@@ -613,6 +613,10 @@ const SRCS: Map<Bend.Name, Src> = new Map();
 
 const LOCAL: Map<Bend.Name, string> = new Map();
 
+// The source module of each constructor. Foreign C may spell constructors from
+// its own module and from Base, so aliases are resolved by provenance.
+const CTRMODS: Map<Bend.Name, string> = new Map();
+
 const FOLDS: Map<HTerm, HTerm | null> = new Map();
 
 const FLATS: Map<Bend.Name, boolean> = new Map();
@@ -620,6 +624,10 @@ const FLATS: Map<Bend.Name, boolean> = new Map();
 const SIGS: Map<Bend.Name, Sig> = new Map();
 
 const BRWS: Map<Bend.Name, boolean[]> = new Map();
+
+const CIDS: Map<Bend.Name, string> = new Map();
+
+const FIDS: Map<Bend.Name, string> = new Map();
 
 const SPINES: Map<HTerm, Spine> = new Map();
 
@@ -645,6 +653,14 @@ function name_own(k: Bend.Name, tld: { T: HTerm }, head: string): string {
 
 function name_clean(k: string): string {
   return (LOCAL.get(k) ?? k).replace(/[^A-Za-z0-9_]/g, "_");
+}
+
+// The macro a foreign .c writes out for one of its module's constructors: the
+// fold of the name the C spells, which is not the allocated one (the same fold
+// may belong to another name in the program) and not through LOCAL (the C names
+// the module's own spelling).
+function mac_fold(prefix: string, k: string): string {
+  return prefix + k.replace(/[^A-Za-z0-9_]/g, "_").toUpperCase();
 }
 
 function name_local(fl: File, k: Bend.Name): string {
@@ -1454,8 +1470,17 @@ function def_body(cb: Carb, k: Bend.Name): TLD | undefined {
 // whether it is flat: no fork, no bang call, self-calls in tail position.
 function carb_book(src: Bend.Book, roots: Bend.Name[]): Carb {
   book_owned(src);
-  [TELES, SRCS, NODES, LAYS, CYCLES, FLATS, SIGS, BRWS].forEach((m) =>
-    m.clear());
+  [TELES, SRCS, NODES, LAYS, CYCLES, FLATS, SIGS, BRWS, CIDS, FIDS, CTRMODS]
+    .forEach((m) => m.clear());
+  MACS.clear();
+  for (const [k, tld] of Object.entries(src.tlds)) {
+    const mod = src.mods[k];
+    if (mod !== undefined) {
+      for (const c of tld.$ === "ADT" ? tld.c : []) {
+        CTRMODS.set(c.k, mod);
+      }
+    }
+  }
   LOCAL.clear();
   for (const [k, tld] of Object.entries(src.tlds)) {
     if (def_foreign(tld)) {
@@ -1511,6 +1536,15 @@ function carb_book(src: Bend.Book, roots: Bend.Name[]): Carb {
     });
     queue.push(...own.refs);
   }
+  const defs = [...SRCS.keys()];
+  const foreign = defs.filter((k) => def_foreign(cb.book.tlds[k]));
+  const ctrs = [...Object.keys(cb.book.ctrs), ...RUNTIME_ADTS];
+  // A foreign def owns its spelling, and so does each of the runtime's names.
+  const fixed = (ks: string[]) => ks.map((k) => [k]);
+  mac_fixed(CIDS, [...fixed(foreign), ...fixed(RUNTIME_CTRS)], "CID_");
+  mac_fixed(FIDS, [...fixed(foreign), ...RUNTIME_SEGS], "FID_");
+  mac_fill(CIDS, [ctrs], "CID_");
+  mac_fill(FIDS, [defs], "FID_");
   return cb;
 }
 
@@ -1555,11 +1589,83 @@ function done_defs(cb: Carb, live = done_live): [Bend.Name, Def][] {
     .filter((p) => live(p[1]));
 }
 
+// Macros
+// ======
+// A def's FID_ and a constructor's CID_ are C identifiers built from a Bend
+// name, and two names must never share one macro: the tables the runtime indexes
+// with them are flat arrays. Names whose spelling the C writes out itself keep
+// the fold of their name -- the runtime's own, a foreign def (its .c registers
+// its handler by that spelling), and the tables -- and two fixed names wanting
+// one spelling is an error, not a rename. Every other name is assigned once per
+// compilation, in groups and sorted, so the answer does not depend on the order
+// codegen reaches a def: of names that fold together the first keeps the
+// readable form and the others take a numbered suffix. A name that turns up
+// later -- an internal segment -- takes a free spelling the same way.
+// The constructors the runtime builds and matches by name.
+const RUNTIME_CTRS = ["True", "False", "Some", "None", "Done", "Fail", "Emit",
+  "Halt", "Tuple", "SCon", "SNil", "WCon"];
+// The segments the runtime enters by name, and the names the book gives them: a
+// call site names the same segment by the book's name.
+const RUNTIME_SEGS = [["clo_apply", CLO_APPLY], ["io_emit"]];
+// The names of the tables the runtime indexes by macro.
+const TABLES = ["CID_ARITY_T", "CID_HOT_T", "FID_ARITY_T", "FID_FLAG_T",
+  "FID_RESW_T"];
+// Macro names no assignment may hand out: the tables' own, and the two
+// segments the runtime keeps outside the segment list.
+const FIXED = [...TABLES, "FID_EXIT", "FID_ENTER"];
+// Every macro handed out this compilation.
+const MACS = new Set<string>();
+
+function mac_used(m: string): boolean {
+  return FIXED.includes(m) || MACS.has(m);
+}
+
+// A name the C spells out itself: it keeps the fold of its name. A group is one
+// name and its aliases in the book; two groups wanting one spelling is an error.
+function mac_fixed(into: Map<Bend.Name, string>, groups: string[][],
+  prefix: string): void {
+  for (const group of groups) {
+    const m = prefix + name_clean(group[0]).toUpperCase();
+    if (mac_used(m)) {
+      die("two fixed names mangle to " + m);
+    }
+    MACS.add(m);
+    for (const k of group) {
+      into.set(k, m);
+    }
+  }
+}
+
+// A name whose macro is ours to choose: the readable spelling, else a suffix.
+function mac_take(into: Map<Bend.Name, string>, prefix: string,
+  k: Bend.Name): string {
+  const base = prefix + name_clean(k).toUpperCase();
+  let m = base;
+  for (let n = 2; mac_used(m); n++) {
+    m = base + "_" + n;
+  }
+  MACS.add(m);
+  into.set(k, m);
+  return m;
+}
+
+// Assign a macro to every name in `groups`, group by group and sorted.
+function mac_fill(into: Map<Bend.Name, string>, groups: string[][],
+  prefix: string): void {
+  for (const group of groups) {
+    for (const k of [...new Set(group)].sort()) {
+      if (!into.has(k)) {
+        mac_take(into, prefix, k);
+      }
+    }
+  }
+}
+
 // Cid
 // ===
 
 function cid_mac(k: string): string {
-  return "CID_" + name_clean(k).toUpperCase();
+  return CIDS.get(k) ?? mac_take(CIDS, "CID_", k);
 }
 
 // File
@@ -1621,7 +1727,7 @@ function seg_new(name: string, ret: Lay, params: string[],
 }
 
 function seg_fid(k: Bend.Name): string {
-  return "FID_" + name_clean(k).toUpperCase();
+  return FIDS.get(k) ?? mac_take(FIDS, "FID_", k);
 }
 
 // A segment's entry: its frame popped, its parameters read from the
@@ -2887,16 +2993,51 @@ function compile_reqs(fl: File): void {
   fl.spares = [];
   for (const [k, tld] of done_defs(fl, def_foreign)) {
     const ns = k.slice(0, k.length - LOCAL.get(k)!.length);
-    const own = ns === "" ? []
-      : Object.keys(fl.book.ctrs).filter((c) => c.startsWith(ns));
-    const macs = own.map((c) =>
-      [cid_mac(c.slice(ns.length)), cid_mac(c)]);
-    for (const [m, g] of macs) {
+    const mod = fl.book.mods[k];
+    // A foreign .c spells its own module's constructors and Base's, the prelude
+    // it opens (EFFECTS.md lays CID_UNIT for Base's Unit).
+    const own = mod === undefined ? []
+      : Object.keys(fl.book.ctrs).filter((c) => {
+          const cm = CTRMODS.get(c);
+          return cm === mod || cm === Bend.BASE_BEND;
+        });
+    // Every CID spelling the .c may use must have one meaning inside the
+    // include: two of the module's constructors that fold to one spelling
+    // cannot both be redirected, since the include would keep the later one and
+    // the other would be unreachable.
+    const aliases = new Map<string, string>();
+    const alias = (m: string, g: string) => {
+      const was = aliases.get(m);
+      if (was !== undefined && was !== g) {
+        die("two foreign C names mangle to " + m);
+      }
+      aliases.set(m, g);
+    };
+    // The effect's own cid is a spelling the C writes too: it registers its
+    // handler by it.
+    alias(mac_fold("CID_", LOCAL.get(k)!), cid_mac(k));
+    for (const c of own) {
+      // Base is the root module: its own names are the ones the C writes.
+      const local = CTRMODS.get(c) === mod ? c.slice(ns.length) : c;
+      alias(mac_fold("CID_", local), cid_mac(c));
+    }
+    // A name already spelled as the macro it was allocated keeps itself: it is
+    // in the map for the check above, and there is nothing to redirect.
+    const pushed = [...aliases].filter(([m, g]) => m !== g);
+    // The preprocessor expands to the end of the chain, so a redirect that is
+    // itself redirected would take the C somewhere neither name meant.
+    const redirected = new Set(pushed.map(([m]) => m));
+    for (const [, g] of pushed) {
+      if (redirected.has(g)) {
+        die("foreign C aliases chain through " + g);
+      }
+    }
+    for (const [m, g] of pushed) {
       fl.reqs += `#pragma push_macro("${m}")\n#define ${m} ${g}\n`;
     }
     fl.reqs += eff_src(tld.i!.find((x) => x.endsWith(".c"))
       ?? die("no .c import: " + k), seen);
-    for (const [m] of macs) {
+    for (const [m] of pushed) {
       fl.reqs += `#pragma pop_macro("${m}")\n`;
     }
     const qp = [...sig_def(fl, k).live.map(([, n]) => n), "k"].map((n) =>
@@ -2908,8 +3049,6 @@ function compile_reqs(fl: File): void {
     file_push(fl, "WL_RETN(1);");
   }
 }
-
-const TABLES = ["CID_ARITY_T", "CID_HOT_T", "FID_ARITY_T", "FID_FLAG_T", "FID_RESW_T"];
 
 // The datatypes whose constructors the runtime or the elaborator lays itself.
 const RUNTIME_ADTS = ["Sigma", "String", "Word.Con", "IO.OP", "Result",

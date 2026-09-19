@@ -606,6 +606,7 @@ function book_seed(base: Bend.Book): Bend.Book {
   for (const k of Object.keys(base.tmps)) {
     book.tmps[k] = { ...base.tmps[k] };
   }
+  Object.assign(book.mods, base.mods);
   book.order.push(...base.order);
   return book;
 }

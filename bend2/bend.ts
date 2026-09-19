@@ -311,7 +311,7 @@ export type Ctrs = Array<Ctr>;
 export type ADT  = { $: "ADT"; n: number; g: number; T: HTerm; c: Ctrs; b?: Bool; };
 export type Def  = { $: "Def"; n: number; x: number; T: HTerm; v: HTerm | null; e?: LTerm; b?: Bool; u?: Bool; i?: string[]; };
 export type TLD  = ADT | Def;
-export type Book = { tlds: Record<Name, TLD>; ctrs: Record<Name, Ctr>; order: Name[]; hols: number; open: number; tmps: Record<Name, Record<string, Name>>; };
+export type Book = { tlds: Record<Name, TLD>; ctrs: Record<Name, Ctr>; order: Name[]; mods: Record<Name, string>; hols: number; open: number; tmps: Record<string, Name>; };
 
 // Context
 export type Ann = { q: Quant; k: Name; T: HTerm };
@@ -978,7 +978,7 @@ export function ctrs_find(cs: Ctrs, k: Name): Ctr | null {
 // ====
 
 export function book_nil(): Book {
-  return { tlds: Object.create(null), ctrs: Object.create(null), order: [], hols: 0, open: 0, tmps: Object.create(null) };
+  return { tlds: Object.create(null), ctrs: Object.create(null), order: [], mods: Object.create(null), hols: 0, open: 0, tmps: Object.create(null) };
 }
 
 export function book_ctr(book: Book, k: Name): Ctr | null {
@@ -1095,6 +1095,12 @@ export async function book_load(book: Book, file: string, ns: string, seen: Map<
   }
   const n0 = book.order.length;
   parse_book(book, dir, lines.join("\n"), ns, al);
+  // Every name this file declares is filed under the file: what a foreign .c
+  // spells is the spelling of its own module, and the root module shares its
+  // namespace with Base.
+  for (const k of book.order.slice(n0)) {
+    book.mods[k] = real;
+  }
   if (real === BASE_BEND) {
     for (const k of book.order.slice(n0)) {
       book.tlds[k].b = true;
