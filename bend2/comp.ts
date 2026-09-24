@@ -572,6 +572,10 @@ const SRCS: Map<Name, Src> = new Map();
 
 const LOCAL: Map<Name, string> = new Map();
 
+const C_MACS: Map<string, string> = new Map();
+
+const BASE_CIDS: Set<Name> = new Set();
+
 const FOLDS: Map<HTerm, HTerm | null> = new Map();
 
 const FLATS: Map<Name, boolean> = new Map();
@@ -604,6 +608,10 @@ function name_own(k: Name, tld: { T: HTerm }, head: string): string {
 
 function name_clean(k: string): string {
   return (LOCAL.get(k) ?? k).replace(/[^A-Za-z0-9_]/g, "_");
+}
+
+function mac_fold(prefix: string, k: string): string {
+  return prefix + k.replace(/[^A-Za-z0-9_]/g, "_").toUpperCase();
 }
 
 function name_local(fl: File, k: Name): string {
@@ -1413,11 +1421,16 @@ function carb_book(src: Bend.Book, roots: Name[]): Carb {
   book_owned(src);
   [TELES, SRCS, NODES, LAYS, CYCLES, FLATS, SIGS, BRWS].forEach((m) =>
     m.clear());
+  C_MACS.clear();
+  BASE_CIDS.clear();
   LOCAL.clear();
   PROBES.length = 1;
   for (const [k, tld] of Object.entries(src.tlds)) {
     if (def_foreign(tld)) {
       LOCAL.set(k, name_own(k, tld, "(def|law) "));
+    }
+    if (tld.$ === "ADT" && tld.b === true) {
+      tld.c.forEach((c) => BASE_CIDS.add(c.k));
     }
   }
   const cb: Carb = {
@@ -1469,6 +1482,8 @@ function carb_book(src: Bend.Book, roots: Name[]): Carb {
     });
     queue.push(...own.refs);
   }
+  Object.keys(cb.book.ctrs).sort().forEach(cid_mac);
+  [...SRCS.keys()].sort().forEach(seg_fid);
   return cb;
 }
 
@@ -1516,8 +1531,13 @@ function done_defs(cb: Carb, live = done_live): [Name, Def][] {
 // Cid
 // ===
 
+function mac(prefix: string, k: Name): string {
+  return memo(C_MACS, prefix + k, () => prefix + "x" + C_MACS.size);
+}
+
 function cid_mac(k: string): string {
-  return "CID_" + name_clean(k).toUpperCase();
+  return BASE_CIDS.has(k) || LOCAL.has(k)
+    ? mac_fold("CID_", LOCAL.get(k) ?? k) : mac("CID_", k);
 }
 
 // File
@@ -1579,7 +1599,8 @@ function seg_new(name: string, ret: Lay, params: string[],
 }
 
 function seg_fid(k: Name): string {
-  return "FID_" + name_clean(k).toUpperCase();
+  return k === CLO_APPLY ? "FID_CLO_APPLY"
+    : k === "$io_emit" ? "FID_IO_EMIT" : mac("FID_", k);
 }
 
 // A segment's entry: its frame popped, its parameters read from the frame
@@ -2876,16 +2897,31 @@ function compile_reqs(fl: File): void {
   fl.spares = [];
   for (const [k, tld] of done_defs(fl, def_foreign)) {
     const ns = k.slice(0, k.length - LOCAL.get(k)!.length);
-    const own = ns === "" ? []
-      : Object.keys(fl.book.ctrs).filter((c) => c.startsWith(ns));
-    const macs = own.map((c) => cid_mac(c.slice(ns.length)));
+    const aliases = new Map<string, string>([[cid_mac(k), cid_mac(k)]]);
+    const alias = (m: string, g: string) => {
+      const was = aliases.get(m);
+      if (was !== undefined && was !== g) {
+        die("two foreign C names mangle to " + m);
+      }
+      aliases.set(m, g);
+    };
+    for (const c of Object.keys(fl.book.ctrs)) {
+      const f = Bend.book_fam(fl.book, c);
+      const a = fl.book.tlds[f] as Bend.ADT;
+      const cn = f.slice(0, f.length - name_own(f, a, "type ").length);
+      if (a.b) {
+        alias(cid_mac(c), cid_mac(c));
+      } else if (!tld.b && cn === ns) {
+        alias(mac_fold("CID_", c.slice(ns.length)), cid_mac(c));
+      }
+    }
+    const macs = [...aliases].filter(([m, g]) => m !== g);
     // A shared source is spliced once, its namespace's names in scope.
     const path = fs.realpathSync(tld.i!.find((x) => x.endsWith(".c"))
       ?? die("no .c import: " + k));
-    fl.reqs += macs.map((m, j) => `#pragma push_macro("${m}")\n#define ${m} ${
-      cid_mac(own[j])}\n`).join("") + (seen.has(path) ? ""
-      : (seen.add(path), fs.readFileSync(path, "utf8")))
-      + macs.map((m) => `#pragma pop_macro("${m}")\n`).join("");
+    fl.reqs += macs.map(([m, g]) => `#pragma push_macro("${m}")\n#define ${m} ${g}\n`).join("")
+      + (seen.has(path) ? "" : (seen.add(path), fs.readFileSync(path, "utf8")))
+      + macs.map(([m]) => `#pragma pop_macro("${m}")\n`).join("");
     const qp = [...sig_def(fl, k).live.map(([, n]) => n), "k"].map((n) =>
       name_local(fl, n));
     fl.seg = seg_new(k, BOX, qp);
@@ -3036,8 +3072,8 @@ export function compile_book(book: Bend.Book): string {
     s.host = !dev.has(s.fid);
   }
   fl.spins = fl.spins.filter((s) => live.has(s.fid));
-  const entries = [...fl.segs, seg_new("io_emit", BOX, [""]),
-    seg_new("clo_apply", BOX, ["", ""])];
+  const entries = [...fl.segs, seg_new("$io_emit", BOX, [""]),
+    seg_new(CLO_APPLY, BOX, ["", ""])];
   const desc = show === null ? [] : ["#if !DEVICE",
     `static const u32 SHOW_DESC[] = { ${show.cells.map((c) =>
       typeof c === "string" ? cid_mac(c) : c).join(", ")} };`,
