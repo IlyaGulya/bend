@@ -572,6 +572,10 @@ const SRCS: Map<Name, Src> = new Map();
 
 const LOCAL: Map<Name, string> = new Map();
 
+const MACS: Map<string, string> = new Map();
+
+const MAC_USED: Set<string> = new Set();
+
 const FOLDS: Map<HTerm, HTerm | null> = new Map();
 
 const FLATS: Map<Name, boolean> = new Map();
@@ -1413,11 +1417,18 @@ function carb_book(src: Bend.Book, roots: Name[]): Carb {
   book_owned(src);
   [TELES, SRCS, NODES, LAYS, CYCLES, FLATS, SIGS, BRWS].forEach((m) =>
     m.clear());
+  MACS.clear();
+  MAC_USED.clear();
+  "CID_ARITY_T CID_HOT_T FID_ARITY_T FID_FLAG_T FID_RESW_T FID_EXIT FID_ENTER"
+    .split(" ").forEach((m) => MAC_USED.add(m));
   LOCAL.clear();
   PROBES.length = 1;
   for (const [k, tld] of Object.entries(src.tlds)) {
     if (def_foreign(tld)) {
       LOCAL.set(k, name_own(k, tld, "(def|law) "));
+    }
+    if (tld.$ === "ADT" && tld.b === true) {
+      tld.c.forEach((c) => mac_fixed("CID_", c.k));
     }
   }
   const cb: Carb = {
@@ -1469,6 +1480,13 @@ function carb_book(src: Bend.Book, roots: Name[]): Carb {
     });
     queue.push(...own.refs);
   }
+  [...SRCS.keys()].filter((k) => def_foreign(cb.book.tlds[k]))
+    .forEach((k) => mac_fixed("CID_", k));
+  mac_fixed("FID_", CLO_APPLY);
+  MAC_USED.add("FID_IO_EMIT");
+  MACS.set("FID_$io_emit", "FID_IO_EMIT");
+  Object.keys(cb.book.ctrs).sort().forEach(cid_mac);
+  [...SRCS.keys()].sort().forEach(seg_fid);
   return cb;
 }
 
@@ -1513,11 +1531,32 @@ function done_defs(cb: Carb, live = done_live): [Name, Def][] {
     .filter((p) => live(p[1]));
 }
 
-// Cid
-// ===
+// Macros
+// ======
+
+function mac(prefix: string, k: Name): string {
+  return memo(MACS, prefix + k, () => {
+    const base = prefix + name_clean(k).toUpperCase();
+    let out = base;
+    for (let n = 2; MAC_USED.has(out); n++) {
+      out = base + "_x" + n;
+    }
+    MAC_USED.add(out);
+    return out;
+  });
+}
+
+function mac_fixed(prefix: string, k: Name): void {
+  const out = prefix + name_clean(k).toUpperCase();
+  if (MAC_USED.has(out)) {
+    die("two fixed names mangle to " + out);
+  }
+  MAC_USED.add(out);
+  MACS.set(prefix + k, out);
+}
 
 function cid_mac(k: string): string {
-  return "CID_" + name_clean(k).toUpperCase();
+  return mac("CID_", k);
 }
 
 // File
@@ -1579,7 +1618,7 @@ function seg_new(name: string, ret: Lay, params: string[],
 }
 
 function seg_fid(k: Name): string {
-  return "FID_" + name_clean(k).toUpperCase();
+  return mac("FID_", k);
 }
 
 // A segment's entry: its frame popped, its parameters read from the frame
@@ -2876,16 +2915,33 @@ function compile_reqs(fl: File): void {
   fl.spares = [];
   for (const [k, tld] of done_defs(fl, def_foreign)) {
     const ns = k.slice(0, k.length - LOCAL.get(k)!.length);
-    const own = ns === "" ? []
-      : Object.keys(fl.book.ctrs).filter((c) => c.startsWith(ns));
-    const macs = own.map((c) => cid_mac(c.slice(ns.length)));
+    const own = Object.keys(fl.book.ctrs).flatMap((c): [string, string][] => {
+      const f = Bend.book_fam(fl.book, c);
+      const a = fl.book.tlds[f] as Bend.ADT;
+      const cn = f.slice(0, f.length - name_own(f, a, "type ").length);
+      return a.b || (!tld.b && cn === ns)
+        ? [[a.b ? c : c.slice(ns.length), c]] : [];
+    });
+    const aliases = new Map<string, string>();
+    for (const [local, c] of [[LOCAL.get(k)!, k], ...own] as [string, string][]) {
+      const m = "CID_" + local.replace(/[^A-Za-z0-9_]/g, "_").toUpperCase();
+      const g = cid_mac(c);
+      const was = aliases.get(m);
+      if (was !== undefined && was !== g) {
+        die("two foreign C names mangle to " + m);
+      }
+      aliases.set(m, g);
+    }
+    const macs = [...aliases].filter(([m, g]) => m !== g);
+    if (macs.some(([, g]) => macs.some(([m]) => m === g))) {
+      die("foreign C aliases chain");
+    }
     // A shared source is spliced once, its namespace's names in scope.
     const path = fs.realpathSync(tld.i!.find((x) => x.endsWith(".c"))
       ?? die("no .c import: " + k));
-    fl.reqs += macs.map((m, j) => `#pragma push_macro("${m}")\n#define ${m} ${
-      cid_mac(own[j])}\n`).join("") + (seen.has(path) ? ""
-      : (seen.add(path), fs.readFileSync(path, "utf8")))
-      + macs.map((m) => `#pragma pop_macro("${m}")\n`).join("");
+    fl.reqs += macs.map(([m, g]) => `#pragma push_macro("${m}")\n#define ${m} ${g}\n`).join("")
+      + (seen.has(path) ? "" : (seen.add(path), fs.readFileSync(path, "utf8")))
+      + macs.map(([m]) => `#pragma pop_macro("${m}")\n`).join("");
     const qp = [...sig_def(fl, k).live.map(([, n]) => n), "k"].map((n) =>
       name_local(fl, n));
     fl.seg = seg_new(k, BOX, qp);
@@ -3036,8 +3092,8 @@ export function compile_book(book: Bend.Book): string {
     s.host = !dev.has(s.fid);
   }
   fl.spins = fl.spins.filter((s) => live.has(s.fid));
-  const entries = [...fl.segs, seg_new("io_emit", BOX, [""]),
-    seg_new("clo_apply", BOX, ["", ""])];
+  const entries = [...fl.segs, seg_new("$io_emit", BOX, [""]),
+    seg_new(CLO_APPLY, BOX, ["", ""])];
   const desc = show === null ? [] : ["#if !DEVICE",
     `static const u32 SHOW_DESC[] = { ${show.cells.map((c) =>
       typeof c === "string" ? cid_mac(c) : c).join(", ")} };`,
