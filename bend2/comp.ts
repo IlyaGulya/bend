@@ -552,10 +552,6 @@ function char_new(code) {
 // Caches
 // ------
 
-const IDS: Map<string, string> = new Map();
-
-const TAKEN: Set<string> = new Set();
-
 const PROBES: Of<"Var">[] = [];
 
 const DUMMY = probe("~");
@@ -609,15 +605,8 @@ function name_local(fl: File, k: Name): string {
 }
 
 function name_id(pre: string, k: string): string {
-  return memo(IDS, pre + k, () => {
-    const base = pre + name_clean(k).toUpperCase();
-    let id = base;
-    for (let n = 1; TAKEN.has(id); n += 1) {
-      id = base + "_" + n;
-    }
-    TAKEN.add(id);
-    return id;
-  });
+  return "BEND_" + pre + k.replace(/[^A-Za-z0-9]/g, (c) =>
+    "_" + c.charCodeAt(0).toString(16) + "_");
 }
 
 function cid_mac(k: string): string {
@@ -1352,9 +1341,8 @@ export function io_run(book: Bend.Book, args: string[] = []): number {
 
 function file_book(src: Bend.Book, roots: Name[], js: boolean): File {
   book_owned(src);
-  [TELES, SRCS, LOOPS, NODES, LAYS, FLATS, FUNS, BRWS, IDS, TAKEN]
+  [TELES, SRCS, LOOPS, NODES, LAYS, FLATS, FUNS, BRWS]
     .forEach((m) => m.clear());
-  "FID_EXIT FID_ENTER FID_T CID_T".split(" ").forEach((id) => TAKEN.add(id));
   PROBES.length = 1;
   const fl: File = {
     book: src,
@@ -2815,7 +2803,7 @@ function emit_chain(fl: File, cond: (i: number) => string,
 function c_ids(fl: File, src: string, m = ""): string {
   return src.replace(/\b([CF]ID)\(([\w./~-]+)\)/g, (_, p, k) => {
     const q = [m === "" ? k : m + "." + k, k].find((q) => q in fl.book.ctrs
-      || q in fl.book.tlds || IDS.has(p + "_" + q))
+      || q in fl.book.tlds || p === "FID" && (q === CLO_APPLY || q === IO_EMIT))
       ?? die(p + "(" + k + ") names no constructor or def");
     return fl.js ? JSON.stringify(q) : name_id(p + "_", q);
   });
