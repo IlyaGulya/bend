@@ -19,6 +19,8 @@ type MatchChainState is Data:
 type PatternScanMode is Data:
   PatternExpect{quantity: Ast.Quantity, beg: Nat}
   PatternCompleted{pattern: Ast.SyntaxPattern}
+  PatternNoNat{number: Lexer.Token, quantity: Ast.Quantity, beg: Nat, end: Nat}
+  PatternBadNat{beg: Nat, end: Nat}
 
 type PatternFrame is Data:
   PatternFrameOf{key: String, beg: Nat, end: Nat, fields: List<&2, Ast.SyntaxPattern>, root_scope: List<&2, Scope>, root_depth: Nat}
@@ -1904,9 +1906,23 @@ def parse_pattern_nat_suffix(is_nat: Bool, file: String, text: String, tokens: L
     case False{}:
       ((Ast.PatternVar{ "", depth, Ast.QOne{}, span(file, beg, end)}, tokens), ((scope, depth), False{}))
 
+def pattern_number_read(result: Maybe<&2, Nat>, file: String, beg: Nat, end: Nat) -> PatternScanMode:
+  match result:
+    case Some{value}:
+      PatternCompleted{nat_pattern(file, value, beg, end)}
+    case None{}:
+      PatternBadNat{beg, end}
+
+def pattern_number_mode(is_nat: Bool, file: String, text: String, +beg: Nat, +end: Nat, line: Nat, col: Nat, quantity: Ast.Quantity) -> PatternScanMode:
+  match is_nat:
+    case True{}:
+      pattern_number_read(Nat.read(drop_nat_suffix(text)), file, beg, end)
+    case False{}:
+      PatternNoNat{Lexer.TokenInfo{Lexer.NumberToken{}, text, beg, end, line, col}, quantity, beg, end}
+
 def pattern_scan(+tokens: List<&2, Lexer.Token>, +file: String, mode: PatternScanMode, frames: List<&2, PatternFrame>, +scope: List<&2, Scope>, +depth: Nat) -> (Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool):
   match tokens mode:
-    case Lexer.TokenInfo{_, "+", beg, _, _, _} <> +rest PatternExpect{Ast.QOne{}, _}:
+    case Lexer.TokenInfo{Lexer.SymbolToken{}, "+", beg, ignored_end, ignored_line, ignored_col} <> +rest PatternExpect{Ast.QOne{}, +ignored_beg}:
       pattern_scan(rest, file, PatternExpect{Ast.QMany{}, beg}, frames, scope, depth)
     case Lexer.TokenInfo{_, "-", beg, end, _, _} <> +rest PatternExpect{Ast.QOne{}, _}:
       ((Ast.PatternVar{"", depth, Ast.QOne{}, span(file, beg, end)}, tokens), ((scope, depth), False{}))
@@ -1918,16 +1934,12 @@ def pattern_scan(+tokens: List<&2, Lexer.Token>, +file: String, mode: PatternSca
       pattern_scan(rest, file, PatternCompleted{Ast.PatternVar{key, depth, Ast.QOne{}, span(file, beg, end)}}, frames, extend_scope(key, depth, scope), depth + 1n)
     case Lexer.TokenInfo{Lexer.NameToken{}, +key, _, end, _, _} <> +rest PatternExpect{quantity, beg}:
       pattern_scan(rest, file, PatternCompleted{Ast.PatternVar{key, depth, quantity, span(file, beg, end)}}, frames, extend_scope(key, depth, scope), depth + 1n)
-    case Lexer.TokenInfo{Lexer.NumberToken{}, text, beg, end, _, _} <> +rest PatternExpect{quantity, _}:
-      match has_nat_suffix(text):
-        case True{}:
-          match Nat.read(drop_nat_suffix(text)):
-            case Some{value}:
-              pattern_scan(rest, file, PatternCompleted{nat_pattern(file, value, beg, end)}, frames, scope, depth)
-            case None{}:
-              ((Ast.PatternVar{"", depth, Ast.QOne{}, span(file, beg, end)}, rest), ((scope, depth), False{}))
-        case False{}:
-          ((Ast.PatternVar{"", depth, quantity, span(file, beg, end)}, tokens), ((scope, depth), False{}))
+    case Lexer.TokenInfo{Lexer.NumberToken{}, +text, +beg, +end, line, col} <> +rest PatternExpect{quantity, _}:
+      pattern_scan(rest, file, pattern_number_mode(has_nat_suffix(text), file, text, beg, end, line, col, quantity), frames, scope, depth)
+    case _ PatternNoNat{number, quantity, beg, end}:
+      ((Ast.PatternVar{"", depth, quantity, span(file, beg, end)}, number <> tokens), ((scope, depth), False{}))
+    case _ PatternBadNat{beg, end}:
+      ((Ast.PatternVar{"", depth, Ast.QOne{}, span(file, beg, end)}, tokens), ((scope, depth), False{}))
     case Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _} <> +rest PatternExpect{quantity, beg}:
       pattern_scan(rest, file, PatternExpect{quantity, beg}, frames, scope, depth)
     case Lexer.TokenInfo{_, "}", _, close_end, _, _} <> +rest PatternExpect{quantity, beg}:
@@ -1978,7 +1990,7 @@ def pattern_scan(+tokens: List<&2, Lexer.Token>, +file: String, mode: PatternSca
           ((Ast.PatternCtr{key, List.reverse(&2, Ast.SyntaxPattern, pattern <> fields), span(file, beg, end)}, tokens), ((root_scope, root_depth), False{}))
         case Nil{}:
           ((pattern, tokens), ((scope, depth), True{}))
-    case _ PatternExpect{quantity, beg}:
+    case _ PatternExpect{quantity, +beg}:
       match frames:
         case PatternFrameOf{key, start, end, fields, root_scope, root_depth} <> parents:
           ((Ast.PatternCtr{key, List.reverse(&2, Ast.SyntaxPattern, fields), span(file, start, end)}, tokens), ((root_scope, root_depth), False{}))
