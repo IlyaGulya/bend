@@ -1,6 +1,7 @@
 {
   "source": "bend2/selfhost/parser.bend",
   "sourceSha256": "1e6188eb07361e3a78bd27ff22d7ae3cac3fcf6967cfa01e3897d1a22c510a57",
+  "status": "Historical SCC 204 boundary inventory for sourceSha256 only; not a current parser boundary plan.",
   "coreSccId": 204,
   "coreSccSize": 160,
   "selectedFeedbackNodes": [

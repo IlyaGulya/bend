@@ -1,6 +1,7 @@
 {
   "source": "bend2/selfhost/parser.bend",
   "sourceSha256": "1e6188eb07361e3a78bd27ff22d7ae3cac3fcf6967cfa01e3897d1a22c510a57",
+  "status": "Historical reorder/SCC plan for sourceSha256 only; current main SCC at checkpoint 487aab75f8bd91696e9e65c4b1e29ea91677a5ee has 161 definitions.",
   "method": "Stable Kahn topological order of the SCC condensation DAG; caller->callee edges; dependencies first; tie-break by minimum original declaration line, then component id, with the leaf self-recursive split_last_do_args deferred until immediately before its sole caller do_call to preserve Gate A type-resolution order; preserve member order inside each SCC and the law parse: anchor.",
   "anchor": {
     "text": "law parse:",

@@ -2035,7 +2035,7 @@ def pattern_single_result(result: PatternScanOutcome, file: String, depth: Nat) 
     case PatternCaseOutcome{patterns, after, scope, next_depth, ok}:
       ((Ast.PatternVar{"", depth, Ast.QOne{}, span(file, 0n, 0n)}, after), ((scope, next_depth), False{}))
 
-def parse_pattern_atom(file: String, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> (Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool):
+def parse_pattern_atom(+file: String, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, +depth: Nat) -> (Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool):
   pattern_single_result(pattern_scan(tokens, file, PatternExpect{Ast.QOne{}, 0n}, Nil{}, scope, depth, PatternSingleGoal{}), file, depth)
 def parse_module_import_alias_token(file: String, canonical: String, beg: Nat, path_token: Lexer.Token, as_token: Lexer.Token, alias_token: Lexer.Token, rest: List<&2, Lexer.Token>) -> (Ast.ModuleImport & List<&2, Lexer.Token>) & Bool:
   match alias_token:

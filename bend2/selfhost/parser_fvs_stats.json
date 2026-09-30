@@ -1,6 +1,21 @@
 {
   "source": "bend2/selfhost/parser.bend",
   "sourceSha256": "1e6188eb07361e3a78bd27ff22d7ae3cac3fcf6967cfa01e3897d1a22c510a57",
+  "status": "Historical snapshot only; SCC 204 and its 150-node feedback-set residual do not describe the current parser.",
+  "currentAudit": {
+    "baselineCommit": "2daae0046db14af553c43d79065dd5a1dec19e51",
+    "baselineNonSingletonSccs": 7,
+    "baselineLargestScc": 150,
+    "currentCommit": "487aab75f8bd91696e9e65c4b1e29ea91677a5ee",
+    "currentSourceSha256": "8f40a9509b20efe398e6de8fd483aa5571942dc9528cc27f340be75ab8eb9272",
+    "currentNonSingletonSccs": 6,
+    "currentLargestScc": 161,
+    "crossingEdgesPresentAtBothCommits": [
+      ["parse_match_body", "parse_match_scrutinees"],
+      ["parse_case_body_indented", "parse_body"]
+    ],
+    "newCaseRowPath": ["parse_case_row", "parse_case_row_scan_result", "parse_case_row_patterns"]
+  },
   "definitions": 471,
   "callOccurrences": 1407,
   "uniqueCallEdges": 1139,
