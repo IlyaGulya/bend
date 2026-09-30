@@ -2037,14 +2037,14 @@ def pattern_single_result(result: PatternScanOutcome, file: String, depth: Nat) 
 
 def parse_pattern_atom(+file: String, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, +depth: Nat) -> (Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool):
   pattern_single_result(pattern_scan(tokens, file, PatternExpect{Ast.QOne{}, 0n}, Nil{}, scope, depth, PatternSingleGoal{}), file, depth)
-def parse_module_import_alias_token(file: String, canonical: String, beg: Nat, path_token: Lexer.Token, as_token: Lexer.Token, alias_token: Lexer.Token, rest: List<&2, Lexer.Token>) -> (Ast.ModuleImport & List<&2, Lexer.Token>) & Bool:
+def parse_module_import_alias_token(file: String, +canonical: String, beg: Nat, path_token: Lexer.Token, as_token: Lexer.Token, alias_token: Lexer.Token, rest: List<&2, Lexer.Token>) -> (Ast.ModuleImport & List<&2, Lexer.Token>) & Bool:
   match alias_token:
     case Lexer.TokenInfo{ Lexer.NameToken{}, alias, _, fin, _, _}:
       ((Ast.ModuleImport{ canonical, alias, span(file, beg, fin)}, rest), True{})
     case Lexer.TokenInfo{kind, text, field_beg, field_end, line, col}:
       ((Ast.ModuleImport{ canonical, canonical, span(file, beg, token_end(path_token))}, as_token <> (Lexer.TokenInfo{kind, text, field_beg, field_end, line, col} <> rest)), False{})
 
-def parse_module_import_alias_target(file: String, canonical: String, beg: Nat, path_token: Lexer.Token, as_token: Lexer.Token, after_as: List<&2, Lexer.Token>) -> (Ast.ModuleImport & List<&2, Lexer.Token>) & Bool:
+def parse_module_import_alias_target(file: String, +canonical: String, beg: Nat, path_token: Lexer.Token, as_token: Lexer.Token, after_as: List<&2, Lexer.Token>) -> (Ast.ModuleImport & List<&2, Lexer.Token>) & Bool:
   match after_as:
     case +alias_token <> rest:
       parse_module_import_alias_token(file, canonical, beg, path_token, as_token, alias_token, rest)
@@ -2058,14 +2058,14 @@ def is_base_path(token: Lexer.Token) -> Bool:
     case _:
       False{}
 
-def parse_module_import_modifier(file: String, canonical: String, beg: Nat, path_token: Lexer.Token, modifier: Lexer.Token, after_modifier: List<&2, Lexer.Token>) -> (Ast.ModuleImport & List<&2, Lexer.Token>) & Bool:
+def parse_module_import_modifier(file: String, canonical: String, beg: Nat, +path_token: Lexer.Token, modifier: Lexer.Token, after_modifier: List<&2, Lexer.Token>) -> (Ast.ModuleImport & List<&2, Lexer.Token>) & Bool:
   match modifier:
     case Lexer.TokenInfo{kind, "as", field_beg, field_end, line, col}:
       parse_module_import_alias_target(file, canonical, beg, path_token, Lexer.TokenInfo{kind, "as", field_beg, field_end, line, col}, after_modifier)
     case Lexer.TokenInfo{kind, text, field_beg, field_end, line, col}:
       module_import_without_alias(is_base_path(path_token), file, canonical, beg, path_token, Lexer.TokenInfo{kind, text, field_beg, field_end, line, col} <> after_modifier)
 
-def parse_module_import_path_rest(file: String, canonical: String, beg: Nat, path_token: Lexer.Token, tokens: List<&2, Lexer.Token>) -> (Ast.ModuleImport & List<&2, Lexer.Token>) & Bool:
+def parse_module_import_path_rest(file: String, canonical: String, beg: Nat, +path_token: Lexer.Token, tokens: List<&2, Lexer.Token>) -> (Ast.ModuleImport & List<&2, Lexer.Token>) & Bool:
   match tokens:
     case +modifier <> after_modifier:
       parse_module_import_modifier(file, canonical, beg, path_token, modifier, after_modifier)
@@ -2085,7 +2085,7 @@ def strip_quotes_chars(chars: List<&2, Char>, text: String) -> String:
     case Nil{}:
       text
 
-def strip_quotes(text: String) -> String:
+def strip_quotes(+text: String) -> String:
   strip_quotes_chars(String.to_list(text), text)
 
 def parse_external_imports_scan(tokens: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>, acc: List<&2, String>) -> (List<&2, String> & List<&2, Lexer.Token>) & Bool:
