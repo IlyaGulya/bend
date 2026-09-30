@@ -1,0 +1,1290 @@
+{
+  "source": "bend2/selfhost/parser.bend",
+  "sourceSha256": "1e6188eb07361e3a78bd27ff22d7ae3cac3fcf6967cfa01e3897d1a22c510a57",
+  "coreSccId": 204,
+  "coreSccSize": 160,
+  "selectedFeedbackNodes": [
+    "parse_term",
+    "parse_term_tail",
+    "parse_body",
+    "parse_do_return_scan",
+    "parse_local_values_next",
+    "parse_term_args_after_separator",
+    "parse_case_row_result",
+    "parse_term_args_first",
+    "parse_terms_until_colon_result",
+    "parse_match_chain_state"
+  ],
+  "edgeCount": 67,
+  "tailEdgeCount": 21,
+  "nonTailEdgeCount": 46,
+  "tailCallsiteCount": 21,
+  "nonTailCallsiteCount": 48,
+  "distinctContinuationConsumers": 47,
+  "resultFamilies": {
+    "TermResult": "(Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool",
+    "TermsResult": "(List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool",
+    "LocalValuesResult": "((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Nat) & Bool"
+  },
+  "targetSignatures": {
+    "parse_term": "def parse_term(file: String, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, level: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:",
+    "parse_term_tail": "def parse_term_tail(file: String, left: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, level: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:",
+    "parse_body": "def parse_body(file: String, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, parent_col: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:",
+    "parse_do_return_scan": "def parse_do_return_scan(file: String, key: String, args: List<&2, Ast.SyntaxTerm>, tokens: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>, beg: Nat, end: Nat, scope: List<&2, Scope>, depth: Nat, col: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:",
+    "parse_local_values_next": "def parse_local_values_next(next: Lexer.Token, after_next: List<&2, Lexer.Token>, value: Ast.SyntaxTerm, file: String, scope: List<&2, Scope>, depth: Nat, line: Nat, acc: List<&2, Ast.SyntaxTerm>) -> ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Nat) & Bool:",
+    "parse_term_args_after_separator": "def parse_term_args_after_separator(is_close: Bool, file: String, term: Ast.SyntaxTerm, after: List<&2, Lexer.Token>, tail: List<&2, Lexer.Token>, close: String, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.SyntaxTerm>) -> (List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool:",
+    "parse_case_row_result": "def parse_case_row_result(ok_row: Bool, row: Ast.SyntaxTerm, after_row: List<&2, Lexer.Token>, file: String, tokens: List<&2, Lexer.Token>, parent_col: Nat, scope: List<&2, Scope>, depth: Nat, arity: Nat, acc: List<&2, Ast.SyntaxTerm>) -> (List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool:",
+    "parse_term_args_first": "def parse_term_args_first(is_close: Bool, file: String, token: Lexer.Token, rest: List<&2, Lexer.Token>, tokens: List<&2, Lexer.Token>, close: String, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.SyntaxTerm>) -> (List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool:",
+    "parse_terms_until_colon_result": "def parse_terms_until_colon_result(ok: Bool, term: Ast.SyntaxTerm, after: List<&2, Lexer.Token>, file: String, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.SyntaxTerm>) -> (List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool:",
+    "parse_match_chain_state": "def parse_match_chain_state(state: MatchChainState) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:"
+  },
+  "rows": [
+    {
+      "caller": "parse_case_body_indented",
+      "target": "parse_body",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_case_body_result"
+      ],
+      "sites": [
+        {
+          "line": 3353,
+          "tail": false,
+          "continuation": "parse_case_body_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_body(file, after_colon, scope, depth, col), body => after_body => ok_body => parse_case_body_result(ok_body, body, after_body, patterns, file, beg))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_destructuring_body_ready",
+      "target": "parse_body",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_destructuring_parsed_body"
+      ],
+      "sites": [
+        {
+          "line": 3208,
+          "tail": false,
+          "continuation": "parse_destructuring_parsed_body",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_body(file, skip_rewrite_semicolon(after_value), next_scope, depth, col), body => after_body => ok_body => parse_destructuring_parsed_body(ok_body, body, after_body, value, pattern, file, beg))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_local_body_ready",
+      "target": "parse_body",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_local_body_parsed"
+      ],
+      "sites": [
+        {
+          "line": 3148,
+          "tail": false,
+          "continuation": "parse_local_body_parsed",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_body(file, skip_rewrite_semicolon(after_value), next_scope, depth + 1n, col), body => after_body => ok_body => parse_local_body_parsed(ok_body, body, after_body, file, key, beg, pattern, quantity, value))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_parallel_body_ready",
+      "target": "parse_body",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_parallel_parsed_body"
+      ],
+      "sites": [
+        {
+          "line": 3117,
+          "tail": false,
+          "continuation": "parse_parallel_parsed_body",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_body(file, skip_rewrite_semicolon(after_values), next_scope, next_depth, col), body => after_body => ok_body => parse_parallel_parsed_body(ok_body, body, after_body, values, patterns, quantity, file, beg))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_parenthesized_body",
+      "target": "parse_body",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_parenthesized_body_result_checked"
+      ],
+      "sites": [
+        {
+          "line": 1552,
+          "tail": false,
+          "continuation": "parse_parenthesized_body_result_checked",
+          "kontAction": "push-typed-kont",
+          "expression": "parse_parenthesized_body_result_checked(parse_body(file, tokens, scope, depth, col), file, tokens, beg, scope, depth)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_case_row_indented",
+      "target": "parse_case_row_result",
+      "targetResultFamily": "TermsResult",
+      "tail": true,
+      "continuationNeeded": false,
+      "continuations": [],
+      "sites": [
+        {
+          "line": 3271,
+          "tail": true,
+          "continuation": null,
+          "kontAction": "forward-existing",
+          "expression": "with_term_result(parse_case_row(file, rest, beg, col, scope, depth, arity), row => after_row => ok_row => parse_case_row_result(ok_row, row, after_row, file, tokens, parent_col, scope, depth, arity, acc))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_do_return",
+      "target": "parse_do_return_scan",
+      "targetResultFamily": "TermResult",
+      "tail": true,
+      "continuationNeeded": false,
+      "continuations": [],
+      "sites": [
+        {
+          "line": 467,
+          "tail": true,
+          "continuation": null,
+          "kontAction": "forward-existing",
+          "expression": "parse_do_return_scan(file, key, args, tokens, skip_lines(tokens), beg, end, scope, depth, col)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_local_values_result",
+      "target": "parse_local_values_next",
+      "targetResultFamily": "LocalValuesResult",
+      "tail": true,
+      "continuationNeeded": false,
+      "continuations": [],
+      "sites": [
+        {
+          "line": 3052,
+          "tail": true,
+          "continuation": null,
+          "kontAction": "forward-existing",
+          "expression": "parse_local_values_next(next, after_next, value, file, scope, depth, line, acc)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_match_chain",
+      "target": "parse_match_chain_state",
+      "targetResultFamily": "TermResult",
+      "tail": true,
+      "continuationNeeded": false,
+      "continuations": [],
+      "sites": [
+        {
+          "line": 1745,
+          "tail": true,
+          "continuation": null,
+          "kontAction": "forward-existing",
+          "expression": "parse_match_chain_state(MatchChainStart{file, key, head, tokens, skip_lines(tokens), beg, scope, depth})"
+        }
+      ]
+    },
+    {
+      "caller": "expr_match_array_shape",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "expr_match_array_count",
+        "expr_match_array_depth"
+      ],
+      "sites": [
+        {
+          "line": 1341,
+          "tail": false,
+          "continuation": "expr_match_array_count",
+          "kontAction": "push-typed-kont",
+          "expression": "expr_match_array_count(parse_term(file, after_shape, scope, depth, 0n), file, value, ty, beg, end)"
+        },
+        {
+          "line": 1343,
+          "tail": false,
+          "continuation": "expr_match_array_depth",
+          "kontAction": "push-typed-kont",
+          "expression": "expr_match_array_depth(parse_term(file, after_shape, scope, depth, 0n), file, value, ty, beg, end)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_all_named",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_all_named_type_result"
+      ],
+      "sites": [
+        {
+          "line": 2097,
+          "tail": false,
+          "continuation": "parse_all_named_type_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, after_colon, scope, depth, 1n), ty => after_ty => ok_ty => parse_all_named_type_result(ok_ty, ty, after_ty, file, key, key_end, beg, quantity, scope, depth))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_all_named_type_result",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_all_named_body_result"
+      ],
+      "sites": [
+        {
+          "line": 2082,
+          "tail": false,
+          "continuation": "parse_all_named_body_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, after_arrow, next_scope, depth + 1n, 0n), body => after_body => ok_body => parse_all_named_body_result(ok_body, body, after_body, file, key, key_end, beg, quantity, ty, idx))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_array_literal",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "expr_match_array_type"
+      ],
+      "sites": [
+        {
+          "line": 1336,
+          "tail": false,
+          "continuation": "expr_match_array_type",
+          "kontAction": "push-typed-kont",
+          "expression": "expr_match_array_type(parse_term(file, tokens, scope, depth, 12n), file, value, beg, end, scope, depth)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_array_write_local",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_local_body_term_result"
+      ],
+      "sites": [
+        {
+          "line": 3175,
+          "tail": false,
+          "continuation": "parse_local_body_term_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, tokens, scope, depth, 0n), value => after_value => ok_value => parse_local_body_term_result(ok_value, file, key, beg, key_end, col, value, after_value, scope, depth, Ast.QOne{}))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_atom_scan",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_kind_result"
+      ],
+      "sites": [
+        {
+          "line": 381,
+          "tail": false,
+          "continuation": "parse_kind_result",
+          "kontAction": "push-typed-kont",
+          "expression": "parse_kind_result(parse_term(file, more, scope, depth, 0n), file, beg, end, rest)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_brace",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_brace_left_result"
+      ],
+      "sites": [
+        {
+          "line": 1888,
+          "tail": false,
+          "continuation": "parse_brace_left_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, tokens, scope, depth, 0n), left => after_left => ok_left => parse_brace_left_result(ok_left, after_left, left, file, beg, scope, depth))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_brace_equal_right_result",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_brace_equal_type_result"
+      ],
+      "sites": [
+        {
+          "line": 1840,
+          "tail": false,
+          "continuation": "parse_brace_equal_type_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, after_colon, scope, depth, 0n), ty => after_ty => ok_ty => parse_brace_equal_type_result(ok_ty, after_ty, ty, file, left, right, beg))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_brace_equals",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_brace_equal_right_result",
+        "parse_brace_annot_type_result"
+      ],
+      "sites": [
+        {
+          "line": 1860,
+          "tail": false,
+          "continuation": "parse_brace_equal_right_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, after_equals, scope, depth, 0n), right => after_right => ok_right => parse_brace_equal_right_result(ok_right, after_right, right, file, left, beg, scope, depth))"
+        },
+        {
+          "line": 1862,
+          "tail": false,
+          "continuation": "parse_brace_annot_type_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, after_equals, scope, depth, 0n), ty => after_ty => ok_ty => parse_brace_annot_type_result(ok_ty, after_ty, ty, file, left, beg))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_destructuring_pattern_result",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_destructuring_value_result"
+      ],
+      "sites": [
+        {
+          "line": 3192,
+          "tail": false,
+          "continuation": "parse_destructuring_value_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, after_equals, scope, depth, 0n), value => after_value => ok_value => parse_destructuring_value_result(ok_value, value, after_value, pattern, next_scope, next_depth, file, tokens, beg, col, scope, depth))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_do_assignment",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_do_assignment_value_result"
+      ],
+      "sites": [
+        {
+          "line": 538,
+          "tail": false,
+          "continuation": "parse_do_assignment_value_result",
+          "kontAction": "push-typed-kont",
+          "expression": "parse_do_assignment_value_result(parse_term(file, tokens, scope, depth, 0n), file, monad, args, key, key_beg, ty, beg, end, scope, depth, col)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_do_typed_bind",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_do_typed_bind_type_result"
+      ],
+      "sites": [
+        {
+          "line": 514,
+          "tail": false,
+          "continuation": "parse_do_typed_bind_type_result",
+          "kontAction": "push-typed-kont",
+          "expression": "parse_do_typed_bind_type_result(parse_term(file, after_colon, scope, depth, 1n), file, monad, args, key, key_beg, beg, end, scope, depth, col)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_do_typed_bind_type_token",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_do_typed_bind_value_result"
+      ],
+      "sites": [
+        {
+          "line": 472,
+          "tail": false,
+          "continuation": "parse_do_typed_bind_value_result",
+          "kontAction": "push-typed-kont",
+          "expression": "parse_do_typed_bind_value_result(parse_term(file, after_bind, scope, depth, 0n), file, monad, args, key, key_beg, ty, beg, end, scope, depth, col)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_do_untyped",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_do_untyped_result"
+      ],
+      "sites": [
+        {
+          "line": 566,
+          "tail": false,
+          "continuation": "parse_do_untyped_result",
+          "kontAction": "push-typed-kont",
+          "expression": "parse_do_untyped_result(parse_term(file, tokens, scope, depth, 0n), file, monad, args, beg, end, scope, depth, col)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_do_untyped_after_action",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_do_untyped_value_result"
+      ],
+      "sites": [
+        {
+          "line": 559,
+          "tail": false,
+          "continuation": "parse_do_untyped_value_result",
+          "kontAction": "push-typed-kont",
+          "expression": "parse_do_untyped_value_result(parse_term(file, after_bind, scope, depth, 0n), file, monad, args, action, beg, end, scope, depth, col)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_index_set_token",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_array_set_value_result"
+      ],
+      "sites": [
+        {
+          "line": 2564,
+          "tail": false,
+          "continuation": "parse_array_set_value_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, after_set, scope, depth, 0n), value => after_value => ok_value => parse_array_set_value_result(ok_value, value, after_value, file, left, typed_index, beg, open_end, scope, depth, level))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_index_tail",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_index_result"
+      ],
+      "sites": [
+        {
+          "line": 2587,
+          "tail": false,
+          "continuation": "parse_index_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, tokens, scope, depth, 0n), index => after_index => ok_index => parse_index_result(ok_index, after_index, index, file, left, scope, depth, level, beg, open_end))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_inequality",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_inequality_right_result"
+      ],
+      "sites": [
+        {
+          "line": 1913,
+          "tail": false,
+          "continuation": "parse_inequality_right_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, tokens, scope, depth, 0n), right => after_right => ok_right => parse_inequality_right_result(ok_right, right, after_right, file, left, beg, scope, depth))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_inequality_right_result",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_inequality_type_result"
+      ],
+      "sites": [
+        {
+          "line": 1906,
+          "tail": false,
+          "continuation": "parse_inequality_type_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, after_colon, scope, depth, 0n), ty => after_ty => ok_ty => parse_inequality_type_result(ok_ty, ty, after_ty, file, left, right, beg, depth))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_less_or_adt_args",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_less_right"
+      ],
+      "sites": [
+        {
+          "line": 2432,
+          "tail": false,
+          "continuation": "parse_less_right",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, tokens, scope, depth, 5n), right => after_right => ok_right => parse_less_right(ok_right, after_right, right, file, left, tokens, all_tokens, scope, depth, level, end))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_list",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "expr_match_ok_after"
+      ],
+      "sites": [
+        {
+          "line": 1283,
+          "tail": false,
+          "continuation": "expr_match_ok_after",
+          "kontAction": "push-typed-kont",
+          "expression": "expr_match_ok_after(parse_term(file, tokens, scope, depth, 0n), file, beg, token_end(close), scope, depth)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_local_body",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_local_body_term_result"
+      ],
+      "sites": [
+        {
+          "line": 3131,
+          "tail": false,
+          "continuation": "parse_local_body_term_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, tokens, scope, depth, 0n), value => after_value => ok_value => parse_local_body_term_result(ok_value, file, key, beg, key_end, col, value, after_value, scope, depth, quantity))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_local_values",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_local_values_result"
+      ],
+      "sites": [
+        {
+          "line": 3059,
+          "tail": false,
+          "continuation": "parse_local_values_result",
+          "kontAction": "push-typed-kont",
+          "expression": "parse_local_values_result(parse_term(file, tokens, scope, depth, 0n), tokens, file, scope, depth, line, acc)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_many_lambda",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_many_lambda_body_result"
+      ],
+      "sites": [
+        {
+          "line": 2124,
+          "tail": false,
+          "continuation": "parse_many_lambda_body_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, after_arrow, next_scope, depth + 1n, 0n), body => after_body => ok_body => parse_many_lambda_body_result(ok_body, body, after_body, file, key, beg, end, depth))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_match_expr_after_name",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_match_expr_head_result"
+      ],
+      "sites": [
+        {
+          "line": 1682,
+          "tail": false,
+          "continuation": "parse_match_expr_head_result",
+          "kontAction": "push-typed-kont",
+          "expression": "parse_match_expr_head_result(parse_term(file, after_colon, scope, depth, 0n), file, key, beg, scope, depth)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_match_tail",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_match_tail_result"
+      ],
+      "sites": [
+        {
+          "line": 1827,
+          "tail": false,
+          "continuation": "parse_match_tail_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, tokens, scope, depth, 0n), tail => after_tail => ok_tail => parse_match_tail_result(ok_tail, file, tail, after_tail))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_min_precedence",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_min_precedence_result"
+      ],
+      "sites": [
+        {
+          "line": 2503,
+          "tail": false,
+          "continuation": "parse_min_precedence_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, tokens, scope, depth, 5n), right => after => ok => parse_min_precedence_result(ok, right, after, file, left, scope, depth, level, end))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_name_term",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_name_lambda_result"
+      ],
+      "sites": [
+        {
+          "line": 2014,
+          "tail": false,
+          "continuation": "parse_name_lambda_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, rest, next_scope, depth + 1n, 0n), body => after => ok => parse_name_lambda_result(ok, body, after, file, key, beg, end, depth))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_nat_literal",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_nat_literal_tail"
+      ],
+      "sites": [
+        {
+          "line": 925,
+          "tail": false,
+          "continuation": "parse_nat_literal_tail",
+          "kontAction": "push-typed-kont",
+          "expression": "parse_nat_literal_tail(parse_term(file, rest, scope, depth, 0n), file, value, beg, end)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_operator_precedence",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_operator_precedence_result"
+      ],
+      "sites": [
+        {
+          "line": 2618,
+          "tail": false,
+          "continuation": "parse_operator_precedence_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, tokens, scope, depth, priority + 1n), right => after => ok => parse_operator_precedence_result(ok, right, after, file, name, left, scope, depth, level, end))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_operator_right_precedence",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_operator_right_result"
+      ],
+      "sites": [
+        {
+          "line": 2485,
+          "tail": false,
+          "continuation": "parse_operator_right_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, tokens, scope, depth, rhs_level), right => after => ok => parse_operator_right_result(ok, right, after, file, key, left, scope, depth, level, end))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_pair_operator",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_pair_operator_result"
+      ],
+      "sites": [
+        {
+          "line": 2525,
+          "tail": false,
+          "continuation": "parse_pair_operator_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, tokens, scope, depth, 1n), right => after => ok => parse_pair_operator_result(ok, right, after, amp, file, left, scope, depth, level, end, tokens))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_reply",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_reply_result"
+      ],
+      "sites": [
+        {
+          "line": 2967,
+          "tail": false,
+          "continuation": "parse_reply_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, tokens, scope, depth, 0n), term => after => ok => parse_reply_result(ok, term, after, file))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_rewrite",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_rewrite_first_result"
+      ],
+      "sites": [
+        {
+          "line": 1948,
+          "tail": false,
+          "continuation": "parse_rewrite_first_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, tokens, scope, depth, 0n), first => after_first => ok_first => parse_rewrite_first_result(ok_first, first, after_first, file, beg, end, scope, depth))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_rewrite_first_at_name",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_rewrite_equation_result"
+      ],
+      "sites": [
+        {
+          "line": 1925,
+          "tail": false,
+          "continuation": "parse_rewrite_equation_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, after_at, scope, depth, 0n), equation => after_equation => ok_equation => parse_rewrite_equation_result(ok_equation, equation, after_equation, file, key, beg, end, scope, depth))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_rewrite_motive",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_rewrite_motive_result"
+      ],
+      "sites": [
+        {
+          "line": 1975,
+          "tail": false,
+          "continuation": "parse_rewrite_motive_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, after_colon, motive_scope, depth + 2n, 0n), motive => after_motive => ok_motive => parse_rewrite_motive_result(ok_motive, motive, after_motive, file, equation, key, beg, scope, depth))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_rewrite_motive_result",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_rewrite_body_result"
+      ],
+      "sites": [
+        {
+          "line": 1964,
+          "tail": false,
+          "continuation": "parse_rewrite_body_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, body_tokens, scope, depth, 0n), body => after_body => ok_body => parse_rewrite_body_result(ok_body, body, after_body, equation, proof, file, beg))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_template_term",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_template_term_result"
+      ],
+      "sites": [
+        {
+          "line": 437,
+          "tail": false,
+          "continuation": "parse_template_term_result",
+          "kontAction": "push-typed-kont",
+          "expression": "parse_template_term_result(parse_term(file, tokens, scope, depth, 12n), file, beg)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_terms_until_colon",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_terms_until_colon_result"
+      ],
+      "sites": [
+        {
+          "line": 3264,
+          "tail": false,
+          "continuation": "parse_terms_until_colon_result",
+          "kontAction": "push-typed-kont",
+          "expression": "with_term_result(parse_term(file, tokens, scope, depth, 0n), term => after => ok => parse_terms_until_colon_result(ok, term, after, file, scope, depth, acc))"
+        }
+      ]
+    },
+    {
+      "caller": "parse_typed_operator",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_typed_operator_term"
+      ],
+      "sites": [
+        {
+          "line": 1589,
+          "tail": false,
+          "continuation": "parse_typed_operator_term",
+          "kontAction": "push-typed-kont",
+          "expression": "parse_typed_operator_term(parse_term(file, tokens, scope, depth, 0n), file, scope, depth)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_typed_operator_colon",
+      "target": "parse_term",
+      "targetResultFamily": "TermResult",
+      "tail": false,
+      "continuationNeeded": true,
+      "continuations": [
+        "parse_typed_operator_type"
+      ],
+      "sites": [
+        {
+          "line": 1575,
+          "tail": false,
+          "continuation": "parse_typed_operator_type",
+          "kontAction": "push-typed-kont",
+          "expression": "parse_typed_operator_type(parse_term(file, after_colon, scope, depth, 0n), file, term)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_term_args_first_result",
+      "target": "parse_term_args_after_separator",
+      "targetResultFamily": "TermsResult",
+      "tail": true,
+      "continuationNeeded": false,
+      "continuations": [],
+      "sites": [
+        {
+          "line": 2036,
+          "tail": true,
+          "continuation": null,
+          "kontAction": "forward-existing",
+          "expression": "parse_term_args_after_separator(String.eq(token_text(separator), close), file, term, after, tail, close, scope, depth, acc)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_term_args",
+      "target": "parse_term_args_first",
+      "targetResultFamily": "TermsResult",
+      "tail": true,
+      "continuationNeeded": false,
+      "continuations": [],
+      "sites": [
+        {
+          "line": 2025,
+          "tail": true,
+          "continuation": null,
+          "kontAction": "forward-existing",
+          "expression": "parse_term_args_first(Bool.or(String.eq(token_text(token), close), Bool.and(String.eq(close, \">\"), String.eq(token_text(token), \"<>\"))), file, token, rest, tokens, close, scope, depth, acc)"
+        }
+      ]
+    },
+    {
+      "caller": "operator_call",
+      "target": "parse_term_tail",
+      "targetResultFamily": "TermResult",
+      "tail": true,
+      "continuationNeeded": false,
+      "continuations": [],
+      "sites": [
+        {
+          "line": 2452,
+          "tail": true,
+          "continuation": null,
+          "kontAction": "forward-existing",
+          "expression": "parse_term_tail(file, combined, after, scope, depth, level)"
+        }
+      ]
+    },
+    {
+      "caller": "pair_application_result",
+      "target": "parse_term_tail",
+      "targetResultFamily": "TermResult",
+      "tail": true,
+      "continuationNeeded": false,
+      "continuations": [],
+      "sites": [
+        {
+          "line": 2539,
+          "tail": true,
+          "continuation": null,
+          "kontAction": "forward-existing",
+          "expression": "parse_term_tail(file, term, after, scope, depth, level)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_application_applied_result",
+      "target": "parse_term_tail",
+      "targetResultFamily": "TermResult",
+      "tail": true,
+      "continuationNeeded": false,
+      "continuations": [],
+      "sites": [
+        {
+          "line": 2232,
+          "tail": true,
+          "continuation": null,
+          "kontAction": "forward-existing",
+          "expression": "parse_term_tail(file, applied, after_args, scope, depth, level)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_array_get_result",
+      "target": "parse_term_tail",
+      "targetResultFamily": "TermResult",
+      "tail": true,
+      "continuationNeeded": false,
+      "continuations": [],
+      "sites": [
+        {
+          "line": 2592,
+          "tail": true,
+          "continuation": null,
+          "kontAction": "forward-existing",
+          "expression": "parse_term_tail(file, call, tokens, scope, depth, level)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_array_set_call_result",
+      "target": "parse_term_tail",
+      "targetResultFamily": "TermResult",
+      "tail": true,
+      "continuationNeeded": false,
+      "continuations": [],
+      "sites": [
+        {
+          "line": 2550,
+          "tail": true,
+          "continuation": null,
+          "kontAction": "forward-existing",
+          "expression": "parse_term_tail(file, call, after_value, scope, depth, level)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_empty_generic_name",
+      "target": "parse_term_tail",
+      "targetResultFamily": "TermResult",
+      "tail": true,
+      "continuationNeeded": false,
+      "continuations": [],
+      "sites": [
+        {
+          "line": 2204,
+          "tail": true,
+          "continuation": null,
+          "kontAction": "forward-existing",
+          "expression": "parse_term_tail(file, fill, rest, scope, depth, level)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_less_many_result",
+      "target": "parse_term_tail",
+      "targetResultFamily": "TermResult",
+      "tail": true,
+      "continuationNeeded": false,
+      "continuations": [],
+      "sites": [
+        {
+          "line": 2420,
+          "tail": true,
+          "continuation": null,
+          "kontAction": "forward-existing",
+          "expression": "parse_term_tail(file, fill, after_args, scope, depth, level)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_less_named",
+      "target": "parse_term_tail",
+      "targetResultFamily": "TermResult",
+      "tail": true,
+      "continuationNeeded": false,
+      "continuations": [],
+      "sites": [
+        {
+          "line": 2412,
+          "tail": true,
+          "continuation": null,
+          "kontAction": "forward-existing",
+          "expression": "parse_term_tail(file, fill, after_separator, scope, depth, level)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_min_precedence_result",
+      "target": "parse_term_tail",
+      "targetResultFamily": "TermResult",
+      "tail": true,
+      "continuationNeeded": false,
+      "continuations": [],
+      "sites": [
+        {
+          "line": 2494,
+          "tail": true,
+          "continuation": null,
+          "kontAction": "forward-existing",
+          "expression": "parse_term_tail(file, term, after, scope, depth, level)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_operator_precedence_result",
+      "target": "parse_term_tail",
+      "targetResultFamily": "TermResult",
+      "tail": true,
+      "continuationNeeded": false,
+      "continuations": [],
+      "sites": [
+        {
+          "line": 2609,
+          "tail": true,
+          "continuation": null,
+          "kontAction": "forward-existing",
+          "expression": "parse_term_tail(file, combined, after, scope, depth, level)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_operator_right_named",
+      "target": "parse_term_tail",
+      "targetResultFamily": "TermResult",
+      "tail": true,
+      "continuationNeeded": false,
+      "continuations": [],
+      "sites": [
+        {
+          "line": 2461,
+          "tail": true,
+          "continuation": null,
+          "kontAction": "forward-existing",
+          "expression": "parse_term_tail(file, constructor, after, scope, depth, level)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_pair_quantity",
+      "target": "parse_term_tail",
+      "targetResultFamily": "TermResult",
+      "tail": true,
+      "continuationNeeded": false,
+      "continuations": [],
+      "sites": [
+        {
+          "line": 2508,
+          "tail": true,
+          "continuation": null,
+          "kontAction": "forward-existing",
+          "expression": "parse_term_tail(file, Ast.TermMin{left, right,  span(file, token_beg_first(left), token_end_of(after, end))}, after, scope, depth, level)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_term_arrow_result",
+      "target": "parse_term_tail",
+      "targetResultFamily": "TermResult",
+      "tail": true,
+      "continuationNeeded": false,
+      "continuations": [],
+      "sites": [
+        {
+          "line": 2258,
+          "tail": true,
+          "continuation": null,
+          "kontAction": "forward-existing",
+          "expression": "parse_term_tail(file, Ast.TermAll{Ast.QOne{}, \"_\", depth, left, right, span(file, token_beg_first(left), token_end_of(after, end))}, after, scope, depth + 1n, level)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_term_atom_result",
+      "target": "parse_term_tail",
+      "targetResultFamily": "TermResult",
+      "tail": true,
+      "continuationNeeded": false,
+      "continuations": [],
+      "sites": [
+        {
+          "line": 2186,
+          "tail": true,
+          "continuation": null,
+          "kontAction": "forward-existing",
+          "expression": "parse_term_tail(file, left, rest, scope, depth, level)"
+        }
+      ]
+    },
+    {
+      "caller": "parse_terms_until_colon",
+      "target": "parse_terms_until_colon_result",
+      "targetResultFamily": "TermsResult",
+      "tail": true,
+      "continuationNeeded": false,
+      "continuations": [],
+      "sites": [
+        {
+          "line": 3264,
+          "tail": true,
+          "continuation": null,
+          "kontAction": "forward-existing",
+          "expression": "with_term_result(parse_term(file, tokens, scope, depth, 0n), term => after => ok => parse_terms_until_colon_result(ok, term, after, file, scope, depth, acc))"
+        }
+      ]
+    }
+  ]
+}
