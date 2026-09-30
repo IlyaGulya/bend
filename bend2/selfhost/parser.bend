@@ -2088,27 +2088,27 @@ def strip_quotes_chars(chars: List<&2, Char>, text: String) -> String:
 def strip_quotes(+text: String) -> String:
   strip_quotes_chars(String.to_list(text), text)
 
-def parse_external_imports_scan(tokens: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>, acc: List<&2, String>) -> (List<&2, String> & List<&2, Lexer.Token>) & Bool:
-  match scanned:
+def parse_external_imports_scan(current: List<&2, Lexer.Token>, original: List<&2, Lexer.Token>, acc: List<&2, String>) -> (List<&2, String> & List<&2, Lexer.Token>) & Bool:
+  match current:
     case +token <> rest:
       match token:
+        case Lexer.TokenInfo{ Lexer.NewlineToken{},  _,  _,  _,  _,  _}:
+          parse_external_imports_scan(rest, original, acc)
         case Lexer.TokenInfo{ Lexer.NameToken{},  "import",  _,  _,  _,  _}:
           match rest:
+            case Lexer.TokenInfo{ Lexer.StringToken{}, text,  _,  _,  _,  _} <> +after_path:
+              parse_external_imports_scan(after_path, after_path, strip_quotes(text) <> acc)
             case +path_token <> after_path:
-              match path_token:
-                case Lexer.TokenInfo{ Lexer.StringToken{}, text,  _,  _,  _,  _}:
-                  parse_external_imports_scan(after_path, skip_lines(after_path), strip_quotes(text) <> acc)
-                case _:
-                  ((List.reverse(&2, String, acc) & rest), False{})
+              ((List.reverse(&2, String, acc), path_token <> after_path), False{})
             case Nil{}:
-              ((List.reverse(&2, String, acc) & rest), False{})
+              ((List.reverse(&2, String, acc), Nil{}), False{})
         case _:
-          ((List.reverse(&2, String, acc) & tokens), True{})
+          ((List.reverse(&2, String, acc), original), True{})
     case Nil{}:
-      ((List.reverse(&2, String, acc) & Nil{}), True{})
+      ((List.reverse(&2, String, acc), Nil{}), True{})
 
-def parse_external_imports(tokens: List<&2, Lexer.Token>, acc: List<&2, String>) -> (List<&2, String> & List<&2, Lexer.Token>) & Bool:
-  parse_external_imports_scan(tokens, skip_lines(tokens), acc)
+def parse_external_imports(+tokens: List<&2, Lexer.Token>, acc: List<&2, String>) -> (List<&2, String> & List<&2, Lexer.Token>) & Bool:
+  parse_external_imports_scan(tokens, tokens, acc)
 
 def parse_string(file: String, text: String, beg: Nat, end: Nat, rest: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   parse_string_result(string_chars(file, String.to_list(strip_quotes(text)), beg, end), rest)
