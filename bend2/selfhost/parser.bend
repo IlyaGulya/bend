@@ -16,6 +16,13 @@ type MatchChainState is Data:
   MatchChainAfterHead{file: String, key: String, head: Ast.SyntaxTerm, original: List<&2, Lexer.Token>, next_key: String, next_head: Ast.SyntaxTerm, after_head: List<&2, Lexer.Token>, ok_head: Bool, scanned: List<&2, Lexer.Token>, beg: Nat, scope: List<&2, Scope>, depth: Nat}
   MatchChainAfterMatch{file: String, key: String, head: Ast.SyntaxTerm, matched: Ast.SyntaxTerm, after_matched: List<&2, Lexer.Token>, ok_matched: Bool, beg: Nat}
 
+type PatternScanMode is Data:
+  PatternExpect{quantity: Ast.Quantity, beg: Nat}
+  PatternCompleted{pattern: Ast.SyntaxPattern}
+
+type PatternFrame is Data:
+  PatternFrameOf{key: String, beg: Nat, end: Nat, fields: List<&2, Ast.SyntaxPattern>, root_scope: List<&2, Scope>, root_depth: Nat}
+
 type FloatParts is Data:
   FloatParts{mantissa: Nat, scale_negative: Bool, scale: Nat, valid: Bool}
 
@@ -72,10 +79,6 @@ def with_pattern_list_result(result: (Ast.SyntaxPattern & List<&2, Lexer.Token>)
 def span(file: String, beg: Nat, end: Nat) -> Ast.SourceSpan:
   Ast.SpanOf{file, beg, end}
 
-def with_pattern_fields_result(result: (((List<&2, Ast.SyntaxPattern> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool, use: List<&2, Ast.SyntaxPattern> -> List<&2, Lexer.Token> -> List<&2, Scope> -> Nat -> Bool -> (Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool)) -> (Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool):
-  match result:
-    case ((((fields, after), scope), depth), ok):
-      use(fields, after, scope, depth, ok)
 
 def with_import_result(result: (Ast.ModuleImport & List<&2, Lexer.Token>) & Bool, use: Ast.ModuleImport -> List<&2, Lexer.Token> -> Bool -> ((List<&2, Ast.ModuleImport> & List<&2, Lexer.Token>) & Bool)) -> ((List<&2, Ast.ModuleImport> & List<&2, Lexer.Token>) & Bool):
   match result:
@@ -1873,13 +1876,6 @@ def pattern_count_matches(patterns: List<&2, Ast.SyntaxPattern>, count: Nat) -> 
           pattern_count_matches(rest, more)
 
 
-def parse_pattern_constructor_fields_result(ok_fields: Bool, fields: List<&2, Ast.SyntaxPattern>, +after_fields: List<&2, Lexer.Token>, next_scope: List<&2, Scope>, next_depth: Nat, file: String, key: String, beg: Nat, end: Nat, scope: List<&2, Scope>, depth: Nat) -> (Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool):
-  match ok_fields:
-    case True{}:
-      ((Ast.PatternCtr{key, fields,  span(file, beg, token_end_of(after_fields, end))}, after_fields), ((next_scope, next_depth), True{}))
-    case False{}:
-      ((Ast.PatternCtr{key, fields,  span(file, beg, end)}, after_fields), ((scope, depth), False{}))
-
 def module_import_without_alias(is_base: Bool, file: String, +canonical: String, beg: Nat, path_token: Lexer.Token, rest: List<&2, Lexer.Token>) -> (Ast.ModuleImport & List<&2, Lexer.Token>) & Bool:
   match is_base:
     case True{}:
@@ -1908,71 +1904,89 @@ def parse_pattern_nat_suffix(is_nat: Bool, file: String, text: String, tokens: L
     case False{}:
       ((Ast.PatternVar{ "", depth, Ast.QOne{}, span(file, beg, end)}, tokens), ((scope, depth), False{}))
 
-def parse_pattern_atom(file: String, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> (Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool):
-  match tokens:
-    case +token <> +rest:
-      match token:
-        case Lexer.TokenInfo{ Lexer.NumberToken{}, text, beg, end, _, _}:
-          parse_pattern_nat_suffix(has_nat_suffix(text), file, text, tokens, rest, beg, end, scope, depth)
-        case Lexer.TokenInfo{ _, "+", _, _, _, _}:
-          parse_pattern_named(file, rest, token_beg(token), Ast.QMany{}, scope, depth)
-        case Lexer.TokenInfo{ _, "-", _, _, _, _}:
-          parse_pattern_named(file, rest, token_beg(token), Ast.QZero{}, scope, depth)
-        case Lexer.TokenInfo{ _, _, _, _, _, _}:
-          parse_pattern_named(file, tokens, token_beg(token), Ast.QOne{}, scope, depth)
-    case Nil{}:
-      ((Ast.PatternVar{ "",  depth,  Ast.QOne{},  span(file, 0n, 0n)}, Nil{}) & ((scope & depth) & False{}))
-def parse_pattern_named(file: String, tokens: List<&2, Lexer.Token>, beg: Nat, quantity: Ast.Quantity, scope: List<&2, Scope>, depth: Nat) -> (Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool):
-  match tokens:
-    case +name <> rest:
-      match name:
-        case Lexer.TokenInfo{ Lexer.NameToken{},  key,  key_beg, end,  _,  _}:
-          match rest:
-            case +open <> after_open:
-              match open:
-                case Lexer.TokenInfo{ _, "{",  _,  _,  _,  _}:
-                  with_pattern_fields_result(parse_pattern_fields(file, after_open, scope, depth, Nil{}), fields => after_fields => next_scope => next_depth => ok_fields => parse_pattern_constructor_fields_result(ok_fields, fields, after_fields, next_scope, next_depth, file, key, beg, end, scope, depth))
-                case _:
-                  pattern = Ast.PatternVar{key,  depth, quantity,  span(file, beg, end)}
-                  ((pattern, tokens) & ((extend_scope(key, depth, scope) & (depth + 1n)) & True{}))
-            case _:
-              pattern = Ast.PatternVar{key,  depth, quantity,  span(file, beg, end)}
-              ((pattern, rest) & ((extend_scope(key, depth, scope) & (depth + 1n)) & True{}))
-        case _:
-          ((Ast.PatternVar{ "",  depth, quantity,  span(file, beg, token_end(name))}, tokens) & ((scope & depth) & False{}))
-    case Nil{}:
-      ((Ast.PatternVar{ "",  depth, quantity,  span(file, beg, beg)}, Nil{}) & ((scope & depth) & False{}))
-
-def parse_pattern_fields_result(ok_pattern: Bool, pattern: Ast.SyntaxPattern, after_pattern: List<&2, Lexer.Token>, next_scope: List<&2, Scope>, next_depth: Nat, file: String, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.SyntaxPattern>) -> (((List<&2, Ast.SyntaxPattern> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool:
-  match ok_pattern:
-    case True{}:
-      match after_pattern:
-        case +separator <> after_separator:
-          match separator:
-            case Lexer.TokenInfo{ _, ",",  _,  _,  _,  _}:
-              parse_pattern_fields_scan(file, after_separator, skip_lines(after_separator), next_scope, next_depth, pattern <> acc)
-            case Lexer.TokenInfo{ _, "}",  _,  _,  _,  _}:
-              ((((List.reverse(&2, Ast.SyntaxPattern, pattern <> acc) & after_separator) & next_scope) & next_depth) & True{})
-            case _:
-              ((((List.reverse(&2, Ast.SyntaxPattern, pattern <> acc) & after_pattern) & next_scope) & depth) & False{})
+def pattern_scan(+tokens: List<&2, Lexer.Token>, +file: String, mode: PatternScanMode, frames: List<&2, PatternFrame>, +scope: List<&2, Scope>, +depth: Nat) -> (Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool):
+  match tokens mode:
+    case Lexer.TokenInfo{_, "+", beg, _, _, _} <> +rest PatternExpect{Ast.QOne{}, _}:
+      pattern_scan(rest, file, PatternExpect{Ast.QMany{}, beg}, frames, scope, depth)
+    case Lexer.TokenInfo{_, "-", beg, end, _, _} <> +rest PatternExpect{Ast.QOne{}, _}:
+      ((Ast.PatternVar{"", depth, Ast.QOne{}, span(file, beg, end)}, tokens), ((scope, depth), False{}))
+    case Lexer.TokenInfo{Lexer.NameToken{}, key, beg, end, _, _} <> (Lexer.TokenInfo{_, "{", _, _, _, _} <> +after_open) PatternExpect{Ast.QOne{}, _}:
+      pattern_scan(after_open, file, PatternExpect{Ast.QOne{}, 0n}, PatternFrameOf{key, beg, end, Nil{}, scope, depth} <> frames, scope, depth)
+    case Lexer.TokenInfo{Lexer.NameToken{}, key, _, end, _, _} <> (Lexer.TokenInfo{_, "{", _, _, _, _} <> +after_open) PatternExpect{quantity, beg}:
+      pattern_scan(after_open, file, PatternExpect{Ast.QOne{}, 0n}, PatternFrameOf{key, beg, end, Nil{}, scope, depth} <> frames, scope, depth)
+    case Lexer.TokenInfo{Lexer.NameToken{}, +key, beg, end, _, _} <> +rest PatternExpect{Ast.QOne{}, _}:
+      pattern_scan(rest, file, PatternCompleted{Ast.PatternVar{key, depth, Ast.QOne{}, span(file, beg, end)}}, frames, extend_scope(key, depth, scope), depth + 1n)
+    case Lexer.TokenInfo{Lexer.NameToken{}, +key, _, end, _, _} <> +rest PatternExpect{quantity, beg}:
+      pattern_scan(rest, file, PatternCompleted{Ast.PatternVar{key, depth, quantity, span(file, beg, end)}}, frames, extend_scope(key, depth, scope), depth + 1n)
+    case Lexer.TokenInfo{Lexer.NumberToken{}, text, beg, end, _, _} <> +rest PatternExpect{quantity, _}:
+      match has_nat_suffix(text):
+        case True{}:
+          match Nat.read(drop_nat_suffix(text)):
+            case Some{value}:
+              pattern_scan(rest, file, PatternCompleted{nat_pattern(file, value, beg, end)}, frames, scope, depth)
+            case None{}:
+              ((Ast.PatternVar{"", depth, Ast.QOne{}, span(file, beg, end)}, rest), ((scope, depth), False{}))
+        case False{}:
+          ((Ast.PatternVar{"", depth, quantity, span(file, beg, end)}, tokens), ((scope, depth), False{}))
+    case Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _} <> +rest PatternExpect{quantity, beg}:
+      pattern_scan(rest, file, PatternExpect{quantity, beg}, frames, scope, depth)
+    case Lexer.TokenInfo{_, "}", _, close_end, _, _} <> +rest PatternExpect{quantity, beg}:
+      match frames:
+        case PatternFrameOf{key, start, end, fields, root_scope, root_depth} <> parents:
+          pattern_scan(rest, file, PatternCompleted{Ast.PatternCtr{key, List.reverse(&2, Ast.SyntaxPattern, fields), span(file, start, close_end)}}, parents, scope, depth)
         case Nil{}:
-          ((((List.reverse(&2, Ast.SyntaxPattern, pattern <> acc) & Nil{}) & next_scope) & next_depth) & False{})
-    case False{}:
-      ((((List.reverse(&2, Ast.SyntaxPattern, acc) & after_pattern) & scope) & depth) & False{})
+          ((Ast.PatternVar{"", depth, quantity, span(file, beg, beg)}, tokens), ((scope, depth), False{}))
+    case Lexer.TokenInfo{_, ",", _, _, _, _} <> +rest PatternCompleted{pattern}:
+      match frames:
+        case PatternFrameOf{key, beg, end, fields, root_scope, root_depth} <> parents:
+          pattern_scan(rest, file, PatternExpect{Ast.QOne{}, 0n}, PatternFrameOf{key, beg, end, pattern <> fields, root_scope, root_depth} <> parents, scope, depth)
+        case Nil{}:
+          ((pattern, tokens), ((scope, depth), True{}))
+    case Lexer.TokenInfo{_, "}", _, close_end, _, _} <> +rest PatternCompleted{pattern}:
+      match frames:
+        case PatternFrameOf{key, beg, end, fields, root_scope, root_depth} <> parents:
+          pattern_scan(rest, file, PatternCompleted{Ast.PatternCtr{key, List.reverse(&2, Ast.SyntaxPattern, pattern <> fields), span(file, beg, close_end)}}, parents, scope, depth)
+        case Nil{}:
+          ((pattern, tokens), ((scope, depth), True{}))
+    case Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _} <> +rest PatternCompleted{pattern}:
+      match frames:
+        case +_ <> _:
+          pattern_scan(rest, file, PatternCompleted{pattern}, frames, scope, depth)
+        case Nil{}:
+          ((pattern, tokens), ((scope, depth), True{}))
+    case Lexer.TokenInfo{Lexer.NameToken{}, key, beg, end, _, _} <> (Lexer.TokenInfo{_, "{", _, _, _, _} <> +after_open) PatternCompleted{pattern}:
+      match frames:
+        case PatternFrameOf{parent, start, parent_end, fields, root_scope, root_depth} <> parents:
+          pattern_scan(after_open, file, PatternExpect{Ast.QOne{}, 0n}, PatternFrameOf{key, beg, end, Nil{}, scope, depth} <> (PatternFrameOf{parent, start, parent_end, pattern <> fields, root_scope, root_depth} <> parents), scope, depth)
+        case Nil{}:
+          ((pattern, tokens), ((scope, depth), True{}))
+    case Lexer.TokenInfo{Lexer.NameToken{}, +key, beg, end, _, _} <> +rest PatternCompleted{pattern}:
+      match frames:
+        case PatternFrameOf{parent, start, parent_end, fields, root_scope, root_depth} <> parents:
+          pattern_scan(rest, file, PatternCompleted{Ast.PatternVar{key, depth, Ast.QOne{}, span(file, beg, end)}}, PatternFrameOf{parent, start, parent_end, pattern <> fields, root_scope, root_depth} <> parents, extend_scope(key, depth, scope), depth + 1n)
+        case Nil{}:
+          ((pattern, tokens), ((scope, depth), True{}))
+    case Lexer.TokenInfo{_, "+", beg, _, _, _} <> +rest PatternCompleted{pattern}:
+      match frames:
+        case PatternFrameOf{parent, start, parent_end, fields, root_scope, root_depth} <> parents:
+          pattern_scan(rest, file, PatternExpect{Ast.QMany{}, beg}, PatternFrameOf{parent, start, parent_end, pattern <> fields, root_scope, root_depth} <> parents, scope, depth)
+        case Nil{}:
+          ((pattern, tokens), ((scope, depth), True{}))
+    case _ PatternCompleted{pattern}:
+      match frames:
+        case PatternFrameOf{key, beg, end, fields, root_scope, root_depth} <> parents:
+          ((Ast.PatternCtr{key, List.reverse(&2, Ast.SyntaxPattern, pattern <> fields), span(file, beg, end)}, tokens), ((root_scope, root_depth), False{}))
+        case Nil{}:
+          ((pattern, tokens), ((scope, depth), True{}))
+    case _ PatternExpect{quantity, beg}:
+      match frames:
+        case PatternFrameOf{key, start, end, fields, root_scope, root_depth} <> parents:
+          ((Ast.PatternCtr{key, List.reverse(&2, Ast.SyntaxPattern, fields), span(file, start, end)}, tokens), ((root_scope, root_depth), False{}))
+        case Nil{}:
+          ((Ast.PatternVar{"", depth, quantity, span(file, beg, beg)}, tokens), ((scope, depth), False{}))
 
-def parse_pattern_fields_scan(file: String, tokens: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.SyntaxPattern>) -> (((List<&2, Ast.SyntaxPattern> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool:
-  match scanned:
-    case +token <> rest:
-      match token:
-        case Lexer.TokenInfo{ _, "}",  _,  _,  _,  _}:
-          ((((List.reverse(&2, Ast.SyntaxPattern, acc) & rest) & scope) & depth) & True{})
-        case _:
-          with_pattern_list_result(parse_pattern_atom(file, tokens, scope, depth), pattern => after_pattern => next_scope => next_depth => ok_pattern => parse_pattern_fields_result(ok_pattern, pattern, after_pattern, next_scope, next_depth, file, scope, depth, acc))
-    case Nil{}:
-      ((((List.reverse(&2, Ast.SyntaxPattern, acc) & Nil{}) & scope) & depth) & False{})
-
-def parse_pattern_fields(file: String, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.SyntaxPattern>) -> (((List<&2, Ast.SyntaxPattern> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool:
-  parse_pattern_fields_scan(file, tokens, skip_lines(tokens), scope, depth, acc)
+def parse_pattern_atom(file: String, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> (Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool):
+  pattern_scan(tokens, file, PatternExpect{Ast.QOne{}, 0n}, Nil{}, scope, depth)
 
 def parse_case_patterns(after_pattern: List<&2, Lexer.Token>, ok_pattern: Bool, +pattern: Ast.SyntaxPattern, +next_scope: List<&2, Scope>, +next_depth: Nat, +file: String, scope: List<&2, Scope>, depth: Nat, +acc: List<&2, Ast.SyntaxPattern>) -> (((List<&2, Ast.SyntaxPattern> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool:
   match after_pattern:
