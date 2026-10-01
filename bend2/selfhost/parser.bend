@@ -52,6 +52,16 @@ def with_term_to_args(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, u
     case ((term, after), ok):
       use(term, after, ok)
 
+def with_term_top(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, use: Ast.SyntaxTerm -> List<&2, Lexer.Token> -> Bool -> (Ast.TopLevel & List<&2, Lexer.Token>) & Bool) -> (Ast.TopLevel & List<&2, Lexer.Token>) & Bool:
+  match result:
+    case ((term, after), ok):
+      use(term, after, ok)
+
+def with_term_law_clauses(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, use: Ast.SyntaxTerm -> List<&2, Lexer.Token> -> Bool -> (((List<&2, Ast.Clause> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool) -> (((List<&2, Ast.Clause> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool:
+  match result:
+    case ((term, after), ok):
+      use(term, after, ok)
+
 def with_term_bool(result: Ast.SyntaxTerm & Bool, use: Ast.SyntaxTerm -> Bool -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match result:
     case (term, ok):
@@ -3458,14 +3468,14 @@ def parse_terms_until_colon(file: String, tokens: List<&2, Lexer.Token>, scope: 
         case Lexer.TokenInfo{ _, ":",  _,  _,  _,  _}:
           ((List.reverse(&2, Ast.SyntaxTerm, acc), tokens), True{})
         case _:
-          with_term_result(parse_term(file, tokens, scope, depth, 0n), term => after => ok => parse_terms_until_colon_result(ok, term, after, file, scope, depth, acc))
+          with_term_to_args(parse_term(file, tokens, scope, depth, 0n), term => after => ok => parse_terms_until_colon_result(ok, term, after, file, scope, depth, acc))
     case Nil{}:
       ((List.reverse(&2, Ast.SyntaxTerm, acc), Nil{}), False{})
 
 def parse_case_row_indented(is_indented: Bool, file: String, tokens: List<&2, Lexer.Token>, rest: List<&2, Lexer.Token>, parent_col: Nat, scope: List<&2, Scope>, depth: Nat, arity: Nat, acc: List<&2, Ast.SyntaxTerm>, beg: Nat, col: Nat) -> (List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool:
   match is_indented:
     case True{}:
-      with_term_result(parse_case_row(file, rest, beg, col, scope, depth, arity), row => after_row => ok_row => parse_case_row_result(ok_row, row, after_row, file, tokens, parent_col, scope, depth, arity, acc))
+      with_term_to_args(parse_case_row(file, rest, beg, col, scope, depth, arity), row => after_row => ok_row => parse_case_row_result(ok_row, row, after_row, file, tokens, parent_col, scope, depth, arity, acc))
     case False{}:
       parse_case_rows_stop(acc, tokens)
 
@@ -3854,7 +3864,7 @@ def parse_type_header_scan(file: String, key: String, beg: Nat, col: Nat, params
     case +is_token <> after_is:
       match is_token:
         case Lexer.TokenInfo{ _, "is",  _,  _,  _,  _}:
-          with_term_result(parse_term(file, after_is, scope, depth, 0n), kind => after_kind => ok_kind => parse_type_header_kind_result(ok_kind, kind, after_kind, file, key, beg, col, params, tokens, scope, depth))
+          with_term_top(parse_term(file, after_is, scope, depth, 0n), kind => after_kind => ok_kind => parse_type_header_kind_result(ok_kind, kind, after_kind, file, key, beg, col, params, tokens, scope, depth))
         case _:
           type_failure(file, key, beg, token_beg(is_token), tokens)
     case Nil{}:
@@ -3907,7 +3917,7 @@ def parse_law_body_result(ok_body: Bool, body: Ast.SyntaxTerm, after_body: List<
 def parse_law_clauses_result(ok_clauses: Bool, clauses: List<&2, Ast.Clause>, after_clauses: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, file: String, key: String, beg: Nat, colon: Lexer.Token, after_colon: List<&2, Lexer.Token>) -> (Ast.TopLevel & List<&2, Lexer.Token>) & Bool:
   match ok_clauses:
     case True{}:
-      with_term_result(parse_body(file, after_clauses, scope, depth, 0n), body => after_body => ok_body => parse_law_body_result(ok_body, body, after_body, file, key, clauses, beg, colon, after_clauses))
+      with_term_top(parse_body(file, after_clauses, scope, depth, 0n), body => after_body => ok_body => parse_law_body_result(ok_body, body, after_body, file, key, clauses, beg, colon, after_clauses))
     case False{}:
       law_failure(file, key, beg, token_end(colon), after_colon)
 
@@ -3965,7 +3975,7 @@ def parse_law_clause_name(file: String, tokens: List<&2, Lexer.Token>, beg: Nat,
             case +colon <> after_colon:
               match colon:
                 case Lexer.TokenInfo{ _, ":",  _,  _,  _,  _}:
-                  with_term_result(parse_term(file, after_colon, scope, depth, 0n), ty => after_ty => ok_ty => parse_law_clause_type_result(ok_ty, ty, after_ty, file, key, key_beg, key_end, beg, universal, quantity, scope, depth, acc))
+                  with_term_law_clauses(parse_term(file, after_colon, scope, depth, 0n), ty => after_ty => ok_ty => parse_law_clause_type_result(ok_ty, ty, after_ty, file, key, key_beg, key_end, beg, universal, quantity, scope, depth, acc))
                 case _:
                   ((((List.reverse(&2, Ast.Clause, acc), after_name), scope), depth), False{})
             case Nil{}:
@@ -3988,7 +3998,7 @@ def parse_law_clause_condition_scan(file: String, tokens: List<&2, Lexer.Token>,
     case +where_token <> after_where:
       match where_token:
         case Lexer.TokenInfo{ _, "where",  _,  _,  _,  _}:
-          with_term_result(parse_term(file, after_where, next_scope, next_depth, 0n), condition => after_condition => ok_condition => parse_law_clause_condition_result(ok_condition, condition, after_condition, file, beg, universal, quantity, key, key_beg, ty, next_scope, next_depth, acc))
+          with_term_law_clauses(parse_term(file, after_where, next_scope, next_depth, 0n), condition => after_condition => ok_condition => parse_law_clause_condition_result(ok_condition, condition, after_condition, file, beg, universal, quantity, key, key_beg, ty, next_scope, next_depth, acc))
         case _:
           finish_law_clause(file, tokens, beg, universal, quantity, key, key_beg, key_end, ty, next_scope, next_depth, acc)
     case Nil{}:
