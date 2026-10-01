@@ -2206,6 +2206,8 @@ def parse_atom_scan(file: String, tokens: List<&2, Lexer.Token>, scanned: List<&
               parse_template_term(file, rest, beg, scope, depth)
             case "{":
               parse_brace(file, rest, beg, end, scope, depth)
+            case _:
+              ((Ast.TermHole{ "parse-error: expected a term",  span(file, beg, end)}, tokens), False{})
         case Lexer.TokenInfo{ Lexer.StringToken{}, text, beg, end,  _,  _}:
           parse_string(file, text, beg, end, rest)
         case Lexer.TokenInfo{ Lexer.CharToken{}, text, beg, end,  _,  _}:
