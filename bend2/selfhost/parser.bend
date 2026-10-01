@@ -3313,12 +3313,12 @@ def parse_local_values_same_line(is_same_line: Bool, file: String, value: Ast.Sy
     case True{}:
       parse_local_values(file, after_value, scope, depth, line, value <> acc)
     case False{}:
-      ((List.reverse(&2, Ast.SyntaxTerm, value <> acc) & after_value) & line) & True{}
+      (((List.reverse(&2, Ast.SyntaxTerm, value <> acc), after_value), line), True{})
 
 def parse_local_values_next(next: Lexer.Token, after_next: List<&2, Lexer.Token>, value: Ast.SyntaxTerm, file: String, scope: List<&2, Scope>, depth: Nat, line: Nat, acc: List<&2, Ast.SyntaxTerm>) -> ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Nat) & Bool:
   match next:
     case Lexer.TokenInfo{_, ";", _, _, _, _}:
-      ((List.reverse(&2, Ast.SyntaxTerm, value <> acc) & (next <> after_next)) & line) & True{}
+      (((List.reverse(&2, Ast.SyntaxTerm, value <> acc), next <> after_next), line), True{})
     case _:
       parse_local_values_same_line(Nat.is_eq(token_line(next), line), file, value, next <> after_next, scope, depth, line, acc)
 
@@ -3327,9 +3327,9 @@ def parse_local_values_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) &
     case ((value, +next <> after_next), True{}):
       parse_local_values_next(next, after_next, value, file, scope, depth, line, acc)
     case ((value, Nil{}), True{}):
-      ((List.reverse(&2, Ast.SyntaxTerm, value <> acc) & Nil{}) & line) & True{}
+      (((List.reverse(&2, Ast.SyntaxTerm, value <> acc), []), line), True{})
     case (_, False{}):
-      ((List.reverse(&2, Ast.SyntaxTerm, acc) & tokens) & line) & False{}
+      (((List.reverse(&2, Ast.SyntaxTerm, acc), tokens), line), False{})
 
 def parse_local_values(file: String, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, line: Nat, acc: List<&2, Ast.SyntaxTerm>) -> ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Nat) & Bool:
   parse_local_values_result(parse_term(file, tokens, scope, depth, 0n), tokens, file, scope, depth, line, acc)
@@ -3472,7 +3472,7 @@ def parse_case_row_result(ok_row: Bool, row: Ast.SyntaxTerm, after_row: List<&2,
     case True{}:
       parse_case_rows_scan(file, after_row, skip_lines(after_row), parent_col, scope, depth, arity, row <> acc)
     case False{}:
-      ((List.reverse(&2, Ast.SyntaxTerm, row <> acc) & after_row), False{})
+      ((List.reverse(&2, Ast.SyntaxTerm, row <> acc), after_row), False{})
 
 def parse_case_rows_scan(file: String, tokens: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>, parent_col: Nat, scope: List<&2, Scope>, depth: Nat, arity: Nat, acc: List<&2, Ast.SyntaxTerm>) -> (List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool:
   match scanned:
@@ -3483,15 +3483,15 @@ def parse_case_rows_scan(file: String, tokens: List<&2, Lexer.Token>, scanned: L
         case _:
           match acc:
             case Nil{}:
-              ((Nil{} & tokens), False{})
+              (([], tokens), False{})
             case _:
-              ((List.reverse(&2, Ast.SyntaxTerm, acc) & tokens), True{})
+              ((List.reverse(&2, Ast.SyntaxTerm, acc), tokens), True{})
     case Nil{}:
       match acc:
         case Nil{}:
-          ((Nil{} & Nil{}), False{})
+          (([], []), False{})
         case _:
-          ((List.reverse(&2, Ast.SyntaxTerm, acc) & Nil{}), True{})
+          ((List.reverse(&2, Ast.SyntaxTerm, acc), []), True{})
 
 def parse_case_rows(file: String, tokens: List<&2, Lexer.Token>, parent_col: Nat, scope: List<&2, Scope>, depth: Nat, arity: Nat, acc: List<&2, Ast.SyntaxTerm>) -> (List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool:
   parse_case_rows_scan(file, tokens, skip_lines(tokens), parent_col, scope, depth, arity, acc)
@@ -3543,13 +3543,13 @@ def parse_def_binders_scan(file: String, tokens: List<&2, Lexer.Token>, scanned:
     case +token <> rest:
       match token:
         case Lexer.TokenInfo{ _, ")",  _,  _,  _,  _}:
-          (((List.reverse(&2, Ast.TelescopeItem, acc) & rest) & scope) & depth) & True{}
+          ((((List.reverse(&2, Ast.TelescopeItem, acc), rest), scope), depth), True{})
         case Lexer.TokenInfo{ _, ">",  _,  _,  _,  _}:
-          (((List.reverse(&2, Ast.TelescopeItem, acc) & rest) & scope) & depth) & True{}
+          ((((List.reverse(&2, Ast.TelescopeItem, acc), rest), scope), depth), True{})
         case Lexer.TokenInfo{ _, "<>",  _,  _,  _,  _}:
-          (((List.reverse(&2, Ast.TelescopeItem, acc) & rest) & scope) & depth) & True{}
+          ((((List.reverse(&2, Ast.TelescopeItem, acc), rest), scope), depth), True{})
         case Lexer.TokenInfo{ _, "}",  _,  _,  _,  _}:
-          (((List.reverse(&2, Ast.TelescopeItem, acc) & rest) & scope) & depth) & True{}
+          ((((List.reverse(&2, Ast.TelescopeItem, acc), rest), scope), depth), True{})
         case Lexer.TokenInfo{ _, ",",  _,  _,  _,  _}:
           parse_def_binders_scan(file, rest, skip_lines(rest), scope, depth, acc)
         case Lexer.TokenInfo{ _, "+",  _,  _,  _,  _}:
@@ -3561,9 +3561,9 @@ def parse_def_binders_scan(file: String, tokens: List<&2, Lexer.Token>, scanned:
         case Lexer.TokenInfo{Lexer.NameToken{}, key, beg, _, _, _}:
           parse_def_binder(file, key, Ast.QOne{}, beg, rest, scope, depth, acc)
         case _:
-          (((List.reverse(&2, Ast.TelescopeItem, acc) & tokens) & scope) & depth) & False{}
+          ((((List.reverse(&2, Ast.TelescopeItem, acc), tokens), scope), depth), False{})
     case Nil{}:
-      (((List.reverse(&2, Ast.TelescopeItem, acc) & Nil{}) & scope) & depth) & False{}
+      ((((List.reverse(&2, Ast.TelescopeItem, acc), []), scope), depth), False{})
 def parse_def_binders(file: String, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.TelescopeItem>) -> (((List<&2, Ast.TelescopeItem> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool:
   parse_def_binders_scan(file, tokens, skip_lines(tokens), scope, depth, acc)
 
@@ -3575,7 +3575,7 @@ def parse_template_binder_type_result(result: (Ast.SyntaxTerm & List<&2, Lexer.T
       next_scope = extend_scope(key, index, scope)
       parse_def_binders(file, after_ty, next_scope, depth + 1n, item <> acc)
     case ((ty, after_ty), False{}):
-      (((List.reverse(&2, Ast.TelescopeItem, acc) & after_ty) & scope) & depth) & False{}
+      ((((List.reverse(&2, Ast.TelescopeItem, acc), after_ty), scope), depth), False{})
 
 def parse_template_def_binder_after_name(file: String, key: String, beg: Nat, original: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.TelescopeItem>) -> (((List<&2, Ast.TelescopeItem> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool:
   match scanned:
@@ -3584,9 +3584,9 @@ def parse_template_def_binder_after_name(file: String, key: String, beg: Nat, or
         case Lexer.TokenInfo{ _, ":",  _,  _,  _,  _}:
           parse_template_binder_type_result(parse_term(file, after_colon, scope, depth, 0n), file, acc, scope, depth, key, beg)
         case _:
-          (((List.reverse(&2, Ast.TelescopeItem, acc) & original) & scope) & depth) & False{}
+          ((((List.reverse(&2, Ast.TelescopeItem, acc), original), scope), depth), False{})
     case Nil{}:
-      (((List.reverse(&2, Ast.TelescopeItem, acc) & original) & scope) & depth) & False{}
+      ((((List.reverse(&2, Ast.TelescopeItem, acc), original), scope), depth), False{})
 
 def parse_template_def_binder(file: String, tokens: List<&2, Lexer.Token>, beg: Nat, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.TelescopeItem>) -> (((List<&2, Ast.TelescopeItem> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool:
   match tokens:
@@ -3595,9 +3595,9 @@ def parse_template_def_binder(file: String, tokens: List<&2, Lexer.Token>, beg: 
         case Lexer.TokenInfo{ Lexer.NameToken{},  key,  _,  _,  _,  _}:
           parse_template_def_binder_after_name(file, key, beg, after_name, skip_lines(after_name), scope, depth, acc)
         case _:
-          (((List.reverse(&2, Ast.TelescopeItem, acc) & tokens) & scope) & depth) & False{}
+          ((((List.reverse(&2, Ast.TelescopeItem, acc), tokens), scope), depth), False{})
     case Nil{}:
-      (((List.reverse(&2, Ast.TelescopeItem, acc) & Nil{}) & scope) & depth) & False{}
+      ((((List.reverse(&2, Ast.TelescopeItem, acc), []), scope), depth), False{})
 
 def parse_def_binder_prefix(file: String, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.TelescopeItem>, quantity: Ast.Quantity) -> (((List<&2, Ast.TelescopeItem> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool:
   match tokens:
@@ -3606,9 +3606,9 @@ def parse_def_binder_prefix(file: String, tokens: List<&2, Lexer.Token>, scope: 
         case Lexer.TokenInfo{ Lexer.NameToken{},  key, beg,  _,  _,  _}:
           parse_def_binder(file, key, quantity, beg, rest, scope, depth, acc)
         case _:
-          (((List.reverse(&2, Ast.TelescopeItem, acc) & tokens) & scope) & depth) & False{}
+          ((((List.reverse(&2, Ast.TelescopeItem, acc), tokens), scope), depth), False{})
     case Nil{}:
-      (((List.reverse(&2, Ast.TelescopeItem, acc) & Nil{}) & scope) & depth) & False{}
+      ((((List.reverse(&2, Ast.TelescopeItem, acc), []), scope), depth), False{})
 
 def parse_def_binder_type_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, file: String, key: String, quantity: Ast.Quantity, beg: Nat, acc: List<&2, Ast.TelescopeItem>, scope: List<&2, Scope>, depth: Nat) -> (((List<&2, Ast.TelescopeItem> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool:
   match result:
@@ -3618,7 +3618,7 @@ def parse_def_binder_type_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>
       next_scope = extend_scope(key, index, scope)
       parse_def_binders(file, after_ty, next_scope, depth + 1n, item <> acc)
     case ((ty, after_ty), False{}):
-      (((List.reverse(&2, Ast.TelescopeItem, acc) & after_ty) & scope) & depth) & False{}
+      ((((List.reverse(&2, Ast.TelescopeItem, acc), after_ty), scope), depth), False{})
 
 def parse_def_binder_scan(file: String, key: String, quantity: Ast.Quantity, beg: Nat, tokens: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.TelescopeItem>) -> (((List<&2, Ast.TelescopeItem> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool:
   match scanned:
@@ -3746,7 +3746,7 @@ def parse_imports_result(ok: Bool, item: Ast.ModuleImport, after: List<&2, Lexer
     case True{}:
       parse_imports_scan(file, after, skip_lines(after), item <> acc)
     case False{}:
-      ((List.reverse(&2, Ast.ModuleImport, item <> acc) & after), False{})
+      ((List.reverse(&2, Ast.ModuleImport, item <> acc), after), False{})
 
 def parse_imports_scan(file: String, tokens: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>, acc: List<&2, Ast.ModuleImport>) -> ((List<&2, Ast.ModuleImport> & List<&2, Lexer.Token>) & Bool):
   match scanned:
@@ -3755,9 +3755,9 @@ def parse_imports_scan(file: String, tokens: List<&2, Lexer.Token>, scanned: Lis
         case Lexer.TokenInfo{ Lexer.NameToken{},  "import",  _,  _,  _,  _}:
           with_import_result(parse_module_import(file, token, rest), item => after => ok => parse_imports_result(ok, item, after, file, acc))
         case _:
-          ((List.reverse(&2, Ast.ModuleImport, acc) & tokens), True{})
+          ((List.reverse(&2, Ast.ModuleImport, acc), tokens), True{})
     case Nil{}:
-      ((List.reverse(&2, Ast.ModuleImport, acc) & Nil{}), True{})
+      ((List.reverse(&2, Ast.ModuleImport, acc), []), True{})
 
 def parse_imports(file: String, tokens: List<&2, Lexer.Token>, acc: List<&2, Ast.ModuleImport>) -> ((List<&2, Ast.ModuleImport> & List<&2, Lexer.Token>) & Bool):
   parse_imports_scan(file, tokens, skip_lines(tokens), acc)
@@ -3805,7 +3805,7 @@ def parse_type_constructor_fields_result(ok_fields: Bool, fields: List<&2, Ast.T
       item = Ast.Constructor{key, fields, span(file, beg, token_end_of(after_fields, token_end(open)))}
       parse_type_constructors_scan(file, after_fields, skip_lines(after_fields), col, scope, depth, item <> acc)
     case False{}:
-      ((List.reverse(&2, Ast.ConstructorDecl, acc) & after_open), False{})
+      ((List.reverse(&2, Ast.ConstructorDecl, acc), after_open), False{})
 
 def parse_type_constructor_indent(is_indented: Bool, file: String, tokens: List<&2, Lexer.Token>, rest: List<&2, Lexer.Token>, col: Nat, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.ConstructorDecl>, key: String, beg: Nat) -> (List<&2, Ast.ConstructorDecl> & List<&2, Lexer.Token>) & Bool:
   match is_indented:
@@ -3816,11 +3816,11 @@ def parse_type_constructor_indent(is_indented: Bool, file: String, tokens: List<
             case Lexer.TokenInfo{ _, "{",  _,  _,  _,  _}:
               with_def_binders_constructors_result(parse_def_binders(file, after_open, scope, depth, Nil{}), fields => after_fields => _fields_scope => _fields_depth => ok_fields => parse_type_constructor_fields_result(ok_fields, fields, after_fields, file, open, after_open, col, scope, depth, acc, key, beg))
             case _:
-              ((List.reverse(&2, Ast.ConstructorDecl, acc) & tokens), False{})
+              ((List.reverse(&2, Ast.ConstructorDecl, acc), tokens), False{})
         case Nil{}:
-          ((List.reverse(&2, Ast.ConstructorDecl, acc) & tokens), False{})
+          ((List.reverse(&2, Ast.ConstructorDecl, acc), tokens), False{})
     case False{}:
-      ((List.reverse(&2, Ast.ConstructorDecl, acc) & tokens), True{})
+      ((List.reverse(&2, Ast.ConstructorDecl, acc), tokens), True{})
 
 def parse_type_constructors_scan(file: String, tokens: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>, col: Nat, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.ConstructorDecl>) -> (List<&2, Ast.ConstructorDecl> & List<&2, Lexer.Token>) & Bool:
   match scanned:
@@ -3829,9 +3829,9 @@ def parse_type_constructors_scan(file: String, tokens: List<&2, Lexer.Token>, sc
         case Lexer.TokenInfo{ Lexer.NameToken{},  key, beg,  _,  _,  constructor_col}:
           parse_type_constructor_indent(Nat.is_lt(col, constructor_col), file, tokens, rest, col, scope, depth, acc, key, beg)
         case _:
-          ((List.reverse(&2, Ast.ConstructorDecl, acc) & tokens), True{})
+          ((List.reverse(&2, Ast.ConstructorDecl, acc), tokens), True{})
     case Nil{}:
-      ((List.reverse(&2, Ast.ConstructorDecl, acc) & Nil{}), True{})
+      ((List.reverse(&2, Ast.ConstructorDecl, acc), []), True{})
 
 def parse_type_constructors(file: String, tokens: List<&2, Lexer.Token>, col: Nat, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.ConstructorDecl>) -> (List<&2, Ast.ConstructorDecl> & List<&2, Lexer.Token>) & Bool:
   parse_type_constructors_scan(file, tokens, skip_lines(tokens), col, scope, depth, acc)
@@ -3918,9 +3918,9 @@ def parse_law_clauses_scan(file: String, tokens: List<&2, Lexer.Token>, scanned:
         case Lexer.TokenInfo{ _, "exs",  _,  _,  _,  _}:
           parse_law_clause(file, after_token, token_beg(token), False{}, scope, depth, acc)
         case _:
-          (((List.reverse(&2, Ast.Clause, acc) & tokens) & scope) & depth) & True{}
+          ((((List.reverse(&2, Ast.Clause, acc), tokens), scope), depth), True{})
     case Nil{}:
-      (((List.reverse(&2, Ast.Clause, acc) & Nil{}) & scope) & depth) & True{}
+      ((((List.reverse(&2, Ast.Clause, acc), []), scope), depth), True{})
 
 def parse_law_clauses(file: String, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.Clause>) -> (((List<&2, Ast.Clause> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool:
   parse_law_clauses_scan(file, tokens, skip_lines(tokens), scope, depth, acc)
@@ -3943,7 +3943,7 @@ def parse_law_universal_clause(file: String, tokens: List<&2, Lexer.Token>, beg:
         case _:
           parse_law_clause_name(file, tokens, beg, True{}, Ast.QOne{}, scope, depth, acc)
     case Nil{}:
-      (((List.reverse(&2, Ast.Clause, acc) & Nil{}) & scope) & depth) & False{}
+      ((((List.reverse(&2, Ast.Clause, acc), []), scope), depth), False{})
 
 def parse_law_clause_type_result(ok_ty: Bool, ty: Ast.SyntaxTerm, after_ty: List<&2, Lexer.Token>, file: String, key: String, key_beg: Nat, key_end: Nat, beg: Nat, universal: Bool, quantity: Ast.Quantity, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.Clause>) -> (((List<&2, Ast.Clause> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool:
   match ok_ty:
@@ -3952,7 +3952,7 @@ def parse_law_clause_type_result(ok_ty: Bool, ty: Ast.SyntaxTerm, after_ty: List
       next_scope = extend_scope(key, index, scope)
       parse_law_clause_condition(file, after_ty, beg, universal, quantity, key, key_beg, key_end, ty, next_scope, depth + 1n, acc)
     case False{}:
-      (((List.reverse(&2, Ast.Clause, acc) & after_ty) & scope) & depth) & False{}
+      ((((List.reverse(&2, Ast.Clause, acc), after_ty), scope), depth), False{})
 
 def parse_law_clause_name(file: String, tokens: List<&2, Lexer.Token>, beg: Nat, universal: Bool, quantity: Ast.Quantity, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.Clause>) -> (((List<&2, Ast.Clause> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool:
   match tokens:
@@ -3965,13 +3965,13 @@ def parse_law_clause_name(file: String, tokens: List<&2, Lexer.Token>, beg: Nat,
                 case Lexer.TokenInfo{ _, ":",  _,  _,  _,  _}:
                   with_term_result(parse_term(file, after_colon, scope, depth, 0n), ty => after_ty => ok_ty => parse_law_clause_type_result(ok_ty, ty, after_ty, file, key, key_beg, key_end, beg, universal, quantity, scope, depth, acc))
                 case _:
-                  (((List.reverse(&2, Ast.Clause, acc) & after_name) & scope) & depth) & False{}
+                  ((((List.reverse(&2, Ast.Clause, acc), after_name), scope), depth), False{})
             case Nil{}:
-              (((List.reverse(&2, Ast.Clause, acc) & after_name) & scope) & depth) & False{}
+              ((((List.reverse(&2, Ast.Clause, acc), after_name), scope), depth), False{})
         case _:
-          (((List.reverse(&2, Ast.Clause, acc) & tokens) & scope) & depth) & False{}
+          ((((List.reverse(&2, Ast.Clause, acc), tokens), scope), depth), False{})
     case Nil{}:
-      (((List.reverse(&2, Ast.Clause, acc) & Nil{}) & scope) & depth) & False{}
+      ((((List.reverse(&2, Ast.Clause, acc), []), scope), depth), False{})
 
 def parse_law_clause_condition_result(ok_condition: Bool, condition: Ast.SyntaxTerm, after_condition: List<&2, Lexer.Token>, file: String, beg: Nat, universal: Bool, quantity: Ast.Quantity, key: String, key_beg: Nat, ty: Ast.SyntaxTerm, next_scope: List<&2, Scope>, next_depth: Nat, acc: List<&2, Ast.Clause>) -> (((List<&2, Ast.Clause> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool:
   match ok_condition:
@@ -3979,7 +3979,7 @@ def parse_law_clause_condition_result(ok_condition: Bool, condition: Ast.SyntaxT
       clause = Ast.ClauseFor{universal, quantity, key, ty, Some{condition}, span(file, key_beg, token_end_first(condition))}
       parse_law_clauses(file, after_condition, next_scope, next_depth, clause <> acc)
     case False{}:
-      (((List.reverse(&2, Ast.Clause, acc) & after_condition) & next_scope) & next_depth) & False{}
+      ((((List.reverse(&2, Ast.Clause, acc), after_condition), next_scope), next_depth), False{})
 
 def parse_law_clause_condition_scan(file: String, tokens: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>, beg: Nat, universal: Bool, quantity: Ast.Quantity, key: String, key_beg: Nat, key_end: Nat, ty: Ast.SyntaxTerm, next_scope: List<&2, Scope>, next_depth: Nat, acc: List<&2, Ast.Clause>) -> (((List<&2, Ast.Clause> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool:
   match scanned:
