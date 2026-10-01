@@ -2119,7 +2119,7 @@ def parse_char_literal(file: String, text: String, beg: Nat, end: Nat, rest: Lis
 def parse_do_atom_colon(colon: Lexer.Token, after_colon: List<&2, Lexer.Token>, args: List<&2, Ast.SyntaxTerm>, file: String, key: String, beg: Nat, end: Nat, scope: List<&2, Scope>, depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match colon:
     case Lexer.TokenInfo{_, ":", _, _, _, _}:
-      parse_do_return(file, key, args, after_colon, beg, end, scope, depth, do_first(after_colon))
+      parse_do_return(file, key, args, after_colon, beg, end, scope, depth, do_first_col(after_colon))
     case _:
       ((Ast.TermHole{"parse-error: expected : after do parameters", span(file, token_beg(colon), token_end(colon))}, +colon <> after_colon), False{})
 def parse_do_atom_args_result(result: (List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool, file: String, key: String, beg: Nat, end: Nat, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
