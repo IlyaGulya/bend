@@ -2827,6 +2827,8 @@ def parse_many_lambda(file: String, tokens: List<&2, Lexer.Token>, beg: Nat, sco
                   with_term_result(parse_term(file, after_arrow, next_scope, depth + 1n, 0n), body => after_body => ok_body => parse_many_lambda_body_result(ok_body, body, after_body, file, key, beg, end, depth))
                 case _:
                   parse_plus_sugar(file, key, beg, name_beg, end, rest, scope, depth)
+            case Nil{}:
+              parse_plus_sugar(file, key, beg, name_beg, end, rest, scope, depth)
         case _:
           ((Ast.TermHole{ "parse-error: expected a binder after +",  span(file, token_beg(name), token_end(name))}, tokens), False{})
     case Nil{}:
@@ -3878,7 +3880,7 @@ def parse_type_decl(file: String, tokens: List<&2, Lexer.Token>, beg: Nat, col: 
               match open:
                 case Lexer.TokenInfo{ _, "<",  _,  _,  _,  _}:
                   with_def_binders_result(parse_def_binders(file, after_open, Nil{}, 0n, Nil{}), params => after_params => scope => depth => ok_params => parse_type_params_result(ok_params, params, after_params, open, file, key, beg, col, scope, depth))
-                case "<>":
+                case Lexer.TokenInfo{_, "<>", _, _, _, _}:
                   parse_type_header(file, key, beg, col, Nil{}, after_open, Nil{}, 0n)
                 case _:
                   parse_type_header(file, key, beg, col, Nil{}, after_name, Nil{}, 0n)
