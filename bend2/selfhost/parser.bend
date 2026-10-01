@@ -2121,7 +2121,7 @@ def parse_do_atom_colon(colon: Lexer.Token, after_colon: List<&2, Lexer.Token>, 
     case Lexer.TokenInfo{_, ":", _, _, _, _}:
       parse_do_return(file, key, args, after_colon, beg, end, scope, depth, do_first_col(after_colon))
     case _:
-      ((Ast.TermHole{"parse-error: expected : after do parameters", span(file, token_beg(colon), token_end(colon))}, +colon <> after_colon), False{})
+      ((Ast.TermHole{"parse-error: expected : after do parameters", span(file, token_beg(colon), token_end(colon))}, colon <> after_colon), False{})
 def parse_do_atom_args_result(result: (List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool, file: String, key: String, beg: Nat, end: Nat, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match result:
     case ((args, +colon <> after_colon), True{}):
@@ -2247,7 +2247,7 @@ def parse_do_typed_bind_type_token(bind_token: Lexer.Token, after_bind: List<&2,
     case Lexer.TokenInfo{_, "=", _, _, _, _}:
       parse_do_assignment(file, monad, args, key, key_beg, ty, after_bind, beg, end, scope, depth, col)
     case _:
-      ((Ast.TermHole{"parse-error: expected <- in do binding", span(file, token_beg(bind_token), token_end(bind_token))}, +bind_token <> after_bind), False{})
+      ((Ast.TermHole{"parse-error: expected <- in do binding", span(file, token_beg(bind_token), token_end(bind_token))}, bind_token <> after_bind), False{})
 
 def parse_do_typed_bind_type_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, file: String, monad: String, args: List<&2, Ast.SyntaxTerm>, key: String, key_beg: Nat, beg: Nat, end: Nat, scope: List<&2, Scope>, depth: Nat, col: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match result:
@@ -2438,7 +2438,7 @@ def expr_match_array_shape(shape: Lexer.Token, after_shape: List<&2, Lexer.Token
     case Lexer.TokenInfo{_, "^", _, _, _, _}:
       expr_match_array_depth(parse_term(file, after_shape, scope, depth, 0n), file, value, ty, beg, end)
     case _:
-      ((Ast.TermHole{"parse-error: expected * or ^ in array literal", span(file, token_beg(shape), token_end(shape))}, +shape <> after_shape), False{})
+      ((Ast.TermHole{"parse-error: expected * or ^ in array literal", span(file, token_beg(shape), token_end(shape))}, shape <> after_shape), False{})
 
 def expr_match_array_type(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, file: String, value: Ast.SyntaxTerm, beg: Nat, end: Nat, scope: List<&2, Scope>, depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match result:
@@ -2484,7 +2484,7 @@ def parse_typed_operator_colon(colon: Lexer.Token, after_colon: List<&2, Lexer.T
 def parse_typed_operator_term(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, file: String, scope: List<&2, Scope>, depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match result:
     case ((term, +colon <> after_colon), True{}):
-      parse_typed_operator_colon(colon, after_colon, +colon <> after_colon, term, file, scope, depth)
+      parse_typed_operator_colon(colon, after_colon, colon <> after_colon, term, file, scope, depth)
     case ((term, after_term), False{}):
       ((term, after_term), False{})
     case ((term, after_term), True{}):
@@ -3414,7 +3414,7 @@ def parse_destructuring_value_result(ok_value: Bool, value: Ast.SyntaxTerm, afte
 def parse_destructuring_body_ready(is_ready: Bool, value: Ast.SyntaxTerm, after_value: List<&2, Lexer.Token>, pattern: Ast.SyntaxPattern, next_scope: List<&2, Scope>, next_depth: Nat, file: String, beg: Nat, col: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match is_ready:
     case True{}:
-      with_term_result(parse_body(file, skip_rewrite_semicolon(after_value), next_scope, depth, col), body => after_body => ok_body => parse_destructuring_parsed_body(ok_body, body, after_body, value, pattern, file, beg))
+      with_term_result(parse_body(file, skip_rewrite_semicolon(after_value), next_scope, next_depth, col), body => after_body => ok_body => parse_destructuring_parsed_body(ok_body, body, after_body, value, pattern, file, beg))
     case False{}:
       ((Ast.TermHole{ "parse-error: expected an indented destructuring body",  span(file, token_end_first(value), token_end_first(value))}, after_value), False{})
 
@@ -3664,7 +3664,7 @@ def parse_definition_typed_colon(colon: Lexer.Token, +after_colon: List<&2, Lexe
 def parse_definition_typed_result(result_pair: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, header: Lexer.Token, file: String, key: String, beg: Nat, binders: List<&2, Ast.TelescopeItem>, scope: List<&2, Scope>, depth: Nat) -> (Ast.TopLevel & List<&2, Lexer.Token>) & Bool:
   match result_pair:
     case ((result, +colon <> after_colon), True{}):
-      parse_definition_typed_colon(colon, after_colon, +colon <> after_colon, result, header, file, key, beg, binders, scope, depth)
+      parse_definition_typed_colon(colon, after_colon, colon <> after_colon, result, header, file, key, beg, binders, scope, depth)
     case ((_, after_result), False{}):
       definition_failure(file, key, binders, beg, token_end(header), after_result)
     case ((_, after_result), True{}):
