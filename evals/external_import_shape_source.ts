@@ -7,14 +7,16 @@ export async function extractExternalImportShape(source:string){
  const nested=body.r[0]!.f,line=(n:number)=>source.lastIndexOf('\n',n)+1,start=source.indexOf('def parse_external_imports_scan('),begin=line(body.e[0]!.s!.beg),next=source.indexOf('\ndef ',start),end=next+1,original=source.slice(start,end),originalBody=source.slice(begin,end);
  if(start<0||next<0)throw Error('External import source range drift');
  const replacements=[
-  ['match token:', 'match action:'],
-  ['case +token <> rest:', 'case +token <> +rest:'],
   ['parse_external_imports_scan(rest, original, acc)', 'external_import_worker(rest, original, acc, external_import_action(rest))'],
   ['parse_external_imports_scan(after_path, after_path, strip_quotes(text) <> acc)', 'external_import_worker(after_path, after_path, strip_quotes(text) <> acc, external_import_action(after_path))']
  ] as const;
- let workerBody=originalBody;for(const [a,b]of replacements){if(workerBody.split(a).length!==2)throw Error('External worker rewrite anchor drift');workerBody=workerBody.replace(a,b);}
- const patterns=nested.r.map(r=>r.p.map(p=>source.slice(p.s!.beg,p.s!.end)).join(' '));
- for(const [i,p]of patterns.entries()){if(workerBody.split('case '+p+':').length!==2)throw Error('External token pattern drift');workerBody=workerBody.replace('case '+p+':','case '+(i<2?i+'n':'_')+':');}
+ const patterns=nested.r.map(r=>r.p.map(p=>source.slice(p.s!.beg,p.s!.end)).join(' ')),nilBegin=line(body.r[1]!.p[0]!.s!.beg);
+ const branches=nested.r.map((row,i)=>{
+  const beg=source.indexOf('\n',source.indexOf(':',Math.max(...row.p.map(p=>p.s!.end))))+1,finish=i+1<nested.r.length?line(nested.r[i+1]!.p[0]!.s!.beg):nilBegin,text=source.slice(beg,finish),indent=text.match(/^ */)![0].length;
+  return '    case '+(i<2?'+token <> +rest '+i+'n':'_ <> _ _')+':\n'+text.trimEnd().split('\n').map(s=>s.trim()?'      '+s.slice(indent):'').join('\n')+'\n';
+ });
+ let workerBody='  match current action:\n'+branches.join('')+source.slice(nilBegin,end).replace('case Nil{}:','case Nil{} _:');
+ for(const [a,b]of replacements){if(workerBody.split(a).length!==2)throw Error('External worker rewrite anchor drift');workerBody=workerBody.replace(a,b);}
  const predicate='def external_import_token_action(token: Lexer.Token) -> Nat:\n  match token:\n'+patterns.map((p,i)=>'    case '+p+':\n      '+i+'n\n').join('')+'\n'+
  'def external_import_action(current: List<&2, Lexer.Token>) -> Nat:\n  match current:\n    case +token <> _:\n      external_import_token_action(token)\n    case Nil{}:\n      2n\n\n';
  const result='(List<&2, String> & List<&2, Lexer.Token>) & Bool',worker='def external_import_worker(+current: List<&2, Lexer.Token>, original: List<&2, Lexer.Token>, acc: List<&2, String>, action: Nat) -> '+result+':\n'+workerBody,

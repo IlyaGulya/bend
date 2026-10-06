@@ -1,0 +1,11 @@
+{
+  "command":"bun evals/heavy_gate.ts --memory-mib=3072 --rss-mib=3072 --poll-ms=10 -- bun evals/external_import_shape_smoke.ts",
+  "outcomes":[
+    {"design":"nested current then Nat action then rest","guardian":"1791320650531-03a382abf68a6fc0","status":"FAIL","error":"a match on a parameter or field (this name is a def or a consumed binder: give the value its own def)","location":"match rest in case1n","compiledJSExecuted":false},
+    {"design":"current/action matrix, nested rest under action1n","guardian":"1791320754387-15b925955c0e56c7","status":"FAIL","error":"a match on a parameter or field (this name is a def or a consumed binder: give the value its own def)","location":"match rest in case +token <> +rest 1n","compiledJSExecuted":false}
+  ],
+  "nextQuestion":"Does flattening original three import-rest rows directly into tokens-first current/action matrix avoid the consumed nested field without changing consumed suffixes or recursion?",
+  "onPass":"actual JS fixture comparison, then whole retained-e check",
+  "onFail":"record exact native boundary, no retry of nested-rest designs",
+  "limits":{"physicalMiB":3072,"rssMiB":3072,"pollMs":10}
+}

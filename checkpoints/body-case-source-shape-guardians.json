@@ -1644,5 +1644,26 @@
       "memoryLimitBytes": 3221225472,
       "rssLimitBytes": 3221225472
     }
+  },
+  {
+    "id": "1791320754387-15b925955c0e56c7",
+    "report": {
+      "status": "FAIL",
+      "reason": "command_exit",
+      "commandExitCode": 2,
+      "commandSignal": 0,
+      "peakRssBytes": 93569024,
+      "peakFootprintBytes": 65520240,
+      "elapsedMs": 132,
+      "command": [
+        "bun",
+        "evals/external_import_shape_smoke.ts"
+      ],
+      "label": "heavy command",
+      "exitCode": 1,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791320754387-15b925955c0e56c7.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    }
   }
 ]
