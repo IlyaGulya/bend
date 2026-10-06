@@ -13,6 +13,7 @@ export async function extractInequalityShape(source:string){return extractOwnedT
 export async function extractInequalityRightShape(source:string){return extractTwoRowShape(source,'parse_inequality_right_result','inequality_right','colon');}
 export async function extractAllNamedTypeShape(source:string){return extractTwoRowShape(source,'parse_all_named_type_result','all_named_type','arrow');}
 export async function extractIndexResultShape(source:string){return extractTwoRowShape(source,'parse_index_result','index_result','close');}
+export async function extractRewriteMotiveShape(source:string){return extractTwoRowShape(source,'parse_rewrite_motive','rewrite_motive','colon');}
 async function extractOwnedTailShape(source:string,name:'parse_brace_annot_type_result'|'parse_inequality_type_result',helper:string){
  const graph=await readParserGraph(source),body=graph.bodies.get(name),sig=graph.signatures.get(name);
  if(body?.$!=='Match'||body.r[0]!.f.$!=='Match'||!sig)throw Error('Owned-tail success branch drift');
@@ -26,7 +27,7 @@ async function extractOwnedTailShape(source:string,name:'parse_brace_annot_type_
  const result=await extractTwoRowShape(projected,name,helper,'close');
  return{...result,audit:{...result.audit,originalSha256:sha(source),ownedTailProjection:{binderId:tail.id,quantity:tail.quantity.$,originalSpan:span,expression:projection,outerNonemptyGuard:true,exactInverse:true,noListCopy:true}}};
 }
-async function extractTwoRowShape(source:string,name:'parse_case_row_body'|'parse_match_tail_after_semicolon'|'parse_match_tail_scan'|'parse_brace_equal_right_result'|'parse_brace_annot_type_result'|'parse_inequality_type_result'|'parse_inequality_right_result'|'parse_all_named_type_result'|'parse_index_result',helper:string,token:string){
+async function extractTwoRowShape(source:string,name:'parse_case_row_body'|'parse_match_tail_after_semicolon'|'parse_match_tail_scan'|'parse_brace_equal_right_result'|'parse_brace_annot_type_result'|'parse_inequality_type_result'|'parse_inequality_right_result'|'parse_all_named_type_result'|'parse_index_result'|'parse_rewrite_motive',helper:string,token:string){
  const graph=await readParserGraph(source),body=graph.bodies.get(name),sig=graph.signatures.get(name);
  if(body?.$!=='Match'||body.r.length!==2||body.r[0]!.f.$!=='Match'||!sig)throw Error('Case scanner shape drift');
  const match=body.r[0]!.f;if(match.r.length!==(name==='parse_match_tail_scan'?3:2))throw Error('Token selector row drift');
