@@ -1,0 +1,9 @@
+{
+  "question": "Does state-free colon selection plus two typed copied branches remove actual whole-check frontier step_parse_case_row_body?",
+  "scope": "User-authorized remaining actual scanner blockers; diagnostic canonical copy only.",
+  "cheapestCheck": "AST row/capture audit and exact inverse, normal generation, ordinary complete load/check; if ordinary load hits existing ceiling, temporary direct-loader whole native retained-e check.",
+  "onPass": "Continue only at next actual stopping scanner declaration; execute actual emitted JS only after whole validation/codegen.",
+  "onFail": "Record exact declaration/error/resource boundary; no excluded events, discard-E, grammar or generic generator changes.",
+  "limits": {"physicalMiB":3072,"rssMiB":3072,"pollMs":10},
+  "productionFilesUnchanged": true
+}
