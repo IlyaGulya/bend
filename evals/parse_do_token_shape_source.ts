@@ -6,14 +6,15 @@ const sha=(s:string)=>createHash('sha256').update(s).digest('hex');
 const show=(t:B.LTerm)=>B.term_show(t).replace(/\bast\./g,'Ast.').replace(/\blexer\./g,'Lexer.');
 export async function extractDoTokenShape(source:string){return extractTokenShape(source,'parse_do_typed_bind_type_token','do_token','DoTokenAction');}
 export async function extractArrayShape(source:string){return extractTokenShape(source,'expr_match_array_shape','array_shape','ArrayShapeAction');}
-async function extractTokenShape(source:string,name:'parse_do_typed_bind_type_token'|'expr_match_array_shape',helper:string,action:string){
+export async function extractBraceEqualsShape(source:string){return extractTokenShape(source,'parse_brace_equals','brace_equals','BraceEqualsAction');}
+async function extractTokenShape(source:string,name:'parse_do_typed_bind_type_token'|'expr_match_array_shape'|'parse_brace_equals',helper:string,action:string){
  const graph=await readParserGraph(source),body=graph.bodies.get(name),sig=graph.signatures.get(name);
- if(body?.$!=='Match'||body.r.length!==3||!sig)throw Error('Typed do scanner shape drift');
+ if(body?.$!=='Match'||body.r.length!==(name==='parse_brace_equals'?4:3)||!sig)throw Error('Direct token selector shape drift');
  const types=new LexicalTypes(graph.parserBook,graph.signatures);types.indexBody(body,sig.parameters,sig.result);
  const line=(n:number)=>source.lastIndexOf('\n',n)+1,begin=line(body.e[0]!.s!.beg),next=source.indexOf('\ndef ',begin),end=next+1,original=source.slice(begin,end),helpers:string[]=[],calls:string[]=[],audit:object[]=[];
  for(const [i,row]of body.r.entries()){
   if(row.f.$!=='Reply')throw Error('Typed do branch drift');const env=types.environmentAt(row.f.x),captures=[...freeBinderIds(row.f.x)].filter(id=>env.has(id)).sort((a,b)=>a-b).map(id=>env.get(id)!);
-  const beg=source.indexOf('\n',source.indexOf(':',Math.max(...row.p.map(p=>p.s!.end))))+1,finish=i<2?line(body.r[i+1]!.p[0]!.s!.beg):end,text=source.slice(beg,finish),indent=text.match(/^ */)![0].length;
+  const beg=source.indexOf('\n',source.indexOf(':',Math.max(...row.p.map(p=>p.s!.end))))+1,finish=i+1<body.r.length?line(body.r[i+1]!.p[0]!.s!.beg):end,text=source.slice(beg,finish),indent=text.match(/^ */)![0].length;
   helpers.push('def '+helper+'_branch_'+i+'('+captures.map(b=>(b.quantity.$==='Many'?'+':'')+b.name+': '+show(b.type)).join(', ')+') -> '+show(sig.result)+':\n'+text.trimEnd().split('\n').map(s=>'  '+s.slice(indent)).join('\n')+'\n');
   calls.push(helper+'_branch_'+i+'('+captures.map(b=>b.name).join(', ')+')');audit.push({row:i,originalBodySha256:sha(text),captures:captures.map(b=>({name:b.name,quantity:b.quantity.$,type:show(b.type)}))});
  }
