@@ -10,11 +10,11 @@ import {extractCaseShape,extractMatchTailShape,extractMatchTailScanShape,extract
 import {extractDoTokenShape,extractArrayShape,extractBraceEqualsShape} from './parse_do_token_shape_source.ts';
 import {extractOperatorKeyShape} from './operator_key_shape_source.ts';
 import {extractExternalImportShape} from './external_import_shape_source.ts';
-import {extractSymbolPairShape} from './symbol_pair_shape_source.ts';
+import {extractSymbolPairShape,extractSymbolTripleShape} from './symbol_pair_shape_source.ts';
 import {checkFrozen,frozen,replayKernel} from './load_replay_kernel.ts';
 import {runHeavyGate,guardHeavyGate} from './heavy_gate.ts';
 const isProposal=process.argv[2]==='--build-proposal';
-const stem=process.env.BEND_PARSER_REPORT_PREFIX??(isProposal?'checkpoints/parser-symbol-pair-shape-proposal':'checkpoints/parser-symbol-pair-shape'),sourcePath=resolve('bend2/selfhost/.parser_symbol_pair_shape_source.bend'),outputBase=resolve('bend2/selfhost/.parser_symbol_pair_shape_generated.bend'),candidatePath=outputBase.replace('.bend','_fuel.bend'),artifactPath=resolve('bend2/selfhost/parser_explicit_fuel.diagnostic.js');
+const stem=process.env.BEND_PARSER_REPORT_PREFIX??(isProposal?'checkpoints/parser-symbol-triple-shape-proposal':'checkpoints/parser-symbol-triple-shape'),sourcePath=resolve('bend2/selfhost/.parser_symbol_triple_shape_source.bend'),outputBase=resolve('bend2/selfhost/.parser_symbol_triple_shape_generated.bend'),candidatePath=outputBase.replace('.bend','_fuel.bend'),artifactPath=resolve('bend2/selfhost/parser_explicit_fuel.diagnostic.js');
 const sha=(s:string)=>createHash('sha256').update(s).digest('hex');
 const mode=process.argv[2];
 if(!mode){
@@ -39,7 +39,8 @@ try{
    ['braceRight',extractBraceRightShape],['braceAnnot',extractBraceAnnotShape],['braceEquals',extractBraceEqualsShape],
    ['inequality',extractInequalityShape],['inequalityRight',extractInequalityRightShape],['allNamedType',extractAllNamedTypeShape],
    ['indexResult',extractIndexResultShape],['rewriteMotive',extractRewriteMotiveShape],['matchScrutinees',extractMatchScrutineesShape],
-   ['definitionHeader',extractDefinitionHeaderShape],['externalImport',extractExternalImportShape],['symbolPair',extractSymbolPairShape]
+   ['definitionHeader',extractDefinitionHeaderShape],['externalImport',extractExternalImportShape],['symbolPair',extractSymbolPairShape],
+   ['symbolTriple',extractSymbolTripleShape]
   ] as const;
   let currentSource=await Bun.file('bend2/selfhost/parser.bend').text(),latest:{source:string,graph:Awaited<ReturnType<typeof extractAllNamedTypeShape>>['graph'],audit:{transformedSha256:string}}|undefined;
   const audits:Record<string,object>={};

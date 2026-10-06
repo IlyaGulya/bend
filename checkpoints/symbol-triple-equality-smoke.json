@@ -1,0 +1,236 @@
+{
+  "status": "PASS",
+  "backend": "actual compiled JS",
+  "source": "import Base\n\ntype SymbolTripleClass is Data:\n  SymbolTripleMerged{three: String}\n  SymbolTripleUnmerged{left: String, right: String}\n\ndef symbol_triple_fallback(text: String) -> SymbolTripleClass:\n  match text:\n    case SCon{first, SCon{second, _}}:\n      SymbolTripleUnmerged{String.from_list([first]), String.from_list([second])}\n    case SCon{first, SNil{}}:\n      SymbolTripleUnmerged{String.from_list([first]), SNil{}}\n    case SNil{}:\n      SymbolTripleUnmerged{SNil{}, SNil{}}\n\ndef symbol_triple_choice_3(matched: Bool, text: String) -> SymbolTripleClass:\n  match matched:\n    case True{}:\n      SymbolTripleMerged{\".&.\"}\n    case False{}:\n      symbol_triple_fallback(text)\n\ndef symbol_triple_test_3(+text: String) -> SymbolTripleClass:\n  symbol_triple_choice_3(String.eq(text, \".&.\"), text)\n\ndef symbol_triple_choice_2(matched: Bool, text: String) -> SymbolTripleClass:\n  match matched:\n    case True{}:\n      SymbolTripleMerged{\".^.\"}\n    case False{}:\n      symbol_triple_test_3(text)\n\ndef symbol_triple_test_2(+text: String) -> SymbolTripleClass:\n  symbol_triple_choice_2(String.eq(text, \".^.\"), text)\n\ndef symbol_triple_choice_1(matched: Bool, text: String) -> SymbolTripleClass:\n  match matched:\n    case True{}:\n      SymbolTripleMerged{\".|.\"}\n    case False{}:\n      symbol_triple_test_2(text)\n\ndef symbol_triple_test_1(+text: String) -> SymbolTripleClass:\n  symbol_triple_choice_1(String.eq(text, \".|.\"), text)\n\ndef symbol_triple_choice_0(matched: Bool, text: String) -> SymbolTripleClass:\n  match matched:\n    case True{}:\n      SymbolTripleMerged{\"<&>\"}\n    case False{}:\n      symbol_triple_test_1(text)\n\ndef symbol_triple_test_0(+text: String) -> SymbolTripleClass:\n  symbol_triple_choice_0(String.eq(text, \"<&>\"), text)\n\ndef multi_symbol_3(text: String) -> SymbolTripleClass:\n  symbol_triple_test_0(text)\n\n",
+  "sourceSha256": "cacca7382560637c23755c21db03e04541fbdc403be2e27e3b14f56370a381c4",
+  "jsSha256": "fecab5b1db0f5d7e5016fb034da809c292e0c827cd910c32a5f2e6e41fc96d88",
+  "nativeEvents": 461,
+  "results": [
+    {
+      "text": "<&>",
+      "expected": {
+        "$": "SymbolTripleMerged",
+        "three": "<&>"
+      },
+      "actual": {
+        "$": "SymbolTripleMerged",
+        "three": "<&>"
+      }
+    },
+    {
+      "text": ".|.",
+      "expected": {
+        "$": "SymbolTripleMerged",
+        "three": ".|."
+      },
+      "actual": {
+        "$": "SymbolTripleMerged",
+        "three": ".|."
+      }
+    },
+    {
+      "text": ".^.",
+      "expected": {
+        "$": "SymbolTripleMerged",
+        "three": ".^."
+      },
+      "actual": {
+        "$": "SymbolTripleMerged",
+        "three": ".^."
+      }
+    },
+    {
+      "text": ".&.",
+      "expected": {
+        "$": "SymbolTripleMerged",
+        "three": ".&."
+      },
+      "actual": {
+        "$": "SymbolTripleMerged",
+        "three": ".&."
+      }
+    },
+    {
+      "text": "",
+      "expected": {
+        "$": "SymbolTripleUnmerged",
+        "left": "",
+        "right": ""
+      },
+      "actual": {
+        "$": "SymbolTripleUnmerged",
+        "left": "",
+        "right": ""
+      }
+    },
+    {
+      "text": "<",
+      "expected": {
+        "$": "SymbolTripleUnmerged",
+        "left": "<",
+        "right": ""
+      },
+      "actual": {
+        "$": "SymbolTripleUnmerged",
+        "left": "<",
+        "right": ""
+      }
+    },
+    {
+      "text": "<&",
+      "expected": {
+        "$": "SymbolTripleUnmerged",
+        "left": "<",
+        "right": "&"
+      },
+      "actual": {
+        "$": "SymbolTripleUnmerged",
+        "left": "<",
+        "right": "&"
+      }
+    },
+    {
+      "text": "<&>x",
+      "expected": {
+        "$": "SymbolTripleUnmerged",
+        "left": "<",
+        "right": "&"
+      },
+      "actual": {
+        "$": "SymbolTripleUnmerged",
+        "left": "<",
+        "right": "&"
+      }
+    },
+    {
+      "text": ".|. ",
+      "expected": {
+        "$": "SymbolTripleUnmerged",
+        "left": ".",
+        "right": "|"
+      },
+      "actual": {
+        "$": "SymbolTripleUnmerged",
+        "left": ".",
+        "right": "|"
+      }
+    },
+    {
+      "text": ".^",
+      "expected": {
+        "$": "SymbolTripleUnmerged",
+        "left": ".",
+        "right": "^"
+      },
+      "actual": {
+        "$": "SymbolTripleUnmerged",
+        "left": ".",
+        "right": "^"
+      }
+    },
+    {
+      "text": "x<&>",
+      "expected": {
+        "$": "SymbolTripleUnmerged",
+        "left": "x",
+        "right": "<"
+      },
+      "actual": {
+        "$": "SymbolTripleUnmerged",
+        "left": "x",
+        "right": "<"
+      }
+    },
+    {
+      "text": "😺x",
+      "expected": {
+        "$": "SymbolTripleUnmerged",
+        "left": "😺",
+        "right": "x"
+      },
+      "actual": {
+        "$": "SymbolTripleUnmerged",
+        "left": "😺",
+        "right": "x"
+      }
+    },
+    {
+      "text": "λξ",
+      "expected": {
+        "$": "SymbolTripleUnmerged",
+        "left": "λ",
+        "right": "ξ"
+      },
+      "actual": {
+        "$": "SymbolTripleUnmerged",
+        "left": "λ",
+        "right": "ξ"
+      }
+    },
+    {
+      "text": "😺λx",
+      "expected": {
+        "$": "SymbolTripleUnmerged",
+        "left": "😺",
+        "right": "λ"
+      },
+      "actual": {
+        "$": "SymbolTripleUnmerged",
+        "left": "😺",
+        "right": "λ"
+      }
+    },
+    {
+      "text": "\u0000x",
+      "expected": {
+        "$": "SymbolTripleUnmerged",
+        "left": "\u0000",
+        "right": "x"
+      },
+      "actual": {
+        "$": "SymbolTripleUnmerged",
+        "left": "\u0000",
+        "right": "x"
+      }
+    },
+    {
+      "text": "→",
+      "expected": {
+        "$": "SymbolTripleUnmerged",
+        "left": "→",
+        "right": ""
+      },
+      "actual": {
+        "$": "SymbolTripleUnmerged",
+        "left": "→",
+        "right": ""
+      }
+    },
+    {
+      "text": "\n",
+      "expected": {
+        "$": "SymbolTripleUnmerged",
+        "left": "\n",
+        "right": ""
+      },
+      "actual": {
+        "$": "SymbolTripleUnmerged",
+        "left": "\n",
+        "right": ""
+      }
+    },
+    {
+      "text": "abc",
+      "expected": {
+        "$": "SymbolTripleUnmerged",
+        "left": "a",
+        "right": "b"
+      },
+      "actual": {
+        "$": "SymbolTripleUnmerged",
+        "left": "a",
+        "right": "b"
+      }
+    }
+  ]
+}
