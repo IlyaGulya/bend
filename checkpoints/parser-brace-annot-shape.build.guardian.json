@@ -1,0 +1,19 @@
+{
+  "status": "RESOURCE_LIMIT",
+  "reason": "physical_footprint_limit",
+  "commandExitCode": -1,
+  "commandSignal": 15,
+  "peakRssBytes": 3053879296,
+  "peakFootprintBytes": 3221785480,
+  "elapsedMs": 4123,
+  "command": [
+    "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+    "/Users/ilyagulya/Projects/My/bend/evals/parser_local_shape_build.ts",
+    "--build"
+  ],
+  "label": "Local scanner candidate ordinary complete load/check/JS codegen",
+  "exitCode": 73,
+  "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791315582129-558bf966cfa0a50c.json",
+  "memoryLimitBytes": 3221225472,
+  "rssLimitBytes": 3221225472
+}
