@@ -2520,22 +2520,42 @@ def strip_quotes_chars(chars: List<&2, Char>, text: String) -> String:
 def strip_quotes(+text: String) -> String:
   strip_quotes_chars(String.to_list(text), text)
 
-def parse_external_imports_scan(current: List<&2, Lexer.Token>, original: List<&2, Lexer.Token>, acc: List<&2, String>) -> (List<&2, String> & List<&2, Lexer.Token>) & Bool:
+def external_import_token_action(token: Lexer.Token) -> Nat:
+  match token:
+    case Lexer.TokenInfo{ Lexer.NewlineToken{},  _,  _,  _,  _,  _}:
+      0n
+    case Lexer.TokenInfo{ Lexer.NameToken{},  "import",  _,  _,  _,  _}:
+      1n
+    case _:
+      2n
+
+def external_import_action(current: List<&2, Lexer.Token>) -> Nat:
   match current:
-    case Lexer.TokenInfo{ Lexer.NewlineToken{},  _,  _,  _,  _,  _} <> rest:
-      parse_external_imports_scan(rest, original, acc)
-    case Lexer.TokenInfo{ Lexer.NameToken{},  "import",  _,  _,  _,  _} <> rest:
-      match rest:
-        case Lexer.TokenInfo{ Lexer.StringToken{}, text,  _,  _,  _,  _} <> +after_path:
-          parse_external_imports_scan(after_path, after_path, strip_quotes(text) <> acc)
-        case +path_token <> after_path:
-          ((List.reverse(&2, String, acc), path_token <> after_path), False{})
-        case Nil{}:
-          ((List.reverse(&2, String, acc), Nil{}), False{})
-    case _ <> rest:
-      ((List.reverse(&2, String, acc), original), True{})
+    case +token <> _:
+      external_import_token_action(token)
     case Nil{}:
+      2n
+
+def external_import_worker(+current: List<&2, Lexer.Token>, original: List<&2, Lexer.Token>, acc: List<&2, String>, action: Nat) -> (List<&2, String> & List<&2, Lexer.Token>) & Bool:
+  match current action:
+    case +token <> +rest 0n:
+      external_import_worker(rest, original, acc, external_import_action(rest))
+    case +token <> Lexer.TokenInfo{ Lexer.StringToken{}, text,  _,  _,  _,  _} <> +after_path 1n:
+      external_import_worker(after_path, after_path, strip_quotes(text) <> acc, external_import_action(after_path))
+    case +token <> +path_token <> after_path 1n:
+      ((List.reverse(&2, String, acc), path_token <> after_path), False{})
+    case +token <> Nil{} 1n:
+      ((List.reverse(&2, String, acc), Nil{}), False{})
+    case _ <> _ _:
+      ((List.reverse(&2, String, acc), original), True{})
+    case Nil{} _:
       ((List.reverse(&2, String, acc), Nil{}), True{})
+
+def external_import_start(+current: List<&2, Lexer.Token>, original: List<&2, Lexer.Token>, acc: List<&2, String>) -> (List<&2, String> & List<&2, Lexer.Token>) & Bool:
+  external_import_worker(current, original, acc, external_import_action(current))
+
+def parse_external_imports_scan(current: List<&2, Lexer.Token>, original: List<&2, Lexer.Token>, acc: List<&2, String>) -> (List<&2, String> & List<&2, Lexer.Token>) & Bool:
+  external_import_start(current, original, acc)
 
 def parse_external_imports(+tokens: List<&2, Lexer.Token>, acc: List<&2, String>) -> (List<&2, String> & List<&2, Lexer.Token>) & Bool:
   parse_external_imports_scan(tokens, tokens, acc)

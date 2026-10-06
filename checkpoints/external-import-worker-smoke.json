@@ -1,0 +1,392 @@
+{
+  "status": "PASS",
+  "backend": "actual compiled JS",
+  "source": "import Base\nimport ../lexer.bend as Lexer\n\ndef strip_quotes_reversed(reversed: List<&2, Char>) -> String:\n  match reversed:\n    case +_ <> chars:\n      String.from_list(List.reverse(&2, Char, chars))\n    case Nil{}:\n      SNil{}\ndef strip_quotes_chars(chars: List<&2, Char>, text: String) -> String:\n  match chars:\n    case +_ <> rest:\n      strip_quotes_reversed(List.reverse(&2, Char, rest))\n    case Nil{}:\n      text\n\ndef strip_quotes(+text: String) -> String:\n  strip_quotes_chars(String.to_list(text), text)\n\ndef external_import_token_action(token: Lexer.Token) -> Nat:\n  match token:\n    case Lexer.TokenInfo{ Lexer.NewlineToken{},  _,  _,  _,  _,  _}:\n      0n\n    case Lexer.TokenInfo{ Lexer.NameToken{},  \"import\",  _,  _,  _,  _}:\n      1n\n    case _:\n      2n\n\ndef external_import_action(current: List<&2, Lexer.Token>) -> Nat:\n  match current:\n    case +token <> _:\n      external_import_token_action(token)\n    case Nil{}:\n      2n\n\ndef external_import_worker(+current: List<&2, Lexer.Token>, original: List<&2, Lexer.Token>, acc: List<&2, String>, action: Nat) -> (List<&2, String> & List<&2, Lexer.Token>) & Bool:\n  match current action:\n    case +token <> +rest 0n:\n      external_import_worker(rest, original, acc, external_import_action(rest))\n    case +token <> Lexer.TokenInfo{ Lexer.StringToken{}, text,  _,  _,  _,  _} <> +after_path 1n:\n      external_import_worker(after_path, after_path, strip_quotes(text) <> acc, external_import_action(after_path))\n    case +token <> +path_token <> after_path 1n:\n      ((List.reverse(&2, String, acc), path_token <> after_path), False{})\n    case +token <> Nil{} 1n:\n      ((List.reverse(&2, String, acc), Nil{}), False{})\n    case _ <> _ _:\n      ((List.reverse(&2, String, acc), original), True{})\n    case Nil{} _:\n      ((List.reverse(&2, String, acc), Nil{}), True{})\n\ndef external_import_start(+current: List<&2, Lexer.Token>, original: List<&2, Lexer.Token>, acc: List<&2, String>) -> (List<&2, String> & List<&2, Lexer.Token>) & Bool:\n  external_import_worker(current, original, acc, external_import_action(current))\n\ndef parse_external_imports_scan(current: List<&2, Lexer.Token>, original: List<&2, Lexer.Token>, acc: List<&2, String>) -> (List<&2, String> & List<&2, Lexer.Token>) & Bool:\n  external_import_start(current, original, acc)\n\ndef smoke_end() -> Nat:\n  0n\n",
+  "sourceSha256": "d4326ba3694797e7438fef01b2362234565cc927dd76f8ee74d063ac9254b32f",
+  "transformedSourceSha256": "e9e8e4d07a50881ed368efefb9c3b91fa798a6b9e11ee98634fca14d1ba669a4",
+  "importPathRedirectOnly": true,
+  "jsSha256": "b27bc9b4c1478bd1e8b1b3316925a2cf9db991b1906f39268937d116f9ba283f",
+  "nativeEvents": 479,
+  "results": [
+    {
+      "name": "empty",
+      "actual": {
+        "paths": [],
+        "rest": [],
+        "ok": true
+      },
+      "expected": {
+        "paths": [],
+        "rest": [],
+        "ok": true
+      }
+    },
+    {
+      "name": "newline-only",
+      "actual": {
+        "paths": [],
+        "rest": [],
+        "ok": true
+      },
+      "expected": {
+        "paths": [],
+        "rest": [],
+        "ok": true
+      }
+    },
+    {
+      "name": "other",
+      "actual": {
+        "paths": [],
+        "rest": [
+          [
+            "NameToken",
+            "def"
+          ]
+        ],
+        "ok": true
+      },
+      "expected": {
+        "paths": [],
+        "rest": [
+          [
+            "NameToken",
+            "def"
+          ]
+        ],
+        "ok": true
+      }
+    },
+    {
+      "name": "newline-preserved-with-other",
+      "actual": {
+        "paths": [],
+        "rest": [
+          [
+            "NewlineToken",
+            "\n"
+          ],
+          [
+            "NameToken",
+            "def"
+          ]
+        ],
+        "ok": true
+      },
+      "expected": {
+        "paths": [],
+        "rest": [
+          [
+            "NewlineToken",
+            "\n"
+          ],
+          [
+            "NameToken",
+            "def"
+          ]
+        ],
+        "ok": true
+      }
+    },
+    {
+      "name": "one-import",
+      "actual": {
+        "paths": [
+          "a"
+        ],
+        "rest": [
+          [
+            "NameToken",
+            "def"
+          ]
+        ],
+        "ok": true
+      },
+      "expected": {
+        "paths": [
+          "a"
+        ],
+        "rest": [
+          [
+            "NameToken",
+            "def"
+          ]
+        ],
+        "ok": true
+      }
+    },
+    {
+      "name": "two-imports-newlines",
+      "actual": {
+        "paths": [
+          "a",
+          "b"
+        ],
+        "rest": [
+          [
+            "NewlineToken",
+            "\n"
+          ],
+          [
+            "NameToken",
+            "def"
+          ]
+        ],
+        "ok": true
+      },
+      "expected": {
+        "paths": [
+          "a",
+          "b"
+        ],
+        "rest": [
+          [
+            "NewlineToken",
+            "\n"
+          ],
+          [
+            "NameToken",
+            "def"
+          ]
+        ],
+        "ok": true
+      }
+    },
+    {
+      "name": "invalid-path",
+      "actual": {
+        "paths": [],
+        "rest": [
+          [
+            "NameToken",
+            "bad"
+          ],
+          [
+            "NameToken",
+            "def"
+          ]
+        ],
+        "ok": false
+      },
+      "expected": {
+        "paths": [],
+        "rest": [
+          [
+            "NameToken",
+            "bad"
+          ],
+          [
+            "NameToken",
+            "def"
+          ]
+        ],
+        "ok": false
+      }
+    },
+    {
+      "name": "missing-path",
+      "actual": {
+        "paths": [],
+        "rest": [],
+        "ok": false
+      },
+      "expected": {
+        "paths": [],
+        "rest": [],
+        "ok": false
+      }
+    },
+    {
+      "name": "trailing-newline",
+      "actual": {
+        "paths": [
+          "a"
+        ],
+        "rest": [],
+        "ok": true
+      },
+      "expected": {
+        "paths": [
+          "a"
+        ],
+        "rest": [],
+        "ok": true
+      }
+    },
+    {
+      "name": "kind-priority",
+      "actual": {
+        "paths": [],
+        "rest": [
+          [
+            "SymbolToken",
+            "import"
+          ],
+          [
+            "StringToken",
+            "\"a\""
+          ]
+        ],
+        "ok": true
+      },
+      "expected": {
+        "paths": [],
+        "rest": [
+          [
+            "SymbolToken",
+            "import"
+          ],
+          [
+            "StringToken",
+            "\"a\""
+          ]
+        ],
+        "ok": true
+      }
+    },
+    {
+      "name": "keyword-near-miss",
+      "actual": {
+        "paths": [],
+        "rest": [
+          [
+            "NameToken",
+            "imports"
+          ],
+          [
+            "StringToken",
+            "\"a\""
+          ]
+        ],
+        "ok": true
+      },
+      "expected": {
+        "paths": [],
+        "rest": [
+          [
+            "NameToken",
+            "imports"
+          ],
+          [
+            "StringToken",
+            "\"a\""
+          ]
+        ],
+        "ok": true
+      }
+    },
+    {
+      "name": "newline-not-a-path",
+      "actual": {
+        "paths": [],
+        "rest": [
+          [
+            "NewlineToken",
+            "\n"
+          ],
+          [
+            "NameToken",
+            "def"
+          ]
+        ],
+        "ok": false
+      },
+      "expected": {
+        "paths": [],
+        "rest": [
+          [
+            "NewlineToken",
+            "\n"
+          ],
+          [
+            "NameToken",
+            "def"
+          ]
+        ],
+        "ok": false
+      }
+    },
+    {
+      "name": "valid-then-invalid",
+      "actual": {
+        "paths": [
+          "a"
+        ],
+        "rest": [
+          [
+            "NameToken",
+            "bad"
+          ]
+        ],
+        "ok": false
+      },
+      "expected": {
+        "paths": [
+          "a"
+        ],
+        "rest": [
+          [
+            "NameToken",
+            "bad"
+          ]
+        ],
+        "ok": false
+      }
+    },
+    {
+      "name": "empty-path",
+      "actual": {
+        "paths": [
+          ""
+        ],
+        "rest": [],
+        "ok": true
+      },
+      "expected": {
+        "paths": [
+          ""
+        ],
+        "rest": [],
+        "ok": true
+      }
+    },
+    {
+      "name": "unicode-path",
+      "actual": {
+        "paths": [
+          "λ"
+        ],
+        "rest": [],
+        "ok": true
+      },
+      "expected": {
+        "paths": [
+          "λ"
+        ],
+        "rest": [],
+        "ok": true
+      }
+    },
+    {
+      "name": "existing-accumulator",
+      "actual": {
+        "paths": [
+          "older",
+          "prior",
+          "a"
+        ],
+        "rest": [],
+        "ok": true
+      },
+      "expected": {
+        "paths": [
+          "older",
+          "prior",
+          "a"
+        ],
+        "rest": [],
+        "ok": true
+      }
+    }
+  ]
+}

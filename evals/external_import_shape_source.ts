@@ -1,4 +1,5 @@
 import {readParserGraph} from './parser_full_graph.ts';
+import type {Case} from '../bend2/bend.ts';
 import {createHash} from 'node:crypto';
 const sha=(s:string)=>createHash('sha256').update(s).digest('hex');
 export async function extractExternalImportShape(source:string){
@@ -11,10 +12,16 @@ export async function extractExternalImportShape(source:string){
   ['parse_external_imports_scan(after_path, after_path, strip_quotes(text) <> acc)', 'external_import_worker(after_path, after_path, strip_quotes(text) <> acc, external_import_action(after_path))']
  ] as const;
  const patterns=nested.r.map(r=>r.p.map(p=>source.slice(p.s!.beg,p.s!.end)).join(' ')),nilBegin=line(body.r[1]!.p[0]!.s!.beg);
- const branches=nested.r.map((row,i)=>{
-  const beg=source.indexOf('\n',source.indexOf(':',Math.max(...row.p.map(p=>p.s!.end))))+1,finish=i+1<nested.r.length?line(nested.r[i+1]!.p[0]!.s!.beg):nilBegin,text=source.slice(beg,finish),indent=text.match(/^ */)![0].length;
-  return '    case '+(i<2?'+token <> +rest '+i+'n':'_ <> _ _')+':\n'+text.trimEnd().split('\n').map(s=>s.trim()?'      '+s.slice(indent):'').join('\n')+'\n';
- });
+ function branch(row:Case,finish:number,pattern:string){
+  const beg=source.indexOf('\n',source.indexOf(':',Math.max(...row.p.map(p=>p.s!.end))))+1,text=source.slice(beg,finish),indent=text.match(/^ */)![0].length;
+  return '    case '+pattern+':\n'+text.trimEnd().split('\n').map(s=>s.trim()?'      '+s.slice(indent):'').join('\n')+'\n';
+ }
+ const importBody=nested.r[1]!.f;if(importBody.$!=='Match'||importBody.r.length!==3)throw Error('External import path matrix drift');
+ const importEnd=line(nested.r[2]!.p[0]!.s!.beg),branches=[
+  branch(nested.r[0]!,line(nested.r[1]!.p[0]!.s!.beg),'+token <> +rest 0n'),
+  ...importBody.r.map((row,i)=>branch(row,i+1<3?line(importBody.r[i+1]!.p[0]!.s!.beg):importEnd,'+token <> '+row.p.map(p=>source.slice(p.s!.beg,p.s!.end)).join(' ')+' 1n')),
+  branch(nested.r[2]!,nilBegin,'_ <> _ _')
+ ];
  let workerBody='  match current action:\n'+branches.join('')+source.slice(nilBegin,end).replace('case Nil{}:','case Nil{} _:');
  for(const [a,b]of replacements){if(workerBody.split(a).length!==2)throw Error('External worker rewrite anchor drift');workerBody=workerBody.replace(a,b);}
  const predicate='def external_import_token_action(token: Lexer.Token) -> Nat:\n  match token:\n'+patterns.map((p,i)=>'    case '+p+':\n      '+i+'n\n').join('')+'\n'+
