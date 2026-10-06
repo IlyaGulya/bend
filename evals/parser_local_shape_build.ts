@@ -6,13 +6,13 @@ import {writeFileSync,appendFileSync,rmSync} from 'node:fs';
 import {partitionPatternScanSource} from './pattern_scan_partition_source.ts';
 import {extractAtomShape} from './parse_atom_shape_source.ts';
 import {extractBodyShape} from './parse_body_shape_source.ts';
-import {extractCaseShape,extractMatchTailShape,extractMatchTailScanShape,extractBraceRightShape,extractBraceAnnotShape,extractInequalityShape,extractInequalityRightShape,extractAllNamedTypeShape} from './parse_case_shape_source.ts';
+import {extractCaseShape,extractMatchTailShape,extractMatchTailScanShape,extractBraceRightShape,extractBraceAnnotShape,extractInequalityShape,extractInequalityRightShape,extractAllNamedTypeShape,extractIndexResultShape} from './parse_case_shape_source.ts';
 import {extractDoTokenShape,extractArrayShape,extractBraceEqualsShape} from './parse_do_token_shape_source.ts';
 import {extractOperatorKeyShape} from './operator_key_shape_source.ts';
 import {checkFrozen,frozen,replayKernel} from './load_replay_kernel.ts';
 import {runHeavyGate,guardHeavyGate} from './heavy_gate.ts';
 const isProposal=process.argv[2]==='--build-proposal';
-const stem=process.env.BEND_PARSER_REPORT_PREFIX??(isProposal?'checkpoints/parser-all-named-type-shape-proposal':'checkpoints/parser-all-named-type-shape'),sourcePath=resolve('bend2/selfhost/.parser_all_named_type_shape_source.bend'),outputBase=resolve('bend2/selfhost/.parser_all_named_type_shape_generated.bend'),candidatePath=outputBase.replace('.bend','_fuel.bend'),artifactPath=resolve('bend2/selfhost/parser_explicit_fuel.diagnostic.js');
+const stem=process.env.BEND_PARSER_REPORT_PREFIX??(isProposal?'checkpoints/parser-index-result-shape-proposal':'checkpoints/parser-index-result-shape'),sourcePath=resolve('bend2/selfhost/.parser_index_result_shape_source.bend'),outputBase=resolve('bend2/selfhost/.parser_index_result_shape_generated.bend'),candidatePath=outputBase.replace('.bend','_fuel.bend'),artifactPath=resolve('bend2/selfhost/parser_explicit_fuel.diagnostic.js');
 const sha=(s:string)=>createHash('sha256').update(s).digest('hex');
 const mode=process.argv[2];
 if(!mode){
@@ -35,7 +35,8 @@ try{
    ['caseScanner',extractCaseShape],['doTokenScanner',extractDoTokenShape],['arrayScanner',extractArrayShape],
    ['operatorKey',extractOperatorKeyShape],['matchTail',extractMatchTailShape],['tailScan',extractMatchTailScanShape],
    ['braceRight',extractBraceRightShape],['braceAnnot',extractBraceAnnotShape],['braceEquals',extractBraceEqualsShape],
-   ['inequality',extractInequalityShape],['inequalityRight',extractInequalityRightShape],['allNamedType',extractAllNamedTypeShape]
+   ['inequality',extractInequalityShape],['inequalityRight',extractInequalityRightShape],['allNamedType',extractAllNamedTypeShape],
+   ['indexResult',extractIndexResultShape]
   ] as const;
   let currentSource=await Bun.file('bend2/selfhost/parser.bend').text(),latest:{source:string,graph:Awaited<ReturnType<typeof extractAllNamedTypeShape>>['graph'],audit:{transformedSha256:string}}|undefined;
   const audits:Record<string,object>={};
