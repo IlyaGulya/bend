@@ -8,7 +8,7 @@ import {extractAtomShape} from './parse_atom_shape_source.ts';
 import {checkFrozen,frozen,replayKernel} from './load_replay_kernel.ts';
 import {runHeavyGate,guardHeavyGate} from './heavy_gate.ts';
 const isProposal=process.argv[2]==='--build-proposal';
-const stem=process.env.BEND_PARSER_REPORT_PREFIX??(isProposal?'checkpoints/parser-atom-choice-shape-proposal':'checkpoints/parser-atom-choice-shape'),sourcePath=resolve('bend2/selfhost/.parser_atom_choice_shape_source.bend'),outputBase=resolve('bend2/selfhost/.parser_atom_choice_shape_generated.bend'),candidatePath=outputBase.replace('.bend','_fuel.bend'),artifactPath=resolve('bend2/selfhost/parser_explicit_fuel.diagnostic.js');
+const stem=process.env.BEND_PARSER_REPORT_PREFIX??(isProposal?'checkpoints/parser-atom-action-shape-proposal':'checkpoints/parser-atom-action-shape'),sourcePath=resolve('bend2/selfhost/.parser_atom_action_shape_source.bend'),outputBase=resolve('bend2/selfhost/.parser_atom_action_shape_generated.bend'),candidatePath=outputBase.replace('.bend','_fuel.bend'),artifactPath=resolve('bend2/selfhost/parser_explicit_fuel.diagnostic.js');
 const sha=(s:string)=>createHash('sha256').update(s).digest('hex');
 const mode=process.argv[2];
 if(!mode){

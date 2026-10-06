@@ -1,0 +1,10 @@
+{
+  "question": "Can a parser-state-free selector for the exact original expect token/quantity/lookahead rows, followed by an enum-only stateful dispatch, remove the current pattern_scan_expect_step full-check ceiling?",
+  "newData": "Current full native retained-e --smol candidate reaches index742 pattern_scan_expect_step after all atom and completed classifier/dispatch declarations return.",
+  "cheapTest": "Exact original ten ordered patterns go into a three-parameter selector. Carry quantity only for rows whose existing typed helper needs it; transport it once rather than add sharing. Runtime fields come from the same token. Keep scanner ABI, structural tail callbacks and row logic unchanged.",
+  "onPass": "Normal regeneration plus ordinary complete retained-e load/check/codegen, with one labeled direct-loader full diagnostic if ordinary replay still blocks; only actual JS execution can establish parser behavior.",
+  "onFailure": "Retain concrete type/ownership or resource result, without unsafe, altered rules or generated hand edits.",
+  "memoryMiB": 3072,
+  "rssMiB": 3072,
+  "pollMs": 10
+}

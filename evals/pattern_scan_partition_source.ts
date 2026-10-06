@@ -18,6 +18,7 @@ export async function partitionPatternScanSource(source:string){
  const calls=graph.calls.get('pattern_scan')!.filter(c=>c.callee==='pattern_scan');
  const groups={expect:[] as string[],completed:[] as string[],empty:[] as string[]};const audit:object[]=[];
  const completedTextCases=new Map<string,string>();
+ const expectSelectors:string[]=[],expectActions:string[]=[],expectRuns:string[]=[];
  for(let i=0;i<20;i++){
   const row=m.r[i]!,mode=row.p[1];if(mode?.$!=='PCtr')throw Error('Non-constructor scanner mode');
   const begin=source.indexOf('\n',source.indexOf(':',Math.max(...row.p.map(p=>p.s!.end))))+1;
@@ -52,7 +53,14 @@ export async function partitionPatternScanSource(source:string){
    rowHelpers.push('def pattern_scan_row_'+i+'('+params.join(', ')+') -> PatternScanOutcome:\n  match ctx:\n    case PatternScanContext{+file, +tokens, frames, +scope, +depth, goal}:\n'+body.trimEnd());
    rowCallBody='      pattern_scan_row_'+i+'('+actuals.join(', ')+')';
   }
-  if(mode.k==='PatternExpect'){const quantity=text(mode.x[0]!);groups.expect.push('    case '+head+' '+quantity+' '+lookahead+':\n'+rowCallBody.trimEnd());}
+  if(mode.k==='PatternExpect'){
+   const quantity=text(mode.x[0]!),qtyPattern=mode.x[0]!,needsQuantity=qtyPattern.$==='PVar'&&qtyPattern.k!=='_'&&new RegExp('\\b'+qtyPattern.k+'\\b').test(rowCallBody),tag='PatternExpectActionRow'+i;
+   expectActions.push('  '+tag+'{'+(needsQuantity?'quantity: Ast.Quantity':'')+'}');
+   expectSelectors.push('    case '+head+' '+quantity+' '+lookahead+':\n      '+tag+'{'+(needsQuantity?qtyPattern.k:'')+'}');
+   if(token.$==='PCtr'){const scalar=token.x[0]!;if(scalar.$!=='PCtr'||scalar.x.length!==6)throw Error('Expect token fields drift');for(const [index,name] of ['kind','text','token_beg','token_end','token_line','token_col'].entries()){const field=scalar.x[index]!;if(field.$==='PVar'&&field.k!=='_')rowCallBody=rowCallBody.replace(new RegExp('\\b'+field.k+'\\b','g'),name);}}
+   expectRuns.push('        case '+tag+'{'+(needsQuantity?'quantity':'')+'}:\n    '+rowCallBody.trimEnd());
+   groups.expect.push('    case '+head+' '+quantity+' '+lookahead+':\n'+rowCallBody.trimEnd());
+  }
   else if(mode.k==='PatternCompleted'){
    if(token.$==='PCtr'){
     const scalar=token.x[0]!;if(scalar.$!=='PCtr'||!text(scalar).startsWith('Lexer.TokenInfo{')||scalar.x.length!==6)throw Error('Unexpected completed token fields');
@@ -73,10 +81,13 @@ export async function partitionPatternScanSource(source:string){
  if(completedTextCases.size!==4)throw Error('Completed text classification drift');
  const helpers=[
  'type PatternScanContext is Data:\n  PatternScanContext{file: String, tokens: List<&2, Lexer.Token>, frames: List<&2, PatternFrame>, scope: List<&2, Scope>, depth: Nat, goal: PatternScanGoal}',
+ 'type PatternExpectAction is Data:\n'+expectActions.join('\n'),
  'type PatternCompletedText is Data:\n'+[...completedTextCases.values(),'PatternCompletedTextOther'].map(tag=>'  '+tag+'{}').join('\n'),
  'def pattern_completed_text(text: String) -> PatternCompletedText:\n  match text:\n'+[...completedTextCases].map(([literal,tag])=>'    case '+literal+':\n      '+tag+'{}').join('\n')+'\n    case _:\n      PatternCompletedTextOther{}',
  ...rowHelpers,
- 'def pattern_scan_expect_step(+token: Lexer.Token, quantity: Ast.Quantity, lookahead: Maybe<&2, Lexer.Token>, +initial_beg: Nat, ctx: PatternScanContext, '+continuations+') -> PatternScanOutcome:\n  match token quantity lookahead:\n'+groups.expect.join('\n'),
+ 'def pattern_expect_action(+token: Lexer.Token, quantity: Ast.Quantity, lookahead: Maybe<&2, Lexer.Token>) -> PatternExpectAction:\n  match token quantity lookahead:\n'+expectSelectors.join('\n'),
+ 'def pattern_scan_expect_run(action: PatternExpectAction, +token: Lexer.Token, +initial_beg: Nat, ctx: PatternScanContext, '+continuations+') -> PatternScanOutcome:\n  match token:\n    case Lexer.TokenInfo{kind, +text, +token_beg, +token_end, +token_line, +token_col}:\n      match action:\n'+expectRuns.join('\n'),
+ 'def pattern_scan_expect_step(+token: Lexer.Token, quantity: Ast.Quantity, lookahead: Maybe<&2, Lexer.Token>, +initial_beg: Nat, ctx: PatternScanContext, '+continuations+') -> PatternScanOutcome:\n  pattern_scan_expect_run(pattern_expect_action(token, quantity, lookahead), token, initial_beg, ctx, continue_rest, continue_open)',
  'def pattern_scan_completed_fields(choice: PatternCompletedText, kind: Lexer.TokenKind, lookahead: Maybe<&2, Lexer.Token>, +text: String, +token_beg: Nat, +token_end: Nat, pattern: Ast.SyntaxPattern, ctx: PatternScanContext, '+continuations+') -> PatternScanOutcome:\n  match choice kind lookahead:\n'+groups.completed.join('\n'),
  'def pattern_scan_completed_step(+token: Lexer.Token, lookahead: Maybe<&2, Lexer.Token>, pattern: Ast.SyntaxPattern, ctx: PatternScanContext, '+continuations+') -> PatternScanOutcome:\n  match token:\n    case Lexer.TokenInfo{kind, +text, +beg, +end, line, col}:\n      pattern_scan_completed_fields(pattern_completed_text(text), kind, lookahead, text, beg, end, pattern, ctx, continue_rest, continue_open)',
  'def pattern_scan_token_step(mode: PatternScanMode, +token: Lexer.Token, lookahead: Maybe<&2, Lexer.Token>, '+common+', '+continuations+') -> PatternScanOutcome:\n  match mode:\n    case PatternExpect{quantity, +initial_beg}:\n      pattern_scan_expect_step(token, quantity, lookahead, initial_beg, PatternScanContext{file, tokens, frames, scope, depth, goal}, continue_rest, continue_open)\n    case PatternCompleted{pattern}:\n      pattern_scan_completed_step(token, lookahead, pattern, PatternScanContext{file, tokens, frames, scope, depth, goal}, continue_rest, continue_open)\n    case PatternNoNat{number, quantity, beg, end}:\n      pattern_finish(goal, Ast.PatternVar{"", depth, quantity, span(file, beg, end)}, number <> tokens, scope, depth, False{})\n    case PatternBadNat{beg, end}:\n      pattern_finish(goal, Ast.PatternVar{"", depth, Ast.QOne{}, span(file, beg, end)}, tokens, scope, depth, False{})',
