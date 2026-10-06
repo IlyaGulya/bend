@@ -1262,8 +1262,8 @@ def parse_brace_equal_type_result(ok_ty: Bool, after_ty: List<&2, Lexer.Token>, 
     case _ _:
       ((ty, after_ty), False{})
 
-def brace_annot_branch_0(ty: Ast.SyntaxTerm, file: String, left: Ast.SyntaxTerm, beg: Nat, +close: Lexer.Token, tail: List<&2, Lexer.Token>) -> Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool):
-  ((Ast.TermAnn{ left, ty,  span(file, beg, token_end(close))}, tail), True{})
+def brace_annot_branch_0(after_ty: List<&2, Lexer.Token>, ty: Ast.SyntaxTerm, file: String, left: Ast.SyntaxTerm, beg: Nat, +close: Lexer.Token) -> Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool):
+  ((Ast.TermAnn{ left, ty,  span(file, beg, token_end(close))}, List.tail(&2, Lexer.Token, after_ty)), True{})
 
 def brace_annot_branch_1(after_ty: List<&2, Lexer.Token>, file: String, +close: Lexer.Token) -> Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool):
   ((Ast.TermHole{ "parse-error: expected }",  span(file, token_beg(close), token_end(close))}, after_ty), False{})
@@ -1275,17 +1275,17 @@ def brace_annot_is_colon(close: Lexer.Token) -> Bool:
     case _:
       False{}
 
-def brace_annot_run(is_colon: Bool, after_ty: List<&2, Lexer.Token>, ty: Ast.SyntaxTerm, file: String, left: Ast.SyntaxTerm, beg: Nat, +close: Lexer.Token, tail: List<&2, Lexer.Token>) -> Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool):
+def brace_annot_run(is_colon: Bool, after_ty: List<&2, Lexer.Token>, ty: Ast.SyntaxTerm, file: String, left: Ast.SyntaxTerm, beg: Nat, +close: Lexer.Token) -> Pair(Pair(Ast.SyntaxTerm, List<&2, Lexer.Token>), Bool):
   match is_colon:
     case True{}:
-      brace_annot_branch_0(ty, file, left, beg, close, tail)
+      brace_annot_branch_0(after_ty, ty, file, left, beg, close)
     case False{}:
       brace_annot_branch_1(after_ty, file, close)
 
 def parse_brace_annot_type_result(ok_ty: Bool, after_ty: List<&2, Lexer.Token>, ty: Ast.SyntaxTerm, file: String, left: Ast.SyntaxTerm, beg: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok_ty after_ty:
     case True{} +close <> tail:
-      brace_annot_run(brace_annot_is_colon(close), after_ty, ty, file, left, beg, close, tail)
+      brace_annot_run(brace_annot_is_colon(close), after_ty, ty, file, left, beg, close)
     case _ _:
       ((ty, after_ty), False{})
 

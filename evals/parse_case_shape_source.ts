@@ -8,7 +8,19 @@ export async function extractCaseShape(source:string){return extractTwoRowShape(
 export async function extractMatchTailShape(source:string){return extractTwoRowShape(source,'parse_match_tail_after_semicolon','match_tail','end');}
 export async function extractMatchTailScanShape(source:string){return extractTwoRowShape(source,'parse_match_tail_scan','match_tail_scan','close');}
 export async function extractBraceRightShape(source:string){return extractTwoRowShape(source,'parse_brace_equal_right_result','brace_equal_right','colon');}
-export async function extractBraceAnnotShape(source:string){return extractTwoRowShape(source,'parse_brace_annot_type_result','brace_annot','close');}
+export async function extractBraceAnnotShape(source:string){
+ const graph=await readParserGraph(source),name='parse_brace_annot_type_result',body=graph.bodies.get(name),sig=graph.signatures.get(name);
+ if(body?.$!=='Match'||body.r[0]!.f.$!=='Match'||body.r[0]!.f.r[0]!.f.$!=='Reply'||!sig)throw Error('Annotation success branch drift');
+ const expression=body.r[0]!.f.r[0]!.f.x,types=new LexicalTypes(graph.parserBook,graph.signatures);types.indexBody(body,sig.parameters,sig.result);
+ const tail=[...types.environmentAt(expression).values()].find(b=>b.name==='tail');if(!tail||tail.quantity.$!=='Lone')throw Error('Annotation tail ownership drift');
+ const spans:Array<{beg:number,end:number}>=[];
+ function visit(value:unknown){if(!value||typeof value!=='object')return;if(Array.isArray(value)){value.forEach(visit);return;}const node=value as Record<string,unknown>;if(node.$==='Var'&&node.i===tail!.id){const s=node.s as {beg:number,end:number}|undefined;if(!s||source.slice(s.beg,s.end)!=='tail')throw Error('Annotation tail reference span drift');spans.push(s);}for(const [key,child]of Object.entries(node))if(key!=='s'&&key!=='b')visit(child);}
+ visit(expression);if(spans.length!==1)throw Error('Annotation tail reference count drift');
+ const span=spans[0]!,projection='List.tail(&2, Lexer.Token, after_ty)',projected=source.slice(0,span.beg)+projection+source.slice(span.end);
+ if(projected.slice(0,span.beg)+'tail'+projected.slice(span.beg+projection.length)!==source)throw Error('Annotation projection inverse differs');
+ const result=await extractTwoRowShape(projected,name,'brace_annot','close');
+ return{...result,audit:{...result.audit,originalSha256:sha(source),ownedTailProjection:{binderId:tail.id,quantity:tail.quantity.$,originalSpan:span,expression:projection,outerNonemptyGuard:true,exactInverse:true,noListCopy:true}}};
+}
 async function extractTwoRowShape(source:string,name:'parse_case_row_body'|'parse_match_tail_after_semicolon'|'parse_match_tail_scan'|'parse_brace_equal_right_result'|'parse_brace_annot_type_result',helper:string,token:string){
  const graph=await readParserGraph(source),body=graph.bodies.get(name),sig=graph.signatures.get(name);
  if(body?.$!=='Match'||body.r.length!==2||body.r[0]!.f.$!=='Match'||!sig)throw Error('Case scanner shape drift');
