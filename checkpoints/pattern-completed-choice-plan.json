@@ -1,0 +1,10 @@
+{
+  "question": "Can a state-free typed completed-text classifier remove string-pattern expansion from the stateful scanner dispatch, now that atom factoring advances whole retained-e checking to pattern_scan_completed_fields?",
+  "cheapTest": "Audit the four exact original completed string literals and eight-row priority: text classification is injective on those literals, Other covers only the wildcard complement, and newline/name/plus precedence stays in the original ordered rows. No grammar inside generator.",
+  "newData": "Whole --smol direct retained-e candidate reaches index725 pattern_scan_completed_fields; all earlier atom declarations returned. Fresh atomic atom row9 passes under686163048B footprint.",
+  "onPass": "Regenerate normally from the composed temporary canonical-copy and run complete ordinary retained-e build; then explicit direct-loader diagnostic only if ordinary load still blocks.",
+  "onFailure": "Record the exact semantic error or resource frontier; no checker weakening, unsafe or generated edits.",
+  "memoryMiB": 3072,
+  "rssMiB": 3072,
+  "pollMs": 10
+}
