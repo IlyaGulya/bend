@@ -1,0 +1,161 @@
+{
+  "status": "DIAGNOSTIC_SOURCE_FRONTIER_ADVANCED_P_STILL_BLOCKED",
+  "authorization": "User selected Diagnostic refactor parse_atom_scan",
+  "snapshots": [
+    "f16d4db3",
+    "2c839b0d",
+    "82fa42e2",
+    "2f498f3d"
+  ],
+  "finalSourceSha256": "de160e70450fa83658665163c254a414dae75b8dd023ebb0282d08db2347b3cc",
+  "finalCandidateSha256": "a2a13e3293ebc91c473a4580ead59cb472ebc328fb2c6587a0fce9ae44129b4e",
+  "hashMethod": "shasum -a 256 of actual source bytes",
+  "fullDiagnostic": {
+    "completeLoadEvents": 1322,
+    "bookValidStart": 0,
+    "excludedEvents": [],
+    "checkedOutput": "native e retained",
+    "runtimeArgs": [
+      "--smol"
+    ],
+    "toolchain": "Temporary explicit direct loader proposal; unchanged full checker and compiler",
+    "returned": {
+      "step_parse_atom_scan": 694,
+      "pattern_scan_completed_fields": 728,
+      "pattern_expect_action": 730,
+      "pattern_scan_expect_run": 744,
+      "pattern_scan_expect_step": 745,
+      "pattern_scan": 747
+    },
+    "stopped": {
+      "index": 758,
+      "name": "step_parse_body_scan",
+      "status": "RESOURCE_LIMIT",
+      "exitCode": 73
+    }
+  },
+  "ordinary": "Final ordinary load still exceeds3072MiB; no full validation PASS",
+  "guardedEvidence": {
+    "atomDispatchFull": {
+      "status": "RESOURCE_LIMIT",
+      "reason": "rss_limit",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 3228778496,
+      "peakFootprintBytes": 3218967432,
+      "elapsedMs": 5304,
+      "command": [
+        "bun",
+        "evals/parser_local_shape_build.ts",
+        "--build-proposal"
+      ],
+      "label": "heavy command",
+      "exitCode": 73,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791303320071-4d27b0f2a8725080.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    },
+    "atomRowsFull": {
+      "status": "RESOURCE_LIMIT",
+      "reason": "physical_footprint_limit",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 2315304960,
+      "peakFootprintBytes": 3228158832,
+      "elapsedMs": 18691,
+      "command": [
+        "bun",
+        "evals/parser_local_shape_build.ts",
+        "--build-proposal"
+      ],
+      "label": "heavy command",
+      "exitCode": 73,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791303712164-63e5b5ad800bcdba.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    },
+    "freshAtomicRow9": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 540360704,
+      "peakFootprintBytes": 686163048,
+      "elapsedMs": 22666,
+      "command": [
+        "bun",
+        "evals/atom_shape_target.ts"
+      ],
+      "label": "heavy command",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791304088589-0d8da00d150bb2ef.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    },
+    "atomRowsSmolFull": {
+      "status": "RESOURCE_LIMIT",
+      "reason": "physical_footprint_limit",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 3040870400,
+      "peakFootprintBytes": 3233778592,
+      "elapsedMs": 12011,
+      "command": [
+        "bun",
+        "--smol",
+        "evals/parser_local_shape_build.ts",
+        "--build-proposal"
+      ],
+      "label": "heavy command",
+      "exitCode": 73,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791304181515-5aa8d1b1a8d4d659.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    },
+    "completedChoiceSmolFull": {
+      "status": "RESOURCE_LIMIT",
+      "reason": "physical_footprint_limit",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 1522171904,
+      "peakFootprintBytes": 3228781424,
+      "elapsedMs": 77559,
+      "command": [
+        "bun",
+        "--smol",
+        "evals/parser_local_shape_build.ts",
+        "--build-proposal"
+      ],
+      "label": "heavy command",
+      "exitCode": 73,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791305265430-18ede391ee3ad958.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    },
+    "correctedActionSmolFull": {
+      "status": "RESOURCE_LIMIT",
+      "reason": "physical_footprint_limit",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 2856026112,
+      "peakFootprintBytes": 3222801264,
+      "elapsedMs": 18894,
+      "command": [
+        "bun",
+        "--smol",
+        "evals/parser_local_shape_build.ts",
+        "--build-proposal"
+      ],
+      "label": "heavy command",
+      "exitCode": 73,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791306825601-be360aefa2c98986.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    }
+  },
+  "parserJsArtifact": null,
+  "compiledCorpus29": "NOT_EXECUTED; old lazy Body29 is not attributed to this candidate",
+  "protectedKernelGeneratorCompilerCanonical": "UNCHANGED; byte hashes separately confirmed",
+  "selfhostGreen": false,
+  "nextScopeRequired": "Remaining real scanner blocker is parse_body_scan, outside the newly authorized parse_atom_scan diagnostic scope. No new generic match compiler or unapproved checked-output discard/handoff was implemented."
+}

@@ -2147,7 +2147,7 @@ def pattern_expect_action(+token: Lexer.Token, quantity: Ast.Quantity, lookahead
     case _ quantity _:
       PatternExpectActionRow19{quantity}
 
-def pattern_scan_expect_run(action: PatternExpectAction, +token: Lexer.Token, +initial_beg: Nat, ctx: PatternScanContext, continue_rest: PatternScanMode -> List<&2, PatternFrame> -> List<&2, Scope> -> Nat -> PatternScanGoal -> PatternScanOutcome, continue_open: PatternScanMode -> List<&2, PatternFrame> -> List<&2, Scope> -> Nat -> PatternScanGoal -> PatternScanOutcome) -> PatternScanOutcome:
+def pattern_scan_expect_run(+token: Lexer.Token, action: PatternExpectAction, +initial_beg: Nat, ctx: PatternScanContext, continue_rest: PatternScanMode -> List<&2, PatternFrame> -> List<&2, Scope> -> Nat -> PatternScanGoal -> PatternScanOutcome, continue_open: PatternScanMode -> List<&2, PatternFrame> -> List<&2, Scope> -> Nat -> PatternScanGoal -> PatternScanOutcome) -> PatternScanOutcome:
   match token:
     case Lexer.TokenInfo{kind, +text, +token_beg, +token_end, +token_line, +token_col}:
       match action:
@@ -2173,7 +2173,7 @@ def pattern_scan_expect_run(action: PatternExpectAction, +token: Lexer.Token, +i
           pattern_scan_row_19(ctx, quantity, initial_beg)
 
 def pattern_scan_expect_step(+token: Lexer.Token, quantity: Ast.Quantity, lookahead: Maybe<&2, Lexer.Token>, +initial_beg: Nat, ctx: PatternScanContext, continue_rest: PatternScanMode -> List<&2, PatternFrame> -> List<&2, Scope> -> Nat -> PatternScanGoal -> PatternScanOutcome, continue_open: PatternScanMode -> List<&2, PatternFrame> -> List<&2, Scope> -> Nat -> PatternScanGoal -> PatternScanOutcome) -> PatternScanOutcome:
-  pattern_scan_expect_run(pattern_expect_action(token, quantity, lookahead), token, initial_beg, ctx, continue_rest, continue_open)
+  pattern_scan_expect_run(token, pattern_expect_action(token, quantity, lookahead), initial_beg, ctx, continue_rest, continue_open)
 
 def pattern_scan_completed_fields(choice: PatternCompletedText, kind: Lexer.TokenKind, lookahead: Maybe<&2, Lexer.Token>, +text: String, +token_beg: Nat, +token_end: Nat, pattern: Ast.SyntaxPattern, ctx: PatternScanContext, continue_rest: PatternScanMode -> List<&2, PatternFrame> -> List<&2, Scope> -> Nat -> PatternScanGoal -> PatternScanOutcome, continue_open: PatternScanMode -> List<&2, PatternFrame> -> List<&2, Scope> -> Nat -> PatternScanGoal -> PatternScanOutcome) -> PatternScanOutcome:
   match choice kind lookahead:

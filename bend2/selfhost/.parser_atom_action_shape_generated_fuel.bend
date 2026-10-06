@@ -1840,7 +1840,7 @@ def pattern_scan_row_9(ctx: PatternScanContext, quantity: Ast.Quantity, initial_
     case PatternScanContext{+file, +tokens, frames, +scope, +depth, goal}:
       continue_rest(PatternExpect{quantity, initial_beg}, frames, scope, depth, goal)
 
-def pattern_scan_expect_run(action: PatternExpectAction, +token: Lexer.Token, +initial_beg: Nat, ctx: PatternScanContext, continue_rest: PatternScanMode -> List<&2, PatternFrame> -> List<&2, Scope> -> Nat -> PatternScanGoal -> PatternScanOutcome, continue_open: PatternScanMode -> List<&2, PatternFrame> -> List<&2, Scope> -> Nat -> PatternScanGoal -> PatternScanOutcome) -> PatternScanOutcome:
+def pattern_scan_expect_run(+token: Lexer.Token, action: PatternExpectAction, +initial_beg: Nat, ctx: PatternScanContext, continue_rest: PatternScanMode -> List<&2, PatternFrame> -> List<&2, Scope> -> Nat -> PatternScanGoal -> PatternScanOutcome, continue_open: PatternScanMode -> List<&2, PatternFrame> -> List<&2, Scope> -> Nat -> PatternScanGoal -> PatternScanOutcome) -> PatternScanOutcome:
   match token:
     case Lexer.TokenInfo{kind, +text, +token_beg, +token_end, +token_line, +token_col}:
       match action:
@@ -1866,7 +1866,7 @@ def pattern_scan_expect_run(action: PatternExpectAction, +token: Lexer.Token, +i
           pattern_scan_row_19(ctx, quantity, initial_beg)
 
 def pattern_scan_expect_step(+token: Lexer.Token, quantity: Ast.Quantity, lookahead: Maybe<&2, Lexer.Token>, +initial_beg: Nat, ctx: PatternScanContext, continue_rest: PatternScanMode -> List<&2, PatternFrame> -> List<&2, Scope> -> Nat -> PatternScanGoal -> PatternScanOutcome, continue_open: PatternScanMode -> List<&2, PatternFrame> -> List<&2, Scope> -> Nat -> PatternScanGoal -> PatternScanOutcome) -> PatternScanOutcome:
-  pattern_scan_expect_run(pattern_expect_action(token, quantity, lookahead), token, initial_beg, ctx, continue_rest, continue_open)
+  pattern_scan_expect_run(token, pattern_expect_action(token, quantity, lookahead), initial_beg, ctx, continue_rest, continue_open)
 
 def pattern_scan_token_step(mode: PatternScanMode, +token: Lexer.Token, lookahead: Maybe<&2, Lexer.Token>, +file: String, +tokens: List<&2, Lexer.Token>, frames: List<&2, PatternFrame>, +scope: List<&2, Scope>, +depth: Nat, goal: PatternScanGoal, continue_rest: PatternScanMode -> List<&2, PatternFrame> -> List<&2, Scope> -> Nat -> PatternScanGoal -> PatternScanOutcome, continue_open: PatternScanMode -> List<&2, PatternFrame> -> List<&2, Scope> -> Nat -> PatternScanGoal -> PatternScanOutcome) -> PatternScanOutcome:
   match mode:

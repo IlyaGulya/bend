@@ -3,9 +3,9 @@
   "reason": "command_exit",
   "commandExitCode": 0,
   "commandSignal": 0,
-  "peakRssBytes": 1072070656,
-  "peakFootprintBytes": 875284592,
-  "elapsedMs": 15489,
+  "peakRssBytes": 790609920,
+  "peakFootprintBytes": 836552720,
+  "elapsedMs": 42305,
   "command": [
     "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
     "/Users/ilyagulya/Projects/My/bend/evals/parser_local_shape_build.ts",
@@ -13,7 +13,7 @@
   ],
   "label": "Local typed scanner helpers normal regeneration",
   "exitCode": 0,
-  "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791306326898-9e0245528bd45f65.json",
+  "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791306664245-ca0f9f36a8be473f.json",
   "memoryLimitBytes": 3221225472,
   "rssLimitBytes": 3221225472
 }
