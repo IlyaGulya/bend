@@ -7,7 +7,8 @@ const show=(t:B.LTerm)=>B.term_show(t).replace(/\bast\./g,'Ast.').replace(/\blex
 export async function extractCaseShape(source:string){return extractTwoRowShape(source,'parse_case_row_body','case_row','colon');}
 export async function extractMatchTailShape(source:string){return extractTwoRowShape(source,'parse_match_tail_after_semicolon','match_tail','end');}
 export async function extractMatchTailScanShape(source:string){return extractTwoRowShape(source,'parse_match_tail_scan','match_tail_scan','close');}
-async function extractTwoRowShape(source:string,name:'parse_case_row_body'|'parse_match_tail_after_semicolon'|'parse_match_tail_scan',helper:string,token:string){
+export async function extractBraceRightShape(source:string){return extractTwoRowShape(source,'parse_brace_equal_right_result','brace_equal_right','colon');}
+async function extractTwoRowShape(source:string,name:'parse_case_row_body'|'parse_match_tail_after_semicolon'|'parse_match_tail_scan'|'parse_brace_equal_right_result',helper:string,token:string){
  const graph=await readParserGraph(source),body=graph.bodies.get(name),sig=graph.signatures.get(name);
  if(body?.$!=='Match'||body.r.length!==2||body.r[0]!.f.$!=='Match'||!sig)throw Error('Case scanner shape drift');
  const match=body.r[0]!.f;if(match.r.length!==(name==='parse_match_tail_scan'?3:2))throw Error('Token selector row drift');
