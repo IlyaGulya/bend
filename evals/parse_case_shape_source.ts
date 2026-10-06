@@ -16,6 +16,7 @@ export async function extractIndexResultShape(source:string){return extractTwoRo
 export async function extractRewriteMotiveShape(source:string){return extractTwoRowShape(source,'parse_rewrite_motive','rewrite_motive','colon');}
 export async function extractMatchScrutineesShape(source:string){return extractTwoRowShape(source,'parse_match_scrutinees','match_scrutinees','colon');}
 export async function extractDefinitionHeaderShape(source:string){return extractTwoRowShape(source,'parse_definition_after_binders_scan','definition_header','header');}
+export async function extractDefinitionBodyShape(source:string){return extractTwoRowShape(source,'parse_definition_body_scan','definition_body','token');}
 async function extractOwnedTailShape(source:string,name:'parse_brace_annot_type_result'|'parse_inequality_type_result',helper:string){
  const graph=await readParserGraph(source),body=graph.bodies.get(name),sig=graph.signatures.get(name);
  if(body?.$!=='Match'||body.r[0]!.f.$!=='Match'||!sig)throw Error('Owned-tail success branch drift');
@@ -29,7 +30,7 @@ async function extractOwnedTailShape(source:string,name:'parse_brace_annot_type_
  const result=await extractTwoRowShape(projected,name,helper,'close');
  return{...result,audit:{...result.audit,originalSha256:sha(source),ownedTailProjection:{binderId:tail.id,quantity:tail.quantity.$,originalSpan:span,expression:projection,outerNonemptyGuard:true,exactInverse:true,noListCopy:true}}};
 }
-async function extractTwoRowShape(source:string,name:'parse_case_row_body'|'parse_match_tail_after_semicolon'|'parse_match_tail_scan'|'parse_brace_equal_right_result'|'parse_brace_annot_type_result'|'parse_inequality_type_result'|'parse_inequality_right_result'|'parse_all_named_type_result'|'parse_index_result'|'parse_rewrite_motive'|'parse_match_scrutinees'|'parse_definition_after_binders_scan',helper:string,token:string){
+async function extractTwoRowShape(source:string,name:'parse_case_row_body'|'parse_match_tail_after_semicolon'|'parse_match_tail_scan'|'parse_brace_equal_right_result'|'parse_brace_annot_type_result'|'parse_inequality_type_result'|'parse_inequality_right_result'|'parse_all_named_type_result'|'parse_index_result'|'parse_rewrite_motive'|'parse_match_scrutinees'|'parse_definition_after_binders_scan'|'parse_definition_body_scan',helper:string,token:string){
  const graph=await readParserGraph(source),body=graph.bodies.get(name),sig=graph.signatures.get(name);
  if(body?.$!=='Match'||body.r.length!==2||body.r[0]!.f.$!=='Match'||!sig)throw Error('Case scanner shape drift');
  const match=body.r[0]!.f;if(match.r.length!==(name==='parse_match_tail_scan'||name==='parse_definition_after_binders_scan'?3:2))throw Error('Token selector row drift');
