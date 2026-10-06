@@ -1,0 +1,12 @@
+{
+  "authorization": "User selected remaining scanner blockers: parse_body_scan first, then only actual stopping scanner declarations; same protected files and resource ceilings.",
+  "question": "Does factoring each existing body-token branch plus its nested next-token branches into typed source helpers remove step_parse_body_scan's actual complete retained-e check ceiling?",
+  "cheapTest": "Raw AST fixes the original five body-token rows, two name/rest rows and four next-token rows; copy all bodies/patterns verbatim, capture by binder ID/type/quantity, order matched parameters first, and audit an exact source inverse with unchanged external ABI.",
+  "onPass": "Normally regenerate and complete ordinary retained-e load/check/codegen. If ordinary replay still blocks, label the existing direct-loader proposal explicitly; no diagnostic result is production acceptance.",
+  "onFailure": "Fix ordinary capture/parameter implementation errors in this authorized source scope; retain actual resource frontier, not toy ratios or prior PASS.",
+  "memoryMiB": 3072,
+  "rssMiB": 3072,
+  "pollMs": 10,
+  "generatedHandEdits": false,
+  "newUnsafe": false
+}
