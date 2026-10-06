@@ -1,0 +1,307 @@
+{
+  "status": "PASS",
+  "backend": "actual compiled JS",
+  "source": "import Base\n\ntype SymbolPairClass is Data:\n  SymbolPairMerged{pair: String}\n  SymbolPairUnmerged{left: String}\n\ndef symbol_pair_fallback(text: String) -> SymbolPairClass:\n  match text:\n    case SCon{first, _}:\n      SymbolPairUnmerged{String.from_list([first])}\n    case SNil{}:\n      SymbolPairUnmerged{SNil{}}\n\ndef symbol_pair_choice_12(matched: Bool, text: String) -> SymbolPairClass:\n  match matched:\n    case True{}:\n      SymbolPairMerged{\"&&\"}\n    case False{}:\n      symbol_pair_fallback(text)\n\ndef symbol_pair_test_12(+text: String) -> SymbolPairClass:\n  symbol_pair_choice_12(String.eq(text, \"&&\"), text)\n\ndef symbol_pair_choice_11(matched: Bool, text: String) -> SymbolPairClass:\n  match matched:\n    case True{}:\n      SymbolPairMerged{\"||\"}\n    case False{}:\n      symbol_pair_test_12(text)\n\ndef symbol_pair_test_11(+text: String) -> SymbolPairClass:\n  symbol_pair_choice_11(String.eq(text, \"||\"), text)\n\ndef symbol_pair_choice_10(matched: Bool, text: String) -> SymbolPairClass:\n  match matched:\n    case True{}:\n      SymbolPairMerged{\">>\"}\n    case False{}:\n      symbol_pair_test_11(text)\n\ndef symbol_pair_test_10(+text: String) -> SymbolPairClass:\n  symbol_pair_choice_10(String.eq(text, \">>\"), text)\n\ndef symbol_pair_choice_9(matched: Bool, text: String) -> SymbolPairClass:\n  match matched:\n    case True{}:\n      SymbolPairMerged{\"<<\"}\n    case False{}:\n      symbol_pair_test_10(text)\n\ndef symbol_pair_test_9(+text: String) -> SymbolPairClass:\n  symbol_pair_choice_9(String.eq(text, \"<<\"), text)\n\ndef symbol_pair_choice_8(matched: Bool, text: String) -> SymbolPairClass:\n  match matched:\n    case True{}:\n      SymbolPairMerged{\"++\"}\n    case False{}:\n      symbol_pair_test_9(text)\n\ndef symbol_pair_test_8(+text: String) -> SymbolPairClass:\n  symbol_pair_choice_8(String.eq(text, \"++\"), text)\n\ndef symbol_pair_choice_7(matched: Bool, text: String) -> SymbolPairClass:\n  match matched:\n    case True{}:\n      SymbolPairMerged{\"<>\"}\n    case False{}:\n      symbol_pair_test_8(text)\n\ndef symbol_pair_test_7(+text: String) -> SymbolPairClass:\n  symbol_pair_choice_7(String.eq(text, \"<>\"), text)\n\ndef symbol_pair_choice_6(matched: Bool, text: String) -> SymbolPairClass:\n  match matched:\n    case True{}:\n      SymbolPairMerged{\">=\"}\n    case False{}:\n      symbol_pair_test_7(text)\n\ndef symbol_pair_test_6(+text: String) -> SymbolPairClass:\n  symbol_pair_choice_6(String.eq(text, \">=\"), text)\n\ndef symbol_pair_choice_5(matched: Bool, text: String) -> SymbolPairClass:\n  match matched:\n    case True{}:\n      SymbolPairMerged{\"<=\"}\n    case False{}:\n      symbol_pair_test_6(text)\n\ndef symbol_pair_test_5(+text: String) -> SymbolPairClass:\n  symbol_pair_choice_5(String.eq(text, \"<=\"), text)\n\ndef symbol_pair_choice_4(matched: Bool, text: String) -> SymbolPairClass:\n  match matched:\n    case True{}:\n      SymbolPairMerged{\"!=\"}\n    case False{}:\n      symbol_pair_test_5(text)\n\ndef symbol_pair_test_4(+text: String) -> SymbolPairClass:\n  symbol_pair_choice_4(String.eq(text, \"!=\"), text)\n\ndef symbol_pair_choice_3(matched: Bool, text: String) -> SymbolPairClass:\n  match matched:\n    case True{}:\n      SymbolPairMerged{\"==\"}\n    case False{}:\n      symbol_pair_test_4(text)\n\ndef symbol_pair_test_3(+text: String) -> SymbolPairClass:\n  symbol_pair_choice_3(String.eq(text, \"==\"), text)\n\ndef symbol_pair_choice_2(matched: Bool, text: String) -> SymbolPairClass:\n  match matched:\n    case True{}:\n      SymbolPairMerged{\"<-\"}\n    case False{}:\n      symbol_pair_test_3(text)\n\ndef symbol_pair_test_2(+text: String) -> SymbolPairClass:\n  symbol_pair_choice_2(String.eq(text, \"<-\"), text)\n\ndef symbol_pair_choice_1(matched: Bool, text: String) -> SymbolPairClass:\n  match matched:\n    case True{}:\n      SymbolPairMerged{\"->\"}\n    case False{}:\n      symbol_pair_test_2(text)\n\ndef symbol_pair_test_1(+text: String) -> SymbolPairClass:\n  symbol_pair_choice_1(String.eq(text, \"->\"), text)\n\ndef symbol_pair_choice_0(matched: Bool, text: String) -> SymbolPairClass:\n  match matched:\n    case True{}:\n      SymbolPairMerged{\"=>\"}\n    case False{}:\n      symbol_pair_test_1(text)\n\ndef symbol_pair_test_0(+text: String) -> SymbolPairClass:\n  symbol_pair_choice_0(String.eq(text, \"=>\"), text)\n\ndef multi_symbol_2(text: String) -> SymbolPairClass:\n  symbol_pair_test_0(text)\n\n",
+  "sourceSha256": "7563dea0a922c6180473cd0c2ac10b9f8e516ea03294860e1ed80ed260200c13",
+  "jsSha256": "4ea09a7258fd072fbc7e6f1b712e36968c2ebbd5f7ae9a23542badfc0fdcfac8",
+  "nativeEvents": 479,
+  "results": [
+    {
+      "text": "=>",
+      "expected": {
+        "$": "SymbolPairMerged",
+        "pair": "=>"
+      },
+      "actual": {
+        "$": "SymbolPairMerged",
+        "pair": "=>"
+      }
+    },
+    {
+      "text": "->",
+      "expected": {
+        "$": "SymbolPairMerged",
+        "pair": "->"
+      },
+      "actual": {
+        "$": "SymbolPairMerged",
+        "pair": "->"
+      }
+    },
+    {
+      "text": "<-",
+      "expected": {
+        "$": "SymbolPairMerged",
+        "pair": "<-"
+      },
+      "actual": {
+        "$": "SymbolPairMerged",
+        "pair": "<-"
+      }
+    },
+    {
+      "text": "==",
+      "expected": {
+        "$": "SymbolPairMerged",
+        "pair": "=="
+      },
+      "actual": {
+        "$": "SymbolPairMerged",
+        "pair": "=="
+      }
+    },
+    {
+      "text": "!=",
+      "expected": {
+        "$": "SymbolPairMerged",
+        "pair": "!="
+      },
+      "actual": {
+        "$": "SymbolPairMerged",
+        "pair": "!="
+      }
+    },
+    {
+      "text": "<=",
+      "expected": {
+        "$": "SymbolPairMerged",
+        "pair": "<="
+      },
+      "actual": {
+        "$": "SymbolPairMerged",
+        "pair": "<="
+      }
+    },
+    {
+      "text": ">=",
+      "expected": {
+        "$": "SymbolPairMerged",
+        "pair": ">="
+      },
+      "actual": {
+        "$": "SymbolPairMerged",
+        "pair": ">="
+      }
+    },
+    {
+      "text": "<>",
+      "expected": {
+        "$": "SymbolPairMerged",
+        "pair": "<>"
+      },
+      "actual": {
+        "$": "SymbolPairMerged",
+        "pair": "<>"
+      }
+    },
+    {
+      "text": "++",
+      "expected": {
+        "$": "SymbolPairMerged",
+        "pair": "++"
+      },
+      "actual": {
+        "$": "SymbolPairMerged",
+        "pair": "++"
+      }
+    },
+    {
+      "text": "<<",
+      "expected": {
+        "$": "SymbolPairMerged",
+        "pair": "<<"
+      },
+      "actual": {
+        "$": "SymbolPairMerged",
+        "pair": "<<"
+      }
+    },
+    {
+      "text": ">>",
+      "expected": {
+        "$": "SymbolPairMerged",
+        "pair": ">>"
+      },
+      "actual": {
+        "$": "SymbolPairMerged",
+        "pair": ">>"
+      }
+    },
+    {
+      "text": "||",
+      "expected": {
+        "$": "SymbolPairMerged",
+        "pair": "||"
+      },
+      "actual": {
+        "$": "SymbolPairMerged",
+        "pair": "||"
+      }
+    },
+    {
+      "text": "&&",
+      "expected": {
+        "$": "SymbolPairMerged",
+        "pair": "&&"
+      },
+      "actual": {
+        "$": "SymbolPairMerged",
+        "pair": "&&"
+      }
+    },
+    {
+      "text": "",
+      "expected": {
+        "$": "SymbolPairUnmerged",
+        "left": ""
+      },
+      "actual": {
+        "$": "SymbolPairUnmerged",
+        "left": ""
+      }
+    },
+    {
+      "text": "=",
+      "expected": {
+        "$": "SymbolPairUnmerged",
+        "left": "="
+      },
+      "actual": {
+        "$": "SymbolPairUnmerged",
+        "left": "="
+      }
+    },
+    {
+      "text": "x",
+      "expected": {
+        "$": "SymbolPairUnmerged",
+        "left": "x"
+      },
+      "actual": {
+        "$": "SymbolPairUnmerged",
+        "left": "x"
+      }
+    },
+    {
+      "text": "=>x",
+      "expected": {
+        "$": "SymbolPairUnmerged",
+        "left": "="
+      },
+      "actual": {
+        "$": "SymbolPairUnmerged",
+        "left": "="
+      }
+    },
+    {
+      "text": "<= ",
+      "expected": {
+        "$": "SymbolPairUnmerged",
+        "left": "<"
+      },
+      "actual": {
+        "$": "SymbolPairUnmerged",
+        "left": "<"
+      }
+    },
+    {
+      "text": "&&&",
+      "expected": {
+        "$": "SymbolPairUnmerged",
+        "left": "&"
+      },
+      "actual": {
+        "$": "SymbolPairUnmerged",
+        "left": "&"
+      }
+    },
+    {
+      "text": "x=>",
+      "expected": {
+        "$": "SymbolPairUnmerged",
+        "left": "x"
+      },
+      "actual": {
+        "$": "SymbolPairUnmerged",
+        "left": "x"
+      }
+    },
+    {
+      "text": "😺x",
+      "expected": {
+        "$": "SymbolPairUnmerged",
+        "left": "😺"
+      },
+      "actual": {
+        "$": "SymbolPairUnmerged",
+        "left": "😺"
+      }
+    },
+    {
+      "text": "λξ",
+      "expected": {
+        "$": "SymbolPairUnmerged",
+        "left": "λ"
+      },
+      "actual": {
+        "$": "SymbolPairUnmerged",
+        "left": "λ"
+      }
+    },
+    {
+      "text": "\u0000x",
+      "expected": {
+        "$": "SymbolPairUnmerged",
+        "left": "\u0000"
+      },
+      "actual": {
+        "$": "SymbolPairUnmerged",
+        "left": "\u0000"
+      }
+    },
+    {
+      "text": "→",
+      "expected": {
+        "$": "SymbolPairUnmerged",
+        "left": "→"
+      },
+      "actual": {
+        "$": "SymbolPairUnmerged",
+        "left": "→"
+      }
+    },
+    {
+      "text": "\n",
+      "expected": {
+        "$": "SymbolPairUnmerged",
+        "left": "\n"
+      },
+      "actual": {
+        "$": "SymbolPairUnmerged",
+        "left": "\n"
+      }
+    },
+    {
+      "text": ">",
+      "expected": {
+        "$": "SymbolPairUnmerged",
+        "left": ">"
+      },
+      "actual": {
+        "$": "SymbolPairUnmerged",
+        "left": ">"
+      }
+    },
+    {
+      "text": "<<x",
+      "expected": {
+        "$": "SymbolPairUnmerged",
+        "left": "<"
+      },
+      "actual": {
+        "$": "SymbolPairUnmerged",
+        "left": "<"
+      }
+    }
+  ]
+}
