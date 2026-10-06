@@ -1,0 +1,43 @@
+{
+  "status": "RESOURCE_LIMIT",
+  "actualPhase": "validation",
+  "actualFrontier": {
+    "index": 1228,
+    "name": "step_parse_operator_right_named"
+  },
+  "loadedEvents": 1482,
+  "retainedE": true,
+  "checksExcluded": 0,
+  "phaseBoundaryGCReached": false,
+  "codegenReached": false,
+  "artifactProduced": false,
+  "guardian": {
+    "status": "RESOURCE_LIMIT",
+    "reason": "physical_footprint_limit",
+    "commandExitCode": -1,
+    "commandSignal": 15,
+    "peakRssBytes": 3043803136,
+    "peakFootprintBytes": 3221457776,
+    "elapsedMs": 288433,
+    "command": [
+      "bun",
+      "--smol",
+      "evals/parser_local_shape_build.ts",
+      "--build-proposal"
+    ],
+    "label": "heavy command",
+    "exitCode": 73,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791324145037-457085f8f0093443.json",
+    "memoryLimitBytes": 3221225472,
+    "rssLimitBytes": 3221225472
+  },
+  "hashes": {
+    "bend2/bend.ts": "47e1b06e2fa4466bad702f86d8cbce03f40e833a8ba8eaa1e04297fa46dc94a9",
+    "bend2/comp.ts": "0939b98d013ab58d82619e35c0d4900b72c9d8e5b478f0e1df7822fe713c9b48",
+    "bend2/selfhost/parser.bend": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+    "evals/parser_full_generate.ts": "0aedb4c1703cffe1055794b29829a357edcd956fdc0a8dec77bfa3c0cf7a6da6",
+    "bend2/selfhost/.parser_definition_typed_colon_shape_generated_fuel.bend": "3feffbdbc8b7f2cf35a15d9a805c333611ed83f0ad20e7d128c6d6680bdeb7ce"
+  },
+  "decision": "No whole-check PASS for this candidate; phase-GC effect remains unknown. Earlier full native PASS822e is separate evidence. Do not attribute process growth to the stopping declaration. Stop further speculative source factoring; broader storage investigation needs separate scope.",
+  "selfhostGreen": false
+}
