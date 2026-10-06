@@ -7,7 +7,7 @@ import {partitionPatternScanSource} from './pattern_scan_partition_source.ts';
 import {checkFrozen,frozen,replayKernel} from './load_replay_kernel.ts';
 import {runHeavyGate,guardHeavyGate} from './heavy_gate.ts';
 const isProposal=process.argv[2]==='--build-proposal';
-const stem=isProposal?'checkpoints/parser-packet-shape-proposal':'checkpoints/parser-packet-shape',sourcePath=resolve('bend2/selfhost/.pattern_scan_packet_source.bend'),outputBase=resolve('bend2/selfhost/.pattern_scan_packet_generated.bend'),candidatePath=outputBase.replace('.bend','_fuel.bend'),artifactPath=resolve('bend2/selfhost/parser_explicit_fuel.diagnostic.js');
+const stem=process.env.BEND_PARSER_REPORT_PREFIX??(isProposal?'checkpoints/parser-fields-shape-proposal':'checkpoints/parser-fields-shape'),sourcePath=resolve('bend2/selfhost/.pattern_scan_fields_source.bend'),outputBase=resolve('bend2/selfhost/.pattern_scan_fields_generated.bend'),candidatePath=outputBase.replace('.bend','_fuel.bend'),artifactPath=resolve('bend2/selfhost/parser_explicit_fuel.diagnostic.js');
 const sha=(s:string)=>createHash('sha256').update(s).digest('hex');
 const mode=process.argv[2];
 if(!mode){
@@ -21,7 +21,7 @@ await guardHeavyGate(import.meta.path,{label:'Local scanner build worker'});awai
 const compilerHash=sha(await Bun.file('bend2/comp.ts').text());
 let proposalKernel:Awaited<ReturnType<typeof replayKernel>>|undefined;
 const start=performance.now();let phase=mode==='--prepare'?'source':'load';
-function event(data:object){const row={phase,elapsedMs:performance.now()-start,...data};appendFileSync(stem+'.jsonl',JSON.stringify(row)+'\n');writeFileSync(stem+'.progress.json',JSON.stringify(row)+'\n');}
+function event(data:object){const row={phase,elapsedMs:performance.now()-start,bunVersion:Bun.version,runtimeArgs:process.execArgv,...data};appendFileSync(stem+'.jsonl',JSON.stringify(row)+'\n');writeFileSync(stem+'.progress.json',JSON.stringify(row)+'\n');}
 try{
  if(mode==='--prepare'){
   writeFileSync(stem+'.jsonl','');const prepared=await partitionPatternScanSource(await Bun.file('bend2/selfhost/parser.bend').text());writeFileSync(sourcePath,prepared.source);writeFileSync(stem+'.audit.json',JSON.stringify(prepared.audit,null,2)+'\n');event({stage:'source-audit-pass',sourceHash:prepared.audit.transformedSha256});

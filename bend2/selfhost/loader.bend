@@ -3,12 +3,10 @@ import ./ast.bend as Ast
 import ./parser.bend as Parser
 import ./path.bend as Path
 import ./sha256.bend as SHA256
-
-type LoadedModule is Data:
-  LoadedModule{namespace: String, module: Ast.Module}
+import ./loaded_module.bend as Modules
 
 type LoadResult is Data:
-  LoadSuccess{modules: List<&2, LoadedModule>}
+  LoadSuccess{modules: List<&2, Modules.LoadedModule>}
   LoadFailure{file: String, span: Ast.SourceSpan, message: String, expected: String, observed: String}
 
 type ReadResult is Data:
@@ -19,7 +17,7 @@ type Assignment is Data:
   Assignment{path: String, namespace: String}
 
 type WorkResult is Data:
-  WorkSuccess{modules: List<&2, LoadedModule>, assignments: List<&2, Assignment>}
+  WorkSuccess{modules: List<&2, Modules.LoadedModule>, assignments: List<&2, Assignment>}
   WorkFailure{failure: LoadResult}
 
 type WorkItem is Data:
@@ -286,13 +284,13 @@ def find_assignment(path: String, assignments: List<&2, Assignment>, matches: Bo
         case Assignment{ found, found_namespace}:
           find_assignment(path, rest, String.eq(path, found), found_namespace)
 
-def has_module(path: String, modules: List<&2, LoadedModule>, matches: Bool) -> Bool:
+def has_module(path: String, modules: List<&2, Modules.LoadedModule>, matches: Bool) -> Bool:
   match modules matches:
     case _ True{}: True{}
     case Nil{} False{}: False{}
     case +loaded <> rest False{}:
       match loaded:
-        case LoadedModule{ _,  Ast.Module{ found,  _,  _}}:
+        case Modules.LoadedModule{ _,  Ast.Module{ found,  _,  _}}:
           has_module(path, rest, String.eq(path, found))
 
 def in_stack(path: String, stack: List<&2, String>, matches: Bool) -> Bool:
@@ -305,12 +303,12 @@ def in_stack(path: String, stack: List<&2, String>, matches: Bool) -> Bool:
 def add_assignment(assignments: List<&2, Assignment>, path: String, namespace: String) -> List<&2, Assignment>:
   Assignment{path, namespace} <> assignments
 
-def append_module(modules: List<&2, LoadedModule>, namespace: String, module: Ast.Module) -> List<&2, LoadedModule>:
-  List.append(&2, LoadedModule, modules, [LoadedModule{namespace, module}])
+def append_module(modules: List<&2, Modules.LoadedModule>, namespace: String, module: Ast.Module) -> List<&2, Modules.LoadedModule>:
+  List.append(&2, Modules.LoadedModule, modules, [Modules.LoadedModule{namespace, module}])
 
 # Work is a finite graph discovered through IO; its task queue is not a source list.
 @unsafe
-def load_work(base_file: String, work: List<&2, WorkItem>, assignments: List<&2, Assignment>, modules: List<&2, LoadedModule>) -> IO(WorkResult):
+def load_work(base_file: String, work: List<&2, WorkItem>, assignments: List<&2, Assignment>, modules: List<&2, Modules.LoadedModule>) -> IO(WorkResult):
   do IO<WorkResult>:
     match work:
       case Nil{}:
@@ -387,7 +385,7 @@ def load_work(base_file: String, work: List<&2, WorkItem>, assignments: List<&2,
                 imports = ImportsItem{module, namespace, module.imports, path <> stack}
                 finish = FinishItem{module, namespace}
                 load_work(base_file, imports <> finish <> pending, assignments, modules)
-def load_file(base_file: String, path: String, namespace: String, import_span: Ast.SourceSpan, stack: List<&2, String>, assignments: List<&2, Assignment>, modules: List<&2, LoadedModule>) -> IO(WorkResult):
+def load_file(base_file: String, path: String, namespace: String, import_span: Ast.SourceSpan, stack: List<&2, String>, assignments: List<&2, Assignment>, modules: List<&2, Modules.LoadedModule>) -> IO(WorkResult):
   load_work(base_file, [FileItem{path, namespace, import_span, stack}], assignments, modules)
 
 

@@ -1,7 +1,7 @@
 import Base
 import ./ast.bend as AST
 import ./path.bend as Path
-import ./loader.bend as Loader
+import ./loaded_module.bend as Loader
 
 type EmitResult is Data:
   EmitSuccess{source: String}

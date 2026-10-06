@@ -52,7 +52,14 @@ export async function partitionPatternScanSource(source:string){
    rowCallBody='      pattern_scan_row_'+i+'('+actuals.join(', ')+')';
   }
   if(mode.k==='PatternExpect'){const quantity=text(mode.x[0]!);groups.expect.push('    case '+head+' '+quantity+' '+lookahead+':\n'+rowCallBody.trimEnd());}
-  else if(mode.k==='PatternCompleted')groups.completed.push('    case '+head+' '+lookahead+':\n'+rowCallBody.trimEnd());
+  else if(mode.k==='PatternCompleted'){
+   if(token.$==='PCtr'){
+    const scalar=token.x[0]!;if(scalar.$!=='PCtr'||!text(scalar).startsWith('Lexer.TokenInfo{')||scalar.x.length!==6)throw Error('Unexpected completed token fields');
+    if(scalar.x.slice(4).some(p=>p.$!=='PVar'||p.k!=='_'))throw Error('Completed scanner observes additional token fields');
+    for(const [index,name] of [[2,'token_beg'],[3,'token_end']] as const){const field=scalar.x[index]!;if(field.$==='PVar'&&field.k!=='_')rowCallBody=rowCallBody.replace(new RegExp('\\b'+field.k+'\\b','g'),name);}
+    groups.completed.push('    case '+text(scalar.x[1]!)+' '+text(scalar.x[0]!)+' '+lookahead+':\n'+rowCallBody.trimEnd());
+   }else groups.completed.push('    case _ _ '+lookahead+':\n'+rowCallBody.trimEnd());
+  }
   else if(!['PatternNoNat','PatternBadNat'].includes(mode.k))throw Error('Unknown mode');
   if(token.$==='PVar')groups.empty.push('    case '+text(mode)+':\n'+originalBody.trimEnd());
   audit.push({row:i,mode:mode.k,originalPatterns:row.p.map(text),head,lookahead,bodyOriginalSha256:sha(originalBody),rewrittenBodySha256:sha(body),originalRecursiveCalls:rowCalls.map(c=>argumentsAt(source,c.offset).args),recursiveFirstTokenArgumentPreservedViaLexicalTailCallbacks:true});
@@ -63,7 +70,8 @@ export async function partitionPatternScanSource(source:string){
  'type PatternScanContext is Data:\n  PatternScanContext{file: String, tokens: List<&2, Lexer.Token>, frames: List<&2, PatternFrame>, scope: List<&2, Scope>, depth: Nat, goal: PatternScanGoal}',
  ...rowHelpers,
  'def pattern_scan_expect_step(+token: Lexer.Token, quantity: Ast.Quantity, lookahead: Maybe<&2, Lexer.Token>, +initial_beg: Nat, ctx: PatternScanContext, '+continuations+') -> PatternScanOutcome:\n  match token quantity lookahead:\n'+groups.expect.join('\n'),
- 'def pattern_scan_completed_step(+token: Lexer.Token, lookahead: Maybe<&2, Lexer.Token>, pattern: Ast.SyntaxPattern, ctx: PatternScanContext, '+continuations+') -> PatternScanOutcome:\n  match token lookahead:\n'+groups.completed.join('\n'),
+ 'def pattern_scan_completed_fields(+text: String, kind: Lexer.TokenKind, lookahead: Maybe<&2, Lexer.Token>, +token_beg: Nat, +token_end: Nat, pattern: Ast.SyntaxPattern, ctx: PatternScanContext, '+continuations+') -> PatternScanOutcome:\n  match text kind lookahead:\n'+groups.completed.join('\n'),
+ 'def pattern_scan_completed_step(+token: Lexer.Token, lookahead: Maybe<&2, Lexer.Token>, pattern: Ast.SyntaxPattern, ctx: PatternScanContext, '+continuations+') -> PatternScanOutcome:\n  match token:\n    case Lexer.TokenInfo{kind, +text, +beg, +end, line, col}:\n      pattern_scan_completed_fields(text, kind, lookahead, beg, end, pattern, ctx, continue_rest, continue_open)',
  'def pattern_scan_token_step(mode: PatternScanMode, +token: Lexer.Token, lookahead: Maybe<&2, Lexer.Token>, '+common+', '+continuations+') -> PatternScanOutcome:\n  match mode:\n    case PatternExpect{quantity, +initial_beg}:\n      pattern_scan_expect_step(token, quantity, lookahead, initial_beg, PatternScanContext{file, tokens, frames, scope, depth, goal}, continue_rest, continue_open)\n    case PatternCompleted{pattern}:\n      pattern_scan_completed_step(token, lookahead, pattern, PatternScanContext{file, tokens, frames, scope, depth, goal}, continue_rest, continue_open)\n    case PatternNoNat{number, quantity, beg, end}:\n      pattern_finish(goal, Ast.PatternVar{"", depth, quantity, span(file, beg, end)}, number <> tokens, scope, depth, False{})\n    case PatternBadNat{beg, end}:\n      pattern_finish(goal, Ast.PatternVar{"", depth, Ast.QOne{}, span(file, beg, end)}, tokens, scope, depth, False{})',
  'def pattern_scan_empty_step(mode: PatternScanMode, '+common+') -> PatternScanOutcome:\n  match mode:\n'+groups.empty.join('\n')];
  const header=source.indexOf('def pattern_scan('),bodyStart=source.indexOf('\n',header)+1,bodyEnd=source.indexOf('\ndef ',bodyStart);

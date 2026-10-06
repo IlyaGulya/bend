@@ -1,0 +1,70 @@
+{
+  "status": "PASS",
+  "scope": "Positive branch priority compiled execution and negative type/decrease rejection on tiny real modules only; not full parser acceptance or permission to patch kernel",
+  "kernelProposal": {
+    "old": "term_higher(term_lower(term_higher(body_flatten(book, body))))",
+    "replacement": "term_higher(body_flatten(book, body))",
+    "productionModified": false,
+    "checkedOutputRetention": "native e"
+  },
+  "results": [
+    {
+      "name": "priority",
+      "source": "import Base\n\ntype ProbeMarker is Data:\n  ProbeMark{kind: Bool, text: String}\n\ndef choose(marker: ProbeMarker) -> Nat:\n  match marker:\n    case ProbeMark{True{}, \"+\"}:\n      11n\n    case ProbeMark{_, \"+\"}:\n      12n\n    case _:\n      13n\n\ndef main() -> Nat:\n  choose(ProbeMark{True{}, \"+\"}) * 100n + choose(ProbeMark{False{}, \"+\"}) * 10n + choose(ProbeMark{False{}, \"other\"})\n",
+      "outcomes": [
+        {
+          "toolchain": "ordinary",
+          "status": "PASS",
+          "stage": "execution",
+          "value": "1233",
+          "artifactSha256": "1c52908a96088eb3c912ada985b6f7ddb88fa2d57669a7f08a66704eb72ef156",
+          "eventsFullyValidated": 453
+        },
+        {
+          "toolchain": "proposed-direct",
+          "status": "PASS",
+          "stage": "execution",
+          "value": "1233",
+          "artifactSha256": "1c52908a96088eb3c912ada985b6f7ddb88fa2d57669a7f08a66704eb72ef156",
+          "eventsFullyValidated": 453
+        }
+      ]
+    },
+    {
+      "name": "type-rejection",
+      "source": "import Base\n\ndef main() -> Nat:\n  True{}\n",
+      "outcomes": [
+        {
+          "toolchain": "ordinary",
+          "status": "EXPECTED_REJECTION",
+          "stage": "full-validation",
+          "error": "Error:\n- expected : Nat\n- observed : Bool\nLocation: main\n3 | def main() -> Nat:\n4>|   True{}\n5 | "
+        },
+        {
+          "toolchain": "proposed-direct",
+          "status": "EXPECTED_REJECTION",
+          "stage": "full-validation",
+          "error": "Error:\n- expected : Nat\n- observed : Bool\nLocation: main\n3 | def main() -> Nat:\n4>|   True{}\n5 | "
+        }
+      ]
+    },
+    {
+      "name": "decrease-rejection",
+      "source": "import Base\n\ntype ProbeMode is Data:\n  ProbeIdle{}\n  ProbeNext{}\n\ndef invalid(mode: ProbeMode, +tokens: List<&2, Nat>) -> Nat:\n  match mode tokens:\n    case ProbeIdle{} value <> rest:\n      invalid(ProbeNext{}, rest)\n    case _ _:\n      0n\n\ndef main() -> Nat:\n  invalid(ProbeIdle{}, [1n])\n",
+      "outcomes": [
+        {
+          "toolchain": "ordinary",
+          "status": "EXPECTED_REJECTION",
+          "stage": "full-validation",
+          "error": "Error:\n- expected : a decreasing self-call (arguments are read left to right: each passed unchanged until one shrinks)\n- observed : invalid\nContext:\n- value : Nat\n- rest  : List<&2, Nat>\nLocation: invalid\n 9 |     case ProbeIdle{} value <> rest:\n10>|       invalid(ProbeNext{}, rest)\n11 |     case _ _:"
+        },
+        {
+          "toolchain": "proposed-direct",
+          "status": "EXPECTED_REJECTION",
+          "stage": "full-validation",
+          "error": "Error:\n- expected : a decreasing self-call (arguments are read left to right: each passed unchanged until one shrinks)\n- observed : invalid\nContext:\n- value : Nat\n- rest  : List<&2, Nat>\nLocation: invalid\n 9 |     case ProbeIdle{} value <> rest:\n10>|       invalid(ProbeNext{}, rest)\n11 |     case _ _:"
+        }
+      ]
+    }
+  ]
+}

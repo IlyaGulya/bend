@@ -1,0 +1,72 @@
+{
+  "status": "IMPLEMENTED_NOT_EXECUTED",
+  "question": "Does a complete aligned tokens/mode formal, actual, scrutinee and pattern-column permutation allow native checking of the real regenerated pattern_scan target within the existing 3 GiB budget while retaining checked e?",
+  "cheapTest": {
+    "command": "The saved command first runs alignedPatternScanSource before invoking the generator or loading the candidate.",
+    "assertions": [
+      "Parse canonical source using existing raw-AST parser_full_graph calls/signatures and reuse column_source_swap native span permutation.",
+      "Exactly 20 top-level rows remain in the same priority/order; swap both scrutinees and every pattern pair.",
+      "Move mode from formal position 2 to 0 and +tokens from 0 to 2; every other formal, quantity and full type text is unchanged.",
+      "Audit all 18 scanner calls, including all 16 recursive calls; swap actual positions 0 and 2 and preserve every other actual exactly.",
+      "Every scanner AST reference is accounted for by a unique fully applied call; no bare or partial applications are accepted.",
+      "Reparse transformed source; definitions and dependency edges are identical; inverse edits reconstruct original bytes exactly.",
+      "Each row body is byte-identical modulo only its necessary recursive actual argument swaps. All unrelated source bytes remain identical."
+    ],
+    "failureDecision": "Stop before generation/target execution; report the failed audit invariant, without rerunning a rejected column-only hypothesis."
+  },
+  "outcomes": {
+    "targetPass": "Record actual target index/native done, retained checked e, full-load declaration count, source/generated/kernel/generator/metadata hashes, timing and sampler/guardian peaks. Parent next attempts ordinary load/full check/codegen on the same regenerated candidate; the trusted prefix target diagnostic is not a full validation or JS compilation artifact.",
+    "targetFailureOrResourceLimit": "Consume this one report; do not repeat the aligned target or start a generic match compiler. Next allowed bounded step is a canonical-source-copy local pattern_scan compilation-shape refactor using existing scanner control and small typed helpers, respecting structural recursion, affine ownership, quantities, parameter order and row priority.",
+    "generationFailure": "Report the exact frozen-generator failure and source audit. Do not hand-edit generated output or relax graph assertions."
+  },
+  "command": "bun evals/pattern_scan_aligned_probe.ts",
+  "budget": {
+    "physicalMiB": 3072,
+    "rssMiB": 3072,
+    "pollMs": 10,
+    "wallMs": 300000,
+    "termGraceMs": 0,
+    "exclusiveHeavyLane": true,
+    "description": "Existing heavy_gate sampled physical+RSS process-group guard, 10 ms polling, one sequential preparation/generation then fresh target process; independent 300-second orchestrator wall watchdog. Not a hard allocation quota."
+  },
+  "candidate": {
+    "canonical": "bend2/selfhost/parser.bend",
+    "temporarySource": "bend2/selfhost/.pattern_scan_aligned_source.bend",
+    "temporaryGenerated": "bend2/selfhost/.pattern_scan_aligned_generated_fuel.bend",
+    "generatedOnlyBy": "Invertible temporary evals copy of parser_full_generate.ts --fuel-parametric",
+    "generatorConstantSubstitutions": ["input", "output", "expected", "currentGraphPath (metadata input)"],
+    "metadataPolicy": "Fresh aligned raw-AST definitions/edges/unresolved references; diagnostic source SHA/checkpoint. Definitions/edges must match canonical. Redirect metadata input constant only; preserve all generator assertions, grammar logic and historical feedback cut.",
+    "temporaryGeneratorAndMetadataCleanup": "Removed on ordinary preparation exit; generated candidate, canonical source copy, source audit and scorecard retained as diagnostic evidence.",
+    "protectedFilesEdited": false,
+    "checkedERetention": "retain",
+    "loader": "Existing invertible load_replay_kernel direct diagnostic; frozen production loader untouched.",
+    "validation": "Fresh complete 1280-declaration load, then bounded book.order through actual pattern_scan index and native book_valid(book, actualIndex). No earlier body checks; exactly one checked body; original order restored after success.",
+    "normalToolchainBuildClaim": false
+  },
+  "priorEvidenceSearch": {
+    "reportGlobs": ["evals/*aligned*", "checkpoints/*aligned*"],
+    "focusedContentSearch": "aligned|parameter.*swap|done.?705 in evals/*.json, checkpoints/*.json and existing scanner/column diagnostics",
+    "ctxSearches": ["aligned pattern_scan full source parameter order native target", "pattern_scan aligned"],
+    "observed": "No real aligned regenerated-candidate target report found in these focused searches. Existing stage0-column-order-decision.json explicitly says its aligned external alias leaves recursive ABI original and is not a full-parser check; source-only swap was rejected; original fresh done=705 target exceeded the budget.",
+    "historicalPaths": ["checkpoints/stage0-column-order-decision.json", "checkpoints/stage0-column-order-controls.json", "checkpoints/pattern-scan-source-swap-decision.json", "checkpoints/pattern-scan-target-guardian.json", "checkpoints/parser-final-scalability.json"],
+    "limitation": "Focused repo/history search, not a corpus-wide absence proof. The runner refuses to overwrite its existing result/guardian/progress evidence."
+  },
+  "frozenInputs": {
+    "bend2/bend.ts": "47e1b06e2fa4466bad702f86d8cbce03f40e833a8ba8eaa1e04297fa46dc94a9",
+    "bend2/selfhost/parser.bend": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+    "bend2/selfhost/parser_full_generated_fuel.bend": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+    "evals/parser_full_generate.ts": "0aedb4c1703cffe1055794b29829a357edcd956fdc0a8dec77bfa3c0cf7a6da6",
+    "bend2/comp.ts": "Captured before preparation and verified unchanged before/after target; no compiler edits authorized."
+  },
+  "approvalPrerequisite": "No further permission needed for this source-copy diagnostic: Main explicitly accepted currentGraphPath metadata-input constant redirection as invertible diagnostic path configuration. Any canonical/parser/kernel/generator production edit still needs separate explicit authorization.",
+  "evidenceOutputs": [
+    "evals/pattern_scan_aligned_result.json",
+    "evals/pattern_scan_aligned_result.guardian.json",
+    "evals/pattern_scan_aligned_result.source-audit.json",
+    "evals/pattern_scan_aligned_result.generation.json",
+    "evals/pattern_scan_aligned_result.progress.json",
+    "evals/pattern_scan_aligned_result.jsonl",
+    "bend2/selfhost/.pattern_scan_aligned_generated_fuel.bend.scorecard.json"
+  ],
+  "verification": "Not executed by worker. Parent owns the one guarded diagnostic command and all verification."
+}

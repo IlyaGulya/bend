@@ -3,7 +3,7 @@ import ./ast.bend as AST
 import ./core.bend as Core
 import ./c_parts.bend as CParts
 import ./c_assemble.bend as CAssembly
-import ./loader.bend as Loader
+import ./loaded_module.bend as Loader
 import ./c_foreign.bend as CForeign
 
 type EmitResult is Data:

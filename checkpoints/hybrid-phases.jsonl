@@ -1,0 +1,3 @@
+{"stage":"host-modules-before","input":"/Users/ilyagulya/Projects/My/bend/bend2/selfhost/architecture_probe_affine_nat.bend","elapsedMs":157.388292,"rss":20267008,"heapTotal":1542144,"heapUsed":1542144,"external":210,"arrayBuffers":210}
+{"stage":"host-modules-after","input":"/Users/ilyagulya/Projects/My/bend/bend2/selfhost/architecture_probe_affine_nat.bend","elapsedMs":290.521459,"rss":100532224,"heapTotal":15590400,"heapUsed":13006141,"external":6796861,"arrayBuffers":210}
+{"stage":"runner-compile-before","input":"/Users/ilyagulya/Projects/My/bend/bend2/selfhost/architecture_probe_affine_nat.bend","elapsedMs":293.206375,"rss":102170624,"heapTotal":15590400,"heapUsed":18755958,"external":12530022,"arrayBuffers":210}

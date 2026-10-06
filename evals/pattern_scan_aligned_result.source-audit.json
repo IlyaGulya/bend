@@ -1,0 +1,862 @@
+{
+  "status": "SOURCE_AUDIT_PASS",
+  "originalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+  "transformedSha256": "ed466c65698301913b0f3fe0cb594f0dace60db99c533a1e88fd5a2e352bf058",
+  "permutation": [
+    2,
+    1,
+    0,
+    3,
+    4,
+    5,
+    6
+  ],
+  "originalParameters": [
+    {
+      "name": "tokens",
+      "quantity": "Many",
+      "declaration": "+tokens: List<&2, Lexer.Token>"
+    },
+    {
+      "name": "file",
+      "quantity": "Many",
+      "declaration": "+file: String"
+    },
+    {
+      "name": "mode",
+      "quantity": "Lone",
+      "declaration": "mode: PatternScanMode"
+    },
+    {
+      "name": "frames",
+      "quantity": "Lone",
+      "declaration": "frames: List<&2, PatternFrame>"
+    },
+    {
+      "name": "scope",
+      "quantity": "Many",
+      "declaration": "+scope: List<&2, Scope>"
+    },
+    {
+      "name": "depth",
+      "quantity": "Many",
+      "declaration": "+depth: Nat"
+    },
+    {
+      "name": "goal",
+      "quantity": "Lone",
+      "declaration": "goal: PatternScanGoal"
+    }
+  ],
+  "transformedParameters": [
+    {
+      "name": "mode",
+      "quantity": "Lone",
+      "declaration": "mode: PatternScanMode"
+    },
+    {
+      "name": "file",
+      "quantity": "Many",
+      "declaration": "+file: String"
+    },
+    {
+      "name": "tokens",
+      "quantity": "Many",
+      "declaration": "+tokens: List<&2, Lexer.Token>"
+    },
+    {
+      "name": "frames",
+      "quantity": "Lone",
+      "declaration": "frames: List<&2, PatternFrame>"
+    },
+    {
+      "name": "scope",
+      "quantity": "Many",
+      "declaration": "+scope: List<&2, Scope>"
+    },
+    {
+      "name": "depth",
+      "quantity": "Many",
+      "declaration": "+depth: Nat"
+    },
+    {
+      "name": "goal",
+      "quantity": "Lone",
+      "declaration": "goal: PatternScanGoal"
+    }
+  ],
+  "scrutinees": {
+    "original": [
+      "tokens",
+      "mode"
+    ],
+    "transformed": [
+      "mode",
+      "tokens"
+    ]
+  },
+  "rowCount": 20,
+  "rows": [
+    {
+      "index": 0,
+      "originalPatterns": [
+        "Lexer.TokenInfo{Lexer.SymbolToken{}, \"+\", beg, ignored_end, ignored_line, ignored_col} <> +rest",
+        "PatternExpect{Ast.QOne{}, +ignored_beg}"
+      ],
+      "transformedPatterns": [
+        "PatternExpect{Ast.QOne{}, +ignored_beg}",
+        "Lexer.TokenInfo{Lexer.SymbolToken{}, \"+\", beg, ignored_end, ignored_line, ignored_col} <> +rest"
+      ],
+      "originalBodySha256": "5c04eb8b6dfa3bac4a4553267aa022771352043d630aff27858b2406136382b7",
+      "transformedBodySha256": "4ea189bca36a4d73bc1e0014166b895c33400db243f91add031188cf939d9076",
+      "recursiveActualSwaps": 1,
+      "bodyPreservedModuloRecursiveActuals": true
+    },
+    {
+      "index": 1,
+      "originalPatterns": [
+        "Lexer.TokenInfo{_, \"-\", beg, end, _, _} <> +rest",
+        "PatternExpect{Ast.QOne{}, _}"
+      ],
+      "transformedPatterns": [
+        "PatternExpect{Ast.QOne{}, _}",
+        "Lexer.TokenInfo{_, \"-\", beg, end, _, _} <> +rest"
+      ],
+      "originalBodySha256": "c5a65c9fa04845e0fbfe90d8e9b3d028f8a9f316c5c81796aecde323a14e3d32",
+      "transformedBodySha256": "c5a65c9fa04845e0fbfe90d8e9b3d028f8a9f316c5c81796aecde323a14e3d32",
+      "recursiveActualSwaps": 0,
+      "bodyPreservedModuloRecursiveActuals": true
+    },
+    {
+      "index": 2,
+      "originalPatterns": [
+        "Lexer.TokenInfo{Lexer.NameToken{}, key, beg, end, _, _} <> (Lexer.TokenInfo{_, \"{\", _, _, _, _} <> +after_open)",
+        "PatternExpect{Ast.QOne{}, _}"
+      ],
+      "transformedPatterns": [
+        "PatternExpect{Ast.QOne{}, _}",
+        "Lexer.TokenInfo{Lexer.NameToken{}, key, beg, end, _, _} <> (Lexer.TokenInfo{_, \"{\", _, _, _, _} <> +after_open)"
+      ],
+      "originalBodySha256": "b91cf0e1bccae9fb9fcc1e05061d64115568cf097300082571246482a1ffe3cf",
+      "transformedBodySha256": "9262802b0387e2cdb98b197c320c2270f616d8a72d99508293ea9f3714b1ec19",
+      "recursiveActualSwaps": 1,
+      "bodyPreservedModuloRecursiveActuals": true
+    },
+    {
+      "index": 3,
+      "originalPatterns": [
+        "Lexer.TokenInfo{Lexer.NameToken{}, key, _, end, _, _} <> (Lexer.TokenInfo{_, \"{\", _, _, _, _} <> +after_open)",
+        "PatternExpect{quantity, beg}"
+      ],
+      "transformedPatterns": [
+        "PatternExpect{quantity, beg}",
+        "Lexer.TokenInfo{Lexer.NameToken{}, key, _, end, _, _} <> (Lexer.TokenInfo{_, \"{\", _, _, _, _} <> +after_open)"
+      ],
+      "originalBodySha256": "b91cf0e1bccae9fb9fcc1e05061d64115568cf097300082571246482a1ffe3cf",
+      "transformedBodySha256": "9262802b0387e2cdb98b197c320c2270f616d8a72d99508293ea9f3714b1ec19",
+      "recursiveActualSwaps": 1,
+      "bodyPreservedModuloRecursiveActuals": true
+    },
+    {
+      "index": 4,
+      "originalPatterns": [
+        "Lexer.TokenInfo{Lexer.NameToken{}, +key, beg, end, _, _} <> +rest",
+        "PatternExpect{Ast.QOne{}, _}"
+      ],
+      "transformedPatterns": [
+        "PatternExpect{Ast.QOne{}, _}",
+        "Lexer.TokenInfo{Lexer.NameToken{}, +key, beg, end, _, _} <> +rest"
+      ],
+      "originalBodySha256": "fefee747c8c08741bb24bea3c5adfaad63be67d5dd91b79077089c473cde06b4",
+      "transformedBodySha256": "2fe10c0392657ef216aa2f4e706d976fc3a5331f0485d90d80898189033dc219",
+      "recursiveActualSwaps": 1,
+      "bodyPreservedModuloRecursiveActuals": true
+    },
+    {
+      "index": 5,
+      "originalPatterns": [
+        "Lexer.TokenInfo{Lexer.NameToken{}, +key, _, end, _, _} <> +rest",
+        "PatternExpect{quantity, beg}"
+      ],
+      "transformedPatterns": [
+        "PatternExpect{quantity, beg}",
+        "Lexer.TokenInfo{Lexer.NameToken{}, +key, _, end, _, _} <> +rest"
+      ],
+      "originalBodySha256": "2f242a6b5c8aaedaf73a4691e7d4b0c1574bc7fd5caa6fa577f58b08901b9df8",
+      "transformedBodySha256": "46f765ae7f1ef67e9a08874c2d2df25c5700a2043ba6a3f63c5cd3e4996131eb",
+      "recursiveActualSwaps": 1,
+      "bodyPreservedModuloRecursiveActuals": true
+    },
+    {
+      "index": 6,
+      "originalPatterns": [
+        "Lexer.TokenInfo{Lexer.NumberToken{}, +text, +beg, +end, line, col} <> +rest",
+        "PatternExpect{quantity, _}"
+      ],
+      "transformedPatterns": [
+        "PatternExpect{quantity, _}",
+        "Lexer.TokenInfo{Lexer.NumberToken{}, +text, +beg, +end, line, col} <> +rest"
+      ],
+      "originalBodySha256": "a844602c5d8373ca26a51ea491ba820802aaf4d6f56e570e1a9d6cbcc5d83d7b",
+      "transformedBodySha256": "ac18c1f331b460503a9cf4fb63f1db324e5d48be0377e7eec9ecf8c9d0931522",
+      "recursiveActualSwaps": 1,
+      "bodyPreservedModuloRecursiveActuals": true
+    },
+    {
+      "index": 7,
+      "originalPatterns": [
+        "_",
+        "PatternNoNat{number, quantity, beg, end}"
+      ],
+      "transformedPatterns": [
+        "PatternNoNat{number, quantity, beg, end}",
+        "_"
+      ],
+      "originalBodySha256": "a128746acf729169288fbd3e3e9da41128975551ee5481433d7f39f9143838e8",
+      "transformedBodySha256": "a128746acf729169288fbd3e3e9da41128975551ee5481433d7f39f9143838e8",
+      "recursiveActualSwaps": 0,
+      "bodyPreservedModuloRecursiveActuals": true
+    },
+    {
+      "index": 8,
+      "originalPatterns": [
+        "_",
+        "PatternBadNat{beg, end}"
+      ],
+      "transformedPatterns": [
+        "PatternBadNat{beg, end}",
+        "_"
+      ],
+      "originalBodySha256": "c5a65c9fa04845e0fbfe90d8e9b3d028f8a9f316c5c81796aecde323a14e3d32",
+      "transformedBodySha256": "c5a65c9fa04845e0fbfe90d8e9b3d028f8a9f316c5c81796aecde323a14e3d32",
+      "recursiveActualSwaps": 0,
+      "bodyPreservedModuloRecursiveActuals": true
+    },
+    {
+      "index": 9,
+      "originalPatterns": [
+        "Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _} <> +rest",
+        "PatternExpect{quantity, beg}"
+      ],
+      "transformedPatterns": [
+        "PatternExpect{quantity, beg}",
+        "Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _} <> +rest"
+      ],
+      "originalBodySha256": "ac779e156d3c5d12c5188af82c19f05c8d97d06f45b64248a664809a45e39ad0",
+      "transformedBodySha256": "a5cf31629cbfebcb2618b4930df1db1e34356493398861e316d788b8893ed4f9",
+      "recursiveActualSwaps": 1,
+      "bodyPreservedModuloRecursiveActuals": true
+    },
+    {
+      "index": 10,
+      "originalPatterns": [
+        "Lexer.TokenInfo{_, \"}\", _, close_end, _, _} <> +rest",
+        "PatternExpect{quantity, +beg}"
+      ],
+      "transformedPatterns": [
+        "PatternExpect{quantity, +beg}",
+        "Lexer.TokenInfo{_, \"}\", _, close_end, _, _} <> +rest"
+      ],
+      "originalBodySha256": "dee217101a75040a78d86b2111bc6d60b00f1a9f48452289f89cf9e7c80bece1",
+      "transformedBodySha256": "71aeda79c158e2d6643bfee729956c7ea238c2533699ebc7fdf09bec3b150aad",
+      "recursiveActualSwaps": 1,
+      "bodyPreservedModuloRecursiveActuals": true
+    },
+    {
+      "index": 11,
+      "originalPatterns": [
+        "Lexer.TokenInfo{_, \",\", _, _, _, _} <> +rest",
+        "PatternCompleted{pattern}"
+      ],
+      "transformedPatterns": [
+        "PatternCompleted{pattern}",
+        "Lexer.TokenInfo{_, \",\", _, _, _, _} <> +rest"
+      ],
+      "originalBodySha256": "4687710060465157e44ed53bdab13ae3e8be124a42fddc273d113fb17f8b2f52",
+      "transformedBodySha256": "a5a1f81c848520a35d554de44d1be4b3d1c9dce89cdb28b1a5315127ae72f3bb",
+      "recursiveActualSwaps": 2,
+      "bodyPreservedModuloRecursiveActuals": true
+    },
+    {
+      "index": 12,
+      "originalPatterns": [
+        "Lexer.TokenInfo{_, \":\", _, _, _, _} <> +rest",
+        "PatternCompleted{pattern}"
+      ],
+      "transformedPatterns": [
+        "PatternCompleted{pattern}",
+        "Lexer.TokenInfo{_, \":\", _, _, _, _} <> +rest"
+      ],
+      "originalBodySha256": "6a4aa72f1ee86e3f48ed721a06eb1ddbf5edbdaab357ab97e5a643de21ae95d4",
+      "transformedBodySha256": "6a4aa72f1ee86e3f48ed721a06eb1ddbf5edbdaab357ab97e5a643de21ae95d4",
+      "recursiveActualSwaps": 0,
+      "bodyPreservedModuloRecursiveActuals": true
+    },
+    {
+      "index": 13,
+      "originalPatterns": [
+        "Lexer.TokenInfo{_, \"}\", _, close_end, _, _} <> +rest",
+        "PatternCompleted{pattern}"
+      ],
+      "transformedPatterns": [
+        "PatternCompleted{pattern}",
+        "Lexer.TokenInfo{_, \"}\", _, close_end, _, _} <> +rest"
+      ],
+      "originalBodySha256": "86e8b873d89821fd4f25f8e80915e50227bc47f3d2722b517fee7fafa79deab1",
+      "transformedBodySha256": "be84e637ea53ad4e9552281675ae4c93b3e29cb5857faf69f6eeb444008a3d2c",
+      "recursiveActualSwaps": 1,
+      "bodyPreservedModuloRecursiveActuals": true
+    },
+    {
+      "index": 14,
+      "originalPatterns": [
+        "Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _} <> +rest",
+        "PatternCompleted{pattern}"
+      ],
+      "transformedPatterns": [
+        "PatternCompleted{pattern}",
+        "Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _} <> +rest"
+      ],
+      "originalBodySha256": "b2894ad4168e9ab367f4655bf7a1331cc1029ef5fa319831c3273f0df416c334",
+      "transformedBodySha256": "e8d1b5e60d592289cac42c94ef5dd3f82dbab8d04da217433a49aefb2ea56d49",
+      "recursiveActualSwaps": 2,
+      "bodyPreservedModuloRecursiveActuals": true
+    },
+    {
+      "index": 15,
+      "originalPatterns": [
+        "Lexer.TokenInfo{Lexer.NameToken{}, key, beg, end, _, _} <> (Lexer.TokenInfo{_, \"{\", _, _, _, _} <> +after_open)",
+        "PatternCompleted{pattern}"
+      ],
+      "transformedPatterns": [
+        "PatternCompleted{pattern}",
+        "Lexer.TokenInfo{Lexer.NameToken{}, key, beg, end, _, _} <> (Lexer.TokenInfo{_, \"{\", _, _, _, _} <> +after_open)"
+      ],
+      "originalBodySha256": "d746a54da10828aa60407020bcc759c30911fc149ab67b96b4a240a700f514c5",
+      "transformedBodySha256": "5bc2f064e4a8a27368270b6653d89d98b5db00ee3d1c5d91890b8e9e0b4221a7",
+      "recursiveActualSwaps": 1,
+      "bodyPreservedModuloRecursiveActuals": true
+    },
+    {
+      "index": 16,
+      "originalPatterns": [
+        "Lexer.TokenInfo{Lexer.NameToken{}, +key, beg, end, _, _} <> +rest",
+        "PatternCompleted{pattern}"
+      ],
+      "transformedPatterns": [
+        "PatternCompleted{pattern}",
+        "Lexer.TokenInfo{Lexer.NameToken{}, +key, beg, end, _, _} <> +rest"
+      ],
+      "originalBodySha256": "7959fbfb07d6faa5669c0b6df051bfdbed29e11e509dfb74bb3fae10878d69fc",
+      "transformedBodySha256": "7be2c5e10e6b413c3468e73268b9d7f0608a19bcd5fe65920144889e196dc744",
+      "recursiveActualSwaps": 1,
+      "bodyPreservedModuloRecursiveActuals": true
+    },
+    {
+      "index": 17,
+      "originalPatterns": [
+        "Lexer.TokenInfo{_, \"+\", beg, _, _, _} <> +rest",
+        "PatternCompleted{pattern}"
+      ],
+      "transformedPatterns": [
+        "PatternCompleted{pattern}",
+        "Lexer.TokenInfo{_, \"+\", beg, _, _, _} <> +rest"
+      ],
+      "originalBodySha256": "d9646a854097520e05ff6d46fd5e5c102424cba85c34371c8aa2058bae34fa3e",
+      "transformedBodySha256": "00fca7165d007f897f406ffc4e3162738c69fe16e0994fc2edd014cc99f106ea",
+      "recursiveActualSwaps": 1,
+      "bodyPreservedModuloRecursiveActuals": true
+    },
+    {
+      "index": 18,
+      "originalPatterns": [
+        "_",
+        "PatternCompleted{pattern}"
+      ],
+      "transformedPatterns": [
+        "PatternCompleted{pattern}",
+        "_"
+      ],
+      "originalBodySha256": "cca09e43e52300542ac810162c2a78ee25e15d6034afcd40f9c2dd26fc2f740e",
+      "transformedBodySha256": "cca09e43e52300542ac810162c2a78ee25e15d6034afcd40f9c2dd26fc2f740e",
+      "recursiveActualSwaps": 0,
+      "bodyPreservedModuloRecursiveActuals": true
+    },
+    {
+      "index": 19,
+      "originalPatterns": [
+        "_",
+        "PatternExpect{quantity, +beg}"
+      ],
+      "transformedPatterns": [
+        "PatternExpect{quantity, +beg}",
+        "_"
+      ],
+      "originalBodySha256": "085296550201262260ea97a648207b236a0047a1482e4d156c81d79e87aed46f",
+      "transformedBodySha256": "085296550201262260ea97a648207b236a0047a1482e4d156c81d79e87aed46f",
+      "recursiveActualSwaps": 0,
+      "bodyPreservedModuloRecursiveActuals": true
+    }
+  ],
+  "calls": [
+    {
+      "caller": "pattern_scan",
+      "line": 1953,
+      "column": 7,
+      "offset": 101290,
+      "recursive": true,
+      "original": [
+        "rest",
+        "file",
+        "PatternExpect{Ast.QMany{}, beg}",
+        "frames",
+        "scope",
+        "depth",
+        "goal"
+      ],
+      "transformed": [
+        "PatternExpect{Ast.QMany{}, beg}",
+        "file",
+        "rest",
+        "frames",
+        "scope",
+        "depth",
+        "goal"
+      ]
+    },
+    {
+      "caller": "pattern_scan",
+      "line": 1957,
+      "column": 7,
+      "offset": 101740,
+      "recursive": true,
+      "original": [
+        "after_open",
+        "file",
+        "PatternExpect{Ast.QOne{}, 0n}",
+        "PatternFrameOf{key, beg, end, Nil{}, scope, depth} <> frames",
+        "scope",
+        "depth",
+        "goal"
+      ],
+      "transformed": [
+        "PatternExpect{Ast.QOne{}, 0n}",
+        "file",
+        "after_open",
+        "PatternFrameOf{key, beg, end, Nil{}, scope, depth} <> frames",
+        "scope",
+        "depth",
+        "goal"
+      ]
+    },
+    {
+      "caller": "pattern_scan",
+      "line": 1959,
+      "column": 7,
+      "offset": 102039,
+      "recursive": true,
+      "original": [
+        "after_open",
+        "file",
+        "PatternExpect{Ast.QOne{}, 0n}",
+        "PatternFrameOf{key, beg, end, Nil{}, scope, depth} <> frames",
+        "scope",
+        "depth",
+        "goal"
+      ],
+      "transformed": [
+        "PatternExpect{Ast.QOne{}, 0n}",
+        "file",
+        "after_open",
+        "PatternFrameOf{key, beg, end, Nil{}, scope, depth} <> frames",
+        "scope",
+        "depth",
+        "goal"
+      ]
+    },
+    {
+      "caller": "pattern_scan",
+      "line": 1961,
+      "column": 7,
+      "offset": 102294,
+      "recursive": true,
+      "original": [
+        "rest",
+        "file",
+        "PatternCompleted{Ast.PatternVar{key, depth, Ast.QOne{}, span(file, beg, end)}}",
+        "frames",
+        "extend_scope(key, depth, scope)",
+        "depth + 1n",
+        "goal"
+      ],
+      "transformed": [
+        "PatternCompleted{Ast.PatternVar{key, depth, Ast.QOne{}, span(file, beg, end)}}",
+        "file",
+        "rest",
+        "frames",
+        "extend_scope(key, depth, scope)",
+        "depth + 1n",
+        "goal"
+      ]
+    },
+    {
+      "caller": "pattern_scan",
+      "line": 1963,
+      "column": 7,
+      "offset": 102567,
+      "recursive": true,
+      "original": [
+        "rest",
+        "file",
+        "PatternCompleted{Ast.PatternVar{key, depth, quantity, span(file, beg, end)}}",
+        "frames",
+        "extend_scope(key, depth, scope)",
+        "depth + 1n",
+        "goal"
+      ],
+      "transformed": [
+        "PatternCompleted{Ast.PatternVar{key, depth, quantity, span(file, beg, end)}}",
+        "file",
+        "rest",
+        "frames",
+        "extend_scope(key, depth, scope)",
+        "depth + 1n",
+        "goal"
+      ]
+    },
+    {
+      "caller": "pattern_scan",
+      "line": 1965,
+      "column": 7,
+      "offset": 102848,
+      "recursive": true,
+      "original": [
+        "rest",
+        "file",
+        "pattern_number_mode(has_nat_suffix(text), file, text, beg, end, line, col, quantity)",
+        "frames",
+        "scope",
+        "depth",
+        "goal"
+      ],
+      "transformed": [
+        "pattern_number_mode(has_nat_suffix(text), file, text, beg, end, line, col, quantity)",
+        "file",
+        "rest",
+        "frames",
+        "scope",
+        "depth",
+        "goal"
+      ]
+    },
+    {
+      "caller": "pattern_scan",
+      "line": 1971,
+      "column": 7,
+      "offset": 103429,
+      "recursive": true,
+      "original": [
+        "rest",
+        "file",
+        "PatternExpect{quantity, beg}",
+        "frames",
+        "scope",
+        "depth",
+        "goal"
+      ],
+      "transformed": [
+        "PatternExpect{quantity, beg}",
+        "file",
+        "rest",
+        "frames",
+        "scope",
+        "depth",
+        "goal"
+      ]
+    },
+    {
+      "caller": "pattern_scan",
+      "line": 1975,
+      "column": 11,
+      "offset": 103724,
+      "recursive": true,
+      "original": [
+        "rest",
+        "file",
+        "PatternCompleted{Ast.PatternCtr{key, List.reverse(&2, Ast.SyntaxPattern, fields), span(file, start, close_end)}}",
+        "parents",
+        "scope",
+        "depth",
+        "goal"
+      ],
+      "transformed": [
+        "PatternCompleted{Ast.PatternCtr{key, List.reverse(&2, Ast.SyntaxPattern, fields), span(file, start, close_end)}}",
+        "file",
+        "rest",
+        "parents",
+        "scope",
+        "depth",
+        "goal"
+      ]
+    },
+    {
+      "caller": "pattern_scan",
+      "line": 1981,
+      "column": 11,
+      "offset": 104231,
+      "recursive": true,
+      "original": [
+        "rest",
+        "file",
+        "PatternExpect{Ast.QOne{}, 0n}",
+        "PatternFrameOf{key, beg, end, pattern <> fields, root_scope, root_depth} <> parents",
+        "scope",
+        "depth",
+        "goal"
+      ],
+      "transformed": [
+        "PatternExpect{Ast.QOne{}, 0n}",
+        "file",
+        "rest",
+        "PatternFrameOf{key, beg, end, pattern <> fields, root_scope, root_depth} <> parents",
+        "scope",
+        "depth",
+        "goal"
+      ]
+    },
+    {
+      "caller": "pattern_scan",
+      "line": 1987,
+      "column": 15,
+      "offset": 104627,
+      "recursive": true,
+      "original": [
+        "rest",
+        "file",
+        "PatternExpect{Ast.QOne{}, 0n}",
+        "Nil{}",
+        "scope",
+        "depth",
+        "PatternCaseGoal{pattern <> acc, scope, depth}"
+      ],
+      "transformed": [
+        "PatternExpect{Ast.QOne{}, 0n}",
+        "file",
+        "rest",
+        "Nil{}",
+        "scope",
+        "depth",
+        "PatternCaseGoal{pattern <> acc, scope, depth}"
+      ]
+    },
+    {
+      "caller": "pattern_scan",
+      "line": 2001,
+      "column": 11,
+      "offset": 105653,
+      "recursive": true,
+      "original": [
+        "rest",
+        "file",
+        "PatternCompleted{Ast.PatternCtr{key, List.reverse(&2, Ast.SyntaxPattern, pattern <> fields), span(file, beg, close_end)}}",
+        "parents",
+        "scope",
+        "depth",
+        "goal"
+      ],
+      "transformed": [
+        "PatternCompleted{Ast.PatternCtr{key, List.reverse(&2, Ast.SyntaxPattern, pattern <> fields), span(file, beg, close_end)}}",
+        "file",
+        "rest",
+        "parents",
+        "scope",
+        "depth",
+        "goal"
+      ]
+    },
+    {
+      "caller": "pattern_scan",
+      "line": 2007,
+      "column": 11,
+      "offset": 106070,
+      "recursive": true,
+      "original": [
+        "rest",
+        "file",
+        "PatternCompleted{pattern}",
+        "frames",
+        "scope",
+        "depth",
+        "goal"
+      ],
+      "transformed": [
+        "PatternCompleted{pattern}",
+        "file",
+        "rest",
+        "frames",
+        "scope",
+        "depth",
+        "goal"
+      ]
+    },
+    {
+      "caller": "pattern_scan",
+      "line": 2013,
+      "column": 15,
+      "offset": 106385,
+      "recursive": true,
+      "original": [
+        "rest",
+        "file",
+        "PatternCompleted{pattern}",
+        "Nil{}",
+        "scope",
+        "depth",
+        "PatternCaseGoal{acc, before_scope, before_depth}"
+      ],
+      "transformed": [
+        "PatternCompleted{pattern}",
+        "file",
+        "rest",
+        "Nil{}",
+        "scope",
+        "depth",
+        "PatternCaseGoal{acc, before_scope, before_depth}"
+      ]
+    },
+    {
+      "caller": "pattern_scan",
+      "line": 2017,
+      "column": 11,
+      "offset": 106785,
+      "recursive": true,
+      "original": [
+        "after_open",
+        "file",
+        "PatternExpect{Ast.QOne{}, 0n}",
+        "PatternFrameOf{key, beg, end, Nil{}, scope, depth} <> (PatternFrameOf{parent, start, parent_end, pattern <> fields, root_scope, root_depth} <> parents)",
+        "scope",
+        "depth",
+        "goal"
+      ],
+      "transformed": [
+        "PatternExpect{Ast.QOne{}, 0n}",
+        "file",
+        "after_open",
+        "PatternFrameOf{key, beg, end, Nil{}, scope, depth} <> (PatternFrameOf{parent, start, parent_end, pattern <> fields, root_scope, root_depth} <> parents)",
+        "scope",
+        "depth",
+        "goal"
+      ]
+    },
+    {
+      "caller": "pattern_scan",
+      "line": 2023,
+      "column": 11,
+      "offset": 107341,
+      "recursive": true,
+      "original": [
+        "rest",
+        "file",
+        "PatternCompleted{Ast.PatternVar{key, depth, Ast.QOne{}, span(file, beg, end)}}",
+        "PatternFrameOf{parent, start, parent_end, pattern <> fields, root_scope, root_depth} <> parents",
+        "extend_scope(key, depth, scope)",
+        "depth + 1n",
+        "goal"
+      ],
+      "transformed": [
+        "PatternCompleted{Ast.PatternVar{key, depth, Ast.QOne{}, span(file, beg, end)}}",
+        "file",
+        "rest",
+        "PatternFrameOf{parent, start, parent_end, pattern <> fields, root_scope, root_depth} <> parents",
+        "extend_scope(key, depth, scope)",
+        "depth + 1n",
+        "goal"
+      ]
+    },
+    {
+      "caller": "pattern_scan",
+      "line": 2029,
+      "column": 11,
+      "offset": 107896,
+      "recursive": true,
+      "original": [
+        "rest",
+        "file",
+        "PatternExpect{Ast.QMany{}, beg}",
+        "PatternFrameOf{parent, start, parent_end, pattern <> fields, root_scope, root_depth} <> parents",
+        "scope",
+        "depth",
+        "goal"
+      ],
+      "transformed": [
+        "PatternExpect{Ast.QMany{}, beg}",
+        "file",
+        "rest",
+        "PatternFrameOf{parent, start, parent_end, pattern <> fields, root_scope, root_depth} <> parents",
+        "scope",
+        "depth",
+        "goal"
+      ]
+    },
+    {
+      "caller": "parse_pattern_atom",
+      "line": 2053,
+      "column": 25,
+      "offset": 109713,
+      "recursive": false,
+      "original": [
+        "tokens",
+        "file",
+        "PatternExpect{Ast.QOne{}, 0n}",
+        "Nil{}",
+        "scope",
+        "depth",
+        "PatternSingleGoal{}"
+      ],
+      "transformed": [
+        "PatternExpect{Ast.QOne{}, 0n}",
+        "file",
+        "tokens",
+        "Nil{}",
+        "scope",
+        "depth",
+        "PatternSingleGoal{}"
+      ]
+    },
+    {
+      "caller": "parse_case_row",
+      "line": 3558,
+      "column": 30,
+      "offset": 219668,
+      "recursive": false,
+      "original": [
+        "tokens",
+        "file",
+        "PatternExpect{Ast.QOne{}, 0n}",
+        "Nil{}",
+        "scope",
+        "depth",
+        "PatternCaseGoal{Nil{}, scope, depth}"
+      ],
+      "transformed": [
+        "PatternExpect{Ast.QOne{}, 0n}",
+        "file",
+        "tokens",
+        "Nil{}",
+        "scope",
+        "depth",
+        "PatternCaseGoal{Nil{}, scope, depth}"
+      ]
+    }
+  ],
+  "callCount": 18,
+  "recursiveCallCount": 16,
+  "allReferencesFullyAppliedAndAudited": true,
+  "rowOrderUnchanged": true,
+  "quantitiesAndTypesPreserved": true,
+  "inverseByteExact": true,
+  "unrelatedBytesIdentical": true,
+  "definitionAndDependencyGraphUnchanged": true,
+  "editCount": 40
+}

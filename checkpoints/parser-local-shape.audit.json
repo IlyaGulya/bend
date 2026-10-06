@@ -1,0 +1,701 @@
+{
+  "question": "Do typed frame/goal helpers with token-tail continuation preserve native decreasing checks and allow real full parser build under3GiB?",
+  "cheapTest": "Ordinary native scanner continuation smoke returned7n with shrinking original first token argument; no checker modification",
+  "onPass": "Full ordinary load/check/codegen then released JS comparison, not target-only acceptance",
+  "onFailure": "Fix only local scanner implementation; no checker weakening/unsafe/generic match changes",
+  "originalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+  "transformedSha256": "71c56c89d66ee26b96c689b764d3dec968b3e5ad5791647f6ed2acb43a8ac15e",
+  "rows": 20,
+  "rowOrderPatternsQuantitiesUnchanged": true,
+  "originalScannerFormalsAndExternalActualsUnchanged": true,
+  "helpers": [
+    {
+      "rowIndex": 10,
+      "helper": "pattern_scan_frame_10",
+      "bodyOriginalSha256": "e49412dff4bc2fdb260cc854282be93e10a91e7127b2367471c1bb42c0bb55be",
+      "helperBodySha256": "5c132a992dbd0876dadef7717b40e84a48d9599bba46cfbd92cfd17703170774",
+      "capturedBindings": [
+        {
+          "id": 8,
+          "name": "frames",
+          "quantity": "Lone",
+          "type": "List<&2, PatternFrame>"
+        },
+        {
+          "id": 1,
+          "name": "tokens",
+          "quantity": "Many",
+          "type": "List<&2, Lexer.Token>"
+        },
+        {
+          "id": 3,
+          "name": "file",
+          "quantity": "Many",
+          "type": "String"
+        },
+        {
+          "id": 11,
+          "name": "scope",
+          "quantity": "Many",
+          "type": "List<&2, Scope>"
+        },
+        {
+          "id": 13,
+          "name": "depth",
+          "quantity": "Many",
+          "type": "Nat"
+        },
+        {
+          "id": 15,
+          "name": "goal",
+          "quantity": "Lone",
+          "type": "PatternScanGoal"
+        },
+        {
+          "id": 200,
+          "name": "close_end",
+          "quantity": "Lone",
+          "type": "Nat"
+        },
+        {
+          "id": 204,
+          "name": "quantity",
+          "quantity": "Lone",
+          "type": "Ast.Quantity"
+        },
+        {
+          "id": 205,
+          "name": "beg",
+          "quantity": "Many",
+          "type": "Nat"
+        }
+      ],
+      "recursiveCalls": [
+        {
+          "offset": 103724,
+          "args": [
+            "rest",
+            "file",
+            "PatternCompleted{Ast.PatternCtr{key, List.reverse(&2, Ast.SyntaxPattern, fields), span(file, start, close_end)}}",
+            "parents",
+            "scope",
+            "depth",
+            "goal"
+          ]
+        }
+      ],
+      "tokenSuffix": "rest",
+      "originalTokenFormalOrderPreserved": true
+    },
+    {
+      "rowIndex": 11,
+      "helper": "pattern_scan_frame_11",
+      "bodyOriginalSha256": "07b6f3b1e9d738f6fc2142ac8a4b167e5770202aaee0526a3a16437e9ffe2a19",
+      "helperBodySha256": "4f10840ed9f861a9c64058ed19355addffee71fc7d10710a5bd75c7048b7498d",
+      "capturedBindings": [
+        {
+          "id": 8,
+          "name": "frames",
+          "quantity": "Lone",
+          "type": "List<&2, PatternFrame>"
+        },
+        {
+          "id": 1,
+          "name": "tokens",
+          "quantity": "Many",
+          "type": "List<&2, Lexer.Token>"
+        },
+        {
+          "id": 11,
+          "name": "scope",
+          "quantity": "Many",
+          "type": "List<&2, Scope>"
+        },
+        {
+          "id": 13,
+          "name": "depth",
+          "quantity": "Many",
+          "type": "Nat"
+        },
+        {
+          "id": 15,
+          "name": "goal",
+          "quantity": "Lone",
+          "type": "PatternScanGoal"
+        },
+        {
+          "id": 237,
+          "name": "pattern",
+          "quantity": "Lone",
+          "type": "Ast.SyntaxPattern"
+        }
+      ],
+      "recursiveCalls": [
+        {
+          "offset": 104231,
+          "args": [
+            "rest",
+            "file",
+            "PatternExpect{Ast.QOne{}, 0n}",
+            "PatternFrameOf{key, beg, end, pattern <> fields, root_scope, root_depth} <> parents",
+            "scope",
+            "depth",
+            "goal"
+          ]
+        },
+        {
+          "offset": 104627,
+          "args": [
+            "rest",
+            "file",
+            "PatternExpect{Ast.QOne{}, 0n}",
+            "Nil{}",
+            "scope",
+            "depth",
+            "PatternCaseGoal{pattern <> acc, scope, depth}"
+          ]
+        }
+      ],
+      "tokenSuffix": "rest",
+      "originalTokenFormalOrderPreserved": true
+    },
+    {
+      "rowIndex": 12,
+      "helper": "pattern_scan_frame_12",
+      "bodyOriginalSha256": "400c6d0ab72eb0ec20648a0f2d7d7d9002021244e7cf73138438b9d6572a9d3b",
+      "helperBodySha256": "f284364a2e75cb1b4f7af2e4c5eecbec82bb2e13ac2f8011a673cff47415b8aa",
+      "capturedBindings": [
+        {
+          "id": 8,
+          "name": "frames",
+          "quantity": "Lone",
+          "type": "List<&2, PatternFrame>"
+        },
+        {
+          "id": 1,
+          "name": "tokens",
+          "quantity": "Many",
+          "type": "List<&2, Lexer.Token>"
+        },
+        {
+          "id": 3,
+          "name": "file",
+          "quantity": "Many",
+          "type": "String"
+        },
+        {
+          "id": 11,
+          "name": "scope",
+          "quantity": "Many",
+          "type": "List<&2, Scope>"
+        },
+        {
+          "id": 13,
+          "name": "depth",
+          "quantity": "Many",
+          "type": "Nat"
+        },
+        {
+          "id": 15,
+          "name": "goal",
+          "quantity": "Lone",
+          "type": "PatternScanGoal"
+        },
+        {
+          "id": 273,
+          "name": "pattern",
+          "quantity": "Lone",
+          "type": "Ast.SyntaxPattern"
+        }
+      ],
+      "recursiveCalls": [],
+      "tokenSuffix": null,
+      "originalTokenFormalOrderPreserved": true
+    },
+    {
+      "rowIndex": 13,
+      "helper": "pattern_scan_frame_13",
+      "bodyOriginalSha256": "773af80d2de4c987bc553357c5fa9302765b645bb465e3e6dda180f1d6a58227",
+      "helperBodySha256": "ad9cb763e55913a6fb5e04e414f260bf447fd1b8eb60114a354410950a432209",
+      "capturedBindings": [
+        {
+          "id": 8,
+          "name": "frames",
+          "quantity": "Lone",
+          "type": "List<&2, PatternFrame>"
+        },
+        {
+          "id": 1,
+          "name": "tokens",
+          "quantity": "Many",
+          "type": "List<&2, Lexer.Token>"
+        },
+        {
+          "id": 3,
+          "name": "file",
+          "quantity": "Many",
+          "type": "String"
+        },
+        {
+          "id": 11,
+          "name": "scope",
+          "quantity": "Many",
+          "type": "List<&2, Scope>"
+        },
+        {
+          "id": 13,
+          "name": "depth",
+          "quantity": "Many",
+          "type": "Nat"
+        },
+        {
+          "id": 15,
+          "name": "goal",
+          "quantity": "Lone",
+          "type": "PatternScanGoal"
+        },
+        {
+          "id": 305,
+          "name": "close_end",
+          "quantity": "Lone",
+          "type": "Nat"
+        },
+        {
+          "id": 309,
+          "name": "pattern",
+          "quantity": "Lone",
+          "type": "Ast.SyntaxPattern"
+        }
+      ],
+      "recursiveCalls": [
+        {
+          "offset": 105653,
+          "args": [
+            "rest",
+            "file",
+            "PatternCompleted{Ast.PatternCtr{key, List.reverse(&2, Ast.SyntaxPattern, pattern <> fields), span(file, beg, close_end)}}",
+            "parents",
+            "scope",
+            "depth",
+            "goal"
+          ]
+        }
+      ],
+      "tokenSuffix": "rest",
+      "originalTokenFormalOrderPreserved": true
+    },
+    {
+      "rowIndex": 14,
+      "helper": "pattern_scan_frame_14",
+      "bodyOriginalSha256": "50e93f6a89096a572e93a3e65dd348da20134d4196bd58b839998b0b243f9e00",
+      "helperBodySha256": "d25d8de9184306ce0b78ae3fca025a129139055fc943b1c2d7b649dfabe42687",
+      "capturedBindings": [
+        {
+          "id": 8,
+          "name": "frames",
+          "quantity": "Lone",
+          "type": "List<&2, PatternFrame>"
+        },
+        {
+          "id": 1,
+          "name": "tokens",
+          "quantity": "Many",
+          "type": "List<&2, Lexer.Token>"
+        },
+        {
+          "id": 11,
+          "name": "scope",
+          "quantity": "Many",
+          "type": "List<&2, Scope>"
+        },
+        {
+          "id": 13,
+          "name": "depth",
+          "quantity": "Many",
+          "type": "Nat"
+        },
+        {
+          "id": 15,
+          "name": "goal",
+          "quantity": "Lone",
+          "type": "PatternScanGoal"
+        },
+        {
+          "id": 340,
+          "name": "pattern",
+          "quantity": "Lone",
+          "type": "Ast.SyntaxPattern"
+        }
+      ],
+      "recursiveCalls": [
+        {
+          "offset": 106070,
+          "args": [
+            "rest",
+            "file",
+            "PatternCompleted{pattern}",
+            "frames",
+            "scope",
+            "depth",
+            "goal"
+          ]
+        },
+        {
+          "offset": 106385,
+          "args": [
+            "rest",
+            "file",
+            "PatternCompleted{pattern}",
+            "Nil{}",
+            "scope",
+            "depth",
+            "PatternCaseGoal{acc, before_scope, before_depth}"
+          ]
+        }
+      ],
+      "tokenSuffix": "rest",
+      "originalTokenFormalOrderPreserved": true
+    },
+    {
+      "rowIndex": 15,
+      "helper": "pattern_scan_frame_15",
+      "bodyOriginalSha256": "cce6ac7f74f6ff5e1c8cd5820220f57c17226c0853ea26672842bd467fc46f3c",
+      "helperBodySha256": "88443c3303fc68c16b2f510961fc8a33f8793865c82d8600bdf194885cb48bfc",
+      "capturedBindings": [
+        {
+          "id": 8,
+          "name": "frames",
+          "quantity": "Lone",
+          "type": "List<&2, PatternFrame>"
+        },
+        {
+          "id": 1,
+          "name": "tokens",
+          "quantity": "Many",
+          "type": "List<&2, Lexer.Token>"
+        },
+        {
+          "id": 11,
+          "name": "scope",
+          "quantity": "Many",
+          "type": "List<&2, Scope>"
+        },
+        {
+          "id": 13,
+          "name": "depth",
+          "quantity": "Many",
+          "type": "Nat"
+        },
+        {
+          "id": 15,
+          "name": "goal",
+          "quantity": "Lone",
+          "type": "PatternScanGoal"
+        },
+        {
+          "id": 365,
+          "name": "key",
+          "quantity": "Lone",
+          "type": "String"
+        },
+        {
+          "id": 366,
+          "name": "beg",
+          "quantity": "Lone",
+          "type": "Nat"
+        },
+        {
+          "id": 367,
+          "name": "end",
+          "quantity": "Lone",
+          "type": "Nat"
+        },
+        {
+          "id": 376,
+          "name": "pattern",
+          "quantity": "Lone",
+          "type": "Ast.SyntaxPattern"
+        }
+      ],
+      "recursiveCalls": [
+        {
+          "offset": 106785,
+          "args": [
+            "after_open",
+            "file",
+            "PatternExpect{Ast.QOne{}, 0n}",
+            "PatternFrameOf{key, beg, end, Nil{}, scope, depth} <> (PatternFrameOf{parent, start, parent_end, pattern <> fields, root_scope, root_depth} <> parents)",
+            "scope",
+            "depth",
+            "goal"
+          ]
+        }
+      ],
+      "tokenSuffix": "after_open",
+      "originalTokenFormalOrderPreserved": true
+    },
+    {
+      "rowIndex": 16,
+      "helper": "pattern_scan_frame_16",
+      "bodyOriginalSha256": "640e64bfbb4efd3dd40747f3018406aac6eb2d04657ba991b6488665397d1353",
+      "helperBodySha256": "30d6ff9e4108712765fafe6e047c42dfede51d160dda27e29c4d3d14f11feb69",
+      "capturedBindings": [
+        {
+          "id": 8,
+          "name": "frames",
+          "quantity": "Lone",
+          "type": "List<&2, PatternFrame>"
+        },
+        {
+          "id": 1,
+          "name": "tokens",
+          "quantity": "Many",
+          "type": "List<&2, Lexer.Token>"
+        },
+        {
+          "id": 3,
+          "name": "file",
+          "quantity": "Many",
+          "type": "String"
+        },
+        {
+          "id": 11,
+          "name": "scope",
+          "quantity": "Many",
+          "type": "List<&2, Scope>"
+        },
+        {
+          "id": 13,
+          "name": "depth",
+          "quantity": "Many",
+          "type": "Nat"
+        },
+        {
+          "id": 15,
+          "name": "goal",
+          "quantity": "Lone",
+          "type": "PatternScanGoal"
+        },
+        {
+          "id": 400,
+          "name": "key",
+          "quantity": "Many",
+          "type": "String"
+        },
+        {
+          "id": 401,
+          "name": "beg",
+          "quantity": "Lone",
+          "type": "Nat"
+        },
+        {
+          "id": 402,
+          "name": "end",
+          "quantity": "Lone",
+          "type": "Nat"
+        },
+        {
+          "id": 406,
+          "name": "pattern",
+          "quantity": "Lone",
+          "type": "Ast.SyntaxPattern"
+        }
+      ],
+      "recursiveCalls": [
+        {
+          "offset": 107341,
+          "args": [
+            "rest",
+            "file",
+            "PatternCompleted{Ast.PatternVar{key, depth, Ast.QOne{}, span(file, beg, end)}}",
+            "PatternFrameOf{parent, start, parent_end, pattern <> fields, root_scope, root_depth} <> parents",
+            "extend_scope(key, depth, scope)",
+            "depth + 1n",
+            "goal"
+          ]
+        }
+      ],
+      "tokenSuffix": "rest",
+      "originalTokenFormalOrderPreserved": true
+    },
+    {
+      "rowIndex": 17,
+      "helper": "pattern_scan_frame_17",
+      "bodyOriginalSha256": "3b48b9b0c42996da15c5bb8278bc2ac6149a360432051477afe06bd932747d0a",
+      "helperBodySha256": "30e7e8f6a2bf8b7067318e9e2f17c833d9f0220f9fb72c8743554f9c719260c0",
+      "capturedBindings": [
+        {
+          "id": 8,
+          "name": "frames",
+          "quantity": "Lone",
+          "type": "List<&2, PatternFrame>"
+        },
+        {
+          "id": 1,
+          "name": "tokens",
+          "quantity": "Many",
+          "type": "List<&2, Lexer.Token>"
+        },
+        {
+          "id": 11,
+          "name": "scope",
+          "quantity": "Many",
+          "type": "List<&2, Scope>"
+        },
+        {
+          "id": 13,
+          "name": "depth",
+          "quantity": "Many",
+          "type": "Nat"
+        },
+        {
+          "id": 15,
+          "name": "goal",
+          "quantity": "Lone",
+          "type": "PatternScanGoal"
+        },
+        {
+          "id": 433,
+          "name": "beg",
+          "quantity": "Lone",
+          "type": "Nat"
+        },
+        {
+          "id": 438,
+          "name": "pattern",
+          "quantity": "Lone",
+          "type": "Ast.SyntaxPattern"
+        }
+      ],
+      "recursiveCalls": [
+        {
+          "offset": 107896,
+          "args": [
+            "rest",
+            "file",
+            "PatternExpect{Ast.QMany{}, beg}",
+            "PatternFrameOf{parent, start, parent_end, pattern <> fields, root_scope, root_depth} <> parents",
+            "scope",
+            "depth",
+            "goal"
+          ]
+        }
+      ],
+      "tokenSuffix": "rest",
+      "originalTokenFormalOrderPreserved": true
+    },
+    {
+      "rowIndex": 18,
+      "helper": "pattern_scan_frame_18",
+      "bodyOriginalSha256": "55c84bf14d523c4f83bcdb01a0962d13d5cc1b32602a6eeb11c9734781aa0982",
+      "helperBodySha256": "8b0bff51ed4727a41da60584d7a395c12f2edf2a00d629c3deefb899897cd1e5",
+      "capturedBindings": [
+        {
+          "id": 8,
+          "name": "frames",
+          "quantity": "Lone",
+          "type": "List<&2, PatternFrame>"
+        },
+        {
+          "id": 1,
+          "name": "tokens",
+          "quantity": "Many",
+          "type": "List<&2, Lexer.Token>"
+        },
+        {
+          "id": 3,
+          "name": "file",
+          "quantity": "Many",
+          "type": "String"
+        },
+        {
+          "id": 11,
+          "name": "scope",
+          "quantity": "Many",
+          "type": "List<&2, Scope>"
+        },
+        {
+          "id": 13,
+          "name": "depth",
+          "quantity": "Many",
+          "type": "Nat"
+        },
+        {
+          "id": 15,
+          "name": "goal",
+          "quantity": "Lone",
+          "type": "PatternScanGoal"
+        },
+        {
+          "id": 458,
+          "name": "pattern",
+          "quantity": "Lone",
+          "type": "Ast.SyntaxPattern"
+        }
+      ],
+      "recursiveCalls": [],
+      "tokenSuffix": null,
+      "originalTokenFormalOrderPreserved": true
+    },
+    {
+      "rowIndex": 19,
+      "helper": "pattern_scan_frame_19",
+      "bodyOriginalSha256": "d98ed0cc72fc59a45c46efa930e490c17a600939cd569abb091bcae75bb2edcf",
+      "helperBodySha256": "c6beaa6a2e2a4adf9d5d0faee91ccfce8490db894b810025d913663a7cfdf152",
+      "capturedBindings": [
+        {
+          "id": 8,
+          "name": "frames",
+          "quantity": "Lone",
+          "type": "List<&2, PatternFrame>"
+        },
+        {
+          "id": 1,
+          "name": "tokens",
+          "quantity": "Many",
+          "type": "List<&2, Lexer.Token>"
+        },
+        {
+          "id": 3,
+          "name": "file",
+          "quantity": "Many",
+          "type": "String"
+        },
+        {
+          "id": 11,
+          "name": "scope",
+          "quantity": "Many",
+          "type": "List<&2, Scope>"
+        },
+        {
+          "id": 13,
+          "name": "depth",
+          "quantity": "Many",
+          "type": "Nat"
+        },
+        {
+          "id": 15,
+          "name": "goal",
+          "quantity": "Lone",
+          "type": "PatternScanGoal"
+        },
+        {
+          "id": 480,
+          "name": "quantity",
+          "quantity": "Lone",
+          "type": "Ast.Quantity"
+        },
+        {
+          "id": 481,
+          "name": "beg",
+          "quantity": "Many",
+          "type": "Nat"
+        }
+      ],
+      "recursiveCalls": [],
+      "tokenSuffix": null,
+      "originalTokenFormalOrderPreserved": true
+    }
+  ],
+  "sourceSpecificGeneratorExceptions": 0
+}

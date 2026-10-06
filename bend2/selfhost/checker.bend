@@ -2,7 +2,7 @@ import Base
 import ./ast.bend as Ast
 import ./path.bend as Path
 import ./template.bend as Template
-import ./loader.bend as Loader
+import ./loaded_module.bend as Loader
 
 type Diagnostic is Data:
   Diagnostic{file: String, span: Ast.SourceSpan, message: String, expected: String, observed: String}

@@ -1,0 +1,17 @@
+{
+  "status": "PROPOSAL_NOT_APPLIED",
+  "file": "bend2/bend.ts",
+  "frozenSha256": "47e1b06e2fa4466bad702f86d8cbce03f40e833a8ba8eaa1e04297fa46dc94a9",
+  "old": "  def.v = term_higher(term_lower(term_higher(body_flatten(b, vars, () => p.sc.frs++))));",
+  "replacement": "  def.v = term_higher(body_flatten(b, vars, () => p.sc.frs++));",
+  "scope": "Remove eager higher/lower replay from parse-body value installation only. Keep native full validation and checked def.e assignment unchanged.",
+  "regressionCommand": "bun evals/heavy_gate.ts --memory-mib=3072 --rss-mib=3072 --poll-ms=10 -- bun evals/proposed_loader_regressions.ts",
+  "regressionEvidence": "proposed-loader-regressions.json",
+  "observed": {
+    "priorityCompiledJs": "Both ordinary and proposed-direct fully check 453 events, execute JS and return 1233. Identical JS SHA256: 1c52908a96088eb3c912ada985b6f7ddb88fa2d57669a7f08a66704eb72ef156.",
+    "negativeType": "Both reject Bool as Nat during full validation.",
+    "negativeDecrease": "Both reject the changed-before-shrinking self-call during full validation."
+  },
+  "limits": "Three small semantic regressions are not whole parser or language equivalence. Direct-load whole retained-e candidate validation still exceeds 3GiB. This proposal is not sufficient evidence for Milestone P.",
+  "authorization": "Separate production approval and action by the human owner of bend2/bend.ts are required; repository instructions prohibit this assistant from editing that file. No temporary kernel is installed as production tooling."
+}

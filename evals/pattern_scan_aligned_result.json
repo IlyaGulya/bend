@@ -1,0 +1,67 @@
+{
+  "status": "FAIL",
+  "diagnosticOnly": true,
+  "fullValidation": "NOT_RUN",
+  "backendCompilation": "NOT_RUN",
+  "checkedERetention": "retain",
+  "configPath": "/Users/ilyagulya/Projects/My/bend/evals/pattern_scan_aligned_evidence.json",
+  "worker": {
+    "status": "FAIL",
+    "phase": "validation",
+    "activeName": "pattern_scan",
+    "checkedBodies": 0,
+    "declarationsLoaded": 1280,
+    "targetIndex": 705,
+    "error": "Error:\n- expected : a decreasing self-call (arguments are read left to right: each passed unchanged until one shrinks)\n- observed : pattern_scan\nContext:\n- ignored_beg  : Nat\n- file         : String\n- beg          : Nat\n- ignored_end  : Nat\n- ignored_line : Nat\n- ignored_col  : Nat\n- rest         : List<&2, lexer.Token>\n- frames       : List<&2, PatternFrame>\n- scope        : List<&2, Scope>\n- depth        : Nat\n- goal         : PatternScanGoal\nLocation: pattern_scan\n1563 |     case PatternExpect{Ast.QOne{}, +ignored_beg} Lexer.TokenInfo{Lexer.SymbolToken{}, \"+\", beg, ignored_end, ignored_line, ignored_col} <> +rest:\n1564>|       pattern_scan(PatternExpect{Ast.QMany{}, beg}, file, rest, frames, scope, depth, goal)\n1565 |     case PatternExpect{Ast.QOne{}, _} Lexer.TokenInfo{_, \"-\", beg, end, _, _} <> +rest:",
+    "sourceHash": "ed466c65698301913b0f3fe0cb594f0dace60db99c533a1e88fd5a2e352bf058",
+    "generatedHash": "aad623ac58771469a943582a58ff47c75eda92b0bed16b4bab8a0fe48370f48f",
+    "checkedERetention": "retain",
+    "frozen": {
+      "bend2/bend.ts": "47e1b06e2fa4466bad702f86d8cbce03f40e833a8ba8eaa1e04297fa46dc94a9",
+      "bend2/selfhost/parser.bend": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "bend2/selfhost/parser_full_generated_fuel.bend": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "evals/parser_full_generate.ts": "0aedb4c1703cffe1055794b29829a357edcd956fdc0a8dec77bfa3c0cf7a6da6"
+    },
+    "compilerHash": "0939b98d013ab58d82619e35c0d4900b72c9d8e5b478f0e1df7822fe713c9b48",
+    "journal": "/Users/ilyagulya/Projects/My/bend/evals/pattern_scan_aligned_result.jsonl"
+  },
+  "last": {
+    "status": "ACTIVE",
+    "last": {
+      "elapsedMs": 728.91975,
+      "phase": "validation",
+      "checkedBodies": 0,
+      "activeName": "pattern_scan",
+      "footprintBytes": 619332640,
+      "rssBytes": 656080896,
+      "lifetimeMaxFootprintBytes": 619332640,
+      "heapUsed": 361653090,
+      "heapTotal": 582524928,
+      "stage": "error",
+      "error": "Error:\n- expected : a decreasing self-call (arguments are read left to right: each passed unchanged until one shrinks)\n- observed : pattern_scan\nContext:\n- ignored_beg  : Nat\n- file         : String\n- beg          : Nat\n- ignored_end  : Nat\n- ignored_line : Nat\n- ignored_col  : Nat\n- rest         : List<&2, lexer.Token>\n- frames       : List<&2, PatternFrame>\n- scope        : List<&2, Scope>\n- depth        : Nat\n- goal         : PatternScanGoal\nLocation: pattern_scan\n1563 |     case PatternExpect{Ast.QOne{}, +ignored_beg} Lexer.TokenInfo{Lexer.SymbolToken{}, \"+\", beg, ignored_end, ignored_line, ignored_col} <> +rest:\n1564>|       pattern_scan(PatternExpect{Ast.QMany{}, beg}, file, rest, frames, scope, depth, goal)\n1565 |     case PatternExpect{Ast.QOne{}, _} Lexer.TokenInfo{_, \"-\", beg, end, _, _} <> +rest:"
+    }
+  },
+  "guardian": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "commandExitCode": 2,
+    "commandSignal": 0,
+    "peakRssBytes": 958758912,
+    "peakFootprintBytes": 830867952,
+    "elapsedMs": 7625,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+      "/Users/ilyagulya/Projects/My/bend/evals/pattern_scan_aligned_probe.ts",
+      "--worker"
+    ],
+    "label": "One aligned real pattern_scan fresh native target check (retain checked e)",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791293720594-ba6c44e4056898a1.json",
+    "memoryLimitBytes": 3221225472,
+    "rssLimitBytes": 3221225472
+  },
+  "peakFootprintBytes": 830867952,
+  "peakRssBytes": 958758912,
+  "journal": "/Users/ilyagulya/Projects/My/bend/evals/pattern_scan_aligned_result.jsonl",
+  "auditPath": "/Users/ilyagulya/Projects/My/bend/evals/pattern_scan_aligned_result.source-audit.json"
+}

@@ -1,0 +1,18 @@
+{
+  "status": "RESOURCE_LIMIT",
+  "reason": "physical_footprint_limit",
+  "commandExitCode": -1,
+  "commandSignal": 15,
+  "peakRssBytes": 2875195392,
+  "peakFootprintBytes": 3231108600,
+  "elapsedMs": 2106,
+  "command": [
+    "bun",
+    "gates/hybrid_gate.ts"
+  ],
+  "label": "heavy command",
+  "exitCode": 73,
+  "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791293984282-02fa6e0d50ac7230.json",
+  "memoryLimitBytes": 3221225472,
+  "rssLimitBytes": 3221225472
+}

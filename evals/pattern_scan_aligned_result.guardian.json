@@ -1,0 +1,19 @@
+{
+  "status": "FAIL",
+  "reason": "command_exit",
+  "commandExitCode": 2,
+  "commandSignal": 0,
+  "peakRssBytes": 958758912,
+  "peakFootprintBytes": 830867952,
+  "elapsedMs": 7625,
+  "command": [
+    "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+    "/Users/ilyagulya/Projects/My/bend/evals/pattern_scan_aligned_probe.ts",
+    "--worker"
+  ],
+  "label": "One aligned real pattern_scan fresh native target check (retain checked e)",
+  "exitCode": 1,
+  "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791293720594-ba6c44e4056898a1.json",
+  "memoryLimitBytes": 3221225472,
+  "rssLimitBytes": 3221225472
+}

@@ -1,6 +1,7 @@
 import Base
 import ./ast.bend as AST
 import ./loader.bend as Loader
+import ./loaded_module.bend as Modules
 import ./checker.bend as Checker
 import ./js_emit.bend as JSEmit
 import ./c_emit.bend as CEmit
@@ -112,7 +113,7 @@ def compile_c_emit(emitted: CEmit.EmitResult, output: String) -> IO(U32):
     case CEmit.EmitSuccess{source}:
       write_output(output, source)
 
-def dispatch_c(is_c: Bool, checked: List<&2, Loader.LoadedModule>, output: String, runtime: String) -> IO(U32):
+def dispatch_c(is_c: Bool, checked: List<&2, Modules.LoadedModule>, output: String, runtime: String) -> IO(U32):
   match is_c:
     case False{}:
       do IO<U32>:
@@ -121,7 +122,7 @@ def dispatch_c(is_c: Bool, checked: List<&2, Loader.LoadedModule>, output: Strin
     case True{}:
       compile_c_emit(CEmit.emit(checked, runtime), output)
 
-def dispatch_output(is_js: Bool, checked: List<&2, Loader.LoadedModule>, output: String, runtime: String) -> IO(U32):
+def dispatch_output(is_js: Bool, checked: List<&2, Modules.LoadedModule>, output: String, runtime: String) -> IO(U32):
   match is_js:
     case True{}:
       compile_js_emit(JSEmit.emit(checked), output)

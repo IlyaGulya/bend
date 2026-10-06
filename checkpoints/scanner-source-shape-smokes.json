@@ -1,0 +1,13 @@
+{
+  "callback": {
+    "source": "import Base\n\ndef scanner_branch(frames: List<&2, Nat>, next: Nat -> Nat) -> Nat:\n  match frames:\n    case value <> _: next(value)\n    case Nil{}: 0n\n\ndef scanner_loop(+tokens: List<&2, Nat>, frames: List<&2, Nat>) -> Nat:\n  match tokens:\n    case _ <> +rest:\n      scanner_branch(frames, value => scanner_loop(rest, [value]))\n    case Nil{}: 7n\n\ndef main() -> Nat:\n  scanner_loop([1n, 2n], [3n])\n\n#|7\n",
+    "command": "bun evals/heavy_gate.ts --memory-mib=3072 --rss-mib=3072 --poll-ms=10 -- bun bend2/main.ts /tmp/bend_pattern_scan_helper_smoke.bend",
+    "observedOutput": "7n",
+    "scope": "Tiny compiled callback/decreasing-tail shape only, not parser acceptance"
+  },
+  "nestedModeFirst": {
+    "source": "import Base\n\ntype ScannerMode is Data:\n  ProbeExpect{flag: Bool}\n  ProbeDone{}\n\ndef scan(+tokens: List<&2, Nat>, mode: ScannerMode) -> Nat:\n  match mode:\n    case ProbeExpect{flag}:\n      match tokens flag:\n        case _ <> +rest True{}: scan(rest, ProbeDone{})\n        case _ _: 1n\n    case ProbeDone{}:\n      match tokens:\n        case _ <> +rest: scan(rest, ProbeDone{})\n        case Nil{}: 7n\n\ndef main() -> Nat:\n  scan([1n, 2n], ProbeExpect{True{}})\n",
+    "observedFailure": "Consumed binder at match tokens flag",
+    "scope": "Source ownership rejection, not native target memory evidence"
+  }
+}

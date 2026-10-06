@@ -1,5 +1,12 @@
 # Historical self-host parser graph snapshot
 
+## Current integration boundary
+
+**HYBRID (not SELFHOST GREEN), resource-blocked:** stage-0 host parser and import graph → generated real `Ast.Module` values → selfhost `Checker.check` (symbol resolution and checking) → selfhost `JSEmit.emit` → JS-only driver. `gates/hybrid.ts`, `gates/hybrid_gate.ts`, and `hybrid_driver.bend` isolate this path; they never invoke `Loader.load` on target source or the native emitter. After the shared-contract cutover, the existing gate completes host module conversion but exceeds its 3GiB RSS ceiling during runner compilation (exit73), before runner execution or parity comparison. `BEND_HYBRID_TRACE_FILE` optionally records phase boundaries; `checkpoints/hybrid-phases.jsonl` retains the observed boundary. Host import resolution remains host work; no HYBRID PASS or bootstrap is claimed.
+
+`loaded_module.bend` owns `LoadedModule{namespace,module}` and imports only Base and Ast. Checker, Template, JSEmit, both emitters' shared-type consumers, and the hybrid driver import this pure contract rather than Loader's parser/IO implementation. Loader, its real driver and the loader test use the same nominal type directly; there is no legacy re-export. An actual compiled contract round-trip returns `"module-contract-ok"`; that smoke does not establish full checker/emitter parity.
+
+
 The SCC 204 dispatcher/FVS analysis below describes the source identified by the `sourceSha256` fields in `parser_fvs_stats.json`, `parser_fvs_boundaries.json`, and `parser_scc_order.json`. It is **not** the current parser graph or an active migration plan; in particular, its 150-node feedback-set residual and 160-node SCC must not be used as current metrics. Do not revive the proposed global dispatcher or fuel design.
 
 At checkpoint `487aab75f8bd91696e9e65c4b1e29ea91677a5ee`, the graph has 6 non-singleton SCCs and a 161-node main SCC. Relative to `2daae0046db14af553c43d79065dd5a1dec19e51` (7 non-singleton SCCs; largest 150), `parse_case_row → parse_case_row_scan_result → parse_case_row_patterns` reconnects the case-row pattern result to its body. The pre-existing crossing edges `parse_match_body → parse_match_scrutinees` and `parse_case_body_indented → parse_body` then join the 11 case-row nodes to the main SCC. `pattern_scan` remains a singleton SCC.

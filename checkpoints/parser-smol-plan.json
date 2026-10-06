@@ -1,0 +1,12 @@
+{
+  "question": "Can Bun 1.4.2 --smol run the frozen ordinary loader and complete native retained-e check of the current normally regenerated candidate under unchanged 3072MiB footprint and RSS ceilings?",
+  "cheapTest": "Run the already compiled shared-contract smoke with --smol; expect module-contract-ok.",
+  "onPass": "Run one complete ordinary load/check/JS codegen; only if it succeeds execute the actual artifact and compare the corpus. No temporary kernel or excluded declarations.",
+  "onFailure": "Keep P blocked; report exact phase and resource exit, retain existing HYBRID evidence and require a separately agreed protected-toolchain change before production cutover.",
+  "runtimeOnly": true,
+  "memoryMiB": 3072,
+  "rssMiB": 3072,
+  "pollMs": 10,
+  "kernelModification": false,
+  "discardCheckedOutput": false
+}

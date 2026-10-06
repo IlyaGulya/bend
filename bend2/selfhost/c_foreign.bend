@@ -1,6 +1,6 @@
 import Base
 import ./ast.bend as Ast
-import ./loader.bend as Loader
+import ./loaded_module.bend as Loader
 import ./path.bend as Path
 
 type ForeignDefinition is Data:

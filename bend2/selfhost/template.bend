@@ -1,7 +1,7 @@
 import Base
 import ./ast.bend as Ast
 import ./core.bend as Core
-import ./loader.bend as Loader
+import ./loaded_module.bend as Loader
 import ./sha256.bend as SHA256
 import ./path.bend as Path
 

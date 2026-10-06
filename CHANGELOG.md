@@ -3,6 +3,11 @@
 Each release names what changed for a user. `bend update` installs the
 latest one; the GitHub release carries the same notes.
 
+## Unreleased
+
+- Selfhost checker/emitter consumers share `loaded_module.bend` instead of
+  importing the loader's parser and IO implementation for its module type.
+
 ## 2.0.16 (2026-09-19)
 
 - The template memo and the compiler's show table key on the syntax tree
