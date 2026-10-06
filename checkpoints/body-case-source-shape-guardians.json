@@ -400,5 +400,72 @@
       "memoryLimitBytes": 3221225472,
       "rssLimitBytes": 3221225472
     }
+  },
+  {
+    "id": "1791311350233-3c298bedc15a1a67",
+    "report": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 1609318400,
+      "peakFootprintBytes": 1056950696,
+      "elapsedMs": 15292,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/parser_local_shape_build.ts",
+        "--prepare"
+      ],
+      "label": "Local typed scanner helpers normal regeneration",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791311350233-3c298bedc15a1a67.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    }
+  },
+  {
+    "id": "1791311365536-331d4bf522e3f4b4",
+    "report": {
+      "status": "RESOURCE_LIMIT",
+      "reason": "rss_limit",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 3254501376,
+      "peakFootprintBytes": 3180268400,
+      "elapsedMs": 4957,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/parser_local_shape_build.ts",
+        "--build"
+      ],
+      "label": "Local scanner candidate ordinary complete load/check/JS codegen",
+      "exitCode": 73,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791311365536-331d4bf522e3f4b4.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    }
+  },
+  {
+    "id": "1791311375590-277d92ae92a61593",
+    "report": {
+      "status": "RESOURCE_LIMIT",
+      "reason": "physical_footprint_limit",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 3046408192,
+      "peakFootprintBytes": 3228601176,
+      "elapsedMs": 830355,
+      "command": [
+        "bun",
+        "--smol",
+        "evals/parser_local_shape_build.ts",
+        "--build-proposal"
+      ],
+      "label": "heavy command",
+      "exitCode": 73,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791311375590-277d92ae92a61593.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    }
   }
 ]
