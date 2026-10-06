@@ -1080,26 +1080,53 @@ def parse_parenthesized_body_result(body: Ast.SyntaxTerm, rest: List<&2, Lexer.T
     case _:
       ((body, rest), True{})
 
-def operator_key_first(key: String, namespace: String) -> String:
+def operator_key_classify(key: String) -> Bool & String:
   match key:
-    case ".or": String.append(namespace, key)
-    case ".xor": String.append(namespace, key)
-    case ".and": String.append(namespace, key)
-    case ".is_lt": String.append(namespace, key)
-    case ".is_le": String.append(namespace, key)
-    case ".is_ge": String.append(namespace, key)
-    case ".is_gt": String.append(namespace, key)
-    case ".shln": String.append(namespace, key)
-    case ".shrn": String.append(namespace, key)
-    case ".add": String.append(namespace, key)
-    case ".sub": String.append(namespace, key)
-    case ".mul": String.append(namespace, key)
-    case ".div": String.append(namespace, key)
-    case ".mod": String.append(namespace, key)
-    case _: key
+    case ".or":
+      (True{}, key)
+    case ".xor":
+      (True{}, key)
+    case ".and":
+      (True{}, key)
+    case ".is_lt":
+      (True{}, key)
+    case ".is_le":
+      (True{}, key)
+    case ".is_ge":
+      (True{}, key)
+    case ".is_gt":
+      (True{}, key)
+    case ".shln":
+      (True{}, key)
+    case ".shrn":
+      (True{}, key)
+    case ".add":
+      (True{}, key)
+    case ".sub":
+      (True{}, key)
+    case ".mul":
+      (True{}, key)
+    case ".div":
+      (True{}, key)
+    case ".mod":
+      (True{}, key)
+    case _:
+      (False{}, key)
+
+def operator_key_apply(mapped: Bool, namespace: String, key: String) -> String:
+  match mapped:
+    case True{}:
+      String.append(namespace, key)
+    case False{}:
+      key
+
+def operator_key_result(result: Bool & String, namespace: String) -> String:
+  match result:
+    case (mapped, key):
+      operator_key_apply(mapped, namespace, key)
 
 def map_operator_key(namespace: String, key: String) -> String:
-  operator_key_first(key, namespace)
+  operator_key_result(operator_key_classify(key), namespace)
 
 def parse_match_tail_after_semicolon(file: String, tail: Ast.SyntaxTerm, close: Lexer.Token, rest: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match scanned:
