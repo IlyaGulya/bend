@@ -1,0 +1,337 @@
+[
+  {
+    "id": "1791308789224-ddfeba6fb9588bd4",
+    "report": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 920387584,
+      "peakFootprintBytes": 900597776,
+      "elapsedMs": 20530,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/parser_local_shape_build.ts",
+        "--prepare"
+      ],
+      "label": "Local typed scanner helpers normal regeneration",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791308789224-ddfeba6fb9588bd4.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    }
+  },
+  {
+    "id": "1791308809774-fab8a93234333170",
+    "report": {
+      "status": "RESOURCE_LIMIT",
+      "reason": "physical_footprint_limit",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 2662776832,
+      "peakFootprintBytes": 3228863368,
+      "elapsedMs": 22587,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/parser_local_shape_build.ts",
+        "--build"
+      ],
+      "label": "Local scanner candidate ordinary complete load/check/JS codegen",
+      "exitCode": 73,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791308809774-fab8a93234333170.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    }
+  },
+  {
+    "id": "1791308836894-4bcea887cf5a555d",
+    "report": {
+      "status": "RESOURCE_LIMIT",
+      "reason": "physical_footprint_limit",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 2092990464,
+      "peakFootprintBytes": 3221785456,
+      "elapsedMs": 21586,
+      "command": [
+        "bun",
+        "--smol",
+        "evals/parser_local_shape_build.ts",
+        "--build-proposal"
+      ],
+      "label": "heavy command",
+      "exitCode": 73,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791308836894-4bcea887cf5a555d.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    }
+  },
+  {
+    "id": "1791308920207-24aaabe8fe872c76",
+    "report": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 865402880,
+      "peakFootprintBytes": 855017512,
+      "elapsedMs": 31074,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/parser_local_shape_build.ts",
+        "--prepare"
+      ],
+      "label": "Local typed scanner helpers normal regeneration",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791308920207-24aaabe8fe872c76.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    }
+  },
+  {
+    "id": "1791308951311-324babba9ec524d4",
+    "report": {
+      "status": "RESOURCE_LIMIT",
+      "reason": "physical_footprint_limit",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 2788343808,
+      "peakFootprintBytes": 3221834680,
+      "elapsedMs": 18171,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/parser_local_shape_build.ts",
+        "--build"
+      ],
+      "label": "Local scanner candidate ordinary complete load/check/JS codegen",
+      "exitCode": 73,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791308951311-324babba9ec524d4.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    }
+  },
+  {
+    "id": "1791308974679-265df61b104bc04f",
+    "report": {
+      "status": "RESOURCE_LIMIT",
+      "reason": "physical_footprint_limit",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 2781102080,
+      "peakFootprintBytes": 3231206280,
+      "elapsedMs": 12003,
+      "command": [
+        "bun",
+        "--smol",
+        "evals/parser_local_shape_build.ts",
+        "--build-proposal"
+      ],
+      "label": "heavy command",
+      "exitCode": 73,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791308974679-265df61b104bc04f.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    }
+  },
+  {
+    "id": "1791309073605-90e99c5c02c53154",
+    "report": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 795197440,
+      "peakFootprintBytes": 1006029008,
+      "elapsedMs": 58794,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/parser_local_shape_build.ts",
+        "--prepare"
+      ],
+      "label": "Local typed scanner helpers normal regeneration",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791309073605-90e99c5c02c53154.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    }
+  },
+  {
+    "id": "1791309132442-ce20fc8dcf76aa6f",
+    "report": {
+      "status": "RESOURCE_LIMIT",
+      "reason": "physical_footprint_limit",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 2941190144,
+      "peakFootprintBytes": 3229207432,
+      "elapsedMs": 20212,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/parser_local_shape_build.ts",
+        "--build"
+      ],
+      "label": "Local scanner candidate ordinary complete load/check/JS codegen",
+      "exitCode": 73,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791309132442-ce20fc8dcf76aa6f.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    }
+  },
+  {
+    "id": "1791309157700-327d161033a1d0c9",
+    "report": {
+      "status": "RESOURCE_LIMIT",
+      "reason": "physical_footprint_limit",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 3227582464,
+      "peakFootprintBytes": 3226323824,
+      "elapsedMs": 10392,
+      "command": [
+        "bun",
+        "--smol",
+        "evals/parser_local_shape_build.ts",
+        "--build-proposal"
+      ],
+      "label": "heavy command",
+      "exitCode": 73,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791309157700-327d161033a1d0c9.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    }
+  },
+  {
+    "id": "1791309237173-cad2e9f424bfee13",
+    "report": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 1381416960,
+      "peakFootprintBytes": 1075841280,
+      "elapsedMs": 12835,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/parser_local_shape_build.ts",
+        "--prepare"
+      ],
+      "label": "Local typed scanner helpers normal regeneration",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791309237173-cad2e9f424bfee13.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    }
+  },
+  {
+    "id": "1791309250020-a116fc628467164d",
+    "report": {
+      "status": "FAIL",
+      "reason": "command_exit",
+      "commandExitCode": 2,
+      "commandSignal": 0,
+      "peakRssBytes": 826376192,
+      "peakFootprintBytes": 786941104,
+      "elapsedMs": 1402,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/parser_local_shape_build.ts",
+        "--build"
+      ],
+      "label": "Local scanner candidate ordinary complete load/check/JS codegen",
+      "exitCode": 1,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791309250020-a116fc628467164d.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    }
+  },
+  {
+    "id": "1791309267316-a669b5df83e59cc5",
+    "report": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 1306705920,
+      "peakFootprintBytes": 1101089000,
+      "elapsedMs": 12242,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/parser_local_shape_build.ts",
+        "--prepare"
+      ],
+      "label": "Local typed scanner helpers normal regeneration",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791309267316-a669b5df83e59cc5.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    }
+  },
+  {
+    "id": "1791309279565-d6384ae4756b3086",
+    "report": {
+      "status": "RESOURCE_LIMIT",
+      "reason": "physical_footprint_limit",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 3169665024,
+      "peakFootprintBytes": 3235466120,
+      "elapsedMs": 6387,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/parser_local_shape_build.ts",
+        "--build"
+      ],
+      "label": "Local scanner candidate ordinary complete load/check/JS codegen",
+      "exitCode": 73,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791309279565-d6384ae4756b3086.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    }
+  },
+  {
+    "id": "1791309290407-cbcf33f7392ecbc0",
+    "report": {
+      "status": "RESOURCE_LIMIT",
+      "reason": "physical_footprint_limit",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 2937864192,
+      "peakFootprintBytes": 3229092744,
+      "elapsedMs": 4001,
+      "command": [
+        "bun",
+        "--smol",
+        "evals/parser_local_shape_build.ts",
+        "--build-proposal"
+      ],
+      "label": "heavy command",
+      "exitCode": 73,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791309290407-cbcf33f7392ecbc0.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    }
+  },
+  {
+    "id": "1791309346317-6384c67243e5a52a",
+    "report": {
+      "status": "RESOURCE_LIMIT",
+      "reason": "physical_footprint_limit",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 3126116352,
+      "peakFootprintBytes": 3234417568,
+      "elapsedMs": 295643,
+      "command": [
+        "bun",
+        "--smol",
+        "evals/parser_local_shape_build.ts",
+        "--build-proposal"
+      ],
+      "label": "heavy command",
+      "exitCode": 73,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791309346317-6384c67243e5a52a.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    }
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "reason": "command_exit",
+  "commandExitCode": 0,
+  "commandSignal": 0,
+  "peakRssBytes": 1306705920,
+  "peakFootprintBytes": 1101089000,
+  "elapsedMs": 12242,
+  "command": [
+    "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+    "/Users/ilyagulya/Projects/My/bend/evals/parser_local_shape_build.ts",
+    "--prepare"
+  ],
+  "label": "Local typed scanner helpers normal regeneration",
+  "exitCode": 0,
+  "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791309267316-a669b5df83e59cc5.json",
+  "memoryLimitBytes": 3221225472,
+  "rssLimitBytes": 3221225472
+}
