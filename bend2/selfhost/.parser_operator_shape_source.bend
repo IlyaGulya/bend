@@ -1080,53 +1080,148 @@ def parse_parenthesized_body_result(body: Ast.SyntaxTerm, rest: List<&2, Lexer.T
     case _:
       ((body, rest), True{})
 
-def operator_key_classify(key: String) -> Bool & String:
-  match key:
-    case ".or":
-      (True{}, key)
-    case ".xor":
-      (True{}, key)
-    case ".and":
-      (True{}, key)
-    case ".is_lt":
-      (True{}, key)
-    case ".is_le":
-      (True{}, key)
-    case ".is_ge":
-      (True{}, key)
-    case ".is_gt":
-      (True{}, key)
-    case ".shln":
-      (True{}, key)
-    case ".shrn":
-      (True{}, key)
-    case ".add":
-      (True{}, key)
-    case ".sub":
-      (True{}, key)
-    case ".mul":
-      (True{}, key)
-    case ".div":
-      (True{}, key)
-    case ".mod":
-      (True{}, key)
-    case _:
-      (False{}, key)
-
-def operator_key_apply(mapped: Bool, namespace: String, key: String) -> String:
+def operator_key_choice_13(mapped: Bool, key: String, namespace: String) -> String:
   match mapped:
     case True{}:
       String.append(namespace, key)
     case False{}:
       key
 
-def operator_key_result(result: Bool & String, namespace: String) -> String:
-  match result:
-    case (mapped, key):
-      operator_key_apply(mapped, namespace, key)
+def operator_key_test_13(+key: String, namespace: String) -> String:
+  operator_key_choice_13(String.eq(key, ".mod"), key, namespace)
+
+def operator_key_choice_12(mapped: Bool, key: String, namespace: String) -> String:
+  match mapped:
+    case True{}:
+      String.append(namespace, key)
+    case False{}:
+      operator_key_test_13(key, namespace)
+
+def operator_key_test_12(+key: String, namespace: String) -> String:
+  operator_key_choice_12(String.eq(key, ".div"), key, namespace)
+
+def operator_key_choice_11(mapped: Bool, key: String, namespace: String) -> String:
+  match mapped:
+    case True{}:
+      String.append(namespace, key)
+    case False{}:
+      operator_key_test_12(key, namespace)
+
+def operator_key_test_11(+key: String, namespace: String) -> String:
+  operator_key_choice_11(String.eq(key, ".mul"), key, namespace)
+
+def operator_key_choice_10(mapped: Bool, key: String, namespace: String) -> String:
+  match mapped:
+    case True{}:
+      String.append(namespace, key)
+    case False{}:
+      operator_key_test_11(key, namespace)
+
+def operator_key_test_10(+key: String, namespace: String) -> String:
+  operator_key_choice_10(String.eq(key, ".sub"), key, namespace)
+
+def operator_key_choice_9(mapped: Bool, key: String, namespace: String) -> String:
+  match mapped:
+    case True{}:
+      String.append(namespace, key)
+    case False{}:
+      operator_key_test_10(key, namespace)
+
+def operator_key_test_9(+key: String, namespace: String) -> String:
+  operator_key_choice_9(String.eq(key, ".add"), key, namespace)
+
+def operator_key_choice_8(mapped: Bool, key: String, namespace: String) -> String:
+  match mapped:
+    case True{}:
+      String.append(namespace, key)
+    case False{}:
+      operator_key_test_9(key, namespace)
+
+def operator_key_test_8(+key: String, namespace: String) -> String:
+  operator_key_choice_8(String.eq(key, ".shrn"), key, namespace)
+
+def operator_key_choice_7(mapped: Bool, key: String, namespace: String) -> String:
+  match mapped:
+    case True{}:
+      String.append(namespace, key)
+    case False{}:
+      operator_key_test_8(key, namespace)
+
+def operator_key_test_7(+key: String, namespace: String) -> String:
+  operator_key_choice_7(String.eq(key, ".shln"), key, namespace)
+
+def operator_key_choice_6(mapped: Bool, key: String, namespace: String) -> String:
+  match mapped:
+    case True{}:
+      String.append(namespace, key)
+    case False{}:
+      operator_key_test_7(key, namespace)
+
+def operator_key_test_6(+key: String, namespace: String) -> String:
+  operator_key_choice_6(String.eq(key, ".is_gt"), key, namespace)
+
+def operator_key_choice_5(mapped: Bool, key: String, namespace: String) -> String:
+  match mapped:
+    case True{}:
+      String.append(namespace, key)
+    case False{}:
+      operator_key_test_6(key, namespace)
+
+def operator_key_test_5(+key: String, namespace: String) -> String:
+  operator_key_choice_5(String.eq(key, ".is_ge"), key, namespace)
+
+def operator_key_choice_4(mapped: Bool, key: String, namespace: String) -> String:
+  match mapped:
+    case True{}:
+      String.append(namespace, key)
+    case False{}:
+      operator_key_test_5(key, namespace)
+
+def operator_key_test_4(+key: String, namespace: String) -> String:
+  operator_key_choice_4(String.eq(key, ".is_le"), key, namespace)
+
+def operator_key_choice_3(mapped: Bool, key: String, namespace: String) -> String:
+  match mapped:
+    case True{}:
+      String.append(namespace, key)
+    case False{}:
+      operator_key_test_4(key, namespace)
+
+def operator_key_test_3(+key: String, namespace: String) -> String:
+  operator_key_choice_3(String.eq(key, ".is_lt"), key, namespace)
+
+def operator_key_choice_2(mapped: Bool, key: String, namespace: String) -> String:
+  match mapped:
+    case True{}:
+      String.append(namespace, key)
+    case False{}:
+      operator_key_test_3(key, namespace)
+
+def operator_key_test_2(+key: String, namespace: String) -> String:
+  operator_key_choice_2(String.eq(key, ".and"), key, namespace)
+
+def operator_key_choice_1(mapped: Bool, key: String, namespace: String) -> String:
+  match mapped:
+    case True{}:
+      String.append(namespace, key)
+    case False{}:
+      operator_key_test_2(key, namespace)
+
+def operator_key_test_1(+key: String, namespace: String) -> String:
+  operator_key_choice_1(String.eq(key, ".xor"), key, namespace)
+
+def operator_key_choice_0(mapped: Bool, key: String, namespace: String) -> String:
+  match mapped:
+    case True{}:
+      String.append(namespace, key)
+    case False{}:
+      operator_key_test_1(key, namespace)
+
+def operator_key_test_0(+key: String, namespace: String) -> String:
+  operator_key_choice_0(String.eq(key, ".or"), key, namespace)
 
 def map_operator_key(namespace: String, key: String) -> String:
-  operator_key_result(operator_key_classify(key), namespace)
+  operator_key_test_0(key, namespace)
 
 def parse_match_tail_after_semicolon(file: String, tail: Ast.SyntaxTerm, close: Lexer.Token, rest: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match scanned:

@@ -1,0 +1,406 @@
+{
+  "status": "PASS",
+  "backend": "actual compiled JS",
+  "source": "import Base\n\ndef operator_key_choice_13(mapped: Bool, key: String, namespace: String) -> String:\n  match mapped:\n    case True{}:\n      String.append(namespace, key)\n    case False{}:\n      key\n\ndef operator_key_test_13(+key: String, namespace: String) -> String:\n  operator_key_choice_13(String.eq(key, \".mod\"), key, namespace)\n\ndef operator_key_choice_12(mapped: Bool, key: String, namespace: String) -> String:\n  match mapped:\n    case True{}:\n      String.append(namespace, key)\n    case False{}:\n      operator_key_test_13(key, namespace)\n\ndef operator_key_test_12(+key: String, namespace: String) -> String:\n  operator_key_choice_12(String.eq(key, \".div\"), key, namespace)\n\ndef operator_key_choice_11(mapped: Bool, key: String, namespace: String) -> String:\n  match mapped:\n    case True{}:\n      String.append(namespace, key)\n    case False{}:\n      operator_key_test_12(key, namespace)\n\ndef operator_key_test_11(+key: String, namespace: String) -> String:\n  operator_key_choice_11(String.eq(key, \".mul\"), key, namespace)\n\ndef operator_key_choice_10(mapped: Bool, key: String, namespace: String) -> String:\n  match mapped:\n    case True{}:\n      String.append(namespace, key)\n    case False{}:\n      operator_key_test_11(key, namespace)\n\ndef operator_key_test_10(+key: String, namespace: String) -> String:\n  operator_key_choice_10(String.eq(key, \".sub\"), key, namespace)\n\ndef operator_key_choice_9(mapped: Bool, key: String, namespace: String) -> String:\n  match mapped:\n    case True{}:\n      String.append(namespace, key)\n    case False{}:\n      operator_key_test_10(key, namespace)\n\ndef operator_key_test_9(+key: String, namespace: String) -> String:\n  operator_key_choice_9(String.eq(key, \".add\"), key, namespace)\n\ndef operator_key_choice_8(mapped: Bool, key: String, namespace: String) -> String:\n  match mapped:\n    case True{}:\n      String.append(namespace, key)\n    case False{}:\n      operator_key_test_9(key, namespace)\n\ndef operator_key_test_8(+key: String, namespace: String) -> String:\n  operator_key_choice_8(String.eq(key, \".shrn\"), key, namespace)\n\ndef operator_key_choice_7(mapped: Bool, key: String, namespace: String) -> String:\n  match mapped:\n    case True{}:\n      String.append(namespace, key)\n    case False{}:\n      operator_key_test_8(key, namespace)\n\ndef operator_key_test_7(+key: String, namespace: String) -> String:\n  operator_key_choice_7(String.eq(key, \".shln\"), key, namespace)\n\ndef operator_key_choice_6(mapped: Bool, key: String, namespace: String) -> String:\n  match mapped:\n    case True{}:\n      String.append(namespace, key)\n    case False{}:\n      operator_key_test_7(key, namespace)\n\ndef operator_key_test_6(+key: String, namespace: String) -> String:\n  operator_key_choice_6(String.eq(key, \".is_gt\"), key, namespace)\n\ndef operator_key_choice_5(mapped: Bool, key: String, namespace: String) -> String:\n  match mapped:\n    case True{}:\n      String.append(namespace, key)\n    case False{}:\n      operator_key_test_6(key, namespace)\n\ndef operator_key_test_5(+key: String, namespace: String) -> String:\n  operator_key_choice_5(String.eq(key, \".is_ge\"), key, namespace)\n\ndef operator_key_choice_4(mapped: Bool, key: String, namespace: String) -> String:\n  match mapped:\n    case True{}:\n      String.append(namespace, key)\n    case False{}:\n      operator_key_test_5(key, namespace)\n\ndef operator_key_test_4(+key: String, namespace: String) -> String:\n  operator_key_choice_4(String.eq(key, \".is_le\"), key, namespace)\n\ndef operator_key_choice_3(mapped: Bool, key: String, namespace: String) -> String:\n  match mapped:\n    case True{}:\n      String.append(namespace, key)\n    case False{}:\n      operator_key_test_4(key, namespace)\n\ndef operator_key_test_3(+key: String, namespace: String) -> String:\n  operator_key_choice_3(String.eq(key, \".is_lt\"), key, namespace)\n\ndef operator_key_choice_2(mapped: Bool, key: String, namespace: String) -> String:\n  match mapped:\n    case True{}:\n      String.append(namespace, key)\n    case False{}:\n      operator_key_test_3(key, namespace)\n\ndef operator_key_test_2(+key: String, namespace: String) -> String:\n  operator_key_choice_2(String.eq(key, \".and\"), key, namespace)\n\ndef operator_key_choice_1(mapped: Bool, key: String, namespace: String) -> String:\n  match mapped:\n    case True{}:\n      String.append(namespace, key)\n    case False{}:\n      operator_key_test_2(key, namespace)\n\ndef operator_key_test_1(+key: String, namespace: String) -> String:\n  operator_key_choice_1(String.eq(key, \".xor\"), key, namespace)\n\ndef operator_key_choice_0(mapped: Bool, key: String, namespace: String) -> String:\n  match mapped:\n    case True{}:\n      String.append(namespace, key)\n    case False{}:\n      operator_key_test_1(key, namespace)\n\ndef operator_key_test_0(+key: String, namespace: String) -> String:\n  operator_key_choice_0(String.eq(key, \".or\"), key, namespace)\n\ndef map_operator_key(namespace: String, key: String) -> String:\n  operator_key_test_0(key, namespace)\n\n",
+  "sourceSha256": "b4b957439fcd8224d79136dd664394cba0ec8115c82440873a40668e30c2d10a",
+  "jsSha256": "f80755c7741b5fed3b03cb3ccd34f08aeef53691bb9556b1c8442176fd1dcdc2",
+  "nativeEvents": 479,
+  "results": [
+    {
+      "namespace": "U32",
+      "key": ".or",
+      "expected": "U32.or",
+      "actual": "U32.or"
+    },
+    {
+      "namespace": "U32",
+      "key": ".xor",
+      "expected": "U32.xor",
+      "actual": "U32.xor"
+    },
+    {
+      "namespace": "U32",
+      "key": ".and",
+      "expected": "U32.and",
+      "actual": "U32.and"
+    },
+    {
+      "namespace": "U32",
+      "key": ".is_lt",
+      "expected": "U32.is_lt",
+      "actual": "U32.is_lt"
+    },
+    {
+      "namespace": "U32",
+      "key": ".is_le",
+      "expected": "U32.is_le",
+      "actual": "U32.is_le"
+    },
+    {
+      "namespace": "U32",
+      "key": ".is_ge",
+      "expected": "U32.is_ge",
+      "actual": "U32.is_ge"
+    },
+    {
+      "namespace": "U32",
+      "key": ".is_gt",
+      "expected": "U32.is_gt",
+      "actual": "U32.is_gt"
+    },
+    {
+      "namespace": "U32",
+      "key": ".shln",
+      "expected": "U32.shln",
+      "actual": "U32.shln"
+    },
+    {
+      "namespace": "U32",
+      "key": ".shrn",
+      "expected": "U32.shrn",
+      "actual": "U32.shrn"
+    },
+    {
+      "namespace": "U32",
+      "key": ".add",
+      "expected": "U32.add",
+      "actual": "U32.add"
+    },
+    {
+      "namespace": "U32",
+      "key": ".sub",
+      "expected": "U32.sub",
+      "actual": "U32.sub"
+    },
+    {
+      "namespace": "U32",
+      "key": ".mul",
+      "expected": "U32.mul",
+      "actual": "U32.mul"
+    },
+    {
+      "namespace": "U32",
+      "key": ".div",
+      "expected": "U32.div",
+      "actual": "U32.div"
+    },
+    {
+      "namespace": "U32",
+      "key": ".mod",
+      "expected": "U32.mod",
+      "actual": "U32.mod"
+    },
+    {
+      "namespace": "U32",
+      "key": "",
+      "expected": "",
+      "actual": ""
+    },
+    {
+      "namespace": "U32",
+      "key": "add",
+      "expected": "add",
+      "actual": "add"
+    },
+    {
+      "namespace": "U32",
+      "key": ".addx",
+      "expected": ".addx",
+      "actual": ".addx"
+    },
+    {
+      "namespace": "U32",
+      "key": "..add",
+      "expected": "..add",
+      "actual": "..add"
+    },
+    {
+      "namespace": "U32",
+      "key": ".ADD",
+      "expected": ".ADD",
+      "actual": ".ADD"
+    },
+    {
+      "namespace": "U32",
+      "key": "unknown",
+      "expected": "unknown",
+      "actual": "unknown"
+    },
+    {
+      "namespace": "U32",
+      "key": "λ",
+      "expected": "λ",
+      "actual": "λ"
+    },
+    {
+      "namespace": "U32",
+      "key": ".is_l",
+      "expected": ".is_l",
+      "actual": ".is_l"
+    },
+    {
+      "namespace": "",
+      "key": ".or",
+      "expected": ".or",
+      "actual": ".or"
+    },
+    {
+      "namespace": "",
+      "key": ".xor",
+      "expected": ".xor",
+      "actual": ".xor"
+    },
+    {
+      "namespace": "",
+      "key": ".and",
+      "expected": ".and",
+      "actual": ".and"
+    },
+    {
+      "namespace": "",
+      "key": ".is_lt",
+      "expected": ".is_lt",
+      "actual": ".is_lt"
+    },
+    {
+      "namespace": "",
+      "key": ".is_le",
+      "expected": ".is_le",
+      "actual": ".is_le"
+    },
+    {
+      "namespace": "",
+      "key": ".is_ge",
+      "expected": ".is_ge",
+      "actual": ".is_ge"
+    },
+    {
+      "namespace": "",
+      "key": ".is_gt",
+      "expected": ".is_gt",
+      "actual": ".is_gt"
+    },
+    {
+      "namespace": "",
+      "key": ".shln",
+      "expected": ".shln",
+      "actual": ".shln"
+    },
+    {
+      "namespace": "",
+      "key": ".shrn",
+      "expected": ".shrn",
+      "actual": ".shrn"
+    },
+    {
+      "namespace": "",
+      "key": ".add",
+      "expected": ".add",
+      "actual": ".add"
+    },
+    {
+      "namespace": "",
+      "key": ".sub",
+      "expected": ".sub",
+      "actual": ".sub"
+    },
+    {
+      "namespace": "",
+      "key": ".mul",
+      "expected": ".mul",
+      "actual": ".mul"
+    },
+    {
+      "namespace": "",
+      "key": ".div",
+      "expected": ".div",
+      "actual": ".div"
+    },
+    {
+      "namespace": "",
+      "key": ".mod",
+      "expected": ".mod",
+      "actual": ".mod"
+    },
+    {
+      "namespace": "",
+      "key": "",
+      "expected": "",
+      "actual": ""
+    },
+    {
+      "namespace": "",
+      "key": "add",
+      "expected": "add",
+      "actual": "add"
+    },
+    {
+      "namespace": "",
+      "key": ".addx",
+      "expected": ".addx",
+      "actual": ".addx"
+    },
+    {
+      "namespace": "",
+      "key": "..add",
+      "expected": "..add",
+      "actual": "..add"
+    },
+    {
+      "namespace": "",
+      "key": ".ADD",
+      "expected": ".ADD",
+      "actual": ".ADD"
+    },
+    {
+      "namespace": "",
+      "key": "unknown",
+      "expected": "unknown",
+      "actual": "unknown"
+    },
+    {
+      "namespace": "",
+      "key": "λ",
+      "expected": "λ",
+      "actual": "λ"
+    },
+    {
+      "namespace": "",
+      "key": ".is_l",
+      "expected": ".is_l",
+      "actual": ".is_l"
+    },
+    {
+      "namespace": "α",
+      "key": ".or",
+      "expected": "α.or",
+      "actual": "α.or"
+    },
+    {
+      "namespace": "α",
+      "key": ".xor",
+      "expected": "α.xor",
+      "actual": "α.xor"
+    },
+    {
+      "namespace": "α",
+      "key": ".and",
+      "expected": "α.and",
+      "actual": "α.and"
+    },
+    {
+      "namespace": "α",
+      "key": ".is_lt",
+      "expected": "α.is_lt",
+      "actual": "α.is_lt"
+    },
+    {
+      "namespace": "α",
+      "key": ".is_le",
+      "expected": "α.is_le",
+      "actual": "α.is_le"
+    },
+    {
+      "namespace": "α",
+      "key": ".is_ge",
+      "expected": "α.is_ge",
+      "actual": "α.is_ge"
+    },
+    {
+      "namespace": "α",
+      "key": ".is_gt",
+      "expected": "α.is_gt",
+      "actual": "α.is_gt"
+    },
+    {
+      "namespace": "α",
+      "key": ".shln",
+      "expected": "α.shln",
+      "actual": "α.shln"
+    },
+    {
+      "namespace": "α",
+      "key": ".shrn",
+      "expected": "α.shrn",
+      "actual": "α.shrn"
+    },
+    {
+      "namespace": "α",
+      "key": ".add",
+      "expected": "α.add",
+      "actual": "α.add"
+    },
+    {
+      "namespace": "α",
+      "key": ".sub",
+      "expected": "α.sub",
+      "actual": "α.sub"
+    },
+    {
+      "namespace": "α",
+      "key": ".mul",
+      "expected": "α.mul",
+      "actual": "α.mul"
+    },
+    {
+      "namespace": "α",
+      "key": ".div",
+      "expected": "α.div",
+      "actual": "α.div"
+    },
+    {
+      "namespace": "α",
+      "key": ".mod",
+      "expected": "α.mod",
+      "actual": "α.mod"
+    },
+    {
+      "namespace": "α",
+      "key": "",
+      "expected": "",
+      "actual": ""
+    },
+    {
+      "namespace": "α",
+      "key": "add",
+      "expected": "add",
+      "actual": "add"
+    },
+    {
+      "namespace": "α",
+      "key": ".addx",
+      "expected": ".addx",
+      "actual": ".addx"
+    },
+    {
+      "namespace": "α",
+      "key": "..add",
+      "expected": "..add",
+      "actual": "..add"
+    },
+    {
+      "namespace": "α",
+      "key": ".ADD",
+      "expected": ".ADD",
+      "actual": ".ADD"
+    },
+    {
+      "namespace": "α",
+      "key": "unknown",
+      "expected": "unknown",
+      "actual": "unknown"
+    },
+    {
+      "namespace": "α",
+      "key": "λ",
+      "expected": "λ",
+      "actual": "λ"
+    },
+    {
+      "namespace": "α",
+      "key": ".is_l",
+      "expected": ".is_l",
+      "actual": ".is_l"
+    }
+  ]
+}
