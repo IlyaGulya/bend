@@ -1,0 +1,14 @@
+{
+  "question": "Does extracting the existing name/symbol string-dispatch Bodies from parse_atom_scan into small typed helpers reduce the actual generated step_parse_atom_scan enough for a complete retained-e build under 3GiB?",
+  "authorization": "User selected Diagnostic refactor parse_atom_scan after the saved reports.",
+  "cheapTest": "Audit the raw source AST: exact original branch counts/order/body text, captured binder identities/types/quantities, unchanged external parse_atom_scan ABI and invertible body-to-helper/call transformation. Then normal regeneration, not hand-edited output.",
+  "source": "Compose the already saved diagnostic pattern scanner shape with the atom-only extraction on a temporary copy of frozen canonical source. No production canonical edit.",
+  "onPass": "Run complete ordinary load and retained-e native check, actual JS codegen/execution/corpus on that same candidate; only complete results qualify.",
+  "onFailure": "Record the exact error/phase and resource outcome. If ordinary replay prevents checking, one explicit temporary direct-loader full retained-e diagnostic is allowed; it cannot be production acceptance.",
+  "memoryMiB": 3072,
+  "rssMiB": 3072,
+  "pollMs": 10,
+  "protectedFilesModified": false,
+  "newUnsafe": false,
+  "generatedHandEdits": false
+}

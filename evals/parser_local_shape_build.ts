@@ -4,10 +4,11 @@ import {createHash,randomUUID} from 'node:crypto';
 import {resolve} from 'node:path';
 import {writeFileSync,appendFileSync,rmSync} from 'node:fs';
 import {partitionPatternScanSource} from './pattern_scan_partition_source.ts';
+import {extractAtomShape} from './parse_atom_shape_source.ts';
 import {checkFrozen,frozen,replayKernel} from './load_replay_kernel.ts';
 import {runHeavyGate,guardHeavyGate} from './heavy_gate.ts';
 const isProposal=process.argv[2]==='--build-proposal';
-const stem=process.env.BEND_PARSER_REPORT_PREFIX??(isProposal?'checkpoints/parser-fields-shape-proposal':'checkpoints/parser-fields-shape'),sourcePath=resolve('bend2/selfhost/.pattern_scan_fields_source.bend'),outputBase=resolve('bend2/selfhost/.pattern_scan_fields_generated.bend'),candidatePath=outputBase.replace('.bend','_fuel.bend'),artifactPath=resolve('bend2/selfhost/parser_explicit_fuel.diagnostic.js');
+const stem=process.env.BEND_PARSER_REPORT_PREFIX??(isProposal?'checkpoints/parser-atom-shape-proposal':'checkpoints/parser-atom-shape'),sourcePath=resolve('bend2/selfhost/.parser_atom_shape_source.bend'),outputBase=resolve('bend2/selfhost/.parser_atom_shape_generated.bend'),candidatePath=outputBase.replace('.bend','_fuel.bend'),artifactPath=resolve('bend2/selfhost/parser_explicit_fuel.diagnostic.js');
 const sha=(s:string)=>createHash('sha256').update(s).digest('hex');
 const mode=process.argv[2];
 if(!mode){
@@ -24,7 +25,7 @@ const start=performance.now();let phase=mode==='--prepare'?'source':'load';
 function event(data:object){const row={phase,elapsedMs:performance.now()-start,bunVersion:Bun.version,runtimeArgs:process.execArgv,...data};appendFileSync(stem+'.jsonl',JSON.stringify(row)+'\n');writeFileSync(stem+'.progress.json',JSON.stringify(row)+'\n');}
 try{
  if(mode==='--prepare'){
-  writeFileSync(stem+'.jsonl','');const prepared=await partitionPatternScanSource(await Bun.file('bend2/selfhost/parser.bend').text());writeFileSync(sourcePath,prepared.source);writeFileSync(stem+'.audit.json',JSON.stringify(prepared.audit,null,2)+'\n');event({stage:'source-audit-pass',sourceHash:prepared.audit.transformedSha256});
+  writeFileSync(stem+'.jsonl','');const pattern=await partitionPatternScanSource(await Bun.file('bend2/selfhost/parser.bend').text()),atom=await extractAtomShape(pattern.source),prepared={...atom,audit:{...atom.audit,patternScanner:pattern.audit}};writeFileSync(sourcePath,prepared.source);writeFileSync(stem+'.audit.json',JSON.stringify(prepared.audit,null,2)+'\n');event({stage:'source-audit-pass',sourceHash:prepared.audit.transformedSha256});
   const graphPath=resolve('evals/.local_shape_graph_'+randomUUID()+'.json'),generatorPath=resolve('evals/.local_shape_generator_'+randomUUID()+'.ts');
   const baseGraph=await Bun.file('bend2/selfhost/parser_full_current_graph.json').json();writeFileSync(graphPath,JSON.stringify({...baseGraph,sourceCheckpoint:prepared.audit.transformedSha256.slice(0,8),sourceSha256:prepared.audit.transformedSha256,definitions:prepared.graph.definitions,edges:prepared.graph.edges,unresolvedReferences:prepared.graph.unresolvedReferences},null,2)+'\n');
   const original=await Bun.file('evals/parser_full_generate.ts').text(),changes=[['const input = resolve(import.meta.dir, "../bend2/selfhost/parser.bend");','const input = '+JSON.stringify(sourcePath)+';'],['const output = resolve(import.meta.dir, "../bend2/selfhost/parser_full_generated.bend");','const output = '+JSON.stringify(outputBase)+';'],['const expected = "'+frozen['bend2/selfhost/parser.bend']+'";','const expected = "'+prepared.audit.transformedSha256+'";'],['const currentGraphPath = resolve(import.meta.dir, "../bend2/selfhost/parser_full_current_graph.json");','const currentGraphPath = '+JSON.stringify(graphPath)+';']];

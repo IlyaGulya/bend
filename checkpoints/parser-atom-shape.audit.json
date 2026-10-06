@@ -1,0 +1,636 @@
+{
+  "originalSha256": "8eec93e0780cd25ac1c13f0d6965647b4644789e1b7371438c6563417d20a1ed",
+  "transformedSha256": "c6a1f6f1fa8c49248fab60134b576b486b4ef10a27e6f3ade04e854ca8a56fec",
+  "externalAtomABIUnchanged": true,
+  "exactInverse": true,
+  "helpers": [
+    {
+      "helper": "parse_atom_name_dispatch",
+      "originalRows": 6,
+      "patterns": [
+        [
+          "\"do\""
+        ],
+        [
+          "\"Type\""
+        ],
+        [
+          "\"Data\""
+        ],
+        [
+          "\"Quant\""
+        ],
+        [
+          "\"Kind\""
+        ],
+        [
+          "_"
+        ]
+      ],
+      "captured": [
+        {
+          "id": 22,
+          "name": "text",
+          "quantity": "Lone",
+          "type": "String"
+        },
+        {
+          "id": 1,
+          "name": "file",
+          "quantity": "Many",
+          "type": "String"
+        },
+        {
+          "id": 8,
+          "name": "scope",
+          "quantity": "Lone",
+          "type": "List<&2, Scope>"
+        },
+        {
+          "id": 10,
+          "name": "depth",
+          "quantity": "Lone",
+          "type": "Nat"
+        },
+        {
+          "id": 16,
+          "name": "rest",
+          "quantity": "Lone",
+          "type": "List<&2, Lexer.Token>"
+        },
+        {
+          "id": 23,
+          "name": "beg",
+          "quantity": "Lone",
+          "type": "Nat"
+        },
+        {
+          "id": 24,
+          "name": "end",
+          "quantity": "Lone",
+          "type": "Nat"
+        }
+      ],
+      "sourceBodySha256": "e6c3f7c0e86d14f30930e1b5bef3f90b05f173207cb6c1157893e60d6a8ed66d",
+      "matchedScalarFirst": true,
+      "recursiveLogicUnchanged": true
+    },
+    {
+      "helper": "parse_atom_symbol_dispatch",
+      "originalRows": 11,
+      "patterns": [
+        [
+          "\"?\""
+        ],
+        [
+          "\"[\""
+        ],
+        [
+          "\"(\""
+        ],
+        [
+          "\"%\""
+        ],
+        [
+          "\"@\""
+        ],
+        [
+          "\"&\""
+        ],
+        [
+          "\"+\""
+        ],
+        [
+          "\"\\\\\""
+        ],
+        [
+          "\"~\""
+        ],
+        [
+          "\"{\""
+        ],
+        [
+          "_"
+        ]
+      ],
+      "captured": [
+        {
+          "id": 71,
+          "name": "text",
+          "quantity": "Lone",
+          "type": "String"
+        },
+        {
+          "id": 1,
+          "name": "file",
+          "quantity": "Many",
+          "type": "String"
+        },
+        {
+          "id": 3,
+          "name": "tokens",
+          "quantity": "Lone",
+          "type": "List<&2, Lexer.Token>"
+        },
+        {
+          "id": 8,
+          "name": "scope",
+          "quantity": "Lone",
+          "type": "List<&2, Scope>"
+        },
+        {
+          "id": 10,
+          "name": "depth",
+          "quantity": "Lone",
+          "type": "Nat"
+        },
+        {
+          "id": 16,
+          "name": "rest",
+          "quantity": "Lone",
+          "type": "List<&2, Lexer.Token>"
+        },
+        {
+          "id": 72,
+          "name": "beg",
+          "quantity": "Lone",
+          "type": "Nat"
+        },
+        {
+          "id": 73,
+          "name": "end",
+          "quantity": "Lone",
+          "type": "Nat"
+        },
+        {
+          "id": 75,
+          "name": "col",
+          "quantity": "Lone",
+          "type": "Nat"
+        }
+      ],
+      "sourceBodySha256": "b04094aec053a7602242afab5cd9ee7309aa5d11096a25519f84718681391fa4",
+      "matchedScalarFirst": true,
+      "recursiveLogicUnchanged": true
+    }
+  ],
+  "grammarLogicCopiedOnly": true,
+  "newUnsafe": false,
+  "patternScanner": {
+    "question": "Can nonrecursive mode-specific scanner steps shrink checking while lexical tail callbacks preserve original token-first recursion and ownership?",
+    "cheapTest": "Typed callback native smoke PASS7n; direct nested mode-first original-ABI smoke consumed-binder FAIL, so mode matching lives in nonrecursive helpers with aligned formals",
+    "onPass": "Actual complete ordinary load/check/codegen then artifact execution/corpus, no trusted-prefix acceptance",
+    "onFailure": "Report concrete source/toolchain boundary, no unsafe/checker/generator logic workaround",
+    "originalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+    "transformedSha256": "8eec93e0780cd25ac1c13f0d6965647b4644789e1b7371438c6563417d20a1ed",
+    "originalExternalScannerABIUnchanged": true,
+    "quantities": "Original scanner ABI and emitted syntax quantities unchanged; helper sharing is explicit and checked",
+    "priority": "Original order preserved within disjoint mode constructors; no branch priority changed",
+    "rows": [
+      {
+        "row": 0,
+        "mode": "PatternExpect",
+        "originalPatterns": [
+          "Lexer.TokenInfo{Lexer.SymbolToken{}, \"+\", beg, ignored_end, ignored_line, ignored_col} <> +rest",
+          "PatternExpect{Ast.QOne{}, +ignored_beg}"
+        ],
+        "head": "Lexer.TokenInfo{Lexer.SymbolToken{}, \"+\", beg, ignored_end, ignored_line, ignored_col}",
+        "lookahead": "_",
+        "bodyOriginalSha256": "a479b56a895f6729a4cf89b5dd4f3149716aa1dfd0903b3cf9c6b5767da5a31b",
+        "rewrittenBodySha256": "ad15c4c3e6c049ae96f4892ad339c8623352c23ba782284c4638a968c3dd342e",
+        "originalRecursiveCalls": [
+          [
+            "rest",
+            "file",
+            "PatternExpect{Ast.QMany{}, beg}",
+            "frames",
+            "scope",
+            "depth",
+            "goal"
+          ]
+        ],
+        "recursiveFirstTokenArgumentPreservedViaLexicalTailCallbacks": true
+      },
+      {
+        "row": 1,
+        "mode": "PatternExpect",
+        "originalPatterns": [
+          "Lexer.TokenInfo{_, \"-\", beg, end, _, _} <> +rest",
+          "PatternExpect{Ast.QOne{}, _}"
+        ],
+        "head": "Lexer.TokenInfo{_, \"-\", beg, end, _, _}",
+        "lookahead": "_",
+        "bodyOriginalSha256": "f9fe72d91f7a95b62193c552c08e5682c66d6035a07ceef40f14ed20065889e0",
+        "rewrittenBodySha256": "f9fe72d91f7a95b62193c552c08e5682c66d6035a07ceef40f14ed20065889e0",
+        "originalRecursiveCalls": [],
+        "recursiveFirstTokenArgumentPreservedViaLexicalTailCallbacks": true
+      },
+      {
+        "row": 2,
+        "mode": "PatternExpect",
+        "originalPatterns": [
+          "Lexer.TokenInfo{Lexer.NameToken{}, key, beg, end, _, _} <> (Lexer.TokenInfo{_, \"{\", _, _, _, _} <> +after_open)",
+          "PatternExpect{Ast.QOne{}, _}"
+        ],
+        "head": "Lexer.TokenInfo{Lexer.NameToken{}, key, beg, end, _, _}",
+        "lookahead": "Some{Lexer.TokenInfo{_, \"{\", _, _, _, _}}",
+        "bodyOriginalSha256": "ef3e04235041ecc034b13bf326b2a591419d250533f013d7fa3f9b0b334fee89",
+        "rewrittenBodySha256": "940dc2393ee32feb10e2159b545ecf13101ab56978fea1b04b996326b582564b",
+        "originalRecursiveCalls": [
+          [
+            "after_open",
+            "file",
+            "PatternExpect{Ast.QOne{}, 0n}",
+            "PatternFrameOf{key, beg, end, Nil{}, scope, depth} <> frames",
+            "scope",
+            "depth",
+            "goal"
+          ]
+        ],
+        "recursiveFirstTokenArgumentPreservedViaLexicalTailCallbacks": true
+      },
+      {
+        "row": 3,
+        "mode": "PatternExpect",
+        "originalPatterns": [
+          "Lexer.TokenInfo{Lexer.NameToken{}, key, _, end, _, _} <> (Lexer.TokenInfo{_, \"{\", _, _, _, _} <> +after_open)",
+          "PatternExpect{quantity, beg}"
+        ],
+        "head": "Lexer.TokenInfo{Lexer.NameToken{}, key, _, end, _, _}",
+        "lookahead": "Some{Lexer.TokenInfo{_, \"{\", _, _, _, _}}",
+        "bodyOriginalSha256": "ef3e04235041ecc034b13bf326b2a591419d250533f013d7fa3f9b0b334fee89",
+        "rewrittenBodySha256": "b62b7f377089c63f0eb66993a034b9d3b4f620522c9c138c6066e70fd8d6eb80",
+        "originalRecursiveCalls": [
+          [
+            "after_open",
+            "file",
+            "PatternExpect{Ast.QOne{}, 0n}",
+            "PatternFrameOf{key, beg, end, Nil{}, scope, depth} <> frames",
+            "scope",
+            "depth",
+            "goal"
+          ]
+        ],
+        "recursiveFirstTokenArgumentPreservedViaLexicalTailCallbacks": true
+      },
+      {
+        "row": 4,
+        "mode": "PatternExpect",
+        "originalPatterns": [
+          "Lexer.TokenInfo{Lexer.NameToken{}, +key, beg, end, _, _} <> +rest",
+          "PatternExpect{Ast.QOne{}, _}"
+        ],
+        "head": "Lexer.TokenInfo{Lexer.NameToken{}, +key, beg, end, _, _}",
+        "lookahead": "_",
+        "bodyOriginalSha256": "03f72f9d106e916778a7fc60bfab20a217fc1601d275d0623c4f7c8b313a79b6",
+        "rewrittenBodySha256": "3ced8bbc7e4f78fd451f8888d6fd1dce99e0d06187a7a793806178f12823233d",
+        "originalRecursiveCalls": [
+          [
+            "rest",
+            "file",
+            "PatternCompleted{Ast.PatternVar{key, depth, Ast.QOne{}, span(file, beg, end)}}",
+            "frames",
+            "extend_scope(key, depth, scope)",
+            "depth + 1n",
+            "goal"
+          ]
+        ],
+        "recursiveFirstTokenArgumentPreservedViaLexicalTailCallbacks": true
+      },
+      {
+        "row": 5,
+        "mode": "PatternExpect",
+        "originalPatterns": [
+          "Lexer.TokenInfo{Lexer.NameToken{}, +key, _, end, _, _} <> +rest",
+          "PatternExpect{quantity, beg}"
+        ],
+        "head": "Lexer.TokenInfo{Lexer.NameToken{}, +key, _, end, _, _}",
+        "lookahead": "_",
+        "bodyOriginalSha256": "56a1df171672d3c551fbd2bc87dc765e0d87892b34801de54aa850cf98605ab5",
+        "rewrittenBodySha256": "e9cb375c4fe77439f0fa00a2bdcf2e5c5f83a6ec4c1fdeb69ba7b3ece598f2db",
+        "originalRecursiveCalls": [
+          [
+            "rest",
+            "file",
+            "PatternCompleted{Ast.PatternVar{key, depth, quantity, span(file, beg, end)}}",
+            "frames",
+            "extend_scope(key, depth, scope)",
+            "depth + 1n",
+            "goal"
+          ]
+        ],
+        "recursiveFirstTokenArgumentPreservedViaLexicalTailCallbacks": true
+      },
+      {
+        "row": 6,
+        "mode": "PatternExpect",
+        "originalPatterns": [
+          "Lexer.TokenInfo{Lexer.NumberToken{}, +text, +beg, +end, line, col} <> +rest",
+          "PatternExpect{quantity, _}"
+        ],
+        "head": "Lexer.TokenInfo{Lexer.NumberToken{}, +text, +beg, +end, line, col}",
+        "lookahead": "_",
+        "bodyOriginalSha256": "129e994a1894d61b44e08abd6c3c1ac3f7ea701b1e0898b11c5b0d814cc20501",
+        "rewrittenBodySha256": "6500f877630d33df0e0d9730175d4ad9f36681c86482c998196c96684b5dedb7",
+        "originalRecursiveCalls": [
+          [
+            "rest",
+            "file",
+            "pattern_number_mode(has_nat_suffix(text), file, text, beg, end, line, col, quantity)",
+            "frames",
+            "scope",
+            "depth",
+            "goal"
+          ]
+        ],
+        "recursiveFirstTokenArgumentPreservedViaLexicalTailCallbacks": true
+      },
+      {
+        "row": 7,
+        "mode": "PatternNoNat",
+        "originalPatterns": [
+          "_",
+          "PatternNoNat{number, quantity, beg, end}"
+        ],
+        "head": "_",
+        "lookahead": "_",
+        "bodyOriginalSha256": "2c23c31fce3d00d0acf6375a81ea79681ed9f6c3b56034275ca01549b0b56995",
+        "rewrittenBodySha256": "2c23c31fce3d00d0acf6375a81ea79681ed9f6c3b56034275ca01549b0b56995",
+        "originalRecursiveCalls": [],
+        "recursiveFirstTokenArgumentPreservedViaLexicalTailCallbacks": true
+      },
+      {
+        "row": 8,
+        "mode": "PatternBadNat",
+        "originalPatterns": [
+          "_",
+          "PatternBadNat{beg, end}"
+        ],
+        "head": "_",
+        "lookahead": "_",
+        "bodyOriginalSha256": "f9fe72d91f7a95b62193c552c08e5682c66d6035a07ceef40f14ed20065889e0",
+        "rewrittenBodySha256": "f9fe72d91f7a95b62193c552c08e5682c66d6035a07ceef40f14ed20065889e0",
+        "originalRecursiveCalls": [],
+        "recursiveFirstTokenArgumentPreservedViaLexicalTailCallbacks": true
+      },
+      {
+        "row": 9,
+        "mode": "PatternExpect",
+        "originalPatterns": [
+          "Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _} <> +rest",
+          "PatternExpect{quantity, beg}"
+        ],
+        "head": "Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _}",
+        "lookahead": "_",
+        "bodyOriginalSha256": "2f1935f87cdc280cc5dd42457b76e23bd451bfe2e1d9045706aaae5107b4cb5d",
+        "rewrittenBodySha256": "0511988cfbead5bfd44f37c98d5330e4c7bbf6e0e17ea9c98fdb039b0e270e1c",
+        "originalRecursiveCalls": [
+          [
+            "rest",
+            "file",
+            "PatternExpect{quantity, beg}",
+            "frames",
+            "scope",
+            "depth",
+            "goal"
+          ]
+        ],
+        "recursiveFirstTokenArgumentPreservedViaLexicalTailCallbacks": true
+      },
+      {
+        "row": 10,
+        "mode": "PatternExpect",
+        "originalPatterns": [
+          "Lexer.TokenInfo{_, \"}\", _, close_end, _, _} <> +rest",
+          "PatternExpect{quantity, +beg}"
+        ],
+        "head": "Lexer.TokenInfo{_, \"}\", _, close_end, _, _}",
+        "lookahead": "_",
+        "bodyOriginalSha256": "e49412dff4bc2fdb260cc854282be93e10a91e7127b2367471c1bb42c0bb55be",
+        "rewrittenBodySha256": "568cd5eb24a05aa7bf427d6536f9bb7c86b6a1842083656dc722adf6589a2f0f",
+        "originalRecursiveCalls": [
+          [
+            "rest",
+            "file",
+            "PatternCompleted{Ast.PatternCtr{key, List.reverse(&2, Ast.SyntaxPattern, fields), span(file, start, close_end)}}",
+            "parents",
+            "scope",
+            "depth",
+            "goal"
+          ]
+        ],
+        "recursiveFirstTokenArgumentPreservedViaLexicalTailCallbacks": true
+      },
+      {
+        "row": 11,
+        "mode": "PatternCompleted",
+        "originalPatterns": [
+          "Lexer.TokenInfo{_, \",\", _, _, _, _} <> +rest",
+          "PatternCompleted{pattern}"
+        ],
+        "head": "Lexer.TokenInfo{_, \",\", _, _, _, _}",
+        "lookahead": "_",
+        "bodyOriginalSha256": "07b6f3b1e9d738f6fc2142ac8a4b167e5770202aaee0526a3a16437e9ffe2a19",
+        "rewrittenBodySha256": "f31fe9df50db30d29785417686c27ecac39d6dbb5b2bda81be1fad10da27e970",
+        "originalRecursiveCalls": [
+          [
+            "rest",
+            "file",
+            "PatternExpect{Ast.QOne{}, 0n}",
+            "PatternFrameOf{key, beg, end, pattern <> fields, root_scope, root_depth} <> parents",
+            "scope",
+            "depth",
+            "goal"
+          ],
+          [
+            "rest",
+            "file",
+            "PatternExpect{Ast.QOne{}, 0n}",
+            "Nil{}",
+            "scope",
+            "depth",
+            "PatternCaseGoal{pattern <> acc, scope, depth}"
+          ]
+        ],
+        "recursiveFirstTokenArgumentPreservedViaLexicalTailCallbacks": true
+      },
+      {
+        "row": 12,
+        "mode": "PatternCompleted",
+        "originalPatterns": [
+          "Lexer.TokenInfo{_, \":\", _, _, _, _} <> +rest",
+          "PatternCompleted{pattern}"
+        ],
+        "head": "Lexer.TokenInfo{_, \":\", _, _, _, _}",
+        "lookahead": "_",
+        "bodyOriginalSha256": "400c6d0ab72eb0ec20648a0f2d7d7d9002021244e7cf73138438b9d6572a9d3b",
+        "rewrittenBodySha256": "400c6d0ab72eb0ec20648a0f2d7d7d9002021244e7cf73138438b9d6572a9d3b",
+        "originalRecursiveCalls": [],
+        "recursiveFirstTokenArgumentPreservedViaLexicalTailCallbacks": true
+      },
+      {
+        "row": 13,
+        "mode": "PatternCompleted",
+        "originalPatterns": [
+          "Lexer.TokenInfo{_, \"}\", _, close_end, _, _} <> +rest",
+          "PatternCompleted{pattern}"
+        ],
+        "head": "Lexer.TokenInfo{_, \"}\", _, close_end, _, _}",
+        "lookahead": "_",
+        "bodyOriginalSha256": "773af80d2de4c987bc553357c5fa9302765b645bb465e3e6dda180f1d6a58227",
+        "rewrittenBodySha256": "4b6be2f6707a92106dc0b70ac1a6fbd831e930c338861aaaeeb38b0de36362fe",
+        "originalRecursiveCalls": [
+          [
+            "rest",
+            "file",
+            "PatternCompleted{Ast.PatternCtr{key, List.reverse(&2, Ast.SyntaxPattern, pattern <> fields), span(file, beg, close_end)}}",
+            "parents",
+            "scope",
+            "depth",
+            "goal"
+          ]
+        ],
+        "recursiveFirstTokenArgumentPreservedViaLexicalTailCallbacks": true
+      },
+      {
+        "row": 14,
+        "mode": "PatternCompleted",
+        "originalPatterns": [
+          "Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _} <> +rest",
+          "PatternCompleted{pattern}"
+        ],
+        "head": "Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _}",
+        "lookahead": "_",
+        "bodyOriginalSha256": "50e93f6a89096a572e93a3e65dd348da20134d4196bd58b839998b0b243f9e00",
+        "rewrittenBodySha256": "e3d65e2460539f285337e7fdbd6b882f969a383438186a70f1fd3de7b6c0e007",
+        "originalRecursiveCalls": [
+          [
+            "rest",
+            "file",
+            "PatternCompleted{pattern}",
+            "frames",
+            "scope",
+            "depth",
+            "goal"
+          ],
+          [
+            "rest",
+            "file",
+            "PatternCompleted{pattern}",
+            "Nil{}",
+            "scope",
+            "depth",
+            "PatternCaseGoal{acc, before_scope, before_depth}"
+          ]
+        ],
+        "recursiveFirstTokenArgumentPreservedViaLexicalTailCallbacks": true
+      },
+      {
+        "row": 15,
+        "mode": "PatternCompleted",
+        "originalPatterns": [
+          "Lexer.TokenInfo{Lexer.NameToken{}, key, beg, end, _, _} <> (Lexer.TokenInfo{_, \"{\", _, _, _, _} <> +after_open)",
+          "PatternCompleted{pattern}"
+        ],
+        "head": "Lexer.TokenInfo{Lexer.NameToken{}, key, beg, end, _, _}",
+        "lookahead": "Some{Lexer.TokenInfo{_, \"{\", _, _, _, _}}",
+        "bodyOriginalSha256": "cce6ac7f74f6ff5e1c8cd5820220f57c17226c0853ea26672842bd467fc46f3c",
+        "rewrittenBodySha256": "15d4525cc476e3310e8ab9011810549b39ee22a0db5e349918905a7819097f3e",
+        "originalRecursiveCalls": [
+          [
+            "after_open",
+            "file",
+            "PatternExpect{Ast.QOne{}, 0n}",
+            "PatternFrameOf{key, beg, end, Nil{}, scope, depth} <> (PatternFrameOf{parent, start, parent_end, pattern <> fields, root_scope, root_depth} <> parents)",
+            "scope",
+            "depth",
+            "goal"
+          ]
+        ],
+        "recursiveFirstTokenArgumentPreservedViaLexicalTailCallbacks": true
+      },
+      {
+        "row": 16,
+        "mode": "PatternCompleted",
+        "originalPatterns": [
+          "Lexer.TokenInfo{Lexer.NameToken{}, +key, beg, end, _, _} <> +rest",
+          "PatternCompleted{pattern}"
+        ],
+        "head": "Lexer.TokenInfo{Lexer.NameToken{}, +key, beg, end, _, _}",
+        "lookahead": "_",
+        "bodyOriginalSha256": "640e64bfbb4efd3dd40747f3018406aac6eb2d04657ba991b6488665397d1353",
+        "rewrittenBodySha256": "14a322148156b7c0d40c7dfb58659fed1e1cbe1afef8a5015544c18549b9dced",
+        "originalRecursiveCalls": [
+          [
+            "rest",
+            "file",
+            "PatternCompleted{Ast.PatternVar{key, depth, Ast.QOne{}, span(file, beg, end)}}",
+            "PatternFrameOf{parent, start, parent_end, pattern <> fields, root_scope, root_depth} <> parents",
+            "extend_scope(key, depth, scope)",
+            "depth + 1n",
+            "goal"
+          ]
+        ],
+        "recursiveFirstTokenArgumentPreservedViaLexicalTailCallbacks": true
+      },
+      {
+        "row": 17,
+        "mode": "PatternCompleted",
+        "originalPatterns": [
+          "Lexer.TokenInfo{_, \"+\", beg, _, _, _} <> +rest",
+          "PatternCompleted{pattern}"
+        ],
+        "head": "Lexer.TokenInfo{_, \"+\", beg, _, _, _}",
+        "lookahead": "_",
+        "bodyOriginalSha256": "3b48b9b0c42996da15c5bb8278bc2ac6149a360432051477afe06bd932747d0a",
+        "rewrittenBodySha256": "c92bb4a526e6b56b5cb595891cd96d15af1add397c98a168e13647a6680ccfc5",
+        "originalRecursiveCalls": [
+          [
+            "rest",
+            "file",
+            "PatternExpect{Ast.QMany{}, beg}",
+            "PatternFrameOf{parent, start, parent_end, pattern <> fields, root_scope, root_depth} <> parents",
+            "scope",
+            "depth",
+            "goal"
+          ]
+        ],
+        "recursiveFirstTokenArgumentPreservedViaLexicalTailCallbacks": true
+      },
+      {
+        "row": 18,
+        "mode": "PatternCompleted",
+        "originalPatterns": [
+          "_",
+          "PatternCompleted{pattern}"
+        ],
+        "head": "_",
+        "lookahead": "_",
+        "bodyOriginalSha256": "55c84bf14d523c4f83bcdb01a0962d13d5cc1b32602a6eeb11c9734781aa0982",
+        "rewrittenBodySha256": "55c84bf14d523c4f83bcdb01a0962d13d5cc1b32602a6eeb11c9734781aa0982",
+        "originalRecursiveCalls": [],
+        "recursiveFirstTokenArgumentPreservedViaLexicalTailCallbacks": true
+      },
+      {
+        "row": 19,
+        "mode": "PatternExpect",
+        "originalPatterns": [
+          "_",
+          "PatternExpect{quantity, +beg}"
+        ],
+        "head": "_",
+        "lookahead": "_",
+        "bodyOriginalSha256": "d98ed0cc72fc59a45c46efa930e490c17a600939cd569abb091bcae75bb2edcf",
+        "rewrittenBodySha256": "770e8778ebbe099231fd6237818c464e9f4324b12231b4fcf4d210480db29de1",
+        "originalRecursiveCalls": [],
+        "recursiveFirstTokenArgumentPreservedViaLexicalTailCallbacks": true
+      }
+    ],
+    "helperGroups": {
+      "expect": 10,
+      "completed": 8,
+      "empty": 4
+    },
+    "sourceSpecificGeneratorExceptions": 0
+  }
+}
