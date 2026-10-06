@@ -1,0 +1,16 @@
+{
+  "candidateSha256": "822e8460ff94ff3f00695e27f5b4fe4dbd3515ae4d6d5c3b3c5eb7c1867b840e",
+  "guardian": "1791323371124-68524596cd8240e8",
+  "status": "RESOURCE_LIMIT",
+  "actualPhase": "validation",
+  "actualFrontier": {
+    "index": 1347,
+    "name": "step_parse_definition_typed_colon"
+  },
+  "phaseBoundaryGCReached": false,
+  "codegenReached": false,
+  "priorFullValidationProof": "d746e7cc;1478/1478",
+  "priorCodegenResourceBoundary": "1791322729494-4c160773c5ac935f",
+  "nextBoundedStep": "Source-only typed helper factoring of actual fresh-run stopping declaration, then complete check/codegen with same caps",
+  "protectedSourcesUnchanged": true
+}
