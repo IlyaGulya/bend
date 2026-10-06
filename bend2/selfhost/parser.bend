@@ -7,6 +7,11 @@ type ParseResult is Data:
   ParseSuccess{module: Ast.Module}
   ParseFailure{message: String, expected: String, observed: String, span: Ast.SourceSpan}
 
+type TopOwner is Data:
+  TopOwnerNone{}
+  TopOwnerLaw{}
+  TopOwnerClosed{}
+
 
 type Scope is Data:
   Scope{key: String, index: Nat}
@@ -880,18 +885,17 @@ def make_list_cons(item: Ast.SyntaxTerm, result: Ast.SyntaxTerm & Bool, file: St
     case (tail, ok):
       (Ast.TermCtr{"Con", [item, tail], span(file, beg, end)}, ok)
 
-def u32_bits(+file: String, +value: Nat, remaining: Nat, +beg: Nat, +end: Nat) -> Ast.SyntaxTerm:
+def u32_bits(+file: String, remaining: Nat, +value: Nat, +beg: Nat, +end: Nat) -> Ast.SyntaxTerm:
   match remaining:
     case 0n:
       Ast.TermCtr{ "WNil",  Nil{},  span(file, beg, end)}
     case 1n+rest:
-      +bit_index = rest
-      bit = u32_bit(file, Nat.mod(Nat.div(value, Nat.pow(2n, bit_index)), 2n), beg, end)
-      Ast.TermCtr{ "WCon",  [bit, u32_bits(file, value, bit_index, beg, end)],  span(file, beg, end)}
+      bit = u32_bit(file, Nat.mod(value, 2n), beg, end)
+      Ast.TermCtr{ "WCon",  [bit, u32_bits(file, rest, Nat.div(value, 2n), beg, end)],  span(file, beg, end)}
 
 
 def u32_literal(+file: String, value: Nat, +beg: Nat, +end: Nat) -> Ast.SyntaxTerm:
-  word = u32_bits(file, value, 32n, beg, end)
+  word = u32_bits(file, 32n, value, beg, end)
   Ast.TermCtr{ "U32",  [word],  span(file, beg, end)}
 
 def character_term(+file: String, value: Nat, +beg: Nat, +end: Nat) -> Ast.SyntaxTerm:
@@ -1207,9 +1211,9 @@ def syntax_word_value_go(term: Ast.SyntaxTerm, value: Nat, step: SyntaxWordStep)
     case Ast.TermCtr{"WCon", [_, +rest], _}:
       match step:
         case SyntaxWordZeroBit{}:
-          syntax_word_value_go(rest, value * 2n, syntax_word_step(rest))
+          Maybe.map(&2, Nat, Nat, tail => tail * 2n, syntax_word_value_go(rest, value, syntax_word_step(rest)))
         case SyntaxWordOneBit{}:
-          syntax_word_value_go(rest, value * 2n + 1n, syntax_word_step(rest))
+          Maybe.map(&2, Nat, Nat, tail => tail * 2n + 1n, syntax_word_value_go(rest, value, syntax_word_step(rest)))
         case _:
           None{}
     case _:
@@ -2068,19 +2072,40 @@ def is_base_path(token: Lexer.Token) -> Bool:
     case _:
       False{}
 
-def parse_module_import_modifier(file: String, canonical: String, beg: Nat, +path_token: Lexer.Token, modifier: Lexer.Token, after_modifier: List<&2, Lexer.Token>) -> (Ast.ModuleImport & List<&2, Lexer.Token>) & Bool:
-  match modifier:
-    case Lexer.TokenInfo{kind, "as", field_beg, field_end, line, col}:
-      parse_module_import_alias_target(file, canonical, beg, path_token, Lexer.TokenInfo{kind, "as", field_beg, field_end, line, col}, after_modifier)
-    case Lexer.TokenInfo{kind, text, field_beg, field_end, line, col}:
-      module_import_without_alias(is_base_path(path_token), file, canonical, beg, path_token, Lexer.TokenInfo{kind, text, field_beg, field_end, line, col} <> after_modifier)
+def parse_module_import_modifier(file: String, fragments: List<&2, String>, beg: Nat, path_token: Lexer.Token, modifier: Lexer.Token, after_modifier: List<&2, Lexer.Token>) -> (Ast.ModuleImport & List<&2, Lexer.Token>) & Bool:
+  match path_token modifier:
+    case Lexer.TokenInfo{path_kind, _, path_beg, path_end, path_line, path_col} Lexer.TokenInfo{kind, "as", field_beg, field_end, line, col}:
+      +canonical = String.concat(List.reverse(&2, String, fragments))
+      parse_module_import_alias_target(file, canonical, beg, Lexer.TokenInfo{path_kind, canonical, path_beg, path_end, path_line, path_col}, Lexer.TokenInfo{kind, "as", field_beg, field_end, line, col}, after_modifier)
+    case Lexer.TokenInfo{path_kind, _, path_beg, path_end, path_line, path_col} Lexer.TokenInfo{kind, text, field_beg, field_end, line, col}:
+      +canonical = String.concat(List.reverse(&2, String, fragments))
+      +complete_path = {Lexer.TokenInfo{path_kind, canonical, path_beg, path_end, path_line, path_col} : Lexer.Token}
+      module_import_without_alias(is_base_path(complete_path), file, canonical, beg, complete_path, Lexer.TokenInfo{kind, text, field_beg, field_end, line, col} <> after_modifier)
 
-def parse_module_import_path_rest(file: String, canonical: String, beg: Nat, +path_token: Lexer.Token, tokens: List<&2, Lexer.Token>) -> (Ast.ModuleImport & List<&2, Lexer.Token>) & Bool:
+def parse_module_import_path_rest(tokens: List<&2, Lexer.Token>, is_spaced: Bool, +path_token: Lexer.Token, file: String, fragments: List<&2, String>, beg: Nat) -> (Ast.ModuleImport & List<&2, Lexer.Token>) & Bool:
   match tokens:
-    case +modifier <> after_modifier:
-      parse_module_import_modifier(file, canonical, beg, path_token, modifier, after_modifier)
+    case +modifier <> +after_modifier:
+      match modifier:
+        case Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _}:
+          parse_module_import_modifier(file, fragments, beg, path_token, modifier, after_modifier)
+        case Lexer.TokenInfo{Lexer.EndToken{}, _, _, _, _, _}:
+          parse_module_import_modifier(file, fragments, beg, path_token, modifier, after_modifier)
+        case Lexer.TokenInfo{Lexer.ErrorToken{}, _, _, _, _, _}:
+          parse_module_import_modifier(file, fragments, beg, path_token, modifier, after_modifier)
+        case Lexer.TokenInfo{kind, text, start, +fin, line, col}:
+          match is_spaced:
+            case False{}:
+              match path_token:
+                case Lexer.TokenInfo{path_kind, path_text, path_beg, _, path_line, path_col}:
+                  parse_module_import_path_rest(after_modifier, has_space_after(fin, after_modifier), Lexer.TokenInfo{path_kind, path_text, path_beg, fin, path_line, path_col}, file, text <> fragments, beg)
+            case True{}:
+              parse_module_import_modifier(file, fragments, beg, path_token, Lexer.TokenInfo{kind, text, start, fin, line, col}, after_modifier)
     case Nil{}:
-      module_import_without_alias(is_base_path(path_token), file, canonical, beg, path_token, Nil{})
+      match path_token:
+        case Lexer.TokenInfo{path_kind, _, path_beg, path_end, path_line, path_col}:
+          +canonical = String.concat(List.reverse(&2, String, fragments))
+          +complete_path = {Lexer.TokenInfo{path_kind, canonical, path_beg, path_end, path_line, path_col} : Lexer.Token}
+          module_import_without_alias(is_base_path(complete_path), file, canonical, beg, complete_path, Nil{})
 
 def strip_quotes_reversed(reversed: List<&2, Char>) -> String:
   match reversed:
@@ -2150,6 +2175,8 @@ def parse_do_atom(+file: String, tokens: List<&2, Lexer.Token>, +beg: Nat, +scop
               match open:
                 case Lexer.TokenInfo{_, "<", _, _, _, _}:
                   parse_do_atom_args_result(parse_term_args(file, after_open, ">", scope, depth, Nil{}), file, key, beg, end, tokens, scope, depth)
+                case Lexer.TokenInfo{_, "<>", _, _, _, _}:
+                  parse_do_atom_args_result(((Nil{}, after_open), True{}), file, key, beg, end, tokens, scope, depth)
                 case _:
                   ((Ast.TermHole{"parse-error: expected < after do monad", span(file, token_beg(open), token_end(open))}, rest), False{})
             case Nil{}:
@@ -3270,19 +3297,19 @@ def parse_body_scan(file: String, tokens: List<&2, Lexer.Token>, scanned: List<&
             case +next <> after_next:
               match next:
                 case Lexer.TokenInfo{ _, "=",  _,  _,  _,  _}:
-                  parse_local_body(file, key, beg, end, col, after_next, scope, depth, Ast.QOne{})
+                  parse_local_body(file, key, beg, end, parent_col, after_next, scope, depth, Ast.QOne{})
                 case Lexer.TokenInfo{ _, "{",  _,  _,  _,  _}:
-                  parse_destructuring_local(file, tokens, beg, col, scope, depth)
+                  parse_destructuring_local(file, tokens, beg, parent_col, scope, depth)
                 case Lexer.TokenInfo{ _, "[",  _,  _,  _,  _}:
-                  decl_local_name_group(local_array_write(rest), True{}, file, tokens, token, rest, key, beg, end, col, scope, depth)
+                  decl_local_name_group(local_array_write(rest), True{}, file, tokens, token, rest, key, beg, end, parent_col, scope, depth)
                 case _:
-                  decl_local_name_group(local_group_has_equal(rest), False{}, file, tokens, token, rest, key, beg, end, col, scope, depth)
+                  decl_local_name_group(local_group_has_equal(rest), False{}, file, tokens, token, rest, key, beg, end, parent_col, scope, depth)
             case _:
               parse_reply(file, tokens, scope, depth)
         case Lexer.TokenInfo{ Lexer.SymbolToken{},  "+", beg,  _,  _, col}:
-          decl_parallel_or_reply(local_group_has_equal(rest), file, tokens, rest, beg, col, scope, depth, Ast.QMany{})
+          decl_parallel_or_reply(local_group_has_equal(rest), file, tokens, rest, beg, parent_col, scope, depth, Ast.QMany{})
         case Lexer.TokenInfo{ Lexer.SymbolToken{},  "-", beg,  _,  _, col}:
-          parse_erased_local(file, rest, beg, col, scope, depth)
+          parse_erased_local(file, rest, beg, parent_col, scope, depth)
         case _:
           parse_reply(file, tokens, scope, depth)
     case Nil{}:
@@ -3747,10 +3774,10 @@ def canonical_import_path(token: Lexer.Token) -> String:
     case _:
       token_text(token)
 
-def parse_module_import_path(file: String, import_token: Lexer.Token, +path_token: Lexer.Token, after_path: List<&2, Lexer.Token>) -> (Ast.ModuleImport & List<&2, Lexer.Token>) & Bool:
+def parse_module_import_path(file: String, import_token: Lexer.Token, +path_token: Lexer.Token, +after_path: List<&2, Lexer.Token>) -> (Ast.ModuleImport & List<&2, Lexer.Token>) & Bool:
   canonical = canonical_import_path(path_token)
   beg = token_beg(import_token)
-  parse_module_import_path_rest(file, canonical, beg, path_token, after_path)
+  parse_module_import_path_rest(after_path, has_space_after(token_end(path_token), after_path), path_token, file, [canonical], beg)
 
 def parse_module_import(file: String, +import_token: Lexer.Token, tokens: List<&2, Lexer.Token>) -> (Ast.ModuleImport & List<&2, Lexer.Token>) & Bool:
   match tokens:
@@ -4041,36 +4068,111 @@ def parse_law_decl(+file: String, tokens: List<&2, Lexer.Token>, +beg: Nat) -> (
     case Nil{}:
       law_failure(file, "", beg, beg, Nil{})
 
-def parse_top_result(ok: Bool, top: Ast.TopLevel, +after: List<&2, Lexer.Token>, tokens: List<&2, Lexer.Token>, file: String, path: String, acc: List<&2, Ast.TopLevel>) -> (List<&2, Ast.TopLevel> & Bool) & List<&2, Lexer.Token>:
-  match ok:
-    case True{}:
-      parse_top_scan(file, after, skip_lines(after), path, top <> acc)
-    case False{}:
-      ((List.reverse(&2, Ast.TopLevel, top <> acc), False{}), after)
+def top_owner_set(top: Ast.TopLevel, owners: Map<&2, TopOwner>) -> Map<&2, TopOwner>:
+  match top:
+    case Ast.DefTop{Ast.Definition{key, _, _, _, _, _}}:
+      Map.set(&2, TopOwner, owners, key, TopOwnerClosed{})
+    case Ast.TypeTop{Ast.TypeDecl{key, _, _, _, _}}:
+      Map.set(&2, TopOwner, owners, key, TopOwnerClosed{})
+    case Ast.LawTop{Ast.LawDecl{key, _, _, _}}:
+      Map.set(&2, TopOwner, owners, key, TopOwnerLaw{})
 
-def parse_top_scan(+file: String, tokens: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>, +path: String, acc: List<&2, Ast.TopLevel>) -> (List<&2, Ast.TopLevel> & Bool) & List<&2, Lexer.Token>:
+def top_owners_seed(acc: List<&2, Ast.TopLevel>, owners: Map<&2, TopOwner>) -> Map<&2, TopOwner>:
+  match acc:
+    case top <> rest:
+      top_owner_set(top, top_owners_seed(rest, owners))
+    case Nil{}:
+      owners
+
+def top_owner_query(top: Ast.TopLevel, owners: Map<&2, TopOwner>) -> Map<&2, TopOwner> & TopOwner:
+  match top:
+    case Ast.DefTop{Ast.Definition{key, _, _, _, _, _}}:
+      Map.get(TopOwner, TopOwnerNone{}, owners, key)
+    case Ast.TypeTop{Ast.TypeDecl{key, _, _, _, _}}:
+      Map.get(TopOwner, TopOwnerNone{}, owners, key)
+    case Ast.LawTop{Ast.LawDecl{key, _, _, _}}:
+      Map.get(TopOwner, TopOwnerNone{}, owners, key)
+
+def law_header_end(tokens: List<&2, Lexer.Token>) -> Bool:
+  match tokens:
+    case Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _} <> rest:
+      law_header_end(rest)
+    case Lexer.TokenInfo{_, ":", _, _, _, _} <> _:
+      True{}
+    case _:
+      False{}
+
+def law_header_bare(tokens: List<&2, Lexer.Token>) -> Bool:
+  match tokens:
+    case Lexer.TokenInfo{Lexer.NameToken{}, _, _, _, _, _} <> rest:
+      law_header_bare(rest)
+    case Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _} <> rest:
+      law_header_bare(rest)
+    case Lexer.TokenInfo{_, "(", _, _, _, _} <> rest:
+      law_header_bare(rest)
+    case Lexer.TokenInfo{_, ")", _, _, _, _} <> rest:
+      law_header_end(rest)
+    case Lexer.TokenInfo{_, ",", _, _, _, _} <> rest:
+      law_header_bare(rest)
+    case _:
+      False{}
+
+def top_owner_valid(top: Ast.TopLevel, owner: TopOwner, header: List<&2, Lexer.Token>) -> Bool:
+  match top:
+    case Ast.DefTop{Ast.Definition{_, _, Ast.NoTerm{}, _, _, _}}:
+      match owner:
+        case TopOwnerLaw{}: law_header_bare(header)
+        case _: False{}
+    case Ast.DefTop{Ast.Definition{_, _, Ast.SomeTerm{_}, _, _, _}}:
+      match owner:
+        case TopOwnerNone{}: True{}
+        case _: False{}
+    case Ast.TypeTop{_}:
+      match owner:
+        case TopOwnerNone{}: True{}
+        case _: False{}
+    case Ast.LawTop{_}:
+      match owner:
+        case TopOwnerNone{}: True{}
+        case _: False{}
+
+def top_owner_checked_result(query: Map<&2, TopOwner> & TopOwner, top: Ast.TopLevel, ok: Bool, header: List<&2, Lexer.Token>) -> Map<&2, TopOwner> & Bool:
+  match query:
+    case (owners, owner):
+      (owners, Bool.and(ok, top_owner_valid(top, owner, header)))
+
+def parse_top_result(validation: Map<&2, TopOwner> & Bool, +top: Ast.TopLevel, +after: List<&2, Lexer.Token>, tokens: List<&2, Lexer.Token>, file: String, path: String, acc: List<&2, Ast.TopLevel>) -> (List<&2, Ast.TopLevel> & Bool) & List<&2, Lexer.Token>:
+  match validation:
+    case (owners, ok):
+      match ok:
+        case True{}:
+          parse_top_scan(file, after, skip_lines(after), path, top <> acc, top_owner_set(top, owners))
+        case False{}:
+          ((List.reverse(&2, Ast.TopLevel, top <> acc), False{}), after)
+
+def parse_top_scan(+file: String, tokens: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>, +path: String, acc: List<&2, Ast.TopLevel>, owners: Map<&2, TopOwner>) -> (List<&2, Ast.TopLevel> & Bool) & List<&2, Lexer.Token>:
   match scanned:
-    case +token <> rest:
+    case +token <> +rest:
       match token:
         case Lexer.TokenInfo{ Lexer.EndToken{},  _,  _,  _,  _,  _}:
           ((List.reverse(&2, Ast.TopLevel, acc), True{}), rest)
         case Lexer.TokenInfo{ Lexer.ErrorToken{},  _,  _,  _,  _,  _}:
           ((List.reverse(&2, Ast.TopLevel, acc), False{}), tokens)
         case Lexer.TokenInfo{ Lexer.NameToken{},  "law", beg,  _,  _,  _}:
-          with_top_item_result(parse_law_decl(file, rest, beg), top => after => ok => parse_top_result(ok, top, after, tokens, file, path, acc))
+          with_top_item_result(parse_law_decl(file, rest, beg), +top => after => ok => parse_top_result(top_owner_checked_result(top_owner_query(top, owners), top, ok, rest), top, after, tokens, file, path, acc))
         case Lexer.TokenInfo{ Lexer.NameToken{},  "type", beg,  _,  _, col}:
-          with_top_item_result(parse_type_decl(file, rest, beg, col), top => after => ok => parse_top_result(ok, top, after, tokens, file, path, acc))
+          with_top_item_result(parse_type_decl(file, rest, beg, col), +top => after => ok => parse_top_result(top_owner_checked_result(top_owner_query(top, owners), top, ok, rest), top, after, tokens, file, path, acc))
         case Lexer.TokenInfo{ Lexer.SymbolToken{},  "@",  _,  _,  _,  _}:
-          with_top_item_result(parse_unsafe(file, rest, path), top => after => ok => parse_top_result(ok, top, after, tokens, file, path, acc))
-        case Lexer.TokenInfo{ Lexer.NameToken{},  "def",  _,  _,  _,  _}:
-          with_top_item_result(parse_definition(file, rest, path), top => after => ok => parse_top_result(ok, top, after, tokens, file, path, acc))
+          with_top_item_result(parse_unsafe(file, rest, path), +top => after => ok => parse_top_result(top_owner_checked_result(top_owner_query(top, owners), top, ok, rest), top, after, tokens, file, path, acc))
+        case Lexer.TokenInfo{ Lexer.NameToken{},  "def", beg, end, line, col}:
+          with_top_item_result(parse_definition(file, Lexer.TokenInfo{Lexer.NameToken{}, "def", beg, end, line, col} <> rest, path), +top => after => ok => parse_top_result(top_owner_checked_result(top_owner_query(top, owners), top, ok, rest), top, after, tokens, file, path, acc))
         case _:
           ((List.reverse(&2, Ast.TopLevel, acc), False{}), tokens)
     case Nil{}:
       ((List.reverse(&2, Ast.TopLevel, acc), False{}), Nil{})
 
-def parse_top(file: String, +tokens: List<&2, Lexer.Token>, path: String, acc: List<&2, Ast.TopLevel>) -> (List<&2, Ast.TopLevel> & Bool) & List<&2, Lexer.Token>:
-  parse_top_scan(file, tokens, skip_lines(tokens), path, acc)
+def parse_top(file: String, +tokens: List<&2, Lexer.Token>, path: String, +acc: List<&2, Ast.TopLevel>) -> (List<&2, Ast.TopLevel> & Bool) & List<&2, Lexer.Token>:
+  parse_top_scan(file, tokens, skip_lines(tokens), path, acc, top_owners_seed(acc, Map.new(&2, TopOwner)))
 
 def observed(tokens: List<&2, Lexer.Token>) -> String:
   match tokens:

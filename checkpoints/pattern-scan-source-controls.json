@@ -1,0 +1,774 @@
+{
+  "status": "SEMANTIC_GATE_FAILED",
+  "contract": "Exact source-only exchange; same signatures/calls/bodies; no aligned telescope permutation",
+  "fixtures": [
+    {
+      "fixture": "wildcard-before",
+      "covers": [
+        "literal-priority-oracle",
+        "wildcard-before",
+        "nested-constructor-failure",
+        "later-column-failure"
+      ],
+      "audit": {
+        "rowCount": 4,
+        "scrutinees": {
+          "original": [
+            "tag",
+            "choice"
+          ],
+          "transformed": [
+            "choice",
+            "tag"
+          ]
+        },
+        "rows": [
+          {
+            "index": 0,
+            "original": [
+              "_",
+              "X{True{}}"
+            ],
+            "transformed": [
+              "X{True{}}",
+              "_"
+            ],
+            "bodySha256": "3c0af4d7a8be71f32daf5594dc7c4ed83885bb423c02d305d9d448b2eee433cd",
+            "transformedBodySha256": "3c0af4d7a8be71f32daf5594dc7c4ed83885bb423c02d305d9d448b2eee433cd",
+            "bodyOffsets": {
+              "beg": 309,
+              "end": 321
+            }
+          },
+          {
+            "index": 1,
+            "original": [
+              "C{Nest{Leaf{value}}, True{}}",
+              "X{True{}}"
+            ],
+            "transformed": [
+              "X{True{}}",
+              "C{Nest{Leaf{value}}, True{}}"
+            ],
+            "bodySha256": "ccb7c6085b1a65068795fbf63a6b7202a84d54e3436cb9c52b50f9cec07d6cb1",
+            "transformedBodySha256": "ccb7c6085b1a65068795fbf63a6b7202a84d54e3436cb9c52b50f9cec07d6cb1",
+            "bodyOffsets": {
+              "beg": 368,
+              "end": 380
+            }
+          },
+          {
+            "index": 2,
+            "original": [
+              "D{Nest{Leaf{value}}, True{}}",
+              "X{True{}}"
+            ],
+            "transformed": [
+              "X{True{}}",
+              "D{Nest{Leaf{value}}, True{}}"
+            ],
+            "bodySha256": "da8130f36922dc74cfd43feaf6ae0dde17af478cb1f742761fbd14c7d481af7f",
+            "transformedBodySha256": "da8130f36922dc74cfd43feaf6ae0dde17af478cb1f742761fbd14c7d481af7f",
+            "bodyOffsets": {
+              "beg": 427,
+              "end": 439
+            }
+          },
+          {
+            "index": 3,
+            "original": [
+              "_",
+              "_"
+            ],
+            "transformed": [
+              "_",
+              "_"
+            ],
+            "bodySha256": "b00e83d84f077dcf8533c77566ec35e4fdfa2276dac558a01c4817d1efb90d27",
+            "transformedBodySha256": "b00e83d84f077dcf8533c77566ec35e4fdfa2276dac558a01c4817d1efb90d27",
+            "bodyOffsets": {
+              "beg": 451,
+              "end": 463
+            }
+          }
+        ],
+        "editCount": 5,
+        "originalSha256": "c50e5c4f814109355ab1b3fe296e5fee3adc9df9d3b39461693edd2581c6fd38",
+        "transformedSha256": "f7d5bc7c83d14c084640c8568337da5fd6cb68e761ab12341991f8d0a2dcc3bd",
+        "inverseByteExact": true,
+        "unrelatedBytesIdentical": true,
+        "bodyOffsetsIdentical": true,
+        "rowOrderUnchanged": true,
+        "signaturesAndRecursiveCallsUnchanged": true
+      },
+      "variants": [
+        {
+          "variant": "historical",
+          "status": "PASS",
+          "phase": "evaluation",
+          "values": [
+            33,
+            33,
+            33,
+            33,
+            33,
+            44,
+            44
+          ]
+        },
+        {
+          "variant": "source-only-swap",
+          "status": "FAIL",
+          "phase": "load",
+          "error": "Error:\n- message  : a match on a parameter or field (this name is a def or a consumed binder: give the value its own def)\nLocation:\n12 | def matrix(tag: Tag, choice: Choice) -> Nat:\n13>|   match choice tag:\n14 |     case X{True{}} _:"
+        }
+      ],
+      "identical": false
+    },
+    {
+      "fixture": "wildcard-between",
+      "covers": [
+        "literal-priority-oracle",
+        "wildcard-between",
+        "nested-constructor-failure",
+        "later-column-failure"
+      ],
+      "audit": {
+        "rowCount": 4,
+        "scrutinees": {
+          "original": [
+            "tag",
+            "choice"
+          ],
+          "transformed": [
+            "choice",
+            "tag"
+          ]
+        },
+        "rows": [
+          {
+            "index": 0,
+            "original": [
+              "C{Nest{Leaf{value}}, True{}}",
+              "X{True{}}"
+            ],
+            "transformed": [
+              "X{True{}}",
+              "C{Nest{Leaf{value}}, True{}}"
+            ],
+            "bodySha256": "ccb7c6085b1a65068795fbf63a6b7202a84d54e3436cb9c52b50f9cec07d6cb1",
+            "transformedBodySha256": "ccb7c6085b1a65068795fbf63a6b7202a84d54e3436cb9c52b50f9cec07d6cb1",
+            "bodyOffsets": {
+              "beg": 336,
+              "end": 348
+            }
+          },
+          {
+            "index": 1,
+            "original": [
+              "_",
+              "X{True{}}"
+            ],
+            "transformed": [
+              "X{True{}}",
+              "_"
+            ],
+            "bodySha256": "3c0af4d7a8be71f32daf5594dc7c4ed83885bb423c02d305d9d448b2eee433cd",
+            "transformedBodySha256": "3c0af4d7a8be71f32daf5594dc7c4ed83885bb423c02d305d9d448b2eee433cd",
+            "bodyOffsets": {
+              "beg": 368,
+              "end": 380
+            }
+          },
+          {
+            "index": 2,
+            "original": [
+              "D{Nest{Leaf{value}}, True{}}",
+              "X{True{}}"
+            ],
+            "transformed": [
+              "X{True{}}",
+              "D{Nest{Leaf{value}}, True{}}"
+            ],
+            "bodySha256": "da8130f36922dc74cfd43feaf6ae0dde17af478cb1f742761fbd14c7d481af7f",
+            "transformedBodySha256": "da8130f36922dc74cfd43feaf6ae0dde17af478cb1f742761fbd14c7d481af7f",
+            "bodyOffsets": {
+              "beg": 427,
+              "end": 439
+            }
+          },
+          {
+            "index": 3,
+            "original": [
+              "_",
+              "_"
+            ],
+            "transformed": [
+              "_",
+              "_"
+            ],
+            "bodySha256": "b00e83d84f077dcf8533c77566ec35e4fdfa2276dac558a01c4817d1efb90d27",
+            "transformedBodySha256": "b00e83d84f077dcf8533c77566ec35e4fdfa2276dac558a01c4817d1efb90d27",
+            "bodyOffsets": {
+              "beg": 451,
+              "end": 463
+            }
+          }
+        ],
+        "editCount": 5,
+        "originalSha256": "fcd416de1f4bf712ade382f2cdd95b06899472bf5997a207a9697290e341e8e5",
+        "transformedSha256": "b17b506179c9b3171f97bc5dba751ed7189976ef8664338e80ad16aa4bedf478",
+        "inverseByteExact": true,
+        "unrelatedBytesIdentical": true,
+        "bodyOffsetsIdentical": true,
+        "rowOrderUnchanged": true,
+        "signaturesAndRecursiveCallsUnchanged": true
+      },
+      "variants": [
+        {
+          "variant": "historical",
+          "status": "PASS",
+          "phase": "evaluation",
+          "values": [
+            11,
+            33,
+            33,
+            33,
+            33,
+            44,
+            44
+          ]
+        },
+        {
+          "variant": "source-only-swap",
+          "status": "FAIL",
+          "phase": "load",
+          "error": "Error:\n- message  : a match on a parameter or field (this name is a def or a consumed binder: give the value its own def)\nLocation:\n12 | def matrix(tag: Tag, choice: Choice) -> Nat:\n13>|   match choice tag:\n14 |     case X{True{}} C{Nest{Leaf{value}}, True{}}:"
+        }
+      ],
+      "identical": false
+    },
+    {
+      "fixture": "wildcard-after",
+      "covers": [
+        "literal-priority-oracle",
+        "wildcard-after",
+        "nested-constructor-failure",
+        "later-column-failure"
+      ],
+      "audit": {
+        "rowCount": 4,
+        "scrutinees": {
+          "original": [
+            "tag",
+            "choice"
+          ],
+          "transformed": [
+            "choice",
+            "tag"
+          ]
+        },
+        "rows": [
+          {
+            "index": 0,
+            "original": [
+              "C{Nest{Leaf{value}}, True{}}",
+              "X{True{}}"
+            ],
+            "transformed": [
+              "X{True{}}",
+              "C{Nest{Leaf{value}}, True{}}"
+            ],
+            "bodySha256": "ccb7c6085b1a65068795fbf63a6b7202a84d54e3436cb9c52b50f9cec07d6cb1",
+            "transformedBodySha256": "ccb7c6085b1a65068795fbf63a6b7202a84d54e3436cb9c52b50f9cec07d6cb1",
+            "bodyOffsets": {
+              "beg": 336,
+              "end": 348
+            }
+          },
+          {
+            "index": 1,
+            "original": [
+              "D{Nest{Leaf{value}}, True{}}",
+              "X{True{}}"
+            ],
+            "transformed": [
+              "X{True{}}",
+              "D{Nest{Leaf{value}}, True{}}"
+            ],
+            "bodySha256": "da8130f36922dc74cfd43feaf6ae0dde17af478cb1f742761fbd14c7d481af7f",
+            "transformedBodySha256": "da8130f36922dc74cfd43feaf6ae0dde17af478cb1f742761fbd14c7d481af7f",
+            "bodyOffsets": {
+              "beg": 395,
+              "end": 407
+            }
+          },
+          {
+            "index": 2,
+            "original": [
+              "_",
+              "X{True{}}"
+            ],
+            "transformed": [
+              "X{True{}}",
+              "_"
+            ],
+            "bodySha256": "3c0af4d7a8be71f32daf5594dc7c4ed83885bb423c02d305d9d448b2eee433cd",
+            "transformedBodySha256": "3c0af4d7a8be71f32daf5594dc7c4ed83885bb423c02d305d9d448b2eee433cd",
+            "bodyOffsets": {
+              "beg": 427,
+              "end": 439
+            }
+          },
+          {
+            "index": 3,
+            "original": [
+              "_",
+              "_"
+            ],
+            "transformed": [
+              "_",
+              "_"
+            ],
+            "bodySha256": "b00e83d84f077dcf8533c77566ec35e4fdfa2276dac558a01c4817d1efb90d27",
+            "transformedBodySha256": "b00e83d84f077dcf8533c77566ec35e4fdfa2276dac558a01c4817d1efb90d27",
+            "bodyOffsets": {
+              "beg": 451,
+              "end": 463
+            }
+          }
+        ],
+        "editCount": 5,
+        "originalSha256": "e01ab5bdefda92b98e706336c2b3d897167b981fb694773fbab4ea970890ca61",
+        "transformedSha256": "19872f4e8505944d3bf2d1f63ff75c4fa76e6f6c57fee1d896e3005c6671dcee",
+        "inverseByteExact": true,
+        "unrelatedBytesIdentical": true,
+        "bodyOffsetsIdentical": true,
+        "rowOrderUnchanged": true,
+        "signaturesAndRecursiveCallsUnchanged": true
+      },
+      "variants": [
+        {
+          "variant": "historical",
+          "status": "PASS",
+          "phase": "evaluation",
+          "values": [
+            11,
+            22,
+            33,
+            33,
+            33,
+            44,
+            44
+          ]
+        },
+        {
+          "variant": "source-only-swap",
+          "status": "FAIL",
+          "phase": "load",
+          "error": "Error:\n- message  : a match on a parameter or field (this name is a def or a consumed binder: give the value its own def)\nLocation:\n12 | def matrix(tag: Tag, choice: Choice) -> Nat:\n13>|   match choice tag:\n14 |     case X{True{}} C{Nest{Leaf{value}}, True{}}:"
+        }
+      ],
+      "identical": false
+    },
+    {
+      "fixture": "nested-binder-ids-and-copied-whole",
+      "covers": [
+        "Many-parameter",
+        "nested-Many-field",
+        "whole-scrutinee-reconstruction",
+        "same-spelling-different-row-binder-IDs"
+      ],
+      "audit": {
+        "rowCount": 3,
+        "scrutinees": {
+          "original": [
+            "tag",
+            "choice"
+          ],
+          "transformed": [
+            "choice",
+            "tag"
+          ]
+        },
+        "rows": [
+          {
+            "index": 0,
+            "original": [
+              "C{Nest{Leaf{+value}}, True{}}",
+              "X{True{}}"
+            ],
+            "transformed": [
+              "X{True{}}",
+              "C{Nest{Leaf{+value}}, True{}}"
+            ],
+            "bodySha256": "3f7f88575149cee0b8f6dc1c6e4c1c1367fba4752738083d95a5b537f76cb5f5",
+            "transformedBodySha256": "3f7f88575149cee0b8f6dc1c6e4c1c1367fba4752738083d95a5b537f76cb5f5",
+            "bodyOffsets": {
+              "beg": 639,
+              "end": 669
+            }
+          },
+          {
+            "index": 1,
+            "original": [
+              "+whole",
+              "X{False{}}"
+            ],
+            "transformed": [
+              "X{False{}}",
+              "+whole"
+            ],
+            "bodySha256": "f79c4e8025941a4f7d256c642b7664f13316d6ada82a31bde9105b1fe177ccd6",
+            "transformedBodySha256": "f79c4e8025941a4f7d256c642b7664f13316d6ada82a31bde9105b1fe177ccd6",
+            "bodyOffsets": {
+              "beg": 695,
+              "end": 743
+            }
+          },
+          {
+            "index": 2,
+            "original": [
+              "whole",
+              "_"
+            ],
+            "transformed": [
+              "_",
+              "whole"
+            ],
+            "bodySha256": "a95e8d100ec6f7e2d569b1d6574960dd1ca0ac06f6d1261a47a4e6f5f5067155",
+            "transformedBodySha256": "a95e8d100ec6f7e2d569b1d6574960dd1ca0ac06f6d1261a47a4e6f5f5067155",
+            "bodyOffsets": {
+              "beg": 759,
+              "end": 782
+            }
+          }
+        ],
+        "editCount": 4,
+        "originalSha256": "cb593adf084a5d0a6fe71c2a1dba9aefb21148568a7e66f9f0184208a5f7a403",
+        "transformedSha256": "4b877f28e42e65ed741f4bc109ce4ca0ecd570e92f831d4228989197bd2d42f8",
+        "inverseByteExact": true,
+        "unrelatedBytesIdentical": true,
+        "bodyOffsetsIdentical": true,
+        "rowOrderUnchanged": true,
+        "signaturesAndRecursiveCallsUnchanged": true
+      },
+      "variants": [
+        {
+          "variant": "historical",
+          "status": "PASS",
+          "phase": "evaluation",
+          "values": [
+            14,
+            7,
+            14,
+            36,
+            29
+          ]
+        },
+        {
+          "variant": "source-only-swap",
+          "status": "FAIL",
+          "phase": "load",
+          "error": "Error:\n- message  : a match on a parameter or field (this name is a def or a consumed binder: give the value its own def)\nLocation:\n21 | def matrix(+tag: Tag, choice: Choice) -> Nat:\n22>|   match choice tag:\n23 |     case X{True{}} C{Nest{Leaf{+value}}, True{}}:"
+        }
+      ],
+      "identical": false
+    },
+    {
+      "fixture": "mixed-affine-and-many-nested-fields",
+      "covers": [
+        "Type-affine-parameter",
+        "mixed-nested-Lone-and-Many-fields",
+        "whole-affine-reconstruction-after-later-failure",
+        "same-spelling-different-row-binder-IDs"
+      ],
+      "audit": {
+        "rowCount": 2,
+        "scrutinees": {
+          "original": [
+            "packet",
+            "flag"
+          ],
+          "transformed": [
+            "flag",
+            "packet"
+          ]
+        },
+        "rows": [
+          {
+            "index": 0,
+            "original": [
+              "C{Bundle{resource, (+left, right)}}",
+              "True{}"
+            ],
+            "transformed": [
+              "True{}",
+              "C{Bundle{resource, (+left, right)}}"
+            ],
+            "bodySha256": "bbf2bdae496489b9121c059e97ffe8aa6ce43a8ea617a1b1247074ed332ee5ef",
+            "transformedBodySha256": "bbf2bdae496489b9121c059e97ffe8aa6ce43a8ea617a1b1247074ed332ee5ef",
+            "bodyOffsets": {
+              "beg": 683,
+              "end": 764
+            }
+          },
+          {
+            "index": 1,
+            "original": [
+              "whole",
+              "_"
+            ],
+            "transformed": [
+              "_",
+              "whole"
+            ],
+            "bodySha256": "dd8cb7b1140e7e1e76b9d7464dffd5cc9b32c9c75e40e3883884d81c9355c46e",
+            "transformedBodySha256": "dd8cb7b1140e7e1e76b9d7464dffd5cc9b32c9c75e40e3883884d81c9355c46e",
+            "bodyOffsets": {
+              "beg": 780,
+              "end": 810
+            }
+          }
+        ],
+        "editCount": 3,
+        "originalSha256": "325fc3224756b8fdc8bbbaa35709ec4b41ad05cb018d30267bd488c074318dd4",
+        "transformedSha256": "e1b8c609ada9692e72c4607ded336cd8bc26d9e8587c372ea38b211d2f36e82c",
+        "inverseByteExact": true,
+        "unrelatedBytesIdentical": true,
+        "bodyOffsetsIdentical": true,
+        "rowOrderUnchanged": true,
+        "signaturesAndRecursiveCallsUnchanged": true
+      },
+      "variants": [
+        {
+          "variant": "historical",
+          "status": "PASS",
+          "phase": "evaluation",
+          "values": [
+            17,
+            14,
+            19,
+            19
+          ]
+        },
+        {
+          "variant": "source-only-swap",
+          "status": "FAIL",
+          "phase": "load",
+          "error": "Error:\n- message  : a match on a parameter or field (this name is a def or a consumed binder: give the value its own def)\nLocation:\n18 | def matrix(packet: Packet, flag: Bool) -> Nat:\n19>|   match flag packet:\n20 |     case True{} C{Bundle{resource, (+left, right)}}:"
+        }
+      ],
+      "identical": false
+    },
+    {
+      "fixture": "synthetic-small-full-compile",
+      "covers": [
+        "same-generator-as-growth",
+        "nested-first-column-overlap",
+        "strong-second-column-partition",
+        "literal-oracles"
+      ],
+      "audit": {
+        "rowCount": 9,
+        "scrutinees": {
+          "original": [
+            "wide",
+            "partition"
+          ],
+          "transformed": [
+            "partition",
+            "wide"
+          ]
+        },
+        "rows": [
+          {
+            "index": 0,
+            "original": [
+              "C0{Nest{Nest{Leaf{True{}}}}, True{}}",
+              "P0{Nest{Nest{Leaf{True{}}}}}"
+            ],
+            "transformed": [
+              "P0{Nest{Nest{Leaf{True{}}}}}",
+              "C0{Nest{Nest{Leaf{True{}}}}, True{}}"
+            ],
+            "bodySha256": "a65c852e887c46b89dc7e92bdf2cde3a1d9a31ca12ef56315d3d1d88aa98fe72",
+            "transformedBodySha256": "a65c852e887c46b89dc7e92bdf2cde3a1d9a31ca12ef56315d3d1d88aa98fe72",
+            "bodyOffsets": {
+              "beg": 355,
+              "end": 366
+            }
+          },
+          {
+            "index": 1,
+            "original": [
+              "C1{Nest{Nest{Leaf{True{}}}}, True{}}",
+              "P0{Nest{Nest{Leaf{True{}}}}}"
+            ],
+            "transformed": [
+              "P0{Nest{Nest{Leaf{True{}}}}}",
+              "C1{Nest{Nest{Leaf{True{}}}}, True{}}"
+            ],
+            "bodySha256": "9200351a69142bd48373ea9d177c5c6ca5d80c64d47a000c94948b97589b65e9",
+            "transformedBodySha256": "9200351a69142bd48373ea9d177c5c6ca5d80c64d47a000c94948b97589b65e9",
+            "bodyOffsets": {
+              "beg": 440,
+              "end": 451
+            }
+          },
+          {
+            "index": 2,
+            "original": [
+              "_",
+              "P0{Nest{Nest{Leaf{False{}}}}}"
+            ],
+            "transformed": [
+              "P0{Nest{Nest{Leaf{False{}}}}}",
+              "_"
+            ],
+            "bodySha256": "8bf6243a211c50de375ff72f903cedc8ccc2e609a4f143d4501f2d476b656aab",
+            "transformedBodySha256": "8bf6243a211c50de375ff72f903cedc8ccc2e609a4f143d4501f2d476b656aab",
+            "bodyOffsets": {
+              "beg": 491,
+              "end": 503
+            }
+          },
+          {
+            "index": 3,
+            "original": [
+              "_",
+              "P0{_}"
+            ],
+            "transformed": [
+              "P0{_}",
+              "_"
+            ],
+            "bodySha256": "3c0af4d7a8be71f32daf5594dc7c4ed83885bb423c02d305d9d448b2eee433cd",
+            "transformedBodySha256": "3c0af4d7a8be71f32daf5594dc7c4ed83885bb423c02d305d9d448b2eee433cd",
+            "bodyOffsets": {
+              "beg": 519,
+              "end": 531
+            }
+          },
+          {
+            "index": 4,
+            "original": [
+              "C0{Nest{Nest{Leaf{True{}}}}, True{}}",
+              "P1{Nest{Nest{Leaf{True{}}}}}"
+            ],
+            "transformed": [
+              "P1{Nest{Nest{Leaf{True{}}}}}",
+              "C0{Nest{Nest{Leaf{True{}}}}, True{}}"
+            ],
+            "bodySha256": "6256d6e6c6d9c24b4f00cca30b4801c277de599616830531a202c55d73cb5596",
+            "transformedBodySha256": "6256d6e6c6d9c24b4f00cca30b4801c277de599616830531a202c55d73cb5596",
+            "bodyOffsets": {
+              "beg": 605,
+              "end": 616
+            }
+          },
+          {
+            "index": 5,
+            "original": [
+              "C1{Nest{Nest{Leaf{True{}}}}, True{}}",
+              "P1{Nest{Nest{Leaf{True{}}}}}"
+            ],
+            "transformed": [
+              "P1{Nest{Nest{Leaf{True{}}}}}",
+              "C1{Nest{Nest{Leaf{True{}}}}, True{}}"
+            ],
+            "bodySha256": "3728560afed3f8c6fb97d48b3e2ddc270cc9cbf506dede67c1a775e620a21ccf",
+            "transformedBodySha256": "3728560afed3f8c6fb97d48b3e2ddc270cc9cbf506dede67c1a775e620a21ccf",
+            "bodyOffsets": {
+              "beg": 690,
+              "end": 701
+            }
+          },
+          {
+            "index": 6,
+            "original": [
+              "_",
+              "P1{Nest{Nest{Leaf{False{}}}}}"
+            ],
+            "transformed": [
+              "P1{Nest{Nest{Leaf{False{}}}}}",
+              "_"
+            ],
+            "bodySha256": "8bf6243a211c50de375ff72f903cedc8ccc2e609a4f143d4501f2d476b656aab",
+            "transformedBodySha256": "8bf6243a211c50de375ff72f903cedc8ccc2e609a4f143d4501f2d476b656aab",
+            "bodyOffsets": {
+              "beg": 741,
+              "end": 753
+            }
+          },
+          {
+            "index": 7,
+            "original": [
+              "_",
+              "P1{_}"
+            ],
+            "transformed": [
+              "P1{_}",
+              "_"
+            ],
+            "bodySha256": "3c0af4d7a8be71f32daf5594dc7c4ed83885bb423c02d305d9d448b2eee433cd",
+            "transformedBodySha256": "3c0af4d7a8be71f32daf5594dc7c4ed83885bb423c02d305d9d448b2eee433cd",
+            "bodyOffsets": {
+              "beg": 769,
+              "end": 781
+            }
+          },
+          {
+            "index": 8,
+            "original": [
+              "_",
+              "_"
+            ],
+            "transformed": [
+              "_",
+              "_"
+            ],
+            "bodySha256": "b95fe8854aa001d14ee9766d8b33a748c3a6b9492ee586b139b34d3fb7e593d9",
+            "transformedBodySha256": "b95fe8854aa001d14ee9766d8b33a748c3a6b9492ee586b139b34d3fb7e593d9",
+            "bodyOffsets": {
+              "beg": 793,
+              "end": 805
+            }
+          }
+        ],
+        "editCount": 10,
+        "originalSha256": "d20702ce25e84a03f4408ef7f473ef51abd643f1692ea7b76bef683d3228b160",
+        "transformedSha256": "d3cd0bda7afbe3b730c6a4ec61d7b07611e0a763be34f781fd6e00fa4d9ec97e",
+        "inverseByteExact": true,
+        "unrelatedBytesIdentical": true,
+        "bodyOffsetsIdentical": true,
+        "rowOrderUnchanged": true,
+        "signaturesAndRecursiveCallsUnchanged": true
+      },
+      "variants": [
+        {
+          "variant": "historical",
+          "status": "PASS",
+          "phase": "evaluation",
+          "values": [
+            1,
+            2,
+            3,
+            4,
+            33,
+            33,
+            32,
+            33
+          ]
+        },
+        {
+          "variant": "source-only-swap",
+          "status": "FAIL",
+          "phase": "load",
+          "error": "Error:\n- message  : a match on a parameter or field (this name is a def or a consumed binder: give the value its own def)\nLocation:\n11 | def matrix(wide: Wide, partition: Partition) -> Nat:\n12>|   match partition wide:\n13 |     case P0{Nest{Nest{Leaf{True{}}}}} C0{Nest{Nest{Leaf{True{}}}}, True{}}:"
+        }
+      ],
+      "identical": false
+    }
+  ]
+}

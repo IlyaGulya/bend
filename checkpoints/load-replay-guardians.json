@@ -1,0 +1,77 @@
+[
+  {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 373587968,
+    "peakFootprintBytes": 230933944,
+    "elapsedMs": 11903,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+      "/Users/ilyagulya/Projects/My/bend/evals/load_replay_equivalence.ts"
+    ],
+    "label": "small historical/direct replay equivalence",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791284301866-20665d5305703d60.json",
+    "memoryLimitBytes": 3221225472,
+    "rssLimitBytes": 3221225472
+  },
+  {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 861339648,
+    "peakFootprintBytes": 822166680,
+    "elapsedMs": 1443,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+      "/Users/ilyagulya/Projects/My/bend/evals/load_replay_probe.ts",
+      "pattern"
+    ],
+    "label": "gated direct parser load/validation",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791284456604-eedfc1da641ee014.json",
+    "memoryLimitBytes": 3221225472,
+    "rssLimitBytes": 3221225472
+  },
+  {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 958332928,
+    "peakFootprintBytes": 935740688,
+    "elapsedMs": 4229,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+      "/Users/ilyagulya/Projects/My/bend/evals/load_replay_probe.ts",
+      "load"
+    ],
+    "label": "gated direct parser load/validation",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791284600554-348f202829e238fa.json",
+    "memoryLimitBytes": 3221225472,
+    "rssLimitBytes": 3221225472
+  },
+  {
+    "status": "RESOURCE_LIMIT",
+    "reason": "physical_footprint_limit",
+    "commandExitCode": -1,
+    "commandSignal": 15,
+    "peakRssBytes": 3193651200,
+    "peakFootprintBytes": 3226831752,
+    "elapsedMs": 33311,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+      "/Users/ilyagulya/Projects/My/bend/evals/load_replay_probe.ts",
+      "validation"
+    ],
+    "label": "gated direct parser load/validation",
+    "exitCode": 73,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791284654832-b137e20df733db2e.json",
+    "memoryLimitBytes": 3221225472,
+    "rssLimitBytes": 3221225472
+  }
+]

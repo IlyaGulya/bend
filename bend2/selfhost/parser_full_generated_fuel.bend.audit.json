@@ -1,0 +1,147 @@
+{
+  "sourceSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+  "generatedSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+  "generatedBytes": 463465,
+  "generatedLines": 5991,
+  "definitions": 760,
+  "emittedStepBodies": 215,
+  "requestVariants": 14,
+  "kontVariants": 95,
+  "sourceSpecificTransformerExceptions": 0,
+  "unresolvedReferences": [],
+  "mutualRecursionComponents": [],
+  "dependencyAuditMethod": "unchanged stage-0 source Body AST/raw HOAS Ref nodes; local references and all unresolved targets; before match compilation; NOT checker or lowered-AST evidence",
+  "loweredASTAudit": {
+    "status": "DEFERRED_RESOURCE_BLOCKED",
+    "completed": false,
+    "issue": "bend-nxf.2.2.1"
+  },
+  "declarationMetadata": {
+    "canonicalAnnotatedCount": 1,
+    "generatedAnnotatedCount": 1,
+    "canonicalAnnotated": [
+      {
+        "name": "map_operator_term",
+        "annotations": [
+          "@unsafe"
+        ]
+      }
+    ],
+    "generatedAnnotated": [
+      {
+        "name": "map_operator_term",
+        "annotations": [
+          "@unsafe"
+        ]
+      }
+    ],
+    "missing": [],
+    "spurious": []
+  },
+  "patternQuantityLifting": [
+    {
+      "definition": "feedback_consumer_148404",
+      "binderId": 26,
+      "printedBinder": "v_503",
+      "helper": "feedback_consumer_148404_quantity_0",
+      "runtimeUses": 2,
+      "type": "List<&2, Lexer.Token>",
+      "reason": "source-explicit",
+      "sourceBinder": {
+        "id": 173,
+        "name": "after_head",
+        "span": {
+          "beg": 148483,
+          "end": 148495,
+          "line": 2617,
+          "text": "+after_head "
+        }
+      }
+    }
+  ],
+  "typecheck": {
+    "status": "DEFERRED_RESOURCE_BLOCKED",
+    "completed": false,
+    "currentCandidateRun": false,
+    "issue": "bend-nxf.2.2.1",
+    "priorResourceEvidence": [
+      "checkpoints/parser-memory-incident.json",
+      "checkpoints/canonical-body-family-b-incremental.json"
+    ],
+    "reason": "Exact dependency slices are incremental evidence, not whole-book acceptance."
+  },
+  "families": {
+    "A": {
+      "status": "COMPLETE_INCREMENTAL",
+      "report": "checkpoints/canonical-literal-family-a-repair.json",
+      "semanticStatus": "COMPLETE_ACCEPTED"
+    },
+    "B": {
+      "status": "SEMANTICS_COMPLETE_ACCEPTED_STRUCTURAL_COMMON_BLOCKER",
+      "report": "checkpoints/canonical-body-family-b-repair.json",
+      "invalidVerification": "checkpoints/canonical-body-family-b-changed-check.json",
+      "semanticStatus": "COMPLETE_ACCEPTED",
+      "structuralStatus": "Common scalability blocker; not reopened semantics"
+    },
+    "C": {
+      "status": "COMPLETE_INCREMENTAL",
+      "report": "checkpoints/canonical-import-family-c-repair.json",
+      "semanticStatus": "COMPLETE_ACCEPTED"
+    },
+    "D": {
+      "status": "COMPLETE_INCREMENTAL",
+      "report": "checkpoints/canonical-ownership-family-d-repair.json",
+      "semanticStatus": "COMPLETE_ACCEPTED"
+    }
+  },
+  "stage0Differential": {
+    "status": "COMPLETE",
+    "semanticAndAcceptancePass": 29,
+    "total": 29,
+    "generatorParityPass": 29,
+    "generatorMismatches": 0,
+    "canonicalUnobserved": 0,
+    "normalizationUnsupported": 0,
+    "report": "checkpoints/canonical-ownership-family-d-streaming-expanded.json",
+    "spanDiagnosticDebt": {
+      "cases": 23,
+      "differences": 46
+    },
+    "heavyGate": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 2573565952,
+      "peakFootprintBytes": 2183171024,
+      "elapsedMs": 84746,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+        "/Users/ilyagulya/Projects/My/bend/evals/parser_full_fuel_smoke.ts",
+        "--streaming",
+        "--expanded",
+        "--fuel=1000",
+        "--gc"
+      ],
+      "label": "parser-differential",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791199276258-fe425a86c9a1f127.json",
+      "memoryLimitBytes": 3221225472,
+      "rssLimitBytes": 3221225472
+    }
+  },
+  "generatorArchitecture": "FROZEN",
+  "automaticProductionFuel": "DEFERRED",
+  "selfhostGreen": false,
+  "parserSemanticParity": "PASS 29/29; COMPLETE_ACCEPTED",
+  "generatorSemanticPreservation": "PASS 29/29",
+  "fullLoweredStructuralAcceptance": "RESOURCE_BLOCKED",
+  "semanticRepairsPolicy": "Frozen at f425995a; reopen only if larger differential corpus proves regression",
+  "matchFactoring": {
+    "optionB": "REJECTED_NO_REDUCTION",
+    "installed": false,
+    "report": "checkpoints/parser-match-factor-rejection.json",
+    "next": "Option A minimal stage0 proposal; not implemented"
+  },
+  "spanDiagnosticLedger": "checkpoints/parser-span-diagnostic-debt.json"
+}

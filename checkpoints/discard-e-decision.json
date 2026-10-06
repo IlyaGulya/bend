@@ -1,0 +1,237 @@
+{
+  "result": "B. DISCARD-E STILL RESOURCE_BLOCKED",
+  "D1": "FAIL_RESOURCE_LIMIT",
+  "classification": "P2_VALIDATION_WORKING_SET_NOT_EXPLAINED_SUFFICIENTLY_BY_DEF_E_RETENTION",
+  "temporaryChanges": {
+    "parseLoad": "Previously proven direct path",
+    "bookValid": "Remove only def.e = from exact term_check(...).tm statement",
+    "sourceInversion": "Entire temporary source restores byte-for-byte frozen production after reversing the two exact substitutions",
+    "seenChanged": false,
+    "declarationsSkipped": false,
+    "orderChanged": false,
+    "termCheckChanged": false,
+    "quantitiesChanged": false,
+    "rawVChanged": false,
+    "manualGC": false
+  },
+  "load": {
+    "status": "PASS",
+    "declarations": 1280,
+    "elapsedMs": 17616.237417,
+    "completion": {
+      "elapsedMs": 17643.067875,
+      "footprintBytes": 1018594648,
+      "rssBytes": 1040711680,
+      "lifetimeMaxFootprintBytes": 1018594648,
+      "phase": "load",
+      "stage": "complete",
+      "declarations": 1280,
+      "loadElapsedMs": 17616.237417
+    }
+  },
+  "validation": {
+    "status": "RESOURCE_LIMIT",
+    "declarationEventsCompleted": 705,
+    "totalEvents": 1280,
+    "checkedBodiesCompleted": 524,
+    "activeDeclaration": {
+      "index": 705,
+      "name": "pattern_scan"
+    },
+    "lastBoundary": {
+      "elapsedMs": 41917.081042000005,
+      "footprintBytes": 2720352776,
+      "rssBytes": 2482454528,
+      "lifetimeMaxFootprintBytes": 2720369160,
+      "phase": "validation",
+      "stage": "declaration-begin",
+      "index": 705,
+      "name": "pattern_scan",
+      "checkedDefs": 524,
+      "memorySample": false
+    },
+    "previousRetainedE": "Zero at every sampled checkpoint; checked-body assignment absent throughout native book_valid",
+    "lastRetainedESample": {
+      "elapsedMs": 41669.689,
+      "footprintBytes": 2720352776,
+      "rssBytes": 2482323456,
+      "lifetimeMaxFootprintBytes": 2720369160,
+      "phase": "validation",
+      "stage": "declaration-begin",
+      "index": 681,
+      "name": "feedback_make_Kont_205056",
+      "checkedDefs": 500,
+      "retainedE": 0,
+      "memorySample": true
+    },
+    "peakFootprintBytes": 3222555504,
+    "peakRssBytes": 2986704896,
+    "overallGuardianElapsedMs": 44889,
+    "validationStart": {
+      "elapsedMs": 17650.110709,
+      "footprintBytes": 1020609880,
+      "rssBytes": 1042841600,
+      "lifetimeMaxFootprintBytes": 1020609880,
+      "phase": "validation",
+      "stage": "start",
+      "declarations": 1280,
+      "retainedE": 0
+    },
+    "validationObservedToLastBoundaryMs": 24266.970333000005,
+    "phaseEndTime": "Unavailable after forced termination; overall includes load and startup",
+    "errorObserved": false,
+    "memorySamples": [
+      {
+        "elapsedMs": 17654.091084000003,
+        "footprintBytes": 1020822872,
+        "rssBytes": 1043136512,
+        "lifetimeMaxFootprintBytes": 1020822872,
+        "phase": "validation",
+        "stage": "declaration-begin",
+        "index": 0,
+        "name": "Empty",
+        "checkedDefs": 0,
+        "retainedE": 0,
+        "memorySample": true
+      },
+      {
+        "elapsedMs": 18057.023625,
+        "footprintBytes": 1033241968,
+        "rssBytes": 1058471936,
+        "lifetimeMaxFootprintBytes": 1034667376,
+        "phase": "validation",
+        "stage": "declaration-begin",
+        "index": 173,
+        "name": "Word.cmp",
+        "checkedDefs": 100,
+        "retainedE": 0,
+        "memorySample": true
+      },
+      {
+        "elapsedMs": 18284.363209000003,
+        "footprintBytes": 1029211504,
+        "rssBytes": 1060913152,
+        "lifetimeMaxFootprintBytes": 1034667376,
+        "phase": "validation",
+        "stage": "declaration-begin",
+        "index": 318,
+        "name": "String.split.push",
+        "checkedDefs": 200,
+        "retainedE": 0,
+        "memorySample": true
+      },
+      {
+        "elapsedMs": 18381.684375,
+        "footprintBytes": 1027474800,
+        "rssBytes": 1060995072,
+        "lifetimeMaxFootprintBytes": 1034667376,
+        "phase": "validation",
+        "stage": "declaration-begin",
+        "index": 433,
+        "name": "Set.add",
+        "checkedDefs": 300,
+        "retainedE": 0,
+        "memorySample": true
+      },
+      {
+        "elapsedMs": 25692.275375,
+        "footprintBytes": 1351550560,
+        "rssBytes": 1184382976,
+        "lifetimeMaxFootprintBytes": 1354368608,
+        "phase": "validation",
+        "stage": "declaration-begin",
+        "index": 581,
+        "name": "step_parse_all_named",
+        "checkedDefs": 400,
+        "retainedE": 0,
+        "memorySample": true
+      },
+      {
+        "elapsedMs": 35162.964542,
+        "footprintBytes": 2158905456,
+        "rssBytes": 1821999104,
+        "lifetimeMaxFootprintBytes": 2159020144,
+        "phase": "validation",
+        "stage": "declaration-begin",
+        "index": 631,
+        "name": "encode_float_normal_positive_small",
+        "checkedDefs": 450,
+        "retainedE": 0,
+        "memorySample": true
+      },
+      {
+        "elapsedMs": 41669.689,
+        "footprintBytes": 2720352776,
+        "rssBytes": 2482323456,
+        "lifetimeMaxFootprintBytes": 2720369160,
+        "phase": "validation",
+        "stage": "declaration-begin",
+        "index": 681,
+        "name": "feedback_make_Kont_205056",
+        "checkedDefs": 500,
+        "retainedE": 0,
+        "memorySample": true
+      }
+    ],
+    "atomEntry": {
+      "elapsedMs": 35210.343084,
+      "footprintBytes": 2158954608,
+      "rssBytes": 1825325056,
+      "lifetimeMaxFootprintBytes": 2159020144,
+      "phase": "validation",
+      "stage": "declaration-begin",
+      "index": 678,
+      "name": "step_parse_atom_scan",
+      "checkedDefs": 497,
+      "memorySample": false
+    }
+  },
+  "comparison": {
+    "retainedEPrevious": {
+      "firstBoundary": {
+        "index": 678,
+        "name": "step_parse_atom_scan"
+      },
+      "declarationEventsCompleted": 678,
+      "previousCheckedBodies": 497,
+      "peakFootprintBytes": 3226831752,
+      "peakRssBytes": 3193651200,
+      "source": "checkpoints/load-replay-validation.json"
+    },
+    "discardECurrent": {
+      "firstBoundary": {
+        "index": 705,
+        "name": "pattern_scan"
+      },
+      "declarationEventsCompleted": 705,
+      "previousCheckedBodies": 524
+    },
+    "additionalEventsCompleted": 27,
+    "interpretation": "Eliminating e retention advances validation past atom_scan, but complete validation still cannot fit. e retention is not sufficient to explain P2; dominant allocation source is not established.",
+    "peakCaveat": "Both runs terminate at the same ceiling; peak difference is not a useful memory-savings measure.",
+    "remainingAllocationCaveat": "Total process working set includes raw v/runtime/other retained state and current checking temporaries. No heap/liveness/allocation-kind attribution established."
+  },
+  "conditionalSteps": {
+    "historicalDiscardEquivalence": "NOT_RUN_D1_FAILED",
+    "vEHMeasurements": "NOT_RUN_D1_FAILED",
+    "exactDefBodyHelper": "NOT_CREATED_D1_FAILED",
+    "streamingHValidation": "NOT_STARTED_D1_FAILED",
+    "streamingFixtureCodegen": "NOT_RUN_D1_FAILED",
+    "normalParserJSArtifact": "NOT_STARTED_D1_FAILED",
+    "compiledWhole29": "NOT_RUN_D1_FAILED",
+    "freshProcessFallback": "NOT_USED_REQUIRED_HARD_STOP"
+  },
+  "productionChanged": false,
+  "frozenInputs": {
+    "bend2/bend.ts": "47e1b06e2fa4466bad702f86d8cbce03f40e833a8ba8eaa1e04297fa46dc94a9",
+    "bend2/selfhost/parser.bend": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+    "bend2/selfhost/parser_full_generated_fuel.bend": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+    "evals/parser_full_generate.ts": "0aedb4c1703cffe1055794b29829a357edcd956fdc0a8dec77bfa3c0cf7a6da6"
+  },
+  "selfhostGreen": false,
+  "evidence": [
+    "checkpoints/discard-e-validation.jsonl",
+    "checkpoints/discard-e-validation.json",
+    "checkpoints/discard-e-guardian.json"
+  ]
+}

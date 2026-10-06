@@ -1,0 +1,18 @@
+{
+  "status": "RESOURCE_LIMIT",
+  "reason": "physical_footprint_limit",
+  "commandExitCode": -1,
+  "commandSignal": 15,
+  "peakRssBytes": 2986704896,
+  "peakFootprintBytes": 3222555504,
+  "elapsedMs": 44889,
+  "command": [
+    "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+    "/Users/ilyagulya/Projects/My/bend/evals/discard_e_probe.ts"
+  ],
+  "label": "D1 complete direct-load discard-E validation",
+  "exitCode": 73,
+  "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791285922016-2310994ae5075e98.json",
+  "memoryLimitBytes": 3221225472,
+  "rssLimitBytes": 3221225472
+}

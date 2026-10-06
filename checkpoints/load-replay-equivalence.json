@@ -1,0 +1,955 @@
+{
+  "status": "PASS",
+  "count": 16,
+  "fixtures": [
+    {
+      "name": "basic-plain-constant",
+      "features": [
+        "plain-constant",
+        "Nat-literal"
+      ],
+      "status": "PASS",
+      "loweredSyntaxEqual": true,
+      "loweredSpansEqual": true,
+      "comparisons": [
+        {
+          "name": "main",
+          "historicalBook": true,
+          "directBook": true
+        }
+      ],
+      "outcomes": [
+        {
+          "mode": "historical",
+          "bookValid": "PASS",
+          "native": "17n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          }
+        },
+        {
+          "mode": "direct",
+          "bookValid": "PASS",
+          "native": "17n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "basic-local-lambda",
+      "features": [
+        "lambda",
+        "local-Let",
+        "annotated-function-value",
+        "application"
+      ],
+      "status": "PASS",
+      "loweredSyntaxEqual": true,
+      "loweredSpansEqual": true,
+      "comparisons": [
+        {
+          "name": "main",
+          "historicalBook": true,
+          "directBook": true
+        }
+      ],
+      "outcomes": [
+        {
+          "mode": "historical",
+          "bookValid": "PASS",
+          "native": "17n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          }
+        },
+        {
+          "mode": "direct",
+          "bookValid": "PASS",
+          "native": "17n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "basic-nested-same-name-lambda",
+      "features": [
+        "lambda",
+        "nested-lambda",
+        "same-name-shadowing",
+        "distinct-lexical-binder-IDs",
+        "curried-application"
+      ],
+      "status": "PASS",
+      "loweredSyntaxEqual": true,
+      "loweredSpansEqual": true,
+      "comparisons": [
+        {
+          "name": "main",
+          "historicalBook": true,
+          "directBook": true
+        }
+      ],
+      "outcomes": [
+        {
+          "mode": "historical",
+          "bookValid": "PASS",
+          "native": "17n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          }
+        },
+        {
+          "mode": "direct",
+          "bookValid": "PASS",
+          "native": "17n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "basic-higher-order-application",
+      "features": [
+        "application",
+        "higher-order-argument",
+        "lambda",
+        "nested-application",
+        "earlier-definition-reference"
+      ],
+      "status": "PASS",
+      "loweredSyntaxEqual": true,
+      "loweredSpansEqual": true,
+      "comparisons": [
+        {
+          "name": "apply",
+          "historicalBook": true,
+          "directBook": true
+        },
+        {
+          "name": "main",
+          "historicalBook": true,
+          "directBook": true
+        }
+      ],
+      "outcomes": [
+        {
+          "mode": "historical",
+          "bookValid": "PASS",
+          "native": "17n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          }
+        },
+        {
+          "mode": "direct",
+          "bookValid": "PASS",
+          "native": "17n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "basic-local-let-chain",
+      "features": [
+        "local-Let",
+        "dependent-local-bindings",
+        "application"
+      ],
+      "status": "PASS",
+      "loweredSyntaxEqual": true,
+      "loweredSpansEqual": true,
+      "comparisons": [
+        {
+          "name": "main",
+          "historicalBook": true,
+          "directBook": true
+        }
+      ],
+      "outcomes": [
+        {
+          "mode": "historical",
+          "bookValid": "PASS",
+          "native": "17n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          }
+        },
+        {
+          "mode": "direct",
+          "bookValid": "PASS",
+          "native": "17n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "basic-terminating-recursion",
+      "features": [
+        "recursive-definition",
+        "terminating-Nat-descent",
+        "Nat-pattern-match",
+        "self-reference"
+      ],
+      "status": "PASS",
+      "loweredSyntaxEqual": true,
+      "loweredSpansEqual": true,
+      "comparisons": [
+        {
+          "name": "count",
+          "historicalBook": true,
+          "directBook": true
+        },
+        {
+          "name": "main",
+          "historicalBook": true,
+          "directBook": true
+        }
+      ],
+      "outcomes": [
+        {
+          "mode": "historical",
+          "bookValid": "PASS",
+          "native": "17n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          }
+        },
+        {
+          "mode": "direct",
+          "bookValid": "PASS",
+          "native": "17n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "basic-earlier-definition-chain",
+      "features": [
+        "earlier-definition-reference",
+        "multiple-definitions",
+        "reference-chain"
+      ],
+      "status": "PASS",
+      "loweredSyntaxEqual": true,
+      "loweredSpansEqual": true,
+      "comparisons": [
+        {
+          "name": "seed",
+          "historicalBook": true,
+          "directBook": true
+        },
+        {
+          "name": "offset",
+          "historicalBook": true,
+          "directBook": true
+        },
+        {
+          "name": "result",
+          "historicalBook": true,
+          "directBook": true
+        },
+        {
+          "name": "main",
+          "historicalBook": true,
+          "directBook": true
+        }
+      ],
+      "outcomes": [
+        {
+          "mode": "historical",
+          "bookValid": "PASS",
+          "native": "17n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          }
+        },
+        {
+          "mode": "direct",
+          "bookValid": "PASS",
+          "native": "17n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "binding-constructor-match",
+      "features": [
+        "constructor-match",
+        "constructor-field-binding",
+        "exhaustive-arms"
+      ],
+      "status": "PASS",
+      "loweredSyntaxEqual": true,
+      "loweredSpansEqual": true,
+      "comparisons": [
+        {
+          "name": "score",
+          "historicalBook": true,
+          "directBook": true
+        },
+        {
+          "name": "main",
+          "historicalBook": true,
+          "directBook": true
+        }
+      ],
+      "outcomes": [
+        {
+          "mode": "historical",
+          "bookValid": "PASS",
+          "native": "17n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          }
+        },
+        {
+          "mode": "direct",
+          "bookValid": "PASS",
+          "native": "17n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "binding-multicolumn-wildcard-priority",
+      "features": [
+        "multicolumn-match",
+        "wildcard-priority",
+        "later-column-fallthrough",
+        "constructor-field-binding"
+      ],
+      "status": "PASS",
+      "loweredSyntaxEqual": true,
+      "loweredSpansEqual": true,
+      "comparisons": [
+        {
+          "name": "score",
+          "historicalBook": true,
+          "directBook": true
+        },
+        {
+          "name": "main",
+          "historicalBook": true,
+          "directBook": true
+        }
+      ],
+      "outcomes": [
+        {
+          "mode": "historical",
+          "bookValid": "PASS",
+          "native": "23n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "23n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "23n\n",
+            "stderr": ""
+          }
+        },
+        {
+          "mode": "direct",
+          "bookValid": "PASS",
+          "native": "23n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "23n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "23n\n",
+            "stderr": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "binding-affine-type-resource",
+      "features": [
+        "affine-Lone-binder",
+        "Type-resource-consumption",
+        "single-use-field"
+      ],
+      "status": "PASS",
+      "loweredSyntaxEqual": true,
+      "loweredSpansEqual": true,
+      "comparisons": [
+        {
+          "name": "consume",
+          "historicalBook": true,
+          "directBook": true
+        },
+        {
+          "name": "main",
+          "historicalBook": true,
+          "directBook": true
+        }
+      ],
+      "outcomes": [
+        {
+          "mode": "historical",
+          "bookValid": "PASS",
+          "native": "17n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          }
+        },
+        {
+          "mode": "direct",
+          "bookValid": "PASS",
+          "native": "17n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "binding-affine-match-reconstruction",
+      "features": [
+        "affine-Lone-binder",
+        "Type-resource-consumption",
+        "whole-scrutinee-reconstruction",
+        "exclusive-branch-consumption"
+      ],
+      "status": "PASS",
+      "loweredSyntaxEqual": true,
+      "loweredSpansEqual": true,
+      "comparisons": [
+        {
+          "name": "consume_resource",
+          "historicalBook": true,
+          "directBook": true
+        },
+        {
+          "name": "consume_packet",
+          "historicalBook": true,
+          "directBook": true
+        },
+        {
+          "name": "score",
+          "historicalBook": true,
+          "directBook": true
+        },
+        {
+          "name": "main",
+          "historicalBook": true,
+          "directBook": true
+        }
+      ],
+      "outcomes": [
+        {
+          "mode": "historical",
+          "bookValid": "PASS",
+          "native": "53n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "53n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "53n\n",
+            "stderr": ""
+          }
+        },
+        {
+          "mode": "direct",
+          "bookValid": "PASS",
+          "native": "53n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "53n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "53n\n",
+            "stderr": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "binding-many-actually-duplicated",
+      "features": [
+        "Many-binder",
+        "Data-duplication-license",
+        "two-live-uses"
+      ],
+      "status": "PASS",
+      "loweredSyntaxEqual": true,
+      "loweredSpansEqual": true,
+      "comparisons": [
+        {
+          "name": "twice",
+          "historicalBook": true,
+          "directBook": true
+        },
+        {
+          "name": "main",
+          "historicalBook": true,
+          "directBook": true
+        }
+      ],
+      "outcomes": [
+        {
+          "mode": "historical",
+          "bookValid": "PASS",
+          "native": "18n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "18n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "18n\n",
+            "stderr": ""
+          }
+        },
+        {
+          "mode": "direct",
+          "bookValid": "PASS",
+          "native": "18n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "18n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "18n\n",
+            "stderr": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "binding-dependent-function-concrete-nat",
+      "features": [
+        "dependent-type-binder",
+        "dependent-function-binder",
+        "erased-Type-parameter",
+        "concrete-Nat-instantiation",
+        "partial-application"
+      ],
+      "status": "PASS",
+      "loweredSyntaxEqual": true,
+      "loweredSpansEqual": true,
+      "comparisons": [
+        {
+          "name": "identity",
+          "historicalBook": true,
+          "directBook": true
+        },
+        {
+          "name": "apply",
+          "historicalBook": true,
+          "directBook": true
+        },
+        {
+          "name": "main",
+          "historicalBook": true,
+          "directBook": true
+        }
+      ],
+      "outcomes": [
+        {
+          "mode": "historical",
+          "bookValid": "PASS",
+          "native": "19n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "19n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "19n\n",
+            "stderr": ""
+          }
+        },
+        {
+          "mode": "direct",
+          "bookValid": "PASS",
+          "native": "19n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "19n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "19n\n",
+            "stderr": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "binding-explicit-sub-shadow-capture",
+      "features": [
+        "explicit-Sub",
+        "binder-ID-shadowing",
+        "same-name-binders",
+        "capture-sensitive-substitution",
+        "affine-Lone-binder"
+      ],
+      "status": "PASS",
+      "loweredSyntaxEqual": true,
+      "loweredSpansEqual": true,
+      "comparisons": [
+        {
+          "name": "capture",
+          "historicalBook": true,
+          "directBook": true
+        },
+        {
+          "name": "main",
+          "historicalBook": true,
+          "directBook": true
+        }
+      ],
+      "outcomes": [
+        {
+          "mode": "historical",
+          "bookValid": "PASS",
+          "native": "17n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          }
+        },
+        {
+          "mode": "direct",
+          "bookValid": "PASS",
+          "native": "17n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "binding-share-cell-and-span-reference",
+      "features": [
+        "share-cell",
+        "spans",
+        "earlier-definition-reference"
+      ],
+      "status": "PASS",
+      "loweredSyntaxEqual": true,
+      "loweredSpansEqual": true,
+      "comparisons": [
+        {
+          "name": "earlier",
+          "historicalBook": true,
+          "directBook": true
+        },
+        {
+          "name": "main",
+          "historicalBook": true,
+          "directBook": true
+        }
+      ],
+      "outcomes": [
+        {
+          "mode": "historical",
+          "bookValid": "PASS",
+          "native": "17n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          }
+        },
+        {
+          "mode": "direct",
+          "bookValid": "PASS",
+          "native": "17n",
+          "wnfKind": "Ctr",
+          "termInfer": "PASS",
+          "termCheck": "PASS",
+          "jsRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          },
+          "cRuntime": {
+            "status": 0,
+            "stdout": "17n\n",
+            "stderr": ""
+          }
+        }
+      ]
+    },
+    {
+      "name": "negative-affine-repeated-consumption",
+      "features": [
+        "affine-ownership-rejection"
+      ],
+      "status": "PASS",
+      "expectedRejection": true,
+      "errors": [
+        "Error:\n- expected : resource\n- observed : resource (consumed more than once)\nLocation: bad\n6 |     case Resource{value}: value\n7>| def bad(resource: Resource) -> Nat:\n8 |   Nat.add(consume(resource), consume(resource))",
+        "Error:\n- expected : resource\n- observed : resource (consumed more than once)\nLocation: bad\n6 |     case Resource{value}: value\n7>| def bad(resource: Resource) -> Nat:\n8 |   Nat.add(consume(resource), consume(resource))"
+      ]
+    }
+  ],
+  "frozen": {
+    "bend2/bend.ts": "47e1b06e2fa4466bad702f86d8cbce03f40e833a8ba8eaa1e04297fa46dc94a9",
+    "bend2/selfhost/parser.bend": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+    "bend2/selfhost/parser_full_generated_fuel.bend": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+    "evals/parser_full_generate.ts": "0aedb4c1703cffe1055794b29829a357edcd956fdc0a8dec77bfa3c0cf7a6da6"
+  }
+}

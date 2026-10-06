@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "phase": "pattern",
+  "declarations": 706,
+  "patternScanAssigned": true,
+  "loadElapsedMs": 1361.1906250000002,
+  "declarationsChecked": 0,
+  "checkedDefs": 0,
+  "elapsedMs": 1375.5995,
+  "finalMemory": {
+    "footprintBytes": 822576280,
+    "rssBytes": 861798400,
+    "lifetimeMaxFootprintBytes": 822576280
+  },
+  "frozen": {
+    "bend2/bend.ts": "47e1b06e2fa4466bad702f86d8cbce03f40e833a8ba8eaa1e04297fa46dc94a9",
+    "bend2/selfhost/parser.bend": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+    "bend2/selfhost/parser_full_generated_fuel.bend": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+    "evals/parser_full_generate.ts": "0aedb4c1703cffe1055794b29829a357edcd956fdc0a8dec77bfa3c0cf7a6da6"
+  },
+  "journal": "checkpoints/load-replay-pattern.jsonl"
+}

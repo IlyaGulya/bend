@@ -1,0 +1,72 @@
+{
+  "result": "SOURCE_ONLY_SWAP_REJECTED_BEFORE_TARGET_CHECK",
+  "requestedOutcomes": "Neither A target PASS nor B target RESOURCE_LIMIT occurred; semantic/native-load prerequisite failed",
+  "transformation": {
+    "candidate": "bend2/selfhost/parser_full_generated_fuel_column_swap.bend",
+    "sha256": "b0e7b1059a58cce1d4698afde972d9136707113f4e2ada1f21c9cf98c34de15f",
+    "rows": 20,
+    "sourceEdits": 21,
+    "bodyBytesAndHashesIdentical": true,
+    "rowOrderUnchanged": true,
+    "allOtherSourceBytesIdentical": true,
+    "sourceOffsetsForBodiesIdentical": true,
+    "swappedPatternTreesAndQuantitiesReparsed": true,
+    "signatureAndRecursiveCallsUnchanged": true
+  },
+  "controls": {
+    "fixtures": 6,
+    "historicalPass": 6,
+    "historicalEvaluatorOracles": 38,
+    "sourceOnlySwappedNativeLoadErrors": 6,
+    "errorCategory": "consumed binder",
+    "status": "SEMANTIC_GATE_FAILED"
+  },
+  "realCandidate": {
+    "status": "LOAD_ERROR",
+    "error": "Error:\n- message  : a match on a parameter or field (this name is a def or a consumed binder: give the value its own def)\nLocation:\n1561 | def pattern_scan(+tokens: List<&2, Lexer.Token>, +file: String, mode: PatternScanMode, frames: List<&2, PatternFrame>, +scope: List<&2, Scope>, +depth: Nat, goal: PatternScanGoal) -> PatternScanOutcome:\n1562>|   match mode tokens:\n1563 |     case PatternExpect{Ast.QOne{}, +ignored_beg} Lexer.TokenInfo{Lexer.SymbolToken{}, \"+\", beg, ignored_end, ignored_line, ignored_col} <> +rest:",
+    "elapsedMs": 227.837458,
+    "eventsRegistered": 705,
+    "targetIndex": -1,
+    "targetCheck": "NOT_REACHED",
+    "candidateSha256": "b0e7b1059a58cce1d4698afde972d9136707113f4e2ada1f21c9cf98c34de15f",
+    "frozen": {
+      "bend2/bend.ts": "47e1b06e2fa4466bad702f86d8cbce03f40e833a8ba8eaa1e04297fa46dc94a9",
+      "bend2/selfhost/parser.bend": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "bend2/selfhost/parser_full_generated_fuel.bend": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "evals/parser_full_generate.ts": "0aedb4c1703cffe1055794b29829a357edcd956fdc0a8dec77bfa3c0cf7a6da6"
+    }
+  },
+  "realLoadGuard": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "peakFootprintBytes": 87229088,
+    "peakRssBytes": 117817344,
+    "elapsedMs": 323
+  },
+  "interpretation": "Prior 2.11x lowered-object reduction measured swapped columns AND aligned parameter/telescope order, not this source-only transformation. Exact source-only swap is rejected by frozen native loading; no valid target exists for checker-memory comparison.",
+  "targetCheck": "NOT_REACHED_NATIVE_LOAD_REJECTION",
+  "targetPeak": null,
+  "targetElapsedMs": null,
+  "fullValidation": "NOT_RUN_PREREQUISITE_FAILED",
+  "whole29": "NOT_RUN_PREREQUISITE_FAILED",
+  "canonicalEdit": "NOT_MADE",
+  "normalRegeneration": "NOT_RUN",
+  "JSCompilation": "NOT_RUN",
+  "productionKernelCompilerGeneratorChanged": false,
+  "canonicalAndOriginalGeneratedChanged": false,
+  "noGC": true,
+  "noOtherOptimization": true,
+  "frozenInputs": {
+    "bend2/bend.ts": "47e1b06e2fa4466bad702f86d8cbce03f40e833a8ba8eaa1e04297fa46dc94a9",
+    "bend2/selfhost/parser.bend": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+    "bend2/selfhost/parser_full_generated_fuel.bend": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+    "evals/parser_full_generate.ts": "0aedb4c1703cffe1055794b29829a357edcd956fdc0a8dec77bfa3c0cf7a6da6"
+  },
+  "selfhostGreen": false,
+  "evidence": [
+    "checkpoints/pattern-scan-source-swap-audit.json",
+    "checkpoints/pattern-scan-source-controls.json",
+    "checkpoints/pattern-scan-swap-load.json",
+    "checkpoints/pattern-scan-source-swap-guardians.json"
+  ]
+}

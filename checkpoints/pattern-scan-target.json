@@ -1,0 +1,77 @@
+{
+  "result": "A. PATTERN_SCAN TARGET >3GiB",
+  "interpretation": "T1: fresh target itself crosses the physical ceiling without checking prefix bodies; do not investigate cumulative GC yet",
+  "status": "RESOURCE_LIMIT",
+  "reason": "physical_footprint_limit",
+  "method": {
+    "freshProcess": true,
+    "kernel": "temporary direct-load discard-e with invertible before/after body observation",
+    "fullLoadEvents": 1280,
+    "boundedOrderEvents": 706,
+    "nativeCall": "book_valid(book,705)",
+    "prefixSeed": "Native i<done path, unchanged; no prefix type/body checks",
+    "targetIndex": 705,
+    "targetName": "pattern_scan",
+    "bodyChecksCompleted": 0,
+    "bodyChecksStarted": 1,
+    "retainedE": false,
+    "manualGC": false
+  },
+  "measurements": {
+    "postLoad": {
+      "elapsedMs": 1144.980375,
+      "phase": "load",
+      "checkedBodies": 0,
+      "activeName": null,
+      "footprintBytes": 954123536,
+      "rssBytes": 992706560,
+      "lifetimeMaxFootprintBytes": 958334224,
+      "heapUsed": 514771344,
+      "heapTotal": 913678336,
+      "stage": "load-complete",
+      "declarations": 1280,
+      "loadElapsedMs": 1134.799292
+    },
+    "immediatelyBeforeTargetTermCheck": {
+      "elapsedMs": 1147.607666,
+      "phase": "validation",
+      "checkedBodies": 0,
+      "activeName": "pattern_scan",
+      "footprintBytes": 954451216,
+      "rssBytes": 993034240,
+      "lifetimeMaxFootprintBytes": 958334224,
+      "heapUsed": 514771344,
+      "heapTotal": 913678336,
+      "stage": "body-before"
+    },
+    "peakFootprintBytes": 3223096152,
+    "peakRssBytes": 3160080384,
+    "observedFootprintGrowthFromTargetEntryBytes": 2268644936,
+    "overallGuardElapsedMs": 4960,
+    "loadElapsedMs": 1134.799292,
+    "targetReturn": "NO_RETURN_FORCED_TERMINATION",
+    "targetElapsedMs": null,
+    "postTargetReturnFootprintBytes": null,
+    "semanticErrorObserved": false,
+    "peakCaveat": "Sampled process peak during target; true unconstrained target maximum unknown after guard termination",
+    "allocationCaveat": "Growth includes target-induced temporary/live/unreclaimed allocator state. No heap liveness attribution; earlier checker accumulation is not required for this failure."
+  },
+  "conditional": {
+    "GCAttribution": "NOT_RUN_T1_STOP",
+    "fullGCValidation": "NOT_RUN_T1_STOP",
+    "reachabilityInventory": "NOT_RUN_T1_STOP",
+    "codegen": "NOT_STARTED"
+  },
+  "frozenInputs": {
+    "bend2/bend.ts": "47e1b06e2fa4466bad702f86d8cbce03f40e833a8ba8eaa1e04297fa46dc94a9",
+    "bend2/selfhost/parser.bend": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+    "bend2/selfhost/parser_full_generated_fuel.bend": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+    "evals/parser_full_generate.ts": "0aedb4c1703cffe1055794b29829a357edcd956fdc0a8dec77bfa3c0cf7a6da6"
+  },
+  "productionChanged": false,
+  "selfhostGreen": false,
+  "evidence": [
+    "checkpoints/pattern-scan-target.jsonl",
+    "checkpoints/pattern-scan-target-guardian.json"
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "status": "RESOURCE_LIMIT",
+  "classification": "P2_VALIDATION_RESOURCE_BLOCKER",
+  "phase": "validation",
+  "reason": "physical_footprint_limit",
+  "guardian": {
+    "status": "RESOURCE_LIMIT",
+    "reason": "physical_footprint_limit",
+    "commandExitCode": -1,
+    "commandSignal": 15,
+    "peakRssBytes": 3193651200,
+    "peakFootprintBytes": 3226831752,
+    "elapsedMs": 33311,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+      "/Users/ilyagulya/Projects/My/bend/evals/load_replay_probe.ts",
+      "validation"
+    ],
+    "label": "gated direct parser load/validation",
+    "exitCode": 73,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791284654832-b137e20df733db2e.json",
+    "memoryLimitBytes": 3221225472,
+    "rssLimitBytes": 3221225472
+  },
+  "declarationsLoaded": 1280,
+  "declarationEventsCompleted": 678,
+  "declarationEventsTotal": 1280,
+  "lastBegunDeclaration": {
+    "index": 678,
+    "name": "step_parse_atom_scan"
+  },
+  "previousCheckedDefs": 497,
+  "lastBoundary": {
+    "elapsedMs": 31946.692542,
+    "footprintBytes": 2651113992,
+    "rssBytes": 2626912256,
+    "lifetimeMaxFootprintBytes": 2651113992,
+    "phase": "validation",
+    "stage": "declaration-begin",
+    "index": 678,
+    "name": "step_parse_atom_scan",
+    "previous": "step_parse_template_term",
+    "checkedDefs": 497
+  },
+  "loadPhase": {
+    "elapsedMs": 23355.493375,
+    "footprintBytes": 970343696,
+    "rssBytes": 866222080,
+    "lifetimeMaxFootprintBytes": 970343696,
+    "phase": "load",
+    "stage": "complete",
+    "declarations": 1280,
+    "loadElapsedMs": 23281.671208,
+    "patternScanAssigned": true
+  },
+  "validationStart": {
+    "elapsedMs": 23358.070459,
+    "footprintBytes": 970130704,
+    "rssBytes": 868040704,
+    "lifetimeMaxFootprintBytes": 970343696,
+    "phase": "validation",
+    "stage": "declaration-begin",
+    "index": 0,
+    "name": "Empty",
+    "previous": null,
+    "checkedDefs": 0
+  },
+  "validationElapsedToLastBoundaryMs": 8588.622083000002,
+  "validationEndElapsed": "No child completion timestamp: forcibly terminated. Guardian overall elapsed includes loading/startup.",
+  "semanticTypeOwnershipDisagreementObserved": false,
+  "checkedBodySizeCounts": "Not measured; no giant diagnostic tree traversal or term_lower",
+  "samples": [
+    {
+      "checkedDefs": 0,
+      "index": 0,
+      "name": "Empty",
+      "footprintBytes": 970130704,
+      "rssBytes": 868040704,
+      "elapsedMs": 23358.070459
+    },
+    {
+      "checkedDefs": 100,
+      "index": 173,
+      "name": "Word.cmp",
+      "footprintBytes": 975455528,
+      "rssBytes": 869646336,
+      "elapsedMs": 23632.38425
+    },
+    {
+      "checkedDefs": 200,
+      "index": 318,
+      "name": "String.split.push",
+      "footprintBytes": 984565032,
+      "rssBytes": 882130944,
+      "elapsedMs": 23823.62975
+    },
+    {
+      "checkedDefs": 300,
+      "index": 433,
+      "name": "Set.add",
+      "footprintBytes": 993297704,
+      "rssBytes": 894287872,
+      "elapsedMs": 23985.955834
+    },
+    {
+      "checkedDefs": 400,
+      "index": 581,
+      "name": "step_parse_all_named",
+      "footprintBytes": 1466779328,
+      "rssBytes": 1479655424,
+      "elapsedMs": 28864.549458999998
+    },
+    {
+      "checkedDefs": 497,
+      "index": 678,
+      "name": "step_parse_atom_scan",
+      "footprintBytes": 2651113992,
+      "rssBytes": 2626912256,
+      "elapsedMs": 31946.692542
+    }
+  ],
+  "frozen": {
+    "bend2/bend.ts": "47e1b06e2fa4466bad702f86d8cbce03f40e833a8ba8eaa1e04297fa46dc94a9",
+    "bend2/selfhost/parser.bend": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+    "bend2/selfhost/parser_full_generated_fuel.bend": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+    "evals/parser_full_generate.ts": "0aedb4c1703cffe1055794b29829a357edcd956fdc0a8dec77bfa3c0cf7a6da6"
+  }
+}

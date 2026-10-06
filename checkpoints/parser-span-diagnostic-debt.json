@@ -1,0 +1,9 @@
+{
+  "status": "DEFERRED",
+  "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+  "generatedSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+  "cases": 23,
+  "differences": 46,
+  "evidence": "checkpoints/canonical-ownership-family-d-streaming-expanded.json",
+  "policy": "Exact span/diagnostic parity does not block structural compilation or explicit-fuel JS integration; address after parser pipeline works end-to-end."
+}

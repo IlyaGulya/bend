@@ -1,0 +1,15 @@
+{
+  "status": "LOAD_ERROR",
+  "error": "Error:\n- message  : a match on a parameter or field (this name is a def or a consumed binder: give the value its own def)\nLocation:\n1561 | def pattern_scan(+tokens: List<&2, Lexer.Token>, +file: String, mode: PatternScanMode, frames: List<&2, PatternFrame>, +scope: List<&2, Scope>, +depth: Nat, goal: PatternScanGoal) -> PatternScanOutcome:\n1562>|   match mode tokens:\n1563 |     case PatternExpect{Ast.QOne{}, +ignored_beg} Lexer.TokenInfo{Lexer.SymbolToken{}, \"+\", beg, ignored_end, ignored_line, ignored_col} <> +rest:",
+  "elapsedMs": 227.837458,
+  "eventsRegistered": 705,
+  "targetIndex": -1,
+  "targetCheck": "NOT_REACHED",
+  "candidateSha256": "b0e7b1059a58cce1d4698afde972d9136707113f4e2ada1f21c9cf98c34de15f",
+  "frozen": {
+    "bend2/bend.ts": "47e1b06e2fa4466bad702f86d8cbce03f40e833a8ba8eaa1e04297fa46dc94a9",
+    "bend2/selfhost/parser.bend": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+    "bend2/selfhost/parser_full_generated_fuel.bend": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+    "evals/parser_full_generate.ts": "0aedb4c1703cffe1055794b29829a357edcd956fdc0a8dec77bfa3c0cf7a6da6"
+  }
+}

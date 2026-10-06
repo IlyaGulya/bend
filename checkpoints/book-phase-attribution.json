@@ -1,0 +1,317 @@
+{
+  "decision": "P1 — LOAD BLOCKER",
+  "status": "MEASURED_RESOURCE_LIMIT",
+  "frozenInputs": {
+    "bend2/bend.ts": "47e1b06e2fa4466bad702f86d8cbce03f40e833a8ba8eaa1e04297fa46dc94a9",
+    "bend2/selfhost/parser.bend": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+    "bend2/selfhost/parser_full_generated_fuel.bend": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+    "evals/parser_full_generate.ts": "0aedb4c1703cffe1055794b29829a357edcd956fdc0a8dec77bfa3c0cf7a6da6"
+  },
+  "productionChanges": false,
+  "phaseL": {
+    "api": "unchanged native book_load(book,candidate,\"\",new Map())",
+    "status": "RESOURCE_LIMIT",
+    "declarationsCompleted": 705,
+    "activeDeclaration": {
+      "index": 705,
+      "name": "pattern_scan",
+      "storedV": false
+    },
+    "elapsedMs": 33386,
+    "peakFootprintBytes": 3226602328,
+    "peakRssBytes": 2755493888,
+    "limitBytes": 3221225472,
+    "lastCompletedBoundary": {
+      "elapsedMs": 10645.9645,
+      "footprintBytes": 666502224,
+      "rssBytes": 662437888,
+      "lifetimeMaxFootprintBytes": 666502224,
+      "phase": "load",
+      "boundary": "loaded",
+      "index": 704,
+      "name": "pattern_number_mode",
+      "declarations": 705
+    },
+    "finalProcessMemory": "Not available after forced termination. Last completed boundary and sampled guardian peaks reported separately.",
+    "journal": "checkpoints/book-phase-load.jsonl"
+  },
+  "phaseV": {
+    "status": "NOT_RUN",
+    "reason": "Phase L exceeded ceiling; user stop condition",
+    "retainedCheckedBodies": 0
+  },
+  "phaseC": {
+    "status": "NOT_RUN",
+    "reason": "Load and complete validation prerequisite not met"
+  },
+  "localization": {
+    "prefixBefore": {
+      "status": "PASS",
+      "declarations": 705,
+      "elapsedMs": 3236.50975,
+      "peakFootprintBytes": 643990584,
+      "peakRssBytes": 678035456,
+      "finalMemory": {
+        "footprintBytes": 643925048,
+        "rssBytes": 677838848,
+        "lifetimeMaxFootprintBytes": 643925048
+      },
+      "afterGC": {
+        "elapsedMs": 3381.0503329999997,
+        "footprintBytes": 643925048,
+        "rssBytes": 677953536,
+        "lifetimeMaxFootprintBytes": 643990584,
+        "phase": "load",
+        "boundary": "post-gc",
+        "declarations": 705,
+        "defsWithE": 0
+      },
+      "checkedBodies": 0,
+      "productionKernel": "Uninstrumented frozen original"
+    },
+    "prefixThrough": {
+      "status": "RESOURCE_LIMIT",
+      "elapsedMs": 74356,
+      "peakFootprintBytes": 3223767896,
+      "peakRssBytes": 2469756928,
+      "patternScanBoundaries": [
+        {
+          "elapsedMs": 10391.288542,
+          "footprintBytes": 795378864,
+          "rssBytes": 711819264,
+          "lifetimeMaxFootprintBytes": 795428016,
+          "phase": "load",
+          "boundary": "begin",
+          "index": 705,
+          "name": "pattern_scan"
+        },
+        {
+          "elapsedMs": 24537.664375,
+          "footprintBytes": 1143473568,
+          "rssBytes": 903544832,
+          "lifetimeMaxFootprintBytes": 1143473568,
+          "phase": "load",
+          "boundary": "conversion",
+          "name": "pattern_scan",
+          "stage": "flattened"
+        },
+        {
+          "elapsedMs": 24559.636749999998,
+          "footprintBytes": 1143473568,
+          "rssBytes": 906887168,
+          "lifetimeMaxFootprintBytes": 1143473568,
+          "phase": "load",
+          "boundary": "conversion",
+          "name": "pattern_scan",
+          "stage": "higher"
+        }
+      ],
+      "lastCompletedConversion": "First term_higher after body_flatten",
+      "nextStageWithoutCompletion": "term_lower",
+      "observations": "Temporary byte-reversible identity-return hooks only; no match_flatten modification. Full node walks disabled in this run."
+    },
+    "source": "bend2/bend.ts:2554",
+    "loadExpression": "def.v = term_higher(term_lower(term_higher(body_flatten(...))))",
+    "classification": "Few large retained v bodies form the pre-existing baseline; the 3GiB crossing occurs in the in-flight HOAS-to-LTerm replay of pattern_scan, before assigning its v. Not accumulated e.",
+    "inference": "Input graph and partial normalized output coexist during the conversion; exact allocation-kind attribution inside term_lower is not established."
+  },
+  "retention": {
+    "measuredBodies": 524,
+    "sumPerDefinitionUniqueTermNodes": 3239123,
+    "sumIsNotGlobalUnion": true,
+    "top8ShareOfSum": 0.9210150401821727,
+    "top10": [
+      {
+        "name": "step_parse_atom_scan",
+        "termNodes": 1502762,
+        "objects": 1507832,
+        "arrays": 1454136,
+        "root": "Lam",
+        "retention": "Unique nodes in def.v plus its actual Lam/All/Let captured syntax and environment; spans excluded"
+      },
+      {
+        "name": "step_parse_do_atom",
+        "termNodes": 396806,
+        "objects": 397715,
+        "arrays": 390368,
+        "root": "Lam",
+        "retention": "Unique nodes in def.v plus its actual Lam/All/Let captured syntax and environment; spans excluded"
+      },
+      {
+        "name": "parse_char_literal_escape_codepoint",
+        "termNodes": 299387,
+        "objects": 299393,
+        "arrays": 297479,
+        "root": "Mat",
+        "retention": "Unique nodes in def.v plus its actual Lam/All/Let captured syntax and environment; spans excluded"
+      },
+      {
+        "name": "step_parse_do_atom_colon",
+        "termNodes": 212884,
+        "objects": 213341,
+        "arrays": 209415,
+        "root": "Mat",
+        "retention": "Unique nodes in def.v plus its actual Lam/All/Let captured syntax and environment; spans excluded"
+      },
+      {
+        "name": "step_parse_absurd",
+        "termNodes": 203015,
+        "objects": 203921,
+        "arrays": 197434,
+        "root": "Lam",
+        "retention": "Unique nodes in def.v plus its actual Lam/All/Let captured syntax and environment; spans excluded"
+      },
+      {
+        "name": "step_parse_brace",
+        "termNodes": 138395,
+        "objects": 139740,
+        "arrays": 129334,
+        "root": "Lam",
+        "retention": "Unique nodes in def.v plus its actual Lam/All/Let captured syntax and environment; spans excluded"
+      },
+      {
+        "name": "step_parse_all_named",
+        "termNodes": 124582,
+        "objects": 125049,
+        "arrays": 121241,
+        "root": "Lam",
+        "retention": "Unique nodes in def.v plus its actual Lam/All/Let captured syntax and environment; spans excluded"
+      },
+      {
+        "name": "step_parse_do_return_scan",
+        "termNodes": 105450,
+        "objects": 108109,
+        "arrays": 89442,
+        "root": "Lam",
+        "retention": "Unique nodes in def.v plus its actual Lam/All/Let captured syntax and environment; spans excluded"
+      },
+      {
+        "name": "encode_float_normal_rounding_limit",
+        "termNodes": 34983,
+        "objects": 34987,
+        "arrays": 33548,
+        "root": "Mat",
+        "retention": "Unique nodes in def.v plus its actual Lam/All/Let captured syntax and environment; spans excluded"
+      },
+      {
+        "name": "step_parse_name_term",
+        "termNodes": 19987,
+        "objects": 21289,
+        "arrays": 12118,
+        "root": "Lam",
+        "retention": "Unique nodes in def.v plus its actual Lam/All/Let captured syntax and environment; spans excluded"
+      }
+    ],
+    "method": "Unique native v nodes plus actual syntax/environment already captured by term_higher Lam/All/Let closures; spans excluded. Identity-preserving observational WeakMaps in temporary kernel, verified source inversion. No closure application during counting.",
+    "journal": "checkpoints/book-phase-prefix-retained-v.jsonl",
+    "largestPositiveBoundaryDeltas": [
+      {
+        "index": 678,
+        "name": "step_parse_atom_scan",
+        "deltaBytes": 295665856,
+        "footprintBytes": 635388984
+      },
+      {
+        "index": 579,
+        "name": "step_parse_absurd",
+        "deltaBytes": 62865456,
+        "footprintBytes": 166494952
+      },
+      {
+        "index": 599,
+        "name": "step_parse_do_atom",
+        "deltaBytes": 43024432,
+        "footprintBytes": 294519624
+      },
+      {
+        "index": 546,
+        "name": "parse_char_literal_escape_codepoint",
+        "deltaBytes": 39649304,
+        "footprintBytes": 87409336
+      },
+      {
+        "index": 592,
+        "name": "step_parse_do_atom_colon",
+        "deltaBytes": 29589528,
+        "footprintBytes": 250381080
+      },
+      {
+        "index": 585,
+        "name": "step_parse_brace",
+        "deltaBytes": 27869208,
+        "footprintBytes": 214090496
+      },
+      {
+        "index": 620,
+        "name": "encode_float_normal_rounding_limit",
+        "deltaBytes": 17776664,
+        "footprintBytes": 317260640
+      },
+      {
+        "index": 679,
+        "name": "local_array_write",
+        "deltaBytes": 14368768,
+        "footprintBytes": 649757752
+      },
+      {
+        "index": 583,
+        "name": "step_parse_amp",
+        "deltaBytes": 11632640,
+        "footprintBytes": 186188520
+      },
+      {
+        "index": 563,
+        "name": "string_chars_go",
+        "deltaBytes": 9027584,
+        "footprintBytes": 103629496
+      }
+    ],
+    "deltaCaveat": "Process memory differences at completed declaration boundaries, not exclusive per-function allocations; GC and delayed heap accounting affect deltas."
+  },
+  "checkerDependencies": {
+    "earlierERequired": false,
+    "eWrite": "bend2/bend.ts:3781",
+    "reduction": "bend2/bend.ts:2941-2962 unfolds tld.v; term_infer Ref3307-3343 reads type/arity/filled status",
+    "seen": "bend2/bend.ts:3701-3784 reconstructs ordered visibility, ADT/ctor registration and final/non-final declaration handling",
+    "requirements": [
+      "Earlier declaration types, ADT/constructor metadata, template metadata and reduction bodies v available exactly as normal",
+      "Preserve complete order and last-occurrence semantics, including law/implementation events",
+      "Every declaration/signature/ADT validated independently before whole-book acceptance; done>0 trusts prefix and is not evidence of its validity"
+    ],
+    "freshBatchExperiments": "NOT_RUN: conditional e-retention hypothesis does not apply after L failure",
+    "equivalenceClaim": false,
+    "existingTargetTechnique": "evals/parser_full_target_check.ts:15-38 loads whole candidate then checks prefix before target; still retains prefix e and does not currently avoid the load barrier",
+    "existingSliceTechnique": "evals/parser_full_slice_check.ts dependency/order preserving subset only; PASS is not whole-book equivalence"
+  },
+  "codegenDependencies": {
+    "normalPath": "bend2/main.ts:522-538 book_load then book_valid; cli_emit285 selects js_book/compile_book",
+    "runtimeBody": "bend2/comp.ts:1382-1390 converts e to h, no runtime-body fallback to v; js_def3103 requires h",
+    "reachability": "bend2/comp.ts:1397-1455 carb_book materializes h for reachable definitions before emission, not every unreachable definition",
+    "rawVAlsoNeeded": "bend2/comp.ts:891-896 ty_wnf/ty_all use native reduction and types; v is not merely a liveness marker",
+    "JS": "js_lib3113-3122 has whole-reachable preprocessing then per-def emission; js_call2909-2943 emits named calls and uses signatures (sig_def1119-1134 may call def_body); JS emission does not inline callee h",
+    "C": "compile_book2829-2856 re-emits reachable definitions to fixed point; emit_fuse2098/emit_native2145/emit_unfold2292 read callee h",
+    "eBacking": "term_higher751-755 Lambda captures original LTerm node; h can retain e backing even if the e field were removed",
+    "streaming": "Not implemented or proven. JS emission is local after global reachability/signature preparation; current code retains reachable bodies. C additionally requires body revisits/cross-definition h. Neither resolves the measured Phase L failure."
+  },
+  "preserved": {
+    "canonicalParser": true,
+    "generatedCandidate": true,
+    "generatorArchitecture": true,
+    "whole29": "Accepted previous29/29 unchanged, not rerun",
+    "historicalKernel": true,
+    "matchFlatten": true,
+    "bookValid": true,
+    "codegen": true,
+    "parserRegeneration": false,
+    "columnHeuristic": false,
+    "residualLetWork": false,
+    "selfhostGreen": false
+  },
+  "evidence": [
+    "checkpoints/book-phase-load.jsonl",
+    "checkpoints/book-phase-prefix-direct-before-pattern-scan.json",
+    "checkpoints/book-phase-prefix-through-pattern-scan.jsonl",
+    "checkpoints/book-phase-prefix-retained-v.json",
+    "checkpoints/book-phase-guardians.json"
+  ]
+}

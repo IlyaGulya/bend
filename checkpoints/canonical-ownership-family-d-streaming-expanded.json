@@ -1,0 +1,2611 @@
+{
+  "schema": "FS1",
+  "candidate": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/parser_full_generated_fuel.bend",
+  "sha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+  "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+  "fuel": 1000,
+  "expanded": true,
+  "literals": false,
+  "streaming": true,
+  "instrument": false,
+  "collectGC": true,
+  "cases": null,
+  "rowsPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/fuel-candidate-runtime-smoke.jsonl",
+  "corpusCount": 29,
+  "corpusSelection": "expanded",
+  "status": "expanded-corpus-observation",
+  "canonicalPath": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/parser.bend",
+  "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+  "stage0Path": "/Users/ilyagulya/Projects/My/bend/bend2/bend.ts",
+  "stage0Sha256": "47e1b06e2fa4466bad702f86d8cbce03f40e833a8ba8eaa1e04297fa46dc94a9",
+  "command": "bun evals/parser_full_fuel_smoke.ts --fuel=1000 --expanded --streaming --gc --canonical-timeout-ms=60000",
+  "executionBackend": "Bend.term_wnf over exact generated and canonical Bodies; streaming reuses source-AST lazy body_flatten audit seam; checked compiled Base JS Nat.read ABI; no canonical book_valid",
+  "canonicalObservationPolicy": {
+    "timeoutMsPerCase": 60000,
+    "maxBufferBytes": 16777216,
+    "isolation": "one Bun subprocess per case under inherited heavy-gate lease; timeouts/errors are unobserved parity, not canonical bugs"
+  },
+  "memoryPolicy": "Heavy gate owns whole-process-tree memory peaks and RESOURCE_LIMIT outcome; this report retains compact per-case rows only",
+  "counterDefinitions": {
+    "transitions": "actual driver Call dispatches plus Done continuations resumed",
+    "maxKont": "maximum pending plus saved driver Kont list lengths at driver entry",
+    "observedTokenRewinds": "original combined-token suffix activation index decreases; reconstructed lists excluded",
+    "exhaustion": "zero fuel at nonterminal driver control, distinct from an invariant action"
+  },
+  "automaticFuelPolicy": "DEFERRED",
+  "comparisonScope": "complete canonical/generated SyntaxTerm/module payloads excluding spans; full alpha-normalized stage0 core declaration types, bodies, quantities, constructors, imports and metadata; diagnostics/spans separate",
+  "schemaDefinitions": {
+    "syntax": "generic constructor tag/fields; Nat/String/List/Bool decoded losslessly; SpanOf replaced by null and retained by AST field path",
+    "core": "all trusted LTerm constructors/semantic fields; body_flatten then term_higher/term_lower resolve Body and Sub; term_lower alpha-renumbers binders, binder spelling omitted, free names retained; missing lambda quantity is native plain/default Lone",
+    "resolution": "import aliases and relative module/import paths normalized; datatype Fill/Plus uses Base/import and preceding canonical type declarations' leading Quant parameters",
+    "attribution": "canonical/generated semantic equality establishes generator parity; canonical/native semantic or acceptance mismatch is canonical bug; spans/diagnostics are debt"
+  },
+  "limits": [
+    "bounded representative corpus, not whole-parser equivalence",
+    "no type checking of parsed fixture programs",
+    "template specialization/binders are explicitly unsupported by the core bridge, never PASS",
+    "core spans compare lowered-tree paths; canonical syntax spans remain separately recorded",
+    "native book_load strips import header text, so its later offsets can differ",
+    "canonical timeout/error prevents generator attribution for that case",
+    "fuel is a fixed explicit administrative driver input, not an automatic sizing policy"
+  ],
+  "generatorParity": {
+    "PASS": 29
+  },
+  "canonicalNativeParity": {
+    "PASS": 29
+  },
+  "nativeParity": {
+    "PASS": 29
+  },
+  "acceptanceParity": {
+    "PASS": 29
+  },
+  "spanDiagnosticDebt": {
+    "cases": 23,
+    "differences": 46
+  },
+  "rows": [
+    {
+      "name": "empty",
+      "sourceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sourceBytes": 0,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 3020.7878340000007,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": true,
+        "payloadSha256": "1ef87b24f5d5d95a935b2581b73619d9236e256fc69fd36e323b24c0ee755b0a",
+        "semanticSha256": "2c03d0ec5cc4b724aca2699b7a9fe3685a6ae661de24d73dfbcb69fd3b580eb9",
+        "syntaxSpanCount": 0
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": true,
+        "core": {
+          "status": "COMPLETE",
+          "semanticSha256": "55d626d8f73d6299604f7dc97c69b1493206a75ed5ff80c6415fa6a4f4a3d7d0",
+          "declarationCount": 0,
+          "importCount": 0,
+          "spanCount": 0
+        },
+        "importSpanCount": 0
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 2984.557499999999,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": true,
+          "payloadSha256": "1ef87b24f5d5d95a935b2581b73619d9236e256fc69fd36e323b24c0ee755b0a",
+          "semanticSha256": "2c03d0ec5cc4b724aca2699b7a9fe3685a6ae661de24d73dfbcb69fd3b580eb9",
+          "syntaxSpanCount": 0
+        }
+      },
+      "generatedCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "55d626d8f73d6299604f7dc97c69b1493206a75ed5ff80c6415fa6a4f4a3d7d0",
+        "declarationCount": 0,
+        "importCount": 0,
+        "spanCount": 0
+      },
+      "canonicalCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "55d626d8f73d6299604f7dc97c69b1493206a75ed5ff80c6415fa6a4f4a3d7d0",
+        "declarationCount": 0,
+        "importCount": 0,
+        "spanCount": 0
+      },
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": []
+    },
+    {
+      "name": "base-import",
+      "sourceSha256": "4a35596a5cfe837750215d970c3a269691c53bb0b6df546ed9891bc3f1fd77ca",
+      "sourceBytes": 12,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 4586.164457999999,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": true,
+        "payloadSha256": "667c2a9bd5794b58ea2fa68396687476e4db60096a3ebdf3ddf4d3e2274c76ce",
+        "semanticSha256": "51142fd3933524f4016b59811f32f6849f84208515fbafd87e6faefcf79d23c7",
+        "syntaxSpanCount": 1
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": true,
+        "core": {
+          "status": "COMPLETE",
+          "semanticSha256": "1737166b35dc080449b1d17db5af41b0e9e6de2ce4a038f8fb1cbb56a4785e93",
+          "declarationCount": 0,
+          "importCount": 1,
+          "spanCount": 0
+        },
+        "importSpanCount": 1
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 4553.438167,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": true,
+          "payloadSha256": "667c2a9bd5794b58ea2fa68396687476e4db60096a3ebdf3ddf4d3e2274c76ce",
+          "semanticSha256": "51142fd3933524f4016b59811f32f6849f84208515fbafd87e6faefcf79d23c7",
+          "syntaxSpanCount": 1
+        }
+      },
+      "generatedCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "1737166b35dc080449b1d17db5af41b0e9e6de2ce4a038f8fb1cbb56a4785e93",
+        "declarationCount": 0,
+        "importCount": 1,
+        "spanCount": 0
+      },
+      "canonicalCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "1737166b35dc080449b1d17db5af41b0e9e6de2ce4a038f8fb1cbb56a4785e93",
+        "declarationCount": 0,
+        "importCount": 1,
+        "spanCount": 0
+      },
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": []
+    },
+    {
+      "name": "data-constructors",
+      "sourceSha256": "0e5c8239bae5a83e3ab30aa3b19520b84622095ff04d73550363a209e2557335",
+      "sourceBytes": 34,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 1782.6759170000005,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": true,
+        "payloadSha256": "46d877d0c78474aae9de1eb42dc89500138a5ffd1c6570f721b335aa2bf91b72",
+        "semanticSha256": "8d7a94b53b1f9fb0bda8de34e3de62d0b66fbbaa061917aa2f5a44d04f020fad",
+        "syntaxSpanCount": 5
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": true,
+        "core": {
+          "status": "COMPLETE",
+          "semanticSha256": "66f39d489d308dac03a288ba6642bc7ed5285f20512f8eff8789e2711bdfba38",
+          "declarationCount": 1,
+          "importCount": 0,
+          "spanCount": 1
+        },
+        "importSpanCount": 0
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 1444.2540419999987,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": true,
+          "payloadSha256": "46d877d0c78474aae9de1eb42dc89500138a5ffd1c6570f721b335aa2bf91b72",
+          "semanticSha256": "8d7a94b53b1f9fb0bda8de34e3de62d0b66fbbaa061917aa2f5a44d04f020fad",
+          "syntaxSpanCount": 5
+        }
+      },
+      "generatedCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "66f39d489d308dac03a288ba6642bc7ed5285f20512f8eff8789e2711bdfba38",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 2
+      },
+      "canonicalCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "66f39d489d308dac03a288ba6642bc7ed5285f20512f8eff8789e2711bdfba38",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 2
+      },
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": [
+        {
+          "comparison": "generated/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/length",
+            "expected": 1,
+            "actual": 2
+          }
+        },
+        {
+          "comparison": "canonical/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/length",
+            "expected": 1,
+            "actual": 2
+          }
+        }
+      ]
+    },
+    {
+      "name": "constant-definition",
+      "sourceSha256": "6436f85b1084f77feba95ad229ec486eabba6e78308c9195a4e1418da810e333",
+      "sourceBytes": 25,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 1410.360666999999,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": true,
+        "payloadSha256": "68e1a7a8df2b2ed2dcc45a79ca12d50ce722d14a2c617eb59bb9ebd5d2acb611",
+        "semanticSha256": "17b451b8ebf5908669799ff0d84afc8459a81fc592464f439816d8e807f19475",
+        "syntaxSpanCount": 7
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": true,
+        "core": {
+          "status": "COMPLETE",
+          "semanticSha256": "4feb12da9aa62599ef14080ba825d4189be3a5d37c3dd5557e10986344191c5e",
+          "declarationCount": 1,
+          "importCount": 0,
+          "spanCount": 5
+        },
+        "importSpanCount": 0
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 1108.4114169999993,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": true,
+          "payloadSha256": "68e1a7a8df2b2ed2dcc45a79ca12d50ce722d14a2c617eb59bb9ebd5d2acb611",
+          "semanticSha256": "17b451b8ebf5908669799ff0d84afc8459a81fc592464f439816d8e807f19475",
+          "syntaxSpanCount": 7
+        }
+      },
+      "generatedCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "4feb12da9aa62599ef14080ba825d4189be3a5d37c3dd5557e10986344191c5e",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 5
+      },
+      "canonicalCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "4feb12da9aa62599ef14080ba825d4189be3a5d37c3dd5557e10986344191c5e",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 5
+      },
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": []
+    },
+    {
+      "name": "typed-definition",
+      "sourceSha256": "2973736818d559acfabc673c943707e9b8ec26f880e3177485d523c6d196cb7a",
+      "sourceBytes": 27,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 1501.849624999999,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": true,
+        "payloadSha256": "3dc6ab53ea6d344d045014b81dbc1643d1a4b37795422403e66aaa386f29d894",
+        "semanticSha256": "24175fec9dcb9f5e426f3718e2fdf9ef89a7864a34b6bd40fc1a507595315b2c",
+        "syntaxSpanCount": 6
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": true,
+        "core": {
+          "status": "COMPLETE",
+          "semanticSha256": "4f09a08e4fcdf0501639ca3e78b233fa00557fddf7f5346c310bbe85bebc4a58",
+          "declarationCount": 1,
+          "importCount": 0,
+          "spanCount": 5
+        },
+        "importSpanCount": 0
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 1450.7500409999993,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": true,
+          "payloadSha256": "3dc6ab53ea6d344d045014b81dbc1643d1a4b37795422403e66aaa386f29d894",
+          "semanticSha256": "24175fec9dcb9f5e426f3718e2fdf9ef89a7864a34b6bd40fc1a507595315b2c",
+          "syntaxSpanCount": 6
+        }
+      },
+      "generatedCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "4f09a08e4fcdf0501639ca3e78b233fa00557fddf7f5346c310bbe85bebc4a58",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 5
+      },
+      "canonicalCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "4f09a08e4fcdf0501639ca3e78b233fa00557fddf7f5346c310bbe85bebc4a58",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 5
+      },
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": [
+        {
+          "comparison": "generated/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/end",
+            "expected": 8,
+            "actual": 13
+          }
+        },
+        {
+          "comparison": "canonical/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/end",
+            "expected": 8,
+            "actual": 13
+          }
+        }
+      ]
+    },
+    {
+      "name": "malformed-definition",
+      "sourceSha256": "553eda8c53fc903895e005a1bc644c6058ffd91ce4df67c9fbdbe8763f6d8862",
+      "sourceBytes": 12,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 900.2462909999995,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": false,
+        "payloadSha256": "6d56df545cee65dd8bbaf0c15af3723ca3c7965e506736884fc7b7c9822eb7cc",
+        "semanticSha256": "18f4a48ebb4baa5257f631b592c5e2a43a1edd7514af25ca25ec8e343f718c6a",
+        "syntaxSpanCount": 1,
+        "failure": {
+          "message": "invalid or unsupported top-level syntax",
+          "expected": "a supported declaration",
+          "observed": "\n",
+          "span": {
+            "file": "smoke",
+            "beg": 11,
+            "end": 12
+          }
+        }
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": false,
+        "core": null,
+        "importSpanCount": 0,
+        "diagnostic": {
+          "expected": "a name",
+          "observed": "end of input",
+          "span": {
+            "file": "smoke",
+            "beg": 12,
+            "end": 12
+          }
+        }
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 869.6073329999999,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": false,
+          "payloadSha256": "6d56df545cee65dd8bbaf0c15af3723ca3c7965e506736884fc7b7c9822eb7cc",
+          "semanticSha256": "18f4a48ebb4baa5257f631b592c5e2a43a1edd7514af25ca25ec8e343f718c6a",
+          "syntaxSpanCount": 1,
+          "failure": {
+            "message": "invalid or unsupported top-level syntax",
+            "expected": "a supported declaration",
+            "observed": "\n",
+            "span": {
+              "file": "smoke",
+              "beg": 11,
+              "end": 12
+            }
+          }
+        }
+      },
+      "generatedCore": null,
+      "canonicalCore": null,
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": [
+        {
+          "comparison": "generated/native",
+          "field": "diagnostic",
+          "difference": {
+            "path": "$/expected",
+            "expected": "a name",
+            "actual": "a supported declaration"
+          }
+        },
+        {
+          "comparison": "canonical/native",
+          "field": "diagnostic",
+          "difference": {
+            "path": "$/expected",
+            "expected": "a name",
+            "actual": "a supported declaration"
+          }
+        }
+      ]
+    },
+    {
+      "name": "word-constant",
+      "sourceSha256": "8de50422630b984cb53d023a8f582082dfe12f1ac3279313dc5a3116c12c1a93",
+      "sourceBytes": 24,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 2831.2898749999986,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": true,
+        "payloadSha256": "d50aa37b7a52e768877b26b48c7f5a8e0bfa1a66eeb2fb3745935c72419ec199",
+        "semanticSha256": "e4e9f7e16aa0315eaa25ab4e925888d451a9ab5bb29a8483a582334c93207da1",
+        "syntaxSpanCount": 69
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": true,
+        "core": {
+          "status": "COMPLETE",
+          "semanticSha256": "b85b6471d729b5a9ab2d7b31ceb895969c02fd04256e79d344ac8ad02e077405",
+          "declarationCount": 1,
+          "importCount": 0,
+          "spanCount": 67
+        },
+        "importSpanCount": 0
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 2761.9349580000016,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": true,
+          "payloadSha256": "d50aa37b7a52e768877b26b48c7f5a8e0bfa1a66eeb2fb3745935c72419ec199",
+          "semanticSha256": "e4e9f7e16aa0315eaa25ab4e925888d451a9ab5bb29a8483a582334c93207da1",
+          "syntaxSpanCount": 69
+        }
+      },
+      "generatedCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "b85b6471d729b5a9ab2d7b31ceb895969c02fd04256e79d344ac8ad02e077405",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 67
+      },
+      "canonicalCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "b85b6471d729b5a9ab2d7b31ceb895969c02fd04256e79d344ac8ad02e077405",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 67
+      },
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": []
+    },
+    {
+      "name": "string-constant",
+      "sourceSha256": "03c91c47e90c888b4f18e63ecc3b38e822d782eae2e4a7e405c429737027cb23",
+      "sourceBytes": 32,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 1438.6524580000005,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": true,
+        "payloadSha256": "9ed470966c868036e98bd217590ac85a4fad14b3c9b3235f8d213a8c61eebb19",
+        "semanticSha256": "f70be68d8a9413c84a2ee850237d64f0108e9303f504a9d2a4d93486564c15d3",
+        "syntaxSpanCount": 276
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": true,
+        "core": {
+          "status": "COMPLETE",
+          "semanticSha256": "5b76e4a1e2063a65d61c9a4211a81481470a8d9a7b43eabdcd5739c6eb0ce0a4",
+          "declarationCount": 1,
+          "importCount": 0,
+          "spanCount": 274
+        },
+        "importSpanCount": 0
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 1218.2491249999985,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": true,
+          "payloadSha256": "9ed470966c868036e98bd217590ac85a4fad14b3c9b3235f8d213a8c61eebb19",
+          "semanticSha256": "f70be68d8a9413c84a2ee850237d64f0108e9303f504a9d2a4d93486564c15d3",
+          "syntaxSpanCount": 276
+        }
+      },
+      "generatedCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "5b76e4a1e2063a65d61c9a4211a81481470a8d9a7b43eabdcd5739c6eb0ce0a4",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 274
+      },
+      "canonicalCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "5b76e4a1e2063a65d61c9a4211a81481470a8d9a7b43eabdcd5739c6eb0ce0a4",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 274
+      },
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": []
+    },
+    {
+      "name": "char-constant",
+      "sourceSha256": "ea88cd5e1f229e6e442e5df05ebba9e9c89e2e444851a77bb1971816ae0be20e",
+      "sourceBytes": 32,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 1138.5910829999993,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": true,
+        "payloadSha256": "be45b8425fe04798ae850cc17f94f0fa72fc24e2afa97dc6cac1da48a69d2e21",
+        "semanticSha256": "c072a8ddb6ee6acd2dc179a93ca0c139157a8716be6b1f99b280d4d5326d6209",
+        "syntaxSpanCount": 70
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": true,
+        "core": {
+          "status": "COMPLETE",
+          "semanticSha256": "e1d30fad35ab9066ba12aa26344c2065f1a5d506ea7582c024690c809c02ade1",
+          "declarationCount": 1,
+          "importCount": 0,
+          "spanCount": 68
+        },
+        "importSpanCount": 0
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 1069.6234999999979,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": true,
+          "payloadSha256": "be45b8425fe04798ae850cc17f94f0fa72fc24e2afa97dc6cac1da48a69d2e21",
+          "semanticSha256": "c072a8ddb6ee6acd2dc179a93ca0c139157a8716be6b1f99b280d4d5326d6209",
+          "syntaxSpanCount": 70
+        }
+      },
+      "generatedCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "e1d30fad35ab9066ba12aa26344c2065f1a5d506ea7582c024690c809c02ade1",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 68
+      },
+      "canonicalCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "e1d30fad35ab9066ba12aa26344c2065f1a5d506ea7582c024690c809c02ade1",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 68
+      },
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": []
+    },
+    {
+      "name": "multiple-arguments",
+      "sourceSha256": "3bb6901c64c226a33800247383be7dba9b96d46ea927f8c8959582bb705e6c52",
+      "sourceBytes": 38,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 1150.452459,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": true,
+        "payloadSha256": "0a70f4ee53900ef36306a88d6413897de652edb439816506668d0fd932fb0d70",
+        "semanticSha256": "1a73b4d8dc6961943d873671d0cf531870c5dcddb3c38b7719a70708813d20e7",
+        "syntaxSpanCount": 8
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": true,
+        "core": {
+          "status": "COMPLETE",
+          "semanticSha256": "2cfdbc5fd8e0c42c4acb689d8a0b99a98a864bc9accfbf4e58bbabee703eee63",
+          "declarationCount": 1,
+          "importCount": 0,
+          "spanCount": 8
+        },
+        "importSpanCount": 0
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 1097.5289169999996,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": true,
+          "payloadSha256": "0a70f4ee53900ef36306a88d6413897de652edb439816506668d0fd932fb0d70",
+          "semanticSha256": "1a73b4d8dc6961943d873671d0cf531870c5dcddb3c38b7719a70708813d20e7",
+          "syntaxSpanCount": 8
+        }
+      },
+      "generatedCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "2cfdbc5fd8e0c42c4acb689d8a0b99a98a864bc9accfbf4e58bbabee703eee63",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 8
+      },
+      "canonicalCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "2cfdbc5fd8e0c42c4acb689d8a0b99a98a864bc9accfbf4e58bbabee703eee63",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 8
+      },
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": [
+        {
+          "comparison": "generated/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/end",
+            "expected": 11,
+            "actual": 16
+          }
+        },
+        {
+          "comparison": "canonical/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/end",
+            "expected": 11,
+            "actual": 16
+          }
+        }
+      ]
+    },
+    {
+      "name": "explicit-quantities",
+      "sourceSha256": "ff34aacc16d11e2f6e0d7654c6592900b6bcc3ddd4fdd3e4649648fa30583595",
+      "sourceBytes": 41,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 1122.25,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": true,
+        "payloadSha256": "b8eec273183d89e91fa60cf8323e49e729bd328bb72c5962a13132bd94e795e2",
+        "semanticSha256": "1f727f84c278ca19363ca0c720e296ba7afbda6baddc50ca744bba593b734dac",
+        "syntaxSpanCount": 9
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": true,
+        "core": {
+          "status": "COMPLETE",
+          "semanticSha256": "6c4b1e5aa7da8cca396b93c6283c18b44193f39a72cd1aba8094a57b1c4e8689",
+          "declarationCount": 1,
+          "importCount": 0,
+          "spanCount": 8
+        },
+        "importSpanCount": 0
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 1064.1328749999993,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": true,
+          "payloadSha256": "b8eec273183d89e91fa60cf8323e49e729bd328bb72c5962a13132bd94e795e2",
+          "semanticSha256": "1f727f84c278ca19363ca0c720e296ba7afbda6baddc50ca744bba593b734dac",
+          "syntaxSpanCount": 9
+        }
+      },
+      "generatedCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "6c4b1e5aa7da8cca396b93c6283c18b44193f39a72cd1aba8094a57b1c4e8689",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 9
+      },
+      "canonicalCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "6c4b1e5aa7da8cca396b93c6283c18b44193f39a72cd1aba8094a57b1c4e8689",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 9
+      },
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": [
+        {
+          "comparison": "generated/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/length",
+            "expected": 8,
+            "actual": 9
+          }
+        },
+        {
+          "comparison": "canonical/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/length",
+            "expected": 8,
+            "actual": 9
+          }
+        }
+      ]
+    },
+    {
+      "name": "untyped-without-law",
+      "sourceSha256": "92d7db907d61d77be9d272edf6d9d99efa07ae48c714d0bf9ec98f070405cb60",
+      "sourceBytes": 25,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 1083.3684580000008,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": false,
+        "payloadSha256": "a73af74b1358f20a95dee33ee24395af7e355b8db7538a60c0222a33d9ba0f51",
+        "semanticSha256": "8e88515bd36b78ae366fe5a8de7b98a3d8958fb9d3efb6d2cce79697feac13fe",
+        "syntaxSpanCount": 1,
+        "failure": {
+          "message": "invalid or unsupported top-level syntax",
+          "expected": "a supported declaration",
+          "observed": "end of input",
+          "span": {
+            "file": "smoke",
+            "beg": 25,
+            "end": 25
+          }
+        }
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": false,
+        "core": null,
+        "importSpanCount": 0,
+        "diagnostic": {
+          "expected": "'->'",
+          "observed": "':'",
+          "span": {
+            "file": "smoke",
+            "beg": 19,
+            "end": 19
+          }
+        }
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 1045.8133340000022,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": false,
+          "payloadSha256": "a73af74b1358f20a95dee33ee24395af7e355b8db7538a60c0222a33d9ba0f51",
+          "semanticSha256": "8e88515bd36b78ae366fe5a8de7b98a3d8958fb9d3efb6d2cce79697feac13fe",
+          "syntaxSpanCount": 1,
+          "failure": {
+            "message": "invalid or unsupported top-level syntax",
+            "expected": "a supported declaration",
+            "observed": "end of input",
+            "span": {
+              "file": "smoke",
+              "beg": 25,
+              "end": 25
+            }
+          }
+        }
+      },
+      "generatedCore": null,
+      "canonicalCore": null,
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": [
+        {
+          "comparison": "generated/native",
+          "field": "diagnostic",
+          "difference": {
+            "path": "$/expected",
+            "expected": "'->'",
+            "actual": "a supported declaration"
+          }
+        },
+        {
+          "comparison": "canonical/native",
+          "field": "diagnostic",
+          "difference": {
+            "path": "$/expected",
+            "expected": "'->'",
+            "actual": "a supported declaration"
+          }
+        }
+      ]
+    },
+    {
+      "name": "untyped-law-body",
+      "sourceSha256": "2cca073b72052f715844526b4318e99e10b418ae63166397a75347ee606f8ca2",
+      "sourceBytes": 46,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 1025.487416,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": true,
+        "payloadSha256": "f2b3560af3708482d6bd1e564fbdb36948f5da6c4811ed68f87e1a7aef6e04ac",
+        "semanticSha256": "63ccee8778a70d95ab65a55528932f460945f96ac618a77a58faf8fea90e725f",
+        "syntaxSpanCount": 9
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": true,
+        "core": {
+          "status": "COMPLETE",
+          "semanticSha256": "c825b6b5336ce9efb3b22962bc115a3b6d076c8b8343afa990691160b08eb790",
+          "declarationCount": 2,
+          "importCount": 0,
+          "spanCount": 10
+        },
+        "importSpanCount": 0
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 962.5424169999969,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": true,
+          "payloadSha256": "f2b3560af3708482d6bd1e564fbdb36948f5da6c4811ed68f87e1a7aef6e04ac",
+          "semanticSha256": "63ccee8778a70d95ab65a55528932f460945f96ac618a77a58faf8fea90e725f",
+          "syntaxSpanCount": 9
+        }
+      },
+      "generatedCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "c825b6b5336ce9efb3b22962bc115a3b6d076c8b8343afa990691160b08eb790",
+        "declarationCount": 2,
+        "importCount": 0,
+        "spanCount": 10
+      },
+      "canonicalCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "c825b6b5336ce9efb3b22962bc115a3b6d076c8b8343afa990691160b08eb790",
+        "declarationCount": 2,
+        "importCount": 0,
+        "spanCount": 10
+      },
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": [
+        {
+          "comparison": "generated/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/end",
+            "expected": 17,
+            "actual": 22
+          }
+        },
+        {
+          "comparison": "canonical/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/end",
+            "expected": 17,
+            "actual": 22
+          }
+        }
+      ]
+    },
+    {
+      "name": "lambda-body",
+      "sourceSha256": "6b7925022318c39514eef6c65004510bf75a36af6b5399f26faef1e237ea9f6b",
+      "sourceBytes": 41,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 2522.9244579999977,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": true,
+        "payloadSha256": "e368ca4858732d46ecf186215c219ef8b7299f26bc3d675bda4feeea4e526141",
+        "semanticSha256": "02c03439849970bf5109df0fe141f683a8fdd1d1f58dd546c781a640fae92a73",
+        "syntaxSpanCount": 7
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": true,
+        "core": {
+          "status": "COMPLETE",
+          "semanticSha256": "0f3b16b83f851f97c939f3dd1377696d2514dca2ebcd24ccf0c2a311ace0e08c",
+          "declarationCount": 1,
+          "importCount": 0,
+          "spanCount": 5
+        },
+        "importSpanCount": 0
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 2465.498292000004,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": true,
+          "payloadSha256": "e368ca4858732d46ecf186215c219ef8b7299f26bc3d675bda4feeea4e526141",
+          "semanticSha256": "02c03439849970bf5109df0fe141f683a8fdd1d1f58dd546c781a640fae92a73",
+          "syntaxSpanCount": 7
+        }
+      },
+      "generatedCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "0f3b16b83f851f97c939f3dd1377696d2514dca2ebcd24ccf0c2a311ace0e08c",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 5
+      },
+      "canonicalCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "0f3b16b83f851f97c939f3dd1377696d2514dca2ebcd24ccf0c2a311ace0e08c",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 5
+      },
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": [
+        {
+          "comparison": "generated/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/3/end",
+            "expected": 35,
+            "actual": 41
+          }
+        },
+        {
+          "comparison": "canonical/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/3/end",
+            "expected": 35,
+            "actual": 41
+          }
+        }
+      ]
+    },
+    {
+      "name": "nested-application",
+      "sourceSha256": "c7c41389605960342ab98380543e5c71769da1b7e0c87393984b5e6c3c2a64a8",
+      "sourceBytes": 37,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 1324.7665410000045,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": true,
+        "payloadSha256": "d273ae00d7e60f74fb4164ad52a7290a6e95110d7e791cb9ba2d3e4f62cf3fd2",
+        "semanticSha256": "dc3f2c389d147ba071606a41ece7c4fd54aeb20d6e5ac443d7f3c78c1c637b5f",
+        "syntaxSpanCount": 10
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": true,
+        "core": {
+          "status": "COMPLETE",
+          "semanticSha256": "c572581d83dc6fe4e4069ac971c4154c2e0f9c766abab7927c2c693a82d15872",
+          "declarationCount": 1,
+          "importCount": 0,
+          "spanCount": 9
+        },
+        "importSpanCount": 0
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 1231.0116659999985,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": true,
+          "payloadSha256": "d273ae00d7e60f74fb4164ad52a7290a6e95110d7e791cb9ba2d3e4f62cf3fd2",
+          "semanticSha256": "dc3f2c389d147ba071606a41ece7c4fd54aeb20d6e5ac443d7f3c78c1c637b5f",
+          "syntaxSpanCount": 10
+        }
+      },
+      "generatedCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "c572581d83dc6fe4e4069ac971c4154c2e0f9c766abab7927c2c693a82d15872",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 9
+      },
+      "canonicalCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "c572581d83dc6fe4e4069ac971c4154c2e0f9c766abab7927c2c693a82d15872",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 9
+      },
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": [
+        {
+          "comparison": "generated/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/end",
+            "expected": 12,
+            "actual": 17
+          }
+        },
+        {
+          "comparison": "canonical/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/end",
+            "expected": 12,
+            "actual": 17
+          }
+        }
+      ]
+    },
+    {
+      "name": "lambda-application",
+      "sourceSha256": "368211701aa3ff6713365787a14e2e8dd06e3285518fc25b334a186478c93d83",
+      "sourceBytes": 40,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 1430.643333,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": true,
+        "payloadSha256": "64dcadf3543c53e97944fb2d076b3c0d6628f9727488c1e5fa44f50d33d26017",
+        "semanticSha256": "b403e84ed717bfed78bd2c72b3549bdee256e1cd571c6f214aaf42925956507a",
+        "syntaxSpanCount": 9
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": true,
+        "core": {
+          "status": "COMPLETE",
+          "semanticSha256": "52732f421441dea0b28d1384c2c41aea2ededbba594535335de474e8cfc08077",
+          "declarationCount": 1,
+          "importCount": 0,
+          "spanCount": 8
+        },
+        "importSpanCount": 0
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 1371.0533329999962,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": true,
+          "payloadSha256": "64dcadf3543c53e97944fb2d076b3c0d6628f9727488c1e5fa44f50d33d26017",
+          "semanticSha256": "b403e84ed717bfed78bd2c72b3549bdee256e1cd571c6f214aaf42925956507a",
+          "syntaxSpanCount": 9
+        }
+      },
+      "generatedCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "52732f421441dea0b28d1384c2c41aea2ededbba594535335de474e8cfc08077",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 8
+      },
+      "canonicalCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "52732f421441dea0b28d1384c2c41aea2ededbba594535335de474e8cfc08077",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 8
+      },
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": [
+        {
+          "comparison": "generated/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/end",
+            "expected": 11,
+            "actual": 16
+          }
+        },
+        {
+          "comparison": "canonical/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/end",
+            "expected": 11,
+            "actual": 16
+          }
+        }
+      ]
+    },
+    {
+      "name": "local-body",
+      "sourceSha256": "e7022349a0fab9ad1f109c45c3b4e867b86de4ca229ad6a9dccea761c49ec9b4",
+      "sourceBytes": 38,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 1164.9866660000043,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": true,
+        "payloadSha256": "7c5c6dded80b12341e8f683010e0517645d7c2e46ea2961c44ee4a776873281d",
+        "semanticSha256": "0cd92db19daa96a1dcd149c8cb81569c6101374eb5c6a6ca70458132f01f8d0a",
+        "syntaxSpanCount": 9
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": true,
+        "core": {
+          "status": "COMPLETE",
+          "semanticSha256": "809b728bfbcd958c0fc82131a17a4d7bff452002f67bad5cf45d36418fb2d6cc",
+          "declarationCount": 1,
+          "importCount": 0,
+          "spanCount": 7
+        },
+        "importSpanCount": 0
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 1107.0617920000004,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": true,
+          "payloadSha256": "7c5c6dded80b12341e8f683010e0517645d7c2e46ea2961c44ee4a776873281d",
+          "semanticSha256": "0cd92db19daa96a1dcd149c8cb81569c6101374eb5c6a6ca70458132f01f8d0a",
+          "syntaxSpanCount": 9
+        }
+      },
+      "generatedCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "809b728bfbcd958c0fc82131a17a4d7bff452002f67bad5cf45d36418fb2d6cc",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 7
+      },
+      "canonicalCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "809b728bfbcd958c0fc82131a17a4d7bff452002f67bad5cf45d36418fb2d6cc",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 7
+      },
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": [
+        {
+          "comparison": "generated/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/end",
+            "expected": 11,
+            "actual": 16
+          }
+        },
+        {
+          "comparison": "canonical/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/end",
+            "expected": 11,
+            "actual": 16
+          }
+        }
+      ]
+    },
+    {
+      "name": "nested-patterns",
+      "sourceSha256": "27097444a95cfc408711d1c37fc24c18eb48af15ca2cab7f369977ebd99c8886",
+      "sourceBytes": 108,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 3226.430790999999,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": true,
+        "payloadSha256": "56fa1da773638f2328a5662a5fd93aef448dfa9c4daa015faeffc66085038aca",
+        "semanticSha256": "fc384b1eb852c488f732dda67d98b1053c1a0f492a83905110e3220acbbffce8",
+        "syntaxSpanCount": 21
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": true,
+        "core": {
+          "status": "COMPLETE",
+          "semanticSha256": "dd960d845e0de676b0f85c0b5d6b5686bfaa15678089be75c0efb250a2a2523f",
+          "declarationCount": 1,
+          "importCount": 0,
+          "spanCount": 13
+        },
+        "importSpanCount": 0
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 2263.295665999998,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": true,
+          "payloadSha256": "56fa1da773638f2328a5662a5fd93aef448dfa9c4daa015faeffc66085038aca",
+          "semanticSha256": "fc384b1eb852c488f732dda67d98b1053c1a0f492a83905110e3220acbbffce8",
+          "syntaxSpanCount": 21
+        }
+      },
+      "generatedCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "dd960d845e0de676b0f85c0b5d6b5686bfaa15678089be75c0efb250a2a2523f",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 13
+      },
+      "canonicalCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "dd960d845e0de676b0f85c0b5d6b5686bfaa15678089be75c0efb250a2a2523f",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 13
+      },
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": [
+        {
+          "comparison": "generated/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/end",
+            "expected": 10,
+            "actual": 15
+          }
+        },
+        {
+          "comparison": "canonical/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/end",
+            "expected": 10,
+            "actual": 15
+          }
+        }
+      ]
+    },
+    {
+      "name": "match-cases",
+      "sourceSha256": "28baaf970583bafb53ca8e9da9324fde7f2e972eff053a044caddef31b32fd13",
+      "sourceBytes": 83,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 3584.0237500000003,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": true,
+        "payloadSha256": "f6dd13f1247e087b42b212ba69eb575883fd64b7f6565fa1a21ff2fedb63d96f",
+        "semanticSha256": "10703c81f0d5cf91717ef9078dcad2d42a6e89163a319be485b58b248e5286b5",
+        "syntaxSpanCount": 15
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": true,
+        "core": {
+          "status": "COMPLETE",
+          "semanticSha256": "4dc93701e0faaf0421881cb4462d85fc6bbd7b1aff095ffc9ee53cd9d3ab9ee9",
+          "declarationCount": 1,
+          "importCount": 0,
+          "spanCount": 9
+        },
+        "importSpanCount": 0
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 3478.981584000001,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": true,
+          "payloadSha256": "f6dd13f1247e087b42b212ba69eb575883fd64b7f6565fa1a21ff2fedb63d96f",
+          "semanticSha256": "10703c81f0d5cf91717ef9078dcad2d42a6e89163a319be485b58b248e5286b5",
+          "syntaxSpanCount": 15
+        }
+      },
+      "generatedCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "4dc93701e0faaf0421881cb4462d85fc6bbd7b1aff095ffc9ee53cd9d3ab9ee9",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 9
+      },
+      "canonicalCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "4dc93701e0faaf0421881cb4462d85fc6bbd7b1aff095ffc9ee53cd9d3ab9ee9",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 9
+      },
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": [
+        {
+          "comparison": "generated/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/end",
+            "expected": 17,
+            "actual": 22
+          }
+        },
+        {
+          "comparison": "canonical/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/end",
+            "expected": 17,
+            "actual": 22
+          }
+        }
+      ]
+    },
+    {
+      "name": "do-return",
+      "sourceSha256": "0d97e914df7f0b436f59eb85e086f6037185c539a41c2f40561e42359dcdaaac",
+      "sourceBytes": 46,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 1136.270000000004,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": true,
+        "payloadSha256": "0ffde891889089100f78744d25e3770cc72ad9d1a9d57c9779785973d8caea17",
+        "semanticSha256": "657ab16078f190b1376a706ab8bdd3e36c6c3f713528858c49a2b4326dae3524",
+        "syntaxSpanCount": 8
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": true,
+        "core": {
+          "status": "COMPLETE",
+          "semanticSha256": "dcee3a995b7b2279e86d0e57d2a829d73fdde61976c1aef8fa090fe14a782a97",
+          "declarationCount": 1,
+          "importCount": 0,
+          "spanCount": 7
+        },
+        "importSpanCount": 0
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 1060.289417,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": true,
+          "payloadSha256": "0ffde891889089100f78744d25e3770cc72ad9d1a9d57c9779785973d8caea17",
+          "semanticSha256": "657ab16078f190b1376a706ab8bdd3e36c6c3f713528858c49a2b4326dae3524",
+          "syntaxSpanCount": 8
+        }
+      },
+      "generatedCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "dcee3a995b7b2279e86d0e57d2a829d73fdde61976c1aef8fa090fe14a782a97",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 7
+      },
+      "canonicalCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "dcee3a995b7b2279e86d0e57d2a829d73fdde61976c1aef8fa090fe14a782a97",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 7
+      },
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": [
+        {
+          "comparison": "generated/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/end",
+            "expected": 12,
+            "actual": 17
+          }
+        },
+        {
+          "comparison": "canonical/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/end",
+            "expected": 12,
+            "actual": 17
+          }
+        }
+      ]
+    },
+    {
+      "name": "do-typed-bind",
+      "sourceSha256": "f70610b7149ef066cee80a8f1ad0207671068aed3283c435be91989031d5d6f3",
+      "sourceBytes": 61,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 1661.668666999998,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": true,
+        "payloadSha256": "ade08f63f5b50bbeba285aa6183a64aed74c75948aa0e537dbf9c823601aef10",
+        "semanticSha256": "13600f4b932225955d2ff338c58bb91a0a5501eb01e12dc330865eec5f8047cc",
+        "syntaxSpanCount": 17
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": true,
+        "core": {
+          "status": "COMPLETE",
+          "semanticSha256": "50190a1c3e6f57b01ac234dacb802a98edad7ed0e7c14eaeda57554d885bd87d",
+          "declarationCount": 1,
+          "importCount": 0,
+          "spanCount": 16
+        },
+        "importSpanCount": 0
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 1569.510209,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": true,
+          "payloadSha256": "ade08f63f5b50bbeba285aa6183a64aed74c75948aa0e537dbf9c823601aef10",
+          "semanticSha256": "13600f4b932225955d2ff338c58bb91a0a5501eb01e12dc330865eec5f8047cc",
+          "syntaxSpanCount": 17
+        }
+      },
+      "generatedCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "50190a1c3e6f57b01ac234dacb802a98edad7ed0e7c14eaeda57554d885bd87d",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 16
+      },
+      "canonicalCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "50190a1c3e6f57b01ac234dacb802a98edad7ed0e7c14eaeda57554d885bd87d",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 16
+      },
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": [
+        {
+          "comparison": "generated/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/end",
+            "expected": 11,
+            "actual": 16
+          }
+        },
+        {
+          "comparison": "canonical/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/end",
+            "expected": 11,
+            "actual": 16
+          }
+        }
+      ]
+    },
+    {
+      "name": "parameterized-type",
+      "sourceSha256": "3e66074cc5401c21b5fa9eff6e551a5a82fc0d29657c177a4a4baff7e55fd3d1",
+      "sourceBytes": 93,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 2079.339791999999,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": true,
+        "payloadSha256": "f1a9466764570500fff86aa4f582117a5c50b55186d1ec7c3beb427c0adbf914",
+        "semanticSha256": "72ac85dd560ec1475e89325731d56845a5b2b32c826bb7c7ec9c441c1d153401",
+        "syntaxSpanCount": 19
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": true,
+        "core": {
+          "status": "COMPLETE",
+          "semanticSha256": "861cc8c5041494d59439a55c7ad5e619491badf988bec96b89ace8bbd6ffc907",
+          "declarationCount": 2,
+          "importCount": 0,
+          "spanCount": 20
+        },
+        "importSpanCount": 0
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 1937.8261669999993,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": true,
+          "payloadSha256": "f1a9466764570500fff86aa4f582117a5c50b55186d1ec7c3beb427c0adbf914",
+          "semanticSha256": "72ac85dd560ec1475e89325731d56845a5b2b32c826bb7c7ec9c441c1d153401",
+          "syntaxSpanCount": 19
+        }
+      },
+      "generatedCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "861cc8c5041494d59439a55c7ad5e619491badf988bec96b89ace8bbd6ffc907",
+        "declarationCount": 2,
+        "importCount": 0,
+        "spanCount": 20
+      },
+      "canonicalCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "861cc8c5041494d59439a55c7ad5e619491badf988bec96b89ace8bbd6ffc907",
+        "declarationCount": 2,
+        "importCount": 0,
+        "spanCount": 20
+      },
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": [
+        {
+          "comparison": "generated/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/1/path",
+            "expected": "declarations/0/T/A",
+            "actual": "declarations/0/T/B"
+          }
+        },
+        {
+          "comparison": "canonical/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/1/path",
+            "expected": "declarations/0/T/A",
+            "actual": "declarations/0/T/B"
+          }
+        }
+      ]
+    },
+    {
+      "name": "reusable-type",
+      "sourceSha256": "dc5e9abf86c56b1396e1ef35287040ad7796d523320716d7d2f99825d075cbff",
+      "sourceBytes": 47,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 1136.452541999999,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": true,
+        "payloadSha256": "7f06b2a0dde4854c9df931ec55c41158021afff1dc33f6735d215067c245756e",
+        "semanticSha256": "57569bc285977eae743143fbfdbd7a652447068deab900059e2fd19e8d52b333",
+        "syntaxSpanCount": 10
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": true,
+        "core": {
+          "status": "COMPLETE",
+          "semanticSha256": "537d1eaa716718bb557088475c926ed781ea28b03e39bebf91cce52ad3bfe24c",
+          "declarationCount": 1,
+          "importCount": 0,
+          "spanCount": 9
+        },
+        "importSpanCount": 0
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 1062.5146249999962,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": true,
+          "payloadSha256": "7f06b2a0dde4854c9df931ec55c41158021afff1dc33f6735d215067c245756e",
+          "semanticSha256": "57569bc285977eae743143fbfdbd7a652447068deab900059e2fd19e8d52b333",
+          "syntaxSpanCount": 10
+        }
+      },
+      "generatedCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "537d1eaa716718bb557088475c926ed781ea28b03e39bebf91cce52ad3bfe24c",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 9
+      },
+      "canonicalCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "537d1eaa716718bb557088475c926ed781ea28b03e39bebf91cce52ad3bfe24c",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 9
+      },
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": [
+        {
+          "comparison": "generated/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/end",
+            "expected": 14,
+            "actual": 26
+          }
+        },
+        {
+          "comparison": "canonical/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/end",
+            "expected": 14,
+            "actual": 26
+          }
+        }
+      ]
+    },
+    {
+      "name": "relative-import",
+      "sourceSha256": "a340315ef93a8111af6210527e249f8b55e5149d19f575ceda41cf1ac7d52d72",
+      "sourceBytes": 69,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 5717.366875,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": true,
+        "payloadSha256": "1b90ba58e38ec227830ccf995258c91353da67b87909f50e994b9f895bcce84c",
+        "semanticSha256": "97c554ff319a6143e69da864f548bc8cba14dfeeda710652ac8bd61f0872c2ba",
+        "syntaxSpanCount": 5
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": true,
+        "core": {
+          "status": "COMPLETE",
+          "semanticSha256": "a95a3b0d1938b6fbca271351e6d0d232dedd3ddc040958ced57cbbc19263ef3f",
+          "declarationCount": 1,
+          "importCount": 1,
+          "spanCount": 2
+        },
+        "importSpanCount": 1
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 5427.514667000003,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": true,
+          "payloadSha256": "1b90ba58e38ec227830ccf995258c91353da67b87909f50e994b9f895bcce84c",
+          "semanticSha256": "97c554ff319a6143e69da864f548bc8cba14dfeeda710652ac8bd61f0872c2ba",
+          "syntaxSpanCount": 5
+        }
+      },
+      "generatedCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "a95a3b0d1938b6fbca271351e6d0d232dedd3ddc040958ced57cbbc19263ef3f",
+        "declarationCount": 1,
+        "importCount": 1,
+        "spanCount": 2
+      },
+      "canonicalCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "a95a3b0d1938b6fbca271351e6d0d232dedd3ddc040958ced57cbbc19263ef3f",
+        "declarationCount": 1,
+        "importCount": 1,
+        "spanCount": 2
+      },
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": [
+        {
+          "comparison": "generated/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/beg",
+            "expected": 19,
+            "actual": 50
+          }
+        },
+        {
+          "comparison": "canonical/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/beg",
+            "expected": 19,
+            "actual": 50
+          }
+        }
+      ]
+    },
+    {
+      "name": "external-import-body",
+      "sourceSha256": "d572b615e6d1adc38e289bbefce7a81d0f57704d1675d46009c8ec7a9731e108",
+      "sourceBytes": 52,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 4240.725040999998,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": true,
+        "payloadSha256": "3274011bda4bb90aa5871d2de0a61add4c4684c48b1c741123937af474ae6edd",
+        "semanticSha256": "b48a62f74c0c5567ee2035afef6632d513072a48edb98b0767fea37b01e8e044",
+        "syntaxSpanCount": 4
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": true,
+        "core": {
+          "status": "COMPLETE",
+          "semanticSha256": "82cbd98ea79a0621f15372ac276a2aa1337ae3dc90b65502da1c4b51153e0ffa",
+          "declarationCount": 1,
+          "importCount": 0,
+          "spanCount": 3
+        },
+        "importSpanCount": 0
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 4098.153875000004,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": true,
+          "payloadSha256": "3274011bda4bb90aa5871d2de0a61add4c4684c48b1c741123937af474ae6edd",
+          "semanticSha256": "b48a62f74c0c5567ee2035afef6632d513072a48edb98b0767fea37b01e8e044",
+          "syntaxSpanCount": 4
+        }
+      },
+      "generatedCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "82cbd98ea79a0621f15372ac276a2aa1337ae3dc90b65502da1c4b51153e0ffa",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 3
+      },
+      "canonicalCore": {
+        "status": "COMPLETE",
+        "semanticSha256": "82cbd98ea79a0621f15372ac276a2aa1337ae3dc90b65502da1c4b51153e0ffa",
+        "declarationCount": 1,
+        "importCount": 0,
+        "spanCount": 3
+      },
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": [
+        {
+          "comparison": "generated/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/end",
+            "expected": 14,
+            "actual": 19
+          }
+        },
+        {
+          "comparison": "canonical/native",
+          "field": "coreSpans",
+          "difference": {
+            "path": "$/0/end",
+            "expected": 14,
+            "actual": 19
+          }
+        }
+      ]
+    },
+    {
+      "name": "malformed-body",
+      "sourceSha256": "1125767222992709be78d0aac233583c6cfe27b54ace96f7c55b35822cf4db20",
+      "sourceBytes": 25,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 6453.507958999995,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": false,
+        "payloadSha256": "163c4fbc2f7ea30e53daa4c46af0dfb619011961599d2deec46dfbdd2a6e66bd",
+        "semanticSha256": "18f4a48ebb4baa5257f631b592c5e2a43a1edd7514af25ca25ec8e343f718c6a",
+        "syntaxSpanCount": 1,
+        "failure": {
+          "message": "invalid or unsupported top-level syntax",
+          "expected": "a supported declaration",
+          "observed": "\n",
+          "span": {
+            "file": "smoke",
+            "beg": 20,
+            "end": 21
+          }
+        }
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": false,
+        "core": null,
+        "importSpanCount": 0,
+        "diagnostic": {
+          "expected": "a term",
+          "observed": "')'",
+          "span": {
+            "file": "smoke",
+            "beg": 23,
+            "end": 23
+          }
+        }
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 6190.055375000004,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": false,
+          "payloadSha256": "163c4fbc2f7ea30e53daa4c46af0dfb619011961599d2deec46dfbdd2a6e66bd",
+          "semanticSha256": "18f4a48ebb4baa5257f631b592c5e2a43a1edd7514af25ca25ec8e343f718c6a",
+          "syntaxSpanCount": 1,
+          "failure": {
+            "message": "invalid or unsupported top-level syntax",
+            "expected": "a supported declaration",
+            "observed": "\n",
+            "span": {
+              "file": "smoke",
+              "beg": 20,
+              "end": 21
+            }
+          }
+        }
+      },
+      "generatedCore": null,
+      "canonicalCore": null,
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": [
+        {
+          "comparison": "generated/native",
+          "field": "diagnostic",
+          "difference": {
+            "path": "$/expected",
+            "expected": "a term",
+            "actual": "a supported declaration"
+          }
+        },
+        {
+          "comparison": "canonical/native",
+          "field": "diagnostic",
+          "difference": {
+            "path": "$/expected",
+            "expected": "a term",
+            "actual": "a supported declaration"
+          }
+        }
+      ]
+    },
+    {
+      "name": "malformed-type",
+      "sourceSha256": "08a6816eb70010e2a999b1003e4ac8a554bca01bc0c9d654401648694521f2e9",
+      "sourceBytes": 28,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 4000.3331250000047,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": false,
+        "payloadSha256": "84a5417087647b75d813b65be874a0b047acb9f0c71344fcf69b30c6aee19230",
+        "semanticSha256": "b9fe6638a2ed4ae73d5dc05c7fafb78ab66b1d0973000b8f19d6280685a8c733",
+        "syntaxSpanCount": 1,
+        "failure": {
+          "message": "invalid or unsupported top-level syntax",
+          "expected": "a supported declaration",
+          "observed": "Bad",
+          "span": {
+            "file": "smoke",
+            "beg": 22,
+            "end": 25
+          }
+        }
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": false,
+        "core": null,
+        "importSpanCount": 0,
+        "diagnostic": {
+          "expected": "':'",
+          "observed": "'B'",
+          "span": {
+            "file": "smoke",
+            "beg": 22,
+            "end": 22
+          }
+        }
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 3945.704874999996,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": false,
+          "payloadSha256": "84a5417087647b75d813b65be874a0b047acb9f0c71344fcf69b30c6aee19230",
+          "semanticSha256": "b9fe6638a2ed4ae73d5dc05c7fafb78ab66b1d0973000b8f19d6280685a8c733",
+          "syntaxSpanCount": 1,
+          "failure": {
+            "message": "invalid or unsupported top-level syntax",
+            "expected": "a supported declaration",
+            "observed": "Bad",
+            "span": {
+              "file": "smoke",
+              "beg": 22,
+              "end": 25
+            }
+          }
+        }
+      },
+      "generatedCore": null,
+      "canonicalCore": null,
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": [
+        {
+          "comparison": "generated/native",
+          "field": "diagnostic",
+          "difference": {
+            "path": "$/expected",
+            "expected": "':'",
+            "actual": "a supported declaration"
+          }
+        },
+        {
+          "comparison": "canonical/native",
+          "field": "diagnostic",
+          "difference": {
+            "path": "$/expected",
+            "expected": "':'",
+            "actual": "a supported declaration"
+          }
+        }
+      ]
+    },
+    {
+      "name": "malformed-do",
+      "sourceSha256": "f1f284df53d7041ad4430afbf39c5ff912309b8053165e3fc5c69b5a3a218cd6",
+      "sourceBytes": 38,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 6703.283209000001,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": false,
+        "payloadSha256": "163c4fbc2f7ea30e53daa4c46af0dfb619011961599d2deec46dfbdd2a6e66bd",
+        "semanticSha256": "18f4a48ebb4baa5257f631b592c5e2a43a1edd7514af25ca25ec8e343f718c6a",
+        "syntaxSpanCount": 1,
+        "failure": {
+          "message": "invalid or unsupported top-level syntax",
+          "expected": "a supported declaration",
+          "observed": "\n",
+          "span": {
+            "file": "smoke",
+            "beg": 20,
+            "end": 21
+          }
+        }
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": false,
+        "core": null,
+        "importSpanCount": 0,
+        "diagnostic": {
+          "expected": "a term",
+          "observed": "end of input",
+          "span": {
+            "file": "smoke",
+            "beg": 38,
+            "end": 38
+          }
+        }
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 6013.815749999994,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": false,
+          "payloadSha256": "163c4fbc2f7ea30e53daa4c46af0dfb619011961599d2deec46dfbdd2a6e66bd",
+          "semanticSha256": "18f4a48ebb4baa5257f631b592c5e2a43a1edd7514af25ca25ec8e343f718c6a",
+          "syntaxSpanCount": 1,
+          "failure": {
+            "message": "invalid or unsupported top-level syntax",
+            "expected": "a supported declaration",
+            "observed": "\n",
+            "span": {
+              "file": "smoke",
+              "beg": 20,
+              "end": 21
+            }
+          }
+        }
+      },
+      "generatedCore": null,
+      "canonicalCore": null,
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": [
+        {
+          "comparison": "generated/native",
+          "field": "diagnostic",
+          "difference": {
+            "path": "$/expected",
+            "expected": "a term",
+            "actual": "a supported declaration"
+          }
+        },
+        {
+          "comparison": "canonical/native",
+          "field": "diagnostic",
+          "difference": {
+            "path": "$/expected",
+            "expected": "a term",
+            "actual": "a supported declaration"
+          }
+        }
+      ]
+    },
+    {
+      "name": "orphan-case",
+      "sourceSha256": "67955eb3909d21f4049b84263be0f40b69759958622d37652047a56e0137c89d",
+      "sourceBytes": 16,
+      "candidateSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+      "canonicalSha256": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+      "elapsedMs": 4273.975458000001,
+      "result": {
+        "run": "FeedbackComplete",
+        "accepted": false,
+        "payloadSha256": "2eee85b25179a245253258d542bfc1606352a4cc9a7e67398f38c0bde58ce4d0",
+        "semanticSha256": "d6049c3bf071ab38827c08a8a1ad8dcba5ec195aae4a1e42ed9071f92ffac7c3",
+        "syntaxSpanCount": 1,
+        "failure": {
+          "message": "invalid or unsupported top-level syntax",
+          "expected": "a supported declaration",
+          "observed": "case",
+          "span": {
+            "file": "smoke",
+            "beg": 0,
+            "end": 4
+          }
+        }
+      },
+      "counters": null,
+      "observerPayloadEquality": "NOT_INSTRUMENTED",
+      "stage0": {
+        "accepted": false,
+        "core": null,
+        "importSpanCount": 0,
+        "diagnostic": {
+          "expected": "'def', 'type' or 'law'",
+          "observed": "'c'",
+          "span": {
+            "file": "smoke",
+            "beg": 0,
+            "end": 0
+          }
+        }
+      },
+      "canonical": {
+        "status": "COMPLETE",
+        "elapsedMs": 4240.642082999999,
+        "result": {
+          "run": "CanonicalComplete",
+          "accepted": false,
+          "payloadSha256": "2eee85b25179a245253258d542bfc1606352a4cc9a7e67398f38c0bde58ce4d0",
+          "semanticSha256": "d6049c3bf071ab38827c08a8a1ad8dcba5ec195aae4a1e42ed9071f92ffac7c3",
+          "syntaxSpanCount": 1,
+          "failure": {
+            "message": "invalid or unsupported top-level syntax",
+            "expected": "a supported declaration",
+            "observed": "case",
+            "span": {
+              "file": "smoke",
+              "beg": 0,
+              "end": 4
+            }
+          }
+        }
+      },
+      "generatedCore": null,
+      "canonicalCore": null,
+      "generatorParity": "PASS",
+      "generatorDifference": null,
+      "acceptanceParity": "PASS",
+      "acceptanceComparisons": {
+        "generatedNative": "PASS",
+        "canonicalNative": "PASS",
+        "canonicalGenerated": "PASS"
+      },
+      "rawCanonicalGeneratedPayloadEquality": "PASS",
+      "parity": "PASS",
+      "nativeParity": "PASS",
+      "nativeDifference": null,
+      "canonicalNativeParity": "PASS",
+      "canonicalNativeDifference": null,
+      "classification": "PASS",
+      "spanDiagnosticDebt": [
+        {
+          "comparison": "generated/native",
+          "field": "diagnostic",
+          "difference": {
+            "path": "$/expected",
+            "expected": "'def', 'type' or 'law'",
+            "actual": "a supported declaration"
+          }
+        },
+        {
+          "comparison": "canonical/native",
+          "field": "diagnostic",
+          "difference": {
+            "path": "$/expected",
+            "expected": "'def', 'type' or 'law'",
+            "actual": "a supported declaration"
+          }
+        }
+      ]
+    }
+  ],
+  "exhaustion": {
+    "result": {
+      "run": "FeedbackInvariantFailure",
+      "accepted": false,
+      "syntaxSpanCount": 0
+    },
+    "counters": null
+  },
+  "parityPass": 29,
+  "parityMismatches": 0,
+  "generatorParityPass": 29,
+  "generatorMismatches": 0,
+  "canonicalBugs": 0,
+  "canonicalUnobserved": 0,
+  "normalizationUnsupported": 0,
+  "heavyGate": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 2573565952,
+    "peakFootprintBytes": 2183171024,
+    "elapsedMs": 84746,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+      "/Users/ilyagulya/Projects/My/bend/evals/parser_full_fuel_smoke.ts",
+      "--streaming",
+      "--expanded",
+      "--fuel=1000",
+      "--gc"
+    ],
+    "label": "parser-differential",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791199276258-fe425a86c9a1f127.json",
+    "memoryLimitBytes": 3221225472,
+    "rssLimitBytes": 3221225472
+  }
+}

@@ -1,0 +1,890 @@
+{
+  "status": "COLUMN ORDER INSUFFICIENT",
+  "meaning": "Column permutation materially reduces AST volume but does not explain or solve the earlier 3061-second trajectory: BOTH exact historical 20-row diagnostics already finish comfortably under 3GiB.",
+  "scope": "Full frozen real raw 20-row Body/Match, exact row order/pattern/body object identities, binder IDs and quantities; only matrix columns and aligned external probe parameter order permuted. Recursive body references remain original ABI. No full-parser check/compilation.",
+  "kernelFrozen": {
+    "bend2/bend.ts": "47e1b06e2fa4466bad702f86d8cbce03f40e833a8ba8eaa1e04297fa46dc94a9",
+    "bend2/selfhost/parser.bend": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+    "bend2/selfhost/parser_full_generated_fuel.bend": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+    "evals/parser_full_generate.ts": "0aedb4c1703cffe1055794b29829a357edcd956fdc0a8dec77bfa3c0cf7a6da6"
+  },
+  "limits": {
+    "fresh": 131072,
+    "elapsedLoweringMs": 60000,
+    "physicalAndRssBytes": 3221225472,
+    "pollMs": 10
+  },
+  "real": [
+    {
+      "variant": "original",
+      "status": "COMPLETE",
+      "rawUniqueObjects": 3070,
+      "rawTermNodes": 765,
+      "loweredUniqueObjects": 5286716,
+      "Sub": 2139538,
+      "Lam": 1143038,
+      "Mat": 218793,
+      "freshBinders": 71177,
+      "loweringMs": 905.3804580000001,
+      "lowerAndCountMs": 4236.264125,
+      "guardianElapsedMs": 4873,
+      "peakFootprintBytes": 1436518056,
+      "peakRssBytes": 1381761024,
+      "growth": [
+        {
+          "fresh": 1024,
+          "elapsedMs": 13.142624999999953
+        },
+        {
+          "fresh": 4096,
+          "elapsedMs": 53.808167000000026
+        },
+        {
+          "fresh": 16384,
+          "elapsedMs": 224.49745799999994
+        },
+        {
+          "fresh": 65536,
+          "elapsedMs": 804.918958
+        }
+      ],
+      "thresholdsNotReached": [
+        131072
+      ],
+      "report": "checkpoints/stage0-column-order-real-original.json",
+      "columnOnlyOriginalVars": {
+        "status": "CONSUMED_BINDER_REJECTION",
+        "message": "Error:\n- message  : a match on a parameter or field (this name is a def or a consumed binder: give the value its own def)\nLocation:\n1950 | def pattern_scan(+tokens: List<&2, Lexer.Token>, +file: String, mode: PatternScanMode, frames: List<&2, PatternFrame>, +scope: List<&2, Scope>, +depth: Nat, goal: PatternScanGoal) -> PatternScanOutcome:\n1951>|   match tokens mode:\n1952 |     case Lexer.TokenInfo{Lexer.SymbolToken{}, \"+\", beg, ignored_end, ignored_line, ignored_col} <> +rest PatternExpect{Ast.QOne{}, +ignored_beg}:",
+        "freshBinders": 1,
+        "elapsedMs": 0.79200000000003,
+        "originalVars": [
+          {
+            "k": "tokens",
+            "i": 1
+          },
+          {
+            "k": "file",
+            "i": 3
+          },
+          {
+            "k": "mode",
+            "i": 5
+          },
+          {
+            "k": "frames",
+            "i": 8
+          },
+          {
+            "k": "scope",
+            "i": 11
+          },
+          {
+            "k": "depth",
+            "i": 13
+          },
+          {
+            "k": "goal",
+            "i": 15
+          }
+        ]
+      },
+      "firstRecordedExpansion": {
+        "trigger": "First1024fresh observation, not proof of mathematically first asymptotic explosion",
+        "entry": 21056,
+        "rows": 11,
+        "columns": 8,
+        "variables": 13,
+        "composition": [
+          {
+            "column": 0,
+            "scrutinee": {
+              "kind": "Var",
+              "i": 1518,
+              "k": "_1518"
+            },
+            "constructorRows": 3,
+            "defaultRows": 8,
+            "distinctConstructors": [
+              "WCon"
+            ],
+            "constructors": {
+              "WCon": 3
+            },
+            "immediateDefaultDuplication": 8,
+            "immediateMaxBranchRows": 11,
+            "immediateSumBranchRows": 19
+          },
+          {
+            "column": 1,
+            "scrutinee": {
+              "kind": "Var",
+              "i": 1512,
+              "k": "_1512"
+            },
+            "constructorRows": 3,
+            "defaultRows": 8,
+            "distinctConstructors": [
+              "SNil"
+            ],
+            "constructors": {
+              "SNil": 3
+            },
+            "immediateDefaultDuplication": 8,
+            "immediateMaxBranchRows": 11,
+            "immediateSumBranchRows": 19
+          },
+          {
+            "column": 2,
+            "scrutinee": {
+              "kind": "Var",
+              "i": 64,
+              "k": "_"
+            },
+            "constructorRows": 0,
+            "defaultRows": 11,
+            "distinctConstructors": [],
+            "constructors": {},
+            "immediateDefaultDuplication": 0,
+            "immediateMaxBranchRows": 11,
+            "immediateSumBranchRows": 11
+          },
+          {
+            "column": 3,
+            "scrutinee": {
+              "kind": "Var",
+              "i": 65,
+              "k": "_"
+            },
+            "constructorRows": 0,
+            "defaultRows": 11,
+            "distinctConstructors": [],
+            "constructors": {},
+            "immediateDefaultDuplication": 0,
+            "immediateMaxBranchRows": 11,
+            "immediateSumBranchRows": 11
+          },
+          {
+            "column": 4,
+            "scrutinee": {
+              "kind": "Var",
+              "i": 66,
+              "k": "_"
+            },
+            "constructorRows": 0,
+            "defaultRows": 11,
+            "distinctConstructors": [],
+            "constructors": {},
+            "immediateDefaultDuplication": 0,
+            "immediateMaxBranchRows": 11,
+            "immediateSumBranchRows": 11
+          },
+          {
+            "column": 5,
+            "scrutinee": {
+              "kind": "Var",
+              "i": 67,
+              "k": "_"
+            },
+            "constructorRows": 0,
+            "defaultRows": 11,
+            "distinctConstructors": [],
+            "constructors": {},
+            "immediateDefaultDuplication": 0,
+            "immediateMaxBranchRows": 11,
+            "immediateSumBranchRows": 11
+          },
+          {
+            "column": 6,
+            "scrutinee": {
+              "kind": "Var",
+              "i": 68,
+              "k": "after_open"
+            },
+            "constructorRows": 0,
+            "defaultRows": 11,
+            "distinctConstructors": [],
+            "constructors": {},
+            "immediateDefaultDuplication": 0,
+            "immediateMaxBranchRows": 11,
+            "immediateSumBranchRows": 11
+          },
+          {
+            "column": 7,
+            "scrutinee": {
+              "kind": "Var",
+              "i": 5,
+              "k": "mode"
+            },
+            "constructorRows": 11,
+            "defaultRows": 0,
+            "distinctConstructors": [
+              "PatternBadNat",
+              "PatternCompleted",
+              "PatternExpect",
+              "PatternNoNat"
+            ],
+            "constructors": {
+              "PatternExpect": 6,
+              "PatternNoNat": 1,
+              "PatternBadNat": 1,
+              "PatternCompleted": 3
+            },
+            "immediateDefaultDuplication": 0,
+            "immediateMaxBranchRows": 6,
+            "immediateSumBranchRows": 11
+          }
+        ]
+      }
+    },
+    {
+      "variant": "swapped",
+      "status": "COMPLETE",
+      "rawUniqueObjects": 3070,
+      "rawTermNodes": 765,
+      "loweredUniqueObjects": 2508889,
+      "Sub": 764648,
+      "Lam": 565709,
+      "Mat": 93953,
+      "freshBinders": 53207,
+      "loweringMs": 599.145125,
+      "lowerAndCountMs": 1827.984292,
+      "guardianElapsedMs": 2481,
+      "peakFootprintBytes": 864011536,
+      "peakRssBytes": 900890624,
+      "growth": [
+        {
+          "fresh": 1024,
+          "elapsedMs": 13.18729200000007
+        },
+        {
+          "fresh": 4096,
+          "elapsedMs": 45.45391700000005
+        },
+        {
+          "fresh": 16384,
+          "elapsedMs": 151.77266700000007
+        }
+      ],
+      "thresholdsNotReached": [
+        65536,
+        131072
+      ],
+      "report": "checkpoints/stage0-column-order-real-swapped.json",
+      "columnOnlyOriginalVars": {
+        "status": "CONSUMED_BINDER_REJECTION",
+        "message": "Error:\n- message  : a match on a parameter or field (this name is a def or a consumed binder: give the value its own def)\nLocation:\n1950 | def pattern_scan(+tokens: List<&2, Lexer.Token>, +file: String, mode: PatternScanMode, frames: List<&2, PatternFrame>, +scope: List<&2, Scope>, +depth: Nat, goal: PatternScanGoal) -> PatternScanOutcome:\n1951>|   match tokens mode:\n1952 |     case Lexer.TokenInfo{Lexer.SymbolToken{}, \"+\", beg, ignored_end, ignored_line, ignored_col} <> +rest PatternExpect{Ast.QOne{}, +ignored_beg}:",
+        "freshBinders": 1,
+        "elapsedMs": 0.918292000000065,
+        "originalVars": [
+          {
+            "k": "tokens",
+            "i": 1
+          },
+          {
+            "k": "file",
+            "i": 3
+          },
+          {
+            "k": "mode",
+            "i": 5
+          },
+          {
+            "k": "frames",
+            "i": 8
+          },
+          {
+            "k": "scope",
+            "i": 11
+          },
+          {
+            "k": "depth",
+            "i": 13
+          },
+          {
+            "k": "goal",
+            "i": 15
+          }
+        ]
+      },
+      "firstRecordedExpansion": {
+        "trigger": "First1024fresh observation, not proof of mathematically first asymptotic explosion",
+        "entry": 11355,
+        "rows": 5,
+        "columns": 7,
+        "variables": 11,
+        "composition": [
+          {
+            "column": 0,
+            "scrutinee": {
+              "kind": "Var",
+              "i": 1517,
+              "k": "_1517"
+            },
+            "constructorRows": 2,
+            "defaultRows": 3,
+            "distinctConstructors": [
+              "WCon"
+            ],
+            "constructors": {
+              "WCon": 2
+            },
+            "immediateDefaultDuplication": 3,
+            "immediateMaxBranchRows": 5,
+            "immediateSumBranchRows": 8
+          },
+          {
+            "column": 1,
+            "scrutinee": {
+              "kind": "Var",
+              "i": 1501,
+              "k": "_1501"
+            },
+            "constructorRows": 2,
+            "defaultRows": 3,
+            "distinctConstructors": [
+              "SNil"
+            ],
+            "constructors": {
+              "SNil": 2
+            },
+            "immediateDefaultDuplication": 3,
+            "immediateMaxBranchRows": 5,
+            "immediateSumBranchRows": 8
+          },
+          {
+            "column": 2,
+            "scrutinee": {
+              "kind": "Var",
+              "i": 64,
+              "k": "_"
+            },
+            "constructorRows": 0,
+            "defaultRows": 5,
+            "distinctConstructors": [],
+            "constructors": {},
+            "immediateDefaultDuplication": 0,
+            "immediateMaxBranchRows": 5,
+            "immediateSumBranchRows": 5
+          },
+          {
+            "column": 3,
+            "scrutinee": {
+              "kind": "Var",
+              "i": 65,
+              "k": "_"
+            },
+            "constructorRows": 0,
+            "defaultRows": 5,
+            "distinctConstructors": [],
+            "constructors": {},
+            "immediateDefaultDuplication": 0,
+            "immediateMaxBranchRows": 5,
+            "immediateSumBranchRows": 5
+          },
+          {
+            "column": 4,
+            "scrutinee": {
+              "kind": "Var",
+              "i": 66,
+              "k": "_"
+            },
+            "constructorRows": 0,
+            "defaultRows": 5,
+            "distinctConstructors": [],
+            "constructors": {},
+            "immediateDefaultDuplication": 0,
+            "immediateMaxBranchRows": 5,
+            "immediateSumBranchRows": 5
+          },
+          {
+            "column": 5,
+            "scrutinee": {
+              "kind": "Var",
+              "i": 67,
+              "k": "_"
+            },
+            "constructorRows": 0,
+            "defaultRows": 5,
+            "distinctConstructors": [],
+            "constructors": {},
+            "immediateDefaultDuplication": 0,
+            "immediateMaxBranchRows": 5,
+            "immediateSumBranchRows": 5
+          },
+          {
+            "column": 6,
+            "scrutinee": {
+              "kind": "Var",
+              "i": 68,
+              "k": "after_open"
+            },
+            "constructorRows": 0,
+            "defaultRows": 5,
+            "distinctConstructors": [],
+            "constructors": {},
+            "immediateDefaultDuplication": 0,
+            "immediateMaxBranchRows": 5,
+            "immediateSumBranchRows": 5
+          }
+        ]
+      }
+    }
+  ],
+  "reductions": {
+    "objects": 2.1071940607974287,
+    "Sub": 2.798069176928469,
+    "fresh": 1.33773751574041,
+    "loweringTime": 1.5111204618413612
+  },
+  "rootComposition": [
+    {
+      "column": 0,
+      "scrutinee": {
+        "kind": "Var",
+        "i": 1,
+        "k": "tokens"
+      },
+      "constructorRows": 16,
+      "defaultRows": 4,
+      "distinctConstructors": [
+        "Con"
+      ],
+      "constructors": {
+        "Con": 16
+      },
+      "immediateDefaultDuplication": 4,
+      "immediateMaxBranchRows": 20,
+      "immediateSumBranchRows": 24
+    },
+    {
+      "column": 1,
+      "scrutinee": {
+        "kind": "Var",
+        "i": 5,
+        "k": "mode"
+      },
+      "constructorRows": 20,
+      "defaultRows": 0,
+      "distinctConstructors": [
+        "PatternBadNat",
+        "PatternCompleted",
+        "PatternExpect",
+        "PatternNoNat"
+      ],
+      "constructors": {
+        "PatternExpect": 10,
+        "PatternNoNat": 1,
+        "PatternBadNat": 1,
+        "PatternCompleted": 8
+      },
+      "immediateDefaultDuplication": 0,
+      "immediateMaxBranchRows": 10,
+      "immediateSumBranchRows": 20
+    }
+  ],
+  "remainingExpansion": {
+    "observed": "Original first1k state is 11rows/8columns: WCon3+8defaults, SNil3+8defaults, later mode11constructor rows over4constructors. Swapped first1k state remains5rows/7columns: WCon2+3defaults and SNil2+3defaults. Original mode7row/1column states reappear at4k,16k,64k thresholds.",
+    "interpretation": "[INFERENCE] Nested token word/string matching propagates wildcard bodies into success/default subtrees; early mode partition reduces but does not eliminate this duplication.",
+    "limits": "State composition histogram sampled every1024 entries and thresholds, not exact semantic-state equivalence or an exact causal hot-state/subtree profiler. No unbounded state remains: both variants completed.",
+    "exactEarlyBranchForks": [
+      {
+        "variant": "original",
+        "sourceState": {
+          "entry": 21056,
+          "fresh": 1024,
+          "rows": 11,
+          "columns": 8,
+          "constructor": "WCon",
+          "explicitRows": 3,
+          "defaultRows": 8,
+          "arity": 2
+        },
+        "success": {
+          "rows": 11,
+          "columns": 9
+        },
+        "default": {
+          "rows": 8,
+          "columns": 8
+        },
+        "sumBranchRows": 19,
+        "duplicatedDefaults": 8,
+        "basis": "Exact immediate historical split for the one distinct first-column constructor; does not establish global asymptotic first explosion"
+      },
+      {
+        "variant": "swapped",
+        "sourceState": {
+          "entry": 11355,
+          "fresh": 1024,
+          "rows": 5,
+          "columns": 7,
+          "constructor": "WCon",
+          "explicitRows": 2,
+          "defaultRows": 3,
+          "arity": 2
+        },
+        "success": {
+          "rows": 5,
+          "columns": 8
+        },
+        "default": {
+          "rows": 3,
+          "columns": 7
+        },
+        "sumBranchRows": 8,
+        "duplicatedDefaults": 3,
+        "basis": "Exact immediate historical split for the one distinct first-column constructor; does not establish global asymptotic first explosion"
+      }
+    ]
+  },
+  "synthetic": [
+    {
+      "width": 2,
+      "partitions": 2,
+      "depth": 2,
+      "oppositeControl": false,
+      "objects": {
+        "original": 1881,
+        "swapped": 791,
+        "swappedMinusOriginal": -1090,
+        "swappedOverOriginal": 0.4205209994683679
+      },
+      "freshBinders": {
+        "original": 114,
+        "swapped": 28,
+        "swappedMinusOriginal": -86,
+        "swappedOverOriginal": 0.24561403508771928
+      },
+      "Sub": {
+        "original": 688,
+        "swapped": 170,
+        "swappedMinusOriginal": -518,
+        "swappedOverOriginal": 0.24709302325581395
+      },
+      "Lam": {
+        "original": 136,
+        "swapped": 58,
+        "swappedMinusOriginal": -78,
+        "swappedOverOriginal": 0.4264705882352941
+      },
+      "Mat": {
+        "original": 146,
+        "swapped": 36,
+        "swappedMinusOriginal": -110,
+        "swappedOverOriginal": 0.2465753424657534
+      },
+      "time": {
+        "original": 0.508624999999995,
+        "swapped": 3.2109999999999843,
+        "swappedMinusOriginal": 2.7023749999999893,
+        "swappedOverOriginal": 6.313099041533578
+      }
+    },
+    {
+      "width": 2,
+      "partitions": 2,
+      "depth": 2,
+      "oppositeControl": true,
+      "objects": {
+        "original": 791,
+        "swapped": 1881,
+        "swappedMinusOriginal": 1090,
+        "swappedOverOriginal": 2.3780025284450064
+      },
+      "freshBinders": {
+        "original": 28,
+        "swapped": 114,
+        "swappedMinusOriginal": 86,
+        "swappedOverOriginal": 4.071428571428571
+      },
+      "Sub": {
+        "original": 170,
+        "swapped": 688,
+        "swappedMinusOriginal": 518,
+        "swappedOverOriginal": 4.047058823529412
+      },
+      "Lam": {
+        "original": 58,
+        "swapped": 136,
+        "swappedMinusOriginal": 78,
+        "swappedOverOriginal": 2.3448275862068964
+      },
+      "Mat": {
+        "original": 36,
+        "swapped": 146,
+        "swappedMinusOriginal": 110,
+        "swappedOverOriginal": 4.055555555555555
+      },
+      "time": {
+        "original": 0.21470800000000168,
+        "swapped": 0.5424999999999969,
+        "swappedMinusOriginal": 0.3277919999999952,
+        "swappedOverOriginal": 2.526687408014572
+      }
+    },
+    {
+      "width": 4,
+      "partitions": 4,
+      "depth": 2,
+      "oppositeControl": false,
+      "objects": {
+        "original": 6443,
+        "swapped": 2319,
+        "swappedMinusOriginal": -4124,
+        "swappedOverOriginal": 0.3599255005432252
+      },
+      "freshBinders": {
+        "original": 420,
+        "swapped": 96,
+        "swappedMinusOriginal": -324,
+        "swappedOverOriginal": 0.22857142857142856
+      },
+      "Sub": {
+        "original": 2566,
+        "swapped": 578,
+        "swappedMinusOriginal": -1988,
+        "swappedOverOriginal": 0.22525331254871395
+      },
+      "Lam": {
+        "original": 462,
+        "swapped": 186,
+        "swappedMinusOriginal": -276,
+        "swappedOverOriginal": 0.4025974025974026
+      },
+      "Mat": {
+        "original": 540,
+        "swapped": 120,
+        "swappedMinusOriginal": -420,
+        "swappedOverOriginal": 0.2222222222222222
+      },
+      "time": {
+        "original": 1.683125000000004,
+        "swapped": 1.0601669999999999,
+        "swappedMinusOriginal": -0.6229580000000041,
+        "swappedOverOriginal": 0.6298801336799094
+      }
+    },
+    {
+      "width": 4,
+      "partitions": 4,
+      "depth": 2,
+      "oppositeControl": true,
+      "objects": {
+        "original": 2319,
+        "swapped": 6443,
+        "swappedMinusOriginal": 4124,
+        "swappedOverOriginal": 2.7783527382492452
+      },
+      "freshBinders": {
+        "original": 96,
+        "swapped": 420,
+        "swappedMinusOriginal": 324,
+        "swappedOverOriginal": 4.375
+      },
+      "Sub": {
+        "original": 578,
+        "swapped": 2566,
+        "swappedMinusOriginal": 1988,
+        "swappedOverOriginal": 4.439446366782007
+      },
+      "Lam": {
+        "original": 186,
+        "swapped": 462,
+        "swappedMinusOriginal": 276,
+        "swappedOverOriginal": 2.4838709677419355
+      },
+      "Mat": {
+        "original": 120,
+        "swapped": 540,
+        "swappedMinusOriginal": 420,
+        "swappedOverOriginal": 4.5
+      },
+      "time": {
+        "original": 0.5664579999999972,
+        "swapped": 3.0365830000000003,
+        "swappedMinusOriginal": 2.470125000000003,
+        "swappedOverOriginal": 5.3606498628318695
+      }
+    },
+    {
+      "width": 6,
+      "partitions": 6,
+      "depth": 2,
+      "oppositeControl": false,
+      "objects": {
+        "original": 14031,
+        "swapped": 4929,
+        "swappedMinusOriginal": -9102,
+        "swappedOverOriginal": 0.351293564250588
+      },
+      "freshBinders": {
+        "original": 918,
+        "swapped": 204,
+        "swappedMinusOriginal": -714,
+        "swappedOverOriginal": 0.2222222222222222
+      },
+      "Sub": {
+        "original": 5636,
+        "swapped": 1226,
+        "swappedMinusOriginal": -4410,
+        "swappedOverOriginal": 0.21753016323633784
+      },
+      "Lam": {
+        "original": 980,
+        "swapped": 386,
+        "swappedMinusOriginal": -594,
+        "swappedOverOriginal": 0.39387755102040817
+      },
+      "Mat": {
+        "original": 1182,
+        "swapped": 252,
+        "swappedMinusOriginal": -930,
+        "swappedOverOriginal": 0.2131979695431472
+      },
+      "time": {
+        "original": 3.5251249999999956,
+        "swapped": 2.4560420000000036,
+        "swappedMinusOriginal": -1.069082999999992,
+        "swappedOverOriginal": 0.6967247969930164
+      }
+    },
+    {
+      "width": 6,
+      "partitions": 6,
+      "depth": 2,
+      "oppositeControl": true,
+      "objects": {
+        "original": 4929,
+        "swapped": 14031,
+        "swappedMinusOriginal": 9102,
+        "swappedOverOriginal": 2.846622032866707
+      },
+      "freshBinders": {
+        "original": 204,
+        "swapped": 918,
+        "swappedMinusOriginal": 714,
+        "swappedOverOriginal": 4.5
+      },
+      "Sub": {
+        "original": 1226,
+        "swapped": 5636,
+        "swappedMinusOriginal": 4410,
+        "swappedOverOriginal": 4.597063621533442
+      },
+      "Lam": {
+        "original": 386,
+        "swapped": 980,
+        "swappedMinusOriginal": 594,
+        "swappedOverOriginal": 2.538860103626943
+      },
+      "Mat": {
+        "original": 252,
+        "swapped": 1182,
+        "swappedMinusOriginal": 930,
+        "swappedOverOriginal": 4.690476190476191
+      },
+      "time": {
+        "original": 0.8083750000000052,
+        "swapped": 4.194792,
+        "swappedMinusOriginal": 3.3864169999999945,
+        "swappedOverOriginal": 5.189165919282478
+      }
+    }
+  ],
+  "semantic": {
+    "status": "PASS",
+    "fixtureClasses": 6,
+    "inputPairs": 38,
+    "variants": "Original and aligned argument-permuted swap",
+    "backends": [
+      "book_valid",
+      "evaluator",
+      "js_lib",
+      "actual emitted js_book runtime",
+      "actual emitted C CPU runtime"
+    ],
+    "overlapPriority": "wildcard before/between/after literal oracles PASS",
+    "binderIdsAndQuantities": "Exact raw identity, swap-back identity and original binder quantity comparison PASS",
+    "negative": "Column-only swap preserving original vars rejected as consumed binder; historical algorithm does not preserve original interface via mere e/p array swap",
+    "report": "checkpoints/stage0-column-order-controls.json"
+  },
+  "genericCostRule": {
+    "status": "OFFLINE_ONLY_NOT_A_COMPILER_HEURISTIC",
+    "definition": "Minimize lexicographically (distinctConstructors * defaultRows, maxBranchRows, sumBranchRows, stable column index)",
+    "sumBranchRowsFormula": "constructorRows + (distinctConstructors + 1) * defaultRows",
+    "candidates": [
+      {
+        "column": 0,
+        "distinctConstructors": 1,
+        "defaultRows": 4,
+        "expectedDuplication": 4,
+        "maxBranchRows": 20,
+        "sumBranchRows": 24,
+        "score": [
+          4,
+          20,
+          24,
+          0
+        ]
+      },
+      {
+        "column": 1,
+        "distinctConstructors": 4,
+        "defaultRows": 0,
+        "expectedDuplication": 0,
+        "maxBranchRows": 10,
+        "sumBranchRows": 20,
+        "score": [
+          0,
+          10,
+          20,
+          1
+        ]
+      }
+    ],
+    "selectedColumn": 1,
+    "selectedObservedBetterColumn": true,
+    "limitation": "Local row-duplication proxy only, ignores nested-pattern expansion and binder/type dependencies. Correctly predicts the modest improvement, not the previous 3061-second failure. No compiler prototype justified."
+  },
+  "genericHeuristicPrototype": "NOT_STARTED_NOT_JUSTIFIED",
+  "productionChanges": false,
+  "residualLetWork": "NOT_RESUMED",
+  "backendChanges": false,
+  "selfhostGreen": false,
+  "directUninstrumentedControl": {
+    "status": "PASS",
+    "countsMatchObservedExactly": true,
+    "results": [
+      {
+        "variant": "original",
+        "rows": 20,
+        "objects": 5286716,
+        "Sub": 2139538,
+        "Lam": 1143038,
+        "Mat": 218793,
+        "fresh": 71177,
+        "loweringMs": 935.617875,
+        "observer": "NONE: directly imported frozen production body_flatten"
+      },
+      {
+        "variant": "swapped",
+        "rows": 20,
+        "objects": 2508889,
+        "Sub": 764648,
+        "Lam": 565709,
+        "Mat": 93953,
+        "fresh": 53207,
+        "loweringMs": 368.81441599999926,
+        "observer": "NONE: directly imported frozen production body_flatten"
+      }
+    ],
+    "report": "checkpoints/stage0-column-order-bare.json",
+    "timingCaveat": "Separate sequential run; timings vary and do not isolate observer overhead."
+  },
+  "finalFrozenHashes": {
+    "bend2/bend.ts": "47e1b06e2fa4466bad702f86d8cbce03f40e833a8ba8eaa1e04297fa46dc94a9",
+    "bend2/selfhost/parser.bend": "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18df",
+    "bend2/selfhost/parser_full_generated_fuel.bend": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+    "evals/parser_full_generate.ts": "0aedb4c1703cffe1055794b29829a357edcd956fdc0a8dec77bfa3c0cf7a6da6"
+  }
+}

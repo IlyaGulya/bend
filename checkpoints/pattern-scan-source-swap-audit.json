@@ -1,0 +1,363 @@
+{
+  "rowCount": 20,
+  "scrutinees": {
+    "original": [
+      "tokens",
+      "mode"
+    ],
+    "transformed": [
+      "mode",
+      "tokens"
+    ]
+  },
+  "rows": [
+    {
+      "index": 0,
+      "original": [
+        "Lexer.TokenInfo{Lexer.SymbolToken{}, \"+\", beg, ignored_end, ignored_line, ignored_col} <> +rest",
+        "PatternExpect{Ast.QOne{}, +ignored_beg}"
+      ],
+      "transformed": [
+        "PatternExpect{Ast.QOne{}, +ignored_beg}",
+        "Lexer.TokenInfo{Lexer.SymbolToken{}, \"+\", beg, ignored_end, ignored_line, ignored_col} <> +rest"
+      ],
+      "bodySha256": "5c04eb8b6dfa3bac4a4553267aa022771352043d630aff27858b2406136382b7",
+      "transformedBodySha256": "5c04eb8b6dfa3bac4a4553267aa022771352043d630aff27858b2406136382b7",
+      "bodyOffsets": {
+        "beg": 102977,
+        "end": 103071
+      }
+    },
+    {
+      "index": 1,
+      "original": [
+        "Lexer.TokenInfo{_, \"-\", beg, end, _, _} <> +rest",
+        "PatternExpect{Ast.QOne{}, _}"
+      ],
+      "transformed": [
+        "PatternExpect{Ast.QOne{}, _}",
+        "Lexer.TokenInfo{_, \"-\", beg, end, _, _} <> +rest"
+      ],
+      "bodySha256": "c5a65c9fa04845e0fbfe90d8e9b3d028f8a9f316c5c81796aecde323a14e3d32",
+      "transformedBodySha256": "c5a65c9fa04845e0fbfe90d8e9b3d028f8a9f316c5c81796aecde323a14e3d32",
+      "bodyOffsets": {
+        "beg": 103157,
+        "end": 103278
+      }
+    },
+    {
+      "index": 2,
+      "original": [
+        "Lexer.TokenInfo{Lexer.NameToken{}, key, beg, end, _, _} <> (Lexer.TokenInfo{_, \"{\", _, _, _, _} <> +after_open)",
+        "PatternExpect{Ast.QOne{}, _}"
+      ],
+      "transformed": [
+        "PatternExpect{Ast.QOne{}, _}",
+        "Lexer.TokenInfo{Lexer.NameToken{}, key, beg, end, _, _} <> (Lexer.TokenInfo{_, \"{\", _, _, _, _} <> +after_open)"
+      ],
+      "bodySha256": "b91cf0e1bccae9fb9fcc1e05061d64115568cf097300082571246482a1ffe3cf",
+      "transformedBodySha256": "b91cf0e1bccae9fb9fcc1e05061d64115568cf097300082571246482a1ffe3cf",
+      "bodyOffsets": {
+        "beg": 103427,
+        "end": 103579
+      }
+    },
+    {
+      "index": 3,
+      "original": [
+        "Lexer.TokenInfo{Lexer.NameToken{}, key, _, end, _, _} <> (Lexer.TokenInfo{_, \"{\", _, _, _, _} <> +after_open)",
+        "PatternExpect{quantity, beg}"
+      ],
+      "transformed": [
+        "PatternExpect{quantity, beg}",
+        "Lexer.TokenInfo{Lexer.NameToken{}, key, _, end, _, _} <> (Lexer.TokenInfo{_, \"{\", _, _, _, _} <> +after_open)"
+      ],
+      "bodySha256": "b91cf0e1bccae9fb9fcc1e05061d64115568cf097300082571246482a1ffe3cf",
+      "transformedBodySha256": "b91cf0e1bccae9fb9fcc1e05061d64115568cf097300082571246482a1ffe3cf",
+      "bodyOffsets": {
+        "beg": 103726,
+        "end": 103878
+      }
+    },
+    {
+      "index": 4,
+      "original": [
+        "Lexer.TokenInfo{Lexer.NameToken{}, +key, beg, end, _, _} <> +rest",
+        "PatternExpect{Ast.QOne{}, _}"
+      ],
+      "transformed": [
+        "PatternExpect{Ast.QOne{}, _}",
+        "Lexer.TokenInfo{Lexer.NameToken{}, +key, beg, end, _, _} <> +rest"
+      ],
+      "bodySha256": "fefee747c8c08741bb24bea3c5adfaad63be67d5dd91b79077089c473cde06b4",
+      "transformedBodySha256": "fefee747c8c08741bb24bea3c5adfaad63be67d5dd91b79077089c473cde06b4",
+      "bodyOffsets": {
+        "beg": 103981,
+        "end": 104153
+      }
+    },
+    {
+      "index": 5,
+      "original": [
+        "Lexer.TokenInfo{Lexer.NameToken{}, +key, _, end, _, _} <> +rest",
+        "PatternExpect{quantity, beg}"
+      ],
+      "transformed": [
+        "PatternExpect{quantity, beg}",
+        "Lexer.TokenInfo{Lexer.NameToken{}, +key, _, end, _, _} <> +rest"
+      ],
+      "bodySha256": "2f242a6b5c8aaedaf73a4691e7d4b0c1574bc7fd5caa6fa577f58b08901b9df8",
+      "transformedBodySha256": "2f242a6b5c8aaedaf73a4691e7d4b0c1574bc7fd5caa6fa577f58b08901b9df8",
+      "bodyOffsets": {
+        "beg": 104254,
+        "end": 104424
+      }
+    },
+    {
+      "index": 6,
+      "original": [
+        "Lexer.TokenInfo{Lexer.NumberToken{}, +text, +beg, +end, line, col} <> +rest",
+        "PatternExpect{quantity, _}"
+      ],
+      "transformed": [
+        "PatternExpect{quantity, _}",
+        "Lexer.TokenInfo{Lexer.NumberToken{}, +text, +beg, +end, line, col} <> +rest"
+      ],
+      "bodySha256": "a844602c5d8373ca26a51ea491ba820802aaf4d6f56e570e1a9d6cbcc5d83d7b",
+      "transformedBodySha256": "a844602c5d8373ca26a51ea491ba820802aaf4d6f56e570e1a9d6cbcc5d83d7b",
+      "bodyOffsets": {
+        "beg": 104535,
+        "end": 104682
+      }
+    },
+    {
+      "index": 7,
+      "original": [
+        "_",
+        "PatternNoNat{number, quantity, beg, end}"
+      ],
+      "transformed": [
+        "PatternNoNat{number, quantity, beg, end}",
+        "_"
+      ],
+      "bodySha256": "a128746acf729169288fbd3e3e9da41128975551ee5481433d7f39f9143838e8",
+      "transformedBodySha256": "a128746acf729169288fbd3e3e9da41128975551ee5481433d7f39f9143838e8",
+      "bodyOffsets": {
+        "beg": 104733,
+        "end": 104862
+      }
+    },
+    {
+      "index": 8,
+      "original": [
+        "_",
+        "PatternBadNat{beg, end}"
+      ],
+      "transformed": [
+        "PatternBadNat{beg, end}",
+        "_"
+      ],
+      "bodySha256": "c5a65c9fa04845e0fbfe90d8e9b3d028f8a9f316c5c81796aecde323a14e3d32",
+      "transformedBodySha256": "c5a65c9fa04845e0fbfe90d8e9b3d028f8a9f316c5c81796aecde323a14e3d32",
+      "bodyOffsets": {
+        "beg": 104896,
+        "end": 105017
+      }
+    },
+    {
+      "index": 9,
+      "original": [
+        "Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _} <> +rest",
+        "PatternExpect{quantity, beg}"
+      ],
+      "transformed": [
+        "PatternExpect{quantity, beg}",
+        "Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _} <> +rest"
+      ],
+      "bodySha256": "ac779e156d3c5d12c5188af82c19f05c8d97d06f45b64248a664809a45e39ad0",
+      "transformedBodySha256": "ac779e156d3c5d12c5188af82c19f05c8d97d06f45b64248a664809a45e39ad0",
+      "bodyOffsets": {
+        "beg": 105116,
+        "end": 105207
+      }
+    },
+    {
+      "index": 10,
+      "original": [
+        "Lexer.TokenInfo{_, \"}\", _, close_end, _, _} <> +rest",
+        "PatternExpect{quantity, +beg}"
+      ],
+      "transformed": [
+        "PatternExpect{quantity, +beg}",
+        "Lexer.TokenInfo{_, \"}\", _, close_end, _, _} <> +rest"
+      ],
+      "bodySha256": "dee217101a75040a78d86b2111bc6d60b00f1a9f48452289f89cf9e7c80bece1",
+      "transformedBodySha256": "dee217101a75040a78d86b2111bc6d60b00f1a9f48452289f89cf9e7c80bece1",
+      "bodyOffsets": {
+        "beg": 105298,
+        "end": 105728
+      }
+    },
+    {
+      "index": 11,
+      "original": [
+        "Lexer.TokenInfo{_, \",\", _, _, _, _} <> +rest",
+        "PatternCompleted{pattern}"
+      ],
+      "transformed": [
+        "PatternCompleted{pattern}",
+        "Lexer.TokenInfo{_, \",\", _, _, _, _} <> +rest"
+      ],
+      "bodySha256": "4687710060465157e44ed53bdab13ae3e8be124a42fddc273d113fb17f8b2f52",
+      "transformedBodySha256": "4687710060465157e44ed53bdab13ae3e8be124a42fddc273d113fb17f8b2f52",
+      "bodyOffsets": {
+        "beg": 105807,
+        "end": 106446
+      }
+    },
+    {
+      "index": 12,
+      "original": [
+        "Lexer.TokenInfo{_, \":\", _, _, _, _} <> +rest",
+        "PatternCompleted{pattern}"
+      ],
+      "transformed": [
+        "PatternCompleted{pattern}",
+        "Lexer.TokenInfo{_, \":\", _, _, _, _} <> +rest"
+      ],
+      "bodySha256": "6a4aa72f1ee86e3f48ed721a06eb1ddbf5edbdaab357ab97e5a643de21ae95d4",
+      "transformedBodySha256": "6a4aa72f1ee86e3f48ed721a06eb1ddbf5edbdaab357ab97e5a643de21ae95d4",
+      "bodyOffsets": {
+        "beg": 106525,
+        "end": 107142
+      }
+    },
+    {
+      "index": 13,
+      "original": [
+        "Lexer.TokenInfo{_, \"}\", _, close_end, _, _} <> +rest",
+        "PatternCompleted{pattern}"
+      ],
+      "transformed": [
+        "PatternCompleted{pattern}",
+        "Lexer.TokenInfo{_, \"}\", _, close_end, _, _} <> +rest"
+      ],
+      "bodySha256": "86e8b873d89821fd4f25f8e80915e50227bc47f3d2722b517fee7fafa79deab1",
+      "transformedBodySha256": "86e8b873d89821fd4f25f8e80915e50227bc47f3d2722b517fee7fafa79deab1",
+      "bodyOffsets": {
+        "beg": 107229,
+        "end": 107615
+      }
+    },
+    {
+      "index": 14,
+      "original": [
+        "Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _} <> +rest",
+        "PatternCompleted{pattern}"
+      ],
+      "transformed": [
+        "PatternCompleted{pattern}",
+        "Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _} <> +rest"
+      ],
+      "bodySha256": "b2894ad4168e9ab367f4655bf7a1331cc1029ef5fa319831c3273f0df416c334",
+      "transformedBodySha256": "b2894ad4168e9ab367f4655bf7a1331cc1029ef5fa319831c3273f0df416c334",
+      "bodyOffsets": {
+        "beg": 107711,
+        "end": 108203
+      }
+    },
+    {
+      "index": 15,
+      "original": [
+        "Lexer.TokenInfo{Lexer.NameToken{}, key, beg, end, _, _} <> (Lexer.TokenInfo{_, \"{\", _, _, _, _} <> +after_open)",
+        "PatternCompleted{pattern}"
+      ],
+      "transformed": [
+        "PatternCompleted{pattern}",
+        "Lexer.TokenInfo{Lexer.NameToken{}, key, beg, end, _, _} <> (Lexer.TokenInfo{_, \"{\", _, _, _, _} <> +after_open)"
+      ],
+      "bodySha256": "d746a54da10828aa60407020bcc759c30911fc149ab67b96b4a240a700f514c5",
+      "transformedBodySha256": "d746a54da10828aa60407020bcc759c30911fc149ab67b96b4a240a700f514c5",
+      "bodyOffsets": {
+        "beg": 108349,
+        "end": 108805
+      }
+    },
+    {
+      "index": 16,
+      "original": [
+        "Lexer.TokenInfo{Lexer.NameToken{}, +key, beg, end, _, _} <> +rest",
+        "PatternCompleted{pattern}"
+      ],
+      "transformed": [
+        "PatternCompleted{pattern}",
+        "Lexer.TokenInfo{Lexer.NameToken{}, +key, beg, end, _, _} <> +rest"
+      ],
+      "bodySha256": "7959fbfb07d6faa5669c0b6df051bfdbed29e11e509dfb74bb3fae10878d69fc",
+      "transformedBodySha256": "7959fbfb07d6faa5669c0b6df051bfdbed29e11e509dfb74bb3fae10878d69fc",
+      "bodyOffsets": {
+        "beg": 108905,
+        "end": 109379
+      }
+    },
+    {
+      "index": 17,
+      "original": [
+        "Lexer.TokenInfo{_, \"+\", beg, _, _, _} <> +rest",
+        "PatternCompleted{pattern}"
+      ],
+      "transformed": [
+        "PatternCompleted{pattern}",
+        "Lexer.TokenInfo{_, \"+\", beg, _, _, _} <> +rest"
+      ],
+      "bodySha256": "d9646a854097520e05ff6d46fd5e5c102424cba85c34371c8aa2058bae34fa3e",
+      "transformedBodySha256": "d9646a854097520e05ff6d46fd5e5c102424cba85c34371c8aa2058bae34fa3e",
+      "bodyOffsets": {
+        "beg": 109460,
+        "end": 109856
+      }
+    },
+    {
+      "index": 18,
+      "original": [
+        "_",
+        "PatternCompleted{pattern}"
+      ],
+      "transformed": [
+        "PatternCompleted{pattern}",
+        "_"
+      ],
+      "bodySha256": "cca09e43e52300542ac810162c2a78ee25e15d6034afcd40f9c2dd26fc2f740e",
+      "transformedBodySha256": "cca09e43e52300542ac810162c2a78ee25e15d6034afcd40f9c2dd26fc2f740e",
+      "bodyOffsets": {
+        "beg": 109892,
+        "end": 110262
+      }
+    },
+    {
+      "index": 19,
+      "original": [
+        "_",
+        "PatternExpect{quantity, +beg}"
+      ],
+      "transformed": [
+        "PatternExpect{quantity, +beg}",
+        "_"
+      ],
+      "bodySha256": "085296550201262260ea97a648207b236a0047a1482e4d156c81d79e87aed46f",
+      "transformedBodySha256": "085296550201262260ea97a648207b236a0047a1482e4d156c81d79e87aed46f",
+      "bodyOffsets": {
+        "beg": 110302,
+        "end": 110716
+      }
+    }
+  ],
+  "editCount": 21,
+  "originalSha256": "b66ca5fe16b41d65feb51afd95b3954550396b60e542c21a93fe042b7fa9d51e",
+  "transformedSha256": "b0e7b1059a58cce1d4698afde972d9136707113f4e2ada1f21c9cf98c34de15f",
+  "inverseByteExact": true,
+  "unrelatedBytesIdentical": true,
+  "bodyOffsetsIdentical": true,
+  "rowOrderUnchanged": true,
+  "signaturesAndRecursiveCallsUnchanged": true
+}

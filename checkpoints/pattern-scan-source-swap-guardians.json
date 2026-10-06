@@ -1,0 +1,38 @@
+{
+  "controls": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "commandExitCode": 2,
+    "commandSignal": 0,
+    "peakRssBytes": 194789376,
+    "peakFootprintBytes": 128762624,
+    "elapsedMs": 978,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+      "/Users/ilyagulya/Projects/My/bend/evals/pattern_scan_source_controls.ts"
+    ],
+    "label": "Exact source-only column swap existing semantic fixtures",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791290982099-821d8803b1f372c9.json",
+    "memoryLimitBytes": 3221225472,
+    "rssLimitBytes": 3221225472
+  },
+  "realCandidateLoad": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "commandExitCode": 2,
+    "commandSignal": 0,
+    "peakRssBytes": 117817344,
+    "peakFootprintBytes": 87229088,
+    "elapsedMs": 323,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+      "/Users/ilyagulya/Projects/My/bend/evals/pattern_scan_swap_load.ts"
+    ],
+    "label": "Native load of exact source-only swapped pattern_scan candidate",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791291082495-11a07d3472cb6fb7.json",
+    "memoryLimitBytes": 3221225472,
+    "rssLimitBytes": 3221225472
+  }
+}

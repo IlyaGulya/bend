@@ -1,0 +1,18 @@
+{
+  "status": "RESOURCE_LIMIT",
+  "reason": "physical_footprint_limit",
+  "commandExitCode": -1,
+  "commandSignal": 15,
+  "peakRssBytes": 3160080384,
+  "peakFootprintBytes": 3223096152,
+  "elapsedMs": 4960,
+  "command": [
+    "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+    "/Users/ilyagulya/Projects/My/bend/evals/pattern_scan_memory_probe.ts"
+  ],
+  "label": "Fresh pattern_scan native done=705 target check",
+  "exitCode": 73,
+  "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791288312694-374f358ac9e7c6da.json",
+  "memoryLimitBytes": 3221225472,
+  "rssLimitBytes": 3221225472
+}
