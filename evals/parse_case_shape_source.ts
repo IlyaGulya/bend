@@ -8,20 +8,22 @@ export async function extractCaseShape(source:string){return extractTwoRowShape(
 export async function extractMatchTailShape(source:string){return extractTwoRowShape(source,'parse_match_tail_after_semicolon','match_tail','end');}
 export async function extractMatchTailScanShape(source:string){return extractTwoRowShape(source,'parse_match_tail_scan','match_tail_scan','close');}
 export async function extractBraceRightShape(source:string){return extractTwoRowShape(source,'parse_brace_equal_right_result','brace_equal_right','colon');}
-export async function extractBraceAnnotShape(source:string){
- const graph=await readParserGraph(source),name='parse_brace_annot_type_result',body=graph.bodies.get(name),sig=graph.signatures.get(name);
- if(body?.$!=='Match'||body.r[0]!.f.$!=='Match'||body.r[0]!.f.r[0]!.f.$!=='Reply'||!sig)throw Error('Annotation success branch drift');
- const expression=body.r[0]!.f.r[0]!.f.x,types=new LexicalTypes(graph.parserBook,graph.signatures);types.indexBody(body,sig.parameters,sig.result);
- const tail=[...types.environmentAt(expression).values()].find(b=>b.name==='tail');if(!tail||tail.quantity.$!=='Lone')throw Error('Annotation tail ownership drift');
+export async function extractBraceAnnotShape(source:string){return extractOwnedTailShape(source,'parse_brace_annot_type_result','brace_annot');}
+export async function extractInequalityShape(source:string){return extractOwnedTailShape(source,'parse_inequality_type_result','inequality');}
+async function extractOwnedTailShape(source:string,name:'parse_brace_annot_type_result'|'parse_inequality_type_result',helper:string){
+ const graph=await readParserGraph(source),body=graph.bodies.get(name),sig=graph.signatures.get(name);
+ if(body?.$!=='Match'||body.r[0]!.f.$!=='Match'||!sig)throw Error('Owned-tail success branch drift');
+ const success=body.r[0]!.f.r[0]!.f,expression=success.$==='Reply'?success.x:success.$==='Local'?success.v[0]!:success.e[0]!,types=new LexicalTypes(graph.parserBook,graph.signatures);types.indexBody(body,sig.parameters,sig.result);
+ const tail=[...types.environmentAt(expression).values()].find(b=>b.name==='tail');if(!tail||tail.quantity.$!=='Lone')throw Error('Owned-tail quantity drift');
  const spans:Array<{beg:number,end:number}>=[];
  function visit(value:unknown){if(!value||typeof value!=='object')return;if(Array.isArray(value)){value.forEach(visit);return;}const node=value as Record<string,unknown>;if(node.$==='Var'&&node.i===tail!.id){const s=node.s as {beg:number,end:number}|undefined;if(!s||source.slice(s.beg,s.end)!=='tail')throw Error('Annotation tail reference span drift');spans.push(s);}for(const [key,child]of Object.entries(node))if(key!=='s'&&key!=='b')visit(child);}
- visit(expression);if(spans.length!==1)throw Error('Annotation tail reference count drift');
+ visit(success);if(spans.length!==1)throw Error('Owned-tail reference count drift');
  const span=spans[0]!,projection='List.tail(&2, Lexer.Token, after_ty)',projected=source.slice(0,span.beg)+projection+source.slice(span.end);
  if(projected.slice(0,span.beg)+'tail'+projected.slice(span.beg+projection.length)!==source)throw Error('Annotation projection inverse differs');
- const result=await extractTwoRowShape(projected,name,'brace_annot','close');
+ const result=await extractTwoRowShape(projected,name,helper,'close');
  return{...result,audit:{...result.audit,originalSha256:sha(source),ownedTailProjection:{binderId:tail.id,quantity:tail.quantity.$,originalSpan:span,expression:projection,outerNonemptyGuard:true,exactInverse:true,noListCopy:true}}};
 }
-async function extractTwoRowShape(source:string,name:'parse_case_row_body'|'parse_match_tail_after_semicolon'|'parse_match_tail_scan'|'parse_brace_equal_right_result'|'parse_brace_annot_type_result',helper:string,token:string){
+async function extractTwoRowShape(source:string,name:'parse_case_row_body'|'parse_match_tail_after_semicolon'|'parse_match_tail_scan'|'parse_brace_equal_right_result'|'parse_brace_annot_type_result'|'parse_inequality_type_result',helper:string,token:string){
  const graph=await readParserGraph(source),body=graph.bodies.get(name),sig=graph.signatures.get(name);
  if(body?.$!=='Match'||body.r.length!==2||body.r[0]!.f.$!=='Match'||!sig)throw Error('Case scanner shape drift');
  const match=body.r[0]!.f;if(match.r.length!==(name==='parse_match_tail_scan'?3:2))throw Error('Token selector row drift');
@@ -29,7 +31,10 @@ async function extractTwoRowShape(source:string,name:'parse_case_row_body'|'pars
  const line=(n:number)=>source.lastIndexOf('\n',n)+1,begin=line(match.e[0]!.s!.beg),end=line(body.r[1]!.p[0]!.s!.beg),original=source.slice(begin,end),helpers:string[]=[],calls:string[]=[],audit:object[]=[];
  const all=new Map<number,Binding>();
  for(const [i,row]of match.r.entries()){
-  if(row.f.$!=='Reply')throw Error('Case scanner body drift');const env=types.environmentAt(row.f.x),ids=[...freeBinderIds(row.f.x)].filter(id=>env.has(id)).sort((a,b)=>a-b),captures=ids.map(id=>env.get(id)!);captures.forEach(b=>all.set(b.id,b));
+  const first=row.f.$==='Reply'?row.f.x:row.f.$==='Local'?row.f.v[0]!:row.f.e[0]!,env=types.environmentAt(first),ids=new Set<number>();
+  function expression(t:B.LTerm){for(const id of freeBinderIds(t))if(env.has(id))ids.add(id);}
+  function visit(b:B.Body){if(b.$==='Reply')expression(b.x);else if(b.$==='Local'){b.v.forEach(expression);visit(b.f);}else{b.e.forEach(expression);b.r.forEach(r=>visit(r.f));}}visit(row.f);
+  const captures=[...ids].sort((a,b)=>a-b).map(id=>env.get(id)!);captures.forEach(b=>all.set(b.id,b));
   const beg=source.indexOf('\n',source.indexOf(':',Math.max(...row.p.map(p=>p.s!.end))))+1,finish=i+1<match.r.length?line(match.r[i+1]!.p[0]!.s!.beg):end,text=source.slice(beg,finish),indent=text.match(/^ */)![0].length;
   helpers.push('def '+helper+'_branch_'+i+'('+captures.map(b=>(b.quantity.$==='Many'?'+':'')+b.name+': '+show(b.type)).join(', ')+') -> '+show(sig.result)+':\n'+text.trimEnd().split('\n').map(s=>'  '+s.slice(indent)).join('\n')+'\n');
   calls.push(helper+'_branch_'+i+'('+captures.map(b=>b.name).join(', ')+')');audit.push({row:i,originalBodySha256:sha(text),captures:captures.map(b=>({name:b.name,quantity:b.quantity.$,type:show(b.type)}))});
