@@ -1,7 +1,7 @@
 # Bend: действительное состояние сборки
 
 Integration owner: основной агент. Branch: `selfhost/parser-reproducible-20261006`.
-Подтверждённый baseline: `a03f19f522de50f77615517803241ea61eabaa09`; data-contract snapshot: `a6bf6204`; atom/pattern snapshot: `f6070aa2`. Новый scanner scope: body `51a5d01a`, case `7db368a9`, typed-do `b7bdb575`, array/current commands/results `3d5bde55`. Чужой draft ARCHITECTURE/changelog entry не включён; собственные docs сохранены отдельно.
+Подтверждённый baseline: `a03f19f522de50f77615517803241ea61eabaa09`; data-contract: `a6bf6204`; atom/pattern: `f6070aa2`; scanner/source-blocker history сохранён отдельными snapshots. Последний **полностью native-checked** source/candidate/commands/results: `d746e7cc`. Compiled helper proofs: operator `e3bd5070`, import worker `fdde79f5`, pair `1c977f67`, triple `7c1758cd`. Чужой ARCHITECTURE/changelog draft не включён.
 
 | Источник | SHA256 |
 |---|---|
@@ -10,27 +10,27 @@ Integration owner: основной агент. Branch: `selfhost/parser-reprodu
 | kernel `bend2/bend.ts` | `47e1b06e2fa4466bad702f86d8cbce03f40e833a8ba8eaa1e04297fa46dc94a9` |
 | generator `evals/parser_full_generate.ts` | `0aedb4c1703cffe1055794b29829a357edcd956fdc0a8dec77bfa3c0cf7a6da6` |
 | compiler/runtime `bend2/comp.ts` | `0939b98d013ab58d82619e35c0d4900b72c9d8e5b478f0e1df7822fe713c9b48` |
-| последний diagnostic canonical-copy `.parser_array_shape_source.bend` | `b5a5ca3a2efd3328790eb6da5620ebd77f6fa34ae1ff05fa66e43117d584762d` |
-| его normally generated `_fuel.bend` | `70c4ac9d2d35d181318443508395cd40dffa4aecc14c86952621389047d13fa6` |
+| последний diagnostic canonical-copy `.parser_definition_body_shape_source.bend` | `1e22bf833759ee476a70883b728fb6d374e9da014b2839f2713a15f17bb28c5a` |
+| его normally generated `_fuel.bend` | `822e8460ff94ff3f00695e27f5b4fe4dbd3515ae4d6d5c3b3c5eb7c1867b840e` |
 
 ## Последнее подтверждённое выполнение по этапам
 
 | Этап | Сохранённая команда / результат | Toolchain и предел доказательства |
 |---|---|---|
-| Regeneration | `bun evals/parser_local_shape_build.ts`: preparation PASS; source b5a5→candidate70c4; ordinary build RESOURCE_LIMIT, footprint3221457800 B, exit73. | Typed atom/pattern/body/case/do/array scanner helpers; original branches/priority/captures, exact source inverses. Generator logic и protected sources неизменны. |
-| Load | `BEND_PARSER_DECL_GC=1 BEND_PARSER_REPORT_PREFIX=checkpoints/parser-array-gc-proposal bun evals/heavy_gate.ts --memory-mib=3072 --rss-mib=3072 --poll-ms=10 -- bun --smol evals/parser_local_shape_build.ts --build-proposal`: complete load returned. | Temporary direct loader proposal, native e retained; **не production acceptance**. Ordinary load всё ещё RESOURCE_LIMIT. |
-| Full validation | Тот же70c4 candidate, native `book_valid` с0 без exclusions: body/case/do/array stopping declarations вернулись; новая остановка index1040 **`map_operator_key`**, footprint3226372976 B /RSS3112255488 B,394.621s, exit73. | Полная проверка начата, но **не завершена**. Disclosed runtime policy: `--smol` + явный `Bun.gc(true)` между декларациями; checked e не удалён. GC-only probe ранее достиг array scanner index997; это не JS execution. |
+| Regeneration | `bun evals/parser_local_shape_build.ts`: preparation PASS; source1e22→candidate822e; ordinary build RESOURCE_LIMIT, footprint3229469576 B, exit73. | Diagnostic source helpers + unchanged grammar/priority/ABI; native ownership corrections, exact inverse audits. Generator logic и protected sources неизменны. |
+| Load | `BEND_PARSER_DECL_GC=1 BEND_PARSER_REPORT_PREFIX=checkpoints/parser-definition-body-gc-proposal bun evals/heavy_gate.ts --memory-mib=3072 --rss-mib=3072 --poll-ms=10 -- bun --smol evals/parser_local_shape_build.ts --build-proposal`: complete load PASS1478. | Temporary direct loader proposal; **не production acceptance**. Ordinary load всё ещё RESOURCE_LIMIT. |
+| Full validation / codegen | Тот же822e candidate: native `book_valid` с0 **PASS1478/1478**, `e` retained, checks excluded0. Затем normal `Comp.js_lib` codegen RESOURCE_LIMIT, footprint3228928880 B /RSS3075424256 B,427.395s, exit73; artifact не записан. | Disclosed runtime policy: `--smol` + `Bun.gc(true)` между декларациями. GC на validation→codegen границе — следующий bounded probe, не подтверждённый PASS. |
 | Aligned target | `bun evals/pattern_scan_aligned_probe.ts`: complete load PASS1280; target FAIL decreasing-self-call после изменения mode перед shrinking tokens. | Единственная audited aligned-проба; source/helpers не выбраны как принятый fix. |
 | Parser comparison | `bun evals/parser_full_fuel_smoke.ts --fuel=1000 --expanded --streaming --gc --canonical-timeout-ms=60000`: PASS29 acceptance/semantic/generated↔canonical; diagnostics/spans23cases/46differences. | `B.term_wnf` над lazy raw Bodies; **не выпущенный JS parser**. `canonical-ownership-family-d-streaming-expanded.json`. 29/29 — покрытый корпус, не полная эквивалентность языка. |
 | Source-only swap | `bun evals/pattern_scan_source_controls.ts`: original6/6+38oracles PASS, swapped6/6 native-load consumed-binder errors. `bun evals/pattern_scan_swap_load.ts`: та же ошибка в real candidate. | Строго source-only permutation невалидна; target не достигнут. |
-| JS codegen / released parser / compiled29 | **Результатов нет.** | Нет единого принятого пути regeneration→full check→codegen→execution. |
+| JS parser / compiled29 | **Parser artifact и результатов нет.** Isolated actual compiled helpers: operator66, imports16, pair27, triple18 cases PASS. | Маленькие helper programs прошли whole native check + JS execution; **не весь parser**, не новая атрибуция старых29/29. |
 | Loader proposal controls | `bun evals/heavy_gate.ts --memory-mib=3072 --rss-mib=3072 --poll-ms=10 -- bun evals/proposed_loader_regressions.ts`: PASS; native whole453 + actual JS1233, одинаковый artifact hash; invalid type/decrease отвергнуты обоими kernels. | Три маленьких semantic regressions; отдельный `proposed-loader-patch.json`, **не применён**, не whole-parser proof. |
 | HYBRID boundary | Существующий `gates/hybrid_gate.ts`: host AST conversion PASS boundary, runner compile RESOURCE_LIMIT RSS3226812416 B, exit73. Compiled pure-contract smoke returns `"module-contract-ok"`; invalid Ast.Module rejected. | `LoadedModule` вынесен; Checker/JSEmit runtime, parity, stage1/stage2 не достигнуты. |
 
 ## Blocker и следующий ограниченный шаг
 
-Текущая граница P: ordinary load всё ещё превышает3GiB; последний direct-load retained-e whole-check проходит прежние scanner frontiers, но останавливается на **`map_operator_key` index1040**. Это string/operator mapping, не token scanner. Accepted end-to-end fix и JS parser artifact **отсутствуют**. Старые29/29 не приписаны новым copies. Actual commands/guardians/hashes: `parser-execution-results.json`, `atom-source-shape-results.json`, `body-case-source-shape-guardians.json`; source snapshots и команды в Git.
+Текущая граница P: ordinary load всё ещё превышает3GiB. Diagnostic direct-load pipeline впервые завершил **whole native check1478/1478 с сохранённым e**, но остановился в **normal JS codegen** до записи artifact. Старые29/29 не приписаны новым copies. Sources/commands/traces/guardians в Git; consolidated guards: `body-case-source-shape-guardians.json`. Native shape fixes выбраны лишь как diagnostic candidate, не end-to-end production fix.
 
-Пользователь авторизовал remaining actual scanner blockers после `parse_body_scan`: выполнены source-only factoring body→case→typed-do→array, normal generation и actual whole native checks. Следующий stopping helper `map_operator_key` вне scanner-only scope: нужен новый scope decision. Loader proposal остаётся неприменённым и требует human-owner review; ассистент не редактирует `bend2/bend.ts`. Ни temporary kernel, ни discard-E не стали production toolchain. Один heavy process,3072MiB physical+RSS,10ms; runtime flags/GC раскрыты в evidence.
+Авторизованные scanner и remaining actual source-blocker scopes выполнены до полного native check. Следующий ограниченный шаг: GC между validation и unchanged codegen, без удаления book/e и повышения3GiB. Если не поможет, нужна отдельная compiler/storage-handoff authorization, не новые scanner эксперименты. Loader proposal остаётся неприменённым и требует human-owner review; ассистент не редактирует `bend2/bend.ts`. Один heavy process,3072MiB physical+RSS,10ms. **SELFHOST GREEN: no.**
 
 **Milestone P: не достигнут. SELFHOST GREEN: no.**
