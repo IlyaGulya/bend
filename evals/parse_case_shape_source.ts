@@ -1,6 +1,6 @@
 import * as B from '../bend2/bend.ts';
 import {readParserGraph} from './parser_full_graph.ts';
-import {LexicalTypes,freeBinderIds} from './parser_full_type_env.ts';
+import {LexicalTypes,freeBinderIds,type Binding} from './parser_full_type_env.ts';
 import {createHash} from 'node:crypto';
 const sha=(s:string)=>createHash('sha256').update(s).digest('hex');
 const show=(t:B.LTerm)=>B.term_show(t).replace(/\bast\./g,'Ast.').replace(/\blexer\./g,'Lexer.');
@@ -10,7 +10,7 @@ export async function extractCaseShape(source:string){
  const match=body.r[0]!.f;if(match.r.length!==2)throw Error('Case scanner row drift');
  const types=new LexicalTypes(graph.parserBook,graph.signatures);types.indexBody(body,sig.parameters,sig.result);
  const line=(n:number)=>source.lastIndexOf('\n',n)+1,begin=line(match.e[0]!.s!.beg),end=line(body.r[1]!.p[0]!.s!.beg),original=source.slice(begin,end),helpers:string[]=[],calls:string[]=[],audit:object[]=[];
- const all=new Map<number,ReturnType<typeof types.environmentAt> extends Map<number,infer T>?T:never>();
+ const all=new Map<number,Binding>();
  for(const [i,row]of match.r.entries()){
   if(row.f.$!=='Reply')throw Error('Case scanner body drift');const env=types.environmentAt(row.f.x),ids=[...freeBinderIds(row.f.x)].filter(id=>env.has(id)).sort((a,b)=>a-b),captures=ids.map(id=>env.get(id)!);captures.forEach(b=>all.set(b.id,b));
   const beg=source.indexOf('\n',source.indexOf(':',Math.max(...row.p.map(p=>p.s!.end))))+1,finish=i===0?line(match.r[1]!.p[0]!.s!.beg):end,text=source.slice(beg,finish),indent=text.match(/^ */)![0].length;
