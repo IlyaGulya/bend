@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "name": "step_parse_atom_symbol_row_9",
+  "index": 632,
+  "eventsLoaded": 1317,
+  "elapsedMs": 21318.990292,
+  "scope": "Trusted-prefix single target only, no full-check acceptance",
+  "nativeCheckedOutputRetained": true
+}

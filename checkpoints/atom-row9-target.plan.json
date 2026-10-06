@@ -1,0 +1,9 @@
+{
+  "question": "Does the exact atomic row9 still hit 3GiB with a fresh native target and no preceding checked-e payloads?",
+  "onPass": "Whole-check resource failure is not intrinsic to this row; investigate separately authorized checked-output handoff, no semantic workaround",
+  "onFailure": "Retain exact intrinsic target error/resource evidence; do not claim whole-check readiness",
+  "name": "step_parse_atom_symbol_row_9",
+  "index": 632,
+  "eventsLoaded": 1317,
+  "toolchain": "Temporary direct loader, full native target retaining e; trusted prefix only"
+}
