@@ -1,0 +1,31 @@
+{
+  "checkpoint": "COMPILED EXPLICIT-FUEL SELFHOST PARSER — DIAGNOSTIC DIRECT-LOAD BUILD",
+  "artifactPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/parser-explicit-fuel-822e8460.js",
+  "artifactSha256": "0726b631b839b23f53d6c34bef99d3ff0c5f5889548ac4cdc9a4e6e1ad0ab0ec",
+  "bytes": 30521142,
+  "validationEndMs": 593025.1494999999,
+  "totalElapsedMs": 2538561.791417,
+  "preGC": {
+    "footprintBytes": 3246754672,
+    "rssBytes": 3064381440
+  },
+  "postGC": {
+    "footprintBytes": 3246754672,
+    "rssBytes": 3064561664
+  },
+  "phasePeaks": {
+    "load": {
+      "footprintBytes": 251986736,
+      "rssBytes": 286359552
+    },
+    "validation": {
+      "footprintBytes": 3246754672,
+      "rssBytes": 3064528896
+    },
+    "codegen": {
+      "footprintBytes": 4892119192,
+      "rssBytes": 4710875136
+    }
+  },
+  "selfhostGreen": false
+}

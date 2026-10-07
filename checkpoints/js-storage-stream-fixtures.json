@@ -1,0 +1,45 @@
+{
+  "status": "PASS",
+  "rows": [
+    {
+      "name": "constant",
+      "nativeValidation": "PASS both",
+      "jsBytesEqual": true,
+      "jsSha256": "b2787dafbc8d8d8807f6a3c18d0ad2595eb710e39091227fdbc6f4deb12fa8df",
+      "actual": "7",
+      "expected": "7"
+    },
+    {
+      "name": "callee",
+      "nativeValidation": "PASS both",
+      "jsBytesEqual": true,
+      "jsSha256": "ea134b7034fe56365bd9d7de323a20adb2b59a3ff83715cc87d7b569aa492d6b",
+      "actual": "5",
+      "expected": "5"
+    },
+    {
+      "name": "recursive",
+      "nativeValidation": "PASS both",
+      "jsBytesEqual": true,
+      "jsSha256": "5d733ed2f7566e2f7571f0f565229602dd52e0a85c3e8a08af6d3ea623464226",
+      "actual": "6",
+      "expected": "6"
+    },
+    {
+      "name": "raised-arity",
+      "nativeValidation": "PASS both",
+      "jsBytesEqual": true,
+      "jsSha256": "ba4429d0e49a3792bb02054c6175abd83f2302072bc42f42915b16ea66608506",
+      "actual": "7",
+      "expected": "7"
+    },
+    {
+      "name": "shared-tables",
+      "nativeValidation": "PASS both",
+      "jsBytesEqual": true,
+      "jsSha256": "cd11d9c4c536cd8bf4d178945125fe7bffa881c1e330b326a6007cf5e66243bc",
+      "actual": "4",
+      "expected": "4"
+    }
+  ]
+}

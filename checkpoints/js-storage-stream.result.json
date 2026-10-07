@@ -1,0 +1,15 @@
+{
+  "status": "COMPILED_JS_WHOLE29_PASS",
+  "checkpoint": "COMPILED EXPLICIT-FUEL SELFHOST PARSER",
+  "sourceCandidate": "/private/tmp/bend-artifact-d746e7cc/bend2/selfhost/.parser_definition_body_shape_generated_fuel.bend",
+  "artifactPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/parser-explicit-fuel-822e8460.js",
+  "artifactSha256": "0726b631b839b23f53d6c34bef99d3ff0c5f5889548ac4cdc9a4e6e1ad0ab0ec",
+  "eventsFullyValidated": 1478,
+  "kernel": "47e1b06e2fa4466bad702f86d8cbce03f40e833a8ba8eaa1e04297fa46dc94a9",
+  "compilerHash": "0939b98d013ab58d82619e35c0d4900b72c9d8e5b478f0e1df7822fe713c9b48",
+  "toolchain": "DIAGNOSTIC DIRECT-LOAD JS EMIT/RELEASE PROTOTYPE; exact preparation and per-definition emitter; GC after each emitted definition",
+  "maxSimultaneousE": 1288,
+  "maxSimultaneousH": 197,
+  "compiledExecutionReport": "checkpoints/parser-compiled-whole29.json",
+  "selfhostGreen": false
+}

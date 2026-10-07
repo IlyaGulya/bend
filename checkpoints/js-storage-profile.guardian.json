@@ -1,0 +1,2 @@
+{"status":"RESOURCE_LIMIT","reason":"rss_limit","commandExitCode":-1,"commandSignal":15,"peakRssBytes":8592621568,"peakFootprintBytes":8555060016,"elapsedMs":621248,"command":["bun","--smol","evals/parser_local_shape_build.ts","--build-proposal"],"label":"heavy command","exitCode":73,"reportPath":"/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791363567234-0beb9620cb26b71d.json","memoryLimitBytes":8589934592,"rssLimitBytes":8589934592}
+

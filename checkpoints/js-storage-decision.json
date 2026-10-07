@@ -1,0 +1,52 @@
+{
+  "decision": "J2 — H RETAINS E",
+  "checkpoint": "COMPILED EXPLICIT-FUEL SELFHOST PARSER",
+  "baseline": {
+    "snapshot": "d746e7cc",
+    "candidateSha256": "822e8460ff94ff3f00695e27f5b4fe4dbd3515ae4d6d5c3b3c5eb7c1867b840e"
+  },
+  "eReleaseEffective": false,
+  "retentionEvidence": "js-storage-release-e.json; backing WeakRef remains with h, clears without h; live heap drops123839769/160007592B after h release; committed footprint did not immediately shrink",
+  "perDefinitionEmitReleaseViable": true,
+  "fixtureByteAndRuntimeParity": "5/5",
+  "runtimePolicy": "Bun.gc(true) after emitted definition and memo_gc; diagnostic consuming JS-only variant, not production API cutover",
+  "normalGrowthPhase": "carb_book reachable traversal; emission/assembly never reached",
+  "assembly": {
+    "footprintDeltaBytes": 33783832,
+    "elapsedMs": 26.522874999791384,
+    "outputLines": 207480,
+    "outputUTF16Units": 30310979,
+    "changed": false
+  },
+  "artifact": {
+    "path": "checkpoints/parser-explicit-fuel-822e8460.js",
+    "sha256": "0726b631b839b23f53d6c34bef99d3ff0c5f5889548ac4cdc9a4e6e1ad0ab0ec",
+    "bytes": 30521142
+  },
+  "fullValidation": {
+    "status": "PASS",
+    "events": 1478,
+    "excluded": 0,
+    "peakFootprintBytes": 3246754672,
+    "peakRssBytes": 3064528896
+  },
+  "codegen": {
+    "peakFootprintBytes": 4892119192,
+    "peakRssBytes": 4710875136,
+    "processTreePeakFootprintBytes": 4924035248,
+    "elapsedMs": 1944841.5750410003,
+    "maxSimultaneousEFields": 1288,
+    "maxSimultaneousHFields": 197,
+    "countsCaveat": "Definition e/h slots, not unique live term graphs; prepared signature-only definitions may retain h until completion."
+  },
+  "totalGuardedElapsedMs": 2538792,
+  "compiledExecution": {
+    "tinySmoke": "6/6",
+    "acceptanceParity": "29/29",
+    "normalizedSemanticParity": "29/29; accepted cases normalized, rejected cases match rejection",
+    "realCompilerModule": "bend2/selfhost/ast.bend accepted at explicit fuel200000",
+    "report": "parser-compiled-whole29.json"
+  },
+  "productionCompilerUnchanged": true,
+  "selfhostGreen": false
+}

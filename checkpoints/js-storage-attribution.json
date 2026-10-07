@@ -1,0 +1,111 @@
+{
+  "baseline": "d746e7cc /822e8460",
+  "phase": "carb_book reachable discovery/traversal; emission and assembly not reached",
+  "start": {
+    "phase": "codegen",
+    "elapsedMs": 609544.6627079999,
+    "bunVersion": "1.4.2",
+    "runtimeArgs": [
+      "--smol"
+    ],
+    "stage": "carb-book-before",
+    "preparedCount": 0,
+    "footprintBytes": 3198454640,
+    "rssBytes": 3062595584
+  },
+  "terminal": {
+    "phase": "codegen",
+    "elapsedMs": 619785.387875,
+    "bunVersion": "1.4.2",
+    "runtimeArgs": [
+      "--smol"
+    ],
+    "stage": "traversal-before",
+    "name": "pattern_expect_action",
+    "index": 709,
+    "preparedCount": 814,
+    "footprintBytes": 8212847168,
+    "rssBytes": 8197242880
+  },
+  "topCompletedTraversalIntervals": [
+    {
+      "name": "step_parse_term_tail",
+      "footprintDelta": 1007846096,
+      "elapsedMs": 678.279084000038,
+      "before": 4086156816,
+      "after": 5094002912
+    },
+    {
+      "name": "step_parse_atom_name_dispatch",
+      "footprintDelta": 730350096,
+      "elapsedMs": 608.8199999999488,
+      "before": 5231890752,
+      "after": 5962240848
+    },
+    {
+      "name": "step_parse_def_binders_scan",
+      "footprintDelta": 398442784,
+      "elapsedMs": 356.9499170000199,
+      "before": 3341913064,
+      "after": 3740355848
+    },
+    {
+      "name": "step_parse_unsafe",
+      "footprintDelta": 324157680,
+      "elapsedMs": 549.3667920000153,
+      "before": 7686576176,
+      "after": 8010733856
+    },
+    {
+      "name": "step_parse_top_scan",
+      "footprintDelta": 283427008,
+      "elapsedMs": 174.74445799994282,
+      "before": 6571414808,
+      "after": 6854841816
+    },
+    {
+      "name": "step_parse_do_atom",
+      "footprintDelta": 280707264,
+      "elapsedMs": 233.1433750001015,
+      "before": 6955882016,
+      "after": 7236589280
+    },
+    {
+      "name": "step_parse_atom_symbol_dispatch",
+      "footprintDelta": 175079568,
+      "elapsedMs": 91.09579099994153,
+      "before": 5963010896,
+      "after": 6138090464
+    },
+    {
+      "name": "step_parse_law_clause_condition_scan",
+      "footprintDelta": 166396024,
+      "elapsedMs": 77.9522500000894,
+      "before": 3781741856,
+      "after": 3948137880
+    },
+    {
+      "name": "step_parse_imports_scan",
+      "footprintDelta": 114901088,
+      "elapsedMs": 48.427207999979146,
+      "before": 6236967952,
+      "after": 6351869040
+    },
+    {
+      "name": "step_parse_name_term",
+      "footprintDelta": 110706760,
+      "elapsedMs": 65.28174999996554,
+      "before": 7236589280,
+      "after": 7347296040
+    }
+  ],
+  "higherTotalDelta": 23674904,
+  "raiseTotalDelta": 402080152,
+  "caveat": "Traversal intervals include eager callee preparation; process deltas are not exclusive allocations. No recursive per-definition node counts.",
+  "guard": {
+    "footprintBytes": 8555060016,
+    "rssBytes": 8592621568,
+    "elapsedMs": 621248,
+    "reason": "rss_limit"
+  }
+}

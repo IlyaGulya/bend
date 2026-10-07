@@ -1,0 +1,90 @@
+{
+  "fixtures": [
+    {
+      "name": "constant",
+      "nativeValidation": "PASS both",
+      "preparedHEqual": true,
+      "adjustedNEqual": true,
+      "jsBytesEqual": true,
+      "jsSha256": "b2787dafbc8d8d8807f6a3c18d0ad2595eb710e39091227fdbc6f4deb12fa8df",
+      "runtime": "7",
+      "expected": "7"
+    },
+    {
+      "name": "callee",
+      "nativeValidation": "PASS both",
+      "preparedHEqual": true,
+      "adjustedNEqual": true,
+      "jsBytesEqual": true,
+      "jsSha256": "ea134b7034fe56365bd9d7de323a20adb2b59a3ff83715cc87d7b569aa492d6b",
+      "runtime": "5",
+      "expected": "5"
+    },
+    {
+      "name": "recursive",
+      "nativeValidation": "PASS both",
+      "preparedHEqual": true,
+      "adjustedNEqual": true,
+      "jsBytesEqual": true,
+      "jsSha256": "5d733ed2f7566e2f7571f0f565229602dd52e0a85c3e8a08af6d3ea623464226",
+      "runtime": "6",
+      "expected": "6"
+    }
+  ],
+  "retention": [
+    {
+      "name": "step_parse_term_tail",
+      "index": 884,
+      "diagnostic": "Target-only native book_valid(done=index), not whole-book acceptance; whole1478 baseline proof separate",
+      "before": {
+        "footprintBytes": 586237008,
+        "rssBytes": 676528128,
+        "heapUsed": 285504260
+      },
+      "afterPrepare": {
+        "footprintBytes": 590169168,
+        "rssBytes": 680509440,
+        "heapUsed": 285504260
+      },
+      "afterERelease": {
+        "footprintBytes": 590234704,
+        "rssBytes": 680574976,
+        "heapUsed": 287104381
+      },
+      "backingAliveWithH": true,
+      "afterHRelease": {
+        "footprintBytes": 590873680,
+        "rssBytes": 681213952,
+        "heapUsed": 163264612
+      },
+      "backingAliveWithoutH": false
+    },
+    {
+      "name": "step_parse_atom_name_dispatch",
+      "index": 604,
+      "diagnostic": "Target-only native book_valid(done=index), not whole-book acceptance; whole1478 baseline proof separate",
+      "before": {
+        "footprintBytes": 394642536,
+        "rssBytes": 740786176,
+        "heapUsed": 322842179
+      },
+      "afterPrepare": {
+        "footprintBytes": 395510888,
+        "rssBytes": 741654528,
+        "heapUsed": 322842179
+      },
+      "afterERelease": {
+        "footprintBytes": 395510888,
+        "rssBytes": 741654528,
+        "heapUsed": 324159273
+      },
+      "backingAliveWithH": true,
+      "afterHRelease": {
+        "footprintBytes": 395576424,
+        "rssBytes": 741720064,
+        "heapUsed": 164151681
+      },
+      "backingAliveWithoutH": false
+    }
+  ]
+}

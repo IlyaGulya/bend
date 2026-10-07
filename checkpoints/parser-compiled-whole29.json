@@ -1,0 +1,194 @@
+{
+  "checkpoint": "COMPILED EXPLICIT-FUEL SELFHOST PARSER",
+  "status": "PASS",
+  "artifact": "/Users/ilyagulya/Projects/My/bend/checkpoints/parser-explicit-fuel-822e8460.js",
+  "artifactSha256": "0726b631b839b23f53d6c34bef99d3ff0c5f5889548ac4cdc9a4e6e1ad0ab0ec",
+  "tinySmoke": [
+    {
+      "name": "empty",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "base-import",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "data-constructors",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "constant-definition",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "typed-definition",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "malformed-definition",
+      "acceptanceParity": true,
+      "semanticParity": true
+    }
+  ],
+  "acceptanceParity": 29,
+  "normalizedSemanticParity": 29,
+  "rows": [
+    {
+      "name": "empty",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "base-import",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "data-constructors",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "constant-definition",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "typed-definition",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "malformed-definition",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "word-constant",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "string-constant",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "char-constant",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "multiple-arguments",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "explicit-quantities",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "untyped-without-law",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "untyped-law-body",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "lambda-body",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "nested-application",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "lambda-application",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "local-body",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "nested-patterns",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "match-cases",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "do-return",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "do-typed-bind",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "parameterized-type",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "reusable-type",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "relative-import",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "external-import-body",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "malformed-body",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "malformed-type",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "malformed-do",
+      "acceptanceParity": true,
+      "semanticParity": true
+    },
+    {
+      "name": "orphan-case",
+      "acceptanceParity": true,
+      "semanticParity": true
+    }
+  ],
+  "realModule": {
+    "path": "bend2/selfhost/ast.bend",
+    "accepted": true,
+    "fuel": 200000,
+    "sourceSha256": "4e5c2367aa69a44dc146034a6dc54ccc7c682dd5f0e16ca9a6ff812c4d41f6ca"
+  },
+  "selfhostGreen": false
+}
