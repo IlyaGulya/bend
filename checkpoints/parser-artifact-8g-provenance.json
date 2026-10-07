@@ -1,0 +1,19 @@
+{
+  "snapshot": "d746e7cc",
+  "worktree": "/tmp/bend-artifact-d746e7cc",
+  "candidateSha256": "822e8460ff94ff3f00695e27f5b4fe4dbd3515ae4d6d5c3b3c5eb7c1867b840e",
+  "kernelSha256": "47e1b06e2fa4466bad702f86d8cbce03f40e833a8ba8eaa1e04297fa46dc94a9",
+  "compilerSha256": "0939b98d013ab58d82619e35c0d4900b72c9d8e5b478f0e1df7822fe713c9b48",
+  "command": "BEND_PARSER_DECL_GC=1 bun evals/heavy_gate.ts --memory-mib=8192 --rss-mib=8192 --poll-ms=10 -- bun --smol evals/parser_local_shape_build.ts --build-proposal",
+  "runtimeChangesOnly": [
+    "10ms native phase sampler",
+    "one Bun.gc(true) after complete validation with pre/post memory",
+    "persistent artifact/checkpoint output paths",
+    "explicit candidate/compiler hash assertions"
+  ],
+  "nativeGuardSupport": "Existing evals/heavy_gate_native.c copied unchanged because absent from tracked snapshot; first supervisor attempt failed before spawning build worker",
+  "sourceFactoring": false,
+  "retainedE": true,
+  "checksExcluded": 0,
+  "selfhostGreen": false
+}

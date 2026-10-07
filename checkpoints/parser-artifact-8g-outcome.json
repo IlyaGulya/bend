@@ -1,0 +1,78 @@
+{
+  "result": "C. 8 GiB CODEGEN RESOURCE_LIMIT",
+  "snapshot": "d746e7cc",
+  "candidateSha256": "822e8460ff94ff3f00695e27f5b4fe4dbd3515ae4d6d5c3b3c5eb7c1867b840e",
+  "validation": {
+    "events": 1478,
+    "status": "PASS",
+    "retainedE": true,
+    "checksExcluded": 0,
+    "elapsedMs": 3091117.057042,
+    "peakFootprintBytes": 3150990168,
+    "peakRssBytes": 3068575744
+  },
+  "load": {
+    "elapsedMs": 1779.491667,
+    "peakFootprintBytes": 232244016,
+    "peakRssBytes": 273252352
+  },
+  "preGC": {
+    "phase": "validation",
+    "elapsedMs": 3092919.7200829997,
+    "bunVersion": "1.4.2",
+    "runtimeArgs": [
+      "--smol"
+    ],
+    "stage": "pre-phase-gc",
+    "footprintBytes": 3150990168,
+    "rssBytes": 3068461056
+  },
+  "postGC": {
+    "phase": "validation",
+    "elapsedMs": 3093898.3377079996,
+    "bunVersion": "1.4.2",
+    "runtimeArgs": [
+      "--smol"
+    ],
+    "stage": "post-phase-gc",
+    "footprintBytes": 3150990168,
+    "rssBytes": 3068657664
+  },
+  "codegen": {
+    "status": "RESOURCE_LIMIT",
+    "reason": "rss_limit",
+    "peakFootprintBytes": 8469846760,
+    "peakRssBytes": 8598257664,
+    "elapsedToGuardApproxMs": 12712.430583000183,
+    "elapsedCaveat": "Guardian clock starts before worker clock; difference includes worker startup overhead.",
+    "artifactExists": false,
+    "artifactBytes": 0,
+    "phaseSamplerPeaks": {
+      "footprintBytes": 8456379112,
+      "rssBytes": 8584790016
+    },
+    "peakSource": "Process-tree guardian maxima; codegen is the terminal phase and both prior phase maxima were lower"
+  },
+  "guardian": {
+    "status": "RESOURCE_LIMIT",
+    "reason": "rss_limit",
+    "commandExitCode": -1,
+    "commandSignal": 15,
+    "peakRssBytes": 8598257664,
+    "peakFootprintBytes": 8469846760,
+    "elapsedMs": 3106611,
+    "command": [
+      "bun",
+      "--smol",
+      "evals/parser_local_shape_build.ts",
+      "--build-proposal"
+    ],
+    "label": "heavy command",
+    "exitCode": 73,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1791359133118-03534d73568035fb.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "selfhostGreen": false,
+  "nextScope": "CODEGEN/STORAGE; no parser-source factoring; no additional build this turn"
+}
