@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS",
+  "diagnosticOnly": true,
+  "bootstrapAcceptance": false,
+  "mode": "component",
+  "stopAfter": "check",
+  "oracleIncluded": false,
+  "checksExcluded": 0,
+  "outputPatches": 0,
+  "corpus": "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+  "corpusSha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+  "root": "/private/tmp/bend-v41-corpus.uXXfVm/checkpoints/.bootstrap_compiler_root_v1.bend",
+  "inputFiles": 50,
+  "runtime": {
+    "versions": {
+      "node": "23.11.0",
+      "acorn": "8.14.1",
+      "ada": "3.2.1",
+      "amaro": "0.4.1",
+      "ares": "1.34.4",
+      "brotli": "1.1.0",
+      "cjs_module_lexer": "2.1.0",
+      "cldr": "46.0",
+      "icu": "76.1",
+      "llhttp": "9.2.1",
+      "modules": "131",
+      "napi": "10",
+      "nbytes": "0.1.1",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.64.0",
+      "openssl": "3.0.16",
+      "simdjson": "3.12.2",
+      "simdutf": "6.0.3",
+      "sqlite": "3.49.1",
+      "tz": "2025a",
+      "undici": "6.21.2",
+      "unicode": "16.0",
+      "uv": "1.50.0",
+      "uvwasi": "0.0.21",
+      "v8": "12.9.202.28-node.14",
+      "zlib": "1.3.0.1-motley-788cb3c",
+      "zstd": "1.5.6"
+    },
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "oldGenerationMiB": 6144,
+    "youngGenerationMiB": 128,
+    "stackMiB": 256
+  },
+  "implementationPins": {
+    "/Users/ilyagulya/Projects/My/bend/evals/compiler_benchmark.ts": "82a66e7a51a417fd392693a18863b5562131b103994ab14479dcd4657533b4f1",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-v41.corpus.json": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+    "/private/tmp/bend-v41-algorithm.hDWCul/evals/checker_core_step_runtime.mjs": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+    "/private/tmp/bend-v41-algorithm.hDWCul/checkpoints/compiler-algorithm-v41-seed.js": "36a6abbbaf7b86b9b30a1a9924d0e89a524347615b96a147270c01c5ac59c934",
+    "/private/tmp/bend-v41-corpus.uXXfVm/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+    "/private/tmp/bend-v41-corpus.uXXfVm/bend2/comp.ts": "56d5727049bc3ef528ef84d3b4712a41a0a8ce0a06437b29d881e71107638c70"
+  },
+  "phases": [
+    {
+      "name": "compiler-startup",
+      "wallMs": 139.034334,
+      "cpuMs": 189.441,
+      "memoryEnd": {
+        "rss": 195411968,
+        "heapTotal": 33652736,
+        "heapUsed": 24452136,
+        "external": 21513610,
+        "arrayBuffers": 10612517
+      }
+    },
+    {
+      "name": "load-parse",
+      "wallMs": 4627.820292,
+      "cpuMs": 6016.538,
+      "memoryEnd": {
+        "rss": 1042202624,
+        "heapTotal": 831864832,
+        "heapUsed": 679463448,
+        "external": 10925996,
+        "arrayBuffers": 24863
+      }
+    },
+    {
+      "name": "expand",
+      "wallMs": 4738.4108750000005,
+      "cpuMs": 5173.467,
+      "memoryEnd": {
+        "rss": 1163280384,
+        "heapTotal": 952188928,
+        "heapUsed": 742127336,
+        "external": 10925996,
+        "arrayBuffers": 24863
+      }
+    },
+    {
+      "name": "check",
+      "wallMs": 77458.964875,
+      "cpuMs": 82686.987,
+      "memoryEnd": {
+        "rss": 1361575936,
+        "heapTotal": 1158283264,
+        "heapUsed": 928525520,
+        "external": 10925996,
+        "arrayBuffers": 24863
+      }
+    }
+  ],
+  "moduleCount": 15,
+  "sourceDeclarations": 8403,
+  "checkedModules": 15,
+  "compileMs": 86964.713875,
+  "passed": true,
+  "totalWithOutputSmokeMs": 86985.911834,
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 1438318592,
+    "peakFootprintBytes": 1487034568,
+    "elapsedMs": 87267,
+    "timeoutMs": 600000,
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "--stack-size=262144",
+      "/Users/ilyagulya/Projects/My/bend/evals/compiler_benchmark.ts",
+      "--worker",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-v41-algorithm-check-b.json.request.json",
+      "78e8638436c15998ab6af056ea3b8dc9588de777fac959f1e67fba7f780119fd"
+    ],
+    "label": "Comparable full-corpus component compiler",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792085091128-da795ba3acbad762.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  }
+}

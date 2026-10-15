@@ -20,12 +20,27 @@ serialized diagnostic samples, not medians or a new fixedpoint acceptance.
 export matching under the unchanged8GiB guardian and actual256MiB Worker stack.
 The initial main-thread official attempt SIGSEGV'd; its timing is rejected.
 
-Four isolated v41 candidates are under serialized runtime verification: existing
-C backend execution, scheduled typed identity tails, batched arena word copies,
-and reuse of immutable source-pattern binder-count certificates. Source review is
-not speed or acceptance evidence. Native execution alone would not establish a
-self-generated C backend or replace genuine emitted-JS stage1/stage2 acceptance.
-The current accepted compiler/proof remains Main40/parser67.
+Measured v41 experiments:
+- Scheduled typed identity tails: full compile109626.741ms; no demonstrated win.
+  Rejected branch commit `9313891f`; native8065 bodies and exact output parity pass.
+- Batched arena copies:112567.747ms; no demonstrated win. Rejected `706aaff8`;
+  native8079 bodies, exact output parity and ten overlap/ownership cases pass.
+- Source-pattern binder certificates:106356.703ms. Two checker pairs favor the
+  candidate:84259/79839→81445/77459ms wall,91890/87545→87062/82687ms CPU.
+  Source candidate `ea361e39`, integrated provisionally as `274ec050`; fresh full
+  fixedpoint/fixtures still required. Both full outputs equal baseline19154334
+  bytes, SHA3546e1cdb5104feaef7613ee8f0ea66ae70ad2410e150648f26b43accc22f0bd.
+- Native C execution: no executable or speed claim yet. Full8077-body validation
+  completes, but `compile_book` exceeds diagnostic deadlines. V8 samples expose
+  layout-DAG JSON serialization; canonical no-op-padding interning removes it.
+  Actual C wide257/deep-boxed fixtures print1113/2749. Postrepair C codegen still
+  times out, with38.3% GC near the3072MiB seed heap; investigate C higher-body
+  retention/pass work rather than raising limits. Profiles remain local/ignored.
+
+Current source includes the small certificate candidate, not a newly accepted
+compiler. The accepted image/proof remains Main40/parser67. Native execution alone
+would not establish a self-generated C backend or replace genuine emitted-JS
+stage1/stage2 acceptance.
 
 ## Completed acceleration — Main40 full stage2 below five minutes
 
