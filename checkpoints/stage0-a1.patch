@@ -1,0 +1,109 @@
+diff --git a/bend2/bend.ts b/bend2/bend.ts
+index ea7bbaaa..3da20068 100644
+--- a/bend2/bend.ts
++++ b/bend2/bend.ts
+@@ -2676,30 +2676,84 @@ export function parse_book(book: Book, dir: string, src: string, ns: string = ""
+ // later. a parallel let becomes one Let node binding its names to its
+ // values.
+ 
++// Exact free binder IDs, as interpreted by term_higher. Query metadata only.
++export function term_occurs(t: LTerm, i: number): boolean {
++  return term_occurs_go(t, i, new WeakMap());
++}
++
++function term_occurs_any(xs: readonly (LTerm | Patt)[], i: number, memo: WeakMap<object, boolean>): boolean {
++  for (const x of xs) if (term_occurs_go(x, i, memo)) return true;
++  return false;
++}
++
++function term_occurs_go(t: LTerm | Patt, i: number, memo: WeakMap<object, boolean>): boolean {
++  const known = memo.get(t);
++  if (known !== undefined) return known;
++  const has = term_occurs_go;
++  let found: boolean;
++  switch (t.$) {
++    case "Var": case "PVar": found = t.i === i; break;
++    case "Ref": case "Qnt": case "Qua": case "Efq": case "Rfl": case "Hol":
++      found = false; break;
++    case "Sub":
++      found = has(t.v, i, memo) || (t.i !== i && has(t.f, i, memo)); break;
++    case "Let":
++      found = term_occurs_any(t.v, i, memo) || (!t.i.includes(i) && has(t.f, i, memo)); break;
++    case "Typ": found = has(t.g, i, memo); break;
++    case "Min": found = has(t.a, i, memo) || has(t.b, i, memo); break;
++    case "All": found = has(t.A, i, memo) || (t.i !== i && has(t.B, i, memo)); break;
++    case "Lam": found = t.i !== i && has(t.f, i, memo); break;
++    case "App": found = has(t.f, i, memo) || has(t.x, i, memo); break;
++    case "ADT": case "Ctr": case "PCtr": found = term_occurs_any(t.x, i, memo); break;
++    case "Mat": found = has(t.h, i, memo) || has(t.m, i, memo); break;
++    case "Eql": found = has(t.a, i, memo) || has(t.b, i, memo) || has(t.T, i, memo); break;
++    case "Rwt": found = has(t.e, i, memo) || has(t.p, i, memo) || has(t.f, i, memo); break;
++    case "Ann": found = has(t.x, i, memo) || has(t.T, i, memo); break;
++  }
++  memo.set(t, found);
++  return found;
++}
++
+ export function body_sub(b: Body, i: number, v: Patt): Body {
++  const memo = new WeakMap<object, boolean>();
+   function scrut(e: LTerm): LTerm {
+-    if (e.$ === "Var") {
+-      return e.i !== i ? e : patt_term(v, e.s);
+-    } else {
+-      return Sub(i, v, e);
+-    }
+-  }
+-  switch (b.$) {
+-    case "Match": {
+-      const es = b.e.map(scrut);
+-      const rs = b.r.map((row): Case => ({ p: row.p, f: body_sub(row.f, i, v) }));
+-      return { $: "Match", e: es, r: rs, s: b.s };
+-    }
+-    case "Local": {
+-      const w = b.v.map(scrut);
+-      const f = body_sub(b.f, i, v);
+-      return { $: "Local", k: b.k, q: b.q, v: w, f };
+-    }
+-    case "Reply": {
+-      const x = Sub(i, v, b.x);
+-      return { $: "Reply", x, s: b.s };
++    if (!term_occurs_go(e, i, memo)) return e;
++    return e.$ === "Var" ? patt_term(v, e.s) : Sub(i, v, e);
++  }
++  function terms(xs: LTerm[]): LTerm[] {
++    let ys = xs;
++    for (let j = 0; j < xs.length; j++) {
++      const y = scrut(xs[j]);
++      if (y !== xs[j]) {
++        if (ys === xs) ys = xs.slice();
++        ys[j] = y;
++      }
++    }
++    return ys;
++  }
++  function visit(node: Body): Body {
++    switch (node.$) {
++      case "Match": {
++        const es = terms(node.e);
++        let rs = node.r;
++        for (let j = 0; j < node.r.length; j++) {
++          const row = node.r[j], f = visit(row.f);
++          if (f !== row.f) {
++            if (rs === node.r) rs = node.r.slice();
++            rs[j] = { p: row.p, f };
++          }
++        }
++        return es === node.e && rs === node.r ? node : { ...node, e: es, r: rs };
++      }
++      case "Local": {
++        const xs = terms(node.v), f = visit(node.f);
++        return xs === node.v && f === node.f ? node : { ...node, v: xs, f };
++      }
++      case "Reply":
++        return term_occurs_go(node.x, i, memo) ? { ...node, x: Sub(i, v, node.x) } : node;
+     }
+   }
++  return visit(b);
+ }
+ 
+ export function match_flatten(m: Match, vars: PVar[], fr: () => number): LTerm {

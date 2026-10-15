@@ -1,6 +1,6 @@
 # a let-applied lambda that reduces to a lambda cannot be used twice:
 # k binds Lone, and no live binding contracts (the redex head rides a
-# let binding: a bare beta-redex is refused by infer-app).
+# let binding: a bare beta-redex is its body, stepped by term_higher).
 # ported from bend3: the annotation wears the brace Ann form
 import Base
 
@@ -15,6 +15,7 @@ def main():
   k = k0(Unit{})
   P12{k, k}
 
+#|SOME PROOFS FAIL
 #|Error:
 #|- expected : k
 #|- observed : k (consumed more than once)
@@ -23,5 +24,6 @@ def main():
 #|Location: main
 #|14 |   k0 = {(d => x => x) : Unit -> U32 -> U32}
 #|15>|   k = k0(Unit{})
+#|   |   ^
 #|16 |   P12{k, k}
 #|exit 1

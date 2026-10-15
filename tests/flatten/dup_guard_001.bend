@@ -19,10 +19,12 @@ def main(a):
     case S{p}, x:
       R1{}
 
+#|SOME PROOFS FAIL
 #|Error:
-#|- message  : a match on a parameter or field (this name is a def or a consumed binder: give the value its own def)
+#|- message  : 'a' can't be matched in this position (it is matched after a local statement or after a match on a later binder, it was already matched, or it is a def)
 #|Location:
 #|15 | def main(a):
 #|16>|   match a, a:
+#|   |            ^
 #|17 |     case Z{}, x:
 #|exit 1

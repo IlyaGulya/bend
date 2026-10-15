@@ -134,10 +134,10 @@ export type StructuralFeedbackFuelProgram = {
 export function renderStructuralFeedbackFuel(graph: ParserGraph, height: number, tokenElement = "lexer.Token"): StructuralFeedbackFuelProgram {
   if (!Number.isSafeInteger(height) || height < 0) throw Error("Structural fuel requires a certified nonnegative finite H");
   const lexical = new LexicalTypes(graph.parserBook, graph.signatures);
-  const probeSpan = {src:graph.source, beg:0, end:0};
+  const probeSpan = {file:{str:graph.source,ns:'',al:{}},beg:0,end:0};
   function normalize(type: LTerm) {
     const probe: LTerm = {$:"Var", k:"probe", i:-1};
-    lexical.indexBody({$:"Reply", x:probe}, [[{$:"Many"}, "probe", -1, type, probeSpan]], type);
+    lexical.indexBody(probe, [[{$:"Many"}, "probe", -1, type, probeSpan]], type);
     return lexical.typeOf(probe);
   }
   function constructorFields(type: Extract<LTerm, {$:"ADT"}>, constructor: string) {
@@ -154,7 +154,7 @@ export function renderStructuralFeedbackFuel(graph: ParserGraph, height: number,
       telescope=telescope.B;
     }
     const probe: LTerm = {$:"Var",k:"probe",i:-1};
-    const body: Body = {$:"Match",e:[probe],r:[{p:[{$:"PCtr",k:constructor,x:patterns}],f:{$:"Reply",x:probe}}]};
+    const body: Body = {$:"Match",e:[probe],r:[{p:[{$:"PCtr",k:constructor,x:patterns}],f:probe}]};
     const parameters: ParserParameter[] = [[{$:"Many"},"probe",-1,type,probeSpan]];
     lexical.indexBody(body,parameters,type);
     const environment=lexical.environmentAt(probe);

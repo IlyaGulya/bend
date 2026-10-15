@@ -1,10 +1,10 @@
 // IO
 // ==
 
-function io_sleep(ms) {
-  return { $: "Unit" };
+// Parks until ms milliseconds from now.
+function io_sleep(ms, k) {
+  io_park_on(undefined, false, k, () => ({ $: CID(Unit) }),
+    performance.now() + Number(ms));
 }
 
-function io_sleep_need() {
-  return { time: true };
-}
+io_eff(CID(IO.sleep), io_sleep);

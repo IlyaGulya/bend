@@ -2,8 +2,8 @@
 
 Bend is a dependently typed, affine language that checks in one linear
 bidirectional pass and runs massively parallel on CPU threads and GPUs.
-bend2/bend.ts is the language (parser, theory, checker) and is human-written:
-do not edit it. bend2/comp.ts is the one compiler: the C runtime (host and
+bend2/bend.ts is the language (parser, theory, checker). 
+bend2/comp.ts is the one compiler: the C runtime (host and
 device from one source), the C emitter and the JS emitter; base.bend is the
 prelude; main.ts is the CLI. Every test is a Bend file that ends in the `#|`
 lines its run must print, and the gates run on the mini cluster.
@@ -11,9 +11,13 @@ lines its run must print, and the gates run on the mini cluster.
     bend2/bend.ts       the language: parser, theory, checker
     bend2/comp.ts       the compiler and the runtimes (C, Metal, CUDA, JS)
     bend2/main.ts       the CLI; imported, the .bend loader for bun and node
+    bend2/safe.ts       --verdict and -o <out>.bendtt: the elaborator from a
+                        checked book to BendTT text
+    bend2/bendtt.lean   BendTT: the kernel, its claims (no checked def has type
+                        Empty, live code halts) and their proofs; --verdict
+                        builds its CLI once, with Lean v4.34.0
     bend2/base.bend     the base library
-    bend2/bend.lean     the core, mechanized in Lean
-    bend2/effs/         one file per IO effect, per backend
+    bend2/effs/         IO effect sources per backend; related effects may share
     bend2/pack/         package.json, tsconfig.json, bun.lock
     bend2/docs/         the papers' Typst sources, the film, gen_pins.ts (the
                         record pins on this Mac), gen_charts.ts (the landing
@@ -26,9 +30,13 @@ lines its run must print, and the gates run on the mini cluster.
     gates/test.ts       every test, one shard per live mini, PASS: n / n
     gates/perf.ts       the benches on 48 minis against the pins (--pin writes
                         the medians of three runs)
-    gates/repo.ts       the allow list of files and their ttok caps
+    gates/repo.ts       the allow list of files and the permanent ttok caps
+                        (bend.ts 48k, comp.ts 64k, main.ts 16k, bendtt.lean
+                        64k, README 4k, GUIDE 8k); only Taelin changes them
     gates/ping.ts       the installer, the compiled bend, its daily version
                         check and a release, on a localhost hub
+    gates/safe.ts       bend2's verdict against BendTT's, per file, on the
+                        minis: `tests` or `hub` (a BendHub store, $SAFE_HUB)
     gates/_run.ts       the four gates with --gate
     demos/              one dir per demo
     guide/              GUIDE.md
@@ -41,3 +49,14 @@ lines its run must print, and the gates run on the mini cluster.
                         (the executables per platform) and the droplet ops;
                         gates/ping.ts and gen_charts.ts read it there (or at
                         $SITE_REPO)
+
+## Selfhost version checkpoints
+
+- Commit the current checkpoint and every subsequent selfhost version before
+  starting the next version. Include source changes, regression tests, required
+  frozen input corpus and compact evidence with the exact executed commands,
+  release/runtime/limits, timings, memory and byte-fixedpoint status.
+- Mark failed or rejected versions explicitly; never describe them as accepted.
+- Keep generated compiler images, AST transports, caches, bulk logs, profiles
+  and evidence archives out of Git. `checkpoints/` is ignored by default; add
+  required source inputs and compact receipts explicitly.

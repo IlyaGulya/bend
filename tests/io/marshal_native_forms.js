@@ -1,18 +1,25 @@
 function five() {
-  return 5n;
+  return 5;
 }
 function zero() {
-  return 0n;
+  return 0;
 }
 function wrap() {
-  return {$: "Some", value: 9n};
+  return {$: CID(Some), value: 9};
 }
 function dub(n) {
-  return n * 2n;
+  return n * 2;
 }
 function flip(b) {
   return !b;
 }
 function ord() {
-  return {$: "EQ"};
+  return {$: CID(EQ)};
 }
+
+io_eff(CID(five), five);
+io_eff(CID(zero), zero);
+io_eff(CID(wrap), wrap);
+io_eff(CID(dub), dub);
+io_eff(CID(flip), flip);
+io_eff(CID(ord), ord);

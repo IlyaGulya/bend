@@ -1,0 +1,1 @@
+{"rows":[{"name":"nat-expression-spaced","source":"import Base\ndef f(x: Nat) -> Nat:\n  (1n + x : Nat)\n"},{"name":"nat-expression-adjacent","source":"import Base\ndef f(x: Nat) -> Nat:\n  1n+x\n"},{"name":"nat-expression-rhs-space","source":"import Base\ndef f(x: Nat) -> Nat:\n  1n+ x\n"}]}

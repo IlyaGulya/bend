@@ -39,8 +39,11 @@ def write_opened(output: String, source: String, opened: Result<&1, &1, U32 & St
     case Done{file}:
       do IO<U32>:
         written : File & Result<&1, &1, U32 & String, Unit> <- File.write(file, source)
-        (file, result) = written
-        return finish_write(file, result)
+        return finish_written(written)
+
+def finish_written(written: File & Result<&1, &1, U32 & String, Unit>) -> IO(U32):
+  match written:
+    case (file, result): finish_write(file, result)
 
 def write_output(output: String, source: String) -> IO(U32):
   do IO<U32>:
@@ -48,7 +51,10 @@ def write_output(output: String, source: String) -> IO(U32):
     return write_opened(output, source, opened)
 
 def emit(checked: List<&2, Loader.LoadedModule>, output: String) -> IO(U32):
-  match JSEmit.emit(checked):
+  emit_result(JSEmit.emit(checked), output)
+
+def emit_result(result: JSEmit.EmitResult, output: String) -> IO(U32):
+  match result:
     case JSEmit.EmitFailure{message, span}: report(span, message)
     case JSEmit.EmitSuccess{source}: write_output(output, source)
 
@@ -60,3 +66,13 @@ def compile_checked(result: Checker.CheckResult, output: String) -> IO(U32):
 
 def compile(modules: List<&2, Loader.LoadedModule>, output: String) -> IO(U32):
   compile_checked(Checker.check(modules), output)
+
+# Pure boundary: the host supplies parsed modules, not source.
+def parsed_module(namespace: String, module: AST.Module) -> Loader.LoadedModule:
+  Loader.LoadedModule{namespace, module}
+
+def check_modules(modules: List<&2, Loader.LoadedModule>) -> Checker.CheckResult:
+  Checker.check(modules)
+
+def emit_modules(modules: List<&2, Loader.LoadedModule>) -> JSEmit.EmitResult:
+  JSEmit.emit(modules)

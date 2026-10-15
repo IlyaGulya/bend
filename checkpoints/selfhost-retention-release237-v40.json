@@ -1,0 +1,59 @@
+{
+  "passed": true,
+  "diagnosticOnly": true,
+  "bootstrapAcceptance": false,
+  "purpose": "Retention after archival; not a new bootstrap acceptance",
+  "protectedInputs": 399,
+  "acceptedParserProtectedInputs": 289,
+  "rawBytesEqual": true,
+  "rows": [
+    {
+      "stage": "stageOne",
+      "mode": "saturated-export",
+      "result": "CheckSuccess",
+      "modules": "Nil"
+    },
+    {
+      "stage": "stageOne",
+      "mode": "bare",
+      "result": "CheckSuccess",
+      "modules": "Nil"
+    },
+    {
+      "stage": "stageOne",
+      "mode": "numeric-extra",
+      "result": "CheckSuccess",
+      "modules": "Nil"
+    },
+    {
+      "stage": "stageOne",
+      "mode": "object-extra",
+      "result": "CheckSuccess",
+      "modules": "Nil"
+    },
+    {
+      "stage": "stageTwo",
+      "mode": "saturated-export",
+      "result": "CheckSuccess",
+      "modules": "Nil"
+    },
+    {
+      "stage": "stageTwo",
+      "mode": "bare",
+      "result": "CheckSuccess",
+      "modules": "Nil"
+    },
+    {
+      "stage": "stageTwo",
+      "mode": "numeric-extra",
+      "result": "CheckSuccess",
+      "modules": "Nil"
+    },
+    {
+      "stage": "stageTwo",
+      "mode": "object-extra",
+      "result": "CheckSuccess",
+      "modules": "Nil"
+    }
+  ]
+}

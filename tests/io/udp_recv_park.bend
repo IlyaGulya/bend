@@ -1,5 +1,5 @@
 # io (io_udp_recv_park): a recv_from on a quiet socket parks its
-# computation and nothing else waits: main's three 100 ms ticks land
+# computation and nothing else waits: main's three 1 ms ticks land
 # while the receiver sits parked, then main's datagram wakes it and
 # it prints. The socket is non-blocking and the receive runs on the
 # loop's thread after the park, re-parking on a datagram that vanished
@@ -47,19 +47,22 @@ def ticks(n):
       IO.pure(Unit, Unit{})
     case 1n+p:
       do IO<Unit>:
-        u : Unit <- IO.sleep(100)
+        u : Unit <- IO.sleep(1)
         w : Unit <- IO.print("tick")
         ticks(p)
 
 law send_go:
-  for m: Socket & Result<&1, &1, (U32 & String), Unit>
+  for m: Socket & Result<&1, &1, (U32 & String) & String, Unit>
   IO(Socket)
 
 def send_go(m):
   (s, r) = m
-  do IO<Socket>:
-    u : Unit <- IO.pass(Unit, r)
-    return s
+  match r:
+    case Done{u}:
+      IO.pure(Socket, s)
+    case Fail{(error, data)}:
+      (code, message) = error
+      IO.die(Socket, code, message)
 
 law main_go:
   for a: Socket & U32
@@ -72,7 +75,7 @@ def main_go(a, b):
   do IO<U32>:
     u   : Unit <- IO.spawn(Unit, receive(s2))
     t   : Unit <- ticks(3n)
-    sm  : Socket & Result<&1, &1, (U32 & String), Unit> <-
+    sm  : Socket & Result<&1, &1, (U32 & String) & String, Unit> <-
       UDP.send_to(s1, "127.0.0.1", p2, "bend-park")
     s1b : Socket <- send_go(sm)
     x   : Unit <- Socket.close(s1b)
@@ -103,7 +106,7 @@ def udp_bind_any(tries, port):
     case 1n+t:
       rest = udp_bind_any(t, (port + 1 : U32))
       do IO<Socket & U32>:
-        r : Result<&1, &1, (U32 & String), Socket> <- UDP.bind(port)
+        r : Result<&1, &1, (U32 & String), Socket> <- UDP.bind("127.0.0.1", port)
         udp_retry(port, r, rest)
 
 law main:

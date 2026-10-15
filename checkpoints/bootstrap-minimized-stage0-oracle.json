@@ -1,0 +1,503 @@
+{
+  "rows": [
+    {
+      "name": "cons",
+      "source": "import Base\ndef f(x: Nat) -> Nat:\n  match x:\n    case +_ <> _: 0n\n",
+      "stage0Accepted": true,
+      "boundaries": [
+        {
+          "beg": 0,
+          "end": 11,
+          "kind": "import",
+          "key": "Base"
+        },
+        {
+          "beg": 12,
+          "end": 66,
+          "kind": "def",
+          "key": "f"
+        }
+      ],
+      "canonicalAccepted": false,
+      "canonicalHelper": "parse_body",
+      "canonicalRemainder": [
+        {
+          "kind": "lexer.SymbolToken",
+          "text": "<>",
+          "beg": 45,
+          "end": 47,
+          "line": 3,
+          "col": 13
+        },
+        {
+          "kind": "lexer.NameToken",
+          "text": "_",
+          "beg": 48,
+          "end": 49,
+          "line": 3,
+          "col": 16
+        },
+        {
+          "kind": "lexer.SymbolToken",
+          "text": ":",
+          "beg": 49,
+          "end": 50,
+          "line": 3,
+          "col": 17
+        },
+        {
+          "kind": "lexer.NumberToken",
+          "text": "0n",
+          "beg": 51,
+          "end": 53,
+          "line": 3,
+          "col": 19
+        },
+        {
+          "kind": "lexer.NewlineToken",
+          "text": "\n",
+          "beg": 53,
+          "end": 54,
+          "line": 3,
+          "col": 21
+        },
+        {
+          "kind": "lexer.EndToken",
+          "text": "",
+          "beg": 54,
+          "end": 54,
+          "line": 4,
+          "col": 1
+        }
+      ]
+    },
+    {
+      "name": "tuple",
+      "source": "import Base\ndef f(x: Nat) -> Nat:\n  match x:\n    case (a, b): a\n",
+      "stage0Accepted": true,
+      "boundaries": [
+        {
+          "beg": 0,
+          "end": 11,
+          "kind": "import",
+          "key": "Base"
+        },
+        {
+          "beg": 12,
+          "end": 64,
+          "kind": "def",
+          "key": "f"
+        }
+      ],
+      "canonicalAccepted": false,
+      "canonicalHelper": "parse_body",
+      "canonicalRemainder": [
+        {
+          "kind": "lexer.SymbolToken",
+          "text": "(",
+          "beg": 42,
+          "end": 43,
+          "line": 3,
+          "col": 10
+        },
+        {
+          "kind": "lexer.NameToken",
+          "text": "a",
+          "beg": 43,
+          "end": 44,
+          "line": 3,
+          "col": 11
+        },
+        {
+          "kind": "lexer.SymbolToken",
+          "text": ",",
+          "beg": 44,
+          "end": 45,
+          "line": 3,
+          "col": 12
+        },
+        {
+          "kind": "lexer.NameToken",
+          "text": "b",
+          "beg": 46,
+          "end": 47,
+          "line": 3,
+          "col": 14
+        },
+        {
+          "kind": "lexer.SymbolToken",
+          "text": ")",
+          "beg": 47,
+          "end": 48,
+          "line": 3,
+          "col": 15
+        },
+        {
+          "kind": "lexer.SymbolToken",
+          "text": ":",
+          "beg": 48,
+          "end": 49,
+          "line": 3,
+          "col": 16
+        },
+        {
+          "kind": "lexer.NameToken",
+          "text": "a",
+          "beg": 50,
+          "end": 51,
+          "line": 3,
+          "col": 18
+        },
+        {
+          "kind": "lexer.NewlineToken",
+          "text": "\n",
+          "beg": 51,
+          "end": 52,
+          "line": 3,
+          "col": 19
+        },
+        {
+          "kind": "lexer.EndToken",
+          "text": "",
+          "beg": 52,
+          "end": 52,
+          "line": 4,
+          "col": 1
+        }
+      ]
+    },
+    {
+      "name": "char",
+      "source": "import Base\ndef f(x: Char) -> Nat:\n  match x:\n    case 'x': 0n\n",
+      "stage0Accepted": true,
+      "boundaries": [
+        {
+          "beg": 0,
+          "end": 11,
+          "kind": "import",
+          "key": "Base"
+        },
+        {
+          "beg": 12,
+          "end": 63,
+          "kind": "def",
+          "key": "f"
+        }
+      ],
+      "canonicalAccepted": false,
+      "canonicalHelper": "parse_body",
+      "canonicalRemainder": [
+        {
+          "kind": "lexer.CharToken",
+          "text": "'x'",
+          "beg": 43,
+          "end": 46,
+          "line": 3,
+          "col": 10
+        },
+        {
+          "kind": "lexer.SymbolToken",
+          "text": ":",
+          "beg": 46,
+          "end": 47,
+          "line": 3,
+          "col": 13
+        },
+        {
+          "kind": "lexer.NumberToken",
+          "text": "0n",
+          "beg": 48,
+          "end": 50,
+          "line": 3,
+          "col": 15
+        },
+        {
+          "kind": "lexer.NewlineToken",
+          "text": "\n",
+          "beg": 50,
+          "end": 51,
+          "line": 3,
+          "col": 17
+        },
+        {
+          "kind": "lexer.EndToken",
+          "text": "",
+          "beg": 51,
+          "end": 51,
+          "line": 4,
+          "col": 1
+        }
+      ]
+    },
+    {
+      "name": "multi",
+      "source": "import Base\ndef f(x: Nat, y: Nat) -> Nat:\n  match x y:\n    case Zero{} Zero{}: 0n\n",
+      "stage0Accepted": true,
+      "boundaries": [
+        {
+          "beg": 0,
+          "end": 11,
+          "kind": "import",
+          "key": "Base"
+        },
+        {
+          "beg": 12,
+          "end": 82,
+          "kind": "def",
+          "key": "f"
+        }
+      ],
+      "canonicalAccepted": false,
+      "canonicalHelper": "parse_body",
+      "canonicalRemainder": [
+        {
+          "kind": "lexer.NameToken",
+          "text": "y",
+          "beg": 40,
+          "end": 41,
+          "line": 2,
+          "col": 11
+        },
+        {
+          "kind": "lexer.SymbolToken",
+          "text": ":",
+          "beg": 41,
+          "end": 42,
+          "line": 2,
+          "col": 12
+        },
+        {
+          "kind": "lexer.NewlineToken",
+          "text": "\n",
+          "beg": 42,
+          "end": 43,
+          "line": 2,
+          "col": 13
+        },
+        {
+          "kind": "lexer.NameToken",
+          "text": "case",
+          "beg": 47,
+          "end": 51,
+          "line": 3,
+          "col": 5
+        },
+        {
+          "kind": "lexer.NameToken",
+          "text": "Zero",
+          "beg": 52,
+          "end": 56,
+          "line": 3,
+          "col": 10
+        },
+        {
+          "kind": "lexer.SymbolToken",
+          "text": "{",
+          "beg": 56,
+          "end": 57,
+          "line": 3,
+          "col": 14
+        },
+        {
+          "kind": "lexer.SymbolToken",
+          "text": "}",
+          "beg": 57,
+          "end": 58,
+          "line": 3,
+          "col": 15
+        },
+        {
+          "kind": "lexer.NameToken",
+          "text": "Zero",
+          "beg": 59,
+          "end": 63,
+          "line": 3,
+          "col": 17
+        },
+        {
+          "kind": "lexer.SymbolToken",
+          "text": "{",
+          "beg": 63,
+          "end": 64,
+          "line": 3,
+          "col": 21
+        },
+        {
+          "kind": "lexer.SymbolToken",
+          "text": "}",
+          "beg": 64,
+          "end": 65,
+          "line": 3,
+          "col": 22
+        },
+        {
+          "kind": "lexer.SymbolToken",
+          "text": ":",
+          "beg": 65,
+          "end": 66,
+          "line": 3,
+          "col": 23
+        },
+        {
+          "kind": "lexer.NumberToken",
+          "text": "0n",
+          "beg": 67,
+          "end": 69,
+          "line": 3,
+          "col": 25
+        },
+        {
+          "kind": "lexer.NewlineToken",
+          "text": "\n",
+          "beg": 69,
+          "end": 70,
+          "line": 3,
+          "col": 27
+        },
+        {
+          "kind": "lexer.EndToken",
+          "text": "",
+          "beg": 70,
+          "end": 70,
+          "line": 4,
+          "col": 1
+        }
+      ]
+    },
+    {
+      "name": "indexed-erased",
+      "source": "import Base\ntype A<-p: Nat> is Data:\n  C{}\n",
+      "stage0Accepted": true,
+      "boundaries": [
+        {
+          "beg": 0,
+          "end": 11,
+          "kind": "import",
+          "key": "Base"
+        },
+        {
+          "beg": 12,
+          "end": 43,
+          "kind": "type",
+          "key": "A"
+        }
+      ],
+      "canonicalAccepted": false,
+      "canonicalHelper": "parse_type_decl",
+      "canonicalRemainder": [
+        {
+          "kind": "lexer.SymbolToken",
+          "text": "<-",
+          "beg": 6,
+          "end": 8,
+          "line": 1,
+          "col": 7
+        },
+        {
+          "kind": "lexer.NameToken",
+          "text": "p",
+          "beg": 8,
+          "end": 9,
+          "line": 1,
+          "col": 9
+        },
+        {
+          "kind": "lexer.SymbolToken",
+          "text": ":",
+          "beg": 9,
+          "end": 10,
+          "line": 1,
+          "col": 10
+        },
+        {
+          "kind": "lexer.NameToken",
+          "text": "Nat",
+          "beg": 11,
+          "end": 14,
+          "line": 1,
+          "col": 12
+        },
+        {
+          "kind": "lexer.SymbolToken",
+          "text": ">",
+          "beg": 14,
+          "end": 15,
+          "line": 1,
+          "col": 15
+        },
+        {
+          "kind": "lexer.NameToken",
+          "text": "is",
+          "beg": 16,
+          "end": 18,
+          "line": 1,
+          "col": 17
+        },
+        {
+          "kind": "lexer.NameToken",
+          "text": "Data",
+          "beg": 19,
+          "end": 23,
+          "line": 1,
+          "col": 20
+        },
+        {
+          "kind": "lexer.SymbolToken",
+          "text": ":",
+          "beg": 23,
+          "end": 24,
+          "line": 1,
+          "col": 24
+        },
+        {
+          "kind": "lexer.NewlineToken",
+          "text": "\n",
+          "beg": 24,
+          "end": 25,
+          "line": 1,
+          "col": 25
+        },
+        {
+          "kind": "lexer.NameToken",
+          "text": "C",
+          "beg": 27,
+          "end": 28,
+          "line": 2,
+          "col": 3
+        },
+        {
+          "kind": "lexer.SymbolToken",
+          "text": "{",
+          "beg": 28,
+          "end": 29,
+          "line": 2,
+          "col": 4
+        },
+        {
+          "kind": "lexer.SymbolToken",
+          "text": "}",
+          "beg": 29,
+          "end": 30,
+          "line": 2,
+          "col": 5
+        },
+        {
+          "kind": "lexer.NewlineToken",
+          "text": "\n",
+          "beg": 30,
+          "end": 31,
+          "line": 2,
+          "col": 6
+        },
+        {
+          "kind": "lexer.EndToken",
+          "text": "",
+          "beg": 31,
+          "end": 31,
+          "line": 3,
+          "col": 1
+        }
+      ]
+    }
+  ]
+}

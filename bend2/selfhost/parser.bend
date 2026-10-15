@@ -39,7 +39,7 @@ type PatternScanOutcome is Data:
 
 
 type FloatParts is Data:
-  FloatParts{mantissa: Nat, scale_negative: Bool, scale: Nat, valid: Bool}
+  FloatParts{mantissa: List<&2, Nat>, scale_negative: Bool, scale: Nat, valid: Bool}
 
 def with_term_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, use: Ast.SyntaxTerm -> List<&2, Lexer.Token> -> Bool -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match result:
@@ -270,27 +270,32 @@ def scan_symbol_mode(token: Lexer.Token, rest: List<&2, Lexer.Token>) -> SymbolC
       SymbolCombineUnmerged{token}
 
 def combine_symbols(tokens: List<&2, Lexer.Token>, mode: SymbolCombineMode) -> List<&2, Lexer.Token>:
+  combine_symbols_acc(tokens, mode, Nil{})
+
+# The reversed prefix bounds native and emitted-JS stacks independently of the
+# token count. Scanning and merged-token spans retain their original order.
+def combine_symbols_acc(tokens: List<&2, Lexer.Token>, mode: SymbolCombineMode, reversed: List<&2, Lexer.Token>) -> List<&2, Lexer.Token>:
   match tokens mode:
     case +token <> +rest SymbolCombineScan{}:
-      combine_symbols(rest, scan_symbol_mode(token, rest))
+      combine_symbols_acc(rest, scan_symbol_mode(token, rest), reversed)
     case Nil{} SymbolCombineScan{}:
-      Nil{}
+      List.reverse(&2, Lexer.Token, reversed)
     case +_ <> rest SymbolCombineMerged{merged, 1n}:
-      merged <> combine_symbols(rest, SymbolCombineScan{})
+      combine_symbols_acc(rest, SymbolCombineScan{}, merged <> reversed)
     case +_ <> rest SymbolCombineMerged{merged, 2n}:
-      combine_symbols(rest, SymbolCombineSkip{merged})
+      combine_symbols_acc(rest, SymbolCombineSkip{merged}, reversed)
     case +_ <> rest SymbolCombineMerged{merged, _}:
-      merged <> combine_symbols(rest, SymbolCombineScan{})
+      combine_symbols_acc(rest, SymbolCombineScan{}, merged <> reversed)
     case Nil{} SymbolCombineMerged{merged, _}:
-      merged <> Nil{}
+      List.reverse(&2, Lexer.Token, merged <> reversed)
     case +next <> +rest SymbolCombineUnmerged{token}:
-      token <> combine_symbols(rest, scan_symbol_mode(next, rest))
+      combine_symbols_acc(rest, scan_symbol_mode(next, rest), token <> reversed)
     case Nil{} SymbolCombineUnmerged{token}:
-      token <> Nil{}
+      List.reverse(&2, Lexer.Token, token <> reversed)
     case +_ <> rest SymbolCombineSkip{merged}:
-      merged <> combine_symbols(rest, SymbolCombineScan{})
+      combine_symbols_acc(rest, SymbolCombineScan{}, merged <> reversed)
     case Nil{} SymbolCombineSkip{merged}:
-      merged <> Nil{}
+      List.reverse(&2, Lexer.Token, merged <> reversed)
 
 
 def skip_lines(tokens: List<&2, Lexer.Token>) -> List<&2, Lexer.Token>:
@@ -309,7 +314,7 @@ def lookup_result(+key: String, rest: List<&2, Scope>, +depth: Nat) -> Maybe<&2,
     case +entry <> after:
       match entry:
         case Scope{ found, index}:
-          Bool.pick(Maybe<&2, Nat>, String.eq(key, found), Some{depth - index - 1n}, lookup_result(key, after, depth))
+          Bool.pick(Maybe<&2, Nat>, String.eq(key, found), Some{((depth - index : Nat) - 1n : Nat)}, lookup_result(key, after, depth))
     case Nil{}:
       None{}
 
@@ -318,7 +323,7 @@ def lookup(+key: String, scope: List<&2, Scope>, +depth: Nat) -> Maybe<&2, Nat>:
     case +entry <> rest:
       match entry:
         case Scope{ found, index}:
-          Bool.pick(Maybe<&2, Nat>, String.eq(key, found), Some{depth - index - 1n}, lookup_result(key, rest, depth))
+          Bool.pick(Maybe<&2, Nat>, String.eq(key, found), Some{((depth - index : Nat) - 1n : Nat)}, lookup_result(key, rest, depth))
     case Nil{}:
       None{}
 
@@ -404,10 +409,12 @@ def do_has_more(tokens: List<&2, Lexer.Token>, col: Nat) -> Bool:
     case Nil{}:
       False{}
 
-def string_chars_cons_result(result: Ast.SyntaxTerm & Bool, chr: Ast.SyntaxTerm, file: String, beg: Nat, end: Nat) -> Ast.SyntaxTerm & Bool:
+def string_chars_cons_result(result: Ast.SyntaxTerm & Bool, chr: U32, +file: String, +beg: Nat, +end: Nat) -> Ast.SyntaxTerm & Bool:
   match result:
+    case (Ast.TermString{chars, names, literal_span}, ok):
+      (Ast.TermString{chr <> chars, names, literal_span}, ok)
     case (next, ok):
-      (Ast.TermCtr{"SCon", [chr, next], span(file, beg, end)}, ok)
+      (Ast.TermCtr{"SCon", [Ast.string_character(chr, Ast.string_literal_names(), span(file, beg, end)), next], span(file, beg, end)}, ok)
 
 def parse_char_literal_plain_tail(tail: List<&2, Char>, term: Ast.SyntaxTerm, file: String, beg: Nat, end: Nat, rest: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match tail:
@@ -447,17 +454,17 @@ def escape_code(char: Char) -> Maybe<&2, Nat>:
 
 def unicode_hex_digit_above_zero(is_above: Bool, code: Nat) -> Maybe<&2, Nat>:
   match is_above:
-    case True{}: Some{code - 48n}
+    case True{}: Some{(code - 48n : Nat)}
     case False{}: None{}
 
 def unicode_hex_digit_above_a(is_above: Bool, code: Nat) -> Maybe<&2, Nat>:
   match is_above:
-    case True{}: Some{code - 87n}
+    case True{}: Some{(code - 87n : Nat)}
     case False{}: None{}
 
 def unicode_hex_digit_above_A(is_above: Bool, code: Nat) -> Maybe<&2, Nat>:
   match is_above:
-    case True{}: Some{code - 55n}
+    case True{}: Some{(code - 55n : Nat)}
     case False{}: None{}
 
 def unicode_hex_digit_below_A(is_below: Bool, +code: Nat) -> Maybe<&2, Nat>:
@@ -489,7 +496,7 @@ def unicode_hex_digit(char: Char) -> Maybe<&2, Nat>:
 
 def float_decimal_above_zero(is_above: Bool, code: Nat) -> Maybe<&2, Nat>:
   match is_above:
-    case True{}: Some{code - 48n}
+    case True{}: Some{(code - 48n : Nat)}
     case False{}: None{}
 
 def float_decimal_below_ten(is_below: Bool, +code: Nat) -> Maybe<&2, Nat>:
@@ -502,17 +509,86 @@ def float_decimal_below_ten(is_below: Bool, +code: Nat) -> Maybe<&2, Nat>:
 def float_decimal_digit(+code: Nat) -> Maybe<&2, Nat>:
   float_decimal_below_ten(Nat.is_lt(code, 58n), code)
 
-def float_scale_positive(exponent_smaller: Bool, mantissa: Nat, fractional: Nat, exponent: Nat) -> FloatParts:
+# Float integers are canonical little-endian base-2^24 limbs; zero is Nil.
+# Decimal multiply-add stays below 10 * 2^24, independent of literal size.
+# Neither a long mantissa nor its decimal scale needs a Nat above 2^48-1.
+def float_nat_mul_small(value: List<&2, Nat>, +factor: Nat, carry: Nat) -> List<&2, Nat>:
+  match value:
+    case Nil{}:
+      match carry:
+        case 0n: Nil{}
+        case _: [carry]
+    case limb <> rest:
+      +scaled = ((limb * factor : Nat) + carry : Nat)
+      Nat.mod(scaled, 16777216n) <> float_nat_mul_small(rest, factor, Nat.div(scaled, 16777216n))
+
+def float_nat_scale(scale: Nat, value: List<&2, Nat>) -> List<&2, Nat>:
+  match scale:
+    case 0n: value
+    case 1n+rest:
+      float_nat_scale(rest, float_nat_mul_small(value, 10n, 0n))
+
+def float_nat_cmp_limb(order: Cmp, a: Nat, b: Nat) -> Cmp:
+  match order:
+    case EQ{}: Nat.cmp(a, b)
+    case LT{}: LT{}
+    case GT{}: GT{}
+
+def float_nat_cmp(a: List<&2, Nat>, b: List<&2, Nat>) -> Cmp:
+  match a b:
+    case Nil{} Nil{}: EQ{}
+    case Nil{} _ <> _: LT{}
+    case _ <> _ Nil{}: GT{}
+    case a_limb <> a_rest b_limb <> b_rest:
+      float_nat_cmp_limb(float_nat_cmp(a_rest, b_rest), a_limb, b_limb)
+
+def float_nat_cons(rest: List<&2, Nat>, limb: Nat) -> List<&2, Nat>:
+  match rest:
+    case Nil{}:
+      match limb:
+        case 0n: Nil{}
+        case _: [limb]
+    case _:
+      limb <> rest
+
+def float_nat_sub_limb(underflows: Bool, limb: Nat, remove: Nat) -> Nat:
+  match underflows:
+    case True{}:
+      ((limb + 16777216n : Nat) - remove : Nat)
+    case False{}:
+      (limb - remove : Nat)
+
+# Subtraction callers establish a >= b before passing a borrow.
+def float_nat_sub_go(a: List<&2, Nat>, b: List<&2, Nat>, +borrow: Nat) -> List<&2, Nat>:
+  match a b:
+    case Nil{} Nil{}: Nil{}
+    case Nil{} _ <> _: Nil{}
+    case +limb <> a_rest Nil{}:
+      +underflows = Nat.is_lt(limb, borrow)
+      next = float_nat_sub_limb(underflows, limb, borrow)
+      next_borrow = U32.to_nat(Bool.to_u32(underflows))
+      float_nat_cons(float_nat_sub_go(a_rest, Nil{}, next_borrow), next)
+    case +limb <> a_rest b_limb <> b_rest:
+      +remove = (b_limb + borrow : Nat)
+      +underflows = Nat.is_lt(limb, remove)
+      next = float_nat_sub_limb(underflows, limb, remove)
+      next_borrow = U32.to_nat(Bool.to_u32(underflows))
+      float_nat_cons(float_nat_sub_go(a_rest, b_rest, next_borrow), next)
+
+def float_nat_sub(a: List<&2, Nat>, b: List<&2, Nat>) -> List<&2, Nat>:
+  float_nat_sub_go(a, b, 0n)
+
+def float_scale_positive(exponent_smaller: Bool, mantissa: List<&2, Nat>, fractional: Nat, exponent: Nat) -> FloatParts:
   match exponent_smaller:
     case True{}:
-      FloatParts{mantissa,  True{},  fractional - exponent,  True{}}
+      FloatParts{mantissa,  True{},  (fractional - exponent : Nat),  True{}}
     case False{}:
-      FloatParts{mantissa,  False{},  exponent - fractional,  True{}}
+      FloatParts{mantissa,  False{},  (exponent - fractional : Nat),  True{}}
 
-def float_scale(mantissa: Nat, +fractional: Nat, +exponent: Nat, exponent_negative: Bool) -> FloatParts:
+def float_scale(mantissa: List<&2, Nat>, +fractional: Nat, +exponent: Nat, exponent_negative: Bool) -> FloatParts:
   match exponent_negative:
     case True{}:
-      FloatParts{mantissa,  True{},  exponent + fractional,  True{}}
+      FloatParts{mantissa,  True{},  (exponent + fractional : Nat),  True{}}
     case False{}:
       float_scale_positive(Nat.is_lt(exponent, fractional), mantissa, fractional, exponent)
 
@@ -539,7 +615,7 @@ def parse_unicode_digits(+chars: List<&2, Char>, acc: Nat, code: Nat, result: Ma
         case _:
           match result:
             case Some{digit}:
-              parse_unicode_digits(rest, acc * 16n + digit, parse_unicode_digit_code(rest), parse_unicode_digit_result(rest))
+              parse_unicode_digits(rest, ((acc * 16n : Nat) + digit : Nat), parse_unicode_digit_code(rest), parse_unicode_digit_result(rest))
             case None{}:
               ((0n, chars), False{})
     case Nil{}:
@@ -559,7 +635,7 @@ def parse_unicode_escape(chars: List<&2, Char>, acc: Nat) -> (Nat & List<&2, Cha
     case Nil{}:
       ((0n, Nil{}), False{})
 
-def scan_float_end(mantissa: Nat, fractional: Nat, exponent: Nat, exponent_negative: Bool, valid: Bool, mantissa_digit: Bool, dot_seen: Bool, in_exponent: Bool, exponent_digit: Bool) -> FloatParts:
+def scan_float_end(mantissa: List<&2, Nat>, fractional: Nat, exponent: Nat, exponent_negative: Bool, valid: Bool, mantissa_digit: Bool, dot_seen: Bool, in_exponent: Bool, exponent_digit: Bool) -> FloatParts:
   match valid mantissa_digit dot_seen in_exponent exponent_digit:
     case True{} True{} True{} False{} _:
       float_scale(mantissa, fractional, exponent, exponent_negative)
@@ -567,47 +643,44 @@ def scan_float_end(mantissa: Nat, fractional: Nat, exponent: Nat, exponent_negat
       float_scale(mantissa, fractional, exponent, exponent_negative)
     case _ _ _ _ _:
       FloatParts{mantissa, False{}, 0n, False{}}
-def encode_float_subnormal_limit(is_below_limit: Bool, rounded: Nat) -> Nat & Bool:
-  match is_below_limit:
-    case True{}:
-      (rounded, True{})
-    case False{}:
-      (8388608n, True{})
-
 def round_float_ratio_parity(remainder: Nat, quotient: Nat) -> Nat:
   match remainder:
     case 0n: quotient
-    case _: quotient + 1n
+    case _: (quotient + 1n : Nat)
 
-def round_float_ratio_above(is_above: Bool, +quotient: Nat, twice: Nat, denominator: Nat) -> Nat:
-  match is_above:
-    case True{}:
-      quotient + 1n
-    case False{}:
-      round_float_ratio_parity(Nat.mod(quotient, 2n), quotient)
+def round_float_ratio_cmp(order: Cmp, +quotient: Nat) -> Nat:
+  match order:
+    case LT{}: quotient
+    case EQ{}: round_float_ratio_parity(Nat.mod(quotient, 2n), quotient)
+    case GT{}: (quotient + 1n : Nat)
 
-def round_float_ratio_below(is_below: Bool, quotient: Nat, +twice: Nat, +denominator: Nat) -> Nat:
-  match is_below:
-    case True{}:
-      quotient
-    case False{}:
-      round_float_ratio_above(Nat.is_lt(denominator, twice), quotient, twice, denominator)
+def round_float_ratio(quotient: Nat, +remainder: List<&2, Nat>, denominator: List<&2, Nat>) -> Nat:
+  round_float_ratio_cmp(float_nat_cmp(remainder, float_nat_sub(denominator, remainder)), quotient)
 
-def round_float_ratio_parts(parts: Nat & Nat, +denominator: Nat) -> Nat:
-  match parts:
-    case (quotient, remainder):
-      +twice = remainder * 2n
-      round_float_ratio_below(Nat.is_lt(twice, denominator), quotient, twice, denominator)
+# Shift is the first binder and strictly decreases before any accumulator changes.
+# Its exact remainder stays in limbs until round-to-nearest, ties-to-even.
+def round_float_scaled_loop(shift: Nat, is_below: Bool, +quotient: Nat, remainder: List<&2, Nat>, +denominator: List<&2, Nat>, doubled: List<&2, Nat>) -> Nat:
+  match shift:
+    case 0n:
+      round_float_ratio(quotient, remainder, denominator)
+    case 1n+rest:
+      match is_below:
+        case True{}:
+          +next = doubled
+          +next_doubled = float_nat_mul_small(next, 2n, 0n)
+          round_float_scaled_loop(rest, Cmp.is_lt(float_nat_cmp(next_doubled, denominator)), (quotient * 2n : Nat), next, denominator, next_doubled)
+        case False{}:
+          +next = float_nat_sub(doubled, denominator)
+          +next_doubled = float_nat_mul_small(next, 2n, 0n)
+          round_float_scaled_loop(rest, Cmp.is_lt(float_nat_cmp(next_doubled, denominator)), ((quotient * 2n : Nat) + 1n : Nat), next, denominator, next_doubled)
 
-def round_float_ratio(numerator: Nat, +denominator: Nat) -> Nat:
-  round_float_ratio_parts(Nat.divmod(numerator, denominator), denominator)
-def round_float_scaled(numerator: Nat, denominator: Nat, shift: Nat) -> Nat:
-  scaled = numerator * Nat.pow(2n, shift)
-  round_float_ratio(scaled, denominator)
+def round_float_scaled_go(shift: Nat, quotient: Nat, +remainder: List<&2, Nat>, +denominator: List<&2, Nat>) -> Nat:
+  +doubled = float_nat_mul_small(remainder, 2n, 0n)
+  round_float_scaled_loop(shift, Cmp.is_lt(float_nat_cmp(doubled, denominator)), quotient, remainder, denominator, doubled)
 
-def encode_float_subnormal(numerator: Nat, denominator: Nat) -> Nat & Bool:
-  +rounded = round_float_scaled(numerator, denominator, 149n)
-  encode_float_subnormal_limit(Nat.is_lt(rounded, 8388608n), rounded)
+# The negative exponent search has already multiplied the ratio by 2^126.
+def encode_float_subnormal(numerator: List<&2, Nat>, denominator: List<&2, Nat>) -> Nat & Bool:
+  (round_float_scaled_go(23n, 0n, numerator, denominator), True{})
 
 def nat_succ_prefix(+file: String, count: Nat, term: Ast.SyntaxTerm, +beg: Nat, +end: Nat) -> Ast.SyntaxTerm:
   match count:
@@ -619,13 +692,13 @@ def nat_succ_prefix(+file: String, count: Nat, term: Ast.SyntaxTerm, +beg: Nat, 
 def float_exponent_bits(negative_exponent: Bool, exponent: Nat) -> Nat:
   match negative_exponent:
     case True{}:
-      127n - exponent
+      (127n - exponent : Nat)
     case False{}:
-      127n + exponent
+      (127n + exponent : Nat)
 
 def encode_float_normal_bits_exact(significand: Nat, negative_exponent: Bool, exponent: Nat) -> Nat & Bool:
   exponent_bits = float_exponent_bits(negative_exponent, exponent)
-  bits = exponent_bits * 8388608n + significand - 8388608n
+  bits = (((exponent_bits * 8388608n : Nat) + significand : Nat) - 8388608n : Nat)
   (bits, True{})
 
 def encode_float_normal_rounding_limit(is_below_limit: Bool, significand: Nat, negative_exponent: Bool, exponent: Nat) -> Nat & Bool:
@@ -635,74 +708,74 @@ def encode_float_normal_rounding_limit(is_below_limit: Bool, significand: Nat, n
     case False{}:
       match negative_exponent:
         case True{}:
-          exponent_bits = 128n - exponent
-          (exponent_bits * 8388608n, True{})
+          exponent_bits = (128n - exponent : Nat)
+          ((exponent_bits * 8388608n : Nat), True{})
         case False{}:
           match exponent:
             case 127n: (0n, False{})
-            case _: ((exponent + 128n) * 8388608n, True{})
+            case _: ((((exponent + 128n : Nat)) * 8388608n : Nat), True{})
 
 type FloatScanStep is Data:
-  FloatScanContinue{mantissa: Nat, fractional: Nat, dot_seen: Bool, in_exponent: Bool, exponent: Nat, exponent_negative: Bool, exponent_sign: Bool, mantissa_digit: Bool, exponent_digit: Bool, valid: Bool}
+  FloatScanContinue{mantissa: List<&2, Nat>, fractional: Nat, dot_seen: Bool, in_exponent: Bool, exponent: Nat, exponent_negative: Bool, exponent_sign: Bool, mantissa_digit: Bool, exponent_digit: Bool, valid: Bool}
   FloatScanDone{parts: FloatParts}
 
-def scan_float_dot(in_exponent: Bool, dot_seen: Bool, mantissa: Nat, fractional: Nat, exponent: Nat, exponent_negative: Bool, exponent_sign: Bool, mantissa_digit: Bool, exponent_digit: Bool, valid: Bool) -> FloatScanStep:
+def scan_float_dot(in_exponent: Bool, dot_seen: Bool, mantissa: List<&2, Nat>, fractional: Nat, exponent: Nat, exponent_negative: Bool, exponent_sign: Bool, mantissa_digit: Bool, exponent_digit: Bool, valid: Bool) -> FloatScanStep:
   match in_exponent dot_seen:
     case False{} False{}:
       FloatScanContinue{mantissa, fractional, True{}, False{}, exponent, exponent_negative, exponent_sign, mantissa_digit, exponent_digit, valid}
     case _ _:
       FloatScanDone{FloatParts{mantissa, False{}, 0n, False{}}}
 
-def scan_float_sign(is_negative: Bool, in_exponent: Bool, exponent_digit: Bool, exponent_sign: Bool, mantissa: Nat, fractional: Nat, dot_seen: Bool, exponent: Nat, mantissa_digit: Bool, valid: Bool) -> FloatScanStep:
+def scan_float_sign(is_negative: Bool, in_exponent: Bool, exponent_digit: Bool, exponent_sign: Bool, mantissa: List<&2, Nat>, fractional: Nat, dot_seen: Bool, exponent: Nat, mantissa_digit: Bool, valid: Bool) -> FloatScanStep:
   match in_exponent exponent_digit exponent_sign:
     case True{} False{} False{}:
       FloatScanContinue{mantissa, fractional, dot_seen, True{}, exponent, is_negative, True{}, mantissa_digit, exponent_digit, valid}
     case _ _ _:
       FloatScanDone{FloatParts{mantissa, False{}, 0n, False{}}}
 
-def scan_float_mantissa_digit(digit: Nat, dot_seen: Bool, mantissa: Nat, fractional: Nat, exponent: Nat, exponent_negative: Bool, exponent_sign: Bool, exponent_digit: Bool, valid: Bool) -> FloatScanStep:
+def scan_float_mantissa_digit(digit: Nat, dot_seen: Bool, mantissa: List<&2, Nat>, fractional: Nat, exponent: Nat, exponent_negative: Bool, exponent_sign: Bool, exponent_digit: Bool, valid: Bool) -> FloatScanStep:
   match dot_seen:
     case True{}:
-      FloatScanContinue{mantissa * 10n + digit, fractional + 1n, dot_seen, False{}, exponent, exponent_negative, exponent_sign, True{}, exponent_digit, valid}
+      FloatScanContinue{float_nat_mul_small(mantissa, 10n, digit), (fractional + 1n : Nat), dot_seen, False{}, exponent, exponent_negative, exponent_sign, True{}, exponent_digit, valid}
     case False{}:
-      FloatScanContinue{mantissa * 10n + digit, fractional, dot_seen, False{}, exponent, exponent_negative, exponent_sign, True{}, exponent_digit, valid}
+      FloatScanContinue{float_nat_mul_small(mantissa, 10n, digit), fractional, dot_seen, False{}, exponent, exponent_negative, exponent_sign, True{}, exponent_digit, valid}
 
-def scan_float_valid_digit(in_exponent: Bool, digit: Nat, dot_seen: Bool, mantissa: Nat, fractional: Nat, exponent: Nat, exponent_negative: Bool, exponent_sign: Bool, mantissa_digit: Bool, exponent_digit: Bool, valid: Bool) -> FloatScanStep:
+def scan_float_valid_digit(in_exponent: Bool, digit: Nat, dot_seen: Bool, mantissa: List<&2, Nat>, fractional: Nat, exponent: Nat, exponent_negative: Bool, exponent_sign: Bool, mantissa_digit: Bool, exponent_digit: Bool, valid: Bool) -> FloatScanStep:
   match in_exponent:
     case True{}:
-      FloatScanContinue{mantissa, fractional, dot_seen, True{}, exponent * 10n + digit, exponent_negative, exponent_sign, mantissa_digit, True{}, valid}
+      FloatScanContinue{mantissa, fractional, dot_seen, True{}, ((exponent * 10n : Nat) + digit : Nat), exponent_negative, exponent_sign, mantissa_digit, True{}, valid}
     case False{}:
       scan_float_mantissa_digit(digit, dot_seen, mantissa, fractional, exponent, exponent_negative, exponent_sign, exponent_digit, valid)
 
-def scan_float_digit(result: Maybe<&2, Nat>, in_exponent: Bool, dot_seen: Bool, mantissa: Nat, fractional: Nat, exponent: Nat, exponent_negative: Bool, exponent_sign: Bool, mantissa_digit: Bool, exponent_digit: Bool, valid: Bool) -> FloatScanStep:
+def scan_float_digit(result: Maybe<&2, Nat>, in_exponent: Bool, dot_seen: Bool, mantissa: List<&2, Nat>, fractional: Nat, exponent: Nat, exponent_negative: Bool, exponent_sign: Bool, mantissa_digit: Bool, exponent_digit: Bool, valid: Bool) -> FloatScanStep:
   match result:
     case Some{digit}:
       scan_float_valid_digit(in_exponent, digit, dot_seen, mantissa, fractional, exponent, exponent_negative, exponent_sign, mantissa_digit, exponent_digit, valid)
     case None{}:
       FloatScanDone{FloatParts{mantissa, False{}, 0n, False{}}}
 
-def scan_float_exponent_mantissa(mantissa_digit: Bool, mantissa: Nat, fractional: Nat, dot_seen: Bool, exponent: Nat, exponent_negative: Bool, exponent_sign: Bool, valid: Bool) -> FloatScanStep:
+def scan_float_exponent_mantissa(mantissa_digit: Bool, mantissa: List<&2, Nat>, fractional: Nat, dot_seen: Bool, exponent: Nat, exponent_negative: Bool, exponent_sign: Bool, valid: Bool) -> FloatScanStep:
   match mantissa_digit:
     case True{}:
       FloatScanContinue{mantissa, fractional, dot_seen, True{}, exponent, exponent_negative, False{}, True{}, False{}, valid}
     case False{}:
       FloatScanDone{FloatParts{mantissa, False{}, 0n, False{}}}
 
-def scan_float_exponent_dot(dot_seen: Bool, mantissa_digit: Bool, mantissa: Nat, fractional: Nat, exponent: Nat, exponent_negative: Bool, exponent_sign: Bool, valid: Bool) -> FloatScanStep:
+def scan_float_exponent_dot(dot_seen: Bool, mantissa_digit: Bool, mantissa: List<&2, Nat>, fractional: Nat, exponent: Nat, exponent_negative: Bool, exponent_sign: Bool, valid: Bool) -> FloatScanStep:
   match dot_seen:
     case True{}:
       scan_float_exponent_mantissa(mantissa_digit, mantissa, fractional, dot_seen, exponent, exponent_negative, exponent_sign, valid)
     case False{}:
       FloatScanDone{FloatParts{mantissa, False{}, 0n, False{}}}
 
-def scan_float_exponent(in_exponent: Bool, dot_seen: Bool, mantissa_digit: Bool, mantissa: Nat, fractional: Nat, exponent: Nat, exponent_negative: Bool, exponent_sign: Bool, valid: Bool) -> FloatScanStep:
+def scan_float_exponent(in_exponent: Bool, dot_seen: Bool, mantissa_digit: Bool, mantissa: List<&2, Nat>, fractional: Nat, exponent: Nat, exponent_negative: Bool, exponent_sign: Bool, valid: Bool) -> FloatScanStep:
   match in_exponent:
     case False{}:
       scan_float_exponent_dot(dot_seen, mantissa_digit, mantissa, fractional, exponent, exponent_negative, exponent_sign, valid)
     case True{}:
       FloatScanDone{FloatParts{mantissa, False{}, 0n, False{}}}
 
-def scan_float_code(+code: Nat, mantissa: Nat, fractional: Nat, dot_seen: Bool, in_exponent: Bool, exponent: Nat, exponent_negative: Bool, exponent_sign: Bool, mantissa_digit: Bool, exponent_digit: Bool, valid: Bool) -> FloatScanStep:
+def scan_float_code(+code: Nat, mantissa: List<&2, Nat>, fractional: Nat, dot_seen: Bool, in_exponent: Bool, exponent: Nat, exponent_negative: Bool, exponent_sign: Bool, mantissa_digit: Bool, exponent_digit: Bool, valid: Bool) -> FloatScanStep:
   match code:
     case 46n:
       scan_float_dot(in_exponent, dot_seen, mantissa, fractional, exponent, exponent_negative, exponent_sign, mantissa_digit, exponent_digit, valid)
@@ -717,7 +790,7 @@ def scan_float_code(+code: Nat, mantissa: Nat, fractional: Nat, dot_seen: Bool, 
     case _:
       scan_float_digit(float_decimal_digit(code), in_exponent, dot_seen, mantissa, fractional, exponent, exponent_negative, exponent_sign, mantissa_digit, exponent_digit, valid)
 
-def scan_float_step(chars: List<&2, Char>, mantissa: Nat, fractional: Nat, dot_seen: Bool, in_exponent: Bool, exponent: Nat, exponent_negative: Bool, exponent_sign: Bool, mantissa_digit: Bool, exponent_digit: Bool, valid: Bool) -> FloatScanStep:
+def scan_float_step(chars: List<&2, Char>, mantissa: List<&2, Nat>, fractional: Nat, dot_seen: Bool, in_exponent: Bool, exponent: Nat, exponent_negative: Bool, exponent_sign: Bool, mantissa_digit: Bool, exponent_digit: Bool, valid: Bool) -> FloatScanStep:
   match chars:
     case Nil{}:
       FloatScanDone{scan_float_end(mantissa, fractional, exponent, exponent_negative, valid, mantissa_digit, dot_seen, in_exponent, exponent_digit)}
@@ -739,45 +812,14 @@ def scan_float_go(chars: List<&2, Char>, step: FloatScanStep) -> FloatParts:
         case FloatScanContinue{+mantissa, +fractional, +dot_seen, +in_exponent, +exponent, +exponent_negative, +exponent_sign, +mantissa_digit, +exponent_digit, +valid}:
           scan_float_go(rest, scan_float_step(rest, mantissa, fractional, dot_seen, in_exponent, exponent, exponent_negative, exponent_sign, mantissa_digit, exponent_digit, valid))
 
-def scan_float(+chars: List<&2, Char>, mantissa: Nat, fractional: Nat, dot_seen: Bool, in_exponent: Bool, exponent: Nat, exponent_negative: Bool, exponent_sign: Bool, mantissa_digit: Bool, exponent_digit: Bool, valid: Bool) -> FloatParts:
+def scan_float(+chars: List<&2, Char>, mantissa: List<&2, Nat>, fractional: Nat, dot_seen: Bool, in_exponent: Bool, exponent: Nat, exponent_negative: Bool, exponent_sign: Bool, mantissa_digit: Bool, exponent_digit: Bool, valid: Bool) -> FloatParts:
   scan_float_go(chars, scan_float_step(chars, mantissa, fractional, dot_seen, in_exponent, exponent, exponent_negative, exponent_sign, mantissa_digit, exponent_digit, valid))
 def encode_float_normal_bits(+significand: Nat, negative_exponent: Bool, exponent: Nat) -> Nat & Bool:
   encode_float_normal_rounding_limit(Nat.is_lt(significand, 16777216n), significand, negative_exponent, exponent)
 
-def encode_float_normal_negative(is_too_large: Bool, numerator: Nat, denominator: Nat, +exponent: Nat) -> Nat & Bool:
-  match is_too_large:
-    case True{}:
-      encode_float_subnormal(numerator, denominator)
-    case False{}:
-      shift = 23n + exponent
-      rounded = round_float_scaled(numerator, denominator, shift)
-      encode_float_normal_bits(rounded, True{}, exponent)
-
-def encode_float_normal_positive_small(is_small: Bool, numerator: Nat, denominator: Nat, +exponent: Nat) -> Nat & Bool:
-  match is_small:
-    case True{}:
-      shift = 23n - exponent
-      rounded = round_float_scaled(numerator, denominator, shift)
-      encode_float_normal_bits(rounded, False{}, exponent)
-    case False{}:
-      shift = exponent - 23n
-      scaled_denominator = denominator * Nat.pow(2n, shift)
-      rounded = round_float_scaled(numerator, scaled_denominator, 0n)
-      encode_float_normal_bits(rounded, False{}, exponent)
-
-def encode_float_normal_positive(is_too_large: Bool, numerator: Nat, denominator: Nat, +exponent: Nat) -> Nat & Bool:
-  match is_too_large:
-    case True{}:
-      (0n, False{})
-    case False{}:
-      encode_float_normal_positive_small(Nat.is_lt(exponent, 23n), numerator, denominator, exponent)
-
-def encode_float_normal(numerator: Nat, denominator: Nat, negative_exponent: Bool, +exponent: Nat) -> Nat & Bool:
-  match negative_exponent:
-    case True{}:
-      encode_float_normal_negative(Nat.is_lt(126n, exponent), numerator, denominator, exponent)
-    case False{}:
-      encode_float_normal_positive(Nat.is_lt(127n, exponent), numerator, denominator, exponent)
+def encode_float_normal(numerator: List<&2, Nat>, +denominator: List<&2, Nat>, negative_exponent: Bool, exponent: Nat) -> Nat & Bool:
+  rounded = round_float_scaled_go(23n, 1n, float_nat_sub(numerator, denominator), denominator)
+  encode_float_normal_bits(rounded, negative_exponent, exponent)
 
 def has_nat_suffix_reversed(reversed: List<&2, Char>) -> Bool:
   match reversed:
@@ -793,65 +835,59 @@ def drop_nat_suffix_reversed(reversed: List<&2, Char>, text: String) -> String:
     case Nil{}:
       text
 
-def encode_float_positive_go(remaining: Nat, is_below: Bool, original_numerator: Nat, original_denominator: Nat, +test_numerator: Nat, +test_denominator: Nat, exponent: Nat) -> Nat & Bool:
-  match remaining:
-    case 0n:
+# Exponent budgets are explicit decreasing first binders, not mutual recursion.
+def encode_float_positive_go(remaining: Nat, is_below: Bool, +numerator: List<&2, Nat>, denominator: List<&2, Nat>, +twice_denominator: List<&2, Nat>, +exponent: Nat) -> Nat & Bool:
+  match remaining is_below:
+    case _ True{}:
+      encode_float_normal(numerator, denominator, False{}, exponent)
+    case 0n False{}:
       (0n, False{})
-    case 1n+rest:
-      match is_below:
-        case True{}:
-          encode_float_normal(original_numerator, original_denominator, False{}, exponent)
-        case False{}:
-          encode_float_positive_go(rest, Nat.is_lt(test_numerator, test_denominator * 4n), original_numerator, original_denominator, test_numerator, test_denominator * 2n, exponent + 1n)
+    case 1n+rest False{}:
+      +next_twice = float_nat_mul_small(twice_denominator, 2n, 0n)
+      encode_float_positive_go(rest, Cmp.is_lt(float_nat_cmp(numerator, next_twice)), numerator, twice_denominator, next_twice, (exponent + 1n : Nat))
 
-def encode_float_positive(original_numerator: Nat, original_denominator: Nat, +test_numerator: Nat, +test_denominator: Nat, +exponent: Nat) -> Nat & Bool:
-  encode_float_positive_go(Nat.sub(128n, exponent), Nat.is_lt(test_numerator, test_denominator * 2n), original_numerator, original_denominator, test_numerator, test_denominator, exponent)
+def encode_float_positive(+numerator: List<&2, Nat>, +denominator: List<&2, Nat>, +exponent: Nat) -> Nat & Bool:
+  +twice_denominator = float_nat_mul_small(denominator, 2n, 0n)
+  encode_float_positive_go((127n - exponent : Nat), Cmp.is_lt(float_nat_cmp(numerator, twice_denominator)), numerator, denominator, twice_denominator, exponent)
 
-def encode_float_negative_go(remaining: Nat, +is_below: Bool, original_numerator: Nat, original_denominator: Nat, test_numerator: Nat, +test_denominator: Nat, exponent: Nat) -> Nat & Bool:
-  match remaining:
-    case 0n:
-      match is_below:
-        case False{}:
-          encode_float_normal(original_numerator, original_denominator, True{}, exponent)
-        case True{}:
-          encode_float_subnormal(original_numerator, original_denominator)
-    case 1n+rest:
-      match is_below:
-        case False{}:
-          encode_float_normal(original_numerator, original_denominator, True{}, exponent)
-        case True{}:
-          +next_numerator = test_numerator * 2n
-          next_below = Nat.is_lt(next_numerator, test_denominator)
-          encode_float_negative_go(rest, next_below, original_numerator, original_denominator, next_numerator, test_denominator, exponent + 1n)
+def encode_float_negative_go(remaining: Nat, is_below: Bool, numerator: List<&2, Nat>, +denominator: List<&2, Nat>, +exponent: Nat) -> Nat & Bool:
+  match remaining is_below:
+    case _ False{}:
+      encode_float_normal(numerator, denominator, True{}, exponent)
+    case 0n True{}:
+      encode_float_subnormal(numerator, denominator)
+    case 1n+rest True{}:
+      +next = float_nat_mul_small(numerator, 2n, 0n)
+      encode_float_negative_go(rest, Cmp.is_lt(float_nat_cmp(next, denominator)), next, denominator, (exponent + 1n : Nat))
 
-def encode_float_negative(original_numerator: Nat, original_denominator: Nat, +test_numerator: Nat, +test_denominator: Nat, +exponent: Nat) -> Nat & Bool:
-  encode_float_negative_go(Nat.sub(127n, exponent), Nat.is_lt(test_numerator, test_denominator), original_numerator, original_denominator, test_numerator, test_denominator, exponent)
+def encode_float_negative(+numerator: List<&2, Nat>, +denominator: List<&2, Nat>, +exponent: Nat) -> Nat & Bool:
+  encode_float_negative_go((126n - exponent : Nat), Cmp.is_lt(float_nat_cmp(numerator, denominator)), numerator, denominator, exponent)
 
-def encode_float32_lt_one(less_than_one: Bool, +numerator: Nat, +denominator: Nat) -> Nat & Bool:
+def encode_float32_lt_one(less_than_one: Bool, numerator: List<&2, Nat>, denominator: List<&2, Nat>) -> Nat & Bool:
   match less_than_one:
     case True{}:
-      encode_float_negative(numerator, denominator, numerator, denominator, 0n)
+      encode_float_negative(numerator, denominator, 0n)
     case False{}:
-      encode_float_positive(numerator, denominator, numerator, denominator, 0n)
+      encode_float_positive(numerator, denominator, 0n)
 
-def encode_float32(+numerator: Nat, +denominator: Nat) -> Nat & Bool:
-  encode_float32_lt_one(Nat.is_lt(numerator, denominator), numerator, denominator)
+def encode_float32(+numerator: List<&2, Nat>, +denominator: List<&2, Nat>) -> Nat & Bool:
+  encode_float32_lt_one(Cmp.is_lt(float_nat_cmp(numerator, denominator)), numerator, denominator)
 
 def float32_parts(parts: FloatParts) -> Nat & Bool:
   match parts:
-    case FloatParts{ 0n,  _,  _,  True{}}:
+    case FloatParts{Nil{}, _, _, True{}}:
       (0n, True{})
     case FloatParts{mantissa, True{}, scale, True{}}:
-      denominator = Nat.pow(10n, scale)
+      denominator = float_nat_scale(scale, [1n])
       encode_float32(mantissa, denominator)
     case FloatParts{mantissa, False{}, scale, True{}}:
-      numerator = mantissa * Nat.pow(10n, scale)
-      encode_float32(numerator, 1n)
+      numerator = float_nat_scale(scale, mantissa)
+      encode_float32(numerator, [1n])
     case _:
       (0n, False{})
 
 def float32_bits(text: String) -> Nat & Bool:
-  float32_parts(scan_float(String.to_list(text), 0n, 0n, False{}, False{}, 0n, False{}, False{}, False{}, False{}, True{}))
+  float32_parts(scan_float(String.to_list(text), Nil{}, 0n, False{}, False{}, 0n, False{}, False{}, False{}, False{}, True{}))
 
 def has_nat_suffix(text: String) -> Bool:
   has_nat_suffix_reversed(List.reverse(&2, Char, String.to_list(text)))
@@ -875,7 +911,7 @@ def array_call_result(result: Ast.SyntaxTerm & Bool, after: List<&2, Lexer.Token
 
 def nat_from_syntax_successor(result: Maybe<&2, Nat>) -> Maybe<&2, Nat>:
   match result:
-    case Some{value}: Some{value + 1n}
+    case Some{value}: Some{(value + 1n : Nat)}
     case None{}: None{}
 
  
@@ -900,6 +936,18 @@ def u32_literal(+file: String, value: Nat, +beg: Nat, +end: Nat) -> Ast.SyntaxTe
 
 def character_term(+file: String, value: Nat, +beg: Nat, +end: Nat) -> Ast.SyntaxTerm:
   Ast.TermCtr{ "Chr",  [u32_literal(file, value, beg, end)],  span(file, beg, end)}
+
+def string_codepoint_bit(bit: Nat, value: U32) -> U32:
+  match bit:
+    case 0n: value
+    case _: U32.inc(value)
+
+def string_codepoint(remaining: Nat, +value: Nat) -> U32:
+  match remaining:
+    case 0n: 0
+    case 1n+rest:
+      +upper = string_codepoint(rest, Nat.div(value, 2n))
+      string_codepoint_bit(Nat.mod(value, 2n), U32.add(upper, upper))
 
 type StringCharsInput is Data:
   StringCharsText{char: Char}
@@ -941,7 +989,7 @@ def string_chars_unicode_open(code: Nat) -> StringCharsInput:
 def string_chars_unicode_digit_result(result: Maybe<&2, Nat>, acc: Nat) -> StringCharsInput:
   match result:
     case Some{digit}:
-      StringCharsUnicodeDigits{acc * 16n + digit}
+      StringCharsUnicodeDigits{((acc * 16n : Nat) + digit : Nat)}
     case None{}:
       StringCharsInvalidUnicode{}
 
@@ -957,11 +1005,11 @@ def string_chars_go(+file: String, remaining: List<&2, Char>, +input: StringChar
     case Nil{}:
       match input:
         case StringCharsText{+char}:
-          string_chars_cons_result((Ast.TermCtr{"SNil", Nil{}, span(file, beg, end)}, True{}), character_term(file, U32.to_nat(Char.to_u32(char)), beg, end), file, beg, end)
+          string_chars_cons_result((Ast.TermString{Nil{}, Ast.string_literal_names(), span(file, beg, end)}, True{}), Char.to_u32(char), file, beg, end)
         case StringCharsBackslash{}:
           (Ast.TermHole{"parse-error: incomplete string escape", span(file, beg, end)}, False{})
         case StringCharsValue{+value}:
-          string_chars_cons_result((Ast.TermCtr{"SNil", Nil{}, span(file, beg, end)}, True{}), character_term(file, value, beg, end), file, beg, end)
+          string_chars_cons_result((Ast.TermString{Nil{}, Ast.string_literal_names(), span(file, beg, end)}, True{}), string_codepoint(32n, value), file, beg, end)
         case StringCharsUnicodeStart{}:
           (Ast.TermHole{"parse-error: invalid unicode escape", span(file, beg, end)}, False{})
         case StringCharsUnicodeDigits{_}:
@@ -973,11 +1021,11 @@ def string_chars_go(+file: String, remaining: List<&2, Char>, +input: StringChar
     case +next <> +tail:
       match input:
         case StringCharsText{+char}:
-          string_chars_cons_result(string_chars_go(file, tail, string_chars_after_char(Char.is_eq(next, Char.from_u32(92)), next), beg, end), character_term(file, U32.to_nat(Char.to_u32(char)), beg, end), file, beg, end)
+          string_chars_cons_result(string_chars_go(file, tail, string_chars_after_char(Char.is_eq(next, Char.from_u32(92)), next), beg, end), Char.to_u32(char), file, beg, end)
         case StringCharsBackslash{}:
           string_chars_go(file, tail, string_chars_escape_result(escape_code(next), U32.to_nat(Char.to_u32(next))), beg, end)
         case StringCharsValue{+value}:
-          string_chars_cons_result(string_chars_go(file, tail, string_chars_after_char(Char.is_eq(next, Char.from_u32(92)), next), beg, end), character_term(file, value, beg, end), file, beg, end)
+          string_chars_cons_result(string_chars_go(file, tail, string_chars_after_char(Char.is_eq(next, Char.from_u32(92)), next), beg, end), string_codepoint(32n, value), file, beg, end)
         case StringCharsUnicodeStart{}:
           string_chars_go(file, tail, string_chars_unicode_open(U32.to_nat(Char.to_u32(next))), beg, end)
         case StringCharsUnicodeDigits{+acc}:
@@ -990,7 +1038,7 @@ def string_chars_go(+file: String, remaining: List<&2, Char>, +input: StringChar
 def string_chars(+file: String, chars: List<&2, Char>, beg: Nat, end: Nat) -> Ast.SyntaxTerm & Bool:
   match chars:
     case Nil{}:
-      (Ast.TermCtr{"SNil", Nil{}, span(file, beg, end)}, True{})
+      (Ast.TermString{Nil{}, Ast.string_literal_names(), span(file, beg, end)}, True{})
     case +char <> rest:
       string_chars_go(file, rest, string_chars_after_char(Char.is_eq(char, Char.from_u32(92)), char), beg, end)
 
@@ -1036,7 +1084,7 @@ def parse_char_literal_chars(chars: List<&2, Char>, file: String, beg: Nat, end:
 def parse_number_float_result(result: Nat & Bool, +file: String, +beg: Nat, +end: Nat, rest: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match result:
     case (bits, True{}):
-      ((Ast.TermCtr{"F32", [u32_literal(file, bits, beg, end)], span(file, beg, end)}, rest), True{})
+      ((Ast.TermCtr{"F32", [u32_bits(file, 32n, bits, beg, end)], span(file, beg, end)}, rest), True{})
     case (_, False{}):
       ((Ast.TermHole{"parse-error: unsupported or non-finite numeric literal", span(file, beg, end)}, rest), False{})
 
@@ -1173,14 +1221,48 @@ def token_end_of(tokens: List<&2, Lexer.Token>, fallback: Nat) -> Nat:
     case Nil{}:
       fallback
 
-def parse_nat_literal_prefix(is_large: Bool, +file: String, value: Nat, +beg: Nat, +end: Nat, +after_tail: List<&2, Lexer.Token>, tail: Ast.SyntaxTerm) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+def token_end_first(term: Ast.SyntaxTerm) -> Nat:
+  match term:
+    case Ast.TermVar{ _,  _,  Ast.SpanOf{ _,  _, end}}: end
+    case Ast.TermRef{ _,  Ast.SpanOf{ _,  _, end}}: end
+    case Ast.TermBang{ _,  Ast.SpanOf{ _,  _, end}}: end
+    case Ast.TermAll{ _,  _,  _,  _,  _,  Ast.SpanOf{ _,  _, end}}: end
+    case Ast.TermMin{ _,  _,  Ast.SpanOf{ _,  _, end}}: end
+    case Ast.TermApp{ _,  _,  Ast.SpanOf{ _,  _, end}}: end
+    case Ast.TermLam{ _,  _,  _,  _,  Ast.SpanOf{ _,  _, end}}: end
+    case Ast.TermType{ _,  Ast.SpanOf{ _,  _, end}}: end
+    case Ast.TermQuantity{ _,  Ast.SpanOf{ _,  _, end}}: end
+    case Ast.TermCtr{ _,  _,  Ast.SpanOf{ _,  _, end}}: end
+    case Ast.TermString{_, _, Ast.SpanOf{_, _, end}}: end
+    case Ast.TermAdt{ _,  _,  _,  Ast.SpanOf{ _,  _, end}}: end
+    case Ast.TermMat{ _,  _,  _,  Ast.SpanOf{ _,  _, end}}: end
+    case Ast.TermAbsurd{ Ast.SpanOf{ _,  _, end}}: end
+    case Ast.TermEqual{ _,  _,  _,  Ast.SpanOf{ _,  _, end}}: end
+    case Ast.TermRefl{ Ast.SpanOf{ _,  _, end}}: end
+    case Ast.TermRewrite{ _,  _,  _,  Ast.SpanOf{ _,  _, end}}: end
+    case Ast.TermLet{ _,  _,  _,  _,  _,  Ast.SpanOf{ _,  _, end}}: end
+    case Ast.TermAnn{ _,  _,  Ast.SpanOf{ _,  _, end}}: end
+    case Ast.TermTemplate{ _,  Ast.SpanOf{ _,  _, end}}: end
+    case Ast.TermFill{ _,  _,  Ast.SpanOf{ _,  _, end}}: end
+    case Ast.TermPlus{ _,  _,  Ast.SpanOf{ _,  _, end}}: end
+    case Ast.TermHole{ _,  Ast.SpanOf{ _,  _, end}}: end
+    case Ast.BodyMatch{ _,  _,  Ast.SpanOf{ _,  _, end}}: end
+    case Ast.BodyCase{ _,  _,  Ast.SpanOf{ _,  _, end}}: end
+    case Ast.BodyLocal{ _,  _,  _,  _,  Ast.SpanOf{ _,  _, end}}: end
+    case Ast.BodyReply{ _,  Ast.SpanOf{ _,  _, end}}: end
+    case _:
+      0n
+
+
+def parse_nat_literal_prefix(is_large: Bool, +file: String, value: Nat, +beg: Nat, end: Nat, +after_tail: List<&2, Lexer.Token>, +tail: Ast.SyntaxTerm) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match is_large:
     case True{}:
-      base = nat_literal(file, value, beg, end)
-      +operator_span = span(file, beg, token_end_of(after_tail, end))
+      +whole_end = token_end_of(after_tail, token_end_first(tail))
+      base = nat_literal(file, value, beg, whole_end)
+      +operator_span = span(file, beg, whole_end)
       ((Ast.TermApp{Ast.TermApp{Ast.TermRef{"Nat.add", operator_span}, base, operator_span}, tail, operator_span}, after_tail), True{})
     case False{}:
-      ((nat_succ_prefix(file, value, tail, beg, token_end_of(after_tail, end)), after_tail), True{})
+      ((nat_succ_prefix(file, value, tail, beg, token_end_of(after_tail, token_end_first(tail))), after_tail), True{})
 
 type SyntaxWordStep is Data:
   SyntaxWordZeroBit{}
@@ -1211,9 +1293,9 @@ def syntax_word_value_go(term: Ast.SyntaxTerm, value: Nat, step: SyntaxWordStep)
     case Ast.TermCtr{"WCon", [_, +rest], _}:
       match step:
         case SyntaxWordZeroBit{}:
-          Maybe.map(&2, Nat, Nat, tail => tail * 2n, syntax_word_value_go(rest, value, syntax_word_step(rest)))
+          Maybe.map(&2, Nat, Nat, tail => (tail * 2n : Nat), syntax_word_value_go(rest, value, syntax_word_step(rest)))
         case SyntaxWordOneBit{}:
-          Maybe.map(&2, Nat, Nat, tail => tail * 2n + 1n, syntax_word_value_go(rest, value, syntax_word_step(rest)))
+          Maybe.map(&2, Nat, Nat, tail => ((tail * 2n : Nat) + 1n : Nat), syntax_word_value_go(rest, value, syntax_word_step(rest)))
         case _:
           None{}
     case _:
@@ -1265,16 +1347,83 @@ def power_depth_go(remaining: Nat, depth: Nat, step: PowerDepthStep) -> Maybe<&2
         case PowerDepthDone{}:
           Some{depth}
         case PowerDepthContinue{half}:
-          power_depth_go(rest, depth + 1n, power_depth_step(half))
+          power_depth_go(rest, (depth + 1n : Nat), power_depth_step(half))
         case PowerDepthInvalid{}:
           None{}
 
 def power_depth(+count: Nat, depth: Nat) -> Maybe<&2, Nat>:
   power_depth_go(count, depth, power_depth_step(count))
-def parse_nat_literal_tail(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, file: String, +value: Nat, beg: Nat, end: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
-  match result:
-    case ((tail, after_tail), True{}):
+# Only literal token chains and grouping produce compact native Nat literals.
+# Explicit constructors, annotations and open tails retain their original AST.
+def nat_literal_tokens(tokens: List<&2, Lexer.Token>, +stop: Nat) -> Maybe<&2, Nat>:
+  match tokens:
+    case Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _} <> rest:
+      nat_literal_tokens(rest, stop)
+    case Lexer.TokenInfo{Lexer.SymbolToken{}, "(", _, _, _, _} <> rest:
+      nat_literal_tokens(rest, stop)
+    case Lexer.TokenInfo{Lexer.NumberToken{}, +text, _, +end, _, _} <> +rest:
+      nat_literal_tokens_suffix(has_nat_suffix(text), text, end, rest, stop)
+    case _: None{}
+
+def nat_literal_tokens_suffix(valid: Bool, text: String, end: Nat, rest: List<&2, Lexer.Token>, stop: Nat) -> Maybe<&2, Nat>:
+  match valid:
+    case True{}:
+      nat_literal_tokens_value(Nat.read(drop_nat_suffix(text)), end, rest, stop)
+    case False{}: None{}
+
+def nat_literal_tokens_value(found: Maybe<&2, Nat>, +end: Nat, rest: List<&2, Lexer.Token>, +stop: Nat) -> Maybe<&2, Nat>:
+  match found:
+    case Some{+value}:
+      match rest:
+        case Nil{}: Some{value}
+        case +token <> more:
+          nat_literal_tokens_next(Nat.is_le(stop, token_beg(token)), token, more, value, end, stop)
+    case None{}: None{}
+
+def nat_literal_tokens_next(done: Bool, token: Lexer.Token, more: List<&2, Lexer.Token>, value: Nat, +end: Nat, stop: Nat) -> Maybe<&2, Nat>:
+  match done:
+    case True{}: Some{value}
+    case False{}:
+      match token:
+        case Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _}:
+          nat_literal_tokens_value(Some{value}, end, more, stop)
+        case Lexer.TokenInfo{Lexer.SymbolToken{}, ")", _, _, _, _}:
+          nat_literal_tokens_value(Some{value}, end, more, stop)
+        case Lexer.TokenInfo{Lexer.SymbolToken{}, "+", +beg, _, _, _}:
+          nat_literal_tokens_plus(Nat.is_eq(beg, end), more, value, stop)
+        case _: None{}
+
+def nat_literal_tokens_plus(adjacent: Bool, tokens: List<&2, Lexer.Token>, value: Nat, stop: Nat) -> Maybe<&2, Nat>:
+  match adjacent:
+    case True{}: nat_literal_tokens_sum(nat_literal_tokens(tokens, stop), value)
+    case False{}: None{}
+
+def nat_literal_tokens_sum(found: Maybe<&2, Nat>, value: Nat) -> Maybe<&2, Nat>:
+  match found:
+    case Some{tail}:
+      +sum = Nat.add(value, tail)
+      nat_literal_tokens_sum_range(Nat.is_le(sum, 4294967295n), sum)
+    case None{}: None{}
+
+def nat_literal_tokens_sum_range(valid: Bool, sum: Nat) -> Maybe<&2, Nat>:
+  match valid:
+    case True{}: Some{sum}
+    case False{}: None{}
+
+def parse_nat_literal_fold(found: Maybe<&2, Nat>, +file: String, +value: Nat, +beg: Nat, +end: Nat, +after_tail: List<&2, Lexer.Token>, +tail: Ast.SyntaxTerm) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+  parse_nat_literal_fold_sum(nat_literal_tokens_sum(found, value), file, value, beg, end, after_tail, tail)
+
+def parse_nat_literal_fold_sum(found: Maybe<&2, Nat>, +file: String, +value: Nat, +beg: Nat, +end: Nat, +after_tail: List<&2, Lexer.Token>, +tail: Ast.SyntaxTerm) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+  match found:
+    case Some{sum}:
+      ((nat_literal(file, sum, beg, token_end_of(after_tail, token_end_first(tail))), after_tail), True{})
+    case None{}:
       parse_nat_literal_prefix(Nat.is_lt(256n, value), file, value, beg, end, after_tail, tail)
+
+def parse_nat_literal_tail(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, file: String, +value: Nat, beg: Nat, end: Nat, original: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+  match result:
+    case ((+tail, +after_tail), True{}):
+      parse_nat_literal_fold(nat_literal_tokens(original, token_end_of(after_tail, token_end_first(tail))), file, value, beg, end, after_tail, tail)
     case ((tail, after_tail), False{}):
       ((tail, after_tail), False{})
 
@@ -1305,10 +1454,37 @@ def parse_name_lambda_result(ok: Bool, body: Ast.SyntaxTerm, +after: List<&2, Le
     case False{}:
       ((body, after), False{})
 
-def parse_name_constructor_result(ok: Bool, args: List<&2, Ast.SyntaxTerm>, +after_args: List<&2, Lexer.Token>, file: String, key: String, beg: Nat, end: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+def consumed_token_end(tokens: List<&2, Lexer.Token>, remaining: List<&2, Lexer.Token>, fallback: Nat) -> Nat:
+  match remaining:
+    case next <> _:
+      consumed_token_end_before(tokens, token_beg(next), fallback)
+    case Nil{}:
+      consumed_token_end_all(tokens, fallback)
+
+def consumed_token_end_all(tokens: List<&2, Lexer.Token>, fallback: Nat) -> Nat:
+  match tokens:
+    case next <> rest:
+      consumed_token_end_all(rest, token_end(next))
+    case Nil{}:
+      fallback
+
+def consumed_token_end_before(tokens: List<&2, Lexer.Token>, stop: Nat, fallback: Nat) -> Nat:
+  match tokens:
+    case +next <> rest:
+      consumed_token_end_step(Nat.is_lt(token_beg(next), stop), next, rest, stop, fallback)
+    case Nil{}:
+      fallback
+
+def consumed_token_end_step(is_consumed: Bool, next: Lexer.Token, rest: List<&2, Lexer.Token>, stop: Nat, fallback: Nat) -> Nat:
+  match is_consumed:
+    case True{}:
+      consumed_token_end_before(rest, stop, Nat.min(token_end(next), stop))
+    case False{}:
+      fallback
+def parse_name_constructor_result(ok: Bool, args: List<&2, Ast.SyntaxTerm>, +after_args: List<&2, Lexer.Token>, file: String, key: String, beg: Nat, end: Nat, argument_tokens: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok:
     case True{}:
-      ((Ast.TermCtr{key, args, span(file, beg, token_end_of(after_args, end))}, after_args), True{})
+      ((Ast.TermCtr{key, args, span(file, beg, consumed_token_end(argument_tokens, after_args, end))}, after_args), True{})
     case False{}:
       ((Ast.TermHole{"parse-error: expected constructor fields", span(file, beg, end)}, after_args), False{})
 
@@ -1374,6 +1550,7 @@ def map_operator_term(term: Ast.SyntaxTerm, +namespace: String) -> Ast.SyntaxTer
     case Ast.TermFill{head, args, source_span}: Ast.TermFill{map_operator_term(head, namespace), Core.map_syntax_terms(child => map_operator_term(child, namespace), args), source_span}
     case Ast.TermPlus{head, args, source_span}: Ast.TermPlus{map_operator_term(head, namespace), Core.map_syntax_terms(child => map_operator_term(child, namespace), args), source_span}
     case Ast.TermCtr{key, args, source_span}: Ast.TermCtr{key, Core.map_syntax_terms(child => map_operator_term(child, namespace), args), source_span}
+    case Ast.TermString{chars, names, source_span}: Ast.TermString{chars, names, source_span}
     case Ast.TermMat{key, head, matched, source_span}: Ast.TermMat{key, map_operator_term(head, namespace), map_operator_term(matched, namespace), source_span}
     case Ast.TermAbsurd{source_span}: Ast.TermAbsurd{source_span}
     case Ast.TermEqual{left, right, ty, source_span}: Ast.TermEqual{map_operator_term(left, namespace), map_operator_term(right, namespace), map_operator_term(ty, namespace), source_span}
@@ -1389,7 +1566,7 @@ def operator_rhs_level(right_assoc: Bool, priority: Nat) -> Nat:
     case True{}:
       priority
     case False{}:
-      priority + 1n
+      (priority + 1n : Nat)
 
 def is_quantity_term(term: Ast.SyntaxTerm) -> Bool:
   match term:
@@ -1409,6 +1586,7 @@ def token_beg_first(term: Ast.SyntaxTerm) -> Nat:
     case Ast.TermType{ _,  Ast.SpanOf{ _, beg,  _}}: beg
     case Ast.TermQuantity{ _,  Ast.SpanOf{ _, beg,  _}}: beg
     case Ast.TermCtr{ _,  _,  Ast.SpanOf{ _, beg,  _}}: beg
+    case Ast.TermString{_, _, Ast.SpanOf{_, beg, _}}: beg
     case Ast.TermAdt{ _,  _,  _,  Ast.SpanOf{ _, beg,  _}}: beg
     case Ast.TermMat{ _,  _,  _,  Ast.SpanOf{ _, beg,  _}}: beg
     case Ast.TermAbsurd{ Ast.SpanOf{ _, beg,  _}}: beg
@@ -1427,38 +1605,6 @@ def token_beg_first(term: Ast.SyntaxTerm) -> Nat:
     case Ast.BodyReply{ _,  Ast.SpanOf{ _, beg,  _}}: beg
     case _:
       0n
-
-def token_end_first(term: Ast.SyntaxTerm) -> Nat:
-  match term:
-    case Ast.TermVar{ _,  _,  Ast.SpanOf{ _,  _, end}}: end
-    case Ast.TermRef{ _,  Ast.SpanOf{ _,  _, end}}: end
-    case Ast.TermBang{ _,  Ast.SpanOf{ _,  _, end}}: end
-    case Ast.TermAll{ _,  _,  _,  _,  _,  Ast.SpanOf{ _,  _, end}}: end
-    case Ast.TermMin{ _,  _,  Ast.SpanOf{ _,  _, end}}: end
-    case Ast.TermApp{ _,  _,  Ast.SpanOf{ _,  _, end}}: end
-    case Ast.TermLam{ _,  _,  _,  _,  Ast.SpanOf{ _,  _, end}}: end
-    case Ast.TermType{ _,  Ast.SpanOf{ _,  _, end}}: end
-    case Ast.TermQuantity{ _,  Ast.SpanOf{ _,  _, end}}: end
-    case Ast.TermCtr{ _,  _,  Ast.SpanOf{ _,  _, end}}: end
-    case Ast.TermAdt{ _,  _,  _,  Ast.SpanOf{ _,  _, end}}: end
-    case Ast.TermMat{ _,  _,  _,  Ast.SpanOf{ _,  _, end}}: end
-    case Ast.TermAbsurd{ Ast.SpanOf{ _,  _, end}}: end
-    case Ast.TermEqual{ _,  _,  _,  Ast.SpanOf{ _,  _, end}}: end
-    case Ast.TermRefl{ Ast.SpanOf{ _,  _, end}}: end
-    case Ast.TermRewrite{ _,  _,  _,  Ast.SpanOf{ _,  _, end}}: end
-    case Ast.TermLet{ _,  _,  _,  _,  _,  Ast.SpanOf{ _,  _, end}}: end
-    case Ast.TermAnn{ _,  _,  Ast.SpanOf{ _,  _, end}}: end
-    case Ast.TermTemplate{ _,  Ast.SpanOf{ _,  _, end}}: end
-    case Ast.TermFill{ _,  _,  Ast.SpanOf{ _,  _, end}}: end
-    case Ast.TermPlus{ _,  _,  Ast.SpanOf{ _,  _, end}}: end
-    case Ast.TermHole{ _,  Ast.SpanOf{ _,  _, end}}: end
-    case Ast.BodyMatch{ _,  _,  Ast.SpanOf{ _,  _, end}}: end
-    case Ast.BodyCase{ _,  _,  Ast.SpanOf{ _,  _, end}}: end
-    case Ast.BodyLocal{ _,  _,  _,  _,  Ast.SpanOf{ _,  _, end}}: end
-    case Ast.BodyReply{ _,  Ast.SpanOf{ _,  _, end}}: end
-    case _:
-      0n
-
 
 def parse_template_term_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, file: String, beg: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match result:
@@ -1537,26 +1683,6 @@ def parse_match_tail_result(ok_tail: Bool, file: String, tail: Ast.SyntaxTerm, +
     case False{}:
       ((tail, after_tail), False{})
 
-def empty_generic_follow(tokens: List<&2, Lexer.Token>) -> Bool:
-  match tokens:
-    case +token <> rest:
-      match token:
-        case Lexer.TokenInfo{ Lexer.NewlineToken{},  _,  _,  _,  _,  _}:
-          empty_generic_follow(rest)
-        case Lexer.TokenInfo{ Lexer.EndToken{},  _,  _,  _,  _,  _}:
-          True{}
-        case Lexer.TokenInfo{ Lexer.SymbolToken{}, ")",  _,  _,  _,  _}: True{}
-        case Lexer.TokenInfo{ Lexer.SymbolToken{}, "]",  _,  _,  _,  _}: True{}
-        case Lexer.TokenInfo{ Lexer.SymbolToken{}, "}",  _,  _,  _,  _}: True{}
-        case Lexer.TokenInfo{ Lexer.SymbolToken{}, ",",  _,  _,  _,  _}: True{}
-        case Lexer.TokenInfo{ Lexer.SymbolToken{}, ":",  _,  _,  _,  _}: True{}
-        case Lexer.TokenInfo{ Lexer.SymbolToken{}, ";",  _,  _,  _,  _}: True{}
-        case Lexer.TokenInfo{ Lexer.SymbolToken{}, "(",  _,  _,  _,  _}: True{}
-        case Lexer.TokenInfo{ Lexer.SymbolToken{}, "[",  _,  _,  _,  _}: True{}
-        case _: False{}
-    case Nil{}:
-      True{}
-
 def parse_rewrite_body_result(ok_body: Bool, +body: Ast.SyntaxTerm, after_body: List<&2, Lexer.Token>, equation: Ast.SyntaxTerm, proof: Ast.SyntaxTerm, file: String, beg: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok_body:
     case True{}:
@@ -1598,6 +1724,18 @@ def split_last_do_args(args: List<&2, Ast.SyntaxTerm>, acc: List<&2, Ast.SyntaxT
 
 def do_call(file: String, monad: String, operation: String, args: List<&2, Ast.SyntaxTerm>, before_return: List<&2, Ast.SyntaxTerm>, after_return: List<&2, Ast.SyntaxTerm>, beg: Nat, end: Nat) -> Ast.SyntaxTerm & Bool:
   do_call_from_split(split_last_do_args(args, Nil{}), file, monad, operation, before_return, after_return, beg, end)
+
+def do_final_type(args: List<&2, Ast.SyntaxTerm>, +head: Ast.SyntaxTerm, +source_span: Ast.SourceSpan) -> Ast.SyntaxTerm:
+  match args:
+    case Nil{}:
+      head
+    case +arg <> rest:
+      do_final_type(rest, Ast.TermApp{head, arg, source_span}, source_span)
+
+def parse_do_final_action(+file: String, monad: String, args: List<&2, Ast.SyntaxTerm>, +action: Ast.SyntaxTerm, after_action: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+  +source_span = span(file, token_beg_first(action), token_end_first(action))
+  ty = do_final_type(args, Ast.TermRef{monad, source_span}, source_span)
+  ((Ast.TermAnn{action, ty, source_span}, after_action), True{})
 
 def array_call(+file: String, ty: Ast.SyntaxTerm, depth: Ast.SyntaxTerm, value: Ast.SyntaxTerm, +beg: Nat, end: Nat, after: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   array_call_result(apply_terms([ty, depth, value], file, Ast.TermRef{"Array.new", span(file, beg, end)}, beg), after)
@@ -1760,7 +1898,7 @@ def parse_local_binders(+file: String, tokens: List<&2, Lexer.Token>, scope: Lis
         case Lexer.TokenInfo{_, "=", _, _, _, _}:
           ((((List.reverse(&2, Ast.SyntaxPattern, acc), rest), scope), depth), True{})
         case Lexer.TokenInfo{Lexer.NameToken{}, +key, beg, end, _, _}:
-          parse_local_binders(file, rest, extend_scope(key, depth, scope), depth + 1n, quantity, local_binder_pattern(key, depth, quantity, file, beg, end) <> acc)
+          parse_local_binders(file, rest, extend_scope(key, depth, scope), (depth + 1n : Nat), quantity, local_binder_pattern(key, depth, quantity, file, beg, end) <> acc)
         case _:
           ((((List.reverse(&2, Ast.SyntaxPattern, acc), tokens), scope), depth), False{})
     case Nil{}:
@@ -1785,14 +1923,6 @@ def first_line(tokens: List<&2, Lexer.Token>) -> Nat:
           token_line(token)
     case Nil{}:
       0n
-def local_counts_match(patterns: List<&2, Ast.SyntaxPattern>, values: List<&2, Ast.SyntaxTerm>) -> Bool:
-  match patterns values:
-    case Nil{} Nil{}:
-      True{}
-    case +_ <> more_patterns +_ <> more_values:
-      local_counts_match(more_patterns, more_values)
-    case _ _:
-      False{}
 
 def parse_local_body_parsed(ok_body: Bool, body: Ast.SyntaxTerm, +after_body: List<&2, Lexer.Token>, file: String, key: String, beg: Nat, pattern: Ast.SyntaxPattern, quantity: Ast.Quantity, +value: Ast.SyntaxTerm) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok_body:
@@ -1833,7 +1963,7 @@ def parse_match_cases_result(ok_cases: Bool, cases: List<&2, Ast.SyntaxTerm>, +a
 def parse_case_rows_stop(acc: List<&2, Ast.SyntaxTerm>, tokens: List<&2, Lexer.Token>) -> (List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool:
   match acc:
     case Nil{}:
-      ((Nil{}, tokens), False{})
+      ((Nil{}, tokens), True{})
     case _:
       ((List.reverse(&2, Ast.SyntaxTerm, acc), tokens), True{})
 
@@ -1924,31 +2054,187 @@ def parse_pattern_nat_suffix(is_nat: Bool, file: String, text: String, tokens: L
     case False{}:
       ((Ast.PatternVar{ "", depth, Ast.QOne{}, span(file, beg, end)}, tokens), ((scope, depth), False{}))
 
-def pattern_number_read(result: Maybe<&2, Nat>, file: String, beg: Nat, end: Nat) -> PatternScanMode:
+def nat_pattern_tail(+file: String, value: Nat, tail: Ast.SyntaxPattern, +beg: Nat, +end: Nat) -> Ast.SyntaxPattern:
+  match value:
+    case 0n: tail
+    case 1n+rest: Ast.PatternCtr{"Succ", [nat_pattern_tail(file, rest, tail, beg, end)], span(file, beg, end)}
+
+def pattern_nat_tail_result(result: (Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool), +file: String, value: Nat, beg: Nat, end: Nat, frames: List<&2, PatternFrame>, scope: List<&2, Scope>, +depth: Nat, goal: PatternScanGoal) -> PatternScanOutcome:
+  match result:
+    case ((+tail, after), ((next_scope, next_depth), True{})):
+      pattern_scan(after, file, PatternCompleted{nat_pattern_tail(file, value, tail, beg, pattern_end(tail))}, frames, next_scope, next_depth, goal)
+    case ((_, after), ((_, _), False{})):
+      pattern_finish(goal, Ast.PatternVar{"", depth, Ast.QOne{}, span(file, beg, end)}, after, scope, depth, False{})
+
+def pattern_nat_tail_allowed(allowed: Bool, +file: String, value: Nat, beg: Nat, end: Nat, +tokens: List<&2, Lexer.Token>, frames: List<&2, PatternFrame>, +scope: List<&2, Scope>, +depth: Nat, goal: PatternScanGoal) -> PatternScanOutcome:
+  match allowed:
+    case True{}:
+      pattern_nat_tail_result(parse_pattern_atom(file, tokens, scope, depth), file, value, beg, end, frames, scope, depth, goal)
+    case False{}:
+      pattern_finish(goal, Ast.PatternVar{"", depth, Ast.QOne{}, span(file, beg, end)}, tokens, scope, depth, False{})
+
+def pattern_nat_adjacent(adjacent: Bool, +file: String, +value: Nat, beg: Nat, end: Nat, tail: List<&2, Lexer.Token>, tokens: List<&2, Lexer.Token>, frames: List<&2, PatternFrame>, scope: List<&2, Scope>, depth: Nat, goal: PatternScanGoal) -> PatternScanOutcome:
+  match adjacent:
+    case True{}:
+      pattern_nat_tail_allowed(Nat.is_le(value, 256n), file, value, beg, end, tail, frames, scope, depth, goal)
+    case False{}:
+      pattern_scan(tokens, file, PatternCompleted{nat_pattern(file, value, beg, end)}, frames, scope, depth, goal)
+
+def pattern_nat_after(+tokens: List<&2, Lexer.Token>, +file: String, value: Nat, beg: Nat, +end: Nat, frames: List<&2, PatternFrame>, scope: List<&2, Scope>, depth: Nat, goal: PatternScanGoal) -> PatternScanOutcome:
+  match tokens:
+    case Lexer.TokenInfo{_, "+", plus_beg, _, _, _} <> tail:
+      pattern_nat_adjacent(Nat.is_eq(end, plus_beg), file, value, beg, end, tail, tokens, frames, scope, depth, goal)
+    # A natural prefix consumes one +; the remaining + is the tail's quantity.
+    # Split only here, after the number, so expression ++ remains concatenation.
+    case Lexer.TokenInfo{Lexer.SymbolToken{}, "++", +plus_beg, plus_end, line, col} <> tail:
+      remaining = { Lexer.TokenInfo{Lexer.SymbolToken{}, "+", (plus_beg + 1n : Nat), plus_end, line, (col + 1n : Nat)} <> tail : List<&2, Lexer.Token> }
+      pattern_nat_adjacent(Nat.is_eq(end, plus_beg), file, value, beg, end, remaining, tokens, frames, scope, depth, goal)
+    case _:
+      pattern_scan(tokens, file, PatternCompleted{nat_pattern(file, value, beg, end)}, frames, scope, depth, goal)
+
+def pattern_nat_read(result: Maybe<&2, Nat>, file: String, tokens: List<&2, Lexer.Token>, beg: Nat, end: Nat, frames: List<&2, PatternFrame>, scope: List<&2, Scope>, +depth: Nat, goal: PatternScanGoal) -> PatternScanOutcome:
   match result:
     case Some{value}:
-      PatternCompleted{nat_pattern(file, value, beg, end)}
+      pattern_nat_after(tokens, file, value, beg, end, frames, scope, depth, goal)
     case None{}:
-      PatternBadNat{beg, end}
+      pattern_finish(goal, Ast.PatternVar{"", depth, Ast.QOne{}, span(file, beg, end)}, tokens, scope, depth, False{})
 
-def pattern_number_mode(is_nat: Bool, file: String, text: String, +beg: Nat, +end: Nat, line: Nat, col: Nat, quantity: Ast.Quantity) -> PatternScanMode:
+def pattern_number_start(is_nat: Bool, +file: String, text: String, +beg: Nat, +end: Nat, line: Nat, col: Nat, quantity: Ast.Quantity, tokens: List<&2, Lexer.Token>, frames: List<&2, PatternFrame>, scope: List<&2, Scope>, depth: Nat, goal: PatternScanGoal) -> PatternScanOutcome:
   match is_nat:
     case True{}:
-      pattern_number_read(Nat.read(drop_nat_suffix(text)), file, beg, end)
+      pattern_nat_read(Nat.read(drop_nat_suffix(text)), file, tokens, beg, end, frames, scope, depth, goal)
     case False{}:
-      PatternNoNat{Lexer.TokenInfo{Lexer.NumberToken{}, text, beg, end, line, col}, quantity, beg, end}
+      pattern_scan(tokens, file, PatternNoNat{Lexer.TokenInfo{Lexer.NumberToken{}, text, beg, end, line, col}, quantity, beg, end}, frames, scope, depth, goal)
 
-def pattern_finish(goal: PatternScanGoal, pattern: Ast.SyntaxPattern, after: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, ok: Bool) -> PatternScanOutcome:
+def pattern_finish(goal: PatternScanGoal, +pattern: Ast.SyntaxPattern, after: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, ok: Bool) -> PatternScanOutcome:
   match goal ok:
     case PatternSingleGoal{} status:
       PatternSingleOutcome{pattern, after, scope, depth, status}
     case PatternCaseGoal{acc, before_scope, before_depth} True{}:
-      PatternCaseOutcome{List.reverse(&2, Ast.SyntaxPattern, pattern <> acc), after, scope, depth, False{}}
+      pattern_scan(after, pattern_file(pattern), PatternExpect{Ast.QOne{}, 0n}, Nil{}, scope, depth, PatternCaseGoal{pattern <> acc, before_scope, before_depth})
     case PatternCaseGoal{acc, before_scope, before_depth} False{}:
       PatternCaseOutcome{List.reverse(&2, Ast.SyntaxPattern, acc), after, before_scope, before_depth, False{}}
 
+def pattern_file(pattern: Ast.SyntaxPattern) -> String:
+  match pattern:
+    case Ast.PatternVar{_, _, _, Ast.SpanOf{file, _, _}}: file
+    case Ast.PatternCtr{_, _, Ast.SpanOf{file, _, _}}: file
+
+def pattern_beg(pattern: Ast.SyntaxPattern) -> Nat:
+  match pattern:
+    case Ast.PatternVar{_, _, _, Ast.SpanOf{_, beg, _}}: beg
+    case Ast.PatternCtr{_, _, Ast.SpanOf{_, beg, _}}: beg
+
+def pattern_end(pattern: Ast.SyntaxPattern) -> Nat:
+  match pattern:
+    case Ast.PatternVar{_, _, _, Ast.SpanOf{_, _, end}}: end
+    case Ast.PatternCtr{_, _, Ast.SpanOf{_, _, end}}: end
+
+def pattern_cons_result(result: (Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool), +file: String, +left: Ast.SyntaxPattern, frames: List<&2, PatternFrame>, scope: List<&2, Scope>, depth: Nat, goal: PatternScanGoal) -> PatternScanOutcome:
+  match result:
+    case ((+right, after), ((next_scope, next_depth), True{})):
+      combined = { Ast.PatternCtr{"Con", [left, right], span(file, pattern_beg(left), pattern_end(right))} : Ast.SyntaxPattern }
+      pattern_scan(after, file, PatternCompleted{combined}, frames, next_scope, next_depth, goal)
+    case ((_, after), ((_, _), False{})):
+      pattern_finish(goal, left, after, scope, depth, False{})
+
+def literal_pattern_fields_cons(result: Maybe<&2, List<&2, Ast.SyntaxPattern>>, head: Ast.SyntaxPattern) -> Maybe<&2, List<&2, Ast.SyntaxPattern>>:
+  match result:
+    case Some{tail}: Some{head <> tail}
+    case None{}: None{}
+
+def literal_pattern_field(result: Maybe<&2, Ast.SyntaxPattern>, rest: List<&2, Ast.SyntaxTerm>) -> Maybe<&2, List<&2, Ast.SyntaxPattern>>:
+  match result:
+    case Some{head}: literal_pattern_fields_cons(literal_pattern_fields(rest), head)
+    case None{}: None{}
+
+def literal_pattern_fields(terms: List<&2, Ast.SyntaxTerm>) -> Maybe<&2, List<&2, Ast.SyntaxPattern>>:
+  match terms:
+    case term <> rest: literal_pattern_field(literal_pattern(term), rest)
+    case Nil{}: Some{Nil{}}
+
+def literal_pattern_constructor(result: Maybe<&2, List<&2, Ast.SyntaxPattern>>, key: String, position: Ast.SourceSpan) -> Maybe<&2, Ast.SyntaxPattern>:
+  match result:
+    case Some{fields}: Some{Ast.PatternCtr{key, fields, position}}
+    case None{}: None{}
+
+def literal_pattern_tree(term: Ast.SyntaxTerm) -> Maybe<&2, Ast.SyntaxPattern>:
+  match term:
+    case Ast.TermCtr{key, fields, position}: literal_pattern_constructor(literal_pattern_fields(fields), key, position)
+    case _: None{}
+
+def literal_pattern(term: Ast.SyntaxTerm) -> Maybe<&2, Ast.SyntaxPattern>:
+  match term:
+    case Ast.TermString{chars, names, position}: literal_pattern_tree(Ast.string_desugar(chars, names, position))
+    case _: literal_pattern_tree(term)
+
+def pattern_literal_finish(result: Maybe<&2, Ast.SyntaxPattern>, after: List<&2, Lexer.Token>, file: String, beg: Nat, end: Nat, frames: List<&2, PatternFrame>, scope: List<&2, Scope>, +depth: Nat, goal: PatternScanGoal) -> PatternScanOutcome:
+  match result:
+    case Some{pattern}:
+      pattern_scan(after, file, PatternCompleted{pattern}, frames, scope, depth, goal)
+    case None{}:
+      pattern_finish(goal, Ast.PatternVar{"", depth, Ast.QOne{}, span(file, beg, end)}, after, scope, depth, False{})
+
+def pattern_literal_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, file: String, beg: Nat, end: Nat, frames: List<&2, PatternFrame>, scope: List<&2, Scope>, +depth: Nat, goal: PatternScanGoal) -> PatternScanOutcome:
+  match result:
+    case ((term, after), True{}):
+      pattern_literal_finish(literal_pattern(term), after, file, beg, end, frames, scope, depth, goal)
+    case ((_, after), False{}):
+      pattern_finish(goal, Ast.PatternVar{"", depth, Ast.QOne{}, span(file, beg, end)}, after, scope, depth, False{})
+
+def pattern_group_result(result: (Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool), file: String, frames: List<&2, PatternFrame>, scope: List<&2, Scope>, depth: Nat, goal: PatternScanGoal) -> PatternScanOutcome:
+  match result:
+    case ((pattern, after), ((next_scope, next_depth), True{})):
+      pattern_scan(after, file, PatternCompleted{pattern}, frames, next_scope, next_depth, goal)
+    case ((pattern, after), ((_, _), False{})):
+      pattern_finish(goal, pattern, after, scope, depth, False{})
+
+def pattern_tuple_tail_result(result: (Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool), file: String, beg: Nat, left: Ast.SyntaxPattern) -> (Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool):
+  match result:
+    case ((+right, after), ((scope, depth), True{})):
+      ((Ast.PatternCtr{"Tuple", [left, right], span(file, beg, pattern_end(right))}, after), ((scope, depth), True{}))
+    case ((_, after), ((scope, depth), False{})):
+      ((left, after), ((scope, depth), False{}))
+
+def pattern_tuple_delimiter(+tokens: List<&2, Lexer.Token>, +file: String, +beg: Nat, left: Ast.SyntaxPattern, scope: List<&2, Scope>, depth: Nat) -> (Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool):
+  match tokens:
+    case Lexer.TokenInfo{_, ")", _, _, _, _} <> rest:
+      ((left, rest), ((scope, depth), True{}))
+    case Lexer.TokenInfo{_, ",", _, _, _, _} <> rest:
+      pattern_tuple_tail_result(parse_pattern_tuple(file, beg, rest, scope, depth), file, beg, left)
+    case _:
+      ((left, tokens), ((scope, depth), False{}))
+
+def pattern_tuple_head_result(result: (Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool), +file: String, +beg: Nat) -> (Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool):
+  match result:
+    case ((left, after), ((scope, depth), True{})):
+      pattern_tuple_delimiter(after, file, beg, left, scope, depth)
+    case ((pattern, after), ((scope, depth), False{})):
+      ((pattern, after), ((scope, depth), False{}))
+
+def parse_pattern_tuple(+file: String, beg: Nat, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> (Ast.SyntaxPattern & List<&2, Lexer.Token>) & ((List<&2, Scope> & Nat) & Bool):
+  pattern_tuple_head_result(parse_pattern_atom(file, tokens, scope, depth), file, beg)
+
+def pattern_list_fields(fields: List<&2, Ast.SyntaxPattern>, result: Ast.SyntaxPattern, +file: String, +beg: Nat, +end: Nat) -> Ast.SyntaxPattern:
+  match fields:
+    case Nil{}:
+      result
+    case field <> rest:
+      pattern_list_fields(rest, Ast.PatternCtr{"Con", [field, result], span(file, beg, end)}, file, beg, end)
+
+def make_pattern_list(fields: List<&2, Ast.SyntaxPattern>, +file: String, +beg: Nat, +end: Nat) -> Ast.SyntaxPattern:
+  pattern_list_fields(fields, Ast.PatternCtr{"Nil", Nil{}, span(file, beg, end)}, file, beg, end)
+
 def pattern_scan(+tokens: List<&2, Lexer.Token>, +file: String, mode: PatternScanMode, frames: List<&2, PatternFrame>, +scope: List<&2, Scope>, +depth: Nat, goal: PatternScanGoal) -> PatternScanOutcome:
   match tokens mode:
+    case Lexer.TokenInfo{_, "(", beg, _, _, _} <> rest PatternExpect{Ast.QOne{}, _}:
+      pattern_group_result(parse_pattern_tuple(file, beg, rest, scope, depth), file, frames, scope, depth, goal)
+    case Lexer.TokenInfo{_, "[", beg, end, _, _} <> rest PatternExpect{Ast.QOne{}, _}:
+      pattern_scan(rest, file, PatternExpect{Ast.QOne{}, 0n}, PatternFrameOf{"[]", beg, end, Nil{}, scope, depth} <> frames, scope, depth, goal)
+    case Lexer.TokenInfo{Lexer.CharToken{}, text, +beg, +end, _, _} <> rest PatternExpect{Ast.QOne{}, _}:
+      pattern_literal_result(parse_char_literal(file, text, beg, end, rest), file, beg, end, frames, scope, depth, goal)
+    case Lexer.TokenInfo{Lexer.StringToken{}, text, +beg, +end, _, _} <> rest PatternExpect{Ast.QOne{}, _}:
+      pattern_literal_result(parse_string(file, text, beg, end, rest), file, beg, end, frames, scope, depth, goal)
     case Lexer.TokenInfo{Lexer.SymbolToken{}, "+", beg, ignored_end, ignored_line, ignored_col} <> +rest PatternExpect{Ast.QOne{}, +ignored_beg}:
       pattern_scan(rest, file, PatternExpect{Ast.QMany{}, beg}, frames, scope, depth, goal)
     case Lexer.TokenInfo{_, "-", beg, end, _, _} <> +rest PatternExpect{Ast.QOne{}, _}:
@@ -1958,23 +2244,33 @@ def pattern_scan(+tokens: List<&2, Lexer.Token>, +file: String, mode: PatternSca
     case Lexer.TokenInfo{Lexer.NameToken{}, key, _, end, _, _} <> (Lexer.TokenInfo{_, "{", _, _, _, _} <> +after_open) PatternExpect{quantity, beg}:
       pattern_scan(after_open, file, PatternExpect{Ast.QOne{}, 0n}, PatternFrameOf{key, beg, end, Nil{}, scope, depth} <> frames, scope, depth, goal)
     case Lexer.TokenInfo{Lexer.NameToken{}, +key, beg, end, _, _} <> +rest PatternExpect{Ast.QOne{}, _}:
-      pattern_scan(rest, file, PatternCompleted{Ast.PatternVar{key, depth, Ast.QOne{}, span(file, beg, end)}}, frames, extend_scope(key, depth, scope), depth + 1n, goal)
+      pattern_scan(rest, file, PatternCompleted{Ast.PatternVar{key, depth, Ast.QOne{}, span(file, beg, end)}}, frames, extend_scope(key, depth, scope), (depth + 1n : Nat), goal)
     case Lexer.TokenInfo{Lexer.NameToken{}, +key, _, end, _, _} <> +rest PatternExpect{quantity, beg}:
-      pattern_scan(rest, file, PatternCompleted{Ast.PatternVar{key, depth, quantity, span(file, beg, end)}}, frames, extend_scope(key, depth, scope), depth + 1n, goal)
+      pattern_scan(rest, file, PatternCompleted{Ast.PatternVar{key, depth, quantity, span(file, beg, end)}}, frames, extend_scope(key, depth, scope), (depth + 1n : Nat), goal)
     case Lexer.TokenInfo{Lexer.NumberToken{}, +text, +beg, +end, line, col} <> +rest PatternExpect{quantity, _}:
-      pattern_scan(rest, file, pattern_number_mode(has_nat_suffix(text), file, text, beg, end, line, col, quantity), frames, scope, depth, goal)
+      pattern_number_start(has_nat_suffix(text), file, text, beg, end, line, col, quantity, rest, frames, scope, depth, goal)
     case _ PatternNoNat{number, quantity, beg, end}:
       pattern_finish(goal, Ast.PatternVar{"", depth, quantity, span(file, beg, end)}, number <> tokens, scope, depth, False{})
     case _ PatternBadNat{beg, end}:
       pattern_finish(goal, Ast.PatternVar{"", depth, Ast.QOne{}, span(file, beg, end)}, tokens, scope, depth, False{})
     case Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _} <> +rest PatternExpect{quantity, beg}:
       pattern_scan(rest, file, PatternExpect{quantity, beg}, frames, scope, depth, goal)
+    case Lexer.TokenInfo{_, "]", _, close_end, _, _} <> rest PatternExpect{quantity, beg}:
+      match frames:
+        case PatternFrameOf{"[]", start, _, fields, _, _} <> parents:
+          pattern_scan(rest, file, PatternCompleted{make_pattern_list(fields, file, start, close_end)}, parents, scope, depth, goal)
+        case _:
+          pattern_finish(goal, Ast.PatternVar{"", depth, quantity, span(file, beg, beg)}, tokens, scope, depth, False{})
     case Lexer.TokenInfo{_, "}", _, close_end, _, _} <> +rest PatternExpect{quantity, +beg}:
       match frames:
+        case PatternFrameOf{"[]", start, _, fields, root_scope, root_depth} <> _:
+          pattern_finish(goal, make_pattern_list(fields, file, start, close_end), tokens, root_scope, root_depth, False{})
         case PatternFrameOf{key, start, end, fields, root_scope, root_depth} <> parents:
           pattern_scan(rest, file, PatternCompleted{Ast.PatternCtr{key, List.reverse(&2, Ast.SyntaxPattern, fields), span(file, start, close_end)}}, parents, scope, depth, goal)
         case Nil{}:
           pattern_finish(goal, Ast.PatternVar{"", depth, quantity, span(file, beg, beg)}, tokens, scope, depth, False{})
+    case Lexer.TokenInfo{_, "<>", _, _, _, _} <> rest PatternCompleted{left}:
+      pattern_cons_result(parse_pattern_atom(file, rest, scope, depth), file, left, frames, scope, depth, goal)
     case Lexer.TokenInfo{_, ",", _, _, _, _} <> +rest PatternCompleted{pattern}:
       match frames:
         case PatternFrameOf{key, beg, end, fields, root_scope, root_depth} <> parents:
@@ -1995,8 +2291,16 @@ def pattern_scan(+tokens: List<&2, Lexer.Token>, +file: String, mode: PatternSca
               PatternSingleOutcome{pattern, tokens, scope, depth, True{}}
             case PatternCaseGoal{acc, before_scope, before_depth}:
               PatternCaseOutcome{List.reverse(&2, Ast.SyntaxPattern, pattern <> acc), tokens, scope, depth, True{}}
+    case Lexer.TokenInfo{_, "]", _, close_end, _, _} <> rest PatternCompleted{pattern}:
+      match frames:
+        case PatternFrameOf{"[]", beg, _, fields, _, _} <> parents:
+          pattern_scan(rest, file, PatternCompleted{make_pattern_list(pattern <> fields, file, beg, close_end)}, parents, scope, depth, goal)
+        case _:
+          pattern_finish(goal, pattern, tokens, scope, depth, False{})
     case Lexer.TokenInfo{_, "}", _, close_end, _, _} <> +rest PatternCompleted{pattern}:
       match frames:
+        case PatternFrameOf{"[]", beg, _, fields, root_scope, root_depth} <> _:
+          pattern_finish(goal, make_pattern_list(pattern <> fields, file, beg, close_end), tokens, root_scope, root_depth, False{})
         case PatternFrameOf{key, beg, end, fields, root_scope, root_depth} <> parents:
           pattern_scan(rest, file, PatternCompleted{Ast.PatternCtr{key, List.reverse(&2, Ast.SyntaxPattern, pattern <> fields), span(file, beg, close_end)}}, parents, scope, depth, goal)
         case Nil{}:
@@ -2020,7 +2324,7 @@ def pattern_scan(+tokens: List<&2, Lexer.Token>, +file: String, mode: PatternSca
     case Lexer.TokenInfo{Lexer.NameToken{}, +key, beg, end, _, _} <> +rest PatternCompleted{pattern}:
       match frames:
         case PatternFrameOf{parent, start, parent_end, fields, root_scope, root_depth} <> parents:
-          pattern_scan(rest, file, PatternCompleted{Ast.PatternVar{key, depth, Ast.QOne{}, span(file, beg, end)}}, PatternFrameOf{parent, start, parent_end, pattern <> fields, root_scope, root_depth} <> parents, extend_scope(key, depth, scope), depth + 1n, goal)
+          pattern_scan(rest, file, PatternCompleted{Ast.PatternVar{key, depth, Ast.QOne{}, span(file, beg, end)}}, PatternFrameOf{parent, start, parent_end, pattern <> fields, root_scope, root_depth} <> parents, extend_scope(key, depth, scope), (depth + 1n : Nat), goal)
         case Nil{}:
           pattern_finish(goal, pattern, tokens, scope, depth, True{})
     case Lexer.TokenInfo{_, "+", beg, _, _, _} <> +rest PatternCompleted{pattern}:
@@ -2232,7 +2536,7 @@ def parse_atom_scan(+file: String, tokens: List<&2, Lexer.Token>, scanned: List<
             case "%":
               parse_rewrite(file, rest, beg, end, scope, depth)
             case "@":
-              parse_all(file, rest, scope, depth, beg, Ast.QMany{})
+              parse_all(file, rest, scope, depth, beg)
             case "&":
               parse_amp(file, rest, scope, depth, beg, end)
             case "+":
@@ -2299,7 +2603,7 @@ def parse_do_typed_bind_value_result(result: (Ast.SyntaxTerm & List<&2, Lexer.To
   match result:
     case ((value, after_value), True{}):
       next_scope = extend_scope(key, depth, scope)
-      with_term_result(parse_do_return(file, monad, args, skip_rewrite_semicolon(after_value), beg, end, next_scope, depth + 1n, col), body => after_body => ok_body => parse_do_typed_bind_body_result(ok_body, body, after_body, file, monad, args, key, key_beg, ty, value, beg, end, depth))
+      with_term_result(parse_do_return(file, monad, args, skip_rewrite_semicolon(after_value), beg, end, next_scope, (depth + 1n : Nat), col), body => after_body => ok_body => parse_do_typed_bind_body_result(ok_body, body, after_body, file, monad, args, key, key_beg, ty, value, beg, end, depth))
     case ((value, after_value), False{}):
       ((value, after_value), False{})
 
@@ -2326,7 +2630,7 @@ def parse_do_assignment_value_result(result: (Ast.SyntaxTerm & List<&2, Lexer.To
   match result:
     case ((value, after_value), True{}):
       next_scope = extend_scope(key, depth, scope)
-      with_term_result(parse_do_return(file, monad, args, skip_rewrite_semicolon(after_value), beg, end, next_scope, depth + 1n, col), body => after_body => ok_body => parse_do_assignment_body_result(ok_body, body, after_body, file, key, key_beg, depth, ty, value))
+      with_term_result(parse_do_return(file, monad, args, skip_rewrite_semicolon(after_value), beg, end, next_scope, (depth + 1n : Nat), col), body => after_body => ok_body => parse_do_assignment_body_result(ok_body, body, after_body, file, key, key_beg, depth, ty, value))
     case ((value, after_value), False{}):
       ((value, after_value), False{})
 
@@ -2359,7 +2663,7 @@ def parse_do_untyped_after_action(+file: String, monad: String, args: List<&2, A
         case _:
           parse_do_untyped_step(file, monad, args, action, after_action, beg, end, scope, depth, col)
     case Nil{}:
-      ((action, after_action), True{})
+      parse_do_final_action(file, monad, args, action, after_action)
 
 def parse_do_untyped(+file: String, monad: String, args: List<&2, Ast.SyntaxTerm>, tokens: List<&2, Lexer.Token>, beg: Nat, end: Nat, +scope: List<&2, Scope>, +depth: Nat, col: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   parse_do_untyped_result(parse_term(file, tokens, scope, depth, 0n), file, monad, args, beg, end, scope, depth, col)
@@ -2372,11 +2676,11 @@ def parse_do_untyped_step_after_check(has_more: Bool, +file: String, monad: Stri
     case True{}:
       parse_do_bind(file, monad, args, Ast.TermRef{ "Unit",  span(file, beg, end)}, action, tokens, beg, end, scope, depth, col)
     case False{}:
-      ((action, tokens), True{})
+      parse_do_final_action(file, monad, args, action, tokens)
 
 def parse_do_bind(+file: String, +monad: String, +args: List<&2, Ast.SyntaxTerm>, ty: Ast.SyntaxTerm, value: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, +beg: Nat, +end: Nat, scope: List<&2, Scope>, +depth: Nat, col: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   next_scope = extend_scope("_", depth, scope)
-  with_term_result(parse_do_return(file, monad, args, skip_rewrite_semicolon(tokens), beg, end, next_scope, depth + 1n, col), body => after_body => ok_body => parse_do_bind_body_result(ok_body, body, after_body, file, monad, args, ty, value, beg, end, depth))
+  with_term_result(parse_do_return(file, monad, args, skip_rewrite_semicolon(tokens), beg, end, next_scope, (depth + 1n : Nat), col), body => after_body => ok_body => parse_do_bind_body_result(ok_body, body, after_body, file, monad, args, ty, value, beg, end, depth))
 def parse_amp(file: String, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, beg: Nat, end: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match tokens:
     case +quantity <> rest:
@@ -2388,9 +2692,9 @@ def parse_amp(file: String, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope
         case Lexer.TokenInfo{ _, "2",  _,  _,  _,  _}:
           ((Ast.TermQuantity{ Ast.QMany{},  span(file, beg, token_end(quantity))}, rest), True{})
         case _:
-          parse_all(file, tokens, scope, depth, beg, Ast.QOne{})
+          parse_all(file, tokens, scope, depth, beg)
     case Nil{}:
-      parse_all(file, Nil{}, scope, depth, beg, Ast.QOne{})
+      parse_all(file, Nil{}, scope, depth, beg)
 
 def parse_number(file: String, +text: String, beg: Nat, end: Nat, rest: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   parse_number_suffix(has_nat_suffix(text), file, text, beg, end, rest, scope, depth)
@@ -2427,12 +2731,19 @@ def parse_number_nat_value(has_suffix: Bool, value: Nat, file: String, beg: Nat,
     case False{}:
       ((u32_literal(file, value, beg, end), rest), True{})
 
-def parse_nat_literal(+file: String, value: Nat, beg: Nat, end: Nat, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+def parse_nat_literal_plus(adjacent: Bool, +file: String, value: Nat, beg: Nat, end: Nat, tokens: List<&2, Lexer.Token>, +rest: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+  match adjacent:
+    case True{}:
+      parse_nat_literal_tail(parse_term(file, rest, scope, depth, 0n), file, value, beg, end, rest)
+    case False{}:
+      ((nat_literal(file, value, beg, end), tokens), True{})
+
+def parse_nat_literal(+file: String, value: Nat, beg: Nat, +end: Nat, +tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match tokens:
     case +plus <> rest:
       match plus:
-        case Lexer.TokenInfo{_, "+", _, _, _, _}:
-          parse_nat_literal_tail(parse_term(file, rest, scope, depth, 0n), file, value, beg, end)
+        case Lexer.TokenInfo{_, "+", plus_beg, _, _, _}:
+          parse_nat_literal_plus(Nat.is_eq(end, plus_beg), file, value, beg, end, tokens, rest, scope, depth)
         case _:
           ((nat_literal(file, value, beg, end), tokens), True{})
     case Nil{}:
@@ -2747,7 +3058,7 @@ def parse_rewrite(+file: String, tokens: List<&2, Lexer.Token>, beg: Nat, end: N
 def parse_rewrite_motive_result(ok_motive: Bool, +motive: Ast.SyntaxTerm, after_motive: List<&2, Lexer.Token>, +file: String, equation: Ast.SyntaxTerm, key: String, +beg: Nat, scope: List<&2, Scope>, +depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok_motive:
     case True{}:
-      inner = { Ast.TermLam{None{}, key, depth + 1n, motive, span(file, beg, token_end_first(motive))} : Ast.SyntaxTerm }
+      inner = { Ast.TermLam{None{}, key, (depth + 1n : Nat), motive, span(file, beg, token_end_first(motive))} : Ast.SyntaxTerm }
       proof = { Ast.TermLam{None{}, "_", depth, inner, span(file, beg, token_end_first(motive))} : Ast.SyntaxTerm }
       body_tokens = skip_rewrite_semicolon(after_motive)
       with_term_result(parse_term(file, body_tokens, scope, depth, 0n), body => after_body => ok_body => parse_rewrite_body_result(ok_body, body, after_body, equation, proof, file, beg))
@@ -2759,9 +3070,10 @@ def parse_rewrite_motive(+file: String, equation: Ast.SyntaxTerm, +key: String, 
     case +colon <> after_colon:
       match colon:
         case Lexer.TokenInfo{ _, ":",  _,  _,  _,  _}:
-          base_scope = extend_scope("_", depth, scope)
-          motive_scope = extend_scope(key, depth + 1n, base_scope)
-          with_term_result(parse_term(file, after_colon, motive_scope, depth + 2n, 0n), motive => after_motive => ok_motive => parse_rewrite_motive_result(ok_motive, motive, after_motive, file, equation, key, beg, scope, depth))
+          # Rewrite exposes its implicit value binder; ordinary "_" binders do not.
+          base_scope = { Scope{"_", depth} <> scope : List<&2, Scope> }
+          motive_scope = extend_scope(key, (depth + 1n : Nat), base_scope)
+          with_term_result(parse_term(file, after_colon, motive_scope, (depth + 2n : Nat), 0n), motive => after_motive => ok_motive => parse_rewrite_motive_result(ok_motive, motive, after_motive, file, equation, key, beg, scope, depth))
         case _:
           ((Ast.TermHole{ "parse-error: expected :",  span(file, token_beg(colon), token_end(colon))}, tokens), False{})
     case Nil{}:
@@ -2769,19 +3081,34 @@ def parse_rewrite_motive(+file: String, equation: Ast.SyntaxTerm, +key: String, 
 
 def parse_name_term(+file: String, +key: String, beg: Nat, end: Nat, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, +depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match tokens:
-    case +next <> rest:
+    case +next <> +rest:
       match next:
         case Lexer.TokenInfo{ _, "=>",  _,  _,  _,  _}:
           next_scope = extend_scope(key, depth, scope)
-          with_term_result(parse_term(file, rest, next_scope, depth + 1n, 0n), body => after => ok => parse_name_lambda_result(ok, body, after, file, key, beg, end, depth))
+          with_term_result(parse_term(file, rest, next_scope, (depth + 1n : Nat), 0n), body => after => ok => parse_name_lambda_result(ok, body, after, file, key, beg, end, depth))
         case Lexer.TokenInfo{ _, "{",  _,  _,  _,  _}:
-          with_args_result(parse_term_args(file, rest, "}", scope, depth, Nil{}), args => after_args => ok_args => parse_name_constructor_result(ok_args, args, after_args, file, key, beg, end))
+          with_args_result(parse_term_args(file, rest, "}", scope, depth, Nil{}), args => after_args => ok_args => parse_name_constructor_result(ok_args, args, after_args, file, key, beg, end, rest))
         case _:
           parse_name_term_lookup(lookup(key, scope, depth), file, key, beg, end, tokens)
     case Nil{}:
       parse_name_term_lookup(lookup(key, scope, depth), file, key, beg, end, Nil{})
 
+def split_angle_close(+tokens: List<&2, Lexer.Token>) -> List<&2, Lexer.Token>:
+  match tokens:
+    case Lexer.TokenInfo{Lexer.SymbolToken{}, ">>", +beg, +end, +line, +col} <> rest:
+      Lexer.TokenInfo{Lexer.SymbolToken{}, ">", beg, (beg + 1n : Nat), line, col} <> Lexer.TokenInfo{Lexer.SymbolToken{}, ">", (beg + 1n : Nat), end, line, (col + 1n : Nat)} <> rest
+    case _:
+      tokens
+
+def angle_close_tokens(is_angle: Bool, tokens: List<&2, Lexer.Token>) -> List<&2, Lexer.Token>:
+  match is_angle:
+    case True{}: split_angle_close(tokens)
+    case False{}: tokens
+
 def parse_term_args(file: String, tokens: List<&2, Lexer.Token>, +close: String, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.SyntaxTerm>) -> (List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool:
+  parse_term_args_tokens(file, angle_close_tokens(String.eq(close, ">"), tokens), close, scope, depth, acc)
+
+def parse_term_args_tokens(file: String, +tokens: List<&2, Lexer.Token>, +close: String, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.SyntaxTerm>) -> (List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool:
   match tokens:
     case +token <> +rest:
       parse_term_args_first(Bool.or(String.eq(token_text(token), close), Bool.and(String.eq(close, ">"), String.eq(token_text(token), "<>"))), file, token, rest, tokens, close, scope, depth, acc)
@@ -2789,6 +3116,9 @@ def parse_term_args(file: String, tokens: List<&2, Lexer.Token>, +close: String,
       ((List.reverse(&2, Ast.SyntaxTerm, acc), Nil{}), False{})
 
 def parse_term_args_first_result(ok: Bool, term: Ast.SyntaxTerm, after: List<&2, Lexer.Token>, file: String, tokens: List<&2, Lexer.Token>, +close: String, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.SyntaxTerm>) -> (List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool:
+  parse_term_args_first_result_tokens(ok, term, angle_close_tokens(String.eq(close, ">"), after), file, tokens, close, scope, depth, acc)
+
+def parse_term_args_first_result_tokens(ok: Bool, term: Ast.SyntaxTerm, +after: List<&2, Lexer.Token>, file: String, tokens: List<&2, Lexer.Token>, +close: String, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.SyntaxTerm>) -> (List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool:
   match ok after:
     case True{} +separator <> +tail:
       match separator:
@@ -2812,7 +3142,8 @@ def parse_term_args_after_separator(is_close: Bool, file: String, term: Ast.Synt
       ((List.reverse(&2, Ast.SyntaxTerm, term <> acc), tail), True{})
     case False{}:
       parse_term_args(file, after, close, scope, depth, term <> acc)
-def parse_all(file: String, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, beg: Nat, quantity: Ast.Quantity) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+def parse_all(file: String, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, beg: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+  # An unmarked dependent binder is linear; only its own + or - overrides it.
   match tokens:
     case +prefix <> rest:
       match prefix:
@@ -2821,9 +3152,9 @@ def parse_all(file: String, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope
         case Lexer.TokenInfo{ _, "-",  _,  _,  _,  _}:
           parse_all_named(file, rest, scope, depth, beg, Ast.QZero{})
         case _:
-          parse_all_named(file, tokens, scope, depth, beg, quantity)
+          parse_all_named(file, tokens, scope, depth, beg, Ast.QOne{})
     case Nil{}:
-      parse_all_named(file, Nil{}, scope, depth, beg, quantity)
+      parse_all_named(file, Nil{}, scope, depth, beg, Ast.QOne{})
 
 def parse_all_named_type_result(ok_ty: Bool, ty: Ast.SyntaxTerm, after_ty: List<&2, Lexer.Token>, +file: String, +key: String, key_end: Nat, beg: Nat, quantity: Ast.Quantity, scope: List<&2, Scope>, +depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok_ty after_ty:
@@ -2832,7 +3163,7 @@ def parse_all_named_type_result(ok_ty: Bool, ty: Ast.SyntaxTerm, after_ty: List<
         case Lexer.TokenInfo{ _, "->", _, _, _, _}:
           idx = depth
           next_scope = extend_scope(key, depth, scope)
-          with_term_result(parse_term(file, after_arrow, next_scope, depth + 1n, 0n), body => after_body => ok_body => parse_all_named_body_result(ok_body, body, after_body, file, key, key_end, beg, quantity, ty, idx))
+          with_term_result(parse_term(file, after_arrow, next_scope, (depth + 1n : Nat), 0n), body => after_body => ok_body => parse_all_named_body_result(ok_body, body, after_body, file, key, key_end, beg, quantity, ty, idx))
         case _:
           ((Ast.TermHole{ "parse-error: expected ->", span(file, token_beg(arrow), token_end(arrow))}, after_ty), False{})
     case _ _:
@@ -2867,7 +3198,7 @@ def parse_many_lambda(+file: String, tokens: List<&2, Lexer.Token>, +beg: Nat, s
               match arrow:
                 case Lexer.TokenInfo{ _, "=>",  _,  _,  _,  _}:
                   next_scope = extend_scope(key, depth, scope)
-                  with_term_result(parse_term(file, after_arrow, next_scope, depth + 1n, 0n), body => after_body => ok_body => parse_many_lambda_body_result(ok_body, body, after_body, file, key, beg, end, depth))
+                  with_term_result(parse_term(file, after_arrow, next_scope, (depth + 1n : Nat), 0n), body => after_body => ok_body => parse_many_lambda_body_result(ok_body, body, after_body, file, key, beg, end, depth))
                 case _:
                   parse_plus_sugar(file, key, beg, name_beg, end, rest, scope, depth)
             case Nil{}:
@@ -2911,63 +3242,49 @@ def parse_plus_args_spaced(is_spaced: Bool, +file: String, +head: Ast.SyntaxTerm
     case False{}:
       with_args_result(parse_term_args(file, rest, ">", scope, depth, Nil{}), args => after_args => ok_args => parse_plus_args_result(ok_args, args, after_args, file, head, beg, open))
 
-def parse_term_atom_result(ok: Bool, left: Ast.SyntaxTerm, rest: List<&2, Lexer.Token>, file: String, scope: List<&2, Scope>, depth: Nat, level: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+def parse_term_atom_result(ok: Bool, +left: Ast.SyntaxTerm, +rest: List<&2, Lexer.Token>, file: String, scope: List<&2, Scope>, depth: Nat, level: Nat, original: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok:
     case True{}:
-      parse_term_tail(file, left, rest, scope, depth, level)
+      parse_term_tail_at(file, left, rest, scope, depth, level, consumed_token_end(original, rest, token_end_first(left)))
     case False{}:
       ((left, rest), False{})
 
-def parse_term(+file: String, tokens: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat, level: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
-  with_term_result(parse_atom(file, tokens, scope, depth), left => rest => ok => parse_term_atom_result(ok, left, rest, file, scope, depth, level))
-
-def parse_empty_generic_follow(is_empty: Bool, file: String, +left: Ast.SyntaxTerm, rest: List<&2, Lexer.Token>, all_tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, level: Nat, end: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
-  match is_empty:
-    case True{}:
-      parse_empty_generic_name(term_name(left), file, left, rest, all_tokens, scope, depth, level, end)
-    case False{}:
-      parse_operator_right(file, "Con", 5n, left, rest, scope, depth, level, end, True{})
-
-def parse_empty_generic_name(found: Maybe<&2, String>, +file: String, +left: Ast.SyntaxTerm, rest: List<&2, Lexer.Token>, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, level: Nat, end: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
-  match found:
-    case Some{ _}:
-      fill = { Ast.TermFill{ left,  Nil{},  span(file, token_beg_first(left), end)} : Ast.SyntaxTerm }
-      parse_term_tail(file, fill, rest, scope, depth, level)
-    case None{}:
-      parse_operator_right(file, "Con", 5n, left, rest, scope, depth, level, end, True{})
+def parse_term(+file: String, +tokens: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat, level: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+  with_term_result(parse_atom(file, tokens, scope, depth), left => rest => ok => parse_term_atom_result(ok, left, rest, file, scope, depth, level, tokens))
 
 def parse_glued_operator(is_glued: Bool, file: String, key: String, priority: Nat, left: Ast.SyntaxTerm, remaining: List<&2, Lexer.Token>, all_tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, level: Nat, end: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match is_glued:
     case True{}:
       ((left, all_tokens), True{})
     case False{}:
-      parse_operator(file, key, priority, left, remaining, scope, depth, level, end)
+      parse_operator(file, key, priority, left, remaining, scope, depth, level, end, all_tokens)
 
 def parse_spaced_operator(is_spaced: Bool, file: String, left: Ast.SyntaxTerm, remaining: List<&2, Lexer.Token>, all_tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, level: Nat, end: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match is_spaced:
     case True{}:
-      parse_operator(file, ".mod", 11n, left, remaining, scope, depth, level, end)
+      parse_operator(file, ".mod", 11n, left, remaining, scope, depth, level, end, all_tokens)
     case False{}:
       ((left, all_tokens), True{})
 def parse_comparison_operator(is_spaced: Bool, file: String, key: String, priority: Nat, left: Ast.SyntaxTerm, remaining: List<&2, Lexer.Token>, all_tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, level: Nat, end: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match is_spaced:
     case True{}:
-      parse_operator(file, key, priority, left, remaining, scope, depth, level, end)
+      parse_operator(file, key, priority, left, remaining, scope, depth, level, end, all_tokens)
     case False{}:
       ((left, all_tokens), True{})
 
 
-def parse_application_applied_result(ok_apply: Bool, applied: Ast.SyntaxTerm, after_args: List<&2, Lexer.Token>, file: String, scope: List<&2, Scope>, depth: Nat, level: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+def parse_application_applied_result(ok_apply: Bool, applied: Ast.SyntaxTerm, after_args: List<&2, Lexer.Token>, file: String, scope: List<&2, Scope>, depth: Nat, level: Nat, consumed_end: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok_apply:
     case True{}:
-      parse_term_tail(file, applied, after_args, scope, depth, level)
+      parse_term_tail_at(file, applied, after_args, scope, depth, level, consumed_end)
     case False{}:
       ((applied, after_args), False{})
 
-def parse_application_args_result(ok_args: Bool, args: List<&2, Ast.SyntaxTerm>, after_args: List<&2, Lexer.Token>, +file: String, +head: Ast.SyntaxTerm, failure: Ast.SyntaxTerm, scope: List<&2, Scope>, depth: Nat, level: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+def parse_application_args_result(ok_args: Bool, args: List<&2, Ast.SyntaxTerm>, +after_args: List<&2, Lexer.Token>, +file: String, +head: Ast.SyntaxTerm, failure: Ast.SyntaxTerm, scope: List<&2, Scope>, depth: Nat, level: Nat, argument_tokens: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok_args:
     case True{}:
-      with_term_bool(apply_terms(args, file, head, token_beg_first(head)), applied => ok_apply => parse_application_applied_result(ok_apply, applied, after_args, file, scope, depth, level))
+      consumed_end = consumed_token_end(argument_tokens, after_args, token_end_first(head))
+      with_term_bool(apply_terms(args, file, head, token_beg_first(head)), applied => ok_apply => parse_application_applied_result(ok_apply, applied, after_args, file, scope, depth, level, consumed_end))
     case False{}:
       ((failure, after_args), False{})
 
@@ -2977,7 +3294,7 @@ def parse_bang_call(is_adjacent: Bool, +file: String, left: Ast.SyntaxTerm, +ope
       match left:
         case Ast.TermRef{ +_,  +_}:
           bang = { Ast.TermBang{ left,  span(file, token_beg_first(left), token_end(next))} : Ast.SyntaxTerm }
-          with_args_result(parse_term_args(file, after_open, ")", scope, depth, Nil{}), args => after_args => ok_args => parse_application_args_result(ok_args, args, after_args, file, bang, Ast.TermHole{"parse-error: expected bang-call arguments", span(file, token_beg(open), token_end(open))}, scope, depth, level))
+          with_args_result(parse_term_args(file, after_open, ")", scope, depth, Nil{}), args => after_args => ok_args => parse_application_args_result(ok_args, args, after_args, file, bang, Ast.TermHole{"parse-error: expected bang-call arguments", span(file, token_beg(open), token_end(open))}, scope, depth, level, after_open))
         case _:
           ((Ast.TermHole{ "parse-error: expected a named reference before !",  span(file, token_beg_first(left), token_end(next))}, rest), False{})
     case False{}:
@@ -2986,22 +3303,40 @@ def parse_bang_call(is_adjacent: Bool, +file: String, left: Ast.SyntaxTerm, +ope
 def parse_term_arrow_result(ok: Bool, right: Ast.SyntaxTerm, +after: List<&2, Lexer.Token>, +file: String, +left: Ast.SyntaxTerm, scope: List<&2, Scope>, +depth: Nat, level: Nat, end: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok:
     case True{}:
-      parse_term_tail(file, Ast.TermAll{Ast.QOne{}, "_", depth, left, right, span(file, token_beg_first(left), token_end_of(after, end))}, after, scope, depth + 1n, level)
+      parse_term_tail(file, Ast.TermAll{Ast.QOne{}, "_", depth, left, right, span(file, token_beg_first(left), token_end_of(after, end))}, after, scope, (depth + 1n : Nat), level)
     case False{}:
       ((right, after), False{})
 
+def parse_term_tail_after_line(file: String, left: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, level: Nat, all_tokens: List<&2, Lexer.Token>, last_end: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+  match tokens:
+    case +next <> +rest:
+      match next:
+        case Lexer.TokenInfo{ _, "(", _, _, _, _}:
+          ((left, all_tokens), True{})
+        case Lexer.TokenInfo{ _, "[", _, _, _, _}:
+          ((left, all_tokens), True{})
+        case _:
+          parse_term_tail_at(file, left, tokens, scope, depth, level, last_end)
+    case Nil{}:
+      ((left, tokens), True{})
+
 def parse_term_tail(+file: String, +left: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat, level: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+  parse_term_tail_at(file, left, tokens, scope, depth, level, token_end_first(left))
+
+# Syntactic consumption and AST spans differ for a grouped single term.
+# Operator adjacency follows the consumed closing token, not the inner span.
+def parse_term_tail_at(+file: String, +left: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat, level: Nat, +last_end: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match tokens:
     case +next <> +rest:
       match next:
         case Lexer.TokenInfo{ Lexer.NewlineToken{},  _,  _,  _,  _,  _}:
-          ((left, rest), True{})
+          parse_term_tail_after_line(file, left, skip_lines(rest), scope, depth, level, tokens, last_end)
         case Lexer.TokenInfo{ Lexer.SymbolToken{}, text, beg, end,  _,  _}:
           match text:
             case "->":
               match level:
                 case 0n:
-                  with_term_result(parse_term(file, rest, scope, depth, 0n), right => after => ok => parse_term_arrow_result(ok, right, after, file, left, scope, depth, level, end))
+                  with_term_result(parse_term(file, rest, extend_scope("_", depth, scope), (depth + 1n : Nat), 0n), right => after => ok => parse_term_arrow_result(ok, right, after, file, left, scope, depth, level, end))
                 case _:
                   ((left, tokens), True{})
             case "<":
@@ -3009,29 +3344,29 @@ def parse_term_tail(+file: String, +left: Ast.SyntaxTerm, tokens: List<&2, Lexer
             case "<&>":
               parse_min_operator(file, left, rest, scope, depth, level, end)
             case "<>":
-              parse_empty_generic_follow(empty_generic_follow(rest), file, left, rest, tokens, scope, depth, level, end)
+              parse_operator_right(file, "Con", 5n, left, rest, scope, depth, level, end, True{})
             case "++":
               parse_operator_right(file, "String.append", 5n, left, rest, scope, depth, level, end, True{})
             case "||":
-              parse_operator(file, "Bool.or", 2n, left, rest, scope, depth, level, end)
+              parse_operator(file, "Bool.or", 2n, left, rest, scope, depth, level, end, tokens)
             case "&&":
-              parse_operator(file, "Bool.and", 3n, left, rest, scope, depth, level, end)
+              parse_operator(file, "Bool.and", 3n, left, rest, scope, depth, level, end, tokens)
             case "<=":
-              parse_comparison_operator(Nat.is_lt(token_end_first(left), beg), file, ".is_le", 4n, left, rest, tokens, scope, depth, level, end)
+              parse_comparison_operator(Nat.is_lt(last_end, beg), file, ".is_le", 4n, left, rest, tokens, scope, depth, level, end)
             case ">=":
-              parse_comparison_operator(Nat.is_lt(token_end_first(left), beg), file, ".is_ge", 4n, left, rest, tokens, scope, depth, level, end)
+              parse_comparison_operator(Nat.is_lt(last_end, beg), file, ".is_ge", 4n, left, rest, tokens, scope, depth, level, end)
             case ">":
-              parse_comparison_operator(Nat.is_lt(token_end_first(left), beg), file, ".is_gt", 4n, left, rest, tokens, scope, depth, level, end)
+              parse_comparison_operator(Nat.is_lt(last_end, beg), file, ".is_gt", 4n, left, rest, tokens, scope, depth, level, end)
             case ".|.":
-              parse_operator(file, ".or", 6n, left, rest, scope, depth, level, end)
+              parse_operator(file, ".or", 6n, left, rest, scope, depth, level, end, tokens)
             case ".^.":
-              parse_operator(file, ".xor", 7n, left, rest, scope, depth, level, end)
+              parse_operator(file, ".xor", 7n, left, rest, scope, depth, level, end, tokens)
             case ".&.":
-              parse_operator(file, ".and", 8n, left, rest, scope, depth, level, end)
+              parse_operator(file, ".and", 8n, left, rest, scope, depth, level, end, tokens)
             case "<<":
-              parse_operator(file, ".shln", 9n, left, rest, scope, depth, level, end)
+              parse_operator(file, ".shln", 9n, left, rest, scope, depth, level, end, tokens)
             case ">>":
-              parse_comparison_operator(Nat.is_lt(token_end_first(left), beg), file, ".shrn", 9n, left, rest, tokens, scope, depth, level, end)
+              parse_comparison_operator(Nat.is_lt(last_end, beg), file, ".shrn", 9n, left, rest, tokens, scope, depth, level, end)
             case "+":
               parse_glued_operator(operator_glued_name(end, rest), file, ".add", 10n, left, rest, tokens, scope, depth, level, end)
             case "&":
@@ -3041,9 +3376,9 @@ def parse_term_tail(+file: String, +left: Ast.SyntaxTerm, tokens: List<&2, Lexer
             case "-":
               parse_glued_operator(operator_glued_name(end, rest), file, ".sub", 10n, left, rest, tokens, scope, depth, level, end)
             case "*":
-              parse_operator(file, ".mul", 11n, left, rest, scope, depth, level, end)
+              parse_operator(file, ".mul", 11n, left, rest, scope, depth, level, end, tokens)
             case "/":
-              parse_operator(file, ".div", 11n, left, rest, scope, depth, level, end)
+              parse_operator(file, ".div", 11n, left, rest, scope, depth, level, end, tokens)
             case "%":
               parse_spaced_operator(has_space_after(end, rest), file, left, rest, tokens, scope, depth, level, end)
             case "!":
@@ -3057,7 +3392,7 @@ def parse_term_tail(+file: String, +left: Ast.SyntaxTerm, tokens: List<&2, Lexer
                 case Nil{}:
                   ((left, tokens), True{})
             case "(":
-              with_args_result(parse_term_args(file, rest, ")", scope, depth, Nil{}), args => after_args => ok_args => parse_application_args_result(ok_args, args, after_args, file, left, Ast.TermHole{"parse-error: expected application arguments", span(file, token_end(next), token_end(next))}, scope, depth, level))
+              with_args_result(parse_term_args(file, rest, ")", scope, depth, Nil{}), args => after_args => ok_args => parse_application_args_result(ok_args, args, after_args, file, left, Ast.TermHole{"parse-error: expected application arguments", span(file, token_end(next), token_end(next))}, scope, depth, level, rest))
             case "[":
               parse_index_tail(file, left, rest, scope, depth, level, token_beg_first(left), end)
             case _:
@@ -3090,17 +3425,18 @@ def parse_less_named(found: Maybe<&2, String>, wants_many: Bool, +file: String, 
     case Some{ _}:
       match wants_many:
         case True{}:
-          with_args_result(parse_term_args(file, after_separator, ">", scope, depth, [right]), args => after_args => ok_args => parse_less_many_result(ok_args, args, after_args, file, left, separator, end, scope, depth, level))
+          with_args_result(parse_term_args(file, after_separator, ">", scope, depth, [right]), args => after_args => ok_args => parse_less_many_result(ok_args, args, after_args, file, left, separator, end, scope, depth, level, after_separator))
         case False{}:
           fill = { Ast.TermFill{ left,  [right],  span(file, token_beg_first(left), token_end(separator))} : Ast.SyntaxTerm }
           parse_term_tail(file, fill, after_separator, scope, depth, level)
     case None{}:
       ((Ast.TermHole{ "parse-error: expected a family name before type arguments",  span(file, token_beg_first(left), token_end(separator))}, after_separator), False{})
 
-def parse_less_many_result(ok_args: Bool, args: List<&2, Ast.SyntaxTerm>, +after_args: List<&2, Lexer.Token>, +file: String, +left: Ast.SyntaxTerm, +separator: Lexer.Token, end: Nat, scope: List<&2, Scope>, depth: Nat, level: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+
+def parse_less_many_result(ok_args: Bool, args: List<&2, Ast.SyntaxTerm>, +after_args: List<&2, Lexer.Token>, +file: String, +left: Ast.SyntaxTerm, +separator: Lexer.Token, end: Nat, scope: List<&2, Scope>, depth: Nat, level: Nat, argument_tokens: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok_args:
     case True{}:
-      fill = { Ast.TermFill{ left, args,  span(file, token_beg_first(left), token_end_of(after_args, end))} : Ast.SyntaxTerm }
+      fill = { Ast.TermFill{ left, args,  span(file, token_beg_first(left), consumed_token_end(argument_tokens, after_args, end))} : Ast.SyntaxTerm }
       parse_term_tail(file, fill, after_args, scope, depth, level)
     case False{}:
       ((Ast.TermHole{ "parse-error: expected datatype arguments",  span(file, token_beg(separator), token_end(separator))}, after_args), False{})
@@ -3116,6 +3452,9 @@ def parse_less_or_adt_args(+file: String, left: Ast.SyntaxTerm, +tokens: List<&2
   with_term_result(parse_term(file, tokens, scope, depth, 5n), right => after_right => ok_right => parse_less_right(ok_right, after_right, right, file, left, tokens, all_tokens, scope, depth, level, end))
 
 def parse_less_right(ok_right: Bool, after_right: List<&2, Lexer.Token>, right: Ast.SyntaxTerm, file: String, +left: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, all_tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, +level: Nat, end: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+  parse_less_right_tokens(ok_right, split_angle_close(after_right), right, file, left, tokens, all_tokens, scope, depth, level, end)
+
+def parse_less_right_tokens(ok_right: Bool, +after_right: List<&2, Lexer.Token>, right: Ast.SyntaxTerm, file: String, +left: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, all_tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, +level: Nat, end: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok_right after_right:
     case True{} +separator <> after_separator:
       match separator:
@@ -3179,13 +3518,16 @@ def parse_min_precedence(is_nested: Bool, +file: String, left: Ast.SyntaxTerm, t
     case False{}:
       with_term_result(parse_term(file, tokens, scope, depth, 5n), right => after => ok => parse_min_precedence_result(ok, right, after, file, left, scope, depth, level, end))
 
-def parse_pair_quantity(left_is_quantity: Bool, right_is_quantity: Bool, +file: String, +left: Ast.SyntaxTerm, right: Ast.SyntaxTerm, +after: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, level: Nat, end: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+def parse_pair_quantity(left_is_quantity: Bool, right_is_quantity: Bool, +file: String, +left: Ast.SyntaxTerm, right: Ast.SyntaxTerm, +after: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, level: Nat, +end: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match left_is_quantity right_is_quantity:
     case True{} True{}:
-      parse_term_tail(file, Ast.TermMin{left, right,  span(file, token_beg_first(left), token_end_of(after, end))}, after, scope, depth, level)
+      parse_term_tail_at(file, Ast.TermMin{left, right, span(file, token_beg_first(left), token_end_of(after, end))}, after, scope, depth, level, end)
     case _ _:
       pair_application(file, "Pair", left, right, after, scope, depth, level, end)
-def parse_pair_operator_result(ok: Bool, +right: Ast.SyntaxTerm, after: List<&2, Lexer.Token>, amp: Bool, file: String, +left: Ast.SyntaxTerm, scope: List<&2, Scope>, depth: Nat, level: Nat, end: Nat, tokens: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+def parse_pair_operator_result(ok: Bool, +right: Ast.SyntaxTerm, +after: List<&2, Lexer.Token>, amp: Bool, file: String, +left: Ast.SyntaxTerm, scope: List<&2, Scope>, depth: Nat, level: Nat, end: Nat, tokens: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+  parse_pair_operator_consumed(ok, right, after, amp, file, left, scope, depth, level, consumed_token_end(tokens, after, end))
+
+def parse_pair_operator_consumed(ok: Bool, +right: Ast.SyntaxTerm, after: List<&2, Lexer.Token>, amp: Bool, file: String, +left: Ast.SyntaxTerm, scope: List<&2, Scope>, depth: Nat, level: Nat, end: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok:
     case True{}:
       match amp:
@@ -3197,22 +3539,25 @@ def parse_pair_operator_result(ok: Bool, +right: Ast.SyntaxTerm, after: List<&2,
       ((right, after), False{})
 
 def parse_pair_operator(+file: String, left: Ast.SyntaxTerm, +tokens: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat, level: Nat, end: Nat, amp: Bool) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
-  match level:
-    case 0n:
+  parse_pair_operator_precedence(Nat.is_lt(1n, level), file, left, tokens, scope, depth, level, end, amp)
+
+def parse_pair_operator_precedence(is_nested: Bool, +file: String, left: Ast.SyntaxTerm, +tokens: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat, level: Nat, end: Nat, amp: Bool) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+  match is_nested:
+    case False{}:
       with_term_result(parse_term(file, tokens, scope, depth, 1n), right => after => ok => parse_pair_operator_result(ok, right, after, amp, file, left, scope, depth, level, end, tokens))
-    case _:
+    case True{}:
       ((left, tokens), True{})
 
-def pair_application_result(ok: Bool, term: Ast.SyntaxTerm, after: List<&2, Lexer.Token>, file: String, scope: List<&2, Scope>, depth: Nat, level: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+def pair_application_result(ok: Bool, term: Ast.SyntaxTerm, after: List<&2, Lexer.Token>, file: String, scope: List<&2, Scope>, depth: Nat, level: Nat, end: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok:
     case True{}:
-      parse_term_tail(file, term, after, scope, depth, level)
+      parse_term_tail_at(file, term, after, scope, depth, level, end)
     case False{}:
       ((term, after), False{})
 
-def pair_application(+file: String, key: String, +left: Ast.SyntaxTerm, right: Ast.SyntaxTerm, +after: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, level: Nat, end: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+def pair_application(+file: String, key: String, +left: Ast.SyntaxTerm, right: Ast.SyntaxTerm, +after: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, level: Nat, +end: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   span_value = span(file, token_beg_first(left), token_end_of(after, end))
-  with_term_bool(apply_terms([left, right], file, Ast.TermRef{key, span_value}, token_beg_first(left)), term => ok => pair_application_result(ok, term, after, file, scope, depth, level))
+  with_term_bool(apply_terms([left, right], file, Ast.TermRef{key, span_value}, token_beg_first(left)), term => ok => pair_application_result(ok, term, after, file, scope, depth, level, end))
 
 def parse_array_set_call_result(call_ok: Bool, call: Ast.SyntaxTerm, after_value: List<&2, Lexer.Token>, file: String, scope: List<&2, Scope>, depth: Nat, level: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match call_ok:
@@ -3266,8 +3611,8 @@ def parse_array_get_result(ok: Bool, call: Ast.SyntaxTerm, tokens: List<&2, Lexe
 def parse_array_get(+file: String, left: Ast.SyntaxTerm, index: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, level: Nat, +beg: Nat, +end: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   with_term_bool(apply_terms([Ast.TermRef{"U32", span(file, beg, end)}, left, index], file, Ast.TermRef{"Array.get", span(file, beg, end)}, beg), call => ok => parse_array_get_result(ok, call, tokens, file, scope, depth, level))
 
-def parse_operator(file: String, name: String, +priority: Nat, left: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, +level: Nat, end: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
-  parse_operator_precedence(Nat.is_lt(priority, level), file, name, priority, left, tokens, scope, depth, level, end)
+def parse_operator(file: String, name: String, +priority: Nat, left: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, +level: Nat, end: Nat, all_tokens: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+  parse_operator_precedence(Nat.is_lt(priority, level), file, name, priority, left, tokens, scope, depth, level, end, all_tokens)
 
 def parse_operator_precedence_result(ok: Bool, right: Ast.SyntaxTerm, +after: List<&2, Lexer.Token>, +file: String, name: String, +left: Ast.SyntaxTerm, scope: List<&2, Scope>, depth: Nat, level: Nat, end: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok:
@@ -3280,18 +3625,22 @@ def parse_operator_precedence_result(ok: Bool, right: Ast.SyntaxTerm, +after: Li
     case False{}:
       ((right, after), False{})
 
-def parse_operator_precedence(is_nested: Bool, +file: String, name: String, priority: Nat, left: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat, level: Nat, end: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+def parse_operator_precedence(is_nested: Bool, +file: String, name: String, priority: Nat, left: Ast.SyntaxTerm, tokens: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat, level: Nat, end: Nat, all_tokens: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match is_nested:
     case True{}:
-      ((left, tokens), True{})
+      ((left, all_tokens), True{})
     case False{}:
-      with_term_result(parse_term(file, tokens, scope, depth, priority + 1n), right => after => ok => parse_operator_precedence_result(ok, right, after, file, name, left, scope, depth, level, end))
+      with_term_result(parse_term(file, tokens, scope, depth, (priority + 1n : Nat)), right => after => ok => parse_operator_precedence_result(ok, right, after, file, name, left, scope, depth, level, end))
 def parse_body_scan(file: String, tokens: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, parent_col: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match scanned:
     case +token <> +rest:
       match token:
         case Lexer.TokenInfo{ Lexer.NameToken{},  "match", beg,  _,  _, col}:
           parse_match_body(file, rest, beg, col, scope, depth)
+        case Lexer.TokenInfo{Lexer.SymbolToken{}, "(", beg, _, _, _}:
+          parse_destructuring_local(file, tokens, beg, parent_col, scope, depth)
+        case Lexer.TokenInfo{Lexer.NumberToken{}, _, beg, _, _, _}:
+          parse_destructuring_local(file, tokens, beg, parent_col, scope, depth)
         case Lexer.TokenInfo{ Lexer.NameToken{},  key, beg, end,  _, col}:
           match rest:
             case +next <> after_next:
@@ -3303,7 +3652,7 @@ def parse_body_scan(file: String, tokens: List<&2, Lexer.Token>, scanned: List<&
                 case Lexer.TokenInfo{ _, "[",  _,  _,  _,  _}:
                   decl_local_name_group(local_array_write(rest), True{}, file, tokens, token, rest, key, beg, end, parent_col, scope, depth)
                 case _:
-                  decl_local_name_group(local_group_has_equal(rest), False{}, file, tokens, token, rest, key, beg, end, parent_col, scope, depth)
+                  decl_parallel_or_reply(local_group_has_equal(rest), file, tokens, token <> rest, beg, parent_col, scope, depth, Ast.QOne{})
             case _:
               parse_reply(file, tokens, scope, depth)
         case Lexer.TokenInfo{ Lexer.SymbolToken{},  "+", beg,  _,  _, col}:
@@ -3353,55 +3702,41 @@ def parse_erased_local(file: String, tokens: List<&2, Lexer.Token>, beg: Nat, co
           parse_reply(file, tokens, scope, depth)
     case Nil{}:
       parse_reply(file, Nil{}, scope, depth)
-def parse_local_values_same_line(is_same_line: Bool, file: String, value: Ast.SyntaxTerm, after_value: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, line: Nat, acc: List<&2, Ast.SyntaxTerm>) -> ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Nat) & Bool:
-  match is_same_line:
-    case True{}:
-      parse_local_values(file, after_value, scope, depth, line, value <> acc)
-    case False{}:
-      (((List.reverse(&2, Ast.SyntaxTerm, value <> acc), after_value), line), True{})
 
-def parse_local_values_next(+next: Lexer.Token, after_next: List<&2, Lexer.Token>, value: Ast.SyntaxTerm, file: String, scope: List<&2, Scope>, depth: Nat, +line: Nat, acc: List<&2, Ast.SyntaxTerm>) -> ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Nat) & Bool:
-  match next:
-    case Lexer.TokenInfo{_, ";", +_, +_, +_, +_}:
-      (((List.reverse(&2, Ast.SyntaxTerm, value <> acc), next <> after_next), line), True{})
-    case _:
-      parse_local_values_same_line(Nat.is_eq(token_line(next), line), file, value, next <> after_next, scope, depth, line, acc)
+def parse_local_values_next(remaining: List<&2, Ast.SyntaxPattern>, +file: String, +tokens: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat, line: Nat, acc: List<&2, Ast.SyntaxTerm>) -> ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Nat) & Bool:
+  match remaining:
+    case Nil{}:
+      (((List.reverse(&2, Ast.SyntaxTerm, acc), tokens), line), True{})
+    case _ <> more:
+      parse_local_values_result(parse_term(file, tokens, scope, depth, 0n), tokens, file, scope, depth, more, first_line(skip_lines(tokens)), acc)
 
-def parse_local_values_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, tokens: List<&2, Lexer.Token>, file: String, scope: List<&2, Scope>, depth: Nat, line: Nat, acc: List<&2, Ast.SyntaxTerm>) -> ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Nat) & Bool:
+def parse_local_values_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, tokens: List<&2, Lexer.Token>, file: String, scope: List<&2, Scope>, depth: Nat, remaining: List<&2, Ast.SyntaxPattern>, line: Nat, acc: List<&2, Ast.SyntaxTerm>) -> ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Nat) & Bool:
   match result:
-    case ((value, +next <> after_next), True{}):
-      parse_local_values_next(next, after_next, value, file, scope, depth, line, acc)
-    case ((value, Nil{}), True{}):
-      (((List.reverse(&2, Ast.SyntaxTerm, value <> acc), []), line), True{})
+    case ((value, after), True{}):
+      parse_local_values_next(remaining, file, after, scope, depth, line, value <> acc)
     case (_, False{}):
       (((List.reverse(&2, Ast.SyntaxTerm, acc), tokens), line), False{})
 
-def parse_local_values(+file: String, +tokens: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat, line: Nat, acc: List<&2, Ast.SyntaxTerm>) -> ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Nat) & Bool:
-  parse_local_values_result(parse_term(file, tokens, scope, depth, 0n), tokens, file, scope, depth, line, acc)
+def parse_local_values(file: String, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, remaining: List<&2, Ast.SyntaxPattern>, acc: List<&2, Ast.SyntaxTerm>) -> ((List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Nat) & Bool:
+  parse_local_values_next(remaining, file, tokens, scope, depth, 0n, acc)
 
 def parse_parallel_local(+file: String, tokens: List<&2, Lexer.Token>, beg: Nat, col: Nat, +scope: List<&2, Scope>, +depth: Nat, +quantity: Ast.Quantity) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   with_local_binders_result(parse_local_binders(file, tokens, scope, depth, quantity, Nil{}), patterns => after_equals => next_scope => next_depth => ok_patterns => parse_parallel_binders_result(ok_patterns, patterns, after_equals, next_scope, next_depth, file, beg, col, scope, depth, quantity))
 
-def parse_parallel_binders_result(ok_patterns: Bool, patterns: List<&2, Ast.SyntaxPattern>, +after_equals: List<&2, Lexer.Token>, next_scope: List<&2, Scope>, next_depth: Nat, +file: String, +beg: Nat, col: Nat, +scope: List<&2, Scope>, +depth: Nat, quantity: Ast.Quantity) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+def parse_parallel_binders_result(ok_patterns: Bool, +patterns: List<&2, Ast.SyntaxPattern>, +after_equals: List<&2, Lexer.Token>, next_scope: List<&2, Scope>, next_depth: Nat, +file: String, +beg: Nat, col: Nat, +scope: List<&2, Scope>, +depth: Nat, quantity: Ast.Quantity) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok_patterns:
     case True{}:
-      with_local_values_result(parse_local_values(file, after_equals, scope, depth, first_line(after_equals), Nil{}), values => after_values => rhs_line => ok_values => parse_parallel_values_result(ok_values, values, after_values, rhs_line, patterns, after_equals, next_scope, next_depth, file, beg, col, scope, depth, quantity))
+      with_local_values_result(parse_local_values(file, after_equals, scope, depth, patterns, Nil{}), values => after_values => rhs_line => ok_values => parse_parallel_values_result(ok_values, values, after_values, rhs_line, patterns, next_scope, next_depth, file, beg, col, quantity))
     case False{}:
       ((Ast.TermHole{ "parse-error: expected parallel binders",  span(file, beg, token_end_of(after_equals, beg))}, after_equals), False{})
 
-def parse_parallel_values_result(ok_values: Bool, +values: List<&2, Ast.SyntaxTerm>, after_values: List<&2, Lexer.Token>, rhs_line: Nat, +patterns: List<&2, Ast.SyntaxPattern>, after_equals: List<&2, Lexer.Token>, next_scope: List<&2, Scope>, next_depth: Nat, file: String, +beg: Nat, col: Nat, scope: List<&2, Scope>, depth: Nat, quantity: Ast.Quantity) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+def parse_parallel_values_result(ok_values: Bool, values: List<&2, Ast.SyntaxTerm>, +after_values: List<&2, Lexer.Token>, rhs_line: Nat, patterns: List<&2, Ast.SyntaxPattern>, next_scope: List<&2, Scope>, next_depth: Nat, +file: String, +beg: Nat, +col: Nat, quantity: Ast.Quantity) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok_values:
-    case True{}:
-      parse_parallel_counts_result(local_counts_match(patterns, values), values, after_values, rhs_line, patterns, after_equals, next_scope, next_depth, file, beg, col, scope, depth, quantity)
-    case False{}:
-      ((Ast.TermHole{ "parse-error: expected parallel-let values",  span(file, beg, beg)}, after_values), False{})
-
-def parse_parallel_counts_result(counts_match: Bool, values: List<&2, Ast.SyntaxTerm>, +after_values: List<&2, Lexer.Token>, rhs_line: Nat, patterns: List<&2, Ast.SyntaxPattern>, after_equals: List<&2, Lexer.Token>, next_scope: List<&2, Scope>, next_depth: Nat, file: String, +beg: Nat, +col: Nat, scope: List<&2, Scope>, depth: Nat, quantity: Ast.Quantity) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
-  match counts_match:
     case True{}:
       parse_parallel_body_ready(local_group_body_ready(after_values, col, rhs_line), values, after_values, patterns, next_scope, next_depth, quantity, file, beg, col)
     case False{}:
-      ((Ast.TermHole{ "parse-error: parallel let needs one value per binder",  span(file, beg, token_end_of(after_equals, beg))}, after_values), False{})
+      ((Ast.TermHole{ "parse-error: expected parallel-let values",  span(file, beg, beg)}, after_values), False{})
+
 
 def parse_parallel_body_ready(is_ready: Bool, values: List<&2, Ast.SyntaxTerm>, +after_values: List<&2, Lexer.Token>, patterns: List<&2, Ast.SyntaxPattern>, next_scope: List<&2, Scope>, next_depth: Nat, quantity: Ast.Quantity, +file: String, +beg: Nat, col: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match is_ready:
@@ -3428,15 +3763,60 @@ def parse_local_body_value(+file: String, +key: String, +beg: Nat, key_end: Nat,
 def parse_local_body_ready(is_ready: Bool, +file: String, key: String, beg: Nat, col: Nat, pattern: Ast.SyntaxPattern, +value: Ast.SyntaxTerm, after_value: List<&2, Lexer.Token>, next_scope: List<&2, Scope>, depth: Nat, quantity: Ast.Quantity) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match is_ready:
     case True{}:
-      with_term_result(parse_body(file, skip_rewrite_semicolon(after_value), next_scope, depth + 1n, col), body => after_body => ok_body => parse_local_body_parsed(ok_body, body, after_body, file, key, beg, pattern, quantity, value))
+      with_term_result(parse_body(file, skip_rewrite_semicolon(after_value), next_scope, (depth + 1n : Nat), col), body => after_body => ok_body => parse_local_body_parsed(ok_body, body, after_body, file, key, beg, pattern, quantity, value))
     case False{}:
       ((Ast.TermHole{ "parse-error: expected an indented local body",  span(file, token_end_first(value), token_end_first(value))}, after_value), False{})
 
 def parse_array_write_local(+file: String, key: String, beg: Nat, key_end: Nat, col: Nat, tokens: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   with_term_result(parse_term(file, tokens, scope, depth, 0n), value => after_value => ok_value => parse_local_body_term_result(ok_value, file, key, beg, key_end, col, value, after_value, scope, depth, Ast.QOne{}))
 
+# Recognize the local-assignment marker before constructing speculative patterns.
+# Nested markers and delimiters belonging to an enclosing term are not locals.
+def destructuring_has_equal(tokens: List<&2, Lexer.Token>, nesting: Nat) -> Bool:
+  match tokens nesting:
+    case Nil{} _:
+      False{}
+    case Lexer.TokenInfo{Lexer.EndToken{}, _, _, _, _, _} <> _ _:
+      False{}
+    case Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _} <> _ 0n:
+      False{}
+    case Lexer.TokenInfo{_, "=", _, _, _, _} <> _ 0n:
+      True{}
+    case Lexer.TokenInfo{_, "(", _, _, _, _} <> rest depth:
+      destructuring_has_equal(rest, (depth + 1n : Nat))
+    case Lexer.TokenInfo{_, "{", _, _, _, _} <> rest depth:
+      destructuring_has_equal(rest, (depth + 1n : Nat))
+    case Lexer.TokenInfo{_, "[", _, _, _, _} <> rest depth:
+      destructuring_has_equal(rest, (depth + 1n : Nat))
+    case Lexer.TokenInfo{_, ")", _, _, _, _} <> rest 1n+depth:
+      destructuring_has_equal(rest, depth)
+    case Lexer.TokenInfo{_, "}", _, _, _, _} <> rest 1n+depth:
+      destructuring_has_equal(rest, depth)
+    case Lexer.TokenInfo{_, "]", _, _, _, _} <> rest 1n+depth:
+      destructuring_has_equal(rest, depth)
+    case Lexer.TokenInfo{_, ")", _, _, _, _} <> _ 0n:
+      False{}
+    case Lexer.TokenInfo{_, "}", _, _, _, _} <> _ 0n:
+      False{}
+    case Lexer.TokenInfo{_, "]", _, _, _, _} <> _ 0n:
+      False{}
+    case Lexer.TokenInfo{_, ",", _, _, _, _} <> _ 0n:
+      False{}
+    case Lexer.TokenInfo{_, ":", _, _, _, _} <> _ 0n:
+      False{}
+    case Lexer.TokenInfo{_, ";", _, _, _, _} <> _ 0n:
+      False{}
+    case _ <> rest depth:
+      destructuring_has_equal(rest, depth)
+
 def parse_destructuring_local(+file: String, +tokens: List<&2, Lexer.Token>, beg: Nat, col: Nat, +scope: List<&2, Scope>, +depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
-  with_pattern_result(parse_pattern_atom(file, tokens, scope, depth), pattern => after_pattern => next_scope => next_depth => ok_pattern => parse_destructuring_pattern_result(ok_pattern, after_pattern, pattern, next_scope, next_depth, file, tokens, beg, col, scope, depth))
+  parse_destructuring_recognized(destructuring_has_equal(skip_lines(tokens), 0n), file, tokens, beg, col, scope, depth)
+def parse_destructuring_recognized(is_local: Bool, +file: String, +tokens: List<&2, Lexer.Token>, beg: Nat, col: Nat, +scope: List<&2, Scope>, +depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+  match is_local:
+    case True{}:
+      with_pattern_result(parse_pattern_atom(file, tokens, scope, depth), pattern => after_pattern => next_scope => next_depth => ok_pattern => parse_destructuring_pattern_result(ok_pattern, after_pattern, pattern, next_scope, next_depth, file, tokens, beg, col, scope, depth))
+    case False{}:
+      parse_reply(file, tokens, scope, depth)
 
 def parse_destructuring_pattern_result(ok_pattern: Bool, after_pattern: List<&2, Lexer.Token>, pattern: Ast.SyntaxPattern, next_scope: List<&2, Scope>, next_depth: Nat, +file: String, tokens: List<&2, Lexer.Token>, beg: Nat, col: Nat, +scope: List<&2, Scope>, +depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match ok_pattern after_pattern:
@@ -3488,7 +3868,7 @@ def parse_terms_until_colon_result(ok: Bool, term: Ast.SyntaxTerm, after: List<&
             case Lexer.TokenInfo{ _, ":",  _,  _,  _,  _}:
               ((List.reverse(&2, Ast.SyntaxTerm, term <> acc), after), True{})
             case _:
-              ((List.reverse(&2, Ast.SyntaxTerm, term <> acc), after), False{})
+              parse_terms_until_colon(file, after, scope, depth, term <> acc)
         case Nil{}:
           ((List.reverse(&2, Ast.SyntaxTerm, term <> acc), after), False{})
     case False{} _:
@@ -3526,17 +3906,9 @@ def parse_case_rows_scan(file: String, tokens: List<&2, Lexer.Token>, scanned: L
         case Lexer.TokenInfo{ Lexer.NameToken{},  "case", beg,  _,  _, col}:
           parse_case_row_indented(Nat.is_lt(parent_col, col), file, tokens, rest, parent_col, scope, depth, arity, acc, beg, col)
         case _:
-          match acc:
-            case Nil{}:
-              (([], tokens), False{})
-            case _:
-              ((List.reverse(&2, Ast.SyntaxTerm, acc), tokens), True{})
+          parse_case_rows_stop(acc, tokens)
     case Nil{}:
-      match acc:
-        case Nil{}:
-          (([], []), False{})
-        case _:
-          ((List.reverse(&2, Ast.SyntaxTerm, acc), []), True{})
+      parse_case_rows_stop(acc, Nil{})
 
 def parse_case_rows(file: String, +tokens: List<&2, Lexer.Token>, parent_col: Nat, scope: List<&2, Scope>, depth: Nat, arity: Nat, acc: List<&2, Ast.SyntaxTerm>) -> (List<&2, Ast.SyntaxTerm> & List<&2, Lexer.Token>) & Bool:
   parse_case_rows_scan(file, tokens, skip_lines(tokens), parent_col, scope, depth, arity, acc)
@@ -3612,22 +3984,22 @@ def parse_def_binders_scan(file: String, tokens: List<&2, Lexer.Token>, scanned:
 def parse_def_binders(file: String, +tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, acc: List<&2, Ast.TelescopeItem>) -> (((List<&2, Ast.TelescopeItem> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool:
   parse_def_binders_scan(file, tokens, skip_lines(tokens), scope, depth, acc)
 
-def parse_template_binder_type_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, +file: String, acc: List<&2, Ast.TelescopeItem>, scope: List<&2, Scope>, +depth: Nat, +key: String, beg: Nat) -> (((List<&2, Ast.TelescopeItem> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool:
+def parse_template_binder_type_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, +file: String, acc: List<&2, Ast.TelescopeItem>, scope: List<&2, Scope>, +depth: Nat, +key: String, beg: Nat, type_tokens: List<&2, Lexer.Token>) -> (((List<&2, Ast.TelescopeItem> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool:
   match result:
-    case ((+ty, after_ty), True{}):
+    case ((+ty, +after_ty), True{}):
       +index = depth
-      item = { Ast.TemplateBinder{key, index, ty, span(file, beg, token_end_first(ty))} : Ast.TelescopeItem }
+      item = { Ast.TemplateBinder{key, index, ty, span(file, beg, consumed_token_end(type_tokens, after_ty, token_end_first(ty)))} : Ast.TelescopeItem }
       next_scope = extend_scope(key, index, scope)
-      parse_def_binders(file, after_ty, next_scope, depth + 1n, item <> acc)
+      parse_def_binders(file, after_ty, next_scope, (depth + 1n : Nat), item <> acc)
     case ((ty, after_ty), False{}):
       ((((List.reverse(&2, Ast.TelescopeItem, acc), after_ty), scope), depth), False{})
 
 def parse_template_def_binder_after_name(+file: String, key: String, beg: Nat, original: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat, acc: List<&2, Ast.TelescopeItem>) -> (((List<&2, Ast.TelescopeItem> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool:
   match scanned:
-    case +colon <> after_colon:
+    case +colon <> +after_colon:
       match colon:
         case Lexer.TokenInfo{ _, ":",  _,  _,  _,  _}:
-          parse_template_binder_type_result(parse_term(file, after_colon, scope, depth, 0n), file, acc, scope, depth, key, beg)
+          parse_template_binder_type_result(parse_term(file, after_colon, scope, depth, 0n), file, acc, scope, depth, key, beg, after_colon)
         case _:
           ((((List.reverse(&2, Ast.TelescopeItem, acc), original), scope), depth), False{})
     case Nil{}:
@@ -3655,22 +4027,22 @@ def parse_def_binder_prefix(file: String, tokens: List<&2, Lexer.Token>, scope: 
     case Nil{}:
       ((((List.reverse(&2, Ast.TelescopeItem, acc), []), scope), depth), False{})
 
-def parse_def_binder_type_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, +file: String, +key: String, quantity: Ast.Quantity, beg: Nat, acc: List<&2, Ast.TelescopeItem>, scope: List<&2, Scope>, +depth: Nat) -> (((List<&2, Ast.TelescopeItem> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool:
+def parse_def_binder_type_result(result: (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool, +file: String, +key: String, quantity: Ast.Quantity, beg: Nat, acc: List<&2, Ast.TelescopeItem>, scope: List<&2, Scope>, +depth: Nat, type_tokens: List<&2, Lexer.Token>) -> (((List<&2, Ast.TelescopeItem> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool:
   match result:
-    case ((+ty, after_ty), True{}):
+    case ((+ty, +after_ty), True{}):
       +index = depth
-      item = { Ast.Binder{quantity, key, index, ty, span(file, beg, token_end_first(ty))} : Ast.TelescopeItem }
+      item = { Ast.Binder{quantity, key, index, ty, span(file, beg, consumed_token_end(type_tokens, after_ty, token_end_first(ty)))} : Ast.TelescopeItem }
       next_scope = extend_scope(key, index, scope)
-      parse_def_binders(file, after_ty, next_scope, depth + 1n, item <> acc)
+      parse_def_binders(file, after_ty, next_scope, (depth + 1n : Nat), item <> acc)
     case ((ty, after_ty), False{}):
       ((((List.reverse(&2, Ast.TelescopeItem, acc), after_ty), scope), depth), False{})
 
 def parse_def_binder_scan(+file: String, key: String, quantity: Ast.Quantity, beg: Nat, tokens: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>, +scope: List<&2, Scope>, +depth: Nat, acc: List<&2, Ast.TelescopeItem>) -> (((List<&2, Ast.TelescopeItem> & List<&2, Lexer.Token>) & List<&2, Scope>) & Nat) & Bool:
   match scanned:
-    case +colon <> after_colon:
+    case +colon <> +after_colon:
       match colon:
         case Lexer.TokenInfo{ _, ":",  _,  _,  _,  _}:
-          parse_def_binder_type_result(parse_term(file, after_colon, scope, depth, 0n), file, key, quantity, beg, acc, scope, depth)
+          parse_def_binder_type_result(parse_term(file, after_colon, scope, depth, 0n), file, key, quantity, beg, acc, scope, depth, after_colon)
         case _:
           parse_untyped_def_binder(file, key, beg, tokens, scope, depth, acc)
     case _:
@@ -3683,7 +4055,7 @@ def parse_untyped_def_binder(+file: String, +key: String, +beg: Nat, +tokens: Li
   +index = depth
   item = { Ast.Binder{ Ast.QZero{}, key, index,  Ast.TermQuant{},  span(file, beg, token_end_of(tokens, beg))} : Ast.TelescopeItem }
   next_scope = extend_scope(key, index, scope)
-  parse_def_binders(file, tokens, next_scope, depth + 1n, item <> acc)
+  parse_def_binders(file, tokens, next_scope, (depth + 1n : Nat), item <> acc)
 
 def parse_definition_body_scan(file: String, tokens: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> (Ast.DefBody & List<&2, Lexer.Token>) & Bool:
   match scanned:
@@ -3816,24 +4188,19 @@ def mark_unsafe(top: Ast.TopLevel, unsafe: Bool) -> Ast.TopLevel:
     case _:
       top
 
-def parse_unsafe(file: String, tokens: List<&2, Lexer.Token>, path: String) -> (Ast.TopLevel & List<&2, Lexer.Token>) & Bool:
+def parse_unsafe_definition(+tokens: List<&2, Lexer.Token>, file: String, path: String) -> (Ast.TopLevel & List<&2, Lexer.Token>) & Bool:
   match tokens:
-    case +unsafe_token <> rest:
-      match unsafe_token:
-        case Lexer.TokenInfo{ _, "unsafe",  _,  _,  _,  _}:
-          match rest:
-            case +def_token <> after_def:
-              match def_token:
-                case Lexer.TokenInfo{ _, "def",  _,  _,  _,  _}:
-                  with_top_result(parse_definition(file, after_def, path), top => after => ok => ((mark_unsafe(top, True{}), after), ok))
-                case _:
-                  parse_definition(file, rest, path)
-            case Nil{}:
-              parse_definition(file, rest, path)
-        case _:
-          parse_definition(file, tokens, path)
-    case Nil{}:
-      parse_definition(file, Nil{}, path)
+    case Lexer.TokenInfo{_, "def", _, _, _, _} <> _:
+      with_top_result(parse_definition(file, tokens, path), top => after => ok => ((mark_unsafe(top, True{}), after), ok))
+    case _:
+      with_top_result(parse_definition(file, tokens, path), top => after => _ => ((top, after), False{}))
+
+def parse_unsafe(file: String, +tokens: List<&2, Lexer.Token>, path: String) -> (Ast.TopLevel & List<&2, Lexer.Token>) & Bool:
+  match tokens:
+    case Lexer.TokenInfo{_, "unsafe", _, _, _, _} <> rest:
+      parse_unsafe_definition(skip_lines(rest), file, path)
+    case _:
+      parse_definition(file, tokens, path)
 
 def parse_type_header_constructors_result(ok_constructors: Bool, constructors: List<&2, Ast.ConstructorDecl>, +after_constructors: List<&2, Lexer.Token>, file: String, key: String, beg: Nat, params: List<&2, Ast.TelescopeItem>, +kind: Ast.SyntaxTerm) -> (Ast.TopLevel & List<&2, Lexer.Token>) & Bool:
   declaration = { Ast.TypeDecl{key, params, kind, constructors, span(file, beg, token_end_of(after_constructors, token_end_first(kind)))} : Ast.TypeDecl }
@@ -3923,6 +4290,9 @@ def parse_type_decl(+file: String, tokens: List<&2, Lexer.Token>, +beg: Nat, col
               match open:
                 case Lexer.TokenInfo{ _, "<",  _,  _,  _,  _}:
                   with_def_binders_result(parse_def_binders(file, after_open, Nil{}, 0n, Nil{}), params => after_params => scope => depth => ok_params => parse_type_params_result(ok_params, params, after_params, open, file, key, beg, col, scope, depth))
+                case Lexer.TokenInfo{_, "<-", start, end, line, column}:
+                  erased = { Lexer.TokenInfo{Lexer.SymbolToken{}, "-", (start + 1n : Nat), end, line, (column + 1n : Nat)} : Lexer.Token }
+                  with_def_binders_result(parse_def_binders(file, erased <> after_open, Nil{}, 0n, Nil{}), params => after_params => scope => depth => ok_params => parse_type_params_result(ok_params, params, after_params, open, file, key, beg, col, scope, depth))
                 case Lexer.TokenInfo{_, "<>", _, _, _, _}:
                   parse_type_header(file, key, beg, col, Nil{}, after_open, Nil{}, 0n)
                 case _:
@@ -3995,7 +4365,7 @@ def parse_law_clause_type_result(ok_ty: Bool, ty: Ast.SyntaxTerm, after_ty: List
     case True{}:
       index = depth
       next_scope = extend_scope(key, index, scope)
-      parse_law_clause_condition(file, after_ty, beg, universal, quantity, key, key_beg, key_end, ty, next_scope, depth + 1n, acc)
+      parse_law_clause_condition(file, after_ty, beg, universal, quantity, key, key_beg, key_end, ty, next_scope, (depth + 1n : Nat), acc)
     case False{}:
       ((((List.reverse(&2, Ast.Clause, acc), after_ty), scope), depth), False{})
 

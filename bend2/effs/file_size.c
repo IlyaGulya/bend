@@ -16,8 +16,7 @@ static void file_size_call(IoWork* w) {
 }
 
 static Term file_size_pack(Env e, IoWork* w) {
-  Term r = w->code ? io_fail(e, w->code, NULL) : io_done(e, w->word);
-  return io_tup(e, io_hand(w->hand), r);
+  return io_tup(e, io_hand(w->hand), io_res(e, w, w->word));
 }
 
 Term file_size_run(Env e, Term* f, IoWork* w) {
@@ -26,5 +25,5 @@ Term file_size_run(Env e, Term* f, IoWork* w) {
 }
 
 static void __attribute__((constructor)) file_size_use(void) {
-  io_eff(CID_FILE_SIZE, file_size_run, 0);
+  io_eff(CID(File.size), file_size_run);
 }

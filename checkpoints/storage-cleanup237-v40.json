@@ -1,0 +1,102 @@
+{
+  "status": "PASS",
+  "currentProof": "checkpoints/selfhost-steps-bootstrap-release237-v40.json",
+  "retentionSmoke": "checkpoints/selfhost-retention-release237-v40.json",
+  "archives": [
+    {
+      "path": "checkpoints/experiment-archive237/superseded-proof-v37.tar.gz",
+      "sha256": "27bd4ea3b2cb8499c77986ca9ef6bbddcd678d7d75c1c7e65d05299081bc5605",
+      "allocatedKiB": 60432,
+      "gzipIntegrityPassed": true
+    },
+    {
+      "path": "checkpoints/experiment-archive237/superseded-proof-v38.tar.gz",
+      "sha256": "4fd323396501d3e2a09d6c321370e90b8fe54b35b4c02aa24a24f4337ed2dfa3",
+      "allocatedKiB": 63464,
+      "gzipIntegrityPassed": true
+    },
+    {
+      "path": "checkpoints/experiment-archive237/accepted-release237-v40-source.tar.gz",
+      "sha256": "52143079d5f6e767a52600458f7914b378d7e7e4732d8b2ca0ed91e56d566f52",
+      "allocatedKiB": 1512,
+      "selectedSourceFiles": 118,
+      "members": "checkpoints/experiment-archive237/accepted-release237-v40-source.members.txt",
+      "contentChecksums": "checkpoints/experiment-archive237/accepted-release237-v40-source.sha256",
+      "gzipIntegrityPassed": true
+    },
+    {
+      "path": "checkpoints/experiment-archive237/superseded-experiments-through-v39.tar.gz",
+      "sha256": "e9aa9ef1dac5f28db4f72a7d337f4d91868824f9f72624d9e1471901e64ace11",
+      "allocatedKiB": 180804,
+      "members": "checkpoints/experiment-archive237/superseded-experiments-through-v39.members.txt",
+      "gzipIntegrityPassed": true
+    }
+  ],
+  "removedAfterVerifiedArchival": [
+    "checkpoints/selfhost-steps-bootstrap-release237-v39.json.cases",
+    "checkpoints/selfhost-profile-full-release237-v1",
+    "checkpoints/selfhost-profile-full-release237-v2",
+    "checkpoints/selfhost-profile-full-release237-v3",
+    "checkpoints/selfhost-profile-full-release237-v4",
+    "checkpoints/selfhost-profile-root-release237-v1",
+    "checkpoints/selfhost-profile-root-release237-v2",
+    "checkpoints/selfhost-profile-root-release237-v3",
+    "checkpoints/selfhost-profile-root-release237-v4",
+    "checkpoints/selfhost-profile-root-release237-v5",
+    "checkpoints/selfhost-profile-native-release237-v1",
+    "checkpoints/selfhost-profile-native-release237-v2",
+    "checkpoints/selfhost-profile-emitter-only-release237-v1",
+    "checkpoints/selfhost-profile-release237-v2",
+    "checkpoints/selfhost-profile-release237-v3",
+    "checkpoints/selfhost-profile-release237-v4",
+    "checkpoints/selfhost-root-source-parser-profile-release237-v1",
+    "checkpoints/private-frame237-v1",
+    "checkpoints/private-frame237-v2",
+    "checkpoints/lookup-branch237-v1",
+    "checkpoints/generated-call-cost237-v1",
+    "checkpoints/checker-usage-fuse237-v1",
+    "evals/.selfhost_release237_v39_seed.sh",
+    "evals/.selfhost_release237_v39_final.sh",
+    "evals/.selfhost_release237_v39_smoke.mjs",
+    "evals/.selfhost_release237_v40_seed.sh",
+    "evals/.selfhost_release237_v40_final.sh",
+    "evals/.selfhost_release237_v40_smoke.mjs",
+    "evals/.selfhost_source40_diagnostic.mjs"
+  ],
+  "discardedRegenerableOrInvalid": [
+    "checkpoints/source40-diagnostic.js",
+    "checkpoints/.bootstrap-diagnostic-cache-v1"
+  ],
+  "earlierRemovedThisTurn": [
+    "checkpoints/selfhost-steps-bootstrap-release237-v37.json.cases",
+    "checkpoints/selfhost-steps-bootstrap-release237-v38.json.cases",
+    "evals/.selfhost_current_check_profile237.mjs",
+    "evals/.selfhost_release237_v38.sh",
+    "evals/.selfhost_release237_v38_smoke.mjs"
+  ],
+  "removedTemporaryRetentionScript": "evals/.selfhost_release237_v40_retention.ts",
+  "safety": {
+    "plannedProtectedIntersections": 0,
+    "protectedProofInputsReauthenticated": 399,
+    "acceptedParserInputsReauthenticated": 289,
+    "rawRetainedImagesByteEqual": true,
+    "actualRetainedRuntimeRows": 8,
+    "unknownOrUnrelatedTmpPathsTouched": false,
+    "wholeRepoCopiesMade": false
+  },
+  "measurements": {
+    "initialCheckpointAllocatedKiB": 8162612,
+    "afterRetirementCheckpointAllocatedKiB": 5319340,
+    "archiveAllocatedKiB": 2616216,
+    "availableFilesystemKiB": 331150576,
+    "caveat": "du allocated sizes and observed df availability; do not sum APFS tree sizes as physical bytes freed."
+  },
+  "retentionGuardian": {
+    "status": "PASS",
+    "elapsedMs": 1382,
+    "peakFootprintBytes": 435984936,
+    "peakRssBytes": 655867904
+  },
+  "currentCaseTreeKept": "checkpoints/selfhost-steps-bootstrap-release237-v40.json.cases",
+  "remainingCompilerOrCleanupJobs": 0
+}

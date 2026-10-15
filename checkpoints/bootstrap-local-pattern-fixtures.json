@@ -1,0 +1,1 @@
+{"rows":[{"name":"tuple-local","source":"import Base\ndef tuple_binding_first(p: Nat & Nat) -> Nat:\n  (a, b) = p\n  a\n"}]}

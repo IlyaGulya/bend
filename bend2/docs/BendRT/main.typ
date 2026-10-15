@@ -23,7 +23,7 @@
     let p = counter(page).get().first()
     if p > 1 {
       set text(size: 8pt)
-      if calc.even(p) [#p #h(1fr) Victor Taelin] else [BendRT: A Parallel Runtime for CPUs and GPUs #h(1fr) #p]
+      if calc.even(p) [#p #h(1fr) Victor Taelin et al.] else [BendRT: A Parallel Runtime for CPUs and GPUs #h(1fr) #p]
     }
   },
 )
@@ -75,7 +75,9 @@
   v(10pt)
   text(size: 17.3pt, weight: "bold")[BendRT: A Parallel Runtime for CPUs and GPUs]
   v(2pt)
-  text(size: 11pt)[Victor Taelin]
+  text(size: 11pt)[Victor Taelin, Lorenzo W Battistela, Paulo J Cavalcanti]
+  linebreak()
+  text(size: 11pt)[Nicolas Abril, Vitor Chiarelli Neves, Vanessa Ostroski]
   linebreak()
   text(size: 10pt)[Higher Order Company]
   linebreak()
@@ -156,7 +158,7 @@ def build(+d: Nat, +i: U32) -> Tree:
     case 0n:
       Leaf{i}
     case 1n+p:
-      l r = build(p, i * 2) build(p, i * 2 + 1)
+      l r = build(p, (i * 2 : U32)) build(p, (i * 2 + 1 : U32))
       Node{l, r}
 
 def sum(t: Tree) -> U32:
@@ -165,7 +167,7 @@ def sum(t: Tree) -> U32:
       x
     case Node{l, r}:
       a b = sum(l) sum(r)
-      a + b
+      (a + b : U32)
 
 def main() -> IO(Unit):
   t = build(20n, 0)
@@ -276,8 +278,8 @@ first call in place; each step pushes the next frame, and the last
 jumps into the joiner with both results in the bank.
 
 The emitted file is the runtime template, the program's tables and
-segments, and the C source of every effect it imports; `--threads`,
-`--parallel` and `--gpu` pick the executor at run time.
+segments, and the C source of every effect it imports; `--threads`
+and `--gpu` pick the executor at run time.
 
 = Memory <sec:memory>
 
@@ -444,7 +446,11 @@ The host pool is up to 128 threads, which claim rows by one fetch-add
 and meet at one barrier per turn; it opens at a program's first fork.
 The GPU runs a grow as a dispatch of 128 groups (seeded by one group
 while $f < 128$) and a work as one thread per lane; between dispatches
-the host only reads $f$.
+the host only reads $f$. After a grow from $f < 128$, a lane drains its
+row ring, not its column, down to the put the grow left: a SIMD group
+then runs one root's cousins, and a late group leaves new deals to the
+next round. From more roots a row holds unrelated deals, and the column
+keeps a fork's kids together.
 
 == Why Nothing Contends
 
@@ -474,7 +480,7 @@ behind a hash of the text), and a launch loads it, or compiles it once
 when the file is missing or stale, so host and device run the same
 functions by construction.
 
-The span is decided once, before the first dispatch: `--gpu-memory`,
+The span is decided once, before the first dispatch: `--gpu <size>`,
 else 2 GB on Metal, where a buffer cannot grow under a running kernel,
 and the whole card on CUDA, whose managed pages fault in on demand.
 Metal wraps the host mapping in one zero-copy buffer at the same
@@ -499,14 +505,16 @@ device), and the harness checks that all three print the same bytes.
 = Effects <sec:io>
 
 `IO(A)` is a definition of the base library, not a primitive: a
-continuation over one datatype `IO.OP` with two constructors, `Emit`
-and `Halt`. A _foreign fill_, a def whose body is `import` lines naming
+continuation over one datatype `IO.OP` with three constructors, `Emit`,
+`Halt` and `Exit`. A _foreign fill_, a def whose body is `import` lines naming
 a `.c` and a `.js` file, compiles to one segment that packs its
 arguments and its continuation into a request. The event loop runs on
 one thread: it evaluates `main` to a request through the pure machine,
 runs the effect's C handler, applies the continuation to the answer,
-and evaluates again; `Emit` ends the program and `Halt` exits with its
-code. Effects never run inside an evaluator, and the machine performs
+and evaluates again; `Emit` ends the program, `Halt` prints its message
+and exits with its code, and `Exit` exits with its code silently. A code
+outside 0..255 exits with 1 and an error. Effects never run inside an
+evaluator, and the machine performs
 no IO. A fallible operation answers a `Result` carrying errno, and a
 handle threads back outside the `Result`, so even a failure cannot
 lose it.

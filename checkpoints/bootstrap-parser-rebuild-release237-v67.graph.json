@@ -1,0 +1,3783 @@
+{
+  "schemaVersion": 1,
+  "kind": "capture-fixed-factored",
+  "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_parser_rebuild_release237-v67_source.bend",
+  "canonicalSha256": "de146db91303ed40dd0f7a32004631b873cc1af66b1df08aeb88fa250af140a9",
+  "sourceCheckpoint": "7d8ef4d4",
+  "sourceSha256": "7d8ef4d41a7e47be9855d07b71661c40b776581770bf90ec3691f03f0307e8c8",
+  "definitions": [
+    "all_named_type_branch_0",
+    "all_named_type_branch_1",
+    "all_named_type_is_colon",
+    "all_named_type_run",
+    "angle_close_tokens",
+    "append_terms",
+    "apply_terms",
+    "array_call",
+    "array_call_result",
+    "array_shape_action",
+    "array_shape_branch_0",
+    "array_shape_branch_1",
+    "array_shape_branch_2",
+    "array_shape_run",
+    "body_indented",
+    "body_scan_action",
+    "body_scan_run",
+    "brace_annot_branch_0",
+    "brace_annot_branch_1",
+    "brace_annot_is_colon",
+    "brace_annot_run",
+    "brace_equal_right_branch_0",
+    "brace_equal_right_branch_1",
+    "brace_equal_right_is_colon",
+    "brace_equal_right_run",
+    "brace_equals_action",
+    "brace_equals_branch_0",
+    "brace_equals_branch_1",
+    "brace_equals_branch_2",
+    "brace_equals_branch_3",
+    "brace_equals_run",
+    "canonical_import_path",
+    "case_row_branch_0",
+    "case_row_branch_1",
+    "case_row_is_colon",
+    "case_row_run",
+    "character_term",
+    "combine_symbols",
+    "combine_symbols_acc",
+    "consumed_token_end",
+    "consumed_token_end_all",
+    "consumed_token_end_before",
+    "consumed_token_end_step",
+    "decl_local_name_group",
+    "decl_parallel_or_reply",
+    "definition_body_branch_0",
+    "definition_body_branch_1",
+    "definition_body_is_colon",
+    "definition_body_run",
+    "definition_failure",
+    "definition_header_branch_0",
+    "definition_header_branch_1",
+    "definition_header_branch_2",
+    "definition_header_is_colon",
+    "definition_header_run",
+    "destructuring_has_equal",
+    "do_call",
+    "do_call_from_split",
+    "do_call_return_type",
+    "do_final_type",
+    "do_first_col",
+    "do_has_more",
+    "do_token_action",
+    "do_token_branch_0",
+    "do_token_branch_1",
+    "do_token_branch_2",
+    "do_token_run",
+    "drop_nat_suffix",
+    "drop_nat_suffix_reversed",
+    "encode_float32",
+    "encode_float32_lt_one",
+    "encode_float_negative",
+    "encode_float_negative_go",
+    "encode_float_normal",
+    "encode_float_normal_bits",
+    "encode_float_normal_bits_exact",
+    "encode_float_normal_rounding_limit",
+    "encode_float_positive",
+    "encode_float_positive_go",
+    "encode_float_subnormal",
+    "error_span",
+    "escape_code",
+    "escape_code_value",
+    "evaluation_context_parse_application_args_result_241742",
+    "evaluation_context_parse_def_binder_type_result_306247",
+    "evaluation_context_parse_less_many_result_252346",
+    "evaluation_context_parse_name_constructor_result_84616",
+    "evaluation_context_parse_template_binder_type_result_303235",
+    "expr_finish_list",
+    "expr_finish_list_items",
+    "expr_match_array_count",
+    "expr_match_array_count_close",
+    "expr_match_array_depth",
+    "expr_match_array_depth_close",
+    "expr_match_array_nat",
+    "expr_match_array_power",
+    "expr_match_array_shape",
+    "expr_match_array_type",
+    "expr_match_list_separator",
+    "expr_match_ok_after",
+    "extend_scope",
+    "extend_scope_result",
+    "external_import_action",
+    "external_import_start",
+    "external_import_token_action",
+    "external_import_worker",
+    "external_paths_valid",
+    "finish_law_clause",
+    "first_line",
+    "float32_bits",
+    "float32_parts",
+    "float_decimal_above_zero",
+    "float_decimal_below_ten",
+    "float_decimal_digit",
+    "float_exponent_bits",
+    "float_nat_cmp",
+    "float_nat_cmp_limb",
+    "float_nat_cons",
+    "float_nat_mul_small",
+    "float_nat_scale",
+    "float_nat_sub",
+    "float_nat_sub_go",
+    "float_nat_sub_limb",
+    "float_scale",
+    "float_scale_positive",
+    "has_nat_suffix",
+    "has_nat_suffix_reversed",
+    "has_space_after",
+    "has_space_after_result",
+    "index_result_branch_0",
+    "index_result_branch_1",
+    "index_result_is_colon",
+    "index_result_run",
+    "inequality_branch_0",
+    "inequality_branch_1",
+    "inequality_is_colon",
+    "inequality_right_branch_0",
+    "inequality_right_branch_1",
+    "inequality_right_is_colon",
+    "inequality_right_run",
+    "inequality_run",
+    "is_base_path",
+    "is_quantity_term",
+    "law_failure",
+    "law_header_bare",
+    "law_header_end",
+    "literal_pattern",
+    "literal_pattern_constructor",
+    "literal_pattern_field",
+    "literal_pattern_fields",
+    "literal_pattern_fields_cons",
+    "literal_pattern_tree",
+    "local_array_write",
+    "local_binder_pattern",
+    "local_body_ready",
+    "local_group_body_ready",
+    "local_group_body_ready_after_line",
+    "local_group_has_equal",
+    "lookup",
+    "lookup_result",
+    "make_do_assignment_result",
+    "make_do_assignment_term",
+    "make_list",
+    "make_list_cons",
+    "make_pattern_list",
+    "make_tuple",
+    "make_tuple_cons",
+    "map_operator_key",
+    "map_operator_term",
+    "mark_unsafe",
+    "match_scrutinees_branch_0",
+    "match_scrutinees_branch_1",
+    "match_scrutinees_is_colon",
+    "match_scrutinees_run",
+    "match_tail_branch_0",
+    "match_tail_branch_1",
+    "match_tail_is_colon",
+    "match_tail_run",
+    "match_tail_scan_branch_0",
+    "match_tail_scan_branch_1",
+    "match_tail_scan_branch_2",
+    "match_tail_scan_is_colon",
+    "match_tail_scan_run",
+    "merge_symbol",
+    "merge_symbol_2",
+    "merge_symbol_middle",
+    "merge_symbol_pair",
+    "merge_symbol_pair_result",
+    "merge_symbol_three",
+    "merge_symbol_three_result",
+    "module_import_without_alias",
+    "multi_symbol_2",
+    "multi_symbol_3",
+    "nat_from_syntax",
+    "nat_from_syntax_successor",
+    "nat_literal",
+    "nat_literal_large",
+    "nat_literal_tokens",
+    "nat_literal_tokens_next",
+    "nat_literal_tokens_plus",
+    "nat_literal_tokens_suffix",
+    "nat_literal_tokens_sum",
+    "nat_literal_tokens_sum_range",
+    "nat_literal_tokens_value",
+    "nat_pattern",
+    "nat_pattern_tail",
+    "nat_succ_chain",
+    "nat_succ_prefix",
+    "observed",
+    "operator_call",
+    "operator_glued_name",
+    "operator_key_choice_0",
+    "operator_key_choice_1",
+    "operator_key_choice_10",
+    "operator_key_choice_11",
+    "operator_key_choice_12",
+    "operator_key_choice_13",
+    "operator_key_choice_2",
+    "operator_key_choice_3",
+    "operator_key_choice_4",
+    "operator_key_choice_5",
+    "operator_key_choice_6",
+    "operator_key_choice_7",
+    "operator_key_choice_8",
+    "operator_key_choice_9",
+    "operator_key_test_0",
+    "operator_key_test_1",
+    "operator_key_test_10",
+    "operator_key_test_11",
+    "operator_key_test_12",
+    "operator_key_test_13",
+    "operator_key_test_2",
+    "operator_key_test_3",
+    "operator_key_test_4",
+    "operator_key_test_5",
+    "operator_key_test_6",
+    "operator_key_test_7",
+    "operator_key_test_8",
+    "operator_key_test_9",
+    "operator_rhs_level",
+    "pair_application",
+    "pair_application_result",
+    "parse",
+    "parse_absurd",
+    "parse_all",
+    "parse_all_named",
+    "parse_all_named_body_result",
+    "parse_all_named_type_result",
+    "parse_amp",
+    "parse_application_applied_result",
+    "parse_application_args_result",
+    "parse_array_get",
+    "parse_array_get_result",
+    "parse_array_literal",
+    "parse_array_set_call_result",
+    "parse_array_set_value_result",
+    "parse_array_write_local",
+    "parse_atom",
+    "parse_atom_name_dispatch",
+    "parse_atom_scan",
+    "parse_atom_symbol_dispatch",
+    "parse_atom_symbol_row_0",
+    "parse_atom_symbol_row_1",
+    "parse_atom_symbol_row_10",
+    "parse_atom_symbol_row_2",
+    "parse_atom_symbol_row_3",
+    "parse_atom_symbol_row_4",
+    "parse_atom_symbol_row_5",
+    "parse_atom_symbol_row_6",
+    "parse_atom_symbol_row_7",
+    "parse_atom_symbol_row_8",
+    "parse_atom_symbol_row_9",
+    "parse_bang_call",
+    "parse_body",
+    "parse_body_next_dispatch",
+    "parse_body_next_row_0",
+    "parse_body_next_row_1",
+    "parse_body_next_row_2",
+    "parse_body_next_row_3",
+    "parse_body_scan",
+    "parse_body_token_row_0",
+    "parse_body_token_row_1",
+    "parse_body_token_row_2",
+    "parse_body_token_row_3",
+    "parse_body_token_row_4",
+    "parse_body_token_row_5",
+    "parse_body_token_row_6",
+    "parse_brace",
+    "parse_brace_annot_type_result",
+    "parse_brace_equal_right_result",
+    "parse_brace_equal_type_result",
+    "parse_brace_equals",
+    "parse_brace_left_result",
+    "parse_case_body_indented",
+    "parse_case_body_result",
+    "parse_case_row",
+    "parse_case_row_body",
+    "parse_case_row_count",
+    "parse_case_row_indented",
+    "parse_case_row_patterns",
+    "parse_case_row_result",
+    "parse_case_row_scan_result",
+    "parse_case_rows",
+    "parse_case_rows_scan",
+    "parse_case_rows_stop",
+    "parse_char_literal",
+    "parse_char_literal_after_char",
+    "parse_char_literal_chars",
+    "parse_char_literal_escape_codepoint",
+    "parse_char_literal_escape_result",
+    "parse_char_literal_plain_tail",
+    "parse_char_literal_unicode_result",
+    "parse_comparison_operator",
+    "parse_def_binder",
+    "parse_def_binder_prefix",
+    "parse_def_binder_scan",
+    "parse_def_binder_type_result",
+    "parse_def_binders",
+    "parse_def_binders_scan",
+    "parse_definition",
+    "parse_definition_after_binders",
+    "parse_definition_after_binders_scan",
+    "parse_definition_binders_result",
+    "parse_definition_body",
+    "parse_definition_body_scan",
+    "parse_definition_imports_result",
+    "parse_definition_name_result",
+    "parse_definition_name_tail",
+    "parse_definition_term_result",
+    "parse_definition_typed_body_result",
+    "parse_definition_typed_colon",
+    "parse_definition_typed_result",
+    "parse_definition_untyped_body_result",
+    "parse_definition_with_binders",
+    "parse_destructuring_body_ready",
+    "parse_destructuring_local",
+    "parse_destructuring_parsed_body",
+    "parse_destructuring_pattern_result",
+    "parse_destructuring_recognized",
+    "parse_destructuring_value_result",
+    "parse_do_assignment",
+    "parse_do_assignment_body_result",
+    "parse_do_assignment_value_result",
+    "parse_do_atom",
+    "parse_do_atom_args_result",
+    "parse_do_atom_colon",
+    "parse_do_bind",
+    "parse_do_bind_body_result",
+    "parse_do_bind_call_result",
+    "parse_do_final_action",
+    "parse_do_return",
+    "parse_do_return_call_result",
+    "parse_do_return_scan",
+    "parse_do_return_value_result",
+    "parse_do_typed_bind",
+    "parse_do_typed_bind_body_result",
+    "parse_do_typed_bind_call_result",
+    "parse_do_typed_bind_type_result",
+    "parse_do_typed_bind_type_token",
+    "parse_do_typed_bind_value_result",
+    "parse_do_untyped",
+    "parse_do_untyped_action_result",
+    "parse_do_untyped_after_action",
+    "parse_do_untyped_result",
+    "parse_do_untyped_step",
+    "parse_do_untyped_step_after_check",
+    "parse_do_untyped_value_result",
+    "parse_erased_local",
+    "parse_external_imports",
+    "parse_external_imports_scan",
+    "parse_glued_operator",
+    "parse_imports",
+    "parse_imports_result",
+    "parse_imports_scan",
+    "parse_index_after_close",
+    "parse_index_result",
+    "parse_index_set_token",
+    "parse_index_tail",
+    "parse_inequality",
+    "parse_inequality_right_result",
+    "parse_inequality_type_result",
+    "parse_kind_close",
+    "parse_kind_result",
+    "parse_law_body_result",
+    "parse_law_clause",
+    "parse_law_clause_condition",
+    "parse_law_clause_condition_result",
+    "parse_law_clause_condition_scan",
+    "parse_law_clause_name",
+    "parse_law_clause_type_result",
+    "parse_law_clauses",
+    "parse_law_clauses_result",
+    "parse_law_clauses_scan",
+    "parse_law_decl",
+    "parse_law_universal_clause",
+    "parse_less_many_result",
+    "parse_less_named",
+    "parse_less_operator_or_nested",
+    "parse_less_or_adt",
+    "parse_less_or_adt_args",
+    "parse_less_or_adt_nested",
+    "parse_less_or_adt_precedence",
+    "parse_less_right",
+    "parse_less_right_tokens",
+    "parse_list",
+    "parse_local_binders",
+    "parse_local_body",
+    "parse_local_body_parsed",
+    "parse_local_body_ready",
+    "parse_local_body_term_result",
+    "parse_local_body_value",
+    "parse_local_values",
+    "parse_local_values_next",
+    "parse_local_values_result",
+    "parse_many_lambda",
+    "parse_many_lambda_body_result",
+    "parse_match_body",
+    "parse_match_cases_result",
+    "parse_match_chain",
+    "parse_match_chain_state",
+    "parse_match_expr",
+    "parse_match_expr_after_head",
+    "parse_match_expr_after_name",
+    "parse_match_expr_head_result",
+    "parse_match_expr_parsed_head",
+    "parse_match_expr_scan",
+    "parse_match_scrutinees",
+    "parse_match_tail",
+    "parse_match_tail_after_semicolon",
+    "parse_match_tail_result",
+    "parse_match_tail_scan",
+    "parse_match_tail_with_head",
+    "parse_match_tail_with_head_result",
+    "parse_min_operator",
+    "parse_min_precedence",
+    "parse_min_precedence_result",
+    "parse_module_declarations_result",
+    "parse_module_import",
+    "parse_module_import_alias_target",
+    "parse_module_import_alias_token",
+    "parse_module_import_modifier",
+    "parse_module_import_path",
+    "parse_module_import_path_rest",
+    "parse_module_imports_result",
+    "parse_module_tokens",
+    "parse_name",
+    "parse_name_constructor_result",
+    "parse_name_lambda_result",
+    "parse_name_scan",
+    "parse_name_term",
+    "parse_name_term_lookup",
+    "parse_nat_literal",
+    "parse_nat_literal_fold",
+    "parse_nat_literal_fold_sum",
+    "parse_nat_literal_plus",
+    "parse_nat_literal_prefix",
+    "parse_nat_literal_tail",
+    "parse_number",
+    "parse_number_float_result",
+    "parse_number_missing_nat",
+    "parse_number_nat_range",
+    "parse_number_nat_result",
+    "parse_number_nat_value",
+    "parse_number_suffix",
+    "parse_operator",
+    "parse_operator_precedence",
+    "parse_operator_precedence_result",
+    "parse_operator_right",
+    "parse_operator_right_named",
+    "parse_operator_right_precedence",
+    "parse_operator_right_result",
+    "parse_pair_operator",
+    "parse_pair_operator_consumed",
+    "parse_pair_operator_precedence",
+    "parse_pair_operator_result",
+    "parse_pair_quantity",
+    "parse_parallel_binders_result",
+    "parse_parallel_body_ready",
+    "parse_parallel_local",
+    "parse_parallel_parsed_body",
+    "parse_parallel_values_result",
+    "parse_parenthesized",
+    "parse_parenthesized_body",
+    "parse_parenthesized_body_close",
+    "parse_parenthesized_body_result",
+    "parse_parenthesized_body_result_checked",
+    "parse_parenthesized_result",
+    "parse_parenthesized_terms",
+    "parse_parenthesized_tuple_result",
+    "parse_pattern_atom",
+    "parse_pattern_nat_read",
+    "parse_pattern_nat_suffix",
+    "parse_pattern_tuple",
+    "parse_plus_args_result",
+    "parse_plus_args_spaced",
+    "parse_plus_sugar",
+    "parse_plus_sugar_args",
+    "parse_plus_sugar_head_result",
+    "parse_plus_sugar_named",
+    "parse_reply",
+    "parse_reply_result",
+    "parse_rewrite",
+    "parse_rewrite_body_result",
+    "parse_rewrite_equation_result",
+    "parse_rewrite_first_at",
+    "parse_rewrite_first_at_name",
+    "parse_rewrite_first_result",
+    "parse_rewrite_motive",
+    "parse_rewrite_motive_result",
+    "parse_spaced_operator",
+    "parse_string",
+    "parse_string_result",
+    "parse_template_binder_type_result",
+    "parse_template_def_binder",
+    "parse_template_def_binder_after_name",
+    "parse_template_term",
+    "parse_template_term_result",
+    "parse_term",
+    "parse_term_args",
+    "parse_term_args_after_separator",
+    "parse_term_args_first",
+    "parse_term_args_first_result",
+    "parse_term_args_first_result_tokens",
+    "parse_term_args_tokens",
+    "parse_term_arrow_result",
+    "parse_term_atom_result",
+    "parse_term_tail",
+    "parse_term_tail_after_line",
+    "parse_term_tail_at",
+    "parse_terms_until_colon",
+    "parse_terms_until_colon_result",
+    "parse_top",
+    "parse_top_result",
+    "parse_top_scan",
+    "parse_type_constructor_fields_result",
+    "parse_type_constructor_indent",
+    "parse_type_constructors",
+    "parse_type_constructors_scan",
+    "parse_type_decl",
+    "parse_type_header",
+    "parse_type_header_constructors_result",
+    "parse_type_header_kind_result",
+    "parse_type_header_scan",
+    "parse_type_params_result",
+    "parse_typed_operator",
+    "parse_typed_operator_close",
+    "parse_typed_operator_colon",
+    "parse_typed_operator_namespace",
+    "parse_typed_operator_term",
+    "parse_typed_operator_type",
+    "parse_unicode_digit_code",
+    "parse_unicode_digit_result",
+    "parse_unicode_digits",
+    "parse_unicode_escape",
+    "parse_unicode_open",
+    "parse_unsafe",
+    "parse_unsafe_definition",
+    "parse_untyped_def_binder",
+    "pattern_beg",
+    "pattern_completed_text",
+    "pattern_completed_text_test_0",
+    "pattern_completed_text_test_1",
+    "pattern_completed_text_test_2",
+    "pattern_completed_text_test_3",
+    "pattern_completed_text_test_4",
+    "pattern_completed_text_test_5",
+    "pattern_cons_result",
+    "pattern_count_matches",
+    "pattern_end",
+    "pattern_expect_action",
+    "pattern_expect_action_test_0",
+    "pattern_expect_action_test_1",
+    "pattern_expect_action_test_10",
+    "pattern_expect_action_test_11",
+    "pattern_expect_action_test_12",
+    "pattern_expect_action_test_13",
+    "pattern_expect_action_test_14",
+    "pattern_expect_action_test_2",
+    "pattern_expect_action_test_3",
+    "pattern_expect_action_test_4",
+    "pattern_expect_action_test_5",
+    "pattern_expect_action_test_6",
+    "pattern_expect_action_test_7",
+    "pattern_expect_action_test_8",
+    "pattern_expect_action_test_9",
+    "pattern_file",
+    "pattern_finish",
+    "pattern_group_result",
+    "pattern_list_fields",
+    "pattern_literal_finish",
+    "pattern_literal_result",
+    "pattern_nat_adjacent",
+    "pattern_nat_after",
+    "pattern_nat_read",
+    "pattern_nat_tail_allowed",
+    "pattern_nat_tail_result",
+    "pattern_number_start",
+    "pattern_scan",
+    "pattern_scan_completed_fields",
+    "pattern_scan_completed_step",
+    "pattern_scan_empty_step",
+    "pattern_scan_expect_run",
+    "pattern_scan_expect_step",
+    "pattern_scan_row_0",
+    "pattern_scan_row_1",
+    "pattern_scan_row_10",
+    "pattern_scan_row_13",
+    "pattern_scan_row_14",
+    "pattern_scan_row_15",
+    "pattern_scan_row_16",
+    "pattern_scan_row_17",
+    "pattern_scan_row_18",
+    "pattern_scan_row_19",
+    "pattern_scan_row_2",
+    "pattern_scan_row_20",
+    "pattern_scan_row_21",
+    "pattern_scan_row_22",
+    "pattern_scan_row_23",
+    "pattern_scan_row_24",
+    "pattern_scan_row_25",
+    "pattern_scan_row_26",
+    "pattern_scan_row_3",
+    "pattern_scan_row_4",
+    "pattern_scan_row_5",
+    "pattern_scan_row_6",
+    "pattern_scan_row_7",
+    "pattern_scan_row_8",
+    "pattern_scan_row_9",
+    "pattern_scan_token_step",
+    "pattern_single_result",
+    "pattern_tuple_delimiter",
+    "pattern_tuple_head_result",
+    "pattern_tuple_tail_result",
+    "power_depth",
+    "power_depth_go",
+    "power_depth_remainder",
+    "power_depth_step",
+    "rewrite_motive_branch_0",
+    "rewrite_motive_branch_1",
+    "rewrite_motive_is_colon",
+    "rewrite_motive_run",
+    "round_float_ratio",
+    "round_float_ratio_cmp",
+    "round_float_ratio_parity",
+    "round_float_scaled_go",
+    "round_float_scaled_loop",
+    "scan_float",
+    "scan_float_code",
+    "scan_float_digit",
+    "scan_float_dot",
+    "scan_float_end",
+    "scan_float_exponent",
+    "scan_float_exponent_dot",
+    "scan_float_exponent_mantissa",
+    "scan_float_go",
+    "scan_float_mantissa_digit",
+    "scan_float_sign",
+    "scan_float_step",
+    "scan_float_valid_digit",
+    "scan_symbol_mode",
+    "skip_lines",
+    "skip_rewrite_semicolon",
+    "span",
+    "split_angle_close",
+    "split_last_do_args",
+    "string_chars",
+    "string_chars_after_char",
+    "string_chars_cons_result",
+    "string_chars_escape_codepoint",
+    "string_chars_escape_result",
+    "string_chars_go",
+    "string_chars_unicode_digit_result",
+    "string_chars_unicode_open",
+    "string_chars_unicode_result",
+    "string_codepoint",
+    "string_codepoint_bit",
+    "strip_quotes",
+    "strip_quotes_chars",
+    "strip_quotes_reversed",
+    "symbol_pair_choice_0",
+    "symbol_pair_choice_1",
+    "symbol_pair_choice_10",
+    "symbol_pair_choice_11",
+    "symbol_pair_choice_12",
+    "symbol_pair_choice_2",
+    "symbol_pair_choice_3",
+    "symbol_pair_choice_4",
+    "symbol_pair_choice_5",
+    "symbol_pair_choice_6",
+    "symbol_pair_choice_7",
+    "symbol_pair_choice_8",
+    "symbol_pair_choice_9",
+    "symbol_pair_fallback",
+    "symbol_pair_test_0",
+    "symbol_pair_test_1",
+    "symbol_pair_test_10",
+    "symbol_pair_test_11",
+    "symbol_pair_test_12",
+    "symbol_pair_test_2",
+    "symbol_pair_test_3",
+    "symbol_pair_test_4",
+    "symbol_pair_test_5",
+    "symbol_pair_test_6",
+    "symbol_pair_test_7",
+    "symbol_pair_test_8",
+    "symbol_pair_test_9",
+    "symbol_triple_choice_0",
+    "symbol_triple_choice_1",
+    "symbol_triple_choice_2",
+    "symbol_triple_choice_3",
+    "symbol_triple_fallback",
+    "symbol_triple_test_0",
+    "symbol_triple_test_1",
+    "symbol_triple_test_2",
+    "symbol_triple_test_3",
+    "syntax_word_bit",
+    "syntax_word_step",
+    "syntax_word_value",
+    "syntax_word_value_go",
+    "term_head_name",
+    "term_name",
+    "token_beg",
+    "token_beg_first",
+    "token_end",
+    "token_end_first",
+    "token_end_first_list",
+    "token_end_of",
+    "token_line",
+    "token_text",
+    "top_owner_checked_result",
+    "top_owner_query",
+    "top_owner_set",
+    "top_owner_valid",
+    "top_owners_seed",
+    "type_failure",
+    "u32_bit",
+    "u32_bits",
+    "u32_literal",
+    "unicode_hex_digit",
+    "unicode_hex_digit_above_A",
+    "unicode_hex_digit_above_a",
+    "unicode_hex_digit_above_zero",
+    "unicode_hex_digit_below_10",
+    "unicode_hex_digit_below_A",
+    "unicode_hex_digit_below_a",
+    "unicode_hex_digit_code",
+    "with_args_result",
+    "with_constructor_decls_result",
+    "with_def_binders_constructors_result",
+    "with_def_binders_result",
+    "with_def_body_result",
+    "with_import_result",
+    "with_imports_result",
+    "with_law_clauses_result",
+    "with_local_binders_result",
+    "with_local_values_result",
+    "with_pattern_result",
+    "with_term_bool",
+    "with_term_law_clauses",
+    "with_term_result",
+    "with_term_to_args",
+    "with_term_top",
+    "with_top_declarations_result",
+    "with_top_item_result",
+    "with_top_result"
+  ],
+  "edges": {
+    "with_term_result": [],
+    "with_args_result": [],
+    "with_term_to_args": [],
+    "with_term_top": [],
+    "with_term_law_clauses": [],
+    "with_term_bool": [],
+    "with_def_binders_result": [],
+    "with_def_body_result": [],
+    "with_local_binders_result": [],
+    "with_local_values_result": [],
+    "with_pattern_result": [],
+    "span": [],
+    "with_import_result": [],
+    "with_top_result": [],
+    "with_constructor_decls_result": [],
+    "with_def_binders_constructors_result": [],
+    "with_law_clauses_result": [],
+    "with_imports_result": [],
+    "with_top_item_result": [],
+    "with_top_declarations_result": [],
+    "token_text": [],
+    "token_beg": [],
+    "token_end": [],
+    "symbol_triple_fallback": [],
+    "symbol_triple_choice_3": [
+      "symbol_triple_fallback"
+    ],
+    "symbol_triple_test_3": [
+      "symbol_triple_choice_3"
+    ],
+    "symbol_triple_choice_2": [
+      "symbol_triple_test_3"
+    ],
+    "symbol_triple_test_2": [
+      "symbol_triple_choice_2"
+    ],
+    "symbol_triple_choice_1": [
+      "symbol_triple_test_2"
+    ],
+    "symbol_triple_test_1": [
+      "symbol_triple_choice_1"
+    ],
+    "symbol_triple_choice_0": [
+      "symbol_triple_test_1"
+    ],
+    "symbol_triple_test_0": [
+      "symbol_triple_choice_0"
+    ],
+    "multi_symbol_3": [
+      "symbol_triple_test_0"
+    ],
+    "symbol_pair_fallback": [],
+    "symbol_pair_choice_12": [
+      "symbol_pair_fallback"
+    ],
+    "symbol_pair_test_12": [
+      "symbol_pair_choice_12"
+    ],
+    "symbol_pair_choice_11": [
+      "symbol_pair_test_12"
+    ],
+    "symbol_pair_test_11": [
+      "symbol_pair_choice_11"
+    ],
+    "symbol_pair_choice_10": [
+      "symbol_pair_test_11"
+    ],
+    "symbol_pair_test_10": [
+      "symbol_pair_choice_10"
+    ],
+    "symbol_pair_choice_9": [
+      "symbol_pair_test_10"
+    ],
+    "symbol_pair_test_9": [
+      "symbol_pair_choice_9"
+    ],
+    "symbol_pair_choice_8": [
+      "symbol_pair_test_9"
+    ],
+    "symbol_pair_test_8": [
+      "symbol_pair_choice_8"
+    ],
+    "symbol_pair_choice_7": [
+      "symbol_pair_test_8"
+    ],
+    "symbol_pair_test_7": [
+      "symbol_pair_choice_7"
+    ],
+    "symbol_pair_choice_6": [
+      "symbol_pair_test_7"
+    ],
+    "symbol_pair_test_6": [
+      "symbol_pair_choice_6"
+    ],
+    "symbol_pair_choice_5": [
+      "symbol_pair_test_6"
+    ],
+    "symbol_pair_test_5": [
+      "symbol_pair_choice_5"
+    ],
+    "symbol_pair_choice_4": [
+      "symbol_pair_test_5"
+    ],
+    "symbol_pair_test_4": [
+      "symbol_pair_choice_4"
+    ],
+    "symbol_pair_choice_3": [
+      "symbol_pair_test_4"
+    ],
+    "symbol_pair_test_3": [
+      "symbol_pair_choice_3"
+    ],
+    "symbol_pair_choice_2": [
+      "symbol_pair_test_3"
+    ],
+    "symbol_pair_test_2": [
+      "symbol_pair_choice_2"
+    ],
+    "symbol_pair_choice_1": [
+      "symbol_pair_test_2"
+    ],
+    "symbol_pair_test_1": [
+      "symbol_pair_choice_1"
+    ],
+    "symbol_pair_choice_0": [
+      "symbol_pair_test_1"
+    ],
+    "symbol_pair_test_0": [
+      "symbol_pair_choice_0"
+    ],
+    "multi_symbol_2": [
+      "symbol_pair_test_0"
+    ],
+    "merge_symbol_pair_result": [],
+    "merge_symbol_pair": [
+      "merge_symbol_pair_result",
+      "multi_symbol_2"
+    ],
+    "merge_symbol_2": [
+      "merge_symbol_pair"
+    ],
+    "merge_symbol_three_result": [
+      "merge_symbol_2"
+    ],
+    "merge_symbol_three": [
+      "merge_symbol_2",
+      "merge_symbol_three_result",
+      "multi_symbol_3"
+    ],
+    "merge_symbol_middle": [
+      "merge_symbol_2",
+      "merge_symbol_three"
+    ],
+    "merge_symbol": [
+      "merge_symbol_middle"
+    ],
+    "scan_symbol_mode": [
+      "merge_symbol"
+    ],
+    "combine_symbols": [
+      "combine_symbols_acc"
+    ],
+    "combine_symbols_acc": [
+      "combine_symbols_acc",
+      "scan_symbol_mode"
+    ],
+    "skip_lines": [
+      "skip_lines"
+    ],
+    "lookup_result": [
+      "lookup_result"
+    ],
+    "lookup": [
+      "lookup_result"
+    ],
+    "operator_glued_name": [],
+    "extend_scope_result": [],
+    "extend_scope": [
+      "extend_scope_result"
+    ],
+    "parse_kind_close": [
+      "span"
+    ],
+    "parse_kind_result": [
+      "parse_kind_close",
+      "span"
+    ],
+    "parse_do_typed_bind_call_result": [],
+    "parse_do_bind_call_result": [],
+    "parse_string_result": [],
+    "do_first_col": [
+      "do_first_col"
+    ],
+    "do_has_more": [
+      "do_has_more"
+    ],
+    "string_chars_cons_result": [
+      "span"
+    ],
+    "parse_char_literal_plain_tail": [
+      "span"
+    ],
+    "append_terms": [
+      "append_terms"
+    ],
+    "do_call_return_type": [
+      "append_terms"
+    ],
+    "escape_code_value": [],
+    "escape_code": [
+      "escape_code_value"
+    ],
+    "unicode_hex_digit_above_zero": [],
+    "unicode_hex_digit_above_a": [],
+    "unicode_hex_digit_above_A": [],
+    "unicode_hex_digit_below_A": [
+      "unicode_hex_digit_above_A"
+    ],
+    "unicode_hex_digit_below_a": [
+      "unicode_hex_digit_above_a",
+      "unicode_hex_digit_below_A"
+    ],
+    "unicode_hex_digit_below_10": [
+      "unicode_hex_digit_above_zero",
+      "unicode_hex_digit_below_a"
+    ],
+    "unicode_hex_digit_code": [
+      "unicode_hex_digit_below_10"
+    ],
+    "unicode_hex_digit": [
+      "unicode_hex_digit_code"
+    ],
+    "float_decimal_above_zero": [],
+    "float_decimal_below_ten": [
+      "float_decimal_above_zero"
+    ],
+    "float_decimal_digit": [
+      "float_decimal_below_ten"
+    ],
+    "float_nat_mul_small": [
+      "float_nat_mul_small"
+    ],
+    "float_nat_scale": [
+      "float_nat_mul_small",
+      "float_nat_scale"
+    ],
+    "float_nat_cmp_limb": [],
+    "float_nat_cmp": [
+      "float_nat_cmp",
+      "float_nat_cmp_limb"
+    ],
+    "float_nat_cons": [],
+    "float_nat_sub_limb": [],
+    "float_nat_sub_go": [
+      "float_nat_cons",
+      "float_nat_sub_go",
+      "float_nat_sub_limb"
+    ],
+    "float_nat_sub": [
+      "float_nat_sub_go"
+    ],
+    "float_scale_positive": [],
+    "float_scale": [
+      "float_scale_positive"
+    ],
+    "parse_unicode_digit_code": [],
+    "parse_unicode_digit_result": [
+      "unicode_hex_digit"
+    ],
+    "parse_unicode_digits": [
+      "parse_unicode_digit_code",
+      "parse_unicode_digit_result",
+      "parse_unicode_digits"
+    ],
+    "parse_unicode_open": [
+      "parse_unicode_digit_code",
+      "parse_unicode_digit_result",
+      "parse_unicode_digits"
+    ],
+    "parse_unicode_escape": [
+      "parse_unicode_open"
+    ],
+    "scan_float_end": [
+      "float_scale"
+    ],
+    "round_float_ratio_parity": [],
+    "round_float_ratio_cmp": [
+      "round_float_ratio_parity"
+    ],
+    "round_float_ratio": [
+      "float_nat_cmp",
+      "float_nat_sub",
+      "round_float_ratio_cmp"
+    ],
+    "round_float_scaled_loop": [
+      "float_nat_cmp",
+      "float_nat_mul_small",
+      "float_nat_sub",
+      "round_float_ratio",
+      "round_float_scaled_loop"
+    ],
+    "round_float_scaled_go": [
+      "float_nat_cmp",
+      "float_nat_mul_small",
+      "round_float_scaled_loop"
+    ],
+    "encode_float_subnormal": [
+      "round_float_scaled_go"
+    ],
+    "nat_succ_prefix": [
+      "nat_succ_prefix",
+      "span"
+    ],
+    "float_exponent_bits": [],
+    "encode_float_normal_bits_exact": [
+      "float_exponent_bits"
+    ],
+    "encode_float_normal_rounding_limit": [
+      "encode_float_normal_bits_exact"
+    ],
+    "scan_float_dot": [],
+    "scan_float_sign": [],
+    "scan_float_mantissa_digit": [
+      "float_nat_mul_small"
+    ],
+    "scan_float_valid_digit": [
+      "scan_float_mantissa_digit"
+    ],
+    "scan_float_digit": [
+      "scan_float_valid_digit"
+    ],
+    "scan_float_exponent_mantissa": [],
+    "scan_float_exponent_dot": [
+      "scan_float_exponent_mantissa"
+    ],
+    "scan_float_exponent": [
+      "scan_float_exponent_dot"
+    ],
+    "scan_float_code": [
+      "float_decimal_digit",
+      "scan_float_digit",
+      "scan_float_dot",
+      "scan_float_exponent",
+      "scan_float_sign"
+    ],
+    "scan_float_step": [
+      "scan_float_code",
+      "scan_float_end"
+    ],
+    "scan_float_go": [
+      "scan_float_end",
+      "scan_float_go",
+      "scan_float_step"
+    ],
+    "scan_float": [
+      "scan_float_go",
+      "scan_float_step"
+    ],
+    "encode_float_normal_bits": [
+      "encode_float_normal_rounding_limit"
+    ],
+    "encode_float_normal": [
+      "encode_float_normal_bits",
+      "float_nat_sub",
+      "round_float_scaled_go"
+    ],
+    "has_nat_suffix_reversed": [],
+    "drop_nat_suffix_reversed": [],
+    "encode_float_positive_go": [
+      "encode_float_normal",
+      "encode_float_positive_go",
+      "float_nat_cmp",
+      "float_nat_mul_small"
+    ],
+    "encode_float_positive": [
+      "encode_float_positive_go",
+      "float_nat_cmp",
+      "float_nat_mul_small"
+    ],
+    "encode_float_negative_go": [
+      "encode_float_negative_go",
+      "encode_float_normal",
+      "encode_float_subnormal",
+      "float_nat_cmp",
+      "float_nat_mul_small"
+    ],
+    "encode_float_negative": [
+      "encode_float_negative_go",
+      "float_nat_cmp"
+    ],
+    "encode_float32_lt_one": [
+      "encode_float_negative",
+      "encode_float_positive"
+    ],
+    "encode_float32": [
+      "encode_float32_lt_one",
+      "float_nat_cmp"
+    ],
+    "float32_parts": [
+      "encode_float32",
+      "float_nat_scale"
+    ],
+    "float32_bits": [
+      "float32_parts",
+      "scan_float"
+    ],
+    "has_nat_suffix": [
+      "has_nat_suffix_reversed"
+    ],
+    "drop_nat_suffix": [
+      "drop_nat_suffix_reversed"
+    ],
+    "u32_bit": [
+      "span"
+    ],
+    "expr_finish_list": [],
+    "array_call_result": [],
+    "nat_from_syntax_successor": [],
+    "make_list_cons": [
+      "span"
+    ],
+    "u32_bits": [
+      "span",
+      "u32_bit",
+      "u32_bits"
+    ],
+    "u32_literal": [
+      "span",
+      "u32_bits"
+    ],
+    "character_term": [
+      "span",
+      "u32_literal"
+    ],
+    "string_codepoint_bit": [],
+    "string_codepoint": [
+      "string_codepoint",
+      "string_codepoint_bit"
+    ],
+    "string_chars_after_char": [],
+    "string_chars_escape_codepoint": [],
+    "string_chars_escape_result": [
+      "string_chars_escape_codepoint"
+    ],
+    "string_chars_unicode_open": [],
+    "string_chars_unicode_digit_result": [],
+    "string_chars_unicode_result": [
+      "string_chars_unicode_digit_result"
+    ],
+    "string_chars_go": [
+      "escape_code",
+      "span",
+      "string_chars_after_char",
+      "string_chars_cons_result",
+      "string_chars_escape_result",
+      "string_chars_go",
+      "string_chars_unicode_open",
+      "string_chars_unicode_result",
+      "string_codepoint",
+      "unicode_hex_digit"
+    ],
+    "string_chars": [
+      "span",
+      "string_chars_after_char",
+      "string_chars_go"
+    ],
+    "parse_char_literal_unicode_result": [
+      "character_term",
+      "span"
+    ],
+    "parse_char_literal_escape_codepoint": [
+      "parse_char_literal_unicode_result",
+      "parse_unicode_escape",
+      "span"
+    ],
+    "parse_char_literal_escape_result": [
+      "character_term",
+      "parse_char_literal_escape_codepoint",
+      "parse_char_literal_plain_tail"
+    ],
+    "parse_char_literal_after_char": [
+      "character_term",
+      "escape_code",
+      "parse_char_literal_escape_result",
+      "parse_char_literal_plain_tail",
+      "span"
+    ],
+    "parse_char_literal_chars": [
+      "parse_char_literal_after_char",
+      "span"
+    ],
+    "parse_number_float_result": [
+      "span",
+      "u32_bits"
+    ],
+    "parse_number_missing_nat": [
+      "float32_bits",
+      "parse_number_float_result",
+      "span"
+    ],
+    "make_tuple_cons": [
+      "span"
+    ],
+    "nat_succ_chain": [
+      "nat_succ_chain",
+      "span"
+    ],
+    "nat_literal_large": [
+      "nat_succ_chain",
+      "span",
+      "u32_literal"
+    ],
+    "nat_literal": [
+      "nat_literal_large"
+    ],
+    "parse_parenthesized_tuple_result": [],
+    "parse_parenthesized_body_result": [],
+    "operator_key_choice_13": [],
+    "operator_key_test_13": [
+      "operator_key_choice_13"
+    ],
+    "operator_key_choice_12": [
+      "operator_key_test_13"
+    ],
+    "operator_key_test_12": [
+      "operator_key_choice_12"
+    ],
+    "operator_key_choice_11": [
+      "operator_key_test_12"
+    ],
+    "operator_key_test_11": [
+      "operator_key_choice_11"
+    ],
+    "operator_key_choice_10": [
+      "operator_key_test_11"
+    ],
+    "operator_key_test_10": [
+      "operator_key_choice_10"
+    ],
+    "operator_key_choice_9": [
+      "operator_key_test_10"
+    ],
+    "operator_key_test_9": [
+      "operator_key_choice_9"
+    ],
+    "operator_key_choice_8": [
+      "operator_key_test_9"
+    ],
+    "operator_key_test_8": [
+      "operator_key_choice_8"
+    ],
+    "operator_key_choice_7": [
+      "operator_key_test_8"
+    ],
+    "operator_key_test_7": [
+      "operator_key_choice_7"
+    ],
+    "operator_key_choice_6": [
+      "operator_key_test_7"
+    ],
+    "operator_key_test_6": [
+      "operator_key_choice_6"
+    ],
+    "operator_key_choice_5": [
+      "operator_key_test_6"
+    ],
+    "operator_key_test_5": [
+      "operator_key_choice_5"
+    ],
+    "operator_key_choice_4": [
+      "operator_key_test_5"
+    ],
+    "operator_key_test_4": [
+      "operator_key_choice_4"
+    ],
+    "operator_key_choice_3": [
+      "operator_key_test_4"
+    ],
+    "operator_key_test_3": [
+      "operator_key_choice_3"
+    ],
+    "operator_key_choice_2": [
+      "operator_key_test_3"
+    ],
+    "operator_key_test_2": [
+      "operator_key_choice_2"
+    ],
+    "operator_key_choice_1": [
+      "operator_key_test_2"
+    ],
+    "operator_key_test_1": [
+      "operator_key_choice_1"
+    ],
+    "operator_key_choice_0": [
+      "operator_key_test_1"
+    ],
+    "operator_key_test_0": [
+      "operator_key_choice_0"
+    ],
+    "map_operator_key": [
+      "operator_key_test_0"
+    ],
+    "match_tail_branch_0": [],
+    "match_tail_branch_1": [
+      "span",
+      "token_beg",
+      "token_end"
+    ],
+    "match_tail_is_colon": [],
+    "match_tail_run": [
+      "match_tail_branch_0",
+      "match_tail_branch_1"
+    ],
+    "parse_match_tail_after_semicolon": [
+      "match_tail_is_colon",
+      "match_tail_run",
+      "span",
+      "token_end"
+    ],
+    "parse_brace_equal_type_result": [
+      "span",
+      "token_beg",
+      "token_end"
+    ],
+    "brace_annot_branch_0": [
+      "span",
+      "token_end"
+    ],
+    "brace_annot_branch_1": [
+      "span",
+      "token_beg",
+      "token_end"
+    ],
+    "brace_annot_is_colon": [],
+    "brace_annot_run": [
+      "brace_annot_branch_0",
+      "brace_annot_branch_1"
+    ],
+    "parse_brace_annot_type_result": [
+      "brace_annot_is_colon",
+      "brace_annot_run"
+    ],
+    "inequality_branch_0": [
+      "span",
+      "token_end"
+    ],
+    "inequality_branch_1": [
+      "span",
+      "token_beg",
+      "token_end"
+    ],
+    "inequality_is_colon": [],
+    "inequality_run": [
+      "inequality_branch_0",
+      "inequality_branch_1"
+    ],
+    "parse_inequality_type_result": [
+      "inequality_is_colon",
+      "inequality_run"
+    ],
+    "skip_rewrite_semicolon": [],
+    "parse_do_return_call_result": [
+      "skip_rewrite_semicolon"
+    ],
+    "parse_name_term_lookup": [
+      "span"
+    ],
+    "token_end_of": [
+      "token_beg"
+    ],
+    "token_end_first": [],
+    "parse_nat_literal_prefix": [
+      "nat_literal",
+      "nat_succ_prefix",
+      "span",
+      "token_end_first",
+      "token_end_of"
+    ],
+    "syntax_word_bit": [],
+    "syntax_word_step": [
+      "syntax_word_bit"
+    ],
+    "syntax_word_value_go": [
+      "syntax_word_step",
+      "syntax_word_value_go"
+    ],
+    "syntax_word_value": [
+      "syntax_word_step",
+      "syntax_word_value_go"
+    ],
+    "nat_from_syntax": [
+      "nat_from_syntax",
+      "nat_from_syntax_successor",
+      "syntax_word_value"
+    ],
+    "power_depth_remainder": [],
+    "power_depth_step": [
+      "power_depth_remainder"
+    ],
+    "power_depth_go": [
+      "power_depth_go",
+      "power_depth_step"
+    ],
+    "power_depth": [
+      "power_depth_go",
+      "power_depth_step"
+    ],
+    "nat_literal_tokens": [
+      "has_nat_suffix",
+      "nat_literal_tokens",
+      "nat_literal_tokens_suffix"
+    ],
+    "nat_literal_tokens_suffix": [
+      "drop_nat_suffix",
+      "nat_literal_tokens_value"
+    ],
+    "nat_literal_tokens_value": [
+      "nat_literal_tokens_next",
+      "token_beg"
+    ],
+    "nat_literal_tokens_next": [
+      "nat_literal_tokens_plus",
+      "nat_literal_tokens_value"
+    ],
+    "nat_literal_tokens_plus": [
+      "nat_literal_tokens",
+      "nat_literal_tokens_sum"
+    ],
+    "nat_literal_tokens_sum": [
+      "nat_literal_tokens_sum_range"
+    ],
+    "nat_literal_tokens_sum_range": [],
+    "parse_nat_literal_fold": [
+      "nat_literal_tokens_sum",
+      "parse_nat_literal_fold_sum"
+    ],
+    "parse_nat_literal_fold_sum": [
+      "nat_literal",
+      "parse_nat_literal_prefix",
+      "token_end_first",
+      "token_end_of"
+    ],
+    "parse_nat_literal_tail": [
+      "nat_literal_tokens",
+      "parse_nat_literal_fold",
+      "token_end_first",
+      "token_end_of"
+    ],
+    "make_list": [
+      "make_list",
+      "make_list_cons",
+      "span"
+    ],
+    "make_tuple": [
+      "make_tuple",
+      "make_tuple_cons"
+    ],
+    "parse_parenthesized_terms": [
+      "make_tuple",
+      "parse_parenthesized_tuple_result",
+      "span",
+      "token_end_of"
+    ],
+    "parse_name_lambda_result": [
+      "span",
+      "token_end_of"
+    ],
+    "consumed_token_end": [
+      "consumed_token_end_all",
+      "consumed_token_end_before",
+      "token_beg"
+    ],
+    "consumed_token_end_all": [
+      "consumed_token_end_all",
+      "token_end"
+    ],
+    "consumed_token_end_before": [
+      "consumed_token_end_step",
+      "token_beg"
+    ],
+    "consumed_token_end_step": [
+      "consumed_token_end_before",
+      "token_end"
+    ],
+    "evaluation_context_parse_name_constructor_result_84616": [
+      "span"
+    ],
+    "parse_name_constructor_result": [
+      "consumed_token_end",
+      "evaluation_context_parse_name_constructor_result_84616",
+      "span"
+    ],
+    "parse_all_named_body_result": [
+      "span",
+      "token_end_of"
+    ],
+    "parse_many_lambda_body_result": [
+      "span",
+      "token_end_of"
+    ],
+    "has_space_after_result": [],
+    "has_space_after": [
+      "has_space_after_result",
+      "token_beg"
+    ],
+    "term_head_name": [
+      "term_head_name"
+    ],
+    "term_name": [],
+    "map_operator_term": [
+      "map_operator_key",
+      "map_operator_term"
+    ],
+    "operator_rhs_level": [],
+    "is_quantity_term": [],
+    "token_beg_first": [],
+    "parse_template_term_result": [
+      "span",
+      "token_end_first"
+    ],
+    "make_do_assignment_term": [
+      "span",
+      "token_end_first",
+      "token_end_of"
+    ],
+    "make_do_assignment_result": [],
+    "parse_do_assignment_body_result": [
+      "make_do_assignment_result",
+      "make_do_assignment_term"
+    ],
+    "expr_finish_list_items": [
+      "expr_finish_list",
+      "make_list",
+      "span",
+      "token_end_first",
+      "token_end_of"
+    ],
+    "parse_typed_operator_namespace": [
+      "map_operator_term",
+      "span",
+      "token_beg_first",
+      "token_end_first"
+    ],
+    "parse_typed_operator_close": [
+      "parse_typed_operator_namespace",
+      "span",
+      "term_head_name"
+    ],
+    "parse_typed_operator_type": [
+      "parse_typed_operator_close"
+    ],
+    "parse_match_tail_with_head_result": [
+      "span",
+      "token_end_first",
+      "token_end_of"
+    ],
+    "match_tail_scan_branch_0": [
+      "parse_match_tail_after_semicolon",
+      "skip_lines"
+    ],
+    "match_tail_scan_branch_1": [],
+    "match_tail_scan_branch_2": [
+      "span",
+      "token_beg",
+      "token_end"
+    ],
+    "match_tail_scan_is_colon": [],
+    "match_tail_scan_run": [
+      "match_tail_scan_branch_0",
+      "match_tail_scan_branch_1",
+      "match_tail_scan_branch_2"
+    ],
+    "parse_match_tail_scan": [
+      "match_tail_scan_is_colon",
+      "match_tail_scan_run",
+      "span",
+      "token_end_first"
+    ],
+    "parse_match_tail_result": [
+      "parse_match_tail_scan",
+      "skip_lines"
+    ],
+    "parse_rewrite_body_result": [
+      "span",
+      "token_end_first"
+    ],
+    "parse_plus_args_result": [
+      "span",
+      "token_beg",
+      "token_end",
+      "token_end_first",
+      "token_end_of"
+    ],
+    "apply_terms": [
+      "apply_terms",
+      "span",
+      "token_end_first"
+    ],
+    "do_call_from_split": [
+      "append_terms",
+      "apply_terms",
+      "do_call_return_type",
+      "span"
+    ],
+    "split_last_do_args": [
+      "split_last_do_args"
+    ],
+    "do_call": [
+      "do_call_from_split",
+      "split_last_do_args"
+    ],
+    "do_final_type": [
+      "do_final_type"
+    ],
+    "parse_do_final_action": [
+      "do_final_type",
+      "span",
+      "token_beg_first",
+      "token_end_first"
+    ],
+    "array_call": [
+      "apply_terms",
+      "array_call_result",
+      "span"
+    ],
+    "expr_match_array_depth_close": [
+      "array_call",
+      "span"
+    ],
+    "expr_match_array_depth": [
+      "expr_match_array_depth_close"
+    ],
+    "parse_do_return_value_result": [
+      "do_call",
+      "parse_do_return_call_result"
+    ],
+    "parse_do_typed_bind_body_result": [
+      "do_call",
+      "parse_do_typed_bind_call_result",
+      "span",
+      "token_end_first",
+      "token_end_of"
+    ],
+    "parse_do_bind_body_result": [
+      "do_call",
+      "parse_do_bind_call_result",
+      "span",
+      "token_end_first",
+      "token_end_of"
+    ],
+    "expr_match_array_power": [
+      "array_call",
+      "nat_literal",
+      "span",
+      "token_beg_first",
+      "token_end",
+      "token_end_first"
+    ],
+    "expr_match_array_nat": [
+      "expr_match_array_power",
+      "power_depth",
+      "span",
+      "token_beg_first",
+      "token_end_first"
+    ],
+    "expr_match_array_count_close": [
+      "expr_match_array_nat",
+      "nat_from_syntax"
+    ],
+    "expr_match_array_count": [
+      "expr_match_array_count_close"
+    ],
+    "token_end_first_list": [
+      "token_end_first"
+    ],
+    "parse_name_scan": [],
+    "parse_name": [
+      "parse_name_scan",
+      "skip_lines"
+    ],
+    "definition_failure": [
+      "span"
+    ],
+    "parse_definition_typed_body_result": [
+      "definition_failure",
+      "span",
+      "token_end",
+      "token_end_first",
+      "token_end_of"
+    ],
+    "parse_definition_untyped_body_result": [
+      "definition_failure",
+      "span",
+      "token_end",
+      "token_end_of"
+    ],
+    "parse_definition_term_result": [],
+    "parse_reply_result": [
+      "span",
+      "token_beg_first",
+      "token_end_first"
+    ],
+    "token_line": [],
+    "external_paths_valid": [
+      "external_paths_valid"
+    ],
+    "parse_definition_imports_result": [
+      "external_paths_valid"
+    ],
+    "local_group_has_equal": [
+      "local_group_has_equal"
+    ],
+    "local_binder_pattern": [
+      "span"
+    ],
+    "parse_local_binders": [
+      "extend_scope",
+      "local_binder_pattern",
+      "parse_local_binders"
+    ],
+    "parse_parallel_parsed_body": [
+      "span",
+      "token_end_first_list",
+      "token_end_of"
+    ],
+    "first_line": [
+      "first_line",
+      "token_line"
+    ],
+    "parse_local_body_parsed": [
+      "span",
+      "token_end_first",
+      "token_end_of"
+    ],
+    "parse_destructuring_parsed_body": [
+      "span",
+      "token_end_first",
+      "token_end_of"
+    ],
+    "local_array_write": [
+      "local_array_write"
+    ],
+    "parse_match_cases_result": [
+      "span",
+      "token_beg",
+      "token_end",
+      "token_end_first_list",
+      "token_end_of"
+    ],
+    "parse_case_rows_stop": [],
+    "parse_case_body_result": [
+      "span",
+      "token_end_first",
+      "token_end_of"
+    ],
+    "body_indented": [
+      "body_indented"
+    ],
+    "local_group_body_ready_after_line": [
+      "body_indented"
+    ],
+    "local_group_body_ready": [
+      "local_group_body_ready",
+      "local_group_body_ready_after_line"
+    ],
+    "local_body_ready": [
+      "body_indented"
+    ],
+    "pattern_count_matches": [
+      "pattern_count_matches"
+    ],
+    "module_import_without_alias": [
+      "span",
+      "token_end"
+    ],
+    "nat_pattern": [
+      "nat_pattern",
+      "span"
+    ],
+    "parse_pattern_nat_read": [
+      "nat_pattern",
+      "span"
+    ],
+    "parse_pattern_nat_suffix": [
+      "drop_nat_suffix",
+      "parse_pattern_nat_read",
+      "span"
+    ],
+    "nat_pattern_tail": [
+      "nat_pattern_tail",
+      "span"
+    ],
+    "pattern_nat_tail_result": [
+      "nat_pattern_tail",
+      "pattern_end",
+      "pattern_finish",
+      "pattern_scan",
+      "span"
+    ],
+    "pattern_nat_tail_allowed": [
+      "parse_pattern_atom",
+      "pattern_finish",
+      "pattern_nat_tail_result",
+      "span"
+    ],
+    "pattern_nat_adjacent": [
+      "nat_pattern",
+      "pattern_nat_tail_allowed",
+      "pattern_scan"
+    ],
+    "pattern_nat_after": [
+      "nat_pattern",
+      "pattern_nat_adjacent",
+      "pattern_scan"
+    ],
+    "pattern_nat_read": [
+      "pattern_finish",
+      "pattern_nat_after",
+      "span"
+    ],
+    "pattern_number_start": [
+      "drop_nat_suffix",
+      "pattern_nat_read",
+      "pattern_scan"
+    ],
+    "pattern_finish": [
+      "pattern_file",
+      "pattern_scan"
+    ],
+    "pattern_file": [],
+    "pattern_beg": [],
+    "pattern_end": [],
+    "pattern_cons_result": [
+      "pattern_beg",
+      "pattern_end",
+      "pattern_finish",
+      "pattern_scan",
+      "span"
+    ],
+    "literal_pattern_fields_cons": [],
+    "literal_pattern_field": [
+      "literal_pattern_fields",
+      "literal_pattern_fields_cons"
+    ],
+    "literal_pattern_fields": [
+      "literal_pattern",
+      "literal_pattern_field"
+    ],
+    "literal_pattern_constructor": [],
+    "literal_pattern_tree": [
+      "literal_pattern_constructor",
+      "literal_pattern_fields"
+    ],
+    "literal_pattern": [
+      "literal_pattern_tree"
+    ],
+    "pattern_literal_finish": [
+      "pattern_finish",
+      "pattern_scan",
+      "span"
+    ],
+    "pattern_literal_result": [
+      "literal_pattern",
+      "pattern_finish",
+      "pattern_literal_finish",
+      "span"
+    ],
+    "pattern_group_result": [
+      "pattern_finish",
+      "pattern_scan"
+    ],
+    "pattern_tuple_tail_result": [
+      "pattern_end",
+      "span"
+    ],
+    "pattern_tuple_delimiter": [
+      "parse_pattern_tuple",
+      "pattern_tuple_tail_result"
+    ],
+    "pattern_tuple_head_result": [
+      "pattern_tuple_delimiter"
+    ],
+    "parse_pattern_tuple": [
+      "parse_pattern_atom",
+      "pattern_tuple_head_result"
+    ],
+    "pattern_list_fields": [
+      "pattern_list_fields",
+      "span"
+    ],
+    "make_pattern_list": [
+      "pattern_list_fields",
+      "span"
+    ],
+    "pattern_completed_text_test_0": [
+      "pattern_completed_text_test_1"
+    ],
+    "pattern_completed_text_test_1": [
+      "pattern_completed_text_test_2"
+    ],
+    "pattern_completed_text_test_2": [
+      "pattern_completed_text_test_3"
+    ],
+    "pattern_completed_text_test_3": [
+      "pattern_completed_text_test_4"
+    ],
+    "pattern_completed_text_test_4": [
+      "pattern_completed_text_test_5"
+    ],
+    "pattern_completed_text_test_5": [],
+    "pattern_completed_text": [
+      "pattern_completed_text_test_0"
+    ],
+    "pattern_scan_row_0": [
+      "parse_pattern_tuple",
+      "pattern_group_result"
+    ],
+    "pattern_scan_row_1": [
+      "pattern_scan"
+    ],
+    "pattern_scan_row_2": [
+      "parse_char_literal",
+      "pattern_literal_result"
+    ],
+    "pattern_scan_row_3": [
+      "parse_string",
+      "pattern_literal_result"
+    ],
+    "pattern_scan_row_4": [
+      "pattern_scan"
+    ],
+    "pattern_scan_row_5": [
+      "pattern_finish",
+      "span"
+    ],
+    "pattern_scan_row_6": [
+      "pattern_scan"
+    ],
+    "pattern_scan_row_7": [
+      "pattern_scan"
+    ],
+    "pattern_scan_row_8": [
+      "extend_scope",
+      "pattern_scan",
+      "span"
+    ],
+    "pattern_scan_row_9": [
+      "extend_scope",
+      "pattern_scan",
+      "span"
+    ],
+    "pattern_scan_row_10": [
+      "has_nat_suffix",
+      "pattern_number_start"
+    ],
+    "pattern_scan_row_13": [
+      "pattern_scan"
+    ],
+    "pattern_scan_row_14": [
+      "make_pattern_list",
+      "pattern_finish",
+      "pattern_scan",
+      "span"
+    ],
+    "pattern_scan_row_15": [
+      "make_pattern_list",
+      "pattern_finish",
+      "pattern_scan",
+      "span"
+    ],
+    "pattern_scan_row_16": [
+      "parse_pattern_atom",
+      "pattern_cons_result"
+    ],
+    "pattern_scan_row_17": [
+      "pattern_scan"
+    ],
+    "pattern_scan_row_18": [
+      "pattern_finish",
+      "span"
+    ],
+    "pattern_scan_row_19": [
+      "make_pattern_list",
+      "pattern_finish",
+      "pattern_scan"
+    ],
+    "pattern_scan_row_20": [
+      "make_pattern_list",
+      "pattern_finish",
+      "pattern_scan",
+      "span"
+    ],
+    "pattern_scan_row_21": [
+      "pattern_scan"
+    ],
+    "pattern_scan_row_22": [
+      "pattern_finish",
+      "pattern_scan"
+    ],
+    "pattern_scan_row_23": [
+      "extend_scope",
+      "pattern_finish",
+      "pattern_scan",
+      "span"
+    ],
+    "pattern_scan_row_24": [
+      "pattern_finish",
+      "pattern_scan"
+    ],
+    "pattern_scan_row_25": [
+      "pattern_finish",
+      "span"
+    ],
+    "pattern_scan_row_26": [
+      "pattern_finish",
+      "span"
+    ],
+    "pattern_expect_action_test_0": [
+      "pattern_expect_action_test_1"
+    ],
+    "pattern_expect_action_test_1": [
+      "pattern_expect_action_test_2"
+    ],
+    "pattern_expect_action_test_2": [
+      "pattern_expect_action_test_3"
+    ],
+    "pattern_expect_action_test_3": [
+      "pattern_expect_action_test_4"
+    ],
+    "pattern_expect_action_test_4": [
+      "pattern_expect_action_test_5"
+    ],
+    "pattern_expect_action_test_5": [
+      "pattern_expect_action_test_6"
+    ],
+    "pattern_expect_action_test_6": [
+      "pattern_expect_action_test_7"
+    ],
+    "pattern_expect_action_test_7": [
+      "pattern_expect_action_test_8"
+    ],
+    "pattern_expect_action_test_8": [
+      "pattern_expect_action_test_9"
+    ],
+    "pattern_expect_action_test_9": [
+      "pattern_expect_action_test_10"
+    ],
+    "pattern_expect_action_test_10": [
+      "pattern_expect_action_test_11"
+    ],
+    "pattern_expect_action_test_11": [
+      "pattern_expect_action_test_12"
+    ],
+    "pattern_expect_action_test_12": [
+      "pattern_expect_action_test_13"
+    ],
+    "pattern_expect_action_test_13": [
+      "pattern_expect_action_test_14"
+    ],
+    "pattern_expect_action_test_14": [],
+    "pattern_expect_action": [
+      "pattern_expect_action_test_0"
+    ],
+    "pattern_scan_expect_run": [
+      "pattern_scan_row_0",
+      "pattern_scan_row_1",
+      "pattern_scan_row_10",
+      "pattern_scan_row_13",
+      "pattern_scan_row_14",
+      "pattern_scan_row_15",
+      "pattern_scan_row_2",
+      "pattern_scan_row_26",
+      "pattern_scan_row_3",
+      "pattern_scan_row_4",
+      "pattern_scan_row_5",
+      "pattern_scan_row_6",
+      "pattern_scan_row_7",
+      "pattern_scan_row_8",
+      "pattern_scan_row_9"
+    ],
+    "pattern_scan_expect_step": [
+      "pattern_expect_action",
+      "pattern_scan_expect_run"
+    ],
+    "pattern_scan_completed_fields": [
+      "pattern_scan_row_16",
+      "pattern_scan_row_17",
+      "pattern_scan_row_18",
+      "pattern_scan_row_19",
+      "pattern_scan_row_20",
+      "pattern_scan_row_21",
+      "pattern_scan_row_22",
+      "pattern_scan_row_23",
+      "pattern_scan_row_24",
+      "pattern_scan_row_25"
+    ],
+    "pattern_scan_completed_step": [
+      "pattern_completed_text",
+      "pattern_scan_completed_fields"
+    ],
+    "pattern_scan_token_step": [
+      "pattern_finish",
+      "pattern_scan_completed_step",
+      "pattern_scan_expect_step",
+      "span"
+    ],
+    "pattern_scan_empty_step": [
+      "pattern_finish",
+      "span"
+    ],
+    "pattern_scan": [
+      "pattern_scan_empty_step",
+      "pattern_scan_token_step"
+    ],
+    "pattern_single_result": [
+      "span"
+    ],
+    "parse_pattern_atom": [
+      "pattern_scan",
+      "pattern_single_result"
+    ],
+    "parse_module_import_alias_token": [
+      "span",
+      "token_end"
+    ],
+    "parse_module_import_alias_target": [
+      "parse_module_import_alias_token",
+      "span",
+      "token_end"
+    ],
+    "is_base_path": [],
+    "parse_module_import_modifier": [
+      "is_base_path",
+      "module_import_without_alias",
+      "parse_module_import_alias_target"
+    ],
+    "parse_module_import_path_rest": [
+      "has_space_after",
+      "is_base_path",
+      "module_import_without_alias",
+      "parse_module_import_modifier",
+      "parse_module_import_path_rest"
+    ],
+    "strip_quotes_reversed": [],
+    "strip_quotes_chars": [
+      "strip_quotes_reversed"
+    ],
+    "strip_quotes": [
+      "strip_quotes_chars"
+    ],
+    "external_import_token_action": [],
+    "external_import_action": [
+      "external_import_token_action"
+    ],
+    "external_import_worker": [
+      "external_import_action",
+      "external_import_worker",
+      "strip_quotes"
+    ],
+    "external_import_start": [
+      "external_import_action",
+      "external_import_worker"
+    ],
+    "parse_external_imports_scan": [
+      "external_import_start"
+    ],
+    "parse_external_imports": [
+      "parse_external_imports_scan"
+    ],
+    "parse_string": [
+      "parse_string_result",
+      "string_chars",
+      "strip_quotes"
+    ],
+    "parse_char_literal": [
+      "parse_char_literal_chars",
+      "strip_quotes"
+    ],
+    "parse_do_atom_colon": [
+      "do_first_col",
+      "parse_do_return",
+      "span",
+      "token_beg",
+      "token_end"
+    ],
+    "parse_do_atom_args_result": [
+      "parse_do_atom_colon",
+      "span"
+    ],
+    "parse_do_atom": [
+      "parse_do_atom_args_result",
+      "parse_term_args",
+      "span",
+      "token_beg",
+      "token_end"
+    ],
+    "parse_atom_name_dispatch": [
+      "parse_do_atom",
+      "parse_kind_result",
+      "parse_name_term",
+      "parse_term",
+      "span"
+    ],
+    "parse_atom_symbol_row_0": [
+      "span"
+    ],
+    "parse_atom_symbol_row_1": [
+      "parse_list"
+    ],
+    "parse_atom_symbol_row_2": [
+      "parse_parenthesized"
+    ],
+    "parse_atom_symbol_row_3": [
+      "parse_rewrite"
+    ],
+    "parse_atom_symbol_row_4": [
+      "parse_all"
+    ],
+    "parse_atom_symbol_row_5": [
+      "parse_amp"
+    ],
+    "parse_atom_symbol_row_6": [
+      "parse_many_lambda"
+    ],
+    "parse_atom_symbol_row_7": [
+      "parse_absurd"
+    ],
+    "parse_atom_symbol_row_8": [
+      "parse_template_term"
+    ],
+    "parse_atom_symbol_row_9": [
+      "parse_brace"
+    ],
+    "parse_atom_symbol_row_10": [
+      "span"
+    ],
+    "parse_atom_symbol_dispatch": [
+      "parse_atom_symbol_row_0",
+      "parse_atom_symbol_row_1",
+      "parse_atom_symbol_row_10",
+      "parse_atom_symbol_row_2",
+      "parse_atom_symbol_row_3",
+      "parse_atom_symbol_row_4",
+      "parse_atom_symbol_row_5",
+      "parse_atom_symbol_row_6",
+      "parse_atom_symbol_row_7",
+      "parse_atom_symbol_row_8",
+      "parse_atom_symbol_row_9"
+    ],
+    "parse_atom_scan": [
+      "parse_atom_name_dispatch",
+      "parse_atom_symbol_dispatch",
+      "parse_char_literal",
+      "parse_number",
+      "parse_string",
+      "span",
+      "token_beg",
+      "token_end"
+    ],
+    "parse_atom": [
+      "parse_atom_scan",
+      "skip_lines"
+    ],
+    "parse_template_term": [
+      "parse_template_term_result",
+      "parse_term"
+    ],
+    "parse_do_return_scan": [
+      "parse_do_return_value_result",
+      "parse_do_typed_bind",
+      "parse_term",
+      "span"
+    ],
+    "parse_do_return": [
+      "parse_do_return_scan",
+      "skip_lines"
+    ],
+    "do_token_action": [],
+    "do_token_branch_0": [
+      "parse_do_typed_bind_value_result",
+      "parse_term"
+    ],
+    "do_token_branch_1": [
+      "parse_do_assignment"
+    ],
+    "do_token_branch_2": [
+      "span",
+      "token_beg",
+      "token_end"
+    ],
+    "do_token_run": [
+      "do_token_branch_0",
+      "do_token_branch_1",
+      "do_token_branch_2"
+    ],
+    "parse_do_typed_bind_type_token": [
+      "do_token_action",
+      "do_token_run"
+    ],
+    "parse_do_typed_bind_type_result": [
+      "parse_do_typed_bind_type_token"
+    ],
+    "parse_do_typed_bind_value_result": [
+      "extend_scope",
+      "parse_do_return",
+      "parse_do_typed_bind_body_result",
+      "skip_rewrite_semicolon",
+      "with_term_result"
+    ],
+    "parse_do_typed_bind": [
+      "parse_do_typed_bind_type_result",
+      "parse_do_untyped",
+      "parse_term",
+      "span"
+    ],
+    "parse_do_assignment_value_result": [
+      "extend_scope",
+      "parse_do_assignment_body_result",
+      "parse_do_return",
+      "skip_rewrite_semicolon",
+      "with_term_result"
+    ],
+    "parse_do_assignment": [
+      "parse_do_assignment_value_result",
+      "parse_term"
+    ],
+    "parse_do_untyped_result": [
+      "parse_do_untyped_action_result",
+      "with_term_result"
+    ],
+    "parse_do_untyped_action_result": [
+      "parse_do_untyped_after_action",
+      "skip_rewrite_semicolon"
+    ],
+    "parse_do_untyped_value_result": [
+      "parse_do_bind"
+    ],
+    "parse_do_untyped_after_action": [
+      "parse_do_final_action",
+      "parse_do_untyped_step",
+      "parse_do_untyped_value_result",
+      "parse_term"
+    ],
+    "parse_do_untyped": [
+      "parse_do_untyped_result",
+      "parse_term"
+    ],
+    "parse_do_untyped_step": [
+      "do_has_more",
+      "parse_do_untyped_step_after_check"
+    ],
+    "parse_do_untyped_step_after_check": [
+      "parse_do_bind",
+      "parse_do_final_action",
+      "span"
+    ],
+    "parse_do_bind": [
+      "extend_scope",
+      "parse_do_bind_body_result",
+      "parse_do_return",
+      "skip_rewrite_semicolon",
+      "with_term_result"
+    ],
+    "parse_amp": [
+      "parse_all",
+      "span",
+      "token_end"
+    ],
+    "parse_number": [
+      "has_nat_suffix",
+      "parse_number_suffix"
+    ],
+    "parse_number_suffix": [
+      "drop_nat_suffix",
+      "parse_number_nat_result"
+    ],
+    "parse_number_nat_result": [
+      "parse_number_missing_nat",
+      "parse_number_nat_range"
+    ],
+    "parse_number_nat_range": [
+      "parse_number_nat_value",
+      "span"
+    ],
+    "parse_number_nat_value": [
+      "parse_nat_literal",
+      "u32_literal"
+    ],
+    "parse_nat_literal_plus": [
+      "nat_literal",
+      "parse_nat_literal_tail",
+      "parse_term"
+    ],
+    "parse_nat_literal": [
+      "nat_literal",
+      "parse_nat_literal_plus"
+    ],
+    "parse_list": [
+      "expr_match_ok_after",
+      "parse_term",
+      "span",
+      "token_end"
+    ],
+    "expr_match_ok_after": [
+      "expr_match_list_separator"
+    ],
+    "expr_match_list_separator": [
+      "expr_finish_list",
+      "expr_finish_list_items",
+      "make_list",
+      "parse_array_literal",
+      "parse_term_args",
+      "span",
+      "token_beg",
+      "token_end",
+      "with_args_result"
+    ],
+    "parse_array_literal": [
+      "expr_match_array_type",
+      "parse_term"
+    ],
+    "array_shape_action": [],
+    "array_shape_branch_0": [
+      "expr_match_array_count",
+      "parse_term"
+    ],
+    "array_shape_branch_1": [
+      "expr_match_array_depth",
+      "parse_term"
+    ],
+    "array_shape_branch_2": [
+      "span",
+      "token_beg",
+      "token_end"
+    ],
+    "array_shape_run": [
+      "array_shape_branch_0",
+      "array_shape_branch_1",
+      "array_shape_branch_2"
+    ],
+    "expr_match_array_shape": [
+      "array_shape_action",
+      "array_shape_run"
+    ],
+    "expr_match_array_type": [
+      "expr_match_array_shape"
+    ],
+    "parse_parenthesized_result": [
+      "parse_parenthesized_body",
+      "parse_parenthesized_terms"
+    ],
+    "parse_parenthesized": [
+      "parse_parenthesized_result",
+      "parse_term_args"
+    ],
+    "parse_parenthesized_body_close": [
+      "parse_parenthesized_body_result",
+      "parse_typed_operator"
+    ],
+    "parse_parenthesized_body_result_checked": [
+      "parse_parenthesized_body_close",
+      "parse_typed_operator"
+    ],
+    "parse_parenthesized_body": [
+      "parse_body",
+      "parse_parenthesized_body_result_checked"
+    ],
+    "parse_typed_operator_colon": [
+      "parse_term",
+      "parse_typed_operator_type",
+      "span",
+      "token_beg",
+      "token_end"
+    ],
+    "parse_typed_operator_term": [
+      "parse_typed_operator_colon"
+    ],
+    "parse_typed_operator": [
+      "parse_term",
+      "parse_typed_operator_term"
+    ],
+    "parse_absurd": [
+      "parse_match_expr",
+      "span",
+      "token_beg",
+      "token_end"
+    ],
+    "parse_match_expr_after_head": [
+      "parse_match_chain"
+    ],
+    "parse_match_expr_head_result": [
+      "parse_match_expr_parsed_head",
+      "with_term_result"
+    ],
+    "parse_match_expr_parsed_head": [
+      "parse_match_expr_after_head",
+      "skip_lines"
+    ],
+    "parse_match_expr_after_name": [
+      "parse_match_expr_head_result",
+      "parse_match_tail",
+      "parse_term"
+    ],
+    "parse_match_expr_scan": [
+      "parse_match_expr_after_name",
+      "parse_match_tail",
+      "skip_lines",
+      "span"
+    ],
+    "parse_match_expr": [
+      "parse_match_expr_scan",
+      "skip_lines"
+    ],
+    "parse_match_chain_state": [
+      "parse_match_chain_state",
+      "parse_match_tail_with_head",
+      "parse_term",
+      "skip_lines",
+      "span",
+      "token_end_first",
+      "with_term_result"
+    ],
+    "parse_match_chain": [
+      "parse_match_chain_state",
+      "skip_lines"
+    ],
+    "parse_match_tail_with_head": [
+      "parse_match_tail",
+      "parse_match_tail_with_head_result",
+      "with_term_result"
+    ],
+    "parse_match_tail": [
+      "parse_match_tail_result",
+      "parse_term",
+      "with_term_result"
+    ],
+    "brace_equal_right_branch_0": [
+      "parse_brace_equal_type_result",
+      "parse_term",
+      "with_term_result"
+    ],
+    "brace_equal_right_branch_1": [
+      "span",
+      "token_beg",
+      "token_end"
+    ],
+    "brace_equal_right_is_colon": [],
+    "brace_equal_right_run": [
+      "brace_equal_right_branch_0",
+      "brace_equal_right_branch_1"
+    ],
+    "parse_brace_equal_right_result": [
+      "brace_equal_right_is_colon",
+      "brace_equal_right_run"
+    ],
+    "brace_equals_action": [],
+    "brace_equals_branch_0": [
+      "parse_inequality"
+    ],
+    "brace_equals_branch_1": [
+      "parse_brace_equal_right_result",
+      "parse_term",
+      "with_term_result"
+    ],
+    "brace_equals_branch_2": [
+      "parse_brace_annot_type_result",
+      "parse_term",
+      "with_term_result"
+    ],
+    "brace_equals_branch_3": [
+      "span",
+      "token_beg",
+      "token_end"
+    ],
+    "brace_equals_run": [
+      "brace_equals_branch_0",
+      "brace_equals_branch_1",
+      "brace_equals_branch_2",
+      "brace_equals_branch_3"
+    ],
+    "parse_brace_equals": [
+      "brace_equals_action",
+      "brace_equals_run"
+    ],
+    "parse_brace_left_result": [
+      "parse_brace_equals"
+    ],
+    "parse_brace": [
+      "parse_brace_left_result",
+      "parse_term",
+      "span",
+      "token_beg",
+      "token_end",
+      "with_term_result"
+    ],
+    "inequality_right_branch_0": [
+      "parse_inequality_type_result",
+      "parse_term",
+      "with_term_result"
+    ],
+    "inequality_right_branch_1": [
+      "span",
+      "token_beg",
+      "token_end"
+    ],
+    "inequality_right_is_colon": [],
+    "inequality_right_run": [
+      "inequality_right_branch_0",
+      "inequality_right_branch_1"
+    ],
+    "parse_inequality_right_result": [
+      "inequality_right_is_colon",
+      "inequality_right_run"
+    ],
+    "parse_inequality": [
+      "parse_inequality_right_result",
+      "parse_term",
+      "with_term_result"
+    ],
+    "parse_rewrite_equation_result": [
+      "parse_rewrite_motive"
+    ],
+    "parse_rewrite_first_at_name": [
+      "parse_rewrite_equation_result",
+      "parse_term",
+      "span",
+      "token_beg_first",
+      "token_end_first",
+      "with_term_result"
+    ],
+    "parse_rewrite_first_at": [
+      "parse_rewrite_first_at_name",
+      "parse_rewrite_motive"
+    ],
+    "parse_rewrite_first_result": [
+      "parse_rewrite_first_at"
+    ],
+    "parse_rewrite": [
+      "parse_rewrite_first_result",
+      "parse_term",
+      "with_term_result"
+    ],
+    "parse_rewrite_motive_result": [
+      "parse_rewrite_body_result",
+      "parse_term",
+      "skip_rewrite_semicolon",
+      "span",
+      "token_end_first",
+      "with_term_result"
+    ],
+    "rewrite_motive_branch_0": [
+      "extend_scope",
+      "parse_rewrite_motive_result",
+      "parse_term",
+      "with_term_result"
+    ],
+    "rewrite_motive_branch_1": [
+      "span",
+      "token_beg",
+      "token_end"
+    ],
+    "rewrite_motive_is_colon": [],
+    "rewrite_motive_run": [
+      "rewrite_motive_branch_0",
+      "rewrite_motive_branch_1"
+    ],
+    "parse_rewrite_motive": [
+      "rewrite_motive_is_colon",
+      "rewrite_motive_run",
+      "span"
+    ],
+    "parse_name_term": [
+      "extend_scope",
+      "lookup",
+      "parse_name_constructor_result",
+      "parse_name_lambda_result",
+      "parse_name_term_lookup",
+      "parse_term",
+      "parse_term_args",
+      "with_args_result",
+      "with_term_result"
+    ],
+    "split_angle_close": [],
+    "angle_close_tokens": [
+      "split_angle_close"
+    ],
+    "parse_term_args": [
+      "angle_close_tokens",
+      "parse_term_args_tokens"
+    ],
+    "parse_term_args_tokens": [
+      "parse_term_args_first",
+      "token_text"
+    ],
+    "parse_term_args_first_result": [
+      "angle_close_tokens",
+      "parse_term_args_first_result_tokens"
+    ],
+    "parse_term_args_first_result_tokens": [
+      "parse_term_args",
+      "parse_term_args_after_separator",
+      "token_text"
+    ],
+    "parse_term_args_first": [
+      "parse_term",
+      "parse_term_args_first_result",
+      "with_term_to_args"
+    ],
+    "parse_term_args_after_separator": [
+      "parse_term_args"
+    ],
+    "parse_all": [
+      "parse_all_named"
+    ],
+    "all_named_type_branch_0": [
+      "extend_scope",
+      "parse_all_named_body_result",
+      "parse_term",
+      "with_term_result"
+    ],
+    "all_named_type_branch_1": [
+      "span",
+      "token_beg",
+      "token_end"
+    ],
+    "all_named_type_is_colon": [],
+    "all_named_type_run": [
+      "all_named_type_branch_0",
+      "all_named_type_branch_1"
+    ],
+    "parse_all_named_type_result": [
+      "all_named_type_is_colon",
+      "all_named_type_run"
+    ],
+    "parse_all_named": [
+      "parse_all_named_type_result",
+      "parse_term",
+      "span",
+      "token_beg",
+      "token_end",
+      "with_term_result"
+    ],
+    "parse_many_lambda": [
+      "extend_scope",
+      "parse_many_lambda_body_result",
+      "parse_plus_sugar",
+      "parse_term",
+      "span",
+      "token_beg",
+      "token_end",
+      "with_term_result"
+    ],
+    "parse_plus_sugar_named": [
+      "parse_plus_sugar_args",
+      "span",
+      "token_beg_first",
+      "token_end_first"
+    ],
+    "parse_plus_sugar_head_result": [
+      "parse_plus_sugar_named",
+      "term_name"
+    ],
+    "parse_plus_sugar": [
+      "parse_name_term",
+      "parse_plus_sugar_head_result",
+      "with_term_result"
+    ],
+    "parse_plus_sugar_args": [
+      "parse_plus_args_spaced",
+      "span",
+      "token_beg",
+      "token_end_first"
+    ],
+    "parse_plus_args_spaced": [
+      "parse_plus_args_result",
+      "parse_term_args",
+      "span",
+      "token_end_first",
+      "with_args_result"
+    ],
+    "parse_term_atom_result": [
+      "consumed_token_end",
+      "parse_term_tail_at",
+      "token_end_first"
+    ],
+    "parse_term": [
+      "parse_atom",
+      "parse_term_atom_result",
+      "with_term_result"
+    ],
+    "parse_glued_operator": [
+      "parse_operator"
+    ],
+    "parse_spaced_operator": [
+      "parse_operator"
+    ],
+    "parse_comparison_operator": [
+      "parse_operator"
+    ],
+    "parse_application_applied_result": [
+      "parse_term_tail_at"
+    ],
+    "evaluation_context_parse_application_args_result_241742": [
+      "apply_terms",
+      "parse_application_applied_result",
+      "token_beg_first",
+      "with_term_bool"
+    ],
+    "parse_application_args_result": [
+      "consumed_token_end",
+      "evaluation_context_parse_application_args_result_241742",
+      "token_end_first"
+    ],
+    "parse_bang_call": [
+      "parse_application_args_result",
+      "parse_term_args",
+      "span",
+      "token_beg",
+      "token_beg_first",
+      "token_end",
+      "with_args_result"
+    ],
+    "parse_term_arrow_result": [
+      "parse_term_tail",
+      "span",
+      "token_beg_first",
+      "token_end_of"
+    ],
+    "parse_term_tail_after_line": [
+      "parse_term_tail_at"
+    ],
+    "parse_term_tail": [
+      "parse_term_tail_at",
+      "token_end_first"
+    ],
+    "parse_term_tail_at": [
+      "extend_scope",
+      "has_space_after",
+      "operator_glued_name",
+      "parse_application_args_result",
+      "parse_bang_call",
+      "parse_comparison_operator",
+      "parse_glued_operator",
+      "parse_index_tail",
+      "parse_less_or_adt",
+      "parse_min_operator",
+      "parse_operator",
+      "parse_operator_right",
+      "parse_pair_operator",
+      "parse_spaced_operator",
+      "parse_term",
+      "parse_term_args",
+      "parse_term_arrow_result",
+      "parse_term_tail_after_line",
+      "skip_lines",
+      "span",
+      "token_beg",
+      "token_beg_first",
+      "token_end",
+      "with_args_result",
+      "with_term_result"
+    ],
+    "parse_less_or_adt": [
+      "parse_less_or_adt_precedence"
+    ],
+    "parse_less_or_adt_precedence": [
+      "parse_less_or_adt_args",
+      "parse_less_or_adt_nested",
+      "token_end_first"
+    ],
+    "parse_less_or_adt_nested": [
+      "parse_less_or_adt_args"
+    ],
+    "parse_less_named": [
+      "parse_less_many_result",
+      "parse_term_args",
+      "parse_term_tail",
+      "span",
+      "token_beg_first",
+      "token_end",
+      "with_args_result"
+    ],
+    "evaluation_context_parse_less_many_result_252346": [
+      "parse_term_tail",
+      "span",
+      "token_beg_first"
+    ],
+    "parse_less_many_result": [
+      "consumed_token_end",
+      "evaluation_context_parse_less_many_result_252346",
+      "span",
+      "token_beg",
+      "token_end"
+    ],
+    "parse_less_operator_or_nested": [
+      "operator_call"
+    ],
+    "parse_less_or_adt_args": [
+      "parse_less_right",
+      "parse_term",
+      "with_term_result"
+    ],
+    "parse_less_right": [
+      "parse_less_right_tokens",
+      "split_angle_close"
+    ],
+    "parse_less_right_tokens": [
+      "parse_less_named",
+      "parse_less_operator_or_nested",
+      "term_name"
+    ],
+    "operator_call": [
+      "parse_term_tail",
+      "span",
+      "token_beg_first",
+      "token_end_of"
+    ],
+    "parse_operator_right": [
+      "parse_operator_right_precedence"
+    ],
+    "parse_operator_right_named": [
+      "operator_call",
+      "parse_term_tail",
+      "span",
+      "token_beg_first",
+      "token_end_of"
+    ],
+    "parse_operator_right_result": [
+      "parse_operator_right_named"
+    ],
+    "parse_operator_right_precedence": [
+      "operator_rhs_level",
+      "parse_operator_right_result",
+      "parse_term",
+      "with_term_result"
+    ],
+    "parse_min_operator": [
+      "parse_min_precedence"
+    ],
+    "parse_min_precedence_result": [
+      "parse_term_tail",
+      "span",
+      "token_beg_first",
+      "token_end_of"
+    ],
+    "parse_min_precedence": [
+      "parse_min_precedence_result",
+      "parse_term",
+      "with_term_result"
+    ],
+    "parse_pair_quantity": [
+      "pair_application",
+      "parse_term_tail_at",
+      "span",
+      "token_beg_first",
+      "token_end_of"
+    ],
+    "parse_pair_operator_result": [
+      "consumed_token_end",
+      "parse_pair_operator_consumed"
+    ],
+    "parse_pair_operator_consumed": [
+      "is_quantity_term",
+      "pair_application",
+      "parse_pair_quantity"
+    ],
+    "parse_pair_operator": [
+      "parse_pair_operator_precedence"
+    ],
+    "parse_pair_operator_precedence": [
+      "parse_pair_operator_result",
+      "parse_term",
+      "with_term_result"
+    ],
+    "pair_application_result": [
+      "parse_term_tail_at"
+    ],
+    "pair_application": [
+      "apply_terms",
+      "pair_application_result",
+      "span",
+      "token_beg_first",
+      "token_end_of",
+      "with_term_bool"
+    ],
+    "parse_array_set_call_result": [
+      "parse_term_tail"
+    ],
+    "parse_array_set_value_result": [
+      "apply_terms",
+      "parse_array_set_call_result",
+      "span",
+      "token_end_first",
+      "with_term_bool"
+    ],
+    "parse_index_set_token": [
+      "parse_array_get",
+      "parse_array_set_value_result",
+      "parse_term",
+      "with_term_result"
+    ],
+    "parse_index_after_close": [
+      "parse_array_get",
+      "parse_index_set_token"
+    ],
+    "index_result_branch_0": [
+      "map_operator_term",
+      "parse_index_after_close"
+    ],
+    "index_result_branch_1": [
+      "span",
+      "token_beg",
+      "token_end"
+    ],
+    "index_result_is_colon": [],
+    "index_result_run": [
+      "index_result_branch_0",
+      "index_result_branch_1"
+    ],
+    "parse_index_result": [
+      "index_result_is_colon",
+      "index_result_run"
+    ],
+    "parse_index_tail": [
+      "parse_index_result",
+      "parse_term",
+      "with_term_result"
+    ],
+    "parse_array_get_result": [
+      "parse_term_tail"
+    ],
+    "parse_array_get": [
+      "apply_terms",
+      "parse_array_get_result",
+      "span",
+      "with_term_bool"
+    ],
+    "parse_operator": [
+      "parse_operator_precedence"
+    ],
+    "parse_operator_precedence_result": [
+      "parse_term_tail",
+      "span",
+      "token_beg_first",
+      "token_end_of"
+    ],
+    "parse_operator_precedence": [
+      "parse_operator_precedence_result",
+      "parse_term",
+      "with_term_result"
+    ],
+    "parse_body_next_row_0": [
+      "parse_local_body"
+    ],
+    "parse_body_next_row_1": [
+      "parse_destructuring_local"
+    ],
+    "parse_body_next_row_2": [
+      "decl_local_name_group",
+      "local_array_write"
+    ],
+    "parse_body_next_row_3": [
+      "decl_parallel_or_reply",
+      "local_group_has_equal"
+    ],
+    "parse_body_next_dispatch": [
+      "parse_body_next_row_0",
+      "parse_body_next_row_1",
+      "parse_body_next_row_2",
+      "parse_body_next_row_3"
+    ],
+    "parse_body_token_row_0": [
+      "parse_match_body"
+    ],
+    "parse_body_token_row_1": [
+      "parse_destructuring_local"
+    ],
+    "parse_body_token_row_2": [
+      "parse_destructuring_local"
+    ],
+    "parse_body_token_row_3": [
+      "parse_body_next_dispatch",
+      "parse_reply"
+    ],
+    "parse_body_token_row_4": [
+      "decl_parallel_or_reply",
+      "local_group_has_equal"
+    ],
+    "parse_body_token_row_5": [
+      "parse_erased_local"
+    ],
+    "parse_body_token_row_6": [
+      "parse_reply"
+    ],
+    "body_scan_action": [],
+    "body_scan_run": [
+      "parse_body_token_row_0",
+      "parse_body_token_row_1",
+      "parse_body_token_row_2",
+      "parse_body_token_row_3",
+      "parse_body_token_row_4",
+      "parse_body_token_row_5",
+      "parse_body_token_row_6"
+    ],
+    "parse_body_scan": [
+      "body_scan_action",
+      "body_scan_run",
+      "span"
+    ],
+    "decl_local_name_group": [
+      "decl_parallel_or_reply",
+      "parse_array_write_local"
+    ],
+    "decl_parallel_or_reply": [
+      "parse_parallel_local",
+      "parse_reply"
+    ],
+    "parse_body": [
+      "parse_body_scan",
+      "skip_lines"
+    ],
+    "parse_reply": [
+      "parse_reply_result",
+      "parse_term",
+      "with_term_result"
+    ],
+    "parse_erased_local": [
+      "decl_parallel_or_reply",
+      "local_group_has_equal",
+      "parse_local_body",
+      "parse_reply"
+    ],
+    "parse_local_values_next": [
+      "first_line",
+      "parse_local_values_result",
+      "parse_term",
+      "skip_lines"
+    ],
+    "parse_local_values_result": [
+      "parse_local_values_next"
+    ],
+    "parse_local_values": [
+      "parse_local_values_next"
+    ],
+    "parse_parallel_local": [
+      "parse_local_binders",
+      "parse_parallel_binders_result",
+      "with_local_binders_result"
+    ],
+    "parse_parallel_binders_result": [
+      "parse_local_values",
+      "parse_parallel_values_result",
+      "span",
+      "token_end_of",
+      "with_local_values_result"
+    ],
+    "parse_parallel_values_result": [
+      "local_group_body_ready",
+      "parse_parallel_body_ready",
+      "span"
+    ],
+    "parse_parallel_body_ready": [
+      "parse_body",
+      "parse_parallel_parsed_body",
+      "skip_rewrite_semicolon",
+      "span",
+      "token_end_of",
+      "with_term_result"
+    ],
+    "parse_local_body": [
+      "parse_local_body_term_result",
+      "parse_term",
+      "with_term_result"
+    ],
+    "parse_local_body_term_result": [
+      "parse_local_body_value"
+    ],
+    "parse_local_body_value": [
+      "extend_scope",
+      "local_body_ready",
+      "parse_local_body_ready",
+      "span"
+    ],
+    "parse_local_body_ready": [
+      "parse_body",
+      "parse_local_body_parsed",
+      "skip_rewrite_semicolon",
+      "span",
+      "token_end_first",
+      "with_term_result"
+    ],
+    "parse_array_write_local": [
+      "parse_local_body_term_result",
+      "parse_term",
+      "with_term_result"
+    ],
+    "destructuring_has_equal": [
+      "destructuring_has_equal"
+    ],
+    "parse_destructuring_local": [
+      "destructuring_has_equal",
+      "parse_destructuring_recognized",
+      "skip_lines"
+    ],
+    "parse_destructuring_recognized": [
+      "parse_destructuring_pattern_result",
+      "parse_pattern_atom",
+      "parse_reply",
+      "with_pattern_result"
+    ],
+    "parse_destructuring_pattern_result": [
+      "parse_destructuring_value_result",
+      "parse_reply",
+      "parse_term",
+      "with_term_result"
+    ],
+    "parse_destructuring_value_result": [
+      "local_body_ready",
+      "parse_destructuring_body_ready"
+    ],
+    "parse_destructuring_body_ready": [
+      "parse_body",
+      "parse_destructuring_parsed_body",
+      "skip_rewrite_semicolon",
+      "span",
+      "token_end_first",
+      "with_term_result"
+    ],
+    "parse_match_body": [
+      "parse_match_scrutinees",
+      "parse_terms_until_colon",
+      "with_args_result"
+    ],
+    "match_scrutinees_branch_0": [
+      "parse_case_rows",
+      "parse_match_cases_result",
+      "with_args_result"
+    ],
+    "match_scrutinees_branch_1": [
+      "span",
+      "token_beg",
+      "token_end"
+    ],
+    "match_scrutinees_is_colon": [],
+    "match_scrutinees_run": [
+      "match_scrutinees_branch_0",
+      "match_scrutinees_branch_1"
+    ],
+    "parse_match_scrutinees": [
+      "match_scrutinees_is_colon",
+      "match_scrutinees_run",
+      "span"
+    ],
+    "parse_terms_until_colon_result": [
+      "parse_terms_until_colon"
+    ],
+    "parse_terms_until_colon": [
+      "parse_term",
+      "parse_terms_until_colon_result",
+      "with_term_to_args"
+    ],
+    "parse_case_row_indented": [
+      "parse_case_row",
+      "parse_case_row_result",
+      "parse_case_rows_stop",
+      "with_term_to_args"
+    ],
+    "parse_case_row_result": [
+      "parse_case_rows_scan",
+      "skip_lines"
+    ],
+    "parse_case_rows_scan": [
+      "parse_case_row_indented",
+      "parse_case_rows_stop"
+    ],
+    "parse_case_rows": [
+      "parse_case_rows_scan",
+      "skip_lines"
+    ],
+    "parse_case_row_patterns": [
+      "parse_case_row_count",
+      "pattern_count_matches",
+      "span"
+    ],
+    "parse_case_row_scan_result": [
+      "parse_case_row_patterns",
+      "span"
+    ],
+    "parse_case_row": [
+      "parse_case_row_scan_result",
+      "pattern_scan"
+    ],
+    "parse_case_row_count": [
+      "parse_case_row_body",
+      "span",
+      "token_end_of"
+    ],
+    "parse_case_body_indented": [
+      "parse_body",
+      "parse_case_body_result",
+      "span",
+      "token_end",
+      "with_term_result"
+    ],
+    "case_row_branch_0": [
+      "body_indented",
+      "parse_case_body_indented"
+    ],
+    "case_row_branch_1": [
+      "span",
+      "token_beg",
+      "token_end"
+    ],
+    "case_row_is_colon": [],
+    "case_row_run": [
+      "case_row_branch_0",
+      "case_row_branch_1"
+    ],
+    "parse_case_row_body": [
+      "case_row_is_colon",
+      "case_row_run",
+      "span"
+    ],
+    "parse_def_binders_scan": [
+      "parse_def_binder",
+      "parse_def_binder_prefix",
+      "parse_def_binders_scan",
+      "parse_template_def_binder",
+      "skip_lines"
+    ],
+    "parse_def_binders": [
+      "parse_def_binders_scan",
+      "skip_lines"
+    ],
+    "evaluation_context_parse_template_binder_type_result_303235": [
+      "extend_scope",
+      "parse_def_binders",
+      "span"
+    ],
+    "parse_template_binder_type_result": [
+      "consumed_token_end",
+      "evaluation_context_parse_template_binder_type_result_303235",
+      "token_end_first"
+    ],
+    "parse_template_def_binder_after_name": [
+      "parse_template_binder_type_result",
+      "parse_term"
+    ],
+    "parse_template_def_binder": [
+      "parse_template_def_binder_after_name",
+      "skip_lines"
+    ],
+    "parse_def_binder_prefix": [
+      "parse_def_binder"
+    ],
+    "evaluation_context_parse_def_binder_type_result_306247": [
+      "extend_scope",
+      "parse_def_binders",
+      "span"
+    ],
+    "parse_def_binder_type_result": [
+      "consumed_token_end",
+      "evaluation_context_parse_def_binder_type_result_306247",
+      "token_end_first"
+    ],
+    "parse_def_binder_scan": [
+      "parse_def_binder_type_result",
+      "parse_term",
+      "parse_untyped_def_binder"
+    ],
+    "parse_def_binder": [
+      "parse_def_binder_scan",
+      "skip_lines"
+    ],
+    "parse_untyped_def_binder": [
+      "extend_scope",
+      "parse_def_binders",
+      "span",
+      "token_end_of"
+    ],
+    "definition_body_branch_0": [
+      "parse_definition_imports_result",
+      "parse_external_imports"
+    ],
+    "definition_body_branch_1": [
+      "parse_body",
+      "parse_definition_term_result"
+    ],
+    "definition_body_is_colon": [],
+    "definition_body_run": [
+      "definition_body_branch_0",
+      "definition_body_branch_1"
+    ],
+    "parse_definition_body_scan": [
+      "definition_body_is_colon",
+      "definition_body_run",
+      "span"
+    ],
+    "parse_definition_body": [
+      "parse_definition_body_scan",
+      "skip_lines"
+    ],
+    "parse_definition_typed_colon": [
+      "definition_failure",
+      "parse_definition_body",
+      "parse_definition_typed_body_result",
+      "token_beg",
+      "with_def_body_result"
+    ],
+    "parse_definition_typed_result": [
+      "definition_failure",
+      "parse_definition_typed_colon",
+      "token_end"
+    ],
+    "definition_header_branch_0": [
+      "parse_definition_typed_result",
+      "parse_term"
+    ],
+    "definition_header_branch_1": [
+      "parse_definition_body",
+      "parse_definition_untyped_body_result",
+      "with_def_body_result"
+    ],
+    "definition_header_branch_2": [
+      "definition_failure",
+      "token_beg"
+    ],
+    "definition_header_is_colon": [],
+    "definition_header_run": [
+      "definition_header_branch_0",
+      "definition_header_branch_1",
+      "definition_header_branch_2"
+    ],
+    "parse_definition_after_binders_scan": [
+      "definition_failure",
+      "definition_header_is_colon",
+      "definition_header_run"
+    ],
+    "parse_definition_after_binders": [
+      "parse_definition_after_binders_scan",
+      "skip_lines"
+    ],
+    "parse_definition_binders_result": [
+      "definition_failure",
+      "parse_definition_after_binders",
+      "token_end_of"
+    ],
+    "parse_definition_with_binders": [
+      "parse_def_binders",
+      "parse_definition_binders_result",
+      "with_def_binders_result"
+    ],
+    "parse_definition_name_tail": [
+      "parse_definition_with_binders",
+      "span",
+      "token_beg",
+      "token_end"
+    ],
+    "parse_definition_name_result": [
+      "parse_definition_name_tail",
+      "span",
+      "token_beg",
+      "token_end"
+    ],
+    "parse_definition": [
+      "parse_definition_name_result",
+      "parse_name",
+      "span"
+    ],
+    "canonical_import_path": [
+      "strip_quotes",
+      "token_text"
+    ],
+    "parse_module_import_path": [
+      "canonical_import_path",
+      "has_space_after",
+      "parse_module_import_path_rest",
+      "token_beg",
+      "token_end"
+    ],
+    "parse_module_import": [
+      "parse_module_import_path",
+      "span",
+      "token_beg",
+      "token_end"
+    ],
+    "parse_imports_result": [
+      "parse_imports_scan",
+      "skip_lines"
+    ],
+    "parse_imports_scan": [
+      "parse_imports_result",
+      "parse_module_import",
+      "with_import_result"
+    ],
+    "parse_imports": [
+      "parse_imports_scan",
+      "skip_lines"
+    ],
+    "mark_unsafe": [],
+    "parse_unsafe_definition": [
+      "mark_unsafe",
+      "parse_definition",
+      "with_top_result"
+    ],
+    "parse_unsafe": [
+      "parse_definition",
+      "parse_unsafe_definition",
+      "skip_lines"
+    ],
+    "parse_type_header_constructors_result": [
+      "span",
+      "token_end_first",
+      "token_end_of"
+    ],
+    "type_failure": [
+      "span"
+    ],
+    "parse_type_constructor_fields_result": [
+      "parse_type_constructors_scan",
+      "skip_lines",
+      "span",
+      "token_end",
+      "token_end_of"
+    ],
+    "parse_type_constructor_indent": [
+      "parse_def_binders",
+      "parse_type_constructor_fields_result",
+      "with_def_binders_constructors_result"
+    ],
+    "parse_type_constructors_scan": [
+      "parse_type_constructor_indent"
+    ],
+    "parse_type_constructors": [
+      "parse_type_constructors_scan",
+      "skip_lines"
+    ],
+    "parse_type_header_kind_result": [
+      "parse_type_constructors",
+      "parse_type_header_constructors_result",
+      "token_beg",
+      "token_end_first",
+      "type_failure",
+      "with_constructor_decls_result"
+    ],
+    "parse_type_header_scan": [
+      "parse_term",
+      "parse_type_header_kind_result",
+      "token_beg",
+      "type_failure",
+      "with_term_top"
+    ],
+    "parse_type_header": [
+      "parse_type_header_scan",
+      "skip_lines"
+    ],
+    "parse_type_params_result": [
+      "parse_type_header",
+      "token_end",
+      "type_failure"
+    ],
+    "parse_type_decl": [
+      "parse_def_binders",
+      "parse_type_header",
+      "parse_type_params_result",
+      "token_end",
+      "type_failure",
+      "with_def_binders_result"
+    ],
+    "law_failure": [
+      "span"
+    ],
+    "parse_law_body_result": [
+      "law_failure",
+      "span",
+      "token_end",
+      "token_end_first"
+    ],
+    "parse_law_clauses_result": [
+      "law_failure",
+      "parse_body",
+      "parse_law_body_result",
+      "token_end",
+      "with_term_top"
+    ],
+    "parse_law_clauses_scan": [
+      "parse_law_clause",
+      "token_beg"
+    ],
+    "parse_law_clauses": [
+      "parse_law_clauses_scan",
+      "skip_lines"
+    ],
+    "parse_law_clause": [
+      "parse_law_clause_name",
+      "parse_law_universal_clause"
+    ],
+    "parse_law_universal_clause": [
+      "parse_law_clause_name"
+    ],
+    "parse_law_clause_type_result": [
+      "extend_scope",
+      "parse_law_clause_condition"
+    ],
+    "parse_law_clause_name": [
+      "parse_law_clause_type_result",
+      "parse_term",
+      "with_term_law_clauses"
+    ],
+    "parse_law_clause_condition_result": [
+      "parse_law_clauses",
+      "span",
+      "token_end_first"
+    ],
+    "parse_law_clause_condition_scan": [
+      "finish_law_clause",
+      "parse_law_clause_condition_result",
+      "parse_term",
+      "with_term_law_clauses"
+    ],
+    "parse_law_clause_condition": [
+      "parse_law_clause_condition_scan",
+      "skip_lines"
+    ],
+    "finish_law_clause": [
+      "parse_law_clauses",
+      "span",
+      "token_end_first"
+    ],
+    "parse_law_decl": [
+      "law_failure",
+      "parse_law_clauses",
+      "parse_law_clauses_result",
+      "token_beg",
+      "token_end",
+      "with_law_clauses_result"
+    ],
+    "top_owner_set": [],
+    "top_owners_seed": [
+      "top_owner_set",
+      "top_owners_seed"
+    ],
+    "top_owner_query": [],
+    "law_header_end": [
+      "law_header_end"
+    ],
+    "law_header_bare": [
+      "law_header_bare",
+      "law_header_end"
+    ],
+    "top_owner_valid": [
+      "law_header_bare"
+    ],
+    "top_owner_checked_result": [
+      "top_owner_valid"
+    ],
+    "parse_top_result": [
+      "parse_top_scan",
+      "skip_lines",
+      "top_owner_set"
+    ],
+    "parse_top_scan": [
+      "parse_definition",
+      "parse_law_decl",
+      "parse_top_result",
+      "parse_type_decl",
+      "parse_unsafe",
+      "top_owner_checked_result",
+      "top_owner_query",
+      "with_top_item_result"
+    ],
+    "parse_top": [
+      "parse_top_scan",
+      "skip_lines",
+      "top_owners_seed"
+    ],
+    "observed": [
+      "token_text"
+    ],
+    "error_span": [
+      "span",
+      "token_beg",
+      "token_end"
+    ],
+    "parse_module_declarations_result": [
+      "error_span",
+      "observed"
+    ],
+    "parse_module_imports_result": [
+      "error_span",
+      "observed",
+      "parse_module_declarations_result",
+      "parse_top",
+      "with_top_declarations_result"
+    ],
+    "parse_module_tokens": [
+      "parse_imports",
+      "parse_module_imports_result",
+      "span",
+      "with_imports_result"
+    ],
+    "parse": [
+      "combine_symbols",
+      "parse_module_tokens"
+    ]
+  },
+  "unresolvedReferences": []
+}

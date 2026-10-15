@@ -7,8 +7,8 @@
  */
 import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
-import { term_compare, term_higher, term_show, term_unapply, type Body, type LTerm, type Quant } from "../bend2/bend.ts";
+import { posix, resolve } from "node:path";
+import { err_show, name_show, term_compare, term_higher, term_show, term_unapply, type Body, type Err, type LTerm, type Quant } from "../bend2/bend.ts";
 import { readParserGraph, type ParserParameter } from "./parser_full_graph.ts";
 import { freeBinderIds, LexicalTypes, MissingType } from "./parser_full_type_env.ts";
 import { CaptureTypeDependencyError, planCaptures, renderCaptureCallbacks, type CapturePlan } from "./parser_full_capture.ts";
@@ -30,16 +30,17 @@ const expected = "f425995af41087dfa51f79e7b04259ea5d1acfa9906061c7ed57199bad4e18
 if (createHash("sha256").update(source).digest("hex") !== expected) {
   throw Error("Parser source differs from canonical semantic checkpoint " + expected.slice(0, 8));
 }
-const parserAST = await readParserGraph(source);
+const parserAST = await readParserGraph(source, input);
 const book = parserAST.parserBook;
 const headers = [...source.matchAll(/^def ([A-Za-z_]\w*)\((.*)\)(?: -> (.*))?:$/gm)];
-const aliases = [...source.matchAll(/^import .*\/(\w+)\.bend as (\w+)$/gm)];
+const aliases = [...source.matchAll(/^import (\S+) as (\w+)$/gm)];
+const surfaceFile = {str: source, ns: "", al: Object.fromEntries(
+  aliases.map(alias => [alias[2]!, posix.normalize(alias[1]!).replace(/\.bend$/, "")]))};
+const tokenElement = surfaceFile.al.Lexer + ".Token";
 function showTypeLeaf(term: LTerm): string {
-  let text = term_show(term);
-  for (const alias of aliases) text = text.replace(new RegExp("\\b" + alias[1] + "\\.", "g"), alias[2] + ".");
-  return text;
+  return term_show(term, -1, [], surfaceFile);
 }
-const productTypes = new ProductTypes(book, Object.fromEntries(aliases.map(alias => [alias[2]!, alias[1]!])), showTypeLeaf);
+const productTypes = new ProductTypes(book, surfaceFile.al, showTypeLeaf);
 function surfaceType(term: LTerm): string { return productTypes.fromTerm(term).type; }
 for (const header of headers) {
   const signature = parserAST.signatures.get(header[1]!);
@@ -62,20 +63,7 @@ function indexLexicalBody(name: string): void {
   indexedBodies.add(name);
 }
 function surfaceExpression(term: LTerm, boundNames: string[], precedence = -1): string {
-  function visit(node: LTerm): void {
-    if (node.$ === "Ref" || node.$ === "Ctr" || node.$ === "ADT") {
-      for (const alias of aliases) {
-        if (node.k.startsWith(alias[1] + ".")) node.k = alias[2] + node.k.slice(alias[1]!.length);
-      }
-    }
-    for (const [key, child] of Object.entries(node)) {
-      if (key === "s" || key === "q") continue;
-      if (Array.isArray(child)) child.forEach(value => { if (value?.$) visit(value); });
-      else if (child && typeof child === "object" && "$" in child) visit(child as LTerm);
-    }
-  }
-  visit(term);
-  return term_show(term, precedence, boundNames);
+  return term_show(term, precedence, boundNames, surfaceFile);
 }
 function split(input: string): string[] {
   const parts: string[] = [];
@@ -153,13 +141,8 @@ function bindFallbackScrutinees(text: string, owner: string): string {
   }
   indexMatches(parserAST.bodies.get(owner)!);
   const identifiers = /"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|[A-Za-z_]\w*/g;
-  const imported = new Map([...source.matchAll(/^import .*\/(\w+)\.bend as (\w+)$/gm)]
-    .map(match => [match[2]!, match[1]!]));
   function surfaceSymbol(name: string): string {
-    const parts = name.split(".");
-    const alias = [...imported].find(([, namespace]) => namespace === parts[0])?.[0];
-    if (alias) parts[0] = alias;
-    return parts.join(".");
+    return name_show(surfaceFile, name);
   }
   const stack: {indent: number; name: string; type: string; datatype: LTerm}[] = [];
   for (let i = 1; i < lines.length; i++) {
@@ -316,7 +299,7 @@ function controlConsumer(owner: string, site: Site, plan: CapturePlan, argumentV
   const helper = "feedback_consumer_" + site.offset;
   const rendered = renderBody(specialized.body, specialized.parameters, {
     book, showTerm:surfaceExpression, types:lexicalTypes,
-    emitReply(term, context) {
+    emitTerminal(term, context) {
       const [head, args] = term_unapply(term);
       if (head.$ === "Ref" && lifted.has(head.k)) {
         classifications.push({caller:owner, callee:head.k, offset:head.s?.beg ?? site.offset,
@@ -565,8 +548,8 @@ try {
     const origins=Object.fromEntries([...consumerQuantityOrigins].map(([name,bindings])=>[name,
       Object.fromEntries([...bindings].map(([binding,origin])=>[binding,{...origin,
         sourceSpan:origin.sourceSpan?{beg:origin.sourceSpan.beg,end:origin.sourceSpan.end,
-          line:origin.sourceSpan.src.slice(0,origin.sourceSpan.beg).split("\n").length,
-          text:origin.sourceSpan.src.slice(origin.sourceSpan.beg,origin.sourceSpan.end)}:undefined}]))]));
+          line:origin.sourceSpan.file.str.slice(0,origin.sourceSpan.beg).split("\n").length,
+          text:origin.sourceSpan.file.str.slice(origin.sourceSpan.beg,origin.sourceSpan.end)}:undefined}]))]));
     const diagnosticPath=resolve(import.meta.dir,"../checkpoints/fuel-candidate-consumer-quantity-origins.json");
     writeFileSync(diagnosticPath,JSON.stringify({sourceSha256:expected,sourceSpecificTransformerExceptions:0,origins},null,2)+"\n");
     console.log(JSON.stringify({diagnosticPath,consumers:consumerQuantityOrigins.size,candidateWritten:false}));
@@ -577,7 +560,7 @@ try {
     const candidateChunks = new Map(rawChunks);
     candidateChunks.set("parse_with_fuel", `def parse_with_fuel(fuel: FeedbackFuel, file: String, source: String) -> FeedbackRun:
   feedback_drive(fuel, step_parse(file, source), Nil{})`);
-    let candidateGraph = await readParserGraph([...preamble,...candidateChunks.values()].join("\n\n")+"\n");
+    let candidateGraph = await readParserGraph([...preamble,...candidateChunks.values()].join("\n\n")+"\n", output);
     const quantityTypes = new LexicalTypes(candidateGraph.parserBook,candidateGraph.signatures);
     const patternQuantityLifting:Record<string,unknown>[]=[];
     for(const name of candidateGraph.definitions){
@@ -602,12 +585,12 @@ try {
           reason:origin?.reason??"synthesized-reuse",
           sourceBinder:origin?{id:origin.sourceBinderId,name:origin.sourceBinderName,
             span:origin.sourceSpan?{beg:origin.sourceSpan.beg,end:origin.sourceSpan.end,
-              line:origin.sourceSpan.src.slice(0,origin.sourceSpan.beg).split("\n").length,
-              text:origin.sourceSpan.src.slice(origin.sourceSpan.beg,origin.sourceSpan.end)}:undefined}:undefined});
+              line:origin.sourceSpan.file.str.slice(0,origin.sourceSpan.beg).split("\n").length,
+              text:origin.sourceSpan.file.str.slice(origin.sourceSpan.beg,origin.sourceSpan.end)}:undefined}:undefined});
       }
     }
     if(patternQuantityLifting.length)
-      candidateGraph=await readParserGraph([...preamble,...candidateChunks.values()].join("\n\n")+"\n");
+      candidateGraph=await readParserGraph([...preamble,...candidateChunks.values()].join("\n\n")+"\n", output);
     const reachable = new Set<string>();
     const work = ["parse_with_fuel"];
     for (let index = 0; index < work.length; index++) {
@@ -647,8 +630,8 @@ try {
     console.log(JSON.stringify({source:output+".frontier-source.bend",bodies:steps.size}));
     process.exit(0);
   }
-  let loweredAST = await readParserGraph(loweredSource);
-  const restitution = optimizeCursorRestitution(loweredAST, "lexer.Token");
+  let loweredAST = await readParserGraph(loweredSource, output);
+  const restitution = optimizeCursorRestitution(loweredAST, tokenElement);
   for (const name of restitution.changed) {
     const signature = restitution.signatures.get(name)!;
     const rendered = renderBody(restitution.bodies.get(name)!, signature.parameters, {
@@ -660,7 +643,7 @@ try {
   }
   if (restitution.changed.size) {
     loweredSource = [...preamble,...rawChunks.values()].join("\n\n")+"\n";
-    loweredAST = await readParserGraph(loweredSource);
+    loweredAST = await readParserGraph(loweredSource, output);
   }
   // Consumer specialization makes some original wrappers obsolete. Keep every
   // lowered facade target and every runtime entry; prune only AST-unreferenced
@@ -697,7 +680,7 @@ try {
     const signature=loweredAST.signatures.get(factoryName);
     if(!signature)throw new GenericLimitation("Missing generated frame factory signature", {factoryName});
     const semanticFieldCount=frame.fields.flatMap(field=>productFields(field.name,product(field.type))).length;
-    frame.witnesses=frame.fields.flatMap((_,index)=>containsTokenCursor(loweredAST,signature.parameters[index]![3],"lexer.Token")?
+    frame.witnesses=frame.fields.flatMap((_,index)=>containsTokenCursor(loweredAST,signature.parameters[index]![3],tokenElement)?
       [{argumentIndex:index,parameterIndex:index,frameFieldIndex:0,witnessName:"feedback_witness_"+index}]:[]);
     frame.witnesses.forEach((witness,index)=>witness.frameFieldIndex=semanticFieldCount+index);
     primitiveOperations.set(factoryName, {
@@ -711,7 +694,7 @@ try {
   let explicitProgram: ExplicitProgressProgram;
   try {
     explicitProgram = instrumentExplicitProgress(loweredAST, {
-      definitions:effectDefinitions, nameOf:name=>name, controlType:"FeedbackControl", tokenElement:"lexer.Token",
+      definitions:effectDefinitions, nameOf:name=>name, controlType:"FeedbackControl", tokenElement,
       progressType:"Progress", composeName:"feedback_compose_progress", prefixName:"feedback_prefix",
       primitiveOperations, parameterWitnesses, emitPrelude:false,
       driverEntryPoints:[...[...selected].map(name=>"step_"+name),...frames.map(frame=>"feedback_resume_"+frame.name)],
@@ -745,7 +728,7 @@ try {
   runtime=renderRuntime();
   for(const [name,text] of runtime.declarations)chunks.set(name,text);
   preamble=[source.slice(0,source.indexOf("type ")).trimEnd(),...typeBlocks,valueType,...runtime.typeDeclarations];
-  const finalABIgraph=await readParserGraph([...preamble,...chunks.values()].join("\n\n")+"\n");
+  const finalABIgraph=await readParserGraph([...preamble,...chunks.values()].join("\n\n")+"\n", output);
   // The sole termination decision is made after the real effect writer has
   // instrumented every semantic body. Historical provenance is not consulted.
   const progress = await buildExplicitProgressCertificate(explicitProgram, {
@@ -795,7 +778,11 @@ try {
   writeFileSync(output+".scorecard.json",JSON.stringify(scorecard,null,2)+"\n");
   console.log(JSON.stringify({output,...scorecard}));
 }catch(error){
-  if (!(error instanceof GenericLimitation)) throw error;
+  if (!(error instanceof GenericLimitation)) {
+    if (error && typeof error === "object" && "$" in error && error.$ === "Err")
+      throw Error(err_show(error as Err));
+    throw error;
+  }
   const limitation = {message: error.message, ...error.evidence};
   const evidence={...metadata(),status:progressSummary?"FULL GENERATION STOPPED AT TERMINATION CERTIFICATE":"FULL GENERATION STOPPED AT GENERIC CONTROL SHAPE",candidateEmitted:false,completedLiftedBodies:[...steps.keys()],limitation};
   writeFileSync(output+".limitation.json",JSON.stringify(evidence,null,2)+"\n");

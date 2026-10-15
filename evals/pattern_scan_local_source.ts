@@ -29,7 +29,7 @@ export async function localPatternScanSource(source:string){
   if(end<beg)throw Error('Body boundary missing');
   const rowCalls=calls.filter(c=>c.offset>=beg&&c.offset<end),scope=lexical.environmentAt(row.f.e[0]),ids=new Set<number>();
   function term(t:B.LTerm){const[head,args]=B.term_unapply(t);if(head.$==='Ref'&&head.k==='pattern_scan'&&args.length===7){for(const a of args.slice(2))for(const id of freeBinderIds(a))if(scope.has(id))ids.add(id);return;}for(const id of freeBinderIds(t))if(scope.has(id))ids.add(id);}
-  function visit(b:B.Body){if(b.$==='Reply')term(b.x);else if(b.$==='Local'){b.v.forEach(term);visit(b.f);}else{b.e.forEach(term);b.r.forEach(r=>visit(r.f));}}
+  function visit(b:B.Body){if(b.$==='Local'){b.v.forEach(term);visit(b.f);}else if(b.$==='Match'){b.e.forEach(term);b.r.forEach(r=>visit(r.f));}else term(b);}
   visit(row.f);
   const bindings=[...ids].map(id=>scope.get(id)!).sort((a,b)=>(a.name==='frames'?-1:b.name==='frames'?1:a.id-b.id));
   const helper='pattern_scan_frame_'+rowIndex;

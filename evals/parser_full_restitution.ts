@@ -4,7 +4,7 @@
  * Unsupported unshareable origins, opaque expressions, embedded helper calls and
  * escaped cursor origins stay unchanged for the instrumentation's rejection.
  */
-import { patt_term, quant_join, term_lower, term_unapply, type Body, type LTerm, type Patt, type Quant } from "../bend2/bend.ts";
+import { lit_step, patt_term, quant_join, term_lower, term_unapply, type Body, type LTerm, type Patt, type Quant } from "../bend2/bend.ts";
 import type { ParserGraph, ParserParameter, ParserSignature } from "./parser_full_graph.ts";
 import { betaReduceTerm, runtimeUses, substituteBody, substituteTerm } from "./parser_full_consumer.ts";
 import { freeBinderIds, LexicalTypes, MissingType, termChildren } from "./parser_full_type_env.ts";
@@ -25,12 +25,15 @@ function exact(a: LTerm, b: LTerm): boolean {
   if (a.$ === "Ann") return exact(a.x, b);
   if (b.$ === "Ann") return exact(a, b.x);
   if (a.$ === "Var" && b.$ === "Var") return a.i === b.i;
+  if (a.$ === "Lit" && b.$ === "Lit") return a.k === b.k && a.v === b.v;
+  if (a.$ === "Lit" && b.$ === "Ctr") return exact(lit_step(a), b);
+  if (b.$ === "Lit" && a.$ === "Ctr") return exact(a, lit_step(b));
   return a.$ === "Ctr" && b.$ === "Ctr" && a.k === b.k && a.x.length === b.x.length && a.x.every((field, i) => exact(field, b.x[i]!));
 }
 function visitBody(body: Body, term: (value: LTerm) => void, pattern: (value: Patt) => void = () => {}): void {
-  if (body.$ === "Reply") term(body.x);
-  else if (body.$ === "Local") { body.k.forEach(pattern); body.v.forEach(term); visitBody(body.f, term, pattern); }
-  else { body.e.forEach(term); for (const row of body.r) { row.p.forEach(pattern); visitBody(row.f, term, pattern); } }
+  if (body.$ === "Local") { body.k.forEach(pattern); body.v.forEach(term); visitBody(body.f, term, pattern); }
+  else if (body.$ === "Match") { body.e.forEach(term); for (const row of body.r) { row.p.forEach(pattern); visitBody(row.f, term, pattern); } }
+  else term(body);
 }
 
 /** No mutation of graph maps or source ASTs; erased quantities remain erased. */
@@ -57,7 +60,7 @@ export function optimizeCursorRestitution(graph: ParserGraph, tokenElement: stri
   function normalize(type: LTerm, seen = new Set<string>()): LTerm {
     if (type.$ === "Ann") return normalize(type.x, seen);
     if (type.$ === "Sub") return normalize(substituteTerm(type.f, new Map([[type.i,
-      type.v.$ === "PVar" || type.v.$ === "PCtr" ? patt_term(type.v) : type.v]])), seen);
+      patt_term(type.v)]])), seen);
     if (type.$ === "Ref") {
       const declaration = graph.parserBook.tlds[type.k];
       if (declaration?.$ === "ADT" && declaration.n === 0) return { $: "ADT", k: type.k, x: [], r: [] };
@@ -186,8 +189,8 @@ export function optimizeCursorRestitution(graph: ParserGraph, tokenElement: stri
     }
   }
   function expand(body: Body, stack: ReadonlySet<string>): Body {
-    if (body.$ === "Reply") {
-      const [head, arguments_] = term_unapply(body.x);
+    if (body.$ !== "Local" && body.$ !== "Match") {
+      const [head, arguments_] = term_unapply(body);
       if (head.$ !== "Ref" || !helpers.has(head.k) || stack.has(head.k)) return body;
       const signature = graph.signatures.get(head.k)!;
       // Nontrivial arguments require call-by-value bindings and additional
@@ -206,12 +209,12 @@ export function optimizeCursorRestitution(graph: ParserGraph, tokenElement: stri
   let compileParameters = new Map<number, ParserParameter>();
   function compile(body: Body, result: LTerm): LTerm {
     types.indexBody(body, [...compileParameters.values()], result);
-    if (body.$ === "Reply") return body.x;
+    if (body.$ !== "Local" && body.$ !== "Match") return body;
     if (body.$ === "Local") {
       if (body.k.every(pattern => pattern.$ === "PVar")) {
         const patterns = body.k as Extract<Patt, { $: "PVar" }>[];
         patterns.forEach((pattern, i) => compileParameters.set(pattern.i,
-          [quant_join(body.q, pattern.q), pattern.k, pattern.i, types.typeOf(body.v[i]!), pattern.s ?? { beg: 0, end: 0 }]));
+          [quant_join(body.q, pattern.q), pattern.k, pattern.i, types.typeOf(body.v[i]!), pattern.s ?? { file: {str: graph.source, ns: "", al: {}}, beg: 0, end: 0 }]));
         return { $: "Let", k: patterns.map(pattern => pattern.k), i: patterns.map(pattern => pattern.i),
           q: patterns.map(pattern => quant_join(body.q, pattern.q)), v: body.v, f: compile(body.f, result) };
       }
@@ -358,7 +361,7 @@ export function optimizeCursorRestitution(graph: ParserGraph, tokenElement: stri
       }
       function normalizeBody(body: Body, inherited: readonly Fact[]): Body {
         const facts = [...inherited];
-        if (body.$ === "Reply") return { ...body, x: rewrite(body.x, facts) };
+        if (body.$ !== "Local" && body.$ !== "Match") return rewrite(body, facts);
         if (body.$ === "Local") {
           const v = body.v.map(value => rewrite(value, facts));
           if (body.q.$ !== "None") body.k.forEach((pattern, i) => {
@@ -393,7 +396,7 @@ export function optimizeCursorRestitution(graph: ParserGraph, tokenElement: stri
         return [many, k, i, type, span];
       });
       signatures.set(name, { parameters, result: signature.result });
-      bodies.set(name, { $: "Reply", x: term, s: original.s });
+      bodies.set(name, { ...term, s: original.s });
       changed.add(name);
     } catch (error) {
       // Unknown dependent projection types do not constitute a restitution

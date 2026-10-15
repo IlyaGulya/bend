@@ -1,6 +1,7 @@
 import * as B from '../bend2/bend.ts';
 import {readParserGraph} from './parser_full_graph.ts';
-import {LexicalTypes,freeBinderIds} from './parser_full_type_env.ts';
+import {LexicalTypes} from './parser_full_type_env.ts';
+import {lexicalBodyCaptures,captureQuantityPrefix} from './parser_full_lexical_body_capture.ts';
 import {createHash} from 'node:crypto';
 const sha=(s:string)=>createHash('sha256').update(s).digest('hex');
 const showType=(t:B.LTerm)=>B.term_show(t).replace(/\bast\./g,'Ast.').replace(/\blexer\./g,'Lexer.');
@@ -14,11 +15,7 @@ export async function extractAtomShape(source:string){
  for(const [index,name,count] of [[0,'parse_atom_name_dispatch',6],[2,'parse_atom_symbol_dispatch',11]] as const){
   const match=tokens.r[index]!.f;
   if(match.$!=='Match'||match.e.length!==1||match.r.length!==count||match.e[0]!.$!=='Var')throw Error('Atom scalar dispatch drift '+name);
-  const scalar=match.e[0]!,env=types.environmentAt(scalar),ids=new Set<number>();
-  function expr(t:B.LTerm){for(const id of freeBinderIds(t))if(env.has(id))ids.add(id);}
-  function visit(b:B.Body){if(b.$==='Reply')expr(b.x);else if(b.$==='Local'){b.v.forEach(expr);visit(b.f);}else{b.e.forEach(expr);b.r.forEach(r=>visit(r.f));}}visit(match);
-  const ordered=[scalar.i,...[...ids].filter(id=>id!==scalar.i).sort((a,b)=>a-b)];
-  const captured=ordered.map(id=>{const binding=env.get(id);if(!binding)throw Error('Unknown helper capture '+id);return binding;});
+  const scalar=match.e[0]!,captured=lexicalBodyCaptures(match,types);
   const begin=source.lastIndexOf('\n',scalar.s!.beg)+1,next=tokens.r[index+1]!.p[0]!;
   const end=source.lastIndexOf('\n',next.s!.beg)+1,original=source.slice(begin,end);
   const lines=original.trimEnd().split('\n');if(lines.some(line=>line.trim()&&!line.startsWith('          ')))throw Error('Atom Body indentation drift');
@@ -27,15 +24,12 @@ export async function extractAtomShape(source:string){
   if(index===2){
    const rowPatches:{beg:number,end:number,after:string}[]=[];
    for(const [i,row] of match.r.entries()){
-    const rowIds=new Set<number>();
-    function rowExpr(t:B.LTerm){for(const id of freeBinderIds(t))if(env.has(id))rowIds.add(id);}
-    function rowBody(b:B.Body){if(b.$==='Reply')rowExpr(b.x);else if(b.$==='Local'){b.v.forEach(rowExpr);rowBody(b.f);}else{b.e.forEach(rowExpr);b.r.forEach(r=>rowBody(r.f));}}rowBody(row.f);
-    const rowOrdered=[...rowIds].sort((a,b)=>a-b),rowCaptured=rowOrdered.map(id=>env.get(id)!);
+    const rowCaptured=lexicalBodyCaptures(row.f,types);
     const rowBegin=source.indexOf('\n',source.indexOf(':',Math.max(...row.p.map(p=>p.s!.end))))+1;
     const rowEnd=i+1<match.r.length?source.lastIndexOf('\n',match.r[i+1]!.p[0]!.s!.beg)+1:end;
     const rowOriginal=source.slice(rowBegin,rowEnd),rowLines=rowOriginal.trimEnd().split('\n');
     if(rowLines.some(line=>line.trim()&&!line.startsWith('              ')))throw Error('Symbol row indentation drift');
-    const rowName='parse_atom_symbol_row_'+i,rowParameters=rowCaptured.map(b=>(b.quantity.$==='Many'?'+':'')+b.name+': '+showType(b.type));
+    const rowName='parse_atom_symbol_row_'+i,rowParameters=rowCaptured.map(b=>captureQuantityPrefix(b.quantity)+b.name+': '+showType(b.type));
     helpers.push('def '+rowName+'('+rowParameters.join(', ')+') -> '+showType(sig.result)+':\n'+rowLines.map(line=>line.trim()?'  '+line.slice(14):'').join('\n')+'\n');
     rowPatches.push({beg:rowBegin-begin,end:rowEnd-begin,after:'              '+rowName+'('+rowCaptured.map(b=>b.name).join(', ')+')\n'});
     rowAudits.push({helper:rowName,bodySha256:sha(rowOriginal),captured:rowCaptured.map(b=>({id:b.id,name:b.name,quantity:b.quantity.$,type:showType(b.type)}))});
@@ -43,10 +37,10 @@ export async function extractAtomShape(source:string){
    let raw=original;for(const p of [...rowPatches].sort((a,b)=>b.beg-a.beg))raw=raw.slice(0,p.beg)+p.after+raw.slice(p.end);
    rendered=raw.trimEnd().split('\n').map(line=>line.trim()?'  '+line.slice(10):'').join('\n');
   }
-  const parameters=captured.map(b=>(b.quantity.$==='Many'?'+':'')+b.name+': '+showType(b.type)),actuals=captured.map(b=>b.name);
+  const parameters=captured.map(b=>captureQuantityPrefix(b.quantity)+b.name+': '+showType(b.type)),actuals=captured.map(b=>b.name);
   helpers.push('def '+name+'('+parameters.join(', ')+') -> '+showType(sig.result)+':\n'+rendered+'\n');
   const call='          '+name+'('+actuals.join(', ')+')\n';patches.push({beg:begin,end,after:call});
-  audit.push({helper:name,originalRows:match.r.length,patterns:match.r.map(row=>row.p.map(p=>source.slice(p.s!.beg,p.s!.end))),captured:captured.map((b,i)=>({id:ordered[i],name:b.name,quantity:b.quantity.$,type:showType(b.type)})),sourceBodySha256:sha(original),matchedScalarFirst:true,recursiveLogicUnchanged:true,rowHelpers:rowAudits});
+  audit.push({helper:name,originalRows:match.r.length,patterns:match.r.map(row=>row.p.map(p=>source.slice(p.s!.beg,p.s!.end))),captured:captured.map(b=>({id:b.id,name:b.name,quantity:b.quantity.$,type:showType(b.type)})),sourceBodySha256:sha(original),captureOrder:'type dependencies then source binder ID',recursiveLogicUnchanged:true,rowHelpers:rowAudits});
  }
  let changed=source;for(const p of [...patches].sort((a,b)=>b.beg-a.beg))changed=changed.slice(0,p.beg)+p.after+changed.slice(p.end);
  changed=changed.slice(0,insert)+helpers.join('\n')+'\n'+changed.slice(insert);

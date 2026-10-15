@@ -2,8 +2,9 @@
 /** Exclusive, sampled resource lane for heavyweight commands.
  * Usage: bun evals/heavy_gate.ts [options] -- command args...
  * Options: --memory-mib (3072), --rss-mib (2048), --poll-ms (100),
- * --term-grace-ms (1000), --lock-path. Equivalent HEAVY_GATE_* variables
- * use MEMORY_MIB, RSS_MIB, POLL_MS, TERM_GRACE_MS, LOCK_PATH suffixes.
+ * --term-grace-ms (1000), --timeout-ms (600000), --lock-path. Equivalent
+ * HEAVY_GATE_* variables use MEMORY_MIB, RSS_MIB, POLL_MS, TERM_GRACE_MS,
+ * TIMEOUT_MS, LOCK_PATH suffixes. Deadlines cancel work; they are not language fuel.
  * Output is streamed; the final HEAVY_GATE JSON record is written to stderr.
  * Requires a C compiler once per helper source/platform hash. No heavy command
  * is started if compilation, sampling, authentication, or lock setup fails.
@@ -15,6 +16,7 @@ import {createHash,randomBytes} from 'node:crypto';
 import {mkdir,readFile,rename,rm,lstat,open,writeFile} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {dirname,join,resolve} from 'node:path';
+import {fileURLToPath} from 'node:url';
 
 export type HeavyGateStatus='PASS'|'FAIL'|'RESOURCE_LIMIT'|'LOCK_BUSY';
 export interface HeavyGateOptions {
@@ -23,6 +25,7 @@ export interface HeavyGateOptions {
  rssMiB?:number;
  pollMs?:number;
  termGraceMs?:number;
+ timeoutMs?:number;
  lockPath?:string;
 }
 export interface HeavyGateResult {
@@ -39,11 +42,59 @@ export interface HeavyGateResult {
  reportPath:string;
  memoryLimitBytes:number;
  rssLimitBytes:number;
+ timeoutMs:number;
 }
 const MiB=1024*1024;
 const leaseToken='HEAVY_GATE_LEASE_TOKEN';
 const leasePath='HEAVY_GATE_LEASE_PATH';
 const privateDirectory=join(tmpdir(),`bend-heavy-gate-${process.getuid!()}`);
+const defaultTimeoutMs=600000;
+const maximumTimeoutMs=2147483647;
+const helperCompilationTimeoutMs=60000;
+class HelperDeadlineError extends Error {
+ readonly timeoutMs:number;
+ constructor(timeoutMs:number){
+  super(`heavy-gate helper timed out after ${timeoutMs} ms`);
+  this.timeoutMs=timeoutMs;
+ }
+}
+
+/** Bound small helper subprocesses too, including their compiler process group. */
+async function helperExit(command:string,args:string[],timeoutMs:number):Promise<number>{
+ const child=spawn(command,args,{detached:true,stdio:['ignore','inherit','inherit']});
+ const completion=Promise.withResolvers<number>();
+ let timedOut=false,interrupted=false;
+ let killTimer:NodeJS.Timeout|undefined;
+ const killGroup=(signal:NodeJS.Signals)=>{
+  if(child.pid)try{process.kill(-child.pid,signal);}catch(error){
+   if((error as NodeJS.ErrnoException).code!=='ESRCH')throw error;
+  }
+ };
+ const stop=()=>{
+  if(killTimer)return;
+  killGroup('SIGTERM');
+  killTimer=setTimeout(()=>killGroup('SIGKILL'),1000);
+ };
+ const onSignal=()=>{interrupted=true;stop();};
+ const timer=setTimeout(()=>{timedOut=true;stop();},timeoutMs);
+ process.on('SIGINT',onSignal);process.on('SIGTERM',onSignal);process.on('SIGHUP',onSignal);
+ child.once('error',completion.reject);
+ child.once('close',code=>completion.resolve(code??125));
+ try{
+  const code=await completion.promise;
+  if(timedOut)throw new HelperDeadlineError(timeoutMs);
+  if(interrupted)throw Error('heavy-gate helper interrupted');
+  return code;
+ }finally{
+  clearTimeout(timer);
+  if(killTimer){
+   clearTimeout(killTimer);
+   // The root may exit on TERM while a compiler descendant ignores it.
+   killGroup('SIGKILL');
+  }
+  process.off('SIGINT',onSignal);process.off('SIGTERM',onSignal);process.off('SIGHUP',onSignal);
+ }
+}
 
 async function secureDirectory(path:string):Promise<void>{
  await mkdir(path,{recursive:true,mode:0o700});
@@ -52,10 +103,10 @@ async function secureDirectory(path:string):Promise<void>{
   throw Error(`heavy-gate directory must be owned by this user with mode 0700: ${path}`);
 }
 let helperPromise:Promise<string>|undefined;
-async function prepareNativeHelper():Promise<string>{
+async function prepareNativeHelper(timeoutMs:number):Promise<string>{
  if(process.platform!=='darwin'&&process.platform!=='linux')throw Error(`unsupported heavy-gate platform: ${process.platform}`);
  await secureDirectory(privateDirectory);
- const source=resolve(import.meta.dir,'heavy_gate_native.c');
+ const source=resolve(dirname(fileURLToPath(import.meta.url)),'heavy_gate_native.c');
  const hash=createHash('sha256').update(await readFile(source)).update(process.platform).update(process.arch).digest('hex').slice(0,24);
  const executable=join(privateDirectory,`supervisor-${hash}`);
  try{
@@ -65,11 +116,8 @@ async function prepareNativeHelper():Promise<string>{
  }catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;}
  const temporary=`${executable}.${process.pid}.${randomBytes(8).toString('hex')}`;
  try{
-  const child=spawn(process.env.CC??'cc',['-O2','-std=c11','-Wall','-Wextra',source,'-o',temporary],{stdio:['ignore','inherit','inherit']});
-  const completion=Promise.withResolvers<number>();
-  child.once('error',completion.reject);
-  child.once('exit',code=>completion.resolve(code??125));
-  const code=await completion.promise;
+  const code=await helperExit(process.env.CC??'cc',['-O2','-std=c11','-Wall','-Wextra',source,'-o',temporary],
+   Math.min(timeoutMs,helperCompilationTimeoutMs));
   if(code!==0)throw Error(`heavy-gate native helper compilation exited ${code}`);
   await rename(temporary,executable);
  }finally{await rm(temporary,{force:true});}
@@ -87,6 +135,7 @@ function normalize(options:HeavyGateOptions):Required<HeavyGateOptions>{
   rssMiB:integer(options.rssMiB??process.env.HEAVY_GATE_RSS_MIB??2048,'rss-mib',1,1048576),
   pollMs:integer(options.pollMs??process.env.HEAVY_GATE_POLL_MS??100,'poll-ms',10,1000),
   termGraceMs:integer(options.termGraceMs??process.env.HEAVY_GATE_TERM_GRACE_MS??1000,'term-grace-ms',0,10000),
+  timeoutMs:integer(options.timeoutMs??process.env.HEAVY_GATE_TIMEOUT_MS??defaultTimeoutMs,'timeout-ms',1,maximumTimeoutMs),
   lockPath:resolve(options.lockPath??process.env.HEAVY_GATE_LOCK_PATH??join(privateDirectory,'exclusive.lock')),
  };
 }
@@ -95,7 +144,7 @@ export function parseHeavyGateOptions(args:readonly string[]):{options:HeavyGate
  const options:HeavyGateOptions={},remaining:string[]=[];
  const names:Record<string,keyof HeavyGateOptions>={
   '--memory-mib':'memoryMiB','--rss-mib':'rssMiB','--poll-ms':'pollMs',
-  '--term-grace-ms':'termGraceMs','--lock-path':'lockPath',
+  '--term-grace-ms':'termGraceMs','--timeout-ms':'timeoutMs','--lock-path':'lockPath',
  };
  for(let i=0;i<args.length;i++){
   const argument=args[i]!;
@@ -110,28 +159,26 @@ export function parseHeavyGateOptions(args:readonly string[]):{options:HeavyGate
  }
  return {options,args:remaining};
 }
-async function authenticatedLease():Promise<boolean>{
+async function authenticatedLease(timeoutMs:number):Promise<boolean>{
  const token=process.env[leaseToken],path=process.env[leasePath];
  if(!token||!path)return false;
  if(!/^[a-f0-9]{64}$/.test(token))return false;
- const helper=await (helperPromise??=prepareNativeHelper());
- const child=spawn(helper,['--authenticate',path,token],{stdio:'ignore'});
- const completion=Promise.withResolvers<boolean>();
- child.once('error',completion.reject);
- child.once('exit',code=>completion.resolve(code===0));
- return completion.promise;
+ const helper=await (helperPromise??=prepareNativeHelper(timeoutMs));
+ const code=await helperExit(helper,['--authenticate',path,token],Math.min(timeoutMs,5000));
+ if(code===2)throw Error('heavy-gate inherited lease deadline expired');
+ return code===0;
 }
 /** Public behavior seam. Never nests: guarded entrypoints authenticate the lease. */
 export async function runHeavyGate(command:readonly string[],options:HeavyGateOptions={}):Promise<HeavyGateResult>{
  if(command.length===0||!command[0])throw Error('heavy-gate requires a command');
- const settings=normalize(options),helper=await (helperPromise??=prepareNativeHelper());
+ const settings=normalize(options),helper=await (helperPromise??=prepareNativeHelper(settings.timeoutMs));
  // The default directory is private. Custom lock directories must be private too.
  await secureDirectory(dirname(settings.lockPath));
  const token=randomBytes(32).toString('hex');
  const reportPath=join(privateDirectory,`report-${Date.now()}-${randomBytes(8).toString('hex')}.json`);
  const reportFile=await open(reportPath,'wx',0o600);
  const child=spawn(helper,['--run',settings.lockPath,token,String(settings.memoryMiB*MiB),String(settings.rssMiB*MiB),
-  String(settings.pollMs),String(settings.termGraceMs),'--',...command],{
+  String(settings.pollMs),String(settings.termGraceMs),String(settings.timeoutMs),'--',...command],{
   stdio:['pipe','inherit','inherit',reportFile.fd],
   env:{...process.env,[leaseToken]:token,[leasePath]:settings.lockPath},
  });
@@ -156,7 +203,7 @@ export async function runHeavyGate(command:readonly string[],options:HeavyGateOp
  const record=JSON.parse(await readFile(reportPath,'utf8'));
  if(!['PASS','FAIL','RESOURCE_LIMIT','LOCK_BUSY'].includes(record.status))throw Error('invalid heavy-gate supervisor status');
  const result:HeavyGateResult={...record,command:[...command],label:settings.label,exitCode,
-  reportPath,memoryLimitBytes:settings.memoryMiB*MiB,rssLimitBytes:settings.rssMiB*MiB};
+  reportPath,memoryLimitBytes:settings.memoryMiB*MiB,rssLimitBytes:settings.rssMiB*MiB,timeoutMs:settings.timeoutMs};
  await writeFile(reportPath,JSON.stringify(result)+'\n',{mode:0o600});
  console.error('HEAVY_GATE '+JSON.stringify(result));
  return result;
@@ -165,11 +212,13 @@ export async function runHeavyGate(command:readonly string[],options:HeavyGateOp
 export async function guardHeavyGate(scriptPath:string,options:{label:string}):Promise<void>{
  const parsed=parseHeavyGateOptions(process.argv.slice(2));
  process.argv.splice(2,process.argv.length-2,...parsed.args);
- if(await authenticatedLease())return;
+ // Authenticated descendants retain the native parent's original deadline;
+ // their CLI/environment options cannot start a fresh time allowance.
+ if(await authenticatedLease(normalize(parsed.options).timeoutMs))return;
  const result=await runHeavyGate([process.execPath,resolve(scriptPath),...parsed.args],{...parsed.options,label:options.label});
  process.exit(result.exitCode);
 }
-if(import.meta.main){
+if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url)){
  try{
   const argv=process.argv.slice(2),separator=argv.indexOf('--');
   if(separator<0)throw Error('usage: bun evals/heavy_gate.ts [options] -- command args...');
@@ -178,7 +227,9 @@ if(import.meta.main){
   const result=await runHeavyGate(argv.slice(separator+1),parsed.options);
   process.exitCode=result.exitCode;
  }catch(error){
-  console.error('HEAVY_GATE '+JSON.stringify({status:'FAIL',reason:'runner_error',error:String(error)}));
+  console.error('HEAVY_GATE '+JSON.stringify({status:'FAIL',
+   reason:error instanceof HelperDeadlineError?'helper_deadline_exceeded':'runner_error',
+   ...(error instanceof HelperDeadlineError?{timeoutMs:error.timeoutMs}:{}),error:String(error)}));
   process.exitCode=125;
  }
 }

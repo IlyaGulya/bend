@@ -12,8 +12,21 @@ type ExpandResult is Data:
 type ApplicationSpine is Data:
   ApplicationSpine{head: Ast.SyntaxTerm, args: List<&2, Ast.SyntaxTerm>, span: Ast.SourceSpan}
 
+# Capture names describe only the caller's actual current/import/Base scope.
+# Canonical identities are not a catalog-wide visibility escape hatch.
+type CaptureName is Data:
+  CaptureName{key: String, canonical: String, family: Bool, constructor: Bool}
+
 type TemplateDef is Data:
-  TemplateDef{key: String, namespace: String, imports: List<&2, Ast.ModuleImport>, existing_keys: List<&2, String>, alias_key: String, definition: Ast.Definition}
+  TemplateDef{key: String, namespace: String, imports: List<&2, Ast.ModuleImport>, existing_keys: List<&2, String>, alias_key: String, definition: Ast.Definition, captures: List<&2, CaptureName>}
+
+# Raw occurrences are round-local; expansion still uses the requesting
+# template suffix and the supplying module's complete caller scope.
+type ActualSite is Data:
+  ActualSite{key: String, values: List<&2, Ast.SyntaxTerm>}
+
+type ActualModule is Data:
+  ActualModule{namespace: String, imports: List<&2, Ast.ModuleImport>, sites: List<&2, ActualSite>, captures: List<&2, CaptureName>}
 
 type GeneratedIdentity is Data:
   GeneratedIdentity{key: String, template_key: String, local_key: String, identity: String}
@@ -43,6 +56,7 @@ def span_of(term: Ast.SyntaxTerm) -> Ast.SourceSpan:
     case Ast.TermFill{_, _, span}: span
     case Ast.TermPlus{_, _, span}: span
     case Ast.TermCtr{_, _, span}: span
+    case Ast.TermString{_, _, span}: span
     case Ast.TermMat{_, _, _, span}: span
     case Ast.TermAbsurd{span}: span
     case Ast.TermEqual{_, _, _, span}: span
@@ -87,7 +101,7 @@ def collect_template_decl(namespace: String, imports: List<&2, Ast.ModuleImport>
     case True{}:
       canonical = qualify(namespace, key)
       d = Ast.Definition{key, binders, result, body, unsafe, span}
-      TemplateDef{ canonical, namespace, imports, existing_keys,  "",  d} <> collect_template_decls(namespace, imports, existing_keys, rest)
+      TemplateDef{ canonical, namespace, imports, existing_keys,  "",  d, Nil{}} <> collect_template_decls(namespace, imports, existing_keys, rest)
     case False{}: collect_template_decls(namespace, imports, existing_keys, rest)
 
 def has_template_binder(binders: List<&2, Ast.TelescopeItem>) -> Bool:
@@ -111,7 +125,7 @@ def find_template(key: String, templates: List<&2, TemplateDef>) -> Maybe<&2, Te
     case Nil{}: None{}
     case +item <> rest:
       match item:
-        case TemplateDef{ found,  _,  _,  _, alias_key,  _}:
+        case TemplateDef{ found,  _,  _,  _, alias_key,  _, _}:
           find_template_match(key, item, rest, Bool.or(String.eq(found, key), String.eq(alias_key, key)))
 
 def find_template_match(key: String, item: TemplateDef, rest: List<&2, TemplateDef>, matches: Bool) -> Maybe<&2, TemplateDef>:
@@ -131,7 +145,7 @@ def flatten_append(spine: ApplicationSpine, arg: Ast.SyntaxTerm, span: Ast.Sourc
 
 def leading_template_count(binders: List<&2, Ast.TelescopeItem>) -> Nat:
   match binders:
-    case +Ast.TemplateBinder{ _,  _,  _,  _} <> rest: 1n + leading_template_count(rest)
+    case Ast.TemplateBinder{ _,  _,  _,  _} <> rest: (1n + leading_template_count(rest) : Nat)
     case _: 0n
 
 def template_for_head(head: Ast.SyntaxTerm, templates: List<&2, TemplateDef>) -> Maybe<&2, TemplateDef>:
@@ -141,13 +155,11 @@ def template_for_head(head: Ast.SyntaxTerm, templates: List<&2, TemplateDef>) ->
     case _: None{}
 
 def take_template_args(args: List<&2, Ast.SyntaxTerm>, count: Nat) -> Maybe<&2, List<&2, Ast.SyntaxTerm>>:
-  match count:
-    case 0n: Some{Nil{}}
-    case _:
-      match args:
-        case +Ast.TermTemplate{term,  _} <> rest:
-          take_template_arg(term, take_template_args(rest, count - 1n))
-        case _: None{}
+  match args count:
+    case _ 0n: Some{Nil{}}
+    case Ast.TermTemplate{term, _} <> rest 1n+more:
+      take_template_arg(term, take_template_args(rest, more))
+    case _ _: None{}
 
 def take_template_arg(term: Ast.SyntaxTerm, result: Maybe<&2, List<&2, Ast.SyntaxTerm>>) -> Maybe<&2, List<&2, Ast.SyntaxTerm>>:
   match result:
@@ -163,25 +175,28 @@ def reapply_args(head: Ast.SyntaxTerm, args: List<&2, Ast.SyntaxTerm>, span: Ast
 
 def generated_local_key(template: TemplateDef, values: List<&2, Ast.SyntaxTerm>) -> String:
   match template:
-    case TemplateDef{key,  _,  _, existing_keys,  _,  _}:
+    case TemplateDef{key,  _,  _, existing_keys,  _,  _, _}:
       identity = encode_string(key) ++ serialize_terms(values)
       base = "T~" ++ SHA256.hash(identity)
       fresh_generated_key(base, existing_keys, 0n)
 
 def fresh_generated_key(base: String, existing: List<&2, String>, attempt: Nat) -> String:
-  candidate = match attempt:
-    case 0n: base
-    case _: base ++ "~" ++ Nat.show(attempt)
+  candidate = generated_candidate(base, attempt)
   fresh_generated_key_match(base, existing, attempt, candidate, has_string(candidate, existing))
 
 def fresh_generated_key_match(base: String, existing: List<&2, String>, attempt: Nat, candidate: String, found: Bool) -> String:
   match found:
-    case True{}: fresh_generated_key(base, existing, attempt + 1n)
+    case True{}: fresh_generated_key(base, existing, (attempt + 1n : Nat))
     case False{}: candidate
+
+def generated_candidate(base: String, attempt: Nat) -> String:
+  match attempt:
+    case 0n: base
+    case _: base ++ "~" ++ Nat.show(attempt)
 
 def generated_key(template: TemplateDef, values: List<&2, Ast.SyntaxTerm>) -> String:
   match template:
-    case TemplateDef{ _, namespace,  _,  _,  _,  _}:
+    case TemplateDef{ _, namespace,  _,  _,  _,  _, _}:
       qualify(namespace, generated_local_key(template, values))
 
 def encode_string(value: String) -> String:
@@ -243,6 +258,7 @@ def serialize_term(term: Ast.SyntaxTerm) -> String:
     case Ast.TermFill{head, args,  _}: "f" ++ serialize_term(head) ++ serialize_terms(args)
     case Ast.TermPlus{head, args,  _}: "+" ++ serialize_term(head) ++ serialize_terms(args)
     case Ast.TermCtr{key, args,  _}: "c" ++ encode_string(key) ++ serialize_terms(args)
+    case Ast.TermString{chars, names, span}: serialize_term(Ast.string_desugar(chars, names, span))
     case Ast.TermMat{key, head, matched,  _}: "M" ++ encode_string(key) ++ serialize_term(head) ++ serialize_term(matched)
     case Ast.TermAbsurd{ _}: "!"
     case Ast.TermEqual{left, right, ty,  _}: "=" ++ serialize_term(left) ++ serialize_term(right) ++ serialize_term(ty)
@@ -275,10 +291,171 @@ def strip_namespace_prefix_match(key: String, prefix: String, starts: Bool) -> S
     case True{}: String.drop(key, String.length(prefix))
     case False{}: key
 
+# Relocate only supplied values, before substitution and identity serialization.
+# The template's own binders/result/body retain their original lexical scope.
+def template_capture_names(template: TemplateDef) -> List<&2, CaptureName>:
+  match template:
+    case TemplateDef{_, _, _, _, _, _, captures}: captures
+
+def scoped_templates(namespace: String, imports: List<&2, Ast.ModuleImport>, templates: List<&2, TemplateDef>, modules: List<&2, Loader.LoadedModule>) -> List<&2, TemplateDef>:
+  match templates:
+    case Nil{}: Nil{}
+    case +_ <> _: templates_with_captures(visible_templates(namespace, imports, templates), scope_capture_names(namespace, imports, modules))
+
+def templates_with_captures(templates: List<&2, TemplateDef>, captures: List<&2, CaptureName>) -> List<&2, TemplateDef>:
+  match templates:
+    case Nil{}: Nil{}
+    case TemplateDef{key, owner, imports, existing_keys, alias, definition, _} <> rest:
+      TemplateDef{key, owner, imports, existing_keys, alias, definition, captures} <> templates_with_captures(rest, captures)
+
+def scope_capture_names(namespace: String, imports: List<&2, Ast.ModuleImport>, modules: List<&2, Loader.LoadedModule>) -> List<&2, CaptureName>:
+  current = capture_module_names(namespace, "", modules)
+  imported = capture_import_names(namespace, imports, modules)
+  base = capture_module_names("", "Base", modules)
+  List.append(&2, CaptureName, current, List.append(&2, CaptureName, imported, base))
+
+def capture_import_names(namespace: String, imports: List<&2, Ast.ModuleImport>, modules: List<&2, Loader.LoadedModule>) -> List<&2, CaptureName>:
+  match imports:
+    case Nil{}: Nil{}
+    case Ast.ModuleImport{path, alias, _} <> rest:
+      List.append(&2, CaptureName, capture_module_names(Path.namespace(namespace, path), alias, modules), capture_import_names(namespace, rest, modules))
+
+def capture_module_names(owner: String, alias: String, modules: List<&2, Loader.LoadedModule>) -> List<&2, CaptureName>:
+  match modules:
+    case Nil{}: Nil{}
+    case Loader.LoadedModule{namespace, Ast.Module{_, _, declarations}} <> rest:
+      match String.eq(owner, namespace):
+        case False{}: capture_module_names(owner, alias, rest)
+        case True{}:
+          List.append(&2, CaptureName, capture_declaration_names(owner, alias, declarations), capture_module_names(owner, alias, rest))
+
+def capture_declaration_names(owner: String, alias: String, declarations: List<&2, Ast.TopLevel>) -> List<&2, CaptureName>:
+  match declarations:
+    case Nil{}: Nil{}
+    case +declaration <> rest:
+      tail = capture_declaration_names(owner, alias, rest)
+      match declaration:
+        case Ast.DefTop{Ast.Definition{key, _, _, _, _, _}}:
+          capture_declared_name(owner, alias, key, False{}, False{}, tail)
+        case Ast.TypeTop{Ast.TypeDecl{key, _, _, constructors, _}}:
+          capture_declared_name(owner, alias, key, True{}, False{}, List.append(&2, CaptureName, capture_constructor_names(owner, alias, constructors), tail))
+        case Ast.LawTop{Ast.LawDecl{key, _, _, _}}:
+          capture_declared_name(owner, alias, key, False{}, False{}, tail)
+
+def capture_constructor_names(owner: String, alias: String, constructors: List<&2, Ast.ConstructorDecl>) -> List<&2, CaptureName>:
+  match constructors:
+    case Nil{}: Nil{}
+    case Ast.Constructor{key, _, _} <> rest:
+      capture_declared_name(owner, alias, key, False{}, True{}, capture_constructor_names(owner, alias, rest))
+
+def capture_declared_name(owner: String, alias: String, key: String, family: Bool, constructor: Bool, tail: List<&2, CaptureName>) -> List<&2, CaptureName>:
+  canonical = qualify(owner, key)
+  prefixed = CaptureName{qualify(alias, key), canonical, family, constructor} <> tail
+  match String.eq(alias, "Base"):
+    case True{}: CaptureName{key, canonical, family, constructor} <> prefixed
+    case False{}: prefixed
+
+# Like native scope lookup, ordinary names prefer a family across all segments;
+# constructor positions select the first constructor, not a same-named family.
+def capture_name(key: String, constructor: Bool, captures: List<&2, CaptureName>, candidate: Maybe<&2, String>) -> Maybe<&2, String>:
+  match captures:
+    case Nil{}: candidate
+    case CaptureName{visible, canonical, family, is_constructor} <> rest:
+      match Bool.or(String.eq(key, visible), String.eq(key, canonical)):
+        case False{}: capture_name(key, constructor, rest, candidate)
+        case True{}:
+          match constructor:
+            case True{}:
+              match is_constructor:
+                case True{}: Some{canonical}
+                case False{}: capture_name(key, constructor, rest, candidate)
+            case False{}:
+              match family:
+                case True{}: Some{canonical}
+                case False{}:
+                  match candidate:
+                    case Some{_}: capture_name(key, constructor, rest, candidate)
+                    case None{}: capture_name(key, constructor, rest, Some{canonical})
+
+def capture_key(key: String, constructor: Bool, captures: List<&2, CaptureName>) -> String:
+  match capture_name(key, constructor, captures, None{}):
+    case None{}: key
+    case Some{canonical}: canonical
+
+def capture_strings(keys: List<&2, String>, captures: List<&2, CaptureName>) -> List<&2, String>:
+  match keys:
+    case Nil{}: Nil{}
+    case +key <> rest: capture_key(key, True{}, captures) <> capture_strings(rest, captures)
+
+def capture_patterns(patterns: List<&2, Ast.SyntaxPattern>, captures: List<&2, CaptureName>) -> List<&2, Ast.SyntaxPattern>:
+  match patterns:
+    case Nil{}: Nil{}
+    case +pattern <> rest: capture_pattern(pattern, captures) <> capture_patterns(rest, captures)
+
+def capture_pattern(pattern: Ast.SyntaxPattern, captures: List<&2, CaptureName>) -> Ast.SyntaxPattern:
+  match pattern:
+    case Ast.PatternVar{_, _, _, _}: pattern
+    case Ast.PatternCtr{key, fields, span}: Ast.PatternCtr{capture_key(key, True{}, captures), capture_patterns(fields, captures), span}
+
+def capture_terms(terms: List<&2, Ast.SyntaxTerm>, captures: List<&2, CaptureName>) -> List<&2, Ast.SyntaxTerm>:
+  match terms:
+    case Nil{}: Nil{}
+    case +term <> rest: capture_term(term, captures) <> capture_terms(rest, captures)
+
+# This traversal never changes spans, local names/indices, quantities, or holes.
+# Its only changes are real declared reference identities throughout the value,
+# including higher-order lambda bodies, match patterns and exclusion references.
+# Native core lowering gives unqualified operator references the Nat namespace;
+# parenthesized annotations have already selected any other namespace in Syntax.
+def reference_key(key: String) -> String:
+  match String.starts_with(key, "."):
+    case False{}: key
+    case True{}:
+      match String.starts_with(key, ".."):
+        case True{}: key
+        case False{}: "Nat" ++ key
+
+def capture_string_names(names: Ast.StringLiteralNames, +captures: List<&2, CaptureName>) -> Ast.StringLiteralNames:
+  match names:
+    case Ast.StringLiteralNames{nil, cons, char, uint, word_nil, word_cons, bit_false, bit_true}:
+      Ast.StringLiteralNames{capture_key(nil, True{}, captures), capture_key(cons, True{}, captures), capture_key(char, True{}, captures), capture_key(uint, True{}, captures), capture_key(word_nil, True{}, captures), capture_key(word_cons, True{}, captures), capture_key(bit_false, True{}, captures), capture_key(bit_true, True{}, captures)}
+
+def capture_term(term: Ast.SyntaxTerm, captures: List<&2, CaptureName>) -> Ast.SyntaxTerm:
+  match term:
+    case Ast.TermVar{_, _, _}: term
+    case Ast.TermRef{key, span}: Ast.TermRef{capture_key(reference_key(key), False{}, captures), span}
+    case Ast.TermBang{inner, span}: Ast.TermBang{capture_term(inner, captures), span}
+    case Ast.TermSub{index, value, body, span}: Ast.TermSub{index, capture_term(value, captures), capture_term(body, captures), span}
+    case Ast.TermLet{keys, indexes, quantities, values, body, span}: Ast.TermLet{keys, indexes, quantities, capture_terms(values, captures), capture_term(body, captures), span}
+    case Ast.TermAnn{inner, ty, span}: Ast.TermAnn{capture_term(inner, captures), capture_term(ty, captures), span}
+    case Ast.TermTemplate{inner, span}: Ast.TermTemplate{capture_term(inner, captures), span}
+    case Ast.TermType{kind, span}: Ast.TermType{capture_term(kind, captures), span}
+    case Ast.TermQuant{}: term
+    case Ast.TermQuantity{_, _}: term
+    case Ast.TermMin{left, right, span}: Ast.TermMin{capture_term(left, captures), capture_term(right, captures), span}
+    case Ast.TermAll{quantity, key, index, ty, body, span}: Ast.TermAll{quantity, key, index, capture_term(ty, captures), capture_term(body, captures), span}
+    case Ast.TermLam{quantity, key, index, body, span}: Ast.TermLam{quantity, key, index, capture_term(body, captures), span}
+    case Ast.TermApp{fn, arg, span}: Ast.TermApp{capture_term(fn, captures), capture_term(arg, captures), span}
+    case Ast.TermAdt{key, args, refs, span}: Ast.TermAdt{capture_key(key, False{}, captures), capture_terms(args, captures), capture_strings(refs, captures), span}
+    case Ast.TermFill{head, args, span}: Ast.TermFill{capture_term(head, captures), capture_terms(args, captures), span}
+    case Ast.TermPlus{head, args, span}: Ast.TermPlus{capture_term(head, captures), capture_terms(args, captures), span}
+    case Ast.TermCtr{key, args, span}: Ast.TermCtr{capture_key(key, True{}, captures), capture_terms(args, captures), span}
+    case Ast.TermString{chars, names, span}: Ast.TermString{chars, capture_string_names(names, captures), span}
+    case Ast.TermMat{key, head, matched, span}: Ast.TermMat{capture_key(key, True{}, captures), capture_term(head, captures), capture_term(matched, captures), span}
+    case Ast.TermAbsurd{_}: term
+    case Ast.TermEqual{left, right, ty, span}: Ast.TermEqual{capture_term(left, captures), capture_term(right, captures), capture_term(ty, captures), span}
+    case Ast.TermRefl{_}: term
+    case Ast.TermRewrite{equation, proof, body, span}: Ast.TermRewrite{capture_term(equation, captures), capture_term(proof, captures), capture_term(body, captures), span}
+    case Ast.TermHole{_, _}: term
+    case Ast.BodyMatch{scrutinees, cases, span}: Ast.BodyMatch{capture_terms(scrutinees, captures), capture_terms(cases, captures), span}
+    case Ast.BodyCase{patterns, body, span}: Ast.BodyCase{capture_patterns(patterns, captures), capture_term(body, captures), span}
+    case Ast.BodyLocal{patterns, quantity, values, body, span}: Ast.BodyLocal{capture_patterns(patterns, captures), quantity, capture_terms(values, captures), capture_term(body, captures), span}
+    case Ast.BodyReply{inner, span}: Ast.BodyReply{capture_term(inner, captures), span}
+
 def expand_term(term: Ast.SyntaxTerm, templates: List<&2, TemplateDef>) -> Ast.SyntaxTerm:
   match term:
     case Ast.TermVar{key, index, span}: Ast.TermVar{key, index, span}
-    case Ast.TermRef{key, span}: Ast.TermRef{key, span}
+    case Ast.TermRef{key, span}: Ast.TermRef{reference_key(key), span}
     case Ast.TermBang{ inner, span}: Ast.TermBang{ expand_term(inner, templates), span}
     case Ast.TermSub{index, value, body, span}: Ast.TermSub{index,  expand_term(value, templates),  expand_term(body, templates), span}
     case Ast.TermLet{keys, indexes, quantities, values, body, span}: Ast.TermLet{keys, indexes, quantities,  expand_terms(values, templates),  expand_term(body, templates), span}
@@ -294,7 +471,8 @@ def expand_term(term: Ast.SyntaxTerm, templates: List<&2, TemplateDef>) -> Ast.S
     case Ast.TermAdt{key, args, refs, span}: Ast.TermAdt{key,  expand_terms(args, templates), refs, span}
     case Ast.TermFill{head, args, span}: Ast.TermFill{ expand_term(head, templates),  expand_terms(args, templates), span}
     case Ast.TermPlus{head, args, span}: Ast.TermPlus{ expand_term(head, templates),  expand_terms(args, templates), span}
-    case Ast.TermCtr{key, args, span}: Ast.TermCtr{key,  expand_terms(args, templates), span}
+    case Ast.TermCtr{key, args, span}: expand_constructor_stable(expand_stable_terms(args), term, key, args, span, templates)
+    case Ast.TermString{_, _, _}: term
     case Ast.TermMat{key, head, matched, span}: Ast.TermMat{key,  expand_term(head, templates),  expand_term(matched, templates), span}
     case Ast.TermAbsurd{span}: term
     case Ast.TermEqual{left, right, ty, span}: Ast.TermEqual{ expand_term(left, templates),  expand_term(right, templates),  expand_term(ty, templates), span}
@@ -305,6 +483,36 @@ def expand_term(term: Ast.SyntaxTerm, templates: List<&2, TemplateDef>) -> Ast.S
     case Ast.BodyCase{patterns, body, span}: Ast.BodyCase{patterns,  expand_term(body, templates), span}
     case Ast.BodyLocal{patterns, quantity, values, body, span}: Ast.BodyLocal{patterns, quantity,  expand_terms(values, templates),  expand_term(body, templates), span}
     case Ast.BodyReply{ inner, span}: Ast.BodyReply{ expand_term(inner, templates), span}
+
+# Expansion never changes these leaves or constructor names. Reuse the complete
+# immutable subtree rather than copying every Word bit and string character.
+# References and every potentially transforming syntax node take the old path.
+def expand_stable_term(term: Ast.SyntaxTerm) -> Bool:
+  match term:
+    case Ast.TermVar{_, _, _}: True{}
+    case Ast.TermCtr{_, args, _}: expand_stable_terms(args)
+    case Ast.TermString{_, _, _}: True{}
+    case Ast.TermQuant{}: True{}
+    case Ast.TermQuantity{_, _}: True{}
+    case Ast.TermAbsurd{_}: True{}
+    case Ast.TermRefl{_}: True{}
+    case Ast.TermHole{_, _}: True{}
+    case _: False{}
+
+def expand_stable_terms(terms: List<&2, Ast.SyntaxTerm>) -> Bool:
+  match terms:
+    case Nil{}: True{}
+    case term <> rest: expand_stable_tail(expand_stable_term(term), rest)
+
+def expand_stable_tail(stable: Bool, rest: List<&2, Ast.SyntaxTerm>) -> Bool:
+  match stable:
+    case True{}: expand_stable_terms(rest)
+    case False{}: False{}
+
+def expand_constructor_stable(stable: Bool, original: Ast.SyntaxTerm, key: String, args: List<&2, Ast.SyntaxTerm>, span: Ast.SourceSpan, templates: List<&2, TemplateDef>) -> Ast.SyntaxTerm:
+  match stable:
+    case True{}: original
+    case False{}: Ast.TermCtr{key, expand_terms(args, templates), span}
 
 def expand_application(fn: Ast.SyntaxTerm, arg: Ast.SyntaxTerm, span: Ast.SourceSpan, templates: List<&2, TemplateDef>) -> Ast.SyntaxTerm:
   application = Ast.TermApp{fn, arg, span}
@@ -319,16 +527,19 @@ def expand_application_template(fn: Ast.SyntaxTerm, arg: Ast.SyntaxTerm, span: A
   match found:
     case None{}: Ast.TermApp{ expand_term(fn, templates), expand_term(arg, templates), span}
     case Some{ template}:
-      arity = match template:
-        case TemplateDef{_, _, _, _, _, Ast.Definition{_, binders, _, _, _, _}}: leading_template_count(binders)
+      arity = template_arity(template)
       expand_application_arguments(fn, arg, span, templates, head, args, template, arity, take_template_args(args, arity))
+
+def template_arity(template: TemplateDef) -> Nat:
+  match template:
+    case TemplateDef{_, _, _, _, _, Ast.Definition{_, binders, _, _, _, _}, _}: leading_template_count(binders)
 
 def expand_application_arguments(fn: Ast.SyntaxTerm, arg: Ast.SyntaxTerm, span: Ast.SourceSpan, templates: List<&2, TemplateDef>, head: Ast.SyntaxTerm, args: List<&2, Ast.SyntaxTerm>, template: TemplateDef, arity: Nat, values: Maybe<&2, List<&2, Ast.SyntaxTerm>>) -> Ast.SyntaxTerm:
   match values:
     case None{}: Ast.TermApp{ expand_term(fn, templates), expand_term(arg, templates), span}
     case Some{ actuals}:
       runtime_args = drop_args(args, arity)
-      expanded_values = expand_terms(actuals, templates)
+      expanded_values = capture_terms(expand_terms(actuals, templates), template_capture_names(template))
       specialized = specialize_head(head, generated_key(template, expanded_values))
       reapply_args(specialized, expand_terms(runtime_args, templates), span)
 
@@ -339,27 +550,30 @@ def specialize_head(head: Ast.SyntaxTerm, key: String) -> Ast.SyntaxTerm:
     case _: head
 
 def drop_args(args: List<&2, Ast.SyntaxTerm>, count: Nat) -> List<&2, Ast.SyntaxTerm>:
-  match count:
-    case 0n: args
-    case _:
-      match args:
-        case +_ <> rest: drop_args(rest, count - 1n)
-        case Nil{}: Nil{}
+  match args count:
+    case _ 0n: args
+    case +_ <> rest 1n+more: drop_args(rest, more)
+    case Nil{} _: Nil{}
 
 
 def specialize_definition(template: TemplateDef, values: List<&2, Ast.SyntaxTerm>) -> Ast.Definition:
   match template:
-    case TemplateDef{ _,  _,  _,  _,  _,  Ast.Definition{key, binders, result, body, unsafe, span}}:
-      (specialized_binders, specialized_result, specialized_body) = specialize_prefix(binders, values, result, body)
-      Ast.Definition{ generated_local_key(template, values),  specialized_binders,  specialized_result,  specialized_body, unsafe, span}
+    case TemplateDef{ _,  _,  _,  _,  _,  Ast.Definition{key, binders, result, body, unsafe, span}, _}:
+      specialized = specialize_prefix(binders, values, result, body)
+      specialize_definition_result(generated_local_key(template, values), unsafe, span, specialized)
 
-def specialize_prefix(binders: List<&2, Ast.TelescopeItem>, values: List<&2, Ast.SyntaxTerm>, result: Ast.OptionalTerm, body: Ast.DefBody) -> (List<&2, Ast.TelescopeItem> & Ast.OptionalTerm) & Ast.DefBody:
+def specialize_definition_result(key: String, unsafe: Bool, span: Ast.SourceSpan, specialized: List<&2, Ast.TelescopeItem> & Ast.OptionalTerm & Ast.DefBody) -> Ast.Definition:
+  match specialized:
+    case (binders, result, body): Ast.Definition{key, binders, result, body, unsafe, span}
+
+def specialize_prefix(binders: List<&2, Ast.TelescopeItem>, values: List<&2, Ast.SyntaxTerm>, result: Ast.OptionalTerm, body: Ast.DefBody) -> List<&2, Ast.TelescopeItem> & Ast.OptionalTerm & Ast.DefBody:
   match binders values:
-    case +Ast.TemplateBinder{ _,  _,  _,  _} <> rest_binders +value <> rest_values:
+    case Ast.TemplateBinder{_, _, ty, _} <> rest_binders +value <> rest_values:
       substitution_index = binder_count(rest_binders)
-      next_binders = substitute_binders(rest_binders, 0n, value)
-      next_result = substitute_optional(result, substitution_index, value)
-      next_body = substitute_body(body, substitution_index, value)
+      replacement = Ast.TermAnn{value, ty, span_of(value)}
+      next_binders = substitute_binders(rest_binders, 0n, replacement)
+      next_result = substitute_optional(result, substitution_index, replacement)
+      next_body = substitute_body(body, substitution_index, replacement)
       specialize_prefix(next_binders, rest_values, next_result, next_body)
     case _, _:
       (binders, result, body)
@@ -367,7 +581,7 @@ def specialize_prefix(binders: List<&2, Ast.TelescopeItem>, values: List<&2, Ast
 def binder_count(binders: List<&2, Ast.TelescopeItem>) -> Nat:
   match binders:
     case Nil{}: 0n
-    case +_ <> rest: 1n + binder_count(rest)
+    case +_ <> rest: (1n + binder_count(rest) : Nat)
 
 def substitute_binders(binders: List<&2, Ast.TelescopeItem>, index: Nat, replacement: Ast.SyntaxTerm) -> List<&2, Ast.TelescopeItem>:
   match binders:
@@ -375,9 +589,9 @@ def substitute_binders(binders: List<&2, Ast.TelescopeItem>, index: Nat, replace
     case +binder <> rest:
       match binder:
         case Ast.Binder{quantity, key,  binder_index, ty, span}:
-          Ast.Binder{quantity, key,  binder_index,  Core.subst(index, replacement, ty), span} <> substitute_binders(rest, index + 1n, replacement)
+          Ast.Binder{quantity, key,  binder_index,  Core.subst(index, replacement, ty), span} <> substitute_binders(rest, (index + 1n : Nat), replacement)
         case Ast.TemplateBinder{key,  binder_index, ty, span}:
-          Ast.TemplateBinder{key,  binder_index,  Core.subst(index, replacement, ty), span} <> substitute_binders(rest, index + 1n, replacement)
+          Ast.TemplateBinder{key,  binder_index,  Core.subst(index, replacement, ty), span} <> substitute_binders(rest, (index + 1n : Nat), replacement)
 
 def substitute_optional(value: Ast.OptionalTerm, index: Nat, replacement: Ast.SyntaxTerm) -> Ast.OptionalTerm:
   match value:
@@ -427,7 +641,7 @@ def canonical_template_key(local_key: String, templates: List<&2, TemplateDef>) 
     case Nil{}: None{}
     case +template <> rest:
       match template:
-        case TemplateDef{key, namespace,  _,  _,  _,  _}:
+        case TemplateDef{key, namespace,  _,  _,  _,  _, _}:
           canonical_template_match(local_key, key, rest, String.eq(local_key, strip_namespace(key, namespace)))
 
 def canonical_template_match(local_key: String, key: String, rest: List<&2, TemplateDef>, matches: Bool) -> Maybe<&2, String>:
@@ -492,7 +706,7 @@ def expand_clauses(clauses: List<&2, Ast.Clause>, templates: List<&2, TemplateDe
     case +clause <> rest:
       match clause:
         case Ast.ClauseFor{universal, quantity, key, ty, condition, span}:
-          Ast.ClauseFor{universal, quantity, key, ty,  expand_term(ty, templates),  expand_maybe(condition, templates), span} <> expand_clauses(rest, templates)
+          Ast.ClauseFor{universal, quantity, key, expand_term(ty, templates), expand_maybe(condition, templates), span} <> expand_clauses(rest, templates)
 
 def expand_maybe(value: Maybe<&2, Ast.SyntaxTerm>, templates: List<&2, TemplateDef>) -> Maybe<&2, Ast.SyntaxTerm>:
   match value:
@@ -521,58 +735,51 @@ def expand_binders(binders: List<&2, Ast.TelescopeItem>, templates: List<&2, Tem
         case Ast.Binder{quantity, key, index, ty, span}: Ast.Binder{quantity, key, index,  expand_term(ty, templates), span} <> expand_binders(rest, templates)
         case Ast.TemplateBinder{key, index, ty, span}: Ast.TemplateBinder{key, index,  expand_term(ty, templates), span} <> expand_binders(rest, templates)
 
-def find_actual(term: Ast.SyntaxTerm, template_key: String) -> List<&2, List<&2, Ast.SyntaxTerm>>:
+def collect_actual_term(term: Ast.SyntaxTerm, tail: List<&2, ActualSite>) -> List<&2, ActualSite>:
   match term:
-    case Ast.TermApp{ _,  _,  _}:
-      find_actual_spine(term, template_key, flatten_application(term))
-    case Ast.TermBang{term,  _}: find_actual(term, template_key)
-    case Ast.TermSub{value, body,  _}: first_actual(find_actual(value, template_key), find_actual(body, template_key))
-    case Ast.TermLet{values, body,  _}: first_actual(find_actual_terms(values, template_key), find_actual(body, template_key))
-    case Ast.TermAnn{ inner,  ty,  _}: first_actual(find_actual(inner, template_key), find_actual(ty, template_key))
-    case Ast.TermTemplate{ inner,  _}: find_actual(inner, template_key)
-    case Ast.TermType{kind,  _}: find_actual(kind, template_key)
-    case Ast.TermMin{left, right,  _}: first_actual(find_actual(left, template_key), find_actual(right, template_key))
-    case Ast.TermAll{ty, body,  _}: first_actual(find_actual(ty, template_key), find_actual(body, template_key))
-    case Ast.TermLam{body,  _}: find_actual(body, template_key)
-    case Ast.TermAdt{args,  _}: find_actual_terms(args, template_key)
-    case Ast.TermFill{head, args,  _}: first_actual(find_actual(head, template_key), find_actual_terms(args, template_key))
-    case Ast.TermPlus{head, args,  _}: first_actual(find_actual(head, template_key), find_actual_terms(args, template_key))
-    case Ast.TermCtr{args,  _}: find_actual_terms(args, template_key)
-    case Ast.TermMat{head, matched,  _}: first_actual(find_actual(head, template_key), find_actual(matched, template_key))
-    case Ast.TermEqual{left, right, ty,  _}: first_actual(find_actual(left, template_key), first_actual(find_actual(right, template_key), find_actual(ty, template_key)))
-    case Ast.TermRewrite{equation, proof, body,  _}: first_actual(find_actual(equation, template_key), first_actual(find_actual(proof, template_key), find_actual(body, template_key)))
-    case Ast.BodyMatch{scrutinees, cases,  _}: first_actual(find_actual_terms(scrutinees, template_key), find_actual_terms(cases, template_key))
-    case Ast.BodyCase{body,  _}: find_actual(body, template_key)
-    case Ast.BodyLocal{values, body,  _}: first_actual(find_actual_terms(values, template_key), find_actual(body, template_key))
-    case Ast.BodyReply{ inner,  _}: find_actual(inner, template_key)
-    case _: Nil{}
+    case Ast.TermApp{_, _, _}: collect_actual_application(term, Nil{}, tail)
+    case Ast.TermBang{term, _}: collect_actual_term(term, tail)
+    case Ast.TermSub{_, value, body, _}: collect_actual_term(value, collect_actual_term(body, tail))
+    case Ast.TermLet{_, _, _, values, body, _}: collect_actual_terms(values, collect_actual_term(body, tail))
+    case Ast.TermAnn{inner, ty, _}: collect_actual_term(inner, collect_actual_term(ty, tail))
+    case Ast.TermTemplate{inner, _}: collect_actual_term(inner, tail)
+    case Ast.TermType{kind, _}: collect_actual_term(kind, tail)
+    case Ast.TermMin{left, right, _}: collect_actual_term(left, collect_actual_term(right, tail))
+    case Ast.TermAll{_, _, _, ty, body, _}: collect_actual_term(ty, collect_actual_term(body, tail))
+    case Ast.TermLam{_, _, _, body, _}: collect_actual_term(body, tail)
+    case Ast.TermAdt{_, args, _, _}: collect_actual_terms(args, tail)
+    case Ast.TermFill{head, args, _}: collect_actual_term(head, collect_actual_terms(args, tail))
+    case Ast.TermPlus{head, args, _}: collect_actual_term(head, collect_actual_terms(args, tail))
+    case Ast.TermCtr{_, args, _}: collect_actual_terms(args, tail)
+    case Ast.TermString{_, _, _}: tail
+    case Ast.TermMat{_, head, matched, _}: collect_actual_term(head, collect_actual_term(matched, tail))
+    case Ast.TermEqual{left, right, ty, _}: collect_actual_term(left, collect_actual_term(right, collect_actual_term(ty, tail)))
+    case Ast.TermRewrite{equation, proof, body, _}: collect_actual_term(equation, collect_actual_term(proof, collect_actual_term(body, tail)))
+    case Ast.BodyMatch{scrutinees, cases, _}: collect_actual_terms(scrutinees, collect_actual_terms(cases, tail))
+    case Ast.BodyCase{_, body, _}: collect_actual_term(body, tail)
+    case Ast.BodyLocal{_, _, values, body, _}: collect_actual_terms(values, collect_actual_term(body, tail))
+    case Ast.BodyReply{inner, _}: collect_actual_term(inner, tail)
+    case _: tail
 
-def find_actual_spine(term: Ast.SyntaxTerm, template_key: String, spine: ApplicationSpine) -> List<&2, List<&2, Ast.SyntaxTerm>>:
-  match spine:
-    case ApplicationSpine{head, args, _}: find_actual_head(term, template_key, args, head_key(head))
+# A matching outer spine suppresses its partial applications, but not sites
+# within its arguments. For any other key those partial applications cannot
+# match, so walking the flattened head and arguments preserves the same order.
+# Accumulating arguments with cons also avoids copying every partial spine.
+# wrapped_prefix always returns Some, including for an empty prefix.
+def collect_actual_application(term: Ast.SyntaxTerm, args: List<&2, Ast.SyntaxTerm>, tail: List<&2, ActualSite>) -> List<&2, ActualSite>:
+  match term:
+    case Ast.TermApp{fn, arg, _}: collect_actual_application(fn, arg <> args, tail)
+    case _:
+      nested = collect_actual_term(term, collect_actual_terms(args, tail))
+      match head_key(term):
+        case None{}: nested
+        case Some{key}: collect_actual_prefix(key, wrapped_prefix(args), nested)
 
-def find_actual_head(term: Ast.SyntaxTerm, template_key: String, args: List<&2, Ast.SyntaxTerm>, key: Maybe<&2, String>) -> List<&2, List<&2, Ast.SyntaxTerm>>:
-  match key:
-    case Some{found}: find_actual_key(term, template_key, args, found, String.eq(template_key, found))
-    case None{}: find_actual_application_parts(term, template_key)
-
-def find_actual_key(term: Ast.SyntaxTerm, template_key: String, args: List<&2, Ast.SyntaxTerm>, found: String, matches: Bool) -> List<&2, List<&2, Ast.SyntaxTerm>>:
-  match matches:
-    case True{}: find_actual_prefix(term, template_key, args, wrapped_prefix(args))
-    case False{}: find_actual_application_parts(term, template_key)
-
-def find_actual_prefix(term: Ast.SyntaxTerm, template_key: String, args: List<&2, Ast.SyntaxTerm>, prefix: Maybe<&2, List<&2, Ast.SyntaxTerm>>) -> List<&2, List<&2, Ast.SyntaxTerm>>:
+def collect_actual_prefix(key: String, prefix: Maybe<&2, List<&2, Ast.SyntaxTerm>>, tail: List<&2, ActualSite>) -> List<&2, ActualSite>:
   match prefix:
-    case Some{Nil{}}: find_actual_application_parts(term, template_key)
-    case Some{values}:
-      runtime_args = drop_args(args, List.length(&2, Ast.SyntaxTerm, values))
-      List.append(&2, List<&2, Ast.SyntaxTerm>, [values], first_actual(find_actual_terms(values, template_key), find_actual_terms(runtime_args, template_key)))
-    case None{}: Nil{}
-
-def find_actual_application_parts(term: Ast.SyntaxTerm, template_key: String) -> List<&2, List<&2, Ast.SyntaxTerm>>:
-  match term:
-    case Ast.TermApp{fn, arg, _}: first_actual(find_actual(fn, template_key), find_actual(arg, template_key))
-    case _: Nil{}
+    case Some{Nil{}}: tail
+    case Some{values}: ActualSite{key, values} <> tail
+    case None{}: tail
 
 def head_key(head: Ast.SyntaxTerm) -> Maybe<&2, String>:
   match head:
@@ -582,7 +789,7 @@ def head_key(head: Ast.SyntaxTerm) -> Maybe<&2, String>:
 
 def wrapped_prefix(args: List<&2, Ast.SyntaxTerm>) -> Maybe<&2, List<&2, Ast.SyntaxTerm>>:
   match args:
-    case +Ast.TermTemplate{term,  _} <> rest:
+    case Ast.TermTemplate{term,  _} <> rest:
       wrapped_prefix_cons(term, wrapped_prefix(rest))
     case _: Some{Nil{}}
 
@@ -591,45 +798,60 @@ def wrapped_prefix_cons(term: Ast.SyntaxTerm, result: Maybe<&2, List<&2, Ast.Syn
     case Some{value}: Some{term <> value}
     case None{}: None{}
 
-def find_actual_terms(terms: List<&2, Ast.SyntaxTerm>, template_key: String) -> List<&2, List<&2, Ast.SyntaxTerm>>:
+def collect_actual_terms(terms: List<&2, Ast.SyntaxTerm>, tail: List<&2, ActualSite>) -> List<&2, ActualSite>:
   match terms:
-    case Nil{}: Nil{}
-    case +term <> rest: first_actual(find_actual(term, template_key), find_actual_terms(rest, template_key))
+    case Nil{}: tail
+    case +term <> rest: collect_actual_term(term, collect_actual_terms(rest, tail))
 
 def first_actual(left: List<&2, List<&2, Ast.SyntaxTerm>>, right: List<&2, List<&2, Ast.SyntaxTerm>>) -> List<&2, List<&2, Ast.SyntaxTerm>>:
   List.append(&2, List<&2, Ast.SyntaxTerm>, left, right)
 
-def actual_in_declarations(declarations: List<&2, Ast.TopLevel>, template_key: String) -> List<&2, List<&2, Ast.SyntaxTerm>>:
+def collect_actual_declarations(declarations: List<&2, Ast.TopLevel>, tail: List<&2, ActualSite>) -> List<&2, ActualSite>:
   match declarations:
-    case Nil{}: Nil{}
+    case Nil{}: tail
     case +decl <> rest:
+      next = collect_actual_declarations(rest, tail)
       match decl:
-        case Ast.DefTop{ Ast.Definition{_, binders, result, body, _, _}}:
-          actual_definition(binders, result, body, rest, template_key, has_template_binder(binders))
-        case Ast.TypeTop{ Ast.TypeDecl{_, params, kind, constructors, _}}:
-          first_actual(first_actual(find_actual_binders(params, template_key), find_actual(kind, template_key)), first_actual(find_actual_constructors(constructors, template_key), actual_in_declarations(rest, template_key)))
-        case Ast.LawTop{ Ast.LawDecl{_, clauses, body, _}}:
-          first_actual(first_actual(find_actual_clauses(clauses, template_key), find_actual(body, template_key)), actual_in_declarations(rest, template_key))
+        case Ast.DefTop{Ast.Definition{_, binders, result, body, _, _}}:
+          collect_actual_definition(binders, result, body, next, has_template_binder(binders))
+        case Ast.TypeTop{Ast.TypeDecl{_, params, kind, constructors, _}}:
+          collect_actual_binders(params, collect_actual_term(kind, collect_actual_constructors(constructors, next)))
+        case Ast.LawTop{Ast.LawDecl{_, clauses, body, _}}:
+          collect_actual_clauses(clauses, collect_actual_term(body, next))
 
-def actual_definition(binders: List<&2, Ast.TelescopeItem>, result: Ast.OptionalTerm, body: Ast.DefBody, rest: List<&2, Ast.TopLevel>, template_key: String, is_template: Bool) -> List<&2, List<&2, Ast.SyntaxTerm>>:
+def collect_actual_definition(binders: List<&2, Ast.TelescopeItem>, result: Ast.OptionalTerm, body: Ast.DefBody, tail: List<&2, ActualSite>, is_template: Bool) -> List<&2, ActualSite>:
   match is_template:
-    case True{}: actual_in_declarations(rest, template_key)
+    case True{}: tail
     case False{}:
-      body_actual = match body:
-        case Ast.DefTerm{term}: find_actual(term, template_key)
-        case Ast.DefImports{ _}: Nil{}
-      first_actual(first_actual(find_actual_binders(binders, template_key), find_actual_optional(result, template_key)), first_actual(body_actual, actual_in_declarations(rest, template_key)))
+      collect_actual_binders(binders, collect_actual_optional(result, collect_actual_body(body, tail)))
 
-def actual_in_modules(modules: List<&2, Loader.LoadedModule>, template_key: String, templates: List<&2, TemplateDef>) -> List<&2, List<&2, Ast.SyntaxTerm>>:
+def collect_actual_body(body: Ast.DefBody, tail: List<&2, ActualSite>) -> List<&2, ActualSite>:
+  match body:
+    case Ast.DefTerm{term}: collect_actual_term(term, tail)
+    case Ast.DefImports{_}: tail
+
+def collect_actual_modules(modules: List<&2, Loader.LoadedModule>, catalog: List<&2, Loader.LoadedModule>) -> List<&2, ActualModule>:
   match modules:
     case Nil{}: Nil{}
-    case +loaded <> rest:
-      match loaded:
-        case Loader.LoadedModule{namespace, Ast.Module{_, imports, declarations}}:
-          context = visible_templates(namespace, imports, templates)
-          aliases = template_aliases(namespace, imports, template_key, templates)
-          actuals = actual_in_aliases(declarations, aliases)
-          first_actual(expand_actual_values(actuals, context), actual_in_modules(rest, template_key, templates))
+    case Loader.LoadedModule{namespace, Ast.Module{_, imports, declarations}} <> rest:
+      collect_actual_module(namespace, imports, collect_actual_declarations(declarations, Nil{}), catalog, collect_actual_modules(rest, catalog))
+
+def collect_actual_module(namespace: String, imports: List<&2, Ast.ModuleImport>, sites: List<&2, ActualSite>, catalog: List<&2, Loader.LoadedModule>, tail: List<&2, ActualModule>) -> List<&2, ActualModule>:
+  match sites:
+    case Nil{}: tail
+    case +_ <> _:
+      ActualModule{namespace, imports, sites, scope_capture_names(namespace, imports, catalog)} <> tail
+
+def actual_in_catalog(catalog: List<&2, ActualModule>, template_key: String, templates: List<&2, TemplateDef>) -> List<&2, List<&2, Ast.SyntaxTerm>>:
+  match catalog:
+    case Nil{}: Nil{}
+    case ActualModule{namespace, imports, sites, captures} <> rest:
+      actuals = actual_in_aliases(sites, template_aliases(namespace, imports, template_key, templates))
+      match actuals:
+        case Nil{}: actual_in_catalog(rest, template_key, templates)
+        case +_ <> _:
+          context = templates_with_captures(visible_templates(namespace, imports, templates), captures)
+          first_actual(expand_actual_values(actuals, context, captures), actual_in_catalog(rest, template_key, templates))
 
 def template_aliases(namespace: String, imports: List<&2, Ast.ModuleImport>, template_key: String, templates: List<&2, TemplateDef>) -> List<&2, String>:
   template_aliases_found(namespace, imports, template_key, find_template(template_key, templates))
@@ -637,7 +859,7 @@ def template_aliases(namespace: String, imports: List<&2, Ast.ModuleImport>, tem
 def template_aliases_found(namespace: String, imports: List<&2, Ast.ModuleImport>, template_key: String, found: Maybe<&2, TemplateDef>) -> List<&2, String>:
   match found:
     case None{}: [template_key]
-    case Some{ TemplateDef{ _,  owner,  _,  _,  _,  _}}:
+    case Some{ TemplateDef{ _,  owner,  _,  _,  _,  _, _}}:
       local = strip_namespace(template_key, owner)
       local_names = template_local_alias(namespace, owner, local, String.eq(namespace, owner))
       List.append(&2, String, [template_key], List.append(&2, String, local_names, imported_alias_names(namespace, imports, owner, local)))
@@ -660,46 +882,54 @@ def imported_alias_match(namespace: String, rest: List<&2, Ast.ModuleImport>, ow
     case True{}: (alias ++ "." ++ local) <> imported_alias_names(namespace, rest, owner, local)
     case False{}: imported_alias_names(namespace, rest, owner, local)
 
-def actual_in_aliases(declarations: List<&2, Ast.TopLevel>, aliases: List<&2, String>) -> List<&2, List<&2, Ast.SyntaxTerm>>:
+def actual_in_aliases(sites: List<&2, ActualSite>, aliases: List<&2, String>) -> List<&2, List<&2, Ast.SyntaxTerm>>:
   match aliases:
     case Nil{}: Nil{}
-    case +alias <> rest: first_actual(actual_in_declarations(declarations, alias), actual_in_aliases(declarations, rest))
-def expand_actual_values(actuals: List<&2, List<&2, Ast.SyntaxTerm>>, templates: List<&2, TemplateDef>) -> List<&2, List<&2, Ast.SyntaxTerm>>:
+    case +alias <> rest: first_actual(actual_sites_for_key(sites, alias), actual_in_aliases(sites, rest))
+
+def actual_sites_for_key(sites: List<&2, ActualSite>, key: String) -> List<&2, List<&2, Ast.SyntaxTerm>>:
+  match sites:
+    case Nil{}: Nil{}
+    case ActualSite{found, values} <> rest:
+      match String.eq(key, found):
+        case True{}: values <> actual_sites_for_key(rest, key)
+        case False{}: actual_sites_for_key(rest, key)
+
+def expand_actual_values(actuals: List<&2, List<&2, Ast.SyntaxTerm>>, templates: List<&2, TemplateDef>, captures: List<&2, CaptureName>) -> List<&2, List<&2, Ast.SyntaxTerm>>:
   match actuals:
     case Nil{}: Nil{}
-    case +values <> rest: expand_terms(values, templates) <> expand_actual_values(rest, templates)
+    case +values <> rest: capture_terms(expand_terms(values, templates), captures) <> expand_actual_values(rest, templates, captures)
 
-def find_actual_binders(binders: List<&2, Ast.TelescopeItem>, template_key: String) -> List<&2, List<&2, Ast.SyntaxTerm>>:
+def collect_actual_binders(binders: List<&2, Ast.TelescopeItem>, tail: List<&2, ActualSite>) -> List<&2, ActualSite>:
   match binders:
-    case Nil{}: Nil{}
+    case Nil{}: tail
     case +binder <> rest:
       match binder:
-        case Ast.Binder{_, _, _, ty, _}: first_actual(find_actual(ty, template_key), find_actual_binders(rest, template_key))
-        case Ast.TemplateBinder{_, _, ty, _}: first_actual(find_actual(ty, template_key), find_actual_binders(rest, template_key))
+        case Ast.Binder{_, _, _, ty, _}: collect_actual_term(ty, collect_actual_binders(rest, tail))
+        case Ast.TemplateBinder{_, _, ty, _}: collect_actual_term(ty, collect_actual_binders(rest, tail))
 
-def find_actual_optional(value: Ast.OptionalTerm, template_key: String) -> List<&2, List<&2, Ast.SyntaxTerm>>:
+def collect_actual_optional(value: Ast.OptionalTerm, tail: List<&2, ActualSite>) -> List<&2, ActualSite>:
   match value:
-    case Ast.NoTerm{}: Nil{}
-    case Ast.SomeTerm{term}: find_actual(term, template_key)
+    case Ast.NoTerm{}: tail
+    case Ast.SomeTerm{term}: collect_actual_term(term, tail)
 
-def find_actual_constructors(constructors: List<&2, Ast.ConstructorDecl>, template_key: String) -> List<&2, List<&2, Ast.SyntaxTerm>>:
+def collect_actual_constructors(constructors: List<&2, Ast.ConstructorDecl>, tail: List<&2, ActualSite>) -> List<&2, ActualSite>:
   match constructors:
-    case Nil{}: Nil{}
-    case +constructor <> rest:
-      match constructor:
-        case Ast.Constructor{_, fields, _}: first_actual(find_actual_binders(fields, template_key), find_actual_constructors(rest, template_key))
+    case Nil{}: tail
+    case Ast.Constructor{_, fields, _} <> rest:
+      collect_actual_binders(fields, collect_actual_constructors(rest, tail))
 
-def find_actual_clauses(clauses: List<&2, Ast.Clause>, template_key: String) -> List<&2, List<&2, Ast.SyntaxTerm>>:
+def collect_actual_clauses(clauses: List<&2, Ast.Clause>, tail: List<&2, ActualSite>) -> List<&2, ActualSite>:
   match clauses:
-    case Nil{}: Nil{}
-    case +clause <> rest:
-      match clause:
-        case Ast.ClauseFor{_, _, _, ty, condition, _}: first_actual(find_actual(ty, template_key), first_actual(find_actual_maybe(condition, template_key), find_actual_clauses(rest, template_key)))
+    case Nil{}: tail
+    case Ast.ClauseFor{_, _, _, ty, condition, _} <> rest:
+      collect_actual_term(ty, collect_actual_maybe(condition, collect_actual_clauses(rest, tail)))
 
-def find_actual_maybe(value: Maybe<&2, Ast.SyntaxTerm>, template_key: String) -> List<&2, List<&2, Ast.SyntaxTerm>>:
+def collect_actual_maybe(value: Maybe<&2, Ast.SyntaxTerm>, tail: List<&2, ActualSite>) -> List<&2, ActualSite>:
   match value:
-    case None{}: Nil{}
-    case Some{value}: find_actual(value, template_key)
+    case None{}: tail
+    case Some{value}: collect_actual_term(value, tail)
+
 def has_string(value: String, values: List<&2, String>) -> Bool:
   match values:
     case Nil{}: False{}
@@ -738,7 +968,7 @@ def find_generated_identity_match(key: String, entry: GeneratedIdentity, rest: L
 
 def template_span(template: TemplateDef) -> Ast.SourceSpan:
   match template:
-    case TemplateDef{ _,  _,  _,  _,  _,  Ast.Definition{_, _, _, _, _, span}}: span
+    case TemplateDef{ _,  _,  _,  _,  _,  Ast.Definition{_, _, _, _, _, span}, _}: span
 
 def generated_actuals(template: TemplateDef, actuals: List<&2, List<&2, Ast.SyntaxTerm>>, templates: List<&2, TemplateDef>, existing: List<&2, Ast.TopLevel>, identities: List<&2, GeneratedIdentity>) -> GeneratedBuild:
   match actuals:
@@ -746,12 +976,15 @@ def generated_actuals(template: TemplateDef, actuals: List<&2, List<&2, Ast.Synt
     case +values <> rest:
       expanded_values = expand_terms(values, templates)
       serialized_args = serialize_terms(expanded_values)
-      template_key = match template:
-        case TemplateDef{key,  _,  _,  _,  _,  _}: key
+      template_key = template_name(template)
       identity = encode_string(template_key) ++ serialized_args
       local_key = generated_local_key(template, expanded_values)
       canonical_key = generated_key(template, expanded_values)
       generated_actual_case(template, rest, templates, existing, identities, template_key, identity, local_key, canonical_key, expanded_values, find_generated_identity(canonical_key, identities))
+
+def template_name(template: TemplateDef) -> String:
+  match template:
+    case TemplateDef{key, _, _, _, _, _, _}: key
 
 def generated_actual_case(template: TemplateDef, rest: List<&2, List<&2, Ast.SyntaxTerm>>, templates: List<&2, TemplateDef>, existing: List<&2, Ast.TopLevel>, identities: List<&2, GeneratedIdentity>, template_key: String, identity: String, local_key: String, canonical_key: String, expanded_values: List<&2, Ast.SyntaxTerm>, previous: Maybe<&2, GeneratedIdentity>) -> GeneratedBuild:
   match previous:
@@ -776,49 +1009,85 @@ def generated_actual_complete(definition: Ast.Definition, result: GeneratedBuild
   match result:
     case GeneratedBuild{ rest_definitions, next_identities, collision}: GeneratedBuild{ Ast.DefTop{definition} <> rest_definitions, next_identities, collision}
 
-def generated_for_module(namespace: String, declarations: List<&2, Ast.TopLevel>, templates: List<&2, TemplateDef>, modules: List<&2, Loader.LoadedModule>, identities: List<&2, GeneratedIdentity>) -> GeneratedBuild:
+# Loader namespaces need not uniquely identify a source module. Generation
+# belongs to the original declaration's file and key, never a namespace peer.
+def template_source_span_equal(a: Ast.SourceSpan, b: Ast.SourceSpan) -> Bool:
+  match a b:
+    case Ast.SpanOf{af, ab, ae} Ast.SpanOf{bf, bb, be}:
+      Bool.and(String.eq(af, bf), Bool.and(Nat.is_eq(ab, bb), Nat.is_eq(ae, be)))
+
+def has_template_source_definition(key: String, source: Ast.SourceSpan, declarations: List<&2, Ast.TopLevel>) -> Bool:
+  match declarations:
+    case Nil{}: False{}
+    case Ast.DefTop{Ast.Definition{found, _, _, _, _, span}} <> rest:
+      match String.eq(key, found):
+        case True{}:
+          match template_source_span_equal(source, span):
+            case True{}: True{}
+            case False{}: has_template_source_definition(key, source, rest)
+        case False{}: has_template_source_definition(key, source, rest)
+    case +_ <> rest: has_template_source_definition(key, source, rest)
+
+def template_owned_by_module(namespace: String, path: String, declarations: List<&2, Ast.TopLevel>, template: TemplateDef) -> Bool:
+  match template:
+    case TemplateDef{_, owner, _, _, _, Ast.Definition{key, _, _, _, _, span}, _}:
+      match String.eq(namespace, owner):
+        case False{}: False{}
+        case True{}:
+          match span:
+            case Ast.SpanOf{file, _, _}:
+              match String.eq(path, file):
+                case False{}: False{}
+                case True{}: has_template_source_definition(key, span, declarations)
+
+def generated_for_module(namespace: String, path: String, declarations: List<&2, Ast.TopLevel>, templates: List<&2, TemplateDef>, catalog: List<&2, ActualModule>, identities: List<&2, GeneratedIdentity>) -> GeneratedBuild:
   match templates:
     case Nil{}: GeneratedBuild{ Nil{}, identities,  None{}}
     case +template <> rest:
       match template:
-        case TemplateDef{ template_key,  owner,  _,  _,  _,  _}:
-          generated_for_module_match(namespace, declarations, templates, modules, identities, template, template_key, owner, rest, String.eq(namespace, owner))
+        case TemplateDef{template_key, _, _, _, _, _, _}:
+          generated_for_module_match(namespace, path, declarations, templates, catalog, identities, template, template_key, rest, template_owned_by_module(namespace, path, declarations, template))
 
-def generated_for_module_match(namespace: String, declarations: List<&2, Ast.TopLevel>, templates: List<&2, TemplateDef>, modules: List<&2, Loader.LoadedModule>, identities: List<&2, GeneratedIdentity>, template: TemplateDef, template_key: String, owner: String, rest: List<&2, TemplateDef>, is_owner: Bool) -> GeneratedBuild:
+def generated_for_module_match(namespace: String, path: String, declarations: List<&2, Ast.TopLevel>, templates: List<&2, TemplateDef>, catalog: List<&2, ActualModule>, identities: List<&2, GeneratedIdentity>, template: TemplateDef, template_key: String, rest: List<&2, TemplateDef>, is_owner: Bool) -> GeneratedBuild:
   match is_owner:
-    case False{}: generated_for_module(namespace, declarations, rest, modules, identities)
+    case False{}: generated_for_module(namespace, path, declarations, rest, catalog, identities)
     case True{}:
-      generated_for_module_here(namespace, declarations, templates, modules, identities, rest, generated_actuals(template, actual_in_modules(modules, template_key, templates), templates, declarations, identities))
+      generated_for_module_here(namespace, path, declarations, templates, catalog, identities, rest, generated_actuals(template, actual_in_catalog(catalog, template_key, templates), templates, declarations, identities))
 
-def generated_for_module_here(namespace: String, declarations: List<&2, Ast.TopLevel>, templates: List<&2, TemplateDef>, modules: List<&2, Loader.LoadedModule>, identities: List<&2, GeneratedIdentity>, rest: List<&2, TemplateDef>, here: GeneratedBuild) -> GeneratedBuild:
+def generated_for_module_here(namespace: String, path: String, declarations: List<&2, Ast.TopLevel>, templates: List<&2, TemplateDef>, catalog: List<&2, ActualModule>, identities: List<&2, GeneratedIdentity>, rest: List<&2, TemplateDef>, here: GeneratedBuild) -> GeneratedBuild:
   match here:
     case GeneratedBuild{ here_definitions, here_identities, Some{span}}: GeneratedBuild{here_definitions, here_identities, Some{span}}
     case GeneratedBuild{ here_definitions, here_identities, None{}}:
-      generated_for_module_merge(here_definitions, generated_for_module(namespace, declarations, rest, modules, here_identities))
+      generated_for_module_merge(here_definitions, generated_for_module(namespace, path, declarations, rest, catalog, here_identities))
 
 def generated_for_module_merge(here_definitions: List<&2, Ast.TopLevel>, rest: GeneratedBuild) -> GeneratedBuild:
   match rest:
     case GeneratedBuild{rest_definitions, rest_identities, collision}: GeneratedBuild{List.append(&2, Ast.TopLevel, here_definitions, rest_definitions), rest_identities, collision}
 
 def generate_round(modules: List<&2, Loader.LoadedModule>, templates: List<&2, TemplateDef>, identities: List<&2, GeneratedIdentity>) -> GeneratedRound:
+  match templates:
+    case Nil{}: GeneratedRound{modules, False{}, identities, None{}}
+    case +_ <> _: generate_scoped_round(modules, collect_actual_modules(modules, modules), templates, identities)
+
+def generate_scoped_round(modules: List<&2, Loader.LoadedModule>, catalog: List<&2, ActualModule>, templates: List<&2, TemplateDef>, identities: List<&2, GeneratedIdentity>) -> GeneratedRound:
   match modules:
     case Nil{}: GeneratedRound{ Nil{},  False{}, identities,  None{}}
     case +loaded <> rest:
       match loaded:
         case Loader.LoadedModule{namespace,  Ast.Module{path, imports, declarations}}:
-          generate_round_loaded(namespace, path, imports, declarations, rest, templates, generated_for_module(namespace, declarations, templates, modules, identities))
+          generate_round_loaded(namespace, path, imports, declarations, rest, catalog, templates, generated_for_module(namespace, path, declarations, templates, catalog, identities))
 
-def generate_round_loaded(namespace: String, path: String, imports: List<&2, Ast.ModuleImport>, declarations: List<&2, Ast.TopLevel>, rest: List<&2, Loader.LoadedModule>, templates: List<&2, TemplateDef>, generated: GeneratedBuild) -> GeneratedRound:
+def generate_round_loaded(namespace: String, path: String, imports: List<&2, Ast.ModuleImport>, declarations: List<&2, Ast.TopLevel>, rest: List<&2, Loader.LoadedModule>, catalog: List<&2, ActualModule>, templates: List<&2, TemplateDef>, generated: GeneratedBuild) -> GeneratedRound:
   match generated:
     case GeneratedBuild{definitions, next_identities, build_collision}:
-      generate_round_merge(namespace, path, imports, declarations, definitions, build_collision, generate_round(rest, templates, next_identities))
+      generate_round_merge(namespace, path, imports, declarations, definitions, build_collision, generate_scoped_round(rest, catalog, templates, next_identities))
 
 def generate_round_merge(namespace: String, path: String, imports: List<&2, Ast.ModuleImport>, declarations: List<&2, Ast.TopLevel>, definitions: List<&2, Ast.TopLevel>, build_collision: Maybe<&2, Ast.SourceSpan>, next: GeneratedRound) -> GeneratedRound:
   match next:
     case GeneratedRound{next_modules, changed, final_identities, next_collision}:
       GeneratedRound{
         Loader.LoadedModule{namespace, Ast.Module{path, imports, List.append(&2, Ast.TopLevel, declarations, definitions)}} <> next_modules,
-        Bool.or(changed, not(List.is_empty(&2, Ast.TopLevel, definitions))),
+        Bool.or(changed, Bool.not(List.is_empty(&2, Ast.TopLevel, definitions))),
         final_identities,
         first_invalid(build_collision, next_collision)
       }
@@ -843,12 +1112,12 @@ def local_templates(namespace: String, templates: List<&2, TemplateDef>) -> List
     case Nil{}: Nil{}
     case +template <> rest:
       match template:
-        case TemplateDef{key,  owner, imports, existing_keys,  _, definition}:
+        case TemplateDef{key,  owner, imports, existing_keys,  _, definition, _}:
           local_template_match(namespace, rest, key, owner, imports, existing_keys, definition, String.eq(namespace, owner))
 
 def local_template_match(namespace: String, rest: List<&2, TemplateDef>, key: String, owner: String, imports: List<&2, Ast.ModuleImport>, existing_keys: List<&2, String>, definition: Ast.Definition, is_local: Bool) -> List<&2, TemplateDef>:
   match is_local:
-    case True{}: TemplateDef{key, owner, imports, existing_keys, strip_namespace(key, owner), definition} <> local_templates(namespace, rest)
+    case True{}: TemplateDef{key, owner, imports, existing_keys, strip_namespace(key, owner), definition, Nil{}} <> local_templates(namespace, rest)
     case False{}: local_templates(namespace, rest)
 
 def imported_templates(namespace: String, imports: List<&2, Ast.ModuleImport>, templates: List<&2, TemplateDef>) -> List<&2, TemplateDef>:
@@ -865,25 +1134,28 @@ def imported_from(target: String, alias: String, templates: List<&2, TemplateDef
     case Nil{}: Nil{}
     case +template <> rest:
       match template:
-        case TemplateDef{key,  owner, imports, existing_keys,  _, definition}:
+        case TemplateDef{key,  owner, imports, existing_keys,  _, definition, _}:
           imported_from_match(target, alias, rest, key, owner, imports, existing_keys, definition, String.eq(target, owner))
 
 def imported_from_match(target: String, alias: String, rest: List<&2, TemplateDef>, key: String, owner: String, imports: List<&2, Ast.ModuleImport>, existing_keys: List<&2, String>, definition: Ast.Definition, is_owner: Bool) -> List<&2, TemplateDef>:
   match is_owner:
     case True{}:
       local = strip_namespace(key, owner)
-      (TemplateDef{key, owner, imports, existing_keys, alias ++ "." ++ local, definition}) <> imported_from(target, alias, rest)
+      (TemplateDef{key, owner, imports, existing_keys, alias ++ "." ++ local, definition, Nil{}}) <> imported_from(target, alias, rest)
     case False{}: imported_from(target, alias, rest)
 
 def expand_modules(modules: List<&2, Loader.LoadedModule>, templates: List<&2, TemplateDef>, identities: List<&2, GeneratedIdentity>) -> List<&2, Loader.LoadedModule>:
+  expand_scoped_modules(modules, modules, templates, identities)
+
+def expand_scoped_modules(modules: List<&2, Loader.LoadedModule>, catalog: List<&2, Loader.LoadedModule>, templates: List<&2, TemplateDef>, identities: List<&2, GeneratedIdentity>) -> List<&2, Loader.LoadedModule>:
   match modules:
     case Nil{}: Nil{}
     case +loaded <> rest:
       match loaded:
         case Loader.LoadedModule{namespace,  Ast.Module{path, imports, declarations}}:
-          context = visible_templates(namespace, imports, templates)
+          context = scoped_templates(namespace, imports, templates, catalog)
           expanded = strip_template_decls(namespace, declarations, context, identities)
-          Loader.LoadedModule{namespace,  Ast.Module{path, imports,  expanded}} <> expand_modules(rest, templates, identities)
+          Loader.LoadedModule{namespace,  Ast.Module{path, imports,  expanded}} <> expand_scoped_modules(rest, catalog, templates, identities)
  
 
 def has_late_template_binder(binders: List<&2, Ast.TelescopeItem>, saw_runtime: Bool) -> Bool:
@@ -927,23 +1199,24 @@ def invalid_application(term: Ast.SyntaxTerm, templates: List<&2, TemplateDef>) 
       invalid_application_spine(term, templates, flatten_application(term))
     case Ast.TermTemplate{ inner, span}: first_invalid(Some{span}, invalid_application(inner, templates))
     case Ast.TermBang{ inner,  _}: invalid_application(inner, templates)
-    case Ast.TermSub{value, body,  _}: first_invalid(invalid_application(value, templates), invalid_application(body, templates))
-    case Ast.TermLet{values, body,  _}: first_invalid(invalid_terms(values, templates), invalid_application(body, templates))
+    case Ast.TermSub{_, value, body, _}: first_invalid(invalid_application(value, templates), invalid_application(body, templates))
+    case Ast.TermLet{_, _, _, values, body, _}: first_invalid(invalid_terms(values, templates), invalid_application(body, templates))
     case Ast.TermAnn{ inner, ty,  _}: first_invalid(invalid_application(inner, templates), invalid_application(ty, templates))
     case Ast.TermType{kind,  _}: invalid_application(kind, templates)
     case Ast.TermMin{left, right,  _}: first_invalid(invalid_application(left, templates), invalid_application(right, templates))
-    case Ast.TermAll{ty, body,  _}: first_invalid(invalid_application(ty, templates), invalid_application(body, templates))
-    case Ast.TermLam{body,  _}: invalid_application(body, templates)
-    case Ast.TermAdt{args,  _}: invalid_terms(args, templates)
+    case Ast.TermAll{_, _, _, ty, body, _}: first_invalid(invalid_application(ty, templates), invalid_application(body, templates))
+    case Ast.TermLam{_, _, _, body, _}: invalid_application(body, templates)
+    case Ast.TermAdt{_, args, _, _}: invalid_terms(args, templates)
     case Ast.TermFill{head, args,  _}: first_invalid(invalid_application(head, templates), invalid_terms(args, templates))
     case Ast.TermPlus{head, args,  _}: first_invalid(invalid_application(head, templates), invalid_terms(args, templates))
-    case Ast.TermCtr{args,  _}: invalid_terms(args, templates)
-    case Ast.TermMat{head, matched,  _}: first_invalid(invalid_application(head, templates), invalid_application(matched, templates))
+    case Ast.TermCtr{_, args, _}: invalid_terms(args, templates)
+    case Ast.TermString{_, _, _}: None{}
+    case Ast.TermMat{_, head, matched, _}: first_invalid(invalid_application(head, templates), invalid_application(matched, templates))
     case Ast.TermEqual{left, right, ty,  _}: first_invalid(invalid_application(left, templates), first_invalid(invalid_application(right, templates), invalid_application(ty, templates)))
     case Ast.TermRewrite{equation, proof, body,  _}: first_invalid(invalid_application(equation, templates), first_invalid(invalid_application(proof, templates), invalid_application(body, templates)))
     case Ast.BodyMatch{scrutinees, cases,  _}: first_invalid(invalid_terms(scrutinees, templates), invalid_terms(cases, templates))
-    case Ast.BodyCase{body,  _}: invalid_application(body, templates)
-    case Ast.BodyLocal{values, body,  _}: first_invalid(invalid_terms(values, templates), invalid_application(body, templates))
+    case Ast.BodyCase{_, body, _}: invalid_application(body, templates)
+    case Ast.BodyLocal{_, _, values, body, _}: first_invalid(invalid_terms(values, templates), invalid_application(body, templates))
     case Ast.BodyReply{ inner,  _}: invalid_application(inner, templates)
     case _: None{}
 
@@ -960,9 +1233,8 @@ def invalid_application_spine(term: Ast.SyntaxTerm, templates: List<&2, Template
 def invalid_application_head(term: Ast.SyntaxTerm, templates: List<&2, TemplateDef>, head: Ast.SyntaxTerm, args: List<&2, Ast.SyntaxTerm>, span: Ast.SourceSpan, found: Maybe<&2, TemplateDef>) -> Maybe<&2, Ast.SourceSpan>:
   match found:
     case Some{ template}:
-      arity = match template:
-        case TemplateDef{_, _, _, _, _, Ast.Definition{_, binders, _, _, _, _}}: leading_template_count(binders)
-      invalid_application_arity(args, arity, span, templates, List.length(&2, Ast.SyntaxTerm, args) >= arity)
+      arity = template_arity(template)
+      invalid_application_arity(args, arity, span, templates, Nat.is_ge(List.length(&2, Ast.SyntaxTerm, args), arity))
     case None{}: invalid_application_parts(term, templates)
 
 def invalid_application_arity(args: List<&2, Ast.SyntaxTerm>, arity: Nat, span: Ast.SourceSpan, templates: List<&2, TemplateDef>, enough: Bool) -> Maybe<&2, Ast.SourceSpan>:
@@ -981,43 +1253,120 @@ def invalid_application_parts(term: Ast.SyntaxTerm, templates: List<&2, Template
     case _: None{}
 
 def invalid_template_args(args: List<&2, Ast.SyntaxTerm>, count: Nat, app_span: Ast.SourceSpan, templates: List<&2, TemplateDef>) -> Maybe<&2, Ast.SourceSpan>:
-  match count:
-    case 0n: None{}
-    case _:
-      match args:
-        case +Ast.TermTemplate{term,  _} <> rest:
-          invalid_template_argument(term, rest, count, app_span, templates, has_open_vars(term, 0n))
-        case _: Some{app_span}
+  match args count:
+    case _ 0n: None{}
+    case Ast.TermTemplate{+term, _} <> rest 1n+more:
+      invalid_template_argument(term, rest, (1n + more : Nat), app_span, templates, has_open_vars(term, 0n))
+    case _ _: Some{app_span}
 
 def invalid_template_argument(term: Ast.SyntaxTerm, rest: List<&2, Ast.SyntaxTerm>, count: Nat, app_span: Ast.SourceSpan, templates: List<&2, TemplateDef>, has_open: Bool) -> Maybe<&2, Ast.SourceSpan>:
   match has_open:
     case True{}: Some{app_span}
     case False{}:
-      first_invalid(invalid_application(term, templates), invalid_template_args(rest, count - 1n, app_span, templates))
+      first_invalid(first_invalid(invalid_application(term, templates), invalid_capture_context(term, templates)), invalid_template_args(rest, (count - 1n : Nat), app_span, templates))
+
+# An unresolved caller name must not acquire a meaning merely because the
+# generated definition's owner happens to declare that spelling.
+def invalid_capture_context(term: Ast.SyntaxTerm, templates: List<&2, TemplateDef>) -> Maybe<&2, Ast.SourceSpan>:
+  match templates:
+    case Nil{}: None{}
+    case +template <> _: invalid_capture(term, template_capture_names(template))
+
+def invalid_capture_key(key: String, constructor: Bool, span: Ast.SourceSpan, captures: List<&2, CaptureName>) -> Maybe<&2, Ast.SourceSpan>:
+  match capture_name(key, constructor, captures, None{}):
+    case Some{_}: None{}
+    case None{}: Some{span}
+
+def invalid_capture_strings(keys: List<&2, String>, span: Ast.SourceSpan, captures: List<&2, CaptureName>) -> Maybe<&2, Ast.SourceSpan>:
+  match keys:
+    case Nil{}: None{}
+    case +key <> rest: first_invalid(invalid_capture_key(key, True{}, span, captures), invalid_capture_strings(rest, span, captures))
+
+def invalid_capture_patterns(patterns: List<&2, Ast.SyntaxPattern>, captures: List<&2, CaptureName>) -> Maybe<&2, Ast.SourceSpan>:
+  match patterns:
+    case Nil{}: None{}
+    case Ast.PatternVar{_, _, _, _} <> rest: invalid_capture_patterns(rest, captures)
+    case Ast.PatternCtr{key, fields, span} <> rest:
+      first_invalid(invalid_capture_key(key, True{}, span, captures), first_invalid(invalid_capture_patterns(fields, captures), invalid_capture_patterns(rest, captures)))
+
+def invalid_capture_terms(terms: List<&2, Ast.SyntaxTerm>, captures: List<&2, CaptureName>) -> Maybe<&2, Ast.SourceSpan>:
+  match terms:
+    case Nil{}: None{}
+    case +term <> rest: first_invalid(invalid_capture(term, captures), invalid_capture_terms(rest, captures))
+
+# Validate only constructors present in the historical sugar, in its preorder.
+# In particular an empty literal does not require Char/Word/Bool constructors.
+def invalid_capture_string_bit(zero: Bool, names: Ast.StringLiteralNames, span: Ast.SourceSpan, captures: List<&2, CaptureName>) -> Maybe<&2, Ast.SourceSpan>:
+  match zero names:
+    case True{} Ast.StringLiteralNames{_, _, _, _, _, _, bit_false, _}: invalid_capture_key(bit_false, True{}, span, captures)
+    case False{} Ast.StringLiteralNames{_, _, _, _, _, _, _, bit_true}: invalid_capture_key(bit_true, True{}, span, captures)
+
+def invalid_capture_string_word(remaining: Nat, +value: U32, +names: Ast.StringLiteralNames, +span: Ast.SourceSpan, +captures: List<&2, CaptureName>) -> Maybe<&2, Ast.SourceSpan>:
+  match remaining names:
+    case 0n Ast.StringLiteralNames{_, _, _, _, word_nil, _, _, _}: invalid_capture_key(word_nil, True{}, span, captures)
+    case 1n+rest Ast.StringLiteralNames{_, _, _, _, _, word_cons, _, _}:
+      first_invalid(invalid_capture_key(word_cons, True{}, span, captures), first_invalid(invalid_capture_string_bit(U32.is_zero(U32.and(value, 1)), names, span, captures), invalid_capture_string_word(rest, U32.shr(value), names, span, captures)))
+
+def invalid_capture_string(chars: List<&2, U32>, +names: Ast.StringLiteralNames, +span: Ast.SourceSpan, +captures: List<&2, CaptureName>) -> Maybe<&2, Ast.SourceSpan>:
+  match chars names:
+    case Nil{} Ast.StringLiteralNames{nil, _, _, _, _, _, _, _}: invalid_capture_key(nil, True{}, span, captures)
+    case value <> rest Ast.StringLiteralNames{_, cons, char, uint, _, _, _, _}:
+      first_invalid(invalid_capture_key(cons, True{}, span, captures), first_invalid(invalid_capture_key(char, True{}, span, captures), first_invalid(invalid_capture_key(uint, True{}, span, captures), first_invalid(invalid_capture_string_word(32n, value, names, span, captures), invalid_capture_string(rest, names, span, captures)))))
+
+def invalid_capture(term: Ast.SyntaxTerm, captures: List<&2, CaptureName>) -> Maybe<&2, Ast.SourceSpan>:
+  match term:
+    case Ast.TermRef{key, span}: invalid_capture_key(reference_key(key), False{}, span, captures)
+    case Ast.TermBang{inner, _}: invalid_capture(inner, captures)
+    case Ast.TermSub{_, value, body, _}: first_invalid(invalid_capture(value, captures), invalid_capture(body, captures))
+    case Ast.TermLet{_, _, _, values, body, _}: first_invalid(invalid_capture_terms(values, captures), invalid_capture(body, captures))
+    case Ast.TermAnn{inner, ty, _}: first_invalid(invalid_capture(inner, captures), invalid_capture(ty, captures))
+    case Ast.TermTemplate{inner, _}: invalid_capture(inner, captures)
+    case Ast.TermType{kind, _}: invalid_capture(kind, captures)
+    case Ast.TermMin{left, right, _}: first_invalid(invalid_capture(left, captures), invalid_capture(right, captures))
+    case Ast.TermAll{_, _, _, ty, body, _}: first_invalid(invalid_capture(ty, captures), invalid_capture(body, captures))
+    case Ast.TermLam{_, _, _, body, _}: invalid_capture(body, captures)
+    case Ast.TermApp{fn, arg, _}: first_invalid(invalid_capture(fn, captures), invalid_capture(arg, captures))
+    case Ast.TermAdt{key, args, refs, span}:
+      first_invalid(invalid_capture_key(key, False{}, span, captures), first_invalid(invalid_capture_terms(args, captures), invalid_capture_strings(refs, span, captures)))
+    case Ast.TermFill{head, args, _}: first_invalid(invalid_capture(head, captures), invalid_capture_terms(args, captures))
+    case Ast.TermPlus{head, args, _}: first_invalid(invalid_capture(head, captures), invalid_capture_terms(args, captures))
+    case Ast.TermCtr{key, args, span}: first_invalid(invalid_capture_key(key, True{}, span, captures), invalid_capture_terms(args, captures))
+    case Ast.TermString{chars, names, span}: invalid_capture_string(chars, names, span, captures)
+    case Ast.TermMat{key, head, matched, span}:
+      first_invalid(invalid_capture_key(key, True{}, span, captures), first_invalid(invalid_capture(head, captures), invalid_capture(matched, captures)))
+    case Ast.TermEqual{left, right, ty, _}: first_invalid(invalid_capture(left, captures), first_invalid(invalid_capture(right, captures), invalid_capture(ty, captures)))
+    case Ast.TermRewrite{equation, proof, body, _}: first_invalid(invalid_capture(equation, captures), first_invalid(invalid_capture(proof, captures), invalid_capture(body, captures)))
+    case Ast.BodyMatch{scrutinees, cases, _}: first_invalid(invalid_capture_terms(scrutinees, captures), invalid_capture_terms(cases, captures))
+    case Ast.BodyCase{patterns, body, _}: first_invalid(invalid_capture_patterns(patterns, captures), invalid_capture(body, captures))
+    case Ast.BodyLocal{patterns, _, values, body, _}:
+      first_invalid(invalid_capture_patterns(patterns, captures), first_invalid(invalid_capture_terms(values, captures), invalid_capture(body, captures)))
+    case Ast.BodyReply{inner, _}: invalid_capture(inner, captures)
+    case _: None{}
 
 def has_open_vars(term: Ast.SyntaxTerm, depth: Nat) -> Bool:
   match term:
-    case Ast.TermVar{_, index, _}: index >= depth
-    case Ast.TermSub{_, value, body, _}: Bool.or(has_open_vars(value, depth), has_open_vars(body, depth + 1n))
-    case Ast.TermLet{keys, _, _, values, body, _}: Bool.or(has_open_vars_terms(values, depth), has_open_vars(body, depth + List.length(&2, String, keys)))
+    case Ast.TermVar{_, index, _}: Nat.is_ge(index, depth)
+    case Ast.TermSub{_, value, body, _}: Bool.or(has_open_vars(value, depth), has_open_vars(body, (depth + 1n : Nat)))
+    case Ast.TermLet{keys, _, _, values, body, _}: Bool.or(has_open_vars_terms(values, depth), has_open_vars(body, (depth + List.length(&2, String, keys) : Nat)))
     case Ast.TermAnn{ value, ty,  _}: Bool.or(has_open_vars(value, depth), has_open_vars(ty, depth))
     case Ast.TermTemplate{ value,  _}: has_open_vars(value, depth)
     case Ast.TermBang{ inner,  _}: has_open_vars(inner, depth)
     case Ast.TermType{kind,  _}: has_open_vars(kind, depth)
     case Ast.TermMin{left, right,  _}: Bool.or(has_open_vars(left, depth), has_open_vars(right, depth))
-    case Ast.TermAll{_, _, _, ty, body, _}: Bool.or(has_open_vars(ty, depth), has_open_vars(body, depth + 1n))
-    case Ast.TermLam{_, _, _, body, _}: has_open_vars(body, depth + 1n)
+    case Ast.TermAll{_, _, _, ty, body, _}: Bool.or(has_open_vars(ty, depth), has_open_vars(body, (depth + 1n : Nat)))
+    case Ast.TermLam{_, _, _, body, _}: has_open_vars(body, (depth + 1n : Nat))
     case Ast.TermApp{fn, arg,  _}: Bool.or(has_open_vars(fn, depth), has_open_vars(arg, depth))
     case Ast.TermAdt{_, args, _, _}: has_open_vars_terms(args, depth)
     case Ast.TermFill{head, args,  _}: Bool.or(has_open_vars(head, depth), has_open_vars_terms(args, depth))
     case Ast.TermPlus{head, args,  _}: Bool.or(has_open_vars(head, depth), has_open_vars_terms(args, depth))
     case Ast.TermCtr{_, args, _}: has_open_vars_terms(args, depth)
+    case Ast.TermString{_, _, _}: False{}
     case Ast.TermMat{_, head, matched, _}: Bool.or(has_open_vars(head, depth), has_open_vars(matched, depth))
     case Ast.TermEqual{left, right, ty,  _}: Bool.or(has_open_vars(left, depth), Bool.or(has_open_vars(right, depth), has_open_vars(ty, depth)))
     case Ast.TermRewrite{equation, proof, body,  _}: Bool.or(has_open_vars(equation, depth), Bool.or(has_open_vars(proof, depth), has_open_vars(body, depth)))
     case Ast.BodyMatch{scrutinees, cases,  _}: Bool.or(has_open_vars_terms(scrutinees, depth), has_open_vars_terms(cases, depth))
-    case Ast.BodyCase{patterns, body,  _}: has_open_vars(body, depth + Core.pattern_list_depth(patterns))
-    case Ast.BodyLocal{patterns, _, values, body, _}: Bool.or(has_open_vars_terms(values, depth), has_open_vars(body, depth + Core.pattern_list_depth(patterns)))
+    case Ast.BodyCase{patterns, body,  _}: has_open_vars(body, (depth + Core.pattern_list_depth(patterns) : Nat))
+    case Ast.BodyLocal{patterns, _, values, body, _}: Bool.or(has_open_vars_terms(values, depth), has_open_vars(body, (depth + Core.pattern_list_depth(patterns) : Nat)))
     case Ast.BodyReply{ value,  _}: has_open_vars(value, depth)
     case _: False{}
 
@@ -1040,21 +1389,24 @@ def invalid_definitions(declarations: List<&2, Ast.TopLevel>, templates: List<&2
     case Nil{}: None{}
     case +decl <> rest:
       match decl:
-        case Ast.DefTop{ Ast.Definition{binders, result, body,  _}}:
+        case Ast.DefTop{ Ast.Definition{_, binders, result, body, _, _}}:
           invalid_definition(binders, result, body, rest, templates, has_template_binder(binders))
-        case Ast.TypeTop{ Ast.TypeDecl{params, kind, constructors,  _}}:
+        case Ast.TypeTop{ Ast.TypeDecl{_, params, kind, constructors, _}}:
           first_invalid(first_invalid(invalid_binders(params, templates), invalid_application(kind, templates)), first_invalid(invalid_constructors(constructors, templates), invalid_definitions(rest, templates)))
-        case Ast.LawTop{ Ast.LawDecl{clauses, body,  _}}:
+        case Ast.LawTop{ Ast.LawDecl{_, clauses, body, _}}:
           first_invalid(first_invalid(invalid_clauses(clauses, templates), invalid_application(body, templates)), invalid_definitions(rest, templates))
 
 def invalid_definition(binders: List<&2, Ast.TelescopeItem>, result: Ast.OptionalTerm, body: Ast.DefBody, rest: List<&2, Ast.TopLevel>, templates: List<&2, TemplateDef>, is_template: Bool) -> Maybe<&2, Ast.SourceSpan>:
   match is_template:
     case True{}: invalid_definitions(rest, templates)
     case False{}:
-      invalid_body = match body:
-        case Ast.DefTerm{term}: invalid_application(term, templates)
-        case Ast.DefImports{ _}: None{}
+      invalid_body = invalid_def_body(body, templates)
       first_invalid(first_invalid(invalid_binders(binders, templates), invalid_optional(result, templates)), first_invalid(invalid_body, invalid_definitions(rest, templates)))
+
+def invalid_def_body(body: Ast.DefBody, templates: List<&2, TemplateDef>) -> Maybe<&2, Ast.SourceSpan>:
+  match body:
+    case Ast.DefTerm{term}: invalid_application(term, templates)
+    case Ast.DefImports{_}: None{}
 
 def invalid_optional(value: Ast.OptionalTerm, templates: List<&2, TemplateDef>) -> Maybe<&2, Ast.SourceSpan>:
   match value:
@@ -1115,10 +1467,13 @@ def template_expand_generated(modules: List<&2, Loader.LoadedModule>, identities
     case None{}: ExpandSuccess{expand_modules(modules, templates, identities)}
 
 def invalid_modules(modules: List<&2, Loader.LoadedModule>, templates: List<&2, TemplateDef>) -> Maybe<&2, Ast.SourceSpan>:
+  invalid_scoped_modules(modules, modules, templates)
+
+def invalid_scoped_modules(modules: List<&2, Loader.LoadedModule>, catalog: List<&2, Loader.LoadedModule>, templates: List<&2, TemplateDef>) -> Maybe<&2, Ast.SourceSpan>:
   match modules:
     case Nil{}: None{}
     case +loaded <> rest:
       match loaded:
         case Loader.LoadedModule{namespace,  Ast.Module{ _, imports, declarations}}:
-          context = visible_templates(namespace, imports, templates)
-          first_invalid(invalid_definitions(declarations, context), invalid_modules(rest, templates))
+          context = scoped_templates(namespace, imports, templates, catalog)
+          first_invalid(invalid_definitions(declarations, context), invalid_scoped_modules(rest, catalog, templates))

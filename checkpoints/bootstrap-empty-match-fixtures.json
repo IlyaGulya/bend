@@ -1,0 +1,1 @@
+{"rows":[{"name":"empty-match-eof","source":"import Base\ndef empty_match(e: Empty) -> Nat:\n  match e:\n"},{"name":"empty-match-next-declaration","source":"import Base\ndef empty_match(e: Empty) -> Nat:\n  match e:\ndef after_empty() -> Nat:\n  0n\n"}]}

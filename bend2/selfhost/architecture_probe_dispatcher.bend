@@ -14,7 +14,7 @@ def advance_state(amount: Nat, state: ProbeState) -> ProbeState:
 def advance_request(request: ProbeRequest, amount: Nat) -> ProbeRequest:
   match request:
     case Continue{state}:
-      Continue{advance_state(amount, state)}
+      Continue{advance_state(amount, request)}
     case Finished{state}:
       Finished{state}
 

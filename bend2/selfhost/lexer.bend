@@ -50,9 +50,9 @@ def advance_newline(mark: Mark, +c: Char, newline: Bool) -> Mark:
     case Pos{offset, line, col}:
       match newline:
         case True{}:
-          Pos{offset + utf16_width(c), line + 1n, 1n}
+          Pos{(offset + utf16_width(c) : Nat), (line + 1n : Nat), 1n}
         case False{}:
-          Pos{offset + utf16_width(c), line, col + utf16_width(c)}
+          Pos{(offset + utf16_width(c) : Nat), line, (col + utf16_width(c) : Nat)}
 
 def advance(mark: Mark, +c: Char) -> Mark:
   advance_newline(mark, c, char_is(c, 10))

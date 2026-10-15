@@ -22,10 +22,10 @@ export function hasPatternQuantityBoundary(body:Body):boolean {
 
 export function liftPatternQuantities(body:Body,parameters:readonly ParserParameter[],result:LTerm,types:LexicalTypes,prefix:string):QuantityLift {
  const helpers:QuantityHelper[]=[],lifted:QuantityLift['lifted']=[];
- const span=parameters[0]?.[4]??{src:'',beg:0,end:0};
+ const span=parameters[0]?.[4]??{file:{str:'',ns:'',al:{}},beg:0,end:0};
  function patternIds(node:Patt):number[]{return node.$==='PVar'?[node.i]:node.x.flatMap(patternIds);}
  function freeBody(node:Body):Set<number>{
-  if(node.$==='Reply')return new Set(freeBinderIds(node.x));
+  if(node.$!=='Local'&&node.$!=='Match')return new Set(freeBinderIds(node));
   const free=new Set<number>();
   if(node.$==='Local'){
    const bound=new Set(node.k.flatMap(patternIds));
@@ -41,7 +41,7 @@ export function liftPatternQuantities(body:Body,parameters:readonly ParserParame
   return free;
  }
  function entry(node:Body):LTerm {
-  if(node.$==='Reply')return node.x;
+  if(node.$!=='Local'&&node.$!=='Match')return node;
   const expression=node.$==='Local'?node.v[0]:node.e[0];
   if(!expression)throw Error('Quantity boundary lacks an indexed scope expression');
   return expression;
@@ -86,10 +86,10 @@ export function liftPatternQuantities(body:Body,parameters:readonly ParserParame
    runtimeUses:uses.get(target.i)??0,type:environment.get(target.i)!.type});
   let call:LTerm={$:'Ref',k:helper};
   for(const id of ordered)call={$:'App',f:call,x:{$:'Var',i:id,k:environment.get(id)!.name}};
-  return {$:'Reply',x:call};
+  return call;
  }
  function visit(node:Body):Body{
-  if(node.$==='Reply')return node;
+  if(node.$!=='Local'&&node.$!=='Match')return node;
   if(node.$==='Local'){
    const {patterns,targets}=linearPatterns(node.k),continuation=visit(node.f);
    return {...node,k:patterns,f:targets.length?boundary(continuation,node.f,targets):continuation};

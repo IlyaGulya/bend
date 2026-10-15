@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "parserPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_parser_rebuild_release237-v67_generated_fuel.bend",
+  "parserSha256": "a8b895c51e590e0c8a7eec38520fce1e0701a3a68f90e7501cff1272a6b3a4bf",
+  "canonicalSha256": "de146db91303ed40dd0f7a32004631b873cc1af66b1df08aeb88fa250af140a9",
+  "entryPoint": "parse_with_fuel",
+  "publicTestEntryPoint": "parse_with_fuel",
+  "sourceEntryExplanation": "Source public tests call parse, which executes Lexer.tokens/combine_symbols then parse_module_tokens; generated tests call parse_with_fuel.",
+  "command": [
+    "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+    "test",
+    "evals/parser_bootstrap_compatibility.test.ts"
+  ],
+  "exitCode": 0,
+  "passed": 14,
+  "failed": 0,
+  "assertions": 207,
+  "rawOutputPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-parser-rebuild-release237-v67.candidate-public.json.output.txt",
+  "rawOutputSha256": "d92a0f17dd2e49b4e8f4ddefdf812021ec11805cde7d4a7a5768d21f075fd13e"
+}

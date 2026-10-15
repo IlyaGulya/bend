@@ -12,6 +12,9 @@ type SyntaxPattern is Data:
   PatternVar{key: String, index: Nat, quantity: Quantity, span: SourceSpan}
   PatternCtr{key: String, fields: List<&2, SyntaxPattern>, span: SourceSpan}
 
+type StringLiteralNames is Data:
+  StringLiteralNames{nil: String, cons: String, char: String, uint: String, word_nil: String, word_cons: String, bit_false: String, bit_true: String}
+
 type SyntaxTerm is Data:
   TermVar{key: String, index: Nat, span: SourceSpan}
   TermRef{key: String, span: SourceSpan}
@@ -31,6 +34,7 @@ type SyntaxTerm is Data:
   TermFill{head: SyntaxTerm, args: List<&2, SyntaxTerm>, span: SourceSpan}
   TermPlus{head: SyntaxTerm, args: List<&2, SyntaxTerm>, span: SourceSpan}
   TermCtr{key: String, args: List<&2, SyntaxTerm>, span: SourceSpan}
+  TermString{chars: List<&2, U32>, names: StringLiteralNames, span: SourceSpan}
   TermMat{key: String, head: SyntaxTerm, matched: SyntaxTerm, span: SourceSpan}
   TermAbsurd{span: SourceSpan}
   TermEqual{left: SyntaxTerm, right: SyntaxTerm, ty: SyntaxTerm, span: SourceSpan}
@@ -79,3 +83,34 @@ type ModuleImport is Data:
 
 type Module is Data:
   Module{path: String, imports: List<&2, ModuleImport>, declarations: List<&2, TopLevel>}
+
+def string_literal_names() -> StringLiteralNames:
+  StringLiteralNames{"SNil", "SCon", "Chr", "U32", "WNil", "WCon", "False", "True"}
+
+def string_bit(value: Nat, names: StringLiteralNames, span: SourceSpan) -> SyntaxTerm:
+  match value names:
+    case 0n StringLiteralNames{_, _, _, _, _, _, bit_false, _}: TermCtr{bit_false, Nil{}, span}
+    case _ StringLiteralNames{_, _, _, _, _, _, _, bit_true}: TermCtr{bit_true, Nil{}, span}
+
+def string_word(remaining: Nat, +value: Nat, +names: StringLiteralNames, +span: SourceSpan) -> SyntaxTerm:
+  match remaining names:
+    case 0n StringLiteralNames{_, _, _, _, word_nil, _, _, _}: TermCtr{word_nil, Nil{}, span}
+    case 1n+rest StringLiteralNames{_, _, _, _, _, word_cons, _, _}:
+      TermCtr{word_cons, [string_bit(Nat.mod(value, 2n), names, span), string_word(rest, Nat.div(value, 2n), names, span)], span}
+
+def string_character(value: U32, +names: StringLiteralNames, +span: SourceSpan) -> SyntaxTerm:
+  match names:
+    case StringLiteralNames{_, _, char, uint, _, _, _, _}:
+      TermCtr{char, [TermCtr{uint, [string_word(32n, U32.to_nat(value), names, span)], span}], span}
+
+def string_unfold(chars: List<&2, U32>, +names: StringLiteralNames, +span: SourceSpan) -> SyntaxTerm:
+  match chars names:
+    case Nil{} StringLiteralNames{nil, _, _, _, _, _, _, _}: TermCtr{nil, Nil{}, span}
+    case value <> rest StringLiteralNames{_, cons, _, _, _, _, _, _}:
+      TermCtr{cons, [string_character(value, names, span), TermString{rest, names, span}], span}
+
+def string_desugar(chars: List<&2, U32>, +names: StringLiteralNames, +span: SourceSpan) -> SyntaxTerm:
+  match chars names:
+    case Nil{} StringLiteralNames{nil, _, _, _, _, _, _, _}: TermCtr{nil, Nil{}, span}
+    case value <> rest StringLiteralNames{_, cons, _, _, _, _, _, _}:
+      TermCtr{cons, [string_character(value, names, span), string_desugar(rest, names, span)], span}

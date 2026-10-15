@@ -9,7 +9,7 @@ export class ProductTypes {
  parse(source:string):Product {
   const cached=this.cache.get(source);
   if(cached)return cached;
-  const parser:Parse={book:this.book,dir:'',str:source,pos:0,sc:{stk:[],frs:0},ns:'',al:this.aliases,os:[],inst:null,ts:[],lv:0};
+  const parser:Parse={book:this.book,dir:'',str:source,pos:0,stk:[],frs:0,ns:'',al:this.aliases};
   const result=this.fromTerm(term_lower(term_higher(parse_term(parser))));
   if(source.slice(parser.pos).trim())throw Error('Unparsed generated payload type: '+source);
   this.cache.set(source,result);

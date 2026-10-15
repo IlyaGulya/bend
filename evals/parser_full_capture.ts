@@ -1,5 +1,5 @@
-import { term_show, type LTerm, type Quant } from "../bend2/bend.ts";
-import type { LexicalTypes } from "./parser_full_type_env.ts";
+import { patt_term, term_show, type LTerm, type Patt, type Quant } from "../bend2/bend.ts";
+import { freeBinderIds, termChildren, type LexicalTypes } from "./parser_full_type_env.ts";
 
 export type CaptureField = {
   id: number;
@@ -24,48 +24,19 @@ export class CaptureTypeDependencyError extends Error {
   }
 }
 
-function freeTypeBinders(type: LTerm): number[] {
-  const free = new Set<number>();
-  function visit(term: LTerm, bound: ReadonlySet<number>): void {
-    if (term.$ === "Var") {
-      if (!bound.has(term.i)) free.add(term.i);
-      return;
-    }
-    if (term.$ === "Lam") {
-      visit(term.f, new Set([...bound, term.i]));
-      return;
-    }
-    if (term.$ === "All") {
-      visit(term.A, bound);
-      visit(term.B, new Set([...bound, term.i]));
-      return;
-    }
-    if (term.$ === "Let") {
-      for (const value of term.v) visit(value, bound);
-      visit(term.f, new Set([...bound, ...term.i]));
-      return;
-    }
-    if (term.$ === "Sub") {
-      visit(term.v as LTerm, bound);
-      visit(term.f, new Set([...bound, term.i]));
-      return;
-    }
-    for (const [key, value] of Object.entries(term)) {
-      if (key === "s" || key === "q") continue;
-      if (Array.isArray(value)) {
-        for (const child of value) if (child && typeof child === "object" && "$" in child) visit(child as LTerm, bound);
-      } else if (value && typeof value === "object" && "$" in value) {
-        visit(value as LTerm, bound);
-      }
-    }
-  }
-  visit(type, new Set());
-  return [...free];
-}
 
 /** Map syntax children only; source spans and quantity metadata are not terms. */
 function mapChildren(term: LTerm, visit: (child: LTerm) => LTerm): LTerm {
   const copy = { ...term } as Record<string, unknown>;
+  if (term.$ === "Sub") {
+    const pattern = (node: Patt): Patt => {
+      if (node.$ === "PCtr") return { ...node, x: node.x.map(pattern) };
+      const renamed = visit({ $: "Var", k: node.k, i: node.i, s: node.s });
+      if (renamed.$ !== "Var") throw Error("Capture remapping changed a pattern binder into a non-variable");
+      return { ...node, k: renamed.k, i: renamed.i, s: renamed.s };
+    };
+    return { ...term, v: pattern(term.v), f: visit(term.f) };
+  }
   for (const [key, value] of Object.entries(term)) {
     if (key === "s" || key === "q" || key === "v" && term.$ === "Var") continue;
     if (Array.isArray(value)) {
@@ -91,21 +62,14 @@ export function planCaptures(callbacks: readonly LTerm[], lexical: Pick<LexicalT
       else term.k.forEach(name => reserved.add(name));
     }
     if (term.$ === "Var") uses.set(term.i, (uses.get(term.i) ?? 0) + 1);
-    for (const [key, value] of Object.entries(term)) {
-      if (key === "s" || key === "q" || key === "v" && term.$ === "Var") continue;
-      if (Array.isArray(value)) {
-        for (const child of value) if (child && typeof child === "object" && "$" in child) inspect(child as LTerm);
-      } else if (value && typeof value === "object" && "$" in value) {
-        inspect(value as LTerm);
-      }
-    }
+    for (const child of termChildren(term)) inspect(child);
   }
   callbacks.forEach(inspect);
   const fields = new Map<number, CaptureField>();
   for (const callback of callbacks) {
     for (const binding of lexical.captures(callback)) {
       if (fields.has(binding.id)) continue;
-      const dependencies = freeTypeBinders(binding.type);
+      const dependencies = freeBinderIds(binding.type);
       if (dependencies.length) throw new CaptureTypeDependencyError(binding.id, dependencies, binding.type);
       const base = (options.prefix ?? "capture") + "_" + binding.id;
       let name = base, suffix = 1;
@@ -187,6 +151,11 @@ function printable(term: LTerm, environment: ReadonlyMap<number, PrintBinder>, n
     }
     return { ...term, k: keys, i: indices,
       v: term.v.map(value => printable(value, environment, names)), f: printable(term.f, env, bound) };
+  }
+  if (term.$ === "Sub") {
+    const value = patt_term(term.v);
+    const substitute = (node: LTerm): LTerm => node.$ === "Var" && node.i === term.i ? value : mapChildren(node, substitute);
+    return printable(substitute(term.f), environment, names);
   }
   return mapChildren(term, child => printable(child, environment, names));
 }

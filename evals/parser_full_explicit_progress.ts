@@ -3,7 +3,7 @@
  * comparison participates in this module. Typed matcher expressions are closed
  * into native function-head matches after rewriting; their captures retain the
  * original values and consumption marker span identities. */
-import { body_flatten, list_set, patt_term, term_higher, term_lower, term_show, term_unapply, term_wnf, Var, type Body, type Env, type LTerm, type Patt, type PVar, type Quant } from "../bend2/bend.ts";
+import { body_flatten, f32_from_bits, f32_to_bits, list_set, Lit, lit_step, patt_term, term_higher, term_lower, term_show, term_unapply, term_wnf, Var, type Body, type Env, type LTerm, type Patt, type PVar, type Quant } from "../bend2/bend.ts";
 import type { ParserGraph, ParserParameter, ParserSignature } from "./parser_full_graph.ts";
 import { renderBody } from "./parser_full_body_render.ts";
 import { freeBinderIds, LexicalTypes, MissingType, termChildren } from "./parser_full_type_env.ts";
@@ -131,7 +131,7 @@ export function instrumentExplicitProgress(graph: ParserGraph, options: Explicit
   const initializationOnly = new Set([...selected].filter(name => !driverReachable.has(name)));
   let fresh = -1;
   const id = () => fresh--;
-  const offset = (term: LTerm | Patt | Body) => term.s?.beg ?? (term.$ === "Reply" ? term.x.s?.beg : undefined) ?? 0;
+  const offset = (term: LTerm | Patt | Body) => term.s?.beg ?? 0;
   const fail = (context: Context, node: LTerm | Patt | Body, reason: string): never => { throw new UnsupportedInstrumentation(context.owner, offset(node), reason); };
   const isNamed = (type: LTerm, name: string) => (type.$ === "ADT" || type.$ === "Ref") && type.k === name;
   const tokenList = (type: LTerm): boolean => {
@@ -142,7 +142,6 @@ export function instrumentExplicitProgress(graph: ParserGraph, options: Explicit
   const controlResult = (name: string) => isNamed(graph.signatures.get(name)!.result, controlType);
   const active = new Set([...selected].filter(name => containsCursor(graph.signatures.get(name)!.result) || controlResult(name)));
   function cursorCallbackCalls(value: LTerm | Body): boolean {
-    if (value.$ === "Reply") return cursorCallbackCalls(value.x);
     if (value.$ === "Local") return (value.q.$ !== "None" && value.v.some(cursorCallbackCalls)) || cursorCallbackCalls(value.f);
     if (value.$ === "Match") return value.e.some(cursorCallbackCalls) || value.r.some(row => cursorCallbackCalls(row.f));
     if (value.$ === "App") {
@@ -301,7 +300,7 @@ export function instrumentExplicitProgress(graph: ParserGraph, options: Explicit
         visit(node.f, inner, region, suspended); return;
       }
       if (node.$ === "Sub") {
-        const value = node.v.$ === "PVar" || node.v.$ === "PCtr" ? patt_term(node.v) : node.v;
+        const value = patt_term(node.v);
         const dependencies = alias(value, scope), inner = new Map(scope);
         if (dependencies) inner.set(node.i, dependencies); else visit(value, scope, region, suspended);
         visit(node.f, inner, region, suspended); return;
@@ -339,7 +338,7 @@ export function instrumentExplicitProgress(graph: ParserGraph, options: Explicit
       termChildren(node).forEach(child => visit(child, scope, region, suspended));
     }
     function visitBody(node: Body, scope: Inputs, region: InputRegion) {
-      if (node.$ === "Reply") { visit(node.x, scope, region); return; }
+      if (node.$ !== "Local" && node.$ !== "Match") { visit(node, scope, region); return; }
       if (node.$ === "Local") {
         if (node.q.$ === "None") { visitBody(node.f, scope, region); return; }
         const inner = new Map(scope);
@@ -436,7 +435,7 @@ export function instrumentExplicitProgress(graph: ParserGraph, options: Explicit
       return witnessOf(term.f, { ...context, witnesses });
     }
     if (term.$ === "Sub") {
-      const value = term.v.$ === "PVar" || term.v.$ === "PCtr" ? patt_term(term.v) : term.v;
+      const value = patt_term(term.v);
       const witnesses = new Map(context.witnesses); witnesses.set(term.i, witnessOf(value, context));
       return witnessOf(term.f, { ...context, witnesses });
     }
@@ -517,7 +516,7 @@ export function instrumentExplicitProgress(graph: ParserGraph, options: Explicit
   }
   function captureWitness(spec: WitnessSpec, context: Context, source: LTerm, activationOrigin?: WitnessOrigin): LTerm {
     if (refs(spec).length) witnessLibrary();
-    const placeholder: LTerm = { ...ctr("WitnessNone"), s: { src: "", beg: 0, end: 0 } };
+    const placeholder: LTerm = { ...ctr("WitnessNone"), s: {file:{str:"",ns:'',al:{}},beg:0,end:0} };
     snapshots.push({ context, source, spec, placeholder, activationOrigin });
     return placeholder;
   }
@@ -540,7 +539,7 @@ export function instrumentExplicitProgress(graph: ParserGraph, options: Explicit
     const node = value as LTerm;
     const snapshot = node.s && snapshots.find(snapshot => snapshot.placeholder.s === node.s);
     if (snapshot && node !== snapshot.placeholder) Object.assign(node, snapshot.placeholder);
-    for (const child of Object.values(value)) if (Array.isArray(child)) child.forEach(item => refreshSnapshots(item, visited)); else refreshSnapshots(child, visited);
+    for (const [key, child] of Object.entries(value)) if (key !== "s") { if (Array.isArray(child)) child.forEach(item => refreshSnapshots(item, visited)); else refreshSnapshots(child, visited); }
   }
   const compose = (a: LTerm, b: LTerm): LTerm => a.$ === "Ctr" && a.k === "NoProgress" ? b : b.$ === "Ctr" && b.k === "NoProgress" ? a : apply(ref(composeName), [a, b]);
   const withEffectName = "feedback_with_effect";
@@ -570,7 +569,7 @@ export function instrumentExplicitProgress(graph: ParserGraph, options: Explicit
     if (knownNoWitness(value)) { retire(spec, context, true); return undefined; }
     const structural = value.$ === "Ctr" && value.k === "WitnessTail" && value.x[0]?.$ === "Ctr" && value.x[0].k === "Consumed";
     if (!structural) witnessLibrary();
-    const marker: LTerm = { ...(structural ? ctr("Consumed") : apply(ref("feedback_witness_progress"), [value])), s: { src: "", beg: 0, end: 0 } };
+    const marker: LTerm = { ...(structural ? ctr("Consumed") : apply(ref("feedback_witness_progress"), [value])), s: {file:{str:"",ns:'',al:{}},beg:0,end:0} };
     const effect: EffectExpression = structural ? literal("Consumed") : { kind: "witness", term: marker };
     const operation = emit(context, term, { kind: "consume", progress: effect, binderId: term.i, emitted: marker });
     consumptionBySpan.set(marker.s!, operation);
@@ -593,7 +592,7 @@ export function instrumentExplicitProgress(graph: ParserGraph, options: Explicit
       catch (error) { if (error instanceof MissingType) return false; throw error; }
     }
     function bodyFree(node: Body): boolean {
-      if (node.$ === "Reply") return visit(node.x);
+      if (node.$ !== "Local" && node.$ !== "Match") return visit(node);
       if (node.$ === "Local") return (node.q.$ === "None" || node.v.every(visit)) && bodyFree(node.f);
       return node.e.every(visit) && node.r.every(row => bodyFree(row.f));
     }
@@ -638,7 +637,6 @@ export function instrumentExplicitProgress(graph: ParserGraph, options: Explicit
   function calledOnce(value: Body | LTerm, binder: number): boolean {
     let calls = 0, invalid = false;
     function visit(node: Body | LTerm, suspended = false) {
-      if (node.$ === "Reply") { visit(node.x, suspended); return; }
       if (node.$ === "Local") { node.v.forEach(child => visit(child, suspended)); visit(node.f, suspended); return; }
       if (node.$ === "Match") { node.e.forEach(child => visit(child, suspended)); node.r.forEach(row => visit(row.f, suspended)); return; }
       if (node.$ === "App") {
@@ -820,7 +818,7 @@ export function instrumentExplicitProgress(graph: ParserGraph, options: Explicit
           if ((selected.has(term.k) || primitive) && declared === arguments_.length) {
             let source = apply(term, arguments_);
             for (const parameter of [...parameters].reverse()) source = { $: "Lam", k: `effect_${-parameter.binder}`, i: parameter.binder, q: parameter.type.q, f: source };
-            types.indexBody({ $: "Reply", x: source }, [...(context.bindings ?? [])].map(([binder, type]) => [{ $: "Many" }, `effect_${-binder}`, binder, type, { src: "", beg: 0, end: 0 }] as ParserParameter), expected);
+            types.indexBody(source, [...(context.bindings ?? [])].map(([binder, type]) => [{ $: "Many" }, `effect_${-binder}`, binder, type, {file:{str:"",ns:'',al:{}},beg:0,end:0}] as ParserParameter), expected);
             return { term: pair(lambda(source as Extract<LTerm, { $: "Lam" }>, context, expected, plainCallback), neutral), effect: literal("NoProgress") };
           }
           const first = apply(actual, arguments_.slice(0, declared));
@@ -970,7 +968,7 @@ export function instrumentExplicitProgress(graph: ParserGraph, options: Explicit
         return { term: values.term, effect: joinEffect(values.effect, child.effect) };
       }
       case "Sub": {
-        const value = term.v.$ === "PVar" || term.v.$ === "PCtr" ? patt_term(term.v) : term.v;
+        const value = patt_term(term.v);
         return expression({ $: "Let", k: [`effect_alias_${term.i}`], i: [term.i], q: [lone], v: [value], f: term.f, s: term.s }, context, activePosition, undefined, expected ?? semanticGoals.get(term));
       }
       case "Mat": return fail(context, term, "unapplied matcher requires an explicit callback domain");
@@ -990,15 +988,15 @@ export function instrumentExplicitProgress(graph: ParserGraph, options: Explicit
     for (const child of pattern.x) tailsIn(child, tails, environment);
   }
   function body(node: Body, context: Context, accumulated: LTerm, accumulatedEffect: EffectExpression, control: boolean): Body {
-    if (node.$ === "Reply") {
-      const [head] = term_unapply(node.x);
+    if (node.$ !== "Local" && node.$ !== "Match") {
+      const [head] = term_unapply(node);
       const captures = control && head.$ === "Ref" && !!options.primitiveOperations?.get(head.k)?.captureName;
-      const child = expression(node.x, context, control || containsCursor(graph.signatures.get(context.owner)!.result), captures ? accumulated : undefined, graph.signatures.get(context.owner)!.result, captures ? accumulatedEffect : undefined);
+      const child = expression(node, context, control || containsCursor(graph.signatures.get(context.owner)!.result), captures ? accumulated : undefined, graph.signatures.get(context.owner)!.result, captures ? accumulatedEffect : undefined);
       const effect = joinEffect(accumulatedEffect, child.effect);
       const value = unpack(child.term, (value, progress) => control ? captures ? value : apply(ref(prefixName), [compose(accumulated, progress), value]) : pair(value, compose(accumulated, progress)));
-      const terminal = node.x.$ === "Ctr" ? node.x.k : undefined;
-      emit(context, node, { kind: "return", progress: effect, result: node.x, emitted: value, ...(terminal ? { outcome: terminal } : {}) });
-      return { ...node, x: value };
+      const terminal = node.$ === "Ctr" ? node.k : undefined;
+      emit(context, node, { kind: "return", progress: effect, result: node, emitted: value, ...(terminal ? { outcome: terminal } : {}) });
+      return value;
     }
     if (node.$ === "Local") {
       if (node.q.$ === "None") return { ...node, f: body(node.f, context, accumulated, accumulatedEffect, control) };
@@ -1019,7 +1017,7 @@ export function instrumentExplicitProgress(graph: ParserGraph, options: Explicit
       if (node.k.some(pattern => pattern.$ === "PCtr")) {
         let leaf = node.f;
         while (leaf.$ === "Local" && !leaf.v.length) leaf = leaf.f;
-        const next = leaf.$ === "Reply" ? leaf.x : leaf.$ === "Local" ? leaf.v[0] : leaf.e[0];
+        const next = leaf.$ === "Local" ? leaf.v[0] : leaf.$ === "Match" ? leaf.e[0] : leaf;
         if (!next) return fail(context, node, "local constructor pattern has no indexable lexical continuation");
         const environment = types.environmentAt(next);
         for (const pattern of node.k) try { tailsIn(pattern, tails, environment); } catch (error) { if (error instanceof MissingType) return fail(context, pattern, error.message); throw error; }
@@ -1027,7 +1025,7 @@ export function instrumentExplicitProgress(graph: ParserGraph, options: Explicit
       const witnesses = new Map(context.witnesses); node.k.forEach((pattern, index) => bindWitness(pattern, witnessOf(node.v[index]!, context), context, witnesses, tails, typeOf(node.v[index]!, context)));
       let rest = body(node.f, { ...context, tails, witnesses }, progress, effect, control);
       for (let index = node.k.length - 1; index >= 0; index--) rest = { ...node, k: [node.k[index]!], v: [variable(values[index]!.i)], f: rest };
-      return { $: "Reply", x: eliminateBodyWriters(children, values, flags, rest) };
+      return eliminateBodyWriters(children, values, flags, rest);
     }
     const children: Writer[] = [], values: PVar[] = [], flags: PVar[] = [];
     let progress = accumulated, effect = accumulatedEffect;
@@ -1048,7 +1046,7 @@ export function instrumentExplicitProgress(graph: ParserGraph, options: Explicit
       row.p.forEach(addPattern);
       let leaf = row.f;
       while (leaf.$ === "Local" && !leaf.v.length) leaf = leaf.f;
-      const expression = leaf.$ === "Reply" ? leaf.x : leaf.$ === "Local" ? leaf.v[0] : leaf.e[0];
+      const expression = leaf.$ === "Local" ? leaf.v[0] : leaf.$ === "Match" ? leaf.e[0] : leaf;
       if (!expression) return fail(context, node, "branch has no indexable lexical expression");
       const environment = types.environmentAt(expression);
       for (let column = 0; column < row.p.length; column++) {
@@ -1061,7 +1059,7 @@ export function instrumentExplicitProgress(graph: ParserGraph, options: Explicit
     });
     if (directMatch) return { ...node, e: children.map(child => (child.term as Extract<LTerm, { $: "Ctr" }>).x[0]!), r: rows };
     const match: Body = { ...node, e: values.map(value => variable(value.i)), r: rows };
-    return { $: "Reply", x: eliminateBodyWriters(children, values, flags, match) };
+    return eliminateBodyWriters(children, values, flags, match);
   }
   function eliminateBodyWriters(children: Writer[], values: PVar[], flags: PVar[], continuation: Body): LTerm {
     if (!continuationGoal) throw new UnsupportedInstrumentation(emittingOwner, 0, "body continuation has no declared result type");
@@ -1129,9 +1127,9 @@ export function instrumentExplicitProgress(graph: ParserGraph, options: Explicit
     // Re-index only the expression whose type is demanded. This uses the same
     // constructor telescope inference as source typing, not a cursor relation.
     const lexical = new LexicalTypes(graph.parserBook, graph.signatures);
-    const parameters = [...scope].map(([binder, binding]) => [binding.quantity, `capture_${binder}`, binder, binding.type, { src: "", beg: 0, end: 0 }] as ParserParameter);
+    const parameters = [...scope].map(([binder, binding]) => [binding.quantity, `capture_${binder}`, binder, binding.type, {file:{str:"",ns:'',al:{}},beg:0,end:0}] as ParserParameter);
     try {
-      lexical.indexBody({ $: "Reply", x: term }, parameters);
+      lexical.indexBody(term, parameters);
       return lexical.typeOf(term);
     } catch (error) {
       if (error instanceof MissingType) throw new UnsupportedInstrumentation(emittingOwner, offset(term), error.message);
@@ -1164,7 +1162,7 @@ export function instrumentExplicitProgress(graph: ParserGraph, options: Explicit
       const pattern: Patt = { $: "PCtr", k: remainder.k, x: fields, s: remainder.s };
       const inner = new Map(scope); liftPattern(pattern, input, inner);
       const branchResult = substituteBinder(result, inputId, patt_term(pattern));
-      rows.push({ p: [pattern], f: { $: "Reply", x: liftTerm(handler, branchResult, inner) } });
+      rows.push({ p: [pattern], f: liftTerm(handler, branchResult, inner) });
       remainder = remainder.m;
     }
     if (remainder.$ !== "Efq") {
@@ -1172,7 +1170,7 @@ export function instrumentExplicitProgress(graph: ParserGraph, options: Explicit
       const fallback: PVar = { $: "PVar", k: remainder.k, i: remainder.i, q: remainder.q ?? lone, s: remainder.s };
       const fallbackScope = new Map(scope); fallbackScope.set(fallback.i, { type: input, quantity: fallback.q });
       const fallbackValue = liftTerm(remainder.f, substituteBinder(result, inputId, patt_term(fallback)), fallbackScope);
-      rows.push({ p: [fallback], f: { $: "Reply", x: fallbackValue } });
+      rows.push({ p: [fallback], f: fallbackValue });
     }
     let body: Body = { $: "Match", e: [inputVar], r: rows, s: matcher.s };
     const free = new Set(rows.flatMap(row => freeBinderIds(body_flatten(row.f, row.p.flatMap(pattern => {
@@ -1199,15 +1197,15 @@ export function instrumentExplicitProgress(graph: ParserGraph, options: Explicit
       for (const [binder, value] of replacements) term = substituteBinder(term, binder, value);
       return term;
     };
-    const renameBody = (node: Body): Body => node.$ === "Reply" ? { ...node, x: rename(node.x) }
-      : node.$ === "Local" ? { ...node, v: node.v.map(rename), f: renameBody(node.f) }
-      : { ...node, e: node.e.map(rename), r: node.r.map(row => ({ ...row, f: renameBody(row.f) })) };
+    const renameBody = (node: Body): Body => node.$ === "Local" ? { ...node, v: node.v.map(rename), f: renameBody(node.f) }
+      : node.$ === "Match" ? { ...node, e: node.e.map(rename), r: node.r.map(row => ({ ...row, f: renameBody(row.f) })) }
+      : rename(node);
     for (const binder of captures) {
       const binding = scope.get(binder)!, captureId = id();
-      parameters.push([binding.quantity, `capture_${-captureId}`, captureId, rename(binding.type), matcher.s ?? { src: "", beg: 0, end: 0 }]);
+      parameters.push([binding.quantity, `capture_${-captureId}`, captureId, rename(binding.type), matcher.s ?? {file:{str:"",ns:'',al:{}},beg:0,end:0}]);
       replacements.set(binder, variable(captureId));
     }
-    parameters.push([inputQuantity, inputVar.k, inputId, rename(input), matcher.s ?? { src: "", beg: 0, end: 0 }]);
+    parameters.push([inputQuantity, inputVar.k, inputId, rename(input), matcher.s ?? {file:{str:"",ns:'',al:{}},beg:0,end:0}]);
     body = renameBody(body);
     matcherFunctions.set(name, { signature: { parameters, result: rename(result) }, body });
     return apply(ref(name), captures.map(variable));
@@ -1269,13 +1267,13 @@ export function instrumentExplicitProgress(graph: ParserGraph, options: Explicit
       return { ...term, v: values, f: liftTerm(term.f, goal, inner) };
     }
     if (term.$ === "Sub") {
-      const value = term.v.$ === "PVar" || term.v.$ === "PCtr" ? patt_term(term.v) : term.v;
+      const value = patt_term(term.v);
       return liftTerm(substituteBinder(term.f, term.i, value), goal, scope);
     }
     return term;
   }
   function liftBody(node: Body, goal: LTerm, scope: LiftScope): Body {
-    if (node.$ === "Reply") return { ...node, x: liftTerm(node.x, goal, scope) };
+    if (node.$ !== "Local" && node.$ !== "Match") return liftTerm(node, goal, scope);
     if (node.$ === "Local") {
       const inner = new Map(scope);
       const values = node.v.map((value, index) => {
@@ -1303,7 +1301,7 @@ export function instrumentExplicitProgress(graph: ParserGraph, options: Explicit
       if (!originalParameter) throw new UnsupportedInstrumentation(owner, 0, "witness parameter has no corresponding semantic capture");
       const binder = id();
       generatedBinderTypes.set(binder, ref(witnessType));
-      signature.parameters.push([{ $: "Many" }, parameter.witnessName, binder, ref(witnessType), { src: "", beg: 0, end: 0 }] as ParserParameter);
+      signature.parameters.push([{ $: "Many" }, parameter.witnessName, binder, ref(witnessType), {file:{str:"",ns:'',al:{}},beg:0,end:0}] as ParserParameter);
       witnesses.set(originalParameter[2], { kind: "origin", origin: { owner, base: { $: "Var", i: binder, k: parameter.witnessName }, uses: [] }, path: [] });
     }
     emittingOwner = owner;
@@ -1348,7 +1346,7 @@ export function instrumentExplicitProgress(graph: ParserGraph, options: Explicit
       consumptionExpressions.set(node, operation);
       if (node.$ === "Ctr" && node.k === "Consumed") consumptionLiterals.set(node, operation);
     }
-    for (const child of Object.values(value)) if (Array.isArray(child)) child.forEach(collectConsumption); else collectConsumption(child);
+    for (const [key, child] of Object.entries(value)) if (key !== "s") { if (Array.isArray(child)) child.forEach(collectConsumption); else collectConsumption(child); }
   }
   for (const fn of functions.values()) collectConsumption(fn.body);
   for (const closure of closures.values()) collectConsumption(closure.emitted);
@@ -1384,14 +1382,31 @@ function executeGenerated(graph: ParserGraph, functions: Map<string, ExplicitFun
     }
     throw Error("Generated runtime applied a non-function");
   }
+  function constructorView(value: Value, constructor: string): Value {
+    if (typeof value === "number") {
+      if (constructor === "Zero" || constructor === "Succ")
+        return value === 0 ? constructorValue("Zero") : constructorValue("Succ", value - 1);
+      if (constructor === "U32" || constructor === "F32") {
+        const step = lit_step(Lit<[LTerm]>(constructor, constructor === "F32" ? f32_to_bits(value) : value));
+        return evaluate(step, new Map());
+      }
+    }
+    if (typeof value === "string" && (constructor === "SNil" || constructor === "SCon")) {
+      const code = value.codePointAt(0);
+      return code === undefined ? constructorValue("SNil")
+        : constructorValue("SCon", constructorValue("Chr", code), value.slice(code > 0xffff ? 2 : 1));
+    }
+    return value;
+  }
   function bind(pattern: Patt, value: Value, environment: Environment): boolean {
     if (pattern.$ === "PVar") { if (pattern.k !== "_") environment.set(pattern.i, value); return true; }
+    value = constructorView(value, pattern.k);
     if (!isConstructor(value) || value.name !== pattern.k || value.fields.length !== pattern.x.length) return false;
     return pattern.x.every((child, index) => bind(child, value.fields[index]!, environment));
   }
   function evaluateBody(body: Body, environment: Environment): Value {
     tick();
-    if (body.$ === "Reply") return evaluate(body.x, environment);
+    if (body.$ !== "Local" && body.$ !== "Match") return evaluate(body, environment);
     if (body.$ === "Local") {
       if (body.q.$ === "None") {
         const inner = new Map(environment);
@@ -1439,6 +1454,7 @@ function executeGenerated(graph: ParserGraph, functions: Map<string, ExplicitFun
     switch (term.$) {
       case "Var": { if (!environment.has(term.i)) throw Error(`Unbound generated runtime binder ${term.i}`); return environment.get(term.i)!; }
       case "Ref": return declaration(term.k);
+      case "Lit": return term.k === "F32" ? f32_from_bits(term.v) : term.v;
       case "Ctr": return constructorValue(term.k, ...term.x.map(value => evaluate(value, environment) as RuntimeValue));
       case "Lam": return fn(value => { const inner = new Map(environment); inner.set(term.i, value); return evaluate(term.f, inner); });
       case "App": {
@@ -1451,10 +1467,11 @@ function executeGenerated(graph: ParserGraph, functions: Map<string, ExplicitFun
         return call(evaluate(term.f, environment), evaluate(term.x, environment));
       }
       case "Mat": return fn(value => {
-        if (!isConstructor(value)) throw Error("Generated matcher expected a constructor");
-        if (value.name !== term.k) return call(evaluate(term.m, environment), value);
+        const inspected = constructorView(value, term.k);
+        if (!isConstructor(inspected)) throw Error("Generated matcher expected a constructor");
+        if (inspected.name !== term.k) return call(evaluate(term.m, environment), value);
         let handler = evaluate(term.h, environment);
-        for (const field of value.fields) handler = call(handler, field);
+        for (const field of inspected.fields) handler = call(handler, field);
         return handler;
       });
       case "Let": {
@@ -1464,7 +1481,7 @@ function executeGenerated(graph: ParserGraph, functions: Map<string, ExplicitFun
       }
       case "Sub": {
         const inner = new Map(environment);
-        inner.set(term.i, evaluate(term.v.$ === "PVar" || term.v.$ === "PCtr" ? patt_term(term.v) : term.v, environment));
+        inner.set(term.i, evaluate(patt_term(term.v), environment));
         return evaluate(term.f, inner);
       }
       case "Ann": return evaluate(term.x, environment);

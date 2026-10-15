@@ -1,0 +1,4240 @@
+{
+  "root": "check_modules",
+  "sourceSha256": "b97c3f7bd7af369a568331b240b8b7c982ee1c29373ed94138c34cf183244985",
+  "definitionsTotal": 418,
+  "definitionsIncluded": 416,
+  "templateLocalDependencyCount": 0,
+  "originalRelativeOrderPreserved": true,
+  "exactSignaturesBodiesQuantities": true,
+  "imports": [
+    "import Base",
+    "import ../bend2/selfhost/ast.bend as Ast",
+    "import ../bend2/selfhost/path.bend as Path",
+    "import ../bend2/selfhost/loaded_module.bend as Loader"
+  ],
+  "included": [
+    {
+      "name": "span_file",
+      "sourceOrder": 1,
+      "line": 41,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "term_span",
+      "sourceOrder": 2,
+      "line": 46,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "fail",
+      "sourceOrder": 3,
+      "line": 76,
+      "refs": [
+        "span_file"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "same_quantity",
+      "sourceOrder": 4,
+      "line": 79,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "quantity_join",
+      "sourceOrder": 5,
+      "line": 86,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "quantity_alternative",
+      "sourceOrder": 6,
+      "line": 93,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "quantity_fits",
+      "sourceOrder": 7,
+      "line": 102,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_field_demand",
+      "sourceOrder": 8,
+      "line": 111,
+      "refs": [
+        "quantity_join"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "pattern_quantity_allowed",
+      "sourceOrder": 9,
+      "line": 117,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "lookup_binding",
+      "sourceOrder": 10,
+      "line": 125,
+      "refs": [
+        "lookup_binding_head"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "lookup_binding_head",
+      "sourceOrder": 11,
+      "line": 130,
+      "refs": [
+        "lookup_binding"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "lookup_global_match",
+      "sourceOrder": 12,
+      "line": 135,
+      "refs": [
+        "lookup_global"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "lookup_global",
+      "sourceOrder": 13,
+      "line": 138,
+      "refs": [
+        "lookup_global_match"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "canonical_key",
+      "sourceOrder": 14,
+      "line": 145,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "current_scope",
+      "sourceOrder": 15,
+      "line": 148,
+      "refs": [
+        "current_scope"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "import_scope_base",
+      "sourceOrder": 16,
+      "line": 157,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "import_scope_target",
+      "sourceOrder": 17,
+      "line": 161,
+      "refs": [
+        "import_scope_base"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "import_scope",
+      "sourceOrder": 18,
+      "line": 164,
+      "refs": [
+        "import_scope",
+        "import_scope_target"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "imported_scope",
+      "sourceOrder": 19,
+      "line": 173,
+      "refs": [
+        "import_scope",
+        "imported_scope"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "base_scope",
+      "sourceOrder": 20,
+      "line": 182,
+      "refs": [
+        "import_scope"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "visible_globals",
+      "sourceOrder": 21,
+      "line": 185,
+      "refs": [
+        "current_scope",
+        "imported_scope",
+        "base_scope"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "resolve_family_key_found",
+      "sourceOrder": 22,
+      "line": 187,
+      "refs": [
+        "canonical_key"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "resolve_family_key_result",
+      "sourceOrder": 23,
+      "line": 191,
+      "refs": [
+        "resolve_family_key_found"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "resolve_family_key",
+      "sourceOrder": 24,
+      "line": 196,
+      "refs": [
+        "resolve_family_key_result",
+        "lookup_global"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "family_equal",
+      "sourceOrder": 25,
+      "line": 199,
+      "refs": [
+        "resolve_family_key"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "family_lowered_whnf",
+      "sourceOrder": 26,
+      "line": 202,
+      "refs": [
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "whnf_ref_type",
+      "sourceOrder": 27,
+      "line": 207,
+      "refs": [
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "whnf_ref_global",
+      "sourceOrder": 28,
+      "line": 212,
+      "refs": [
+        "whnf_ref_type",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "whnf_ref_result",
+      "sourceOrder": 29,
+      "line": 217,
+      "refs": [
+        "whnf_ref_global"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "whnf_application",
+      "sourceOrder": 30,
+      "line": 222,
+      "refs": [
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "whnf",
+      "sourceOrder": 31,
+      "line": 227,
+      "refs": [
+        "whnf",
+        "family_lowered_whnf",
+        "lower_family_sugar",
+        "whnf_ref_result",
+        "lookup_global",
+        "whnf_application",
+        "application_type_view"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "equal_term",
+      "sourceOrder": 32,
+      "line": 240,
+      "refs": [
+        "equal_raw",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "fits_kind_whnf",
+      "sourceOrder": 33,
+      "line": 243,
+      "refs": [
+        "fits_kind",
+        "equal_term"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "fits_kind",
+      "sourceOrder": 34,
+      "line": 254,
+      "refs": [
+        "fits_kind_whnf",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "refs_contain_all",
+      "sourceOrder": 35,
+      "line": 257,
+      "refs": [
+        "has_canonical_name",
+        "refs_contain_all"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "fits_term_whnf",
+      "sourceOrder": 36,
+      "line": 263,
+      "refs": [
+        "fits_kind",
+        "same_quantity",
+        "fits_term",
+        "family_equal",
+        "equal_lists",
+        "refs_contain_all",
+        "equal_term"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "fits_term",
+      "sourceOrder": 37,
+      "line": 272,
+      "refs": [
+        "fits_term_whnf",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "equal_raw",
+      "sourceOrder": 38,
+      "line": 275,
+      "refs": [
+        "equal_term",
+        "same_quantity",
+        "canonical_name",
+        "family_equal",
+        "equal_lists",
+        "equal_refs"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "equal_refs",
+      "sourceOrder": 39,
+      "line": 294,
+      "refs": [
+        "canonical_name",
+        "equal_refs"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "equal_lists",
+      "sourceOrder": 40,
+      "line": 301,
+      "refs": [
+        "equal_term",
+        "equal_lists"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_adt_args_view",
+      "sourceOrder": 41,
+      "line": 308,
+      "refs": [
+        "fail",
+        "infer_adt_arg_check",
+        "check_term"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_adt_arg_check",
+      "sourceOrder": 42,
+      "line": 320,
+      "refs": [
+        "infer_adt_args"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_adt_args",
+      "sourceOrder": 43,
+      "line": 325,
+      "refs": [
+        "infer_adt_args_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "validate_terms_result",
+      "sourceOrder": 44,
+      "line": 328,
+      "refs": [
+        "validate_terms"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "validate_terms",
+      "sourceOrder": 45,
+      "line": 333,
+      "refs": [
+        "validate_terms_result",
+        "infer"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "substitute_many",
+      "sourceOrder": 46,
+      "line": 338,
+      "refs": [
+        "substitute_many"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_local_quantities",
+      "sourceOrder": 47,
+      "line": 343,
+      "refs": [
+        "quantity_fits",
+        "use_count_with_context",
+        "check_local_quantities",
+        "span_file"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_local_pattern_uses",
+      "sourceOrder": 48,
+      "line": 350,
+      "refs": [
+        "quantity_fits",
+        "use_count_with_context",
+        "check_local_pattern_uses",
+        "span_file"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "local_pattern_quantities_match",
+      "sourceOrder": 49,
+      "line": 361,
+      "refs": [
+        "same_quantity",
+        "local_pattern_quantities_match"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_local_uses_result",
+      "sourceOrder": 50,
+      "line": 369,
+      "refs": [
+        "infer",
+        "substitute_many"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_local_terms_result",
+      "sourceOrder": 51,
+      "line": 374,
+      "refs": [
+        "usage_local_env",
+        "check_body_local_uses_result",
+        "check_local_pattern_uses"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_local_quantity_result",
+      "sourceOrder": 52,
+      "line": 381,
+      "refs": [
+        "check_body_local_terms_result",
+        "validate_terms",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_local_length_result",
+      "sourceOrder": 53,
+      "line": 386,
+      "refs": [
+        "check_body_local_quantity_result",
+        "local_pattern_quantities_match",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_local",
+      "sourceOrder": 54,
+      "line": 391,
+      "refs": [
+        "check_body_local_length_result"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "family_head_key",
+      "sourceOrder": 55,
+      "line": 393,
+      "refs": [
+        "family_head_key"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "family_head_args",
+      "sourceOrder": 56,
+      "line": 400,
+      "refs": [
+        "family_head_args"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "family_head_refs",
+      "sourceOrder": 57,
+      "line": 406,
+      "refs": [
+        "family_head_refs"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "family_arity_view",
+      "sourceOrder": 58,
+      "line": 412,
+      "refs": [
+        "family_arity"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "family_arity",
+      "sourceOrder": 59,
+      "line": 417,
+      "refs": [
+        "family_arity_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "family_quant_prefix_domain",
+      "sourceOrder": 60,
+      "line": 420,
+      "refs": [
+        "family_quant_prefix"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "family_quant_prefix_view",
+      "sourceOrder": 61,
+      "line": 425,
+      "refs": [
+        "family_quant_prefix_domain",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "family_quant_prefix",
+      "sourceOrder": 62,
+      "line": 430,
+      "refs": [
+        "family_quant_prefix_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "quantity_arguments",
+      "sourceOrder": 63,
+      "line": 432,
+      "refs": [
+        "quantity_arguments"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "set_quantity_prefix",
+      "sourceOrder": 64,
+      "line": 437,
+      "refs": [
+        "set_quantity_prefix"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "family_failure",
+      "sourceOrder": 65,
+      "line": 443,
+      "refs": [
+        "span_file"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "lower_family_sugar_filled",
+      "sourceOrder": 66,
+      "line": 446,
+      "refs": [
+        "quantity_arguments"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "lower_family_sugar_complete",
+      "sourceOrder": 67,
+      "line": 449,
+      "refs": [
+        "canonical_name",
+        "set_quantity_prefix",
+        "family_head_refs",
+        "family_failure"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "lower_family_sugar_plus_quantity",
+      "sourceOrder": 68,
+      "line": 452,
+      "refs": [
+        "family_failure",
+        "lower_family_sugar_complete"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "lower_family_sugar_promote",
+      "sourceOrder": 69,
+      "line": 458,
+      "refs": [
+        "lower_family_sugar_plus_quantity",
+        "canonical_name",
+        "family_head_refs"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "lower_family_sugar_family",
+      "sourceOrder": 70,
+      "line": 463,
+      "refs": [
+        "family_arity",
+        "family_quant_prefix",
+        "family_head_args",
+        "lower_family_sugar_filled",
+        "lower_family_sugar_promote"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "lower_family_sugar_global",
+      "sourceOrder": 71,
+      "line": 470,
+      "refs": [
+        "lower_family_sugar_family",
+        "family_failure"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "lower_family_sugar_global_result",
+      "sourceOrder": 72,
+      "line": 475,
+      "refs": [
+        "family_failure",
+        "lower_family_sugar_global"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "lower_family_sugar_key_result",
+      "sourceOrder": 73,
+      "line": 480,
+      "refs": [
+        "family_failure",
+        "lower_family_sugar_global_result",
+        "lookup_global"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "lower_family_sugar_variable",
+      "sourceOrder": 74,
+      "line": 485,
+      "refs": [
+        "family_failure"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "lower_family_sugar",
+      "sourceOrder": 75,
+      "line": 487,
+      "refs": [
+        "lower_family_sugar_variable",
+        "lower_family_sugar_key_result",
+        "family_head_key"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_family_sugar_result",
+      "sourceOrder": 76,
+      "line": 492,
+      "refs": [
+        "infer"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_family_sugar",
+      "sourceOrder": 77,
+      "line": 497,
+      "refs": [
+        "infer_family_sugar_result",
+        "lower_family_sugar"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_application_check",
+      "sourceOrder": 78,
+      "line": 499,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_application_result_view",
+      "sourceOrder": 79,
+      "line": 504,
+      "refs": [
+        "infer_application_check",
+        "check_term",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_application_result",
+      "sourceOrder": 80,
+      "line": 509,
+      "refs": [
+        "infer_application_result_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_infer_term_sort",
+      "sourceOrder": 81,
+      "line": 512,
+      "refs": [
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_global_reference",
+      "sourceOrder": 82,
+      "line": 518,
+      "refs": [
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_global_adt",
+      "sourceOrder": 83,
+      "line": 525,
+      "refs": [
+        "infer_adt_args",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_local_reference",
+      "sourceOrder": 84,
+      "line": 532,
+      "refs": [
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_term_annotation_result",
+      "sourceOrder": 85,
+      "line": 539,
+      "refs": [
+        "infer_term_annotation_inner",
+        "check_term"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_term_annotation_inner",
+      "sourceOrder": 86,
+      "line": 544,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_type_annotation_result",
+      "sourceOrder": 87,
+      "line": 549,
+      "refs": [
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_min_results",
+      "sourceOrder": 88,
+      "line": 555,
+      "refs": [
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_equal_endpoints",
+      "sourceOrder": 89,
+      "line": 562,
+      "refs": [
+        "fits_term",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_equal_type",
+      "sourceOrder": 90,
+      "line": 569,
+      "refs": [
+        "infer_equal_endpoints",
+        "infer",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_application_result_of_function",
+      "sourceOrder": 91,
+      "line": 574,
+      "refs": [
+        "infer_application_result"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_application_unfolded",
+      "sourceOrder": 92,
+      "line": 579,
+      "refs": [
+        "infer",
+        "infer_application_result_of_function",
+        "application_type_view"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_application_bang",
+      "sourceOrder": 93,
+      "line": 584,
+      "refs": [
+        "application_type_view",
+        "infer_application_result_of_function",
+        "infer",
+        "infer_application_unfolded",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_application_valid",
+      "sourceOrder": 94,
+      "line": 588,
+      "refs": [
+        "infer_application_bang",
+        "application_has_bang",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_all_domain",
+      "sourceOrder": 95,
+      "line": 591,
+      "refs": [
+        "fits_term",
+        "check_infer_term_sort",
+        "infer",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_let_values",
+      "sourceOrder": 96,
+      "line": 598,
+      "refs": [
+        "infer_let_lengths"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_let_validated",
+      "sourceOrder": 97,
+      "line": 603,
+      "refs": [
+        "infer",
+        "substitute_many"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_let_lengths",
+      "sourceOrder": 98,
+      "line": 608,
+      "refs": [
+        "infer_let_validated",
+        "validate_terms",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer",
+      "sourceOrder": 99,
+      "line": 610,
+      "refs": [
+        "infer_local_reference",
+        "lookup_binding",
+        "fail",
+        "infer_global_reference",
+        "lookup_global",
+        "infer_global_adt",
+        "infer_family_sugar",
+        "infer_term_annotation_result",
+        "check_term",
+        "infer_type_annotation_result",
+        "infer",
+        "infer_min_results",
+        "infer_all_domain",
+        "infer_application_valid",
+        "application_bangs_valid",
+        "application_argument_bangs_valid",
+        "infer_equal_type",
+        "usage_let_env",
+        "infer_let_values",
+        "check_local_quantities",
+        "check_body_local",
+        "term_span"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_family_view",
+      "sourceOrder": 100,
+      "line": 635,
+      "refs": [
+        "constructor_family_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_family",
+      "sourceOrder": 101,
+      "line": 641,
+      "refs": [
+        "constructor_family_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "canonical_name_global",
+      "sourceOrder": 102,
+      "line": 646,
+      "refs": [
+        "canonical_key"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "canonical_name_result",
+      "sourceOrder": 103,
+      "line": 650,
+      "refs": [
+        "canonical_name_global"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "canonical_name",
+      "sourceOrder": 104,
+      "line": 655,
+      "refs": [
+        "canonical_name_result",
+        "lookup_global"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "has_canonical_name",
+      "sourceOrder": 105,
+      "line": 658,
+      "refs": [
+        "canonical_name",
+        "has_canonical_name"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "canonicalize_strings",
+      "sourceOrder": 106,
+      "line": 664,
+      "refs": [
+        "canonical_name",
+        "canonicalize_strings"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "canonicalize_patterns",
+      "sourceOrder": 107,
+      "line": 669,
+      "refs": [
+        "canonicalize_pattern",
+        "canonicalize_patterns"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "canonicalize_pattern",
+      "sourceOrder": 108,
+      "line": 674,
+      "refs": [
+        "canonical_name",
+        "canonicalize_patterns"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "canonicalize_terms",
+      "sourceOrder": 109,
+      "line": 679,
+      "refs": [
+        "canonicalize_term",
+        "canonicalize_terms"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "canonicalize_term",
+      "sourceOrder": 110,
+      "line": 684,
+      "refs": [
+        "canonical_name",
+        "canonicalize_term",
+        "canonicalize_terms",
+        "canonicalize_strings",
+        "canonicalize_patterns"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "mat_branch_goal_view",
+      "sourceOrder": 111,
+      "line": 715,
+      "refs": [
+        "shift_terms",
+        "mat_branch_goal_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "mat_branch_goal",
+      "sourceOrder": 112,
+      "line": 725,
+      "refs": [
+        "mat_branch_goal_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_match_default_result",
+      "sourceOrder": 113,
+      "line": 728,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "check_match_head_result",
+      "sourceOrder": 114,
+      "line": 733,
+      "refs": [
+        "check_match_default_result",
+        "check_term"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_match_applied",
+      "sourceOrder": 115,
+      "line": 738,
+      "refs": [
+        "mat_branch_goal",
+        "canonical_name",
+        "check_match_head_result",
+        "check_term",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_match_family_equal",
+      "sourceOrder": 116,
+      "line": 748,
+      "refs": [
+        "check_match_applied",
+        "apply_prefix",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_match_family_result",
+      "sourceOrder": 117,
+      "line": 751,
+      "refs": [
+        "check_match_family_equal",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_match_global",
+      "sourceOrder": 118,
+      "line": 756,
+      "refs": [
+        "check_match_family_result",
+        "constructor_family"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_match_constructor",
+      "sourceOrder": 119,
+      "line": 760,
+      "refs": [
+        "check_match_global",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_match_unexcluded",
+      "sourceOrder": 120,
+      "line": 765,
+      "refs": [
+        "fail",
+        "check_match_constructor",
+        "lookup_global"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_match_input_view",
+      "sourceOrder": 121,
+      "line": 770,
+      "refs": [
+        "check_match_unexcluded",
+        "has_canonical_name",
+        "resolve_family_key",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_match_goal_view",
+      "sourceOrder": 122,
+      "line": 776,
+      "refs": [
+        "check_match_input_view",
+        "whnf",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_match",
+      "sourceOrder": 123,
+      "line": 782,
+      "refs": [
+        "check_match_goal_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "scrutinee_variable_index",
+      "sourceOrder": 124,
+      "line": 786,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "match_scrutinee_binding",
+      "sourceOrder": 125,
+      "line": 790,
+      "refs": [
+        "match_scrutinees_valid"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "match_scrutinees_valid",
+      "sourceOrder": 126,
+      "line": 795,
+      "refs": [
+        "match_scrutinee_binding",
+        "lookup_binding"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "replace_free_terms",
+      "sourceOrder": 127,
+      "line": 804,
+      "refs": [
+        "replace_free_term",
+        "replace_free_terms"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "replace_free_cases",
+      "sourceOrder": 128,
+      "line": 809,
+      "refs": [
+        "replace_free_term",
+        "replace_free_cases"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "replace_free_term",
+      "sourceOrder": 129,
+      "line": 817,
+      "refs": [
+        "replace_free_term",
+        "replace_free_terms",
+        "replace_free_cases"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "optional_root_pattern_quantity_allowed",
+      "sourceOrder": 130,
+      "line": 845,
+      "refs": [
+        "root_pattern_quantity_allowed"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "optional_source_quantity",
+      "sourceOrder": 131,
+      "line": 850,
+      "refs": [
+        "binding_quantity_or_one"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "replace_match_expected",
+      "sourceOrder": 132,
+      "line": 855,
+      "refs": [
+        "replace_free_term"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_case_body_result",
+      "sourceOrder": 133,
+      "line": 860,
+      "refs": [
+        "check_body_cases",
+        "canonical_name"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_case_pattern_result",
+      "sourceOrder": 134,
+      "line": 865,
+      "refs": [
+        "pattern_value",
+        "replace_match_expected",
+        "check_body_case_body_result",
+        "check_term"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_case_constructor_uses",
+      "sourceOrder": 135,
+      "line": 873,
+      "refs": [
+        "check_body_case_pattern_result",
+        "check_pattern_typed",
+        "optional_source_quantity",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_case_constructor_seen",
+      "sourceOrder": 136,
+      "line": 878,
+      "refs": [
+        "fail",
+        "check_body_case_constructor_uses",
+        "pattern_uses_valid"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_case_catchall_result",
+      "sourceOrder": 137,
+      "line": 881,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_case_catchall_usage",
+      "sourceOrder": 138,
+      "line": 886,
+      "refs": [
+        "check_body_case_catchall_result",
+        "check_term",
+        "replace_match_expected",
+        "pattern_value",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_case_catchall",
+      "sourceOrder": 139,
+      "line": 891,
+      "refs": [
+        "check_body_case_catchall_usage",
+        "optional_root_pattern_quantity_allowed",
+        "quantity_fits",
+        "use_count_with_globals",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_case_pattern",
+      "sourceOrder": 140,
+      "line": 896,
+      "refs": [
+        "check_body_case_constructor_seen",
+        "has_canonical_name",
+        "check_body_case_catchall"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_case_term",
+      "sourceOrder": 141,
+      "line": 901,
+      "refs": [
+        "check_body_case_pattern",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_cases",
+      "sourceOrder": 142,
+      "line": 906,
+      "refs": [
+        "residual_has_reachable_constructor",
+        "fail",
+        "check_body_case_term"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_matrix_result",
+      "sourceOrder": 143,
+      "line": 911,
+      "refs": [
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_cases_result",
+      "sourceOrder": 144,
+      "line": 914,
+      "refs": [
+        "check_body_matrix_result",
+        "matrix_covers"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_match_type_view",
+      "sourceOrder": 145,
+      "line": 919,
+      "refs": [
+        "check_body_cases_result",
+        "check_body_cases",
+        "resolve_family_key",
+        "scrutinee_variable_index",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_match_type",
+      "sourceOrder": 146,
+      "line": 925,
+      "refs": [
+        "check_body_match_type_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_scrutinee_types_rest",
+      "sourceOrder": 147,
+      "line": 928,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_scrutinee_types_result",
+      "sourceOrder": 148,
+      "line": 933,
+      "refs": [
+        "infer_scrutinee_types_rest",
+        "infer_scrutinee_types"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "infer_scrutinee_types",
+      "sourceOrder": 149,
+      "line": 938,
+      "refs": [
+        "infer_scrutinee_types_result",
+        "infer"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "family_constructor_keys_for_type",
+      "sourceOrder": 150,
+      "line": 944,
+      "refs": [
+        "canonical_name",
+        "has_canonical_name",
+        "family_equal",
+        "family_constructor_keys_inner"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "family_constructor_keys_inner",
+      "sourceOrder": 151,
+      "line": 953,
+      "refs": [
+        "family_constructor_keys_for_type",
+        "constructor_family",
+        "family_constructor_keys_inner"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "family_constructor_keys",
+      "sourceOrder": 152,
+      "line": 961,
+      "refs": [
+        "family_constructor_keys_inner"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "residual_has_reachable_constructor",
+      "sourceOrder": 153,
+      "line": 964,
+      "refs": [
+        "constructors_for_type"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_pattern_reachable_result",
+      "sourceOrder": 154,
+      "line": 968,
+      "refs": [
+        "constructor_result_possible"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_pattern_reachable",
+      "sourceOrder": 155,
+      "line": 973,
+      "refs": [
+        "constructor_pattern_reachable_result",
+        "check_pattern_typed"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "index_terms_compatible_view",
+      "sourceOrder": 156,
+      "line": 977,
+      "refs": [
+        "index_term_lists_compatible",
+        "family_equal"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "index_terms_compatible",
+      "sourceOrder": 157,
+      "line": 989,
+      "refs": [
+        "equal_term",
+        "index_terms_compatible_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "index_term_lists_compatible",
+      "sourceOrder": 158,
+      "line": 992,
+      "refs": [
+        "index_terms_compatible",
+        "index_term_lists_compatible"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_result_term",
+      "sourceOrder": 159,
+      "line": 999,
+      "refs": [
+        "family_equal",
+        "index_term_lists_compatible"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_result_applied",
+      "sourceOrder": 160,
+      "line": 1005,
+      "refs": [
+        "constructor_result_term",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_result_global",
+      "sourceOrder": 161,
+      "line": 1010,
+      "refs": [
+        "constructor_result_applied",
+        "apply_prefix"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_result_lookup",
+      "sourceOrder": 162,
+      "line": 1014,
+      "refs": [
+        "constructor_result_global"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_result_view",
+      "sourceOrder": 163,
+      "line": 1019,
+      "refs": [
+        "constructor_result_lookup",
+        "lookup_global"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_result_possible",
+      "sourceOrder": 164,
+      "line": 1024,
+      "refs": [
+        "constructor_result_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "filter_reachable_result",
+      "sourceOrder": 165,
+      "line": 1028,
+      "refs": [
+        "filter_reachable_constructors"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "filter_reachable_constructors",
+      "sourceOrder": 166,
+      "line": 1033,
+      "refs": [
+        "filter_reachable_result",
+        "constructor_pattern_reachable"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructors_for_type_view",
+      "sourceOrder": 167,
+      "line": 1038,
+      "refs": [
+        "resolve_family_key",
+        "filter_reachable_constructors",
+        "family_constructor_keys"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructors_for_type",
+      "sourceOrder": 168,
+      "line": 1045,
+      "refs": [
+        "constructors_for_type_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "collect_constructor_field_types_view",
+      "sourceOrder": 169,
+      "line": 1048,
+      "refs": [
+        "collect_constructor_field_types_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "collect_constructor_field_types",
+      "sourceOrder": 170,
+      "line": 1056,
+      "refs": [
+        "collect_constructor_field_types_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_field_types_applied",
+      "sourceOrder": 171,
+      "line": 1059,
+      "refs": [
+        "collect_constructor_field_types"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_field_types_family",
+      "sourceOrder": 172,
+      "line": 1064,
+      "refs": [
+        "family_equal",
+        "constructor_field_types_applied",
+        "apply_prefix"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_field_types_global",
+      "sourceOrder": 173,
+      "line": 1070,
+      "refs": [
+        "constructor_field_types_family",
+        "constructor_family"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_field_types_lookup",
+      "sourceOrder": 174,
+      "line": 1074,
+      "refs": [
+        "constructor_field_types_global"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_field_types_view",
+      "sourceOrder": 175,
+      "line": 1079,
+      "refs": [
+        "constructor_field_types_lookup",
+        "lookup_global"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_field_types_for_type",
+      "sourceOrder": 176,
+      "line": 1084,
+      "refs": [
+        "constructor_field_types_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "wildcard_patterns",
+      "sourceOrder": 177,
+      "line": 1087,
+      "refs": [
+        "wildcard_patterns"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "specialize_pattern_rows",
+      "sourceOrder": 178,
+      "line": 1092,
+      "refs": [
+        "specialize_pattern_rows",
+        "wildcard_patterns",
+        "canonical_name"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "matrix_covers_recursive_result",
+      "sourceOrder": 179,
+      "line": 1106,
+      "refs": [
+        "matrix_covers_constructors"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "matrix_covers_constructors",
+      "sourceOrder": 180,
+      "line": 1111,
+      "refs": [
+        "constructor_field_types_for_type",
+        "specialize_pattern_rows",
+        "matrix_covers_recursive_result",
+        "matrix_covers"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "matrix_covers_types",
+      "sourceOrder": 181,
+      "line": 1120,
+      "refs": [
+        "matrix_covers_constructors",
+        "constructors_for_type"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "matrix_covers",
+      "sourceOrder": 182,
+      "line": 1125,
+      "refs": [
+        "all_variable_patterns",
+        "matrix_covers_types"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "all_variable_patterns",
+      "sourceOrder": 183,
+      "line": 1131,
+      "refs": [
+        "all_variable_patterns"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_pattern_fields_empty_view",
+      "sourceOrder": 184,
+      "line": 1139,
+      "refs": [
+        "span_file"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_pattern_fields_recursive_result",
+      "sourceOrder": 185,
+      "line": 1144,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "check_pattern_fields_typed_result",
+      "sourceOrder": 186,
+      "line": 1149,
+      "refs": [
+        "check_pattern_fields_recursive_result",
+        "check_pattern_typed_fields"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_pattern_fields_view",
+      "sourceOrder": 187,
+      "line": 1154,
+      "refs": [
+        "constructor_field_demand",
+        "check_pattern_fields_typed_result",
+        "check_pattern_typed",
+        "span_file"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_pattern_typed_fields",
+      "sourceOrder": 188,
+      "line": 1162,
+      "refs": [
+        "check_pattern_fields_empty_view",
+        "whnf",
+        "check_pattern_fields_view"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "binding_quantity_result",
+      "sourceOrder": 189,
+      "line": 1167,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "binding_quantity_or_one",
+      "sourceOrder": 190,
+      "line": 1174,
+      "refs": [
+        "binding_quantity_result",
+        "lookup_binding"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "maybe_quantity_or_one",
+      "sourceOrder": 191,
+      "line": 1177,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "check_pattern_variable_result",
+      "sourceOrder": 192,
+      "line": 1182,
+      "refs": [
+        "pattern_value",
+        "span_file"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_pattern_variable_field_quantity",
+      "sourceOrder": 193,
+      "line": 1185,
+      "refs": [
+        "check_pattern_variable_result",
+        "quantity_fits",
+        "pattern_value"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_pattern_result_view",
+      "sourceOrder": 194,
+      "line": 1190,
+      "refs": [
+        "span_file",
+        "fits_term",
+        "canonical_name"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_pattern_fields_result",
+      "sourceOrder": 195,
+      "line": 1195,
+      "refs": [
+        "check_pattern_result_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_pattern_applied_result",
+      "sourceOrder": 196,
+      "line": 1200,
+      "refs": [
+        "span_file",
+        "check_pattern_fields_result",
+        "check_pattern_typed_fields",
+        "maybe_quantity_or_one"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_pattern_family_result",
+      "sourceOrder": 197,
+      "line": 1205,
+      "refs": [
+        "span_file",
+        "family_equal",
+        "check_pattern_applied_result",
+        "apply_prefix"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_pattern_global",
+      "sourceOrder": 198,
+      "line": 1211,
+      "refs": [
+        "check_pattern_family_result",
+        "constructor_family"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_pattern_global_result",
+      "sourceOrder": 199,
+      "line": 1215,
+      "refs": [
+        "span_file",
+        "check_pattern_global"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_pattern_exclusion_result",
+      "sourceOrder": 200,
+      "line": 1220,
+      "refs": [
+        "span_file",
+        "check_pattern_global_result",
+        "lookup_global"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_pattern_typed_view",
+      "sourceOrder": 201,
+      "line": 1223,
+      "refs": [
+        "check_pattern_exclusion_result",
+        "has_canonical_name",
+        "span_file"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_pattern_typed",
+      "sourceOrder": 202,
+      "line": 1228,
+      "refs": [
+        "check_pattern_variable_field_quantity",
+        "check_pattern_typed_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "pattern_source_span",
+      "sourceOrder": 203,
+      "line": 1233,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "root_pattern_quantity_result",
+      "sourceOrder": 204,
+      "line": 1238,
+      "refs": [
+        "pattern_quantity_allowed"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "root_pattern_quantity_allowed",
+      "sourceOrder": 205,
+      "line": 1245,
+      "refs": [
+        "root_pattern_quantity_result",
+        "lookup_binding"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "pattern_uses_valid",
+      "sourceOrder": 206,
+      "line": 1251,
+      "refs": [
+        "quantity_fits",
+        "use_count_with_globals",
+        "pattern_uses_valid_list"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "pattern_uses_valid_list",
+      "sourceOrder": 207,
+      "line": 1257,
+      "refs": [
+        "pattern_uses_valid",
+        "pattern_uses_valid_list"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "maybe_shift_index",
+      "sourceOrder": 208,
+      "line": 1263,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "replace_match_types",
+      "sourceOrder": 209,
+      "line": 1268,
+      "refs": [
+        "replace_free_terms",
+        "shift_terms"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_pattern_vector_typed",
+      "sourceOrder": 210,
+      "line": 1273,
+      "refs": [
+        "pattern_value",
+        "replace_match_expected",
+        "maybe_shift_index",
+        "replace_match_types",
+        "check_body_pattern_vector"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_pattern_vector",
+      "sourceOrder": 211,
+      "line": 1282,
+      "refs": [
+        "check_term",
+        "scrutinee_variable_index",
+        "optional_root_pattern_quantity_allowed",
+        "maybe_shift_index",
+        "pattern_uses_valid",
+        "check_body_pattern_vector_typed",
+        "check_pattern_typed",
+        "optional_source_quantity",
+        "fail",
+        "pattern_source_span"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_pattern_rows_result",
+      "sourceOrder": 212,
+      "line": 1290,
+      "refs": [
+        "check_body_pattern_rows"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_pattern_rows_catchall",
+      "sourceOrder": 213,
+      "line": 1295,
+      "refs": [
+        "fail",
+        "check_body_pattern_rows_result",
+        "check_body_pattern_vector"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_pattern_rows_length",
+      "sourceOrder": 214,
+      "line": 1298,
+      "refs": [
+        "check_body_pattern_rows_catchall",
+        "all_variable_patterns",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_pattern_rows_case",
+      "sourceOrder": 215,
+      "line": 1301,
+      "refs": [
+        "check_body_pattern_rows_length",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_pattern_rows",
+      "sourceOrder": 216,
+      "line": 1306,
+      "refs": [
+        "check_body_pattern_rows_case"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_match_many_rows_result",
+      "sourceOrder": 217,
+      "line": 1311,
+      "refs": [
+        "matrix_covers",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_match_many_types_result",
+      "sourceOrder": 218,
+      "line": 1316,
+      "refs": [
+        "check_body_match_many_rows_result",
+        "check_body_pattern_rows"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_match_many",
+      "sourceOrder": 219,
+      "line": 1321,
+      "refs": [
+        "check_body_match_many_types_result",
+        "infer_scrutinee_types"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_match_first_result",
+      "sourceOrder": 220,
+      "line": 1324,
+      "refs": [
+        "check_body_match_type"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_match_scrutinees",
+      "sourceOrder": 221,
+      "line": 1329,
+      "refs": [
+        "fail",
+        "check_body_match_first_result",
+        "infer",
+        "check_body_match_many"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_match_valid",
+      "sourceOrder": 222,
+      "line": 1337,
+      "refs": [
+        "fail",
+        "check_body_match_scrutinees"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_body_match",
+      "sourceOrder": 223,
+      "line": 1342,
+      "refs": [
+        "check_body_match_valid",
+        "match_scrutinees_valid"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "rewrite_body_result",
+      "sourceOrder": 224,
+      "line": 1344,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "rewrite_body_type_view",
+      "sourceOrder": 225,
+      "line": 1349,
+      "refs": [
+        "equal_term",
+        "rewrite_body_result",
+        "check_term",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "rewrite_left_applied_result",
+      "sourceOrder": 226,
+      "line": 1354,
+      "refs": [
+        "rewrite_body_type_view",
+        "whnf",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "rewrite_fits_result",
+      "sourceOrder": 227,
+      "line": 1359,
+      "refs": [
+        "rewrite_left_applied_result",
+        "apply_prefix",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "rewrite_equation_applied_result",
+      "sourceOrder": 228,
+      "line": 1362,
+      "refs": [
+        "rewrite_fits_result",
+        "fits_term",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "rewrite_proof_result",
+      "sourceOrder": 229,
+      "line": 1367,
+      "refs": [
+        "rewrite_equation_applied_result",
+        "apply_prefix"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "rewrite_equation_view",
+      "sourceOrder": 230,
+      "line": 1372,
+      "refs": [
+        "rewrite_proof_result",
+        "check_term",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "rewrite_equation_result",
+      "sourceOrder": 231,
+      "line": 1384,
+      "refs": [
+        "rewrite_equation_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_rewrite",
+      "sourceOrder": 232,
+      "line": 1389,
+      "refs": [
+        "rewrite_equation_result",
+        "infer"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "lambda_quantity",
+      "sourceOrder": 233,
+      "line": 1392,
+      "refs": [
+        "same_quantity",
+        "lambda_quantity_mismatch"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "lambda_quantity_mismatch",
+      "sourceOrder": 234,
+      "line": 1398,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "lambda_promotes",
+      "sourceOrder": 235,
+      "line": 1403,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "lambda_domain_valid",
+      "sourceOrder": 236,
+      "line": 1408,
+      "refs": [
+        "lambda_domain_valid_result",
+        "infer"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "lambda_domain_valid_result",
+      "sourceOrder": 237,
+      "line": 1411,
+      "refs": [
+        "fits_term"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_lambda_domain_result",
+      "sourceOrder": 238,
+      "line": 1415,
+      "refs": [
+        "fail",
+        "check_lambda_body_result"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_lambda_promotes_result",
+      "sourceOrder": 239,
+      "line": 1418,
+      "refs": [
+        "check_lambda_domain_result",
+        "lambda_domain_valid",
+        "check_lambda_body_result"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_lambda_quantity_result",
+      "sourceOrder": 240,
+      "line": 1421,
+      "refs": [
+        "fail",
+        "check_lambda_promotes_result",
+        "lambda_promotes"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_lambda_body",
+      "sourceOrder": 241,
+      "line": 1426,
+      "refs": [
+        "check_lambda_quantity_result",
+        "lambda_quantity"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_lambda_body_use",
+      "sourceOrder": 242,
+      "line": 1429,
+      "refs": [
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_lambda_body_result",
+      "sourceOrder": 243,
+      "line": 1432,
+      "refs": [
+        "check_lambda_body_use",
+        "quantity_fits",
+        "use_count_with_expected"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_term_lambda_view",
+      "sourceOrder": 244,
+      "line": 1437,
+      "refs": [
+        "check_lambda_body",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_term_constructor_apply",
+      "sourceOrder": 245,
+      "line": 1442,
+      "refs": [
+        "check_ctr_fields",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_term_constructor_global",
+      "sourceOrder": 246,
+      "line": 1447,
+      "refs": [
+        "check_term_constructor_apply",
+        "apply_prefix"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_term_constructor_global_result",
+      "sourceOrder": 247,
+      "line": 1451,
+      "refs": [
+        "check_term_constructor_global",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_term_constructor_allowed",
+      "sourceOrder": 248,
+      "line": 1456,
+      "refs": [
+        "fail",
+        "check_term_constructor_global_result",
+        "lookup_global"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_term_constructor_view",
+      "sourceOrder": 249,
+      "line": 1461,
+      "refs": [
+        "check_term_constructor_allowed",
+        "has_canonical_name",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_term_absurd_residual",
+      "sourceOrder": 250,
+      "line": 1466,
+      "refs": [
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_term_absurd_input_view",
+      "sourceOrder": 251,
+      "line": 1469,
+      "refs": [
+        "check_term_absurd_residual",
+        "residual_has_reachable_constructor",
+        "resolve_family_key",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_term_absurd_view",
+      "sourceOrder": 252,
+      "line": 1474,
+      "refs": [
+        "check_term_absurd_input_view",
+        "whnf",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_term_refl_equal",
+      "sourceOrder": 253,
+      "line": 1479,
+      "refs": [
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_term_refl_view",
+      "sourceOrder": 254,
+      "line": 1482,
+      "refs": [
+        "check_term_refl_equal",
+        "equal_term",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_term_inferred",
+      "sourceOrder": 255,
+      "line": 1487,
+      "refs": [
+        "fits_term",
+        "fail",
+        "term_span"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_term",
+      "sourceOrder": 256,
+      "line": 1492,
+      "refs": [
+        "fail",
+        "check_term_lambda_view",
+        "whnf",
+        "check_term_constructor_view",
+        "check_match",
+        "check_term_absurd_view",
+        "check_term_refl_view",
+        "check_rewrite",
+        "check_body_match",
+        "check_term",
+        "check_term_inferred",
+        "infer"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "usage_get",
+      "sourceOrder": 257,
+      "line": 1513,
+      "refs": [
+        "usage_get"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "usage_set",
+      "sourceOrder": 258,
+      "line": 1520,
+      "refs": [
+        "usage_set"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "usage_merge",
+      "sourceOrder": 259,
+      "line": 1527,
+      "refs": [
+        "usage_get",
+        "usage_merge_quantity",
+        "usage_merge",
+        "usage_set"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "usage_merge_quantity",
+      "sourceOrder": 260,
+      "line": 1537,
+      "refs": [
+        "quantity_alternative",
+        "quantity_join"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "function_type_of_binding_result",
+      "sourceOrder": 261,
+      "line": 1542,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "function_type_of_global_result",
+      "sourceOrder": 262,
+      "line": 1549,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "function_type_of_application_view",
+      "sourceOrder": 263,
+      "line": 1556,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "function_type_of_application_result",
+      "sourceOrder": 264,
+      "line": 1561,
+      "refs": [
+        "function_type_of_application_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "function_type_of",
+      "sourceOrder": 265,
+      "line": 1566,
+      "refs": [
+        "function_type_of",
+        "function_type_of_binding_result",
+        "lookup_binding",
+        "function_type_of_global_result",
+        "lookup_global",
+        "function_type_of_application_result"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "function_quantity_from_type_view",
+      "sourceOrder": 266,
+      "line": 1576,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "function_quantity_from_type",
+      "sourceOrder": 267,
+      "line": 1581,
+      "refs": [
+        "function_quantity_from_type_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "function_argument_quantity_result",
+      "sourceOrder": 268,
+      "line": 1584,
+      "refs": [
+        "function_quantity_from_type"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "function_argument_quantity",
+      "sourceOrder": 269,
+      "line": 1589,
+      "refs": [
+        "function_argument_quantity_result",
+        "function_type_of"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "collect_telescope_quantities_view",
+      "sourceOrder": 270,
+      "line": 1592,
+      "refs": [
+        "term_span",
+        "collect_telescope_quantities_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "collect_telescope_quantities",
+      "sourceOrder": 271,
+      "line": 1599,
+      "refs": [
+        "collect_telescope_quantities_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "family_parameter_quantities_result",
+      "sourceOrder": 272,
+      "line": 1602,
+      "refs": [
+        "collect_telescope_quantities"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "family_parameter_quantities",
+      "sourceOrder": 273,
+      "line": 1609,
+      "refs": [
+        "family_parameter_quantities_result",
+        "lookup_global"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_field_quantities_family_global",
+      "sourceOrder": 274,
+      "line": 1612,
+      "refs": [
+        "initial_telescope_count",
+        "collect_telescope_quantities",
+        "drop_telescope"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_field_quantities_family",
+      "sourceOrder": 275,
+      "line": 1621,
+      "refs": [
+        "constructor_field_quantities_family_global",
+        "lookup_global",
+        "resolve_family_key"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_field_quantities_global",
+      "sourceOrder": 276,
+      "line": 1626,
+      "refs": [
+        "constructor_field_quantities_family",
+        "constructor_family"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_field_quantities_result",
+      "sourceOrder": 277,
+      "line": 1630,
+      "refs": [
+        "constructor_field_quantities_global"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_field_quantities",
+      "sourceOrder": 278,
+      "line": 1635,
+      "refs": [
+        "constructor_field_quantities_result",
+        "lookup_global"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "usage_unknown_type",
+      "sourceOrder": 279,
+      "line": 1638,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "usage_inferred_type",
+      "sourceOrder": 280,
+      "line": 1641,
+      "refs": [
+        "usage_unknown_type"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "usage_let_env",
+      "sourceOrder": 281,
+      "line": 1646,
+      "refs": [
+        "usage_inferred_type",
+        "infer",
+        "term_span",
+        "usage_let_env"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "usage_local_env",
+      "sourceOrder": 282,
+      "line": 1654,
+      "refs": [
+        "usage_inferred_type",
+        "infer",
+        "term_span",
+        "usage_local_env"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "usage_pattern_env_result",
+      "sourceOrder": 283,
+      "line": 1663,
+      "refs": [
+        "pattern_value",
+        "replace_match_types",
+        "usage_pattern_env"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "usage_pattern_env",
+      "sourceOrder": 284,
+      "line": 1671,
+      "refs": [
+        "maybe_shift_index",
+        "scrutinee_variable_index",
+        "optional_source_quantity",
+        "usage_pattern_env_result",
+        "check_pattern_typed"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_usage_expected_view",
+      "sourceOrder": 285,
+      "line": 1681,
+      "refs": [
+        "resolve_family_key",
+        "apply_prefix",
+        "drop_telescope"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_usage_expected",
+      "sourceOrder": 286,
+      "line": 1688,
+      "refs": [
+        "constructor_usage_expected_view",
+        "whnf",
+        "drop_telescope"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_usage_family_global",
+      "sourceOrder": 287,
+      "line": 1693,
+      "refs": [
+        "initial_telescope_count",
+        "constructor_usage_expected"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_usage_family",
+      "sourceOrder": 288,
+      "line": 1702,
+      "refs": [
+        "constructor_usage_family_global",
+        "lookup_global",
+        "resolve_family_key"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_usage_global",
+      "sourceOrder": 289,
+      "line": 1708,
+      "refs": [
+        "constructor_usage_family",
+        "constructor_family"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_usage_global_result",
+      "sourceOrder": 290,
+      "line": 1712,
+      "refs": [
+        "constructor_usage_global"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_usage_field_type",
+      "sourceOrder": 291,
+      "line": 1717,
+      "refs": [
+        "constructor_usage_global_result",
+        "lookup_global"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "term_usage_map_constructor_view",
+      "sourceOrder": 292,
+      "line": 1720,
+      "refs": [
+        "constructor_argument_usage",
+        "usage_merge",
+        "term_usage_map_constructor_args",
+        "term_usage_map_list"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_argument_usage",
+      "sourceOrder": 293,
+      "line": 1727,
+      "refs": [
+        "term_usage_map"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "term_usage_map_constructor_args",
+      "sourceOrder": 294,
+      "line": 1732,
+      "refs": [
+        "term_usage_map_constructor_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "shift_expected",
+      "sourceOrder": 295,
+      "line": 1737,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "term_usage_map_lambda_quantity",
+      "sourceOrder": 296,
+      "line": 1742,
+      "refs": [
+        "term_usage_map",
+        "usage_unknown_type"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "term_usage_map_lambda_view",
+      "sourceOrder": 297,
+      "line": 1749,
+      "refs": [
+        "term_usage_map_lambda_quantity",
+        "lambda_quantity",
+        "usage_unknown_type",
+        "term_usage_map"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "term_usage_map_lambda_expected",
+      "sourceOrder": 298,
+      "line": 1757,
+      "refs": [
+        "term_usage_map_lambda_view",
+        "whnf",
+        "usage_unknown_type",
+        "term_usage_map"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "term_usage_map_argument_expected_view",
+      "sourceOrder": 299,
+      "line": 1764,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "term_usage_map_argument_expected",
+      "sourceOrder": 300,
+      "line": 1769,
+      "refs": [
+        "term_usage_map_argument_expected_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "term_usage_map_application_quantity",
+      "sourceOrder": 301,
+      "line": 1774,
+      "refs": [
+        "term_usage_map",
+        "term_usage_map_argument_expected",
+        "function_type_of",
+        "usage_merge"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "term_usage_map_family_result",
+      "sourceOrder": 302,
+      "line": 1781,
+      "refs": [
+        "term_usage_map",
+        "usage_merge",
+        "term_usage_map_list"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "term_usage_map_constructor_result",
+      "sourceOrder": 303,
+      "line": 1786,
+      "refs": [
+        "term_usage_map_constructor_args",
+        "term_usage_map_quantified_list",
+        "constructor_field_quantities"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "term_usage_map_scrutinee_result",
+      "sourceOrder": 304,
+      "line": 1791,
+      "refs": [
+        "usage_merge",
+        "term_usage_map_cases"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "substituted_usage_expected",
+      "sourceOrder": 305,
+      "line": 1795,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "term_usage_map",
+      "sourceOrder": 306,
+      "line": 1800,
+      "refs": [
+        "term_usage_map",
+        "substituted_usage_expected",
+        "usage_merge",
+        "term_usage_map_lambda_expected",
+        "usage_let_env",
+        "shift_expected",
+        "term_usage_map_quantified_list",
+        "term_usage_map_application_quantity",
+        "function_argument_quantity",
+        "term_usage_map_family_result",
+        "lower_family_sugar",
+        "family_parameter_quantities",
+        "resolve_family_key",
+        "term_usage_map_constructor_result",
+        "constructor_usage_field_type",
+        "term_usage_map_list",
+        "term_usage_map_scrutinee_result",
+        "infer_scrutinee_types",
+        "usage_local_env"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "usage_expected_known",
+      "sourceOrder": 307,
+      "line": 1842,
+      "refs": [
+        "maybe_shift_index",
+        "scrutinee_variable_index",
+        "pattern_value",
+        "replace_match_expected",
+        "usage_expected_known"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "usage_expected_patterns",
+      "sourceOrder": 308,
+      "line": 1853,
+      "refs": [
+        "usage_expected_known"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "term_usage_map_cases",
+      "sourceOrder": 309,
+      "line": 1858,
+      "refs": [
+        "term_usage_map_case",
+        "usage_merge",
+        "term_usage_map_cases"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "term_usage_map_case",
+      "sourceOrder": 310,
+      "line": 1865,
+      "refs": [
+        "usage_pattern_env",
+        "usage_expected_patterns",
+        "term_usage_map"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "term_usage_map_list",
+      "sourceOrder": 311,
+      "line": 1872,
+      "refs": [
+        "usage_merge",
+        "term_usage_map",
+        "term_usage_map_list"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "term_usage_map_quantified_list",
+      "sourceOrder": 312,
+      "line": 1877,
+      "refs": [
+        "term_usage_map_quantified_list",
+        "usage_merge",
+        "term_usage_map",
+        "term_usage_map_list"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "use_count_with_globals",
+      "sourceOrder": 313,
+      "line": 1887,
+      "refs": [
+        "usage_get",
+        "term_usage_map"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "use_count_with_context",
+      "sourceOrder": 314,
+      "line": 1890,
+      "refs": [
+        "usage_get",
+        "term_usage_map"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "use_count_with_expected",
+      "sourceOrder": 315,
+      "line": 1893,
+      "refs": [
+        "usage_get",
+        "term_usage_map"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "binder_count",
+      "sourceOrder": 316,
+      "line": 1897,
+      "refs": [
+        "binder_count"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_binder_uses",
+      "sourceOrder": 317,
+      "line": 1902,
+      "refs": [
+        "quantity_fits",
+        "use_count_with_expected",
+        "check_binder_uses",
+        "span_file"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "binders_env",
+      "sourceOrder": 318,
+      "line": 1914,
+      "refs": [
+        "binders_env"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "binders_type",
+      "sourceOrder": 319,
+      "line": 1922,
+      "refs": [
+        "binders_type"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "parameter_vars",
+      "sourceOrder": 320,
+      "line": 1930,
+      "refs": [
+        "parameter_vars"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "shift_terms",
+      "sourceOrder": 321,
+      "line": 1942,
+      "refs": [
+        "shift_terms"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "apply_prefix",
+      "sourceOrder": 322,
+      "line": 1947,
+      "refs": [
+        "apply_prefix"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_ctr_fields_result",
+      "sourceOrder": 323,
+      "line": 1956,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "check_ctr_fields_arg",
+      "sourceOrder": 324,
+      "line": 1961,
+      "refs": [
+        "check_ctr_fields_result",
+        "check_ctr_fields"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_ctr_fields_view",
+      "sourceOrder": 325,
+      "line": 1966,
+      "refs": [
+        "check_ctr_fields_arg",
+        "check_term",
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_ctr_fields_fit",
+      "sourceOrder": 326,
+      "line": 1971,
+      "refs": [
+        "fail"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_ctr_fields",
+      "sourceOrder": 327,
+      "line": 1974,
+      "refs": [
+        "check_ctr_fields_fit",
+        "fits_term",
+        "check_ctr_fields_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_live_fields_result",
+      "sourceOrder": 328,
+      "line": 1979,
+      "refs": [
+        "check_live_fields"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_live_fields",
+      "sourceOrder": 329,
+      "line": 1984,
+      "refs": [
+        "live_field_goal",
+        "check_live_fields_result",
+        "check_term",
+        "span_file"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "live_field_goal",
+      "sourceOrder": 330,
+      "line": 1994,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "check_constructors_fields_result",
+      "sourceOrder": 331,
+      "line": 1999,
+      "refs": [
+        "canonical_key",
+        "canonicalize_term",
+        "check_constructors"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_constructors_type_result",
+      "sourceOrder": 332,
+      "line": 2007,
+      "refs": [
+        "check_constructors_fields_result",
+        "check_live_fields",
+        "binders_env",
+        "span_file"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_constructors_unique",
+      "sourceOrder": 333,
+      "line": 2013,
+      "refs": [
+        "span_file",
+        "parameter_vars",
+        "binder_count",
+        "shift_terms",
+        "canonical_key",
+        "binders_type",
+        "check_constructors_type_result",
+        "infer"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_constructors",
+      "sourceOrder": 334,
+      "line": 2023,
+      "refs": [
+        "check_constructors_unique",
+        "lookup_global",
+        "canonical_key"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_type_decl_result",
+      "sourceOrder": 335,
+      "line": 2032,
+      "refs": [
+        "check_constructors",
+        "canonical_key",
+        "span_file"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_import_foreign_head",
+      "sourceOrder": 336,
+      "line": 2038,
+      "refs": [
+        "canonical_name",
+        "canonical_key",
+        "canonicalize_term",
+        "span_file"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_import_type_result",
+      "sourceOrder": 337,
+      "line": 2044,
+      "refs": [
+        "check_import_foreign_head",
+        "foreign_head",
+        "span_file"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_type_decl",
+      "sourceOrder": 338,
+      "line": 2049,
+      "refs": [
+        "binders_type",
+        "canonical_key",
+        "canonicalize_term",
+        "check_type_decl_result",
+        "infer"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "foreign_head",
+      "sourceOrder": 339,
+      "line": 2057,
+      "refs": [
+        "foreign_head"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_import_definition",
+      "sourceOrder": 340,
+      "line": 2066,
+      "refs": [
+        "binders_type",
+        "check_import_type_result",
+        "infer",
+        "span_file"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "application_argument_bangs_valid_terms",
+      "sourceOrder": 341,
+      "line": 2073,
+      "refs": [
+        "application_argument_bangs_valid",
+        "application_argument_bangs_valid_terms"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "application_argument_bangs_valid",
+      "sourceOrder": 342,
+      "line": 2078,
+      "refs": [
+        "application_argument_bangs_valid",
+        "application_argument_bangs_valid_terms",
+        "application_bangs_valid"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "application_has_bang",
+      "sourceOrder": 343,
+      "line": 2102,
+      "refs": [
+        "application_has_bang"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "application_bangs_valid",
+      "sourceOrder": 344,
+      "line": 2110,
+      "refs": [
+        "application_bangs_valid",
+        "application_argument_bangs_valid"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "application_type_view",
+      "sourceOrder": 345,
+      "line": 2119,
+      "refs": [
+        "application_type_view"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "application_head",
+      "sourceOrder": 346,
+      "line": 2127,
+      "refs": [
+        "application_head"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "application_args",
+      "sourceOrder": 347,
+      "line": 2135,
+      "refs": [
+        "application_args"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "strip_order_annotation",
+      "sourceOrder": 348,
+      "line": 2142,
+      "refs": [
+        "strip_order_annotation"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "term_descend",
+      "sourceOrder": 349,
+      "line": 2147,
+      "refs": [
+        "term_descend_raw",
+        "strip_order_annotation"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "term_descend_raw",
+      "sourceOrder": 350,
+      "line": 2150,
+      "refs": [
+        "term_descend_live"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "term_descend_live",
+      "sourceOrder": 351,
+      "line": 2155,
+      "refs": [
+        "term_descend_constructor_result",
+        "term_descend_list",
+        "term_is_subterm"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "term_descend_constructor_result",
+      "sourceOrder": 352,
+      "line": 2164,
+      "refs": [
+        "term_is_subterm"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "term_descend_list_result",
+      "sourceOrder": 353,
+      "line": 2169,
+      "refs": [
+        "term_descend_list"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "term_descend_list",
+      "sourceOrder": 354,
+      "line": 2175,
+      "refs": [
+        "term_descend_list_result",
+        "term_descend"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "term_is_subterm_result",
+      "sourceOrder": 355,
+      "line": 2181,
+      "refs": [
+        "term_is_subterm"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "term_is_subterm",
+      "sourceOrder": 356,
+      "line": 2186,
+      "refs": [
+        "term_is_subterm_result",
+        "term_descend"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "recursive_call_decrease_result",
+      "sourceOrder": 357,
+      "line": 2191,
+      "refs": [
+        "recursive_call_decreases"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "recursive_call_decreases",
+      "sourceOrder": 358,
+      "line": 2197,
+      "refs": [
+        "recursive_call_decrease_result",
+        "term_descend"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "binders_quantities",
+      "sourceOrder": 359,
+      "line": 2205,
+      "refs": [
+        "binders_quantities"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "pattern_value",
+      "sourceOrder": 360,
+      "line": 2213,
+      "refs": [
+        "pattern_values"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "pattern_values",
+      "sourceOrder": 361,
+      "line": 2218,
+      "refs": [
+        "pattern_value",
+        "pattern_values"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "replace_order_var",
+      "sourceOrder": 362,
+      "line": 2223,
+      "refs": [
+        "replace_order_vars"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "replace_order_vars",
+      "sourceOrder": 363,
+      "line": 2230,
+      "refs": [
+        "replace_order_var",
+        "replace_order_vars"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "branch_order_column",
+      "sourceOrder": 364,
+      "line": 2235,
+      "refs": [
+        "pattern_value",
+        "branch_order_column",
+        "replace_order_var"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "branch_order_columns",
+      "sourceOrder": 365,
+      "line": 2246,
+      "refs": [
+        "branch_order_column",
+        "branch_order_columns"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "initial_telescope_count_view",
+      "sourceOrder": 366,
+      "line": 2251,
+      "refs": [
+        "initial_telescope_count"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "initial_telescope_count",
+      "sourceOrder": 367,
+      "line": 2256,
+      "refs": [
+        "initial_telescope_count_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "drop_telescope_view",
+      "sourceOrder": 368,
+      "line": 2259,
+      "refs": [
+        "drop_telescope"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "drop_telescope",
+      "sourceOrder": 369,
+      "line": 2264,
+      "refs": [
+        "drop_telescope_view",
+        "whnf"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_field_arity_family_global",
+      "sourceOrder": 370,
+      "line": 2269,
+      "refs": [
+        "initial_telescope_count",
+        "drop_telescope"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_field_arity_family",
+      "sourceOrder": 371,
+      "line": 2278,
+      "refs": [
+        "constructor_field_arity_family_global",
+        "lookup_global"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_field_arity_global",
+      "sourceOrder": 372,
+      "line": 2283,
+      "refs": [
+        "constructor_field_arity_family",
+        "constructor_family"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_field_arity_result",
+      "sourceOrder": 373,
+      "line": 2287,
+      "refs": [
+        "constructor_field_arity_global"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "constructor_field_arity",
+      "sourceOrder": 374,
+      "line": 2292,
+      "refs": [
+        "constructor_field_arity_result",
+        "lookup_global"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "replace_first_column_with_value",
+      "sourceOrder": 375,
+      "line": 2295,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "recursion_terminates_mat_head",
+      "sourceOrder": 376,
+      "line": 2301,
+      "refs": [
+        "term_span",
+        "replace_first_column_with_value",
+        "shift_terms",
+        "recursion_terminates",
+        "recursion_terminates_mat_head"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "recursion_terminates_application_view",
+      "sourceOrder": 377,
+      "line": 2313,
+      "refs": [
+        "recursive_call_decreases",
+        "application_args",
+        "recursion_terminates_call_args",
+        "recursion_terminates"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "recursion_terminates_mat_arity",
+      "sourceOrder": 378,
+      "line": 2319,
+      "refs": [
+        "recursion_terminates_mat_head",
+        "canonical_name",
+        "recursion_terminates"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "recursion_terminates",
+      "sourceOrder": 379,
+      "line": 2324,
+      "refs": [
+        "recursion_terminates",
+        "recursion_terminates_application_view",
+        "application_head",
+        "recursion_terminates_list",
+        "recursion_terminates_mat_arity",
+        "constructor_field_arity",
+        "shift_terms",
+        "recursion_terminates_cases"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "recursion_terminates_cases",
+      "sourceOrder": 380,
+      "line": 2352,
+      "refs": [
+        "branch_order_columns",
+        "recursion_terminates",
+        "recursion_terminates_cases"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "recursion_terminates_list",
+      "sourceOrder": 381,
+      "line": 2363,
+      "refs": [
+        "recursion_terminates",
+        "recursion_terminates_list"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "recursion_terminates_call_args",
+      "sourceOrder": 382,
+      "line": 2368,
+      "refs": [
+        "recursion_terminates_call_args",
+        "recursion_terminates",
+        "recursion_terminates_list"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_termination_result",
+      "sourceOrder": 383,
+      "line": 2377,
+      "refs": [
+        "span_file"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_termination",
+      "sourceOrder": 384,
+      "line": 2380,
+      "refs": [
+        "binder_count",
+        "parameter_vars",
+        "binders_quantities",
+        "check_termination_result",
+        "recursion_terminates"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "validate_definition_termination",
+      "sourceOrder": 385,
+      "line": 2389,
+      "refs": [
+        "check_binder_uses",
+        "binder_count",
+        "binders_env"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "validate_definition_uses",
+      "sourceOrder": 386,
+      "line": 2394,
+      "refs": [
+        "validate_definition_termination",
+        "check_termination"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "store_definition_declared",
+      "sourceOrder": 387,
+      "line": 2398,
+      "refs": [
+        "canonicalize_term",
+        "fits_term",
+        "canonical_key",
+        "span_file"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "store_definition_result",
+      "sourceOrder": 388,
+      "line": 2405,
+      "refs": [
+        "canonical_key",
+        "store_definition_declared"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "store_definition",
+      "sourceOrder": 389,
+      "line": 2410,
+      "refs": [
+        "canonicalize_term",
+        "store_definition_result",
+        "lookup_global",
+        "canonical_key"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_definition_declared_type",
+      "sourceOrder": 390,
+      "line": 2415,
+      "refs": [
+        "fits_term",
+        "store_definition",
+        "span_file"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_definition_inferred_type",
+      "sourceOrder": 391,
+      "line": 2422,
+      "refs": [
+        "store_definition",
+        "span_file"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_definition_finish",
+      "sourceOrder": 392,
+      "line": 2428,
+      "refs": [
+        "binders_type",
+        "check_definition_declared_type",
+        "infer",
+        "check_definition_inferred_type"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_definition_uses_result",
+      "sourceOrder": 393,
+      "line": 2437,
+      "refs": [
+        "check_definition_finish"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_definition_term_result",
+      "sourceOrder": 394,
+      "line": 2442,
+      "refs": [
+        "definition_expected_body",
+        "check_definition_uses_result",
+        "validate_definition_uses"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "definition_expected_body",
+      "sourceOrder": 395,
+      "line": 2449,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "check_definition_body",
+      "sourceOrder": 396,
+      "line": 2454,
+      "refs": [
+        "definition_visible_self",
+        "definition_term_inference",
+        "check_definition_term_result",
+        "check_import_definition"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "definition_visible_self",
+      "sourceOrder": 397,
+      "line": 2462,
+      "refs": [
+        "binders_type",
+        "canonical_key"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "definition_term_inference",
+      "sourceOrder": 398,
+      "line": 2469,
+      "refs": [
+        "check_term",
+        "binders_env",
+        "infer"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_definition",
+      "sourceOrder": 399,
+      "line": 2473,
+      "refs": [
+        "check_definition_body"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "law_type",
+      "sourceOrder": 400,
+      "line": 2478,
+      "refs": [
+        "law_domain",
+        "law_type",
+        "law_quantifier"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "law_domain",
+      "sourceOrder": 401,
+      "line": 2488,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "law_quantifier",
+      "sourceOrder": 402,
+      "line": 2493,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "check_law_result",
+      "sourceOrder": 403,
+      "line": 2498,
+      "refs": [
+        "canonical_key",
+        "canonicalize_term"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_law",
+      "sourceOrder": 404,
+      "line": 2503,
+      "refs": [
+        "law_type",
+        "check_law_result",
+        "check_term"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "has_string",
+      "sourceOrder": 405,
+      "line": 2509,
+      "refs": [
+        "has_string"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_definition_once_global",
+      "sourceOrder": 406,
+      "line": 2515,
+      "refs": [
+        "has_string",
+        "check_definition",
+        "span_file"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_definition_once_result",
+      "sourceOrder": 407,
+      "line": 2521,
+      "refs": [
+        "check_definition",
+        "check_definition_once_global"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_definition_once",
+      "sourceOrder": 408,
+      "line": 2526,
+      "refs": [
+        "check_definition_once_result",
+        "lookup_global",
+        "canonical_key"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_declarations_step",
+      "sourceOrder": 409,
+      "line": 2530,
+      "refs": [
+        "check_declarations"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_declarations_type_result",
+      "sourceOrder": 410,
+      "line": 2535,
+      "refs": [
+        "span_file",
+        "check_declarations_step",
+        "check_type_decl"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_declarations_law_result",
+      "sourceOrder": 411,
+      "line": 2540,
+      "refs": [
+        "span_file",
+        "check_declarations_step",
+        "check_law"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_declarations",
+      "sourceOrder": 412,
+      "line": 2545,
+      "refs": [
+        "visible_globals",
+        "check_declarations_step",
+        "check_definition_once",
+        "check_declarations_type_result",
+        "lookup_global",
+        "canonical_key",
+        "check_declarations_law_result"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_modules_result",
+      "sourceOrder": 413,
+      "line": 2566,
+      "refs": [],
+      "templateRefs": []
+    },
+    {
+      "name": "check_modules_declarations",
+      "sourceOrder": 414,
+      "line": 2571,
+      "refs": [
+        "check_modules_result",
+        "check_modules"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_modules_module",
+      "sourceOrder": 415,
+      "line": 2576,
+      "refs": [
+        "check_modules_declarations",
+        "check_declarations"
+      ],
+      "templateRefs": []
+    },
+    {
+      "name": "check_modules",
+      "sourceOrder": 416,
+      "line": 2581,
+      "refs": [
+        "check_modules_module"
+      ],
+      "templateRefs": []
+    }
+  ],
+  "excluded": [
+    "check_template_result",
+    "check"
+  ]
+}

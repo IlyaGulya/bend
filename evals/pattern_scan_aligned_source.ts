@@ -58,7 +58,7 @@ function apply(source: string, edits: Edit[], inverse = false): string {
   return output;
 }
 function span(term: {s?: Span}, source: string): Slice {
-  if (!term.s || term.s.src !== source) throw Error('Missing canonical native span');
+  if (!term.s || term.s.file.str !== source) throw Error('Missing canonical native span');
   return {beg: term.s.beg, end: term.s.beg + source.slice(term.s.beg, term.s.end).trimEnd().length};
 }
 function parameterText(source: string, parameter: ParserParameter, slice: Slice): string {
@@ -72,7 +72,7 @@ function callText(source: string, call: ParserCall): string[] {
   const slices = argumentsAt(source, call.offset, 'pattern_scan');
   if (slices.length !== permutation.length || call.args.length !== slices.length) throw Error('Partial or overapplied scanner call');
   call.args.forEach((arg: LTerm, index) => {
-    if (!arg.s || arg.s.src !== source) throw Error('Missing actual native span');
+    if (!arg.s || arg.s.file.str !== source) throw Error('Missing actual native span');
     const nativeEnd = arg.s.beg + source.slice(arg.s.beg, arg.s.end).trimEnd().length;
     if (arg.s.beg < slices[index]!.beg || nativeEnd > slices[index]!.end) throw Error('Actual AST/source span mismatch');
   });

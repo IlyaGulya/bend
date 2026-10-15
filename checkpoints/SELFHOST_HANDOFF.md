@@ -1,0 +1,1291 @@
+# Self-hosting: полный handoff следующему сеансу
+
+## 1. Цель и первый шаг
+
+Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
+
+## Completed acceleration — Main40 full stage2 below five minutes
+
+Latest user priority: accelerate the checker and the complete bootstrap, not more
+diagnostic-only runs. `compiler-timing-comparison237-v37.json` records the same-root
+official2.0.37 baseline: Node23 full JS compilation11527ms, checker1573ms, no spill,
+physical3541671088 bytes. The earlier claim that this root requires disk is false.
+
+The canonical native builder now uses the unmodified kernel, retains original
+checked `e` until final SCC emission, and publishes schema4 provenance. Parser,
+driver, bootstrap and library-smoke consumers require that new contract. Removed
+the obsolete snapshot store and emitter restoration callback.
+`selfhost-steps-native-canonical-release237-v38a-nospill.result.json` PASS8064/8402,
+guardian18434ms, physical2566300176. Its10551359-byte output is byte-identical to
+accepted native37, SHA1517d42978725f4f4b2c6f2f6688df999b92135d167bb164dda65595d0ca1efb.
+Mutual-SCC checked-body release regression PASS. This is not a new bootstrap proof.
+
+Fresh37 own-parser/expander/checker CPU profile completed:
+`current37-fresh-source-checker.{json,cpuprofile}`, CheckSuccess15 modules,
+324041ms wall/235900ms CPU. Scheduling variance is substantial; sampled self:
+run_loop12.06%, runSteps7.20%, index_lookup.find3.98%, Map.get.go3.10%, GC2.85%.
+
+Shared named/unary closure depth candidate38 passed real264/264 byte fixedpoint,
+SHA14ae26498085e5e648eb39fa1feb488e2988d1e39368e6b56232af82aac6eb04,
+20547903 bytes; API/mixed120001/foreign-argument smoke passed. REJECTED FOR SPEED:
+whole stage2=525602.628ms, checker371406.484ms. The closure-body/depth edits are
+fully reverted; do not reintroduce them as an optimization.
+
+Source index_lookup now descends structurally with parameter-matched Map.bit
+results, without allocating either recursive branch closure. Actual emitted JS
+Unicode/miss/arbitrary-map semantics passed; 1024-key A/B188.5/190.6→169.7/168.1ms.
+This is local lookup evidence, not a whole-stage speed claim.
+
+Candidate39 instead replaces private tail request objects/argument arrays with
+a module-local register bank and private pending token. The dispatcher captures
+and clears registers before any target call; ordinary Data/progress is unchanged.
+Both dispatcher and nonescape static reviews found no blocker. Source-emitted
+consumer A/B covers arities1/32/40, depth64/65/130, strict recursion, partial
+callbacks, reentry, caught exceptions and deep120001 calls. Dynamic500k tails
+19.2/19.4→14.5/15.6ms. Native full root39 passed8065 bodies under original guard.
+Fresh parser66 + genuine Main39 completed267/267, but missed the five-minute
+target. The accepted successor is Main40/parser67 below; all ten real stage
+API/mixed120001/foreign-argument smoke rows passed for both versions.
+
+Main40 reuses the existing fixedarity scheduler for curried facades and splits
+unary hot dispatch from the large named-arity switch. Closure bodies, public
+arity and the64-call budget stay unchanged. The host continuation driver also
+skips another kind's suffix checks after authenticating its tag. No further
+optimization is pending integration; preserve this accepted baseline.
+The attempted faster diagnostic without source checking produced an invalid
+compiler image (`source40-diagnostic.js`, Lexer.tokens getter called with null).
+Its emission is NOT acceptance or usable performance evidence; keep the complete
+source checker in every compiler-generation path. The cause is not established.
+
+## Storage cleanup — complete
+
+User-requested cleanup completed after cancelling Main34 gates bg622 and bg625.
+`checkpoints/storage-cleanup237.json` is the exact removal/archive/safety receipt.
+Measured checkpoints123194684→6316988KiB (117.49→6.02GiB); this includes
+2068344KiB of compressed evidence archives. Last measured disk availability:
+221951872KiB (211.67GiB). Do not sum apparent APFS tree sizes as physical savings.
+
+All32 confirmed selfhost temporary roots were removed: the first8 in
+`experiment-archive237/manifest.json`, then24 in the cleanup receipt. Every source
+and selected-evidence archive passed gzip integrity verification before deletion.
+The23 unrelated/unknown user paths remain untouched; the bend2-lint/release/perf
+worktrees belong to the separate bend2-lsp-rs project, not this selfhost task.
+
+Removed352 historical case/module sidecar directories, the obsolete1.4GiB
+expanded-AST diagnostic cache, and the stale3.6GiB native checked-body store.
+813 old large top-level logs/artifacts are preserved in
+`experiment-archive237/historical-large-checkpoints.tar.gz`; the adjacent members
+list maps their original paths. Old sidecar paths in historical sections below
+are no longer runnable artifacts. Small receipts remain in place.
+
+Earlier retention kept genuine37 and its authenticated native37/parser64 inputs live.
+After gzip verification, complete31/32/34-clean case directories and nine retired
+recipes/smokes were moved into `experiment-archive237/superseded-proofs-through-v34.tar.gz`.
+That cleanup ended at5922560KiB (5.65GiB), including2311244KiB compressed archives.
+Disk availability then was280519016KiB (267.52GiB). The completed35 case directory
+is archived in `experiment-archive237/superseded-proofs-v35.tar.gz`; completed36/37
+recipes and the small owned operation-index experiment were archived and removed.
+At that point, both37 image hashes matched and parser64 authentication passed
+all291 protected inputs; no compiler/benchmark or cleanup jobs remained.
+The original genuine32 root source SHA c9f18f75…
+also survives as `checkpoints/.bootstrap_compiler_root_v1.bend` inside
+`compact-string-frontend237.FW3I9Q.evidence.tar.gz`; verified against genuine32.
+Post-cleanup smoke PASS: both unchanged stage images hash-verified and exercised
+with bare/foreign-extra-argument callbacks (four CheckSuccess/Nil rows); current
+parser61 authentication and driver assembly PASS, parser declarations unchanged.
+This is retention verification, NOT a new Main34 bootstrap acceptance.
+
+During Main40 integration, retired37 and rejected38 sidecars were gzip-verified
+and archived in `experiment-archive237/superseded-proof-v37.tar.gz` and
+`experiment-archive237/superseded-proof-v38.tar.gz` before removal. Their allocated
+sizes went from955668/1010028KiB to60432/63464KiB. Historic37 image paths below now
+refer to archive members, not live files. The latest accepted40 case tree stays live.
+
+Final40 retention measured5319340KiB (5.07GiB), including2616216KiB archives;
+available disk331150576KiB (315.81GiB). Retired39, earlier phase-profile trees
+and throwaway experiments/recipes are in the gzip-verified
+`experiment-archive237/superseded-experiments-through-v39.tar.gz`.
+The118-file accepted source snapshot is1512KiB, archive SHA
+`52143079d5f6e767a52600458f7914b378d7e7e4732d8b2ca0ed91e56d566f52`.
+Post-cleanup retention smoke PASS:399 genuine-proof inputs and289 accepted-parser
+inputs reauthenticated; raw stage images still equal; eight real exported/
+curried-callback CheckSuccess/Nil runs passed. See
+`selfhost-retention-release237-v40.json` and `storage-cleanup237-v40.json`.
+
+NEVER recursively copy the repository, `checkpoints/`, or `*.checked.bin` into an
+experiment. Isolate only required source and explicitly selected immutable inputs.
+Keep the latest accepted proof, the active candidate and needed profile inputs;
+archive unique patches/receipts and remove superseded experiment copies.
+The old accumulation was a parent cleanup failure. Recent disk-full wall times
+do not establish causal compiler/runtime performance regressions.
+
+## LATEST GENUINE FIXEDPOINT — Main release237-v40, parser67
+
+`selfhost-steps-bootstrap-release237-v40.json` PASS267/267; both raw images
+18244928 bytes, SHA `84b19ce89aad6da90b1aedb7b8fff2ed8ef659636754801c91290424c19a7da2`.
+Whole compiler-generation stage1=155527.422ms; stage2=285168.610ms (4:45.169).
+Stage2 parse+admission43637.237/expand11481.872/check208501.929/
+emit+write+hash21547.572ms. This includes fresh canonical semantic/span admission,
+not only the source checker. The300000ms per-full-stage goal is met in this run.
+Full bootstrap gate, including all267 fixture executions, took913457ms (15:13.457);
+it is NOT a five-minute whole bootstrap. Physical2136842832/RSS2080915456 bytes;
+unchanged8GiB/10ms guard and existing heap/stack/time limits.
+Native seed40-final checked all8065/8065 bodies in20842ms, physical2651833584;
+checksExcluded=0, outputPatches=0, original checked bodies retained without spill.
+Both emitted stages imported and passed ten API/deep120001/callback smoke rows
+(`selfhost-api-smoke-release237-v40.json`, guardian14516ms, physical619229152).
+Raw bytes are compared without normalization or patching; stage2 uses stage1's
+actual parser. No cached AST is accepted and no own-checking phase is omitted.
+Relative to old stable37, this sequential full-stage measurement is14.83% lower;
+it is19.46% lower than39. These are measured run differences, not isolated causal
+attributions to individual changes. Pure parser/template/checker/JS compiler-root
+bootstrap is green; C/Metal/CUDA and the legacy IO driver remain outside this proof.
+Exact selected sources and completed generation/fixedpoint/API recipes are kept
+in `experiment-archive237/accepted-release237-v40-source.tar.gz`.
+
+Remaining measured costs: the source checker is still208.5s; admission transport
+decoding performs two JSON/validation passes and dominated63% of earlier oracle
+profiles. No transport change was integrated. Sharing identity resume closures
+was only suggested, not measured; a named helper can add scheduling work and
+does not by itself make the still-polymorphic host call site monomorphic.
+
+## Previous genuine fixedpoint — Main release237-v39, parser66
+
+`selfhost-steps-bootstrap-release237-v39.json` PASS267/267; both raw images
+18213012 bytes, SHA `bf8da96f787e34048dddb5b73a8b6b319edf83864b4ed0a72492159a9beac15c`.
+Whole stage1=226290.576ms; whole stage2=354073.114ms (5:54.073).
+Stage2 parse55489.188/expand15663.922/check257456.900/emit25463.104ms.
+Guardian1026963ms, physical2019589296/RSS1801093120; unchanged8GiB/10ms.
+No output patches, normalization, AST-replay substitution or increased limits.
+Ten stage API/mixed120001/callback smoke rows PASS; guardian11912ms,
+physical498563536. Native seed39-final fully checked8065 bodies in19490ms,
+physical2686519304. No disk checked-body store remains.
+The five-minute full-stage target remains OPEN. Old37 was334825ms; sequential
+timings do not establish a whole-stage gain despite lower measured memory.
+
+## Previous genuine fixedpoint — Main release237-v37, parser64
+
+`selfhost-steps-bootstrap-release237-v37.json` PASS258/258; both raw images
+18158465 bytes, SHA `710a98a6d027012b757b1f42cb078a1d8f089040a0153f96bb17ac213629b278`.
+Whole stage1=190998.841ms; whole stage2=334825.354ms (5:34.825).
+Stage2 parse69584.519/expand24699.547/check216341.313/emit24199.975ms.
+Guardian850399ms, physical2412396832/RSS2118680576; unchanged8GiB/10ms.
+No output patches, normalization, AST-replay substitution or increased limits.
+Six real stage API smoke rows PASS; guardian1010ms, physical333749568.
+The five-minute full-stage goal remains OPEN; checker-only time is not that goal.
+Native-operation caching and slim scopes are semantically accepted. These
+sequential timings do not establish an isolated whole-stage speed improvement.
+Source snapshot and completed reproduction/smoke recipes:
+`experiment-archive237/accepted-release237-v37-source.tar.gz`.
+Storage cleanup is complete; current acceleration work is described at the top.
+
+## Previous genuine fixedpoint — Main release237-v35, parser62
+
+`selfhost-steps-bootstrap-release237-v35.json` PASS258/258; both raw images
+18150195 bytes, SHA `77a588b329d919a5522845471652ab1fe3ecff350b38b80ba3adc3f167ad9911`.
+Whole stage1=198909.310ms; whole stage2=324706.722ms. Five-minute target OPEN.
+Stage2 parse44896.535/expand24789.229/check227485.362/emit27535.597ms.
+Guardian862332ms, physical2593253904/RSS2707472384; unchanged8GiB/10ms.
+Bounded direct-tail depth64 is semantically accepted, not an isolated speed win:
+whole stage is essentially unchanged from34; physical peak is higher.
+Six actual stage callback/export smoke rows PASS, guardian1060ms.
+Source snapshot: `experiment-archive237/accepted-release237-v35-source.tar.gz`.
+Main37 caches native authority and exact operation identities
+in module-shared EmitAliases. Removed obsolete path/full-module payloads from
+EmitScope, the path slot from EmitModuleIndex, and forwarding through23 helpers.
+Main36 parser63/native admission PASS:8063 checked,CPU119934.234ms,
+guardian164599ms,physical2814495416/RSS2558869504. No full gate yet.
+Before full acceptance, Main37 also skips duplicate classification/map insertion
+when the namespace is empty (local and qualified keys are then identical).
+Main36 source preserved in `experiment-archive237/candidate-release237-v36-source.tar.gz`.
+bg645 parser64/native37 COMPLETE:8064/8064,0exclusions/patches; native
+SHA1517d42978725f4f4b2c6f2f6688df999b92135d167bb164dda65595d0ca1efb.
+Native CPU87378.190ms, guardian72204ms, physical2841403552/RSS2792308736.
+Parser64 status PARSER_ACCEPTED_NATIVE_SEMANTICS, FULL_75_SEMANTIC_GATE.
+bg646 full gate and bg647 actual stage API smoke COMPLETE PASS.
+JSEM F1EC remains the accepted source; no compiler jobs are running.
+Completed recipes are archived rather than left as live throwaway scripts.
+One pre-run machine snapshot: loadavg14.87/18.17/23.84; RAM68719476736 bytes.
+
+## Previous genuine fixedpoint — Main release237-v34-clean, parser61
+
+`checkpoints/selfhost-steps-bootstrap-release237-v34-clean.json` PASS258/258.
+Both raw stage images18150195 bytes, SHA
+`312d18ecf160447262a7c13f2bee137a93162211825300303c74a141362f4fb7`.
+Whole source-root stage1=161375.539ms; stage2=325131.795ms (5:25), target OPEN.
+Stage2 parse39303.970/expand9677.659/check242995.455/emit33154.712ms.
+Guardian846408ms, physical2005363768/RSS2040758272; unchanged8GiB/10ms and
+Node23.11.0 young128/old6144/stack256. Native8052/8052,0exclusions/patches.
+All75 parser semantic/span and public14/207 admission checks passed.
+Six strict/bare/foreign-extra-argument callback smoke rows PASS, guardian1028ms,
+physical333913672. This is genuine source parse/expand/check/emit, not AST replay.
+Lexically named entries and source-name separator collision fixture accepted.
+Comparison with32 is observational: disk cleanup changed the environment too.
+Compact immutable source snapshot: `experiment-archive237/accepted-release237-v34-source.tar.gz`.
+
+## Previous genuine MAIN fixedpoint — release237-v32, parser59
+
+`checkpoints/selfhost-steps-bootstrap-release237-v32.json` PASS255/255 genuine
+byte fixedpoint; both18094680 bytes SHA
+`3771875fe6a6faa42e813d505803bcfd5c13a8c585b50d559f6e916967b8466c`.
+Native8046/8046,0exclusions/patches; parser59 all75 semantic/span/public14/207.
+Guardian1000450ms,physical2173015664/RSS2103885824.
+Node23.11.0 with young128MiB/old6144/stack256 and original8GiB/10ms guardian.
+Fullstage1=167487.083ms; FULLstage2=344107.087ms, so five-minute target OPEN.
+Stage2 parse41941.645/expand11069.248/check262161.253/emit28934.942ms.
+Compared31 whole-stage -21.5%, but this COMBINES statement blocks, scalar Direct
+token, bounded parser overlap and young-generation setting; no isolated attribution.
+
+## Previous genuine MAIN fixedpoint — release237-v31, parser58
+
+`checkpoints/selfhost-steps-bootstrap-release237-v31.json` PASS genuine raw
+stage1/stage2 byte fixedpoint,255/255 fixture executions; both18072183 bytes,
+SHA `83b48b35cad381488fa41cbb53933fa42c396f05a48cf640405d63c8bbee25a7`.
+Guardian1029973ms, physical2893244896/RSS2797273088; original8GiB/10ms limits,
+Node oldheap6144MiB/stack256MiB, native2.0.37/kernel6c1df3 unchanged.
+Main nativeRoot31 all8037 bodies checked,0exclusions/patches;60054ms,
+physical3241095848. Parser58 actual current source all75 semantic/span and
+public14/207 PASS, no historical JSEM substitution.
+
+COMPLETE source-root stage1=163187.244ms, stage2=438367.540ms.
+Stage2 parse59909.073 / expand11800.897 / check333075.276 / emit33582.294ms.
+Five-minute target STILL OPEN. Controlled restored-AST + NATIVE expansion
+checker261544ms was NOT representative of complete own-source stage2;
+do not extrapolate microbenchmarks or confuse fixture-suite with root time.
+
+## Previous genuine private fixedpoint — compact string v5
+
+Private immutable baseline `/tmp/compact-string-frontend237.FW3I9Q`.
+`checkpoints/selfhost-steps-bootstrap-compact-string237-v5b.json` PASS genuine
+rawbytefixedpoint,255/255 executions=alloriginal228+27new; both17957832bytes,
+SHA `87cf76429d09f4b5417a0d7741a53c4b778a4744404b2ee487a6d8897b535c03`.
+Guardian1207468ms,physical2308855368, unchanged8GiB/10ms/heaps/stacks/kernel.
+Native full9API rootv5:8033/8033checkedbodies,0exclusions/patches,53572ms,
+physical3081144704,artifactSHA
+`e934bfff2e9868c69f1a3c67ef02037bfed78e262fc60b1464a114d97ac9b2e1`.
+Finalparserv5 all75fullsemantic+literal-span andpublic14/207 PASS,0exclusions.
+Exactcanonicalcoverage Checker1077/Template196/JSEM505,0omitted/residualcalls.
+Private agent `CompactStringFrontend` result contains exact receipt paths.
+
+Previous private stage1 total144313.227ms; stage2 total416618.537ms,
+parse45343.557/expand15239.859/check318092.771/emit37942.351ms.
+These are not the timings of current Main31 above.
+Fixture-suite walltime is NOT compiler-root stage time.
+
+Parent integrated all14 implementation/consumer/observation/fixture files via
+hashlinepatch; shared Ast52FA,ParserC92E,Checker3214,JSEmit34C1. New compact
+String behavior includes explicit8names, rawUInt32payload/spans, actualcomplete
+schema proof+oldconstructor fallback, capturepreorder preservingunusednames.
+Parent-review equality repair is POSITIVEONLY: matchingnames+samecodepoints
+canproveTrue; ANYmismatch unfoldsordinaryconstructors (bitTrue/False mayalias).
+Inference is intentionallyUNCHANGED: infer(TermCtr)cannotinfer, so inferString
+fallsbackandsamefailure. DoNOTnewlyacceptunannotatedstrings forperformance.
+Tests dropped incidental encoder-call/137-span-count and message-wording pins,
+retained semantic/native-value/full-span comparisons. Main literal suite PASS:
+49 tests / 389 assertions; guardian3140ms, physical2113063048 bytes.
+Legacy C fallback migration is not independently native-checked.
+Main parser59/nativeRoot32/defaultBootstrap32 is previous genuine acceptance.
+
+Main34 native/parser AND full default bootstrap are now genuinely accepted.
+bg637 completed after cleanup; earlier bg622/bg625 cancellations are not passes.
+Main35/JSEM2937 bounded ordinary tail-call budget16→64 is genuinely accepted.
+bg640 parser62/native35 admission COMPLETE:8052/8052,0exclusions/patches;
+native SHA e7f3fc46c1ed856a15c34da614009bb190369c69fcd5b49fb6413005d10bab9c,
+guardian81460ms,CPU92472.114ms,physical3238687088/RSS3094675456.
+bg641 full gate PASS258/raw equality; bg642 actual six-row API smoke PASS.
+Main36 native-operation metadata cache is now the only additional source change.
+Main34 reverted the unaccepted Main33 export experiment and emits module
+lexical `var` entries instead of `$U[name]` dictionary lookups. Module scopes and
+aliases remain block-local; var hoisting preserves forward references and
+duplicate-write order. Curried/public exports and bounded-tail ABI unchanged.
+Main JSEM914A; gate9565 adds a real separator-collision execution fixture.
+Native8052/8052,0exclusions/patches,physical2749350184,wall462690ms/CPU114561ms.
+Parser61 and all258 executions/raw byte fixedpoint PASS (see latest receipt).
+Existing65536-call and120001-call callback fixtures cover deep tail recursion.
+
+Main33 full gate FAILED at1800000ms; it did produce equal stage images18115476B,
+SHA e78d58fd9288b2ec8f352d7eada2dad7d6dd2388f4554d1bec997222d46085c0,
+but remaining fixtures did not complete. It is NOT genuine acceptance.
+Source archived in `saturated-export-release237-v33.source.json`; edit reverted.
+Slowdown affected unchanged native-seed stages too: native33 wall247257ms versus
+native32 wall77870ms, CPU107246ms versus86427ms. No isolated causal attribution.
+AC power/lowpowermode0, no recorded thermal warning; swap used12839.75MiB.
+Do not just increase the timeout or claim an optimization from partial evidence.
+
+Node26 experiment COMPLETED and REJECTED for speed:
+`selfhost-steps-bootstrap-release237-v32-node26.json` PASS255, exact same Main32
+SHA and bytes; complete source stage2=382379.266ms versus344107.087ms on Node23.
+Stage2 parse46077.802/expand13101.684/check293866.571/emit29333.208ms.
+Guardian1186882ms. Same inputs/young128/old6144/stack256/8GiB/10ms.
+Global PATH/settings unchanged; native Bend remains2.0.37.
+Actual Main32 strict/foreign-extra-arguments callback smoke PASS on both stages,
+four CheckSuccess/Nil results, guardian1255ms,physical332504504.
+
+Main32 JSEM E8FF emits function/case locals and matches in existing lexical
+blocks; simultaneous RHS environments, erasure, expected types and constructor
+fallbacks unchanged. Native8046/8046,77870ms,physical2962601576, nativeSHA
+e77a1de4d2e92626fa4a89777863e1350dc517cc38569adbd7f416ce77062c2e.
+Whole build541380ms was variable; Main33 native247257ms also much slower.
+After completion, vm_stat showed ~25GiB compressed pages; a process snapshot
+found unrelated memory consumers, not a leftover own compiler. No causal proof;
+do not kill user processes or attribute timing variance to the tiny source diff.
+Disk last observed99%full/31GiBfree; do not rewrite evidence during timing.
+
+Static-rank private candidate REJECTED: full native8037 PASS90595ms, but actual
+whole-root source check389705.300ms vsMain333075ms; fullstage about499626ms.
+bg615 cancelled during remaining fixtures: its parser-admission corpus still
+referenced Main JSEM, then Main changed. NEVER claim this run as genuinefixedpoint.
+Receipt`/tmp/static-ranked-tail237.v1/checkpoints/selfhost-steps-bootstrap-static-ranked-tail237-v1.json`
+is interrupted IN_PROGRESS, not acceptance. Do not rerun this slower candidate.
+Future private experiments MUST migrate real-source corpus paths to isolated
+actual candidate files before admission, not just owned/parser generated roles.
+
+Main32 changes AFTER genuine31, now covered by genuine Main32 acceptance:
+- lowerer8063 uses authenticated Base False scalar scheduling token rather than
+  fresh Unit{} per Direct; generic Direct<R>, affine invoke and witness unchanged.
+- workerC9CE bounded FIFO2 parser admissions, all proofs drained before consume;
+  agent actual fresh15 A/B48305.982→43520.047ms, full semantic/span/transports/
+  order equal; actual cycle+namespace errors with0modules consumed. Receipt:
+  `/Users/ilyagulya/Projects/My/bend-parser-overlap237-v1/parser-overlap-receipts/receipt.json`.
+- worker + gate9303 explicit young128MiB, old6144/stack256/8GiB unchanged.
+  CurrentRoot replay own-source expansion+checker CheckSuccess306295.869ms,
+  GC11999ms3.9%, run_loop29175/runSteps23314ms, guardian326436ms,physical2285866088.
+  `checkpoints/current-root-source-checker-young128237-v1.{json,cpuprofile}`.
+  Restored approved ASTs, NOT original parser hidden classes/fresh stage/fixedpoint.
+
+StructuralPureIslands REJECTED after generation:35new scalar/selector islands,
+only606bytes saved(-0.0247%), helpers4686→4711, pending1143→1141. No native build.
+Receipt`/tmp/bend-structural-pure237/checkpoints/structural-pure237-rejection.json`.
+No agents running. Parent exclusive guardian reserved to bg617.
+NativeRoot31 all8037 bodies checked,0exclusions/patches;60054ms, physical
+3241095848. NativeSHA835c2e73c62723d13150129aee7afbeb6c258549904b2b41f3db013c54bfc7fe.
+Main's accepted JSEM F8F3 (before pending E8FF) adds run_named1..32 and private last default `$td=0` to ordinary
+named functions, preserving function.length; at most16 calls before yielding
+the original trampoline record. Dynamic/curried/native-law paths unchanged.
+Main runtime96B4 reads progress shape/tag once per transition; request-tag and
+all own-field/callability checks remain. Genuine31 exercises all three runtimes.
+
+Private experiments `/tmp/bounded-named-tail237.zcrXL3` ALL COMPLETE:
+v1 genericspread: CheckSuccess409306.649ms; rejected.
+v2 fixedarity1..32: CheckSuccess261544.396ms vs baseline315198.811ms
+(-17.02% observed), physical2048514816. Integrated; genuine31 confirmed semantics
+but DID NOT establish a whole-root speedup over privateStringv5.
+v3 inline callsite conditional: CheckSuccess292764.587ms; not selected.
+v4 saturated export fastpath: CheckSuccess363115.670ms; rejected.
+v5 per-callee monomorphic tail entries: CheckSuccess402072.378ms; rejected.
+Each had native all-body admission, final parser75/public207 and actual source
+root emission/import/check success. None had a new genuine byte fixedpoint.
+Controlled source checks use EXACT SAME15 baseline transports + unchanged seed
+expansion, but sequential single timings do not establish variance bounds.
+Do NOT claim whole-stage speed from checker-only timings.
+v2 source archive `checkpoints/js_emit_bounded_tail_v2_source.bend` PRIVATE.
+v2 candidateNativeSHA31a8ac53b99a942a01c211f44fd0a3cbddd60522b0bd87c27e14214258474f75;
+sourceLibrary8e41bd433fdaa018e40463908104638bb6b68e5c7da24ba847b7c3a22e67ce9a.
+All experiment receipts/libraries/CPU profiles are in immutable baseline
+`/tmp/compact-string-frontend237.FW3I9Q/checkpoints/`, bounded-tail-* filenames.
+Build script `evals/.canonical_root_build237_v31.sh` complete. Previous root30/
+parser57 pipeline FAILED current-JSEM semantic admission: computed Bool.and
+match scrutinee. Repaired by ordinary parameter-matching helper, not an oracle
+exception. Full parser58 fresh admission passed; genuine31 complete. Continue
+with actual whole-root profiling/optimization: stage2 still438367ms >300000ms.
+
+Complete currentSourceChecker CPU PASS CheckSuccess315198.811ms,15modules,
+nativeverifiedv5 transports+authenticnativeexpand, UNWRAPPEDrealSourceChecker.
+`/tmp/compact-string-frontend237.FW3I9Q/checkpoints/compact-string-source-
+checker-cpu237-v1.{json,cpuprofile}`; guardian329565ms,physical1477963896.
+CPU315.38s:run_loopself52626ms16.7%,GC32177ms10.2%,runSteps28388ms9%.
+Initial direct-name attribution schema279.502ms andpattern17346ms wereNOT
+safeupperbounds: CPShelpers erasesemanticcallers. Correctedbothagentreceipts.
+RecoveredprivateHelpers.owner→nativeMatchNormalizationOwners +actualJSline
+ownership maps: pattern/case/matrixSELF23842.707ms7.56%,visible-stackunion
+49677.618ms15.75%; bothLOWERBOUNDS,notcap. Patterntyping4.47sself/7.4svisible,
+core_pattern_list_depth3.77sself/10.96svisible. Runtime+GC cannotbe reassigned
+fromthisCPUprofilealone. `/tmp/compact-pattern-checker237.b6fFIa/pattern-source-owner-profile.json`.
+Framecache `/tmp/compact-string-infer237.1sWRtd` HELDUNVERIFIED; no nativeproof.
+Pattern shortcut `/tmp/compact-pattern-checker237.b6fFIa` REJECTED:
+all8085 native bodies, parser75/public207, seven semantic/quantity probes PASS,
+but same-input source check341667.088ms vs315198.811ms (+8.4% observed).
+Affine constructor-record reuse REJECTED before edits: no proven exclusive,
+writable, nonescaping owner for foreign/public values; quantity alone is not
+that certificate. No agents or private heavy jobs remain.
+
+Previous stable MAIN receipts: release237-v29 rawfixedpoint all228/228,
+both18252867bytes SHA
+`c897c8f002ec7a9b81949e0a7c4ef514e9231ae4600cebeccbe02351f0d16a22`.
+Guardian1585502ms,physical5488273448/RSS7422935040. NativeRoot29 all7918,
+52040ms,physical2989603648. Stage1 375256.766/stage2 866492.137ms.
+Original sourceCallback extraindex/arrayargs smoke PASS bothv29 images;
+recipe`selfhost-closure-callback-release237-v1.source.json`. BroaderIO/C notgreen.
+
+Whole-pipeline profiling DONE: fresh actual v29 source parser all15 AST hashes
+EXACTLY match genuinev29 stage-two admissions. `selfhost-root-source-parser-
+profile-release237-v1.json`, CPU+4MiBcollectedallocationprofiles perfile/transport,
+guardian70510ms,physical1545393320/RSS1820884992. Parser itself52293.268ms.
+4191364sourcebytes →1754806081 ASTtransportbytes; emitter838723151,
+checker603078214,parserdriver261139271. Eager per-character Chr/U32/32Word
+trees (parser922-936/989-1027) are concrete bulk to remove.
+Source emitter CPU v2 COMPLETE EmitSuccess143814.786ms +RAWoutputSHA=v29;
+nativecheck169737.876ms,guardian380638ms. CPU145s:GC23%,run_loop12.9%self,
+runSteps10.4%,index_lookup.find4%,nativeop suffix/starts/ends path9.1%.
+Both profiler scripts archived `.source.json` and runnable scaffolds removed.
+
+Shared worker original-approved-AST retention tag66C3 /gateboundarytag72A1
+SMOKE PASS all15 complete native semantic/span parity: report
+`selfhost-root-retained-parser-release237-v1.json`,ROOT_PARSE_DIAGNOSTIC_PASS,
+67806ms,physical2833690984/RSS4745003008. No caches/ASTrewrites/validation
+removed: nativeoracle stillallfield+slot+hash TWOpasses; streamrehashbeforeuse.
+That report is parser-loading smoke only; latest PRIVATE Stringv5 genuine
+fixedpoint above NOWexercises retainedAST onboth stages. Main defaultrefresh
+stillrequired after finalperformancecandidatecutover.
+
+Rejected private Ready protocol: safety7918native/17fixtures/120001tailPASS
+but checkerwall+0.262%/allocation+0.043%;doNOTintegrate.
+`/tmp/bounded-ready-progress237/final_receipt.json`. Lazy NodeSlot alsoREJECT:
+complete real5modules +32.4%wall/+46.8%allocation despitecheapinitialpacking,
+`/tmp/lazy-source-arena237/final_receipt.json`. Broad pure23helper candidate
+unverifiedadds13defs/removes3619bytes;held,nointegration. Nativeoperation
+index `/tmp/emitter-native-operation-index` readyUNVERIFIED;held,nointegration.
+Simple native signature-law predeclarations cannot replace CPS: actual2.0.37
+probe rejects liveforwardcall as "an unfilled law is a dead claim"; no kernel
+change attempted. Source/error recipe `local://native-forward-predecl237.json`.
+
+Full emitted-checker CPU diagnostic v3 COMPLETE PASS CheckSuccess569770.996ms;
+guardian636660ms, physical4539719880/RSS4639457280. All15 accepted root modules,
+authentic native seed expansion, unchanged emitted checker, no step wrappers.
+CPU wall570.29s: GC126056ms22.1%, run_loop93977ms16.5%self,
+runSteps38756ms6.8%, run_clo-generated f21161ms3.7%. Arena.name only~19885ms
+3.5%inclusive WHOLE check; reserve_words~8942ms1.6%. Early20s v2 packing
+percentages are NOT whole-checker percentages. Both exact profiler sources
+archived as corresponding `.source.json`; completed throwaways removed.
+Complete current emitter replayv2 usesv29; initialv1 onlyLOCK_BUSY, noCPUproof.
+
+Verified private batch reservation integrated, arena tag1EF7:907/907 native
+bodies,zero exclusions/patches,158 exact boundaryops pervariant,48 benchmark
+checks,poisoned discarded capacity+rewind/append parityPASS.
+12000reservation subsets0..3/0..16/0..63: CPU18.84→11.30/26.98→13.48/
+45.99→32.52ms; sampledallocation16.0→11.27/60.54→27.29/237.70→88.84MB.
+Not root speed claims. `/tmp/bend-selfhost-BatchArenaWordReservation-d7Adq0/receipt.json`.
+Two-entry owning exact-name MRU candidate REJECTED, NOT integrated:
+7929/7936 native bodies and semantic/runtimePASS, but real AST packing wall
+regressed19.84% and arena module wall1.66%. Synthetic78.66% does not justify it.
+`/tmp/arena-name-intern237/final_receipt.json`; rejected, no shared changes.
+
+### Earlier accepted v28 baseline
+
+`selfhost-steps-bootstrap-release237-v28.json`:
+status PURE_STEP_BOOTSTRAP_FIXEDPOINT, passed/compilerBootstrapGreen/
+bootstrapAcceptance true, diagnosticOnly false. All228 fixture executions PASS:
+76 each on seed, genuine stage1 and genuine stage2. BOTH unmodified JS files
+17024439 bytes, raw SHA256
+`cc5aa822d48c50d13983b5cb90be7545716505f55b1514000336fa71b3904c15`.
+Artifacts: report's `.cases/stage-one.js` / `.cases/stage-two.js`.
+Source stage1's OWN parser and steps compiled the complete identical source root;
+raw Buffer.equals comparison passed, no normalization/patches/unchecked fallback.
+Guardian PASS1639756ms, physical5340229040 / RSS7365492736 under8GiB/10ms;
+Node worker heap6144MiB/stack256 unchanged. Broader selfhostGreen remainsfalse:
+this is complete parser/Template/Checker/JSEmit compiler-root bootstrap, not
+legacy fullIO/C-backend product certification.
+
+Earlier v28 root times: stage1 total379917.854ms; stage2 total910552.251ms.
+Stage2 parse145231.109,expand32554.808,check573791.864,emit158974.471ms.
+
+Accepted v28 baseline includes canonical named-object/full-qualified-tag cutover and
+strict direct calls. SourceJSEM SHA5555e4c429b6320bfad0de7a594c0ff7a05f226dddbea22cbf5f4fc1405042a0.
+Earlier parser55 admittedall75; native root28 checks7914bodies zeroexclusions/
+patches,52554ms, physical2972515352/RSS2946629632, SHA
+`ac1662398afe181e9622383933176249296979d88153ccdf2fa16c8d6aaa80dd`.
+Parent also conservatively excludes astral-qualified tags from UTF-16 binary
+dispatch (BMP certificate), preserving original ordered cases. Both source
+consumer workers and host list/fuel builders migrated off obsolete fieldSymbols.
+Gate v27 failed only imported fixture expectedshorttag vs canonicalqualifiedtag;
+v28 validates canonical constructor owner identities for all5 import fixtures,
+not stripped/normalized actualvalues. No fixtures removed.
+Private 16field subset named-payload gain20.2x/83.93%lesssampledallocation;
+NOT fullrootgain. Strictcall subset CPU-5.69%/alloc-7.79%. Both fullcombined
+defaultstage tests and rawfixedpoint exercised before the latest v29 proof above.
+
+### Historical failures and superseded experiments
+
+Full v26 completed RESOURCE_LIMIT/rss_limit at1498713ms: peakRSS8592687104,
+physical8176602960. Genuine SOURCE expansion now PASSED319637.304ms;
+last phase stage-two-check at1085762.300ms, no stage2/fixedpoint.
+Unchanged stage1 SHA
+`c3c80bead8bb4971646c62ed3e1e64875dc7fa36b0c5cee06fbf60d0472ef6a9`,
+17153254bytes. Template sharing is exercised; checker memory remains open.
+New private slices: canonical native named-record payload/full constructor-tag
+cutover (no produced positional arrays/getters), and strict-position ordinary
+calls directly invoke existing uncurried entries while retaining result forcing.
+Strict candidate proven all478canonicalemitterdefs,1540/1541nativebodies,
+sourceconsumer+120001tails; controlled16fieldloop CPU-5.69%/allocation-7.79%.
+Neither new candidate is integrated yet; ctor suite active, parent no heavy job.
+Failed diagnostic replay `selfhost-root-source-checker-profile-release237-v1.*`
+is NOT valid CPU evidence: native-tag root expansion followed by source checker
+fails after2transitions. Native backend uses qualified tags, current source
+produces/matches short tags; inverse source-parser→native-expander replay also
+fails. Actual bootstrap uses homogeneous stages and reached checker: do not
+reinterpret diagnostic ABI failure as its RSS cause. Source snapshot archived;
+runnable replay removed. Native ABI authority comp.ts3198-3206/bend.tsname_key.
+
+Current full default run: bootstrap v26, admitted parser54/native root27.
+Root27 checks7900 bodies, zero exclusions/output patches,44170 ms,
+physical2594045472 / RSS2510192640, SHA
+`638897bdbf538fedafadc2c26e2efde8cd384aebb20ddb93c0d390699cf77ec5`.
+v25 proved emitted stage1 parser can parse the ENTIRE compiler root, then failed
+heap OOM during stage-two-expand; elapsed1144085ms, physical7330415104 /
+RSS8458092544. Full source parser stack fix is exercised; no stage2 yet.
+Parent added conservative immutable constructor-only subtree reuse to Template
+expand_term: constructors and unchanged leaves reuse input; references/apps and
+all uncertain syntax retain original expansion. Predicate short-circuits.
+Four new source defs/5 generated helpers; Template192defs/726calls/503pending.
+This is native-validated, not yet a source-stage memory/fixedpoint proof.
+Both private experiments stay UNINTEGRATED: owned vector requests regress
+one-argument CPU5.07% and barely change16-field metadata allocation(-0.33%);
+AST restore saves3.068s in one pair but raises endpoint/peak heap~60MiB.
+No heavy jobs except complete v26; all private experiments finished.
+
+Current: full bootstrap v25 running with freshly admitted parser53/root26.
+v24 stack identifies ordinary `combine_symbols` constructor-tail recursion:
+`run_loop` -> combine_symbols -> strict recursive list tail. Parent changed
+canonical parser's combiner to a reversed-prefix tail pass, preserving scanner
+states and token spans. This deliberately changes canonical parser source, not
+the official2.0.37 kernel or transport. Parser53 all75 semantic/span admission
+cases pass; native root26 checks7895 bodies, zero exclusions/output patches,
+44178 ms / physical2585196552 bytes; SHA
+`32ae6d92a68706839efba196cec8a8578b9d8025631514e04fb6f08d1d799845`.
+Actual emitted stage2 stack fix still awaits v25 proof; no fixedpoint yet.
+Independent private experiments: owned argument-vector tail requests and bounded
+native AST restoration cost. Neither is integrated; no heavy-lane competition.
+
+Latest full default bootstrap v23 failed after 602449 ms at genuine
+`stage-two-parse`, with `RangeError: Maximum call stack size exceeded` while
+stage1 parsed `checker_core_steps_v1.bend`. No deadline/OOM or stage2 artifact:
+physical 5482896856 / RSS 6300696576 bytes. Fresh parser52 admitted all75;
+native root25 checked all7894 bodies, zero exclusions/output patches, 44270 ms,
+physical2580478464 / RSS2497937408, SHA
+`7c520889bbddb4880b09090b00527eef83d6144d74fe1c368be8ba4788eabf75`.
+Unchanged stage1:17136490 bytes, SHA
+`b199f1cb6018fb3544fd028e268d474a42373037e532197ffbd6c5a75842798b`.
+Root phases: parse119977.958 ms, expand15412.191, check170338.405,
+emit71278.894; total377007.448 ms, still above300000. All76 seed fixtures
+passed before stage1. Stage2 comparison now precedes emitted-stage fixture suites.
+Next: capture actual emitted-parser stack, remove its real recursion cause,
+then rerun the complete gate. Fixedpoint and five-minute target remain OPEN.
+Isolated unchanged stage1 parsing of the same checker source returned
+`FeedbackComplete` after158309 ms without reproducing the stack exception;
+the probe did not inspect the inner ParseResult and is not an acceptance proof.
+Its exact source is archived in
+`selfhost-stage2-parser-stack-release237-v1.source.json`; runnable probe removed.
+Full default bootstrap v24 now runs with identical root25/parser52 and additional
+failure stack reporting only. Do not infer a parser fix from the isolated result.
+
+Full default bootstrap v22 completed with `deadline_exceeded` at 1800018 ms,
+not OOM: physical 4831464816 / RSS 4691427328 bytes. All 76 seed fixtures and
+four genuine stage1 fixtures passed (specialization, Nat extrema, deep tails,
+nullary arrays); deadline hit next aliased-specialization checker. Stage1 is
+18870783 unchanged bytes, SHA
+`f857c74f93ca28c336fc8f54e72aa0d97ff4d369b52e31f405f0e4e01352348c`.
+Full root phases: parse 123163.568 ms, expand 17623.573, check 238500.266,
+emit 76847.314; total 456134.721 ms, not <=300000 and no stage2.
+Actual bounded emitted-checker profile now exists under
+`selfhost-stage1-checker-profile-release237-v1.*`: fresh Base parse 11173.606 ms,
+expansion 13985.971, first 20 s checker still Arena packing; self $ctr 18.9%,
+GC 13.7%, run_loop 12.1%, $resolve 5.9%. Diagnostic sources archived in
+`selfhost-stage1-checker-and-ctor-layout-release237-v1.source.json`.
+Parent integrated exact graded root-match contractions, static constructor
+tag/field metadata (original captured-vector getters retained), definition-scoped
+scalar schema preparation, and fixed-signature uncurried source calls. Constructor
+consumer v2 proves own/erased fields, native named-only inputs, positional mutation,
+vector replacement and borrowed-getter semantics; unchanged before/after outputs.
+Fresh parser51/root25 native admission is running. Full gate now performs genuine
+stage2/raw byte comparison before both complete emitted-stage fixture suites:
+no fixture or final acceptance criterion removed. Private experiments continue
+on native saturated operators, redundant strict forcing and repeated word-key
+resolution; do not apply private results without actual checking/consumer proof.
+
+Fresh parser `release237-v50` now fully admitted; corrected owned checker bytes
+SHA `291fc06c1571bdb5826c633fbc3db6388f6d148998d051dbbbd3309ea21a7693`
+match the private grammar proof. Full native root `canonical-release237-v24`
+checks all 8155 bodies, zero exclusions/patches: 48410 ms, physical 2606530800 /
+RSS 2523381760 bytes; artifact SHA
+`ace0dccca8d1fce63f138f5894ac874a63577dfba805e8e094a354593e22f60d`.
+Default full 76-fixture bootstrap v22 is running unprofiled, with real stage
+boundaries and raw byte comparison; no acceptance yet. Two independent private
+agents investigate eager native builtin dispatch and redundant CPS helper shapes.
+
+Latest actual proof: nullary affine-array memoization regression fixed in source
+`js_emit.bend`, without emitted-byte or AST-transport patches. Before:
+`selfhost-nullary-array-release237-v4.json`, `BitZero{}` instead of `BitOne{}`.
+After: `selfhost-nullary-array-fixed-release237-v1.json`, unchanged emitted JS
+prints `BitOne{}`. Fresh actual emitter native-checks all 1447 selected bodies:
+6110 ms / physical 798173824 bytes. Consumer parse/expand/check/new-emit/run:
+5170 ms / physical 406751384 bytes. Exact diagnostic sources archived separately.
+This proves array-factory ownership, not the stage1 checker OOM cause or fixedpoint.
+Parser `release237-v49` FAILED semantic admission (74/75): generated scalar-schema
+patterns embed unsupported nested U32 numeric fields. Private ClosedScalarTyping
+agent replaces constants with bound fields and typed guards before child reads.
+Root v24 has not been built; next fresh parser must be v50. No stage2 yet.
+
+**Shared immutable layouts и разделение signature/body preparation реализованы и перенесены на Bend 2.0.37. Полный compiler root native-validated.** После CPU-профилирования CPS request/result/resume/step dispatch разделён на типизированные группы по 64 исходных declarations. Новый root `canonical-release237-v13`: 57,126 ms, physical 2,587,277,080 / RSS 2,505,965,568 bytes (ранее v11: 77,819 ms, physical 3,216,420,352 / RSS 3,162,963,968). Реальный fixture `type-specialization` parse/expand/check/emit/run: 28,951 ms, physical 562,488,520 / RSS 782,647,296, с CPU и allocation sampling; baseline 120,645 ms / RSS 1,827,700,736. **Это не full-root self compilation и не fixedpoint.** Stage1/stage2 ещё не получены. Checkout — release `4ff8545f19b09b7d2b8ca2303668100eac8efd66`, CLI `bend 2.0.37`; старые plain v13/v34 reports и разделы 3–10 — история 2.0.16.
+
+Пользователь обновил `AGENTS.md`: при последнем чтении из файла удалены запреты на изменение компилятора, языка и архитектуры генератора. Старый сеанс содержал отдельно загруженную прежнюю редакцию ограничений, поэтому эти изменения не были сделаны. Новый агент должен читать актуальные проектные инструкции и свой загруженный контекст; этот handoff сам по себе не отменяет инструкции более высокого приоритета. Старые запреты в исторических документах/todos не являются описанием текущего содержимого `AGENTS.md`.
+
+Рабочий каталог: `/Users/ilyagulya/Projects/My/bend`; Darwin 25.6 arm64, Bun 1.4.2, Node 23.11.0. Parser/root находятся в общем `checkpoints/`, namespace conflict устранён. Fresh parser `release237-v39` admitted 75/75; canonical parser SHA неизменен. Native root v15 после single match factoring: 88,764 ms, physical 2,582,222,392 / RSS 2,382,692,352 bytes. Actual `type-specialization` fixture PASS 13,681 ms; `specialized-type-error` PASS 10,040 ms с ожидаемой ошибкой. CPS использует original authenticated canonical declaration blocks под owned native-provider header: Checker 4356 -> 966 definitions, pending sites 6070 -> 2506, helpers 8463 -> 5087; Template 218 -> 188. Full root profile v3 достиг `checker_match_2990`, ~333M requests, но checker превысил 300000 ms; artifacts пусты. Его checker CPU samples: GC 21.0%, `runSteps` self 17.4%, top dispatcher self 10.2%. Порог 5 минут и fixedpoint **не доказаны**.
+
+Три независимых sandbox эксперимента завершены и точечные кандидаты внесены parent в production: `index_lookup.find.walk` использует существующий `String.eq` вместо собственного recursive string comparator; `replace_free_term` сохраняет immutable tagged handle при conservative bound certificate и оставляет unknown-bound traversal; source JS emitter переиспользует resolved type key вместо промежуточного descriptor и повторного namespace lookup. Parent дополнительно убрал index/depth arithmetic для closed/unknown bounds. Изолированные результаты: lookup median 503.19 -> 206.71 ms (2.43x); capture-type refinement 6173.75 -> 992.89 ms (6.22x), arena nodes 104 -> 14; type metadata median 652.01 -> 484.28 ms (-25.7%). **Не выдавать эти подсеты за ускорение полной сборки.** Private evidence находится в `/tmp/bend-selfhost-ScopeLookupSubset-z90fUk`, `/tmp/bend-selfhost-CheckerMatchSubset-uGuCp2`, `/tmp/bend-selfhost-EmitterApplySubset-lg1noq01`; production writes принадлежат parent.
+
+Fresh parser `release237-v40` admitted 75/75, both public gates 14 PASS / 207 assertions; canonical parser SHA unchanged. Native root `canonical-release237-v16` PASS 50,441 ms, physical 2,648,556,584 / RSS 2,625,290,240 bytes. Parent actual integration fixtures PASS: type-specialization 11,104 ms; specialized-type-error 8,234 ms; readonly-index-boundaries 13,393 ms; dependent-nested-binding-refinement 952 ms; affine-constructor-field-quantity 771 ms с ожидаемым diagnostic/spans; alias-dependent-conversion 912 ms. Это проверенные подсеты, не fixedpoint.
+
+Full root profile v4 опять превысил 300000 ms checker target, но достиг `emitter_body_js_ref_strings` (~422M requests); stage artifacts отсутствуют. Sampled CPU: runSteps self 19.1%, GC 17.1%, top checker_step self 11.6%. По heartbeat наблюдениям `emitter_body_js_ref_f32_3` оставался current definition на 12-second window / 19.3M requests; это не точный full definition timer. Два новых private эксперимента: literal-heavy source checking и CPS scalar admission. Scalar subset подтвердил exact request reduction для `core_bound_unaffected`, dependent fingerprints и affine/type diagnostics; parent интегрирует только этот exact predicate под существующим live/bounded/nonrecursive policy, не generalized composition-analysis abstraction. Native root v17 build выполняется. Driver tag-cache candidate пока в same-work реальном checker smoke; не считать выигрыш доказанным до receipt.
+
+Native CPU профилирование тоже выполнено: `selfhost-profile-native-release237-v2/selfhost-54960-thread-1-AMELE0/000001-seed-native-load-check-emit.cpuprofile`; actual compiler isolate thread 1, automatic GC и прежний 8GiB/10ms guard. Raw artifact bytes совпадают с unprofiled v16 (`cmp -s` PASS). CPU sampled self: GC 19.4%, checked storage restoration anonymous frame 14.2%, `writeFileUtf8` 13.2%, `NativeCheckedStorage.get` 12.5% self / 32.5% inclusive. v1 captured idle supervisor isolate и **не является native compiler CPU evidence**. Observational preload snapshot archived as `checkpoints/selfhost-native-cpu-preload-release237-v2.mjs`; его original relative import отражает original execution location in `evals/`, это source snapshot, не runnable entrypoint.
+
+После интеграции остаются полный root check/emit/run в пределах пяти минут и настоящий stage1/stage2 byte fixedpoint. Не менять production источники во время authenticated runs, не обходить общий heavy lease и не восстанавливать Eval globals по именам из handoff.
+
+Latest integration: fresh parser `release237-v41` admitted 75/75; native root `canonical-release237-v18` PASS 191,519 ms, physical 2,326,736,448 / RSS 2,109,603,840 bytes. Exact-span childless constructor interning uses source-only memo lane, no typing shortcut/public AST change. Isolated actual 582-codepoint literal subset: source nodes 79,369 -> 60,169 (-24.19%), runtime 3250.98 -> 3242.69 ms (effectively flat); all17 valid/invalid outcomes equivalent. Private evidence `/tmp/bend-selfhost-LiteralCheckSubset-lfUI4D/report.json`.
+
+CPS generator now directly calls earlier typed step bodies for identity continuations with projection-only live arguments, retaining all recursive/back edges and public request handlers. Authenticated single-constructor record roundtrips are folded before lexical indexing; ascriptions preserved, promotions require native closed-Data proof, dependent/unsupported promotions stay unchanged. Checker pending sites 2508 -> 2137, helpers 5094 -> 4445; Template pending714 -> 670; Emitter pending1303 -> 1140. Actual full-native root validated; Unicode-string-pattern fixture PASS 25,942 ms, dependent nested refinement PASS 2,299 ms, affine-negative fixture PASS 1,704 ms with expected diagnostic.
+
+Root profile v5 remained FAIL at 300000 ms checker target: ~280.7M requests, `checker_match_2989`, no stage artifacts; 300001 ms wall / 220539 ms process CPU. Timing varies substantially: native v17 was 259124 ms wall / 80573 ms CPU; do not infer code speedups from unrelated partial progress or endpoint RSS. Driver tag-cache smoke executed actual dependent/affine checker paths and emitted identical program bytes, but alternating timing samples had large warm-up/load drift, so no controlled whole-root speedup claim.
+
+Real full acceptance gate v17 timed out at its existing 3600-second command deadline (no fixture/profile-root/parse-only flag): all73 seed fixtures PASS, source root checker completed, but stage-one emitter produced no artifact in the remaining ~2443 seconds. Report `selfhost-steps-bootstrap-release237-v17.json` retains interrupted IN_PROGRESS with empty artifacts; it is **not acceptance**. Five-minute complete stage target and stage1/stage2 byte fixedpoint remain **unproven**. Do not repeat or extend this unchanged full run. Existing 8GiB/10ms resource guards remain unchanged.
+
+Full acceptance v17 checker receipt `selfhost-profile-full-release237-v1/selfhost-66773-thread-1-O96BTT/001145-stage-one-check.json`: 450,987 ms wall / 455,672 ms process CPU, endpoint heap 2,854,943,936 bytes (not peak). Whole-root checker CPU samples: GC23.5%, top dispatcher11.8%, generic driver8.0% self. SIGKILL lost the uncompleted emitter phase profile. Bounded replay of authenticated original parser transports reproduced actual Bend expansion and saved exact expanded modules `selfhost-emitter-expanded-release237-v1.ast.json` plus provenance receipt; this diagnostic-only transport is not a stage input/checking shortcut. First in-worker 120-second observer did not interrupt a synchronous source helper and itself hit 300 seconds. Follow-up external NodeWorker inspector profiling captures the genuine emitter even inside synchronous helper calls.
+
+Emitter reachability subset candidate replaces linear visited-definition lists with a persistent resolved-key map while preserving emitted-definition order. Native-checked baseline1385/candidate1383 definitions; 1024-definition graph median1996.38 ->470.37 ms, actual512-definition library874.34 ->419.29 ms with identical120828 raw JS bytes and execution outputs. Small cases can regress; no whole-root claim. Evidence `/tmp/bend-selfhost-EmitterReachability-870d76/report.json`; parent integrated narrow reachability hunks, integrated verification pending independent declaration-index candidate. Do not overwrite emitter with a child snapshot.
+
+Actual interruptible full-root emitter CPU evidence now saved: `selfhost-emitter-remote-release237-v1.cpuprofile`, SHA `f9826f5ef40b6bbeb9733ee2e0092116b6422265242fa86383e2fd52d792892d`. External NodeWorker inspector stops sampling even within synchronous helpers; 60,685 sampled ms, Path.normalize54.4% inclusive, String.split33.8% self, find_namespace53.2% inclusive, GC16.6%. These percentages overlap; this is the initial60-second actual emitter window, not its complete40-minute run. Diagnostic command guardian PASS275917ms, peak physical1132215672/RSS1079328768 bytes, no stage artifact/checking shortcut.
+
+Parent integrated three emitter subsets narrowly: visited-key map; immutable first-owner path index and shared resolved alias layouts (including metadata/CLI); ordered same-key type-declaration index. Namespace private same-work49-module/432-import library29295.60 ->1185.69ms,67187 raw bytes identical, namespace resolutions58328 ->432; type-index private64-module library5387.55 ->3569.70ms,333986 raw bytes identical. Small catalog construction can regress. Sources/evidence remain `/tmp/bend-selfhost-EmitterNamespaces-b760ad/report.json` and `/tmp/bend-selfhost-EmitterTypeLookup-Cy8X1g/report.json`; their native compiler snapshots precede parent string-equality primitive. Integrated root acceptance still required.
+
+Complete checker allocation sample estimates total1.288TB cumulative collected allocations (4MiB sampling; NOT live memory); IndexLookup.find.walk and its continuation sites account for49.7%. Parent replaced cursor/division/five continuations with standard native-backed Map.bit and two branch continuations; native-checked363 definitions,214 Unicode/prefix/NUL/missing/nonmonotone cases PASS.50k-call sampled allocations1153851536 ->427219928 bytes; medians825.66 ->481.04ms, substantial warm-up/load variation. Receipt `selfhost-index-intrinsic-release237-v1.json`. Direct builtin String.eq JavaScript lowering added to both emitters; actual JS and C `tests/base/map_prefix_keys.bend` produce all7 expected lines, including equality edge cases.
+
+Single-pass Path candidate integrated from `/tmp/bend-selfhost-SourcePathNormalize-816309/handoff.json`:4043 paths/84903 private native comparisons, raw/execution parity on3 libraries; realistic normalize48.74 ->13.57ms, dirname16.10 ->16.88ms (small regression). Parser42 preparation rejected new numeric `Chr{46}` patterns; equivalent character-literal source spelling preserves the algorithm and passes native AST/literal-span parity. Parser43 completed all75 rows but JSEmit's newly computed-match scrutinee failed native syntax normalization; parent extracted typed `js_type_modules_needed` parameter helper. No parser/kernel/AST edits. Failed42/43 evidence retained, not admission.
+
+Latest integrated proof: fresh parser44 admitted75/75, both public gates14PASS/207assertions; complete optimized native root19 generated9,268,978 JS bytes, all7772 bodies genuinely checked, zero excluded/patches. Guardian PASS52,730ms, processCPU61,847ms, peak physical2,608,269,856/RSS2,523,938,816 bytes; generated artifact NOT_YET_EXECUTED receipt is not bootstrap acceptance. Entire fresh proof/root pipeline257.26s. Real complete default bootstrap gate is now running as `selfhost-steps-bootstrap-release237-v18.json` with native root19/parser44 and CPU/allocation profiles `selfhost-profile-full-release237-v2`; all73 fixtures at every stage plus actual stage1/stage2 root emission/import and raw-byte equality required. Freeze protected source inputs. Standalone sequential `main.ts js_emit.bend --check-only` stops at a forward reference (`js_value_indices_at`); the existing forward-helper source style is handled by authenticated typed CPS generation, whose complete native root validates all bodies. Do not count that standalone command as a passing source check.
+
+Owned diagnostic scripts/Bend fixtures removed after exact source snapshots were archived in `selfhost-index-intrinsic-release237-v1.source.json`, `selfhost-emitter-expanded-release237-v1.source.json`, and `selfhost-emitter-remote-release237-v1.source.json`. Archived native index subset artifact `selfhost-index-intrinsic-release237-v1.mjs` is unchanged measured output, not a stage artifact. Old receipt pins refer to original source paths; snapshots retain those exact bytes.
+
+First genuine complete stage1 artifact now exists: default acceptance v18/native root19 emitted `selfhost-steps-bootstrap-release237-v18.json.cases/stage-one.js`,84,299,486 raw bytes, SHA `ac33f47644abfedac5f1068235e558ee7b217656e20a029102dc625d2d6fef60`, imported full ABI and parsed first stage1 fixture's tiny root. All73 seed fixtures PASS. Gate then FAILED existing1800s deadline while stage1 parser processed original Base for first fixture; no stage1 fixture completion, stage2 or byte fixedpoint. Guardian peak physical6,987,940,672/RSS5,280,284,672 bytes; no memory limit raised. Do not extend/repeat unchanged gate.
+
+Complete source root timings now measured rather than partial: expand~16.4s; checker387,128ms wall/378,662ms CPU; emitter373,427ms wall/349,647ms CPU. Both complete profiles in `selfhost-profile-full-release237-v2/selfhost-64077-thread-1-yT1dGK/001145-stage-one-check.*` and `001146-stage-one-emit.*`; source stage remains~13min, NOT<=5min. Checker selfCPU: dispatcher16.0%,generic driver10.1%,driver wrapper6.9%,GC20.7%; emitter16.7%,12.8%,8.3%,GC22.5%. Namespace normalization bottleneck removed, current dominant overhead is dispatch/protocol allocations. Parent launched bounded external inspector profiling of genuine unmodified stage1 Base parser, and two private slices: typed source direct invocation on Pending (host remains generic LIFO) and shared staged constructor layout/accessor descriptors (own fields and vector coherence preserved).
+
+Actual unmodified stage1 Base-parser CPU window is archived as `selfhost-stage1-parser-profile-release237-v2.cpuprofile`, SHA `a2547f4a36d1dc5cedcaa8a65244b13f0aa0a9a06744e9f84e5cef92e8757234`:20,300 sampled ms; GC53.89% self and `$ctr`33.51% self. Emitted lexer predicates rebuild32 Word constructors for each closed U32 character constant. Parent integrated source-only closed native U32/F32 Word-literal folding, preserving actual Base ownership and falling back for open/malformed/shadowed constructors. Private native-checked1398-definition candidate passed execution/boundary fixtures; actual emitted digit scanner30k calls improved9942.12 ->70.11ms, sampled cumulative allocation16.35GB ->248.75MB. This is subset evidence, not full-stage timing or bootstrap acceptance. Parent added early rejection before traversing an open/noncanonical bit's tail.
+
+Parent also integrated one immutable flat value/constructor owner catalog and ordered type-owner indexes from `EmitterGlobalCatalog`; private27 raw-byte/execution parity cases PASS,49-module subset170.706 ->74.791ms including construction. Small catalogs can regress and retained catalog graph grows; do not claim a memory reduction from this index alone. Fresh parser45 admission is running against both integrated changes; full-root validation and stage1/stage2 remain pending. Source CPS regeneration completed under unchanged guards.
+
+Generic shared-constructor getters remain a retained private candidate, NOT integrated: their receiver-based fields differ from existing original-vector capture for vector replacement and borrowed getters. Do not attribute that candidate's allocation results to production. `CpsDirectDispatch` independently investigates typed earlier-body direct invocations and generic native sharing of closed named function wrappers; no production change from that slice has been integrated yet.
+
+Integrated source admission completed: parser45 all75 acceptance/semantic/literal-span parity rows PASS. Complete native root20 validates all7818 bodies with zero excluded checks/output patches; guardian PASS44,901ms, peak physical2,524,439,616/RSS2,446,540,800 bytes. Artifact SHA `ba5fca2a9918aaa7b62d21e5fd8424d881b2bfac57076bc1250e5ff3aaeb7a3d`; native receipt remains NOT_YET_EXECUTED, not acceptance. Actual default full bootstrap v19 is now running with root20/parser45, all fixture stages and raw stage1/stage2 equality enabled; profiles `selfhost-profile-full-release237-v3`. Source inputs/runtime are frozen until this run completes. Five-minute target and fixedpoint remain unproven.
+
+Default v19 completed seed73 fixtures and genuine full root emission: checker339,610ms/emitter67,296ms (previous387,128/373,427ms); stage1 is31,771,111 rawbytes SHA `999efd7815c27ba5d9d609c89bd56c1c795a1cc6ff0cffabbb06c734da175352`. No five-minute claim: check alone remains>300s. First stage1 tiny-root parser semantic parity PASS, but original Base parse hit unchanged8GiB RSS guard after1,600,402ms; peak physical8,539,076,336/RSS8,617,820,160 bytes. No completed stage1 fixture, stage2 or fixedpoint. Do not replay this unchanged full gate.
+
+New bounded20-second actual stage1 Base profile v3 guardian PASS26,613ms, peak physical5,501,628,648/RSS6,143,131,648 bytes. Raw profile has one negative time delta; the existing strict summarizer rejects it, so preserve raw evidence and explicitly exclude that single invalid sample for diagnostic aggregation. Valid sampled20,193ms:GC57.14%,`u32_to_word`18.52%,`$ctr`6.19%,`$resolve`3.88% self; recursive call-frame identities aggregated, not single profiler-node percentages. Exact throwaway source archived as `selfhost-stage1-parser-profile-release237-v3.source.json`; runnable probe removed. Two private source-emitter slices investigate unused native Word projection and generic tail-call retention, not parser/host shortcuts.
+
+Parent integrated CpsDirectDispatch's typed earlier-body invocation/argument records, generic LIFO Direct boundary and generic native sharing of closed named-function wrappers; future/self/backedges and all public request handlers remain. Actual regenerated checker969 canonical definitions has1105 pending sites (previous2137), template499 (previous670), emitter606 (previous1188); all-body root proof still pending. Source emitter also adds already-canonical Nat.min/max intrinsic lowering. Fresh parser46/native root21 pipeline is running; no current bootstrap run. Preserve production inputs until proof completes.
+
+Fresh parser46/native root21 proof completed: all8431 bodies checked, zero exclusions/output patches; guardian45,951ms, peak physical2,445,675,392/RSS2,371,813,376 bytes. Actual integrated type-specialization consumer PASS5,828ms, physical371,143,312/RSS612,859,904; diagnostic subset, not fixedpoint. New permanent bootstrap fixture `native-nat-extrema-boundaries` executes unchanged source-emitted min/max across zero/equality/order and computed2^48-1; PASS5,661ms, physical342,042,088/RSS579,158,016. First attempted direct decimal48-bit spelling was rejected by existing parser and retained failed receipt; fixture computes the same largest native Nat from supported smaller operands without overflowing intermediates. Full default gate now contains74 fixtures, never silently drops old73.
+
+Private pattern slice confirmed another concrete staged parser cause: one closed U32 character pattern evaluates `u32_to_word` repeatedly at structural Word tests (about97 static conversion occurrences for one pattern). Exactclosed native U32/F32 pattern scalar lowering is being verified; no source integration yet. Private generic source-tail slice also has an authentic native-checked candidate, consumer verification pending. Avoid another full gate until both retained-all-body candidates are resolved.
+
+Both staged source fixes are now integrated narrowly: exactclosed native U32/F32 Word pattern tests (F32 compares bits, not numeric equality) and generic symbol-tagged source unary tail requests/closures. Open/binding/explicit Word patterns remain structural. Tail closures force strict operands/intermediate currying; final tail requests carry `{f,x}`, no thunk/argument array. Private pattern225 paritycases passed; actual closednativepattern CPU603,316 ->2,396µs, Base-prefix parser pipelines2,310,037 ->1,360,232µs. Private source-tail120001-call consumer passed at300,482,560 RSSbytes; recursion profiling max128frames ->25frames, but sampled allocation127.1 ->175.2MB increased, so no blanket allocation reduction claim. Existing foreign-object IO-main failure is unchanged, outside compiler-root acceptance.
+
+Fresh parser47 admission/native root22 completed: all8449 bodies checked, zeroexcluded/outputpatches; guardian46,929ms, peak physical2,464,208,120/RSS2,388,803,584 bytes. Artifact SHA `33acecbf80fa6db2f7bb643766d0a1fef7df755aefb5aef963114df89bb1227e`. Clean production native suite147PASS/901assertions after moving an agent-owned copied-test sandbox outside repo; an earlier run's only failure was that private copied test's missing fixture, retained, not a production pass claim. Full default bootstrap v20/root22/parser47 is now running with profiles `selfhost-profile-full-release237-v4`, unchanged8GiB/10ms/1800s guards; source inputs/runtime are frozen. Full suite now75fixtures: original73 plus real48-bit Nat extrema and65536-step source-tail execution regressions. No current five-minute/fixedpoint claim before actual result.
+
+Full v20/root22 finished all75seed fixtures PASS and emitted genuine19,611,142-byte stage1 SHA `197c49f73d7698ff20401aed8b85b93bd256acab6bdbd1c165dd426f0c226292`. Original Base stage1 parsing now completes12,155ms with full semantic oracle parity, no memory guard raised; previous OOM bottleneck resolved. Gate fails at first stage1 expansion with `TypeError: Cannot read properties of undefined (reading '0')`, not parser OOM; guardian1,110,773ms, peak physical4,535,693,224/RSS4,620,812,288 bytes. No stage1 completed fixture/stage2/fixedpoint. Root source checker378,177ms: record/invoker Direct increases generated check work versus prior339,610ms, despite modest isolated dispatch savings. Do not replay unchanged v20.
+
+Exact bounded repro established ABI cause: original fresh stage1 parser ASTs expand successfully; the unchanged native transport roundtrip drops optional `Symbol.for("bend.fields")` metadata by its documented contract, preserving complete named payloads. Source-emitted pattern projections incorrectly required that optional symbol; native seed projections use named fields. Repro with original Base and genuine unchanged stage1 now fails in8,894ms atstage-one.js:9217; direct fresh AST expansion PASS16,082ms. Wrong main-thread stack diagnostic attempt SIGSEGV is retained, not acceptance; actual repro uses existing256MiB worker stack. Parent source emitter fix generates `$field(v,i,k)` from authentic constructor binder names, using an existing positional vector when present and canonical named payload when absent. Thus vector replacement/borrowed getter semantics stay unchanged; no transport/AST/artifact patch.
+
+Fresh parser48/native root23 proof for named-payload fix is running. Parent prepares genuine source-emitted canonical Template dependency library to exercise unchanged native AST roundtrips before another full gate; this bounded smoke is diagnostic, not a substitute stage. Two private performance slices now target compact typed Direct thunks without per-target derived record/invoker declarations, and exactclosed scalar constructor typing certificates; no production changes from them yet. Five-minute source-root target remains open. Runnable owned probes must be removed after exact source evidence snapshots; do not alter archived failed stage artifacts.
+
+Named-payload integration proof: parser48/native root23 all8453 bodies checked, zeroexclusions/patches;45,955ms, physical2,434,601,392/RSS2,361,098,240 bytes, SHA `b5f6079b40608aee1c494c211e6eec116843cf83ff8e5a774b33008dfe9c17bd`. Real source Template smoke freshly parses/expands/checks/emits the complete canonical Template dependency closure, imports its unchanged1,838,019-byte JS library (SHA `96f73c2a2f140471a4fbee73fdbcc65fb7a39bd20159ec6ee04994a2ea4755eb`) and expands original Base plus tiny root ASTs from genuine stage1 parsing after unchanged native transport roundtrip. PASS49,769ms, physical1,328,386,896/RSS1,337,671,680; no stage/fixedpoint claim from this diagnostic. Exact3 owned probe/root sources archived and hash-checked in `selfhost-template-native-abi-release237-v1.source.json`; runnable probes and throwaway root removed.
+
+Actual complete default bootstrap v21/root23/parser48 is running WITHOUT CPU/allocation instrumentation to separate compiler time from profiler overhead. It retains all75fixtures, fresh parses/checks, real stage1/stage2 raw bytes, unchanged8GiB/10ms and1800s deadline. Prior complete CPU/allocation profiles and actual staged parser evidence remain archived; stage2 profiling still pending. No source/generator/runtime changes while run active. Five-minute target and byte fixedpoint remain unproven until result.
+
+Unprofiled full v21/root23 completed all75seed fixtures and emitted genuine19,641,770-byte stage1 SHA `6fc2611cd161114499b9ba510be711184fde2d6d104d32695fdcf952fa2a183a`. First stage1 fixture original Base parsing and expansion now PASS; checker worker then reaches its existing6144MiB heap limit. No stage1 completed fixture/stage2/fixedpoint. Guardian903,341ms, peak physical7,339,866,896/RSS6,742,458,368 bytes; guards unchanged. Actual unprofiled source-root timings from phase boundaries: parse140,783ms, expansion19,896ms, checker451,862ms, emitter81,039ms; load/profiling drift prevents a simple before/after CPU claim. Five-minute root target still NOT met.
+
+A concrete semantic ownership bug is now reproduced: source nullary definition memoization makes independent `fresh() -> Array<U32>` calls alias. Permanent fixture `nullary-array-freshness` parses/checks/emits successfully but unchanged emitted execution printsBitZero instead of expectedBitOne (`selfhost-nullary-array-release237-v4.json`). Earlier attempted fixture spellings failed canonical grammar (computed/local scrutinee restrictions); failed receipts retained, final fixture uses typed parameter helpers. Source emitter now demand-evaluates each nullary reference without caching its result; functions remain directly registered, foreign initialization remains deferred. Native AST/kernel/parser/transports/artifacts unchanged. This can explain source/transient `Arena.empty()` array aliasing in stage1 checker, but full-stage OOM causality still requires confirmation.
+
+Parent also integrated compact typed Direct Unit-token closures and the closed scalar typing certificate. Parent compressed33 separately unrolled Nat schema validators into one bounded decreasing loop and removed38 redundant boolean-true operations;68 checker functions added instead of100. Compact thunk private sourcechecking cost fell~15% at largest scaling case but runtime allocated bytes rose~9.7%; do not claim unconditional runtime memory savings. Exactclosed scalar private582-literal sourcechecking3457 ->1639ms, unchanged source nodes, transientpeak42934 ->21218; original helpers/aliases/uncertain cases still use general checking. Regeneration now checker1037 canonicaldefs/4741helpers, template188/457, emitter437/1043. Fresh parser49/native root24 full proof is running; no current bootstrap run.
+
+## 2. Состояние: что работает, что не доказано
+
+Работает:
+- Профилирование включается `SELFHOST_CPU_PROFILE_DIR=/absolute/directory`.
+  `selfhost_cpu_profile.mjs` сохраняет по фазам inspector `.cpuprofile`,
+  `.heapprofile` (4MiB statistical allocation sampling, включая collected
+  objects; первоначальный baseline использовал 64KiB), wall/process CPU/memory summaries. Oracle — отдельный Bun child;
+  emitted fixtures — отдельные Node child profiles и resource receipts.
+  При unset env прежний путь исполнения сохраняется. Root profile mode
+  `--profile-root=true` не публикует compilerBootstrapGreen/fixedpoint.
+  `node evals/summarize_cpu_profile.mjs FILE...` считает self/inclusive sampled
+  milliseconds, не дублирует recursive frames; не выдавать samples за точный
+  CPU accounting. Сам native compiler seed build надо отличать от selfhost stage.
+- Baseline actual root CPU: `selfhost-profile-release237-v1-{restore,expand,check}.cpuprofile`.
+  Restore 70.66 s: `scan` 65.9% active sampled self time; expansion 44.20 s:
+  driver/tag decoding 39%, GC 11%; bounded checker 180.58 s:
+  giant `checker_step` 63.8% self time, GC 5.6%. Не утверждать V8 deoptimization:
+  profile не содержит подтверждённого deoptReason. Именно размер typed dispatch
+  стал первым измеренным исправлением, не kernel/AST/output patch.
+  Successful profiled fixture evidence: `selfhost-profile-fixture-release237-v1.json`
+  (baseline), `...-v3.json` (grouped CPS). Intermediate `...-v2.json` проверил и
+  исполнил fixture, но **FAIL** final input guard: producer изменён во время run;
+  не использовать этот report как acceptance или доказательство ускорения.
+- Root v1 checker CPU/heap остановлен на 300000 ms, а не оставлен на часы.
+  Cumulative allocation estimate 310,215,406,104 bytes / 4,719,752 samples;
+  это **не RSS/live heap**. `Map.bit.go` + reconstruction ~69.5GB estimates,
+  continuation driver ~18GB. Summary:
+  `selfhost-root-profile-release237-v1-allocation-summary.json`.
+  Прямые native JS map/string primitives прошли 1598 bit cases, 196 Unicode
+  comparisons, 16 actual map lookups и миллион bit calls; permanent
+  `tests/base/map_prefix_keys.bend` прошёл actual JS и C executions.
+  Both emitter implementations обновлены; source-stage execution ещё нужен.
+  Driver использует grow-only continuation buffer и очищает consumed slots.
+  Root v2 throughput ~368M/300s против ~189M/300s v1, но input/helper sampling
+  различались, поэтому это не same-work speedup и не успешная полная проверка.
+  Allocation interval увеличен до 4MiB: ранний 64KiB sampler сам сохранил
+  377MB profile; sparse sampling снижает observer overhead, сохраняя estimates.
+- `equal_raw` сравнивает полные immutable U32 handles через `U32.is_eq` до
+  структурной проверки. Реальная трасса выявила повторный вход с `(89, 89)`.
+  Minimal `recursive-neutral-application-equality`: до исправления 600-second
+  timeout, после — actual native compiled parse/expand/check/emit/run PASS
+  за 2,262 ms. Полный v8 подтвердил все 73 seed fixtures, включая distinct
+  neutral indices, distinct branches, affine failures и imported family identity.
+  Повторная проверка `base.bend` стоит около 95 секунд на fixture; aggregate
+  600-second deadline был исчерпан на седьмом fixture, не в equality loop.
+  Longer full v8 завершил seed fixtures и обнаружил именно namespace conflict;
+  memory/RSS limits остаются 8192 MiB, 10 ms, без manual GC.
+- Full bootstrap v15: 73 seed fixtures PASS; full source root parsed/restored
+  без AST patches, expansion завершён. Stage-one checking остановлено aggregate
+  RSS 8,590,065,664 bytes (physical 4,859,442,968), 9,022,068 ms.
+  Не повышать guard и не повторять долгий run без lifetime proof.
+  Root checker bounded probe использует реальные authenticated v15 transports,
+  затем actual compiled Template/Checker; это диагностика, не acceptance.
+  Scalar string interning сохраняет все values/fields/sharing/cycles: restored
+  worker heap 1,665,505,288 -> 1,019,200,240 bytes; guarded 180-second checker
+  probe peak RSS 4,547,985,408 -> 3,707,895,808 bytes.
+  Проверено actual restored full source input, не synthetic storage benchmark.
+  Все 8-GiB/10-ms limits и official kernel остаются неизменными.
+- Текущий переход на 2.0.37: actual JS/C arena-generation regression печатает `7`;
+  девять native JS executions проверили retained/released/stored checked-body
+  режимы, byte equality, mutual recursion, 200,000 tail steps, callback exception
+  identity и восстановление depth после exception. В основном checkout permanent
+  `native_checked_storage.test.ts`: 2 PASS / 8 assertions; semantic factoring,
+  capture, affine и progress suites: 70 PASS / 296 assertions.
+- Новый source syntax требует собственных `: Nat` аннотаций операторов; обновлены
+  реальные source inputs, не исторические generated snapshots. Cursor-call
+  renderer сохраняет лексические границы аргументов и аннотации; evaluation-context
+  renderer использует native File aliases вместо старого dot-only remapping.
+- Fresh parser preparation `release237-v9` PASS: 18,834 ms,
+  peak RSS 569,212,928 / physical 289,293,296 bytes. Это закрытый source graph
+  и factoring, не accepted parser build. Public grammar: 14 PASS / 207 assertions.
+  Native literal/oracle/storage boundary regressions: 33 PASS / 248 assertions,
+  включая parenthesized closed Nat tails, explicit U32 decoder и symlink root.
+- Full source-evaluator semantic run v9-v2 остановлен physical guard через
+  232,978 ms на 506,411-byte generated parser: physical 8,605,552,824 bytes.
+  Native oracle отдельно обработал тот же файл: 985 declarations / 788 ms,
+  physical 61,620,896 bytes. Ограничение — source evaluator, не native loader.
+  До root нельзя допускать этот failure или partial diagnostic.
+- Путь разделён на preparation proof (исходная явно ограниченная политика source
+  evaluator, 71 cases) и final acceptance (все 75 cases на реально собранном
+  parser artifact). Native codegen до final gate даёт только provisional receipt;
+  полный compiler root должен требовать отдельный final acceptance wrapper.
+  Исторический generated-parser corpus заменяется текущим candidate selfparse,
+  Checker slice/driver — текущими owned sources; прошлые reports/pins неизменны.
+  Final admission теперь опубликован для v26: PARSER_ACCEPTED_NATIVE_SEMANTICS,
+  FULL_75_SEMANTIC_GATE, admitted=true, 75/75 semantic/literalSpan rows,
+  checksExcluded=0, outputPatches=0. Full native root build 2.0.37 также PASS.
+- Native parser v14 действительно собран и исполнен: 1,439 checked bodies,
+  wall 46,197 ms, peak physical 2,284,130,704 bytes. Это provisional artifact,
+  не final admission. Native semantic v15 завершил все 75 cases за 39,995 ms:
+  peak physical 2,327,298,624 / RSS 4,263,346,176 bytes; admitted=false.
+  Streaming declaration normalization убрала прежний OOM при selfparse.
+  SNil span, multiline Process.run, adjacent Nat +/Many и computed JSEmit matches
+  исправлены. v19 current selfparse и normalized owned checker
+  (1,474,547 bytes / 4,350 definitions) дают semantic/literalSpan parity.
+  У Base в v19 только acceptance=true: semantic/literalSpan parity=false.
+  Прежнее утверждение о Base parity было ошибочным; исторический report неизменён.
+  v16 native validation выявила missing List annotation в split-token binding;
+  аннотация исправлена в исходном parser.bend, исторический v16 report сохранён.
+- Точный limb F32 encoder реально скомпилирован native 2.0.37 и исполнен:
+  `float-native-release237-limbs-v5.json`, 48 bit comparisons / 11 rounding
+  comparisons PASS, включая длинную мантиссу Base.hypot и subnormal boundary.
+  Native boundary regressions v27: 147 PASS / 901 assertions.
+- Owned checker сохраняет исходный полный reachable `check_modules` closure;
+  с новым signature-predeclaration helper это 964 определения / 4,354 normalized
+  defs. Plain variable lets остаются на месте. Ast/Loader/Core identities общие.
+  Только видимый scope заранее получает опубликованные typed signatures, без
+  непроверенных values; duplicate/signature/body/affine checks остаются прежними.
+  Native `forward-family-definition`: before FAIL unknown Word, after PASS WNil.
+  Typed steps пересозданы после parser hash change. Полный root v1 2.0.37:
+  `selfhost-steps-native-canonical-release237-v1.result.json`,
+  11,694 actual checked bodies / 11,992 events; все 9 ABI exports.
+  Guardian PASS: physical 3,213,600,672 / RSS 3,162,177,536 bytes, 79,340 ms.
+  Artifact SHA256 `4a6fcfad03934372f41c93a6293dc12b5940433fe4d7654b7b7dc4f85868ec13`.
+  Это полный native build, не stage1 и не fixedpoint. Fresh полный bootstrap
+  `selfhost-bootstrap-canonical-release237-v1.json` FAIL на строгом span validation:
+  18 Quant binder spans в Base имели end=0, потому что TermQuant не имеет span.
+  Typed/template binder ends теперь берутся из consumed lexical tokens.
+  Regression против v26: 2 FAIL; corrected source: 2 PASS / 10 assertions.
+  Parser candidate и root находятся в общем `checkpoints/`:
+  `checkpoints/.bootstrap_compiler_root_v1.bend`. Идентичный import header
+  сохраняет native AST tags и одинаковые namespaces всех shared imports.
+  Полный root v4: 11,709 checked bodies / 12,007 events; physical 3,226,202,608 /
+  RSS 3,172,990,976 bytes, 80,141 ms. Full bootstrap v5 достиг Base checking,
+  но истёк 600,000-ms deadline; stage artifacts отсутствуют.
+  V8 profile `/tmp/checker-release237-v1.cpuprofile`: 56.3% + 33.9% self time
+  в двух checker dispatch frames, GC 0.7%; проблема — giant string dispatch.
+  Balanced dispatch внедрён в обоих JS emitters. Actual native 64-constructor
+  smoke: 140 cases PASS, single tag/payload reads, named/wildcard и nonstring
+  fallback сохранены. Свежий v30 admission/root/bootstrap проходит provenance.
+  v18/v19 full 75 gate остановлен RSS на JSEmit после owned checker;
+  final admission не опубликован. В v24 все 75 cases завершены под лимитами:
+  physical 3,536,879,360 / RSS 4,096,851,968 bytes, 83,368 ms.
+  Осталось одно semantic/literalSpan расхождение Base.App.run: пропущена Ann
+  на последнем action в do; подтверждено прямым сравнением деревьев.
+  Полный isolated owned semantic execution сохраняет parity:
+  `bootstrap-parser-release237-isolated-owned-v1.json`, physical 2,481,974,416 /
+  RSS 2,955,542,528 bytes. Это partial diagnostic (exit 2), не admission.
+  Новый full gate исполняет каждый из всех 75 cases в отдельном Bun/Node process,
+  объединяет реальные rows и аутентифицирует child reports/raw outputs.
+  Streaming observer не перечитывает каждый закрытый SCon suffix ради
+  неиспользуемых folded-child spans; semantic hash и literal ledger сохранены.
+  Это убирает квадратичное чтение длинных embedded JS strings в JSEmit.
+  Limits и native AST/oracle coverage не меняются, manual GC отсутствует.
+- Cutover сохранил исходное tracked состояние в
+  `refs/omp/bend237-source-backup` (`47656e63f347be3654ccea370a5f604379420124`),
+  изменённые private sources — в `/tmp/bend-237-private-backup-47656e63`.
+  Snapshot не включает untracked файлы; private backup не заменять stash/reset.
+
+
+- Pure step bootstrap harness, соединяющий parser → Template → CheckerCore → JSEmit.
+- Canonical Node/V8 orchestration с автоматическим GC, **3,072 MiB** old-generation limit, 256 MiB worker stack и lossless storage фактически проверенных тел между validation/emission.
+- Внешний process-tree guardian: **8,192 MiB физической памяти и RSS, период 10 ms**; конечные deadlines.
+- Compiler-private AST arena: U32 child/name IDs, flat argument/telescope tapes, исходные arbitrary Nat indexes, quantities и spans сохранены.
+- Разделение source/transient arena и реализация clearing rewind в исходниках.
+- Flat metadata последней арены; реальные нативные проверки роста/rollback прошли.
+- Typed request handlers сохранены; bounded nonrecursive native storage islands убирают измеренный dispatch bottleneck, general computation/recursion остаются CPS.
+- Полная нативная проверка **и JS-сборка** текущего compiler root: `selfhost-steps-native-canonical-v13.result.json`, 7,841 events / 7,568 определений, 30,472,921-byte artifact; RSS 4,757,766,144, physical 4,517,665,880 bytes, wall 230,457 ms, CPU 407,637.498 ms.
+- Same-work v10/v11: идентичные входы и JS bytes; peak physical footprint 6,280,901,264 → 4,157,197,032 bytes. Цена — 3.81-GB временное checked storage и 309,581 вместо 55,607 ms wall; не full-build speedup. Доказательство: `selfhost-memory-same-work-canonical-v11.json`.
+- 14 actual JS/C layout/signature executions: `shared-layout-backends-v110.json`; actual restored-checked-output codec execution/byte equality: `native-checked-storage-smoke-v1.json`.
+- Все 64 seed-fixtures прошли в fresh bootstrap v11/v12, включая private-arena Checker и positive/negative law/type/affine cases.
+- Fresh stage-one parsing v11 выявил слитное `1n++tail`, v12 — U32 numeric patterns в arena decoder. Оба source-level ограничения исправлены без изменения quantities/decoder semantics. Все 15 текущих root .bend inputs проходят actual accepted parser: `parser-root-closure-compat-v1.json` (диагностика, не bootstrap acceptance). Boundary decoder regression реально исполняется на JS/C: `arena-quantity-codec-backends-v1.json`.
+- Последняя завершённая полная native-сборка — `selfhost-steps-native-canonical-v34.result.json`,
+  artifact `selfhost-steps-canonical-v34.js`: 8,495 events / 8,216 definitions,
+  45,804,032 bytes, SHA-256 `9b89658c930e245dec137cdbca37172478fd0cd859b51378eeb1ec2c6dee2b11`;
+  guardian RSS 5,520,310,272 bytes, physical footprint 5,309,812,368 bytes,
+  wall 300,078 ms; одновременно e/h максимум 1/1. Не same-work v10/v11.
+- В bootstrap v18/v20 прошли все 67 seed fixtures. v18 исчерпал deadline
+  на stage-one-check; v20 остановлен вручную после длительного stage-one-check.
+  Отчёт v20 остаётся IN_PROGRESS, не является PASS или завершённым failure.
+  Stage1/stage2 артефактов ещё нет; fixedpoint не доказан.
+- В v21 arena closed certificates учитывали binder depth и arbitrary Nat
+  free-variable bounds; неизвестные и смешанные регионы не получали сертификат.
+  Actual JS/C regressions: `checker_arena_closed.bend`, `checker_arena_bound.bend`.
+  Реальная typed-step подстановка в 1,000 вложенных binders: 2 requests,
+  8.58 ms после загрузки, исходный handle сохранён
+  (`substitution-bound-micro-v21.json`, diagnosticOnly; загрузка заняла 57.63 s).
+- Fresh parser/source-closure diagnostic v21 завершён:
+  `selfhost-root-parse-canonical-v21.json`, guardian 125,326 ms.
+  Это baseline для ограниченного root checker measurement, не bootstrap acceptance.
+  Не повторять 55-минутный полный gate без измеренного улучшения root checker.
+- V22 сертифицирует mixed-region transient bounds при публикации по полным IDs.
+  Guard сохраняет subtree при bound <= target/cut; unknown идёт прежним путём.
+  Реальное typed-step исполнение: 18 assertions / 44 requests
+  (`arena-typed-bound-smoke-v22.json`); fresh parser diagnostic v22 —
+  121,875 ms (`selfhost-root-parse-canonical-v22.json`).
+  Проверены 100 отказов array depth, затем 200,000 tail-шагов
+  (`native-tail-exception-smoke-v21.json`).
+- Но ограниченный root trace v22 всё ещё останавливается на `template_match_43`
+  после 175,455 ms / 46,987,592 requests: существенного root speedup пока нет.
+  Не запускать новый длинный bootstrap на основании microbenchmark.
+- V24 exact memo использует полные source/transient IDs и Nat index/depth.
+  Таблица ограничена 4,096 slots и очищается при любом rewind. Actual typed-step
+  stale-key/value-ID reuse smoke: 9 assertions / 79 requests
+  (`arena-transient-exact-memo-smoke-v24.json`); previous full-key/large-Nat/no-op
+  rewind smoke — `arena-exact-substitution-memo-smoke-v23.json`.
+  JS/C binder regression теперь печатает 10101 (Lam/All/Sub capture boundaries).
+- Ограниченный full-root checker v24 прошёл прежний hotspot и за 240,005 ms
+  достиг 897 definition checks / 858 stored definitions без stable-hotspot stop.
+  Затем полный `selfhost-bootstrap-canonical-v24.json` прошёл все 67 seed fixtures,
+  full-source parser parity и expansion, но исчерпал 3,300,000-ms deadline
+  на stage-one-check. Stage1/stage2 artifacts отсутствуют; это failure, не acceptance.
+- V25/v26 selective beta подставляет аргумент только в выбранную ветвь
+  decisive single-Var0 BodyMatch; неизвестные формы сохраняют прежний путь.
+  Реальные 137 assertions (aliases, binder captures, pattern precedence, fuel)
+  прошли в `selective-beta-smoke-v25.json`. First-row normalization 1/1,000
+  unrelated rows: 116/116 requests вместо прежних 236/53,183; это microbenchmark,
+  не полный root. V25 source parse обнаружил bare U32 pattern; Bool helper исправил
+  источник, fresh v26 parse прошёл (`selfhost-root-parse-canonical-v26.json`).
+- Полный plain root checker v26 всё ещё исчерпал 900,000-ms deadline.
+  Causal v26 за 234,669 ms / 66,030,387 requests достиг `template_match_239`,
+  847 definition checks / 807 stored; hotspot — последовательный проход
+  `whnf_beta_cases` с повторными scope/canonical-name lookups.
+  Не запускать ещё один длинный bootstrap по результату first-row microbenchmark:
+  сначала доказать завершение всего root checker и стоимость LAST-row selection.
+- V27 source constructor-prefix index проходит 250 actual typed assertions
+  (`beta-index-v27.smoke.json`): warmed FIRST/LAST/reverse-LAST среди 100/1,000
+  unrelated heads — одинаковые 82 requests с новыми argument handles.
+  Source alias changes и source rewind/reused ranges проверены; transient lists
+  сохраняют прежний matcher. Fresh v27 parse прошёл за 111,877 ms.
+- Но весь root checker v27 за 900,004 ms / 345,969,184 requests не завершён:
+  2,545 definition checks / 2,505 stored, `checker_continuation_1084`.
+  Causal v27 выявил другой quadratic scan: `checker_result` body checking
+  повторно просматривает все предыдущие pattern rows в
+  `scope_pattern_rows_subsume_named` / `scope_specialize_pattern_rows_named`.
+  Следующая работа — локальные индексы raw constructor heads для usefulness
+  и полной matrix exhaustiveness, без отключения проверок. Новый длинный
+  bootstrap до завершения всего root checker не запускать.
+- V28 indexed usefulness/exhaustiveness проходит 1,225 actual assertions
+  (`coverage-index-live-v28-smoke.json`): full matrix check 100/1,000 unique
+  constructors — 56,146/561,946 requests, линейно; invalid useful branch,
+  arity и nonexhaustive cases по-прежнему отвергаются.
+- Но whole-root v28 не завершён за 900,002 ms / 285,397,035 requests.
+  Точная диагностика `selfhost-checker-index-paths-canonical-v28.json` обнаружила
+  источник промаха: реальные reversed TRANSIENT 188-row dispatch tables
+  возвращали `CasePrefixEmpty` из source-only eligibility.
+- V29b строит ephemeral prefix index для transient tables с проверкой реальных
+  owners; persistent transient cache не добавлен. Names остаются source-interned.
+  Actual `transient-case-live-v29c.json`: 34 eager-parity cases, 30 probes,
+  2 release/rewind ID-reuse cases PASS; FIRST/LAST 100/1,000 unrelated heads
+  385/3,085 requests и по одному whnf_pattern/equal_names. Это линейное построение
+  каждый раз, не constant warm cache. Affine native arenas в reference branches
+  независимы; shared-store начальный driver давал некорректный eager reference.
+  Temporary fixtures удалены после исполнения.
+  Проверка всего root v29b не завершена: 900,003 ms / 254,044,530 requests,
+  2,405 checked definitions (`selfhost-checker-complete-canonical-v29b.json`).
+- Late causal v29b обнаружил 179,150 одинаковых полных source ranges среди
+  189,983 constructor comparisons. V30 повторно использует положительный bit-16
+  witness только для проверенных source constructor trees; рекурсия остаётся typed
+  CPS, native helpers bounded. Unsupported terms сохраняют исходный comparator.
+  Actual `ctor-reflexivity-live-v30j-smoke.json`: 53 parity/safety/lifecycle cases,
+  9 depth/range profiles, 72 warm repetitions PASS. Source Succ depth 1/31/1,000:
+  cold 26/356/11,015 requests, warm всегда 13; это не whole-root acceptance.
+  Fresh native v30 завершён; fresh parse, полный check и настоящий bootstrap
+  stage1/stage2 остаются обязательными. Ни одного stage artifact пока нет.
+- V30 whole check остаётся unfinished: 900,124 ms / 211,159,921 requests,
+  2,277 завершённых definition checks. Точный per-definition journal обнаружил
+  повторные scope segment/index scans, а не новую проблему ctor witness.
+- V31 хранит persistent lookup snapshot в ArenaVisibleScope; family-first и
+  per-kind precedence сохранены, aliases/candidates/unsafe остаются segment-based.
+  Actual `visible-lookup-live-v31d-smoke.json`: 63 full-field parity queries,
+  6 update transitions PASS; 192 warm queries стоят всегда 416 requests при
+  1/10/100/1,000 segments. Cold 4/43/403/4,003. Temporary fixtures удалены.
+  Полный native root v31 PASS; реальный `selfhost-bootstrap-canonical-v31.json`
+  не завершён: deadline 3,300,019 ms, все 67 seed fixtures PASS, полный parse и
+  expansion PASS; stage-one-check начался на 668,987 ms и не вернулся.
+  RSS 5,766,316,032 / physical 4,288,504,360 bytes. Артефакты `{}`: ни stage1,
+  ни stage2, ни fixedpoint. Следующий запуск требует данных о текущем definition,
+  не повторного слепого 55-minute gate; profiler v31 получает только эти данные.
+- V32 actual worker CPU profile (`selfhost-checker-worker-cpu-canonical-v31.json.Checker.cpuprofile`)
+  обнаружил 2,496-arm linear tagged dispatcher: wrapper + dispatch занимают
+  47% self CPU. Native JS emitter переведён на tagged switch; четыре существующих
+  runtime fixtures PASS. Fresh native root v32 PASS: 8,166 definitions,
+  45,765,245 bytes, physical 4,120,423,024 bytes; это другой input, не memory A/B.
+  Full actual native/selfhost consumer smoke теперь PASS:
+  `tagged-dispatch-live-v32h-smoke.json`, 148 observable rows, неизменённые artifacts.
+  Помимо wide enum проверены nested/captured matches, aliases, erased offsets/
+  callbacks и exception identity. Checker default erased binder остаётся QZero;
+  emitter использует constructor telescope quantities для packed offsets.
+  Eager representation-choice recursion и повторение string-tail expression
+  устранены после реального RangeError. Literal dispatch варианты дали native
+  OOM и заменены Boolean helpers без увеличения heap cap. Native regression
+  `tests/reg/match_erased_default_binding.bend` реально печатает `48`.
+  Fresh полный `selfhost-bootstrap-canonical-v33.json` завершился deadline FAIL
+  на 3,300,012 ms: все 69 seed fixtures PASS, полный parse/expand PASS;
+  stage-one-check начался на 305,378 ms и не вернулся. Physical 4,769,064,656 /
+  RSS 6,467,092,480 bytes. Артефакты `{}`; stage1/stage2 byte fixedpoint нет.
+  Counter на тех же frozen v33 inputs измеряет оставшийся whole-root bottleneck;
+  ни 148-row consumer smoke, ни исправленные 69 fixtures не заменяют fixedpoint.
+- V34 late causal измерение v33 выявило повторное индексирование одной reverse
+  transient таблицы из 958 cases. Cache теперь использует существующие 64 slots
+  transient Arena до declaration rewind. Source generation в depths[6] защищает
+  mixed-owner entries от source rewind/ID reuse; immutable publication остаётся
+  обязательным. В tagged IDs bit 31 = transient, bit 30 = reverse.
+  Actual `transient-prefix-cache-live-v34e.json`: 180 native probes PASS;
+  cold 64/100/1,000 rows = 199/307/3,007 requests, warm всегда 6.
+  Проверены source/transient rewind/reuse и forward/reverse mixed owners.
+  `checker_arena_generation.bend` JS/C печатает 7; affected bound/closed/quantity
+  regressions JS/C сохраняют 10101/1001/2102210.
+  Fresh полный `selfhost-bootstrap-canonical-v34.json` запущен с finite
+  10,800,000 ms acceptance deadline и прежними 8 GiB memory/RSS guards.
+  Увеличенный deadline не является speedup. Stage1/stage2 byte fixedpoint
+  ещё не доказан; не останавливаться на cache smoke.
+  V34 full gate остановился через 969,892 ms на worker heap OOM, до finite
+  deadline и до 8 GiB physical guard: peak physical 5,223,975,240 /
+  RSS 5,577,179,136 bytes. Все 69 fixtures, root parse/expand PASS;
+  stage-one-check начался на 257,894 ms, artifacts `{}`.
+  V34b перенёс parser/checked inputs в реальные native start requests и освободил
+  obsolete host roots, но полный запуск тоже FAIL: 3,015,315 ms,
+  physical 5,524,695,744 / RSS 4,669,571,072 bytes, artifacts `{}`.
+  Это lifetime correction, не доказанное завершение stage-one-check.
+
+НЕ доказано:
+
+- Stage-one/stage-two byte fixedpoint текущего compiler root. Ни native byte equality, ни полный source parse, ни seed fixtures не заменяют этого доказательства.
+- Product-wide selfhost green, C/Metal/CUDA/legacy IO acceptance.
+
+Не откатывать уже работающий private arena cutover вслепую. Сначала устранить измеренный bottleneck генерации.
+
+## 3. Исторический полный прогон до архитектурного исправления: v106
+
+Доказательства:
+
+- `checkpoints/selfhost-steps-native-v106.result.json`
+- `checkpoints/selfhost-steps-native-v106.guardian.json`
+- `checkpoints/selfhost-steps-native-v106.progress.json`
+- `checkpoints/selfhost-steps-native-v106.events.jsonl`
+- `checkpoints/selfhost-steps-native-v106.validation-timings.json`
+- `checkpoints/selfhost-steps-native-v106.provenance.json`
+- `checkpoints/selfhost-steps-native-v106.inputs.json`
+
+Нативная проверка: **7,774 / 7,774 events**, 9,347.638542 ms wall / 18,103.32 ms CPU, manualGC=false. Начальное количество checked definition slots: 7,501.
+
+Затем codegen упал с `ERR_WORKER_OUT_OF_MEMORY`; guardian recorded command exit, а не превышение внешнего 8-GiB cap. Полного `checkpoints/selfhost-steps-v106.js` нет.
+
+| Полный root codegen | v99, nominal result | v106, flat metadata |
+| --- | ---: | ---: |
+| Old-generation limit, MiB | 6,144 | 6,144 |
+| Guardian wall time, ms | 27,843 | 27,083 |
+| Peak process-tree RSS, bytes | 6,776,553,472 | 6,771,359,744 |
+| Peak physical footprint, bytes | 7,138,657,248 | 7,095,842,088 |
+| Prepared definitions at last event | 435 | 782 |
+| Completed releases | 14 | 14 |
+| Retained higher-body slots | 421 | 768 |
+
+Последний v106 prepare: `checker_core_steps_v1.checker_body_arena_set_word_region`, index=781, eLive=6,719, hLive=768, heapUsed=6,416,166,888; memo counts: opens=5,992, spines=15,372, teles=239,652, sigs=781, probes=12,514.
+
+782 вместо 435 — продвижение до того же heap limit, **не завершённая сборка и не same-work speedup**.
+
+## 4. Измеренный источник новых аллокаций
+
+Основной профиль: `checkpoints/selfhost-allocation-v100.allocation-profile.json`; результат/guardian — `checkpoints/selfhost-allocation-v100.result.json` и `.guardian.json`.
+
+Profiler запускается **после полной нативной проверки**, только на codegen. Sampling interval=524,288 bytes. При heap cutoff=4,608 MiB существующий accepted probe останавливает эмиссию исключением наблюдателя. Результат — `ALLOCATION_PROFILE_ONLY`, `artifactGenerated=false`, не compiler acceptance. Полный heap snapshot и ручной GC не использовались.
+
+v100: 17,061 ms; peak footprint=5,433,925,032 bytes; 247 preparations / 14 releases. Sampled live bytes=380,074,624:
+
+| Site | Sampled live bytes |
+| --- | ---: |
+| `lay_fields` | 158,349,304 |
+| `lay_pack` | 128,479,104 |
+| Callback constructing constructor arms inside `lay_of` | 64,496,760 |
+| Other sites | 28,749,456 |
+
+Эти три layout sites дают **около 92.4% новых sampled live allocations на codegen**. Это НЕ доля всей памяти процесса: allocations предыдущих фаз не профилированы. `heapUsed` до codegen также не является точным размером retained AST — включает ещё не собранный мусор.
+
+Крупнейший sampled stack достигает layout builders через `sig_def`. В принятой копии компилятора `Sig = { live, lays, ret }`, `sig_def` хранит `lays` и `ret` в `SIGS`. `lay_of` рекурсивно строит layout нециклического ADT; `Array` и `IO.OP` получают BOX. `memo_gc` в этой копии очищает OPENS/USES/FOLDS/SPINES/CONSTS, но не TELES/SIGS/PROBES. Проверить актуальные места сброса и потребителей перед изменением; не выводить exact retained-owner sizes только из allocation stacks.
+
+После flat metadata: `checkpoints/selfhost-allocation-v105.allocation-profile.json`, тот же cutoff/interval/guardian. 12,665 ms, peak footprint=5,451,014,360 bytes, 294 preparations / 14 releases. Стоп произошёл на другом объёме работы; wall-time ratio не считать speedup.
+
+## 5. Исходный архитектурный план — A/B теперь выполнены
+
+### A. Переиспользовать неизменяемые layout'ы
+
+Исследовать `Lay`, `Field`, `Arm`, `lay_of`, `lay_fields`, `lay_pack`, `lay_cyclic`, `ctr_doms`, `sig_def`, `SIGS` в `bend2/comp.ts`. В historical accepted copy это примерно строки 944–1001 и 1130–1154, но canonical offsets могут отличаться.
+
+- Один граф layout'а на конкретное семантическое instantiation типа; signatures ссылаются на него вместо копирования arms/fields/ks.
+- Не ключевать только по имени ADT: параметры, quantities, зависимости, cyclic/boxed cases и область действия важны.
+- Сначала доказать допустимость sharing: `lay_pack` мутирует parent field offsets (`f.at += tag`). Не разделять между родителями изменяемые Field records и проверить остальных consumers.
+- Cache/interning должен быть compile/book-local с явным жизненным циклом; никаких stale layouts между разными books/stages. Не подменять этим результаты typechecking/normalization.
+- Не вводить лишнюю сериализацию/копирование ради cache key; выбрать ключ после чтения существующего type representation.
+- Проверить C и JS consumers layout'ов; canonical `comp.ts` — общий compiler/runtime source, не JS-only fork.
+
+### B. Отделить signature metadata от подготовки тела
+
+В historical accepted compiler `sig_def` начинал с `def_body(cb, k)`; текущий canonical compiler отделяет declaration metadata от on-demand body preparation.
+
+- Найти, какие сведения для ABI действительно требуют body preparation, а какие доступны из полностью нативно проверенной декларации.
+- Не считать замену на raw declaration lookup автоматически корректной: зависимые типы, promoted binders, erasure, quantities, foreign calls и borrowing требуют проверки.
+- Сделать запрос сигнатуры по возможности не вызывающим eager body preparation.
+- Готовить body непосредственно для emission и освобождать данные после последнего реального потребителя; не удалять поля нужного AST и не заменять checked `e` непроверенным `v`.
+- Для cycles/SCC выбрать корректный bounded plan; порядок деклараций сам по себе не является доказанным исправлением.
+
+### C. Request protocol — если A/B недостаточно
+
+`checkpoints/checker_core_steps_v1.bend` содержит большой `CheckerRequest` sum и `CheckerProgress<A>` с `CheckerPending{request, resume}`. Множество helper signatures возвращает этот progress. Повторяемое разворачивание такого layout'а — кандидат; конкретные размеры каждого типа пока не измерены.
+
+При актуальном разрешении можно исследовать компактный boxed/handle payload или frames. Это отдельная архитектурная работа с доказательством resume/result dependent types, quantities, evaluation order и ABI. Не выдавать существующие closures за уже выполненный frame cutover.
+
+**A/B выполнены; детали и completed same-work evidence — в последних sections `checker-core-integration.md`.** Непроверенные product-wide acceptance остаются отдельной задачей.
+
+## 6. Историческая ловушка cached compiler — clean cutover выполнен
+
+v106 импортировал `~/.cache/bend/accepted-native-d746e7cc/bend2/.comp_js_stream_probe.ts`.
+Текущий `evals/checker_core_component_build.ts` выполняет authenticated canonical
+`bend2/comp.ts` и exact-inverse lifetime seam над `bend2/bend.ts`. Историческая
+копия `checkpoints/js-storage-stream-compiler.ts` — только baseline, не executor.
+Schema-three proof pins фактически исполненные compiler/kernel/storage-producer
+bytes, полный input closure и lossless actual checked graphs с original native
+closures. Source `v` никогда не используется вместо checked `e`. Новые artifacts
+и reports создаются под новыми именами; старые pins/results не перезаписываются.
+
+`checkpoints/js-storage-stream-build.ts` — **исторический, НЕ текущий runner/producer**: содержит Bun FFI, `/tmp` dependencies, manual GC и ссылки на отсутствующие старые sibling helpers. Не запускать его как новый путь acceptance. Современный host — `evals/checker_core_component_build.ts`.
+
+## 7. Текущие source identities и cache
+
+SHA-256, измеренные при подготовке handoff:
+
+```text
+0939b98d013ab58d82619e35c0d4900b72c9d8e5b478f0e1df7822fe713c9b48  bend2/comp.ts
+47e1b06e2fa4466bad702f86d8cbce03f40e833a8ba8eaa1e04297fa46dc94a9  bend2/bend.ts
+279d837edbf2e13bddca0604eb864eb0ee832d1cec40e16df1ded71281c122e8  bend2/selfhost/checker_arena.bend
+28193812d643cd5e626952fb445b69dfbcad19680b9f608ea46d73d2fc612bf2  evals/checker_core_component_build.ts
+3d8c4e2a14f1f5e7f1833b8c7492c640481a31dd03544bff7378b360a56d19ae  checkpoints/js-storage-stream-compiler.ts
+0ada35959c5a4542096e0becd64230995807779899e3285c48fdddbfb712ee8d  checkpoints/selfhost_steps_driver_v1.bend
+```
+
+Snapshot `/tmp/bend-artifact-d746e7cc` дважды потерял необходимые файлы. Современный host теперь использует persistent user cache выше. Там восстановлены шесть оригинальных pinned files: stream compiler, bend.ts, comp.ts, base.bend, historical heavy_gate.ts, historical heavy_gate_native.c. Проверки новых v104–v106 реально использовали persistent path.
+
+Ключевые historical pins дополнительно:
+
+- Base: `e149828ca05581f61d1b06cf2a7d1a744e394d29a4c8e1942e5062ecbf30f5b8`.
+- Historical guardian TS: `db386e3d8d92409fd29ac0483e9c2a8b985a16ee459091336954e000e9ccfe94`.
+- Historical guardian C: `32a823b59ff5fa6d129b01aa32ff2e5be735309c6f8b59f3e239c94562c531b1`.
+- Active guardian TS: `47a12205abd374fd69d7dac30ee9fb45d7203cad2790870511387cd2efc22251`.
+- Active guardian C: `f5aecf8308caebc72dccf8986733b37137d448021ee378302cfcd038381b7aa9`.
+
+Если cache отсутствует, восстанавливать bytes по pins, а не менять ожидания на случайный текущий файл. Original guardian TS есть в Git object `d746e7cc:evals/heavy_gate.ts`; original C не был в этом commit. Его точные source lines ранее восстановлены из записанных чтений в истории и verified по SHA. Не утверждать, что весь snapshot восстанавливается одной `git archive`. Прочие legacy runners ещё могут ссылаться на `/tmp`; перенос современного host не мигрировал все исторические scripts.
+
+## 8. Карта исходников и существующих изменений
+
+- `bend2/comp.ts`: canonical compiler, текущий основной объект следующего исправления.
+- `bend2/bend.ts`: canonical parser/theory/checker. Сейчас исходный kernel restored; rejected A1 не установлен.
+- `bend2/selfhost/checker_arena.bend`: lossless descriptors, six data arrays, flat metadata, names map, growth/clear/rewind.
+- `bend2/selfhost/checker_ir.bend`: word/name/Nat/quantity range and reverse-range views, OptionalTerm IDs, private declarations.
+- `bend2/selfhost/checker.bend`: private ArenaStore (source/transient), nominal ArenaResult<T>, ID-based Core/Checker, local pack/decode, private lookup, promotion/publication, transient rewind. Parser-facing `check_modules` / CheckResult original AST ABI preserved in source. Full actual Checker semantic proof pending new artifact.
+- `bend2/selfhost/scope_lookup.bend`: original public globals plus private ID-based arena global/scope descriptors.
+- `bend2/selfhost/core.bend`: retained zero-shift reuse optimization.
+- `bend2/selfhost/js_emit.bend`: earlier ordered spine traversal, erasure/name/owner lookup optimizations; do not overwrite them as cleanup.
+- `evals/checker_core_owned_source.ts`, `evals/checker_core_step_lower.ts`: source ownership and step generation.
+- `evals/checker_core_step_runtime.mjs`: host LIFO continuation driver; not a substitute checker or emitter.
+- `evals/selfhost_driver_source.ts`: exact accepted parser declarations in root namespace plus compiler ABI wrappers. Root-scope parser embedding matters: importing it under a different namespace previously changed promoted-binder resolution.
+- `evals/selfhost_bootstrap_gate.ts`, `evals/selfhost_bootstrap_worker.mjs`: real pure-step acceptance.
+- `evals/bootstrap_ast_transport.ts`: typed-array oracle transport, complete fields and interning; no intermediate materialize API.
+- `evals/selfhost_parser_parity.ts`, `evals/parser_full_semantic_normalize.ts`, `evals/bootstrap_source_oracle.ts`: complete native semantic parity and isolated oracle workers.
+- `evals/heavy_gate.ts`, `evals/heavy_gate_native.c`: external guardian; do not lose aggregate footprint accounting, locks, descendant cleanup or deadlines.
+- `evals/validation_profile.ts`: observed full native validation timings.
+
+Do not confuse private arena descriptors with parser/root input AST: representation cutover stays behind existing entry/exit boundaries. Do not feed host AST as compiler inputs or patch emitted JS.
+
+Flat metadata specifics: pool order nodes/patterns/binders/words/naturals/names; `counts[2*p]`=used, `[2*p+1]`=capacity; `depths[p]`=Array allocation depth. Rewind clears appended entries and preserves capacity/depth. Arbitrary Nat values above 32 bits must be **constructed**, not expressed as unsupported parser literals above `4294967295n`.
+
+## 9. Что уже проверено отдельно
+
+- v104: complete native boundary fixture 701 events / 540 checked definitions; JS=115,312 bytes, SHA `3ad72d390ecbd5a12b5942d93dcc90c30d87bc6d6c89455292eb2e6064f9b370`. Emitted execution: 17 assertions, 68 ms, 10-second deadline. Evidence: `checkpoints/arena-metadata-native-v104-execution.json` and `checkpoints/arena-metadata-native-v104-build.result.json`. Throwaway Bend fixture and JS assertion script removed after proof; do not try to launch their deleted paths.
+- Regeneration after flat metadata: 786 source defs, 3,346 calls, 3,063 pending sites, no lazy choices, 4,537 total bodies/helpers. Owned source 1,985 ms; step lowering 140,855 ms. Generator logic unchanged.
+- v101 ordinary non-profiling host build: `tests/base/u32_divmod_zero.bend`, output export `main.out`; build 470 ms, real exported **thunk call** returned `6n`. JS hash `ba821dbe0f98ee4b05e92566c6337eca18102d7e588ac84b1f272e119ffbe2d1`, equal to v86. `generated['main.out']` is a function, not the result.
+- Older storage v92/v93 separately exercised growth, arbitrary Nat and clearing name-map rollback. These are not proof of current complete Checker semantics.
+
+## 10. Не повторять отвергнутые эксперименты / не завышать evidence
+
+- Nominal ArenaStore/result product реализован; v99 full native checking passed, codegen still OOM. Он не доказал сокращения пика memory. Не повторять этот эксперимент как новое открытие.
+- Rejected A1: `checkpoints/stage0-a1-result.json`, status `A1_INSUFFICIENT_STOPPED`. Historical body_sub occurrence/COW candidate reduced node count but diagnostic ~90.9 ms → ~1580.6 ms; canonical kernel restored. `evals/stage0_a1_replay.ts` retains experiment only. Не ставить rejected kernel обратно.
+- Old `checkpoints/selfhost-steps-v78.js` is a diagnostic seed, NOT current private-arena root. Historical build used 288 explicit GC calls; its build numbers do not prove automatic-GC success.
+- Older path emission produced 325,161 bytes with SHA `dfde577896e6d15f0c793639ab1a4134e7aed30441f914781ec5e2c263e84835`; useful historical evidence only, not current golden without matching authenticated sources.
+- v84 fresh parsing/parity diagnostic passed but did not check/emit/bootstrap. v85 acceptance was cancelled, not passed. No current complete stage1/stage2 artifact exists.
+- A compile attempt returning OOM is FAIL, even if complete native validation passed. `ALLOCATION_PROFILE_ONLY` is diagnostic success only.
+- Do not re-run known OOM merely to confirm it; instrument or change a measured cause first.
+
+## 11. Commands and safe execution contract
+
+Все commands запускаются из repository root через **Bash**, не Eval/codemode. Eval допустим для короткого анализа JSON/данных, не для acceptance. Один heavy child за раз; freeze actual source inputs на весь прогон. Outer Bash timeout плюс finite inner guardian deadline. Fresh artifact/report namespaces: существующие результаты не перезаписываются, даже после ранней неудачи.
+
+### Unchanged source regeneration, если менялся Checker/generator input
+
+Outer Bash timeout 1,230 s:
+
+```bash
+node --experimental-strip-types evals/heavy_gate.ts --memory-mib=8192 --rss-mib=8192 --poll-ms=10 --timeout-ms=300000 -- bun --smol evals/checker_core_owned_source.ts &&
+node --experimental-strip-types evals/heavy_gate.ts --memory-mib=8192 --rss-mib=8192 --poll-ms=10 --timeout-ms=900000 -- bun --smol evals/checker_core_step_lower.ts
+```
+
+Если нужно пересобрать root composition, `evals/selfhost_driver_source.ts` читает accepted parser proof и записывает root/manifest. Запускать под тем же external guardian с разумным finite deadline; не ломать exact parser declaration embedding.
+
+### Codegen allocation diagnostic
+
+Optional diagnostic, не acceptance. Heap cutoff не должен превышать текущие `3072 - 1024` MiB. Outer Bash timeout 150 s:
+
+```bash
+HEAVY_GATE_TIMEOUT_MS=120000 bun --smol evals/checker_core_component_build.ts --file=checkpoints/selfhost_steps_driver_v1.bend --exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,checker_step,emit_modules_start,emit_library_start,emitter_step --artifact=checkpoints/selfhost-allocation-canonical-v15-unused.js --report=checkpoints/selfhost-allocation-canonical-v15 --allocation-profile-mib=2048
+```
+
+`canonical-v15` здесь лишь proposed namespace; проверить, что он свободен. Artifact намеренно не создаётся. Для same-work acceptance использовать законченные сравнения, не cutoff ratios.
+
+### Full native component build
+
+Outer Bash timeout 960 s, inner deadline 900,000 ms:
+
+```bash
+HEAVY_GATE_TIMEOUT_MS=900000 bun --smol evals/checker_core_component_build.ts --file=checkpoints/selfhost_steps_driver_v1.bend --exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,checker_step,emit_modules_start,emit_library_start,emitter_step --artifact=checkpoints/selfhost-steps-canonical-v13.js --report=checkpoints/selfhost-steps-native-canonical-v13
+```
+
+Это фактически завершённая v13 command, а не свободный output namespace: для повторения выбрать новое имя, не перезаписывать evidence. Нет profiling option; `JS_GENERATED_NOT_YET_EXECUTED` не означает bootstrap.
+
+### Semantic fixture после успешной component build
+
+Outer Bash timeout 180 s, inner deadline 120,000 ms:
+
+```bash
+HEAVY_GATE_TIMEOUT_MS=120000 bun --smol evals/selfhost_bootstrap_gate.ts --component=checkpoints/selfhost-steps-canonical-v13.js --component-build=checkpoints/selfhost-steps-native-canonical-v13.result.json --root=checkpoints/selfhost_steps_driver_v1.bend --fixture=law-completion-binding --report=checkpoints/selfhost-law-canonical-v15.json
+```
+
+Verified cases включают `law-completion-binding` (`WNil{}`), `type-specialization` (`BitOne{}`), `specialized-type-error` и `affine-duplicate` (должны быть отвергнуты), `same-module-alias-constructor-rows`, `neutral-family-distinct-branches`. Все 64 seed cases уже исполнялись в full v11/v12/v13; fixture diagnostic не заменяет full gate.
+
+### Final fresh full bootstrap
+
+Outer Bash timeout 3,600 s, inner deadline 3,300,000 ms:
+
+```bash
+HEAVY_GATE_TIMEOUT_MS=3300000 bun --smol evals/selfhost_bootstrap_gate.ts --component=checkpoints/selfhost-steps-canonical-v13.js --component-build=checkpoints/selfhost-steps-native-canonical-v13.result.json --root=checkpoints/selfhost_steps_driver_v1.bend --root-manifest=checkpoints/selfhost-steps-driver-source-v1.json --report=checkpoints/selfhost-bootstrap-canonical-v14.json
+```
+
+Эта команда запущена как fresh v14 после исправления host input-closure accounting: original parsed `DefImports.paths`, а не только `Module.imports`, должны аутентифицировать foreign JS bytes. Native component inputs не менялись; native v13 proof остаётся валиден. Для следующего запуска выбрать новый report namespace.
+
+Default accepted parser proof is separate:
+
+- `checkpoints/bootstrap-parser-rebuild-compat-three-list-linear-v1.js`
+- `checkpoints/bootstrap-parser-rebuild-compat-three-list-linear-v1.result.json`
+- `checkpoints/bootstrap-parser-rebuild-compat-three-list-linear-v1.build.guardian.json`
+- Source `bend2/selfhost/.bootstrap_parser_rebuild_compat-three-list-linear-v1_generated_fuel.bend`, SHA `3f548a6f73acac8f4f089819f2bc522eddd2358b2b62be536260c8d8260447bb`.
+- Parser JS SHA `7f86f11dbd3c56c35003ee1eba61adff827b976382d5117bcc9e718d1d5aa37d`.
+
+Если parser меняется, пересобрать его proof/root embedding coherently; старые artifacts/pins не подменять. Gate hashes source candidate, component, manifests, code and guardians. Host parser используется только как complete semantic oracle, не как compiler inputs.
+
+Full bootstrap всегда fresh: fixture diagnostic cache допустим только в его явно ограниченном diagnostic mode, не для этапов полного bootstrap. `--parse-only=true` даёт лишь fresh parse/parity diagnostic, НЕ acceptance.
+
+### CPU/request profiling
+
+`evals/.checker_profile_gate.ts` drives `evals/.checker_cpu_profile.mjs` under 8-GiB guardian. Arguments: component, native proof, report, seconds, input root, mode, optional authenticated baseline. Modes include plain/causal/counter/emitter.
+
+**Ловушка:** default baseline is historical `checkpoints/selfhost-full-bootstrap-v16.json`; profiler requires exact source hashes and parser-authenticated native transports from its parseRows. Changed sources can legitimately fail authentication. Generate a fresh appropriate baseline or use a genuinely matching one; don't bypass it or feed host AST. Inspect current interface before launching. These profiles are diagnostic only and cannot replace final fresh bootstrap.
+
+## 12. Что считать Done
+
+1. Изменённый фактически исполняемый compiler собирает полный текущий root under unchanged guardian and finite deadlines; report records full native validation, correct new compiler/source identities, zero skipped checks and zero output patches.
+2. Same-work A/B evidence demonstrates reduced layout allocations/retained memory, not just a later cutoff. Peak memory and wall/CPU recorded for a completed build.
+3. New component actually executes positive/negative Template/Checker/JSEmit fixtures with original AST semantics and quantities, including arena-backed Checker.
+4. Full fresh root parser imports every current source; complete semantic oracle parity covers all fields, not hashes of a projection.
+5. Stage one is emitted by Bend JSEmit, actually executed; its own parser/checker/emitter emit stage two from identical Bend sources.
+6. Stage1 JS bytes equal stage2 JS bytes, hashes persisted; stage2 semantic fixtures execute with expected successes/failures.
+7. Report `PURE_STEP_BOOTSTRAP_FIXEDPOINT` / `compilerBootstrapGreen` only if actual complete gate passes. Existing gate deliberately leaves broader `selfhostGreen=false`; do not relabel it product-wide success.
+8. Update existing changelog/evidence, remove throwaway scaffolds, migrate callers/provenance coherently. No hidden host checker/emitter, patched emitted JS, fake fallback, manual GC or unchecked emission.
+
+## 13. Первые действия нового агента
+
+1. Прочитать актуальный `AGENTS.md`, этот файл и последние canonical sections `checker-core-integration.md`; A/B и cutover не начинать заново.
+2. После любых source changes выполнить обычную authenticated regeneration, затем fresh native component build (полный root, девять экспортов, unchanged 8-GiB guardian).
+3. Исполнить полный `selfhost_bootstrap_gate.ts` с fresh source/AST oracle parity, stage1 execution, stage2 emission, byte comparison и stage2 fixtures. Актуальный root — `checkpoints/.bootstrap_compiler_root_v1.bend`; reports используют свежий `release237-vN`, а не исторический canonical-v13. Не переиспользовать admission после изменения любого pinned producer/input.
+4. Исправлять реальные source/compiler причины, найденные полным gate, и повторять fresh authenticated proof. Не останавливаться на диагностическом parse/profiling/fixture pass.
+5. Только после actual fixedpoint обновить статус и evidence; broader `selfhostGreen=false` не переименовывать в product-wide success.
+
+Основная подробная история: `checkpoints/checker-core-integration.md`. Изменения перечислены в `CHANGELOG.md`. Этот handoff — стартовая карта, не утверждение, что self-hosting уже завершён.
+
+## 14. Проверка самого handoff
+
+При подготовке проверены существование основных source/runtime/parser/evidence
+paths, соответствие шести SHA-256 записей фактически измеренным исходникам и
+полный ABI из девяти экспортов обеих native-build commands. Числа v106
+сверены с сохранёнными результатами: full native validation PASS, codegen FAIL.
+Доля layout sites пересчитана из v100 profile: 92.435839% sampled live bytes.
+Интерфейсы bootstrap и CPU diagnostics прочитаны из текущих runners.
+Новые heavy runs ради написания документа не запускались.

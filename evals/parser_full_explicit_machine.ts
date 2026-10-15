@@ -6,7 +6,7 @@ import type {ExplicitTransition} from './parser_full_explicit_certificate.ts';
 import {createHash} from 'node:crypto';
 
 type Origin={owner:string;offset:number;binderId:number};
-type Value={kind:'data';tag:string;fields:Value[];origins?:Origin[]}|{kind:'function';name:string;args:Value[]}|{kind:'closure';node:B.LTerm;env:Map<number,Value>;owner:string}|undefined;
+type Value={kind:'data';tag:string;fields:Value[];origins?:Origin[]}|{kind:'literal';node:Extract<B.LTerm,{$:'Lit'}>}|{kind:'function';name:string;args:Value[]}|{kind:'closure';node:B.LTerm;env:Map<number,Value>;owner:string}|undefined;
 type Packet={value:Value;progress:Progress;origins:Origin[]};
 type Frame={name:string;owner:string;pushOffset:number;inputFamily:number;fields:readonly {name:string}[]};
 export type ExplicitLowering={graph:ParserGraph;sourceGraph:ParserGraph;lifted:ReadonlySet<string>;selected:ReadonlySet<string>;classifications:readonly {caller:string;callee:string;offset:number;kind:string;machineSource?:string}[];frames:readonly Frame[];steps:ReadonlyMap<string,string>;consumerHelpers:ReadonlyMap<string,string>;runtimeBlocks:ReadonlyMap<string,string>;rawChunks:ReadonlyMap<string,string>};
@@ -41,6 +41,7 @@ export async function explicitMachineTransitions(program:ExplicitProgressProgram
  const metadataTags=new Set(['FeedbackControl','FeedbackKont','FeedbackResume','FeedbackCall','FeedbackDone','FeedbackInvariant','KontProgress','NoProgress','Consumed','WitnessNone','WitnessTail','WitnessFields',...lowering.frames.map(f=>f.name),...[...lowering.selected].map(n=>'Request_'+n)]);
  function valueKey(value:Value):string{
   if(!value)return '?';
+  if(value.kind==='literal')return 'lit:'+value.node.k+':'+JSON.stringify(value.node.v);
   if(value.kind==='data')return value.tag+'('+value.fields.map(valueKey).join(',')+')'+(value.origins?.length?'@'+value.origins.map(o=>o.owner+':'+o.offset+':'+o.binderId).sort().join(','):'');
   if(value.kind==='function')return 'fn:'+value.name+'['+value.args.map(valueKey).join(',')+']';
   return 'lambda:'+nodeId(value.node)+'['+[...value.env].sort(([a],[b])=>a-b).map(([id,v])=>id+'='+valueKey(v)).join(';')+']';
@@ -73,8 +74,14 @@ export async function explicitMachineTransitions(program:ExplicitProgressProgram
  function sourceWitness(node:B.LTerm):ExplicitEffectOperation|undefined{
   return program.consumptionExpressions.get(node)??program.consumptionLiterals.get(node);
  }
+ function literalConstructor(term:B.LTerm):Value{
+  if(term.$==='Lit')return{kind:'literal',node:term};
+  if(term.$!=='Ctr')throw Error('Native lit_step returned non-literal constructor syntax');
+  return{kind:'data',tag:term.k,fields:term.x.map(literalConstructor)};
+ }
  function bind(pattern:B.Patt,value:Value,env:Map<number,Value>):boolean{
   if(pattern.$==='PVar'){env.set(pattern.i,value);return true;}
+  if(value?.kind==='literal')value=literalConstructor(B.lit_step(value.node));
   if(value&&!isData(value,pattern.k))return false;
   return pattern.x.every((field,i)=>bind(field,isData(value)?value.fields[i]:undefined,env));
  }
@@ -90,7 +97,7 @@ export async function explicitMachineTransitions(program:ExplicitProgressProgram
   const declaration=graph.parserBook.tlds[name];if(declaration?.$!=='Def'||!declaration.v)return undefined;
   let value=B.term_lower(declaration.v);const parameters:number[]=[];
   while(value.$==='Lam'){parameters.push(value.i);value=value.f;}
-  const result={body:{$:'Reply',x:value} as B.Body,parameters,owner:name};definitions.set(name,result);return result;
+  const result={body:value as B.Body,parameters,owner:name};definitions.set(name,result);return result;
  }
  const constructorArities=new Map<string,number>();
  function constructorArity(tag:string):number{
@@ -101,6 +108,7 @@ export async function explicitMachineTransitions(program:ExplicitProgressProgram
   const arity=count-datatype.n;constructorArities.set(tag,arity);return arity;
  }
  function applyMatcher(node:B.LTerm,input:Value,remaining:Value[],env:Map<number,Value>,owner:string):Packet[]{
+  if(input?.kind==='literal')input=literalConstructor(B.lit_step(input.node));
   const output:Packet[]=[];let match=node;const excluded=new Set<string>();
   while(match.$==='Mat'){
    if(!input||isData(input,match.k)){
@@ -141,6 +149,7 @@ export async function explicitMachineTransitions(program:ExplicitProgressProgram
  function evaluateInner(term:B.LTerm,env:Map<number,Value>,owner:string):Packet[]{
   if(term.$==='Var')return[plain(env.get(term.i))];
   if(term.$==='Ann')return evaluate(term.x,env,owner);
+  if(term.$==='Lit')return[plain({kind:'literal',node:term})];
   if(term.$==='Ref'){
    const definition=definitionOf(term.k);
    return definition&&!definition.parameters.length?context(term.k,[]).outputs:[plain({kind:'function',name:term.k,args:[]})];
@@ -150,7 +159,7 @@ export async function explicitMachineTransitions(program:ExplicitProgressProgram
    const value:Value={kind:'data',tag:term.k,fields:row.values,...(term.k==='Consumed'?{origins:allProgressOrigins([...env.values()])}:{})};
    return{...row.packet,value};
   });
-  if(term.$==='Sub'){const source=term.v.$==='PVar'||term.v.$==='PCtr'?B.patt_term(term.v):term.v;return evaluate(source,env,owner).flatMap(packet=>{const next=new Map(env);next.set(term.i,packet.value);return evaluate(term.f,next,owner).map(p=>merge(packet,p));});}
+  if(term.$==='Sub'){const source=B.patt_term(term.v);return evaluate(source,env,owner).flatMap(packet=>{const next=new Map(env);next.set(term.i,packet.value);return evaluate(term.f,next,owner).map(p=>merge(packet,p));});}
   if(term.$==='Let'){
    let rows=[{env,packet:plain(undefined)}];
    for(let i=0;i<term.v.length;i++)rows=rows.flatMap(row=>evaluate(term.v[i]!,row.env,owner).map(packet=>{const next=new Map(row.env);next.set(term.i[i]!,packet.value);return{env:next,packet:merge(row.packet,packet)};}));
@@ -168,7 +177,7 @@ export async function explicitMachineTransitions(program:ExplicitProgressProgram
   return[plain(undefined)];
  }
  function body(node:B.Body,env:Map<number,Value>,owner:string):Packet[]{
-  if(node.$==='Reply')return evaluate(node.x,env,owner);
+  if(node.$!=='Local'&&node.$!=='Match')return evaluate(node,env,owner);
   if(node.$==='Local'){
    let rows=[{env,packet:plain(undefined)}];
    for(let i=0;i<node.v.length;i++)rows=rows.flatMap(row=>evaluate(node.v[i]!,row.env,owner).flatMap(packet=>{const next=new Map(row.env);return bind(node.k[i]!,packet.value,next)?[{env:next,packet:merge(row.packet,packet)}]:[];}));

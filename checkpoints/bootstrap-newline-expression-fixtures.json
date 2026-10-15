@@ -1,0 +1,1 @@
+{"rows":[{"name":"newline-cons-continuation","source":"import Base\ndef newline_cons(x: Nat, xs: List<&2, Nat>) -> List<&2, Nat>:\n  x\n    <> xs\n"},{"name":"newline-parenthesis-boundary","source":"import Base\ndef newline_boundary(x: Nat) -> Nat:\n  y = x\n  (y)\n"}]}

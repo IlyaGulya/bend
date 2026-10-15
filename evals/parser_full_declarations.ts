@@ -4,7 +4,7 @@ export type SourceDeclaration={name:string;kind:string;start:number;end:number;p
 export class SourceDeclarations {
  readonly declarations=new Map<string,SourceDeclaration>();
  constructor(readonly source:string){
-  const headers=[...source.matchAll(/^(def|type|law)\s+([A-Za-z_]\w*)\b/gm)];
+  const headers=[...source.matchAll(/^(def|type|law)\s+([A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*)\b/gm)];
   const rows=headers.map(header=>{
    const start=header.index!,annotations:string[]=[];
    let cursor=start,prefixStart=start;

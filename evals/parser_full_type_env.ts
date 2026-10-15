@@ -1,5 +1,5 @@
 /** Binder-ID lexical typing over resolved, low-order source ASTs.
- * Body Reply, Local and Match retain expression identities; scopes never mutate.
+ * Terminal LTerms, Local and Match retain expression identities; scopes never mutate.
  * Term traversal covers every LTerm form, including Lam/All/Let/Sub boundaries
  * and constructor patterns in Sub. No source names participate in type lookup.
  * Types come from signatures/Book declarations, App/Ann goals and structural
@@ -8,7 +8,7 @@
  * Patterns with no named binders need no projection: source validation remains
  * the stage-0 checker's responsibility, not this capture environment's.
  */
-import { patt_term, term_lower, type Body, type Book, type HTerm, type LTerm, type Patt, type Quant } from "../bend2/bend.ts";
+import { lit_step, patt_term, term_lower, type Body, type Book, type HTerm, type LTerm, type Patt, type Quant } from "../bend2/bend.ts";
 import type { ParserParameter, ParserSignature } from "./parser_full_graph.ts";
 
 export type Binding = Readonly<{ id: number; name: string; type: LTerm; quantity: Quant }>;
@@ -64,13 +64,13 @@ function patternHasBindings(pattern: Patt): boolean {
 /** Explicit syntax children, never source-span objects or inferred types. */
 export function termChildren(term: LTerm): LTerm[] {
   switch (term.$) {
-    case "Var": case "Ref": case "Qnt": case "Qua": case "Efq": case "Rfl": case "Hol": return [];
+    case "Var": case "Ref": case "Lit": case "Qnt": case "Qua": case "Efq": case "Rfl": case "Hol": return [];
     case "Typ": return [term.g];
     case "Min": return [term.a, term.b];
     case "All": return [term.A, term.B];
     case "Lam": return [term.f];
     case "Let": return [...term.v, term.f];
-    case "Sub": { const children: LTerm[] = []; if (term.v.$ === "PVar" || term.v.$ === "PCtr") patternChildren(term.v, value => children.push(value)); else children.push(term.v); children.push(term.f); return children; }
+    case "Sub": { const children: LTerm[] = []; patternChildren(term.v, value => children.push(value)); children.push(term.f); return children; }
     case "App": return [term.f, term.x];
     case "ADT": case "Ctr": return term.x;
     case "Mat": return [term.h, term.m];
@@ -90,8 +90,7 @@ export function freeBinderIds(term: LTerm): number[] {
     if (node.$ === "All") { visit(node.A, bound); visit(node.B, new Set([...bound, node.i])); return; }
     if (node.$ === "Let") { for (const value of node.v) visit(value, bound); visit(node.f, new Set([...bound, ...node.i])); return; }
     if (node.$ === "Sub") {
-      if (node.v.$ === "PVar" || node.v.$ === "PCtr") patternChildren(node.v, value => visit(value, bound));
-      else visit(node.v, bound);
+      patternChildren(node.v, value => visit(value, bound));
       visit(node.f, new Set([...bound, node.i])); return;
     }
     for (const child of termChildren(node)) visit(child, bound);
@@ -107,7 +106,7 @@ function substitute(term: LTerm, id: number, value: LTerm): LTerm {
     case "Lam": return term.i === id ? term : { ...term, f: substitute(term.f, id, value) };
     case "All": return { ...term, A: substitute(term.A, id, value), B: term.i === id ? term.B : substitute(term.B, id, value) };
     case "Let": return { ...term, v: term.v.map(x => substitute(x, id, value)), f: term.i.includes(id) ? term.f : substitute(term.f, id, value) };
-    case "Sub": return { ...term, v: term.v.$ === "PVar" || term.v.$ === "PCtr" ? substitute(patt_term(term.v), id, value) : substitute(term.v, id, value), f: term.i === id ? term.f : substitute(term.f, id, value) };
+    case "Sub": return substitute(substitute(term.f, term.i, patt_term(term.v)), id, value);
     default: {
       const children = termChildren(term);
       if (!children.length) return term;
@@ -121,6 +120,7 @@ function substitute(term: LTerm, id: number, value: LTerm): LTerm {
     }
   }
 }
+
 
 export class LexicalTypes {
   private readonly environments = new WeakMap<LTerm, Scope>();
@@ -139,9 +139,9 @@ export class LexicalTypes {
       else for (const child of pattern.x) reservePattern(child);
     };
     const reserveBody = (node: Body) => {
-      if (node.$ === "Reply") reserve(node.x);
-      else if (node.$ === "Local") { for (const pattern of node.k) reservePattern(pattern); for (const value of node.v) reserve(value); reserveBody(node.f); }
-      else { for (const value of node.e) reserve(value); for (const row of node.r) { for (const pattern of row.p) reservePattern(pattern); reserveBody(row.f); } }
+      if (node.$ === "Local") { for (const pattern of node.k) reservePattern(pattern); for (const value of node.v) reserve(value); reserveBody(node.f); }
+      else if (node.$ === "Match") { for (const value of node.e) reserve(value); for (const row of node.r) { for (const pattern of row.p) reservePattern(pattern); reserveBody(row.f); } }
+      else reserve(node);
     };
     for (const [, , id, type] of parameters) { this.nextId = Math.max(this.nextId, id + 1); reserve(type); }
     if (result) reserve(result);
@@ -173,7 +173,6 @@ export class LexicalTypes {
   }
   private visitBody(body: Body, scope: Scope, result?: LTerm): void {
     switch (body.$) {
-      case "Reply": this.visitExpression(body.x, scope, result); return;
       case "Local": {
         let inner = scope;
         for (let i = 0; i < body.v.length; i++) {
@@ -192,6 +191,7 @@ export class LexicalTypes {
         }
         return;
       }
+      default: this.visitExpression(body, scope, result); return;
     }
   }
   private constructorFields(constructor: string, expected: LTerm): LTerm {
@@ -251,7 +251,7 @@ export class LexicalTypes {
         this.visitExpression(term.f, inner, expected); return;
       }
       case "Sub": {
-        const value = term.v.$ === "PVar" || term.v.$ === "PCtr" ? patt_term(term.v) : term.v;
+        const value = patt_term(term.v);
         this.visitExpression(value, scope, scope.get(term.i)?.type);
         let type: LTerm | MissingType;
         try { type = this.infer(value, scope); }
@@ -303,7 +303,7 @@ export class LexicalTypes {
   private normalize(type: LTerm, unfolding = new Set<string>()): LTerm {
     switch (type.$) {
       case "Ann": return this.normalize(type.x, unfolding);
-      case "Sub": return this.normalize(substitute(type.f, type.i, type.v.$ === "PVar" || type.v.$ === "PCtr" ? patt_term(type.v) : type.v), unfolding);
+      case "Sub": return this.normalize(substitute(type.f, type.i, patt_term(type.v)), unfolding);
       case "Ref": {
         const definition = this.book.tlds[type.k];
         if (definition?.$ === "Def" && definition.v && !unfolding.has(type.k)) return this.normalize(this.lowerFresh(definition.v), new Set([...unfolding, type.k]));
@@ -314,7 +314,8 @@ export class LexicalTypes {
         const fn = this.normalize(type.f, unfolding);
         if (fn.$ === "Lam") return this.normalize(substitute(fn.f, fn.i, type.x), unfolding);
         if (fn.$ === "Mat") {
-          const argument = this.normalize(type.x, unfolding);
+          const normalized = this.normalize(type.x, unfolding);
+          const argument = normalized.$ === "Lit" ? lit_step(normalized) : normalized;
           if (argument.$ === "Ctr") {
             if (argument.k !== fn.k) return this.normalize({ $: "App", f: fn.m, x: argument }, unfolding);
             let branch = fn.h;
@@ -352,6 +353,8 @@ export class LexicalTypes {
     }
     const unify = (template: LTerm, actual: LTerm, kindFit = false): void => {
       const left = resolved(template), right = resolved(actual);
+      if (left.$ === "Lit" && right.$ === "Ctr") return unify(lit_step(left), right, kindFit);
+      if (right.$ === "Lit" && left.$ === "Ctr") return unify(left, lit_step(right), kindFit);
       if (left.$ === "Var" && parameters.has(left.i)) {
         if (freeBinderIds(right).includes(left.i)) throw new MissingType("recursive constructor type argument", term);
         solutions.set(left.i, right); return;
@@ -378,6 +381,7 @@ export class LexicalTypes {
           unify(left.B, substitute(right.B, right.i, { $: "Var", k: left.k, i: left.i }), kindFit); return;
         }
         case "Qua": if (right.$ !== "Qua" || (left.q.$ !== right.q.$ && !(kindFit && (right.q.$ === "Many" || left.q.$ !== "Many")))) throw new MissingType("constructor payload kind mismatch", term); return;
+        case "Lit": if (right.$ !== "Lit" || left.k !== right.k || left.v !== right.v) throw new MissingType("constructor payload literal mismatch", term); return;
         default: {
           const a = termChildren(left), b = termChildren(right);
           if (a.length !== b.length) throw new MissingType("constructor payload type shape mismatch", term);
@@ -427,6 +431,7 @@ export class LexicalTypes {
         return this.lowerFresh(definition.T);
       }
       case "Ann": return term.T;
+      case "Lit": return { $: "ADT", k: term.k, x: [], r: [], s: term.s };
       case "Ctr": return this.inferConstructor(term, scope, expected);
       case "App": {
         if (term.f.$ === "Lam") return this.infer(substitute(term.f.f, term.f.i, term.x), scope);
@@ -449,7 +454,7 @@ export class LexicalTypes {
         }
         return this.normalize(type);
       }
-      case "Sub": return this.infer(substitute(term.f, term.i, term.v.$ === "PVar" || term.v.$ === "PCtr" ? patt_term(term.v) : term.v), scope);
+      case "Sub": return this.infer(substitute(term.f, term.i, patt_term(term.v)), scope);
       case "Let": {
         let inner = scope;
         for (let i = 0; i < term.v.length; i++) inner = inner.extend(term.i[i]!, term.k[i]!, this.infer(term.v[i]!, scope), term.q[i]!);

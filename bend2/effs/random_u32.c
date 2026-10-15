@@ -17,7 +17,7 @@ static void io_random_u32_call(IoWork* w) {
 }
 
 static Term io_random_u32_pack(Env e, IoWork* w) {
-  return w->code ? io_fail(e, w->code, NULL) : io_done(e, w->word);
+  return io_res(e, w, w->word);
 }
 
 Term io_random_u32_run(Env e, Term* f, IoWork* w) {
@@ -25,5 +25,5 @@ Term io_random_u32_run(Env e, Term* f, IoWork* w) {
 }
 
 static void __attribute__((constructor)) io_random_u32_use(void) {
-  io_eff(CID_IO_RANDOM_U32, io_random_u32_run, 0);
+  io_eff(CID(IO.random_u32), io_random_u32_run);
 }

@@ -1,0 +1,100 @@
+{
+  "status": "PASS",
+  "release": "2.0.37",
+  "officialCommit": "4ff8545f19b09b7d2b8ca2303668100eac8efd66",
+  "proof": "checkpoints/selfhost-steps-bootstrap-release237-v40.json",
+  "parserProof": "checkpoints/bootstrap-parser-rebuild-release237-v67.native-build.result.json",
+  "criterion": "Fresh complete pure compiler root; actual own parse/expand/check/emission; stage2 uses stage1 parser; exact unchanged UTF-8 byte fixedpoint",
+  "fullCompilerStageGoalMs": 300000,
+  "fullCompilerStageGoalMet": true,
+  "wholeBootstrapUnderFiveMinutes": false,
+  "timings": {
+    "stageOneMs": 155527.422042,
+    "stageTwoMs": 285168.609542,
+    "parseAndAdmissionMs": 43637.23679200001,
+    "expandMs": 11481.871583,
+    "checkMs": 208501.929375,
+    "emitWriteHashMs": 21547.571791999973
+  },
+  "bootstrapGuardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 2080915456,
+    "peakFootprintBytes": 2136842832,
+    "elapsedMs": 913457,
+    "timeoutMs": 1800000,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/selfhost_bootstrap_gate.ts",
+      "--component=checkpoints/selfhost-steps-canonical-release237-v40-final.js",
+      "--component-build=checkpoints/selfhost-steps-native-canonical-release237-v40-final.result.json",
+      "--root=checkpoints/.bootstrap_compiler_root_v1.bend",
+      "--root-manifest=checkpoints/selfhost-steps-driver-source-v1.json",
+      "--parser=checkpoints/bootstrap-parser-rebuild-release237-v67.js",
+      "--parser-build=checkpoints/bootstrap-parser-rebuild-release237-v67.native-build.result.json",
+      "--report=checkpoints/selfhost-steps-bootstrap-release237-v40.json",
+      "--worker"
+    ],
+    "label": "Real full selfhost step bootstrap",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792076233889-5137a3242cdec6db.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "fixtureExecutions": 267,
+  "fixedpoint": {
+    "criterion": "Exact emitted UTF-8 JS bytes; no normalization or patching",
+    "equal": true,
+    "stageOneSha256": "84b19ce89aad6da90b1aedb7b8fff2ed8ef659636754801c91290424c19a7da2",
+    "stageTwoSha256": "84b19ce89aad6da90b1aedb7b8fff2ed8ef659636754801c91290424c19a7da2"
+  },
+  "artifacts": {
+    "stageOne": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-steps-bootstrap-release237-v40.json.cases/stage-one.js",
+      "sha256": "84b19ce89aad6da90b1aedb7b8fff2ed8ef659636754801c91290424c19a7da2",
+      "bytes": 18244928
+    },
+    "stageTwo": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-steps-bootstrap-release237-v40.json.cases/stage-two.js",
+      "sha256": "84b19ce89aad6da90b1aedb7b8fff2ed8ef659636754801c91290424c19a7da2",
+      "bytes": 18244928
+    }
+  },
+  "nativeSeed": {
+    "report": "checkpoints/selfhost-steps-native-canonical-release237-v40-final.result.json",
+    "nativeCheckedBodies": 8065,
+    "expectedSourceDefinitions": 8065,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "elapsedMs": 20842,
+    "peakFootprintBytes": 2651833584,
+    "checkedBodySpill": false
+  },
+  "apiSmoke": {
+    "report": "checkpoints/selfhost-api-smoke-release237-v40.json",
+    "passed": true,
+    "rows": 10,
+    "deepCalls": 120001,
+    "elapsedMs": 14516,
+    "peakFootprintBytes": 619229152
+  },
+  "previousMeasurements": {
+    "stable37FullStageTwoMs": 334825.354292,
+    "previous39FullStageTwoMs": 354073.114417,
+    "stageTwoChangeVs37Percent": -14.83064054542732,
+    "stageTwoChangeVs39Percent": -19.46053006268349,
+    "officialSameRootReference": "checkpoints/compiler-timing-comparison237-v37.json"
+  },
+  "measurementCaveat": "Sequential observed runs, not isolated causal attribution or a repeated-run performance distribution.",
+  "boundary": "Pure parser/template/checker/JS compiler root. Trusted host orchestration remains; C/Metal/CUDA and legacy IO are outside this proof.",
+  "sourceSnapshot": "checkpoints/experiment-archive237/accepted-release237-v40-source.tar.gz",
+  "reproduction": {
+    "freshRunIdsRequired": true,
+    "note": "Exact recipes already executed for accepted40. For a new run, use fresh parser run-id and compiler artifact/report names; never overwrite or reuse accepted evidence. Generated images, AST transports, profiles and bulk archives are local-only.",
+    "sourcePreparationRecipe": "#!/bin/sh\nset -eu\nguard() { bun --smol evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 -- \"$@\"; }\nguard bun --smol evals/checker_core_owned_source.ts\nguard bun --smol evals/checker_core_step_lower.ts\nguard bun --smol evals/template_step_lower.ts\nguard bun --smol evals/js_emit_step_lower.ts\nbun --smol evals/checker_core_component_build.ts --file=checkpoints/.bootstrap_compiler_root_v1.bend --exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,checker_step,emit_modules_start,emit_library_start,emitter_step --artifact=checkpoints/selfhost-steps-canonical-release237-v40.js --report=checkpoints/selfhost-steps-native-canonical-release237-v40\n",
+    "parserRootFixedpointRecipe": "#!/bin/sh\nset -eu\nexport BEND_NO_TELEMETRY=1\nRUN=release237-v67\nguard() { bun --smol evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 -- \"$@\"; }\nbun --smol evals/bootstrap_parser_rebuild.ts --prepare-source --run-id \"$RUN\"\nguard bun --smol evals/bootstrap_parser_public_gate.ts --parser=\"checkpoints/.bootstrap_parser_rebuild_${RUN}_source.bend\" --entry=parse_module_tokens --report=\"checkpoints/bootstrap-parser-rebuild-${RUN}.source-public.json\"\nguard bun --smol evals/bootstrap_parser_fast.ts --parser=\"checkpoints/.bootstrap_parser_rebuild_${RUN}_source.bend\" --entry=parse_module_tokens --public-report=\"checkpoints/bootstrap-parser-rebuild-${RUN}.source-public.json\" --report=\"checkpoints/bootstrap-parser-rebuild-${RUN}.source-semantic.json\"\nbun --smol evals/bootstrap_parser_rebuild.ts --prepare --run-id \"$RUN\" --source-gate \"checkpoints/bootstrap-parser-rebuild-${RUN}.source-semantic.json\"\nbun --smol evals/bootstrap_parser_rebuild.ts --build-native --run-id \"$RUN\"\nguard bun --smol evals/bootstrap_parser_public_gate.ts --parser=\"checkpoints/.bootstrap_parser_rebuild_${RUN}_generated_fuel.bend\" --entry=parse_with_fuel --report=\"checkpoints/bootstrap-parser-rebuild-${RUN}.candidate-public.json\"\nguard bun --smol evals/bootstrap_parser_fast.ts --parser=\"checkpoints/.bootstrap_parser_rebuild_${RUN}_generated_fuel.bend\" --entry=parse_with_fuel --component=\"checkpoints/bootstrap-parser-rebuild-${RUN}.js\" --component-build=\"checkpoints/bootstrap-parser-rebuild-${RUN}.native-build.result.json\" --public-report=\"checkpoints/bootstrap-parser-rebuild-${RUN}.candidate-public.json\" --report=\"checkpoints/bootstrap-parser-rebuild-${RUN}.candidate-semantic.json\"\nbun --smol evals/bootstrap_parser_rebuild.ts --build --run-id \"$RUN\" --candidate-gate \"checkpoints/bootstrap-parser-rebuild-${RUN}.candidate-semantic.json\"\nbun --smol evals/selfhost_driver_source.ts --parser-build=\"checkpoints/bootstrap-parser-rebuild-${RUN}.native-build.result.json\"\nbun --smol evals/checker_core_component_build.ts --file=checkpoints/.bootstrap_compiler_root_v1.bend --exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,checker_step,emit_modules_start,emit_library_start,emitter_step --artifact=checkpoints/selfhost-steps-canonical-release237-v40-final.js --report=checkpoints/selfhost-steps-native-canonical-release237-v40-final\nHEAVY_GATE_TIMEOUT_MS=1800000 bun --smol evals/selfhost_bootstrap_gate.ts --component=checkpoints/selfhost-steps-canonical-release237-v40-final.js --component-build=checkpoints/selfhost-steps-native-canonical-release237-v40-final.result.json --root=checkpoints/.bootstrap_compiler_root_v1.bend --root-manifest=checkpoints/selfhost-steps-driver-source-v1.json --parser=\"checkpoints/bootstrap-parser-rebuild-${RUN}.js\" --parser-build=\"checkpoints/bootstrap-parser-rebuild-${RUN}.native-build.result.json\" --report=checkpoints/selfhost-steps-bootstrap-release237-v40.json\n"
+  }
+}

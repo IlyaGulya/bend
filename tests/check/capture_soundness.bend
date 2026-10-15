@@ -4,7 +4,7 @@
 # with expected b, observed a -- a key collision would accept it and
 # close main : Empty.
 # ported from bend3: the annotation wears the brace Ann form, riding
-# a let binding (a bare beta-redex is refused by infer-app)
+# a let binding (a bare beta-redex is its body: term_higher steps it)
 type Empty6 is Data:
 
 type Unit6 is Data:
@@ -42,6 +42,7 @@ law main:
 def main():
   %h@bad : family(_); U6{}
 
+#|SOME PROOFS FAIL
 #|Error:
 #|- expected : b
 #|- observed : a
@@ -52,5 +53,6 @@ def main():
 #|Location: bad
 #|36 |   }
 #|37>|   f(a => b => b, a => b => {==})
+#|   |                            ^^^^
 #|38 |
 #|exit 1

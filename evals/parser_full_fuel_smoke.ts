@@ -32,19 +32,17 @@ if (!Number.isSafeInteger(canonicalTimeout) || canonicalTimeout <= 0) throw Erro
 const canonicalPath = resolve("bend2/selfhost/parser.bend");
 const canonicalText = await Bun.file(canonicalPath).text();
 // Deliberately no canonical checker; reuse the existing source-AST audit seam.
-const canonicalBook = canonicalSource === undefined ? B.book_nil() : await canonicalSourceBook(canonicalText);
+const canonicalBook = canonicalSource === undefined ? B.book_nil() : await canonicalSourceBook(canonicalText, canonicalPath);
 const candidate = resolve("bend2/selfhost/parser_full_generated_fuel.bend");
 const text = await Bun.file(candidate).text();
 const book = canonicalSource !== undefined ? B.book_nil()
-  : streaming ? await canonicalSourceBook(text) : B.book_nil();
+  : streaming ? await canonicalSourceBook(text, candidate) : B.book_nil();
 if (canonicalSource === undefined && !streaming) {
   await B.book_load(book, candidate, "", new Map());
   await installCompiledNatRead(book);
 }
 function closed(text: string, runtime = book): B.HTerm {
-  const p: B.Parse = { book: runtime, dir: resolve("bend2/selfhost") + "/", str: text, pos: 0,
-    sc: { stk: [], frs: 0 }, ns: "", al: { Ast: "ast", Lexer: "lexer" },
-    os: [], inst: null, ts: [], lv: 0 };
+  const p: B.Parse = {book:runtime,dir:resolve("bend2/selfhost") + "/",str:text,pos:0,stk:[],frs:0,ns:"",al:{ Ast: "ast", Lexer: "lexer" }};
   return B.term_higher(B.parse_term(p));
 }
 function apply(name: string, args: B.HTerm[]): B.HTerm {
@@ -89,6 +87,19 @@ function decode(tree: Tree): Value {
     while (cursor[0] === "Succ") { n++; cursor = cursor[1][0]; }
     if (cursor[0] !== "Zero" || !Number.isSafeInteger(n)) throw Error("Invalid AST Nat");
     return n;
+  }
+  if (tag === "U32") {
+    if (fields.length !== 1) throw Error("Invalid AST U32");
+    let word = fields[0], value = 0, bits = 0;
+    while (word[0] === "WCon" && word[1].length === 2) {
+      const bit = word[1][0];
+      if (bits >= 32 || bit[1].length !== 0 || bit[0] !== "True" && bit[0] !== "False")
+        throw Error("Invalid AST U32 bit");
+      if (bit[0] === "True") value += 2 ** bits;
+      bits++; word = word[1][1];
+    }
+    if (bits !== 32 || word[0] !== "WNil" || word[1].length !== 0) throw Error("Invalid AST U32 Word");
+    return value;
   }
   if (tag === "SNil" || tag === "SCon") {
     let cursor = tree, text = "";

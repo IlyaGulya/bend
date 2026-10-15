@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "reason": "command_exit",
+  "commandExitCode": 0,
+  "commandSignal": 0,
+  "peakRssBytes": 208191488,
+  "peakFootprintBytes": 142213912,
+  "elapsedMs": 1334,
+  "timeoutMs": 600000,
+  "command": [
+    "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+    "--smol",
+    "/Users/ilyagulya/Projects/My/bend/evals/bootstrap_parser_rebuild.ts",
+    "--worker-build-native",
+    "--run-id",
+    "release237-v67",
+    "--canonical-sha256",
+    "de146db91303ed40dd0f7a32004631b873cc1af66b1df08aeb88fa250af140a9"
+  ],
+  "label": "Final canonical bootstrap parser --build-native",
+  "exitCode": 0,
+  "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792076131952-7f12a62efeaa4d4f.json",
+  "memoryLimitBytes": 8589934592,
+  "rssLimitBytes": 8589934592,
+  "pollMs": 10
+}

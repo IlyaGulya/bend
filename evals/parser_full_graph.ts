@@ -5,7 +5,7 @@ import { execFileSync, spawnSync } from "node:child_process";
 import { readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, posix, resolve } from "node:path";
 import { book_load, book_nil, list_set, parse_body, parse_eat, parse_name, parse_open,
-  parse_take, parse_tele, parse_term, parse_word, term_force, term_higher, term_lower, term_unapply, Var,
+  parse_take, parse_tele, parse_term, parse_word, tele_bind, term_force, term_higher, term_lower, term_unapply, Var,
   type Body, type Book, type Env, type HTerm, type LTerm, type Parse, type Patt, type Quant, type Span } from "../bend2/bend.ts";
 
 export const sourceCheckpoint = "0d0e204f";
@@ -34,10 +34,10 @@ export type ParserGraph = {
 /** Parse the real stage-0 source Body AST before match compilation. Each syntax
  * expression is traversed as raw HOAS with bound variables retained. This avoids
  * parse_def_body's flatten/lower replay of exhaustive match branches, not any
- * source syntax: every Match, Local, Reply and nested source term is parsed by
+ * source syntax: every Match, Local and terminal source term is parsed by
  * the unchanged stage-0 parser. Datatypes/imports are loaded with book_load.
  */
-export async function readParserGraph(source = readFileSync(parserPath, "utf8")): Promise<ParserGraph> {
+export async function readParserGraph(source = readFileSync(parserPath, "utf8"), sourcePath = parserPath): Promise<ParserGraph> {
   const headers = [...source.matchAll(/^def ([A-Za-z_]\w*)\(/gm)];
   const names = new Set(headers.map(match => match[1]!));
   const declarations = [...source.matchAll(/^(type|def|law) \S+/gm)];
@@ -50,7 +50,7 @@ export async function readParserGraph(source = readFileSync(parserPath, "utf8"))
     aliases[match[2]!] = posix.normalize(match[1]!).replace(/\.bend$/, "");
   }
   const book = book_nil();
-  const temporary = resolve(dirname(parserPath), `parser_full_graph_datatypes_${randomUUID()}.bend`);
+  const temporary = resolve(dirname(sourcePath), `parser_full_graph_datatypes_${randomUUID()}.bend`);
   try {
     writeFileSync(temporary, datatypeSource);
     await book_load(book, temporary, "", new Map());
@@ -68,12 +68,12 @@ export async function readParserGraph(source = readFileSync(parserPath, "utf8"))
   const calls = new Map<string, ParserCall[]>();
   for (const header of headers) {
     const caller = header[1]!;
-    const parser: Parse = { book, dir: dirname(parserPath) + "/", str: source,
-      pos: header.index!, sc: { stk: [], frs: 0 }, ns: "", al: aliases,
-      os: [], inst: null, ts: [], lv: 0 };
+    const parser: Parse = { book, dir: dirname(sourcePath) + "/", str: source,
+      pos: header.index!, stk: [], frs: 0, ns: "", al: aliases };
     if (!parse_word(parser, "def") || parse_name(parser) !== caller) throw Error("Invalid definition: " + caller);
     parse_eat(parser, "(");
     let parameters: ParserParameter[], result: LTerm;
+    const templateKeys: string[] = [];
     const declaration = book.tlds[caller];
     if (declaration?.$ === "Def" && declaration.v === null) {
       parameters = [];
@@ -81,27 +81,31 @@ export async function readParserGraph(source = readFileSync(parserPath, "utf8"))
       while (!parse_take(parser, ")")) {
         const key = parse_name(parser), index = parse_open(parser, key);
         if (type.$ !== "All") throw Error("Law signature has fewer parameters than " + caller);
-        parameters.push([type.q, key, index, term_lower(type.A), { src: source, beg: parser.pos - key.length, end: parser.pos }]);
+        parameters.push([type.q, key, index, term_lower(type.A), { file: parser, beg: parser.pos - key.length, end: parser.pos }]);
         type = type.B(Var(key, index));
         parse_take(parser, ",");
       }
       result = term_lower(type);
     } else {
-      parameters = parse_tele(parser, ")");
+      parameters = parse_tele(parser, ")", templateKeys);
       parse_eat(parser, "->");
       result = parse_term(parser);
     }
     parse_eat(parser, ":");
     const body = parse_body(parser);
-    bodies.set(caller, body);
     const callerCalls: ParserCall[] = [];
     calls.set(caller, callerCalls);
     let parameterEnv: Env = null;
     for (const parameter of parameters) {
-      parameter[3] = term_lower(term_higher(parameter[3], parameterEnv), parser.sc.frs);
+      parameter[3] = term_lower(term_higher(parameter[3], parameterEnv), parser.frs);
       parameterEnv = list_set(parameterEnv, parameter[2], Var(parameter[1], parameter[2]));
     }
-    result = term_lower(term_higher(result, parameterEnv), parser.sc.frs);
+    result = term_lower(term_higher(result, parameterEnv), parser.frs);
+    if (!declaration) {
+      // Authentic parsed signature; the raw Body is kept separately until replay.
+      book.tlds[caller] = {$: "Def", n: parameters.length, x: templateKeys.length,
+        T: term_higher(tele_bind(parameters, result)), v: null, m: parser.ns};
+    }
     signatures.set(caller, { parameters, result });
     const targets = new Set<string>();
     const seen = new WeakSet<object>();
@@ -117,7 +121,7 @@ export async function readParserGraph(source = readFileSync(parserPath, "utf8"))
         if (names.has(term.k)) targets.add(term.k);
         if (names.has(term.k) || book.tlds[term.k] === undefined) {
           if (!term.s) throw Error(`Missing reference coordinates: ${caller} -> ${term.k}`);
-          const prefix = term.s.src.slice(0, term.s.beg);
+          const prefix = term.s.file.str.slice(0, term.s.beg);
           const line = prefix.split("\n").length;
           const column = term.s.beg - prefix.lastIndexOf("\n");
           const site = { caller, callee: term.k, line, column, parsedOffset: term.s.beg,
@@ -186,38 +190,38 @@ export async function readParserGraph(source = readFileSync(parserPath, "utf8"))
       for (const pattern of patterns) bind(pattern);
       return env;
     }
-    function visitBody(body: Body, env: Env): void {
+    function visitBody(body: Body, env: Env): Body {
       switch (body.$) {
-        case "Reply": {
-          const expression = term_higher(body.x, env);
-          visit(expression);
-          body.x = term_lower(expression, parser.sc.frs);
-          visitCalls(body.x);
-          return;
-        }
         case "Local":
           body.v = body.v.map(value => {
             const expression = term_higher(value, env);
             visit(expression);
-            const sourceTerm = term_lower(expression, parser.sc.frs);
+            const sourceTerm = term_lower(expression, parser.frs);
             visitCalls(sourceTerm);
             return sourceTerm;
           });
-          visitBody(body.f, extendEnv(body.k, env));
-          return;
+          body.f = visitBody(body.f, extendEnv(body.k, env));
+          return body;
         case "Match":
           body.e = body.e.map(scrutinee => {
             const expression = term_higher(scrutinee, env);
             visit(expression);
-            const sourceTerm = term_lower(expression, parser.sc.frs);
+            const sourceTerm = term_lower(expression, parser.frs);
             visitCalls(sourceTerm);
             return sourceTerm;
           });
-          for (const row of body.r) visitBody(row.f, extendEnv(row.p, env));
-          return;
+          for (const row of body.r) row.f = visitBody(row.f, extendEnv(row.p, env));
+          return body;
+        default: {
+          const expression = term_higher(body, env);
+          visit(expression);
+          const sourceTerm = term_lower(expression, parser.frs);
+          visitCalls(sourceTerm);
+          return sourceTerm;
+        }
       }
     }
-    visitBody(body, parameterEnv);
+    bodies.set(caller, visitBody(body, parameterEnv));
     callerCalls.sort((a, b) => a.offset - b.offset || (a.parent ?? "").localeCompare(b.parent ?? ""));
     edges[caller] = [...targets].sort();
   }

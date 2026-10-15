@@ -1,0 +1,66 @@
+{
+  "passed": true,
+  "diagnosticOnly": true,
+  "bootstrapAcceptance": false,
+  "rows": [
+    {
+      "stage": "stageOne",
+      "mode": "saturated-export",
+      "result": "CheckSuccess"
+    },
+    {
+      "stage": "stageOne",
+      "mode": "bare",
+      "result": "CheckSuccess"
+    },
+    {
+      "stage": "stageOne",
+      "mode": "foreign-extra-arguments",
+      "result": "CheckSuccess"
+    },
+    {
+      "stage": "stageOne",
+      "mode": "get_observe",
+      "deepCalls": 0,
+      "extraArgumentCases": 4,
+      "result": "BitOne"
+    },
+    {
+      "stage": "stageOne",
+      "mode": "get_mixed",
+      "deepCalls": 120001,
+      "extraArgumentCases": 4,
+      "result": "BitOne"
+    },
+    {
+      "stage": "stageTwo",
+      "mode": "saturated-export",
+      "result": "CheckSuccess"
+    },
+    {
+      "stage": "stageTwo",
+      "mode": "bare",
+      "result": "CheckSuccess"
+    },
+    {
+      "stage": "stageTwo",
+      "mode": "foreign-extra-arguments",
+      "result": "CheckSuccess"
+    },
+    {
+      "stage": "stageTwo",
+      "mode": "get_observe",
+      "deepCalls": 0,
+      "extraArgumentCases": 4,
+      "result": "BitOne"
+    },
+    {
+      "stage": "stageTwo",
+      "mode": "get_mixed",
+      "deepCalls": 120001,
+      "extraArgumentCases": 4,
+      "result": "BitOne"
+    }
+  ],
+  "temporaryArtifactsRemoved": true
+}

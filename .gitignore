@@ -3,3 +3,19 @@
 .agents/
 node_modules/
 *.tgz
+*.bendtt
+
+# Selfhost inputs and compact receipts are added explicitly; build output stays local.
+/checkpoints/
+/bend2/.load_replay_*.ts
+/bend2/.bootstrap_source_oracle_*.ts
+/bend2/selfhost/.bootstrap_*
+/bend2/selfhost/*.bend.*.json
+/evals/.bootstrap_*
+/evals/.checker_*
+/evals/.selfhost_*
+/evals/.tagged_dispatch_*
+/evals/.transient_prefix_*
+*.cpuprofile
+*.heapprofile
+*.heapsnapshot

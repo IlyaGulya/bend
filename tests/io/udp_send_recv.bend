@@ -11,14 +11,17 @@
 import Base
 
 law send_go:
-  for m: Socket & Result<&1, &1, (U32 & String), Unit>
+  for m: Socket & Result<&1, &1, (U32 & String) & String, Unit>
   IO(Socket)
 
 def send_go(m):
   (s, r) = m
-  do IO<Socket>:
-    u : Unit <- IO.pass(Unit, r)
-    return s
+  match r:
+    case Done{u}:
+      IO.pure(Socket, s)
+    case Fail{(error, data)}:
+      (code, message) = error
+      IO.die(Socket, code, message)
 
 law finish_end:
   for s1 : Socket
@@ -54,7 +57,7 @@ law reply_end:
 def reply_end(s1, s2, p):
   (host, from, data) = p
   do IO<U32>:
-    sm  : Socket & Result<&1, &1, (U32 & String), Unit> <- UDP.send_to(s2, host, from, String.append(data, "-pong"))
+    sm  : Socket & Result<&1, &1, (U32 & String) & String, Unit> <- UDP.send_to(s2, host, from, String.append(data, "-pong"))
     s2b : Socket <- send_go(sm)
     rm  : Socket & Result<&1, &1, (U32 & String), String & U32 & String> <- UDP.recv_from(s1, 64)
     finish_go(s2b, rm)
@@ -73,12 +76,13 @@ def reply_go(s1, m):
 law main_go2:
   for s1 : Socket
   for b  : Socket & U32
+  for data : String
   IO(U32)
 
-def main_go2(s1, b):
+def main_go2(s1, b, data):
   (s2, p2) = b
   do IO<U32>:
-    sm  : Socket & Result<&1, &1, (U32 & String), Unit> <- UDP.send_to(s1, "127.0.0.1", p2, "bend-udp")
+    sm  : Socket & Result<&1, &1, (U32 & String) & String, Unit> <- UDP.send_to(s1, "127.0.0.1", p2, data)
     s1b : Socket <- send_go(sm)
     m   : Socket & Result<&1, &1, (U32 & String), String & U32 & String> <- UDP.recv_from(s2, 64)
     reply_go(s1b, m)
@@ -86,11 +90,12 @@ def main_go2(s1, b):
 law main_go:
   for a: Socket & U32
   for b: Socket & U32
+  for data: String
   IO(U32)
 
-def main_go(a, b):
+def main_go(a, b, data):
   (s1, p1) = a
-  main_go2(s1, b)
+  main_go2(s1, b, data)
 
 law udp_retry:
   for port : U32
@@ -117,7 +122,7 @@ def udp_bind_any(tries, port):
     case 1n+t:
       rest = udp_bind_any(t, (port + 1 : U32))
       do IO<Socket & U32>:
-        r : Result<&1, &1, (U32 & String), Socket> <- UDP.bind(port)
+        r : Result<&1, &1, (U32 & String), Socket> <- UDP.bind("127.0.0.1", port)
         udp_retry(port, r, rest)
 
 law main:
@@ -127,6 +132,10 @@ def main():
   do IO<U32>:
     a : Socket & U32 <- udp_bind_any(32n, 19053)
     b : Socket & U32 <- udp_bind_any(32n, 19073)
-    main_go(a, b)
+    r : U32 <- main_go(a, b, "bend-udp")
+    c : Socket & U32 <- udp_bind_any(32n, 19053)
+    d : Socket & U32 <- udp_bind_any(32n, 19073)
+    main_go(c, d, "")
 
 #|bend-udp-pong
+#|-pong

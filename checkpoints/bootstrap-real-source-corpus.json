@@ -1,0 +1,167 @@
+{
+  "criterion": "bootstrap-real-source parser corpus",
+  "modules": [
+    {
+      "id": 1,
+      "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_driver.bend",
+      "snapshot": "checkpoints/bootstrap-real-source/01-checker_core_driver.bend",
+      "sourceSha256": "25593371e3c4077865f5265e967f3a672ab123b19d672aea85330500f8c46b18",
+      "compiledBaselineAccepted": true,
+      "compiledBaselineFailure": null
+    },
+    {
+      "id": 2,
+      "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/.parser_definition_body_shape_generated_fuel.bend",
+      "snapshot": "checkpoints/bootstrap-real-source/02-.parser_definition_body_shape_generated_fuel.bend",
+      "sourceSha256": "822e8460ff94ff3f00695e27f5b4fe4dbd3515ae4d6d5c3b3c5eb7c1867b840e",
+      "compiledBaselineAccepted": false,
+      "compiledBaselineFailure": {
+        "$": "ParseFailure",
+        "message": "invalid or unsupported top-level syntax",
+        "expected": "a supported declaration",
+        "observed": "\n",
+        "span": {
+          "$": "SpanOf",
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/.parser_definition_body_shape_generated_fuel.bend",
+          "beg": "26151",
+          "end": "26152"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "file": "/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+      "snapshot": "checkpoints/bootstrap-real-source/03-base.bend",
+      "sourceSha256": "e149828ca05581f61d1b06cf2a7d1a744e394d29a4c8e1942e5062ecbf30f5b8",
+      "compiledBaselineAccepted": false,
+      "compiledBaselineFailure": {
+        "$": "ParseFailure",
+        "message": "invalid or unsupported top-level syntax",
+        "expected": "a supported declaration",
+        "observed": "<-",
+        "span": {
+          "$": "SpanOf",
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+          "beg": "723",
+          "end": "725"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend",
+      "snapshot": "checkpoints/bootstrap-real-source/04-loaded_module.bend",
+      "sourceSha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+      "compiledBaselineAccepted": true,
+      "compiledBaselineFailure": null
+    },
+    {
+      "id": 5,
+      "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend",
+      "snapshot": "checkpoints/bootstrap-real-source/05-ast.bend",
+      "sourceSha256": "4e5c2367aa69a44dc146034a6dc54ccc7c682dd5f0e16ca9a6ff812c4d41f6ca",
+      "compiledBaselineAccepted": true,
+      "compiledBaselineFailure": null
+    },
+    {
+      "id": 6,
+      "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_slice.bend",
+      "snapshot": "checkpoints/bootstrap-real-source/06-checker_core_slice.bend",
+      "sourceSha256": "dfededaa2637240d7e1409488eed11e8ad995da63eb40e8a2ada4adcfe7b1690",
+      "compiledBaselineAccepted": false,
+      "compiledBaselineFailure": {
+        "$": "ParseFailure",
+        "message": "invalid or unsupported top-level syntax",
+        "expected": "a supported declaration",
+        "observed": "\n",
+        "span": {
+          "$": "SpanOf",
+          "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_slice.bend",
+          "beg": "3090",
+          "end": "3091"
+        }
+      }
+    },
+    {
+      "id": 7,
+      "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_emit.bend",
+      "snapshot": "checkpoints/bootstrap-real-source/07-js_emit.bend",
+      "sourceSha256": "c08d70e3cf804bc1257aca605f541510d05ed401a974e072d02eb8e14642e327",
+      "compiledBaselineAccepted": false,
+      "compiledBaselineFailure": {
+        "$": "ParseFailure",
+        "message": "invalid or unsupported top-level syntax",
+        "expected": "a supported declaration",
+        "observed": "\n",
+        "span": {
+          "$": "SpanOf",
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_emit.bend",
+          "beg": "253",
+          "end": "254"
+        }
+      }
+    },
+    {
+      "id": 8,
+      "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/lexer.bend",
+      "snapshot": "checkpoints/bootstrap-real-source/08-lexer.bend",
+      "sourceSha256": "072d8206f61dc516f138057917ce130507c9e0a29d8c299a7716a49f14676d6f",
+      "compiledBaselineAccepted": false,
+      "compiledBaselineFailure": {
+        "$": "ParseFailure",
+        "message": "invalid or unsupported top-level syntax",
+        "expected": "a supported declaration",
+        "observed": "\n",
+        "span": {
+          "$": "SpanOf",
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/lexer.bend",
+          "beg": "1714",
+          "end": "1715"
+        }
+      }
+    },
+    {
+      "id": 9,
+      "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/core.bend",
+      "snapshot": "checkpoints/bootstrap-real-source/09-core.bend",
+      "sourceSha256": "ee2eab9d4512e6fcc25d1a2032288c792d136a636ef8f5ccb44b0d1c69f4064d",
+      "compiledBaselineAccepted": false,
+      "compiledBaselineFailure": {
+        "$": "ParseFailure",
+        "message": "invalid or unsupported top-level syntax",
+        "expected": "a supported declaration",
+        "observed": "\n",
+        "span": {
+          "$": "SpanOf",
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/core.bend",
+          "beg": "108",
+          "end": "109"
+        }
+      }
+    },
+    {
+      "id": 10,
+      "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend",
+      "snapshot": "checkpoints/bootstrap-real-source/10-path.bend",
+      "sourceSha256": "83970e4f1debce838e2fd5fe15048d0543f96a6e92441dabece4d976e476796e",
+      "compiledBaselineAccepted": false,
+      "compiledBaselineFailure": {
+        "$": "ParseFailure",
+        "message": "invalid or unsupported top-level syntax",
+        "expected": "a supported declaration",
+        "observed": "\n",
+        "span": {
+          "$": "SpanOf",
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend",
+          "beg": "203",
+          "end": "204"
+        }
+      }
+    }
+  ],
+  "compiledArtifact": "checkpoints/parser-explicit-fuel-822e8460.js",
+  "compiledArtifactSha256": "0726b631b839b23f53d6c34bef99d3ff0c5f5889548ac4cdc9a4e6e1ad0ab0ec",
+  "baselineCompiledAcceptance": "3/10",
+  "stage0AndSemanticParity": "PENDING syntax oracle",
+  "excludedDebt": "Only previously ledgered span/diagnostic differences; no semantic exclusions"
+}

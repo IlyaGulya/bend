@@ -101,6 +101,7 @@ def c_term_lambdas(term: AST.SyntaxTerm, arity: Nat, locals: Nat) -> List<&2, In
     case AST.TermLet{ _,  _,  _, values, body,  _}:
       List.append(&2, IndexedDefinition, c_collect_terms(values, arity, locals), c_term_lambdas(substitute_let_values(List.reverse(&2, AST.SyntaxTerm, values), body), arity, locals))
     case AST.TermCtr{ _, args,  _}: c_collect_terms(args, arity, locals)
+    case AST.TermString{_, _, _}: Nil{}
     case AST.TermAdt{ _, args,  _,  _}: c_collect_terms(args, arity, locals)
     case AST.TermFill{head, args,  _}:
       List.append(&2, IndexedDefinition, c_term_lambdas(head, arity, locals), c_collect_terms(args, arity, locals))
@@ -488,6 +489,7 @@ def c_split_bang(term: AST.SyntaxTerm) -> Maybe<&2, BangSplit>:
     case AST.TermLet{ _,  _,  _, values, body,  _}: c_split_bang(substitute_let_values(List.reverse(&2, AST.SyntaxTerm, values), body))
     case AST.TermMin{left, right, span}: c_split_bang_min_left(c_split_bang(left), left, right, span)
     case AST.TermCtr{key, args, span}: c_split_bang_terms_ctr(c_split_bang_terms(args), key, span)
+    case AST.TermString{_, _, _}: None{}
     case AST.TermAdt{key, args, refs, span}: c_split_bang_terms_adt(c_split_bang_terms(args), key, refs, span)
     case AST.TermFill{head, args, span}: c_split_bang_fill_head(c_split_bang(head), head, args, span)
     case AST.TermPlus{head, args, span}: c_split_bang_plus_head(c_split_bang(head), head, args, span)
@@ -651,6 +653,7 @@ def c_term_span(term: AST.SyntaxTerm) -> AST.SourceSpan:
     case AST.TermFill{_, _, span}: span
     case AST.TermPlus{_, _, span}: span
     case AST.TermCtr{_, _, span}: span
+    case AST.TermString{_, _, span}: span
     case AST.TermMat{_, _, _, span}: span
     case AST.TermAbsurd{span}: span
     case AST.TermEqual{_, _, _, span}: span
@@ -824,6 +827,7 @@ def c_replace_bang_placeholder(term: AST.SyntaxTerm, index: Nat) -> AST.SyntaxTe
     case AST.TermTemplate{ inner, span}: AST.TermTemplate{ c_replace_bang_placeholder(inner, index), span}
     case AST.TermMin{left, right, span}: AST.TermMin{ c_replace_bang_placeholder(left, index),  c_replace_bang_placeholder(right, index), span}
     case AST.TermCtr{key, args, span}: AST.TermCtr{key,  c_replace_bang_placeholder_terms(args, index), span}
+    case AST.TermString{_, _, _}: term
     case AST.TermAdt{key, args, refs, span}: AST.TermAdt{key,  c_replace_bang_placeholder_terms(args, index), refs, span}
     case AST.TermFill{head, args, span}: AST.TermFill{ c_replace_bang_placeholder(head, index),  c_replace_bang_placeholder_terms(args, index), span}
     case AST.TermPlus{head, args, span}: AST.TermPlus{ c_replace_bang_placeholder(head, index),  c_replace_bang_placeholder_terms(args, index), span}
@@ -1888,6 +1892,7 @@ def c_expr_env(term: AST.SyntaxTerm, definitions: List<&2, IndexedDefinition>, a
       c_expr_env(substitute_let_values(List.reverse(&2, AST.SyntaxTerm, values), body), definitions, arity, locals)
     case AST.TermCtr{key, args,  _}:
       c_expr_constructor(c_word_literal(term, key), key, args, definitions, arity, locals)
+    case AST.TermString{chars, names, span}: c_expr_env(AST.string_desugar(chars, names, span), definitions, arity, locals)
     case AST.TermApp{ _,  _,  _}: c_expr_spine(app_spine(term), definitions, arity, locals)
     case AST.BodyReply{term,  _}: c_expr_env(term, definitions, arity, locals)
     case AST.BodyMatch{scrutinees, cases,  _}:
@@ -2958,6 +2963,7 @@ def c_lift_term(term: AST.SyntaxTerm, owner: String, binders: List<&2, AST.Teles
     case AST.TermCtr{key, args, span}:
       a = c_lift_terms(args, owner, binders)
       LiftedTerm{ AST.TermCtr{key,  a.terms, span},  a.helpers}
+    case AST.TermString{_, _, _}: LiftedTerm{term, Nil{}}
     case AST.TermAdt{key, args, refs, span}:
       a = c_lift_terms(args, owner, binders)
       LiftedTerm{ AST.TermAdt{key,  a.terms, refs, span},  a.helpers}

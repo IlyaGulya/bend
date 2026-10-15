@@ -1,0 +1,15 @@
+{
+  "diagnosticOnly": true,
+  "bootstrapAcceptance": false,
+  "passed": false,
+  "reason": "Generated from fresh expanded but not own-checked modules; emitted compiler fails fresh own parse at lexer.tokens getter with String.to_list(null). Cause not established; no performance acceptance.",
+  "nativeCheckedBodies": 8065,
+  "moduleCount": 15,
+  "nativeParseMs": 15810.617958,
+  "nativeExpandMs": 14230.205333,
+  "nativeEmitMs": 24219.1095,
+  "discardedOutputBytes": 18240980,
+  "discardedOutputSha256": "8d1562d29ec96227c8e59b6709080357a960b3fb511ec5b159ec80c220abb448",
+  "error": "TypeError: Cannot read properties of null (reading 'length')",
+  "completeProperPipelineProof": "checkpoints/selfhost-steps-bootstrap-release237-v40.json"
+}

@@ -53,11 +53,10 @@ export function runtimeUses(node: Body | LTerm): Uses {
     case "Sub": {
       const uses = runtimeUses(node.f), count = uses.get(node.i) ?? 0;
       uses.delete(node.i);
-      const value = node.v.$ === "PVar" || node.v.$ === "PCtr" ? patt_term(node.v) : node.v;
+      const value = patt_term(node.v);
       return combine(uses, runtimeUses(value), false, count);
     }
     case "Mat": return combine(runtimeUses(node.h), runtimeUses(node.m), true);
-    case "Reply": return runtimeUses(node.x);
     case "Local": {
       const uses = runtimeUses(node.f);
       node.k.flatMap(patternIds).forEach(id => uses.delete(id));
@@ -108,7 +107,6 @@ class Instantiation {
   }
   reserveBody(body: Body): void {
     switch (body.$) {
-      case "Reply": this.reserve(body.x); break;
       case "Local":
         body.k.forEach(pattern => this.reservePattern(pattern));
         body.v.forEach(value => this.reserve(value));
@@ -119,6 +117,8 @@ class Instantiation {
           row.p.forEach(pattern => this.reservePattern(pattern));
           this.reserveBody(row.f);
         }
+        break;
+      default: this.reserve(body);
     }
   }
   bind(id: number, name: string, environment: Map<number, LTerm>): number {
@@ -145,7 +145,7 @@ class Instantiation {
         // Never substitute caller IDs using the consumer's substitution map.
         return replacement ? this.term(replacement, new Map()) : term;
       }
-      case "Ref": case "Qnt": case "Qua": case "Efq": case "Rfl": case "Hol": return term;
+      case "Ref": case "Lit": case "Qnt": case "Qua": case "Efq": case "Rfl": case "Hol": return term;
       case "Typ": return { ...term, g: child(term.g) };
       case "Min": return { ...term, a: child(term.a), b: child(term.b) };
       case "Lam": {
@@ -169,11 +169,7 @@ class Instantiation {
         return { ...term, i, v: term.v.map(child), f,
           q: this.preserveQuantities ? term.q : term.q.map((quantity, index) => quantityForUses(quantity, i[index]!, uses)) };
       }
-      case "Sub": {
-        const local = new Map(environment), i = this.bind(term.i, "_", local);
-        const value = term.v.$ === "PVar" || term.v.$ === "PCtr" ? patt_term(term.v) : term.v;
-        return { ...term, i, v: child(value), f: this.term(term.f, local) };
-      }
+      case "Sub": return this.term(term.f, new Map([...environment, [term.i, child(patt_term(term.v))]]));
       case "App": {
         const f = child(term.f), x = child(term.x);
         if (f.$ === "Lam") {
@@ -195,7 +191,6 @@ class Instantiation {
   }
   body(body: Body, environment: ReadonlyMap<number, LTerm>): Body {
     switch (body.$) {
-      case "Reply": return { ...body, x: this.term(body.x, environment) };
       case "Local": {
         const local = new Map(environment), k = body.k.map(pattern => this.pattern(pattern, local));
         const f = this.body(body.f, local), uses = runtimeUses(f);
@@ -208,6 +203,7 @@ class Instantiation {
           const f = this.body(row.f, local), uses = runtimeUses(f);
           return { ...row, p: this.preserveQuantities ? p : p.map(pattern => promotePattern(pattern, uses)), f };
         }) };
+      default: return this.term(body, environment);
     }
   }
 }

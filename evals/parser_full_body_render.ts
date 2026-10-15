@@ -16,7 +16,7 @@ export type BodyRenderContext = Readonly<{
 }>;
 export type BodyRenderOptions = Readonly<{
   /** Return the terminal expression (possibly multiline), not its indentation. */
-  emitReply?: (term: LTerm, context: BodyRenderContext) => string;
+  emitTerminal?: (term: LTerm, context: BodyRenderContext) => string;
   /** Receives an alpha-renamed, private AST, safe for alias remapping. */
   showTerm?: (term: LTerm, boundNames: string[], precedence: number) => string;
   types?: Pick<LexicalTypes, "environmentAt">;
@@ -30,7 +30,7 @@ export type RenderedBody = Readonly<{
   binderMap: ReadonlyMap<number, string>;
   /** Source binder identities to their declaration-wide printable names. */
   printedBinders: ReadonlyMap<number, string>;
-  /** Render in the helper parameter scope. Reply hooks get their local scope. */
+  /** Render in the helper parameter scope. Terminal hooks get their local scope. */
   renderTerm: (term: LTerm, extraBindings?: ReadonlyMap<number, string>) => string;
 }>;
 
@@ -81,7 +81,7 @@ export function renderBody(body: Body, parameters: readonly ParserParameter[], o
       case "Sub": {
         // Sub is an alias, not a printed declaration. Resolve it before printing:
         // term_show intentionally elides this node and would otherwise lose its RHS.
-        const value = term.v.$ === "PVar" || term.v.$ === "PCtr" ? patt_term(term.v) : term.v;
+        const value = patt_term(term.v);
         const inner = new Map(scope); inner.set(term.i, { name: "", index: -1, value: { term: value, scope } });
         return alpha(term.f, inner, names);
       }
@@ -95,7 +95,7 @@ export function renderBody(body: Body, parameters: readonly ParserParameter[], o
       case "Rwt": return { ...term, e: alpha(term.e, scope, names), p: alpha(term.p, scope, names), f: alpha(term.f, scope, names) };
       case "Ann": return { ...term, x: alpha(term.x, scope, names), T: alpha(term.T, scope, names) };
       case "Qua": return { ...term, q: { ...term.q } };
-      case "Ref": case "Qnt": case "Efq": case "Rfl": case "Hol": return { ...term };
+      case "Ref": case "Lit": case "Qnt": case "Efq": case "Rfl": case "Hol": return { ...term };
       default: return unreachable(term);
     }
   }
@@ -122,29 +122,24 @@ export function renderBody(body: Body, parameters: readonly ParserParameter[], o
   function patterns(patterns: readonly Patt[], scope: Scope, names: readonly string[]): { text: string[]; scope: Scope; names: string[] } {
     let inner = scope, bound = [...names];
     const printNames: string[] = [];
-    function visit(pattern: Patt): LTerm {
-      if (pattern.$ === "PCtr") return { $: "Ctr", k: pattern.k, x: pattern.x.map(visit), s: pattern.s };
+    function visit(pattern: Patt, successorTail = false): LTerm {
+      if (pattern.$ === "PCtr") return { $: "Ctr", k: pattern.k,
+        x: pattern.x.map((child, index) => visit(child, pattern.k === "Succ" && index === 0)), s: pattern.s };
       const name = nameOf(pattern.i, pattern.k);
       [inner, bound] = bind(inner, bound, pattern.i, pattern.k);
       // Quantity markings belong to the pattern spelling, not its bound name.
-      const marked = quant_show(pattern.q) + name;
+      // Keep the successor '+' and a quantity marker as separate tokens.
+      const marked = (successorTail && pattern.q.$ !== "Lone" ? " " : "")
+        + quant_show(pattern.q) + name;
       let index = printNames.indexOf(marked);
       if (index < 0) { index = printNames.length; printNames.push(marked); }
       return { $: "Var", k: marked, i: index, s: pattern.s };
     }
-    const terms = patterns.map(visit);
+    const terms = patterns.map(pattern => visit(pattern));
     return { text: terms.map(term => show(term, [...printNames], -1)), scope: inner, names: bound };
   }
   function visit(node: Body, scope: Scope, names: readonly string[], prefix: string): string {
     switch (node.$) {
-      case "Reply": {
-        const context: BodyRenderContext = {
-          binderMap: binderMap(scope), renderTerm: (term, extraBindings) => renderExtended(term, scope, names, extraBindings),
-          ...(options.types ? { environment: options.types.environmentAt(node.x) } : {}),
-        };
-        const expression = options.emitReply ? options.emitReply(node.x, context) : context.renderTerm(node.x);
-        return expression.split("\n").map(line => prefix + line).join("\n");
-      }
       case "Local": {
         const values = node.v.map(value => renderTerm(value, scope, names, 1));
         const bound = patterns(node.k, scope, names);
@@ -161,7 +156,14 @@ export function renderBody(body: Body, parameters: readonly ParserParameter[], o
         });
         return prefix + "match " + scrutinees.join(", ") + ":\n" + rows.join("\n");
       }
-      default: return unreachable(node);
+      default: {
+        const context: BodyRenderContext = {
+          binderMap: binderMap(scope), renderTerm: (term, extraBindings) => renderExtended(term, scope, names, extraBindings),
+          ...(options.types ? { environment: options.types.environmentAt(node) } : {}),
+        };
+        const expression = options.emitTerminal ? options.emitTerminal(node, context) : context.renderTerm(node);
+        return expression.split("\n").map(line => prefix + line).join("\n");
+      }
     }
   }
   let scope: Scope = new Map(), names: string[] = [];

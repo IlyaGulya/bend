@@ -1,0 +1,1058 @@
+{
+  "schemaVersion": 1,
+  "sourceCheckpoint": "7d8ef4d4",
+  "sourceSha256": "7d8ef4d41a7e47be9855d07b71661c40b776581770bf90ec3691f03f0307e8c8",
+  "canonicalSha256": "de146db91303ed40dd0f7a32004631b873cc1af66b1df08aeb88fa250af140a9",
+  "factoredSha256": "7d8ef4d41a7e47be9855d07b71661c40b776581770bf90ec3691f03f0307e8c8",
+  "currentGraphSha256": "2f91cb4fd77be711d947bf4e3e23376a2c66b5690a582f0688819a943fc951ec",
+  "graphPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-parser-rebuild-release237-v67.graph.json",
+  "factoredPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_parser_rebuild_release237-v67_source.bend",
+  "historicalPath": "bend2/selfhost/parser_full_cut.json",
+  "historicalCutSha256": "dafe1bdbc61510d2bed36b85d782dfaaf4c1975a7aa32b52ebf3e0ee5afdfd0f",
+  "historicalSourceCheckpoint": "0d0e204f",
+  "historicalSourceSha256": "0009070688f8fffffbb8664e72bd4662bf1324675ba097297076d77939153df5",
+  "historicalSelected": [
+    "parse_atom_scan",
+    "parse_body_scan",
+    "parse_case_row_indented",
+    "parse_def_binders_scan",
+    "parse_do_typed_bind",
+    "parse_imports_result",
+    "parse_law_clause_condition_scan",
+    "parse_local_values_next",
+    "parse_match_chain_state",
+    "parse_term_args_first_result",
+    "parse_term_tail",
+    "parse_terms_until_colon_result",
+    "parse_top_result",
+    "parse_type_constructor_fields_result"
+  ],
+  "selected": [
+    "parse_atom_scan",
+    "parse_body_scan",
+    "parse_case_row_indented",
+    "parse_do_typed_bind",
+    "parse_local_values_next",
+    "parse_match_chain_state",
+    "parse_term_args_first_result",
+    "parse_term_tail",
+    "parse_terms_until_colon_result"
+  ],
+  "completeSelected": [
+    "consumed_token_end_before",
+    "literal_pattern_fields",
+    "nat_literal_tokens_next",
+    "parse_atom_scan",
+    "parse_body_scan",
+    "parse_case_row_indented",
+    "parse_def_binders_scan",
+    "parse_do_typed_bind",
+    "parse_imports_result",
+    "parse_law_clause_condition_scan",
+    "parse_local_values_next",
+    "parse_match_chain_state",
+    "parse_pattern_tuple",
+    "parse_term_args_first_result",
+    "parse_term_tail",
+    "parse_term_tail_at",
+    "parse_terms_until_colon_result",
+    "parse_top_result",
+    "parse_type_constructor_fields_result",
+    "pattern_scan"
+  ],
+  "newlySelected": [
+    "consumed_token_end_before",
+    "literal_pattern_fields",
+    "nat_literal_tokens_next",
+    "parse_pattern_tuple",
+    "parse_term_tail_at",
+    "pattern_scan"
+  ],
+  "algorithm": "Exact cycle-hitting branch-and-bound directed feedback vertex set; fixed historical vertices removed; ignore singleton self recursion; exhaust all equal-cardinality minima",
+  "tieBreak": "Lexicographically smallest sorted function-name vector among all minimum-cardinality solutions",
+  "minimumCardinality": 6,
+  "minimumSolutions": [
+    [
+      "consumed_token_end_before",
+      "literal_pattern_fields",
+      "nat_literal_tokens_next",
+      "parse_pattern_tuple",
+      "parse_term_tail_at",
+      "pattern_scan"
+    ],
+    [
+      "consumed_token_end_before",
+      "literal_pattern_fields",
+      "nat_literal_tokens_next",
+      "parse_term_tail_at",
+      "pattern_scan",
+      "pattern_tuple_delimiter"
+    ],
+    [
+      "consumed_token_end_before",
+      "literal_pattern_fields",
+      "nat_literal_tokens_next",
+      "parse_term_tail_at",
+      "pattern_scan",
+      "pattern_tuple_head_result"
+    ],
+    [
+      "consumed_token_end_before",
+      "literal_pattern_fields",
+      "nat_literal_tokens_value",
+      "parse_pattern_tuple",
+      "parse_term_tail_at",
+      "pattern_scan"
+    ],
+    [
+      "consumed_token_end_before",
+      "literal_pattern_fields",
+      "nat_literal_tokens_value",
+      "parse_term_tail_at",
+      "pattern_scan",
+      "pattern_tuple_delimiter"
+    ],
+    [
+      "consumed_token_end_before",
+      "literal_pattern_fields",
+      "nat_literal_tokens_value",
+      "parse_term_tail_at",
+      "pattern_scan",
+      "pattern_tuple_head_result"
+    ],
+    [
+      "consumed_token_end_step",
+      "literal_pattern_fields",
+      "nat_literal_tokens_next",
+      "parse_pattern_tuple",
+      "parse_term_tail_at",
+      "pattern_scan"
+    ],
+    [
+      "consumed_token_end_step",
+      "literal_pattern_fields",
+      "nat_literal_tokens_next",
+      "parse_term_tail_at",
+      "pattern_scan",
+      "pattern_tuple_delimiter"
+    ],
+    [
+      "consumed_token_end_step",
+      "literal_pattern_fields",
+      "nat_literal_tokens_next",
+      "parse_term_tail_at",
+      "pattern_scan",
+      "pattern_tuple_head_result"
+    ],
+    [
+      "consumed_token_end_step",
+      "literal_pattern_fields",
+      "nat_literal_tokens_value",
+      "parse_pattern_tuple",
+      "parse_term_tail_at",
+      "pattern_scan"
+    ],
+    [
+      "consumed_token_end_step",
+      "literal_pattern_fields",
+      "nat_literal_tokens_value",
+      "parse_term_tail_at",
+      "pattern_scan",
+      "pattern_tuple_delimiter"
+    ],
+    [
+      "consumed_token_end_step",
+      "literal_pattern_fields",
+      "nat_literal_tokens_value",
+      "parse_term_tail_at",
+      "pattern_scan",
+      "pattern_tuple_head_result"
+    ]
+  ],
+  "residualSCCs": [
+    [
+      "consumed_token_end_before",
+      "consumed_token_end_step"
+    ],
+    [
+      "evaluation_context_parse_application_args_result_241742",
+      "index_result_branch_0",
+      "index_result_run",
+      "pair_application",
+      "pair_application_result",
+      "parse_application_applied_result",
+      "parse_application_args_result",
+      "parse_bang_call",
+      "parse_comparison_operator",
+      "parse_glued_operator",
+      "parse_index_after_close",
+      "parse_index_result",
+      "parse_index_set_token",
+      "parse_index_tail",
+      "parse_less_named",
+      "parse_less_or_adt",
+      "parse_less_or_adt_args",
+      "parse_less_or_adt_nested",
+      "parse_less_or_adt_precedence",
+      "parse_less_right",
+      "parse_less_right_tokens",
+      "parse_min_operator",
+      "parse_min_precedence",
+      "parse_operator",
+      "parse_operator_precedence",
+      "parse_operator_right",
+      "parse_operator_right_precedence",
+      "parse_pair_operator",
+      "parse_pair_operator_consumed",
+      "parse_pair_operator_precedence",
+      "parse_pair_operator_result",
+      "parse_pair_quantity",
+      "parse_spaced_operator",
+      "parse_term",
+      "parse_term_args",
+      "parse_term_args_first",
+      "parse_term_args_tokens",
+      "parse_term_atom_result",
+      "parse_term_tail_after_line",
+      "parse_term_tail_at"
+    ],
+    [
+      "literal_pattern",
+      "literal_pattern_field",
+      "literal_pattern_fields",
+      "literal_pattern_tree"
+    ],
+    [
+      "nat_literal_tokens",
+      "nat_literal_tokens_next",
+      "nat_literal_tokens_plus",
+      "nat_literal_tokens_suffix",
+      "nat_literal_tokens_value"
+    ],
+    [
+      "parse_pattern_atom",
+      "parse_pattern_tuple",
+      "pattern_cons_result",
+      "pattern_finish",
+      "pattern_group_result",
+      "pattern_literal_finish",
+      "pattern_literal_result",
+      "pattern_nat_adjacent",
+      "pattern_nat_after",
+      "pattern_nat_read",
+      "pattern_nat_tail_allowed",
+      "pattern_nat_tail_result",
+      "pattern_number_start",
+      "pattern_scan",
+      "pattern_scan_completed_fields",
+      "pattern_scan_completed_step",
+      "pattern_scan_empty_step",
+      "pattern_scan_expect_run",
+      "pattern_scan_expect_step",
+      "pattern_scan_row_0",
+      "pattern_scan_row_1",
+      "pattern_scan_row_10",
+      "pattern_scan_row_13",
+      "pattern_scan_row_14",
+      "pattern_scan_row_15",
+      "pattern_scan_row_16",
+      "pattern_scan_row_17",
+      "pattern_scan_row_18",
+      "pattern_scan_row_19",
+      "pattern_scan_row_2",
+      "pattern_scan_row_20",
+      "pattern_scan_row_21",
+      "pattern_scan_row_22",
+      "pattern_scan_row_23",
+      "pattern_scan_row_24",
+      "pattern_scan_row_25",
+      "pattern_scan_row_26",
+      "pattern_scan_row_3",
+      "pattern_scan_row_4",
+      "pattern_scan_row_5",
+      "pattern_scan_row_6",
+      "pattern_scan_row_7",
+      "pattern_scan_row_8",
+      "pattern_scan_row_9",
+      "pattern_scan_token_step",
+      "pattern_tuple_delimiter",
+      "pattern_tuple_head_result"
+    ]
+  ],
+  "candidateAdditionalVertices": [
+    "consumed_token_end_before",
+    "consumed_token_end_step",
+    "literal_pattern",
+    "literal_pattern_field",
+    "literal_pattern_fields",
+    "literal_pattern_tree",
+    "nat_literal_tokens",
+    "nat_literal_tokens_next",
+    "nat_literal_tokens_plus",
+    "nat_literal_tokens_suffix",
+    "nat_literal_tokens_value",
+    "pair_application",
+    "pair_application_result",
+    "parse_application_applied_result",
+    "parse_application_args_result",
+    "parse_bang_call",
+    "parse_comparison_operator",
+    "parse_glued_operator",
+    "parse_index_after_close",
+    "parse_index_result",
+    "parse_index_set_token",
+    "parse_index_tail",
+    "parse_less_named",
+    "parse_less_or_adt",
+    "parse_less_or_adt_args",
+    "parse_less_or_adt_nested",
+    "parse_less_or_adt_precedence",
+    "parse_less_right",
+    "parse_less_right_tokens",
+    "parse_min_operator",
+    "parse_min_precedence",
+    "parse_operator",
+    "parse_operator_precedence",
+    "parse_operator_right",
+    "parse_operator_right_precedence",
+    "parse_pair_operator",
+    "parse_pair_operator_consumed",
+    "parse_pair_operator_precedence",
+    "parse_pair_operator_result",
+    "parse_pair_quantity",
+    "parse_pattern_atom",
+    "parse_pattern_tuple",
+    "parse_spaced_operator",
+    "parse_term",
+    "parse_term_args",
+    "parse_term_args_first",
+    "parse_term_args_tokens",
+    "parse_term_atom_result",
+    "parse_term_tail_after_line",
+    "parse_term_tail_at",
+    "pattern_cons_result",
+    "pattern_finish",
+    "pattern_group_result",
+    "pattern_literal_finish",
+    "pattern_literal_result",
+    "pattern_nat_adjacent",
+    "pattern_nat_after",
+    "pattern_nat_read",
+    "pattern_nat_tail_allowed",
+    "pattern_nat_tail_result",
+    "pattern_number_start",
+    "pattern_scan",
+    "pattern_tuple_delimiter",
+    "pattern_tuple_head_result"
+  ],
+  "residualEdges": {
+    "consumed_token_end_before": [
+      "consumed_token_end_step"
+    ],
+    "consumed_token_end_step": [
+      "consumed_token_end_before"
+    ],
+    "evaluation_context_parse_application_args_result_241742": [
+      "parse_application_applied_result"
+    ],
+    "index_result_branch_0": [
+      "parse_index_after_close"
+    ],
+    "index_result_run": [
+      "index_result_branch_0"
+    ],
+    "pair_application": [
+      "pair_application_result"
+    ],
+    "pair_application_result": [
+      "parse_term_tail_at"
+    ],
+    "parse_application_applied_result": [
+      "parse_term_tail_at"
+    ],
+    "parse_application_args_result": [
+      "evaluation_context_parse_application_args_result_241742"
+    ],
+    "parse_bang_call": [
+      "parse_application_args_result",
+      "parse_term_args"
+    ],
+    "parse_comparison_operator": [
+      "parse_operator"
+    ],
+    "parse_glued_operator": [
+      "parse_operator"
+    ],
+    "parse_index_after_close": [
+      "parse_index_set_token"
+    ],
+    "parse_index_result": [
+      "index_result_run"
+    ],
+    "parse_index_set_token": [
+      "parse_term"
+    ],
+    "parse_index_tail": [
+      "parse_index_result",
+      "parse_term"
+    ],
+    "parse_less_named": [
+      "parse_term_args"
+    ],
+    "parse_less_or_adt": [
+      "parse_less_or_adt_precedence"
+    ],
+    "parse_less_or_adt_args": [
+      "parse_less_right",
+      "parse_term"
+    ],
+    "parse_less_or_adt_nested": [
+      "parse_less_or_adt_args"
+    ],
+    "parse_less_or_adt_precedence": [
+      "parse_less_or_adt_args",
+      "parse_less_or_adt_nested"
+    ],
+    "parse_less_right": [
+      "parse_less_right_tokens"
+    ],
+    "parse_less_right_tokens": [
+      "parse_less_named"
+    ],
+    "parse_min_operator": [
+      "parse_min_precedence"
+    ],
+    "parse_min_precedence": [
+      "parse_term"
+    ],
+    "parse_operator": [
+      "parse_operator_precedence"
+    ],
+    "parse_operator_precedence": [
+      "parse_term"
+    ],
+    "parse_operator_right": [
+      "parse_operator_right_precedence"
+    ],
+    "parse_operator_right_precedence": [
+      "parse_term"
+    ],
+    "parse_pair_operator": [
+      "parse_pair_operator_precedence"
+    ],
+    "parse_pair_operator_consumed": [
+      "pair_application",
+      "parse_pair_quantity"
+    ],
+    "parse_pair_operator_precedence": [
+      "parse_pair_operator_result",
+      "parse_term"
+    ],
+    "parse_pair_operator_result": [
+      "parse_pair_operator_consumed"
+    ],
+    "parse_pair_quantity": [
+      "pair_application",
+      "parse_term_tail_at"
+    ],
+    "parse_spaced_operator": [
+      "parse_operator"
+    ],
+    "parse_term": [
+      "parse_term_atom_result"
+    ],
+    "parse_term_args": [
+      "parse_term_args_tokens"
+    ],
+    "parse_term_args_first": [
+      "parse_term"
+    ],
+    "parse_term_args_tokens": [
+      "parse_term_args_first"
+    ],
+    "parse_term_atom_result": [
+      "parse_term_tail_at"
+    ],
+    "parse_term_tail_after_line": [
+      "parse_term_tail_at"
+    ],
+    "parse_term_tail_at": [
+      "parse_application_args_result",
+      "parse_bang_call",
+      "parse_comparison_operator",
+      "parse_glued_operator",
+      "parse_index_tail",
+      "parse_less_or_adt",
+      "parse_min_operator",
+      "parse_operator",
+      "parse_operator_right",
+      "parse_pair_operator",
+      "parse_spaced_operator",
+      "parse_term",
+      "parse_term_args",
+      "parse_term_tail_after_line"
+    ],
+    "literal_pattern": [
+      "literal_pattern_tree"
+    ],
+    "literal_pattern_field": [
+      "literal_pattern_fields"
+    ],
+    "literal_pattern_fields": [
+      "literal_pattern",
+      "literal_pattern_field"
+    ],
+    "literal_pattern_tree": [
+      "literal_pattern_fields"
+    ],
+    "nat_literal_tokens": [
+      "nat_literal_tokens",
+      "nat_literal_tokens_suffix"
+    ],
+    "nat_literal_tokens_next": [
+      "nat_literal_tokens_plus",
+      "nat_literal_tokens_value"
+    ],
+    "nat_literal_tokens_plus": [
+      "nat_literal_tokens"
+    ],
+    "nat_literal_tokens_suffix": [
+      "nat_literal_tokens_value"
+    ],
+    "nat_literal_tokens_value": [
+      "nat_literal_tokens_next"
+    ],
+    "parse_pattern_atom": [
+      "pattern_scan"
+    ],
+    "parse_pattern_tuple": [
+      "parse_pattern_atom",
+      "pattern_tuple_head_result"
+    ],
+    "pattern_cons_result": [
+      "pattern_finish",
+      "pattern_scan"
+    ],
+    "pattern_finish": [
+      "pattern_scan"
+    ],
+    "pattern_group_result": [
+      "pattern_finish",
+      "pattern_scan"
+    ],
+    "pattern_literal_finish": [
+      "pattern_finish",
+      "pattern_scan"
+    ],
+    "pattern_literal_result": [
+      "literal_pattern",
+      "pattern_finish",
+      "pattern_literal_finish"
+    ],
+    "pattern_nat_adjacent": [
+      "pattern_nat_tail_allowed",
+      "pattern_scan"
+    ],
+    "pattern_nat_after": [
+      "pattern_nat_adjacent",
+      "pattern_scan"
+    ],
+    "pattern_nat_read": [
+      "pattern_finish",
+      "pattern_nat_after"
+    ],
+    "pattern_nat_tail_allowed": [
+      "parse_pattern_atom",
+      "pattern_finish",
+      "pattern_nat_tail_result"
+    ],
+    "pattern_nat_tail_result": [
+      "pattern_finish",
+      "pattern_scan"
+    ],
+    "pattern_number_start": [
+      "pattern_nat_read",
+      "pattern_scan"
+    ],
+    "pattern_scan": [
+      "pattern_scan_empty_step",
+      "pattern_scan_token_step"
+    ],
+    "pattern_scan_completed_fields": [
+      "pattern_scan_row_16",
+      "pattern_scan_row_17",
+      "pattern_scan_row_18",
+      "pattern_scan_row_19",
+      "pattern_scan_row_20",
+      "pattern_scan_row_21",
+      "pattern_scan_row_22",
+      "pattern_scan_row_23",
+      "pattern_scan_row_24",
+      "pattern_scan_row_25"
+    ],
+    "pattern_scan_completed_step": [
+      "pattern_scan_completed_fields"
+    ],
+    "pattern_scan_empty_step": [
+      "pattern_finish"
+    ],
+    "pattern_scan_expect_run": [
+      "pattern_scan_row_0",
+      "pattern_scan_row_1",
+      "pattern_scan_row_10",
+      "pattern_scan_row_13",
+      "pattern_scan_row_14",
+      "pattern_scan_row_15",
+      "pattern_scan_row_2",
+      "pattern_scan_row_26",
+      "pattern_scan_row_3",
+      "pattern_scan_row_4",
+      "pattern_scan_row_5",
+      "pattern_scan_row_6",
+      "pattern_scan_row_7",
+      "pattern_scan_row_8",
+      "pattern_scan_row_9"
+    ],
+    "pattern_scan_expect_step": [
+      "pattern_scan_expect_run"
+    ],
+    "pattern_scan_row_0": [
+      "parse_pattern_tuple",
+      "pattern_group_result"
+    ],
+    "pattern_scan_row_1": [
+      "pattern_scan"
+    ],
+    "pattern_scan_row_10": [
+      "pattern_number_start"
+    ],
+    "pattern_scan_row_13": [
+      "pattern_scan"
+    ],
+    "pattern_scan_row_14": [
+      "pattern_finish",
+      "pattern_scan"
+    ],
+    "pattern_scan_row_15": [
+      "pattern_finish",
+      "pattern_scan"
+    ],
+    "pattern_scan_row_16": [
+      "parse_pattern_atom",
+      "pattern_cons_result"
+    ],
+    "pattern_scan_row_17": [
+      "pattern_scan"
+    ],
+    "pattern_scan_row_18": [
+      "pattern_finish"
+    ],
+    "pattern_scan_row_19": [
+      "pattern_finish",
+      "pattern_scan"
+    ],
+    "pattern_scan_row_2": [
+      "pattern_literal_result"
+    ],
+    "pattern_scan_row_20": [
+      "pattern_finish",
+      "pattern_scan"
+    ],
+    "pattern_scan_row_21": [
+      "pattern_scan"
+    ],
+    "pattern_scan_row_22": [
+      "pattern_finish",
+      "pattern_scan"
+    ],
+    "pattern_scan_row_23": [
+      "pattern_finish",
+      "pattern_scan"
+    ],
+    "pattern_scan_row_24": [
+      "pattern_finish",
+      "pattern_scan"
+    ],
+    "pattern_scan_row_25": [
+      "pattern_finish"
+    ],
+    "pattern_scan_row_26": [
+      "pattern_finish"
+    ],
+    "pattern_scan_row_3": [
+      "pattern_literal_result"
+    ],
+    "pattern_scan_row_4": [
+      "pattern_scan"
+    ],
+    "pattern_scan_row_5": [
+      "pattern_finish"
+    ],
+    "pattern_scan_row_6": [
+      "pattern_scan"
+    ],
+    "pattern_scan_row_7": [
+      "pattern_scan"
+    ],
+    "pattern_scan_row_8": [
+      "pattern_scan"
+    ],
+    "pattern_scan_row_9": [
+      "pattern_scan"
+    ],
+    "pattern_scan_token_step": [
+      "pattern_finish",
+      "pattern_scan_completed_step",
+      "pattern_scan_expect_step"
+    ],
+    "pattern_tuple_delimiter": [
+      "parse_pattern_tuple"
+    ],
+    "pattern_tuple_head_result": [
+      "pattern_tuple_delimiter"
+    ]
+  },
+  "remainingMutualSCCs": [],
+  "statesExamined": 18084,
+  "seedSemantics": "Remove fixed selected vertices from source dependency graph: calls to those source functions become feedback boundaries",
+  "unresolvedReferences": [],
+  "selectionStatus": "PROPOSED_NOT_APPLIED",
+  "candidatePolicy": "Only original canonical source functions are selectable; factored helper vertices are graph facts, not cut candidates",
+  "perComponent": [
+    {
+      "vertices": [
+        "consumed_token_end_before",
+        "consumed_token_end_step"
+      ],
+      "candidateSourceVertices": [
+        "consumed_token_end_before",
+        "consumed_token_end_step"
+      ],
+      "minimumCardinality": 1,
+      "minimumSolutions": [
+        [
+          "consumed_token_end_before"
+        ],
+        [
+          "consumed_token_end_step"
+        ]
+      ],
+      "cycleWitness": [
+        "consumed_token_end_before",
+        "consumed_token_end_step"
+      ]
+    },
+    {
+      "vertices": [
+        "evaluation_context_parse_application_args_result_241742",
+        "index_result_branch_0",
+        "index_result_run",
+        "pair_application",
+        "pair_application_result",
+        "parse_application_applied_result",
+        "parse_application_args_result",
+        "parse_bang_call",
+        "parse_comparison_operator",
+        "parse_glued_operator",
+        "parse_index_after_close",
+        "parse_index_result",
+        "parse_index_set_token",
+        "parse_index_tail",
+        "parse_less_named",
+        "parse_less_or_adt",
+        "parse_less_or_adt_args",
+        "parse_less_or_adt_nested",
+        "parse_less_or_adt_precedence",
+        "parse_less_right",
+        "parse_less_right_tokens",
+        "parse_min_operator",
+        "parse_min_precedence",
+        "parse_operator",
+        "parse_operator_precedence",
+        "parse_operator_right",
+        "parse_operator_right_precedence",
+        "parse_pair_operator",
+        "parse_pair_operator_consumed",
+        "parse_pair_operator_precedence",
+        "parse_pair_operator_result",
+        "parse_pair_quantity",
+        "parse_spaced_operator",
+        "parse_term",
+        "parse_term_args",
+        "parse_term_args_first",
+        "parse_term_args_tokens",
+        "parse_term_atom_result",
+        "parse_term_tail_after_line",
+        "parse_term_tail_at"
+      ],
+      "candidateSourceVertices": [
+        "pair_application",
+        "pair_application_result",
+        "parse_application_applied_result",
+        "parse_application_args_result",
+        "parse_bang_call",
+        "parse_comparison_operator",
+        "parse_glued_operator",
+        "parse_index_after_close",
+        "parse_index_result",
+        "parse_index_set_token",
+        "parse_index_tail",
+        "parse_less_named",
+        "parse_less_or_adt",
+        "parse_less_or_adt_args",
+        "parse_less_or_adt_nested",
+        "parse_less_or_adt_precedence",
+        "parse_less_right",
+        "parse_less_right_tokens",
+        "parse_min_operator",
+        "parse_min_precedence",
+        "parse_operator",
+        "parse_operator_precedence",
+        "parse_operator_right",
+        "parse_operator_right_precedence",
+        "parse_pair_operator",
+        "parse_pair_operator_consumed",
+        "parse_pair_operator_precedence",
+        "parse_pair_operator_result",
+        "parse_pair_quantity",
+        "parse_spaced_operator",
+        "parse_term",
+        "parse_term_args",
+        "parse_term_args_first",
+        "parse_term_args_tokens",
+        "parse_term_atom_result",
+        "parse_term_tail_after_line",
+        "parse_term_tail_at"
+      ],
+      "minimumCardinality": 1,
+      "minimumSolutions": [
+        [
+          "parse_term_tail_at"
+        ]
+      ],
+      "cycleWitness": [
+        "evaluation_context_parse_application_args_result_241742",
+        "parse_application_applied_result",
+        "parse_term_tail_at",
+        "parse_application_args_result"
+      ]
+    },
+    {
+      "vertices": [
+        "literal_pattern",
+        "literal_pattern_field",
+        "literal_pattern_fields",
+        "literal_pattern_tree"
+      ],
+      "candidateSourceVertices": [
+        "literal_pattern",
+        "literal_pattern_field",
+        "literal_pattern_fields",
+        "literal_pattern_tree"
+      ],
+      "minimumCardinality": 1,
+      "minimumSolutions": [
+        [
+          "literal_pattern_fields"
+        ]
+      ],
+      "cycleWitness": [
+        "literal_pattern",
+        "literal_pattern_tree",
+        "literal_pattern_fields"
+      ]
+    },
+    {
+      "vertices": [
+        "nat_literal_tokens",
+        "nat_literal_tokens_next",
+        "nat_literal_tokens_plus",
+        "nat_literal_tokens_suffix",
+        "nat_literal_tokens_value"
+      ],
+      "candidateSourceVertices": [
+        "nat_literal_tokens",
+        "nat_literal_tokens_next",
+        "nat_literal_tokens_plus",
+        "nat_literal_tokens_suffix",
+        "nat_literal_tokens_value"
+      ],
+      "minimumCardinality": 1,
+      "minimumSolutions": [
+        [
+          "nat_literal_tokens_next"
+        ],
+        [
+          "nat_literal_tokens_value"
+        ]
+      ],
+      "cycleWitness": [
+        "nat_literal_tokens",
+        "nat_literal_tokens_suffix",
+        "nat_literal_tokens_value",
+        "nat_literal_tokens_next",
+        "nat_literal_tokens_plus"
+      ]
+    },
+    {
+      "vertices": [
+        "parse_pattern_atom",
+        "parse_pattern_tuple",
+        "pattern_cons_result",
+        "pattern_finish",
+        "pattern_group_result",
+        "pattern_literal_finish",
+        "pattern_literal_result",
+        "pattern_nat_adjacent",
+        "pattern_nat_after",
+        "pattern_nat_read",
+        "pattern_nat_tail_allowed",
+        "pattern_nat_tail_result",
+        "pattern_number_start",
+        "pattern_scan",
+        "pattern_scan_completed_fields",
+        "pattern_scan_completed_step",
+        "pattern_scan_empty_step",
+        "pattern_scan_expect_run",
+        "pattern_scan_expect_step",
+        "pattern_scan_row_0",
+        "pattern_scan_row_1",
+        "pattern_scan_row_10",
+        "pattern_scan_row_13",
+        "pattern_scan_row_14",
+        "pattern_scan_row_15",
+        "pattern_scan_row_16",
+        "pattern_scan_row_17",
+        "pattern_scan_row_18",
+        "pattern_scan_row_19",
+        "pattern_scan_row_2",
+        "pattern_scan_row_20",
+        "pattern_scan_row_21",
+        "pattern_scan_row_22",
+        "pattern_scan_row_23",
+        "pattern_scan_row_24",
+        "pattern_scan_row_25",
+        "pattern_scan_row_26",
+        "pattern_scan_row_3",
+        "pattern_scan_row_4",
+        "pattern_scan_row_5",
+        "pattern_scan_row_6",
+        "pattern_scan_row_7",
+        "pattern_scan_row_8",
+        "pattern_scan_row_9",
+        "pattern_scan_token_step",
+        "pattern_tuple_delimiter",
+        "pattern_tuple_head_result"
+      ],
+      "candidateSourceVertices": [
+        "parse_pattern_atom",
+        "parse_pattern_tuple",
+        "pattern_cons_result",
+        "pattern_finish",
+        "pattern_group_result",
+        "pattern_literal_finish",
+        "pattern_literal_result",
+        "pattern_nat_adjacent",
+        "pattern_nat_after",
+        "pattern_nat_read",
+        "pattern_nat_tail_allowed",
+        "pattern_nat_tail_result",
+        "pattern_number_start",
+        "pattern_scan",
+        "pattern_tuple_delimiter",
+        "pattern_tuple_head_result"
+      ],
+      "minimumCardinality": 2,
+      "minimumSolutions": [
+        [
+          "parse_pattern_tuple",
+          "pattern_scan"
+        ],
+        [
+          "pattern_scan",
+          "pattern_tuple_delimiter"
+        ],
+        [
+          "pattern_scan",
+          "pattern_tuple_head_result"
+        ]
+      ],
+      "cycleWitness": [
+        "parse_pattern_atom",
+        "pattern_scan",
+        "pattern_scan_token_step",
+        "pattern_scan_completed_step",
+        "pattern_scan_completed_fields",
+        "pattern_scan_row_16"
+      ]
+    }
+  ],
+  "patternScanOnlyResidualSCCs": [
+    [
+      "consumed_token_end_before",
+      "consumed_token_end_step"
+    ],
+    [
+      "evaluation_context_parse_application_args_result_241742",
+      "index_result_branch_0",
+      "index_result_run",
+      "pair_application",
+      "pair_application_result",
+      "parse_application_applied_result",
+      "parse_application_args_result",
+      "parse_bang_call",
+      "parse_comparison_operator",
+      "parse_glued_operator",
+      "parse_index_after_close",
+      "parse_index_result",
+      "parse_index_set_token",
+      "parse_index_tail",
+      "parse_less_named",
+      "parse_less_or_adt",
+      "parse_less_or_adt_args",
+      "parse_less_or_adt_nested",
+      "parse_less_or_adt_precedence",
+      "parse_less_right",
+      "parse_less_right_tokens",
+      "parse_min_operator",
+      "parse_min_precedence",
+      "parse_operator",
+      "parse_operator_precedence",
+      "parse_operator_right",
+      "parse_operator_right_precedence",
+      "parse_pair_operator",
+      "parse_pair_operator_consumed",
+      "parse_pair_operator_precedence",
+      "parse_pair_operator_result",
+      "parse_pair_quantity",
+      "parse_spaced_operator",
+      "parse_term",
+      "parse_term_args",
+      "parse_term_args_first",
+      "parse_term_args_tokens",
+      "parse_term_atom_result",
+      "parse_term_tail_after_line",
+      "parse_term_tail_at"
+    ],
+    [
+      "literal_pattern",
+      "literal_pattern_field",
+      "literal_pattern_fields",
+      "literal_pattern_tree"
+    ],
+    [
+      "nat_literal_tokens",
+      "nat_literal_tokens_next",
+      "nat_literal_tokens_plus",
+      "nat_literal_tokens_suffix",
+      "nat_literal_tokens_value"
+    ],
+    [
+      "parse_pattern_tuple",
+      "pattern_tuple_delimiter",
+      "pattern_tuple_head_result"
+    ]
+  ],
+  "graphKind": "capture-fixed-factored",
+  "graphSourceSha256": "7d8ef4d41a7e47be9855d07b71661c40b776581770bf90ec3691f03f0307e8c8"
+}
