@@ -3,6 +3,8 @@
 # exactly 256; a def whose parameters span past WIDE words takes its wide
 # ones boxed, so its segment fits FID_T (u8): sum4 takes 4 x 64
 # words and forks, so it is a segment, not a flat C helper (#944)
+# R4 has 257 words rounded to a 512-word node: its plain and padded
+# layouts must remain distinct. A runtime seed protects the final field offset.
 import Base
 
 type R0 is Data:
@@ -17,6 +19,9 @@ type R2 is Data:
 type R3 is Data:
   R3{a: R1, b: R1, c: R1, d: R1}
 
+type R4 is Data:
+  R4{a: R1, b: R1, c: R1, d: R1, last: U32}
+
 def r0(+x: U32) -> R0:
   R0{x, x, x, x, x, x, x, x}
 
@@ -28,6 +33,9 @@ def r2(+x: U32) -> R2:
 
 def r3(+x: U32) -> R3:
   R3{r1(x), r1(x), r1(x), r1(x)}
+
+def r4(+x: U32, last: U32) -> R4:
+  R4{r1(x), r1(x), r1(x), r1(x), last}
 
 def first0(x: R0) -> U32:
   match x:
@@ -49,14 +57,27 @@ def first3(x: R3) -> U32:
     case R3{a, b, c, d}:
       first1(d)
 
+def first4(x: R4) -> U32:
+  match x:
+    case R4{a, b, c, d, last}:
+      U32.add(first1(d), last)
+
+def padded_offset(+seed: U32) -> U32:
+  U32.sub(first4(r4(seed, 1000)), seed)
+
 def sum4(a: R1, b: R1, c: R1, d: R1) -> U32:
   x y = first1(a) first1(b)
   z w = first1(c) first1(d)
   U32.add(U32.add(x, y), U32.add(z, w))
 
-def main() -> U32:
+def main.out() -> U32:
   a = sum4(r1(1), r1(2), r1(3), r1(4))
   b = sum4(r1(5), r1(6), r1(7), r1(8))
   U32.add(U32.add(first2(r2(7)), first3(r3(70))), U32.add(a, b))
 
-#|113
+def main() -> IO(Unit):
+  do IO<Unit>:
+    seed : U32 <- IO.thread_count()
+    IO.print(U32.show(U32.add(main.out(), padded_offset(seed))))
+
+#|1113

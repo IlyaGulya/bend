@@ -1,0 +1,66 @@
+{
+  "status": "FAIL",
+  "mode": "run",
+  "boundary": {
+    "host": "trusted C file/import loader and serial affine LIFO continuation driver",
+    "sourceAlgorithms": "unchanged canonical Bend parser/expansion/checker/JS library emitter",
+    "hostChecking": false,
+    "hostParsing": false,
+    "embeddedSource": false,
+    "cachedAst": false,
+    "parserFuelRepresentation": "eager native 8M-cell chain per source; JS harness uses lazy cells for the same finite fuel; allocation time remains included in parse",
+    "fuelMemoryEvidence": "per-source native process RSS high-water before/after allocation (not isolated live-byte attribution); guardian samples whole-tree RSS and physical footprint including fuel",
+    "outputPatches": 0,
+    "checksExcluded": 0,
+    "nativeBinaryBootstrap": false
+  },
+  "startedAtUnixMs": 1792087283817,
+  "guard": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "failure": {
+    "phase": "guardian",
+    "diagnostic": "Error: /private/tmp/bend-v41-native.BNLFPt/checkpoints/native41-o0 failed: 1 null"
+  },
+  "lastProgress": {
+    "phase": "guardian",
+    "event": "failure",
+    "unixMs": 1792087286664,
+    "pid": 73179,
+    "worker": false,
+    "rssBytes": 210321408,
+    "heapUsedBytes": 89635022,
+    "cpuMs": 167.091,
+    "diagnostic": "Error: /private/tmp/bend-v41-native.BNLFPt/checkpoints/native41-o0 failed: 1 null"
+  },
+  "guardian": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "commandExitCode": 2,
+    "commandSignal": 0,
+    "peakRssBytes": 392839168,
+    "peakFootprintBytes": 273892696,
+    "elapsedMs": 2820,
+    "timeoutMs": 600000,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+      "--smol",
+      "/private/tmp/bend-v41-native.BNLFPt/evals/native_compiler_experiment.ts",
+      "--mode=run",
+      "--phase=check",
+      "--threads=1",
+      "--corpus=/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+      "--build=/private/tmp/bend-v41-native.BNLFPt/checkpoints/native41-o0-build.json",
+      "--report=/private/tmp/bend-v41-native.BNLFPt/checkpoints/native41-o0-check-a.json",
+      "--internal=run"
+    ],
+    "label": "Native CPU compiler run",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792087283845-d35790a9eb09c393.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  }
+}

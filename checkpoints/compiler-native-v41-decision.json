@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "version": "release237-v41-native",
+  "status": "BUILD_PASS_RUNTIME_FAIL_UNACCEPTED",
+  "bootstrapAcceptance": false,
+  "sourceBaseCommit": "0b31f1c60ebe1557278a12f4b71786bcdf1cbe34",
+  "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+  "nativeBuild": {
+    "report": "checkpoints/native41-o0-build.json",
+    "status": "PASS",
+    "checkedDefinitions": 8077,
+    "guardianMs": 241209,
+    "peakPhysicalBytes": 5038945920,
+    "peakRssBytes": 4069654528,
+    "cGenerationMs": 128904.6275,
+    "cUnitsUTF16": 83616842,
+    "clangMs": 106080,
+    "optimization": "-O0 explicit diagnostic tradeoff; not official -O3 flags"
+  },
+  "rejectedO3Build": {
+    "report": "checkpoints/native41-bounded-build.json",
+    "status": "RESOURCE_LIMIT",
+    "failedPhase": "clang",
+    "guardianMs": 583111,
+    "peakPhysicalBytes": 8608156712,
+    "cGenerationCompletedMs": 120678.651125
+  },
+  "runtime": {
+    "report": "checkpoints/native41-o0-check-a.json",
+    "status": "FAIL",
+    "result": "First source parse reaches runtime fail-stop; no check/compile speed claim",
+    "guardianMs": 2820,
+    "peakPhysicalBytes": 273892696,
+    "firstEagerFuelCells": 8000000,
+    "firstFuelBuildMs": 170.657
+  },
+  "debugEvidence": {
+    "code": "ERR_RFCS=6 (forbidden closure/task refcount wrapping, NOT reference-count overflow)",
+    "stack": ["err_post","rfc_wrap","term_keep","WL_FID____BEND2_SELFHOST_CORE_MAP_SYNTAX_TERMS","work_loop","corpus_eval","native_apply","native_visit","native_experiment_run","io_step"],
+    "rejectedTermHex": "03024a00040611cd",
+    "tag": 3,
+    "closureFunctionId": 586,
+    "captureLocationHex": "40611cd",
+    "sourceCause": "Existing @unsafe Core.map_syntax_terms(+f,terms) contracts a capture-bearing runtime closure. Base List.map uses template ~f instead. No runtime guard has been weakened."
+  },
+  "compilerRepairs": ["Canonicalize identical plain/padded immutable layouts and use identity instead of JSON serialization", "Release complete rebuildable C higher-body/constant/transient/telescope caches at safe top-level boundaries; retain all canonical e", "Default-off C observation through existing observe seam"],
+  "semanticRegressions": {"wide257To512":1113,"deepBoxed":2749,"runtimeThreads":4,"status":"PASS on actual built C binaries after bounded-cache repair"},
+  "executedBuild": "bun --smol evals/native_compiler_experiment.ts --mode=build --corpus=/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-v41.corpus.json --artifact=/private/tmp/bend-v41-native.BNLFPt/checkpoints/native41-o0 --report=/private/tmp/bend-v41-native.BNLFPt/checkpoints/native41-o0-build.json --cc-opt=0",
+  "executedRun": "bun --smol evals/native_compiler_experiment.ts --mode=run --phase=check --threads=1 --corpus=/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-v41.corpus.json --build=/private/tmp/bend-v41-native.BNLFPt/checkpoints/native41-o0-build.json --report=/private/tmp/bend-v41-native.BNLFPt/checkpoints/native41-o0-check-a.json",
+  "limits": {"memoryMiB":8192,"rssMiB":8192,"pollMs":10,"nativeOldMiB":3072,"workerStackMiB":256,"buildTimeoutMs":600000},
+  "checksExcluded": 0,
+  "generatedCPatches": 0,
+  "newUnsafeAnnotations": 0,
+  "newFixedpointRun": false
+}

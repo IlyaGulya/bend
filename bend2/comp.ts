@@ -137,6 +137,13 @@ export type JSOptions = {
     outputLines?: number;
     outputUTF16Units?: number;
     memos?: Record<string, number>;
+    retainedHigher?: number;
+    retainedTeles?: number;
+    segments?: number;
+    spins?: number;
+    ownFacts?: number;
+    hotFacts?: number;
+    staticFacts?: number;
   }) => void;
 };
 
@@ -1032,7 +1039,9 @@ function lay_el(A: HTerm | null): Lay {
     ? tele_unbind(tld.c[0].T).ret : A);
 }
 
-// Intern complete layouts by constructor names and already shared field layouts.
+// Intern complete layouts by constructor/field order and canonical field layouts.
+// Primitive layouts are singleton atoms; no-op padding shares the same object.
+// Thus identity is structural equality, without expanding a shared layout DAG.
 // Padding belongs to construction; no published layout is subsequently mutated.
 function lay_pack(arms: [Name, Lay[]][], padded = false): Lay {
   let pack = FL.packs;
@@ -1057,11 +1066,15 @@ function lay_pack(arms: [Name, Lay[]][], padded = false): Lay {
       }
     }
   }
+  const needsPadding = ks.length > WIDE && (ks.length & (ks.length - 1)) !== 0;
   while (padded && ks.length > WIDE && ks.length & (ks.length - 1)) {
     ks.push("w32");
   }
   const lay = { ks, arms: Object.fromEntries(arms) };
-  if (padded) {
+  if (!needsPadding) {
+    pack.plain = lay;
+    pack.padded = lay;
+  } else if (padded) {
     pack.padded = lay;
   } else {
     pack.plain = lay;
@@ -1076,10 +1089,6 @@ function pack_new(): Pack {
 function lay_node(k: Name): Lay {
   return memo(FL.nodes, k, () => lay_pack([[k, (FL.book.ctrs[k]
     ? ctr_doms(FL.book.ctrs[k]) : []).map(lay_of)]], true));
-}
-
-function lay_eq(a: Lay, b: Lay): boolean {
-  return a === b || JSON.stringify(a) === JSON.stringify(b);
 }
 
 function lay_c(k: Kind): string {
@@ -1493,6 +1502,13 @@ function file_observe(stage: string, k: Name, lines?: string[]): void {
     outputUTF16Units: lines?.reduce((n, line) => n + line.length, 0),
     memos: Object.fromEntries(Object.entries(FL.memo).map(([k, m]) =>
       [k, m.size])),
+    retainedHigher: FL.higher.size,
+    retainedTeles: FL.teles.size,
+    segments: FL.segs.length,
+    spins: FL.spins.length,
+    ownFacts: FL.own.size,
+    hotFacts: FL.hot.size,
+    staticFacts: FL.stat.size,
   });
 }
 
@@ -1516,8 +1532,18 @@ function file_higher(k: Name): HTerm | null {
   return h;
 }
 
+// No analysis/emission scope may still be active here. A C definition can
+// prepare many callees while it emits; their higher bodies and AST-identity
+// constant memo all belong to this finished scope, not to the checked book.
+// Literal images, layouts, signatures, dependency/ownership facts and emitted
+// segments remain valid. Every C release keeps the original checked e.
 function file_release(k: Name, final = false, lines?: string[]): void {
-  FL.higher.delete(k);
+  if (FL.js) {
+    FL.higher.delete(k);
+  } else {
+    FL.higher.clear();
+    FL.consts.clear();
+  }
   const tld = FL.book.tlds[k];
   if (FL.options.releaseChecked && final) {
     if (tld?.$ === "Def") {
@@ -1558,6 +1584,7 @@ function file_book(roots: Name[]): void {
       type_adts(x.T).forEach(src_add);
     }
     if (!done_live(tld)) {
+      if (!FL.js) file_release(d);
       continue;
     }
     const deps = new Set<Name>();
@@ -1589,9 +1616,7 @@ function file_book(roots: Name[]): void {
     });
     FL.srcs.set(d, flat ? deps : null);
     refs.forEach(src_add);
-    if (FL.js) {
-      file_release(d);
-    }
+    file_release(d);
   }
 }
 
@@ -1841,7 +1866,7 @@ function val_sink(sc: Scope, v: Val): void {
 }
 
 function val_to(sc: Scope, v: Val, lay: Lay): Val {
-  return lay_eq(v.lay, lay) ? v : lay === BOX ? val_new([val_box(sc, v)], BOX)
+  return v.lay === lay ? v : lay === BOX ? val_new([val_box(sc, v)], BOX)
     : v.lay === BOX ? val_unbox(sc, v, lay)
     : val_arms(sc, lay, v.ws[0], (k) => val_arm(v, k));
 }
@@ -2373,11 +2398,13 @@ function emit_native(sc: Scope, k: Name, ers: HTerm[]): string {
     const name = `spin_${FL.spun.size}`;
     FL.spun.set(key, name);
     const fuel = FUEL;
+    if (FL.options.observe) file_observe("c-spin-before", k);
     const [sl, vals] = emit_open(sc, k);
     const seg = sl.seg;
     seg.fid = name;
     const dst = val_new(seg.ret.ks.map((_, j) => `o[${j}]`), seg.ret);
     emit_body(sl, fun_of(k).h!, FL.book.tlds[k].T, ers, vals, dst);
+    if (FL.options.observe) file_observe("c-spin-after", k);
     FUEL = fuel;
     const body = [...seg_text(["u32 wpoll = 0;", ...seg.ks.flatMap((k, i) =>
       arr_q(k) ? [`Term h${i} = r${i};`] : []),
@@ -2700,7 +2727,7 @@ function emit_body(sc: Scope, tm: HTerm, ty0: HTerm | null,
       if (sc.seg.def !== ck.k && (flat_call(x) || (dst === null && once))) {
         return emit_fuse(sc, ck, dst, true);
       }
-      if (!lay_eq(sc.seg.ret, ret)
+      if (sc.seg.ret !== ret
         && (sc.seg.ret.arms !== null || ret.arms !== null)) {
         return emit_body(sc, Bend.Let(["r"], [0], [Bend.Ann(x, ty!)],
           (xs) => xs[0]), ty, ers, args, dst);
@@ -2946,17 +2973,24 @@ function effect_srcs(ext: string, miss: string): string[] {
 // host's twelfth slot, which keeps rax free for the tail call. WL_LOAD is a
 // ladder, as clang builds the phi cascade of a fallthrough switch in O(n^2).
 
-export function compile_book(book: Bend.Book): string {
-  FL = file_new(book, false);
+// observe is optional profiling only: preparation, reachability, fixedpoint
+// passes, definitions and native spins report cache/fact sizes without changing
+// roots, checked-body retention, scheduling or generated code.
+export function compile_book(book: Bend.Book,
+  options: Pick<JSOptions, "observe"> = {}): string {
+  FL = file_new(book, false, options);
   // a pure main's descriptor names constructors of the types it prints,
   // so their datatypes are roots too
   const show = show_main();
   const names = (show ?? []).filter((c) => typeof c === "string");
+  if (options.observe) file_observe("c-reachability-before", "main");
   file_book(["main", ...RUNTIME_ADTS,
     ...names.map((c) => Bend.book_fam(FL.book, c))]);
+  if (options.observe) file_observe("c-reachability-after", "main");
   const facts = () => FL.own.size + FL.hot.size + FL.stat.size;
-  let was: number;
+  let was: number, pass = 0;
   do {
+    if (options.observe) file_observe(`c-pass-${++pass}-before`, "main");
     was = facts();
     [FL.lend, FL.spun, FL.clos, FL.tabs, FL.lits, FL.consts, FL.brws]
       .forEach((m) => m.clear());
@@ -2965,7 +2999,7 @@ export function compile_book(book: Bend.Book): string {
     FL.img = [];
     for (const [k, tld] of [...done_defs().reverse(),
       ...done_defs(def_foreign)]) {
-      memo_gc();
+      if (options.observe) file_observe("c-definition-before", k);
       const [dl, vals] = emit_open(scope_new(), k);
       FL.segs.push(dl.seg);
       if (def_foreign(tld)) {
@@ -2974,6 +3008,8 @@ export function compile_book(book: Bend.Book): string {
       } else {
         emit_body(dl, fun_of(k).h!, tld.T, [], vals, null);
       }
+      if (options.observe) file_observe("c-definition-after", k);
+      file_release(k);
     }
     graph_close(FL.lend, [...FL.lend].flatMap((l) => {
       const [a, r] = l.split("<");
@@ -2984,6 +3020,7 @@ export function compile_book(book: Bend.Book): string {
         FL.own.add(k + "~" + i);
       }
     }));
+    if (options.observe) file_observe(`c-pass-${pass}-after`, "main");
   } while (was !== facts());
   const edges = [...FL.segs, ...FL.spins].flatMap((s) =>
     [...s.refs].map((r) => [s.fid, r]));
