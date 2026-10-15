@@ -5,6 +5,10 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- Compiler diagnostics compare the complete frozen source closure and the actual
+  unmodified official public export set, with phase timing, resource limits and
+  emitted-compiler smoke recorded separately from genuine bootstrap acceptance.
+
 - The complete selfhost parser/Template/Checker/JavaScript compiler root now
   reaches an exact stage-one/stage-two byte fixedpoint using its own emitted
   parser and compiler steps. Original semantic/error fixtures and additional

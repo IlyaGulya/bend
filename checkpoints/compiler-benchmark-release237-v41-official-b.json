@@ -1,0 +1,188 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS",
+  "diagnosticOnly": true,
+  "bootstrapAcceptance": false,
+  "mode": "official",
+  "stopAfter": "compile",
+  "oracleIncluded": false,
+  "checksExcluded": 0,
+  "outputPatches": 0,
+  "corpus": "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+  "corpusSha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+  "root": "/private/tmp/bend-v41-corpus.uXXfVm/checkpoints/.bootstrap_compiler_root_v1.bend",
+  "inputFiles": 50,
+  "runtime": {
+    "versions": {
+      "node": "23.11.0",
+      "acorn": "8.14.1",
+      "ada": "3.2.1",
+      "amaro": "0.4.1",
+      "ares": "1.34.4",
+      "brotli": "1.1.0",
+      "cjs_module_lexer": "2.1.0",
+      "cldr": "46.0",
+      "icu": "76.1",
+      "llhttp": "9.2.1",
+      "modules": "131",
+      "napi": "10",
+      "nbytes": "0.1.1",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.64.0",
+      "openssl": "3.0.16",
+      "simdjson": "3.12.2",
+      "simdutf": "6.0.3",
+      "sqlite": "3.49.1",
+      "tz": "2025a",
+      "undici": "6.21.2",
+      "unicode": "16.0",
+      "uv": "1.50.0",
+      "uvwasi": "0.0.21",
+      "v8": "12.9.202.28-node.14",
+      "zlib": "1.3.0.1-motley-788cb3c",
+      "zstd": "1.5.6"
+    },
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "oldGenerationMiB": 6144,
+    "youngGenerationMiB": 128,
+    "stackMiB": 256
+  },
+  "implementationPins": {
+    "/Users/ilyagulya/Projects/My/bend/evals/compiler_benchmark.ts": "82a66e7a51a417fd392693a18863b5562131b103994ab14479dcd4657533b4f1",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-v41.corpus.json": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+    "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+    "/private/tmp/bend-v41-corpus.uXXfVm/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+    "/private/tmp/bend-v41-corpus.uXXfVm/bend2/comp.ts": "56d5727049bc3ef528ef84d3b4712a41a0a8ce0a06437b29d881e71107638c70"
+  },
+  "phases": [
+    {
+      "name": "compiler-startup",
+      "wallMs": 51.09295800000001,
+      "cpuMs": 139.456,
+      "memoryEnd": {
+        "rss": 165855232,
+        "heapTotal": 18497536,
+        "heapUsed": 13756688,
+        "external": 22367632,
+        "arrayBuffers": 225564
+      }
+    },
+    {
+      "name": "load-parse-expand",
+      "wallMs": 1479.60525,
+      "cpuMs": 2547.885,
+      "memoryEnd": {
+        "rss": 741474304,
+        "heapTotal": 573145088,
+        "heapUsed": 328045832,
+        "external": 17282992,
+        "arrayBuffers": 24867
+      }
+    },
+    {
+      "name": "check",
+      "wallMs": 1581.196542,
+      "cpuMs": 3843.673,
+      "memoryEnd": {
+        "rss": 1467613184,
+        "heapTotal": 1302200320,
+        "heapUsed": 1097930040,
+        "external": 17282992,
+        "arrayBuffers": 24867
+      }
+    },
+    {
+      "name": "emit",
+      "wallMs": 11926.576083,
+      "cpuMs": 16654.677,
+      "memoryEnd": {
+        "rss": 2603827200,
+        "heapTotal": 2292088832,
+        "heapUsed": 1511926728,
+        "external": 17282992,
+        "arrayBuffers": 24867
+      }
+    },
+    {
+      "name": "write-and-hash",
+      "wallMs": 49.7570829999986,
+      "cpuMs": 25.988,
+      "memoryEnd": {
+        "rss": 2619949056,
+        "heapTotal": 2307768320,
+        "heapUsed": 1527623032,
+        "external": 25120385,
+        "arrayBuffers": 7862260
+      }
+    },
+    {
+      "name": "output-import",
+      "wallMs": 74.5205420000002,
+      "cpuMs": 74.94,
+      "memoryEnd": {
+        "rss": 2642460672,
+        "heapTotal": 2317025280,
+        "heapUsed": 1542188672,
+        "external": 32961178,
+        "arrayBuffers": 15703053
+      }
+    },
+    {
+      "name": "output-semantic-smoke",
+      "wallMs": 12.051499999999578,
+      "cpuMs": 12.354,
+      "memoryEnd": {
+        "rss": 2643591168,
+        "heapTotal": 2318106624,
+        "heapUsed": 1544271840,
+        "external": 33361220,
+        "arrayBuffers": 16103095
+      }
+    }
+  ],
+  "checkedBodies": 8065,
+  "validationEvents": 8403,
+  "artifact": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-v41-official-b.json.output.mjs",
+    "bytes": 7837393,
+    "sha256": "9a49a9800566217ac632c119b555a2eabc07eb4c1196f7e1ad4f83b9e9630ac9"
+  },
+  "compileMs": 15094.574042,
+  "exportCount": 7720,
+  "exportSetSha256": "99efc6ef8538e35f5b6f549e39296bae814e654d48558f9ca7ba2aae2b1911f4",
+  "outputSmokePassed": true,
+  "passed": true,
+  "totalWithOutputSmokeMs": 15199.237834,
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 3395665920,
+    "peakFootprintBytes": 4492006528,
+    "elapsedMs": 15689,
+    "timeoutMs": 600000,
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "--stack-size=262144",
+      "/Users/ilyagulya/Projects/My/bend/evals/compiler_benchmark.ts",
+      "--worker",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-v41-official-b.json.request.json",
+      "bd751d14523c696647563124bd833331a6119f1aae073d0710f45a94ba27337c"
+    ],
+    "label": "Comparable full-corpus official compiler",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792082444552-a9e6e49c2e551274.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  }
+}

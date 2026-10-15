@@ -1,0 +1,270 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "0b31f1c60ebe1557278a12f4b71786bcdf1cbe34",
+  "officialCommit": "4ff8545f19b09b7d2b8ca2303668100eac8efd66",
+  "root": "checkpoints/.bootstrap_compiler_root_v1.bend",
+  "directory": "/private/tmp/bend-v41-corpus.uXXfVm",
+  "exports": [
+    "parsed_module",
+    "parse_with_fuel",
+    "expand_modules_start",
+    "template_step",
+    "check_expanded_start",
+    "checker_step",
+    "emit_modules_start",
+    "emit_library_start",
+    "emitter_step"
+  ],
+  "files": [
+    {
+      "path": "checkpoints/.bootstrap_compiler_root_v1.bend",
+      "sha256": "897cf0f10db433f42fc4fb64d40b46819c0c6f65104ecf16b26f91c70f6858ef",
+      "namespace": ""
+    },
+    {
+      "path": "bend2/base.bend",
+      "sha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+      "namespace": ""
+    },
+    {
+      "path": "bend2/effs/print.js",
+      "sha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/write.js",
+      "sha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/print_err.js",
+      "sha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/get_env.js",
+      "sha256": "9a4fc592e447607553bdb08b194a9ede90dbae3660507687752f58ea42892dba",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/args.js",
+      "sha256": "ed1a7e7b73ae7fe58ac6d428d2762b66f223f4c70a165570fc5d68dc874ddc0b",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/process_run.js",
+      "sha256": "9ce0c5853ab8059614f115d99b1d0ba845fb23c056a6965a59e645d155bd58c1",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/random_u32.js",
+      "sha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/spawn.js",
+      "sha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/sleep.js",
+      "sha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/now.js",
+      "sha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/thread_count.js",
+      "sha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/chan.js",
+      "sha256": "007ff7505af9effc20fccfa3d26eaf89a382d6295839b27df119a1704a3f86d7",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/file_open.js",
+      "sha256": "dd549f5f05eb896aef9a3a02ffecf2ee902e653f5463be72781edab1cd1180ae",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/file_read.js",
+      "sha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/file_size.js",
+      "sha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/file_write.js",
+      "sha256": "4fe307538beb1047add7646f52df6e382a1da5d8999d8fe96969bd5055bc9b59",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/file_close.js",
+      "sha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/tcp_listen.js",
+      "sha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/tcp_accept.js",
+      "sha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/tcp_connect.js",
+      "sha256": "a20819822e4ce18c8878b94e6ee70466833415eb9ebc2b6a39b65cabfcc553c9",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/tcp_send.js",
+      "sha256": "ea68cc521fa9b5603c3fccebbf19ecebcd26bf1a8af644ff1f13cd14ba9fe733",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/tcp_recv.js",
+      "sha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/udp_bind.js",
+      "sha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/udp_send_to.js",
+      "sha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/udp_recv_from.js",
+      "sha256": "d6f88b08f578f088b4ff257a7e544e4fbbf46f375aee3881ba4d44e25ed890d8",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/socket_close.js",
+      "sha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/listener_close.js",
+      "sha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/window_open.js",
+      "sha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/window_frame.js",
+      "sha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/window_set_title.js",
+      "sha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/window_grab.js",
+      "sha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/window_close.js",
+      "sha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/audio_open.js",
+      "sha256": "6f531ac205dab98dd366111cdcc5eed69fb9058350ca715f3419065cd979b088",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/audio_write.js",
+      "sha256": "377d3e938ce3cc9f083c662b69d34e3a0cf391c92ddaf3fca8a4b28c78662da7",
+      "external": true
+    },
+    {
+      "path": "bend2/effs/audio_close.js",
+      "sha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+      "external": true
+    },
+    {
+      "path": "bend2/selfhost/ast.bend",
+      "sha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+      "namespace": "../bend2/selfhost/ast"
+    },
+    {
+      "path": "bend2/selfhost/lexer.bend",
+      "sha256": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+      "namespace": "../bend2/selfhost/lexer"
+    },
+    {
+      "path": "bend2/selfhost/core.bend",
+      "sha256": "d22905f943e91e85376ce57e58305badaad41ab2785e924f44dd1e20931be86d",
+      "namespace": "../bend2/selfhost/core"
+    },
+    {
+      "path": "bend2/selfhost/loaded_module.bend",
+      "sha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+      "namespace": "../bend2/selfhost/loaded_module"
+    },
+    {
+      "path": "checkpoints/template_steps_v1.bend",
+      "sha256": "2806a2d82d746845b566528f968de9a07a5d585a71f5470aa202de76025eed21",
+      "namespace": "template_steps_v1"
+    },
+    {
+      "path": "bend2/selfhost/sha256.bend",
+      "sha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+      "namespace": "../bend2/selfhost/sha256"
+    },
+    {
+      "path": "bend2/selfhost/path.bend",
+      "sha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+      "namespace": "../bend2/selfhost/path"
+    },
+    {
+      "path": "checkpoints/checker_core_steps_v1.bend",
+      "sha256": "20c1e010778059d880c0c26fd9058c1aab12c452b4a343e90dfd3beb26bcadfb",
+      "namespace": "checker_core_steps_v1"
+    },
+    {
+      "path": "bend2/selfhost/checker_arena.bend",
+      "sha256": "8860468bdd2995e9b3c46611f99abe16079632305c90fbb7bfb70c7c6f3346d6",
+      "namespace": "../bend2/selfhost/checker_arena"
+    },
+    {
+      "path": "bend2/selfhost/scope_lookup.bend",
+      "sha256": "8e35fd58ade180ec6c524e1d620a70e2deb66bef3c30add7e224e51c0b30879a",
+      "namespace": "../bend2/selfhost/scope_lookup"
+    },
+    {
+      "path": "bend2/selfhost/checker_ir.bend",
+      "sha256": "4e23cbab2f0ae0516e0a9ae0b5ca455741fd49c6222d33817dc8b6fd297b2627",
+      "namespace": "../bend2/selfhost/checker_ir"
+    },
+    {
+      "path": "bend2/selfhost/index_lookup.bend",
+      "sha256": "caef5856607bff18b9a5dfc529eee6c6360a83d0963008420888a998274bd9f2",
+      "namespace": "../bend2/selfhost/index_lookup"
+    },
+    {
+      "path": "checkpoints/js_emit_steps_v1.bend",
+      "sha256": "e36985f9c3226b233efd7c15f9fb6984cb1c6885f6ab88b79b830d3c9774974e",
+      "namespace": "js_emit_steps_v1"
+    }
+  ]
+}

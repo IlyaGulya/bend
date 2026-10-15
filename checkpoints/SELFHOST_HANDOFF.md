@@ -4,6 +4,29 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+## Active speed experiments — v41, fair baseline recorded
+
+`compiler-timing-comparison237-v41.json` records a new source-only frozen workload
+from commit `0b31f1c`:50 files,15 Bend modules,8403 declarations. Unmodified official
+2.0.37 chooses7720 public exports; the source compiler emits that exact ordered
+list through its typed emitter API. The nine root ABI exports are not substituted
+for the all-public benchmark. Both emitted outputs pass actual parser/checker smoke.
+
+Fresh no-oracle compile timings: official15094.574ms, native-built Bend JS
+109234.749ms. Checker1581.197 versus84259.446ms; emit11926.576 versus14873.526ms.
+Whole-tree physical peaks4492006528 versus1675468512 bytes. These are single
+serialized diagnostic samples, not medians or a new fixedpoint acceptance.
+`evals/compiler_benchmark.ts` owns source/pin authentication and exact closure/
+export matching under the unchanged8GiB guardian and actual256MiB Worker stack.
+The initial main-thread official attempt SIGSEGV'd; its timing is rejected.
+
+Four isolated v41 candidates are under serialized runtime verification: existing
+C backend execution, scheduled typed identity tails, batched arena word copies,
+and reuse of immutable source-pattern binder-count certificates. Source review is
+not speed or acceptance evidence. Native execution alone would not establish a
+self-generated C backend or replace genuine emitted-JS stage1/stage2 acceptance.
+The current accepted compiler/proof remains Main40/parser67.
+
 ## Completed acceleration — Main40 full stage2 below five minutes
 
 Latest user priority: accelerate the checker and the complete bootstrap, not more
