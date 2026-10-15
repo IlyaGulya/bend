@@ -23006,91 +23006,70 @@ def native_match_scope_body_cases_for_constructor_4(v_34: ArenaResult<IR.WordVie
 def scope_body_cases_for_constructor(v_1: ArenaStore, +v_2: IR.Words, +v_4: String, +v_5: Scope.ArenaGlobalScope) -> ArenaResult<IR.Words>:
   native_match_scope_body_cases_for_constructor_4(arena_words_view(v_1, v_2), v_2, v_4, v_5)
 
-def native_match_core_pattern_list_depth_0(v_90: ArenaResult<Nat>) -> ArenaResult<Nat>:
-  match v_90:
-    case ArenaResult{v_51, +v_52}:
-      {ArenaResult{v_51, Nat.add(1n, v_52)} : ArenaResult<Nat>}
+def native_match_core_pattern_list_depth_0(v_25: ArenaResult<Nat>, v_18: Nat) -> ArenaResult<Nat>:
+  match v_25:
+    case ArenaResult{v_21, v_22}:
+      {ArenaResult{v_21, Nat.add(v_18, v_22)} : ArenaResult<Nat>}
 
-def native_match_core_pattern_list_depth_1(v_91: ArenaResult<String>, v_19: IR.Words, +v_30: Nat, +v_31: Ast.Quantity, +v_32: Ast.SourceSpan) -> ArenaResult<Nat>:
-  match v_91:
-    case ArenaResult{v_36, +v_37}:
-      +v_39 = v_37
-      v_41 = v_39
-      v_43 = v_30
-      v_45 = v_31
-      v_47 = v_32
-      native_match_core_pattern_list_depth_0(core_pattern_list_depth(v_36, v_19))
+def native_match_core_pattern_list_depth_1(v_26: ArenaResult<Nat>, v_14: IR.Words) -> ArenaResult<Nat>:
+  match v_26:
+    case ArenaResult{v_17, v_18}:
+      native_match_core_pattern_list_depth_0(core_pattern_list_depth(v_17, v_14), v_18)
 
-def native_match_core_pattern_list_depth_2(v_92: ArenaResult<Nat>, +v_82: Nat) -> ArenaResult<Nat>:
-  match v_92:
-    case ArenaResult{v_86, +v_87}:
-      {ArenaResult{v_86, Nat.add(v_82, v_87)} : ArenaResult<Nat>}
-
-def native_match_core_pattern_list_depth_3(v_93: ArenaResult<Nat>, v_19: IR.Words) -> ArenaResult<Nat>:
-  match v_93:
-    case ArenaResult{v_81, +v_82}:
-      native_match_core_pattern_list_depth_2(core_pattern_list_depth(v_81, v_19), v_82)
-
-def native_match_core_pattern_list_depth_4(v_94: ArenaResult<String>, v_19: IR.Words, +v_60: U32, +v_61: U32, +v_62: Ast.SourceSpan) -> ArenaResult<Nat>:
-  match v_94:
-    case ArenaResult{v_66, +v_67}:
-      +v_69 = v_67
-      +v_71 = IR.Words{v_60, v_61}
-      v_73 = v_69
-      v_75 = v_71
-      v_77 = v_62
-      native_match_core_pattern_list_depth_3(core_pattern_list_depth(v_66, v_75), v_19)
-
-def native_match_core_pattern_list_depth_5(+v_24: Arena.Pattern, v_19: IR.Words, v_23: ArenaStore) -> ArenaResult<Nat>:
-  match v_24:
-    case Arena.PatternVar{+v_29, +v_30, +v_31, +v_32}:
-      native_match_core_pattern_list_depth_1(arena_name_text(v_23, v_29), v_19, v_30, v_31, v_32)
-    case Arena.PatternCtr{+v_59, +v_60, +v_61, +v_62}:
-      native_match_core_pattern_list_depth_4(arena_name_text(v_23, v_59), v_19, v_60, v_61, v_62)
-
-def native_match_core_pattern_list_depth_6(v_95: ArenaResult<Arena.Pattern>, v_19: IR.Words) -> ArenaResult<Nat>:
-  match v_95:
-    case ArenaResult{v_23, +v_24}:
-      native_match_core_pattern_list_depth_5(v_24, v_19, v_23)
-
-def native_match_core_pattern_list_depth_7(+v_9: IR.WordView, v_8: ArenaStore) -> ArenaResult<Nat>:
-  match v_9:
+def native_match_core_pattern_list_depth_2(v_8: IR.WordView, v_7: ArenaStore) -> ArenaResult<Nat>:
+  match v_8:
     case IR.WordNil{}:
-      {ArenaResult{v_8, 0n} : ArenaResult<Nat>}
-    case IR.WordCons{+v_14, +v_15}:
-      +v_17 = v_14
-      v_19 = v_15
-      native_match_core_pattern_list_depth_6(arena_get_pattern(v_8, v_17), v_19)
+      {ArenaResult{v_7, 0n} : ArenaResult<Nat>}
+    case IR.WordCons{v_13, v_14}:
+      native_match_core_pattern_list_depth_1(core_pattern_depth(v_7, v_13), v_14)
 
-def native_match_core_pattern_list_depth_8(v_96: ArenaResult<IR.WordView>) -> ArenaResult<Nat>:
-  match v_96:
-    case ArenaResult{v_8, +v_9}:
-      native_match_core_pattern_list_depth_7(v_9, v_8)
+def native_match_core_pattern_list_depth_3(v_27: ArenaResult<IR.WordView>) -> ArenaResult<Nat>:
+  match v_27:
+    case ArenaResult{v_7, v_8}:
+      native_match_core_pattern_list_depth_2(v_8, v_7)
 
 def core_pattern_list_depth(v_1: ArenaStore, v_2: IR.Words) -> ArenaResult<Nat>:
-  native_match_core_pattern_list_depth_8(arena_words_view(v_1, v_2))
+  native_match_core_pattern_list_depth_3(arena_words_view(v_1, v_2))
 
-def native_match_core_pattern_depth_0(v_40: ArenaResult<Nat>) -> ArenaResult<Nat>:
-  match v_40:
-    case ArenaResult{v_36, +v_37}:
-      {ArenaResult{v_36, v_37} : ArenaResult<Nat>}
+def core_pattern_depth_bound(id: U32, result: ArenaResult<Nat>) -> ArenaResult<Nat>:
+  match result:
+    case ArenaResult{store, encoded}:
+      match encoded:
+        case 0n: core_pattern_depth_open(store, id)
+        case 1n+depth: {ArenaResult{store, depth} : ArenaResult<Nat>}
 
-def native_match_core_pattern_depth_1(+v_10: Arena.Pattern, v_9: ArenaStore) -> ArenaResult<Nat>:
-  match v_10:
-    case Arena.PatternVar{+v_15, +v_16, +v_17, +v_18}:
-      {ArenaResult{v_9, 1n} : ArenaResult<Nat>}
-    case Arena.PatternCtr{+v_25, +v_26, +v_27, +v_28}:
-      +v_30 = IR.Words{v_26, v_27}
-      v_32 = v_30
-      native_match_core_pattern_depth_0(core_pattern_list_depth(v_9, v_32))
+def native_match_core_pattern_depth_region_0(v_1: ArenaStore, +v_3: U32) -> ArenaResult<Nat>:
+  match v_1:
+    case ArenaStore{v_11, v_12}:
+      core_pattern_depth_bound(v_3, arena_bound_source(Arena.bound_read(v_11, v_3, True{}), v_12))
 
-def native_match_core_pattern_depth_2(v_41: ArenaResult<Arena.Pattern>) -> ArenaResult<Nat>:
-  match v_41:
-    case ArenaResult{v_9, +v_10}:
-      native_match_core_pattern_depth_1(v_10, v_9)
+def native_match_core_pattern_depth_region_1(v_5: Bool, v_1: ArenaStore, +v_3: U32) -> ArenaResult<Nat>:
+  match v_5:
+    case True{}:
+      core_pattern_depth_open(v_1, v_3)
+    case False{}:
+      native_match_core_pattern_depth_region_0(v_1, v_3)
 
-def core_pattern_depth(v_1: ArenaStore, v_3: U32) -> ArenaResult<Nat>:
-  native_match_core_pattern_depth_2(arena_get_pattern(v_1, v_3))
+def core_pattern_depth_region(v_1: ArenaStore, +v_3: U32, v_5: Bool) -> ArenaResult<Nat>:
+  native_match_core_pattern_depth_region_1(v_5, v_1, v_3)
+
+def core_pattern_depth(store: ArenaStore, +id: U32) -> ArenaResult<Nat>:
+  core_pattern_depth_region(store, id, arena_is_transient(id))
+
+def native_match_core_pattern_depth_open_0(v_9: Arena.Pattern, v_8: ArenaStore) -> ArenaResult<Nat>:
+  match v_9:
+    case Arena.PatternVar{_, _, _, _}:
+      {ArenaResult{v_8, 1n} : ArenaResult<Nat>}
+    case Arena.PatternCtr{_, v_25, v_26, _}:
+      core_pattern_list_depth(v_8, IR.Words{v_25, v_26})
+
+def native_match_core_pattern_depth_open_1(v_28: ArenaResult<Arena.Pattern>) -> ArenaResult<Nat>:
+  match v_28:
+    case ArenaResult{v_8, v_9}:
+      native_match_core_pattern_depth_open_0(v_9, v_8)
+
+def core_pattern_depth_open(v_1: ArenaStore, v_3: U32) -> ArenaResult<Nat>:
+  native_match_core_pattern_depth_open_1(arena_get_pattern(v_1, v_3))
 
 def native_match_core_shift_var_0(v_37: ArenaResult<U32>) -> ArenaResult<U32>:
   match v_37:

@@ -1,12 +1,12 @@
 {
   "schemaVersion": 2,
   "source": "bend2/selfhost/checker.bend",
-  "sourceSha256": "862473004bb260d3cc2b0eccc7183ef1eac3b476c1fee154709afc6133ab9c5b",
+  "sourceSha256": "46606788bf2ea5b6e6391f8ad4d991953113a09fe574ac642f606ca36935c1bd",
   "slice": "checkpoints/checker_core_owned_v1.bend",
-  "sliceSha256": "d473a9a3fa367756395b59e0df7e0a4c302cd53952f00689763561c380b6e13c",
+  "sliceSha256": "7f86d4503464c515c9354e5e2dcd05da1dcc8192d4b898287f420e841cfb123c",
   "root": "check_modules",
   "closureDiscovery": "Fixedpoint of binding-aware authentic sourceOracle Body references over every canonical definition; fresh complete closure, not historical membership.",
-  "definitions": 1077,
+  "definitions": 1080,
   "definitionNames": [
     "span_file",
     "term_span",
@@ -709,7 +709,10 @@
     "scope_body_cases_for_names",
     "scope_body_cases_for_constructor",
     "core_pattern_list_depth",
+    "core_pattern_depth_bound",
+    "core_pattern_depth_region",
     "core_pattern_depth",
+    "core_pattern_depth_open",
     "core_shift_var",
     "core_bound_unaffected",
     "core_shift_unaffected",
@@ -4861,16 +4864,15 @@
     "native_match_core_pattern_list_depth_1",
     "native_match_core_pattern_list_depth_2",
     "native_match_core_pattern_list_depth_3",
-    "native_match_core_pattern_list_depth_4",
-    "native_match_core_pattern_list_depth_5",
-    "native_match_core_pattern_list_depth_6",
-    "native_match_core_pattern_list_depth_7",
-    "native_match_core_pattern_list_depth_8",
     "core_pattern_list_depth",
-    "native_match_core_pattern_depth_0",
-    "native_match_core_pattern_depth_1",
-    "native_match_core_pattern_depth_2",
+    "core_pattern_depth_bound",
+    "native_match_core_pattern_depth_region_0",
+    "native_match_core_pattern_depth_region_1",
+    "core_pattern_depth_region",
     "core_pattern_depth",
+    "native_match_core_pattern_depth_open_0",
+    "native_match_core_pattern_depth_open_1",
+    "core_pattern_depth_open",
     "native_match_core_shift_var_0",
     "native_match_core_shift_var_1",
     "native_match_core_shift_var_2",
@@ -9650,20 +9652,19 @@
     "native_match_scope_body_cases_for_constructor_3": "44d356c26dec0a0c1a96ebf09813a3f480cfc8335ce97731292a50a8139b108d",
     "native_match_scope_body_cases_for_constructor_4": "3ffe3c4263098cce4ca8a1749f39ff2870651b57d1477afa18047e55a12ffac5",
     "scope_body_cases_for_constructor": "59ce9112c5b83aedf0cec0b046f15c8f8cbaf97cfb9375f5f880bbcd9f2c69ce",
-    "native_match_core_pattern_list_depth_0": "156d7ad006a4d7b1f444e72c29cbe5689c9f0d0ec8a0bc42e558b9e32d7ba6a0",
-    "native_match_core_pattern_list_depth_1": "256277b1d21e3a1f8cbcc238bc7ae4ad163e7653a0044f7f12b7dac4a5996a68",
-    "native_match_core_pattern_list_depth_2": "f7ad6af4977ad55fd6215dfb34f0ede68efa6f034aac9e7d8a28fc35fa1fc61c",
-    "native_match_core_pattern_list_depth_3": "1b39c46f508585a490221fb0d93cc03fa2c6b85f446a174db5c8e3547d593d02",
-    "native_match_core_pattern_list_depth_4": "fe909e58f16b4a285c1c536e099dc62931179d0a5f2c3702463e2959aee2d636",
-    "native_match_core_pattern_list_depth_5": "e397b83cdd3483ae3240119615165bfb923dd74e3d813c0916ed27d308c24b86",
-    "native_match_core_pattern_list_depth_6": "0dc81aa5e47a28c06e3a220b66bf0b2d6da402db95a67d43279b8ef387217c73",
-    "native_match_core_pattern_list_depth_7": "092169c6a934fe682e0826a213823ab7a252c92d9d2e15efcc0e79d06b73da5e",
-    "native_match_core_pattern_list_depth_8": "850fc78a5e0243bacc5350a6e6a4317774765f10f296aebb6a82be3452a9a6e6",
-    "core_pattern_list_depth": "0526bf4d9cc05bc99e81a62d29cd22c3eae6b31391ecb68ce84a2272ad3c9279",
-    "native_match_core_pattern_depth_0": "acb70bc473723878e3370e82c37083c0add5b65a759854acc174cffff40d59c1",
-    "native_match_core_pattern_depth_1": "8bee4bbb87783d19ea541ffc425f6c8ce4f17402cc207d4997579909c8ee6072",
-    "native_match_core_pattern_depth_2": "5fcda56cdfb35aeaa339dd4585766e26f818f3f3fadd83c9d4c18dc32ffbdd64",
-    "core_pattern_depth": "88498a48ae6da4bd88a9baadb28f3ddfbda4b716a20fbd156c13aa44b7121f07",
+    "native_match_core_pattern_list_depth_0": "c4e1031956b58903a5ff212045fbe47d57f8bb0e9e73eab4b2b452fe9ce4461e",
+    "native_match_core_pattern_list_depth_1": "ca2804ca0e564999d59d21b984f43fc294ded3d162df5b03712fe5de56587e5e",
+    "native_match_core_pattern_list_depth_2": "4be964f501b8d768abddcf68e64e634ce822411970fc238d293130bb2a50a54b",
+    "native_match_core_pattern_list_depth_3": "40a3e4f45cdbd2f6bac0cfe517119b3748f9513a6d30399d22e3da329e79c8cb",
+    "core_pattern_list_depth": "18ef542cd90b024e4f64681fb66ab674d798f076b50b7acdd7b3c36bc20aea47",
+    "core_pattern_depth_bound": "4456840d00d5545cab1547d6a9985a9e94ea5e26b262bfd7f24db127d646deea",
+    "native_match_core_pattern_depth_region_0": "ef51ddea12b548c4fe02992fe0cf990a036f0bc5fa042006a90c89a5b5fd7f41",
+    "native_match_core_pattern_depth_region_1": "e09983181b52f6e3020791d95b3ada1d82a4f0be1c5622ee1a451808f95846f5",
+    "core_pattern_depth_region": "3e322a8e7b18499bcbb88c2c37a7d1865dfaef96dd057eb8fc36e580dd74399c",
+    "core_pattern_depth": "9c7af79071dcabda1070f5c0832b3fef00c286fff36cd60984b63178cc80608c",
+    "native_match_core_pattern_depth_open_0": "9dd4f4c9c3f4e3dfd84252440f944f87984f52b54395eb795d01f58ac12082aa",
+    "native_match_core_pattern_depth_open_1": "d4b32f85eb2964f24f7c9e55a7318cafe65c2bcecee4f72e4e5c5eb880970f86",
+    "core_pattern_depth_open": "30823e61fbe3ebef3070dc60a998351f4ed71cba1dffcfdba862b5fd0607eb02",
     "native_match_core_shift_var_0": "abe41ee481f3f34930021f61ad8654a0c326def9690cd6bb9931f8b4aea743ad",
     "native_match_core_shift_var_1": "2d6af172f6232380336a0eae6520fc772c6ab3b415e878332de4c509d6d212d7",
     "native_match_core_shift_var_2": "c8a7ea37cd58c6784030721ed0bfc7232504ac3fd4531d2af7bde51656933ad3",
@@ -13747,14 +13748,10 @@
     "native_match_core_pattern_list_depth_1": "core_pattern_list_depth",
     "native_match_core_pattern_list_depth_2": "core_pattern_list_depth",
     "native_match_core_pattern_list_depth_3": "core_pattern_list_depth",
-    "native_match_core_pattern_list_depth_4": "core_pattern_list_depth",
-    "native_match_core_pattern_list_depth_5": "core_pattern_list_depth",
-    "native_match_core_pattern_list_depth_6": "core_pattern_list_depth",
-    "native_match_core_pattern_list_depth_7": "core_pattern_list_depth",
-    "native_match_core_pattern_list_depth_8": "core_pattern_list_depth",
-    "native_match_core_pattern_depth_0": "core_pattern_depth",
-    "native_match_core_pattern_depth_1": "core_pattern_depth",
-    "native_match_core_pattern_depth_2": "core_pattern_depth",
+    "native_match_core_pattern_depth_region_0": "core_pattern_depth_region",
+    "native_match_core_pattern_depth_region_1": "core_pattern_depth_region",
+    "native_match_core_pattern_depth_open_0": "core_pattern_depth_open",
+    "native_match_core_pattern_depth_open_1": "core_pattern_depth_open",
     "native_match_core_shift_var_0": "core_shift_var",
     "native_match_core_shift_var_1": "core_shift_var",
     "native_match_core_shift_var_2": "core_shift_var",
@@ -20174,15 +20171,27 @@
     },
     {
       "name": "scope_body_cases_for_constructor",
-      "exactCanonicalBlockSha256": "499dfc06cf82c2745acccb147d0f513b4d5c4c94946b95676c3b8509acc914af"
+      "exactCanonicalBlockSha256": "4b5ccbe5f6affc9a2e5cc79ee8ae556d721ffac8bbb16a80a892c1c8d79f1d71"
     },
     {
       "name": "core_pattern_list_depth",
-      "exactCanonicalBlockSha256": "923d4b2c99df97a80ec6fc8f424374f1a55bcb890973ae94a88d96293d180059"
+      "exactCanonicalBlockSha256": "9d9244653a1fc2c9b43c4c8c586082b2d4c241430d5c70b4ba4a4fde7468b128"
+    },
+    {
+      "name": "core_pattern_depth_bound",
+      "exactCanonicalBlockSha256": "4456840d00d5545cab1547d6a9985a9e94ea5e26b262bfd7f24db127d646deea"
+    },
+    {
+      "name": "core_pattern_depth_region",
+      "exactCanonicalBlockSha256": "6d2acd4a5e01286055f1435e7edd4c48f6a2e954b3c3bae58dc4cfbb5b10f6b5"
     },
     {
       "name": "core_pattern_depth",
-      "exactCanonicalBlockSha256": "e703cdbfe9b8fabe146d54d884d93dc08e9a2f228ea3f16b40b6d8bbfcd9613f"
+      "exactCanonicalBlockSha256": "9c7af79071dcabda1070f5c0832b3fef00c286fff36cd60984b63178cc80608c"
+    },
+    {
+      "name": "core_pattern_depth_open",
+      "exactCanonicalBlockSha256": "c21630c1444226ce579d819fd5d534ea352c3146b2356450ff664f6721e54fe4"
     },
     {
       "name": "core_shift_var",
@@ -57706,7 +57715,9 @@
       "owner": "core_pattern_list_depth",
       "helper": "native_match_core_pattern_list_depth_0",
       "kind": "local",
-      "captures": [],
+      "captures": [
+        18
+      ],
       "producers": 1
     },
     {
@@ -57714,66 +57725,51 @@
       "helper": "native_match_core_pattern_list_depth_1",
       "kind": "local",
       "captures": [
-        19,
-        30,
-        31,
-        32
+        14
       ],
       "producers": 1
     },
     {
       "owner": "core_pattern_list_depth",
       "helper": "native_match_core_pattern_list_depth_2",
-      "kind": "local",
-      "captures": [
-        82
-      ],
-      "producers": 1
-    },
-    {
-      "owner": "core_pattern_list_depth",
-      "helper": "native_match_core_pattern_list_depth_3",
-      "kind": "local",
-      "captures": [
-        19
-      ],
-      "producers": 1
-    },
-    {
-      "owner": "core_pattern_list_depth",
-      "helper": "native_match_core_pattern_list_depth_4",
-      "kind": "local",
-      "captures": [
-        19,
-        60,
-        61,
-        62
-      ],
-      "producers": 1
-    },
-    {
-      "owner": "core_pattern_list_depth",
-      "helper": "native_match_core_pattern_list_depth_5",
       "kind": "match",
       "captures": [
-        24,
-        19,
-        23
+        8,
+        7
       ],
       "producers": 0
     },
     {
       "owner": "core_pattern_list_depth",
-      "helper": "native_match_core_pattern_list_depth_6",
+      "helper": "native_match_core_pattern_list_depth_3",
       "kind": "local",
-      "captures": [
-        19
-      ],
+      "captures": [],
       "producers": 1
     },
     {
-      "owner": "core_pattern_list_depth",
-      "helper": "native_match_core_pattern_list_depth_7",
+      "owner": "core_pattern_depth_region",
+      "helper": "native_match_core_pattern_depth_region_0",
+      "kind": "match",
+      "captures": [
+        1,
+        3
+      ],
+      "producers": 0
+    },
+    {
+      "owner": "core_pattern_depth_region",
+      "helper": "native_match_core_pattern_depth_region_1",
+      "kind": "match",
+      "captures": [
+        5,
+        1,
+        3
+      ],
+      "producers": 0
+    },
+    {
+      "owner": "core_pattern_depth_open",
+      "helper": "native_match_core_pattern_depth_open_0",
       "kind": "match",
       "captures": [
         9,
@@ -57782,32 +57778,8 @@
       "producers": 0
     },
     {
-      "owner": "core_pattern_list_depth",
-      "helper": "native_match_core_pattern_list_depth_8",
-      "kind": "local",
-      "captures": [],
-      "producers": 1
-    },
-    {
-      "owner": "core_pattern_depth",
-      "helper": "native_match_core_pattern_depth_0",
-      "kind": "local",
-      "captures": [],
-      "producers": 1
-    },
-    {
-      "owner": "core_pattern_depth",
-      "helper": "native_match_core_pattern_depth_1",
-      "kind": "match",
-      "captures": [
-        10,
-        9
-      ],
-      "producers": 0
-    },
-    {
-      "owner": "core_pattern_depth",
-      "helper": "native_match_core_pattern_depth_2",
+      "owner": "core_pattern_depth_open",
+      "helper": "native_match_core_pattern_depth_open_1",
       "kind": "local",
       "captures": [],
       "producers": 1
@@ -64673,72 +64645,72 @@
   ],
   "ownedModules": [
     {
-      "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend",
+      "source": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/ast.bend",
       "sourceSha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
-      "output": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend",
+      "output": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/ast.bend",
       "outputSha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
       "extractions": []
     },
     {
-      "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend",
+      "source": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/checker_arena.bend",
       "sourceSha256": "8860468bdd2995e9b3c46611f99abe16079632305c90fbb7bfb70c7c6f3346d6",
-      "output": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend",
+      "output": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/checker_arena.bend",
       "outputSha256": "8860468bdd2995e9b3c46611f99abe16079632305c90fbb7bfb70c7c6f3346d6",
       "extractions": []
     },
     {
-      "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend",
+      "source": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/scope_lookup.bend",
       "sourceSha256": "8e35fd58ade180ec6c524e1d620a70e2deb66bef3c30add7e224e51c0b30879a",
-      "output": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend",
+      "output": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/scope_lookup.bend",
       "outputSha256": "8e35fd58ade180ec6c524e1d620a70e2deb66bef3c30add7e224e51c0b30879a",
       "extractions": []
     },
     {
-      "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_ir.bend",
+      "source": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/checker_ir.bend",
       "sourceSha256": "4e23cbab2f0ae0516e0a9ae0b5ca455741fd49c6222d33817dc8b6fd297b2627",
-      "output": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_ir.bend",
+      "output": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/checker_ir.bend",
       "outputSha256": "4e23cbab2f0ae0516e0a9ae0b5ca455741fd49c6222d33817dc8b6fd297b2627",
       "extractions": []
     },
     {
-      "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend",
+      "source": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/path.bend",
       "sourceSha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
-      "output": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend",
+      "output": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/path.bend",
       "outputSha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
       "extractions": []
     },
     {
-      "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend",
+      "source": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/loaded_module.bend",
       "sourceSha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
-      "output": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend",
+      "output": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/loaded_module.bend",
       "outputSha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
       "extractions": []
     },
     {
-      "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/index_lookup.bend",
+      "source": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/index_lookup.bend",
       "sourceSha256": "caef5856607bff18b9a5dfc529eee6c6360a83d0963008420888a998274bd9f2",
-      "output": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/index_lookup.bend",
+      "output": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/index_lookup.bend",
       "outputSha256": "caef5856607bff18b9a5dfc529eee6c6360a83d0963008420888a998274bd9f2",
       "extractions": []
     },
     {
-      "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/core.bend",
+      "source": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/core.bend",
       "sourceSha256": "d22905f943e91e85376ce57e58305badaad41ab2785e924f44dd1e20931be86d",
-      "output": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/core.bend",
+      "output": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/core.bend",
       "outputSha256": "d22905f943e91e85376ce57e58305badaad41ab2785e924f44dd1e20931be86d",
       "extractions": []
     },
     {
-      "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/sha256.bend",
+      "source": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/sha256.bend",
       "sourceSha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
-      "output": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/sha256.bend",
+      "output": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/sha256.bend",
       "outputSha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
       "extractions": []
     },
     {
-      "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_emit.bend",
+      "source": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/js_emit.bend",
       "sourceSha256": "94fb429be1f7b9943706733f0e4796dfdc89725b0351b23227b5a066bb7789f0",
-      "output": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_emit.bend",
+      "output": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/js_emit.bend",
       "outputSha256": "94fb429be1f7b9943706733f0e4796dfdc89725b0351b23227b5a066bb7789f0",
       "extractions": []
     }

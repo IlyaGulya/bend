@@ -11592,46 +11592,43 @@ def scope_body_cases_for_constructor(v_20042217: ArenaStore, +v_1: IR.Words, +v_
       ArenaResult{v_20042225, +v_20042226} = scope_body_cases_for_names(v_20042223, v_1, v_20042224)
       {ArenaResult{v_20042225, v_20042226} : ArenaResult<IR.Words>}
 
-def core_pattern_list_depth(v_20042227: ArenaStore, v_1: IR.Words) -> ArenaResult<Nat>:
-  ArenaResult{v_20042228, +v_20042229} = arena_words_view(v_20042227, v_1)
-  match v_20042229:
-    case IR.WordNil{}:
-      {ArenaResult{v_20042228, 0n} : ArenaResult<Nat>}
-    case IR.WordCons{+v_20042230, +v_20042231}:
-      +v_5 = v_20042230
-      v_6 = v_20042231
-      ArenaResult{v_20042232, +v_20042233} = arena_get_pattern(v_20042228, v_5)
-      match v_20042233:
-        case Arena.PatternVar{+v_20042234, +v_20042236, +v_20042237, +v_20042238}:
-          ArenaResult{v_20042239, +v_20042240} = arena_name_text(v_20042232, v_20042234)
-          +v_20042235 = v_20042240
-          v_11 = v_20042235
-          v_12 = v_20042236
-          v_13 = v_20042237
-          v_14 = v_20042238
-          ArenaResult{v_20042241, +v_20042242} = core_pattern_list_depth(v_20042239, v_6)
-          {ArenaResult{v_20042241, Nat.add(1n, v_20042242)} : ArenaResult<Nat>}
-        case Arena.PatternCtr{+v_20042243, +v_20042245, +v_20042246, +v_20042248}:
-          ArenaResult{v_20042249, +v_20042250} = arena_name_text(v_20042232, v_20042243)
-          +v_20042244 = v_20042250
-          +v_20042247 = IR.Words{v_20042245, v_20042246}
-          v_19 = v_20042244
-          v_20 = v_20042247
-          v_21 = v_20042248
-          ArenaResult{v_20042251, +v_20042252} = core_pattern_list_depth(v_20042249, v_20)
-          ArenaResult{v_20042253, +v_20042254} = core_pattern_list_depth(v_20042251, v_6)
-          {ArenaResult{v_20042253, Nat.add(v_20042252, v_20042254)} : ArenaResult<Nat>}
+# Pattern bounds already encode the exact binder count as 1+depth. Reuse only
+# source-owned entries: transient patterns can contain source-tagged children,
+# so their arena-local metadata is not a certificate. Unknown source entries
+# and transient descriptors retain the structural count. This fact depends on
+# neither typing scope nor de Bruijn depth, and creates no new cache lifetime.
+def core_pattern_list_depth(store: ArenaStore, patterns: IR.Words) -> ArenaResult<Nat>:
+  ArenaResult{store, view} = arena_words_view(store, patterns)
+  match view:
+    case IR.WordNil{}: {ArenaResult{store, 0n} : ArenaResult<Nat>}
+    case IR.WordCons{pattern, rest}:
+      ArenaResult{store, depth} = core_pattern_depth(store, pattern)
+      ArenaResult{store, remaining} = core_pattern_list_depth(store, rest)
+      {ArenaResult{store, Nat.add(depth, remaining)} : ArenaResult<Nat>}
 
-def core_pattern_depth(v_20042255: ArenaStore, v_0: U32) -> ArenaResult<Nat>:
-  ArenaResult{v_20042256, +v_20042257} = arena_get_pattern(v_20042255, v_0)
-  match v_20042257:
-    case Arena.PatternVar{+v_20042258, +v_20042260, +v_20042261, +v_20042262}:
-      {ArenaResult{v_20042256, 1n} : ArenaResult<Nat>}
-    case Arena.PatternCtr{+v_20042263, +v_20042265, +v_20042266, +v_20042268}:
-      +v_20042267 = IR.Words{v_20042265, v_20042266}
-      v_14 = v_20042267
-      ArenaResult{v_20042269, +v_20042270} = core_pattern_list_depth(v_20042256, v_14)
-      {ArenaResult{v_20042269, v_20042270} : ArenaResult<Nat>}
+def core_pattern_depth_bound(id: U32, result: ArenaResult<Nat>) -> ArenaResult<Nat>:
+  match result:
+    case ArenaResult{store, encoded}:
+      match encoded:
+        case 0n: core_pattern_depth_open(store, id)
+        case 1n+depth: {ArenaResult{store, depth} : ArenaResult<Nat>}
+
+def core_pattern_depth_region(store: ArenaStore, +id: U32, temporary: Bool) -> ArenaResult<Nat>:
+  match temporary:
+    case True{}: core_pattern_depth_open(store, id)
+    case False{}:
+      match store:
+        case ArenaStore{source, transient}:
+          core_pattern_depth_bound(id, arena_bound_source(Arena.bound_read(source, id, True{}), transient))
+
+def core_pattern_depth(store: ArenaStore, +id: U32) -> ArenaResult<Nat>:
+  core_pattern_depth_region(store, id, arena_is_transient(id))
+
+def core_pattern_depth_open(store: ArenaStore, id: U32) -> ArenaResult<Nat>:
+  ArenaResult{store, pattern} = arena_get_pattern(store, id)
+  match pattern:
+    case Arena.PatternVar{_, _, _, _}: {ArenaResult{store, 1n} : ArenaResult<Nat>}
+    case Arena.PatternCtr{_, start, count, _}: core_pattern_list_depth(store, IR.Words{start, count})
 
 def core_shift_var(v_20042271: ArenaStore, v_1: Bool, v_3: String, v_5: Nat, v_7: Nat, v_8: Ast.SourceSpan) -> ArenaResult<U32>:
   match v_1:

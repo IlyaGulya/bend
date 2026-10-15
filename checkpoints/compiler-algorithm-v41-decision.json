@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "version": "release237-v41-algorithm",
+  "status": "MEASURED_CANDIDATE_PENDING_FULL_FIXEDPOINT",
+  "bootstrapAcceptance": false,
+  "sourceBaseCommit": "0b31f1c60ebe1557278a12f4b71786bcdf1cbe34",
+  "benchmarkImplementationCommit": "3c85ba8d",
+  "nativeBuildReceipt": "checkpoints/compiler-algorithm-v41-native.result.json",
+  "nativeValidatedDefinitions": 8067,
+  "nativeValidationEvents": 8405,
+  "nativeGuardianMs": 18151,
+  "nativePeakFootprintBytes": 2704542808,
+  "corpusSha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+  "inputFiles": 50,
+  "sourceModules": 15,
+  "identicalExports": 7720,
+  "fullCompileBaselineMs": 109234.74916600001,
+  "fullCompileCandidateMs": 106356.703167,
+  "checkWallSamples": {
+    "baseline": [84259.44566699999,79838.78616599999],
+    "candidate": [81444.878291,77458.964875]
+  },
+  "checkCpuSamples": {
+    "baseline": [91889.628,87544.906],
+    "candidate": [87061.933,82686.987]
+  },
+  "measurementOrder": ["baseline full compile","control full compile","layout full compile","candidate full compile","baseline check-only","candidate check-only"],
+  "completeOutputBytes": 19154334,
+  "completeOutputSha256": "3546e1cdb5104feaef7613ee8f0ea66ae70ad2410e150648f26b43accc22f0bd",
+  "baselineOutputByteIdentity": true,
+  "outputParserCheckerSmoke": "PASS",
+  "interpretation": "Both pairs favor reuse of immutable source-pattern binder-count certificates (~3% checker wall, ~5% CPU). Absolute sample variance is comparable, so this is a small candidate improvement, not an official-compiler speed win. Transient pattern metadata always uses structural fallback. Integration still requires fresh full source-root fixedpoint and fixtures.",
+  "executedPreparation": "sh evals/.selfhost_v41_prepare.sh (guarded owned/checker/template/emitter regeneration and canonical root component build)",
+  "executedBenchmark": "bun --smol evals/compiler_benchmark.ts --mode=component --corpus=checkpoints/compiler-benchmark-release237-v41.corpus.json --report=checkpoints/compiler-benchmark-release237-v41-algorithm-a.json --component=/private/tmp/bend-v41-algorithm.hDWCul/checkpoints/compiler-algorithm-v41-seed.js --driver=/private/tmp/bend-v41-algorithm.hDWCul/evals/checker_core_step_runtime.mjs --exports=checkpoints/compiler-benchmark-release237-v41-official-b.json.exports.json",
+  "executedRepeats": [
+    "bun --smol evals/compiler_benchmark.ts --mode=component --stop-after=check --corpus=checkpoints/compiler-benchmark-release237-v41.corpus.json --report=checkpoints/compiler-benchmark-release237-v41-native40-check-b.json --component=checkpoints/selfhost-steps-canonical-release237-v40-final.js",
+    "bun --smol evals/compiler_benchmark.ts --mode=component --stop-after=check --corpus=checkpoints/compiler-benchmark-release237-v41.corpus.json --report=checkpoints/compiler-benchmark-release237-v41-algorithm-check-b.json --component=/private/tmp/bend-v41-algorithm.hDWCul/checkpoints/compiler-algorithm-v41-seed.js --driver=/private/tmp/bend-v41-algorithm.hDWCul/evals/checker_core_step_runtime.mjs"
+  ],
+  "limits": {"memoryMiB":8192,"rssMiB":8192,"pollMs":10,"nativeOldMiB":3072,"benchmarkOldMiB":6144,"workerStackMiB":256,"timeoutMs":600000},
+  "nativeKernelUnchangedSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+  "checksExcluded": 0,
+  "outputPatches": 0,
+  "newFixedpointRun": false
+}

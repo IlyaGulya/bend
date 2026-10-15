@@ -802,11 +802,14 @@ type CheckerRequestGroup10 is Type:
   CheckerRequest_scope_body_cases_for_names{v_1: ArenaStore, +v_2: IR.Words, +v_3: IR.Names}
   CheckerRequest_scope_body_cases_for_constructor{v_1: ArenaStore, +v_2: IR.Words, +v_4: String, +v_5: Scope.ArenaGlobalScope}
   CheckerRequest_core_pattern_list_depth{v_1: ArenaStore, v_2: IR.Words}
-  CheckerRequest_core_pattern_depth{v_1: ArenaStore, v_3: U32}
-  CheckerRequest_core_shift_var{v_1: ArenaStore, v_3: Bool, v_5: String, v_7: Nat, v_9: Nat, v_10: Ast.SourceSpan}
-  CheckerRequest_core_bound_unaffected{v_1: Nat, v_3: Nat}
+  CheckerRequest_core_pattern_depth_bound{v_1: U32, v_4: ArenaResult<Nat>}
+  CheckerRequest_core_pattern_depth_region{v_1: ArenaStore, +v_3: U32, v_5: Bool}
+  CheckerRequest_core_pattern_depth{v_1: ArenaStore, +v_3: U32}
 
 type CheckerRequestGroup11 is Type:
+  CheckerRequest_core_pattern_depth_open{v_1: ArenaStore, v_3: U32}
+  CheckerRequest_core_shift_var{v_1: ArenaStore, v_3: Bool, v_5: String, v_7: Nat, v_9: Nat, v_10: Ast.SourceSpan}
+  CheckerRequest_core_bound_unaffected{v_1: Nat, v_3: Nat}
   CheckerRequest_core_shift_unaffected{v_1: ArenaStore, v_3: Bool, v_5: U32, v_7: Nat, v_9: Nat, v_11: Nat}
   CheckerRequest_core_shift_at{v_1: ArenaStore, +v_3: U32, +v_5: Nat, v_7: Nat, +v_9: Nat}
   CheckerRequest_core_shift_open{v_1: ArenaStore, v_3: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat}
@@ -868,11 +871,11 @@ type CheckerRequestGroup11 is Type:
   CheckerRequest_arena_case_prefix_local_index{v_1: ArenaStore, +v_3: U32, +v_5: U32}
   CheckerRequest_arena_case_prefix_local_cached_exact{v_1: ArenaStore, v_3: U32, v_5: U32, v_6: Arena.CasePrefixEntry, v_8: Bool}
   CheckerRequest_arena_case_prefix_local_cached_generation{v_0: Arena.Arena, +v_2: U32, +v_4: U32, v_5: Arena.CasePrefixEntry, v_7: Bool, v_9: Nat, v_11: Pair(Arena.Arena, Nat)}
+
+type CheckerRequestGroup12 is Type:
   CheckerRequest_arena_case_prefix_local_cached{v_0: Arena.Arena, +v_2: U32, +v_4: U32, v_5: Pair(Arena.Arena, Arena.CasePrefixEntry)}
   CheckerRequest_arena_case_prefix_eligible{v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Bool}
   CheckerRequest_arena_case_prefix_region{v_1: ArenaStore, v_3: U32, v_5: U32, v_7: Bool}
-
-type CheckerRequestGroup12 is Type:
   CheckerRequest_arena_case_prefix_large{v_1: ArenaStore, +v_3: U32, v_5: U32, v_7: Bool}
   CheckerRequest_arena_case_prefix_index{v_1: ArenaStore, v_2: IR.Words}
   CheckerRequest_arena_case_prefix_name{v_2: Map<&2, U32>, v_4: String}
@@ -934,11 +937,11 @@ type CheckerRequestGroup12 is Type:
   CheckerRequest_arena_bound_range_combine{v_1: Nat, v_3: Bool, v_6: ArenaResult<Nat>}
   CheckerRequest_arena_bound_range_word{v_1: Nat, +v_3: Bool, v_5: U32, v_8: ArenaResult<U32>}
   CheckerRequest_arena_bound_range_loop{v_1: Nat, +v_3: U32, +v_5: U32, +v_7: Bool, +v_9: U32, v_12: ArenaResult<Nat>}
+
+type CheckerRequestGroup13 is Type:
   CheckerRequest_arena_bound_range_length{v_1: ArenaStore, v_3: U32, +v_5: U32, v_7: Bool, v_9: U32, v_11: Cmp}
   CheckerRequest_arena_bound_range_start{v_1: ArenaStore, +v_3: U32, +v_5: U32, +v_7: U32, v_9: Bool, v_11: U32, v_13: Cmp}
   CheckerRequest_arena_bound_range_source{+v_1: U32, v_3: U32, v_5: Bool, v_7: U32, v_9: Pair(Arena.Arena, U32), v_10: Arena.Arena}
-
-type CheckerRequestGroup13 is Type:
   CheckerRequest_arena_bound_range_transient{+v_1: U32, v_3: U32, v_5: Bool, v_7: U32, v_9: Pair(Arena.Arena, U32), v_10: Arena.Arena}
   CheckerRequest_arena_bound_range_region{v_0: Arena.Arena, v_1: Arena.Arena, v_3: U32, v_5: U32, v_7: Bool, v_9: U32, v_11: Bool}
   CheckerRequest_arena_bound_range_empty{v_1: ArenaStore, v_3: U32, v_5: U32, v_7: Bool, v_9: U32, v_11: Bool}
@@ -1000,11 +1003,11 @@ type CheckerRequestGroup13 is Type:
   CheckerRequest_arena_publish_names{v_1: ArenaStore, v_2: IR.Names}
   CheckerRequest_arena_publish_quantities_copy{v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Nat, +v_9: U32}
   CheckerRequest_arena_publish_quantities_select{v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Bool, v_9: Bool}
+
+type CheckerRequestGroup14 is Type:
   CheckerRequest_arena_publish_quantities{v_1: ArenaStore, v_2: IR.Quantities}
   CheckerRequest_arena_publish_naturals_copy{v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Nat, +v_9: U32}
   CheckerRequest_arena_publish_naturals_select{v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Bool, v_9: Bool}
-
-type CheckerRequestGroup14 is Type:
   CheckerRequest_arena_publish_naturals{v_1: ArenaStore, v_2: IR.Naturals}
   CheckerRequest_arena_publish_term_region{v_1: ArenaStore, v_3: U32, v_5: Bool}
   CheckerRequest_arena_publish_term{v_1: ArenaStore, +v_3: U32}
@@ -1066,11 +1069,11 @@ type CheckerRequestGroup14 is Type:
   CheckerRequest_arena_decode_optional_term{v_0: Arena.Arena, v_1: IR.OptionalTerm}
   CheckerRequest_arena_decode_definition{v_0: Arena.Arena, v_1: IR.Definition}
   CheckerRequest_arena_decode_type_decl{v_0: Arena.Arena, v_1: IR.TypeDecl}
+
+type CheckerRequestGroup15 is Type:
   CheckerRequest_arena_decode_law_decl{v_0: Arena.Arena, v_1: IR.LawDecl}
   CheckerRequest_arena_decode_top_level{v_0: Arena.Arena, v_1: IR.TopLevel}
   CheckerRequest_arena_decode_module{v_0: Arena.Arena, v_1: IR.Module}
-
-type CheckerRequestGroup15 is Type:
   CheckerRequest_arena_decode_maybe_term{v_0: Arena.Arena, v_3: Maybe<&2, U32>}
   CheckerRequest_arena_decode_constructor_decl_list{v_0: Arena.Arena, v_2: List<&2, IR.ConstructorDecl>}
   CheckerRequest_arena_decode_clause_list{v_0: Arena.Arena, v_2: List<&2, IR.Clause>}
@@ -1132,11 +1135,11 @@ type CheckerRequestGroup15 is Type:
   CheckerRequest_arena_pack_quantities_reserve_words_result_34{v_2: Pair(Arena.Arena, U32), +v_4: List<&2, Ast.Quantity>, +v_6: U32}
   CheckerRequest_arena_pack_term_name_result_35{v_2: Pair(Arena.Arena, U32), v_4: Nat, v_5: Ast.SourceSpan}
   CheckerRequest_arena_pack_term_name_result_36{v_2: Pair(Arena.Arena, U32), v_3: Ast.SourceSpan}
+
+type CheckerRequestGroup16 is Type:
   CheckerRequest_arena_pack_term_name_result_37{v_2: Pair(Arena.Arena, U32), v_3: Ast.SyntaxTerm, v_4: Ast.SyntaxTerm, v_5: Ast.Quantity, v_7: Nat, v_8: Ast.SourceSpan}
   CheckerRequest_arena_pack_term_name_result_38{v_2: Pair(Arena.Arena, U32), v_3: Ast.SyntaxTerm, v_5: Maybe<&2, Ast.Quantity>, v_7: Nat, v_8: Ast.SourceSpan}
   CheckerRequest_arena_pack_term_name_result_39{v_2: Pair(Arena.Arena, U32), v_4: List<&2, Ast.SyntaxTerm>, v_7: List<&2, String>, v_8: Ast.SourceSpan}
-
-type CheckerRequestGroup16 is Type:
   CheckerRequest_arena_pack_term_name_result_40{v_2: Pair(Arena.Arena, U32), v_4: List<&2, Ast.SyntaxTerm>, v_5: Ast.SourceSpan}
   CheckerRequest_arena_pack_term_name_result_41{v_2: Pair(Arena.Arena, U32), v_3: Ast.SyntaxTerm, v_4: Ast.SyntaxTerm, v_5: Ast.SourceSpan}
   CheckerRequest_arena_pack_term_name_result_42{v_2: Pair(Arena.Arena, U32), v_3: Ast.SourceSpan}
@@ -1943,12 +1946,15 @@ def checker_result_group_10(request: CheckerRequestGroup10) -> Type:
     case CheckerRequest_scope_body_cases_for_names{_, _, _}: ArenaResult<IR.Words>
     case CheckerRequest_scope_body_cases_for_constructor{_, _, _, _}: ArenaResult<IR.Words>
     case CheckerRequest_core_pattern_list_depth{_, _}: ArenaResult<Nat>
+    case CheckerRequest_core_pattern_depth_bound{_, _}: ArenaResult<Nat>
+    case CheckerRequest_core_pattern_depth_region{_, _, _}: ArenaResult<Nat>
     case CheckerRequest_core_pattern_depth{_, _}: ArenaResult<Nat>
-    case CheckerRequest_core_shift_var{_, _, _, _, _, _}: ArenaResult<U32>
-    case CheckerRequest_core_bound_unaffected{_, _}: Bool
 
 def checker_result_group_11(request: CheckerRequestGroup11) -> Type:
   match request:
+    case CheckerRequest_core_pattern_depth_open{_, _}: ArenaResult<Nat>
+    case CheckerRequest_core_shift_var{_, _, _, _, _, _}: ArenaResult<U32>
+    case CheckerRequest_core_bound_unaffected{_, _}: Bool
     case CheckerRequest_core_shift_unaffected{_, _, _, _, _, _}: ArenaResult<U32>
     case CheckerRequest_core_shift_at{_, _, _, _, _}: ArenaResult<U32>
     case CheckerRequest_core_shift_open{_, _, _, _, _}: ArenaResult<U32>
@@ -2010,12 +2016,12 @@ def checker_result_group_11(request: CheckerRequestGroup11) -> Type:
     case CheckerRequest_arena_case_prefix_local_index{_, _, _}: ArenaResult<Arena.CasePrefixEntry>
     case CheckerRequest_arena_case_prefix_local_cached_exact{_, _, _, _, _}: ArenaResult<Arena.CasePrefixEntry>
     case CheckerRequest_arena_case_prefix_local_cached_generation{_, _, _, _, _, _, _}: ArenaResult<Arena.CasePrefixEntry>
-    case CheckerRequest_arena_case_prefix_local_cached{_, _, _, _}: ArenaResult<Arena.CasePrefixEntry>
-    case CheckerRequest_arena_case_prefix_eligible{_, _, _, _}: ArenaResult<Arena.CasePrefixEntry>
-    case CheckerRequest_arena_case_prefix_region{_, _, _, _}: ArenaResult<Arena.CasePrefixEntry>
 
 def checker_result_group_12(request: CheckerRequestGroup12) -> Type:
   match request:
+    case CheckerRequest_arena_case_prefix_local_cached{_, _, _, _}: ArenaResult<Arena.CasePrefixEntry>
+    case CheckerRequest_arena_case_prefix_eligible{_, _, _, _}: ArenaResult<Arena.CasePrefixEntry>
+    case CheckerRequest_arena_case_prefix_region{_, _, _, _}: ArenaResult<Arena.CasePrefixEntry>
     case CheckerRequest_arena_case_prefix_large{_, _, _, _}: ArenaResult<Arena.CasePrefixEntry>
     case CheckerRequest_arena_case_prefix_index{_, _}: ArenaResult<Arena.CasePrefixEntry>
     case CheckerRequest_arena_case_prefix_name{_, _}: Map<&2, U32> & U32
@@ -2077,12 +2083,12 @@ def checker_result_group_12(request: CheckerRequestGroup12) -> Type:
     case CheckerRequest_arena_bound_range_combine{_, _, _}: ArenaResult<Nat>
     case CheckerRequest_arena_bound_range_word{_, _, _, _}: ArenaResult<Nat>
     case CheckerRequest_arena_bound_range_loop{_, _, _, _, _, _}: ArenaResult<Nat>
-    case CheckerRequest_arena_bound_range_length{_, _, _, _, _, _}: ArenaResult<Nat>
-    case CheckerRequest_arena_bound_range_start{_, _, _, _, _, _, _}: ArenaResult<Nat>
-    case CheckerRequest_arena_bound_range_source{_, _, _, _, _, _}: ArenaResult<Nat>
 
 def checker_result_group_13(request: CheckerRequestGroup13) -> Type:
   match request:
+    case CheckerRequest_arena_bound_range_length{_, _, _, _, _, _}: ArenaResult<Nat>
+    case CheckerRequest_arena_bound_range_start{_, _, _, _, _, _, _}: ArenaResult<Nat>
+    case CheckerRequest_arena_bound_range_source{_, _, _, _, _, _}: ArenaResult<Nat>
     case CheckerRequest_arena_bound_range_transient{_, _, _, _, _, _}: ArenaResult<Nat>
     case CheckerRequest_arena_bound_range_region{_, _, _, _, _, _, _}: ArenaResult<Nat>
     case CheckerRequest_arena_bound_range_empty{_, _, _, _, _, _}: ArenaResult<Nat>
@@ -2144,12 +2150,12 @@ def checker_result_group_13(request: CheckerRequestGroup13) -> Type:
     case CheckerRequest_arena_publish_names{_, _}: ArenaResult<IR.Names>
     case CheckerRequest_arena_publish_quantities_copy{_, _, _, _, _}: ArenaStore
     case CheckerRequest_arena_publish_quantities_select{_, _, _, _, _}: ArenaResult<IR.Quantities>
-    case CheckerRequest_arena_publish_quantities{_, _}: ArenaResult<IR.Quantities>
-    case CheckerRequest_arena_publish_naturals_copy{_, _, _, _, _}: ArenaStore
-    case CheckerRequest_arena_publish_naturals_select{_, _, _, _, _}: ArenaResult<IR.Naturals>
 
 def checker_result_group_14(request: CheckerRequestGroup14) -> Type:
   match request:
+    case CheckerRequest_arena_publish_quantities{_, _}: ArenaResult<IR.Quantities>
+    case CheckerRequest_arena_publish_naturals_copy{_, _, _, _, _}: ArenaStore
+    case CheckerRequest_arena_publish_naturals_select{_, _, _, _, _}: ArenaResult<IR.Naturals>
     case CheckerRequest_arena_publish_naturals{_, _}: ArenaResult<IR.Naturals>
     case CheckerRequest_arena_publish_term_region{_, _, _}: ArenaResult<U32>
     case CheckerRequest_arena_publish_term{_, _}: ArenaResult<U32>
@@ -2211,12 +2217,12 @@ def checker_result_group_14(request: CheckerRequestGroup14) -> Type:
     case CheckerRequest_arena_decode_optional_term{_, _}: Arena.Arena & Ast.OptionalTerm
     case CheckerRequest_arena_decode_definition{_, _}: Arena.Arena & Ast.Definition
     case CheckerRequest_arena_decode_type_decl{_, _}: Arena.Arena & Ast.TypeDecl
-    case CheckerRequest_arena_decode_law_decl{_, _}: Arena.Arena & Ast.LawDecl
-    case CheckerRequest_arena_decode_top_level{_, _}: Arena.Arena & Ast.TopLevel
-    case CheckerRequest_arena_decode_module{_, _}: Arena.Arena & Ast.Module
 
 def checker_result_group_15(request: CheckerRequestGroup15) -> Type:
   match request:
+    case CheckerRequest_arena_decode_law_decl{_, _}: Arena.Arena & Ast.LawDecl
+    case CheckerRequest_arena_decode_top_level{_, _}: Arena.Arena & Ast.TopLevel
+    case CheckerRequest_arena_decode_module{_, _}: Arena.Arena & Ast.Module
     case CheckerRequest_arena_decode_maybe_term{_, _}: Arena.Arena & Maybe<&2, Ast.SyntaxTerm>
     case CheckerRequest_arena_decode_constructor_decl_list{_, _}: Arena.Arena & List<&2, Ast.ConstructorDecl>
     case CheckerRequest_arena_decode_clause_list{_, _}: Arena.Arena & List<&2, Ast.Clause>
@@ -2278,12 +2284,12 @@ def checker_result_group_15(request: CheckerRequestGroup15) -> Type:
     case CheckerRequest_arena_pack_quantities_reserve_words_result_34{_, _, _}: Pair(Arena.Arena, Pair(U32, U32))
     case CheckerRequest_arena_pack_term_name_result_35{_, _, _}: Pair(Arena.Arena, U32)
     case CheckerRequest_arena_pack_term_name_result_36{_, _}: Pair(Arena.Arena, U32)
-    case CheckerRequest_arena_pack_term_name_result_37{_, _, _, _, _, _}: Pair(Arena.Arena, U32)
-    case CheckerRequest_arena_pack_term_name_result_38{_, _, _, _, _}: Pair(Arena.Arena, U32)
-    case CheckerRequest_arena_pack_term_name_result_39{_, _, _, _}: Pair(Arena.Arena, U32)
 
 def checker_result_group_16(request: CheckerRequestGroup16) -> Type:
   match request:
+    case CheckerRequest_arena_pack_term_name_result_37{_, _, _, _, _, _}: Pair(Arena.Arena, U32)
+    case CheckerRequest_arena_pack_term_name_result_38{_, _, _, _, _}: Pair(Arena.Arena, U32)
+    case CheckerRequest_arena_pack_term_name_result_39{_, _, _, _}: Pair(Arena.Arena, U32)
     case CheckerRequest_arena_pack_term_name_result_40{_, _, _}: Pair(Arena.Arena, U32)
     case CheckerRequest_arena_pack_term_name_result_41{_, _, _, _}: Pair(Arena.Arena, U32)
     case CheckerRequest_arena_pack_term_name_result_42{_, _}: Pair(Arena.Arena, U32)
@@ -3091,12 +3097,15 @@ def checker_resume_type_group_10(-B: Type, request: CheckerRequestGroup10) -> Ty
     case CheckerRequest_scope_body_cases_for_names{_, _, _}: (@value: ArenaResult<IR.Words> -> B)
     case CheckerRequest_scope_body_cases_for_constructor{_, _, _, _}: (@value: ArenaResult<IR.Words> -> B)
     case CheckerRequest_core_pattern_list_depth{_, _}: (@value: ArenaResult<Nat> -> B)
+    case CheckerRequest_core_pattern_depth_bound{_, _}: (@value: ArenaResult<Nat> -> B)
+    case CheckerRequest_core_pattern_depth_region{_, _, _}: (@value: ArenaResult<Nat> -> B)
     case CheckerRequest_core_pattern_depth{_, _}: (@value: ArenaResult<Nat> -> B)
-    case CheckerRequest_core_shift_var{_, _, _, _, _, _}: (@value: ArenaResult<U32> -> B)
-    case CheckerRequest_core_bound_unaffected{_, _}: (@+value: Bool -> B)
 
 def checker_resume_type_group_11(-B: Type, request: CheckerRequestGroup11) -> Type:
   match request:
+    case CheckerRequest_core_pattern_depth_open{_, _}: (@value: ArenaResult<Nat> -> B)
+    case CheckerRequest_core_shift_var{_, _, _, _, _, _}: (@value: ArenaResult<U32> -> B)
+    case CheckerRequest_core_bound_unaffected{_, _}: (@+value: Bool -> B)
     case CheckerRequest_core_shift_unaffected{_, _, _, _, _, _}: (@value: ArenaResult<U32> -> B)
     case CheckerRequest_core_shift_at{_, _, _, _, _}: (@value: ArenaResult<U32> -> B)
     case CheckerRequest_core_shift_open{_, _, _, _, _}: (@value: ArenaResult<U32> -> B)
@@ -3158,12 +3167,12 @@ def checker_resume_type_group_11(-B: Type, request: CheckerRequestGroup11) -> Ty
     case CheckerRequest_arena_case_prefix_local_index{_, _, _}: (@value: ArenaResult<Arena.CasePrefixEntry> -> B)
     case CheckerRequest_arena_case_prefix_local_cached_exact{_, _, _, _, _}: (@value: ArenaResult<Arena.CasePrefixEntry> -> B)
     case CheckerRequest_arena_case_prefix_local_cached_generation{_, _, _, _, _, _, _}: (@value: ArenaResult<Arena.CasePrefixEntry> -> B)
-    case CheckerRequest_arena_case_prefix_local_cached{_, _, _, _}: (@value: ArenaResult<Arena.CasePrefixEntry> -> B)
-    case CheckerRequest_arena_case_prefix_eligible{_, _, _, _}: (@value: ArenaResult<Arena.CasePrefixEntry> -> B)
-    case CheckerRequest_arena_case_prefix_region{_, _, _, _}: (@value: ArenaResult<Arena.CasePrefixEntry> -> B)
 
 def checker_resume_type_group_12(-B: Type, request: CheckerRequestGroup12) -> Type:
   match request:
+    case CheckerRequest_arena_case_prefix_local_cached{_, _, _, _}: (@value: ArenaResult<Arena.CasePrefixEntry> -> B)
+    case CheckerRequest_arena_case_prefix_eligible{_, _, _, _}: (@value: ArenaResult<Arena.CasePrefixEntry> -> B)
+    case CheckerRequest_arena_case_prefix_region{_, _, _, _}: (@value: ArenaResult<Arena.CasePrefixEntry> -> B)
     case CheckerRequest_arena_case_prefix_large{_, _, _, _}: (@value: ArenaResult<Arena.CasePrefixEntry> -> B)
     case CheckerRequest_arena_case_prefix_index{_, _}: (@value: ArenaResult<Arena.CasePrefixEntry> -> B)
     case CheckerRequest_arena_case_prefix_name{_, _}: (@value: Map<&2, U32> & U32 -> B)
@@ -3225,12 +3234,12 @@ def checker_resume_type_group_12(-B: Type, request: CheckerRequestGroup12) -> Ty
     case CheckerRequest_arena_bound_range_combine{_, _, _}: (@value: ArenaResult<Nat> -> B)
     case CheckerRequest_arena_bound_range_word{_, _, _, _}: (@value: ArenaResult<Nat> -> B)
     case CheckerRequest_arena_bound_range_loop{_, _, _, _, _, _}: (@value: ArenaResult<Nat> -> B)
-    case CheckerRequest_arena_bound_range_length{_, _, _, _, _, _}: (@value: ArenaResult<Nat> -> B)
-    case CheckerRequest_arena_bound_range_start{_, _, _, _, _, _, _}: (@value: ArenaResult<Nat> -> B)
-    case CheckerRequest_arena_bound_range_source{_, _, _, _, _, _}: (@value: ArenaResult<Nat> -> B)
 
 def checker_resume_type_group_13(-B: Type, request: CheckerRequestGroup13) -> Type:
   match request:
+    case CheckerRequest_arena_bound_range_length{_, _, _, _, _, _}: (@value: ArenaResult<Nat> -> B)
+    case CheckerRequest_arena_bound_range_start{_, _, _, _, _, _, _}: (@value: ArenaResult<Nat> -> B)
+    case CheckerRequest_arena_bound_range_source{_, _, _, _, _, _}: (@value: ArenaResult<Nat> -> B)
     case CheckerRequest_arena_bound_range_transient{_, _, _, _, _, _}: (@value: ArenaResult<Nat> -> B)
     case CheckerRequest_arena_bound_range_region{_, _, _, _, _, _, _}: (@value: ArenaResult<Nat> -> B)
     case CheckerRequest_arena_bound_range_empty{_, _, _, _, _, _}: (@value: ArenaResult<Nat> -> B)
@@ -3292,12 +3301,12 @@ def checker_resume_type_group_13(-B: Type, request: CheckerRequestGroup13) -> Ty
     case CheckerRequest_arena_publish_names{_, _}: (@value: ArenaResult<IR.Names> -> B)
     case CheckerRequest_arena_publish_quantities_copy{_, _, _, _, _}: (@value: ArenaStore -> B)
     case CheckerRequest_arena_publish_quantities_select{_, _, _, _, _}: (@value: ArenaResult<IR.Quantities> -> B)
-    case CheckerRequest_arena_publish_quantities{_, _}: (@value: ArenaResult<IR.Quantities> -> B)
-    case CheckerRequest_arena_publish_naturals_copy{_, _, _, _, _}: (@value: ArenaStore -> B)
-    case CheckerRequest_arena_publish_naturals_select{_, _, _, _, _}: (@value: ArenaResult<IR.Naturals> -> B)
 
 def checker_resume_type_group_14(-B: Type, request: CheckerRequestGroup14) -> Type:
   match request:
+    case CheckerRequest_arena_publish_quantities{_, _}: (@value: ArenaResult<IR.Quantities> -> B)
+    case CheckerRequest_arena_publish_naturals_copy{_, _, _, _, _}: (@value: ArenaStore -> B)
+    case CheckerRequest_arena_publish_naturals_select{_, _, _, _, _}: (@value: ArenaResult<IR.Naturals> -> B)
     case CheckerRequest_arena_publish_naturals{_, _}: (@value: ArenaResult<IR.Naturals> -> B)
     case CheckerRequest_arena_publish_term_region{_, _, _}: (@value: ArenaResult<U32> -> B)
     case CheckerRequest_arena_publish_term{_, _}: (@value: ArenaResult<U32> -> B)
@@ -3359,12 +3368,12 @@ def checker_resume_type_group_14(-B: Type, request: CheckerRequestGroup14) -> Ty
     case CheckerRequest_arena_decode_optional_term{_, _}: (@value: Arena.Arena & Ast.OptionalTerm -> B)
     case CheckerRequest_arena_decode_definition{_, _}: (@value: Arena.Arena & Ast.Definition -> B)
     case CheckerRequest_arena_decode_type_decl{_, _}: (@value: Arena.Arena & Ast.TypeDecl -> B)
-    case CheckerRequest_arena_decode_law_decl{_, _}: (@value: Arena.Arena & Ast.LawDecl -> B)
-    case CheckerRequest_arena_decode_top_level{_, _}: (@value: Arena.Arena & Ast.TopLevel -> B)
-    case CheckerRequest_arena_decode_module{_, _}: (@value: Arena.Arena & Ast.Module -> B)
 
 def checker_resume_type_group_15(-B: Type, request: CheckerRequestGroup15) -> Type:
   match request:
+    case CheckerRequest_arena_decode_law_decl{_, _}: (@value: Arena.Arena & Ast.LawDecl -> B)
+    case CheckerRequest_arena_decode_top_level{_, _}: (@value: Arena.Arena & Ast.TopLevel -> B)
+    case CheckerRequest_arena_decode_module{_, _}: (@value: Arena.Arena & Ast.Module -> B)
     case CheckerRequest_arena_decode_maybe_term{_, _}: (@value: Arena.Arena & Maybe<&2, Ast.SyntaxTerm> -> B)
     case CheckerRequest_arena_decode_constructor_decl_list{_, _}: (@value: Arena.Arena & List<&2, Ast.ConstructorDecl> -> B)
     case CheckerRequest_arena_decode_clause_list{_, _}: (@value: Arena.Arena & List<&2, Ast.Clause> -> B)
@@ -3426,12 +3435,12 @@ def checker_resume_type_group_15(-B: Type, request: CheckerRequestGroup15) -> Ty
     case CheckerRequest_arena_pack_quantities_reserve_words_result_34{_, _, _}: (@value: Pair(Arena.Arena, Pair(U32, U32)) -> B)
     case CheckerRequest_arena_pack_term_name_result_35{_, _, _}: (@value: Pair(Arena.Arena, U32) -> B)
     case CheckerRequest_arena_pack_term_name_result_36{_, _}: (@value: Pair(Arena.Arena, U32) -> B)
-    case CheckerRequest_arena_pack_term_name_result_37{_, _, _, _, _, _}: (@value: Pair(Arena.Arena, U32) -> B)
-    case CheckerRequest_arena_pack_term_name_result_38{_, _, _, _, _}: (@value: Pair(Arena.Arena, U32) -> B)
-    case CheckerRequest_arena_pack_term_name_result_39{_, _, _, _}: (@value: Pair(Arena.Arena, U32) -> B)
 
 def checker_resume_type_group_16(-B: Type, request: CheckerRequestGroup16) -> Type:
   match request:
+    case CheckerRequest_arena_pack_term_name_result_37{_, _, _, _, _, _}: (@value: Pair(Arena.Arena, U32) -> B)
+    case CheckerRequest_arena_pack_term_name_result_38{_, _, _, _, _}: (@value: Pair(Arena.Arena, U32) -> B)
+    case CheckerRequest_arena_pack_term_name_result_39{_, _, _, _}: (@value: Pair(Arena.Arena, U32) -> B)
     case CheckerRequest_arena_pack_term_name_result_40{_, _, _}: (@value: Pair(Arena.Arena, U32) -> B)
     case CheckerRequest_arena_pack_term_name_result_41{_, _, _, _}: (@value: Pair(Arena.Arena, U32) -> B)
     case CheckerRequest_arena_pack_term_name_result_42{_, _}: (@value: Pair(Arena.Arena, U32) -> B)
@@ -25154,156 +25163,146 @@ def checker_body_scope_body_cases_for_constructor(v_1: ArenaStore, +v_2: IR.Word
   v_1003895 = {checker_pure_arena_words_view(v_1, v_2) : ArenaResult<IR.WordView>}
   checker_match_2960(v_1003895, v_4, v_5, v_2)
 
-def checker_continuation_2961(v_1003896: ArenaResult<Nat>) -> CheckerProgress<ArenaResult<Nat>>:
-  ArenaResult{v_51, +v_52} = v_1003896
-  CheckerFinished{{ArenaResult{v_51, Nat.add(1n, v_52)} : ArenaResult<Nat>}}
+def checker_continuation_2961(v_1003897: ArenaResult<Nat>, v_18: Nat) -> CheckerProgress<ArenaResult<Nat>>:
+  ArenaResult{v_21, v_22} = v_1003897
+  CheckerFinished{{ArenaResult{v_21, Nat.add(v_18, v_22)} : ArenaResult<Nat>}}
 
-def checker_match_2962(v_1003897: ArenaResult<String>, +v_30: Nat, +v_31: Ast.Quantity, +v_32: Ast.SourceSpan, v_19: IR.Words) -> CheckerProgress<ArenaResult<Nat>>:
-  match v_1003897:
-    case ArenaResult{v_36, +v_37}:
-      +v_39 = v_37
-      v_41 = v_39
-      v_43 = v_30
-      v_45 = v_31
-      v_47 = v_32
-      CheckerPending{CheckerRequestGroup_10{CheckerRequest_core_pattern_list_depth{v_36, v_19}}, v_1003896 => checker_continuation_2961(v_1003896)}
+def checker_continuation_2962(v_1003896: ArenaResult<Nat>, v_14: IR.Words) -> CheckerProgress<ArenaResult<Nat>>:
+  ArenaResult{v_17, v_18} = v_1003896
+  CheckerPending{CheckerRequestGroup_10{CheckerRequest_core_pattern_list_depth{v_17, v_14}}, v_1003897 => checker_continuation_2961(v_1003897, v_18)}
 
-def checker_continuation_2963(v_1003899: ArenaResult<Nat>, +v_82: Nat) -> CheckerProgress<ArenaResult<Nat>>:
-  ArenaResult{v_86, +v_87} = v_1003899
-  CheckerFinished{{ArenaResult{v_86, Nat.add(v_82, v_87)} : ArenaResult<Nat>}}
-
-def checker_continuation_2964(v_1003898: ArenaResult<Nat>, v_19: IR.Words) -> CheckerProgress<ArenaResult<Nat>>:
-  ArenaResult{v_81, +v_82} = v_1003898
-  CheckerPending{CheckerRequestGroup_10{CheckerRequest_core_pattern_list_depth{v_81, v_19}}, v_1003899 => checker_continuation_2963(v_1003899, v_82)}
-
-def checker_match_2965(v_1003900: ArenaResult<String>, +v_60: U32, +v_61: U32, +v_62: Ast.SourceSpan, v_19: IR.Words) -> CheckerProgress<ArenaResult<Nat>>:
-  match v_1003900:
-    case ArenaResult{v_66, +v_67}:
-      +v_69 = v_67
-      +v_71 = {IR.Words{v_60, v_61} : IR.Words}
-      v_73 = v_69
-      v_75 = v_71
-      v_77 = v_62
-      CheckerPending{CheckerRequestGroup_10{CheckerRequest_core_pattern_list_depth{v_66, v_75}}, v_1003898 => checker_continuation_2964(v_1003898, v_19)}
-
-def checker_match_2966(+v_24: Arena.Pattern, v_23: ArenaStore, v_19: IR.Words) -> CheckerProgress<ArenaResult<Nat>>:
-  match v_24:
-    case Arena.PatternVar{+v_29, +v_30, +v_31, +v_32}:
-      v_1003897 = {checker_pure_arena_name_text(v_23, v_29) : ArenaResult<String>}
-      checker_match_2962(v_1003897, v_30, v_31, v_32, v_19)
-    case Arena.PatternCtr{+v_59, +v_60, +v_61, +v_62}:
-      v_1003900 = {checker_pure_arena_name_text(v_23, v_59) : ArenaResult<String>}
-      checker_match_2965(v_1003900, v_60, v_61, v_62, v_19)
-
-def checker_match_2967(v_1003901: ArenaResult<Arena.Pattern>, v_19: IR.Words) -> CheckerProgress<ArenaResult<Nat>>:
-  match v_1003901:
-    case ArenaResult{v_23, +v_24}:
-      checker_match_2966(v_24, v_23, v_19)
-
-def checker_match_2968(+v_9: IR.WordView, v_8: ArenaStore) -> CheckerProgress<ArenaResult<Nat>>:
-  match v_9:
+def checker_match_2963(v_8: IR.WordView, v_7: ArenaStore) -> CheckerProgress<ArenaResult<Nat>>:
+  match v_8:
     case IR.WordNil{}:
-      CheckerFinished{{ArenaResult{v_8, 0n} : ArenaResult<Nat>}}
-    case IR.WordCons{+v_14, +v_15}:
-      +v_17 = v_14
-      v_19 = v_15
-      v_1003901 = {checker_pure_arena_get_pattern(v_8, v_17) : ArenaResult<Arena.Pattern>}
-      checker_match_2967(v_1003901, v_19)
+      CheckerFinished{{ArenaResult{v_7, 0n} : ArenaResult<Nat>}}
+    case IR.WordCons{v_13, v_14}:
+      CheckerPending{CheckerRequestGroup_10{CheckerRequest_core_pattern_depth{v_7, v_13}}, v_1003896 => checker_continuation_2962(v_1003896, v_14)}
 
-def checker_match_2969(v_1003902: ArenaResult<IR.WordView>) -> CheckerProgress<ArenaResult<Nat>>:
-  match v_1003902:
-    case ArenaResult{v_8, +v_9}:
-      checker_match_2968(v_9, v_8)
+def checker_match_2964(v_1003898: ArenaResult<IR.WordView>) -> CheckerProgress<ArenaResult<Nat>>:
+  match v_1003898:
+    case ArenaResult{v_7, v_8}:
+      checker_match_2963(v_8, v_7)
 
 def checker_body_core_pattern_list_depth(v_1: ArenaStore, v_2: IR.Words) -> CheckerProgress<ArenaResult<Nat>>:
-  v_1003902 = {checker_pure_arena_words_view(v_1, v_2) : ArenaResult<IR.WordView>}
-  checker_match_2969(v_1003902)
+  v_1003898 = {checker_pure_arena_words_view(v_1, v_2) : ArenaResult<IR.WordView>}
+  checker_match_2964(v_1003898)
 
-def checker_match_2970(+v_10: Arena.Pattern, v_9: ArenaStore) -> CheckerProgress<ArenaResult<Nat>>:
+def checker_match_2965(v_10: Nat, v_9: ArenaStore, v_1: U32) -> CheckerProgress<ArenaResult<Nat>>:
   match v_10:
-    case Arena.PatternVar{+v_15, +v_16, +v_17, +v_18}:
-      CheckerFinished{{ArenaResult{v_9, 1n} : ArenaResult<Nat>}}
-    case Arena.PatternCtr{+v_25, +v_26, +v_27, +v_28}:
-      +v_30 = {IR.Words{v_26, v_27} : IR.Words}
-      v_32 = v_30
-      {checker_body_core_pattern_list_depth(v_9, v_32) : CheckerProgress<ArenaResult<Nat>>}
+    case 0n:
+      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_pattern_depth_open{v_9, v_1}}, v_1003899 => CheckerFinished{v_1003899}}
+    case 1n+v_13:
+      CheckerFinished{{ArenaResult{v_9, v_13} : ArenaResult<Nat>}}
 
-def checker_match_2971(v_1003904: ArenaResult<Arena.Pattern>) -> CheckerProgress<ArenaResult<Nat>>:
-  match v_1003904:
-    case ArenaResult{v_9, +v_10}:
-      checker_match_2970(v_10, v_9)
+def checker_match_2966(v_4: ArenaResult<Nat>, v_1: U32) -> CheckerProgress<ArenaResult<Nat>>:
+  match v_4:
+    case ArenaResult{v_9, v_10}:
+      checker_match_2965(v_10, v_9, v_1)
 
-def checker_body_core_pattern_depth(v_1: ArenaStore, v_3: U32) -> CheckerProgress<ArenaResult<Nat>>:
-  v_1003904 = {checker_pure_arena_get_pattern(v_1, v_3) : ArenaResult<Arena.Pattern>}
-  checker_match_2971(v_1003904)
+def checker_body_core_pattern_depth_bound(v_1: U32, v_4: ArenaResult<Nat>) -> CheckerProgress<ArenaResult<Nat>>:
+  checker_match_2966(v_4, v_1)
 
-def checker_match_2972(v_1003906: ArenaResult<U32>, v_7: Nat, v_9: Nat, v_10: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1003906:
+def checker_match_2967(v_1: ArenaStore, +v_3: U32) -> CheckerProgress<ArenaResult<Nat>>:
+  match v_1:
+    case ArenaStore{v_11, v_12}:
+      CheckerDirect{Bool, CheckerRequestGroup_10{CheckerRequest_core_pattern_depth_bound{v_3, checker_pure_arena_bound_source(Arena.bound_read(v_11, v_3, True{}), v_12)}}, False{}, v_1003902 => checker_body_core_pattern_depth_bound(v_3, checker_pure_arena_bound_source(Arena.bound_read(v_11, v_3, True{}), v_12)), v_1003901 => CheckerFinished{v_1003901}}
+
+def checker_match_2968(v_5: Bool, v_1: ArenaStore, +v_3: U32) -> CheckerProgress<ArenaResult<Nat>>:
+  match v_5:
+    case True{}:
+      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_pattern_depth_open{v_1, v_3}}, v_1003900 => CheckerFinished{v_1003900}}
+    case False{}:
+      checker_match_2967(v_1, v_3)
+
+def checker_body_core_pattern_depth_region(v_1: ArenaStore, +v_3: U32, v_5: Bool) -> CheckerProgress<ArenaResult<Nat>>:
+  checker_match_2968(v_5, v_1, v_3)
+
+def checker_body_core_pattern_depth(v_1: ArenaStore, +v_3: U32) -> CheckerProgress<ArenaResult<Nat>>:
+  CheckerDirect{Bool, CheckerRequestGroup_10{CheckerRequest_core_pattern_depth_region{v_1, v_3, checker_pure_arena_is_transient(v_3)}}, False{}, v_1003904 => checker_body_core_pattern_depth_region(v_1, v_3, checker_pure_arena_is_transient(v_3)), v_1003903 => CheckerFinished{v_1003903}}
+
+def checker_match_2969(v_9: Arena.Pattern, v_8: ArenaStore) -> CheckerProgress<ArenaResult<Nat>>:
+  match v_9:
+    case Arena.PatternVar{_, _, _, _}:
+      CheckerFinished{{ArenaResult{v_8, 1n} : ArenaResult<Nat>}}
+    case Arena.PatternCtr{_, v_25, v_26, _}:
+      CheckerDirect{Bool, CheckerRequestGroup_10{CheckerRequest_core_pattern_list_depth{v_8, IR.Words{v_25, v_26}}}, False{}, v_1003906 => checker_body_core_pattern_list_depth(v_8, IR.Words{v_25, v_26}), v_1003905 => CheckerFinished{v_1003905}}
+
+def checker_match_2970(v_1003907: ArenaResult<Arena.Pattern>) -> CheckerProgress<ArenaResult<Nat>>:
+  match v_1003907:
+    case ArenaResult{v_8, v_9}:
+      checker_match_2969(v_9, v_8)
+
+def checker_body_core_pattern_depth_open(v_1: ArenaStore, v_3: U32) -> CheckerProgress<ArenaResult<Nat>>:
+  v_1003907 = {checker_pure_arena_get_pattern(v_1, v_3) : ArenaResult<Arena.Pattern>}
+  checker_match_2970(v_1003907)
+
+def checker_match_2971(v_1003909: ArenaResult<U32>, v_7: Nat, v_9: Nat, v_10: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1003909:
     case ArenaResult{v_16, +v_17}:
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_16, Arena.TermVar{v_17, Nat.add(v_7, v_9), v_10}}}, v_1003905 => CheckerFinished{{v_1003905 : ArenaResult<U32>}}}
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_16, Arena.TermVar{v_17, Nat.add(v_7, v_9), v_10}}}, v_1003908 => CheckerFinished{{v_1003908 : ArenaResult<U32>}}}
 
-def checker_match_2973(v_1003908: ArenaResult<U32>, v_7: Nat, v_10: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1003908:
+def checker_match_2972(v_1003911: ArenaResult<U32>, v_7: Nat, v_10: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1003911:
     case ArenaResult{v_28, +v_29}:
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_28, Arena.TermVar{v_29, v_7, v_10}}}, v_1003907 => CheckerFinished{{v_1003907 : ArenaResult<U32>}}}
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_28, Arena.TermVar{v_29, v_7, v_10}}}, v_1003910 => CheckerFinished{{v_1003910 : ArenaResult<U32>}}}
 
-def checker_match_2974(v_3: Bool, v_1: ArenaStore, v_5: String, v_7: Nat, v_9: Nat, v_10: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+def checker_match_2973(v_3: Bool, v_1: ArenaStore, v_5: String, v_7: Nat, v_9: Nat, v_10: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
   match v_3:
     case True{}:
-      v_1003906 = {checker_pure_arena_name(v_1, v_5) : ArenaResult<U32>}
-      checker_match_2972(v_1003906, v_7, v_9, v_10)
+      v_1003909 = {checker_pure_arena_name(v_1, v_5) : ArenaResult<U32>}
+      checker_match_2971(v_1003909, v_7, v_9, v_10)
     case False{}:
-      v_1003908 = {checker_pure_arena_name(v_1, v_5) : ArenaResult<U32>}
-      checker_match_2973(v_1003908, v_7, v_10)
+      v_1003911 = {checker_pure_arena_name(v_1, v_5) : ArenaResult<U32>}
+      checker_match_2972(v_1003911, v_7, v_10)
 
 def checker_body_core_shift_var(v_1: ArenaStore, v_3: Bool, v_5: String, v_7: Nat, v_9: Nat, v_10: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  checker_match_2974(v_3, v_1, v_5, v_7, v_9, v_10)
+  checker_match_2973(v_3, v_1, v_5, v_7, v_9, v_10)
 
 def checker_body_core_bound_unaffected(v_1: Nat, v_3: Nat) -> CheckerProgress<Bool>:
   CheckerFinished{checker_pure_core_bound_unaffected(v_1, v_3)}
 
-def checker_match_2975(v_3: Bool, v_1: ArenaStore, v_5: U32, v_7: Nat, v_9: Nat, v_11: Nat) -> CheckerProgress<ArenaResult<U32>>:
+def checker_match_2974(v_3: Bool, v_1: ArenaStore, v_5: U32, v_7: Nat, v_9: Nat, v_11: Nat) -> CheckerProgress<ArenaResult<U32>>:
   match v_3:
     case True{}:
       CheckerFinished{{ArenaResult{v_1, v_5} : ArenaResult<U32>}}
     case False{}:
-      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_shift_open{v_1, v_5, v_7, v_9, v_11}}, v_1003909 => CheckerFinished{v_1003909}}
+      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_shift_open{v_1, v_5, v_7, v_9, v_11}}, v_1003912 => CheckerFinished{v_1003912}}
 
 def checker_body_core_shift_unaffected(v_1: ArenaStore, v_3: Bool, v_5: U32, v_7: Nat, v_9: Nat, v_11: Nat) -> CheckerProgress<ArenaResult<U32>>:
-  checker_match_2975(v_3, v_1, v_5, v_7, v_9, v_11)
+  checker_match_2974(v_3, v_1, v_5, v_7, v_9, v_11)
 
-def checker_match_2976(v_1003912: ArenaResult<Nat>, +v_5: Nat, +v_9: Nat, +v_3: U32, v_7: Nat) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1003912:
+def checker_match_2975(v_1003915: ArenaResult<Nat>, +v_5: Nat, +v_9: Nat, +v_3: U32, v_7: Nat) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1003915:
     case ArenaResult{v_15, v_16}:
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_unaffected{v_15, checker_pure_core_bound_unaffected(v_16, Nat.add(v_5, v_9)), v_3, v_5, v_7, v_9}}, False{}, v_1003911 => checker_body_core_shift_unaffected(v_15, checker_pure_core_bound_unaffected(v_16, Nat.add(v_5, v_9)), v_3, v_5, v_7, v_9), v_1003910 => CheckerFinished{v_1003910}}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_unaffected{v_15, checker_pure_core_bound_unaffected(v_16, Nat.add(v_5, v_9)), v_3, v_5, v_7, v_9}}, False{}, v_1003914 => checker_body_core_shift_unaffected(v_15, checker_pure_core_bound_unaffected(v_16, Nat.add(v_5, v_9)), v_3, v_5, v_7, v_9), v_1003913 => CheckerFinished{v_1003913}}
 
 def checker_body_core_shift_at(v_1: ArenaStore, +v_3: U32, +v_5: Nat, v_7: Nat, +v_9: Nat) -> CheckerProgress<ArenaResult<U32>>:
-  v_1003912 = {checker_pure_arena_node_bound(v_1, v_3) : ArenaResult<Nat>}
-  checker_match_2976(v_1003912, v_5, v_9, v_3, v_7)
+  v_1003915 = {checker_pure_arena_node_bound(v_1, v_3) : ArenaResult<Nat>}
+  checker_match_2975(v_1003915, v_5, v_9, v_3, v_7)
 
-def checker_match_2977(v_1003915: ArenaResult<String>, +v_21: Nat, +v_22: Ast.SourceSpan, +v_5: Nat, +v_9: Nat, +v_7: Nat) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1003915:
+def checker_match_2976(v_1003918: ArenaResult<String>, +v_21: Nat, +v_22: Ast.SourceSpan, +v_5: Nat, +v_9: Nat, +v_7: Nat) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1003918:
     case ArenaResult{v_26, +v_27}:
       +v_29 = v_27
       v_31 = v_29
       +v_33 = v_21
       v_35 = v_22
-      CheckerDirect{Bool, CheckerRequestGroup_10{CheckerRequest_core_shift_var{v_26, Nat.is_ge(v_33, Nat.add(v_5, v_9)), v_31, v_33, v_7, v_35}}, False{}, v_1003914 => checker_body_core_shift_var(v_26, Nat.is_ge(v_33, Nat.add(v_5, v_9)), v_31, v_33, v_7, v_35), v_1003913 => CheckerFinished{{v_1003913 : ArenaResult<U32>}}}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_var{v_26, Nat.is_ge(v_33, Nat.add(v_5, v_9)), v_31, v_33, v_7, v_35}}, False{}, v_1003917 => checker_body_core_shift_var(v_26, Nat.is_ge(v_33, Nat.add(v_5, v_9)), v_31, v_33, v_7, v_35), v_1003916 => CheckerFinished{{v_1003916 : ArenaResult<U32>}}}
 
-def checker_continuation_2978(v_1003916: ArenaResult<U32>, v_56: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_60, +v_61} = v_1003916
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_60, Arena.TermBang{v_61, v_56}}}, v_1003917 => CheckerFinished{{v_1003917 : ArenaResult<U32>}}}
+def checker_continuation_2977(v_1003919: ArenaResult<U32>, v_56: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_60, +v_61} = v_1003919
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_60, Arena.TermBang{v_61, v_56}}}, v_1003920 => CheckerFinished{{v_1003920 : ArenaResult<U32>}}}
 
-def checker_continuation_2979(v_1003920: ArenaResult<U32>, v_78: Nat, +v_89: U32, v_84: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_93, +v_94} = v_1003920
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_93, Arena.TermSub{v_78, v_89, v_94, v_84}}}, v_1003921 => CheckerFinished{{v_1003921 : ArenaResult<U32>}}}
+def checker_continuation_2978(v_1003923: ArenaResult<U32>, v_78: Nat, +v_89: U32, v_84: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_93, +v_94} = v_1003923
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_93, Arena.TermSub{v_78, v_89, v_94, v_84}}}, v_1003924 => CheckerFinished{{v_1003924 : ArenaResult<U32>}}}
 
-def checker_continuation_2980(v_1003919: ArenaResult<U32>, v_82: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_78: Nat, v_84: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_88, +v_89} = v_1003919
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_88, v_82, v_5, v_7, Nat.add(v_9, 1n)}}, False{}, v_1003922 => checker_body_core_shift_at(v_88, v_82, v_5, v_7, Nat.add(v_9, 1n)), v_1003920 => checker_continuation_2979(v_1003920, v_78, v_89, v_84)}
+def checker_continuation_2979(v_1003922: ArenaResult<U32>, v_82: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_78: Nat, v_84: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_88, +v_89} = v_1003922
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_88, v_82, v_5, v_7, Nat.add(v_9, 1n)}}, False{}, v_1003925 => checker_body_core_shift_at(v_88, v_82, v_5, v_7, Nat.add(v_9, 1n)), v_1003923 => checker_continuation_2978(v_1003923, v_78, v_89, v_84)}
 
-def checker_continuation_2981(v_1003925: ArenaResult<U32>, +v_131: IR.Names, +v_133: IR.Naturals, +v_135: IR.Quantities, +v_146: IR.Words, v_141: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_151, +v_152} = v_1003925
+def checker_continuation_2980(v_1003928: ArenaResult<U32>, +v_131: IR.Names, +v_133: IR.Naturals, +v_135: IR.Quantities, +v_146: IR.Words, v_141: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_151, +v_152} = v_1003928
   v_155 = checker_pure_arena_names_start(v_131)
   v_158 = checker_pure_arena_names_count(v_131)
   v_161 = checker_pure_arena_naturals_start(v_133)
@@ -25312,52 +25311,52 @@ def checker_continuation_2981(v_1003925: ArenaResult<U32>, +v_131: IR.Names, +v_
   v_170 = checker_pure_arena_quantities_count(v_135)
   v_173 = checker_pure_arena_words_start(v_146)
   v_176 = checker_pure_arena_words_count(v_146)
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_151, Arena.TermLet{v_155, v_158, v_161, v_164, v_167, v_170, v_173, v_176, v_152, v_141}}}, v_1003926 => CheckerFinished{{v_1003926 : ArenaResult<U32>}}}
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_151, Arena.TermLet{v_155, v_158, v_161, v_164, v_167, v_170, v_173, v_176, v_152, v_141}}}, v_1003929 => CheckerFinished{{v_1003929 : ArenaResult<U32>}}}
 
-def checker_continuation_2982(v_1003924: ArenaResult<IR.Words>, v_139: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, +v_131: IR.Names, v_133: IR.Naturals, v_135: IR.Quantities, v_141: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_145, +v_146} = v_1003924
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_145, v_139, v_5, v_7, Nat.add(v_9, checker_pure_arena_names_length(v_131))}}, False{}, v_1003927 => checker_body_core_shift_at(v_145, v_139, v_5, v_7, Nat.add(v_9, checker_pure_arena_names_length(v_131))), v_1003925 => checker_continuation_2981(v_1003925, v_131, v_133, v_135, v_146, v_141)}
+def checker_continuation_2981(v_1003927: ArenaResult<IR.Words>, v_139: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, +v_131: IR.Names, v_133: IR.Naturals, v_135: IR.Quantities, v_141: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_145, +v_146} = v_1003927
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_145, v_139, v_5, v_7, Nat.add(v_9, checker_pure_arena_names_length(v_131))}}, False{}, v_1003930 => checker_body_core_shift_at(v_145, v_139, v_5, v_7, Nat.add(v_9, checker_pure_arena_names_length(v_131))), v_1003928 => checker_continuation_2980(v_1003928, v_131, v_133, v_135, v_146, v_141)}
 
-def checker_continuation_2983(v_1003929: ArenaResult<U32>, +v_200: U32, v_195: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_204, +v_205} = v_1003929
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_204, Arena.TermAnn{v_200, v_205, v_195}}}, v_1003930 => CheckerFinished{{v_1003930 : ArenaResult<U32>}}}
+def checker_continuation_2982(v_1003932: ArenaResult<U32>, +v_200: U32, v_195: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_204, +v_205} = v_1003932
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_204, Arena.TermAnn{v_200, v_205, v_195}}}, v_1003933 => CheckerFinished{{v_1003933 : ArenaResult<U32>}}}
 
-def checker_continuation_2984(v_1003928: ArenaResult<U32>, v_193: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_195: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_199, +v_200} = v_1003928
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_199, v_193, v_5, v_7, v_9}}, False{}, v_1003931 => checker_body_core_shift_at(v_199, v_193, v_5, v_7, v_9), v_1003929 => checker_continuation_2983(v_1003929, v_200, v_195)}
+def checker_continuation_2983(v_1003931: ArenaResult<U32>, v_193: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_195: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_199, +v_200} = v_1003931
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_199, v_193, v_5, v_7, v_9}}, False{}, v_1003934 => checker_body_core_shift_at(v_199, v_193, v_5, v_7, v_9), v_1003932 => checker_continuation_2982(v_1003932, v_200, v_195)}
 
-def checker_continuation_2985(v_1003933: ArenaResult<U32>, v_220: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_224, +v_225} = v_1003933
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_224, Arena.TermTemplate{v_225, v_220}}}, v_1003934 => CheckerFinished{{v_1003934 : ArenaResult<U32>}}}
+def checker_continuation_2984(v_1003936: ArenaResult<U32>, v_220: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_224, +v_225} = v_1003936
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_224, Arena.TermTemplate{v_225, v_220}}}, v_1003937 => CheckerFinished{{v_1003937 : ArenaResult<U32>}}}
 
-def checker_continuation_2986(v_1003936: ArenaResult<U32>, v_240: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_244, +v_245} = v_1003936
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_244, Arena.TermType{v_245, v_240}}}, v_1003937 => CheckerFinished{{v_1003937 : ArenaResult<U32>}}}
+def checker_continuation_2985(v_1003939: ArenaResult<U32>, v_240: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_244, +v_245} = v_1003939
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_244, Arena.TermType{v_245, v_240}}}, v_1003940 => CheckerFinished{{v_1003940 : ArenaResult<U32>}}}
 
-def checker_continuation_2987(v_1003942: ArenaResult<U32>, +v_291: U32, v_286: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_295, +v_296} = v_1003942
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_295, Arena.TermMin{v_291, v_296, v_286}}}, v_1003943 => CheckerFinished{{v_1003943 : ArenaResult<U32>}}}
+def checker_continuation_2986(v_1003945: ArenaResult<U32>, +v_291: U32, v_286: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_295, +v_296} = v_1003945
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_295, Arena.TermMin{v_291, v_296, v_286}}}, v_1003946 => CheckerFinished{{v_1003946 : ArenaResult<U32>}}}
 
-def checker_continuation_2988(v_1003941: ArenaResult<U32>, v_284: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_286: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_290, +v_291} = v_1003941
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_290, v_284, v_5, v_7, v_9}}, False{}, v_1003944 => checker_body_core_shift_at(v_290, v_284, v_5, v_7, v_9), v_1003942 => checker_continuation_2987(v_1003942, v_291, v_286)}
+def checker_continuation_2987(v_1003944: ArenaResult<U32>, v_284: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_286: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_290, +v_291} = v_1003944
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_290, v_284, v_5, v_7, v_9}}, False{}, v_1003947 => checker_body_core_shift_at(v_290, v_284, v_5, v_7, v_9), v_1003945 => checker_continuation_2986(v_1003945, v_291, v_286)}
 
-def checker_match_2989(v_1003949: ArenaResult<U32>, v_324: Ast.Quantity, v_328: Nat, +v_339: U32, +v_344: U32, v_334: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1003949:
-    case ArenaResult{v_348, +v_349}:
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_348, Arena.TermAll{v_324, v_349, v_328, v_339, v_344, v_334}}}, v_1003948 => CheckerFinished{{v_1003948 : ArenaResult<U32>}}}
-
-def checker_continuation_2990(v_1003947: ArenaResult<U32>, v_326: String, v_324: Ast.Quantity, v_328: Nat, +v_339: U32, v_334: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_343, +v_344} = v_1003947
-  v_1003949 = {checker_pure_arena_name(v_343, v_326) : ArenaResult<U32>}
-  checker_match_2989(v_1003949, v_324, v_328, v_339, v_344, v_334)
-
-def checker_continuation_2991(v_1003946: ArenaResult<U32>, v_332: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_326: String, v_324: Ast.Quantity, v_328: Nat, v_334: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_338, +v_339} = v_1003946
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_338, v_332, v_5, v_7, Nat.add(v_9, 1n)}}, False{}, v_1003950 => checker_body_core_shift_at(v_338, v_332, v_5, v_7, Nat.add(v_9, 1n)), v_1003947 => checker_continuation_2990(v_1003947, v_326, v_324, v_328, v_339, v_334)}
-
-def checker_match_2992(v_1003952: ArenaResult<String>, +v_310: Ast.Quantity, +v_312: Nat, +v_313: U32, +v_314: U32, +v_315: Ast.SourceSpan, +v_5: Nat, +v_7: Nat, +v_9: Nat) -> CheckerProgress<ArenaResult<U32>>:
+def checker_match_2988(v_1003952: ArenaResult<U32>, v_324: Ast.Quantity, v_328: Nat, +v_339: U32, +v_344: U32, v_334: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
   match v_1003952:
+    case ArenaResult{v_348, +v_349}:
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_348, Arena.TermAll{v_324, v_349, v_328, v_339, v_344, v_334}}}, v_1003951 => CheckerFinished{{v_1003951 : ArenaResult<U32>}}}
+
+def checker_continuation_2989(v_1003950: ArenaResult<U32>, v_326: String, v_324: Ast.Quantity, v_328: Nat, +v_339: U32, v_334: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_343, +v_344} = v_1003950
+  v_1003952 = {checker_pure_arena_name(v_343, v_326) : ArenaResult<U32>}
+  checker_match_2988(v_1003952, v_324, v_328, v_339, v_344, v_334)
+
+def checker_continuation_2990(v_1003949: ArenaResult<U32>, v_332: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_326: String, v_324: Ast.Quantity, v_328: Nat, v_334: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_338, +v_339} = v_1003949
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_338, v_332, v_5, v_7, Nat.add(v_9, 1n)}}, False{}, v_1003953 => checker_body_core_shift_at(v_338, v_332, v_5, v_7, Nat.add(v_9, 1n)), v_1003950 => checker_continuation_2989(v_1003950, v_326, v_324, v_328, v_339, v_334)}
+
+def checker_match_2991(v_1003955: ArenaResult<String>, +v_310: Ast.Quantity, +v_312: Nat, +v_313: U32, +v_314: U32, +v_315: Ast.SourceSpan, +v_5: Nat, +v_7: Nat, +v_9: Nat) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1003955:
     case ArenaResult{v_319, +v_320}:
       +v_322 = v_320
       v_324 = v_310
@@ -25366,20 +25365,20 @@ def checker_match_2992(v_1003952: ArenaResult<String>, +v_310: Ast.Quantity, +v_
       v_330 = v_313
       v_332 = v_314
       v_334 = v_315
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_319, v_330, v_5, v_7, v_9}}, False{}, v_1003951 => checker_body_core_shift_at(v_319, v_330, v_5, v_7, v_9), v_1003946 => checker_continuation_2991(v_1003946, v_332, v_5, v_7, v_9, v_326, v_324, v_328, v_334)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_319, v_330, v_5, v_7, v_9}}, False{}, v_1003954 => checker_body_core_shift_at(v_319, v_330, v_5, v_7, v_9), v_1003949 => checker_continuation_2990(v_1003949, v_332, v_5, v_7, v_9, v_326, v_324, v_328, v_334)}
 
-def checker_match_2993(v_1003955: ArenaResult<U32>, v_375: Maybe<&2, Ast.Quantity>, v_379: Nat, +v_388: U32, v_383: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1003955:
+def checker_match_2992(v_1003958: ArenaResult<U32>, v_375: Maybe<&2, Ast.Quantity>, v_379: Nat, +v_388: U32, v_383: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1003958:
     case ArenaResult{v_392, +v_393}:
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_392, Arena.TermLam{v_375, v_393, v_379, v_388, v_383}}}, v_1003954 => CheckerFinished{{v_1003954 : ArenaResult<U32>}}}
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_392, Arena.TermLam{v_375, v_393, v_379, v_388, v_383}}}, v_1003957 => CheckerFinished{{v_1003957 : ArenaResult<U32>}}}
 
-def checker_continuation_2994(v_1003953: ArenaResult<U32>, v_377: String, v_375: Maybe<&2, Ast.Quantity>, v_379: Nat, v_383: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_387, +v_388} = v_1003953
-  v_1003955 = {checker_pure_arena_name(v_387, v_377) : ArenaResult<U32>}
-  checker_match_2993(v_1003955, v_375, v_379, v_388, v_383)
+def checker_continuation_2993(v_1003956: ArenaResult<U32>, v_377: String, v_375: Maybe<&2, Ast.Quantity>, v_379: Nat, v_383: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_387, +v_388} = v_1003956
+  v_1003958 = {checker_pure_arena_name(v_387, v_377) : ArenaResult<U32>}
+  checker_match_2992(v_1003958, v_375, v_379, v_388, v_383)
 
-def checker_match_2995(v_1003957: ArenaResult<String>, +v_362: Maybe<&2, Ast.Quantity>, +v_364: Nat, +v_365: U32, +v_366: Ast.SourceSpan, +v_5: Nat, +v_7: Nat, +v_9: Nat) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1003957:
+def checker_match_2994(v_1003960: ArenaResult<String>, +v_362: Maybe<&2, Ast.Quantity>, +v_364: Nat, +v_365: U32, +v_366: Ast.SourceSpan, +v_5: Nat, +v_7: Nat, +v_9: Nat) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1003960:
     case ArenaResult{v_370, +v_371}:
       +v_373 = v_371
       v_375 = v_362
@@ -25387,32 +25386,32 @@ def checker_match_2995(v_1003957: ArenaResult<String>, +v_362: Maybe<&2, Ast.Qua
       v_379 = v_364
       v_381 = v_365
       v_383 = v_366
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_370, v_381, v_5, v_7, Nat.add(v_9, 1n)}}, False{}, v_1003956 => checker_body_core_shift_at(v_370, v_381, v_5, v_7, Nat.add(v_9, 1n)), v_1003953 => checker_continuation_2994(v_1003953, v_377, v_375, v_379, v_383)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_370, v_381, v_5, v_7, Nat.add(v_9, 1n)}}, False{}, v_1003959 => checker_body_core_shift_at(v_370, v_381, v_5, v_7, Nat.add(v_9, 1n)), v_1003956 => checker_continuation_2993(v_1003956, v_377, v_375, v_379, v_383)}
 
-def checker_continuation_2996(v_1003959: ArenaResult<U32>, +v_417: U32, v_412: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_421, +v_422} = v_1003959
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_421, Arena.TermApp{v_417, v_422, v_412}}}, v_1003960 => CheckerFinished{{v_1003960 : ArenaResult<U32>}}}
+def checker_continuation_2995(v_1003962: ArenaResult<U32>, +v_417: U32, v_412: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_421, +v_422} = v_1003962
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_421, Arena.TermApp{v_417, v_422, v_412}}}, v_1003963 => CheckerFinished{{v_1003963 : ArenaResult<U32>}}}
 
-def checker_continuation_2997(v_1003958: ArenaResult<U32>, v_410: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_412: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_416, +v_417} = v_1003958
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_416, v_410, v_5, v_7, v_9}}, False{}, v_1003961 => checker_body_core_shift_at(v_416, v_410, v_5, v_7, v_9), v_1003959 => checker_continuation_2996(v_1003959, v_417, v_412)}
+def checker_continuation_2996(v_1003961: ArenaResult<U32>, v_410: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_412: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_416, +v_417} = v_1003961
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_416, v_410, v_5, v_7, v_9}}, False{}, v_1003964 => checker_body_core_shift_at(v_416, v_410, v_5, v_7, v_9), v_1003962 => checker_continuation_2995(v_1003962, v_417, v_412)}
 
-def checker_match_2998(v_1003965: ArenaResult<U32>, +v_465: IR.Words, +v_458: IR.Names, v_460: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1003965:
+def checker_match_2997(v_1003968: ArenaResult<U32>, +v_465: IR.Words, +v_458: IR.Names, v_460: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1003968:
     case ArenaResult{v_469, +v_470}:
       v_473 = checker_pure_arena_words_start(v_465)
       v_476 = checker_pure_arena_words_count(v_465)
       v_479 = checker_pure_arena_names_start(v_458)
       v_482 = checker_pure_arena_names_count(v_458)
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_469, Arena.TermAdt{v_470, v_473, v_476, v_479, v_482, v_460}}}, v_1003964 => CheckerFinished{{v_1003964 : ArenaResult<U32>}}}
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_469, Arena.TermAdt{v_470, v_473, v_476, v_479, v_482, v_460}}}, v_1003967 => CheckerFinished{{v_1003967 : ArenaResult<U32>}}}
 
-def checker_continuation_2999(v_1003963: ArenaResult<IR.Words>, v_454: String, v_458: IR.Names, v_460: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_464, +v_465} = v_1003963
-  v_1003965 = {checker_pure_arena_name(v_464, v_454) : ArenaResult<U32>}
-  checker_match_2998(v_1003965, v_465, v_458, v_460)
+def checker_continuation_2998(v_1003966: ArenaResult<IR.Words>, v_454: String, v_458: IR.Names, v_460: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_464, +v_465} = v_1003966
+  v_1003968 = {checker_pure_arena_name(v_464, v_454) : ArenaResult<U32>}
+  checker_match_2997(v_1003968, v_465, v_458, v_460)
 
-def checker_match_3000(v_1003966: ArenaResult<String>, +v_437: U32, +v_438: U32, +v_439: U32, +v_440: U32, +v_441: Ast.SourceSpan, +v_5: Nat, +v_7: Nat, +v_9: Nat) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1003966:
+def checker_match_2999(v_1003969: ArenaResult<String>, +v_437: U32, +v_438: U32, +v_439: U32, +v_440: U32, +v_441: Ast.SourceSpan, +v_5: Nat, +v_7: Nat, +v_9: Nat) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1003969:
     case ArenaResult{v_445, +v_446}:
       +v_448 = v_446
       +v_450 = {IR.Words{v_437, v_438} : IR.Words}
@@ -25421,171 +25420,171 @@ def checker_match_3000(v_1003966: ArenaResult<String>, +v_437: U32, +v_438: U32,
       v_456 = v_450
       v_458 = v_452
       v_460 = v_441
-      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_shift_terms{v_445, v_5, v_7, v_9, v_456}}, v_1003963 => checker_continuation_2999(v_1003963, v_454, v_458, v_460)}
+      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_shift_terms{v_445, v_5, v_7, v_9, v_456}}, v_1003966 => checker_continuation_2998(v_1003966, v_454, v_458, v_460)}
 
-def checker_continuation_3001(v_1003968: ArenaResult<IR.Words>, +v_510: U32, v_505: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_514, +v_515} = v_1003968
+def checker_continuation_3000(v_1003971: ArenaResult<IR.Words>, +v_510: U32, v_505: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_514, +v_515} = v_1003971
   v_518 = checker_pure_arena_words_start(v_515)
   v_521 = checker_pure_arena_words_count(v_515)
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_514, Arena.TermFill{v_510, v_518, v_521, v_505}}}, v_1003969 => CheckerFinished{{v_1003969 : ArenaResult<U32>}}}
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_514, Arena.TermFill{v_510, v_518, v_521, v_505}}}, v_1003972 => CheckerFinished{{v_1003972 : ArenaResult<U32>}}}
 
-def checker_continuation_3002(v_1003967: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_503: IR.Words, v_505: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_509, +v_510} = v_1003967
-  CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_shift_terms{v_509, v_5, v_7, v_9, v_503}}, v_1003968 => checker_continuation_3001(v_1003968, v_510, v_505)}
+def checker_continuation_3001(v_1003970: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_503: IR.Words, v_505: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_509, +v_510} = v_1003970
+  CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_shift_terms{v_509, v_5, v_7, v_9, v_503}}, v_1003971 => checker_continuation_3000(v_1003971, v_510, v_505)}
 
-def checker_continuation_3003(v_1003972: ArenaResult<IR.Words>, +v_549: U32, v_544: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_553, +v_554} = v_1003972
+def checker_continuation_3002(v_1003975: ArenaResult<IR.Words>, +v_549: U32, v_544: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_553, +v_554} = v_1003975
   v_557 = checker_pure_arena_words_start(v_554)
   v_560 = checker_pure_arena_words_count(v_554)
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_553, Arena.TermPlus{v_549, v_557, v_560, v_544}}}, v_1003973 => CheckerFinished{{v_1003973 : ArenaResult<U32>}}}
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_553, Arena.TermPlus{v_549, v_557, v_560, v_544}}}, v_1003976 => CheckerFinished{{v_1003976 : ArenaResult<U32>}}}
 
-def checker_continuation_3004(v_1003971: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_542: IR.Words, v_544: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_548, +v_549} = v_1003971
-  CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_shift_terms{v_548, v_5, v_7, v_9, v_542}}, v_1003972 => checker_continuation_3003(v_1003972, v_549, v_544)}
+def checker_continuation_3003(v_1003974: ArenaResult<U32>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_542: IR.Words, v_544: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_548, +v_549} = v_1003974
+  CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_shift_terms{v_548, v_5, v_7, v_9, v_542}}, v_1003975 => checker_continuation_3002(v_1003975, v_549, v_544)}
 
-def checker_match_3005(v_1003977: ArenaResult<U32>, +v_603: IR.Words, v_598: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1003977:
+def checker_match_3004(v_1003980: ArenaResult<U32>, +v_603: IR.Words, v_598: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1003980:
     case ArenaResult{v_607, +v_608}:
       v_611 = checker_pure_arena_words_start(v_603)
       v_614 = checker_pure_arena_words_count(v_603)
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_607, Arena.TermCtr{v_608, v_611, v_614, v_598}}}, v_1003976 => CheckerFinished{{v_1003976 : ArenaResult<U32>}}}
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_607, Arena.TermCtr{v_608, v_611, v_614, v_598}}}, v_1003979 => CheckerFinished{{v_1003979 : ArenaResult<U32>}}}
 
-def checker_continuation_3006(v_1003975: ArenaResult<IR.Words>, v_594: String, v_598: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_602, +v_603} = v_1003975
-  v_1003977 = {checker_pure_arena_name(v_602, v_594) : ArenaResult<U32>}
-  checker_match_3005(v_1003977, v_603, v_598)
+def checker_continuation_3005(v_1003978: ArenaResult<IR.Words>, v_594: String, v_598: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_602, +v_603} = v_1003978
+  v_1003980 = {checker_pure_arena_name(v_602, v_594) : ArenaResult<U32>}
+  checker_match_3004(v_1003980, v_603, v_598)
 
-def checker_match_3007(v_1003978: ArenaResult<String>, +v_581: U32, +v_582: U32, +v_583: Ast.SourceSpan, +v_5: Nat, +v_7: Nat, +v_9: Nat) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1003978:
+def checker_match_3006(v_1003981: ArenaResult<String>, +v_581: U32, +v_582: U32, +v_583: Ast.SourceSpan, +v_5: Nat, +v_7: Nat, +v_9: Nat) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1003981:
     case ArenaResult{v_587, +v_588}:
       +v_590 = v_588
       +v_592 = {IR.Words{v_581, v_582} : IR.Words}
       v_594 = v_590
       v_596 = v_592
       v_598 = v_583
-      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_shift_terms{v_587, v_5, v_7, v_9, v_596}}, v_1003975 => checker_continuation_3006(v_1003975, v_594, v_598)}
+      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_shift_terms{v_587, v_5, v_7, v_9, v_596}}, v_1003978 => checker_continuation_3005(v_1003978, v_594, v_598)}
 
-def checker_match_3008(v_1003982: ArenaResult<U32>, +v_649: U32, +v_654: U32, v_644: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1003982:
-    case ArenaResult{v_658, +v_659}:
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_658, Arena.TermMat{v_659, v_649, v_654, v_644}}}, v_1003981 => CheckerFinished{{v_1003981 : ArenaResult<U32>}}}
-
-def checker_continuation_3009(v_1003980: ArenaResult<U32>, v_638: String, +v_649: U32, v_644: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_653, +v_654} = v_1003980
-  v_1003982 = {checker_pure_arena_name(v_653, v_638) : ArenaResult<U32>}
-  checker_match_3008(v_1003982, v_649, v_654, v_644)
-
-def checker_continuation_3010(v_1003979: ArenaResult<U32>, v_642: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_638: String, v_644: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_648, +v_649} = v_1003979
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_648, v_642, v_5, v_7, v_9}}, False{}, v_1003983 => checker_body_core_shift_at(v_648, v_642, v_5, v_7, v_9), v_1003980 => checker_continuation_3009(v_1003980, v_638, v_649, v_644)}
-
-def checker_match_3011(v_1003985: ArenaResult<String>, +v_627: U32, +v_628: U32, +v_629: Ast.SourceSpan, +v_5: Nat, +v_7: Nat, +v_9: Nat) -> CheckerProgress<ArenaResult<U32>>:
+def checker_match_3007(v_1003985: ArenaResult<U32>, +v_649: U32, +v_654: U32, v_644: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
   match v_1003985:
+    case ArenaResult{v_658, +v_659}:
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_658, Arena.TermMat{v_659, v_649, v_654, v_644}}}, v_1003984 => CheckerFinished{{v_1003984 : ArenaResult<U32>}}}
+
+def checker_continuation_3008(v_1003983: ArenaResult<U32>, v_638: String, +v_649: U32, v_644: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_653, +v_654} = v_1003983
+  v_1003985 = {checker_pure_arena_name(v_653, v_638) : ArenaResult<U32>}
+  checker_match_3007(v_1003985, v_649, v_654, v_644)
+
+def checker_continuation_3009(v_1003982: ArenaResult<U32>, v_642: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_638: String, v_644: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_648, +v_649} = v_1003982
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_648, v_642, v_5, v_7, v_9}}, False{}, v_1003986 => checker_body_core_shift_at(v_648, v_642, v_5, v_7, v_9), v_1003983 => checker_continuation_3008(v_1003983, v_638, v_649, v_644)}
+
+def checker_match_3010(v_1003988: ArenaResult<String>, +v_627: U32, +v_628: U32, +v_629: Ast.SourceSpan, +v_5: Nat, +v_7: Nat, +v_9: Nat) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1003988:
     case ArenaResult{v_633, +v_634}:
       +v_636 = v_634
       v_638 = v_636
       v_640 = v_627
       v_642 = v_628
       v_644 = v_629
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_633, v_640, v_5, v_7, v_9}}, False{}, v_1003984 => checker_body_core_shift_at(v_633, v_640, v_5, v_7, v_9), v_1003979 => checker_continuation_3010(v_1003979, v_642, v_5, v_7, v_9, v_638, v_644)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_633, v_640, v_5, v_7, v_9}}, False{}, v_1003987 => checker_body_core_shift_at(v_633, v_640, v_5, v_7, v_9), v_1003982 => checker_continuation_3009(v_1003982, v_642, v_5, v_7, v_9, v_638, v_644)}
 
-def checker_continuation_3012(v_1003989: ArenaResult<U32>, +v_698: U32, +v_703: U32, v_693: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_707, +v_708} = v_1003989
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_707, Arena.TermEqual{v_698, v_703, v_708, v_693}}}, v_1003990 => CheckerFinished{{v_1003990 : ArenaResult<U32>}}}
+def checker_continuation_3011(v_1003992: ArenaResult<U32>, +v_698: U32, +v_703: U32, v_693: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_707, +v_708} = v_1003992
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_707, Arena.TermEqual{v_698, v_703, v_708, v_693}}}, v_1003993 => CheckerFinished{{v_1003993 : ArenaResult<U32>}}}
 
-def checker_continuation_3013(v_1003988: ArenaResult<U32>, v_691: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, +v_698: U32, v_693: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_702, +v_703} = v_1003988
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_702, v_691, v_5, v_7, v_9}}, False{}, v_1003991 => checker_body_core_shift_at(v_702, v_691, v_5, v_7, v_9), v_1003989 => checker_continuation_3012(v_1003989, v_698, v_703, v_693)}
+def checker_continuation_3012(v_1003991: ArenaResult<U32>, v_691: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, +v_698: U32, v_693: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_702, +v_703} = v_1003991
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_702, v_691, v_5, v_7, v_9}}, False{}, v_1003994 => checker_body_core_shift_at(v_702, v_691, v_5, v_7, v_9), v_1003992 => checker_continuation_3011(v_1003992, v_698, v_703, v_693)}
 
-def checker_continuation_3014(v_1003987: ArenaResult<U32>, v_689: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_691: U32, v_693: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_697, +v_698} = v_1003987
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_697, v_689, v_5, v_7, v_9}}, False{}, v_1003992 => checker_body_core_shift_at(v_697, v_689, v_5, v_7, v_9), v_1003988 => checker_continuation_3013(v_1003988, v_691, v_5, v_7, v_9, v_698, v_693)}
+def checker_continuation_3013(v_1003990: ArenaResult<U32>, v_689: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_691: U32, v_693: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_697, +v_698} = v_1003990
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_697, v_689, v_5, v_7, v_9}}, False{}, v_1003995 => checker_body_core_shift_at(v_697, v_689, v_5, v_7, v_9), v_1003991 => checker_continuation_3012(v_1003991, v_691, v_5, v_7, v_9, v_698, v_693)}
 
-def checker_continuation_3015(v_1003997: ArenaResult<U32>, +v_747: U32, +v_752: U32, v_742: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_756, +v_757} = v_1003997
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_756, Arena.TermRewrite{v_747, v_752, v_757, v_742}}}, v_1003998 => CheckerFinished{{v_1003998 : ArenaResult<U32>}}}
+def checker_continuation_3014(v_1004000: ArenaResult<U32>, +v_747: U32, +v_752: U32, v_742: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_756, +v_757} = v_1004000
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_756, Arena.TermRewrite{v_747, v_752, v_757, v_742}}}, v_1004001 => CheckerFinished{{v_1004001 : ArenaResult<U32>}}}
 
-def checker_continuation_3016(v_1003996: ArenaResult<U32>, v_740: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, +v_747: U32, v_742: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_751, +v_752} = v_1003996
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_751, v_740, v_5, v_7, v_9}}, False{}, v_1003999 => checker_body_core_shift_at(v_751, v_740, v_5, v_7, v_9), v_1003997 => checker_continuation_3015(v_1003997, v_747, v_752, v_742)}
+def checker_continuation_3015(v_1003999: ArenaResult<U32>, v_740: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, +v_747: U32, v_742: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_751, +v_752} = v_1003999
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_751, v_740, v_5, v_7, v_9}}, False{}, v_1004002 => checker_body_core_shift_at(v_751, v_740, v_5, v_7, v_9), v_1004000 => checker_continuation_3014(v_1004000, v_747, v_752, v_742)}
 
-def checker_continuation_3017(v_1003995: ArenaResult<U32>, v_738: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_740: U32, v_742: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_746, +v_747} = v_1003995
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_746, v_738, v_5, v_7, v_9}}, False{}, v_1004000 => checker_body_core_shift_at(v_746, v_738, v_5, v_7, v_9), v_1003996 => checker_continuation_3016(v_1003996, v_740, v_5, v_7, v_9, v_747, v_742)}
+def checker_continuation_3016(v_1003998: ArenaResult<U32>, v_738: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_740: U32, v_742: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_746, +v_747} = v_1003998
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_746, v_738, v_5, v_7, v_9}}, False{}, v_1004003 => checker_body_core_shift_at(v_746, v_738, v_5, v_7, v_9), v_1003999 => checker_continuation_3015(v_1003999, v_740, v_5, v_7, v_9, v_747, v_742)}
 
-def checker_match_3018(v_1004003: ArenaResult<U32>, v_779: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1004003:
+def checker_match_3017(v_1004006: ArenaResult<U32>, v_779: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1004006:
     case ArenaResult{v_783, +v_784}:
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_783, Arena.TermHole{v_784, v_779}}}, v_1004002 => CheckerFinished{{v_1004002 : ArenaResult<U32>}}}
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_783, Arena.TermHole{v_784, v_779}}}, v_1004005 => CheckerFinished{{v_1004005 : ArenaResult<U32>}}}
 
-def checker_match_3019(v_1004004: ArenaResult<String>, +v_768: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1004004:
+def checker_match_3018(v_1004007: ArenaResult<String>, +v_768: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1004007:
     case ArenaResult{v_772, +v_773}:
       +v_775 = v_773
       v_777 = v_775
       v_779 = v_768
-      v_1004003 = {checker_pure_arena_name(v_772, v_777) : ArenaResult<U32>}
-      checker_match_3018(v_1004003, v_779)
+      v_1004006 = {checker_pure_arena_name(v_772, v_777) : ArenaResult<U32>}
+      checker_match_3017(v_1004006, v_779)
 
-def checker_continuation_3020(v_1004006: ArenaResult<IR.Words>, +v_816: IR.Words, v_811: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_820, +v_821} = v_1004006
+def checker_continuation_3019(v_1004009: ArenaResult<IR.Words>, +v_816: IR.Words, v_811: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_820, +v_821} = v_1004009
   v_824 = checker_pure_arena_words_start(v_816)
   v_827 = checker_pure_arena_words_count(v_816)
   v_830 = checker_pure_arena_words_start(v_821)
   v_833 = checker_pure_arena_words_count(v_821)
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_820, Arena.BodyMatch{v_824, v_827, v_830, v_833, v_811}}}, v_1004007 => CheckerFinished{{v_1004007 : ArenaResult<U32>}}}
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_820, Arena.BodyMatch{v_824, v_827, v_830, v_833, v_811}}}, v_1004010 => CheckerFinished{{v_1004010 : ArenaResult<U32>}}}
 
-def checker_continuation_3021(v_1004005: ArenaResult<IR.Words>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_809: IR.Words, v_811: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_815, +v_816} = v_1004005
-  CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_shift_terms{v_815, v_5, v_7, v_9, v_809}}, v_1004006 => checker_continuation_3020(v_1004006, v_816, v_811)}
+def checker_continuation_3020(v_1004008: ArenaResult<IR.Words>, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_809: IR.Words, v_811: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_815, +v_816} = v_1004008
+  CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_shift_terms{v_815, v_5, v_7, v_9, v_809}}, v_1004009 => checker_continuation_3019(v_1004009, v_816, v_811)}
 
-def checker_continuation_3022(v_1004009: ArenaResult<U32>, +v_852: IR.Words, v_856: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_865, +v_866} = v_1004009
+def checker_continuation_3021(v_1004012: ArenaResult<U32>, +v_852: IR.Words, v_856: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_865, +v_866} = v_1004012
   v_869 = checker_pure_arena_words_start(v_852)
   v_872 = checker_pure_arena_words_count(v_852)
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_865, Arena.BodyCase{v_869, v_872, v_866, v_856}}}, v_1004010 => CheckerFinished{{v_1004010 : ArenaResult<U32>}}}
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_865, Arena.BodyCase{v_869, v_872, v_866, v_856}}}, v_1004013 => CheckerFinished{{v_1004013 : ArenaResult<U32>}}}
 
-def checker_continuation_3023(v_1004008: ArenaResult<Nat>, v_854: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, +v_852: IR.Words, v_856: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_860, +v_861} = v_1004008
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_860, v_854, v_5, v_7, Nat.add(v_9, v_861)}}, False{}, v_1004011 => checker_body_core_shift_at(v_860, v_854, v_5, v_7, Nat.add(v_9, v_861)), v_1004009 => checker_continuation_3022(v_1004009, v_852, v_856)}
+def checker_continuation_3022(v_1004011: ArenaResult<Nat>, v_854: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, +v_852: IR.Words, v_856: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_860, +v_861} = v_1004011
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_860, v_854, v_5, v_7, Nat.add(v_9, v_861)}}, False{}, v_1004014 => checker_body_core_shift_at(v_860, v_854, v_5, v_7, Nat.add(v_9, v_861)), v_1004012 => checker_continuation_3021(v_1004012, v_852, v_856)}
 
-def checker_continuation_3024(v_1004015: ArenaResult<U32>, +v_899: IR.Words, +v_912: IR.Words, v_901: Ast.Quantity, v_907: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_921, +v_922} = v_1004015
+def checker_continuation_3023(v_1004018: ArenaResult<U32>, +v_899: IR.Words, +v_912: IR.Words, v_901: Ast.Quantity, v_907: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_921, +v_922} = v_1004018
   v_925 = checker_pure_arena_words_start(v_899)
   v_928 = checker_pure_arena_words_count(v_899)
   v_931 = checker_pure_arena_words_start(v_912)
   v_934 = checker_pure_arena_words_count(v_912)
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_921, Arena.BodyLocal{v_925, v_928, v_901, v_931, v_934, v_922, v_907}}}, v_1004016 => CheckerFinished{{v_1004016 : ArenaResult<U32>}}}
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_921, Arena.BodyLocal{v_925, v_928, v_901, v_931, v_934, v_922, v_907}}}, v_1004019 => CheckerFinished{{v_1004019 : ArenaResult<U32>}}}
 
-def checker_continuation_3025(v_1004014: ArenaResult<Nat>, v_905: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, +v_899: IR.Words, +v_912: IR.Words, v_901: Ast.Quantity, v_907: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_916, +v_917} = v_1004014
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_916, v_905, v_5, v_7, Nat.add(v_9, v_917)}}, False{}, v_1004017 => checker_body_core_shift_at(v_916, v_905, v_5, v_7, Nat.add(v_9, v_917)), v_1004015 => checker_continuation_3024(v_1004015, v_899, v_912, v_901, v_907)}
+def checker_continuation_3024(v_1004017: ArenaResult<Nat>, v_905: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, +v_899: IR.Words, +v_912: IR.Words, v_901: Ast.Quantity, v_907: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_916, +v_917} = v_1004017
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_916, v_905, v_5, v_7, Nat.add(v_9, v_917)}}, False{}, v_1004020 => checker_body_core_shift_at(v_916, v_905, v_5, v_7, Nat.add(v_9, v_917)), v_1004018 => checker_continuation_3023(v_1004018, v_899, v_912, v_901, v_907)}
 
-def checker_continuation_3026(v_1004013: ArenaResult<IR.Words>, +v_899: IR.Words, v_905: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_901: Ast.Quantity, v_907: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_911, +v_912} = v_1004013
-  CheckerDirect{Bool, CheckerRequestGroup_10{CheckerRequest_core_pattern_list_depth{v_911, v_899}}, False{}, v_1004018 => checker_body_core_pattern_list_depth(v_911, v_899), v_1004014 => checker_continuation_3025(v_1004014, v_905, v_5, v_7, v_9, v_899, v_912, v_901, v_907)}
+def checker_continuation_3025(v_1004016: ArenaResult<IR.Words>, +v_899: IR.Words, v_905: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat, v_901: Ast.Quantity, v_907: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_911, +v_912} = v_1004016
+  CheckerDirect{Bool, CheckerRequestGroup_10{CheckerRequest_core_pattern_list_depth{v_911, v_899}}, False{}, v_1004021 => checker_body_core_pattern_list_depth(v_911, v_899), v_1004017 => checker_continuation_3024(v_1004017, v_905, v_5, v_7, v_9, v_899, v_912, v_901, v_907)}
 
-def checker_continuation_3027(v_1004019: ArenaResult<U32>, v_949: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_953, +v_954} = v_1004019
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_953, Arena.BodyReply{v_954, v_949}}}, v_1004020 => CheckerFinished{{v_1004020 : ArenaResult<U32>}}}
+def checker_continuation_3026(v_1004022: ArenaResult<U32>, v_949: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_953, +v_954} = v_1004022
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_953, Arena.BodyReply{v_954, v_949}}}, v_1004023 => CheckerFinished{{v_1004023 : ArenaResult<U32>}}}
 
-def checker_match_3028(+v_16: Arena.Node, v_15: ArenaStore, +v_5: Nat, +v_9: Nat, +v_7: Nat, v_3: U32) -> CheckerProgress<ArenaResult<U32>>:
+def checker_match_3027(+v_16: Arena.Node, v_15: ArenaStore, +v_5: Nat, +v_9: Nat, +v_7: Nat, v_3: U32) -> CheckerProgress<ArenaResult<U32>>:
   match v_16:
     case Arena.TermVar{+v_20, +v_21, +v_22}:
-      v_1003915 = {checker_pure_arena_name_text(v_15, v_20) : ArenaResult<String>}
-      checker_match_2977(v_1003915, v_21, v_22, v_5, v_9, v_7)
+      v_1003918 = {checker_pure_arena_name_text(v_15, v_20) : ArenaResult<String>}
+      checker_match_2976(v_1003918, v_21, v_22, v_5, v_9, v_7)
     case Arena.TermRef{+v_45, +v_46}:
       CheckerFinished{{ArenaResult{v_15, v_3} : ArenaResult<U32>}}
     case Arena.TermBang{+v_51, +v_52}:
       v_54 = v_51
       v_56 = v_52
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_15, v_54, v_5, v_7, v_9}}, False{}, v_1003918 => checker_body_core_shift_at(v_15, v_54, v_5, v_7, v_9), v_1003916 => checker_continuation_2978(v_1003916, v_56)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_15, v_54, v_5, v_7, v_9}}, False{}, v_1003921 => checker_body_core_shift_at(v_15, v_54, v_5, v_7, v_9), v_1003919 => checker_continuation_2977(v_1003919, v_56)}
     case Arena.TermSub{+v_73, +v_74, +v_75, +v_76}:
       v_78 = v_73
       v_80 = v_74
       v_82 = v_75
       v_84 = v_76
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_15, v_80, v_5, v_7, v_9}}, False{}, v_1003923 => checker_body_core_shift_at(v_15, v_80, v_5, v_7, v_9), v_1003919 => checker_continuation_2980(v_1003919, v_82, v_5, v_7, v_9, v_78, v_84)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_15, v_80, v_5, v_7, v_9}}, False{}, v_1003926 => checker_body_core_shift_at(v_15, v_80, v_5, v_7, v_9), v_1003922 => checker_continuation_2979(v_1003922, v_82, v_5, v_7, v_9, v_78, v_84)}
     case Arena.TermLet{+v_112, +v_113, +v_114, +v_115, +v_116, +v_117, +v_118, +v_119, +v_120, +v_121}:
       +v_123 = {IR.Names{v_112, v_113} : IR.Names}
       +v_125 = {IR.Naturals{v_114, v_115} : IR.Naturals}
@@ -25597,99 +25596,99 @@ def checker_match_3028(+v_16: Arena.Node, v_15: ArenaStore, +v_5: Nat, +v_9: Nat
       v_137 = v_129
       v_139 = v_120
       v_141 = v_121
-      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_shift_terms{v_15, v_5, v_7, v_9, v_137}}, v_1003924 => checker_continuation_2982(v_1003924, v_139, v_5, v_7, v_9, v_131, v_133, v_135, v_141)}
+      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_shift_terms{v_15, v_5, v_7, v_9, v_137}}, v_1003927 => checker_continuation_2981(v_1003927, v_139, v_5, v_7, v_9, v_131, v_133, v_135, v_141)}
     case Arena.TermAnn{+v_187, +v_188, +v_189}:
       v_191 = v_187
       v_193 = v_188
       v_195 = v_189
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_15, v_191, v_5, v_7, v_9}}, False{}, v_1003932 => checker_body_core_shift_at(v_15, v_191, v_5, v_7, v_9), v_1003928 => checker_continuation_2984(v_1003928, v_193, v_5, v_7, v_9, v_195)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_15, v_191, v_5, v_7, v_9}}, False{}, v_1003935 => checker_body_core_shift_at(v_15, v_191, v_5, v_7, v_9), v_1003931 => checker_continuation_2983(v_1003931, v_193, v_5, v_7, v_9, v_195)}
     case Arena.TermTemplate{+v_215, +v_216}:
       v_218 = v_215
       v_220 = v_216
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_15, v_218, v_5, v_7, v_9}}, False{}, v_1003935 => checker_body_core_shift_at(v_15, v_218, v_5, v_7, v_9), v_1003933 => checker_continuation_2985(v_1003933, v_220)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_15, v_218, v_5, v_7, v_9}}, False{}, v_1003938 => checker_body_core_shift_at(v_15, v_218, v_5, v_7, v_9), v_1003936 => checker_continuation_2984(v_1003936, v_220)}
     case Arena.TermType{+v_235, +v_236}:
       v_238 = v_235
       v_240 = v_236
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_15, v_238, v_5, v_7, v_9}}, False{}, v_1003938 => checker_body_core_shift_at(v_15, v_238, v_5, v_7, v_9), v_1003936 => checker_continuation_2986(v_1003936, v_240)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_15, v_238, v_5, v_7, v_9}}, False{}, v_1003941 => checker_body_core_shift_at(v_15, v_238, v_5, v_7, v_9), v_1003939 => checker_continuation_2985(v_1003939, v_240)}
     case Arena.TermQuant{}:
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_15, Arena.TermQuant{}}}, v_1003939 => CheckerFinished{{v_1003939 : ArenaResult<U32>}}}
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_15, Arena.TermQuant{}}}, v_1003942 => CheckerFinished{{v_1003942 : ArenaResult<U32>}}}
     case Arena.TermQuantity{+v_262, +v_263}:
       v_265 = v_262
       v_267 = v_263
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_15, Arena.TermQuantity{v_265, v_267}}}, v_1003940 => CheckerFinished{{v_1003940 : ArenaResult<U32>}}}
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_15, Arena.TermQuantity{v_265, v_267}}}, v_1003943 => CheckerFinished{{v_1003943 : ArenaResult<U32>}}}
     case Arena.TermMin{+v_278, +v_279, +v_280}:
       v_282 = v_278
       v_284 = v_279
       v_286 = v_280
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_15, v_282, v_5, v_7, v_9}}, False{}, v_1003945 => checker_body_core_shift_at(v_15, v_282, v_5, v_7, v_9), v_1003941 => checker_continuation_2988(v_1003941, v_284, v_5, v_7, v_9, v_286)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_15, v_282, v_5, v_7, v_9}}, False{}, v_1003948 => checker_body_core_shift_at(v_15, v_282, v_5, v_7, v_9), v_1003944 => checker_continuation_2987(v_1003944, v_284, v_5, v_7, v_9, v_286)}
     case Arena.TermAll{+v_310, +v_311, +v_312, +v_313, +v_314, +v_315}:
-      v_1003952 = {checker_pure_arena_name_text(v_15, v_311) : ArenaResult<String>}
-      checker_match_2992(v_1003952, v_310, v_312, v_313, v_314, v_315, v_5, v_7, v_9)
+      v_1003955 = {checker_pure_arena_name_text(v_15, v_311) : ArenaResult<String>}
+      checker_match_2991(v_1003955, v_310, v_312, v_313, v_314, v_315, v_5, v_7, v_9)
     case Arena.TermLam{+v_362, +v_363, +v_364, +v_365, +v_366}:
-      v_1003957 = {checker_pure_arena_name_text(v_15, v_363) : ArenaResult<String>}
-      checker_match_2995(v_1003957, v_362, v_364, v_365, v_366, v_5, v_7, v_9)
+      v_1003960 = {checker_pure_arena_name_text(v_15, v_363) : ArenaResult<String>}
+      checker_match_2994(v_1003960, v_362, v_364, v_365, v_366, v_5, v_7, v_9)
     case Arena.TermApp{+v_404, +v_405, +v_406}:
       v_408 = v_404
       v_410 = v_405
       v_412 = v_406
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_15, v_408, v_5, v_7, v_9}}, False{}, v_1003962 => checker_body_core_shift_at(v_15, v_408, v_5, v_7, v_9), v_1003958 => checker_continuation_2997(v_1003958, v_410, v_5, v_7, v_9, v_412)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_15, v_408, v_5, v_7, v_9}}, False{}, v_1003965 => checker_body_core_shift_at(v_15, v_408, v_5, v_7, v_9), v_1003961 => checker_continuation_2996(v_1003961, v_410, v_5, v_7, v_9, v_412)}
     case Arena.TermAdt{+v_436, +v_437, +v_438, +v_439, +v_440, +v_441}:
-      v_1003966 = {checker_pure_arena_name_text(v_15, v_436) : ArenaResult<String>}
-      checker_match_3000(v_1003966, v_437, v_438, v_439, v_440, v_441, v_5, v_7, v_9)
+      v_1003969 = {checker_pure_arena_name_text(v_15, v_436) : ArenaResult<String>}
+      checker_match_2999(v_1003969, v_437, v_438, v_439, v_440, v_441, v_5, v_7, v_9)
     case Arena.TermFill{+v_494, +v_495, +v_496, +v_497}:
       +v_499 = {IR.Words{v_495, v_496} : IR.Words}
       v_501 = v_494
       v_503 = v_499
       v_505 = v_497
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_15, v_501, v_5, v_7, v_9}}, False{}, v_1003970 => checker_body_core_shift_at(v_15, v_501, v_5, v_7, v_9), v_1003967 => checker_continuation_3002(v_1003967, v_5, v_7, v_9, v_503, v_505)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_15, v_501, v_5, v_7, v_9}}, False{}, v_1003973 => checker_body_core_shift_at(v_15, v_501, v_5, v_7, v_9), v_1003970 => checker_continuation_3001(v_1003970, v_5, v_7, v_9, v_503, v_505)}
     case Arena.TermPlus{+v_533, +v_534, +v_535, +v_536}:
       +v_538 = {IR.Words{v_534, v_535} : IR.Words}
       v_540 = v_533
       v_542 = v_538
       v_544 = v_536
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_15, v_540, v_5, v_7, v_9}}, False{}, v_1003974 => checker_body_core_shift_at(v_15, v_540, v_5, v_7, v_9), v_1003971 => checker_continuation_3004(v_1003971, v_5, v_7, v_9, v_542, v_544)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_15, v_540, v_5, v_7, v_9}}, False{}, v_1003977 => checker_body_core_shift_at(v_15, v_540, v_5, v_7, v_9), v_1003974 => checker_continuation_3003(v_1003974, v_5, v_7, v_9, v_542, v_544)}
     case Arena.TermString{_, _, _}:
       CheckerFinished{{ArenaResult{v_15, v_3} : ArenaResult<U32>}}
     case Arena.TermCtr{+v_580, +v_581, +v_582, +v_583}:
-      v_1003978 = {checker_pure_arena_name_text(v_15, v_580) : ArenaResult<String>}
-      checker_match_3007(v_1003978, v_581, v_582, v_583, v_5, v_7, v_9)
+      v_1003981 = {checker_pure_arena_name_text(v_15, v_580) : ArenaResult<String>}
+      checker_match_3006(v_1003981, v_581, v_582, v_583, v_5, v_7, v_9)
     case Arena.TermMat{+v_626, +v_627, +v_628, +v_629}:
-      v_1003985 = {checker_pure_arena_name_text(v_15, v_626) : ArenaResult<String>}
-      checker_match_3011(v_1003985, v_627, v_628, v_629, v_5, v_7, v_9)
+      v_1003988 = {checker_pure_arena_name_text(v_15, v_626) : ArenaResult<String>}
+      checker_match_3010(v_1003988, v_627, v_628, v_629, v_5, v_7, v_9)
     case Arena.TermAbsurd{+v_668}:
       v_670 = v_668
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_15, Arena.TermAbsurd{v_670}}}, v_1003986 => CheckerFinished{{v_1003986 : ArenaResult<U32>}}}
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_15, Arena.TermAbsurd{v_670}}}, v_1003989 => CheckerFinished{{v_1003989 : ArenaResult<U32>}}}
     case Arena.TermEqual{+v_682, +v_683, +v_684, +v_685}:
       v_687 = v_682
       v_689 = v_683
       v_691 = v_684
       v_693 = v_685
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_15, v_687, v_5, v_7, v_9}}, False{}, v_1003993 => checker_body_core_shift_at(v_15, v_687, v_5, v_7, v_9), v_1003987 => checker_continuation_3014(v_1003987, v_689, v_5, v_7, v_9, v_691, v_693)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_15, v_687, v_5, v_7, v_9}}, False{}, v_1003996 => checker_body_core_shift_at(v_15, v_687, v_5, v_7, v_9), v_1003990 => checker_continuation_3013(v_1003990, v_689, v_5, v_7, v_9, v_691, v_693)}
     case Arena.TermRefl{+v_717}:
       v_719 = v_717
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_15, Arena.TermRefl{v_719}}}, v_1003994 => CheckerFinished{{v_1003994 : ArenaResult<U32>}}}
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_15, Arena.TermRefl{v_719}}}, v_1003997 => CheckerFinished{{v_1003997 : ArenaResult<U32>}}}
     case Arena.TermRewrite{+v_731, +v_732, +v_733, +v_734}:
       v_736 = v_731
       v_738 = v_732
       v_740 = v_733
       v_742 = v_734
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_15, v_736, v_5, v_7, v_9}}, False{}, v_1004001 => checker_body_core_shift_at(v_15, v_736, v_5, v_7, v_9), v_1003995 => checker_continuation_3017(v_1003995, v_738, v_5, v_7, v_9, v_740, v_742)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_15, v_736, v_5, v_7, v_9}}, False{}, v_1004004 => checker_body_core_shift_at(v_15, v_736, v_5, v_7, v_9), v_1003998 => checker_continuation_3016(v_1003998, v_738, v_5, v_7, v_9, v_740, v_742)}
     case Arena.TermHole{+v_767, +v_768}:
-      v_1004004 = {checker_pure_arena_name_text(v_15, v_767) : ArenaResult<String>}
-      checker_match_3019(v_1004004, v_768)
+      v_1004007 = {checker_pure_arena_name_text(v_15, v_767) : ArenaResult<String>}
+      checker_match_3018(v_1004007, v_768)
     case Arena.BodyMatch{+v_797, +v_798, +v_799, +v_800, +v_801}:
       +v_803 = {IR.Words{v_797, v_798} : IR.Words}
       +v_805 = {IR.Words{v_799, v_800} : IR.Words}
       v_807 = v_803
       v_809 = v_805
       v_811 = v_801
-      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_shift_terms{v_15, v_5, v_7, v_9, v_807}}, v_1004005 => checker_continuation_3021(v_1004005, v_5, v_7, v_9, v_809, v_811)}
+      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_shift_terms{v_15, v_5, v_7, v_9, v_807}}, v_1004008 => checker_continuation_3020(v_1004008, v_5, v_7, v_9, v_809, v_811)}
     case Arena.BodyCase{+v_845, +v_846, +v_847, +v_848}:
       +v_850 = {IR.Words{v_845, v_846} : IR.Words}
       +v_852 = v_850
       v_854 = v_847
       v_856 = v_848
-      CheckerDirect{Bool, CheckerRequestGroup_10{CheckerRequest_core_pattern_list_depth{v_15, v_852}}, False{}, v_1004012 => checker_body_core_pattern_list_depth(v_15, v_852), v_1004008 => checker_continuation_3023(v_1004008, v_854, v_5, v_7, v_9, v_852, v_856)}
+      CheckerDirect{Bool, CheckerRequestGroup_10{CheckerRequest_core_pattern_list_depth{v_15, v_852}}, False{}, v_1004015 => checker_body_core_pattern_list_depth(v_15, v_852), v_1004011 => checker_continuation_3022(v_1004011, v_854, v_5, v_7, v_9, v_852, v_856)}
     case Arena.BodyLocal{+v_887, +v_888, +v_889, +v_890, +v_891, +v_892, +v_893}:
       +v_895 = {IR.Words{v_887, v_888} : IR.Words}
       +v_897 = {IR.Words{v_890, v_891} : IR.Words}
@@ -25698,22 +25697,22 @@ def checker_match_3028(+v_16: Arena.Node, v_15: ArenaStore, +v_5: Nat, +v_9: Nat
       v_903 = v_897
       v_905 = v_892
       v_907 = v_893
-      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_shift_terms{v_15, v_5, v_7, v_9, v_903}}, v_1004013 => checker_continuation_3026(v_1004013, v_899, v_905, v_5, v_7, v_9, v_901, v_907)}
+      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_shift_terms{v_15, v_5, v_7, v_9, v_903}}, v_1004016 => checker_continuation_3025(v_1004016, v_899, v_905, v_5, v_7, v_9, v_901, v_907)}
     case Arena.BodyReply{+v_944, +v_945}:
       v_947 = v_944
       v_949 = v_945
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_15, v_947, v_5, v_7, v_9}}, False{}, v_1004021 => checker_body_core_shift_at(v_15, v_947, v_5, v_7, v_9), v_1004019 => checker_continuation_3027(v_1004019, v_949)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_15, v_947, v_5, v_7, v_9}}, False{}, v_1004024 => checker_body_core_shift_at(v_15, v_947, v_5, v_7, v_9), v_1004022 => checker_continuation_3026(v_1004022, v_949)}
 
-def checker_match_3029(v_1004022: ArenaResult<Arena.Node>, +v_5: Nat, +v_9: Nat, +v_7: Nat, v_3: U32) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1004022:
+def checker_match_3028(v_1004025: ArenaResult<Arena.Node>, +v_5: Nat, +v_9: Nat, +v_7: Nat, v_3: U32) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1004025:
     case ArenaResult{v_15, +v_16}:
-      checker_match_3028(v_16, v_15, v_5, v_9, v_7, v_3)
+      checker_match_3027(v_16, v_15, v_5, v_9, v_7, v_3)
 
 def checker_body_core_shift_open(v_1: ArenaStore, +v_3: U32, +v_5: Nat, +v_7: Nat, +v_9: Nat) -> CheckerProgress<ArenaResult<U32>>:
-  v_1004022 = {checker_pure_arena_get_node(v_1, v_3) : ArenaResult<Arena.Node>}
-  checker_match_3029(v_1004022, v_5, v_9, v_7, v_3)
+  v_1004025 = {checker_pure_arena_get_node(v_1, v_3) : ArenaResult<Arena.Node>}
+  checker_match_3028(v_1004025, v_5, v_9, v_7, v_3)
 
-def checker_match_3030(+v_5: Nat, v_1: ArenaStore, v_7: U32, v_3: Nat) -> CheckerProgress<ArenaResult<U32>>:
+def checker_match_3029(+v_5: Nat, v_1: ArenaStore, v_7: U32, v_3: Nat) -> CheckerProgress<ArenaResult<U32>>:
   match v_5:
     case 0n:
       CheckerFinished{{ArenaResult{v_1, v_7} : ArenaResult<U32>}}
@@ -25721,111 +25720,111 @@ def checker_match_3030(+v_5: Nat, v_1: ArenaStore, v_7: U32, v_3: Nat) -> Checke
       {checker_body_core_shift_at(v_1, v_7, v_3, v_5, 0n) : CheckerProgress<ArenaResult<U32>>}
 
 def checker_body_core_shift(v_1: ArenaStore, v_3: Nat, v_5: Nat, v_7: U32) -> CheckerProgress<ArenaResult<U32>>:
-  checker_match_3030(v_5, v_1, v_7, v_3)
+  checker_match_3029(v_5, v_1, v_7, v_3)
 
-def checker_match_3031(v_1004026: ArenaResult<U32>, v_13: Nat, v_14: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1004026:
+def checker_match_3030(v_1004029: ArenaResult<U32>, v_13: Nat, v_14: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1004029:
     case ArenaResult{v_27, +v_28}:
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_27, Arena.TermVar{v_28, Nat.sub(v_13, 1n), v_14}}}, v_1004025 => CheckerFinished{{v_1004025 : ArenaResult<U32>}}}
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_27, Arena.TermVar{v_28, Nat.sub(v_13, 1n), v_14}}}, v_1004028 => CheckerFinished{{v_1004028 : ArenaResult<U32>}}}
 
-def checker_match_3032(v_1004028: ArenaResult<U32>, v_13: Nat, v_14: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1004028:
+def checker_match_3031(v_1004031: ArenaResult<U32>, v_13: Nat, v_14: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1004031:
     case ArenaResult{v_39, +v_40}:
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_39, Arena.TermVar{v_40, v_13, v_14}}}, v_1004027 => CheckerFinished{{v_1004027 : ArenaResult<U32>}}}
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_39, Arena.TermVar{v_40, v_13, v_14}}}, v_1004030 => CheckerFinished{{v_1004030 : ArenaResult<U32>}}}
 
-def checker_match_3033(v_5: Bool, v_1: ArenaStore, v_11: String, v_13: Nat, v_14: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+def checker_match_3032(v_5: Bool, v_1: ArenaStore, v_11: String, v_13: Nat, v_14: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
   match v_5:
     case True{}:
-      v_1004026 = {checker_pure_arena_name(v_1, v_11) : ArenaResult<U32>}
-      checker_match_3031(v_1004026, v_13, v_14)
+      v_1004029 = {checker_pure_arena_name(v_1, v_11) : ArenaResult<U32>}
+      checker_match_3030(v_1004029, v_13, v_14)
     case False{}:
-      v_1004028 = {checker_pure_arena_name(v_1, v_11) : ArenaResult<U32>}
-      checker_match_3032(v_1004028, v_13, v_14)
+      v_1004031 = {checker_pure_arena_name(v_1, v_11) : ArenaResult<U32>}
+      checker_match_3031(v_1004031, v_13, v_14)
 
-def checker_match_3034(v_3: Bool, v_1: ArenaStore, v_7: Nat, v_9: U32, v_5: Bool, v_11: String, v_13: Nat, v_14: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+def checker_match_3033(v_3: Bool, v_1: ArenaStore, v_7: Nat, v_9: U32, v_5: Bool, v_11: String, v_13: Nat, v_14: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
   match v_3:
     case True{}:
       {checker_body_core_shift(v_1, 0n, v_7, v_9) : CheckerProgress<ArenaResult<U32>>}
     case False{}:
-      checker_match_3033(v_5, v_1, v_11, v_13, v_14)
+      checker_match_3032(v_5, v_1, v_11, v_13, v_14)
 
 def checker_body_core_subst_var(v_1: ArenaStore, v_3: Bool, v_5: Bool, v_7: Nat, v_9: U32, v_11: String, v_13: Nat, v_14: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  checker_match_3034(v_3, v_1, v_7, v_9, v_5, v_11, v_13, v_14)
+  checker_match_3033(v_3, v_1, v_7, v_9, v_5, v_11, v_13, v_14)
 
-def checker_match_3035(v_10: ArenaResult<U32>, v_7: U32, v_1: Nat, v_3: U32, v_5: Nat) -> CheckerProgress<ArenaResult<U32>>:
+def checker_match_3034(v_10: ArenaResult<U32>, v_7: U32, v_1: Nat, v_3: U32, v_5: Nat) -> CheckerProgress<ArenaResult<U32>>:
   match v_10:
     case ArenaResult{v_15, +v_16}:
       CheckerFinished{{ArenaResult{checker_pure_arena_subst_memo_store(v_15, v_7, v_1, v_3, v_5, v_16), v_16} : ArenaResult<U32>}}
 
 def checker_body_core_subst_memo_saved(v_1: Nat, v_3: U32, v_5: Nat, v_7: U32, v_10: ArenaResult<U32>) -> CheckerProgress<ArenaResult<U32>>:
-  checker_match_3035(v_10, v_7, v_1, v_3, v_5)
+  checker_match_3034(v_10, v_7, v_1, v_3, v_5)
 
-def checker_match_3036(v_17: Maybe<&2, U32>, v_16: ArenaStore, +v_1: Nat, +v_3: U32, +v_5: Nat, +v_7: U32) -> CheckerProgress<ArenaResult<U32>>:
+def checker_match_3035(v_17: Maybe<&2, U32>, v_16: ArenaStore, +v_1: Nat, +v_3: U32, +v_5: Nat, +v_7: U32) -> CheckerProgress<ArenaResult<U32>>:
   match v_17:
     case Some{v_19}:
       CheckerFinished{{ArenaResult{v_16, v_19} : ArenaResult<U32>}}
     case None{}:
-      v_1004029 = {v_1 : Nat}
-      v_1004030 = {v_3 : U32}
-      v_1004031 = {v_5 : Nat}
-      v_1004032 = {v_7 : U32}
-      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_subst_open{v_16, v_1, v_3, v_5, v_7}}, v_1004033 => checker_body_core_subst_memo_saved(v_1004029, v_1004030, v_1004031, v_1004032, v_1004033)}
+      v_1004032 = {v_1 : Nat}
+      v_1004033 = {v_3 : U32}
+      v_1004034 = {v_5 : Nat}
+      v_1004035 = {v_7 : U32}
+      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_subst_open{v_16, v_1, v_3, v_5, v_7}}, v_1004036 => checker_body_core_subst_memo_saved(v_1004032, v_1004033, v_1004034, v_1004035, v_1004036)}
 
-def checker_match_3037(v_11: ArenaResult<Maybe<&2, U32>>, +v_1: Nat, +v_3: U32, +v_5: Nat, +v_7: U32) -> CheckerProgress<ArenaResult<U32>>:
+def checker_match_3036(v_11: ArenaResult<Maybe<&2, U32>>, +v_1: Nat, +v_3: U32, +v_5: Nat, +v_7: U32) -> CheckerProgress<ArenaResult<U32>>:
   match v_11:
     case ArenaResult{v_16, v_17}:
-      checker_match_3036(v_17, v_16, v_1, v_3, v_5, v_7)
+      checker_match_3035(v_17, v_16, v_1, v_3, v_5, v_7)
 
 def checker_body_core_subst_memo_found(+v_1: Nat, +v_3: U32, +v_5: Nat, +v_7: U32, v_11: ArenaResult<Maybe<&2, U32>>) -> CheckerProgress<ArenaResult<U32>>:
-  checker_match_3037(v_11, v_1, v_3, v_5, v_7)
+  checker_match_3036(v_11, v_1, v_3, v_5, v_7)
 
-def checker_match_3038(v_3: Bool, v_1: ArenaStore, +v_11: U32, +v_5: Nat, +v_7: U32, +v_9: Nat) -> CheckerProgress<ArenaResult<U32>>:
+def checker_match_3037(v_3: Bool, v_1: ArenaStore, +v_11: U32, +v_5: Nat, +v_7: U32, +v_9: Nat) -> CheckerProgress<ArenaResult<U32>>:
   match v_3:
     case True{}:
       CheckerFinished{{ArenaResult{v_1, v_11} : ArenaResult<U32>}}
     case False{}:
-      +v_1004035 = {v_5 : Nat}
-      +v_1004036 = {v_7 : U32}
-      +v_1004037 = {v_9 : Nat}
-      +v_1004038 = {v_11 : U32}
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_subst_memo_lookup{v_1, v_11, v_5, v_7, v_9}}, v_1004039 => checker_body_core_subst_memo_found(v_1004035, v_1004036, v_1004037, v_1004038, v_1004039)}
+      +v_1004038 = {v_5 : Nat}
+      +v_1004039 = {v_7 : U32}
+      +v_1004040 = {v_9 : Nat}
+      +v_1004041 = {v_11 : U32}
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_subst_memo_lookup{v_1, v_11, v_5, v_7, v_9}}, v_1004042 => checker_body_core_subst_memo_found(v_1004038, v_1004039, v_1004040, v_1004041, v_1004042)}
 
 def checker_body_core_subst_unaffected(v_1: ArenaStore, v_3: Bool, +v_5: Nat, +v_7: U32, +v_9: Nat, +v_11: U32) -> CheckerProgress<ArenaResult<U32>>:
-  checker_match_3038(v_3, v_1, v_11, v_5, v_7, v_9)
+  checker_match_3037(v_3, v_1, v_11, v_5, v_7, v_9)
 
-def checker_match_3039(v_1004043: ArenaResult<Nat>, +v_3: Nat, +v_7: Nat, v_5: U32, +v_9: U32) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1004043:
+def checker_match_3038(v_1004046: ArenaResult<Nat>, +v_3: Nat, +v_7: Nat, v_5: U32, +v_9: U32) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1004046:
     case ArenaResult{v_15, v_16}:
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_unaffected{v_15, checker_pure_core_bound_unaffected(v_16, Nat.add(v_3, v_7)), v_3, v_5, v_7, v_9}}, False{}, v_1004042 => checker_body_core_subst_unaffected(v_15, checker_pure_core_bound_unaffected(v_16, Nat.add(v_3, v_7)), v_3, v_5, v_7, v_9), v_1004041 => CheckerFinished{v_1004041}}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_unaffected{v_15, checker_pure_core_bound_unaffected(v_16, Nat.add(v_3, v_7)), v_3, v_5, v_7, v_9}}, False{}, v_1004045 => checker_body_core_subst_unaffected(v_15, checker_pure_core_bound_unaffected(v_16, Nat.add(v_3, v_7)), v_3, v_5, v_7, v_9), v_1004044 => CheckerFinished{v_1004044}}
 
 def checker_body_core_subst_at(v_1: ArenaStore, +v_3: Nat, v_5: U32, +v_7: Nat, +v_9: U32) -> CheckerProgress<ArenaResult<U32>>:
-  v_1004043 = {checker_pure_arena_node_bound(v_1, v_9) : ArenaResult<Nat>}
-  checker_match_3039(v_1004043, v_3, v_7, v_5, v_9)
+  v_1004046 = {checker_pure_arena_node_bound(v_1, v_9) : ArenaResult<Nat>}
+  checker_match_3038(v_1004046, v_3, v_7, v_5, v_9)
 
-def checker_match_3040(v_1004046: ArenaResult<String>, +v_21: Nat, +v_22: Ast.SourceSpan, +v_3: Nat, +v_7: Nat, +v_5: U32) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1004046:
+def checker_match_3039(v_1004049: ArenaResult<String>, +v_21: Nat, +v_22: Ast.SourceSpan, +v_3: Nat, +v_7: Nat, +v_5: U32) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1004049:
     case ArenaResult{v_26, +v_27}:
       +v_29 = v_27
       v_31 = v_29
       +v_33 = v_21
       v_35 = v_22
       +v_37 = Nat.add(v_3, v_7)
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_var{v_26, Nat.is_eq(v_33, v_37), Nat.is_gt(v_33, v_37), v_7, v_5, v_31, v_33, v_35}}, False{}, v_1004045 => checker_body_core_subst_var(v_26, Nat.is_eq(v_33, v_37), Nat.is_gt(v_33, v_37), v_7, v_5, v_31, v_33, v_35), v_1004044 => CheckerFinished{{v_1004044 : ArenaResult<U32>}}}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_var{v_26, Nat.is_eq(v_33, v_37), Nat.is_gt(v_33, v_37), v_7, v_5, v_31, v_33, v_35}}, False{}, v_1004048 => checker_body_core_subst_var(v_26, Nat.is_eq(v_33, v_37), Nat.is_gt(v_33, v_37), v_7, v_5, v_31, v_33, v_35), v_1004047 => CheckerFinished{{v_1004047 : ArenaResult<U32>}}}
 
-def checker_continuation_3041(v_1004047: ArenaResult<U32>, v_58: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_62, +v_63} = v_1004047
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_62, Arena.TermBang{v_63, v_58}}}, v_1004048 => CheckerFinished{{v_1004048 : ArenaResult<U32>}}}
+def checker_continuation_3040(v_1004050: ArenaResult<U32>, v_58: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_62, +v_63} = v_1004050
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_62, Arena.TermBang{v_63, v_58}}}, v_1004051 => CheckerFinished{{v_1004051 : ArenaResult<U32>}}}
 
-def checker_continuation_3042(v_1004051: ArenaResult<U32>, v_80: Nat, +v_91: U32, v_86: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_95, +v_96} = v_1004051
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_95, Arena.TermSub{v_80, v_91, v_96, v_86}}}, v_1004052 => CheckerFinished{{v_1004052 : ArenaResult<U32>}}}
+def checker_continuation_3041(v_1004054: ArenaResult<U32>, v_80: Nat, +v_91: U32, v_86: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_95, +v_96} = v_1004054
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_95, Arena.TermSub{v_80, v_91, v_96, v_86}}}, v_1004055 => CheckerFinished{{v_1004055 : ArenaResult<U32>}}}
 
-def checker_continuation_3043(v_1004050: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_84: U32, v_80: Nat, v_86: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_90, +v_91} = v_1004050
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_90, v_3, v_5, Nat.add(v_7, 1n), v_84}}, False{}, v_1004053 => checker_body_core_subst_at(v_90, v_3, v_5, Nat.add(v_7, 1n), v_84), v_1004051 => checker_continuation_3042(v_1004051, v_80, v_91, v_86)}
+def checker_continuation_3042(v_1004053: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_84: U32, v_80: Nat, v_86: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_90, +v_91} = v_1004053
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_90, v_3, v_5, Nat.add(v_7, 1n), v_84}}, False{}, v_1004056 => checker_body_core_subst_at(v_90, v_3, v_5, Nat.add(v_7, 1n), v_84), v_1004054 => checker_continuation_3041(v_1004054, v_80, v_91, v_86)}
 
-def checker_continuation_3044(v_1004056: ArenaResult<U32>, +v_133: IR.Names, +v_135: IR.Naturals, +v_137: IR.Quantities, +v_148: IR.Words, v_143: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_153, +v_154} = v_1004056
+def checker_continuation_3043(v_1004059: ArenaResult<U32>, +v_133: IR.Names, +v_135: IR.Naturals, +v_137: IR.Quantities, +v_148: IR.Words, v_143: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_153, +v_154} = v_1004059
   v_157 = checker_pure_arena_names_start(v_133)
   v_160 = checker_pure_arena_names_count(v_133)
   v_163 = checker_pure_arena_naturals_start(v_135)
@@ -25834,52 +25833,52 @@ def checker_continuation_3044(v_1004056: ArenaResult<U32>, +v_133: IR.Names, +v_
   v_172 = checker_pure_arena_quantities_count(v_137)
   v_175 = checker_pure_arena_words_start(v_148)
   v_178 = checker_pure_arena_words_count(v_148)
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_153, Arena.TermLet{v_157, v_160, v_163, v_166, v_169, v_172, v_175, v_178, v_154, v_143}}}, v_1004057 => CheckerFinished{{v_1004057 : ArenaResult<U32>}}}
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_153, Arena.TermLet{v_157, v_160, v_163, v_166, v_169, v_172, v_175, v_178, v_154, v_143}}}, v_1004060 => CheckerFinished{{v_1004060 : ArenaResult<U32>}}}
 
-def checker_continuation_3045(v_1004055: ArenaResult<IR.Words>, +v_3: Nat, +v_5: U32, +v_7: Nat, +v_133: IR.Names, v_141: U32, v_135: IR.Naturals, v_137: IR.Quantities, v_143: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_147, +v_148} = v_1004055
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_147, v_3, v_5, Nat.add(v_7, checker_pure_arena_names_length(v_133)), v_141}}, False{}, v_1004058 => checker_body_core_subst_at(v_147, v_3, v_5, Nat.add(v_7, checker_pure_arena_names_length(v_133)), v_141), v_1004056 => checker_continuation_3044(v_1004056, v_133, v_135, v_137, v_148, v_143)}
+def checker_continuation_3044(v_1004058: ArenaResult<IR.Words>, +v_3: Nat, +v_5: U32, +v_7: Nat, +v_133: IR.Names, v_141: U32, v_135: IR.Naturals, v_137: IR.Quantities, v_143: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_147, +v_148} = v_1004058
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_147, v_3, v_5, Nat.add(v_7, checker_pure_arena_names_length(v_133)), v_141}}, False{}, v_1004061 => checker_body_core_subst_at(v_147, v_3, v_5, Nat.add(v_7, checker_pure_arena_names_length(v_133)), v_141), v_1004059 => checker_continuation_3043(v_1004059, v_133, v_135, v_137, v_148, v_143)}
 
-def checker_continuation_3046(v_1004060: ArenaResult<U32>, +v_202: U32, v_197: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_206, +v_207} = v_1004060
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_206, Arena.TermAnn{v_202, v_207, v_197}}}, v_1004061 => CheckerFinished{{v_1004061 : ArenaResult<U32>}}}
+def checker_continuation_3045(v_1004063: ArenaResult<U32>, +v_202: U32, v_197: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_206, +v_207} = v_1004063
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_206, Arena.TermAnn{v_202, v_207, v_197}}}, v_1004064 => CheckerFinished{{v_1004064 : ArenaResult<U32>}}}
 
-def checker_continuation_3047(v_1004059: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_195: U32, v_197: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_201, +v_202} = v_1004059
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_201, v_3, v_5, v_7, v_195}}, False{}, v_1004062 => checker_body_core_subst_at(v_201, v_3, v_5, v_7, v_195), v_1004060 => checker_continuation_3046(v_1004060, v_202, v_197)}
+def checker_continuation_3046(v_1004062: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_195: U32, v_197: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_201, +v_202} = v_1004062
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_201, v_3, v_5, v_7, v_195}}, False{}, v_1004065 => checker_body_core_subst_at(v_201, v_3, v_5, v_7, v_195), v_1004063 => checker_continuation_3045(v_1004063, v_202, v_197)}
 
-def checker_continuation_3048(v_1004064: ArenaResult<U32>, v_222: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_226, +v_227} = v_1004064
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_226, Arena.TermTemplate{v_227, v_222}}}, v_1004065 => CheckerFinished{{v_1004065 : ArenaResult<U32>}}}
+def checker_continuation_3047(v_1004067: ArenaResult<U32>, v_222: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_226, +v_227} = v_1004067
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_226, Arena.TermTemplate{v_227, v_222}}}, v_1004068 => CheckerFinished{{v_1004068 : ArenaResult<U32>}}}
 
-def checker_continuation_3049(v_1004067: ArenaResult<U32>, v_242: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_246, +v_247} = v_1004067
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_246, Arena.TermType{v_247, v_242}}}, v_1004068 => CheckerFinished{{v_1004068 : ArenaResult<U32>}}}
+def checker_continuation_3048(v_1004070: ArenaResult<U32>, v_242: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_246, +v_247} = v_1004070
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_246, Arena.TermType{v_247, v_242}}}, v_1004071 => CheckerFinished{{v_1004071 : ArenaResult<U32>}}}
 
-def checker_continuation_3050(v_1004073: ArenaResult<U32>, +v_293: U32, v_288: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_297, +v_298} = v_1004073
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_297, Arena.TermMin{v_293, v_298, v_288}}}, v_1004074 => CheckerFinished{{v_1004074 : ArenaResult<U32>}}}
+def checker_continuation_3049(v_1004076: ArenaResult<U32>, +v_293: U32, v_288: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_297, +v_298} = v_1004076
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_297, Arena.TermMin{v_293, v_298, v_288}}}, v_1004077 => CheckerFinished{{v_1004077 : ArenaResult<U32>}}}
 
-def checker_continuation_3051(v_1004072: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_286: U32, v_288: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_292, +v_293} = v_1004072
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_292, v_3, v_5, v_7, v_286}}, False{}, v_1004075 => checker_body_core_subst_at(v_292, v_3, v_5, v_7, v_286), v_1004073 => checker_continuation_3050(v_1004073, v_293, v_288)}
+def checker_continuation_3050(v_1004075: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_286: U32, v_288: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_292, +v_293} = v_1004075
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_292, v_3, v_5, v_7, v_286}}, False{}, v_1004078 => checker_body_core_subst_at(v_292, v_3, v_5, v_7, v_286), v_1004076 => checker_continuation_3049(v_1004076, v_293, v_288)}
 
-def checker_match_3052(v_1004080: ArenaResult<U32>, v_326: Ast.Quantity, v_330: Nat, +v_341: U32, +v_346: U32, v_336: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1004080:
-    case ArenaResult{v_350, +v_351}:
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_350, Arena.TermAll{v_326, v_351, v_330, v_341, v_346, v_336}}}, v_1004079 => CheckerFinished{{v_1004079 : ArenaResult<U32>}}}
-
-def checker_continuation_3053(v_1004078: ArenaResult<U32>, v_328: String, v_326: Ast.Quantity, v_330: Nat, +v_341: U32, v_336: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_345, +v_346} = v_1004078
-  v_1004080 = {checker_pure_arena_name(v_345, v_328) : ArenaResult<U32>}
-  checker_match_3052(v_1004080, v_326, v_330, v_341, v_346, v_336)
-
-def checker_continuation_3054(v_1004077: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_334: U32, v_328: String, v_326: Ast.Quantity, v_330: Nat, v_336: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_340, +v_341} = v_1004077
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_340, v_3, v_5, Nat.add(v_7, 1n), v_334}}, False{}, v_1004081 => checker_body_core_subst_at(v_340, v_3, v_5, Nat.add(v_7, 1n), v_334), v_1004078 => checker_continuation_3053(v_1004078, v_328, v_326, v_330, v_341, v_336)}
-
-def checker_match_3055(v_1004083: ArenaResult<String>, +v_312: Ast.Quantity, +v_314: Nat, +v_315: U32, +v_316: U32, +v_317: Ast.SourceSpan, +v_3: Nat, +v_5: U32, +v_7: Nat) -> CheckerProgress<ArenaResult<U32>>:
+def checker_match_3051(v_1004083: ArenaResult<U32>, v_326: Ast.Quantity, v_330: Nat, +v_341: U32, +v_346: U32, v_336: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
   match v_1004083:
+    case ArenaResult{v_350, +v_351}:
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_350, Arena.TermAll{v_326, v_351, v_330, v_341, v_346, v_336}}}, v_1004082 => CheckerFinished{{v_1004082 : ArenaResult<U32>}}}
+
+def checker_continuation_3052(v_1004081: ArenaResult<U32>, v_328: String, v_326: Ast.Quantity, v_330: Nat, +v_341: U32, v_336: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_345, +v_346} = v_1004081
+  v_1004083 = {checker_pure_arena_name(v_345, v_328) : ArenaResult<U32>}
+  checker_match_3051(v_1004083, v_326, v_330, v_341, v_346, v_336)
+
+def checker_continuation_3053(v_1004080: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_334: U32, v_328: String, v_326: Ast.Quantity, v_330: Nat, v_336: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_340, +v_341} = v_1004080
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_340, v_3, v_5, Nat.add(v_7, 1n), v_334}}, False{}, v_1004084 => checker_body_core_subst_at(v_340, v_3, v_5, Nat.add(v_7, 1n), v_334), v_1004081 => checker_continuation_3052(v_1004081, v_328, v_326, v_330, v_341, v_336)}
+
+def checker_match_3054(v_1004086: ArenaResult<String>, +v_312: Ast.Quantity, +v_314: Nat, +v_315: U32, +v_316: U32, +v_317: Ast.SourceSpan, +v_3: Nat, +v_5: U32, +v_7: Nat) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1004086:
     case ArenaResult{v_321, +v_322}:
       +v_324 = v_322
       v_326 = v_312
@@ -25888,20 +25887,20 @@ def checker_match_3055(v_1004083: ArenaResult<String>, +v_312: Ast.Quantity, +v_
       v_332 = v_315
       v_334 = v_316
       v_336 = v_317
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_321, v_3, v_5, v_7, v_332}}, False{}, v_1004082 => checker_body_core_subst_at(v_321, v_3, v_5, v_7, v_332), v_1004077 => checker_continuation_3054(v_1004077, v_3, v_5, v_7, v_334, v_328, v_326, v_330, v_336)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_321, v_3, v_5, v_7, v_332}}, False{}, v_1004085 => checker_body_core_subst_at(v_321, v_3, v_5, v_7, v_332), v_1004080 => checker_continuation_3053(v_1004080, v_3, v_5, v_7, v_334, v_328, v_326, v_330, v_336)}
 
-def checker_match_3056(v_1004086: ArenaResult<U32>, v_377: Maybe<&2, Ast.Quantity>, v_381: Nat, +v_390: U32, v_385: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1004086:
+def checker_match_3055(v_1004089: ArenaResult<U32>, v_377: Maybe<&2, Ast.Quantity>, v_381: Nat, +v_390: U32, v_385: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1004089:
     case ArenaResult{v_394, +v_395}:
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_394, Arena.TermLam{v_377, v_395, v_381, v_390, v_385}}}, v_1004085 => CheckerFinished{{v_1004085 : ArenaResult<U32>}}}
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_394, Arena.TermLam{v_377, v_395, v_381, v_390, v_385}}}, v_1004088 => CheckerFinished{{v_1004088 : ArenaResult<U32>}}}
 
-def checker_continuation_3057(v_1004084: ArenaResult<U32>, v_379: String, v_377: Maybe<&2, Ast.Quantity>, v_381: Nat, v_385: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_389, +v_390} = v_1004084
-  v_1004086 = {checker_pure_arena_name(v_389, v_379) : ArenaResult<U32>}
-  checker_match_3056(v_1004086, v_377, v_381, v_390, v_385)
+def checker_continuation_3056(v_1004087: ArenaResult<U32>, v_379: String, v_377: Maybe<&2, Ast.Quantity>, v_381: Nat, v_385: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_389, +v_390} = v_1004087
+  v_1004089 = {checker_pure_arena_name(v_389, v_379) : ArenaResult<U32>}
+  checker_match_3055(v_1004089, v_377, v_381, v_390, v_385)
 
-def checker_match_3058(v_1004088: ArenaResult<String>, +v_364: Maybe<&2, Ast.Quantity>, +v_366: Nat, +v_367: U32, +v_368: Ast.SourceSpan, +v_3: Nat, +v_5: U32, +v_7: Nat) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1004088:
+def checker_match_3057(v_1004091: ArenaResult<String>, +v_364: Maybe<&2, Ast.Quantity>, +v_366: Nat, +v_367: U32, +v_368: Ast.SourceSpan, +v_3: Nat, +v_5: U32, +v_7: Nat) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1004091:
     case ArenaResult{v_372, +v_373}:
       +v_375 = v_373
       v_377 = v_364
@@ -25909,32 +25908,32 @@ def checker_match_3058(v_1004088: ArenaResult<String>, +v_364: Maybe<&2, Ast.Qua
       v_381 = v_366
       v_383 = v_367
       v_385 = v_368
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_372, v_3, v_5, Nat.add(v_7, 1n), v_383}}, False{}, v_1004087 => checker_body_core_subst_at(v_372, v_3, v_5, Nat.add(v_7, 1n), v_383), v_1004084 => checker_continuation_3057(v_1004084, v_379, v_377, v_381, v_385)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_372, v_3, v_5, Nat.add(v_7, 1n), v_383}}, False{}, v_1004090 => checker_body_core_subst_at(v_372, v_3, v_5, Nat.add(v_7, 1n), v_383), v_1004087 => checker_continuation_3056(v_1004087, v_379, v_377, v_381, v_385)}
 
-def checker_continuation_3059(v_1004090: ArenaResult<U32>, +v_419: U32, v_414: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_423, +v_424} = v_1004090
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_423, Arena.TermApp{v_419, v_424, v_414}}}, v_1004091 => CheckerFinished{{v_1004091 : ArenaResult<U32>}}}
+def checker_continuation_3058(v_1004093: ArenaResult<U32>, +v_419: U32, v_414: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_423, +v_424} = v_1004093
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_423, Arena.TermApp{v_419, v_424, v_414}}}, v_1004094 => CheckerFinished{{v_1004094 : ArenaResult<U32>}}}
 
-def checker_continuation_3060(v_1004089: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_412: U32, v_414: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_418, +v_419} = v_1004089
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_418, v_3, v_5, v_7, v_412}}, False{}, v_1004092 => checker_body_core_subst_at(v_418, v_3, v_5, v_7, v_412), v_1004090 => checker_continuation_3059(v_1004090, v_419, v_414)}
+def checker_continuation_3059(v_1004092: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_412: U32, v_414: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_418, +v_419} = v_1004092
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_418, v_3, v_5, v_7, v_412}}, False{}, v_1004095 => checker_body_core_subst_at(v_418, v_3, v_5, v_7, v_412), v_1004093 => checker_continuation_3058(v_1004093, v_419, v_414)}
 
-def checker_match_3061(v_1004096: ArenaResult<U32>, +v_467: IR.Words, +v_460: IR.Names, v_462: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1004096:
+def checker_match_3060(v_1004099: ArenaResult<U32>, +v_467: IR.Words, +v_460: IR.Names, v_462: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1004099:
     case ArenaResult{v_471, +v_472}:
       v_475 = checker_pure_arena_words_start(v_467)
       v_478 = checker_pure_arena_words_count(v_467)
       v_481 = checker_pure_arena_names_start(v_460)
       v_484 = checker_pure_arena_names_count(v_460)
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_471, Arena.TermAdt{v_472, v_475, v_478, v_481, v_484, v_462}}}, v_1004095 => CheckerFinished{{v_1004095 : ArenaResult<U32>}}}
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_471, Arena.TermAdt{v_472, v_475, v_478, v_481, v_484, v_462}}}, v_1004098 => CheckerFinished{{v_1004098 : ArenaResult<U32>}}}
 
-def checker_continuation_3062(v_1004094: ArenaResult<IR.Words>, v_456: String, v_460: IR.Names, v_462: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_466, +v_467} = v_1004094
-  v_1004096 = {checker_pure_arena_name(v_466, v_456) : ArenaResult<U32>}
-  checker_match_3061(v_1004096, v_467, v_460, v_462)
+def checker_continuation_3061(v_1004097: ArenaResult<IR.Words>, v_456: String, v_460: IR.Names, v_462: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_466, +v_467} = v_1004097
+  v_1004099 = {checker_pure_arena_name(v_466, v_456) : ArenaResult<U32>}
+  checker_match_3060(v_1004099, v_467, v_460, v_462)
 
-def checker_match_3063(v_1004097: ArenaResult<String>, +v_439: U32, +v_440: U32, +v_441: U32, +v_442: U32, +v_443: Ast.SourceSpan, +v_3: Nat, +v_5: U32, +v_7: Nat) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1004097:
+def checker_match_3062(v_1004100: ArenaResult<String>, +v_439: U32, +v_440: U32, +v_441: U32, +v_442: U32, +v_443: Ast.SourceSpan, +v_3: Nat, +v_5: U32, +v_7: Nat) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1004100:
     case ArenaResult{v_447, +v_448}:
       +v_450 = v_448
       +v_452 = {IR.Words{v_439, v_440} : IR.Words}
@@ -25943,171 +25942,171 @@ def checker_match_3063(v_1004097: ArenaResult<String>, +v_439: U32, +v_440: U32,
       v_458 = v_452
       v_460 = v_454
       v_462 = v_443
-      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_subst_terms{v_447, v_3, v_5, v_7, v_458}}, v_1004094 => checker_continuation_3062(v_1004094, v_456, v_460, v_462)}
+      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_subst_terms{v_447, v_3, v_5, v_7, v_458}}, v_1004097 => checker_continuation_3061(v_1004097, v_456, v_460, v_462)}
 
-def checker_continuation_3064(v_1004099: ArenaResult<IR.Words>, +v_512: U32, v_507: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_516, +v_517} = v_1004099
+def checker_continuation_3063(v_1004102: ArenaResult<IR.Words>, +v_512: U32, v_507: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_516, +v_517} = v_1004102
   v_520 = checker_pure_arena_words_start(v_517)
   v_523 = checker_pure_arena_words_count(v_517)
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_516, Arena.TermFill{v_512, v_520, v_523, v_507}}}, v_1004100 => CheckerFinished{{v_1004100 : ArenaResult<U32>}}}
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_516, Arena.TermFill{v_512, v_520, v_523, v_507}}}, v_1004103 => CheckerFinished{{v_1004103 : ArenaResult<U32>}}}
 
-def checker_continuation_3065(v_1004098: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_505: IR.Words, v_507: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_511, +v_512} = v_1004098
-  CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_subst_terms{v_511, v_3, v_5, v_7, v_505}}, v_1004099 => checker_continuation_3064(v_1004099, v_512, v_507)}
+def checker_continuation_3064(v_1004101: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_505: IR.Words, v_507: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_511, +v_512} = v_1004101
+  CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_subst_terms{v_511, v_3, v_5, v_7, v_505}}, v_1004102 => checker_continuation_3063(v_1004102, v_512, v_507)}
 
-def checker_continuation_3066(v_1004103: ArenaResult<IR.Words>, +v_551: U32, v_546: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_555, +v_556} = v_1004103
+def checker_continuation_3065(v_1004106: ArenaResult<IR.Words>, +v_551: U32, v_546: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_555, +v_556} = v_1004106
   v_559 = checker_pure_arena_words_start(v_556)
   v_562 = checker_pure_arena_words_count(v_556)
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_555, Arena.TermPlus{v_551, v_559, v_562, v_546}}}, v_1004104 => CheckerFinished{{v_1004104 : ArenaResult<U32>}}}
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_555, Arena.TermPlus{v_551, v_559, v_562, v_546}}}, v_1004107 => CheckerFinished{{v_1004107 : ArenaResult<U32>}}}
 
-def checker_continuation_3067(v_1004102: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_544: IR.Words, v_546: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_550, +v_551} = v_1004102
-  CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_subst_terms{v_550, v_3, v_5, v_7, v_544}}, v_1004103 => checker_continuation_3066(v_1004103, v_551, v_546)}
+def checker_continuation_3066(v_1004105: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_544: IR.Words, v_546: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_550, +v_551} = v_1004105
+  CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_subst_terms{v_550, v_3, v_5, v_7, v_544}}, v_1004106 => checker_continuation_3065(v_1004106, v_551, v_546)}
 
-def checker_match_3068(v_1004108: ArenaResult<U32>, +v_605: IR.Words, v_600: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1004108:
+def checker_match_3067(v_1004111: ArenaResult<U32>, +v_605: IR.Words, v_600: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1004111:
     case ArenaResult{v_609, +v_610}:
       v_613 = checker_pure_arena_words_start(v_605)
       v_616 = checker_pure_arena_words_count(v_605)
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_609, Arena.TermCtr{v_610, v_613, v_616, v_600}}}, v_1004107 => CheckerFinished{{v_1004107 : ArenaResult<U32>}}}
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_609, Arena.TermCtr{v_610, v_613, v_616, v_600}}}, v_1004110 => CheckerFinished{{v_1004110 : ArenaResult<U32>}}}
 
-def checker_continuation_3069(v_1004106: ArenaResult<IR.Words>, v_596: String, v_600: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_604, +v_605} = v_1004106
-  v_1004108 = {checker_pure_arena_name(v_604, v_596) : ArenaResult<U32>}
-  checker_match_3068(v_1004108, v_605, v_600)
+def checker_continuation_3068(v_1004109: ArenaResult<IR.Words>, v_596: String, v_600: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_604, +v_605} = v_1004109
+  v_1004111 = {checker_pure_arena_name(v_604, v_596) : ArenaResult<U32>}
+  checker_match_3067(v_1004111, v_605, v_600)
 
-def checker_match_3070(v_1004109: ArenaResult<String>, +v_583: U32, +v_584: U32, +v_585: Ast.SourceSpan, +v_3: Nat, +v_5: U32, +v_7: Nat) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1004109:
+def checker_match_3069(v_1004112: ArenaResult<String>, +v_583: U32, +v_584: U32, +v_585: Ast.SourceSpan, +v_3: Nat, +v_5: U32, +v_7: Nat) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1004112:
     case ArenaResult{v_589, +v_590}:
       +v_592 = v_590
       +v_594 = {IR.Words{v_583, v_584} : IR.Words}
       v_596 = v_592
       v_598 = v_594
       v_600 = v_585
-      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_subst_terms{v_589, v_3, v_5, v_7, v_598}}, v_1004106 => checker_continuation_3069(v_1004106, v_596, v_600)}
+      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_subst_terms{v_589, v_3, v_5, v_7, v_598}}, v_1004109 => checker_continuation_3068(v_1004109, v_596, v_600)}
 
-def checker_match_3071(v_1004113: ArenaResult<U32>, +v_651: U32, +v_656: U32, v_646: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1004113:
-    case ArenaResult{v_660, +v_661}:
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_660, Arena.TermMat{v_661, v_651, v_656, v_646}}}, v_1004112 => CheckerFinished{{v_1004112 : ArenaResult<U32>}}}
-
-def checker_continuation_3072(v_1004111: ArenaResult<U32>, v_640: String, +v_651: U32, v_646: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_655, +v_656} = v_1004111
-  v_1004113 = {checker_pure_arena_name(v_655, v_640) : ArenaResult<U32>}
-  checker_match_3071(v_1004113, v_651, v_656, v_646)
-
-def checker_continuation_3073(v_1004110: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_644: U32, v_640: String, v_646: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_650, +v_651} = v_1004110
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_650, v_3, v_5, v_7, v_644}}, False{}, v_1004114 => checker_body_core_subst_at(v_650, v_3, v_5, v_7, v_644), v_1004111 => checker_continuation_3072(v_1004111, v_640, v_651, v_646)}
-
-def checker_match_3074(v_1004116: ArenaResult<String>, +v_629: U32, +v_630: U32, +v_631: Ast.SourceSpan, +v_3: Nat, +v_5: U32, +v_7: Nat) -> CheckerProgress<ArenaResult<U32>>:
+def checker_match_3070(v_1004116: ArenaResult<U32>, +v_651: U32, +v_656: U32, v_646: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
   match v_1004116:
+    case ArenaResult{v_660, +v_661}:
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_660, Arena.TermMat{v_661, v_651, v_656, v_646}}}, v_1004115 => CheckerFinished{{v_1004115 : ArenaResult<U32>}}}
+
+def checker_continuation_3071(v_1004114: ArenaResult<U32>, v_640: String, +v_651: U32, v_646: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_655, +v_656} = v_1004114
+  v_1004116 = {checker_pure_arena_name(v_655, v_640) : ArenaResult<U32>}
+  checker_match_3070(v_1004116, v_651, v_656, v_646)
+
+def checker_continuation_3072(v_1004113: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_644: U32, v_640: String, v_646: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_650, +v_651} = v_1004113
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_650, v_3, v_5, v_7, v_644}}, False{}, v_1004117 => checker_body_core_subst_at(v_650, v_3, v_5, v_7, v_644), v_1004114 => checker_continuation_3071(v_1004114, v_640, v_651, v_646)}
+
+def checker_match_3073(v_1004119: ArenaResult<String>, +v_629: U32, +v_630: U32, +v_631: Ast.SourceSpan, +v_3: Nat, +v_5: U32, +v_7: Nat) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1004119:
     case ArenaResult{v_635, +v_636}:
       +v_638 = v_636
       v_640 = v_638
       v_642 = v_629
       v_644 = v_630
       v_646 = v_631
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_635, v_3, v_5, v_7, v_642}}, False{}, v_1004115 => checker_body_core_subst_at(v_635, v_3, v_5, v_7, v_642), v_1004110 => checker_continuation_3073(v_1004110, v_3, v_5, v_7, v_644, v_640, v_646)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_635, v_3, v_5, v_7, v_642}}, False{}, v_1004118 => checker_body_core_subst_at(v_635, v_3, v_5, v_7, v_642), v_1004113 => checker_continuation_3072(v_1004113, v_3, v_5, v_7, v_644, v_640, v_646)}
 
-def checker_continuation_3075(v_1004120: ArenaResult<U32>, +v_700: U32, +v_705: U32, v_695: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_709, +v_710} = v_1004120
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_709, Arena.TermEqual{v_700, v_705, v_710, v_695}}}, v_1004121 => CheckerFinished{{v_1004121 : ArenaResult<U32>}}}
+def checker_continuation_3074(v_1004123: ArenaResult<U32>, +v_700: U32, +v_705: U32, v_695: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_709, +v_710} = v_1004123
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_709, Arena.TermEqual{v_700, v_705, v_710, v_695}}}, v_1004124 => CheckerFinished{{v_1004124 : ArenaResult<U32>}}}
 
-def checker_continuation_3076(v_1004119: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_693: U32, +v_700: U32, v_695: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_704, +v_705} = v_1004119
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_704, v_3, v_5, v_7, v_693}}, False{}, v_1004122 => checker_body_core_subst_at(v_704, v_3, v_5, v_7, v_693), v_1004120 => checker_continuation_3075(v_1004120, v_700, v_705, v_695)}
+def checker_continuation_3075(v_1004122: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_693: U32, +v_700: U32, v_695: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_704, +v_705} = v_1004122
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_704, v_3, v_5, v_7, v_693}}, False{}, v_1004125 => checker_body_core_subst_at(v_704, v_3, v_5, v_7, v_693), v_1004123 => checker_continuation_3074(v_1004123, v_700, v_705, v_695)}
 
-def checker_continuation_3077(v_1004118: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_691: U32, v_693: U32, v_695: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_699, +v_700} = v_1004118
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_699, v_3, v_5, v_7, v_691}}, False{}, v_1004123 => checker_body_core_subst_at(v_699, v_3, v_5, v_7, v_691), v_1004119 => checker_continuation_3076(v_1004119, v_3, v_5, v_7, v_693, v_700, v_695)}
+def checker_continuation_3076(v_1004121: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_691: U32, v_693: U32, v_695: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_699, +v_700} = v_1004121
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_699, v_3, v_5, v_7, v_691}}, False{}, v_1004126 => checker_body_core_subst_at(v_699, v_3, v_5, v_7, v_691), v_1004122 => checker_continuation_3075(v_1004122, v_3, v_5, v_7, v_693, v_700, v_695)}
 
-def checker_continuation_3078(v_1004128: ArenaResult<U32>, +v_749: U32, +v_754: U32, v_744: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_758, +v_759} = v_1004128
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_758, Arena.TermRewrite{v_749, v_754, v_759, v_744}}}, v_1004129 => CheckerFinished{{v_1004129 : ArenaResult<U32>}}}
+def checker_continuation_3077(v_1004131: ArenaResult<U32>, +v_749: U32, +v_754: U32, v_744: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_758, +v_759} = v_1004131
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_758, Arena.TermRewrite{v_749, v_754, v_759, v_744}}}, v_1004132 => CheckerFinished{{v_1004132 : ArenaResult<U32>}}}
 
-def checker_continuation_3079(v_1004127: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_742: U32, +v_749: U32, v_744: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_753, +v_754} = v_1004127
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_753, v_3, v_5, v_7, v_742}}, False{}, v_1004130 => checker_body_core_subst_at(v_753, v_3, v_5, v_7, v_742), v_1004128 => checker_continuation_3078(v_1004128, v_749, v_754, v_744)}
+def checker_continuation_3078(v_1004130: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_742: U32, +v_749: U32, v_744: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_753, +v_754} = v_1004130
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_753, v_3, v_5, v_7, v_742}}, False{}, v_1004133 => checker_body_core_subst_at(v_753, v_3, v_5, v_7, v_742), v_1004131 => checker_continuation_3077(v_1004131, v_749, v_754, v_744)}
 
-def checker_continuation_3080(v_1004126: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_740: U32, v_742: U32, v_744: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_748, +v_749} = v_1004126
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_748, v_3, v_5, v_7, v_740}}, False{}, v_1004131 => checker_body_core_subst_at(v_748, v_3, v_5, v_7, v_740), v_1004127 => checker_continuation_3079(v_1004127, v_3, v_5, v_7, v_742, v_749, v_744)}
+def checker_continuation_3079(v_1004129: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_740: U32, v_742: U32, v_744: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_748, +v_749} = v_1004129
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_748, v_3, v_5, v_7, v_740}}, False{}, v_1004134 => checker_body_core_subst_at(v_748, v_3, v_5, v_7, v_740), v_1004130 => checker_continuation_3078(v_1004130, v_3, v_5, v_7, v_742, v_749, v_744)}
 
-def checker_match_3081(v_1004134: ArenaResult<U32>, v_781: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1004134:
+def checker_match_3080(v_1004137: ArenaResult<U32>, v_781: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1004137:
     case ArenaResult{v_785, +v_786}:
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_785, Arena.TermHole{v_786, v_781}}}, v_1004133 => CheckerFinished{{v_1004133 : ArenaResult<U32>}}}
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_785, Arena.TermHole{v_786, v_781}}}, v_1004136 => CheckerFinished{{v_1004136 : ArenaResult<U32>}}}
 
-def checker_match_3082(v_1004135: ArenaResult<String>, +v_770: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1004135:
+def checker_match_3081(v_1004138: ArenaResult<String>, +v_770: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1004138:
     case ArenaResult{v_774, +v_775}:
       +v_777 = v_775
       v_779 = v_777
       v_781 = v_770
-      v_1004134 = {checker_pure_arena_name(v_774, v_779) : ArenaResult<U32>}
-      checker_match_3081(v_1004134, v_781)
+      v_1004137 = {checker_pure_arena_name(v_774, v_779) : ArenaResult<U32>}
+      checker_match_3080(v_1004137, v_781)
 
-def checker_continuation_3083(v_1004137: ArenaResult<IR.Words>, +v_818: IR.Words, v_813: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_822, +v_823} = v_1004137
+def checker_continuation_3082(v_1004140: ArenaResult<IR.Words>, +v_818: IR.Words, v_813: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_822, +v_823} = v_1004140
   v_826 = checker_pure_arena_words_start(v_818)
   v_829 = checker_pure_arena_words_count(v_818)
   v_832 = checker_pure_arena_words_start(v_823)
   v_835 = checker_pure_arena_words_count(v_823)
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_822, Arena.BodyMatch{v_826, v_829, v_832, v_835, v_813}}}, v_1004138 => CheckerFinished{{v_1004138 : ArenaResult<U32>}}}
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_822, Arena.BodyMatch{v_826, v_829, v_832, v_835, v_813}}}, v_1004141 => CheckerFinished{{v_1004141 : ArenaResult<U32>}}}
 
-def checker_continuation_3084(v_1004136: ArenaResult<IR.Words>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_811: IR.Words, v_813: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_817, +v_818} = v_1004136
-  CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_subst_terms{v_817, v_3, v_5, v_7, v_811}}, v_1004137 => checker_continuation_3083(v_1004137, v_818, v_813)}
+def checker_continuation_3083(v_1004139: ArenaResult<IR.Words>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_811: IR.Words, v_813: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_817, +v_818} = v_1004139
+  CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_subst_terms{v_817, v_3, v_5, v_7, v_811}}, v_1004140 => checker_continuation_3082(v_1004140, v_818, v_813)}
 
-def checker_continuation_3085(v_1004140: ArenaResult<U32>, +v_854: IR.Words, v_858: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_867, +v_868} = v_1004140
+def checker_continuation_3084(v_1004143: ArenaResult<U32>, +v_854: IR.Words, v_858: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_867, +v_868} = v_1004143
   v_871 = checker_pure_arena_words_start(v_854)
   v_874 = checker_pure_arena_words_count(v_854)
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_867, Arena.BodyCase{v_871, v_874, v_868, v_858}}}, v_1004141 => CheckerFinished{{v_1004141 : ArenaResult<U32>}}}
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_867, Arena.BodyCase{v_871, v_874, v_868, v_858}}}, v_1004144 => CheckerFinished{{v_1004144 : ArenaResult<U32>}}}
 
-def checker_continuation_3086(v_1004139: ArenaResult<Nat>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_856: U32, +v_854: IR.Words, v_858: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_862, +v_863} = v_1004139
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_862, v_3, v_5, Nat.add(v_7, v_863), v_856}}, False{}, v_1004142 => checker_body_core_subst_at(v_862, v_3, v_5, Nat.add(v_7, v_863), v_856), v_1004140 => checker_continuation_3085(v_1004140, v_854, v_858)}
+def checker_continuation_3085(v_1004142: ArenaResult<Nat>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_856: U32, +v_854: IR.Words, v_858: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_862, +v_863} = v_1004142
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_862, v_3, v_5, Nat.add(v_7, v_863), v_856}}, False{}, v_1004145 => checker_body_core_subst_at(v_862, v_3, v_5, Nat.add(v_7, v_863), v_856), v_1004143 => checker_continuation_3084(v_1004143, v_854, v_858)}
 
-def checker_continuation_3087(v_1004146: ArenaResult<U32>, +v_901: IR.Words, +v_914: IR.Words, v_903: Ast.Quantity, v_909: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_923, +v_924} = v_1004146
+def checker_continuation_3086(v_1004149: ArenaResult<U32>, +v_901: IR.Words, +v_914: IR.Words, v_903: Ast.Quantity, v_909: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_923, +v_924} = v_1004149
   v_927 = checker_pure_arena_words_start(v_901)
   v_930 = checker_pure_arena_words_count(v_901)
   v_933 = checker_pure_arena_words_start(v_914)
   v_936 = checker_pure_arena_words_count(v_914)
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_923, Arena.BodyLocal{v_927, v_930, v_903, v_933, v_936, v_924, v_909}}}, v_1004147 => CheckerFinished{{v_1004147 : ArenaResult<U32>}}}
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_923, Arena.BodyLocal{v_927, v_930, v_903, v_933, v_936, v_924, v_909}}}, v_1004150 => CheckerFinished{{v_1004150 : ArenaResult<U32>}}}
 
-def checker_continuation_3088(v_1004145: ArenaResult<Nat>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_907: U32, +v_901: IR.Words, +v_914: IR.Words, v_903: Ast.Quantity, v_909: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_918, +v_919} = v_1004145
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_918, v_3, v_5, Nat.add(v_7, v_919), v_907}}, False{}, v_1004148 => checker_body_core_subst_at(v_918, v_3, v_5, Nat.add(v_7, v_919), v_907), v_1004146 => checker_continuation_3087(v_1004146, v_901, v_914, v_903, v_909)}
+def checker_continuation_3087(v_1004148: ArenaResult<Nat>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_907: U32, +v_901: IR.Words, +v_914: IR.Words, v_903: Ast.Quantity, v_909: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_918, +v_919} = v_1004148
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_918, v_3, v_5, Nat.add(v_7, v_919), v_907}}, False{}, v_1004151 => checker_body_core_subst_at(v_918, v_3, v_5, Nat.add(v_7, v_919), v_907), v_1004149 => checker_continuation_3086(v_1004149, v_901, v_914, v_903, v_909)}
 
-def checker_continuation_3089(v_1004144: ArenaResult<IR.Words>, +v_901: IR.Words, +v_3: Nat, +v_5: U32, +v_7: Nat, v_907: U32, v_903: Ast.Quantity, v_909: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_913, +v_914} = v_1004144
-  CheckerDirect{Bool, CheckerRequestGroup_10{CheckerRequest_core_pattern_list_depth{v_913, v_901}}, False{}, v_1004149 => checker_body_core_pattern_list_depth(v_913, v_901), v_1004145 => checker_continuation_3088(v_1004145, v_3, v_5, v_7, v_907, v_901, v_914, v_903, v_909)}
+def checker_continuation_3088(v_1004147: ArenaResult<IR.Words>, +v_901: IR.Words, +v_3: Nat, +v_5: U32, +v_7: Nat, v_907: U32, v_903: Ast.Quantity, v_909: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_913, +v_914} = v_1004147
+  CheckerDirect{Bool, CheckerRequestGroup_10{CheckerRequest_core_pattern_list_depth{v_913, v_901}}, False{}, v_1004152 => checker_body_core_pattern_list_depth(v_913, v_901), v_1004148 => checker_continuation_3087(v_1004148, v_3, v_5, v_7, v_907, v_901, v_914, v_903, v_909)}
 
-def checker_continuation_3090(v_1004150: ArenaResult<U32>, v_951: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_955, +v_956} = v_1004150
-  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_955, Arena.BodyReply{v_956, v_951}}}, v_1004151 => CheckerFinished{{v_1004151 : ArenaResult<U32>}}}
+def checker_continuation_3089(v_1004153: ArenaResult<U32>, v_951: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_955, +v_956} = v_1004153
+  CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_955, Arena.BodyReply{v_956, v_951}}}, v_1004154 => CheckerFinished{{v_1004154 : ArenaResult<U32>}}}
 
-def checker_match_3091(+v_16: Arena.Node, v_15: ArenaStore, +v_3: Nat, +v_7: Nat, +v_5: U32, v_9: U32) -> CheckerProgress<ArenaResult<U32>>:
+def checker_match_3090(+v_16: Arena.Node, v_15: ArenaStore, +v_3: Nat, +v_7: Nat, +v_5: U32, v_9: U32) -> CheckerProgress<ArenaResult<U32>>:
   match v_16:
     case Arena.TermVar{+v_20, +v_21, +v_22}:
-      v_1004046 = {checker_pure_arena_name_text(v_15, v_20) : ArenaResult<String>}
-      checker_match_3040(v_1004046, v_21, v_22, v_3, v_7, v_5)
+      v_1004049 = {checker_pure_arena_name_text(v_15, v_20) : ArenaResult<String>}
+      checker_match_3039(v_1004049, v_21, v_22, v_3, v_7, v_5)
     case Arena.TermRef{+v_47, +v_48}:
       CheckerFinished{{ArenaResult{v_15, v_9} : ArenaResult<U32>}}
     case Arena.TermBang{+v_53, +v_54}:
       v_56 = v_53
       v_58 = v_54
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_15, v_3, v_5, v_7, v_56}}, False{}, v_1004049 => checker_body_core_subst_at(v_15, v_3, v_5, v_7, v_56), v_1004047 => checker_continuation_3041(v_1004047, v_58)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_15, v_3, v_5, v_7, v_56}}, False{}, v_1004052 => checker_body_core_subst_at(v_15, v_3, v_5, v_7, v_56), v_1004050 => checker_continuation_3040(v_1004050, v_58)}
     case Arena.TermSub{+v_75, +v_76, +v_77, +v_78}:
       v_80 = v_75
       v_82 = v_76
       v_84 = v_77
       v_86 = v_78
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_15, v_3, v_5, v_7, v_82}}, False{}, v_1004054 => checker_body_core_subst_at(v_15, v_3, v_5, v_7, v_82), v_1004050 => checker_continuation_3043(v_1004050, v_3, v_5, v_7, v_84, v_80, v_86)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_15, v_3, v_5, v_7, v_82}}, False{}, v_1004057 => checker_body_core_subst_at(v_15, v_3, v_5, v_7, v_82), v_1004053 => checker_continuation_3042(v_1004053, v_3, v_5, v_7, v_84, v_80, v_86)}
     case Arena.TermLet{+v_114, +v_115, +v_116, +v_117, +v_118, +v_119, +v_120, +v_121, +v_122, +v_123}:
       +v_125 = {IR.Names{v_114, v_115} : IR.Names}
       +v_127 = {IR.Naturals{v_116, v_117} : IR.Naturals}
@@ -26119,99 +26118,99 @@ def checker_match_3091(+v_16: Arena.Node, v_15: ArenaStore, +v_3: Nat, +v_7: Nat
       v_139 = v_131
       v_141 = v_122
       v_143 = v_123
-      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_subst_terms{v_15, v_3, v_5, v_7, v_139}}, v_1004055 => checker_continuation_3045(v_1004055, v_3, v_5, v_7, v_133, v_141, v_135, v_137, v_143)}
+      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_subst_terms{v_15, v_3, v_5, v_7, v_139}}, v_1004058 => checker_continuation_3044(v_1004058, v_3, v_5, v_7, v_133, v_141, v_135, v_137, v_143)}
     case Arena.TermAnn{+v_189, +v_190, +v_191}:
       v_193 = v_189
       v_195 = v_190
       v_197 = v_191
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_15, v_3, v_5, v_7, v_193}}, False{}, v_1004063 => checker_body_core_subst_at(v_15, v_3, v_5, v_7, v_193), v_1004059 => checker_continuation_3047(v_1004059, v_3, v_5, v_7, v_195, v_197)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_15, v_3, v_5, v_7, v_193}}, False{}, v_1004066 => checker_body_core_subst_at(v_15, v_3, v_5, v_7, v_193), v_1004062 => checker_continuation_3046(v_1004062, v_3, v_5, v_7, v_195, v_197)}
     case Arena.TermTemplate{+v_217, +v_218}:
       v_220 = v_217
       v_222 = v_218
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_15, v_3, v_5, v_7, v_220}}, False{}, v_1004066 => checker_body_core_subst_at(v_15, v_3, v_5, v_7, v_220), v_1004064 => checker_continuation_3048(v_1004064, v_222)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_15, v_3, v_5, v_7, v_220}}, False{}, v_1004069 => checker_body_core_subst_at(v_15, v_3, v_5, v_7, v_220), v_1004067 => checker_continuation_3047(v_1004067, v_222)}
     case Arena.TermType{+v_237, +v_238}:
       v_240 = v_237
       v_242 = v_238
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_15, v_3, v_5, v_7, v_240}}, False{}, v_1004069 => checker_body_core_subst_at(v_15, v_3, v_5, v_7, v_240), v_1004067 => checker_continuation_3049(v_1004067, v_242)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_15, v_3, v_5, v_7, v_240}}, False{}, v_1004072 => checker_body_core_subst_at(v_15, v_3, v_5, v_7, v_240), v_1004070 => checker_continuation_3048(v_1004070, v_242)}
     case Arena.TermQuant{}:
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_15, Arena.TermQuant{}}}, v_1004070 => CheckerFinished{{v_1004070 : ArenaResult<U32>}}}
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_15, Arena.TermQuant{}}}, v_1004073 => CheckerFinished{{v_1004073 : ArenaResult<U32>}}}
     case Arena.TermQuantity{+v_264, +v_265}:
       v_267 = v_264
       v_269 = v_265
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_15, Arena.TermQuantity{v_267, v_269}}}, v_1004071 => CheckerFinished{{v_1004071 : ArenaResult<U32>}}}
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_15, Arena.TermQuantity{v_267, v_269}}}, v_1004074 => CheckerFinished{{v_1004074 : ArenaResult<U32>}}}
     case Arena.TermMin{+v_280, +v_281, +v_282}:
       v_284 = v_280
       v_286 = v_281
       v_288 = v_282
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_15, v_3, v_5, v_7, v_284}}, False{}, v_1004076 => checker_body_core_subst_at(v_15, v_3, v_5, v_7, v_284), v_1004072 => checker_continuation_3051(v_1004072, v_3, v_5, v_7, v_286, v_288)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_15, v_3, v_5, v_7, v_284}}, False{}, v_1004079 => checker_body_core_subst_at(v_15, v_3, v_5, v_7, v_284), v_1004075 => checker_continuation_3050(v_1004075, v_3, v_5, v_7, v_286, v_288)}
     case Arena.TermAll{+v_312, +v_313, +v_314, +v_315, +v_316, +v_317}:
-      v_1004083 = {checker_pure_arena_name_text(v_15, v_313) : ArenaResult<String>}
-      checker_match_3055(v_1004083, v_312, v_314, v_315, v_316, v_317, v_3, v_5, v_7)
+      v_1004086 = {checker_pure_arena_name_text(v_15, v_313) : ArenaResult<String>}
+      checker_match_3054(v_1004086, v_312, v_314, v_315, v_316, v_317, v_3, v_5, v_7)
     case Arena.TermLam{+v_364, +v_365, +v_366, +v_367, +v_368}:
-      v_1004088 = {checker_pure_arena_name_text(v_15, v_365) : ArenaResult<String>}
-      checker_match_3058(v_1004088, v_364, v_366, v_367, v_368, v_3, v_5, v_7)
+      v_1004091 = {checker_pure_arena_name_text(v_15, v_365) : ArenaResult<String>}
+      checker_match_3057(v_1004091, v_364, v_366, v_367, v_368, v_3, v_5, v_7)
     case Arena.TermApp{+v_406, +v_407, +v_408}:
       v_410 = v_406
       v_412 = v_407
       v_414 = v_408
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_15, v_3, v_5, v_7, v_410}}, False{}, v_1004093 => checker_body_core_subst_at(v_15, v_3, v_5, v_7, v_410), v_1004089 => checker_continuation_3060(v_1004089, v_3, v_5, v_7, v_412, v_414)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_15, v_3, v_5, v_7, v_410}}, False{}, v_1004096 => checker_body_core_subst_at(v_15, v_3, v_5, v_7, v_410), v_1004092 => checker_continuation_3059(v_1004092, v_3, v_5, v_7, v_412, v_414)}
     case Arena.TermAdt{+v_438, +v_439, +v_440, +v_441, +v_442, +v_443}:
-      v_1004097 = {checker_pure_arena_name_text(v_15, v_438) : ArenaResult<String>}
-      checker_match_3063(v_1004097, v_439, v_440, v_441, v_442, v_443, v_3, v_5, v_7)
+      v_1004100 = {checker_pure_arena_name_text(v_15, v_438) : ArenaResult<String>}
+      checker_match_3062(v_1004100, v_439, v_440, v_441, v_442, v_443, v_3, v_5, v_7)
     case Arena.TermFill{+v_496, +v_497, +v_498, +v_499}:
       +v_501 = {IR.Words{v_497, v_498} : IR.Words}
       v_503 = v_496
       v_505 = v_501
       v_507 = v_499
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_15, v_3, v_5, v_7, v_503}}, False{}, v_1004101 => checker_body_core_subst_at(v_15, v_3, v_5, v_7, v_503), v_1004098 => checker_continuation_3065(v_1004098, v_3, v_5, v_7, v_505, v_507)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_15, v_3, v_5, v_7, v_503}}, False{}, v_1004104 => checker_body_core_subst_at(v_15, v_3, v_5, v_7, v_503), v_1004101 => checker_continuation_3064(v_1004101, v_3, v_5, v_7, v_505, v_507)}
     case Arena.TermPlus{+v_535, +v_536, +v_537, +v_538}:
       +v_540 = {IR.Words{v_536, v_537} : IR.Words}
       v_542 = v_535
       v_544 = v_540
       v_546 = v_538
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_15, v_3, v_5, v_7, v_542}}, False{}, v_1004105 => checker_body_core_subst_at(v_15, v_3, v_5, v_7, v_542), v_1004102 => checker_continuation_3067(v_1004102, v_3, v_5, v_7, v_544, v_546)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_15, v_3, v_5, v_7, v_542}}, False{}, v_1004108 => checker_body_core_subst_at(v_15, v_3, v_5, v_7, v_542), v_1004105 => checker_continuation_3066(v_1004105, v_3, v_5, v_7, v_544, v_546)}
     case Arena.TermString{_, _, _}:
       CheckerFinished{{ArenaResult{v_15, v_9} : ArenaResult<U32>}}
     case Arena.TermCtr{+v_582, +v_583, +v_584, +v_585}:
-      v_1004109 = {checker_pure_arena_name_text(v_15, v_582) : ArenaResult<String>}
-      checker_match_3070(v_1004109, v_583, v_584, v_585, v_3, v_5, v_7)
+      v_1004112 = {checker_pure_arena_name_text(v_15, v_582) : ArenaResult<String>}
+      checker_match_3069(v_1004112, v_583, v_584, v_585, v_3, v_5, v_7)
     case Arena.TermMat{+v_628, +v_629, +v_630, +v_631}:
-      v_1004116 = {checker_pure_arena_name_text(v_15, v_628) : ArenaResult<String>}
-      checker_match_3074(v_1004116, v_629, v_630, v_631, v_3, v_5, v_7)
+      v_1004119 = {checker_pure_arena_name_text(v_15, v_628) : ArenaResult<String>}
+      checker_match_3073(v_1004119, v_629, v_630, v_631, v_3, v_5, v_7)
     case Arena.TermAbsurd{+v_670}:
       v_672 = v_670
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_15, Arena.TermAbsurd{v_672}}}, v_1004117 => CheckerFinished{{v_1004117 : ArenaResult<U32>}}}
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_15, Arena.TermAbsurd{v_672}}}, v_1004120 => CheckerFinished{{v_1004120 : ArenaResult<U32>}}}
     case Arena.TermEqual{+v_684, +v_685, +v_686, +v_687}:
       v_689 = v_684
       v_691 = v_685
       v_693 = v_686
       v_695 = v_687
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_15, v_3, v_5, v_7, v_689}}, False{}, v_1004124 => checker_body_core_subst_at(v_15, v_3, v_5, v_7, v_689), v_1004118 => checker_continuation_3077(v_1004118, v_3, v_5, v_7, v_691, v_693, v_695)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_15, v_3, v_5, v_7, v_689}}, False{}, v_1004127 => checker_body_core_subst_at(v_15, v_3, v_5, v_7, v_689), v_1004121 => checker_continuation_3076(v_1004121, v_3, v_5, v_7, v_691, v_693, v_695)}
     case Arena.TermRefl{+v_719}:
       v_721 = v_719
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_15, Arena.TermRefl{v_721}}}, v_1004125 => CheckerFinished{{v_1004125 : ArenaResult<U32>}}}
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_put_node{v_15, Arena.TermRefl{v_721}}}, v_1004128 => CheckerFinished{{v_1004128 : ArenaResult<U32>}}}
     case Arena.TermRewrite{+v_733, +v_734, +v_735, +v_736}:
       v_738 = v_733
       v_740 = v_734
       v_742 = v_735
       v_744 = v_736
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_15, v_3, v_5, v_7, v_738}}, False{}, v_1004132 => checker_body_core_subst_at(v_15, v_3, v_5, v_7, v_738), v_1004126 => checker_continuation_3080(v_1004126, v_3, v_5, v_7, v_740, v_742, v_744)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_15, v_3, v_5, v_7, v_738}}, False{}, v_1004135 => checker_body_core_subst_at(v_15, v_3, v_5, v_7, v_738), v_1004129 => checker_continuation_3079(v_1004129, v_3, v_5, v_7, v_740, v_742, v_744)}
     case Arena.TermHole{+v_769, +v_770}:
-      v_1004135 = {checker_pure_arena_name_text(v_15, v_769) : ArenaResult<String>}
-      checker_match_3082(v_1004135, v_770)
+      v_1004138 = {checker_pure_arena_name_text(v_15, v_769) : ArenaResult<String>}
+      checker_match_3081(v_1004138, v_770)
     case Arena.BodyMatch{+v_799, +v_800, +v_801, +v_802, +v_803}:
       +v_805 = {IR.Words{v_799, v_800} : IR.Words}
       +v_807 = {IR.Words{v_801, v_802} : IR.Words}
       v_809 = v_805
       v_811 = v_807
       v_813 = v_803
-      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_subst_terms{v_15, v_3, v_5, v_7, v_809}}, v_1004136 => checker_continuation_3084(v_1004136, v_3, v_5, v_7, v_811, v_813)}
+      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_subst_terms{v_15, v_3, v_5, v_7, v_809}}, v_1004139 => checker_continuation_3083(v_1004139, v_3, v_5, v_7, v_811, v_813)}
     case Arena.BodyCase{+v_847, +v_848, +v_849, +v_850}:
       +v_852 = {IR.Words{v_847, v_848} : IR.Words}
       +v_854 = v_852
       v_856 = v_849
       v_858 = v_850
-      CheckerDirect{Bool, CheckerRequestGroup_10{CheckerRequest_core_pattern_list_depth{v_15, v_854}}, False{}, v_1004143 => checker_body_core_pattern_list_depth(v_15, v_854), v_1004139 => checker_continuation_3086(v_1004139, v_3, v_5, v_7, v_856, v_854, v_858)}
+      CheckerDirect{Bool, CheckerRequestGroup_10{CheckerRequest_core_pattern_list_depth{v_15, v_854}}, False{}, v_1004146 => checker_body_core_pattern_list_depth(v_15, v_854), v_1004142 => checker_continuation_3085(v_1004142, v_3, v_5, v_7, v_856, v_854, v_858)}
     case Arena.BodyLocal{+v_889, +v_890, +v_891, +v_892, +v_893, +v_894, +v_895}:
       +v_897 = {IR.Words{v_889, v_890} : IR.Words}
       +v_899 = {IR.Words{v_892, v_893} : IR.Words}
@@ -26220,75 +26219,75 @@ def checker_match_3091(+v_16: Arena.Node, v_15: ArenaStore, +v_3: Nat, +v_7: Nat
       v_905 = v_899
       v_907 = v_894
       v_909 = v_895
-      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_subst_terms{v_15, v_3, v_5, v_7, v_905}}, v_1004144 => checker_continuation_3089(v_1004144, v_901, v_3, v_5, v_7, v_907, v_903, v_909)}
+      CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_subst_terms{v_15, v_3, v_5, v_7, v_905}}, v_1004147 => checker_continuation_3088(v_1004147, v_901, v_3, v_5, v_7, v_907, v_903, v_909)}
     case Arena.BodyReply{+v_946, +v_947}:
       v_949 = v_946
       v_951 = v_947
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_15, v_3, v_5, v_7, v_949}}, False{}, v_1004152 => checker_body_core_subst_at(v_15, v_3, v_5, v_7, v_949), v_1004150 => checker_continuation_3090(v_1004150, v_951)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_15, v_3, v_5, v_7, v_949}}, False{}, v_1004155 => checker_body_core_subst_at(v_15, v_3, v_5, v_7, v_949), v_1004153 => checker_continuation_3089(v_1004153, v_951)}
 
-def checker_match_3092(v_1004153: ArenaResult<Arena.Node>, +v_3: Nat, +v_7: Nat, +v_5: U32, v_9: U32) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1004153:
+def checker_match_3091(v_1004156: ArenaResult<Arena.Node>, +v_3: Nat, +v_7: Nat, +v_5: U32, v_9: U32) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1004156:
     case ArenaResult{v_15, +v_16}:
-      checker_match_3091(v_16, v_15, v_3, v_7, v_5, v_9)
+      checker_match_3090(v_16, v_15, v_3, v_7, v_5, v_9)
 
 def checker_body_core_subst_open(v_1: ArenaStore, +v_3: Nat, +v_5: U32, +v_7: Nat, +v_9: U32) -> CheckerProgress<ArenaResult<U32>>:
-  v_1004153 = {checker_pure_arena_get_node(v_1, v_9) : ArenaResult<Arena.Node>}
-  checker_match_3092(v_1004153, v_3, v_7, v_5, v_9)
+  v_1004156 = {checker_pure_arena_get_node(v_1, v_9) : ArenaResult<Arena.Node>}
+  checker_match_3091(v_1004156, v_3, v_7, v_5, v_9)
 
 def checker_body_core_subst(v_1: ArenaStore, v_3: Nat, v_5: U32, v_7: U32) -> CheckerProgress<ArenaResult<U32>>:
   {checker_body_core_subst_at(v_1, v_3, v_5, 0n, v_7) : CheckerProgress<ArenaResult<U32>>}
 
-def checker_continuation_3093(v_1004156: ArenaResult<IR.Words>, +v_28: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
-  ArenaResult{v_32, +v_33} = v_1004156
-  CheckerPending{CheckerRequestGroup_13{CheckerRequest_arena_words_cons{v_32, v_28, v_33}}, v_1004157 => CheckerFinished{{v_1004157 : ArenaResult<IR.Words>}}}
+def checker_continuation_3092(v_1004159: ArenaResult<IR.Words>, +v_28: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
+  ArenaResult{v_32, +v_33} = v_1004159
+  CheckerPending{CheckerRequestGroup_13{CheckerRequest_arena_words_cons{v_32, v_28, v_33}}, v_1004160 => CheckerFinished{{v_1004160 : ArenaResult<IR.Words>}}}
 
-def checker_continuation_3094(v_1004155: ArenaResult<U32>, +v_3: Nat, +v_5: Nat, +v_7: Nat, v_23: IR.Words) -> CheckerProgress<ArenaResult<IR.Words>>:
-  ArenaResult{v_27, +v_28} = v_1004155
-  CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_shift_terms{v_27, v_3, v_5, v_7, v_23}}, v_1004156 => checker_continuation_3093(v_1004156, v_28)}
+def checker_continuation_3093(v_1004158: ArenaResult<U32>, +v_3: Nat, +v_5: Nat, +v_7: Nat, v_23: IR.Words) -> CheckerProgress<ArenaResult<IR.Words>>:
+  ArenaResult{v_27, +v_28} = v_1004158
+  CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_shift_terms{v_27, v_3, v_5, v_7, v_23}}, v_1004159 => checker_continuation_3092(v_1004159, v_28)}
 
-def checker_match_3095(+v_14: IR.WordView, v_13: ArenaStore, +v_3: Nat, +v_5: Nat, +v_7: Nat) -> CheckerProgress<ArenaResult<IR.Words>>:
+def checker_match_3094(+v_14: IR.WordView, v_13: ArenaStore, +v_3: Nat, +v_5: Nat, +v_7: Nat) -> CheckerProgress<ArenaResult<IR.Words>>:
   match v_14:
     case IR.WordNil{}:
       CheckerFinished{{ArenaResult{v_13, IR.Words{0, 0}} : ArenaResult<IR.Words>}}
     case IR.WordCons{+v_18, +v_19}:
       v_21 = v_18
       v_23 = v_19
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_13, v_21, v_3, v_5, v_7}}, False{}, v_1004158 => checker_body_core_shift_at(v_13, v_21, v_3, v_5, v_7), v_1004155 => checker_continuation_3094(v_1004155, v_3, v_5, v_7, v_23)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_shift_at{v_13, v_21, v_3, v_5, v_7}}, False{}, v_1004161 => checker_body_core_shift_at(v_13, v_21, v_3, v_5, v_7), v_1004158 => checker_continuation_3093(v_1004158, v_3, v_5, v_7, v_23)}
 
-def checker_match_3096(v_1004159: ArenaResult<IR.WordView>, +v_3: Nat, +v_5: Nat, +v_7: Nat) -> CheckerProgress<ArenaResult<IR.Words>>:
-  match v_1004159:
+def checker_match_3095(v_1004162: ArenaResult<IR.WordView>, +v_3: Nat, +v_5: Nat, +v_7: Nat) -> CheckerProgress<ArenaResult<IR.Words>>:
+  match v_1004162:
     case ArenaResult{v_13, +v_14}:
-      checker_match_3095(v_14, v_13, v_3, v_5, v_7)
+      checker_match_3094(v_14, v_13, v_3, v_5, v_7)
 
 def checker_body_core_shift_terms(v_1: ArenaStore, +v_3: Nat, +v_5: Nat, +v_7: Nat, v_8: IR.Words) -> CheckerProgress<ArenaResult<IR.Words>>:
-  v_1004159 = {checker_pure_arena_words_view(v_1, v_8) : ArenaResult<IR.WordView>}
-  checker_match_3096(v_1004159, v_3, v_5, v_7)
+  v_1004162 = {checker_pure_arena_words_view(v_1, v_8) : ArenaResult<IR.WordView>}
+  checker_match_3095(v_1004162, v_3, v_5, v_7)
 
-def checker_continuation_3097(v_1004161: ArenaResult<IR.Words>, +v_28: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
-  ArenaResult{v_32, +v_33} = v_1004161
-  CheckerPending{CheckerRequestGroup_13{CheckerRequest_arena_words_cons{v_32, v_28, v_33}}, v_1004162 => CheckerFinished{{v_1004162 : ArenaResult<IR.Words>}}}
+def checker_continuation_3096(v_1004164: ArenaResult<IR.Words>, +v_28: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
+  ArenaResult{v_32, +v_33} = v_1004164
+  CheckerPending{CheckerRequestGroup_13{CheckerRequest_arena_words_cons{v_32, v_28, v_33}}, v_1004165 => CheckerFinished{{v_1004165 : ArenaResult<IR.Words>}}}
 
-def checker_continuation_3098(v_1004160: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_23: IR.Words) -> CheckerProgress<ArenaResult<IR.Words>>:
-  ArenaResult{v_27, +v_28} = v_1004160
-  CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_subst_terms{v_27, v_3, v_5, v_7, v_23}}, v_1004161 => checker_continuation_3097(v_1004161, v_28)}
+def checker_continuation_3097(v_1004163: ArenaResult<U32>, +v_3: Nat, +v_5: U32, +v_7: Nat, v_23: IR.Words) -> CheckerProgress<ArenaResult<IR.Words>>:
+  ArenaResult{v_27, +v_28} = v_1004163
+  CheckerPending{CheckerRequestGroup_11{CheckerRequest_core_subst_terms{v_27, v_3, v_5, v_7, v_23}}, v_1004164 => checker_continuation_3096(v_1004164, v_28)}
 
-def checker_match_3099(+v_14: IR.WordView, v_13: ArenaStore, +v_3: Nat, +v_5: U32, +v_7: Nat) -> CheckerProgress<ArenaResult<IR.Words>>:
+def checker_match_3098(+v_14: IR.WordView, v_13: ArenaStore, +v_3: Nat, +v_5: U32, +v_7: Nat) -> CheckerProgress<ArenaResult<IR.Words>>:
   match v_14:
     case IR.WordNil{}:
       CheckerFinished{{ArenaResult{v_13, IR.Words{0, 0}} : ArenaResult<IR.Words>}}
     case IR.WordCons{+v_18, +v_19}:
       v_21 = v_18
       v_23 = v_19
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_13, v_3, v_5, v_7, v_21}}, False{}, v_1004163 => checker_body_core_subst_at(v_13, v_3, v_5, v_7, v_21), v_1004160 => checker_continuation_3098(v_1004160, v_3, v_5, v_7, v_23)}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_core_subst_at{v_13, v_3, v_5, v_7, v_21}}, False{}, v_1004166 => checker_body_core_subst_at(v_13, v_3, v_5, v_7, v_21), v_1004163 => checker_continuation_3097(v_1004163, v_3, v_5, v_7, v_23)}
 
-def checker_match_3100(v_1004164: ArenaResult<IR.WordView>, +v_3: Nat, +v_5: U32, +v_7: Nat) -> CheckerProgress<ArenaResult<IR.Words>>:
-  match v_1004164:
+def checker_match_3099(v_1004167: ArenaResult<IR.WordView>, +v_3: Nat, +v_5: U32, +v_7: Nat) -> CheckerProgress<ArenaResult<IR.Words>>:
+  match v_1004167:
     case ArenaResult{v_13, +v_14}:
-      checker_match_3099(v_14, v_13, v_3, v_5, v_7)
+      checker_match_3098(v_14, v_13, v_3, v_5, v_7)
 
 def checker_body_core_subst_terms(v_1: ArenaStore, +v_3: Nat, +v_5: U32, +v_7: Nat, v_8: IR.Words) -> CheckerProgress<ArenaResult<IR.Words>>:
-  v_1004164 = {checker_pure_arena_words_view(v_1, v_8) : ArenaResult<IR.WordView>}
-  checker_match_3100(v_1004164, v_3, v_5, v_7)
+  v_1004167 = {checker_pure_arena_words_view(v_1, v_8) : ArenaResult<IR.WordView>}
+  checker_match_3099(v_1004167, v_3, v_5, v_7)
 
 def checker_body_arena_is_transient(+v_1: U32) -> CheckerProgress<Bool>:
   CheckerFinished{checker_pure_arena_is_transient(v_1)}
@@ -26326,70 +26325,70 @@ def checker_body_arena_case_prefix_head(v_1: ArenaStore, v_3: U32) -> CheckerPro
 def checker_body_arena_case_prefix_save(v_1: ArenaStore, +v_3: U32, +v_5: U32, +v_8: Map<&2, U32>, +v_10: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   CheckerFinished{checker_pure_arena_case_prefix_save(v_1, v_3, v_5, v_8, v_10)}
 
-def checker_match_3101(v_10: Maybe<&2, String>, v_9: ArenaStore, +v_17: U32, +v_18: U32, v_22: Map<&2, U32>, +v_20: U32, v_19: U32, v_21: Nat) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3100(v_10: Maybe<&2, String>, v_9: ArenaStore, +v_17: U32, +v_18: U32, v_22: Map<&2, U32>, +v_20: U32, v_19: U32, v_21: Nat) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_10:
     case None{}:
       CheckerFinished{checker_pure_arena_case_prefix_save(v_9, v_17, v_18, v_22, v_20)}
     case Some{v_25}:
-      CheckerPending{CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_build{v_9, CasePrefixBuild{v_17, v_18, checker_pure_arena_range_index(v_19, 1), U32.add(v_20, 1), v_21, Arena.case_prefix_first(v_22, v_25, v_20)}}}, v_1004165 => CheckerFinished{v_1004165}}
+      CheckerPending{CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_build{v_9, CasePrefixBuild{v_17, v_18, checker_pure_arena_range_index(v_19, 1), U32.add(v_20, 1), v_21, Arena.case_prefix_first(v_22, v_25, v_20)}}}, v_1004168 => CheckerFinished{v_1004168}}
 
-def checker_match_3102(v_1: CasePrefixBuild, v_10: Maybe<&2, String>, v_9: ArenaStore) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3101(v_1: CasePrefixBuild, v_10: Maybe<&2, String>, v_9: ArenaStore) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_1:
     case CasePrefixBuild{+v_17, +v_18, v_19, +v_20, v_21, v_22}:
-      checker_match_3101(v_10, v_9, v_17, v_18, v_22, v_20, v_19, v_21)
+      checker_match_3100(v_10, v_9, v_17, v_18, v_22, v_20, v_19, v_21)
 
-def checker_match_3103(v_5: ArenaResult<Maybe<&2, String>>, v_1: CasePrefixBuild) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3102(v_5: ArenaResult<Maybe<&2, String>>, v_1: CasePrefixBuild) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_5:
     case ArenaResult{v_9, v_10}:
-      checker_match_3102(v_1, v_10, v_9)
+      checker_match_3101(v_1, v_10, v_9)
 
 def checker_body_arena_case_prefix_build_head(v_1: CasePrefixBuild, v_5: ArenaResult<Maybe<&2, String>>) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
-  checker_match_3103(v_5, v_1)
+  checker_match_3102(v_5, v_1)
 
-def checker_match_3104(v_4: ArenaResult<U32>, v_1: CasePrefixBuild) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3103(v_4: ArenaResult<U32>, v_1: CasePrefixBuild) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_4:
     case ArenaResult{v_8, v_9}:
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_build_head{v_1, checker_pure_arena_case_prefix_head(v_8, v_9)}}, False{}, v_1004167 => checker_body_arena_case_prefix_build_head(v_1, checker_pure_arena_case_prefix_head(v_8, v_9)), v_1004166 => CheckerFinished{v_1004166}}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_build_head{v_1, checker_pure_arena_case_prefix_head(v_8, v_9)}}, False{}, v_1004170 => checker_body_arena_case_prefix_build_head(v_1, checker_pure_arena_case_prefix_head(v_8, v_9)), v_1004169 => CheckerFinished{v_1004169}}
 
 def checker_body_arena_case_prefix_build_word(v_1: CasePrefixBuild, v_4: ArenaResult<U32>) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
-  checker_match_3104(v_4, v_1)
+  checker_match_3103(v_4, v_1)
 
-def checker_match_3105(v_15: Nat, v_1: ArenaStore, +v_11: U32, +v_12: U32, v_16: Map<&2, U32>, v_14: U32, +v_13: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3104(v_15: Nat, v_1: ArenaStore, +v_11: U32, +v_12: U32, v_16: Map<&2, U32>, v_14: U32, +v_13: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_15:
     case 0n:
       CheckerFinished{checker_pure_arena_case_prefix_save(v_1, v_11, v_12, v_16, v_14)}
     case 1n+v_19:
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_build_word{CasePrefixBuild{v_11, v_12, v_13, v_14, v_19, v_16}, checker_pure_arena_get_word(v_1, v_13)}}, False{}, v_1004169 => checker_body_arena_case_prefix_build_word(CasePrefixBuild{v_11, v_12, v_13, v_14, v_19, v_16}, checker_pure_arena_get_word(v_1, v_13)), v_1004168 => CheckerFinished{v_1004168}}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_build_word{CasePrefixBuild{v_11, v_12, v_13, v_14, v_19, v_16}, checker_pure_arena_get_word(v_1, v_13)}}, False{}, v_1004172 => checker_body_arena_case_prefix_build_word(CasePrefixBuild{v_11, v_12, v_13, v_14, v_19, v_16}, checker_pure_arena_get_word(v_1, v_13)), v_1004171 => CheckerFinished{v_1004171}}
 
-def checker_match_3106(v_3: CasePrefixBuild, v_1: ArenaStore) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3105(v_3: CasePrefixBuild, v_1: ArenaStore) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_3:
     case CasePrefixBuild{+v_11, +v_12, +v_13, v_14, v_15, v_16}:
-      checker_match_3105(v_15, v_1, v_11, v_12, v_16, v_14, v_13)
+      checker_match_3104(v_15, v_1, v_11, v_12, v_16, v_14, v_13)
 
 def checker_body_arena_case_prefix_build(v_1: ArenaStore, v_3: CasePrefixBuild) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
-  checker_match_3106(v_3, v_1)
+  checker_match_3105(v_3, v_1)
 
-def checker_match_3107(v_11: Bool, v_10: Arena.Arena, v_0: Arena.Arena, +v_2: U32, +v_4: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3106(v_11: Bool, v_10: Arena.Arena, v_0: Arena.Arena, +v_2: U32, +v_4: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_11:
     case False{}:
       CheckerFinished{{ArenaResult{ArenaStore{v_10, v_0}, Arena.CasePrefixEmpty{}} : ArenaResult<Arena.CasePrefixEntry>}}
     case True{}:
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_build{ArenaStore{v_10, v_0}, CasePrefixBuild{v_2, v_4, v_2, 0, U32.to_nat(v_4), Map.new(&2, U32)}}}, False{}, v_1004171 => checker_body_arena_case_prefix_build(ArenaStore{v_10, v_0}, CasePrefixBuild{v_2, v_4, v_2, 0, U32.to_nat(v_4), Map.new(&2, U32)}), v_1004170 => CheckerFinished{v_1004170}}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_build{ArenaStore{v_10, v_0}, CasePrefixBuild{v_2, v_4, v_2, 0, U32.to_nat(v_4), Map.new(&2, U32)}}}, False{}, v_1004174 => checker_body_arena_case_prefix_build(ArenaStore{v_10, v_0}, CasePrefixBuild{v_2, v_4, v_2, 0, U32.to_nat(v_4), Map.new(&2, U32)}), v_1004173 => CheckerFinished{v_1004173}}
 
-def checker_match_3108(v_6: Pair(Arena.Arena, Bool), v_0: Arena.Arena, +v_2: U32, +v_4: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3107(v_6: Pair(Arena.Arena, Bool), v_0: Arena.Arena, +v_2: U32, +v_4: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_6:
     case (v_10, v_11):
-      checker_match_3107(v_11, v_10, v_0, v_2, v_4)
+      checker_match_3106(v_11, v_10, v_0, v_2, v_4)
 
 def checker_body_arena_case_prefix_valid(v_0: Arena.Arena, +v_2: U32, +v_4: U32, v_6: Pair(Arena.Arena, Bool)) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
-  checker_match_3108(v_6, v_0, v_2, v_4)
+  checker_match_3107(v_6, v_0, v_2, v_4)
 
 def checker_body_arena_case_prefix_miss(v_1: ArenaStore, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_1:
     case ArenaStore{v_9, v_10}:
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_valid{v_10, v_3, v_5, Arena.case_prefix_range_valid(v_9, v_3, v_5)}}, False{}, v_1004173 => checker_body_arena_case_prefix_valid(v_10, v_3, v_5, Arena.case_prefix_range_valid(v_9, v_3, v_5)), v_1004172 => CheckerFinished{v_1004172}}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_valid{v_10, v_3, v_5, Arena.case_prefix_range_valid(v_9, v_3, v_5)}}, False{}, v_1004176 => checker_body_arena_case_prefix_valid(v_10, v_3, v_5, Arena.case_prefix_range_valid(v_9, v_3, v_5)), v_1004175 => CheckerFinished{v_1004175}}
 
-def checker_match_3110(v_8: Bool, v_1: ArenaStore, v_3: U32, v_5: U32, v_6: Arena.CasePrefixEntry) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3109(v_8: Bool, v_1: ArenaStore, v_3: U32, v_5: U32, v_6: Arena.CasePrefixEntry) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_8:
     case False{}:
       checker_body_arena_case_prefix_miss(v_1, v_3, v_5)
@@ -26397,22 +26396,22 @@ def checker_match_3110(v_8: Bool, v_1: ArenaStore, v_3: U32, v_5: U32, v_6: Aren
       CheckerFinished{{ArenaResult{v_1, v_6} : ArenaResult<Arena.CasePrefixEntry>}}
 
 def checker_body_arena_case_prefix_cached_exact(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: Arena.CasePrefixEntry, v_8: Bool) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
-  checker_match_3110(v_8, v_1, v_3, v_5, v_6)
+  checker_match_3109(v_8, v_1, v_3, v_5, v_6)
 
-def checker_match_3111(v_10: Arena.CasePrefixEntry, v_9: ArenaStore, +v_1: U32, +v_3: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3110(v_10: Arena.CasePrefixEntry, v_9: ArenaStore, +v_1: U32, +v_3: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_10:
     case Arena.CasePrefixEmpty{}:
       checker_body_arena_case_prefix_miss(v_9, v_1, v_3)
     case Arena.CasePrefixSaved{+v_17, +v_18, v_19, v_20, v_21}:
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_cached_exact{v_9, v_1, v_3, Arena.CasePrefixSaved{v_17, v_18, v_19, v_20, v_21}, Bool.and(U32.is_eq(v_1, v_17), U32.is_eq(v_3, v_18))}}, False{}, v_1004177 => checker_body_arena_case_prefix_cached_exact(v_9, v_1, v_3, Arena.CasePrefixSaved{v_17, v_18, v_19, v_20, v_21}, Bool.and(U32.is_eq(v_1, v_17), U32.is_eq(v_3, v_18))), v_1004176 => CheckerFinished{v_1004176}}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_cached_exact{v_9, v_1, v_3, Arena.CasePrefixSaved{v_17, v_18, v_19, v_20, v_21}, Bool.and(U32.is_eq(v_1, v_17), U32.is_eq(v_3, v_18))}}, False{}, v_1004180 => checker_body_arena_case_prefix_cached_exact(v_9, v_1, v_3, Arena.CasePrefixSaved{v_17, v_18, v_19, v_20, v_21}, Bool.and(U32.is_eq(v_1, v_17), U32.is_eq(v_3, v_18))), v_1004179 => CheckerFinished{v_1004179}}
 
-def checker_match_3112(v_5: ArenaResult<Arena.CasePrefixEntry>, +v_1: U32, +v_3: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3111(v_5: ArenaResult<Arena.CasePrefixEntry>, +v_1: U32, +v_3: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_5:
     case ArenaResult{v_9, v_10}:
-      checker_match_3111(v_10, v_9, v_1, v_3)
+      checker_match_3110(v_10, v_9, v_1, v_3)
 
 def checker_body_arena_case_prefix_cached(+v_1: U32, +v_3: U32, v_5: ArenaResult<Arena.CasePrefixEntry>) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
-  checker_match_3112(v_5, v_1, v_3)
+  checker_match_3111(v_5, v_1, v_3)
 
 def checker_body_arena_case_prefix_local_valid_result(v_0: Arena.Arena, v_2: Pair(Arena.Arena, Bool), v_4: Bool) -> CheckerProgress<ArenaResult<Bool>>:
   CheckerFinished{checker_pure_arena_case_prefix_local_valid_result(v_0, v_2, v_4)}
@@ -26480,68 +26479,68 @@ def checker_body_arena_case_prefix_local_finish_region(v_1: ArenaStore, +v_3: U3
 def checker_body_arena_case_prefix_local_finish(v_1: ArenaStore, +v_3: U32, v_5: U32, v_8: Map<&2, U32>, v_10: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   CheckerFinished{checker_pure_arena_case_prefix_local_finish(v_1, v_3, v_5, v_8, v_10)}
 
-def checker_match_3113(v_10: Maybe<&2, String>, v_9: ArenaStore, v_17: U32, v_18: U32, v_22: Map<&2, U32>, +v_20: U32, +v_19: U32, v_21: Nat) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3112(v_10: Maybe<&2, String>, v_9: ArenaStore, v_17: U32, v_18: U32, v_22: Map<&2, U32>, +v_20: U32, +v_19: U32, v_21: Nat) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_10:
     case None{}:
       CheckerFinished{checker_pure_arena_case_prefix_local_finish(v_9, v_17, v_18, v_22, v_20)}
     case Some{v_25}:
-      CheckerPending{CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_local_build{v_9, CasePrefixBuild{v_17, v_18, checker_pure_arena_range_index(v_19, 1), U32.add(v_20, 1), v_21, Arena.case_prefix_first(v_22, v_25, v_20)}}}, v_1004178 => CheckerFinished{v_1004178}}
+      CheckerPending{CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_local_build{v_9, CasePrefixBuild{v_17, v_18, checker_pure_arena_range_index(v_19, 1), U32.add(v_20, 1), v_21, Arena.case_prefix_first(v_22, v_25, v_20)}}}, v_1004181 => CheckerFinished{v_1004181}}
 
-def checker_match_3114(v_1: CasePrefixBuild, v_10: Maybe<&2, String>, v_9: ArenaStore) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3113(v_1: CasePrefixBuild, v_10: Maybe<&2, String>, v_9: ArenaStore) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_1:
     case CasePrefixBuild{v_17, v_18, +v_19, +v_20, v_21, v_22}:
-      checker_match_3113(v_10, v_9, v_17, v_18, v_22, v_20, v_19, v_21)
+      checker_match_3112(v_10, v_9, v_17, v_18, v_22, v_20, v_19, v_21)
 
-def checker_match_3115(v_5: ArenaResult<Maybe<&2, String>>, v_1: CasePrefixBuild) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3114(v_5: ArenaResult<Maybe<&2, String>>, v_1: CasePrefixBuild) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_5:
     case ArenaResult{v_9, v_10}:
-      checker_match_3114(v_1, v_10, v_9)
+      checker_match_3113(v_1, v_10, v_9)
 
 def checker_body_arena_case_prefix_local_build_head(v_1: CasePrefixBuild, v_5: ArenaResult<Maybe<&2, String>>) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
-  checker_match_3115(v_5, v_1)
+  checker_match_3114(v_5, v_1)
 
-def checker_match_3116(v_4: ArenaResult<U32>, v_1: CasePrefixBuild) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3115(v_4: ArenaResult<U32>, v_1: CasePrefixBuild) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_4:
     case ArenaResult{v_8, v_9}:
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_local_build_head{v_1, checker_pure_arena_case_prefix_local_head(v_8, v_9)}}, False{}, v_1004180 => checker_body_arena_case_prefix_local_build_head(v_1, checker_pure_arena_case_prefix_local_head(v_8, v_9)), v_1004179 => CheckerFinished{v_1004179}}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_local_build_head{v_1, checker_pure_arena_case_prefix_local_head(v_8, v_9)}}, False{}, v_1004183 => checker_body_arena_case_prefix_local_build_head(v_1, checker_pure_arena_case_prefix_local_head(v_8, v_9)), v_1004182 => CheckerFinished{v_1004182}}
 
 def checker_body_arena_case_prefix_local_build_word(v_1: CasePrefixBuild, v_4: ArenaResult<U32>) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
-  checker_match_3116(v_4, v_1)
+  checker_match_3115(v_4, v_1)
 
-def checker_match_3117(v_15: Nat, v_1: ArenaStore, v_11: U32, v_12: U32, v_16: Map<&2, U32>, v_14: U32, +v_13: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3116(v_15: Nat, v_1: ArenaStore, v_11: U32, v_12: U32, v_16: Map<&2, U32>, v_14: U32, +v_13: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_15:
     case 0n:
       CheckerFinished{checker_pure_arena_case_prefix_local_finish(v_1, v_11, v_12, v_16, v_14)}
     case 1n+v_19:
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_local_build_word{CasePrefixBuild{v_11, v_12, v_13, v_14, v_19, v_16}, checker_pure_arena_get_word(v_1, v_13)}}, False{}, v_1004182 => checker_body_arena_case_prefix_local_build_word(CasePrefixBuild{v_11, v_12, v_13, v_14, v_19, v_16}, checker_pure_arena_get_word(v_1, v_13)), v_1004181 => CheckerFinished{v_1004181}}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_local_build_word{CasePrefixBuild{v_11, v_12, v_13, v_14, v_19, v_16}, checker_pure_arena_get_word(v_1, v_13)}}, False{}, v_1004185 => checker_body_arena_case_prefix_local_build_word(CasePrefixBuild{v_11, v_12, v_13, v_14, v_19, v_16}, checker_pure_arena_get_word(v_1, v_13)), v_1004184 => CheckerFinished{v_1004184}}
 
-def checker_match_3118(v_3: CasePrefixBuild, v_1: ArenaStore) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3117(v_3: CasePrefixBuild, v_1: ArenaStore) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_3:
     case CasePrefixBuild{v_11, v_12, +v_13, v_14, v_15, v_16}:
-      checker_match_3117(v_15, v_1, v_11, v_12, v_16, v_14, v_13)
+      checker_match_3116(v_15, v_1, v_11, v_12, v_16, v_14, v_13)
 
 def checker_body_arena_case_prefix_local_build(v_1: ArenaStore, v_3: CasePrefixBuild) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
-  checker_match_3118(v_3, v_1)
+  checker_match_3117(v_3, v_1)
 
-def checker_match_3119(v_11: Bool, v_10: ArenaStore, +v_1: U32, +v_3: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3118(v_11: Bool, v_10: ArenaStore, +v_1: U32, +v_3: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_11:
     case False{}:
       CheckerFinished{{ArenaResult{v_10, Arena.CasePrefixEmpty{}} : ArenaResult<Arena.CasePrefixEntry>}}
     case True{}:
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_local_build{v_10, CasePrefixBuild{v_1, v_3, v_1, 0, U32.to_nat(v_3), Map.new(&2, U32)}}}, False{}, v_1004184 => checker_body_arena_case_prefix_local_build(v_10, CasePrefixBuild{v_1, v_3, v_1, 0, U32.to_nat(v_3), Map.new(&2, U32)}), v_1004183 => CheckerFinished{v_1004183}}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_local_build{v_10, CasePrefixBuild{v_1, v_3, v_1, 0, U32.to_nat(v_3), Map.new(&2, U32)}}}, False{}, v_1004187 => checker_body_arena_case_prefix_local_build(v_10, CasePrefixBuild{v_1, v_3, v_1, 0, U32.to_nat(v_3), Map.new(&2, U32)}), v_1004186 => CheckerFinished{v_1004186}}
 
-def checker_match_3120(v_6: ArenaResult<Bool>, +v_1: U32, +v_3: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3119(v_6: ArenaResult<Bool>, +v_1: U32, +v_3: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_6:
     case ArenaResult{v_10, v_11}:
-      checker_match_3119(v_11, v_10, v_1, v_3)
+      checker_match_3118(v_11, v_10, v_1, v_3)
 
 def checker_body_arena_case_prefix_local_range_valid(+v_1: U32, +v_3: U32, v_6: ArenaResult<Bool>) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
-  checker_match_3120(v_6, v_1, v_3)
+  checker_match_3119(v_6, v_1, v_3)
 
 def checker_body_arena_case_prefix_local_index(v_1: ArenaStore, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
-  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_local_range_valid{v_3, v_5, checker_pure_arena_case_prefix_local_range(v_1, v_3, v_5)}}, False{}, v_1004186 => checker_body_arena_case_prefix_local_range_valid(v_3, v_5, checker_pure_arena_case_prefix_local_range(v_1, v_3, v_5)), v_1004185 => CheckerFinished{v_1004185}}
+  CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_local_range_valid{v_3, v_5, checker_pure_arena_case_prefix_local_range(v_1, v_3, v_5)}}, False{}, v_1004189 => checker_body_arena_case_prefix_local_range_valid(v_3, v_5, checker_pure_arena_case_prefix_local_range(v_1, v_3, v_5)), v_1004188 => CheckerFinished{v_1004188}}
 
-def checker_match_3121(v_8: Bool, v_1: ArenaStore, v_3: U32, v_5: U32, v_6: Arena.CasePrefixEntry) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3120(v_8: Bool, v_1: ArenaStore, v_3: U32, v_5: U32, v_6: Arena.CasePrefixEntry) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_8:
     case False{}:
       checker_body_arena_case_prefix_local_index(v_1, v_3, v_5)
@@ -26549,78 +26548,78 @@ def checker_match_3121(v_8: Bool, v_1: ArenaStore, v_3: U32, v_5: U32, v_6: Aren
       CheckerFinished{{ArenaResult{v_1, v_6} : ArenaResult<Arena.CasePrefixEntry>}}
 
 def checker_body_arena_case_prefix_local_cached_exact(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: Arena.CasePrefixEntry, v_8: Bool) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
-  checker_match_3121(v_8, v_1, v_3, v_5, v_6)
+  checker_match_3120(v_8, v_1, v_3, v_5, v_6)
 
-def checker_match_3122(v_11: Pair(Arena.Arena, Nat), v_0: Arena.Arena, +v_2: U32, +v_4: U32, v_5: Arena.CasePrefixEntry, v_7: Bool, v_9: Nat) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3121(v_11: Pair(Arena.Arena, Nat), v_0: Arena.Arena, +v_2: U32, +v_4: U32, v_5: Arena.CasePrefixEntry, v_7: Bool, v_9: Nat) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_11:
     case (v_15, v_16):
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_local_cached_exact{ArenaStore{v_15, v_0}, v_2, v_4, v_5, Bool.and(v_7, Nat.is_eq(v_9, v_16))}}, False{}, v_1004189 => checker_body_arena_case_prefix_local_cached_exact(ArenaStore{v_15, v_0}, v_2, v_4, v_5, Bool.and(v_7, Nat.is_eq(v_9, v_16))), v_1004188 => CheckerFinished{v_1004188}}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_local_cached_exact{ArenaStore{v_15, v_0}, v_2, v_4, v_5, Bool.and(v_7, Nat.is_eq(v_9, v_16))}}, False{}, v_1004192 => checker_body_arena_case_prefix_local_cached_exact(ArenaStore{v_15, v_0}, v_2, v_4, v_5, Bool.and(v_7, Nat.is_eq(v_9, v_16))), v_1004191 => CheckerFinished{v_1004191}}
 
 def checker_body_arena_case_prefix_local_cached_generation(v_0: Arena.Arena, +v_2: U32, +v_4: U32, v_5: Arena.CasePrefixEntry, v_7: Bool, v_9: Nat, v_11: Pair(Arena.Arena, Nat)) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
-  checker_match_3122(v_11, v_0, v_2, v_4, v_5, v_7, v_9)
+  checker_match_3121(v_11, v_0, v_2, v_4, v_5, v_7, v_9)
 
-def checker_match_3123(v_10: Arena.CasePrefixEntry, v_0: Arena.Arena, v_9: Arena.Arena, +v_2: U32, +v_4: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3122(v_10: Arena.CasePrefixEntry, v_0: Arena.Arena, v_9: Arena.Arena, +v_2: U32, +v_4: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_10:
     case Arena.CasePrefixEmpty{}:
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_local_index{ArenaStore{v_0, v_9}, v_2, v_4}}, False{}, v_1004191 => checker_body_arena_case_prefix_local_index(ArenaStore{v_0, v_9}, v_2, v_4), v_1004190 => CheckerFinished{v_1004190}}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_local_index{ArenaStore{v_0, v_9}, v_2, v_4}}, False{}, v_1004194 => checker_body_arena_case_prefix_local_index(ArenaStore{v_0, v_9}, v_2, v_4), v_1004193 => CheckerFinished{v_1004193}}
     case Arena.CasePrefixSaved{+v_17, +v_18, v_19, v_20, +v_21}:
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_local_cached_generation{v_9, v_2, v_4, Arena.CasePrefixSaved{v_17, v_18, v_19, v_20, v_21}, Bool.and(U32.is_eq(v_2, v_17), U32.is_eq(v_4, v_18)), v_21, Arena.generation(v_0)}}, False{}, v_1004193 => checker_body_arena_case_prefix_local_cached_generation(v_9, v_2, v_4, Arena.CasePrefixSaved{v_17, v_18, v_19, v_20, v_21}, Bool.and(U32.is_eq(v_2, v_17), U32.is_eq(v_4, v_18)), v_21, Arena.generation(v_0)), v_1004192 => CheckerFinished{v_1004192}}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_local_cached_generation{v_9, v_2, v_4, Arena.CasePrefixSaved{v_17, v_18, v_19, v_20, v_21}, Bool.and(U32.is_eq(v_2, v_17), U32.is_eq(v_4, v_18)), v_21, Arena.generation(v_0)}}, False{}, v_1004196 => checker_body_arena_case_prefix_local_cached_generation(v_9, v_2, v_4, Arena.CasePrefixSaved{v_17, v_18, v_19, v_20, v_21}, Bool.and(U32.is_eq(v_2, v_17), U32.is_eq(v_4, v_18)), v_21, Arena.generation(v_0)), v_1004195 => CheckerFinished{v_1004195}}
 
-def checker_match_3124(v_5: Pair(Arena.Arena, Arena.CasePrefixEntry), v_0: Arena.Arena, +v_2: U32, +v_4: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3123(v_5: Pair(Arena.Arena, Arena.CasePrefixEntry), v_0: Arena.Arena, +v_2: U32, +v_4: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_5:
     case (v_9, v_10):
-      checker_match_3123(v_10, v_0, v_9, v_2, v_4)
+      checker_match_3122(v_10, v_0, v_9, v_2, v_4)
 
 def checker_body_arena_case_prefix_local_cached(v_0: Arena.Arena, +v_2: U32, +v_4: U32, v_5: Pair(Arena.Arena, Arena.CasePrefixEntry)) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
-  checker_match_3124(v_5, v_0, v_2, v_4)
+  checker_match_3123(v_5, v_0, v_2, v_4)
 
-def checker_match_3125(v_1: ArenaStore, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3124(v_1: ArenaStore, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_1:
     case ArenaStore{v_12, v_13}:
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_cached{v_3, v_5, checker_pure_arena_case_prefix_result(v_13, Arena.case_prefix_get(v_12, v_3, v_5))}}, False{}, v_1004195 => checker_body_arena_case_prefix_cached(v_3, v_5, checker_pure_arena_case_prefix_result(v_13, Arena.case_prefix_get(v_12, v_3, v_5))), v_1004194 => CheckerFinished{v_1004194}}
+      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_cached{v_3, v_5, checker_pure_arena_case_prefix_result(v_13, Arena.case_prefix_get(v_12, v_3, v_5))}}, False{}, v_1004198 => checker_body_arena_case_prefix_cached(v_3, v_5, checker_pure_arena_case_prefix_result(v_13, Arena.case_prefix_get(v_12, v_3, v_5))), v_1004197 => CheckerFinished{v_1004197}}
 
-def checker_match_3126(v_7: Bool, v_1: ArenaStore, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3125(v_7: Bool, v_1: ArenaStore, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_7:
     case False{}:
       CheckerFinished{{ArenaResult{v_1, Arena.CasePrefixEmpty{}} : ArenaResult<Arena.CasePrefixEntry>}}
     case True{}:
-      checker_match_3125(v_1, v_3, v_5)
+      checker_match_3124(v_1, v_3, v_5)
 
 def checker_body_arena_case_prefix_eligible(v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Bool) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
-  checker_match_3126(v_7, v_1, v_3, v_5)
+  checker_match_3125(v_7, v_1, v_3, v_5)
 
-def checker_match_3127(v_1: ArenaStore, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3126(v_1: ArenaStore, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_1:
     case ArenaStore{v_12, v_13}:
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_local_cached{v_12, v_3, v_5, Arena.case_prefix_get(v_13, v_3, v_5)}}, False{}, v_1004198 => checker_body_arena_case_prefix_local_cached(v_12, v_3, v_5, Arena.case_prefix_get(v_13, v_3, v_5)), v_1004197 => CheckerFinished{v_1004197}}
+      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_case_prefix_local_cached{v_12, v_3, v_5, Arena.case_prefix_get(v_13, v_3, v_5)}}, False{}, v_1004201 => checker_body_arena_case_prefix_local_cached(v_12, v_3, v_5, Arena.case_prefix_get(v_13, v_3, v_5)), v_1004200 => CheckerFinished{v_1004200}}
 
-def checker_match_3128(v_7: Bool, v_1: ArenaStore, v_3: U32, v_5: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3127(v_7: Bool, v_1: ArenaStore, v_3: U32, v_5: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_7:
     case False{}:
       checker_body_arena_case_prefix_eligible(v_1, v_3, v_5, True{})
     case True{}:
-      checker_match_3127(v_1, v_3, v_5)
+      checker_match_3126(v_1, v_3, v_5)
 
 def checker_body_arena_case_prefix_region(v_1: ArenaStore, v_3: U32, v_5: U32, v_7: Bool) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
-  checker_match_3128(v_7, v_1, v_3, v_5)
+  checker_match_3127(v_7, v_1, v_3, v_5)
 
-def checker_match_3129(v_7: Bool, v_1: ArenaStore, +v_3: U32, v_5: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3128(v_7: Bool, v_1: ArenaStore, +v_3: U32, v_5: U32) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_7:
     case False{}:
       CheckerFinished{{ArenaResult{v_1, Arena.CasePrefixEmpty{}} : ArenaResult<Arena.CasePrefixEntry>}}
     case True{}:
-      CheckerDirect{Bool, CheckerRequestGroup_11{CheckerRequest_arena_case_prefix_region{v_1, v_3, v_5, checker_pure_arena_is_transient(v_3)}}, False{}, v_1004200 => checker_body_arena_case_prefix_region(v_1, v_3, v_5, checker_pure_arena_is_transient(v_3)), v_1004199 => CheckerFinished{v_1004199}}
+      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_case_prefix_region{v_1, v_3, v_5, checker_pure_arena_is_transient(v_3)}}, False{}, v_1004203 => checker_body_arena_case_prefix_region(v_1, v_3, v_5, checker_pure_arena_is_transient(v_3)), v_1004202 => CheckerFinished{v_1004202}}
 
 def checker_body_arena_case_prefix_large(v_1: ArenaStore, +v_3: U32, v_5: U32, v_7: Bool) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
-  checker_match_3129(v_7, v_1, v_3, v_5)
+  checker_match_3128(v_7, v_1, v_3, v_5)
 
-def checker_match_3130(v_2: IR.Words, v_1: ArenaStore) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
+def checker_match_3129(v_2: IR.Words, v_1: ArenaStore) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
   match v_2:
     case IR.Words{+v_6, +v_7}:
-      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_case_prefix_large{v_1, v_6, v_7, Arena.case_prefix_at_most(U32.cmp(64, v_7))}}, False{}, v_1004202 => checker_body_arena_case_prefix_large(v_1, v_6, v_7, Arena.case_prefix_at_most(U32.cmp(64, v_7))), v_1004201 => CheckerFinished{v_1004201}}
+      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_case_prefix_large{v_1, v_6, v_7, Arena.case_prefix_at_most(U32.cmp(64, v_7))}}, False{}, v_1004205 => checker_body_arena_case_prefix_large(v_1, v_6, v_7, Arena.case_prefix_at_most(U32.cmp(64, v_7))), v_1004204 => CheckerFinished{v_1004204}}
 
 def checker_body_arena_case_prefix_index(v_1: ArenaStore, v_2: IR.Words) -> CheckerProgress<ArenaResult<Arena.CasePrefixEntry>>:
-  checker_match_3130(v_2, v_1)
+  checker_match_3129(v_2, v_1)
 
 def checker_body_arena_case_prefix_name(v_2: Map<&2, U32>, v_4: String) -> CheckerProgress<Pair(Map<&2, U32>, U32)>:
   CheckerFinished{checker_pure_arena_case_prefix_name(v_2, v_4)}
@@ -26631,7 +26630,7 @@ def checker_body_arena_case_prefix_suffix(v_1: U32, v_3: U32, v_5: U32, v_7: Boo
 def checker_body_arena_subst_memo_exact(v_1: U32, v_3: Bool) -> CheckerProgress<Maybe<&2, U32>>:
   CheckerFinished{checker_pure_arena_subst_memo_exact(v_1, v_3)}
 
-def checker_match_3131(v_8: Arena.SubstMemoEntry, v_1: U32, v_5: U32, v_3: Nat, v_7: Nat) -> CheckerProgress<Maybe<&2, U32>>:
+def checker_match_3130(v_8: Arena.SubstMemoEntry, v_1: U32, v_5: U32, v_3: Nat, v_7: Nat) -> CheckerProgress<Maybe<&2, U32>>:
   match v_8:
     case Arena.SubstMemoEmpty{}:
       CheckerFinished{None{}}
@@ -26641,21 +26640,21 @@ def checker_match_3131(v_8: Arena.SubstMemoEntry, v_1: U32, v_5: U32, v_3: Nat, 
       CheckerFinished{None{}}
 
 def checker_body_arena_subst_memo_entry(v_1: U32, v_3: Nat, v_5: U32, v_7: Nat, v_8: Arena.SubstMemoEntry) -> CheckerProgress<Maybe<&2, U32>>:
-  checker_match_3131(v_8, v_1, v_5, v_3, v_7)
+  checker_match_3130(v_8, v_1, v_5, v_3, v_7)
 
-def checker_match_3132(v_9: Pair(Arena.Arena, Arena.SubstMemoEntry), v_0: Arena.Arena, v_2: U32, v_4: Nat, v_6: U32, v_8: Nat) -> CheckerProgress<ArenaResult<Maybe<&2, U32>>>:
+def checker_match_3131(v_9: Pair(Arena.Arena, Arena.SubstMemoEntry), v_0: Arena.Arena, v_2: U32, v_4: Nat, v_6: U32, v_8: Nat) -> CheckerProgress<ArenaResult<Maybe<&2, U32>>>:
   match v_9:
     case (v_15, v_16):
-      v_1004203 = {ArenaStore{v_0, v_15} : ArenaStore}
-      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_subst_memo_entry{v_2, v_4, v_6, v_8, v_16}}, False{}, v_1004205 => checker_body_arena_subst_memo_entry(v_2, v_4, v_6, v_8, v_16), +v_1004204 => CheckerFinished{{ArenaResult{v_1004203, v_1004204} : ArenaResult<Maybe<&2, U32>>}}}
+      v_1004206 = {ArenaStore{v_0, v_15} : ArenaStore}
+      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_subst_memo_entry{v_2, v_4, v_6, v_8, v_16}}, False{}, v_1004208 => checker_body_arena_subst_memo_entry(v_2, v_4, v_6, v_8, v_16), +v_1004207 => CheckerFinished{{ArenaResult{v_1004206, v_1004207} : ArenaResult<Maybe<&2, U32>>}}}
 
 def checker_body_arena_subst_memo_lookup_result(v_0: Arena.Arena, v_2: U32, v_4: Nat, v_6: U32, v_8: Nat, v_9: Pair(Arena.Arena, Arena.SubstMemoEntry)) -> CheckerProgress<ArenaResult<Maybe<&2, U32>>>:
-  checker_match_3132(v_9, v_0, v_2, v_4, v_6, v_8)
+  checker_match_3131(v_9, v_0, v_2, v_4, v_6, v_8)
 
 def checker_body_arena_subst_memo_lookup(v_1: ArenaStore, +v_3: U32, v_5: Nat, +v_7: U32, v_9: Nat) -> CheckerProgress<ArenaResult<Maybe<&2, U32>>>:
   match v_1:
     case ArenaStore{v_15, v_16}:
-      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_subst_memo_lookup_result{v_15, v_3, v_5, v_7, v_9, Arena.subst_memo_get(v_16, v_3, v_7)}}, False{}, v_1004207 => checker_body_arena_subst_memo_lookup_result(v_15, v_3, v_5, v_7, v_9, Arena.subst_memo_get(v_16, v_3, v_7)), v_1004206 => CheckerFinished{v_1004206}}
+      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_subst_memo_lookup_result{v_15, v_3, v_5, v_7, v_9, Arena.subst_memo_get(v_16, v_3, v_7)}}, False{}, v_1004210 => checker_body_arena_subst_memo_lookup_result(v_15, v_3, v_5, v_7, v_9, Arena.subst_memo_get(v_16, v_3, v_7)), v_1004209 => CheckerFinished{v_1004209}}
 
 def checker_body_arena_subst_memo_store(v_1: ArenaStore, v_3: U32, v_5: Nat, v_7: U32, v_9: Nat, v_11: U32) -> CheckerProgress<ArenaStore>:
   CheckerFinished{checker_pure_arena_subst_memo_store(v_1, v_3, v_5, v_7, v_9, v_11)}
@@ -26684,8 +26683,8 @@ def checker_body_arena_put_node_bound(v_0: Arena.Node, v_3: ArenaResult<Nat>) ->
   CheckerFinished{checker_pure_arena_put_node_bound(v_0, v_3)}
 
 def checker_body_arena_put_node(v_1: ArenaStore, +v_2: Arena.Node) -> CheckerProgress<ArenaResult<U32>>:
-  v_1004208 = {v_2 : Arena.Node}
-  CheckerPending{CheckerRequestGroup_13{CheckerRequest_arena_bound_node{v_1, v_2}}, v_1004209 => CheckerFinished{checker_pure_arena_put_node_bound(v_1004208, v_1004209)}}
+  v_1004211 = {v_2 : Arena.Node}
+  CheckerPending{CheckerRequestGroup_13{CheckerRequest_arena_bound_node{v_1, v_2}}, v_1004212 => CheckerFinished{checker_pure_arena_put_node_bound(v_1004211, v_1004212)}}
 
 def checker_body_arena_put_source_node(v_1: ArenaStore, v_2: Arena.Node) -> CheckerProgress<ArenaResult<U32>>:
   CheckerFinished{checker_pure_arena_put_source_node(v_1, v_2)}
@@ -26744,21 +26743,21 @@ def checker_body_arena_set_word(v_1: ArenaStore, +v_3: U32, v_5: U32) -> Checker
 def checker_body_arena_word_cursor(v_1: ArenaStore) -> CheckerProgress<ArenaResult<U32>>:
   CheckerFinished{checker_pure_arena_word_cursor(v_1)}
 
-def checker_match_3135(v_1004211: ArenaResult<U32>, +v_5: U32, +v_9: U32, +v_3: U32, v_12: Nat) -> CheckerProgress<ArenaStore>:
-  match v_1004211:
+def checker_match_3134(v_1004214: ArenaResult<U32>, +v_5: U32, +v_9: U32, +v_3: U32, v_12: Nat) -> CheckerProgress<ArenaStore>:
+  match v_1004214:
     case ArenaResult{v_17, v_18}:
-      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_copy_word_range{checker_pure_arena_set_word(v_17, checker_pure_arena_range_index(v_5, v_9), v_18), v_3, v_5, v_12, U32.add(v_9, 1)}}, v_1004210 => CheckerFinished{v_1004210}}
+      CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_copy_word_range{checker_pure_arena_set_word(v_17, checker_pure_arena_range_index(v_5, v_9), v_18), v_3, v_5, v_12, U32.add(v_9, 1)}}, v_1004213 => CheckerFinished{v_1004213}}
 
-def checker_match_3136(v_7: Nat, v_1: ArenaStore, +v_3: U32, +v_9: U32, +v_5: U32) -> CheckerProgress<ArenaStore>:
+def checker_match_3135(v_7: Nat, v_1: ArenaStore, +v_3: U32, +v_9: U32, +v_5: U32) -> CheckerProgress<ArenaStore>:
   match v_7:
     case 0n:
       CheckerFinished{v_1}
     case 1n+v_12:
-      v_1004211 = {checker_pure_arena_get_word(v_1, checker_pure_arena_range_index(v_3, v_9)) : ArenaResult<U32>}
-      checker_match_3135(v_1004211, v_5, v_9, v_3, v_12)
+      v_1004214 = {checker_pure_arena_get_word(v_1, checker_pure_arena_range_index(v_3, v_9)) : ArenaResult<U32>}
+      checker_match_3134(v_1004214, v_5, v_9, v_3, v_12)
 
 def checker_body_arena_copy_word_range(v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Nat, +v_9: U32) -> CheckerProgress<ArenaStore>:
-  checker_match_3136(v_7, v_1, v_3, v_9, v_5)
+  checker_match_3135(v_7, v_1, v_3, v_9, v_5)
 
 def checker_body_arena_reserve_source_naturals(v_1: ArenaStore, v_3: U32) -> CheckerProgress<ArenaResult<U32>>:
   CheckerFinished{checker_pure_arena_reserve_source_naturals(v_1, v_3)}
@@ -26805,219 +26804,219 @@ def checker_body_arena_bound_min_order(v_1: U32, v_3: U32, v_5: Cmp) -> CheckerP
 def checker_body_arena_bound_min(+v_1: U32, +v_3: U32) -> CheckerProgress<U32>:
   CheckerFinished{checker_pure_arena_bound_min(v_1, v_3)}
 
-def checker_match_3137(v_4: Arena.Pattern, v_1: ArenaStore, v_3: U32) -> CheckerProgress<ArenaResult<Nat>>:
+def checker_match_3136(v_4: Arena.Pattern, v_1: ArenaStore, v_3: U32) -> CheckerProgress<ArenaResult<Nat>>:
   match v_4:
     case Arena.PatternVar{_, _, _, _}:
       CheckerFinished{{ArenaResult{v_1, 2n} : ArenaResult<Nat>}}
     case Arena.PatternCtr{_, v_22, v_23, _}:
-      CheckerPending{CheckerRequestGroup_13{CheckerRequest_arena_bound_range{v_1, v_22, v_23, True{}, v_3}}, v_1004212 => CheckerFinished{v_1004212}}
+      CheckerPending{CheckerRequestGroup_13{CheckerRequest_arena_bound_range{v_1, v_22, v_23, True{}, v_3}}, v_1004215 => CheckerFinished{v_1004215}}
 
 def checker_body_arena_bound_pattern_value(v_1: ArenaStore, v_3: U32, v_4: Arena.Pattern) -> CheckerProgress<ArenaResult<Nat>>:
-  checker_match_3137(v_4, v_1, v_3)
+  checker_match_3136(v_4, v_1, v_3)
 
-def checker_match_3138(v_3: ArenaResult<Arena.Pattern>, v_1: U32) -> CheckerProgress<ArenaResult<Nat>>:
+def checker_match_3137(v_3: ArenaResult<Arena.Pattern>, v_1: U32) -> CheckerProgress<ArenaResult<Nat>>:
   match v_3:
     case ArenaResult{v_8, v_9}:
       checker_body_arena_bound_pattern_value(v_8, v_1, v_9)
 
 def checker_body_arena_bound_pattern_get(v_1: U32, v_3: ArenaResult<Arena.Pattern>) -> CheckerProgress<ArenaResult<Nat>>:
-  checker_match_3138(v_3, v_1)
+  checker_match_3137(v_3, v_1)
 
-def checker_match_3139(v_5: Cmp, +v_3: U32, v_0: Arena.Arena, v_1: Arena.Arena) -> CheckerProgress<ArenaResult<Nat>>:
+def checker_match_3138(v_5: Cmp, +v_3: U32, v_0: Arena.Arena, v_1: Arena.Arena) -> CheckerProgress<ArenaResult<Nat>>:
   match v_5:
     case LT{}:
-      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_bound_pattern_get{checker_pure_arena_node_offset(v_3), checker_pure_arena_get_pattern(ArenaStore{v_0, v_1}, v_3)}}, False{}, v_1004215 => checker_body_arena_bound_pattern_get(checker_pure_arena_node_offset(v_3), checker_pure_arena_get_pattern(ArenaStore{v_0, v_1}, v_3)), v_1004214 => CheckerFinished{v_1004214}}
+      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_bound_pattern_get{checker_pure_arena_node_offset(v_3), checker_pure_arena_get_pattern(ArenaStore{v_0, v_1}, v_3)}}, False{}, v_1004218 => checker_body_arena_bound_pattern_get(checker_pure_arena_node_offset(v_3), checker_pure_arena_get_pattern(ArenaStore{v_0, v_1}, v_3)), v_1004217 => CheckerFinished{v_1004217}}
     case _:
       CheckerFinished{{ArenaResult{ArenaStore{v_0, v_1}, 0n} : ArenaResult<Nat>}}
 
 def checker_body_arena_bound_pattern_order(v_0: Arena.Arena, v_1: Arena.Arena, +v_3: U32, v_5: Cmp) -> CheckerProgress<ArenaResult<Nat>>:
-  checker_match_3139(v_5, v_3, v_0, v_1)
+  checker_match_3138(v_5, v_3, v_0, v_1)
 
-def checker_match_3140(v_6: Pair(Arena.Arena, U32), v_0: Arena.Arena, +v_2: U32, +v_4: U32) -> CheckerProgress<ArenaResult<Nat>>:
+def checker_match_3139(v_6: Pair(Arena.Arena, U32), v_0: Arena.Arena, +v_2: U32, +v_4: U32) -> CheckerProgress<ArenaResult<Nat>>:
   match v_6:
     case (v_11, v_12):
-      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_bound_pattern_order{v_0, v_11, v_2, U32.cmp(checker_pure_arena_node_offset(v_2), checker_pure_arena_bound_min(v_12, v_4))}}, False{}, v_1004217 => checker_body_arena_bound_pattern_order(v_0, v_11, v_2, U32.cmp(checker_pure_arena_node_offset(v_2), checker_pure_arena_bound_min(v_12, v_4))), v_1004216 => CheckerFinished{v_1004216}}
+      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_bound_pattern_order{v_0, v_11, v_2, U32.cmp(checker_pure_arena_node_offset(v_2), checker_pure_arena_bound_min(v_12, v_4))}}, False{}, v_1004220 => checker_body_arena_bound_pattern_order(v_0, v_11, v_2, U32.cmp(checker_pure_arena_node_offset(v_2), checker_pure_arena_bound_min(v_12, v_4))), v_1004219 => CheckerFinished{v_1004219}}
 
 def checker_body_arena_bound_pattern_count(v_0: Arena.Arena, +v_2: U32, +v_4: U32, v_6: Pair(Arena.Arena, U32)) -> CheckerProgress<ArenaResult<Nat>>:
-  checker_match_3140(v_6, v_0, v_2, v_4)
+  checker_match_3139(v_6, v_0, v_2, v_4)
 
-def checker_match_3141(v_7: Bool, v_0: Arena.Arena, v_3: U32, v_1: Arena.Arena, v_5: U32) -> CheckerProgress<ArenaResult<Nat>>:
+def checker_match_3140(v_7: Bool, v_0: Arena.Arena, v_3: U32, v_1: Arena.Arena, v_5: U32) -> CheckerProgress<ArenaResult<Nat>>:
   match v_7:
     case False{}:
       CheckerFinished{checker_pure_arena_bound_source(Arena.bound_read(v_0, v_3, True{}), v_1)}
     case True{}:
-      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_bound_pattern_count{v_0, v_3, v_5, Arena.pattern_count(v_1)}}, False{}, v_1004219 => checker_body_arena_bound_pattern_count(v_0, v_3, v_5, Arena.pattern_count(v_1)), v_1004218 => CheckerFinished{v_1004218}}
+      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_bound_pattern_count{v_0, v_3, v_5, Arena.pattern_count(v_1)}}, False{}, v_1004222 => checker_body_arena_bound_pattern_count(v_0, v_3, v_5, Arena.pattern_count(v_1)), v_1004221 => CheckerFinished{v_1004221}}
 
 def checker_body_arena_bound_pattern_region(v_0: Arena.Arena, v_1: Arena.Arena, v_3: U32, v_5: U32, v_7: Bool) -> CheckerProgress<ArenaResult<Nat>>:
-  checker_match_3141(v_7, v_0, v_3, v_1, v_5)
+  checker_match_3140(v_7, v_0, v_3, v_1, v_5)
 
 def checker_body_arena_bound_pattern(v_1: ArenaStore, +v_3: U32, v_5: U32) -> CheckerProgress<ArenaResult<Nat>>:
   match v_1:
     case ArenaStore{v_10, v_11}:
-      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_bound_pattern_region{v_10, v_11, v_3, v_5, checker_pure_arena_is_transient(v_3)}}, False{}, v_1004221 => checker_body_arena_bound_pattern_region(v_10, v_11, v_3, v_5, checker_pure_arena_is_transient(v_3)), v_1004220 => CheckerFinished{v_1004220}}
+      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_bound_pattern_region{v_10, v_11, v_3, v_5, checker_pure_arena_is_transient(v_3)}}, False{}, v_1004224 => checker_body_arena_bound_pattern_region(v_10, v_11, v_3, v_5, checker_pure_arena_is_transient(v_3)), v_1004223 => CheckerFinished{v_1004223}}
 
 def checker_body_arena_bound_range_combine(v_1: Nat, v_3: Bool, v_6: ArenaResult<Nat>) -> CheckerProgress<ArenaResult<Nat>>:
   CheckerFinished{checker_pure_arena_bound_range_combine(v_1, v_3, v_6)}
 
-def checker_match_3143(+v_3: Bool, v_1: Nat, v_13: ArenaStore, v_14: U32, v_5: U32) -> CheckerProgress<ArenaResult<Nat>>:
+def checker_match_3142(+v_3: Bool, v_1: Nat, v_13: ArenaStore, v_14: U32, v_5: U32) -> CheckerProgress<ArenaResult<Nat>>:
   match v_3:
     case False{}:
       CheckerFinished{checker_pure_arena_bound_range_combine(v_1, v_3, checker_pure_arena_node_bound(v_13, v_14))}
     case True{}:
-      v_1004222 = {v_1 : Nat}
-      v_1004223 = {v_3 : Bool}
-      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_bound_pattern{v_13, v_14, v_5}}, False{}, v_1004225 => checker_body_arena_bound_pattern(v_13, v_14, v_5), v_1004224 => CheckerFinished{checker_pure_arena_bound_range_combine(v_1004222, v_1004223, v_1004224)}}
+      v_1004225 = {v_1 : Nat}
+      v_1004226 = {v_3 : Bool}
+      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_bound_pattern{v_13, v_14, v_5}}, False{}, v_1004228 => checker_body_arena_bound_pattern(v_13, v_14, v_5), v_1004227 => CheckerFinished{checker_pure_arena_bound_range_combine(v_1004225, v_1004226, v_1004227)}}
 
-def checker_match_3144(v_8: ArenaResult<U32>, +v_3: Bool, v_1: Nat, v_5: U32) -> CheckerProgress<ArenaResult<Nat>>:
+def checker_match_3143(v_8: ArenaResult<U32>, +v_3: Bool, v_1: Nat, v_5: U32) -> CheckerProgress<ArenaResult<Nat>>:
   match v_8:
     case ArenaResult{v_13, v_14}:
-      checker_match_3143(v_3, v_1, v_13, v_14, v_5)
+      checker_match_3142(v_3, v_1, v_13, v_14, v_5)
 
 def checker_body_arena_bound_range_word(v_1: Nat, +v_3: Bool, v_5: U32, v_8: ArenaResult<U32>) -> CheckerProgress<ArenaResult<Nat>>:
-  checker_match_3144(v_8, v_3, v_1, v_5)
+  checker_match_3143(v_8, v_3, v_1, v_5)
 
-def checker_match_3145(v_20: Nat, v_19: ArenaStore, v_16: Nat, +v_3: U32, +v_5: U32, +v_7: Bool, +v_9: U32) -> CheckerProgress<ArenaResult<Nat>>:
+def checker_match_3144(v_20: Nat, v_19: ArenaStore, v_16: Nat, +v_3: U32, +v_5: U32, +v_7: Bool, +v_9: U32) -> CheckerProgress<ArenaResult<Nat>>:
   match v_20:
     case 0n:
       CheckerFinished{{ArenaResult{v_19, 0n} : ArenaResult<Nat>}}
     case 1n+v_24:
-      v_1004226 = {v_16 : Nat}
-      +v_1004227 = {v_3 : U32}
-      +v_1004228 = {U32.add(v_5, 1) : U32}
-      +v_1004229 = {v_7 : Bool}
-      +v_1004230 = {v_9 : U32}
-      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_bound_range_word{v_24, v_7, v_9, checker_pure_arena_get_word(v_19, checker_pure_arena_range_index(v_3, v_5))}}, False{}, v_1004233 => checker_body_arena_bound_range_word(v_24, v_7, v_9, checker_pure_arena_get_word(v_19, checker_pure_arena_range_index(v_3, v_5))), v_1004231 => CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_bound_range_loop{v_1004226, v_1004227, v_1004228, v_1004229, v_1004230, v_1004231}}, v_1004232 => CheckerFinished{v_1004232}}}
+      v_1004229 = {v_16 : Nat}
+      +v_1004230 = {v_3 : U32}
+      +v_1004231 = {U32.add(v_5, 1) : U32}
+      +v_1004232 = {v_7 : Bool}
+      +v_1004233 = {v_9 : U32}
+      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_bound_range_word{v_24, v_7, v_9, checker_pure_arena_get_word(v_19, checker_pure_arena_range_index(v_3, v_5))}}, False{}, v_1004236 => checker_body_arena_bound_range_word(v_24, v_7, v_9, checker_pure_arena_get_word(v_19, checker_pure_arena_range_index(v_3, v_5))), v_1004234 => CheckerPending{CheckerRequestGroup_12{CheckerRequest_arena_bound_range_loop{v_1004229, v_1004230, v_1004231, v_1004232, v_1004233, v_1004234}}, v_1004235 => CheckerFinished{v_1004235}}}
 
-def checker_match_3146(v_12: ArenaResult<Nat>, v_16: Nat, +v_3: U32, +v_5: U32, +v_7: Bool, +v_9: U32) -> CheckerProgress<ArenaResult<Nat>>:
+def checker_match_3145(v_12: ArenaResult<Nat>, v_16: Nat, +v_3: U32, +v_5: U32, +v_7: Bool, +v_9: U32) -> CheckerProgress<ArenaResult<Nat>>:
   match v_12:
     case ArenaResult{v_19, v_20}:
-      checker_match_3145(v_20, v_19, v_16, v_3, v_5, v_7, v_9)
+      checker_match_3144(v_20, v_19, v_16, v_3, v_5, v_7, v_9)
 
-def checker_match_3147(v_1: Nat, v_12: ArenaResult<Nat>, +v_3: U32, +v_5: U32, +v_7: Bool, +v_9: U32) -> CheckerProgress<ArenaResult<Nat>>:
+def checker_match_3146(v_1: Nat, v_12: ArenaResult<Nat>, +v_3: U32, +v_5: U32, +v_7: Bool, +v_9: U32) -> CheckerProgress<ArenaResult<Nat>>:
   match v_1:
     case 0n:
       CheckerFinished{v_12}
     case 1n+v_16:
-      checker_match_3146(v_12, v_16, v_3, v_5, v_7, v_9)
+      checker_match_3145(v_12, v_16, v_3, v_5, v_7, v_9)
 
 def checker_body_arena_bound_range_loop(v_1: Nat, +v_3: U32, +v_5: U32, +v_7: Bool, +v_9: U32, v_12: ArenaResult<Nat>) -> CheckerProgress<ArenaResult<Nat>>:
-  checker_match_3147(v_1, v_12, v_3, v_5, v_7, v_9)
+  checker_match_3146(v_1, v_12, v_3, v_5, v_7, v_9)
 
-def checker_match_3148(v_11: Cmp, v_1: ArenaStore, +v_5: U32, v_3: U32, v_7: Bool, v_9: U32) -> CheckerProgress<ArenaResult<Nat>>:
+def checker_match_3147(v_11: Cmp, v_1: ArenaStore, +v_5: U32, v_3: U32, v_7: Bool, v_9: U32) -> CheckerProgress<ArenaResult<Nat>>:
   match v_11:
     case GT{}:
       CheckerFinished{{ArenaResult{v_1, 0n} : ArenaResult<Nat>}}
     case _:
-      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_bound_range_loop{U32.to_nat(v_5), v_3, 0, v_7, v_9, {ArenaResult{v_1, 1n} : ArenaResult<Nat>}}}, False{}, v_1004235 => checker_body_arena_bound_range_loop(U32.to_nat(v_5), v_3, 0, v_7, v_9, {ArenaResult{v_1, 1n} : ArenaResult<Nat>}), v_1004234 => CheckerFinished{v_1004234}}
+      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_bound_range_loop{U32.to_nat(v_5), v_3, 0, v_7, v_9, {ArenaResult{v_1, 1n} : ArenaResult<Nat>}}}, False{}, v_1004238 => checker_body_arena_bound_range_loop(U32.to_nat(v_5), v_3, 0, v_7, v_9, {ArenaResult{v_1, 1n} : ArenaResult<Nat>}), v_1004237 => CheckerFinished{v_1004237}}
 
 def checker_body_arena_bound_range_length(v_1: ArenaStore, v_3: U32, +v_5: U32, v_7: Bool, v_9: U32, v_11: Cmp) -> CheckerProgress<ArenaResult<Nat>>:
-  checker_match_3148(v_11, v_1, v_5, v_3, v_7, v_9)
+  checker_match_3147(v_11, v_1, v_5, v_3, v_7, v_9)
 
-def checker_match_3149(+v_21: Bool, v_1: ArenaStore, +v_3: U32, +v_5: U32, v_9: Bool, v_11: U32, +v_7: U32, +v_18: U32) -> CheckerProgress<ArenaResult<Nat>>:
+def checker_match_3148(+v_21: Bool, v_1: ArenaStore, +v_3: U32, +v_5: U32, v_9: Bool, v_11: U32, +v_7: U32, +v_18: U32) -> CheckerProgress<ArenaResult<Nat>>:
   match v_21:
     case False{}:
-      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_bound_range_length{v_1, v_3, v_5, v_9, v_11, U32.cmp(v_5, U32.sub(v_7, v_18))}}, False{}, v_1004237 => checker_body_arena_bound_range_length(v_1, v_3, v_5, v_9, v_11, U32.cmp(v_5, U32.sub(v_7, v_18))), v_1004236 => CheckerFinished{v_1004236}}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_range_length{v_1, v_3, v_5, v_9, v_11, U32.cmp(v_5, U32.sub(v_7, v_18))}}, False{}, v_1004240 => checker_body_arena_bound_range_length(v_1, v_3, v_5, v_9, v_11, U32.cmp(v_5, U32.sub(v_7, v_18))), v_1004239 => CheckerFinished{v_1004239}}
     case True{}:
-      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_bound_range_length{v_1, v_3, v_5, v_9, v_11, U32.cmp(v_5, U32.add(v_18, 1))}}, False{}, v_1004239 => checker_body_arena_bound_range_length(v_1, v_3, v_5, v_9, v_11, U32.cmp(v_5, U32.add(v_18, 1))), v_1004238 => CheckerFinished{v_1004238}}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_range_length{v_1, v_3, v_5, v_9, v_11, U32.cmp(v_5, U32.add(v_18, 1))}}, False{}, v_1004242 => checker_body_arena_bound_range_length(v_1, v_3, v_5, v_9, v_11, U32.cmp(v_5, U32.add(v_18, 1))), v_1004241 => CheckerFinished{v_1004241}}
 
-def checker_match_3150(v_13: Cmp, +v_3: U32, v_1: ArenaStore, +v_5: U32, v_9: Bool, v_11: U32, +v_7: U32) -> CheckerProgress<ArenaResult<Nat>>:
+def checker_match_3149(v_13: Cmp, +v_3: U32, v_1: ArenaStore, +v_5: U32, v_9: Bool, v_11: U32, +v_7: U32) -> CheckerProgress<ArenaResult<Nat>>:
   match v_13:
     case LT{}:
       +v_18 = checker_pure_arena_tape_offset(v_3)
       +v_21 = checker_pure_arena_is_reverse(v_3)
-      checker_match_3149(v_21, v_1, v_3, v_5, v_9, v_11, v_7, v_18)
+      checker_match_3148(v_21, v_1, v_3, v_5, v_9, v_11, v_7, v_18)
     case _:
       CheckerFinished{{ArenaResult{v_1, 0n} : ArenaResult<Nat>}}
 
 def checker_body_arena_bound_range_start(v_1: ArenaStore, +v_3: U32, +v_5: U32, +v_7: U32, v_9: Bool, v_11: U32, v_13: Cmp) -> CheckerProgress<ArenaResult<Nat>>:
-  checker_match_3150(v_13, v_3, v_1, v_5, v_9, v_11, v_7)
+  checker_match_3149(v_13, v_3, v_1, v_5, v_9, v_11, v_7)
+
+def checker_match_3150(v_9: Pair(Arena.Arena, U32), v_10: Arena.Arena, +v_1: U32, v_3: U32, v_5: Bool, v_7: U32) -> CheckerProgress<ArenaResult<Nat>>:
+  match v_9:
+    case (v_15, v_16):
+      +v_19 = checker_pure_arena_bound_min(v_16, 1073741824)
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_range_start{ArenaStore{v_15, v_10}, v_1, v_3, v_19, v_5, v_7, U32.cmp(checker_pure_arena_tape_offset(v_1), v_19)}}, False{}, v_1004244 => checker_body_arena_bound_range_start(ArenaStore{v_15, v_10}, v_1, v_3, v_19, v_5, v_7, U32.cmp(checker_pure_arena_tape_offset(v_1), v_19)), v_1004243 => CheckerFinished{v_1004243}}
+
+def checker_body_arena_bound_range_source(+v_1: U32, v_3: U32, v_5: Bool, v_7: U32, v_9: Pair(Arena.Arena, U32), v_10: Arena.Arena) -> CheckerProgress<ArenaResult<Nat>>:
+  checker_match_3150(v_9, v_10, v_1, v_3, v_5, v_7)
 
 def checker_match_3151(v_9: Pair(Arena.Arena, U32), v_10: Arena.Arena, +v_1: U32, v_3: U32, v_5: Bool, v_7: U32) -> CheckerProgress<ArenaResult<Nat>>:
   match v_9:
     case (v_15, v_16):
       +v_19 = checker_pure_arena_bound_min(v_16, 1073741824)
-      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_bound_range_start{ArenaStore{v_15, v_10}, v_1, v_3, v_19, v_5, v_7, U32.cmp(checker_pure_arena_tape_offset(v_1), v_19)}}, False{}, v_1004241 => checker_body_arena_bound_range_start(ArenaStore{v_15, v_10}, v_1, v_3, v_19, v_5, v_7, U32.cmp(checker_pure_arena_tape_offset(v_1), v_19)), v_1004240 => CheckerFinished{v_1004240}}
-
-def checker_body_arena_bound_range_source(+v_1: U32, v_3: U32, v_5: Bool, v_7: U32, v_9: Pair(Arena.Arena, U32), v_10: Arena.Arena) -> CheckerProgress<ArenaResult<Nat>>:
-  checker_match_3151(v_9, v_10, v_1, v_3, v_5, v_7)
-
-def checker_match_3152(v_9: Pair(Arena.Arena, U32), v_10: Arena.Arena, +v_1: U32, v_3: U32, v_5: Bool, v_7: U32) -> CheckerProgress<ArenaResult<Nat>>:
-  match v_9:
-    case (v_15, v_16):
-      +v_19 = checker_pure_arena_bound_min(v_16, 1073741824)
-      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_bound_range_start{ArenaStore{v_10, v_15}, v_1, v_3, v_19, v_5, v_7, U32.cmp(checker_pure_arena_tape_offset(v_1), v_19)}}, False{}, v_1004243 => checker_body_arena_bound_range_start(ArenaStore{v_10, v_15}, v_1, v_3, v_19, v_5, v_7, U32.cmp(checker_pure_arena_tape_offset(v_1), v_19)), v_1004242 => CheckerFinished{v_1004242}}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_range_start{ArenaStore{v_10, v_15}, v_1, v_3, v_19, v_5, v_7, U32.cmp(checker_pure_arena_tape_offset(v_1), v_19)}}, False{}, v_1004246 => checker_body_arena_bound_range_start(ArenaStore{v_10, v_15}, v_1, v_3, v_19, v_5, v_7, U32.cmp(checker_pure_arena_tape_offset(v_1), v_19)), v_1004245 => CheckerFinished{v_1004245}}
 
 def checker_body_arena_bound_range_transient(+v_1: U32, v_3: U32, v_5: Bool, v_7: U32, v_9: Pair(Arena.Arena, U32), v_10: Arena.Arena) -> CheckerProgress<ArenaResult<Nat>>:
-  checker_match_3152(v_9, v_10, v_1, v_3, v_5, v_7)
+  checker_match_3151(v_9, v_10, v_1, v_3, v_5, v_7)
 
-def checker_match_3153(v_11: Bool, v_3: U32, v_5: U32, v_7: Bool, v_9: U32, v_0: Arena.Arena, v_1: Arena.Arena) -> CheckerProgress<ArenaResult<Nat>>:
+def checker_match_3152(v_11: Bool, v_3: U32, v_5: U32, v_7: Bool, v_9: U32, v_0: Arena.Arena, v_1: Arena.Arena) -> CheckerProgress<ArenaResult<Nat>>:
   match v_11:
     case False{}:
-      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_bound_range_source{v_3, v_5, v_7, v_9, Arena.word_count(v_0), v_1}}, False{}, v_1004245 => checker_body_arena_bound_range_source(v_3, v_5, v_7, v_9, Arena.word_count(v_0), v_1), v_1004244 => CheckerFinished{v_1004244}}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_range_source{v_3, v_5, v_7, v_9, Arena.word_count(v_0), v_1}}, False{}, v_1004248 => checker_body_arena_bound_range_source(v_3, v_5, v_7, v_9, Arena.word_count(v_0), v_1), v_1004247 => CheckerFinished{v_1004247}}
     case True{}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_range_transient{v_3, v_5, v_7, v_9, Arena.word_count(v_1), v_0}}, False{}, v_1004247 => checker_body_arena_bound_range_transient(v_3, v_5, v_7, v_9, Arena.word_count(v_1), v_0), v_1004246 => CheckerFinished{v_1004246}}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_range_transient{v_3, v_5, v_7, v_9, Arena.word_count(v_1), v_0}}, False{}, v_1004250 => checker_body_arena_bound_range_transient(v_3, v_5, v_7, v_9, Arena.word_count(v_1), v_0), v_1004249 => CheckerFinished{v_1004249}}
 
 def checker_body_arena_bound_range_region(v_0: Arena.Arena, v_1: Arena.Arena, v_3: U32, v_5: U32, v_7: Bool, v_9: U32, v_11: Bool) -> CheckerProgress<ArenaResult<Nat>>:
-  checker_match_3153(v_11, v_3, v_5, v_7, v_9, v_0, v_1)
+  checker_match_3152(v_11, v_3, v_5, v_7, v_9, v_0, v_1)
 
-def checker_match_3154(v_1: ArenaStore, +v_3: U32, v_5: U32, v_7: Bool, v_9: U32) -> CheckerProgress<ArenaResult<Nat>>:
+def checker_match_3153(v_1: ArenaStore, +v_3: U32, v_5: U32, v_7: Bool, v_9: U32) -> CheckerProgress<ArenaResult<Nat>>:
   match v_1:
     case ArenaStore{v_18, v_19}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_range_region{v_18, v_19, v_3, v_5, v_7, v_9, checker_pure_arena_is_transient(v_3)}}, False{}, v_1004249 => checker_body_arena_bound_range_region(v_18, v_19, v_3, v_5, v_7, v_9, checker_pure_arena_is_transient(v_3)), v_1004248 => CheckerFinished{v_1004248}}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_range_region{v_18, v_19, v_3, v_5, v_7, v_9, checker_pure_arena_is_transient(v_3)}}, False{}, v_1004252 => checker_body_arena_bound_range_region(v_18, v_19, v_3, v_5, v_7, v_9, checker_pure_arena_is_transient(v_3)), v_1004251 => CheckerFinished{v_1004251}}
 
-def checker_match_3155(v_11: Bool, v_1: ArenaStore, v_3: U32, v_5: U32, v_7: Bool, v_9: U32) -> CheckerProgress<ArenaResult<Nat>>:
+def checker_match_3154(v_11: Bool, v_1: ArenaStore, v_3: U32, v_5: U32, v_7: Bool, v_9: U32) -> CheckerProgress<ArenaResult<Nat>>:
   match v_11:
     case True{}:
       CheckerFinished{{ArenaResult{v_1, 1n} : ArenaResult<Nat>}}
     case False{}:
-      checker_match_3154(v_1, v_3, v_5, v_7, v_9)
+      checker_match_3153(v_1, v_3, v_5, v_7, v_9)
 
 def checker_body_arena_bound_range_empty(v_1: ArenaStore, v_3: U32, v_5: U32, v_7: Bool, v_9: U32, v_11: Bool) -> CheckerProgress<ArenaResult<Nat>>:
-  checker_match_3155(v_11, v_1, v_3, v_5, v_7, v_9)
+  checker_match_3154(v_11, v_1, v_3, v_5, v_7, v_9)
 
 def checker_body_arena_bound_range(v_1: ArenaStore, v_3: U32, +v_5: U32, v_7: Bool, v_9: U32) -> CheckerProgress<ArenaResult<Nat>>:
-  CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_range_empty{v_1, v_3, v_5, v_7, v_9, U32.is_eq(v_5, 0)}}, False{}, v_1004251 => checker_body_arena_bound_range_empty(v_1, v_3, v_5, v_7, v_9, U32.is_eq(v_5, 0)), v_1004250 => CheckerFinished{v_1004250}}
+  CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_range_empty{v_1, v_3, v_5, v_7, v_9, U32.is_eq(v_5, 0)}}, False{}, v_1004254 => checker_body_arena_bound_range_empty(v_1, v_3, v_5, v_7, v_9, U32.is_eq(v_5, 0)), v_1004253 => CheckerFinished{v_1004253}}
 
 def checker_body_arena_bound_terms(v_1: ArenaStore, v_3: U32, v_5: U32) -> CheckerProgress<ArenaResult<Nat>>:
-  CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_range{v_1, v_3, v_5, False{}, 2147483648}}, False{}, v_1004253 => checker_body_arena_bound_range(v_1, v_3, v_5, False{}, 2147483648), v_1004252 => CheckerFinished{v_1004252}}
+  CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_range{v_1, v_3, v_5, False{}, 2147483648}}, False{}, v_1004256 => checker_body_arena_bound_range(v_1, v_3, v_5, False{}, 2147483648), v_1004255 => CheckerFinished{v_1004255}}
 
-def checker_match_3156(v_12: Nat, v_11: ArenaStore, v_1: U32, v_3: U32) -> CheckerProgress<ArenaResult<Nat>>:
+def checker_match_3155(v_12: Nat, v_11: ArenaStore, v_1: U32, v_3: U32) -> CheckerProgress<ArenaResult<Nat>>:
   match v_12:
     case 0n:
       CheckerFinished{{ArenaResult{v_11, 0n} : ArenaResult<Nat>}}
     case 1n+v_16:
-      v_1004254 = {v_16 : Nat}
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_terms{v_11, v_1, v_3}}, False{}, v_1004256 => checker_body_arena_bound_terms(v_11, v_1, v_3), v_1004255 => CheckerFinished{checker_pure_arena_bound_merge(v_1004254, v_1004255)}}
+      v_1004257 = {v_16 : Nat}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_terms{v_11, v_1, v_3}}, False{}, v_1004259 => checker_body_arena_bound_terms(v_11, v_1, v_3), v_1004258 => CheckerFinished{checker_pure_arena_bound_merge(v_1004257, v_1004258)}}
 
-def checker_match_3157(v_6: ArenaResult<Nat>, v_1: U32, v_3: U32) -> CheckerProgress<ArenaResult<Nat>>:
+def checker_match_3156(v_6: ArenaResult<Nat>, v_1: U32, v_3: U32) -> CheckerProgress<ArenaResult<Nat>>:
   match v_6:
     case ArenaResult{v_11, v_12}:
-      checker_match_3156(v_12, v_11, v_1, v_3)
+      checker_match_3155(v_12, v_11, v_1, v_3)
 
 def checker_body_arena_bound_range_then(v_1: U32, v_3: U32, v_6: ArenaResult<Nat>) -> CheckerProgress<ArenaResult<Nat>>:
-  checker_match_3157(v_6, v_1, v_3)
+  checker_match_3156(v_6, v_1, v_3)
 
 def checker_body_arena_bound_case(v_1: U32, v_4: ArenaResult<Nat>) -> CheckerProgress<ArenaResult<Nat>>:
   CheckerFinished{checker_pure_arena_bound_case(v_1, v_4)}
 
-def checker_match_3158(v_14: Nat, v_13: ArenaStore, v_1: U32, v_3: U32, v_5: U32) -> CheckerProgress<ArenaResult<Nat>>:
+def checker_match_3157(v_14: Nat, v_13: ArenaStore, v_1: U32, v_3: U32, v_5: U32) -> CheckerProgress<ArenaResult<Nat>>:
   match v_14:
     case 0n:
       CheckerFinished{{ArenaResult{v_13, 0n} : ArenaResult<Nat>}}
     case 1n+v_18:
-      v_1004257 = {v_1 : U32}
-      v_1004258 = {v_18 : Nat}
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_terms{v_13, v_3, v_5}}, False{}, v_1004260 => checker_body_arena_bound_terms(v_13, v_3, v_5), v_1004259 => CheckerFinished{checker_pure_arena_bound_binder(v_1004257, v_1004258, v_1004259)}}
+      v_1004260 = {v_1 : U32}
+      v_1004261 = {v_18 : Nat}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_terms{v_13, v_3, v_5}}, False{}, v_1004263 => checker_body_arena_bound_terms(v_13, v_3, v_5), v_1004262 => CheckerFinished{checker_pure_arena_bound_binder(v_1004260, v_1004261, v_1004262)}}
 
-def checker_match_3159(v_8: ArenaResult<Nat>, v_1: U32, v_3: U32, v_5: U32) -> CheckerProgress<ArenaResult<Nat>>:
+def checker_match_3158(v_8: ArenaResult<Nat>, v_1: U32, v_3: U32, v_5: U32) -> CheckerProgress<ArenaResult<Nat>>:
   match v_8:
     case ArenaResult{v_13, v_14}:
-      checker_match_3158(v_14, v_13, v_1, v_3, v_5)
+      checker_match_3157(v_14, v_13, v_1, v_3, v_5)
 
 def checker_body_arena_bound_local(v_1: U32, v_3: U32, v_5: U32, v_8: ArenaResult<Nat>) -> CheckerProgress<ArenaResult<Nat>>:
-  checker_match_3159(v_8, v_1, v_3, v_5)
+  checker_match_3158(v_8, v_1, v_3, v_5)
 
-def checker_match_3160(v_2: Arena.Node, v_1: ArenaStore) -> CheckerProgress<ArenaResult<Nat>>:
+def checker_match_3159(v_2: Arena.Node, v_1: ArenaStore) -> CheckerProgress<ArenaResult<Nat>>:
   match v_2:
     case Arena.TermVar{_, v_9, _}:
       CheckerFinished{{ArenaResult{v_1, Nat.add(v_9, 2n)} : ArenaResult<Nat>}}
@@ -27028,9 +27027,9 @@ def checker_match_3160(v_2: Arena.Node, v_1: ArenaStore) -> CheckerProgress<Aren
     case Arena.TermSub{_, v_29, v_30, _}:
       CheckerFinished{checker_pure_arena_bound_binder(v_30, 1n, checker_pure_arena_node_bound(v_1, v_29))}
     case Arena.TermLet{_, v_45, _, _, _, _, v_50, v_51, v_52, _}:
-      v_1004261 = {v_52 : U32}
-      v_1004262 = {U32.to_nat(v_45) : Nat}
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_terms{v_1, v_50, v_51}}, False{}, v_1004264 => checker_body_arena_bound_terms(v_1, v_50, v_51), v_1004263 => CheckerFinished{checker_pure_arena_bound_binder(v_1004261, v_1004262, v_1004263)}}
+      v_1004264 = {v_52 : U32}
+      v_1004265 = {U32.to_nat(v_45) : Nat}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_terms{v_1, v_50, v_51}}, False{}, v_1004267 => checker_body_arena_bound_terms(v_1, v_50, v_51), v_1004266 => CheckerFinished{checker_pure_arena_bound_binder(v_1004264, v_1004265, v_1004266)}}
     case Arena.TermAnn{v_59, v_60, _}:
       CheckerFinished{checker_pure_arena_bound_two(v_1, v_59, v_60)}
     case Arena.TermTemplate{v_65, _}:
@@ -27052,9 +27051,9 @@ def checker_match_3160(v_2: Arena.Node, v_1: ArenaStore) -> CheckerProgress<Aren
     case Arena.TermAdt{_, v_128, v_129, _, _, _}:
       checker_body_arena_bound_terms(v_1, v_128, v_129)
     case Arena.TermFill{v_138, v_139, v_140, _}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_range_then{v_139, v_140, checker_pure_arena_node_bound(v_1, v_138)}}, False{}, v_1004267 => checker_body_arena_bound_range_then(v_139, v_140, checker_pure_arena_node_bound(v_1, v_138)), v_1004266 => CheckerFinished{v_1004266}}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_range_then{v_139, v_140, checker_pure_arena_node_bound(v_1, v_138)}}, False{}, v_1004270 => checker_body_arena_bound_range_then(v_139, v_140, checker_pure_arena_node_bound(v_1, v_138)), v_1004269 => CheckerFinished{v_1004269}}
     case Arena.TermPlus{v_148, v_149, v_150, _}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_range_then{v_149, v_150, checker_pure_arena_node_bound(v_1, v_148)}}, False{}, v_1004269 => checker_body_arena_bound_range_then(v_149, v_150, checker_pure_arena_node_bound(v_1, v_148)), v_1004268 => CheckerFinished{v_1004268}}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_range_then{v_149, v_150, checker_pure_arena_node_bound(v_1, v_148)}}, False{}, v_1004272 => checker_body_arena_bound_range_then(v_149, v_150, checker_pure_arena_node_bound(v_1, v_148)), v_1004271 => CheckerFinished{v_1004271}}
     case Arena.TermCtr{_, v_159, v_160, _}:
       checker_body_arena_bound_terms(v_1, v_159, v_160)
     case Arena.TermString{_, _, _}:
@@ -27072,22 +27071,22 @@ def checker_match_3160(v_2: Arena.Node, v_1: ArenaStore) -> CheckerProgress<Aren
     case Arena.TermHole{_, _}:
       CheckerFinished{{ArenaResult{v_1, 1n} : ArenaResult<Nat>}}
     case Arena.BodyMatch{v_217, v_218, v_219, v_220, _}:
-      v_1004271 = {v_219 : U32}
-      v_1004272 = {v_220 : U32}
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_terms{v_1, v_217, v_218}}, False{}, v_1004275 => checker_body_arena_bound_terms(v_1, v_217, v_218), v_1004273 => checker_body_arena_bound_range_then(v_1004271, v_1004272, v_1004273)}
+      v_1004274 = {v_219 : U32}
+      v_1004275 = {v_220 : U32}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_terms{v_1, v_217, v_218}}, False{}, v_1004278 => checker_body_arena_bound_terms(v_1, v_217, v_218), v_1004276 => checker_body_arena_bound_range_then(v_1004274, v_1004275, v_1004276)}
     case Arena.BodyCase{v_228, v_229, v_230, _}:
-      v_1004276 = {v_230 : U32}
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_range{v_1, v_228, v_229, True{}, 2147483648}}, False{}, v_1004278 => checker_body_arena_bound_range(v_1, v_228, v_229, True{}, 2147483648), v_1004277 => CheckerFinished{checker_pure_arena_bound_case(v_1004276, v_1004277)}}
+      v_1004279 = {v_230 : U32}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_range{v_1, v_228, v_229, True{}, 2147483648}}, False{}, v_1004281 => checker_body_arena_bound_range(v_1, v_228, v_229, True{}, 2147483648), v_1004280 => CheckerFinished{checker_pure_arena_bound_case(v_1004279, v_1004280)}}
     case Arena.BodyLocal{v_241, v_242, _, v_244, v_245, v_246, _}:
-      v_1004279 = {v_246 : U32}
-      v_1004280 = {v_244 : U32}
-      v_1004281 = {v_245 : U32}
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_range{v_1, v_241, v_242, True{}, 2147483648}}, False{}, v_1004284 => checker_body_arena_bound_range(v_1, v_241, v_242, True{}, 2147483648), v_1004282 => checker_body_arena_bound_local(v_1004279, v_1004280, v_1004281, v_1004282)}
+      v_1004282 = {v_246 : U32}
+      v_1004283 = {v_244 : U32}
+      v_1004284 = {v_245 : U32}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_bound_range{v_1, v_241, v_242, True{}, 2147483648}}, False{}, v_1004287 => checker_body_arena_bound_range(v_1, v_241, v_242, True{}, 2147483648), v_1004285 => checker_body_arena_bound_local(v_1004282, v_1004283, v_1004284, v_1004285)}
     case Arena.BodyReply{v_252, _}:
       CheckerFinished{checker_pure_arena_node_bound(v_1, v_252)}
 
 def checker_body_arena_bound_node(v_1: ArenaStore, v_2: Arena.Node) -> CheckerProgress<ArenaResult<Nat>>:
-  checker_match_3160(v_2, v_1)
+  checker_match_3159(v_2, v_1)
 
 def checker_body_arena_words_start(v_0: IR.Words) -> CheckerProgress<U32>:
   CheckerFinished{checker_pure_arena_words_start(v_0)}
@@ -27107,74 +27106,74 @@ def checker_body_arena_words_view_nonempty(v_1: ArenaStore, +v_3: U32, v_5: U32,
 def checker_body_arena_words_view(v_1: ArenaStore, v_2: IR.Words) -> CheckerProgress<ArenaResult<IR.WordView>>:
   CheckerFinished{checker_pure_arena_words_view(v_1, v_2)}
 
-def checker_continuation_3161(v_1004285: ArenaStore, +v_15: U32, v_3: U32, +v_7: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
-  v_19 = v_1004285
+def checker_continuation_3160(v_1004288: ArenaStore, +v_15: U32, v_3: U32, +v_7: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
+  v_19 = v_1004288
   v_22 = checker_pure_arena_set_word(v_19, v_15, v_3)
   CheckerFinished{{ArenaResult{v_22, IR.Words{v_15, U32.add(v_7, 1)}} : ArenaResult<IR.Words>}}
 
-def checker_match_3162(v_1004287: ArenaResult<U32>, +v_7: U32, +v_5: U32, v_3: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
-  match v_1004287:
+def checker_match_3161(v_1004290: ArenaResult<U32>, +v_7: U32, +v_5: U32, v_3: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
+  match v_1004290:
     case ArenaResult{v_12, v_13}:
       +v_15 = U32.or(U32.add(v_13, v_7), 1073741824)
-      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_copy_word_range{v_12, v_5, checker_pure_arena_range_index(v_15, 1), U32.to_nat(v_7), 0}}, False{}, v_1004286 => checker_body_arena_copy_word_range(v_12, v_5, checker_pure_arena_range_index(v_15, 1), U32.to_nat(v_7), 0), v_1004285 => checker_continuation_3161(v_1004285, v_15, v_3, v_7)}
+      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_copy_word_range{v_12, v_5, checker_pure_arena_range_index(v_15, 1), U32.to_nat(v_7), 0}}, False{}, v_1004289 => checker_body_arena_copy_word_range(v_12, v_5, checker_pure_arena_range_index(v_15, 1), U32.to_nat(v_7), 0), v_1004288 => checker_continuation_3160(v_1004288, v_15, v_3, v_7)}
 
 def checker_body_arena_words_prepend_copy(v_1: ArenaStore, v_3: U32, +v_5: U32, +v_7: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
-  v_1004287 = {checker_pure_arena_reserve_words(v_1, U32.add(v_7, 1)) : ArenaResult<U32>}
-  checker_match_3162(v_1004287, v_7, v_5, v_3)
+  v_1004290 = {checker_pure_arena_reserve_words(v_1, U32.add(v_7, 1)) : ArenaResult<U32>}
+  checker_match_3161(v_1004290, v_7, v_5, v_3)
 
-def checker_match_3163(v_1004288: ArenaResult<U32>, +v_7: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
-  match v_1004288:
+def checker_match_3162(v_1004291: ArenaResult<U32>, +v_7: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
+  match v_1004291:
     case ArenaResult{v_14, v_15}:
       CheckerFinished{{ArenaResult{v_14, IR.Words{U32.or(v_15, 1073741824), U32.add(v_7, 1)}} : ArenaResult<IR.Words>}}
 
-def checker_match_3164(v_9: Bool, v_1: ArenaStore, v_3: U32, +v_7: U32, v_5: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
+def checker_match_3163(v_9: Bool, v_1: ArenaStore, v_3: U32, +v_7: U32, v_5: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
   match v_9:
     case True{}:
-      v_1004288 = {checker_pure_arena_put_word(v_1, v_3) : ArenaResult<U32>}
-      checker_match_3163(v_1004288, v_7)
+      v_1004291 = {checker_pure_arena_put_word(v_1, v_3) : ArenaResult<U32>}
+      checker_match_3162(v_1004291, v_7)
     case False{}:
       checker_body_arena_words_prepend_copy(v_1, v_3, v_5, v_7)
 
 def checker_body_arena_words_prepend_fast(v_1: ArenaStore, v_3: U32, v_5: U32, +v_7: U32, v_9: Bool) -> CheckerProgress<ArenaResult<IR.Words>>:
-  checker_match_3164(v_9, v_1, v_3, v_7, v_5)
+  checker_match_3163(v_9, v_1, v_3, v_7, v_5)
 
 def checker_body_arena_words_prepend_count(v_1: ArenaStore, v_3: U32, +v_5: U32, +v_7: U32, v_9: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
-  CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_words_prepend_fast{v_1, v_3, v_5, v_7, Bool.or(U32.is_eq(v_7, 0), Bool.and(Bool.and(checker_pure_arena_is_transient(v_5), checker_pure_arena_is_reverse(v_5)), U32.is_eq(U32.add(checker_pure_arena_tape_offset(v_5), 1), v_9)))}}, False{}, v_1004291 => checker_body_arena_words_prepend_fast(v_1, v_3, v_5, v_7, Bool.or(U32.is_eq(v_7, 0), Bool.and(Bool.and(checker_pure_arena_is_transient(v_5), checker_pure_arena_is_reverse(v_5)), U32.is_eq(U32.add(checker_pure_arena_tape_offset(v_5), 1), v_9)))), v_1004290 => CheckerFinished{v_1004290}}
+  CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_words_prepend_fast{v_1, v_3, v_5, v_7, Bool.or(U32.is_eq(v_7, 0), Bool.and(Bool.and(checker_pure_arena_is_transient(v_5), checker_pure_arena_is_reverse(v_5)), U32.is_eq(U32.add(checker_pure_arena_tape_offset(v_5), 1), v_9)))}}, False{}, v_1004294 => checker_body_arena_words_prepend_fast(v_1, v_3, v_5, v_7, Bool.or(U32.is_eq(v_7, 0), Bool.and(Bool.and(checker_pure_arena_is_transient(v_5), checker_pure_arena_is_reverse(v_5)), U32.is_eq(U32.add(checker_pure_arena_tape_offset(v_5), 1), v_9)))), v_1004293 => CheckerFinished{v_1004293}}
 
-def checker_match_3165(v_1004293: ArenaResult<U32>, v_3: U32, v_8: U32, v_9: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
-  match v_1004293:
+def checker_match_3164(v_1004296: ArenaResult<U32>, v_3: U32, v_8: U32, v_9: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
+  match v_1004296:
     case ArenaResult{v_13, v_14}:
       checker_body_arena_words_prepend_count(v_13, v_3, v_8, v_9, v_14)
 
-def checker_match_3166(v_4: IR.Words, v_1: ArenaStore, v_3: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
+def checker_match_3165(v_4: IR.Words, v_1: ArenaStore, v_3: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
   match v_4:
     case IR.Words{v_8, v_9}:
-      v_1004293 = {checker_pure_arena_word_cursor(v_1) : ArenaResult<U32>}
-      checker_match_3165(v_1004293, v_3, v_8, v_9)
+      v_1004296 = {checker_pure_arena_word_cursor(v_1) : ArenaResult<U32>}
+      checker_match_3164(v_1004296, v_3, v_8, v_9)
 
 def checker_body_arena_words_cons(v_1: ArenaStore, v_3: U32, v_4: IR.Words) -> CheckerProgress<ArenaResult<IR.Words>>:
-  checker_match_3166(v_4, v_1, v_3)
+  checker_match_3165(v_4, v_1, v_3)
 
-def checker_continuation_3167(v_1004295: ArenaStore, +v_19: U32, +v_12: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
-  v_26 = v_1004295
+def checker_continuation_3166(v_1004298: ArenaStore, +v_19: U32, +v_12: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
+  v_26 = v_1004298
   CheckerFinished{{ArenaResult{v_26, IR.Words{v_19, v_12}} : ArenaResult<IR.Words>}}
 
-def checker_continuation_3168(v_1004294: ArenaStore, +v_7: U32, +v_19: U32, +v_5: U32, +v_9: U32, +v_12: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
-  v_22 = v_1004294
-  CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_copy_word_range{v_22, v_7, checker_pure_arena_range_index(v_19, v_5), U32.to_nat(v_9), 0}}, False{}, v_1004296 => checker_body_arena_copy_word_range(v_22, v_7, checker_pure_arena_range_index(v_19, v_5), U32.to_nat(v_9), 0), v_1004295 => checker_continuation_3167(v_1004295, v_19, v_12)}
+def checker_continuation_3167(v_1004297: ArenaStore, +v_7: U32, +v_19: U32, +v_5: U32, +v_9: U32, +v_12: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
+  v_22 = v_1004297
+  CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_copy_word_range{v_22, v_7, checker_pure_arena_range_index(v_19, v_5), U32.to_nat(v_9), 0}}, False{}, v_1004299 => checker_body_arena_copy_word_range(v_22, v_7, checker_pure_arena_range_index(v_19, v_5), U32.to_nat(v_9), 0), v_1004298 => checker_continuation_3166(v_1004298, v_19, v_12)}
 
-def checker_match_3169(v_1004298: ArenaResult<U32>, +v_12: U32, +v_3: U32, +v_5: U32, +v_7: U32, +v_9: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
-  match v_1004298:
+def checker_match_3168(v_1004301: ArenaResult<U32>, +v_12: U32, +v_3: U32, +v_5: U32, +v_7: U32, +v_9: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
+  match v_1004301:
     case ArenaResult{v_16, v_17}:
       +v_19 = U32.or(U32.add(v_17, U32.sub(v_12, 1)), 1073741824)
-      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_copy_word_range{v_16, v_3, v_19, U32.to_nat(v_5), 0}}, False{}, v_1004297 => checker_body_arena_copy_word_range(v_16, v_3, v_19, U32.to_nat(v_5), 0), v_1004294 => checker_continuation_3168(v_1004294, v_7, v_19, v_5, v_9, v_12)}
+      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_copy_word_range{v_16, v_3, v_19, U32.to_nat(v_5), 0}}, False{}, v_1004300 => checker_body_arena_copy_word_range(v_16, v_3, v_19, U32.to_nat(v_5), 0), v_1004297 => checker_continuation_3167(v_1004297, v_7, v_19, v_5, v_9, v_12)}
 
 def checker_body_arena_words_append_copy(v_1: ArenaStore, +v_3: U32, +v_5: U32, +v_7: U32, +v_9: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
   +v_12 = U32.add(v_5, v_9)
-  v_1004298 = {checker_pure_arena_reserve_words(v_1, v_12) : ArenaResult<U32>}
-  checker_match_3169(v_1004298, v_12, v_3, v_5, v_7, v_9)
+  v_1004301 = {checker_pure_arena_reserve_words(v_1, v_12) : ArenaResult<U32>}
+  checker_match_3168(v_1004301, v_12, v_3, v_5, v_7, v_9)
 
-def checker_match_3170(v_11: Bool, v_13: Bool, v_15: Bool, v_1: ArenaStore, +v_7: U32, +v_9: U32, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
+def checker_match_3169(v_11: Bool, v_13: Bool, v_15: Bool, v_1: ArenaStore, +v_7: U32, +v_9: U32, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
   match v_11, v_13, v_15:
     case True{}, _, _:
       CheckerFinished{{ArenaResult{v_1, IR.Words{v_7, v_9}} : ArenaResult<IR.Words>}}
@@ -27186,15 +27185,15 @@ def checker_match_3170(v_11: Bool, v_13: Bool, v_15: Bool, v_1: ArenaStore, +v_7
       checker_body_arena_words_append_copy(v_1, v_3, v_5, v_7, v_9)
 
 def checker_body_arena_words_append_select(v_1: ArenaStore, +v_3: U32, +v_5: U32, +v_7: U32, +v_9: U32, v_11: Bool, v_13: Bool, v_15: Bool) -> CheckerProgress<ArenaResult<IR.Words>>:
-  checker_match_3170(v_11, v_13, v_15, v_1, v_7, v_9, v_3, v_5)
+  checker_match_3169(v_11, v_13, v_15, v_1, v_7, v_9, v_3, v_5)
 
-def checker_match_3171(v_2: IR.Words, v_3: IR.Words, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.Words>>:
+def checker_match_3170(v_2: IR.Words, v_3: IR.Words, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.Words>>:
   match v_2, v_3:
     case IR.Words{+v_9, +v_10}, IR.Words{+v_11, +v_12}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_words_append_select{v_1, v_9, v_10, v_11, v_12, U32.is_eq(v_10, 0), U32.is_eq(v_12, 0), U32.is_eq(checker_pure_arena_range_index(v_9, v_10), v_11)}}, False{}, v_1004301 => checker_body_arena_words_append_select(v_1, v_9, v_10, v_11, v_12, U32.is_eq(v_10, 0), U32.is_eq(v_12, 0), U32.is_eq(checker_pure_arena_range_index(v_9, v_10), v_11)), v_1004300 => CheckerFinished{v_1004300}}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_words_append_select{v_1, v_9, v_10, v_11, v_12, U32.is_eq(v_10, 0), U32.is_eq(v_12, 0), U32.is_eq(checker_pure_arena_range_index(v_9, v_10), v_11)}}, False{}, v_1004304 => checker_body_arena_words_append_select(v_1, v_9, v_10, v_11, v_12, U32.is_eq(v_10, 0), U32.is_eq(v_12, 0), U32.is_eq(checker_pure_arena_range_index(v_9, v_10), v_11)), v_1004303 => CheckerFinished{v_1004303}}
 
 def checker_body_arena_words_append(v_1: ArenaStore, v_2: IR.Words, v_3: IR.Words) -> CheckerProgress<ArenaResult<IR.Words>>:
-  checker_match_3171(v_2, v_3, v_1)
+  checker_match_3170(v_2, v_3, v_1)
 
 def checker_body_arena_words_reverse(v_1: ArenaStore, v_2: IR.Words) -> CheckerProgress<ArenaResult<IR.Words>>:
   CheckerFinished{checker_pure_arena_words_reverse(v_1, v_2)}
@@ -27217,80 +27216,80 @@ def checker_body_arena_names_view_nonempty(v_1: ArenaStore, +v_3: U32, v_5: U32,
 def checker_body_arena_names_view(v_1: ArenaStore, v_2: IR.Names) -> CheckerProgress<ArenaResult<IR.NameView>>:
   CheckerFinished{checker_pure_arena_names_view(v_1, v_2)}
 
-def checker_continuation_3172(v_1004302: ArenaStore, +v_15: U32, v_3: U32, +v_7: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
-  v_19 = v_1004302
+def checker_continuation_3171(v_1004305: ArenaStore, +v_15: U32, v_3: U32, +v_7: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
+  v_19 = v_1004305
   v_22 = checker_pure_arena_set_word(v_19, v_15, v_3)
   CheckerFinished{{ArenaResult{v_22, IR.Names{v_15, U32.add(v_7, 1)}} : ArenaResult<IR.Names>}}
 
-def checker_match_3173(v_1004304: ArenaResult<U32>, +v_7: U32, +v_5: U32, v_3: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
-  match v_1004304:
+def checker_match_3172(v_1004307: ArenaResult<U32>, +v_7: U32, +v_5: U32, v_3: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
+  match v_1004307:
     case ArenaResult{v_12, v_13}:
       +v_15 = U32.or(U32.add(v_13, v_7), 1073741824)
-      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_copy_word_range{v_12, v_5, checker_pure_arena_range_index(v_15, 1), U32.to_nat(v_7), 0}}, False{}, v_1004303 => checker_body_arena_copy_word_range(v_12, v_5, checker_pure_arena_range_index(v_15, 1), U32.to_nat(v_7), 0), v_1004302 => checker_continuation_3172(v_1004302, v_15, v_3, v_7)}
+      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_copy_word_range{v_12, v_5, checker_pure_arena_range_index(v_15, 1), U32.to_nat(v_7), 0}}, False{}, v_1004306 => checker_body_arena_copy_word_range(v_12, v_5, checker_pure_arena_range_index(v_15, 1), U32.to_nat(v_7), 0), v_1004305 => checker_continuation_3171(v_1004305, v_15, v_3, v_7)}
 
 def checker_body_arena_names_prepend_copy(v_1: ArenaStore, v_3: U32, +v_5: U32, +v_7: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
-  v_1004304 = {checker_pure_arena_reserve_words(v_1, U32.add(v_7, 1)) : ArenaResult<U32>}
-  checker_match_3173(v_1004304, v_7, v_5, v_3)
+  v_1004307 = {checker_pure_arena_reserve_words(v_1, U32.add(v_7, 1)) : ArenaResult<U32>}
+  checker_match_3172(v_1004307, v_7, v_5, v_3)
 
-def checker_match_3174(v_1004305: ArenaResult<U32>, +v_7: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
-  match v_1004305:
+def checker_match_3173(v_1004308: ArenaResult<U32>, +v_7: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
+  match v_1004308:
     case ArenaResult{v_14, v_15}:
       CheckerFinished{{ArenaResult{v_14, IR.Names{U32.or(v_15, 1073741824), U32.add(v_7, 1)}} : ArenaResult<IR.Names>}}
 
-def checker_match_3175(v_9: Bool, v_1: ArenaStore, v_3: U32, +v_7: U32, v_5: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
+def checker_match_3174(v_9: Bool, v_1: ArenaStore, v_3: U32, +v_7: U32, v_5: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
   match v_9:
     case True{}:
-      v_1004305 = {checker_pure_arena_put_word(v_1, v_3) : ArenaResult<U32>}
-      checker_match_3174(v_1004305, v_7)
+      v_1004308 = {checker_pure_arena_put_word(v_1, v_3) : ArenaResult<U32>}
+      checker_match_3173(v_1004308, v_7)
     case False{}:
       checker_body_arena_names_prepend_copy(v_1, v_3, v_5, v_7)
 
 def checker_body_arena_names_prepend_fast(v_1: ArenaStore, v_3: U32, v_5: U32, +v_7: U32, v_9: Bool) -> CheckerProgress<ArenaResult<IR.Names>>:
-  checker_match_3175(v_9, v_1, v_3, v_7, v_5)
+  checker_match_3174(v_9, v_1, v_3, v_7, v_5)
 
 def checker_body_arena_names_prepend_count(v_1: ArenaStore, v_3: U32, +v_5: U32, +v_7: U32, v_9: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
-  CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_names_prepend_fast{v_1, v_3, v_5, v_7, Bool.or(U32.is_eq(v_7, 0), Bool.and(Bool.and(checker_pure_arena_is_transient(v_5), checker_pure_arena_is_reverse(v_5)), U32.is_eq(U32.add(checker_pure_arena_tape_offset(v_5), 1), v_9)))}}, False{}, v_1004308 => checker_body_arena_names_prepend_fast(v_1, v_3, v_5, v_7, Bool.or(U32.is_eq(v_7, 0), Bool.and(Bool.and(checker_pure_arena_is_transient(v_5), checker_pure_arena_is_reverse(v_5)), U32.is_eq(U32.add(checker_pure_arena_tape_offset(v_5), 1), v_9)))), v_1004307 => CheckerFinished{v_1004307}}
+  CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_names_prepend_fast{v_1, v_3, v_5, v_7, Bool.or(U32.is_eq(v_7, 0), Bool.and(Bool.and(checker_pure_arena_is_transient(v_5), checker_pure_arena_is_reverse(v_5)), U32.is_eq(U32.add(checker_pure_arena_tape_offset(v_5), 1), v_9)))}}, False{}, v_1004311 => checker_body_arena_names_prepend_fast(v_1, v_3, v_5, v_7, Bool.or(U32.is_eq(v_7, 0), Bool.and(Bool.and(checker_pure_arena_is_transient(v_5), checker_pure_arena_is_reverse(v_5)), U32.is_eq(U32.add(checker_pure_arena_tape_offset(v_5), 1), v_9)))), v_1004310 => CheckerFinished{v_1004310}}
 
-def checker_match_3176(v_1004310: ArenaResult<U32>, v_14: U32, v_8: U32, v_9: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
-  match v_1004310:
+def checker_match_3175(v_1004313: ArenaResult<U32>, v_14: U32, v_8: U32, v_9: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
+  match v_1004313:
     case ArenaResult{v_18, v_19}:
       checker_body_arena_names_prepend_count(v_18, v_14, v_8, v_9, v_19)
 
-def checker_match_3177(v_1004311: ArenaResult<U32>, v_8: U32, v_9: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
-  match v_1004311:
+def checker_match_3176(v_1004314: ArenaResult<U32>, v_8: U32, v_9: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
+  match v_1004314:
     case ArenaResult{v_13, v_14}:
-      v_1004310 = {checker_pure_arena_word_cursor(v_13) : ArenaResult<U32>}
-      checker_match_3176(v_1004310, v_14, v_8, v_9)
+      v_1004313 = {checker_pure_arena_word_cursor(v_13) : ArenaResult<U32>}
+      checker_match_3175(v_1004313, v_14, v_8, v_9)
 
-def checker_match_3178(v_4: IR.Names, v_1: ArenaStore, v_3: String) -> CheckerProgress<ArenaResult<IR.Names>>:
+def checker_match_3177(v_4: IR.Names, v_1: ArenaStore, v_3: String) -> CheckerProgress<ArenaResult<IR.Names>>:
   match v_4:
     case IR.Names{v_8, v_9}:
-      v_1004311 = {checker_pure_arena_name(v_1, v_3) : ArenaResult<U32>}
-      checker_match_3177(v_1004311, v_8, v_9)
+      v_1004314 = {checker_pure_arena_name(v_1, v_3) : ArenaResult<U32>}
+      checker_match_3176(v_1004314, v_8, v_9)
 
 def checker_body_arena_names_cons(v_1: ArenaStore, v_3: String, v_4: IR.Names) -> CheckerProgress<ArenaResult<IR.Names>>:
-  checker_match_3178(v_4, v_1, v_3)
+  checker_match_3177(v_4, v_1, v_3)
 
-def checker_continuation_3179(v_1004313: ArenaStore, +v_19: U32, +v_12: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
-  v_26 = v_1004313
+def checker_continuation_3178(v_1004316: ArenaStore, +v_19: U32, +v_12: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
+  v_26 = v_1004316
   CheckerFinished{{ArenaResult{v_26, IR.Names{v_19, v_12}} : ArenaResult<IR.Names>}}
 
-def checker_continuation_3180(v_1004312: ArenaStore, +v_7: U32, +v_19: U32, +v_5: U32, +v_9: U32, +v_12: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
-  v_22 = v_1004312
-  CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_copy_word_range{v_22, v_7, checker_pure_arena_range_index(v_19, v_5), U32.to_nat(v_9), 0}}, False{}, v_1004314 => checker_body_arena_copy_word_range(v_22, v_7, checker_pure_arena_range_index(v_19, v_5), U32.to_nat(v_9), 0), v_1004313 => checker_continuation_3179(v_1004313, v_19, v_12)}
+def checker_continuation_3179(v_1004315: ArenaStore, +v_7: U32, +v_19: U32, +v_5: U32, +v_9: U32, +v_12: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
+  v_22 = v_1004315
+  CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_copy_word_range{v_22, v_7, checker_pure_arena_range_index(v_19, v_5), U32.to_nat(v_9), 0}}, False{}, v_1004317 => checker_body_arena_copy_word_range(v_22, v_7, checker_pure_arena_range_index(v_19, v_5), U32.to_nat(v_9), 0), v_1004316 => checker_continuation_3178(v_1004316, v_19, v_12)}
 
-def checker_match_3181(v_1004316: ArenaResult<U32>, +v_12: U32, +v_3: U32, +v_5: U32, +v_7: U32, +v_9: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
-  match v_1004316:
+def checker_match_3180(v_1004319: ArenaResult<U32>, +v_12: U32, +v_3: U32, +v_5: U32, +v_7: U32, +v_9: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
+  match v_1004319:
     case ArenaResult{v_16, v_17}:
       +v_19 = U32.or(U32.add(v_17, U32.sub(v_12, 1)), 1073741824)
-      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_copy_word_range{v_16, v_3, v_19, U32.to_nat(v_5), 0}}, False{}, v_1004315 => checker_body_arena_copy_word_range(v_16, v_3, v_19, U32.to_nat(v_5), 0), v_1004312 => checker_continuation_3180(v_1004312, v_7, v_19, v_5, v_9, v_12)}
+      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_copy_word_range{v_16, v_3, v_19, U32.to_nat(v_5), 0}}, False{}, v_1004318 => checker_body_arena_copy_word_range(v_16, v_3, v_19, U32.to_nat(v_5), 0), v_1004315 => checker_continuation_3179(v_1004315, v_7, v_19, v_5, v_9, v_12)}
 
 def checker_body_arena_names_append_copy(v_1: ArenaStore, +v_3: U32, +v_5: U32, +v_7: U32, +v_9: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
   +v_12 = U32.add(v_5, v_9)
-  v_1004316 = {checker_pure_arena_reserve_words(v_1, v_12) : ArenaResult<U32>}
-  checker_match_3181(v_1004316, v_12, v_3, v_5, v_7, v_9)
+  v_1004319 = {checker_pure_arena_reserve_words(v_1, v_12) : ArenaResult<U32>}
+  checker_match_3180(v_1004319, v_12, v_3, v_5, v_7, v_9)
 
-def checker_match_3182(v_11: Bool, v_13: Bool, v_15: Bool, v_1: ArenaStore, +v_7: U32, +v_9: U32, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
+def checker_match_3181(v_11: Bool, v_13: Bool, v_15: Bool, v_1: ArenaStore, +v_7: U32, +v_9: U32, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
   match v_11, v_13, v_15:
     case True{}, _, _:
       CheckerFinished{{ArenaResult{v_1, IR.Names{v_7, v_9}} : ArenaResult<IR.Names>}}
@@ -27302,15 +27301,15 @@ def checker_match_3182(v_11: Bool, v_13: Bool, v_15: Bool, v_1: ArenaStore, +v_7
       checker_body_arena_names_append_copy(v_1, v_3, v_5, v_7, v_9)
 
 def checker_body_arena_names_append_select(v_1: ArenaStore, +v_3: U32, +v_5: U32, +v_7: U32, +v_9: U32, v_11: Bool, v_13: Bool, v_15: Bool) -> CheckerProgress<ArenaResult<IR.Names>>:
-  checker_match_3182(v_11, v_13, v_15, v_1, v_7, v_9, v_3, v_5)
+  checker_match_3181(v_11, v_13, v_15, v_1, v_7, v_9, v_3, v_5)
 
-def checker_match_3183(v_2: IR.Names, v_3: IR.Names, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.Names>>:
+def checker_match_3182(v_2: IR.Names, v_3: IR.Names, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.Names>>:
   match v_2, v_3:
     case IR.Names{+v_9, +v_10}, IR.Names{+v_11, +v_12}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_names_append_select{v_1, v_9, v_10, v_11, v_12, U32.is_eq(v_10, 0), U32.is_eq(v_12, 0), U32.is_eq(checker_pure_arena_range_index(v_9, v_10), v_11)}}, False{}, v_1004319 => checker_body_arena_names_append_select(v_1, v_9, v_10, v_11, v_12, U32.is_eq(v_10, 0), U32.is_eq(v_12, 0), U32.is_eq(checker_pure_arena_range_index(v_9, v_10), v_11)), v_1004318 => CheckerFinished{v_1004318}}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_names_append_select{v_1, v_9, v_10, v_11, v_12, U32.is_eq(v_10, 0), U32.is_eq(v_12, 0), U32.is_eq(checker_pure_arena_range_index(v_9, v_10), v_11)}}, False{}, v_1004322 => checker_body_arena_names_append_select(v_1, v_9, v_10, v_11, v_12, U32.is_eq(v_10, 0), U32.is_eq(v_12, 0), U32.is_eq(checker_pure_arena_range_index(v_9, v_10), v_11)), v_1004321 => CheckerFinished{v_1004321}}
 
 def checker_body_arena_names_append(v_1: ArenaStore, v_2: IR.Names, v_3: IR.Names) -> CheckerProgress<ArenaResult<IR.Names>>:
-  checker_match_3183(v_2, v_3, v_1)
+  checker_match_3182(v_2, v_3, v_1)
 
 def checker_body_arena_names_reverse(v_1: ArenaStore, v_2: IR.Names) -> CheckerProgress<ArenaResult<IR.Names>>:
   CheckerFinished{checker_pure_arena_names_reverse(v_1, v_2)}
@@ -27333,375 +27332,375 @@ def checker_body_arena_quantities_view_nonempty(v_1: ArenaStore, +v_3: U32, v_5:
 def checker_body_arena_quantities_view(v_1: ArenaStore, v_2: IR.Quantities) -> CheckerProgress<ArenaResult<IR.QuantityView>>:
   CheckerFinished{checker_pure_arena_quantities_view(v_1, v_2)}
 
-def checker_continuation_3184(v_1004320: ArenaStore, +v_15: U32, v_3: U32, +v_7: U32) -> CheckerProgress<ArenaResult<IR.Quantities>>:
-  v_19 = v_1004320
+def checker_continuation_3183(v_1004323: ArenaStore, +v_15: U32, v_3: U32, +v_7: U32) -> CheckerProgress<ArenaResult<IR.Quantities>>:
+  v_19 = v_1004323
   v_22 = checker_pure_arena_set_word(v_19, v_15, v_3)
   CheckerFinished{{ArenaResult{v_22, IR.Quantities{v_15, U32.add(v_7, 1)}} : ArenaResult<IR.Quantities>}}
 
-def checker_match_3185(v_1004322: ArenaResult<U32>, +v_7: U32, +v_5: U32, v_3: U32) -> CheckerProgress<ArenaResult<IR.Quantities>>:
-  match v_1004322:
+def checker_match_3184(v_1004325: ArenaResult<U32>, +v_7: U32, +v_5: U32, v_3: U32) -> CheckerProgress<ArenaResult<IR.Quantities>>:
+  match v_1004325:
     case ArenaResult{v_12, v_13}:
       +v_15 = U32.or(U32.add(v_13, v_7), 1073741824)
-      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_copy_word_range{v_12, v_5, checker_pure_arena_range_index(v_15, 1), U32.to_nat(v_7), 0}}, False{}, v_1004321 => checker_body_arena_copy_word_range(v_12, v_5, checker_pure_arena_range_index(v_15, 1), U32.to_nat(v_7), 0), v_1004320 => checker_continuation_3184(v_1004320, v_15, v_3, v_7)}
+      CheckerDirect{Bool, CheckerRequestGroup_12{CheckerRequest_arena_copy_word_range{v_12, v_5, checker_pure_arena_range_index(v_15, 1), U32.to_nat(v_7), 0}}, False{}, v_1004324 => checker_body_arena_copy_word_range(v_12, v_5, checker_pure_arena_range_index(v_15, 1), U32.to_nat(v_7), 0), v_1004323 => checker_continuation_3183(v_1004323, v_15, v_3, v_7)}
 
 def checker_body_arena_quantities_prepend_copy(v_1: ArenaStore, v_3: U32, +v_5: U32, +v_7: U32) -> CheckerProgress<ArenaResult<IR.Quantities>>:
-  v_1004322 = {checker_pure_arena_reserve_words(v_1, U32.add(v_7, 1)) : ArenaResult<U32>}
-  checker_match_3185(v_1004322, v_7, v_5, v_3)
+  v_1004325 = {checker_pure_arena_reserve_words(v_1, U32.add(v_7, 1)) : ArenaResult<U32>}
+  checker_match_3184(v_1004325, v_7, v_5, v_3)
 
-def checker_match_3186(v_1004323: ArenaResult<U32>, +v_7: U32) -> CheckerProgress<ArenaResult<IR.Quantities>>:
-  match v_1004323:
+def checker_match_3185(v_1004326: ArenaResult<U32>, +v_7: U32) -> CheckerProgress<ArenaResult<IR.Quantities>>:
+  match v_1004326:
     case ArenaResult{v_14, v_15}:
       CheckerFinished{{ArenaResult{v_14, IR.Quantities{U32.or(v_15, 1073741824), U32.add(v_7, 1)}} : ArenaResult<IR.Quantities>}}
 
-def checker_match_3187(v_9: Bool, v_1: ArenaStore, v_3: U32, +v_7: U32, v_5: U32) -> CheckerProgress<ArenaResult<IR.Quantities>>:
+def checker_match_3186(v_9: Bool, v_1: ArenaStore, v_3: U32, +v_7: U32, v_5: U32) -> CheckerProgress<ArenaResult<IR.Quantities>>:
   match v_9:
     case True{}:
-      v_1004323 = {checker_pure_arena_put_word(v_1, v_3) : ArenaResult<U32>}
-      checker_match_3186(v_1004323, v_7)
+      v_1004326 = {checker_pure_arena_put_word(v_1, v_3) : ArenaResult<U32>}
+      checker_match_3185(v_1004326, v_7)
     case False{}:
       checker_body_arena_quantities_prepend_copy(v_1, v_3, v_5, v_7)
 
 def checker_body_arena_quantities_prepend_fast(v_1: ArenaStore, v_3: U32, v_5: U32, +v_7: U32, v_9: Bool) -> CheckerProgress<ArenaResult<IR.Quantities>>:
-  checker_match_3187(v_9, v_1, v_3, v_7, v_5)
+  checker_match_3186(v_9, v_1, v_3, v_7, v_5)
 
 def checker_body_arena_quantities_prepend_count(v_1: ArenaStore, v_3: U32, +v_5: U32, +v_7: U32, v_9: U32) -> CheckerProgress<ArenaResult<IR.Quantities>>:
-  CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_quantities_prepend_fast{v_1, v_3, v_5, v_7, Bool.or(U32.is_eq(v_7, 0), Bool.and(Bool.and(checker_pure_arena_is_transient(v_5), checker_pure_arena_is_reverse(v_5)), U32.is_eq(U32.add(checker_pure_arena_tape_offset(v_5), 1), v_9)))}}, False{}, v_1004326 => checker_body_arena_quantities_prepend_fast(v_1, v_3, v_5, v_7, Bool.or(U32.is_eq(v_7, 0), Bool.and(Bool.and(checker_pure_arena_is_transient(v_5), checker_pure_arena_is_reverse(v_5)), U32.is_eq(U32.add(checker_pure_arena_tape_offset(v_5), 1), v_9)))), v_1004325 => CheckerFinished{v_1004325}}
+  CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_quantities_prepend_fast{v_1, v_3, v_5, v_7, Bool.or(U32.is_eq(v_7, 0), Bool.and(Bool.and(checker_pure_arena_is_transient(v_5), checker_pure_arena_is_reverse(v_5)), U32.is_eq(U32.add(checker_pure_arena_tape_offset(v_5), 1), v_9)))}}, False{}, v_1004329 => checker_body_arena_quantities_prepend_fast(v_1, v_3, v_5, v_7, Bool.or(U32.is_eq(v_7, 0), Bool.and(Bool.and(checker_pure_arena_is_transient(v_5), checker_pure_arena_is_reverse(v_5)), U32.is_eq(U32.add(checker_pure_arena_tape_offset(v_5), 1), v_9)))), v_1004328 => CheckerFinished{v_1004328}}
 
-def checker_match_3188(v_1004329: ArenaResult<U32>, v_2: Ast.Quantity, v_7: U32, v_8: U32) -> CheckerProgress<ArenaResult<IR.Quantities>>:
-  match v_1004329:
+def checker_match_3187(v_1004332: ArenaResult<U32>, v_2: Ast.Quantity, v_7: U32, v_8: U32) -> CheckerProgress<ArenaResult<IR.Quantities>>:
+  match v_1004332:
     case ArenaResult{v_12, v_13}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_quantities_prepend_count{v_12, Arena.quantity_word(v_2), v_7, v_8, v_13}}, False{}, v_1004328 => checker_body_arena_quantities_prepend_count(v_12, Arena.quantity_word(v_2), v_7, v_8, v_13), v_1004327 => CheckerFinished{v_1004327}}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_quantities_prepend_count{v_12, Arena.quantity_word(v_2), v_7, v_8, v_13}}, False{}, v_1004331 => checker_body_arena_quantities_prepend_count(v_12, Arena.quantity_word(v_2), v_7, v_8, v_13), v_1004330 => CheckerFinished{v_1004330}}
 
-def checker_match_3189(v_3: IR.Quantities, v_1: ArenaStore, v_2: Ast.Quantity) -> CheckerProgress<ArenaResult<IR.Quantities>>:
+def checker_match_3188(v_3: IR.Quantities, v_1: ArenaStore, v_2: Ast.Quantity) -> CheckerProgress<ArenaResult<IR.Quantities>>:
   match v_3:
     case IR.Quantities{v_7, v_8}:
-      v_1004329 = {checker_pure_arena_word_cursor(v_1) : ArenaResult<U32>}
-      checker_match_3188(v_1004329, v_2, v_7, v_8)
+      v_1004332 = {checker_pure_arena_word_cursor(v_1) : ArenaResult<U32>}
+      checker_match_3187(v_1004332, v_2, v_7, v_8)
 
 def checker_body_arena_quantities_cons(v_1: ArenaStore, v_2: Ast.Quantity, v_3: IR.Quantities) -> CheckerProgress<ArenaResult<IR.Quantities>>:
-  checker_match_3189(v_3, v_1, v_2)
+  checker_match_3188(v_3, v_1, v_2)
 
-def checker_continuation_3190(v_1004330: ArenaResult<U32>, +v_5: U32, +v_9: U32, +v_3: U32, v_12: Nat) -> CheckerProgress<ArenaStore>:
-  ArenaResult{v_22, v_23} = v_1004330
-  CheckerPending{CheckerRequestGroup_13{CheckerRequest_arena_publish_terms_copy{checker_pure_arena_set_word(v_22, U32.add(v_5, v_9), v_23), v_3, v_5, v_12, U32.add(v_9, 1)}}, v_1004331 => CheckerFinished{v_1004331}}
+def checker_continuation_3189(v_1004333: ArenaResult<U32>, +v_5: U32, +v_9: U32, +v_3: U32, v_12: Nat) -> CheckerProgress<ArenaStore>:
+  ArenaResult{v_22, v_23} = v_1004333
+  CheckerPending{CheckerRequestGroup_13{CheckerRequest_arena_publish_terms_copy{checker_pure_arena_set_word(v_22, U32.add(v_5, v_9), v_23), v_3, v_5, v_12, U32.add(v_9, 1)}}, v_1004334 => CheckerFinished{v_1004334}}
 
-def checker_match_3191(v_1004332: ArenaResult<U32>, +v_5: U32, +v_9: U32, +v_3: U32, v_12: Nat) -> CheckerProgress<ArenaStore>:
-  match v_1004332:
+def checker_match_3190(v_1004335: ArenaResult<U32>, +v_5: U32, +v_9: U32, +v_3: U32, v_12: Nat) -> CheckerProgress<ArenaStore>:
+  match v_1004335:
     case ArenaResult{v_17, v_18}:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_17, v_18}}, v_1004330 => checker_continuation_3190(v_1004330, v_5, v_9, v_3, v_12)}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_17, v_18}}, v_1004333 => checker_continuation_3189(v_1004333, v_5, v_9, v_3, v_12)}
 
-def checker_match_3192(v_7: Nat, v_1: ArenaStore, +v_3: U32, +v_9: U32, +v_5: U32) -> CheckerProgress<ArenaStore>:
+def checker_match_3191(v_7: Nat, v_1: ArenaStore, +v_3: U32, +v_9: U32, +v_5: U32) -> CheckerProgress<ArenaStore>:
   match v_7:
     case 0n:
       CheckerFinished{v_1}
     case 1n+v_12:
-      v_1004332 = {checker_pure_arena_get_word(v_1, checker_pure_arena_range_index(v_3, v_9)) : ArenaResult<U32>}
-      checker_match_3191(v_1004332, v_5, v_9, v_3, v_12)
+      v_1004335 = {checker_pure_arena_get_word(v_1, checker_pure_arena_range_index(v_3, v_9)) : ArenaResult<U32>}
+      checker_match_3190(v_1004335, v_5, v_9, v_3, v_12)
 
 def checker_body_arena_publish_terms_copy(v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Nat, +v_9: U32) -> CheckerProgress<ArenaStore>:
-  checker_match_3192(v_7, v_1, v_3, v_9, v_5)
+  checker_match_3191(v_7, v_1, v_3, v_9, v_5)
 
-def checker_continuation_3193(v_1004333: ArenaStore, v_25: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
-  v_28 = v_1004333
+def checker_continuation_3192(v_1004336: ArenaStore, v_25: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
+  v_28 = v_1004336
   CheckerFinished{{ArenaResult{v_28, IR.Words{v_25, v_5}} : ArenaResult<IR.Words>}}
 
-def checker_match_3194(v_1004335: ArenaResult<U32>, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
-  match v_1004335:
+def checker_match_3193(v_1004338: ArenaResult<U32>, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
+  match v_1004338:
     case ArenaResult{v_24, +v_25}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_terms_copy{v_24, v_3, v_25, U32.to_nat(v_5), 0}}, False{}, v_1004334 => checker_body_arena_publish_terms_copy(v_24, v_3, v_25, U32.to_nat(v_5), 0), v_1004333 => checker_continuation_3193(v_1004333, v_25, v_5)}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_terms_copy{v_24, v_3, v_25, U32.to_nat(v_5), 0}}, False{}, v_1004337 => checker_body_arena_publish_terms_copy(v_24, v_3, v_25, U32.to_nat(v_5), 0), v_1004336 => checker_continuation_3192(v_1004336, v_25, v_5)}
 
-def checker_match_3195(v_7: Bool, v_9: Bool, v_1: ArenaStore, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
+def checker_match_3194(v_7: Bool, v_9: Bool, v_1: ArenaStore, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
   match v_7, v_9:
     case True{}, _:
       CheckerFinished{{ArenaResult{v_1, IR.Words{0, 0}} : ArenaResult<IR.Words>}}
     case _, True{}:
       CheckerFinished{{ArenaResult{v_1, IR.Words{v_3, v_5}} : ArenaResult<IR.Words>}}
     case _, _:
-      v_1004335 = {checker_pure_arena_reserve_source_words(v_1, v_5) : ArenaResult<U32>}
-      checker_match_3194(v_1004335, v_3, v_5)
+      v_1004338 = {checker_pure_arena_reserve_source_words(v_1, v_5) : ArenaResult<U32>}
+      checker_match_3193(v_1004338, v_3, v_5)
 
 def checker_body_arena_publish_terms_select(v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Bool, v_9: Bool) -> CheckerProgress<ArenaResult<IR.Words>>:
-  checker_match_3195(v_7, v_9, v_1, v_3, v_5)
+  checker_match_3194(v_7, v_9, v_1, v_3, v_5)
 
-def checker_match_3196(v_2: IR.Words, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.Words>>:
+def checker_match_3195(v_2: IR.Words, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.Words>>:
   match v_2:
     case IR.Words{+v_6, +v_7}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_terms_select{v_1, v_6, v_7, U32.is_eq(v_7, 0), Bool.and(Bool.not(checker_pure_arena_is_transient(v_6)), Bool.not(checker_pure_arena_is_reverse(v_6)))}}, False{}, v_1004337 => checker_body_arena_publish_terms_select(v_1, v_6, v_7, U32.is_eq(v_7, 0), Bool.and(Bool.not(checker_pure_arena_is_transient(v_6)), Bool.not(checker_pure_arena_is_reverse(v_6)))), v_1004336 => CheckerFinished{v_1004336}}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_terms_select{v_1, v_6, v_7, U32.is_eq(v_7, 0), Bool.and(Bool.not(checker_pure_arena_is_transient(v_6)), Bool.not(checker_pure_arena_is_reverse(v_6)))}}, False{}, v_1004340 => checker_body_arena_publish_terms_select(v_1, v_6, v_7, U32.is_eq(v_7, 0), Bool.and(Bool.not(checker_pure_arena_is_transient(v_6)), Bool.not(checker_pure_arena_is_reverse(v_6)))), v_1004339 => CheckerFinished{v_1004339}}
 
 def checker_body_arena_publish_terms(v_1: ArenaStore, v_2: IR.Words) -> CheckerProgress<ArenaResult<IR.Words>>:
-  checker_match_3196(v_2, v_1)
+  checker_match_3195(v_2, v_1)
 
-def checker_continuation_3197(v_1004338: ArenaResult<U32>, +v_5: U32, +v_9: U32, +v_3: U32, v_12: Nat) -> CheckerProgress<ArenaStore>:
-  ArenaResult{v_22, v_23} = v_1004338
-  CheckerPending{CheckerRequestGroup_13{CheckerRequest_arena_publish_patterns_copy{checker_pure_arena_set_word(v_22, U32.add(v_5, v_9), v_23), v_3, v_5, v_12, U32.add(v_9, 1)}}, v_1004339 => CheckerFinished{v_1004339}}
+def checker_continuation_3196(v_1004341: ArenaResult<U32>, +v_5: U32, +v_9: U32, +v_3: U32, v_12: Nat) -> CheckerProgress<ArenaStore>:
+  ArenaResult{v_22, v_23} = v_1004341
+  CheckerPending{CheckerRequestGroup_13{CheckerRequest_arena_publish_patterns_copy{checker_pure_arena_set_word(v_22, U32.add(v_5, v_9), v_23), v_3, v_5, v_12, U32.add(v_9, 1)}}, v_1004342 => CheckerFinished{v_1004342}}
 
-def checker_match_3198(v_1004340: ArenaResult<U32>, +v_5: U32, +v_9: U32, +v_3: U32, v_12: Nat) -> CheckerProgress<ArenaStore>:
-  match v_1004340:
+def checker_match_3197(v_1004343: ArenaResult<U32>, +v_5: U32, +v_9: U32, +v_3: U32, v_12: Nat) -> CheckerProgress<ArenaStore>:
+  match v_1004343:
     case ArenaResult{v_17, v_18}:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_publish_pattern{v_17, v_18}}, v_1004338 => checker_continuation_3197(v_1004338, v_5, v_9, v_3, v_12)}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_publish_pattern{v_17, v_18}}, v_1004341 => checker_continuation_3196(v_1004341, v_5, v_9, v_3, v_12)}
 
-def checker_match_3199(v_7: Nat, v_1: ArenaStore, +v_3: U32, +v_9: U32, +v_5: U32) -> CheckerProgress<ArenaStore>:
+def checker_match_3198(v_7: Nat, v_1: ArenaStore, +v_3: U32, +v_9: U32, +v_5: U32) -> CheckerProgress<ArenaStore>:
   match v_7:
     case 0n:
       CheckerFinished{v_1}
     case 1n+v_12:
-      v_1004340 = {checker_pure_arena_get_word(v_1, checker_pure_arena_range_index(v_3, v_9)) : ArenaResult<U32>}
-      checker_match_3198(v_1004340, v_5, v_9, v_3, v_12)
+      v_1004343 = {checker_pure_arena_get_word(v_1, checker_pure_arena_range_index(v_3, v_9)) : ArenaResult<U32>}
+      checker_match_3197(v_1004343, v_5, v_9, v_3, v_12)
 
 def checker_body_arena_publish_patterns_copy(v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Nat, +v_9: U32) -> CheckerProgress<ArenaStore>:
-  checker_match_3199(v_7, v_1, v_3, v_9, v_5)
+  checker_match_3198(v_7, v_1, v_3, v_9, v_5)
 
-def checker_continuation_3200(v_1004341: ArenaStore, v_25: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
-  v_28 = v_1004341
+def checker_continuation_3199(v_1004344: ArenaStore, v_25: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
+  v_28 = v_1004344
   CheckerFinished{{ArenaResult{v_28, IR.Words{v_25, v_5}} : ArenaResult<IR.Words>}}
 
-def checker_match_3201(v_1004343: ArenaResult<U32>, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
-  match v_1004343:
+def checker_match_3200(v_1004346: ArenaResult<U32>, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
+  match v_1004346:
     case ArenaResult{v_24, +v_25}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_patterns_copy{v_24, v_3, v_25, U32.to_nat(v_5), 0}}, False{}, v_1004342 => checker_body_arena_publish_patterns_copy(v_24, v_3, v_25, U32.to_nat(v_5), 0), v_1004341 => checker_continuation_3200(v_1004341, v_25, v_5)}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_patterns_copy{v_24, v_3, v_25, U32.to_nat(v_5), 0}}, False{}, v_1004345 => checker_body_arena_publish_patterns_copy(v_24, v_3, v_25, U32.to_nat(v_5), 0), v_1004344 => checker_continuation_3199(v_1004344, v_25, v_5)}
 
-def checker_match_3202(v_7: Bool, v_9: Bool, v_1: ArenaStore, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
+def checker_match_3201(v_7: Bool, v_9: Bool, v_1: ArenaStore, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
   match v_7, v_9:
     case True{}, _:
       CheckerFinished{{ArenaResult{v_1, IR.Words{0, 0}} : ArenaResult<IR.Words>}}
     case _, True{}:
       CheckerFinished{{ArenaResult{v_1, IR.Words{v_3, v_5}} : ArenaResult<IR.Words>}}
     case _, _:
-      v_1004343 = {checker_pure_arena_reserve_source_words(v_1, v_5) : ArenaResult<U32>}
-      checker_match_3201(v_1004343, v_3, v_5)
+      v_1004346 = {checker_pure_arena_reserve_source_words(v_1, v_5) : ArenaResult<U32>}
+      checker_match_3200(v_1004346, v_3, v_5)
 
 def checker_body_arena_publish_patterns_select(v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Bool, v_9: Bool) -> CheckerProgress<ArenaResult<IR.Words>>:
-  checker_match_3202(v_7, v_9, v_1, v_3, v_5)
+  checker_match_3201(v_7, v_9, v_1, v_3, v_5)
 
-def checker_match_3203(v_2: IR.Words, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.Words>>:
+def checker_match_3202(v_2: IR.Words, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.Words>>:
   match v_2:
     case IR.Words{+v_6, +v_7}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_patterns_select{v_1, v_6, v_7, U32.is_eq(v_7, 0), Bool.and(Bool.not(checker_pure_arena_is_transient(v_6)), Bool.not(checker_pure_arena_is_reverse(v_6)))}}, False{}, v_1004345 => checker_body_arena_publish_patterns_select(v_1, v_6, v_7, U32.is_eq(v_7, 0), Bool.and(Bool.not(checker_pure_arena_is_transient(v_6)), Bool.not(checker_pure_arena_is_reverse(v_6)))), v_1004344 => CheckerFinished{v_1004344}}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_patterns_select{v_1, v_6, v_7, U32.is_eq(v_7, 0), Bool.and(Bool.not(checker_pure_arena_is_transient(v_6)), Bool.not(checker_pure_arena_is_reverse(v_6)))}}, False{}, v_1004348 => checker_body_arena_publish_patterns_select(v_1, v_6, v_7, U32.is_eq(v_7, 0), Bool.and(Bool.not(checker_pure_arena_is_transient(v_6)), Bool.not(checker_pure_arena_is_reverse(v_6)))), v_1004347 => CheckerFinished{v_1004347}}
 
 def checker_body_arena_publish_patterns(v_1: ArenaStore, v_2: IR.Words) -> CheckerProgress<ArenaResult<IR.Words>>:
-  checker_match_3203(v_2, v_1)
+  checker_match_3202(v_2, v_1)
 
-def checker_continuation_3204(v_1004346: ArenaResult<U32>, +v_5: U32, +v_9: U32, +v_3: U32, v_12: Nat) -> CheckerProgress<ArenaStore>:
-  ArenaResult{v_22, v_23} = v_1004346
-  CheckerPending{CheckerRequestGroup_13{CheckerRequest_arena_publish_binders_copy{checker_pure_arena_set_word(v_22, U32.add(v_5, v_9), v_23), v_3, v_5, v_12, U32.add(v_9, 1)}}, v_1004347 => CheckerFinished{v_1004347}}
+def checker_continuation_3203(v_1004349: ArenaResult<U32>, +v_5: U32, +v_9: U32, +v_3: U32, v_12: Nat) -> CheckerProgress<ArenaStore>:
+  ArenaResult{v_22, v_23} = v_1004349
+  CheckerPending{CheckerRequestGroup_13{CheckerRequest_arena_publish_binders_copy{checker_pure_arena_set_word(v_22, U32.add(v_5, v_9), v_23), v_3, v_5, v_12, U32.add(v_9, 1)}}, v_1004350 => CheckerFinished{v_1004350}}
 
-def checker_match_3205(v_1004348: ArenaResult<U32>, +v_5: U32, +v_9: U32, +v_3: U32, v_12: Nat) -> CheckerProgress<ArenaStore>:
-  match v_1004348:
+def checker_match_3204(v_1004351: ArenaResult<U32>, +v_5: U32, +v_9: U32, +v_3: U32, v_12: Nat) -> CheckerProgress<ArenaStore>:
+  match v_1004351:
     case ArenaResult{v_17, v_18}:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_publish_binder{v_17, v_18}}, v_1004346 => checker_continuation_3204(v_1004346, v_5, v_9, v_3, v_12)}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_publish_binder{v_17, v_18}}, v_1004349 => checker_continuation_3203(v_1004349, v_5, v_9, v_3, v_12)}
 
-def checker_match_3206(v_7: Nat, v_1: ArenaStore, +v_3: U32, +v_9: U32, +v_5: U32) -> CheckerProgress<ArenaStore>:
+def checker_match_3205(v_7: Nat, v_1: ArenaStore, +v_3: U32, +v_9: U32, +v_5: U32) -> CheckerProgress<ArenaStore>:
   match v_7:
     case 0n:
       CheckerFinished{v_1}
     case 1n+v_12:
-      v_1004348 = {checker_pure_arena_get_word(v_1, checker_pure_arena_range_index(v_3, v_9)) : ArenaResult<U32>}
-      checker_match_3205(v_1004348, v_5, v_9, v_3, v_12)
+      v_1004351 = {checker_pure_arena_get_word(v_1, checker_pure_arena_range_index(v_3, v_9)) : ArenaResult<U32>}
+      checker_match_3204(v_1004351, v_5, v_9, v_3, v_12)
 
 def checker_body_arena_publish_binders_copy(v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Nat, +v_9: U32) -> CheckerProgress<ArenaStore>:
-  checker_match_3206(v_7, v_1, v_3, v_9, v_5)
+  checker_match_3205(v_7, v_1, v_3, v_9, v_5)
 
-def checker_continuation_3207(v_1004349: ArenaStore, v_25: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
-  v_28 = v_1004349
+def checker_continuation_3206(v_1004352: ArenaStore, v_25: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
+  v_28 = v_1004352
   CheckerFinished{{ArenaResult{v_28, IR.Words{v_25, v_5}} : ArenaResult<IR.Words>}}
 
-def checker_match_3208(v_1004351: ArenaResult<U32>, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
-  match v_1004351:
+def checker_match_3207(v_1004354: ArenaResult<U32>, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
+  match v_1004354:
     case ArenaResult{v_24, +v_25}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_binders_copy{v_24, v_3, v_25, U32.to_nat(v_5), 0}}, False{}, v_1004350 => checker_body_arena_publish_binders_copy(v_24, v_3, v_25, U32.to_nat(v_5), 0), v_1004349 => checker_continuation_3207(v_1004349, v_25, v_5)}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_binders_copy{v_24, v_3, v_25, U32.to_nat(v_5), 0}}, False{}, v_1004353 => checker_body_arena_publish_binders_copy(v_24, v_3, v_25, U32.to_nat(v_5), 0), v_1004352 => checker_continuation_3206(v_1004352, v_25, v_5)}
 
-def checker_match_3209(v_7: Bool, v_9: Bool, v_1: ArenaStore, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
+def checker_match_3208(v_7: Bool, v_9: Bool, v_1: ArenaStore, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Words>>:
   match v_7, v_9:
     case True{}, _:
       CheckerFinished{{ArenaResult{v_1, IR.Words{0, 0}} : ArenaResult<IR.Words>}}
     case _, True{}:
       CheckerFinished{{ArenaResult{v_1, IR.Words{v_3, v_5}} : ArenaResult<IR.Words>}}
     case _, _:
-      v_1004351 = {checker_pure_arena_reserve_source_words(v_1, v_5) : ArenaResult<U32>}
-      checker_match_3208(v_1004351, v_3, v_5)
+      v_1004354 = {checker_pure_arena_reserve_source_words(v_1, v_5) : ArenaResult<U32>}
+      checker_match_3207(v_1004354, v_3, v_5)
 
 def checker_body_arena_publish_binders_select(v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Bool, v_9: Bool) -> CheckerProgress<ArenaResult<IR.Words>>:
-  checker_match_3209(v_7, v_9, v_1, v_3, v_5)
+  checker_match_3208(v_7, v_9, v_1, v_3, v_5)
 
-def checker_match_3210(v_2: IR.Words, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.Words>>:
+def checker_match_3209(v_2: IR.Words, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.Words>>:
   match v_2:
     case IR.Words{+v_6, +v_7}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_binders_select{v_1, v_6, v_7, U32.is_eq(v_7, 0), Bool.and(Bool.not(checker_pure_arena_is_transient(v_6)), Bool.not(checker_pure_arena_is_reverse(v_6)))}}, False{}, v_1004353 => checker_body_arena_publish_binders_select(v_1, v_6, v_7, U32.is_eq(v_7, 0), Bool.and(Bool.not(checker_pure_arena_is_transient(v_6)), Bool.not(checker_pure_arena_is_reverse(v_6)))), v_1004352 => CheckerFinished{v_1004352}}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_binders_select{v_1, v_6, v_7, U32.is_eq(v_7, 0), Bool.and(Bool.not(checker_pure_arena_is_transient(v_6)), Bool.not(checker_pure_arena_is_reverse(v_6)))}}, False{}, v_1004356 => checker_body_arena_publish_binders_select(v_1, v_6, v_7, U32.is_eq(v_7, 0), Bool.and(Bool.not(checker_pure_arena_is_transient(v_6)), Bool.not(checker_pure_arena_is_reverse(v_6)))), v_1004355 => CheckerFinished{v_1004355}}
 
 def checker_body_arena_publish_binders(v_1: ArenaStore, v_2: IR.Words) -> CheckerProgress<ArenaResult<IR.Words>>:
-  checker_match_3210(v_2, v_1)
+  checker_match_3209(v_2, v_1)
 
-def checker_match_3211(v_1004355: ArenaResult<U32>, +v_5: U32, +v_9: U32, +v_3: U32, v_12: Nat) -> CheckerProgress<ArenaStore>:
-  match v_1004355:
+def checker_match_3210(v_1004358: ArenaResult<U32>, +v_5: U32, +v_9: U32, +v_3: U32, v_12: Nat) -> CheckerProgress<ArenaStore>:
+  match v_1004358:
     case ArenaResult{v_17, v_18}:
-      CheckerPending{CheckerRequestGroup_13{CheckerRequest_arena_publish_names_copy{checker_pure_arena_set_word(v_17, U32.add(v_5, v_9), v_18), v_3, v_5, v_12, U32.add(v_9, 1)}}, v_1004354 => CheckerFinished{v_1004354}}
+      CheckerPending{CheckerRequestGroup_13{CheckerRequest_arena_publish_names_copy{checker_pure_arena_set_word(v_17, U32.add(v_5, v_9), v_18), v_3, v_5, v_12, U32.add(v_9, 1)}}, v_1004357 => CheckerFinished{v_1004357}}
 
-def checker_match_3212(v_7: Nat, v_1: ArenaStore, +v_3: U32, +v_9: U32, +v_5: U32) -> CheckerProgress<ArenaStore>:
+def checker_match_3211(v_7: Nat, v_1: ArenaStore, +v_3: U32, +v_9: U32, +v_5: U32) -> CheckerProgress<ArenaStore>:
   match v_7:
     case 0n:
       CheckerFinished{v_1}
     case 1n+v_12:
-      v_1004355 = {checker_pure_arena_get_word(v_1, checker_pure_arena_range_index(v_3, v_9)) : ArenaResult<U32>}
-      checker_match_3211(v_1004355, v_5, v_9, v_3, v_12)
+      v_1004358 = {checker_pure_arena_get_word(v_1, checker_pure_arena_range_index(v_3, v_9)) : ArenaResult<U32>}
+      checker_match_3210(v_1004358, v_5, v_9, v_3, v_12)
 
 def checker_body_arena_publish_names_copy(v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Nat, +v_9: U32) -> CheckerProgress<ArenaStore>:
-  checker_match_3212(v_7, v_1, v_3, v_9, v_5)
+  checker_match_3211(v_7, v_1, v_3, v_9, v_5)
 
-def checker_continuation_3213(v_1004356: ArenaStore, v_25: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
-  v_28 = v_1004356
+def checker_continuation_3212(v_1004359: ArenaStore, v_25: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
+  v_28 = v_1004359
   CheckerFinished{{ArenaResult{v_28, IR.Names{v_25, v_5}} : ArenaResult<IR.Names>}}
 
-def checker_match_3214(v_1004358: ArenaResult<U32>, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
-  match v_1004358:
+def checker_match_3213(v_1004361: ArenaResult<U32>, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
+  match v_1004361:
     case ArenaResult{v_24, +v_25}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_names_copy{v_24, v_3, v_25, U32.to_nat(v_5), 0}}, False{}, v_1004357 => checker_body_arena_publish_names_copy(v_24, v_3, v_25, U32.to_nat(v_5), 0), v_1004356 => checker_continuation_3213(v_1004356, v_25, v_5)}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_names_copy{v_24, v_3, v_25, U32.to_nat(v_5), 0}}, False{}, v_1004360 => checker_body_arena_publish_names_copy(v_24, v_3, v_25, U32.to_nat(v_5), 0), v_1004359 => checker_continuation_3212(v_1004359, v_25, v_5)}
 
-def checker_match_3215(v_7: Bool, v_9: Bool, v_1: ArenaStore, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
+def checker_match_3214(v_7: Bool, v_9: Bool, v_1: ArenaStore, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Names>>:
   match v_7, v_9:
     case True{}, _:
       CheckerFinished{{ArenaResult{v_1, IR.Names{0, 0}} : ArenaResult<IR.Names>}}
     case _, True{}:
       CheckerFinished{{ArenaResult{v_1, IR.Names{v_3, v_5}} : ArenaResult<IR.Names>}}
     case _, _:
-      v_1004358 = {checker_pure_arena_reserve_source_words(v_1, v_5) : ArenaResult<U32>}
-      checker_match_3214(v_1004358, v_3, v_5)
+      v_1004361 = {checker_pure_arena_reserve_source_words(v_1, v_5) : ArenaResult<U32>}
+      checker_match_3213(v_1004361, v_3, v_5)
 
 def checker_body_arena_publish_names_select(v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Bool, v_9: Bool) -> CheckerProgress<ArenaResult<IR.Names>>:
-  checker_match_3215(v_7, v_9, v_1, v_3, v_5)
+  checker_match_3214(v_7, v_9, v_1, v_3, v_5)
 
-def checker_match_3216(v_2: IR.Names, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.Names>>:
+def checker_match_3215(v_2: IR.Names, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.Names>>:
   match v_2:
     case IR.Names{+v_6, +v_7}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_names_select{v_1, v_6, v_7, U32.is_eq(v_7, 0), Bool.and(Bool.not(checker_pure_arena_is_transient(v_6)), Bool.not(checker_pure_arena_is_reverse(v_6)))}}, False{}, v_1004360 => checker_body_arena_publish_names_select(v_1, v_6, v_7, U32.is_eq(v_7, 0), Bool.and(Bool.not(checker_pure_arena_is_transient(v_6)), Bool.not(checker_pure_arena_is_reverse(v_6)))), v_1004359 => CheckerFinished{v_1004359}}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_names_select{v_1, v_6, v_7, U32.is_eq(v_7, 0), Bool.and(Bool.not(checker_pure_arena_is_transient(v_6)), Bool.not(checker_pure_arena_is_reverse(v_6)))}}, False{}, v_1004363 => checker_body_arena_publish_names_select(v_1, v_6, v_7, U32.is_eq(v_7, 0), Bool.and(Bool.not(checker_pure_arena_is_transient(v_6)), Bool.not(checker_pure_arena_is_reverse(v_6)))), v_1004362 => CheckerFinished{v_1004362}}
 
 def checker_body_arena_publish_names(v_1: ArenaStore, v_2: IR.Names) -> CheckerProgress<ArenaResult<IR.Names>>:
-  checker_match_3216(v_2, v_1)
+  checker_match_3215(v_2, v_1)
 
-def checker_match_3217(v_1004362: ArenaResult<U32>, +v_5: U32, +v_9: U32, +v_3: U32, v_12: Nat) -> CheckerProgress<ArenaStore>:
-  match v_1004362:
+def checker_match_3216(v_1004365: ArenaResult<U32>, +v_5: U32, +v_9: U32, +v_3: U32, v_12: Nat) -> CheckerProgress<ArenaStore>:
+  match v_1004365:
     case ArenaResult{v_17, v_18}:
-      CheckerPending{CheckerRequestGroup_13{CheckerRequest_arena_publish_quantities_copy{checker_pure_arena_set_word(v_17, U32.add(v_5, v_9), v_18), v_3, v_5, v_12, U32.add(v_9, 1)}}, v_1004361 => CheckerFinished{v_1004361}}
+      CheckerPending{CheckerRequestGroup_13{CheckerRequest_arena_publish_quantities_copy{checker_pure_arena_set_word(v_17, U32.add(v_5, v_9), v_18), v_3, v_5, v_12, U32.add(v_9, 1)}}, v_1004364 => CheckerFinished{v_1004364}}
 
-def checker_match_3218(v_7: Nat, v_1: ArenaStore, +v_3: U32, +v_9: U32, +v_5: U32) -> CheckerProgress<ArenaStore>:
+def checker_match_3217(v_7: Nat, v_1: ArenaStore, +v_3: U32, +v_9: U32, +v_5: U32) -> CheckerProgress<ArenaStore>:
   match v_7:
     case 0n:
       CheckerFinished{v_1}
     case 1n+v_12:
-      v_1004362 = {checker_pure_arena_get_word(v_1, checker_pure_arena_range_index(v_3, v_9)) : ArenaResult<U32>}
-      checker_match_3217(v_1004362, v_5, v_9, v_3, v_12)
+      v_1004365 = {checker_pure_arena_get_word(v_1, checker_pure_arena_range_index(v_3, v_9)) : ArenaResult<U32>}
+      checker_match_3216(v_1004365, v_5, v_9, v_3, v_12)
 
 def checker_body_arena_publish_quantities_copy(v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Nat, +v_9: U32) -> CheckerProgress<ArenaStore>:
-  checker_match_3218(v_7, v_1, v_3, v_9, v_5)
+  checker_match_3217(v_7, v_1, v_3, v_9, v_5)
 
-def checker_continuation_3219(v_1004363: ArenaStore, v_25: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Quantities>>:
-  v_28 = v_1004363
+def checker_continuation_3218(v_1004366: ArenaStore, v_25: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Quantities>>:
+  v_28 = v_1004366
   CheckerFinished{{ArenaResult{v_28, IR.Quantities{v_25, v_5}} : ArenaResult<IR.Quantities>}}
 
-def checker_match_3220(v_1004365: ArenaResult<U32>, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Quantities>>:
-  match v_1004365:
+def checker_match_3219(v_1004368: ArenaResult<U32>, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Quantities>>:
+  match v_1004368:
     case ArenaResult{v_24, +v_25}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_quantities_copy{v_24, v_3, v_25, U32.to_nat(v_5), 0}}, False{}, v_1004364 => checker_body_arena_publish_quantities_copy(v_24, v_3, v_25, U32.to_nat(v_5), 0), v_1004363 => checker_continuation_3219(v_1004363, v_25, v_5)}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_quantities_copy{v_24, v_3, v_25, U32.to_nat(v_5), 0}}, False{}, v_1004367 => checker_body_arena_publish_quantities_copy(v_24, v_3, v_25, U32.to_nat(v_5), 0), v_1004366 => checker_continuation_3218(v_1004366, v_25, v_5)}
 
-def checker_match_3221(v_7: Bool, v_9: Bool, v_1: ArenaStore, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Quantities>>:
+def checker_match_3220(v_7: Bool, v_9: Bool, v_1: ArenaStore, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Quantities>>:
   match v_7, v_9:
     case True{}, _:
       CheckerFinished{{ArenaResult{v_1, IR.Quantities{0, 0}} : ArenaResult<IR.Quantities>}}
     case _, True{}:
       CheckerFinished{{ArenaResult{v_1, IR.Quantities{v_3, v_5}} : ArenaResult<IR.Quantities>}}
     case _, _:
-      v_1004365 = {checker_pure_arena_reserve_source_words(v_1, v_5) : ArenaResult<U32>}
-      checker_match_3220(v_1004365, v_3, v_5)
+      v_1004368 = {checker_pure_arena_reserve_source_words(v_1, v_5) : ArenaResult<U32>}
+      checker_match_3219(v_1004368, v_3, v_5)
 
 def checker_body_arena_publish_quantities_select(v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Bool, v_9: Bool) -> CheckerProgress<ArenaResult<IR.Quantities>>:
-  checker_match_3221(v_7, v_9, v_1, v_3, v_5)
+  checker_match_3220(v_7, v_9, v_1, v_3, v_5)
 
-def checker_match_3222(v_2: IR.Quantities, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.Quantities>>:
+def checker_match_3221(v_2: IR.Quantities, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.Quantities>>:
   match v_2:
     case IR.Quantities{+v_6, +v_7}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_quantities_select{v_1, v_6, v_7, U32.is_eq(v_7, 0), Bool.and(Bool.not(checker_pure_arena_is_transient(v_6)), Bool.not(checker_pure_arena_is_reverse(v_6)))}}, False{}, v_1004367 => checker_body_arena_publish_quantities_select(v_1, v_6, v_7, U32.is_eq(v_7, 0), Bool.and(Bool.not(checker_pure_arena_is_transient(v_6)), Bool.not(checker_pure_arena_is_reverse(v_6)))), v_1004366 => CheckerFinished{v_1004366}}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_quantities_select{v_1, v_6, v_7, U32.is_eq(v_7, 0), Bool.and(Bool.not(checker_pure_arena_is_transient(v_6)), Bool.not(checker_pure_arena_is_reverse(v_6)))}}, False{}, v_1004370 => checker_body_arena_publish_quantities_select(v_1, v_6, v_7, U32.is_eq(v_7, 0), Bool.and(Bool.not(checker_pure_arena_is_transient(v_6)), Bool.not(checker_pure_arena_is_reverse(v_6)))), v_1004369 => CheckerFinished{v_1004369}}
 
 def checker_body_arena_publish_quantities(v_1: ArenaStore, v_2: IR.Quantities) -> CheckerProgress<ArenaResult<IR.Quantities>>:
-  checker_match_3222(v_2, v_1)
+  checker_match_3221(v_2, v_1)
 
-def checker_match_3223(v_1004369: ArenaResult<Nat>, +v_5: U32, +v_9: U32, +v_3: U32, v_12: Nat) -> CheckerProgress<ArenaStore>:
-  match v_1004369:
+def checker_match_3222(v_1004372: ArenaResult<Nat>, +v_5: U32, +v_9: U32, +v_3: U32, v_12: Nat) -> CheckerProgress<ArenaStore>:
+  match v_1004372:
     case ArenaResult{v_17, v_18}:
-      CheckerPending{CheckerRequestGroup_13{CheckerRequest_arena_publish_naturals_copy{checker_pure_arena_set_natural(v_17, U32.add(v_5, v_9), v_18), v_3, v_5, v_12, U32.add(v_9, 1)}}, v_1004368 => CheckerFinished{v_1004368}}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_publish_naturals_copy{checker_pure_arena_set_natural(v_17, U32.add(v_5, v_9), v_18), v_3, v_5, v_12, U32.add(v_9, 1)}}, v_1004371 => CheckerFinished{v_1004371}}
 
-def checker_match_3224(v_7: Nat, v_1: ArenaStore, +v_3: U32, +v_9: U32, +v_5: U32) -> CheckerProgress<ArenaStore>:
+def checker_match_3223(v_7: Nat, v_1: ArenaStore, +v_3: U32, +v_9: U32, +v_5: U32) -> CheckerProgress<ArenaStore>:
   match v_7:
     case 0n:
       CheckerFinished{v_1}
     case 1n+v_12:
-      v_1004369 = {checker_pure_arena_get_natural(v_1, checker_pure_arena_range_index(v_3, v_9)) : ArenaResult<Nat>}
-      checker_match_3223(v_1004369, v_5, v_9, v_3, v_12)
+      v_1004372 = {checker_pure_arena_get_natural(v_1, checker_pure_arena_range_index(v_3, v_9)) : ArenaResult<Nat>}
+      checker_match_3222(v_1004372, v_5, v_9, v_3, v_12)
 
 def checker_body_arena_publish_naturals_copy(v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Nat, +v_9: U32) -> CheckerProgress<ArenaStore>:
-  checker_match_3224(v_7, v_1, v_3, v_9, v_5)
+  checker_match_3223(v_7, v_1, v_3, v_9, v_5)
 
-def checker_continuation_3225(v_1004370: ArenaStore, v_25: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Naturals>>:
-  v_28 = v_1004370
+def checker_continuation_3224(v_1004373: ArenaStore, v_25: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Naturals>>:
+  v_28 = v_1004373
   CheckerFinished{{ArenaResult{v_28, IR.Naturals{v_25, v_5}} : ArenaResult<IR.Naturals>}}
 
-def checker_match_3226(v_1004372: ArenaResult<U32>, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Naturals>>:
-  match v_1004372:
+def checker_match_3225(v_1004375: ArenaResult<U32>, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Naturals>>:
+  match v_1004375:
     case ArenaResult{v_24, +v_25}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_naturals_copy{v_24, v_3, v_25, U32.to_nat(v_5), 0}}, False{}, v_1004371 => checker_body_arena_publish_naturals_copy(v_24, v_3, v_25, U32.to_nat(v_5), 0), v_1004370 => checker_continuation_3225(v_1004370, v_25, v_5)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_naturals_copy{v_24, v_3, v_25, U32.to_nat(v_5), 0}}, False{}, v_1004374 => checker_body_arena_publish_naturals_copy(v_24, v_3, v_25, U32.to_nat(v_5), 0), v_1004373 => checker_continuation_3224(v_1004373, v_25, v_5)}
 
-def checker_match_3227(v_7: Bool, v_9: Bool, v_1: ArenaStore, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Naturals>>:
+def checker_match_3226(v_7: Bool, v_9: Bool, v_1: ArenaStore, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<IR.Naturals>>:
   match v_7, v_9:
     case True{}, _:
       CheckerFinished{{ArenaResult{v_1, IR.Naturals{0, 0}} : ArenaResult<IR.Naturals>}}
     case _, True{}:
       CheckerFinished{{ArenaResult{v_1, IR.Naturals{v_3, v_5}} : ArenaResult<IR.Naturals>}}
     case _, _:
-      v_1004372 = {checker_pure_arena_reserve_source_naturals(v_1, v_5) : ArenaResult<U32>}
-      checker_match_3226(v_1004372, v_3, v_5)
+      v_1004375 = {checker_pure_arena_reserve_source_naturals(v_1, v_5) : ArenaResult<U32>}
+      checker_match_3225(v_1004375, v_3, v_5)
 
 def checker_body_arena_publish_naturals_select(v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Bool, v_9: Bool) -> CheckerProgress<ArenaResult<IR.Naturals>>:
-  checker_match_3227(v_7, v_9, v_1, v_3, v_5)
+  checker_match_3226(v_7, v_9, v_1, v_3, v_5)
 
-def checker_match_3228(v_2: IR.Naturals, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.Naturals>>:
+def checker_match_3227(v_2: IR.Naturals, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.Naturals>>:
   match v_2:
     case IR.Naturals{+v_6, +v_7}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_naturals_select{v_1, v_6, v_7, U32.is_eq(v_7, 0), Bool.and(Bool.not(checker_pure_arena_is_transient(v_6)), Bool.not(checker_pure_arena_is_reverse(v_6)))}}, False{}, v_1004374 => checker_body_arena_publish_naturals_select(v_1, v_6, v_7, U32.is_eq(v_7, 0), Bool.and(Bool.not(checker_pure_arena_is_transient(v_6)), Bool.not(checker_pure_arena_is_reverse(v_6)))), v_1004373 => CheckerFinished{v_1004373}}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_naturals_select{v_1, v_6, v_7, U32.is_eq(v_7, 0), Bool.and(Bool.not(checker_pure_arena_is_transient(v_6)), Bool.not(checker_pure_arena_is_reverse(v_6)))}}, False{}, v_1004377 => checker_body_arena_publish_naturals_select(v_1, v_6, v_7, U32.is_eq(v_7, 0), Bool.and(Bool.not(checker_pure_arena_is_transient(v_6)), Bool.not(checker_pure_arena_is_reverse(v_6)))), v_1004376 => CheckerFinished{v_1004376}}
 
 def checker_body_arena_publish_naturals(v_1: ArenaStore, v_2: IR.Naturals) -> CheckerProgress<ArenaResult<IR.Naturals>>:
-  checker_match_3228(v_2, v_1)
+  checker_match_3227(v_2, v_1)
 
-def checker_match_3229(v_1004376: ArenaResult<Arena.Node>) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1004376:
+def checker_match_3228(v_1004379: ArenaResult<Arena.Node>) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1004379:
     case ArenaResult{v_13, v_14}:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_publish_term_view{v_13, v_14}}, v_1004375 => CheckerFinished{v_1004375}}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_publish_term_view{v_13, v_14}}, v_1004378 => CheckerFinished{v_1004378}}
 
-def checker_match_3230(v_5: Bool, v_1: ArenaStore, v_3: U32) -> CheckerProgress<ArenaResult<U32>>:
+def checker_match_3229(v_5: Bool, v_1: ArenaStore, v_3: U32) -> CheckerProgress<ArenaResult<U32>>:
   match v_5:
     case False{}:
       CheckerFinished{{ArenaResult{v_1, v_3} : ArenaResult<U32>}}
     case True{}:
-      v_1004376 = {checker_pure_arena_get_node(v_1, v_3) : ArenaResult<Arena.Node>}
-      checker_match_3229(v_1004376)
+      v_1004379 = {checker_pure_arena_get_node(v_1, v_3) : ArenaResult<Arena.Node>}
+      checker_match_3228(v_1004379)
 
 def checker_body_arena_publish_term_region(v_1: ArenaStore, v_3: U32, v_5: Bool) -> CheckerProgress<ArenaResult<U32>>:
-  checker_match_3230(v_5, v_1, v_3)
+  checker_match_3229(v_5, v_1, v_3)
 
 def checker_body_arena_publish_term(v_1: ArenaStore, +v_3: U32) -> CheckerProgress<ArenaResult<U32>>:
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term_region{v_1, v_3, checker_pure_arena_is_transient(v_3)}}, False{}, v_1004378 => checker_body_arena_publish_term_region(v_1, v_3, checker_pure_arena_is_transient(v_3)), v_1004377 => CheckerFinished{v_1004377}}
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term_region{v_1, v_3, checker_pure_arena_is_transient(v_3)}}, False{}, v_1004381 => checker_body_arena_publish_term_region(v_1, v_3, checker_pure_arena_is_transient(v_3)), v_1004380 => CheckerFinished{v_1004380}}
 
-def checker_continuation_3231(v_1004379: ArenaResult<U32>, v_20: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_24, v_25} = v_1004379
+def checker_continuation_3230(v_1004382: ArenaResult<U32>, v_20: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_24, v_25} = v_1004382
   CheckerFinished{checker_pure_arena_put_source_node(v_24, Arena.TermBang{v_25, v_20})}
 
-def checker_continuation_3232(v_1004382: ArenaResult<U32>, v_31: Nat, v_39: U32, v_34: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_43, v_44} = v_1004382
+def checker_continuation_3231(v_1004385: ArenaResult<U32>, v_31: Nat, v_39: U32, v_34: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_43, v_44} = v_1004385
   CheckerFinished{checker_pure_arena_put_source_node(v_43, Arena.TermSub{v_31, v_39, v_44, v_34})}
 
-def checker_continuation_3233(v_1004381: ArenaResult<U32>, v_33: U32, v_31: Nat, v_34: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_38, v_39} = v_1004381
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_38, v_33}}, False{}, v_1004383 => checker_body_arena_publish_term(v_38, v_33), v_1004382 => checker_continuation_3232(v_1004382, v_31, v_39, v_34)}
+def checker_continuation_3232(v_1004384: ArenaResult<U32>, v_33: U32, v_31: Nat, v_34: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_38, v_39} = v_1004384
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_38, v_33}}, False{}, v_1004386 => checker_body_arena_publish_term(v_38, v_33), v_1004385 => checker_continuation_3231(v_1004385, v_31, v_39, v_34)}
 
-def checker_continuation_3234(v_1004389: ArenaResult<U32>, +v_70: IR.Names, +v_75: IR.Naturals, +v_80: IR.Quantities, +v_85: IR.Words, v_65: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_89, v_90} = v_1004389
+def checker_continuation_3233(v_1004392: ArenaResult<U32>, +v_70: IR.Names, +v_75: IR.Naturals, +v_80: IR.Quantities, +v_85: IR.Words, v_65: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_89, v_90} = v_1004392
   v_93 = checker_pure_arena_names_start(v_70)
   v_96 = checker_pure_arena_names_count(v_70)
   v_99 = checker_pure_arena_naturals_start(v_75)
@@ -27712,1465 +27711,1465 @@ def checker_continuation_3234(v_1004389: ArenaResult<U32>, +v_70: IR.Names, +v_7
   v_114 = checker_pure_arena_words_count(v_85)
   CheckerFinished{checker_pure_arena_put_source_node(v_89, Arena.TermLet{v_93, v_96, v_99, v_102, v_105, v_108, v_111, v_114, v_90, v_65})}
 
-def checker_continuation_3235(v_1004388: ArenaResult<IR.Words>, v_64: U32, v_70: IR.Names, v_75: IR.Naturals, v_80: IR.Quantities, v_65: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_84, v_85} = v_1004388
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_84, v_64}}, False{}, v_1004390 => checker_body_arena_publish_term(v_84, v_64), v_1004389 => checker_continuation_3234(v_1004389, v_70, v_75, v_80, v_85, v_65)}
+def checker_continuation_3234(v_1004391: ArenaResult<IR.Words>, v_64: U32, v_70: IR.Names, v_75: IR.Naturals, v_80: IR.Quantities, v_65: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_84, v_85} = v_1004391
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_84, v_64}}, False{}, v_1004393 => checker_body_arena_publish_term(v_84, v_64), v_1004392 => checker_continuation_3233(v_1004392, v_70, v_75, v_80, v_85, v_65)}
 
-def checker_continuation_3236(v_1004387: ArenaResult<IR.Quantities>, v_62: U32, v_63: U32, v_64: U32, v_70: IR.Names, v_75: IR.Naturals, v_65: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_79, v_80} = v_1004387
-  CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_terms{v_79, IR.Words{v_62, v_63}}}, False{}, v_1004391 => checker_body_arena_publish_terms(v_79, IR.Words{v_62, v_63}), v_1004388 => checker_continuation_3235(v_1004388, v_64, v_70, v_75, v_80, v_65)}
+def checker_continuation_3235(v_1004390: ArenaResult<IR.Quantities>, v_62: U32, v_63: U32, v_64: U32, v_70: IR.Names, v_75: IR.Naturals, v_65: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_79, v_80} = v_1004390
+  CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_terms{v_79, IR.Words{v_62, v_63}}}, False{}, v_1004394 => checker_body_arena_publish_terms(v_79, IR.Words{v_62, v_63}), v_1004391 => checker_continuation_3234(v_1004391, v_64, v_70, v_75, v_80, v_65)}
 
-def checker_continuation_3237(v_1004386: ArenaResult<IR.Naturals>, v_60: U32, v_61: U32, v_62: U32, v_63: U32, v_64: U32, v_70: IR.Names, v_65: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_74, v_75} = v_1004386
-  CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_quantities{v_74, IR.Quantities{v_60, v_61}}}, False{}, v_1004392 => checker_body_arena_publish_quantities(v_74, IR.Quantities{v_60, v_61}), v_1004387 => checker_continuation_3236(v_1004387, v_62, v_63, v_64, v_70, v_75, v_65)}
+def checker_continuation_3236(v_1004389: ArenaResult<IR.Naturals>, v_60: U32, v_61: U32, v_62: U32, v_63: U32, v_64: U32, v_70: IR.Names, v_65: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_74, v_75} = v_1004389
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_quantities{v_74, IR.Quantities{v_60, v_61}}}, False{}, v_1004395 => checker_body_arena_publish_quantities(v_74, IR.Quantities{v_60, v_61}), v_1004390 => checker_continuation_3235(v_1004390, v_62, v_63, v_64, v_70, v_75, v_65)}
 
-def checker_continuation_3238(v_1004385: ArenaResult<IR.Names>, v_58: U32, v_59: U32, v_60: U32, v_61: U32, v_62: U32, v_63: U32, v_64: U32, v_65: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_69, v_70} = v_1004385
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_naturals{v_69, IR.Naturals{v_58, v_59}}}, False{}, v_1004393 => checker_body_arena_publish_naturals(v_69, IR.Naturals{v_58, v_59}), v_1004386 => checker_continuation_3237(v_1004386, v_60, v_61, v_62, v_63, v_64, v_70, v_65)}
+def checker_continuation_3237(v_1004388: ArenaResult<IR.Names>, v_58: U32, v_59: U32, v_60: U32, v_61: U32, v_62: U32, v_63: U32, v_64: U32, v_65: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_69, v_70} = v_1004388
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_naturals{v_69, IR.Naturals{v_58, v_59}}}, False{}, v_1004396 => checker_body_arena_publish_naturals(v_69, IR.Naturals{v_58, v_59}), v_1004389 => checker_continuation_3236(v_1004389, v_60, v_61, v_62, v_63, v_64, v_70, v_65)}
 
-def checker_continuation_3239(v_1004396: ArenaResult<U32>, v_126: U32, v_121: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_130, v_131} = v_1004396
+def checker_continuation_3238(v_1004399: ArenaResult<U32>, v_126: U32, v_121: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_130, v_131} = v_1004399
   CheckerFinished{checker_pure_arena_put_source_node(v_130, Arena.TermAnn{v_126, v_131, v_121})}
 
-def checker_continuation_3240(v_1004395: ArenaResult<U32>, v_120: U32, v_121: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_125, v_126} = v_1004395
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_125, v_120}}, False{}, v_1004397 => checker_body_arena_publish_term(v_125, v_120), v_1004396 => checker_continuation_3239(v_1004396, v_126, v_121)}
+def checker_continuation_3239(v_1004398: ArenaResult<U32>, v_120: U32, v_121: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_125, v_126} = v_1004398
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_125, v_120}}, False{}, v_1004400 => checker_body_arena_publish_term(v_125, v_120), v_1004399 => checker_continuation_3238(v_1004399, v_126, v_121)}
 
-def checker_continuation_3241(v_1004399: ArenaResult<U32>, v_136: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_140, v_141} = v_1004399
+def checker_continuation_3240(v_1004402: ArenaResult<U32>, v_136: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_140, v_141} = v_1004402
   CheckerFinished{checker_pure_arena_put_source_node(v_140, Arena.TermTemplate{v_141, v_136})}
 
-def checker_continuation_3242(v_1004401: ArenaResult<U32>, v_146: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_150, v_151} = v_1004401
+def checker_continuation_3241(v_1004404: ArenaResult<U32>, v_146: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_150, v_151} = v_1004404
   CheckerFinished{checker_pure_arena_put_source_node(v_150, Arena.TermType{v_151, v_146})}
 
-def checker_continuation_3243(v_1004404: ArenaResult<U32>, v_169: U32, v_164: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_173, v_174} = v_1004404
+def checker_continuation_3242(v_1004407: ArenaResult<U32>, v_169: U32, v_164: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_173, v_174} = v_1004407
   CheckerFinished{checker_pure_arena_put_source_node(v_173, Arena.TermMin{v_169, v_174, v_164})}
 
-def checker_continuation_3244(v_1004403: ArenaResult<U32>, v_163: U32, v_164: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_168, v_169} = v_1004403
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_168, v_163}}, False{}, v_1004405 => checker_body_arena_publish_term(v_168, v_163), v_1004404 => checker_continuation_3243(v_1004404, v_169, v_164)}
+def checker_continuation_3243(v_1004406: ArenaResult<U32>, v_163: U32, v_164: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_168, v_169} = v_1004406
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_168, v_163}}, False{}, v_1004408 => checker_body_arena_publish_term(v_168, v_163), v_1004407 => checker_continuation_3242(v_1004407, v_169, v_164)}
 
-def checker_continuation_3245(v_1004408: ArenaResult<U32>, v_182: Ast.Quantity, v_183: U32, v_184: Nat, v_192: U32, v_187: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_196, v_197} = v_1004408
+def checker_continuation_3244(v_1004411: ArenaResult<U32>, v_182: Ast.Quantity, v_183: U32, v_184: Nat, v_192: U32, v_187: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_196, v_197} = v_1004411
   CheckerFinished{checker_pure_arena_put_source_node(v_196, Arena.TermAll{v_182, v_183, v_184, v_192, v_197, v_187})}
 
-def checker_continuation_3246(v_1004407: ArenaResult<U32>, v_186: U32, v_182: Ast.Quantity, v_183: U32, v_184: Nat, v_187: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_191, v_192} = v_1004407
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_191, v_186}}, False{}, v_1004409 => checker_body_arena_publish_term(v_191, v_186), v_1004408 => checker_continuation_3245(v_1004408, v_182, v_183, v_184, v_192, v_187)}
+def checker_continuation_3245(v_1004410: ArenaResult<U32>, v_186: U32, v_182: Ast.Quantity, v_183: U32, v_184: Nat, v_187: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_191, v_192} = v_1004410
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_191, v_186}}, False{}, v_1004412 => checker_body_arena_publish_term(v_191, v_186), v_1004411 => checker_continuation_3244(v_1004411, v_182, v_183, v_184, v_192, v_187)}
 
-def checker_continuation_3247(v_1004411: ArenaResult<U32>, v_204: Maybe<&2, Ast.Quantity>, v_205: U32, v_206: Nat, v_208: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_212, v_213} = v_1004411
+def checker_continuation_3246(v_1004414: ArenaResult<U32>, v_204: Maybe<&2, Ast.Quantity>, v_205: U32, v_206: Nat, v_208: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_212, v_213} = v_1004414
   CheckerFinished{checker_pure_arena_put_source_node(v_212, Arena.TermLam{v_204, v_205, v_206, v_213, v_208})}
 
-def checker_continuation_3248(v_1004414: ArenaResult<U32>, v_225: U32, v_220: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_229, v_230} = v_1004414
+def checker_continuation_3247(v_1004417: ArenaResult<U32>, v_225: U32, v_220: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_229, v_230} = v_1004417
   CheckerFinished{checker_pure_arena_put_source_node(v_229, Arena.TermApp{v_225, v_230, v_220})}
 
-def checker_continuation_3249(v_1004413: ArenaResult<U32>, v_219: U32, v_220: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_224, v_225} = v_1004413
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_224, v_219}}, False{}, v_1004415 => checker_body_arena_publish_term(v_224, v_219), v_1004414 => checker_continuation_3248(v_1004414, v_225, v_220)}
+def checker_continuation_3248(v_1004416: ArenaResult<U32>, v_219: U32, v_220: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_224, v_225} = v_1004416
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_224, v_219}}, False{}, v_1004418 => checker_body_arena_publish_term(v_224, v_219), v_1004417 => checker_continuation_3247(v_1004417, v_225, v_220)}
 
-def checker_continuation_3250(v_1004418: ArenaResult<IR.Names>, +v_248: IR.Words, v_238: U32, v_243: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_252, +v_253} = v_1004418
+def checker_continuation_3249(v_1004421: ArenaResult<IR.Names>, +v_248: IR.Words, v_238: U32, v_243: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_252, +v_253} = v_1004421
   v_256 = checker_pure_arena_words_start(v_248)
   v_259 = checker_pure_arena_words_count(v_248)
   v_262 = checker_pure_arena_names_start(v_253)
   v_265 = checker_pure_arena_names_count(v_253)
   CheckerFinished{checker_pure_arena_put_source_node(v_252, Arena.TermAdt{v_238, v_256, v_259, v_262, v_265, v_243})}
 
-def checker_continuation_3251(v_1004417: ArenaResult<IR.Words>, v_241: U32, v_242: U32, v_238: U32, v_243: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_247, v_248} = v_1004417
-  CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_names{v_247, IR.Names{v_241, v_242}}}, False{}, v_1004419 => checker_body_arena_publish_names(v_247, IR.Names{v_241, v_242}), v_1004418 => checker_continuation_3250(v_1004418, v_248, v_238, v_243)}
+def checker_continuation_3250(v_1004420: ArenaResult<IR.Words>, v_241: U32, v_242: U32, v_238: U32, v_243: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_247, v_248} = v_1004420
+  CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_names{v_247, IR.Names{v_241, v_242}}}, False{}, v_1004422 => checker_body_arena_publish_names(v_247, IR.Names{v_241, v_242}), v_1004421 => checker_continuation_3249(v_1004421, v_248, v_238, v_243)}
 
-def checker_continuation_3252(v_1004422: ArenaResult<IR.Words>, v_279: U32, v_274: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_283, +v_284} = v_1004422
+def checker_continuation_3251(v_1004425: ArenaResult<IR.Words>, v_279: U32, v_274: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_283, +v_284} = v_1004425
   v_287 = checker_pure_arena_words_start(v_284)
   v_290 = checker_pure_arena_words_count(v_284)
   CheckerFinished{checker_pure_arena_put_source_node(v_283, Arena.TermFill{v_279, v_287, v_290, v_274})}
 
-def checker_continuation_3253(v_1004421: ArenaResult<U32>, v_272: U32, v_273: U32, v_274: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_278, v_279} = v_1004421
-  CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_terms{v_278, IR.Words{v_272, v_273}}}, False{}, v_1004423 => checker_body_arena_publish_terms(v_278, IR.Words{v_272, v_273}), v_1004422 => checker_continuation_3252(v_1004422, v_279, v_274)}
+def checker_continuation_3252(v_1004424: ArenaResult<U32>, v_272: U32, v_273: U32, v_274: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_278, v_279} = v_1004424
+  CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_terms{v_278, IR.Words{v_272, v_273}}}, False{}, v_1004426 => checker_body_arena_publish_terms(v_278, IR.Words{v_272, v_273}), v_1004425 => checker_continuation_3251(v_1004425, v_279, v_274)}
 
-def checker_continuation_3254(v_1004426: ArenaResult<IR.Words>, v_304: U32, v_299: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_308, +v_309} = v_1004426
+def checker_continuation_3253(v_1004429: ArenaResult<IR.Words>, v_304: U32, v_299: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_308, +v_309} = v_1004429
   v_312 = checker_pure_arena_words_start(v_309)
   v_315 = checker_pure_arena_words_count(v_309)
   CheckerFinished{checker_pure_arena_put_source_node(v_308, Arena.TermPlus{v_304, v_312, v_315, v_299})}
 
-def checker_continuation_3255(v_1004425: ArenaResult<U32>, v_297: U32, v_298: U32, v_299: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_303, v_304} = v_1004425
-  CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_terms{v_303, IR.Words{v_297, v_298}}}, False{}, v_1004427 => checker_body_arena_publish_terms(v_303, IR.Words{v_297, v_298}), v_1004426 => checker_continuation_3254(v_1004426, v_304, v_299)}
+def checker_continuation_3254(v_1004428: ArenaResult<U32>, v_297: U32, v_298: U32, v_299: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_303, v_304} = v_1004428
+  CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_terms{v_303, IR.Words{v_297, v_298}}}, False{}, v_1004430 => checker_body_arena_publish_terms(v_303, IR.Words{v_297, v_298}), v_1004429 => checker_continuation_3253(v_1004429, v_304, v_299)}
 
-def checker_continuation_3256(v_1004429: ArenaResult<IR.Words>, v_328: U32, v_331: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_335, +v_336} = v_1004429
+def checker_continuation_3255(v_1004432: ArenaResult<IR.Words>, v_328: U32, v_331: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_335, +v_336} = v_1004432
   v_339 = checker_pure_arena_words_start(v_336)
   v_342 = checker_pure_arena_words_count(v_336)
   CheckerFinished{checker_pure_arena_put_source_node(v_335, Arena.TermCtr{v_328, v_339, v_342, v_331})}
 
-def checker_continuation_3257(v_1004432: ArenaResult<U32>, v_348: U32, v_356: U32, v_351: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_360, v_361} = v_1004432
+def checker_continuation_3256(v_1004435: ArenaResult<U32>, v_348: U32, v_356: U32, v_351: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_360, v_361} = v_1004435
   CheckerFinished{checker_pure_arena_put_source_node(v_360, Arena.TermMat{v_348, v_356, v_361, v_351})}
 
-def checker_continuation_3258(v_1004431: ArenaResult<U32>, v_350: U32, v_348: U32, v_351: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_355, v_356} = v_1004431
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_355, v_350}}, False{}, v_1004433 => checker_body_arena_publish_term(v_355, v_350), v_1004432 => checker_continuation_3257(v_1004432, v_348, v_356, v_351)}
+def checker_continuation_3257(v_1004434: ArenaResult<U32>, v_350: U32, v_348: U32, v_351: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_355, v_356} = v_1004434
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_355, v_350}}, False{}, v_1004436 => checker_body_arena_publish_term(v_355, v_350), v_1004435 => checker_continuation_3256(v_1004435, v_348, v_356, v_351)}
 
-def checker_continuation_3259(v_1004437: ArenaResult<U32>, v_378: U32, v_383: U32, v_373: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_387, v_388} = v_1004437
+def checker_continuation_3258(v_1004440: ArenaResult<U32>, v_378: U32, v_383: U32, v_373: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_387, v_388} = v_1004440
   CheckerFinished{checker_pure_arena_put_source_node(v_387, Arena.TermEqual{v_378, v_383, v_388, v_373})}
 
-def checker_continuation_3260(v_1004436: ArenaResult<U32>, v_372: U32, v_378: U32, v_373: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_382, v_383} = v_1004436
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_382, v_372}}, False{}, v_1004438 => checker_body_arena_publish_term(v_382, v_372), v_1004437 => checker_continuation_3259(v_1004437, v_378, v_383, v_373)}
+def checker_continuation_3259(v_1004439: ArenaResult<U32>, v_372: U32, v_378: U32, v_373: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_382, v_383} = v_1004439
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_382, v_372}}, False{}, v_1004441 => checker_body_arena_publish_term(v_382, v_372), v_1004440 => checker_continuation_3258(v_1004440, v_378, v_383, v_373)}
 
-def checker_continuation_3261(v_1004435: ArenaResult<U32>, v_371: U32, v_372: U32, v_373: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_377, v_378} = v_1004435
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_377, v_371}}, False{}, v_1004439 => checker_body_arena_publish_term(v_377, v_371), v_1004436 => checker_continuation_3260(v_1004436, v_372, v_378, v_373)}
+def checker_continuation_3260(v_1004438: ArenaResult<U32>, v_371: U32, v_372: U32, v_373: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_377, v_378} = v_1004438
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_377, v_371}}, False{}, v_1004442 => checker_body_arena_publish_term(v_377, v_371), v_1004439 => checker_continuation_3259(v_1004439, v_372, v_378, v_373)}
 
-def checker_continuation_3262(v_1004443: ArenaResult<U32>, v_405: U32, v_410: U32, v_400: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_414, v_415} = v_1004443
+def checker_continuation_3261(v_1004446: ArenaResult<U32>, v_405: U32, v_410: U32, v_400: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_414, v_415} = v_1004446
   CheckerFinished{checker_pure_arena_put_source_node(v_414, Arena.TermRewrite{v_405, v_410, v_415, v_400})}
 
-def checker_continuation_3263(v_1004442: ArenaResult<U32>, v_399: U32, v_405: U32, v_400: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_409, v_410} = v_1004442
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_409, v_399}}, False{}, v_1004444 => checker_body_arena_publish_term(v_409, v_399), v_1004443 => checker_continuation_3262(v_1004443, v_405, v_410, v_400)}
+def checker_continuation_3262(v_1004445: ArenaResult<U32>, v_399: U32, v_405: U32, v_400: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_409, v_410} = v_1004445
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_409, v_399}}, False{}, v_1004447 => checker_body_arena_publish_term(v_409, v_399), v_1004446 => checker_continuation_3261(v_1004446, v_405, v_410, v_400)}
 
-def checker_continuation_3264(v_1004441: ArenaResult<U32>, v_398: U32, v_399: U32, v_400: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_404, v_405} = v_1004441
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_404, v_398}}, False{}, v_1004445 => checker_body_arena_publish_term(v_404, v_398), v_1004442 => checker_continuation_3263(v_1004442, v_399, v_405, v_400)}
+def checker_continuation_3263(v_1004444: ArenaResult<U32>, v_398: U32, v_399: U32, v_400: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_404, v_405} = v_1004444
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_404, v_398}}, False{}, v_1004448 => checker_body_arena_publish_term(v_404, v_398), v_1004445 => checker_continuation_3262(v_1004445, v_399, v_405, v_400)}
 
-def checker_continuation_3265(v_1004448: ArenaResult<IR.Words>, +v_436: IR.Words, v_431: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_440, +v_441} = v_1004448
+def checker_continuation_3264(v_1004451: ArenaResult<IR.Words>, +v_436: IR.Words, v_431: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_440, +v_441} = v_1004451
   v_444 = checker_pure_arena_words_start(v_436)
   v_447 = checker_pure_arena_words_count(v_436)
   v_450 = checker_pure_arena_words_start(v_441)
   v_453 = checker_pure_arena_words_count(v_441)
   CheckerFinished{checker_pure_arena_put_source_node(v_440, Arena.BodyMatch{v_444, v_447, v_450, v_453, v_431})}
 
-def checker_continuation_3266(v_1004447: ArenaResult<IR.Words>, v_429: U32, v_430: U32, v_431: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_435, v_436} = v_1004447
-  CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_terms{v_435, IR.Words{v_429, v_430}}}, False{}, v_1004449 => checker_body_arena_publish_terms(v_435, IR.Words{v_429, v_430}), v_1004448 => checker_continuation_3265(v_1004448, v_436, v_431)}
+def checker_continuation_3265(v_1004450: ArenaResult<IR.Words>, v_429: U32, v_430: U32, v_431: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_435, v_436} = v_1004450
+  CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_terms{v_435, IR.Words{v_429, v_430}}}, False{}, v_1004452 => checker_body_arena_publish_terms(v_435, IR.Words{v_429, v_430}), v_1004451 => checker_continuation_3264(v_1004451, v_436, v_431)}
 
-def checker_continuation_3267(v_1004452: ArenaResult<U32>, +v_467: IR.Words, v_462: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_471, v_472} = v_1004452
+def checker_continuation_3266(v_1004455: ArenaResult<U32>, +v_467: IR.Words, v_462: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_471, v_472} = v_1004455
   v_475 = checker_pure_arena_words_start(v_467)
   v_478 = checker_pure_arena_words_count(v_467)
   CheckerFinished{checker_pure_arena_put_source_node(v_471, Arena.BodyCase{v_475, v_478, v_472, v_462})}
 
-def checker_continuation_3268(v_1004451: ArenaResult<IR.Words>, v_461: U32, v_462: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_466, v_467} = v_1004451
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_466, v_461}}, False{}, v_1004453 => checker_body_arena_publish_term(v_466, v_461), v_1004452 => checker_continuation_3267(v_1004452, v_467, v_462)}
+def checker_continuation_3267(v_1004454: ArenaResult<IR.Words>, v_461: U32, v_462: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_466, v_467} = v_1004454
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_466, v_461}}, False{}, v_1004456 => checker_body_arena_publish_term(v_466, v_461), v_1004455 => checker_continuation_3266(v_1004455, v_467, v_462)}
 
-def checker_continuation_3269(v_1004457: ArenaResult<U32>, +v_498: IR.Words, +v_503: IR.Words, v_489: Ast.Quantity, v_493: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_507, v_508} = v_1004457
+def checker_continuation_3268(v_1004460: ArenaResult<U32>, +v_498: IR.Words, +v_503: IR.Words, v_489: Ast.Quantity, v_493: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_507, v_508} = v_1004460
   v_511 = checker_pure_arena_words_start(v_498)
   v_514 = checker_pure_arena_words_count(v_498)
   v_517 = checker_pure_arena_words_start(v_503)
   v_520 = checker_pure_arena_words_count(v_503)
   CheckerFinished{checker_pure_arena_put_source_node(v_507, Arena.BodyLocal{v_511, v_514, v_489, v_517, v_520, v_508, v_493})}
 
-def checker_continuation_3270(v_1004456: ArenaResult<IR.Words>, v_492: U32, v_498: IR.Words, v_489: Ast.Quantity, v_493: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_502, v_503} = v_1004456
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_502, v_492}}, False{}, v_1004458 => checker_body_arena_publish_term(v_502, v_492), v_1004457 => checker_continuation_3269(v_1004457, v_498, v_503, v_489, v_493)}
+def checker_continuation_3269(v_1004459: ArenaResult<IR.Words>, v_492: U32, v_498: IR.Words, v_489: Ast.Quantity, v_493: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_502, v_503} = v_1004459
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_502, v_492}}, False{}, v_1004461 => checker_body_arena_publish_term(v_502, v_492), v_1004460 => checker_continuation_3268(v_1004460, v_498, v_503, v_489, v_493)}
 
-def checker_continuation_3271(v_1004455: ArenaResult<IR.Words>, v_490: U32, v_491: U32, v_492: U32, v_489: Ast.Quantity, v_493: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_497, v_498} = v_1004455
-  CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_terms{v_497, IR.Words{v_490, v_491}}}, False{}, v_1004459 => checker_body_arena_publish_terms(v_497, IR.Words{v_490, v_491}), v_1004456 => checker_continuation_3270(v_1004456, v_492, v_498, v_489, v_493)}
+def checker_continuation_3270(v_1004458: ArenaResult<IR.Words>, v_490: U32, v_491: U32, v_492: U32, v_489: Ast.Quantity, v_493: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_497, v_498} = v_1004458
+  CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_terms{v_497, IR.Words{v_490, v_491}}}, False{}, v_1004462 => checker_body_arena_publish_terms(v_497, IR.Words{v_490, v_491}), v_1004459 => checker_continuation_3269(v_1004459, v_492, v_498, v_489, v_493)}
 
-def checker_continuation_3272(v_1004461: ArenaResult<U32>, v_525: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_529, v_530} = v_1004461
+def checker_continuation_3271(v_1004464: ArenaResult<U32>, v_525: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_529, v_530} = v_1004464
   CheckerFinished{checker_pure_arena_put_source_node(v_529, Arena.BodyReply{v_530, v_525})}
 
-def checker_match_3273(v_2: Arena.Node, v_1: ArenaStore) -> CheckerProgress<ArenaResult<U32>>:
+def checker_match_3272(v_2: Arena.Node, v_1: ArenaStore) -> CheckerProgress<ArenaResult<U32>>:
   match v_2:
     case Arena.TermVar{v_8, v_9, v_10}:
       CheckerFinished{checker_pure_arena_put_source_node(v_1, Arena.TermVar{v_8, v_9, v_10})}
     case Arena.TermRef{v_14, v_15}:
       CheckerFinished{checker_pure_arena_put_source_node(v_1, Arena.TermRef{v_14, v_15})}
     case Arena.TermBang{v_19, v_20}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_19}}, False{}, v_1004380 => checker_body_arena_publish_term(v_1, v_19), v_1004379 => checker_continuation_3231(v_1004379, v_20)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_19}}, False{}, v_1004383 => checker_body_arena_publish_term(v_1, v_19), v_1004382 => checker_continuation_3230(v_1004382, v_20)}
     case Arena.TermSub{v_31, v_32, v_33, v_34}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_32}}, False{}, v_1004384 => checker_body_arena_publish_term(v_1, v_32), v_1004381 => checker_continuation_3233(v_1004381, v_33, v_31, v_34)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_32}}, False{}, v_1004387 => checker_body_arena_publish_term(v_1, v_32), v_1004384 => checker_continuation_3232(v_1004384, v_33, v_31, v_34)}
     case Arena.TermLet{v_56, v_57, v_58, v_59, v_60, v_61, v_62, v_63, v_64, v_65}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_names{v_1, IR.Names{v_56, v_57}}}, False{}, v_1004394 => checker_body_arena_publish_names(v_1, IR.Names{v_56, v_57}), v_1004385 => checker_continuation_3238(v_1004385, v_58, v_59, v_60, v_61, v_62, v_63, v_64, v_65)}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_names{v_1, IR.Names{v_56, v_57}}}, False{}, v_1004397 => checker_body_arena_publish_names(v_1, IR.Names{v_56, v_57}), v_1004388 => checker_continuation_3237(v_1004388, v_58, v_59, v_60, v_61, v_62, v_63, v_64, v_65)}
     case Arena.TermAnn{v_119, v_120, v_121}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_119}}, False{}, v_1004398 => checker_body_arena_publish_term(v_1, v_119), v_1004395 => checker_continuation_3240(v_1004395, v_120, v_121)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_119}}, False{}, v_1004401 => checker_body_arena_publish_term(v_1, v_119), v_1004398 => checker_continuation_3239(v_1004398, v_120, v_121)}
     case Arena.TermTemplate{v_135, v_136}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_135}}, False{}, v_1004400 => checker_body_arena_publish_term(v_1, v_135), v_1004399 => checker_continuation_3241(v_1004399, v_136)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_135}}, False{}, v_1004403 => checker_body_arena_publish_term(v_1, v_135), v_1004402 => checker_continuation_3240(v_1004402, v_136)}
     case Arena.TermType{v_145, v_146}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_145}}, False{}, v_1004402 => checker_body_arena_publish_term(v_1, v_145), v_1004401 => checker_continuation_3242(v_1004401, v_146)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_145}}, False{}, v_1004405 => checker_body_arena_publish_term(v_1, v_145), v_1004404 => checker_continuation_3241(v_1004404, v_146)}
     case Arena.TermQuant{}:
       CheckerFinished{checker_pure_arena_put_source_node(v_1, Arena.TermQuant{})}
     case Arena.TermQuantity{v_156, v_157}:
       CheckerFinished{checker_pure_arena_put_source_node(v_1, Arena.TermQuantity{v_156, v_157})}
     case Arena.TermMin{v_162, v_163, v_164}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_162}}, False{}, v_1004406 => checker_body_arena_publish_term(v_1, v_162), v_1004403 => checker_continuation_3244(v_1004403, v_163, v_164)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_162}}, False{}, v_1004409 => checker_body_arena_publish_term(v_1, v_162), v_1004406 => checker_continuation_3243(v_1004406, v_163, v_164)}
     case Arena.TermAll{v_182, v_183, v_184, v_185, v_186, v_187}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_185}}, False{}, v_1004410 => checker_body_arena_publish_term(v_1, v_185), v_1004407 => checker_continuation_3246(v_1004407, v_186, v_182, v_183, v_184, v_187)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_185}}, False{}, v_1004413 => checker_body_arena_publish_term(v_1, v_185), v_1004410 => checker_continuation_3245(v_1004410, v_186, v_182, v_183, v_184, v_187)}
     case Arena.TermLam{v_204, v_205, v_206, v_207, v_208}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_207}}, False{}, v_1004412 => checker_body_arena_publish_term(v_1, v_207), v_1004411 => checker_continuation_3247(v_1004411, v_204, v_205, v_206, v_208)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_207}}, False{}, v_1004415 => checker_body_arena_publish_term(v_1, v_207), v_1004414 => checker_continuation_3246(v_1004414, v_204, v_205, v_206, v_208)}
     case Arena.TermApp{v_218, v_219, v_220}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_218}}, False{}, v_1004416 => checker_body_arena_publish_term(v_1, v_218), v_1004413 => checker_continuation_3249(v_1004413, v_219, v_220)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_218}}, False{}, v_1004419 => checker_body_arena_publish_term(v_1, v_218), v_1004416 => checker_continuation_3248(v_1004416, v_219, v_220)}
     case Arena.TermAdt{v_238, v_239, v_240, v_241, v_242, v_243}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_terms{v_1, IR.Words{v_239, v_240}}}, False{}, v_1004420 => checker_body_arena_publish_terms(v_1, IR.Words{v_239, v_240}), v_1004417 => checker_continuation_3251(v_1004417, v_241, v_242, v_238, v_243)}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_terms{v_1, IR.Words{v_239, v_240}}}, False{}, v_1004423 => checker_body_arena_publish_terms(v_1, IR.Words{v_239, v_240}), v_1004420 => checker_continuation_3250(v_1004420, v_241, v_242, v_238, v_243)}
     case Arena.TermFill{v_271, v_272, v_273, v_274}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_271}}, False{}, v_1004424 => checker_body_arena_publish_term(v_1, v_271), v_1004421 => checker_continuation_3253(v_1004421, v_272, v_273, v_274)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_271}}, False{}, v_1004427 => checker_body_arena_publish_term(v_1, v_271), v_1004424 => checker_continuation_3252(v_1004424, v_272, v_273, v_274)}
     case Arena.TermPlus{v_296, v_297, v_298, v_299}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_296}}, False{}, v_1004428 => checker_body_arena_publish_term(v_1, v_296), v_1004425 => checker_continuation_3255(v_1004425, v_297, v_298, v_299)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_296}}, False{}, v_1004431 => checker_body_arena_publish_term(v_1, v_296), v_1004428 => checker_continuation_3254(v_1004428, v_297, v_298, v_299)}
     case Arena.TermString{v_320, v_321, v_322}:
       CheckerFinished{checker_pure_arena_put_source_node(v_1, Arena.TermString{v_320, v_321, v_322})}
     case Arena.TermCtr{v_328, v_329, v_330, v_331}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_terms{v_1, IR.Words{v_329, v_330}}}, False{}, v_1004430 => checker_body_arena_publish_terms(v_1, IR.Words{v_329, v_330}), v_1004429 => checker_continuation_3256(v_1004429, v_328, v_331)}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_terms{v_1, IR.Words{v_329, v_330}}}, False{}, v_1004433 => checker_body_arena_publish_terms(v_1, IR.Words{v_329, v_330}), v_1004432 => checker_continuation_3255(v_1004432, v_328, v_331)}
     case Arena.TermMat{v_348, v_349, v_350, v_351}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_349}}, False{}, v_1004434 => checker_body_arena_publish_term(v_1, v_349), v_1004431 => checker_continuation_3258(v_1004431, v_350, v_348, v_351)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_349}}, False{}, v_1004437 => checker_body_arena_publish_term(v_1, v_349), v_1004434 => checker_continuation_3257(v_1004434, v_350, v_348, v_351)}
     case Arena.TermAbsurd{v_364}:
       CheckerFinished{checker_pure_arena_put_source_node(v_1, Arena.TermAbsurd{v_364})}
     case Arena.TermEqual{v_370, v_371, v_372, v_373}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_370}}, False{}, v_1004440 => checker_body_arena_publish_term(v_1, v_370), v_1004435 => checker_continuation_3261(v_1004435, v_371, v_372, v_373)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_370}}, False{}, v_1004443 => checker_body_arena_publish_term(v_1, v_370), v_1004438 => checker_continuation_3260(v_1004438, v_371, v_372, v_373)}
     case Arena.TermRefl{v_391}:
       CheckerFinished{checker_pure_arena_put_source_node(v_1, Arena.TermRefl{v_391})}
     case Arena.TermRewrite{v_397, v_398, v_399, v_400}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_397}}, False{}, v_1004446 => checker_body_arena_publish_term(v_1, v_397), v_1004441 => checker_continuation_3264(v_1004441, v_398, v_399, v_400)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_397}}, False{}, v_1004449 => checker_body_arena_publish_term(v_1, v_397), v_1004444 => checker_continuation_3263(v_1004444, v_398, v_399, v_400)}
     case Arena.TermHole{v_419, v_420}:
       CheckerFinished{checker_pure_arena_put_source_node(v_1, Arena.TermHole{v_419, v_420})}
     case Arena.BodyMatch{v_427, v_428, v_429, v_430, v_431}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_terms{v_1, IR.Words{v_427, v_428}}}, False{}, v_1004450 => checker_body_arena_publish_terms(v_1, IR.Words{v_427, v_428}), v_1004447 => checker_continuation_3266(v_1004447, v_429, v_430, v_431)}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_terms{v_1, IR.Words{v_427, v_428}}}, False{}, v_1004453 => checker_body_arena_publish_terms(v_1, IR.Words{v_427, v_428}), v_1004450 => checker_continuation_3265(v_1004450, v_429, v_430, v_431)}
     case Arena.BodyCase{v_459, v_460, v_461, v_462}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_patterns{v_1, IR.Words{v_459, v_460}}}, False{}, v_1004454 => checker_body_arena_publish_patterns(v_1, IR.Words{v_459, v_460}), v_1004451 => checker_continuation_3268(v_1004451, v_461, v_462)}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_patterns{v_1, IR.Words{v_459, v_460}}}, False{}, v_1004457 => checker_body_arena_publish_patterns(v_1, IR.Words{v_459, v_460}), v_1004454 => checker_continuation_3267(v_1004454, v_461, v_462)}
     case Arena.BodyLocal{v_487, v_488, v_489, v_490, v_491, v_492, v_493}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_patterns{v_1, IR.Words{v_487, v_488}}}, False{}, v_1004460 => checker_body_arena_publish_patterns(v_1, IR.Words{v_487, v_488}), v_1004455 => checker_continuation_3271(v_1004455, v_490, v_491, v_492, v_489, v_493)}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_patterns{v_1, IR.Words{v_487, v_488}}}, False{}, v_1004463 => checker_body_arena_publish_patterns(v_1, IR.Words{v_487, v_488}), v_1004458 => checker_continuation_3270(v_1004458, v_490, v_491, v_492, v_489, v_493)}
     case Arena.BodyReply{v_524, v_525}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_524}}, False{}, v_1004462 => checker_body_arena_publish_term(v_1, v_524), v_1004461 => checker_continuation_3272(v_1004461, v_525)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_524}}, False{}, v_1004465 => checker_body_arena_publish_term(v_1, v_524), v_1004464 => checker_continuation_3271(v_1004464, v_525)}
 
 def checker_body_arena_publish_term_view(v_1: ArenaStore, v_2: Arena.Node) -> CheckerProgress<ArenaResult<U32>>:
-  checker_match_3273(v_2, v_1)
+  checker_match_3272(v_2, v_1)
 
-def checker_match_3274(v_1004464: ArenaResult<Arena.Pattern>) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1004464:
+def checker_match_3273(v_1004467: ArenaResult<Arena.Pattern>) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1004467:
     case ArenaResult{v_13, v_14}:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_publish_pattern_view{v_13, v_14}}, v_1004463 => CheckerFinished{v_1004463}}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_publish_pattern_view{v_13, v_14}}, v_1004466 => CheckerFinished{v_1004466}}
 
-def checker_match_3275(v_5: Bool, v_1: ArenaStore, v_3: U32) -> CheckerProgress<ArenaResult<U32>>:
+def checker_match_3274(v_5: Bool, v_1: ArenaStore, v_3: U32) -> CheckerProgress<ArenaResult<U32>>:
   match v_5:
     case False{}:
       CheckerFinished{{ArenaResult{v_1, v_3} : ArenaResult<U32>}}
     case True{}:
-      v_1004464 = {checker_pure_arena_get_pattern(v_1, v_3) : ArenaResult<Arena.Pattern>}
-      checker_match_3274(v_1004464)
+      v_1004467 = {checker_pure_arena_get_pattern(v_1, v_3) : ArenaResult<Arena.Pattern>}
+      checker_match_3273(v_1004467)
 
 def checker_body_arena_publish_pattern_region(v_1: ArenaStore, v_3: U32, v_5: Bool) -> CheckerProgress<ArenaResult<U32>>:
-  checker_match_3275(v_5, v_1, v_3)
+  checker_match_3274(v_5, v_1, v_3)
 
 def checker_body_arena_publish_pattern(v_1: ArenaStore, +v_3: U32) -> CheckerProgress<ArenaResult<U32>>:
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_pattern_region{v_1, v_3, checker_pure_arena_is_transient(v_3)}}, False{}, v_1004466 => checker_body_arena_publish_pattern_region(v_1, v_3, checker_pure_arena_is_transient(v_3)), v_1004465 => CheckerFinished{v_1004465}}
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_pattern_region{v_1, v_3, checker_pure_arena_is_transient(v_3)}}, False{}, v_1004469 => checker_body_arena_publish_pattern_region(v_1, v_3, checker_pure_arena_is_transient(v_3)), v_1004468 => CheckerFinished{v_1004468}}
 
-def checker_continuation_3276(v_1004467: ArenaResult<IR.Words>, v_18: U32, v_21: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_25, +v_26} = v_1004467
+def checker_continuation_3275(v_1004470: ArenaResult<IR.Words>, v_18: U32, v_21: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_25, +v_26} = v_1004470
   v_29 = checker_pure_arena_words_start(v_26)
   v_32 = checker_pure_arena_words_count(v_26)
   CheckerFinished{checker_pure_arena_put_source_pattern(v_25, Arena.PatternCtr{v_18, v_29, v_32, v_21})}
 
-def checker_match_3277(v_2: Arena.Pattern, v_1: ArenaStore) -> CheckerProgress<ArenaResult<U32>>:
+def checker_match_3276(v_2: Arena.Pattern, v_1: ArenaStore) -> CheckerProgress<ArenaResult<U32>>:
   match v_2:
     case Arena.PatternVar{v_9, v_10, v_11, v_12}:
       CheckerFinished{checker_pure_arena_put_source_pattern(v_1, Arena.PatternVar{v_9, v_10, v_11, v_12})}
     case Arena.PatternCtr{v_18, v_19, v_20, v_21}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_patterns{v_1, IR.Words{v_19, v_20}}}, False{}, v_1004468 => checker_body_arena_publish_patterns(v_1, IR.Words{v_19, v_20}), v_1004467 => checker_continuation_3276(v_1004467, v_18, v_21)}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_patterns{v_1, IR.Words{v_19, v_20}}}, False{}, v_1004471 => checker_body_arena_publish_patterns(v_1, IR.Words{v_19, v_20}), v_1004470 => checker_continuation_3275(v_1004470, v_18, v_21)}
 
 def checker_body_arena_publish_pattern_view(v_1: ArenaStore, v_2: Arena.Pattern) -> CheckerProgress<ArenaResult<U32>>:
-  checker_match_3277(v_2, v_1)
+  checker_match_3276(v_2, v_1)
 
-def checker_match_3278(v_1004470: ArenaResult<Arena.Binder>) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1004470:
+def checker_match_3277(v_1004473: ArenaResult<Arena.Binder>) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1004473:
     case ArenaResult{v_13, v_14}:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_publish_binder_view{v_13, v_14}}, v_1004469 => CheckerFinished{v_1004469}}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_publish_binder_view{v_13, v_14}}, v_1004472 => CheckerFinished{v_1004472}}
 
-def checker_match_3279(v_5: Bool, v_1: ArenaStore, v_3: U32) -> CheckerProgress<ArenaResult<U32>>:
+def checker_match_3278(v_5: Bool, v_1: ArenaStore, v_3: U32) -> CheckerProgress<ArenaResult<U32>>:
   match v_5:
     case False{}:
       CheckerFinished{{ArenaResult{v_1, v_3} : ArenaResult<U32>}}
     case True{}:
-      v_1004470 = {checker_pure_arena_get_binder(v_1, v_3) : ArenaResult<Arena.Binder>}
-      checker_match_3278(v_1004470)
+      v_1004473 = {checker_pure_arena_get_binder(v_1, v_3) : ArenaResult<Arena.Binder>}
+      checker_match_3277(v_1004473)
 
 def checker_body_arena_publish_binder_region(v_1: ArenaStore, v_3: U32, v_5: Bool) -> CheckerProgress<ArenaResult<U32>>:
-  checker_match_3279(v_5, v_1, v_3)
+  checker_match_3278(v_5, v_1, v_3)
 
 def checker_body_arena_publish_binder(v_1: ArenaStore, +v_3: U32) -> CheckerProgress<ArenaResult<U32>>:
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_binder_region{v_1, v_3, checker_pure_arena_is_transient(v_3)}}, False{}, v_1004472 => checker_body_arena_publish_binder_region(v_1, v_3, checker_pure_arena_is_transient(v_3)), v_1004471 => CheckerFinished{v_1004471}}
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_binder_region{v_1, v_3, checker_pure_arena_is_transient(v_3)}}, False{}, v_1004475 => checker_body_arena_publish_binder_region(v_1, v_3, checker_pure_arena_is_transient(v_3)), v_1004474 => CheckerFinished{v_1004474}}
 
-def checker_continuation_3280(v_1004473: ArenaResult<U32>, v_10: Ast.Quantity, v_11: U32, v_12: Nat, v_14: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_18, v_19} = v_1004473
+def checker_continuation_3279(v_1004476: ArenaResult<U32>, v_10: Ast.Quantity, v_11: U32, v_12: Nat, v_14: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_18, v_19} = v_1004476
   CheckerFinished{checker_pure_arena_put_source_binder(v_18, Arena.Binder{v_10, v_11, v_12, v_19, v_14})}
 
-def checker_continuation_3281(v_1004475: ArenaResult<U32>, v_25: U32, v_26: Nat, v_28: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  ArenaResult{v_32, v_33} = v_1004475
+def checker_continuation_3280(v_1004478: ArenaResult<U32>, v_25: U32, v_26: Nat, v_28: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
+  ArenaResult{v_32, v_33} = v_1004478
   CheckerFinished{checker_pure_arena_put_source_binder(v_32, Arena.TemplateBinder{v_25, v_26, v_33, v_28})}
 
-def checker_match_3282(v_2: Arena.Binder, v_1: ArenaStore) -> CheckerProgress<ArenaResult<U32>>:
+def checker_match_3281(v_2: Arena.Binder, v_1: ArenaStore) -> CheckerProgress<ArenaResult<U32>>:
   match v_2:
     case Arena.Binder{v_10, v_11, v_12, v_13, v_14}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_13}}, False{}, v_1004474 => checker_body_arena_publish_term(v_1, v_13), v_1004473 => checker_continuation_3280(v_1004473, v_10, v_11, v_12, v_14)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_13}}, False{}, v_1004477 => checker_body_arena_publish_term(v_1, v_13), v_1004476 => checker_continuation_3279(v_1004476, v_10, v_11, v_12, v_14)}
     case Arena.TemplateBinder{v_25, v_26, v_27, v_28}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_27}}, False{}, v_1004476 => checker_body_arena_publish_term(v_1, v_27), v_1004475 => checker_continuation_3281(v_1004475, v_25, v_26, v_28)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_27}}, False{}, v_1004479 => checker_body_arena_publish_term(v_1, v_27), v_1004478 => checker_continuation_3280(v_1004478, v_25, v_26, v_28)}
 
 def checker_body_arena_publish_binder_view(v_1: ArenaStore, v_2: Arena.Binder) -> CheckerProgress<ArenaResult<U32>>:
-  checker_match_3282(v_2, v_1)
+  checker_match_3281(v_2, v_1)
 
 def checker_body_arena_pack_terms_length(v_1: List<&2, Ast.SyntaxTerm>) -> CheckerProgress<U32>:
   match v_1:
     case []:
       CheckerFinished{0}
     case _ <> v_6:
-      v_1004477 = {1 : U32}
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_terms_length{v_6}}, +v_1004478 => CheckerFinished{U32.add(v_1004477, v_1004478)}}
+      v_1004480 = {1 : U32}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_terms_length{v_6}}, +v_1004481 => CheckerFinished{U32.add(v_1004480, v_1004481)}}
 
-def checker_continuation_3284(v_1004479: Pair(Arena.Arena, U32), +v_4: U32, v_8: List<&2, Ast.SyntaxTerm>) -> CheckerProgress<Arena.Arena>:
-  (v_12, v_13) = v_1004479
-  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_terms_at{Arena.set_word(v_12, v_4, v_13), v_8, U32.add(v_4, 1)}}, v_1004480 => CheckerFinished{v_1004480}}
+def checker_continuation_3283(v_1004482: Pair(Arena.Arena, U32), +v_4: U32, v_8: List<&2, Ast.SyntaxTerm>) -> CheckerProgress<Arena.Arena>:
+  (v_12, v_13) = v_1004482
+  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_terms_at{Arena.set_word(v_12, v_4, v_13), v_8, U32.add(v_4, 1)}}, v_1004483 => CheckerFinished{v_1004483}}
 
-def checker_match_3285(v_2: List<&2, Ast.SyntaxTerm>, v_0: Arena.Arena, +v_4: U32) -> CheckerProgress<Arena.Arena>:
+def checker_match_3284(v_2: List<&2, Ast.SyntaxTerm>, v_0: Arena.Arena, +v_4: U32) -> CheckerProgress<Arena.Arena>:
   match v_2:
     case []:
       CheckerFinished{v_0}
     case v_7 <> v_8:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_7}}, v_1004479 => checker_continuation_3284(v_1004479, v_4, v_8)}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_7}}, v_1004482 => checker_continuation_3283(v_1004482, v_4, v_8)}
 
 def checker_body_arena_pack_terms_at(v_0: Arena.Arena, v_2: List<&2, Ast.SyntaxTerm>, +v_4: U32) -> CheckerProgress<Arena.Arena>:
-  checker_match_3285(v_2, v_0, v_4)
+  checker_match_3284(v_2, v_0, v_4)
 
-def checker_continuation_3286(+v_1004481: U32, v_0: Arena.Arena, +v_2: List<&2, Ast.SyntaxTerm>) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
-  +v_9 = v_1004481
-  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_pack_terms_reserve_words_result_28{Arena.reserve_words(v_0, v_9), v_2, v_9}}, v_1004482 => CheckerFinished{v_1004482}}
+def checker_continuation_3285(+v_1004484: U32, v_0: Arena.Arena, +v_2: List<&2, Ast.SyntaxTerm>) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
+  +v_9 = v_1004484
+  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_pack_terms_reserve_words_result_28{Arena.reserve_words(v_0, v_9), v_2, v_9}}, v_1004485 => CheckerFinished{v_1004485}}
 
 def checker_body_arena_pack_terms(v_0: Arena.Arena, +v_2: List<&2, Ast.SyntaxTerm>) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_terms_length{v_2}}, False{}, v_1004483 => checker_body_arena_pack_terms_length(v_2), +v_1004481 => checker_continuation_3286(v_1004481, v_0, v_2)}
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_terms_length{v_2}}, False{}, v_1004486 => checker_body_arena_pack_terms_length(v_2), +v_1004484 => checker_continuation_3285(v_1004484, v_0, v_2)}
 
 def checker_body_arena_pack_patterns_length(v_1: List<&2, Ast.SyntaxPattern>) -> CheckerProgress<U32>:
   match v_1:
     case []:
       CheckerFinished{0}
     case _ <> v_6:
-      v_1004484 = {1 : U32}
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_patterns_length{v_6}}, +v_1004485 => CheckerFinished{U32.add(v_1004484, v_1004485)}}
+      v_1004487 = {1 : U32}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_patterns_length{v_6}}, +v_1004488 => CheckerFinished{U32.add(v_1004487, v_1004488)}}
 
-def checker_continuation_3288(v_1004486: Pair(Arena.Arena, U32), +v_4: U32, v_8: List<&2, Ast.SyntaxPattern>) -> CheckerProgress<Arena.Arena>:
-  (v_12, v_13) = v_1004486
-  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_patterns_at{Arena.set_word(v_12, v_4, v_13), v_8, U32.add(v_4, 1)}}, v_1004487 => CheckerFinished{v_1004487}}
+def checker_continuation_3287(v_1004489: Pair(Arena.Arena, U32), +v_4: U32, v_8: List<&2, Ast.SyntaxPattern>) -> CheckerProgress<Arena.Arena>:
+  (v_12, v_13) = v_1004489
+  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_patterns_at{Arena.set_word(v_12, v_4, v_13), v_8, U32.add(v_4, 1)}}, v_1004490 => CheckerFinished{v_1004490}}
 
-def checker_match_3289(v_2: List<&2, Ast.SyntaxPattern>, v_0: Arena.Arena, +v_4: U32) -> CheckerProgress<Arena.Arena>:
+def checker_match_3288(v_2: List<&2, Ast.SyntaxPattern>, v_0: Arena.Arena, +v_4: U32) -> CheckerProgress<Arena.Arena>:
   match v_2:
     case []:
       CheckerFinished{v_0}
     case v_7 <> v_8:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_pattern{v_0, v_7}}, v_1004486 => checker_continuation_3288(v_1004486, v_4, v_8)}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_pattern{v_0, v_7}}, v_1004489 => checker_continuation_3287(v_1004489, v_4, v_8)}
 
 def checker_body_arena_pack_patterns_at(v_0: Arena.Arena, v_2: List<&2, Ast.SyntaxPattern>, +v_4: U32) -> CheckerProgress<Arena.Arena>:
-  checker_match_3289(v_2, v_0, v_4)
+  checker_match_3288(v_2, v_0, v_4)
 
-def checker_continuation_3290(+v_1004488: U32, v_0: Arena.Arena, +v_2: List<&2, Ast.SyntaxPattern>) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
-  +v_9 = v_1004488
-  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_pack_patterns_reserve_words_result_29{Arena.reserve_words(v_0, v_9), v_2, v_9}}, v_1004489 => CheckerFinished{v_1004489}}
+def checker_continuation_3289(+v_1004491: U32, v_0: Arena.Arena, +v_2: List<&2, Ast.SyntaxPattern>) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
+  +v_9 = v_1004491
+  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_pack_patterns_reserve_words_result_29{Arena.reserve_words(v_0, v_9), v_2, v_9}}, v_1004492 => CheckerFinished{v_1004492}}
 
 def checker_body_arena_pack_patterns(v_0: Arena.Arena, +v_2: List<&2, Ast.SyntaxPattern>) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_patterns_length{v_2}}, False{}, v_1004490 => checker_body_arena_pack_patterns_length(v_2), +v_1004488 => checker_continuation_3290(v_1004488, v_0, v_2)}
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_patterns_length{v_2}}, False{}, v_1004493 => checker_body_arena_pack_patterns_length(v_2), +v_1004491 => checker_continuation_3289(v_1004491, v_0, v_2)}
 
 def checker_body_arena_pack_binders_length(v_1: List<&2, Ast.TelescopeItem>) -> CheckerProgress<U32>:
   match v_1:
     case []:
       CheckerFinished{0}
     case _ <> v_6:
-      v_1004491 = {1 : U32}
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_binders_length{v_6}}, +v_1004492 => CheckerFinished{U32.add(v_1004491, v_1004492)}}
+      v_1004494 = {1 : U32}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_binders_length{v_6}}, +v_1004495 => CheckerFinished{U32.add(v_1004494, v_1004495)}}
 
-def checker_continuation_3292(v_1004493: Pair(Arena.Arena, U32), +v_4: U32, v_8: List<&2, Ast.TelescopeItem>) -> CheckerProgress<Arena.Arena>:
-  (v_12, v_13) = v_1004493
-  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_binders_at{Arena.set_word(v_12, v_4, v_13), v_8, U32.add(v_4, 1)}}, v_1004494 => CheckerFinished{v_1004494}}
+def checker_continuation_3291(v_1004496: Pair(Arena.Arena, U32), +v_4: U32, v_8: List<&2, Ast.TelescopeItem>) -> CheckerProgress<Arena.Arena>:
+  (v_12, v_13) = v_1004496
+  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_binders_at{Arena.set_word(v_12, v_4, v_13), v_8, U32.add(v_4, 1)}}, v_1004497 => CheckerFinished{v_1004497}}
 
-def checker_match_3293(v_2: List<&2, Ast.TelescopeItem>, v_0: Arena.Arena, +v_4: U32) -> CheckerProgress<Arena.Arena>:
+def checker_match_3292(v_2: List<&2, Ast.TelescopeItem>, v_0: Arena.Arena, +v_4: U32) -> CheckerProgress<Arena.Arena>:
   match v_2:
     case []:
       CheckerFinished{v_0}
     case v_7 <> v_8:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_binder{v_0, v_7}}, v_1004493 => checker_continuation_3292(v_1004493, v_4, v_8)}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_binder{v_0, v_7}}, v_1004496 => checker_continuation_3291(v_1004496, v_4, v_8)}
 
 def checker_body_arena_pack_binders_at(v_0: Arena.Arena, v_2: List<&2, Ast.TelescopeItem>, +v_4: U32) -> CheckerProgress<Arena.Arena>:
-  checker_match_3293(v_2, v_0, v_4)
+  checker_match_3292(v_2, v_0, v_4)
 
-def checker_continuation_3294(+v_1004495: U32, v_0: Arena.Arena, +v_2: List<&2, Ast.TelescopeItem>) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
-  +v_9 = v_1004495
-  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_pack_binders_reserve_words_result_30{Arena.reserve_words(v_0, v_9), v_2, v_9}}, v_1004496 => CheckerFinished{v_1004496}}
+def checker_continuation_3293(+v_1004498: U32, v_0: Arena.Arena, +v_2: List<&2, Ast.TelescopeItem>) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
+  +v_9 = v_1004498
+  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_pack_binders_reserve_words_result_30{Arena.reserve_words(v_0, v_9), v_2, v_9}}, v_1004499 => CheckerFinished{v_1004499}}
 
 def checker_body_arena_pack_binders(v_0: Arena.Arena, +v_2: List<&2, Ast.TelescopeItem>) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_binders_length{v_2}}, False{}, v_1004497 => checker_body_arena_pack_binders_length(v_2), +v_1004495 => checker_continuation_3294(v_1004495, v_0, v_2)}
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_binders_length{v_2}}, False{}, v_1004500 => checker_body_arena_pack_binders_length(v_2), +v_1004498 => checker_continuation_3293(v_1004498, v_0, v_2)}
 
 def checker_body_arena_pack_names_length(v_2: List<&2, String>) -> CheckerProgress<U32>:
   match v_2:
     case []:
       CheckerFinished{0}
     case _ <> v_7:
-      v_1004498 = {1 : U32}
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_names_length{v_7}}, +v_1004499 => CheckerFinished{U32.add(v_1004498, v_1004499)}}
+      v_1004501 = {1 : U32}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_names_length{v_7}}, +v_1004502 => CheckerFinished{U32.add(v_1004501, v_1004502)}}
 
-def checker_match_3296(v_3: List<&2, String>, v_0: Arena.Arena, +v_5: U32) -> CheckerProgress<Arena.Arena>:
+def checker_match_3295(v_3: List<&2, String>, v_0: Arena.Arena, +v_5: U32) -> CheckerProgress<Arena.Arena>:
   match v_3:
     case []:
       CheckerFinished{v_0}
     case v_8 <> v_9:
-      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_pack_names_at_name_result_31{Arena.name(v_0, v_8), v_5, v_9}}, v_1004500 => CheckerFinished{v_1004500}}
+      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_pack_names_at_name_result_31{Arena.name(v_0, v_8), v_5, v_9}}, v_1004503 => CheckerFinished{v_1004503}}
 
 def checker_body_arena_pack_names_at(v_0: Arena.Arena, v_3: List<&2, String>, +v_5: U32) -> CheckerProgress<Arena.Arena>:
-  checker_match_3296(v_3, v_0, v_5)
+  checker_match_3295(v_3, v_0, v_5)
 
-def checker_continuation_3297(+v_1004501: U32, v_0: Arena.Arena, +v_3: List<&2, String>) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
-  +v_10 = v_1004501
-  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_pack_names_reserve_words_result_32{Arena.reserve_words(v_0, v_10), v_3, v_10}}, v_1004502 => CheckerFinished{v_1004502}}
+def checker_continuation_3296(+v_1004504: U32, v_0: Arena.Arena, +v_3: List<&2, String>) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
+  +v_10 = v_1004504
+  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_pack_names_reserve_words_result_32{Arena.reserve_words(v_0, v_10), v_3, v_10}}, v_1004505 => CheckerFinished{v_1004505}}
 
 def checker_body_arena_pack_names(v_0: Arena.Arena, +v_3: List<&2, String>) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_names_length{v_3}}, False{}, v_1004503 => checker_body_arena_pack_names_length(v_3), +v_1004501 => checker_continuation_3297(v_1004501, v_0, v_3)}
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_names_length{v_3}}, False{}, v_1004506 => checker_body_arena_pack_names_length(v_3), +v_1004504 => checker_continuation_3296(v_1004504, v_0, v_3)}
 
 def checker_body_arena_pack_naturals_length(v_2: List<&2, Nat>) -> CheckerProgress<U32>:
   match v_2:
     case []:
       CheckerFinished{0}
     case _ <> v_7:
-      v_1004504 = {1 : U32}
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_naturals_length{v_7}}, +v_1004505 => CheckerFinished{U32.add(v_1004504, v_1004505)}}
+      v_1004507 = {1 : U32}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_naturals_length{v_7}}, +v_1004508 => CheckerFinished{U32.add(v_1004507, v_1004508)}}
 
-def checker_match_3299(v_3: List<&2, Nat>, v_0: Arena.Arena, +v_5: U32) -> CheckerProgress<Arena.Arena>:
+def checker_match_3298(v_3: List<&2, Nat>, v_0: Arena.Arena, +v_5: U32) -> CheckerProgress<Arena.Arena>:
   match v_3:
     case []:
       CheckerFinished{v_0}
     case v_8 <> v_9:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_naturals_at{Arena.set_natural(v_0, v_5, v_8), v_9, U32.add(v_5, 1)}}, v_1004506 => CheckerFinished{v_1004506}}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_naturals_at{Arena.set_natural(v_0, v_5, v_8), v_9, U32.add(v_5, 1)}}, v_1004509 => CheckerFinished{v_1004509}}
 
 def checker_body_arena_pack_naturals_at(v_0: Arena.Arena, v_3: List<&2, Nat>, +v_5: U32) -> CheckerProgress<Arena.Arena>:
-  checker_match_3299(v_3, v_0, v_5)
+  checker_match_3298(v_3, v_0, v_5)
 
-def checker_continuation_3300(+v_1004507: U32, v_0: Arena.Arena, +v_3: List<&2, Nat>) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
-  +v_10 = v_1004507
-  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_pack_naturals_reserve_naturals_result_33{Arena.reserve_naturals(v_0, v_10), v_3, v_10}}, v_1004508 => CheckerFinished{v_1004508}}
+def checker_continuation_3299(+v_1004510: U32, v_0: Arena.Arena, +v_3: List<&2, Nat>) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
+  +v_10 = v_1004510
+  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_pack_naturals_reserve_naturals_result_33{Arena.reserve_naturals(v_0, v_10), v_3, v_10}}, v_1004511 => CheckerFinished{v_1004511}}
 
 def checker_body_arena_pack_naturals(v_0: Arena.Arena, +v_3: List<&2, Nat>) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_naturals_length{v_3}}, False{}, v_1004509 => checker_body_arena_pack_naturals_length(v_3), +v_1004507 => checker_continuation_3300(v_1004507, v_0, v_3)}
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_naturals_length{v_3}}, False{}, v_1004512 => checker_body_arena_pack_naturals_length(v_3), +v_1004510 => checker_continuation_3299(v_1004510, v_0, v_3)}
 
 def checker_body_arena_pack_quantities_length(v_1: List<&2, Ast.Quantity>) -> CheckerProgress<U32>:
   match v_1:
     case []:
       CheckerFinished{0}
     case _ <> v_6:
-      v_1004510 = {1 : U32}
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_quantities_length{v_6}}, +v_1004511 => CheckerFinished{U32.add(v_1004510, v_1004511)}}
+      v_1004513 = {1 : U32}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_quantities_length{v_6}}, +v_1004514 => CheckerFinished{U32.add(v_1004513, v_1004514)}}
 
-def checker_match_3302(v_2: List<&2, Ast.Quantity>, v_0: Arena.Arena, +v_4: U32) -> CheckerProgress<Arena.Arena>:
+def checker_match_3301(v_2: List<&2, Ast.Quantity>, v_0: Arena.Arena, +v_4: U32) -> CheckerProgress<Arena.Arena>:
   match v_2:
     case []:
       CheckerFinished{v_0}
     case v_7 <> v_8:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_quantities_at{Arena.set_word(v_0, v_4, Arena.quantity_word(v_7)), v_8, U32.add(v_4, 1)}}, v_1004512 => CheckerFinished{v_1004512}}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_quantities_at{Arena.set_word(v_0, v_4, Arena.quantity_word(v_7)), v_8, U32.add(v_4, 1)}}, v_1004515 => CheckerFinished{v_1004515}}
 
 def checker_body_arena_pack_quantities_at(v_0: Arena.Arena, v_2: List<&2, Ast.Quantity>, +v_4: U32) -> CheckerProgress<Arena.Arena>:
-  checker_match_3302(v_2, v_0, v_4)
+  checker_match_3301(v_2, v_0, v_4)
 
-def checker_continuation_3303(+v_1004513: U32, v_0: Arena.Arena, +v_2: List<&2, Ast.Quantity>) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
-  +v_9 = v_1004513
-  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_pack_quantities_reserve_words_result_34{Arena.reserve_words(v_0, v_9), v_2, v_9}}, v_1004514 => CheckerFinished{v_1004514}}
+def checker_continuation_3302(+v_1004516: U32, v_0: Arena.Arena, +v_2: List<&2, Ast.Quantity>) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
+  +v_9 = v_1004516
+  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_pack_quantities_reserve_words_result_34{Arena.reserve_words(v_0, v_9), v_2, v_9}}, v_1004517 => CheckerFinished{v_1004517}}
 
 def checker_body_arena_pack_quantities(v_0: Arena.Arena, +v_2: List<&2, Ast.Quantity>) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_quantities_length{v_2}}, False{}, v_1004515 => checker_body_arena_pack_quantities_length(v_2), +v_1004513 => checker_continuation_3303(v_1004513, v_0, v_2)}
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_quantities_length{v_2}}, False{}, v_1004518 => checker_body_arena_pack_quantities_length(v_2), +v_1004516 => checker_continuation_3302(v_1004516, v_0, v_2)}
 
-def checker_continuation_3304(v_1004516: Pair(Arena.Arena, U32), v_18: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_22, v_23) = v_1004516
+def checker_continuation_3303(v_1004519: Pair(Arena.Arena, U32), v_18: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_22, v_23) = v_1004519
   CheckerFinished{Arena.put_node(v_22, Arena.TermBang{v_23, v_18})}
 
-def checker_continuation_3305(v_1004518: Pair(Arena.Arena, U32), v_27: Nat, v_35: U32, v_30: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_39, v_40) = v_1004518
+def checker_continuation_3304(v_1004521: Pair(Arena.Arena, U32), v_27: Nat, v_35: U32, v_30: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_39, v_40) = v_1004521
   CheckerFinished{Arena.put_node(v_39, Arena.TermSub{v_27, v_35, v_40, v_30})}
 
-def checker_continuation_3306(v_1004517: Pair(Arena.Arena, U32), v_29: Ast.SyntaxTerm, v_27: Nat, v_30: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_34, v_35) = v_1004517
-  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_34, v_29}}, v_1004518 => checker_continuation_3305(v_1004518, v_27, v_35, v_30)}
+def checker_continuation_3305(v_1004520: Pair(Arena.Arena, U32), v_29: Ast.SyntaxTerm, v_27: Nat, v_30: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_34, v_35) = v_1004520
+  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_34, v_29}}, v_1004521 => checker_continuation_3304(v_1004521, v_27, v_35, v_30)}
 
-def checker_continuation_3307(v_1004523: Pair(Arena.Arena, U32), v_58: U32, v_59: U32, v_65: U32, v_66: U32, v_72: U32, v_73: U32, v_79: U32, v_80: U32, v_52: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_84, v_85) = v_1004523
+def checker_continuation_3306(v_1004526: Pair(Arena.Arena, U32), v_58: U32, v_59: U32, v_65: U32, v_66: U32, v_72: U32, v_73: U32, v_79: U32, v_80: U32, v_52: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_84, v_85) = v_1004526
   CheckerFinished{Arena.put_node(v_84, Arena.TermLet{v_58, v_59, v_65, v_66, v_72, v_73, v_79, v_80, v_85, v_52})}
 
-def checker_continuation_3308(v_1004522: Pair(Arena.Arena, Pair(U32, U32)), v_51: Ast.SyntaxTerm, v_58: U32, v_59: U32, v_65: U32, v_66: U32, v_72: U32, v_73: U32, v_52: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_78, v_79, v_80) = v_1004522
-  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_78, v_51}}, v_1004523 => checker_continuation_3307(v_1004523, v_58, v_59, v_65, v_66, v_72, v_73, v_79, v_80, v_52)}
+def checker_continuation_3307(v_1004525: Pair(Arena.Arena, Pair(U32, U32)), v_51: Ast.SyntaxTerm, v_58: U32, v_59: U32, v_65: U32, v_66: U32, v_72: U32, v_73: U32, v_52: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_78, v_79, v_80) = v_1004525
+  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_78, v_51}}, v_1004526 => checker_continuation_3306(v_1004526, v_58, v_59, v_65, v_66, v_72, v_73, v_79, v_80, v_52)}
 
-def checker_continuation_3309(v_1004521: Pair(Arena.Arena, Pair(U32, U32)), v_50: List<&2, Ast.SyntaxTerm>, v_51: Ast.SyntaxTerm, v_58: U32, v_59: U32, v_65: U32, v_66: U32, v_52: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_71, v_72, v_73) = v_1004521
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_terms{v_71, v_50}}, False{}, v_1004524 => checker_body_arena_pack_terms(v_71, v_50), v_1004522 => checker_continuation_3308(v_1004522, v_51, v_58, v_59, v_65, v_66, v_72, v_73, v_52)}
+def checker_continuation_3308(v_1004524: Pair(Arena.Arena, Pair(U32, U32)), v_50: List<&2, Ast.SyntaxTerm>, v_51: Ast.SyntaxTerm, v_58: U32, v_59: U32, v_65: U32, v_66: U32, v_52: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_71, v_72, v_73) = v_1004524
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_terms{v_71, v_50}}, False{}, v_1004527 => checker_body_arena_pack_terms(v_71, v_50), v_1004525 => checker_continuation_3307(v_1004525, v_51, v_58, v_59, v_65, v_66, v_72, v_73, v_52)}
 
-def checker_continuation_3310(v_1004520: Pair(Arena.Arena, Pair(U32, U32)), v_49: List<&2, Ast.Quantity>, v_50: List<&2, Ast.SyntaxTerm>, v_51: Ast.SyntaxTerm, v_58: U32, v_59: U32, v_52: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_64, v_65, v_66) = v_1004520
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_quantities{v_64, v_49}}, False{}, v_1004525 => checker_body_arena_pack_quantities(v_64, v_49), v_1004521 => checker_continuation_3309(v_1004521, v_50, v_51, v_58, v_59, v_65, v_66, v_52)}
+def checker_continuation_3309(v_1004523: Pair(Arena.Arena, Pair(U32, U32)), v_49: List<&2, Ast.Quantity>, v_50: List<&2, Ast.SyntaxTerm>, v_51: Ast.SyntaxTerm, v_58: U32, v_59: U32, v_52: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_64, v_65, v_66) = v_1004523
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_quantities{v_64, v_49}}, False{}, v_1004528 => checker_body_arena_pack_quantities(v_64, v_49), v_1004524 => checker_continuation_3308(v_1004524, v_50, v_51, v_58, v_59, v_65, v_66, v_52)}
 
-def checker_continuation_3311(v_1004519: Pair(Arena.Arena, Pair(U32, U32)), v_48: List<&2, Nat>, v_49: List<&2, Ast.Quantity>, v_50: List<&2, Ast.SyntaxTerm>, v_51: Ast.SyntaxTerm, v_52: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_57, v_58, v_59) = v_1004519
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_naturals{v_57, v_48}}, False{}, v_1004526 => checker_body_arena_pack_naturals(v_57, v_48), v_1004520 => checker_continuation_3310(v_1004520, v_49, v_50, v_51, v_58, v_59, v_52)}
+def checker_continuation_3310(v_1004522: Pair(Arena.Arena, Pair(U32, U32)), v_48: List<&2, Nat>, v_49: List<&2, Ast.Quantity>, v_50: List<&2, Ast.SyntaxTerm>, v_51: Ast.SyntaxTerm, v_52: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_57, v_58, v_59) = v_1004522
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_naturals{v_57, v_48}}, False{}, v_1004529 => checker_body_arena_pack_naturals(v_57, v_48), v_1004523 => checker_continuation_3309(v_1004523, v_49, v_50, v_51, v_58, v_59, v_52)}
 
-def checker_continuation_3312(v_1004529: Pair(Arena.Arena, U32), v_96: U32, v_91: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_100, v_101) = v_1004529
+def checker_continuation_3311(v_1004532: Pair(Arena.Arena, U32), v_96: U32, v_91: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_100, v_101) = v_1004532
   CheckerFinished{Arena.put_node(v_100, Arena.TermAnn{v_96, v_101, v_91})}
 
-def checker_continuation_3313(v_1004528: Pair(Arena.Arena, U32), v_90: Ast.SyntaxTerm, v_91: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_95, v_96) = v_1004528
-  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_95, v_90}}, v_1004529 => checker_continuation_3312(v_1004529, v_96, v_91)}
+def checker_continuation_3312(v_1004531: Pair(Arena.Arena, U32), v_90: Ast.SyntaxTerm, v_91: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_95, v_96) = v_1004531
+  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_95, v_90}}, v_1004532 => checker_continuation_3311(v_1004532, v_96, v_91)}
 
-def checker_continuation_3314(v_1004530: Pair(Arena.Arena, U32), v_105: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_109, v_110) = v_1004530
+def checker_continuation_3313(v_1004533: Pair(Arena.Arena, U32), v_105: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_109, v_110) = v_1004533
   CheckerFinished{Arena.put_node(v_109, Arena.TermTemplate{v_110, v_105})}
 
-def checker_continuation_3315(v_1004531: Pair(Arena.Arena, U32), v_114: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_118, v_119) = v_1004531
+def checker_continuation_3314(v_1004534: Pair(Arena.Arena, U32), v_114: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_118, v_119) = v_1004534
   CheckerFinished{Arena.put_node(v_118, Arena.TermType{v_119, v_114})}
 
-def checker_continuation_3316(v_1004533: Pair(Arena.Arena, U32), v_134: U32, v_129: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_138, v_139) = v_1004533
+def checker_continuation_3315(v_1004536: Pair(Arena.Arena, U32), v_134: U32, v_129: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_138, v_139) = v_1004536
   CheckerFinished{Arena.put_node(v_138, Arena.TermMin{v_134, v_139, v_129})}
 
-def checker_continuation_3317(v_1004532: Pair(Arena.Arena, U32), v_128: Ast.SyntaxTerm, v_129: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_133, v_134) = v_1004532
-  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_133, v_128}}, v_1004533 => checker_continuation_3316(v_1004533, v_134, v_129)}
+def checker_continuation_3316(v_1004535: Pair(Arena.Arena, U32), v_128: Ast.SyntaxTerm, v_129: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_133, v_134) = v_1004535
+  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_133, v_128}}, v_1004536 => checker_continuation_3315(v_1004536, v_134, v_129)}
 
-def checker_continuation_3318(v_1004537: Pair(Arena.Arena, U32), v_174: U32, v_169: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_178, v_179) = v_1004537
+def checker_continuation_3317(v_1004540: Pair(Arena.Arena, U32), v_174: U32, v_169: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_178, v_179) = v_1004540
   CheckerFinished{Arena.put_node(v_178, Arena.TermApp{v_174, v_179, v_169})}
 
-def checker_continuation_3319(v_1004536: Pair(Arena.Arena, U32), v_168: Ast.SyntaxTerm, v_169: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_173, v_174) = v_1004536
-  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_173, v_168}}, v_1004537 => checker_continuation_3318(v_1004537, v_174, v_169)}
+def checker_continuation_3318(v_1004539: Pair(Arena.Arena, U32), v_168: Ast.SyntaxTerm, v_169: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_173, v_174) = v_1004539
+  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_173, v_168}}, v_1004540 => checker_continuation_3317(v_1004540, v_174, v_169)}
 
-def checker_continuation_3320(v_1004540: Pair(Arena.Arena, Pair(U32, U32)), v_199: U32, v_194: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_204, v_205, v_206) = v_1004540
+def checker_continuation_3319(v_1004543: Pair(Arena.Arena, Pair(U32, U32)), v_199: U32, v_194: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_204, v_205, v_206) = v_1004543
   CheckerFinished{Arena.put_node(v_204, Arena.TermFill{v_199, v_205, v_206, v_194})}
 
-def checker_continuation_3321(v_1004539: Pair(Arena.Arena, U32), v_193: List<&2, Ast.SyntaxTerm>, v_194: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_198, v_199) = v_1004539
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_terms{v_198, v_193}}, False{}, v_1004541 => checker_body_arena_pack_terms(v_198, v_193), v_1004540 => checker_continuation_3320(v_1004540, v_199, v_194)}
+def checker_continuation_3320(v_1004542: Pair(Arena.Arena, U32), v_193: List<&2, Ast.SyntaxTerm>, v_194: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_198, v_199) = v_1004542
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_terms{v_198, v_193}}, False{}, v_1004544 => checker_body_arena_pack_terms(v_198, v_193), v_1004543 => checker_continuation_3319(v_1004543, v_199, v_194)}
 
-def checker_continuation_3322(v_1004543: Pair(Arena.Arena, Pair(U32, U32)), v_217: U32, v_212: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_222, v_223, v_224) = v_1004543
+def checker_continuation_3321(v_1004546: Pair(Arena.Arena, Pair(U32, U32)), v_217: U32, v_212: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_222, v_223, v_224) = v_1004546
   CheckerFinished{Arena.put_node(v_222, Arena.TermPlus{v_217, v_223, v_224, v_212})}
 
-def checker_continuation_3323(v_1004542: Pair(Arena.Arena, U32), v_211: List<&2, Ast.SyntaxTerm>, v_212: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_216, v_217) = v_1004542
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_terms{v_216, v_211}}, False{}, v_1004544 => checker_body_arena_pack_terms(v_216, v_211), v_1004543 => checker_continuation_3322(v_1004543, v_217, v_212)}
+def checker_continuation_3322(v_1004545: Pair(Arena.Arena, U32), v_211: List<&2, Ast.SyntaxTerm>, v_212: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_216, v_217) = v_1004545
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_terms{v_216, v_211}}, False{}, v_1004547 => checker_body_arena_pack_terms(v_216, v_211), v_1004546 => checker_continuation_3321(v_1004546, v_217, v_212)}
 
-def checker_continuation_3324(v_1004549: Pair(Arena.Arena, U32), v_261: U32, v_266: U32, v_256: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_270, v_271) = v_1004549
+def checker_continuation_3323(v_1004552: Pair(Arena.Arena, U32), v_261: U32, v_266: U32, v_256: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_270, v_271) = v_1004552
   CheckerFinished{Arena.put_node(v_270, Arena.TermEqual{v_261, v_266, v_271, v_256})}
 
-def checker_continuation_3325(v_1004548: Pair(Arena.Arena, U32), v_255: Ast.SyntaxTerm, v_261: U32, v_256: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_265, v_266) = v_1004548
-  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_265, v_255}}, v_1004549 => checker_continuation_3324(v_1004549, v_261, v_266, v_256)}
+def checker_continuation_3324(v_1004551: Pair(Arena.Arena, U32), v_255: Ast.SyntaxTerm, v_261: U32, v_256: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_265, v_266) = v_1004551
+  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_265, v_255}}, v_1004552 => checker_continuation_3323(v_1004552, v_261, v_266, v_256)}
 
-def checker_continuation_3326(v_1004547: Pair(Arena.Arena, U32), v_254: Ast.SyntaxTerm, v_255: Ast.SyntaxTerm, v_256: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_260, v_261) = v_1004547
-  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_260, v_254}}, v_1004548 => checker_continuation_3325(v_1004548, v_255, v_261, v_256)}
+def checker_continuation_3325(v_1004550: Pair(Arena.Arena, U32), v_254: Ast.SyntaxTerm, v_255: Ast.SyntaxTerm, v_256: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_260, v_261) = v_1004550
+  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_260, v_254}}, v_1004551 => checker_continuation_3324(v_1004551, v_255, v_261, v_256)}
 
-def checker_continuation_3327(v_1004552: Pair(Arena.Arena, U32), v_286: U32, v_291: U32, v_281: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_295, v_296) = v_1004552
+def checker_continuation_3326(v_1004555: Pair(Arena.Arena, U32), v_286: U32, v_291: U32, v_281: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_295, v_296) = v_1004555
   CheckerFinished{Arena.put_node(v_295, Arena.TermRewrite{v_286, v_291, v_296, v_281})}
 
-def checker_continuation_3328(v_1004551: Pair(Arena.Arena, U32), v_280: Ast.SyntaxTerm, v_286: U32, v_281: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_290, v_291) = v_1004551
-  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_290, v_280}}, v_1004552 => checker_continuation_3327(v_1004552, v_286, v_291, v_281)}
+def checker_continuation_3327(v_1004554: Pair(Arena.Arena, U32), v_280: Ast.SyntaxTerm, v_286: U32, v_281: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_290, v_291) = v_1004554
+  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_290, v_280}}, v_1004555 => checker_continuation_3326(v_1004555, v_286, v_291, v_281)}
 
-def checker_continuation_3329(v_1004550: Pair(Arena.Arena, U32), v_279: Ast.SyntaxTerm, v_280: Ast.SyntaxTerm, v_281: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_285, v_286) = v_1004550
-  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_285, v_279}}, v_1004551 => checker_continuation_3328(v_1004551, v_280, v_286, v_281)}
+def checker_continuation_3328(v_1004553: Pair(Arena.Arena, U32), v_279: Ast.SyntaxTerm, v_280: Ast.SyntaxTerm, v_281: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_285, v_286) = v_1004553
+  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_285, v_279}}, v_1004554 => checker_continuation_3327(v_1004554, v_280, v_286, v_281)}
 
-def checker_continuation_3330(v_1004554: Pair(Arena.Arena, Pair(U32, U32)), v_313: U32, v_314: U32, v_307: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_319, v_320, v_321) = v_1004554
+def checker_continuation_3329(v_1004557: Pair(Arena.Arena, Pair(U32, U32)), v_313: U32, v_314: U32, v_307: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_319, v_320, v_321) = v_1004557
   CheckerFinished{Arena.put_node(v_319, Arena.BodyMatch{v_313, v_314, v_320, v_321, v_307})}
 
-def checker_continuation_3331(v_1004553: Pair(Arena.Arena, Pair(U32, U32)), v_306: List<&2, Ast.SyntaxTerm>, v_307: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_312, v_313, v_314) = v_1004553
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_terms{v_312, v_306}}, False{}, v_1004555 => checker_body_arena_pack_terms(v_312, v_306), v_1004554 => checker_continuation_3330(v_1004554, v_313, v_314, v_307)}
+def checker_continuation_3330(v_1004556: Pair(Arena.Arena, Pair(U32, U32)), v_306: List<&2, Ast.SyntaxTerm>, v_307: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_312, v_313, v_314) = v_1004556
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_terms{v_312, v_306}}, False{}, v_1004558 => checker_body_arena_pack_terms(v_312, v_306), v_1004557 => checker_continuation_3329(v_1004557, v_313, v_314, v_307)}
 
-def checker_continuation_3332(v_1004558: Pair(Arena.Arena, U32), v_333: U32, v_334: U32, v_327: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_338, v_339) = v_1004558
+def checker_continuation_3331(v_1004561: Pair(Arena.Arena, U32), v_333: U32, v_334: U32, v_327: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_338, v_339) = v_1004561
   CheckerFinished{Arena.put_node(v_338, Arena.BodyCase{v_333, v_334, v_339, v_327})}
 
-def checker_continuation_3333(v_1004557: Pair(Arena.Arena, Pair(U32, U32)), v_326: Ast.SyntaxTerm, v_327: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_332, v_333, v_334) = v_1004557
-  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_332, v_326}}, v_1004558 => checker_continuation_3332(v_1004558, v_333, v_334, v_327)}
+def checker_continuation_3332(v_1004560: Pair(Arena.Arena, Pair(U32, U32)), v_326: Ast.SyntaxTerm, v_327: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_332, v_333, v_334) = v_1004560
+  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_332, v_326}}, v_1004561 => checker_continuation_3331(v_1004561, v_333, v_334, v_327)}
 
-def checker_continuation_3334(v_1004562: Pair(Arena.Arena, U32), v_355: U32, v_356: U32, v_346: Ast.Quantity, v_362: U32, v_363: U32, v_349: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_367, v_368) = v_1004562
+def checker_continuation_3333(v_1004565: Pair(Arena.Arena, U32), v_355: U32, v_356: U32, v_346: Ast.Quantity, v_362: U32, v_363: U32, v_349: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_367, v_368) = v_1004565
   CheckerFinished{Arena.put_node(v_367, Arena.BodyLocal{v_355, v_356, v_346, v_362, v_363, v_368, v_349})}
 
-def checker_continuation_3335(v_1004561: Pair(Arena.Arena, Pair(U32, U32)), v_348: Ast.SyntaxTerm, v_355: U32, v_356: U32, v_346: Ast.Quantity, v_349: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_361, v_362, v_363) = v_1004561
-  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_361, v_348}}, v_1004562 => checker_continuation_3334(v_1004562, v_355, v_356, v_346, v_362, v_363, v_349)}
+def checker_continuation_3334(v_1004564: Pair(Arena.Arena, Pair(U32, U32)), v_348: Ast.SyntaxTerm, v_355: U32, v_356: U32, v_346: Ast.Quantity, v_349: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_361, v_362, v_363) = v_1004564
+  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_361, v_348}}, v_1004565 => checker_continuation_3333(v_1004565, v_355, v_356, v_346, v_362, v_363, v_349)}
 
-def checker_continuation_3336(v_1004560: Pair(Arena.Arena, Pair(U32, U32)), v_347: List<&2, Ast.SyntaxTerm>, v_348: Ast.SyntaxTerm, v_346: Ast.Quantity, v_349: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_354, v_355, v_356) = v_1004560
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_terms{v_354, v_347}}, False{}, v_1004563 => checker_body_arena_pack_terms(v_354, v_347), v_1004561 => checker_continuation_3335(v_1004561, v_348, v_355, v_356, v_346, v_349)}
+def checker_continuation_3335(v_1004563: Pair(Arena.Arena, Pair(U32, U32)), v_347: List<&2, Ast.SyntaxTerm>, v_348: Ast.SyntaxTerm, v_346: Ast.Quantity, v_349: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_354, v_355, v_356) = v_1004563
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_terms{v_354, v_347}}, False{}, v_1004566 => checker_body_arena_pack_terms(v_354, v_347), v_1004564 => checker_continuation_3334(v_1004564, v_348, v_355, v_356, v_346, v_349)}
 
-def checker_continuation_3337(v_1004565: Pair(Arena.Arena, U32), v_372: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_376, v_377) = v_1004565
+def checker_continuation_3336(v_1004568: Pair(Arena.Arena, U32), v_372: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_376, v_377) = v_1004568
   CheckerFinished{Arena.put_node(v_376, Arena.BodyReply{v_377, v_372})}
 
-def checker_match_3338(v_1: Ast.SyntaxTerm, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+def checker_match_3337(v_1: Ast.SyntaxTerm, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, U32)>:
   match v_1:
     case Ast.TermVar{v_6, v_7, v_8}:
       CheckerFinished{checker_pure_arena_pack_term_name_result_35(Arena.name(v_0, v_6), v_7, v_8)}
     case Ast.TermRef{v_12, v_13}:
       CheckerFinished{checker_pure_arena_pack_term_name_result_36(Arena.name(v_0, v_12), v_13)}
     case Ast.TermBang{v_17, v_18}:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_17}}, v_1004516 => checker_continuation_3304(v_1004516, v_18)}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_17}}, v_1004519 => checker_continuation_3303(v_1004519, v_18)}
     case Ast.TermSub{v_27, v_28, v_29, v_30}:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_28}}, v_1004517 => checker_continuation_3306(v_1004517, v_29, v_27, v_30)}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_28}}, v_1004520 => checker_continuation_3305(v_1004520, v_29, v_27, v_30)}
     case Ast.TermLet{v_47, v_48, v_49, v_50, v_51, v_52}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_names{v_0, v_47}}, False{}, v_1004527 => checker_body_arena_pack_names(v_0, v_47), v_1004519 => checker_continuation_3311(v_1004519, v_48, v_49, v_50, v_51, v_52)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_names{v_0, v_47}}, False{}, v_1004530 => checker_body_arena_pack_names(v_0, v_47), v_1004522 => checker_continuation_3310(v_1004522, v_48, v_49, v_50, v_51, v_52)}
     case Ast.TermAnn{v_89, v_90, v_91}:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_89}}, v_1004528 => checker_continuation_3313(v_1004528, v_90, v_91)}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_89}}, v_1004531 => checker_continuation_3312(v_1004531, v_90, v_91)}
     case Ast.TermTemplate{v_104, v_105}:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_104}}, v_1004530 => checker_continuation_3314(v_1004530, v_105)}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_104}}, v_1004533 => checker_continuation_3313(v_1004533, v_105)}
     case Ast.TermType{v_113, v_114}:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_113}}, v_1004531 => checker_continuation_3315(v_1004531, v_114)}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_113}}, v_1004534 => checker_continuation_3314(v_1004534, v_114)}
     case Ast.TermQuant{}:
       CheckerFinished{Arena.put_node(v_0, Arena.TermQuant{})}
     case Ast.TermQuantity{v_122, v_123}:
       CheckerFinished{Arena.put_node(v_0, Arena.TermQuantity{v_122, v_123})}
     case Ast.TermMin{v_127, v_128, v_129}:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_127}}, v_1004532 => checker_continuation_3317(v_1004532, v_128, v_129)}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_127}}, v_1004535 => checker_continuation_3316(v_1004535, v_128, v_129)}
     case Ast.TermAll{v_146, v_147, v_148, v_149, v_150, v_151}:
-      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_pack_term_name_result_37{Arena.name(v_0, v_147), v_149, v_150, v_146, v_148, v_151}}, v_1004534 => CheckerFinished{v_1004534}}
+      CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_pack_term_name_result_37{Arena.name(v_0, v_147), v_149, v_150, v_146, v_148, v_151}}, v_1004537 => CheckerFinished{v_1004537}}
     case Ast.TermLam{v_158, v_159, v_160, v_161, v_162}:
-      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_pack_term_name_result_38{Arena.name(v_0, v_159), v_161, v_158, v_160, v_162}}, v_1004535 => CheckerFinished{v_1004535}}
+      CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_pack_term_name_result_38{Arena.name(v_0, v_159), v_161, v_158, v_160, v_162}}, v_1004538 => CheckerFinished{v_1004538}}
     case Ast.TermApp{v_167, v_168, v_169}:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_167}}, v_1004536 => checker_continuation_3319(v_1004536, v_168, v_169)}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_167}}, v_1004539 => checker_continuation_3318(v_1004539, v_168, v_169)}
     case Ast.TermAdt{v_184, v_185, v_186, v_187}:
-      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_pack_term_name_result_39{Arena.name(v_0, v_184), v_185, v_186, v_187}}, v_1004538 => CheckerFinished{v_1004538}}
+      CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_pack_term_name_result_39{Arena.name(v_0, v_184), v_185, v_186, v_187}}, v_1004541 => CheckerFinished{v_1004541}}
     case Ast.TermFill{v_192, v_193, v_194}:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_192}}, v_1004539 => checker_continuation_3321(v_1004539, v_193, v_194)}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_192}}, v_1004542 => checker_continuation_3320(v_1004542, v_193, v_194)}
     case Ast.TermPlus{v_210, v_211, v_212}:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_210}}, v_1004542 => checker_continuation_3323(v_1004542, v_211, v_212)}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_210}}, v_1004545 => checker_continuation_3322(v_1004545, v_211, v_212)}
     case Ast.TermString{v_228, v_229, v_230}:
       CheckerFinished{Arena.put_node(v_0, Arena.TermString{v_228, v_229, v_230})}
     case Ast.TermCtr{v_234, v_235, v_236}:
-      CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_pack_term_name_result_40{Arena.name(v_0, v_234), v_235, v_236}}, v_1004545 => CheckerFinished{v_1004545}}
+      CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_pack_term_name_result_40{Arena.name(v_0, v_234), v_235, v_236}}, v_1004548 => CheckerFinished{v_1004548}}
     case Ast.TermMat{v_242, v_243, v_244, v_245}:
-      CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_pack_term_name_result_41{Arena.name(v_0, v_242), v_243, v_244, v_245}}, v_1004546 => CheckerFinished{v_1004546}}
+      CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_pack_term_name_result_41{Arena.name(v_0, v_242), v_243, v_244, v_245}}, v_1004549 => CheckerFinished{v_1004549}}
     case Ast.TermAbsurd{v_248}:
       CheckerFinished{Arena.put_node(v_0, Arena.TermAbsurd{v_248})}
     case Ast.TermEqual{v_253, v_254, v_255, v_256}:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_253}}, v_1004547 => checker_continuation_3326(v_1004547, v_254, v_255, v_256)}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_253}}, v_1004550 => checker_continuation_3325(v_1004550, v_254, v_255, v_256)}
     case Ast.TermRefl{v_273}:
       CheckerFinished{Arena.put_node(v_0, Arena.TermRefl{v_273})}
     case Ast.TermRewrite{v_278, v_279, v_280, v_281}:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_278}}, v_1004550 => checker_continuation_3329(v_1004550, v_279, v_280, v_281)}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_278}}, v_1004553 => checker_continuation_3328(v_1004553, v_279, v_280, v_281)}
     case Ast.TermHole{v_299, v_300}:
       CheckerFinished{checker_pure_arena_pack_term_name_result_42(Arena.name(v_0, v_299), v_300)}
     case Ast.BodyMatch{v_305, v_306, v_307}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_terms{v_0, v_305}}, False{}, v_1004556 => checker_body_arena_pack_terms(v_0, v_305), v_1004553 => checker_continuation_3331(v_1004553, v_306, v_307)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_terms{v_0, v_305}}, False{}, v_1004559 => checker_body_arena_pack_terms(v_0, v_305), v_1004556 => checker_continuation_3330(v_1004556, v_306, v_307)}
     case Ast.BodyCase{v_325, v_326, v_327}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_patterns{v_0, v_325}}, False{}, v_1004559 => checker_body_arena_pack_patterns(v_0, v_325), v_1004557 => checker_continuation_3333(v_1004557, v_326, v_327)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_patterns{v_0, v_325}}, False{}, v_1004562 => checker_body_arena_pack_patterns(v_0, v_325), v_1004560 => checker_continuation_3332(v_1004560, v_326, v_327)}
     case Ast.BodyLocal{v_345, v_346, v_347, v_348, v_349}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_patterns{v_0, v_345}}, False{}, v_1004564 => checker_body_arena_pack_patterns(v_0, v_345), v_1004560 => checker_continuation_3336(v_1004560, v_347, v_348, v_346, v_349)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_patterns{v_0, v_345}}, False{}, v_1004567 => checker_body_arena_pack_patterns(v_0, v_345), v_1004563 => checker_continuation_3335(v_1004563, v_347, v_348, v_346, v_349)}
     case Ast.BodyReply{v_371, v_372}:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_371}}, v_1004565 => checker_continuation_3337(v_1004565, v_372)}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_371}}, v_1004568 => checker_continuation_3336(v_1004568, v_372)}
 
 def checker_body_arena_pack_term(v_0: Arena.Arena, v_1: Ast.SyntaxTerm) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  checker_match_3338(v_1, v_0)
+  checker_match_3337(v_1, v_0)
 
-def checker_match_3339(v_1: Ast.SyntaxPattern, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+def checker_match_3338(v_1: Ast.SyntaxPattern, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, U32)>:
   match v_1:
     case Ast.PatternVar{v_7, v_8, v_9, v_10}:
       CheckerFinished{checker_pure_arena_pack_pattern_name_result_43(Arena.name(v_0, v_7), v_8, v_9, v_10)}
     case Ast.PatternCtr{v_15, v_16, v_17}:
-      CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_pack_pattern_name_result_44{Arena.name(v_0, v_15), v_16, v_17}}, v_1004566 => CheckerFinished{v_1004566}}
+      CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_pack_pattern_name_result_44{Arena.name(v_0, v_15), v_16, v_17}}, v_1004569 => CheckerFinished{v_1004569}}
 
 def checker_body_arena_pack_pattern(v_0: Arena.Arena, v_1: Ast.SyntaxPattern) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  checker_match_3339(v_1, v_0)
+  checker_match_3338(v_1, v_0)
 
-def checker_match_3340(v_1: Ast.TelescopeItem, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+def checker_match_3339(v_1: Ast.TelescopeItem, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, U32)>:
   match v_1:
     case Ast.Binder{v_8, v_9, v_10, v_11, v_12}:
-      CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_pack_binder_name_result_45{Arena.name(v_0, v_9), v_11, v_8, v_10, v_12}}, v_1004567 => CheckerFinished{v_1004567}}
+      CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_pack_binder_name_result_45{Arena.name(v_0, v_9), v_11, v_8, v_10, v_12}}, v_1004570 => CheckerFinished{v_1004570}}
     case Ast.TemplateBinder{v_18, v_19, v_20, v_21}:
-      CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_pack_binder_name_result_46{Arena.name(v_0, v_18), v_20, v_19, v_21}}, v_1004568 => CheckerFinished{v_1004568}}
+      CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_pack_binder_name_result_46{Arena.name(v_0, v_18), v_20, v_19, v_21}}, v_1004571 => CheckerFinished{v_1004571}}
 
 def checker_body_arena_pack_binder(v_0: Arena.Arena, v_1: Ast.TelescopeItem) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  checker_match_3340(v_1, v_0)
+  checker_match_3339(v_1, v_0)
 
-def checker_continuation_3341(v_1004570: Pair(Arena.Arena, Maybe<&2, U32>), v_8: Bool, v_9: Ast.Quantity, v_10: String, v_18: U32, v_13: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, IR.Clause)>:
-  (v_22, v_23) = v_1004570
+def checker_continuation_3340(v_1004573: Pair(Arena.Arena, Maybe<&2, U32>), v_8: Bool, v_9: Ast.Quantity, v_10: String, v_18: U32, v_13: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, IR.Clause)>:
+  (v_22, v_23) = v_1004573
   CheckerFinished{(v_22, IR.ClauseFor{v_8, v_9, v_10, v_18, v_23, v_13})}
 
-def checker_continuation_3342(v_1004569: Pair(Arena.Arena, U32), v_12: Maybe<&2, Ast.SyntaxTerm>, v_8: Bool, v_9: Ast.Quantity, v_10: String, v_13: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, IR.Clause)>:
-  (v_17, v_18) = v_1004569
-  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_maybe_term{v_17, v_12}}, v_1004570 => checker_continuation_3341(v_1004570, v_8, v_9, v_10, v_18, v_13)}
+def checker_continuation_3341(v_1004572: Pair(Arena.Arena, U32), v_12: Maybe<&2, Ast.SyntaxTerm>, v_8: Bool, v_9: Ast.Quantity, v_10: String, v_13: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, IR.Clause)>:
+  (v_17, v_18) = v_1004572
+  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_maybe_term{v_17, v_12}}, v_1004573 => checker_continuation_3340(v_1004573, v_8, v_9, v_10, v_18, v_13)}
 
-def checker_match_3343(v_1: Ast.Clause, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, IR.Clause)>:
+def checker_match_3342(v_1: Ast.Clause, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, IR.Clause)>:
   match v_1:
     case Ast.ClauseFor{v_8, v_9, v_10, v_11, v_12, v_13}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_11}}, False{}, v_1004571 => checker_body_arena_pack_term(v_0, v_11), v_1004569 => checker_continuation_3342(v_1004569, v_12, v_8, v_9, v_10, v_13)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_11}}, False{}, v_1004574 => checker_body_arena_pack_term(v_0, v_11), v_1004572 => checker_continuation_3341(v_1004572, v_12, v_8, v_9, v_10, v_13)}
 
 def checker_body_arena_pack_clause(v_0: Arena.Arena, v_1: Ast.Clause) -> CheckerProgress<Pair(Arena.Arena, IR.Clause)>:
-  checker_match_3343(v_1, v_0)
+  checker_match_3342(v_1, v_0)
 
-def checker_continuation_3344(v_1004572: Pair(Arena.Arena, Pair(U32, U32)), v_5: String, v_7: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, IR.ConstructorDecl)>:
-  (v_11, v_12) = v_1004572
+def checker_continuation_3343(v_1004575: Pair(Arena.Arena, Pair(U32, U32)), v_5: String, v_7: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, IR.ConstructorDecl)>:
+  (v_11, v_12) = v_1004575
   (v_15, v_16) = v_12
   v_18 = {IR.Words{v_15, v_16} : IR.Words}
   CheckerFinished{(v_11, IR.Constructor{v_5, v_18, v_7})}
 
-def checker_match_3345(v_1: Ast.ConstructorDecl, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, IR.ConstructorDecl)>:
+def checker_match_3344(v_1: Ast.ConstructorDecl, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, IR.ConstructorDecl)>:
   match v_1:
     case Ast.Constructor{v_5, v_6, v_7}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_binders{v_0, v_6}}, False{}, v_1004573 => checker_body_arena_pack_binders(v_0, v_6), v_1004572 => checker_continuation_3344(v_1004572, v_5, v_7)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_binders{v_0, v_6}}, False{}, v_1004576 => checker_body_arena_pack_binders(v_0, v_6), v_1004575 => checker_continuation_3343(v_1004575, v_5, v_7)}
 
 def checker_body_arena_pack_constructor_decl(v_0: Arena.Arena, v_1: Ast.ConstructorDecl) -> CheckerProgress<Pair(Arena.Arena, IR.ConstructorDecl)>:
-  checker_match_3345(v_1, v_0)
+  checker_match_3344(v_1, v_0)
 
-def checker_continuation_3346(v_1004574: Pair(Arena.Arena, U32)) -> CheckerProgress<Pair(Arena.Arena, IR.DefBody)>:
-  (v_7, v_8) = v_1004574
+def checker_continuation_3345(v_1004577: Pair(Arena.Arena, U32)) -> CheckerProgress<Pair(Arena.Arena, IR.DefBody)>:
+  (v_7, v_8) = v_1004577
   CheckerFinished{(v_7, IR.DefTerm{v_8})}
 
-def checker_continuation_3347(v_1004576: Pair(Arena.Arena, Pair(U32, U32))) -> CheckerProgress<Pair(Arena.Arena, IR.DefBody)>:
-  (v_14, v_15) = v_1004576
+def checker_continuation_3346(v_1004579: Pair(Arena.Arena, Pair(U32, U32))) -> CheckerProgress<Pair(Arena.Arena, IR.DefBody)>:
+  (v_14, v_15) = v_1004579
   (v_18, v_19) = v_15
   v_21 = {IR.Names{v_18, v_19} : IR.Names}
   CheckerFinished{(v_14, IR.DefImports{v_21})}
 
-def checker_match_3348(v_1: Ast.DefBody, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, IR.DefBody)>:
+def checker_match_3347(v_1: Ast.DefBody, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, IR.DefBody)>:
   match v_1:
     case Ast.DefTerm{v_3}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_3}}, False{}, v_1004575 => checker_body_arena_pack_term(v_0, v_3), v_1004574 => checker_continuation_3346(v_1004574)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_3}}, False{}, v_1004578 => checker_body_arena_pack_term(v_0, v_3), v_1004577 => checker_continuation_3345(v_1004577)}
     case Ast.DefImports{v_10}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_names{v_0, v_10}}, False{}, v_1004577 => checker_body_arena_pack_names(v_0, v_10), v_1004576 => checker_continuation_3347(v_1004576)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_names{v_0, v_10}}, False{}, v_1004580 => checker_body_arena_pack_names(v_0, v_10), v_1004579 => checker_continuation_3346(v_1004579)}
 
 def checker_body_arena_pack_def_body(v_0: Arena.Arena, v_1: Ast.DefBody) -> CheckerProgress<Pair(Arena.Arena, IR.DefBody)>:
-  checker_match_3348(v_1, v_0)
+  checker_match_3347(v_1, v_0)
 
-def checker_continuation_3349(v_1004578: Pair(Arena.Arena, U32)) -> CheckerProgress<Pair(Arena.Arena, IR.OptionalTerm)>:
-  (v_7, v_8) = v_1004578
+def checker_continuation_3348(v_1004581: Pair(Arena.Arena, U32)) -> CheckerProgress<Pair(Arena.Arena, IR.OptionalTerm)>:
+  (v_7, v_8) = v_1004581
   CheckerFinished{(v_7, IR.SomeTerm{v_8})}
 
-def checker_match_3350(v_1: Ast.OptionalTerm, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, IR.OptionalTerm)>:
+def checker_match_3349(v_1: Ast.OptionalTerm, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, IR.OptionalTerm)>:
   match v_1:
     case Ast.NoTerm{}:
       CheckerFinished{(v_0, IR.NoTerm{})}
     case Ast.SomeTerm{v_3}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_3}}, False{}, v_1004579 => checker_body_arena_pack_term(v_0, v_3), v_1004578 => checker_continuation_3349(v_1004578)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_3}}, False{}, v_1004582 => checker_body_arena_pack_term(v_0, v_3), v_1004581 => checker_continuation_3348(v_1004581)}
 
 def checker_body_arena_pack_optional_term(v_0: Arena.Arena, v_1: Ast.OptionalTerm) -> CheckerProgress<Pair(Arena.Arena, IR.OptionalTerm)>:
-  checker_match_3350(v_1, v_0)
+  checker_match_3349(v_1, v_0)
 
-def checker_continuation_3351(v_1004582: Pair(Arena.Arena, IR.DefBody), v_8: String, v_24: IR.Words, v_29: IR.OptionalTerm, v_12: Bool, v_13: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, IR.Definition)>:
-  (v_33, v_34) = v_1004582
+def checker_continuation_3350(v_1004585: Pair(Arena.Arena, IR.DefBody), v_8: String, v_24: IR.Words, v_29: IR.OptionalTerm, v_12: Bool, v_13: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, IR.Definition)>:
+  (v_33, v_34) = v_1004585
   CheckerFinished{(v_33, IR.Definition{v_8, v_24, v_29, v_34, v_12, v_13})}
 
-def checker_continuation_3352(v_1004581: Pair(Arena.Arena, IR.OptionalTerm), v_11: Ast.DefBody, v_8: String, v_24: IR.Words, v_12: Bool, v_13: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, IR.Definition)>:
-  (v_28, v_29) = v_1004581
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_def_body{v_28, v_11}}, False{}, v_1004583 => checker_body_arena_pack_def_body(v_28, v_11), v_1004582 => checker_continuation_3351(v_1004582, v_8, v_24, v_29, v_12, v_13)}
+def checker_continuation_3351(v_1004584: Pair(Arena.Arena, IR.OptionalTerm), v_11: Ast.DefBody, v_8: String, v_24: IR.Words, v_12: Bool, v_13: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, IR.Definition)>:
+  (v_28, v_29) = v_1004584
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_def_body{v_28, v_11}}, False{}, v_1004586 => checker_body_arena_pack_def_body(v_28, v_11), v_1004585 => checker_continuation_3350(v_1004585, v_8, v_24, v_29, v_12, v_13)}
 
-def checker_continuation_3353(v_1004580: Pair(Arena.Arena, Pair(U32, U32)), v_10: Ast.OptionalTerm, v_11: Ast.DefBody, v_8: String, v_12: Bool, v_13: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, IR.Definition)>:
-  (v_17, v_18) = v_1004580
+def checker_continuation_3352(v_1004583: Pair(Arena.Arena, Pair(U32, U32)), v_10: Ast.OptionalTerm, v_11: Ast.DefBody, v_8: String, v_12: Bool, v_13: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, IR.Definition)>:
+  (v_17, v_18) = v_1004583
   (v_21, v_22) = v_18
   v_24 = {IR.Words{v_21, v_22} : IR.Words}
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_optional_term{v_17, v_10}}, False{}, v_1004584 => checker_body_arena_pack_optional_term(v_17, v_10), v_1004581 => checker_continuation_3352(v_1004581, v_11, v_8, v_24, v_12, v_13)}
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_optional_term{v_17, v_10}}, False{}, v_1004587 => checker_body_arena_pack_optional_term(v_17, v_10), v_1004584 => checker_continuation_3351(v_1004584, v_11, v_8, v_24, v_12, v_13)}
 
-def checker_match_3354(v_1: Ast.Definition, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, IR.Definition)>:
+def checker_match_3353(v_1: Ast.Definition, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, IR.Definition)>:
   match v_1:
     case Ast.Definition{v_8, v_9, v_10, v_11, v_12, v_13}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_binders{v_0, v_9}}, False{}, v_1004585 => checker_body_arena_pack_binders(v_0, v_9), v_1004580 => checker_continuation_3353(v_1004580, v_10, v_11, v_8, v_12, v_13)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_binders{v_0, v_9}}, False{}, v_1004588 => checker_body_arena_pack_binders(v_0, v_9), v_1004583 => checker_continuation_3352(v_1004583, v_10, v_11, v_8, v_12, v_13)}
 
 def checker_body_arena_pack_definition(v_0: Arena.Arena, v_1: Ast.Definition) -> CheckerProgress<Pair(Arena.Arena, IR.Definition)>:
-  checker_match_3354(v_1, v_0)
+  checker_match_3353(v_1, v_0)
 
-def checker_continuation_3355(v_1004588: Pair(Arena.Arena, List<&2, IR.ConstructorDecl>), v_7: String, v_22: IR.Words, v_27: U32, v_11: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, IR.TypeDecl)>:
-  (v_31, v_32) = v_1004588
+def checker_continuation_3354(v_1004591: Pair(Arena.Arena, List<&2, IR.ConstructorDecl>), v_7: String, v_22: IR.Words, v_27: U32, v_11: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, IR.TypeDecl)>:
+  (v_31, v_32) = v_1004591
   CheckerFinished{(v_31, IR.TypeDecl{v_7, v_22, v_27, v_32, v_11})}
 
-def checker_continuation_3356(v_1004587: Pair(Arena.Arena, U32), v_10: List<&2, Ast.ConstructorDecl>, v_7: String, v_22: IR.Words, v_11: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, IR.TypeDecl)>:
-  (v_26, v_27) = v_1004587
-  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_constructor_decl_list{v_26, v_10}}, v_1004588 => checker_continuation_3355(v_1004588, v_7, v_22, v_27, v_11)}
+def checker_continuation_3355(v_1004590: Pair(Arena.Arena, U32), v_10: List<&2, Ast.ConstructorDecl>, v_7: String, v_22: IR.Words, v_11: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, IR.TypeDecl)>:
+  (v_26, v_27) = v_1004590
+  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_constructor_decl_list{v_26, v_10}}, v_1004591 => checker_continuation_3354(v_1004591, v_7, v_22, v_27, v_11)}
 
-def checker_continuation_3357(v_1004586: Pair(Arena.Arena, Pair(U32, U32)), v_9: Ast.SyntaxTerm, v_10: List<&2, Ast.ConstructorDecl>, v_7: String, v_11: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, IR.TypeDecl)>:
-  (v_15, v_16) = v_1004586
+def checker_continuation_3356(v_1004589: Pair(Arena.Arena, Pair(U32, U32)), v_9: Ast.SyntaxTerm, v_10: List<&2, Ast.ConstructorDecl>, v_7: String, v_11: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, IR.TypeDecl)>:
+  (v_15, v_16) = v_1004589
   (v_19, v_20) = v_16
   v_22 = {IR.Words{v_19, v_20} : IR.Words}
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_15, v_9}}, False{}, v_1004589 => checker_body_arena_pack_term(v_15, v_9), v_1004587 => checker_continuation_3356(v_1004587, v_10, v_7, v_22, v_11)}
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_15, v_9}}, False{}, v_1004592 => checker_body_arena_pack_term(v_15, v_9), v_1004590 => checker_continuation_3355(v_1004590, v_10, v_7, v_22, v_11)}
 
-def checker_match_3358(v_1: Ast.TypeDecl, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, IR.TypeDecl)>:
+def checker_match_3357(v_1: Ast.TypeDecl, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, IR.TypeDecl)>:
   match v_1:
     case Ast.TypeDecl{v_7, v_8, v_9, v_10, v_11}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_binders{v_0, v_8}}, False{}, v_1004590 => checker_body_arena_pack_binders(v_0, v_8), v_1004586 => checker_continuation_3357(v_1004586, v_9, v_10, v_7, v_11)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_binders{v_0, v_8}}, False{}, v_1004593 => checker_body_arena_pack_binders(v_0, v_8), v_1004589 => checker_continuation_3356(v_1004589, v_9, v_10, v_7, v_11)}
 
 def checker_body_arena_pack_type_decl(v_0: Arena.Arena, v_1: Ast.TypeDecl) -> CheckerProgress<Pair(Arena.Arena, IR.TypeDecl)>:
-  checker_match_3358(v_1, v_0)
+  checker_match_3357(v_1, v_0)
 
-def checker_continuation_3359(v_1004592: Pair(Arena.Arena, U32), v_6: String, v_14: List<&2, IR.Clause>, v_9: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, IR.LawDecl)>:
-  (v_18, v_19) = v_1004592
+def checker_continuation_3358(v_1004595: Pair(Arena.Arena, U32), v_6: String, v_14: List<&2, IR.Clause>, v_9: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, IR.LawDecl)>:
+  (v_18, v_19) = v_1004595
   CheckerFinished{(v_18, IR.LawDecl{v_6, v_14, v_19, v_9})}
 
-def checker_continuation_3360(v_1004591: Pair(Arena.Arena, List<&2, IR.Clause>), v_8: Ast.SyntaxTerm, v_6: String, v_9: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, IR.LawDecl)>:
-  (v_13, v_14) = v_1004591
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_13, v_8}}, False{}, v_1004593 => checker_body_arena_pack_term(v_13, v_8), v_1004592 => checker_continuation_3359(v_1004592, v_6, v_14, v_9)}
+def checker_continuation_3359(v_1004594: Pair(Arena.Arena, List<&2, IR.Clause>), v_8: Ast.SyntaxTerm, v_6: String, v_9: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, IR.LawDecl)>:
+  (v_13, v_14) = v_1004594
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_13, v_8}}, False{}, v_1004596 => checker_body_arena_pack_term(v_13, v_8), v_1004595 => checker_continuation_3358(v_1004595, v_6, v_14, v_9)}
 
-def checker_match_3361(v_1: Ast.LawDecl, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, IR.LawDecl)>:
+def checker_match_3360(v_1: Ast.LawDecl, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, IR.LawDecl)>:
   match v_1:
     case Ast.LawDecl{v_6, v_7, v_8, v_9}:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_clause_list{v_0, v_7}}, v_1004591 => checker_continuation_3360(v_1004591, v_8, v_6, v_9)}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_clause_list{v_0, v_7}}, v_1004594 => checker_continuation_3359(v_1004594, v_8, v_6, v_9)}
 
 def checker_body_arena_pack_law_decl(v_0: Arena.Arena, v_1: Ast.LawDecl) -> CheckerProgress<Pair(Arena.Arena, IR.LawDecl)>:
-  checker_match_3361(v_1, v_0)
+  checker_match_3360(v_1, v_0)
 
-def checker_continuation_3362(v_1004594: Pair(Arena.Arena, IR.Definition)) -> CheckerProgress<Pair(Arena.Arena, IR.TopLevel)>:
-  (v_7, v_8) = v_1004594
+def checker_continuation_3361(v_1004597: Pair(Arena.Arena, IR.Definition)) -> CheckerProgress<Pair(Arena.Arena, IR.TopLevel)>:
+  (v_7, v_8) = v_1004597
   CheckerFinished{(v_7, IR.DefTop{v_8})}
 
-def checker_continuation_3363(v_1004596: Pair(Arena.Arena, IR.TypeDecl)) -> CheckerProgress<Pair(Arena.Arena, IR.TopLevel)>:
-  (v_14, v_15) = v_1004596
+def checker_continuation_3362(v_1004599: Pair(Arena.Arena, IR.TypeDecl)) -> CheckerProgress<Pair(Arena.Arena, IR.TopLevel)>:
+  (v_14, v_15) = v_1004599
   CheckerFinished{(v_14, IR.TypeTop{v_15})}
 
-def checker_continuation_3364(v_1004598: Pair(Arena.Arena, IR.LawDecl)) -> CheckerProgress<Pair(Arena.Arena, IR.TopLevel)>:
-  (v_21, v_22) = v_1004598
+def checker_continuation_3363(v_1004601: Pair(Arena.Arena, IR.LawDecl)) -> CheckerProgress<Pair(Arena.Arena, IR.TopLevel)>:
+  (v_21, v_22) = v_1004601
   CheckerFinished{(v_21, IR.LawTop{v_22})}
 
-def checker_match_3365(v_1: Ast.TopLevel, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, IR.TopLevel)>:
+def checker_match_3364(v_1: Ast.TopLevel, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, IR.TopLevel)>:
   match v_1:
     case Ast.DefTop{v_3}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_definition{v_0, v_3}}, False{}, v_1004595 => checker_body_arena_pack_definition(v_0, v_3), v_1004594 => checker_continuation_3362(v_1004594)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_definition{v_0, v_3}}, False{}, v_1004598 => checker_body_arena_pack_definition(v_0, v_3), v_1004597 => checker_continuation_3361(v_1004597)}
     case Ast.TypeTop{v_10}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_type_decl{v_0, v_10}}, False{}, v_1004597 => checker_body_arena_pack_type_decl(v_0, v_10), v_1004596 => checker_continuation_3363(v_1004596)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_type_decl{v_0, v_10}}, False{}, v_1004600 => checker_body_arena_pack_type_decl(v_0, v_10), v_1004599 => checker_continuation_3362(v_1004599)}
     case Ast.LawTop{v_17}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_law_decl{v_0, v_17}}, False{}, v_1004599 => checker_body_arena_pack_law_decl(v_0, v_17), v_1004598 => checker_continuation_3364(v_1004598)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_law_decl{v_0, v_17}}, False{}, v_1004602 => checker_body_arena_pack_law_decl(v_0, v_17), v_1004601 => checker_continuation_3363(v_1004601)}
 
 def checker_body_arena_pack_top_level(v_0: Arena.Arena, v_1: Ast.TopLevel) -> CheckerProgress<Pair(Arena.Arena, IR.TopLevel)>:
-  checker_match_3365(v_1, v_0)
+  checker_match_3364(v_1, v_0)
 
-def checker_continuation_3366(v_1004600: Pair(Arena.Arena, List<&2, IR.TopLevel>), v_5: String, v_6: List<&2, Ast.ModuleImport>) -> CheckerProgress<Pair(Arena.Arena, IR.Module)>:
-  (v_11, v_12) = v_1004600
+def checker_continuation_3365(v_1004603: Pair(Arena.Arena, List<&2, IR.TopLevel>), v_5: String, v_6: List<&2, Ast.ModuleImport>) -> CheckerProgress<Pair(Arena.Arena, IR.Module)>:
+  (v_11, v_12) = v_1004603
   CheckerFinished{(v_11, IR.Module{v_5, v_6, v_12})}
 
-def checker_match_3367(v_1: Ast.Module, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, IR.Module)>:
+def checker_match_3366(v_1: Ast.Module, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, IR.Module)>:
   match v_1:
     case Ast.Module{v_5, v_6, v_7}:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_top_level_list{v_0, v_7}}, v_1004600 => checker_continuation_3366(v_1004600, v_5, v_6)}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_top_level_list{v_0, v_7}}, v_1004603 => checker_continuation_3365(v_1004603, v_5, v_6)}
 
 def checker_body_arena_pack_module(v_0: Arena.Arena, v_1: Ast.Module) -> CheckerProgress<Pair(Arena.Arena, IR.Module)>:
-  checker_match_3367(v_1, v_0)
+  checker_match_3366(v_1, v_0)
 
-def checker_continuation_3368(v_1004601: Pair(Arena.Arena, U32)) -> CheckerProgress<Pair(Arena.Arena, Maybe<&2, U32>)>:
-  (v_10, v_11) = v_1004601
+def checker_continuation_3367(v_1004604: Pair(Arena.Arena, U32)) -> CheckerProgress<Pair(Arena.Arena, Maybe<&2, U32>)>:
+  (v_10, v_11) = v_1004604
   CheckerFinished{(v_10, Some{v_11})}
 
-def checker_match_3369(v_2: Maybe<&2, Ast.SyntaxTerm>, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Maybe<&2, U32>)>:
+def checker_match_3368(v_2: Maybe<&2, Ast.SyntaxTerm>, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Maybe<&2, U32>)>:
   match v_2:
     case None{}:
       CheckerFinished{(v_0, None{})}
     case Some{v_6}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_6}}, False{}, v_1004602 => checker_body_arena_pack_term(v_0, v_6), v_1004601 => checker_continuation_3368(v_1004601)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_6}}, False{}, v_1004605 => checker_body_arena_pack_term(v_0, v_6), v_1004604 => checker_continuation_3367(v_1004604)}
 
 def checker_body_arena_pack_maybe_term(v_0: Arena.Arena, v_2: Maybe<&2, Ast.SyntaxTerm>) -> CheckerProgress<Pair(Arena.Arena, Maybe<&2, U32>)>:
-  checker_match_3369(v_2, v_0)
+  checker_match_3368(v_2, v_0)
 
-def checker_continuation_3370(v_1004604: Pair(Arena.Arena, List<&2, IR.ConstructorDecl>), v_12: IR.ConstructorDecl) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.ConstructorDecl>)>:
-  (v_16, v_17) = v_1004604
-  CheckerFinished{(v_16, v_12 <> v_17)}
-
-def checker_continuation_3371(v_1004603: Pair(Arena.Arena, IR.ConstructorDecl), v_7: List<&2, Ast.ConstructorDecl>) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.ConstructorDecl>)>:
-  (v_11, v_12) = v_1004603
-  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_constructor_decl_list{v_11, v_7}}, v_1004604 => checker_continuation_3370(v_1004604, v_12)}
-
-def checker_match_3372(v_2: List<&2, Ast.ConstructorDecl>, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.ConstructorDecl>)>:
-  match v_2:
-    case []:
-      CheckerFinished{(v_0, [])}
-    case v_6 <> v_7:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_constructor_decl{v_0, v_6}}, False{}, v_1004605 => checker_body_arena_pack_constructor_decl(v_0, v_6), v_1004603 => checker_continuation_3371(v_1004603, v_7)}
-
-def checker_body_arena_pack_constructor_decl_list(v_0: Arena.Arena, v_2: List<&2, Ast.ConstructorDecl>) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.ConstructorDecl>)>:
-  checker_match_3372(v_2, v_0)
-
-def checker_continuation_3373(v_1004607: Pair(Arena.Arena, List<&2, IR.Clause>), v_12: IR.Clause) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.Clause>)>:
+def checker_continuation_3369(v_1004607: Pair(Arena.Arena, List<&2, IR.ConstructorDecl>), v_12: IR.ConstructorDecl) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.ConstructorDecl>)>:
   (v_16, v_17) = v_1004607
   CheckerFinished{(v_16, v_12 <> v_17)}
 
-def checker_continuation_3374(v_1004606: Pair(Arena.Arena, IR.Clause), v_7: List<&2, Ast.Clause>) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.Clause>)>:
+def checker_continuation_3370(v_1004606: Pair(Arena.Arena, IR.ConstructorDecl), v_7: List<&2, Ast.ConstructorDecl>) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.ConstructorDecl>)>:
   (v_11, v_12) = v_1004606
-  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_clause_list{v_11, v_7}}, v_1004607 => checker_continuation_3373(v_1004607, v_12)}
+  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_constructor_decl_list{v_11, v_7}}, v_1004607 => checker_continuation_3369(v_1004607, v_12)}
 
-def checker_match_3375(v_2: List<&2, Ast.Clause>, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.Clause>)>:
+def checker_match_3371(v_2: List<&2, Ast.ConstructorDecl>, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.ConstructorDecl>)>:
   match v_2:
     case []:
       CheckerFinished{(v_0, [])}
     case v_6 <> v_7:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_clause{v_0, v_6}}, False{}, v_1004608 => checker_body_arena_pack_clause(v_0, v_6), v_1004606 => checker_continuation_3374(v_1004606, v_7)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_constructor_decl{v_0, v_6}}, False{}, v_1004608 => checker_body_arena_pack_constructor_decl(v_0, v_6), v_1004606 => checker_continuation_3370(v_1004606, v_7)}
 
-def checker_body_arena_pack_clause_list(v_0: Arena.Arena, v_2: List<&2, Ast.Clause>) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.Clause>)>:
-  checker_match_3375(v_2, v_0)
+def checker_body_arena_pack_constructor_decl_list(v_0: Arena.Arena, v_2: List<&2, Ast.ConstructorDecl>) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.ConstructorDecl>)>:
+  checker_match_3371(v_2, v_0)
 
-def checker_continuation_3376(v_1004610: Pair(Arena.Arena, List<&2, IR.TopLevel>), v_12: IR.TopLevel) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.TopLevel>)>:
+def checker_continuation_3372(v_1004610: Pair(Arena.Arena, List<&2, IR.Clause>), v_12: IR.Clause) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.Clause>)>:
   (v_16, v_17) = v_1004610
   CheckerFinished{(v_16, v_12 <> v_17)}
 
-def checker_continuation_3377(v_1004609: Pair(Arena.Arena, IR.TopLevel), v_7: List<&2, Ast.TopLevel>) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.TopLevel>)>:
+def checker_continuation_3373(v_1004609: Pair(Arena.Arena, IR.Clause), v_7: List<&2, Ast.Clause>) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.Clause>)>:
   (v_11, v_12) = v_1004609
-  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_top_level_list{v_11, v_7}}, v_1004610 => checker_continuation_3376(v_1004610, v_12)}
+  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_clause_list{v_11, v_7}}, v_1004610 => checker_continuation_3372(v_1004610, v_12)}
 
-def checker_match_3378(v_2: List<&2, Ast.TopLevel>, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.TopLevel>)>:
+def checker_match_3374(v_2: List<&2, Ast.Clause>, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.Clause>)>:
   match v_2:
     case []:
       CheckerFinished{(v_0, [])}
     case v_6 <> v_7:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_top_level{v_0, v_6}}, False{}, v_1004611 => checker_body_arena_pack_top_level(v_0, v_6), v_1004609 => checker_continuation_3377(v_1004609, v_7)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_clause{v_0, v_6}}, False{}, v_1004611 => checker_body_arena_pack_clause(v_0, v_6), v_1004609 => checker_continuation_3373(v_1004609, v_7)}
+
+def checker_body_arena_pack_clause_list(v_0: Arena.Arena, v_2: List<&2, Ast.Clause>) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.Clause>)>:
+  checker_match_3374(v_2, v_0)
+
+def checker_continuation_3375(v_1004613: Pair(Arena.Arena, List<&2, IR.TopLevel>), v_12: IR.TopLevel) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.TopLevel>)>:
+  (v_16, v_17) = v_1004613
+  CheckerFinished{(v_16, v_12 <> v_17)}
+
+def checker_continuation_3376(v_1004612: Pair(Arena.Arena, IR.TopLevel), v_7: List<&2, Ast.TopLevel>) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.TopLevel>)>:
+  (v_11, v_12) = v_1004612
+  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_pack_top_level_list{v_11, v_7}}, v_1004613 => checker_continuation_3375(v_1004613, v_12)}
+
+def checker_match_3377(v_2: List<&2, Ast.TopLevel>, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.TopLevel>)>:
+  match v_2:
+    case []:
+      CheckerFinished{(v_0, [])}
+    case v_6 <> v_7:
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_top_level{v_0, v_6}}, False{}, v_1004614 => checker_body_arena_pack_top_level(v_0, v_6), v_1004612 => checker_continuation_3376(v_1004612, v_7)}
 
 def checker_body_arena_pack_top_level_list(v_0: Arena.Arena, v_2: List<&2, Ast.TopLevel>) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.TopLevel>)>:
-  checker_match_3378(v_2, v_0)
+  checker_match_3377(v_2, v_0)
 
-def checker_continuation_3379(v_1004613: ArenaResult<Maybe<&2, U32>>, v_10: Bool, v_11: Ast.Quantity, v_12: String, v_20: U32, v_15: Ast.SourceSpan) -> CheckerProgress<ArenaResult<IR.Clause>>:
-  ArenaResult{v_24, v_25} = v_1004613
+def checker_continuation_3378(v_1004616: ArenaResult<Maybe<&2, U32>>, v_10: Bool, v_11: Ast.Quantity, v_12: String, v_20: U32, v_15: Ast.SourceSpan) -> CheckerProgress<ArenaResult<IR.Clause>>:
+  ArenaResult{v_24, v_25} = v_1004616
   CheckerFinished{{ArenaResult{v_24, IR.ClauseFor{v_10, v_11, v_12, v_20, v_25, v_15}} : ArenaResult<IR.Clause>}}
 
-def checker_continuation_3380(v_1004612: ArenaResult<U32>, v_14: Maybe<&2, U32>, v_10: Bool, v_11: Ast.Quantity, v_12: String, v_15: Ast.SourceSpan) -> CheckerProgress<ArenaResult<IR.Clause>>:
-  ArenaResult{v_19, v_20} = v_1004612
-  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_publish_maybe_term{v_19, v_14}}, v_1004613 => checker_continuation_3379(v_1004613, v_10, v_11, v_12, v_20, v_15)}
+def checker_continuation_3379(v_1004615: ArenaResult<U32>, v_14: Maybe<&2, U32>, v_10: Bool, v_11: Ast.Quantity, v_12: String, v_15: Ast.SourceSpan) -> CheckerProgress<ArenaResult<IR.Clause>>:
+  ArenaResult{v_19, v_20} = v_1004615
+  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_publish_maybe_term{v_19, v_14}}, v_1004616 => checker_continuation_3378(v_1004616, v_10, v_11, v_12, v_20, v_15)}
 
-def checker_match_3381(v_2: IR.Clause, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.Clause>>:
+def checker_match_3380(v_2: IR.Clause, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.Clause>>:
   match v_2:
     case IR.ClauseFor{v_10, v_11, v_12, v_13, v_14, v_15}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_13}}, False{}, v_1004614 => checker_body_arena_publish_term(v_1, v_13), v_1004612 => checker_continuation_3380(v_1004612, v_14, v_10, v_11, v_12, v_15)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_13}}, False{}, v_1004617 => checker_body_arena_publish_term(v_1, v_13), v_1004615 => checker_continuation_3379(v_1004615, v_14, v_10, v_11, v_12, v_15)}
 
 def checker_body_arena_publish_clause(v_1: ArenaStore, v_2: IR.Clause) -> CheckerProgress<ArenaResult<IR.Clause>>:
-  checker_match_3381(v_2, v_1)
+  checker_match_3380(v_2, v_1)
 
-def checker_continuation_3382(v_1004615: ArenaResult<IR.Words>, v_7: String, v_9: Ast.SourceSpan) -> CheckerProgress<ArenaResult<IR.ConstructorDecl>>:
-  ArenaResult{v_13, v_14} = v_1004615
+def checker_continuation_3381(v_1004618: ArenaResult<IR.Words>, v_7: String, v_9: Ast.SourceSpan) -> CheckerProgress<ArenaResult<IR.ConstructorDecl>>:
+  ArenaResult{v_13, v_14} = v_1004618
   CheckerFinished{{ArenaResult{v_13, IR.Constructor{v_7, v_14, v_9}} : ArenaResult<IR.ConstructorDecl>}}
 
-def checker_match_3383(v_2: IR.ConstructorDecl, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.ConstructorDecl>>:
+def checker_match_3382(v_2: IR.ConstructorDecl, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.ConstructorDecl>>:
   match v_2:
     case IR.Constructor{v_7, v_8, v_9}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_binders{v_1, v_8}}, False{}, v_1004616 => checker_body_arena_publish_binders(v_1, v_8), v_1004615 => checker_continuation_3382(v_1004615, v_7, v_9)}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_binders{v_1, v_8}}, False{}, v_1004619 => checker_body_arena_publish_binders(v_1, v_8), v_1004618 => checker_continuation_3381(v_1004618, v_7, v_9)}
 
 def checker_body_arena_publish_constructor_decl(v_1: ArenaStore, v_2: IR.ConstructorDecl) -> CheckerProgress<ArenaResult<IR.ConstructorDecl>>:
-  checker_match_3383(v_2, v_1)
+  checker_match_3382(v_2, v_1)
 
-def checker_continuation_3384(v_1004617: ArenaResult<U32>) -> CheckerProgress<ArenaResult<IR.DefBody>>:
-  ArenaResult{v_9, v_10} = v_1004617
+def checker_continuation_3383(v_1004620: ArenaResult<U32>) -> CheckerProgress<ArenaResult<IR.DefBody>>:
+  ArenaResult{v_9, v_10} = v_1004620
   CheckerFinished{{ArenaResult{v_9, IR.DefTerm{v_10}} : ArenaResult<IR.DefBody>}}
 
-def checker_continuation_3385(v_1004619: ArenaResult<IR.Names>) -> CheckerProgress<ArenaResult<IR.DefBody>>:
-  ArenaResult{v_17, v_18} = v_1004619
+def checker_continuation_3384(v_1004622: ArenaResult<IR.Names>) -> CheckerProgress<ArenaResult<IR.DefBody>>:
+  ArenaResult{v_17, v_18} = v_1004622
   CheckerFinished{{ArenaResult{v_17, IR.DefImports{v_18}} : ArenaResult<IR.DefBody>}}
 
-def checker_match_3386(v_2: IR.DefBody, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.DefBody>>:
+def checker_match_3385(v_2: IR.DefBody, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.DefBody>>:
   match v_2:
     case IR.DefTerm{v_5}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_5}}, False{}, v_1004618 => checker_body_arena_publish_term(v_1, v_5), v_1004617 => checker_continuation_3384(v_1004617)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_5}}, False{}, v_1004621 => checker_body_arena_publish_term(v_1, v_5), v_1004620 => checker_continuation_3383(v_1004620)}
     case IR.DefImports{v_13}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_names{v_1, v_13}}, False{}, v_1004620 => checker_body_arena_publish_names(v_1, v_13), v_1004619 => checker_continuation_3385(v_1004619)}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_names{v_1, v_13}}, False{}, v_1004623 => checker_body_arena_publish_names(v_1, v_13), v_1004622 => checker_continuation_3384(v_1004622)}
 
 def checker_body_arena_publish_def_body(v_1: ArenaStore, v_2: IR.DefBody) -> CheckerProgress<ArenaResult<IR.DefBody>>:
-  checker_match_3386(v_2, v_1)
+  checker_match_3385(v_2, v_1)
 
-def checker_continuation_3387(v_1004621: ArenaResult<U32>) -> CheckerProgress<ArenaResult<IR.OptionalTerm>>:
-  ArenaResult{v_10, v_11} = v_1004621
+def checker_continuation_3386(v_1004624: ArenaResult<U32>) -> CheckerProgress<ArenaResult<IR.OptionalTerm>>:
+  ArenaResult{v_10, v_11} = v_1004624
   CheckerFinished{{ArenaResult{v_10, IR.SomeTerm{v_11}} : ArenaResult<IR.OptionalTerm>}}
 
-def checker_match_3388(v_2: IR.OptionalTerm, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.OptionalTerm>>:
+def checker_match_3387(v_2: IR.OptionalTerm, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.OptionalTerm>>:
   match v_2:
     case IR.NoTerm{}:
       CheckerFinished{{ArenaResult{v_1, IR.NoTerm{}} : ArenaResult<IR.OptionalTerm>}}
     case IR.SomeTerm{v_6}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_6}}, False{}, v_1004622 => checker_body_arena_publish_term(v_1, v_6), v_1004621 => checker_continuation_3387(v_1004621)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_6}}, False{}, v_1004625 => checker_body_arena_publish_term(v_1, v_6), v_1004624 => checker_continuation_3386(v_1004624)}
 
 def checker_body_arena_publish_optional_term(v_1: ArenaStore, v_2: IR.OptionalTerm) -> CheckerProgress<ArenaResult<IR.OptionalTerm>>:
-  checker_match_3388(v_2, v_1)
+  checker_match_3387(v_2, v_1)
 
-def checker_continuation_3389(v_1004625: ArenaResult<IR.DefBody>, v_10: String, v_20: IR.Words, v_25: IR.OptionalTerm, v_14: Bool, v_15: Ast.SourceSpan) -> CheckerProgress<ArenaResult<IR.Definition>>:
-  ArenaResult{v_29, v_30} = v_1004625
+def checker_continuation_3388(v_1004628: ArenaResult<IR.DefBody>, v_10: String, v_20: IR.Words, v_25: IR.OptionalTerm, v_14: Bool, v_15: Ast.SourceSpan) -> CheckerProgress<ArenaResult<IR.Definition>>:
+  ArenaResult{v_29, v_30} = v_1004628
   CheckerFinished{{ArenaResult{v_29, IR.Definition{v_10, v_20, v_25, v_30, v_14, v_15}} : ArenaResult<IR.Definition>}}
 
-def checker_continuation_3390(v_1004624: ArenaResult<IR.OptionalTerm>, v_13: IR.DefBody, v_10: String, v_20: IR.Words, v_14: Bool, v_15: Ast.SourceSpan) -> CheckerProgress<ArenaResult<IR.Definition>>:
-  ArenaResult{v_24, v_25} = v_1004624
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_def_body{v_24, v_13}}, False{}, v_1004626 => checker_body_arena_publish_def_body(v_24, v_13), v_1004625 => checker_continuation_3389(v_1004625, v_10, v_20, v_25, v_14, v_15)}
+def checker_continuation_3389(v_1004627: ArenaResult<IR.OptionalTerm>, v_13: IR.DefBody, v_10: String, v_20: IR.Words, v_14: Bool, v_15: Ast.SourceSpan) -> CheckerProgress<ArenaResult<IR.Definition>>:
+  ArenaResult{v_24, v_25} = v_1004627
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_def_body{v_24, v_13}}, False{}, v_1004629 => checker_body_arena_publish_def_body(v_24, v_13), v_1004628 => checker_continuation_3388(v_1004628, v_10, v_20, v_25, v_14, v_15)}
 
-def checker_continuation_3391(v_1004623: ArenaResult<IR.Words>, v_12: IR.OptionalTerm, v_13: IR.DefBody, v_10: String, v_14: Bool, v_15: Ast.SourceSpan) -> CheckerProgress<ArenaResult<IR.Definition>>:
-  ArenaResult{v_19, v_20} = v_1004623
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_optional_term{v_19, v_12}}, False{}, v_1004627 => checker_body_arena_publish_optional_term(v_19, v_12), v_1004624 => checker_continuation_3390(v_1004624, v_13, v_10, v_20, v_14, v_15)}
+def checker_continuation_3390(v_1004626: ArenaResult<IR.Words>, v_12: IR.OptionalTerm, v_13: IR.DefBody, v_10: String, v_14: Bool, v_15: Ast.SourceSpan) -> CheckerProgress<ArenaResult<IR.Definition>>:
+  ArenaResult{v_19, v_20} = v_1004626
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_optional_term{v_19, v_12}}, False{}, v_1004630 => checker_body_arena_publish_optional_term(v_19, v_12), v_1004627 => checker_continuation_3389(v_1004627, v_13, v_10, v_20, v_14, v_15)}
 
-def checker_match_3392(v_2: IR.Definition, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.Definition>>:
+def checker_match_3391(v_2: IR.Definition, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.Definition>>:
   match v_2:
     case IR.Definition{v_10, v_11, v_12, v_13, v_14, v_15}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_binders{v_1, v_11}}, False{}, v_1004628 => checker_body_arena_publish_binders(v_1, v_11), v_1004623 => checker_continuation_3391(v_1004623, v_12, v_13, v_10, v_14, v_15)}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_binders{v_1, v_11}}, False{}, v_1004631 => checker_body_arena_publish_binders(v_1, v_11), v_1004626 => checker_continuation_3390(v_1004626, v_12, v_13, v_10, v_14, v_15)}
 
 def checker_body_arena_publish_definition(v_1: ArenaStore, v_2: IR.Definition) -> CheckerProgress<ArenaResult<IR.Definition>>:
-  checker_match_3392(v_2, v_1)
+  checker_match_3391(v_2, v_1)
 
-def checker_continuation_3393(v_1004631: ArenaResult<List<&2, IR.ConstructorDecl>>, v_9: String, v_18: IR.Words, v_23: U32, v_13: Ast.SourceSpan) -> CheckerProgress<ArenaResult<IR.TypeDecl>>:
-  ArenaResult{v_27, v_28} = v_1004631
+def checker_continuation_3392(v_1004634: ArenaResult<List<&2, IR.ConstructorDecl>>, v_9: String, v_18: IR.Words, v_23: U32, v_13: Ast.SourceSpan) -> CheckerProgress<ArenaResult<IR.TypeDecl>>:
+  ArenaResult{v_27, v_28} = v_1004634
   CheckerFinished{{ArenaResult{v_27, IR.TypeDecl{v_9, v_18, v_23, v_28, v_13}} : ArenaResult<IR.TypeDecl>}}
 
-def checker_continuation_3394(v_1004630: ArenaResult<U32>, v_12: List<&2, IR.ConstructorDecl>, v_9: String, v_18: IR.Words, v_13: Ast.SourceSpan) -> CheckerProgress<ArenaResult<IR.TypeDecl>>:
-  ArenaResult{v_22, v_23} = v_1004630
-  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_publish_constructor_decl_list{v_22, v_12}}, v_1004631 => checker_continuation_3393(v_1004631, v_9, v_18, v_23, v_13)}
+def checker_continuation_3393(v_1004633: ArenaResult<U32>, v_12: List<&2, IR.ConstructorDecl>, v_9: String, v_18: IR.Words, v_13: Ast.SourceSpan) -> CheckerProgress<ArenaResult<IR.TypeDecl>>:
+  ArenaResult{v_22, v_23} = v_1004633
+  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_publish_constructor_decl_list{v_22, v_12}}, v_1004634 => checker_continuation_3392(v_1004634, v_9, v_18, v_23, v_13)}
 
-def checker_continuation_3395(v_1004629: ArenaResult<IR.Words>, v_11: U32, v_12: List<&2, IR.ConstructorDecl>, v_9: String, v_13: Ast.SourceSpan) -> CheckerProgress<ArenaResult<IR.TypeDecl>>:
-  ArenaResult{v_17, v_18} = v_1004629
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_17, v_11}}, False{}, v_1004632 => checker_body_arena_publish_term(v_17, v_11), v_1004630 => checker_continuation_3394(v_1004630, v_12, v_9, v_18, v_13)}
+def checker_continuation_3394(v_1004632: ArenaResult<IR.Words>, v_11: U32, v_12: List<&2, IR.ConstructorDecl>, v_9: String, v_13: Ast.SourceSpan) -> CheckerProgress<ArenaResult<IR.TypeDecl>>:
+  ArenaResult{v_17, v_18} = v_1004632
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_17, v_11}}, False{}, v_1004635 => checker_body_arena_publish_term(v_17, v_11), v_1004633 => checker_continuation_3393(v_1004633, v_12, v_9, v_18, v_13)}
 
-def checker_match_3396(v_2: IR.TypeDecl, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.TypeDecl>>:
+def checker_match_3395(v_2: IR.TypeDecl, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.TypeDecl>>:
   match v_2:
     case IR.TypeDecl{v_9, v_10, v_11, v_12, v_13}:
-      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_binders{v_1, v_10}}, False{}, v_1004633 => checker_body_arena_publish_binders(v_1, v_10), v_1004629 => checker_continuation_3395(v_1004629, v_11, v_12, v_9, v_13)}
+      CheckerDirect{Bool, CheckerRequestGroup_13{CheckerRequest_arena_publish_binders{v_1, v_10}}, False{}, v_1004636 => checker_body_arena_publish_binders(v_1, v_10), v_1004632 => checker_continuation_3394(v_1004632, v_11, v_12, v_9, v_13)}
 
 def checker_body_arena_publish_type_decl(v_1: ArenaStore, v_2: IR.TypeDecl) -> CheckerProgress<ArenaResult<IR.TypeDecl>>:
-  checker_match_3396(v_2, v_1)
+  checker_match_3395(v_2, v_1)
 
-def checker_continuation_3397(v_1004635: ArenaResult<U32>, v_8: String, v_16: List<&2, IR.Clause>, v_11: Ast.SourceSpan) -> CheckerProgress<ArenaResult<IR.LawDecl>>:
-  ArenaResult{v_20, v_21} = v_1004635
+def checker_continuation_3396(v_1004638: ArenaResult<U32>, v_8: String, v_16: List<&2, IR.Clause>, v_11: Ast.SourceSpan) -> CheckerProgress<ArenaResult<IR.LawDecl>>:
+  ArenaResult{v_20, v_21} = v_1004638
   CheckerFinished{{ArenaResult{v_20, IR.LawDecl{v_8, v_16, v_21, v_11}} : ArenaResult<IR.LawDecl>}}
 
-def checker_continuation_3398(v_1004634: ArenaResult<List<&2, IR.Clause>>, v_10: U32, v_8: String, v_11: Ast.SourceSpan) -> CheckerProgress<ArenaResult<IR.LawDecl>>:
-  ArenaResult{v_15, v_16} = v_1004634
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_15, v_10}}, False{}, v_1004636 => checker_body_arena_publish_term(v_15, v_10), v_1004635 => checker_continuation_3397(v_1004635, v_8, v_16, v_11)}
+def checker_continuation_3397(v_1004637: ArenaResult<List<&2, IR.Clause>>, v_10: U32, v_8: String, v_11: Ast.SourceSpan) -> CheckerProgress<ArenaResult<IR.LawDecl>>:
+  ArenaResult{v_15, v_16} = v_1004637
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_15, v_10}}, False{}, v_1004639 => checker_body_arena_publish_term(v_15, v_10), v_1004638 => checker_continuation_3396(v_1004638, v_8, v_16, v_11)}
 
-def checker_match_3399(v_2: IR.LawDecl, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.LawDecl>>:
+def checker_match_3398(v_2: IR.LawDecl, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.LawDecl>>:
   match v_2:
     case IR.LawDecl{v_8, v_9, v_10, v_11}:
-      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_publish_clause_list{v_1, v_9}}, v_1004634 => checker_continuation_3398(v_1004634, v_10, v_8, v_11)}
+      CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_publish_clause_list{v_1, v_9}}, v_1004637 => checker_continuation_3397(v_1004637, v_10, v_8, v_11)}
 
 def checker_body_arena_publish_law_decl(v_1: ArenaStore, v_2: IR.LawDecl) -> CheckerProgress<ArenaResult<IR.LawDecl>>:
-  checker_match_3399(v_2, v_1)
+  checker_match_3398(v_2, v_1)
 
-def checker_continuation_3400(v_1004637: ArenaResult<IR.Definition>) -> CheckerProgress<ArenaResult<IR.TopLevel>>:
-  ArenaResult{v_9, v_10} = v_1004637
+def checker_continuation_3399(v_1004640: ArenaResult<IR.Definition>) -> CheckerProgress<ArenaResult<IR.TopLevel>>:
+  ArenaResult{v_9, v_10} = v_1004640
   CheckerFinished{{ArenaResult{v_9, IR.DefTop{v_10}} : ArenaResult<IR.TopLevel>}}
 
-def checker_continuation_3401(v_1004639: ArenaResult<IR.TypeDecl>) -> CheckerProgress<ArenaResult<IR.TopLevel>>:
-  ArenaResult{v_17, v_18} = v_1004639
+def checker_continuation_3400(v_1004642: ArenaResult<IR.TypeDecl>) -> CheckerProgress<ArenaResult<IR.TopLevel>>:
+  ArenaResult{v_17, v_18} = v_1004642
   CheckerFinished{{ArenaResult{v_17, IR.TypeTop{v_18}} : ArenaResult<IR.TopLevel>}}
 
-def checker_continuation_3402(v_1004641: ArenaResult<IR.LawDecl>) -> CheckerProgress<ArenaResult<IR.TopLevel>>:
-  ArenaResult{v_25, v_26} = v_1004641
+def checker_continuation_3401(v_1004644: ArenaResult<IR.LawDecl>) -> CheckerProgress<ArenaResult<IR.TopLevel>>:
+  ArenaResult{v_25, v_26} = v_1004644
   CheckerFinished{{ArenaResult{v_25, IR.LawTop{v_26}} : ArenaResult<IR.TopLevel>}}
 
-def checker_match_3403(v_2: IR.TopLevel, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.TopLevel>>:
+def checker_match_3402(v_2: IR.TopLevel, v_1: ArenaStore) -> CheckerProgress<ArenaResult<IR.TopLevel>>:
   match v_2:
     case IR.DefTop{v_5}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_definition{v_1, v_5}}, False{}, v_1004638 => checker_body_arena_publish_definition(v_1, v_5), v_1004637 => checker_continuation_3400(v_1004637)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_definition{v_1, v_5}}, False{}, v_1004641 => checker_body_arena_publish_definition(v_1, v_5), v_1004640 => checker_continuation_3399(v_1004640)}
     case IR.TypeTop{v_13}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_type_decl{v_1, v_13}}, False{}, v_1004640 => checker_body_arena_publish_type_decl(v_1, v_13), v_1004639 => checker_continuation_3401(v_1004639)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_type_decl{v_1, v_13}}, False{}, v_1004643 => checker_body_arena_publish_type_decl(v_1, v_13), v_1004642 => checker_continuation_3400(v_1004642)}
     case IR.LawTop{v_21}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_law_decl{v_1, v_21}}, False{}, v_1004642 => checker_body_arena_publish_law_decl(v_1, v_21), v_1004641 => checker_continuation_3402(v_1004641)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_law_decl{v_1, v_21}}, False{}, v_1004645 => checker_body_arena_publish_law_decl(v_1, v_21), v_1004644 => checker_continuation_3401(v_1004644)}
 
 def checker_body_arena_publish_top_level(v_1: ArenaStore, v_2: IR.TopLevel) -> CheckerProgress<ArenaResult<IR.TopLevel>>:
-  checker_match_3403(v_2, v_1)
+  checker_match_3402(v_2, v_1)
 
-def checker_continuation_3404(v_1004643: ArenaResult<U32>) -> CheckerProgress<ArenaResult<Maybe<&2, U32>>>:
-  ArenaResult{v_16, v_17} = v_1004643
+def checker_continuation_3403(v_1004646: ArenaResult<U32>) -> CheckerProgress<ArenaResult<Maybe<&2, U32>>>:
+  ArenaResult{v_16, v_17} = v_1004646
   CheckerFinished{{ArenaResult{v_16, Some{v_17}} : ArenaResult<Maybe<&2, U32>>}}
 
-def checker_match_3405(v_4: Maybe<&2, U32>, v_1: ArenaStore) -> CheckerProgress<ArenaResult<Maybe<&2, U32>>>:
+def checker_match_3404(v_4: Maybe<&2, U32>, v_1: ArenaStore) -> CheckerProgress<ArenaResult<Maybe<&2, U32>>>:
   match v_4:
     case None{}:
       CheckerFinished{{ArenaResult{v_1, None{}} : ArenaResult<Maybe<&2, U32>>}}
     case Some{v_12}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_12}}, False{}, v_1004644 => checker_body_arena_publish_term(v_1, v_12), v_1004643 => checker_continuation_3404(v_1004643)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_12}}, False{}, v_1004647 => checker_body_arena_publish_term(v_1, v_12), v_1004646 => checker_continuation_3403(v_1004646)}
 
 def checker_body_arena_publish_maybe_term(v_1: ArenaStore, v_4: Maybe<&2, U32>) -> CheckerProgress<ArenaResult<Maybe<&2, U32>>>:
-  checker_match_3405(v_4, v_1)
+  checker_match_3404(v_4, v_1)
 
-def checker_continuation_3406(v_1004646: ArenaResult<List<&2, IR.ConstructorDecl>>, v_16: IR.ConstructorDecl) -> CheckerProgress<ArenaResult<List<&2, IR.ConstructorDecl>>>:
-  ArenaResult{v_20, v_21} = v_1004646
+def checker_continuation_3405(v_1004649: ArenaResult<List<&2, IR.ConstructorDecl>>, v_16: IR.ConstructorDecl) -> CheckerProgress<ArenaResult<List<&2, IR.ConstructorDecl>>>:
+  ArenaResult{v_20, v_21} = v_1004649
   CheckerFinished{{ArenaResult{v_20, v_16 <> v_21} : ArenaResult<List<&2, IR.ConstructorDecl>>}}
 
-def checker_continuation_3407(v_1004645: ArenaResult<IR.ConstructorDecl>, v_11: List<&2, IR.ConstructorDecl>) -> CheckerProgress<ArenaResult<List<&2, IR.ConstructorDecl>>>:
-  ArenaResult{v_15, v_16} = v_1004645
-  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_publish_constructor_decl_list{v_15, v_11}}, v_1004646 => checker_continuation_3406(v_1004646, v_16)}
+def checker_continuation_3406(v_1004648: ArenaResult<IR.ConstructorDecl>, v_11: List<&2, IR.ConstructorDecl>) -> CheckerProgress<ArenaResult<List<&2, IR.ConstructorDecl>>>:
+  ArenaResult{v_15, v_16} = v_1004648
+  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_publish_constructor_decl_list{v_15, v_11}}, v_1004649 => checker_continuation_3405(v_1004649, v_16)}
 
-def checker_match_3408(v_3: List<&2, IR.ConstructorDecl>, v_1: ArenaStore) -> CheckerProgress<ArenaResult<List<&2, IR.ConstructorDecl>>>:
+def checker_match_3407(v_3: List<&2, IR.ConstructorDecl>, v_1: ArenaStore) -> CheckerProgress<ArenaResult<List<&2, IR.ConstructorDecl>>>:
   match v_3:
     case []:
       CheckerFinished{{ArenaResult{v_1, []} : ArenaResult<List<&2, IR.ConstructorDecl>>}}
     case v_10 <> v_11:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_constructor_decl{v_1, v_10}}, False{}, v_1004647 => checker_body_arena_publish_constructor_decl(v_1, v_10), v_1004645 => checker_continuation_3407(v_1004645, v_11)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_constructor_decl{v_1, v_10}}, False{}, v_1004650 => checker_body_arena_publish_constructor_decl(v_1, v_10), v_1004648 => checker_continuation_3406(v_1004648, v_11)}
 
 def checker_body_arena_publish_constructor_decl_list(v_1: ArenaStore, v_3: List<&2, IR.ConstructorDecl>) -> CheckerProgress<ArenaResult<List<&2, IR.ConstructorDecl>>>:
-  checker_match_3408(v_3, v_1)
+  checker_match_3407(v_3, v_1)
 
-def checker_continuation_3409(v_1004649: ArenaResult<List<&2, IR.Clause>>, v_16: IR.Clause) -> CheckerProgress<ArenaResult<List<&2, IR.Clause>>>:
-  ArenaResult{v_20, v_21} = v_1004649
+def checker_continuation_3408(v_1004652: ArenaResult<List<&2, IR.Clause>>, v_16: IR.Clause) -> CheckerProgress<ArenaResult<List<&2, IR.Clause>>>:
+  ArenaResult{v_20, v_21} = v_1004652
   CheckerFinished{{ArenaResult{v_20, v_16 <> v_21} : ArenaResult<List<&2, IR.Clause>>}}
 
-def checker_continuation_3410(v_1004648: ArenaResult<IR.Clause>, v_11: List<&2, IR.Clause>) -> CheckerProgress<ArenaResult<List<&2, IR.Clause>>>:
-  ArenaResult{v_15, v_16} = v_1004648
-  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_publish_clause_list{v_15, v_11}}, v_1004649 => checker_continuation_3409(v_1004649, v_16)}
+def checker_continuation_3409(v_1004651: ArenaResult<IR.Clause>, v_11: List<&2, IR.Clause>) -> CheckerProgress<ArenaResult<List<&2, IR.Clause>>>:
+  ArenaResult{v_15, v_16} = v_1004651
+  CheckerPending{CheckerRequestGroup_14{CheckerRequest_arena_publish_clause_list{v_15, v_11}}, v_1004652 => checker_continuation_3408(v_1004652, v_16)}
 
-def checker_match_3411(v_3: List<&2, IR.Clause>, v_1: ArenaStore) -> CheckerProgress<ArenaResult<List<&2, IR.Clause>>>:
+def checker_match_3410(v_3: List<&2, IR.Clause>, v_1: ArenaStore) -> CheckerProgress<ArenaResult<List<&2, IR.Clause>>>:
   match v_3:
     case []:
       CheckerFinished{{ArenaResult{v_1, []} : ArenaResult<List<&2, IR.Clause>>}}
     case v_10 <> v_11:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_clause{v_1, v_10}}, False{}, v_1004650 => checker_body_arena_publish_clause(v_1, v_10), v_1004648 => checker_continuation_3410(v_1004648, v_11)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_clause{v_1, v_10}}, False{}, v_1004653 => checker_body_arena_publish_clause(v_1, v_10), v_1004651 => checker_continuation_3409(v_1004651, v_11)}
 
 def checker_body_arena_publish_clause_list(v_1: ArenaStore, v_3: List<&2, IR.Clause>) -> CheckerProgress<ArenaResult<List<&2, IR.Clause>>>:
-  checker_match_3411(v_3, v_1)
+  checker_match_3410(v_3, v_1)
 
-def checker_continuation_3412(v_1004652: Pair(Arena.Arena, Maybe<&2, Ast.SyntaxTerm>), v_8: Bool, v_9: Ast.Quantity, v_10: String, v_18: Ast.SyntaxTerm, v_13: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.Clause)>:
-  (v_22, v_23) = v_1004652
+def checker_continuation_3411(v_1004655: Pair(Arena.Arena, Maybe<&2, Ast.SyntaxTerm>), v_8: Bool, v_9: Ast.Quantity, v_10: String, v_18: Ast.SyntaxTerm, v_13: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.Clause)>:
+  (v_22, v_23) = v_1004655
   CheckerFinished{(v_22, Ast.ClauseFor{v_8, v_9, v_10, v_18, v_23, v_13})}
 
-def checker_continuation_3413(v_1004651: Pair(Arena.Arena, Ast.SyntaxTerm), v_12: Maybe<&2, U32>, v_8: Bool, v_9: Ast.Quantity, v_10: String, v_13: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.Clause)>:
-  (v_17, v_18) = v_1004651
-  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_maybe_term{v_17, v_12}}, v_1004652 => checker_continuation_3412(v_1004652, v_8, v_9, v_10, v_18, v_13)}
+def checker_continuation_3412(v_1004654: Pair(Arena.Arena, Ast.SyntaxTerm), v_12: Maybe<&2, U32>, v_8: Bool, v_9: Ast.Quantity, v_10: String, v_13: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.Clause)>:
+  (v_17, v_18) = v_1004654
+  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_maybe_term{v_17, v_12}}, v_1004655 => checker_continuation_3411(v_1004655, v_8, v_9, v_10, v_18, v_13)}
 
-def checker_match_3414(v_1: IR.Clause, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Ast.Clause)>:
+def checker_match_3413(v_1: IR.Clause, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Ast.Clause)>:
   match v_1:
     case IR.ClauseFor{v_8, v_9, v_10, v_11, v_12, v_13}:
-      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_0, v_11}}, v_1004651 => checker_continuation_3413(v_1004651, v_12, v_8, v_9, v_10, v_13)}
+      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_0, v_11}}, v_1004654 => checker_continuation_3412(v_1004654, v_12, v_8, v_9, v_10, v_13)}
 
 def checker_body_arena_decode_clause(v_0: Arena.Arena, v_1: IR.Clause) -> CheckerProgress<Pair(Arena.Arena, Ast.Clause)>:
-  checker_match_3414(v_1, v_0)
+  checker_match_3413(v_1, v_0)
 
-def checker_continuation_3415(v_1004653: Pair(Arena.Arena, List<&2, Ast.TelescopeItem>), v_5: String, v_7: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.ConstructorDecl)>:
-  (v_13, v_14) = v_1004653
+def checker_continuation_3414(v_1004656: Pair(Arena.Arena, List<&2, Ast.TelescopeItem>), v_5: String, v_7: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.ConstructorDecl)>:
+  (v_13, v_14) = v_1004656
   CheckerFinished{(v_13, Ast.Constructor{v_5, v_14, v_7})}
 
-def checker_match_3416(v_1: IR.ConstructorDecl, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Ast.ConstructorDecl)>:
+def checker_match_3415(v_1: IR.ConstructorDecl, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Ast.ConstructorDecl)>:
   match v_1:
     case IR.Constructor{v_5, +v_6, v_7}:
-      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_binders{v_0, checker_pure_arena_words_start(v_6), checker_pure_arena_words_count(v_6)}}, v_1004653 => checker_continuation_3415(v_1004653, v_5, v_7)}
+      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_binders{v_0, checker_pure_arena_words_start(v_6), checker_pure_arena_words_count(v_6)}}, v_1004656 => checker_continuation_3414(v_1004656, v_5, v_7)}
 
 def checker_body_arena_decode_constructor_decl(v_0: Arena.Arena, v_1: IR.ConstructorDecl) -> CheckerProgress<Pair(Arena.Arena, Ast.ConstructorDecl)>:
-  checker_match_3416(v_1, v_0)
+  checker_match_3415(v_1, v_0)
 
-def checker_continuation_3417(v_1004654: Pair(Arena.Arena, Ast.SyntaxTerm)) -> CheckerProgress<Pair(Arena.Arena, Ast.DefBody)>:
-  (v_7, v_8) = v_1004654
+def checker_continuation_3416(v_1004657: Pair(Arena.Arena, Ast.SyntaxTerm)) -> CheckerProgress<Pair(Arena.Arena, Ast.DefBody)>:
+  (v_7, v_8) = v_1004657
   CheckerFinished{(v_7, Ast.DefTerm{v_8})}
 
-def checker_continuation_3418(v_1004655: Pair(Arena.Arena, List<&2, String>)) -> CheckerProgress<Pair(Arena.Arena, Ast.DefBody)>:
-  (v_16, v_17) = v_1004655
+def checker_continuation_3417(v_1004658: Pair(Arena.Arena, List<&2, String>)) -> CheckerProgress<Pair(Arena.Arena, Ast.DefBody)>:
+  (v_16, v_17) = v_1004658
   CheckerFinished{(v_16, Ast.DefImports{v_17})}
 
-def checker_match_3419(v_1: IR.DefBody, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Ast.DefBody)>:
+def checker_match_3418(v_1: IR.DefBody, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Ast.DefBody)>:
   match v_1:
     case IR.DefTerm{v_3}:
-      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_0, v_3}}, v_1004654 => checker_continuation_3417(v_1004654)}
+      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_0, v_3}}, v_1004657 => checker_continuation_3416(v_1004657)}
     case IR.DefImports{+v_10}:
-      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_names{v_0, checker_pure_arena_names_start(v_10), checker_pure_arena_names_count(v_10)}}, v_1004655 => checker_continuation_3418(v_1004655)}
+      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_names{v_0, checker_pure_arena_names_start(v_10), checker_pure_arena_names_count(v_10)}}, v_1004658 => checker_continuation_3417(v_1004658)}
 
 def checker_body_arena_decode_def_body(v_0: Arena.Arena, v_1: IR.DefBody) -> CheckerProgress<Pair(Arena.Arena, Ast.DefBody)>:
-  checker_match_3419(v_1, v_0)
+  checker_match_3418(v_1, v_0)
 
-def checker_continuation_3420(v_1004656: Pair(Arena.Arena, Ast.SyntaxTerm)) -> CheckerProgress<Pair(Arena.Arena, Ast.OptionalTerm)>:
-  (v_7, v_8) = v_1004656
+def checker_continuation_3419(v_1004659: Pair(Arena.Arena, Ast.SyntaxTerm)) -> CheckerProgress<Pair(Arena.Arena, Ast.OptionalTerm)>:
+  (v_7, v_8) = v_1004659
   CheckerFinished{(v_7, Ast.SomeTerm{v_8})}
 
-def checker_match_3421(v_1: IR.OptionalTerm, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Ast.OptionalTerm)>:
+def checker_match_3420(v_1: IR.OptionalTerm, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Ast.OptionalTerm)>:
   match v_1:
     case IR.NoTerm{}:
       CheckerFinished{(v_0, Ast.NoTerm{})}
     case IR.SomeTerm{v_3}:
-      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_0, v_3}}, v_1004656 => checker_continuation_3420(v_1004656)}
+      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_0, v_3}}, v_1004659 => checker_continuation_3419(v_1004659)}
 
 def checker_body_arena_decode_optional_term(v_0: Arena.Arena, v_1: IR.OptionalTerm) -> CheckerProgress<Pair(Arena.Arena, Ast.OptionalTerm)>:
-  checker_match_3421(v_1, v_0)
+  checker_match_3420(v_1, v_0)
 
-def checker_continuation_3422(v_1004659: Pair(Arena.Arena, Ast.DefBody), v_8: String, v_20: List<&2, Ast.TelescopeItem>, v_25: Ast.OptionalTerm, v_12: Bool, v_13: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.Definition)>:
-  (v_29, v_30) = v_1004659
+def checker_continuation_3421(v_1004662: Pair(Arena.Arena, Ast.DefBody), v_8: String, v_20: List<&2, Ast.TelescopeItem>, v_25: Ast.OptionalTerm, v_12: Bool, v_13: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.Definition)>:
+  (v_29, v_30) = v_1004662
   CheckerFinished{(v_29, Ast.Definition{v_8, v_20, v_25, v_30, v_12, v_13})}
 
-def checker_continuation_3423(v_1004658: Pair(Arena.Arena, Ast.OptionalTerm), v_11: IR.DefBody, v_8: String, v_20: List<&2, Ast.TelescopeItem>, v_12: Bool, v_13: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.Definition)>:
-  (v_24, v_25) = v_1004658
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_decode_def_body{v_24, v_11}}, False{}, v_1004660 => checker_body_arena_decode_def_body(v_24, v_11), v_1004659 => checker_continuation_3422(v_1004659, v_8, v_20, v_25, v_12, v_13)}
+def checker_continuation_3422(v_1004661: Pair(Arena.Arena, Ast.OptionalTerm), v_11: IR.DefBody, v_8: String, v_20: List<&2, Ast.TelescopeItem>, v_12: Bool, v_13: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.Definition)>:
+  (v_24, v_25) = v_1004661
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_decode_def_body{v_24, v_11}}, False{}, v_1004663 => checker_body_arena_decode_def_body(v_24, v_11), v_1004662 => checker_continuation_3421(v_1004662, v_8, v_20, v_25, v_12, v_13)}
 
-def checker_continuation_3424(v_1004657: Pair(Arena.Arena, List<&2, Ast.TelescopeItem>), v_10: IR.OptionalTerm, v_11: IR.DefBody, v_8: String, v_12: Bool, v_13: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.Definition)>:
-  (v_19, v_20) = v_1004657
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_decode_optional_term{v_19, v_10}}, False{}, v_1004661 => checker_body_arena_decode_optional_term(v_19, v_10), v_1004658 => checker_continuation_3423(v_1004658, v_11, v_8, v_20, v_12, v_13)}
+def checker_continuation_3423(v_1004660: Pair(Arena.Arena, List<&2, Ast.TelescopeItem>), v_10: IR.OptionalTerm, v_11: IR.DefBody, v_8: String, v_12: Bool, v_13: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.Definition)>:
+  (v_19, v_20) = v_1004660
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_decode_optional_term{v_19, v_10}}, False{}, v_1004664 => checker_body_arena_decode_optional_term(v_19, v_10), v_1004661 => checker_continuation_3422(v_1004661, v_11, v_8, v_20, v_12, v_13)}
 
-def checker_match_3425(v_1: IR.Definition, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Ast.Definition)>:
+def checker_match_3424(v_1: IR.Definition, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Ast.Definition)>:
   match v_1:
     case IR.Definition{v_8, +v_9, v_10, v_11, v_12, v_13}:
-      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_binders{v_0, checker_pure_arena_words_start(v_9), checker_pure_arena_words_count(v_9)}}, v_1004657 => checker_continuation_3424(v_1004657, v_10, v_11, v_8, v_12, v_13)}
+      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_binders{v_0, checker_pure_arena_words_start(v_9), checker_pure_arena_words_count(v_9)}}, v_1004660 => checker_continuation_3423(v_1004660, v_10, v_11, v_8, v_12, v_13)}
 
 def checker_body_arena_decode_definition(v_0: Arena.Arena, v_1: IR.Definition) -> CheckerProgress<Pair(Arena.Arena, Ast.Definition)>:
-  checker_match_3425(v_1, v_0)
+  checker_match_3424(v_1, v_0)
 
-def checker_continuation_3426(v_1004664: Pair(Arena.Arena, List<&2, Ast.ConstructorDecl>), v_7: String, v_18: List<&2, Ast.TelescopeItem>, v_23: Ast.SyntaxTerm, v_11: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.TypeDecl)>:
-  (v_27, v_28) = v_1004664
+def checker_continuation_3425(v_1004667: Pair(Arena.Arena, List<&2, Ast.ConstructorDecl>), v_7: String, v_18: List<&2, Ast.TelescopeItem>, v_23: Ast.SyntaxTerm, v_11: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.TypeDecl)>:
+  (v_27, v_28) = v_1004667
   CheckerFinished{(v_27, Ast.TypeDecl{v_7, v_18, v_23, v_28, v_11})}
 
-def checker_continuation_3427(v_1004663: Pair(Arena.Arena, Ast.SyntaxTerm), v_10: List<&2, IR.ConstructorDecl>, v_7: String, v_18: List<&2, Ast.TelescopeItem>, v_11: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.TypeDecl)>:
-  (v_22, v_23) = v_1004663
-  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_constructor_decl_list{v_22, v_10}}, v_1004664 => checker_continuation_3426(v_1004664, v_7, v_18, v_23, v_11)}
+def checker_continuation_3426(v_1004666: Pair(Arena.Arena, Ast.SyntaxTerm), v_10: List<&2, IR.ConstructorDecl>, v_7: String, v_18: List<&2, Ast.TelescopeItem>, v_11: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.TypeDecl)>:
+  (v_22, v_23) = v_1004666
+  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_constructor_decl_list{v_22, v_10}}, v_1004667 => checker_continuation_3425(v_1004667, v_7, v_18, v_23, v_11)}
 
-def checker_continuation_3428(v_1004662: Pair(Arena.Arena, List<&2, Ast.TelescopeItem>), v_9: U32, v_10: List<&2, IR.ConstructorDecl>, v_7: String, v_11: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.TypeDecl)>:
-  (v_17, v_18) = v_1004662
-  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_17, v_9}}, v_1004663 => checker_continuation_3427(v_1004663, v_10, v_7, v_18, v_11)}
+def checker_continuation_3427(v_1004665: Pair(Arena.Arena, List<&2, Ast.TelescopeItem>), v_9: U32, v_10: List<&2, IR.ConstructorDecl>, v_7: String, v_11: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.TypeDecl)>:
+  (v_17, v_18) = v_1004665
+  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_17, v_9}}, v_1004666 => checker_continuation_3426(v_1004666, v_10, v_7, v_18, v_11)}
 
-def checker_match_3429(v_1: IR.TypeDecl, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Ast.TypeDecl)>:
+def checker_match_3428(v_1: IR.TypeDecl, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Ast.TypeDecl)>:
   match v_1:
     case IR.TypeDecl{v_7, +v_8, v_9, v_10, v_11}:
-      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_binders{v_0, checker_pure_arena_words_start(v_8), checker_pure_arena_words_count(v_8)}}, v_1004662 => checker_continuation_3428(v_1004662, v_9, v_10, v_7, v_11)}
+      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_binders{v_0, checker_pure_arena_words_start(v_8), checker_pure_arena_words_count(v_8)}}, v_1004665 => checker_continuation_3427(v_1004665, v_9, v_10, v_7, v_11)}
 
 def checker_body_arena_decode_type_decl(v_0: Arena.Arena, v_1: IR.TypeDecl) -> CheckerProgress<Pair(Arena.Arena, Ast.TypeDecl)>:
-  checker_match_3429(v_1, v_0)
+  checker_match_3428(v_1, v_0)
 
-def checker_continuation_3430(v_1004666: Pair(Arena.Arena, Ast.SyntaxTerm), v_6: String, v_14: List<&2, Ast.Clause>, v_9: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.LawDecl)>:
-  (v_18, v_19) = v_1004666
+def checker_continuation_3429(v_1004669: Pair(Arena.Arena, Ast.SyntaxTerm), v_6: String, v_14: List<&2, Ast.Clause>, v_9: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.LawDecl)>:
+  (v_18, v_19) = v_1004669
   CheckerFinished{(v_18, Ast.LawDecl{v_6, v_14, v_19, v_9})}
 
-def checker_continuation_3431(v_1004665: Pair(Arena.Arena, List<&2, Ast.Clause>), v_8: U32, v_6: String, v_9: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.LawDecl)>:
-  (v_13, v_14) = v_1004665
-  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_13, v_8}}, v_1004666 => checker_continuation_3430(v_1004666, v_6, v_14, v_9)}
+def checker_continuation_3430(v_1004668: Pair(Arena.Arena, List<&2, Ast.Clause>), v_8: U32, v_6: String, v_9: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.LawDecl)>:
+  (v_13, v_14) = v_1004668
+  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_13, v_8}}, v_1004669 => checker_continuation_3429(v_1004669, v_6, v_14, v_9)}
 
-def checker_match_3432(v_1: IR.LawDecl, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Ast.LawDecl)>:
+def checker_match_3431(v_1: IR.LawDecl, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Ast.LawDecl)>:
   match v_1:
     case IR.LawDecl{v_6, v_7, v_8, v_9}:
-      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_clause_list{v_0, v_7}}, v_1004665 => checker_continuation_3431(v_1004665, v_8, v_6, v_9)}
+      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_clause_list{v_0, v_7}}, v_1004668 => checker_continuation_3430(v_1004668, v_8, v_6, v_9)}
 
 def checker_body_arena_decode_law_decl(v_0: Arena.Arena, v_1: IR.LawDecl) -> CheckerProgress<Pair(Arena.Arena, Ast.LawDecl)>:
-  checker_match_3432(v_1, v_0)
+  checker_match_3431(v_1, v_0)
 
-def checker_continuation_3433(v_1004667: Pair(Arena.Arena, Ast.Definition)) -> CheckerProgress<Pair(Arena.Arena, Ast.TopLevel)>:
-  (v_7, v_8) = v_1004667
+def checker_continuation_3432(v_1004670: Pair(Arena.Arena, Ast.Definition)) -> CheckerProgress<Pair(Arena.Arena, Ast.TopLevel)>:
+  (v_7, v_8) = v_1004670
   CheckerFinished{(v_7, Ast.DefTop{v_8})}
 
-def checker_continuation_3434(v_1004669: Pair(Arena.Arena, Ast.TypeDecl)) -> CheckerProgress<Pair(Arena.Arena, Ast.TopLevel)>:
-  (v_14, v_15) = v_1004669
+def checker_continuation_3433(v_1004672: Pair(Arena.Arena, Ast.TypeDecl)) -> CheckerProgress<Pair(Arena.Arena, Ast.TopLevel)>:
+  (v_14, v_15) = v_1004672
   CheckerFinished{(v_14, Ast.TypeTop{v_15})}
 
-def checker_continuation_3435(v_1004671: Pair(Arena.Arena, Ast.LawDecl)) -> CheckerProgress<Pair(Arena.Arena, Ast.TopLevel)>:
-  (v_21, v_22) = v_1004671
+def checker_continuation_3434(v_1004674: Pair(Arena.Arena, Ast.LawDecl)) -> CheckerProgress<Pair(Arena.Arena, Ast.TopLevel)>:
+  (v_21, v_22) = v_1004674
   CheckerFinished{(v_21, Ast.LawTop{v_22})}
 
-def checker_match_3436(v_1: IR.TopLevel, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Ast.TopLevel)>:
+def checker_match_3435(v_1: IR.TopLevel, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Ast.TopLevel)>:
   match v_1:
     case IR.DefTop{v_3}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_decode_definition{v_0, v_3}}, False{}, v_1004668 => checker_body_arena_decode_definition(v_0, v_3), v_1004667 => checker_continuation_3433(v_1004667)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_decode_definition{v_0, v_3}}, False{}, v_1004671 => checker_body_arena_decode_definition(v_0, v_3), v_1004670 => checker_continuation_3432(v_1004670)}
     case IR.TypeTop{v_10}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_decode_type_decl{v_0, v_10}}, False{}, v_1004670 => checker_body_arena_decode_type_decl(v_0, v_10), v_1004669 => checker_continuation_3434(v_1004669)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_decode_type_decl{v_0, v_10}}, False{}, v_1004673 => checker_body_arena_decode_type_decl(v_0, v_10), v_1004672 => checker_continuation_3433(v_1004672)}
     case IR.LawTop{v_17}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_decode_law_decl{v_0, v_17}}, False{}, v_1004672 => checker_body_arena_decode_law_decl(v_0, v_17), v_1004671 => checker_continuation_3435(v_1004671)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_law_decl{v_0, v_17}}, False{}, v_1004675 => checker_body_arena_decode_law_decl(v_0, v_17), v_1004674 => checker_continuation_3434(v_1004674)}
 
 def checker_body_arena_decode_top_level(v_0: Arena.Arena, v_1: IR.TopLevel) -> CheckerProgress<Pair(Arena.Arena, Ast.TopLevel)>:
-  checker_match_3436(v_1, v_0)
+  checker_match_3435(v_1, v_0)
 
-def checker_continuation_3437(v_1004673: Pair(Arena.Arena, List<&2, Ast.TopLevel>), v_5: String, v_6: List<&2, Ast.ModuleImport>) -> CheckerProgress<Pair(Arena.Arena, Ast.Module)>:
-  (v_11, v_12) = v_1004673
+def checker_continuation_3436(v_1004676: Pair(Arena.Arena, List<&2, Ast.TopLevel>), v_5: String, v_6: List<&2, Ast.ModuleImport>) -> CheckerProgress<Pair(Arena.Arena, Ast.Module)>:
+  (v_11, v_12) = v_1004676
   CheckerFinished{(v_11, Ast.Module{v_5, v_6, v_12})}
 
-def checker_match_3438(v_1: IR.Module, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Ast.Module)>:
+def checker_match_3437(v_1: IR.Module, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Ast.Module)>:
   match v_1:
     case IR.Module{v_5, v_6, v_7}:
-      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_top_level_list{v_0, v_7}}, v_1004673 => checker_continuation_3437(v_1004673, v_5, v_6)}
+      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_top_level_list{v_0, v_7}}, v_1004676 => checker_continuation_3436(v_1004676, v_5, v_6)}
 
 def checker_body_arena_decode_module(v_0: Arena.Arena, v_1: IR.Module) -> CheckerProgress<Pair(Arena.Arena, Ast.Module)>:
-  checker_match_3438(v_1, v_0)
+  checker_match_3437(v_1, v_0)
 
-def checker_continuation_3439(v_1004674: Pair(Arena.Arena, Ast.SyntaxTerm)) -> CheckerProgress<Pair(Arena.Arena, Maybe<&2, Ast.SyntaxTerm>)>:
-  (v_10, v_11) = v_1004674
+def checker_continuation_3438(v_1004677: Pair(Arena.Arena, Ast.SyntaxTerm)) -> CheckerProgress<Pair(Arena.Arena, Maybe<&2, Ast.SyntaxTerm>)>:
+  (v_10, v_11) = v_1004677
   CheckerFinished{(v_10, Some{v_11})}
 
-def checker_match_3440(v_3: Maybe<&2, U32>, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Maybe<&2, Ast.SyntaxTerm>)>:
+def checker_match_3439(v_3: Maybe<&2, U32>, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Maybe<&2, Ast.SyntaxTerm>)>:
   match v_3:
     case None{}:
       CheckerFinished{(v_0, None{})}
     case Some{v_6}:
-      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_0, v_6}}, v_1004674 => checker_continuation_3439(v_1004674)}
+      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_0, v_6}}, v_1004677 => checker_continuation_3438(v_1004677)}
 
 def checker_body_arena_decode_maybe_term(v_0: Arena.Arena, v_3: Maybe<&2, U32>) -> CheckerProgress<Pair(Arena.Arena, Maybe<&2, Ast.SyntaxTerm>)>:
-  checker_match_3440(v_3, v_0)
+  checker_match_3439(v_3, v_0)
 
-def checker_continuation_3441(v_1004676: Pair(Arena.Arena, List<&2, Ast.ConstructorDecl>), v_12: Ast.ConstructorDecl) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.ConstructorDecl>)>:
-  (v_16, v_17) = v_1004676
-  CheckerFinished{(v_16, v_12 <> v_17)}
-
-def checker_continuation_3442(v_1004675: Pair(Arena.Arena, Ast.ConstructorDecl), v_7: List<&2, IR.ConstructorDecl>) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.ConstructorDecl>)>:
-  (v_11, v_12) = v_1004675
-  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_constructor_decl_list{v_11, v_7}}, v_1004676 => checker_continuation_3441(v_1004676, v_12)}
-
-def checker_match_3443(v_2: List<&2, IR.ConstructorDecl>, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.ConstructorDecl>)>:
-  match v_2:
-    case []:
-      CheckerFinished{(v_0, [])}
-    case v_6 <> v_7:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_decode_constructor_decl{v_0, v_6}}, False{}, v_1004677 => checker_body_arena_decode_constructor_decl(v_0, v_6), v_1004675 => checker_continuation_3442(v_1004675, v_7)}
-
-def checker_body_arena_decode_constructor_decl_list(v_0: Arena.Arena, v_2: List<&2, IR.ConstructorDecl>) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.ConstructorDecl>)>:
-  checker_match_3443(v_2, v_0)
-
-def checker_continuation_3444(v_1004679: Pair(Arena.Arena, List<&2, Ast.Clause>), v_12: Ast.Clause) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.Clause>)>:
+def checker_continuation_3440(v_1004679: Pair(Arena.Arena, List<&2, Ast.ConstructorDecl>), v_12: Ast.ConstructorDecl) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.ConstructorDecl>)>:
   (v_16, v_17) = v_1004679
   CheckerFinished{(v_16, v_12 <> v_17)}
 
-def checker_continuation_3445(v_1004678: Pair(Arena.Arena, Ast.Clause), v_7: List<&2, IR.Clause>) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.Clause>)>:
+def checker_continuation_3441(v_1004678: Pair(Arena.Arena, Ast.ConstructorDecl), v_7: List<&2, IR.ConstructorDecl>) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.ConstructorDecl>)>:
   (v_11, v_12) = v_1004678
-  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_clause_list{v_11, v_7}}, v_1004679 => checker_continuation_3444(v_1004679, v_12)}
+  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_constructor_decl_list{v_11, v_7}}, v_1004679 => checker_continuation_3440(v_1004679, v_12)}
 
-def checker_match_3446(v_2: List<&2, IR.Clause>, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.Clause>)>:
+def checker_match_3442(v_2: List<&2, IR.ConstructorDecl>, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.ConstructorDecl>)>:
   match v_2:
     case []:
       CheckerFinished{(v_0, [])}
     case v_6 <> v_7:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_decode_clause{v_0, v_6}}, False{}, v_1004680 => checker_body_arena_decode_clause(v_0, v_6), v_1004678 => checker_continuation_3445(v_1004678, v_7)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_decode_constructor_decl{v_0, v_6}}, False{}, v_1004680 => checker_body_arena_decode_constructor_decl(v_0, v_6), v_1004678 => checker_continuation_3441(v_1004678, v_7)}
 
-def checker_body_arena_decode_clause_list(v_0: Arena.Arena, v_2: List<&2, IR.Clause>) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.Clause>)>:
-  checker_match_3446(v_2, v_0)
+def checker_body_arena_decode_constructor_decl_list(v_0: Arena.Arena, v_2: List<&2, IR.ConstructorDecl>) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.ConstructorDecl>)>:
+  checker_match_3442(v_2, v_0)
 
-def checker_continuation_3447(v_1004682: Pair(Arena.Arena, List<&2, Ast.TopLevel>), v_12: Ast.TopLevel) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.TopLevel>)>:
+def checker_continuation_3443(v_1004682: Pair(Arena.Arena, List<&2, Ast.Clause>), v_12: Ast.Clause) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.Clause>)>:
   (v_16, v_17) = v_1004682
   CheckerFinished{(v_16, v_12 <> v_17)}
 
-def checker_continuation_3448(v_1004681: Pair(Arena.Arena, Ast.TopLevel), v_7: List<&2, IR.TopLevel>) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.TopLevel>)>:
+def checker_continuation_3444(v_1004681: Pair(Arena.Arena, Ast.Clause), v_7: List<&2, IR.Clause>) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.Clause>)>:
   (v_11, v_12) = v_1004681
-  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_top_level_list{v_11, v_7}}, v_1004682 => checker_continuation_3447(v_1004682, v_12)}
+  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_clause_list{v_11, v_7}}, v_1004682 => checker_continuation_3443(v_1004682, v_12)}
 
-def checker_match_3449(v_2: List<&2, IR.TopLevel>, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.TopLevel>)>:
+def checker_match_3445(v_2: List<&2, IR.Clause>, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.Clause>)>:
   match v_2:
     case []:
       CheckerFinished{(v_0, [])}
     case v_6 <> v_7:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_decode_top_level{v_0, v_6}}, False{}, v_1004683 => checker_body_arena_decode_top_level(v_0, v_6), v_1004681 => checker_continuation_3448(v_1004681, v_7)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_decode_clause{v_0, v_6}}, False{}, v_1004683 => checker_body_arena_decode_clause(v_0, v_6), v_1004681 => checker_continuation_3444(v_1004681, v_7)}
+
+def checker_body_arena_decode_clause_list(v_0: Arena.Arena, v_2: List<&2, IR.Clause>) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.Clause>)>:
+  checker_match_3445(v_2, v_0)
+
+def checker_continuation_3446(v_1004685: Pair(Arena.Arena, List<&2, Ast.TopLevel>), v_12: Ast.TopLevel) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.TopLevel>)>:
+  (v_16, v_17) = v_1004685
+  CheckerFinished{(v_16, v_12 <> v_17)}
+
+def checker_continuation_3447(v_1004684: Pair(Arena.Arena, Ast.TopLevel), v_7: List<&2, IR.TopLevel>) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.TopLevel>)>:
+  (v_11, v_12) = v_1004684
+  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_top_level_list{v_11, v_7}}, v_1004685 => checker_continuation_3446(v_1004685, v_12)}
+
+def checker_match_3448(v_2: List<&2, IR.TopLevel>, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.TopLevel>)>:
+  match v_2:
+    case []:
+      CheckerFinished{(v_0, [])}
+    case v_6 <> v_7:
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_top_level{v_0, v_6}}, False{}, v_1004686 => checker_body_arena_decode_top_level(v_0, v_6), v_1004684 => checker_continuation_3447(v_1004684, v_7)}
 
 def checker_body_arena_decode_top_level_list(v_0: Arena.Arena, v_2: List<&2, IR.TopLevel>) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.TopLevel>)>:
-  checker_match_3449(v_2, v_0)
+  checker_match_3448(v_2, v_0)
 
-def checker_match_3450(v_4: Nat, v_0: Arena.Arena, +v_2: U32) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>)>:
+def checker_match_3449(v_4: Nat, v_0: Arena.Arena, +v_2: U32) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>)>:
   match v_4:
     case 0n:
       CheckerFinished{(v_0, [])}
     case 1n+v_7:
-      CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_decode_terms_go_word_result_47{Arena.word(v_0, v_2), v_2, v_7}}, v_1004684 => CheckerFinished{v_1004684}}
+      CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_decode_terms_go_word_result_47{Arena.word(v_0, v_2), v_2, v_7}}, v_1004687 => CheckerFinished{v_1004687}}
 
 def checker_body_arena_decode_terms_go(v_0: Arena.Arena, +v_2: U32, v_4: Nat) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>)>:
-  checker_match_3450(v_4, v_0, v_2)
+  checker_match_3449(v_4, v_0, v_2)
 
 def checker_body_arena_decode_terms(v_0: Arena.Arena, v_2: U32, v_4: U32) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>)>:
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_terms_go{v_0, v_2, U32.to_nat(v_4)}}, False{}, v_1004686 => checker_body_arena_decode_terms_go(v_0, v_2, U32.to_nat(v_4)), v_1004685 => CheckerFinished{v_1004685}}
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_terms_go{v_0, v_2, U32.to_nat(v_4)}}, False{}, v_1004689 => checker_body_arena_decode_terms_go(v_0, v_2, U32.to_nat(v_4)), v_1004688 => CheckerFinished{v_1004688}}
 
-def checker_match_3451(v_4: Nat, v_0: Arena.Arena, +v_2: U32) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.SyntaxPattern>)>:
+def checker_match_3450(v_4: Nat, v_0: Arena.Arena, +v_2: U32) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.SyntaxPattern>)>:
   match v_4:
     case 0n:
       CheckerFinished{(v_0, [])}
     case 1n+v_7:
-      CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_decode_patterns_go_word_result_48{Arena.word(v_0, v_2), v_2, v_7}}, v_1004687 => CheckerFinished{v_1004687}}
+      CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_decode_patterns_go_word_result_48{Arena.word(v_0, v_2), v_2, v_7}}, v_1004690 => CheckerFinished{v_1004690}}
 
 def checker_body_arena_decode_patterns_go(v_0: Arena.Arena, +v_2: U32, v_4: Nat) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.SyntaxPattern>)>:
-  checker_match_3451(v_4, v_0, v_2)
+  checker_match_3450(v_4, v_0, v_2)
 
 def checker_body_arena_decode_patterns(v_0: Arena.Arena, v_2: U32, v_4: U32) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.SyntaxPattern>)>:
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_patterns_go{v_0, v_2, U32.to_nat(v_4)}}, False{}, v_1004689 => checker_body_arena_decode_patterns_go(v_0, v_2, U32.to_nat(v_4)), v_1004688 => CheckerFinished{v_1004688}}
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_patterns_go{v_0, v_2, U32.to_nat(v_4)}}, False{}, v_1004692 => checker_body_arena_decode_patterns_go(v_0, v_2, U32.to_nat(v_4)), v_1004691 => CheckerFinished{v_1004691}}
 
-def checker_match_3452(v_4: Nat, v_0: Arena.Arena, +v_2: U32) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.TelescopeItem>)>:
+def checker_match_3451(v_4: Nat, v_0: Arena.Arena, +v_2: U32) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.TelescopeItem>)>:
   match v_4:
     case 0n:
       CheckerFinished{(v_0, [])}
     case 1n+v_7:
-      CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_decode_binders_go_word_result_49{Arena.word(v_0, v_2), v_2, v_7}}, v_1004690 => CheckerFinished{v_1004690}}
+      CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_decode_binders_go_word_result_49{Arena.word(v_0, v_2), v_2, v_7}}, v_1004693 => CheckerFinished{v_1004693}}
 
 def checker_body_arena_decode_binders_go(v_0: Arena.Arena, +v_2: U32, v_4: Nat) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.TelescopeItem>)>:
-  checker_match_3452(v_4, v_0, v_2)
+  checker_match_3451(v_4, v_0, v_2)
 
 def checker_body_arena_decode_binders(v_0: Arena.Arena, v_2: U32, v_4: U32) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.TelescopeItem>)>:
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_binders_go{v_0, v_2, U32.to_nat(v_4)}}, False{}, v_1004692 => checker_body_arena_decode_binders_go(v_0, v_2, U32.to_nat(v_4)), v_1004691 => CheckerFinished{v_1004691}}
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_binders_go{v_0, v_2, U32.to_nat(v_4)}}, False{}, v_1004695 => checker_body_arena_decode_binders_go(v_0, v_2, U32.to_nat(v_4)), v_1004694 => CheckerFinished{v_1004694}}
 
-def checker_match_3453(v_4: Nat, v_0: Arena.Arena, +v_2: U32) -> CheckerProgress<Pair(Arena.Arena, List<&2, String>)>:
+def checker_match_3452(v_4: Nat, v_0: Arena.Arena, +v_2: U32) -> CheckerProgress<Pair(Arena.Arena, List<&2, String>)>:
   match v_4:
     case 0n:
       CheckerFinished{(v_0, [])}
     case 1n+v_8:
-      CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_decode_names_go_word_result_50{Arena.word(v_0, v_2), v_2, v_8}}, v_1004693 => CheckerFinished{v_1004693}}
+      CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_decode_names_go_word_result_50{Arena.word(v_0, v_2), v_2, v_8}}, v_1004696 => CheckerFinished{v_1004696}}
 
 def checker_body_arena_decode_names_go(v_0: Arena.Arena, +v_2: U32, v_4: Nat) -> CheckerProgress<Pair(Arena.Arena, List<&2, String>)>:
-  checker_match_3453(v_4, v_0, v_2)
+  checker_match_3452(v_4, v_0, v_2)
 
 def checker_body_arena_decode_names(v_0: Arena.Arena, v_2: U32, v_4: U32) -> CheckerProgress<Pair(Arena.Arena, List<&2, String>)>:
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_names_go{v_0, v_2, U32.to_nat(v_4)}}, False{}, v_1004695 => checker_body_arena_decode_names_go(v_0, v_2, U32.to_nat(v_4)), v_1004694 => CheckerFinished{v_1004694}}
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_names_go{v_0, v_2, U32.to_nat(v_4)}}, False{}, v_1004698 => checker_body_arena_decode_names_go(v_0, v_2, U32.to_nat(v_4)), v_1004697 => CheckerFinished{v_1004697}}
 
-def checker_match_3454(v_4: Nat, v_0: Arena.Arena, +v_2: U32) -> CheckerProgress<Pair(Arena.Arena, List<&2, Nat>)>:
+def checker_match_3453(v_4: Nat, v_0: Arena.Arena, +v_2: U32) -> CheckerProgress<Pair(Arena.Arena, List<&2, Nat>)>:
   match v_4:
     case 0n:
       CheckerFinished{(v_0, [])}
     case 1n+v_8:
-      CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_decode_naturals_go_natural_result_52{Arena.natural(v_0, v_2), v_2, v_8}}, v_1004696 => CheckerFinished{v_1004696}}
+      CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_decode_naturals_go_natural_result_52{Arena.natural(v_0, v_2), v_2, v_8}}, v_1004699 => CheckerFinished{v_1004699}}
 
 def checker_body_arena_decode_naturals_go(v_0: Arena.Arena, +v_2: U32, v_4: Nat) -> CheckerProgress<Pair(Arena.Arena, List<&2, Nat>)>:
-  checker_match_3454(v_4, v_0, v_2)
+  checker_match_3453(v_4, v_0, v_2)
 
 def checker_body_arena_decode_naturals(v_0: Arena.Arena, v_2: U32, v_4: U32) -> CheckerProgress<Pair(Arena.Arena, List<&2, Nat>)>:
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_naturals_go{v_0, v_2, U32.to_nat(v_4)}}, False{}, v_1004698 => checker_body_arena_decode_naturals_go(v_0, v_2, U32.to_nat(v_4)), v_1004697 => CheckerFinished{v_1004697}}
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_naturals_go{v_0, v_2, U32.to_nat(v_4)}}, False{}, v_1004701 => checker_body_arena_decode_naturals_go(v_0, v_2, U32.to_nat(v_4)), v_1004700 => CheckerFinished{v_1004700}}
 
-def checker_match_3455(v_4: Nat, v_0: Arena.Arena, +v_2: U32) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.Quantity>)>:
+def checker_match_3454(v_4: Nat, v_0: Arena.Arena, +v_2: U32) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.Quantity>)>:
   match v_4:
     case 0n:
       CheckerFinished{(v_0, [])}
     case 1n+v_7:
-      CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_decode_quantities_go_word_result_53{Arena.word(v_0, v_2), v_2, v_7}}, v_1004699 => CheckerFinished{v_1004699}}
+      CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_decode_quantities_go_word_result_53{Arena.word(v_0, v_2), v_2, v_7}}, v_1004702 => CheckerFinished{v_1004702}}
 
 def checker_body_arena_decode_quantities_go(v_0: Arena.Arena, +v_2: U32, v_4: Nat) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.Quantity>)>:
-  checker_match_3455(v_4, v_0, v_2)
+  checker_match_3454(v_4, v_0, v_2)
 
 def checker_body_arena_decode_quantities(v_0: Arena.Arena, v_2: U32, v_4: U32) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.Quantity>)>:
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_quantities_go{v_0, v_2, U32.to_nat(v_4)}}, False{}, v_1004701 => checker_body_arena_decode_quantities_go(v_0, v_2, U32.to_nat(v_4)), v_1004700 => CheckerFinished{v_1004700}}
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_quantities_go{v_0, v_2, U32.to_nat(v_4)}}, False{}, v_1004704 => checker_body_arena_decode_quantities_go(v_0, v_2, U32.to_nat(v_4)), v_1004703 => CheckerFinished{v_1004703}}
 
 def checker_body_arena_decode_term(v_0: Arena.Arena, v_2: U32) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_decode_term_get_node_result_54{Arena.get_node(v_0, v_2)}}, v_1004702 => CheckerFinished{v_1004702}}
+  CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_decode_term_get_node_result_54{Arena.get_node(v_0, v_2)}}, v_1004705 => CheckerFinished{v_1004705}}
 
 def checker_body_arena_decode_pattern(v_0: Arena.Arena, v_2: U32) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxPattern)>:
-  CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_decode_pattern_get_pattern_result_63{Arena.get_pattern(v_0, v_2)}}, v_1004703 => CheckerFinished{v_1004703}}
+  CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_decode_pattern_get_pattern_result_63{Arena.get_pattern(v_0, v_2)}}, v_1004706 => CheckerFinished{v_1004706}}
 
 def checker_body_arena_decode_binder(v_0: Arena.Arena, v_2: U32) -> CheckerProgress<Pair(Arena.Arena, Ast.TelescopeItem)>:
-  CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_decode_binder_get_binder_result_66{Arena.get_binder(v_0, v_2)}}, v_1004704 => CheckerFinished{v_1004704}}
+  CheckerPending{CheckerRequestGroup_16{CheckerRequest_arena_decode_binder_get_binder_result_66{Arena.get_binder(v_0, v_2)}}, v_1004707 => CheckerFinished{v_1004707}}
 
-def checker_continuation_3456(v_1004706: ArenaResult<IR.OptionalTerm>, v_10: String, v_11: String, v_12: String, v_20: U32, v_15: Scope.GlobalKind) -> CheckerProgress<ArenaResult<Scope.ArenaGlobal>>:
-  ArenaResult{v_24, v_25} = v_1004706
+def checker_continuation_3455(v_1004709: ArenaResult<IR.OptionalTerm>, v_10: String, v_11: String, v_12: String, v_20: U32, v_15: Scope.GlobalKind) -> CheckerProgress<ArenaResult<Scope.ArenaGlobal>>:
+  ArenaResult{v_24, v_25} = v_1004709
   CheckerFinished{{ArenaResult{v_24, Scope.ArenaGlobal{v_10, v_11, v_12, v_20, v_25, v_15}} : ArenaResult<Scope.ArenaGlobal>}}
 
-def checker_continuation_3457(v_1004705: ArenaResult<U32>, v_14: IR.OptionalTerm, v_10: String, v_11: String, v_12: String, v_15: Scope.GlobalKind) -> CheckerProgress<ArenaResult<Scope.ArenaGlobal>>:
-  ArenaResult{v_19, v_20} = v_1004705
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_optional_term{v_19, v_14}}, False{}, v_1004707 => checker_body_arena_publish_optional_term(v_19, v_14), v_1004706 => checker_continuation_3456(v_1004706, v_10, v_11, v_12, v_20, v_15)}
+def checker_continuation_3456(v_1004708: ArenaResult<U32>, v_14: IR.OptionalTerm, v_10: String, v_11: String, v_12: String, v_15: Scope.GlobalKind) -> CheckerProgress<ArenaResult<Scope.ArenaGlobal>>:
+  ArenaResult{v_19, v_20} = v_1004708
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_optional_term{v_19, v_14}}, False{}, v_1004710 => checker_body_arena_publish_optional_term(v_19, v_14), v_1004709 => checker_continuation_3455(v_1004709, v_10, v_11, v_12, v_20, v_15)}
 
-def checker_match_3458(v_2: Scope.ArenaGlobal, v_1: ArenaStore) -> CheckerProgress<ArenaResult<Scope.ArenaGlobal>>:
+def checker_match_3457(v_2: Scope.ArenaGlobal, v_1: ArenaStore) -> CheckerProgress<ArenaResult<Scope.ArenaGlobal>>:
   match v_2:
     case Scope.ArenaGlobal{v_10, v_11, v_12, v_13, v_14, v_15}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_13}}, False{}, v_1004708 => checker_body_arena_publish_term(v_1, v_13), v_1004705 => checker_continuation_3457(v_1004705, v_14, v_10, v_11, v_12, v_15)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_publish_term{v_1, v_13}}, False{}, v_1004711 => checker_body_arena_publish_term(v_1, v_13), v_1004708 => checker_continuation_3456(v_1004708, v_14, v_10, v_11, v_12, v_15)}
 
 def checker_body_arena_publish_global(v_1: ArenaStore, v_2: Scope.ArenaGlobal) -> CheckerProgress<ArenaResult<Scope.ArenaGlobal>>:
-  checker_match_3458(v_2, v_1)
+  checker_match_3457(v_2, v_1)
 
-def checker_match_3459(v_1004710: ArenaResult<Arena.Node>) -> CheckerProgress<ArenaResult<Maybe<&2, String>>>:
-  match v_1004710:
+def checker_match_3458(v_1004713: ArenaResult<Arena.Node>) -> CheckerProgress<ArenaResult<Maybe<&2, String>>>:
+  match v_1004713:
     case ArenaResult{v_10, v_11}:
-      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_constructor_owner_view{v_10, v_11}}, v_1004709 => CheckerFinished{v_1004709}}
+      CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_constructor_owner_view{v_10, v_11}}, v_1004712 => CheckerFinished{v_1004712}}
 
 def checker_body_arena_constructor_owner(v_1: ArenaStore, v_3: U32) -> CheckerProgress<ArenaResult<Maybe<&2, String>>>:
-  v_1004710 = {checker_pure_arena_get_node(v_1, v_3) : ArenaResult<Arena.Node>}
-  checker_match_3459(v_1004710)
+  v_1004713 = {checker_pure_arena_get_node(v_1, v_3) : ArenaResult<Arena.Node>}
+  checker_match_3458(v_1004713)
 
-def checker_match_3460(v_1004712: ArenaResult<String>) -> CheckerProgress<ArenaResult<Maybe<&2, String>>>:
-  match v_1004712:
+def checker_match_3459(v_1004715: ArenaResult<String>) -> CheckerProgress<ArenaResult<Maybe<&2, String>>>:
+  match v_1004715:
     case ArenaResult{v_34, v_35}:
       CheckerFinished{{ArenaResult{v_34, Some{v_35}} : ArenaResult<Maybe<&2, String>>}}
 
-def checker_match_3461(v_2: Arena.Node, v_1: ArenaStore) -> CheckerProgress<ArenaResult<Maybe<&2, String>>>:
+def checker_match_3460(v_2: Arena.Node, v_1: ArenaStore) -> CheckerProgress<ArenaResult<Maybe<&2, String>>>:
   match v_2:
     case Arena.TermAll{_, _, _, _, v_16, _}:
       checker_body_arena_constructor_owner(v_1, v_16)
     case Arena.TermAdt{v_25, _, _, _, _, _}:
-      v_1004712 = {checker_pure_arena_name_text(v_1, v_25) : ArenaResult<String>}
-      checker_match_3460(v_1004712)
+      v_1004715 = {checker_pure_arena_name_text(v_1, v_25) : ArenaResult<String>}
+      checker_match_3459(v_1004715)
     case _:
       CheckerFinished{{ArenaResult{v_1, None{}} : ArenaResult<Maybe<&2, String>>}}
 
 def checker_body_arena_constructor_owner_view(v_1: ArenaStore, v_2: Arena.Node) -> CheckerProgress<ArenaResult<Maybe<&2, String>>>:
-  checker_match_3461(v_2, v_1)
+  checker_match_3460(v_2, v_1)
 
-def checker_match_3462(v_4: Maybe<&2, Bool>, v_1: ArenaStore, v_5: IR.Words, v_6: IR.Words, v_7: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Maybe<&2, Bool>>>:
+def checker_match_3461(v_4: Maybe<&2, Bool>, v_1: ArenaStore, v_5: IR.Words, v_6: IR.Words, v_7: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Maybe<&2, Bool>>>:
   match v_4:
     case Some{True{}}:
       checker_body_scope_constructor_lists_equal(v_1, v_5, v_6, v_7)
@@ -29180,95 +29179,95 @@ def checker_match_3462(v_4: Maybe<&2, Bool>, v_1: ArenaStore, v_5: IR.Words, v_6
       CheckerFinished{{ArenaResult{v_1, None{}} : ArenaResult<Maybe<&2, Bool>>}}
 
 def checker_body_scope_constructor_equality_after(v_1: ArenaStore, v_4: Maybe<&2, Bool>, v_5: IR.Words, v_6: IR.Words, v_7: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Maybe<&2, Bool>>>:
-  checker_match_3462(v_4, v_1, v_5, v_6, v_7)
+  checker_match_3461(v_4, v_1, v_5, v_6, v_7)
 
-def checker_continuation_3463(v_1004716: Pair(Arena.Arena, List<&2, Scope.ArenaGlobal>), v_11: String, v_12: String, v_13: String, v_22: U32, v_27: IR.OptionalTerm, v_16: Scope.GlobalKind) -> CheckerProgress<Pair(Arena.Arena, List<&2, Scope.ArenaGlobal>)>:
-  (v_31, v_32) = v_1004716
+def checker_continuation_3462(v_1004719: Pair(Arena.Arena, List<&2, Scope.ArenaGlobal>), v_11: String, v_12: String, v_13: String, v_22: U32, v_27: IR.OptionalTerm, v_16: Scope.GlobalKind) -> CheckerProgress<Pair(Arena.Arena, List<&2, Scope.ArenaGlobal>)>:
+  (v_31, v_32) = v_1004719
   CheckerFinished{(v_31, Scope.ArenaGlobal{v_11, v_12, v_13, v_22, v_27, v_16} <> v_32)}
 
-def checker_continuation_3464(v_1004715: Pair(Arena.Arena, IR.OptionalTerm), v_17: List<&2, Scope.Global>, v_11: String, v_12: String, v_13: String, v_22: U32, v_16: Scope.GlobalKind) -> CheckerProgress<Pair(Arena.Arena, List<&2, Scope.ArenaGlobal>)>:
-  (v_26, v_27) = v_1004715
-  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_pack_globals{v_26, v_17}}, v_1004716 => checker_continuation_3463(v_1004716, v_11, v_12, v_13, v_22, v_27, v_16)}
+def checker_continuation_3463(v_1004718: Pair(Arena.Arena, IR.OptionalTerm), v_17: List<&2, Scope.Global>, v_11: String, v_12: String, v_13: String, v_22: U32, v_16: Scope.GlobalKind) -> CheckerProgress<Pair(Arena.Arena, List<&2, Scope.ArenaGlobal>)>:
+  (v_26, v_27) = v_1004718
+  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_pack_globals{v_26, v_17}}, v_1004719 => checker_continuation_3462(v_1004719, v_11, v_12, v_13, v_22, v_27, v_16)}
 
-def checker_continuation_3465(v_1004714: Pair(Arena.Arena, U32), v_15: Ast.OptionalTerm, v_17: List<&2, Scope.Global>, v_11: String, v_12: String, v_13: String, v_16: Scope.GlobalKind) -> CheckerProgress<Pair(Arena.Arena, List<&2, Scope.ArenaGlobal>)>:
-  (v_21, v_22) = v_1004714
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_optional_term{v_21, v_15}}, False{}, v_1004717 => checker_body_arena_pack_optional_term(v_21, v_15), v_1004715 => checker_continuation_3464(v_1004715, v_17, v_11, v_12, v_13, v_22, v_16)}
+def checker_continuation_3464(v_1004717: Pair(Arena.Arena, U32), v_15: Ast.OptionalTerm, v_17: List<&2, Scope.Global>, v_11: String, v_12: String, v_13: String, v_16: Scope.GlobalKind) -> CheckerProgress<Pair(Arena.Arena, List<&2, Scope.ArenaGlobal>)>:
+  (v_21, v_22) = v_1004717
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_optional_term{v_21, v_15}}, False{}, v_1004720 => checker_body_arena_pack_optional_term(v_21, v_15), v_1004718 => checker_continuation_3463(v_1004718, v_17, v_11, v_12, v_13, v_22, v_16)}
 
-def checker_match_3466(v_2: List<&2, Scope.Global>, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, List<&2, Scope.ArenaGlobal>)>:
+def checker_match_3465(v_2: List<&2, Scope.Global>, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, List<&2, Scope.ArenaGlobal>)>:
   match v_2:
     case []:
       CheckerFinished{(v_0, [])}
     case Scope.Global{v_11, v_12, v_13, v_14, v_15, v_16} <> v_17:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_14}}, False{}, v_1004718 => checker_body_arena_pack_term(v_0, v_14), v_1004714 => checker_continuation_3465(v_1004714, v_15, v_17, v_11, v_12, v_13, v_16)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_0, v_14}}, False{}, v_1004721 => checker_body_arena_pack_term(v_0, v_14), v_1004717 => checker_continuation_3464(v_1004717, v_15, v_17, v_11, v_12, v_13, v_16)}
 
 def checker_body_arena_pack_globals(v_0: Arena.Arena, v_2: List<&2, Scope.Global>) -> CheckerProgress<Pair(Arena.Arena, List<&2, Scope.ArenaGlobal>)>:
-  checker_match_3466(v_2, v_0)
+  checker_match_3465(v_2, v_0)
 
-def checker_continuation_3467(v_1004720: Pair(Arena.Arena, List<&2, IR.LoadedModule>), v_7: String, v_14: IR.Module) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.LoadedModule>)>:
-  (v_18, v_19) = v_1004720
+def checker_continuation_3466(v_1004723: Pair(Arena.Arena, List<&2, IR.LoadedModule>), v_7: String, v_14: IR.Module) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.LoadedModule>)>:
+  (v_18, v_19) = v_1004723
   CheckerFinished{(v_18, IR.LoadedModule{v_7, v_14} <> v_19)}
 
-def checker_continuation_3468(v_1004719: Pair(Arena.Arena, IR.Module), v_9: List<&2, Loader.LoadedModule>, v_7: String) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.LoadedModule>)>:
-  (v_13, v_14) = v_1004719
-  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_pack_modules{v_13, v_9}}, v_1004720 => checker_continuation_3467(v_1004720, v_7, v_14)}
+def checker_continuation_3467(v_1004722: Pair(Arena.Arena, IR.Module), v_9: List<&2, Loader.LoadedModule>, v_7: String) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.LoadedModule>)>:
+  (v_13, v_14) = v_1004722
+  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_pack_modules{v_13, v_9}}, v_1004723 => checker_continuation_3466(v_1004723, v_7, v_14)}
 
-def checker_match_3469(v_2: List<&2, Loader.LoadedModule>, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.LoadedModule>)>:
+def checker_match_3468(v_2: List<&2, Loader.LoadedModule>, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.LoadedModule>)>:
   match v_2:
     case []:
       CheckerFinished{(v_0, [])}
     case Loader.LoadedModule{v_7, v_8} <> v_9:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_module{v_0, v_8}}, False{}, v_1004721 => checker_body_arena_pack_module(v_0, v_8), v_1004719 => checker_continuation_3468(v_1004719, v_9, v_7)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_module{v_0, v_8}}, False{}, v_1004724 => checker_body_arena_pack_module(v_0, v_8), v_1004722 => checker_continuation_3467(v_1004722, v_9, v_7)}
 
 def checker_body_arena_pack_modules(v_0: Arena.Arena, v_2: List<&2, Loader.LoadedModule>) -> CheckerProgress<Pair(Arena.Arena, List<&2, IR.LoadedModule>)>:
-  checker_match_3469(v_2, v_0)
+  checker_match_3468(v_2, v_0)
 
-def checker_continuation_3470(v_1004723: Pair(Arena.Arena, List<&2, Loader.LoadedModule>), v_7: String, v_14: Ast.Module) -> CheckerProgress<Pair(Arena.Arena, List<&2, Loader.LoadedModule>)>:
-  (v_18, v_19) = v_1004723
+def checker_continuation_3469(v_1004726: Pair(Arena.Arena, List<&2, Loader.LoadedModule>), v_7: String, v_14: Ast.Module) -> CheckerProgress<Pair(Arena.Arena, List<&2, Loader.LoadedModule>)>:
+  (v_18, v_19) = v_1004726
   CheckerFinished{(v_18, Loader.LoadedModule{v_7, v_14} <> v_19)}
 
-def checker_continuation_3471(v_1004722: Pair(Arena.Arena, Ast.Module), v_9: List<&2, IR.LoadedModule>, v_7: String) -> CheckerProgress<Pair(Arena.Arena, List<&2, Loader.LoadedModule>)>:
-  (v_13, v_14) = v_1004722
-  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_modules{v_13, v_9}}, v_1004723 => checker_continuation_3470(v_1004723, v_7, v_14)}
+def checker_continuation_3470(v_1004725: Pair(Arena.Arena, Ast.Module), v_9: List<&2, IR.LoadedModule>, v_7: String) -> CheckerProgress<Pair(Arena.Arena, List<&2, Loader.LoadedModule>)>:
+  (v_13, v_14) = v_1004725
+  CheckerPending{CheckerRequestGroup_15{CheckerRequest_arena_decode_modules{v_13, v_9}}, v_1004726 => checker_continuation_3469(v_1004726, v_7, v_14)}
 
-def checker_match_3472(v_2: List<&2, IR.LoadedModule>, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, List<&2, Loader.LoadedModule>)>:
+def checker_match_3471(v_2: List<&2, IR.LoadedModule>, v_0: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, List<&2, Loader.LoadedModule>)>:
   match v_2:
     case []:
       CheckerFinished{(v_0, [])}
     case IR.LoadedModule{v_7, v_8} <> v_9:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_decode_module{v_0, v_8}}, False{}, v_1004724 => checker_body_arena_decode_module(v_0, v_8), v_1004722 => checker_continuation_3471(v_1004722, v_9, v_7)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_module{v_0, v_8}}, False{}, v_1004727 => checker_body_arena_decode_module(v_0, v_8), v_1004725 => checker_continuation_3470(v_1004725, v_9, v_7)}
 
 def checker_body_arena_decode_modules(v_0: Arena.Arena, v_2: List<&2, IR.LoadedModule>) -> CheckerProgress<Pair(Arena.Arena, List<&2, Loader.LoadedModule>)>:
-  checker_match_3472(v_2, v_0)
+  checker_match_3471(v_2, v_0)
 
-def checker_continuation_3473(v_1004725: Pair(Arena.Arena, List<&2, Loader.LoadedModule>)) -> CheckerProgress<CheckResult>:
-  (v_11, v_12) = v_1004725
+def checker_continuation_3472(v_1004728: Pair(Arena.Arena, List<&2, Loader.LoadedModule>)) -> CheckerProgress<CheckResult>:
+  (v_11, v_12) = v_1004728
   CheckerFinished{CheckSuccess{v_12}}
 
-def checker_match_3474(v_2: PrivateResult, v_0: Arena.Arena) -> CheckerProgress<CheckResult>:
+def checker_match_3473(v_2: PrivateResult, v_0: Arena.Arena) -> CheckerProgress<CheckResult>:
   match v_2:
     case PrivateFailure{v_5}:
       CheckerFinished{CheckFailure{v_5}}
     case PrivateSuccess{v_7}:
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_modules{v_0, v_7}}, False{}, v_1004726 => checker_body_arena_decode_modules(v_0, v_7), v_1004725 => checker_continuation_3473(v_1004725)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_modules{v_0, v_7}}, False{}, v_1004729 => checker_body_arena_decode_modules(v_0, v_7), v_1004728 => checker_continuation_3472(v_1004728)}
 
 def checker_body_arena_check_exit(v_0: Arena.Arena, v_2: PrivateResult) -> CheckerProgress<CheckResult>:
-  checker_match_3474(v_2, v_0)
+  checker_match_3473(v_2, v_0)
 
 def checker_body_arena_check_result(v_2: ArenaResult<PrivateResult>) -> CheckerProgress<CheckResult>:
   match v_2:
     case ArenaResult{ArenaStore{v_7, _}, v_9}:
       checker_body_arena_check_exit(v_7, v_9)
 
-def checker_continuation_3476(v_1004729: Pair(Arena.Arena, List<&2, Scope.ArenaGlobal>), v_9: List<&2, IR.LoadedModule>) -> CheckerProgress<CheckResult>:
-  (v_13, v_14) = v_1004729
-  CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_check_modules_private{ArenaStore{v_13, Arena.empty}, v_9, v_14}}, False{}, v_1004732 => checker_body_check_modules_private(ArenaStore{v_13, Arena.empty}, v_9, v_14), v_1004730 => checker_body_arena_check_result(v_1004730)}
+def checker_continuation_3475(v_1004732: Pair(Arena.Arena, List<&2, Scope.ArenaGlobal>), v_9: List<&2, IR.LoadedModule>) -> CheckerProgress<CheckResult>:
+  (v_13, v_14) = v_1004732
+  CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_check_modules_private{ArenaStore{v_13, Arena.empty}, v_9, v_14}}, False{}, v_1004735 => checker_body_check_modules_private(ArenaStore{v_13, Arena.empty}, v_9, v_14), v_1004733 => checker_body_arena_check_result(v_1004733)}
 
-def checker_continuation_3477(v_1004728: Pair(Arena.Arena, List<&2, IR.LoadedModule>), v_3: List<&2, Scope.Global>) -> CheckerProgress<CheckResult>:
-  (v_8, v_9) = v_1004728
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_pack_globals{v_8, v_3}}, False{}, v_1004733 => checker_body_arena_pack_globals(v_8, v_3), v_1004729 => checker_continuation_3476(v_1004729, v_9)}
+def checker_continuation_3476(v_1004731: Pair(Arena.Arena, List<&2, IR.LoadedModule>), v_3: List<&2, Scope.Global>) -> CheckerProgress<CheckResult>:
+  (v_8, v_9) = v_1004731
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_pack_globals{v_8, v_3}}, False{}, v_1004736 => checker_body_arena_pack_globals(v_8, v_3), v_1004732 => checker_continuation_3475(v_1004732, v_9)}
 
 def checker_body_arena_check_entry(v_1: List<&2, Loader.LoadedModule>, v_3: List<&2, Scope.Global>) -> CheckerProgress<CheckResult>:
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_pack_modules{Arena.empty, v_1}}, False{}, v_1004734 => checker_body_arena_pack_modules(Arena.empty, v_1), v_1004728 => checker_continuation_3477(v_1004728, v_3)}
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_pack_modules{Arena.empty, v_1}}, False{}, v_1004737 => checker_body_arena_pack_modules(Arena.empty, v_1), v_1004731 => checker_continuation_3476(v_1004731, v_3)}
 
 def checker_body_check_modules(v_1: List<&2, Loader.LoadedModule>, v_3: List<&2, Scope.Global>) -> CheckerProgress<CheckResult>:
   checker_body_arena_check_entry(v_1, v_3)
@@ -29339,64 +29338,64 @@ def checker_body_arena_word_cursor_word_count_result_24(v_2: Pair(Arena.Arena, U
 def checker_body_arena_reserve_source_naturals_reserve_naturals_result_26(v_2: Pair(Arena.Arena, U32), v_3: Arena.Arena) -> CheckerProgress<ArenaResult<U32>>:
   CheckerFinished{checker_pure_arena_reserve_source_naturals_reserve_naturals_result_26(v_2, v_3)}
 
-def checker_continuation_3478(v_1004736: Arena.Arena, +v_14: U32, +v_6: U32) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
-  v_17 = v_1004736
+def checker_continuation_3477(v_1004739: Arena.Arena, +v_14: U32, +v_6: U32) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
+  v_17 = v_1004739
   CheckerFinished{(v_17, v_14, v_6)}
 
 def checker_body_arena_pack_terms_reserve_words_result_28(v_2: Pair(Arena.Arena, U32), +v_4: List<&2, Ast.SyntaxTerm>, +v_6: U32) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
   match v_2:
     case (v_13, +v_14):
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_terms_at{v_13, v_4, v_14}}, False{}, v_1004737 => checker_body_arena_pack_terms_at(v_13, v_4, v_14), v_1004736 => checker_continuation_3478(v_1004736, v_14, v_6)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_terms_at{v_13, v_4, v_14}}, False{}, v_1004740 => checker_body_arena_pack_terms_at(v_13, v_4, v_14), v_1004739 => checker_continuation_3477(v_1004739, v_14, v_6)}
 
-def checker_continuation_3480(v_1004738: Arena.Arena, +v_14: U32, +v_6: U32) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
-  v_17 = v_1004738
+def checker_continuation_3479(v_1004741: Arena.Arena, +v_14: U32, +v_6: U32) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
+  v_17 = v_1004741
   CheckerFinished{(v_17, v_14, v_6)}
 
 def checker_body_arena_pack_patterns_reserve_words_result_29(v_2: Pair(Arena.Arena, U32), +v_4: List<&2, Ast.SyntaxPattern>, +v_6: U32) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
   match v_2:
     case (v_13, +v_14):
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_patterns_at{v_13, v_4, v_14}}, False{}, v_1004739 => checker_body_arena_pack_patterns_at(v_13, v_4, v_14), v_1004738 => checker_continuation_3480(v_1004738, v_14, v_6)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_patterns_at{v_13, v_4, v_14}}, False{}, v_1004742 => checker_body_arena_pack_patterns_at(v_13, v_4, v_14), v_1004741 => checker_continuation_3479(v_1004741, v_14, v_6)}
 
-def checker_continuation_3482(v_1004740: Arena.Arena, +v_14: U32, +v_6: U32) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
-  v_17 = v_1004740
+def checker_continuation_3481(v_1004743: Arena.Arena, +v_14: U32, +v_6: U32) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
+  v_17 = v_1004743
   CheckerFinished{(v_17, v_14, v_6)}
 
 def checker_body_arena_pack_binders_reserve_words_result_30(v_2: Pair(Arena.Arena, U32), +v_4: List<&2, Ast.TelescopeItem>, +v_6: U32) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
   match v_2:
     case (v_13, +v_14):
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_binders_at{v_13, v_4, v_14}}, False{}, v_1004741 => checker_body_arena_pack_binders_at(v_13, v_4, v_14), v_1004740 => checker_continuation_3482(v_1004740, v_14, v_6)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_binders_at{v_13, v_4, v_14}}, False{}, v_1004744 => checker_body_arena_pack_binders_at(v_13, v_4, v_14), v_1004743 => checker_continuation_3481(v_1004743, v_14, v_6)}
 
 def checker_body_arena_pack_names_at_name_result_31(v_2: Pair(Arena.Arena, U32), +v_4: U32, v_7: List<&2, String>) -> CheckerProgress<Arena.Arena>:
   match v_2:
     case (v_10, v_11):
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_names_at{Arena.set_word(v_10, v_4, v_11), v_7, U32.add(v_4, 1)}}, False{}, v_1004743 => checker_body_arena_pack_names_at(Arena.set_word(v_10, v_4, v_11), v_7, U32.add(v_4, 1)), v_1004742 => CheckerFinished{v_1004742}}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_names_at{Arena.set_word(v_10, v_4, v_11), v_7, U32.add(v_4, 1)}}, False{}, v_1004746 => checker_body_arena_pack_names_at(Arena.set_word(v_10, v_4, v_11), v_7, U32.add(v_4, 1)), v_1004745 => CheckerFinished{v_1004745}}
 
-def checker_continuation_3485(v_1004744: Arena.Arena, +v_15: U32, +v_7: U32) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
-  v_18 = v_1004744
+def checker_continuation_3484(v_1004747: Arena.Arena, +v_15: U32, +v_7: U32) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
+  v_18 = v_1004747
   CheckerFinished{(v_18, v_15, v_7)}
 
 def checker_body_arena_pack_names_reserve_words_result_32(v_2: Pair(Arena.Arena, U32), +v_5: List<&2, String>, +v_7: U32) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
   match v_2:
     case (v_14, +v_15):
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_names_at{v_14, v_5, v_15}}, False{}, v_1004745 => checker_body_arena_pack_names_at(v_14, v_5, v_15), v_1004744 => checker_continuation_3485(v_1004744, v_15, v_7)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_names_at{v_14, v_5, v_15}}, False{}, v_1004748 => checker_body_arena_pack_names_at(v_14, v_5, v_15), v_1004747 => checker_continuation_3484(v_1004747, v_15, v_7)}
 
-def checker_continuation_3487(v_1004746: Arena.Arena, +v_15: U32, +v_7: U32) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
-  v_18 = v_1004746
+def checker_continuation_3486(v_1004749: Arena.Arena, +v_15: U32, +v_7: U32) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
+  v_18 = v_1004749
   CheckerFinished{(v_18, v_15, v_7)}
 
 def checker_body_arena_pack_naturals_reserve_naturals_result_33(v_2: Pair(Arena.Arena, U32), +v_5: List<&2, Nat>, +v_7: U32) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
   match v_2:
     case (v_14, +v_15):
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_naturals_at{v_14, v_5, v_15}}, False{}, v_1004747 => checker_body_arena_pack_naturals_at(v_14, v_5, v_15), v_1004746 => checker_continuation_3487(v_1004746, v_15, v_7)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_naturals_at{v_14, v_5, v_15}}, False{}, v_1004750 => checker_body_arena_pack_naturals_at(v_14, v_5, v_15), v_1004749 => checker_continuation_3486(v_1004749, v_15, v_7)}
 
-def checker_continuation_3489(v_1004748: Arena.Arena, +v_14: U32, +v_6: U32) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
-  v_17 = v_1004748
+def checker_continuation_3488(v_1004751: Arena.Arena, +v_14: U32, +v_6: U32) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
+  v_17 = v_1004751
   CheckerFinished{(v_17, v_14, v_6)}
 
 def checker_body_arena_pack_quantities_reserve_words_result_34(v_2: Pair(Arena.Arena, U32), +v_4: List<&2, Ast.Quantity>, +v_6: U32) -> CheckerProgress<Pair(Arena.Arena, Pair(U32, U32))>:
   match v_2:
     case (v_13, +v_14):
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_quantities_at{v_13, v_4, v_14}}, False{}, v_1004749 => checker_body_arena_pack_quantities_at(v_13, v_4, v_14), v_1004748 => checker_continuation_3489(v_1004748, v_14, v_6)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_quantities_at{v_13, v_4, v_14}}, False{}, v_1004752 => checker_body_arena_pack_quantities_at(v_13, v_4, v_14), v_1004751 => checker_continuation_3488(v_1004751, v_14, v_6)}
 
 def checker_body_arena_pack_term_name_result_35(v_2: Pair(Arena.Arena, U32), v_4: Nat, v_5: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
   CheckerFinished{checker_pure_arena_pack_term_name_result_35(v_2, v_4, v_5)}
@@ -29404,69 +29403,69 @@ def checker_body_arena_pack_term_name_result_35(v_2: Pair(Arena.Arena, U32), v_4
 def checker_body_arena_pack_term_name_result_36(v_2: Pair(Arena.Arena, U32), v_3: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
   CheckerFinished{checker_pure_arena_pack_term_name_result_36(v_2, v_3)}
 
-def checker_continuation_3491(v_1004751: Pair(Arena.Arena, U32), v_5: Ast.Quantity, v_14: U32, v_7: Nat, v_19: U32, v_8: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_23, v_24) = v_1004751
+def checker_continuation_3490(v_1004754: Pair(Arena.Arena, U32), v_5: Ast.Quantity, v_14: U32, v_7: Nat, v_19: U32, v_8: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_23, v_24) = v_1004754
   CheckerFinished{Arena.put_node(v_23, Arena.TermAll{v_5, v_14, v_7, v_19, v_24, v_8})}
 
-def checker_continuation_3492(v_1004750: Pair(Arena.Arena, U32), v_4: Ast.SyntaxTerm, v_5: Ast.Quantity, v_14: U32, v_7: Nat, v_8: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_18, v_19) = v_1004750
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_18, v_4}}, False{}, v_1004752 => checker_body_arena_pack_term(v_18, v_4), v_1004751 => checker_continuation_3491(v_1004751, v_5, v_14, v_7, v_19, v_8)}
+def checker_continuation_3491(v_1004753: Pair(Arena.Arena, U32), v_4: Ast.SyntaxTerm, v_5: Ast.Quantity, v_14: U32, v_7: Nat, v_8: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_18, v_19) = v_1004753
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_18, v_4}}, False{}, v_1004755 => checker_body_arena_pack_term(v_18, v_4), v_1004754 => checker_continuation_3490(v_1004754, v_5, v_14, v_7, v_19, v_8)}
 
 def checker_body_arena_pack_term_name_result_37(v_2: Pair(Arena.Arena, U32), v_3: Ast.SyntaxTerm, v_4: Ast.SyntaxTerm, v_5: Ast.Quantity, v_7: Nat, v_8: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
   match v_2:
     case (v_13, v_14):
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_13, v_3}}, False{}, v_1004753 => checker_body_arena_pack_term(v_13, v_3), v_1004750 => checker_continuation_3492(v_1004750, v_4, v_5, v_14, v_7, v_8)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_13, v_3}}, False{}, v_1004756 => checker_body_arena_pack_term(v_13, v_3), v_1004753 => checker_continuation_3491(v_1004753, v_4, v_5, v_14, v_7, v_8)}
 
-def checker_continuation_3494(v_1004754: Pair(Arena.Arena, U32), v_5: Maybe<&2, Ast.Quantity>, v_14: U32, v_7: Nat, v_8: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_18, v_19) = v_1004754
+def checker_continuation_3493(v_1004757: Pair(Arena.Arena, U32), v_5: Maybe<&2, Ast.Quantity>, v_14: U32, v_7: Nat, v_8: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_18, v_19) = v_1004757
   CheckerFinished{Arena.put_node(v_18, Arena.TermLam{v_5, v_14, v_7, v_19, v_8})}
 
 def checker_body_arena_pack_term_name_result_38(v_2: Pair(Arena.Arena, U32), v_3: Ast.SyntaxTerm, v_5: Maybe<&2, Ast.Quantity>, v_7: Nat, v_8: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
   match v_2:
     case (v_13, v_14):
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_13, v_3}}, False{}, v_1004755 => checker_body_arena_pack_term(v_13, v_3), v_1004754 => checker_continuation_3494(v_1004754, v_5, v_14, v_7, v_8)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_13, v_3}}, False{}, v_1004758 => checker_body_arena_pack_term(v_13, v_3), v_1004757 => checker_continuation_3493(v_1004757, v_5, v_14, v_7, v_8)}
 
-def checker_continuation_3496(v_1004757: Pair(Arena.Arena, Pair(U32, U32)), v_14: U32, v_20: U32, v_21: U32, v_8: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_26, v_27, v_28) = v_1004757
+def checker_continuation_3495(v_1004760: Pair(Arena.Arena, Pair(U32, U32)), v_14: U32, v_20: U32, v_21: U32, v_8: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_26, v_27, v_28) = v_1004760
   CheckerFinished{Arena.put_node(v_26, Arena.TermAdt{v_14, v_20, v_21, v_27, v_28, v_8})}
 
-def checker_continuation_3497(v_1004756: Pair(Arena.Arena, Pair(U32, U32)), v_7: List<&2, String>, v_14: U32, v_8: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_19, v_20, v_21) = v_1004756
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_names{v_19, v_7}}, False{}, v_1004758 => checker_body_arena_pack_names(v_19, v_7), v_1004757 => checker_continuation_3496(v_1004757, v_14, v_20, v_21, v_8)}
+def checker_continuation_3496(v_1004759: Pair(Arena.Arena, Pair(U32, U32)), v_7: List<&2, String>, v_14: U32, v_8: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_19, v_20, v_21) = v_1004759
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_names{v_19, v_7}}, False{}, v_1004761 => checker_body_arena_pack_names(v_19, v_7), v_1004760 => checker_continuation_3495(v_1004760, v_14, v_20, v_21, v_8)}
 
 def checker_body_arena_pack_term_name_result_39(v_2: Pair(Arena.Arena, U32), v_4: List<&2, Ast.SyntaxTerm>, v_7: List<&2, String>, v_8: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
   match v_2:
     case (v_13, v_14):
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_terms{v_13, v_4}}, False{}, v_1004759 => checker_body_arena_pack_terms(v_13, v_4), v_1004756 => checker_continuation_3497(v_1004756, v_7, v_14, v_8)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_terms{v_13, v_4}}, False{}, v_1004762 => checker_body_arena_pack_terms(v_13, v_4), v_1004759 => checker_continuation_3496(v_1004759, v_7, v_14, v_8)}
 
-def checker_continuation_3499(v_1004760: Pair(Arena.Arena, Pair(U32, U32)), v_11: U32, v_5: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_18, v_19, v_20) = v_1004760
+def checker_continuation_3498(v_1004763: Pair(Arena.Arena, Pair(U32, U32)), v_11: U32, v_5: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_18, v_19, v_20) = v_1004763
   CheckerFinished{Arena.put_node(v_18, Arena.TermCtr{v_11, v_19, v_20, v_5})}
 
-def checker_match_3500(+v_4: List<&2, Ast.SyntaxTerm>, v_10: Arena.Arena, v_11: U32, v_5: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+def checker_match_3499(+v_4: List<&2, Ast.SyntaxTerm>, v_10: Arena.Arena, v_11: U32, v_5: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
   match v_4:
     case []:
       CheckerFinished{Arena.put_ctr_leaf(v_10, v_11, v_5)}
     case _:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_terms{v_10, v_4}}, False{}, v_1004761 => checker_body_arena_pack_terms(v_10, v_4), v_1004760 => checker_continuation_3499(v_1004760, v_11, v_5)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_terms{v_10, v_4}}, False{}, v_1004764 => checker_body_arena_pack_terms(v_10, v_4), v_1004763 => checker_continuation_3498(v_1004763, v_11, v_5)}
 
 def checker_body_arena_pack_term_name_result_40(v_2: Pair(Arena.Arena, U32), v_4: List<&2, Ast.SyntaxTerm>, v_5: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
   match v_2:
     case (v_10, v_11):
-      checker_match_3500(v_4, v_10, v_11, v_5)
+      checker_match_3499(v_4, v_10, v_11, v_5)
 
-def checker_continuation_3502(v_1004763: Pair(Arena.Arena, U32), v_11: U32, v_16: U32, v_5: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_20, v_21) = v_1004763
+def checker_continuation_3501(v_1004766: Pair(Arena.Arena, U32), v_11: U32, v_16: U32, v_5: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_20, v_21) = v_1004766
   CheckerFinished{Arena.put_node(v_20, Arena.TermMat{v_11, v_16, v_21, v_5})}
 
-def checker_continuation_3503(v_1004762: Pair(Arena.Arena, U32), v_4: Ast.SyntaxTerm, v_11: U32, v_5: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_15, v_16) = v_1004762
-  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_15, v_4}}, False{}, v_1004764 => checker_body_arena_pack_term(v_15, v_4), v_1004763 => checker_continuation_3502(v_1004763, v_11, v_16, v_5)}
+def checker_continuation_3502(v_1004765: Pair(Arena.Arena, U32), v_4: Ast.SyntaxTerm, v_11: U32, v_5: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_15, v_16) = v_1004765
+  CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_15, v_4}}, False{}, v_1004767 => checker_body_arena_pack_term(v_15, v_4), v_1004766 => checker_continuation_3501(v_1004766, v_11, v_16, v_5)}
 
 def checker_body_arena_pack_term_name_result_41(v_2: Pair(Arena.Arena, U32), v_3: Ast.SyntaxTerm, v_4: Ast.SyntaxTerm, v_5: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
   match v_2:
     case (v_10, v_11):
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_10, v_3}}, False{}, v_1004765 => checker_body_arena_pack_term(v_10, v_3), v_1004762 => checker_continuation_3503(v_1004762, v_4, v_11, v_5)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_10, v_3}}, False{}, v_1004768 => checker_body_arena_pack_term(v_10, v_3), v_1004765 => checker_continuation_3502(v_1004765, v_4, v_11, v_5)}
 
 def checker_body_arena_pack_term_name_result_42(v_2: Pair(Arena.Arena, U32), v_3: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
   CheckerFinished{checker_pure_arena_pack_term_name_result_42(v_2, v_3)}
@@ -29474,104 +29473,104 @@ def checker_body_arena_pack_term_name_result_42(v_2: Pair(Arena.Arena, U32), v_3
 def checker_body_arena_pack_pattern_name_result_43(v_2: Pair(Arena.Arena, U32), v_4: Nat, v_5: Ast.Quantity, v_6: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
   CheckerFinished{checker_pure_arena_pack_pattern_name_result_43(v_2, v_4, v_5, v_6)}
 
-def checker_continuation_3505(v_1004766: Pair(Arena.Arena, Pair(U32, U32)), v_11: U32, v_5: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_16, v_17, v_18) = v_1004766
+def checker_continuation_3504(v_1004769: Pair(Arena.Arena, Pair(U32, U32)), v_11: U32, v_5: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_16, v_17, v_18) = v_1004769
   CheckerFinished{Arena.put_pattern(v_16, Arena.PatternCtr{v_11, v_17, v_18, v_5})}
 
 def checker_body_arena_pack_pattern_name_result_44(v_2: Pair(Arena.Arena, U32), v_4: List<&2, Ast.SyntaxPattern>, v_5: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
   match v_2:
     case (v_10, v_11):
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_patterns{v_10, v_4}}, False{}, v_1004767 => checker_body_arena_pack_patterns(v_10, v_4), v_1004766 => checker_continuation_3505(v_1004766, v_11, v_5)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_patterns{v_10, v_4}}, False{}, v_1004770 => checker_body_arena_pack_patterns(v_10, v_4), v_1004769 => checker_continuation_3504(v_1004769, v_11, v_5)}
 
-def checker_continuation_3507(v_1004768: Pair(Arena.Arena, U32), v_4: Ast.Quantity, v_13: U32, v_6: Nat, v_7: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_17, v_18) = v_1004768
+def checker_continuation_3506(v_1004771: Pair(Arena.Arena, U32), v_4: Ast.Quantity, v_13: U32, v_6: Nat, v_7: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_17, v_18) = v_1004771
   CheckerFinished{Arena.put_binder(v_17, Arena.Binder{v_4, v_13, v_6, v_18, v_7})}
 
 def checker_body_arena_pack_binder_name_result_45(v_2: Pair(Arena.Arena, U32), v_3: Ast.SyntaxTerm, v_4: Ast.Quantity, v_6: Nat, v_7: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
   match v_2:
     case (v_12, v_13):
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_12, v_3}}, False{}, v_1004769 => checker_body_arena_pack_term(v_12, v_3), v_1004768 => checker_continuation_3507(v_1004768, v_4, v_13, v_6, v_7)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_12, v_3}}, False{}, v_1004772 => checker_body_arena_pack_term(v_12, v_3), v_1004771 => checker_continuation_3506(v_1004771, v_4, v_13, v_6, v_7)}
 
-def checker_continuation_3509(v_1004770: Pair(Arena.Arena, U32), v_12: U32, v_5: Nat, v_6: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
-  (v_16, v_17) = v_1004770
+def checker_continuation_3508(v_1004773: Pair(Arena.Arena, U32), v_12: U32, v_5: Nat, v_6: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
+  (v_16, v_17) = v_1004773
   CheckerFinished{Arena.put_binder(v_16, Arena.TemplateBinder{v_12, v_5, v_17, v_6})}
 
 def checker_body_arena_pack_binder_name_result_46(v_2: Pair(Arena.Arena, U32), v_3: Ast.SyntaxTerm, v_5: Nat, v_6: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, U32)>:
   match v_2:
     case (v_11, v_12):
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_11, v_3}}, False{}, v_1004771 => checker_body_arena_pack_term(v_11, v_3), v_1004770 => checker_continuation_3509(v_1004770, v_12, v_5, v_6)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_11, v_3}}, False{}, v_1004774 => checker_body_arena_pack_term(v_11, v_3), v_1004773 => checker_continuation_3508(v_1004773, v_12, v_5, v_6)}
 
-def checker_continuation_3511(v_1004773: Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>), v_17: Ast.SyntaxTerm) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>)>:
-  (v_21, v_22) = v_1004773
+def checker_continuation_3510(v_1004776: Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>), v_17: Ast.SyntaxTerm) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>)>:
+  (v_21, v_22) = v_1004776
   CheckerFinished{(v_21, v_17 <> v_22)}
 
-def checker_continuation_3512(v_1004772: Pair(Arena.Arena, Ast.SyntaxTerm), +v_4: U32, v_6: Nat) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>)>:
-  (v_16, v_17) = v_1004772
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_terms_go{v_16, U32.add(v_4, 1), v_6}}, False{}, v_1004774 => checker_body_arena_decode_terms_go(v_16, U32.add(v_4, 1), v_6), v_1004773 => checker_continuation_3511(v_1004773, v_17)}
+def checker_continuation_3511(v_1004775: Pair(Arena.Arena, Ast.SyntaxTerm), +v_4: U32, v_6: Nat) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>)>:
+  (v_16, v_17) = v_1004775
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_terms_go{v_16, U32.add(v_4, 1), v_6}}, False{}, v_1004777 => checker_body_arena_decode_terms_go(v_16, U32.add(v_4, 1), v_6), v_1004776 => checker_continuation_3510(v_1004776, v_17)}
 
 def checker_body_arena_decode_terms_go_word_result_47(v_2: Pair(Arena.Arena, U32), +v_4: U32, v_6: Nat) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>)>:
   match v_2:
     case (v_11, v_12):
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_11, v_12}}, False{}, v_1004775 => checker_body_arena_decode_term(v_11, v_12), v_1004772 => checker_continuation_3512(v_1004772, v_4, v_6)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_11, v_12}}, False{}, v_1004778 => checker_body_arena_decode_term(v_11, v_12), v_1004775 => checker_continuation_3511(v_1004775, v_4, v_6)}
 
-def checker_continuation_3514(v_1004777: Pair(Arena.Arena, List<&2, Ast.SyntaxPattern>), v_17: Ast.SyntaxPattern) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.SyntaxPattern>)>:
-  (v_21, v_22) = v_1004777
+def checker_continuation_3513(v_1004780: Pair(Arena.Arena, List<&2, Ast.SyntaxPattern>), v_17: Ast.SyntaxPattern) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.SyntaxPattern>)>:
+  (v_21, v_22) = v_1004780
   CheckerFinished{(v_21, v_17 <> v_22)}
 
-def checker_continuation_3515(v_1004776: Pair(Arena.Arena, Ast.SyntaxPattern), +v_4: U32, v_6: Nat) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.SyntaxPattern>)>:
-  (v_16, v_17) = v_1004776
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_patterns_go{v_16, U32.add(v_4, 1), v_6}}, False{}, v_1004778 => checker_body_arena_decode_patterns_go(v_16, U32.add(v_4, 1), v_6), v_1004777 => checker_continuation_3514(v_1004777, v_17)}
+def checker_continuation_3514(v_1004779: Pair(Arena.Arena, Ast.SyntaxPattern), +v_4: U32, v_6: Nat) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.SyntaxPattern>)>:
+  (v_16, v_17) = v_1004779
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_patterns_go{v_16, U32.add(v_4, 1), v_6}}, False{}, v_1004781 => checker_body_arena_decode_patterns_go(v_16, U32.add(v_4, 1), v_6), v_1004780 => checker_continuation_3513(v_1004780, v_17)}
 
 def checker_body_arena_decode_patterns_go_word_result_48(v_2: Pair(Arena.Arena, U32), +v_4: U32, v_6: Nat) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.SyntaxPattern>)>:
   match v_2:
     case (v_11, v_12):
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_pattern{v_11, v_12}}, False{}, v_1004779 => checker_body_arena_decode_pattern(v_11, v_12), v_1004776 => checker_continuation_3515(v_1004776, v_4, v_6)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_pattern{v_11, v_12}}, False{}, v_1004782 => checker_body_arena_decode_pattern(v_11, v_12), v_1004779 => checker_continuation_3514(v_1004779, v_4, v_6)}
 
-def checker_continuation_3517(v_1004781: Pair(Arena.Arena, List<&2, Ast.TelescopeItem>), v_17: Ast.TelescopeItem) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.TelescopeItem>)>:
-  (v_21, v_22) = v_1004781
+def checker_continuation_3516(v_1004784: Pair(Arena.Arena, List<&2, Ast.TelescopeItem>), v_17: Ast.TelescopeItem) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.TelescopeItem>)>:
+  (v_21, v_22) = v_1004784
   CheckerFinished{(v_21, v_17 <> v_22)}
 
-def checker_continuation_3518(v_1004780: Pair(Arena.Arena, Ast.TelescopeItem), +v_4: U32, v_6: Nat) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.TelescopeItem>)>:
-  (v_16, v_17) = v_1004780
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_binders_go{v_16, U32.add(v_4, 1), v_6}}, False{}, v_1004782 => checker_body_arena_decode_binders_go(v_16, U32.add(v_4, 1), v_6), v_1004781 => checker_continuation_3517(v_1004781, v_17)}
+def checker_continuation_3517(v_1004783: Pair(Arena.Arena, Ast.TelescopeItem), +v_4: U32, v_6: Nat) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.TelescopeItem>)>:
+  (v_16, v_17) = v_1004783
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_binders_go{v_16, U32.add(v_4, 1), v_6}}, False{}, v_1004785 => checker_body_arena_decode_binders_go(v_16, U32.add(v_4, 1), v_6), v_1004784 => checker_continuation_3516(v_1004784, v_17)}
 
 def checker_body_arena_decode_binders_go_word_result_49(v_2: Pair(Arena.Arena, U32), +v_4: U32, v_6: Nat) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.TelescopeItem>)>:
   match v_2:
     case (v_11, v_12):
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_binder{v_11, v_12}}, False{}, v_1004783 => checker_body_arena_decode_binder(v_11, v_12), v_1004780 => checker_continuation_3518(v_1004780, v_4, v_6)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_binder{v_11, v_12}}, False{}, v_1004786 => checker_body_arena_decode_binder(v_11, v_12), v_1004783 => checker_continuation_3517(v_1004783, v_4, v_6)}
 
-def checker_continuation_3520(v_1004784: Pair(Arena.Arena, List<&2, String>), v_13: String) -> CheckerProgress<Pair(Arena.Arena, List<&2, String>)>:
-  (v_17, v_18) = v_1004784
+def checker_continuation_3519(v_1004787: Pair(Arena.Arena, List<&2, String>), v_13: String) -> CheckerProgress<Pair(Arena.Arena, List<&2, String>)>:
+  (v_17, v_18) = v_1004787
   CheckerFinished{(v_17, v_13 <> v_18)}
 
 def checker_body_arena_decode_names_go_name_text_result_51(v_2: Pair(Arena.Arena, String), +v_4: U32, v_6: Nat) -> CheckerProgress<Pair(Arena.Arena, List<&2, String>)>:
   match v_2:
     case (v_12, v_13):
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_names_go{v_12, U32.add(v_4, 1), v_6}}, False{}, v_1004785 => checker_body_arena_decode_names_go(v_12, U32.add(v_4, 1), v_6), v_1004784 => checker_continuation_3520(v_1004784, v_13)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_names_go{v_12, U32.add(v_4, 1), v_6}}, False{}, v_1004788 => checker_body_arena_decode_names_go(v_12, U32.add(v_4, 1), v_6), v_1004787 => checker_continuation_3519(v_1004787, v_13)}
 
 def checker_body_arena_decode_names_go_word_result_50(v_2: Pair(Arena.Arena, U32), +v_4: U32, v_6: Nat) -> CheckerProgress<Pair(Arena.Arena, List<&2, String>)>:
   match v_2:
     case (v_12, v_13):
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_arena_decode_names_go_name_text_result_51{Arena.name_text(v_12, v_13), v_4, v_6}}, False{}, v_1004787 => checker_body_arena_decode_names_go_name_text_result_51(Arena.name_text(v_12, v_13), v_4, v_6), v_1004786 => CheckerFinished{v_1004786}}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_arena_decode_names_go_name_text_result_51{Arena.name_text(v_12, v_13), v_4, v_6}}, False{}, v_1004790 => checker_body_arena_decode_names_go_name_text_result_51(Arena.name_text(v_12, v_13), v_4, v_6), v_1004789 => CheckerFinished{v_1004789}}
 
-def checker_continuation_3523(v_1004788: Pair(Arena.Arena, List<&2, Nat>), v_13: Nat) -> CheckerProgress<Pair(Arena.Arena, List<&2, Nat>)>:
-  (v_17, v_18) = v_1004788
+def checker_continuation_3522(v_1004791: Pair(Arena.Arena, List<&2, Nat>), v_13: Nat) -> CheckerProgress<Pair(Arena.Arena, List<&2, Nat>)>:
+  (v_17, v_18) = v_1004791
   CheckerFinished{(v_17, v_13 <> v_18)}
 
 def checker_body_arena_decode_naturals_go_natural_result_52(v_2: Pair(Arena.Arena, Nat), +v_4: U32, v_6: Nat) -> CheckerProgress<Pair(Arena.Arena, List<&2, Nat>)>:
   match v_2:
     case (v_12, v_13):
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_naturals_go{v_12, U32.add(v_4, 1), v_6}}, False{}, v_1004789 => checker_body_arena_decode_naturals_go(v_12, U32.add(v_4, 1), v_6), v_1004788 => checker_continuation_3523(v_1004788, v_13)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_naturals_go{v_12, U32.add(v_4, 1), v_6}}, False{}, v_1004792 => checker_body_arena_decode_naturals_go(v_12, U32.add(v_4, 1), v_6), v_1004791 => checker_continuation_3522(v_1004791, v_13)}
 
-def checker_continuation_3525(v_1004790: Pair(Arena.Arena, List<&2, Ast.Quantity>), v_14: Ast.Quantity) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.Quantity>)>:
-  (v_18, v_19) = v_1004790
+def checker_continuation_3524(v_1004793: Pair(Arena.Arena, List<&2, Ast.Quantity>), v_14: Ast.Quantity) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.Quantity>)>:
+  (v_18, v_19) = v_1004793
   CheckerFinished{(v_18, v_14 <> v_19)}
 
 def checker_body_arena_decode_quantities_go_word_result_53(v_2: Pair(Arena.Arena, U32), +v_4: U32, v_6: Nat) -> CheckerProgress<Pair(Arena.Arena, List<&2, Ast.Quantity>)>:
   match v_2:
     case (v_11, v_12):
       v_14 = Arena.word_quantity(v_12)
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_quantities_go{v_11, U32.add(v_4, 1), v_6}}, False{}, v_1004791 => checker_body_arena_decode_quantities_go(v_11, U32.add(v_4, 1), v_6), v_1004790 => checker_continuation_3525(v_1004790, v_14)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_quantities_go{v_11, U32.add(v_4, 1), v_6}}, False{}, v_1004794 => checker_body_arena_decode_quantities_go(v_11, U32.add(v_4, 1), v_6), v_1004793 => checker_continuation_3524(v_1004793, v_14)}
 
 def checker_body_arena_decode_term_name_text_result_55(v_2: Pair(Arena.Arena, String), v_4: Nat, v_5: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
   CheckerFinished{checker_pure_arena_decode_term_name_text_result_55(v_2, v_4, v_5)}
@@ -29579,361 +29578,361 @@ def checker_body_arena_decode_term_name_text_result_55(v_2: Pair(Arena.Arena, St
 def checker_body_arena_decode_term_name_text_result_56(v_2: Pair(Arena.Arena, String), v_3: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
   CheckerFinished{checker_pure_arena_decode_term_name_text_result_56(v_2, v_3)}
 
-def checker_continuation_3527(v_1004793: Pair(Arena.Arena, Ast.SyntaxTerm), v_7: Ast.Quantity, v_15: String, v_9: Nat, v_20: Ast.SyntaxTerm, v_10: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_24, v_25) = v_1004793
+def checker_continuation_3526(v_1004796: Pair(Arena.Arena, Ast.SyntaxTerm), v_7: Ast.Quantity, v_15: String, v_9: Nat, v_20: Ast.SyntaxTerm, v_10: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_24, v_25) = v_1004796
   CheckerFinished{(v_24, Ast.TermAll{v_7, v_15, v_9, v_20, v_25, v_10})}
 
-def checker_continuation_3528(v_1004792: Pair(Arena.Arena, Ast.SyntaxTerm), v_6: U32, v_7: Ast.Quantity, v_15: String, v_9: Nat, v_10: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_19, v_20) = v_1004792
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_19, v_6}}, False{}, v_1004794 => checker_body_arena_decode_term(v_19, v_6), v_1004793 => checker_continuation_3527(v_1004793, v_7, v_15, v_9, v_20, v_10)}
+def checker_continuation_3527(v_1004795: Pair(Arena.Arena, Ast.SyntaxTerm), v_6: U32, v_7: Ast.Quantity, v_15: String, v_9: Nat, v_10: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_19, v_20) = v_1004795
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_19, v_6}}, False{}, v_1004797 => checker_body_arena_decode_term(v_19, v_6), v_1004796 => checker_continuation_3526(v_1004796, v_7, v_15, v_9, v_20, v_10)}
 
 def checker_body_arena_decode_term_name_text_result_57(v_2: Pair(Arena.Arena, String), v_4: U32, v_6: U32, v_7: Ast.Quantity, v_9: Nat, v_10: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
   match v_2:
     case (v_14, v_15):
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_14, v_4}}, False{}, v_1004795 => checker_body_arena_decode_term(v_14, v_4), v_1004792 => checker_continuation_3528(v_1004792, v_6, v_7, v_15, v_9, v_10)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_14, v_4}}, False{}, v_1004798 => checker_body_arena_decode_term(v_14, v_4), v_1004795 => checker_continuation_3527(v_1004795, v_6, v_7, v_15, v_9, v_10)}
 
-def checker_continuation_3530(v_1004796: Pair(Arena.Arena, Ast.SyntaxTerm), v_6: Maybe<&2, Ast.Quantity>, v_14: String, v_8: Nat, v_9: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_18, v_19) = v_1004796
+def checker_continuation_3529(v_1004799: Pair(Arena.Arena, Ast.SyntaxTerm), v_6: Maybe<&2, Ast.Quantity>, v_14: String, v_8: Nat, v_9: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_18, v_19) = v_1004799
   CheckerFinished{(v_18, Ast.TermLam{v_6, v_14, v_8, v_19, v_9})}
 
 def checker_body_arena_decode_term_name_text_result_58(v_2: Pair(Arena.Arena, String), v_4: U32, v_6: Maybe<&2, Ast.Quantity>, v_8: Nat, v_9: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
   match v_2:
     case (v_13, v_14):
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_13, v_4}}, False{}, v_1004797 => checker_body_arena_decode_term(v_13, v_4), v_1004796 => checker_continuation_3530(v_1004796, v_6, v_14, v_8, v_9)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_13, v_4}}, False{}, v_1004800 => checker_body_arena_decode_term(v_13, v_4), v_1004799 => checker_continuation_3529(v_1004799, v_6, v_14, v_8, v_9)}
 
-def checker_continuation_3532(v_1004799: Pair(Arena.Arena, List<&2, String>), v_16: String, v_21: List<&2, Ast.SyntaxTerm>, v_11: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_25, v_26) = v_1004799
+def checker_continuation_3531(v_1004802: Pair(Arena.Arena, List<&2, String>), v_16: String, v_21: List<&2, Ast.SyntaxTerm>, v_11: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_25, v_26) = v_1004802
   CheckerFinished{(v_25, Ast.TermAdt{v_16, v_21, v_26, v_11})}
 
-def checker_continuation_3533(v_1004798: Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>), v_8: U32, v_10: U32, v_16: String, v_11: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_20, v_21) = v_1004798
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_names{v_20, v_8, v_10}}, False{}, v_1004800 => checker_body_arena_decode_names(v_20, v_8, v_10), v_1004799 => checker_continuation_3532(v_1004799, v_16, v_21, v_11)}
+def checker_continuation_3532(v_1004801: Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>), v_8: U32, v_10: U32, v_16: String, v_11: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_20, v_21) = v_1004801
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_names{v_20, v_8, v_10}}, False{}, v_1004803 => checker_body_arena_decode_names(v_20, v_8, v_10), v_1004802 => checker_continuation_3531(v_1004802, v_16, v_21, v_11)}
 
 def checker_body_arena_decode_term_name_text_result_59(v_2: Pair(Arena.Arena, String), v_4: U32, v_6: U32, v_8: U32, v_10: U32, v_11: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
   match v_2:
     case (v_15, v_16):
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_terms{v_15, v_4, v_6}}, False{}, v_1004801 => checker_body_arena_decode_terms(v_15, v_4, v_6), v_1004798 => checker_continuation_3533(v_1004798, v_8, v_10, v_16, v_11)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_terms{v_15, v_4, v_6}}, False{}, v_1004804 => checker_body_arena_decode_terms(v_15, v_4, v_6), v_1004801 => checker_continuation_3532(v_1004801, v_8, v_10, v_16, v_11)}
 
-def checker_continuation_3535(v_1004802: Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>), v_12: String, v_7: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_16, v_17) = v_1004802
+def checker_continuation_3534(v_1004805: Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>), v_12: String, v_7: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_16, v_17) = v_1004805
   CheckerFinished{(v_16, Ast.TermCtr{v_12, v_17, v_7})}
 
 def checker_body_arena_decode_term_name_text_result_60(v_2: Pair(Arena.Arena, String), v_4: U32, v_6: U32, v_7: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
   match v_2:
     case (v_11, v_12):
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_terms{v_11, v_4, v_6}}, False{}, v_1004803 => checker_body_arena_decode_terms(v_11, v_4, v_6), v_1004802 => checker_continuation_3535(v_1004802, v_12, v_7)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_terms{v_11, v_4, v_6}}, False{}, v_1004806 => checker_body_arena_decode_terms(v_11, v_4, v_6), v_1004805 => checker_continuation_3534(v_1004805, v_12, v_7)}
 
-def checker_continuation_3537(v_1004805: Pair(Arena.Arena, Ast.SyntaxTerm), v_12: String, v_17: Ast.SyntaxTerm, v_7: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_21, v_22) = v_1004805
+def checker_continuation_3536(v_1004808: Pair(Arena.Arena, Ast.SyntaxTerm), v_12: String, v_17: Ast.SyntaxTerm, v_7: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_21, v_22) = v_1004808
   CheckerFinished{(v_21, Ast.TermMat{v_12, v_17, v_22, v_7})}
 
-def checker_continuation_3538(v_1004804: Pair(Arena.Arena, Ast.SyntaxTerm), v_6: U32, v_12: String, v_7: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_16, v_17) = v_1004804
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_16, v_6}}, False{}, v_1004806 => checker_body_arena_decode_term(v_16, v_6), v_1004805 => checker_continuation_3537(v_1004805, v_12, v_17, v_7)}
+def checker_continuation_3537(v_1004807: Pair(Arena.Arena, Ast.SyntaxTerm), v_6: U32, v_12: String, v_7: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_16, v_17) = v_1004807
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_16, v_6}}, False{}, v_1004809 => checker_body_arena_decode_term(v_16, v_6), v_1004808 => checker_continuation_3536(v_1004808, v_12, v_17, v_7)}
 
 def checker_body_arena_decode_term_name_text_result_61(v_2: Pair(Arena.Arena, String), v_4: U32, v_6: U32, v_7: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
   match v_2:
     case (v_11, v_12):
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_11, v_4}}, False{}, v_1004807 => checker_body_arena_decode_term(v_11, v_4), v_1004804 => checker_continuation_3538(v_1004804, v_6, v_12, v_7)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_11, v_4}}, False{}, v_1004810 => checker_body_arena_decode_term(v_11, v_4), v_1004807 => checker_continuation_3537(v_1004807, v_6, v_12, v_7)}
 
 def checker_body_arena_decode_term_name_text_result_62(v_2: Pair(Arena.Arena, String), v_3: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
   CheckerFinished{checker_pure_arena_decode_term_name_text_result_62(v_2, v_3)}
 
-def checker_continuation_3540(v_1004808: Pair(Arena.Arena, Ast.SyntaxTerm), v_22: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_26, v_27) = v_1004808
+def checker_continuation_3539(v_1004811: Pair(Arena.Arena, Ast.SyntaxTerm), v_22: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_26, v_27) = v_1004811
   CheckerFinished{(v_26, Ast.TermBang{v_27, v_22})}
 
-def checker_continuation_3541(v_1004811: Pair(Arena.Arena, Ast.SyntaxTerm), v_32: Nat, v_40: Ast.SyntaxTerm, v_35: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_44, v_45) = v_1004811
+def checker_continuation_3540(v_1004814: Pair(Arena.Arena, Ast.SyntaxTerm), v_32: Nat, v_40: Ast.SyntaxTerm, v_35: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_44, v_45) = v_1004814
   CheckerFinished{(v_44, Ast.TermSub{v_32, v_40, v_45, v_35})}
 
-def checker_continuation_3542(v_1004810: Pair(Arena.Arena, Ast.SyntaxTerm), v_34: U32, v_32: Nat, v_35: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_39, v_40) = v_1004810
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_39, v_34}}, False{}, v_1004812 => checker_body_arena_decode_term(v_39, v_34), v_1004811 => checker_continuation_3541(v_1004811, v_32, v_40, v_35)}
+def checker_continuation_3541(v_1004813: Pair(Arena.Arena, Ast.SyntaxTerm), v_34: U32, v_32: Nat, v_35: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_39, v_40) = v_1004813
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_39, v_34}}, False{}, v_1004815 => checker_body_arena_decode_term(v_39, v_34), v_1004814 => checker_continuation_3540(v_1004814, v_32, v_40, v_35)}
 
-def checker_continuation_3543(v_1004818: Pair(Arena.Arena, Ast.SyntaxTerm), v_70: List<&2, String>, v_75: List<&2, Nat>, v_80: List<&2, Ast.Quantity>, v_85: List<&2, Ast.SyntaxTerm>, v_65: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_89, v_90) = v_1004818
+def checker_continuation_3542(v_1004821: Pair(Arena.Arena, Ast.SyntaxTerm), v_70: List<&2, String>, v_75: List<&2, Nat>, v_80: List<&2, Ast.Quantity>, v_85: List<&2, Ast.SyntaxTerm>, v_65: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_89, v_90) = v_1004821
   CheckerFinished{(v_89, Ast.TermLet{v_70, v_75, v_80, v_85, v_90, v_65})}
 
-def checker_continuation_3544(v_1004817: Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>), v_64: U32, v_70: List<&2, String>, v_75: List<&2, Nat>, v_80: List<&2, Ast.Quantity>, v_65: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_84, v_85) = v_1004817
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_84, v_64}}, False{}, v_1004819 => checker_body_arena_decode_term(v_84, v_64), v_1004818 => checker_continuation_3543(v_1004818, v_70, v_75, v_80, v_85, v_65)}
+def checker_continuation_3543(v_1004820: Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>), v_64: U32, v_70: List<&2, String>, v_75: List<&2, Nat>, v_80: List<&2, Ast.Quantity>, v_65: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_84, v_85) = v_1004820
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_84, v_64}}, False{}, v_1004822 => checker_body_arena_decode_term(v_84, v_64), v_1004821 => checker_continuation_3542(v_1004821, v_70, v_75, v_80, v_85, v_65)}
 
-def checker_continuation_3545(v_1004816: Pair(Arena.Arena, List<&2, Ast.Quantity>), v_62: U32, v_63: U32, v_64: U32, v_70: List<&2, String>, v_75: List<&2, Nat>, v_65: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_79, v_80) = v_1004816
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_terms{v_79, v_62, v_63}}, False{}, v_1004820 => checker_body_arena_decode_terms(v_79, v_62, v_63), v_1004817 => checker_continuation_3544(v_1004817, v_64, v_70, v_75, v_80, v_65)}
+def checker_continuation_3544(v_1004819: Pair(Arena.Arena, List<&2, Ast.Quantity>), v_62: U32, v_63: U32, v_64: U32, v_70: List<&2, String>, v_75: List<&2, Nat>, v_65: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_79, v_80) = v_1004819
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_terms{v_79, v_62, v_63}}, False{}, v_1004823 => checker_body_arena_decode_terms(v_79, v_62, v_63), v_1004820 => checker_continuation_3543(v_1004820, v_64, v_70, v_75, v_80, v_65)}
 
-def checker_continuation_3546(v_1004815: Pair(Arena.Arena, List<&2, Nat>), v_60: U32, v_61: U32, v_62: U32, v_63: U32, v_64: U32, v_70: List<&2, String>, v_65: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_74, v_75) = v_1004815
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_quantities{v_74, v_60, v_61}}, False{}, v_1004821 => checker_body_arena_decode_quantities(v_74, v_60, v_61), v_1004816 => checker_continuation_3545(v_1004816, v_62, v_63, v_64, v_70, v_75, v_65)}
+def checker_continuation_3545(v_1004818: Pair(Arena.Arena, List<&2, Nat>), v_60: U32, v_61: U32, v_62: U32, v_63: U32, v_64: U32, v_70: List<&2, String>, v_65: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_74, v_75) = v_1004818
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_quantities{v_74, v_60, v_61}}, False{}, v_1004824 => checker_body_arena_decode_quantities(v_74, v_60, v_61), v_1004819 => checker_continuation_3544(v_1004819, v_62, v_63, v_64, v_70, v_75, v_65)}
 
-def checker_continuation_3547(v_1004814: Pair(Arena.Arena, List<&2, String>), v_58: U32, v_59: U32, v_60: U32, v_61: U32, v_62: U32, v_63: U32, v_64: U32, v_65: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_69, v_70) = v_1004814
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_naturals{v_69, v_58, v_59}}, False{}, v_1004822 => checker_body_arena_decode_naturals(v_69, v_58, v_59), v_1004815 => checker_continuation_3546(v_1004815, v_60, v_61, v_62, v_63, v_64, v_70, v_65)}
+def checker_continuation_3546(v_1004817: Pair(Arena.Arena, List<&2, String>), v_58: U32, v_59: U32, v_60: U32, v_61: U32, v_62: U32, v_63: U32, v_64: U32, v_65: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_69, v_70) = v_1004817
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_naturals{v_69, v_58, v_59}}, False{}, v_1004825 => checker_body_arena_decode_naturals(v_69, v_58, v_59), v_1004818 => checker_continuation_3545(v_1004818, v_60, v_61, v_62, v_63, v_64, v_70, v_65)}
 
-def checker_continuation_3548(v_1004825: Pair(Arena.Arena, Ast.SyntaxTerm), v_101: Ast.SyntaxTerm, v_96: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_105, v_106) = v_1004825
+def checker_continuation_3547(v_1004828: Pair(Arena.Arena, Ast.SyntaxTerm), v_101: Ast.SyntaxTerm, v_96: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_105, v_106) = v_1004828
   CheckerFinished{(v_105, Ast.TermAnn{v_101, v_106, v_96})}
 
-def checker_continuation_3549(v_1004824: Pair(Arena.Arena, Ast.SyntaxTerm), v_95: U32, v_96: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_100, v_101) = v_1004824
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_100, v_95}}, False{}, v_1004826 => checker_body_arena_decode_term(v_100, v_95), v_1004825 => checker_continuation_3548(v_1004825, v_101, v_96)}
+def checker_continuation_3548(v_1004827: Pair(Arena.Arena, Ast.SyntaxTerm), v_95: U32, v_96: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_100, v_101) = v_1004827
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_100, v_95}}, False{}, v_1004829 => checker_body_arena_decode_term(v_100, v_95), v_1004828 => checker_continuation_3547(v_1004828, v_101, v_96)}
 
-def checker_continuation_3550(v_1004828: Pair(Arena.Arena, Ast.SyntaxTerm), v_110: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_114, v_115) = v_1004828
+def checker_continuation_3549(v_1004831: Pair(Arena.Arena, Ast.SyntaxTerm), v_110: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_114, v_115) = v_1004831
   CheckerFinished{(v_114, Ast.TermTemplate{v_115, v_110})}
 
-def checker_continuation_3551(v_1004830: Pair(Arena.Arena, Ast.SyntaxTerm), v_119: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_123, v_124) = v_1004830
+def checker_continuation_3550(v_1004833: Pair(Arena.Arena, Ast.SyntaxTerm), v_119: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_123, v_124) = v_1004833
   CheckerFinished{(v_123, Ast.TermType{v_124, v_119})}
 
-def checker_continuation_3552(v_1004833: Pair(Arena.Arena, Ast.SyntaxTerm), v_139: Ast.SyntaxTerm, v_134: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_143, v_144) = v_1004833
+def checker_continuation_3551(v_1004836: Pair(Arena.Arena, Ast.SyntaxTerm), v_139: Ast.SyntaxTerm, v_134: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_143, v_144) = v_1004836
   CheckerFinished{(v_143, Ast.TermMin{v_139, v_144, v_134})}
 
-def checker_continuation_3553(v_1004832: Pair(Arena.Arena, Ast.SyntaxTerm), v_133: U32, v_134: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_138, v_139) = v_1004832
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_138, v_133}}, False{}, v_1004834 => checker_body_arena_decode_term(v_138, v_133), v_1004833 => checker_continuation_3552(v_1004833, v_139, v_134)}
+def checker_continuation_3552(v_1004835: Pair(Arena.Arena, Ast.SyntaxTerm), v_133: U32, v_134: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_138, v_139) = v_1004835
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_138, v_133}}, False{}, v_1004837 => checker_body_arena_decode_term(v_138, v_133), v_1004836 => checker_continuation_3551(v_1004836, v_139, v_134)}
 
-def checker_continuation_3554(v_1004841: Pair(Arena.Arena, Ast.SyntaxTerm), v_179: Ast.SyntaxTerm, v_174: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_183, v_184) = v_1004841
+def checker_continuation_3553(v_1004844: Pair(Arena.Arena, Ast.SyntaxTerm), v_179: Ast.SyntaxTerm, v_174: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_183, v_184) = v_1004844
   CheckerFinished{(v_183, Ast.TermApp{v_179, v_184, v_174})}
 
-def checker_continuation_3555(v_1004840: Pair(Arena.Arena, Ast.SyntaxTerm), v_173: U32, v_174: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_178, v_179) = v_1004840
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_178, v_173}}, False{}, v_1004842 => checker_body_arena_decode_term(v_178, v_173), v_1004841 => checker_continuation_3554(v_1004841, v_179, v_174)}
+def checker_continuation_3554(v_1004843: Pair(Arena.Arena, Ast.SyntaxTerm), v_173: U32, v_174: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_178, v_179) = v_1004843
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_178, v_173}}, False{}, v_1004845 => checker_body_arena_decode_term(v_178, v_173), v_1004844 => checker_continuation_3553(v_1004844, v_179, v_174)}
 
-def checker_continuation_3556(v_1004847: Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>), v_210: Ast.SyntaxTerm, v_205: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_214, v_215) = v_1004847
+def checker_continuation_3555(v_1004850: Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>), v_210: Ast.SyntaxTerm, v_205: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_214, v_215) = v_1004850
   CheckerFinished{(v_214, Ast.TermFill{v_210, v_215, v_205})}
 
-def checker_continuation_3557(v_1004846: Pair(Arena.Arena, Ast.SyntaxTerm), v_203: U32, v_204: U32, v_205: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_209, v_210) = v_1004846
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_terms{v_209, v_203, v_204}}, False{}, v_1004848 => checker_body_arena_decode_terms(v_209, v_203, v_204), v_1004847 => checker_continuation_3556(v_1004847, v_210, v_205)}
+def checker_continuation_3556(v_1004849: Pair(Arena.Arena, Ast.SyntaxTerm), v_203: U32, v_204: U32, v_205: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_209, v_210) = v_1004849
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_terms{v_209, v_203, v_204}}, False{}, v_1004851 => checker_body_arena_decode_terms(v_209, v_203, v_204), v_1004850 => checker_continuation_3555(v_1004850, v_210, v_205)}
 
-def checker_continuation_3558(v_1004851: Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>), v_228: Ast.SyntaxTerm, v_223: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_232, v_233) = v_1004851
+def checker_continuation_3557(v_1004854: Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>), v_228: Ast.SyntaxTerm, v_223: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_232, v_233) = v_1004854
   CheckerFinished{(v_232, Ast.TermPlus{v_228, v_233, v_223})}
 
-def checker_continuation_3559(v_1004850: Pair(Arena.Arena, Ast.SyntaxTerm), v_221: U32, v_222: U32, v_223: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_227, v_228) = v_1004850
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_terms{v_227, v_221, v_222}}, False{}, v_1004852 => checker_body_arena_decode_terms(v_227, v_221, v_222), v_1004851 => checker_continuation_3558(v_1004851, v_228, v_223)}
+def checker_continuation_3558(v_1004853: Pair(Arena.Arena, Ast.SyntaxTerm), v_221: U32, v_222: U32, v_223: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_227, v_228) = v_1004853
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_terms{v_227, v_221, v_222}}, False{}, v_1004855 => checker_body_arena_decode_terms(v_227, v_221, v_222), v_1004854 => checker_continuation_3557(v_1004854, v_228, v_223)}
 
-def checker_continuation_3560(v_1004860: Pair(Arena.Arena, Ast.SyntaxTerm), v_272: Ast.SyntaxTerm, v_277: Ast.SyntaxTerm, v_267: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_281, v_282) = v_1004860
+def checker_continuation_3559(v_1004863: Pair(Arena.Arena, Ast.SyntaxTerm), v_272: Ast.SyntaxTerm, v_277: Ast.SyntaxTerm, v_267: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_281, v_282) = v_1004863
   CheckerFinished{(v_281, Ast.TermEqual{v_272, v_277, v_282, v_267})}
 
-def checker_continuation_3561(v_1004859: Pair(Arena.Arena, Ast.SyntaxTerm), v_266: U32, v_272: Ast.SyntaxTerm, v_267: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_276, v_277) = v_1004859
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_276, v_266}}, False{}, v_1004861 => checker_body_arena_decode_term(v_276, v_266), v_1004860 => checker_continuation_3560(v_1004860, v_272, v_277, v_267)}
+def checker_continuation_3560(v_1004862: Pair(Arena.Arena, Ast.SyntaxTerm), v_266: U32, v_272: Ast.SyntaxTerm, v_267: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_276, v_277) = v_1004862
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_276, v_266}}, False{}, v_1004864 => checker_body_arena_decode_term(v_276, v_266), v_1004863 => checker_continuation_3559(v_1004863, v_272, v_277, v_267)}
 
-def checker_continuation_3562(v_1004858: Pair(Arena.Arena, Ast.SyntaxTerm), v_265: U32, v_266: U32, v_267: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_271, v_272) = v_1004858
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_271, v_265}}, False{}, v_1004862 => checker_body_arena_decode_term(v_271, v_265), v_1004859 => checker_continuation_3561(v_1004859, v_266, v_272, v_267)}
+def checker_continuation_3561(v_1004861: Pair(Arena.Arena, Ast.SyntaxTerm), v_265: U32, v_266: U32, v_267: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_271, v_272) = v_1004861
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_271, v_265}}, False{}, v_1004865 => checker_body_arena_decode_term(v_271, v_265), v_1004862 => checker_continuation_3560(v_1004862, v_266, v_272, v_267)}
 
-def checker_continuation_3563(v_1004866: Pair(Arena.Arena, Ast.SyntaxTerm), v_297: Ast.SyntaxTerm, v_302: Ast.SyntaxTerm, v_292: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_306, v_307) = v_1004866
+def checker_continuation_3562(v_1004869: Pair(Arena.Arena, Ast.SyntaxTerm), v_297: Ast.SyntaxTerm, v_302: Ast.SyntaxTerm, v_292: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_306, v_307) = v_1004869
   CheckerFinished{(v_306, Ast.TermRewrite{v_297, v_302, v_307, v_292})}
 
-def checker_continuation_3564(v_1004865: Pair(Arena.Arena, Ast.SyntaxTerm), v_291: U32, v_297: Ast.SyntaxTerm, v_292: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_301, v_302) = v_1004865
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_301, v_291}}, False{}, v_1004867 => checker_body_arena_decode_term(v_301, v_291), v_1004866 => checker_continuation_3563(v_1004866, v_297, v_302, v_292)}
+def checker_continuation_3563(v_1004868: Pair(Arena.Arena, Ast.SyntaxTerm), v_291: U32, v_297: Ast.SyntaxTerm, v_292: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_301, v_302) = v_1004868
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_301, v_291}}, False{}, v_1004870 => checker_body_arena_decode_term(v_301, v_291), v_1004869 => checker_continuation_3562(v_1004869, v_297, v_302, v_292)}
 
-def checker_continuation_3565(v_1004864: Pair(Arena.Arena, Ast.SyntaxTerm), v_290: U32, v_291: U32, v_292: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_296, v_297) = v_1004864
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_296, v_290}}, False{}, v_1004868 => checker_body_arena_decode_term(v_296, v_290), v_1004865 => checker_continuation_3564(v_1004865, v_291, v_297, v_292)}
+def checker_continuation_3564(v_1004867: Pair(Arena.Arena, Ast.SyntaxTerm), v_290: U32, v_291: U32, v_292: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_296, v_297) = v_1004867
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_296, v_290}}, False{}, v_1004871 => checker_body_arena_decode_term(v_296, v_290), v_1004868 => checker_continuation_3563(v_1004868, v_291, v_297, v_292)}
 
-def checker_continuation_3566(v_1004871: Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>), v_327: List<&2, Ast.SyntaxTerm>, v_322: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_331, v_332) = v_1004871
+def checker_continuation_3565(v_1004874: Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>), v_327: List<&2, Ast.SyntaxTerm>, v_322: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_331, v_332) = v_1004874
   CheckerFinished{(v_331, Ast.BodyMatch{v_327, v_332, v_322})}
 
-def checker_continuation_3567(v_1004870: Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>), v_320: U32, v_321: U32, v_322: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_326, v_327) = v_1004870
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_terms{v_326, v_320, v_321}}, False{}, v_1004872 => checker_body_arena_decode_terms(v_326, v_320, v_321), v_1004871 => checker_continuation_3566(v_1004871, v_327, v_322)}
+def checker_continuation_3566(v_1004873: Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>), v_320: U32, v_321: U32, v_322: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_326, v_327) = v_1004873
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_terms{v_326, v_320, v_321}}, False{}, v_1004875 => checker_body_arena_decode_terms(v_326, v_320, v_321), v_1004874 => checker_continuation_3565(v_1004874, v_327, v_322)}
 
-def checker_continuation_3568(v_1004875: Pair(Arena.Arena, Ast.SyntaxTerm), v_345: List<&2, Ast.SyntaxPattern>, v_340: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_349, v_350) = v_1004875
+def checker_continuation_3567(v_1004878: Pair(Arena.Arena, Ast.SyntaxTerm), v_345: List<&2, Ast.SyntaxPattern>, v_340: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_349, v_350) = v_1004878
   CheckerFinished{(v_349, Ast.BodyCase{v_345, v_350, v_340})}
 
-def checker_continuation_3569(v_1004874: Pair(Arena.Arena, List<&2, Ast.SyntaxPattern>), v_339: U32, v_340: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_344, v_345) = v_1004874
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_344, v_339}}, False{}, v_1004876 => checker_body_arena_decode_term(v_344, v_339), v_1004875 => checker_continuation_3568(v_1004875, v_345, v_340)}
+def checker_continuation_3568(v_1004877: Pair(Arena.Arena, List<&2, Ast.SyntaxPattern>), v_339: U32, v_340: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_344, v_345) = v_1004877
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_344, v_339}}, False{}, v_1004879 => checker_body_arena_decode_term(v_344, v_339), v_1004878 => checker_continuation_3567(v_1004878, v_345, v_340)}
 
-def checker_continuation_3570(v_1004880: Pair(Arena.Arena, Ast.SyntaxTerm), v_369: List<&2, Ast.SyntaxPattern>, v_360: Ast.Quantity, v_374: List<&2, Ast.SyntaxTerm>, v_364: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_378, v_379) = v_1004880
+def checker_continuation_3569(v_1004883: Pair(Arena.Arena, Ast.SyntaxTerm), v_369: List<&2, Ast.SyntaxPattern>, v_360: Ast.Quantity, v_374: List<&2, Ast.SyntaxTerm>, v_364: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_378, v_379) = v_1004883
   CheckerFinished{(v_378, Ast.BodyLocal{v_369, v_360, v_374, v_379, v_364})}
 
-def checker_continuation_3571(v_1004879: Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>), v_363: U32, v_369: List<&2, Ast.SyntaxPattern>, v_360: Ast.Quantity, v_364: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_373, v_374) = v_1004879
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_373, v_363}}, False{}, v_1004881 => checker_body_arena_decode_term(v_373, v_363), v_1004880 => checker_continuation_3570(v_1004880, v_369, v_360, v_374, v_364)}
+def checker_continuation_3570(v_1004882: Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>), v_363: U32, v_369: List<&2, Ast.SyntaxPattern>, v_360: Ast.Quantity, v_364: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_373, v_374) = v_1004882
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_373, v_363}}, False{}, v_1004884 => checker_body_arena_decode_term(v_373, v_363), v_1004883 => checker_continuation_3569(v_1004883, v_369, v_360, v_374, v_364)}
 
-def checker_continuation_3572(v_1004878: Pair(Arena.Arena, List<&2, Ast.SyntaxPattern>), v_361: U32, v_362: U32, v_363: U32, v_360: Ast.Quantity, v_364: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_368, v_369) = v_1004878
-  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_terms{v_368, v_361, v_362}}, False{}, v_1004882 => checker_body_arena_decode_terms(v_368, v_361, v_362), v_1004879 => checker_continuation_3571(v_1004879, v_363, v_369, v_360, v_364)}
+def checker_continuation_3571(v_1004881: Pair(Arena.Arena, List<&2, Ast.SyntaxPattern>), v_361: U32, v_362: U32, v_363: U32, v_360: Ast.Quantity, v_364: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_368, v_369) = v_1004881
+  CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_terms{v_368, v_361, v_362}}, False{}, v_1004885 => checker_body_arena_decode_terms(v_368, v_361, v_362), v_1004882 => checker_continuation_3570(v_1004882, v_363, v_369, v_360, v_364)}
 
-def checker_continuation_3573(v_1004884: Pair(Arena.Arena, Ast.SyntaxTerm), v_383: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
-  (v_387, v_388) = v_1004884
+def checker_continuation_3572(v_1004887: Pair(Arena.Arena, Ast.SyntaxTerm), v_383: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+  (v_387, v_388) = v_1004887
   CheckerFinished{(v_387, Ast.BodyReply{v_388, v_383})}
 
-def checker_match_3574(v_6: Arena.Node, v_5: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
+def checker_match_3573(v_6: Arena.Node, v_5: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
   match v_6:
     case Arena.TermVar{v_10, v_11, v_12}:
       CheckerFinished{checker_pure_arena_decode_term_name_text_result_55(Arena.name_text(v_5, v_10), v_11, v_12)}
     case Arena.TermRef{v_16, v_17}:
       CheckerFinished{checker_pure_arena_decode_term_name_text_result_56(Arena.name_text(v_5, v_16), v_17)}
     case Arena.TermBang{v_21, v_22}:
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_5, v_21}}, False{}, v_1004809 => checker_body_arena_decode_term(v_5, v_21), v_1004808 => checker_continuation_3540(v_1004808, v_22)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_5, v_21}}, False{}, v_1004812 => checker_body_arena_decode_term(v_5, v_21), v_1004811 => checker_continuation_3539(v_1004811, v_22)}
     case Arena.TermSub{v_32, v_33, v_34, v_35}:
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_5, v_33}}, False{}, v_1004813 => checker_body_arena_decode_term(v_5, v_33), v_1004810 => checker_continuation_3542(v_1004810, v_34, v_32, v_35)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_5, v_33}}, False{}, v_1004816 => checker_body_arena_decode_term(v_5, v_33), v_1004813 => checker_continuation_3541(v_1004813, v_34, v_32, v_35)}
     case Arena.TermLet{v_56, v_57, v_58, v_59, v_60, v_61, v_62, v_63, v_64, v_65}:
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_names{v_5, v_56, v_57}}, False{}, v_1004823 => checker_body_arena_decode_names(v_5, v_56, v_57), v_1004814 => checker_continuation_3547(v_1004814, v_58, v_59, v_60, v_61, v_62, v_63, v_64, v_65)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_names{v_5, v_56, v_57}}, False{}, v_1004826 => checker_body_arena_decode_names(v_5, v_56, v_57), v_1004817 => checker_continuation_3546(v_1004817, v_58, v_59, v_60, v_61, v_62, v_63, v_64, v_65)}
     case Arena.TermAnn{v_94, v_95, v_96}:
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_5, v_94}}, False{}, v_1004827 => checker_body_arena_decode_term(v_5, v_94), v_1004824 => checker_continuation_3549(v_1004824, v_95, v_96)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_5, v_94}}, False{}, v_1004830 => checker_body_arena_decode_term(v_5, v_94), v_1004827 => checker_continuation_3548(v_1004827, v_95, v_96)}
     case Arena.TermTemplate{v_109, v_110}:
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_5, v_109}}, False{}, v_1004829 => checker_body_arena_decode_term(v_5, v_109), v_1004828 => checker_continuation_3550(v_1004828, v_110)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_5, v_109}}, False{}, v_1004832 => checker_body_arena_decode_term(v_5, v_109), v_1004831 => checker_continuation_3549(v_1004831, v_110)}
     case Arena.TermType{v_118, v_119}:
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_5, v_118}}, False{}, v_1004831 => checker_body_arena_decode_term(v_5, v_118), v_1004830 => checker_continuation_3551(v_1004830, v_119)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_5, v_118}}, False{}, v_1004834 => checker_body_arena_decode_term(v_5, v_118), v_1004833 => checker_continuation_3550(v_1004833, v_119)}
     case Arena.TermQuant{}:
       CheckerFinished{(v_5, Ast.TermQuant{})}
     case Arena.TermQuantity{v_127, v_128}:
       CheckerFinished{(v_5, Ast.TermQuantity{v_127, v_128})}
     case Arena.TermMin{v_132, v_133, v_134}:
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_5, v_132}}, False{}, v_1004835 => checker_body_arena_decode_term(v_5, v_132), v_1004832 => checker_continuation_3553(v_1004832, v_133, v_134)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_5, v_132}}, False{}, v_1004838 => checker_body_arena_decode_term(v_5, v_132), v_1004835 => checker_continuation_3552(v_1004835, v_133, v_134)}
     case Arena.TermAll{v_151, v_152, v_153, v_154, v_155, v_156}:
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_arena_decode_term_name_text_result_57{Arena.name_text(v_5, v_152), v_154, v_155, v_151, v_153, v_156}}, False{}, v_1004837 => checker_body_arena_decode_term_name_text_result_57(Arena.name_text(v_5, v_152), v_154, v_155, v_151, v_153, v_156), v_1004836 => CheckerFinished{v_1004836}}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_arena_decode_term_name_text_result_57{Arena.name_text(v_5, v_152), v_154, v_155, v_151, v_153, v_156}}, False{}, v_1004840 => checker_body_arena_decode_term_name_text_result_57(Arena.name_text(v_5, v_152), v_154, v_155, v_151, v_153, v_156), v_1004839 => CheckerFinished{v_1004839}}
     case Arena.TermLam{v_163, v_164, v_165, v_166, v_167}:
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_arena_decode_term_name_text_result_58{Arena.name_text(v_5, v_164), v_166, v_163, v_165, v_167}}, False{}, v_1004839 => checker_body_arena_decode_term_name_text_result_58(Arena.name_text(v_5, v_164), v_166, v_163, v_165, v_167), v_1004838 => CheckerFinished{v_1004838}}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_arena_decode_term_name_text_result_58{Arena.name_text(v_5, v_164), v_166, v_163, v_165, v_167}}, False{}, v_1004842 => checker_body_arena_decode_term_name_text_result_58(Arena.name_text(v_5, v_164), v_166, v_163, v_165, v_167), v_1004841 => CheckerFinished{v_1004841}}
     case Arena.TermApp{v_172, v_173, v_174}:
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_5, v_172}}, False{}, v_1004843 => checker_body_arena_decode_term(v_5, v_172), v_1004840 => checker_continuation_3555(v_1004840, v_173, v_174)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_5, v_172}}, False{}, v_1004846 => checker_body_arena_decode_term(v_5, v_172), v_1004843 => checker_continuation_3554(v_1004843, v_173, v_174)}
     case Arena.TermAdt{v_191, v_192, v_193, v_194, v_195, v_196}:
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_arena_decode_term_name_text_result_59{Arena.name_text(v_5, v_191), v_192, v_193, v_194, v_195, v_196}}, False{}, v_1004845 => checker_body_arena_decode_term_name_text_result_59(Arena.name_text(v_5, v_191), v_192, v_193, v_194, v_195, v_196), v_1004844 => CheckerFinished{v_1004844}}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_arena_decode_term_name_text_result_59{Arena.name_text(v_5, v_191), v_192, v_193, v_194, v_195, v_196}}, False{}, v_1004848 => checker_body_arena_decode_term_name_text_result_59(Arena.name_text(v_5, v_191), v_192, v_193, v_194, v_195, v_196), v_1004847 => CheckerFinished{v_1004847}}
     case Arena.TermFill{v_202, v_203, v_204, v_205}:
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_5, v_202}}, False{}, v_1004849 => checker_body_arena_decode_term(v_5, v_202), v_1004846 => checker_continuation_3557(v_1004846, v_203, v_204, v_205)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_5, v_202}}, False{}, v_1004852 => checker_body_arena_decode_term(v_5, v_202), v_1004849 => checker_continuation_3556(v_1004849, v_203, v_204, v_205)}
     case Arena.TermPlus{v_220, v_221, v_222, v_223}:
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_5, v_220}}, False{}, v_1004853 => checker_body_arena_decode_term(v_5, v_220), v_1004850 => checker_continuation_3559(v_1004850, v_221, v_222, v_223)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_5, v_220}}, False{}, v_1004856 => checker_body_arena_decode_term(v_5, v_220), v_1004853 => checker_continuation_3558(v_1004853, v_221, v_222, v_223)}
     case Arena.TermString{v_237, v_238, v_239}:
       CheckerFinished{(v_5, Ast.TermString{v_237, v_238, v_239})}
     case Arena.TermCtr{v_244, v_245, v_246, v_247}:
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_arena_decode_term_name_text_result_60{Arena.name_text(v_5, v_244), v_245, v_246, v_247}}, False{}, v_1004855 => checker_body_arena_decode_term_name_text_result_60(Arena.name_text(v_5, v_244), v_245, v_246, v_247), v_1004854 => CheckerFinished{v_1004854}}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_arena_decode_term_name_text_result_60{Arena.name_text(v_5, v_244), v_245, v_246, v_247}}, False{}, v_1004858 => checker_body_arena_decode_term_name_text_result_60(Arena.name_text(v_5, v_244), v_245, v_246, v_247), v_1004857 => CheckerFinished{v_1004857}}
     case Arena.TermMat{v_253, v_254, v_255, v_256}:
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_arena_decode_term_name_text_result_61{Arena.name_text(v_5, v_253), v_254, v_255, v_256}}, False{}, v_1004857 => checker_body_arena_decode_term_name_text_result_61(Arena.name_text(v_5, v_253), v_254, v_255, v_256), v_1004856 => CheckerFinished{v_1004856}}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_arena_decode_term_name_text_result_61{Arena.name_text(v_5, v_253), v_254, v_255, v_256}}, False{}, v_1004860 => checker_body_arena_decode_term_name_text_result_61(Arena.name_text(v_5, v_253), v_254, v_255, v_256), v_1004859 => CheckerFinished{v_1004859}}
     case Arena.TermAbsurd{v_259}:
       CheckerFinished{(v_5, Ast.TermAbsurd{v_259})}
     case Arena.TermEqual{v_264, v_265, v_266, v_267}:
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_5, v_264}}, False{}, v_1004863 => checker_body_arena_decode_term(v_5, v_264), v_1004858 => checker_continuation_3562(v_1004858, v_265, v_266, v_267)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_5, v_264}}, False{}, v_1004866 => checker_body_arena_decode_term(v_5, v_264), v_1004861 => checker_continuation_3561(v_1004861, v_265, v_266, v_267)}
     case Arena.TermRefl{v_284}:
       CheckerFinished{(v_5, Ast.TermRefl{v_284})}
     case Arena.TermRewrite{v_289, v_290, v_291, v_292}:
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_5, v_289}}, False{}, v_1004869 => checker_body_arena_decode_term(v_5, v_289), v_1004864 => checker_continuation_3565(v_1004864, v_290, v_291, v_292)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_5, v_289}}, False{}, v_1004872 => checker_body_arena_decode_term(v_5, v_289), v_1004867 => checker_continuation_3564(v_1004867, v_290, v_291, v_292)}
     case Arena.TermHole{v_310, v_311}:
       CheckerFinished{checker_pure_arena_decode_term_name_text_result_62(Arena.name_text(v_5, v_310), v_311)}
     case Arena.BodyMatch{v_318, v_319, v_320, v_321, v_322}:
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_terms{v_5, v_318, v_319}}, False{}, v_1004873 => checker_body_arena_decode_terms(v_5, v_318, v_319), v_1004870 => checker_continuation_3567(v_1004870, v_320, v_321, v_322)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_terms{v_5, v_318, v_319}}, False{}, v_1004876 => checker_body_arena_decode_terms(v_5, v_318, v_319), v_1004873 => checker_continuation_3566(v_1004873, v_320, v_321, v_322)}
     case Arena.BodyCase{v_337, v_338, v_339, v_340}:
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_patterns{v_5, v_337, v_338}}, False{}, v_1004877 => checker_body_arena_decode_patterns(v_5, v_337, v_338), v_1004874 => checker_continuation_3569(v_1004874, v_339, v_340)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_patterns{v_5, v_337, v_338}}, False{}, v_1004880 => checker_body_arena_decode_patterns(v_5, v_337, v_338), v_1004877 => checker_continuation_3568(v_1004877, v_339, v_340)}
     case Arena.BodyLocal{v_358, v_359, v_360, v_361, v_362, v_363, v_364}:
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_patterns{v_5, v_358, v_359}}, False{}, v_1004883 => checker_body_arena_decode_patterns(v_5, v_358, v_359), v_1004878 => checker_continuation_3572(v_1004878, v_361, v_362, v_363, v_360, v_364)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_patterns{v_5, v_358, v_359}}, False{}, v_1004886 => checker_body_arena_decode_patterns(v_5, v_358, v_359), v_1004881 => checker_continuation_3571(v_1004881, v_361, v_362, v_363, v_360, v_364)}
     case Arena.BodyReply{v_382, v_383}:
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_5, v_382}}, False{}, v_1004885 => checker_body_arena_decode_term(v_5, v_382), v_1004884 => checker_continuation_3573(v_1004884, v_383)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_5, v_382}}, False{}, v_1004888 => checker_body_arena_decode_term(v_5, v_382), v_1004887 => checker_continuation_3572(v_1004887, v_383)}
 
 def checker_body_arena_decode_term_get_node_result_54(v_1: Pair(Arena.Arena, Arena.Node)) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxTerm)>:
   match v_1:
     case (v_5, v_6):
-      checker_match_3574(v_6, v_5)
+      checker_match_3573(v_6, v_5)
 
 def checker_body_arena_decode_pattern_name_text_result_64(v_2: Pair(Arena.Arena, String), v_4: Nat, v_5: Ast.Quantity, v_6: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxPattern)>:
   CheckerFinished{checker_pure_arena_decode_pattern_name_text_result_64(v_2, v_4, v_5, v_6)}
 
-def checker_continuation_3576(v_1004886: Pair(Arena.Arena, List<&2, Ast.SyntaxPattern>), v_12: String, v_7: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxPattern)>:
-  (v_16, v_17) = v_1004886
+def checker_continuation_3575(v_1004889: Pair(Arena.Arena, List<&2, Ast.SyntaxPattern>), v_12: String, v_7: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxPattern)>:
+  (v_16, v_17) = v_1004889
   CheckerFinished{(v_16, Ast.PatternCtr{v_12, v_17, v_7})}
 
 def checker_body_arena_decode_pattern_name_text_result_65(v_2: Pair(Arena.Arena, String), v_4: U32, v_6: U32, v_7: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxPattern)>:
   match v_2:
     case (v_11, v_12):
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_patterns{v_11, v_4, v_6}}, False{}, v_1004887 => checker_body_arena_decode_patterns(v_11, v_4, v_6), v_1004886 => checker_continuation_3576(v_1004886, v_12, v_7)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_patterns{v_11, v_4, v_6}}, False{}, v_1004890 => checker_body_arena_decode_patterns(v_11, v_4, v_6), v_1004889 => checker_continuation_3575(v_1004889, v_12, v_7)}
 
-def checker_match_3578(v_6: Arena.Pattern, v_5: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxPattern)>:
+def checker_match_3577(v_6: Arena.Pattern, v_5: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxPattern)>:
   match v_6:
     case Arena.PatternVar{v_11, v_12, v_13, v_14}:
       CheckerFinished{checker_pure_arena_decode_pattern_name_text_result_64(Arena.name_text(v_5, v_11), v_12, v_13, v_14)}
     case Arena.PatternCtr{v_20, v_21, v_22, v_23}:
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_arena_decode_pattern_name_text_result_65{Arena.name_text(v_5, v_20), v_21, v_22, v_23}}, False{}, v_1004889 => checker_body_arena_decode_pattern_name_text_result_65(Arena.name_text(v_5, v_20), v_21, v_22, v_23), v_1004888 => CheckerFinished{v_1004888}}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_arena_decode_pattern_name_text_result_65{Arena.name_text(v_5, v_20), v_21, v_22, v_23}}, False{}, v_1004892 => checker_body_arena_decode_pattern_name_text_result_65(Arena.name_text(v_5, v_20), v_21, v_22, v_23), v_1004891 => CheckerFinished{v_1004891}}
 
 def checker_body_arena_decode_pattern_get_pattern_result_63(v_1: Pair(Arena.Arena, Arena.Pattern)) -> CheckerProgress<Pair(Arena.Arena, Ast.SyntaxPattern)>:
   match v_1:
     case (v_5, v_6):
-      checker_match_3578(v_6, v_5)
+      checker_match_3577(v_6, v_5)
 
-def checker_continuation_3580(v_1004890: Pair(Arena.Arena, Ast.SyntaxTerm), v_5: Ast.Quantity, v_13: String, v_7: Nat, v_8: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.TelescopeItem)>:
-  (v_17, v_18) = v_1004890
+def checker_continuation_3579(v_1004893: Pair(Arena.Arena, Ast.SyntaxTerm), v_5: Ast.Quantity, v_13: String, v_7: Nat, v_8: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.TelescopeItem)>:
+  (v_17, v_18) = v_1004893
   CheckerFinished{(v_17, Ast.Binder{v_5, v_13, v_7, v_18, v_8})}
 
 def checker_body_arena_decode_binder_name_text_result_67(v_2: Pair(Arena.Arena, String), v_4: U32, v_5: Ast.Quantity, v_7: Nat, v_8: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.TelescopeItem)>:
   match v_2:
     case (v_12, v_13):
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_12, v_4}}, False{}, v_1004891 => checker_body_arena_decode_term(v_12, v_4), v_1004890 => checker_continuation_3580(v_1004890, v_5, v_13, v_7, v_8)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_12, v_4}}, False{}, v_1004894 => checker_body_arena_decode_term(v_12, v_4), v_1004893 => checker_continuation_3579(v_1004893, v_5, v_13, v_7, v_8)}
 
-def checker_continuation_3582(v_1004892: Pair(Arena.Arena, Ast.SyntaxTerm), v_12: String, v_6: Nat, v_7: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.TelescopeItem)>:
-  (v_16, v_17) = v_1004892
+def checker_continuation_3581(v_1004895: Pair(Arena.Arena, Ast.SyntaxTerm), v_12: String, v_6: Nat, v_7: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.TelescopeItem)>:
+  (v_16, v_17) = v_1004895
   CheckerFinished{(v_16, Ast.TemplateBinder{v_12, v_6, v_17, v_7})}
 
 def checker_body_arena_decode_binder_name_text_result_68(v_2: Pair(Arena.Arena, String), v_4: U32, v_6: Nat, v_7: Ast.SourceSpan) -> CheckerProgress<Pair(Arena.Arena, Ast.TelescopeItem)>:
   match v_2:
     case (v_11, v_12):
-      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_11, v_4}}, False{}, v_1004893 => checker_body_arena_decode_term(v_11, v_4), v_1004892 => checker_continuation_3582(v_1004892, v_12, v_6, v_7)}
+      CheckerDirect{Bool, CheckerRequestGroup_15{CheckerRequest_arena_decode_term{v_11, v_4}}, False{}, v_1004896 => checker_body_arena_decode_term(v_11, v_4), v_1004895 => checker_continuation_3581(v_1004895, v_12, v_6, v_7)}
 
-def checker_match_3584(v_6: Arena.Binder, v_5: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Ast.TelescopeItem)>:
+def checker_match_3583(v_6: Arena.Binder, v_5: Arena.Arena) -> CheckerProgress<Pair(Arena.Arena, Ast.TelescopeItem)>:
   match v_6:
     case Arena.Binder{v_12, v_13, v_14, v_15, v_16}:
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_arena_decode_binder_name_text_result_67{Arena.name_text(v_5, v_13), v_15, v_12, v_14, v_16}}, False{}, v_1004895 => checker_body_arena_decode_binder_name_text_result_67(Arena.name_text(v_5, v_13), v_15, v_12, v_14, v_16), v_1004894 => CheckerFinished{v_1004894}}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_arena_decode_binder_name_text_result_67{Arena.name_text(v_5, v_13), v_15, v_12, v_14, v_16}}, False{}, v_1004898 => checker_body_arena_decode_binder_name_text_result_67(Arena.name_text(v_5, v_13), v_15, v_12, v_14, v_16), v_1004897 => CheckerFinished{v_1004897}}
     case Arena.TemplateBinder{v_22, v_23, v_24, v_25}:
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_arena_decode_binder_name_text_result_68{Arena.name_text(v_5, v_22), v_24, v_23, v_25}}, False{}, v_1004897 => checker_body_arena_decode_binder_name_text_result_68(Arena.name_text(v_5, v_22), v_24, v_23, v_25), v_1004896 => CheckerFinished{v_1004896}}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_arena_decode_binder_name_text_result_68{Arena.name_text(v_5, v_22), v_24, v_23, v_25}}, False{}, v_1004900 => checker_body_arena_decode_binder_name_text_result_68(Arena.name_text(v_5, v_22), v_24, v_23, v_25), v_1004899 => CheckerFinished{v_1004899}}
 
 def checker_body_arena_decode_binder_get_binder_result_66(v_1: Pair(Arena.Arena, Arena.Binder)) -> CheckerProgress<Pair(Arena.Arena, Ast.TelescopeItem)>:
   match v_1:
     case (v_5, v_6):
-      checker_match_3584(v_6, v_5)
+      checker_match_3583(v_6, v_5)
 
-def checker_continuation_3586(v_1004898: Pair(Arena.Arena, U32), v_8: Arena.Arena) -> CheckerProgress<ArenaResult<U32>>:
-  (v_11, v_12) = v_1004898
+def checker_continuation_3585(v_1004901: Pair(Arena.Arena, U32), v_8: Arena.Arena) -> CheckerProgress<ArenaResult<U32>>:
+  (v_11, v_12) = v_1004901
   CheckerFinished{{ArenaResult{ArenaStore{v_11, v_8}, v_12} : ArenaResult<U32>}}
 
 def checker_body_string_pack_store(v_1: ArenaStore, v_2: Ast.SyntaxTerm) -> CheckerProgress<ArenaResult<U32>>:
   match v_1:
     case ArenaStore{v_7, v_8}:
-      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_7, v_2}}, False{}, v_1004899 => checker_body_arena_pack_term(v_7, v_2), v_1004898 => checker_continuation_3586(v_1004898, v_8)}
+      CheckerDirect{Bool, CheckerRequestGroup_14{CheckerRequest_arena_pack_term{v_7, v_2}}, False{}, v_1004902 => checker_body_arena_pack_term(v_7, v_2), v_1004901 => checker_continuation_3585(v_1004901, v_8)}
 
 def checker_body_string_unfold_store(v_1: ArenaStore, v_4: List<&2, U32>, v_5: Ast.StringLiteralNames, v_6: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_pack_store{v_1, Ast.string_unfold(v_4, v_5, v_6)}}, False{}, v_1004901 => checker_body_string_pack_store(v_1, Ast.string_unfold(v_4, v_5, v_6)), v_1004900 => CheckerFinished{v_1004900}}
+  CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_pack_store{v_1, Ast.string_unfold(v_4, v_5, v_6)}}, False{}, v_1004904 => checker_body_string_pack_store(v_1, Ast.string_unfold(v_4, v_5, v_6)), v_1004903 => CheckerFinished{v_1004903}}
 
 def checker_body_string_desugar_store(v_1: ArenaStore, v_4: List<&2, U32>, v_5: Ast.StringLiteralNames, v_6: Ast.SourceSpan) -> CheckerProgress<ArenaResult<U32>>:
-  CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_pack_store{v_1, Ast.string_desugar(v_4, v_5, v_6)}}, False{}, v_1004903 => checker_body_string_pack_store(v_1, Ast.string_desugar(v_4, v_5, v_6)), v_1004902 => CheckerFinished{v_1004902}}
+  CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_pack_store{v_1, Ast.string_desugar(v_4, v_5, v_6)}}, False{}, v_1004906 => checker_body_string_pack_store(v_1, Ast.string_desugar(v_4, v_5, v_6)), v_1004905 => CheckerFinished{v_1004905}}
 
 def checker_body_string_canonical_names(v_0: Ast.StringLiteralNames, +v_1: Scope.ArenaGlobalScope) -> CheckerProgress<Ast.StringLiteralNames>:
   match v_0:
     case Ast.StringLiteralNames{v_10, v_11, v_12, v_13, v_14, v_15, v_16, v_17}:
-      CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_canonical_name{v_10, v_1}}, False{}, v_1004919 => checker_body_scope_canonical_name(v_10, v_1), +v_1004904 => CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_canonical_name{v_11, v_1}}, False{}, v_1004918 => checker_body_scope_canonical_name(v_11, v_1), +v_1004905 => CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_canonical_name{v_12, v_1}}, False{}, v_1004917 => checker_body_scope_canonical_name(v_12, v_1), +v_1004906 => CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_canonical_name{v_13, v_1}}, False{}, v_1004916 => checker_body_scope_canonical_name(v_13, v_1), +v_1004907 => CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_canonical_name{v_14, v_1}}, False{}, v_1004915 => checker_body_scope_canonical_name(v_14, v_1), +v_1004908 => CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_canonical_name{v_15, v_1}}, False{}, v_1004914 => checker_body_scope_canonical_name(v_15, v_1), +v_1004909 => CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_canonical_name{v_16, v_1}}, False{}, v_1004913 => checker_body_scope_canonical_name(v_16, v_1), +v_1004910 => CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_canonical_name{v_17, v_1}}, False{}, v_1004912 => checker_body_scope_canonical_name(v_17, v_1), +v_1004911 => CheckerFinished{Ast.StringLiteralNames{v_1004904, v_1004905, v_1004906, v_1004907, v_1004908, v_1004909, v_1004910, v_1004911}}}}}}}}}}
+      CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_canonical_name{v_10, v_1}}, False{}, v_1004922 => checker_body_scope_canonical_name(v_10, v_1), +v_1004907 => CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_canonical_name{v_11, v_1}}, False{}, v_1004921 => checker_body_scope_canonical_name(v_11, v_1), +v_1004908 => CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_canonical_name{v_12, v_1}}, False{}, v_1004920 => checker_body_scope_canonical_name(v_12, v_1), +v_1004909 => CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_canonical_name{v_13, v_1}}, False{}, v_1004919 => checker_body_scope_canonical_name(v_13, v_1), +v_1004910 => CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_canonical_name{v_14, v_1}}, False{}, v_1004918 => checker_body_scope_canonical_name(v_14, v_1), +v_1004911 => CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_canonical_name{v_15, v_1}}, False{}, v_1004917 => checker_body_scope_canonical_name(v_15, v_1), +v_1004912 => CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_canonical_name{v_16, v_1}}, False{}, v_1004916 => checker_body_scope_canonical_name(v_16, v_1), +v_1004913 => CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_canonical_name{v_17, v_1}}, False{}, v_1004915 => checker_body_scope_canonical_name(v_17, v_1), +v_1004914 => CheckerFinished{Ast.StringLiteralNames{v_1004907, v_1004908, v_1004909, v_1004910, v_1004911, v_1004912, v_1004913, v_1004914}}}}}}}}}}
 
 def checker_body_string_names_equal(v_0: Ast.StringLiteralNames, v_1: Ast.StringLiteralNames, +v_2: Scope.ArenaGlobalScope) -> CheckerProgress<Bool>:
   match v_0, v_1:
     case Ast.StringLiteralNames{v_20, v_21, v_22, v_23, v_24, v_25, v_26, v_27}, Ast.StringLiteralNames{v_28, v_29, v_30, v_31, v_32, v_33, v_34, v_35}:
-      CheckerDirect{Bool, CheckerRequestGroup_1{CheckerRequest_equal_names{v_20, v_28, v_2}}, False{}, v_1004935 => checker_body_equal_names(v_20, v_28, v_2), +v_1004920 => CheckerDirect{Bool, CheckerRequestGroup_1{CheckerRequest_equal_names{v_21, v_29, v_2}}, False{}, v_1004934 => checker_body_equal_names(v_21, v_29, v_2), +v_1004921 => CheckerDirect{Bool, CheckerRequestGroup_1{CheckerRequest_equal_names{v_22, v_30, v_2}}, False{}, v_1004933 => checker_body_equal_names(v_22, v_30, v_2), +v_1004922 => CheckerDirect{Bool, CheckerRequestGroup_1{CheckerRequest_equal_names{v_23, v_31, v_2}}, False{}, v_1004932 => checker_body_equal_names(v_23, v_31, v_2), +v_1004923 => CheckerDirect{Bool, CheckerRequestGroup_1{CheckerRequest_equal_names{v_24, v_32, v_2}}, False{}, v_1004931 => checker_body_equal_names(v_24, v_32, v_2), +v_1004924 => CheckerDirect{Bool, CheckerRequestGroup_1{CheckerRequest_equal_names{v_25, v_33, v_2}}, False{}, v_1004930 => checker_body_equal_names(v_25, v_33, v_2), +v_1004925 => CheckerDirect{Bool, CheckerRequestGroup_1{CheckerRequest_equal_names{v_26, v_34, v_2}}, False{}, v_1004929 => checker_body_equal_names(v_26, v_34, v_2), +v_1004926 => CheckerDirect{Bool, CheckerRequestGroup_1{CheckerRequest_equal_names{v_27, v_35, v_2}}, False{}, v_1004928 => checker_body_equal_names(v_27, v_35, v_2), +v_1004927 => CheckerFinished{Bool.and(v_1004920, Bool.and(v_1004921, Bool.and(v_1004922, Bool.and(v_1004923, Bool.and(v_1004924, Bool.and(v_1004925, Bool.and(v_1004926, v_1004927)))))))}}}}}}}}}
+      CheckerDirect{Bool, CheckerRequestGroup_1{CheckerRequest_equal_names{v_20, v_28, v_2}}, False{}, v_1004938 => checker_body_equal_names(v_20, v_28, v_2), +v_1004923 => CheckerDirect{Bool, CheckerRequestGroup_1{CheckerRequest_equal_names{v_21, v_29, v_2}}, False{}, v_1004937 => checker_body_equal_names(v_21, v_29, v_2), +v_1004924 => CheckerDirect{Bool, CheckerRequestGroup_1{CheckerRequest_equal_names{v_22, v_30, v_2}}, False{}, v_1004936 => checker_body_equal_names(v_22, v_30, v_2), +v_1004925 => CheckerDirect{Bool, CheckerRequestGroup_1{CheckerRequest_equal_names{v_23, v_31, v_2}}, False{}, v_1004935 => checker_body_equal_names(v_23, v_31, v_2), +v_1004926 => CheckerDirect{Bool, CheckerRequestGroup_1{CheckerRequest_equal_names{v_24, v_32, v_2}}, False{}, v_1004934 => checker_body_equal_names(v_24, v_32, v_2), +v_1004927 => CheckerDirect{Bool, CheckerRequestGroup_1{CheckerRequest_equal_names{v_25, v_33, v_2}}, False{}, v_1004933 => checker_body_equal_names(v_25, v_33, v_2), +v_1004928 => CheckerDirect{Bool, CheckerRequestGroup_1{CheckerRequest_equal_names{v_26, v_34, v_2}}, False{}, v_1004932 => checker_body_equal_names(v_26, v_34, v_2), +v_1004929 => CheckerDirect{Bool, CheckerRequestGroup_1{CheckerRequest_equal_names{v_27, v_35, v_2}}, False{}, v_1004931 => checker_body_equal_names(v_27, v_35, v_2), +v_1004930 => CheckerFinished{Bool.and(v_1004923, Bool.and(v_1004924, Bool.and(v_1004925, Bool.and(v_1004926, Bool.and(v_1004927, Bool.and(v_1004928, Bool.and(v_1004929, v_1004930)))))))}}}}}}}}}
 
-def checker_match_3590(v_1004936: Bool, v_12: List<&2, U32>, v_14: List<&2, U32>) -> CheckerProgress<Bool>:
-  match v_1004936:
+def checker_match_3589(v_1004939: Bool, v_12: List<&2, U32>, v_14: List<&2, U32>) -> CheckerProgress<Bool>:
+  match v_1004939:
     case False{}:
       CheckerFinished{False{}}
     case True{}:
-      CheckerPending{CheckerRequestGroup_16{CheckerRequest_string_chars_equal{v_12, v_14}}, +v_1004937 => CheckerFinished{v_1004937}}
+      CheckerPending{CheckerRequestGroup_16{CheckerRequest_string_chars_equal{v_12, v_14}}, +v_1004940 => CheckerFinished{v_1004940}}
 
 def checker_body_string_chars_equal(v_2: List<&2, U32>, v_5: List<&2, U32>) -> CheckerProgress<Bool>:
   match v_2, v_5:
     case [], []:
       CheckerFinished{True{}}
     case v_11 <> v_12, v_13 <> v_14:
-      v_1004936 = {U32.is_eq(v_11, v_13) : Bool}
-      checker_match_3590(v_1004936, v_12, v_14)
+      v_1004939 = {U32.is_eq(v_11, v_13) : Bool}
+      checker_match_3589(v_1004939, v_12, v_14)
     case _, _:
       CheckerFinished{False{}}
 
@@ -29944,352 +29943,352 @@ def checker_body_string_literal_positive(v_1: Bool, v_4: List<&2, U32>, v_7: Lis
     case True{}:
       checker_body_string_chars_equal(v_4, v_7)
 
-def checker_continuation_3593(v_1004942: ArenaResult<U32>, v_36: U32, +v_6: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
-  ArenaResult{v_39, v_40} = v_1004942
+def checker_continuation_3592(v_1004945: ArenaResult<U32>, v_36: U32, +v_6: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
+  ArenaResult{v_39, v_40} = v_1004945
   checker_body_equal_raw(v_39, v_36, v_40, v_6)
 
-def checker_continuation_3594(v_1004941: ArenaResult<U32>, +v_26: List<&2, U32>, +v_27: Ast.StringLiteralNames, +v_28: Ast.SourceSpan, +v_6: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
-  ArenaResult{v_35, v_36} = v_1004941
-  CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_unfold_store{v_35, v_26, v_27, v_28}}, False{}, v_1004944 => checker_body_string_unfold_store(v_35, v_26, v_27, v_28), v_1004942 => checker_continuation_3593(v_1004942, v_36, v_6)}
+def checker_continuation_3593(v_1004944: ArenaResult<U32>, +v_26: List<&2, U32>, +v_27: Ast.StringLiteralNames, +v_28: Ast.SourceSpan, +v_6: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
+  ArenaResult{v_35, v_36} = v_1004944
+  CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_unfold_store{v_35, v_26, v_27, v_28}}, False{}, v_1004947 => checker_body_string_unfold_store(v_35, v_26, v_27, v_28), v_1004945 => checker_continuation_3592(v_1004945, v_36, v_6)}
 
-def checker_match_3595(+v_1004940: Bool, v_15: ArenaStore, +v_23: List<&2, U32>, +v_24: Ast.StringLiteralNames, +v_25: Ast.SourceSpan, +v_26: List<&2, U32>, +v_27: Ast.StringLiteralNames, +v_28: Ast.SourceSpan, +v_6: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
-  match v_1004940:
+def checker_match_3594(+v_1004943: Bool, v_15: ArenaStore, +v_23: List<&2, U32>, +v_24: Ast.StringLiteralNames, +v_25: Ast.SourceSpan, +v_26: List<&2, U32>, +v_27: Ast.StringLiteralNames, +v_28: Ast.SourceSpan, +v_6: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
+  match v_1004943:
     case True{}:
       CheckerFinished{{ArenaResult{v_15, True{}} : ArenaResult<Bool>}}
     case False{}:
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_unfold_store{v_15, v_23, v_24, v_25}}, False{}, v_1004945 => checker_body_string_unfold_store(v_15, v_23, v_24, v_25), v_1004941 => checker_continuation_3594(v_1004941, v_26, v_27, v_28, v_6)}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_unfold_store{v_15, v_23, v_24, v_25}}, False{}, v_1004948 => checker_body_string_unfold_store(v_15, v_23, v_24, v_25), v_1004944 => checker_continuation_3593(v_1004944, v_26, v_27, v_28, v_6)}
 
-def checker_continuation_3596(v_1004948: ArenaResult<U32>, +v_5: U32, +v_6: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
-  ArenaResult{v_52, v_53} = v_1004948
+def checker_continuation_3595(v_1004951: ArenaResult<U32>, +v_5: U32, +v_6: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
+  ArenaResult{v_52, v_53} = v_1004951
   checker_body_equal_raw(v_52, v_53, v_5, v_6)
 
-def checker_continuation_3597(v_1004951: ArenaResult<U32>, +v_3: U32, +v_6: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
-  ArenaResult{v_65, v_66} = v_1004951
+def checker_continuation_3596(v_1004954: ArenaResult<U32>, +v_3: U32, +v_6: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
+  ArenaResult{v_65, v_66} = v_1004954
   checker_body_equal_raw(v_65, v_3, v_66, v_6)
 
-def checker_match_3598(+v_12: Arena.Node, +v_16: Arena.Node, +v_6: Scope.ArenaGlobalScope, v_15: ArenaStore, +v_5: U32, +v_3: U32) -> CheckerProgress<ArenaResult<Bool>>:
+def checker_match_3597(+v_12: Arena.Node, +v_16: Arena.Node, +v_6: Scope.ArenaGlobalScope, v_15: ArenaStore, +v_5: U32, +v_3: U32) -> CheckerProgress<ArenaResult<Bool>>:
   match v_12, v_16:
     case Arena.TermString{+v_23, +v_24, +v_25}, Arena.TermString{+v_26, +v_27, +v_28}:
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_names_equal{v_24, v_27, v_6}}, False{}, v_1004947 => checker_body_string_names_equal(v_24, v_27, v_6), +v_1004939 => CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_literal_positive{v_1004939, v_23, v_26}}, False{}, v_1004946 => checker_body_string_literal_positive(v_1004939, v_23, v_26), +v_1004940 => checker_match_3595(v_1004940, v_15, v_23, v_24, v_25, v_26, v_27, v_28, v_6)}}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_names_equal{v_24, v_27, v_6}}, False{}, v_1004950 => checker_body_string_names_equal(v_24, v_27, v_6), +v_1004942 => CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_literal_positive{v_1004942, v_23, v_26}}, False{}, v_1004949 => checker_body_string_literal_positive(v_1004942, v_23, v_26), +v_1004943 => checker_match_3594(v_1004943, v_15, v_23, v_24, v_25, v_26, v_27, v_28, v_6)}}
     case Arena.TermString{v_46, v_47, v_48}, _:
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_unfold_store{v_15, v_46, v_47, v_48}}, False{}, v_1004950 => checker_body_string_unfold_store(v_15, v_46, v_47, v_48), v_1004948 => checker_continuation_3596(v_1004948, v_5, v_6)}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_unfold_store{v_15, v_46, v_47, v_48}}, False{}, v_1004953 => checker_body_string_unfold_store(v_15, v_46, v_47, v_48), v_1004951 => checker_continuation_3595(v_1004951, v_5, v_6)}
     case _, Arena.TermString{v_60, v_61, v_62}:
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_unfold_store{v_15, v_60, v_61, v_62}}, False{}, v_1004953 => checker_body_string_unfold_store(v_15, v_60, v_61, v_62), v_1004951 => checker_continuation_3597(v_1004951, v_3, v_6)}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_unfold_store{v_15, v_60, v_61, v_62}}, False{}, v_1004956 => checker_body_string_unfold_store(v_15, v_60, v_61, v_62), v_1004954 => checker_continuation_3596(v_1004954, v_3, v_6)}
     case _, _:
       checker_body_equal_raw_ordinary(v_15, v_3, v_5, v_6)
 
-def checker_match_3599(v_1004955: ArenaResult<Arena.Node>, +v_12: Arena.Node, +v_6: Scope.ArenaGlobalScope, +v_5: U32, +v_3: U32) -> CheckerProgress<ArenaResult<Bool>>:
-  match v_1004955:
+def checker_match_3598(v_1004958: ArenaResult<Arena.Node>, +v_12: Arena.Node, +v_6: Scope.ArenaGlobalScope, +v_5: U32, +v_3: U32) -> CheckerProgress<ArenaResult<Bool>>:
+  match v_1004958:
     case ArenaResult{v_15, +v_16}:
-      checker_match_3598(v_12, v_16, v_6, v_15, v_5, v_3)
+      checker_match_3597(v_12, v_16, v_6, v_15, v_5, v_3)
 
-def checker_match_3600(v_1004956: ArenaResult<Arena.Node>, +v_5: U32, +v_6: Scope.ArenaGlobalScope, +v_3: U32) -> CheckerProgress<ArenaResult<Bool>>:
-  match v_1004956:
+def checker_match_3599(v_1004959: ArenaResult<Arena.Node>, +v_5: U32, +v_6: Scope.ArenaGlobalScope, +v_3: U32) -> CheckerProgress<ArenaResult<Bool>>:
+  match v_1004959:
     case ArenaResult{v_11, +v_12}:
-      v_1004955 = {checker_pure_arena_get_node(v_11, v_5) : ArenaResult<Arena.Node>}
-      checker_match_3599(v_1004955, v_12, v_6, v_5, v_3)
+      v_1004958 = {checker_pure_arena_get_node(v_11, v_5) : ArenaResult<Arena.Node>}
+      checker_match_3598(v_1004958, v_12, v_6, v_5, v_3)
 
 def checker_body_equal_raw_distinct(v_1: ArenaStore, +v_3: U32, +v_5: U32, +v_6: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
-  v_1004956 = {checker_pure_arena_get_node(v_1, v_3) : ArenaResult<Arena.Node>}
-  checker_match_3600(v_1004956, v_5, v_6, v_3)
+  v_1004959 = {checker_pure_arena_get_node(v_1, v_3) : ArenaResult<Arena.Node>}
+  checker_match_3599(v_1004959, v_5, v_6, v_3)
 
 def checker_body_string_constructor_identity(+v_1: String, +v_3: String, +v_4: Scope.ArenaGlobalScope, +v_6: String) -> CheckerProgress<Bool>:
-  CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_lookup_kind{v_1, Scope.GlobalConstructor{}, v_4}}, False{}, v_1004963 => checker_body_scope_lookup_kind(v_1, Scope.GlobalConstructor{}, v_4), +v_1004957 => CheckerDirect{Bool, CheckerRequestGroup_0{CheckerRequest_canonical_key{v_3, v_6}}, False{}, v_1004962 => checker_body_canonical_key(v_3, v_6), +v_1004958 => CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_lookup_kind{v_1004958, Scope.GlobalConstructor{}, v_4}}, False{}, v_1004961 => checker_body_scope_lookup_kind(v_1004958, Scope.GlobalConstructor{}, v_4), +v_1004959 => checker_body_scalar_global_identity(v_1004957, v_1004959)}}}
+  CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_lookup_kind{v_1, Scope.GlobalConstructor{}, v_4}}, False{}, v_1004966 => checker_body_scope_lookup_kind(v_1, Scope.GlobalConstructor{}, v_4), +v_1004960 => CheckerDirect{Bool, CheckerRequestGroup_0{CheckerRequest_canonical_key{v_3, v_6}}, False{}, v_1004965 => checker_body_canonical_key(v_3, v_6), +v_1004961 => CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_lookup_kind{v_1004961, Scope.GlobalConstructor{}, v_4}}, False{}, v_1004964 => checker_body_scope_lookup_kind(v_1004961, Scope.GlobalConstructor{}, v_4), +v_1004962 => checker_body_scalar_global_identity(v_1004960, v_1004962)}}}
 
 def checker_body_string_names_schema(v_0: Ast.StringLiteralNames, +v_2: String, +v_3: Scope.ArenaGlobalScope) -> CheckerProgress<Bool>:
   match v_0:
     case Ast.StringLiteralNames{v_13, v_14, v_15, v_16, v_17, v_18, v_19, v_20}:
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_constructor_identity{v_13, v_2, v_3, "SNil"}}, False{}, v_1004979 => checker_body_string_constructor_identity(v_13, v_2, v_3, "SNil"), +v_1004964 => CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_constructor_identity{v_14, v_2, v_3, "SCon"}}, False{}, v_1004978 => checker_body_string_constructor_identity(v_14, v_2, v_3, "SCon"), +v_1004965 => CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_constructor_identity{v_15, v_2, v_3, "Chr"}}, False{}, v_1004977 => checker_body_string_constructor_identity(v_15, v_2, v_3, "Chr"), +v_1004966 => CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_constructor_identity{v_16, v_2, v_3, "U32"}}, False{}, v_1004976 => checker_body_string_constructor_identity(v_16, v_2, v_3, "U32"), +v_1004967 => CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_constructor_identity{v_17, v_2, v_3, "WNil"}}, False{}, v_1004975 => checker_body_string_constructor_identity(v_17, v_2, v_3, "WNil"), +v_1004968 => CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_constructor_identity{v_18, v_2, v_3, "WCon"}}, False{}, v_1004974 => checker_body_string_constructor_identity(v_18, v_2, v_3, "WCon"), +v_1004969 => CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_constructor_identity{v_19, v_2, v_3, "False"}}, False{}, v_1004973 => checker_body_string_constructor_identity(v_19, v_2, v_3, "False"), +v_1004970 => CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_constructor_identity{v_20, v_2, v_3, "True"}}, False{}, v_1004972 => checker_body_string_constructor_identity(v_20, v_2, v_3, "True"), +v_1004971 => CheckerFinished{Bool.and(v_1004964, Bool.and(v_1004965, Bool.and(v_1004966, Bool.and(v_1004967, Bool.and(v_1004968, Bool.and(v_1004969, Bool.and(v_1004970, v_1004971)))))))}}}}}}}}}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_constructor_identity{v_13, v_2, v_3, "SNil"}}, False{}, v_1004982 => checker_body_string_constructor_identity(v_13, v_2, v_3, "SNil"), +v_1004967 => CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_constructor_identity{v_14, v_2, v_3, "SCon"}}, False{}, v_1004981 => checker_body_string_constructor_identity(v_14, v_2, v_3, "SCon"), +v_1004968 => CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_constructor_identity{v_15, v_2, v_3, "Chr"}}, False{}, v_1004980 => checker_body_string_constructor_identity(v_15, v_2, v_3, "Chr"), +v_1004969 => CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_constructor_identity{v_16, v_2, v_3, "U32"}}, False{}, v_1004979 => checker_body_string_constructor_identity(v_16, v_2, v_3, "U32"), +v_1004970 => CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_constructor_identity{v_17, v_2, v_3, "WNil"}}, False{}, v_1004978 => checker_body_string_constructor_identity(v_17, v_2, v_3, "WNil"), +v_1004971 => CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_constructor_identity{v_18, v_2, v_3, "WCon"}}, False{}, v_1004977 => checker_body_string_constructor_identity(v_18, v_2, v_3, "WCon"), +v_1004972 => CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_constructor_identity{v_19, v_2, v_3, "False"}}, False{}, v_1004976 => checker_body_string_constructor_identity(v_19, v_2, v_3, "False"), +v_1004973 => CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_constructor_identity{v_20, v_2, v_3, "True"}}, False{}, v_1004975 => checker_body_string_constructor_identity(v_20, v_2, v_3, "True"), +v_1004974 => CheckerFinished{Bool.and(v_1004967, Bool.and(v_1004968, Bool.and(v_1004969, Bool.and(v_1004970, Bool.and(v_1004971, Bool.and(v_1004972, Bool.and(v_1004973, v_1004974)))))))}}}}}}}}}
 
-def checker_match_3602(v_14: Arena.Node, v_13: ArenaStore, +v_5: String, +v_6: Scope.ArenaGlobalScope, v_8: String) -> CheckerProgress<ArenaResult<Bool>>:
+def checker_match_3601(v_14: Arena.Node, v_13: ArenaStore, +v_5: String, +v_6: Scope.ArenaGlobalScope, v_8: String) -> CheckerProgress<ArenaResult<Bool>>:
   match v_14:
     case Arena.TermRef{v_17, _}:
       checker_body_scalar_schema_name(v_13, v_17, v_5, v_6, v_8, True{})
     case _:
       CheckerFinished{{ArenaResult{v_13, False{}} : ArenaResult<Bool>}}
 
-def checker_match_3603(v_1004981: ArenaResult<Arena.Node>, +v_5: String, +v_6: Scope.ArenaGlobalScope, v_8: String) -> CheckerProgress<ArenaResult<Bool>>:
-  match v_1004981:
+def checker_match_3602(v_1004984: ArenaResult<Arena.Node>, +v_5: String, +v_6: Scope.ArenaGlobalScope, v_8: String) -> CheckerProgress<ArenaResult<Bool>>:
+  match v_1004984:
     case ArenaResult{v_13, v_14}:
-      checker_match_3602(v_14, v_13, v_5, v_6, v_8)
+      checker_match_3601(v_14, v_13, v_5, v_6, v_8)
 
 def checker_body_string_schema_ref(v_1: ArenaStore, v_3: U32, +v_5: String, +v_6: Scope.ArenaGlobalScope, v_8: String) -> CheckerProgress<ArenaResult<Bool>>:
-  v_1004981 = {checker_pure_arena_get_node(v_1, v_3) : ArenaResult<Arena.Node>}
-  checker_match_3603(v_1004981, v_5, v_6, v_8)
+  v_1004984 = {checker_pure_arena_get_node(v_1, v_3) : ArenaResult<Arena.Node>}
+  checker_match_3602(v_1004984, v_5, v_6, v_8)
 
-def checker_match_3604(v_1004982: Bool, v_13: ArenaStore, v_21: U32, +v_5: String, +v_6: Scope.ArenaGlobalScope, v_8: String) -> CheckerProgress<ArenaResult<Bool>>:
-  match v_1004982:
+def checker_match_3603(v_1004985: Bool, v_13: ArenaStore, v_21: U32, +v_5: String, +v_6: Scope.ArenaGlobalScope, v_8: String) -> CheckerProgress<ArenaResult<Bool>>:
+  match v_1004985:
     case True{}:
       checker_body_scalar_schema_name(v_13, v_21, v_5, v_6, v_8, True{})
     case False{}:
       CheckerFinished{{ArenaResult{v_13, False{}} : ArenaResult<Bool>}}
 
-def checker_match_3605(v_14: Arena.Node, v_13: ArenaStore, +v_5: String, +v_6: Scope.ArenaGlobalScope, v_8: String) -> CheckerProgress<ArenaResult<Bool>>:
+def checker_match_3604(v_14: Arena.Node, v_13: ArenaStore, +v_5: String, +v_6: Scope.ArenaGlobalScope, v_8: String) -> CheckerProgress<ArenaResult<Bool>>:
   match v_14:
     case Arena.TermAdt{v_21, _, v_23, _, v_25, _}:
-      v_1004982 = {Bool.and(U32.is_eq(v_23, 0), U32.is_eq(v_25, 0)) : Bool}
-      checker_match_3604(v_1004982, v_13, v_21, v_5, v_6, v_8)
+      v_1004985 = {Bool.and(U32.is_eq(v_23, 0), U32.is_eq(v_25, 0)) : Bool}
+      checker_match_3603(v_1004985, v_13, v_21, v_5, v_6, v_8)
     case _:
       CheckerFinished{{ArenaResult{v_13, False{}} : ArenaResult<Bool>}}
 
-def checker_match_3606(v_1004984: ArenaResult<Arena.Node>, +v_5: String, +v_6: Scope.ArenaGlobalScope, v_8: String) -> CheckerProgress<ArenaResult<Bool>>:
-  match v_1004984:
+def checker_match_3605(v_1004987: ArenaResult<Arena.Node>, +v_5: String, +v_6: Scope.ArenaGlobalScope, v_8: String) -> CheckerProgress<ArenaResult<Bool>>:
+  match v_1004987:
     case ArenaResult{v_13, v_14}:
-      checker_match_3605(v_14, v_13, v_5, v_6, v_8)
+      checker_match_3604(v_14, v_13, v_5, v_6, v_8)
 
 def checker_body_string_schema_adt(v_1: ArenaStore, v_3: U32, +v_5: String, +v_6: Scope.ArenaGlobalScope, v_8: String) -> CheckerProgress<ArenaResult<Bool>>:
-  v_1004984 = {checker_pure_arena_get_node(v_1, v_3) : ArenaResult<Arena.Node>}
-  checker_match_3606(v_1004984, v_5, v_6, v_8)
+  v_1004987 = {checker_pure_arena_get_node(v_1, v_3) : ArenaResult<Arena.Node>}
+  checker_match_3605(v_1004987, v_5, v_6, v_8)
 
-def checker_continuation_3607(v_1004988: ArenaResult<Bool>, v_16: String, +v_3: String, +v_6: String, v_17: String, v_18: String, +v_24: Bool) -> CheckerProgress<ArenaResult<Bool>>:
-  ArenaResult{v_27, +v_28} = v_1004988
-  v_1004989 = {v_27 : ArenaStore}
-  v_1004990 = {v_16 : String}
-  CheckerDirect{Bool, CheckerRequestGroup_0{CheckerRequest_canonical_key{v_3, v_6}}, False{}, v_1004992 => checker_body_canonical_key(v_3, v_6), +v_1004991 => CheckerFinished{{ArenaResult{v_1004989, Bool.and(String.eq(v_1004990, v_1004991), Bool.and(String.eq(v_17, v_3), Bool.and(String.eq(v_18, v_6), Bool.and(v_24, v_28))))} : ArenaResult<Bool>}}}
+def checker_continuation_3606(v_1004991: ArenaResult<Bool>, v_16: String, +v_3: String, +v_6: String, v_17: String, v_18: String, +v_24: Bool) -> CheckerProgress<ArenaResult<Bool>>:
+  ArenaResult{v_27, +v_28} = v_1004991
+  v_1004992 = {v_27 : ArenaStore}
+  v_1004993 = {v_16 : String}
+  CheckerDirect{Bool, CheckerRequestGroup_0{CheckerRequest_canonical_key{v_3, v_6}}, False{}, v_1004995 => checker_body_canonical_key(v_3, v_6), +v_1004994 => CheckerFinished{{ArenaResult{v_1004992, Bool.and(String.eq(v_1004993, v_1004994), Bool.and(String.eq(v_17, v_3), Bool.and(String.eq(v_18, v_6), Bool.and(v_24, v_28))))} : ArenaResult<Bool>}}}
 
-def checker_continuation_3608(v_1004987: ArenaResult<Bool>, v_20: U32, +v_3: String, +v_4: Scope.ArenaGlobalScope, +v_6: String, v_16: String, v_17: String, v_18: String) -> CheckerProgress<ArenaResult<Bool>>:
-  ArenaResult{v_23, +v_24} = v_1004987
-  CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema_adt{v_23, v_20, v_3, v_4, v_6}}, False{}, v_1004993 => checker_body_string_schema_adt(v_23, v_20, v_3, v_4, v_6), v_1004988 => checker_continuation_3607(v_1004988, v_16, v_3, v_6, v_17, v_18, v_24)}
+def checker_continuation_3607(v_1004990: ArenaResult<Bool>, v_20: U32, +v_3: String, +v_4: Scope.ArenaGlobalScope, +v_6: String, v_16: String, v_17: String, v_18: String) -> CheckerProgress<ArenaResult<Bool>>:
+  ArenaResult{v_23, +v_24} = v_1004990
+  CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema_adt{v_23, v_20, v_3, v_4, v_6}}, False{}, v_1004996 => checker_body_string_schema_adt(v_23, v_20, v_3, v_4, v_6), v_1004991 => checker_continuation_3606(v_1004991, v_16, v_3, v_6, v_17, v_18, v_24)}
 
-def checker_match_3609(+v_1004986: Maybe<&2, Scope.ArenaGlobal>, v_1: ArenaStore, +v_3: String, +v_4: Scope.ArenaGlobalScope, +v_6: String) -> CheckerProgress<ArenaResult<Bool>>:
-  match v_1004986:
+def checker_match_3608(+v_1004989: Maybe<&2, Scope.ArenaGlobal>, v_1: ArenaStore, +v_3: String, +v_4: Scope.ArenaGlobalScope, +v_6: String) -> CheckerProgress<ArenaResult<Bool>>:
+  match v_1004989:
     case Some{Scope.ArenaGlobal{v_16, v_17, v_18, v_19, IR.SomeTerm{v_20}, Scope.GlobalFamily{}}}:
-      CheckerDirect{Bool, CheckerRequestGroup_5{CheckerRequest_scalar_schema_0{v_1, v_19, v_3, v_4}}, False{}, v_1004994 => checker_body_scalar_schema_0(v_1, v_19, v_3, v_4), v_1004987 => checker_continuation_3608(v_1004987, v_20, v_3, v_4, v_6, v_16, v_17, v_18)}
+      CheckerDirect{Bool, CheckerRequestGroup_5{CheckerRequest_scalar_schema_0{v_1, v_19, v_3, v_4}}, False{}, v_1004997 => checker_body_scalar_schema_0(v_1, v_19, v_3, v_4), v_1004990 => checker_continuation_3607(v_1004990, v_20, v_3, v_4, v_6, v_16, v_17, v_18)}
     case _:
       CheckerFinished{{ArenaResult{v_1, False{}} : ArenaResult<Bool>}}
 
 def checker_body_string_schema_family(v_1: ArenaStore, +v_3: String, +v_4: Scope.ArenaGlobalScope, +v_6: String) -> CheckerProgress<ArenaResult<Bool>>:
-  CheckerDirect{Bool, CheckerRequestGroup_0{CheckerRequest_canonical_key{v_3, v_6}}, False{}, v_1004996 => checker_body_canonical_key(v_3, v_6), +v_1004985 => CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_lookup_kind{v_1004985, Scope.GlobalFamily{}, v_4}}, False{}, v_1004995 => checker_body_scope_lookup_kind(v_1004985, Scope.GlobalFamily{}, v_4), +v_1004986 => checker_match_3609(v_1004986, v_1, v_3, v_4, v_6)}}
+  CheckerDirect{Bool, CheckerRequestGroup_0{CheckerRequest_canonical_key{v_3, v_6}}, False{}, v_1004999 => checker_body_canonical_key(v_3, v_6), +v_1004988 => CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_lookup_kind{v_1004988, Scope.GlobalFamily{}, v_4}}, False{}, v_1004998 => checker_body_scope_lookup_kind(v_1004988, Scope.GlobalFamily{}, v_4), +v_1004989 => checker_match_3608(v_1004989, v_1, v_3, v_4, v_6)}}
 
-def checker_continuation_3610(v_1004999: ArenaResult<Bool>, +v_10: Nat, v_31: Nat, +v_38: Bool) -> CheckerProgress<ArenaResult<Bool>>:
-  ArenaResult{v_41, +v_42} = v_1004999
+def checker_continuation_3609(v_1005002: ArenaResult<Bool>, +v_10: Nat, v_31: Nat, +v_38: Bool) -> CheckerProgress<ArenaResult<Bool>>:
+  ArenaResult{v_41, +v_42} = v_1005002
   CheckerFinished{{ArenaResult{v_41, Bool.and(Nat.is_eq(v_10, v_31), Bool.and(v_38, v_42))} : ArenaResult<Bool>}}
 
-def checker_continuation_3611(v_1004998: ArenaResult<Bool>, v_33: U32, v_20: List<&2, String>, +v_8: String, +v_10: Nat, +v_12: String, +v_13: Scope.ArenaGlobalScope, v_31: Nat) -> CheckerProgress<ArenaResult<Bool>>:
-  ArenaResult{v_37, +v_38} = v_1004998
-  CheckerPending{CheckerRequestGroup_16{CheckerRequest_string_schema_fields{v_37, v_33, v_20, v_8, Nat.add(v_10, 1n), v_12, v_13}}, v_1004999 => checker_continuation_3610(v_1004999, v_10, v_31, v_38)}
+def checker_continuation_3610(v_1005001: ArenaResult<Bool>, v_33: U32, v_20: List<&2, String>, +v_8: String, +v_10: Nat, +v_12: String, +v_13: Scope.ArenaGlobalScope, v_31: Nat) -> CheckerProgress<ArenaResult<Bool>>:
+  ArenaResult{v_37, +v_38} = v_1005001
+  CheckerPending{CheckerRequestGroup_16{CheckerRequest_string_schema_fields{v_37, v_33, v_20, v_8, Nat.add(v_10, 1n), v_12, v_13}}, v_1005002 => checker_continuation_3609(v_1005002, v_10, v_31, v_38)}
 
-def checker_match_3612(v_24: Arena.Node, v_23: ArenaStore, +v_12: String, +v_13: Scope.ArenaGlobalScope, v_19: String, v_20: List<&2, String>, +v_8: String, +v_10: Nat) -> CheckerProgress<ArenaResult<Bool>>:
+def checker_match_3611(v_24: Arena.Node, v_23: ArenaStore, +v_12: String, +v_13: Scope.ArenaGlobalScope, v_19: String, v_20: List<&2, String>, +v_8: String, +v_10: Nat) -> CheckerProgress<ArenaResult<Bool>>:
   match v_24:
     case Arena.TermAll{Ast.QOne{}, _, v_31, v_32, v_33, _}:
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema_ref{v_23, v_32, v_12, v_13, v_19}}, False{}, v_1005000 => checker_body_string_schema_ref(v_23, v_32, v_12, v_13, v_19), v_1004998 => checker_continuation_3611(v_1004998, v_33, v_20, v_8, v_10, v_12, v_13, v_31)}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema_ref{v_23, v_32, v_12, v_13, v_19}}, False{}, v_1005003 => checker_body_string_schema_ref(v_23, v_32, v_12, v_13, v_19), v_1005001 => checker_continuation_3610(v_1005001, v_33, v_20, v_8, v_10, v_12, v_13, v_31)}
     case _:
       CheckerFinished{{ArenaResult{v_23, False{}} : ArenaResult<Bool>}}
 
-def checker_match_3613(v_1005001: ArenaResult<Arena.Node>, +v_12: String, +v_13: Scope.ArenaGlobalScope, v_19: String, v_20: List<&2, String>, +v_8: String, +v_10: Nat) -> CheckerProgress<ArenaResult<Bool>>:
-  match v_1005001:
+def checker_match_3612(v_1005004: ArenaResult<Arena.Node>, +v_12: String, +v_13: Scope.ArenaGlobalScope, v_19: String, v_20: List<&2, String>, +v_8: String, +v_10: Nat) -> CheckerProgress<ArenaResult<Bool>>:
+  match v_1005004:
     case ArenaResult{v_23, v_24}:
-      checker_match_3612(v_24, v_23, v_12, v_13, v_19, v_20, v_8, v_10)
+      checker_match_3611(v_24, v_23, v_12, v_13, v_19, v_20, v_8, v_10)
 
-def checker_match_3614(v_6: List<&2, String>, v_1: ArenaStore, v_3: U32, +v_12: String, +v_13: Scope.ArenaGlobalScope, +v_8: String, +v_10: Nat) -> CheckerProgress<ArenaResult<Bool>>:
+def checker_match_3613(v_6: List<&2, String>, v_1: ArenaStore, v_3: U32, +v_12: String, +v_13: Scope.ArenaGlobalScope, +v_8: String, +v_10: Nat) -> CheckerProgress<ArenaResult<Bool>>:
   match v_6:
     case []:
       checker_body_string_schema_adt(v_1, v_3, v_12, v_13, v_8)
     case v_19 <> v_20:
-      v_1005001 = {checker_pure_arena_get_node(v_1, v_3) : ArenaResult<Arena.Node>}
-      checker_match_3613(v_1005001, v_12, v_13, v_19, v_20, v_8, v_10)
+      v_1005004 = {checker_pure_arena_get_node(v_1, v_3) : ArenaResult<Arena.Node>}
+      checker_match_3612(v_1005004, v_12, v_13, v_19, v_20, v_8, v_10)
 
 def checker_body_string_schema_fields(v_1: ArenaStore, v_3: U32, v_6: List<&2, String>, +v_8: String, +v_10: Nat, +v_12: String, +v_13: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
-  checker_match_3614(v_6, v_1, v_3, v_12, v_13, v_8, v_10)
+  checker_match_3613(v_6, v_1, v_3, v_12, v_13, v_8, v_10)
 
-def checker_continuation_3615(v_1005004: ArenaResult<Bool>, v_20: String, +v_3: String, +v_6: String, v_21: String, v_22: String) -> CheckerProgress<ArenaResult<Bool>>:
-  ArenaResult{v_26, +v_27} = v_1005004
-  v_1005005 = {v_26 : ArenaStore}
-  v_1005006 = {v_20 : String}
-  CheckerDirect{Bool, CheckerRequestGroup_0{CheckerRequest_canonical_key{v_3, v_6}}, False{}, v_1005008 => checker_body_canonical_key(v_3, v_6), +v_1005007 => CheckerFinished{{ArenaResult{v_1005005, Bool.and(String.eq(v_1005006, v_1005007), Bool.and(String.eq(v_21, v_3), Bool.and(String.eq(v_22, v_6), v_27)))} : ArenaResult<Bool>}}}
+def checker_continuation_3614(v_1005007: ArenaResult<Bool>, v_20: String, +v_3: String, +v_6: String, v_21: String, v_22: String) -> CheckerProgress<ArenaResult<Bool>>:
+  ArenaResult{v_26, +v_27} = v_1005007
+  v_1005008 = {v_26 : ArenaStore}
+  v_1005009 = {v_20 : String}
+  CheckerDirect{Bool, CheckerRequestGroup_0{CheckerRequest_canonical_key{v_3, v_6}}, False{}, v_1005011 => checker_body_canonical_key(v_3, v_6), +v_1005010 => CheckerFinished{{ArenaResult{v_1005008, Bool.and(String.eq(v_1005009, v_1005010), Bool.and(String.eq(v_21, v_3), Bool.and(String.eq(v_22, v_6), v_27)))} : ArenaResult<Bool>}}}
 
-def checker_match_3616(+v_1005003: Maybe<&2, Scope.ArenaGlobal>, v_1: ArenaStore, v_9: List<&2, String>, v_11: String, +v_3: String, +v_4: Scope.ArenaGlobalScope, +v_6: String) -> CheckerProgress<ArenaResult<Bool>>:
-  match v_1005003:
+def checker_match_3615(+v_1005006: Maybe<&2, Scope.ArenaGlobal>, v_1: ArenaStore, v_9: List<&2, String>, v_11: String, +v_3: String, +v_4: Scope.ArenaGlobalScope, +v_6: String) -> CheckerProgress<ArenaResult<Bool>>:
+  match v_1005006:
     case Some{Scope.ArenaGlobal{v_20, v_21, v_22, v_23, IR.NoTerm{}, Scope.GlobalConstructor{}}}:
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema_fields{v_1, v_23, v_9, v_11, 0n, v_3, v_4}}, False{}, v_1005009 => checker_body_string_schema_fields(v_1, v_23, v_9, v_11, 0n, v_3, v_4), v_1005004 => checker_continuation_3615(v_1005004, v_20, v_3, v_6, v_21, v_22)}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema_fields{v_1, v_23, v_9, v_11, 0n, v_3, v_4}}, False{}, v_1005012 => checker_body_string_schema_fields(v_1, v_23, v_9, v_11, 0n, v_3, v_4), v_1005007 => checker_continuation_3614(v_1005007, v_20, v_3, v_6, v_21, v_22)}
     case _:
       CheckerFinished{{ArenaResult{v_1, False{}} : ArenaResult<Bool>}}
 
 def checker_body_string_schema_constructor(v_1: ArenaStore, +v_3: String, +v_4: Scope.ArenaGlobalScope, +v_6: String, v_9: List<&2, String>, v_11: String) -> CheckerProgress<ArenaResult<Bool>>:
-  CheckerDirect{Bool, CheckerRequestGroup_0{CheckerRequest_canonical_key{v_3, v_6}}, False{}, v_1005011 => checker_body_canonical_key(v_3, v_6), +v_1005002 => CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_lookup_kind{v_1005002, Scope.GlobalConstructor{}, v_4}}, False{}, v_1005010 => checker_body_scope_lookup_kind(v_1005002, Scope.GlobalConstructor{}, v_4), +v_1005003 => checker_match_3616(v_1005003, v_1, v_9, v_11, v_3, v_4, v_6)}}
+  CheckerDirect{Bool, CheckerRequestGroup_0{CheckerRequest_canonical_key{v_3, v_6}}, False{}, v_1005014 => checker_body_canonical_key(v_3, v_6), +v_1005005 => CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_lookup_kind{v_1005005, Scope.GlobalConstructor{}, v_4}}, False{}, v_1005013 => checker_body_scope_lookup_kind(v_1005005, Scope.GlobalConstructor{}, v_4), +v_1005006 => checker_match_3615(v_1005006, v_1, v_9, v_11, v_3, v_4, v_6)}}
 
-def checker_continuation_3617(v_1005017: ArenaResult<Bool>, +v_10: Bool, +v_14: Bool, +v_18: Bool, +v_22: Bool, +v_26: Bool) -> CheckerProgress<ArenaResult<Bool>>:
-  ArenaResult{v_29, +v_30} = v_1005017
+def checker_continuation_3616(v_1005020: ArenaResult<Bool>, +v_10: Bool, +v_14: Bool, +v_18: Bool, +v_22: Bool, +v_26: Bool) -> CheckerProgress<ArenaResult<Bool>>:
+  ArenaResult{v_29, +v_30} = v_1005020
   CheckerFinished{{ArenaResult{v_29, Bool.and(v_10, Bool.and(v_14, Bool.and(v_18, Bool.and(v_22, Bool.and(v_26, v_30)))))} : ArenaResult<Bool>}}
 
-def checker_continuation_3618(v_1005016: ArenaResult<Bool>, +v_3: String, +v_4: Scope.ArenaGlobalScope, +v_10: Bool, +v_14: Bool, +v_18: Bool, +v_22: Bool) -> CheckerProgress<ArenaResult<Bool>>:
-  ArenaResult{v_25, +v_26} = v_1005016
-  CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema_constructor{v_25, v_3, v_4, "SCon", ["Char", "String"], "String"}}, False{}, v_1005018 => checker_body_string_schema_constructor(v_25, v_3, v_4, "SCon", ["Char", "String"], "String"), v_1005017 => checker_continuation_3617(v_1005017, v_10, v_14, v_18, v_22, v_26)}
+def checker_continuation_3617(v_1005019: ArenaResult<Bool>, +v_3: String, +v_4: Scope.ArenaGlobalScope, +v_10: Bool, +v_14: Bool, +v_18: Bool, +v_22: Bool) -> CheckerProgress<ArenaResult<Bool>>:
+  ArenaResult{v_25, +v_26} = v_1005019
+  CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema_constructor{v_25, v_3, v_4, "SCon", ["Char", "String"], "String"}}, False{}, v_1005021 => checker_body_string_schema_constructor(v_25, v_3, v_4, "SCon", ["Char", "String"], "String"), v_1005020 => checker_continuation_3616(v_1005020, v_10, v_14, v_18, v_22, v_26)}
 
-def checker_continuation_3619(v_1005015: ArenaResult<Bool>, +v_3: String, +v_4: Scope.ArenaGlobalScope, +v_10: Bool, +v_14: Bool, +v_18: Bool) -> CheckerProgress<ArenaResult<Bool>>:
-  ArenaResult{v_21, +v_22} = v_1005015
-  CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema_constructor{v_21, v_3, v_4, "SNil", [], "String"}}, False{}, v_1005019 => checker_body_string_schema_constructor(v_21, v_3, v_4, "SNil", [], "String"), v_1005016 => checker_continuation_3618(v_1005016, v_3, v_4, v_10, v_14, v_18, v_22)}
+def checker_continuation_3618(v_1005018: ArenaResult<Bool>, +v_3: String, +v_4: Scope.ArenaGlobalScope, +v_10: Bool, +v_14: Bool, +v_18: Bool) -> CheckerProgress<ArenaResult<Bool>>:
+  ArenaResult{v_21, +v_22} = v_1005018
+  CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema_constructor{v_21, v_3, v_4, "SNil", [], "String"}}, False{}, v_1005022 => checker_body_string_schema_constructor(v_21, v_3, v_4, "SNil", [], "String"), v_1005019 => checker_continuation_3617(v_1005019, v_3, v_4, v_10, v_14, v_18, v_22)}
 
-def checker_continuation_3620(v_1005014: ArenaResult<Bool>, +v_3: String, +v_4: Scope.ArenaGlobalScope, +v_10: Bool, +v_14: Bool) -> CheckerProgress<ArenaResult<Bool>>:
-  ArenaResult{v_17, +v_18} = v_1005014
-  CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema_constructor{v_17, v_3, v_4, "Chr", ["U32"], "Char"}}, False{}, v_1005020 => checker_body_string_schema_constructor(v_17, v_3, v_4, "Chr", ["U32"], "Char"), v_1005015 => checker_continuation_3619(v_1005015, v_3, v_4, v_10, v_14, v_18)}
+def checker_continuation_3619(v_1005017: ArenaResult<Bool>, +v_3: String, +v_4: Scope.ArenaGlobalScope, +v_10: Bool, +v_14: Bool) -> CheckerProgress<ArenaResult<Bool>>:
+  ArenaResult{v_17, +v_18} = v_1005017
+  CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema_constructor{v_17, v_3, v_4, "Chr", ["U32"], "Char"}}, False{}, v_1005023 => checker_body_string_schema_constructor(v_17, v_3, v_4, "Chr", ["U32"], "Char"), v_1005018 => checker_continuation_3618(v_1005018, v_3, v_4, v_10, v_14, v_18)}
 
-def checker_continuation_3621(v_1005013: ArenaResult<Bool>, +v_3: String, +v_4: Scope.ArenaGlobalScope, +v_10: Bool) -> CheckerProgress<ArenaResult<Bool>>:
-  ArenaResult{v_13, +v_14} = v_1005013
-  CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema_family{v_13, v_3, v_4, "String"}}, False{}, v_1005021 => checker_body_string_schema_family(v_13, v_3, v_4, "String"), v_1005014 => checker_continuation_3620(v_1005014, v_3, v_4, v_10, v_14)}
+def checker_continuation_3620(v_1005016: ArenaResult<Bool>, +v_3: String, +v_4: Scope.ArenaGlobalScope, +v_10: Bool) -> CheckerProgress<ArenaResult<Bool>>:
+  ArenaResult{v_13, +v_14} = v_1005016
+  CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema_family{v_13, v_3, v_4, "String"}}, False{}, v_1005024 => checker_body_string_schema_family(v_13, v_3, v_4, "String"), v_1005017 => checker_continuation_3619(v_1005017, v_3, v_4, v_10, v_14)}
 
-def checker_continuation_3622(v_1005012: ArenaResult<Bool>, +v_3: String, +v_4: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
-  ArenaResult{v_9, +v_10} = v_1005012
-  CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema_family{v_9, v_3, v_4, "Char"}}, False{}, v_1005022 => checker_body_string_schema_family(v_9, v_3, v_4, "Char"), v_1005013 => checker_continuation_3621(v_1005013, v_3, v_4, v_10)}
+def checker_continuation_3621(v_1005015: ArenaResult<Bool>, +v_3: String, +v_4: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
+  ArenaResult{v_9, +v_10} = v_1005015
+  CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema_family{v_9, v_3, v_4, "Char"}}, False{}, v_1005025 => checker_body_string_schema_family(v_9, v_3, v_4, "Char"), v_1005016 => checker_continuation_3620(v_1005016, v_3, v_4, v_10)}
 
 def checker_body_string_schema(v_1: ArenaStore, +v_3: String, +v_4: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
-  CheckerDirect{Bool, CheckerRequestGroup_6{CheckerRequest_scalar_schema_builtin{v_1, v_3, v_4, "U32"}}, False{}, v_1005023 => checker_body_scalar_schema_builtin(v_1, v_3, v_4, "U32"), v_1005012 => checker_continuation_3622(v_1005012, v_3, v_4)}
+  CheckerDirect{Bool, CheckerRequestGroup_6{CheckerRequest_scalar_schema_builtin{v_1, v_3, v_4, "U32"}}, False{}, v_1005026 => checker_body_scalar_schema_builtin(v_1, v_3, v_4, "U32"), v_1005015 => checker_continuation_3621(v_1005015, v_3, v_4)}
 
-def checker_match_3623(v_4: ArenaResult<Bool>, +v_0: Scope.ArenaGlobalScope, +v_1: Scope.ArenaGlobal) -> CheckerProgress<ArenaResult<Bool>>:
+def checker_match_3622(v_4: ArenaResult<Bool>, +v_0: Scope.ArenaGlobalScope, +v_1: Scope.ArenaGlobal) -> CheckerProgress<ArenaResult<Bool>>:
   match v_4:
     case ArenaResult{v_9, +v_10}:
-      CheckerDirect{Bool, CheckerRequestGroup_6{CheckerRequest_scalar_frame_store{v_9, Arena.StringSchemaSaved{v_0, v_1, v_10}}}, False{}, v_1005025 => checker_body_scalar_frame_store(v_9, Arena.StringSchemaSaved{v_0, v_1, v_10}), v_1005024 => CheckerFinished{{ArenaResult{v_1005024, v_10} : ArenaResult<Bool>}}}
+      CheckerDirect{Bool, CheckerRequestGroup_6{CheckerRequest_scalar_frame_store{v_9, Arena.StringSchemaSaved{v_0, v_1, v_10}}}, False{}, v_1005028 => checker_body_scalar_frame_store(v_9, Arena.StringSchemaSaved{v_0, v_1, v_10}), v_1005027 => CheckerFinished{{ArenaResult{v_1005027, v_10} : ArenaResult<Bool>}}}
 
 def checker_body_string_schema_prepare(+v_0: Scope.ArenaGlobalScope, +v_1: Scope.ArenaGlobal, v_4: ArenaResult<Bool>) -> CheckerProgress<ArenaResult<Bool>>:
-  checker_match_3623(v_4, v_0, v_1)
+  checker_match_3622(v_4, v_0, v_1)
 
-def checker_match_3624(+v_1005036: Bool, v_1: ArenaStore, v_26: Bool, v_24: Scope.ArenaGlobalScope, +v_3: Scope.ArenaGlobal, +v_5: String, +v_6: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
-  match v_1005036:
+def checker_match_3623(+v_1005039: Bool, v_1: ArenaStore, v_26: Bool, v_24: Scope.ArenaGlobalScope, +v_3: Scope.ArenaGlobal, +v_5: String, +v_6: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
+  match v_1005039:
     case True{}:
       CheckerFinished{{ArenaResult{v_1, v_26} : ArenaResult<Bool>}}
     case False{}:
-      +v_1005037 = {v_24 : Scope.ArenaGlobalScope}
-      +v_1005038 = {v_3 : Scope.ArenaGlobal}
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema{v_1, v_5, v_6}}, False{}, v_1005041 => checker_body_string_schema(v_1, v_5, v_6), v_1005039 => checker_body_string_schema_prepare(v_1005037, v_1005038, v_1005039)}
+      +v_1005040 = {v_24 : Scope.ArenaGlobalScope}
+      +v_1005041 = {v_3 : Scope.ArenaGlobal}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema{v_1, v_5, v_6}}, False{}, v_1005044 => checker_body_string_schema(v_1, v_5, v_6), v_1005042 => checker_body_string_schema_prepare(v_1005040, v_1005041, v_1005042)}
 
-def checker_match_3625(v_2: Arena.SubstMemoEntry, +v_3: Scope.ArenaGlobal, v_1: ArenaStore, +v_5: String, +v_6: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
+def checker_match_3624(v_2: Arena.SubstMemoEntry, +v_3: Scope.ArenaGlobal, v_1: ArenaStore, +v_5: String, +v_6: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
   match v_2:
     case Arena.ScalarSchemaOpen{v_10}:
-      +v_1005026 = {v_10 : Scope.ArenaGlobalScope}
-      +v_1005027 = {v_3 : Scope.ArenaGlobal}
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema{v_1, v_5, v_6}}, False{}, v_1005030 => checker_body_string_schema(v_1, v_5, v_6), v_1005028 => checker_body_string_schema_prepare(v_1005026, v_1005027, v_1005028)}
+      +v_1005029 = {v_10 : Scope.ArenaGlobalScope}
+      +v_1005030 = {v_3 : Scope.ArenaGlobal}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema{v_1, v_5, v_6}}, False{}, v_1005033 => checker_body_string_schema(v_1, v_5, v_6), v_1005031 => checker_body_string_schema_prepare(v_1005029, v_1005030, v_1005031)}
     case Arena.ScalarSchemaSaved{v_16, _, _}:
-      +v_1005031 = {v_16 : Scope.ArenaGlobalScope}
-      +v_1005032 = {v_3 : Scope.ArenaGlobal}
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema{v_1, v_5, v_6}}, False{}, v_1005035 => checker_body_string_schema(v_1, v_5, v_6), v_1005033 => checker_body_string_schema_prepare(v_1005031, v_1005032, v_1005033)}
+      +v_1005034 = {v_16 : Scope.ArenaGlobalScope}
+      +v_1005035 = {v_3 : Scope.ArenaGlobal}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema{v_1, v_5, v_6}}, False{}, v_1005038 => checker_body_string_schema(v_1, v_5, v_6), v_1005036 => checker_body_string_schema_prepare(v_1005034, v_1005035, v_1005036)}
     case Arena.StringSchemaSaved{v_24, v_25, v_26}:
-      CheckerDirect{Bool, CheckerRequestGroup_5{CheckerRequest_scalar_global_identity{Some{v_3}, Some{v_25}}}, False{}, v_1005042 => checker_body_scalar_global_identity(Some{v_3}, Some{v_25}), +v_1005036 => checker_match_3624(v_1005036, v_1, v_26, v_24, v_3, v_5, v_6)}
+      CheckerDirect{Bool, CheckerRequestGroup_5{CheckerRequest_scalar_global_identity{Some{v_3}, Some{v_25}}}, False{}, v_1005045 => checker_body_scalar_global_identity(Some{v_3}, Some{v_25}), +v_1005039 => checker_match_3623(v_1005039, v_1, v_26, v_24, v_3, v_5, v_6)}
     case _:
       checker_body_string_schema(v_1, v_5, v_6)
 
 def checker_body_string_schema_entry(v_1: ArenaStore, v_2: Arena.SubstMemoEntry, +v_3: Scope.ArenaGlobal, +v_5: String, +v_6: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
-  checker_match_3625(v_2, v_3, v_1, v_5, v_6)
+  checker_match_3624(v_2, v_3, v_1, v_5, v_6)
 
-def checker_match_3626(v_5: Pair(Arena.Arena, Arena.SubstMemoEntry), v_0: Arena.Arena, v_1: Scope.ArenaGlobal, v_3: String, v_4: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
+def checker_match_3625(v_5: Pair(Arena.Arena, Arena.SubstMemoEntry), v_0: Arena.Arena, v_1: Scope.ArenaGlobal, v_3: String, v_4: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
   match v_5:
     case (v_10, v_11):
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema_entry{ArenaStore{v_10, v_0}, v_11, v_1, v_3, v_4}}, False{}, v_1005045 => checker_body_string_schema_entry(ArenaStore{v_10, v_0}, v_11, v_1, v_3, v_4), v_1005044 => CheckerFinished{v_1005044}}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema_entry{ArenaStore{v_10, v_0}, v_11, v_1, v_3, v_4}}, False{}, v_1005048 => checker_body_string_schema_entry(ArenaStore{v_10, v_0}, v_11, v_1, v_3, v_4), v_1005047 => CheckerFinished{v_1005047}}
 
 def checker_body_string_schema_frame(v_0: Arena.Arena, v_1: Scope.ArenaGlobal, v_3: String, v_4: Scope.ArenaGlobalScope, v_5: Pair(Arena.Arena, Arena.SubstMemoEntry)) -> CheckerProgress<ArenaResult<Bool>>:
-  checker_match_3626(v_5, v_0, v_1, v_3, v_4)
+  checker_match_3625(v_5, v_0, v_1, v_3, v_4)
 
 def checker_body_string_schema_prepared(v_1: ArenaStore, v_2: Scope.ArenaGlobal, v_4: String, v_5: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
   match v_1:
     case ArenaStore{v_10, v_11}:
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema_frame{v_11, v_2, v_4, v_5, Arena.scalar_frame_get(v_10)}}, False{}, v_1005047 => checker_body_string_schema_frame(v_11, v_2, v_4, v_5, Arena.scalar_frame_get(v_10)), v_1005046 => CheckerFinished{v_1005046}}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema_frame{v_11, v_2, v_4, v_5, Arena.scalar_frame_get(v_10)}}, False{}, v_1005050 => checker_body_string_schema_frame(v_11, v_2, v_4, v_5, Arena.scalar_frame_get(v_10)), v_1005049 => CheckerFinished{v_1005049}}
 
-def checker_match_3628(+v_45: Bool, v_44: ArenaStore, +v_26: Scope.ArenaGlobal, +v_34: String, +v_3: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
+def checker_match_3627(+v_45: Bool, v_44: ArenaStore, +v_26: Scope.ArenaGlobal, +v_34: String, +v_3: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
   match v_45:
     case False{}:
       CheckerFinished{{ArenaResult{v_44, False{}} : ArenaResult<Bool>}}
     case True{}:
       checker_body_string_schema_prepared(v_44, v_26, v_34, v_3)
 
-def checker_continuation_3629(v_1005050: ArenaResult<Bool>, +v_26: Scope.ArenaGlobal, +v_34: String, +v_3: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
-  ArenaResult{v_44, +v_45} = v_1005050
-  checker_match_3628(v_45, v_44, v_26, v_34, v_3)
+def checker_continuation_3628(v_1005053: ArenaResult<Bool>, +v_26: Scope.ArenaGlobal, +v_34: String, +v_3: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Bool>>:
+  ArenaResult{v_44, +v_45} = v_1005053
+  checker_match_3627(v_45, v_44, v_26, v_34, v_3)
 
-def checker_match_3630(+v_1005049: Bool, v_1: ArenaStore, v_5: U32, +v_34: String, +v_3: Scope.ArenaGlobalScope, +v_26: Scope.ArenaGlobal) -> CheckerProgress<ArenaResult<Bool>>:
-  match v_1005049:
+def checker_match_3629(+v_1005052: Bool, v_1: ArenaStore, v_5: U32, +v_34: String, +v_3: Scope.ArenaGlobalScope, +v_26: Scope.ArenaGlobal) -> CheckerProgress<ArenaResult<Bool>>:
+  match v_1005052:
     case False{}:
       CheckerFinished{{ArenaResult{v_1, False{}} : ArenaResult<Bool>}}
     case True{}:
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema_adt{v_1, v_5, v_34, v_3, "String"}}, False{}, v_1005052 => checker_body_string_schema_adt(v_1, v_5, v_34, v_3, "String"), v_1005050 => checker_continuation_3629(v_1005050, v_26, v_34, v_3)}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_schema_adt{v_1, v_5, v_34, v_3, "String"}}, False{}, v_1005055 => checker_body_string_schema_adt(v_1, v_5, v_34, v_3, "String"), v_1005053 => checker_continuation_3628(v_1005053, v_26, v_34, v_3)}
 
-def checker_match_3631(+v_26: Scope.ArenaGlobal, +v_2: Ast.StringLiteralNames, +v_3: Scope.ArenaGlobalScope, v_1: ArenaStore, v_5: U32) -> CheckerProgress<ArenaResult<Bool>>:
+def checker_match_3630(+v_26: Scope.ArenaGlobal, +v_2: Ast.StringLiteralNames, +v_3: Scope.ArenaGlobalScope, v_1: ArenaStore, v_5: U32) -> CheckerProgress<ArenaResult<Bool>>:
   match v_26:
     case Scope.ArenaGlobal{_, +v_34, _, _, _, _}:
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_names_schema{v_2, v_34, v_3}}, False{}, v_1005053 => checker_body_string_names_schema(v_2, v_34, v_3), +v_1005049 => checker_match_3630(v_1005049, v_1, v_5, v_34, v_3, v_26)}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_names_schema{v_2, v_34, v_3}}, False{}, v_1005056 => checker_body_string_names_schema(v_2, v_34, v_3), +v_1005052 => checker_match_3629(v_1005052, v_1, v_5, v_34, v_3, v_26)}
 
-def checker_match_3632(+v_1005048: Maybe<&2, Scope.ArenaGlobal>, +v_2: Ast.StringLiteralNames, +v_3: Scope.ArenaGlobalScope, v_1: ArenaStore, v_5: U32) -> CheckerProgress<ArenaResult<Bool>>:
-  match v_1005048:
+def checker_match_3631(+v_1005051: Maybe<&2, Scope.ArenaGlobal>, +v_2: Ast.StringLiteralNames, +v_3: Scope.ArenaGlobalScope, v_1: ArenaStore, v_5: U32) -> CheckerProgress<ArenaResult<Bool>>:
+  match v_1005051:
     case Some{+v_26}:
-      checker_match_3631(v_26, v_2, v_3, v_1, v_5)
+      checker_match_3630(v_26, v_2, v_3, v_1, v_5)
     case None{}:
       CheckerFinished{{ArenaResult{v_1, False{}} : ArenaResult<Bool>}}
 
-def checker_match_3633(+v_2: Ast.StringLiteralNames, +v_3: Scope.ArenaGlobalScope, v_1: ArenaStore, v_5: U32) -> CheckerProgress<ArenaResult<Bool>>:
+def checker_match_3632(+v_2: Ast.StringLiteralNames, +v_3: Scope.ArenaGlobalScope, v_1: ArenaStore, v_5: U32) -> CheckerProgress<ArenaResult<Bool>>:
   match v_2:
     case Ast.StringLiteralNames{v_16, _, _, _, _, _, _, _}:
-      CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_lookup_kind{v_16, Scope.GlobalConstructor{}, v_3}}, False{}, v_1005054 => checker_body_scope_lookup_kind(v_16, Scope.GlobalConstructor{}, v_3), +v_1005048 => checker_match_3632(v_1005048, v_2, v_3, v_1, v_5)}
+      CheckerDirect{Bool, CheckerRequestGroup_9{CheckerRequest_scope_lookup_kind{v_16, Scope.GlobalConstructor{}, v_3}}, False{}, v_1005057 => checker_body_scope_lookup_kind(v_16, Scope.GlobalConstructor{}, v_3), +v_1005051 => checker_match_3631(v_1005051, v_2, v_3, v_1, v_5)}
 
 def checker_body_string_certificate(v_1: ArenaStore, +v_2: Ast.StringLiteralNames, +v_3: Scope.ArenaGlobalScope, v_5: U32) -> CheckerProgress<ArenaResult<Bool>>:
-  checker_match_3633(v_2, v_3, v_1, v_5)
+  checker_match_3632(v_2, v_3, v_1, v_5)
 
-def checker_continuation_3634(v_1005057: ArenaResult<U32>, +v_11: List<&2, Binding>, +v_12: Scope.ArenaGlobalScope, +v_14: U32) -> CheckerProgress<ArenaResult<Inference>>:
-  ArenaResult{v_29, v_30} = v_1005057
+def checker_continuation_3633(v_1005060: ArenaResult<U32>, +v_11: List<&2, Binding>, +v_12: Scope.ArenaGlobalScope, +v_14: U32) -> CheckerProgress<ArenaResult<Inference>>:
+  ArenaResult{v_29, v_30} = v_1005060
   checker_body_check_term(v_29, v_30, v_11, v_12, v_14)
 
-def checker_match_3635(v_24: Bool, v_23: ArenaStore, +v_3: U32, +v_14: U32, +v_6: List<&2, U32>, +v_7: Ast.StringLiteralNames, +v_8: Ast.SourceSpan, +v_11: List<&2, Binding>, +v_12: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Inference>>:
+def checker_match_3634(v_24: Bool, v_23: ArenaStore, +v_3: U32, +v_14: U32, +v_6: List<&2, U32>, +v_7: Ast.StringLiteralNames, +v_8: Ast.SourceSpan, +v_11: List<&2, Binding>, +v_12: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Inference>>:
   match v_24:
     case True{}:
       CheckerFinished{{ArenaResult{v_23, Inferred{v_3, v_14}} : ArenaResult<Inference>}}
     case False{}:
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_desugar_store{v_23, v_6, v_7, v_8}}, False{}, v_1005059 => checker_body_string_desugar_store(v_23, v_6, v_7, v_8), v_1005057 => checker_continuation_3634(v_1005057, v_11, v_12, v_14)}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_desugar_store{v_23, v_6, v_7, v_8}}, False{}, v_1005062 => checker_body_string_desugar_store(v_23, v_6, v_7, v_8), v_1005060 => checker_continuation_3633(v_1005060, v_11, v_12, v_14)}
 
-def checker_continuation_3636(v_1005056: ArenaResult<Bool>, +v_3: U32, +v_14: U32, +v_6: List<&2, U32>, +v_7: Ast.StringLiteralNames, +v_8: Ast.SourceSpan, +v_11: List<&2, Binding>, +v_12: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Inference>>:
-  ArenaResult{v_23, v_24} = v_1005056
-  checker_match_3635(v_24, v_23, v_3, v_14, v_6, v_7, v_8, v_11, v_12)
+def checker_continuation_3635(v_1005059: ArenaResult<Bool>, +v_3: U32, +v_14: U32, +v_6: List<&2, U32>, +v_7: Ast.StringLiteralNames, +v_8: Ast.SourceSpan, +v_11: List<&2, Binding>, +v_12: Scope.ArenaGlobalScope) -> CheckerProgress<ArenaResult<Inference>>:
+  ArenaResult{v_23, v_24} = v_1005059
+  checker_match_3634(v_24, v_23, v_3, v_14, v_6, v_7, v_8, v_11, v_12)
 
-def checker_continuation_3637(v_1005055: ArenaResult<U32>, +v_7: Ast.StringLiteralNames, +v_12: Scope.ArenaGlobalScope, +v_3: U32, +v_14: U32, +v_6: List<&2, U32>, +v_8: Ast.SourceSpan, +v_11: List<&2, Binding>) -> CheckerProgress<ArenaResult<Inference>>:
-  ArenaResult{v_19, v_20} = v_1005055
-  CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_certificate{v_19, v_7, v_12, v_20}}, False{}, v_1005060 => checker_body_string_certificate(v_19, v_7, v_12, v_20), v_1005056 => checker_continuation_3636(v_1005056, v_3, v_14, v_6, v_7, v_8, v_11, v_12)}
+def checker_continuation_3636(v_1005058: ArenaResult<U32>, +v_7: Ast.StringLiteralNames, +v_12: Scope.ArenaGlobalScope, +v_3: U32, +v_14: U32, +v_6: List<&2, U32>, +v_8: Ast.SourceSpan, +v_11: List<&2, Binding>) -> CheckerProgress<ArenaResult<Inference>>:
+  ArenaResult{v_19, v_20} = v_1005058
+  CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_certificate{v_19, v_7, v_12, v_20}}, False{}, v_1005063 => checker_body_string_certificate(v_19, v_7, v_12, v_20), v_1005059 => checker_continuation_3635(v_1005059, v_3, v_14, v_6, v_7, v_8, v_11, v_12)}
 
 def checker_body_check_string_literal(v_1: ArenaStore, +v_3: U32, +v_6: List<&2, U32>, +v_7: Ast.StringLiteralNames, +v_8: Ast.SourceSpan, +v_11: List<&2, Binding>, +v_12: Scope.ArenaGlobalScope, +v_14: U32) -> CheckerProgress<ArenaResult<Inference>>:
-  CheckerDirect{Bool, CheckerRequestGroup_1{CheckerRequest_whnf{v_1, 64n, v_14, v_12}}, False{}, v_1005061 => checker_body_whnf(v_1, 64n, v_14, v_12), v_1005055 => checker_continuation_3637(v_1005055, v_7, v_12, v_3, v_14, v_6, v_8, v_11)}
+  CheckerDirect{Bool, CheckerRequestGroup_1{CheckerRequest_whnf{v_1, 64n, v_14, v_12}}, False{}, v_1005064 => checker_body_whnf(v_1, 64n, v_14, v_12), v_1005058 => checker_continuation_3636(v_1005058, v_7, v_12, v_3, v_14, v_6, v_8, v_11)}
 
-def checker_continuation_3638(v_1005062: ArenaResult<U32>, +v_5: U32) -> CheckerProgress<ArenaResult<TermOrder>>:
-  ArenaResult{v_26, v_27} = v_1005062
-  CheckerPending{CheckerRequestGroup_16{CheckerRequest_term_descend_live{v_26, v_27, v_5}}, v_1005063 => CheckerFinished{v_1005063}}
+def checker_continuation_3637(v_1005065: ArenaResult<U32>, +v_5: U32) -> CheckerProgress<ArenaResult<TermOrder>>:
+  ArenaResult{v_26, v_27} = v_1005065
+  CheckerPending{CheckerRequestGroup_16{CheckerRequest_term_descend_live{v_26, v_27, v_5}}, v_1005066 => CheckerFinished{v_1005066}}
 
-def checker_continuation_3639(v_1005065: ArenaResult<U32>, +v_3: U32) -> CheckerProgress<ArenaResult<TermOrder>>:
-  ArenaResult{v_39, v_40} = v_1005065
-  CheckerPending{CheckerRequestGroup_16{CheckerRequest_term_descend_live{v_39, v_3, v_40}}, v_1005066 => CheckerFinished{v_1005066}}
+def checker_continuation_3638(v_1005068: ArenaResult<U32>, +v_3: U32) -> CheckerProgress<ArenaResult<TermOrder>>:
+  ArenaResult{v_39, v_40} = v_1005068
+  CheckerPending{CheckerRequestGroup_16{CheckerRequest_term_descend_live{v_39, v_3, v_40}}, v_1005069 => CheckerFinished{v_1005069}}
 
-def checker_match_3640(v_11: Arena.Node, v_15: Arena.Node, v_14: ArenaStore, +v_5: U32, +v_3: U32) -> CheckerProgress<ArenaResult<TermOrder>>:
+def checker_match_3639(v_11: Arena.Node, v_15: Arena.Node, v_14: ArenaStore, +v_5: U32, +v_3: U32) -> CheckerProgress<ArenaResult<TermOrder>>:
   match v_11, v_15:
     case Arena.TermString{v_20, v_21, v_22}, _:
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_unfold_store{v_14, v_20, v_21, v_22}}, False{}, v_1005064 => checker_body_string_unfold_store(v_14, v_20, v_21, v_22), v_1005062 => checker_continuation_3638(v_1005062, v_5)}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_unfold_store{v_14, v_20, v_21, v_22}}, False{}, v_1005067 => checker_body_string_unfold_store(v_14, v_20, v_21, v_22), v_1005065 => checker_continuation_3637(v_1005065, v_5)}
     case _, Arena.TermString{v_34, v_35, v_36}:
-      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_unfold_store{v_14, v_34, v_35, v_36}}, False{}, v_1005067 => checker_body_string_unfold_store(v_14, v_34, v_35, v_36), v_1005065 => checker_continuation_3639(v_1005065, v_3)}
+      CheckerDirect{Bool, CheckerRequestGroup_16{CheckerRequest_string_unfold_store{v_14, v_34, v_35, v_36}}, False{}, v_1005070 => checker_body_string_unfold_store(v_14, v_34, v_35, v_36), v_1005068 => checker_continuation_3638(v_1005068, v_3)}
     case _, _:
       checker_body_term_descend_ordinary(v_14, v_3, v_5)
 
-def checker_match_3641(v_1005069: ArenaResult<Arena.Node>, v_11: Arena.Node, +v_5: U32, +v_3: U32) -> CheckerProgress<ArenaResult<TermOrder>>:
-  match v_1005069:
+def checker_match_3640(v_1005072: ArenaResult<Arena.Node>, v_11: Arena.Node, +v_5: U32, +v_3: U32) -> CheckerProgress<ArenaResult<TermOrder>>:
+  match v_1005072:
     case ArenaResult{v_14, v_15}:
-      checker_match_3640(v_11, v_15, v_14, v_5, v_3)
+      checker_match_3639(v_11, v_15, v_14, v_5, v_3)
 
-def checker_match_3642(v_1005070: ArenaResult<Arena.Node>, +v_5: U32, +v_3: U32) -> CheckerProgress<ArenaResult<TermOrder>>:
-  match v_1005070:
+def checker_match_3641(v_1005073: ArenaResult<Arena.Node>, +v_5: U32, +v_3: U32) -> CheckerProgress<ArenaResult<TermOrder>>:
+  match v_1005073:
     case ArenaResult{v_10, v_11}:
-      v_1005069 = {checker_pure_arena_get_node(v_10, v_5) : ArenaResult<Arena.Node>}
-      checker_match_3641(v_1005069, v_11, v_5, v_3)
+      v_1005072 = {checker_pure_arena_get_node(v_10, v_5) : ArenaResult<Arena.Node>}
+      checker_match_3640(v_1005072, v_11, v_5, v_3)
 
 def checker_body_term_descend_live(v_1: ArenaStore, +v_3: U32, +v_5: U32) -> CheckerProgress<ArenaResult<TermOrder>>:
-  v_1005070 = {checker_pure_arena_get_node(v_1, v_3) : ArenaResult<Arena.Node>}
-  checker_match_3642(v_1005070, v_5, v_3)
+  v_1005073 = {checker_pure_arena_get_node(v_1, v_3) : ArenaResult<Arena.Node>}
+  checker_match_3641(v_1005073, v_5, v_3)
 
-def checker_match_3643(v_9: Arena.Node, v_8: ArenaStore, +v_3: U32) -> CheckerProgress<ArenaResult<U32>>:
+def checker_match_3642(v_9: Arena.Node, v_8: ArenaStore, +v_3: U32) -> CheckerProgress<ArenaResult<U32>>:
   match v_9:
     case Arena.TermString{v_13, v_14, v_15}:
       checker_body_string_unfold_store(v_8, v_13, v_14, v_15)
     case _:
       CheckerFinished{{ArenaResult{v_8, v_3} : ArenaResult<U32>}}
 
-def checker_match_3644(v_1005072: ArenaResult<Arena.Node>, +v_3: U32) -> CheckerProgress<ArenaResult<U32>>:
-  match v_1005072:
+def checker_match_3643(v_1005075: ArenaResult<Arena.Node>, +v_3: U32) -> CheckerProgress<ArenaResult<U32>>:
+  match v_1005075:
     case ArenaResult{v_8, v_9}:
-      checker_match_3643(v_9, v_8, v_3)
+      checker_match_3642(v_9, v_8, v_3)
 
 def checker_body_string_observe_zero(v_1: ArenaStore, +v_3: U32) -> CheckerProgress<ArenaResult<U32>>:
-  v_1005072 = {checker_pure_arena_get_node(v_1, v_3) : ArenaResult<Arena.Node>}
-  checker_match_3644(v_1005072, v_3)
+  v_1005075 = {checker_pure_arena_get_node(v_1, v_3) : ArenaResult<Arena.Node>}
+  checker_match_3643(v_1005075, v_3)
 
 def checker_step_group_0(request: CheckerRequestGroup0) -> CheckerProgress<checker_result_group_0(request)>:
   match request:
@@ -31024,12 +31023,15 @@ def checker_step_group_10(request: CheckerRequestGroup10) -> CheckerProgress<che
     case CheckerRequest_scope_body_cases_for_names{arg_0, arg_1, arg_2}: checker_body_scope_body_cases_for_names(arg_0, arg_1, arg_2)
     case CheckerRequest_scope_body_cases_for_constructor{arg_0, arg_1, arg_2, arg_3}: checker_body_scope_body_cases_for_constructor(arg_0, arg_1, arg_2, arg_3)
     case CheckerRequest_core_pattern_list_depth{arg_0, arg_1}: checker_body_core_pattern_list_depth(arg_0, arg_1)
+    case CheckerRequest_core_pattern_depth_bound{arg_0, arg_1}: checker_body_core_pattern_depth_bound(arg_0, arg_1)
+    case CheckerRequest_core_pattern_depth_region{arg_0, arg_1, arg_2}: checker_body_core_pattern_depth_region(arg_0, arg_1, arg_2)
     case CheckerRequest_core_pattern_depth{arg_0, arg_1}: checker_body_core_pattern_depth(arg_0, arg_1)
-    case CheckerRequest_core_shift_var{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5}: checker_body_core_shift_var(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5)
-    case CheckerRequest_core_bound_unaffected{arg_0, arg_1}: checker_body_core_bound_unaffected(arg_0, arg_1)
 
 def checker_step_group_11(request: CheckerRequestGroup11) -> CheckerProgress<checker_result_group_11(request)>:
   match request:
+    case CheckerRequest_core_pattern_depth_open{arg_0, arg_1}: checker_body_core_pattern_depth_open(arg_0, arg_1)
+    case CheckerRequest_core_shift_var{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5}: checker_body_core_shift_var(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5)
+    case CheckerRequest_core_bound_unaffected{arg_0, arg_1}: checker_body_core_bound_unaffected(arg_0, arg_1)
     case CheckerRequest_core_shift_unaffected{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5}: checker_body_core_shift_unaffected(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5)
     case CheckerRequest_core_shift_at{arg_0, arg_1, arg_2, arg_3, arg_4}: checker_body_core_shift_at(arg_0, arg_1, arg_2, arg_3, arg_4)
     case CheckerRequest_core_shift_open{arg_0, arg_1, arg_2, arg_3, arg_4}: checker_body_core_shift_open(arg_0, arg_1, arg_2, arg_3, arg_4)
@@ -31091,12 +31093,12 @@ def checker_step_group_11(request: CheckerRequestGroup11) -> CheckerProgress<che
     case CheckerRequest_arena_case_prefix_local_index{arg_0, arg_1, arg_2}: checker_body_arena_case_prefix_local_index(arg_0, arg_1, arg_2)
     case CheckerRequest_arena_case_prefix_local_cached_exact{arg_0, arg_1, arg_2, arg_3, arg_4}: checker_body_arena_case_prefix_local_cached_exact(arg_0, arg_1, arg_2, arg_3, arg_4)
     case CheckerRequest_arena_case_prefix_local_cached_generation{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6}: checker_body_arena_case_prefix_local_cached_generation(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6)
-    case CheckerRequest_arena_case_prefix_local_cached{arg_0, arg_1, arg_2, arg_3}: checker_body_arena_case_prefix_local_cached(arg_0, arg_1, arg_2, arg_3)
-    case CheckerRequest_arena_case_prefix_eligible{arg_0, arg_1, arg_2, arg_3}: checker_body_arena_case_prefix_eligible(arg_0, arg_1, arg_2, arg_3)
-    case CheckerRequest_arena_case_prefix_region{arg_0, arg_1, arg_2, arg_3}: checker_body_arena_case_prefix_region(arg_0, arg_1, arg_2, arg_3)
 
 def checker_step_group_12(request: CheckerRequestGroup12) -> CheckerProgress<checker_result_group_12(request)>:
   match request:
+    case CheckerRequest_arena_case_prefix_local_cached{arg_0, arg_1, arg_2, arg_3}: checker_body_arena_case_prefix_local_cached(arg_0, arg_1, arg_2, arg_3)
+    case CheckerRequest_arena_case_prefix_eligible{arg_0, arg_1, arg_2, arg_3}: checker_body_arena_case_prefix_eligible(arg_0, arg_1, arg_2, arg_3)
+    case CheckerRequest_arena_case_prefix_region{arg_0, arg_1, arg_2, arg_3}: checker_body_arena_case_prefix_region(arg_0, arg_1, arg_2, arg_3)
     case CheckerRequest_arena_case_prefix_large{arg_0, arg_1, arg_2, arg_3}: checker_body_arena_case_prefix_large(arg_0, arg_1, arg_2, arg_3)
     case CheckerRequest_arena_case_prefix_index{arg_0, arg_1}: checker_body_arena_case_prefix_index(arg_0, arg_1)
     case CheckerRequest_arena_case_prefix_name{arg_0, arg_1}: checker_body_arena_case_prefix_name(arg_0, arg_1)
@@ -31158,12 +31160,12 @@ def checker_step_group_12(request: CheckerRequestGroup12) -> CheckerProgress<che
     case CheckerRequest_arena_bound_range_combine{arg_0, arg_1, arg_2}: checker_body_arena_bound_range_combine(arg_0, arg_1, arg_2)
     case CheckerRequest_arena_bound_range_word{arg_0, arg_1, arg_2, arg_3}: checker_body_arena_bound_range_word(arg_0, arg_1, arg_2, arg_3)
     case CheckerRequest_arena_bound_range_loop{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5}: checker_body_arena_bound_range_loop(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5)
-    case CheckerRequest_arena_bound_range_length{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5}: checker_body_arena_bound_range_length(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5)
-    case CheckerRequest_arena_bound_range_start{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6}: checker_body_arena_bound_range_start(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6)
-    case CheckerRequest_arena_bound_range_source{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5}: checker_body_arena_bound_range_source(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5)
 
 def checker_step_group_13(request: CheckerRequestGroup13) -> CheckerProgress<checker_result_group_13(request)>:
   match request:
+    case CheckerRequest_arena_bound_range_length{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5}: checker_body_arena_bound_range_length(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5)
+    case CheckerRequest_arena_bound_range_start{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6}: checker_body_arena_bound_range_start(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6)
+    case CheckerRequest_arena_bound_range_source{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5}: checker_body_arena_bound_range_source(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5)
     case CheckerRequest_arena_bound_range_transient{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5}: checker_body_arena_bound_range_transient(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5)
     case CheckerRequest_arena_bound_range_region{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6}: checker_body_arena_bound_range_region(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6)
     case CheckerRequest_arena_bound_range_empty{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5}: checker_body_arena_bound_range_empty(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5)
@@ -31225,12 +31227,12 @@ def checker_step_group_13(request: CheckerRequestGroup13) -> CheckerProgress<che
     case CheckerRequest_arena_publish_names{arg_0, arg_1}: checker_body_arena_publish_names(arg_0, arg_1)
     case CheckerRequest_arena_publish_quantities_copy{arg_0, arg_1, arg_2, arg_3, arg_4}: checker_body_arena_publish_quantities_copy(arg_0, arg_1, arg_2, arg_3, arg_4)
     case CheckerRequest_arena_publish_quantities_select{arg_0, arg_1, arg_2, arg_3, arg_4}: checker_body_arena_publish_quantities_select(arg_0, arg_1, arg_2, arg_3, arg_4)
-    case CheckerRequest_arena_publish_quantities{arg_0, arg_1}: checker_body_arena_publish_quantities(arg_0, arg_1)
-    case CheckerRequest_arena_publish_naturals_copy{arg_0, arg_1, arg_2, arg_3, arg_4}: checker_body_arena_publish_naturals_copy(arg_0, arg_1, arg_2, arg_3, arg_4)
-    case CheckerRequest_arena_publish_naturals_select{arg_0, arg_1, arg_2, arg_3, arg_4}: checker_body_arena_publish_naturals_select(arg_0, arg_1, arg_2, arg_3, arg_4)
 
 def checker_step_group_14(request: CheckerRequestGroup14) -> CheckerProgress<checker_result_group_14(request)>:
   match request:
+    case CheckerRequest_arena_publish_quantities{arg_0, arg_1}: checker_body_arena_publish_quantities(arg_0, arg_1)
+    case CheckerRequest_arena_publish_naturals_copy{arg_0, arg_1, arg_2, arg_3, arg_4}: checker_body_arena_publish_naturals_copy(arg_0, arg_1, arg_2, arg_3, arg_4)
+    case CheckerRequest_arena_publish_naturals_select{arg_0, arg_1, arg_2, arg_3, arg_4}: checker_body_arena_publish_naturals_select(arg_0, arg_1, arg_2, arg_3, arg_4)
     case CheckerRequest_arena_publish_naturals{arg_0, arg_1}: checker_body_arena_publish_naturals(arg_0, arg_1)
     case CheckerRequest_arena_publish_term_region{arg_0, arg_1, arg_2}: checker_body_arena_publish_term_region(arg_0, arg_1, arg_2)
     case CheckerRequest_arena_publish_term{arg_0, arg_1}: checker_body_arena_publish_term(arg_0, arg_1)
@@ -31292,12 +31294,12 @@ def checker_step_group_14(request: CheckerRequestGroup14) -> CheckerProgress<che
     case CheckerRequest_arena_decode_optional_term{arg_0, arg_1}: checker_body_arena_decode_optional_term(arg_0, arg_1)
     case CheckerRequest_arena_decode_definition{arg_0, arg_1}: checker_body_arena_decode_definition(arg_0, arg_1)
     case CheckerRequest_arena_decode_type_decl{arg_0, arg_1}: checker_body_arena_decode_type_decl(arg_0, arg_1)
-    case CheckerRequest_arena_decode_law_decl{arg_0, arg_1}: checker_body_arena_decode_law_decl(arg_0, arg_1)
-    case CheckerRequest_arena_decode_top_level{arg_0, arg_1}: checker_body_arena_decode_top_level(arg_0, arg_1)
-    case CheckerRequest_arena_decode_module{arg_0, arg_1}: checker_body_arena_decode_module(arg_0, arg_1)
 
 def checker_step_group_15(request: CheckerRequestGroup15) -> CheckerProgress<checker_result_group_15(request)>:
   match request:
+    case CheckerRequest_arena_decode_law_decl{arg_0, arg_1}: checker_body_arena_decode_law_decl(arg_0, arg_1)
+    case CheckerRequest_arena_decode_top_level{arg_0, arg_1}: checker_body_arena_decode_top_level(arg_0, arg_1)
+    case CheckerRequest_arena_decode_module{arg_0, arg_1}: checker_body_arena_decode_module(arg_0, arg_1)
     case CheckerRequest_arena_decode_maybe_term{arg_0, arg_1}: checker_body_arena_decode_maybe_term(arg_0, arg_1)
     case CheckerRequest_arena_decode_constructor_decl_list{arg_0, arg_1}: checker_body_arena_decode_constructor_decl_list(arg_0, arg_1)
     case CheckerRequest_arena_decode_clause_list{arg_0, arg_1}: checker_body_arena_decode_clause_list(arg_0, arg_1)
@@ -31359,12 +31361,12 @@ def checker_step_group_15(request: CheckerRequestGroup15) -> CheckerProgress<che
     case CheckerRequest_arena_pack_quantities_reserve_words_result_34{arg_0, arg_1, arg_2}: checker_body_arena_pack_quantities_reserve_words_result_34(arg_0, arg_1, arg_2)
     case CheckerRequest_arena_pack_term_name_result_35{arg_0, arg_1, arg_2}: checker_body_arena_pack_term_name_result_35(arg_0, arg_1, arg_2)
     case CheckerRequest_arena_pack_term_name_result_36{arg_0, arg_1}: checker_body_arena_pack_term_name_result_36(arg_0, arg_1)
-    case CheckerRequest_arena_pack_term_name_result_37{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5}: checker_body_arena_pack_term_name_result_37(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5)
-    case CheckerRequest_arena_pack_term_name_result_38{arg_0, arg_1, arg_2, arg_3, arg_4}: checker_body_arena_pack_term_name_result_38(arg_0, arg_1, arg_2, arg_3, arg_4)
-    case CheckerRequest_arena_pack_term_name_result_39{arg_0, arg_1, arg_2, arg_3}: checker_body_arena_pack_term_name_result_39(arg_0, arg_1, arg_2, arg_3)
 
 def checker_step_group_16(request: CheckerRequestGroup16) -> CheckerProgress<checker_result_group_16(request)>:
   match request:
+    case CheckerRequest_arena_pack_term_name_result_37{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5}: checker_body_arena_pack_term_name_result_37(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5)
+    case CheckerRequest_arena_pack_term_name_result_38{arg_0, arg_1, arg_2, arg_3, arg_4}: checker_body_arena_pack_term_name_result_38(arg_0, arg_1, arg_2, arg_3, arg_4)
+    case CheckerRequest_arena_pack_term_name_result_39{arg_0, arg_1, arg_2, arg_3}: checker_body_arena_pack_term_name_result_39(arg_0, arg_1, arg_2, arg_3)
     case CheckerRequest_arena_pack_term_name_result_40{arg_0, arg_1, arg_2}: checker_body_arena_pack_term_name_result_40(arg_0, arg_1, arg_2)
     case CheckerRequest_arena_pack_term_name_result_41{arg_0, arg_1, arg_2, arg_3}: checker_body_arena_pack_term_name_result_41(arg_0, arg_1, arg_2, arg_3)
     case CheckerRequest_arena_pack_term_name_result_42{arg_0, arg_1}: checker_body_arena_pack_term_name_result_42(arg_0, arg_1)
