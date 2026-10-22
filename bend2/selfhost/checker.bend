@@ -9057,14 +9057,8 @@ def application_type_view(v_20040138: ArenaStore, v_0: U32) -> ArenaResult<U32>:
     case Arena.TermBang{+v_20040143, +v_20040144}:
       ArenaResult{v_20040145, +v_20040146} = arena_get_node(v_20040139, v_20040143)
       match v_20040146:
-        case Arena.TermRef{+v_20040149, +v_20040151}:
-          ArenaResult{v_20040152, +v_20040153} = arena_name_text(v_20040145, v_20040149)
-          +v_20040150 = v_20040153
-          v_4 = v_20040150
-          v_5 = v_20040151
-          ArenaResult{v_20040154, +v_20040155} = arena_name(v_20040152, v_4)
-          ArenaResult{v_20040156, +v_20040157} = arena_put_node(v_20040154, Arena.TermRef{v_20040155, v_5})
-          {ArenaResult{v_20040156, v_20040157} : ArenaResult<U32>}
+        case Arena.TermRef{_, _}:
+          {ArenaResult{v_20040145, v_20040143} : ArenaResult<U32>}
         case _:
           {ArenaResult{v_20040145, v_0} : ArenaResult<U32>}
     case Arena.TermApp{+v_20040162, +v_20040163, +v_20040164}:
@@ -9072,15 +9066,25 @@ def application_type_view(v_20040138: ArenaStore, v_0: U32) -> ArenaResult<U32>:
       v_11 = v_20040163
       v_12 = v_20040164
       ArenaResult{v_20040165, +v_20040166} = application_type_view(v_20040139, v_10)
-      ArenaResult{v_20040167, +v_20040168} = arena_put_node(v_20040165, Arena.TermApp{v_20040166, v_11, v_12})
-      {ArenaResult{v_20040167, v_20040168} : ArenaResult<U32>}
+      unchanged = U32.is_eq(v_20040166, v_10)
+      match unchanged:
+        case True{}:
+          {ArenaResult{v_20040165, v_0} : ArenaResult<U32>}
+        case False{}:
+          ArenaResult{v_20040167, +v_20040168} = arena_put_node(v_20040165, Arena.TermApp{v_20040166, v_11, v_12})
+          {ArenaResult{v_20040167, v_20040168} : ArenaResult<U32>}
     case Arena.TermAnn{+v_20040172, +v_20040173, +v_20040174}:
       v_17 = v_20040172
       v_18 = v_20040173
       v_19 = v_20040174
       ArenaResult{v_20040175, +v_20040176} = application_type_view(v_20040139, v_17)
-      ArenaResult{v_20040177, +v_20040178} = arena_put_node(v_20040175, Arena.TermAnn{v_20040176, v_18, v_19})
-      {ArenaResult{v_20040177, v_20040178} : ArenaResult<U32>}
+      unchanged = U32.is_eq(v_20040176, v_17)
+      match unchanged:
+        case True{}:
+          {ArenaResult{v_20040175, v_0} : ArenaResult<U32>}
+        case False{}:
+          ArenaResult{v_20040177, +v_20040178} = arena_put_node(v_20040175, Arena.TermAnn{v_20040176, v_18, v_19})
+          {ArenaResult{v_20040177, v_20040178} : ArenaResult<U32>}
     case Arena.TermSub{+v_20040183, +v_20040184, +v_20040185, +v_20040186}:
       v_25 = v_20040183
       v_26 = v_20040184

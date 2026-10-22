@@ -88,6 +88,30 @@ smoke; bytes19154334 still equal baseline SHA3546e1cd… . Whole compile337101ms
 checker283962ms wall/123175ms CPU; substantial wall/CPU divergence precludes
 attributing the historical wall difference solely to compiler changes.
 
+v46 reuses immutable application/annotation nodes when their viewed function
+is unchanged, and the existing reference beneath a bang. The same frozen corpus
+passes7720 exports, unchanged19154334 output bytes and emitted-compiler smoke.
+Observed compile281954ms; checker246641ms wall/120262ms CPU versus45's
+283962/123175ms. This single CPU pair is only a2.36% improvement, not the apparent
+16% wall improvement: the host was heavily contended. Physical peak1480505840.
+Two new semantic boundaries pass the native and source checkers: annotated
+banged partial application returnsBitOne{}, and an incompatible result annotation
+is rejected by both. They are permanent full-bootstrap fixtures.
+v46 is **UNACCEPTED**: fresh parser70 passed14 public tests and71/71 source
+semantic/span cases, but its generation phase hit the unchanged600000ms
+deadline (actual600477ms, physical217253280 bytes). Native parser70 and the
+full v46 stage1/stage2 gate did not start. The last accepted fixedpoint is43.
+At failure the Mac's load averages were556.82/400.56/314.68 on10 physical cores;
+a process snapshot found1215 processes and no remaining selfhost heavy jobs.
+The contemporaneous official comparison took322949ms wall but36576ms CPU;
+v46 took281954ms wall but156317ms CPU, so it has NOT outperformed official.
+No unrelated processes were killed and no limit was raised. There are no
+configured tool SSH hosts; BEND_HOC is unset and `ssh ... cluster true` fails
+to resolve the cluster alias. Obtain available Mac capacity or cluster access
+before another expensive attempt; use a fresh parser run namespace (not70).
+`compiler-sharing-v46.json` records exact recipes, measured results and failure.
+Do not substitute frozen-corpus output parity for a genuine new fixedpoint.
+
 ## Completed acceleration — Main40 full stage2 below five minutes
 
 Latest user priority: accelerate the checker and the complete bootstrap, not more

@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "component": "/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-steps-canonical-release237-v46.js",
+  "componentSha256": "898a2c7fb63999dad37ed85b899c62eeec225ae33a898088a91efcbc58fced6c",
+  "rows": [
+    {
+      "name": "annotated-banged-partial-application",
+      "source": "type Bit is Data:\n  BitZero{}\n  BitOne{}\ndef select(left: Bit, right: Bit) -> Bit:\n  left\ndef main() -> Bit:\n  {select!(BitOne{}) : Bit -> Bit}(BitZero{})\n",
+      "nativeAccepted": true,
+      "accepted": true,
+      "output": "BitOne{}"
+    },
+    {
+      "name": "annotated-banged-partial-result-mismatch",
+      "source": "type Bit is Data:\n  BitZero{}\n  BitOne{}\ntype Count is Data:\n  CZero{}\n  CSucc{pred: Count}\ndef select(left: Bit, right: Bit) -> Bit:\n  left\ndef main() -> Bit:\n  {select!(BitOne{}) : Bit -> Count}(BitZero{})\n",
+      "nativeAccepted": false,
+      "accepted": false,
+      "nativeDiagnostic": "Error:\n- expected : @_:Bit -> Count\n- observed : @right:Bit -> Bit\nLocation: main\n 9 | def main() -> Bit:\n10>|   {select!(BitOne{}) : Bit -> Count}(BitZero{})\n   |    ^^^^^^^^^^^^^^^^^\n11 | ",
+      "diagnostic": {
+        "$": "checker_core_steps_v1.Diagnostic",
+        "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/.application-view46-annotated-banged-partial-result-mismatch.bend",
+        "span": {
+          "$": "../bend2/selfhost/ast.SpanOf",
+          "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/.application-view46-annotated-banged-partial-result-mismatch.bend",
+          "beg": 163,
+          "end": 179
+        },
+        "message": "term has the wrong type",
+        "expected": "the expected type",
+        "observed": "an incompatible type"
+      }
+    }
+  ]
+}
