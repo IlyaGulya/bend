@@ -12,6 +12,9 @@ latest one; the GitHub release carries the same notes.
   rebuildable body caches between top-level definitions, retaining checked terms.
 - Selfhost syntax shifting, substitution and operator-name rewriting use direct
   list traversals instead of copying an unsafe capture-bearing affine callback.
+- Parser continuation preparation discovers newly mutual-recursive components
+  from the current source graph and sequences multiple nested calls while
+  preserving typed lexical captures and affine rejection.
 
 - The complete selfhost parser/Template/Checker/JavaScript compiler root now
   reaches an exact stage-one/stage-two byte fixedpoint using its own emitted

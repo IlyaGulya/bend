@@ -1,12 +1,12 @@
 /** AST/binder-ID evaluation-context factoring for the unchanged feedback lowerer.
- * Only immediate single-effect contexts are extracted. Helpers retain the whole
+ * Immediate effects are sequenced one at a time. Helpers retain the whole
  * lexical continuation (including Local bindings and remainder), rather than
  * evaluating pure siblings early or deriving captures from source spellings.
  * Closed transport types are required by the existing Request/Kont ABI.
  */
 import { posix } from 'node:path';
 import { term_show, term_unapply, type Body, type LTerm, type Span } from '../bend2/bend.ts';
-import { readParserGraph, type ParserGraph, type ParserParameter, type ParserSignature } from './parser_full_graph.ts';
+import { mutualComponents, readParserGraph, type ParserGraph, type ParserParameter, type ParserSignature } from './parser_full_graph.ts';
 import { LexicalTypes, freeBinderIds, termChildren, type Binding } from './parser_full_type_env.ts';
 import { lexicalBodyCaptures } from './parser_full_lexical_body_capture.ts';
 import { renderBody } from './parser_full_body_render.ts';
@@ -110,6 +110,10 @@ export async function normalizeEvaluationContexts(source: string, seeds: readonl
   const original = await readParserGraph(source);
   if (original.unresolvedReferences.length) throw new EvaluationContextLimitation('UnresolvedReferences',
     'Evaluation-context source has unresolved references', { references: original.unresolvedReferences });
+  // Every new mutual SCC needs a feedback boundary, regardless of which vertex
+  // the later exact cut chooses. Reverse reachability from one representative
+  // covers that SCC and its callers without treating legal self recursion as an effect.
+  const currentSeeds = [...seeds, ...mutualComponents(original.edges, new Set(seeds)).map(component => component[0]!)];
   const bodies = new Map(original.bodies), signatures = new Map(original.signatures);
   const contexts: ContextRow[] = [], changed = new Set<string>();
   const origins = new Map(original.definitions.map(name => [name, name]));
@@ -132,7 +136,7 @@ export async function normalizeEvaluationContexts(source: string, seeds: readonl
   // Keep source coordinates and binder identities through the fixed point;
   // reparsing each intermediate helper would destroy their lexical provenance.
   for (;;) {
-    const effectful = effectReachability(bodies, seeds);
+    const effectful = effectReachability(bodies, currentSeeds);
     let factored = false;
     for (const [name, body] of bodies) {
       const signature = signatures.get(name)!;
@@ -196,7 +200,6 @@ export async function normalizeEvaluationContexts(source: string, seeds: readonl
       function inspect(expressions: readonly LTerm[], terminal: boolean): Effect | undefined {
         const found = expressions.map(expression => expressionEffects(expression, effectful));
         const immediate = found.flatMap(effects => effects.immediate), delayed = found.flatMap(effects => effects.delayed);
-        if (immediate.length > 1) stop('MultipleSuspendedEffects', 'multiple-effect evaluation context requires sequencing', immediate);
         const expression = expressions[0];
         const [head, args] = expression?.$ === 'App' ? term_unapply(expression) : [expression, [] as LTerm[]];
         const namedTerminal = terminal && head?.$ === 'Ref' && signatures.has(head.k);
@@ -207,7 +210,7 @@ export async function normalizeEvaluationContexts(source: string, seeds: readonl
           return;
         }
         const effect = immediate[0]!;
-        if (terminal && (expression === effect.term || (namedTerminal && args.some(argument => argument === effect.term)))) return;
+        if (immediate.length === 1 && terminal && (expression === effect.term || (namedTerminal && args.some(argument => argument === effect.term)))) return;
         if (delayed.length) stop('DelayedLambdaEffect', 'Factoring this context would transport an unsupported delayed effect', delayed);
         return effect;
       }

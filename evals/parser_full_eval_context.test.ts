@@ -7,7 +7,7 @@ import * as B from '../bend2/bend.ts';
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { EvaluationContextLimitation, normalizeEvaluationContexts } from './parser_full_eval_context.ts';
+import { normalizeEvaluationContexts } from './parser_full_eval_context.ts';
 import {
   evaluationContextFixtures,
   invalidAffineEvaluationContext,
@@ -58,7 +58,7 @@ function rethrowNativeError(error: unknown): never {
   throw error;
 }
 
-for (const fixture of evaluationContextFixtures) {
+for (const fixture of [...evaluationContextFixtures, multipleSiblingEffects]) {
   test(`evaluation context factoring preserves ${fixture.name}`, async () => {
     try {
       const normalized = await normalizeEvaluationContexts(fixture.source, fixture.seeds);
@@ -73,24 +73,6 @@ for (const fixture of evaluationContextFixtures) {
     }
   }, 30000);
 }
-
-test('evaluation context factoring explicitly rejects multiple suspended sibling effects', async () => {
-  try {
-    const fixture = multipleSiblingEffects;
-    expect(await validateAndEvaluate(fixture.source, fixture)).toEqual(fixture.inputs.map(([, value]) => value));
-    try {
-      await normalizeEvaluationContexts(fixture.source, fixture.seeds);
-      throw Error('Expected multiple suspended sibling effects to be rejected');
-    } catch (error) {
-      if (!(error instanceof EvaluationContextLimitation)) throw error;
-      expect(error.code).toBe('MultipleSuspendedEffects');
-      expect(error.message).toContain('multiple-effect evaluation context requires sequencing');
-      expect(error.evidence).toMatchObject({ owner: 'example', producers: ['produce', 'produce'] });
-    }
-  } catch (error) {
-    rethrowNativeError(error);
-  }
-}, 30000);
 
 test('evaluation context factoring cannot legalize affine contraction', async () => {
   try {

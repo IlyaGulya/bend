@@ -1,0 +1,133 @@
+{
+  "version": "release237-v43",
+  "status": "PARSER_ACCEPTED_ROOT_SEED_BUILT_FULL_BOOTSTRAP_PENDING",
+  "bootstrapAcceptance": false,
+  "repair": "Current residual mutual-SCC effect discovery and sequential sibling continuations; no per-function exception or generated-output patch",
+  "sourcePins": {
+    "evals/parser_full_graph.ts": "27f985053761fd8192b845988f6047e59355faf686b3c36f079d3d8fad545f86",
+    "evals/bootstrap_parser_current_cut.ts": "efeef80cc8596638be0fd01a7fd5fa946d19ccf4615d490a4053203a479477e7",
+    "evals/parser_full_eval_context.ts": "0bcfda9ce7ae8af4e0c7ff22814ed2fb5a996c09744c420dae57a11d49f6b52e",
+    "evals/bootstrap_parser_rebuild.ts": "bc9fc8ecfab2de65939b0b0680fe23f75920dbd2a4160fee19e871e425280c5d",
+    "evals/parser_full_eval_context.test.ts": "9a1d1b5644343a98c64a5a98bc028466ab7791d19ac68691b0f089464299bce3",
+    "evals/parser_full_eval_context_fixtures.ts": "df526a9e32dc6d275d2f91d53706fceb12ac8df02416deddf7ff1516252aa797",
+    "evals/native_compiler_driver.bend": "81bce6308089e6e9489305f7ada0ea13ae8d34aa668e68c015ce14de04c55afd"
+  },
+  "regression": {
+    "command": "bun --smol evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 -- bun test evals/parser_full_eval_context.test.ts",
+    "failingBefore": "multiple suspended sibling effects rejected by MultipleSuspendedEffects",
+    "passed": 15,
+    "failed": 0,
+    "assertions": 44,
+    "elapsedMs": 11816,
+    "peakPhysicalBytes": 182043440
+  },
+  "parser": {
+    "run": "release237-v69",
+    "counts": {
+      "focused": {
+        "total": 23,
+        "accepted": 22,
+        "acceptanceParity": 23,
+        "semanticParity": 23,
+        "literalSpanParity": 23
+      },
+      "whole29": {
+        "total": 29,
+        "accepted": 23,
+        "acceptanceParity": 29,
+        "semanticParity": 29,
+        "literalSpanParity": 29
+      },
+      "literals": {
+        "total": 13,
+        "accepted": 13,
+        "acceptanceParity": 13,
+        "semanticParity": 13,
+        "literalSpanParity": 13
+      },
+      "real": {
+        "total": 10,
+        "accepted": 10,
+        "acceptanceParity": 10,
+        "semanticParity": 10,
+        "literalSpanParity": 10
+      }
+    },
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "sourceSpecificExceptions": 0
+  },
+  "root": {
+    "checkedDefinitions": 8192,
+    "eventsFullyValidated": 8530,
+    "sourceSha256": "9c58757eb5d8d3ce938122abab3a3d8854a2cc3dcd54b80dd49780a0bc8e6c82",
+    "artifactSha256": "b9eb88ab7c4025ddf2a6593aad5186d16b10a0e2670b7a678e307913dfbec0fc",
+    "runtime": {
+      "name": "node",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "heapLimitMiB": 3072,
+      "stackSizeMb": 256,
+      "heapSizeLimitBytes": 3271557120,
+      "manualGC": false
+    },
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 2470674432,
+      "peakFootprintBytes": 2651767400,
+      "elapsedMs": 23120,
+      "timeoutMs": 600000,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/Users/ilyagulya/Projects/My/bend/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_v1.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,checker_step,emit_modules_start,emit_library_start,emitter_step",
+        "--artifact=/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-steps-canonical-release237-v43-final.js",
+        "--report=/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-steps-native-canonical-release237-v43-final",
+        "--inputs-sha256=f519956d04d0bcc5732e7bc8503bac3b4179e027ed3b7663bf644c9efec60532"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792644480579-c7eabe23b3bd3ef0.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "reproduction": [
+    "#!/bin/sh",
+    "set -eu",
+    "export BEND_NO_TELEMETRY=1",
+    "RUN=release237-v69",
+    "guard() { bun --smol evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 -- \"$@\"; }",
+    "guard bun --smol evals/checker_core_owned_source.ts",
+    "guard bun --smol evals/checker_core_step_lower.ts",
+    "guard bun --smol evals/template_step_lower.ts",
+    "guard bun --smol evals/js_emit_step_lower.ts",
+    "bun --smol evals/bootstrap_parser_rebuild.ts --prepare-source --run-id \"$RUN\"",
+    "guard bun --smol evals/bootstrap_parser_public_gate.ts --parser=\"checkpoints/.bootstrap_parser_rebuild_${RUN}_source.bend\" --entry=parse_module_tokens --report=\"checkpoints/bootstrap-parser-rebuild-${RUN}.source-public.json\"",
+    "guard bun --smol evals/bootstrap_parser_fast.ts --parser=\"checkpoints/.bootstrap_parser_rebuild_${RUN}_source.bend\" --entry=parse_module_tokens --public-report=\"checkpoints/bootstrap-parser-rebuild-${RUN}.source-public.json\" --report=\"checkpoints/bootstrap-parser-rebuild-${RUN}.source-semantic.json\"",
+    "bun --smol evals/bootstrap_parser_rebuild.ts --prepare --run-id \"$RUN\" --source-gate \"checkpoints/bootstrap-parser-rebuild-${RUN}.source-semantic.json\"",
+    "bun --smol evals/bootstrap_parser_rebuild.ts --build-native --run-id \"$RUN\"",
+    "guard bun --smol evals/bootstrap_parser_public_gate.ts --parser=\"checkpoints/.bootstrap_parser_rebuild_${RUN}_generated_fuel.bend\" --entry=parse_with_fuel --report=\"checkpoints/bootstrap-parser-rebuild-${RUN}.candidate-public.json\"",
+    "guard bun --smol evals/bootstrap_parser_fast.ts --parser=\"checkpoints/.bootstrap_parser_rebuild_${RUN}_generated_fuel.bend\" --entry=parse_with_fuel --component=\"checkpoints/bootstrap-parser-rebuild-${RUN}.js\" --component-build=\"checkpoints/bootstrap-parser-rebuild-${RUN}.native-build.result.json\" --public-report=\"checkpoints/bootstrap-parser-rebuild-${RUN}.candidate-public.json\" --report=\"checkpoints/bootstrap-parser-rebuild-${RUN}.candidate-semantic.json\"",
+    "bun --smol evals/bootstrap_parser_rebuild.ts --build --run-id \"$RUN\" --candidate-gate \"checkpoints/bootstrap-parser-rebuild-${RUN}.candidate-semantic.json\"",
+    "bun --smol evals/selfhost_driver_source.ts --parser-build=\"checkpoints/bootstrap-parser-rebuild-${RUN}.native-build.result.json\"",
+    "bun --smol evals/checker_core_component_build.ts --file=checkpoints/.bootstrap_compiler_root_v1.bend --exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,checker_step,emit_modules_start,emit_library_start,emitter_step --artifact=checkpoints/selfhost-steps-canonical-release237-v43-final.js --report=checkpoints/selfhost-steps-native-canonical-release237-v43-final",
+    ""
+  ],
+  "nativeBridge": "Value_15 rejected at canonical book_valid; migrated to current generated Value_17<ParseResult>; failed receipt native43-o0-build.json",
+  "frozenCorpusRecovery": {
+    "sourceCommit": "0b31f1c60ebe1557278a12f4b71786bcdf1cbe34",
+    "authenticatedFiles": 50,
+    "corpusSha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258"
+  },
+  "newByteFixedpoint": "PENDING",
+  "nativeFullExecution": "PENDING"
+}

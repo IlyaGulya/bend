@@ -409,8 +409,7 @@ try {
       ['caseBodyLayout', cases.normalizeInlineCaseBodies],
       ['evaluationContexts', async (source: string) => {
         const historical = await Bun.file(historicalCutPath).json();
-        const seeds = [...(historical.completeSelected ?? historical.selected),
-          'consumed_token_end_before', 'literal_pattern_fields', 'parse_pattern_tuple', 'pattern_scan'];
+        const seeds = historical.completeSelected ?? historical.selected;
         const normalized = await normalizeEvaluationContexts(source, seeds);
         if (normalized.graph.unresolvedReferences.length || normalized.sourceSpecificTransformerExceptions !== 0)
           throw Error('Evaluation-context factoring is not generically closed');

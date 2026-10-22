@@ -64645,72 +64645,72 @@
   ],
   "ownedModules": [
     {
-      "source": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/ast.bend",
+      "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend",
       "sourceSha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
-      "output": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/ast.bend",
+      "output": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend",
       "outputSha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/checker_arena.bend",
+      "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend",
       "sourceSha256": "8860468bdd2995e9b3c46611f99abe16079632305c90fbb7bfb70c7c6f3346d6",
-      "output": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/checker_arena.bend",
+      "output": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend",
       "outputSha256": "8860468bdd2995e9b3c46611f99abe16079632305c90fbb7bfb70c7c6f3346d6",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/scope_lookup.bend",
+      "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend",
       "sourceSha256": "8e35fd58ade180ec6c524e1d620a70e2deb66bef3c30add7e224e51c0b30879a",
-      "output": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/scope_lookup.bend",
+      "output": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend",
       "outputSha256": "8e35fd58ade180ec6c524e1d620a70e2deb66bef3c30add7e224e51c0b30879a",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/checker_ir.bend",
+      "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_ir.bend",
       "sourceSha256": "4e23cbab2f0ae0516e0a9ae0b5ca455741fd49c6222d33817dc8b6fd297b2627",
-      "output": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/checker_ir.bend",
+      "output": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_ir.bend",
       "outputSha256": "4e23cbab2f0ae0516e0a9ae0b5ca455741fd49c6222d33817dc8b6fd297b2627",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/path.bend",
+      "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend",
       "sourceSha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
-      "output": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/path.bend",
+      "output": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend",
       "outputSha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/loaded_module.bend",
+      "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend",
       "sourceSha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
-      "output": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/loaded_module.bend",
+      "output": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend",
       "outputSha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/index_lookup.bend",
+      "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/index_lookup.bend",
       "sourceSha256": "caef5856607bff18b9a5dfc529eee6c6360a83d0963008420888a998274bd9f2",
-      "output": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/index_lookup.bend",
+      "output": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/index_lookup.bend",
       "outputSha256": "caef5856607bff18b9a5dfc529eee6c6360a83d0963008420888a998274bd9f2",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/core.bend",
-      "sourceSha256": "d22905f943e91e85376ce57e58305badaad41ab2785e924f44dd1e20931be86d",
-      "output": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/core.bend",
-      "outputSha256": "d22905f943e91e85376ce57e58305badaad41ab2785e924f44dd1e20931be86d",
+      "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/core.bend",
+      "sourceSha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+      "output": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/core.bend",
+      "outputSha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/sha256.bend",
+      "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/sha256.bend",
       "sourceSha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
-      "output": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/sha256.bend",
+      "output": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/sha256.bend",
       "outputSha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/js_emit.bend",
+      "source": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_emit.bend",
       "sourceSha256": "94fb429be1f7b9943706733f0e4796dfdc89725b0351b23227b5a066bb7789f0",
-      "output": "/private/tmp/bend-v41-algorithm.hDWCul/bend2/selfhost/js_emit.bend",
+      "output": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_emit.bend",
       "outputSha256": "94fb429be1f7b9943706733f0e4796dfdc89725b0351b23227b5a066bb7789f0",
       "extractions": []
     }

@@ -170,10 +170,10 @@ def example(seed: Nat) -> Nat:
 export const multipleSiblingEffects: EvaluationContextFixture = {
   name: 'multiple suspended sibling effects',
   source: `${prelude}def example(first: Nat, second: Nat) -> Nat:
-  Nat.add(produce(first), produce(second))
+  Nat.sub(produce(first), produce(second))
 `,
   seeds: ['produce'],
-  inputs: [['example(4n, 9n)', 13], ['example(2n, 15n)', 17]],
+  inputs: [['example(9n, 4n)', 5], ['example(15n, 2n)', 13], ['example(2n, 15n)', 0]],
 };
 
 /** Factoring must not turn invalid affine contraction into a valid program. */

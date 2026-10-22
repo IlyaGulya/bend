@@ -1,0 +1,66 @@
+{
+  "status": "FAIL",
+  "mode": "build",
+  "boundary": {
+    "host": "trusted C file/import loader and serial affine LIFO continuation driver",
+    "sourceAlgorithms": "unchanged canonical Bend parser/expansion/checker/JS library emitter",
+    "hostChecking": false,
+    "hostParsing": false,
+    "embeddedSource": false,
+    "cachedAst": false,
+    "parserFuelRepresentation": "eager native 8M-cell chain per source; JS harness uses lazy cells for the same finite fuel; allocation time remains included in parse",
+    "fuelMemoryEvidence": "per-source native process RSS high-water before/after allocation (not isolated live-byte attribution); guardian samples whole-tree RSS and physical footprint including fuel",
+    "outputPatches": 0,
+    "checksExcluded": 0,
+    "nativeBinaryBootstrap": false
+  },
+  "startedAtUnixMs": 1792644519189,
+  "guard": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "failure": {
+    "phase": "book_valid",
+    "diagnostic": "Error:\n- expected : a constructor of Maybe (missing, or already matched)\n- observed : \\{ParseSuccess: (module => _ => native_parse_success(module)); ParseFailure: (message => _ => _ => _ => _ => NativeParseFailure{message}); (_21 => _ => NativeParseFailure{\"parser fuel exhausted or feedback invariant failure\"})}\nLocation: native_parse_result\n33 |   match result:\n34>|     case FeedbackComplete{Value_15{ParseSuccess{module}}, _}:\n   |                                    ^^^^^^^^^^^^^^^^^^^^\n35 |       native_parse_success(module)"
+  },
+  "lastProgress": {
+    "phase": "book_valid",
+    "event": "failure",
+    "unixMs": 1792644523275,
+    "pid": 40902,
+    "worker": false,
+    "rssBytes": 168247296,
+    "heapUsedBytes": 11047808,
+    "cpuMs": 6302.62,
+    "diagnostic": "Error:\n- expected : a constructor of Maybe (missing, or already matched)\n- observed : \\{ParseSuccess: (module => _ => native_parse_success(module)); ParseFailure: (message => _ => _ => _ => _ => NativeParseFailure{message}); (_21 => _ => NativeParseFailure{\"parser fuel exhausted or feedback invariant failure\"})}\nLocation: native_parse_result\n33 |   match result:\n34>|     case FeedbackComplete{Value_15{ParseSuccess{module}}, _}:\n   |                                    ^^^^^^^^^^^^^^^^^^^^\n35 |       native_parse_success(module)"
+  },
+  "guardian": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "commandExitCode": 2,
+    "commandSignal": 0,
+    "peakRssBytes": 1269596160,
+    "peakFootprintBytes": 1295197552,
+    "elapsedMs": 4083,
+    "timeoutMs": 600000,
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "--max-old-space-size=3072",
+      "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_experiment.ts",
+      "--mode=build",
+      "--corpus=checkpoints/compiler-benchmark-release237-v41.corpus.json",
+      "--artifact=checkpoints/native43-o0",
+      "--report=checkpoints/native43-o0-build.json",
+      "--cc-opt=0",
+      "--internal=build"
+    ],
+    "label": "Native CPU compiler build",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792644519206-088094a5977fcc5c.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  }
+}

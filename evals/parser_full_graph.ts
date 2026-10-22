@@ -31,6 +31,40 @@ export type ParserGraph = {
   calls: Map<string, ParserCall[]>;
 };
 
+/** Residual mutual recursion; singleton self recursion needs no feedback cut. */
+export function mutualComponents(edges: Readonly<Record<string, readonly string[]>>, removed: ReadonlySet<string>): string[][] {
+  let time = 0;
+  const index = new Map<string, number>(), low = new Map<string, number>();
+  const stack: string[] = [], active = new Set<string>(), components: string[][] = [];
+  function visit(vertex: string): void {
+    index.set(vertex, time); low.set(vertex, time++);
+    stack.push(vertex); active.add(vertex);
+    for (const target of [...(edges[vertex] ?? [])].sort()) {
+      if (removed.has(target) || !Object.hasOwn(edges, target)) continue;
+      if (!index.has(target)) {
+        visit(target);
+        low.set(vertex, Math.min(low.get(vertex)!, low.get(target)!));
+      } else if (active.has(target)) {
+        low.set(vertex, Math.min(low.get(vertex)!, index.get(target)!));
+      }
+    }
+    if (low.get(vertex) === index.get(vertex)) {
+      const component: string[] = [];
+      let target: string;
+      do {
+        target = stack.pop()!;
+        active.delete(target); component.push(target);
+      } while (target !== vertex);
+      if (component.length > 1) components.push(component.sort());
+    }
+  }
+  for (const vertex of Object.keys(edges).sort()) if (!removed.has(vertex) && !index.has(vertex)) visit(vertex);
+  return components.sort((a, b) => {
+    const left = a.join('\0'), right = b.join('\0');
+    return left < right ? -1 : left > right ? 1 : 0;
+  });
+}
+
 /** Parse the real stage-0 source Body AST before match compilation. Each syntax
  * expression is traversed as raw HOAS with bound variables retained. This avoids
  * parse_def_body's flatten/lower replay of exhaustive match branches, not any

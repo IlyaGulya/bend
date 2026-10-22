@@ -1,5 +1,6 @@
 import {createHash} from 'node:crypto';
 import {writeFileSync} from 'node:fs';
+import {mutualComponents} from './parser_full_graph.ts';
 const options=new Map<string,string>();
 for(const arg of process.argv.slice(2)){const at=arg.indexOf('='),key=arg.slice(0,at),value=arg.slice(at+1);if(at<0||!['--graph','--factored','--output'].includes(key)||!value||options.has(key))throw Error('Require unique --graph=PATH --factored=PATH --output=PATH');options.set(key,value);}
 for(const key of ['--graph','--factored','--output'])if(!options.has(key))throw Error('Missing '+key);
@@ -13,12 +14,7 @@ const edges=graph.edges as Record<string,string[]>;
 const canonicalText=await Bun.file('bend2/selfhost/parser.bend').text();
 const sourceVertices=new Set([...canonicalText.matchAll(/^def ([A-Za-z_]\w*)\(/gm)].map(m=>m[1]!));
 const lexicalCompare=(a:string,b:string)=>a<b?-1:a>b?1:0;
-function scc(removed:Set<string>){
- let time=0;const index=new Map<string,number>(),low=new Map<string,number>(),stack:string[]=[],active=new Set<string>(),out:string[][]=[];
- function visit(v:string){index.set(v,time);low.set(v,time++);stack.push(v);active.add(v);for(const w of [...(edges[v]??[])].sort()){if(removed.has(w)||!Object.hasOwn(edges,w))continue;if(!index.has(w)){visit(w);low.set(v,Math.min(low.get(v)!,low.get(w)!));}else if(active.has(w))low.set(v,Math.min(low.get(v)!,index.get(w)!));}if(low.get(v)===index.get(v)){const component:string[]=[];let w:string;do{w=stack.pop()!;active.delete(w);component.push(w);}while(w!==v);if(component.length>1)out.push(component.sort());}}
- for(const v of Object.keys(edges).sort())if(!removed.has(v)&&!index.has(v))visit(v);
- return out.sort((a,b)=>lexicalCompare(a.join('\0'),b.join('\0')));
-}
+const scc=(removed:Set<string>)=>mutualComponents(edges,removed);
 const fixed=new Set(seeds),residual=scc(fixed),candidates=[...new Set(residual.flat())].filter(v=>sourceVertices.has(v)).sort();
 // Exact directed feedback vertex set for mutual recursion. Singleton self loops
 // remain legal under the existing generator. Branch on every vertex of one

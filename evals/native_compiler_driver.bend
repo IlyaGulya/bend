@@ -31,9 +31,9 @@ def native_parse_success(+module: Ast.Module) -> NativeParsed:
 
 def native_parse_result(result: FeedbackRun) -> NativeParsed:
   match result:
-    case FeedbackComplete{Value_15{ParseSuccess{module}}, _}:
+    case FeedbackComplete{Value_17{ParseSuccess{module}}, _}:
       native_parse_success(module)
-    case FeedbackComplete{Value_15{ParseFailure{message, _, _, _}}, _}:
+    case FeedbackComplete{Value_17{ParseFailure{message, _, _, _}}, _}:
       NativeParseFailure{message}
     case _:
       NativeParseFailure{"parser fuel exhausted or feedback invariant failure"}

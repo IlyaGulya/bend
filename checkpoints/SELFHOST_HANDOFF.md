@@ -38,12 +38,22 @@ Measured v41 experiments:
   Full execution then failed in Core.map_syntax_terms: ERR_RFCS rejects copying
   its captured affine callback, not reference-count overflow. See
   `compiler-native-v41-decision.json`; no native full-run speed claim.
-  Current v42 replaces all24 live callback sites with first-order traversals,
-  without new unsafe annotations or runtime guard changes. Actual C1/C4 and
-  JS shift/substitution regressions print capture-ok; parser/root regeneration,
-  complete native execution and new emitted-JS fixedpoint remain outstanding.
+  v42 replaces all24 live callback sites with first-order traversals, without
+  new unsafe annotations or runtime guard changes. Actual C1/C4 and JS
+  shift/substitution regressions print capture-ok (`7d9a851d`).
+  Fresh parser68 source semantics passed71/71, but generation failed because
+  historical effect seeds missed the new mapper SCC; v42 is UNACCEPTED (`10af8abc`).
+  v43 derives new effect roots from the current residual mutual SCCs and sequences
+  sibling effects; the cut solver shares the same SCC algorithm. All15 context
+  semantic/affine tests pass, including the failing-before sibling case.
+  Fresh parser69 now passes75/75 compiled semantic/span cases. The assembled
+  full root checks8192 bodies/8530 events and builds JS in23120ms, physical
+  2651767400 bytes. Native bridge migrated to this parser's Value_17 result ABI
+  after the old Value_15 contract was rejected by the unchanged checker.
+  Full native execution and fresh emitted-JS fixedpoint are still outstanding.
   On resumption the temporary v41 directories contained no files; committed
-  receipts survived. The mapper repair is restored directly in the main checkout.
+  receipts survived. Mapper changes are restored in main; the frozen50-file
+  workload was recovered from0b31f1c and every original SHA reauthenticated.
 
 Current source includes the small certificate candidate, not a newly accepted
 compiler. The accepted image/proof remains Main40/parser67. Native execution alone
