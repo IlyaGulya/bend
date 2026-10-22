@@ -1,7 +1,7 @@
 {
   "version": "release237-v43",
-  "status": "PARSER_ACCEPTED_ROOT_SEED_BUILT_FULL_BOOTSTRAP_PENDING",
-  "bootstrapAcceptance": false,
+  "status": "GENUINE_JS_FIXEDPOINT_PASS_NATIVE_BUILD_TIMEOUT_SPEED_GOAL_UNMET",
+  "bootstrapAcceptance": true,
   "repair": "Current residual mutual-SCC effect discovery and sequential sibling continuations; no per-function exception or generated-output patch",
   "sourcePins": {
     "evals/parser_full_graph.ts": "27f985053761fd8192b845988f6047e59355faf686b3c36f079d3d8fad545f86",
@@ -128,6 +128,20 @@
     "authenticatedFiles": 50,
     "corpusSha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258"
   },
-  "newByteFixedpoint": "PENDING",
-  "nativeFullExecution": "PENDING"
+  "newByteFixedpoint": "PASS267/267: checkpoints/selfhost-acceptance-release237-v43.json",
+  "nativeFullExecution": "NOT_RUN_BUILD_DEADLINE",
+  "nativeBuild": {
+    "report": "checkpoints/native43-o0-build-b.json",
+    "status": "FAIL_DEADLINE_IN_CLANG",
+    "checkedDefinitions": 8204,
+    "checkWallMs": 3897.62975,
+    "cGenerationWallMs": 428780.80825,
+    "cGenerationCpuMs": 265824.852,
+    "cUnitsUTF16": 68378636,
+    "guardianMs": 600017,
+    "peakPhysicalBytes": 4046369568,
+    "optimization": "-O0",
+    "limitsRaised": false,
+    "runtimeSpeedClaim": false
+  }
 }

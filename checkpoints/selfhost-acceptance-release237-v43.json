@@ -1,0 +1,97 @@
+{
+  "version": "release237-v43",
+  "status": "PURE_STEP_BOOTSTRAP_FIXEDPOINT",
+  "bootstrapAcceptance": true,
+  "compilerBootstrapGreen": true,
+  "fixedpoint": {
+    "criterion": "Exact emitted UTF-8 JS bytes; no normalization or patching",
+    "equal": true,
+    "stageOneSha256": "0803217475d839c4aaaf48104e8c7d91852dac19433d5b433f2ffc219ddea0cf",
+    "stageTwoSha256": "0803217475d839c4aaaf48104e8c7d91852dac19433d5b433f2ffc219ddea0cf"
+  },
+  "fixtureExecutions": 267,
+  "fixturePasses": 267,
+  "images": {
+    "stageOne": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-steps-bootstrap-release237-v43.json.cases/stage-one.js",
+      "sha256": "0803217475d839c4aaaf48104e8c7d91852dac19433d5b433f2ffc219ddea0cf",
+      "bytes": 18400386
+    },
+    "stageTwo": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-steps-bootstrap-release237-v43.json.cases/stage-two.js",
+      "sha256": "0803217475d839c4aaaf48104e8c7d91852dac19433d5b433f2ffc219ddea0cf",
+      "bytes": 18400386
+    }
+  },
+  "timings": {
+    "one": {
+      "parseAndAdmissionMs": 50184.61204199999,
+      "expandMs": 14224.584792000009,
+      "checkMs": 127850.79141599996,
+      "emitWriteHashMs": 21617.56620900001,
+      "totalMs": 213877.55445899998
+    },
+    "two": {
+      "parseAndAdmissionMs": 51562.81154199998,
+      "expandMs": 14396.287041000032,
+      "checkMs": 258266.53129199997,
+      "emitWriteHashMs": 45767.91229200002,
+      "totalMs": 369993.542167
+    }
+  },
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 2220638208,
+    "peakFootprintBytes": 2125450592,
+    "elapsedMs": 1252553,
+    "timeoutMs": 1800000,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/selfhost_bootstrap_gate.ts",
+      "--component=checkpoints/selfhost-steps-canonical-release237-v43-final.js",
+      "--component-build=checkpoints/selfhost-steps-native-canonical-release237-v43-final.result.json",
+      "--root=checkpoints/.bootstrap_compiler_root_v1.bend",
+      "--root-manifest=checkpoints/selfhost-steps-driver-source-v1.json",
+      "--parser=checkpoints/bootstrap-parser-rebuild-release237-v69.js",
+      "--parser-build=checkpoints/bootstrap-parser-rebuild-release237-v69.native-build.result.json",
+      "--report=checkpoints/selfhost-steps-bootstrap-release237-v43.json",
+      "--worker"
+    ],
+    "label": "Real full selfhost step bootstrap",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792645230306-303a7f6877c07308.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "workerStackMiB": 256,
+    "workerOldGenerationMiB": 6144,
+    "workerYoungGenerationMiB": 128,
+    "parserFuel": 8000000,
+    "maxHeavyChildren": 1
+  },
+  "rootSourceSha256": "9c58757eb5d8d3ce938122abab3a3d8854a2cc3dcd54b80dd49780a0bc8e6c82",
+  "seed": "b9eb88ab7c4025ddf2a6593aad5186d16b10a0e2670b7a678e307913dfbec0fc",
+  "parserBuild": "checkpoints/bootstrap-parser-rebuild-release237-v69.native-build.result.json",
+  "parserBuildSha256": "a4ff72384588de7d77cee43ba9b8be08302da299c0f9997f8e9d38f14c50114c",
+  "fullReport": "checkpoints/selfhost-steps-bootstrap-release237-v43.json",
+  "fullReportSha256": "4dcbe3331edc8ece4a275f4b9a42c838c283255e62181ca1e08cef5651ddd5f3",
+  "speedGoal": "NOT_MET: whole stage-two exceeds300000ms; no faster-than-official or native execution claim",
+  "boundary": {
+    "orchestration": "trusted host file loading/import resolution and shared Node LIFO continuation driver",
+    "nativeTerminationProofIncludesDriver": false,
+    "hostCheckingExpansionEmission": false,
+    "hostParserUse": "full semantic AST oracle only; never compiler inputs",
+    "compilerAstInput": "Original immutable parser result after complete transport validation and full native semantic/span parity approval; transport rehashed before use",
+    "nativeCheckedBodies": "seed-native component retains original checked e in memory; never inputs to Bend bootstrap stages",
+    "legacyIODriver": false,
+    "legacyCBackend": false
+  }
+}

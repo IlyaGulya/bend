@@ -50,15 +50,17 @@ Measured v41 experiments:
   full root checks8192 bodies/8530 events and builds JS in23120ms, physical
   2651767400 bytes. Native bridge migrated to this parser's Value_17 result ABI
   after the old Value_15 contract was rejected by the unchanged checker.
-  Full native execution and fresh emitted-JS fixedpoint are still outstanding.
+  Full C build then hit the unchanged600s deadline in clang after completed
+  428780.808ms C generation,8204 checked bodies, physical4046369568 bytes.
+  No native execution or speed claim. Genuine JS fixedpoint passes below.
   On resumption the temporary v41 directories contained no files; committed
   receipts survived. Mapper changes are restored in main; the frozen50-file
   workload was recovered from0b31f1c and every original SHA reauthenticated.
 
-Current source includes the small certificate candidate, not a newly accepted
-compiler. The accepted image/proof remains Main40/parser67. Native execution alone
-would not establish a self-generated C backend or replace genuine emitted-JS
-stage1/stage2 acceptance.
+Current Main43/parser69 has a fresh accepted emitted-JS byte fixedpoint267/267.
+It is accepted for semantics, NOT speed: stage2 takes369993.542ms, above five
+minutes. Main40 remains the faster historical measurement. Neither emitted-JS
+proof establishes a self-generated C backend or a native-binary fixedpoint.
 
 ## Completed acceleration — Main40 full stage2 below five minutes
 
@@ -175,7 +177,26 @@ archive unique patches/receipts and remove superseded experiment copies.
 The old accumulation was a parent cleanup failure. Recent disk-full wall times
 do not establish causal compiler/runtime performance regressions.
 
-## LATEST GENUINE FIXEDPOINT — Main release237-v40, parser67
+## LATEST GENUINE FIXEDPOINT — Main release237-v43, parser69
+
+`selfhost-acceptance-release237-v43.json` is the compact receipt; the complete
+local report is `selfhost-steps-bootstrap-release237-v43.json`. All267/267 fixture
+executions pass. Both unpatched UTF-8 images are18400386 bytes, SHA
+`0803217475d839c4aaaf48104e8c7d91852dac19433d5b433f2ffc219ddea0cf`.
+Stage1=213877.554ms; stage2=369993.542ms. Stage2 parse/admission51562.812,
+expand14396.287, check258266.531, emit/write/hash45767.912ms.
+Whole gate1252553ms, physical2125450592/RSS2220638208 bytes, unchanged8GiB/10ms.
+No source checker omission, cached AST, output normalization or output patch.
+The full root's native JS seed checked8192 bodies and8530 events in23120ms,
+physical2651767400 bytes. Parser69 passed75/75 semantic/span comparisons.
+The current cut includes the formerly unsafe operator traversal's new mutual
+recursion. v43 is a correctness repair, not a measured performance improvement:
+the five-minute stage2 target and faster-than-official target remain unmet.
+Exact parser/root preparation commands are in `compiler-context-v43.json`;
+the complete gate command is in this acceptance receipt. Generated images and
+bulk oracle/phase sidecars are local, not Git inputs.
+
+## Previous genuine fixedpoint — Main release237-v40, parser67
 
 `selfhost-steps-bootstrap-release237-v40.json` PASS267/267; both raw images
 18244928 bytes, SHA `84b19ce89aad6da90b1aedb7b8fff2ed8ef659636754801c91290424c19a7da2`.
