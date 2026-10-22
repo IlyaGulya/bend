@@ -8,6 +8,10 @@ latest one; the GitHub release carries the same notes.
 - Compiler diagnostics compare the complete frozen source closure and the actual
   unmodified official public export set, with phase timing, resource limits and
   emitted-compiler smoke recorded separately from genuine bootstrap acceptance.
+- Native C compilation compares canonical shared layouts by identity and releases
+  rebuildable body caches between top-level definitions, retaining checked terms.
+- Selfhost syntax shifting, substitution and operator-name rewriting use direct
+  list traversals instead of copying an unsafe capture-bearing affine callback.
 
 - The complete selfhost parser/Template/Checker/JavaScript compiler root now
   reaches an exact stage-one/stage-two byte fixedpoint using its own emitted

@@ -1536,7 +1536,7 @@ def map_operator_term(term: Ast.SyntaxTerm, +namespace: String) -> Ast.SyntaxTer
     case Ast.TermRef{key, source_span}: Ast.TermRef{map_operator_key(namespace, key), source_span}
     case Ast.TermBang{term, source_span}: Ast.TermBang{map_operator_term(term, namespace), source_span}
     case Ast.TermSub{index, value, body, source_span}: Ast.TermSub{index, map_operator_term(value, namespace), map_operator_term(body, namespace), source_span}
-    case Ast.TermLet{keys, indexes, quantities, values, body, source_span}: Ast.TermLet{keys, indexes, quantities, Core.map_syntax_terms(child => map_operator_term(child, namespace), values), map_operator_term(body, namespace), source_span}
+    case Ast.TermLet{keys, indexes, quantities, values, body, source_span}: Ast.TermLet{keys, indexes, quantities, map_operator_terms(values, namespace), map_operator_term(body, namespace), source_span}
     case Ast.TermAnn{term, ty, source_span}: Ast.TermAnn{map_operator_term(term, namespace), map_operator_term(ty, namespace), source_span}
     case Ast.TermTemplate{term, source_span}: Ast.TermTemplate{map_operator_term(term, namespace), source_span}
     case Ast.TermType{kind, source_span}: Ast.TermType{map_operator_term(kind, namespace), source_span}
@@ -1546,10 +1546,10 @@ def map_operator_term(term: Ast.SyntaxTerm, +namespace: String) -> Ast.SyntaxTer
     case Ast.TermAll{quantity, key, index, ty, body, source_span}: Ast.TermAll{quantity, key, index, map_operator_term(ty, namespace), map_operator_term(body, namespace), source_span}
     case Ast.TermLam{quantity, key, index, body, source_span}: Ast.TermLam{quantity, key, index, map_operator_term(body, namespace), source_span}
     case Ast.TermApp{fn, arg, source_span}: Ast.TermApp{map_operator_term(fn, namespace), map_operator_term(arg, namespace), source_span}
-    case Ast.TermAdt{key, args, refs, source_span}: Ast.TermAdt{key, Core.map_syntax_terms(child => map_operator_term(child, namespace), args), refs, source_span}
-    case Ast.TermFill{head, args, source_span}: Ast.TermFill{map_operator_term(head, namespace), Core.map_syntax_terms(child => map_operator_term(child, namespace), args), source_span}
-    case Ast.TermPlus{head, args, source_span}: Ast.TermPlus{map_operator_term(head, namespace), Core.map_syntax_terms(child => map_operator_term(child, namespace), args), source_span}
-    case Ast.TermCtr{key, args, source_span}: Ast.TermCtr{key, Core.map_syntax_terms(child => map_operator_term(child, namespace), args), source_span}
+    case Ast.TermAdt{key, args, refs, source_span}: Ast.TermAdt{key, map_operator_terms(args, namespace), refs, source_span}
+    case Ast.TermFill{head, args, source_span}: Ast.TermFill{map_operator_term(head, namespace), map_operator_terms(args, namespace), source_span}
+    case Ast.TermPlus{head, args, source_span}: Ast.TermPlus{map_operator_term(head, namespace), map_operator_terms(args, namespace), source_span}
+    case Ast.TermCtr{key, args, source_span}: Ast.TermCtr{key, map_operator_terms(args, namespace), source_span}
     case Ast.TermString{chars, names, source_span}: Ast.TermString{chars, names, source_span}
     case Ast.TermMat{key, head, matched, source_span}: Ast.TermMat{key, map_operator_term(head, namespace), map_operator_term(matched, namespace), source_span}
     case Ast.TermAbsurd{source_span}: Ast.TermAbsurd{source_span}
@@ -1557,10 +1557,17 @@ def map_operator_term(term: Ast.SyntaxTerm, +namespace: String) -> Ast.SyntaxTer
     case Ast.TermRefl{source_span}: Ast.TermRefl{source_span}
     case Ast.TermRewrite{equation, proof, body, source_span}: Ast.TermRewrite{map_operator_term(equation, namespace), map_operator_term(proof, namespace), map_operator_term(body, namespace), source_span}
     case Ast.TermHole{key, source_span}: Ast.TermHole{key, source_span}
-    case Ast.BodyMatch{scrutinees, cases, source_span}: Ast.BodyMatch{Core.map_syntax_terms(child => map_operator_term(child, namespace), scrutinees), Core.map_syntax_terms(child => map_operator_term(child, namespace), cases), source_span}
+    case Ast.BodyMatch{scrutinees, cases, source_span}: Ast.BodyMatch{map_operator_terms(scrutinees, namespace), map_operator_terms(cases, namespace), source_span}
     case Ast.BodyCase{patterns, body, source_span}: Ast.BodyCase{patterns, map_operator_term(body, namespace), source_span}
-    case Ast.BodyLocal{patterns, quantity, values, body, source_span}: Ast.BodyLocal{patterns, quantity, Core.map_syntax_terms(child => map_operator_term(child, namespace), values), map_operator_term(body, namespace), source_span}
+    case Ast.BodyLocal{patterns, quantity, values, body, source_span}: Ast.BodyLocal{patterns, quantity, map_operator_terms(values, namespace), map_operator_term(body, namespace), source_span}
     case Ast.BodyReply{term, source_span}: Ast.BodyReply{map_operator_term(term, namespace), source_span}
+
+def map_operator_terms(terms: List<&2, Ast.SyntaxTerm>, +namespace: String) -> List<&2, Ast.SyntaxTerm>:
+  match terms:
+    case Nil{}: Nil{}
+    case term <> rest:
+      map_operator_term(term, namespace) <> map_operator_terms(rest, namespace)
+
 def operator_rhs_level(right_assoc: Bool, priority: Nat) -> Nat:
   match right_assoc:
     case True{}:

@@ -1,0 +1,24 @@
+{
+  "version": "release237-v42-mapper",
+  "status": "SOURCE_REPAIR_SMOKE_PASS_FULL_ACCEPTANCE_PENDING",
+  "bootstrapAcceptance": false,
+  "previousFailure": "checkpoints/compiler-native-v41-decision.json",
+  "cause": "@unsafe map_syntax_terms contracted a capture-bearing affine closure; native ERR_RFCS=6",
+  "repair": "Remove generic callback mapper; first-order shift_terms, subst_terms and map_operator_terms after their existing unsafe recursive consumers; migrate all24 live source callsites; regenerate current parser/root rather than patch historical generated snapshots",
+  "newUnsafeAnnotations": 0,
+  "runtimeGuardChanges": 0,
+  "kernelVersion": "2.0.37",
+  "limits": {"memoryMiB":8192,"rssMiB":8192,"pollMs":10,"timeoutMs":600000},
+  "guardPrefix": "bun --smol evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 --",
+  "runs": [
+    {"command":"bun --smol bend2/main.ts tests/compile/core_mapper_capture.bend -o checkpoints/native42-mapper","status":"PASS","elapsedMs":4722,"peakPhysicalBytes":135890288},
+    {"command":"checkpoints/native42-mapper --threads 1 --gpu off","status":"PASS","stdout":"capture-ok","elapsedMs":17,"peakPhysicalBytes":311440},
+    {"command":"checkpoints/native42-mapper --threads 4 --gpu off","status":"PASS","stdout":"capture-ok","elapsedMs":25,"peakPhysicalBytes":786624},
+    {"command":"bun --smol bend2/main.ts tests/compile/core_mapper_capture.bend -o checkpoints/native42-mapper.js","status":"PASS","elapsedMs":257,"peakPhysicalBytes":59556488},
+    {"command":"node checkpoints/native42-mapper.js","status":"PASS","stdout":"capture-ok","elapsedMs":78,"peakPhysicalBytes":11879960}
+  ],
+  "assertions": ["runtime-dependent shift amount", "below-cutoff index unchanged", "above-cutoff index shifted", "runtime String replacement", "above-substitution index decremented", "constructor/list order and variable names retained"],
+  "recovery": "Temporary v41 worktree directories contained no files on resumption; committed native build/failure receipts survived. Reapplied the source repair directly in main and exercised fresh binaries. Initial restored regression authoring attempts failed typechecking and are not runtime evidence.",
+  "nativeFullExecution": "PENDING",
+  "newByteFixedpoint": "PENDING"
+}

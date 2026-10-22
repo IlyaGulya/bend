@@ -30,12 +30,20 @@ Measured v41 experiments:
   Source candidate `ea361e39`, integrated provisionally as `274ec050`; fresh full
   fixedpoint/fixtures still required. Both full outputs equal baseline19154334
   bytes, SHA3546e1cdb5104feaef7613ee8f0ea66ae70ad2410e150648f26b43accc22f0bd.
-- Native C execution: no executable or speed claim yet. Full8077-body validation
-  completes, but `compile_book` exceeds diagnostic deadlines. V8 samples expose
-  layout-DAG JSON serialization; canonical no-op-padding interning removes it.
-  Actual C wide257/deep-boxed fixtures print1113/2749. Postrepair C codegen still
-  times out, with38.3% GC near the3072MiB seed heap; investigate C higher-body
-  retention/pass work rather than raising limits. Profiles remain local/ignored.
+- Native C build completed under unchanged8GiB limits:8077 checked bodies,
+  241209ms total, peak physical5038945920 bytes, explicit clang-O0.
+  C generation128904.628ms; clang106080ms. The-O3 attempt hit8GiB during clang.
+  Canonical shared layouts remove JSON DAG serialization; bounded higher-body
+  cache release retains every original checked e. Wide257/deep-boxed C cases pass.
+  Full execution then failed in Core.map_syntax_terms: ERR_RFCS rejects copying
+  its captured affine callback, not reference-count overflow. See
+  `compiler-native-v41-decision.json`; no native full-run speed claim.
+  Current v42 replaces all24 live callback sites with first-order traversals,
+  without new unsafe annotations or runtime guard changes. Actual C1/C4 and
+  JS shift/substitution regressions print capture-ok; parser/root regeneration,
+  complete native execution and new emitted-JS fixedpoint remain outstanding.
+  On resumption the temporary v41 directories contained no files; committed
+  receipts survived. The mapper repair is restored directly in the main checkout.
 
 Current source includes the small certificate candidate, not a newly accepted
 compiler. The accepted image/proof remains Main40/parser67. Native execution alone

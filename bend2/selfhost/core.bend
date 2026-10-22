@@ -28,14 +28,6 @@ def shift_var(shifted: Bool, key: String, index: Nat, by: Nat, span: Ast.SourceS
       Ast.TermVar{key, index, span}
 
 @unsafe
-def map_syntax_terms(+f: Ast.SyntaxTerm -> Ast.SyntaxTerm, terms: List<&2, Ast.SyntaxTerm>) -> List<&2, Ast.SyntaxTerm>:
-  match terms:
-    case Nil{}:
-      Nil{}
-    case +term <> rest:
-      f(term) <> map_syntax_terms(f, rest)
-
-@unsafe
 def shift_at(term: Ast.SyntaxTerm, +cutoff: Nat, +by: Nat, +depth: Nat) -> Ast.SyntaxTerm:
   match term:
     case Ast.TermVar{key, +index, span}:
@@ -45,7 +37,7 @@ def shift_at(term: Ast.SyntaxTerm, +cutoff: Nat, +by: Nat, +depth: Nat) -> Ast.S
     case Ast.TermSub{index, value, body, span}:
       Ast.TermSub{index, shift_at(value, cutoff, by, depth), shift_at(body, cutoff, by, (depth + 1n : Nat)), span}
     case Ast.TermLet{+keys, indexes, quantities, values, body, span}:
-      Ast.TermLet{keys, indexes, quantities, map_syntax_terms(value => shift_at(value, cutoff, by, depth), values), shift_at(body, cutoff, by, (depth + List.length(&2, String, keys) : Nat)), span}
+      Ast.TermLet{keys, indexes, quantities, shift_terms(values, cutoff, by, depth), shift_at(body, cutoff, by, (depth + List.length(&2, String, keys) : Nat)), span}
     case Ast.TermAnn{value, ty, span}: Ast.TermAnn{shift_at(value, cutoff, by, depth), shift_at(ty, cutoff, by, depth), span}
     case Ast.TermTemplate{value, span}: Ast.TermTemplate{shift_at(value, cutoff, by, depth), span}
     case Ast.TermType{kind, span}: Ast.TermType{shift_at(kind, cutoff, by, depth), span}
@@ -57,10 +49,10 @@ def shift_at(term: Ast.SyntaxTerm, +cutoff: Nat, +by: Nat, +depth: Nat) -> Ast.S
     case Ast.TermLam{quantity, key, index, body, span}:
       Ast.TermLam{quantity, key, index, shift_at(body, cutoff, by, (depth + 1n : Nat)), span}
     case Ast.TermApp{fn, arg, span}: Ast.TermApp{shift_at(fn, cutoff, by, depth), shift_at(arg, cutoff, by, depth), span}
-    case Ast.TermAdt{key, args, refs, span}: Ast.TermAdt{key, map_syntax_terms(value => shift_at(value, cutoff, by, depth), args), refs, span}
-    case Ast.TermFill{head, args, span}: Ast.TermFill{shift_at(head, cutoff, by, depth), map_syntax_terms(value => shift_at(value, cutoff, by, depth), args), span}
-    case Ast.TermPlus{head, args, span}: Ast.TermPlus{shift_at(head, cutoff, by, depth), map_syntax_terms(value => shift_at(value, cutoff, by, depth), args), span}
-    case Ast.TermCtr{key, args, span}: Ast.TermCtr{key, map_syntax_terms(value => shift_at(value, cutoff, by, depth), args), span}
+    case Ast.TermAdt{key, args, refs, span}: Ast.TermAdt{key, shift_terms(args, cutoff, by, depth), refs, span}
+    case Ast.TermFill{head, args, span}: Ast.TermFill{shift_at(head, cutoff, by, depth), shift_terms(args, cutoff, by, depth), span}
+    case Ast.TermPlus{head, args, span}: Ast.TermPlus{shift_at(head, cutoff, by, depth), shift_terms(args, cutoff, by, depth), span}
+    case Ast.TermCtr{key, args, span}: Ast.TermCtr{key, shift_terms(args, cutoff, by, depth), span}
     case Ast.TermString{chars, names, span}: Ast.TermString{chars, names, span}
     case Ast.TermMat{key, head, matched, span}: Ast.TermMat{key, shift_at(head, cutoff, by, depth), shift_at(matched, cutoff, by, depth), span}
     case Ast.TermAbsurd{span}: Ast.TermAbsurd{span}
@@ -68,10 +60,16 @@ def shift_at(term: Ast.SyntaxTerm, +cutoff: Nat, +by: Nat, +depth: Nat) -> Ast.S
     case Ast.TermRefl{span}: Ast.TermRefl{span}
     case Ast.TermRewrite{equation, proof, body, span}: Ast.TermRewrite{shift_at(equation, cutoff, by, depth), shift_at(proof, cutoff, by, depth), shift_at(body, cutoff, by, depth), span}
     case Ast.TermHole{key, span}: Ast.TermHole{key, span}
-    case Ast.BodyMatch{scrutinees, cases, span}: Ast.BodyMatch{map_syntax_terms(value => shift_at(value, cutoff, by, depth), scrutinees), map_syntax_terms(value => shift_at(value, cutoff, by, depth), cases), span}
+    case Ast.BodyMatch{scrutinees, cases, span}: Ast.BodyMatch{shift_terms(scrutinees, cutoff, by, depth), shift_terms(cases, cutoff, by, depth), span}
     case Ast.BodyCase{+patterns, body, span}: Ast.BodyCase{patterns, shift_at(body, cutoff, by, (depth + pattern_list_depth(patterns) : Nat)), span}
-    case Ast.BodyLocal{+patterns, quantity, values, body, span}: Ast.BodyLocal{patterns, quantity, map_syntax_terms(value => shift_at(value, cutoff, by, depth), values), shift_at(body, cutoff, by, (depth + pattern_list_depth(patterns) : Nat)), span}
+    case Ast.BodyLocal{+patterns, quantity, values, body, span}: Ast.BodyLocal{patterns, quantity, shift_terms(values, cutoff, by, depth), shift_at(body, cutoff, by, (depth + pattern_list_depth(patterns) : Nat)), span}
     case Ast.BodyReply{term, span}: Ast.BodyReply{shift_at(term, cutoff, by, depth), span}
+
+def shift_terms(terms: List<&2, Ast.SyntaxTerm>, +cutoff: Nat, +by: Nat, +depth: Nat) -> List<&2, Ast.SyntaxTerm>:
+  match terms:
+    case Nil{}: Nil{}
+    case term <> rest:
+      shift_at(term, cutoff, by, depth) <> shift_terms(rest, cutoff, by, depth)
 
 def shift(cutoff: Nat, by: Nat, term: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
   match by:
@@ -100,7 +98,7 @@ def subst_at(+index: Nat, +replacement: Ast.SyntaxTerm, +depth: Nat, term: Ast.S
     case Ast.TermSub{sub_index, value, body, span}:
       Ast.TermSub{sub_index, subst_at(index, replacement, depth, value), subst_at(index, replacement, (depth + 1n : Nat), body), span}
     case Ast.TermLet{+keys, indexes, quantities, values, body, span}:
-      Ast.TermLet{keys, indexes, quantities, map_syntax_terms(value => subst_at(index, replacement, depth, value), values), subst_at(index, replacement, (depth + List.length(&2, String, keys) : Nat), body), span}
+      Ast.TermLet{keys, indexes, quantities, subst_terms(values, index, replacement, depth), subst_at(index, replacement, (depth + List.length(&2, String, keys) : Nat), body), span}
     case Ast.TermAnn{value, ty, span}: Ast.TermAnn{subst_at(index, replacement, depth, value), subst_at(index, replacement, depth, ty), span}
     case Ast.TermTemplate{value, span}: Ast.TermTemplate{subst_at(index, replacement, depth, value), span}
     case Ast.TermType{kind, span}: Ast.TermType{subst_at(index, replacement, depth, kind), span}
@@ -112,10 +110,10 @@ def subst_at(+index: Nat, +replacement: Ast.SyntaxTerm, +depth: Nat, term: Ast.S
     case Ast.TermLam{quantity, key, binder_index, body, span}:
       Ast.TermLam{quantity, key, binder_index, subst_at(index, replacement, (depth + 1n : Nat), body), span}
     case Ast.TermApp{fn, arg, span}: Ast.TermApp{subst_at(index, replacement, depth, fn), subst_at(index, replacement, depth, arg), span}
-    case Ast.TermAdt{key, args, refs, span}: Ast.TermAdt{key, map_syntax_terms(value => subst_at(index, replacement, depth, value), args), refs, span}
-    case Ast.TermFill{head, args, span}: Ast.TermFill{subst_at(index, replacement, depth, head), map_syntax_terms(value => subst_at(index, replacement, depth, value), args), span}
-    case Ast.TermPlus{head, args, span}: Ast.TermPlus{subst_at(index, replacement, depth, head), map_syntax_terms(value => subst_at(index, replacement, depth, value), args), span}
-    case Ast.TermCtr{key, args, span}: Ast.TermCtr{key, map_syntax_terms(value => subst_at(index, replacement, depth, value), args), span}
+    case Ast.TermAdt{key, args, refs, span}: Ast.TermAdt{key, subst_terms(args, index, replacement, depth), refs, span}
+    case Ast.TermFill{head, args, span}: Ast.TermFill{subst_at(index, replacement, depth, head), subst_terms(args, index, replacement, depth), span}
+    case Ast.TermPlus{head, args, span}: Ast.TermPlus{subst_at(index, replacement, depth, head), subst_terms(args, index, replacement, depth), span}
+    case Ast.TermCtr{key, args, span}: Ast.TermCtr{key, subst_terms(args, index, replacement, depth), span}
     case Ast.TermString{chars, names, span}: Ast.TermString{chars, names, span}
     case Ast.TermMat{key, head, matched, span}: Ast.TermMat{key, subst_at(index, replacement, depth, head), subst_at(index, replacement, depth, matched), span}
     case Ast.TermAbsurd{span}: Ast.TermAbsurd{span}
@@ -126,12 +124,18 @@ def subst_at(+index: Nat, +replacement: Ast.SyntaxTerm, +depth: Nat, term: Ast.S
       Ast.TermRewrite{subst_at(index, replacement, depth, equation), subst_at(index, replacement, depth, proof), subst_at(index, replacement, depth, body), span}
     case Ast.TermHole{key, span}: Ast.TermHole{key, span}
     case Ast.BodyMatch{scrutinees, cases, span}:
-      Ast.BodyMatch{map_syntax_terms(value => subst_at(index, replacement, depth, value), scrutinees), map_syntax_terms(value => subst_at(index, replacement, depth, value), cases), span}
+      Ast.BodyMatch{subst_terms(scrutinees, index, replacement, depth), subst_terms(cases, index, replacement, depth), span}
     case Ast.BodyCase{+patterns, body, span}:
       Ast.BodyCase{patterns, subst_at(index, replacement, (depth + pattern_list_depth(patterns) : Nat), body), span}
     case Ast.BodyLocal{+patterns, quantity, values, body, span}:
-      Ast.BodyLocal{patterns, quantity, map_syntax_terms(value => subst_at(index, replacement, depth, value), values), subst_at(index, replacement, (depth + pattern_list_depth(patterns) : Nat), body), span}
+      Ast.BodyLocal{patterns, quantity, subst_terms(values, index, replacement, depth), subst_at(index, replacement, (depth + pattern_list_depth(patterns) : Nat), body), span}
     case Ast.BodyReply{term, span}: Ast.BodyReply{subst_at(index, replacement, depth, term), span}
+
+def subst_terms(terms: List<&2, Ast.SyntaxTerm>, +index: Nat, +replacement: Ast.SyntaxTerm, +depth: Nat) -> List<&2, Ast.SyntaxTerm>:
+  match terms:
+    case Nil{}: Nil{}
+    case term <> rest:
+      subst_at(index, replacement, depth, term) <> subst_terms(rest, index, replacement, depth)
 
 def subst(index: Nat, replacement: Ast.SyntaxTerm, term: Ast.SyntaxTerm) -> Ast.SyntaxTerm:
   subst_at(index, replacement, 0n, term)
