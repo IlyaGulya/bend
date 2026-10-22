@@ -1,6 +1,6 @@
 {
   "version": "release237-v42-mapper",
-  "status": "SOURCE_REPAIR_SMOKE_PASS_FULL_ACCEPTANCE_PENDING",
+  "status": "SOURCE_REPAIR_SMOKE_PASS_PARSER_GENERATION_FAILED_UNACCEPTED",
   "bootstrapAcceptance": false,
   "previousFailure": "checkpoints/compiler-native-v41-decision.json",
   "cause": "@unsafe map_syntax_terms contracted a capture-bearing affine closure; native ERR_RFCS=6",
@@ -20,5 +20,18 @@
   "assertions": ["runtime-dependent shift amount", "below-cutoff index unchanged", "above-cutoff index shifted", "runtime String replacement", "above-substitution index decremented", "constructor/list order and variable names retained"],
   "recovery": "Temporary v41 worktree directories contained no files on resumption; committed native build/failure receipts survived. Reapplied the source repair directly in main and exercised fresh binaries. Initial restored regression authoring attempts failed typechecking and are not runtime evidence.",
   "nativeFullExecution": "PENDING",
-  "newByteFixedpoint": "PENDING"
+  "newByteFixedpoint": "NOT_RUN_PARSER_GENERATION_BLOCKED",
+  "freshParser": {
+    "runId": "release237-v68",
+    "sourcePublic": "14 pass, 207 assertions",
+    "sourceSemantic": "71/71 acceptance, semantic and literal-span parity",
+    "prepareSourceMs": 332716,
+    "failedPrepareMs": 154026,
+    "command": "sh evals/.selfhost_v42_acceptance.sh",
+    "failedCommand": "bun --smol evals/bootstrap_parser_rebuild.ts --prepare --run-id release237-v68 --source-gate checkpoints/bootstrap-parser-rebuild-release237-v68.source-semantic.json",
+    "limitation": "Effectful App is not a complete argument of a terminal named consumer",
+    "owner": "map_operator_term",
+    "sourceContext": "Ast.BodyReply{map_operator_term(term, namespace), source_span}",
+    "cause": "Evaluation-context preparation used a historical seed list; the later exact current cut additionally selects the newly mutual map_operator_term/map_operator_terms SCC"
+  }
 }
