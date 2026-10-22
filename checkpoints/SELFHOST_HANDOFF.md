@@ -70,6 +70,24 @@ The short native43 profile samples25.3% GC. Instrumented higher preparation is
 5619ms out of63011ms reachability; it does not justify blaming body-cache misses
 alone. No accepted43 source or generated image changed in this experiment.
 
+v45 keeps a weak telescope cache: live book signatures are reused, while temporary
+type keys remain collectible. Eight C1/C4 mapper/record/dependent-family runs pass.
+Full8204-body C build passes524886ms, physical4047794976 bytes, clang-O0;
+C bytes exactly match43. Full8192-body JS seed passes28578ms and is byte-identical
+to accepted43's seed SHA b9eb88ab7c4025ddf2a6593aad5186d16b10a0e2670b7a678e307913dfbec0fc.
+This is backend byte parity, not a fresh stage1/stage2 gate.
+The actual native-O0 full workload is REJECTED FOR SPEED: parse31948.469ms,
+expand101927.657ms/31910111 calls, then checker fails to finish before the
+unchanged1800000ms guardian deadline; no emission/result. Fuel construction is
+only839.573ms for all120M cells, disproving it as the dominant cost.
+Do not raise the limit or repeat this O0 run. Preserve `compiler-native-v45-decision.json`;
+the next path is source-checker sharing on JS, not more unoptimized C experiments.
+`compiler-v45-research.md` records source-cited candidates and uncertainty.
+Fresh same-frozen-corpus JS baseline45 passes7720 exports and output semantic
+smoke; bytes19154334 still equal baseline SHA3546e1cd… . Whole compile337101ms,
+checker283962ms wall/123175ms CPU; substantial wall/CPU divergence precludes
+attributing the historical wall difference solely to compiler changes.
+
 ## Completed acceleration — Main40 full stage2 below five minutes
 
 Latest user priority: accelerate the checker and the complete bootstrap, not more

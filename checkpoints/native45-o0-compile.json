@@ -1,0 +1,80 @@
+{
+  "status": "FAIL",
+  "mode": "run",
+  "boundary": {
+    "host": "trusted C file/import loader and serial affine LIFO continuation driver",
+    "sourceAlgorithms": "unchanged canonical Bend parser/expansion/checker/JS library emitter",
+    "hostChecking": false,
+    "hostParsing": false,
+    "embeddedSource": false,
+    "cachedAst": false,
+    "parserFuelRepresentation": "eager native 8M-cell chain per source; JS harness uses lazy cells for the same finite fuel; allocation time remains included in parse",
+    "fuelMemoryEvidence": "per-source native process RSS high-water before/after allocation (not isolated live-byte attribution); guardian samples whole-tree RSS and physical footprint including fuel",
+    "outputPatches": 0,
+    "checksExcluded": 0,
+    "nativeBinaryBootstrap": false
+  },
+  "startedAtUnixMs": 1792647680936,
+  "guard": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 1800000
+  },
+  "guardian": {
+    "status": "FAIL",
+    "reason": "deadline_exceeded",
+    "commandExitCode": -1,
+    "commandSignal": 15,
+    "peakRssBytes": 630063104,
+    "peakFootprintBytes": 936855568,
+    "elapsedMs": 1800019,
+    "timeoutMs": 1800000,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_experiment.ts",
+      "--mode=run",
+      "--phase=compile",
+      "--threads=1",
+      "--corpus=checkpoints/compiler-benchmark-release237-v41.corpus.json",
+      "--build=checkpoints/native45-o0-build.json",
+      "--report=checkpoints/native45-o0-compile.json",
+      "--exports=checkpoints/compiler-benchmark-release237-v41-official-b.json.exports.json",
+      "--internal=run"
+    ],
+    "label": "Native CPU compiler run",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792647680954-07a2a909082cf3b6.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "lastProgress": {
+    "phase": "guardian",
+    "event": "start",
+    "unixMs": 1792647680953,
+    "pid": 48873,
+    "worker": false,
+    "rssBytes": 27115520,
+    "heapUsedBytes": 3987409,
+    "cpuMs": 34.834,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+      "--smol",
+      "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_experiment.ts",
+      "--mode=run",
+      "--phase=compile",
+      "--threads=1",
+      "--corpus=checkpoints/compiler-benchmark-release237-v41.corpus.json",
+      "--build=checkpoints/native45-o0-build.json",
+      "--report=checkpoints/native45-o0-compile.json",
+      "--exports=checkpoints/compiler-benchmark-release237-v41-official-b.json.exports.json",
+      "--internal=run"
+    ],
+    "timeoutMs": 1800000
+  },
+  "failure": {
+    "phase": "guardian",
+    "diagnostic": "deadline_exceeded"
+  }
+}

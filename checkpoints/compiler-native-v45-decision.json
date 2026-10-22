@@ -1,0 +1,161 @@
+{
+  "version": "release237-v45",
+  "status": "BACKEND_BYTE_PARITY_PASS_NATIVE_O0_EXECUTION_REJECTED",
+  "change": "Weak telescope identity cache keeps live signatures reusable while temporary type keys remain collectible; body release and original checked e retention unchanged.",
+  "compilerSha256": "8c33864a67f0fd08d1805929c8f48806c040b219126b29bb31f201f45d6b69e6",
+  "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+  "build": {
+    "report": "checkpoints/native45-o0-build.json",
+    "reportSha256": "3268ba93a1952784d3ff0a4cdddaf83a1060a62a81eb133cdd3c9f5d00edec08",
+    "status": "NATIVE_EXECUTABLE_BUILT_NOT_YET_RUN",
+    "checkedBodies": 8204,
+    "events": 8548,
+    "codegenMs": 391843.64749999996,
+    "codegenCpuMs": 249746.254,
+    "clangMs": 116950,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 3146989568,
+      "peakFootprintBytes": 4047794976,
+      "elapsedMs": 524886,
+      "timeoutMs": 600000,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_experiment.ts",
+        "--mode=build",
+        "--corpus=checkpoints/compiler-benchmark-release237-v41.corpus.json",
+        "--artifact=checkpoints/native45-o0",
+        "--report=checkpoints/native45-o0-build.json",
+        "--cc-opt=0",
+        "--internal=build"
+      ],
+      "label": "Native CPU compiler build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792647147720-d31b767e82a72275.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "ccOptimization": {
+      "level": 0,
+      "flag": "-O0",
+      "officialDefault": false,
+      "diagnosticTradeoff": true
+    },
+    "cSha256": "f72b84f4c59937b077e56386ed5a3115b106cbb78b090f55bd2d5eef49171cc2",
+    "cByteParityWithNative43": true,
+    "artifactSha256": "803554231989d4a84ead11621777d5a81682f80ab123e74634d0a99dddc05b95"
+  },
+  "smoke": {
+    "report": "checkpoints/native45-smoke.json",
+    "reportSha256": "0b5990479b4e9a67f87d90872e219143d27b869fb6dae57c03c7de5b0508f417",
+    "status": "PASS",
+    "semanticExecutions": 8,
+    "cases": [
+      "core_mapper_capture",
+      "record_wide_node",
+      "record_deep_boxed",
+      "family_two_indices"
+    ],
+    "threads": [
+      1,
+      4
+    ],
+    "checkedReleaseTest": "PASS",
+    "guardianElapsedMs": 18372,
+    "guardianPeakFootprintBytes": 185354088,
+    "guardianPeakRssBytes": 274595840
+  },
+  "nativeRun": {
+    "report": "checkpoints/native45-o0-compile.json",
+    "reportSha256": "fef7b14d5348e742671a1b7c0dc556db1af3651ab6b6472ddd57b1641d66a2b2",
+    "status": "FAIL",
+    "guardian": {
+      "status": "FAIL",
+      "reason": "deadline_exceeded",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 630063104,
+      "peakFootprintBytes": 936855568,
+      "elapsedMs": 1800019,
+      "timeoutMs": 1800000,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_experiment.ts",
+        "--mode=run",
+        "--phase=compile",
+        "--threads=1",
+        "--corpus=checkpoints/compiler-benchmark-release237-v41.corpus.json",
+        "--build=checkpoints/native45-o0-build.json",
+        "--report=checkpoints/native45-o0-compile.json",
+        "--exports=checkpoints/compiler-benchmark-release237-v41-official-b.json.exports.json",
+        "--internal=run"
+      ],
+      "label": "Native CPU compiler run",
+      "exitCode": 1,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792647680954-07a2a909082cf3b6.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "stdoutEvidence": "bg_734 artifact://2181 NATIVE_PHASE/NATIVE_FUEL lines",
+    "completedPhases": [
+      {
+        "phase": "parse",
+        "elapsedMs": 31948.469,
+        "modules": 15,
+        "sourceBytes": 4333108,
+        "foreignBytes": 25145,
+        "fuelCells": 120000000,
+        "fuelBuildMs": 839.573
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 101927.657,
+        "calls": 31910111,
+        "resumes": 31910111
+      }
+    ],
+    "failedDuring": "check",
+    "checkCompleted": false,
+    "emitStarted": false,
+    "outputGenerated": false,
+    "decision": "Reject this clang-O0 execution strategy for speed; no limit increase or repeated O0 full run. Do not generalize to optimized native compilation."
+  },
+  "jsSeed": {
+    "report": "checkpoints/selfhost-steps-native-canonical-release237-v45.result.json",
+    "command": "bun --smol evals/checker_core_component_build.ts --file=checkpoints/.bootstrap_compiler_root_v1.bend --exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,checker_step,emit_modules_start,emit_library_start,emitter_step --artifact=checkpoints/selfhost-steps-canonical-release237-v45.js --report=checkpoints/selfhost-steps-native-canonical-release237-v45",
+    "checkedDefinitions": 8192,
+    "eventsFullyValidated": 8530,
+    "rawByteParityWithAccepted43Seed": true,
+    "sha256": "b9eb88ab7c4025ddf2a6593aad5186d16b10a0e2670b7a678e307913dfbec0fc",
+    "guardianElapsedMs": 28578,
+    "peakFootprintBytes": 2668954816,
+    "peakRssBytes": 2462121984,
+    "newFixedpointRun": false
+  },
+  "jsBenchmark": {
+    "report": "checkpoints/compiler-benchmark-release237-v45-js.json",
+    "command": "bun --smol evals/compiler_benchmark.ts --mode=component --corpus=checkpoints/compiler-benchmark-release237-v41.corpus.json --report=checkpoints/compiler-benchmark-release237-v45-js.json --component=checkpoints/selfhost-steps-canonical-release237-v45.js --exports=checkpoints/compiler-benchmark-release237-v41-official-b.json.exports.json",
+    "status": "PASS",
+    "compileMs": 337101.407834,
+    "checkerWallMs": 283961.818916,
+    "checkerCpuMs": 123175.382,
+    "exportCount": 7720,
+    "outputBytes": 19154334,
+    "outputSha256": "3546e1cdb5104feaef7613ee8f0ea66ae70ad2410e150648f26b43accc22f0bd",
+    "outputSemanticSmoke": "PASS",
+    "diagnosticOnly": true,
+    "caveat": "Large wall/CPU divergence; do not attribute historical wall differences solely to implementation changes."
+  },
+  "fixedpoint": {
+    "newRun": false,
+    "latestAccepted": "checkpoints/selfhost-acceptance-release237-v43.json",
+    "nativeBinaryFixedpoint": false
+  },
+  "next": "Keep verified backend weak telescope cache; optimize redundant source-checker reconstruction on the JS path. Do not repeat or extend the failed O0 workload."
+}

@@ -10,6 +10,7 @@ latest one; the GitHub release carries the same notes.
   emitted-compiler smoke recorded separately from genuine bootstrap acceptance.
 - Native C compilation compares canonical shared layouts by identity and releases
   rebuildable body caches between top-level definitions, retaining checked terms.
+  Weak telescope caching reuses live signatures without retaining temporary types.
 - Selfhost syntax shifting, substitution and operator-name rewriting use direct
   list traversals instead of copying an unsafe capture-bearing affine callback.
 - Parser continuation preparation discovers newly mutual-recursive components
@@ -61,7 +62,7 @@ latest one; the GitHub release carries the same notes.
   of demand-driven C ABI layouts, and saturated declarations need no body scan
   to discover promoted binders.
 - JavaScript dependency analysis and emission each prepare one reachable checked
-  body at a time and release transient body/telescope data between declarations.
+  body at a time and release transient body data between declarations.
   Mutually recursive entrypoints retain checked inputs until their last emission
   when no out-of-core reader is installed. C ABI layout construction stays lazy.
   The native selfhost builder uses authenticated canonical compiler bytes,

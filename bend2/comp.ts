@@ -85,7 +85,7 @@ type File = {
   consts: Map<Lay, Map<HTerm, Val>>;
   ids: Map<string, string>;
   taken: Set<string>;
-  teles: Map<HTerm, { doms: Dom[]; ret: HTerm }>;
+  teles: WeakMap<HTerm, { doms: Dom[]; ret: HTerm }>;
   srcs: Map<Name, Set<Name> | null>;
   loops: Map<Name, Name[]>;
   flats: Map<Name, boolean>;
@@ -138,7 +138,6 @@ export type JSOptions = {
     outputUTF16Units?: number;
     memos?: Record<string, number>;
     retainedHigher?: number;
-    retainedTeles?: number;
     segments?: number;
     spins?: number;
     ownFacts?: number;
@@ -891,6 +890,8 @@ function op_name(k: Name): string {
 // Tele
 // ====
 
+// Book-owned signatures survive body-cache release; temporary instantiated
+// types must not be kept alive by their cached telescope.
 function tele_unbind(T: HTerm): { doms: Dom[]; ret: HTerm } {
   return memo(FL.teles, T, () => Bend.tele_unbind(FL.book, T));
 }
@@ -1459,7 +1460,7 @@ function file_new(book: Bend.Book, js: boolean, options: JSOptions = {}): File {
     consts: new Map(),
     ids: new Map(),
     taken: new Set("FID_EXIT FID_ENTER FID_T CID_T".split(" ")),
-    teles: new Map(),
+    teles: new WeakMap(),
     srcs: new Map(),
     loops: new Map(),
     flats: new Map(),
@@ -1503,7 +1504,6 @@ function file_observe(stage: string, k: Name, lines?: string[]): void {
     memos: Object.fromEntries(Object.entries(FL.memo).map(([k, m]) =>
       [k, m.size])),
     retainedHigher: FL.higher.size,
-    retainedTeles: FL.teles.size,
     segments: FL.segs.length,
     spins: FL.spins.length,
     ownFacts: FL.own.size,
@@ -1551,7 +1551,6 @@ function file_release(k: Name, final = false, lines?: string[]): void {
     }
   }
   memo_gc();
-  FL.teles.clear();
   file_observe("release-after", k, lines);
 }
 
@@ -2049,7 +2048,7 @@ function die(m: string): never {
 // Memo
 // ====
 
-function memo<K, V>(m: Map<K, V>, k: K, f: (k: K) => V): V {
+function memo<K, V>(m: { get(k: K): V | undefined; set(k: K, v: V): unknown }, k: K, f: (k: K) => V): V {
   let v = m.get(k);
   if (v === undefined) {
     m.set(k, v = f(k));

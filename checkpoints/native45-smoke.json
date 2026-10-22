@@ -1,0 +1,151 @@
+{
+  "status": "PASS",
+  "compilerSha256": "8c33864a67f0fd08d1805929c8f48806c040b219126b29bb31f201f45d6b69e6",
+  "rows": [
+    {
+      "command": [
+        "bun",
+        "--smol",
+        "bend2/main.ts",
+        "tests/compile/core_mapper_capture.bend",
+        "-o",
+        "checkpoints/native45-core_mapper_capture"
+      ],
+      "elapsedMs": 4300.533583,
+      "output": ""
+    },
+    {
+      "command": [
+        "checkpoints/native45-core_mapper_capture",
+        "--threads",
+        "1",
+        "--gpu",
+        "off"
+      ],
+      "elapsedMs": 9.103374999999687,
+      "output": "capture-ok"
+    },
+    {
+      "command": [
+        "checkpoints/native45-core_mapper_capture",
+        "--threads",
+        "4",
+        "--gpu",
+        "off"
+      ],
+      "elapsedMs": 4.782250000000204,
+      "output": "capture-ok"
+    },
+    {
+      "command": [
+        "bun",
+        "--smol",
+        "bend2/main.ts",
+        "tests/compile/record_wide_node.bend",
+        "-o",
+        "checkpoints/native45-record_wide_node"
+      ],
+      "elapsedMs": 8513.070375,
+      "output": ""
+    },
+    {
+      "command": [
+        "checkpoints/native45-record_wide_node",
+        "--threads",
+        "1",
+        "--gpu",
+        "off"
+      ],
+      "elapsedMs": 7.29645900000105,
+      "output": "1113"
+    },
+    {
+      "command": [
+        "checkpoints/native45-record_wide_node",
+        "--threads",
+        "4",
+        "--gpu",
+        "off"
+      ],
+      "elapsedMs": 6.9852499999997235,
+      "output": "1113"
+    },
+    {
+      "command": [
+        "bun",
+        "--smol",
+        "bend2/main.ts",
+        "tests/compile/record_deep_boxed.bend",
+        "-o",
+        "checkpoints/native45-record_deep_boxed"
+      ],
+      "elapsedMs": 3461.8564590000005,
+      "output": ""
+    },
+    {
+      "command": [
+        "checkpoints/native45-record_deep_boxed",
+        "--threads",
+        "1",
+        "--gpu",
+        "off"
+      ],
+      "elapsedMs": 52.37754099999984,
+      "output": "2749"
+    },
+    {
+      "command": [
+        "checkpoints/native45-record_deep_boxed",
+        "--threads",
+        "4",
+        "--gpu",
+        "off"
+      ],
+      "elapsedMs": 58.07891699999891,
+      "output": "2749"
+    },
+    {
+      "command": [
+        "bun",
+        "--smol",
+        "bend2/main.ts",
+        "tests/compile/family_two_indices.bend",
+        "-o",
+        "checkpoints/native45-family_two_indices"
+      ],
+      "elapsedMs": 1333.8835419999996,
+      "output": ""
+    },
+    {
+      "command": [
+        "checkpoints/native45-family_two_indices",
+        "--threads",
+        "1",
+        "--gpu",
+        "off"
+      ],
+      "elapsedMs": 7.104583000000275,
+      "output": "64"
+    },
+    {
+      "command": [
+        "checkpoints/native45-family_two_indices",
+        "--threads",
+        "4",
+        "--gpu",
+        "off"
+      ],
+      "elapsedMs": 6.653583999999682,
+      "output": "64"
+    },
+    {
+      "command": [
+        "bun",
+        "test",
+        "evals/native_checked_release.test.ts"
+      ],
+      "elapsedMs": 555.4489160000012,
+      "output": "bun test v1.4.2 (744846f84)"
+    }
+  ]
+}
