@@ -62,6 +62,14 @@ It is accepted for semantics, NOT speed: stage2 takes369993.542ms, above five
 minutes. Main40 remains the faster historical measurement. Neither emitted-JS
 proof establishes a self-generated C backend or a native-binary fixedpoint.
 
+v44's closed template callback with an explicit runtime environment is rejected:
+specialization checks the recursive target before it is filled. The tiny native
+build fails canonical checking; no additional unsafe annotation was introduced.
+`compiler-native-v44-decision.json` preserves the reproducer and actual failure.
+The short native43 profile samples25.3% GC. Instrumented higher preparation is
+5619ms out of63011ms reachability; it does not justify blaming body-cache misses
+alone. No accepted43 source or generated image changed in this experiment.
+
 ## Completed acceleration — Main40 full stage2 below five minutes
 
 Latest user priority: accelerate the checker and the complete bootstrap, not more

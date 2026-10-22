@@ -1,0 +1,56 @@
+{
+  "version": "release237-v44",
+  "status": "REJECTED_TEMPLATE_ENVIRONMENT_RECURSIVE_SPECIALIZATION",
+  "acceptedSourceVersion": "969d7a89",
+  "source": "import Base\n\ntype Tree is Data:\n  Leaf{key: String}\n  Branch{children: List<&2, Tree>}\n\ndef map_children(~f: Tree -> String -> Tree, children: List<&2, Tree>, +prefix: String) -> List<&2, Tree>:\n  match children:\n    case Nil{}: Nil{}\n    case child <> rest:\n      f(child, prefix) <> map_children(~f, rest, prefix)\n\n@unsafe\ndef rename(tree: Tree, +prefix: String) -> Tree:\n  match tree:\n    case Leaf{key}: Leaf{String.append(prefix, key)}\n    case Branch{children}: Branch{map_children(~(tree => prefix => rename(tree, prefix)), children, prefix)}\n\ndef input() -> Tree:\n  Branch{[Leaf{\"left\"}, Leaf{\"right\"}]}\n\ndef result(ok: Bool) -> String:\n  match ok:\n    case True{}: \"template-env-ok\"\n    case False{}: \"template-env-failed\"\n\ndef verify(tree: Tree, +prefix: String) -> String:\n  match tree:\n    case Branch{Leaf{left} <> Leaf{right} <> Nil{}}:\n      result(Bool.and(String.eq(left, String.append(prefix, \"left\")), String.eq(right, String.append(prefix, \"right\"))))\n    case _: \"template-env-failed\"\n\ndef run(seed: U32) -> String:\n  +prefix = U32.show(seed)\n  verify(rename(input(), prefix), prefix)\n\ndef main() -> IO(Unit):\n  do IO<Unit>:\n    seed : U32 <- IO.thread_count()\n    IO.print(run(seed))\n\n#|template-env-ok\n",
+  "sourceSha256": "4a73e8784ded3d3c34e2d8c71b15ddb64e30550b4997df59ba8d432cefe1345b",
+  "command": [
+    "bun",
+    "--smol",
+    "evals/heavy_gate.ts",
+    "--memory-mib",
+    "8192",
+    "--rss-mib",
+    "8192",
+    "--poll-ms",
+    "10",
+    "--",
+    "bun",
+    "--smol",
+    "bend2/main.ts",
+    "checkpoints/.native44-template-env.bend",
+    "-o",
+    "checkpoints/native44-template-env"
+  ],
+  "result": {
+    "exitCode": 1,
+    "elapsedMs": 144,
+    "peakFootprintBytes": 48972424,
+    "peakRssBytes": 72564736,
+    "error": "a filled definition (an unfilled law is a dead claim: live code cannot use it)",
+    "definition": "map_children~0",
+    "observed": "rename",
+    "runtimeExecutions": 0
+  },
+  "decision": "Do not integrate: the closed template specialization checks its recursive target before that target is filled. No additional unsafe boundary or checker exception introduced.",
+  "native43Profile": {
+    "diagnosticOnly": true,
+    "command": "node --prof-process checkpoints/native43-v8-profile/isolate-0xc138b4000-90241-native-build.v8.log",
+    "ticks": 19929,
+    "gcTicks": 5037,
+    "termHigherSelfTicks": 1434,
+    "instrumentedReachabilityMs": 63011,
+    "preparedBodies": 9095,
+    "uniquePreparedBodies": 7868,
+    "instrumentedPrepareEventsMs": 5619,
+    "caveats": [
+      "Contains synchronous per-definition journal and memory sampling overhead",
+      "Native C++ symbols are incompletely attributed; no precise native-call claim",
+      "Only reachability and the beginning of C pass1 were observed"
+    ]
+  },
+  "fixedpoint": {
+    "newRun": false,
+    "latestAccepted": "checkpoints/selfhost-acceptance-release237-v43.json"
+  }
+}
