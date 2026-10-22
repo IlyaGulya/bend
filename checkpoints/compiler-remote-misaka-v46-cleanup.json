@@ -1,0 +1,10 @@
+{
+  "status": "ARCHIVED_AND_REMOVED_VERIFIED_RAW_TRANSPORTS",
+  "removedFiles": 408,
+  "removedBytes": 1009229428,
+  "archive": "/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-steps-bootstrap-release237-misaka-v46.evidence.tar.gz",
+  "archiveBytes": 66976360,
+  "archiveSha256": "60da1407eadc94278f7fa5b41d565abf6c4fff005be39cb412733649a617645b",
+  "emittedImagesRetained": true,
+  "completedRunnerRemoved": true
+}

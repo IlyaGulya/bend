@@ -1,0 +1,151 @@
+{
+  "schema": 1,
+  "status": "ACCEPTED_GENUINE_EMITTED_JS_FIXEDPOINT",
+  "version": 46,
+  "sourceCommit": "106c7efd",
+  "host": "misakaindrive",
+  "root": "/Users/ilyagulya/Projects/My/bend",
+  "toolchainDirectory": "/Users/ilyagulya/.cache/bend-selfhost-106c7efd/bin",
+  "hostProbes": [
+    {
+      "host": "misakaindrive",
+      "code": 0,
+      "stdout": "Darwin M-LV6VCFYHGQ 25.5.0 Darwin Kernel Version 25.5.0: Mon Apr 27 20:41:06 PDT 2026; root:xnu-12377.121.6~2/RELEASE_ARM64_T6030 arm64\nProductName:\t\tmacOS\nProductVersion:\t\t26.5.1\nBuildVersion:\t\t25F80\nhw.memsize: 38654705664\nhw.physicalcpu: 12\nvm.loadavg: { 12.13 6.55 5.35 }\nThe system has 38654705664 (2359296 pages with a page size of 16384).\nSystem-wide memory free percentage: 85%\nFilesystem   1024-blocks      Used Available Capacity  Mounted on\n/dev/disk3s5   482797652 352389412 107888120    77%    /System/Volumes/Data\nHOME=/Users/ilyagulya\n/opt/homebrew/bin/bun\n/opt/homebrew/bin/node\n/usr/bin/clang\n/usr/bin/git\n1.2.5\nv26.3.0\n",
+      "stderr": ""
+    },
+    {
+      "host": "nhs",
+      "code": 0,
+      "stdout": "Linux nanomisaka-homeserver 6.8.0-147-generic #147-Ubuntu SMP PREEMPT_DYNAMIC Thu Sep 24 11:33:16 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux\n12\n 13:16:29 up 1 day,  8:16,  3 users,  load average: 0.41, 0.54, 0.67\n               total        used        free      shared  buff/cache   available\nMem:     74096377856 31448100864  1684389888   761032704 42526892032 42648276992\nSwap:     8589930496  3675463680  4914466816\nFilesystem                        1024-blocks      Used Available Capacity Mounted on\n/dev/mapper/ubuntu--vg-ubuntu--lv   569584760 461990856  81737896      85% /\nHOME=/home/ilyagulya\n/usr/bin/node\n/usr/bin/clang\n/usr/bin/git\nv22.22.1\n",
+      "stderr": "sh: 8: bun: not found\n"
+    }
+  ],
+  "unchangedGuard": {
+    "platform": "darwin",
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "phaseTimeoutMs": 600000,
+    "fullBootstrapTimeoutMs": 600000,
+    "maxHeavyChildren": 1
+  },
+  "runtimes": {
+    "bun": "1.4.2",
+    "bunSha256": "35d20dd0263e5c950194434b925454fdfa9ba6e4467da960410fa05b08a7a5b5",
+    "node": "23.11.0",
+    "nodeSha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5",
+    "systemInstallationsModified": false
+  },
+  "archiveHashes": {
+    "source": "d74910f6233d3b33948202f1d94ff260227b280d01835e2927db075b30719bf3",
+    "git": "ac32d2dc2d1779ace69ec2c7e1288138ef6a7d86bfd76ecc83264766bcb416b7",
+    "corpus": "28eb76b5a49b5ae31138d5b70987d2e646a3e3b99abacb7b3a447ee808283613"
+  },
+  "deployment": {
+    "trackedInputFiles": 1263,
+    "uncompressedTrackedBytes": 109592601,
+    "checkoutDiskKiB": 110528,
+    "isolatedToolsAndArchivesDiskKiB": 184940,
+    "frozenCorpusDiskKiB": 4716,
+    "transferredBulkLocalCheckpoints": false,
+    "officialGitKernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e"
+  },
+  "smoke": {
+    "command": [
+      "set -eu",
+      "export PATH=\"/Users/ilyagulya/.cache/bend-selfhost-106c7efd/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin\"",
+      "export BEND_NO_TELEMETRY=1",
+      "cd \"/Users/ilyagulya/Projects/My/bend\"",
+      "bun --smol evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 -- bun --smol bend2/main.ts tests/compile/core_mapper_capture.bend -o checkpoints/misaka46-capture-smoke",
+      "observed=$(bun --smol evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 -- checkpoints/misaka46-capture-smoke --threads 1 --gpu off)",
+      "test \"$observed\" = capture-ok",
+      "printf '%s",
+      "' \"$observed\"",
+      "rm checkpoints/misaka46-capture-smoke"
+    ],
+    "stdout": "capture-ok\n",
+    "guardians": [
+      {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 252755968,
+        "peakFootprintBytes": 135513504,
+        "elapsedMs": 832,
+        "timeoutMs": 600000,
+        "command": [
+          "bun",
+          "--smol",
+          "bend2/main.ts",
+          "tests/compile/core_mapper_capture.bend",
+          "-o",
+          "checkpoints/misaka46-capture-smoke"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792675564351-d93ae46e4c0ff905.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1703936,
+        "peakFootprintBytes": 1245568,
+        "elapsedMs": 631,
+        "timeoutMs": 600000,
+        "command": [
+          "checkpoints/misaka46-capture-smoke",
+          "--threads",
+          "1",
+          "--gpu",
+          "off"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792675566176-4ead1b13cd3b8aea.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    ]
+  },
+  "recipe": [
+    "#!/bin/sh",
+    "set -eu",
+    "export PATH=\"/Users/ilyagulya/.cache/bend-selfhost-106c7efd/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin\"",
+    "cd \"/Users/ilyagulya/Projects/My/bend\"",
+    "export BEND_NO_TELEMETRY=1",
+    "RUN=release237-misaka-v71",
+    "guard() { bun --smol evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 -- \"$@\"; }",
+    "guard bun --smol evals/checker_core_owned_source.ts",
+    "guard bun --smol evals/checker_core_step_lower.ts",
+    "guard bun --smol evals/template_step_lower.ts",
+    "guard bun --smol evals/js_emit_step_lower.ts",
+    "bun --smol evals/bootstrap_parser_rebuild.ts --prepare-source --run-id \"$RUN\"",
+    "guard bun --smol evals/bootstrap_parser_public_gate.ts --parser=\"checkpoints/.bootstrap_parser_rebuild_${RUN}_source.bend\" --entry=parse_module_tokens --report=\"checkpoints/bootstrap-parser-rebuild-${RUN}.source-public.json\"",
+    "guard bun --smol evals/bootstrap_parser_fast.ts --parser=\"checkpoints/.bootstrap_parser_rebuild_${RUN}_source.bend\" --entry=parse_module_tokens --public-report=\"checkpoints/bootstrap-parser-rebuild-${RUN}.source-public.json\" --report=\"checkpoints/bootstrap-parser-rebuild-${RUN}.source-semantic.json\"",
+    "bun --smol evals/bootstrap_parser_rebuild.ts --prepare --run-id \"$RUN\" --source-gate \"checkpoints/bootstrap-parser-rebuild-${RUN}.source-semantic.json\"",
+    "bun --smol evals/bootstrap_parser_rebuild.ts --build-native --run-id \"$RUN\"",
+    "guard bun --smol evals/bootstrap_parser_public_gate.ts --parser=\"checkpoints/.bootstrap_parser_rebuild_${RUN}_generated_fuel.bend\" --entry=parse_with_fuel --report=\"checkpoints/bootstrap-parser-rebuild-${RUN}.candidate-public.json\"",
+    "guard bun --smol evals/bootstrap_parser_fast.ts --parser=\"checkpoints/.bootstrap_parser_rebuild_${RUN}_generated_fuel.bend\" --entry=parse_with_fuel --component=\"checkpoints/bootstrap-parser-rebuild-${RUN}.js\" --component-build=\"checkpoints/bootstrap-parser-rebuild-${RUN}.native-build.result.json\" --public-report=\"checkpoints/bootstrap-parser-rebuild-${RUN}.candidate-public.json\" --report=\"checkpoints/bootstrap-parser-rebuild-${RUN}.candidate-semantic.json\"",
+    "bun --smol evals/bootstrap_parser_rebuild.ts --build --run-id \"$RUN\" --candidate-gate \"checkpoints/bootstrap-parser-rebuild-${RUN}.candidate-semantic.json\"",
+    "bun --smol evals/selfhost_driver_source.ts --parser-build=\"checkpoints/bootstrap-parser-rebuild-${RUN}.native-build.result.json\"",
+    "bun --smol evals/checker_core_component_build.ts --file=checkpoints/.bootstrap_compiler_root_v1.bend --exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,checker_step,emit_modules_start,emit_library_start,emitter_step --artifact=checkpoints/selfhost-steps-canonical-release237-misaka-v46-final.js --report=checkpoints/selfhost-steps-native-canonical-release237-misaka-v46-final",
+    "",
+    "bun --smol evals/selfhost_bootstrap_gate.ts --component=checkpoints/selfhost-steps-canonical-release237-misaka-v46-final.js --component-build=checkpoints/selfhost-steps-native-canonical-release237-misaka-v46-final.result.json --root=checkpoints/.bootstrap_compiler_root_v1.bend --root-manifest=checkpoints/selfhost-steps-driver-source-v1.json --parser=checkpoints/bootstrap-parser-rebuild-release237-misaka-v71.js --parser-build=checkpoints/bootstrap-parser-rebuild-release237-misaka-v71.native-build.result.json --report=checkpoints/selfhost-steps-bootstrap-release237-misaka-v46.json",
+    "bun --smol evals/compiler_benchmark.ts --mode=official --corpus=checkpoints/compiler-benchmark-release237-v41.corpus.json --report=checkpoints/compiler-benchmark-release237-misaka-v46-official.json",
+    "bun --smol evals/compiler_benchmark.ts --mode=component --corpus=checkpoints/compiler-benchmark-release237-v41.corpus.json --report=checkpoints/compiler-benchmark-release237-misaka-v46-js.json --component=checkpoints/selfhost-steps-canonical-release237-misaka-v46-final.js --exports=checkpoints/compiler-benchmark-release237-misaka-v46-official.json.exports.json"
+  ],
+  "lastAcceptedFixedpoint": "checkpoints/selfhost-acceptance-release237-misaka-v46.json",
+  "currentFixedpointAccepted": true,
+  "deadlineNote": "Remote default600000ms was stricter than the previous local1800000ms; physical/RSS8GiB and10ms sampling were unchanged.",
+  "evidenceArchive": {
+    "host": "misakaindrive",
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-steps-bootstrap-release237-misaka-v46.evidence.tar.gz",
+    "sha256": "60da1407eadc94278f7fa5b41d565abf6c4fff005be39cb412733649a617645b",
+    "gzipIntegrityPassed": true
+  }
+}

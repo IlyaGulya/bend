@@ -18,6 +18,8 @@ latest one; the GitHub release carries the same notes.
   preserving typed lexical captures and affine rejection.
 - Checker application-type views retain unchanged application and annotation
   nodes, and reuse referenced nodes beneath bangs instead of copying them.
+  Fresh remote acceptance checks the complete root and all273 fixture executions;
+  unchanged emitted stage-one/stage-two JavaScript bytes match exactly.
 
 - The complete selfhost parser/Template/Checker/JavaScript compiler root now
   reaches an exact stage-one/stage-two byte fixedpoint using its own emitted

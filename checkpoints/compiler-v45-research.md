@@ -25,3 +25,27 @@ The host allocates exactly8M fuel cells per source (`native_compiler_host.c:190-
 `comp.ts` now uses a WeakMap for telescope results: checked-book signature keys stay live and reusable; temporary instantiated type keys are collectible. Body-cache release still retains original checked terms and clears transient body/constant memos. Native45 generated C is byte-identical to native43 C (SHAf72b84f4c59937b077e56386ed5a3115b106cbb78b090f55bd2d5eef49171cc2). Eight C1/C4 executions pass for mapper captures, wide records, deep boxed records and dependent two-index families. Full8204-body build completes in524886ms under the unchanged8GiB/600s guardian. Sequential codegen observations391844 vs428781ms are not an isolated causal speedup or a median; native execution speed is a separate result.
 
 The subsequent actual native-O0 run completed parse31948.469ms and expand101927.657ms (31910111 calls and resumes), but did not finish checking before the unchanged1800000ms deadline. Peak footprint936855568 bytes; no emitted output. All120M fuel cells cost839.573ms total: fuel construction is not the dominant bottleneck. Reject this unoptimized native execution strategy; this is not evidence about optimized native code. The full JS seed regenerated through the weak-cache backend is raw-byte-identical to accepted43's seed (SHAb9eb88ab7c4025ddf2a6593aad5186d16b10a0e2670b7a678e307913dfbec0fc).
+
+## Read-only follow-up while remote46 acceptance runs
+
+The v46 view-sharing edit removes rebuilding, not repeated spine traversal.
+`infer` at `checker.bend:3202-3204` validates the function spine and argument;
+`infer_application_valid:3039-3041` then views that spine and recursively infers
+the function prefix. On ordinary nested applications this repeats prefix walks.
+`application_args` is not a general inference cost: its only nonrecursive
+consumer is the self-recursion termination branch at9633-9655. Likewise
+`recursion_terminates:9685-9689` finds the head and, for a different name,
+recursively visits the function prefix again at9652-9655.
+
+A candidate to measure next is positive immutable-node certification for the two
+bang-validation contexts, rather than skipping validation or caching inferred
+types/affine usage. These validators have no environment/global-scope argument.
+The arena already stores independent certificate bits in `node_closed`, with
+range-checked `node_has_flag` and a positive constructor-tree certificate:
+`checker_arena.bend:532-612`. Reusing this metadata avoids adding an arena array.
+Each new/reused node slot overwrites its flags at959-980. A future certificate
+must keep source/transient region handling and both contexts distinct, and must
+update the existing preservation mask19 at702 without clobbering bound or
+constructor certificates. TermSub normalization and rewind/reuse need semantic
+regressions. No such cache is implemented or timed in46; source inspection does
+not establish its full-workload speedup.

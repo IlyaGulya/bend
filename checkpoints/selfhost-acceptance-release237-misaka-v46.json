@@ -1,0 +1,357 @@
+{
+  "schema": 1,
+  "status": "ACCEPTED_GENUINE_EMITTED_JS_FIXEDPOINT",
+  "version": 46,
+  "sourceCommit": "106c7efd",
+  "host": "misakaindrive",
+  "parserRunId": "release237-misaka-v71",
+  "release": "4ff8545f19b09b7d2b8ca2303668100eac8efd66",
+  "releaseKernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+  "sourceSha256": "5bf145afcbd521945ef1143bc032149cca0af05455d35d36e03f46a895a29470",
+  "nativeRoot": {
+    "sourceSha256": "9c58757eb5d8d3ce938122abab3a3d8854a2cc3dcd54b80dd49780a0bc8e6c82",
+    "artifactSha256": "898a2c7fb63999dad37ed85b899c62eeec225ae33a898088a91efcbc58fced6c",
+    "bytes": 10699214,
+    "checkedBodies": 8192,
+    "eventsFullyValidated": 8530,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 2593144832,
+      "peakFootprintBytes": 2700807136,
+      "elapsedMs": 13700,
+      "timeoutMs": 600000,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/Users/ilyagulya/Projects/My/bend/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_v1.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,checker_step,emit_modules_start,emit_library_start,emitter_step",
+        "--artifact=/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-steps-canonical-release237-misaka-v46-final.js",
+        "--report=/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-steps-native-canonical-release237-misaka-v46-final",
+        "--inputs-sha256=ee59db989e721b189a50fc8ec6576c915164474c88ef14d7aeb6dd90e0d70c60"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792675682604-7823d851c590900f.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "parser": {
+    "status": "PARSER_ACCEPTED_NATIVE_SEMANTICS",
+    "admitted": true,
+    "artifactSha256": "ee68914e5a8e44970bc596afaa87a28282d61b3796d7f5ef3d50b6138235a545",
+    "completed": true,
+    "partial": false,
+    "counts": {
+      "focused": {
+        "total": 23,
+        "accepted": 22,
+        "acceptanceParity": 23,
+        "semanticParity": 23,
+        "literalSpanParity": 23
+      },
+      "whole29": {
+        "total": 29,
+        "accepted": 23,
+        "acceptanceParity": 29,
+        "semanticParity": 29,
+        "literalSpanParity": 29
+      },
+      "literals": {
+        "total": 13,
+        "accepted": 13,
+        "acceptanceParity": 13,
+        "semanticParity": 13,
+        "literalSpanParity": 13
+      },
+      "real": {
+        "total": 10,
+        "accepted": 10,
+        "acceptanceParity": 10,
+        "semanticParity": 10,
+        "literalSpanParity": 10
+      }
+    },
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "sourceSpecificExceptions": 0
+  },
+  "bootstrap": {
+    "status": "PURE_STEP_BOOTSTRAP_FIXEDPOINT",
+    "passed": true,
+    "bootstrapAcceptance": true,
+    "compilerBootstrapGreen": true,
+    "fixtureExecutions": 273,
+    "fixtureByStage": {
+      "seed": {
+        "total": 91,
+        "passed": 91
+      },
+      "stage-one": {
+        "total": 91,
+        "passed": 91
+      },
+      "stage-two": {
+        "total": 91,
+        "passed": 91
+      }
+    },
+    "stageTwoParser": "stage-one emitted parse_with_fuel, not seed parser",
+    "bytes": 18400923,
+    "fixedpoint": {
+      "criterion": "Exact emitted UTF-8 JS bytes; no normalization or patching",
+      "equal": true,
+      "stageOneSha256": "9565582817b74796fe5357fdffb6205124e24cccab52e2aca2d2b277f2adfd42",
+      "stageTwoSha256": "9565582817b74796fe5357fdffb6205124e24cccab52e2aca2d2b277f2adfd42"
+    },
+    "remoteCmpExitCode": 0,
+    "downloadedCmpExitCode": 0,
+    "downloadedStages": [
+      {
+        "stage": "stage-one",
+        "sha256": "9565582817b74796fe5357fdffb6205124e24cccab52e2aca2d2b277f2adfd42"
+      },
+      {
+        "stage": "stage-two",
+        "sha256": "9565582817b74796fe5357fdffb6205124e24cccab52e2aca2d2b277f2adfd42"
+      }
+    ],
+    "phases": [
+      {
+        "stage": "stage-one",
+        "totalMs": 82759.56620899998,
+        "parseAndAdmissionMs": 17062.098250000003,
+        "expandMs": 4234.537499999991,
+        "checkMs": 50896.42725000001,
+        "emitMs": 10566.503208999988
+      },
+      {
+        "stage": "stage-two",
+        "totalMs": 117070.04795899999,
+        "parseAndAdmissionMs": 17692.73449999999,
+        "expandMs": 5481.141709000018,
+        "checkMs": 82266.215791,
+        "emitMs": 11629.955958999984
+      }
+    ],
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 3505111040,
+      "peakFootprintBytes": 2219395776,
+      "elapsedMs": 414330,
+      "timeoutMs": 600000,
+      "command": [
+        "/Users/ilyagulya/.cache/bend-selfhost-106c7efd/bin/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_bootstrap_gate.ts",
+        "--component=checkpoints/selfhost-steps-canonical-release237-misaka-v46-final.js",
+        "--component-build=checkpoints/selfhost-steps-native-canonical-release237-misaka-v46-final.result.json",
+        "--root=checkpoints/.bootstrap_compiler_root_v1.bend",
+        "--root-manifest=checkpoints/selfhost-steps-driver-source-v1.json",
+        "--parser=checkpoints/bootstrap-parser-rebuild-release237-misaka-v71.js",
+        "--parser-build=checkpoints/bootstrap-parser-rebuild-release237-misaka-v71.native-build.result.json",
+        "--report=checkpoints/selfhost-steps-bootstrap-release237-misaka-v46.json",
+        "--worker"
+      ],
+      "label": "Real full selfhost step bootstrap",
+      "exitCode": 0,
+      "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792675696444-ee3c95d4b6c677be.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "workerStackMiB": 256,
+      "workerOldGenerationMiB": 6144,
+      "workerYoungGenerationMiB": 128,
+      "parserFuel": 8000000,
+      "maxHeavyChildren": 1
+    }
+  },
+  "comparison": {
+    "sameFrozenCorpus": true,
+    "own": {
+      "path": "checkpoints/compiler-benchmark-release237-misaka-v46-js.json",
+      "status": "PASS",
+      "compileMs": 70000.533416,
+      "phases": [
+        {
+          "name": "compiler-startup",
+          "wallMs": 103.22120800000002,
+          "cpuMs": 138.654
+        },
+        {
+          "name": "load-parse",
+          "wallMs": 3534.6669580000002,
+          "cpuMs": 4774.501
+        },
+        {
+          "name": "expand",
+          "wallMs": 3601.7498330000003,
+          "cpuMs": 4024.685
+        },
+        {
+          "name": "check",
+          "wallMs": 52240.701083,
+          "cpuMs": 58047.651
+        },
+        {
+          "name": "emit",
+          "wallMs": 10449.513584000008,
+          "cpuMs": 11909.187
+        },
+        {
+          "name": "write-and-hash",
+          "wallMs": 68.86595900000248,
+          "cpuMs": 67.612
+        },
+        {
+          "name": "output-import",
+          "wallMs": 222.52775000000838,
+          "cpuMs": 223.49
+        },
+        {
+          "name": "output-semantic-smoke",
+          "wallMs": 9.526582999998936,
+          "cpuMs": 10.585
+        }
+      ],
+      "exportCount": 7720,
+      "exportSetSha256": "99efc6ef8538e35f5b6f549e39296bae814e654d48558f9ca7ba2aae2b1911f4",
+      "output": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-misaka-v46-js.json.output.mjs",
+        "bytes": 19154334,
+        "sha256": "3546e1cdb5104feaef7613ee8f0ea66ae70ad2410e150648f26b43accc22f0bd"
+      },
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1779531776,
+        "peakFootprintBytes": 1815060048,
+        "elapsedMs": 70548,
+        "timeoutMs": 600000,
+        "command": [
+          "node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "--stack-size=262144",
+          "/Users/ilyagulya/Projects/My/bend/evals/compiler_benchmark.ts",
+          "--worker",
+          "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-misaka-v46-js.json.request.json",
+          "13facc5ba81169ab7556f9674f5cf20775eea2ca1e9a0c8a218d0dccbaea7a38"
+        ],
+        "label": "Comparable full-corpus component compiler",
+        "exitCode": 0,
+        "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792676121571-0264c48cd4abdb08.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    "official": {
+      "path": "checkpoints/compiler-benchmark-release237-misaka-v46-official.json",
+      "status": "PASS",
+      "compileMs": 10099.880291000001,
+      "phases": [
+        {
+          "name": "compiler-startup",
+          "wallMs": 43.16825,
+          "cpuMs": 116.42
+        },
+        {
+          "name": "load-parse-expand",
+          "wallMs": 1094.3746250000002,
+          "cpuMs": 1909.436
+        },
+        {
+          "name": "check",
+          "wallMs": 993.1955410000003,
+          "cpuMs": 2605.018
+        },
+        {
+          "name": "emit",
+          "wallMs": 7947.938875,
+          "cpuMs": 12081.02
+        },
+        {
+          "name": "write-and-hash",
+          "wallMs": 16.651042000001326,
+          "cpuMs": 15.512
+        },
+        {
+          "name": "output-import",
+          "wallMs": 51.78570799999943,
+          "cpuMs": 52.266
+        },
+        {
+          "name": "output-semantic-smoke",
+          "wallMs": 8.545999999998457,
+          "cpuMs": 8.799
+        }
+      ],
+      "exportCount": 7720,
+      "exportSetSha256": "99efc6ef8538e35f5b6f549e39296bae814e654d48558f9ca7ba2aae2b1911f4",
+      "output": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-misaka-v46-official.json.output.mjs",
+        "bytes": 7837393,
+        "sha256": "9a49a9800566217ac632c119b555a2eabc07eb4c1196f7e1ad4f83b9e9630ac9"
+      },
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 4246945792,
+        "peakFootprintBytes": 4456974872,
+        "elapsedMs": 10509,
+        "timeoutMs": 600000,
+        "command": [
+          "node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "--stack-size=262144",
+          "/Users/ilyagulya/Projects/My/bend/evals/compiler_benchmark.ts",
+          "--worker",
+          "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-misaka-v46-official.json.request.json",
+          "cfecbc089242cfcf381c061704e544a8fd68575ee0a93bdcf2456e9277eb2571"
+        ],
+        "label": "Comparable full-corpus official compiler",
+        "exitCode": 0,
+        "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792676110929-1fc5472218dea3f7.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    "outperformedOfficial": false,
+    "wallRatio": 6.930828029553721,
+    "memoryFootprintRatio": 0.40724035924068813
+  },
+  "evidence": {
+    "fullGate": "checkpoints/selfhost-steps-bootstrap-release237-misaka-v46.json",
+    "fullGateSha256": "372e7817873be5707ee9394b553f96414601117719d2d6cc0052f5cffd8cf5e5",
+    "deployment": "checkpoints/compiler-remote-misaka-v46.json",
+    "frozenCorpus": "checkpoints/compiler-benchmark-release237-v41.corpus.json"
+  },
+  "scope": [
+    "Real unchanged emitted JS stage1/stage2 proof; not a self-generated C backend or native-binary fixedpoint.",
+    "Same source version46; host migration, not a claim that a2.36% source edit caused the whole observed wall-time reduction.",
+    "Full bootstrap used default600000ms, stricter than the previous local1800000ms;8GiB footprint/RSS and10ms sampling remained unchanged.",
+    "Stage2 complete self-compilation117070ms is below five minutes; the273-fixture full acceptance gate414330ms is not."
+  ]
+}

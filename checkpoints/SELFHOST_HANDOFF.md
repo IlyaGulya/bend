@@ -4,7 +4,41 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
-## Active speed experiments — v41, fair baseline recorded
+## Latest acceptance — Main46/parser71 on misakaindrive
+
+Source version46 (`106c7efd`) now has genuine fresh emitted-JS acceptance:
+273/273 executions,91 fixtures on the seed and each emitted stage. Both actual
+images are18400923 bytes, SHA256
+`9565582817b74796fe5357fdffb6205124e24cccab52e2aca2d2b277f2adfd42`;
+`cmp` passed remotely and again on downloaded copies. Stage2 uses stage1's
+emitted parser/compiler, with fresh source parsing and complete oracle admission.
+Parser71 passes all75 compiled semantic/span cases. Full seed build validates
+8192 bodies/8530 events in13700ms, physical2700807136 bytes.
+
+Stage1 compilation takes82760ms; stage2 takes117070ms, including parse/admission,
+expansion, checking and emission. The complete273-fixture gate takes414330ms
+and peaks at2219395776 physical bytes/3505111040 RSS. It passed a600000ms deadline
+(stricter than the former local1800000ms), with unchanged8GiB limits and10ms sampling.
+Thus stage2 is below five minutes; the whole acceptance suite is not.
+
+Same frozen50-file/7720-export comparison on this host: official10099.880ms,
+source compiler70000.533ms. Check993.196 versus52240.701ms; emit7947.939 versus
+10449.514ms. Physical peaks4456974872 versus1815060048 bytes. Both unchanged
+outputs and their compiler smokes pass. Source compiler is still6.93x slower
+overall; do not call the host migration an algorithmic speedup.
+
+Use `ssh misakaindrive`, checkout `/Users/ilyagulya/Projects/My/bend`, and prepend
+`/Users/ilyagulya/.cache/bend-selfhost-106c7efd/bin` to PATH. Isolated Bun1.4.2 and
+Node23.11.0 have authenticated binary hashes; system installations were untouched.
+`ssh nhs` also works but is Linux without Bun; no guardian port was needed.
+Only109592601 bytes of tracked source inputs were deployed, not local bulk caches.
+Exact recipes/deployment/archive hashes: `compiler-remote-misaka-v46.json`.
+Compact final proof: `selfhost-acceptance-release237-misaka-v46.json`.
+Full reports and actual images remain ignored evidence, not Git payloads.
+The local parser70 failure below is historical and superseded, not a current blocker.
+`compiler-v45-research.md` records an unimplemented repeated-validation candidate.
+
+## Historical speed experiments — v41 through local v46
 
 `compiler-timing-comparison237-v41.json` records a new source-only frozen workload
 from commit `0b31f1c`:50 files,15 Bend modules,8403 declarations. Unmodified official
@@ -97,18 +131,18 @@ Observed compile281954ms; checker246641ms wall/120262ms CPU versus45's
 Two new semantic boundaries pass the native and source checkers: annotated
 banged partial application returnsBitOne{}, and an incompatible result annotation
 is rejected by both. They are permanent full-bootstrap fixtures.
-v46 is **UNACCEPTED**: fresh parser70 passed14 public tests and71/71 source
+The local v46 attempt was **UNACCEPTED**: parser70 passed14 public tests and71/71 source
 semantic/span cases, but its generation phase hit the unchanged600000ms
 deadline (actual600477ms, physical217253280 bytes). Native parser70 and the
-full v46 stage1/stage2 gate did not start. The last accepted fixedpoint is43.
+full v46 stage1/stage2 gate did not start. At that point the last accepted fixedpoint was43.
 At failure the Mac's load averages were556.82/400.56/314.68 on10 physical cores;
 a process snapshot found1215 processes and no remaining selfhost heavy jobs.
 The contemporaneous official comparison took322949ms wall but36576ms CPU;
 v46 took281954ms wall but156317ms CPU, so it has NOT outperformed official.
 No unrelated processes were killed and no limit was raised. There are no
 configured tool SSH hosts; BEND_HOC is unset and `ssh ... cluster true` fails
-to resolve the cluster alias. Obtain available Mac capacity or cluster access
-before another expensive attempt; use a fresh parser run namespace (not70).
+to resolve that cluster alias. The user subsequently supplied `misakaindrive`
+and `nhs`; the complete remote acceptance above resolves this resource blocker.
 `compiler-sharing-v46.json` records exact recipes, measured results and failure.
 Do not substitute frozen-corpus output parity for a genuine new fixedpoint.
 

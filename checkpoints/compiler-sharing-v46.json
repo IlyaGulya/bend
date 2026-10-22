@@ -1,6 +1,8 @@
 {
   "schema": 1,
   "status": "UNACCEPTED_FRESH_PARSER_PREPARATION_DEADLINE",
+  "attemptScope": "Historical local attempt; the same source version46 subsequently passed complete remote acceptance.",
+  "supersededBy": "checkpoints/selfhost-acceptance-release237-misaka-v46.json",
   "version": 46,
   "release": "2.0.37",
   "change": "Reuse immutable unchanged App/Ann nodes and the existing Ref beneath Bang in application_type_view; preserve transformed-head reconstruction and complete substitution.",
