@@ -122,3 +122,35 @@ generic helper attribution is not exact removable overhead. A future public
 entry fast path must not reset depth for ordinary internal higher-order calls:
 those must keep the existing stack-safety protocol. No emitted image was patched.
 
+## Version49 public entry and challenged theory conclusions
+
+The source emitter now specializes eligible exact-arity public entries only.
+Native root8173/8173, parser75 semantic/span cases, library16 consumer cases,
+and full273-fixture genuine stage1/stage2 byte fixedpoint pass. No internal
+closure depth reset or emitted-output patch. Complete proof/recipe are in
+`selfhost-acceptance-release237-misaka-v49.json` and `compiler-export-entry-v49.json`.
+Actual nhs consecutive48/49 compilation111478/101230ms, phaseCPU132706/120623ms;
+one pair favors49, not a repeated causal result.49seed84375ms is not emitted49.
+Both49runtimes emit identical bytes;48format differs intentionally.
+
+Reading official2.0.37 and the current arena checker disproves repeated
+application-prefix inference: both infer each App once, with one whnf, argument
+check and codomain instantiation per level. Bang/type-view prefix walks repeat,
+but measured request volumes do not justify calling them the main bottleneck.
+Official uses HOAS codomain closures and integrates affine usage with checking;
+selfhost eagerly substitutes affected arena subtrees and separately projects usage.
+
+Existing TermSub is not a safe lazy-substitution acceleration: first force still
+runs full core_subst, charges an extra whnf fuel step, breaks raw inferred-type
+inspectors, and loses structural/identity fast paths. Do not implement this
+deferral or reset64fuel. Head-only substitution needs lazy fields/closures and a
+representation-wide consumer migration, not a one-line substitution change.
+
+A separate local duplication is real: non-erased term_usage_map applications
+derive/whnf the same callee type for quantity, then derive/whnf it again for the
+argument domain. function_type_of has732845 v46 requests, all in usage accounting,
+versus220871 infer calls. Hoisting a single normalized head inside that same
+application can remove recomputation without a cache or weakened check. Preserve
+erased skipping, missing-type fallback, f-before-arg merge, Lambda beta branch,
+arena lifetime and diagnostics. Benefit is unmeasured and bounded; not an8x claim.
+

@@ -4,7 +4,38 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
-## Latest acceptance — Main48/parser73 on misakaindrive
+## Latest acceptance — Main49/parser74 on misakaindrive
+
+Version49, source parent `bc86f3a1`, specializes only exact-arity eligible named
+public ESM calls to the existing uncurried body at fresh depth0. Internal
+curried facades/depth bounds are unchanged. Partial/over-applied, erased,
+returned-function and nullary behavior passes16 actual consumer cases.
+The old manual library probe now supplies the required outer request group.
+
+Fresh parser74 passes75 compiled semantic/span cases. Complete compiler root
+checks8173/8173 bodies and8511 events, zero exclusions/output patches. Seed
+and both actual emitted stages pass273/273 fixtures. Remote and downloaded
+`cmp` pass: both images18330720 bytes, SHA256
+`28061d5eab72b2a0bc560c6963b8f22cd863d7572f102cb627d483606f412e81`.
+Stage1 self-compilation124593ms; stage2 self-compilation151113ms. Full gate
+577612ms, physical2528125240/RSS3721707520 bytes, unchanged8GiB/600s limits.
+Stage2 is below five minutes; the full acceptance suite is not.
+
+`compiler-emitted-linux-v49.json` measures genuine emitted48 then emitted49
+consecutively on nhs:111478 ->101230ms compile, checker86646 ->79821ms.
+Summed compilation-phase CPU132706 ->120623ms. This single pair favors49
+but does not establish a repeated causal speedup. All50 fresh files/15 modules,
+7720 exports and actual output import/semantic smoke pass in each run.
+Version49 seed84375ms is a separate runtime, not the emitted49 timing.
+49seed and49emitted output bytes compare equal;49vs48 intentionally differs.
+Prior official13572ms remains much faster; the official-speed goal is unmet.
+
+Exact executed recipes and source hashes: `compiler-export-entry-v49.json`;
+complete proof: `selfhost-acceptance-release237-misaka-v49.json`. Verified raw
+AST transport1008234098 bytes was archived to66915824 bytes, copied locally,
+then removed. Actual images remain; no generated payload enters Git.
+
+## Previous acceptance — Main48/parser73 on misakaindrive
 
 Version48, source parent `70b80cb4`, unifies the three checker name-equality
 implementations in native-checked Scope.equal_names. Identical strings avoid

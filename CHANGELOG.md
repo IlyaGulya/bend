@@ -25,6 +25,9 @@ latest one; the GitHub release carries the same notes.
   family/kind precedence, alias fallback and nested unsafe-scope behavior.
   Name equality shares one implementation and skips canonicalization for
   identical names while preserving alias and shadowing behavior for distinct ones.
+- Exact-arity named JavaScript library exports enter their checked uncurried
+  bodies directly; partial/over-applied calls keep the curried fallback and
+  internal calls retain their existing bounded trampoline protocol.
 
 - The complete selfhost parser/Template/Checker/JavaScript compiler root now
   reaches an exact stage-one/stage-two byte fixedpoint using its own emitted

@@ -2919,15 +2919,44 @@ def js_emit_foreign(found: Maybe<&2, AST.SourceSpan>, modules: List<&2, Loader.L
       source = String.append(js_runtime(), String.append(js_runtime_extra(), String.append(js_runtime_show(), String.append(js_runtime_cli(), String.append(js_runtime_io(), String.append(js_runtime_array(), String.append(js_runtime_foreign(), String.append(js_runtime_namespace(), String.append(js_constructor_fields_modules(modules), String.append(js_type_modules(modules, catalog), String.append(js_modules(modules, catalog), js_emit_ending(exports, modules, catalog))))))))))))
       EmitSuccess{source}
 
-def js_library_exports(exports: List<&2, String>) -> String:
-  String.append("export default {", String.append(js_library_export_fields(exports), "};\n"))
+# Fresh, fully saturated public calls may enter the checked uncurried body at
+# depth zero. Internal curried facades retain their trampoline/depth protocol.
+# Partial, over-applied, nullary and unsupported declarations keep the same ABI.
+# Concise methods read arguments directly; the saturated path builds no rest array.
+def js_library_export_arguments(remaining: Nat, index: Nat, first: Bool) -> String:
+  match remaining:
+    case 0n: ""
+    case 1n+rest:
+      String.append(js_comma_prefix(first), String.append("arguments[", String.append(Nat.show(index), String.append("]", js_library_export_arguments(rest, (index + 1n : Nat), False{})))))
 
-def js_library_export_fields(exports: List<&2, String>) -> String:
+def js_library_export_apply(key: String, values: String) -> String:
+  String.append("$run($D[", String.append(js_quote(key), String.append("],", String.append(values, ")"))))
+
+def js_library_export_fallback(+key: String) -> String:
+  String.append(js_quote(key), String.append(":(...args)=>", js_library_export_apply(key, "args")))
+
+def js_library_export_named(eligible: Bool, resolved: String, count: Nat, +key: String) -> String:
+  match eligible:
+    case False{}: js_library_export_fallback(key)
+    case True{}:
+      prefix = String.append(js_quote(key), String.append("(){return arguments.length===", String.append(Nat.show(count), String.append("?run_loop(", String.append(js_named_identifier(resolved), "(")))))
+      suffix = String.append(")):", String.append(js_library_export_apply(key, "arguments"), ";}"))
+      String.append(prefix, String.append(js_library_export_arguments(count, 0n, True{}), suffix))
+
+def js_library_export_entry(found: Maybe<&2, EmitNamed>, key: String) -> String:
+  match found:
+    case Some{EmitNamed{resolved, AST.Definition{_, +binders, result, AST.DefTerm{term}, _, _}, owner}}:
+      js_library_export_named(js_named_eligible(resolved, binders, result, term, owner), resolved, js_live_binders(binders), key)
+    case _: js_library_export_fallback(key)
+
+def js_library_exports(exports: List<&2, String>, catalog: EmitCatalog) -> String:
+  String.append("export default {", String.append(js_library_export_fields(exports, catalog), "};\n"))
+
+def js_library_export_fields(exports: List<&2, String>, +catalog: EmitCatalog) -> String:
   match exports:
     case Nil{}: ""
     case +key <> rest:
-      quoted = js_quote(key)
-      String.append(quoted, String.append(":(...args)=>$run($D[", String.append(quoted, String.append("],args),", js_library_export_fields(rest)))))
+      String.append(js_library_export_entry(js_named_lookup(key, catalog), key), String.append(",", js_library_export_fields(rest, catalog)))
 
 def emit_library(modules: List<&2, Loader.LoadedModule>, exports: List<&2, String>) -> EmitResult:
   js_emit_template(template_modules(modules), modules, Some{exports})
@@ -2935,4 +2964,4 @@ def emit_library(modules: List<&2, Loader.LoadedModule>, exports: List<&2, Strin
 def js_emit_ending(exports: Maybe<&2, List<&2, String>>, modules: List<&2, Loader.LoadedModule>, catalog: EmitCatalog) -> String:
   match exports:
     case None{}: js_main(main_type_expr_modules(modules, catalog))
-    case Some{keys}: js_library_exports(keys)
+    case Some{keys}: js_library_exports(keys, catalog)

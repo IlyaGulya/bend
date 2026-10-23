@@ -26,7 +26,7 @@ def emit_modules_start(modules: List<&2, Loader.LoadedModule>) -> JSEmit.Emitter
 
 # Consumer-only diagnostic export; these are program APIs, not compiler APIs.
 def emit_library_probe_start(modules: List<&2, Loader.LoadedModule>) -> JSEmit.EmitterProgress<JSEmit.EmitResult>:
-  JSEmit.emitter_step(JSEmit.EmitterRequest_emit_library{modules, ["zero", "one", "pack", "make_pack", "apply", "identity", "identity_probe", "erased_probe", "specialized_probe"]})
+  JSEmit.emitter_step(JSEmit.EmitterRequestGroup_8{JSEmit.EmitterRequest_emit_library{modules, ["zero", "one", "pack", "make_pack", "apply", "identity", "identity_probe", "erased_probe", "specialized_probe"]}})
 
 def emitter_step(request: JSEmit.EmitterRequest) -> JSEmit.EmitterProgress<JSEmit.emitter_result(request)>:
   JSEmit.emitter_step(request)

@@ -87,6 +87,7 @@ if(isMainThread){
   const higher=api.make_pack(one);
   expect('returned-curried-function',typeof higher,'function');
   expect('higher-order-positional-call',duo(api.apply(higher,zero)),['BitOne','BitZero']);
+  expect('over-applied-returned-function',duo(api.make_pack(one,zero)),['BitOne','BitZero']);
   let liveCalls=0;
   expect('live-host-callback',duo(api.apply(value=>{liveCalls++;return api.pack(value,one);},zero)),['BitZero','BitOne']);
   expect('live-host-callback-evaluated-once',liveCalls,1);
