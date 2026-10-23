@@ -4,6 +4,23 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+## Compiler57 — архитектура и законы, реализация ещё не принята
+
+Нормативный контракт: [SELFHOST_IR_ARCHITECTURE.md](SELFHOST_IR_ARCHITECTURE.md).
+Он фиксирует Checked FIR → lowering → structured Backend IR → JS renderer,
+владение/publish/rewind, occurrence identity отдельно от semantic node identity,
+освобождение тел после lowering, границы runtime descriptors и native ABI.
+Законы F1–F3, L1–L7, B1–B2, G1–G2 имеют явные обязательства и способы проверки.
+Неподтверждённый Bend `law` не считается доказательством: нужны связанные с
+production functions проверяемые `def` либо честно обозначенное runtime evidence.
+
+Новые frontend/backend схемы и renderer записаны; checker propagation, catalog,
+runtime lowering и consumer migration входят в текущую незавершённую интеграцию.
+Новый полный root, corpus, native owner handoff и stage1/stage2 ещё не проверены.
+Рабочий baseline остаётся55; fixedpoint53 не доказывает новую архитектуру57.
+Legacy standalone C emission пока использует явный inspection/readback и не
+является BIR backend; обычный JS compile path не должен делать readback.
+
 ## Compiler56 — FIR/BIR architecture preflight, not production acceptance
 
 Selected working compiler55 is committed as2b3efa80. User explicitly redirects
