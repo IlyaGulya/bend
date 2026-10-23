@@ -1198,8 +1198,53 @@ function mat_arms(t: HTerm) {
 
 function mat_lits(x: HTerm): Row[] {
   const ws: Row[] = [];
-  const key = (t: HTerm) => JSON.stringify(Bend.term_lower(t),
-    (k, v) => k === "s" ? undefined : v?.$ === "Ann" ? Bend.term_strip(v) : v);
+  // Keep the old lowered representation and JSON key equivalence (including
+  // binder names/levels), but stop at a mismatch without allocating key strings.
+  const same = (a: unknown, b: unknown): boolean => {
+    if (a && typeof a === "object" && "$" in a && a.$ === "Ann") {
+      a = Bend.term_strip(a as Bend.LTerm);
+    }
+    if (b && typeof b === "object" && "$" in b && b.$ === "Ann") {
+      b = Bend.term_strip(b as Bend.LTerm);
+    }
+    if (typeof a === "number" && !Number.isFinite(a)) a = null;
+    if (typeof b === "number" && !Number.isFinite(b)) b = null;
+    if (a === b) return true;
+    if (a === null || b === null || typeof a !== typeof b) return false;
+    if (typeof a !== "object") return false;
+    if (Array.isArray(a)) {
+      if (!Array.isArray(b) || a.length !== b.length) return false;
+      for (let i = 0; i < a.length; i++) {
+        const av = a[i], bv = b[i];
+        const ax = av === undefined || typeof av === "function" || typeof av === "symbol";
+        const bx = bv === undefined || typeof bv === "function" || typeof bv === "symbol";
+        if (!same(ax ? null : av, bx ? null : bv)) return false;
+      }
+      return true;
+    }
+    if (Array.isArray(b)) return false;
+    // Kernel-produced plain objects only: spans and omitted values do not
+    // participate, but field order still does, exactly as in the old JSON key.
+    const ar = a as Record<string, unknown>;
+    const br = b as Record<string, unknown>;
+    const ak = Object.keys(ar), bk = Object.keys(br);
+    let i = 0, j = 0;
+    for (;;) {
+      while (i < ak.length) {
+        const k = ak[i], v = ar[k];
+        if (k !== "s" && v !== undefined && typeof v !== "function" && typeof v !== "symbol") break;
+        i++;
+      }
+      while (j < bk.length) {
+        const k = bk[j], v = br[k];
+        if (k !== "s" && v !== undefined && typeof v !== "function" && typeof v !== "symbol") break;
+        j++;
+      }
+      if (i === ak.length || j === bk.length) return i === ak.length && j === bk.length;
+      const k = ak[i++];
+      if (k !== bk[j++] || !same(ar[k], br[k])) return false;
+    }
+  };
   const walk = (t: HTerm, j: number, n: number,
     cov: ((w: Of<"Ctr">) => HTerm) | null) => {
     const h = mat_arms(t).arms[0]?.[1];
@@ -1211,7 +1256,8 @@ function mat_lits(x: HTerm): Row[] {
     const inst = (w: Of<"Ctr">) => (h ? w.x : [w])
       .reduce((f, a) => Bend.term_apply(f, a), end);
     const w = Bend.Ctr("WCon", [probe("b"), probe("t")]) as Of<"Ctr">;
-    const own = arms.length < 2 && (!cov || key(cov(w)) !== key(inst(w)));
+    const own = arms.length < 2 && (!cov
+      || !same(Bend.term_lower(cov(w)), Bend.term_lower(inst(w))));
     const sub = own ? inst : cov;
     for (const [k, a] of arms) {
       walk(a, j + 1, n + (k === "True" ? 2 ** j : 0), sub && ((v) =>

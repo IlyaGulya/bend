@@ -1,0 +1,1079 @@
+{
+  "version": "57p",
+  "status": "ALLOCATION_TIGHT_COVERAGE_KEYS_INTEGRATED_NATIVE_SEED_BYTE_IDENTICAL_CURRENT_C_CLANG_RSS_FAIL",
+  "compilerSha256": "286dad9d2123736849a67b732f4af3125f5fac2d8e1f0d04eb32401aca117b3b",
+  "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+  "change": "Native word coverage compares the same lowered terms structurally; preserves old Ann/span/omitted-value/property-order/literal equivalence. Whole JSON key strings removed; property-key arrays retained, additional filtered arrays/callbacks avoided. No semantic unfolding/cache/typechecker change.",
+  "permanentRegression": {
+    "path": "tests/run/word_match_coverage.bend",
+    "sha256": "d9ffd19522099cd487cee350c984373453136d2bdd5b35e7c7eac15f56474060",
+    "command": [
+      "bun",
+      "--smol",
+      "bend2/main.ts",
+      "tests/run/word_match_coverage.bend",
+      "-o",
+      "checkpoints/.ir57p-word-coverage.js"
+    ],
+    "actualExecution": [
+      "node",
+      "checkpoints/.ir57p-word-coverage.js"
+    ],
+    "actualStdout": "17,27,37,27,27,37,12,16,12,16,16,12\n"
+  },
+  "lifetimeRegression": {
+    "command": [
+      "bun",
+      "test",
+      "evals/native_checked_release.test.ts"
+    ],
+    "passed": 2,
+    "failed": 0,
+    "expectCalls": 4
+  },
+  "privateNativeConsumers": {
+    "status": "PASS",
+    "sourcePatches": 0,
+    "outputPatches": 0,
+    "rows": [
+      {
+        "label": "baseline",
+        "fixture": "word_coverage.bend",
+        "releaseChecked": false,
+        "checkedDefinitions": 348,
+        "jsSha256": "becfde74f120a247fd8c9041822f2cbd1de2d09115d4499784b6b42c60288166",
+        "actual": {
+          "overlap": [
+            17,
+            27,
+            37,
+            27,
+            27,
+            37
+          ],
+          "binder": [
+            12,
+            16,
+            12,
+            16,
+            16,
+            12
+          ]
+        },
+        "expected": {
+          "overlap": [
+            17,
+            27,
+            37,
+            27,
+            27,
+            37
+          ],
+          "binder": [
+            12,
+            16,
+            12,
+            16,
+            16,
+            12
+          ]
+        }
+      },
+      {
+        "label": "baseline",
+        "fixture": "word_coverage.bend",
+        "releaseChecked": true,
+        "checkedDefinitions": 348,
+        "jsSha256": "becfde74f120a247fd8c9041822f2cbd1de2d09115d4499784b6b42c60288166",
+        "actual": {
+          "overlap": [
+            17,
+            27,
+            37,
+            27,
+            27,
+            37
+          ],
+          "binder": [
+            12,
+            16,
+            12,
+            16,
+            16,
+            12
+          ]
+        },
+        "expected": {
+          "overlap": [
+            17,
+            27,
+            37,
+            27,
+            27,
+            37
+          ],
+          "binder": [
+            12,
+            16,
+            12,
+            16,
+            16,
+            12
+          ]
+        }
+      },
+      {
+        "label": "baseline",
+        "fixture": "js_late_fold.bend",
+        "releaseChecked": false,
+        "checkedDefinitions": 348,
+        "jsSha256": "ac71c60575d9e0fd2acad38418b432594885fb8b2184b8a8bef365fecc088a41",
+        "actual": [
+          1,
+          4,
+          4
+        ],
+        "expected": [
+          1,
+          4,
+          4
+        ]
+      },
+      {
+        "label": "baseline",
+        "fixture": "js_late_fold.bend",
+        "releaseChecked": true,
+        "checkedDefinitions": 348,
+        "jsSha256": "ac71c60575d9e0fd2acad38418b432594885fb8b2184b8a8bef365fecc088a41",
+        "actual": [
+          1,
+          4,
+          4
+        ],
+        "expected": [
+          1,
+          4,
+          4
+        ]
+      },
+      {
+        "label": "baseline",
+        "fixture": "word_match_cover_key.bend",
+        "releaseChecked": false,
+        "checkedDefinitions": 353,
+        "jsSha256": "5a0a9f7ea28a570e3b8173ee251ae9a9a5d09d3ab19427ba2318afe05d6d8023",
+        "actual": [
+          [
+            0,
+            0
+          ],
+          [
+            2139095040,
+            2143289344
+          ],
+          [
+            2139095040,
+            2143289344
+          ],
+          [
+            2139095040,
+            2143289344
+          ]
+        ],
+        "expected": [
+          [
+            0,
+            0
+          ],
+          [
+            2139095040,
+            2143289344
+          ],
+          [
+            2139095040,
+            2143289344
+          ],
+          [
+            2139095040,
+            2143289344
+          ]
+        ]
+      },
+      {
+        "label": "baseline",
+        "fixture": "word_match_cover_key.bend",
+        "releaseChecked": true,
+        "checkedDefinitions": 353,
+        "jsSha256": "5a0a9f7ea28a570e3b8173ee251ae9a9a5d09d3ab19427ba2318afe05d6d8023",
+        "actual": [
+          [
+            0,
+            0
+          ],
+          [
+            2139095040,
+            2143289344
+          ],
+          [
+            2139095040,
+            2143289344
+          ],
+          [
+            2139095040,
+            2143289344
+          ]
+        ],
+        "expected": [
+          [
+            0,
+            0
+          ],
+          [
+            2139095040,
+            2143289344
+          ],
+          [
+            2139095040,
+            2143289344
+          ],
+          [
+            2139095040,
+            2143289344
+          ]
+        ]
+      },
+      {
+        "label": "candidate",
+        "fixture": "word_coverage.bend",
+        "releaseChecked": false,
+        "checkedDefinitions": 348,
+        "jsSha256": "becfde74f120a247fd8c9041822f2cbd1de2d09115d4499784b6b42c60288166",
+        "actual": {
+          "overlap": [
+            17,
+            27,
+            37,
+            27,
+            27,
+            37
+          ],
+          "binder": [
+            12,
+            16,
+            12,
+            16,
+            16,
+            12
+          ]
+        },
+        "expected": {
+          "overlap": [
+            17,
+            27,
+            37,
+            27,
+            27,
+            37
+          ],
+          "binder": [
+            12,
+            16,
+            12,
+            16,
+            16,
+            12
+          ]
+        }
+      },
+      {
+        "label": "candidate",
+        "fixture": "word_coverage.bend",
+        "releaseChecked": true,
+        "checkedDefinitions": 348,
+        "jsSha256": "becfde74f120a247fd8c9041822f2cbd1de2d09115d4499784b6b42c60288166",
+        "actual": {
+          "overlap": [
+            17,
+            27,
+            37,
+            27,
+            27,
+            37
+          ],
+          "binder": [
+            12,
+            16,
+            12,
+            16,
+            16,
+            12
+          ]
+        },
+        "expected": {
+          "overlap": [
+            17,
+            27,
+            37,
+            27,
+            27,
+            37
+          ],
+          "binder": [
+            12,
+            16,
+            12,
+            16,
+            16,
+            12
+          ]
+        }
+      },
+      {
+        "label": "candidate",
+        "fixture": "js_late_fold.bend",
+        "releaseChecked": false,
+        "checkedDefinitions": 348,
+        "jsSha256": "ac71c60575d9e0fd2acad38418b432594885fb8b2184b8a8bef365fecc088a41",
+        "actual": [
+          1,
+          4,
+          4
+        ],
+        "expected": [
+          1,
+          4,
+          4
+        ]
+      },
+      {
+        "label": "candidate",
+        "fixture": "js_late_fold.bend",
+        "releaseChecked": true,
+        "checkedDefinitions": 348,
+        "jsSha256": "ac71c60575d9e0fd2acad38418b432594885fb8b2184b8a8bef365fecc088a41",
+        "actual": [
+          1,
+          4,
+          4
+        ],
+        "expected": [
+          1,
+          4,
+          4
+        ]
+      },
+      {
+        "label": "candidate",
+        "fixture": "word_match_cover_key.bend",
+        "releaseChecked": false,
+        "checkedDefinitions": 353,
+        "jsSha256": "5a0a9f7ea28a570e3b8173ee251ae9a9a5d09d3ab19427ba2318afe05d6d8023",
+        "actual": [
+          [
+            0,
+            0
+          ],
+          [
+            2139095040,
+            2143289344
+          ],
+          [
+            2139095040,
+            2143289344
+          ],
+          [
+            2139095040,
+            2143289344
+          ]
+        ],
+        "expected": [
+          [
+            0,
+            0
+          ],
+          [
+            2139095040,
+            2143289344
+          ],
+          [
+            2139095040,
+            2143289344
+          ],
+          [
+            2139095040,
+            2143289344
+          ]
+        ]
+      },
+      {
+        "label": "candidate",
+        "fixture": "word_match_cover_key.bend",
+        "releaseChecked": true,
+        "checkedDefinitions": 353,
+        "jsSha256": "5a0a9f7ea28a570e3b8173ee251ae9a9a5d09d3ab19427ba2318afe05d6d8023",
+        "actual": [
+          [
+            0,
+            0
+          ],
+          [
+            2139095040,
+            2143289344
+          ],
+          [
+            2139095040,
+            2143289344
+          ],
+          [
+            2139095040,
+            2143289344
+          ]
+        ],
+        "expected": [
+          [
+            0,
+            0
+          ],
+          [
+            2139095040,
+            2143289344
+          ],
+          [
+            2139095040,
+            2143289344
+          ],
+          [
+            2139095040,
+            2143289344
+          ]
+        ]
+      }
+    ]
+  },
+  "privateCompleteRootJsSmoke": {
+    "passed": true,
+    "sourceRoot": "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_v1.bend",
+    "rootSha256": "e404aea222d4b03b76d33804447bbccd0f7f8712ff7ee95100654525a40f224c",
+    "compilerSha256": "9fc96bda52864b8d27b5c81d29b21c30b8a370eb8826362385ef73d2ee0a6200",
+    "nativeBodies": 8382,
+    "events": 8772,
+    "outputSha256": "c27cead81e2171be74d19061c5307c216c2c840e66dc422e3007ae03537f068a",
+    "outputBytes": 12739684,
+    "exactNativeSeedBytesEqual": true,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "nativeValidationMs": 4998.750375,
+    "emissionMs": 13199.175583000002,
+    "elapsedMs": 18197.928916
+  },
+  "freshParser": {
+    "status": "PARSER_ACCEPTED_NATIVE_SEMANTICS",
+    "admitted": true,
+    "receiptSha256": "894243cb082df421c2a6af30b457aa28917eed7b1f373198b297e133c85b9889",
+    "artifactSha256": "1464037ba20c190ea51083d5824665fa665ce8d5657264544f4515e2339a3ee0",
+    "sourceSemanticGate": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-source-semantic-a.json",
+      "sha256": "8e09b9c310c2926ccd16bd0f0c5e81dae47e1bc1a8a3f72748d5b244fce9c7dd",
+      "phase": "source",
+      "evaluationMode": "source-preparation",
+      "rows": 71,
+      "parserSha256": "41768ddc5dc0e5e014892aaaa10ec26428e1380c940cce908be6cf6a3a5e46f9",
+      "entryPoint": "parse_module_tokens",
+      "publicRegressionPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-source-public-a.json",
+      "publicRegressionSha256": "1947ccdb9cb7078513ea4d823361e20be23327164aefa55f894d8ea8d7715cdd",
+      "publicRawOutputPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-source-public-a.json.output.txt",
+      "publicRawOutputSha256": "b83f69664672de9ca2edd2f6ca8cfa964ce18432a6b5128a8788b9d8eccc6c28",
+      "authenticatedInputs": {
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-source-semantic-a.json": "8e09b9c310c2926ccd16bd0f0c5e81dae47e1bc1a8a3f72748d5b244fce9c7dd",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_parser_rebuild_ir57p-admit-a_source.bend": "41768ddc5dc0e5e014892aaaa10ec26428e1380c940cce908be6cf6a3a5e46f9",
+        "/Users/ilyagulya/Projects/My/bend/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+        "/Users/ilyagulya/Projects/My/bend/bend2/comp.ts": "286dad9d2123736849a67b732f4af3125f5fac2d8e1f0d04eb32401aca117b3b",
+        "/Users/ilyagulya/Projects/My/bend/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/lexer.bend": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+        "/Users/ilyagulya/Projects/My/bend/evals/bootstrap_parser_fast.ts": "20480eb8de7bd0685d6434374bb34010f282adf4c640ddcd18114ab13aa58e69",
+        "/Users/ilyagulya/Projects/My/bend/evals/bootstrap_parser_public_gate.ts": "a0b70c11f7be103d29b0d9db1ef68ab589eb20b85f76d272c872f08d7e27840c",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts": "47a12205abd374fd69d7dac30ee9fb45d7203cad2790870511387cd2efc22251",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate_native.c": "f5aecf8308caebc72dccf8986733b37137d448021ee378302cfcd038381b7aa9",
+        "/Users/ilyagulya/Projects/My/bend/evals/bootstrap_ast_transport.ts": "67a5ca2cf64b50053f0f05fcd4f189b3fbdf9589257ae4f4540127cfc12d23e5",
+        "/Users/ilyagulya/Projects/My/bend/evals/parser_full_semantic_normalize.ts": "75cb2932823938cabdc462c30b0b8a12669e6e8ced2a8525de04a9a71081f64e",
+        "/Users/ilyagulya/Projects/My/bend/evals/parser_full_graph.ts": "27f985053761fd8192b845988f6047e59355faf686b3c36f079d3d8fad545f86",
+        "/Users/ilyagulya/Projects/My/bend/evals/bootstrap_source_oracle.ts": "c6ab51ae9e37b584065f2358b2c29cf11504f4b8886c23803f9b5217fc350223",
+        "/Users/ilyagulya/Projects/My/bend/evals/bootstrap_parser_eval_abi.ts": "ba1020decf0c77c5b8f3982f65014aa64f7293a243ec74be0535598b806c6065",
+        "/Users/ilyagulya/Projects/My/bend/evals/parser_full_fuel_smoke.ts": "866023d56ee7f2e0bdda9ac51e3c427eb52592a67263de22757af33e41f45dec",
+        "/Users/ilyagulya/Projects/My/bend/evals/bootstrap_token_worker.mjs": "0db4824663dcb69038d155f552d407074935293d7a4594c5665a577d5fb6f4dc",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-real-source-corpus.json": "0c86976251badbf22ce010fdd203515ba89120750d626e36e3d96511748831c0",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-minimized-stage0-oracle.json": "06f02c56eac202d6ed84bc06cd9aa4ee2796031dfeb2fe7d4eaec80716acdb87",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-new-minimized-stage0-oracle.json": "e4fad24c9f69338f75c7b1e82cae6c071ad3e0c9dbfdda830bce03fc5d380f30",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-natural-expression-fixtures.json": "55ccc136198b1f7db002993045c27e5b83d053f0107649ed363621ab2a0bcf1b",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-binder-identity-fixtures.json": "222353825f84cc53c3bba4f476d0fa414f26e2def7c90e2e564dc1a116cdd13c",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-local-pattern-fixtures.json": "e5900f8d7de78e33ca51b8b2edff2498abca3b73fd530fc45ef0284f4f35a447",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-signature-fixtures.json": "ff019e99e5b812bf79f49d5815d26bfcf72d419f950f566c6ed42e4a25c6ac03",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-empty-match-fixtures.json": "b4bdbd2dca1f2a14d3f6007f890a1aa2daa243808fcec90ab33057377dbe94aa",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-newline-expression-fixtures.json": "2d1302bcbdd2be1ea116ea7e0c168b7ca22e89fa5fa39c39fb4198b3e11194fb",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_owned_driver_v1.bend": "66c2bbff0891a6a9ab92d588854e7828748cfc6cd7ba360bb4ae13744995af66",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_emit.bend": "1879ff7793f295c88aaccf1f59d20ebe4d292c728451d0191e986032be13faa6",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_owned_v1.bend": "439ebf50a6a78169c6ffe93e476da31e26254f84fb119296de9fe4799f518c32",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/parser.bend": "eade8cec5cb889d4e2ac346b5afaf363e09823862cd46acdb6e4271f6a7501dd",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-lexer-token-producer-release237-3f009d1f545e5e57741a40ad96bdfa9af66734f33439d5ac0402dd356f9baee1.js": "3f009d1f545e5e57741a40ad96bdfa9af66734f33439d5ac0402dd356f9baee1",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-source-public-a.json": "1947ccdb9cb7078513ea4d823361e20be23327164aefa55f894d8ea8d7715cdd",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-source-public-a.json.output.txt": "b83f69664672de9ca2edd2f6ca8cfa964ce18432a6b5128a8788b9d8eccc6c28",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend": "fb8651ab2e6304faded5eb312ffe95175a177254f7dd704eca7a9b0896a40e31",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/index_lookup.bend": "caef5856607bff18b9a5dfc529eee6c6360a83d0963008420888a998274bd9f2",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/js_emit_owned_v1.bend": "23a4ffca36187cc3474d5e6c6b6b0347d019215c216ca243b1cd76662efa30d6",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_ir.bend": "0c4c67e38dbf34e04c2378863ec48a7222d2f762551baaa388f200f2a7d8c83b"
+      }
+    },
+    "candidateSemanticGate": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json",
+      "sha256": "844dd4ccf69d6f42be3a7cd7b1617ade83ed2458f5345aea8f0dcf8b43757156",
+      "phase": "candidate",
+      "evaluationMode": "native-artifact",
+      "rows": 75,
+      "parserSha256": "9a7696eef1fc4965a7f9d8fc36e4f6bb779c51e4d1623ea3d04f5e1c3a6eaa65",
+      "entryPoint": "parse_with_fuel",
+      "publicRegressionPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-public-a.json",
+      "publicRegressionSha256": "9dc924efa7eb38e514610893950fdf40944bb0f319771ba3f322c46d0588efe5",
+      "publicRawOutputPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-public-a.json.output.txt",
+      "publicRawOutputSha256": "cfa87019c81bace7bfcaaf19ee2fef7316b1d6906c6fd820c661cc63491c0915",
+      "component": {
+        "artifactPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-parser-rebuild-ir57p-admit-a.js",
+        "artifactSha256": "1464037ba20c190ea51083d5824665fa665ce8d5657264544f4515e2339a3ee0",
+        "nativeBuildPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-parser-rebuild-ir57p-admit-a.native-build.result.json",
+        "nativeBuildSha256": "69080f1e7e2eb90e1b9fa839fdd968842b9ab3983608c08301533b4497ed1dd3",
+        "provenancePath": "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-parser-rebuild-ir57p-admit-a.native-build.provenance.json",
+        "provenanceSha256": "97e428c8169b9e289d10dffaf1b3a362ecf9f23ddd0ac203b3ca1a204b9f9bed"
+      },
+      "authenticatedInputs": {
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json": "844dd4ccf69d6f42be3a7cd7b1617ade83ed2458f5345aea8f0dcf8b43757156",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_parser_rebuild_ir57p-admit-a_generated_fuel.bend": "9a7696eef1fc4965a7f9d8fc36e4f6bb779c51e4d1623ea3d04f5e1c3a6eaa65",
+        "/Users/ilyagulya/Projects/My/bend/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+        "/Users/ilyagulya/Projects/My/bend/bend2/comp.ts": "286dad9d2123736849a67b732f4af3125f5fac2d8e1f0d04eb32401aca117b3b",
+        "/Users/ilyagulya/Projects/My/bend/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/lexer.bend": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+        "/Users/ilyagulya/Projects/My/bend/evals/bootstrap_parser_fast.ts": "20480eb8de7bd0685d6434374bb34010f282adf4c640ddcd18114ab13aa58e69",
+        "/Users/ilyagulya/Projects/My/bend/evals/bootstrap_parser_public_gate.ts": "a0b70c11f7be103d29b0d9db1ef68ab589eb20b85f76d272c872f08d7e27840c",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts": "47a12205abd374fd69d7dac30ee9fb45d7203cad2790870511387cd2efc22251",
+        "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate_native.c": "f5aecf8308caebc72dccf8986733b37137d448021ee378302cfcd038381b7aa9",
+        "/Users/ilyagulya/Projects/My/bend/evals/bootstrap_ast_transport.ts": "67a5ca2cf64b50053f0f05fcd4f189b3fbdf9589257ae4f4540127cfc12d23e5",
+        "/Users/ilyagulya/Projects/My/bend/evals/parser_full_semantic_normalize.ts": "75cb2932823938cabdc462c30b0b8a12669e6e8ced2a8525de04a9a71081f64e",
+        "/Users/ilyagulya/Projects/My/bend/evals/parser_full_graph.ts": "27f985053761fd8192b845988f6047e59355faf686b3c36f079d3d8fad545f86",
+        "/Users/ilyagulya/Projects/My/bend/evals/bootstrap_source_oracle.ts": "c6ab51ae9e37b584065f2358b2c29cf11504f4b8886c23803f9b5217fc350223",
+        "/Users/ilyagulya/Projects/My/bend/evals/bootstrap_parser_eval_abi.ts": "ba1020decf0c77c5b8f3982f65014aa64f7293a243ec74be0535598b806c6065",
+        "/Users/ilyagulya/Projects/My/bend/evals/parser_full_fuel_smoke.ts": "866023d56ee7f2e0bdda9ac51e3c427eb52592a67263de22757af33e41f45dec",
+        "/Users/ilyagulya/Projects/My/bend/evals/bootstrap_parser_native_semantic_worker.mjs": "039879d770042fd54fe57ef1a1f7ca65424e09025518f705e611ecb2d213a288",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-parser-rebuild-ir57p-admit-a.native-build.result.json": "69080f1e7e2eb90e1b9fa839fdd968842b9ab3983608c08301533b4497ed1dd3",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-parser-rebuild-ir57p-admit-a.native-build.provenance.json": "427d55f761816a05308e90877cd1c3bf8be1ca9f9d61e330726182470db15d25",
+        "/Users/ilyagulya/Projects/My/bend/evals/checker_core_component_build.ts": "3630bcb65246cd0fab7c5bf8e600d0b6e1508db43eff58dc849c9b40d9c02fdb",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/args.js": "ed1a7e7b73ae7fe58ac6d428d2762b66f223f4c70a165570fc5d68dc874ddc0b",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_close.js": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_open.js": "6f531ac205dab98dd366111cdcc5eed69fb9058350ca715f3419065cd979b088",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_write.js": "377d3e938ce3cc9f083c662b69d34e3a0cf391c92ddaf3fca8a4b28c78662da7",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/chan.js": "007ff7505af9effc20fccfa3d26eaf89a382d6295839b27df119a1704a3f86d7",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_close.js": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_open.js": "dd549f5f05eb896aef9a3a02ffecf2ee902e653f5463be72781edab1cd1180ae",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_read.js": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_size.js": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_write.js": "4fe307538beb1047add7646f52df6e382a1da5d8999d8fe96969bd5055bc9b59",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/get_env.js": "9a4fc592e447607553bdb08b194a9ede90dbae3660507687752f58ea42892dba",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/listener_close.js": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/now.js": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/print_err.js": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/print.js": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/process_run.js": "9ce0c5853ab8059614f115d99b1d0ba845fb23c056a6965a59e645d155bd58c1",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/random_u32.js": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/sleep.js": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/socket_close.js": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/spawn.js": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_accept.js": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_connect.js": "a20819822e4ce18c8878b94e6ee70466833415eb9ebc2b6a39b65cabfcc553c9",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_listen.js": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_recv.js": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_send.js": "ea68cc521fa9b5603c3fccebbf19ecebcd26bf1a8af644ff1f13cd14ba9fe733",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/thread_count.js": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_bind.js": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_recv_from.js": "d6f88b08f578f088b4ff257a7e544e4fbbf46f375aee3881ba4d44e25ed890d8",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_send_to.js": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_close.js": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_frame.js": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_grab.js": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_open.js": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_set_title.js": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+        "/Users/ilyagulya/Projects/My/bend/bend2/effs/write.js": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-parser-rebuild-ir57p-admit-a.js": "1464037ba20c190ea51083d5824665fa665ce8d5657264544f4515e2339a3ee0",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-real-source-corpus.json": "0c86976251badbf22ce010fdd203515ba89120750d626e36e3d96511748831c0",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-minimized-stage0-oracle.json": "06f02c56eac202d6ed84bc06cd9aa4ee2796031dfeb2fe7d4eaec80716acdb87",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-new-minimized-stage0-oracle.json": "e4fad24c9f69338f75c7b1e82cae6c071ad3e0c9dbfdda830bce03fc5d380f30",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-natural-expression-fixtures.json": "55ccc136198b1f7db002993045c27e5b83d053f0107649ed363621ab2a0bcf1b",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-binder-identity-fixtures.json": "222353825f84cc53c3bba4f476d0fa414f26e2def7c90e2e564dc1a116cdd13c",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-local-pattern-fixtures.json": "e5900f8d7de78e33ca51b8b2edff2498abca3b73fd530fc45ef0284f4f35a447",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-signature-fixtures.json": "ff019e99e5b812bf79f49d5815d26bfcf72d419f950f566c6ed42e4a25c6ac03",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-empty-match-fixtures.json": "b4bdbd2dca1f2a14d3f6007f890a1aa2daa243808fcec90ab33057377dbe94aa",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/bootstrap-newline-expression-fixtures.json": "2d1302bcbdd2be1ea116ea7e0c168b7ca22e89fa5fa39c39fb4198b3e11194fb",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_owned_driver_v1.bend": "66c2bbff0891a6a9ab92d588854e7828748cfc6cd7ba360bb4ae13744995af66",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_emit.bend": "1879ff7793f295c88aaccf1f59d20ebe4d292c728451d0191e986032be13faa6",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_owned_v1.bend": "439ebf50a6a78169c6ffe93e476da31e26254f84fb119296de9fe4799f518c32",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/parser.bend": "eade8cec5cb889d4e2ac346b5afaf363e09823862cd46acdb6e4271f6a7501dd",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-public-a.json": "9dc924efa7eb38e514610893950fdf40944bb0f319771ba3f322c46d0588efe5",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-public-a.json.output.txt": "cfa87019c81bace7bfcaaf19ee2fef7316b1d6906c6fd820c661cc63491c0915",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-cons.json": "49968c5cae8ddae39600521ed37b4efc5e855b896c18aff0d268175fbc16219f",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-cons.json.output.txt": "8e7abed158c4b7bb4b3cc39ddc191ee7bbaf92046622e91d46ecef1f731c8dc4",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-tuple.json": "2886e05bb482794132630766ae319e38531747f1ddcb4129eaa4a908c134f23b",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-tuple.json.output.txt": "f5eb987f4cf47f7dffb9396ecf14f5d38c1373098d2db394d75a4954a4ddf562",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-char.json": "5ee25bc1d4a0b27e8deb5e3030e456d1a415692384d5dd8d81d836f977310a17",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-char.json.output.txt": "daa458316701fb6af6639adb81a0ff19a151bd57c76c26f3cc65ee3d7329e1a2",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-multi.json": "4dcadf47383429c072395ab3b1ce3a0168b4a49d10317fc3a6e78c2d00ccb42a",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-multi.json.output.txt": "704f67caa7d42c51020746e127b6a3742cbc23c8ae0cf02966e7a821a234b018",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-indexed-erased.json": "62babfbb1ec85d33d11227461d4bdc05ab37517c37541d96161456d7649092e1",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-indexed-erased.json.output.txt": "39feb72f0f9190f01a856f3374ec3d6beecc084c001a642e9238accdfd048bd2",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-nat-prefix.json": "9ad237e6fc69811082582d989ca5d223bb07a88341100e9c61964276dbe6c23b",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-nat-prefix.json.output.txt": "61244d0561b44b5b680e3a8423b95f1584dd3803dda1a606a8359d93d9bfd050",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-unsafe-line.json": "507466f58453d23dd6f52343a0151db3a4f1c04a1d942400b827a87ea730f532",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-unsafe-line.json.output.txt": "9ee17d95775e5738964a9292293a8004260d4d0a9170ec1a21730687c8319b89",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-unsafe-inline.json": "d2b383a6b4fcc8d75bca0705d434e1e5b4f96044365b7077a77d53678f301578",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-unsafe-inline.json.output.txt": "e357e9f550dc1091d8f68062c6fca15df70ae7450b872d5a5d3a9c38773f4c0c",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-nat-expression-spaced.json": "71bc28d0a0d659c6511843cbea96ebaf45581b7889c05c96e5e58c4999d11191",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-nat-expression-spaced.json.output.txt": "b6113ff471b3d6e499704e2bd5c8897cb0f87ad017f0f3610ed2c5c1f56723fb",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-nat-expression-adjacent.json": "04552b73d7d15a6e15ca7d7b31cc2227d71d1f3a76b6c5ad5b06265882a78f1b",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-nat-expression-adjacent.json.output.txt": "1ac81de9f113c7bb7e1a9a2c380f2da72ef3c29eb83b5d284e155385e640f861",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-nat-expression-rhs-space.json": "6b28b290c075029dace452620b63c24916f46e17630c48d88f3b7a80a3e4f9a9",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-nat-expression-rhs-space.json.output.txt": "5dc214aec57b2153ec94b4b702201e9ae91a085c3bb09a34e510266ac6407ece",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-case-binder-identity.json": "3ce52d151474e8fa7645ad59c4559016d67cfdbbf01ec3ef83aa23750474f909",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-case-binder-identity.json.output.txt": "78361431f07d53b8ed6780f752c1f00649212d6789d2d03f44845e5190398bad",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-tuple-local.json": "fe798be070e6eebd2691f6b6540b15cf52c672fd1fd54cc23db24d3a1e4d706b",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-tuple-local.json.output.txt": "573c0ccad730d0964b483642cdc5ee9b7dafaa29299b740ac7bc21dd2f37ac1b",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-nested-angle-adjacent.json": "97da7c9e6ce14ee03dc56c71b84cea68e055a2890c23536b9e0e885a80a7a3a2",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-nested-angle-adjacent.json.output.txt": "7817eab1124e87697abd1669ba643bc1a7512bcbbedb0cfc5de0c660b478a61b",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-nested-angle-spaced.json": "ed6f4097c8c925e901ba06fa9bf776ab91befa49e6b083f38a7fdbca3c840842",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-nested-angle-spaced.json.output.txt": "13c77e04272f7ade5656fcd75ea31ddc0e83fb53685718306b2963569cf15dd9",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-multiline-result.json": "6892f14e799cbbb1275515add264de40d47987c310249b80227bfa4de19f3d14",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-multiline-result.json.output.txt": "54b74625f0e9ae23e6472590f64f604e7b2b2116855d9dece919ebf10e83c0af",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-file-result-minimized.json": "c1e7a1a0e27e2a05697d8ae387a9d68d6cb2205ab5d3485799ec5de1e90f9ce4",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-file-result-minimized.json.output.txt": "343ff4d2a0171803ce30eec81666baf1fdc1ac5f85c4955ed85c9bacccd2bd6d",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-pair-chain-minimized.json": "9ece08024b0b2d6db0d1b83621cb42607a7e73948ce7618938bd1355b8bc661d",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-pair-chain-minimized.json.output.txt": "a28e6fd4b6fd263f75ce32d868da0bbdfdb2f7ff15b5e23438ba1fbbef51dc18",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-generic-pair-chain-minimized.json": "9b5eae7f350395db35ca5467bbdfcdb2089d60c2f0392271de48531935545fc7",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-generic-pair-chain-minimized.json.output.txt": "a22ea870eb5f9291f92b57963eae8e2ea231f126773461abc28336f7dcc570c6",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-empty-match-eof.json": "d750805bdc4db22f17d01e51b5e1fbba774e86c3c05f07d6e94aefbc873a8874",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-empty-match-eof.json.output.txt": "32a86264b54593167d8fee73c9232506bd3b1610d1c17733d86ad2820627ffeb",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-empty-match-next-declaration.json": "ca8fc659887c917a47757d207da87fe01a09c96532b984d276444652ba3f28a4",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-empty-match-next-declaration.json.output.txt": "e5f6de7bbea36b63b369ed59675b44fb4fb626f30c22cc505315d5c405253ef7",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-newline-cons-continuation.json": "3940c3c47ba533c9b215211c9386e0fb58ae2b6d3de48853df691135ce76a345",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-newline-cons-continuation.json.output.txt": "7ee9a204b8b6e8058fb06dec9084da0b353ac85bf4898d34c6b001b6240900a7",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-newline-parenthesis-boundary.json": "9b6139aeb03358a39c5556258eb9d20178e48ae124c748910b472f0485853980",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-focused-newline-parenthesis-boundary.json.output.txt": "d009bd97a48a96c834ede946e3709cfebb62d9a0163e208ee71e8566109cb0c8",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-empty.json": "76f16d7a58d4f986525f64b1ed382716e53e9237948255f43582157fb6f04fa5",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-empty.json.output.txt": "8e3e5039e8bb6de8637b4d1ffb8a67a5d76c61fa347de147610a46fb788bf76e",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-base-import.json": "3495d1da68a14cb8078b1be0ad407f49c2ca6503a6ebaefc57d0a79300bb04d4",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-base-import.json.output.txt": "6575be3f5e824e9949e8394e5257f48d626944bba9824332ae3cf91cf0a96448",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-data-constructors.json": "1e9ed6dce73098d600aca53bc99247f46eed77bcb8462610f14af3314654cb3c",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-data-constructors.json.output.txt": "9cb5523807cecf888d7a939939e44103a8f85bd3d6f488dfe1a12b3aec3de7cc",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-constant-definition.json": "fd48f12d79052284fc22f75b7e0a49c6e10db6e386145c7d97acaf8937e6c699",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-constant-definition.json.output.txt": "027d9028b81d44adeb6d11bf6e7a987a2325f09d5368d3897b7254d2e623a9eb",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-typed-definition.json": "725d4e1a4aa6804dbeba3cb775280bbb2ed1c737936d83a4a2ca418b9b939753",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-typed-definition.json.output.txt": "ed0b93953480a269ea95a5501b84618a54a39daf8575fe4fbaf69bbf2f5d8104",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-malformed-definition.json": "7e0539c5a1c91984a3988ca174d55db3ca74a05e1dfdb935b1c468fe72344a0e",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-malformed-definition.json.output.txt": "ae2a0eef939de42d8606148a43039bd5ff895c8addbe0d91accd92d3049daec1",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-word-constant.json": "de843df5c06b8ebf28959ca12f7d9309237df70e10889f230998378cc4c6574b",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-word-constant.json.output.txt": "b228004e040f2305e02a1b7309042312f0f1af7d133a63120c54139b0df004c3",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-string-constant.json": "d30626c12896101ef0e851e940f3c7469b9907b2c0cabad05fc4cde66bc4bb1a",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-string-constant.json.output.txt": "dfe2dbf5fa1322f3661ab7ae56ca5bccb36d2fdb5553ab09cd1a74af8265bc51",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-char-constant.json": "282c4b64d483dbd4a178f900d0775601ca8a8a6d3cbaa0d38b7b6f1ec263c066",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-char-constant.json.output.txt": "91cc5be7435238578eab487ede0d86ab3899d9b9447071c05e831a4020d4a758",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-multiple-arguments.json": "41bd3ea4a3be12a391acfbf032ff5ca4e6faa4d97de944e02c97f10ecda5ab9c",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-multiple-arguments.json.output.txt": "4090d4353c349c20877d824cf197283f0a8e01af9867eccd23b10cf88706150e",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-explicit-quantities.json": "6ee35bbb5460ed3114421cd3f1d703f51dd6d26e90aa4b8d3f4f5722db4ba9ce",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-explicit-quantities.json.output.txt": "4b93063898d2c98b5076bc86667fc9b708dec70fd22db001585f82ba5ec8bf1b",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-untyped-without-law.json": "80a1f5f10fa07f679f414b04d79ce248cb399003a7eb9d45ef94bd8a15c39acb",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-untyped-without-law.json.output.txt": "a88df81fad56b796892a4d8b929f7135807f42451652e7729bd3199a01d12118",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-untyped-law-body.json": "f2213202fcbe97dd4106bce9e65690f31adc51ba0c1dfd484e5b851cfb781036",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-untyped-law-body.json.output.txt": "dbf45745995bd29749f80dadf29e3afba7afe291d53d6b5b6e6e2db021808042",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-lambda-body.json": "5d22688fcd2c1667a8b3a68a5586237ed7d85667eb6de05d7043d07352cf3765",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-lambda-body.json.output.txt": "35647da7f6fd6e1cb561c11e21971096ceef479bf484401cfa59af8c5bdb89d7",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-nested-application.json": "3975db2a6164e870db26427d3ac25082224d87eb6bd15e3f6a3016fdeba30354",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-nested-application.json.output.txt": "6c2238b55a97ea63b6292b96f4e884823138c6fa6a8bcc93e5bc80717fcb37c1",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-lambda-application.json": "a1efa1fd46d32667d958b4ce440c684b2e13b2936ab244f1ebadbe685dfbc26a",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-lambda-application.json.output.txt": "9f822f6ce377dfe7dcf8c489100b330132eb5f4c4101a0b487dd443fd81e22da",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-local-body.json": "28b6a432ace261a517806275e0c9acad2910e99913814bb307771277168bc0bb",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-local-body.json.output.txt": "179b12f7e84e092713d52ddd2bcc7cadcf4b8499a1d9a2a60a96e8f623f5b32c",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-nested-patterns.json": "8a3a8d3423f4f4cf6850c9e58a1e4c9f9c4a36b007bd58fea86d187568cfc7d7",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-nested-patterns.json.output.txt": "6cde980160bfca10dce1c6fb9b371054b4bd5121b52bd4c6ce6fbbe0f8f2bcc2",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-match-cases.json": "6dbfe74a81ef8fc05bc3789953466453a557725c1f0815bb3d800150ea3c32da",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-match-cases.json.output.txt": "3a4e84044b1da0963c4e97d1332ac7d301d819926d5cfbf4241f4ce41d6f851e",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-do-return.json": "aff303245580f90786d8fe68663ccf5bcd2e640fc7065425c667f98cbe858f37",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-do-return.json.output.txt": "02fd53fc7671b2dfc6c4ecd5d30305b4df4f0e9037de1a7b47ce9907d680accd",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-do-typed-bind.json": "822481290b5e35a0a90285c5e275bc2ed8d559935938e2a2905b719c0d3969d5",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-do-typed-bind.json.output.txt": "6ec781be8a78acc076d0238399414cec53aa5ba1bc22ac71c8875a60ad346308",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-parameterized-type.json": "6e2df4a7c0f1aa4239a88faf99675a877fe4d5bf8cb66bd4778ed43e8a174f8d",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-parameterized-type.json.output.txt": "7764b88e4a73beac0d3bbede5b993518eb3b06b97ac2fbf2527cc0cec158c797",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-reusable-type.json": "478191136aa47f632d8c0ab4f703899561842602e25d28740afe92e3a19d4951",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-reusable-type.json.output.txt": "c3d1919ad731fc1cc4d6789e1d8ebd295774e9684bb805d8ca9711e54bed77c8",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-relative-import.json": "6927f4da8df5ab4f90ec801763ceaba98e0c5b111292109a3402f9785b07faa4",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-relative-import.json.output.txt": "e5ab0168673e24c75c76a0777b9daf033a10503bdd0004a459c18ce9e124ff1f",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-external-import-body.json": "be473038e45950944162a0566824974434378b17cf52d59b13655d2d1c3d12fc",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-external-import-body.json.output.txt": "4934ea4daaf17b0ba8bfd1413677a18e0cfefe0887e26e183e89211b6c9fed22",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-malformed-body.json": "de1d9f8444f213bd8f994e85d60b5810e276dc3b070a2b86fe350b1b11e4cc04",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-malformed-body.json.output.txt": "edb0f05173a7f199f850ddf04b10841a484c065269b24626af474c2f42e848f3",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-malformed-type.json": "1151d9a528105679f15827baadd2f5ba94a286ef1ce2927eed9276dd601069e8",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-malformed-type.json.output.txt": "6d77a89c87394cda324e2de7c8ca04d12c865ee519bc753a9aaa0b7726260552",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-malformed-do.json": "13cde92f999e8cf6b12bbbc6f32399510e5a7ab9c86c4ebb5f3706e6bb27070f",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-malformed-do.json.output.txt": "95c459bf88b6109bf35436fff888d2341a7a5698b46009fd3df2545ad9ff398b",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-orphan-case.json": "34eeef04b159437be1b9cec39d75bbb8cea3a850ce3fd6f9136a3a0858686b5c",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-whole29-orphan-case.json.output.txt": "59e1fe3238e725f8d566d0600d3107f6f49cdce20b1527bc9e53bed5281d0899",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-number-0.json": "ae4095a5880c6f2b3aee0975b62be7907d302d7c21d43b7be175387f87e13ecb",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-number-0.json.output.txt": "aaa7bbd27adf9ff09920982bf5eb0f0307edbfd2267af87cf40a1da9420d1ef2",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-number-1.json": "f8719f3bad07d303b95491827c042d347d415a4a837a3f5aae1b4a09a1ed163b",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-number-1.json.output.txt": "a43b9b18c036222a5deb38c348bb5adb4c0d52d7a677115d7fedb3f0db124d1b",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-number-2.json": "5ffac2380d0b0cb3459aa3119626a48b2c79d8bf3252e25799aa785cf52911e0",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-number-2.json.output.txt": "ac09efc6f679d8c89a6795d8c244b7a131617124be0885c8e553e7fdc0fb2d14",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-number-42.json": "605e5aa112b5ed06bf3a796e02a04a274d1185280404b05f80c6194bd9637bfe",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-number-42.json.output.txt": "d399a4f83553c900d1be7530fe99ee9ec40a8dd98bc2dbdabe470afa4798c407",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-number-255.json": "56d705a28b9a2da6a55cbd89b1b5bd464338509b1147dc107e5690f760aabcd6",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-number-255.json.output.txt": "11e678796363cd0c65fef65219d2a40bf2cb61d6f33971efee912ef9cf23639c",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-char-A.json": "1c4818352c2cb73fc79f890f9a1328faa86f8ea2e722f7387e22fe3c65c4e133",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-char-A.json.output.txt": "ed069e463d8dd865b26d1190d37fa9148e723b8fd7a640ca4281985dba40af8a",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-char-b.json": "32c280302f4ff6f891b49f2c27ecef1af392f20ebf30ad87ac4faa730515556f",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-char-b.json.output.txt": "9ff2ea67fe2cd5ba1c76bf042ef7653f8a566fef4d4f2a8ddc8714c6e65f790e",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-char-space.json": "e5cc23b6f410f36010e2adafee053b70df8389f40fddeddf70fb123570771cc5",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-char-space.json.output.txt": "adca1cd7cb8c03d63deb96cfce9d6813296a370cc78f72c02d9adff9651c9a2e",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-string-empty.json": "3f2316f5b86ce920e298e97cb1700b0835862b5ec3288092617bd3c64b485503",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-string-empty.json.output.txt": "3b8adf3650dcc550e9e8c09c8816299eaa5aad43d72fc5572c4f2f0137e3e506",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-string-A.json": "431aa8001dc3bee852cf4772e801500a04edace4c19fc73299f747dacdbc1d46",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-string-A.json.output.txt": "e8805002f800301d2ffd02c56352f08600886e2113182deeaa2fe05112ba10d2",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-string-Az.json": "ddce84502fcda32f0cd1924dfb73b93e05359e36f9178af202841c8d949c556c",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-string-Az.json.output.txt": "4c0f48a047e775c2d99c6f332e879b7843825d20f7b5dc554fb524dd2d023744",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-string-unicode.json": "e064d11e70e8dbc2dcdc2cf4b0e2c34ed009a86de35fe7b6c87fd89a56a886d0",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-string-unicode.json.output.txt": "de0c1ff1f778e899a35a9b8ab7e76d6d6c0a87ede4fa7f2a44be2ce53eff4842",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-string-escaped-newline.json": "569ec5ce190244ef122dd3e5a0cc8cb8c1291bbccbf890788c68dc4c6c8e2609",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-literals-literal-string-escaped-newline.json.output.txt": "b4f50f089dbf6c5608e7e701a50b30da23e34d9bdf79ce3401c1e24ee9fb2136",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend": "fb8651ab2e6304faded5eb312ffe95175a177254f7dd704eca7a9b0896a40e31",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/index_lookup.bend": "caef5856607bff18b9a5dfc529eee6c6360a83d0963008420888a998274bd9f2",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/js_emit_owned_v1.bend": "23a4ffca36187cc3474d5e6c6b6b0347d019215c216ca243b1cd76662efa30d6",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_ir.bend": "0c4c67e38dbf34e04c2378863ec48a7222d2f762551baaa388f200f2a7d8c83b",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-real-checker_core_driver.bend.json": "123a331cc8e0c92a8e64a70f9f459d0eab07284d73fa8f59f623cc6f9b57ae74",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-real-checker_core_driver.bend.json.output.txt": "2fd3f66c7c76851798bd971edce64851ee1344d07a9f27cf7966dba8961a66fc",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-real-.parser_definition_body_shape_generated_fuel.bend.json": "88c51912e12e5d3480faba232591fba750b6774e0755ca27ae581bd622ce40ec",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-real-.parser_definition_body_shape_generated_fuel.bend.json.output.txt": "6d86f24c48ede0d73153af1727cfe59c4f3cd528e43c0031f2d1fa78e0a7a39c",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-real-base.bend.json": "a69ec3b32a5f45e988de112e97aff043a907b2e46d24714225d125a7c7296e77",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-real-base.bend.json.output.txt": "2f0ade602eb2ebb96af44829620767ac6b49895d7ba10e44a92fafb7262f90da",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-real-loaded_module.bend.json": "20b5d45dcd477974a954ac2927f098cb44adf31acf76a132c82f24d0261315fb",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-real-loaded_module.bend.json.output.txt": "15b3d2457f5f25f39515514a309fce3787d7cc167511b1dffab451c732d504cb",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-real-ast.bend.json": "cd10c92fe8f483150e0b53361f2f89bcd545874633fccead0d917db3a519d8ca",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-real-ast.bend.json.output.txt": "8ba9f378983a90b6264e0c221ecaeb69bd0d498053210b59c979387b29edfbfa",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-real-checker_core_slice.bend.json": "4a01b4fe47baffb2d2184e2635c16614fccffa531ac3bfd9b23f795f46e2eec8",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-real-checker_core_slice.bend.json.output.txt": "d5b0c14f867162f16fbf2ef8f599745d95cd566344772928b5b4c163d0404395",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/lower_catalog.bend": "51faef9846748253b0a43f38b509cf863386fe93ee0558edbe1f475b62fd0f1e",
+        "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_backend.bend": "9d1f37b269989efc85993f6c561f40a68b99ebbd48930b168a2fb712c5d51b20",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-real-js_emit.bend.json": "090fe4e369ddca4e3e56fd00ba5f4ddaf941a1835cdce6243880945890443016",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-real-js_emit.bend.json.output.txt": "1476fae99312bee6133ee5aaf6441135d2ae3257949b75d9aa8a926a50866e75",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-real-lexer.bend.json": "f00851afcd54df9fa291182e86c5cc43e402a18c5e70323ebcf5d4c8ebbaa5cc",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-real-lexer.bend.json.output.txt": "71f2bd95fdc2651a5b8c86f23854f97131c83bcec01d51d5cf4fc94a1d323904",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-real-core.bend.json": "a93c5af3a1bfeeafbd28c22e49c0955277740fa6e55eb5d171790fd6d6269a88",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-real-core.bend.json.output.txt": "4c32215d36ed8edda5f0093e1e1823214cfc8edf2dc1b68fbb96523fe860c6d1",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-real-path.bend.json": "95aa5aeec891dbd07efdeb5a6d07643f18af121313a1d5b19b0767c2362e085e",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/ir57p-candidate-semantic-a.json.case-real-path.bend.json.output.txt": "16bb2237f0d5c1d117af96ed5895e840b00ad0b7ee3a2e5522b9ca409187eeeb"
+      }
+    }
+  },
+  "freshNativeSeed": {
+    "status": "JS_GENERATED_NOT_YET_EXECUTED",
+    "provenancePath": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57p-full-a-native-build.provenance.json",
+    "provenanceSha256": "cc9062843a5a5bea81808c3b77211d1b28b2f18a8e40aa2c4f7720c3abeb9207",
+    "sourcePath": "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_v1.bend",
+    "sourceSha256": "e404aea222d4b03b76d33804447bbccd0f7f8712ff7ee95100654525a40f224c",
+    "exports": [
+      "parsed_module",
+      "parse_with_fuel",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step"
+    ],
+    "artifactPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57p-full-a.js",
+    "artifactSha256": "c27cead81e2171be74d19061c5307c216c2c840e66dc422e3007ae03537f068a",
+    "bytes": 12739684,
+    "eventsFullyValidated": 8772,
+    "checkedDefinitions": 8382,
+    "liveBodies": 8382,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "checkedOutputRetention": "native e",
+    "nativeRetention": "native checked e retained through all JS definition folding; scope-local higher caches released between definitions; no serialization or source-value fallback",
+    "nativeCheckedBodies": 8382,
+    "expectedSourceDefinitions": 8382,
+    "toolchain": "CANONICAL NATIVE LOAD/CHECK; CANONICAL JS PREPARE/EMIT/RELEASE; Node/V8 automatic GC",
+    "preparedCount": 8097,
+    "releasedCount": 8490,
+    "maxSimultaneousE": 8382,
+    "maxSimultaneousH": 2,
+    "countsCaveat": "Definition slots, not unique term graphs; signature metadata does not prepare higher bodies",
+    "runtime": {
+      "name": "node",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "heapLimitMiB": 3072,
+      "stackSizeMb": 256,
+      "heapSizeLimitBytes": 3271557120,
+      "manualGC": false
+    },
+    "cpuMs": 36505.669,
+    "compiledExecution": "NOT_RUN",
+    "selfhostGreen": false,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 2931392512,
+      "peakFootprintBytes": 3057875512,
+      "elapsedMs": 25815,
+      "timeoutMs": 600000,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/Users/ilyagulya/Projects/My/bend/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_v1.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step",
+        "--artifact=/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57p-full-a.js",
+        "--report=/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57p-full-a-native-build",
+        "--inputs-sha256=6c027eeff100a95921be218e0075054f235fa676199356f9551ed3bab3c6c993"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792796286392-54b39ae6e004c48f.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "seedByteEquivalence": {
+    "criterion": "Actual cmp of freshly full-native validated root output with previousK seed",
+    "identical": true,
+    "sha256": "c27cead81e2171be74d19061c5307c216c2c840e66dc422e3007ae03537f068a",
+    "previousK": "c27cead81e2171be74d19061c5307c216c2c840e66dc422e3007ae03537f068a",
+    "behaviorProofLink": "compiler-ir-checkpoint-v57k.json and compiler-ir-checkpoint-v57n.json: exact same executable seed and unchanged Bend root/dependency source; true unchanged stage1/stage2 byte fixedpoint and285 executions are established for this program. Not a new timed monolithic gate run."
+  },
+  "currentNativeCBuild": {
+    "report": {
+      "status": "RESOURCE_LIMIT",
+      "boundary": {
+        "host": "trusted C file/import loader and serial affine LIFO continuation driver",
+        "sourceAlgorithms": "unchanged canonical Bend parser/expansion/checker/JS library emitter",
+        "hostChecking": false,
+        "hostParsing": false,
+        "embeddedSource": false,
+        "cachedAst": false,
+        "parserFuelRepresentation": "eager native 8M-cell chain per source; JS harness uses lazy cells for the same finite fuel; allocation time remains included in parse",
+        "fuelMemoryEvidence": "per-source native process RSS high-water before/after allocation (not isolated live-byte attribution); guardian samples whole-tree RSS and physical footprint including fuel",
+        "outputPatches": 0,
+        "checksExcluded": 0,
+        "nativeBinaryBootstrap": false
+      },
+      "protectedPins": {
+        "/private/tmp/native-structural57p-keys-loop/evals/native_compiler_experiment.ts": "32c5c70a2ea7fc6176497f1a0b22456574f09cc149a04eaac3dc555f15ac99d8",
+        "/private/tmp/native-structural57p-keys-loop/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+        "/private/tmp/native-structural57p-keys-loop/bend2/comp.ts": "9fc96bda52864b8d27b5c81d29b21c30b8a370eb8826362385ef73d2ee0a6200",
+        "/private/tmp/native-structural57p-keys-loop/evals/native_compiler_driver.bend": "2d662ae3c9e95b074f619b75b4fa1b6a0cbcdcee3d20fcc79d9b191b6dea4ee6",
+        "/private/tmp/native-structural57p-keys-loop/evals/native_compiler_host.c": "e3a754c6edf98c467f9837c337bc3e6b4a16a1c15bf4a9fcb7b5ca45f0a4cee2",
+        "/private/tmp/native-structural57p-keys-loop/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+        "/private/tmp/native-structural57p-keys-loop/evals/heavy_gate.ts": "47a12205abd374fd69d7dac30ee9fb45d7203cad2790870511387cd2efc22251",
+        "/private/tmp/native-structural57p-keys-loop/evals/heavy_gate_native.c": "f5aecf8308caebc72dccf8986733b37137d448021ee378302cfcd038381b7aa9",
+        "/private/tmp/native-structural57p-keys-loop/checkpoints/compiler-benchmark-release237-v41.corpus.json": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258"
+      },
+      "loadedInputs": {
+        "/private/tmp/native-structural57p-keys-loop/checkpoints/.bootstrap_compiler_root_v1.bend": "e404aea222d4b03b76d33804447bbccd0f7f8712ff7ee95100654525a40f224c",
+        "/private/tmp/native-structural57p-keys-loop/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+        "/private/tmp/native-structural57p-keys-loop/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+        "/private/tmp/native-structural57p-keys-loop/bend2/selfhost/lexer.bend": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+        "/private/tmp/native-structural57p-keys-loop/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+        "/private/tmp/native-structural57p-keys-loop/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+        "/private/tmp/native-structural57p-keys-loop/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+        "/private/tmp/native-structural57p-keys-loop/bend2/selfhost/checker_arena.bend": "fb8651ab2e6304faded5eb312ffe95175a177254f7dd704eca7a9b0896a40e31",
+        "/private/tmp/native-structural57p-keys-loop/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+        "/private/tmp/native-structural57p-keys-loop/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+        "/private/tmp/native-structural57p-keys-loop/bend2/selfhost/index_lookup.bend": "caef5856607bff18b9a5dfc529eee6c6360a83d0963008420888a998274bd9f2",
+        "/private/tmp/native-structural57p-keys-loop/checkpoints/template_steps_v1.bend": "669e43923b5c7cde21fc922090d3c7ed674049d5cf44c0f2ac09e4ac901b81b6",
+        "/private/tmp/native-structural57p-keys-loop/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+        "/private/tmp/native-structural57p-keys-loop/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+        "/private/tmp/native-structural57p-keys-loop/checkpoints/checker_core_steps_v1.bend": "2f595741666a0f936e6f695938dadd8e0b2a3d3f28c39d06073139d8783898c5",
+        "/private/tmp/native-structural57p-keys-loop/checkpoints/js_emit_steps_v1.bend": "1c731b51b542a79040c5173f06c1d813fb0f2b7a8b98bc4f8a31e15d6dcda329",
+        "/private/tmp/native-structural57p-keys-loop/bend2/selfhost/backend_ir.bend": "0c4c67e38dbf34e04c2378863ec48a7222d2f762551baaa388f200f2a7d8c83b",
+        "/private/tmp/native-structural57p-keys-loop/evals/native_compiler_driver.bend": "2d662ae3c9e95b074f619b75b4fa1b6a0cbcdcee3d20fcc79d9b191b6dea4ee6",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/print.c": "2693b48e0ad8bba77c2babb1cfe00b4adfd63e68b0688229d7efd3a261af3c46",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/print.js": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/write.c": "8807a5f655db452c1d846354560c26fe1e94289e5dc0be231d0b71ecc876d02f",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/write.js": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/print_err.c": "f84aa11c8d0d6af6fa2fee28411f95714d6744ad97156990e43e55c292c9c6fb",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/print_err.js": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/get_env.c": "508a4aaca91e37b2a0a97770f172100fdbaf4a676aba54623b1cd5d1634805ce",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/get_env.js": "9a4fc592e447607553bdb08b194a9ede90dbae3660507687752f58ea42892dba",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/args.c": "84e12702f78e7cce5d350a3ccc6cfbda66f812496c39f025afe02bdf090880cf",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/args.js": "ed1a7e7b73ae7fe58ac6d428d2762b66f223f4c70a165570fc5d68dc874ddc0b",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/process_run.c": "a8ae18d313840eeb1594d762a1cb08c43b632dce83c76c1c5316870b1b20d320",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/process_run.js": "9ce0c5853ab8059614f115d99b1d0ba845fb23c056a6965a59e645d155bd58c1",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/random_u32.c": "75429b2b42e00562177fe33a5e18d2730478847f58c4038b048e78131e1b8c0a",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/random_u32.js": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/spawn.c": "05e11ae3f1461d9c72440af3b1786c076b418d2faff45639ac25ba464ee73cd5",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/spawn.js": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/sleep.c": "1dde3701026517d5272d2ff5344d3a8643bec264dbad9f266fdae1c4aaf7601c",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/sleep.js": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/now.c": "fc4c1d87a4fb2ace7d5b6c57b434cc3d953a15bdf213020912df6c17aa2352d6",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/now.js": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/thread_count.c": "d4889ed7757dccce03729c9568b88188128f2c1576166a3dc184a8707ed44568",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/thread_count.js": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/chan.c": "f20345b3475168e52d431dabc8c8b9347d73b51b5318aae7890b78c94762f4e6",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/chan.js": "007ff7505af9effc20fccfa3d26eaf89a382d6295839b27df119a1704a3f86d7",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/file_open.c": "2f5923e325a22eb384edb3fbb023f04ca842d5acd22654983608b575fa7617fa",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/file_open.js": "dd549f5f05eb896aef9a3a02ffecf2ee902e653f5463be72781edab1cd1180ae",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/file_read.c": "ab577225fa98a034c09d7eb6326b74808756dc6203b0e2599a459876382f090d",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/file_read.js": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/file_size.c": "ed0d74fd6b9f14ea471bfe5dd80ecbb2c5abb6a8406519fb2c7e1a1acf3dd5af",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/file_size.js": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/file_write.c": "9da28a35294cbde6a97729be825a31f9cab0b8c9d421a02a4613e688df451214",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/file_write.js": "4fe307538beb1047add7646f52df6e382a1da5d8999d8fe96969bd5055bc9b59",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/file_close.c": "033da9beb0b484fbc8784044193bf69004f858f6ad86e0c31b4beb89df1349ca",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/file_close.js": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/tcp_listen.c": "efc7528de96abd9f62f299833c1ac7b0e86528292c746b114d2684b5bac52899",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/tcp_listen.js": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/tcp_accept.c": "bf7ca1685ed388ce97827ea8379881fbdf5359c7c663ad03eeb8da34bd8584ef",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/tcp_accept.js": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/tcp_connect.c": "8d17c097138709d71e9d9e1fbc4255007c5e80c93ee384c4a3510b6ac8d10da3",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/tcp_connect.js": "a20819822e4ce18c8878b94e6ee70466833415eb9ebc2b6a39b65cabfcc553c9",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/tcp_send.c": "ed724ef8ce712b113eaac478164802509b41fac4e92435e3df0837d6a8c75632",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/tcp_send.js": "ea68cc521fa9b5603c3fccebbf19ecebcd26bf1a8af644ff1f13cd14ba9fe733",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/tcp_recv.c": "249c8789cd2f541ad00068882de16a00870c2f81a8168b0ac7a59db1e3cb0c6f",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/tcp_recv.js": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/udp_bind.c": "a1be1bc5c03d430fc6eb43982651073e144872956fadaee98c3700be59352ee3",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/udp_bind.js": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/udp_send_to.c": "b3a87e56958d8071a368da2edb4748e9496b3eed58b93d6cb4f8af398dd1011a",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/udp_send_to.js": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/udp_recv_from.c": "607085b34605af6c888e1de5c3f5cd8f689f221c71a3ef9e2c50f9ac880b1bae",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/udp_recv_from.js": "d6f88b08f578f088b4ff257a7e544e4fbbf46f375aee3881ba4d44e25ed890d8",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/socket_close.c": "abea115d2928d4942a9d89898d2022c0f1b19c52db48d0b060c2356d261bfa77",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/socket_close.js": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/listener_close.c": "11f6bac6342a37e97b9656e96bdca7d052ed0a7a0cab3b05ea87657020cfb7a2",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/listener_close.js": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/window.c": "1d99fc0dd1640602bc4020e62fd28abef44422429ab9970523d25b050f1e6c18",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/window_open.js": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/window_frame.js": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/window_set_title.js": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/window_grab.js": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/window_close.js": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/audio.c": "f0fac2bee02918b4958ad1e7508945824fcd98ce9a2e7ede657304c4f8905b85",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/audio_open.js": "6f531ac205dab98dd366111cdcc5eed69fb9058350ca715f3419065cd979b088",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/audio_write.js": "377d3e938ce3cc9f083c662b69d34e3a0cf391c92ddaf3fca8a4b28c78662da7",
+        "/private/tmp/native-structural57p-keys-loop/bend2/effs/audio_close.js": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+        "/private/tmp/native-structural57p-keys-loop/evals/native_compiler_host.c": "e3a754c6edf98c467f9837c337bc3e6b4a16a1c15bf4a9fcb7b5ca45f0a4cee2"
+      },
+      "source": "/private/tmp/native-structural57p-keys-loop/checkpoints/.bootstrap_compiler_root_v1.bend",
+      "sourceSha256": "e404aea222d4b03b76d33804447bbccd0f7f8712ff7ee95100654525a40f224c",
+      "bridge": "/private/tmp/native-structural57p-keys-loop/evals/native_compiler_driver.bend",
+      "eventsFullyValidated": 8796,
+      "codegenTrace": false,
+      "diagnosticOnlyCodegenTiming": false,
+      "ccOptimization": {
+        "level": 1,
+        "flag": "-O1",
+        "officialDefault": false,
+        "diagnosticTradeoff": true
+      },
+      "checkedDefinitions": 8400,
+      "expectedSourceDefinitions": 8400,
+      "checksExcluded": 0,
+      "outputPatches": 0,
+      "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+      "compilerSha256": "9fc96bda52864b8d27b5c81d29b21c30b8a370eb8826362385ef73d2ee0a6200",
+      "cPath": "/private/tmp/native-structural57p-keys-loop/artifacts/compiler-o1-k.c",
+      "cSha256": "96d6fc902f977b8816ca8db5cef6e1f90246636a1bc129078db938bcc9c7f1f5",
+      "artifact": "/private/tmp/native-structural57p-keys-loop/artifacts/compiler-o1-k",
+      "runtime": {
+        "name": "node",
+        "node": "26.3.0",
+        "heapLimitMiB": 3072,
+        "stackMiB": 256,
+        "manualGC": false,
+        "profiling": null
+      },
+      "validationMs": 1303.7543749999998,
+      "codegenMs": 101744.052917,
+      "elapsedMs": 104937.113625,
+      "guardian": {
+        "status": "RESOURCE_LIMIT",
+        "reason": "rss_limit",
+        "commandExitCode": -1,
+        "commandSignal": 15,
+        "peakRssBytes": 8590409728,
+        "peakFootprintBytes": 7095787296,
+        "elapsedMs": 162969,
+        "timeoutMs": 600000,
+        "command": [
+          "/opt/homebrew/Cellar/bun/1.2.5/bin/bun",
+          "--smol",
+          "/private/tmp/native-structural57p-keys-loop/evals/native_compiler_experiment.ts",
+          "--mode=build",
+          "--corpus=/private/tmp/native-structural57p-keys-loop/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+          "--report=/private/tmp/native-structural57p-keys-loop/artifacts/build-o1-k.json",
+          "--artifact=/private/tmp/native-structural57p-keys-loop/artifacts/compiler-o1-k",
+          "--cc-opt=1",
+          "--internal=build"
+        ],
+        "label": "Native CPU compiler build",
+        "exitCode": 73,
+        "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792795072392-64541508e48d1fed.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "lastProgress": {
+        "phase": "clang",
+        "event": "start",
+        "unixMs": 1792795177925,
+        "pid": 5570,
+        "worker": false,
+        "rssBytes": 44466176,
+        "heapUsedBytes": 3341068,
+        "cpuMs": 122.758,
+        "command": [
+          "/private/tmp/native-structural57p-keys-loop/timed-clang",
+          "-std=c11",
+          "-O1",
+          "/private/tmp/native-structural57p-keys-loop/artifacts/compiler-o1-k.c",
+          "-lpthread",
+          "-lm",
+          "-o",
+          "/private/tmp/native-structural57p-keys-loop/artifacts/compiler-o1-k"
+        ]
+      },
+      "failure": {
+        "phase": "clang",
+        "diagnostic": "rss_limit"
+      }
+    },
+    "scope": "Private currentK source8400bodies with same algorithm privateP compiler9fc96...; canonicalP differs only comments. Actual full native validation/codegen complete but clang O1 exceeded8GiB RSS; no binary/runtime/consumer acceptance from this attempt.",
+    "firstCodegenOnlySetupFailure": "Missing required report.inputs.json before native validation. Retried meaningfully via existing public build that creates full input authentication."
+  },
+  "cleanup": {
+    "obsoleteFailedGAndJAstTransportsRemoved": true,
+    "finalKAndNRootProofTransportsPreserved": true
+  },
+  "performanceAccepted": false,
+  "fullCurrentNativeBinaryStillRequired": true
+}

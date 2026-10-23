@@ -169,6 +169,11 @@ latest one; the GitHub release carries the same notes.
   fixedpoint and independently execute every source fixture on both unchanged
   stage images with fresh parsing and full native AST/span parity. Separate
   behavior receipts do not waive or relabel the original aggregate deadline.
+- Native word-match coverage comparison stops at the first structural mismatch
+  instead of materializing whole JSON keys. It retains the same lowered binder
+  representation, annotation/span omission, property order and literal behavior.
+  Overlapping/default word arms and returned bound-variable identity have a
+  runtime regression; original checked-body lifetime remains unchanged.
 - Source map lookup selects the same Patricia branch through a structurally
   decreasing worker instead of allocating two recursive branch closures per
   node. Unicode keys, misses and arbitrary public map shapes retain Map.bit

@@ -13,9 +13,17 @@ byte fixedpoint есть. ВСЕ285 behavior executions также заверш�
 честно FAIL по deadline. Functional IR cutover выполнен; цель по скорости ещё не достигнута.
 Current correctness checkpoint2fabd354/d7e9b9ee и receipt57k/57n. Selected
 performance baseline55 остаётся2b3efa80. Native O0 отвергнут:clang37.22s,
-но whole frozen runtime не закончил check за300s. Parent57p full currentK/O1
-build с private allocation-tight mat_lits comparator сейчас в работе на misaka;
-canonical comp.ts пока85f46bbc..., kernel строго2.0.37, не обновлять.
+но whole frozen runtime не закончил check за300s. В57p coverage JSON keys
+заменены allocation-tight structural comparison; canonical comp.ts SHA
+286dad9d2123736849a67b732f4af3125f5fac2d8e1f0d04eb32401aca117b3b.
+Свежая parser75/75 chain и native8382/8772 seed прошли; actual cmp подтвердил
+тот же executable SHA c27cead..., поэтому establishedK fixedpoint/285 behavior
+относится к тому же программному образу, не новому timed gate. Kernel2.0.37 прежний.
+Private currentK C build57p проверил8400/8796 и выдал C за~101.6s, но clangO1
+пересёк8GiB RSS (8590409728bytes); лимит не повышен, binary не заявлен.
+Private57q short-FID вариант затем реально собрал currentK O1 под лимитом,
+прошёл полный frozen compile/7720 consumer; parent review/integration впереди.
+Не отключать LLVM passes: отдельный57q experiment упёрся в physical limit.
 
 ## Compiler57 — архитектура и законы, реализация ещё не принята
 
