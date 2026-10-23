@@ -52,12 +52,12 @@ def native_expand_result(box: Template.TemplateValue<Template.ExpandResult>) -> 
   match box:
     case Template.TemplateValue{value}: native_expand_value(value)
 
-def native_check_value(result: Checked.CheckResult) -> NativeResult<List<&2, String> -> Emitter.EmitterProgress<Emitter.EmitResult>>:
+def native_check_value(result: Checked.CheckResult) -> NativeResult<(List<&2, String> -> Emitter.EmitterProgress<Emitter.EmitResult>)>:
   match result:
     case Checked.CheckSuccess{program}: NativeAccepted{exports => emit_library_start(program, exports)}
     case Checked.CheckFailure{Checked.Diagnostic{_, _, message, _, _}}: NativeRejected{message}
 
-def native_check_result(box: Checker.CheckerValue<Checked.CheckResult>) -> NativeResult<List<&2, String> -> Emitter.EmitterProgress<Emitter.EmitResult>>:
+def native_check_result(box: Checker.CheckerValue<Checked.CheckResult>) -> NativeResult<(List<&2, String> -> Emitter.EmitterProgress<Emitter.EmitResult>)>:
   match box:
     case Checker.CheckerValue{value}: native_check_value(value)
 
@@ -141,7 +141,7 @@ def native_experiment(
   expand_result: Template.TemplateValue<Template.ExpandResult> -> NativeResult<List<&2, Loader.LoadedModule>>,
   check: List<&2, Loader.LoadedModule> -> Checker.CheckerProgress<Checked.CheckResult>,
   checker_view: (@-A: Type -> @progress: Checker.CheckerProgress<A> -> NativeCheckerView<A>),
-  check_result: Checker.CheckerValue<Checked.CheckResult> -> NativeResult<List<&2, String> -> Emitter.EmitterProgress<Emitter.EmitResult>>,
+  check_result: Checker.CheckerValue<Checked.CheckResult> -> NativeResult<(List<&2, String> -> Emitter.EmitterProgress<Emitter.EmitResult>)>,
   emit: ((List<&2, String> -> Emitter.EmitterProgress<Emitter.EmitResult>) & List<&2, String>) -> Emitter.EmitterProgress<Emitter.EmitResult>,
   emitter_view: (@-A: Type -> @progress: Emitter.EmitterProgress<A> -> NativeEmitterView<A>),
   emit_result: Emitter.EmitterValue<Emitter.EmitResult> -> NativeResult<String>

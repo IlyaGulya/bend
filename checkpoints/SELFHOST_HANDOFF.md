@@ -33,7 +33,7 @@ JS execution и получил `BitOne{}`. Live locals/ordering затем пр�
 Legacy standalone C использует явный inspection/readback и не является BIR
 backend; обычный JS compile path не должен делать readback.
 
-Новый полный corpus, native owner handoff и stage1/stage2 ещё не проверены.
+Полный frozen corpus57 прошёл native check, но compile не уложился в300s.
 Рабочий baseline остаётся55; fixedpoint53 не доказывает новую архитектуру57.
 
 Отдельно реально воспроизведён дефект старого explicit constructor eliminator:
@@ -81,9 +81,33 @@ active phase при timeout — check (`compiler-benchmark-ir57-attribution-a.js
 Настоящий checker V8 profile содержит56433ticks,70unaccounted,0excluded;
 6.3% GC — mixed-window sample share, не allocation attribution. Native nearest
 symbol StatWatcher не считать реальным filesystem hotspot. Canonical CPS-owner
-aggregation и независимый nativeC run на misakaindrive запущены параллельно.
-Receipt57e: `compiler-ir-checkpoint-v57e.json`. Fresh stage1/stage2 и полный
-nativeC owner-boundary runtime ещё не приняты; full acceptance не объявлена.
+aggregation завершена:34180 ticks в checker-only окне30–80s,683 source owners.
+Это physical self attribution с inlining, не inclusive logical CPS family cost;
+8853 runtime-code ticks остаются неразрешёнными. Старый вывод «не publication /
+не WHNF» отозван: из малых self shares он не следует.
+
+В57f нативный C root на misakaindrive собран с O1:8357/8357 bodies
+(8339 compiler +18 bridge),8750 validated events,227457ms; peak physical
+6796724232bytes. Это регрессия к55:157171ms /4902139784bytes, а не снижение памяти.
+Bridge function-type arguments исправлены скобками в трёх местах; kernel прежний.
+Полный frozen check прошёл:parse3434.679ms,expand5434.206ms,check264839.309ms,
+80468975 calls/resumes. У55 на том же host/corpus/O1/одном потоке check47591.305ms
+и6328943 calls. В обеих версиях checker_chunk64; batching не удалялся.
+Full compile остановлен guardian на300017ms после завершённой check265120.214ms;
+emit/post-check handoff — только INFERENCE, native phase-start markers отсутствуют.
+Нет полного output/7720-export consumer и нового stage1/stage2 fixedpoint.
+
+Реальный native owner → emitter → unchanged ESM consumer прошёл BitOne{}.
+Полный JS seed57 также прошёл own parser → check → FIR → BIR → library execution:
+28 assertions /15 exports,63560bytes, SHA499da2251b920e3ce4fa6d17340603a1ac0dad3291a6891d1782541b78298024.
+Это reachable-path proof, не замена полного corpus/fixedpoint.
+Новый Base+main123 probe прошёл execution123, но обнаружил полный Word32 occurrence
+tree вместо ScalarOccurrence. Diagnostic inspection показывает checked Word.Con<p>
+как TermAdt и прямые reply terms; scalar schema ещё требует старые TermFill /
+BodyReply. Это конкретный кандидат причины регрессии, пока не measured fix.
+Receipt57e: `compiler-ir-checkpoint-v57e.json`;57f: `compiler-ir-checkpoint-v57f.json`.
+Сначала восстановить точное распознавание checked schema, затем измерить полный
+corpus; свежую immutable parser/producer chain собирать после стабилизации source.
 
 ## Compiler56 — FIR/BIR architecture preflight, not production acceptance
 

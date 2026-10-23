@@ -1,0 +1,3914 @@
+{
+  "schemaVersion": 1,
+  "version": "57f",
+  "previousCheckpoint": "da7d1fbf",
+  "status": "NOT_ACCEPTED: full native checker regression and native compile deadline",
+  "acceptedFullCompilerBaseline": "2b3efa80 (55)",
+  "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+  "sourceHashes": {
+    "bend2/comp.ts": "85f46bbc0851ed4933c87e7f67088555bb95389649d0363678181ac3e85290d3",
+    "evals/checker_core_component_build.ts": "3630bcb65246cd0fab7c5bf8e600d0b6e1508db43eff58dc849c9b40d9c02fdb",
+    "evals/compiler_benchmark.ts": "fdc223e29261f6da9484bba1d49f998379a8bafcfe053a2eb18f9c23c137282a",
+    "evals/native_checked_release.test.ts": "09eef2a8df14240afc3cc3aefa70941bc9341a806b0f39e5e0924a1a1058cfe3",
+    "tests/run/js_late_fold.bend": "a6a22487d40cf9d7aa886270019e7eb8d13d8ff2380a892aaf1ac188bec667c2",
+    "nativeBridge": {
+      "path": "evals/native_compiler_driver.bend",
+      "sha256": "2d662ae3c9e95b074f619b75b4fa1b6a0cbcdcee3d20fcc79d9b191b6dea4ee6"
+    }
+  },
+  "native": {
+    "summarySha256": "faeccedc05c0ed4b68adf5b93027458ec4bbb64c9b6f6878a38c4bfaf1150836",
+    "compactTar": {
+      "bytes": 154028,
+      "sha256": "b3c10317f34d2bc5a95d40564f60d536817066e90ddb01ddfa7280c816ed1897"
+    },
+    "evidence": {
+      "kind": "remote native57e O1 diagnostic; no fixedpoint or official-O3 speed claim",
+      "snapshot": "/private/tmp/nativefull57e-s1e9tznm-paren",
+      "originalSnapshot": "/private/tmp/nativefull57e-s1e9tznm",
+      "revision": {
+        "originalSnapshot": "/private/tmp/nativefull57e-s1e9tznm",
+        "originalArchiveSha256": "e2b1fa4d741868933b5b8ef8537db9f40e2b27032c3c5466bf3026c889f887f0",
+        "originalSnapshotSha256": "1a73e516f06c2c0452949693fa052e433004f67696301db76f9ab6f07f4e43cb",
+        "revisionDiff": "/private/tmp/nativefull57e-s1e9tznm-paren/bridge-parentheses.diff",
+        "revisionDiffSha256": "fa1b0325e7260e5e6217569c809ad236ccf493c0d5c728733c436cb0fb5e4599",
+        "changesOnly": [
+          "evals/native_compiler_driver.bend:55,60,144 compound function type argument parentheses"
+        ],
+        "currentRootSha256": "e404aea222d4b03b76d33804447bbccd0f7f8712ff7ee95100654525a40f224c",
+        "bridgeOriginalSha256": "f67a359abcd8860e72e1e895ab74cfe8f125068f23a95f77927cb9d78bae3522",
+        "bridgeCurrentSha256": "2d662ae3c9e95b074f619b75b4fa1b6a0cbcdcee3d20fcc79d9b191b6dea4ee6",
+        "kernelUnchanged": true
+      },
+      "reports": {
+        "build-o1.json": {
+          "status": "NATIVE_EXECUTABLE_BUILT_NOT_YET_RUN",
+          "ccOptimization": {
+            "level": 1,
+            "flag": "-O1",
+            "officialDefault": false,
+            "diagnosticTradeoff": true
+          },
+          "checkedDefinitions": 8357,
+          "expectedSourceDefinitions": 8357,
+          "eventsFullyValidated": 8750,
+          "validationMs": 1589.1344159999999,
+          "codegenMs": 111138.879959,
+          "elapsedMs": 114784.583792,
+          "artifactSha256": "aa6d522ac2736d76d13691a5edeee39290339ed94228071abead005c8275e62d",
+          "cSha256": "e818a4b13f1f2becda4a28520cfcac959ec5ecf8c95849f052f177e4523e0074",
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 7345537024,
+            "peakFootprintBytes": 6796724232,
+            "elapsedMs": 227457,
+            "timeoutMs": 600000,
+            "command": [
+              "node",
+              "--experimental-strip-types",
+              "--max-old-space-size=3072",
+              "/private/tmp/nativefull57e-s1e9tznm-paren/evals/native_compiler_experiment.ts",
+              "--mode=build",
+              "--corpus=/private/tmp/nativefull57e-s1e9tznm-paren/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+              "--artifact=/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/compiler57e-o1",
+              "--report=/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/build-o1.json",
+              "--cc-opt=1",
+              "--internal=build"
+            ],
+            "label": "Native CPU compiler build",
+            "exitCode": 0,
+            "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792783819507-44fa6ec51601e481.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "receiptSha256": "06237120bdae599cc7c102413948ecf2fb465a801343524cd52b9626c0dd1d71"
+        },
+        "frozen-check.json": {
+          "status": "NATIVE_FULL_CHECK_PASS",
+          "ccOptimization": {
+            "level": 1,
+            "flag": "-O1",
+            "officialDefault": false,
+            "diagnosticTradeoff": true
+          },
+          "threads": 1,
+          "elapsedMs": 277104.397667,
+          "phases": [
+            {
+              "phase": "parse",
+              "elapsedMs": 3434.679,
+              "modules": 15,
+              "sourceBytes": 4333108,
+              "foreignBytes": 25145,
+              "eagerFuelCells": 120000000,
+              "fuelBuildMs": 117.556
+            },
+            {
+              "phase": "expand",
+              "elapsedMs": 5434.206,
+              "calls": 950796,
+              "resumes": 950796
+            },
+            {
+              "phase": "check",
+              "elapsedMs": 264839.309,
+              "calls": 80468975,
+              "resumes": 80468975
+            }
+          ],
+          "result": {
+            "result": "CheckSuccess",
+            "modules": 15
+          },
+          "guardian": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 5743558656,
+            "peakFootprintBytes": 6355048112,
+            "elapsedMs": 277279,
+            "timeoutMs": 300000,
+            "command": [
+              "/Users/ilyagulya/.cache/bend-selfhost-106c7efd/bin/bun",
+              "--smol",
+              "/private/tmp/nativefull57e-s1e9tznm-paren/evals/native_compiler_experiment.ts",
+              "--mode=run",
+              "--corpus=/private/tmp/nativefull57e-s1e9tznm-paren/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+              "--build=/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/build-o1.json",
+              "--report=/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/frozen-check.json",
+              "--phase=check",
+              "--threads=1",
+              "--exports=/private/tmp/nativefull57e-s1e9tznm-paren/checkpoints/compiler-benchmark-ir57-official-a.json.exports.json",
+              "--internal=run"
+            ],
+            "label": "Native CPU compiler run",
+            "exitCode": 0,
+            "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792784053597-f3b92203a1e7cdb3.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "exports": 7720,
+          "receiptSha256": "03c06022a8f5710ad61298a537f985cc044b254169b83ba66996a9bf1961051c"
+        },
+        "frozen-compile.json": {
+          "status": "FAIL",
+          "failure": {
+            "phase": "guardian",
+            "diagnostic": "deadline_exceeded"
+          },
+          "guardian": {
+            "status": "FAIL",
+            "reason": "deadline_exceeded",
+            "commandExitCode": -1,
+            "commandSignal": 15,
+            "peakRssBytes": 6185730048,
+            "peakFootprintBytes": 7770004248,
+            "elapsedMs": 300017,
+            "timeoutMs": 300000,
+            "command": [
+              "/Users/ilyagulya/.cache/bend-selfhost-106c7efd/bin/bun",
+              "--smol",
+              "/private/tmp/nativefull57e-s1e9tznm-paren/evals/native_compiler_experiment.ts",
+              "--mode=run",
+              "--corpus=/private/tmp/nativefull57e-s1e9tznm-paren/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+              "--build=/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/build-o1.json",
+              "--report=/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/frozen-compile.json",
+              "--phase=compile",
+              "--threads=1",
+              "--exports=/private/tmp/nativefull57e-s1e9tznm-paren/checkpoints/compiler-benchmark-ir57-official-a.json.exports.json",
+              "--internal=run"
+            ],
+            "label": "Native CPU compiler run",
+            "exitCode": 1,
+            "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792784336372-0ea9190da97eee74.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "receiptSha256": "394fbc9a4a68bdf99d417e742b08ad6e8b90da6fcc9a83a435df683fb06c9a23"
+        },
+        "owner-fixture.compile.json": {
+          "status": "PASS",
+          "scope": "real single-source owner/emitter scenario, not frozen corpus",
+          "elapsedMs": 92.92025,
+          "records": [
+            {
+              "kind": "NATIVE_BEGIN",
+              "value": {
+                "computeThreads": 1,
+                "parserFuel": 8000000,
+                "phase": "compile"
+              }
+            },
+            {
+              "kind": "NATIVE_FUEL",
+              "value": {
+                "sourceOrdinal": 1,
+                "cells": 8000000,
+                "elapsedMs": 14.319,
+                "processPeakRssBeforeBytes": 3997696,
+                "processPeakRssAfterBytes": 68026368
+              }
+            },
+            {
+              "kind": "NATIVE_PHASE",
+              "value": {
+                "phase": "parse",
+                "elapsedMs": 55.065,
+                "modules": 1,
+                "sourceBytes": 63,
+                "foreignBytes": 0,
+                "eagerFuelCells": 8000000,
+                "fuelBuildMs": 14.319
+              }
+            },
+            {
+              "kind": "NATIVE_PHASE",
+              "value": {
+                "phase": "expand",
+                "elapsedMs": 0.079,
+                "calls": 4,
+                "resumes": 4
+              }
+            },
+            {
+              "kind": "NATIVE_PHASE",
+              "value": {
+                "phase": "check",
+                "elapsedMs": 1.045,
+                "calls": 86,
+                "resumes": 86
+              }
+            },
+            {
+              "kind": "NATIVE_PHASE",
+              "value": {
+                "phase": "emit",
+                "elapsedMs": 0.716,
+                "calls": 14,
+                "resumes": 14
+              }
+            },
+            {
+              "kind": "NATIVE_RESULT",
+              "value": {
+                "result": "EmitSuccess",
+                "bytes": 57032,
+                "modules": 1
+              }
+            }
+          ],
+          "output": "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/owner-fixture.mjs",
+          "outputSha256": "f5846ec61f6b02fcf640c5ddba1e81771b23ba70b5c5a0bf5e88791d265ceaee",
+          "outputBytes": 57032,
+          "userCpuMs": 55.232,
+          "systemCpuMs": 4.117,
+          "childMaxRssBytes": 78036992,
+          "receiptSha256": "b6537c1bd8c735674f278f84c0e0c18fdef3272a43721a079abd0e2f95e73881"
+        },
+        "owner-fixture.guard.json": {
+          "status": "PASS",
+          "elapsedMs": 209,
+          "peakRssBytes": 180912128,
+          "peakFootprintBytes": 170181448,
+          "receiptSha256": "039df8cead9fbfefdcb14a4c41bb54017558c1dc3048d79e860120dfb57b42a4"
+        },
+        "owner-fixture.consumer.json": {
+          "status": "PASS",
+          "scope": "real one-source native owner/emitter scenario only, not frozen compiler output",
+          "value": {
+            "$": "One"
+          },
+          "output": "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/owner-fixture.mjs",
+          "outputSha256": "f5846ec61f6b02fcf640c5ddba1e81771b23ba70b5c5a0bf5e88791d265ceaee",
+          "outputBytes": 57032,
+          "exports": 1,
+          "receiptSha256": "c909f5059d1c289707ae0c8d027f9de5b35658dfbdc24f0b6de0b96b79e15c11"
+        },
+        "owner-fixture.consumer-guard.json": {
+          "status": "PASS",
+          "elapsedMs": 172,
+          "peakRssBytes": 44253184,
+          "peakFootprintBytes": 12912248,
+          "receiptSha256": "d9e4f05e7435e94a601f39e96a604997a820e7979e71f08cc6ec19bd37ba639a"
+        }
+      },
+      "limits": {
+        "buildMs": 600000,
+        "runMs": 300000,
+        "rssBytes": 8589934592,
+        "physicalFootprintBytes": 8589934592
+      },
+      "metricLimits": "Native host records phase wall times and fuel RSS high-water only; per-phase native CPU and isolated phase live-memory were not exposed. Build event stream records cumulative worker/process CPU and RSS/heap at each phase. Guardian records complete-tree physical/RSS peaks.",
+      "files": {
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/build-o1.json": {
+          "sha256": "06237120bdae599cc7c102413948ecf2fb465a801343524cd52b9626c0dd1d71",
+          "bytes": 16961
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/build-o1.json.inputs.json": {
+          "sha256": "57c292d0e34c86a57df37e40d1c2109cdc5a79f596b6cb926b3bce83a61f744a",
+          "bytes": 1285
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/build-o1.json.progress.json": {
+          "sha256": "a0de3ae6f1ff673eae8b1d37e6e22e46a6677f5be96b8425a7ed69be93246bff",
+          "bytes": 198
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/frozen-check.execution.json": {
+          "sha256": "be1a138851f1fec88d275bc33b2ad4e1294bb41ed9d80f714b04c4ee98603b2d",
+          "bytes": 6107
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/frozen-check.json": {
+          "sha256": "03c06022a8f5710ad61298a537f985cc044b254169b83ba66996a9bf1961051c",
+          "bytes": 401840
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/frozen-check.json.inputs.json": {
+          "sha256": "57c292d0e34c86a57df37e40d1c2109cdc5a79f596b6cb926b3bce83a61f744a",
+          "bytes": 1285
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/frozen-check.json.progress.json": {
+          "sha256": "a9ea735191e3b3a5ddc8a567fe84815ef3c84365e5bb9a4535698f5a697ad8e2",
+          "bytes": 198
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/frozen-check.observations.json": {
+          "sha256": "8e179467c164489cdf6271038de88a404f5fb640ea43ef1e715ece1ff8e07b5e",
+          "bytes": 5466
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/frozen-compile.execution.json": {
+          "sha256": "7b96c8cc9374211bf7b12a34a6b9973eabce23dd250f4c7574f6357e4058b7a8",
+          "bytes": 5920
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/frozen-compile.json": {
+          "sha256": "394fbc9a4a68bdf99d417e742b08ad6e8b90da6fcc9a83a435df683fb06c9a23",
+          "bytes": 3172
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/frozen-compile.json.inputs.json": {
+          "sha256": "57c292d0e34c86a57df37e40d1c2109cdc5a79f596b6cb926b3bce83a61f744a",
+          "bytes": 1285
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/frozen-compile.json.progress.json": {
+          "sha256": "d97a99f7132f9ad77829974f0d1a750490961e37808f6a6bf2f72cb126784661",
+          "bytes": 226
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/frozen-compile.observations.json": {
+          "sha256": "a9785a5a1e35952fb3d01ab3e906e32ce44df99cc46a1de65790193f1c55b3bf",
+          "bytes": 5275
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/owner-fixture.compile.json": {
+          "sha256": "b6537c1bd8c735674f278f84c0e0c18fdef3272a43721a079abd0e2f95e73881",
+          "bytes": 2530
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/owner-fixture.consumer-guard.json": {
+          "sha256": "d9e4f05e7435e94a601f39e96a604997a820e7979e71f08cc6ec19bd37ba639a",
+          "bytes": 607
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/owner-fixture.consumer.json": {
+          "sha256": "c909f5059d1c289707ae0c8d027f9de5b35658dfbdc24f0b6de0b96b79e15c11",
+          "bytes": 420
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/owner-fixture.guard.json": {
+          "sha256": "039df8cead9fbfefdcb14a4c41bb54017558c1dc3048d79e860120dfb57b42a4",
+          "bytes": 571
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/revision-provenance.json": {
+          "sha256": "47a22652494c878bb10fe3947ac1fd16e4eb177b5c937115bffb0a9abfd02f43",
+          "bytes": 15721
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/build-o1.json.events.jsonl": {
+          "sha256": "71e019b0fadc0366661feb18bbd573fe6ec2e03f32e7d60fceea069a611160be",
+          "bytes": 14011
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/frozen-check.json.events.jsonl": {
+          "sha256": "0ce58beafa18b3f3756d78d5bf0c0523138ea5f63b53fda893e119568630ffa6",
+          "bytes": 1119
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/frozen-compile.json.events.jsonl": {
+          "sha256": "26e02b9e2951a0f217617e39e1659cc83317999012c39da183f2f31e3a9e0c2d",
+          "bytes": 1151
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/frozen-check.json.stdout.log": {
+          "sha256": "8e01f0812b75b2857c35e52379aaf19d9ea2f872922627ab48a52da5b12f1df9",
+          "bytes": 4783
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/frozen-compile.json.stdout.log": {
+          "sha256": "b51382f5f4d3cc55407b1eb9276de6bc6926ecfd72a60df9f3c87a1e0cb9a0f6",
+          "bytes": 4774
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/owner-fixture.stdout.log": {
+          "sha256": "cc9898df65dff158c9b424d96effcedc28ec039e714ea43a4f0cfb7757211b98",
+          "bytes": 636
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/frozen-check.json.exports.txt": {
+          "sha256": "8472512efdfdae7d66af31ca3dfea1ee5a8283f08dd85b5af3082883d3bfd7fd",
+          "bytes": 339076
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/frozen-compile.json.exports.txt": {
+          "sha256": "8472512efdfdae7d66af31ca3dfea1ee5a8283f08dd85b5af3082883d3bfd7fd",
+          "bytes": 339076
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/owner-fixture.exports.txt": {
+          "sha256": "6403203dd5a0867eb14d104ee8a73730bd72dd9ad92e78d996a6dba0a5dcfc01",
+          "bytes": 5
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/frozen-check.json.runtime.tsv": {
+          "sha256": "93095f172f0519842e6586b6ccadb01db8dbf68870eb76c8c3b5aa7d88b10355",
+          "bytes": 3578
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/frozen-compile.json.runtime.tsv": {
+          "sha256": "93095f172f0519842e6586b6ccadb01db8dbf68870eb76c8c3b5aa7d88b10355",
+          "bytes": 3578
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/owner-fixture.runtime.tsv": {
+          "sha256": "c702531edc9f78fc3a597ebb27efec65a8ab07ca596cd127f4ed44feef97f6f5",
+          "bytes": 64
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/bridge-parentheses.diff": {
+          "sha256": "fa1b0325e7260e5e6217569c809ad236ccf493c0d5c728733c436cb0fb5e4599",
+          "bytes": 2016
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/snapshot.json": {
+          "sha256": "1a73e516f06c2c0452949693fa052e433004f67696301db76f9ab6f07f4e43cb",
+          "bytes": 15233
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/evals/native_compiler_driver.bend": {
+          "sha256": "2d662ae3c9e95b074f619b75b4fa1b6a0cbcdcee3d20fcc79d9b191b6dea4ee6",
+          "bytes": 8450
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/run_native.py": {
+          "sha256": "61aabd22f70901243d4f1e72872c2d87da25173f5aaf1584924146eff7b941f7",
+          "bytes": 1451
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/consume_native.mjs": {
+          "sha256": "7ad7a3fe7903ecc2b3b16a33c7a87653d29db773a7500e2280bdfa5a2348143b",
+          "bytes": 3779
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/collect_native.py": {
+          "sha256": "1ea3c1240dee16ecc53e1d063eedc6306ed3b27ba9790dcaae6be75b788a9550",
+          "bytes": 5184
+        },
+        "/private/tmp/nativefull57e-s1e9tznm/artifacts/build-o1.json": {
+          "sha256": "d1fc6fa2bd578be44fdaf6d1814931a51a905636c8082beb64c3281384af178b",
+          "bytes": 3049
+        },
+        "/private/tmp/nativefull57e-s1e9tznm/artifacts/build-o1.json.events.jsonl": {
+          "sha256": "0721fb0bb72845c0c93aebcfad5b358649ba164ffb9d470d5b9af635ddf948fa",
+          "bytes": 12687
+        },
+        "/private/tmp/nativefull57e-s1e9tznm/artifacts/build-o1.json.progress.json": {
+          "sha256": "d1421ebdba5b2eccb97a9f98482f871eb38c90dc27ac84454b7210f84d94802a",
+          "bytes": 229
+        },
+        "/private/tmp/nativefull57e-s1e9tznm/artifacts/build-o1.json.inputs.json": {
+          "sha256": "4b79e4189d2ded1a1c36687891e180284fee2bd0b68d2419d9a57f22d82adb4d",
+          "bytes": 1231
+        },
+        "/private/tmp/nativefull57e-s1e9tznm/artifacts/preparation.json": {
+          "sha256": "98b992c009932ed9191e21050d83fc0655d02fd4ba657929de35bd612f20ccf5",
+          "bytes": 504
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/owner-fixture.bend": {
+          "sha256": "ba48ad7ada4800439039f8efa5fa2ead8af1915042d0c45092d79c971fedad8d",
+          "bytes": 63
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/owner_scenario.py": {
+          "sha256": "ca419215155e4472b57f05a525b3212464adbf18223ab276743e9ef0efa26328",
+          "bytes": 2288
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/owner_guard.ts": {
+          "sha256": "5ea4179439b8d0b18425d3880113d69625429347db8bd99eb4a45da250e1bb0c",
+          "bytes": 943
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/consume_owner.mjs": {
+          "sha256": "aa88c8821610a41d90d469c90ccc9a03d14dc5df4a5476f7d5c7b9948a014964",
+          "bytes": 1306
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/owner-fixture.mjs": {
+          "sha256": "f5846ec61f6b02fcf640c5ddba1e81771b23ba70b5c5a0bf5e88791d265ceaee",
+          "bytes": 57032
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/compiler57e-o1": {
+          "sha256": "aa6d522ac2736d76d13691a5edeee39290339ed94228071abead005c8275e62d",
+          "bytes": 21006992,
+          "retainedRemoteOnly": true
+        },
+        "/private/tmp/nativefull57e-s1e9tznm-paren/artifacts/compiler57e-o1.c": {
+          "sha256": "e818a4b13f1f2becda4a28520cfcac959ec5ecf8c95849f052f177e4523e0074",
+          "bytes": 69872319,
+          "retainedRemoteOnly": true
+        }
+      },
+      "frozenCompileAttribution": {
+        "observedLastCompletedPhase": "check",
+        "lastObservedCheckElapsedMs": 265120.214,
+        "observedFailure": "300000ms guardian deadline",
+        "nextExpectedPhase": "emit",
+        "activeEmissionOrPostCheckOwnerHandoff": "INFERENCE: native host does not emit phase-start markers",
+        "unchangedFrozenLibraryConsumer": "NOT_RUN: complete frozen emitted artifact unavailable"
+      },
+      "frozenWorkload": {
+        "files": 50,
+        "modules": 15,
+        "declarations": 8403,
+        "officialExports": 7720,
+        "manifestSha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+        "directory": "/private/tmp/bend-v41-corpus.uXXfVm",
+        "buildRootUsesSnapshotRepositoryRelativeRoot": true,
+        "executionUsesAuthenticatedOriginalDirectory": true
+      }
+    },
+    "comparison55": {
+      "commit": "2b3efa80",
+      "receipt": "compiler-native-boundary-v55.json",
+      "sameMachineAndFrozenCorpus": true,
+      "ccOptimization": "O1",
+      "threads": 1,
+      "buildMs": 157171,
+      "buildPeakFootprintBytes": 4902139784,
+      "checkMs": 47591.305,
+      "checkCalls": 6328943,
+      "compileRunMs": 81244.654917,
+      "compileRunPeakFootprintBytes": 1425213576
+    },
+    "batchedCheckerQuantum64StillPresentInBothVersions": true
+  },
+  "fullRootLibrarySmoke": {
+    "passed": true,
+    "smokeOnly": true,
+    "fullCompilerRoot": true,
+    "bootstrapFixedpointClaim": false,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "phases": [
+      {
+        "phase": "parse",
+        "result": "ParseSuccess",
+        "parserImageIsCompilerImage": true
+      },
+      {
+        "phase": "expand",
+        "result": "ExpandSuccess"
+      },
+      {
+        "phase": "check",
+        "result": "CheckSuccess"
+      },
+      {
+        "phase": "emit-library",
+        "result": "EmitSuccess",
+        "input": "actual Checked.CheckSuccess.program; no inspection/readback"
+      },
+      {
+        "phase": "consume-esm",
+        "result": "PASS",
+        "assertions": 28,
+        "exports": 15
+      }
+    ],
+    "parserSha256": "4c95b16946f3431555cdeec9fd74c171142f602e2d7400c03f939c4846993af4",
+    "componentSha256": "4c95b16946f3431555cdeec9fd74c171142f602e2d7400c03f939c4846993af4",
+    "nativeCheckedBodies": 8339,
+    "fixtureSha256": "47ff2f270cb818cc377cd7b5b51f83d5c0410e06b51731524a7815a1db73e441",
+    "assertionsWorkerSha256": "f63fd299ee5587f7be4656aa7d530dfadd97f441138ea5ecb2cabed8e19edbf2",
+    "source": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-library-full-consumer.bend",
+      "sha256": "932163e5486d1d620e93cc8840f6b6b978b87227e95b27a4b07fb2dbc4e1d7e1"
+    },
+    "artifact": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-library-full-consumer.mjs",
+      "sha256": "499da2251b920e3ce4fa6d17340603a1ac0dad3291a6891d1782541b78298024",
+      "bytes": 63560
+    },
+    "assertionsSha256": "d937307d3281d055a352a85934efc743a1b48f4e613503b1ebc90f8a7f58f092",
+    "runtime": {
+      "exports": [
+        "zero",
+        "one",
+        "pack",
+        "make_pack",
+        "apply",
+        "identity",
+        "identity_probe",
+        "erased_probe",
+        "specialized_probe",
+        "local_twice",
+        "local_unused",
+        "local_order",
+        "over_order",
+        "over_generic",
+        "constructor_match"
+      ],
+      "rows": [
+        {
+          "name": "zero-nullary",
+          "observed": "BitZero",
+          "expected": "BitZero",
+          "passed": true
+        },
+        {
+          "name": "one-nullary",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "positional-noncommutative",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "positional-reversed-input",
+          "observed": [
+            "BitZero",
+            "BitOne"
+          ],
+          "expected": [
+            "BitZero",
+            "BitOne"
+          ],
+          "passed": true
+        },
+        {
+          "name": "pack-one-argument-is-curried-function",
+          "observed": "function",
+          "expected": "function",
+          "passed": true
+        },
+        {
+          "name": "pack-curried-second-argument",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "returned-curried-function",
+          "observed": "function",
+          "expected": "function",
+          "passed": true
+        },
+        {
+          "name": "higher-order-positional-call",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "over-applied-returned-function",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "live-host-callback",
+          "observed": [
+            "BitZero",
+            "BitOne"
+          ],
+          "expected": [
+            "BitZero",
+            "BitOne"
+          ],
+          "passed": true
+        },
+        {
+          "name": "live-host-callback-evaluated-once",
+          "observed": 1,
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "erased-kind-and-type-effective-one-argument",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "ordinary-type-reference-erasure-in-bend-application",
+          "observed": "BitZero",
+          "expected": "BitZero",
+          "passed": true
+        },
+        {
+          "name": "actual-template-specialization",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "erased-expression-keeps-second-live-argument",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "erased-expression-not-evaluated",
+          "observed": 0,
+          "expected": 0,
+          "passed": true
+        },
+        {
+          "name": "shared-local-value",
+          "observed": [
+            "BitOne",
+            "BitOne"
+          ],
+          "expected": [
+            "BitOne",
+            "BitOne"
+          ],
+          "passed": true
+        },
+        {
+          "name": "shared-local-evaluated-once",
+          "observed": 1,
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "unused-local-result",
+          "observed": "BitZero",
+          "expected": "BitZero",
+          "passed": true
+        },
+        {
+          "name": "unused-live-local-still-evaluated",
+          "observed": 1,
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "ordered-local-values",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "local-evaluation-order",
+          "observed": [
+            "first",
+            "second"
+          ],
+          "expected": [
+            "first",
+            "second"
+          ],
+          "passed": true
+        },
+        {
+          "name": "named-over-application-value",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "named-over-application-order",
+          "observed": [
+            "callee",
+            "argument"
+          ],
+          "expected": [
+            "callee",
+            "argument"
+          ],
+          "passed": true
+        },
+        {
+          "name": "generic-over-application-value",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "generic-over-application-order",
+          "observed": [
+            "callee",
+            "argument",
+            "apply"
+          ],
+          "expected": [
+            "callee",
+            "argument",
+            "apply"
+          ],
+          "passed": true
+        },
+        {
+          "name": "constructor-eliminator-first-arm",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "constructor-eliminator-default-chain",
+          "observed": "BitZero",
+          "expected": "BitZero",
+          "passed": true
+        }
+      ],
+      "artifactExecutedUnchanged": true
+    }
+  },
+  "scalarBefore": {
+    "source": {
+      "text": "import Base\ndef main() -> U32:\n  123\n",
+      "sha256": "5a8c46954d9db633aae057d6fdacac5d53ab62b60c25f8b7e0ae7d1651051992"
+    },
+    "componentSha256": "4c95b16946f3431555cdeec9fd74c171142f602e2d7400c03f939c4846993af4",
+    "root": {
+      "rootTag": "TypedOccurrence",
+      "tags": [
+        [
+          "TypedOccurrence",
+          66
+        ]
+      ],
+      "maxDepth": 33
+    },
+    "phases": [
+      {
+        "phase": "parse-before",
+        "elapsedMs": 203.350542,
+        "cpu": {
+          "user": 197548,
+          "system": 18006
+        }
+      },
+      {
+        "phase": "parse-after",
+        "elapsedMs": 455.591625,
+        "cpu": {
+          "user": 624893,
+          "system": 39683
+        }
+      },
+      {
+        "phase": "expand-after",
+        "elapsedMs": 702.917208,
+        "cpu": {
+          "user": 1090315,
+          "system": 53977
+        }
+      },
+      {
+        "phase": "check-after",
+        "elapsedMs": 6640.046458,
+        "cpu": {
+          "user": 9011036,
+          "system": 289620
+        }
+      },
+      {
+        "phase": "emit-after",
+        "elapsedMs": 7126.887042,
+        "cpu": {
+          "user": 9580430,
+          "system": 309259
+        }
+      }
+    ],
+    "execution": {
+      "status": 0,
+      "stdout": "123\n",
+      "stderr": "",
+      "outputSha256": "77559a4699e9230c47915d0bf7144c99b5f03293f34e2fb81c41b1033b045fd3"
+    },
+    "counters": {
+      "pending": 1228386,
+      "direct": 1014456,
+      "bound": 1056316,
+      "resume": 3299158,
+      "finished": 3299159
+    },
+    "inspection": {
+      "diagnosticOnly": true,
+      "sourceNodesAreNativeArray": true,
+      "wordCheckedZeroBody": "TermRef Word.Nil",
+      "wordCheckedSuccBody": "TermAdt Word.Con {args:[TermVar p index0],refs:[]}",
+      "reportSha256": "a2e63eeffbda18320367532649ec12bcfb795466cd79cfeddebf822f981152a9"
+    },
+    "interpretation": "Observed full Word32 occurrence tree, no ScalarOccurrence. Old scalar schema recognizes only TermFill and BodyReply wrappers; source-grounded candidate cause, not a measured fix."
+  },
+  "checkerCpuWindow": {
+    "scope": "Physical V8 compiled-code self ticks in checker-only30-80s; not inclusive logical CPS call-family cost. Inlining remains inside physical owners.",
+    "rawLog": "isolate-0xba9800000-68844-.ir57-check-full-v8.log",
+    "rawSha256": "bee5fa3d10d35fc1d5f369fd23a154ee56a7aa36c8ec698d25285f1c7922fa5f",
+    "derivedWindowSha256": "16ea84633bb1054fb1ffc5540469e4f9ddd0e4d33c85f7c08dcd45b60d776df1",
+    "manifestSha256": "cc612ffa9a8d1c331dad75f58f8bb0cfc827e5a9217f5d5f9b9856463b54318f",
+    "processor": "node --prof-process --preprocess; retain all non-tick records and only ticks with30000000<=tm<=80000000us",
+    "windowUs": {
+      "first": 30000416,
+      "last": 79999666
+    },
+    "ticks": 34180,
+    "ownerMap": "3766 private CPS helpers plus1139 canonical body wrappers; anonymous closures assigned to innermost actual V8 source interval among5274 named-function ranges",
+    "selfGroups": [
+      [
+        "checker-owner",
+        13890
+      ],
+      [
+        "checker-glue",
+        4837
+      ],
+      [
+        "native-unresolved",
+        779
+      ],
+      [
+        "runtime-code",
+        8853
+      ],
+      [
+        "host-scheduler",
+        1092
+      ],
+      [
+        "provider",
+        2492
+      ],
+      [
+        "base-or-program",
+        1562
+      ],
+      [
+        "native-library",
+        130
+      ],
+      [
+        "runtime-js",
+        421
+      ],
+      [
+        "anonymous-unmapped",
+        98
+      ],
+      [
+        "unmapped-code",
+        26
+      ]
+    ],
+    "canonicalOwnerSelfTicks": [
+      [
+        "whnf",
+        294
+      ],
+      [
+        "arena_get_node",
+        264
+      ],
+      [
+        "arena_words_view",
+        258
+      ],
+      [
+        "arena_get_node_region",
+        200
+      ],
+      [
+        "arena_words_view_nonempty",
+        194
+      ],
+      [
+        "arena_publish_occurrence",
+        186
+      ],
+      [
+        "arena_bound_range_loop",
+        171
+      ],
+      [
+        "core_subst_at",
+        168
+      ],
+      [
+        "core_subst_open",
+        164
+      ],
+      [
+        "materialize_node",
+        164
+      ],
+      [
+        "fits_term_whnf",
+        160
+      ],
+      [
+        "arena_name_text",
+        158
+      ],
+      [
+        "equal_raw_distinct",
+        148
+      ],
+      [
+        "canonicalize_term",
+        147
+      ],
+      [
+        "arena_get_word",
+        145
+      ],
+      [
+        "check_ctr_fields",
+        145
+      ],
+      [
+        "arena_publish_term_view",
+        141
+      ],
+      [
+        "equal_raw_ordinary",
+        132
+      ],
+      [
+        "infer_raw",
+        122
+      ],
+      [
+        "check_term_constructor_global",
+        122
+      ],
+      [
+        "check_term_raw",
+        115
+      ],
+      [
+        "arena_bound_node",
+        114
+      ],
+      [
+        "arena_subst_memo_lookup",
+        113
+      ],
+      [
+        "arena_get_word_region",
+        109
+      ],
+      [
+        "arena_node_bound",
+        102
+      ],
+      [
+        "term_usage_map",
+        99
+      ],
+      [
+        "finish_inference",
+        95
+      ],
+      [
+        "check_ctr_fields_arg",
+        94
+      ],
+      [
+        "arena_publish_term",
+        94
+      ],
+      [
+        "lower_family_sugar_family",
+        93
+      ],
+      [
+        "scope_constructor_lists_equal_open",
+        93
+      ],
+      [
+        "whnf_patterns",
+        93
+      ],
+      [
+        "check_ctr_fields_view",
+        89
+      ],
+      [
+        "apply_prefix",
+        88
+      ],
+      [
+        "scope_constructor_lists_equal",
+        87
+      ],
+      [
+        "arena_bound_read_region",
+        87
+      ],
+      [
+        "core_pattern_list_depth",
+        82
+      ],
+      [
+        "check_body_pattern_vector",
+        82
+      ],
+      [
+        "arena_put_node",
+        76
+      ],
+      [
+        "arena_publication_uncached",
+        73
+      ],
+      [
+        "arena_publish_terms_copy",
+        73
+      ],
+      [
+        "arena_words_prepend_count",
+        71
+      ],
+      [
+        "whnf_pattern",
+        71
+      ],
+      [
+        "canonicalize_terms",
+        71
+      ],
+      [
+        "arena_copy_word_range",
+        69
+      ],
+      [
+        "whnf_ref_global",
+        66
+      ],
+      [
+        "arena_subst_memo_lookup_result",
+        65
+      ],
+      [
+        "arena_names_view",
+        64
+      ],
+      [
+        "whnf_application_global",
+        64
+      ],
+      [
+        "arena_words_append",
+        61
+      ],
+      [
+        "arena_bound_range_start",
+        60
+      ],
+      [
+        "check_term_constructor_view",
+        60
+      ],
+      [
+        "arena_bound_range_word",
+        59
+      ],
+      [
+        "fits_term_target_view",
+        58
+      ],
+      [
+        "arena_bound_two",
+        56
+      ],
+      [
+        "occurrence_words_equal",
+        56
+      ],
+      [
+        "whnf_beta_case",
+        55
+      ],
+      [
+        "core_pattern_depth",
+        54
+      ],
+      [
+        "application_type_view",
+        53
+      ],
+      [
+        "check_term",
+        51
+      ],
+      [
+        "arena_bound_terms",
+        49
+      ],
+      [
+        "scope_segment_name_aliases",
+        49
+      ],
+      [
+        "scalar_reference_identity",
+        49
+      ],
+      [
+        "scalar_constructor_dispatch",
+        48
+      ],
+      [
+        "arena_word_cursor",
+        48
+      ],
+      [
+        "usage_merge",
+        47
+      ],
+      [
+        "arena_get_pattern_region",
+        47
+      ],
+      [
+        "infer_adt_args_view",
+        47
+      ],
+      [
+        "whnf_application",
+        47
+      ],
+      [
+        "core_shift_at",
+        46
+      ],
+      [
+        "arena_bound_range_empty",
+        46
+      ],
+      [
+        "arena_publish_checked_bindings",
+        46
+      ],
+      [
+        "fits_term",
+        45
+      ],
+      [
+        "arena_bound_range",
+        44
+      ],
+      [
+        "arena_get_pattern",
+        44
+      ],
+      [
+        "check_pattern_typed_fields",
+        43
+      ],
+      [
+        "scalar_certificate_global",
+        43
+      ],
+      [
+        "whnf_beta_scrutinee_count",
+        43
+      ],
+      [
+        "arena_bound_range_transient",
+        42
+      ],
+      [
+        "pattern_value",
+        42
+      ],
+      [
+        "pattern_values",
+        41
+      ],
+      [
+        "term_usage_map_application_quantity",
+        40
+      ],
+      [
+        "core_shift_open",
+        40
+      ],
+      [
+        "arena_words_cons",
+        40
+      ],
+      [
+        "materialize_operands",
+        40
+      ],
+      [
+        "whnf_beta_cases_view",
+        40
+      ],
+      [
+        "collect_constructor_field_types_view",
+        39
+      ],
+      [
+        "arena_bound_range_region",
+        39
+      ],
+      [
+        "whnf_beta_selected",
+        39
+      ],
+      [
+        "arena_constructor_owner",
+        38
+      ],
+      [
+        "equal_term",
+        38
+      ],
+      [
+        "substitute_many",
+        38
+      ],
+      [
+        "match_branch_body",
+        38
+      ],
+      [
+        "lower_family_sugar",
+        37
+      ],
+      [
+        "usage_pattern_env",
+        37
+      ],
+      [
+        "global_index_prepend",
+        37
+      ],
+      [
+        "function_type_of",
+        36
+      ],
+      [
+        "arena_publish_terms",
+        36
+      ],
+      [
+        "equal_lists",
+        36
+      ],
+      [
+        "check_pattern_result_view",
+        35
+      ],
+      [
+        "scope_pattern_rows_subsume",
+        35
+      ],
+      [
+        "whnf_beta_variable",
+        35
+      ],
+      [
+        "check_term_constructor_allowed",
+        35
+      ],
+      [
+        "whnf_beta_try",
+        35
+      ],
+      [
+        "arena_publish_occurrences",
+        35
+      ],
+      [
+        "core_pattern_depth_region",
+        35
+      ],
+      [
+        "check_term_inferred",
+        34
+      ],
+      [
+        "refine_binding_types",
+        34
+      ],
+      [
+        "whnf_beta_cases",
+        34
+      ],
+      [
+        "scope_index_name_aliases",
+        33
+      ],
+      [
+        "binders_type",
+        33
+      ],
+      [
+        "arena_put_word",
+        32
+      ],
+      [
+        "branch_order_column",
+        32
+      ],
+      [
+        "check_ctr_fields_fit",
+        32
+      ],
+      [
+        "whnf_beta_scrutinee",
+        32
+      ],
+      [
+        "arena_names_append",
+        32
+      ],
+      [
+        "core_subst_terms",
+        31
+      ],
+      [
+        "check_body_pattern_vector_typed",
+        31
+      ],
+      [
+        "infer",
+        30
+      ],
+      [
+        "check_pattern_applied_result",
+        29
+      ],
+      [
+        "arena_publish_names_copy",
+        29
+      ],
+      [
+        "check_pattern_typed",
+        29
+      ],
+      [
+        "inference_symbol",
+        29
+      ],
+      [
+        "whnf_beta_index",
+        29
+      ],
+      [
+        "check_pattern_fields_view",
+        28
+      ],
+      [
+        "arena_set_word",
+        28
+      ],
+      [
+        "whnf_pattern_constructor",
+        28
+      ],
+      [
+        "scope_constructor_lists_equal_exact",
+        28
+      ],
+      [
+        "arena_constructor_trees_loop",
+        28
+      ],
+      [
+        "scalar_schema_common",
+        28
+      ],
+      [
+        "usage_expected_known",
+        27
+      ],
+      [
+        "scope_canonical_aliases_filter",
+        27
+      ],
+      [
+        "whnf_beta_pattern_result",
+        27
+      ],
+      [
+        "scope_constructor_lists_equal_empty",
+        26
+      ],
+      [
+        "check_term_constructor_apply",
+        26
+      ],
+      [
+        "check_pattern_fields_typed_result",
+        26
+      ],
+      [
+        "whnf_patterns_step",
+        26
+      ],
+      [
+        "check_pattern_typed_view",
+        26
+      ],
+      [
+        "term_usage_map_case",
+        26
+      ],
+      [
+        "infer_global_adt",
+        26
+      ],
+      [
+        "pattern_result_fits_view",
+        25
+      ],
+      [
+        "scope_specialize_pattern_rows",
+        25
+      ],
+      [
+        "term_usage_map_constructor_view",
+        25
+      ],
+      [
+        "arena_publish_checked_pattern",
+        25
+      ],
+      [
+        "family_quant_prefix_view",
+        25
+      ],
+      [
+        "arena_names_prepend_copy",
+        25
+      ],
+      [
+        "definition_visible_self",
+        25
+      ],
+      [
+        "whnf_beta_scrutinee_single",
+        25
+      ],
+      [
+        "family_arity",
+        24
+      ],
+      [
+        "core_subst_memo_found",
+        24
+      ],
+      [
+        "term_span",
+        24
+      ],
+      [
+        "lower_family_sugar_promote",
+        24
+      ],
+      [
+        "arena_publish_checked_binding",
+        24
+      ],
+      [
+        "arena_case_prefix_index",
+        24
+      ],
+      [
+        "replace_match_expected",
+        24
+      ],
+      [
+        "recursion_terminates_cases",
+        24
+      ],
+      [
+        "global_index_insert",
+        23
+      ],
+      [
+        "arena_names_prepend_count",
+        23
+      ],
+      [
+        "core_subst_unaffected",
+        23
+      ],
+      [
+        "pattern_usage_valid_list",
+        23
+      ],
+      [
+        "arena_publish_terms_select",
+        23
+      ],
+      [
+        "arena_publish_optional_symbol",
+        23
+      ],
+      [
+        "matrix_pattern_covered_indexed",
+        23
+      ],
+      [
+        "replace_free_open",
+        22
+      ],
+      [
+        "equal_lists_general",
+        22
+      ],
+      [
+        "scope_name_is_in",
+        22
+      ],
+      [
+        "whnf_beta_argument",
+        22
+      ],
+      [
+        "arena_constructor_owner_view",
+        22
+      ],
+      [
+        "recursion_terminates",
+        22
+      ],
+      [
+        "infer_all_domain",
+        22
+      ],
+      [
+        "refs_contain_all",
+        22
+      ],
+      [
+        "arena_bound_range_source",
+        21
+      ],
+      [
+        "arena_bound_then",
+        21
+      ],
+      [
+        "arena_set_word_region",
+        21
+      ],
+      [
+        "arena_bound_binder",
+        21
+      ],
+      [
+        "has_canonical_name",
+        21
+      ],
+      [
+        "match_branch_body_source",
+        21
+      ],
+      [
+        "matrix_covers_constructors",
+        20
+      ],
+      [
+        "scope_canonical_alias_valid",
+        20
+      ],
+      [
+        "pattern_row_index_select_seen",
+        20
+      ],
+      [
+        "scope_constructor_trees_are_closed",
+        19
+      ],
+      [
+        "branch_order_columns",
+        19
+      ],
+      [
+        "infer_family_sugar",
+        19
+      ],
+      [
+        "whnf_ref_type",
+        19
+      ],
+      [
+        "whnf_beta",
+        19
+      ],
+      [
+        "constructor_usage_expected_view",
+        19
+      ],
+      [
+        "infer_application_valid",
+        19
+      ],
+      [
+        "arena_names_cons",
+        19
+      ],
+      [
+        "arena_names_view_nonempty",
+        19
+      ],
+      [
+        "term_usage_map_cases",
+        19
+      ],
+      [
+        "scope_specialize_pattern_row",
+        19
+      ],
+      [
+        "infer_adt_arg_check",
+        19
+      ],
+      [
+        "global_scope_prepend",
+        19
+      ],
+      [
+        "scope_canonical_name_aliases",
+        19
+      ],
+      [
+        "arena_words_append_select",
+        19
+      ],
+      [
+        "recursion_terminates_list",
+        18
+      ],
+      [
+        "global_index_aliases",
+        18
+      ],
+      [
+        "check_binder_usage_map",
+        18
+      ],
+      [
+        "core_subst",
+        18
+      ],
+      [
+        "check_pattern_exclusion_result",
+        18
+      ],
+      [
+        "replace_free_term",
+        18
+      ],
+      [
+        "arena_bound_pattern",
+        18
+      ],
+      [
+        "whnf_beta_body",
+        18
+      ],
+      [
+        "store_definition",
+        18
+      ],
+      [
+        "usage_set",
+        18
+      ],
+      [
+        "term_usage_map_list",
+        18
+      ],
+      [
+        "fits_kind",
+        18
+      ],
+      [
+        "arena_pack_term_name_result_40",
+        18
+      ],
+      [
+        "arena_bound_range_length",
+        17
+      ],
+      [
+        "check_pattern_fields_recursive_result",
+        17
+      ],
+      [
+        "arena_constructor_node_is_tree",
+        17
+      ],
+      [
+        "infer_binding_value",
+        17
+      ],
+      [
+        "check_pattern_global",
+        17
+      ],
+      [
+        "check_pattern_family_result",
+        17
+      ],
+      [
+        "shift_terms",
+        16
+      ],
+      [
+        "binders_env",
+        16
+      ],
+      [
+        "restore_named_head",
+        16
+      ],
+      [
+        "check_termination",
+        16
+      ],
+      [
+        "scalar_schema_name",
+        16
+      ],
+      [
+        "family_head_key",
+        16
+      ],
+      [
+        "whnf_pattern_append",
+        16
+      ],
+      [
+        "arena_constructor_trees_word",
+        16
+      ],
+      [
+        "lower_family_sugar_filled",
+        16
+      ],
+      [
+        "check_body_pattern_rows",
+        16
+      ],
+      [
+        "check_pattern_variable_field_quantity",
+        15
+      ],
+      [
+        "check_pattern_fields_result",
+        15
+      ],
+      [
+        "pattern_row_index_select",
+        15
+      ],
+      [
+        "family_arity_view",
+        15
+      ],
+      [
+        "scalar_constructor_certificate",
+        15
+      ],
+      [
+        "usage_local_env",
+        15
+      ],
+      [
+        "parameter_vars",
+        15
+      ],
+      [
+        "constructor_field_types_view",
+        15
+      ],
+      [
+        "scalar_schema_nat",
+        15
+      ],
+      [
+        "pattern_usage_valid",
+        14
+      ],
+      [
+        "replace_match_types",
+        14
+      ],
+      [
+        "pattern_row_index_pattern_result",
+        14
+      ],
+      [
+        "arena_publish_checked_patterns",
+        14
+      ],
+      [
+        "binders_quantities",
+        14
+      ],
+      [
+        "arena_publish_names",
+        14
+      ],
+      [
+        "binders_lambda",
+        14
+      ],
+      [
+        "arena_words_append_copy",
+        14
+      ],
+      [
+        "arena_words_reverse",
+        14
+      ],
+      [
+        "arena_publish_names_select",
+        14
+      ],
+      [
+        "check_body_pattern_rows_useful",
+        14
+      ],
+      [
+        "arena_pack_term",
+        14
+      ],
+      [
+        "arena_bound_range_then",
+        13
+      ],
+      [
+        "lookup_binding",
+        13
+      ],
+      [
+        "pattern_row_index_segments_complete",
+        13
+      ],
+      [
+        "global_index_alias_declaration",
+        13
+      ],
+      [
+        "usage_get",
+        13
+      ],
+      [
+        "infer_local_reference",
+        13
+      ],
+      [
+        "scalar_global_identity",
+        13
+      ],
+      [
+        "arena_publish_term_region",
+        13
+      ],
+      [
+        "equal_raw",
+        13
+      ],
+      [
+        "equal_raw_identity",
+        13
+      ],
+      [
+        "metadata_ordinary",
+        13
+      ],
+      [
+        "function_type_of_application_view",
+        13
+      ],
+      [
+        "validate_definition_termination",
+        13
+      ],
+      [
+        "application_bangs_valid",
+        12
+      ],
+      [
+        "all_variable_patterns",
+        12
+      ],
+      [
+        "matrix_covers",
+        12
+      ],
+      [
+        "lower_family_sugar_key_result",
+        12
+      ],
+      [
+        "pattern_row_index_range_region",
+        12
+      ],
+      [
+        "term_usage_map_constructor_args",
+        12
+      ],
+      [
+        "term_usage_map_argument_expected",
+        12
+      ],
+      [
+        "arena_name",
+        12
+      ],
+      [
+        "global_index_build",
+        12
+      ],
+      [
+        "pattern_row_index_range_result",
+        12
+      ],
+      [
+        "usage_pattern_env_result",
+        12
+      ],
+      [
+        "arena_get_binder",
+        12
+      ],
+      [
+        "core_shift",
+        12
+      ],
+      [
+        "check_body_pattern_rows_case",
+        12
+      ],
+      [
+        "constructor_field_types_family",
+        12
+      ],
+      [
+        "definition_classify",
+        12
+      ],
+      [
+        "constructor_usage_expected",
+        12
+      ],
+      [
+        "arena_publish_patterns_copy",
+        12
+      ],
+      [
+        "arena_bound_merge",
+        12
+      ],
+      [
+        "arena_names_append_select",
+        12
+      ],
+      [
+        "global_segments_family_aliases",
+        12
+      ],
+      [
+        "visible_scope_update",
+        12
+      ],
+      [
+        "infer_global_reference",
+        12
+      ],
+      [
+        "visible_lookup_key",
+        12
+      ],
+      [
+        "arena_publish_global",
+        12
+      ],
+      [
+        "check_declarations_step",
+        12
+      ],
+      [
+        "arena_publish_pattern",
+        12
+      ],
+      [
+        "arena_constructor_trees",
+        12
+      ],
+      [
+        "arena_publication_lookup",
+        12
+      ],
+      [
+        "family_quant_prefix",
+        11
+      ],
+      [
+        "binding_quantity_or_one",
+        11
+      ],
+      [
+        "matrix_covers_types",
+        11
+      ],
+      [
+        "restore_head_child",
+        11
+      ],
+      [
+        "global_segments_update",
+        11
+      ],
+      [
+        "arena_constructor_trees_valid",
+        11
+      ],
+      [
+        "application_argument_bangs_valid_terms",
+        11
+      ],
+      [
+        "constructors_for_type_view",
+        11
+      ],
+      [
+        "global_bucket_new",
+        11
+      ],
+      [
+        "binder_count",
+        11
+      ],
+      [
+        "family_quant_prefix_domain",
+        11
+      ],
+      [
+        "check_pattern_variable_result",
+        11
+      ],
+      [
+        "family_head_args",
+        11
+      ],
+      [
+        "arena_publish_optional_term",
+        11
+      ],
+      [
+        "scalar_schema_12",
+        11
+      ],
+      [
+        "pattern_row_index_range",
+        11
+      ],
+      [
+        "arena_case_prefix_local_build",
+        11
+      ],
+      [
+        "check_body_pattern_rows_length",
+        11
+      ],
+      [
+        "store_definition_result",
+        11
+      ],
+      [
+        "visible_lookup_insert",
+        11
+      ],
+      [
+        "arena_pack_terms_at",
+        11
+      ],
+      [
+        "scalar_schema_22",
+        11
+      ],
+      [
+        "canonicalize_patterns",
+        10
+      ],
+      [
+        "arena_bound_range_combine",
+        10
+      ],
+      [
+        "infer_adt_args",
+        10
+      ],
+      [
+        "global_index_alias_keys",
+        10
+      ],
+      [
+        "quantity_fits",
+        10
+      ],
+      [
+        "pattern_row_index_pattern_region",
+        10
+      ],
+      [
+        "core_shift_var",
+        10
+      ],
+      [
+        "scalar_schema_3",
+        10
+      ],
+      [
+        "arena_case_prefix_local_head",
+        10
+      ],
+      [
+        "arena_publish_symbol",
+        10
+      ],
+      [
+        "arena_bound_transient",
+        10
+      ],
+      [
+        "case_pattern_rows",
+        10
+      ],
+      [
+        "whnf_beta_fallback",
+        9
+      ],
+      [
+        "pattern_row_index_build",
+        9
+      ],
+      [
+        "visible_scope_prepend",
+        9
+      ],
+      [
+        "family_constructor_keys_inner",
+        9
+      ],
+      [
+        "finish_materialized",
+        9
+      ],
+      [
+        "global_segment_prepend",
+        9
+      ],
+      [
+        "arena_bound_pattern_region",
+        9
+      ],
+      [
+        "global_scope_constructor_alias_collision",
+        9
+      ],
+      [
+        "family_head_refs",
+        9
+      ],
+      [
+        "whnf_beta_index_offset",
+        9
+      ],
+      [
+        "check_local_pattern_usage_map",
+        9
+      ],
+      [
+        "constructor_usage_family",
+        9
+      ],
+      [
+        "replace_order_var",
+        9
+      ],
+      [
+        "occurrence_terms",
+        9
+      ],
+      [
+        "arena_case_prefix_region",
+        9
+      ],
+      [
+        "local_pattern_quantities_match",
+        9
+      ],
+      [
+        "check_body_match_type_view",
+        9
+      ],
+      [
+        "arena_publish_definition",
+        9
+      ],
+      [
+        "definition_term_inference",
+        9
+      ],
+      [
+        "check_definition_finish",
+        9
+      ],
+      [
+        "metadata_prefix",
+        9
+      ],
+      [
+        "global_index_constructor_owner",
+        9
+      ],
+      [
+        "scalar_global_U32_GlobalFamily",
+        9
+      ],
+      [
+        "check_pattern_fields_empty_view",
+        8
+      ],
+      [
+        "binding_type_at",
+        8
+      ],
+      [
+        "pattern_row_index_fields_result",
+        8
+      ],
+      [
+        "pattern_row_index_candidates",
+        8
+      ],
+      [
+        "replace_free_bound",
+        8
+      ],
+      [
+        "visible_lookup_prepend",
+        8
+      ],
+      [
+        "global_segments_has_constructor_owner",
+        8
+      ],
+      [
+        "arena_bound_pattern_count",
+        8
+      ],
+      [
+        "infer_application_check",
+        8
+      ],
+      [
+        "check_definition_uses_result",
+        8
+      ],
+      [
+        "same_quantity",
+        8
+      ],
+      [
+        "lookup_binding_head",
+        8
+      ],
+      [
+        "arena_bound_case",
+        8
+      ],
+      [
+        "family_constructor_keys_equal",
+        8
+      ],
+      [
+        "check_body_match_scrutinees",
+        8
+      ],
+      [
+        "pattern_row_index_name_result",
+        8
+      ],
+      [
+        "canonicalize_pattern",
+        8
+      ],
+      [
+        "pattern_binding_usage_valid",
+        8
+      ],
+      [
+        "pattern_row_index_range_empty",
+        8
+      ],
+      [
+        "constructor_usage_family_global",
+        8
+      ],
+      [
+        "whnf_beta_index_names_view",
+        8
+      ],
+      [
+        "match_scrutinees_valid",
+        8
+      ],
+      [
+        "infer_term_annotation_result",
+        8
+      ],
+      [
+        "scalar_global_Word_Con_GlobalFamily",
+        8
+      ],
+      [
+        "arena_case_prefix_local_single_valid",
+        8
+      ],
+      [
+        "constructor_usage_global",
+        8
+      ],
+      [
+        "initial_telescope_count_view",
+        8
+      ],
+      [
+        "whnf_beta_index_names",
+        8
+      ],
+      [
+        "check_body_matrix_rows",
+        8
+      ],
+      [
+        "check_infer_term_sort",
+        8
+      ],
+      [
+        "arena_publish_def_body",
+        8
+      ],
+      [
+        "scalar_schema_builtin",
+        8
+      ],
+      [
+        "scalar_global_Word_GlobalDefinition",
+        8
+      ],
+      [
+        "scalar_schema_prepared_result",
+        8
+      ],
+      [
+        "core_subst_var",
+        7
+      ],
+      [
+        "pattern_row_index_add",
+        7
+      ],
+      [
+        "constructor_field_types_global",
+        7
+      ],
+      [
+        "application_argument_bangs_valid",
+        7
+      ],
+      [
+        "arena_get_binder_region",
+        7
+      ],
+      [
+        "visible_lookup_refresh_segments",
+        7
+      ],
+      [
+        "function_type_of_application_result",
+        7
+      ],
+      [
+        "check_body_pattern_rows_result",
+        7
+      ],
+      [
+        "fits_kind_whnf",
+        7
+      ],
+      [
+        "arena_quantities_prepend_fast",
+        7
+      ],
+      [
+        "equal_refs",
+        7
+      ],
+      [
+        "arena_constructor_trees_are_closed",
+        7
+      ],
+      [
+        "pattern_quantity_valid",
+        7
+      ],
+      [
+        "scalar_global_Bool_GlobalFamily",
+        7
+      ],
+      [
+        "constructor_argument_usage",
+        7
+      ],
+      [
+        "term_usage_map_lambda_view",
+        7
+      ],
+      [
+        "pattern_result_fits",
+        7
+      ],
+      [
+        "check_definition_declared_type",
+        7
+      ],
+      [
+        "function_argument_quantity",
+        7
+      ],
+      [
+        "check_definition",
+        7
+      ],
+      [
+        "global_index_declaration",
+        7
+      ],
+      [
+        "scalar_schema_28",
+        7
+      ],
+      [
+        "scalar_global_True_GlobalConstructor",
+        7
+      ],
+      [
+        "check_declarations_definition",
+        7
+      ],
+      [
+        "check_constructors_unique",
+        7
+      ],
+      [
+        "scalar_schema_2",
+        7
+      ],
+      [
+        "scalar_schema_9",
+        7
+      ],
+      [
+        "refine_match_env",
+        6
+      ],
+      [
+        "arena_names_append_copy",
+        6
+      ],
+      [
+        "arena_bound_pattern_order",
+        6
+      ],
+      [
+        "arena_publish_pattern_view",
+        6
+      ],
+      [
+        "infer_application_result_view",
+        6
+      ],
+      [
+        "matrix_pattern_covered",
+        6
+      ],
+      [
+        "term_usage_map_argument_expected_view",
+        6
+      ],
+      [
+        "occurrence_retype",
+        6
+      ],
+      [
+        "replace_free_terms",
+        6
+      ],
+      [
+        "family_constructor_keys_candidates",
+        6
+      ],
+      [
+        "occurrence_term",
+        6
+      ],
+      [
+        "lower_family_sugar_global_result",
+        6
+      ],
+      [
+        "declaration_visible_scope",
+        6
+      ],
+      [
+        "family_constructor_keys",
+        6
+      ],
+      [
+        "shift_expected",
+        6
+      ],
+      [
+        "promotion_domain_valid",
+        6
+      ],
+      [
+        "binder_usage_map",
+        6
+      ],
+      [
+        "arena_pack_terms_reserve_words_result_28",
+        6
+      ],
+      [
+        "family_lowered_whnf",
+        6
+      ],
+      [
+        "arena_case_prefix_local_pattern_valid",
+        6
+      ],
+      [
+        "inference_case",
+        6
+      ],
+      [
+        "term_usage_map_lambda_expected",
+        6
+      ],
+      [
+        "visible_lookup_refresh",
+        6
+      ],
+      [
+        "scope_constructor_equality_after",
+        6
+      ],
+      [
+        "visible_lookup_refresh_key",
+        6
+      ],
+      [
+        "scalar_global_Zero_GlobalConstructor",
+        6
+      ],
+      [
+        "scalar_global_WCon_GlobalConstructor",
+        6
+      ],
+      [
+        "arena_pack_terms",
+        6
+      ],
+      [
+        "scalar_schema_14",
+        6
+      ],
+      [
+        "scalar_schema_7",
+        6
+      ],
+      [
+        "scalar_global_U32_GlobalConstructor",
+        6
+      ],
+      [
+        "scalar_global_False_GlobalConstructor",
+        6
+      ],
+      [
+        "initial_telescope_count",
+        5
+      ],
+      [
+        "scope_specialize_pattern_rows_named",
+        5
+      ],
+      [
+        "core_shift_terms",
+        5
+      ],
+      [
+        "constructor_usage_global_result",
+        5
+      ],
+      [
+        "check_body_local_uses_result",
+        5
+      ],
+      [
+        "constructor_field_types_for_type",
+        5
+      ],
+      [
+        "equal_lists_constructor_result",
+        5
+      ],
+      [
+        "check_pattern_global_result",
+        5
+      ],
+      [
+        "elaborate_definition",
+        5
+      ],
+      [
+        "matrix_variable_column",
+        5
+      ],
+      [
+        "scalar_schema_27",
+        5
+      ],
+      [
+        "scrutinee_variable_index",
+        5
+      ],
+      [
+        "constructor_family",
+        5
+      ],
+      [
+        "arena_case_prefix_local_name_valid",
+        5
+      ],
+      [
+        "quantity_arguments",
+        5
+      ],
+      [
+        "checked_local_env",
+        5
+      ],
+      [
+        "scalar_schema_4",
+        5
+      ],
+      [
+        "scalar_schema_20",
+        5
+      ],
+      [
+        "scalar_global_Succ_GlobalConstructor",
+        5
+      ],
+      [
+        "canonical_key",
+        5
+      ],
+      [
+        "function_quantity_from_type",
+        5
+      ],
+      [
+        "arena_case_prefix_local_pattern",
+        5
+      ],
+      [
+        "whnf_beta_index_node",
+        5
+      ],
+      [
+        "infer_term_annotation_inner",
+        5
+      ],
+      [
+        "check_lambda_body_result",
+        5
+      ],
+      [
+        "term_usage_map_constructor_result",
+        5
+      ],
+      [
+        "arena_case_prefix_local_single",
+        5
+      ],
+      [
+        "check_declarations",
+        5
+      ],
+      [
+        "infer_application_result",
+        5
+      ],
+      [
+        "scalar_schema_prepared",
+        5
+      ],
+      [
+        "scalar_schema_13",
+        5
+      ],
+      [
+        "check_definition_body",
+        5
+      ],
+      [
+        "constructor_result_view",
+        5
+      ],
+      [
+        "term_usage_map_scrutinee_result",
+        5
+      ],
+      [
+        "core_shift_unaffected",
+        5
+      ],
+      [
+        "scalar_schema_prepared_entry",
+        5
+      ],
+      [
+        "collect_telescope_quantities_view",
+        5
+      ],
+      [
+        "scalar_global_WNil_GlobalConstructor",
+        5
+      ],
+      [
+        "scalar_schema_35",
+        5
+      ],
+      [
+        "scalar_schema_18",
+        5
+      ],
+      [
+        "scalar_schema_32",
+        5
+      ],
+      [
+        "scalar_schema_15",
+        5
+      ],
+      [
+        "scalar_schema_36",
+        5
+      ],
+      [
+        "constructor_field_types_lookup",
+        4
+      ],
+      [
+        "filter_reachable_result",
+        4
+      ],
+      [
+        "constructor_usage_field_type",
+        4
+      ],
+      [
+        "domain_quantity",
+        4
+      ],
+      [
+        "constructor_field_types_applied",
+        4
+      ],
+      [
+        "constructor_result_possible",
+        4
+      ],
+      [
+        "check_body_match_many_rows_result",
+        4
+      ],
+      [
+        "constructor_pattern_reachable_result",
+        4
+      ],
+      [
+        "scope_pattern_rows_subsume_named",
+        4
+      ],
+      [
+        "arena_publish_pattern_region",
+        4
+      ],
+      [
+        "global_index_constructor_parent",
+        4
+      ],
+      [
+        "check_constructors_fields_result",
+        4
+      ],
+      [
+        "application_head",
+        4
+      ],
+      [
+        "family_constructor_keys_seen",
+        4
+      ],
+      [
+        "scalar_schema_8",
+        4
+      ],
+      [
+        "scalar_schema_24",
+        4
+      ],
+      [
+        "scalar_global_Nat_GlobalFamily",
+        4
+      ],
+      [
+        "arena_case_prefix_large",
+        4
+      ],
+      [
+        "arena_case_prefix_local_build_head",
+        4
+      ],
+      [
+        "term_usage_map_lambda_quantity",
+        4
+      ],
+      [
+        "whnf_beta_index_aliases",
+        4
+      ],
+      [
+        "pattern_row_index_scope_complete",
+        4
+      ],
+      [
+        "inference_keep",
+        4
+      ],
+      [
+        "infer_family_sugar_result",
+        4
+      ],
+      [
+        "whnf_beta_index_normal",
+        4
+      ],
+      [
+        "arena_put_pattern",
+        4
+      ],
+      [
+        "check_body_local_env_result",
+        4
+      ],
+      [
+        "global_segments_constructor_candidates_head",
+        4
+      ],
+      [
+        "arena_bound_local",
+        4
+      ],
+      [
+        "global_index_constructor_candidates",
+        4
+      ],
+      [
+        "collect_constructor_field_types",
+        4
+      ],
+      [
+        "scoped_checked",
+        4
+      ],
+      [
+        "infer_scrutinee_types",
+        4
+      ],
+      [
+        "arena_publish_patterns",
+        4
+      ],
+      [
+        "check_body_match",
+        4
+      ],
+      [
+        "scalar_schema_11",
+        4
+      ],
+      [
+        "arena_constructor_trees_child",
+        4
+      ],
+      [
+        "quantity_join",
+        4
+      ],
+      [
+        "arena_case_prefix_local_node",
+        4
+      ],
+      [
+        "scalar_schema_34",
+        4
+      ],
+      [
+        "scalar_global_Word_Nil_GlobalFamily",
+        4
+      ],
+      [
+        "arena_bound_pattern_get",
+        3
+      ],
+      [
+        "lower_family_sugar_global",
+        3
+      ],
+      [
+        "pattern_row_index_query",
+        3
+      ],
+      [
+        "filter_reachable_constructors",
+        3
+      ],
+      [
+        "pattern_row_index_add_head",
+        3
+      ],
+      [
+        "validate_definition_uses",
+        3
+      ],
+      [
+        "arena_quantities_cons",
+        3
+      ],
+      [
+        "pattern_row_covered",
+        3
+      ],
+      [
+        "pattern_row_selection_merge",
+        3
+      ],
+      [
+        "arena_case_prefix_local_build_word",
+        3
+      ],
+      [
+        "scalar_schema_25",
+        3
+      ],
+      [
+        "check_body_local",
+        3
+      ],
+      [
+        "arena_publish_patterns_select",
+        3
+      ],
+      [
+        "usage_merge_quantity",
+        3
+      ],
+      [
+        "arena_case_prefix_local_name",
+        3
+      ],
+      [
+        "constructor_result_term",
+        3
+      ],
+      [
+        "infer_scrutinee_types_result",
+        3
+      ],
+      [
+        "arena_publish_optional_occurrence",
+        3
+      ],
+      [
+        "definition_term_inference_uncached",
+        3
+      ],
+      [
+        "arena_publish_binders",
+        3
+      ],
+      [
+        "function_quantity_from_type_view",
+        3
+      ],
+      [
+        "lambda_quantity",
+        3
+      ],
+      [
+        "global_segment_update",
+        3
+      ],
+      [
+        "visible_lookup_key_merge",
+        3
+      ],
+      [
+        "infer_application_result_of_function",
+        3
+      ],
+      [
+        "metadata_sort",
+        3
+      ],
+      [
+        "term_usage_map_family_result",
+        3
+      ],
+      [
+        "arena_quantities_view_nonempty",
+        3
+      ],
+      [
+        "scalar_frame_finish",
+        3
+      ],
+      [
+        "infer_scrutinee_types_rest",
+        3
+      ],
+      [
+        "global_scope_has_constructor_owner",
+        3
+      ],
+      [
+        "constructors_for_type",
+        3
+      ],
+      [
+        "arena_case_prefix_local_head_valid",
+        3
+      ],
+      [
+        "occurrence_take",
+        3
+      ],
+      [
+        "usage_value_type",
+        3
+      ],
+      [
+        "scalar_schema_0",
+        3
+      ],
+      [
+        "scalar_schema_21",
+        3
+      ],
+      [
+        "scalar_schema_10",
+        3
+      ],
+      [
+        "scalar_schema_16",
+        3
+      ],
+      [
+        "term_descend_ordinary",
+        2
+      ],
+      [
+        "pattern_row_selection_merge_order",
+        2
+      ],
+      [
+        "global_scope_family_aliases",
+        2
+      ],
+      [
+        "arena_bound_remove",
+        2
+      ],
+      [
+        "check_live_fields",
+        2
+      ],
+      [
+        "recursive_call_decreases",
+        2
+      ],
+      [
+        "import_scope_base",
+        2
+      ],
+      [
+        "recursion_terminates_application_view",
+        2
+      ],
+      [
+        "function_argument_quantity_result",
+        2
+      ],
+      [
+        "visible_lookup_merge",
+        2
+      ],
+      [
+        "restore_function_bangs",
+        2
+      ],
+      [
+        "global_index_has_constructor_owner",
+        2
+      ],
+      [
+        "constructor_pattern_reachable",
+        2
+      ],
+      [
+        "arena_put_source_node",
+        2
+      ],
+      [
+        "pattern_row_index_region_result",
+        2
+      ],
+      [
+        "pattern_row_index_ranks",
+        2
+      ],
+      [
+        "arena_case_prefix_local_descriptor_region",
+        2
+      ],
+      [
+        "string_certificate",
+        2
+      ],
+      [
+        "arena_bound_min",
+        2
+      ],
+      [
+        "check_term_lambda_view",
+        2
+      ],
+      [
+        "scope_scope_name_aliases",
+        2
+      ],
+      [
+        "string_schema",
+        2
+      ],
+      [
+        "case_pattern_rows_cons",
+        2
+      ],
+      [
+        "arena_case_prefix_local_descriptor",
+        2
+      ],
+      [
+        "arena_case_prefix_local_descriptor_valid",
+        2
+      ],
+      [
+        "visible_bucket_merge_result",
+        2
+      ],
+      [
+        "global_bucket_prepend",
+        2
+      ],
+      [
+        "local_body_inferred",
+        2
+      ],
+      [
+        "lambda_promotes",
+        2
+      ],
+      [
+        "arena_case_prefix_eligible",
+        2
+      ],
+      [
+        "whnf_beta_index_name",
+        2
+      ],
+      [
+        "arena_case_prefix_local_save",
+        2
+      ],
+      [
+        "check_lambda_body_use",
+        2
+      ],
+      [
+        "arena_case_prefix_local_cached_generation",
+        2
+      ],
+      [
+        "arena_constructor_node_has_witness_source",
+        2
+      ],
+      [
+        "check_type_decl",
+        2
+      ],
+      [
+        "arena_publish_binders_select",
+        2
+      ],
+      [
+        "arena_quantities_prepend_count",
+        2
+      ],
+      [
+        "import_scope",
+        2
+      ],
+      [
+        "term_usage_map_quantified_list",
+        2
+      ],
+      [
+        "family_constructor_keys_membership",
+        2
+      ],
+      [
+        "check_body_matrix_result",
+        2
+      ],
+      [
+        "destructuring_local_match",
+        2
+      ],
+      [
+        "constructor_result_applied",
+        2
+      ],
+      [
+        "checked_local_env_inference",
+        2
+      ],
+      [
+        "lambda_usage_valid",
+        2
+      ],
+      [
+        "check_lambda_promotes_result",
+        2
+      ],
+      [
+        "check_body_local_length_result",
+        2
+      ],
+      [
+        "scalar_schema_23",
+        2
+      ],
+      [
+        "scalar_schema_1",
+        2
+      ],
+      [
+        "maybe_shift_index",
+        1
+      ],
+      [
+        "arena_bound_min_order",
+        1
+      ],
+      [
+        "replace_free_unaffected",
+        1
+      ],
+      [
+        "constructor_family_literal",
+        1
+      ],
+      [
+        "visible_lookup_refresh_alias",
+        1
+      ],
+      [
+        "scalar_schema_17",
+        1
+      ],
+      [
+        "visible_bucket_merge",
+        1
+      ],
+      [
+        "arena_constructor_node_tree_cached",
+        1
+      ],
+      [
+        "import_scope_target",
+        1
+      ],
+      [
+        "inference_prefix",
+        1
+      ],
+      [
+        "optional_source_quantity",
+        1
+      ],
+      [
+        "current_scope",
+        1
+      ],
+      [
+        "arena_get_pattern_region_get_pattern_result_7",
+        1
+      ],
+      [
+        "scalar_schema_prepare",
+        1
+      ],
+      [
+        "infer_type_annotation_result",
+        1
+      ],
+      [
+        "live_field_goal",
+        1
+      ],
+      [
+        "arena_publish_constructor_decl_list",
+        1
+      ],
+      [
+        "global_scope_entries",
+        1
+      ],
+      [
+        "constructor_field_demand",
+        1
+      ],
+      [
+        "check_string_literal",
+        1
+      ],
+      [
+        "local_bindings",
+        1
+      ],
+      [
+        "checked_binding",
+        1
+      ],
+      [
+        "pattern_quantity_allowed",
+        1
+      ],
+      [
+        "check_definition_term_result",
+        1
+      ],
+      [
+        "checked_symbol",
+        1
+      ],
+      [
+        "typed_leaf",
+        1
+      ],
+      [
+        "arena_case_prefix_local_cached",
+        1
+      ],
+      [
+        "constructor_result_global",
+        1
+      ],
+      [
+        "arena_words_start",
+        1
+      ],
+      [
+        "usage_annotation_type",
+        1
+      ],
+      [
+        "canonicalize_strings",
+        1
+      ],
+      [
+        "arena_case_prefix_local_text_result",
+        1
+      ],
+      [
+        "pattern_row_index_bucket",
+        1
+      ],
+      [
+        "check_lambda_body",
+        1
+      ],
+      [
+        "replace_order_vars",
+        1
+      ],
+      [
+        "inference_case_pattern",
+        1
+      ],
+      [
+        "family_constructor_keys_for_type",
+        1
+      ],
+      [
+        "scope_constructor_lists_equal_witness",
+        1
+      ],
+      [
+        "equal_match_patterns",
+        1
+      ],
+      [
+        "scalar_schema_5",
+        1
+      ],
+      [
+        "global_local_alias",
+        1
+      ],
+      [
+        "check_body_match_type",
+        1
+      ],
+      [
+        "occurrence_drop",
+        1
+      ],
+      [
+        "predeclare_definition_signatures",
+        1
+      ],
+      [
+        "check_constructors_type_result",
+        1
+      ],
+      [
+        "inference_prepend",
+        1
+      ],
+      [
+        "collect_telescope_quantities",
+        1
+      ],
+      [
+        "arena_quantities_view",
+        1
+      ],
+      [
+        "checked_definition",
+        1
+      ],
+      [
+        "arena_words_length",
+        1
+      ],
+      [
+        "quantity_alternative",
+        1
+      ],
+      [
+        "require_checked_definition",
+        1
+      ],
+      [
+        "arena_case_prefix_local_range",
+        1
+      ],
+      [
+        "check_lambda_quantity_result",
+        1
+      ],
+      [
+        "string_constructor_identity",
+        1
+      ],
+      [
+        "function_type_of_binding_result",
+        1
+      ],
+      [
+        "matrix_pattern_covered_constructors",
+        1
+      ],
+      [
+        "global_segments_constructor_candidates",
+        1
+      ],
+      [
+        "arena_case_prefix_local_valid_result",
+        1
+      ],
+      [
+        "span_file",
+        1
+      ],
+      [
+        "definition_sort",
+        1
+      ],
+      [
+        "scope_wildcard_patterns",
+        1
+      ],
+      [
+        "arena_names_reverse",
+        1
+      ],
+      [
+        "check_body_local_quantity_result",
+        1
+      ],
+      [
+        "matrix_covers_recursive_result",
+        1
+      ],
+      [
+        "scope_pattern_rows_subsume_other",
+        1
+      ],
+      [
+        "arena_publish_top_level",
+        1
+      ],
+      [
+        "scalar_schema_19",
+        1
+      ],
+      [
+        "local_occurrence",
+        1
+      ],
+      [
+        "promotion_domain_valid_result",
+        1
+      ],
+      [
+        "arena_pack_terms_length",
+        1
+      ],
+      [
+        "match_scrutinee_binding",
+        1
+      ],
+      [
+        "string_pack_store",
+        1
+      ]
+    ],
+    "nearestJsContextTop30": [
+      [
+        "checker-glue:checker_chunk",
+        4424
+      ],
+      [
+        "checker-glue:checker_step_one",
+        2764
+      ],
+      [
+        "host-scheduler:runSteps",
+        2219
+      ],
+      [
+        "anonymous-unmapped: file:///Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-full-b.js:284896:27",
+        1477
+      ],
+      [
+        "host-scheduler:runCheckerSteps",
+        1318
+      ],
+      [
+        "provider:index_lookup.find.go",
+        979
+      ],
+      [
+        "base-or-program:$Map$get$go$",
+        843
+      ],
+      [
+        "checker-glue:checker_step_group_13",
+        345
+      ],
+      [
+        "checker-owner:whnf",
+        328
+      ],
+      [
+        "checker-owner:arena_get_node",
+        315
+      ],
+      [
+        "checker-owner:arena_words_view",
+        271
+      ],
+      [
+        "checker-glue:checker_step_group_12",
+        260
+      ],
+      [
+        "checker-owner:arena_get_node_region",
+        245
+      ],
+      [
+        "base-or-program:$Map$diff$",
+        234
+      ],
+      [
+        "base-or-program:$Map$seek$go$",
+        222
+      ],
+      [
+        "checker-owner:arena_publish_occurrence",
+        213
+      ],
+      [
+        "checker-owner:arena_words_view_nonempty",
+        207
+      ],
+      [
+        "checker-owner:arena_get_word",
+        189
+      ],
+      [
+        "checker-owner:core_subst_open",
+        182
+      ],
+      [
+        "checker-owner:arena_bound_range_loop",
+        182
+      ],
+      [
+        "checker-owner:core_subst_at",
+        180
+      ],
+      [
+        "checker-owner:canonicalize_term",
+        178
+      ],
+      [
+        "runtime-js:map_bit",
+        174
+      ],
+      [
+        "checker-owner:materialize_node",
+        174
+      ],
+      [
+        "checker-owner:equal_raw_distinct",
+        167
+      ],
+      [
+        "checker-owner:check_term_raw",
+        167
+      ],
+      [
+        "checker-owner:arena_name_text",
+        165
+      ],
+      [
+        "checker-owner:fits_term_whnf",
+        164
+      ],
+      [
+        "checker-owner:arena_node_bound",
+        159
+      ],
+      [
+        "checker-owner:check_ctr_fields",
+        159
+      ]
+    ],
+    "heuristicFamilySelfTicks": [
+      [
+        "substitution/bounds",
+        613
+      ],
+      [
+        "other checker",
+        3841
+      ],
+      [
+        "arena",
+        3821
+      ],
+      [
+        "affine usage/quantity",
+        650
+      ],
+      [
+        "conversion/equality",
+        543
+      ],
+      [
+        "preparation/materialization",
+        690
+      ],
+      [
+        "inference/checking",
+        1364
+      ],
+      [
+        "whnf/reduction",
+        1386
+      ],
+      [
+        "publication/metadata/readback",
+        982
+      ]
+    ],
+    "caveats": [
+      "Family prefix classifier is heuristic, not semantic inclusive attribution.",
+      "8853 runtime-code ticks labelled Abort.ExtraWide remain unresolved; no actual-abort claim.",
+      "Native StatWatcher nearest symbol is not reliable filesystem CPU attribution.",
+      "Publication/WHNF/checking can own shared arena/runtime costs absent from physical self counts.",
+      "No allocation-byte attribution or causal performance fix is proved by this profile.",
+      "Earlier scout NOT publication/NOT WHNF conclusion was retracted."
+    ]
+  },
+  "acceptance": {
+    "nativeFullRootBuilt": true,
+    "nativeFullFrozenCheck": true,
+    "nativeFullFrozenCompile": false,
+    "fullRootLibrarySmoke": true,
+    "fullFrozenConsumer": false,
+    "stage1Stage2ByteFixedpoint": false,
+    "memoryGoal": false,
+    "speedGoal": false,
+    "checksExcluded": 0,
+    "outputPatches": 0
+  },
+  "next": [
+    "Correct scalar schema recognition for checked Word representation, then measure actual behavior.",
+    "Refresh immutable producer/parser chain after sources stabilize.",
+    "Complete unchanged full frozen compiler consumer and genuine current stage1/stage2 fixedpoint."
+  ]
+}

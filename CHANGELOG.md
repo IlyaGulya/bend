@@ -143,6 +143,10 @@ latest one; the GitHub release carries the same notes.
   late word-match folding of an already-emitted callee; a runtime regression
   covers both released and retained builds. The canonical checker and complete
   body coverage remain unchanged; there are no disk snapshots or source fallbacks.
+- The native selfhost bridge parenthesizes function-valued result type arguments,
+  admitting the owning Checked FIR handoff to the native checker and emitter.
+  Full native root validation and a real emitted-library consumer pass; current
+  full-corpus performance and bootstrap acceptance are tracked separately.
 - Source map lookup selects the same Patricia branch through a structurally
   decreasing worker instead of allocating two recursive branch closures per
   node. Unicode keys, misses and arbitrary public map shapes retain Map.bit
