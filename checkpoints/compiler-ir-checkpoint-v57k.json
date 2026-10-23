@@ -1,6 +1,6 @@
 {
   "version": "57k",
-  "status": "FULL8382_BODY_NATIVE_ROOT_AND_COMPLETE_FROZEN_CORPUS_PASS_REVISED_FIXTURE_BOOTSTRAP_RUNNING",
+  "status": "TRUE_UNCHANGED_FULL_ROOT_BYTE_FIXEDPOINT_PROVED_FULL_EMITTED_FIXTURES_INCOMPLETE",
   "selectedWorkingBaseline": "2b3efa80",
   "sourceHashes": {
     "bend2/selfhost/js_emit.bend": "1879ff7793f295c88aaccf1f59d20ebe4d292c728451d0191e986032be13faa6",
@@ -273,8 +273,10 @@
     "perImageFixtures": 95,
     "fullGateExpectedFixtures": 285,
     "fullRootNativeBuild": "PASS8382/8382 bodies8772events26241msphysical2989784400",
-    "fixedpoint": false,
-    "speedClaim": false
+    "fixedpoint": true,
+    "speedClaim": false,
+    "fullGatePassed": false,
+    "fullGateFixtureExecutionsCompleted": 100
   },
   "fullRootNativeProof": {
     "status": "JS_GENERATED_NOT_YET_EXECUTED",
@@ -552,5 +554,720 @@
     "observedNode26Ms": 300250,
     "observedNode23Ms": 344297,
     "observationLimit": "Both runs prof+trace;795962 synchronous trace records dominate native profile bucket. These are NOT normal-codegen CPU costs and do NOT prove a Node-version cause. No source integration. Untraced-observer profile launched separately."
+  },
+  "fixedpoint": {
+    "criterion": "Actual cmp exit0 and original worker Buffer.equals on complete unchanged emitted source; no normalization or output patch",
+    "stageOne": {
+      "event": "artifact",
+      "phase": "stage-one-emit",
+      "stage": "stageOne",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-ir57k-bootstrap-b.json.cases/stage-one.js",
+      "sha256": "8aacace8d17a5a8d79e909733d03ccd4b82a5c42d9b269a96276925215d02c0b",
+      "bytes": 13733899,
+      "sourceHashes": [
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_v1.bend",
+          "sha256": "e404aea222d4b03b76d33804447bbccd0f7f8712ff7ee95100654525a40f224c",
+          "sourceBytesSha256": "e404aea222d4b03b76d33804447bbccd0f7f8712ff7ee95100654525a40f224c",
+          "namespace": ""
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+          "sha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+          "sourceBytesSha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+          "namespace": ""
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/print.js",
+          "sha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+          "sourceBytesSha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/write.js",
+          "sha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+          "sourceBytesSha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/print_err.js",
+          "sha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+          "sourceBytesSha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/get_env.js",
+          "sha256": "9a4fc592e447607553bdb08b194a9ede90dbae3660507687752f58ea42892dba",
+          "sourceBytesSha256": "9a4fc592e447607553bdb08b194a9ede90dbae3660507687752f58ea42892dba",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/args.js",
+          "sha256": "ed1a7e7b73ae7fe58ac6d428d2762b66f223f4c70a165570fc5d68dc874ddc0b",
+          "sourceBytesSha256": "ed1a7e7b73ae7fe58ac6d428d2762b66f223f4c70a165570fc5d68dc874ddc0b",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/process_run.js",
+          "sha256": "9ce0c5853ab8059614f115d99b1d0ba845fb23c056a6965a59e645d155bd58c1",
+          "sourceBytesSha256": "9ce0c5853ab8059614f115d99b1d0ba845fb23c056a6965a59e645d155bd58c1",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/random_u32.js",
+          "sha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+          "sourceBytesSha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/spawn.js",
+          "sha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+          "sourceBytesSha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/sleep.js",
+          "sha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+          "sourceBytesSha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/now.js",
+          "sha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+          "sourceBytesSha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/thread_count.js",
+          "sha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+          "sourceBytesSha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/chan.js",
+          "sha256": "007ff7505af9effc20fccfa3d26eaf89a382d6295839b27df119a1704a3f86d7",
+          "sourceBytesSha256": "007ff7505af9effc20fccfa3d26eaf89a382d6295839b27df119a1704a3f86d7",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_open.js",
+          "sha256": "dd549f5f05eb896aef9a3a02ffecf2ee902e653f5463be72781edab1cd1180ae",
+          "sourceBytesSha256": "dd549f5f05eb896aef9a3a02ffecf2ee902e653f5463be72781edab1cd1180ae",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_read.js",
+          "sha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+          "sourceBytesSha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_size.js",
+          "sha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+          "sourceBytesSha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_write.js",
+          "sha256": "4fe307538beb1047add7646f52df6e382a1da5d8999d8fe96969bd5055bc9b59",
+          "sourceBytesSha256": "4fe307538beb1047add7646f52df6e382a1da5d8999d8fe96969bd5055bc9b59",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_close.js",
+          "sha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+          "sourceBytesSha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_listen.js",
+          "sha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+          "sourceBytesSha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_accept.js",
+          "sha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+          "sourceBytesSha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_connect.js",
+          "sha256": "a20819822e4ce18c8878b94e6ee70466833415eb9ebc2b6a39b65cabfcc553c9",
+          "sourceBytesSha256": "a20819822e4ce18c8878b94e6ee70466833415eb9ebc2b6a39b65cabfcc553c9",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_send.js",
+          "sha256": "ea68cc521fa9b5603c3fccebbf19ecebcd26bf1a8af644ff1f13cd14ba9fe733",
+          "sourceBytesSha256": "ea68cc521fa9b5603c3fccebbf19ecebcd26bf1a8af644ff1f13cd14ba9fe733",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_recv.js",
+          "sha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+          "sourceBytesSha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_bind.js",
+          "sha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+          "sourceBytesSha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_send_to.js",
+          "sha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+          "sourceBytesSha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_recv_from.js",
+          "sha256": "d6f88b08f578f088b4ff257a7e544e4fbbf46f375aee3881ba4d44e25ed890d8",
+          "sourceBytesSha256": "d6f88b08f578f088b4ff257a7e544e4fbbf46f375aee3881ba4d44e25ed890d8",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/socket_close.js",
+          "sha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+          "sourceBytesSha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/listener_close.js",
+          "sha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+          "sourceBytesSha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_open.js",
+          "sha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+          "sourceBytesSha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_frame.js",
+          "sha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+          "sourceBytesSha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_set_title.js",
+          "sha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+          "sourceBytesSha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_grab.js",
+          "sha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+          "sourceBytesSha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_close.js",
+          "sha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+          "sourceBytesSha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_open.js",
+          "sha256": "6f531ac205dab98dd366111cdcc5eed69fb9058350ca715f3419065cd979b088",
+          "sourceBytesSha256": "6f531ac205dab98dd366111cdcc5eed69fb9058350ca715f3419065cd979b088",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_write.js",
+          "sha256": "377d3e938ce3cc9f083c662b69d34e3a0cf391c92ddaf3fca8a4b28c78662da7",
+          "sourceBytesSha256": "377d3e938ce3cc9f083c662b69d34e3a0cf391c92ddaf3fca8a4b28c78662da7",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_close.js",
+          "sha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+          "sourceBytesSha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend",
+          "sha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "sourceBytesSha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "namespace": "../bend2/selfhost/ast"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/lexer.bend",
+          "sha256": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+          "sourceBytesSha256": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+          "namespace": "../bend2/selfhost/lexer"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/core.bend",
+          "sha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+          "sourceBytesSha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+          "namespace": "../bend2/selfhost/core"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend",
+          "sha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+          "sourceBytesSha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+          "namespace": "../bend2/selfhost/loaded_module"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checked_frontend.bend",
+          "sha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+          "sourceBytesSha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+          "namespace": "../bend2/selfhost/checked_frontend"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend",
+          "sha256": "fb8651ab2e6304faded5eb312ffe95175a177254f7dd704eca7a9b0896a40e31",
+          "sourceBytesSha256": "fb8651ab2e6304faded5eb312ffe95175a177254f7dd704eca7a9b0896a40e31",
+          "namespace": "../bend2/selfhost/checker_arena"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend",
+          "sha256": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+          "sourceBytesSha256": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+          "namespace": "../bend2/selfhost/scope_lookup"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_ir.bend",
+          "sha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+          "sourceBytesSha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+          "namespace": "../bend2/selfhost/checker_ir"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/index_lookup.bend",
+          "sha256": "caef5856607bff18b9a5dfc529eee6c6360a83d0963008420888a998274bd9f2",
+          "sourceBytesSha256": "caef5856607bff18b9a5dfc529eee6c6360a83d0963008420888a998274bd9f2",
+          "namespace": "../bend2/selfhost/index_lookup"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/template_steps_v1.bend",
+          "sha256": "669e43923b5c7cde21fc922090d3c7ed674049d5cf44c0f2ac09e4ac901b81b6",
+          "sourceBytesSha256": "669e43923b5c7cde21fc922090d3c7ed674049d5cf44c0f2ac09e4ac901b81b6",
+          "namespace": "template_steps_v1"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/sha256.bend",
+          "sha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+          "sourceBytesSha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+          "namespace": "../bend2/selfhost/sha256"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend",
+          "sha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+          "sourceBytesSha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+          "namespace": "../bend2/selfhost/path"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_steps_v1.bend",
+          "sha256": "2f595741666a0f936e6f695938dadd8e0b2a3d3f28c39d06073139d8783898c5",
+          "sourceBytesSha256": "2f595741666a0f936e6f695938dadd8e0b2a3d3f28c39d06073139d8783898c5",
+          "namespace": "checker_core_steps_v1"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/js_emit_steps_v1.bend",
+          "sha256": "1c731b51b542a79040c5173f06c1d813fb0f2b7a8b98bc4f8a31e15d6dcda329",
+          "sourceBytesSha256": "1c731b51b542a79040c5173f06c1d813fb0f2b7a8b98bc4f8a31e15d6dcda329",
+          "namespace": "js_emit_steps_v1"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_ir.bend",
+          "sha256": "0c4c67e38dbf34e04c2378863ec48a7222d2f762551baaa388f200f2a7d8c83b",
+          "sourceBytesSha256": "0c4c67e38dbf34e04c2378863ec48a7222d2f762551baaa388f200f2a7d8c83b",
+          "namespace": "../bend2/selfhost/backend_ir"
+        }
+      ]
+    },
+    "stageTwo": {
+      "event": "artifact",
+      "phase": "stage-two-emit",
+      "stage": "stageTwo",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-ir57k-bootstrap-b.json.cases/stage-two.js",
+      "sha256": "8aacace8d17a5a8d79e909733d03ccd4b82a5c42d9b269a96276925215d02c0b",
+      "bytes": 13733899,
+      "sourceHashes": [
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_v1.bend",
+          "sha256": "e404aea222d4b03b76d33804447bbccd0f7f8712ff7ee95100654525a40f224c",
+          "sourceBytesSha256": "e404aea222d4b03b76d33804447bbccd0f7f8712ff7ee95100654525a40f224c",
+          "namespace": ""
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+          "sha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+          "sourceBytesSha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+          "namespace": ""
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/print.js",
+          "sha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+          "sourceBytesSha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/write.js",
+          "sha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+          "sourceBytesSha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/print_err.js",
+          "sha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+          "sourceBytesSha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/get_env.js",
+          "sha256": "9a4fc592e447607553bdb08b194a9ede90dbae3660507687752f58ea42892dba",
+          "sourceBytesSha256": "9a4fc592e447607553bdb08b194a9ede90dbae3660507687752f58ea42892dba",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/args.js",
+          "sha256": "ed1a7e7b73ae7fe58ac6d428d2762b66f223f4c70a165570fc5d68dc874ddc0b",
+          "sourceBytesSha256": "ed1a7e7b73ae7fe58ac6d428d2762b66f223f4c70a165570fc5d68dc874ddc0b",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/process_run.js",
+          "sha256": "9ce0c5853ab8059614f115d99b1d0ba845fb23c056a6965a59e645d155bd58c1",
+          "sourceBytesSha256": "9ce0c5853ab8059614f115d99b1d0ba845fb23c056a6965a59e645d155bd58c1",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/random_u32.js",
+          "sha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+          "sourceBytesSha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/spawn.js",
+          "sha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+          "sourceBytesSha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/sleep.js",
+          "sha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+          "sourceBytesSha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/now.js",
+          "sha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+          "sourceBytesSha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/thread_count.js",
+          "sha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+          "sourceBytesSha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/chan.js",
+          "sha256": "007ff7505af9effc20fccfa3d26eaf89a382d6295839b27df119a1704a3f86d7",
+          "sourceBytesSha256": "007ff7505af9effc20fccfa3d26eaf89a382d6295839b27df119a1704a3f86d7",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_open.js",
+          "sha256": "dd549f5f05eb896aef9a3a02ffecf2ee902e653f5463be72781edab1cd1180ae",
+          "sourceBytesSha256": "dd549f5f05eb896aef9a3a02ffecf2ee902e653f5463be72781edab1cd1180ae",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_read.js",
+          "sha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+          "sourceBytesSha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_size.js",
+          "sha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+          "sourceBytesSha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_write.js",
+          "sha256": "4fe307538beb1047add7646f52df6e382a1da5d8999d8fe96969bd5055bc9b59",
+          "sourceBytesSha256": "4fe307538beb1047add7646f52df6e382a1da5d8999d8fe96969bd5055bc9b59",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_close.js",
+          "sha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+          "sourceBytesSha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_listen.js",
+          "sha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+          "sourceBytesSha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_accept.js",
+          "sha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+          "sourceBytesSha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_connect.js",
+          "sha256": "a20819822e4ce18c8878b94e6ee70466833415eb9ebc2b6a39b65cabfcc553c9",
+          "sourceBytesSha256": "a20819822e4ce18c8878b94e6ee70466833415eb9ebc2b6a39b65cabfcc553c9",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_send.js",
+          "sha256": "ea68cc521fa9b5603c3fccebbf19ecebcd26bf1a8af644ff1f13cd14ba9fe733",
+          "sourceBytesSha256": "ea68cc521fa9b5603c3fccebbf19ecebcd26bf1a8af644ff1f13cd14ba9fe733",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_recv.js",
+          "sha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+          "sourceBytesSha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_bind.js",
+          "sha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+          "sourceBytesSha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_send_to.js",
+          "sha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+          "sourceBytesSha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_recv_from.js",
+          "sha256": "d6f88b08f578f088b4ff257a7e544e4fbbf46f375aee3881ba4d44e25ed890d8",
+          "sourceBytesSha256": "d6f88b08f578f088b4ff257a7e544e4fbbf46f375aee3881ba4d44e25ed890d8",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/socket_close.js",
+          "sha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+          "sourceBytesSha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/listener_close.js",
+          "sha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+          "sourceBytesSha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_open.js",
+          "sha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+          "sourceBytesSha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_frame.js",
+          "sha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+          "sourceBytesSha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_set_title.js",
+          "sha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+          "sourceBytesSha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_grab.js",
+          "sha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+          "sourceBytesSha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_close.js",
+          "sha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+          "sourceBytesSha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_open.js",
+          "sha256": "6f531ac205dab98dd366111cdcc5eed69fb9058350ca715f3419065cd979b088",
+          "sourceBytesSha256": "6f531ac205dab98dd366111cdcc5eed69fb9058350ca715f3419065cd979b088",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_write.js",
+          "sha256": "377d3e938ce3cc9f083c662b69d34e3a0cf391c92ddaf3fca8a4b28c78662da7",
+          "sourceBytesSha256": "377d3e938ce3cc9f083c662b69d34e3a0cf391c92ddaf3fca8a4b28c78662da7",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_close.js",
+          "sha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+          "sourceBytesSha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+          "external": true
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend",
+          "sha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "sourceBytesSha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "namespace": "../bend2/selfhost/ast"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/lexer.bend",
+          "sha256": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+          "sourceBytesSha256": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+          "namespace": "../bend2/selfhost/lexer"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/core.bend",
+          "sha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+          "sourceBytesSha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+          "namespace": "../bend2/selfhost/core"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend",
+          "sha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+          "sourceBytesSha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+          "namespace": "../bend2/selfhost/loaded_module"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checked_frontend.bend",
+          "sha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+          "sourceBytesSha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+          "namespace": "../bend2/selfhost/checked_frontend"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend",
+          "sha256": "fb8651ab2e6304faded5eb312ffe95175a177254f7dd704eca7a9b0896a40e31",
+          "sourceBytesSha256": "fb8651ab2e6304faded5eb312ffe95175a177254f7dd704eca7a9b0896a40e31",
+          "namespace": "../bend2/selfhost/checker_arena"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend",
+          "sha256": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+          "sourceBytesSha256": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+          "namespace": "../bend2/selfhost/scope_lookup"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_ir.bend",
+          "sha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+          "sourceBytesSha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+          "namespace": "../bend2/selfhost/checker_ir"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/index_lookup.bend",
+          "sha256": "caef5856607bff18b9a5dfc529eee6c6360a83d0963008420888a998274bd9f2",
+          "sourceBytesSha256": "caef5856607bff18b9a5dfc529eee6c6360a83d0963008420888a998274bd9f2",
+          "namespace": "../bend2/selfhost/index_lookup"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/template_steps_v1.bend",
+          "sha256": "669e43923b5c7cde21fc922090d3c7ed674049d5cf44c0f2ac09e4ac901b81b6",
+          "sourceBytesSha256": "669e43923b5c7cde21fc922090d3c7ed674049d5cf44c0f2ac09e4ac901b81b6",
+          "namespace": "template_steps_v1"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/sha256.bend",
+          "sha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+          "sourceBytesSha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+          "namespace": "../bend2/selfhost/sha256"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend",
+          "sha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+          "sourceBytesSha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+          "namespace": "../bend2/selfhost/path"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_steps_v1.bend",
+          "sha256": "2f595741666a0f936e6f695938dadd8e0b2a3d3f28c39d06073139d8783898c5",
+          "sourceBytesSha256": "2f595741666a0f936e6f695938dadd8e0b2a3d3f28c39d06073139d8783898c5",
+          "namespace": "checker_core_steps_v1"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/js_emit_steps_v1.bend",
+          "sha256": "1c731b51b542a79040c5173f06c1d813fb0f2b7a8b98bc4f8a31e15d6dcda329",
+          "sourceBytesSha256": "1c731b51b542a79040c5173f06c1d813fb0f2b7a8b98bc4f8a31e15d6dcda329",
+          "namespace": "js_emit_steps_v1"
+        },
+        {
+          "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/backend_ir.bend",
+          "sha256": "0c4c67e38dbf34e04c2378863ec48a7222d2f762551baaa388f200f2a7d8c83b",
+          "sourceBytesSha256": "0c4c67e38dbf34e04c2378863ec48a7222d2f762551baaa388f200f2a7d8c83b",
+          "namespace": "../bend2/selfhost/backend_ir"
+        }
+      ]
+    },
+    "sourceHashesEqual": true,
+    "stageTwoUsesStageOneParserAndCompiler": true,
+    "seedReuseAfterStageOne": false,
+    "comparisonPhase": {
+      "event": "phase",
+      "phase": "fixedpoint-byte-comparison",
+      "elapsedMs": 588140.157375,
+      "rssBytes": 2875408384,
+      "heapUsedBytes": 1902203728,
+      "heapLimitBytes": 6643777536
+    },
+    "stageTwoExecutionPhase": {
+      "event": "phase",
+      "phase": "stage-two-execute",
+      "elapsedMs": 588159.743084,
+      "rssBytes": 2902966272,
+      "heapUsedBytes": 1902207152,
+      "heapLimitBytes": 6643777536
+    }
+  },
+  "monolithicGate": {
+    "reportSha256": "1f8b74ab5ccae36011aa1bd2abfa495f6c60f64855811cfb5b7c2650ac2783d8",
+    "guardian": {
+      "status": "FAIL",
+      "reason": "deadline_exceeded",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 4425433088,
+      "peakFootprintBytes": 3434405184,
+      "elapsedMs": 600028,
+      "timeoutMs": 600000,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_bootstrap_gate.ts",
+        "--component=checkpoints/.ir57k-full-a.js",
+        "--component-build=checkpoints/.ir57k-full-a-native-build.result.json",
+        "--root=checkpoints/.bootstrap_compiler_root_v1.bend",
+        "--root-manifest=checkpoints/selfhost-steps-driver-source-v1.json",
+        "--parser=checkpoints/bootstrap-parser-rebuild-ir57k-admit-a.js",
+        "--parser-build=checkpoints/bootstrap-parser-rebuild-ir57k-admit-a.native-build.result.json",
+        "--report=checkpoints/selfhost-ir57k-bootstrap-b.json",
+        "--worker"
+      ],
+      "label": "Real full selfhost step bootstrap",
+      "exitCode": 1,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792793250597-524df732551bb004.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "passed": false,
+    "seedPassed": 95,
+    "stageOnePassed": 5,
+    "stageTwoPassed": 0,
+    "lastPhase": "stage-one-fixture-native-nat-extrema-boundaries-check",
+    "all285Required": true,
+    "reason": "600s aggregate deadline after true byte comparison; full emitted suites still required. No raised limit or narrowed case list."
+  },
+  "correctedFixtureNativeCli": {
+    "passed": true,
+    "observed": "ALL PROOFS CHECK; Use --verdict for mathematical validity.",
+    "command": [
+      "bun",
+      "--smol",
+      "bend2/main.ts",
+      "checkpoints/.ir57k-native-local-order.bend",
+      "--check-only"
+    ]
   }
 }

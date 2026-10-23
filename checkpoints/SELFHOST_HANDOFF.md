@@ -215,6 +215,17 @@ Output14101164bytes SHAeb3d374abac9f7e45067174e75c1074966d933467402866eece29556f
 Первый bootstrap-a остановлен на invalid новом fixture; bootstrap-b запускает
 исправленный полный corpus с неизменёнными admitted seed/parser artifacts.
 
+В57k bootstrap-b настоящий byte fixedpoint ПОЛУЧЕН: оба неизменённых emitted
+image13733899bytes, SHA8aacace8d17a5a8d79e909733d03ccd4b82a5c42d9b269a96276925215d02c0b.
+И worker Buffer.equals, и отдельный actual cmp прошли. Stage2 использовал только
+stage1 parser/compiler. Stage-one-check154286.482583ms; stage-two-check
+251386.003375ms; comparison588140.157375ms, stage-two-execute588159.743084ms.
+Полный monolithic gate всё ещё FAIL:600028ms deadline,95 seed +5 stage1 fixtures,
+остальные185 не исполнены. Green acceptance не объявлена;285 обязательны.
+Отдельная проверка ВСЕХ95 случаев на КАЖДОМ unchanged image запущена с тем же
+worker, native AST/span oracle и guard600s; это отдельное behavioral evidence,
+не задним числом PASS исходного monolithic gate и не speed claim.
+
 Отдельный first-order typed-frame эксперимент на NHS действительно нативно
 проверен и исполнен:359 bodies,523 events; affine Type owner проходит три
 конкретных site-indexed Frame/Input/Output семейства. Duplicate owner и reuse

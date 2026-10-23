@@ -3,11 +3,11 @@
 ## Статус и границы
 
 Это архитектурный контракт текущего перехода compiler57, а не отчёт о принятой
-версии. Рабочая native-версия55 остаётся базовой; реальный emitted JS byte
-fixedpoint доказан для версии53. Полный новый native root57 уже собран, frozen
-corpus с реальным emitted consumer прошёл; stage1 существует, но stage2/fixedpoint
-ещё не принят. Нельзя переносить доказательства53/55 на57 после изменения
-checker, lowering или runtime ABI.
+версии. Рабочая native-версия55 остаётся базовой. Для полного compiler root57k
+реально получены два неизменённых emitted JS stage с точным byte fixedpoint;
+frozen corpus и7720-export consumer также прошли. Все emitted-stage fixtures
+и performance acceptance пока не завершены. Нельзя переносить эти доказательства
+на изменённые checker, lowering или runtime ABI без новой проверки.
 
 Единственный источник этого контракта — этот файл; оперативный статус, команды,
 хеши и результаты находятся в SELFHOST_HANDOFF.md и компактных version receipts.
