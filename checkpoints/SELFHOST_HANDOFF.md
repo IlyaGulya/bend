@@ -35,17 +35,26 @@ stripped executable TS-transpile bytes совпали SHA90c3ef4f58ba4b7b9e2414c
 тот же root source SHAe404aea... и JS c27cead...; foreign C consumers actual42/77.
 Отключение LLVM passes в отдельном57q experiment упёрлось в physical8GiB после306856ms:
 отвергнуто, output/binary отсутствует. O0 тоже отвергнут, guard не повышать.
-Следующий57r experiment — typed first-order CPS continuations вместо generated
-resume closures. Прямые indexed per-site constructors с Compose/Identity реально
-прошли JS И clangO1/nativeC, в том числе dependent live captures и erased
-existential type capture: compiler-ir-frame-model-v57r.json. Wrong input/output
-witnesses и повторное использование owning continuation нативно отвергнуты.
-Unindexed FrameOutput не может возвращать erased capturedType какlive: этот
-вариант/ошибка записаны, source quantities не повышать. Production/performance
-ещё НЕ доказаны.
-FrameGenerator57R работает с генератором наnhs, RuntimeFrames57R — сJS/C ABI
-и всеми callers наmisaka. Parent интегрирует только после actual proofs; существующий
-K fixedpoint нельзя переносить на изменённый Progress ABI без нового полного прогона.
+57r first-order resume experiment завершён и ОБА implementations отвергнуты дляJS:
+полные checker/emitter/template bodies проверены, Base/type/affine consumers верны,
+но same-host untraced Node22.22.1 rounds дают canonical4.686s, Frame+Leaf15.243s,
+flat40.861s; CPU7.522/17.140/42.692s. Шесть actual123 executions и все semantic hashes
+совпали. Результат: compiler-ir-checkpoint-v57r-rejected.json; canonical edits0.
+Separate CPU samples:57.9% FrameApply /81.6% flatResume selftime, GC ниже baseline.
+Dispatchers3.24/4.65MB; JIT-mechanism лишь INFERENCE, deopt evidence отсутствует.
+Это rejection данных implementations, НЕ доказательство против defunctionalization вообще:
+existing request dispatchers уже группируются, новый giant dispatcher нарушил этот pattern.
+Small indexed model и native wrong-witness/reuse proofs сохранены отдельно в
+compiler-ir-frame-model-v57r.json; они не дают performance acceptance.
+Следующий57t: native heterogeneous LIFO Stack<A,R> + opaque Run<R>, старые leaf
+resume closures сохранены, Bound association и host LIFO убираются. Нет per-site
+3000 новых helpers/giant dispatcher; это пока design/experiment, НЕ измеренный win.
+StackGenerator57T — local heavy lane, StackRuntime57T — NHS послеR profiling.
+NativeBitcode57U — misaka: matching LLVM bitcode split ДО machine backend,
+на exact successful57q C; без C/JS patches/ослабления guard. Old partition57g
+sampler_error и noLLVM-machine physical failure не доказывают невозможность этого pipeline.
+Parent интегрирует только actual winners. Изменённый Progress/Run ABI требует
+свежей parser75 acceptance chain, полного root/frozen/285 и нового byte fixedpoint.
 
 ## Compiler57 — принятый functional FIR/BIR cutover, performance ещё не принят
 

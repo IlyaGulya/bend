@@ -1,0 +1,1665 @@
+{
+  "version": "57r-rejected",
+  "status": "FULL_TYPED_FRAME_CANDIDATES_BEHAVIOR_PASS_BUT_BOTH_REJECTED_BY_SAME_HOST_UNTRACED_CPU_AND_WALL",
+  "canonicalEdits": false,
+  "promoted": false,
+  "baseCommit": "52298266",
+  "generator": {
+    "status": "TWO_COMPLETE_NATIVE_CHECKED_FIRST_ORDER_CANDIDATES_REAL_CONSUMERS_PASS_NO_PERFORMANCE_WIN_CLAIM",
+    "canonicalEdits": false,
+    "runtimeSliceEdits": false,
+    "heavyLane": "nhs (released)",
+    "remote": "nhs:/tmp/frames57r-20261024",
+    "privateRoot": "/tmp/frames57r-source",
+    "kernel": {
+      "release": "official2.0.37",
+      "sha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+      "unmodified": true
+    },
+    "sourceVariants": [
+      {
+        "representation": "Frame+Leaf",
+        "source": "evals/.frames57r.ts",
+        "sourceSha256": "b4a1d03c426eb04408f53f17fb3c82c10dc129bdcb455c2627d3647e14d9a45b",
+        "diff": "/tmp/frames57r-source/frame-leaf.diff",
+        "diffSha256": "82ba27cc41c077e03b48ae84be50d43cd1affadb4ad29fd2f894604940e2d5de"
+      },
+      {
+        "representation": "flat direct-site Continuation",
+        "source": "evals/.flatframes57r.ts",
+        "sourceSha256": "8827b7fc11975d79dec7332be4d42e536f939494afb1281f27ff60059efb8490",
+        "diff": "/tmp/frames57r-source/flat-sites.diff",
+        "diffSha256": "e15e8939793a55fd0ff29c2aec3c5b76404970565a37b894a98ba38f1883c2b8"
+      }
+    ],
+    "abi": {
+      "progressABI": "first-order-continuation-v57r",
+      "resume": "prefix_resume(-A:Type,-R:Type,continuation:ProtocolContinuation<A,R>,box:ProtocolValue<A>)->ProtocolProgress<R>",
+      "liveArguments": [
+        "continuation",
+        "box"
+      ],
+      "directInvokeChanged": false,
+      "quantityPolicy": "Source capture quantities and binder identities retained; transitive prerequisite closure ordered before dependent captures; no erased capture promoted",
+      "equalityMotives": [
+        "ProtocolValue<_>",
+        "ProtocolProgress<_>"
+      ],
+      "chunkAssociation": "Compose, no association lambdas",
+      "start": "Identity with live equality",
+      "recursion": "resume structural Continuation.first; chunk unchanged structural operational Nat64; no source-specific/fuel bypass",
+      "generatedResumeClosures": 0
+    },
+    "counts": [
+      {
+        "variant": "frames57r",
+        "mode": "checker",
+        "sourceDefinitions": 1139,
+        "generatedBodies": 7992,
+        "sourceBytes": 4371956,
+        "sourceSha256": "a18ececb86bda372f980dfd8a4d1264b1b9b5d5d367bf30293486e5a383acbfc",
+        "sites": 3038,
+        "pendingRequestSites": 1537,
+        "directInvokeClosures": 1501,
+        "generatedResumeClosures": 0,
+        "captures": 9369,
+        "erasedCaptures": 0,
+        "requestConstructors": 1139,
+        "quantum": 64,
+        "lambdaSyntaxSites": 1535,
+        "originalNonResumeLambdaSites": 34
+      },
+      {
+        "variant": "frames57r",
+        "mode": "emitter",
+        "sourceDefinitions": 634,
+        "generatedBodies": 1931,
+        "sourceBytes": 1410826,
+        "sourceSha256": "1d41d231aa9ea388b38aaea3e1c60c41ab5ed08777fc95cd48abed3955ea59da",
+        "sites": 888,
+        "pendingRequestSites": 292,
+        "directInvokeClosures": 596,
+        "generatedResumeClosures": 0,
+        "captures": 2350,
+        "erasedCaptures": 0,
+        "requestConstructors": 634,
+        "quantum": 64,
+        "lambdaSyntaxSites": 669,
+        "originalNonResumeLambdaSites": 73
+      },
+      {
+        "variant": "frames57r",
+        "mode": "template",
+        "sourceDefinitions": 196,
+        "generatedBodies": 1133,
+        "sourceBytes": 713007,
+        "sourceSha256": "090d35e98efefde74d831df7d32b487270b633c1b2b957e1b31254aea644a4f8",
+        "sites": 699,
+        "pendingRequestSites": 512,
+        "directInvokeClosures": 187,
+        "generatedResumeClosures": 0,
+        "captures": 1512,
+        "erasedCaptures": 0,
+        "requestConstructors": 196,
+        "quantum": 64,
+        "lambdaSyntaxSites": 189,
+        "originalNonResumeLambdaSites": 2
+      },
+      {
+        "variant": "flatframes57r",
+        "mode": "checker",
+        "sourceDefinitions": 1139,
+        "generatedBodies": 7989,
+        "sourceBytes": 4747139,
+        "sourceSha256": "028971ced2513c6afc2445dbf6aafec9cbd9d38e4bf2e7bef63e2884b55d9643",
+        "sites": 3038,
+        "pendingRequestSites": 1537,
+        "directInvokeClosures": 1501,
+        "generatedResumeClosures": 0,
+        "captures": 9369,
+        "erasedCaptures": 0,
+        "requestConstructors": 1139,
+        "quantum": 64,
+        "lambdaSyntaxSites": 1535,
+        "originalNonResumeLambdaSites": 34
+      },
+      {
+        "variant": "flatframes57r",
+        "mode": "emitter",
+        "sourceDefinitions": 634,
+        "generatedBodies": 1928,
+        "sourceBytes": 1519069,
+        "sourceSha256": "901dd1c779a30eb0a7f9e679012e85f77afdd594c489d8b34ef83c3e8eda87d2",
+        "sites": 888,
+        "pendingRequestSites": 292,
+        "directInvokeClosures": 596,
+        "generatedResumeClosures": 0,
+        "captures": 2350,
+        "erasedCaptures": 0,
+        "requestConstructors": 634,
+        "quantum": 64,
+        "lambdaSyntaxSites": 669,
+        "originalNonResumeLambdaSites": 73
+      },
+      {
+        "variant": "flatframes57r",
+        "mode": "template",
+        "sourceDefinitions": 196,
+        "generatedBodies": 1130,
+        "sourceBytes": 795907,
+        "sourceSha256": "6c8e21698e815f314d8e19f2df6357ebce9d247eda24bce1968fed929f085843",
+        "sites": 699,
+        "pendingRequestSites": 512,
+        "directInvokeClosures": 187,
+        "generatedResumeClosures": 0,
+        "captures": 1512,
+        "erasedCaptures": 0,
+        "requestConstructors": 196,
+        "quantum": 64,
+        "lambdaSyntaxSites": 189,
+        "originalNonResumeLambdaSites": 2
+      }
+    ],
+    "nativeCoverage": [
+      {
+        "variant": "frames57r",
+        "mode": "checker",
+        "receipt": "/tmp/frames57r-source/checkpoints/.frames57r_checker_3.json",
+        "receiptSha256": "1f77f9dd410070dea15f2cb669269aa145169b58ab62231adc4301e3f38d281c",
+        "nativeCheckedBodies": 8674,
+        "expectedSourceDefinitions": 8674,
+        "generatedDeclaredBodies": 7992,
+        "generatedCheckedBodiesField": 0,
+        "validation": {
+          "status": "FULL_VALIDATION_PASS",
+          "wallMs": 1413.746078,
+          "cpuMs": 2128.357
+        },
+        "artifactPath": "/tmp/frames57r-20261024/checkpoints/.frames57r_checker_3.js",
+        "artifactSha256": "5fcf2a58113dcaf3ae9f22074c05c0e4b1c965935ab095a72c2a132fd5eaea1f",
+        "artifactBytes": 10670064,
+        "wallMs": 23801.213777999998,
+        "cpuMs": 28005.173,
+        "maxRSSKiB": 1102872
+      },
+      {
+        "variant": "frames57r",
+        "mode": "emitter",
+        "receipt": "/tmp/frames57r-source/checkpoints/.frames57r_emitter_1.json",
+        "receiptSha256": "2e90198e344c98bac6b242d0defd5855231194ef1aae7bb1ada0b7379a550a01",
+        "nativeCheckedBodies": 2613,
+        "expectedSourceDefinitions": 2613,
+        "generatedDeclaredBodies": 1931,
+        "generatedCheckedBodiesField": 1931,
+        "validation": {
+          "status": "FULL_VALIDATION_PASS",
+          "wallMs": 1151.4271630000003,
+          "cpuMs": 1888.674
+        },
+        "artifactPath": "/tmp/frames57r-20261024/checkpoints/.frames57r_emitter_1.js",
+        "artifactSha256": "08fe60f07f6816ccea2dc63c2ad5a7ba20e0955a22e8e7eee28a790c03b0e9a4",
+        "artifactBytes": 4013513,
+        "wallMs": 8630.816514,
+        "cpuMs": 14354.838,
+        "maxRSSKiB": 2034464
+      },
+      {
+        "variant": "frames57r",
+        "mode": "template",
+        "receipt": "/tmp/frames57r-source/checkpoints/.frames57r_template_1.json",
+        "receiptSha256": "fd2828522decbc5f4d0ff1dd1074b37494766ebe00dfa0f28b1207f94834dab0",
+        "nativeCheckedBodies": 1556,
+        "expectedSourceDefinitions": 1556,
+        "generatedDeclaredBodies": 1133,
+        "generatedCheckedBodiesField": 1133,
+        "validation": {
+          "status": "FULL_VALIDATION_PASS",
+          "wallMs": 213.811486,
+          "cpuMs": 613.131
+        },
+        "artifactPath": "/tmp/frames57r-20261024/checkpoints/.frames57r_template_1.js",
+        "artifactSha256": "6de34b5fadfcdc29e7c543b54cb3837f4688ef7fdc8f4993423f683b6552a26e",
+        "artifactBytes": 1725549,
+        "wallMs": 841.9479,
+        "cpuMs": 2193.773,
+        "maxRSSKiB": 286336
+      },
+      {
+        "variant": "flatframes57r",
+        "mode": "checker",
+        "receipt": "/tmp/frames57r-source/checkpoints/.flatframes57r_checker_1.json",
+        "receiptSha256": "59b8f80e06f2e7e97c78ffcc3872217e47a0cfc9d25f44f5edfd0f0f2cb8aa98",
+        "nativeCheckedBodies": 8671,
+        "expectedSourceDefinitions": 8671,
+        "generatedDeclaredBodies": 7989,
+        "generatedCheckedBodiesField": 7989,
+        "validation": {
+          "status": "FULL_VALIDATION_PASS",
+          "wallMs": 1011.239395,
+          "cpuMs": 1917.243
+        },
+        "artifactPath": "/tmp/frames57r-20261024/checkpoints/.flatframes57r_checker_1.js",
+        "artifactSha256": "afe12414358bf555100ebab7bda9f8a0e7b76d4b53e38eee77f908569a57ae7c",
+        "artifactBytes": 12118779,
+        "wallMs": 4651.261547,
+        "cpuMs": 9075.377,
+        "maxRSSKiB": 1098532
+      },
+      {
+        "variant": "flatframes57r",
+        "mode": "emitter",
+        "receipt": "/tmp/frames57r-source/checkpoints/.flatframes57r_emitter_1.json",
+        "receiptSha256": "bab9defa1c959cc11ee1a12ee442c6855e334b4c829e32c3b87010dc1d0593c0",
+        "nativeCheckedBodies": 2610,
+        "expectedSourceDefinitions": 2610,
+        "generatedDeclaredBodies": 1928,
+        "generatedCheckedBodiesField": 1928,
+        "validation": {
+          "status": "FULL_VALIDATION_PASS",
+          "wallMs": 1105.271697,
+          "cpuMs": 1973.12
+        },
+        "artifactPath": "/tmp/frames57r-20261024/checkpoints/.flatframes57r_emitter_1.js",
+        "artifactSha256": "767688983779a318e3fb24e7e003730b1dfcf7e60bb5472150f1a226cb858826",
+        "artifactBytes": 4406736,
+        "wallMs": 8604.373231,
+        "cpuMs": 14398.09,
+        "maxRSSKiB": 2010068
+      },
+      {
+        "variant": "flatframes57r",
+        "mode": "template",
+        "receipt": "/tmp/frames57r-source/checkpoints/.flatframes57r_template_1.json",
+        "receiptSha256": "234206e963e0b6676857bef76be7433c066be1907144d1f84fc234369ea97f7f",
+        "nativeCheckedBodies": 1553,
+        "expectedSourceDefinitions": 1553,
+        "generatedDeclaredBodies": 1130,
+        "generatedCheckedBodiesField": 1130,
+        "validation": {
+          "status": "FULL_VALIDATION_PASS",
+          "wallMs": 208.96072599999997,
+          "cpuMs": 606.847
+        },
+        "artifactPath": "/tmp/frames57r-20261024/checkpoints/.flatframes57r_template_1.js",
+        "artifactSha256": "8cfce17e9d39cbfe5f448dbd1686db4dcb63d83a9b1130559cef16198854f6d5",
+        "artifactBytes": 2030011,
+        "wallMs": 879.735511,
+        "cpuMs": 2308.286,
+        "maxRSSKiB": 326316
+      }
+    ],
+    "consumers": [
+      {
+        "variant": "frames57r",
+        "receipt": "/tmp/frames57r-source/checkpoints/.frames57r_consumer_4.json",
+        "receiptSha256": "b46c165d31d711d391b387485779d061fe6cbcfb5f4c586945abe53f42d8bb89",
+        "passed": true,
+        "seedSha256": "9e1201a3e63d09679795fd4e252ecea847da64e71f7ef1e3c57843ee5b526cf3",
+        "candidateSha256": "5fcf2a58113dcaf3ae9f22074c05c0e4b1c965935ab095a72c2a132fd5eaea1f",
+        "baseSha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+        "rows": [
+          {
+            "name": "positive",
+            "sourceSha256": "df75703d5a25a4bf4e84c2751aab7b8647492b19c81c8222a44bb52f776046cd",
+            "result": "CheckSuccess",
+            "semanticHash": "9b5fdecd9b477fe927f477fda72bed4c75f263ebede55b17b592369a45997284",
+            "inputSemanticHash": "6fd4d2c4f47864430c6c6a851d66925c6aab980e0458a821a7e4357a1954b8e9",
+            "outputSha256": "ec2a673501f8f078cbc5ca2b406c23f1ed82035e4f6f8d98b6ebcb5f525197b3",
+            "execution": {
+              "status": 0,
+              "stdout": "123\n",
+              "stderr": ""
+            },
+            "wallMs": 15623.027682,
+            "cpuMs": 17935.302,
+            "hostCalls": {
+              "step": 1025560,
+              "resume": 2718991
+            }
+          },
+          {
+            "name": "negative-type",
+            "sourceSha256": "d2f46dfc071ab8560082752ec2cc4df44cdfe07e1d7a3df4fdd6a9b97aadb061",
+            "result": "CheckFailure",
+            "semanticHash": "31f2d1d3d9bb9454838fd09058e522c37c61728ddc3fcc64e2bf3adaa02aa41f",
+            "inputSemanticHash": "9149acb7e20bc7731432598127fc168ec2f205859104c44aa595b312c4764bea",
+            "wallMs": 14502.386123,
+            "cpuMs": 16460.796,
+            "hostCalls": {
+              "step": 1002602,
+              "resume": 2627751
+            }
+          },
+          {
+            "name": "negative-affine",
+            "sourceSha256": "b9f1a49047804eec37b65b023fa04c5cf9bceda5bdb1713d44e0ed6cb0ef2425",
+            "result": "CheckFailure",
+            "semanticHash": "22ae9450a8cddafa62a8fd358102ba05598960abcd1875b9679003ae182d2ece",
+            "inputSemanticHash": "dcb1f869dbf76f463bd6d1b0d03ccc705d93f920dd1ba3732c5e606f0f41f1c6",
+            "wallMs": 14320.292356000002,
+            "cpuMs": 15701.707,
+            "hostCalls": {
+              "step": 1001162,
+              "resume": 2623553
+            }
+          }
+        ],
+        "wallMs": 46431.040422000005,
+        "cpuMs": 53407.211,
+        "maxRSSKiB": 412920
+      },
+      {
+        "variant": "flatframes57r",
+        "receipt": "/tmp/frames57r-source/checkpoints/.flatframes57r_consumer_1.json",
+        "receiptSha256": "6d85906e4fc2dff67dd3288d8ea04ab5e7d6ed2a5a6701f6f186fe2d5de11efb",
+        "passed": true,
+        "seedSha256": "9e1201a3e63d09679795fd4e252ecea847da64e71f7ef1e3c57843ee5b526cf3",
+        "candidateSha256": "afe12414358bf555100ebab7bda9f8a0e7b76d4b53e38eee77f908569a57ae7c",
+        "baseSha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+        "rows": [
+          {
+            "name": "positive",
+            "sourceSha256": "df75703d5a25a4bf4e84c2751aab7b8647492b19c81c8222a44bb52f776046cd",
+            "result": "CheckSuccess",
+            "semanticHash": "9b5fdecd9b477fe927f477fda72bed4c75f263ebede55b17b592369a45997284",
+            "inputSemanticHash": "6fd4d2c4f47864430c6c6a851d66925c6aab980e0458a821a7e4357a1954b8e9",
+            "outputSha256": "ec2a673501f8f078cbc5ca2b406c23f1ed82035e4f6f8d98b6ebcb5f525197b3",
+            "execution": {
+              "status": 0,
+              "stdout": "123\n",
+              "stderr": ""
+            },
+            "wallMs": 40820.268099,
+            "cpuMs": 43112.583,
+            "hostCalls": {
+              "step": 1025560,
+              "resume": 2718991
+            }
+          },
+          {
+            "name": "negative-type",
+            "sourceSha256": "d2f46dfc071ab8560082752ec2cc4df44cdfe07e1d7a3df4fdd6a9b97aadb061",
+            "result": "CheckFailure",
+            "semanticHash": "31f2d1d3d9bb9454838fd09058e522c37c61728ddc3fcc64e2bf3adaa02aa41f",
+            "inputSemanticHash": "9149acb7e20bc7731432598127fc168ec2f205859104c44aa595b312c4764bea",
+            "wallMs": 39571.25710499999,
+            "cpuMs": 41643.634,
+            "hostCalls": {
+              "step": 1002602,
+              "resume": 2627751
+            }
+          },
+          {
+            "name": "negative-affine",
+            "sourceSha256": "b9f1a49047804eec37b65b023fa04c5cf9bceda5bdb1713d44e0ed6cb0ef2425",
+            "result": "CheckFailure",
+            "semanticHash": "22ae9450a8cddafa62a8fd358102ba05598960abcd1875b9679003ae182d2ece",
+            "inputSemanticHash": "dcb1f869dbf76f463bd6d1b0d03ccc705d93f920dd1ba3732c5e606f0f41f1c6",
+            "wallMs": 38978.19652299999,
+            "cpuMs": 40209.293,
+            "hostCalls": {
+              "step": 1001162,
+              "resume": 2623553
+            }
+          }
+        ],
+        "wallMs": 121644.140548,
+        "cpuMs": 128708.149,
+        "maxRSSKiB": 419660
+      }
+    ],
+    "ownershipProof": {
+      "receipt": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-runtimeframes57r.ehrjcmj9/runtime57r-receipt.json",
+      "receiptSha256": "33dd2e540e944332b0880d6ae832c3ab9b101cb1d75e0e496a7a015535819184",
+      "sourceSha256": "20af9b093024adfa1e2ff70e4819ce120e3a843f97c599105379cb28c06c562a",
+      "kernel": {
+        "release": "official2.0.37",
+        "sha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+        "unmodified": true
+      },
+      "nativeCoverage": {
+        "nativeCheckedBodies": 362,
+        "expectedSourceDefinitions": 362,
+        "validationEvents": 525
+      },
+      "consumer": {
+        "status": "PASS",
+        "consumer": "real native-checked dependent affine first-order protocol",
+        "output": [
+          7,
+          23,
+          2345
+        ],
+        "counts": {
+          "pending": 1,
+          "direct": 1,
+          "bound": 3,
+          "resume": 5
+        },
+        "ownersProduced": 5,
+        "ownersConsumed": 5,
+        "constructorPayloadInterpreted": false,
+        "productionGeneratorAcceptance": false
+      },
+      "negative": [
+        {
+          "file": "wrong_domain.bend",
+          "rejected": true,
+          "diagnostic": "Error:\n- expected : Nat\n- observed : F.Owned\nContext:\n- continuation : F.TemplateContinuation<Nat, Nat>\n- value        : F.Owned\nLocation: wrong\n3 | def wrong(continuation: F.TemplateContinuation<Nat, Nat>, value: F.Owned) -> F.TemplateProgress<Nat>:\n4>|   F.template_resume(Nat, Nat, continuation, F.TemplateValue{value})\n  |                                                             ^^^^^\n5 | def main() -> Nat:"
+        },
+        {
+          "file": "reused_frame.bend",
+          "rejected": true,
+          "diagnostic": "Error:\n- expected : continuation\n- observed : continuation (consumed more than once)\nLocation: wrong\n2 | \n3>| def wrong(continuation: F.TemplateContinuation<Nat, Nat>, box: F.TemplateValue<Nat>) -> F.TemplateProgress<Nat>:\n  |           ^^^^^^^^^^^^\n4 |   inner = F.template_resume(Nat, Nat, continuation, box)"
+        }
+      ],
+      "nativeOutput": "NATIVE_CONSUMER 7,23,2345\n",
+      "note": "Independent real affine protocol, not a substitute for complete production source native proofs above. Parent separately owns flat erased-dependent model and wrong-witness/reused-owner proof."
+    },
+    "guards": [
+      {
+        "path": "/tmp/frames57r-source/guards/report-1792797703134-8f454c7735af908c.json",
+        "status": "PASS",
+        "peakRssBytes": 1061294080,
+        "peakFootprintBytes": 1129340928,
+        "elapsedMs": 23982,
+        "timeoutMs": 300000,
+        "memoryLimitBytes": 3221225472,
+        "rssLimitBytes": 2147483648
+      },
+      {
+        "path": "/tmp/frames57r-source/guards/report-1792797951567-0891187809114b5d.json",
+        "status": "PASS",
+        "peakRssBytes": 1111609344,
+        "peakFootprintBytes": 1111609344,
+        "elapsedMs": 4776,
+        "timeoutMs": 300000,
+        "memoryLimitBytes": 3221225472,
+        "rssLimitBytes": 2147483648
+      },
+      {
+        "path": "/tmp/frames57r-source/guards/report-1792798093721-257c3dc2ca180213.json",
+        "status": "PASS",
+        "peakRssBytes": 2059239424,
+        "peakFootprintBytes": 2059239424,
+        "elapsedMs": 8817,
+        "timeoutMs": 300000,
+        "memoryLimitBytes": 3221225472,
+        "rssLimitBytes": 2147483648
+      },
+      {
+        "path": "/tmp/frames57r-source/guards/report-1792797919174-8fdf2c937de7fcb8.json",
+        "status": "PASS",
+        "peakRssBytes": 2084421632,
+        "peakFootprintBytes": 2084421632,
+        "elapsedMs": 8821,
+        "timeoutMs": 300000,
+        "memoryLimitBytes": 3221225472,
+        "rssLimitBytes": 2147483648
+      },
+      {
+        "path": "/tmp/frames57r-source/guards/report-1792798102718-3d47bda287c1f4eb.json",
+        "status": "PASS",
+        "peakRssBytes": 305098752,
+        "peakFootprintBytes": 334147584,
+        "elapsedMs": 1042,
+        "timeoutMs": 300000,
+        "memoryLimitBytes": 3221225472,
+        "rssLimitBytes": 2147483648
+      },
+      {
+        "path": "/tmp/frames57r-source/guards/report-1792797929107-7b1d2d4518012ffa.json",
+        "status": "PASS",
+        "peakRssBytes": 272093184,
+        "peakFootprintBytes": 272093184,
+        "elapsedMs": 936,
+        "timeoutMs": 300000,
+        "memoryLimitBytes": 3221225472,
+        "rssLimitBytes": 2147483648
+      },
+      {
+        "path": "/tmp/frames57r-source/guards/report-1792797971710-9ad59fd30ac07882.json",
+        "status": "PASS",
+        "peakRssBytes": 430780416,
+        "peakFootprintBytes": 430780416,
+        "elapsedMs": 121835,
+        "timeoutMs": 300000,
+        "memoryLimitBytes": 3221225472,
+        "rssLimitBytes": 2147483648
+      },
+      {
+        "path": "/tmp/frames57r-source/guards/report-1792797861306-c2d995de73afe588.json",
+        "status": "PASS",
+        "peakRssBytes": 423047168,
+        "peakFootprintBytes": 423047168,
+        "elapsedMs": 46552,
+        "timeoutMs": 300000,
+        "memoryLimitBytes": 3221225472,
+        "rssLimitBytes": 2147483648
+      }
+    ],
+    "resourceLimits": {
+      "cpuTimeLimit": null,
+      "cpuPolicy": "No hard CPU cap; actual user+system CPU recorded",
+      "wallMsPerHeavyCommand": 300000,
+      "rssMiB": 2048,
+      "memoryMiB": 3072,
+      "workerHeapMiB": 3072,
+      "workerStackMiB": 256
+    },
+    "firstFailures": [
+      {
+        "stage": "native checker attempt1",
+        "path": "/tmp/frames57r-source/checkpoints/.frames57r_checker_1.json",
+        "artifact": "artifact://3366",
+        "failure": "Inline lifted proof rewrite used _ motive; expected Value<A>==Value<R>, observed R"
+      },
+      {
+        "stage": "native checker attempt2",
+        "path": "/tmp/frames57r-source/checkpoints/.frames57r_checker_2.json",
+        "artifact": "artifact://3374",
+        "failure": "Ordinary Value cast still used _ rather than Value<_> motive; expected Value<B>, observed B"
+      },
+      {
+        "stage": "actual consumer initial",
+        "path": "/tmp/frames57r-source/checkpoints/.frames57r_consumer_3.json",
+        "artifact": "artifact://3391",
+        "failure": "Fresh parser filename strings changed checked/output hashes; reused EXACT57l filename inputs on retry; no source/output/compiler patch"
+      },
+      {
+        "stage": "private snapshot setup",
+        "artifacts": [
+          "artifact://3344",
+          "artifact://3355",
+          "artifact://3359"
+        ],
+        "failure": "Absolute owned-manifest provenance paths initially not relocated, then composition map keys needed same absolute-prefix relocation; helper generated with775 permissions was secured700"
+      }
+    ],
+    "provenanceRelocation": "Only private owned manifest keys/values replace /Users/ilyagulya/Projects/My/bend/ with /tmp/frames57r-20261024/. Authenticated source bytes and source hashes are unchanged.",
+    "commands": [
+      "ssh nhs 'cd /tmp/frames57r-20261024 && /home/ilyagulya/.bun/bin/bun evals/heavy_gate.ts --timeout-ms 300000 -- /home/ilyagulya/.bun/bin/bun evals/.frames57r_generate.ts checker'",
+      "Repeat generation for emitter then template; .flatframes57r_generate.ts generates alternative.",
+      "FRAMES57R_ATTEMPT=3 bun evals/heavy_gate.ts --timeout-ms 300000 -- node --experimental-strip-types --no-warnings evals/.frames57r_build.mjs",
+      "FRAMES57R_MODE=emitter (then template), attempt1, same guarded build.",
+      "FRAMES57R_ATTEMPT=3 FRAMES57R_CONSUMER_ATTEMPT=4 bun evals/heavy_gate.ts --timeout-ms 300000 -- node --experimental-strip-types --no-warnings evals/.frames57r_consume.mjs",
+      "FRAMES57R_VARIANT=flatframes57r FRAMES57R_ATTEMPT=1; same guarded build all3 modes and consumer."
+    ],
+    "limitations": [
+      "No full-root byte fixedpoint or285 behavior claim; parent owns canonical integration/proofs.",
+      "No full production C artifact built here; runtime peer provides real minimal native C protocol proof.",
+      "Produced emitter/template JS fully native-checked and emitted, but behavioral consumer uses historical accepted parser/template/emitter and executes produced checker JS; no historical production fallback.",
+      "Frame+Leaf concrete complete corpus has zero erased captures. Parent found unindexed FrameOutput cannot expose arbitrary erased Type capture live; flat alternative avoids this family and preserves dependent capture telescopes.",
+      "Frame checker successful receipt generatedCheckedBodies field0 is a diagnostic-count bug (Def has no s property), not an exclusion: ALL8674 loaded bodies checked; generated source declares7992 bodies. Counting fixed for remaining passes; flat checker7989/8671 counted correctly.",
+      "Single instrumented Linux consumer runs, not paired canonical-baseline/performance or macOS physical-footprint acceptance. Frame positive15.623s/17.935s CPU; flat40.820s/43.113s CPU; no speed-win claim.",
+      "Remaining genuine lambda syntax includes unchanged Direct.invoke plus authenticated original source lambdas; source lexical counts exclude comments/strings, not runtime allocation measurements."
+    ],
+    "checksExcluded": 0,
+    "outputPatches": 0
+  },
+  "paired": {
+    "status": "REJECT_BOTH_R_JS_CANDIDATES_SAME_HOST_UNTRACED_REGRESSIONS",
+    "canonicalEdits": false,
+    "compilerSourceEditsDuringFollowup": false,
+    "heavyLane": "nhs released",
+    "remote": "nhs:/tmp/frames57r-20261024",
+    "runtime": {
+      "node": "22.22.1",
+      "v8": "12.4.254.21-node.35",
+      "execPath": "/usr/bin/node",
+      "versions": {
+        "node": "22.22.1",
+        "acorn": "8.15.0",
+        "ada": "2.9.2",
+        "amaro": "1.1.5",
+        "ares": "1.34.6",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.2.0",
+        "cldr": "48.0",
+        "icu": "78.2",
+        "llhttp": "9.3.0",
+        "modules": "127",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.5.5",
+        "simdjson": "4.2.4",
+        "simdutf": "6.4.2",
+        "sqlite": "3.51.2",
+        "tz": "2025c",
+        "undici": "6.23.0",
+        "unicode": "17.0",
+        "uv": "1.51.0",
+        "uvwasi": "0.0.23",
+        "v8": "12.4.254.21-node.35",
+        "zlib": "1.3.1-e00f703",
+        "zstd": "1.5.7"
+      }
+    },
+    "comparisonPolicy": {
+      "timed": "Only ABI-appropriate runtime.runCheckerSteps(component, exactSameExpandedModulesObject)",
+      "counters": false,
+      "exportWrappers": false,
+      "tracing": false,
+      "manualGC": false,
+      "hotSamplingObservers": false,
+      "guardian": "Existing out-of-process memory guardian100ms; no stack/CPU tracing",
+      "positiveOrders": [
+        [
+          "canonical57q",
+          "frame-leaf",
+          "flat-sites"
+        ],
+        [
+          "flat-sites",
+          "frame-leaf",
+          "canonical57q"
+        ]
+      ],
+      "negativeTypeOrder": [
+        [
+          "frame-leaf",
+          "flat-sites",
+          "canonical57q"
+        ]
+      ],
+      "negativeAffineOrder": [
+        [
+          "flat-sites",
+          "canonical57q",
+          "frame-leaf"
+        ]
+      ],
+      "parseExpandEmit": "Accepted canonical57q full artifact; original callable ABI runtime. R checker artifacts use opaque first-order ABI runtime; no compatibility fallback."
+    },
+    "artifacts": [
+      {
+        "label": "canonical57q",
+        "path": "/tmp/frames57r-20261024/checkpoints/.ir57q-full-a.js",
+        "sha256": "c27cead81e2171be74d19061c5307c216c2c840e66dc422e3007ae03537f068a",
+        "bytes": 12739684,
+        "nativeCheckedBodies": 8382
+      },
+      {
+        "label": "frame-leaf",
+        "path": "/tmp/frames57r-20261024/checkpoints/.frames57r_checker_3.js",
+        "sha256": "5fcf2a58113dcaf3ae9f22074c05c0e4b1c965935ab095a72c2a132fd5eaea1f",
+        "bytes": 10670064,
+        "nativeCheckedBodies": 8674
+      },
+      {
+        "label": "flat-sites",
+        "path": "/tmp/frames57r-20261024/checkpoints/.flatframes57r_checker_1.js",
+        "sha256": "afe12414358bf555100ebab7bda9f8a0e7b76d4b53e38eee77f908569a57ae7c",
+        "bytes": 12118779,
+        "nativeCheckedBodies": 8671
+      }
+    ],
+    "sourceRuntimeHashes": {
+      "canonicalCallable": "f5a22a431b83b4f739bf8022a489a12d2beaa2f04ec7b19ed779981c2a4e5b07",
+      "firstOrder": "4324e1fa4712604aed46aa5faa4a690d921742a91f74023f227e40961a9cf62b"
+    },
+    "paired": [
+      {
+        "case": "positive",
+        "receipt": "/tmp/frames57r-source/checkpoints/.frames57r_paired_positive_2.json",
+        "receiptSha256": "bf684502279c1266d95bf31141a8c4622899c89a43d5e3cc957c9408024c8fef",
+        "passed": true,
+        "inputSemanticHash": "6fd4d2c4f47864430c6c6a851d66925c6aab980e0458a821a7e4357a1954b8e9",
+        "expectedSemanticHash": "9b5fdecd9b477fe927f477fda72bed4c75f263ebede55b17b592369a45997284",
+        "summary": {
+          "canonical57q": {
+            "runs": 2,
+            "meanWallMs": 4686.1461265000025,
+            "meanCpuMs": 7521.8369999999995
+          },
+          "frame-leaf": {
+            "runs": 2,
+            "meanWallMs": 15242.553003999998,
+            "meanCpuMs": 17139.721
+          },
+          "flat-sites": {
+            "runs": 2,
+            "meanWallMs": 40860.61013100001,
+            "meanCpuMs": 42692.4265
+          }
+        },
+        "wallSlowdown": {
+          "frame-leaf": 3.2526841017192916,
+          "flat-sites": 8.71944856775477
+        },
+        "cpuSlowdown": {
+          "frame-leaf": 2.278661582270395,
+          "flat-sites": 5.67579788022527
+        },
+        "runs": [
+          {
+            "label": "canonical57q",
+            "round": 0,
+            "result": "CheckSuccess",
+            "wallMs": 5003.1797910000005,
+            "cpuMs": 7730.096,
+            "semanticHash": "9b5fdecd9b477fe927f477fda72bed4c75f263ebede55b17b592369a45997284",
+            "outputSha256": "5205ba719898886c8c175c78e06169d70a3fa097a50fa0a8e8cb3577312dda7e",
+            "execution": {
+              "status": 0,
+              "stdout": "123\n",
+              "stderr": ""
+            }
+          },
+          {
+            "label": "frame-leaf",
+            "round": 0,
+            "result": "CheckSuccess",
+            "wallMs": 15855.074388,
+            "cpuMs": 18158.776,
+            "semanticHash": "9b5fdecd9b477fe927f477fda72bed4c75f263ebede55b17b592369a45997284",
+            "outputSha256": "5205ba719898886c8c175c78e06169d70a3fa097a50fa0a8e8cb3577312dda7e",
+            "execution": {
+              "status": 0,
+              "stdout": "123\n",
+              "stderr": ""
+            }
+          },
+          {
+            "label": "flat-sites",
+            "round": 0,
+            "result": "CheckSuccess",
+            "wallMs": 41704.974747,
+            "cpuMs": 43901.83,
+            "semanticHash": "9b5fdecd9b477fe927f477fda72bed4c75f263ebede55b17b592369a45997284",
+            "outputSha256": "5205ba719898886c8c175c78e06169d70a3fa097a50fa0a8e8cb3577312dda7e",
+            "execution": {
+              "status": 0,
+              "stdout": "123\n",
+              "stderr": ""
+            }
+          },
+          {
+            "label": "flat-sites",
+            "round": 1,
+            "result": "CheckSuccess",
+            "wallMs": 40016.24551500001,
+            "cpuMs": 41483.023,
+            "semanticHash": "9b5fdecd9b477fe927f477fda72bed4c75f263ebede55b17b592369a45997284",
+            "outputSha256": "5205ba719898886c8c175c78e06169d70a3fa097a50fa0a8e8cb3577312dda7e",
+            "execution": {
+              "status": 0,
+              "stdout": "123\n",
+              "stderr": ""
+            }
+          },
+          {
+            "label": "frame-leaf",
+            "round": 1,
+            "result": "CheckSuccess",
+            "wallMs": 14630.031619999994,
+            "cpuMs": 16120.666,
+            "semanticHash": "9b5fdecd9b477fe927f477fda72bed4c75f263ebede55b17b592369a45997284",
+            "outputSha256": "5205ba719898886c8c175c78e06169d70a3fa097a50fa0a8e8cb3577312dda7e",
+            "execution": {
+              "status": 0,
+              "stdout": "123\n",
+              "stderr": ""
+            }
+          },
+          {
+            "label": "canonical57q",
+            "round": 1,
+            "result": "CheckSuccess",
+            "wallMs": 4369.112462000005,
+            "cpuMs": 7313.578,
+            "semanticHash": "9b5fdecd9b477fe927f477fda72bed4c75f263ebede55b17b592369a45997284",
+            "outputSha256": "5205ba719898886c8c175c78e06169d70a3fa097a50fa0a8e8cb3577312dda7e",
+            "execution": {
+              "status": 0,
+              "stdout": "123\n",
+              "stderr": ""
+            }
+          }
+        ],
+        "limits": {
+          "wallMs": 300000,
+          "rssMiB": 2048,
+          "memoryMiB": 3072,
+          "workerHeapMiB": 3072,
+          "workerStackMiB": 256,
+          "cpuTimeLimit": null
+        },
+        "processMaxRSSKiB": 624388
+      },
+      {
+        "case": "negative-type",
+        "receipt": "/tmp/frames57r-source/checkpoints/.frames57r_paired_negative-type.json",
+        "receiptSha256": "77c19cfb18e21d3119eeed195c6ac6a77a2efabef2d3b423c464c5e3b35145d5",
+        "passed": true,
+        "inputSemanticHash": "9149acb7e20bc7731432598127fc168ec2f205859104c44aa595b312c4764bea",
+        "expectedSemanticHash": "31f2d1d3d9bb9454838fd09058e522c37c61728ddc3fcc64e2bf3adaa02aa41f",
+        "summary": {
+          "canonical57q": {
+            "runs": 1,
+            "meanWallMs": 4839.697721999997,
+            "meanCpuMs": 7508.489
+          },
+          "frame-leaf": {
+            "runs": 1,
+            "meanWallMs": 15558.462803999999,
+            "meanCpuMs": 17870.32
+          },
+          "flat-sites": {
+            "runs": 1,
+            "meanWallMs": 40594.08373,
+            "meanCpuMs": 42803.398
+          }
+        },
+        "wallSlowdown": {
+          "frame-leaf": 3.214759205575031,
+          "flat-sites": 8.387731230706814
+        },
+        "cpuSlowdown": {
+          "frame-leaf": 2.3800154731531205,
+          "flat-sites": 5.700667337995701
+        },
+        "runs": [
+          {
+            "label": "frame-leaf",
+            "round": 0,
+            "result": "CheckFailure",
+            "wallMs": 15558.462803999999,
+            "cpuMs": 17870.32,
+            "semanticHash": "31f2d1d3d9bb9454838fd09058e522c37c61728ddc3fcc64e2bf3adaa02aa41f"
+          },
+          {
+            "label": "flat-sites",
+            "round": 0,
+            "result": "CheckFailure",
+            "wallMs": 40594.08373,
+            "cpuMs": 42803.398,
+            "semanticHash": "31f2d1d3d9bb9454838fd09058e522c37c61728ddc3fcc64e2bf3adaa02aa41f"
+          },
+          {
+            "label": "canonical57q",
+            "round": 0,
+            "result": "CheckFailure",
+            "wallMs": 4839.697721999997,
+            "cpuMs": 7508.489,
+            "semanticHash": "31f2d1d3d9bb9454838fd09058e522c37c61728ddc3fcc64e2bf3adaa02aa41f"
+          }
+        ],
+        "limits": {
+          "wallMs": 300000,
+          "rssMiB": 2048,
+          "memoryMiB": 3072,
+          "workerHeapMiB": 3072,
+          "workerStackMiB": 256,
+          "cpuTimeLimit": null
+        },
+        "processMaxRSSKiB": 487588
+      },
+      {
+        "case": "negative-affine",
+        "receipt": "/tmp/frames57r-source/checkpoints/.frames57r_paired_negative-affine.json",
+        "receiptSha256": "1a064728909f8ae81bc272b04153d90c52db5cfd0c55fc46dbe1938c111fdd0a",
+        "passed": true,
+        "inputSemanticHash": "dcb1f869dbf76f463bd6d1b0d03ccc705d93f920dd1ba3732c5e606f0f41f1c6",
+        "expectedSemanticHash": "22ae9450a8cddafa62a8fd358102ba05598960abcd1875b9679003ae182d2ece",
+        "summary": {
+          "canonical57q": {
+            "runs": 1,
+            "meanWallMs": 4840.861785000001,
+            "meanCpuMs": 7552.012
+          },
+          "frame-leaf": {
+            "runs": 1,
+            "meanWallMs": 15650.357922999996,
+            "meanCpuMs": 17818.918
+          },
+          "flat-sites": {
+            "runs": 1,
+            "meanWallMs": 40682.442913,
+            "meanCpuMs": 42959.669
+          }
+        },
+        "wallSlowdown": {
+          "frame-leaf": 3.2329693798518546,
+          "flat-sites": 8.403967045508198
+        },
+        "cpuSlowdown": {
+          "frame-leaf": 2.3594928080093096,
+          "flat-sites": 5.688506453644407
+        },
+        "runs": [
+          {
+            "label": "flat-sites",
+            "round": 0,
+            "result": "CheckFailure",
+            "wallMs": 40682.442913,
+            "cpuMs": 42959.669,
+            "semanticHash": "22ae9450a8cddafa62a8fd358102ba05598960abcd1875b9679003ae182d2ece"
+          },
+          {
+            "label": "canonical57q",
+            "round": 0,
+            "result": "CheckFailure",
+            "wallMs": 4840.861785000001,
+            "cpuMs": 7552.012,
+            "semanticHash": "22ae9450a8cddafa62a8fd358102ba05598960abcd1875b9679003ae182d2ece"
+          },
+          {
+            "label": "frame-leaf",
+            "round": 0,
+            "result": "CheckFailure",
+            "wallMs": 15650.357922999996,
+            "cpuMs": 17818.918,
+            "semanticHash": "22ae9450a8cddafa62a8fd358102ba05598960abcd1875b9679003ae182d2ece"
+          }
+        ],
+        "limits": {
+          "wallMs": 300000,
+          "rssMiB": 2048,
+          "memoryMiB": 3072,
+          "workerHeapMiB": 3072,
+          "workerStackMiB": 256,
+          "cpuTimeLimit": null
+        },
+        "processMaxRSSKiB": 493880
+      }
+    ],
+    "actualPositiveExecutions": 6,
+    "actualStdout": "123\n",
+    "canonical57qOutputSha256": "5205ba719898886c8c175c78e06169d70a3fa097a50fa0a8e8cb3577312dda7e",
+    "firstFailure": {
+      "receipt": "/tmp/frames57r-source/checkpoints/.frames57r_paired_positive.json",
+      "artifact": "artifact://3427",
+      "reason": "Harness initially retained historical57g emitter output hash ec2a6735...; canonical57q emitter actually produces5205ba71..., while checked-module hash remains exact57l. Repaired expectation only; original failing receipt preserved. No compiler/source/output patch."
+    },
+    "limits": {
+      "wallMsPerCommand": 300000,
+      "rssMiB": 2048,
+      "memoryMiB": 3072,
+      "workerHeapMiB": 3072,
+      "workerStackMiB": 256,
+      "cpuTimeLimit": null,
+      "pairedNodeFlags": [
+        "--experimental-strip-types",
+        "--no-warnings"
+      ]
+    },
+    "diagnostics": {
+      "separateFromAcceptance": true,
+      "profiler": "Node --cpu-prof, default1000us",
+      "nodeFlags": [
+        "--experimental-strip-types",
+        "--no-warnings",
+        "--max-old-space-size=3072",
+        "--stack-size=262144",
+        "--cpu-prof",
+        "--cpu-prof-dir=checkpoints/.frames57r_profiles",
+        "--cpu-prof-name=<label>.cpuprofile"
+      ],
+      "shellStackLimitKiB": 262144,
+      "sources": [
+        {
+          "path": "/tmp/frames57r-source/evals/.frames57r_paired.mjs",
+          "sha256": "83a7a14c05c80de325e858d2eaab952e3f6080e9e54f001bbd49441a07db39bf"
+        },
+        {
+          "path": "/tmp/frames57r-source/evals/.frames57r_profile.mjs",
+          "sha256": "c9bde60ffc5cec12d0dcb23ee8e2074bcaa6b4466f3e97cba4764f2b6091dba5"
+        }
+      ],
+      "profileSummary": "/tmp/frames57r-source/profiles/summary.json",
+      "profileSummarySha256": "fb8b6c37cece8f57c4e2920a8014d9c41d4d31b94b21025dc9469be48c9790f3",
+      "profiles": [
+        {
+          "label": "canonical57q",
+          "path": "/tmp/frames57r-source/profiles/canonical57q.cpuprofile",
+          "sha256": "b71783f41de202f3dc20d2f25a6ed642fb50938c205f3ffeb7bd9520402f8222",
+          "bytes": 1318410,
+          "totalSamples": 5681,
+          "sampledMs": 6215.341,
+          "top": [
+            {
+              "functionName": "(garbage collector)",
+              "scriptId": "0",
+              "url": "",
+              "lineNumber": -1,
+              "columnNumber": -1,
+              "selfUs": 699731,
+              "samples": 623,
+              "deoptReasons": [],
+              "selfMs": 699.731,
+              "percent": 11.258127269284179
+            },
+            {
+              "functionName": "f",
+              "scriptId": "155",
+              "url": "file:///tmp/frames57r-20261024/checkpoints/.ir57q-full-a.js",
+              "lineNumber": 172,
+              "columnNumber": 12,
+              "selfUs": 561682,
+              "samples": 511,
+              "deoptReasons": [],
+              "selfMs": 561.682,
+              "percent": 9.037026287053276
+            },
+            {
+              "functionName": "$checker_core_steps_v1$058checker_chunk$",
+              "scriptId": "155",
+              "url": "file:///tmp/frames57r-20261024/checkpoints/.ir57q-full-a.js",
+              "lineNumber": 1416,
+              "columnNumber": 49,
+              "selfUs": 273009,
+              "samples": 243,
+              "deoptReasons": [],
+              "selfMs": 273.009,
+              "percent": 4.392502358277687
+            },
+            {
+              "functionName": "runSteps",
+              "scriptId": "132",
+              "url": "file:///tmp/frames57r-20261024/evals/.frames57r_historical_runtime.mjs",
+              "lineNumber": 19,
+              "columnNumber": 17,
+              "selfUs": 237748,
+              "samples": 217,
+              "deoptReasons": [],
+              "selfMs": 237.748,
+              "percent": 3.8251803078865665
+            },
+            {
+              "functionName": "$checker_core_steps_v1$058checker_step_one$",
+              "scriptId": "155",
+              "url": "file:///tmp/frames57r-20261024/checkpoints/.ir57q-full-a.js",
+              "lineNumber": 1504,
+              "columnNumber": 52,
+              "selfUs": 232580,
+              "samples": 214,
+              "deoptReasons": [],
+              "selfMs": 232.58,
+              "percent": 3.742031209550691
+            },
+            {
+              "functionName": "$checker_core_steps_v1$058checker_step$",
+              "scriptId": "155",
+              "url": "file:///tmp/frames57r-20261024/checkpoints/.ir57q-full-a.js",
+              "lineNumber": 564,
+              "columnNumber": 48,
+              "selfUs": 230027,
+              "samples": 209,
+              "deoptReasons": [],
+              "selfMs": 230.027,
+              "percent": 3.700955426258994
+            },
+            {
+              "functionName": "runCheckerSteps",
+              "scriptId": "132",
+              "url": "file:///tmp/frames57r-20261024/evals/.frames57r_historical_runtime.mjs",
+              "lineNumber": 124,
+              "columnNumber": 31,
+              "selfUs": 204838,
+              "samples": 186,
+              "deoptReasons": [],
+              "selfMs": 204.838,
+              "percent": 3.295684017980671
+            }
+          ]
+        },
+        {
+          "label": "frame-leaf",
+          "path": "/tmp/frames57r-source/profiles/frame-leaf.cpuprofile",
+          "sha256": "63773531d5dd1a4013555931f75417b09b374d8b0cf1f5b7ea4b06744ddf5d5f",
+          "bytes": 1617452,
+          "totalSamples": 15678,
+          "sampledMs": 17225.65,
+          "top": [
+            {
+              "functionName": "$frames57r_checker_steps$058checker_frame_apply$",
+              "scriptId": "157",
+              "url": "file:///tmp/frames57r-20261024/checkpoints/.frames57r_checker_3.js",
+              "lineNumber": 677,
+              "columnNumber": 57,
+              "selfUs": 9976158,
+              "samples": 9033,
+              "deoptReasons": [],
+              "selfMs": 9976.158,
+              "percent": 57.91455184564879
+            },
+            {
+              "functionName": "$frames57r_checker_steps$058checker_resume$",
+              "scriptId": "157",
+              "url": "file:///tmp/frames57r-20261024/checkpoints/.frames57r_checker_3.js",
+              "lineNumber": 298,
+              "columnNumber": 52,
+              "selfUs": 1180035,
+              "samples": 1067,
+              "deoptReasons": [],
+              "selfMs": 1180.035,
+              "percent": 6.850452667968988
+            },
+            {
+              "functionName": "(garbage collector)",
+              "scriptId": "0",
+              "url": "",
+              "lineNumber": -1,
+              "columnNumber": -1,
+              "selfUs": 576056,
+              "samples": 514,
+              "deoptReasons": [],
+              "selfMs": 576.056,
+              "percent": 3.3441756914833403
+            },
+            {
+              "functionName": "$frames57r_checker_steps$058checker_chunk$",
+              "scriptId": "157",
+              "url": "file:///tmp/frames57r-20261024/checkpoints/.frames57r_checker_3.js",
+              "lineNumber": 333,
+              "columnNumber": 51,
+              "selfUs": 232788,
+              "samples": 209,
+              "deoptReasons": [],
+              "selfMs": 232.788,
+              "percent": 1.3514032852171036
+            },
+            {
+              "functionName": "$frames57r_checker_steps$058checker_step_one$",
+              "scriptId": "157",
+              "url": "file:///tmp/frames57r-20261024/checkpoints/.frames57r_checker_3.js",
+              "lineNumber": 415,
+              "columnNumber": 54,
+              "selfUs": 230179,
+              "samples": 210,
+              "deoptReasons": [],
+              "selfMs": 230.179,
+              "percent": 1.336257267505145
+            },
+            {
+              "functionName": "$frames57r_checker_steps$058checker_step$",
+              "scriptId": "157",
+              "url": "file:///tmp/frames57r-20261024/checkpoints/.frames57r_checker_3.js",
+              "lineNumber": 285,
+              "columnNumber": 50,
+              "selfUs": 227352,
+              "samples": 206,
+              "deoptReasons": [],
+              "selfMs": 227.352,
+              "percent": 1.3198456952277562
+            },
+            {
+              "functionName": "runSteps",
+              "scriptId": "133",
+              "url": "file:///tmp/frames57r-20261024/evals/.frames57r_runtime.mjs",
+              "lineNumber": 20,
+              "columnNumber": 17,
+              "selfUs": 221211,
+              "samples": 202,
+              "deoptReasons": [],
+              "selfMs": 221.211,
+              "percent": 1.2841953714373624
+            }
+          ]
+        },
+        {
+          "label": "flat-sites",
+          "path": "/tmp/frames57r-source/profiles/flat-sites.cpuprofile",
+          "sha256": "14e4e00fc2341fddac2ccb6301e938b0bf6b7c7b13cbdff0a7b9ee822cbba4fe",
+          "bytes": 1994548,
+          "totalSamples": 39262,
+          "sampledMs": 43303.366,
+          "top": [
+            {
+              "functionName": "$flatframes57r_checker_steps$058checker_resume$",
+              "scriptId": "157",
+              "url": "file:///tmp/frames57r-20261024/checkpoints/.flatframes57r_checker_1.js",
+              "lineNumber": 298,
+              "columnNumber": 56,
+              "selfUs": 35348801,
+              "samples": 32005,
+              "deoptReasons": [],
+              "selfMs": 35348.801,
+              "percent": 81.63060811485185
+            },
+            {
+              "functionName": "$flatframes57r_checker_steps$058checker_chunk$",
+              "scriptId": "157",
+              "url": "file:///tmp/frames57r-20261024/checkpoints/.flatframes57r_checker_1.js",
+              "lineNumber": 70442,
+              "columnNumber": 55,
+              "selfUs": 779470,
+              "samples": 705,
+              "deoptReasons": [],
+              "selfMs": 779.47,
+              "percent": 1.8000217350309442
+            },
+            {
+              "functionName": "(garbage collector)",
+              "scriptId": "0",
+              "url": "",
+              "lineNumber": -1,
+              "columnNumber": -1,
+              "selfUs": 577448,
+              "samples": 514,
+              "deoptReasons": [],
+              "selfMs": 577.448,
+              "percent": 1.3334944909363398
+            },
+            {
+              "functionName": "$checker_resume$",
+              "scriptId": "157",
+              "url": "file:///tmp/frames57r-20261024/checkpoints/.flatframes57r_checker_1.js",
+              "lineNumber": 246,
+              "columnNumber": 25,
+              "selfUs": 538017,
+              "samples": 484,
+              "deoptReasons": [],
+              "selfMs": 538.017,
+              "percent": 1.2424369043274834
+            },
+            {
+              "functionName": "$flatframes57r_checker_steps$058checker_step_one$",
+              "scriptId": "157",
+              "url": "file:///tmp/frames57r-20261024/checkpoints/.flatframes57r_checker_1.js",
+              "lineNumber": 70524,
+              "columnNumber": 58,
+              "selfUs": 286044,
+              "samples": 263,
+              "deoptReasons": [],
+              "selfMs": 286.044,
+              "percent": 0.6605583501291793
+            },
+            {
+              "functionName": "runSteps",
+              "scriptId": "133",
+              "url": "file:///tmp/frames57r-20261024/evals/.frames57r_runtime.mjs",
+              "lineNumber": 20,
+              "columnNumber": 17,
+              "selfUs": 253182,
+              "samples": 222,
+              "deoptReasons": [],
+              "selfMs": 253.182,
+              "percent": 0.5846704849687666
+            },
+            {
+              "functionName": "$flatframes57r_checker_steps$058checker_step$",
+              "scriptId": "157",
+              "url": "file:///tmp/frames57r-20261024/checkpoints/.flatframes57r_checker_1.js",
+              "lineNumber": 285,
+              "columnNumber": 54,
+              "selfUs": 211819,
+              "samples": 193,
+              "deoptReasons": [],
+              "selfMs": 211.819,
+              "percent": 0.4891513514215038
+            }
+          ]
+        }
+      ],
+      "dispatcherGeometry": [
+        {
+          "label": "frame-leaf",
+          "functionName": "$frames57r_checker_steps$058checker_frame_apply$",
+          "generatedJsPath": "/tmp/frames57r-source/profiles/.frames57r_checker_3.js",
+          "startLine": 678,
+          "nextTopLevelFunctionLine": 58653,
+          "topLevelRegionLines": 57975,
+          "topLevelRegionBytes": 3244425,
+          "sourceShape": "Balanced UTF-16 string tag comparison tree (native compiler js_match >=32-arm policy)"
+        },
+        {
+          "label": "frame-leaf",
+          "functionName": "$frames57r_checker_steps$058checker_resume$",
+          "generatedJsPath": "/tmp/frames57r-source/profiles/.frames57r_checker_3.js",
+          "startLine": 299,
+          "nextTopLevelFunctionLine": 334,
+          "topLevelRegionLines": 35,
+          "topLevelRegionBytes": 1441,
+          "sourceShape": "Small tagged switch over Leaf, Compose and Identity"
+        },
+        {
+          "label": "flat-sites",
+          "functionName": "$flatframes57r_checker_steps$058checker_resume$",
+          "generatedJsPath": "/tmp/frames57r-source/profiles/.flatframes57r_checker_1.js",
+          "startLine": 299,
+          "nextTopLevelFunctionLine": 70443,
+          "topLevelRegionLines": 70144,
+          "topLevelRegionBytes": 4652901,
+          "sourceShape": "Balanced UTF-16 string tag comparison tree (native compiler js_match >=32-arm policy)"
+        }
+      ],
+      "interpretation": [
+        "Frame+Leaf checker_frame_apply self9976ms/57.91% of whole-process samples, plus checker_resume1180ms/6.85%.",
+        "Flat checker_resume self35349ms/81.63% of whole-process samples.",
+        "GC samples canonical700ms, Frame576ms, flat577ms. Observed excess CPU is concentrated in generated dispatchers, not GC.",
+        "Generated dispatcher regions are3.24MB/57975 lines (Frame apply) and4.65MB/70144 lines (flat resume), emitted as balanced string-tag trees by existing js_match >=32-arm policy.",
+        "These CPU profiles have no deopt/tiering metadata; giant-function/JIT inhibition is an INFERENCE, not established mechanism. Source label hotspot is measured.",
+        "Separate profile process uses Node main thread with explicit256MiB stack; paired acceptance uses same256MiB worker stack. Diagnostic timings are NOT acceptance measurements."
+      ]
+    },
+    "commands": [
+      "FRAMES57R_CASE=positive FRAMES57R_PAIR_ATTEMPT=2 bun evals/heavy_gate.ts --timeout-ms 300000 -- node --experimental-strip-types --no-warnings evals/.frames57r_paired.mjs",
+      "FRAMES57R_CASE=negative-type (then negative-affine), same guarded command, no profiler.",
+      "ulimit -s 262144; FRAMES57R_PROFILE_LABEL=canonical57q (then frame-leaf, flat-sites) bun evals/heavy_gate.ts --timeout-ms 300000 -- node --experimental-strip-types --no-warnings --max-old-space-size=3072 --stack-size=262144 --cpu-prof --cpu-prof-dir=checkpoints/.frames57r_profiles --cpu-prof-name=<label>.cpuprofile evals/.frames57r_profile.mjs"
+    ],
+    "limitations": [
+      "Two positive rounds, one negative round per case; sufficient wide regression rejection, not a comprehensive benchmark distribution.",
+      "RSS from shared retained-artifact worker is not isolated per-candidate memory proof, and Linux RSS is not macOS physical-footprint acceptance.",
+      "No claim about native C performance from JavaScript measurements.",
+      "No slower candidate selected, integrated or promoted. Original native proofs/source diffs retained in generator57r-receipt.json."
+    ],
+    "checksExcluded": 0,
+    "outputPatches": 0
+  },
+  "runtime": {
+    "source": {
+      "candidateRoot": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-runtimeframes57r.ehrjcmj9/candidate",
+      "canonicalEdits": false,
+      "progressABI": "first-order-continuation-v57r",
+      "rootExports": 13,
+      "subsetExports": 12,
+      "nativeEffectLiveArguments": 13,
+      "changes": [
+        {
+          "path": "evals/checker_core_step_runtime.mjs",
+          "baseSha256": "f5a22a431b83b4f739bf8022a489a12d2beaa2f04ec7b19ed779981c2a4e5b07",
+          "candidateSha256": "4324e1fa4712604aed46aa5faa4a690d921742a91f74023f227e40961a9cf62b"
+        },
+        {
+          "path": "evals/checker_core_step_counts.mjs",
+          "baseSha256": "43e618da27a5d5fcd30246269885779f19c49cb09244c3e3f31c6f4f1e235513",
+          "candidateSha256": "d01ae1b357be008eb45bc9a0a1b82f590135458bf1e20951b9b8817687d70dc6"
+        },
+        {
+          "path": "evals/selfhost_driver_source.ts",
+          "baseSha256": "74dfd3d656fb4c58f8a2d32e9e14026dbcccaa9c8e6d947ddc6d4e96745b69ce",
+          "candidateSha256": "82bf94c61d88059b79b8808d0318c79ee028428f7a35833e3bfcaddfcfcd06ea"
+        },
+        {
+          "path": "evals/native_compiler_driver.bend",
+          "baseSha256": "2d662ae3c9e95b074f619b75b4fa1b6a0cbcdcee3d20fcc79d9b191b6dea4ee6",
+          "candidateSha256": "4966dfb9132388384523cfaa3d14dde5942630c859e088a8570e8cb16c759768"
+        },
+        {
+          "path": "evals/native_compiler_host.c",
+          "baseSha256": "e3a754c6edf98c467f9837c337bc3e6b4a16a1c15bf4a9fcb7b5ca45f0a4cee2",
+          "candidateSha256": "4daedb4798c1435e48883ad99b585d36ff788d2b6432d6a521bef7181f1a2141"
+        },
+        {
+          "path": "evals/native_compiler_experiment.ts",
+          "baseSha256": "32c5c70a2ea7fc6176497f1a0b22456574f09cc149a04eaac3dc555f15ac99d8",
+          "candidateSha256": "277eea52a27df7dcaabb47da8bcc5a177bfba873ce5d9d996a5577ff3acef1b3"
+        },
+        {
+          "path": "evals/selfhost_bootstrap_gate.ts",
+          "baseSha256": "8c373376ab63f0fe23751102f6aa4f9fa2ae0c562599003f9833bbb00651e70c",
+          "candidateSha256": "55ec1845f8a77d15574356ace65ed62ecc3ec3c271f6e5b25f6b773642b0030f"
+        },
+        {
+          "path": "evals/selfhost_bootstrap_worker.mjs",
+          "baseSha256": "310f1240dc2c29e6ca8fb1df2076222b013e5acd91e8ff8991304c6830f8ef55",
+          "candidateSha256": "b7ed67548a51c5bf40b18e08a128e71f3ac671dcf243c78b10515f90618560f5"
+        },
+        {
+          "path": "evals/checker_library_smoke.ts",
+          "baseSha256": "47ff2f270cb818cc377cd7b5b51f83d5c0410e06b51731524a7815a1db73e441",
+          "candidateSha256": "7b2a5b6c461d4810c32b17e610f243ea2604bd155af910ea370b44b192b5a298"
+        },
+        {
+          "path": "evals/checker_library_smoke_worker.mjs",
+          "baseSha256": "f63fd299ee5587f7be4656aa7d530dfadd97f441138ea5ecb2cabed8e19edbf2",
+          "candidateSha256": "92cb498a1b3a7053ffecc7ac77bfe3d1bb95c973764e61149a74866f417706f9"
+        },
+        {
+          "path": "evals/compiler_benchmark.ts",
+          "baseSha256": "fdc223e29261f6da9484bba1d49f998379a8bafcfe053a2eb18f9c23c137282a",
+          "candidateSha256": "46edce27182dd3dc44da890a466317ab98aba8162ca841938314bad26cea77a9"
+        },
+        {
+          "path": "evals/checker_core_target_gate.ts",
+          "baseSha256": "9bd6a09e783f37bf5b3bf174a82f0e6e16f0e566d1ef8fc54e46b42943bc36bf",
+          "candidateSha256": "78f9de2f36414bfbf6f0c6ead670093b544c67ee7c9b908ab8b06b68b3ae0c3e"
+        },
+        {
+          "path": "checkpoints/checker_core_steps_component_v1.bend",
+          "baseSha256": "36196bfaade59a4f29238aa41346e2c56ef6e118bbd976bcc6872df37ac53e94",
+          "candidateSha256": "63a972ff69486aeb3299687f77622cc1bb20f46c3f97b4ffe84cb8ccc82246d0"
+        },
+        {
+          "path": "checkpoints/checker_core_steps_driver_v1.bend",
+          "baseSha256": "1d185edb03962f68ac01feac3a49ba75bcae5de0d4ef5579eb53a7f461f94fce",
+          "candidateSha256": "8808afcea57c5317b0b70c7e58259b9f402a6e3a83ce43662275f83b518575f9"
+        },
+        {
+          "path": "checkpoints/checker_core_steps_emit_driver_v1.bend",
+          "baseSha256": "aafc0054d7488d2018740261ce3f4428b4aafeb84a46f80d29f5a343a2bab524",
+          "candidateSha256": "919b7f5794768e9ae3f67bafd2ead9686fa5ca18b40b14b6ccaafc7df51103c4"
+        },
+        {
+          "path": "checkpoints/js_emit_steps_component_v1.bend",
+          "baseSha256": "695618af0ee97d6227d786afe4b2460ce72481692c0f3d4c397cd5b663612bb7",
+          "candidateSha256": "6390619299d2f13a79f4c96a8fc973db5e0356aec4e246cb0fe68056dead8b06"
+        },
+        {
+          "path": "checkpoints/template_checker_steps_driver_v1.bend",
+          "baseSha256": "ce210a5752499cf3267ddd85c204d29e7ce8163ea7d79428aac19b0a7c7d1d99",
+          "candidateSha256": "c3cf17b917e155c212635b10f2d2c622dab1a6e79f34a667d447b7aa51a40ddd"
+        },
+        {
+          "path": "checkpoints/template_steps_component_v1.bend",
+          "baseSha256": "283b042e1293146b992e16fe37e8f07d4ffb8390e1ab0d7c2a20a872664fc1af",
+          "candidateSha256": "93f87fd32321f3fe1db089149ff147331eb1e5e6cc47e3d6a2f788685f03feeb"
+        },
+        {
+          "path": "CHANGELOG.md",
+          "baseSha256": "23fc4dbfb00379035beac138368763ff50112607875758ee1310b2c2a156f1be",
+          "candidateSha256": "486506ffc0f9010ae3eb0c7d9f6da8b62cf381c6e5388ddf9a34947a139ba89f"
+        }
+      ],
+      "historicalUnchanged": [
+        "checkpoints/compiler-benchmark-v41-step-runtime.mjs",
+        "checkpoints/compiler-benchmark-release237-v41.corpus.json",
+        "checkpoints/selfhost_steps_driver_v1.bend",
+        "evals/.bounded_native57j*",
+        "evals/.boundyield57l*",
+        "evals/.finishedbind57l*",
+        "historical checkpoint receipts and captured source corpora",
+        "evals/selfhost_emitted_suites.ts (entire immutable K-only certificate, including old ABI10 and image13733899/8aac... hardpins)"
+      ],
+      "tests": "No incidental runtime or ABI source-text wiring assertions found in evals/*.test.ts, gates/*.ts or tests/**/*.ts; no mocks or source-text tests added. Real checked smoke harness is isolated.",
+      "integrationPrerequisites": [
+        "Fresh parser acceptance wrapper must authenticate changed selfhost_driver_source.ts; old receipts are not re-pinned.",
+        "Parent owns new R full-root native/fixedpoint/285-behavior proofs; immutable K-only selfhost_emitted_suites.ts must not be used for R.",
+        "Generated step source, manifests and generated component wrappers must come from matching first-order generator; not patched output."
+      ],
+      "scope": "Source candidate only, not full production/native/fixedpoint/performance acceptance"
+    },
+    "nativeMiniAndNegatives": {
+      "status": "SOURCE_CANDIDATE_AND_REAL_MINIMAL_CONSUMER_PASS",
+      "privateRoot": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-runtimeframes57r.ehrjcmj9",
+      "remote": "misakaindrive:/tmp/bend-runtimeframes57r-20261024",
+      "sourcePatch": {
+        "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-runtimeframes57r.ehrjcmj9/runtime57r.patch",
+        "sha256": "2ca22e7fb53b237f8a4b1b3bd53c1296d414a24244754d229df3157e2de29f50",
+        "bytes": 47263,
+        "changedFiles": 19
+      },
+      "kernel": {
+        "release": "official2.0.37",
+        "sha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+        "unmodified": true
+      },
+      "nativeCoverage": {
+        "nativeCheckedBodies": 362,
+        "expectedSourceDefinitions": 362,
+        "validationEvents": 525
+      },
+      "sourceSha256": "20af9b093024adfa1e2ff70e4819ce120e3a843f97c599105379cb28c06c562a",
+      "jsArtifact": {
+        "sha256": "460648b67fa7ebedd9f9a573355d31ed948b293ef2a0566ed4007369b8ec61a2",
+        "bytes": 10081,
+        "exports": [
+          "expand_modules_start",
+          "template_step",
+          "template_resume"
+        ]
+      },
+      "cArtifact": {
+        "sha256": "6cdbb373521f55c7b6113e7486ab72c874dd812d6ef2a3c73733987ab72e1752",
+        "bytes": 107845
+      },
+      "nativeExecutableSha256": "b16db1efc1af57b94a9033911513ece4ae2d0340619128be5ba6502351c80608",
+      "consumer": {
+        "status": "PASS",
+        "consumer": "real native-checked dependent affine first-order protocol",
+        "output": [
+          7,
+          23,
+          2345
+        ],
+        "counts": {
+          "pending": 1,
+          "direct": 1,
+          "bound": 3,
+          "resume": 5
+        },
+        "ownersProduced": 5,
+        "ownersConsumed": 5,
+        "constructorPayloadInterpreted": false,
+        "productionGeneratorAcceptance": false
+      },
+      "nativeOutput": "NATIVE_CONSUMER 7,23,2345\n",
+      "nativeCalls": 5,
+      "nativeResumes": 5,
+      "negative": [
+        {
+          "file": "wrong_domain.bend",
+          "rejected": true,
+          "diagnostic": "Error:\n- expected : Nat\n- observed : F.Owned\nContext:\n- continuation : F.TemplateContinuation<Nat, Nat>\n- value        : F.Owned\nLocation: wrong\n3 | def wrong(continuation: F.TemplateContinuation<Nat, Nat>, value: F.Owned) -> F.TemplateProgress<Nat>:\n4>|   F.template_resume(Nat, Nat, continuation, F.TemplateValue{value})\n  |                                                             ^^^^^\n5 | def main() -> Nat:"
+        },
+        {
+          "file": "reused_frame.bend",
+          "rejected": true,
+          "diagnostic": "Error:\n- expected : continuation\n- observed : continuation (consumed more than once)\nLocation: wrong\n2 | \n3>| def wrong(continuation: F.TemplateContinuation<Nat, Nat>, box: F.TemplateValue<Nat>) -> F.TemplateProgress<Nat>:\n  |           ^^^^^^^^^^^^\n4 |   inner = F.template_resume(Nat, Nat, continuation, box)"
+        }
+      ],
+      "guard": {
+        "memoryMiB": 8192,
+        "rssMiB": 8192,
+        "pollMs": 10,
+        "timeoutMs": 600000,
+        "repairConsumerPass": {
+          "status": "PASS",
+          "peakRssBytes": 146685952,
+          "peakFootprintBytes": 48516144,
+          "elapsedMs": 1633
+        }
+      },
+      "commands": [
+        "ssh misakaindrive \"cd /tmp/bend-runtimeframes57r-20261024 && /opt/homebrew/bin/bun evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 --timeout-ms 600000 -- /opt/homebrew/bin/node --experimental-strip-types --max-old-space-size=3072 prove.mjs\"",
+        "ssh misakaindrive \"cd /tmp/bend-runtimeframes57r-20261024 && /opt/homebrew/bin/bun evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 --timeout-ms 600000 -- /opt/homebrew/bin/node finish.mjs\"",
+        "clang -std=c11 -O3 smoke.c -lpthread -lm -o smoke",
+        "./smoke --threads 1 --gpu off"
+      ],
+      "firstFailuresPreserved": [
+        {
+          "artifact": "artifact://3377",
+          "stage": "proof launcher",
+          "failure": "Worker received URL string instead of URL object; corrected harness only"
+        },
+        {
+          "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-runtimeframes57r.ehrjcmj9/first-error.json",
+          "stage": "native source proof",
+          "failure": "Equality motive was _, needed explicit TemplateValue<_>/TemplateProgress<_>; corrected real source and native checked"
+        },
+        {
+          "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-runtimeframes57r.ehrjcmj9/proof.json",
+          "stage": "consumer observer",
+          "failure": "Observer did not register progress nested under Bound; corrected observer only and retried failed consumers without rerunning native prerequisite"
+        }
+      ],
+      "limits": [
+        "Minimal real checked dependent affine protocol, NOT production generator source acceptance.",
+        "Production native bridge and full generated template/emitter/checker root are not built by this proof.",
+        "No fixedpoint,285-suite or performance acceptance claim.",
+        "C generic entry is capture-free; ordinary native_apply currying creates and consumes one temporary partial-application closure per host resume; no per-site resume closure or compatibility path retained.",
+        "Parent owns production root proof and fresh parser helper authentication chain."
+      ],
+      "canonicalEdits": false,
+      "checksExcluded": 0,
+      "outputPatches": 0
+    },
+    "actualGeneratedCheckerJs": {
+      "status": "ACTUAL_GENERATED_CHECKER_JS_CONSUMER_PASS",
+      "executedBy": "FrameGenerator57R on nhs, actual receipts retrieved by RuntimeFrames57R",
+      "runtimeSha256": "4324e1fa4712604aed46aa5faa4a690d921742a91f74023f227e40961a9cf62b",
+      "runtimeIdentity": "Exact same isolated runtime as own JS/native minimal consumer, hash confirmed by ssh sha256sum",
+      "consumerSourceSha256": "318aea0bd7933d88520b9bdfee2b543810aea7a27642aeaf9b533e7fa3e00751",
+      "consumerReceiptSha256": "b46c165d31d711d391b387485779d061fe6cbcfb5f4c586945abe53f42d8bb89",
+      "nativeBodies": {
+        "checker": 8674,
+        "emitter": 2613,
+        "template": 1556
+      },
+      "artifactSha256": {
+        "checker": "5fcf2a58113dcaf3ae9f22074c05c0e4b1c965935ab095a72c2a132fd5eaea1f",
+        "emitter": "08fe60f07f6816ccea2dc63c2ad5a7ba20e0955a22e8e7eee28a790c03b0e9a4",
+        "template": "6de34b5fadfcdc29e7c543b54cb3837f4688ef7fdc8f4993423f683b6552a26e"
+      },
+      "rows": [
+        {
+          "name": "positive",
+          "result": "CheckSuccess",
+          "semanticHash": "9b5fdecd9b477fe927f477fda72bed4c75f263ebede55b17b592369a45997284",
+          "hostCalls": {
+            "step": 1025560,
+            "resume": 2718991
+          },
+          "outputSha256": "ec2a673501f8f078cbc5ca2b406c23f1ed82035e4f6f8d98b6ebcb5f525197b3",
+          "execution": {
+            "status": 0,
+            "stdout": "123\n",
+            "stderr": ""
+          }
+        },
+        {
+          "name": "negative-type",
+          "result": "CheckFailure",
+          "semanticHash": "31f2d1d3d9bb9454838fd09058e522c37c61728ddc3fcc64e2bf3adaa02aa41f",
+          "hostCalls": {
+            "step": 1002602,
+            "resume": 2627751
+          }
+        },
+        {
+          "name": "negative-affine",
+          "result": "CheckFailure",
+          "semanticHash": "22ae9450a8cddafa62a8fd358102ba05598960abcd1875b9679003ae182d2ece",
+          "hostCalls": {
+            "step": 1001162,
+            "resume": 2623553
+          }
+        }
+      ],
+      "remoteConsumer": "nhs:/tmp/frames57r-20261024/checkpoints/.frames57r_consumer_4.json",
+      "limits": [
+        "Actual generated first-order CHECKER/inspection executed with full unchanged Base.",
+        "Parser/template/emitter in this consumer are explicitly authenticated HISTORICAL SEED ONLY, not candidate generated template/emitter execution.",
+        "Generated candidate template/emitter have native body coverage+JS emission, not execution acceptance.",
+        "Native C execution proof is separate real minimal checked protocol, not full generated production native bridge.",
+        "No full-root fixedpoint/285 behavior/performance acceptance."
+      ]
+    }
+  },
+  "sourceDiffs": {
+    "frameLeaf": "--- evals/checker_core_step_lower.ts\n+++ evals/checker_core_step_lower.ts\n@@ -50,6 +50,10 @@\n const resultFunction = prefix + '_result', stepFunction = prefix + '_step', startFunction = prefix + '_start';\n const rawStepFunction = prefix + '_step_one', chunkFunction = prefix + '_chunk', nativeChunkQuantum = 64;\n const unboxFunction = prefix + '_unbox';\n+const continuationType = protocol + 'Continuation', frameType = protocol + 'Frame';\n+const leafType = protocol + 'Leaf', composeType = protocol + 'Compose', identityType = protocol + 'Identity';\n+const frameInput = prefix + '_frame_input', frameOutput = prefix + '_frame_output';\n+const frameApply = prefix + '_frame_apply', resumeFunction = prefix + '_resume', castFunction = prefix + '_cast';\n const inputPaths: string[] = [paths.canonical, paths.owned, paths.dependency, paths.frozenSlice, paths.frozenDriver,\n   paths.frozenCorpus, paths.kernel, paths.emitter, paths.parser, paths.base, paths.nodePolicy, paths.validationPolicy,\n   paths.ownedManifest, ...(paths.ownedDriver ? [paths.ownedDriver] : []), ...(paths.checkerOutput ? [paths.checkerOutput] : []),\n@@ -554,7 +558,8 @@\n const reserved = new Set([...clean.matchAll(/\\b[A-Za-z_]\\w*\\b/g)].map(match => match[0]));\n function reserve(name: string): string {if (reserved.has(name)) throw Error('Generated name collision ' + name); reserved.add(name); return name;}\n for (const name of [requestType, progressType, valueType, finishedType, pendingType, directType, boundType,\n-  resultFunction, stepFunction, rawStepFunction, chunkFunction, unboxFunction, startFunction]) reserve(name);\n+  resultFunction, stepFunction, rawStepFunction, chunkFunction, unboxFunction, startFunction,\n+  continuationType, frameType, leafType, composeType, identityType, frameInput, frameOutput, frameApply, resumeFunction, castFunction]) reserve(name);\n const requestName = new Map(definitions.map(def => [def.name, reserve(requestType + '_' + def.name)]));\n // Keep request datatypes and dispatch bodies bounded. A single thousands-row\n // dependent match is expensive for both the source checker and native JS.\n@@ -594,6 +599,7 @@\n const boxedValue = (type: B.LTerm): B.LTerm => ({$: 'ADT', k: valueType, x: [type], r: []});\n const finished = (value: B.LTerm): B.LTerm => ctr(finishedType, [ctr(valueType, [value])]);\n const generated: {name: string; parameters: ParserParameter[]; result: B.LTerm; body: B.Body; owner: string; kind: string}[] = [];\n+const frames: {constructor: string; helper: string; parameters: ParserParameter[]; input: B.LTerm; output: B.LTerm; owner: string}[] = [];\n let helperSerial = 0, syntheticId = 1000000, pendingCount = 0, lazyChoices = 0;\n const ownerBindings = new Map<string, Map<number, Binding>>();\n let activeOwner = '';\n@@ -726,23 +732,27 @@\n // scrutinized binders come first; captures come after, hence remain visible in\n // native constructor branches. This includes computed conditions and nested\n // fields. Helpers call only earlier generated helpers, never source functions.\n-function factorHelper(body: B.Body, scope: Map<number, Binding>, result: B.LTerm, owner: string, first: number[], kind: string, stem: string, direct = false): B.LTerm {\n-  const ids = [...first, ...bodyFree(body).filter(id => !first.includes(id))];\n-  const parameters = ids.map<ParserParameter>(id => {\n+// Close every capture telescope transitively before its dependent binder.\n+function captureParameters(ids: number[], scope: Map<number, Binding>, owner: string, excluded = new Set<number>()): ParserParameter[] {\n+  const result: ParserParameter[] = [], seen = new Set<number>(), visiting = new Set<number>();\n+  function add(id: number) {\n+    if (excluded.has(id) || seen.has(id)) return;\n+    if (visiting.has(id)) fail(owner, 'Cyclic lexical capture telescope ' + id);\n     const binding = scope.get(id);\n     if (!binding) fail(owner, 'Missing lexical capture type for binder ' + id);\n-    return [binding.quantity, binding.name, binding.id, binding.type, {file: {str: source, ns: '', al: aliases}, beg: 0, end: 0}];\n-  });\n-  // Reordering dependent captures would alter telescope scope. The checker\n-  // closure currently uses concrete datatypes; reject a future dependent case.\n-  const available = new Set<number>();\n-  for (const parameter of parameters) {\n-    if (freeBinderIds(parameter[3]).some(id => !available.has(id))) fail(owner, 'Unsupported dependent match-capture telescope order');\n-    available.add(parameter[2]);\n+    visiting.add(id);\n+    freeBinderIds(binding.type).forEach(add);\n+    visiting.delete(id); seen.add(id);\n+    result.push([binding.quantity, binding.name, binding.id, binding.type, {file: {str: source, ns: '', al: aliases}, beg: 0, end: 0}]);\n   }\n+  ids.forEach(add);\n+  return result;\n+}\n+function factorHelper(body: B.Body, scope: Map<number, Binding>, result: B.LTerm, owner: string, first: number[], kind: string, stem: string, direct = false): B.LTerm {\n+  const parameters = captureParameters([...first, ...bodyFree(body), ...freeBinderIds(result)], scope, owner);\n   const name = reserve(prefix + '_' + stem + '_' + helperSerial++);\n   generated.push({name, parameters, result: direct ? result : progress(result), body, owner, kind});\n-  return app(name, ids.map(id => B.Var(scope.get(id)!.name, id)));\n+  return app(name, parameters.map(parameter => B.Var(parameter[1], parameter[2])));\n }\n function factorMatch(body: B.Match, scope: Map<number, Binding>, result: B.LTerm, owner: string, direct = false): B.Body {\n   const first: number[] = [];\n@@ -757,16 +767,22 @@\n   if (body.$ !== 'Local' && body.$ !== 'Match') return body;\n   return factorHelper(body, scope, result, owner, [], 'continuation', 'continuation');\n }\n-// One shared parameter-match getter consumes the affine carrier. A single Let\n-// restores the authenticated source-result quantity, including reusable Data;\n-// existing continuation factoring keeps all matches on named helper parameters.\n+// The environment owns exact free source captures. Its helper restores the\n+// original resumed-value quantity using the former checked unbox/Let.\n function boxedContinuation(body: B.Body, scope: Map<number, Binding>, value: SourceVar, result: B.LTerm, owner: string): B.LTerm {\n   const continuation = factorContinuation(body, scope, result, owner);\n   const binding = scope.get(value.i)!;\n+  const parameters = captureParameters([...bodyFree(continuation), ...freeBinderIds(binding.type), ...freeBinderIds(result)], scope, owner, new Set([value.i]));\n+  if (parameters.some(parameter => freeBinderIds(parameter[3]).includes(value.i)))\n+    fail(owner, 'Continuation capture type depends on unavailable resumed value');\n   const next = new Map(scope), box = variable(boxedValue(binding.type), next);\n   const unboxed: B.LTerm = {$: 'Let', k: [value.k], i: [value.i], q: [binding.quantity],\n     v: [app(unboxFunction, [binding.type, box])], f: continuation};\n-  return {$: 'Lam', k: box.k, i: box.i, q: B.Lone(), f: unboxed};\n+  const constructor = reserve(frameType + '_' + frames.length), helper = reserve(prefix + '_frame_body_' + frames.length);\n+  frames.push({constructor, helper, parameters, input: binding.type, output: result, owner});\n+  generated.push({name: helper, parameters: [...parameters, [B.Lone(), box.k, box.i, boxedValue(binding.type), parameters[0]?.[4]] as ParserParameter],\n+    result: progress(result), body: unboxed, owner, kind: 'frame-body'});\n+  return ctr(leafType, [ctr(constructor, parameters.map(parameter => B.Var(parameter[1], parameter[2]))), {$: 'Rfl'}, {$: 'Rfl'}]);\n }\n // Generate the pure value closure first, then retain every original typed\n // request handler. Even externally requested pure definitions finish through\n@@ -978,6 +994,11 @@\n   }\n   function quantities(key: string, constructor: boolean): B.Quant[] {\n     if (constructor && key === directType) return [B.None(), B.None(), B.Lone(), B.Lone(), B.Lone()];\n+    if (constructor && key === leafType) return [B.Lone(), B.Lone(), B.Lone()];\n+    if (constructor) {\n+      const frame = frames.find(frame => frame.constructor === key);\n+      if (frame) return frame.parameters.map(parameter => parameter[0]);\n+    }\n     if (!constructor && key === unboxFunction) return [B.None(), B.Lone()];\n     const parameters = generatedSignatures.get(key) ?? requestSignatures.get(key);\n     if (parameters) return parameters.map(parameter => parameter[0]);\n@@ -1117,9 +1138,28 @@\n }\n chunks.push('\\ndef ' + resultFunction + '(request: ' + requestType + ') -> ' + resultKind + ':\\n  match request:\\n');\n for (const group of requestGroups) chunks.push('    case ' + group.constructor + '{inner}: ' + group.result + '(inner)\\n');\n-const resumeType = '(@box: ' + valueType + '<' + resultFunction + '(request)> -> ' + progressType + '<A>)';\n+chunks.push('\\ntype ' + frameType + ' is Type:\\n');\n+for (const frame of frames) {\n+  const rendered = renderBody(frame.input, frame.parameters, {book, showTerm});\n+  chunks.push('  ' + frame.constructor + '{' + rendered.parameters + '}\\n');\n+}\n+for (const [name, field] of [[frameInput, 'input'], [frameOutput, 'output']] as const) {\n+  chunks.push('\\ndef ' + name + '(frame: ' + frameType + ') -> Type:\\n  match frame:\\n');\n+  for (const frame of frames) {\n+    const rendered = renderBody(frame[field], frame.parameters, {book, showTerm});\n+    const names = frame.parameters.map(parameter => rendered.renderTerm(B.Var(parameter[1], parameter[2])));\n+    chunks.push('    case ' + frame.constructor + '{' + names.join(', ') + '}: ' + rendered.renderTerm(frame[field]) + '\\n');\n+  }\n+}\n+chunks.push(`\n+type ${continuationType}<-A: Type, -R: Type> is Type:\n+  ${leafType}{frame: ${frameType}, input: {A == ${frameInput}(frame) : Type}, output: {${frameOutput}(frame) == R : Type}}\n+  ${composeType}{-B: Type, first: ${continuationType}<A, B>, next: ${continuationType}<B, R>}\n+  ${identityType}{equation: {A == R : Type}}\n+`);\n+const resumeType = continuationType + '<' + resultFunction + '(request), A>';\n chunks.push('\\ntype ' + valueType + '<-A: Type> is Type:\\n  ' + valueType + '{value: A}\\n');\n-chunks.push('\\ntype ' + progressType + '<-A: Type> is Type:\\n  ' + finishedType + '{box: ' + valueType + '<A>}\\n  ' + pendingType + '{request: ' + requestType + ', resume: ' + resumeType + '}\\n  ' + directType + '{-R: Type, -request: ' + requestType + ', arguments: R, invoke: (@arguments: R -> ' + progressType + '<' + resultFunction + '(request)>), resume: ' + resumeType + '}\\n  ' + boundType + '{-B: Type, inner: ' + progressType + '<B>, resume: (@box: ' + valueType + '<B> -> ' + progressType + '<A>)}\\n\\n');\n+chunks.push('\\ntype ' + progressType + '<-A: Type> is Type:\\n  ' + finishedType + '{box: ' + valueType + '<A>}\\n  ' + pendingType + '{request: ' + requestType + ', resume: ' + resumeType + '}\\n  ' + directType + '{-R: Type, -request: ' + requestType + ', arguments: R, invoke: (@arguments: R -> ' + progressType + '<' + resultFunction + '(request)>), resume: ' + resumeType + '}\\n  ' + boundType + '{-B: Type, inner: ' + progressType + '<B>, resume: ' + continuationType + '<B, A>}\\n\\n');\n chunks.push('def ' + unboxFunction + '(-A: Type, box: ' + valueType + '<A>) -> A:\\n  match box:\\n    case ' + valueType + '{value}: value\\n\\n');\n const generatedNames = new Set(generated.map(def => def.name)), positions = new Map(generated.map((def, index) => [def.name, index]));\n const generatedEdges: {from: string; to: string}[] = [];\n@@ -1141,6 +1181,32 @@\n   const rendered = renderBody(def.body, def.parameters, {book, showTerm});\n   chunks.push('def ' + def.name + '(' + rendered.parameters + ') -> ' + rendered.renderTerm(def.result) + ':\\n' + rendered.body + '\\n\\n');\n }\n+chunks.push('def ' + frameApply + '(frame: ' + frameType + ', box: ' + valueType + '<' + frameInput + '(frame)>) -> ' + progressType + '<' + frameOutput + '(frame)>:\\n  match frame:\\n');\n+for (const frame of frames) {\n+  const rendered = renderBody(frame.input, frame.parameters, {book, showTerm});\n+  const names = frame.parameters.map(parameter => rendered.renderTerm(B.Var(parameter[1], parameter[2])));\n+  chunks.push('    case ' + frame.constructor + '{' + names.join(', ') + '}: ' + frame.helper + '(' + [...names, 'box'].join(', ') + ')\\n');\n+}\n+chunks.push(`\n+def ${castFunction}(-A: Type, -B: Type, equation: {A == B : Type}, value: ${valueType}<A>) -> ${valueType}<B>:\n+  %equation : ${valueType}<_>\n+  value\n+\n+def ${castFunction}_progress(-A: Type, -B: Type, equation: {A == B : Type}, value: ${progressType}<A>) -> ${progressType}<B>:\n+  %equation : ${progressType}<_>\n+  value\n+\n+def ${resumeFunction}(-A: Type, -R: Type, continuation: ${continuationType}<A, R>, box: ${valueType}<A>) -> ${progressType}<R>:\n+  match continuation:\n+    case ${identityType}{equation}:\n+      ${finishedType}{${castFunction}(A, R, equation, box)}\n+    case ${leafType}{frame, input, output}:\n+      converted = ${castFunction}(A, ${frameInput}(frame), input, box)\n+      result = ${frameApply}(frame, converted)\n+      ${castFunction}_progress(${frameOutput}(frame), R, output, result)\n+    case ${composeType}{B, first, next}:\n+      ${boundType}{B, ${resumeFunction}(A, B, first, box), next}\n+`);\n for (const group of requestGroups) {\n   chunks.push('def ' + group.step + '(request: ' + group.type + ') -> ' + progressType + '<' + group.result + '(request)>:\\n  match request:\\n');\n   for (const def of group.definitions) {\n@@ -1164,13 +1230,13 @@\n       ${chunkFunction}(A, rest, ${boundType}{${resultFunction}(request), invoke(arguments), resume})\n     case 1n+rest ${boundType}{B, inner, resume}:\n       match inner:\n-        case ${finishedType}{box}: ${chunkFunction}(A, rest, resume(box))\n+        case ${finishedType}{box}: ${chunkFunction}(A, rest, ${resumeFunction}(B, A, resume, box))\n         case ${pendingType}{request, next}:\n-          ${chunkFunction}(A, rest, ${pendingType}{request, box => ${boundType}{B, next(box), resume}})\n+          ${chunkFunction}(A, rest, ${pendingType}{request, ${composeType}{B, next, resume}})\n         case ${directType}{R, request, arguments, invoke, next}:\n-          ${chunkFunction}(A, rest, ${directType}{R, request, arguments, invoke, box => ${boundType}{B, next(box), resume}})\n+          ${chunkFunction}(A, rest, ${directType}{R, request, arguments, invoke, ${composeType}{B, next, resume}})\n         case ${boundType}{C, nested, next}:\n-          ${chunkFunction}(A, rest, ${boundType}{C, nested, box => ${boundType}{B, next(box), resume}})\n+          ${chunkFunction}(A, rest, ${boundType}{C, nested, ${composeType}{B, next, resume}})\n \n def ${stepFunction}(request: ${requestType}) -> ${progressType}<${resultFunction}(request)>:\n   ${chunkFunction}(${resultFunction}(request), ${nativeChunkQuantum}n, ${rawStepFunction}(request))\n@@ -1180,7 +1246,7 @@\n function typedStart(name:string, root:string, parameters:string, arguments_:string, result:string){\n  const group=requestGroup.get(root),request=requestName.get(root);\n  if(!group||!request)throw Error('Missing typed public root '+root);\n- return '\\ndef '+name+'('+parameters+') -> '+progressType+'<'+result+'>:\\n  '+chunkFunction+'('+result+', '+nativeChunkQuantum+'n, '+pendingType+'{'+group.constructor+'{'+request+'{'+arguments_+'}}, box => '+finishedType+'{box}})\\n';\n+ return '\\ndef '+name+'('+parameters+') -> '+progressType+'<'+result+'>:\\n  '+chunkFunction+'('+result+', '+nativeChunkQuantum+'n, '+pendingType+'{'+group.constructor+'{'+request+'{'+arguments_+'}}, '+identityType+'{{==}}})\\n';\n }\n chunks.push(typedStart(startFunction,paths.root,startInput,startArguments,paths.result));\n if(paths.mode==='checker')chunks.push(typedStart('checker_inspect_start','inspect_checked','program: Checked.CheckedProgram','program','Checked.Inspection'));\n@@ -1193,7 +1259,8 @@\n const wrappers = 'def ' + wrapper + '('+startInput+') -> ' + alias + '.' + progressType + '<' + resultType + '>:\\n  ' + alias + '.' + startFunction + '('+(paths.mode==='emitter'?'program':'modules')+')\\n\\n'\n  + (paths.mode==='checker'?'def inspect_checked_start(program: Checked.CheckedProgram) -> CheckerCore.CheckerProgress<Checked.Inspection>:\\n  CheckerCore.checker_inspect_start(program)\\n\\n':'')\n  + (paths.mode==='emitter'?'def emit_library_start(program: Checked.CheckedProgram, exports: List<&2, String>) -> JSEmit.EmitterProgress<JSEmit.EmitResult>:\\n  JSEmit.emitter_library_start(program, exports)\\n\\n':'')\n- + 'def ' + stepFunction + '(request: ' + alias + '.' + requestType + ') -> ' + alias + '.' + progressType + '<' + alias + '.' + resultFunction + '(request)>:\\n  ' + alias + '.' + stepFunction + '(request)';\n+ + 'def ' + stepFunction + '(request: ' + alias + '.' + requestType + ') -> ' + alias + '.' + progressType + '<' + alias + '.' + resultFunction + '(request)>:\\n  ' + alias + '.' + stepFunction + '(request)\\n\\n'\n+ + 'def ' + resumeFunction + '(-A: Type, -R: Type, continuation: ' + alias + '.' + continuationType + '<A, R>, box: ' + alias + '.' + valueType + '<A>) -> ' + alias + '.' + progressType + '<R>:\\n  ' + alias + '.' + resumeFunction + '(A, R, continuation, box)';\n const loaderImport=header.match(/^import (\\S+) as Loader$/m)?.[0];\n const checkedImport=header.match(/^import (\\S+) as Checked$/m)?.[0];\n if(paths.mode!=='emitter'&&!loaderImport||paths.mode!=='template'&&!checkedImport)throw Error('Typed step component has no authenticated boundary import');\n@@ -1212,10 +1279,16 @@\n writeChanged(paths.output, output); writeChanged(paths.component, component);\n if (paths.driver && driver !== undefined) writeChanged(paths.driver, driver);\n const manifest = {\n-  version: 1, algorithm: 'raw-AST typed boxed-continuation CPS with bounded dependent request groups, dependency-first ordered match, projection values, bounded nonrecursive storage islands and structurally recursive native chunks',\n+  version: 1, algorithm: 'raw-AST typed first-order-continuation CPS with checked affine frame telescopes and structurally recursive Continuation composition',\n   generationConfig, generationEnvironment, generationInputRealpaths,\n-  nativeTerminationClaim: 'Generated source handlers and continuation helpers form an acyclic declaration graph. The native chunk scheduler is structurally self-recursive on an operational Nat quantum; zero returns the remaining progress, not an error. This does not alter canonical semantic fuel or claim termination of the complete host-driven computation.',\n-  progressABI: 'boxed-value-bound-v53',\n+  nativeTerminationClaim: 'Source handlers and frame helpers form an acyclic declaration graph. Native resume is structurally recursive on Continuation.first. Native chunk is structurally recursive on operational Nat quantum, returning residual progress at zero without changing semantic fuel.',\n+  progressABI: 'first-order-continuation-v57r',\n+  continuation: {type: continuationType, resumeFunction, frameType, frameInput, frameOutput, frameApply,\n+    leafConstructor: leafType, composeConstructor: composeType, identityConstructor: identityType,\n+    recursion: 'structural Continuation', frameCount: frames.length,\n+    sites: frames.map(frame => ({constructor: frame.constructor, helper: frame.helper, owner: frame.owner,\n+      captures: frame.parameters.map(parameter => ({id: parameter[2], name: parameter[1], quantity: parameter[0].$, type: showTerm(parameter[3], [], -1)}))}))},\n+  nativeRecursiveFunctions: [chunkFunction, resumeFunction],\n   boxedTransport: {\n     type: valueType, constructor: valueType, kind: 'Type', parameter: {name: 'A', kind: 'Type', quantity: 'None'},\n     valueField: 'value', finishedField: 'box', resumeQuantity: 'Lone',\n@@ -1286,7 +1359,7 @@\n   },\n   syntaxNormalizations: normalizations, authenticatedConstructorPatterns: authenticatedPatterns,\n   privateHelpers: generated.filter(def => def.kind !== 'source-body').map(def => ({name: def.name, owner: def.owner, kind: def.kind})),\n-  generatedHelperEdges: generatedEdges, residualSourceCalls: 0, residualCheckerCalls: 0, recursiveHelpers: 1, generatedPrivateRecursiveHelpers: 0,\n+  generatedHelperEdges: generatedEdges, residualSourceCalls: 0, residualCheckerCalls: 0, recursiveHelpers: 2, generatedPrivateRecursiveHelpers: 0,\n   protectedUnchangedHashes: Object.fromEntries(inputPaths.map(path => [path, sha(inputs.get(path)!)])),\n   outputs: Object.fromEntries([[paths.output, output], [paths.component, component],\n     ...(paths.driver && driver !== undefined ? [[paths.driver, driver]] : [])].map(([path, text]) => [path!, sha(text!)])),\n",
+    "flat": "--- evals/checker_core_step_lower.ts\n+++ evals/checker_core_step_lower.ts\n@@ -50,6 +50,9 @@\n const resultFunction = prefix + '_result', stepFunction = prefix + '_step', startFunction = prefix + '_start';\n const rawStepFunction = prefix + '_step_one', chunkFunction = prefix + '_chunk', nativeChunkQuantum = 64;\n const unboxFunction = prefix + '_unbox';\n+const continuationType = protocol + 'Continuation';\n+const composeType = protocol + 'Compose', identityType = protocol + 'Identity';\n+const resumeFunction = prefix + '_resume', castFunction = prefix + '_cast';\n const inputPaths: string[] = [paths.canonical, paths.owned, paths.dependency, paths.frozenSlice, paths.frozenDriver,\n   paths.frozenCorpus, paths.kernel, paths.emitter, paths.parser, paths.base, paths.nodePolicy, paths.validationPolicy,\n   paths.ownedManifest, ...(paths.ownedDriver ? [paths.ownedDriver] : []), ...(paths.checkerOutput ? [paths.checkerOutput] : []),\n@@ -554,7 +557,8 @@\n const reserved = new Set([...clean.matchAll(/\\b[A-Za-z_]\\w*\\b/g)].map(match => match[0]));\n function reserve(name: string): string {if (reserved.has(name)) throw Error('Generated name collision ' + name); reserved.add(name); return name;}\n for (const name of [requestType, progressType, valueType, finishedType, pendingType, directType, boundType,\n-  resultFunction, stepFunction, rawStepFunction, chunkFunction, unboxFunction, startFunction]) reserve(name);\n+  resultFunction, stepFunction, rawStepFunction, chunkFunction, unboxFunction, startFunction,\n+  continuationType, composeType, identityType, resumeFunction, castFunction, castFunction + '_progress']) reserve(name);\n const requestName = new Map(definitions.map(def => [def.name, reserve(requestType + '_' + def.name)]));\n // Keep request datatypes and dispatch bodies bounded. A single thousands-row\n // dependent match is expensive for both the source checker and native JS.\n@@ -594,6 +598,7 @@\n const boxedValue = (type: B.LTerm): B.LTerm => ({$: 'ADT', k: valueType, x: [type], r: []});\n const finished = (value: B.LTerm): B.LTerm => ctr(finishedType, [ctr(valueType, [value])]);\n const generated: {name: string; parameters: ParserParameter[]; result: B.LTerm; body: B.Body; owner: string; kind: string}[] = [];\n+const frames: {constructor: string; helper: string; parameters: ParserParameter[]; input: B.LTerm; output: B.LTerm; owner: string}[] = [];\n let helperSerial = 0, syntheticId = 1000000, pendingCount = 0, lazyChoices = 0;\n const ownerBindings = new Map<string, Map<number, Binding>>();\n let activeOwner = '';\n@@ -726,23 +731,27 @@\n // scrutinized binders come first; captures come after, hence remain visible in\n // native constructor branches. This includes computed conditions and nested\n // fields. Helpers call only earlier generated helpers, never source functions.\n-function factorHelper(body: B.Body, scope: Map<number, Binding>, result: B.LTerm, owner: string, first: number[], kind: string, stem: string, direct = false): B.LTerm {\n-  const ids = [...first, ...bodyFree(body).filter(id => !first.includes(id))];\n-  const parameters = ids.map<ParserParameter>(id => {\n+// Close every capture telescope transitively before its dependent binder.\n+function captureParameters(ids: number[], scope: Map<number, Binding>, owner: string, excluded = new Set<number>()): ParserParameter[] {\n+  const result: ParserParameter[] = [], seen = new Set<number>(), visiting = new Set<number>();\n+  function add(id: number) {\n+    if (excluded.has(id) || seen.has(id)) return;\n+    if (visiting.has(id)) fail(owner, 'Cyclic lexical capture telescope ' + id);\n     const binding = scope.get(id);\n     if (!binding) fail(owner, 'Missing lexical capture type for binder ' + id);\n-    return [binding.quantity, binding.name, binding.id, binding.type, {file: {str: source, ns: '', al: aliases}, beg: 0, end: 0}];\n-  });\n-  // Reordering dependent captures would alter telescope scope. The checker\n-  // closure currently uses concrete datatypes; reject a future dependent case.\n-  const available = new Set<number>();\n-  for (const parameter of parameters) {\n-    if (freeBinderIds(parameter[3]).some(id => !available.has(id))) fail(owner, 'Unsupported dependent match-capture telescope order');\n-    available.add(parameter[2]);\n+    visiting.add(id);\n+    freeBinderIds(binding.type).forEach(add);\n+    visiting.delete(id); seen.add(id);\n+    result.push([binding.quantity, binding.name, binding.id, binding.type, {file: {str: source, ns: '', al: aliases}, beg: 0, end: 0}]);\n   }\n+  ids.forEach(add);\n+  return result;\n+}\n+function factorHelper(body: B.Body, scope: Map<number, Binding>, result: B.LTerm, owner: string, first: number[], kind: string, stem: string, direct = false): B.LTerm {\n+  const parameters = captureParameters([...first, ...bodyFree(body), ...freeBinderIds(result)], scope, owner);\n   const name = reserve(prefix + '_' + stem + '_' + helperSerial++);\n   generated.push({name, parameters, result: direct ? result : progress(result), body, owner, kind});\n-  return app(name, ids.map(id => B.Var(scope.get(id)!.name, id)));\n+  return app(name, parameters.map(parameter => B.Var(parameter[1], parameter[2])));\n }\n function factorMatch(body: B.Match, scope: Map<number, Binding>, result: B.LTerm, owner: string, direct = false): B.Body {\n   const first: number[] = [];\n@@ -757,16 +766,22 @@\n   if (body.$ !== 'Local' && body.$ !== 'Match') return body;\n   return factorHelper(body, scope, result, owner, [], 'continuation', 'continuation');\n }\n-// One shared parameter-match getter consumes the affine carrier. A single Let\n-// restores the authenticated source-result quantity, including reusable Data;\n-// existing continuation factoring keeps all matches on named helper parameters.\n+// The environment owns exact free source captures. Its helper restores the\n+// original resumed-value quantity using the former checked unbox/Let.\n function boxedContinuation(body: B.Body, scope: Map<number, Binding>, value: SourceVar, result: B.LTerm, owner: string): B.LTerm {\n   const continuation = factorContinuation(body, scope, result, owner);\n   const binding = scope.get(value.i)!;\n+  const parameters = captureParameters([...bodyFree(continuation), ...freeBinderIds(binding.type), ...freeBinderIds(result)], scope, owner, new Set([value.i]));\n+  if (parameters.some(parameter => freeBinderIds(parameter[3]).includes(value.i)))\n+    fail(owner, 'Continuation capture type depends on unavailable resumed value');\n   const next = new Map(scope), box = variable(boxedValue(binding.type), next);\n   const unboxed: B.LTerm = {$: 'Let', k: [value.k], i: [value.i], q: [binding.quantity],\n     v: [app(unboxFunction, [binding.type, box])], f: continuation};\n-  return {$: 'Lam', k: box.k, i: box.i, q: B.Lone(), f: unboxed};\n+  const constructor = reserve(protocol + 'Site_' + frames.length), helper = reserve(prefix + '_continuation_body_' + frames.length);\n+  frames.push({constructor, helper, parameters, input: binding.type, output: result, owner});\n+  generated.push({name: helper, parameters: [...parameters, [B.Lone(), box.k, box.i, boxedValue(binding.type), parameters[0]?.[4]] as ParserParameter],\n+    result: progress(result), body: unboxed, owner, kind: 'continuation-site-body'});\n+  return ctr(constructor, [...parameters.map(parameter => B.Var(parameter[1], parameter[2])), {$: 'Rfl'}, {$: 'Rfl'}]);\n }\n // Generate the pure value closure first, then retain every original typed\n // request handler. Even externally requested pure definitions finish through\n@@ -978,6 +993,10 @@\n   }\n   function quantities(key: string, constructor: boolean): B.Quant[] {\n     if (constructor && key === directType) return [B.None(), B.None(), B.Lone(), B.Lone(), B.Lone()];\n+    if (constructor) {\n+      const frame = frames.find(frame => frame.constructor === key);\n+      if (frame) return [...frame.parameters.map(parameter => parameter[0]), B.Lone(), B.Lone()];\n+    }\n     if (!constructor && key === unboxFunction) return [B.None(), B.Lone()];\n     const parameters = generatedSignatures.get(key) ?? requestSignatures.get(key);\n     if (parameters) return parameters.map(parameter => parameter[0]);\n@@ -1117,9 +1136,22 @@\n }\n chunks.push('\\ndef ' + resultFunction + '(request: ' + requestType + ') -> ' + resultKind + ':\\n  match request:\\n');\n for (const group of requestGroups) chunks.push('    case ' + group.constructor + '{inner}: ' + group.result + '(inner)\\n');\n-const resumeType = '(@box: ' + valueType + '<' + resultFunction + '(request)> -> ' + progressType + '<A>)';\n+// Direct site constructors retain dependent captures inside their original\n+// telescope; no family exposes an erased captured type as a live Type value.\n+chunks.push('\\ntype ' + continuationType + '<-A: Type, -R: Type> is Type:\\n');\n+for (const frame of frames) {\n+  const rendered = renderBody(frame.input, frame.parameters, {book, showTerm});\n+  chunks.push('  ' + frame.constructor + '{' + (rendered.parameters ? rendered.parameters + ', ' : '')\n+    + 'input: {A == ' + rendered.renderTerm(frame.input) + ' : Type}, output: {'\n+    + rendered.renderTerm(frame.output) + ' == R : Type}}\\n');\n+}\n+chunks.push(`\n+  ${composeType}{-B: Type, first: ${continuationType}<A, B>, next: ${continuationType}<B, R>}\n+  ${identityType}{equation: {A == R : Type}}\n+`);\n+const resumeType = continuationType + '<' + resultFunction + '(request), A>';\n chunks.push('\\ntype ' + valueType + '<-A: Type> is Type:\\n  ' + valueType + '{value: A}\\n');\n-chunks.push('\\ntype ' + progressType + '<-A: Type> is Type:\\n  ' + finishedType + '{box: ' + valueType + '<A>}\\n  ' + pendingType + '{request: ' + requestType + ', resume: ' + resumeType + '}\\n  ' + directType + '{-R: Type, -request: ' + requestType + ', arguments: R, invoke: (@arguments: R -> ' + progressType + '<' + resultFunction + '(request)>), resume: ' + resumeType + '}\\n  ' + boundType + '{-B: Type, inner: ' + progressType + '<B>, resume: (@box: ' + valueType + '<B> -> ' + progressType + '<A>)}\\n\\n');\n+chunks.push('\\ntype ' + progressType + '<-A: Type> is Type:\\n  ' + finishedType + '{box: ' + valueType + '<A>}\\n  ' + pendingType + '{request: ' + requestType + ', resume: ' + resumeType + '}\\n  ' + directType + '{-R: Type, -request: ' + requestType + ', arguments: R, invoke: (@arguments: R -> ' + progressType + '<' + resultFunction + '(request)>), resume: ' + resumeType + '}\\n  ' + boundType + '{-B: Type, inner: ' + progressType + '<B>, resume: ' + continuationType + '<B, A>}\\n\\n');\n chunks.push('def ' + unboxFunction + '(-A: Type, box: ' + valueType + '<A>) -> A:\\n  match box:\\n    case ' + valueType + '{value}: value\\n\\n');\n const generatedNames = new Set(generated.map(def => def.name)), positions = new Map(generated.map((def, index) => [def.name, index]));\n const generatedEdges: {from: string; to: string}[] = [];\n@@ -1141,6 +1173,32 @@\n   const rendered = renderBody(def.body, def.parameters, {book, showTerm});\n   chunks.push('def ' + def.name + '(' + rendered.parameters + ') -> ' + rendered.renderTerm(def.result) + ':\\n' + rendered.body + '\\n\\n');\n }\n+chunks.push(`\n+def ${castFunction}(-A: Type, -B: Type, equation: {A == B : Type}, value: ${valueType}<A>) -> ${valueType}<B>:\n+  %equation : ${valueType}<_>\n+  value\n+\n+def ${castFunction}_progress(-A: Type, -B: Type, equation: {A == B : Type}, value: ${progressType}<A>) -> ${progressType}<B>:\n+  %equation : ${progressType}<_>\n+  value\n+\n+def ${resumeFunction}(-A: Type, -R: Type, continuation: ${continuationType}<A, R>, box: ${valueType}<A>) -> ${progressType}<R>:\n+  match continuation:\n+    case ${identityType}{equation}:\n+      ${finishedType}{${castFunction}(A, R, equation, box)}\n+`);\n+for (const frame of frames) {\n+  const rendered = renderBody(frame.input, frame.parameters, {book, showTerm});\n+  const names = frame.parameters.map(parameter => rendered.renderTerm(B.Var(parameter[1], parameter[2])));\n+  chunks.push('    case ' + frame.constructor + '{' + [...names, 'input', 'output'].join(', ') + '}:\\n'\n+    + '      converted = ' + castFunction + '(A, ' + rendered.renderTerm(frame.input) + ', input, box)\\n'\n+    + '      result = ' + frame.helper + '(' + [...names, 'converted'].join(', ') + ')\\n'\n+    + '      ' + castFunction + '_progress(' + rendered.renderTerm(frame.output) + ', R, output, result)\\n');\n+}\n+chunks.push(`\n+    case ${composeType}{B, first, next}:\n+      ${boundType}{B, ${resumeFunction}(A, B, first, box), next}\n+`);\n for (const group of requestGroups) {\n   chunks.push('def ' + group.step + '(request: ' + group.type + ') -> ' + progressType + '<' + group.result + '(request)>:\\n  match request:\\n');\n   for (const def of group.definitions) {\n@@ -1164,13 +1222,13 @@\n       ${chunkFunction}(A, rest, ${boundType}{${resultFunction}(request), invoke(arguments), resume})\n     case 1n+rest ${boundType}{B, inner, resume}:\n       match inner:\n-        case ${finishedType}{box}: ${chunkFunction}(A, rest, resume(box))\n+        case ${finishedType}{box}: ${chunkFunction}(A, rest, ${resumeFunction}(B, A, resume, box))\n         case ${pendingType}{request, next}:\n-          ${chunkFunction}(A, rest, ${pendingType}{request, box => ${boundType}{B, next(box), resume}})\n+          ${chunkFunction}(A, rest, ${pendingType}{request, ${composeType}{B, next, resume}})\n         case ${directType}{R, request, arguments, invoke, next}:\n-          ${chunkFunction}(A, rest, ${directType}{R, request, arguments, invoke, box => ${boundType}{B, next(box), resume}})\n+          ${chunkFunction}(A, rest, ${directType}{R, request, arguments, invoke, ${composeType}{B, next, resume}})\n         case ${boundType}{C, nested, next}:\n-          ${chunkFunction}(A, rest, ${boundType}{C, nested, box => ${boundType}{B, next(box), resume}})\n+          ${chunkFunction}(A, rest, ${boundType}{C, nested, ${composeType}{B, next, resume}})\n \n def ${stepFunction}(request: ${requestType}) -> ${progressType}<${resultFunction}(request)>:\n   ${chunkFunction}(${resultFunction}(request), ${nativeChunkQuantum}n, ${rawStepFunction}(request))\n@@ -1180,7 +1238,7 @@\n function typedStart(name:string, root:string, parameters:string, arguments_:string, result:string){\n  const group=requestGroup.get(root),request=requestName.get(root);\n  if(!group||!request)throw Error('Missing typed public root '+root);\n- return '\\ndef '+name+'('+parameters+') -> '+progressType+'<'+result+'>:\\n  '+chunkFunction+'('+result+', '+nativeChunkQuantum+'n, '+pendingType+'{'+group.constructor+'{'+request+'{'+arguments_+'}}, box => '+finishedType+'{box}})\\n';\n+ return '\\ndef '+name+'('+parameters+') -> '+progressType+'<'+result+'>:\\n  '+chunkFunction+'('+result+', '+nativeChunkQuantum+'n, '+pendingType+'{'+group.constructor+'{'+request+'{'+arguments_+'}}, '+identityType+'{{==}}})\\n';\n }\n chunks.push(typedStart(startFunction,paths.root,startInput,startArguments,paths.result));\n if(paths.mode==='checker')chunks.push(typedStart('checker_inspect_start','inspect_checked','program: Checked.CheckedProgram','program','Checked.Inspection'));\n@@ -1193,7 +1251,8 @@\n const wrappers = 'def ' + wrapper + '('+startInput+') -> ' + alias + '.' + progressType + '<' + resultType + '>:\\n  ' + alias + '.' + startFunction + '('+(paths.mode==='emitter'?'program':'modules')+')\\n\\n'\n  + (paths.mode==='checker'?'def inspect_checked_start(program: Checked.CheckedProgram) -> CheckerCore.CheckerProgress<Checked.Inspection>:\\n  CheckerCore.checker_inspect_start(program)\\n\\n':'')\n  + (paths.mode==='emitter'?'def emit_library_start(program: Checked.CheckedProgram, exports: List<&2, String>) -> JSEmit.EmitterProgress<JSEmit.EmitResult>:\\n  JSEmit.emitter_library_start(program, exports)\\n\\n':'')\n- + 'def ' + stepFunction + '(request: ' + alias + '.' + requestType + ') -> ' + alias + '.' + progressType + '<' + alias + '.' + resultFunction + '(request)>:\\n  ' + alias + '.' + stepFunction + '(request)';\n+ + 'def ' + stepFunction + '(request: ' + alias + '.' + requestType + ') -> ' + alias + '.' + progressType + '<' + alias + '.' + resultFunction + '(request)>:\\n  ' + alias + '.' + stepFunction + '(request)\\n\\n'\n+ + 'def ' + resumeFunction + '(-A: Type, -R: Type, continuation: ' + alias + '.' + continuationType + '<A, R>, box: ' + alias + '.' + valueType + '<A>) -> ' + alias + '.' + progressType + '<R>:\\n  ' + alias + '.' + resumeFunction + '(A, R, continuation, box)';\n const loaderImport=header.match(/^import (\\S+) as Loader$/m)?.[0];\n const checkedImport=header.match(/^import (\\S+) as Checked$/m)?.[0];\n if(paths.mode!=='emitter'&&!loaderImport||paths.mode!=='template'&&!checkedImport)throw Error('Typed step component has no authenticated boundary import');\n@@ -1212,10 +1271,16 @@\n writeChanged(paths.output, output); writeChanged(paths.component, component);\n if (paths.driver && driver !== undefined) writeChanged(paths.driver, driver);\n const manifest = {\n-  version: 1, algorithm: 'raw-AST typed boxed-continuation CPS with bounded dependent request groups, dependency-first ordered match, projection values, bounded nonrecursive storage islands and structurally recursive native chunks',\n+  version: 1, algorithm: 'raw-AST typed flat first-order-continuation CPS with checked affine dependent site telescopes and structurally recursive Continuation composition',\n   generationConfig, generationEnvironment, generationInputRealpaths,\n-  nativeTerminationClaim: 'Generated source handlers and continuation helpers form an acyclic declaration graph. The native chunk scheduler is structurally self-recursive on an operational Nat quantum; zero returns the remaining progress, not an error. This does not alter canonical semantic fuel or claim termination of the complete host-driven computation.',\n-  progressABI: 'boxed-value-bound-v53',\n+  nativeTerminationClaim: 'Source handlers and frame helpers form an acyclic declaration graph. Native resume is structurally recursive on Continuation.first. Native chunk is structurally recursive on operational Nat quantum, returning residual progress at zero without changing semantic fuel.',\n+  progressABI: 'first-order-continuation-v57r',\n+  continuation: {representation: 'flat-sites', type: continuationType, resumeFunction,\n+    composeConstructor: composeType, identityConstructor: identityType,\n+    recursion: 'structural Continuation', frameCount: frames.length,\n+    sites: frames.map(frame => ({constructor: frame.constructor, helper: frame.helper, owner: frame.owner,\n+      captures: frame.parameters.map(parameter => ({id: parameter[2], name: parameter[1], quantity: parameter[0].$, type: showTerm(parameter[3], [], -1)}))}))},\n+  nativeRecursiveFunctions: [chunkFunction, resumeFunction],\n   boxedTransport: {\n     type: valueType, constructor: valueType, kind: 'Type', parameter: {name: 'A', kind: 'Type', quantity: 'None'},\n     valueField: 'value', finishedField: 'box', resumeQuantity: 'Lone',\n@@ -1286,7 +1351,7 @@\n   },\n   syntaxNormalizations: normalizations, authenticatedConstructorPatterns: authenticatedPatterns,\n   privateHelpers: generated.filter(def => def.kind !== 'source-body').map(def => ({name: def.name, owner: def.owner, kind: def.kind})),\n-  generatedHelperEdges: generatedEdges, residualSourceCalls: 0, residualCheckerCalls: 0, recursiveHelpers: 1, generatedPrivateRecursiveHelpers: 0,\n+  generatedHelperEdges: generatedEdges, residualSourceCalls: 0, residualCheckerCalls: 0, recursiveHelpers: 2, generatedPrivateRecursiveHelpers: 0,\n   protectedUnchangedHashes: Object.fromEntries(inputPaths.map(path => [path, sha(inputs.get(path)!)])),\n   outputs: Object.fromEntries([[paths.output, output], [paths.component, component],\n     ...(paths.driver && driver !== undefined ? [[paths.driver, driver]] : [])].map(([path, text]) => [path!, sha(text!)])),\n"
+  },
+  "runtimePatch": {
+    "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-runtimeframes57r.ehrjcmj9/runtime57r.patch",
+    "sha256": "2ca22e7fb53b237f8a4b1b3bd53c1296d414a24244754d229df3157e2de29f50"
+  },
+  "decision": "Reject BOTH actual implementations for JS selection; do not generalize this to a proof that all defunctionalization loses. Measured excess CPU is dispatcher self time, GC is lower; giant-function/JIT mechanism not observed and remains INFERENCE. Existing request grouping explicitly bounds dispatcher size; future defunctionalization must reuse that pattern rather than emit3-4MB functions.",
+  "next": "Keep source leaf resume closures, move heterogeneous LIFO into structural native Run machine. Removes Bound association/host transfers without per-site3000 extra helpers or giant frame dispatcher. Needs new actual native/consumer/full-root/fixedpoint/performance acceptance.",
+  "selectedCanonical": "57q/52298266",
+  "establishedFixedpointUnchanged": true
+}

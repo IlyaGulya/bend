@@ -14,9 +14,13 @@ Performance acceptance остаётся открытой; исходный monol
 выполнил полный frozen compile/7720 consumer. Короткие private C symbols и
 allocation-tight native coverage comparison сохраняют точные root source/JS seed
 bytesK; новый native-produced seed повторно проверен полностью. Build+run347804ms
-выше цели300s; исходный monolithic gate не перекрашен. Следующий typed first-order
-CPS continuation experiment меняет Progress ABI и требует новой полной проверки:
-generic affine type model сам по себе её не заменяет.
+выше цели300s; исходный monolithic gate не перекрашен. First-order continuation
+57r candidates полно нативно проверены, но ОБА отвергнуты по same-host untraced
+JS performance: Frame+Leaf3.25×/flat8.72× slower. Более низкий GC не компенсировал
+giant dispatcher selftime. Это не production cutover и не общее отрицание defunctionalization.
+Следующий57t experiment сохраняет leaf resume closures, переносит heterogeneous
+Stack<A,R> внутрь bounded native Run<R> machine и убирает Bound association/host LIFO.
+Изменённый Run ABI требует новой полной проверки; small affine type model её не заменяет.
 
 
 Единственный источник этого контракта — этот файл; оперативный статус, команды,
