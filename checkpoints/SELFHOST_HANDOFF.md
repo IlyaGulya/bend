@@ -36,8 +36,13 @@ stripped executable TS-transpile bytes совпали SHA90c3ef4f58ba4b7b9e2414c
 Отключение LLVM passes в отдельном57q experiment упёрлось в physical8GiB после306856ms:
 отвергнуто, output/binary отсутствует. O0 тоже отвергнут, guard не повышать.
 Следующий57r experiment — typed first-order CPS continuations вместо generated
-resume closures. Generic heterogeneous affine stack с live equality witnesses
-уже реально native-checked/run, но production integration/performance ещё НЕ доказаны.
+resume closures. Прямые indexed per-site constructors с Compose/Identity реально
+прошли JS И clangO1/nativeC, в том числе dependent live captures и erased
+existential type capture: compiler-ir-frame-model-v57r.json. Wrong input/output
+witnesses и повторное использование owning continuation нативно отвергнуты.
+Unindexed FrameOutput не может возвращать erased capturedType какlive: этот
+вариант/ошибка записаны, source quantities не повышать. Production/performance
+ещё НЕ доказаны.
 FrameGenerator57R работает с генератором наnhs, RuntimeFrames57R — сJS/C ABI
 и всеми callers наmisaka. Parent интегрирует только после actual proofs; существующий
 K fixedpoint нельзя переносить на изменённый Progress ABI без нового полного прогона.

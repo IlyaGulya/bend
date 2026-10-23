@@ -1,0 +1,150 @@
+{
+  "version": "57r-model",
+  "status": "EXACT_NATIVE_JS_AND_C_INDEXED_AFFINE_CONTINUATION_MODEL_PASS_NOT_PRODUCTION_ACCEPTANCE",
+  "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+  "compilerSha256": "5b934b694b873c9b2e44a6d99b920181cc72e660b30996566bfaee38a7ba0fda",
+  "sources": {
+    "frames.bend": {
+      "sha256": "f7ecc2090a8faaf34227c0a279ba79d785b9e277fd79c64b863e2f979030e1ce",
+      "source": "import Base\n\n# A lease is affine even though its serial is observable Data. All resumption\n# sites transfer this live owner, never copy or replace it with its serial.\ntype Owner is Type:\n  Lease{serial: Nat}\n\ntype Owned is Type:\n  Owned{owner: Owner, value: Nat, trace: Nat}\n\ntype Site is Data:\n  BumpSite{}\n  CaptureSite{}\n  FinishSite{}\n\n# Three source continuation sites, all first-order environments.\ntype BumpFrame is Data:\n  BumpFrame{digit: Nat}\n\ntype CaptureFrame is Type:\n  CaptureOwner{owner: Owner, digit: Nat}\n\ntype FinishFrame is Data:\n  FinishFrame{digit: Nat}\n\ndef Frame(site: Site) -> Type:\n  match site:\n    case BumpSite{}: BumpFrame\n    case CaptureSite{}: CaptureFrame\n    case FinishSite{}: FinishFrame\n\ndef Input(site: Site) -> Type:\n  match site:\n    case BumpSite{}: Nat\n    case CaptureSite{}: Nat\n    case FinishSite{}: Owned\n\ndef Output(site: Site) -> Type:\n  match site:\n    case BumpSite{}: Nat\n    case CaptureSite{}: Owned\n    case FinishSite{}: Owned\n\ndef append(trace: Nat, digit: Nat) -> Nat:\n  Nat.add(Nat.mul(trace, 10n), digit)\n\n# Expose the concrete Data binder before contracting the Nat. The open\n# Input(site) family conservatively has kind Type, even in the refined arm.\ndef capture(owner: Owner, +number: Nat, digit: Nat) -> Owned:\n  Owned{owner, number, append(number, digit)}\n\n# Matching the closed site refines all three families together; no cast or\n# equality witness is supplied, and the owner is moved out of its frame once.\ndef apply(site: Site, frame: Frame(site), input: Input(site)) -> Output(site):\n  match site:\n    case BumpSite{}:\n      match frame:\n        case BumpFrame{digit}: append(input, digit)\n    case CaptureSite{}:\n      match frame:\n        case CaptureOwner{owner, digit}: capture(owner, input, digit)\n    case FinishSite{}:\n      match frame:\n        case FinishFrame{digit}:\n          match input:\n            case Owned{owner, value, trace}: Owned{owner, value, append(trace, digit)}\n\n# Requests and their genuine dependent result family follow production's\n# request/result pattern. The second request itself owns a live lease.\ntype Request is Type:\n  NumberRequest{seed: Nat}\n  LeaseRequest{owner: Owner, seed: Nat}\n\ndef RequestResult(request: Request) -> Type:\n  match request:\n    case NumberRequest{seed}: Nat\n    case LeaseRequest{owner, seed}: Owned\n\ndef request_step(request: Request) -> RequestResult(request):\n  match request:\n    case NumberRequest{seed}: seed\n    case LeaseRequest{owner, seed}:\n      +number = seed\n      Owned{owner, number, number}\n\n# Concrete source-site pending shapes preserve the adjacency invariant\n# structurally: Number -> Nat -> Owned -> Owned. No boxed existential input,\n# generic function field, dynamically untyped value or host scheduler exists.\ntype PendingNat is Type:\n  PendingNat{seed: Nat, frame: Frame(BumpSite{})}\n\ntype PendingOwned is Type:\n  PendingOwned{inner: PendingNat, frame: Frame(CaptureSite{})}\n\ntype PendingFinish is Type:\n  PendingFinish{inner: PendingOwned, frame: Frame(FinishSite{})}\n\ndef run_nat(pending: PendingNat) -> Nat:\n  match pending:\n    case PendingNat{seed, frame}:\n      apply(BumpSite{}, frame, request_step(NumberRequest{seed}))\n\ndef run_owned(pending: PendingOwned) -> Owned:\n  match pending:\n    case PendingOwned{inner, frame}:\n      apply(CaptureSite{}, frame, run_nat(inner))\n\ndef run_finish(pending: PendingFinish) -> Owned:\n  match pending:\n    case PendingFinish{inner, frame}:\n      apply(FinishSite{}, frame, run_owned(inner))\n\ntype Summary is Data:\n  Summary{serial: Nat, value: Nat, trace: Nat}\n\n# The only observer consumes the resulting live owner exactly once.\ndef close(result: Owned) -> Summary:\n  match result:\n    case Owned{owner, value, trace}:\n      match owner:\n        case Lease{serial}: Summary{serial, value, trace}\n\ndef exercise(serial: Nat, seed: Nat, first: Nat, second: Nat, third: Nat) -> Summary:\n  close(run_finish(PendingFinish{\n    PendingOwned{\n      PendingNat{seed, BumpFrame{first}},\n      CaptureOwner{Lease{serial}, second}\n    },\n    FinishFrame{third}\n  }))\n\ntype Results is Data:\n  Results{nested: Summary, other: Summary, request_owned: Summary, direct_nat: Nat}\n\ndef main() -> Results:\n  Results{\n    exercise(7n, 2n, 3n, 4n, 5n),\n    exercise(9n, 6n, 1n, 8n, 2n),\n    close(request_step(LeaseRequest{Lease{11n}, 8n})),\n    apply(BumpSite{}, BumpFrame{9n}, 4n)\n  }\n"
+    },
+    "generic_stack.bend": {
+      "sha256": "5f3374dbf249b8f8d13e4a2a33daa61b69914a07ff7cc3125aa40d3d0350ec24",
+      "source": "import Base\nimport ./frames.bend as F\n\ndef cast(-A: Type, -B: Type, equation: {A == B : Type}, value: A) -> B:\n  %equation : _\n  value\n\ntype Resume<-A: Type, -B: Type> is Type:\n  Resume{site: F.Site, frame: F.Frame(site), input: {A == F.Input(site) : Type}, output: {F.Output(site) == B : Type}}\n\ndef resume(-A: Type, -B: Type, continuation: Resume<A, B>, value: A) -> B:\n  match continuation:\n    case Resume{site, frame, input, output}:\n      converted = cast(A, F.Input(site), input, value)\n      result = F.apply(site, frame, converted)\n      cast(F.Output(site), B, output, result)\n\ntype Stack<-A: Type, -R: Type> is Type:\n  End{equation: {A == R : Type}}\n  More{-B: Type, continuation: Resume<A, B>, rest: Stack<B, R>}\n\ndef run(-A: Type, -R: Type, stack: Stack<A, R>, value: A) -> R:\n  match stack:\n    case End{equation}: cast(A, R, equation, value)\n    case More{B, continuation, rest}: run(B, R, rest, resume(A, B, continuation, value))\n\ndef exercise() -> F.Summary:\n  bump = {Resume{F.BumpSite{}, F.BumpFrame{3n}, {==}, {==}} : Resume<Nat, Nat>}\n  capture = {Resume{F.CaptureSite{}, F.CaptureOwner{F.Lease{7n}, 4n}, {==}, {==}} : Resume<Nat, F.Owned>}\n  finish = {Resume{F.FinishSite{}, F.FinishFrame{5n}, {==}, {==}} : Resume<F.Owned, F.Owned>}\n  stack = {More{Nat, bump, More{F.Owned, capture, More{F.Owned, finish, End{{==}}}}} : Stack<Nat, F.Owned>}\n  F.close(run(Nat, F.Owned, stack, 2n))\n\ndef main() -> F.Summary:\n  exercise()\n"
+    },
+    "indexed_frames.bend": {
+      "sha256": "9c2d7d662e70bf2dae3fe2261f0a9aa94eef848eff26b0e59c0495ad622818cc",
+      "source": "import Base\nimport ./frames.bend as F\n\ntype Continuation<-A: Type, -R: Type> is Type:\n  Bump{digit: Nat, input: {A == Nat : Type}, output: {Nat == R : Type}}\n  Capture{owner: F.Owner, digit: Nat, input: {A == Nat : Type}, output: {F.Owned == R : Type}}\n  Finish{digit: Nat, input: {A == F.Owned : Type}, output: {F.Owned == R : Type}}\n  Keep{-B: Type, value: B, input: {A == Nat : Type}, output: {B == R : Type}}\n  Select{site: F.Site, payload: F.Frame(site), input: {A == F.Input(site) : Type}, output: {F.Output(site) == R : Type}}\n  Compose{-B: Type, first: Continuation<A, B>, next: Continuation<B, R>}\n  Identity{equation: {A == R : Type}}\n\ntype Value<-A: Type> is Type:\n  Value{value: A}\n\ntype Progress<-A: Type> is Type:\n  Finished{box: Value<A>}\n  Bound{-B: Type, inner: Progress<B>, resume: Continuation<B, A>}\n\ndef unbox(-A: Type, box: Value<A>) -> A:\n  match box:\n    case Value{value}: value\n\ndef cast_box(-A: Type, -B: Type, equation: {A == B : Type}, box: Value<A>) -> Value<B>:\n  %equation : Value<_>\n  box\n\ndef cast_progress(-A: Type, -B: Type, equation: {A == B : Type}, progress: Progress<A>) -> Progress<B>:\n  %equation : Progress<_>\n  progress\n\ndef complete_finish(digit: Nat, box: Value<F.Owned>) -> Progress<F.Owned>:\n  match box:\n    case Value{F.Owned{owner, value, trace}}: Finished{Value{F.Owned{owner, value, F.append(trace, digit)}}}\n\ndef resume(-A: Type, -R: Type, continuation: Continuation<A, R>, box: Value<A>) -> Progress<R>:\n  match continuation:\n    case Bump{digit, input, output}:\n      cast_progress(Nat, R, output, Finished{Value{F.append(unbox(Nat, cast_box(A, Nat, input, box)), digit)}})\n    case Capture{owner, digit, input, output}:\n      cast_progress(F.Owned, R, output, Finished{Value{F.capture(owner, unbox(Nat, cast_box(A, Nat, input, box)), digit)}})\n    case Finish{digit, input, output}:\n      cast_progress(F.Owned, R, output, complete_finish(digit, cast_box(A, F.Owned, input, box)))\n    case Keep{B, value, input, output}:\n      cast_progress(B, R, output, Finished{Value{value}})\n    case Select{site, payload, input, output}:\n      cast_progress(F.Output(site), R, output, Finished{Value{F.apply(site, payload, unbox(F.Input(site), cast_box(A, F.Input(site), input, box)))}})\n    case Compose{B, first, next}: Bound{B, resume(A, B, first, box), next}\n    case Identity{equation}: Finished{cast_box(A, R, equation, box)}\n\ndef chunk(-A: Type, fuel: Nat, progress: Progress<A>) -> Progress<A>:\n  match fuel progress:\n    case 0n state: state\n    case 1n+rest Finished{box}: Finished{box}\n    case 1n+rest Bound{B, inner, continuation}:\n      match inner:\n        case Finished{box}: chunk(A, rest, resume(B, A, continuation, box))\n        case Bound{C, nested, next}: chunk(A, rest, Bound{C, nested, Compose{B, next, continuation}})\n\ndef finish(progress: Progress<F.Owned>) -> F.Summary:\n  match progress:\n    case Finished{Value{value}}: F.close(value)\n    case _: F.Summary{0n, 0n, 0n}\n\ndef composed() -> F.Summary:\n  bump = {Bump{3n, {==}, {==}} : Continuation<Nat, Nat>}\n  capture = {Capture{F.Lease{7n}, 4n, {==}, {==}} : Continuation<Nat, F.Owned>}\n  finish_frame = {Finish{5n, {==}, {==}} : Continuation<F.Owned, F.Owned>}\n  all = {Compose{Nat, bump, Compose{F.Owned, capture, finish_frame}} : Continuation<Nat, F.Owned>}\n  finish(chunk(F.Owned, 16n, resume(Nat, F.Owned, all, Value{2n})))\n\ndef dependent_site() -> F.Summary:\n  continuation = {Select{F.CaptureSite{}, F.CaptureOwner{F.Lease{9n}, 8n}, {==}, {==}} : Continuation<Nat, F.Owned>}\n  finish(chunk(F.Owned, 8n, resume(Nat, F.Owned, continuation, Value{6n})))\n\ndef existential_type() -> F.Summary:\n  continuation = {Keep{F.Owned, F.Owned{F.Lease{11n}, 8n, 8n}, {==}, {==}} : Continuation<Nat, F.Owned>}\n  identity = {Identity{{==}} : Continuation<F.Owned, F.Owned>}\n  all = {Compose{F.Owned, continuation, identity} : Continuation<Nat, F.Owned>}\n  finish(chunk(F.Owned, 8n, resume(Nat, F.Owned, all, Value{0n})))\n\ntype Results is Data:\n  Results{composed: F.Summary, dependent: F.Summary, existential: F.Summary}\n\ndef main() -> Results:\n  Results{composed(), dependent_site(), existential_type()}\n"
+    }
+  },
+  "positive": {
+    "jsCommand": [
+      "bun",
+      "--smol",
+      "bend2/main.ts",
+      "/tmp/bend-typedframes57k.6WCRTJ/indexed_frames.bend",
+      "-o",
+      "/tmp/bend-typedframes57k.6WCRTJ/indexed_frames.js"
+    ],
+    "jsActualCommand": [
+      "node",
+      "/tmp/bend-typedframes57k.6WCRTJ/indexed_frames.js"
+    ],
+    "cCommand": [
+      "bun",
+      "--smol",
+      "bend2/main.ts",
+      "/tmp/bend-typedframes57k.6WCRTJ/indexed_frames.bend",
+      "-o",
+      "/tmp/bend-typedframes57k.6WCRTJ/indexed_frames.c"
+    ],
+    "clangCommand": [
+      "clang",
+      "-std=c11",
+      "-O1",
+      "/tmp/bend-typedframes57k.6WCRTJ/indexed_frames.c",
+      "-lpthread",
+      "-lm",
+      "-o",
+      "/tmp/bend-typedframes57k.6WCRTJ/indexed_frames"
+    ],
+    "nativeActualCommand": [
+      "/tmp/bend-typedframes57k.6WCRTJ/indexed_frames",
+      "--threads",
+      "1",
+      "--gpu",
+      "off"
+    ],
+    "jsActualStdout": "Results{frames.Summary{7n, 23n, 2345n}, frames.Summary{9n, 6n, 68n}, frames.Summary{11n, 8n, 8n}}\n",
+    "nativeActualStdout": "Results{frames.Summary{7n, 23n, 2345n}, frames.Summary{9n, 6n, 68n}, frames.Summary{11n, 8n, 8n}}\n",
+    "jsSha256": "b669ad791abbffdbcc5c8aed7cc2c27e012275bd2eb3686520e8d568ebe1920b",
+    "cSha256": "3fb73604d41783417ad25c3a611fa015b117e2b78e94eb884e27666bfae63708",
+    "nativeBinarySha256": "84105d9b62f0a3f5e9829f84cdc88d0b79e24e3d7fbef8a8ca808d0b26bc4608",
+    "allExitZero": true
+  },
+  "negative": [
+    {
+      "kind": "input",
+      "command": [
+        "bun",
+        "--smol",
+        "bend2/main.ts",
+        "/tmp/bend-typedframes57k.6WCRTJ/indexed_bad_input.bend",
+        "-o",
+        "/tmp/bend-typedframes57k.6WCRTJ/indexed_bad_input.js"
+      ],
+      "source": "import Base\nimport ./frames.bend as F\nimport ./indexed_frames.bend as C\n\ndef main() -> C.Continuation<F.Owned, Nat>:\n  C.Bump{3n, {==}, {==}}\n",
+      "sourceSha256": "1c1e90bbd7f423e9c8d5aef32032e9e32ce5f4b5bb521e623c995285ce5eda48",
+      "stdout": "",
+      "stderr": "SOME PROOFS FAIL\nError:\n- expected : F.Owned\n- observed : Nat\nLocation: main\n5 | def main() -> C.Continuation<F.Owned, Nat>:\n6>|   C.Bump{3n, {==}, {==}}\n  |              ^^^^\n7 | \nbend 2.0.38 is available: run bend update\n",
+      "exitCode": 1
+    },
+    {
+      "kind": "output",
+      "command": [
+        "bun",
+        "--smol",
+        "bend2/main.ts",
+        "/tmp/bend-typedframes57k.6WCRTJ/indexed_bad_output.bend",
+        "-o",
+        "/tmp/bend-typedframes57k.6WCRTJ/indexed_bad_output.js"
+      ],
+      "source": "import Base\nimport ./frames.bend as F\nimport ./indexed_frames.bend as C\n\ndef main() -> C.Continuation<Nat, F.Owned>:\n  C.Bump{3n, {==}, {==}}\n",
+      "sourceSha256": "725681096adc368bbf0397d4b96bf732d4e73562eda160dcc36daa45ee3bacd4",
+      "stdout": "",
+      "stderr": "SOME PROOFS FAIL\nError:\n- expected : Nat\n- observed : F.Owned\nLocation: main\n5 | def main() -> C.Continuation<Nat, F.Owned>:\n6>|   C.Bump{3n, {==}, {==}}\n  |                    ^^^^\n7 | \nbend 2.0.38 is available: run bend update\n",
+      "exitCode": 1
+    },
+    {
+      "kind": "reuse",
+      "command": [
+        "bun",
+        "--smol",
+        "bend2/main.ts",
+        "/tmp/bend-typedframes57k.6WCRTJ/indexed_bad_reuse.bend",
+        "-o",
+        "/tmp/bend-typedframes57k.6WCRTJ/indexed_bad_reuse.js"
+      ],
+      "source": "import Base\nimport ./frames.bend as F\nimport ./indexed_frames.bend as C\n\ndef use(continuation: C.Continuation<Nat, F.Owned>) -> F.Summary:\n  C.finish(C.chunk(F.Owned, 8n, C.resume(Nat, F.Owned, continuation, C.Value{1n})))\n\ndef main() -> F.Summary & F.Summary:\n  continuation = {C.Capture{F.Lease{7n}, 4n, {==}, {==}} : C.Continuation<Nat, F.Owned>}\n  (use(continuation), use(continuation))\n",
+      "sourceSha256": "fdc532ff122de6206dc71b731e92cb5499299595619cfffc6c8f8c3bed21f36d",
+      "stdout": "",
+      "stderr": "SOME PROOFS FAIL\nError:\n- expected : continuation\n- observed : continuation (consumed more than once)\nLocation: main\n 8 | def main() -> F.Summary & F.Summary:\n 9>|   continuation = {C.Capture{F.Lease{7n}, 4n, {==}, {==}} : C.Continuation<Nat, F.Owned>}\n   |   ^^^^^^^^^^^^\n10 |   (use(continuation), use(continuation))\nbend 2.0.38 is available: run bend update\n",
+      "exitCode": 1
+    }
+  ],
+  "firstFailures": [
+    {
+      "kind": "unindexed FrameOutput reifies erased type capture",
+      "source": "import Base\nimport ./frames.bend as F\n\ntype Frame is Type:\n  Bump{digit: Nat}\n  Capture{owner: F.Owner, digit: Nat}\n  Finish{digit: Nat}\n  Keep{-A: Type, value: A}\n  Select{site: F.Site, payload: F.Frame(site)}\n\ndef Input(frame: Frame) -> Type:\n  match frame:\n    case Bump{_}: Nat\n    case Capture{_, _}: Nat\n    case Finish{_}: F.Owned\n    case Keep{_, _}: Nat\n    case Select{site, _}: F.Input(site)\n\ndef Output(frame: Frame) -> Type:\n  match frame:\n    case Bump{_}: Nat\n    case Capture{_, _}: F.Owned\n    case Finish{_}: F.Owned\n    case Keep{A, _}: A\n    case Select{site, _}: F.Output(site)\n\ntype Continuation<-A: Type, -R: Type> is Type:\n  Leaf{frame: Frame, input: {A == Input(frame) : Type}, output: {Output(frame) == R : Type}}\n  Compose{-B: Type, first: Continuation<A, B>, next: Continuation<B, R>}\n  Identity{equation: {A == R : Type}}\n\ntype Value<-A: Type> is Type:\n  Value{value: A}\n\ntype Progress<-A: Type> is Type:\n  Finished{box: Value<A>}\n  Bound{-B: Type, inner: Progress<B>, resume: Continuation<B, A>}\n\ndef unbox(-A: Type, box: Value<A>) -> A:\n  match box:\n    case Value{value}: value\n\ndef apply(frame: Frame, box: Value<Input(frame)>) -> Progress<Output(frame)>:\n  match frame:\n    case Bump{digit}: Finished{Value{F.append(unbox(Nat, box), digit)}}\n    case Capture{owner, digit}: Finished{Value{F.capture(owner, unbox(Nat, box), digit)}}\n    case Finish{digit}:\n      match box:\n        case Value{F.Owned{owner, value, trace}}: Finished{Value{F.Owned{owner, value, F.append(trace, digit)}}}\n    case Keep{A, value}: Finished{Value{value}}\n    case Select{site, payload}: Finished{Value{F.apply(site, payload, unbox(F.Input(site), box))}}\n\ndef resume(-A: Type, -R: Type, continuation: Continuation<A, R>, box: Value<A>) -> Progress<R>:\n  match continuation:\n    case Leaf{frame, input, output}:\n      %input : _\n      %output : _\n      apply(frame, box)\n    case Compose{B, first, next}: Bound{B, resume(A, B, first, box), next}\n    case Identity{equation}:\n      %equation : _\n      Finished{box}\n\ndef chunk(-A: Type, fuel: Nat, progress: Progress<A>) -> Progress<A>:\n  match fuel progress:\n    case 0n state: state\n    case 1n+rest Finished{box}: Finished{box}\n    case 1n+rest Bound{B, inner, continuation}:\n      match inner:\n        case Finished{box}: chunk(A, rest, resume(B, A, continuation, box))\n        case Bound{C, nested, next}: chunk(A, rest, Bound{C, nested, Compose{B, next, continuation}})\n\ndef finish(progress: Progress<F.Owned>) -> F.Summary:\n  match progress:\n    case Finished{Value{value}}: F.close(value)\n    case _: F.Summary{0n, 0n, 0n}\n\ndef composed() -> F.Summary:\n  bump = {Leaf{Bump{3n}, {==}, {==}} : Continuation<Nat, Nat>}\n  capture = {Leaf{Capture{F.Lease{7n}, 4n}, {==}, {==}} : Continuation<Nat, F.Owned>}\n  finish_frame = {Leaf{Finish{5n}, {==}, {==}} : Continuation<F.Owned, F.Owned>}\n  all = {Compose{Nat, bump, Compose{F.Owned, capture, finish_frame}} : Continuation<Nat, F.Owned>}\n  finish(chunk(F.Owned, 16n, resume(Nat, F.Owned, all, Value{2n})))\n\ndef dependent_site() -> F.Summary:\n  continuation = {Leaf{Select{F.CaptureSite{}, F.CaptureOwner{F.Lease{9n}, 8n}}, {==}, {==}} : Continuation<Nat, F.Owned>}\n  finish(chunk(F.Owned, 8n, resume(Nat, F.Owned, continuation, Value{6n})))\n\ndef existential_type() -> F.Summary:\n  continuation = {Leaf{Keep{F.Owned, F.Owned{F.Lease{11n}, 8n, 8n}}, {==}, {==}} : Continuation<Nat, F.Owned>}\n  identity = {Identity{{==}} : Continuation<F.Owned, F.Owned>}\n  all = {Compose{F.Owned, continuation, identity} : Continuation<Nat, F.Owned>}\n  finish(chunk(F.Owned, 8n, resume(Nat, F.Owned, all, Value{0n})))\n\ntype Results is Data:\n  Results{composed: F.Summary, dependent: F.Summary, existential: F.Summary}\n\ndef main() -> Results:\n  Results{composed(), dependent_site(), existential_type()}\n",
+      "error": "expected -A; observed A; Location Output case Keep{A,_}: A",
+      "decision": "Never promote original erased quantity. Direct indexed continuation constructors keep erased captured type and use live native-checked equality witnesses."
+    },
+    {
+      "kind": "matching after local rewrite forbidden",
+      "error": "'box' can't be matched in this position",
+      "decision": "Concrete owned box destructuring factored into a native-checked helper, not bypassed."
+    },
+    {
+      "kind": "wrong equality motive",
+      "error": "expected Value<B>; observed B at %equation : _",
+      "decision": "Use explicit checked motive Value<_> / Progress<_>, not the atomic-type motive _."
+    },
+    {
+      "kind": "negative harness first discarded stderr",
+      "error": "Harness interpreted missing stdout banner as unexpected acceptance; no native success observed. Captured both stdout/stderr on retry; all three native exit1 diagnostics stored verbatim.",
+      "decision": "Do not infer native acceptance from one output stream."
+    }
+  ],
+  "covers": [
+    "heterogeneous Compose and Identity native structural recursion",
+    "exact native-indexed input/output refinements using live equality witnesses",
+    "dependent runtime site/payload capture telescope",
+    "erased existential type capture without reification",
+    "affine owner transferred once",
+    "wrong input/output witnesses and reused continuation rejected"
+  ],
+  "limitations": [
+    "Model only: no production generator/runtime/native/full-root/fixedpoint/performance acceptance.",
+    "No allocation/time/RSS claim inferred from syntax; actual production measurement required."
+  ]
+}

@@ -174,6 +174,20 @@ Obs включает завершение/ошибку, результат с у
 | B2 | Rendered entries и foreign callbacks сохраняют публичный ABI и порядок эффектов; nullary factories не memoize. | Насыщенный и частичный экспорт, extra application, mutable factory repeated reads, callback/private-tail boundary. |
 | G1 | IDs, declaration order и serialization детерминированы для одного canonical input. | Два настоящих emitted stages и точное byte comparison; без переписывания результата. |
 | G2 | Ускорение не ослабляет admission и полноту compiler root. | Все bodies проверены, старые negative diagnostics/span fixtures сохранены, полный corpus и все exports; нет unsafe/exclusions/patches. |
+| K1 | Native CPS resumer имеет зависимый контракт `Continuation<A,R> × Value<A> → Progress<R>`; индексы не стираются посредством unsafe/host cast. | Native rejection неверных input/output equality witnesses; реальное исполнение checked resumer. |
+| K2 | Defunctionalization сохраняет исходный порядок и quantities capture telescope, включая erased type parameters; affine continuation не копируется. | Зависимый live capture, erased existential type capture; native rejection повторного использования owning continuation. |
+| K3 | Composition возобновляет first до next и переносит исходный boxed value без подмены. | Неперестановочный trace через разные промежуточные типы; JS/C совпадение фактического результата. |
+| K4 | Операционная квота chunk остаётся структурной; opaque host только передаёт first-order frame в соответствующий native resumer. | Полный source/body admission и root ABI callers, nested Pending/Direct/Bound, новый fixedpoint/behavior/performance run; small model недостаточна. |
+
+57r small model в `compiler-ir-frame-model-v57r.json` реально прошла native2.0.37,
+JS и clangO1/C для indexed per-site constructors, Compose/Identity, dependent live
+capture и erased existential type capture; три неверных witness/reuse programs
+нативно отвергнуты. Это локальные следствия K1–K3, НЕ доказательство production
+generator cutover/K4 или ускорения. Unindexed FrameOutput, возвращающий erased
+captured type как live Type, был отвергнут; quantities нельзя «исправлять» promotion.
+Checked equality lifting использует motive `Value<_>`/`Progress<_>`; atomic `_`
+не означает автоматическую конгруэнтность семейства. Evidence сохраняет первые ошибки.
+
 
 ### Как объявлять `law` в Bend
 
