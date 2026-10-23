@@ -29,7 +29,7 @@ Receipt: `compiler-ir-checkpoint-v57c.json`; это не full-root acceptance.
 а LocalReference — из lexical term, не подстановленного semantic value.
 `Inspection`/`InspectionFailure` сохраняют владельца программы. Реальный
 compiled smoke провёл explicit matcher через check → inspection → lowering →
-JS execution и получил `BitOne{}`. Проверки локальных эффектов пока впереди.
+JS execution и получил `BitOne{}`. Live locals/ordering затем прошли fixture ниже.
 Legacy standalone C использует явный inspection/readback и не является BIR
 backend; обычный JS compile path не должен делать readback.
 
@@ -52,11 +52,38 @@ U32 patterns больше не попадают в ошибочный PatternNoN
 переведены существующим typed native_match_source extractor в parameter-owned
 helper defs: это исправление исходников, не ослабление native kernel/AST oracle.
 Полный parser semantic gate прошёл75/75 acceptance/semantic/literal-span parity
-(`ir57-scalars-b.candidate-semantic-b.json`). Его final wrapper отклонён честно:
-старый preparation gate запомнил предыдущие js_emit/owned bytes. Ни один receipt
-не переписывался. Запущен новый полный namespace `ir57-admit-c` при неизменных
-теперь исходниках; затем — root assembly/native build десяти экспортов.
-Receipt57d: `compiler-ir-checkpoint-v57d.json`. Full fixedpoint пока не получен.
+(`ir57-scalars-b.candidate-semantic-b.json`). Старый preparation proof был
+отклонён после source cutover; свежий `ir57-admit-c` прошёл и final parser
+acceptance. Receipt57d: `compiler-ir-checkpoint-v57d.json`.
+
+В57e полный ten-export root нативно проверен:8339/8339 bodies,8726 events,
+без exclusions/patches; JS seed artifact `.ir57-full-b.js` —12668854 bytes,
+SHA256 `4c95b16946f3431555cdeec9fd74c171142f602e2d7400c03f939c4846993af4`.
+Build101717ms, peak footprint2972922672bytes, max simultaneous higher bodies2.
+Это JS seed build через native checker, не native C executable/fixedpoint.
+
+Первый full-root codegen выявил прежний backend lifetime bug: поздний word-match
+constant folding читает уже emitted callee. В `comp.ts` checked e теперь живут
+до конца всего JS definition folding, а higher caches очищаются между defs.
+Минимальный `[1,4]` пример и regression прошли в retained/released режимах;
+официальный CLI fixture реально выполнился с выводом1. Никакого fallback на
+unchecked source нет. Builder retention wording/accounting также обновлены;
+из-за изменения producer hashes новый final proof требует свежего parser build.
+
+Полный frozen corpus пока НЕ прошёл: component benchmark достиг600s timeout.
+Прежние async phase logs не доказывают, в какой фазе процесс был остановлен.
+Не приписывать timeout parser по последней строке stdout. Отдельный exact-input
+probe разобрал largest2.45MB source за3.809s; whole loader прошёл все50 files /
+15 modules за6.691s. Записаны bounded V8 profiles. Benchmark теперь синхронно
+сохраняет active/completed phase и сохраняет partial status при guardian failure.
+Bounded90s attribution подтвердил: load/parse5.159528333s, expand8.300180208s,
+active phase при timeout — check (`compiler-benchmark-ir57-attribution-a.json`).
+Настоящий checker V8 profile содержит56433ticks,70unaccounted,0excluded;
+6.3% GC — mixed-window sample share, не allocation attribution. Native nearest
+symbol StatWatcher не считать реальным filesystem hotspot. Canonical CPS-owner
+aggregation и независимый nativeC run на misakaindrive запущены параллельно.
+Receipt57e: `compiler-ir-checkpoint-v57e.json`. Fresh stage1/stage2 и полный
+nativeC owner-boundary runtime ещё не приняты; full acceptance не объявлена.
 
 ## Compiler56 — FIR/BIR architecture preflight, not production acceptance
 

@@ -1,0 +1,527 @@
+{
+  "schemaVersion": 1,
+  "version": "57e",
+  "previousCheckpoint": "3ca19c91",
+  "status": "FULL_NATIVE_CHECKED_JS_ROOT_BUILT_RUNTIME_CHECKER_TIMEOUT_NOT_ACCEPTED",
+  "acceptedFullCompilerBaseline": "2b3efa80",
+  "sourceHashes": {
+    "bend2/comp.ts": "85f46bbc0851ed4933c87e7f67088555bb95389649d0363678181ac3e85290d3",
+    "evals/checker_core_component_build.ts": "3630bcb65246cd0fab7c5bf8e600d0b6e1508db43eff58dc849c9b40d9c02fdb",
+    "evals/compiler_benchmark.ts": "fdc223e29261f6da9484bba1d49f998379a8bafcfe053a2eb18f9c23c137282a",
+    "evals/native_checked_release.test.ts": "09eef2a8df14240afc3cc3aefa70941bc9341a806b0f39e5e0924a1a1058cfe3",
+    "tests/run/js_late_fold.bend": "a6a22487d40cf9d7aa886270019e7eb8d13d8ff2380a892aaf1ac188bec667c2"
+  },
+  "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+  "lifetimeFix": {
+    "before": {
+      "scope": "Actual unchanged JS library from an officially checked minimal word-match program",
+      "rows": [
+        {
+          "releaseChecked": false,
+          "passed": true,
+          "observed": [
+            1,
+            4
+          ]
+        },
+        {
+          "releaseChecked": true,
+          "passed": false,
+          "message": "Error: missing checked body early",
+          "stack": "Error: missing checked body early\n    at die (/Users/ilyagulya/Projects/My/bend/bend2/comp.ts:2045:13)\n    at emit_unfold (/Users/ilyagulya/Projects/My/bend/bend2/comp.ts:2560:20)\n    at <anonymous> (/Users/ilyagulya/Projects/My/bend/bend2/comp.ts:2529:17)\n    at memo (/Users/ilyagulya/Projects/My/bend/bend2/comp.ts:2054:18)\n    at emit_fold (/Users/ilyagulya/Projects/My/bend/bend2/comp.ts:2523:13)\n    at emit_row (/Users/ilyagulya/Projects/My/bend/bend2/comp.ts:2824:7)\n    at map (native:1:11)\n    at mat_rows (/Users/ilyagulya/Projects/My/bend/bend2/comp.ts:1251:26)\n    at js_match (/Users/ilyagulya/Projects/My/bend/bend2/comp.ts:3307:37)\n    at block (/Users/ilyagulya/Projects/My/bend/bend2/comp.ts:1687:3)"
+        }
+      ]
+    },
+    "after": {
+      "scope": "Actual unchanged JS library from an officially checked minimal word-match program",
+      "rows": [
+        {
+          "releaseChecked": false,
+          "passed": true,
+          "observed": [
+            1,
+            4
+          ]
+        },
+        {
+          "releaseChecked": true,
+          "passed": true,
+          "observed": [
+            1,
+            4
+          ]
+        }
+      ]
+    },
+    "regressionCommand": "bun test evals/native_checked_release.test.ts",
+    "regressionBefore": {
+      "passed": 1,
+      "failed": 1,
+      "error": "missing checked body early"
+    },
+    "regressionAfter": {
+      "passed": 2,
+      "failed": 0,
+      "assertions": 4
+    },
+    "actualCLI": {
+      "command": "bun --smol bend2/main.ts tests/run/js_late_fold.bend -o checkpoints/.ir57-late-fold-official.js && node checkpoints/.ir57-late-fold-official.js",
+      "exitCode": 0,
+      "stdout": "1\n"
+    },
+    "cause": "A later word-match table can constant-fold an already emitted non-SCC callee. Deleting checked e immediately after its own emission is too early.",
+    "decision": "Retain original checked e through all JS definition folding, then release. Clear all higher-body/memo caches after each definition scope; no source fallback, copying to disk, or skipped checks."
+  },
+  "fullRoot": {
+    "nativeBuild": {
+      "status": "JS_GENERATED_NOT_YET_EXECUTED",
+      "provenancePath": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-full-b-native-build.provenance.json",
+      "provenanceSha256": "7227ab4a8731ba4ab7e3e3f3e32d2a9a83bc36ffe576a8514303bd22c16c3028",
+      "sourcePath": "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_v1.bend",
+      "sourceSha256": "e404aea222d4b03b76d33804447bbccd0f7f8712ff7ee95100654525a40f224c",
+      "exports": [
+        "parsed_module",
+        "parse_with_fuel",
+        "expand_modules_start",
+        "template_step",
+        "check_expanded_start",
+        "inspect_checked_start",
+        "checker_step",
+        "emit_modules_start",
+        "emit_library_start",
+        "emitter_step"
+      ],
+      "artifactPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-full-b.js",
+      "artifactSha256": "4c95b16946f3431555cdeec9fd74c171142f602e2d7400c03f939c4846993af4",
+      "bytes": 12668854,
+      "eventsFullyValidated": 8726,
+      "checkedDefinitions": 8339,
+      "liveBodies": 8339,
+      "checksExcluded": 0,
+      "outputPatches": 0,
+      "checkedOutputRetention": "native e",
+      "nativeRetention": "native checked e retained in memory until final SCC emission; no serialization or source-value fallback",
+      "nativeCheckedBodies": 8339,
+      "expectedSourceDefinitions": 8339,
+      "toolchain": "CANONICAL NATIVE LOAD/CHECK; CANONICAL JS PREPARE/EMIT/RELEASE; Node/V8 automatic GC",
+      "preparedCount": 8054,
+      "releasedCount": 8447,
+      "maxSimultaneousE": 8339,
+      "maxSimultaneousH": 2,
+      "countsCaveat": "Definition slots, not unique term graphs; signature metadata does not prepare higher bodies",
+      "runtime": {
+        "name": "node",
+        "node": "23.11.0",
+        "v8": "12.9.202.28-node.14",
+        "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "heapLimitMiB": 3072,
+        "stackSizeMb": 256,
+        "heapSizeLimitBytes": 3271557120,
+        "manualGC": false
+      },
+      "cpuMs": 52211.93,
+      "compiledExecution": "NOT_RUN",
+      "selfhostGreen": false,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 2600599552,
+        "peakFootprintBytes": 2972922672,
+        "elapsedMs": 101717,
+        "timeoutMs": 600000,
+        "command": [
+          "node",
+          "--experimental-strip-types",
+          "--max-old-space-size=3072",
+          "/Users/ilyagulya/Projects/My/bend/evals/checker_core_component_build.ts",
+          "--worker",
+          "--file=/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_v1.bend",
+          "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step",
+          "--artifact=/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-full-b.js",
+          "--report=/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-full-b-native-build",
+          "--inputs-sha256=f899eb8bf43baf6901850d58be19bf26069c52cc7d62a2b4c6acf505dce35437"
+        ],
+        "label": "Full-native CheckerCore component JS build",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792781933741-c63560041177fbd0.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    "failedPriorCodegen": {
+      "status": "FAIL",
+      "stage": "codegen",
+      "diagnostic": "Error: missing checked body Bool.pick",
+      "checksExcluded": 0,
+      "outputPatches": 0,
+      "compiledExecution": "NOT_RUN",
+      "selfhostGreen": false,
+      "guardian": {
+        "status": "FAIL",
+        "reason": "command_exit",
+        "commandExitCode": 2,
+        "commandSignal": 0,
+        "peakRssBytes": 2579595264,
+        "peakFootprintBytes": 2720917648,
+        "elapsedMs": 40006,
+        "timeoutMs": 600000,
+        "command": [
+          "node",
+          "--experimental-strip-types",
+          "--max-old-space-size=3072",
+          "/Users/ilyagulya/Projects/My/bend/evals/checker_core_component_build.ts",
+          "--worker",
+          "--file=/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_v1.bend",
+          "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step",
+          "--artifact=/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-full-a.js",
+          "--report=/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-full-a-native-build",
+          "--inputs-sha256=8f57f43badc3a6cc3894b7e28438997ebe5388d0f74093633b159de396809e2f"
+        ],
+        "label": "Full-native CheckerCore component JS build",
+        "exitCode": 1,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792781185158-75b91054b59eeb1b.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    "nativeBuildResultSha256": "0817e8571138e3542321adbd47220c7170f3f24e43f1f092e36445d979f92195",
+    "nativeBuildProvenanceFileSha256": "01d524c900565df62e5df687221e443ca2c8a977317fefd11b84be9e7a6da246",
+    "note": "JS seed produced through full canonical native checking, not a native C executable. This producer receipt predates the documentation-only builder retention-string correction; preserve its original source pins. Rebuild current producer for final admission."
+  },
+  "completeCorpus": {
+    "manifest": "checkpoints/compiler-benchmark-release237-v41.corpus.json",
+    "sha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+    "official": {
+      "report": "checkpoints/compiler-benchmark-ir57-official-a.json",
+      "sha256": "d3259671279f9477c24a73ee13dddfec035752fa5a3b79ca62e7af7424594e74",
+      "compileMs": 32002.610417,
+      "phases": [
+        {
+          "name": "compiler-startup",
+          "wallMs": 111.936667,
+          "cpuMs": 169.737,
+          "memoryEnd": {
+            "rss": 170835968,
+            "heapTotal": 18235392,
+            "heapUsed": 13806728,
+            "external": 22386566,
+            "arrayBuffers": 228278
+          }
+        },
+        {
+          "name": "load-parse-expand",
+          "wallMs": 3295.8678339999997,
+          "cpuMs": 3242.001,
+          "memoryEnd": {
+            "rss": 724402176,
+            "heapTotal": 570261504,
+            "heapUsed": 365876720,
+            "external": 17282992,
+            "arrayBuffers": 24867
+          }
+        },
+        {
+          "name": "check",
+          "wallMs": 3306.8262910000003,
+          "cpuMs": 4410.477,
+          "memoryEnd": {
+            "rss": 1481162752,
+            "heapTotal": 1306394624,
+            "heapUsed": 1097968072,
+            "external": 17282992,
+            "arrayBuffers": 24867
+          }
+        },
+        {
+          "name": "emit",
+          "wallMs": 25235.25025,
+          "cpuMs": 19937.557,
+          "memoryEnd": {
+            "rss": 3530391552,
+            "heapTotal": 2311323648,
+            "heapUsed": 1644263712,
+            "external": 17282992,
+            "arrayBuffers": 24867
+          }
+        },
+        {
+          "name": "write-and-hash",
+          "wallMs": 43.72858300000007,
+          "cpuMs": 32.773,
+          "memoryEnd": {
+            "rss": 3561848832,
+            "heapTotal": 2327003136,
+            "heapUsed": 1659959968,
+            "external": 25120385,
+            "arrayBuffers": 7862260
+          }
+        },
+        {
+          "name": "output-import",
+          "wallMs": 115.0645829999994,
+          "cpuMs": 129.489,
+          "memoryEnd": {
+            "rss": 3567353856,
+            "heapTotal": 2315681792,
+            "heapUsed": 1559811600,
+            "external": 25123785,
+            "arrayBuffers": 7865660
+          }
+        },
+        {
+          "name": "output-semantic-smoke",
+          "wallMs": 14.540165999998862,
+          "cpuMs": 14.512,
+          "memoryEnd": {
+            "rss": 3568549888,
+            "heapTotal": 2316500992,
+            "heapUsed": 1561924552,
+            "external": 25529871,
+            "arrayBuffers": 8271746
+          }
+        }
+      ],
+      "passed": true,
+      "artifact": {
+        "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-ir57-official-a.json.output.mjs",
+        "bytes": 7837393,
+        "sha256": "9a49a9800566217ac632c119b555a2eabc07eb4c1196f7e1ad4f83b9e9630ac9"
+      }
+    },
+    "component": {
+      "report": "checkpoints/compiler-benchmark-ir57-component-a.json",
+      "sha256": "c05ba2a63dd0351d80895ef74effa7295a188596eaecc7f2aa153893e35143c1",
+      "passed": false,
+      "deadlineMs": 600000,
+      "exactTimeoutPhase": "UNKNOWN_FROM_OLD_ASYNC_STDOUT; do not attribute to parsing"
+    },
+    "durableAttribution": {
+      "schemaVersion": 1,
+      "status": "FAIL",
+      "diagnosticOnly": true,
+      "bootstrapAcceptance": false,
+      "mode": "component",
+      "stopAfter": "check",
+      "oracleIncluded": false,
+      "checksExcluded": 0,
+      "outputPatches": 0,
+      "corpus": "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+      "corpusSha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+      "root": "/private/tmp/bend-v41-corpus.uXXfVm/checkpoints/.bootstrap_compiler_root_v1.bend",
+      "inputFiles": 50,
+      "runtime": {
+        "versions": {
+          "node": "23.11.0",
+          "acorn": "8.14.1",
+          "ada": "3.2.1",
+          "amaro": "0.4.1",
+          "ares": "1.34.4",
+          "brotli": "1.1.0",
+          "cjs_module_lexer": "2.1.0",
+          "cldr": "46.0",
+          "icu": "76.1",
+          "llhttp": "9.2.1",
+          "modules": "131",
+          "napi": "10",
+          "nbytes": "0.1.1",
+          "ncrypto": "0.0.1",
+          "nghttp2": "1.64.0",
+          "openssl": "3.0.16",
+          "simdjson": "3.12.2",
+          "simdutf": "6.0.3",
+          "sqlite": "3.49.1",
+          "tz": "2025a",
+          "undici": "6.21.2",
+          "unicode": "16.0",
+          "uv": "1.50.0",
+          "uvwasi": "0.0.21",
+          "v8": "12.9.202.28-node.14",
+          "zlib": "1.3.0.1-motley-788cb3c",
+          "zstd": "1.5.6"
+        },
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "limits": {
+        "memoryMiB": 8192,
+        "rssMiB": 8192,
+        "pollMs": 10,
+        "oldGenerationMiB": 6144,
+        "youngGenerationMiB": 128,
+        "stackMiB": 256
+      },
+      "implementationPins": {
+        "/Users/ilyagulya/Projects/My/bend/evals/compiler_benchmark.ts": "fdc223e29261f6da9484bba1d49f998379a8bafcfe053a2eb18f9c23c137282a",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-v41.corpus.json": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+        "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs": "f5a22a431b83b4f739bf8022a489a12d2beaa2f04ec7b19ed779981c2a4e5b07",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-v41-step-runtime.mjs": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-full-b.js": "4c95b16946f3431555cdeec9fd74c171142f602e2d7400c03f939c4846993af4",
+        "/private/tmp/bend-v41-corpus.uXXfVm/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+        "/private/tmp/bend-v41-corpus.uXXfVm/bend2/comp.ts": "56d5727049bc3ef528ef84d3b4712a41a0a8ce0a06437b29d881e71107638c70"
+      },
+      "phases": [
+        {
+          "name": "compiler-startup",
+          "wallMs": 161.623958,
+          "cpuMs": 198.879,
+          "memoryEnd": {
+            "rss": 202194944,
+            "heapTotal": 35749888,
+            "heapUsed": 26656160,
+            "external": 23669248,
+            "arrayBuffers": 12702579
+          }
+        },
+        {
+          "name": "load-parse",
+          "wallMs": 5159.528333,
+          "cpuMs": 6475.006,
+          "memoryEnd": {
+            "rss": 1051934720,
+            "heapTotal": 834813952,
+            "heapUsed": 576704536,
+            "external": 10991532,
+            "arrayBuffers": 24863
+          }
+        },
+        {
+          "name": "expand",
+          "wallMs": 8300.180208,
+          "cpuMs": 7746.323,
+          "memoryEnd": {
+            "rss": 1199357952,
+            "heapTotal": 981090304,
+            "heapUsed": 747750576,
+            "external": 10991532,
+            "arrayBuffers": 24863
+          }
+        }
+      ],
+      "lastCompletedPhase": "expand",
+      "moduleCount": 15,
+      "sourceDeclarations": 8403,
+      "activePhase": {
+        "name": "check",
+        "startedAtUnixMs": 1792783108050,
+        "memoryBefore": {
+          "rss": 1199357952,
+          "heapTotal": 981090304,
+          "heapUsed": 747760224,
+          "external": 10991532,
+          "arrayBuffers": 24863
+        }
+      },
+      "guardian": {
+        "status": "FAIL",
+        "reason": "deadline_exceeded",
+        "commandExitCode": -1,
+        "commandSignal": 15,
+        "peakRssBytes": 1463255040,
+        "peakFootprintBytes": 1567847440,
+        "elapsedMs": 90129,
+        "timeoutMs": 90000,
+        "command": [
+          "node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "--stack-size=262144",
+          "/Users/ilyagulya/Projects/My/bend/evals/compiler_benchmark.ts",
+          "--worker",
+          "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-ir57-attribution-a.json.request.json",
+          "9a0c2d6bacb9c4fcfeae49a0252dcbd1e2da841cc65351682021fef8b706be51"
+        ],
+        "label": "Comparable full-corpus component compiler",
+        "exitCode": 1,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792783094209-42f83c291e9af6b8.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "passed": false,
+      "partial": true
+    },
+    "attributionReportSha256": "7cc4a709c9c80028f4b411ce76458006ba0a9f6b516aa2da3779967e43d9c72a",
+    "finding": "Current comparable runtime is blocked in check, after 5.159528333s load/parse and 8.300180208s expansion. A 90s downward bounded run durably preserves the active checker phase; no full compile/speedup claim."
+  },
+  "boundedProfiles": {
+    "largestParser": {
+      "diagnosticOnly": true,
+      "status": "RETURNED",
+      "image": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-full-b.js",
+      "imageSha256": "4c95b16946f3431555cdeec9fd74c171142f602e2d7400c03f939c4846993af4",
+      "file": "/private/tmp/bend-v41-corpus.uXXfVm/checkpoints/checker_core_steps_v1.bend",
+      "sourceSha256": "20c1e010778059d880c0c26fd9058c1aab12c452b4a343e90dfd3beb26bcadfb",
+      "bytes": 2453111,
+      "fuelCells": 8000000,
+      "startedAtUnixMs": 1792782831431,
+      "memoryBefore": {
+        "rss": 122372096,
+        "heapTotal": 39714816,
+        "heapUsed": 37739896,
+        "external": 29597490,
+        "arrayBuffers": 27807478
+      },
+      "elapsedMs": 3809.475625,
+      "cpuMs": 4033.53,
+      "feedbackTag": "FeedbackComplete",
+      "resultTag": "ParseSuccess",
+      "memoryAfter": {
+        "rss": 812761088,
+        "heapTotal": 696500224,
+        "heapUsed": 537415720,
+        "external": 4399087,
+        "arrayBuffers": 2469746
+      }
+    },
+    "wholeLoader": {
+      "diagnosticOnly": true,
+      "image": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-full-b.js",
+      "imageSha256": "4c95b16946f3431555cdeec9fd74c171142f602e2d7400c03f939c4846993af4",
+      "corpusSha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+      "status": "PASS",
+      "elapsedMs": 6691.532792,
+      "moduleCount": 15,
+      "declarations": 8403,
+      "inputFiles": 50
+    },
+    "checker": {
+      "status": "DEADLINE_EXCEEDED_DURING_CHECK",
+      "limitMs": 90000,
+      "checkBeforeElapsedMs": 19927.753999999997,
+      "checkBeforeCpuMs": 15720.861,
+      "peakFootprintBytes": 1572637040,
+      "log": "checkpoints/isolate-0xba9800000-68844-.ir57-check-full-v8.log",
+      "logSha256": "bee5fa3d10d35fc1d5f369fd23a154ee56a7aa36c8ec698d25285f1c7922fa5f",
+      "sampleCoverage": {
+        "ticks": 56433,
+        "unaccounted": 70,
+        "excluded": 0,
+        "unknownOverflowFrame": true,
+        "wholeProfileSummary": {
+          "javascriptTicks": 37237,
+          "gcTicks": 3548,
+          "nativeTicks": 18755
+        },
+        "processedOutput": "artifact://2893",
+        "interpretation": "Whole-window sample totals include load/expansion/startup; canonical checker-owner aggregation is running separately. C++ nearest-symbol StatWatcher label is not valid function-level attribution."
+      }
+    },
+    "samplingLimits": "V8 statistical tick samples, not allocation attribution. Whole-load profile contains4734 ticks,17 unaccounted and0 excluded; unknown overflow frame reported. Native nearest-symbol labels such as StatWatcher are not reliable function-level C++ attribution."
+  },
+  "acceptance": {
+    "fullRootNativeChecked": true,
+    "fullRootJSGenerated": true,
+    "fullFrozenCompile": false,
+    "freshFixedpoint": false,
+    "nativeCExecutableBuilt": false,
+    "nativeCOwnerExecuted": false,
+    "speedupEstablished": false
+  },
+  "next": "Use actual checker samples to locate the runtime regression; do not rerun another blind ten-minute gate. After stabilizing code, regenerate immutable parser/producer proofs, complete full corpus, actual stage1/stage2 byte fixedpoint and native C run.",
+  "remainingParallelWork": {
+    "nativeC": "Independent immutable remote build/run on misakaindrive",
+    "checker": "Read-only canonical-owner aggregation from the real bounded checker profile"
+  }
+}

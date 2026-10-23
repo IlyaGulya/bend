@@ -137,10 +137,12 @@ latest one; the GitHub release carries the same notes.
   module. Emitter scopes no longer retain or forward source paths and complete
   module lists through symbol lookup; declaration ordering and alias resolution
   are unchanged.
-- Native selfhost seed builds retain original checked bodies in memory and release
-  them after their final SCC entrypoint is emitted. The unmodified canonical
-  checker replaces temporary observed kernels and lossless disk snapshots;
-  complete body coverage, input authentication and the memory guard remain.
+- Native selfhost seed builds retain original checked bodies through all JS
+  constant folding, then release them after definition emission completes.
+  Higher-body and scope memo caches are cleared between definitions. This fixes
+  late word-match folding of an already-emitted callee; a runtime regression
+  covers both released and retained builds. The canonical checker and complete
+  body coverage remain unchanged; there are no disk snapshots or source fallbacks.
 - Source map lookup selects the same Patricia branch through a structurally
   decreasing worker instead of allocating two recursive branch closures per
   node. Unicode keys, misses and arbitrary public map shapes retain Map.bit

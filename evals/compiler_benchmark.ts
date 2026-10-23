@@ -117,9 +117,13 @@ async function worker(requestPath:string,requestSha256:string){
  const report:any={schemaVersion:1,status:'IN_PROGRESS',diagnosticOnly:true,bootstrapAcceptance:false,mode:o.mode,stopAfter:o.stopAfter,oracleIncluded:false,checksExcluded:0,outputPatches:0,corpus:o.corpus,corpusSha256:hash(o.corpus),root:resolve(corpus.directory,corpus.root),inputFiles:expected.size,runtime:{versions:process.versions,platform:process.platform,arch:process.arch},limits:{...guard,oldGenerationMiB:6144,youngGenerationMiB:128,stackMiB:256},implementationPins:request.pins,phases};
  const started=performance.now();
  const phase=async<T>(name:string,action:()=>T|Promise<T>):Promise<T>=>{
+  report.activePhase={name,startedAtUnixMs:Date.now(),memoryBefore:process.memoryUsage()};
+  save(o.report,report);
   const wall=performance.now(),cpu=process.cpuUsage();
   const value=await action(),used=process.cpuUsage(cpu);
-  const row={name,wallMs:performance.now()-wall,cpuMs:(used.user+used.system)/1000,memoryEnd:process.memoryUsage()};phases.push(row);console.log(JSON.stringify({phase:name,...row}));return value;
+  const row={name,wallMs:performance.now()-wall,cpuMs:(used.user+used.system)/1000,memoryEnd:process.memoryUsage()};phases.push(row);
+  report.lastCompletedPhase=name;delete report.activePhase;save(o.report,report);
+  console.log(JSON.stringify({phase:name,...row}));return value;
  };
  let source:string|undefined,api:any,driver:any;
  try{
@@ -205,5 +209,7 @@ if(!isMainThread){
  if(pins[realpathSync(resolve(corpus.directory,'bend2/bend.ts'))]!==expectedOfficialKernel||pins[realpathSync(resolve(corpus.directory,'bend2/comp.ts'))]!==expectedOfficialCompiler)throw Error('Unmodified official compiler identity mismatch');
  const request=o.report+'.request.json';save(request,{options:o,pins},true);save(o.report,{status:'IN_PROGRESS',diagnosticOnly:true,bootstrapAcceptance:false},true);
  const result=await runHeavyGate(['node','--experimental-strip-types','--max-old-space-size=6144','--max-semi-space-size=128','--stack-size=262144',script,'--worker',request,hash(request)],{label:'Comparable full-corpus '+o.mode+' compiler',...guard});
- const record=JSON.parse(readFileSync(o.report,'utf8'));record.guardian=result;record.passed=record.passed===true&&result.status==='PASS';save(o.report,record);process.exitCode=record.passed?0:result.exitCode||1;
+ const record=JSON.parse(readFileSync(o.report,'utf8'));record.guardian=result;record.passed=record.passed===true&&result.status==='PASS';
+ if(result.status!=='PASS'){record.status=result.status;record.partial=true;}
+ save(o.report,record);process.exitCode=record.passed?0:result.exitCode||1;
 }

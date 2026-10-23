@@ -1532,16 +1532,13 @@ function file_higher(k: Name): HTerm | null {
   return h;
 }
 
-// No analysis/emission scope may still be active here. A C definition can
-// prepare many callees while it emits; their higher bodies and AST-identity
-// constant memo all belong to this finished scope, not to the checked book.
-// Literal images, layouts, signatures, dependency/ownership facts and emitted
-// segments remain valid. Every C release keeps the original checked e.
+// No analysis/emission scope may still be active here. A definition can prepare
+// callees while it emits; every higher body belongs to that finished scope, not
+// to a signature. Checked e stays live until all JS constant folding is done.
+// Literal images, layouts, signatures and emitted segments remain valid.
 function file_release(k: Name, final = false, lines?: string[]): void {
-  if (FL.js) {
-    FL.higher.delete(k);
-  } else {
-    FL.higher.clear();
+  FL.higher.clear();
+  if (!FL.js) {
     FL.consts.clear();
   }
   const tld = FL.book.tlds[k];
@@ -3452,22 +3449,10 @@ export function js_lib(book: Bend.Book, mod = false,
   file_book(options.roots ?? outs ?? ["main"]);
   const sc = scope_new();
   const defs = done_defs(fun_runs);
-  const pending = options.releaseChecked ? new Set(defs.map(([k]) => k)) : null;
   for (const [k, def] of defs) {
     memo_gc();
     js_def(sc, k, def);
-    pending?.delete(k);
-    const loop = pending === null ? [] : loop_of(k);
-    const final = !loop.some((d) => pending!.has(d));
-    file_release(k, final, sc.seg.lines);
-    // A mutual SCC needs every member's checked body until its last entrypoint.
-    if (pending !== null && final) {
-      for (const d of loop) {
-        if (d !== k) {
-          file_release(d, true);
-        }
-      }
-    }
+    file_release(k, false, sc.seg.lines);
   }
   const effs = effect_srcs(".js", "a foreign def without a .js import: ")
     .map((t) => `(() => {\n${t}\n})();\n\n`).join("");
@@ -3482,6 +3467,13 @@ export function js_lib(book: Bend.Book, mod = false,
     .join("\n");
   const closed = [...FL.closed_refs.values()].map(({ name, value }) =>
     `const ${name} = ${value};`);
+  // A later word-match table may fold a previously emitted callee. Its original
+  // checked body remains authoritative; only higher-body caches are short-lived.
+  if (options.releaseChecked) {
+    for (const [k] of defs) {
+      file_release(k, true);
+    }
+  }
   return RUNTIME + effs + "// Program\n// =======\n\n" + [funs, ...closed, ...[...FL.tabs]
     .map(([r, i]) => `const TAB_${i} = [${r}];`)].join("\n") + lib;
 }

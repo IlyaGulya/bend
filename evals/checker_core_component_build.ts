@@ -5,7 +5,7 @@
  * Canonical compiler/kernel/Base identities are captured before worker startup,
  * authenticated before import, and held fixed through artifact publication.
  * The unmodified native kernel retains actual checked e values in the book.
- * Canonical emission releases them after their last SCC entrypoint is emitted.
+ * Canonical emission releases checked e after all JS definition folding completes.
  * Optional --allocation-profile-mib=N captures live sampled codegen allocations
  * without publishing a compiler artifact or acceptance. Automatic GC only.
  * Reports prove generation only; no artifact execution or selfhost-green claim.
@@ -20,7 +20,7 @@ import type * as Bend from '../bend2/bend.ts';
 import type {Session as InspectorSession, HeapProfiler} from 'node:inspector';
 import {guardHeavyGate, runHeavyGate} from './heavy_gate.ts';
 
-type StorageState = {eExists?: boolean; hExists?: boolean; outputLines?: number; outputUTF16Units?: number};
+type StorageState = {eExists?: boolean; hExists?: boolean; retainedHigher?: number; outputLines?: number; outputUTF16Units?: number};
 interface CanonicalCompiler {
   js_lib(book: Bend.Book, mod?: boolean, options?: {
     releaseChecked?: boolean;
@@ -152,7 +152,7 @@ async function worker(o: Options) {
       return {rssBytes: usage.rss, heapUsed: usage.heapUsed};
     };
     // Import only after authenticating the exact canonical kernel/compiler.
-    const nativeRetention = 'native checked e retained in memory until final SCC emission; no serialization or source-value fallback';
+    const nativeRetention = 'native checked e retained through all JS definition folding; scope-local higher caches released between definitions; no serialization or source-value fallback';
     kernel = await import(kernelPath) as typeof Bend;
     await stableInputs();
     comp = await import(compilerPath) as CanonicalCompiler;
@@ -236,6 +236,7 @@ async function worker(o: Options) {
         maxE = Math.max(maxE, eLive);
       }
       if (state.hExists !== undefined) {
+        if (state.retainedHigher === 0) hNames.clear();
         if (state.hExists) hNames.add(name); else hNames.delete(name);
         hLive = hNames.size; maxH = Math.max(maxH, hLive);
       }
