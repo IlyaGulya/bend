@@ -17,19 +17,21 @@ production functions проверяемые `def` либо честно обоз
 Checkpoint реализации57a сохранён отдельно от принятого baseline:
 `compiler-ir-checkpoint-v57a.json` содержит хеши исходников и реальные первые
 native-ошибки. Frontend, catalog, runtime lowering, BIR renderer и consumer
-migration написаны, но новый полный root и runtime ещё не прошли проверку.
-Checkpoint57a: `3728d396`. Последующий57b фиксирует интеграцию Catalog/Backend
-в authenticated typed CPS closure; receipt — `compiler-ir-checkpoint-v57b.json`.
-Owned generation прошла; checker CPS с1139 определениями также сгенерирован.
-Emitter CPS пока остановлен: `cps_provider_1_record_fields: Missing lexical
-capture type for binder -1`. Это ещё не native admission и не рабочая сборка.
+migration написаны; полный root/corpus/fixedpoint нового пути ещё не приняты.
+Checkpoint57a: `3728d396`;57b: `1a366baf`. В57c устранён фиктивный binder -1
+при CPS lowering generic constructor domains: реальные типы полей теперь
+инстанцируются из datatype context, без ослабления capture checks.
+Генерация checker/emitter/template прошла. Настоящий native build pipeline
+без parser проверил6910/6910 тел и создал JS-компонент без исключений/патчей.
+Receipt: `compiler-ir-checkpoint-v57c.json`; это не full-root acceptance.
 
 Явный readback исправлен: runtime body восстанавливается из occurrence children,
 а LocalReference — из lexical term, не подстановленного semantic value.
-`Inspection`/`InspectionFailure` сохраняют владельца программы; это изменение
-ещё не проверено исполнением. Legacy standalone C использует этот явный
-inspection/readback и не является BIR backend; обычный JS compile path не
-должен делать readback.
+`Inspection`/`InspectionFailure` сохраняют владельца программы. Реальный
+compiled smoke провёл explicit matcher через check → inspection → lowering →
+JS execution и получил `BitOne{}`. Проверки локальных эффектов пока впереди.
+Legacy standalone C использует явный inspection/readback и не является BIR
+backend; обычный JS compile path не должен делать readback.
 
 Новый полный corpus, native owner handoff и stage1/stage2 ещё не проверены.
 Рабочий baseline остаётся55; fixedpoint53 не доказывает новую архитектуру57.
@@ -38,8 +40,15 @@ inspection/readback и не является BIR backend; обычный JS comp
 неизменённый stage1 образ53 проходит parse/expand/check/emit, но его программа
 падает с `bend: runtime fail-stop`; reference CLI с kernel2.0.37 и текущим
 shared-layout backend печатает `BitOne{}`. Точные исходники/хеши/наблюдения
-сохранены в receipt57b. В library smoke добавлены проверки live locals,
-порядка over-application и обеих ветвей eliminator; новый IR их ещё не исполнял.
+сохранены в receipt57b; успешный новый pipeline — в receipt57c. В library smoke
+добавлены live locals, порядок over-application и обе ветви eliminator; весь
+library suite ещё не выполнен. Обе ветви добавлены и в seed/stage1/stage2 gate.
+Свежий parser `ir57-local-full` нативно собран, но complete semantic gate
+отклонён:73/75 случаев совпали, два новых файла не разобраны. Общая причина —
+canonical parser принимает только `0n`-подобные natural patterns, не U32 `0`.
+Затронуты `native_match_scalar_bit_value_2` в owned checker и `project_native`
+в emitter. Следующий шаг — общий scalar-pattern parser, не переписывание
+исходников под старое ограничение и не исключение этих двух случаев.
 
 ## Compiler56 — FIR/BIR architecture preflight, not production acceptance
 

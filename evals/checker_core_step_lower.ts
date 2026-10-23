@@ -875,13 +875,19 @@ for (const {def, direct} of [
     if (term.$ === 'Ctr') {
       const declaration = Object.values(book.tlds).find(tld => tld.$ === 'ADT' && tld.c.some(field => field.k === term.k));
       if (declaration?.$ !== 'ADT') fail(def.name, 'Constructor lacks an authenticated datatype declaration', term);
-      const needsDomains = term.x.some((value, index) => !effectful(value) && term.x.slice(index + 1).some(effectful));
-      const datatype = needsDomains && declaration.n ? expected ?? typeOf(term) : undefined;
+      // Every field domain is propagated into recursive lowering, even when
+      // this constructor itself needs no sequencing temporary. A nested field
+      // can need one later, so its datatype parameters must stay authentic.
+      // Pure/zero-field constructors already returned before this branch.
+      const datatype = declaration.n ? expected ?? typeOf(term) : undefined;
       if (datatype && datatype.$ !== 'ADT') fail(def.name, 'Effectful constructor lacks an authenticated datatype instance', term);
       let telescope = book.ctrs[term.k]?.T;
+      let datatypeEnv: B.Env = null;
+      if (declaration.n) for (const [id, binding] of scope) datatypeEnv = B.list_set(datatypeEnv, id, B.Var(binding.name, id));
       for (let index = 0; index < declaration.n; index++) {
-        if (!telescope || telescope.$ !== 'All') fail(def.name, 'Constructor datatype parameter telescope drift', term);
-        telescope = telescope.B(datatype?.$ === 'ADT' ? B.term_higher(datatype.x[index]!) : B.Var('_', -1));
+        if (!telescope || telescope.$ !== 'All' || datatype?.$ !== 'ADT' || !datatype.x[index])
+          fail(def.name, 'Constructor datatype parameter telescope drift', term);
+        telescope = telescope.B(B.term_higher(datatype.x[index]!, datatypeEnv));
       }
       const {quantities, domains} = telescopeArguments(telescope, term.x, scope);
       return sequence(term.x, scope, quantities, (values, inner) => k({...term, x: values}, inner), domains);

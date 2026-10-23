@@ -5,6 +5,13 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- The in-progress selfhost FIR/Backend IR cutover has a native-checked JS
+  pipeline (all6910 bodies, no exclusions) and an exercised owning
+  check/inspection/lowering path. Full-root and fresh fixedpoint acceptance
+  are still pending; the selected complete compiler remains version55.
+- Explicit constructor eliminators in that pipeline produce callable matchers
+  instead of eagerly evaluating the fallback. A program rejected at runtime
+  by the unchanged previous stage-one output now executes as `BitOne{}`.
 - Compiler diagnostics compare the complete frozen source closure and the actual
   unmodified official public export set, with phase timing, resource limits and
   emitted-compiler smoke recorded separately from genuine bootstrap acceptance.

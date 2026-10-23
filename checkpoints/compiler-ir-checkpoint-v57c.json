@@ -1,0 +1,311 @@
+{
+  "schemaVersion": 1,
+  "status": "NATIVE_PIPELINE_AND_EXECUTED_REGRESSION_NOT_FULL_BOOTSTRAP",
+  "version": "57c",
+  "previousCheckpoint": "1a366baf",
+  "acceptedFullCompilerBaseline": "2b3efa80",
+  "sourceHashes": {
+    "evals/checker_core_step_lower.ts": "a4f8a1ba27c6b86f9328149e76357ceb5943ad837cc689e6328db65e006769d6",
+    "evals/selfhost_bootstrap_gate.ts": "9fdaf4b58588907f576b623d6863caa2e054b0b710f37bf465fb726cd1fae7e1"
+  },
+  "change": "Effectful generic constructor CPS lowering instantiates real datatype arguments before propagating field domains; removed fake binder -1 without weakening capture checks.",
+  "generation": {
+    "checker": {
+      "definitions": 1139,
+      "helpers": 4905,
+      "sourceCalls": 4210,
+      "pendingSites": 1537,
+      "status": "PASS"
+    },
+    "emitter": {
+      "definitions": 326,
+      "helpers": 787,
+      "sourceCalls": 939,
+      "pendingSites": 285,
+      "status": "PASS"
+    },
+    "template": {
+      "definitions": 196,
+      "helpers": 414,
+      "sourceCalls": 755,
+      "pendingSites": 512,
+      "status": "PASS"
+    }
+  },
+  "nativePipeline": {
+    "status": "JS_GENERATED_NOT_YET_EXECUTED",
+    "provenancePath": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-pipeline-a-native-build.provenance.json",
+    "provenanceSha256": "504d648e6b01f9cff338855baa1fc5a333f6a03da50a55794b9597e7070cb98a",
+    "sourcePath": "/Users/ilyagulya/Projects/My/bend/checkpoints/template_checker_steps_driver_v1.bend",
+    "sourceSha256": "ce210a5752499cf3267ddd85c204d29e7ce8163ea7d79428aac19b0a7c7d1d99",
+    "exports": [
+      "parsed_module",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step"
+    ],
+    "artifactPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-pipeline-a.js",
+    "artifactSha256": "9744fa85d1433c229dbe2aa55609575a7b80e63f8fe4b1db40d4f2d8ae3503f6",
+    "bytes": 9611367,
+    "eventsFullyValidated": 7251,
+    "checkedDefinitions": 6910,
+    "liveBodies": 6910,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "checkedOutputRetention": "native e",
+    "nativeRetention": "native checked e retained in memory until final SCC emission; no serialization or source-value fallback",
+    "nativeCheckedBodies": 6910,
+    "expectedSourceDefinitions": 6910,
+    "toolchain": "CANONICAL NATIVE LOAD/CHECK; CANONICAL JS PREPARE/EMIT/RELEASE; Node/V8 automatic GC",
+    "preparedCount": 6614,
+    "releasedCount": 7018,
+    "maxSimultaneousE": 6910,
+    "maxSimultaneousH": 2,
+    "countsCaveat": "Definition slots, not unique term graphs; signature metadata does not prepare higher bodies",
+    "runtime": {
+      "name": "node",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "heapLimitMiB": 3072,
+      "stackSizeMb": 256,
+      "heapSizeLimitBytes": 3271557120,
+      "manualGC": false
+    },
+    "cpuMs": 20194.197,
+    "compiledExecution": "NOT_RUN",
+    "selfhostGreen": false,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 2269773824,
+      "peakFootprintBytes": 2401938640,
+      "elapsedMs": 17779,
+      "timeoutMs": 600000,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/Users/ilyagulya/Projects/My/bend/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/Users/ilyagulya/Projects/My/bend/checkpoints/template_checker_steps_driver_v1.bend",
+        "--exports=parsed_module,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step",
+        "--artifact=/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-pipeline-a.js",
+        "--report=/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-pipeline-a-native-build",
+        "--inputs-sha256=66ee972274f536b3a2dee39fbc7cad863cc4681dc77acdb07c34d1a640125b39"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792777982949-0e8d6f2b00cdbe2d.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "actualRegression": {
+    "source": "type Bit is Data:\n  BitZero{}\n  BitOne{}\ndef matcher() -> Bit -> Bit:\n  \\{BitZero: BitOne{}; BitOne: BitZero{}; \\{}}\ndef main() -> Bit:\n  matcher()(BitZero{})\n",
+    "componentSha256": "9744fa85d1433c229dbe2aa55609575a7b80e63f8fe4b1db40d4f2d8ae3503f6",
+    "phases": [
+      {
+        "phase": "parse",
+        "result": "ParseSuccess"
+      },
+      {
+        "phase": "expand",
+        "result": "ExpandSuccess"
+      },
+      {
+        "phase": "check",
+        "result": "CheckSuccess"
+      },
+      {
+        "phase": "inspect",
+        "result": "Inspection"
+      },
+      {
+        "phase": "emit",
+        "result": "EmitSuccess"
+      },
+      {
+        "phase": "execute",
+        "result": "BitOne{}"
+      }
+    ],
+    "outputPatches": 0,
+    "fullBootstrapAcceptance": false,
+    "outputHash": "a9b89367cea9e5823ba8d871e398ba655dc3656e24173ada13eb083558c6d2bf",
+    "execution": {
+      "status": 0,
+      "signal": null,
+      "stdout": "BitOne{}\n",
+      "stderr": ""
+    },
+    "passed": true
+  },
+  "sourceProofs": {
+    "nativeBuildResultSha256": "17a5e18d42fe4163c665a8292af80ba26d3e33e57afb2d2c799e860710402a49",
+    "checkerManifestSha256": "937771283ffa77b05de5dc28182dcf2ad6abb56e8842d8019cd8cc6f474672cd",
+    "emitterManifestSha256": "a1b6ed3b5073659282afa43368442329377d40afb19d5ad699305f587af6ad64",
+    "templateManifestSha256": "199141b3d981eed5ca4e90e7211b4888417f7dcd1ddde89b8061eb52179c2113",
+    "nativeProvenanceFileSha256": "14b10dcc342f5a272fa7f4e4b66e70e2f8a6fdc0ccbf6258c96a0830528871f3"
+  },
+  "regressionsAddedToFullGate": [
+    "constructor-eliminator-hit",
+    "constructor-eliminator-default"
+  ],
+  "parserRefresh": {
+    "runId": "ir57-local-full",
+    "prepareSource": "PASS",
+    "publicSource": {
+      "passed": 15,
+      "failed": 0,
+      "expectations": 264
+    },
+    "sourceSemantic": {
+      "completed": true,
+      "partial": false,
+      "focused": 23,
+      "whole": 29,
+      "literals": 13,
+      "real": 6,
+      "acceptanceAndSemanticAndLiteralSpanParity": true
+    },
+    "nativeBuild": "PASS",
+    "fullPrepareAndNativeCommandElapsedSeconds": 397.98,
+    "candidateSemantic": "FAIL_TWO_REAL_SOURCE_PARSE_REJECTIONS",
+    "candidateCounts": {
+      "focused": {
+        "total": 23,
+        "accepted": 22,
+        "acceptanceParity": 23,
+        "semanticParity": 23,
+        "literalSpanParity": 23
+      },
+      "whole29": {
+        "total": 29,
+        "accepted": 23,
+        "acceptanceParity": 29,
+        "semanticParity": 29,
+        "literalSpanParity": 29
+      },
+      "literals": {
+        "total": 13,
+        "accepted": 13,
+        "acceptanceParity": 13,
+        "semanticParity": 13,
+        "literalSpanParity": 13
+      },
+      "real": {
+        "total": 10,
+        "accepted": 8,
+        "acceptanceParity": 8,
+        "semanticParity": 8,
+        "literalSpanParity": 8
+      }
+    },
+    "candidateSemanticReportSha256": "f98e408c70487e89efa202edee89c7ac2a399e535a2cc25846a6446fd3fdc902",
+    "failures": [
+      {
+        "name": "checker_core_slice.bend",
+        "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_owned_v1.bend",
+        "sourceSha256": "e974dabea13105aa60428411440999c8dbec52c5467b38f6ed9f861a0fb406d2",
+        "failure": {
+          "tag": "ParseFailure",
+          "fields": [
+            "invalid or unsupported top-level syntax",
+            "a supported declaration",
+            "\n",
+            {
+              "tag": "SpanOf",
+              "fields": [
+                "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_owned_v1.bend",
+                16823,
+                16824
+              ]
+            }
+          ]
+        },
+        "failureBoundary": {
+          "beg": 16691,
+          "end": 17026,
+          "kind": "def",
+          "key": "native_match_scalar_bit_value_2"
+        }
+      },
+      {
+        "name": "js_emit.bend",
+        "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_emit.bend",
+        "sourceSha256": "6c164705d300631ddee658cd6746179bd47e04c83eaa864180a9300757c361b8",
+        "failure": {
+          "tag": "ParseFailure",
+          "fields": [
+            "invalid or unsupported top-level syntax",
+            "a supported declaration",
+            "\n",
+            {
+              "tag": "SpanOf",
+              "fields": [
+                "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_emit.bend",
+                31617,
+                31618
+              ]
+            }
+          ]
+        },
+        "failureBoundary": {
+          "beg": 31456,
+          "end": 32405,
+          "kind": "def",
+          "key": "project_native"
+        }
+      }
+    ],
+    "cause": "Canonical numeric-pattern dispatcher only accepts n-suffixed natural patterns. New source uses U32 numeric patterns, which the official parser accepts. Fix the canonical grammar; do not rewrite the generated image or waive these source cases."
+  },
+  "remaining": [
+    "Complete fresh parser artifact admission",
+    "Assemble and natively compile actual ten-export parser-containing compiler root",
+    "Run full library semantic cases and full frozen corpus",
+    "Obtain new exact-byte stage1/stage2 fixedpoint with all fixtures",
+    "Build/run and profile current full native C compiler on the frozen corpus"
+  ],
+  "acceptance": {
+    "fullRoot": false,
+    "fullCorpus": false,
+    "freshStage1Stage2Fixedpoint": false,
+    "currentNativeCDriverExecuted": false,
+    "selfhostGreen": false
+  },
+  "note": "Native pipeline is the complete checker/template/emitter component without embedded parser. The exercised program passes through actual checked FIR, explicit owner-preserving inspection, new lowering, new renderer and unchanged emitted JS execution. This is not full-root or performance acceptance.",
+  "descriptorCounterexampleProbe": {
+    "result": {
+      "source": "type Bit is Data:\n  BitZero{}\n  BitOne{}\ntype Other is Data:\n  Other{}\ndef ByBit() -> Bit -> Data:\n  \\{BitZero: Bit; BitOne: Other; \\{}}\ndef main() -> ByBit()(BitZero{}):\n  BitOne{}\n",
+      "componentSha256": "9744fa85d1433c229dbe2aa55609575a7b80e63f8fe4b1db40d4f2d8ae3503f6",
+      "phases": [
+        {
+          "phase": "parse",
+          "result": "ParseSuccess"
+        },
+        {
+          "phase": "expand",
+          "result": "ExpandSuccess"
+        }
+      ],
+      "outputPatches": 0,
+      "fullBootstrapAcceptance": false,
+      "passed": false,
+      "failure": {
+        "phase": "check",
+        "message": "Error: {\"$\":\"../bend2/selfhost/checked_frontend.CheckFailure\",\"diagnostic\":{\"$\":\"../bend2/selfhost/checked_frontend.Diagnostic\",\"file\":\"/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-type-eliminator.bend\",\"span\":{\"$\":\"../bend2/selfhost/ast.SpanOf\",\"file\":\"/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-type-eliminator.bend\",\"beg\":173,\"end\":181},\"message\":\"constructor requires a datatype goal\",\"expected\":\"a datatype\",\"observed\":\"a non-datatype type\"}}",
+        "stack": "Error: {\"$\":\"../bend2/selfhost/checked_frontend.CheckFailure\",\"diagnostic\":{\"$\":\"../bend2/selfhost/checked_frontend.Diagnostic\",\"file\":\"/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-type-eliminator.bend\",\"span\":{\"$\":\"../bend2/selfhost/ast.SpanOf\",\"file\":\"/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-type-eliminator.bend\",\"beg\":173,\"end\":181},\"message\":\"constructor requires a datatype goal\",\"expected\":\"a datatype\",\"observed\":\"a non-datatype type\"}}\n    at file:///Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-eliminator-after.mjs:30:42"
+      }
+    },
+    "interpretation": "Stopped at checking: constructor requires a datatype goal. Does not establish descriptor lowering or runtime correctness; no backend correction is claimed from this probe."
+  }
+}
