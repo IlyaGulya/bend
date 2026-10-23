@@ -4,7 +4,7 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
-Актуально57n: production FIR→BIR compiler root нативно проверен8382/8382,
+Актуально57q: production FIR→BIR compiler root нативно проверен8382/8382,
 полный frozen corpus/7720 exports прошёл, настоящий unchanged stage1/stage2
 byte fixedpoint есть. ВСЕ285 behavior executions также завершены:95 seed,
 95 stage1,95 stage2; на каждом emitted image64 positive/31 negative и130
@@ -14,18 +14,35 @@ byte fixedpoint есть. ВСЕ285 behavior executions также заверш�
 Current correctness checkpoint2fabd354/d7e9b9ee и receipt57k/57n. Selected
 performance baseline55 остаётся2b3efa80. Native O0 отвергнут:clang37.22s,
 но whole frozen runtime не закончил check за300s. В57p coverage JSON keys
-заменены allocation-tight structural comparison; canonical comp.ts SHA
-286dad9d2123736849a67b732f4af3125f5fac2d8e1f0d04eb32401aca117b3b.
-Свежая parser75/75 chain и native8382/8772 seed прошли; actual cmp подтвердил
+заменены allocation-tight structural comparison. В57q интегрированы короткие
+private FID symbols без изменения numeric IDs, CID и foreign resolver keys;
+canonical comp.ts SHA5b934b694b873c9b2e44a6d99b920181cc72e660b30996566bfaee38a7ba0fda.
+В57p свежая parser75/75 chain и native8382/8772 seed прошли; actual cmp подтвердил
 тот же executable SHA c27cead..., поэтому establishedK fixedpoint/285 behavior
 относится к тому же программному образу, не новому timed gate. Kernel2.0.37 прежний.
 Private currentK C build57p проверил8400/8796 и выдал C за~101.6s, но clangO1
 пересёк8GiB RSS (8590409728bytes); лимит не повышен, binary не заявлен.
-Private57q short-FID вариант затем реально собрал currentK O1 под лимитом,
-прошёл полный frozen compile/7720 consumer; parent review/integration впереди.
-Не отключать LLVM passes: отдельный57q experiment упёрся в physical limit.
+57q реально собрал currentK8400/8796 O1 под прежним8GiB guard:
+242981ms, RSS8342945792, physical8165500744. Затем полный frozen compile
+прошёл104823ms /1301612680physicalbytes, output SHAeb3d374..., actual7720 consumerPASS.
+PhaseCPU/wall подробно в compiler-ir-checkpoint-v57q.json; wall parse3644.196,
+expand6081.754, check79895.09, emit13014.165ms. Official total32002.610417ms.
+Build+run347804ms измерены двумя командами: <=300s пока НЕ достигнуто;
+запас RSS всего~247MB, повторяемый memory win не заявлен.
+Private successful producer и canonical различаются только comments:
+stripped executable TS-transpile bytes совпали SHA90c3ef4f58ba4b7b9e2414c293828ded3ffa1797e4751e4c9897f313f669beb3.
+Свежий canonical native seed8382/8772 прошёл25347ms и actual cmp сK подтвердил
+тот же root source SHAe404aea... и JS c27cead...; foreign C consumers actual42/77.
+Отключение LLVM passes в отдельном57q experiment упёрлось в physical8GiB после306856ms:
+отвергнуто, output/binary отсутствует. O0 тоже отвергнут, guard не повышать.
+Следующий57r experiment — typed first-order CPS continuations вместо generated
+resume closures. Generic heterogeneous affine stack с live equality witnesses
+уже реально native-checked/run, но production integration/performance ещё НЕ доказаны.
+FrameGenerator57R работает с генератором наnhs, RuntimeFrames57R — сJS/C ABI
+и всеми callers наmisaka. Parent интегрирует только после actual proofs; существующий
+K fixedpoint нельзя переносить на изменённый Progress ABI без нового полного прогона.
 
-## Compiler57 — архитектура и законы, реализация ещё не принята
+## Compiler57 — принятый functional FIR/BIR cutover, performance ещё не принят
 
 Нормативный контракт: [SELFHOST_IR_ARCHITECTURE.md](SELFHOST_IR_ARCHITECTURE.md).
 Он фиксирует Checked FIR → lowering → structured Backend IR → JS renderer,

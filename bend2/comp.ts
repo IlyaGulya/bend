@@ -619,7 +619,8 @@ function name_local(sc: Scope, k: Name): string {
 
 function name_id(pre: string, k: string): string {
   return memo(FL.ids, pre + k, () => {
-    const base = pre + name_clean(k).toUpperCase();
+    const base = pre === "FID_" ? pre + FL.ids.size
+      : pre + name_clean(k).toUpperCase();
     let id = base;
     for (let n = 1; FL.taken.has(id); n += 1) {
       id = base + "_" + n;
@@ -3101,6 +3102,10 @@ export function compile_book(book: Bend.Book,
     [...entries.map((s) => s.fid), "FID_EXIT", "FID_ENTER"]].flatMap((ms) =>
     ms.length > 65536 ? die("an id over 65535")
       : ms.map((m, i) => `#define ${m} ${i}`));
+  // One-time profiler ownership map; JSON quotes line breaks, and escaping '*'
+  // prevents source names from terminating these generated C comments.
+  defs.push(...entries.map((s) => `/* ${s.fid}: ${
+    JSON.stringify(s.def).replaceAll("*", "\\u002a")} */`));
   const resw = Math.max(...entries.map((s) => s.ret.ks.length));
   const n = Math.max(resw, ...entries.filter((s) => s.frame === null)
     .map((s) => s.params.length));

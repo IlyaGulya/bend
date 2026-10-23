@@ -174,6 +174,11 @@ latest one; the GitHub release carries the same notes.
   representation, annotation/span omission, property order and literal behavior.
   Overlapping/default word arms and returned bound-variable identity have a
   runtime regression; original checked-body lifetime remains unchanged.
+- Native private function IDs use compact internal symbols while preserving
+  numeric ID order, constructor IDs and foreign placeholder lookup. Escaped
+  declaration comments retain source ownership for profiling without hot tracing.
+  The complete current compiler builds at `-O1` within the existing 8 GiB guard;
+  its full frozen compilation and unchanged 7,720-export consumer pass.
 - Source map lookup selects the same Patricia branch through a structurally
   decreasing worker instead of allocating two recursive branch closures per
   node. Unicode keys, misses and arbitrary public map shapes retain Map.bit

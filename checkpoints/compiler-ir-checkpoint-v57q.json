@@ -1,0 +1,834 @@
+{
+  "version": "57q",
+  "status": "COMPACT_PRIVATE_FIDS_INTEGRATED_FULL_CURRENT_NATIVE_O1_BINARY_AND_FROZEN_CONSUMER_PASS",
+  "canonicalCompilerSha256": "5b934b694b873c9b2e44a6d99b920181cc72e660b30996566bfaee38a7ba0fda",
+  "successfulPrivateProducer": {
+    "origin": "/private/tmp/native-structural57p-keys-loop",
+    "privateSnapshot": "/private/tmp/native-shortfids57q",
+    "compilerBeforeSha256": "9fc96bda52864b8d27b5c81d29b21c30b8a370eb8826362385ef73d2ee0a6200",
+    "compilerAfterSha256": "7505963a0f8a01034767a84dd280681a3443d17c62e018c33549ac63d0732f35",
+    "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+    "patch": "/private/tmp/native-shortfids57q/artifacts/private-short-fids.patch",
+    "patchSha256": "3d6d7eed25b862b8df06b5685eac5da801bdf8a6d41a86ec7f6cbc0b2569e3ed",
+    "ffiFixtureSha256": {
+      "foreign_runtime_apply.bend": "282719d8ea2e0343af518f138374c01ec24d0e67fcc59826972ca0cfb4ab7ace",
+      "foreign_runtime_apply.c": "da77ef6f78c58ed44e4e9beaf277ad93d1cf22e269d59cbc4bb8055cd049ae26",
+      "foreign_runtime_apply.js": "e5d846e9f15bcbe7f887d79fbca7338107ab6556e1215a59c5d044aabe97a7d1",
+      "foreign_types.bend": "54d2c48500033b983c098f3d3684cf9ccfeea0ab1632c13008518155d4308142",
+      "foreign_types.c": "b7349b49771083041ea075834012e0d9744d3a643207ad308225ab4648b98b22",
+      "foreign_types.js": "ffd30b219ae31fc89eb12aeafcfb5b5f33a03ff9e9712c317e75083b7dee4b07"
+    },
+    "ownershipMapping": "artifacts/symbol-evidence.json ownershipMap and one-time C declaration comments",
+    "algorithmChanges": 0,
+    "kernelChanges": 0,
+    "outputPatches": 0
+  },
+  "canonicalVersusSuccessfulPrivateProducer": {
+    "method": "Bun.Transpiler loader ts/minifyWhitespace true strips comment-only differences; executable generated JS compared as exact strings",
+    "identical": true,
+    "executableSourceSha256": "90c3ef4f58ba4b7b9e2414c293828ded3ffa1797e4751e4c9897f313f669beb3",
+    "privateCompilerSha256": "7505963a0f8a01034767a84dd280681a3443d17c62e018c33549ac63d0732f35",
+    "canonicalCompilerSha256": "5b934b694b873c9b2e44a6d99b920181cc72e660b30996566bfaee38a7ba0fda"
+  },
+  "change": {
+    "privateFidSpellingOnly": true,
+    "numericFidOrderUnchanged": true,
+    "constructorIdsUnchanged": true,
+    "memoAndForeignResolutionKeysUnchanged": true,
+    "reservedExitEnterTableNamesUnchanged": true,
+    "sourceOwnership": "One-time escaped C declaration comments, not hot tracing/runtime string tables",
+    "algorithmChanges": 0,
+    "kernelChanges": 0,
+    "unsafe": false,
+    "compatibilityFallbacks": 0
+  },
+  "symbols": {
+    "old": {
+      "bytes": 70165381,
+      "sha256": "96d6fc902f977b8816ca8db5cef6e1f90246636a1bc129078db938bcc9c7f1f5",
+      "numericDefinitions": 10381,
+      "privateSymbols": 10379,
+      "privateSymbolChars": 576594,
+      "maxPrivateSymbolChars": 96,
+      "fidTokenOccurrences": 60150,
+      "fidTokenChars": 3084117
+    },
+    "new": {
+      "bytes": 68340029,
+      "sha256": "a13e7d4e32cd5fea6cba603366feb82c873ff9acaf14bcdf30f365a0a50dc22c",
+      "numericDefinitions": 10381,
+      "privateSymbols": 10379,
+      "privateSymbolChars": 91355,
+      "maxPrivateSymbolChars": 9,
+      "fidTokenOccurrences": 70529,
+      "fidTokenChars": 609518
+    },
+    "numericDefinitionOrderUnchanged": true,
+    "ownershipComments": 10379,
+    "cIdenticalAfterSymbolRestorationAndRemovingOwnershipComments": true,
+    "restoredSha256": "96d6fc902f977b8816ca8db5cef6e1f90246636a1bc129078db938bcc9c7f1f5"
+  },
+  "fullNativeBuild": {
+    "status": "NATIVE_EXECUTABLE_BUILT_NOT_YET_RUN",
+    "boundary": {
+      "host": "trusted C file/import loader and serial affine LIFO continuation driver",
+      "sourceAlgorithms": "unchanged canonical Bend parser/expansion/checker/JS library emitter",
+      "hostChecking": false,
+      "hostParsing": false,
+      "embeddedSource": false,
+      "cachedAst": false,
+      "parserFuelRepresentation": "eager native 8M-cell chain per source; JS harness uses lazy cells for the same finite fuel; allocation time remains included in parse",
+      "fuelMemoryEvidence": "per-source native process RSS high-water before/after allocation (not isolated live-byte attribution); guardian samples whole-tree RSS and physical footprint including fuel",
+      "outputPatches": 0,
+      "checksExcluded": 0,
+      "nativeBinaryBootstrap": false
+    },
+    "protectedPins": {
+      "/private/tmp/native-shortfids57q/evals/native_compiler_experiment.ts": "32c5c70a2ea7fc6176497f1a0b22456574f09cc149a04eaac3dc555f15ac99d8",
+      "/private/tmp/native-shortfids57q/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+      "/private/tmp/native-shortfids57q/bend2/comp.ts": "7505963a0f8a01034767a84dd280681a3443d17c62e018c33549ac63d0732f35",
+      "/private/tmp/native-shortfids57q/evals/native_compiler_driver.bend": "2d662ae3c9e95b074f619b75b4fa1b6a0cbcdcee3d20fcc79d9b191b6dea4ee6",
+      "/private/tmp/native-shortfids57q/evals/native_compiler_host.c": "e3a754c6edf98c467f9837c337bc3e6b4a16a1c15bf4a9fcb7b5ca45f0a4cee2",
+      "/private/tmp/native-shortfids57q/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+      "/private/tmp/native-shortfids57q/evals/heavy_gate.ts": "47a12205abd374fd69d7dac30ee9fb45d7203cad2790870511387cd2efc22251",
+      "/private/tmp/native-shortfids57q/evals/heavy_gate_native.c": "f5aecf8308caebc72dccf8986733b37137d448021ee378302cfcd038381b7aa9",
+      "/private/tmp/native-shortfids57q/checkpoints/compiler-benchmark-release237-v41.corpus.json": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258"
+    },
+    "loadedInputs": {
+      "/private/tmp/native-shortfids57q/checkpoints/.bootstrap_compiler_root_v1.bend": "e404aea222d4b03b76d33804447bbccd0f7f8712ff7ee95100654525a40f224c",
+      "/private/tmp/native-shortfids57q/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+      "/private/tmp/native-shortfids57q/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+      "/private/tmp/native-shortfids57q/bend2/selfhost/lexer.bend": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+      "/private/tmp/native-shortfids57q/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+      "/private/tmp/native-shortfids57q/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+      "/private/tmp/native-shortfids57q/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+      "/private/tmp/native-shortfids57q/bend2/selfhost/checker_arena.bend": "fb8651ab2e6304faded5eb312ffe95175a177254f7dd704eca7a9b0896a40e31",
+      "/private/tmp/native-shortfids57q/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+      "/private/tmp/native-shortfids57q/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+      "/private/tmp/native-shortfids57q/bend2/selfhost/index_lookup.bend": "caef5856607bff18b9a5dfc529eee6c6360a83d0963008420888a998274bd9f2",
+      "/private/tmp/native-shortfids57q/checkpoints/template_steps_v1.bend": "669e43923b5c7cde21fc922090d3c7ed674049d5cf44c0f2ac09e4ac901b81b6",
+      "/private/tmp/native-shortfids57q/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+      "/private/tmp/native-shortfids57q/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+      "/private/tmp/native-shortfids57q/checkpoints/checker_core_steps_v1.bend": "2f595741666a0f936e6f695938dadd8e0b2a3d3f28c39d06073139d8783898c5",
+      "/private/tmp/native-shortfids57q/checkpoints/js_emit_steps_v1.bend": "1c731b51b542a79040c5173f06c1d813fb0f2b7a8b98bc4f8a31e15d6dcda329",
+      "/private/tmp/native-shortfids57q/bend2/selfhost/backend_ir.bend": "0c4c67e38dbf34e04c2378863ec48a7222d2f762551baaa388f200f2a7d8c83b",
+      "/private/tmp/native-shortfids57q/evals/native_compiler_driver.bend": "2d662ae3c9e95b074f619b75b4fa1b6a0cbcdcee3d20fcc79d9b191b6dea4ee6",
+      "/private/tmp/native-shortfids57q/bend2/effs/print.c": "2693b48e0ad8bba77c2babb1cfe00b4adfd63e68b0688229d7efd3a261af3c46",
+      "/private/tmp/native-shortfids57q/bend2/effs/print.js": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+      "/private/tmp/native-shortfids57q/bend2/effs/write.c": "8807a5f655db452c1d846354560c26fe1e94289e5dc0be231d0b71ecc876d02f",
+      "/private/tmp/native-shortfids57q/bend2/effs/write.js": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+      "/private/tmp/native-shortfids57q/bend2/effs/print_err.c": "f84aa11c8d0d6af6fa2fee28411f95714d6744ad97156990e43e55c292c9c6fb",
+      "/private/tmp/native-shortfids57q/bend2/effs/print_err.js": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+      "/private/tmp/native-shortfids57q/bend2/effs/get_env.c": "508a4aaca91e37b2a0a97770f172100fdbaf4a676aba54623b1cd5d1634805ce",
+      "/private/tmp/native-shortfids57q/bend2/effs/get_env.js": "9a4fc592e447607553bdb08b194a9ede90dbae3660507687752f58ea42892dba",
+      "/private/tmp/native-shortfids57q/bend2/effs/args.c": "84e12702f78e7cce5d350a3ccc6cfbda66f812496c39f025afe02bdf090880cf",
+      "/private/tmp/native-shortfids57q/bend2/effs/args.js": "ed1a7e7b73ae7fe58ac6d428d2762b66f223f4c70a165570fc5d68dc874ddc0b",
+      "/private/tmp/native-shortfids57q/bend2/effs/process_run.c": "a8ae18d313840eeb1594d762a1cb08c43b632dce83c76c1c5316870b1b20d320",
+      "/private/tmp/native-shortfids57q/bend2/effs/process_run.js": "9ce0c5853ab8059614f115d99b1d0ba845fb23c056a6965a59e645d155bd58c1",
+      "/private/tmp/native-shortfids57q/bend2/effs/random_u32.c": "75429b2b42e00562177fe33a5e18d2730478847f58c4038b048e78131e1b8c0a",
+      "/private/tmp/native-shortfids57q/bend2/effs/random_u32.js": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+      "/private/tmp/native-shortfids57q/bend2/effs/spawn.c": "05e11ae3f1461d9c72440af3b1786c076b418d2faff45639ac25ba464ee73cd5",
+      "/private/tmp/native-shortfids57q/bend2/effs/spawn.js": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+      "/private/tmp/native-shortfids57q/bend2/effs/sleep.c": "1dde3701026517d5272d2ff5344d3a8643bec264dbad9f266fdae1c4aaf7601c",
+      "/private/tmp/native-shortfids57q/bend2/effs/sleep.js": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+      "/private/tmp/native-shortfids57q/bend2/effs/now.c": "fc4c1d87a4fb2ace7d5b6c57b434cc3d953a15bdf213020912df6c17aa2352d6",
+      "/private/tmp/native-shortfids57q/bend2/effs/now.js": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+      "/private/tmp/native-shortfids57q/bend2/effs/thread_count.c": "d4889ed7757dccce03729c9568b88188128f2c1576166a3dc184a8707ed44568",
+      "/private/tmp/native-shortfids57q/bend2/effs/thread_count.js": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+      "/private/tmp/native-shortfids57q/bend2/effs/chan.c": "f20345b3475168e52d431dabc8c8b9347d73b51b5318aae7890b78c94762f4e6",
+      "/private/tmp/native-shortfids57q/bend2/effs/chan.js": "007ff7505af9effc20fccfa3d26eaf89a382d6295839b27df119a1704a3f86d7",
+      "/private/tmp/native-shortfids57q/bend2/effs/file_open.c": "2f5923e325a22eb384edb3fbb023f04ca842d5acd22654983608b575fa7617fa",
+      "/private/tmp/native-shortfids57q/bend2/effs/file_open.js": "dd549f5f05eb896aef9a3a02ffecf2ee902e653f5463be72781edab1cd1180ae",
+      "/private/tmp/native-shortfids57q/bend2/effs/file_read.c": "ab577225fa98a034c09d7eb6326b74808756dc6203b0e2599a459876382f090d",
+      "/private/tmp/native-shortfids57q/bend2/effs/file_read.js": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+      "/private/tmp/native-shortfids57q/bend2/effs/file_size.c": "ed0d74fd6b9f14ea471bfe5dd80ecbb2c5abb6a8406519fb2c7e1a1acf3dd5af",
+      "/private/tmp/native-shortfids57q/bend2/effs/file_size.js": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+      "/private/tmp/native-shortfids57q/bend2/effs/file_write.c": "9da28a35294cbde6a97729be825a31f9cab0b8c9d421a02a4613e688df451214",
+      "/private/tmp/native-shortfids57q/bend2/effs/file_write.js": "4fe307538beb1047add7646f52df6e382a1da5d8999d8fe96969bd5055bc9b59",
+      "/private/tmp/native-shortfids57q/bend2/effs/file_close.c": "033da9beb0b484fbc8784044193bf69004f858f6ad86e0c31b4beb89df1349ca",
+      "/private/tmp/native-shortfids57q/bend2/effs/file_close.js": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+      "/private/tmp/native-shortfids57q/bend2/effs/tcp_listen.c": "efc7528de96abd9f62f299833c1ac7b0e86528292c746b114d2684b5bac52899",
+      "/private/tmp/native-shortfids57q/bend2/effs/tcp_listen.js": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+      "/private/tmp/native-shortfids57q/bend2/effs/tcp_accept.c": "bf7ca1685ed388ce97827ea8379881fbdf5359c7c663ad03eeb8da34bd8584ef",
+      "/private/tmp/native-shortfids57q/bend2/effs/tcp_accept.js": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+      "/private/tmp/native-shortfids57q/bend2/effs/tcp_connect.c": "8d17c097138709d71e9d9e1fbc4255007c5e80c93ee384c4a3510b6ac8d10da3",
+      "/private/tmp/native-shortfids57q/bend2/effs/tcp_connect.js": "a20819822e4ce18c8878b94e6ee70466833415eb9ebc2b6a39b65cabfcc553c9",
+      "/private/tmp/native-shortfids57q/bend2/effs/tcp_send.c": "ed724ef8ce712b113eaac478164802509b41fac4e92435e3df0837d6a8c75632",
+      "/private/tmp/native-shortfids57q/bend2/effs/tcp_send.js": "ea68cc521fa9b5603c3fccebbf19ecebcd26bf1a8af644ff1f13cd14ba9fe733",
+      "/private/tmp/native-shortfids57q/bend2/effs/tcp_recv.c": "249c8789cd2f541ad00068882de16a00870c2f81a8168b0ac7a59db1e3cb0c6f",
+      "/private/tmp/native-shortfids57q/bend2/effs/tcp_recv.js": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+      "/private/tmp/native-shortfids57q/bend2/effs/udp_bind.c": "a1be1bc5c03d430fc6eb43982651073e144872956fadaee98c3700be59352ee3",
+      "/private/tmp/native-shortfids57q/bend2/effs/udp_bind.js": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+      "/private/tmp/native-shortfids57q/bend2/effs/udp_send_to.c": "b3a87e56958d8071a368da2edb4748e9496b3eed58b93d6cb4f8af398dd1011a",
+      "/private/tmp/native-shortfids57q/bend2/effs/udp_send_to.js": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+      "/private/tmp/native-shortfids57q/bend2/effs/udp_recv_from.c": "607085b34605af6c888e1de5c3f5cd8f689f221c71a3ef9e2c50f9ac880b1bae",
+      "/private/tmp/native-shortfids57q/bend2/effs/udp_recv_from.js": "d6f88b08f578f088b4ff257a7e544e4fbbf46f375aee3881ba4d44e25ed890d8",
+      "/private/tmp/native-shortfids57q/bend2/effs/socket_close.c": "abea115d2928d4942a9d89898d2022c0f1b19c52db48d0b060c2356d261bfa77",
+      "/private/tmp/native-shortfids57q/bend2/effs/socket_close.js": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+      "/private/tmp/native-shortfids57q/bend2/effs/listener_close.c": "11f6bac6342a37e97b9656e96bdca7d052ed0a7a0cab3b05ea87657020cfb7a2",
+      "/private/tmp/native-shortfids57q/bend2/effs/listener_close.js": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+      "/private/tmp/native-shortfids57q/bend2/effs/window.c": "1d99fc0dd1640602bc4020e62fd28abef44422429ab9970523d25b050f1e6c18",
+      "/private/tmp/native-shortfids57q/bend2/effs/window_open.js": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+      "/private/tmp/native-shortfids57q/bend2/effs/window_frame.js": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+      "/private/tmp/native-shortfids57q/bend2/effs/window_set_title.js": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+      "/private/tmp/native-shortfids57q/bend2/effs/window_grab.js": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+      "/private/tmp/native-shortfids57q/bend2/effs/window_close.js": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+      "/private/tmp/native-shortfids57q/bend2/effs/audio.c": "f0fac2bee02918b4958ad1e7508945824fcd98ce9a2e7ede657304c4f8905b85",
+      "/private/tmp/native-shortfids57q/bend2/effs/audio_open.js": "6f531ac205dab98dd366111cdcc5eed69fb9058350ca715f3419065cd979b088",
+      "/private/tmp/native-shortfids57q/bend2/effs/audio_write.js": "377d3e938ce3cc9f083c662b69d34e3a0cf391c92ddaf3fca8a4b28c78662da7",
+      "/private/tmp/native-shortfids57q/bend2/effs/audio_close.js": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+      "/private/tmp/native-shortfids57q/evals/native_compiler_host.c": "e3a754c6edf98c467f9837c337bc3e6b4a16a1c15bf4a9fcb7b5ca45f0a4cee2"
+    },
+    "source": "/private/tmp/native-shortfids57q/checkpoints/.bootstrap_compiler_root_v1.bend",
+    "sourceSha256": "e404aea222d4b03b76d33804447bbccd0f7f8712ff7ee95100654525a40f224c",
+    "bridge": "/private/tmp/native-shortfids57q/evals/native_compiler_driver.bend",
+    "eventsFullyValidated": 8796,
+    "codegenTrace": false,
+    "diagnosticOnlyCodegenTiming": false,
+    "ccOptimization": {
+      "level": 1,
+      "flag": "-O1",
+      "officialDefault": false,
+      "diagnosticTradeoff": true
+    },
+    "checkedDefinitions": 8400,
+    "expectedSourceDefinitions": 8400,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+    "compilerSha256": "7505963a0f8a01034767a84dd280681a3443d17c62e018c33549ac63d0732f35",
+    "cPath": "/private/tmp/native-shortfids57q/artifacts/compiler-o1-k-sdk.c",
+    "cSha256": "a13e7d4e32cd5fea6cba603366feb82c873ff9acaf14bcdf30f365a0a50dc22c",
+    "artifact": "/private/tmp/native-shortfids57q/artifacts/compiler-o1-k-sdk",
+    "runtime": {
+      "name": "node",
+      "node": "26.3.0",
+      "heapLimitMiB": 3072,
+      "stackMiB": 256,
+      "manualGC": false,
+      "profiling": null
+    },
+    "validationMs": 1565.673625,
+    "codegenMs": 114105.970791,
+    "elapsedMs": 117679.467834,
+    "artifactSha256": "90af8a9352def7cbfeb055fadd579a2cb64f2be92c264b14d0af3dd1f731aa59",
+    "buildCommand": [
+      "/private/tmp/native-shortfids57q/timed-clang",
+      "-std=c11",
+      "-O1",
+      "/private/tmp/native-shortfids57q/artifacts/compiler-o1-k-sdk.c",
+      "-lpthread",
+      "-lm",
+      "-o",
+      "/private/tmp/native-shortfids57q/artifacts/compiler-o1-k-sdk"
+    ],
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 8342945792,
+      "peakFootprintBytes": 8165500744,
+      "elapsedMs": 242981,
+      "timeoutMs": 600000,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.2.5/bin/bun",
+        "--smol",
+        "/private/tmp/native-shortfids57q/evals/native_compiler_experiment.ts",
+        "--mode=build",
+        "--corpus=/private/tmp/native-shortfids57q/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+        "--artifact=/private/tmp/native-shortfids57q/artifacts/compiler-o1-k-sdk",
+        "--report=/private/tmp/native-shortfids57q/artifacts/build-o1-k-sdk.json",
+        "--cc-opt=1",
+        "--internal=build"
+      ],
+      "label": "Native CPU compiler build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792795857030-aafff7afa517314f.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "lastProgress": {
+      "phase": "clang",
+      "event": "complete",
+      "unixMs": 1792796099978,
+      "pid": 11569,
+      "worker": false,
+      "rssBytes": 33472512,
+      "heapUsedBytes": 3528579,
+      "cpuMs": 166.179,
+      "artifact": "/private/tmp/native-shortfids57q/artifacts/compiler-o1-k-sdk"
+    }
+  },
+  "completeFrozenCompile": {
+    "status": "NATIVE_FULL_COMPILE_PASS",
+    "boundary": {
+      "host": "trusted C file/import loader and serial affine LIFO continuation driver",
+      "sourceAlgorithms": "unchanged canonical Bend parser/expansion/checker/JS library emitter",
+      "hostChecking": false,
+      "hostParsing": false,
+      "embeddedSource": false,
+      "cachedAst": false,
+      "parserFuelRepresentation": "eager native 8M-cell chain per source; JS harness uses lazy cells for the same finite fuel; allocation time remains included in parse",
+      "fuelMemoryEvidence": "per-source native process RSS high-water before/after allocation (not isolated live-byte attribution); guardian samples whole-tree RSS and physical footprint including fuel",
+      "outputPatches": 0,
+      "checksExcluded": 0,
+      "nativeBinaryBootstrap": false
+    },
+    "build": "/private/tmp/native-shortfids57q/artifacts/build-o1-k-sdk.json",
+    "buildSha256": "d34ce22a039d30a167903e31e0bbc5284267ceecc843076ccbbf78f67d0959f6",
+    "protectedPins": {
+      "/private/tmp/native-shortfids57q/evals/native_compiler_experiment.ts": "32c5c70a2ea7fc6176497f1a0b22456574f09cc149a04eaac3dc555f15ac99d8",
+      "/private/tmp/native-shortfids57q/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+      "/private/tmp/native-shortfids57q/bend2/comp.ts": "7505963a0f8a01034767a84dd280681a3443d17c62e018c33549ac63d0732f35",
+      "/private/tmp/native-shortfids57q/evals/native_compiler_driver.bend": "2d662ae3c9e95b074f619b75b4fa1b6a0cbcdcee3d20fcc79d9b191b6dea4ee6",
+      "/private/tmp/native-shortfids57q/evals/native_compiler_host.c": "e3a754c6edf98c467f9837c337bc3e6b4a16a1c15bf4a9fcb7b5ca45f0a4cee2",
+      "/private/tmp/native-shortfids57q/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+      "/private/tmp/native-shortfids57q/evals/heavy_gate.ts": "47a12205abd374fd69d7dac30ee9fb45d7203cad2790870511387cd2efc22251",
+      "/private/tmp/native-shortfids57q/evals/heavy_gate_native.c": "f5aecf8308caebc72dccf8986733b37137d448021ee378302cfcd038381b7aa9",
+      "/private/tmp/native-shortfids57q/checkpoints/compiler-benchmark-release237-v41.corpus.json": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258"
+    },
+    "corpus": "/private/tmp/native-shortfids57q/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+    "corpusSha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+    "ccOptimization": {
+      "level": 1,
+      "flag": "-O1",
+      "officialDefault": false,
+      "diagnosticTradeoff": true
+    },
+    "threads": 1,
+    "multithread": false,
+    "command": [
+      "/private/tmp/native-shortfids57q/artifacts/compiler-o1-k-sdk",
+      "--threads",
+      "1",
+      "--gpu",
+      "off",
+      "--",
+      "/private/tmp/bend-v41-corpus.uXXfVm/checkpoints/.bootstrap_compiler_root_v1.bend",
+      "/private/tmp/bend-v41-corpus.uXXfVm/bend2/base.bend",
+      "/private/tmp/native-shortfids57q/artifacts/frozen-compile-complete.json.runtime.tsv",
+      "/private/tmp/native-shortfids57q/artifacts/frozen-compile-complete.json.exports.txt",
+      "compile",
+      "/private/tmp/native-shortfids57q/artifacts/frozen-compile-complete.json.mjs"
+    ],
+    "elapsedMs": 104665.847792,
+    "phases": [
+      {
+        "phase": "parse",
+        "elapsedMs": 3644.196,
+        "userCpuMs": 3613.115,
+        "systemCpuMs": 29.488,
+        "modules": 15,
+        "sourceBytes": 4333108,
+        "foreignBytes": 25145,
+        "eagerFuelCells": 120000000,
+        "fuelBuildMs": 123.047
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 6081.754,
+        "userCpuMs": 6047.945,
+        "systemCpuMs": 14.743,
+        "calls": 950796,
+        "resumes": 950796
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 79895.09,
+        "userCpuMs": 79115.473,
+        "systemCpuMs": 297.834,
+        "calls": 14472521,
+        "resumes": 14472521
+      },
+      {
+        "phase": "emit",
+        "elapsedMs": 13014.165,
+        "userCpuMs": 12923.887,
+        "systemCpuMs": 63.356,
+        "calls": 641283,
+        "resumes": 641283
+      }
+    ],
+    "phaseStarts": [
+      {
+        "phase": "parse"
+      },
+      {
+        "phase": "expand"
+      },
+      {
+        "phase": "check"
+      },
+      {
+        "phase": "emit"
+      }
+    ],
+    "fuel": [
+      {
+        "sourceOrdinal": 1,
+        "cells": 8000000,
+        "elapsedMs": 25.106,
+        "processPeakRssBeforeBytes": 4702208,
+        "processPeakRssAfterBytes": 68730880
+      },
+      {
+        "sourceOrdinal": 2,
+        "cells": 8000000,
+        "elapsedMs": 5.807,
+        "processPeakRssBeforeBytes": 117440512,
+        "processPeakRssAfterBytes": 117440512
+      },
+      {
+        "sourceOrdinal": 3,
+        "cells": 8000000,
+        "elapsedMs": 5.352,
+        "processPeakRssBeforeBytes": 117768192,
+        "processPeakRssAfterBytes": 117768192
+      },
+      {
+        "sourceOrdinal": 4,
+        "cells": 8000000,
+        "elapsedMs": 5.241,
+        "processPeakRssBeforeBytes": 117800960,
+        "processPeakRssAfterBytes": 117800960
+      },
+      {
+        "sourceOrdinal": 5,
+        "cells": 8000000,
+        "elapsedMs": 5.419,
+        "processPeakRssBeforeBytes": 117866496,
+        "processPeakRssAfterBytes": 117866496
+      },
+      {
+        "sourceOrdinal": 6,
+        "cells": 8000000,
+        "elapsedMs": 6.164,
+        "processPeakRssBeforeBytes": 117866496,
+        "processPeakRssAfterBytes": 117866496
+      },
+      {
+        "sourceOrdinal": 7,
+        "cells": 8000000,
+        "elapsedMs": 5.501,
+        "processPeakRssBeforeBytes": 118128640,
+        "processPeakRssAfterBytes": 118128640
+      },
+      {
+        "sourceOrdinal": 8,
+        "cells": 8000000,
+        "elapsedMs": 5.927,
+        "processPeakRssBeforeBytes": 122028032,
+        "processPeakRssAfterBytes": 122028032
+      },
+      {
+        "sourceOrdinal": 9,
+        "cells": 8000000,
+        "elapsedMs": 5.949,
+        "processPeakRssBeforeBytes": 122060800,
+        "processPeakRssAfterBytes": 122060800
+      },
+      {
+        "sourceOrdinal": 10,
+        "cells": 8000000,
+        "elapsedMs": 5.364,
+        "processPeakRssBeforeBytes": 124616704,
+        "processPeakRssAfterBytes": 124616704
+      },
+      {
+        "sourceOrdinal": 11,
+        "cells": 8000000,
+        "elapsedMs": 11.102,
+        "processPeakRssBeforeBytes": 300662784,
+        "processPeakRssAfterBytes": 300662784
+      },
+      {
+        "sourceOrdinal": 12,
+        "cells": 8000000,
+        "elapsedMs": 7.603,
+        "processPeakRssBeforeBytes": 300695552,
+        "processPeakRssAfterBytes": 300695552
+      },
+      {
+        "sourceOrdinal": 13,
+        "cells": 8000000,
+        "elapsedMs": 9.185,
+        "processPeakRssBeforeBytes": 300695552,
+        "processPeakRssAfterBytes": 300695552
+      },
+      {
+        "sourceOrdinal": 14,
+        "cells": 8000000,
+        "elapsedMs": 8.968,
+        "processPeakRssBeforeBytes": 300695552,
+        "processPeakRssAfterBytes": 300695552
+      },
+      {
+        "sourceOrdinal": 15,
+        "cells": 8000000,
+        "elapsedMs": 10.359,
+        "processPeakRssBeforeBytes": 301137920,
+        "processPeakRssAfterBytes": 301137920
+      }
+    ],
+    "result": {
+      "result": "EmitSuccess",
+      "bytes": 14101164,
+      "modules": 15
+    },
+    "semanticSmoke": {
+      "status": "NOT_REQUESTED"
+    },
+    "output": "/private/tmp/native-shortfids57q/artifacts/frozen-compile-complete.json.mjs",
+    "outputSha256": "eb3d374abac9f7e45067174e75c1074966d933467402866eece29556f307559a",
+    "outputBytes": 14101164,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 1351630848,
+      "peakFootprintBytes": 1301612680,
+      "elapsedMs": 104823,
+      "timeoutMs": 300000,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.2.5/bin/bun",
+        "--smol",
+        "/private/tmp/native-shortfids57q/evals/native_compiler_experiment.ts",
+        "--mode=run",
+        "--corpus=/private/tmp/native-shortfids57q/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+        "--build=/private/tmp/native-shortfids57q/artifacts/build-o1-k-sdk.json",
+        "--report=/private/tmp/native-shortfids57q/artifacts/frozen-compile-complete.json",
+        "--phase=compile",
+        "--threads=1",
+        "--exports=/private/tmp/native-shortfids57q/checkpoints/compiler-benchmark-ir57-official-a.json.exports.json",
+        "--internal=run"
+      ],
+      "label": "Native CPU compiler run",
+      "exitCode": 0,
+      "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792796114912-cad0aeb3e03e6a04.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "lastProgress": {
+      "phase": "emit",
+      "event": "complete",
+      "unixMs": 1792796218828,
+      "pid": 13601,
+      "worker": false,
+      "rssBytes": 78184448,
+      "heapUsedBytes": 2801748,
+      "cpuMs": 187.383,
+      "native": {
+        "phase": "emit",
+        "elapsedMs": 13014.165,
+        "userCpuMs": 12923.887,
+        "systemCpuMs": 63.356,
+        "calls": 641283,
+        "resumes": 641283
+      }
+    },
+    "exportsCount": 7720,
+    "exportsOrderedJsonSha256": "99efc6ef8538e35f5b6f549e39296bae814e654d48558f9ca7ba2aae2b1911f4",
+    "expectedExportReceiptSha256": "b49ac17d858cff20e3ea8b88f3068b52ca6d0d2045684d4c17d7f318bd3aba18"
+  },
+  "actualUnchangedFrozenConsumer": {
+    "status": "PASS",
+    "kind": "actual unchanged native emitted frozen-v41 library consumer",
+    "output": "/private/tmp/native-shortfids57q/consumer/artifacts/frozen-compile.json.mjs",
+    "outputPatches": 0,
+    "fixedpoint": false,
+    "exports": 7720,
+    "exportSetSha256": "99efc6ef8538e35f5b6f549e39296bae814e654d48558f9ca7ba2aae2b1911f4",
+    "parserPassed": true,
+    "checkerPassed": true,
+    "outputSha256": "eb3d374abac9f7e45067174e75c1074966d933467402866eece29556f307559a",
+    "outputBytes": 14101164,
+    "runtimeSha256": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+    "exportsReceiptSha256": "b49ac17d858cff20e3ea8b88f3068b52ca6d0d2045684d4c17d7f318bd3aba18",
+    "manifestSha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+    "elapsedMs": 239.818542,
+    "cpuMs": 259.563,
+    "maxRssBytes": 306724864
+  },
+  "canonicalNativeForeignConsumers": {
+    "commands": [
+      [
+        "bun",
+        "--smol",
+        "bend2/main.ts",
+        "tests/io/foreign_runtime_apply.bend",
+        "-o",
+        "/private/tmp/ir57q-foreign-apply.c"
+      ],
+      [
+        "clang",
+        "-std=c11",
+        "-O1",
+        "/private/tmp/ir57q-foreign-apply.c",
+        "-lpthread",
+        "-lm",
+        "-o",
+        "/private/tmp/ir57q-foreign-apply"
+      ],
+      [
+        "/private/tmp/ir57q-foreign-apply",
+        "--threads",
+        "1",
+        "--gpu",
+        "off"
+      ],
+      [
+        "bun",
+        "--smol",
+        "bend2/main.ts",
+        "tests/io/foreign_types.bend",
+        "-o",
+        "/private/tmp/ir57q-foreign-types.c"
+      ],
+      [
+        "clang",
+        "-std=c11",
+        "-O1",
+        "/private/tmp/ir57q-foreign-types.c",
+        "-lpthread",
+        "-lm",
+        "-o",
+        "/private/tmp/ir57q-foreign-types"
+      ],
+      [
+        "/private/tmp/ir57q-foreign-types",
+        "--threads",
+        "1",
+        "--gpu",
+        "off"
+      ]
+    ],
+    "actualStdout": [
+      "42\n",
+      "77\n"
+    ],
+    "allExitZero": true,
+    "fixturesUnchanged": true
+  },
+  "canonicalCompleteSeed": {
+    "status": "JS_GENERATED_NOT_YET_EXECUTED",
+    "provenancePath": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57q-full-a-native-build.provenance.json",
+    "provenanceSha256": "4452f482229f965c5f4395dadfe600e605bb495c81bc2384fa2f4fd649a158e3",
+    "sourcePath": "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_v1.bend",
+    "sourceSha256": "e404aea222d4b03b76d33804447bbccd0f7f8712ff7ee95100654525a40f224c",
+    "exports": [
+      "parsed_module",
+      "parse_with_fuel",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step"
+    ],
+    "artifactPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57q-full-a.js",
+    "artifactSha256": "c27cead81e2171be74d19061c5307c216c2c840e66dc422e3007ae03537f068a",
+    "bytes": 12739684,
+    "eventsFullyValidated": 8772,
+    "checkedDefinitions": 8382,
+    "liveBodies": 8382,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "checkedOutputRetention": "native e",
+    "nativeRetention": "native checked e retained through all JS definition folding; scope-local higher caches released between definitions; no serialization or source-value fallback",
+    "nativeCheckedBodies": 8382,
+    "expectedSourceDefinitions": 8382,
+    "toolchain": "CANONICAL NATIVE LOAD/CHECK; CANONICAL JS PREPARE/EMIT/RELEASE; Node/V8 automatic GC",
+    "preparedCount": 8097,
+    "releasedCount": 8490,
+    "maxSimultaneousE": 8382,
+    "maxSimultaneousH": 2,
+    "countsCaveat": "Definition slots, not unique term graphs; signature metadata does not prepare higher bodies",
+    "runtime": {
+      "name": "node",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "heapLimitMiB": 3072,
+      "stackSizeMb": 256,
+      "heapSizeLimitBytes": 3271557120,
+      "manualGC": false
+    },
+    "cpuMs": 35412.566,
+    "compiledExecution": "NOT_RUN",
+    "selfhostGreen": false,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 2900164608,
+      "peakFootprintBytes": 2965664632,
+      "elapsedMs": 25347,
+      "timeoutMs": 600000,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/Users/ilyagulya/Projects/My/bend/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_v1.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step",
+        "--artifact=/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57q-full-a.js",
+        "--report=/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57q-full-a-native-build",
+        "--inputs-sha256=d6501e1cb07fd6ae96ed1d96d69eb20e31313a3391a7ce5730630d528081c5a2"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792797197144-c8995ec4f7f0f755.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "seedByteEquivalence": {
+    "actualCmpExitCode": 0,
+    "against": "checkpoints/.ir57k-full-a.js",
+    "sha256": "c27cead81e2171be74d19061c5307c216c2c840e66dc422e3007ae03537f068a",
+    "bytes": 12739684,
+    "scope": "Fresh schema4 every-body native proof with canonical57q producer. Unchanged Bend source/program image gives the same established K genuine byte fixedpoint and285 behavior; not a new600s monolithic run.",
+    "rootSourceSha256": "e404aea222d4b03b76d33804447bbccd0f7f8712ff7ee95100654525a40f224c",
+    "establishedKRootSourceSha256": "e404aea222d4b03b76d33804447bbccd0f7f8712ff7ee95100654525a40f224c"
+  },
+  "rejectedDisableLlvmPasses": {
+    "kind": "explicit O1 disable LLVM passes isolated exact currentK C compilation flag tradeoff, not same-flags source speed attribution",
+    "remoteNamespace": "/private/tmp/native57q-noir-GSWCSErp",
+    "executions": [
+      {
+        "stage": "isolated-clang",
+        "command": [
+          "bun",
+          "--smol",
+          "/private/tmp/native57q-noir-GSWCSErp/guard.ts",
+          "build"
+        ],
+        "exitCode": 2,
+        "wallMs": 307201.257708
+      }
+    ],
+    "endToEndCodegenBuildRunMs": null,
+    "codegenRepeated": false,
+    "otherRunCodegenTimingIncluded": false,
+    "expectedCurrentKOutputSha256": "eb3d374abac9f7e45067174e75c1074966d933467402866eece29556f307559a",
+    "isolatedClangTime": {
+      "rawLog": "/private/tmp/native57q-noir-GSWCSErp/artifacts/isolated-clang.stderr.log",
+      "realSeconds": null,
+      "userSeconds": null,
+      "systemSeconds": null,
+      "maxRssBytes": null
+    },
+    "postflight": {
+      "sourceAndCUnchanged": true,
+      "checkedDefinitions": 8400,
+      "expectedSourceDefinitions": 8400,
+      "eventsFullyValidated": 8796,
+      "actualConsumerUnchanged": true
+    },
+    "status": "FAIL",
+    "build": {
+      "status": "FAIL",
+      "boundary": {
+        "host": "trusted C file/import loader and serial affine LIFO continuation driver",
+        "sourceAlgorithms": "unchanged canonical Bend parser/expansion/checker/JS library emitter",
+        "hostChecking": false,
+        "hostParsing": false,
+        "embeddedSource": false,
+        "cachedAst": false,
+        "parserFuelRepresentation": "eager native 8M-cell chain per source; JS harness uses lazy cells for the same finite fuel; allocation time remains included in parse",
+        "fuelMemoryEvidence": "per-source native process RSS high-water before/after allocation (not isolated live-byte attribution); guardian samples whole-tree RSS and physical footprint including fuel",
+        "outputPatches": 0,
+        "checksExcluded": 0,
+        "nativeBinaryBootstrap": false
+      },
+      "source": "/private/tmp/native-structural57p-keys-loop/checkpoints/.bootstrap_compiler_root_v1.bend",
+      "sourceSha256": "e404aea222d4b03b76d33804447bbccd0f7f8712ff7ee95100654525a40f224c",
+      "bridge": "/private/tmp/native-structural57p-keys-loop/evals/native_compiler_driver.bend",
+      "eventsFullyValidated": 8796,
+      "checkedDefinitions": 8400,
+      "expectedSourceDefinitions": 8400,
+      "checksExcluded": 0,
+      "outputPatches": 0,
+      "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+      "compilerSha256": "9fc96bda52864b8d27b5c81d29b21c30b8a370eb8826362385ef73d2ee0a6200",
+      "cPath": "/private/tmp/native-structural57p-keys-loop/artifacts/compiler-o1-k.c",
+      "cSha256": "96d6fc902f977b8816ca8db5cef6e1f90246636a1bc129078db938bcc9c7f1f5",
+      "artifact": "/private/tmp/native57q-noir-GSWCSErp/artifacts/compiler-o1-noir",
+      "artifactSha256": null,
+      "ccOptimization": {
+        "level": 1,
+        "flag": "-O1 -Xclang -disable-llvm-passes",
+        "officialDefault": false,
+        "diagnosticTradeoff": true
+      },
+      "buildCommand": [
+        "/usr/bin/time",
+        "-lp",
+        "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang",
+        "-std=c11",
+        "-O1",
+        "-Xclang",
+        "-disable-llvm-passes",
+        "/private/tmp/native-structural57p-keys-loop/artifacts/compiler-o1-k.c",
+        "-lpthread",
+        "-lm",
+        "-o",
+        "/private/tmp/native57q-noir-GSWCSErp/artifacts/compiler-o1-noir"
+      ],
+      "guardian": {
+        "status": "RESOURCE_LIMIT",
+        "reason": "physical_footprint_limit",
+        "commandExitCode": -1,
+        "commandSignal": 15,
+        "peakRssBytes": 6163808256,
+        "peakFootprintBytes": 8594021624,
+        "elapsedMs": 306856,
+        "timeoutMs": 600000,
+        "command": [
+          "/usr/bin/time",
+          "-lp",
+          "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang",
+          "-std=c11",
+          "-O1",
+          "-Xclang",
+          "-disable-llvm-passes",
+          "/private/tmp/native-structural57p-keys-loop/artifacts/compiler-o1-k.c",
+          "-lpthread",
+          "-lm",
+          "-o",
+          "/private/tmp/native57q-noir-GSWCSErp/artifacts/compiler-o1-noir"
+        ],
+        "label": "Native57Q isolated exact currentK O1 disable LLVM passes compilation",
+        "exitCode": 73,
+        "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792796233036-9ef7a742769d03ab.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "provenance": {
+        "kind": "isolated recompilation of immutable previously validated generated currentK C; compiler-flag tradeoff, not same-flags source speed attribution",
+        "sourceValidationReceipt": "/private/tmp/native-structural57p-keys-loop/artifacts/build-o1-k.json",
+        "sourceValidationReceiptSha256": "186efabbadf7480d5f60c1015e659e1c80dad444180870a98c7418233f0e4c4c",
+        "inheritedValidationOnly": true,
+        "parentBuildStatus": "RESOURCE_LIMIT",
+        "SDKROOT": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.5.sdk",
+        "clangVersion": "Apple clang version 21.0.0 (clang-2100.1.1.101)\nTarget: arm64-apple-darwin25.5.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\n",
+        "codegenRepeated": false,
+        "endToEndBuildTimingAvailable": false
+      }
+    }
+  },
+  "limitations": [
+    "One successful current-root clang build under8GiB has narrow RSS headroom; no precise causal peak-memory reduction claim from a censored failing baseline.",
+    "Build242981ms + full frozen compile104823ms =347804ms in separate guarded commands, not a <=300s end-to-end run. Official same-corpus compilation32002.610417ms remains faster.",
+    "Original600s monolithic selfhost gate remains honestly FAIL; correctness is independently complete byte fixedpoint plus all285 actual behavior executions.",
+    "First public private build failed missing SDKROOT/math.h; corrected fresh full build under SDKROOT passed. First frozen attempt lacked captured export receipt before execution; corrected fresh run with exact historical receipt passed."
+  ],
+  "selectedPerformanceBaseline": "55/2b3efa80",
+  "performanceAccepted": false
+}

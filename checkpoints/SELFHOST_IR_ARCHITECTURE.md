@@ -2,14 +2,22 @@
 
 ## Статус и границы
 
-Это архитектурный контракт текущего перехода compiler57, а не отчёт о принятой
-версии. Рабочая native-версия55 остаётся базовой. Для полного compiler root57k
+Это архитектурный контракт принятого functional FIR/BIR cutover compiler57,
+не performance acceptance. Рабочая performance-версия55 остаётся базовой. Для полного compiler root57k
 реально получены два неизменённых emitted JS stage с точным byte fixedpoint;
 frozen corpus и7720-export consumer также прошли. Все285 seed/stage1/stage2
 behavior executions завершены со свежим parsing и native AST/span parity.
 Performance acceptance остаётся открытой; исходный monolithic600s gate red.
 Нельзя переносить доказательства на изменённые checker, lowering или runtime ABI
 без новой проверки.
+В57q current native C root8400/8796 реально собранO1 под прежним8GiB guard и
+выполнил полный frozen compile/7720 consumer. Короткие private C symbols и
+allocation-tight native coverage comparison сохраняют точные root source/JS seed
+bytesK; новый native-produced seed повторно проверен полностью. Build+run347804ms
+выше цели300s; исходный monolithic gate не перекрашен. Следующий typed first-order
+CPS continuation experiment меняет Progress ABI и требует новой полной проверки:
+generic affine type model сам по себе её не заменяет.
+
 
 Единственный источник этого контракта — этот файл; оперативный статус, команды,
 хеши и результаты находятся в SELFHOST_HANDOFF.md и компактных version receipts.
