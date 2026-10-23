@@ -35,6 +35,13 @@ stripped executable TS-transpile bytes совпали SHA90c3ef4f58ba4b7b9e2414c
 тот же root source SHAe404aea... и JS c27cead...; foreign C consumers actual42/77.
 Отключение LLVM passes в отдельном57q experiment упёрлось в physical8GiB после306856ms:
 отвергнуто, output/binary отсутствует. O0 тоже отвергнут, guard не повышать.
+57s shorteningCID тоже отвергнут: current8400/8796 native bodies/C emission прошли,
+codegen92780.613ms, но clangO1 превысил RSS8GiB за151850ms
+(8590475264RSS/7125802760physical). Binary/runtime/consumer не получены;
+source delta НЕ интегрирован, process_run.c остался прежним. Receipt57s сохраняет failure.
+Удалены completed own rawM/P/S namespaces после compact evidence; успешные
+self-contained57q/57h snapshots и finalK/N proof transports сохранены.
+Последний измеренный checkpoints10014448KiB (~9.55GiB), не прежние100GiB.
 57r first-order resume experiment завершён и ОБА implementations отвергнуты дляJS:
 полные checker/emitter/template bodies проверены, Base/type/affine consumers верны,
 но same-host untraced Node22.22.1 rounds дают canonical4.686s, Frame+Leaf15.243s,
