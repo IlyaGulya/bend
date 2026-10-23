@@ -24,7 +24,6 @@ type MatchChainState is Data:
 type PatternScanMode is Data:
   PatternExpect{quantity: Ast.Quantity, beg: Nat}
   PatternCompleted{pattern: Ast.SyntaxPattern}
-  PatternNoNat{number: Lexer.Token, quantity: Ast.Quantity, beg: Nat, end: Nat}
   PatternBadNat{beg: Nat, end: Nat}
 
 type PatternFrame is Data:
@@ -1088,12 +1087,22 @@ def parse_number_float_result(result: Nat & Bool, +file: String, +beg: Nat, +end
     case (_, False{}):
       ((Ast.TermHole{"parse-error: unsupported or non-finite numeric literal", span(file, beg, end)}, rest), False{})
 
-def parse_number_missing_nat(has_suffix: Bool, file: String, text: String, beg: Nat, end: Nat, rest: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
-  match has_suffix:
+def parse_scalar_number_range(in_range: Bool, file: String, value: Nat, beg: Nat, end: Nat, rest: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+  match in_range:
     case True{}:
-      ((Ast.TermHole{ "parse-error: invalid natural literal",  span(file, beg, end)}, rest), False{})
+      ((u32_literal(file, value, beg, end), rest), True{})
     case False{}:
+      ((Ast.TermHole{"parse-error: unsigned integer literal exceeds 4294967295", span(file, beg, end)}, rest), False{})
+
+def parse_scalar_number_read(result: Maybe<&2, Nat>, file: String, text: String, beg: Nat, end: Nat, rest: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+  match result:
+    case Some{+value}:
+      parse_scalar_number_range(Nat.is_le(value, 4294967295n), file, value, beg, end, rest)
+    case None{}:
       parse_number_float_result(float32_bits(text), file, beg, end, rest)
+
+def parse_scalar_number(file: String, +text: String, beg: Nat, end: Nat, rest: List<&2, Lexer.Token>) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+  parse_scalar_number_read(Nat.read(text), file, text, beg, end, rest)
 
 def make_tuple_cons(first: Ast.SyntaxTerm, result: Ast.SyntaxTerm & Bool, file: String, beg: Nat, end: Nat) -> Ast.SyntaxTerm & Bool:
   match result:
@@ -2104,12 +2113,12 @@ def pattern_nat_read(result: Maybe<&2, Nat>, file: String, tokens: List<&2, Lexe
     case None{}:
       pattern_finish(goal, Ast.PatternVar{"", depth, Ast.QOne{}, span(file, beg, end)}, tokens, scope, depth, False{})
 
-def pattern_number_start(is_nat: Bool, +file: String, text: String, +beg: Nat, +end: Nat, line: Nat, col: Nat, quantity: Ast.Quantity, tokens: List<&2, Lexer.Token>, frames: List<&2, PatternFrame>, scope: List<&2, Scope>, depth: Nat, goal: PatternScanGoal) -> PatternScanOutcome:
+def pattern_number_start(is_nat: Bool, +file: String, text: String, +beg: Nat, +end: Nat, tokens: List<&2, Lexer.Token>, frames: List<&2, PatternFrame>, scope: List<&2, Scope>, depth: Nat, goal: PatternScanGoal) -> PatternScanOutcome:
   match is_nat:
     case True{}:
       pattern_nat_read(Nat.read(drop_nat_suffix(text)), file, tokens, beg, end, frames, scope, depth, goal)
     case False{}:
-      pattern_scan(tokens, file, PatternNoNat{Lexer.TokenInfo{Lexer.NumberToken{}, text, beg, end, line, col}, quantity, beg, end}, frames, scope, depth, goal)
+      pattern_literal_result(parse_scalar_number(file, text, beg, end, tokens), file, beg, end, frames, scope, depth, goal)
 
 def pattern_finish(goal: PatternScanGoal, +pattern: Ast.SyntaxPattern, after: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat, ok: Bool) -> PatternScanOutcome:
   match goal ok:
@@ -2252,10 +2261,8 @@ def pattern_scan(+tokens: List<&2, Lexer.Token>, +file: String, mode: PatternSca
       pattern_scan(rest, file, PatternCompleted{Ast.PatternVar{key, depth, Ast.QOne{}, span(file, beg, end)}}, frames, extend_scope(key, depth, scope), (depth + 1n : Nat), goal)
     case Lexer.TokenInfo{Lexer.NameToken{}, +key, _, end, _, _} <> +rest PatternExpect{quantity, beg}:
       pattern_scan(rest, file, PatternCompleted{Ast.PatternVar{key, depth, quantity, span(file, beg, end)}}, frames, extend_scope(key, depth, scope), (depth + 1n : Nat), goal)
-    case Lexer.TokenInfo{Lexer.NumberToken{}, +text, +beg, +end, line, col} <> +rest PatternExpect{quantity, _}:
-      pattern_number_start(has_nat_suffix(text), file, text, beg, end, line, col, quantity, rest, frames, scope, depth, goal)
-    case _ PatternNoNat{number, quantity, beg, end}:
-      pattern_finish(goal, Ast.PatternVar{"", depth, quantity, span(file, beg, end)}, number <> tokens, scope, depth, False{})
+    case Lexer.TokenInfo{Lexer.NumberToken{}, +text, +beg, +end, _, _} <> +rest PatternExpect{_, _}:
+      pattern_number_start(has_nat_suffix(text), file, text, beg, end, rest, frames, scope, depth, goal)
     case _ PatternBadNat{beg, end}:
       pattern_finish(goal, Ast.PatternVar{"", depth, Ast.QOne{}, span(file, beg, end)}, tokens, scope, depth, False{})
     case Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _} <> +rest PatternExpect{quantity, beg}:
@@ -2707,34 +2714,23 @@ def parse_number(file: String, +text: String, beg: Nat, end: Nat, rest: List<&2,
 def parse_number_suffix(has_suffix: Bool, file: String, +text: String, beg: Nat, end: Nat, rest: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match has_suffix:
     case True{}:
-      parse_number_nat_result(Nat.read(drop_nat_suffix(text)), True{}, file, text, beg, end, rest, scope, depth)
+      parse_number_nat_result(Nat.read(drop_nat_suffix(text)), file, beg, end, rest, scope, depth)
     case False{}:
-      parse_number_nat_result(Nat.read(text), False{}, file, text, beg, end, rest, scope, depth)
+      parse_scalar_number(file, text, beg, end, rest)
 
-def parse_number_nat_result(result: Maybe<&2, Nat>, has_suffix: Bool, file: String, text: String, beg: Nat, end: Nat, rest: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+def parse_number_nat_result(result: Maybe<&2, Nat>, file: String, beg: Nat, end: Nat, rest: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match result:
     case Some{+value}:
-      parse_number_nat_range(Nat.is_le(value, 4294967295n), has_suffix, value, file, beg, end, rest, scope, depth)
+      parse_number_nat_range(Nat.is_le(value, 4294967295n), value, file, beg, end, rest, scope, depth)
     case None{}:
-      parse_number_missing_nat(has_suffix, file, text, beg, end, rest)
+      ((Ast.TermHole{"parse-error: invalid natural literal", span(file, beg, end)}, rest), False{})
 
-def parse_number_nat_range(in_range: Bool, has_suffix: Bool, value: Nat, file: String, beg: Nat, end: Nat, rest: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+def parse_number_nat_range(in_range: Bool, value: Nat, file: String, beg: Nat, end: Nat, rest: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match in_range:
-    case True{}:
-      parse_number_nat_value(has_suffix, value, file, beg, end, rest, scope, depth)
-    case False{}:
-      match has_suffix:
-        case True{}:
-          ((Ast.TermHole{ "parse-error: natural literal exceeds 4294967295",  span(file, beg, end)}, rest), False{})
-        case False{}:
-          ((Ast.TermHole{ "parse-error: unsigned integer literal exceeds 4294967295",  span(file, beg, end)}, rest), False{})
-
-def parse_number_nat_value(has_suffix: Bool, value: Nat, file: String, beg: Nat, end: Nat, rest: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
-  match has_suffix:
     case True{}:
       parse_nat_literal(file, value, beg, end, rest, scope, depth)
     case False{}:
-      ((u32_literal(file, value, beg, end), rest), True{})
+      ((Ast.TermHole{"parse-error: natural literal exceeds 4294967295", span(file, beg, end)}, rest), False{})
 
 def parse_nat_literal_plus(adjacent: Bool, +file: String, value: Nat, beg: Nat, end: Nat, tokens: List<&2, Lexer.Token>, +rest: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match adjacent:

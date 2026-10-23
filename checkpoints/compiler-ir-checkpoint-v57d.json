@@ -1,0 +1,648 @@
+{
+  "schemaVersion": 1,
+  "version": "57d",
+  "previousCheckpoint": "2d2361b3",
+  "status": "CORRECTED_CANONICAL_SOURCES_AWAITING_FULL_ROOT_ACCEPTANCE",
+  "acceptedFullCompilerBaseline": "2b3efa80",
+  "parserFix": {
+    "source": "bend2/selfhost/parser.bend",
+    "sha256": "eade8cec5cb889d4e2ac346b5afaf363e09823862cd46acdb6e4271f6a7501dd",
+    "partitionGenerator": "evals/pattern_scan_partition_source.ts",
+    "partitionGeneratorSha256": "500e44c9222b23036de2c524cf38fc3dc294d2a8820ab06139eeff9cdbe3ca47",
+    "behavior": "Unsigned and F32 patterns use the same scalar-number parser as expressions; natural prefix patterns retain separate adjacency/quantity handling. Removed obsolete PatternNoNat state and its partition-generator branch.",
+    "numericProbe": {
+      "passed": true,
+      "scope": "Actual compiled canonical parser numeric-pattern behavior; not compiler-root/fixedpoint acceptance",
+      "componentSha256": "1464037ba20c190ea51083d5824665fa665ce8d5657264544f4515e2339a3ee0",
+      "nativeCheckedBodies": 1601,
+      "checksExcluded": 0,
+      "outputPatches": 0,
+      "rows": [
+        {
+          "source": "def f(x: U32, y: U32) -> U32:\n  match x:\n    case 0: 0\n",
+          "expected": {
+            "key": "U32",
+            "value": 0
+          },
+          "observed": {
+            "key": "U32",
+            "value": 0
+          },
+          "passed": true
+        },
+        {
+          "source": "def f(x: U32, y: U32) -> U32:\n  match x:\n    case 1: 0\n",
+          "expected": {
+            "key": "U32",
+            "value": 1
+          },
+          "observed": {
+            "key": "U32",
+            "value": 1
+          },
+          "passed": true
+        },
+        {
+          "source": "def f(x: U32, y: U32) -> U32:\n  match x:\n    case 4294967295: 0\n",
+          "expected": {
+            "key": "U32",
+            "value": 4294967295
+          },
+          "observed": {
+            "key": "U32",
+            "value": 4294967295
+          },
+          "passed": true
+        },
+        {
+          "source": "def f(x: U32, y: U32) -> U32:\n  match x:\n    case 1.5: 0\n",
+          "expected": {
+            "key": "F32",
+            "value": 1069547520
+          },
+          "observed": {
+            "key": "F32",
+            "value": 1069547520
+          },
+          "passed": true
+        },
+        {
+          "source": "def f(x: U32, y: U32) -> U32:\n  match x:\n    case Box{0}: 0\n",
+          "nestedConstructorPattern": true,
+          "passed": true
+        },
+        {
+          "source": "def f(x: U32, y: U32) -> U32:\n  match x y:\n    case 0 1: 0\n",
+          "multipleScrutinees": true,
+          "passed": true
+        },
+        {
+          "source": "def f(x: U32, y: U32) -> U32:\n  match x:\n    case 4294967296: 0\n",
+          "expected": "ParseFailure",
+          "observed": "ParseFailure",
+          "passed": true
+        },
+        {
+          "source": "def f(x: U32, y: U32) -> U32:\n  match x:\n    case 1e999: 0\n",
+          "expected": "ParseFailure",
+          "observed": "ParseFailure",
+          "passed": true
+        }
+      ]
+    },
+    "regression": "Existing complete current-source parser gate rejected owned-checker nested U32 zero and emitter multi-scrutinee U32 patterns before the fix. After the fix, acceptance parity holds on all75 cases, including negative cases; semantic normalization still rejects an unsupported computed destructure in the new canonical js_emit."
+  },
+  "canonicalNativeMatchCutover": [
+    {
+      "path": "bend2/selfhost/js_emit.bend",
+      "originalSha256": "6c164705d300631ddee658cd6746179bd47e04c83eaa864180a9300757c361b8",
+      "transformedSha256": "ed49ff118bd333ad9fd3d031a7b229d6d893001f7dbc6814046e9d510f04a240",
+      "extractions": 150,
+      "owners": [
+        "state_problem",
+        "node",
+        "name",
+        "operation",
+        "resolve_owner",
+        "bind_slot",
+        "capture_argument",
+        "close",
+        "call_reference",
+        "field_value",
+        "construct_native",
+        "constructor_operands",
+        "reference_kind",
+        "literal_word",
+        "literal_string_items",
+        "spine",
+        "application_header",
+        "application_native",
+        "application_direct",
+        "application_direct_values",
+        "argument_prefix",
+        "apply_rest",
+        "partial",
+        "patterns",
+        "pattern",
+        "pattern_scalar",
+        "pattern_fields",
+        "lower_values",
+        "new_parameters",
+        "checked_cases",
+        "match_values",
+        "split_occurrences",
+        "lower_match",
+        "lower",
+        "lower_node",
+        "application_checked",
+        "constructor_checked",
+        "lambda_checked",
+        "absurd_checked",
+        "local_values",
+        "let_checked",
+        "let_bindings",
+        "scalar_literal_native",
+        "matcher_constructor",
+        "matcher_fields",
+        "definition_frame",
+        "definition_body",
+        "definition_closed",
+        "template_binders",
+        "template_declarations",
+        "template_constructors",
+        "template_modules"
+      ],
+      "transformer": "evals/native_match_source.ts",
+      "transformerSha256": "ef744c5b0c22f50bf5a659dd81836136f5a488fdc62de895ef3cd22b04a34bb6"
+    },
+    {
+      "path": "bend2/selfhost/lower_catalog.bend",
+      "originalSha256": "e9cca759b90f049215933a0c7ba95ce1ce40f7ba04159915a6a1ca86986e206b",
+      "transformedSha256": "51faef9846748253b0a43f38b509cf863386fe93ee0558edbe1f475b62fd0f1e",
+      "extractions": 135,
+      "owners": [
+        "descriptor",
+        "descriptor_name",
+        "descriptors",
+        "descriptor_patterns",
+        "descriptor_pattern",
+        "descriptor_sugar",
+        "descriptor_node",
+        "descriptor_cases",
+        "descriptor_case",
+        "telescope",
+        "telescope_binder",
+        "insert_definition",
+        "insert_constructor",
+        "needed_ref",
+        "needed_definition",
+        "needed_terms",
+        "needed_pair",
+        "needed_term",
+        "needed_roots",
+        "binder_roots",
+        "header_insert",
+        "foreign_path",
+        "definition_foreign",
+        "main_descriptor",
+        "prepare_definition_symbol",
+        "prepare_constructors",
+        "prepare_family",
+        "prepare_declarations",
+        "prepare_modules",
+        "build_finish",
+        "build",
+        "live_telescope"
+      ],
+      "transformer": "evals/native_match_source.ts",
+      "transformerSha256": "ef744c5b0c22f50bf5a659dd81836136f5a488fdc62de895ef3cd22b04a34bb6"
+    }
+  ],
+  "firstCorrectedParserGate": {
+    "reportSha256": "8a6363e7a14e6392cbeebf5684e0406342668f55ee7c5bbfa5215bb5cbaa7f6e",
+    "counts": {
+      "focused": {
+        "total": 23,
+        "accepted": 22,
+        "acceptanceParity": 23,
+        "semanticParity": 23,
+        "literalSpanParity": 23
+      },
+      "whole29": {
+        "total": 29,
+        "accepted": 23,
+        "acceptanceParity": 29,
+        "semanticParity": 29,
+        "literalSpanParity": 29
+      },
+      "literals": {
+        "total": 13,
+        "accepted": 13,
+        "acceptanceParity": 13,
+        "semanticParity": 13,
+        "literalSpanParity": 13
+      },
+      "real": {
+        "total": 10,
+        "accepted": 10,
+        "acceptanceParity": 10,
+        "semanticParity": 9,
+        "literalSpanParity": 9
+      }
+    },
+    "failures": [
+      {
+        "name": "js_emit.bend",
+        "error": "Error:\n- message  : a parameter or field scrutinee (a match cannot scrutinize a computed value: give it its own def)\nLocation:\n62 | def state_problem(state: State, message: String, span: Ast.SourceSpan) -> State:\n63>|   LowerResult{state, _} = fail(state, message, span)\n   |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^\n64 |   state"
+      }
+    ],
+    "resolution": "Translate canonical emitter/catalog computed constructor locals and nested matches using the existing typed source-only native_match_source extractor. No kernel, oracle, semantic comparison or gate exclusions changed."
+  },
+  "earlierNativePipelineLibraryProbe": {
+    "passed": true,
+    "smokeOnly": true,
+    "fullCompilerRoot": false,
+    "bootstrapFixedpointClaim": false,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "phases": [
+      {
+        "phase": "parse",
+        "result": "ParseSuccess",
+        "parserOnly": true
+      },
+      {
+        "phase": "expand",
+        "result": "ExpandSuccess"
+      },
+      {
+        "phase": "check",
+        "result": "CheckSuccess"
+      },
+      {
+        "phase": "emit-library",
+        "result": "EmitSuccess",
+        "input": "actual Checked.CheckSuccess.program; no inspection/readback"
+      },
+      {
+        "phase": "consume-esm",
+        "result": "PASS",
+        "assertions": 28,
+        "exports": 15
+      }
+    ],
+    "parserSha256": "14dd1f829459c7bca9f519d6813612e9a7d847dca8d1e942c24a641b25610348",
+    "componentSha256": "9744fa85d1433c229dbe2aa55609575a7b80e63f8fe4b1db40d4f2d8ae3503f6",
+    "nativeCheckedBodies": 6910,
+    "fixtureSha256": "47ff2f270cb818cc377cd7b5b51f83d5c0410e06b51731524a7815a1db73e441",
+    "assertionsWorkerSha256": "f63fd299ee5587f7be4656aa7d530dfadd97f441138ea5ecb2cabed8e19edbf2",
+    "source": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-library-native-consumer.bend",
+      "sha256": "932163e5486d1d620e93cc8840f6b6b978b87227e95b27a4b07fb2dbc4e1d7e1"
+    },
+    "artifact": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-library-native-consumer.mjs",
+      "sha256": "499da2251b920e3ce4fa6d17340603a1ac0dad3291a6891d1782541b78298024",
+      "bytes": 63560
+    },
+    "assertionsSha256": "d937307d3281d055a352a85934efc743a1b48f4e613503b1ebc90f8a7f58f092",
+    "runtime": {
+      "exports": [
+        "zero",
+        "one",
+        "pack",
+        "make_pack",
+        "apply",
+        "identity",
+        "identity_probe",
+        "erased_probe",
+        "specialized_probe",
+        "local_twice",
+        "local_unused",
+        "local_order",
+        "over_order",
+        "over_generic",
+        "constructor_match"
+      ],
+      "rows": [
+        {
+          "name": "zero-nullary",
+          "observed": "BitZero",
+          "expected": "BitZero",
+          "passed": true
+        },
+        {
+          "name": "one-nullary",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "positional-noncommutative",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "positional-reversed-input",
+          "observed": [
+            "BitZero",
+            "BitOne"
+          ],
+          "expected": [
+            "BitZero",
+            "BitOne"
+          ],
+          "passed": true
+        },
+        {
+          "name": "pack-one-argument-is-curried-function",
+          "observed": "function",
+          "expected": "function",
+          "passed": true
+        },
+        {
+          "name": "pack-curried-second-argument",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "returned-curried-function",
+          "observed": "function",
+          "expected": "function",
+          "passed": true
+        },
+        {
+          "name": "higher-order-positional-call",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "over-applied-returned-function",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "live-host-callback",
+          "observed": [
+            "BitZero",
+            "BitOne"
+          ],
+          "expected": [
+            "BitZero",
+            "BitOne"
+          ],
+          "passed": true
+        },
+        {
+          "name": "live-host-callback-evaluated-once",
+          "observed": 1,
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "erased-kind-and-type-effective-one-argument",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "ordinary-type-reference-erasure-in-bend-application",
+          "observed": "BitZero",
+          "expected": "BitZero",
+          "passed": true
+        },
+        {
+          "name": "actual-template-specialization",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "erased-expression-keeps-second-live-argument",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "erased-expression-not-evaluated",
+          "observed": 0,
+          "expected": 0,
+          "passed": true
+        },
+        {
+          "name": "shared-local-value",
+          "observed": [
+            "BitOne",
+            "BitOne"
+          ],
+          "expected": [
+            "BitOne",
+            "BitOne"
+          ],
+          "passed": true
+        },
+        {
+          "name": "shared-local-evaluated-once",
+          "observed": 1,
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "unused-local-result",
+          "observed": "BitZero",
+          "expected": "BitZero",
+          "passed": true
+        },
+        {
+          "name": "unused-live-local-still-evaluated",
+          "observed": 1,
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "ordered-local-values",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "local-evaluation-order",
+          "observed": [
+            "first",
+            "second"
+          ],
+          "expected": [
+            "first",
+            "second"
+          ],
+          "passed": true
+        },
+        {
+          "name": "named-over-application-value",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "named-over-application-order",
+          "observed": [
+            "callee",
+            "argument"
+          ],
+          "expected": [
+            "callee",
+            "argument"
+          ],
+          "passed": true
+        },
+        {
+          "name": "generic-over-application-value",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "generic-over-application-order",
+          "observed": [
+            "callee",
+            "argument",
+            "apply"
+          ],
+          "expected": [
+            "callee",
+            "argument",
+            "apply"
+          ],
+          "passed": true
+        },
+        {
+          "name": "constructor-eliminator-first-arm",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "constructor-eliminator-default-chain",
+          "observed": "BitZero",
+          "expected": "BitZero",
+          "passed": true
+        }
+      ],
+      "artifactExecutedUnchanged": true
+    }
+  },
+  "earlierLibraryProbeBoundary": "Passed on native pipeline artifact9744... before the canonical source-only match cutover. Accepted53 was parser only. All28 assertions consume untouched new-BIR emitted output. This is not formal current full-root acceptance.",
+  "fullRoot": false,
+  "freshFixedpoint": false,
+  "notes": [
+    "Generated sources/images are not committed. Compact source hashes, exact failures and exercised runtime receipts are retained.",
+    "Final parser admission and ten-export full root build are in progress; no green bootstrap or speedup claim."
+  ],
+  "correctedCompleteParserGate": {
+    "report": "checkpoints/bootstrap-parser-rebuild-ir57-scalars-b.candidate-semantic-b.json",
+    "reportSha256": "9b6ff24d574260f9fd8fb1caeb5134a50b8531db0946e7a1757d4f69b3237a06",
+    "admitted": true,
+    "counts": {
+      "focused": {
+        "total": 23,
+        "accepted": 22,
+        "acceptanceParity": 23,
+        "semanticParity": 23,
+        "literalSpanParity": 23
+      },
+      "whole29": {
+        "total": 29,
+        "accepted": 23,
+        "acceptanceParity": 29,
+        "semanticParity": 29,
+        "literalSpanParity": 29
+      },
+      "literals": {
+        "total": 13,
+        "accepted": 13,
+        "acceptanceParity": 13,
+        "semanticParity": 13,
+        "literalSpanParity": 13
+      },
+      "real": {
+        "total": 10,
+        "accepted": 10,
+        "acceptanceParity": 10,
+        "semanticParity": 10,
+        "literalSpanParity": 10
+      }
+    },
+    "currentInputDrift": []
+  },
+  "finalWrapper": {
+    "passed": false,
+    "error": "Semantic current input drift",
+    "invalidatedPreparationInputs": [
+      {
+        "file": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_emit.bend",
+        "expected": "6c164705d300631ddee658cd6746179bd47e04c83eaa864180a9300757c361b8",
+        "observed": "ed49ff118bd333ad9fd3d031a7b229d6d893001f7dbc6814046e9d510f04a240"
+      },
+      {
+        "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/js_emit_owned_v1.bend",
+        "expected": "450e821f5f50f054d900d3177a8ffec7ef0567bf7f797c1a75542b670f42ed6a",
+        "observed": "10ebcc1ed9eaae4569e131a78ab265de0319a884ab362a603b86f282687ea2e5"
+      }
+    ],
+    "action": "Fresh full namespace ir57-admit-c. Do not overwrite old proof or substitute current hashes into it."
+  },
+  "generationAfterNativeSourceCutover": {
+    "checker": {
+      "definitions": 1139,
+      "sourceCalls": 4210,
+      "pendingSites": 1537,
+      "helpers": 4905
+    },
+    "emitter": {
+      "definitions": 611,
+      "sourceCalls": 1224,
+      "pendingSites": 285,
+      "helpers": 968
+    },
+    "template": {
+      "definitions": 196,
+      "sourceCalls": 755,
+      "pendingSites": 512,
+      "helpers": 414
+    },
+    "residualSourceCalls": 0,
+    "checksExcluded": 0
+  },
+  "sourceHashes": {
+    "bend2/selfhost/parser.bend": "eade8cec5cb889d4e2ac346b5afaf363e09823862cd46acdb6e4271f6a7501dd",
+    "evals/pattern_scan_partition_source.ts": "500e44c9222b23036de2c524cf38fc3dc294d2a8820ab06139eeff9cdbe3ca47",
+    "bend2/selfhost/js_emit.bend": "ed49ff118bd333ad9fd3d031a7b229d6d893001f7dbc6814046e9d510f04a240",
+    "bend2/selfhost/lower_catalog.bend": "51faef9846748253b0a43f38b509cf863386fe93ee0558edbe1f475b62fd0f1e"
+  }
+}

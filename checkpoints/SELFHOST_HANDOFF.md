@@ -40,15 +40,23 @@ backend; обычный JS compile path не должен делать readback.
 неизменённый stage1 образ53 проходит parse/expand/check/emit, но его программа
 падает с `bend: runtime fail-stop`; reference CLI с kernel2.0.37 и текущим
 shared-layout backend печатает `BitOne{}`. Точные исходники/хеши/наблюдения
-сохранены в receipt57b; успешный новый pipeline — в receipt57c. В library smoke
-добавлены live locals, порядок over-application и обе ветви eliminator; весь
-library suite ещё не выполнен. Обе ветви добавлены и в seed/stage1/stage2 gate.
-Свежий parser `ir57-local-full` нативно собран, но complete semantic gate
-отклонён:73/75 случаев совпали, два новых файла не разобраны. Общая причина —
-canonical parser принимает только `0n`-подобные natural patterns, не U32 `0`.
-Затронуты `native_match_scalar_bit_value_2` в owned checker и `project_native`
-в emitter. Следующий шаг — общий scalar-pattern parser, не переписывание
-исходников под старое ограничение и не исключение этих двух случаев.
+сохранены в receipt57b; успешный новый pipeline — в receipt57c. Реально исполнен
+15-export library fixture:28 assertions, включая live/unused locals, порядок
+over-application и обе ветви eliminator. Использован native pipeline, не старый
+compiler; stage53 работал только parser. Это ещё не formal full-root acceptance.
+В57d canonical parser получил общий expression/pattern scalar decoder;
+U32 patterns больше не попадают в ошибочный PatternNoNat. Сам старый state
+и ветка partition generator удалены. Реальный compiled probe прошёл U32
+0/1/max, F32 bits, nested/multi patterns и две границы отказа.
+В canonical js_emit/lower_catalog computed constructor locals и nested matches
+переведены существующим typed native_match_source extractor в parameter-owned
+helper defs: это исправление исходников, не ослабление native kernel/AST oracle.
+Полный parser semantic gate прошёл75/75 acceptance/semantic/literal-span parity
+(`ir57-scalars-b.candidate-semantic-b.json`). Его final wrapper отклонён честно:
+старый preparation gate запомнил предыдущие js_emit/owned bytes. Ни один receipt
+не переписывался. Запущен новый полный namespace `ir57-admit-c` при неизменных
+теперь исходниках; затем — root assembly/native build десяти экспортов.
+Receipt57d: `compiler-ir-checkpoint-v57d.json`. Full fixedpoint пока не получен.
 
 ## Compiler56 — FIR/BIR architecture preflight, not production acceptance
 

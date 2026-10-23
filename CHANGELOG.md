@@ -12,6 +12,10 @@ latest one; the GitHub release carries the same notes.
 - Explicit constructor eliminators in that pipeline produce callable matchers
   instead of eagerly evaluating the fallback. A program rejected at runtime
   by the unchanged previous stage-one output now executes as `BitOne{}`.
+- The selfhost parser accepts unsigned and finite F32 literal patterns through
+  the shared expression-literal decoder, including nested and multi-scrutinee
+  patterns. Natural-prefix adjacency rules are unchanged. Full parser semantic
+  and literal-span parity passes all75 current cases.
 - Compiler diagnostics compare the complete frozen source closure and the actual
   unmodified official public export set, with phase timing, resource limits and
   emitted-compiler smoke recorded separately from genuine bootstrap acceptance.
