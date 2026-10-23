@@ -4,9 +4,10 @@
 
 Это архитектурный контракт текущего перехода compiler57, а не отчёт о принятой
 версии. Рабочая native-версия55 остаётся базовой; реальный emitted JS byte
-fixedpoint доказан для версии53. Новые типы и renderer уже записаны в исходниках,
-но полный путь57 ещё не собран и не принят. Нельзя переносить доказательства53/55
-на57 после изменения checker, lowering или runtime ABI.
+fixedpoint доказан для версии53. Полный новый native root57 уже собран, frozen
+corpus с реальным emitted consumer прошёл; stage1 существует, но stage2/fixedpoint
+ещё не принят. Нельзя переносить доказательства53/55 на57 после изменения
+checker, lowering или runtime ABI.
 
 Единственный источник этого контракта — этот файл; оперативный статус, команды,
 хеши и результаты находятся в SELFHOST_HANDOFF.md и компактных version receipts.
@@ -66,6 +67,13 @@ checked_frontend.bend, scope_lookup.bend.
 * Наличие конструктора CheckedProgram само по себе не доказывает валидность всех
   его U32 handles. Это внутренний контракт producer; не объявляем его автоматически
   доказанной теоремой благодаря одному имени типа.
+* Runtime occurrences могут не содержать source cases, доказанно покрытые
+  предыдущими patterns. Нынешняя affine usage validation намеренно проверяет
+  ВСЕ исходные cases: повторный affine/erased use в пропущенной строке всё ещё
+  должен отклоняться. Поэтому occurrence-only usage pass требует явных
+  omitted-row usage witnesses с сохранением прежней quantity/merge семантики;
+  существующий FIR сам по себе их не содержит. Контрпример реально исполнен
+  в compiler-ir-checkpoint-v57h.json; original-case pass не удалён.
 
 checked_frontend находится НАД Arena/Scope/IR: Arena уже зависит от Scope → IR.
 Обратный импорт IR → Arena создаёт цикл. Явный inspection возвращает owner вместе

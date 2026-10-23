@@ -1,0 +1,1220 @@
+{
+  "version": "57h",
+  "status": "FULL_NATIVE_ROOT_FROZEN_COMPILE_AND_UNCHANGED_CONSUMER_PASS_NOT_FIXEDPOINT",
+  "selectedWorkingBaseline": "2b3efa80",
+  "kernelVersion": "2.0.37",
+  "goalComplete": false,
+  "changes": {
+    "wholeProcessCodegenIsolation": "Node codegen process exits before clang starts; Bun remains only as a small controller. Worker exit alone retained about 2.34GB RSS at clang start in the failed prior run.",
+    "phaseTrace": "Actual getrusage process user/system CPU and explicit parse/expand/check/emit starts; v2 host output parsed, validated and synchronously persisted by runner.",
+    "protectedSourceHashes": {
+      "evals/native_compiler_experiment.ts": "32c5c70a2ea7fc6176497f1a0b22456574f09cc149a04eaac3dc555f15ac99d8",
+      "evals/native_compiler_host.c": "e3a754c6edf98c467f9837c337bc3e6b4a16a1c15bf4a9fcb7b5ca45f0a4cee2"
+    }
+  },
+  "host": {
+    "name": "misakaindrive",
+    "bun": "1.2.5",
+    "node": "26.3.0",
+    "clang": "Apple clang 21",
+    "sdkRoot": "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+    "versionCaveat": "Prior57e build used different Bun/Node versions; not a source-only build timing comparison."
+  },
+  "nativeBuild": {
+    "status": "NATIVE_EXECUTABLE_BUILT_NOT_YET_RUN",
+    "boundary": {
+      "host": "trusted C file/import loader and serial affine LIFO continuation driver",
+      "sourceAlgorithms": "unchanged canonical Bend parser/expansion/checker/JS library emitter",
+      "hostChecking": false,
+      "hostParsing": false,
+      "embeddedSource": false,
+      "cachedAst": false,
+      "parserFuelRepresentation": "eager native 8M-cell chain per source; JS harness uses lazy cells for the same finite fuel; allocation time remains included in parse",
+      "fuelMemoryEvidence": "per-source native process RSS high-water before/after allocation (not isolated live-byte attribution); guardian samples whole-tree RSS and physical footprint including fuel",
+      "outputPatches": 0,
+      "checksExcluded": 0,
+      "nativeBinaryBootstrap": false
+    },
+    "protectedPins": {
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/evals/native_compiler_experiment.ts": "32c5c70a2ea7fc6176497f1a0b22456574f09cc149a04eaac3dc555f15ac99d8",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts": "85f46bbc0851ed4933c87e7f67088555bb95389649d0363678181ac3e85290d3",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/evals/native_compiler_driver.bend": "2d662ae3c9e95b074f619b75b4fa1b6a0cbcdcee3d20fcc79d9b191b6dea4ee6",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/evals/native_compiler_host.c": "e3a754c6edf98c467f9837c337bc3e6b4a16a1c15bf4a9fcb7b5ca45f0a4cee2",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/evals/heavy_gate.ts": "47a12205abd374fd69d7dac30ee9fb45d7203cad2790870511387cd2efc22251",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/evals/heavy_gate_native.c": "f5aecf8308caebc72dccf8986733b37137d448021ee378302cfcd038381b7aa9",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/checkpoints/compiler-benchmark-release237-v41.corpus.json": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258"
+    },
+    "loadedInputs": {
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/checkpoints/.bootstrap_compiler_root_v1.bend": "e404aea222d4b03b76d33804447bbccd0f7f8712ff7ee95100654525a40f224c",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/selfhost/lexer.bend": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/selfhost/checker_arena.bend": "fb8651ab2e6304faded5eb312ffe95175a177254f7dd704eca7a9b0896a40e31",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/selfhost/index_lookup.bend": "caef5856607bff18b9a5dfc529eee6c6360a83d0963008420888a998274bd9f2",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/checkpoints/template_steps_v1.bend": "669e43923b5c7cde21fc922090d3c7ed674049d5cf44c0f2ac09e4ac901b81b6",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/checkpoints/checker_core_steps_v1.bend": "2f595741666a0f936e6f695938dadd8e0b2a3d3f28c39d06073139d8783898c5",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/checkpoints/js_emit_steps_v1.bend": "836e8944e34bf9204fa61dea3d876f5c954ec22c303bac53c77587898faaccb5",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/selfhost/backend_ir.bend": "0c4c67e38dbf34e04c2378863ec48a7222d2f762551baaa388f200f2a7d8c83b",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/evals/native_compiler_driver.bend": "2d662ae3c9e95b074f619b75b4fa1b6a0cbcdcee3d20fcc79d9b191b6dea4ee6",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/print.c": "2693b48e0ad8bba77c2babb1cfe00b4adfd63e68b0688229d7efd3a261af3c46",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/print.js": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/write.c": "8807a5f655db452c1d846354560c26fe1e94289e5dc0be231d0b71ecc876d02f",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/write.js": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/print_err.c": "f84aa11c8d0d6af6fa2fee28411f95714d6744ad97156990e43e55c292c9c6fb",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/print_err.js": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/get_env.c": "508a4aaca91e37b2a0a97770f172100fdbaf4a676aba54623b1cd5d1634805ce",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/get_env.js": "9a4fc592e447607553bdb08b194a9ede90dbae3660507687752f58ea42892dba",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/args.c": "84e12702f78e7cce5d350a3ccc6cfbda66f812496c39f025afe02bdf090880cf",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/args.js": "ed1a7e7b73ae7fe58ac6d428d2762b66f223f4c70a165570fc5d68dc874ddc0b",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/process_run.c": "a8ae18d313840eeb1594d762a1cb08c43b632dce83c76c1c5316870b1b20d320",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/process_run.js": "9ce0c5853ab8059614f115d99b1d0ba845fb23c056a6965a59e645d155bd58c1",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/random_u32.c": "75429b2b42e00562177fe33a5e18d2730478847f58c4038b048e78131e1b8c0a",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/random_u32.js": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/spawn.c": "05e11ae3f1461d9c72440af3b1786c076b418d2faff45639ac25ba464ee73cd5",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/spawn.js": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/sleep.c": "1dde3701026517d5272d2ff5344d3a8643bec264dbad9f266fdae1c4aaf7601c",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/sleep.js": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/now.c": "fc4c1d87a4fb2ace7d5b6c57b434cc3d953a15bdf213020912df6c17aa2352d6",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/now.js": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/thread_count.c": "d4889ed7757dccce03729c9568b88188128f2c1576166a3dc184a8707ed44568",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/thread_count.js": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/chan.c": "f20345b3475168e52d431dabc8c8b9347d73b51b5318aae7890b78c94762f4e6",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/chan.js": "007ff7505af9effc20fccfa3d26eaf89a382d6295839b27df119a1704a3f86d7",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/file_open.c": "2f5923e325a22eb384edb3fbb023f04ca842d5acd22654983608b575fa7617fa",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/file_open.js": "dd549f5f05eb896aef9a3a02ffecf2ee902e653f5463be72781edab1cd1180ae",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/file_read.c": "ab577225fa98a034c09d7eb6326b74808756dc6203b0e2599a459876382f090d",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/file_read.js": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/file_size.c": "ed0d74fd6b9f14ea471bfe5dd80ecbb2c5abb6a8406519fb2c7e1a1acf3dd5af",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/file_size.js": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/file_write.c": "9da28a35294cbde6a97729be825a31f9cab0b8c9d421a02a4613e688df451214",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/file_write.js": "4fe307538beb1047add7646f52df6e382a1da5d8999d8fe96969bd5055bc9b59",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/file_close.c": "033da9beb0b484fbc8784044193bf69004f858f6ad86e0c31b4beb89df1349ca",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/file_close.js": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/tcp_listen.c": "efc7528de96abd9f62f299833c1ac7b0e86528292c746b114d2684b5bac52899",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/tcp_listen.js": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/tcp_accept.c": "bf7ca1685ed388ce97827ea8379881fbdf5359c7c663ad03eeb8da34bd8584ef",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/tcp_accept.js": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/tcp_connect.c": "8d17c097138709d71e9d9e1fbc4255007c5e80c93ee384c4a3510b6ac8d10da3",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/tcp_connect.js": "a20819822e4ce18c8878b94e6ee70466833415eb9ebc2b6a39b65cabfcc553c9",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/tcp_send.c": "ed724ef8ce712b113eaac478164802509b41fac4e92435e3df0837d6a8c75632",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/tcp_send.js": "ea68cc521fa9b5603c3fccebbf19ecebcd26bf1a8af644ff1f13cd14ba9fe733",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/tcp_recv.c": "249c8789cd2f541ad00068882de16a00870c2f81a8168b0ac7a59db1e3cb0c6f",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/tcp_recv.js": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/udp_bind.c": "a1be1bc5c03d430fc6eb43982651073e144872956fadaee98c3700be59352ee3",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/udp_bind.js": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/udp_send_to.c": "b3a87e56958d8071a368da2edb4748e9496b3eed58b93d6cb4f8af398dd1011a",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/udp_send_to.js": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/udp_recv_from.c": "607085b34605af6c888e1de5c3f5cd8f689f221c71a3ef9e2c50f9ac880b1bae",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/udp_recv_from.js": "d6f88b08f578f088b4ff257a7e544e4fbbf46f375aee3881ba4d44e25ed890d8",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/socket_close.c": "abea115d2928d4942a9d89898d2022c0f1b19c52db48d0b060c2356d261bfa77",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/socket_close.js": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/listener_close.c": "11f6bac6342a37e97b9656e96bdca7d052ed0a7a0cab3b05ea87657020cfb7a2",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/listener_close.js": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/window.c": "1d99fc0dd1640602bc4020e62fd28abef44422429ab9970523d25b050f1e6c18",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/window_open.js": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/window_frame.js": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/window_set_title.js": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/window_grab.js": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/window_close.js": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/audio.c": "f0fac2bee02918b4958ad1e7508945824fcd98ce9a2e7ede657304c4f8905b85",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/audio_open.js": "6f531ac205dab98dd366111cdcc5eed69fb9058350ca715f3419065cd979b088",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/audio_write.js": "377d3e938ce3cc9f083c662b69d34e3a0cf391c92ddaf3fca8a4b28c78662da7",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/effs/audio_close.js": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/evals/native_compiler_host.c": "e3a754c6edf98c467f9837c337bc3e6b4a16a1c15bf4a9fcb7b5ca45f0a4cee2"
+    },
+    "source": "/private/tmp/nativefull57h-process-isolation-9e1201a3/checkpoints/.bootstrap_compiler_root_v1.bend",
+    "sourceSha256": "e404aea222d4b03b76d33804447bbccd0f7f8712ff7ee95100654525a40f224c",
+    "bridge": "/private/tmp/nativefull57h-process-isolation-9e1201a3/evals/native_compiler_driver.bend",
+    "eventsFullyValidated": 8750,
+    "codegenTrace": false,
+    "diagnosticOnlyCodegenTiming": false,
+    "ccOptimization": {
+      "level": 1,
+      "flag": "-O1",
+      "officialDefault": false,
+      "diagnosticTradeoff": true
+    },
+    "checkedDefinitions": 8357,
+    "expectedSourceDefinitions": 8357,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+    "compilerSha256": "85f46bbc0851ed4933c87e7f67088555bb95389649d0363678181ac3e85290d3",
+    "cPath": "/private/tmp/nativefull57h-process-isolation-9e1201a3/artifacts/compiler57h-o1b.c",
+    "cSha256": "e4890debf5e210f8962c1c667a77401414d5ef420bfe98baf68db91218379e2f",
+    "artifact": "/private/tmp/nativefull57h-process-isolation-9e1201a3/artifacts/compiler57h-o1b",
+    "runtime": {
+      "name": "node",
+      "node": "26.3.0",
+      "heapLimitMiB": 3072,
+      "stackMiB": 256,
+      "manualGC": false,
+      "profiling": null
+    },
+    "validationMs": 1462.5010420000003,
+    "codegenMs": 194531.01166699998,
+    "elapsedMs": 198970.30270899998,
+    "artifactSha256": "91eb065e9504fd8921cdeb18da2c9c18fe79c3cf19f1cdfddd0fd31b4f6f451b",
+    "buildCommand": [
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/timed-clang-isolated",
+      "-std=c11",
+      "-O1",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/artifacts/compiler57h-o1b.c",
+      "-lpthread",
+      "-lm",
+      "-o",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/artifacts/compiler57h-o1b"
+    ],
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 8533295104,
+      "peakFootprintBytes": 6734390896,
+      "elapsedMs": 319550,
+      "timeoutMs": 600000,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.2.5/bin/bun",
+        "--smol",
+        "/private/tmp/nativefull57h-process-isolation-9e1201a3/evals/native_compiler_experiment.ts",
+        "--mode=build",
+        "--corpus=/private/tmp/nativefull57h-process-isolation-9e1201a3/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+        "--artifact=/private/tmp/nativefull57h-process-isolation-9e1201a3/artifacts/compiler57h-o1b",
+        "--report=/private/tmp/nativefull57h-process-isolation-9e1201a3/artifacts/build-o1b.json",
+        "--cc-opt=1",
+        "--internal=build"
+      ],
+      "label": "Native CPU compiler build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792788561086-2e86784346f97260.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "lastProgress": {
+      "phase": "clang",
+      "event": "complete",
+      "unixMs": 1792788880605,
+      "pid": 47695,
+      "worker": false,
+      "rssBytes": 30900224,
+      "heapUsedBytes": 3526456,
+      "cpuMs": 185.031,
+      "artifact": "/private/tmp/nativefull57h-process-isolation-9e1201a3/artifacts/compiler57h-o1b"
+    }
+  },
+  "fullFrozenRun": {
+    "status": "NATIVE_FULL_COMPILE_PASS",
+    "boundary": {
+      "host": "trusted C file/import loader and serial affine LIFO continuation driver",
+      "sourceAlgorithms": "unchanged canonical Bend parser/expansion/checker/JS library emitter",
+      "hostChecking": false,
+      "hostParsing": false,
+      "embeddedSource": false,
+      "cachedAst": false,
+      "parserFuelRepresentation": "eager native 8M-cell chain per source; JS harness uses lazy cells for the same finite fuel; allocation time remains included in parse",
+      "fuelMemoryEvidence": "per-source native process RSS high-water before/after allocation (not isolated live-byte attribution); guardian samples whole-tree RSS and physical footprint including fuel",
+      "outputPatches": 0,
+      "checksExcluded": 0,
+      "nativeBinaryBootstrap": false
+    },
+    "build": "/private/tmp/nativefull57h-process-isolation-9e1201a3/artifacts/build-o1b.json",
+    "buildSha256": "4cf90369a1428728ca9bcd0b6f94e420eac0625568a04abd360ef947be0bf178",
+    "protectedPins": {
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/evals/native_compiler_experiment.ts": "32c5c70a2ea7fc6176497f1a0b22456574f09cc149a04eaac3dc555f15ac99d8",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts": "85f46bbc0851ed4933c87e7f67088555bb95389649d0363678181ac3e85290d3",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/evals/native_compiler_driver.bend": "2d662ae3c9e95b074f619b75b4fa1b6a0cbcdcee3d20fcc79d9b191b6dea4ee6",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/evals/native_compiler_host.c": "e3a754c6edf98c467f9837c337bc3e6b4a16a1c15bf4a9fcb7b5ca45f0a4cee2",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/evals/heavy_gate.ts": "47a12205abd374fd69d7dac30ee9fb45d7203cad2790870511387cd2efc22251",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/evals/heavy_gate_native.c": "f5aecf8308caebc72dccf8986733b37137d448021ee378302cfcd038381b7aa9",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/checkpoints/compiler-benchmark-release237-v41.corpus.json": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258"
+    },
+    "corpus": "/private/tmp/nativefull57h-process-isolation-9e1201a3/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+    "corpusSha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+    "ccOptimization": {
+      "level": 1,
+      "flag": "-O1",
+      "officialDefault": false,
+      "diagnosticTradeoff": true
+    },
+    "threads": 1,
+    "multithread": false,
+    "command": [
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/artifacts/compiler57h-o1b",
+      "--threads",
+      "1",
+      "--gpu",
+      "off",
+      "--",
+      "/private/tmp/bend-v41-corpus.uXXfVm/checkpoints/.bootstrap_compiler_root_v1.bend",
+      "/private/tmp/bend-v41-corpus.uXXfVm/bend2/base.bend",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/artifacts/frozen-compile-b.json.runtime.tsv",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/artifacts/frozen-compile-b.json.exports.txt",
+      "compile",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/artifacts/frozen-compile-b.json.mjs"
+    ],
+    "elapsedMs": 96048.315959,
+    "phases": [
+      {
+        "phase": "parse",
+        "elapsedMs": 3472.393,
+        "userCpuMs": 3438.035,
+        "systemCpuMs": 34.136,
+        "modules": 15,
+        "sourceBytes": 4333108,
+        "foreignBytes": 25145,
+        "eagerFuelCells": 120000000,
+        "fuelBuildMs": 107.965
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 5686.564,
+        "userCpuMs": 5668.587,
+        "systemCpuMs": 17.902,
+        "calls": 950796,
+        "resumes": 950796
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 73155.822,
+        "userCpuMs": 72859.136,
+        "systemCpuMs": 252.243,
+        "calls": 14472521,
+        "resumes": 14472521
+      },
+      {
+        "phase": "emit",
+        "elapsedMs": 11671.854,
+        "userCpuMs": 11625.476,
+        "systemCpuMs": 45.763,
+        "calls": 664537,
+        "resumes": 664537
+      }
+    ],
+    "phaseStarts": [
+      {
+        "phase": "parse"
+      },
+      {
+        "phase": "expand"
+      },
+      {
+        "phase": "check"
+      },
+      {
+        "phase": "emit"
+      }
+    ],
+    "fuel": [
+      {
+        "sourceOrdinal": 1,
+        "cells": 8000000,
+        "elapsedMs": 25.98,
+        "processPeakRssBeforeBytes": 4718592,
+        "processPeakRssAfterBytes": 68747264
+      },
+      {
+        "sourceOrdinal": 2,
+        "cells": 8000000,
+        "elapsedMs": 5.262,
+        "processPeakRssBeforeBytes": 117424128,
+        "processPeakRssAfterBytes": 117424128
+      },
+      {
+        "sourceOrdinal": 3,
+        "cells": 8000000,
+        "elapsedMs": 5.308,
+        "processPeakRssBeforeBytes": 117751808,
+        "processPeakRssAfterBytes": 117751808
+      },
+      {
+        "sourceOrdinal": 4,
+        "cells": 8000000,
+        "elapsedMs": 4.734,
+        "processPeakRssBeforeBytes": 117784576,
+        "processPeakRssAfterBytes": 117784576
+      },
+      {
+        "sourceOrdinal": 5,
+        "cells": 8000000,
+        "elapsedMs": 4.899,
+        "processPeakRssBeforeBytes": 117850112,
+        "processPeakRssAfterBytes": 117850112
+      },
+      {
+        "sourceOrdinal": 6,
+        "cells": 8000000,
+        "elapsedMs": 4.825,
+        "processPeakRssBeforeBytes": 117850112,
+        "processPeakRssAfterBytes": 117850112
+      },
+      {
+        "sourceOrdinal": 7,
+        "cells": 8000000,
+        "elapsedMs": 5.266,
+        "processPeakRssBeforeBytes": 118112256,
+        "processPeakRssAfterBytes": 118112256
+      },
+      {
+        "sourceOrdinal": 8,
+        "cells": 8000000,
+        "elapsedMs": 5.197,
+        "processPeakRssBeforeBytes": 122011648,
+        "processPeakRssAfterBytes": 122011648
+      },
+      {
+        "sourceOrdinal": 9,
+        "cells": 8000000,
+        "elapsedMs": 4.913,
+        "processPeakRssBeforeBytes": 122044416,
+        "processPeakRssAfterBytes": 122044416
+      },
+      {
+        "sourceOrdinal": 10,
+        "cells": 8000000,
+        "elapsedMs": 5.003,
+        "processPeakRssBeforeBytes": 124567552,
+        "processPeakRssAfterBytes": 124567552
+      },
+      {
+        "sourceOrdinal": 11,
+        "cells": 8000000,
+        "elapsedMs": 8.599,
+        "processPeakRssBeforeBytes": 300630016,
+        "processPeakRssAfterBytes": 300630016
+      },
+      {
+        "sourceOrdinal": 12,
+        "cells": 8000000,
+        "elapsedMs": 6.912,
+        "processPeakRssBeforeBytes": 300679168,
+        "processPeakRssAfterBytes": 300679168
+      },
+      {
+        "sourceOrdinal": 13,
+        "cells": 8000000,
+        "elapsedMs": 7.031,
+        "processPeakRssBeforeBytes": 300679168,
+        "processPeakRssAfterBytes": 300679168
+      },
+      {
+        "sourceOrdinal": 14,
+        "cells": 8000000,
+        "elapsedMs": 6.73,
+        "processPeakRssBeforeBytes": 300679168,
+        "processPeakRssAfterBytes": 300679168
+      },
+      {
+        "sourceOrdinal": 15,
+        "cells": 8000000,
+        "elapsedMs": 7.306,
+        "processPeakRssBeforeBytes": 301121536,
+        "processPeakRssAfterBytes": 301121536
+      }
+    ],
+    "result": {
+      "result": "EmitSuccess",
+      "bytes": 14928486,
+      "modules": 15
+    },
+    "exports": {
+      "count": 7720,
+      "sourceReceiptSha256": "ace024e7c39e3a131904e794dfda6e2e2443e499c0578f68c28ad2bf55bdeacf",
+      "exactExportSetSha256": "99efc6ef8538e35f5b6f549e39296bae814e654d48558f9ca7ba2aae2b1911f4",
+      "fullExportNamesNotDuplicatedHere": true
+    },
+    "semanticSmoke": {
+      "status": "NOT_REQUESTED"
+    },
+    "output": "/private/tmp/nativefull57h-process-isolation-9e1201a3/artifacts/frozen-compile-b.json.mjs",
+    "outputSha256": "e3a0dfc85a863e3883cd54fa5afb4b67cb049f0572234dc5126ae4caeb6f59de",
+    "outputBytes": 14928486,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 1384513536,
+      "peakFootprintBytes": 1335298232,
+      "elapsedMs": 96204,
+      "timeoutMs": 300000,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.2.5/bin/bun",
+        "--smol",
+        "/private/tmp/nativefull57h-process-isolation-9e1201a3/evals/native_compiler_experiment.ts",
+        "--mode=run",
+        "--corpus=/private/tmp/nativefull57h-process-isolation-9e1201a3/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+        "--build=/private/tmp/nativefull57h-process-isolation-9e1201a3/artifacts/build-o1b.json",
+        "--phase=compile",
+        "--threads=1",
+        "--exports=/private/tmp/nativefull57h-process-isolation-9e1201a3/checkpoints/compiler-benchmark-ir57-official-a.json.exports.json",
+        "--report=/private/tmp/nativefull57h-process-isolation-9e1201a3/artifacts/frozen-compile-b.json",
+        "--internal=run"
+      ],
+      "label": "Native CPU compiler run",
+      "exitCode": 0,
+      "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792789003938-16b92e280b086891.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "lastProgress": {
+      "phase": "emit",
+      "event": "complete",
+      "unixMs": 1792789099259,
+      "pid": 53003,
+      "worker": false,
+      "rssBytes": 78495744,
+      "heapUsedBytes": 2802430,
+      "cpuMs": 195.382,
+      "native": {
+        "phase": "emit",
+        "elapsedMs": 11671.854,
+        "userCpuMs": 11625.476,
+        "systemCpuMs": 45.763,
+        "calls": 664537,
+        "resumes": 664537
+      }
+    }
+  },
+  "actualUnchangedConsumer": {
+    "status": "PASS",
+    "kind": "actual unchanged native emitted frozen-v41 library consumer",
+    "output": "/private/tmp/nativefull57h-process-isolation-9e1201a3/artifacts/frozen-compile.json.mjs",
+    "outputPatches": 0,
+    "fixedpoint": false,
+    "exports": 7720,
+    "exportSetSha256": "99efc6ef8538e35f5b6f549e39296bae814e654d48558f9ca7ba2aae2b1911f4",
+    "parserPassed": true,
+    "checkerPassed": true,
+    "outputSha256": "e3a0dfc85a863e3883cd54fa5afb4b67cb049f0572234dc5126ae4caeb6f59de",
+    "outputBytes": 14928486,
+    "runtimeSha256": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+    "exportsReceiptSha256": "b49ac17d858cff20e3ea8b88f3068b52ca6d0d2045684d4c17d7f318bd3aba18",
+    "manifestSha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+    "elapsedMs": 248.99908299999998,
+    "cpuMs": 266.316,
+    "maxRssBytes": 316080128
+  },
+  "consumerGuardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 301105152,
+    "peakFootprintBytes": 239342704,
+    "elapsedMs": 322,
+    "timeoutMs": 300000,
+    "command": [
+      "node",
+      "--max-old-space-size=3072",
+      "/private/tmp/nativefull57h-process-isolation-9e1201a3/consume_native.mjs"
+    ],
+    "label": "Native57g unchanged full frozen output actual captured consumer",
+    "exitCode": 0,
+    "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792789542704-f8a1b9ae46e1d12e.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "isolatedClang": {
+    "wallSeconds": 119.73,
+    "userSeconds": 115.07,
+    "systemSeconds": 3.61,
+    "maxRssBytes": 8485109760,
+    "evidence": "Actual /usr/bin/time -lp wrapper stdout artifact://3016; do not interpret its uncalibrated peak-memory-footprint line as bytes.",
+    "controllerRssBeforeClangApproxBytes": 33000000
+  },
+  "profiling": {
+    "receiptSha256": "b9a0b5eb1cbb56dce5e70e3bd6927495a4b4340a1d9fd4a95e174c299b50c7ea",
+    "status": "ACTUAL_NATIVE_PROFILE_EXACT_OUTPUT_PASS",
+    "toolIdentity": {
+      "path": "/usr/bin/sample",
+      "version": "SamplingTools-64575.39.1",
+      "reportVersion": 7,
+      "sha256": "569d1e8f29e32e0557fdfffb7620e20126fab5df90f9e1bce4c6930ccded7363",
+      "privileges": "uid502 same user, no sudo/entitlements changed; all four live native PID attachments exit0",
+      "binaryUUID": "3F0469DB-6172-3B4B-8A3B-0D6CD1D34B46",
+      "debugInfo": "dwarfdump --debug-info reports empty .debug_info; no debug inline chains"
+    },
+    "sampling": {
+      "checkObservations": 7032,
+      "checkWindows": 3,
+      "requestedSecondsPerWindow": 6,
+      "requestedIntervalMs": 2,
+      "emitObservations": 2341,
+      "allSamplesSingleThread": "Thread_7675984 com.apple.main-thread",
+      "noQuestionMarkLeafSymbols": true,
+      "windowsEntirelyInsideTargetPhase": true,
+      "selfAccounting": "inclusive node count minus immediate children; per profile sums equal thread observations and every Apple collapsed top-of-stack >=5 count cross-checks",
+      "overheadLimit": "4x6s windows, one sampler at a time, 2ms requested interval; all descendants under unchanged8GiB RSS/footprint,10ms poll,300s deadline",
+      "observedElapsedDeltaPctVsSingleUnprofiled": 4.107,
+      "observedCheckDeltaPctVsSingleUnprofiled": 6.227,
+      "overheadCaveat": "Observed deltas include ordinary run variance; not isolated profiler overhead or calibrated hardware cycles."
+    },
+    "sourceMapping": {
+      "generatedC": {
+        "path": "/private/tmp/nativefull57h-process-isolation-9e1201a3/artifacts/compiler57h-o1b.c",
+        "sha256": "e4890debf5e210f8962c1c667a77401414d5ef420bfe98baf68db91218379e2f",
+        "bytes": 69884362
+      },
+      "canonical": {
+        "path": "bend2/selfhost/checker.bend",
+        "sha256": "f01dbf58d8effae632b7da69eecc0a9652dc4ae3c40a6691208e54bf49716330"
+      },
+      "generatedSteps": {
+        "path": "checkpoints/checker_core_steps_v1.bend",
+        "sha256": "2f595741666a0f936e6f695938dadd8e0b2a3d3f28c39d06073139d8783898c5"
+      },
+      "metadata": {
+        "path": "checkpoints/checker-core-steps-v1.json",
+        "sha256": "691c0b68435748f2c5bf118b29f3e83b627c690a503911dcdd3c0f62fb4a6d3e"
+      },
+      "comp": {
+        "path": "bend2/comp.ts",
+        "sha256": "85f46bbc0851ed4933c87e7f67088555bb95389649d0363678181ac3e85290d3",
+        "anchors": [
+          "609-610 name_clean",
+          "620-628 name_id",
+          "1713-1720 seg_new/seg_fid",
+          "1749-1750 owner suffix",
+          "2390-2415 spin generation",
+          "3054-3057 numeric FID assignment",
+          "3092-3095 WL_CASE emission",
+          "3630-3634 host symbol naming/tailcalls"
+        ]
+      },
+      "mappingRule": "WL_FID prefix + uppercase sanitized namespace/name; strip terminal _K/_C/_J numeric segment suffix; generated helper exact name resolves via privateHelpers.owner or checker_body_ name, then nativeMatchNormalizationOwners to authenticated canonical owner. Every reported owner is a canonical declaration in the SHA-matching manifest. Numeric IDs and C lines extracted from actual C, not guessed.",
+      "mappedCanonicalCheckLeafSymbols": 408,
+      "mappedCanonicalCheckLeafSamples": 802,
+      "physicalVsSemantic": "Source owner is the code-generating body/helper owner, not semantic inclusive responsibility. Emit_fuse/INLINE runtime work may be charged to it. Generic Map/String/runtime/dispatch costs remain unassigned to semantic families.",
+      "codegenTraceAvailable": false,
+      "spinOutlinedSamplesUnresolved": 306,
+      "cAnchors": [
+        {
+          "line": 1564199,
+          "text": "  WL_CASE(FID_CHECKER_CORE_STEPS_V1_CHECKER_BODY_WHNF_C28937)"
+        },
+        {
+          "line": 1564200,
+          "text": "  {"
+        },
+        {
+          "line": 1564201,
+          "text": "    u32 _v_5_1 = r0;"
+        },
+        {
+          "line": 1564202,
+          "text": "    Term _v_6_1 = r1;"
+        },
+        {
+          "line": 1564203,
+          "text": "    Term _v_11_1 = r2;"
+        },
+        {
+          "line": 1564204,
+          "text": "    Term _x_1 = r3;"
+        },
+        {
+          "line": 1564205,
+          "text": "    WL_OPEN"
+        },
+        {
+          "line": 1735829,
+          "text": "  WL_CASE(FID_CHECKER_CORE_STEPS_V1_CHECKER_STEP_ONE)"
+        },
+        {
+          "line": 1735830,
+          "text": "  {"
+        },
+        {
+          "line": 1735831,
+          "text": "    u32 _request_0 = r0;"
+        },
+        {
+          "line": 1735832,
+          "text": "    u32 _request_1 = r1;"
+        },
+        {
+          "line": 1735833,
+          "text": "    Term _request_2 = r2;"
+        },
+        {
+          "line": 1735834,
+          "text": "    Term _request_3 = r3;"
+        },
+        {
+          "line": 1735835,
+          "text": "    Term _request_4 = r4;"
+        },
+        {
+          "line": 1908498,
+          "text": "  WL_CASE(FID_CHECKER_CORE_STEPS_V1_CHECKER_CHUNK)"
+        },
+        {
+          "line": 1908499,
+          "text": "  {"
+        },
+        {
+          "line": 1908500,
+          "text": "    Term _fuel_0 = r0;"
+        },
+        {
+          "line": 1908501,
+          "text": "    Term _progress_0 = r1;"
+        },
+        {
+          "line": 1908502,
+          "text": "    WL_OPEN"
+        },
+        {
+          "line": 1908503,
+          "text": "    WL_SPIN"
+        },
+        {
+          "line": 1908504,
+          "text": "    if (_fuel_0 == 0) {"
+        }
+      ]
+    },
+    "checkCategories": [
+      {
+        "category": "named_runtime_sharing_drop",
+        "selfSamples": 1807,
+        "percent": 25.697
+      },
+      {
+        "category": "closure_work_dispatch_physical",
+        "selfSamples": 1666,
+        "percent": 23.692
+      },
+      {
+        "category": "checker_chunk_request_dispatch_physical",
+        "selfSamples": 1048,
+        "percent": 14.903
+      },
+      {
+        "category": "map_library_physical",
+        "selfSamples": 841,
+        "percent": 11.96
+      },
+      {
+        "category": "string_library_physical",
+        "selfSamples": 337,
+        "percent": 4.792
+      },
+      {
+        "category": "spin_outlined_owner_unresolved",
+        "selfSamples": 306,
+        "percent": 4.352
+      },
+      {
+        "category": "other_typing_checking_owner",
+        "selfSamples": 302,
+        "percent": 4.295
+      },
+      {
+        "category": "arena_storage_bounds_descriptor_owner",
+        "selfSamples": 242,
+        "percent": 3.441
+      },
+      {
+        "category": "named_runtime_storage",
+        "selfSamples": 96,
+        "percent": 1.365
+      },
+      {
+        "category": "whnf_reduction_owner",
+        "selfSamples": 95,
+        "percent": 1.351
+      },
+      {
+        "category": "imported_scope_index_arena_provider_physical",
+        "selfSamples": 77,
+        "percent": 1.095
+      },
+      {
+        "category": "substitution_shift_owner",
+        "selfSamples": 58,
+        "percent": 0.825
+      },
+      {
+        "category": "publication_or_readback_owner",
+        "selfSamples": 40,
+        "percent": 0.569
+      },
+      {
+        "category": "affine_usage_quantity_owner",
+        "selfSamples": 37,
+        "percent": 0.526
+      },
+      {
+        "category": "host_driver_evaluator_physical",
+        "selfSamples": 31,
+        "percent": 0.441
+      },
+      {
+        "category": "scope_name_resolution_owner",
+        "selfSamples": 28,
+        "percent": 0.398
+      },
+      {
+        "category": "bridge_closures_physical",
+        "selfSamples": 12,
+        "percent": 0.171
+      },
+      {
+        "category": "other_system_runtime_unresolved",
+        "selfSamples": 5,
+        "percent": 0.071
+      },
+      {
+        "category": "other_generated_physical",
+        "selfSamples": 4,
+        "percent": 0.057
+      }
+    ],
+    "limits": [
+      "These are physical stack observations of a compute-active thread, not exact hardware CPU-cycle fractions or allocation metrics.",
+      "Only18s of requested check sampling spread early/middle/late in77.711s check; not full phase coverage.",
+      "Musttail dispatch erases logical caller history; do not charge generic Map/String/sharing samples to WHNF/substitution/usage/publication without extra evidence.",
+      "No debug inline chains; spin_N and OUTLINED_FUNCTION symbols have no authenticated emitted-owner metadata in this build and remain unresolved.",
+      "Small semantic-owner counts cannot prove absent inclusive cost or rank whole algorithms. No causal optimization or fixedpoint acceptance claim."
+    ],
+    "interpretation": [
+      "Largest named physical buckets: sharing/drop25.697%, closure/work dispatch23.692%, checker chunk/request dispatch14.903%, Map11.960%. Direct host driver/evaluator0.441%, native_drive5/7032 samples.",
+      "Direct canonical helper-owner samples distinguish WHNF95, substitution/shift58, affine usage/quantity37, publication/readback40; other typing/checking302, arena storage/bounds/descriptor242, scope resolution28. These are disjoint charged leaf counts, not semantic phase totals.",
+      "Actual check CPU user76860.654ms/system208.871ms,14,472,521 calls; same baseline counts and exact full output bytes."
+    ],
+    "profiledRun": {
+      "elapsedMs": 99992.740125,
+      "phases": [
+        {
+          "phase": "parse",
+          "elapsedMs": 3617.153,
+          "userCpuMs": 3592.823,
+          "systemCpuMs": 24.091,
+          "modules": 15,
+          "sourceBytes": 4333108,
+          "foreignBytes": 25145,
+          "eagerFuelCells": 120000000,
+          "fuelBuildMs": 108.142
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 5923.212,
+          "userCpuMs": 5914.328,
+          "systemCpuMs": 8.648,
+          "calls": 950796,
+          "resumes": 950796
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 77711.235,
+          "userCpuMs": 76860.654,
+          "systemCpuMs": 208.871,
+          "calls": 14472521,
+          "resumes": 14472521
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 11840.312,
+          "userCpuMs": 11633.808,
+          "systemCpuMs": 53.252,
+          "calls": 664537,
+          "resumes": 664537
+        }
+      ],
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1379811328,
+        "peakFootprintBytes": 1334888632,
+        "elapsedMs": 100304,
+        "timeoutMs": 300000,
+        "command": [
+          "/opt/homebrew/Cellar/bun/1.2.5/bin/bun",
+          "--smol",
+          "/private/tmp/native57i-cpu-launch.mjs",
+          "--worker"
+        ],
+        "label": "Native57I actual child CPU sampling",
+        "exitCode": 0,
+        "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792789587876-a44cb1470c5244a8.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    }
+  },
+  "affineUsageSafety": {
+    "evidence": {
+      "scope": "Actual unchanged native-validated seed checker consumer; occurrence-only affine cutover safety investigation, not a candidate or fixedpoint claim",
+      "seedSha256": "9e1201a3e63d09679795fd4e252ecea847da64e71f7ef1e3c57843ee5b526cf3",
+      "nativeBuild": {
+        "status": "JS_GENERATED_NOT_YET_EXECUTED",
+        "checkedDefinitions": 8339,
+        "checksExcluded": 0,
+        "outputPatches": 0,
+        "guardian": "PASS"
+      },
+      "checksExcluded": 0,
+      "outputPatches": 0,
+      "rows": [
+        {
+          "name": "covered-one",
+          "source": "type Bit is Data:\n  BitZero{}\n  BitOne{}\ntype Pair is Data:\n  Pair{left: Bit, right: Bit}\ndef choose(x: Bit, v: Bit) -> Pair:\n  match x:\n    case BitZero{}: Pair{BitZero{}, BitZero{}}\n    case BitOne{}: Pair{BitZero{}, BitZero{}}\n    case other: Pair{v, BitZero{}}\n",
+          "sourceSha256": "e23407fb92ca448ba5ca6335559aa3af8b49a330b9e42207a7a20b151e9ac19b",
+          "expectedAccepted": true,
+          "parseMs": 25.673125,
+          "parsedCases": 3,
+          "checkMs": 110.52062500000002,
+          "checkCpu": {
+            "user": 141719,
+            "system": 4346
+          },
+          "checkResult": "CheckSuccess",
+          "hostBoundaries": {
+            "pending": 1306,
+            "direct": 1306,
+            "bound": 633,
+            "finished": 3246,
+            "resume": 3245,
+            "schedulerLoopIterations": 6491
+          },
+          "accepted": true,
+          "matchesExpected": true,
+          "materializedCases": 2,
+          "emitted": {
+            "bytes": 57865,
+            "sha256": "102b4ffe6e0d7e77a2b6765f8fe143da08f0e8c5036fef5b6578389cbf5ef0dc"
+          },
+          "execution": [
+            {
+              "input": "BitZero",
+              "result": "Pair",
+              "left": "BitZero",
+              "right": "BitZero"
+            },
+            {
+              "input": "BitOne",
+              "result": "Pair",
+              "left": "BitZero",
+              "right": "BitZero"
+            }
+          ],
+          "consumerPassed": true,
+          "checkedRoot": {
+            "node": {
+              "$": "../bend2/selfhost/checker_arena.BodyMatch",
+              "scrutinees_start": 4,
+              "scrutinees_count": 1,
+              "cases_start": 81,
+              "cases_count": 2,
+              "span": {
+                "$": "../bend2/selfhost/ast.SpanOf",
+                "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57i-fir-usage-covered-one.bend",
+                "beg": 128,
+                "end": 265
+              }
+            },
+            "children": [
+              {
+                "tag": "TypedOccurrence",
+                "node": {
+                  "$": "../bend2/selfhost/checker_arena.TermVar",
+                  "key_id": 3,
+                  "index": 1,
+                  "span": {
+                    "$": "../bend2/selfhost/ast.SpanOf",
+                    "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57i-fir-usage-covered-one.bend",
+                    "beg": 134,
+                    "end": 135
+                  }
+                }
+              },
+              {
+                "tag": "CaseOccurrence",
+                "node": {
+                  "$": "../bend2/selfhost/checker_arena.BodyCase",
+                  "patterns_start": 8,
+                  "patterns_count": 1,
+                  "body_id": 12,
+                  "span": {
+                    "$": "../bend2/selfhost/ast.SpanOf",
+                    "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57i-fir-usage-covered-one.bend",
+                    "beg": 141,
+                    "end": 188
+                  }
+                }
+              },
+              {
+                "tag": "CaseOccurrence",
+                "node": {
+                  "$": "../bend2/selfhost/checker_arena.BodyCase",
+                  "patterns_start": 11,
+                  "patterns_count": 1,
+                  "body_id": 17,
+                  "span": {
+                    "$": "../bend2/selfhost/ast.SpanOf",
+                    "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57i-fir-usage-covered-one.bend",
+                    "beg": 188,
+                    "end": 234
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "covered-many",
+          "source": "type Bit is Data:\n  BitZero{}\n  BitOne{}\ntype Pair is Data:\n  Pair{left: Bit, right: Bit}\ndef choose(x: Bit, +v: Bit) -> Pair:\n  match x:\n    case BitZero{}: Pair{BitZero{}, BitZero{}}\n    case BitOne{}: Pair{BitZero{}, BitZero{}}\n    case other: Pair{v, v}\n",
+          "sourceSha256": "3d7e4548885666fe71d6e27b7c7792bd3937f79eb32a2cf0f2bb9174dc260864",
+          "expectedAccepted": true,
+          "parseMs": 3.8542079999999714,
+          "parsedCases": 3,
+          "checkMs": 23.358916000000022,
+          "checkCpu": {
+            "user": 48148,
+            "system": 2090
+          },
+          "checkResult": "CheckSuccess",
+          "hostBoundaries": {
+            "pending": 1297,
+            "direct": 1301,
+            "bound": 627,
+            "finished": 3226,
+            "resume": 3225,
+            "schedulerLoopIterations": 6451
+          },
+          "accepted": true,
+          "matchesExpected": true,
+          "materializedCases": 2,
+          "emitted": {
+            "bytes": 57865,
+            "sha256": "102b4ffe6e0d7e77a2b6765f8fe143da08f0e8c5036fef5b6578389cbf5ef0dc"
+          },
+          "execution": [
+            {
+              "input": "BitZero",
+              "result": "Pair",
+              "left": "BitZero",
+              "right": "BitZero"
+            },
+            {
+              "input": "BitOne",
+              "result": "Pair",
+              "left": "BitZero",
+              "right": "BitZero"
+            }
+          ],
+          "consumerPassed": true,
+          "checkedRoot": {
+            "node": {
+              "$": "../bend2/selfhost/checker_arena.BodyMatch",
+              "scrutinees_start": 4,
+              "scrutinees_count": 1,
+              "cases_start": 81,
+              "cases_count": 2,
+              "span": {
+                "$": "../bend2/selfhost/ast.SpanOf",
+                "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57i-fir-usage-covered-many.bend",
+                "beg": 129,
+                "end": 258
+              }
+            },
+            "children": [
+              {
+                "tag": "TypedOccurrence",
+                "node": {
+                  "$": "../bend2/selfhost/checker_arena.TermVar",
+                  "key_id": 3,
+                  "index": 1,
+                  "span": {
+                    "$": "../bend2/selfhost/ast.SpanOf",
+                    "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57i-fir-usage-covered-many.bend",
+                    "beg": 135,
+                    "end": 136
+                  }
+                }
+              },
+              {
+                "tag": "CaseOccurrence",
+                "node": {
+                  "$": "../bend2/selfhost/checker_arena.BodyCase",
+                  "patterns_start": 8,
+                  "patterns_count": 1,
+                  "body_id": 12,
+                  "span": {
+                    "$": "../bend2/selfhost/ast.SpanOf",
+                    "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57i-fir-usage-covered-many.bend",
+                    "beg": 142,
+                    "end": 189
+                  }
+                }
+              },
+              {
+                "tag": "CaseOccurrence",
+                "node": {
+                  "$": "../bend2/selfhost/checker_arena.BodyCase",
+                  "patterns_start": 11,
+                  "patterns_count": 1,
+                  "body_id": 17,
+                  "span": {
+                    "$": "../bend2/selfhost/ast.SpanOf",
+                    "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57i-fir-usage-covered-many.bend",
+                    "beg": 189,
+                    "end": 235
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "covered-affine-duplicate",
+          "source": "type Bit is Data:\n  BitZero{}\n  BitOne{}\ntype Pair is Data:\n  Pair{left: Bit, right: Bit}\ndef choose(x: Bit, v: Bit) -> Pair:\n  match x:\n    case BitZero{}: Pair{BitZero{}, BitZero{}}\n    case BitOne{}: Pair{BitZero{}, BitZero{}}\n    case other: Pair{v, v}\n",
+          "sourceSha256": "2924682b924565bd74fa5a481f8948965803a4c1f3afc62c1964b0c514cc299c",
+          "expectedAccepted": false,
+          "parseMs": 3.2475829999999632,
+          "parsedCases": 3,
+          "checkMs": 22.610541000000012,
+          "checkCpu": {
+            "user": 24126,
+            "system": 1443
+          },
+          "checkResult": "CheckFailure",
+          "diagnostic": {
+            "$": "../bend2/selfhost/checked_frontend.Diagnostic",
+            "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57i-fir-usage-covered-affine-duplicate.bend",
+            "span": {
+              "$": "../bend2/selfhost/ast.SpanOf",
+              "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57i-fir-usage-covered-affine-duplicate.bend",
+              "beg": 109,
+              "end": 115
+            },
+            "message": "invalid use quantity for v",
+            "expected": "within the binder quantity",
+            "observed": "too many uses"
+          },
+          "hostBoundaries": {
+            "pending": 1071,
+            "direct": 995,
+            "bound": 431,
+            "finished": 2498,
+            "resume": 2497,
+            "schedulerLoopIterations": 4995
+          },
+          "accepted": false,
+          "matchesExpected": true
+        },
+        {
+          "name": "covered-erased-use",
+          "source": "type Bit is Data:\n  BitZero{}\n  BitOne{}\ntype Pair is Data:\n  Pair{left: Bit, right: Bit}\ndef choose(x: Bit, -v: Bit) -> Pair:\n  match x:\n    case BitZero{}: Pair{BitZero{}, BitZero{}}\n    case BitOne{}: Pair{BitZero{}, BitZero{}}\n    case other: Pair{v, BitZero{}}\n",
+          "sourceSha256": "823c59f6ada55a8f05a40c2c2de0ff7a8adb801cc7f7842b53f6a64b608decb1",
+          "expectedAccepted": false,
+          "parseMs": 2.445875000000001,
+          "parsedCases": 3,
+          "checkMs": 20.388417000000004,
+          "checkCpu": {
+            "user": 30433,
+            "system": 1793
+          },
+          "checkResult": "CheckFailure",
+          "diagnostic": {
+            "$": "../bend2/selfhost/checked_frontend.Diagnostic",
+            "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57i-fir-usage-covered-erased-use.bend",
+            "span": {
+              "$": "../bend2/selfhost/ast.SpanOf",
+              "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57i-fir-usage-covered-erased-use.bend",
+              "beg": 110,
+              "end": 116
+            },
+            "message": "invalid use quantity for v",
+            "expected": "within the binder quantity",
+            "observed": "too many uses"
+          },
+          "hostBoundaries": {
+            "pending": 1070,
+            "direct": 994,
+            "bound": 437,
+            "finished": 2502,
+            "resume": 2501,
+            "schedulerLoopIterations": 5003
+          },
+          "accepted": false,
+          "matchesExpected": true
+        }
+      ],
+      "passed": true,
+      "verdict": "UNSAFE_OCCURRENCE_ONLY_CUTOVER: covered source rows are discarded from CheckedFIR/materialized terms but still contribute to original-term affine validation; no complete candidate can use only already-produced occurrences.",
+      "guardian": {
+        "status": "PASS",
+        "elapsedMs": 492,
+        "peakRssBytes": 148930560,
+        "peakFootprintBytes": 114087792,
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592,
+        "pollMs": 10,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792789626089-a44ecfa997bfccc3.json"
+      },
+      "sourceEvidence": {
+        "originalTermValidation": "bend2/selfhost/checker.bend:10639-10646 (v_7 original passed to validate_definition_uses; inferred v_18 used separately)",
+        "droppedRows": "bend2/selfhost/checker.bend:6206-6217 (covered True skips body and occurrence)",
+        "allOriginalRowsContribute": "bend2/selfhost/checker.bend:8711-8723 (every original case alternative merged)",
+        "materialization": "bend2/selfhost/checker.bend:431-434 (checked case operands replace original case tape)",
+        "missingFacts": "No usage summary or occurrence for discarded rows in checker_ir.bend:52-58. Need original-row usage witnesses (including typed dependent/erasure decisions) at declaration scope before rows are dropped, not source reconstruction or a reference to unchecked source.",
+        "publication": "bend2/selfhost/checker.bend:10629-10637 and14475-14513 (publish only after validation, all occurrence handles published before declaration-local lifetime ends)"
+      },
+      "candidate": {
+        "patch": null,
+        "nativeBuild": "NOT_RUN: no safe source candidate",
+        "fullFrozenComparison": "NOT_RUN: no safe source candidate",
+        "performanceImprovement": "NOT_MEASURED; per-fixture timings/counters above are observations, not before/after speedups",
+        "canonicalFilesChanged": false
+      }
+    },
+    "decision": "Keep original complete source-case usage validation. Covered rows are omitted from CheckedFIR: occurrence-only validation would accept invalid affine/erased uses without an explicit omitted-row usage witness. No candidate, no validation removal."
+  },
+  "rejectedBuildExperiment": {
+    "kind": "unchanged-C LLVM partitioning on nhs",
+    "summarySha256": "3d2002ce331e14ac15aec103ba08c685ac37b9dc1de4a63df337f5de83565570",
+    "status": "guardian sampler_error; no complete IR stage, binary or consumer; not selected",
+    "partitionFrontendMs": 72881,
+    "partitionPeakBytes": 6543609856,
+    "singleTUControlMs": 285561,
+    "singleTUControlPeakBytes": 7720357888
+  },
+  "firstFailures": [
+    {
+      "kind": "unisolated native57g",
+      "reason": "8GiB guardian memory limit during clang with retained codegen worker pages; no binary"
+    },
+    {
+      "kind": "first process-isolated attempt",
+      "reason": "Missing explicit SDKROOT; math.h not found. Actual second namespace uses verified Xcode SDK, no source/output patch."
+    }
+  ],
+  "acceptance": {
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "nativeBodies": 8357,
+    "fullFrozenModules": 15,
+    "fullFrozenExports": 7720,
+    "outputMatches57gJsComposition": true,
+    "stage1Stage2Fixedpoint": false,
+    "withinFiveMinuteBuildAndRun": false,
+    "officialSameCorpusMs": 32002.610417,
+    "remaining": "Current source renderer/root-match optimization must be native validated and pass fresh parser producer chain plus full actual bootstrap; native build alone remains319550ms."
+  }
+}

@@ -132,12 +132,38 @@ Baseline55 пока остаётся selected; official same-corpus total32002.6
 unified seed нативно проверил8339 тел за37603ms /2978084712physicalbytes,
 artifact12670329bytes SHA9e1201a3e63d09679795fd4e252ecea847da64e71f7ef1e3c57843ee5b526cf3.
 
-Native phase profiling дополнено actual getrusage user/system CPU и явными
-phase-start records с synchronous progress persistence; version2 ещё требует
-реального native build/run. Endpoint-only codegen RSS не доказывает принадлежность
-guardian peak clang: следующий native run должен снять isolated clang maxRSS.
-Параллельно запущены native57g completion на misakaindrive и независимый
-controlled LLVM-partition build-memory experiment без изменения generated C.
+В57h phaseTraceVersion2 реально проверен полным native build/run: explicit
+phase-start и getrusage user/system CPU присутствуют для всех четырёх фаз.
+Whole-process isolation завершает Node codegen до запуска clang; exit Worker
+внутри живого Node раньше оставлял около2.34GB RSS перед clang. Новая сборка
+8357/8357 bodies прошла319550ms, peak physical6734390896bytes; actual isolated
+clang maxRSS8485109760bytes, wall119.73s. Generated C byte-identical неудачному57g.
+Это всё ещё больше native55 по памяти и само по себе дольше пяти минут.
+
+Полный native frozen compile теперь PASS: elapsed96048.315959ms,
+parse3472.393,expand5686.564,check73155.822,emit11671.854ms;
+check14472521 calls,emit664537. Реальный unchanged7720-export consumer прошёл,
+output SHAe3a0dfc85a863e3883cd54fa5afb4b67cb049f0572234dc5126ae4caeb6f59de
+совпадает с57g JS composition. Check→emit handoff около3ms, не прежняя гипотеза
+о долгом handoff. Это frozen-v41 output consumer, не новый bootstrap fixedpoint.
+Remote Bun1.2.5/Node26.3.0 отличаются от57e; source-only build ratio не заявлен.
+Первый isolated build без SDKROOT упал math.h; второй использовал verified Xcode
+SDKROOT. NHS LLVM partition/control оба остановлены sampler_error без binary;
+эксперимент не принят, лимиты/монитор не ослаблены.
+
+Actual native CPU sampling: три6s checker окна и одно6s emit окно,2ms interval,
+все внутри phase boundaries;7032 checker observations. Physical self shares:
+sharing/drop25.697%,closure/work dispatch23.692%,checker dispatch14.903%,
+Map11.960%. Это не inclusive semantic attribution: musttail стирает caller history;
+306 spin/outlined samples остаются unresolved. Не выводить «WHNF/publication
+не стоят времени» из их малых leaf shares. Receipt57h сохраняет tool identity,
+точные source/C hashes, owner mapping, sample accounting и ограничения.
+
+Occurrence-only affine usage cutover отвергнут реальным counterexample:
+проверка покрытой третьей source case ещё нужна, хотя CheckedFIR содержит только
+две runtime cases. Повторное affine use и erased use в покрытой строке правильно
+отклоняются нынешним checker. Без explicit omitted-row usage witness удалять
+original-case validation нельзя. Receipt: compiler-ir-checkpoint-v57h.json.
 
 Первый настоящий gate57g остановлен600103ms во время stage-two-check:
 seed93 fixtures прошли; stage-one реально emitted14562034bytes,

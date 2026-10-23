@@ -213,12 +213,24 @@ async function compile(o:Options){
     validationMs,codegenMs:performance.now()-codegenStart,elapsedMs:performance.now()-start});
   progress(o,'c-publication','complete',{cPath:o.artifact+'.c'});
 }
-async function buildWorker(o:Options){
-  await guardHeavyGate(script,{label:'Native CPU compiler build'});
+async function codegenWorker(o:Options){
+  await guardHeavyGate(script,{label:'Native CPU compiler code generation'});
   reportWritable=true;
   progress(o,'compiler-worker','start');
   const thread=new Worker(new URL(import.meta.url),{workerData:o,resourceLimits:{stackSizeMb:256,maxOldGenerationSizeMb:3072}});
   await new Promise<void>((yes,no)=>{thread.once('error',no);thread.once('exit',code=>code===0?yes():no(Error('Canonical C build worker failed: '+code)));});
+}
+async function buildWorker(o:Options){
+  await guardHeavyGate(script,{label:'Native CPU compiler build'});
+  reportWritable=true;
+  const profileFlags=o.v8LogDir?['--prof','--logfile='+join(o.v8LogDir,'native-build.v8.log')]:[];
+  const args_=process.argv.slice(2).filter(arg=>!arg.startsWith('--internal='));
+  // Worker exit need not return its allocator pages to the OS. Terminate the
+  // entire codegen process before clang, not just the worker's JS heap.
+  const codegen=['node',...profileFlags,'--experimental-strip-types','--max-old-space-size=3072',script,...args_,'--internal=codegen'];
+  progress(o,'codegen-process','start',{command:codegen});
+  await child(codegen[0],codegen.slice(1));
+  progress(o,'codegen-process','complete');
   const report=json(o.report),cc=process.env.CC??'clang';
   // Official CPU flags by default. Explicit lower optimization levels are
   // authenticated diagnostic tradeoffs, not an official-flags speed claim.
@@ -247,15 +259,23 @@ async function runWorker(o:Options){
   create(o.report+'.exports.txt',names.join('\n')+'\n');
   const phases:Array<{phase:string}> = [],begins:Array<{computeThreads:number}> = [],results:Array<{result:string;modules:number;bytes?:number}> = [];
   const fuel:Array<Record<string,unknown>> = [];
+  const phaseStarts:Array<{phase:string}> = [];
   const command=[build.artifact,'--threads',String(o.threads),'--gpu','off','--',
     resolve(input.directory,input.root),resolve(input.directory,'bend2/base.bend'),
     o.report+'.runtime.tsv',o.report+'.exports.txt',o.phase,output];
   const started=performance.now();
   await child(command[0],command.slice(1),line=>{
+    if(line.startsWith('NATIVE_PHASE_START ')){
+      const row=jsonRecord(line.slice(19));
+      if(typeof row.phase!=='string')throw Error('Malformed native phase-start record');
+      phaseStarts.push({...row,phase:row.phase});
+      progress(o,row.phase,'start',{native:row});
+    }
     if(line.startsWith('NATIVE_PHASE ')){
       const row=jsonRecord(line.slice(13));
-      if(typeof row.phase!=='string')throw Error('Malformed native phase record');
+      if(typeof row.phase!=='string'||![row.elapsedMs,row.userCpuMs,row.systemCpuMs].every(value=>typeof value==='number'&&Number.isFinite(value)&&value>=0))throw Error('Malformed native phase CPU/wall record');
       phases.push({...row,phase:row.phase});
+      progress(o,row.phase,'complete',{native:row});
     }
     if(line.startsWith('NATIVE_FUEL ')){
       const row=jsonRecord(line.slice(12));
@@ -264,7 +284,7 @@ async function runWorker(o:Options){
     }
     if(line.startsWith('NATIVE_BEGIN ')){
       const row=jsonRecord(line.slice(13));
-      if(typeof row.computeThreads!=='number')throw Error('Malformed native runtime record');
+      if(typeof row.computeThreads!=='number'||row.phaseTraceVersion!==2)throw Error('Malformed native runtime/phase-trace record');
       begins.push({...row,computeThreads:row.computeThreads});
     }
     if(line.startsWith('NATIVE_RESULT ')){
@@ -279,7 +299,7 @@ async function runWorker(o:Options){
   const begin=begins[0];
   if(begins.length!==1||begin?.computeThreads!==o.threads||results.length!==1||results[0].modules!==expectedModules||results[0].result!==(o.phase==='compile'?'EmitSuccess':'CheckSuccess'))throw Error('Missing complete typed whole-workload result');
   const expectedPhases=o.phase==='compile'?['parse','expand','check','emit']:['parse','expand','check'];
-  if(JSON.stringify(phases.map(row=>row.phase))!==JSON.stringify(expectedPhases))throw Error('Missing ordered phase evidence');
+  if(JSON.stringify(phases.map(row=>row.phase))!==JSON.stringify(expectedPhases)||JSON.stringify(phaseStarts.map(row=>row.phase))!==JSON.stringify(expectedPhases))throw Error('Missing ordered phase-start/completion evidence');
   let semanticSmoke:unknown={status:'NOT_REQUESTED'};
   if(o.expectJs){
     if(hash(o.expectJs)!==acceptedCompilerSha256)throw Error('Expected image is not the accepted v40 fixedpoint compiler');
@@ -290,11 +310,12 @@ async function runWorker(o:Options){
     build:o.build,buildSha256:hash(o.build!),protectedPins,corpus:o.corpus,corpusSha256:hash(o.corpus),
     ccOptimization:build.ccOptimization,
     threads:o.threads,multithread:o.threads>1,command,elapsedMs:performance.now()-started,
-    phases,fuel,result:results[0],exports:names,semanticSmoke,
+    phases,phaseStarts,fuel,result:results[0],exports:names,semanticSmoke,
     ...(o.phase==='compile'?{output,outputSha256:hash(output),outputBytes:readFileSync(output).length}:{diagnosticOnly:true})});
 }
 async function main(o:Options){
   if(o.internal==='build'){await buildWorker(o);return;}
+  if(o.internal==='codegen'){await codegenWorker(o);return;}
   if(o.internal==='run'){await runWorker(o);return;}
   if(o.internal)throw Error('Unknown internal operation');
   mkdirSync(dirname(o.report),{recursive:true});
@@ -309,8 +330,7 @@ async function main(o:Options){
   // logging separates the large-stack Worker from its waiting main thread.
   // Tick logs do not depend on executing Profiler.stop in a blocked phase.
   if(o.v8LogDir)mkdirSync(o.v8LogDir);
-  const profileFlags=o.v8LogDir?['--prof','--logfile='+join(o.v8LogDir,'native-build.v8.log')]:[];
-  const command=o.mode==='build'?['node',...profileFlags,'--experimental-strip-types','--max-old-space-size=3072',script,...args,'--internal=build']:[process.execPath,'--smol',script,...args,'--internal=run'];
+  const command=[process.execPath,'--smol',script,...args,'--internal='+(o.mode==='build'?'build':'run')];
   const stopped=new Map<NodeJS.Signals,()=>void>();
   for(const signal of ['SIGINT','SIGTERM','SIGHUP'] as const){
     const handler=()=>failure(o,Error('Runner received '+signal),signal);

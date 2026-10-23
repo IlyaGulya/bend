@@ -26,6 +26,21 @@ typedef struct {
   u64 parsed_sources;
 } NativeLoader;
 
+static void native_cpu_sample(struct rusage* usage) {
+  if (getrusage(RUSAGE_SELF, usage) != 0)
+    err_fail("native experiment: cannot sample process CPU");
+}
+
+static double native_cpu_ms(const struct timeval* before, const struct timeval* after) {
+  return (double)(after->tv_sec - before->tv_sec) * 1000.0
+    + (double)(after->tv_usec - before->tv_usec) / 1000.0;
+}
+
+static void native_phase_start(const char* phase, struct rusage* cpu) {
+  native_cpu_sample(cpu);
+  fprintf(stderr, "NATIVE_PHASE_START {\"phase\":\"%s\"}\n", phase);
+}
+
 static u64 native_peak_rss(void) {
   struct rusage usage;
   if (getrusage(RUSAGE_SELF, &usage) != 0)
@@ -72,6 +87,8 @@ static Term native_drive(Env e, Term start, Term argument, Term reflect,
   size_t depth = 0, capacity = 0;
   u64 calls = 0, resumes = 0;
   u64 started = io_tick();
+  struct rusage cpu_started;
+  native_phase_start(phase, &cpu_started);
   Term progress = native_apply(e, start, argument);
   for (;;) {
     // reflect is polymorphic in its erased result type. It preserves the
@@ -95,8 +112,12 @@ static Term native_drive(Env e, Term start, Term argument, Term reflect,
       Term boxed = native_apply(e, fs[0], term_pak(CID(Unit), 0));
       if (depth == 0) {
         free(stack);
-        fprintf(stderr, "NATIVE_PHASE {\"phase\":\"%s\",\"elapsedMs\":%.3f,\"calls\":%llu,\"resumes\":%llu}\n",
+        struct rusage cpu_finished;
+        native_cpu_sample(&cpu_finished);
+        fprintf(stderr, "NATIVE_PHASE {\"phase\":\"%s\",\"elapsedMs\":%.3f,\"userCpuMs\":%.3f,\"systemCpuMs\":%.3f,\"calls\":%llu,\"resumes\":%llu}\n",
           phase, (double)(io_tick() - started) / 1000000.0,
+          native_cpu_ms(&cpu_started.ru_utime, &cpu_finished.ru_utime),
+          native_cpu_ms(&cpu_started.ru_stime, &cpu_finished.ru_stime),
           (unsigned long long)calls, (unsigned long long)resumes);
         return boxed;
       }
@@ -302,8 +323,10 @@ static Term native_experiment_run(Env e, Term* f, IoWork* work) {
   for (u32 i = 0; i < 10; i++) native_closed(f[i]);
   bool compile = strcmp(io_argv[5], "compile") == 0;
   if (!compile && strcmp(io_argv[5], "check") != 0) err_fail("native experiment: invalid phase");
-  fprintf(stderr, "NATIVE_BEGIN {\"computeThreads\":%u,\"parserFuel\":8000000,\"phase\":\"%s\"}\n", pool_size, io_argv[5]);
+  fprintf(stderr, "NATIVE_BEGIN {\"computeThreads\":%u,\"parserFuel\":8000000,\"phase\":\"%s\",\"phaseTraceVersion\":2}\n", pool_size, io_argv[5]);
   u64 started = io_tick();
+  struct rusage cpu_started;
+  native_phase_start("parse", &cpu_started);
   NativeLoader loader = native_manifest(io_argv[3], io_argv[2], f[0]);
   native_visit(e, &loader, io_argv[1], "");
   for (size_t i = 0; i < loader.count; i++) {
@@ -315,8 +338,12 @@ static Term native_experiment_run(Env e, Term* f, IoWork* work) {
   free(loader.modules);
   for (size_t i = 0; i < loader.count; i++) { free(loader.inputs[i].path); free(loader.inputs[i].scope); }
   free(loader.inputs);
-  fprintf(stderr, "NATIVE_PHASE {\"phase\":\"parse\",\"elapsedMs\":%.3f,\"modules\":%zu,\"sourceBytes\":%llu,\"foreignBytes\":%llu,\"eagerFuelCells\":%llu,\"fuelBuildMs\":%.3f}\n",
-    (double)(io_tick() - started) / 1000000.0, loader.module_count,
+  struct rusage cpu_finished;
+  native_cpu_sample(&cpu_finished);
+  fprintf(stderr, "NATIVE_PHASE {\"phase\":\"parse\",\"elapsedMs\":%.3f,\"userCpuMs\":%.3f,\"systemCpuMs\":%.3f,\"modules\":%zu,\"sourceBytes\":%llu,\"foreignBytes\":%llu,\"eagerFuelCells\":%llu,\"fuelBuildMs\":%.3f}\n",
+    (double)(io_tick() - started) / 1000000.0,
+    native_cpu_ms(&cpu_started.ru_utime, &cpu_finished.ru_utime),
+    native_cpu_ms(&cpu_started.ru_stime, &cpu_finished.ru_stime), loader.module_count,
     (unsigned long long)loader.source_bytes, (unsigned long long)loader.foreign_bytes,
     (unsigned long long)loader.fuel_cells, (double)loader.fuel_build_ns / 1000000.0);
   Term expanded = native_drive(e, f[1], modules, f[2],

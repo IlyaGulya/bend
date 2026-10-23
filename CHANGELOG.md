@@ -152,6 +152,12 @@ latest one; the GitHub release carries the same notes.
   constructor identities, arities, quantities and indexes remain mandatory;
   checked literals no longer fall back to full Word trees solely because of
   the FIR representation change.
+- Native selfhost builds run code generation in a separate Node process that exits
+  before clang starts, releasing its retained heap instead of overlapping both
+  compiler working sets. Native phase receipts include explicit start markers
+  and process user/system CPU, persisted synchronously by the runner. The full
+  frozen corpus and unchanged 7720-export consumer pass; this is not a bootstrap
+  fixedpoint or a five-minute build claim.
 - Source map lookup selects the same Patricia branch through a structurally
   decreasing worker instead of allocating two recursive branch closures per
   node. Unicode keys, misses and arbitrary public map shapes retain Map.bit
