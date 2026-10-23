@@ -28,6 +28,9 @@ latest one; the GitHub release carries the same notes.
 - Exact-arity named JavaScript library exports enter their checked uncurried
   bodies directly; partial/over-applied calls keep the curried fallback and
   internal calls retain their existing bounded trampoline protocol.
+- Diagnostic step counters recognize the selfhost emitter's callback names and
+  preserve each checker pass in a separate write-once file, so output smokes
+  cannot overwrite full-workload measurements.
 
 - The complete selfhost parser/Template/Checker/JavaScript compiler root now
   reaches an exact stage-one/stage-two byte fixedpoint using its own emitted

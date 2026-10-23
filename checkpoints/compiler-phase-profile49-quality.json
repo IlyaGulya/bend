@@ -1,0 +1,1339 @@
+{
+  "status": "PASS_PHASE_ISOLATED_CPU_AND_SAMPLED_ALLOCATION",
+  "diagnosticOnly": true,
+  "normalBenchmark": false,
+  "bootstrapAcceptance": false,
+  "newFixedpoint": false,
+  "compilerSha256": "28061d5eab72b2a0bc560c6963b8f22cd863d7572f102cb627d483606f412e81",
+  "coverage": {
+    "files": 50,
+    "modules": 15,
+    "checkedModules": 15,
+    "exports": 7720,
+    "actualOutputImportAndSemanticSmoke": true,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "corpusSha256": "6a00a60b7833e1b188b7b1872297df8e00252cf381b1cc4f9d6b670dfe5ff016"
+  },
+  "output": {
+    "status": "PASS",
+    "bytes": 20285397,
+    "sha256": "7a3ca3d98b60044e7c00629a5e4b5c3b4d25669eb185979390e46992a27942f1",
+    "reference": "paired49-actual49.json.output.mjs",
+    "exactByteMatch": true,
+    "emission": true,
+    "actualOutputImportAndSemanticSmoke": true,
+    "exports": 7720
+  },
+  "profiling": {
+    "helper": "evals/selfhost_cpu_profile.mjs",
+    "helperSha256": "09682b3127c7b8e5a2b857b6a4d1ae44d67406b80094fe6fd5c8b5f1f2819c7a",
+    "helperChanges": 0,
+    "baseRunner": "benchmark-linux.ts",
+    "baseRunnerSha256": "107be3470c240af8c069fdc39ccfebd080b473fb727a5943c9979d7370c987eb",
+    "clone": "benchmark-quality49.ts",
+    "cloneSha256": "8550838f2095b90a0e9a8e3b8152dfc51fddb96f1b121aa3802eedee92a76372",
+    "cloneChanges": "Only import/createCpuProfiler; mark on existing phase entry; finish in finally. All existing load/parse/expand/check/emit/export/import/smoke operations retained.",
+    "launcher": "run-quality49.mjs",
+    "launcherSha256": "a734d755e80d264ec01e4e5a69efbfdf0bd5bb86fda3cfc3738ed07767f80497",
+    "cpuIntervalUs": 1000,
+    "allocationIntervalBytes": 4194304,
+    "collectedByMinorGcIncluded": true,
+    "collectedByMajorGcIncluded": true,
+    "cliCpuProfiler": false,
+    "runtime": {
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      },
+      "platform": "linux",
+      "arch": "x64"
+    }
+  },
+  "phases": [
+    {
+      "phase": "compiler-startup",
+      "status": "completed",
+      "instrumentedWallMs": 552.258752,
+      "processCpuMs": 602.397,
+      "workerSampledMs": 566.867,
+      "workerGcSampledMs": 12.311,
+      "workerGcSamplePercent": 2.171761630153105,
+      "estimatedAllocatedBytes": 49376216,
+      "allocationSampleRecords": 5,
+      "allocationSampleSizeSum": 49376216,
+      "cpuProfile": {
+        "path": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/profiling-quality49/selfhost-1220597-thread-1-ImoXA5/000001-compiler-startup.cpuprofile",
+        "sha256": "096d8cfc771505dc8e73b5281626fa14aa5359885247944382d2e6b803f1ce34",
+        "bytes": 11439
+      },
+      "heapProfile": {
+        "path": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/profiling-quality49/selfhost-1220597-thread-1-ImoXA5/000001-compiler-startup.heapprofile",
+        "sha256": "136ed5c71452bfebdc0a87e32c780aaa68f6e8461805432b245f3565d4ca0ace",
+        "bytes": 2733
+      },
+      "topCpuSelf": [
+        {
+          "name": "compileSourceTextModule",
+          "line": 342,
+          "url": "node:internal/modules/esm/utils",
+          "sampledMs": 289.019,
+          "percent": 50.98532812811471
+        },
+        {
+          "name": "detectModuleFormat",
+          "line": 36,
+          "url": "node:internal/modules/esm/get_format",
+          "sampledMs": 203.529,
+          "percent": 35.90418916606541
+        },
+        {
+          "name": "(anonymous)",
+          "line": 1,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "sampledMs": 26.92,
+          "percent": 4.748909356162909
+        },
+        {
+          "name": "post",
+          "line": 112,
+          "url": "node:inspector",
+          "sampledMs": 13.346,
+          "percent": 2.354344140689086
+        },
+        {
+          "name": "(garbage collector)",
+          "line": 0,
+          "url": "",
+          "sampledMs": 12.311,
+          "percent": 2.171761630153105
+        },
+        {
+          "name": "decode",
+          "line": 440,
+          "url": "node:internal/encoding",
+          "sampledMs": 6.72,
+          "percent": 1.1854632568133265
+        },
+        {
+          "name": "(idle)",
+          "line": 0,
+          "url": "",
+          "sampledMs": 5.678,
+          "percent": 1.001645888718165
+        },
+        {
+          "name": "toString",
+          "line": 835,
+          "url": "node:buffer",
+          "sampledMs": 4.309,
+          "percent": 0.7601430317869976
+        }
+      ],
+      "topAllocationSites": [
+        {
+          "name": "decode",
+          "line": 440,
+          "url": "node:internal/encoding",
+          "estimatedAllocatedBytes": 18330736,
+          "sampleRecords": 1,
+          "estimatedSharePercent": 37.124626966149044
+        },
+        {
+          "name": "toString",
+          "line": 835,
+          "url": "node:buffer",
+          "estimatedAllocatedBytes": 18330736,
+          "sampleRecords": 1,
+          "estimatedSharePercent": 37.124626966149044
+        },
+        {
+          "name": "(anonymous)",
+          "line": 1,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 12714744,
+          "sampleRecords": 3,
+          "estimatedSharePercent": 25.750746067701908
+        }
+      ],
+      "summary": "profiling-quality49-compiler-startup-summary.json"
+    },
+    {
+      "phase": "load-parse",
+      "status": "completed",
+      "instrumentedWallMs": 5821.698275000001,
+      "processCpuMs": 8967.965,
+      "workerSampledMs": 5844.005,
+      "workerGcSampledMs": 913.741,
+      "workerGcSamplePercent": 15.63552734811144,
+      "estimatedAllocatedBytes": 10717091728,
+      "allocationSampleRecords": 2554,
+      "allocationSampleSizeSum": 10717109216,
+      "cpuProfile": {
+        "path": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/profiling-quality49/selfhost-1220597-thread-1-ImoXA5/000002-load-parse.cpuprofile",
+        "sha256": "7535cf6629c05059807115e6f92c92439e91e2e44f96a4f35a61ce930d5ef9f3",
+        "bytes": 4433336
+      },
+      "heapProfile": {
+        "path": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/profiling-quality49/selfhost-1220597-thread-1-ImoXA5/000002-load-parse.heapprofile",
+        "sha256": "7b20c730315b8107fd01ca902ed237cc23d77d9fc0434c85e802e0a01e38ecc4",
+        "bytes": 11615350
+      },
+      "topCpuSelf": [
+        {
+          "name": "(garbage collector)",
+          "line": 0,
+          "url": "",
+          "sampledMs": 913.741,
+          "percent": 15.63552734811144
+        },
+        {
+          "name": "../bend2/selfhost/lexer.normal_mode",
+          "line": 7300,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "sampledMs": 281.024,
+          "percent": 4.8087570082503355
+        },
+        {
+          "name": "String.from_list",
+          "line": 6589,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "sampledMs": 272.989,
+          "percent": 4.67126568166865
+        },
+        {
+          "name": "run_loop",
+          "line": 10,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "sampledMs": 263.373,
+          "percent": 4.50672099014289
+        },
+        {
+          "name": "../bend2/selfhost/lexer.scan",
+          "line": 7302,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "sampledMs": 241.469,
+          "percent": 4.131909538065077
+        },
+        {
+          "name": "../bend2/selfhost/lexer.normal_acc",
+          "line": 7298,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "sampledMs": 241.261,
+          "percent": 4.128350335086982
+        },
+        {
+          "name": "Char.is_eq",
+          "line": 6458,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "sampledMs": 231.547,
+          "percent": 3.962128711388851
+        },
+        {
+          "name": "List.reverse.go",
+          "line": 5903,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "sampledMs": 230.486,
+          "percent": 3.943973353890012
+        }
+      ],
+      "topAllocationSites": [
+        {
+          "name": "../bend2/selfhost/lexer.normal_mode",
+          "line": 7300,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 2298535496,
+          "sampleRecords": 548,
+          "estimatedSharePercent": 21.447381009110273
+        },
+        {
+          "name": "List.reverse.go",
+          "line": 5903,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 1333798848,
+          "sampleRecords": 318,
+          "estimatedSharePercent": 12.44552983077724
+        },
+        {
+          "name": "feedback_drive",
+          "line": 54075,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 952128224,
+          "sampleRecords": 227,
+          "estimatedSharePercent": 8.884203365661442
+        },
+        {
+          "name": "../bend2/selfhost/lexer.normal_acc",
+          "line": 7298,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 880807872,
+          "sampleRecords": 210,
+          "estimatedSharePercent": 8.218721033232907
+        },
+        {
+          "name": "../bend2/selfhost/lexer.scan",
+          "line": 7302,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 864032560,
+          "sampleRecords": 206,
+          "estimatedSharePercent": 8.062192448559399
+        },
+        {
+          "name": "String.from_list",
+          "line": 6589,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 763367136,
+          "sampleRecords": 182,
+          "estimatedSharePercent": 7.122894488302172
+        },
+        {
+          "name": "../bend2/selfhost/lexer.advance_newline",
+          "line": 7258,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 650123264,
+          "sampleRecords": 155,
+          "estimatedSharePercent": 6.066228418120711
+        },
+        {
+          "name": "step_consumed_token_end_step",
+          "line": 47474,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 373300088,
+          "sampleRecords": 89,
+          "estimatedSharePercent": 3.4832219176094004
+        }
+      ],
+      "summary": "profiling-quality49-load-parse-summary.json"
+    },
+    {
+      "phase": "expand",
+      "status": "completed",
+      "instrumentedWallMs": 3915.5769210000008,
+      "processCpuMs": 5039.864,
+      "workerSampledMs": 4067.523,
+      "workerGcSampledMs": 199.643,
+      "workerGcSamplePercent": 4.908220555851805,
+      "estimatedAllocatedBytes": 10066520616,
+      "allocationSampleRecords": 2400,
+      "allocationSampleSizeSum": 10066580480,
+      "cpuProfile": {
+        "path": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/profiling-quality49/selfhost-1220597-thread-1-ImoXA5/000003-expand.cpuprofile",
+        "sha256": "4296e0bfc60dc9ed55a6cc292fee8810beb07fd6bda2f10d294ec6b019931efe",
+        "bytes": 311371
+      },
+      "heapProfile": {
+        "path": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/profiling-quality49/selfhost-1220597-thread-1-ImoXA5/000003-expand.heapprofile",
+        "sha256": "2b46df78011e062c846c72212481ee665c81164d28e77d58f2bd95d2e432241b",
+        "bytes": 220035
+      },
+      "topCpuSelf": [
+        {
+          "name": "runSteps",
+          "line": 20,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+          "sampledMs": 833.442,
+          "percent": 20.49016071943539
+        },
+        {
+          "name": "run_named1",
+          "line": 56,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "sampledMs": 628.077,
+          "percent": 15.44126486807819
+        },
+        {
+          "name": "template_steps_v1.template_match_16",
+          "line": 7939,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "sampledMs": 301.303,
+          "percent": 7.407530332342312
+        },
+        {
+          "name": "runTemplateSteps",
+          "line": 96,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+          "sampledMs": 290.092,
+          "percent": 7.131908043298096
+        },
+        {
+          "name": "template_steps_v1.template_step_group_0",
+          "line": 10120,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "sampledMs": 219.879,
+          "percent": 5.405722352399728
+        },
+        {
+          "name": "(garbage collector)",
+          "line": 0,
+          "url": "",
+          "sampledMs": 199.643,
+          "percent": 4.908220555851805
+        },
+        {
+          "name": "post",
+          "line": 112,
+          "url": "node:inspector",
+          "sampledMs": 151.94,
+          "percent": 3.7354429218962006
+        },
+        {
+          "name": "run_named2",
+          "line": 57,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "sampledMs": 133.954,
+          "percent": 3.2932573460555723
+        }
+      ],
+      "topAllocationSites": [
+        {
+          "name": "template_steps_v1.template_match_16",
+          "line": 7939,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 5821785896,
+          "sampleRecords": 1388,
+          "estimatedSharePercent": 57.83314928841149
+        },
+        {
+          "name": "(anonymous)",
+          "line": 7941,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 956305880,
+          "sampleRecords": 228,
+          "estimatedSharePercent": 9.499865112082734
+        },
+        {
+          "name": "template_steps_v1.template_match_229",
+          "line": 9707,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 251663184,
+          "sampleRecords": 60,
+          "estimatedSharePercent": 2.5000016748587366
+        },
+        {
+          "name": "template_steps_v1.template_match_19",
+          "line": 7961,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 247474984,
+          "sampleRecords": 59,
+          "estimatedSharePercent": 2.4583964354740067
+        },
+        {
+          "name": "template_steps_v1.template_match_250",
+          "line": 9951,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 222307200,
+          "sampleRecords": 53,
+          "estimatedSharePercent": 2.208381708836506
+        },
+        {
+          "name": "template_steps_v1.template_body_flatten_append",
+          "line": 7970,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 171971072,
+          "sampleRecords": 41,
+          "estimatedSharePercent": 1.7083466925668889
+        },
+        {
+          "name": "(anonymous)",
+          "line": 7962,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 159388080,
+          "sampleRecords": 38,
+          "estimatedSharePercent": 1.583348269775202
+        },
+        {
+          "name": "template_steps_v1.template_body_capture_declared_name",
+          "line": 8308,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 113250592,
+          "sampleRecords": 27,
+          "estimatedSharePercent": 1.125022203004248
+        }
+      ],
+      "summary": "profiling-quality49-expand-summary.json"
+    },
+    {
+      "phase": "check",
+      "status": "completed",
+      "instrumentedWallMs": 100887.312717,
+      "processCpuMs": 118503.008,
+      "workerSampledMs": 101047.529,
+      "workerGcSampledMs": 3431.161,
+      "workerGcSamplePercent": 3.3955911974848982,
+      "estimatedAllocatedBytes": 172138113888,
+      "allocationSampleRecords": 41021,
+      "allocationSampleSizeSum": 172138849784,
+      "cpuProfile": {
+        "path": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/profiling-quality49/selfhost-1220597-thread-1-ImoXA5/000004-check.cpuprofile",
+        "sha256": "94f374cdc2f6fcd982d775b0408701632e3abe8205bdf62691ab29393cc9920c",
+        "bytes": 14120926
+      },
+      "heapProfile": {
+        "path": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/profiling-quality49/selfhost-1220597-thread-1-ImoXA5/000004-check.heapprofile",
+        "sha256": "c6908f562c4b5bb153cfba4661cc9935b63188a25237e845dc4b998708a9d22f",
+        "bytes": 8576405
+      },
+      "topCpuSelf": [
+        {
+          "name": "runCheckerSteps",
+          "line": 100,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+          "sampledMs": 12056.207,
+          "percent": 11.931223968871125
+        },
+        {
+          "name": "runSteps",
+          "line": 20,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+          "sampledMs": 9431.016,
+          "percent": 9.333247525528309
+        },
+        {
+          "name": "run_named1",
+          "line": 56,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "sampledMs": 4890.511,
+          "percent": 4.8398125598895145
+        },
+        {
+          "name": "Map.get.go",
+          "line": 7014,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "sampledMs": 4714.955,
+          "percent": 4.666076495546962
+        },
+        {
+          "name": "../bend2/selfhost/index_lookup.find.go",
+          "line": 10949,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "sampledMs": 4474.945,
+          "percent": 4.42855460621902
+        },
+        {
+          "name": "(garbage collector)",
+          "line": 0,
+          "url": "",
+          "sampledMs": 3431.161,
+          "percent": 3.3955911974848982
+        },
+        {
+          "name": "run_named4",
+          "line": 59,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "sampledMs": 1460.322,
+          "percent": 1.445183285976246
+        },
+        {
+          "name": "run_named5",
+          "line": 60,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "sampledMs": 1409.025,
+          "percent": 1.3944180663734984
+        }
+      ],
+      "topAllocationSites": [
+        {
+          "name": "Map.hi",
+          "line": 6945,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 11186531136,
+          "sampleRecords": 2667,
+          "estimatedSharePercent": 6.498578893038417
+        },
+        {
+          "name": "Map.lo",
+          "line": 6942,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 9299047752,
+          "sampleRecords": 2217,
+          "estimatedSharePercent": 5.402085303461809
+        },
+        {
+          "name": "Map.get.go",
+          "line": 7014,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 8296392328,
+          "sampleRecords": 1978,
+          "estimatedSharePercent": 4.8196138209100905
+        },
+        {
+          "name": "../bend2/selfhost/checker_arena.get_node.result",
+          "line": 11364,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 6031552896,
+          "sampleRecords": 1438,
+          "estimatedSharePercent": 3.503903208748047
+        },
+        {
+          "name": "../bend2/selfhost/index_lookup.find.go",
+          "line": 10949,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 4919952528,
+          "sampleRecords": 1173,
+          "estimatedSharePercent": 2.8581424629766303
+        },
+        {
+          "name": "../bend2/selfhost/checker_arena.word.result",
+          "line": 11464,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 4022434368,
+          "sampleRecords": 959,
+          "estimatedSharePercent": 2.3367482524045533
+        },
+        {
+          "name": "../bend2/selfhost/checker_arena.name_text.result",
+          "line": 12065,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 2801862144,
+          "sampleRecords": 668,
+          "estimatedSharePercent": 1.6276826094556867
+        },
+        {
+          "name": "checker_core_steps_v1.checker_pure_arena_get_node_region_get_node_result_2",
+          "line": 13437,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 2747300736,
+          "sampleRecords": 655,
+          "estimatedSharePercent": 1.5959863123558473
+        }
+      ],
+      "summary": "profiling-quality49-check-summary.json"
+    },
+    {
+      "phase": "emit",
+      "status": "completed",
+      "instrumentedWallMs": 13277.966539000001,
+      "processCpuMs": 17606.765,
+      "workerSampledMs": 13667.698,
+      "workerGcSampledMs": 697.748,
+      "workerGcSamplePercent": 5.105087923365002,
+      "estimatedAllocatedBytes": 21953615432,
+      "allocationSampleRecords": 5234,
+      "allocationSampleSizeSum": 21953570304,
+      "cpuProfile": {
+        "path": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/profiling-quality49/selfhost-1220597-thread-1-ImoXA5/000005-emit.cpuprofile",
+        "sha256": "01ae0905d5f515016fd52a9f74b5e546a5073867cd3f36fe51638f7c9bad6b2b",
+        "bytes": 1801247
+      },
+      "heapProfile": {
+        "path": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/profiling-quality49/selfhost-1220597-thread-1-ImoXA5/000005-emit.heapprofile",
+        "sha256": "d347af63727277cecc0800871f64d42a34debf776fe26281b3c66ff344853958",
+        "bytes": 1066594
+      },
+      "topCpuSelf": [
+        {
+          "name": "runSteps",
+          "line": 20,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+          "sampledMs": 1981.127,
+          "percent": 14.494957380533284
+        },
+        {
+          "name": "../bend2/selfhost/index_lookup.find.go",
+          "line": 10949,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "sampledMs": 1698.554,
+          "percent": 12.427506080394812
+        },
+        {
+          "name": "runLibraryEmitterSteps",
+          "line": 108,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+          "sampledMs": 1694.578,
+          "percent": 12.398415592735514
+        },
+        {
+          "name": "run_named1",
+          "line": 56,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "sampledMs": 1340.055,
+          "percent": 9.804540603692004
+        },
+        {
+          "name": "(garbage collector)",
+          "line": 0,
+          "url": "",
+          "sampledMs": 697.748,
+          "percent": 5.105087923365002
+        },
+        {
+          "name": "post",
+          "line": 112,
+          "url": "node:inspector",
+          "sampledMs": 390.262,
+          "percent": 2.855360134530336
+        },
+        {
+          "name": "run_named2",
+          "line": 57,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "sampledMs": 231.933,
+          "percent": 1.696942674618652
+        },
+        {
+          "name": "emitter_step",
+          "line": 54343,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "sampledMs": 181.522,
+          "percent": 1.3281095324172365
+        }
+      ],
+      "topAllocationSites": [
+        {
+          "name": "../bend2/selfhost/index_lookup.find.go",
+          "line": 10949,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 1421877984,
+          "sampleRecords": 339,
+          "estimatedSharePercent": 6.4767372299299915
+        },
+        {
+          "name": "js_emit_steps_v1.emitter_body_js_quote_chars",
+          "line": 40294,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 1409343520,
+          "sampleRecords": 336,
+          "estimatedSharePercent": 6.419642014616484
+        },
+        {
+          "name": "js_emit_steps_v1.emitter_match_43",
+          "line": 40410,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 1300270232,
+          "sampleRecords": 310,
+          "estimatedSharePercent": 5.922806819803821
+        },
+        {
+          "name": "js_emit_steps_v1.emitter_continuation_27",
+          "line": 40291,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 1002451600,
+          "sampleRecords": 239,
+          "estimatedSharePercent": 4.566225563643644
+        },
+        {
+          "name": "js_emit_steps_v1.emitter_match_42",
+          "line": 40403,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 973089984,
+          "sampleRecords": 232,
+          "estimatedSharePercent": 4.432481688558714
+        },
+        {
+          "name": "js_emit_steps_v1.emitter_body_js_named_identifier_chars",
+          "line": 40308,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 629160720,
+          "sampleRecords": 150,
+          "estimatedSharePercent": 2.8658638115839614
+        },
+        {
+          "name": "js_emit_steps_v1.emitter_body_js_reduce",
+          "line": 40637,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 444614456,
+          "sampleRecords": 106,
+          "estimatedSharePercent": 2.0252448047892906
+        },
+        {
+          "name": "(anonymous)",
+          "line": 40314,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+          "estimatedAllocatedBytes": 432019112,
+          "sampleRecords": 103,
+          "estimatedSharePercent": 1.967872277521455
+        }
+      ],
+      "summary": "profiling-quality49-emit-summary.json"
+    },
+    {
+      "phase": "write-and-hash",
+      "status": "completed",
+      "instrumentedWallMs": 221.9440969999996,
+      "processCpuMs": 232.576,
+      "workerSampledMs": 636.741,
+      "workerGcSampledMs": 0,
+      "workerGcSamplePercent": 0,
+      "estimatedAllocatedBytes": 20285416,
+      "allocationSampleRecords": 1,
+      "allocationSampleSizeSum": 20285416,
+      "cpuProfile": {
+        "path": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/profiling-quality49/selfhost-1220597-thread-1-ImoXA5/000006-write-and-hash.cpuprofile",
+        "sha256": "89a6e8aebeb7abe4f55cb5833035aae3841253cd6ee913c25a17b66b94c84d0a",
+        "bytes": 6350
+      },
+      "heapProfile": {
+        "path": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/profiling-quality49/selfhost-1220597-thread-1-ImoXA5/000006-write-and-hash.heapprofile",
+        "sha256": "cc1ce538d24376f8a318b377d12739bf59e618484cb739b00ba415804d8f2cd8",
+        "bytes": 1748
+      },
+      "topCpuSelf": [
+        {
+          "name": "post",
+          "line": 112,
+          "url": "node:inspector",
+          "sampledMs": 414.216,
+          "percent": 65.05250957610708
+        },
+        {
+          "name": "(anonymous)",
+          "line": 0,
+          "url": "",
+          "sampledMs": 201.985,
+          "percent": 31.72168903840023
+        },
+        {
+          "name": "update",
+          "line": 0,
+          "url": "",
+          "sampledMs": 10.031,
+          "percent": 1.575365808075811
+        },
+        {
+          "name": "writeBuffer",
+          "line": 0,
+          "url": "",
+          "sampledMs": 6.35,
+          "percent": 0.9972657642589373
+        },
+        {
+          "name": "proto.utf8Write",
+          "line": 1061,
+          "url": "node:internal/buffer",
+          "sampledMs": 2.244,
+          "percent": 0.3524195866137095
+        },
+        {
+          "name": "update",
+          "line": 107,
+          "url": "node:internal/crypto/hash",
+          "sampledMs": 1.151,
+          "percent": 0.18076423537984831
+        },
+        {
+          "name": "dispatch",
+          "line": 0,
+          "url": "",
+          "sampledMs": 0.764,
+          "percent": 0.11998599116438238
+        }
+      ],
+      "topAllocationSites": [
+        {
+          "name": "createFromString",
+          "line": 474,
+          "url": "node:buffer",
+          "estimatedAllocatedBytes": 20285416,
+          "sampleRecords": 1,
+          "estimatedSharePercent": 100
+        }
+      ],
+      "summary": "profiling-quality49-write-and-hash-summary.json"
+    },
+    {
+      "phase": "output-import",
+      "status": "completed",
+      "instrumentedWallMs": 353.3170090000058,
+      "processCpuMs": 367.643,
+      "workerSampledMs": 644.009,
+      "workerGcSampledMs": 2.266,
+      "workerGcSamplePercent": 0.35185843676097694,
+      "estimatedAllocatedBytes": 32873864,
+      "allocationSampleRecords": 4,
+      "allocationSampleSizeSum": 32873864,
+      "cpuProfile": {
+        "path": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/profiling-quality49/selfhost-1220597-thread-1-ImoXA5/000007-output-import.cpuprofile",
+        "sha256": "4884422bb6d2fba8d71b10fd938a08d5bdba042c6c86ee21bb08cbd99cee7b05",
+        "bytes": 9973
+      },
+      "heapProfile": {
+        "path": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/profiling-quality49/selfhost-1220597-thread-1-ImoXA5/000007-output-import.heapprofile",
+        "sha256": "2d776321d46ef77c460462f3d0e4ade283350253e68aa8e2648954a7b239d2aa",
+        "bytes": 2021
+      },
+      "topCpuSelf": [
+        {
+          "name": "compileSourceTextModule",
+          "line": 342,
+          "url": "node:internal/modules/esm/utils",
+          "sampledMs": 306.645,
+          "percent": 47.61501780254624
+        },
+        {
+          "name": "post",
+          "line": 112,
+          "url": "node:inspector",
+          "sampledMs": 290.292,
+          "percent": 45.07576757467675
+        },
+        {
+          "name": "(anonymous)",
+          "line": 1,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/profiling-quality49.json.output.mjs",
+          "sampledMs": 26.838,
+          "percent": 4.167333065221138
+        },
+        {
+          "name": "(idle)",
+          "line": 0,
+          "url": "",
+          "sampledMs": 6.803,
+          "percent": 1.0563516969483346
+        },
+        {
+          "name": "decode",
+          "line": 440,
+          "url": "node:internal/encoding",
+          "sampledMs": 5.536,
+          "percent": 0.8596153159350257
+        },
+        {
+          "name": "(garbage collector)",
+          "line": 0,
+          "url": "",
+          "sampledMs": 2.266,
+          "percent": 0.35185843676097694
+        },
+        {
+          "name": "finalizeResolution",
+          "line": 228,
+          "url": "node:internal/modules/esm/resolve",
+          "sampledMs": 1.218,
+          "percent": 0.18912779169235214
+        },
+        {
+          "name": "read",
+          "line": 0,
+          "url": "",
+          "sampledMs": 1.127,
+          "percent": 0.17499755438200398
+        }
+      ],
+      "topAllocationSites": [
+        {
+          "name": "decode",
+          "line": 440,
+          "url": "node:internal/encoding",
+          "estimatedAllocatedBytes": 20285416,
+          "sampleRecords": 1,
+          "estimatedSharePercent": 61.706819739839524
+        },
+        {
+          "name": "(anonymous)",
+          "line": 1,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/profiling-quality49.json.output.mjs",
+          "estimatedAllocatedBytes": 8394016,
+          "sampleRecords": 2,
+          "estimatedSharePercent": 25.53401084825319
+        },
+        {
+          "name": "compileSourceTextModule",
+          "line": 342,
+          "url": "node:internal/modules/esm/utils",
+          "estimatedAllocatedBytes": 4194432,
+          "sampleRecords": 1,
+          "estimatedSharePercent": 12.759169411907283
+        }
+      ],
+      "summary": "profiling-quality49-output-import-summary.json"
+    },
+    {
+      "phase": "output-semantic-smoke",
+      "status": "completed",
+      "instrumentedWallMs": 54.69095799999195,
+      "processCpuMs": 47.149,
+      "workerSampledMs": 343.314,
+      "workerGcSampledMs": 0,
+      "workerGcSamplePercent": 0,
+      "estimatedAllocatedBytes": 4194400,
+      "allocationSampleRecords": 1,
+      "allocationSampleSizeSum": 4194400,
+      "cpuProfile": {
+        "path": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/profiling-quality49/selfhost-1220597-thread-1-ImoXA5/000008-output-semantic-smoke.cpuprofile",
+        "sha256": "8d547a2274fe1e02be7c606a96532c00db9368c0cdc6cf9c3e6f8399a8be259c",
+        "bytes": 66506
+      },
+      "heapProfile": {
+        "path": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/profiling-quality49/selfhost-1220597-thread-1-ImoXA5/000008-output-semantic-smoke.heapprofile",
+        "sha256": "1bdc973cf2072c259b7d027f4c9cd0d5f2995ed7d40868b65df5808bcf04883b",
+        "bytes": 2494
+      },
+      "topCpuSelf": [
+        {
+          "name": "post",
+          "line": 112,
+          "url": "node:inspector",
+          "sampledMs": 288.434,
+          "percent": 84.01463383374985
+        },
+        {
+          "name": "read",
+          "line": 0,
+          "url": "",
+          "sampledMs": 18.606,
+          "percent": 5.419528478302662
+        },
+        {
+          "name": "update",
+          "line": 0,
+          "url": "",
+          "sampledMs": 11.965,
+          "percent": 3.4851477073466275
+        },
+        {
+          "name": "run_named2",
+          "line": 57,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/profiling-quality49.json.output.mjs",
+          "sampledMs": 3.374,
+          "percent": 0.982773787261807
+        },
+        {
+          "name": "feedback_resume",
+          "line": 53597,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/profiling-quality49.json.output.mjs",
+          "sampledMs": 2.253,
+          "percent": 0.6562505461472588
+        },
+        {
+          "name": "run_named1",
+          "line": 56,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/profiling-quality49.json.output.mjs",
+          "sampledMs": 2.078,
+          "percent": 0.6052768019946754
+        },
+        {
+          "name": "run_named4",
+          "line": 59,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/profiling-quality49.json.output.mjs",
+          "sampledMs": 1.209,
+          "percent": 0.35215575245984726
+        },
+        {
+          "name": "Bool.or",
+          "line": 5606,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/profiling-quality49.json.output.mjs",
+          "sampledMs": 1.152,
+          "percent": 0.3355528757930058
+        }
+      ],
+      "topAllocationSites": [
+        {
+          "name": "feedback_resume",
+          "line": 53597,
+          "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/profiling-quality49.json.output.mjs",
+          "estimatedAllocatedBytes": 4194400,
+          "sampleRecords": 1,
+          "estimatedSharePercent": 100
+        }
+      ],
+      "summary": "profiling-quality49-output-semantic-smoke-summary.json"
+    }
+  ],
+  "metricScopes": {
+    "processCpu": "process.cpuUsage is the entire Node process, including helper/concurrent V8 threads; not worker-isolate-only CPU.",
+    "workerCpu": "Inspector CPU profiles sample the local worker isolate. Each phase has its own denominator. GC samples measure this isolate profiling category, not total/concurrent GC CPU.",
+    "allocation": "Heap sampling byte weights estimate cumulative worker-isolate allocation, including collected objects. Not exact bytes, not exact allocation counts, and not live/RSS/retained memory.",
+    "cgroup": "cpu.stat/memory.peak cover the guarded cgroup tree; distinct from process and isolate metrics.",
+    "hardware": "perf probe reports cycles/instructions <not supported>; no compiler hardware-cycle/instruction measurements."
+  },
+  "observerLimitations": [
+    "CPU Profiler.start precedes HeapProfiler.startSampling in unchanged helper; inspector post/startSampling overhead enters CPU sample profiles before helper wall/processCPU timers begin. E.g. write-and-hash sample span636.741ms vs helper wall221.944ms; small phase samples are observer dominated. No subtraction-based performance claim.",
+    "Helper stops CPU before allocation sampler; profile materialization can allocate while heap sampling remains active. Raw profiles retain observer/inspector sites.",
+    "Phase intervals run mark-to-next-mark/finish and include interphase validation. Overall times include profile serialization; all timings instrumented, not comparable as normal benchmarks.",
+    "Heap tree selfSize sum and sampling-record size sum differ slightly; both retained as statistical estimates rather than asserting exact allocation accounting.",
+    "CPU sampling self attribution can fold inlined work into callers; allocation sites and real call stacks are complementary evidence, not proof of isolated causal cost."
+  ],
+  "allocationFindings": [
+    {
+      "phase": "check",
+      "estimatedBytes": 172138113888,
+      "records": 41021,
+      "allMapFamilyEstimatedBytes": 38072476888,
+      "statement": "Map-family sites account for about22.1% of sampled check allocation estimates. Top Map.hi11.19GB,Map.lo9.30GB,Map.get.go8.30GB. Heap stacks connect these through checker_arena.name to checker_body_arena_names_cons. Source6942-6946 constructs Tuple+MNode during map rebuilding; no exact object count inferred."
+    },
+    {
+      "phase": "check",
+      "site": "checker_arena.get_node.result",
+      "line": 11364,
+      "estimatedBytes": 6031552896,
+      "statement": "Heap stacks connect to checker_body_whnf and checker_body_core_subst_open. Source11366 constructs Tuple+Arena after Array.get; observed aggregate-record allocation, not just a generic helper label."
+    },
+    {
+      "phase": "check",
+      "sites": [
+        "checker_match_3002",
+        "checker_match_3003"
+      ],
+      "estimatedBytes": [
+        1774266456,
+        1514209848
+      ],
+      "statement": "Source31951-31964 constructs CheckerPending/CheckerDirect/Finished wrappers and closures for substitution paths. Heap data measures allocation sites; it does not attribute all logical substitution CPU."
+    },
+    {
+      "phase": "emit",
+      "estimatedBytes": 21953615432,
+      "records": 5234,
+      "statement": "Top index_lookup.find.go1.42GB via emitter_body_js_constructor_lookup; emitter_body_js_quote_chars1.41GB and emitter_continuation_27 1.00GB via emitted per-character CPS path. Check and emit have separate sample denominators."
+    }
+  ],
+  "environment": {
+    "before": {
+      "at": "2026-10-23T09:14:06.152Z",
+      "loadavg": {
+        "value": "1.79 1.82 2.75 1/3244 1220611"
+      },
+      "allowedCpuAffinity": [
+        "Cpus_allowed:\tfff",
+        "Cpus_allowed_list:\t0-11"
+      ],
+      "cpuStat": {
+        "value": "usage_usec 115531\nuser_usec 82664\nsystem_usec 32866\ncore_sched.force_idle_usec 0"
+      },
+      "memoryMax": {
+        "value": "8589934592"
+      },
+      "memorySwapMax": {
+        "value": "0"
+      },
+      "cpufreq": [],
+      "procCpuInfo": [
+        "processor\t: 0",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 3930.210",
+        "processor\t: 1",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 3410.514",
+        "processor\t: 2",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4833.959",
+        "processor\t: 3",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 3926.532",
+        "processor\t: 4",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 2157.621",
+        "processor\t: 5",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 3276.794",
+        "processor\t: 6",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4279.012",
+        "processor\t: 7",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4849.043",
+        "processor\t: 8",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4753.657",
+        "processor\t: 9",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4852.223",
+        "processor\t: 10",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4844.353",
+        "processor\t: 11",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4161.747"
+      ],
+      "frequencyLimit": "No readable cpufreq directories; proc/cpuinfo MHz is only a reported snapshot, not measured hardware cycles."
+    },
+    "after": {
+      "at": "2026-10-23T09:16:14.654Z",
+      "loadavg": {
+        "value": "3.14 2.33 2.82 1/3248 1266197"
+      },
+      "allowedCpuAffinity": [
+        "Cpus_allowed:\tfff",
+        "Cpus_allowed_list:\t0-11"
+      ],
+      "cpuStat": {
+        "value": "usage_usec 156485995\nuser_usec 150437764\nsystem_usec 6048231\ncore_sched.force_idle_usec 0"
+      },
+      "memoryMax": {
+        "value": "8589934592"
+      },
+      "memorySwapMax": {
+        "value": "0"
+      },
+      "cpufreq": [],
+      "procCpuInfo": [
+        "processor\t: 0",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4101.089",
+        "processor\t: 1",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4094.443",
+        "processor\t: 2",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4245.766",
+        "processor\t: 3",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4376.912",
+        "processor\t: 4",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4527.082",
+        "processor\t: 5",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 3281.946",
+        "processor\t: 6",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4488.339",
+        "processor\t: 7",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4261.647",
+        "processor\t: 8",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 3937.069",
+        "processor\t: 9",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 3984.276",
+        "processor\t: 10",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4526.135",
+        "processor\t: 11",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4065.328"
+      ],
+      "frequencyLimit": "No readable cpufreq directories; proc/cpuinfo MHz is only a reported snapshot, not measured hardware cycles."
+    },
+    "cgroupCpuStatDelta": {
+      "usage_usec": 156370464,
+      "user_usec": 150355100,
+      "system_usec": 6015365,
+      "core_sched.force_idle_usec": 0
+    },
+    "hardwareProbe": {
+      "command": [
+        "perf",
+        "stat",
+        "-e",
+        "cycles,instructions",
+        "--",
+        "true"
+      ],
+      "status": 0,
+      "signal": null,
+      "error": null,
+      "stdout": "",
+      "stderr": "\n Performance counter stats for 'true':\n\n   <not supported>      cycles                                                                \n   <not supported>      instructions                                                          \n\n       0.001269759 seconds time elapsed\n\n       0.000000000 seconds user\n       0.000667000 seconds sys\n\n\n",
+      "scope": "Availability probe only; compiler hardware cycles/instructions are NOT measured by this experiment."
+    },
+    "affinityGovernorSysctlsChanged": false,
+    "sudoUsed": false
+  },
+  "guard": {
+    "label": "profiling-quality49",
+    "command": [
+      "./node-v23.11.0-linux-x64/bin/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "--stack-size=262144",
+      "run-quality49.mjs"
+    ],
+    "group": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-profiling-quality49.scope",
+    "memoryMax": "8589934592",
+    "memorySwapMax": "0",
+    "startedAt": "2026-10-23T09:14:06.043Z",
+    "samples": 515,
+    "elapsedMs": 128670.44781,
+    "memoryPeak": "1723133952",
+    "memoryCurrent": "117358592",
+    "memoryEvents": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+    "cpuStat": "usage_usec 156551328\nuser_usec 150459789\nsystem_usec 6091538\ncore_sched.force_idle_usec 0",
+    "pid": 1220597,
+    "exitCode": 0,
+    "signal": null
+  },
+  "systemd": {
+    "command": [
+      "systemd-run",
+      "--user",
+      "--scope",
+      "--quiet",
+      "--unit=bend-native46-elcWbhvH-profiling-quality49",
+      "-p",
+      "MemoryMax=8589934592",
+      "-p",
+      "MemorySwapMax=0",
+      "-p",
+      "RuntimeMaxSec=300s",
+      "/usr/bin/node",
+      "guard.mjs",
+      "profiling-quality49",
+      "290000",
+      "./node-v23.11.0-linux-x64/bin/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "--stack-size=262144",
+      "run-quality49.mjs"
+    ],
+    "elapsedMs": 128717,
+    "status": 0,
+    "signal": null,
+    "error": null,
+    "stdout": "",
+    "stderr": "",
+    "systemctlShow": {
+      "status": 0,
+      "stdout": "Result=success\nRuntimeMaxUSec=infinity\nControlGroup=\nMemoryMax=infinity\nMemorySwapMax=infinity\nActiveState=inactive\nSubState=dead\n",
+      "stderr": ""
+    }
+  },
+  "caps": {
+    "rawCpuBytes": 20761148,
+    "rawCpuCapBytes": 41943040,
+    "rawHeapBytes": 21487380,
+    "rawHeapCapBytes": 26214400,
+    "withinCpuCap": true,
+    "withinHeapCap": true
+  },
+  "evidenceSha256": {
+    "profiling-quality49.json": "8563256c3b670f8ca76c706b6d5d88bccbed0c84b5a921a31d840009c310036f",
+    "profiling-quality49.json.request.json": "da8d407071208a1977c3e17188f886415a78bc56693923c1e78c280696b321ea",
+    "profiling-quality49-phase-summaries.json": "d564bcf36aa29667399ebc928a8fffafbe42f6ecd37c047e0374c1b226befc96",
+    "profiling-quality49.guard.json": "8fe8895566ddc4572968583aa4e633520f55ae0db2254e8f908c5add5cd7ab82",
+    "profiling-quality49.systemd.json": "3702f477df8c54cd73a5372da7d677969df5bff7d18d54a1347ddbee97c5877b",
+    "profiling-quality49-output-comparison.json": "fa82624f29742bb8e802fe21b395aa35654a98a2e5344e5d0fd381a1b1fb02bd",
+    "profiling-quality49-environment-before.json": "a182145439a9ddad82307d0dc0eddf7b526039ce6e11889ccae9e1f2a6ef3164",
+    "profiling-quality49-environment-after.json": "f4797aa2d84f7e17fc7dbebb5eab33198f3b084cbd495feaa77c8831a08b3265",
+    "profiling-quality49-perf-availability.json": "1340587fa88d6a47a03a8a1c211aca79982141ddd2e36e1a6e8f2df1d526ff79",
+    "benchmark-quality49.ts": "8550838f2095b90a0e9a8e3b8152dfc51fddb96f1b121aa3802eedee92a76372",
+    "evals/selfhost_cpu_profile.mjs": "09682b3127c7b8e5a2b857b6a4d1ae44d67406b80094fe6fd5c8b5f1f2819c7a",
+    "run-quality49.mjs": "a734d755e80d264ec01e4e5a69efbfdf0bd5bb86fda3cfc3738ed07767f80497",
+    "analyze-quality49.mjs": "dbf0be9c6e49208002dd538e97224825a8e75f5074e2aad49fedc1b4a6ea3ca2"
+  },
+  "cleanup": {
+    "directoryBytes": 686746683,
+    "oldProfile49ReceiptsUntouched": true,
+    "compilerImageUnchanged": true,
+    "permanentSourceChanges": false,
+    "rawProfilesRetained": true
+  }
+}

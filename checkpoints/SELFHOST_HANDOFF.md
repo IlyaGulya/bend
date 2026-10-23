@@ -4,6 +4,46 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+## Profiling revision51 — actual49, compiler unchanged
+
+User challenged profiling quality and requested fundamental architecture review.
+Do not start another optimization from generic V8 self samples alone. Revision51
+changes diagnostic tooling only; source50 remains a rejected snapshot and49 is
+the last selected compiler.
+
+`compiler-profiling-quality-v51.json` preserves exact runnable measurement
+sources, hashes and scope limitations. Separate phase CPU/heap evidence:
+`compiler-phase-profile49-quality.json`. Actual full50-file/15-module checking,
+7720 exports, output import/smoke and exact frozen output bytes pass in every run.
+The unchanged helper samples worker CPU at1ms and allocations at4MiB, including
+objects collected by minor/major GC. Whole-process CPU is a different metric.
+
+Checking estimates172138113888 cumulative allocated bytes, NOT live RAM or exact
+bytes/object counts; Map-family sites estimate38072476888 bytes. Canonical
+Map.get rebuilds paths through Map.lo/hi; Arena.name still calls it. Existing
+IndexLookup.find is already read-only. Arena get_node.result also rebuilds
+Tuple/Arena records. These are allocation findings, not isolated CPU shares.
+
+`evals/checker_core_step_counts.mjs` recognizes own$46 and seed$058 symbols.
+Final actual49 full-run counts remain324586413 balanced iterations. Sampled
+named target coverage is99.92375% Direct and46.407% Resume; inline unnamed work
+remains unattributed. This does not reconstruct complete logical CPS CPU stacks.
+A/observer/A controls measure6.23–11.66% compile overhead for the prior90be889d
+observer; do not assign that estimate to final18cc49be persistence changes.
+`compiler-counter-profile49-quality-final.json` proves the final observer on
+the full workload and real collision input: smoke gets a separate pass-2 file;
+exclusive writes preserve earlier main counts and fail EEXIST on collisions.
+
+Architecture assessment: whole Checker direct style is blocked by forward/
+mutual references and nonstructural recursion over U32 arena IDs under current
+official rules. Do not add unsafe to bypass it. Prefer coarse semantic machine/
+worklist boundaries and structurally checked direct helpers, with unchanged64
+WHNF semantic fuel. Usage fusion is an atomic infer/check-result migration plus
+five close sites, with level/erasure/error-precedence obligations, not another
+small application-query patch. Do not combine it with a closure representation
+rewrite. First pursue measured zero-cost read paths/ownership-aware lowering;
+no architecture rewrite or acceleration is claimed by profiling revision51.
+
 ## Latest experiment — Main50/parser75: rejected as acceleration
 
 Version50 removes duplicate callee-type derivation from affine usage; source

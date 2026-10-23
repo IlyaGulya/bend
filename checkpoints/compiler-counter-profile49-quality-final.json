@@ -1,0 +1,460 @@
+{
+  "status": "PASS_FINAL_WRITE_ONCE_OBSERVER_FULL49_AND_REAL_COLLISION",
+  "diagnosticOnly": true,
+  "newFixedpoint": false,
+  "bootstrapAcceptance": false,
+  "normalBenchmark": false,
+  "compiler": {
+    "path": "stage-one49.js",
+    "sha256": "28061d5eab72b2a0bc560c6963b8f22cd863d7572f102cb627d483606f412e81",
+    "kind": "Genuine accepted own-emitted49; unchanged source/image/output"
+  },
+  "runtime": {
+    "versions": {
+      "node": "23.11.0",
+      "acorn": "8.14.1",
+      "ada": "3.2.1",
+      "amaro": "0.4.1",
+      "ares": "1.34.4",
+      "brotli": "1.1.0",
+      "cjs_module_lexer": "2.1.0",
+      "cldr": "46.0",
+      "icu": "76.1",
+      "llhttp": "9.2.1",
+      "modules": "131",
+      "napi": "10",
+      "nbytes": "0.1.1",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.64.0",
+      "openssl": "3.0.16",
+      "simdjson": "3.12.2",
+      "simdutf": "6.0.3",
+      "sqlite": "3.49.1",
+      "tz": "2025a",
+      "undici": "6.21.2",
+      "unicode": "16.0",
+      "uv": "1.50.0",
+      "uvwasi": "0.0.21",
+      "v8": "12.9.202.28-node.14",
+      "zlib": "1.3.0.1-motley-788cb3c",
+      "zstd": "1.5.6"
+    },
+    "platform": "linux",
+    "arch": "x64"
+  },
+  "recipe": {
+    "originalRunner": "benchmark-linux.ts",
+    "originalRunnerSha256": "107be3470c240af8c069fdc39ccfebd080b473fb727a5943c9979d7370c987eb",
+    "originalRunnerUnchanged": true,
+    "phaseEnvironmentRedirect": false,
+    "observer": "counts-quality-final49.mjs",
+    "observerSha256": "18cc49be187976f4db75ba37fb56c2621e3de50ecee4fe7bf870ce310f3937c0",
+    "observerBytes": 9227,
+    "observerUnchangedAfterTransfer": true,
+    "env": {
+      "BEND_CHECKER_COUNTS_FILE": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/final-quality49.counts.json"
+    },
+    "launcher": "run-final-counterquality49.mjs",
+    "launcherSha256": "d509db417fbc74ce02faed75ffe63eaa464c2ca77682e5a11597b5faad7e2ebe",
+    "scopeLimits": {
+      "MemoryMax": 8589934592,
+      "MemorySwapMax": 0,
+      "RuntimeMaxSec": 300
+    },
+    "workerLimits": {
+      "stackSizeMb": 256,
+      "maxOldGenerationSizeMb": 6144,
+      "maxYoungGenerationSizeMb": 128
+    },
+    "oneHeavyLane": true,
+    "additionalBaselineRuns": 0,
+    "additionalProfileRuns": 0
+  },
+  "coverage": {
+    "files": 50,
+    "modules": 15,
+    "checkedModules": 15,
+    "exports": 7720,
+    "actualOutputImportAndSemanticSmoke": true,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "corpusSha256": "6a00a60b7833e1b188b7b1872297df8e00252cf381b1cc4f9d6b670dfe5ff016",
+    "freshIoParsingCheckingEmission": true
+  },
+  "output": {
+    "status": "PASS",
+    "reference": "paired49-actual49.json.output.mjs",
+    "exactByteMatch": true,
+    "bytes": 20285397,
+    "sha256": "7a3ca3d98b60044e7c00629a5e4b5c3b4d25669eb185979390e46992a27942f1",
+    "exports": 7720,
+    "actualOutputImportAndSemanticSmoke": true
+  },
+  "captures": {
+    "status": "PASS",
+    "main": {
+      "pending": 80385948,
+      "direct": 81907258,
+      "finished": 162293207,
+      "resume": 162293206,
+      "schedulerLoopIterations": 324586413,
+      "capture": 1,
+      "base": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/final-quality49.counts.json",
+      "path": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/final-quality49.counts.json",
+      "result": "CheckSuccess",
+      "sha256": "36ff040efb8f0428031fb0a69e5e9eef8fa2e0aeaad3d69e156011b218be05f4"
+    },
+    "smoke": {
+      "pending": 1,
+      "direct": 4,
+      "finished": 6,
+      "resume": 5,
+      "schedulerLoopIterations": 11,
+      "capture": 2,
+      "base": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/final-quality49.counts.json",
+      "path": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/final-quality49.counts.json.pass-2.json",
+      "result": "CheckSuccess",
+      "sha256": "c7c4acb7583042cbd38fa4df914b972a9d378cad464416e346722a524bfeaece"
+    },
+    "allTargetMapsEqualPriorObserver": true,
+    "originalBenchmarkRunnerUnchanged": true,
+    "phaseEnvironmentRedirect": false
+  },
+  "collision": {
+    "status": "PASS",
+    "actualCompiler": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+    "actualCompilerSha256": "28061d5eab72b2a0bc560c6963b8f22cd863d7572f102cb627d483606f412e81",
+    "observer": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/counts-quality-final49.mjs",
+    "observerSha256": "18cc49be187976f4db75ba37fb56c2621e3de50ecee4fe7bf870ce310f3937c0",
+    "freshObserverInstance": "Main-process ESM instance after worker exited; no previous main-process observer import",
+    "input": {
+      "$": "Nil"
+    },
+    "existingBase": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/final-quality49.counts.json",
+    "failure": {
+      "code": "EEXIST",
+      "message": "Error: EEXIST: file already exists, open '/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/final-quality49.counts.json'",
+      "syscall": "open",
+      "path": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/final-quality49.counts.json"
+    },
+    "beforeSha256": "36ff040efb8f0428031fb0a69e5e9eef8fa2e0aeaad3d69e156011b218be05f4",
+    "afterSha256": "36ff040efb8f0428031fb0a69e5e9eef8fa2e0aeaad3d69e156011b218be05f4",
+    "bytePreserved": true,
+    "mocks": false
+  },
+  "sampleCoverage": {
+    "direct": {
+      "actualCallbacks": 81907258,
+      "samples": 80005,
+      "own": 79944,
+      "seed": 0,
+      "unattributed": 61,
+      "scope": "Generated native target volume, not logical CPU ownership"
+    },
+    "resume": {
+      "actualCallbacks": 162293206,
+      "samples": 158558,
+      "own": 73582,
+      "seed": 0,
+      "unattributed": 84976,
+      "scope": "Generated native target volume, not logical CPU ownership"
+    }
+  },
+  "timings": {
+    "instrumentedCompileMs": 127455.081227,
+    "instrumentedTotalWithOutputSmokeMs": 127829.234443,
+    "phases": [
+      {
+        "name": "compiler-startup",
+        "wallMs": 476.52424799999994,
+        "cpuMs": 500.481,
+        "memoryEnd": {
+          "rss": 481697792,
+          "heapTotal": 66674688,
+          "heapUsed": 53349240,
+          "external": 28692493,
+          "arrayBuffers": 18365410
+        }
+      },
+      {
+        "name": "load-parse",
+        "wallMs": 7590.345449,
+        "cpuMs": 12937.056,
+        "memoryEnd": {
+          "rss": 1764438016,
+          "heapTotal": 1255366656,
+          "heapUsed": 382412840,
+          "external": 10345296,
+          "arrayBuffers": 24863
+        }
+      },
+      {
+        "name": "expand",
+        "wallMs": 3768.0152,
+        "cpuMs": 4560.736,
+        "memoryEnd": {
+          "rss": 1768185856,
+          "heapTotal": 1260871680,
+          "heapUsed": 439417584,
+          "external": 10345296,
+          "arrayBuffers": 24863
+        }
+      },
+      {
+        "name": "check",
+        "wallMs": 103698.50350600001,
+        "cpuMs": 116735.28,
+        "memoryEnd": {
+          "rss": 1927507968,
+          "heapTotal": 1265487872,
+          "heapUsed": 778271712,
+          "external": 10412214,
+          "arrayBuffers": 91781
+        }
+      },
+      {
+        "name": "emit",
+        "wallMs": 11707.427033999993,
+        "cpuMs": 15145.102,
+        "memoryEnd": {
+          "rss": 2001874944,
+          "heapTotal": 1500520448,
+          "heapUsed": 1297825288,
+          "external": 10345296,
+          "arrayBuffers": 24863
+        }
+      },
+      {
+        "name": "write-and-hash",
+        "wallMs": 211.3412160000007,
+        "cpuMs": 211.297,
+        "memoryEnd": {
+          "rss": 2022191104,
+          "heapTotal": 1520807936,
+          "heapUsed": 1318119152,
+          "external": 30630693,
+          "arrayBuffers": 20310260
+        }
+      },
+      {
+        "name": "output-import",
+        "wallMs": 325.159971999994,
+        "cpuMs": 327.803,
+        "memoryEnd": {
+          "rss": 2069770240,
+          "heapTotal": 1556480000,
+          "heapUsed": 1288750728,
+          "external": 30638693,
+          "arrayBuffers": 20318260
+        }
+      },
+      {
+        "name": "output-semantic-smoke",
+        "wallMs": 11.761728999990737,
+        "cpuMs": 13.679,
+        "memoryEnd": {
+          "rss": 2070556672,
+          "heapTotal": 1557266432,
+          "heapUsed": 1289883392,
+          "external": 30638693,
+          "arrayBuffers": 20318260
+        }
+      }
+    ],
+    "scopeWallIncludesAdditionalRealCollisionProbe": true,
+    "processCpuScope": "Phase cpuMs is whole Node process, not worker-only CPU"
+  },
+  "priorOverheadEvidence": {
+    "receipt": "quality-counter49-diagnostic.json",
+    "receiptSha256": "cc72072c6f0e3b2097909c12288d0104ee83babe59cc08c671dfb697ddf5344b",
+    "measuredObserverSha256": "90be889d86578efd53fe8a1500df6cc2d4a33ab415bcebd6a9dbaa6bc7970835",
+    "finalObserverSha256": "18cc49be187976f4db75ba37fb56c2621e3de50ecee4fe7bf870ce310f3937c0",
+    "unchangedRegions": [
+      {
+        "region": "callback sampler",
+        "identical": true,
+        "bytes": 770,
+        "sha256": "efe23edccb409c14b51219eff16ad19f96933de6b644a1cb4aa240afea3e7441"
+      },
+      {
+        "region": "trusted step loop",
+        "identical": true,
+        "bytes": 2818,
+        "sha256": "c34864f74d0812a27dc0ed94477bc3373aadf042abb769fbc469e878bab33109"
+      }
+    ],
+    "allCounterTargetMapsEqualPriorObserver": true,
+    "previousMeasuredRatios": {
+      "compileMs": {
+        "before": 113841.524502,
+        "observer": 127115.506243,
+        "after": 119665.080753,
+        "observerPercentVsBefore": 11.660052690849888,
+        "observerPercentVsAfter": 6.226064816166699,
+        "baselineAfterPercentVsBefore": 5.1154939082862505
+      },
+      "totalWithOutputSmokeMs": {
+        "before": 114195.187653,
+        "observer": 127512.672778,
+        "after": 120037.611439,
+        "observerPercentVsBefore": 11.662037077663246,
+        "observerPercentVsAfter": 6.2272659788791485,
+        "baselineAfterPercentVsBefore": 5.116173374795019
+      },
+      "checkWallMs": {
+        "before": 92812.54503099999,
+        "observer": 102552.047554,
+        "after": 98103.861007,
+        "observerPercentVsBefore": 10.493735000744731,
+        "observerPercentVsAfter": 4.534160532868947,
+        "baselineAfterPercentVsBefore": 5.7010784201992015
+      },
+      "checkWholeProcessCpuMs": {
+        "before": 105600.788,
+        "observer": 115668.746,
+        "after": 112818.162,
+        "observerPercentVsBefore": 9.53397999264929,
+        "observerPercentVsAfter": 2.526706648527033,
+        "baselineAfterPercentVsBefore": 6.83458346920669
+      },
+      "summedPhaseWholeProcessCpuMs": {
+        "before": 134294.306,
+        "observer": 150634.208,
+        "after": 141819.28999999998,
+        "observerPercentVsBefore": 12.167233657695053,
+        "observerPercentVsAfter": 6.215598738366301,
+        "baselineAfterPercentVsBefore": 5.603352982069065
+      }
+    },
+    "interpretation": "A/oldObserver/A measured the previous90be observer, not this final18cc observer. Sampler and step-loop source regions are byte-identical; only capture persistence changed. No new baseline or final-observer-specific overhead estimate is claimed."
+  },
+  "environment": {
+    "before": {
+      "at": "2026-10-23T09:52:45.995Z",
+      "loadavg": "1.67 1.82 2.16 3/3250 2769219",
+      "allowedCpuAffinity": [
+        "Cpus_allowed:\tfff",
+        "Cpus_allowed_list:\t0-11"
+      ],
+      "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-final-quality49.scope",
+      "memoryMax": "8589934592",
+      "memorySwapMax": "0",
+      "cpuStat": "usage_usec 86122\nuser_usec 56739\nsystem_usec 29382\ncore_sched.force_idle_usec 0"
+    },
+    "afterWorkload": {
+      "at": "2026-10-23T09:54:54.070Z",
+      "loadavg": "2.43 2.07 2.21 2/3288 2862827",
+      "allowedCpuAffinity": [
+        "Cpus_allowed:\tfff",
+        "Cpus_allowed_list:\t0-11"
+      ],
+      "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-final-quality49.scope",
+      "memoryMax": "8589934592",
+      "memorySwapMax": "0",
+      "cpuStat": "usage_usec 151139410\nuser_usec 148584507\nsystem_usec 2554902\ncore_sched.force_idle_usec 0"
+    },
+    "afterCollision": {
+      "at": "2026-10-23T09:54:54.669Z",
+      "loadavg": "2.43 2.07 2.21 2/3300 2863384",
+      "allowedCpuAffinity": [
+        "Cpus_allowed:\tfff",
+        "Cpus_allowed_list:\t0-11"
+      ],
+      "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-final-quality49.scope",
+      "memoryMax": "8589934592",
+      "memorySwapMax": "0",
+      "cpuStat": "usage_usec 151778900\nuser_usec 149104020\nsystem_usec 2674879\ncore_sched.force_idle_usec 0"
+    }
+  },
+  "guard": {
+    "label": "final-quality49",
+    "command": [
+      "./node-v23.11.0-linux-x64/bin/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "--stack-size=262144",
+      "run-final-counterquality49.mjs"
+    ],
+    "group": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-final-quality49.scope",
+    "memoryMax": "8589934592",
+    "memorySwapMax": "0",
+    "startedAt": "2026-10-23T09:52:45.926Z",
+    "samples": 516,
+    "elapsedMs": 128791.250824,
+    "memoryPeak": "2104512512",
+    "memoryCurrent": "70766592",
+    "memoryEvents": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+    "cpuStat": "usage_usec 151826900\nuser_usec 149106988\nsystem_usec 2719911\ncore_sched.force_idle_usec 0",
+    "pid": 2769209,
+    "exitCode": 0,
+    "signal": null
+  },
+  "systemd": {
+    "command": [
+      "systemd-run",
+      "--user",
+      "--scope",
+      "--quiet",
+      "--unit=bend-native46-elcWbhvH-final-quality49",
+      "-p",
+      "MemoryMax=8589934592",
+      "-p",
+      "MemorySwapMax=0",
+      "-p",
+      "RuntimeMaxSec=300s",
+      "/usr/bin/node",
+      "guard.mjs",
+      "final-quality49",
+      "290000",
+      "./node-v23.11.0-linux-x64/bin/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "--stack-size=262144",
+      "run-final-counterquality49.mjs"
+    ],
+    "elapsedMs": 128834,
+    "status": 0,
+    "signal": null,
+    "error": null,
+    "stdout": "",
+    "stderr": "",
+    "systemctlShow": {
+      "status": 0,
+      "stdout": "Result=success\nRuntimeMaxUSec=infinity\nControlGroup=\nMemoryMax=infinity\nMemorySwapMax=infinity\nActiveState=inactive\nSubState=dead\n",
+      "stderr": ""
+    }
+  },
+  "limitations": [
+    "Exact scheduler loop iterations are Pending+Direct+Finished, one observed step constructor per loop visit.",
+    "Samples are generated native callback targets; unmatched inline continuations remain unattributed. No logical source CPU ownership fabricated.",
+    "Actual Linux cgroup controls are authoritative; inherited benchmark rssMiB/pollMs metadata is not a macOS guard.",
+    "The existing-base collision probe uses actual49 and a fresh main-process ESM observer instance, not mocks; it executes empty checking before the write-once EEXIST failure."
+  ],
+  "evidenceSha256": {
+    "counts-quality-final49.mjs": "18cc49be187976f4db75ba37fb56c2621e3de50ecee4fe7bf870ce310f3937c0",
+    "benchmark-linux.ts": "107be3470c240af8c069fdc39ccfebd080b473fb727a5943c9979d7370c987eb",
+    "run-final-counterquality49.mjs": "d509db417fbc74ce02faed75ffe63eaa464c2ca77682e5a11597b5faad7e2ebe",
+    "final-quality49.json": "48e68863757d3f1195a1a62503b888a4715608bebbded5967ac76dcd3fca3e48",
+    "final-quality49.json.request.json": "5169ce446877f56b8ef9e7e0ae1d7b5f9fd7c27c2455954e2ad528df85c728e5",
+    "final-quality49.guard.json": "38bbcb3bb08c6f3eaf2eca2854db57b8f72edaf8364c836dbc37ea369dc9d858",
+    "final-quality49.systemd.json": "598b77ac1c13b027a4f93e226aacfa8042190c39e50cd82a0b6d0c991207333f",
+    "final-quality49.output-comparison.json": "a12d6b3a858d2f6532c9bf849cf227b32fb9de9aa8203855f788216499805dbd",
+    "final-quality49.capture-validation.json": "60f7e2a5e763b8f8611974a3edae6dad7e9b6914b25c14912495983a4750d8d8",
+    "final-quality49.collision-probe.json": "7d0e7568e32c506dfd9e5440fe96d5cd4455ac5feee43412266594c0061c26a7",
+    "final-quality49.counts.json": "36ff040efb8f0428031fb0a69e5e9eef8fa2e0aeaad3d69e156011b218be05f4",
+    "final-quality49.counts.json.pass-2.json": "c7c4acb7583042cbd38fa4df914b972a9d378cad464416e346722a524bfeaece",
+    "final-quality49.environment-before.json": "ba33ee0c33bb36e48355d9fc553a579abc1ab00876c1ca54b55c851abc074ec4",
+    "final-quality49.environment-after-workload.json": "a88635430bf775d73142333b64f67b1c14f1f81284dde37c5e2e9ec3c26f0599",
+    "final-quality49.environment-after-collision.json": "c65531950f36bd0fa4fa53be55a15d000a2c17cc2530247840edbac77443fc9a",
+    "quality-counter49-diagnostic.json": "cc72072c6f0e3b2097909c12288d0104ee83babe59cc08c671dfb697ddf5344b"
+  },
+  "cleanup": {
+    "directoryBytes": 768841200,
+    "previousReceiptsUnchanged": true,
+    "rawProfilesRemainRemote": true,
+    "permanentCompilerSourceChanges": false,
+    "globallyInstalledTools": false
+  }
+}

@@ -1,0 +1,1177 @@
+{
+  "status": "PASS_CONTROL_OBSERVER_CONTROL_FULL49",
+  "diagnosticOnly": true,
+  "bootstrapAcceptance": false,
+  "newFixedpoint": false,
+  "compiler": {
+    "path": "stage-one49.js",
+    "sha256": "28061d5eab72b2a0bc560c6963b8f22cd863d7572f102cb627d483606f412e81",
+    "bytes": 18330720,
+    "kind": "Genuine accepted own-emitted49 image, not official-generated seed; compiler source/image/output unchanged"
+  },
+  "runtime": {
+    "versions": {
+      "node": "23.11.0",
+      "acorn": "8.14.1",
+      "ada": "3.2.1",
+      "amaro": "0.4.1",
+      "ares": "1.34.4",
+      "brotli": "1.1.0",
+      "cjs_module_lexer": "2.1.0",
+      "cldr": "46.0",
+      "icu": "76.1",
+      "llhttp": "9.2.1",
+      "modules": "131",
+      "napi": "10",
+      "nbytes": "0.1.1",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.64.0",
+      "openssl": "3.0.16",
+      "simdjson": "3.12.2",
+      "simdutf": "6.0.3",
+      "sqlite": "3.49.1",
+      "tz": "2025a",
+      "undici": "6.21.2",
+      "unicode": "16.0",
+      "uv": "1.50.0",
+      "uvwasi": "0.0.21",
+      "v8": "12.9.202.28-node.14",
+      "zlib": "1.3.0.1-motley-788cb3c",
+      "zstd": "1.5.6"
+    },
+    "platform": "linux",
+    "arch": "x64"
+  },
+  "sequence": [
+    "quality49-a-before",
+    "quality49-observer",
+    "quality49-a-after"
+  ],
+  "recipe": {
+    "supervisorNode": "22.22.1",
+    "measuredWorkerNode": "23.11.0",
+    "scopeLimits": {
+      "MemoryMax": 8589934592,
+      "MemorySwapMax": 0,
+      "RuntimeMaxSec": 300
+    },
+    "workerLimits": {
+      "stackSizeMb": 256,
+      "maxOldGenerationSizeMb": 6144,
+      "maxYoungGenerationSizeMb": 128
+    },
+    "normalDriver": "evals/checker_core_step_runtime.mjs",
+    "normalDriverSha256": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+    "observer": "counts-quality51.mjs",
+    "observerSha256": "90be889d86578efd53fe8a1500df6cc2d4a33ab415bcebd6a9dbaa6bc7970835",
+    "observerBytes": 8852,
+    "observerChangesAfterTransfer": 0,
+    "observerEnv": {
+      "BEND_CHECKER_COUNTS_FILE": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/quality49-observer.counts.json"
+    },
+    "baseRunner": "benchmark-linux.ts",
+    "baseRunnerSha256": "107be3470c240af8c069fdc39ccfebd080b473fb727a5943c9979d7370c987eb",
+    "runner": "benchmark-counterquality49.ts",
+    "runnerSha256": "dfbc576c834bfc9a30eb4afc6887ad03cf889cd5da3eac2b2dd2e4c23b11ec35",
+    "runnerChange": "One phase-entry line redirects count output to a fresh .smoke.json only for output-semantic-smoke, preserving main full-check counters. Same clone used by both controls and observer. No operation/validation/timing logic omitted or changed.",
+    "heavyJobsConcurrent": 1,
+    "cliOrInspectorProfiler": false,
+    "caches": false
+  },
+  "runs": [
+    {
+      "label": "quality49-a-before",
+      "instrumented": false,
+      "driver": {
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-counterquality49.ts": "dfbc576c834bfc9a30eb4afc6887ad03cf889cd5da3eac2b2dd2e4c23b11ec35",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-linux.ts": "107be3470c240af8c069fdc39ccfebd080b473fb727a5943c9979d7370c987eb",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/run-counterquality49.mjs": "a86c26cf2d1e06e9bb2b9e43423edebc044b1403aba563a9938a8c056619805a",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/corpus.relocated.json": "6a00a60b7833e1b188b7b1872297df8e00252cf381b1cc4f9d6b670dfe5ff016",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js": "28061d5eab72b2a0bc560c6963b8f22cd863d7572f102cb627d483606f412e81",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/official.json.exports.json": "9740412dd732c74160b574acff9ca4ce8c1565b15a51a40f3e49beba08c76914",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/corpus/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/corpus/bend2/comp.ts": "56d5727049bc3ef528ef84d3b4712a41a0a8ce0a06437b29d881e71107638c70"
+      },
+      "compileMs": 113841.524502,
+      "totalWithOutputSmokeMs": 114195.187653,
+      "checkWallMs": 92812.54503099999,
+      "checkWholeProcessCpuMs": 105600.788,
+      "summedPhaseWholeProcessCpuMs": 134294.306,
+      "phases": [
+        {
+          "name": "compiler-startup",
+          "wallMs": 500.23553599999997,
+          "cpuMs": 527.449,
+          "memoryEnd": {
+            "rss": 481083392,
+            "heapTotal": 66674688,
+            "heapUsed": 53356496,
+            "external": 28689310,
+            "arrayBuffers": 18362227
+          }
+        },
+        {
+          "name": "load-parse",
+          "wallMs": 5082.191588,
+          "cpuMs": 7690.96,
+          "memoryEnd": {
+            "rss": 1308807168,
+            "heapTotal": 805711872,
+            "heapUsed": 568816664,
+            "external": 10351986,
+            "arrayBuffers": 24863
+          }
+        },
+        {
+          "name": "expand",
+          "wallMs": 3548.3261999999995,
+          "cpuMs": 4293.926,
+          "memoryEnd": {
+            "rss": 1420582912,
+            "heapTotal": 919744512,
+            "heapUsed": 755544848,
+            "external": 10351986,
+            "arrayBuffers": 24863
+          }
+        },
+        {
+          "name": "check",
+          "wallMs": 92812.54503099999,
+          "cpuMs": 105600.788,
+          "memoryEnd": {
+            "rss": 1857056768,
+            "heapTotal": 1258098688,
+            "heapUsed": 586871528,
+            "external": 10346361,
+            "arrayBuffers": 24863
+          }
+        },
+        {
+          "name": "emit",
+          "wallMs": 11641.854418999996,
+          "cpuMs": 15591.255,
+          "memoryEnd": {
+            "rss": 1754406912,
+            "heapTotal": 993660928,
+            "heapUsed": 726119712,
+            "external": 10345296,
+            "arrayBuffers": 24863
+          }
+        },
+        {
+          "name": "write-and-hash",
+          "wallMs": 253.82495100000233,
+          "cpuMs": 256.052,
+          "memoryEnd": {
+            "rss": 1774592000,
+            "heapTotal": 1013948416,
+            "heapUsed": 746430256,
+            "external": 30630693,
+            "arrayBuffers": 20310260
+          }
+        },
+        {
+          "name": "output-import",
+          "wallMs": 320.06666099998984,
+          "cpuMs": 320.983,
+          "memoryEnd": {
+            "rss": 1799757824,
+            "heapTotal": 1037299712,
+            "heapUsed": 675927568,
+            "external": 30638893,
+            "arrayBuffers": 20318460
+          }
+        },
+        {
+          "name": "output-semantic-smoke",
+          "wallMs": 11.345178999996278,
+          "cpuMs": 12.893,
+          "memoryEnd": {
+            "rss": 1799757824,
+            "heapTotal": 1037299712,
+            "heapUsed": 677056280,
+            "external": 30638893,
+            "arrayBuffers": 20318460
+          }
+        }
+      ],
+      "coverage": {
+        "files": 50,
+        "modules": 15,
+        "checkedModules": 15,
+        "exports": 7720,
+        "actualOutputImportAndSemanticSmoke": true,
+        "checksExcluded": 0,
+        "outputPatches": 0,
+        "corpusSha256": "6a00a60b7833e1b188b7b1872297df8e00252cf381b1cc4f9d6b670dfe5ff016"
+      },
+      "output": {
+        "status": "PASS",
+        "reference": "paired49-actual49.json.output.mjs",
+        "exactByteMatch": true,
+        "bytes": 20285397,
+        "sha256": "7a3ca3d98b60044e7c00629a5e4b5c3b4d25669eb185979390e46992a27942f1",
+        "exports": 7720,
+        "actualOutputImportAndSemanticSmoke": true
+      },
+      "guard": {
+        "label": "quality49-a-before",
+        "command": [
+          "./node-v23.11.0-linux-x64/bin/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "--stack-size=262144",
+          "run-counterquality49.mjs",
+          "quality49-a-before"
+        ],
+        "group": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-quality49-a-before.scope",
+        "memoryMax": "8589934592",
+        "memorySwapMax": "0",
+        "startedAt": "2026-10-23T09:25:37.748Z",
+        "samples": 460,
+        "elapsedMs": 114692.16175300001,
+        "memoryPeak": "1988947968",
+        "memoryCurrent": "139321344",
+        "memoryEvents": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+        "cpuStat": "usage_usec 135045831\nuser_usec 132366148\nsystem_usec 2679683\ncore_sched.force_idle_usec 0",
+        "pid": 1672486,
+        "exitCode": 0,
+        "signal": null
+      },
+      "systemd": {
+        "command": [
+          "systemd-run",
+          "--user",
+          "--scope",
+          "--quiet",
+          "--unit=bend-native46-elcWbhvH-quality49-a-before",
+          "-p",
+          "MemoryMax=8589934592",
+          "-p",
+          "MemorySwapMax=0",
+          "-p",
+          "RuntimeMaxSec=300s",
+          "/usr/bin/node",
+          "guard.mjs",
+          "quality49-a-before",
+          "290000",
+          "./node-v23.11.0-linux-x64/bin/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "--stack-size=262144",
+          "run-counterquality49.mjs",
+          "quality49-a-before"
+        ],
+        "elapsedMs": 114732,
+        "status": 0,
+        "signal": null,
+        "error": null,
+        "stdout": "",
+        "stderr": "",
+        "systemctlShow": {
+          "status": 0,
+          "stdout": "Result=success\nRuntimeMaxUSec=infinity\nControlGroup=\nMemoryMax=infinity\nMemorySwapMax=infinity\nActiveState=inactive\nSubState=dead\n",
+          "stderr": ""
+        }
+      },
+      "environmentBefore": {
+        "at": "2026-10-23T09:25:37.924Z",
+        "loadavg": "1.68 2.02 2.53 1/3321 1672500",
+        "allowedCpuAffinity": [
+          "Cpus_allowed:\tfff",
+          "Cpus_allowed_list:\t0-11"
+        ],
+        "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-quality49-a-before.scope",
+        "memoryMax": "8589934592",
+        "memorySwapMax": "0",
+        "cpuStat": "usage_usec 96781\nuser_usec 57493\nsystem_usec 39287\ncore_sched.force_idle_usec 0"
+      },
+      "environmentAfter": {
+        "at": "2026-10-23T09:27:32.377Z",
+        "loadavg": "3.40 2.52 2.66 1/3297 1752868",
+        "allowedCpuAffinity": [
+          "Cpus_allowed:\tfff",
+          "Cpus_allowed_list:\t0-11"
+        ],
+        "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-quality49-a-before.scope",
+        "memoryMax": "8589934592",
+        "memorySwapMax": "0",
+        "cpuStat": "usage_usec 134980847\nuser_usec 132353290\nsystem_usec 2627557\ncore_sched.force_idle_usec 0"
+      }
+    },
+    {
+      "label": "quality49-observer",
+      "instrumented": true,
+      "driver": {
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-counterquality49.ts": "dfbc576c834bfc9a30eb4afc6887ad03cf889cd5da3eac2b2dd2e4c23b11ec35",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-linux.ts": "107be3470c240af8c069fdc39ccfebd080b473fb727a5943c9979d7370c987eb",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/run-counterquality49.mjs": "a86c26cf2d1e06e9bb2b9e43423edebc044b1403aba563a9938a8c056619805a",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/corpus.relocated.json": "6a00a60b7833e1b188b7b1872297df8e00252cf381b1cc4f9d6b670dfe5ff016",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/counts-quality51.mjs": "90be889d86578efd53fe8a1500df6cc2d4a33ab415bcebd6a9dbaa6bc7970835",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js": "28061d5eab72b2a0bc560c6963b8f22cd863d7572f102cb627d483606f412e81",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/official.json.exports.json": "9740412dd732c74160b574acff9ca4ce8c1565b15a51a40f3e49beba08c76914",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/corpus/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/corpus/bend2/comp.ts": "56d5727049bc3ef528ef84d3b4712a41a0a8ce0a06437b29d881e71107638c70"
+      },
+      "compileMs": 127115.506243,
+      "totalWithOutputSmokeMs": 127512.672778,
+      "checkWallMs": 102552.047554,
+      "checkWholeProcessCpuMs": 115668.746,
+      "summedPhaseWholeProcessCpuMs": 150634.208,
+      "phases": [
+        {
+          "name": "compiler-startup",
+          "wallMs": 538.710969,
+          "cpuMs": 568.275,
+          "memoryEnd": {
+            "rss": 480186368,
+            "heapTotal": 66674688,
+            "heapUsed": 53363360,
+            "external": 28692118,
+            "arrayBuffers": 18365035
+          }
+        },
+        {
+          "name": "load-parse",
+          "wallMs": 7961.261869000001,
+          "cpuMs": 13256.782,
+          "memoryEnd": {
+            "rss": 1765638144,
+            "heapTotal": 1250123776,
+            "heapUsed": 358809600,
+            "external": 10345296,
+            "arrayBuffers": 24863
+          }
+        },
+        {
+          "name": "expand",
+          "wallMs": 3814.5479030000006,
+          "cpuMs": 4589.053,
+          "memoryEnd": {
+            "rss": 1768919040,
+            "heapTotal": 1255104512,
+            "heapUsed": 418075536,
+            "external": 10345296,
+            "arrayBuffers": 24863
+          }
+        },
+        {
+          "name": "check",
+          "wallMs": 102552.047554,
+          "cpuMs": 115668.746,
+          "memoryEnd": {
+            "rss": 1896648704,
+            "heapTotal": 1243156480,
+            "heapUsed": 664503232,
+            "external": 10345296,
+            "arrayBuffers": 24863
+          }
+        },
+        {
+          "name": "emit",
+          "wallMs": 11977.205751000001,
+          "cpuMs": 15925.497,
+          "memoryEnd": {
+            "rss": 1804890112,
+            "heapTotal": 1112674304,
+            "heapUsed": 597465208,
+            "external": 10345296,
+            "arrayBuffers": 24863
+          }
+        },
+        {
+          "name": "write-and-hash",
+          "wallMs": 267.718154999995,
+          "cpuMs": 268.843,
+          "memoryEnd": {
+            "rss": 1825206272,
+            "heapTotal": 1132961792,
+            "heapUsed": 617781632,
+            "external": 30630693,
+            "arrayBuffers": 20310260
+          }
+        },
+        {
+          "name": "output-import",
+          "wallMs": 339.8664370000042,
+          "cpuMs": 341.662,
+          "memoryEnd": {
+            "rss": 1859547136,
+            "heapTotal": 1156313088,
+            "heapUsed": 632553912,
+            "external": 30638693,
+            "arrayBuffers": 20318260
+          }
+        },
+        {
+          "name": "output-semantic-smoke",
+          "wallMs": 13.102739000009024,
+          "cpuMs": 15.35,
+          "memoryEnd": {
+            "rss": 1859547136,
+            "heapTotal": 1156313088,
+            "heapUsed": 633683592,
+            "external": 30638693,
+            "arrayBuffers": 20318260
+          }
+        }
+      ],
+      "coverage": {
+        "files": 50,
+        "modules": 15,
+        "checkedModules": 15,
+        "exports": 7720,
+        "actualOutputImportAndSemanticSmoke": true,
+        "checksExcluded": 0,
+        "outputPatches": 0,
+        "corpusSha256": "6a00a60b7833e1b188b7b1872297df8e00252cf381b1cc4f9d6b670dfe5ff016"
+      },
+      "output": {
+        "status": "PASS",
+        "reference": "paired49-actual49.json.output.mjs",
+        "exactByteMatch": true,
+        "bytes": 20285397,
+        "sha256": "7a3ca3d98b60044e7c00629a5e4b5c3b4d25669eb185979390e46992a27942f1",
+        "exports": 7720,
+        "actualOutputImportAndSemanticSmoke": true
+      },
+      "guard": {
+        "label": "quality49-observer",
+        "command": [
+          "./node-v23.11.0-linux-x64/bin/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "--stack-size=262144",
+          "run-counterquality49.mjs",
+          "quality49-observer"
+        ],
+        "group": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-quality49-observer.scope",
+        "memoryMax": "8589934592",
+        "memorySwapMax": "0",
+        "startedAt": "2026-10-23T09:27:32.504Z",
+        "samples": 512,
+        "elapsedMs": 127890.956725,
+        "memoryPeak": "1949147136",
+        "memoryCurrent": "77213696",
+        "memoryEvents": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+        "cpuStat": "usage_usec 151420497\nuser_usec 148447952\nsystem_usec 2972545\ncore_sched.force_idle_usec 0",
+        "pid": 1752884,
+        "exitCode": 0,
+        "signal": null
+      },
+      "systemd": {
+        "command": [
+          "systemd-run",
+          "--user",
+          "--scope",
+          "--quiet",
+          "--unit=bend-native46-elcWbhvH-quality49-observer",
+          "-p",
+          "MemoryMax=8589934592",
+          "-p",
+          "MemorySwapMax=0",
+          "-p",
+          "RuntimeMaxSec=300s",
+          "/usr/bin/node",
+          "guard.mjs",
+          "quality49-observer",
+          "290000",
+          "./node-v23.11.0-linux-x64/bin/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "--stack-size=262144",
+          "run-counterquality49.mjs",
+          "quality49-observer"
+        ],
+        "elapsedMs": 127936,
+        "status": 0,
+        "signal": null,
+        "error": null,
+        "stdout": "",
+        "stderr": "",
+        "systemctlShow": {
+          "status": 0,
+          "stdout": "Result=success\nRuntimeMaxUSec=infinity\nControlGroup=\nMemoryMax=infinity\nMemorySwapMax=infinity\nActiveState=inactive\nSubState=dead\n",
+          "stderr": ""
+        }
+      },
+      "environmentBefore": {
+        "at": "2026-10-23T09:27:32.565Z",
+        "loadavg": "3.40 2.52 2.66 1/3311 1752912",
+        "allowedCpuAffinity": [
+          "Cpus_allowed:\tfff",
+          "Cpus_allowed_list:\t0-11"
+        ],
+        "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-quality49-observer.scope",
+        "memoryMax": "8589934592",
+        "memorySwapMax": "0",
+        "cpuStat": "usage_usec 80354\nuser_usec 56545\nsystem_usec 23808\ncore_sched.force_idle_usec 0"
+      },
+      "environmentAfter": {
+        "at": "2026-10-23T09:29:40.327Z",
+        "loadavg": "2.66 2.53 2.65 4/3265 1842458",
+        "allowedCpuAffinity": [
+          "Cpus_allowed:\tfff",
+          "Cpus_allowed_list:\t0-11"
+        ],
+        "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-quality49-observer.scope",
+        "memoryMax": "8589934592",
+        "memorySwapMax": "0",
+        "cpuStat": "usage_usec 151353789\nuser_usec 148435356\nsystem_usec 2918433\ncore_sched.force_idle_usec 0"
+      }
+    },
+    {
+      "label": "quality49-a-after",
+      "instrumented": false,
+      "driver": {
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-counterquality49.ts": "dfbc576c834bfc9a30eb4afc6887ad03cf889cd5da3eac2b2dd2e4c23b11ec35",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-linux.ts": "107be3470c240af8c069fdc39ccfebd080b473fb727a5943c9979d7370c987eb",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/run-counterquality49.mjs": "a86c26cf2d1e06e9bb2b9e43423edebc044b1403aba563a9938a8c056619805a",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/corpus.relocated.json": "6a00a60b7833e1b188b7b1872297df8e00252cf381b1cc4f9d6b670dfe5ff016",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js": "28061d5eab72b2a0bc560c6963b8f22cd863d7572f102cb627d483606f412e81",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/official.json.exports.json": "9740412dd732c74160b574acff9ca4ce8c1565b15a51a40f3e49beba08c76914",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/corpus/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/corpus/bend2/comp.ts": "56d5727049bc3ef528ef84d3b4712a41a0a8ce0a06437b29d881e71107638c70"
+      },
+      "compileMs": 119665.080753,
+      "totalWithOutputSmokeMs": 120037.611439,
+      "checkWallMs": 98103.861007,
+      "checkWholeProcessCpuMs": 112818.162,
+      "summedPhaseWholeProcessCpuMs": 141819.28999999998,
+      "phases": [
+        {
+          "name": "compiler-startup",
+          "wallMs": 541.5313199999999,
+          "cpuMs": 569.906,
+          "memoryEnd": {
+            "rss": 480243712,
+            "heapTotal": 66936832,
+            "heapUsed": 53328016,
+            "external": 28689310,
+            "arrayBuffers": 18362227
+          }
+        },
+        {
+          "name": "load-parse",
+          "wallMs": 5248.794158,
+          "cpuMs": 7752.698,
+          "memoryEnd": {
+            "rss": 1154838528,
+            "heapTotal": 603430912,
+            "heapUsed": 345428400,
+            "external": 10351986,
+            "arrayBuffers": 24863
+          }
+        },
+        {
+          "name": "expand",
+          "wallMs": 3592.5689870000006,
+          "cpuMs": 4383.98,
+          "memoryEnd": {
+            "rss": 1187430400,
+            "heapTotal": 716414976,
+            "heapUsed": 535100272,
+            "external": 10351986,
+            "arrayBuffers": 24863
+          }
+        },
+        {
+          "name": "check",
+          "wallMs": 98103.861007,
+          "cpuMs": 112818.162,
+          "memoryEnd": {
+            "rss": 1633943552,
+            "heapTotal": 971051008,
+            "heapUsed": 695481080,
+            "external": 10345296,
+            "arrayBuffers": 24863
+          }
+        },
+        {
+          "name": "emit",
+          "wallMs": 11915.855519000004,
+          "cpuMs": 15704.364,
+          "memoryEnd": {
+            "rss": 1549881344,
+            "heapTotal": 922095616,
+            "heapUsed": 629928192,
+            "external": 10345296,
+            "arrayBuffers": 24863
+          }
+        },
+        {
+          "name": "write-and-hash",
+          "wallMs": 257.632740999994,
+          "cpuMs": 258.183,
+          "memoryEnd": {
+            "rss": 1570066432,
+            "heapTotal": 942383104,
+            "heapUsed": 650238736,
+            "external": 30630693,
+            "arrayBuffers": 20310260
+          }
+        },
+        {
+          "name": "output-import",
+          "wallMs": 314.6966079999984,
+          "cpuMs": 316.579,
+          "memoryEnd": {
+            "rss": 1593528320,
+            "heapTotal": 965734400,
+            "heapUsed": 668560384,
+            "external": 30638693,
+            "arrayBuffers": 20318260
+          }
+        },
+        {
+          "name": "output-semantic-smoke",
+          "wallMs": 12.296449000001303,
+          "cpuMs": 15.418,
+          "memoryEnd": {
+            "rss": 1593790464,
+            "heapTotal": 965734400,
+            "heapUsed": 669690344,
+            "external": 30638693,
+            "arrayBuffers": 20318260
+          }
+        }
+      ],
+      "coverage": {
+        "files": 50,
+        "modules": 15,
+        "checkedModules": 15,
+        "exports": 7720,
+        "actualOutputImportAndSemanticSmoke": true,
+        "checksExcluded": 0,
+        "outputPatches": 0,
+        "corpusSha256": "6a00a60b7833e1b188b7b1872297df8e00252cf381b1cc4f9d6b670dfe5ff016"
+      },
+      "output": {
+        "status": "PASS",
+        "reference": "paired49-actual49.json.output.mjs",
+        "exactByteMatch": true,
+        "bytes": 20285397,
+        "sha256": "7a3ca3d98b60044e7c00629a5e4b5c3b4d25669eb185979390e46992a27942f1",
+        "exports": 7720,
+        "actualOutputImportAndSemanticSmoke": true
+      },
+      "guard": {
+        "label": "quality49-a-after",
+        "command": [
+          "./node-v23.11.0-linux-x64/bin/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "--stack-size=262144",
+          "run-counterquality49.mjs",
+          "quality49-a-after"
+        ],
+        "group": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-quality49-a-after.scope",
+        "memoryMax": "8589934592",
+        "memorySwapMax": "0",
+        "startedAt": "2026-10-23T09:29:40.459Z",
+        "samples": 482,
+        "elapsedMs": 120412.223842,
+        "memoryPeak": "1652592640",
+        "memoryCurrent": "67837952",
+        "memoryEvents": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+        "cpuStat": "usage_usec 142616035\nuser_usec 139794953\nsystem_usec 2821082\ncore_sched.force_idle_usec 0",
+        "pid": 1842675,
+        "exitCode": 0,
+        "signal": null
+      },
+      "systemd": {
+        "command": [
+          "systemd-run",
+          "--user",
+          "--scope",
+          "--quiet",
+          "--unit=bend-native46-elcWbhvH-quality49-a-after",
+          "-p",
+          "MemoryMax=8589934592",
+          "-p",
+          "MemorySwapMax=0",
+          "-p",
+          "RuntimeMaxSec=300s",
+          "/usr/bin/node",
+          "guard.mjs",
+          "quality49-a-after",
+          "290000",
+          "./node-v23.11.0-linux-x64/bin/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=6144",
+          "--max-semi-space-size=128",
+          "--stack-size=262144",
+          "run-counterquality49.mjs",
+          "quality49-a-after"
+        ],
+        "elapsedMs": 120455,
+        "status": 0,
+        "signal": null,
+        "error": null,
+        "stdout": "",
+        "stderr": "",
+        "systemctlShow": {
+          "status": 0,
+          "stdout": "Result=success\nRuntimeMaxUSec=infinity\nControlGroup=\nMemoryMax=infinity\nMemorySwapMax=infinity\nActiveState=inactive\nSubState=dead\n",
+          "stderr": ""
+        }
+      },
+      "environmentBefore": {
+        "at": "2026-10-23T09:29:40.527Z",
+        "loadavg": "2.66 2.53 2.65 4/3275 1842795",
+        "allowedCpuAffinity": [
+          "Cpus_allowed:\tfff",
+          "Cpus_allowed_list:\t0-11"
+        ],
+        "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-quality49-a-after.scope",
+        "memoryMax": "8589934592",
+        "memorySwapMax": "0",
+        "cpuStat": "usage_usec 87300\nuser_usec 63217\nsystem_usec 24082\ncore_sched.force_idle_usec 0"
+      },
+      "environmentAfter": {
+        "at": "2026-10-23T09:31:40.797Z",
+        "loadavg": "3.45 2.89 2.77 2/3334 1921456",
+        "allowedCpuAffinity": [
+          "Cpus_allowed:\tfff",
+          "Cpus_allowed_list:\t0-11"
+        ],
+        "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-quality49-a-after.scope",
+        "memoryMax": "8589934592",
+        "memorySwapMax": "0",
+        "cpuStat": "usage_usec 142541983\nuser_usec 139779083\nsystem_usec 2762900\ncore_sched.force_idle_usec 0"
+      }
+    }
+  ],
+  "overhead": {
+    "compileMs": {
+      "before": 113841.524502,
+      "observer": 127115.506243,
+      "after": 119665.080753,
+      "observerPercentVsBefore": 11.660052690849888,
+      "observerPercentVsAfter": 6.226064816166699,
+      "baselineAfterPercentVsBefore": 5.1154939082862505
+    },
+    "totalWithOutputSmokeMs": {
+      "before": 114195.187653,
+      "observer": 127512.672778,
+      "after": 120037.611439,
+      "observerPercentVsBefore": 11.662037077663246,
+      "observerPercentVsAfter": 6.2272659788791485,
+      "baselineAfterPercentVsBefore": 5.116173374795019
+    },
+    "checkWallMs": {
+      "before": 92812.54503099999,
+      "observer": 102552.047554,
+      "after": 98103.861007,
+      "observerPercentVsBefore": 10.493735000744731,
+      "observerPercentVsAfter": 4.534160532868947,
+      "baselineAfterPercentVsBefore": 5.7010784201992015
+    },
+    "checkWholeProcessCpuMs": {
+      "before": 105600.788,
+      "observer": 115668.746,
+      "after": 112818.162,
+      "observerPercentVsBefore": 9.53397999264929,
+      "observerPercentVsAfter": 2.526706648527033,
+      "baselineAfterPercentVsBefore": 6.83458346920669
+    },
+    "summedPhaseWholeProcessCpuMs": {
+      "before": 134294.306,
+      "observer": 150634.208,
+      "after": 141819.28999999998,
+      "observerPercentVsBefore": 12.167233657695053,
+      "observerPercentVsAfter": 6.215598738366301,
+      "baselineAfterPercentVsBefore": 5.603352982069065
+    }
+  },
+  "overheadInterpretation": "Observer timings are instrumentation costs, NOT compiler improvements. Two bracketing normal runs expose baseline variation; ratios against each are descriptive, not a confidence interval or noise-corrected causal estimate. Per-phase cpuMs measures whole Node process; cgroup cpu.stat measures entire guarded group. No worker-only CPU inference.",
+  "exactCounters": {
+    "pending": 80385948,
+    "direct": 81907258,
+    "finished": 162293207,
+    "resume": 162293206,
+    "schedulerLoopIterations": 324586413,
+    "pendingTargetSum": 80385948,
+    "result": "CheckSuccess",
+    "balanced": true,
+    "pendingTargetsMatchPrior49": true,
+    "oldCounterRuntimeSha256": "9bc67992963fbc430070ffc82ad2e07a83f145733951b67bf4ccd97b6ba583d6"
+  },
+  "sampleCoverage": {
+    "direct": {
+      "actualCallbacks": 81907258,
+      "sampleRecords": 80005,
+      "sampledCallbackFraction": 0.0009767754647579583,
+      "ownSamples": 79944,
+      "seedSamples": 0,
+      "unattributedSamples": 61,
+      "matchedSampleFraction": 0.9992375476532717,
+      "oldObserverSamples": 80005,
+      "oldObserverUnattributedSamples": 80005,
+      "sampleCountMatchesOldObserver": true,
+      "uniqueGeneratedTargetLabels": 382,
+      "topGeneratedTargets": [
+        {
+          "target": "checker_body_whnf",
+          "samples": 5563,
+          "fractionOfSamples": 0.06953315417786389
+        },
+        {
+          "target": "checker_body_core_subst_unaffected",
+          "samples": 4454,
+          "fractionOfSamples": 0.05567152052996688
+        },
+        {
+          "target": "checker_body_arena_words_prepend_fast",
+          "samples": 2736,
+          "fractionOfSamples": 0.0341978626335854
+        },
+        {
+          "target": "checker_body_arena_bound_range_word",
+          "samples": 2487,
+          "fractionOfSamples": 0.031085557152677957
+        },
+        {
+          "target": "checker_body_arena_subst_memo_entry",
+          "samples": 2271,
+          "fractionOfSamples": 0.02838572589213174
+        },
+        {
+          "target": "checker_body_core_subst_at",
+          "samples": 2270,
+          "fractionOfSamples": 0.028373226673332915
+        },
+        {
+          "target": "checker_body_arena_subst_memo_lookup_result",
+          "samples": 2199,
+          "fractionOfSamples": 0.027485782138616337
+        },
+        {
+          "target": "checker_body_arena_names_append_select",
+          "samples": 1899,
+          "fractionOfSamples": 0.023736016498968813
+        },
+        {
+          "target": "checker_body_arena_bound_range_empty",
+          "samples": 1776,
+          "fractionOfSamples": 0.02219861258671333
+        },
+        {
+          "target": "checker_body_arena_bound_range",
+          "samples": 1693,
+          "fractionOfSamples": 0.02116117742641085
+        },
+        {
+          "target": "checker_body_arena_words_append_select",
+          "samples": 1497,
+          "fractionOfSamples": 0.018711330541841136
+        },
+        {
+          "target": "checker_body_arena_bound_range_start",
+          "samples": 1432,
+          "fractionOfSamples": 0.017898881319917504
+        },
+        {
+          "target": "checker_body_arena_bound_range_length",
+          "samples": 1428,
+          "fractionOfSamples": 0.017848884444722206
+        },
+        {
+          "target": "checker_body_scope_index_name_aliases",
+          "samples": 1403,
+          "fractionOfSamples": 0.017536403974751577
+        },
+        {
+          "target": "checker_body_scope_index_name_aliases_result",
+          "samples": 1396,
+          "fractionOfSamples": 0.017448909443159803
+        },
+        {
+          "target": "checker_body_core_pattern_depth_bound",
+          "samples": 1388,
+          "fractionOfSamples": 0.017348915692769203
+        },
+        {
+          "target": "checker_body_arena_bound_range_region",
+          "samples": 1368,
+          "fractionOfSamples": 0.0170989313167927
+        },
+        {
+          "target": "checker_body_arena_bound_range_loop",
+          "samples": 1342,
+          "fractionOfSamples": 0.01677395162802325
+        },
+        {
+          "target": "checker_body_core_pattern_depth_region",
+          "samples": 1331,
+          "fractionOfSamples": 0.016636460221236174
+        },
+        {
+          "target": "checker_body_core_shift_unaffected",
+          "samples": 1109,
+          "fractionOfSamples": 0.013861633647897007
+        }
+      ]
+    },
+    "resume": {
+      "actualCallbacks": 162293206,
+      "sampleRecords": 158558,
+      "sampledCallbackFraction": 0.0009769848283112973,
+      "ownSamples": 73582,
+      "seedSamples": 0,
+      "unattributedSamples": 84976,
+      "matchedSampleFraction": 0.4640699302463452,
+      "oldObserverSamples": 158558,
+      "oldObserverUnattributedSamples": 158558,
+      "sampleCountMatchesOldObserver": true,
+      "uniqueGeneratedTargetLabels": 853,
+      "topGeneratedTargets": [
+        {
+          "target": "(unattributed)",
+          "samples": 84976,
+          "fractionOfSamples": 0.5359300697536548
+        },
+        {
+          "target": "checker_pure_arena_put_node_bound",
+          "samples": 4594,
+          "fractionOfSamples": 0.02897362479345098
+        },
+        {
+          "target": "checker_body_core_subst_memo_found",
+          "samples": 2232,
+          "fractionOfSamples": 0.014076867770784193
+        },
+        {
+          "target": "checker_body_core_subst_memo_saved",
+          "samples": 1725,
+          "fractionOfSamples": 0.010879299688442085
+        },
+        {
+          "target": "checker_continuation_2750",
+          "samples": 1389,
+          "fractionOfSamples": 0.00876020131434554
+        },
+        {
+          "target": "checker_continuation_1826",
+          "samples": 1239,
+          "fractionOfSamples": 0.00781417525448101
+        },
+        {
+          "target": "checker_continuation_1830",
+          "samples": 1046,
+          "fractionOfSamples": 0.006596955057455316
+        },
+        {
+          "target": "checker_continuation_1098",
+          "samples": 1043,
+          "fractionOfSamples": 0.006578034536258026
+        },
+        {
+          "target": "checker_continuation_2926",
+          "samples": 1016,
+          "fractionOfSamples": 0.0064077498454824106
+        },
+        {
+          "target": "checker_continuation_2927",
+          "samples": 1016,
+          "fractionOfSamples": 0.0064077498454824106
+        },
+        {
+          "target": "checker_continuation_2761",
+          "samples": 938,
+          "fractionOfSamples": 0.005915816294352855
+        },
+        {
+          "target": "checker_continuation_2760",
+          "samples": 938,
+          "fractionOfSamples": 0.005915816294352855
+        },
+        {
+          "target": "checker_continuation_668",
+          "samples": 828,
+          "fractionOfSamples": 0.005222063850452201
+        },
+        {
+          "target": "checker_continuation_830",
+          "samples": 815,
+          "fractionOfSamples": 0.0051400749252639415
+        },
+        {
+          "target": "checker_continuation_377",
+          "samples": 804,
+          "fractionOfSamples": 0.005070699680873876
+        },
+        {
+          "target": "checker_continuation_1851",
+          "samples": 747,
+          "fractionOfSamples": 0.004711209778125355
+        },
+        {
+          "target": "checker_continuation_1846",
+          "samples": 691,
+          "fractionOfSamples": 0.004358026715775931
+        },
+        {
+          "target": "checker_continuation_1843",
+          "samples": 674,
+          "fractionOfSamples": 0.004250810428991284
+        },
+        {
+          "target": "checker_continuation_2405",
+          "samples": 651,
+          "fractionOfSamples": 0.004105753099812056
+        },
+        {
+          "target": "checker_continuation_2406",
+          "samples": 647,
+          "fractionOfSamples": 0.004080525738215669
+        }
+      ]
+    },
+    "unattributedExamples": [
+      "($x7,$raw=undefined)=>run_force(({$:\"checker_core_steps_v1.CheckerFinished\", \"value\":$x7}),$raw)",
+      "($x4,$raw=undefined)=>run_force(({$:\"checker_core_steps_v1.CheckerFinished\", \"value\":$x4}),$raw)",
+      "($x6,$raw=undefined)=>run_force(({$:\"checker_core_steps_v1.CheckerFinished\", \"value\":run_loop($u$U32$46$add($local5,$x6))}),$raw)",
+      "($x9,$raw=undefined)=>run_force(({$:\"checker_core_steps_v1.CheckerFinished\", \"value\":$x9}),$raw)",
+      "($x10,$raw=undefined)=>run_force(({$:\"checker_core_steps_v1.CheckerFinished\", \"value\":$x10}),$raw)",
+      "($x2,$raw=undefined)=>run_force(({$:\"checker_core_steps_v1.CheckerFinished\", \"value\":$x2}),$raw)",
+      "($x5,$raw=undefined)=>run_force(({$:\"checker_core_steps_v1.CheckerFinished\", \"value\":$x5}),$raw)",
+      "($x9,$raw=undefined)=>run_force(({$:\"checker_core_steps_v1.CheckerFinished\", \"value\":run_loop($u$Map$46$set($local7,$local8,$x9))}),$raw)"
+    ]
+  },
+  "callbackAttributionScope": "Sampled generated native callback targets, NOT canonical logical CPU cost; source owner map required for continuation IDs",
+  "limitations": [
+    "Callback labels are sampled generated native target VOLUME, not logical source CPU ownership or exact logical calls.",
+    "Unmatched inline boundary continuations remain unattributed; bounded actual callback source examples retained. No invented source owner or reassignment.",
+    "Exact pending request counts, sampled direct/resume callback counts and CPU samples have distinct denominators. They cannot be added into a logical cost breakdown.",
+    "No compiler performance speedup claimed from an observed counter delta or instrumentation overhead ratio.",
+    "Legacy benchmark limits.rssMiB/pollMs are inherited declarative metadata, not a macOS heavy_gate. Actual enforcement is captured in each real Linux systemd scope guard."
+  ],
+  "pendingTargetsTop": [
+    {
+      "target": "checker_core_steps_v1.CheckerRequest_arena_put_node",
+      "count": 4764907
+    },
+    {
+      "target": "checker_core_steps_v1.CheckerRequest_arena_bound_node",
+      "count": 4764907
+    },
+    {
+      "target": "checker_core_steps_v1.CheckerRequest_whnf",
+      "count": 3189738
+    },
+    {
+      "target": "checker_core_steps_v1.CheckerRequest_arena_words_cons",
+      "count": 2791646
+    },
+    {
+      "target": "checker_core_steps_v1.CheckerRequest_arena_copy_word_range",
+      "count": 2688318
+    },
+    {
+      "target": "checker_core_steps_v1.CheckerRequest_arena_bound_range_loop",
+      "count": 2548613
+    },
+    {
+      "target": "checker_core_steps_v1.CheckerRequest_arena_constructor_owner_view",
+      "count": 2331913
+    },
+    {
+      "target": "checker_core_steps_v1.CheckerRequest_arena_subst_memo_lookup",
+      "count": 2293927
+    },
+    {
+      "target": "checker_core_steps_v1.CheckerRequest_core_subst",
+      "count": 2002584
+    },
+    {
+      "target": "checker_core_steps_v1.CheckerRequest_arena_names_append",
+      "count": 1971272
+    },
+    {
+      "target": "checker_core_steps_v1.CheckerRequest_core_pattern_list_depth",
+      "count": 1826927
+    },
+    {
+      "target": "checker_core_steps_v1.CheckerRequest_core_subst_open",
+      "count": 1800727
+    },
+    {
+      "target": "checker_core_steps_v1.CheckerRequest_arena_words_append",
+      "count": 1509177
+    },
+    {
+      "target": "checker_core_steps_v1.CheckerRequest_scope_segment_name_aliases",
+      "count": 1421213
+    },
+    {
+      "target": "checker_core_steps_v1.CheckerRequest_core_pattern_depth",
+      "count": 1367123
+    },
+    {
+      "target": "checker_core_steps_v1.CheckerRequest_usage_get",
+      "count": 1293344
+    },
+    {
+      "target": "checker_core_steps_v1.CheckerRequest_pattern_row_index_segments_complete",
+      "count": 1224563
+    },
+    {
+      "target": "checker_core_steps_v1.CheckerRequest_pattern_values",
+      "count": 1156185
+    },
+    {
+      "target": "checker_core_steps_v1.CheckerRequest_core_shift",
+      "count": 1111462
+    },
+    {
+      "target": "checker_core_steps_v1.CheckerRequest_arena_names_cons",
+      "count": 1097645
+    }
+  ],
+  "smokeCounterFile": "quality49-observer.counts.json.smoke.json",
+  "evidenceSha256": {
+    "counts-quality51.mjs": "90be889d86578efd53fe8a1500df6cc2d4a33ab415bcebd6a9dbaa6bc7970835",
+    "benchmark-counterquality49.ts": "dfbc576c834bfc9a30eb4afc6887ad03cf889cd5da3eac2b2dd2e4c23b11ec35",
+    "run-counterquality49.mjs": "a86c26cf2d1e06e9bb2b9e43423edebc044b1403aba563a9938a8c056619805a",
+    "counts49.counts.json": "a931932c63a68bd88e2581e0b01a273f33af006b4c0b430f7e60bb4e977456ae",
+    "quality49-observer.counts.json": "fc0be6003cf03b0c7ceb4ef115dd9875daec1ceeeb597eccb96da3a751a336de",
+    "quality49-observer.counts.json.smoke.json": "4314ea87eaac8760dab161272997097592471f587a811cc06e945b6639284b55",
+    "quality49-observer.counter-equality.json": "455e8156326e1e0327ae2d64fb9cf55144fccadd4d768a194dfe6c727b2b0242",
+    "quality49-a-before.json": "c540a0093f811f21a1a6636bb361e0e44ccdff149fc4dd7d722e6ea0892cf98c",
+    "quality49-a-before.json.request.json": "005fbbc2104a3c69daff214e3cbf7e57bc68cc683955d469cb6f8b37ba9ffabd",
+    "quality49-a-before.guard.json": "0e4dfa9009ff1c7d84f48d32fd920e70c6b27cff55c41c85814d619141c31295",
+    "quality49-a-before.systemd.json": "17a79d60b1a7ab72cd4a0c680a6f8b64059acdbb5e413e90a97fe604965800ec",
+    "quality49-a-before.output-comparison.json": "a12d6b3a858d2f6532c9bf849cf227b32fb9de9aa8203855f788216499805dbd",
+    "quality49-a-before.environment-before.json": "54939cf0004a185aa6c3faf0efeb0ba712b1ebc77dcf18c4b9967e8d7807ff41",
+    "quality49-a-before.environment-after.json": "196c8d50d60a1274f6545a5909f1c64e499d7534ba93cc70e3c3bef81ebd273b",
+    "quality49-observer.json": "a6680cda09dc79ff529b1b7fe24f3d68dd30842db1c9deb73f2f7fd81203f31d",
+    "quality49-observer.json.request.json": "525ed839890da1db9f337eebcffe7de73ffdc09219069f1b2cf4d9196362a291",
+    "quality49-observer.guard.json": "6c6c14a408c42520e51089754345d3c6bdfa59ff7f60a9cb319845880def8493",
+    "quality49-observer.systemd.json": "ec9cea5e0e0698afcd5909c4282815e34a5db773a3686da1c1b7df9520960ba2",
+    "quality49-observer.output-comparison.json": "a12d6b3a858d2f6532c9bf849cf227b32fb9de9aa8203855f788216499805dbd",
+    "quality49-observer.environment-before.json": "6f2b17e9f38769b3da51923a87247d249295e5313daa243da95c92b4253fbe3f",
+    "quality49-observer.environment-after.json": "490ad03b3006354e941e20a95ed8f3d45204db54308e6b5c3d71352ad1743273",
+    "quality49-a-after.json": "8ae3a15692351d65cd5e5ca06a8797b65d505f6903e6899a6a587ed8b22b6b69",
+    "quality49-a-after.json.request.json": "a729d8309238f4bfeca27030a60589be2fb7c4a5dff1de2f42f80db5cc82de9f",
+    "quality49-a-after.guard.json": "7166e7ecc1a270d2b02a1714c87dd7371d7855f893c1fbb67c18a4bc8ae4236b",
+    "quality49-a-after.systemd.json": "d76683f46cbb3873f659ec2aec1e6b14cc6a66b275e9d07abcfd5c875c4598e4",
+    "quality49-a-after.output-comparison.json": "a12d6b3a858d2f6532c9bf849cf227b32fb9de9aa8203855f788216499805dbd",
+    "quality49-a-after.environment-before.json": "7821d0cdc4fe0cf470e17a9524008cba8dad4e69544c0509f14c80598570b0fa",
+    "quality49-a-after.environment-after.json": "f96bd9c2edf52ddc6f7ed1868335903c58e07fdeae5059e4fb74e565d8aefe49"
+  },
+  "cleanup": {
+    "directoryBytes": 748406038,
+    "rawTargetMapsRetainedRemote": true,
+    "oldEvidenceUntouched": true,
+    "permanentSourceChanges": false,
+    "globallyInstalledTools": false
+  }
+}

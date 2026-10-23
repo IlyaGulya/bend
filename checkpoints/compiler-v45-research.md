@@ -198,3 +198,57 @@ the exact request/result/continuation grades, fallback and single evaluation;
 restrict eager targets so they cannot nest earlier nonpure source body calls.
 Do not turn the host driver into the checker or reset internal closure depth.
 
+## Profiling revision51 and architecture re-evaluation
+
+`compiler-profiling-quality-v51.json` records immutable accepted49 as the subject,
+not the rejected50 source snapshot. Exact measurement runner/guard sources are
+embedded for reproduction; raw profiles/images remain outside Git.
+
+The existing inspector helper was reused unchanged for separate phase CPU and
+heap sampling. Check:101047.529ms worker samples,3431.161ms isolate GC samples;
+whole-process checkCPU118503.008ms has a different scope. Estimated cumulative
+check allocations172138113888 bytes include collected objects; not live heap or
+an exact object/byte count. Map-family estimate38072476888 bytes connects to
+Arena.name; actual Map.get source reconstructs MNode/Tuple along the path.
+Arena.get_node.result estimates6031552896 bytes and reconstructs Tuple/Arena.
+Do not turn allocation percentages into CPU percentages.
+
+The old full-worker profile includes startup/parse/expand/check. Its median
+sample interval1097us,99th percentile1265us; seven gaps exceed5ms and contribute
+0.0639% of elapsed sample weight. Missing duration0.092ms. This validates sample
+coverage, not causal attribution or hardware cycles. Hardware perf counters are
+unsupported on nhs. Inspector setup/materialization contaminates tiny phases;
+phase-profile times are instrumented, never normal benchmark timings.
+
+Corrected observer actual callback coverage:
+
+|Kind|Samples|Named own targets|Unattributed|
+|---|---:|---:|---:|
+|Direct|80005|79944|61|
+|Resume|158558|73582|84976|
+
+These are sampled generated target volumes. Unnamed inline continuations are
+not assigned invented logical owners. All exact totals and Pending target maps
+match the earlier49 observer. A/observer/A compile113842/127116/119665ms exposes
+6.23–11.66% overhead against drifting controls, not a compiler speedup or CI.
+Final observer persistence now writes each pass once; the original benchmark
+runner needs no redirect clone. Full7720-export/output-byte/smoke run passes.
+Real49 empty-input collision throwsEEXIST and preserves the existing main file.
+
+The architecture review challenges treating all historical blockers as current.
+Match factoring, memory fixes and the parser source stack fix are separate from
+the remaining language constraints: forward bodiless references and structural
+descent over constructor fields do not prove recursion through U32 arena IDs.
+Native46 was clang18-O1 of the SAME CPS representation; it does not establish
+that direct-style native code is slower. Template/JSEmit structural islands are
+plausible direct-style candidates; Checker needs semantic worklists/machine
+states or a representation proof, not unsafe annotations.
+
+Official usage fusion is a real larger change, but the complete boundary is
+Inference/check_term plus all five close sites. Env-relative usage indices
+cannot silently become absolute levels. Constructor/erased/scalar/source-syntax
+usage must be preserved; Let/local/case error precedence and conservative missing
+type fallback can change acceptance. Treat this as an atomic differential
+migration, separate from closure/environment normalization. No such rewrite has
+been implemented or advertised as accepted.
+
