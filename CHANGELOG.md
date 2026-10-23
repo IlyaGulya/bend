@@ -23,6 +23,8 @@ latest one; the GitHub release carries the same notes.
 - Selfhost scope lookups and canonical-name queries execute as native-checked
   Bend provider functions instead of request/continuation chains, preserving
   family/kind precedence, alias fallback and nested unsafe-scope behavior.
+  Name equality shares one implementation and skips canonicalization for
+  identical names while preserving alias and shadowing behavior for distinct ones.
 
 - The complete selfhost parser/Template/Checker/JavaScript compiler root now
   reaches an exact stage-one/stage-two byte fixedpoint using its own emitted

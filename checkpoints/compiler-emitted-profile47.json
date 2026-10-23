@@ -1,0 +1,817 @@
+{
+  "status": "PASS_FULL_CHECK_PROFILE",
+  "diagnosticOnly": true,
+  "bootstrapAcceptance": false,
+  "newFixedpoint": false,
+  "experimentDirectory": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH",
+  "compiler": {
+    "kind": "Actual accepted v47 emitted stage-one with own generated JavaScript runtime, not official-generated seed",
+    "sha256": "e6fcff2cc279971cc55200f6666435b1cd7041c93d15b087dc85487bf6349edf",
+    "bytes": 18335893
+  },
+  "runtime": {
+    "versions": {
+      "node": "23.11.0",
+      "acorn": "8.14.1",
+      "ada": "3.2.1",
+      "amaro": "0.4.1",
+      "ares": "1.34.4",
+      "brotli": "1.1.0",
+      "cjs_module_lexer": "2.1.0",
+      "cldr": "46.0",
+      "icu": "76.1",
+      "llhttp": "9.2.1",
+      "modules": "131",
+      "napi": "10",
+      "nbytes": "0.1.1",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.64.0",
+      "openssl": "3.0.16",
+      "simdjson": "3.12.2",
+      "simdutf": "6.0.3",
+      "sqlite": "3.49.1",
+      "tz": "2025a",
+      "undici": "6.21.2",
+      "unicode": "16.0",
+      "uv": "1.50.0",
+      "uvwasi": "0.0.21",
+      "v8": "12.9.202.28-node.14",
+      "zlib": "1.3.0.1-motley-788cb3c",
+      "zstd": "1.5.6"
+    },
+    "platform": "linux",
+    "arch": "x64"
+  },
+  "coverage": {
+    "inputFiles": 50,
+    "modules": 15,
+    "checkedModules": 15,
+    "stopAfter": "check",
+    "freshParseExpandCheck": true,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "corpusSha256": "6a00a60b7833e1b188b7b1872297df8e00252cf381b1cc4f9d6b670dfe5ff016",
+    "exportsReceiptCount": 7720,
+    "emission": false,
+    "outputImportSmoke": false,
+    "note": "Existing runner supports stopAfter=check, explicitly requested for profiling. Authentic7720export receipt remains pinned but no emission/export execution or output smoke is claimed in this check-only diagnostic. Prior full v47 compile/smoke remains separate."
+  },
+  "phases": [
+    {
+      "phase": "compiler-startup",
+      "wallMs": 516.929565,
+      "cpuMs": 579.21
+    },
+    {
+      "phase": "load-parse",
+      "wallMs": 7615.651277,
+      "cpuMs": 13193.649
+    },
+    {
+      "phase": "expand",
+      "wallMs": 4399.1386729999995,
+      "cpuMs": 5440.351
+    },
+    {
+      "phase": "check",
+      "wallMs": 93772.755018,
+      "cpuMs": 113709.726
+    }
+  ],
+  "wallThroughCheckMs": 106305.899645,
+  "guard": {
+    "label": "profile47",
+    "command": [
+      "./node-v23.11.0-linux-x64/bin/node",
+      "--cpu-prof",
+      "--cpu-prof-dir=profile47",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "--stack-size=262144",
+      "run-profile47.mjs"
+    ],
+    "group": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-profile47.scope",
+    "memoryMax": "8589934592",
+    "memorySwapMax": "0",
+    "startedAt": "2026-10-23T06:34:25.278Z",
+    "samples": 429,
+    "elapsedMs": 106915.104412,
+    "memoryPeak": "1992970240",
+    "memoryCurrent": "36245504",
+    "memoryEvents": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+    "cpuStat": "usage_usec 133886172\nuser_usec 126341640\nsystem_usec 7544532\ncore_sched.force_idle_usec 0",
+    "pid": 3101001,
+    "exitCode": 0,
+    "signal": null
+  },
+  "systemd": {
+    "command": [
+      "systemd-run",
+      "--user",
+      "--scope",
+      "--quiet",
+      "--unit=bend-native46-elcWbhvH-profile47",
+      "-p",
+      "MemoryMax=8589934592",
+      "-p",
+      "MemorySwapMax=0",
+      "-p",
+      "RuntimeMaxSec=300s",
+      "/usr/bin/node",
+      "guard.mjs",
+      "profile47",
+      "290000",
+      "./node-v23.11.0-linux-x64/bin/node",
+      "--cpu-prof",
+      "--cpu-prof-dir=profile47",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "--stack-size=262144",
+      "run-profile47.mjs"
+    ],
+    "elapsedMs": 106956,
+    "status": 0,
+    "signal": null,
+    "error": null,
+    "stdout": "",
+    "stderr": "",
+    "systemctlShow": {
+      "status": 0,
+      "stdout": "Result=success\nRuntimeMaxUSec=infinity\nControlGroup=\nMemoryMax=infinity\nMemorySwapMax=infinity\nActiveState=inactive\nSubState=dead\n",
+      "stderr": ""
+    }
+  },
+  "profiles": [
+    {
+      "file": "profile47/CPU.20261023.063425.3101001.0.001.cpuprofile",
+      "sha256": "26bd9d1eeaaa5f13920efe6a29fb561f612183ad9eead4cc2defa776248a2ae4",
+      "bytes": 875990,
+      "containsCompilerFrames": false,
+      "samples": 94436,
+      "nodes": 151,
+      "profileDurationMs": 106861.382,
+      "totalSampledMs": 106861.248,
+      "checkAttributedSampledMs": 0
+    },
+    {
+      "file": "profile47/CPU.20261023.063425.3101001.1.002.cpuprofile",
+      "sha256": "8c418841ff208b56fe02c61f7820366752a6e8e9746d17f35df3a7f79e0cc431",
+      "bytes": 17975866,
+      "containsCompilerFrames": true,
+      "samples": 96555,
+      "nodes": 63177,
+      "profileDurationMs": 106463.857,
+      "totalSampledMs": 106462.698,
+      "checkAttributedSampledMs": 90194.181
+    }
+  ],
+  "workerTopSelf": [
+    {
+      "function": "runCheckerSteps",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+      "line": 100,
+      "column": 32,
+      "samples": 9713,
+      "sampledUs": 10788840,
+      "sampledMs": 10788.84,
+      "percent": 10.133915636817695
+    },
+    {
+      "function": "runSteps",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+      "line": 20,
+      "column": 18,
+      "samples": 8960,
+      "sampledUs": 9971084,
+      "sampledMs": 9971.084,
+      "percent": 9.365800592429096
+    },
+    {
+      "function": "(garbage collector)",
+      "url": "",
+      "line": 0,
+      "column": 0,
+      "samples": 5201,
+      "sampledUs": 5855418,
+      "sampledMs": 5855.418,
+      "percent": 5.499971454790672
+    },
+    {
+      "function": "run_named1",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 56,
+      "column": 20,
+      "samples": 4891,
+      "sampledUs": 5371500,
+      "sampledMs": 5371.5,
+      "percent": 5.045429151156775
+    },
+    {
+      "function": "$u$$46$$46$$47$bend2$47$selfhost$47$index_lookup$46$find$46$go",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 10947,
+      "column": 70,
+      "samples": 4147,
+      "sampledUs": 4603815,
+      "sampledMs": 4603.815,
+      "percent": 4.324345603189579
+    },
+    {
+      "function": "$u$Map$46$get$46$go",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 7012,
+      "column": 27,
+      "samples": 3783,
+      "sampledUs": 4213313,
+      "sampledMs": 4213.313,
+      "percent": 3.9575485866420554
+    },
+    {
+      "function": "run_loop",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 10,
+      "column": 18,
+      "samples": 1810,
+      "sampledUs": 2000105,
+      "sampledMs": 2000.105,
+      "percent": 1.8786908819462758
+    },
+    {
+      "function": "run_named3",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 58,
+      "column": 20,
+      "samples": 1322,
+      "sampledUs": 1390731,
+      "sampledMs": 1390.731,
+      "percent": 1.3063082432872404
+    },
+    {
+      "function": "run_named4",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 59,
+      "column": 20,
+      "samples": 1236,
+      "sampledUs": 1373774,
+      "sampledMs": 1373.774,
+      "percent": 1.290380598845992
+    },
+    {
+      "function": "run_named2",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 57,
+      "column": 20,
+      "samples": 1247,
+      "sampledUs": 1310322,
+      "sampledMs": 1310.322,
+      "percent": 1.2307803809368048
+    },
+    {
+      "function": "run_named5",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 60,
+      "column": 20,
+      "samples": 1174,
+      "sampledUs": 1232463,
+      "sampledMs": 1232.463,
+      "percent": 1.1576477237125815
+    },
+    {
+      "function": "(anonymous)",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 54343,
+      "column": 30,
+      "samples": 817,
+      "sampledUs": 911730,
+      "sampledMs": 911.73,
+      "percent": 0.8563844587143564
+    },
+    {
+      "function": "$u$Map$46$hi",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 6943,
+      "column": 20,
+      "samples": 743,
+      "sampledUs": 825409,
+      "sampledMs": 825.409,
+      "percent": 0.7753034776556198
+    },
+    {
+      "function": "run_named6",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 61,
+      "column": 20,
+      "samples": 745,
+      "sampledUs": 761622,
+      "sampledMs": 761.622,
+      "percent": 0.7153885955435771
+    },
+    {
+      "function": "$u$checker_core_steps_v1$46$checker_step",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 40061,
+      "column": 48,
+      "samples": 678,
+      "sampledUs": 749026,
+      "sampledMs": 749.026,
+      "percent": 0.7035572215162159
+    }
+  ],
+  "workerCheckTopSelf": [
+    {
+      "function": "runCheckerSteps",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+      "line": 100,
+      "column": 32,
+      "samples": 9713,
+      "sampledUs": 10788840,
+      "sampledMs": 10788.84,
+      "percent": 11.961791637090203
+    },
+    {
+      "function": "runSteps",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+      "line": 20,
+      "column": 18,
+      "samples": 8230,
+      "sampledUs": 9160457,
+      "sampledMs": 9160.457,
+      "percent": 10.156372504784981
+    },
+    {
+      "function": "run_named1",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 56,
+      "column": 20,
+      "samples": 4217,
+      "sampledUs": 4694848,
+      "sampledMs": 4694.848,
+      "percent": 5.205267067062786
+    },
+    {
+      "function": "$u$$46$$46$$47$bend2$47$selfhost$47$index_lookup$46$find$46$go",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 10947,
+      "column": 70,
+      "samples": 4147,
+      "sampledUs": 4603815,
+      "sampledMs": 4603.815,
+      "percent": 5.1043370525200515
+    },
+    {
+      "function": "$u$Map$46$get$46$go",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 7012,
+      "column": 27,
+      "samples": 3768,
+      "sampledUs": 4195716,
+      "sampledMs": 4195.716,
+      "percent": 4.651869947131068
+    },
+    {
+      "function": "run_loop",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 10,
+      "column": 18,
+      "samples": 1440,
+      "sampledUs": 1593811,
+      "sampledMs": 1593.811,
+      "percent": 1.7670884998667487
+    },
+    {
+      "function": "run_named4",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 59,
+      "column": 20,
+      "samples": 1186,
+      "sampledUs": 1320982,
+      "sampledMs": 1320.982,
+      "percent": 1.4645978103620676
+    },
+    {
+      "function": "run_named3",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 58,
+      "column": 20,
+      "samples": 1166,
+      "sampledUs": 1291237,
+      "sampledMs": 1291.237,
+      "percent": 1.4316189644207757
+    },
+    {
+      "function": "run_named5",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 60,
+      "column": 20,
+      "samples": 1091,
+      "sampledUs": 1209675,
+      "sampledMs": 1209.675,
+      "percent": 1.3411896272997923
+    },
+    {
+      "function": "run_named2",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 57,
+      "column": 20,
+      "samples": 1009,
+      "sampledUs": 1117478,
+      "sampledMs": 1117.478,
+      "percent": 1.2389690638689872
+    },
+    {
+      "function": "(anonymous)",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 54343,
+      "column": 30,
+      "samples": 817,
+      "sampledUs": 911730,
+      "sampledMs": 911.73,
+      "percent": 1.01085235199375
+    },
+    {
+      "function": "$u$Map$46$hi",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 6943,
+      "column": 20,
+      "samples": 743,
+      "sampledUs": 825409,
+      "sampledMs": 825.409,
+      "percent": 0.915146621265955
+    },
+    {
+      "function": "$u$checker_core_steps_v1$46$checker_step",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 40061,
+      "column": 48,
+      "samples": 678,
+      "sampledUs": 749026,
+      "sampledMs": 749.026,
+      "percent": 0.8304593397217056
+    },
+    {
+      "function": "run_named6",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 61,
+      "column": 20,
+      "samples": 661,
+      "sampledUs": 736158,
+      "sampledMs": 736.158,
+      "percent": 0.8161923439384632
+    },
+    {
+      "function": "$u$Map$46$lo",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 6940,
+      "column": 20,
+      "samples": 638,
+      "sampledUs": 706070,
+      "sampledMs": 706.07,
+      "percent": 0.7828332073884012
+    }
+  ],
+  "workerCheckTopInclusive": [
+    {
+      "function": "runCheckerSteps",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+      "line": 100,
+      "column": 32,
+      "samples": 81274,
+      "sampledUs": 90194181,
+      "sampledMs": 90194.181,
+      "percent": 100
+    },
+    {
+      "function": "(anonymous)",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-linux.ts",
+      "line": 107,
+      "column": 36,
+      "samples": 81274,
+      "sampledUs": 90194181,
+      "sampledMs": 90194.181,
+      "percent": 100
+    },
+    {
+      "function": "phase",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-linux.ts",
+      "line": 79,
+      "column": 14,
+      "samples": 81274,
+      "sampledUs": 90194181,
+      "sampledMs": 90194.181,
+      "percent": 100
+    },
+    {
+      "function": "worker",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-linux.ts",
+      "line": 72,
+      "column": 22,
+      "samples": 81274,
+      "sampledUs": 90194181,
+      "sampledMs": 90194.181,
+      "percent": 100
+    },
+    {
+      "function": "(root)",
+      "url": "",
+      "line": 0,
+      "column": 0,
+      "samples": 81274,
+      "sampledUs": 90194181,
+      "sampledMs": 90194.181,
+      "percent": 100
+    },
+    {
+      "function": "runSteps",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+      "line": 20,
+      "column": 18,
+      "samples": 68619,
+      "sampledUs": 76138622,
+      "sampledMs": 76138.622,
+      "percent": 84.41633501833117
+    },
+    {
+      "function": "checker_step",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 54351,
+      "column": 354,
+      "samples": 24172,
+      "sampledUs": 26811209,
+      "sampledMs": 26811.209,
+      "percent": 29.72609618795696
+    },
+    {
+      "function": "(anonymous)",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 54343,
+      "column": 30,
+      "samples": 23553,
+      "sampledUs": 26126996,
+      "sampledMs": 26126.996,
+      "percent": 28.967496251227118
+    },
+    {
+      "function": "$run",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 9,
+      "column": 14,
+      "samples": 23538,
+      "sampledUs": 26107706,
+      "sampledMs": 26107.706,
+      "percent": 28.946109062179964
+    },
+    {
+      "function": "run_loop",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 10,
+      "column": 18,
+      "samples": 23492,
+      "sampledUs": 26045508,
+      "sampledMs": 26045.508,
+      "percent": 28.877148959310357
+    },
+    {
+      "function": "run_force",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 47,
+      "column": 19,
+      "samples": 22814,
+      "sampledUs": 25297291,
+      "sampledMs": 25297.291,
+      "percent": 28.047586573240242
+    },
+    {
+      "function": "tail_dispatch",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 11,
+      "column": 23,
+      "samples": 22355,
+      "sampledUs": 24787310,
+      "sampledMs": 24787.31,
+      "percent": 27.482160961137836
+    },
+    {
+      "function": "run_named1",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 56,
+      "column": 20,
+      "samples": 22345,
+      "sampledUs": 24780832,
+      "sampledMs": 24780.832,
+      "percent": 27.474978679611272
+    },
+    {
+      "function": "$u$checker_step",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 54342,
+      "column": 23,
+      "samples": 21707,
+      "sampledUs": 24073367,
+      "sampledMs": 24073.367,
+      "percent": 26.69059880925134
+    },
+    {
+      "function": "$u$checker_core_steps_v1$46$checker_step",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 40061,
+      "column": 48,
+      "samples": 21416,
+      "sampledUs": 23748951,
+      "sampledMs": 23748.951,
+      "percent": 26.33091263393145
+    },
+    {
+      "function": "run_named3",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 58,
+      "column": 20,
+      "samples": 19007,
+      "sampledUs": 21130850,
+      "sampledMs": 21130.85,
+      "percent": 23.428174374131743
+    },
+    {
+      "function": "run_named2",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 57,
+      "column": 20,
+      "samples": 18550,
+      "sampledUs": 20583408,
+      "sampledMs": 20583.408,
+      "percent": 22.821215040469184
+    },
+    {
+      "function": "run_named4",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 59,
+      "column": 20,
+      "samples": 17192,
+      "sampledUs": 19086687,
+      "sampledMs": 19086.687,
+      "percent": 21.161772065982838
+    },
+    {
+      "function": "run_named5",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 60,
+      "column": 20,
+      "samples": 14007,
+      "sampledUs": 15523502,
+      "sampledMs": 15523.502,
+      "percent": 17.21120124146368
+    },
+    {
+      "function": "run_named6",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 61,
+      "column": 20,
+      "samples": 7980,
+      "sampledUs": 8841863,
+      "sampledMs": 8841.863,
+      "percent": 9.803141291343396
+    },
+    {
+      "function": "$u$$46$$46$$47$bend2$47$selfhost$47$checker_arena$46$name",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 12129,
+      "column": 65,
+      "samples": 5645,
+      "sampledUs": 6274729,
+      "sampledMs": 6274.729,
+      "percent": 6.956911111593773
+    },
+    {
+      "function": "$u$Map$46$get",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 7023,
+      "column": 21,
+      "samples": 5375,
+      "sampledUs": 5980193,
+      "sampledMs": 5980.193,
+      "percent": 6.630353459276935
+    },
+    {
+      "function": "$u$checker_core_steps_v1$46$checker_pure_arena_name",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 13604,
+      "column": 59,
+      "samples": 5286,
+      "sampledUs": 5878425,
+      "sampledMs": 5878.425,
+      "percent": 6.517521346526778
+    },
+    {
+      "function": "$u$Map$46$get$46$go",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 7012,
+      "column": 27,
+      "samples": 5271,
+      "sampledUs": 5863912,
+      "sampledMs": 5863.912,
+      "percent": 6.501430508028007
+    },
+    {
+      "function": "$u$$46$$46$$47$bend2$47$selfhost$47$index_lookup$46$find",
+      "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one47.js",
+      "line": 10955,
+      "column": 64,
+      "samples": 4989,
+      "sampledUs": 5543727,
+      "sampledMs": 5543.727,
+      "percent": 6.146435322695596
+    }
+  ],
+  "selfCategories": {
+    "runtime": {
+      "samples": 14507,
+      "us": 15749544,
+      "checkUs": 14005914,
+      "sampledMs": 15749.544,
+      "wholePercent": 14.793485695806808,
+      "checkSampledMs": 14005.914,
+      "checkAttributedPercent": 15.52862262810502
+    },
+    "hostDriver": {
+      "samples": 18989,
+      "us": 21108390,
+      "checkUs": 19949297,
+      "sampledMs": 21108.39,
+      "wholePercent": 19.827028993760802,
+      "checkSampledMs": 19949.297,
+      "checkAttributedPercent": 22.118164141875184
+    },
+    "lookupFindGo": {
+      "samples": 4147,
+      "us": 4603815,
+      "checkUs": 4603815,
+      "sampledMs": 4603.815,
+      "wholePercent": 4.324345603189579,
+      "checkSampledMs": 4603.815,
+      "checkAttributedPercent": 5.1043370525200515
+    },
+    "mapGetGo": {
+      "samples": 3783,
+      "us": 4213313,
+      "checkUs": 4195716,
+      "sampledMs": 4213.313,
+      "wholePercent": 3.9575485866420554,
+      "checkSampledMs": 4195.716,
+      "checkAttributedPercent": 4.651869947131068
+    }
+  },
+  "findings": [
+    {
+      "kind": "OBSERVATION",
+      "text": "run_named1 has4364.358ms sampled self in the concrete checker-core-step dispatch ancestry: run_named1 <- generated checker_core_steps_v1.checker_step <- run_named1 <- generated checker_step <- tail_dispatch <- run_loop <- run_force <- exported checker_step closure <- $run. This is not attribution from a generic helper name alone."
+    },
+    {
+      "kind": "OBSERVATION",
+      "text": "Read-only index_lookup.find.go contributes4603.815ms self; concrete sampled ancestry includes repeated find.go/run_named2 recursion, scope_lookup.lookup and canonical_name. Map.get.go contributes4213.313ms self total,4195.716ms in check-attributed stacks, with recursive lookup ancestry through checker_arena.name."
+    },
+    {
+      "kind": "OBSERVATION",
+      "text": "Generated runtime helpers account for15749.544ms self across profile,14005.914ms in runCheckerSteps-attributed stacks. Host driver frames account for21108.390ms self overall,19949.297ms check-attributed. These are sampled leaf attribution, not isolated causal overhead. GC is5855.418ms whole-profile self."
+    },
+    {
+      "kind": "LIMITATION",
+      "text": "runCheckerSteps is a one-line wrapper yet receives10788.840ms self; V8 positionTicks also charges generated line54351 to runSteps. Optimized/inlined attribution prevents interpreting all driver self samples as validation-loop overhead or safe removable cost."
+    },
+    {
+      "kind": "STATIC_CODE_AND_PROFILE_SUPPORTED_MECHANISM",
+      "text": "Own emitted ABI uses (...args)=>$run($D[name],args), curried run_clo/run_force wrappers and run_namedN; at exported checker_step entry outer $td=64 forces a pending-tail frame drained through tail_dispatch. Official-generated seed uses run_lib over direct $checker_step$, whose depth<64 branch invokes checker implementation directly. Profile confirms the own-runtime concrete dispatch path is hot, making its additional ABI/trampoline indirection a supported optimization target, not a quantified explanation of the seed timing delta."
+    },
+    {
+      "kind": "NO_CAUSAL_DIFFERENTIAL_CLAIM",
+      "text": "No seed CPU profile or paired runtime-only intervention was captured. The profile cannot establish how much of the previously observed own-runtime versus seed gap comes from wrappers, inlining, algorithms, GC, or host variation. No speedup or full seed-gap explanation is claimed."
+    }
+  ],
+  "sourceEvidence": {
+    "ownRuntime": "stage-one47.js:3-10,47-60,54342-54351",
+    "ownIndexLookup": "stage-one47.js:10947-10955",
+    "ownMapLookup": "stage-one47.js:7012-7029",
+    "hostDriver": "evals/checker_core_step_runtime.mjs:20-61,100-102",
+    "seedRuntime": "checkpoints/selfhost-steps-canonical-release237-misaka-v46-final.js:161-189,264-274,256496-256506"
+  },
+  "method": "V8 --cpu-prof sampling, default interval; timeDeltas attributed to sampled leaf. Inclusive sums deduplicate identical function/location within each stack. Checking subset requires runCheckerSteps ancestor. Profile sampling is not logical operation counts or an unprofiled performance comparison.",
+  "evidenceSha256": {
+    "profile47.json": "4a0884b2a502adafc2a342395d2158ed2d363b6a6451fe59ff8dd219c6e50a73",
+    "profile47.json.request.json": "8914f08ee0873a1aa6cd9fada12d9bd2095e11269695ad8fbf5cbca0502b2a62",
+    "profile47.guard.json": "55a2cf0ba31ca3733e011f3d3ed0c1c2971477a70d18cc74dba7a13c2a05d190",
+    "profile47.systemd.json": "f866999ebf4a89e5e13f1ee5e9e69de3724c1cc6a1c91c4f5c22d5736aad9125",
+    "profile47-summary.json": "35784b20319184996f5fbd3c77b223e0e64a4c23e4690fa974896798b9dca60b",
+    "profile47-details.json": "7a905f669f6e18c70b0b6b48fd28edd96946ac348d96d122d2e9c66051218051",
+    "benchmark-linux.ts": "107be3470c240af8c069fdc39ccfebd080b473fb727a5943c9979d7370c987eb",
+    "run-profile47.mjs": "bee1bac9a5859d6add809ec6d688987f8bd651b5f285c33102dafed951124d15",
+    "evals/checker_core_step_runtime.mjs": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+    "analyze-profile47.mjs": "0f3b2d5cd54a8f1d1c8bf0e96d06c8f9ec3a9c2a39803216329afdbcc48fd277"
+  },
+  "cleanup": {
+    "directoryBytes": 374816298,
+    "oldReceiptsAndCompilerBytesUnchanged": true,
+    "permanentSourceChanges": false,
+    "rawProfilesRetained": true,
+    "noBlockCoverage": true
+  }
+}

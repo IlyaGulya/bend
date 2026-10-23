@@ -969,9 +969,6 @@ def declaration_visible_scope(v_20032971: ArenaStore, +v_0: Scope.ArenaGlobalSco
   ArenaResult{v_20032972, +v_20032973} = visible_scope_update(v_20032971, Nat.sub(global_scope_size(v_0), v_2), global_scope_entries(v_0), v_3)
   {ArenaResult{v_20032972, v_20032973} : ArenaResult<Scope.ArenaGlobalScope>}
 
-def family_equal(v_1: String, v_3: String, +v_4: Scope.ArenaGlobalScope) -> Bool:
-  String.eq(Scope.canonical_name(v_1, v_4), Scope.canonical_name(v_3, v_4))
-
 def family_lowered_whnf(v_20032974: ArenaStore, v_1: Nat, v_2: U32, v_3: Scope.ArenaGlobalScope, v_5: FamilyLowering) -> ArenaResult<U32>:
   match v_5:
     case FamilyTerm{+v_20032975}:
@@ -1278,7 +1275,7 @@ def whnf_pattern_constructor(v_20033113: ArenaStore, v_0: U32, v_2: String, v_4:
       +v_20033123 = IR.Words{v_20033121, v_20033122}
       v_12 = v_20033120
       v_13 = v_20033123
-      +v_20033129 = equal_names(v_2, v_12, v_7)
+      +v_20033129 = Scope.equal_names(v_2, v_12, v_7)
       match v_20033129:
         case False{}:
           +v_20033127 = PatternMismatch{}
@@ -1678,7 +1675,7 @@ def fits_term_whnf(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: Scope.ArenaGlobalSc
           v_165 = v_125
           ArenaResult{v_169, +v_170} = equal_lists(v_146, v_163, v_157, v_6)
           ArenaResult{v_174, +v_175} = refs_contain_all(v_169, v_159, v_165, v_6)
-          v_50000017 = Bool.and(family_equal(v_161, v_155, v_6), Bool.and(v_170, v_175))
+          v_50000017 = Bool.and(Scope.equal_names(v_161, v_155, v_6), Bool.and(v_170, v_175))
           {ArenaResult{v_174, v_50000017} : ArenaResult<Bool>}
         case _:
           ArenaResult{v_182, +v_183} = equal_term(v_129, v_3, v_5, v_6)
@@ -1707,16 +1704,6 @@ def fits_term_target_view(v_20033626: ArenaStore, v_0: U32, v_1: U32, v_2: U32, 
       ArenaResult{v_20033629, +v_20033630} = whnf(v_20033627, 64n, v_0, v_3)
       ArenaResult{v_20033631, +v_20033632} = fits_term_whnf(v_20033629, v_20033630, v_2, v_3)
       {ArenaResult{v_20033631, v_20033632} : ArenaResult<Bool>}
-
-def equal_names(+v_1: String, +v_3: String, +v_4: Scope.ArenaGlobalScope) -> Bool:
-  +v_20033634 = String.eq(v_1, v_3)
-  match v_20033634:
-    case False{}:
-      +v_20033633 = String.eq(Scope.canonical_name(v_1, v_4), Scope.canonical_name(v_3, v_4))
-      v_20033633
-    case True{}:
-      +v_20033633 = True{}
-      v_20033633
 
 # Full handles identify one immutable term in this threaded store and scope.
 # Reflexivity must precede unfolding: neutral recursive branch bodies can
@@ -1810,7 +1797,7 @@ def equal_raw_ordinary(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: Scope.ArenaGlob
           +v_201 = v_199
           v_203 = v_201
           v_205 = v_174
-          v_50000019 = equal_names(v_205, v_203, v_6)
+          v_50000019 = Scope.equal_names(v_205, v_203, v_6)
           {ArenaResult{v_198, v_50000019} : ArenaResult<Bool>}
         case _:
           {ArenaResult{v_178, False{}} : ArenaResult<Bool>}
@@ -1911,7 +1898,7 @@ def equal_raw_ordinary(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: Scope.ArenaGlob
           v_469 = v_418
           v_471 = v_420
           v_473 = v_422
-          +v_476 = family_equal(v_469, v_463, v_6)
+          +v_476 = Scope.equal_names(v_469, v_463, v_6)
           match v_476:
             case False{}:
               +v_478 = False{}
@@ -1950,7 +1937,7 @@ def equal_raw_ordinary(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: Scope.ArenaGlob
           v_559 = v_555
           v_561 = v_520
           v_563 = v_522
-          +v_566 = equal_names(v_561, v_557, v_6)
+          +v_566 = Scope.equal_names(v_561, v_557, v_6)
           match v_566:
             case False{}:
               +v_568 = False{}
@@ -2074,7 +2061,7 @@ def equal_refs(v_20034084: ArenaStore, v_2: IR.Names, v_5: IR.Names, v_6: Scope.
           v_15 = v_20034099
           +v_12 = v_20034092
           v_13 = v_20034093
-          +v_20034102 = equal_names(v_12, v_14, v_6)
+          +v_20034102 = Scope.equal_names(v_12, v_14, v_6)
           match v_20034102:
             case False{}:
               +v_20034100 = False{}
@@ -2197,7 +2184,7 @@ def equal_match_patterns(v_20034141: ArenaStore, v_1: IR.Words, v_3: IR.Words, v
                   v_37 = v_20034190
                   v_38 = v_20034193
                   v_40 = v_20034150
-                  +v_20034218 = equal_names(v_37, v_41, v_4)
+                  +v_20034218 = Scope.equal_names(v_37, v_41, v_4)
                   match v_20034218:
                     case False{}:
                       +v_20034216 = False{}
@@ -4344,7 +4331,7 @@ def family_constructor_keys_for_type(v_20036273: ArenaStore, v_2: Maybe<&2, Stri
   match v_2:
     case Some{+v_20036274}:
       v_19 = v_20036274
-      ArenaResult{v_20036275, +v_20036276} = family_constructor_keys_equal(v_20036273, family_equal(v_19, v_8, v_15), v_4, v_6, v_8, v_11, v_14, v_15)
+      ArenaResult{v_20036275, +v_20036276} = family_constructor_keys_equal(v_20036273, Scope.equal_names(v_19, v_8, v_15), v_4, v_6, v_8, v_11, v_14, v_15)
       {ArenaResult{v_20036275, v_20036276} : ArenaResult<IR.Names>}
     case None{}:
       ArenaResult{v_20036277, +v_20036278} = family_constructor_keys_inner(v_20036273, v_6, v_8, v_11, v_14, v_15)
@@ -4649,7 +4636,7 @@ def index_terms_compatible_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: Scope.
           v_170 = v_126
           v_172 = v_128
           ArenaResult{v_176, +v_177} = index_term_lists_compatible(v_159, v_172, v_168, v_6)
-          v_50000171 = Bool.and(family_equal(v_170, v_166, v_6), Bool.and(Nat.is_eq(arena_words_length(v_172), arena_words_length(v_168)), v_177))
+          v_50000171 = Bool.and(Scope.equal_names(v_170, v_166, v_6), Bool.and(Nat.is_eq(arena_words_length(v_172), arena_words_length(v_168)), v_177))
           {ArenaResult{v_176, v_50000171} : ArenaResult<Bool>}
         case _:
           {ArenaResult{v_132, True{}} : ArenaResult<Bool>}
@@ -4717,7 +4704,7 @@ def constructor_result_term(v_1: ArenaStore, v_3: U32, v_5: String, v_6: IR.Word
       v_50 = v_46
       v_52 = v_48
       ArenaResult{v_56, +v_57} = index_term_lists_compatible(v_43, v_52, v_6, v_7)
-      v_50000172 = Bool.and(family_equal(v_50, v_5, v_7), v_57)
+      v_50000172 = Bool.and(Scope.equal_names(v_50, v_5, v_7), v_57)
       {ArenaResult{v_56, v_50000172} : ArenaResult<Bool>}
     case _:
       {ArenaResult{v_14, True{}} : ArenaResult<Bool>}
@@ -4852,7 +4839,7 @@ def constructor_field_types_family(v_20036792: ArenaStore, v_2: Maybe<&2, String
       {ArenaResult{v_20036792, IR.Words{0, 0}} : ArenaResult<IR.Words>}
     case Some{+v_20036793}:
       v_12 = v_20036793
-      +v_20036796 = family_equal(v_12, v_4, v_9)
+      +v_20036796 = Scope.equal_names(v_12, v_4, v_9)
       match v_20036796:
         case False{}:
           +v_20036794 = IR.Words{0, 0}
@@ -5341,7 +5328,7 @@ def pattern_result_fits_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: Scope.Are
           v_67 = v_33
           v_69 = v_35
           ArenaResult{v_73, +v_74} = equal_lists(v_56, v_69, v_65, v_6)
-          v_50000185 = Bool.and(family_equal(v_67, v_63, v_6), v_74)
+          v_50000185 = Bool.and(Scope.equal_names(v_67, v_63, v_6), v_74)
           {ArenaResult{v_73, v_50000185} : ArenaResult<Bool>}
         case _:
           ArenaResult{v_81, +v_82} = fits_term(v_39, v_3, v_5, v_6)
@@ -5420,7 +5407,7 @@ def check_pattern_family_result(v_1: ArenaStore, v_4: Maybe<&2, String>, v_6: St
       {ArenaResult{v_1, v_50000198} : ArenaResult<PatternTyping>}
     case Some{+v_29}:
       v_31 = v_29
-      +v_34 = family_equal(v_31, v_6, v_23)
+      +v_34 = Scope.equal_names(v_31, v_6, v_23)
       match v_34:
         case False{}:
           v_50000199 = span_file(v_22)
@@ -11047,16 +11034,6 @@ def scope_specialize_pattern_rows(store: ArenaStore, index: PatternRowIndex, +na
   ArenaResult{store3, candidates} = pattern_row_index_query(store2, pattern_row_index_scope_complete(scope), index, query_names)
   scope_specialize_pattern_rows_named(store3, candidates, names, arity)
 
-def scope_equal_names_result(+v_1: String, +v_3: String, +v_5: Scope.ArenaGlobalScope, v_7: Bool) -> Bool:
-  match v_7:
-    case True{}:
-      True{}
-    case False{}:
-      String.eq(Scope.canonical_name(v_1, v_5), Scope.canonical_name(v_3, v_5))
-
-def scope_equal_names(+v_1: String, +v_3: String, +v_5: Scope.ArenaGlobalScope) -> Bool:
-  scope_equal_names_result(v_1, v_3, v_5, String.eq(v_1, v_3))
-
 def scope_pattern_row_subsumes(v_20041915: ArenaStore, +v_1: IR.Words, +v_3: IR.Words, +v_5: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
   ArenaResult{v_20041916, +v_20041917} = arena_words_view(v_20041915, v_1)
   match v_20041917:
@@ -11099,7 +11076,7 @@ def scope_pattern_row_subsumes(v_20041915: ArenaStore, +v_1: IR.Words, +v_3: IR.
                   v_30 = v_20041949
                   v_31 = v_20041952
                   v_33 = v_20041924
-                  +v_20041977 = scope_equal_names(v_30, v_34, v_5)
+                  +v_20041977 = Scope.equal_names(v_30, v_34, v_5)
                   match v_20041977:
                     case False{}:
                       +v_20041975 = False{}
@@ -11423,7 +11400,7 @@ def scope_constructor_lists_equal_open(v_20042112: ArenaStore, v_1: IR.Words, v_
                   v_25 = v_20042139
                   v_27 = v_20042129
                   v_23 = v_20042123
-                  +v_20042158 = scope_equal_names(v_20, v_24, v_5)
+                  +v_20042158 = Scope.equal_names(v_20, v_24, v_5)
                   match v_20042158:
                     case False{}:
                       +v_20042156 = Some{False{}}
@@ -14769,7 +14746,7 @@ def string_canonical_names(names: Ast.StringLiteralNames, +scope: Scope.ArenaGlo
 def string_names_equal(left: Ast.StringLiteralNames, right: Ast.StringLiteralNames, +scope: Scope.ArenaGlobalScope) -> Bool:
   match left right:
     case Ast.StringLiteralNames{a, b, c, d, e, f, g, h} Ast.StringLiteralNames{i, j, k, l, m, n, o, p}:
-      Bool.and(equal_names(a, i, scope), Bool.and(equal_names(b, j, scope), Bool.and(equal_names(c, k, scope), Bool.and(equal_names(d, l, scope), Bool.and(equal_names(e, m, scope), Bool.and(equal_names(f, n, scope), Bool.and(equal_names(g, o, scope), equal_names(h, p, scope))))))))
+      Bool.and(Scope.equal_names(a, i, scope), Bool.and(Scope.equal_names(b, j, scope), Bool.and(Scope.equal_names(c, k, scope), Bool.and(Scope.equal_names(d, l, scope), Bool.and(Scope.equal_names(e, m, scope), Bool.and(Scope.equal_names(f, n, scope), Bool.and(Scope.equal_names(g, o, scope), Scope.equal_names(h, p, scope))))))))
 
 def string_chars_equal(left: List<&2, U32>, right: List<&2, U32>) -> Bool:
   match left right:

@@ -4,7 +4,35 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
-## Latest acceptance — Main47/parser72 on misakaindrive
+## Latest acceptance — Main48/parser73 on misakaindrive
+
+Version48, source parent `70b80cb4`, unifies the three checker name-equality
+implementations in native-checked Scope.equal_names. Identical strings avoid
+canonicalization; distinct names preserve alias/shadowing resolution. Actual
+CPU1/4 regression covers aliases and non-idempotent canonicalization.
+
+Fresh parser73 passes75 compiled semantic/span cases. The complete compiler
+root checks8160/8160 bodies and8498 events, zero exclusions/output patches.
+Seed plus both emitted stages pass273/273 fixture executions. Actual remote
+and downloaded `cmp` pass: both images18306878 bytes, SHA256
+`1e906fb1139f2930befb41395b046d9183a722eb55459b41c27a0f915ce3074c`.
+
+Stage1 self-compilation77150ms; stage2 self-compilation98995ms. Complete gate
+388077ms, physical2102435528/RSS3433709568 bytes, unchanged8GiB/600s limits.
+Full frozen50-file/7720-export seed benchmark64738ms: check46997ms, emit10473ms.
+Output bytes remain unchanged and actual output import/semantic smoke passes.
+These are observations, not isolated causal speedup or an official-speed win.
+Exact source/recipes: `compiler-equality-v48.json`; complete compact acceptance:
+`selfhost-acceptance-release237-misaka-v48.json`. Each1GB raw AST transport set
+was hash-verified, archived to67MB, copied locally and removed; real images remain.
+
+`compiler-emitted-profile47.json` separately profiles the actual emitted47
+compiler on nhs, not the official-generated seed. It shows a public checker-step
+entry through run_named1/tail_dispatch with initial$td=64; a raw public entry is
+an evidenced next target, but preserving internal closure stack bounds is mandatory.
+No such runtime change is implemented in48; do not alter the accepted image.
+
+## Previous acceptance — Main47/parser72 on misakaindrive
 
 Main47 moves pure scope queries into the native-checked `scope_lookup.bend`
 provider, migrates all consumers, and removes the old11 CPS definitions.

@@ -107,3 +107,18 @@ output import/smoke and native/seed byte parity. The original seed measured
 85558ms and official13572ms there. Do not describe seed timing as emitted-stage
 timing, and do not compare these Linux numbers to Mac wall times.
 
+
+## Actual emitted47 profile, collected during48 acceptance
+
+`compiler-emitted-profile47.json` records the byte-pinned real emitted compiler,
+all50 fresh files/15 checked modules under actual8GiB/no-swap Linux cgroups.
+Statistical worker profile SHA8c418841ff208b56fe02c61f7820366752a6e8e9746d17f35df3a7f79e0cc431.
+Checking completed in93773ms; emitted output/smoke was intentionally not rerun.
+The concrete public checker dispatch stack includes $run -> exported curried
+wrapper -> run_force/run_loop -> tail_dispatch -> checker_step -> run_named1.
+The global facade starts with$td=64, forcing a tail frame even on a fresh
+public entry. Generated runtime self samples total15750ms, but inlining means
+generic helper attribution is not exact removable overhead. A future public
+entry fast path must not reset depth for ordinary internal higher-order calls:
+those must keep the existing stack-safety protocol. No emitted image was patched.
+

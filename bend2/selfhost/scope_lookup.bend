@@ -88,3 +88,11 @@ def canonical_name_result(name: String, value: Maybe<&2, ArenaGlobal>) -> String
 
 def canonical_name(+name: String, scope: ArenaGlobalScope) -> String:
   canonical_name_result(name, lookup(name, scope))
+
+def equal_names_result(left: String, right: String, +scope: ArenaGlobalScope, same: Bool) -> Bool:
+  match same:
+    case True{}: True{}
+    case False{}: String.eq(canonical_name(left, scope), canonical_name(right, scope))
+
+def equal_names(+left: String, +right: String, scope: ArenaGlobalScope) -> Bool:
+  equal_names_result(left, right, scope, String.eq(left, right))

@@ -39,7 +39,15 @@ def run(+query: String) -> String:
   +fallback = has_key(Scope.bucket(Scope.ArenaGlobalBucket{definition, None{}, None{}, Some{definition}}), "definition")
   +absent_kind = missing(Scope.bucket_kind(Scope.ArenaGlobalBucket{definition, None{}, None{}, Some{definition}}, Scope.GlobalFamily{}))
   +unqualified = String.eq(Scope.canonical_name_result(query, Some{global("root", "", "item", Scope.GlobalFamily{})}), "item")
-  result(Bool.and(generic, Bool.and(selected, Bool.and(selected_constructor, Bool.and(alias, Bool.and(unknown, Bool.and(absent, Bool.and(fallback, Bool.and(absent_kind, unqualified)))))))))
+  +lookup_checks = Bool.and(generic, Bool.and(selected, Bool.and(selected_constructor, Bool.and(alias, Bool.and(unknown, Bool.and(absent, Bool.and(fallback, Bool.and(absent_kind, unqualified))))))))
+  +shadow = global("shadow", "S", "item", Scope.GlobalFamily{})
+  +shadow_bucket = {Scope.ArenaGlobalBucket{shadow, Some{shadow}, None{}, None{}} : Scope.ArenaGlobalBucket}
+  +shadow_values = Map.set(&2, Scope.ArenaGlobalBucket, values, "F.item", shadow_bucket)
+  +shadow_scope = {Scope.ArenaVisibleScope{[], shadow_values} : Scope.ArenaGlobalScope}
+  +alias_equal = Scope.equal_names(query, "F.item", unsafe)
+  +distinct = Bool.not(Scope.equal_names(query, "unknown", unsafe))
+  +shadow_distinct = Bool.not(Scope.equal_names(query, "F.item", shadow_scope))
+  result(Bool.and(lookup_checks, Bool.and(alias_equal, Bool.and(distinct, shadow_distinct))))
 
 def main() -> IO(Unit):
   do IO<Unit>:
