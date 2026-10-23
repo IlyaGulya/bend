@@ -1,5 +1,13 @@
 import Base
 import ./backend_ir.bend as BIR
+import ./index_lookup.bend as IndexLookup
+
+type TagArm is Data:
+  TagArm{label: U32, condition: U32, tag: String, body: BIR.Block}
+type TaggedRegion is Data:
+  TaggedRegion{label: U32, condition: U32, subject: BIR.Atom, tag: String, body: BIR.Block, rest: BIR.Block}
+type TagGroup is Data:
+  TagGroup{arms: List<&2, TagArm>, rest: BIR.Block, count: Nat}
 
 # This module consumes only target IR. All name resolution, erasure, call-shape
 # selection and native provenance decisions are completed by lowering.
@@ -112,12 +120,72 @@ def operation(op: BIR.Op) -> String:
     case BIR.Foreign{path, key, arity}: foreign(path, key, arity)
 def tag_test(+value: String, tag: String) -> String:
   cat(["(", value, "&&", value, ".$===", js_quote(tag), ")"])
+# Group only immutable local/capture tag guards whose failure leaves that case.
+# Distinct tags may jump directly; a failed nested pattern still reaches the
+# original remaining cases. Keep every case label and condition binding.
+def tag_subject_same(left: BIR.Atom, right: BIR.Atom) -> Bool:
+  match left right:
+    case BIR.Local{a} BIR.Local{b}: U32.is_eq(a, b)
+    case BIR.Capture{a} BIR.Capture{b}: U32.is_eq(a, b)
+    case _ _: False{}
+def tagged_region_checked(valid: Bool, region: TaggedRegion) -> Maybe<&2, TaggedRegion>:
+  match valid:
+    case True{}: Some{region}
+    case False{}: None{}
+def tagged_region(input: BIR.Block) -> Maybe<&2, TaggedRegion>:
+  match input:
+    case BIR.Region{+label, BIR.Let{+condition, BIR.HasTag{+subject, _, tag}, BIR.Branch{BIR.Local{test}, body, BIR.LeaveRegion{failed}}}, rest}:
+      tagged_region_checked(Bool.and(U32.is_eq(label, failed), Bool.and(U32.is_eq(condition, test), tag_subject_same(subject, subject))), TaggedRegion{label, condition, subject, tag, body, rest})
+    case _: None{}
+def tag_unseen(value: Maybe<&2, Bool>) -> Bool:
+  match value:
+    case None{}: True{}
+    case Some{_}: False{}
+def tag_group_selected(selected: Bool, subject: BIR.Atom, arm: TaggedRegion, input: BIR.Block, arms: List<&2, TagArm>, seen: Map<&2, Bool>, count: Nat) -> TagGroup:
+  match selected:
+    case False{}: TagGroup{arms, input, count}
+    case True{}:
+      match arm:
+        case TaggedRegion{label, condition, _, +tag, body, rest}:
+          tag_group(subject, rest, TagArm{label, condition, tag, body} <> arms, Map.set(&2, Bool, seen, tag, True{}), Nat.add(count, 1n))
+def tag_group_view(view: Maybe<&2, TaggedRegion>, +subject: BIR.Atom, input: BIR.Block, arms: List<&2, TagArm>, +seen: Map<&2, Bool>, count: Nat) -> TagGroup:
+  match view:
+    case None{}: TagGroup{arms, input, count}
+    case Some{+arm}:
+      match arm:
+        case TaggedRegion{_, _, candidate, +tag, _, _}:
+          tag_group_selected(Bool.and(tag_subject_same(subject, candidate), tag_unseen(IndexLookup.find(Bool, seen, tag))), subject, arm, input, arms, seen, count)
+def tag_group(subject: BIR.Atom, +input: BIR.Block, arms: List<&2, TagArm>, seen: Map<&2, Bool>, count: Nat) -> TagGroup:
+  tag_group_view(tagged_region(input), subject, input, arms, seen, count)
+def tag_arms(arms: List<&2, TagArm>) -> String:
+  match arms:
+    case Nil{}: ""
+    case TagArm{label, condition, tag, body} <> rest:
+      cat(["case ", js_quote(tag), ":{$case", U32.show(label), ":{const ", local(condition), "=true;", block(body), "}break;}", tag_arms(rest)])
+def ordinary_region(label: U32, body: BIR.Block, next: BIR.Block) -> String:
+  cat(["$case", U32.show(label), ":{", block(body), "}", block(next)])
+def tag_render_selected(selected: Bool, subject: BIR.Atom, arms: List<&2, TagArm>, rest: BIR.Block, label: U32, body: BIR.Block, next: BIR.Block) -> String:
+  match selected:
+    case False{}: ordinary_region(label, body, next)
+    case True{}: cat(["switch(", atom(subject), "?.$){", tag_arms(List.reverse(&2, TagArm, arms)), "}", block(rest)])
+def tag_render_group(group: TagGroup, subject: BIR.Atom, label: U32, body: BIR.Block, next: BIR.Block) -> String:
+  match group:
+    case TagGroup{arms, rest, +count}: tag_render_selected(Nat.is_gt(count, 2n), subject, arms, rest, label, body, next)
+def region_view(view: Maybe<&2, TaggedRegion>, label: U32, body: BIR.Block, next: BIR.Block) -> String:
+  match view:
+    case None{}: ordinary_region(label, body, next)
+    case Some{arm}:
+      match arm:
+        case TaggedRegion{case_label, condition, +subject, +tag, case_body, rest}:
+          tag_render_group(tag_group(subject, rest, [TagArm{case_label, condition, tag, case_body}], Map.set(&2, Bool, Map.new(&2, Bool), tag, True{}), 1n), subject, label, body, next)
+def region(+label: U32, +body: BIR.Block, +next: BIR.Block) -> String:
+  region_view(tagged_region(BIR.Region{label, body, next}), label, body, next)
 def block(body: BIR.Block) -> String:
   match body:
     case BIR.Return{value}: cat(["return ", atom(value), ";"])
     case BIR.Let{id, op, next}: cat(["const ", local(id), "=", operation(op), ";", block(next)])
     case BIR.Branch{condition, yes, no}: cat(["if(", atom(condition), "){", block(yes), "}else{", block(no), "}"])
-    case BIR.Region{label, body, next}: cat(["$case", U32.show(label), ":{", block(body), "}", block(next)])
+    case BIR.Region{label, body, next}: region(label, body, next)
     case BIR.LeaveRegion{label}: cat(["break $case", U32.show(label), ";"])
     case BIR.TailDirect{code, args}: cat(["return ", tail_call(code, arguments(args)), ";"])
     case BIR.TailApply{fn, BIR.Arg{_, value}}: cat(["return run_tail(", atom(fn), ",", atom(value), ");"])

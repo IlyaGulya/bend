@@ -1481,20 +1481,67 @@ def definition_local(state: State, key: String, code: U32, parameters: List<&2, 
     case False{} Some{native}: definitions(state, rest, registry, BIR.NativeDeclaration{key, native, quantities} <> result)
     case False{} None{}:
       definition_body(state, key, code, parameters, quantities, checked, rest, registry, result)
+# Only the definition's own positional locals may replace the administrative
+# match callable. Keep its authentic header parameters and lexical environment;
+# nested matches and returned lambdas still use their ordinary closure frames.
+def definition_identity(values: List<&2, BIR.Atom>, parameters: List<&2, BIR.Parameter>) -> Bool:
+  match values parameters:
+    case Nil{} Nil{}: True{}
+    case BIR.Local{id} <> rest BIR.Parameter{parameter, _} <> more:
+      Bool.and(U32.is_eq(id, parameter), definition_identity(rest, more))
+    case _ _: False{}
+def definition_identity_frame(frame: Frame, values: List<&2, BIR.Atom>, parameters: List<&2, BIR.Parameter>) -> Bool:
+  match frame parameters:
+    case Frame{_, Nil{}, Nil{}, 0} _ <> _:
+      definition_identity(values, parameters)
+    case _ _: False{}
+def definition_atom_block(result: LowerResult<BIR.Atom>) -> LowerResult<BIR.Block>:
+  match result:
+    case LowerResult{state, value}: take_block(state, value)
+def definition_match_identity(identity: Bool, state: State, cases: List<&2, IR.Occurrence>, values: List<&2, BIR.Atom>, env: List<&2, Slot>, registry: Catalog.Registry) -> LowerResult<BIR.Block>:
+  match identity:
+    case True{}: checked_cases(state, cases, values, env, registry)
+    case False{}: definition_atom_block(match_values(state, cases, values, env, registry))
+def definition_match_state(state: State, cases: List<&2, IR.Occurrence>, values: List<&2, BIR.Atom>, env: List<&2, Slot>, registry: Catalog.Registry, parameters: List<&2, BIR.Parameter>) -> LowerResult<BIR.Block>:
+  match state:
+    case State{source, next_code, local, frame, codes, failure}:
+      definition_match_identity(definition_identity_frame(frame, values, parameters), State{source, next_code, local, frame, codes, failure}, cases, values, env, registry)
+def definition_match_values(result: LowerResult<List<&2, BIR.Atom>>, cases: List<&2, IR.Occurrence>, env: List<&2, Slot>, registry: Catalog.Registry, parameters: List<&2, BIR.Parameter>) -> LowerResult<BIR.Block>:
+  match result:
+    case LowerResult{state, values}:
+      definition_match_state(state, cases, values, env, registry, parameters)
+def definition_match_parts(parts: Pair(List<&2, IR.Occurrence>, List<&2, IR.Occurrence>), state: State, env: List<&2, Slot>, registry: Catalog.Registry, parameters: List<&2, BIR.Parameter>) -> LowerResult<BIR.Block>:
+  match parts:
+    case (values, cases):
+      definition_match_values(lower_values(state, values, env, registry), cases, env, registry, parameters)
+def definition_root_node(result: LowerResult<Arena.Node>, occurrence: IR.Occurrence, children: List<&2, IR.Occurrence>, env: List<&2, Slot>, registry: Catalog.Registry, parameters: List<&2, BIR.Parameter>) -> LowerResult<BIR.Block>:
+  match result:
+    case LowerResult{state, Arena.BodyMatch{_, count, _, _, _}}:
+      definition_match_parts(split_occurrences(count, children), state, env, registry, parameters)
+    case LowerResult{state, shape}:
+      definition_root_other(occurrence, state, shape, env, registry)
+def definition_root_other(occurrence: IR.Occurrence, state: State, shape: Arena.Node, env: List<&2, Slot>, registry: Catalog.Registry) -> LowerResult<BIR.Block>:
+  match occurrence:
+    case IR.TypedOccurrence{_, _, quantity, symbol, bindings, children}:
+      definition_atom_block(lower_node(state, shape, quantity, symbol, bindings, children, env, registry))
+    case _:
+      definition_atom_block(lower(state, occurrence, env, registry))
+def definition_root(state: State, occurrence: IR.Occurrence, env: List<&2, Slot>, registry: Catalog.Registry, parameters: List<&2, BIR.Parameter>) -> LowerResult<BIR.Block>:
+  match occurrence:
+    case IR.TypedOccurrence{term, _, _, _, _, children}:
+      definition_root_node(node(state, term), occurrence, children, env, registry, parameters)
+    case _:
+      definition_atom_block(lower(state, occurrence, env, registry))
+
 def native_match_definition_body_0(v_38: LowerResult<BIR.Block>, v_3: String, v_5: U32, v_7: List<&2, BIR.Parameter>, v_13: List<&2, Catalog.Definition>, v_14: Catalog.Registry, v_16: List<&2, BIR.Declaration>) -> LowerResult<List<&2, BIR.Declaration>>:
   match v_38:
     case LowerResult{v_36, v_37}:
       definition_complete(v_36, v_3, v_5, v_7, v_37, v_13, v_14, v_16)
 
-def native_match_definition_body_1(v_39: LowerResult<BIR.Atom>, v_3: String, v_5: U32, v_7: List<&2, BIR.Parameter>, v_13: List<&2, Catalog.Definition>, v_14: Catalog.Registry, v_16: List<&2, BIR.Declaration>) -> LowerResult<List<&2, BIR.Declaration>>:
-  match v_39:
-    case LowerResult{v_32, v_33}:
-      native_match_definition_body_0(take_block(v_32, v_33), v_3, v_5, v_7, v_13, v_14, v_16)
-
 def native_match_definition_body_2(v_40: LowerResult<List<&2, Slot>>, v_3: String, v_5: U32, v_7: List<&2, BIR.Parameter>, v_13: List<&2, Catalog.Definition>, v_14: Catalog.Registry, v_16: List<&2, BIR.Declaration>, v_23: IR.Occurrence) -> LowerResult<List<&2, BIR.Declaration>>:
   match v_40:
     case LowerResult{v_28, v_29}:
-      native_match_definition_body_1(lower(v_28, v_23, v_29, v_14), v_3, v_5, v_7, v_13, v_14, v_16)
+      native_match_definition_body_0(definition_root(v_28, v_23, v_29, v_14, v_7), v_3, v_5, v_7, v_13, v_14, v_16)
 
 def native_match_definition_body_3(v_11: Maybe<&2, IR.Occurrence>, v_1: State, v_3: String, v_5: U32, v_7: List<&2, BIR.Parameter>, v_9: List<&2, BIR.Quantity>, v_13: List<&2, Catalog.Definition>, v_14: Catalog.Registry, v_16: List<&2, BIR.Declaration>) -> LowerResult<List<&2, BIR.Declaration>>:
   match v_11:

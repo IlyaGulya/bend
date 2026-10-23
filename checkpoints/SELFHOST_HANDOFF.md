@@ -165,6 +165,26 @@ Occurrence-only affine usage cutover отвергнут реальным counter
 отклоняются нынешним checker. Без explicit omitted-row usage witness удалять
 original-case validation нельзя. Receipt: compiler-ir-checkpoint-v57h.json.
 
+В57j объединены две source-level оптимизации без нового BIR/schema/runtime ABI:
+definition-root BodyMatch использует свой code вместо административной forwarding
+функции только при exact positional header locals и пустом instruction/capture
+frame; renderer группирует >=3 distinct-tag Region на том же Local/Capture
+в switch. Symbol/lazy getters не группируются. Duplicate tag останавливает группу;
+failed nested pattern продолжает исходный остаток cases, labels сохранены.
+Combined complete emitter нативно проверен1716/1716 bodies,2002 events,
+11647ms /2233269432physicalbytes, без exclusions/output patches.
+Actual unchanged15-export library:28 assertions; recursion/mutual/returned/
+erased/nonidentity:6; полный Base+native primitive:2; ordered nested failure/
+duplicate-tag/wildcard:5. Реальный output содержит switch с тремя первыми tags
+и исходный следующий ChoiceA fallback. Постоянный fixture добавлен в полный gate,
+теперь94 на image. Ещё нет нового full-root fixedpoint или runtime-speed claim.
+
+Параллельный bounded-metadata native-island кандидат нативно проверен полностью,
+но не интегрирован: actual positive consumer уменьшил resumes только0.83%
+и wall0.17% в одной seed-first паре. Девять допущенных helpers и cost-analysis
+не оправданы measured whole-stage результатом; existing128-node guard сохранён.
+Private evidence/patch записаны отдельно, не подменяют production classifier.
+
 Первый настоящий gate57g остановлен600103ms во время stage-two-check:
 seed93 fixtures прошли; stage-one реально emitted14562034bytes,
 SHA3d7b43c127d2ab4f81dc5c38104dc90c83db3c7554bf6ee729ef27107b8a4c5d.
