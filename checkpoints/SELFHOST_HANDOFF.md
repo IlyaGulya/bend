@@ -4,7 +4,39 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
-## Latest acceptance — Main46/parser71 on misakaindrive
+## Latest acceptance — Main47/parser72 on misakaindrive
+
+Main47 moves pure scope queries into the native-checked `scope_lookup.bend`
+provider, migrates all consumers, and removes the old11 CPS definitions.
+The family/kind/alias/missing/nested-unsafe regression executes successfully
+with1 and4 CPU threads. All8178 current compiler-root bodies/8516 events are
+validated, with zero excluded checks or output patches.
+
+Fresh parser72 passes75 compiled semantic/span cases. Complete seed/stage1/
+stage2 acceptance passes273/273. Both emitted images are18335893 bytes, SHA256
+`e6fcff2cc279971cc55200f6666435b1cd7041c93d15b087dc85487bf6349edf`;
+actual remote `cmp` passes. Stage1 takes97094ms; stage2 takes118980ms. Full gate
+477618ms, physical2650814912/RSS2344435712 bytes, unchanged8GiB/600s guard.
+Compact proof: `selfhost-acceptance-release237-misaka-v47.json`.
+Exact recipes/source hashes: `compiler-scope-v47.json`.
+
+The initial seed benchmark was85885ms versus the earlier46 run70001ms, with
+unchanged parse/expand/emit also slower. Fresh consecutive46/47 controls instead
+measure136943/107474ms compilation and105845/92043ms checker CPU. This single
+pair is not a median or isolated21.5% causal speedup; unchanged phases vary too.
+Both controls preserve all7720 exports, output bytes and actual semantic smoke.
+Exact balanced full-workload counters prove378277435 ->327412751 CPS iterations,
+50864684 fewer (13.45%); this is not a wall-time speedup claim.
+Do not conflate seed performance with the actual emitted runtime:
+`compiler-emitted-linux-v46.json` measures the genuine46 stage1 on nhs at122301ms,
+versus85558ms seed and13572ms official on the same frozen input/runtime.
+All7720 exports, complete checking, output import/smoke and byte parity pass.
+Actual emitted47 also passes the identical nhs workload and output byte comparison:
+`compiler-emitted-linux-v47.json`,127458ms versus122301ms emitted46. That one
+observation shows no speedup, with unchanged phases slower too. The official
+speed target is still unmet; retain this distinction in every performance claim.
+
+## Previous acceptance — Main46/parser71 on misakaindrive
 
 Source version46 (`106c7efd`) now has genuine fresh emitted-JS acceptance:
 273/273 executions,91 fixtures on the seed and each emitted stage. Both actual

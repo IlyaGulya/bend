@@ -1,0 +1,228 @@
+{
+  "status": "PASS",
+  "diagnosticOnly": true,
+  "bootstrapAcceptance": false,
+  "newFixedpoint": false,
+  "compiler": {
+    "kind": "Accepted v46 emitted stage-one compiler, with its own emitted JavaScript runtime",
+    "file": "stage-one.js",
+    "sha256": "9565582817b74796fe5357fdffb6205124e24cccab52e2aca2d2b277f2adfd42",
+    "bytes": 18400923
+  },
+  "previousCompiler": {
+    "kind": "Official-generated v46 source-JS seed, NOT the own-runtime emitted stage-one image",
+    "sha256": "898a2c7fb63999dad37ed85b899c62eeec225ae33a898088a91efcbc58fced6c"
+  },
+  "runtime": {
+    "node": "23.11.0",
+    "v8": "12.9.202.28-node.14",
+    "platform": "linux",
+    "arch": "x64",
+    "distribution": {
+      "url": "https://nodejs.org/dist/v23.11.0/node-v23.11.0-linux-x64.tar.xz",
+      "sha256": "fa9ae28d8796a6cfb7057397e1eea30ca1c61002b42b8897f354563a254e7cf5",
+      "bytes": 30989060,
+      "upstreamChecksums": "https://nodejs.org/dist/v23.11.0/SHASUMS256.txt",
+      "version": "v23.11.0"
+    }
+  },
+  "coverage": {
+    "inputFiles": 50,
+    "modules": 15,
+    "checkedModules": 15,
+    "exports": 7720,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "actualOutputImportAndSemanticSmoke": true,
+    "corpusSha256": "6a00a60b7833e1b188b7b1872297df8e00252cf381b1cc4f9d6b670dfe5ff016",
+    "exportSetSha256": "99efc6ef8538e35f5b6f549e39296bae814e654d48558f9ca7ba2aae2b1911f4"
+  },
+  "output": {
+    "status": "PASS",
+    "exactByteMatch": true,
+    "outputBytes": 19158366,
+    "outputSha256": "c532278061dbdd5b3bac7c85b16534c4b6808411eda760aaa3ca907b2211e79c",
+    "referenceOutputBytes": 19158366,
+    "referenceOutputSha256": "c532278061dbdd5b3bac7c85b16534c4b6808411eda760aaa3ca907b2211e79c",
+    "executedCompilerSha256": "9565582817b74796fe5357fdffb6205124e24cccab52e2aca2d2b277f2adfd42",
+    "runtime": {
+      "node": "23.11.0",
+      "acorn": "8.14.1",
+      "ada": "3.2.1",
+      "amaro": "0.4.1",
+      "ares": "1.34.4",
+      "brotli": "1.1.0",
+      "cjs_module_lexer": "2.1.0",
+      "cldr": "46.0",
+      "icu": "76.1",
+      "llhttp": "9.2.1",
+      "modules": "131",
+      "napi": "10",
+      "nbytes": "0.1.1",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.64.0",
+      "openssl": "3.0.16",
+      "simdjson": "3.12.2",
+      "simdutf": "6.0.3",
+      "sqlite": "3.49.1",
+      "tz": "2025a",
+      "undici": "6.21.2",
+      "unicode": "16.0",
+      "uv": "1.50.0",
+      "uvwasi": "0.0.21",
+      "v8": "12.9.202.28-node.14",
+      "zlib": "1.3.0.1-motley-788cb3c",
+      "zstd": "1.5.6"
+    },
+    "compilerRuntimeDistinction": "Accepted v46 emitted stage-one compiler using its own generated JS runtime; prior component run used the official-generated v46 seed.",
+    "bootstrapAcceptance": false
+  },
+  "measurement": {
+    "compileMs": 122301.093752,
+    "totalWithOutputSmokeMs": 122636.30257100001,
+    "processWallMs": 123181.429317,
+    "phases": [
+      {
+        "phase": "compiler-startup",
+        "wallMs": 478.69774099999995,
+        "cpuMs": 502.428
+      },
+      {
+        "phase": "load-parse",
+        "wallMs": 7478.729179,
+        "cpuMs": 12463.09
+      },
+      {
+        "phase": "expand",
+        "wallMs": 4482.412799,
+        "cpuMs": 5173.156
+      },
+      {
+        "phase": "check",
+        "wallMs": 97376.92836,
+        "cpuMs": 108952.822
+      },
+      {
+        "phase": "emit",
+        "wallMs": 12292.75710399999,
+        "cpuMs": 15422.719
+      },
+      {
+        "phase": "write-and-hash",
+        "wallMs": 188.81585699999414,
+        "cpuMs": 190.082
+      },
+      {
+        "phase": "output-import",
+        "wallMs": 300.9858510000049,
+        "cpuMs": 302.552
+      },
+      {
+        "phase": "output-semantic-smoke",
+        "wallMs": 11.700474999990547,
+        "cpuMs": 13.45
+      }
+    ],
+    "cgroupMemoryPeakBytes": 2010591232
+  },
+  "comparison": {
+    "stageOneCoreMs": 121630.827442,
+    "seedCoreMs": 85203.32290399999,
+    "officialCoreMs": 13486.077195,
+    "nativeCoreMs": 165221.999,
+    "stageOneVsSeedCoreSlowdown": 1.4275361957308108,
+    "stageOneVsOfficialCoreSlowdown": 9.01899237882866,
+    "nativeVsStageOneCoreSlowdown": 1.3583891721758334,
+    "stageOneVsSeedCompileSlowdown": 1.429446057824022,
+    "stageOneVsOfficialCompileSlowdown": 9.011035597683906,
+    "note": "One new same-host Node23.11.0 full emitted-stage1 measurement; seed/official/native are the earlier recorded measurements, not rerun. Runtime identity differs between official-generated seed and genuine emitted stage1. Same50file corpus,7720export set, worker runner, limits and smoke. No statistical averaging or claim of identical host load across measurement times."
+  },
+  "guard": {
+    "label": "stage-one",
+    "command": [
+      "./node-v23.11.0-linux-x64/bin/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "--stack-size=262144",
+      "run-stage-one.mjs"
+    ],
+    "group": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-stage-one.scope",
+    "memoryMax": "8589934592",
+    "memorySwapMax": "0",
+    "startedAt": "2026-10-23T06:10:08.321Z",
+    "samples": 493,
+    "elapsedMs": 123181.429317,
+    "memoryPeak": "2010591232",
+    "memoryCurrent": "136568832",
+    "memoryEvents": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+    "cpuStat": "usage_usec 143815183\nuser_usec 141455850\nsystem_usec 2359333\ncore_sched.force_idle_usec 0",
+    "pid": 2320589,
+    "exitCode": 0,
+    "signal": null
+  },
+  "systemd": {
+    "command": [
+      "systemd-run",
+      "--user",
+      "--scope",
+      "--quiet",
+      "--unit=bend-native46-elcWbhvH-stage-one",
+      "-p",
+      "MemoryMax=8589934592",
+      "-p",
+      "MemorySwapMax=0",
+      "-p",
+      "RuntimeMaxSec=300s",
+      "/usr/bin/node",
+      "guard.mjs",
+      "stage-one",
+      "290000",
+      "./node-v23.11.0-linux-x64/bin/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "--stack-size=262144",
+      "run-stage-one.mjs"
+    ],
+    "elapsedMs": 123230,
+    "status": 0,
+    "signal": null,
+    "error": null,
+    "stdout": "",
+    "stderr": "",
+    "systemctlShow": {
+      "status": 0,
+      "stdout": "Result=success\nRuntimeMaxUSec=infinity\nControlGroup=\nMemoryMax=infinity\nMemorySwapMax=infinity\nActiveState=inactive\nSubState=dead\n",
+      "stderr": ""
+    }
+  },
+  "guardMetadataNote": "Real guard is cgroup MemoryMax=8589934592,MemorySwapMax=0,RuntimeMaxSec=300s;250ms resource recorder. Legacy benchmark metadata rssMiB/pollMs are not Linux RSS policing. Inactive systemctl-show infinity defaults are not execution limits.",
+  "evidenceSha256": {
+    "stage-one.json": "e4aa8e86176b514cd0c7269585a01352a5aa2fb854832059a9c3633099fdb3c3",
+    "stage-one.json.request.json": "7a285cdd7271c1115c69f44ec66cb953f6ef72dac1ac4f0dbdf9d78b6c7b2d76",
+    "stage-one-output-comparison.json": "ff577c5290941aa6991ad9656caef123ebad8f28496a2a36f88aa0698aeae414",
+    "stage-one.guard.json": "063e9afa14902d0582c15a5585244f31c4cff0f59a9db7376d60e03be9e6a0a2",
+    "stage-one.systemd.json": "07b27d55981d9d79d1b5a7cf850179e9a07e798fccc6913b6f0cc2950c7e4f10",
+    "run-stage-one.mjs": "3283e03b9c83fb4a8c1db9149ac131265e688ac0dbdb09a6a939bbe5e2a9b6fc",
+    "benchmark-linux.ts": "107be3470c240af8c069fdc39ccfebd080b473fb727a5943c9979d7370c987eb",
+    "result.json": "ecbcc73337876db55ab176cc6e6c53f8a3006ac9f082235cece6fc8698a506c2"
+  },
+  "cleanup": {
+    "retainedAdditional": [
+      "stage-one.js",
+      "stage-one.json",
+      "stage-one.json.output.mjs",
+      "stage-one.json.request.json",
+      "stage-one-output-comparison.json",
+      "stage-one.guard.json",
+      "stage-one.systemd.json",
+      "stage-one.stdout.log",
+      "stage-one.stderr.log",
+      "run-stage-one.mjs"
+    ],
+    "directoryBytes": 318224624,
+    "previousResultUntouched": true,
+    "permanentSourceChanges": false
+  }
+}

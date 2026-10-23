@@ -408,7 +408,7 @@ def global_index_constructor_owner(v_2: Maybe<&2, String>, v_3: Scope.ArenaGloba
       global_index_incomplete(v_4)
     case Some{+v_20032698}:
       v_7 = v_20032698
-      global_index_constructor_parent(scope_index_kind(v_7, Scope.GlobalFamily{}, v_4), v_7, v_3, v_4)
+      global_index_constructor_parent(Scope.index_kind(v_7, Scope.GlobalFamily{}, v_4), v_7, v_3, v_4)
 
 def global_index_alias_keys(v_20032699: ArenaStore, v_1: String, v_3: String, v_6: IR.Names) -> ArenaResult<IR.Names>:
   +v_20032702 = String.eq(v_1, v_3)
@@ -560,7 +560,7 @@ def global_segment_prepend(v_20032807: ArenaStore, +v_0: Scope.ArenaGlobal, v_1:
       {ArenaResult{v_20032813, Scope.ArenaGlobalSegment{v_7, v_8, v_9, v_0 <> v_10, v_20032814}} : ArenaResult<Scope.ArenaGlobalSegment>}
 
 # Earlier segments supply the generic first entry and the first of each kind.
-# scope_bucket selects any family before the generic first entry.
+# Scope.bucket selects any family before the generic first entry.
 def visible_bucket_first(+first: Maybe<&2, Scope.ArenaGlobal>, later: Maybe<&2, Scope.ArenaGlobal>) -> Maybe<&2, Scope.ArenaGlobal>:
   match first:
     case Some{entry}: first
@@ -970,7 +970,7 @@ def declaration_visible_scope(v_20032971: ArenaStore, +v_0: Scope.ArenaGlobalSco
   {ArenaResult{v_20032972, v_20032973} : ArenaResult<Scope.ArenaGlobalScope>}
 
 def family_equal(v_1: String, v_3: String, +v_4: Scope.ArenaGlobalScope) -> Bool:
-  String.eq(scope_canonical_name(v_1, v_4), scope_canonical_name(v_3, v_4))
+  String.eq(Scope.canonical_name(v_1, v_4), Scope.canonical_name(v_3, v_4))
 
 def family_lowered_whnf(v_20032974: ArenaStore, v_1: Nat, v_2: U32, v_3: Scope.ArenaGlobalScope, v_5: FamilyLowering) -> ArenaResult<U32>:
   match v_5:
@@ -1137,7 +1137,7 @@ def whnf_beta_index_name(request: CasePrefixSelect, result: ArenaResult<String>)
     case ArenaResult{store, +name}:
       match request:
         case CasePrefixSelect{cases, scrutinees, argument, fuel, +globals, heads, offset}:
-          whnf_beta_index_aliases(CasePrefixSelect{cases, scrutinees, argument, fuel, globals, heads, offset}, name, scope_canonical_name_aliases(store, scope_canonical_name(name, globals), globals))
+          whnf_beta_index_aliases(CasePrefixSelect{cases, scrutinees, argument, fuel, globals, heads, offset}, name, scope_canonical_name_aliases(store, Scope.canonical_name(name, globals), globals))
 
 def whnf_beta_index_aliases(request: CasePrefixSelect, name: String, result: ArenaResult<IR.Names>) -> ArenaResult<Maybe<&2, U32>>:
   match result:
@@ -1215,7 +1215,7 @@ def whnf_application(v_20033053: ArenaStore, v_0: U32, v_2: Nat, v_3: U32, v_4: 
       ArenaResult{v_20033076, +v_20033077} = arena_name_text(v_20033054, v_20033073)
       +v_20033074 = v_20033077
       v_19 = v_20033074
-      ArenaResult{v_20033078, +v_20033079} = whnf_application_global(v_20033076, scope_lookup(v_19, v_5), v_2, v_3, v_4, v_5)
+      ArenaResult{v_20033078, +v_20033079} = whnf_application_global(v_20033076, Scope.lookup(v_19, v_5), v_2, v_3, v_4, v_5)
       {ArenaResult{v_20033078, v_20033079} : ArenaResult<U32>}
     case _:
       {ArenaResult{v_20033054, v_3} : ArenaResult<U32>}
@@ -1448,7 +1448,7 @@ def whnf(v_20033248: ArenaStore, v_1: Nat, v_2: U32, v_3: Scope.ArenaGlobalScope
           ArenaResult{v_20033307, +v_20033308} = arena_name_text(v_20033250, v_20033304)
           +v_20033305 = v_20033308
           v_45 = v_20033305
-          ArenaResult{v_20033309, +v_20033310} = whnf_ref_result(v_20033307, scope_lookup(v_45, v_3), v_5, v_2, v_3)
+          ArenaResult{v_20033309, +v_20033310} = whnf_ref_result(v_20033307, Scope.lookup(v_45, v_3), v_5, v_2, v_3)
           {ArenaResult{v_20033309, v_20033310} : ArenaResult<U32>}
         case Arena.TermApp{+v_20033314, +v_20033315, +v_20033316}:
           v_51 = v_20033314
@@ -1712,7 +1712,7 @@ def equal_names(+v_1: String, +v_3: String, +v_4: Scope.ArenaGlobalScope) -> Boo
   +v_20033634 = String.eq(v_1, v_3)
   match v_20033634:
     case False{}:
-      +v_20033633 = String.eq(scope_canonical_name(v_1, v_4), scope_canonical_name(v_3, v_4))
+      +v_20033633 = String.eq(Scope.canonical_name(v_1, v_4), Scope.canonical_name(v_3, v_4))
       v_20033633
     case True{}:
       +v_20033633 = True{}
@@ -2697,7 +2697,7 @@ def lower_family_sugar_complete(v_1: ArenaStore, v_3: Bool, v_5: String, v_7: U3
     case True{}:
       ArenaResult{v_27, +v_28} = set_quantity_prefix(v_1, v_8, v_10, Ast.QMany{}, v_11)
       ArenaResult{v_32, +v_33} = family_head_refs(v_27, v_7)
-      ArenaResult{v_38, +v_39} = arena_name(v_32, scope_canonical_name(v_5, v_12))
+      ArenaResult{v_38, +v_39} = arena_name(v_32, Scope.canonical_name(v_5, v_12))
       v_50000055 = arena_words_start(v_28)
       v_50000056 = arena_words_count(v_28)
       v_50000057 = arena_names_start(v_33)
@@ -2723,7 +2723,7 @@ def lower_family_sugar_promote(v_1: ArenaStore, v_3: Bool, v_5: Bool, v_7: Strin
       {ArenaResult{v_21, v_22} : ArenaResult<FamilyLowering>}
     case False{}:
       ArenaResult{v_26, +v_27} = family_head_refs(v_1, v_9)
-      ArenaResult{v_32, +v_33} = arena_name(v_26, scope_canonical_name(v_7, v_14))
+      ArenaResult{v_32, +v_33} = arena_name(v_26, Scope.canonical_name(v_7, v_14))
       v_50000060 = arena_words_start(v_10)
       v_50000061 = arena_words_count(v_10)
       v_50000062 = arena_names_start(v_27)
@@ -2773,7 +2773,7 @@ def lower_family_sugar_key_result(v_1: ArenaStore, v_4: Maybe<&2, String>, v_6: 
       {ArenaResult{v_1, v_50000066} : ArenaResult<FamilyLowering>}
     case Some{+v_17}:
       +v_19 = v_17
-      ArenaResult{v_24, +v_25} = lower_family_sugar_global_result(v_1, scope_lookup(v_19, v_11), v_19, v_6, v_7, v_9, v_10, v_11)
+      ArenaResult{v_24, +v_25} = lower_family_sugar_global_result(v_1, Scope.lookup(v_19, v_11), v_19, v_6, v_7, v_9, v_10, v_11)
       {ArenaResult{v_24, v_25} : ArenaResult<FamilyLowering>}
 
 def lower_family_sugar_variable(v_1: Bool, v_2: U32, v_3: Ast.SourceSpan) -> FamilyLowering:
@@ -3125,7 +3125,7 @@ def infer(v_1: ArenaStore, v_3: U32, v_6: List<&2, Binding>, v_7: Scope.ArenaGlo
       +v_59 = v_57
       v_61 = v_59
       v_63 = v_52
-      v_50000081 = infer_global_reference(scope_lookup(v_61, v_7), v_61, v_3, v_63)
+      v_50000081 = infer_global_reference(Scope.lookup(v_61, v_7), v_61, v_3, v_63)
       {ArenaResult{v_56, v_50000081} : ArenaResult<Inference>}
     case Arena.TermAdt{+v_72, +v_73, +v_74, +v_75, +v_76, +v_77}:
       ArenaResult{v_81, +v_82} = arena_name_text(v_14, v_72)
@@ -3134,7 +3134,7 @@ def infer(v_1: ArenaStore, v_3: U32, v_6: List<&2, Binding>, v_7: Scope.ArenaGlo
       v_88 = v_84
       v_90 = v_86
       v_92 = v_77
-      ArenaResult{v_97, +v_98} = infer_global_adt(v_81, scope_lookup(v_88, v_7), v_88, v_90, v_3, v_92, v_6, v_7)
+      ArenaResult{v_97, +v_98} = infer_global_adt(v_81, Scope.lookup(v_88, v_7), v_88, v_90, v_3, v_92, v_6, v_7)
       {ArenaResult{v_97, v_98} : ArenaResult<Inference>}
     case Arena.TermFill{+v_103, +v_104, +v_105, +v_106}:
       +v_108 = IR.Words{v_104, v_105}
@@ -3292,8 +3292,8 @@ def has_canonical_name(v_20035229: ArenaStore, v_1: String, v_4: IR.Names, v_5: 
     case IR.NameCons{+v_20035232, +v_20035233}:
       +v_9 = v_20035232
       v_10 = v_20035233
-      v_12 = scope_canonical_name(v_1, v_5)
-      +v_20035236 = String.eq(v_12, scope_canonical_name(v_9, v_5))
+      v_12 = Scope.canonical_name(v_1, v_5)
+      +v_20035236 = String.eq(v_12, Scope.canonical_name(v_9, v_5))
       match v_20035236:
         case False{}:
           ArenaResult{v_20035237, +v_20035238} = has_canonical_name(v_20035230, v_1, v_10, v_5)
@@ -3314,7 +3314,7 @@ def canonicalize_strings(v_20035239: ArenaStore, v_2: IR.Names, v_3: Scope.Arena
       +v_8 = v_20035242
       v_9 = v_20035243
       ArenaResult{v_20035244, +v_20035245} = canonicalize_strings(v_20035240, v_9, v_3)
-      ArenaResult{v_20035246, +v_20035247} = arena_names_cons(v_20035244, scope_canonical_name(v_8, v_3), v_20035245)
+      ArenaResult{v_20035246, +v_20035247} = arena_names_cons(v_20035244, Scope.canonical_name(v_8, v_3), v_20035245)
       {ArenaResult{v_20035246, v_20035247} : ArenaResult<IR.Names>}
 
 def canonicalize_patterns(v_20035248: ArenaStore, v_1: IR.Words, v_2: Scope.ArenaGlobalScope) -> ArenaResult<IR.Words>:
@@ -3351,7 +3351,7 @@ def canonicalize_pattern(v_1: ArenaStore, v_3: U32, v_4: Scope.ArenaGlobalScope)
       v_66 = v_62
       v_68 = v_53
       ArenaResult{v_72, +v_73} = canonicalize_patterns(v_57, v_66, v_4)
-      ArenaResult{v_78, +v_79} = arena_name(v_72, scope_canonical_name(v_64, v_4))
+      ArenaResult{v_78, +v_79} = arena_name(v_72, Scope.canonical_name(v_64, v_4))
       v_50000085 = arena_words_start(v_73)
       v_50000086 = arena_words_count(v_73)
       ArenaResult{v_85, +v_86} = arena_put_pattern(v_78, Arena.PatternCtr{v_79, v_50000085, v_50000086, v_68})
@@ -3387,7 +3387,7 @@ def canonicalize_term(v_1: ArenaStore, v_3: U32, v_4: Scope.ArenaGlobalScope) ->
       +v_52 = v_50
       v_54 = v_52
       v_56 = v_45
-      ArenaResult{v_61, +v_62} = arena_name(v_49, scope_canonical_name(v_54, v_4))
+      ArenaResult{v_61, +v_62} = arena_name(v_49, Scope.canonical_name(v_54, v_4))
       ArenaResult{v_66, +v_67} = arena_put_node(v_61, Arena.TermRef{v_62, v_56})
       {ArenaResult{v_66, v_67} : ArenaResult<U32>}
     case Arena.TermBang{+v_70, +v_71}:
@@ -3530,7 +3530,7 @@ def canonicalize_term(v_1: ArenaStore, v_3: U32, v_4: Scope.ArenaGlobalScope) ->
       v_499 = v_480
       ArenaResult{v_503, +v_504} = canonicalize_terms(v_484, v_495, v_4)
       ArenaResult{v_508, +v_509} = canonicalize_strings(v_503, v_497, v_4)
-      ArenaResult{v_514, +v_515} = arena_name(v_508, scope_canonical_name(v_493, v_4))
+      ArenaResult{v_514, +v_515} = arena_name(v_508, Scope.canonical_name(v_493, v_4))
       v_50000099 = arena_words_start(v_504)
       v_50000100 = arena_words_count(v_504)
       v_50000101 = arena_names_start(v_509)
@@ -3547,7 +3547,7 @@ def canonicalize_term(v_1: ArenaStore, v_3: U32, v_4: Scope.ArenaGlobalScope) ->
       v_545 = v_541
       v_547 = v_532
       ArenaResult{v_551, +v_552} = canonicalize_terms(v_536, v_545, v_4)
-      ArenaResult{v_557, +v_558} = arena_name(v_551, scope_canonical_name(v_543, v_4))
+      ArenaResult{v_557, +v_558} = arena_name(v_551, Scope.canonical_name(v_543, v_4))
       v_50000103 = arena_words_start(v_552)
       v_50000104 = arena_words_count(v_552)
       ArenaResult{v_564, +v_565} = arena_put_node(v_557, Arena.TermCtr{v_558, v_50000103, v_50000104, v_547})
@@ -3561,7 +3561,7 @@ def canonicalize_term(v_1: ArenaStore, v_3: U32, v_4: Scope.ArenaGlobalScope) ->
       v_588 = v_573
       ArenaResult{v_592, +v_593} = canonicalize_term(v_577, v_584, v_4)
       ArenaResult{v_597, +v_598} = canonicalize_term(v_592, v_586, v_4)
-      ArenaResult{v_603, +v_604} = arena_name(v_597, scope_canonical_name(v_582, v_4))
+      ArenaResult{v_603, +v_604} = arena_name(v_597, Scope.canonical_name(v_582, v_4))
       ArenaResult{v_608, +v_609} = arena_put_node(v_603, Arena.TermMat{v_604, v_593, v_598, v_588})
       {ArenaResult{v_608, v_609} : ArenaResult<U32>}
     case Arena.TermAbsurd{+v_611}:
@@ -3701,7 +3701,7 @@ def check_match_applied(v_1: ArenaStore, v_4: Maybe<&2, U32>, v_6: String, v_8: 
       v_39 = v_37
       ArenaResult{v_43, +v_44} = mat_branch_goal(v_1, v_39, v_30, v_6, IR.Words{0, 0}, 0n, v_11, v_17)
       v_46 = v_44
-      ArenaResult{v_51, +v_52} = arena_names_cons(v_43, scope_canonical_name(v_6, v_17), IR.Names{0, 0})
+      ArenaResult{v_51, +v_52} = arena_names_cons(v_43, Scope.canonical_name(v_6, v_17), IR.Names{0, 0})
       ArenaResult{v_56, +v_57} = arena_names_append(v_51, v_23, v_52)
       v_59 = v_57
       ArenaResult{v_63, +v_64} = arena_name(v_56, v_21)
@@ -3769,7 +3769,7 @@ def check_match_unexcluded(v_1: ArenaStore, v_3: Bool, v_5: String, v_7: U32, v_
       v_50000125 = fail(v_10, "constructor is already excluded from this match", "an unmatched constructor", v_5)
       {ArenaResult{v_1, v_50000125} : ArenaResult<Inference>}
     case False{}:
-      ArenaResult{v_40, +v_41} = check_match_constructor(v_1, scope_lookup_kind(v_5, Scope.GlobalConstructor{}, v_16), v_5, v_7, v_9, v_10, v_12, v_15, v_16, v_18, v_20, v_22, v_23, v_24, v_25, v_27, v_29, v_31)
+      ArenaResult{v_40, +v_41} = check_match_constructor(v_1, Scope.lookup_kind(v_5, Scope.GlobalConstructor{}, v_16), v_5, v_7, v_9, v_10, v_12, v_15, v_16, v_18, v_20, v_22, v_23, v_24, v_25, v_27, v_29, v_31)
       {ArenaResult{v_40, v_41} : ArenaResult<Inference>}
 
 def check_match_input_view(v_1: ArenaStore, v_3: U32, v_5: String, v_7: U32, v_9: U32, v_10: Ast.SourceSpan, v_12: U32, v_15: List<&2, Binding>, v_16: Scope.ArenaGlobalScope, v_18: U32, v_19: Ast.Quantity, v_21: String, v_23: Nat, v_25: U32) -> ArenaResult<Inference>:
@@ -3784,7 +3784,7 @@ def check_match_input_view(v_1: ArenaStore, v_3: U32, v_5: String, v_7: U32, v_9
       v_60 = v_54
       v_62 = v_56
       ArenaResult{v_66, +v_67} = has_canonical_name(v_49, v_5, v_62, v_16)
-      ArenaResult{v_72, +v_73} = check_match_unexcluded(v_66, v_67, v_5, v_7, v_9, v_10, v_12, v_15, v_16, v_18, v_58, scope_canonical_name(v_58, v_16), v_60, v_62, v_19, v_21, v_23, v_25)
+      ArenaResult{v_72, +v_73} = check_match_unexcluded(v_66, v_67, v_5, v_7, v_9, v_10, v_12, v_15, v_16, v_18, v_58, Scope.canonical_name(v_58, v_16), v_60, v_62, v_19, v_21, v_23, v_25)
       {ArenaResult{v_72, v_73} : ArenaResult<Inference>}
     case _:
       v_50000126 = fail(v_10, "match scrutinee is not a datatype", "a datatype", "a non-datatype")
@@ -4316,7 +4316,7 @@ def family_constructor_keys_seen(v_20036253: ArenaStore, v_2: IR.Names, v_3: Sco
     case IR.NameCons{+v_20036256, +v_20036257}:
       +v_11 = v_20036256
       v_12 = v_20036257
-      ArenaResult{v_20036258, +v_20036259} = family_constructor_keys_seen(v_20036254, v_12, v_3, Map.set(&2, Bool, v_6, scope_canonical_name(v_11, v_3), True{}))
+      ArenaResult{v_20036258, +v_20036259} = family_constructor_keys_seen(v_20036254, v_12, v_3, Map.set(&2, Bool, v_6, Scope.canonical_name(v_11, v_3), True{}))
       {ArenaResult{v_20036258, v_20036259} : ArenaResult<Map<&2, Bool>>}
 
 def family_constructor_keys_membership(v_20036260: ArenaStore, v_2: Maybe<&2, Bool>, v_4: String, v_6: String, v_8: List<&2, Scope.ArenaGlobal>, v_10: String, v_13: Map<&2, Bool>, v_16: IR.Names, v_17: Scope.ArenaGlobalScope) -> ArenaResult<IR.Names>:
@@ -4335,8 +4335,8 @@ def family_constructor_keys_equal(v_20036268: ArenaStore, v_1: Bool, v_3: String
       ArenaResult{v_20036269, +v_20036270} = family_constructor_keys_inner(v_20036268, v_5, v_7, v_10, v_13, v_14)
       {ArenaResult{v_20036269, v_20036270} : ArenaResult<IR.Names>}
     case True{}:
-      +v_19 = scope_canonical_name(v_3, v_14)
-      +v_21 = scope_canonical_name(v_19, v_14)
+      +v_19 = Scope.canonical_name(v_3, v_14)
+      +v_21 = Scope.canonical_name(v_19, v_14)
       ArenaResult{v_20036271, +v_20036272} = family_constructor_keys_membership(v_20036268, IndexLookup.find(Bool, v_10, v_21), v_19, v_21, v_5, v_7, v_10, v_13, v_14)
       {ArenaResult{v_20036271, v_20036272} : ArenaResult<IR.Names>}
 
@@ -4531,7 +4531,7 @@ def global_scope_constructor_alias_collision(v_20036379: ArenaStore, v_2: IR.Nam
               ArenaResult{v_20036388, +v_20036389} = global_scope_constructor_alias_collision(v_20036380, v_10, v_4, v_5)
               {ArenaResult{v_20036388, v_20036389} : ArenaResult<Bool>}
             case True{}:
-              +v_20036390 = String.eq(scope_canonical_name(v_9, v_5), v_4)
+              +v_20036390 = String.eq(Scope.canonical_name(v_9, v_5), v_4)
               match v_20036390:
                 case True{}:
                   {ArenaResult{v_20036380, True{}} : ArenaResult<Bool>}
@@ -4557,7 +4557,7 @@ def family_constructor_keys_candidates(v_20036393: ArenaStore, v_2: Maybe<&2, Li
           {ArenaResult{v_20036403, v_20036404} : ArenaResult<IR.Names>}
 
 def family_constructor_keys(v_20036405: ArenaStore, v_0: Scope.ArenaGlobalScope, v_2: String, v_5: IR.Names) -> ArenaResult<IR.Names>:
-  v_9 = scope_canonical_name(v_2, v_0)
+  v_9 = Scope.canonical_name(v_2, v_0)
   ArenaResult{v_20036406, +v_20036407} = family_constructor_keys_seen(v_20036405, v_5, v_0, MTip{})
   ArenaResult{v_20036408, +v_20036409} = family_constructor_keys_candidates(v_20036406, global_scope_constructor_candidates(v_0, v_9), v_9, v_0, v_2, v_20036407)
   {ArenaResult{v_20036408, v_20036409} : ArenaResult<IR.Names>}
@@ -4758,7 +4758,7 @@ def constructor_result_view(v_20036682: ArenaStore, v_0: U32, v_2: String, v_3: 
       +v_20036693 = IR.Words{v_20036691, v_20036692}
       v_9 = v_20036690
       v_10 = v_20036693
-      ArenaResult{v_20036700, +v_20036701} = constructor_result_lookup(v_20036698, scope_lookup_kind(v_2, Scope.GlobalConstructor{}, v_3), v_9, v_10, v_3)
+      ArenaResult{v_20036700, +v_20036701} = constructor_result_lookup(v_20036698, Scope.lookup_kind(v_2, Scope.GlobalConstructor{}, v_3), v_9, v_10, v_3)
       {ArenaResult{v_20036700, v_20036701} : ArenaResult<Bool>}
     case _:
       {ArenaResult{v_20036683, False{}} : ArenaResult<Bool>}
@@ -4799,7 +4799,7 @@ def constructors_for_type_view(v_20036724: ArenaStore, v_0: U32, v_1: U32, v_2: 
       +v_20036738 = IR.Names{v_20036736, v_20036737}
       v_9 = v_20036732
       v_11 = v_20036738
-      v_14 = scope_canonical_name(v_9, v_2)
+      v_14 = Scope.canonical_name(v_9, v_2)
       ArenaResult{v_20036742, +v_20036743} = family_constructor_keys(v_20036740, v_2, v_14, v_11)
       ArenaResult{v_20036744, +v_20036745} = filter_reachable_constructors(v_20036742, v_20036743, v_1, v_2)
       {ArenaResult{v_20036744, v_20036745} : ArenaResult<IR.Names>}
@@ -4892,7 +4892,7 @@ def constructor_field_types_view(v_20036816: ArenaStore, v_0: U32, v_2: String, 
       v_10 = v_20036824
       v_11 = v_20036827
       v_13 = v_20036831
-      ArenaResult{v_20036834, +v_20036835} = constructor_field_types_lookup(v_20036832, scope_lookup_kind(v_2, Scope.GlobalConstructor{}, v_4), v_10, v_11, v_13, v_4)
+      ArenaResult{v_20036834, +v_20036835} = constructor_field_types_lookup(v_20036832, Scope.lookup_kind(v_2, Scope.GlobalConstructor{}, v_4), v_10, v_11, v_13, v_4)
       {ArenaResult{v_20036834, v_20036835} : ArenaResult<IR.Words>}
     case _:
       {ArenaResult{v_20036817, IR.Words{0, 0}} : ArenaResult<IR.Words>}
@@ -5021,8 +5021,8 @@ def empty_constructor_type_view(v_20036936: ArenaStore, v_0: U32, v_1: Scope.Are
       +v_20036950 = IR.Names{v_20036948, v_20036949}
       v_7 = v_20036944
       v_9 = v_20036950
-      v_12 = scope_canonical_name(v_7, v_1)
-      ArenaResult{v_20036954, +v_20036955} = empty_constructor_family(v_20036952, scope_lookup_kind(v_12, Scope.GlobalFamily{}, v_1), v_12, v_9, v_1)
+      v_12 = Scope.canonical_name(v_7, v_1)
+      ArenaResult{v_20036954, +v_20036955} = empty_constructor_family(v_20036952, Scope.lookup_kind(v_12, Scope.GlobalFamily{}, v_1), v_12, v_9, v_1)
       {ArenaResult{v_20036954, v_20036955} : ArenaResult<Bool>}
     case _:
       {ArenaResult{v_20036937, False{}} : ArenaResult<Bool>}
@@ -5162,7 +5162,7 @@ def matrix_pattern_covered_indexed(v_20037029: ArenaStore, v_1: IR.Words, +v_4: 
                   v_35 = v_20037040
                   ArenaResult{v_20037071, +v_20037072} = constructor_field_types_for_type(v_20037069, v_34, v_36, v_7)
                   v_42 = v_20037072
-                  ArenaResult{v_20037073, +v_20037074} = scope_specialize_pattern_rows(v_20037071, v_4, scope_canonical_name(v_36, v_7), arena_words_length(v_42), v_7)
+                  ArenaResult{v_20037073, +v_20037074} = scope_specialize_pattern_rows(v_20037071, v_4, Scope.canonical_name(v_36, v_7), arena_words_length(v_42), v_7)
                   v_44 = v_20037074
                   ArenaResult{v_20037075, +v_20037076} = arena_words_append(v_20037073, v_42, v_35)
                   ArenaResult{v_20037077, +v_20037078} = arena_words_append(v_20037075, v_37, v_39)
@@ -5374,7 +5374,7 @@ def check_pattern_result_view(v_1: ArenaStore, v_3: U32, v_5: String, v_6: IR.Wo
           v_48 = v_40
           {ArenaResult{v_48, v_46} : ArenaResult<PatternTyping>}
         case True{}:
-          ArenaResult{v_54, +v_55} = arena_name(v_40, scope_canonical_name(v_5, v_13))
+          ArenaResult{v_54, +v_55} = arena_name(v_40, Scope.canonical_name(v_5, v_13))
           v_50000191 = arena_words_start(v_6)
           v_50000192 = arena_words_count(v_6)
           ArenaResult{v_61, +v_62} = arena_put_node(v_54, Arena.TermCtr{v_55, v_50000191, v_50000192, v_12})
@@ -5459,7 +5459,7 @@ def check_pattern_exclusion_result(v_1: ArenaStore, v_3: Bool, v_5: String, v_6:
   +v_26 = v_3
   match v_26:
     case False{}:
-      ArenaResult{v_31, +v_32} = check_pattern_global_result(v_1, scope_lookup_kind(v_5, Scope.GlobalConstructor{}, v_21), v_8, v_9, v_10, v_12, v_5, v_14, v_16, v_19, v_20, v_21)
+      ArenaResult{v_31, +v_32} = check_pattern_global_result(v_1, Scope.lookup_kind(v_5, Scope.GlobalConstructor{}, v_21), v_8, v_9, v_10, v_12, v_5, v_14, v_16, v_19, v_20, v_21)
       +v_34 = v_32
       v_36 = v_31
       {ArenaResult{v_36, v_34} : ArenaResult<PatternTyping>}
@@ -6097,7 +6097,7 @@ def check_term_constructor_allowed(v_1: ArenaStore, v_3: Bool, v_5: String, v_6:
       v_50000230 = fail(v_7, "constructor is excluded from this datatype goal", "a remaining constructor", v_5)
       {ArenaResult{v_1, v_50000230} : ArenaResult<Inference>}
     case False{}:
-      ArenaResult{v_28, +v_29} = check_term_constructor_global_result(v_1, scope_lookup_kind(v_5, Scope.GlobalConstructor{}, v_15), v_5, v_6, v_7, v_8, v_11, v_14, v_15, v_17, v_19)
+      ArenaResult{v_28, +v_29} = check_term_constructor_global_result(v_1, Scope.lookup_kind(v_5, Scope.GlobalConstructor{}, v_15), v_5, v_6, v_7, v_8, v_11, v_14, v_15, v_17, v_19)
       {ArenaResult{v_28, v_29} : ArenaResult<Inference>}
 
 # Exact bounded scalar typing proof. Names select scope entries; every selected
@@ -6134,13 +6134,13 @@ def scalar_reference_constructor(expected: String) -> Bool:
 def scalar_reference_identity(+name: String, +ns: String, +globals: Scope.ArenaGlobalScope, +expected: String) -> Bool:
   match scalar_reference_constructor(expected):
     case True{}:
-      scalar_global_identity(scope_lookup_kind(name, Scope.GlobalConstructor{}, globals), scope_lookup_kind(canonical_key(ns, expected), Scope.GlobalConstructor{}, globals))
+      scalar_global_identity(Scope.lookup_kind(name, Scope.GlobalConstructor{}, globals), Scope.lookup_kind(canonical_key(ns, expected), Scope.GlobalConstructor{}, globals))
     case False{}:
       match String.eq(expected, "Word"):
         case True{}:
-          scalar_global_identity(scope_lookup(name, globals), scope_lookup_kind(canonical_key(ns, expected), Scope.GlobalDefinition{}, globals))
+          scalar_global_identity(Scope.lookup(name, globals), Scope.lookup_kind(canonical_key(ns, expected), Scope.GlobalDefinition{}, globals))
         case False{}:
-          scalar_global_identity(scope_lookup(name, globals), scope_lookup_kind(canonical_key(ns, expected), Scope.GlobalFamily{}, globals))
+          scalar_global_identity(Scope.lookup(name, globals), Scope.lookup_kind(canonical_key(ns, expected), Scope.GlobalFamily{}, globals))
 
 
 def scalar_schema_name(store: ArenaStore, id: U32, +ns: String, +globals: Scope.ArenaGlobalScope, +expected: String, canonical: Bool) -> ArenaResult<Bool>:
@@ -6176,7 +6176,7 @@ def scalar_schema_2(store: ArenaStore, id: U32, +ns: String, +globals: Scope.Are
     case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
 
 def scalar_global_Bool_GlobalFamily(store: ArenaStore, +ns: String, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
-  match scope_lookup_kind(canonical_key(ns, "Bool"), Scope.GlobalFamily{}, globals):
+  match Scope.lookup_kind(canonical_key(ns, "Bool"), Scope.GlobalFamily{}, globals):
     case Some{Scope.ArenaGlobal{key, owner, local, ty, IR.SomeTerm{value}, Scope.GlobalFamily{}}}:
       ArenaResult{store, +valid_ty} = scalar_schema_0(store, ty, ns, globals)
       ArenaResult{store, +valid_value} = scalar_schema_2(store, value, ns, globals)
@@ -6184,14 +6184,14 @@ def scalar_global_Bool_GlobalFamily(store: ArenaStore, +ns: String, +globals: Sc
     case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
 
 def scalar_global_False_GlobalConstructor(store: ArenaStore, +ns: String, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
-  match scope_lookup_kind(canonical_key(ns, "False"), Scope.GlobalConstructor{}, globals):
+  match Scope.lookup_kind(canonical_key(ns, "False"), Scope.GlobalConstructor{}, globals):
     case Some{Scope.ArenaGlobal{key, owner, local, ty, IR.NoTerm{}, Scope.GlobalConstructor{}}}:
       ArenaResult{store, +valid_ty} = scalar_schema_2(store, ty, ns, globals)
       {ArenaResult{store, Bool.and(String.eq(key, canonical_key(ns, "False")), Bool.and(String.eq(owner, ns), Bool.and(String.eq(local, "False"), valid_ty)))} : ArenaResult<Bool>}
     case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
 
 def scalar_global_True_GlobalConstructor(store: ArenaStore, +ns: String, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
-  match scope_lookup_kind(canonical_key(ns, "True"), Scope.GlobalConstructor{}, globals):
+  match Scope.lookup_kind(canonical_key(ns, "True"), Scope.GlobalConstructor{}, globals):
     case Some{Scope.ArenaGlobal{key, owner, local, ty, IR.NoTerm{}, Scope.GlobalConstructor{}}}:
       ArenaResult{store, +valid_ty} = scalar_schema_2(store, ty, ns, globals)
       {ArenaResult{store, Bool.and(String.eq(key, canonical_key(ns, "True")), Bool.and(String.eq(owner, ns), Bool.and(String.eq(local, "True"), valid_ty)))} : ArenaResult<Bool>}
@@ -6209,7 +6209,7 @@ def scalar_schema_3(store: ArenaStore, id: U32, +ns: String, +globals: Scope.Are
     case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
 
 def scalar_global_Nat_GlobalFamily(store: ArenaStore, +ns: String, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
-  match scope_lookup_kind(canonical_key(ns, "Nat"), Scope.GlobalFamily{}, globals):
+  match Scope.lookup_kind(canonical_key(ns, "Nat"), Scope.GlobalFamily{}, globals):
     case Some{Scope.ArenaGlobal{key, owner, local, ty, IR.SomeTerm{value}, Scope.GlobalFamily{}}}:
       ArenaResult{store, +valid_ty} = scalar_schema_0(store, ty, ns, globals)
       ArenaResult{store, +valid_value} = scalar_schema_3(store, value, ns, globals)
@@ -6217,7 +6217,7 @@ def scalar_global_Nat_GlobalFamily(store: ArenaStore, +ns: String, +globals: Sco
     case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
 
 def scalar_global_Zero_GlobalConstructor(store: ArenaStore, +ns: String, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
-  match scope_lookup_kind(canonical_key(ns, "Zero"), Scope.GlobalConstructor{}, globals):
+  match Scope.lookup_kind(canonical_key(ns, "Zero"), Scope.GlobalConstructor{}, globals):
     case Some{Scope.ArenaGlobal{key, owner, local, ty, IR.NoTerm{}, Scope.GlobalConstructor{}}}:
       ArenaResult{store, +valid_ty} = scalar_schema_3(store, ty, ns, globals)
       {ArenaResult{store, Bool.and(String.eq(key, canonical_key(ns, "Zero")), Bool.and(String.eq(owner, ns), Bool.and(String.eq(local, "Zero"), valid_ty)))} : ArenaResult<Bool>}
@@ -6242,7 +6242,7 @@ def scalar_schema_4(store: ArenaStore, id: U32, +ns: String, +globals: Scope.Are
     case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
 
 def scalar_global_Succ_GlobalConstructor(store: ArenaStore, +ns: String, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
-  match scope_lookup_kind(canonical_key(ns, "Succ"), Scope.GlobalConstructor{}, globals):
+  match Scope.lookup_kind(canonical_key(ns, "Succ"), Scope.GlobalConstructor{}, globals):
     case Some{Scope.ArenaGlobal{key, owner, local, ty, IR.NoTerm{}, Scope.GlobalConstructor{}}}:
       ArenaResult{store, +valid_ty} = scalar_schema_4(store, ty, ns, globals)
       {ArenaResult{store, Bool.and(String.eq(key, canonical_key(ns, "Succ")), Bool.and(String.eq(owner, ns), Bool.and(String.eq(local, "Succ"), valid_ty)))} : ArenaResult<Bool>}
@@ -6260,7 +6260,7 @@ def scalar_schema_6(store: ArenaStore, id: U32, +ns: String, +globals: Scope.Are
     case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
 
 def scalar_global_Word_Nil_GlobalFamily(store: ArenaStore, +ns: String, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
-  match scope_lookup_kind(canonical_key(ns, "Word.Nil"), Scope.GlobalFamily{}, globals):
+  match Scope.lookup_kind(canonical_key(ns, "Word.Nil"), Scope.GlobalFamily{}, globals):
     case Some{Scope.ArenaGlobal{key, owner, local, ty, IR.SomeTerm{value}, Scope.GlobalFamily{}}}:
       ArenaResult{store, +valid_ty} = scalar_schema_0(store, ty, ns, globals)
       ArenaResult{store, +valid_value} = scalar_schema_6(store, value, ns, globals)
@@ -6268,7 +6268,7 @@ def scalar_global_Word_Nil_GlobalFamily(store: ArenaStore, +ns: String, +globals
     case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
 
 def scalar_global_WNil_GlobalConstructor(store: ArenaStore, +ns: String, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
-  match scope_lookup_kind(canonical_key(ns, "WNil"), Scope.GlobalConstructor{}, globals):
+  match Scope.lookup_kind(canonical_key(ns, "WNil"), Scope.GlobalConstructor{}, globals):
     case Some{Scope.ArenaGlobal{key, owner, local, ty, IR.NoTerm{}, Scope.GlobalConstructor{}}}:
       ArenaResult{store, +valid_ty} = scalar_schema_6(store, ty, ns, globals)
       {ArenaResult{store, Bool.and(String.eq(key, canonical_key(ns, "WNil")), Bool.and(String.eq(owner, ns), Bool.and(String.eq(local, "WNil"), valid_ty)))} : ArenaResult<Bool>}
@@ -6315,7 +6315,7 @@ def scalar_schema_8(store: ArenaStore, id: U32, +ns: String, +globals: Scope.Are
     case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
 
 def scalar_global_Word_Con_GlobalFamily(store: ArenaStore, +ns: String, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
-  match scope_lookup_kind(canonical_key(ns, "Word.Con"), Scope.GlobalFamily{}, globals):
+  match Scope.lookup_kind(canonical_key(ns, "Word.Con"), Scope.GlobalFamily{}, globals):
     case Some{Scope.ArenaGlobal{key, owner, local, ty, IR.SomeTerm{value}, Scope.GlobalFamily{}}}:
       ArenaResult{store, +valid_ty} = scalar_schema_7(store, ty, ns, globals)
       ArenaResult{store, +valid_value} = scalar_schema_8(store, value, ns, globals)
@@ -6407,7 +6407,7 @@ def scalar_schema_11(store: ArenaStore, id: U32, +ns: String, +globals: Scope.Ar
     case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
 
 def scalar_global_WCon_GlobalConstructor(store: ArenaStore, +ns: String, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
-  match scope_lookup_kind(canonical_key(ns, "WCon"), Scope.GlobalConstructor{}, globals):
+  match Scope.lookup_kind(canonical_key(ns, "WCon"), Scope.GlobalConstructor{}, globals):
     case Some{Scope.ArenaGlobal{key, owner, local, ty, IR.NoTerm{}, Scope.GlobalConstructor{}}}:
       ArenaResult{store, +valid_ty} = scalar_schema_11(store, ty, ns, globals)
       {ArenaResult{store, Bool.and(String.eq(key, canonical_key(ns, "WCon")), Bool.and(String.eq(owner, ns), Bool.and(String.eq(local, "WCon"), valid_ty)))} : ArenaResult<Bool>}
@@ -6560,7 +6560,7 @@ def scalar_schema_21(store: ArenaStore, id: U32, +ns: String, +globals: Scope.Ar
     case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
 
 def scalar_global_Word_GlobalDefinition(store: ArenaStore, +ns: String, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
-  match scope_lookup_kind(canonical_key(ns, "Word"), Scope.GlobalDefinition{}, globals):
+  match Scope.lookup_kind(canonical_key(ns, "Word"), Scope.GlobalDefinition{}, globals):
     case Some{Scope.ArenaGlobal{key, owner, local, ty, IR.SomeTerm{value}, Scope.GlobalDefinition{}}}:
       ArenaResult{store, +valid_ty} = scalar_schema_20(store, ty, ns, globals)
       ArenaResult{store, +valid_value} = scalar_schema_21(store, value, ns, globals)
@@ -6579,7 +6579,7 @@ def scalar_schema_34(store: ArenaStore, id: U32, +ns: String, +globals: Scope.Ar
     case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
 
 def scalar_global_U32_GlobalFamily(store: ArenaStore, +ns: String, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
-  match scope_lookup_kind(canonical_key(ns, "U32"), Scope.GlobalFamily{}, globals):
+  match Scope.lookup_kind(canonical_key(ns, "U32"), Scope.GlobalFamily{}, globals):
     case Some{Scope.ArenaGlobal{key, owner, local, ty, IR.SomeTerm{value}, Scope.GlobalFamily{}}}:
       ArenaResult{store, +valid_ty} = scalar_schema_0(store, ty, ns, globals)
       ArenaResult{store, +valid_value} = scalar_schema_34(store, value, ns, globals)
@@ -6624,7 +6624,7 @@ def scalar_schema_35(store: ArenaStore, id: U32, +ns: String, +globals: Scope.Ar
     case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
 
 def scalar_global_U32_GlobalConstructor(store: ArenaStore, +ns: String, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
-  match scope_lookup_kind(canonical_key(ns, "U32"), Scope.GlobalConstructor{}, globals):
+  match Scope.lookup_kind(canonical_key(ns, "U32"), Scope.GlobalConstructor{}, globals):
     case Some{Scope.ArenaGlobal{key, owner, local, ty, IR.NoTerm{}, Scope.GlobalConstructor{}}}:
       ArenaResult{store, +valid_ty} = scalar_schema_35(store, ty, ns, globals)
       {ArenaResult{store, Bool.and(String.eq(key, canonical_key(ns, "U32")), Bool.and(String.eq(owner, ns), Bool.and(String.eq(local, "U32"), valid_ty)))} : ArenaResult<Bool>}
@@ -6642,7 +6642,7 @@ def scalar_schema_70(store: ArenaStore, id: U32, +ns: String, +globals: Scope.Ar
     case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
 
 def scalar_global_F32_GlobalFamily(store: ArenaStore, +ns: String, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
-  match scope_lookup_kind(canonical_key(ns, "F32"), Scope.GlobalFamily{}, globals):
+  match Scope.lookup_kind(canonical_key(ns, "F32"), Scope.GlobalFamily{}, globals):
     case Some{Scope.ArenaGlobal{key, owner, local, ty, IR.SomeTerm{value}, Scope.GlobalFamily{}}}:
       ArenaResult{store, +valid_ty} = scalar_schema_0(store, ty, ns, globals)
       ArenaResult{store, +valid_value} = scalar_schema_70(store, value, ns, globals)
@@ -6660,7 +6660,7 @@ def scalar_schema_71(store: ArenaStore, id: U32, +ns: String, +globals: Scope.Ar
     case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
 
 def scalar_global_F32_GlobalConstructor(store: ArenaStore, +ns: String, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
-  match scope_lookup_kind(canonical_key(ns, "F32"), Scope.GlobalConstructor{}, globals):
+  match Scope.lookup_kind(canonical_key(ns, "F32"), Scope.GlobalConstructor{}, globals):
     case Some{Scope.ArenaGlobal{key, owner, local, ty, IR.NoTerm{}, Scope.GlobalConstructor{}}}:
       ArenaResult{store, +valid_ty} = scalar_schema_71(store, ty, ns, globals)
       {ArenaResult{store, Bool.and(String.eq(key, canonical_key(ns, "F32")), Bool.and(String.eq(owner, ns), Bool.and(String.eq(local, "F32"), valid_ty)))} : ArenaResult<Bool>}
@@ -6828,7 +6828,7 @@ def scalar_schema_prepared(store: ArenaStore, +selected: Scope.ArenaGlobal, +ns:
 def scalar_certificate_global(store: ArenaStore, +selected: Maybe<&2, Scope.ArenaGlobal>, +goal: String, start: U32, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
   match selected:
     case Some{Scope.ArenaGlobal{key, ns, local, ty, IR.NoTerm{}, Scope.GlobalConstructor{}}}:
-      match Bool.and(String.eq(scope_canonical_name(goal, globals), key), Bool.and(scalar_global_identity(selected, scope_lookup_kind(canonical_key(ns, local), Scope.GlobalConstructor{}, globals)), scalar_reference_identity(goal, ns, globals, local))):
+      match Bool.and(String.eq(Scope.canonical_name(goal, globals), key), Bool.and(scalar_global_identity(selected, Scope.lookup_kind(canonical_key(ns, local), Scope.GlobalConstructor{}, globals)), scalar_reference_identity(goal, ns, globals, local))):
         case True{}:
           ArenaResult{store, +schemas} = scalar_schema_prepared(store, Scope.ArenaGlobal{key, ns, local, ty, IR.NoTerm{}, Scope.GlobalConstructor{}}, ns, globals, local)
           match schemas:
@@ -6849,7 +6849,7 @@ def scalar_constructor_certificate(store: ArenaStore, goal_key: U32, goal_args: 
               match U32.is_eq(count, 1):
                 case True{}:
                   ArenaResult{store, +goal} = arena_name_text(store, goal_key)
-                  scalar_certificate_global(store, scope_lookup_kind(name, Scope.GlobalConstructor{}, globals), goal, start, globals)
+                  scalar_certificate_global(store, Scope.lookup_kind(name, Scope.GlobalConstructor{}, globals), goal, start, globals)
                 case False{}: {ArenaResult{store, False{}} : ArenaResult<Bool>}
             case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
         case False{}: {ArenaResult{store, False{}} : ArenaResult<Bool>}
@@ -6900,7 +6900,7 @@ def check_term_absurd_input_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: Ast.S
       v_44 = v_38
       v_46 = v_40
       v_48 = v_29
-      ArenaResult{v_53, +v_54} = residual_has_reachable_constructor(v_33, scope_canonical_name(v_42, v_9), v_44, v_46, v_48, v_9)
+      ArenaResult{v_53, +v_54} = residual_has_reachable_constructor(v_33, Scope.canonical_name(v_42, v_9), v_44, v_46, v_48, v_9)
       v_50000232 = check_term_absurd_residual(v_54, v_5, v_6, v_8)
       {ArenaResult{v_53, v_50000232} : ArenaResult<Inference>}
     case _:
@@ -7277,7 +7277,7 @@ def function_type_of(v_1: ArenaStore, v_3: U32, v_6: List<&2, Binding>, v_7: Sco
       ArenaResult{v_82, +v_83} = arena_name_text(v_15, v_77)
       +v_85 = v_83
       v_87 = v_85
-      v_50000238 = function_type_of_global_result(scope_lookup(v_87, v_7))
+      v_50000238 = function_type_of_global_result(Scope.lookup(v_87, v_7))
       {ArenaResult{v_82, v_50000238} : ArenaResult<Maybe<&2, U32>>}
     case Arena.TermApp{+v_93, +v_94, +v_95}:
       v_97 = v_93
@@ -7357,7 +7357,7 @@ def family_parameter_quantities_result(v_20038272: ArenaStore, v_1: Maybe<&2, Sc
           {ArenaResult{v_20038280, v_20038281} : ArenaResult<IR.Quantities>}
 
 def family_parameter_quantities(v_20038282: ArenaStore, v_1: String, v_2: Scope.ArenaGlobalScope) -> ArenaResult<IR.Quantities>:
-  ArenaResult{v_20038283, +v_20038284} = family_parameter_quantities_result(v_20038282, scope_lookup(v_1, v_2), v_2)
+  ArenaResult{v_20038283, +v_20038284} = family_parameter_quantities_result(v_20038282, Scope.lookup(v_1, v_2), v_2)
   {ArenaResult{v_20038283, v_20038284} : ArenaResult<IR.Quantities>}
 
 def constructor_field_quantities_family_global(v_20038285: ArenaStore, v_1: Maybe<&2, Scope.ArenaGlobal>, v_2: U32, v_3: Scope.ArenaGlobalScope) -> ArenaResult<IR.Quantities>:
@@ -7381,7 +7381,7 @@ def constructor_field_quantities_family(v_20038299: ArenaStore, v_2: Maybe<&2, S
       {ArenaResult{v_20038299, IR.Quantities{0, 0}} : ArenaResult<IR.Quantities>}
     case Some{+v_20038300}:
       v_7 = v_20038300
-      ArenaResult{v_20038301, +v_20038302} = constructor_field_quantities_family_global(v_20038299, scope_lookup(scope_canonical_name(v_7, v_4), v_4), v_3, v_4)
+      ArenaResult{v_20038301, +v_20038302} = constructor_field_quantities_family_global(v_20038299, Scope.lookup(Scope.canonical_name(v_7, v_4), v_4), v_3, v_4)
       {ArenaResult{v_20038301, v_20038302} : ArenaResult<IR.Quantities>}
 
 def constructor_field_quantities_global(v_20038303: ArenaStore, v_0: Scope.ArenaGlobal, v_1: Scope.ArenaGlobalScope) -> ArenaResult<IR.Quantities>:
@@ -7402,7 +7402,7 @@ def constructor_field_quantities_result(v_20038314: ArenaStore, v_1: Maybe<&2, S
       {ArenaResult{v_20038316, v_20038317} : ArenaResult<IR.Quantities>}
 
 def constructor_field_quantities(v_20038318: ArenaStore, v_1: String, v_2: Scope.ArenaGlobalScope) -> ArenaResult<IR.Quantities>:
-  ArenaResult{v_20038319, +v_20038320} = constructor_field_quantities_result(v_20038318, scope_lookup_kind(v_1, Scope.GlobalConstructor{}, v_2), v_2)
+  ArenaResult{v_20038319, +v_20038320} = constructor_field_quantities_result(v_20038318, Scope.lookup_kind(v_1, Scope.GlobalConstructor{}, v_2), v_2)
   {ArenaResult{v_20038319, v_20038320} : ArenaResult<IR.Quantities>}
 
 def usage_unknown_type(v_20038321: ArenaStore, v_0: Ast.SourceSpan) -> ArenaResult<U32>:
@@ -7634,7 +7634,7 @@ def constructor_usage_expected_view(v_20038533: ArenaStore, v_0: U32, v_2: Strin
       +v_20038544 = IR.Words{v_20038542, v_20038543}
       v_12 = v_20038541
       v_13 = v_20038544
-      v_17 = String.eq(scope_canonical_name(v_12, v_6), scope_canonical_name(v_2, v_6))
+      v_17 = String.eq(Scope.canonical_name(v_12, v_6), Scope.canonical_name(v_2, v_6))
       +v_20038553 = v_17
       match v_20038553:
         case False{}:
@@ -7682,7 +7682,7 @@ def constructor_usage_family(v_20038581: ArenaStore, v_2: Maybe<&2, String>, v_3
       {ArenaResult{v_20038581, None{}} : ArenaResult<Maybe<&2, U32>>}
     case Some{+v_20038582}:
       v_9 = v_20038582
-      ArenaResult{v_20038583, +v_20038584} = constructor_usage_family_global(v_20038581, scope_lookup(scope_canonical_name(v_9, v_6), v_6), v_9, v_3, v_5, v_6)
+      ArenaResult{v_20038583, +v_20038584} = constructor_usage_family_global(v_20038581, Scope.lookup(Scope.canonical_name(v_9, v_6), v_6), v_9, v_3, v_5, v_6)
       {ArenaResult{v_20038583, v_20038584} : ArenaResult<Maybe<&2, U32>>}
 
 def constructor_usage_global(v_20038585: ArenaStore, v_0: Scope.ArenaGlobal, v_2: Maybe<&2, U32>, v_3: Scope.ArenaGlobalScope) -> ArenaResult<Maybe<&2, U32>>:
@@ -7703,7 +7703,7 @@ def constructor_usage_global_result(v_20038596: ArenaStore, v_1: Maybe<&2, Scope
       {ArenaResult{v_20038598, v_20038599} : ArenaResult<Maybe<&2, U32>>}
 
 def constructor_usage_field_type(v_20038600: ArenaStore, v_1: String, v_3: Maybe<&2, U32>, v_4: Scope.ArenaGlobalScope) -> ArenaResult<Maybe<&2, U32>>:
-  ArenaResult{v_20038601, +v_20038602} = constructor_usage_global_result(v_20038600, scope_lookup_kind(v_1, Scope.GlobalConstructor{}, v_4), v_3, v_4)
+  ArenaResult{v_20038601, +v_20038602} = constructor_usage_global_result(v_20038600, Scope.lookup_kind(v_1, Scope.GlobalConstructor{}, v_4), v_3, v_4)
   {ArenaResult{v_20038601, v_20038602} : ArenaResult<Maybe<&2, U32>>}
 
 def term_usage_map_constructor_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: IR.Words, v_7: IR.Words, v_9: U32, v_11: Nat, v_14: List<&2, Binding>, v_15: Scope.ArenaGlobalScope, v_17: Bool) -> ArenaResult<List<&2, UsageEntry>>:
@@ -7987,7 +7987,7 @@ def term_usage_map(v_1: ArenaStore, v_3: U32, v_5: Nat, v_8: List<&2, Binding>, 
       +v_356 = IR.Words{v_343, v_344}
       v_358 = v_354
       v_360 = v_356
-      ArenaResult{v_365, +v_366} = family_parameter_quantities(v_351, scope_canonical_name(v_358, v_9), v_9)
+      ArenaResult{v_365, +v_366} = family_parameter_quantities(v_351, Scope.canonical_name(v_358, v_9), v_9)
       ArenaResult{v_370, +v_371} = term_usage_map_quantified_list(v_365, v_360, v_366, v_5, v_8, v_9, v_14)
       {ArenaResult{v_370, v_371} : ArenaResult<List<&2, UsageEntry>>}
     case Arena.TermString{_, _, _}:
@@ -8706,7 +8706,7 @@ def check_constructors(v_20039639: ArenaStore, v_1: List<&2, IR.ConstructorDecl>
           v_20 = v_20039642
           v_21 = v_20039643
           v_22 = v_20039644
-          ArenaResult{v_20039645, +v_20039646} = check_constructors_unique(v_20039639, scope_lookup_kind(canonical_key(v_8, v_20), Scope.GlobalConstructor{}, v_9), v_21, v_16, v_3, v_5, v_6, v_8, v_9, v_10, v_11, v_20, v_22)
+          ArenaResult{v_20039645, +v_20039646} = check_constructors_unique(v_20039639, Scope.lookup_kind(canonical_key(v_8, v_20), Scope.GlobalConstructor{}, v_9), v_21, v_16, v_3, v_5, v_6, v_8, v_9, v_10, v_11, v_20, v_22)
           {ArenaResult{v_20039645, v_20039646} : ArenaResult<ScopedState>}
 
 def check_type_decl_result(v_1: ArenaStore, v_3: Inference, v_5: String, v_6: IR.Words, v_8: U32, v_10: List<&2, IR.ConstructorDecl>, v_11: Scope.ArenaGlobal, v_12: Scope.ArenaGlobal, v_14: U32, v_16: String, v_17: Scope.ArenaGlobalScope, v_18: Scope.ArenaGlobalScope, v_19: Ast.SourceSpan) -> ArenaResult<ScopedState>:
@@ -8733,7 +8733,7 @@ def check_import_foreign_head(v_1: ArenaStore, v_4: Maybe<&2, String>, v_6: U32,
   match v_4:
     case Some{+v_18}:
       v_20 = v_18
-      +v_24 = String.eq(scope_canonical_name(v_20, v_12), scope_canonical_name("IO", v_12))
+      +v_24 = String.eq(Scope.canonical_name(v_20, v_12), Scope.canonical_name("IO", v_12))
       match v_24:
         case False{}:
           v_50000285 = span_file(v_13)
@@ -9544,7 +9544,7 @@ def constructor_field_arity_family(v_20040675: ArenaStore, v_2: Maybe<&2, String
       {ArenaResult{v_20040675, None{}} : ArenaResult<Maybe<&2, Nat>>}
     case Some{+v_20040676}:
       v_8 = v_20040676
-      ArenaResult{v_20040677, +v_20040678} = constructor_field_arity_family_global(v_20040675, scope_lookup(v_8, v_4), v_3, v_4)
+      ArenaResult{v_20040677, +v_20040678} = constructor_field_arity_family_global(v_20040675, Scope.lookup(v_8, v_4), v_3, v_4)
       {ArenaResult{v_20040677, v_20040678} : ArenaResult<Maybe<&2, Nat>>}
 
 def constructor_field_arity_global(v_20040679: ArenaStore, v_0: Scope.ArenaGlobal, v_1: Scope.ArenaGlobalScope) -> ArenaResult<Maybe<&2, Nat>>:
@@ -9565,7 +9565,7 @@ def constructor_field_arity_result(v_20040690: ArenaStore, v_1: Maybe<&2, Scope.
       {ArenaResult{v_20040692, v_20040693} : ArenaResult<Maybe<&2, Nat>>}
 
 def constructor_field_arity(v_20040694: ArenaStore, v_1: String, v_2: Scope.ArenaGlobalScope) -> ArenaResult<Maybe<&2, Nat>>:
-  ArenaResult{v_20040695, +v_20040696} = constructor_field_arity_result(v_20040694, scope_lookup_kind(v_1, Scope.GlobalConstructor{}, v_2), v_2)
+  ArenaResult{v_20040695, +v_20040696} = constructor_field_arity_result(v_20040694, Scope.lookup_kind(v_1, Scope.GlobalConstructor{}, v_2), v_2)
   {ArenaResult{v_20040695, v_20040696} : ArenaResult<Maybe<&2, Nat>>}
 
 def replace_first_column_with_value(v_20040697: ArenaStore, v_1: IR.Words, v_2: U32) -> ArenaResult<IR.Words>:
@@ -9662,7 +9662,7 @@ def recursion_terminates_mat_arity(v_20040789: ArenaStore, v_2: Maybe<&2, Nat>, 
   match v_2:
     case Some{+v_20040790}:
       v_18 = v_20040790
-      ArenaResult{v_20040791, +v_20040792} = recursion_terminates_mat_head(v_20040789, v_3, v_8, scope_canonical_name(v_6, v_15), v_18, v_10, v_12, v_14, IR.Words{0, 0}, v_15)
+      ArenaResult{v_20040791, +v_20040792} = recursion_terminates_mat_head(v_20040789, v_3, v_8, Scope.canonical_name(v_6, v_15), v_18, v_10, v_12, v_14, IR.Words{0, 0}, v_15)
       ArenaResult{v_20040793, +v_20040794} = recursion_terminates(v_20040791, v_4, v_8, v_10, v_12, v_14, v_15)
       {ArenaResult{v_20040793, Bool.and(v_20040792, v_20040794)} : ArenaResult<Bool>}
     case None{}:
@@ -10062,7 +10062,7 @@ def store_definition(v_20041285: ArenaStore, v_1: String, v_3: String, v_4: U32,
   v_12 = v_20041287
   ArenaResult{v_20041288, +v_20041289} = canonicalize_term(v_20041286, v_5, v_7)
   v_15 = v_20041289
-  ArenaResult{v_20041290, +v_20041291} = store_definition_result(v_20041288, scope_lookup(canonical_key(v_3, v_1), v_6), v_1, v_3, v_12, v_15, v_6, v_7, v_8)
+  ArenaResult{v_20041290, +v_20041291} = store_definition_result(v_20041288, Scope.lookup(canonical_key(v_3, v_1), v_6), v_1, v_3, v_12, v_15, v_6, v_7, v_8)
   {ArenaResult{v_20041290, v_20041291} : ArenaResult<ScopedState>}
 
 def check_definition_declared_type(v_1: ArenaStore, v_3: Inference, v_5: String, v_7: U32, v_9: U32, v_11: U32, v_13: U32, v_15: String, v_16: Scope.ArenaGlobalScope, v_17: Scope.ArenaGlobalScope, v_18: Ast.SourceSpan) -> ArenaResult<ScopedState>:
@@ -10517,7 +10517,7 @@ def elaborate_definition_result(v_20041631: ArenaStore, v_1: Maybe<&2, Scope.Are
       {ArenaResult{v_20041633, v_20041634} : ArenaResult<DefinitionElaboration>}
 
 def elaborate_definition(v_20041635: ArenaStore, v_0: IR.Definition, v_2: String, v_3: Scope.ArenaGlobalScope, v_4: Scope.ArenaGlobalScope, v_6: String, v_7: Ast.SourceSpan, v_10: IR.Names) -> ArenaResult<DefinitionElaboration>:
-  ArenaResult{v_20041636, +v_20041637} = elaborate_definition_result(v_20041635, scope_lookup(canonical_key(v_2, v_6), v_3), v_0, v_4, v_6, v_7, v_10)
+  ArenaResult{v_20041636, +v_20041637} = elaborate_definition_result(v_20041635, Scope.lookup(canonical_key(v_2, v_6), v_3), v_0, v_4, v_6, v_7, v_10)
   {ArenaResult{v_20041636, v_20041637} : ArenaResult<DefinitionElaboration>}
 
 def check_declarations_prepend(v_1: Declarations, v_2: IR.TopLevel) -> Declarations:
@@ -10610,7 +10610,7 @@ def check_declarations(v_1: ArenaStore, v_3: List<&2, IR.TopLevel>, v_5: String,
             case IR.TypeDecl{+v_62, +v_63, +v_64, +v_65, +v_66}:
               v_68 = v_62
               v_70 = v_66
-              ArenaResult{v_76, +v_77} = check_declarations_type_result(v_1, scope_lookup(canonical_key(v_5, v_68), v_8), v_56, v_22, v_5, v_7, v_8, v_10, v_9, v_68, v_70)
+              ArenaResult{v_76, +v_77} = check_declarations_type_result(v_1, Scope.lookup(canonical_key(v_5, v_68), v_8), v_56, v_22, v_5, v_7, v_8, v_10, v_9, v_68, v_70)
               {ArenaResult{v_76, v_77} : ArenaResult<Declarations>}
         case IR.LawTop{+v_79}:
           v_81 = v_79
@@ -10618,7 +10618,7 @@ def check_declarations(v_1: ArenaStore, v_3: List<&2, IR.TopLevel>, v_5: String,
             case IR.LawDecl{+v_86, +v_87, +v_88, +v_89}:
               v_91 = v_86
               v_93 = v_89
-              ArenaResult{v_99, +v_100} = check_declarations_law_result(v_1, scope_lookup(canonical_key(v_5, v_91), v_8), v_81, v_22, v_5, v_7, v_8, v_10, v_9, v_91, v_93)
+              ArenaResult{v_99, +v_100} = check_declarations_law_result(v_1, Scope.lookup(canonical_key(v_5, v_91), v_8), v_81, v_22, v_5, v_7, v_8, v_10, v_9, v_91, v_93)
               {ArenaResult{v_99, v_100} : ArenaResult<Declarations>}
 
 def check_modules_result(v_1: PrivateResult, v_2: IR.LoadedModule) -> PrivateResult:
@@ -10682,101 +10682,6 @@ def check_modules_private(v_20041717: ArenaStore, v_1: List<&2, IR.LoadedModule>
           ArenaResult{v_20041722, +v_20041723} = check_modules_module(v_20041717, v_12, v_11, v_8, v_3)
           {ArenaResult{v_20041722, v_20041723} : ArenaResult<PrivateResult>}
 
-def scope_bucket(+v_1: Scope.ArenaGlobalBucket) -> Maybe<&2, Scope.ArenaGlobal>:
-  match v_1:
-    case Scope.ArenaGlobalBucket{+v_20041724, +v_20041725, +v_20041726, +v_20041727}:
-      v_8 = v_20041724
-      v_9 = v_20041725
-      match v_9:
-        case Some{+v_20041728}:
-          v_9
-        case None{}:
-          Some{v_8}
-
-def scope_bucket_kind(+v_1: Scope.ArenaGlobalBucket, +v_3: Scope.GlobalKind) -> Maybe<&2, Scope.ArenaGlobal>:
-  match v_1:
-    case Scope.ArenaGlobalBucket{+v_20041729, +v_20041730, +v_20041731, +v_20041732}:
-      match v_3:
-        case Scope.GlobalFamily{}:
-          v_11 = v_20041730
-          v_11
-        case Scope.GlobalConstructor{}:
-          v_20 = v_20041731
-          v_20
-        case Scope.GlobalDefinition{}:
-          v_29 = v_20041732
-          v_29
-
-def scope_index_result(+v_2: Maybe<&2, Scope.ArenaGlobalBucket>) -> Maybe<&2, Scope.ArenaGlobal>:
-  match v_2:
-    case None{}:
-      None{}
-    case Some{+v_20041733}:
-      v_6 = v_20041733
-      scope_bucket(v_6)
-
-def scope_index(+v_1: String, +v_3: Scope.ArenaGlobalIndex) -> Maybe<&2, Scope.ArenaGlobal>:
-  match v_3:
-    case Scope.ArenaGlobalIndex{+v_20041734, +v_20041735, +v_20041736, +v_20041737}:
-      v_10 = v_20041734
-      scope_index_result(IndexLookup.find(Scope.ArenaGlobalBucket, v_10, v_1))
-
-def scope_index_kind_result(+v_2: Maybe<&2, Scope.ArenaGlobalBucket>, +v_4: Scope.GlobalKind) -> Maybe<&2, Scope.ArenaGlobal>:
-  match v_2:
-    case None{}:
-      None{}
-    case Some{+v_20041738}:
-      v_8 = v_20041738
-      scope_bucket_kind(v_8, v_4)
-
-def scope_index_kind(+v_1: String, +v_3: Scope.GlobalKind, +v_5: Scope.ArenaGlobalIndex) -> Maybe<&2, Scope.ArenaGlobal>:
-  match v_5:
-    case Scope.ArenaGlobalIndex{+v_20041739, +v_20041740, +v_20041741, +v_20041742}:
-      v_12 = v_20041739
-      scope_index_kind_result(IndexLookup.find(Scope.ArenaGlobalBucket, v_12, v_1), v_3)
-
-def scope_lookup(+v_1: String, +v_3: Scope.ArenaGlobalScope) -> Maybe<&2, Scope.ArenaGlobal>:
-  match v_3:
-    case Scope.ArenaGlobalScope{+v_20041780, +v_20041781, +v_20041782}:
-      v_10 = v_20041781
-      scope_index(v_1, v_10)
-    case Scope.ArenaVisibleScope{ignored_segments, lookup}:
-      scope_index_result(IndexLookup.find(Scope.ArenaGlobalBucket, lookup, v_1))
-    case Scope.ArenaUnsafeScope{+v_20041784}:
-      v_17 = v_20041784
-      scope_lookup(v_1, v_17)
-
-def scope_lookup_kind(+v_1: String, +v_3: Scope.GlobalKind, +v_5: Scope.ArenaGlobalScope) -> Maybe<&2, Scope.ArenaGlobal>:
-  match v_5:
-    case Scope.ArenaGlobalScope{+v_20041785, +v_20041786, +v_20041787}:
-      v_12 = v_20041786
-      scope_index_kind(v_1, v_3, v_12)
-    case Scope.ArenaVisibleScope{ignored_segments, lookup}:
-      scope_index_kind_result(IndexLookup.find(Scope.ArenaGlobalBucket, lookup, v_1), v_3)
-    case Scope.ArenaUnsafeScope{+v_20041789}:
-      v_19 = v_20041789
-      scope_lookup_kind(v_1, v_3, v_19)
-
-def scope_canonical_key_result(+v_1: String, +v_3: String, v_5: Bool) -> String:
-  match v_5:
-    case True{}:
-      v_3
-    case False{}:
-      String.append(v_1, String.append(".", v_3))
-
-def scope_canonical_name_result(+v_1: String, +v_4: Maybe<&2, Scope.ArenaGlobal>) -> String:
-  match v_4:
-    case None{}:
-      v_1
-    case Some{+v_20041790}:
-      match v_20041790:
-        case Scope.ArenaGlobal{+v_20041791, +v_20041792, +v_20041793, +v_20041794, +v_20041795, +v_20041796}:
-          v_13 = v_20041792
-          v_14 = v_20041793
-          scope_canonical_key_result(v_13, v_14, String.eq(v_13, ""))
-
-def scope_canonical_name(+v_1: String, +v_3: Scope.ArenaGlobalScope) -> String:
-  scope_canonical_name_result(v_1, scope_lookup(v_1, v_3))
 
 def scope_index_name_aliases_result(v_3: Maybe<&2, IR.Names>) -> IR.Names:
   match v_3:
@@ -10845,7 +10750,7 @@ def scope_canonical_alias_valid(v_20041834: ArenaStore, +v_1: String, +v_3: Scop
   +v_20041839 = v_20041838
   match v_20041839:
     case False{}:
-      +v_20041842 = String.eq(scope_canonical_name(v_5, v_3), v_1)
+      +v_20041842 = String.eq(Scope.canonical_name(v_5, v_3), v_1)
       match v_20041842:
         case False{}:
           +v_20041840 = v_8
@@ -11147,7 +11052,7 @@ def scope_equal_names_result(+v_1: String, +v_3: String, +v_5: Scope.ArenaGlobal
     case True{}:
       True{}
     case False{}:
-      String.eq(scope_canonical_name(v_1, v_5), scope_canonical_name(v_3, v_5))
+      String.eq(Scope.canonical_name(v_1, v_5), Scope.canonical_name(v_3, v_5))
 
 def scope_equal_names(+v_1: String, +v_3: String, +v_5: Scope.ArenaGlobalScope) -> Bool:
   scope_equal_names_result(v_1, v_3, v_5, String.eq(v_1, v_3))
@@ -11312,7 +11217,7 @@ def scope_pattern_rows_subsume(store: ArenaStore, index: PatternRowIndex, +targe
       match descriptor:
         case Arena.PatternCtr{name, fields_start, fields_count, span}:
           ArenaResult{store3, +key} = arena_name_text(store2, name)
-          ArenaResult{store4, +names} = scope_canonical_name_aliases(store3, scope_canonical_name(key, scope), scope)
+          ArenaResult{store4, +names} = scope_canonical_name_aliases(store3, Scope.canonical_name(key, scope), scope)
           ArenaResult{store5, query_names} = arena_names_cons(store4, key, names)
           ArenaResult{store6, candidates} = pattern_row_index_query(store5, pattern_row_index_scope_complete(scope), index, query_names)
           scope_pattern_rows_subsume_named(store6, candidates, IR.Words{fields_start, fields_count}, rest, names, scope)
@@ -11591,7 +11496,7 @@ def scope_body_cases_for_constructor(v_20042217: ArenaStore, +v_1: IR.Words, +v_
     case IR.WordNil{}:
       {ArenaResult{v_20042218, IR.Words{0, 0}} : ArenaResult<IR.Words>}
     case _:
-      ArenaResult{v_20042221, +v_20042222} = scope_canonical_name_aliases(v_20042218, scope_canonical_name(v_3, v_5), v_5)
+      ArenaResult{v_20042221, +v_20042222} = scope_canonical_name_aliases(v_20042218, Scope.canonical_name(v_3, v_5), v_5)
       ArenaResult{v_20042223, +v_20042224} = arena_names_cons(v_20042221, v_3, v_20042222)
       ArenaResult{v_20042225, +v_20042226} = scope_body_cases_for_names(v_20042223, v_1, v_20042224)
       {ArenaResult{v_20042225, v_20042226} : ArenaResult<IR.Words>}
@@ -14859,7 +14764,7 @@ def string_desugar_store(store: ArenaStore, chars: List<&2, U32>, names: Ast.Str
 def string_canonical_names(names: Ast.StringLiteralNames, +scope: Scope.ArenaGlobalScope) -> Ast.StringLiteralNames:
   match names:
     case Ast.StringLiteralNames{nil, cons, char, uint, word_nil, word_cons, bit_false, bit_true}:
-      Ast.StringLiteralNames{scope_canonical_name(nil, scope), scope_canonical_name(cons, scope), scope_canonical_name(char, scope), scope_canonical_name(uint, scope), scope_canonical_name(word_nil, scope), scope_canonical_name(word_cons, scope), scope_canonical_name(bit_false, scope), scope_canonical_name(bit_true, scope)}
+      Ast.StringLiteralNames{Scope.canonical_name(nil, scope), Scope.canonical_name(cons, scope), Scope.canonical_name(char, scope), Scope.canonical_name(uint, scope), Scope.canonical_name(word_nil, scope), Scope.canonical_name(word_cons, scope), Scope.canonical_name(bit_false, scope), Scope.canonical_name(bit_true, scope)}
 
 def string_names_equal(left: Ast.StringLiteralNames, right: Ast.StringLiteralNames, +scope: Scope.ArenaGlobalScope) -> Bool:
   match left right:
@@ -14906,7 +14811,7 @@ def equal_raw_distinct(store: ArenaStore, +left: U32, +right: U32, +scope: Scope
 # kind), not spellings or source filenames. Unrecognized but legitimate schemas
 # deliberately decline the optimization.
 def string_constructor_identity(+name: String, +ns: String, +scope: Scope.ArenaGlobalScope, +expected: String) -> Bool:
-  scalar_global_identity(scope_lookup_kind(name, Scope.GlobalConstructor{}, scope), scope_lookup_kind(canonical_key(ns, expected), Scope.GlobalConstructor{}, scope))
+  scalar_global_identity(Scope.lookup_kind(name, Scope.GlobalConstructor{}, scope), Scope.lookup_kind(canonical_key(ns, expected), Scope.GlobalConstructor{}, scope))
 
 def string_names_schema(names: Ast.StringLiteralNames, +ns: String, +scope: Scope.ArenaGlobalScope) -> Bool:
   match names:
@@ -14929,7 +14834,7 @@ def string_schema_adt(store: ArenaStore, id: U32, +ns: String, +scope: Scope.Are
     case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
 
 def string_schema_family(store: ArenaStore, +ns: String, +scope: Scope.ArenaGlobalScope, +name: String) -> ArenaResult<Bool>:
-  match scope_lookup_kind(canonical_key(ns, name), Scope.GlobalFamily{}, scope):
+  match Scope.lookup_kind(canonical_key(ns, name), Scope.GlobalFamily{}, scope):
     case Some{Scope.ArenaGlobal{key, owner, local, ty, IR.SomeTerm{value}, Scope.GlobalFamily{}}}:
       ArenaResult{store, +valid_ty} = scalar_schema_0(store, ty, ns, scope)
       ArenaResult{store, +valid_value} = string_schema_adt(store, value, ns, scope, name)
@@ -14952,7 +14857,7 @@ def string_schema_fields(store: ArenaStore, id: U32, fields: List<&2, String>, +
         case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
 
 def string_schema_constructor(store: ArenaStore, +ns: String, +scope: Scope.ArenaGlobalScope, +name: String, fields: List<&2, String>, result: String) -> ArenaResult<Bool>:
-  match scope_lookup_kind(canonical_key(ns, name), Scope.GlobalConstructor{}, scope):
+  match Scope.lookup_kind(canonical_key(ns, name), Scope.GlobalConstructor{}, scope):
     case Some{Scope.ArenaGlobal{key, owner, local, ty, IR.NoTerm{}, Scope.GlobalConstructor{}}}:
       ArenaResult{store, +valid_ty} = string_schema_fields(store, ty, fields, result, 0n, ns, scope)
       {ArenaResult{store, Bool.and(String.eq(key, canonical_key(ns, name)), Bool.and(String.eq(owner, ns), Bool.and(String.eq(local, name), valid_ty)))} : ArenaResult<Bool>}
@@ -15000,7 +14905,7 @@ def string_schema_prepared(store: ArenaStore, selected: Scope.ArenaGlobal, ns: S
 def string_certificate(store: ArenaStore, +names: Ast.StringLiteralNames, +scope: Scope.ArenaGlobalScope, view: U32) -> ArenaResult<Bool>:
   match names:
     case Ast.StringLiteralNames{nil, _, _, _, _, _, _, _}:
-      match scope_lookup_kind(nil, Scope.GlobalConstructor{}, scope):
+      match Scope.lookup_kind(nil, Scope.GlobalConstructor{}, scope):
         case Some{+selected}:
           match selected:
             case Scope.ArenaGlobal{_, +ns, _, _, _, _}:

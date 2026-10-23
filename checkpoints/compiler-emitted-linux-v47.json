@@ -1,0 +1,262 @@
+{
+  "status": "PASS",
+  "diagnosticOnly": true,
+  "bootstrapAcceptance": false,
+  "newFixedpoint": false,
+  "compiler": {
+    "kind": "Actual accepted v47 emitted stage-one, using its own emitted JavaScript runtime",
+    "file": "stage-one47.js",
+    "sha256": "e6fcff2cc279971cc55200f6666435b1cd7041c93d15b087dc85487bf6349edf",
+    "bytes": 18335893
+  },
+  "baseline": {
+    "kind": "Actual accepted v46 emitted stage-one, NOT official-generated seed",
+    "sha256": "9565582817b74796fe5357fdffb6205124e24cccab52e2aca2d2b277f2adfd42",
+    "receipt": "stage-one-diagnostic.json"
+  },
+  "runtime": {
+    "versions": {
+      "node": "23.11.0",
+      "acorn": "8.14.1",
+      "ada": "3.2.1",
+      "amaro": "0.4.1",
+      "ares": "1.34.4",
+      "brotli": "1.1.0",
+      "cjs_module_lexer": "2.1.0",
+      "cldr": "46.0",
+      "icu": "76.1",
+      "llhttp": "9.2.1",
+      "modules": "131",
+      "napi": "10",
+      "nbytes": "0.1.1",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.64.0",
+      "openssl": "3.0.16",
+      "simdjson": "3.12.2",
+      "simdutf": "6.0.3",
+      "sqlite": "3.49.1",
+      "tz": "2025a",
+      "undici": "6.21.2",
+      "unicode": "16.0",
+      "uv": "1.50.0",
+      "uvwasi": "0.0.21",
+      "v8": "12.9.202.28-node.14",
+      "zlib": "1.3.0.1-motley-788cb3c",
+      "zstd": "1.5.6"
+    },
+    "platform": "linux",
+    "arch": "x64"
+  },
+  "coverage": {
+    "inputFiles": 50,
+    "modules": 15,
+    "checkedModules": 15,
+    "exports": 7720,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "actualOutputImportAndSemanticSmoke": true,
+    "corpusSha256": "6a00a60b7833e1b188b7b1872297df8e00252cf381b1cc4f9d6b670dfe5ff016",
+    "exportSetSha256": "99efc6ef8538e35f5b6f549e39296bae814e654d48558f9ca7ba2aae2b1911f4"
+  },
+  "output": {
+    "status": "PASS",
+    "exactByteMatch": true,
+    "outputBytes": 19158366,
+    "outputSha256": "c532278061dbdd5b3bac7c85b16534c4b6808411eda760aaa3ca907b2211e79c",
+    "comparisons": [
+      {
+        "reference": "component.json.output.mjs",
+        "exactByteMatch": true,
+        "referenceOutputBytes": 19158366,
+        "referenceOutputSha256": "c532278061dbdd5b3bac7c85b16534c4b6808411eda760aaa3ca907b2211e79c"
+      },
+      {
+        "reference": "native-output.mjs",
+        "exactByteMatch": true,
+        "referenceOutputBytes": 19158366,
+        "referenceOutputSha256": "c532278061dbdd5b3bac7c85b16534c4b6808411eda760aaa3ca907b2211e79c"
+      },
+      {
+        "reference": "stage-one.json.output.mjs",
+        "exactByteMatch": true,
+        "referenceOutputBytes": 19158366,
+        "referenceOutputSha256": "c532278061dbdd5b3bac7c85b16534c4b6808411eda760aaa3ca907b2211e79c"
+      }
+    ],
+    "executedCompilerSha256": "e6fcff2cc279971cc55200f6666435b1cd7041c93d15b087dc85487bf6349edf",
+    "runtime": {
+      "node": "23.11.0",
+      "acorn": "8.14.1",
+      "ada": "3.2.1",
+      "amaro": "0.4.1",
+      "ares": "1.34.4",
+      "brotli": "1.1.0",
+      "cjs_module_lexer": "2.1.0",
+      "cldr": "46.0",
+      "icu": "76.1",
+      "llhttp": "9.2.1",
+      "modules": "131",
+      "napi": "10",
+      "nbytes": "0.1.1",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.64.0",
+      "openssl": "3.0.16",
+      "simdjson": "3.12.2",
+      "simdutf": "6.0.3",
+      "sqlite": "3.49.1",
+      "tz": "2025a",
+      "undici": "6.21.2",
+      "unicode": "16.0",
+      "uv": "1.50.0",
+      "uvwasi": "0.0.21",
+      "v8": "12.9.202.28-node.14",
+      "zlib": "1.3.0.1-motley-788cb3c",
+      "zstd": "1.5.6"
+    },
+    "compilerRuntimeDistinction": "Accepted v47 emitted stage-one compiler with its own generated JS runtime; compare against actual emitted v46 and earlier official-generated v46 seed/native outputs.",
+    "bootstrapAcceptance": false
+  },
+  "measurement": {
+    "compileMs": 127458.426116,
+    "totalWithOutputSmokeMs": 127813.040471,
+    "processWallMs": 128336.996867,
+    "phases": [
+      {
+        "phase": "compiler-startup",
+        "wallMs": 568.0717179999999,
+        "cpuMs": 597.361
+      },
+      {
+        "phase": "load-parse",
+        "wallMs": 8252.910972,
+        "cpuMs": 13883.378
+      },
+      {
+        "phase": "expand",
+        "wallMs": 4710.546606,
+        "cpuMs": 5436.269
+      },
+      {
+        "phase": "check",
+        "wallMs": 99889.40267000001,
+        "cpuMs": 112308.011
+      },
+      {
+        "phase": "emit",
+        "wallMs": 13820.734092999992,
+        "cpuMs": 18450.075
+      },
+      {
+        "phase": "write-and-hash",
+        "wallMs": 213.75280699999712,
+        "cpuMs": 214.837
+      },
+      {
+        "phase": "output-import",
+        "wallMs": 320.6161330000032,
+        "cpuMs": 322.278
+      },
+      {
+        "phase": "output-semantic-smoke",
+        "wallMs": 12.438043999994989,
+        "cpuMs": 15.106
+      }
+    ],
+    "cgroupMemoryPeakBytes": 1983950848
+  },
+  "comparison": {
+    "v47CompileMs": 127458.426116,
+    "v46CompileMs": 122301.093752,
+    "v47CoreMs": 126673.594341,
+    "v46CoreMs": 121630.827442,
+    "v47CheckMs": 99889.40267000001,
+    "v46CheckMs": 97376.92836,
+    "v46OverV47CompileRatio": 0.9595371406884758,
+    "v46OverV47CoreRatio": 0.9601908596244211,
+    "v46OverV47CheckRatio": 0.9748474388389292,
+    "compileReductionFraction": -0.04216914342939515,
+    "checkReductionFraction": -0.02580153587009293,
+    "officialCompileMs": 13572.368283999998,
+    "v47OverOfficialCompileRatio": 9.391023250250024,
+    "officialGeneratedSeedCompileMs": 85558.383321,
+    "note": "One fresh emitted-v47 run; comparison is prior actual emitted-v46 same-host run. Identical frozen50files/7720exports, Node23.11.0, unchanged benchmark worker and real8GiB/no-swap cgroup. Baselines not rerun. Single observations at different times, not paired statistical estimates or controlled host load."
+  },
+  "guard": {
+    "label": "stage-one47",
+    "command": [
+      "./node-v23.11.0-linux-x64/bin/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "--stack-size=262144",
+      "run-stage-one47.mjs"
+    ],
+    "group": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-stage-one47.scope",
+    "memoryMax": "8589934592",
+    "memorySwapMax": "0",
+    "startedAt": "2026-10-23T06:22:53.179Z",
+    "samples": 514,
+    "elapsedMs": 128336.996867,
+    "memoryPeak": "1983950848",
+    "memoryCurrent": "139350016",
+    "memoryEvents": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+    "cpuStat": "usage_usec 152092669\nuser_usec 149301077\nsystem_usec 2791592\ncore_sched.force_idle_usec 0",
+    "pid": 2658006,
+    "exitCode": 0,
+    "signal": null
+  },
+  "systemd": {
+    "command": [
+      "systemd-run",
+      "--user",
+      "--scope",
+      "--quiet",
+      "--unit=bend-native46-elcWbhvH-stage-one47",
+      "-p",
+      "MemoryMax=8589934592",
+      "-p",
+      "MemorySwapMax=0",
+      "-p",
+      "RuntimeMaxSec=300s",
+      "/usr/bin/node",
+      "guard.mjs",
+      "stage-one47",
+      "290000",
+      "./node-v23.11.0-linux-x64/bin/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "--stack-size=262144",
+      "run-stage-one47.mjs"
+    ],
+    "elapsedMs": 128382,
+    "status": 0,
+    "signal": null,
+    "error": null,
+    "stdout": "",
+    "stderr": "",
+    "systemctlShow": {
+      "status": 0,
+      "stdout": "Result=success\nRuntimeMaxUSec=infinity\nControlGroup=\nMemoryMax=infinity\nMemorySwapMax=infinity\nActiveState=inactive\nSubState=dead\n",
+      "stderr": ""
+    }
+  },
+  "guardMetadataNote": "Actual Linux cgroup enforcement and250ms recorder; legacy benchmark metadata rssMiB/pollMs are not Linux RSS policing. Post-exit systemctl defaults are not execution limits.",
+  "evidenceSha256": {
+    "stage-one47.json": "5f1d001bb1afd01656f609dd649ecca69a6b4ff828a7c306eefddb9e3d69f8f6",
+    "stage-one47.json.request.json": "0537818d3f8886b452691630aebd23c0b95a5bb07fa5d4293d044fe35de318ce",
+    "stage-one47-output-comparison.json": "07074b744fba640f99b8d13566c818fbb98f49871901feaa1ca130f84d874afb",
+    "stage-one47.guard.json": "2027bd87e7ffac223e502c6e4a91303303b0b269cc850b67fd71bac0c9874084",
+    "stage-one47.systemd.json": "4cb1cc839eadfbe83b5cd3fd33f49492b67d03e0e503c4cddeb0af1f6bd53dc3",
+    "run-stage-one47.mjs": "7d31570a92941c0b8b105703204d6098252344697d726132e6ac5a1927697262",
+    "benchmark-linux.ts": "107be3470c240af8c069fdc39ccfebd080b473fb727a5943c9979d7370c987eb",
+    "result.json": "ecbcc73337876db55ab176cc6e6c53f8a3006ac9f082235cece6fc8698a506c2",
+    "stage-one-diagnostic.json": "9149d1f12a393c650c028102867f00e11622d68c131f7a21d7532bb7c1357f7b"
+  },
+  "cleanup": {
+    "directoryBytes": 355747163,
+    "oldReceiptsUntouched": true,
+    "permanentSourceChanges": false,
+    "retained": "Separate v47 input, output, request, runner, logs, guard receipts and diagnostic; entire isolated directory remains below1GiB."
+  }
+}

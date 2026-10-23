@@ -72,3 +72,38 @@ parity. Native165222ms core phases versus source-JS85203ms and official13486ms,
 all on the same relocated50-file corpus. Native is1.94x slower than JS, not an
 acceleration. cgroup charged memory is not macOS physical footprint.
 
+
+## Follow-up source slices, not implemented in47
+
+The native-island scout recommends a narrower arena extraction than moving the
+mutually recursive bound cluster: thread an `Arena & Arena` pair through a
+native-checked word-range copy loop in `checker_arena.bend`. Source/transient
+tag decoding and reverse range direction must remain exact; declaration rewind
+and overlapping copy order must retain original behavior. Checker adapters can
+retain ArenaStore/ArenaResult and become eligible for the existing bounded
+storage classifier, with no new layout or admission convention. Targeted v46
+requests are arena_copy_word_range2688318, arena_publish_names_copy387760,
+arena_words_append1509177 and arena_names_append1971272. These are measured
+baseline counts, not a proven complete delta or speedup.
+
+The constructor-query scout found an existing index invariant: only the
+complete/collision-False family bucket guarantees every entry has the same
+literal owner. Re-deriving that owner through every constructor telescope is
+unnecessary. A corrected one-loop design would carry `Maybe<Bool>`: compute
+`family_equal(bucket_key, requested_name, scope)` once for a nonempty certified
+bucket; use None for incomplete or alias-collision full scans. Some(valid)
+bypasses owner derivation and the per-entry family comparison. Preserve
+canonicalization and seen-map lookup for every emitted constructor name.
+`Maybe<String>` alone does not hoist family_equal; the scout's initial claimed
+seen-map savings were incorrect. Canonicalization is not idempotent under
+shadowing, so the hoisted predicate cannot be replaced with True. Empty families
+must avoid evaluating it eagerly. No scope identity or memo invalidation scheme
+is invented. The estimated401k eligible entries is sampling-derived, not an
+exact count; actual deltas still need measurement.
+
+Actual emitted46 runtime was also measured independently on nhs:
+`compiler-emitted-linux-v46.json`,122301ms full compilation, all7720 exports,
+output import/smoke and native/seed byte parity. The original seed measured
+85558ms and official13572ms there. Do not describe seed timing as emitted-stage
+timing, and do not compare these Linux numbers to Mac wall times.
+

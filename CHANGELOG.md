@@ -20,6 +20,9 @@ latest one; the GitHub release carries the same notes.
   nodes, and reuse referenced nodes beneath bangs instead of copying them.
   Fresh remote acceptance checks the complete root and all273 fixture executions;
   unchanged emitted stage-one/stage-two JavaScript bytes match exactly.
+- Selfhost scope lookups and canonical-name queries execute as native-checked
+  Bend provider functions instead of request/continuation chains, preserving
+  family/kind precedence, alias fallback and nested unsafe-scope behavior.
 
 - The complete selfhost parser/Template/Checker/JavaScript compiler root now
   reaches an exact stage-one/stage-two byte fixedpoint using its own emitted
