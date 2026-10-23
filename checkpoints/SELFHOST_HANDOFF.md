@@ -244,6 +244,25 @@ semantic WHNF fuel64, classifier и host driver неизменны.
 Linux RSS shared-process/maxRSS не является accepted Mac physical-memory proof.
 Compact evidence: compiler-ir-checkpoint-v57l.json.
 
+57m: codegen profile переснят БЕЗ per-definition trace. Предыдущие795962
+synchronous observer writes доминировали diagnostic profile; их IO не является
+стоимостью обычного компилятора. Новый whole Node/Worker guarded run:
+8357 bodies8750events, sameC e4890de...,codegen123321.674875ms,
+physical3492435872bytes; всего50 progress records, observer chains не найдены.
+81188 worker ticks,69unaccounted;44324 nearest node::CreateEnvironment остаются
+unresolved, не называются initialization/IO. Visible mat_lits ancestry —
+1165/11599 bounded ticks (lower bound, не полная inclusive стоимость).
+
+Private replacement JSON coverage keys на structural lowered-term comparison
+прошёл sameC bytes и12 actual retained/released word/default/binder/late-fold/
+NaN consumers;codegen101613.215ms в одной diagnostic pair, без speed attribution.
+Canonical comp.ts НЕ изменён. Parent57p убрал дополнительные filtered key arrays
+в private variant; native full CURRENT K/O1 build с этой версией запущен.
+Первый codegen-only57p вызов не имел требуемого inputs.json и завершился до
+native validation; затем использован обычный public build, генерирующий proof.
+Старый завершённый raw profile directory951580KiB на misaka удалён после
+сохранения compact archive/hash. Receipt: compiler-ir-checkpoint-v57m.json.
+
 Первый настоящий gate57g остановлен600103ms во время stage-two-check:
 seed93 fixtures прошли; stage-one реально emitted14562034bytes,
 SHA3d7b43c127d2ab4f81dc5c38104dc90c83db3c7554bf6ee729ef27107b8a4c5d.

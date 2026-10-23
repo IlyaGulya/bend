@@ -1,0 +1,1253 @@
+{
+  "version": "57m",
+  "status": "UNTRACED_CODEGEN_PROFILE_COMPLETE_STRUCTURAL_KEY_PRIVATE_CANDIDATE_PASS_NOT_INTEGRATED",
+  "canonicalCompilerSha256": "85f46bbc0851ed4933c87e7f67088555bb95389649d0363678181ac3e85290d3",
+  "untraced": {
+    "label": "CodegenUntraced57M",
+    "status": "COMPLETE_NO_SOURCE_CHANGES_NO_CLANG",
+    "remoteRoot": "misakaindrive:/private/tmp/native-untraced57m-ds3dJWY4",
+    "localEvidence": "/private/tmp/native-untraced57m-evidence-dD1E63Eq",
+    "immutableSnapshot": "/private/tmp/nativefull57h-process-isolation-9e1201a3",
+    "actualCodegenRuns": 1,
+    "coverage": {
+      "reportStatus": "C_GENERATED_NOT_YET_BUILT",
+      "cSha256": "e4890debf5e210f8962c1c667a77401414d5ef420bfe98baf68db91218379e2f",
+      "cBytes": 69884362,
+      "inputsUnchanged": true,
+      "checkedDefinitions": 8357,
+      "eventsFullyValidated": 8750,
+      "checksExcluded": 0,
+      "outputPatches": 0,
+      "traceFileExists": false,
+      "codegenTrace": false
+    },
+    "timing": {
+      "outerRunnerWallMs": 127741.505042,
+      "guardianWallMs": 127643,
+      "timeNodeWallSeconds": 127.62,
+      "timeNodeUserSeconds": 307.95,
+      "timeNodeSystemSeconds": 8.34,
+      "timeNodeTotalCpuSeconds": 316.29,
+      "timePrecisionSeconds": 0.01,
+      "reportValidationMs": 1363.362792,
+      "reportCodegenMs": 123321.67487500001,
+      "compileBookProgress": {
+        "phase": "compile_book",
+        "wallMs": 123195,
+        "processCpuMs": 307927.911,
+        "startUnixMs": 1792793400451,
+        "endUnixMs": 1792793523646
+      },
+      "note": "reportCodegenMs ends after publication/report bookkeeping, not just compile_book. Process CPU includes all Node threads, including Worker and GC helpers. Profile processing times are separate and excluded."
+    },
+    "memory": {
+      "guardianPeakTreeRssBytes": 3526705152,
+      "guardianPeakTreeFootprintBytes": 3492435872,
+      "timeNodeMaxRssBytes": 3525476352,
+      "timeNodePeakFootprintBytes": 3491518176,
+      "limitRssBytes": 8589934592,
+      "limitFootprintBytes": 8589934592,
+      "pollMs": 10
+    },
+    "runtime": {
+      "bunPath": "/opt/homebrew/bin/bun",
+      "bunVersion": "1.2.5",
+      "bunRevision": "1.2.5+013fdddc6",
+      "nodePath": "/opt/homebrew/bin/node",
+      "nodeRealPath": "/opt/homebrew/Cellar/node/26.3.0/bin/node",
+      "nodeVersion": "v26.3.0",
+      "nodeVersions": {
+        "node": "26.3.0",
+        "acorn": "8.16.0",
+        "ada": "3.4.4",
+        "amaro": "1.1.9",
+        "ares": "1.34.6",
+        "brotli": "1.2.0",
+        "cldr": "48.0",
+        "icu": "78.3",
+        "libffi": "3.5.2",
+        "lief": "0.17.0",
+        "llhttp": "9.4.1",
+        "merve": "1.2.2",
+        "modules": "147",
+        "napi": "10",
+        "nbytes": "0.1.4",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.69.0",
+        "nghttp3": "",
+        "ngtcp2": "",
+        "openssl": "3.6.3",
+        "simdjson": "4.6.4",
+        "simdutf": "7.7.0",
+        "sqlite": "3.53.2",
+        "tz": "2026a",
+        "undici": "8.3.0",
+        "unicode": "17.0",
+        "uv": "1.52.1",
+        "uvwasi": "0.0.23",
+        "v8": "14.6.202.34-node.20",
+        "zlib": "1.2.12",
+        "zstd": "1.5.7"
+      },
+      "nodeBinarySha256": "56694c81b093cc8da273fa017cf91765b3653e5f64f16727976ffaa87b2b6b31",
+      "bunBinarySha256": "abe991b29c5151ab11b5344be65dee3a675b0a4a55b8fc493e3cfbe256e61781",
+      "uname": "Darwin M-LV6VCFYHGQ 25.5.0 Darwin Kernel Version 25.5.0: Mon Apr 27 20:41:06 PDT 2026; root:xnu-12377.121.6~2/RELEASE_ARM64_T6030 arm64",
+      "swVers": "ProductName:\t\tmacOS\nProductVersion:\t\t26.5.1\nBuildVersion:\t\t25F80"
+    },
+    "isolateAccounting": {
+      "worker": {
+        "path": "/private/tmp/native-untraced57m-ds3dJWY4/node26/v8/isolate-0x78e994000-91583-untraced57m.v8.log",
+        "sha256": "b21957abe3b46063816d873fb65c9005f07633a150d7cc930d0f1e28c2cd214c",
+        "bytes": 79355181,
+        "records": {
+          "v8-version": 1,
+          "v8-platform": 1,
+          "shared-library": 372,
+          "shared-library-end\n": 1,
+          "profiler": 2,
+          "new": 54895,
+          "heap-capacity": 1,
+          "heap-available": 1,
+          "code-creation": 10824,
+          "tick": 81188,
+          "script-source": 171,
+          "code-source-info": 7871,
+          "delete": 79083,
+          "code-move": 2097,
+          "sfi-move": 10
+        },
+        "tickCount": 81188,
+        "firstTickUs": 7318,
+        "lastTickUs": 127213549,
+        "tickSpanMs": 127206.231,
+        "vmStatesRaw": {
+          "0": 49607,
+          "1": 31464,
+          "2": 16,
+          "3": 6,
+          "4": 56,
+          "5": 36,
+          "6": 3
+        },
+        "sourceCodeCreationCounts": {
+          "bend.ts": 1283,
+          "comp.ts": 5194
+        },
+        "sourceCodeExamples": [
+          "code-creation,JS,10,295096,0x10352663a018,1427,term_higher file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:693:28,0x2d94f6c15a80,~",
+          "code-creation,JS,11,295503,0x13bad8740,9088,term_higher file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:693:28,0x2d94f6c15a80,^",
+          "code-creation,JS,10,298076,0x345f9080d6c8,951,term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27,0x2d94f6c15ac8,~",
+          "code-creation,JS,11,299009,0x13baf21c0,6008,term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27,0x2d94f6c15ac8,^",
+          "code-creation,JS,12,303896,0x13bb40040,11280,term_higher file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:693:28,0x2d94f6c15a80,+'",
+          "code-creation,JS,12,304070,0x13bb0b7e0,8956,term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27,0x2d94f6c15ac8,+'",
+          "code-creation,JS,12,309155,0x13baa45a0,12020,term_higher file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:693:28,0x2d94f6c15a80,+'",
+          "code-creation,JS,12,309290,0x13bb16d00,9536,term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27,0x2d94f6c15ac8,+'",
+          "code-creation,JS,12,315770,0x13bb247a0,9568,term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27,0x2d94f6c15ac8,+'",
+          "code-creation,JS,12,315929,0x13bb26f40,12020,term_higher file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:693:28,0x2d94f6c15a80,+'",
+          "code-creation,JS,12,318349,0x13bb2af20,12020,term_higher file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:693:28,0x2d94f6c15a80,+'",
+          "code-creation,JS,13,351000,0x13bb81f20,16892,term_higher file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:693:28,0x2d94f6c15a80,*'"
+        ]
+      },
+      "parent": {
+        "path": "/private/tmp/native-untraced57m-ds3dJWY4/node26/v8/isolate-0x78e80c000-91583-untraced57m.v8.log",
+        "sha256": "fb83b890b9fe99848d66ef5d05eecb7dc2823497bb8e42c77c892d69b665983d",
+        "bytes": 7115178,
+        "records": {
+          "v8-version": 1,
+          "v8-platform": 1,
+          "shared-library": 372,
+          "shared-library-end\n": 1,
+          "profiler": 2,
+          "new": 54,
+          "heap-capacity": 1,
+          "heap-available": 1,
+          "code-creation": 4352,
+          "tick": 53,
+          "script-source": 154,
+          "code-source-info": 1406,
+          "delete": 47
+        },
+        "tickCount": 53,
+        "firstTickUs": 9144,
+        "lastTickUs": 127551443,
+        "tickSpanMs": 127542.299,
+        "vmStatesRaw": {
+          "0": 18,
+          "2": 22,
+          "3": 5,
+          "5": 6,
+          "6": 2
+        },
+        "sourceCodeCreationCounts": {},
+        "sourceCodeExamples": []
+      },
+      "parentFlat": {
+        "ticks": 53,
+        "javaScript": 0,
+        "cpp": 51,
+        "sharedLibraries": 1,
+        "unaccounted": 1,
+        "gcOverlap": 0
+      },
+      "identification": "Worker has 81188 ticks and real comp.ts/bend.ts code creation; parent only53 ticks and no compiler/kernel code creation. Parent waiting isolate not used for codegen cost."
+    },
+    "fullFlatAccounting": {
+      "totalTicks": 81188,
+      "javaScriptTicks": 18186,
+      "cppTicks": 61127,
+      "sharedLibraryTicks": 1806,
+      "unaccountedTicks": 69,
+      "excludedTicks": 0,
+      "gcVmStateTicksOverlap": 31464,
+      "partitionSum": 81188,
+      "gcNote": "GC31464 is an overlapping VM-state count, not an additive fifth bucket. Never add it to flat totals.",
+      "sourceSelfAllTiers": [
+        {
+          "source": "bend.ts:693:28",
+          "selfTicks": 5161,
+          "percentAllWorkerTicks": 6.356850766123072,
+          "percentJsSelfTicks": 28.378972836247662
+        },
+        {
+          "source": "bend.ts:782:27",
+          "selfTicks": 2507,
+          "percentAllWorkerTicks": 3.0878947627728235,
+          "percentJsSelfTicks": 13.785329374243924
+        },
+        {
+          "source": "comp.ts:827:20",
+          "selfTicks": 708,
+          "percentAllWorkerTicks": 0.8720500566586195,
+          "percentJsSelfTicks": 3.8931045859452325
+        },
+        {
+          "source": "bend.ts:530:28",
+          "selfTicks": 603,
+          "percentAllWorkerTicks": 0.7427205991033158,
+          "percentJsSelfTicks": 3.315737380402507
+        },
+        {
+          "source": "bend.ts:2795:25",
+          "selfTicks": 594,
+          "percentAllWorkerTicks": 0.7316352170271468,
+          "percentJsSelfTicks": 3.2662487627845596
+        },
+        {
+          "source": "comp.ts:735:35",
+          "selfTicks": 454,
+          "percentAllWorkerTicks": 0.5591959402867419,
+          "percentJsSelfTicks": 2.496425822060926
+        },
+        {
+          "source": "comp.ts:1202:5",
+          "selfTicks": 446,
+          "percentAllWorkerTicks": 0.5493422673301473,
+          "percentJsSelfTicks": 2.4524359397338613
+        },
+        {
+          "source": "comp.ts:2464:18",
+          "selfTicks": 356,
+          "percentAllWorkerTicks": 0.43848844656845837,
+          "percentJsSelfTicks": 1.9575497635543826
+        },
+        {
+          "source": "bend.ts:1114:33",
+          "selfTicks": 332,
+          "percentAllWorkerTicks": 0.4089274276986747,
+          "percentJsSelfTicks": 1.8255801165731882
+        },
+        {
+          "source": "bend.ts:549:30",
+          "selfTicks": 316,
+          "percentAllWorkerTicks": 0.38922008178548556,
+          "percentJsSelfTicks": 1.7376003519190586
+        },
+        {
+          "source": "bend.ts:3646:60",
+          "selfTicks": 304,
+          "percentAllWorkerTicks": 0.37443957235059366,
+          "percentJsSelfTicks": 1.6716155284284615
+        },
+        {
+          "source": "comp.ts:837:19",
+          "selfTicks": 291,
+          "percentAllWorkerTicks": 0.3584273537961275,
+          "percentJsSelfTicks": 1.6001319696469811
+        },
+        {
+          "source": "comp.ts:1123:18",
+          "selfTicks": 275,
+          "percentAllWorkerTicks": 0.3387200078829384,
+          "percentJsSelfTicks": 1.5121522049928517
+        },
+        {
+          "source": "comp.ts:787:19",
+          "selfTicks": 259,
+          "percentAllWorkerTicks": 0.3190126619697492,
+          "percentJsSelfTicks": 1.4241724403387221
+        },
+        {
+          "source": "bend.ts:1089:28",
+          "selfTicks": 253,
+          "percentAllWorkerTicks": 0.3116224072523033,
+          "percentJsSelfTicks": 1.3911800285934235
+        },
+        {
+          "source": "comp.ts:838:33",
+          "selfTicks": 252,
+          "percentAllWorkerTicks": 0.31039069813272896,
+          "percentJsSelfTicks": 1.3856812933025404
+        },
+        {
+          "source": "comp.ts:2009:19",
+          "selfTicks": 237,
+          "percentAllWorkerTicks": 0.29191506133911416,
+          "percentJsSelfTicks": 1.303200263939294
+        },
+        {
+          "source": "comp.ts:2671:19",
+          "selfTicks": 199,
+          "percentAllWorkerTicks": 0.24511011479528994,
+          "percentJsSelfTicks": 1.0942483228857363
+        },
+        {
+          "source": "comp.ts:1619:19",
+          "selfTicks": 139,
+          "percentAllWorkerTicks": 0.17120756762083067,
+          "percentJsSelfTicks": 0.7643242054327505
+        },
+        {
+          "source": "bend.ts:734:36",
+          "selfTicks": 137,
+          "percentAllWorkerTicks": 0.16874414938168203,
+          "percentJsSelfTicks": 0.7533267348509842
+        }
+      ],
+      "dominantNearestNativeLabelsUnresolved": [
+        {
+          "label": "T node::CreateEnvironment(node::IsolateData*, v8::Local<v8::Context>, std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>>> const&, std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>>> const&, node::EnvironmentFlags::Flags, node::ThreadId, std::__1::unique_ptr<node::InspectorParentHandle, std::__1::default_delete<node::InspectorParentHandle>>)",
+          "ticks": 44324,
+          "percentAllWorkerTicks": 54.59427501601222,
+          "meaning": "Nearest-symbol bucket only; actual C++ implementation and operation unresolved. Not attributed from its name."
+        },
+        {
+          "label": "t _Builtins_CreateArrayFromSlowBoilerplateHelper",
+          "ticks": 6020,
+          "percentAllWorkerTicks": 7.414888899837415,
+          "meaning": "Nearest-symbol bucket only; actual C++ implementation and operation unresolved. Not attributed from its name."
+        },
+        {
+          "label": "t _Builtins_CloneObjectIC",
+          "ticks": 1092,
+          "percentAllWorkerTicks": 1.345026358575159,
+          "meaning": "Nearest-symbol bucket only; actual C++ implementation and operation unresolved. Not attributed from its name."
+        }
+      ]
+    },
+    "analysisMethod": {
+      "flat": "All original81188 Worker ticks, source/code moves and all symbol records processed with Node26 embedded V8 tooling. Only final C++ entry/bottom-up view-output block suppressed to avoid known huge redundant view/OOM; all flat parsing/resolution/self accounting unchanged. Transformation+module hashes in analysis-tooling.json. No compiler/kernel/harness/generated C changes.",
+      "bounded": {
+        "source": "/private/tmp/native-untraced57m-ds3dJWY4/node26/v8/isolate-0x78e994000-91583-untraced57m.v8.log",
+        "sourceSha256": "b21957abe3b46063816d873fb65c9005f07633a150d7cc930d0f1e28c2cd214c",
+        "derived": "/private/tmp/native-untraced57m-ds3dJWY4/node26/worker-bounded.v8.log",
+        "derivedSha256": "b0a2ec589804cd086bcd3ad44da14fb255b567b5906c78c0a998aaa35876c472",
+        "originalTicks": 81188,
+        "retainedTicks": 11599,
+        "stride": 7,
+        "derivation": "All non-tick records retained unchanged/in order; retain original tick indices 1,1+stride,...; deterministic bounded sample, not another workload run."
+      },
+      "bounds": "Official unmodified --prof-process --call-graph-size=12 output. Visible ancestry lower bounds below deduplicate recursion by selecting first matching node in each root-to-caller path, then not descending it. Omitted<1% branches and depth12 prevent complete inclusive accounting. Families overlap each other; do not sum them. Whole-isolate samples, no fabricated phase/isolate timestamp alignment."
+    },
+    "boundedSourceAncestryLowerBounds": {
+      "mat_lits_family": {
+        "visibleNonoverlappingSampledTicks": 1165,
+        "percentAllSampledWorkerTicks": 10.043969307698939,
+        "topVisibleFirstMatchBranches": [
+          {
+            "line": 498,
+            "ticks": 631,
+            "name": "JS: *key file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1201:15"
+          },
+          {
+            "line": 2402,
+            "ticks": 178,
+            "name": "JS: *walk file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1203:16"
+          },
+          {
+            "line": 4576,
+            "ticks": 34,
+            "name": "JS: *key file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1201:15"
+          },
+          {
+            "line": 4757,
+            "ticks": 21,
+            "name": "JS: *<anonymous> file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1202:5"
+          },
+          {
+            "line": 6588,
+            "ticks": 11,
+            "name": "JS: *key file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1201:15"
+          }
+        ]
+      },
+      "term_lower": {
+        "visibleNonoverlappingSampledTicks": 874,
+        "percentAllSampledWorkerTicks": 7.535132338994741,
+        "topVisibleFirstMatchBranches": [
+          {
+            "line": 6575,
+            "ticks": 355,
+            "name": "JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27"
+          },
+          {
+            "line": 4258,
+            "ticks": 179,
+            "name": "JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27"
+          },
+          {
+            "line": 2933,
+            "ticks": 54,
+            "name": "JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27"
+          },
+          {
+            "line": 5565,
+            "ticks": 33,
+            "name": "JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27"
+          },
+          {
+            "line": 6257,
+            "ticks": 32,
+            "name": "JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27"
+          }
+        ]
+      },
+      "term_higher": {
+        "visibleNonoverlappingSampledTicks": 954,
+        "percentAllSampledWorkerTicks": 8.224846969566341,
+        "topVisibleFirstMatchBranches": [
+          {
+            "line": 5328,
+            "ticks": 738,
+            "name": "JS: *term_higher file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:693:28"
+          },
+          {
+            "line": 3739,
+            "ticks": 212,
+            "name": "JS: *term_higher file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:693:28"
+          },
+          {
+            "line": 7374,
+            "ticks": 4,
+            "name": "JS: *term_higher file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:693:28"
+          }
+        ]
+      }
+    },
+    "oneMeasuredTarget": {
+      "target": "comp.ts mat_lits key/cov-vs-inst comparison at1199-1225, key1201-1202, own1214",
+      "sourceMechanism": "For each relevant match walk, key(t) first constructs Bend.term_lower(t), then JSON.stringify with a replacer that drops s and strips Ann. Repeated recursive term_lower materializes an LTerm tree and drives term_higher closures. Real callchains show key/walk/mat_lits and lower/higher, not observer names.",
+      "measurement": "At least1165/11599 sampled Worker ticks (10.0439693%) have a visible mat_lits-family source ancestor; this is a deduplicated visible lower bound, not a complete inclusive percentage or predicted speedup. 631/11599 sampled ticks are the dominant unresolved native bucket with direct caller key1201 then walk1203. Full all-tier source self: term_higher5161 ticks6.3569%, term_lower2507 ticks3.0879%; neither self count proves inclusive cost.",
+      "conclusion": "Source-backed candidate is exact semantic structural comparison/keying without whole lower+JSON materialization. No implementation/change here and no speedup inferred."
+    },
+    "observerAssessment": {
+      "perDefinitionFsObserver": "Disabled by actual traceC=false command and report; no c-events file; harness calls C.compile_book(book) without observe at185. Existing progress emits only50 records across entire run.",
+      "profileEvidence": "No file_observe/appendFileSync/writeFileSync source self row and no such visible bounded chain. Dominant unresolved native bucket contains measured key1201/walk1203/mat_lits chains. No evidence for another dominating observer; remaining native implementation unresolved, so this does not rule out all statistical-profiler overhead.",
+      "ioClaims": "None. pwrite, mach and other nearest native labels are not used to infer IO cost."
+    },
+    "chainEvidence": [
+      {
+        "file": "worker-bounded.txt",
+        "lines": [
+          497,
+          510
+        ],
+        "text": "   6378   55.0%  T node::CreateEnvironment(node::IsolateData*, v8::Local<v8::Context>, std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>>> const&, std::__1::vector<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>, std::__1::allocator<std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char>>>> const&, node::EnvironmentFlags::Flags, node::ThreadId, std::__1::unique_ptr<node::InspectorParentHandle, std::__1::default_delete<node::InspectorParentHandle>>)\n    631    9.9%    JS: *key file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1201:15\n    434   68.8%      JS: +walk file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1203:16\n    434  100.0%        JS: +walk file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1203:16\n    426   98.2%          JS: +walk file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1203:16\n    417   97.9%            JS: +walk file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1203:16\n    410   98.3%              JS: +walk file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1203:16\n    402   98.0%                JS: +walk file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1203:16\n    390   97.0%                  JS: +walk file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1203:16\n    370   94.9%                    JS: +walk file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1203:16\n    362   97.8%                      JS: +walk file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1203:16\n    345   95.3%                        JS: +walk file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1203:16\n    340   98.6%                          JS: +walk file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1203:16\n      5    1.4%                          JS: +mat_lits file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1199:18"
+      },
+      {
+        "file": "worker-bounded.txt",
+        "lines": [
+          2932,
+          2948
+        ],
+        "text": "    106    1.7%    JS: *<anonymous> file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:3646:60\n     54   50.9%      JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n     54  100.0%        JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n     45   83.3%          JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n     43   95.6%            JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n     38   88.4%              JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n     35   92.1%                JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n     28   80.0%                  JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n     23   82.1%                    JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n     18   78.3%                      JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n      9   50.0%                        JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n      5   55.6%                          JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n      3   33.3%                          JS: *key file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1201:15\n      1   11.1%                          JS: *walk file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1203:16\n      7   38.9%                        JS: *key file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1201:15\n      5   71.4%                          JS: +walk file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1203:16\n      2   28.6%                          JS: ^walk file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1203:16"
+      },
+      {
+        "file": "worker-bounded.txt",
+        "lines": [
+          5328,
+          5354
+        ],
+        "text": "    738    6.4%  JS: *term_higher file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:693:28\n    582   78.9%    JS: *term_higher file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:693:28\n    434   74.6%      JS: *term_higher file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:693:28\n    398   91.7%        JS: *term_higher file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:693:28\n    363   91.2%          JS: *term_higher file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:693:28\n    352   97.0%            JS: *term_higher file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:693:28\n    335   95.2%              JS: *term_higher file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:693:28\n    327   97.6%                JS: *term_higher file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:693:28\n    316   96.6%                  JS: *term_higher file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:693:28\n    315   99.7%                    JS: *term_higher file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:693:28\n    307   97.5%                      JS: *term_higher file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:693:28\n    304   99.0%                        JS: *term_higher file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:693:28\n    297   97.7%                          JS: *term_higher file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:693:28\n      4    1.3%                          JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n      4    1.2%                  JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n      4  100.0%                    JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n      4  100.0%                      JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n      4  100.0%                        JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n      4  100.0%                          JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n      6    1.7%              JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n      6  100.0%                JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n      5   83.3%                  JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n      5  100.0%                    JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n      5  100.0%                      JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n      5  100.0%                        JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n      4   80.0%                          JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n      1   20.0%                          JS: *key file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1201:15"
+      },
+      {
+        "file": "worker-bounded.txt",
+        "lines": [
+          6575,
+          6591
+        ],
+        "text": "    355    3.1%  JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n    336   94.6%    JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n    321   95.5%      JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n    314   97.8%        JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n    302   96.2%          JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n    293   97.0%            JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n    278   94.9%              JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n    271   97.5%                JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n    262   96.7%                  JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n    253   96.6%                    JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n    245   96.8%                      JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n    240   98.0%                        JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n    229   95.4%                          JS: *term_lower file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/bend.ts:782:27\n     11    4.6%                          JS: *key file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1201:15\n      3    1.2%                        JS: *key file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1201:15\n      2   66.7%                          JS: +walk file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1203:16\n      1   33.3%                          JS: ^walk file:///private/tmp/nativefull57h-process-isolation-9e1201a3/bend2/comp.ts:1203:16"
+      }
+    ],
+    "lease": {
+      "releasedTo": "StructuralKeys57M",
+      "parentNotified": true,
+      "furtherHeavyRuns": false
+    },
+    "caveats": [
+      "Statistical --prof remains enabled; diagnostic measurement, not unprofiled benchmark.",
+      "Full Worker profile includes load, validation, codegen and publication; do not label every tick as compile_book.",
+      "No native C++ bucket semantically resolved merely by nearest symbol.",
+      "No source self-to-inclusive inference; no sample count converted into wall milliseconds.",
+      "No version-causality claim or controlled speedup ratio.",
+      "No clang or native consumer run in this assignment; same-C artifact is acceptance."
+    ]
+  },
+  "structuralCandidate": {
+    "findings": {
+      "status": "PASS_PRIVATE_CANDIDATE",
+      "candidate": "/private/tmp/native-structural57m/bend2/comp.ts",
+      "candidateSha256": "9f8af84fcbbc595068cd6f75eb52aad53be34df4d70c19876fc5cb4457aca671",
+      "scope": "Only mat_lits coverage-key comparison; no canonical changes",
+      "implementation": "Local ordered structural walk over the same lowered terms; strips Ann, ignores all s fields, preserves object-field order and binder names/levels, omits undefined/function/symbol object fields, converts omitted array entries to null, equates nonfinite numbers with JSON null and -0 with 0. No cache or semantic unfolding.",
+      "limitation": "Retains both term_lower trees and allocates property-key arrays; eliminates coverage-key JSON strings only. Domain is kernel-produced plain term/pattern/quant objects, not arbitrary objects with toJSON/getters.",
+      "native": {
+        "receipt": "/private/tmp/native-structural57m/node26/receipt.json",
+        "guardian": "PASS: real8192MiB RSS and physical footprint,10ms polling,600000ms deadline",
+        "node": "26.3.0 --prof --experimental-strip-types --max-old-space-size=3072; trace-c OFF; codegen-only; no clang",
+        "checkedDefinitions": 8357,
+        "eventsFullyValidated": 8750,
+        "checksExcluded": 0,
+        "outputPatches": 0,
+        "cBytes": 69884362,
+        "cSha256": "e4890debf5e210f8962c1c667a77401414d5ef420bfe98baf68db91218379e2f",
+        "inputsUnchanged": true,
+        "codegenMs": 101613.21500000001,
+        "outerMs": 105994.899917,
+        "peakRssBytes": 3498622976,
+        "peakFootprintBytes": 3476271992
+      },
+      "consumers": {
+        "receipt": "/private/tmp/native-structural57m/consumers/receipt.json",
+        "runner": "/private/tmp/native-structural57m/consumers.mjs",
+        "status": "PASS",
+        "matrix": "baseline/candidate x retained/released checked bodies x3 fixtures; all12 actual emitted JS outputs executed unchanged; corresponding JS SHA identical",
+        "overlap": "words[0,1,2,3,4294967295,4294967294] with live extra formal7 => [17,27,37,27,27,37]",
+        "binder": "same words; returned x=>y=>x versus x=>y=>y with live extra formal7 and args5,9 => [12,16,12,16,16,12]",
+        "lateFold": "js_late_fold.bend lookup[0,1,4294967295] => [1,4,4] for both retained/released",
+        "literalDiscrimination": "word_match_cover_key.bend actual F32 infinity/NaN bits remain [2139095040,2143289344] for odd words and [0,0] for zero"
+      },
+      "timingInterpretation": "One diagnostic pair only: sibling baseline codegen123321.674875ms versus candidate101613.215ms; no replicated causal speed attribution.",
+      "recommendation": "Evidence-backed candidate for parent review/integration; no claim of avoiding lowered trees or replicated performance improvement",
+      "lease": "Released terminally; no further heavy runs"
+    },
+    "nativeReceipt": {
+      "exitCode": 0,
+      "elapsedMs": 105994.899917,
+      "guardian": [
+        {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 3498622976,
+          "peakFootprintBytes": 3476271992,
+          "elapsedMs": 105884,
+          "timeoutMs": 600000,
+          "command": [
+            "/usr/bin/time",
+            "-l",
+            "-p",
+            "-o",
+            "/private/tmp/native-structural57m/node26/time.txt",
+            "/opt/homebrew/bin/node",
+            "--prof",
+            "--logfile=/private/tmp/native-structural57m/node26/v8/structural57m.v8.log",
+            "--experimental-strip-types",
+            "--max-old-space-size=3072",
+            "/private/tmp/native-structural57m/evals/native_compiler_experiment.ts",
+            "--mode=build",
+            "--corpus=/private/tmp/native-structural57m/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+            "--report=/private/tmp/native-structural57m/node26/codegen.json",
+            "--artifact=/private/tmp/native-structural57m/node26/compiler",
+            "--internal=codegen",
+            "--v8-log-dir=/private/tmp/native-structural57m/node26/v8"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792793598346-9ff9c982c5928205.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        }
+      ],
+      "report": {
+        "status": "C_GENERATED_NOT_YET_BUILT",
+        "boundary": {
+          "host": "trusted C file/import loader and serial affine LIFO continuation driver",
+          "sourceAlgorithms": "unchanged canonical Bend parser/expansion/checker/JS library emitter",
+          "hostChecking": false,
+          "hostParsing": false,
+          "embeddedSource": false,
+          "cachedAst": false,
+          "parserFuelRepresentation": "eager native 8M-cell chain per source; JS harness uses lazy cells for the same finite fuel; allocation time remains included in parse",
+          "fuelMemoryEvidence": "per-source native process RSS high-water before/after allocation (not isolated live-byte attribution); guardian samples whole-tree RSS and physical footprint including fuel",
+          "outputPatches": 0,
+          "checksExcluded": 0,
+          "nativeBinaryBootstrap": false
+        },
+        "protectedPins": {
+          "/private/tmp/native-structural57m/evals/native_compiler_experiment.ts": "32c5c70a2ea7fc6176497f1a0b22456574f09cc149a04eaac3dc555f15ac99d8",
+          "/private/tmp/native-structural57m/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+          "/private/tmp/native-structural57m/bend2/comp.ts": "9f8af84fcbbc595068cd6f75eb52aad53be34df4d70c19876fc5cb4457aca671",
+          "/private/tmp/native-structural57m/evals/native_compiler_driver.bend": "2d662ae3c9e95b074f619b75b4fa1b6a0cbcdcee3d20fcc79d9b191b6dea4ee6",
+          "/private/tmp/native-structural57m/evals/native_compiler_host.c": "e3a754c6edf98c467f9837c337bc3e6b4a16a1c15bf4a9fcb7b5ca45f0a4cee2",
+          "/private/tmp/native-structural57m/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+          "/private/tmp/native-structural57m/evals/heavy_gate.ts": "47a12205abd374fd69d7dac30ee9fb45d7203cad2790870511387cd2efc22251",
+          "/private/tmp/native-structural57m/evals/heavy_gate_native.c": "f5aecf8308caebc72dccf8986733b37137d448021ee378302cfcd038381b7aa9",
+          "/private/tmp/native-structural57m/checkpoints/compiler-benchmark-release237-v41.corpus.json": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+          "/private/tmp/native-structural57m/checkpoints/.bootstrap_compiler_root_v1.bend": "e404aea222d4b03b76d33804447bbccd0f7f8712ff7ee95100654525a40f224c",
+          "/private/tmp/native-structural57m/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "/private/tmp/native-structural57m/bend2/selfhost/lexer.bend": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+          "/private/tmp/native-structural57m/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+          "/private/tmp/native-structural57m/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+          "/private/tmp/native-structural57m/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+          "/private/tmp/native-structural57m/bend2/selfhost/checker_arena.bend": "fb8651ab2e6304faded5eb312ffe95175a177254f7dd704eca7a9b0896a40e31",
+          "/private/tmp/native-structural57m/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+          "/private/tmp/native-structural57m/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+          "/private/tmp/native-structural57m/bend2/selfhost/index_lookup.bend": "caef5856607bff18b9a5dfc529eee6c6360a83d0963008420888a998274bd9f2",
+          "/private/tmp/native-structural57m/checkpoints/template_steps_v1.bend": "669e43923b5c7cde21fc922090d3c7ed674049d5cf44c0f2ac09e4ac901b81b6",
+          "/private/tmp/native-structural57m/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+          "/private/tmp/native-structural57m/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+          "/private/tmp/native-structural57m/checkpoints/checker_core_steps_v1.bend": "2f595741666a0f936e6f695938dadd8e0b2a3d3f28c39d06073139d8783898c5",
+          "/private/tmp/native-structural57m/checkpoints/js_emit_steps_v1.bend": "836e8944e34bf9204fa61dea3d876f5c954ec22c303bac53c77587898faaccb5",
+          "/private/tmp/native-structural57m/bend2/selfhost/backend_ir.bend": "0c4c67e38dbf34e04c2378863ec48a7222d2f762551baaa388f200f2a7d8c83b",
+          "/private/tmp/native-structural57m/bend2/effs/print.c": "2693b48e0ad8bba77c2babb1cfe00b4adfd63e68b0688229d7efd3a261af3c46",
+          "/private/tmp/native-structural57m/bend2/effs/print.js": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+          "/private/tmp/native-structural57m/bend2/effs/write.c": "8807a5f655db452c1d846354560c26fe1e94289e5dc0be231d0b71ecc876d02f",
+          "/private/tmp/native-structural57m/bend2/effs/write.js": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+          "/private/tmp/native-structural57m/bend2/effs/print_err.c": "f84aa11c8d0d6af6fa2fee28411f95714d6744ad97156990e43e55c292c9c6fb",
+          "/private/tmp/native-structural57m/bend2/effs/print_err.js": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+          "/private/tmp/native-structural57m/bend2/effs/get_env.c": "508a4aaca91e37b2a0a97770f172100fdbaf4a676aba54623b1cd5d1634805ce",
+          "/private/tmp/native-structural57m/bend2/effs/get_env.js": "9a4fc592e447607553bdb08b194a9ede90dbae3660507687752f58ea42892dba",
+          "/private/tmp/native-structural57m/bend2/effs/args.c": "84e12702f78e7cce5d350a3ccc6cfbda66f812496c39f025afe02bdf090880cf",
+          "/private/tmp/native-structural57m/bend2/effs/args.js": "ed1a7e7b73ae7fe58ac6d428d2762b66f223f4c70a165570fc5d68dc874ddc0b",
+          "/private/tmp/native-structural57m/bend2/effs/process_run.c": "a8ae18d313840eeb1594d762a1cb08c43b632dce83c76c1c5316870b1b20d320",
+          "/private/tmp/native-structural57m/bend2/effs/process_run.js": "9ce0c5853ab8059614f115d99b1d0ba845fb23c056a6965a59e645d155bd58c1",
+          "/private/tmp/native-structural57m/bend2/effs/random_u32.c": "75429b2b42e00562177fe33a5e18d2730478847f58c4038b048e78131e1b8c0a",
+          "/private/tmp/native-structural57m/bend2/effs/random_u32.js": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+          "/private/tmp/native-structural57m/bend2/effs/spawn.c": "05e11ae3f1461d9c72440af3b1786c076b418d2faff45639ac25ba464ee73cd5",
+          "/private/tmp/native-structural57m/bend2/effs/spawn.js": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+          "/private/tmp/native-structural57m/bend2/effs/sleep.c": "1dde3701026517d5272d2ff5344d3a8643bec264dbad9f266fdae1c4aaf7601c",
+          "/private/tmp/native-structural57m/bend2/effs/sleep.js": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+          "/private/tmp/native-structural57m/bend2/effs/now.c": "fc4c1d87a4fb2ace7d5b6c57b434cc3d953a15bdf213020912df6c17aa2352d6",
+          "/private/tmp/native-structural57m/bend2/effs/now.js": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+          "/private/tmp/native-structural57m/bend2/effs/thread_count.c": "d4889ed7757dccce03729c9568b88188128f2c1576166a3dc184a8707ed44568",
+          "/private/tmp/native-structural57m/bend2/effs/thread_count.js": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+          "/private/tmp/native-structural57m/bend2/effs/chan.c": "f20345b3475168e52d431dabc8c8b9347d73b51b5318aae7890b78c94762f4e6",
+          "/private/tmp/native-structural57m/bend2/effs/chan.js": "007ff7505af9effc20fccfa3d26eaf89a382d6295839b27df119a1704a3f86d7",
+          "/private/tmp/native-structural57m/bend2/effs/file_open.c": "2f5923e325a22eb384edb3fbb023f04ca842d5acd22654983608b575fa7617fa",
+          "/private/tmp/native-structural57m/bend2/effs/file_open.js": "dd549f5f05eb896aef9a3a02ffecf2ee902e653f5463be72781edab1cd1180ae",
+          "/private/tmp/native-structural57m/bend2/effs/file_read.c": "ab577225fa98a034c09d7eb6326b74808756dc6203b0e2599a459876382f090d",
+          "/private/tmp/native-structural57m/bend2/effs/file_read.js": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+          "/private/tmp/native-structural57m/bend2/effs/file_size.c": "ed0d74fd6b9f14ea471bfe5dd80ecbb2c5abb6a8406519fb2c7e1a1acf3dd5af",
+          "/private/tmp/native-structural57m/bend2/effs/file_size.js": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+          "/private/tmp/native-structural57m/bend2/effs/file_write.c": "9da28a35294cbde6a97729be825a31f9cab0b8c9d421a02a4613e688df451214",
+          "/private/tmp/native-structural57m/bend2/effs/file_write.js": "4fe307538beb1047add7646f52df6e382a1da5d8999d8fe96969bd5055bc9b59",
+          "/private/tmp/native-structural57m/bend2/effs/file_close.c": "033da9beb0b484fbc8784044193bf69004f858f6ad86e0c31b4beb89df1349ca",
+          "/private/tmp/native-structural57m/bend2/effs/file_close.js": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+          "/private/tmp/native-structural57m/bend2/effs/tcp_listen.c": "efc7528de96abd9f62f299833c1ac7b0e86528292c746b114d2684b5bac52899",
+          "/private/tmp/native-structural57m/bend2/effs/tcp_listen.js": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+          "/private/tmp/native-structural57m/bend2/effs/tcp_accept.c": "bf7ca1685ed388ce97827ea8379881fbdf5359c7c663ad03eeb8da34bd8584ef",
+          "/private/tmp/native-structural57m/bend2/effs/tcp_accept.js": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+          "/private/tmp/native-structural57m/bend2/effs/tcp_connect.c": "8d17c097138709d71e9d9e1fbc4255007c5e80c93ee384c4a3510b6ac8d10da3",
+          "/private/tmp/native-structural57m/bend2/effs/tcp_connect.js": "a20819822e4ce18c8878b94e6ee70466833415eb9ebc2b6a39b65cabfcc553c9",
+          "/private/tmp/native-structural57m/bend2/effs/tcp_send.c": "ed724ef8ce712b113eaac478164802509b41fac4e92435e3df0837d6a8c75632",
+          "/private/tmp/native-structural57m/bend2/effs/tcp_send.js": "ea68cc521fa9b5603c3fccebbf19ecebcd26bf1a8af644ff1f13cd14ba9fe733",
+          "/private/tmp/native-structural57m/bend2/effs/tcp_recv.c": "249c8789cd2f541ad00068882de16a00870c2f81a8168b0ac7a59db1e3cb0c6f",
+          "/private/tmp/native-structural57m/bend2/effs/tcp_recv.js": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+          "/private/tmp/native-structural57m/bend2/effs/udp_bind.c": "a1be1bc5c03d430fc6eb43982651073e144872956fadaee98c3700be59352ee3",
+          "/private/tmp/native-structural57m/bend2/effs/udp_bind.js": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+          "/private/tmp/native-structural57m/bend2/effs/udp_send_to.c": "b3a87e56958d8071a368da2edb4748e9496b3eed58b93d6cb4f8af398dd1011a",
+          "/private/tmp/native-structural57m/bend2/effs/udp_send_to.js": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+          "/private/tmp/native-structural57m/bend2/effs/udp_recv_from.c": "607085b34605af6c888e1de5c3f5cd8f689f221c71a3ef9e2c50f9ac880b1bae",
+          "/private/tmp/native-structural57m/bend2/effs/udp_recv_from.js": "d6f88b08f578f088b4ff257a7e544e4fbbf46f375aee3881ba4d44e25ed890d8",
+          "/private/tmp/native-structural57m/bend2/effs/socket_close.c": "abea115d2928d4942a9d89898d2022c0f1b19c52db48d0b060c2356d261bfa77",
+          "/private/tmp/native-structural57m/bend2/effs/socket_close.js": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+          "/private/tmp/native-structural57m/bend2/effs/listener_close.c": "11f6bac6342a37e97b9656e96bdca7d052ed0a7a0cab3b05ea87657020cfb7a2",
+          "/private/tmp/native-structural57m/bend2/effs/listener_close.js": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+          "/private/tmp/native-structural57m/bend2/effs/window.c": "1d99fc0dd1640602bc4020e62fd28abef44422429ab9970523d25b050f1e6c18",
+          "/private/tmp/native-structural57m/bend2/effs/window_open.js": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+          "/private/tmp/native-structural57m/bend2/effs/window_frame.js": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+          "/private/tmp/native-structural57m/bend2/effs/window_set_title.js": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+          "/private/tmp/native-structural57m/bend2/effs/window_grab.js": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+          "/private/tmp/native-structural57m/bend2/effs/window_close.js": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+          "/private/tmp/native-structural57m/bend2/effs/audio.c": "f0fac2bee02918b4958ad1e7508945824fcd98ce9a2e7ede657304c4f8905b85",
+          "/private/tmp/native-structural57m/bend2/effs/audio_open.js": "6f531ac205dab98dd366111cdcc5eed69fb9058350ca715f3419065cd979b088",
+          "/private/tmp/native-structural57m/bend2/effs/audio_write.js": "377d3e938ce3cc9f083c662b69d34e3a0cf391c92ddaf3fca8a4b28c78662da7",
+          "/private/tmp/native-structural57m/bend2/effs/audio_close.js": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62"
+        },
+        "loadedInputs": {
+          "/private/tmp/native-structural57m/checkpoints/.bootstrap_compiler_root_v1.bend": "e404aea222d4b03b76d33804447bbccd0f7f8712ff7ee95100654525a40f224c",
+          "/private/tmp/native-structural57m/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+          "/private/tmp/native-structural57m/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "/private/tmp/native-structural57m/bend2/selfhost/lexer.bend": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+          "/private/tmp/native-structural57m/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+          "/private/tmp/native-structural57m/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+          "/private/tmp/native-structural57m/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+          "/private/tmp/native-structural57m/bend2/selfhost/checker_arena.bend": "fb8651ab2e6304faded5eb312ffe95175a177254f7dd704eca7a9b0896a40e31",
+          "/private/tmp/native-structural57m/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+          "/private/tmp/native-structural57m/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+          "/private/tmp/native-structural57m/bend2/selfhost/index_lookup.bend": "caef5856607bff18b9a5dfc529eee6c6360a83d0963008420888a998274bd9f2",
+          "/private/tmp/native-structural57m/checkpoints/template_steps_v1.bend": "669e43923b5c7cde21fc922090d3c7ed674049d5cf44c0f2ac09e4ac901b81b6",
+          "/private/tmp/native-structural57m/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+          "/private/tmp/native-structural57m/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+          "/private/tmp/native-structural57m/checkpoints/checker_core_steps_v1.bend": "2f595741666a0f936e6f695938dadd8e0b2a3d3f28c39d06073139d8783898c5",
+          "/private/tmp/native-structural57m/checkpoints/js_emit_steps_v1.bend": "836e8944e34bf9204fa61dea3d876f5c954ec22c303bac53c77587898faaccb5",
+          "/private/tmp/native-structural57m/bend2/selfhost/backend_ir.bend": "0c4c67e38dbf34e04c2378863ec48a7222d2f762551baaa388f200f2a7d8c83b",
+          "/private/tmp/native-structural57m/evals/native_compiler_driver.bend": "2d662ae3c9e95b074f619b75b4fa1b6a0cbcdcee3d20fcc79d9b191b6dea4ee6",
+          "/private/tmp/native-structural57m/bend2/effs/print.c": "2693b48e0ad8bba77c2babb1cfe00b4adfd63e68b0688229d7efd3a261af3c46",
+          "/private/tmp/native-structural57m/bend2/effs/print.js": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+          "/private/tmp/native-structural57m/bend2/effs/write.c": "8807a5f655db452c1d846354560c26fe1e94289e5dc0be231d0b71ecc876d02f",
+          "/private/tmp/native-structural57m/bend2/effs/write.js": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+          "/private/tmp/native-structural57m/bend2/effs/print_err.c": "f84aa11c8d0d6af6fa2fee28411f95714d6744ad97156990e43e55c292c9c6fb",
+          "/private/tmp/native-structural57m/bend2/effs/print_err.js": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+          "/private/tmp/native-structural57m/bend2/effs/get_env.c": "508a4aaca91e37b2a0a97770f172100fdbaf4a676aba54623b1cd5d1634805ce",
+          "/private/tmp/native-structural57m/bend2/effs/get_env.js": "9a4fc592e447607553bdb08b194a9ede90dbae3660507687752f58ea42892dba",
+          "/private/tmp/native-structural57m/bend2/effs/args.c": "84e12702f78e7cce5d350a3ccc6cfbda66f812496c39f025afe02bdf090880cf",
+          "/private/tmp/native-structural57m/bend2/effs/args.js": "ed1a7e7b73ae7fe58ac6d428d2762b66f223f4c70a165570fc5d68dc874ddc0b",
+          "/private/tmp/native-structural57m/bend2/effs/process_run.c": "a8ae18d313840eeb1594d762a1cb08c43b632dce83c76c1c5316870b1b20d320",
+          "/private/tmp/native-structural57m/bend2/effs/process_run.js": "9ce0c5853ab8059614f115d99b1d0ba845fb23c056a6965a59e645d155bd58c1",
+          "/private/tmp/native-structural57m/bend2/effs/random_u32.c": "75429b2b42e00562177fe33a5e18d2730478847f58c4038b048e78131e1b8c0a",
+          "/private/tmp/native-structural57m/bend2/effs/random_u32.js": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+          "/private/tmp/native-structural57m/bend2/effs/spawn.c": "05e11ae3f1461d9c72440af3b1786c076b418d2faff45639ac25ba464ee73cd5",
+          "/private/tmp/native-structural57m/bend2/effs/spawn.js": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+          "/private/tmp/native-structural57m/bend2/effs/sleep.c": "1dde3701026517d5272d2ff5344d3a8643bec264dbad9f266fdae1c4aaf7601c",
+          "/private/tmp/native-structural57m/bend2/effs/sleep.js": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+          "/private/tmp/native-structural57m/bend2/effs/now.c": "fc4c1d87a4fb2ace7d5b6c57b434cc3d953a15bdf213020912df6c17aa2352d6",
+          "/private/tmp/native-structural57m/bend2/effs/now.js": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+          "/private/tmp/native-structural57m/bend2/effs/thread_count.c": "d4889ed7757dccce03729c9568b88188128f2c1576166a3dc184a8707ed44568",
+          "/private/tmp/native-structural57m/bend2/effs/thread_count.js": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+          "/private/tmp/native-structural57m/bend2/effs/chan.c": "f20345b3475168e52d431dabc8c8b9347d73b51b5318aae7890b78c94762f4e6",
+          "/private/tmp/native-structural57m/bend2/effs/chan.js": "007ff7505af9effc20fccfa3d26eaf89a382d6295839b27df119a1704a3f86d7",
+          "/private/tmp/native-structural57m/bend2/effs/file_open.c": "2f5923e325a22eb384edb3fbb023f04ca842d5acd22654983608b575fa7617fa",
+          "/private/tmp/native-structural57m/bend2/effs/file_open.js": "dd549f5f05eb896aef9a3a02ffecf2ee902e653f5463be72781edab1cd1180ae",
+          "/private/tmp/native-structural57m/bend2/effs/file_read.c": "ab577225fa98a034c09d7eb6326b74808756dc6203b0e2599a459876382f090d",
+          "/private/tmp/native-structural57m/bend2/effs/file_read.js": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+          "/private/tmp/native-structural57m/bend2/effs/file_size.c": "ed0d74fd6b9f14ea471bfe5dd80ecbb2c5abb6a8406519fb2c7e1a1acf3dd5af",
+          "/private/tmp/native-structural57m/bend2/effs/file_size.js": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+          "/private/tmp/native-structural57m/bend2/effs/file_write.c": "9da28a35294cbde6a97729be825a31f9cab0b8c9d421a02a4613e688df451214",
+          "/private/tmp/native-structural57m/bend2/effs/file_write.js": "4fe307538beb1047add7646f52df6e382a1da5d8999d8fe96969bd5055bc9b59",
+          "/private/tmp/native-structural57m/bend2/effs/file_close.c": "033da9beb0b484fbc8784044193bf69004f858f6ad86e0c31b4beb89df1349ca",
+          "/private/tmp/native-structural57m/bend2/effs/file_close.js": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+          "/private/tmp/native-structural57m/bend2/effs/tcp_listen.c": "efc7528de96abd9f62f299833c1ac7b0e86528292c746b114d2684b5bac52899",
+          "/private/tmp/native-structural57m/bend2/effs/tcp_listen.js": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+          "/private/tmp/native-structural57m/bend2/effs/tcp_accept.c": "bf7ca1685ed388ce97827ea8379881fbdf5359c7c663ad03eeb8da34bd8584ef",
+          "/private/tmp/native-structural57m/bend2/effs/tcp_accept.js": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+          "/private/tmp/native-structural57m/bend2/effs/tcp_connect.c": "8d17c097138709d71e9d9e1fbc4255007c5e80c93ee384c4a3510b6ac8d10da3",
+          "/private/tmp/native-structural57m/bend2/effs/tcp_connect.js": "a20819822e4ce18c8878b94e6ee70466833415eb9ebc2b6a39b65cabfcc553c9",
+          "/private/tmp/native-structural57m/bend2/effs/tcp_send.c": "ed724ef8ce712b113eaac478164802509b41fac4e92435e3df0837d6a8c75632",
+          "/private/tmp/native-structural57m/bend2/effs/tcp_send.js": "ea68cc521fa9b5603c3fccebbf19ecebcd26bf1a8af644ff1f13cd14ba9fe733",
+          "/private/tmp/native-structural57m/bend2/effs/tcp_recv.c": "249c8789cd2f541ad00068882de16a00870c2f81a8168b0ac7a59db1e3cb0c6f",
+          "/private/tmp/native-structural57m/bend2/effs/tcp_recv.js": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+          "/private/tmp/native-structural57m/bend2/effs/udp_bind.c": "a1be1bc5c03d430fc6eb43982651073e144872956fadaee98c3700be59352ee3",
+          "/private/tmp/native-structural57m/bend2/effs/udp_bind.js": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+          "/private/tmp/native-structural57m/bend2/effs/udp_send_to.c": "b3a87e56958d8071a368da2edb4748e9496b3eed58b93d6cb4f8af398dd1011a",
+          "/private/tmp/native-structural57m/bend2/effs/udp_send_to.js": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+          "/private/tmp/native-structural57m/bend2/effs/udp_recv_from.c": "607085b34605af6c888e1de5c3f5cd8f689f221c71a3ef9e2c50f9ac880b1bae",
+          "/private/tmp/native-structural57m/bend2/effs/udp_recv_from.js": "d6f88b08f578f088b4ff257a7e544e4fbbf46f375aee3881ba4d44e25ed890d8",
+          "/private/tmp/native-structural57m/bend2/effs/socket_close.c": "abea115d2928d4942a9d89898d2022c0f1b19c52db48d0b060c2356d261bfa77",
+          "/private/tmp/native-structural57m/bend2/effs/socket_close.js": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+          "/private/tmp/native-structural57m/bend2/effs/listener_close.c": "11f6bac6342a37e97b9656e96bdca7d052ed0a7a0cab3b05ea87657020cfb7a2",
+          "/private/tmp/native-structural57m/bend2/effs/listener_close.js": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+          "/private/tmp/native-structural57m/bend2/effs/window.c": "1d99fc0dd1640602bc4020e62fd28abef44422429ab9970523d25b050f1e6c18",
+          "/private/tmp/native-structural57m/bend2/effs/window_open.js": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+          "/private/tmp/native-structural57m/bend2/effs/window_frame.js": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+          "/private/tmp/native-structural57m/bend2/effs/window_set_title.js": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+          "/private/tmp/native-structural57m/bend2/effs/window_grab.js": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+          "/private/tmp/native-structural57m/bend2/effs/window_close.js": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+          "/private/tmp/native-structural57m/bend2/effs/audio.c": "f0fac2bee02918b4958ad1e7508945824fcd98ce9a2e7ede657304c4f8905b85",
+          "/private/tmp/native-structural57m/bend2/effs/audio_open.js": "6f531ac205dab98dd366111cdcc5eed69fb9058350ca715f3419065cd979b088",
+          "/private/tmp/native-structural57m/bend2/effs/audio_write.js": "377d3e938ce3cc9f083c662b69d34e3a0cf391c92ddaf3fca8a4b28c78662da7",
+          "/private/tmp/native-structural57m/bend2/effs/audio_close.js": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+          "/private/tmp/native-structural57m/evals/native_compiler_host.c": "e3a754c6edf98c467f9837c337bc3e6b4a16a1c15bf4a9fcb7b5ca45f0a4cee2"
+        },
+        "source": "/private/tmp/native-structural57m/checkpoints/.bootstrap_compiler_root_v1.bend",
+        "sourceSha256": "e404aea222d4b03b76d33804447bbccd0f7f8712ff7ee95100654525a40f224c",
+        "bridge": "/private/tmp/native-structural57m/evals/native_compiler_driver.bend",
+        "eventsFullyValidated": 8750,
+        "codegenTrace": false,
+        "diagnosticOnlyCodegenTiming": true,
+        "ccOptimization": {
+          "level": 3,
+          "flag": "-O3",
+          "officialDefault": true,
+          "diagnosticTradeoff": false
+        },
+        "checkedDefinitions": 8357,
+        "expectedSourceDefinitions": 8357,
+        "checksExcluded": 0,
+        "outputPatches": 0,
+        "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+        "compilerSha256": "9f8af84fcbbc595068cd6f75eb52aad53be34df4d70c19876fc5cb4457aca671",
+        "cPath": "/private/tmp/native-structural57m/node26/compiler.c",
+        "cSha256": "e4890debf5e210f8962c1c667a77401414d5ef420bfe98baf68db91218379e2f",
+        "artifact": "/private/tmp/native-structural57m/node26/compiler",
+        "runtime": {
+          "name": "node",
+          "node": "26.3.0",
+          "heapLimitMiB": 3072,
+          "stackMiB": 256,
+          "manualGC": false,
+          "profiling": {
+            "kind": "V8 statistical tick log",
+            "directory": "/private/tmp/native-structural57m/node26/v8",
+            "diagnosticOnlyTiming": true
+          }
+        },
+        "validationMs": 1346.8387910000001,
+        "codegenMs": 101613.21500000001,
+        "elapsedMs": 104940.122208
+      },
+      "inputsUnchanged": true,
+      "traceFileExists": false,
+      "timeText": "real 105.87\nuser 278.62\nsys 5.22\n          3497394176  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n             1022120  page reclaims\n                  88  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   0  messages sent\n                   0  messages received\n               70233  signals received\n                2295  voluntary context switches\n              624138  involuntary context switches\n       3257287993736  instructions retired\n       1021066879600  cycles elapsed\n          3475354296  peak memory footprint\n",
+      "cSha256": "e4890debf5e210f8962c1c667a77401414d5ef420bfe98baf68db91218379e2f",
+      "cBytes": 69884362
+    },
+    "actualConsumers": {
+      "status": "PASS",
+      "sourcePatches": 0,
+      "outputPatches": 0,
+      "rows": [
+        {
+          "label": "baseline",
+          "fixture": "word_coverage.bend",
+          "releaseChecked": false,
+          "checkedDefinitions": 348,
+          "jsSha256": "becfde74f120a247fd8c9041822f2cbd1de2d09115d4499784b6b42c60288166",
+          "actual": {
+            "overlap": [
+              17,
+              27,
+              37,
+              27,
+              27,
+              37
+            ],
+            "binder": [
+              12,
+              16,
+              12,
+              16,
+              16,
+              12
+            ]
+          },
+          "expected": {
+            "overlap": [
+              17,
+              27,
+              37,
+              27,
+              27,
+              37
+            ],
+            "binder": [
+              12,
+              16,
+              12,
+              16,
+              16,
+              12
+            ]
+          }
+        },
+        {
+          "label": "baseline",
+          "fixture": "word_coverage.bend",
+          "releaseChecked": true,
+          "checkedDefinitions": 348,
+          "jsSha256": "becfde74f120a247fd8c9041822f2cbd1de2d09115d4499784b6b42c60288166",
+          "actual": {
+            "overlap": [
+              17,
+              27,
+              37,
+              27,
+              27,
+              37
+            ],
+            "binder": [
+              12,
+              16,
+              12,
+              16,
+              16,
+              12
+            ]
+          },
+          "expected": {
+            "overlap": [
+              17,
+              27,
+              37,
+              27,
+              27,
+              37
+            ],
+            "binder": [
+              12,
+              16,
+              12,
+              16,
+              16,
+              12
+            ]
+          }
+        },
+        {
+          "label": "baseline",
+          "fixture": "js_late_fold.bend",
+          "releaseChecked": false,
+          "checkedDefinitions": 348,
+          "jsSha256": "ac71c60575d9e0fd2acad38418b432594885fb8b2184b8a8bef365fecc088a41",
+          "actual": [
+            1,
+            4,
+            4
+          ],
+          "expected": [
+            1,
+            4,
+            4
+          ]
+        },
+        {
+          "label": "baseline",
+          "fixture": "js_late_fold.bend",
+          "releaseChecked": true,
+          "checkedDefinitions": 348,
+          "jsSha256": "ac71c60575d9e0fd2acad38418b432594885fb8b2184b8a8bef365fecc088a41",
+          "actual": [
+            1,
+            4,
+            4
+          ],
+          "expected": [
+            1,
+            4,
+            4
+          ]
+        },
+        {
+          "label": "baseline",
+          "fixture": "word_match_cover_key.bend",
+          "releaseChecked": false,
+          "checkedDefinitions": 353,
+          "jsSha256": "5a0a9f7ea28a570e3b8173ee251ae9a9a5d09d3ab19427ba2318afe05d6d8023",
+          "actual": [
+            [
+              0,
+              0
+            ],
+            [
+              2139095040,
+              2143289344
+            ],
+            [
+              2139095040,
+              2143289344
+            ],
+            [
+              2139095040,
+              2143289344
+            ]
+          ],
+          "expected": [
+            [
+              0,
+              0
+            ],
+            [
+              2139095040,
+              2143289344
+            ],
+            [
+              2139095040,
+              2143289344
+            ],
+            [
+              2139095040,
+              2143289344
+            ]
+          ]
+        },
+        {
+          "label": "baseline",
+          "fixture": "word_match_cover_key.bend",
+          "releaseChecked": true,
+          "checkedDefinitions": 353,
+          "jsSha256": "5a0a9f7ea28a570e3b8173ee251ae9a9a5d09d3ab19427ba2318afe05d6d8023",
+          "actual": [
+            [
+              0,
+              0
+            ],
+            [
+              2139095040,
+              2143289344
+            ],
+            [
+              2139095040,
+              2143289344
+            ],
+            [
+              2139095040,
+              2143289344
+            ]
+          ],
+          "expected": [
+            [
+              0,
+              0
+            ],
+            [
+              2139095040,
+              2143289344
+            ],
+            [
+              2139095040,
+              2143289344
+            ],
+            [
+              2139095040,
+              2143289344
+            ]
+          ]
+        },
+        {
+          "label": "candidate",
+          "fixture": "word_coverage.bend",
+          "releaseChecked": false,
+          "checkedDefinitions": 348,
+          "jsSha256": "becfde74f120a247fd8c9041822f2cbd1de2d09115d4499784b6b42c60288166",
+          "actual": {
+            "overlap": [
+              17,
+              27,
+              37,
+              27,
+              27,
+              37
+            ],
+            "binder": [
+              12,
+              16,
+              12,
+              16,
+              16,
+              12
+            ]
+          },
+          "expected": {
+            "overlap": [
+              17,
+              27,
+              37,
+              27,
+              27,
+              37
+            ],
+            "binder": [
+              12,
+              16,
+              12,
+              16,
+              16,
+              12
+            ]
+          }
+        },
+        {
+          "label": "candidate",
+          "fixture": "word_coverage.bend",
+          "releaseChecked": true,
+          "checkedDefinitions": 348,
+          "jsSha256": "becfde74f120a247fd8c9041822f2cbd1de2d09115d4499784b6b42c60288166",
+          "actual": {
+            "overlap": [
+              17,
+              27,
+              37,
+              27,
+              27,
+              37
+            ],
+            "binder": [
+              12,
+              16,
+              12,
+              16,
+              16,
+              12
+            ]
+          },
+          "expected": {
+            "overlap": [
+              17,
+              27,
+              37,
+              27,
+              27,
+              37
+            ],
+            "binder": [
+              12,
+              16,
+              12,
+              16,
+              16,
+              12
+            ]
+          }
+        },
+        {
+          "label": "candidate",
+          "fixture": "js_late_fold.bend",
+          "releaseChecked": false,
+          "checkedDefinitions": 348,
+          "jsSha256": "ac71c60575d9e0fd2acad38418b432594885fb8b2184b8a8bef365fecc088a41",
+          "actual": [
+            1,
+            4,
+            4
+          ],
+          "expected": [
+            1,
+            4,
+            4
+          ]
+        },
+        {
+          "label": "candidate",
+          "fixture": "js_late_fold.bend",
+          "releaseChecked": true,
+          "checkedDefinitions": 348,
+          "jsSha256": "ac71c60575d9e0fd2acad38418b432594885fb8b2184b8a8bef365fecc088a41",
+          "actual": [
+            1,
+            4,
+            4
+          ],
+          "expected": [
+            1,
+            4,
+            4
+          ]
+        },
+        {
+          "label": "candidate",
+          "fixture": "word_match_cover_key.bend",
+          "releaseChecked": false,
+          "checkedDefinitions": 353,
+          "jsSha256": "5a0a9f7ea28a570e3b8173ee251ae9a9a5d09d3ab19427ba2318afe05d6d8023",
+          "actual": [
+            [
+              0,
+              0
+            ],
+            [
+              2139095040,
+              2143289344
+            ],
+            [
+              2139095040,
+              2143289344
+            ],
+            [
+              2139095040,
+              2143289344
+            ]
+          ],
+          "expected": [
+            [
+              0,
+              0
+            ],
+            [
+              2139095040,
+              2143289344
+            ],
+            [
+              2139095040,
+              2143289344
+            ],
+            [
+              2139095040,
+              2143289344
+            ]
+          ]
+        },
+        {
+          "label": "candidate",
+          "fixture": "word_match_cover_key.bend",
+          "releaseChecked": true,
+          "checkedDefinitions": 353,
+          "jsSha256": "5a0a9f7ea28a570e3b8173ee251ae9a9a5d09d3ab19427ba2318afe05d6d8023",
+          "actual": [
+            [
+              0,
+              0
+            ],
+            [
+              2139095040,
+              2143289344
+            ],
+            [
+              2139095040,
+              2143289344
+            ],
+            [
+              2139095040,
+              2143289344
+            ]
+          ],
+          "expected": [
+            [
+              0,
+              0
+            ],
+            [
+              2139095040,
+              2143289344
+            ],
+            [
+              2139095040,
+              2143289344
+            ],
+            [
+              2139095040,
+              2143289344
+            ]
+          ]
+        }
+      ]
+    },
+    "sourceSha256": "9f8af84fcbbc595068cd6f75eb52aad53be34df4d70c19876fc5cb4457aca671",
+    "sourceBlock": "function mat_lits(x: HTerm): Row[] {\n  const ws: Row[] = [];\n  // Compare the old coverage keys without materializing their JSON strings.\n  // Lowering is retained: binder names/levels and substituted Vars must have\n  // exactly the old representation, rather than a wider semantic equality.\n  const same = (a: unknown, b: unknown): boolean => {\n    // All tagged Ann values here originate in the lowered term, not user data.\n    if (a && typeof a === \"object\" && \"$\" in a && a.$ === \"Ann\") {\n      a = Bend.term_strip(a as Bend.LTerm);\n    }\n    if (b && typeof b === \"object\" && \"$\" in b && b.$ === \"Ann\") {\n      b = Bend.term_strip(b as Bend.LTerm);\n    }\n    if (typeof a === \"number\" && !Number.isFinite(a)) a = null;\n    if (typeof b === \"number\" && !Number.isFinite(b)) b = null;\n    if (a === b) return true;\n    if (a === null || b === null || typeof a !== typeof b) return false;\n    if (typeof a !== \"object\") return false;\n    if (Array.isArray(a)) {\n      if (!Array.isArray(b) || a.length !== b.length) return false;\n      for (let i = 0; i < a.length; i++) {\n        // JSON arrays retain omitted values as null (including holes).\n        const av = a[i], bv = b[i];\n        const ax = av === undefined || typeof av === \"function\" || typeof av === \"symbol\";\n        const bx = bv === undefined || typeof bv === \"function\" || typeof bv === \"symbol\";\n        if (!same(ax ? null : av, bx ? null : bv)) return false;\n      }\n      return true;\n    }\n    if (Array.isArray(b)) return false;\n    // Keep property order: even equal maps with different insertion order had\n    // different keys. Undefined object fields and spans were omitted entirely.\n    const ar = a as Record<string, unknown>;\n    const br = b as Record<string, unknown>;\n    const ak = Object.keys(ar).filter(k => k !== \"s\" && ar[k] !== undefined\n      && typeof ar[k] !== \"function\" && typeof ar[k] !== \"symbol\");\n    const bk = Object.keys(br).filter(k => k !== \"s\" && br[k] !== undefined\n      && typeof br[k] !== \"function\" && typeof br[k] !== \"symbol\");\n    return ak.length === bk.length && ak.every((k, i) => k === bk[i] && same(ar[k], br[k]));\n  };\n  const walk = (t: HTerm, j: number, n: number,\n    cov: ((w: Of<\"Ctr\">) => HTerm) | null) => {\n    const h = mat_arms(t).arms[0]?.[1];\n    if (h && j === 32) {\n      ws.push([h, j, n, 0]);\n      return;\n    }\n    const { arms, end } = mat_arms(h ?? t);\n    const inst = (w: Of<\"Ctr\">) => (h ? w.x : [w])\n      .reduce((f, a) => Bend.term_apply(f, a), end);\n    const w = Bend.Ctr(\"WCon\", [probe(\"b\"), probe(\"t\")]) as Of<\"Ctr\">;\n    const own = arms.length < 2 && (!cov\n      || !same(Bend.term_lower(cov(w)), Bend.term_lower(inst(w))));\n    const sub = own ? inst : cov;\n    for (const [k, a] of arms) {\n      walk(a, j + 1, n + (k === \"True\" ? 2 ** j : 0), sub && ((v) =>\n        sub(Bend.Ctr(\"WCon\", [Bend.Ctr(k, []), v]) as Of<\"Ctr\">)));\n    }\n    if (own) {\n      ws.push([end, j, n, h ? 2 : 1]);\n    }\n  };\n  walk(mat_arms(x).arms[0][1], 0, 0, null);\n  return ws;\n}",
+    "decision": "Not integrated while full emitted suites require pinned original compiler; parent also reviews avoidable filtered key-array allocations. Evidence supports eliminating whole coverage JSON strings, not lowering or established general speed gain."
+  },
+  "comparison": {
+    "baselineProfileCodegenMs": 123321.674875,
+    "candidateProfileCodegenMs": 101613.215,
+    "replicates": 1,
+    "causalSpeedClaim": false,
+    "clangs": 0,
+    "coverage": "Both8357 native bodies8750 fully validated events, same complete69884362-byte C SHAe4890debf5e210f8962c1c667a77401414d5ef420bfe98baf68db91218379e2f"
+  },
+  "observerCorrection": "Previous57k prof+trace data dominated by795962 synchronous trace writes; NEVER transfer its IO cost to normal compiler. This run disables per-definition trace and has50 progress records only. Largest nearest-node::CreateEnvironment native symbol unresolved, not classified as environment init or IO.",
+  "cleanup": {
+    "removedRemoteOwnCompletedRawProfileDirectory": "/private/tmp/native-codegen57k-1M1oJDyK",
+    "measuredBeforeKiB": 951580,
+    "preservedCompactArchiveSha256": "19ef8bd859c8c5991ce898ba23db38e2bf62b264c832ed87adc24c497ce1f8ab"
+  }
+}
