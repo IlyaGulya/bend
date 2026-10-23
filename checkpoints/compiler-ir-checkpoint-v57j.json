@@ -1,6 +1,6 @@
 {
   "version": "57j",
-  "status": "COMBINED_CANONICAL_EMITTER_NATIVE_AND_ACTUAL_CONSUMER_PASS_FULL_BOOTSTRAP_RUNNING",
+  "status": "FULL8379_BODY_ROOT_BUILD_PASS_STAGE_TWO_CHECK_TIMEOUT_NOT_FIXEDPOINT",
   "selectedWorkingBaseline": "2b3efa80",
   "sourceHashes": {
     "bend2/selfhost/js_backend.bend": "9d1f37b269989efc85993f6c561f40a68b99ebbd48930b168a2fb712c5d51b20",
@@ -537,8 +537,205 @@
     "unchangedLibraryExports": 15,
     "unchangedLibraryAssertions": 28,
     "additionalActualBehaviorAssertions": 13,
-    "fullRootNativeBuild": "running",
+    "fullRootNativeBuild": "PASS8379/8379",
     "stage1Stage2Fixedpoint": false,
     "runtimeSpeedClaim": false
+  },
+  "fullRootNativeBuild": {
+    "status": "JS_GENERATED_NOT_YET_EXECUTED",
+    "provenancePath": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57j-full-a-native-build.provenance.json",
+    "provenanceSha256": "69689d38ecc24ea2d0a397cfd753013af3c1f6d03d35fd70d79b56b798e3b12b",
+    "sourcePath": "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_v1.bend",
+    "sourceSha256": "e404aea222d4b03b76d33804447bbccd0f7f8712ff7ee95100654525a40f224c",
+    "exports": [
+      "parsed_module",
+      "parse_with_fuel",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step"
+    ],
+    "artifactPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57j-full-a.js",
+    "artifactSha256": "7205387c034ab47f645cfef535b2fb20226ec7231ce93202007a191726519a85",
+    "bytes": 12737628,
+    "eventsFullyValidated": 8769,
+    "checkedDefinitions": 8379,
+    "liveBodies": 8379,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "checkedOutputRetention": "native e",
+    "nativeRetention": "native checked e retained through all JS definition folding; scope-local higher caches released between definitions; no serialization or source-value fallback",
+    "nativeCheckedBodies": 8379,
+    "expectedSourceDefinitions": 8379,
+    "toolchain": "CANONICAL NATIVE LOAD/CHECK; CANONICAL JS PREPARE/EMIT/RELEASE; Node/V8 automatic GC",
+    "preparedCount": 8094,
+    "releasedCount": 8487,
+    "maxSimultaneousE": 8379,
+    "maxSimultaneousH": 2,
+    "countsCaveat": "Definition slots, not unique term graphs; signature metadata does not prepare higher bodies",
+    "runtime": {
+      "name": "node",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "heapLimitMiB": 3072,
+      "stackSizeMb": 256,
+      "heapSizeLimitBytes": 3271557120,
+      "manualGC": false
+    },
+    "cpuMs": 35402.59,
+    "compiledExecution": "NOT_RUN",
+    "selfhostGreen": false,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 2891546624,
+      "peakFootprintBytes": 3015699280,
+      "elapsedMs": 25531,
+      "timeoutMs": 600000,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/Users/ilyagulya/Projects/My/bend/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_v1.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step",
+        "--artifact=/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57j-full-a.js",
+        "--report=/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57j-full-a-native-build",
+        "--inputs-sha256=1c1c2d2d96bd347d735bfcc945e84b9a0b0a25c6e46957bb97fe2987b880f03f"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792791578418-d423b345b2934c4c.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "fullBootstrap": {
+    "receiptSha256": "a7e8c853dd94458afbb2218345b0b86537bde2ee686a24b703315de2750dcb94",
+    "guardian": {
+      "status": "FAIL",
+      "reason": "deadline_exceeded",
+      "commandExitCode": -1,
+      "commandSignal": 15,
+      "peakRssBytes": 4470669312,
+      "peakFootprintBytes": 3140525288,
+      "elapsedMs": 600040,
+      "timeoutMs": 600000,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_bootstrap_gate.ts",
+        "--component=checkpoints/.ir57j-full-a.js",
+        "--component-build=checkpoints/.ir57j-full-a-native-build.result.json",
+        "--root=checkpoints/.bootstrap_compiler_root_v1.bend",
+        "--root-manifest=checkpoints/selfhost-steps-driver-source-v1.json",
+        "--parser=checkpoints/bootstrap-parser-rebuild-ir57j-admit-a.js",
+        "--parser-build=checkpoints/bootstrap-parser-rebuild-ir57j-admit-a.native-build.result.json",
+        "--report=checkpoints/selfhost-ir57j-bootstrap-a.json",
+        "--worker"
+      ],
+      "label": "Real full selfhost step bootstrap",
+      "exitCode": 1,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792791604043-66434f8b11987b72.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "compilerBootstrapGreen": false,
+    "seedFixturesPassed": 94,
+    "stageOne": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-ir57j-bootstrap-a.json.cases/stage-one.js",
+      "sha256": "eaed045d38ac27213ddbc071d48c75aac094839922306a2a8ff295b1aada971a",
+      "bytes": 14370680
+    },
+    "stages": [
+      {
+        "phase": "stage-one-parse",
+        "elapsedMs": 88476.1455,
+        "heapUsedBytes": 310148888
+      },
+      {
+        "phase": "stage-one",
+        "elapsedMs": 116480.537167,
+        "heapUsedBytes": 802089520
+      },
+      {
+        "phase": "stage-one-expand",
+        "elapsedMs": 116480.551125,
+        "heapUsedBytes": 802090752
+      },
+      {
+        "phase": "stage-one-check",
+        "elapsedMs": 125382.375375,
+        "heapUsedBytes": 939172240
+      },
+      {
+        "phase": "stage-one-emit",
+        "elapsedMs": 279438.138209,
+        "heapUsedBytes": 1760655696
+      },
+      {
+        "phase": "stage-one-execute",
+        "elapsedMs": 286096.519542,
+        "heapUsedBytes": 1123582064
+      },
+      {
+        "phase": "stage-two-parse",
+        "elapsedMs": 286484.572292,
+        "heapUsedBytes": 1125109496
+      },
+      {
+        "phase": "stage-two",
+        "elapsedMs": 317969.675584,
+        "heapUsedBytes": 2196289432
+      },
+      {
+        "phase": "stage-two-expand",
+        "elapsedMs": 317969.69475,
+        "heapUsedBytes": 2196290776
+      },
+      {
+        "phase": "stage-two-check",
+        "elapsedMs": 329921.296834,
+        "heapUsedBytes": 2307215264
+      }
+    ],
+    "stageTwoOutput": false,
+    "byteComparison": false
+  },
+  "emittedScalarProbe": {
+    "stageOneUnchanged": true,
+    "execution": {
+      "status": 0,
+      "stdout": "123\n",
+      "stderr": "",
+      "outputSha256": "04f15cd47167a8f6798550f070907be4fc59214f1875af14296ba8e9c1b5d0a0"
+    },
+    "source": {
+      "text": "import Base\ndef main() -> U32:\n  123\n",
+      "sha256": "5a8c46954d9db633aae057d6fdacac5d53ab62b60c25f8b7e0ae7d1651051992"
+    },
+    "rootOccurrence": {
+      "tag": "ScalarOccurrence",
+      "term": 13305,
+      "ty": 13269,
+      "bits": 123
+    },
+    "checkWallMs": 12031.690458,
+    "counts": {
+      "resume": 2680654,
+      "pending": 1017155,
+      "direct": 838376,
+      "bound": 825123
+    },
+    "equalMachineWorkTo57g": true,
+    "performanceCaveat": "One profiled cold mixed-window run; no replicated causal speed ratio. Still materially slower than native-validated seed for identical source."
   }
 }

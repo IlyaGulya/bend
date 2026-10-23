@@ -1,0 +1,556 @@
+{
+  "version": "57k",
+  "status": "FULL8382_BODY_NATIVE_ROOT_AND_COMPLETE_FROZEN_CORPUS_PASS_REVISED_FIXTURE_BOOTSTRAP_RUNNING",
+  "selectedWorkingBaseline": "2b3efa80",
+  "sourceHashes": {
+    "bend2/selfhost/js_emit.bend": "1879ff7793f295c88aaccf1f59d20ebe4d292c728451d0191e986032be13faa6",
+    "bend2/selfhost/js_backend.bend": "9d1f37b269989efc85993f6c561f40a68b99ebbd48930b168a2fb712c5d51b20",
+    "evals/selfhost_bootstrap_gate.ts": "8c373376ab63f0fe23751102f6aa4f9fa2ae0c562599003f9833bbb00651e70c"
+  },
+  "change": "Replace full positional equality with explicit header-local membership. Nonempty stable local subsets/permutations/unrestricted repetitions retain original header parameters/Use, original lowered scrutinee order and env; no effects, symbols, captured operands, new instruction frames or nonroot matches inline.",
+  "nativeEmitterBuild": {
+    "status": "JS_GENERATED_NOT_YET_EXECUTED",
+    "provenancePath": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57k-emitter-build.provenance.json",
+    "provenanceSha256": "daac5084232e2f75bce47fbae31278d30dd40132354ee4bf09c6286097b94bc3",
+    "sourcePath": "/Users/ilyagulya/Projects/My/bend/checkpoints/js_emit_steps_component_v1.bend",
+    "sourceSha256": "695618af0ee97d6227d786afe4b2460ce72481692c0f3d4c397cd5b663612bb7",
+    "exports": [
+      "emit_library_start",
+      "emitter_step"
+    ],
+    "artifactPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57k-emitter.js",
+    "artifactSha256": "655ee5c37c5edd42ae96507e06ba27f95b67fa0710ceddc316ca61621c94f4ff",
+    "bytes": 2914623,
+    "eventsFullyValidated": 2005,
+    "checkedDefinitions": 1719,
+    "liveBodies": 1719,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "checkedOutputRetention": "native e",
+    "nativeRetention": "native checked e retained through all JS definition folding; scope-local higher caches released between definitions; no serialization or source-value fallback",
+    "nativeCheckedBodies": 1719,
+    "expectedSourceDefinitions": 1719,
+    "toolchain": "CANONICAL NATIVE LOAD/CHECK; CANONICAL JS PREPARE/EMIT/RELEASE; Node/V8 automatic GC",
+    "preparedCount": 1174,
+    "releasedCount": 1827,
+    "maxSimultaneousE": 1719,
+    "maxSimultaneousH": 2,
+    "countsCaveat": "Definition slots, not unique term graphs; signature metadata does not prepare higher bodies",
+    "runtime": {
+      "name": "node",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "heapLimitMiB": 3072,
+      "stackSizeMb": 256,
+      "heapSizeLimitBytes": 3271557120,
+      "manualGC": false
+    },
+    "cpuMs": 14434.921,
+    "compiledExecution": "NOT_RUN",
+    "selfhostGreen": false,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 2156068864,
+      "peakFootprintBytes": 2239168344,
+      "elapsedMs": 11019,
+      "timeoutMs": 600000,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/Users/ilyagulya/Projects/My/bend/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/Users/ilyagulya/Projects/My/bend/checkpoints/js_emit_steps_component_v1.bend",
+        "--exports=emit_library_start,emitter_step",
+        "--artifact=/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57k-emitter.js",
+        "--report=/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57k-emitter-build",
+        "--inputs-sha256=f6b9a3f155af63c7fd88e3c1acfe945b5ac5fdf83ab9015370cb46829132b637"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792792446847-4aac94e4c78d5da2.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "actualConsumer": {
+    "passed": true,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "bootstrapFixedpointClaim": false,
+    "cases": [
+      {
+        "name": "library",
+        "sourceSha256": "932163e5486d1d620e93cc8840f6b6b978b87227e95b27a4b07fb2dbc4e1d7e1",
+        "artifactSha256": "499da2251b920e3ce4fa6d17340603a1ac0dad3291a6891d1782541b78298024",
+        "baselineSha256": "499da2251b920e3ce4fa6d17340603a1ac0dad3291a6891d1782541b78298024",
+        "baseline": {
+          "bytes": 63560,
+          "definitions": 20,
+          "unique": 20,
+          "references": 60,
+          "forwarders": 5
+        },
+        "candidate": {
+          "bytes": 63560,
+          "definitions": 20,
+          "unique": 20,
+          "references": 60,
+          "forwarders": 5
+        },
+        "assertions": 28
+      },
+      {
+        "name": "recursive",
+        "sourceSha256": "5ce78eaf509ff3fd11d207b98f22eb7b49e4a31841da1e2dd70f2fbbaf60b3e1",
+        "artifactSha256": "be6dcd08e99094a213d06bfcc4b9f96308d5c3b3499938c24b16999c974eb75b",
+        "baselineSha256": "a7cc87158af840f9b4fadec1461139cfb164352352f9474952e444704cecef9a",
+        "baseline": {
+          "bytes": 60906,
+          "definitions": 14,
+          "unique": 14,
+          "references": 37,
+          "forwarders": 6
+        },
+        "candidate": {
+          "bytes": 60524,
+          "definitions": 8,
+          "unique": 8,
+          "references": 25,
+          "forwarders": 0
+        },
+        "assertions": 6
+      },
+      {
+        "name": "native",
+        "sourceSha256": "0a3429c96a7348ae7eeeb6fd7c372354d5b348b8eb4bc237c699809756b61689",
+        "artifactSha256": "0127f6d4b67b824853176135d6bfb9e8b4898f034b384de34a3f53445b8469f0",
+        "baselineSha256": "07a293a71e677eec5bb78f623dbe865dffe2352819fbce575aa8d4d297adc5b6",
+        "baseline": {
+          "bytes": 293041,
+          "definitions": 504,
+          "unique": 504,
+          "references": 1344,
+          "forwarders": 221
+        },
+        "candidate": {
+          "bytes": 274515,
+          "definitions": 315,
+          "unique": 315,
+          "references": 966,
+          "forwarders": 31
+        },
+        "assertions": 2
+      },
+      {
+        "name": "ordered-dispatch",
+        "sourceSha256": "a1568e3b35ab5f29d11cfd35331515b0af6fa5eacb2e99a19f41b5330f436391",
+        "artifactSha256": "052d5a215471338a632cd885f2bf2718f02bc758d407a155aed215fdda53faf0",
+        "baselineSha256": "9933de2483864479012887a42e6c49d57229f60cfef12d76ae3474275e85d58f",
+        "baseline": {
+          "bytes": 59348,
+          "definitions": 2,
+          "unique": 2,
+          "references": 10,
+          "forwarders": 1
+        },
+        "candidate": {
+          "bytes": 59229,
+          "definitions": 1,
+          "unique": 1,
+          "references": 8,
+          "forwarders": 0
+        },
+        "assertions": 5,
+        "switchStatements": 3
+      },
+      {
+        "name": "root-local-order",
+        "sourceSha256": "9ced588db2bffe85608fb9f9bf9b52aea35eb7b9d136cd0112f80beddaa339e6",
+        "artifactSha256": "a44536750e6ec020b41aac2d6d18dfb61861c6959e365f10c932d6bbbd272f54",
+        "baselineSha256": "b0e4eca28ee95c6cdf53dbbffbfe5f4c3fbce5fdf5adf90b7b50f7dab7b96e61",
+        "baseline": {
+          "bytes": 59464,
+          "definitions": 6,
+          "unique": 6,
+          "references": 18,
+          "forwarders": 3
+        },
+        "candidate": {
+          "bytes": 59248,
+          "definitions": 3,
+          "unique": 3,
+          "references": 12,
+          "forwarders": 0
+        },
+        "assertions": 3,
+        "scopeWarning": "Old diagnostic source was not native-admitted; it is NOT accepted source-language compatibility evidence. Correct ordered-subset replacement is exercised in full bootstrap-b."
+      }
+    ],
+    "seedSha256": "9e1201a3e63d09679795fd4e252ecea847da64e71f7ef1e3c57843ee5b526cf3",
+    "candidateSha256": "655ee5c37c5edd42ae96507e06ba27f95b67fa0710ceddc316ca61621c94f4ff",
+    "nativeCheckedBodies": 1719,
+    "assertionsSha256": "d937307d3281d055a352a85934efc743a1b48f4e613503b1ebc90f8a7f58f092"
+  },
+  "typedFrameInvestigation": {
+    "report": {
+      "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+      "compilerSha256": "85f46bbc0851ed4933c87e7f67088555bb95389649d0363678181ac3e85290d3",
+      "baseSha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+      "host": "linux/x64",
+      "conditions": {
+        "kernelChanges": 0,
+        "productionChanges": 0,
+        "casts": 0,
+        "fakeEquality": 0,
+        "hostAlgorithm": false
+      },
+      "cases": [
+        {
+          "name": "frames",
+          "source": "/tmp/bend-typedframes57k.gskdms/frames.bend",
+          "sourceSha256": "f7ecc2090a8faaf34227c0a279ba79d785b9e277fd79c64b863e2f979030e1ce",
+          "checkedDefinitions": 359,
+          "checkedEvents": 523,
+          "checked": true,
+          "build": {
+            "status": 0,
+            "signal": null,
+            "stdout": "",
+            "stderr": ""
+          },
+          "execution": {
+            "status": 0,
+            "signal": null,
+            "stdout": "Results{Summary{7n, 23n, 2345n}, Summary{9n, 61n, 6182n}, Summary{11n, 8n, 8n}, 49n}\n",
+            "stderr": ""
+          },
+          "consumerPass": true
+        },
+        {
+          "name": "duplicate_owner",
+          "source": "/tmp/bend-typedframes57k.gskdms/duplicate_owner.bend",
+          "sourceSha256": "154f791bbdf5c03cf133eb2dcdf50f2361f76206285670d10dd08a701c58f520",
+          "checked": false,
+          "error": "Error:\n- expected : owner\n- observed : owner (consumed more than once)\nLocation: duplicate\n5 | \n6>| def duplicate(owner: F.Owner) -> OwnerPair:\n  |               ^^^^^\n7 |   OwnerPair{owner, owner}"
+        },
+        {
+          "name": "reuse_frame",
+          "source": "/tmp/bend-typedframes57k.gskdms/reuse_frame.bend",
+          "sourceSha256": "3b26540601e675fa2b7024c57678231c32864e7bf11248bad6f83dc9045fc0e1",
+          "checked": false,
+          "error": "Error:\n- expected : frame\n- observed : frame (consumed more than once)\nLocation: reuse\n5 | \n6>| def reuse(frame: F.CaptureFrame) -> ReceiptPair:\n  |           ^^^^^\n7 |   ReceiptPair{F.apply(F.CaptureSite{}, frame, 1n), F.apply(F.CaptureSite{}, frame, 2n)}"
+        },
+        {
+          "name": "indexed_without_witness",
+          "source": "/tmp/bend-typedframes57k.gskdms/indexed_without_witness.bend",
+          "sourceSha256": "55f66f83f13be608e1155ffd682f6fdf0e340a173a1f24bb2395328f0759c15f",
+          "checked": false,
+          "error": "Error:\n- expected : Nat\n- observed : I\nContext:\n- I     : Type\n- O     : Type\n- digit : Nat\n- input : I\nLocation: apply_indexed\n12 |   match frame:\n13>|     case IndexedBump{digit}: F.append(input, digit)\n   |                                       ^^^^^\n14 |     case IndexedCapture{owner, digit}: F.Owned{owner, input, digit}"
+        }
+      ],
+      "pass": true
+    },
+    "source": {
+      "frames.bend": "import Base\n\n# A lease is affine even though its serial is observable Data. All resumption\n# sites transfer this live owner, never copy or replace it with its serial.\ntype Owner is Type:\n  Lease{serial: Nat}\n\ntype Owned is Type:\n  Owned{owner: Owner, value: Nat, trace: Nat}\n\ntype Site is Data:\n  BumpSite{}\n  CaptureSite{}\n  FinishSite{}\n\n# Three source continuation sites, all first-order environments.\ntype BumpFrame is Data:\n  BumpFrame{digit: Nat}\n\ntype CaptureFrame is Type:\n  CaptureOwner{owner: Owner, digit: Nat}\n\ntype FinishFrame is Data:\n  FinishFrame{digit: Nat}\n\ndef Frame(site: Site) -> Type:\n  match site:\n    case BumpSite{}: BumpFrame\n    case CaptureSite{}: CaptureFrame\n    case FinishSite{}: FinishFrame\n\ndef Input(site: Site) -> Type:\n  match site:\n    case BumpSite{}: Nat\n    case CaptureSite{}: Nat\n    case FinishSite{}: Owned\n\ndef Output(site: Site) -> Type:\n  match site:\n    case BumpSite{}: Nat\n    case CaptureSite{}: Owned\n    case FinishSite{}: Owned\n\ndef append(trace: Nat, digit: Nat) -> Nat:\n  Nat.add(Nat.mul(trace, 10n), digit)\n\n# Expose the concrete Data binder before contracting the Nat. The open\n# Input(site) family conservatively has kind Type, even in the refined arm.\ndef capture(owner: Owner, +number: Nat, digit: Nat) -> Owned:\n  Owned{owner, number, append(number, digit)}\n\n# Matching the closed site refines all three families together; no cast or\n# equality witness is supplied, and the owner is moved out of its frame once.\ndef apply(site: Site, frame: Frame(site), input: Input(site)) -> Output(site):\n  match site:\n    case BumpSite{}:\n      match frame:\n        case BumpFrame{digit}: append(input, digit)\n    case CaptureSite{}:\n      match frame:\n        case CaptureOwner{owner, digit}: capture(owner, input, digit)\n    case FinishSite{}:\n      match frame:\n        case FinishFrame{digit}:\n          match input:\n            case Owned{owner, value, trace}: Owned{owner, value, append(trace, digit)}\n\n# Requests and their genuine dependent result family follow production's\n# request/result pattern. The second request itself owns a live lease.\ntype Request is Type:\n  NumberRequest{seed: Nat}\n  LeaseRequest{owner: Owner, seed: Nat}\n\ndef RequestResult(request: Request) -> Type:\n  match request:\n    case NumberRequest{seed}: Nat\n    case LeaseRequest{owner, seed}: Owned\n\ndef request_step(request: Request) -> RequestResult(request):\n  match request:\n    case NumberRequest{seed}: seed\n    case LeaseRequest{owner, seed}:\n      +number = seed\n      Owned{owner, number, number}\n\n# Concrete source-site pending shapes preserve the adjacency invariant\n# structurally: Number -> Nat -> Owned -> Owned. No boxed existential input,\n# generic function field, dynamically untyped value or host scheduler exists.\ntype PendingNat is Type:\n  PendingNat{seed: Nat, frame: Frame(BumpSite{})}\n\ntype PendingOwned is Type:\n  PendingOwned{inner: PendingNat, frame: Frame(CaptureSite{})}\n\ntype PendingFinish is Type:\n  PendingFinish{inner: PendingOwned, frame: Frame(FinishSite{})}\n\ndef run_nat(pending: PendingNat) -> Nat:\n  match pending:\n    case PendingNat{seed, frame}:\n      apply(BumpSite{}, frame, request_step(NumberRequest{seed}))\n\ndef run_owned(pending: PendingOwned) -> Owned:\n  match pending:\n    case PendingOwned{inner, frame}:\n      apply(CaptureSite{}, frame, run_nat(inner))\n\ndef run_finish(pending: PendingFinish) -> Owned:\n  match pending:\n    case PendingFinish{inner, frame}:\n      apply(FinishSite{}, frame, run_owned(inner))\n\ntype Summary is Data:\n  Summary{serial: Nat, value: Nat, trace: Nat}\n\n# The only observer consumes the resulting live owner exactly once.\ndef close(result: Owned) -> Summary:\n  match result:\n    case Owned{owner, value, trace}:\n      match owner:\n        case Lease{serial}: Summary{serial, value, trace}\n\ndef exercise(serial: Nat, seed: Nat, first: Nat, second: Nat, third: Nat) -> Summary:\n  close(run_finish(PendingFinish{\n    PendingOwned{\n      PendingNat{seed, BumpFrame{first}},\n      CaptureOwner{Lease{serial}, second}\n    },\n    FinishFrame{third}\n  }))\n\ntype Results is Data:\n  Results{nested: Summary, other: Summary, request_owned: Summary, direct_nat: Nat}\n\ndef main() -> Results:\n  Results{\n    exercise(7n, 2n, 3n, 4n, 5n),\n    exercise(9n, 6n, 1n, 8n, 2n),\n    close(request_step(LeaseRequest{Lease{11n}, 8n})),\n    apply(BumpSite{}, BumpFrame{9n}, 4n)\n  }\n",
+      "duplicate_owner.bend": "import ./frames.bend as F\n\ntype OwnerPair is Type:\n  OwnerPair{left: F.Owner, right: F.Owner}\n\ndef duplicate(owner: F.Owner) -> OwnerPair:\n  OwnerPair{owner, owner}\n\ndef main() -> OwnerPair:\n  duplicate(F.Lease{7n})\n",
+      "reuse_frame.bend": "import ./frames.bend as F\n\ntype ReceiptPair is Type:\n  ReceiptPair{left: F.Owned, right: F.Owned}\n\ndef reuse(frame: F.CaptureFrame) -> ReceiptPair:\n  ReceiptPair{F.apply(F.CaptureSite{}, frame, 1n), F.apply(F.CaptureSite{}, frame, 2n)}\n\ndef main() -> ReceiptPair:\n  reuse(F.CaptureOwner{F.Lease{7n}, 4n})\n",
+      "indexed_without_witness.bend": "import Base\nimport ./frames.bend as F\n\n# Bend ADT parameters are uniform: writing this does not constrain I/O per\n# constructor, unlike a GADT declaring Capture : Frame<Nat, Owned>.\ntype IndexedFrame<-I: Type, -O: Type> is Type:\n  IndexedBump{digit: Nat}\n  IndexedCapture{owner: F.Owner, digit: Nat}\n  IndexedFinish{digit: Nat}\n\ndef apply_indexed(-I: Type, -O: Type, frame: IndexedFrame<I, O>, input: I) -> O:\n  match frame:\n    case IndexedBump{digit}: F.append(input, digit)\n    case IndexedCapture{owner, digit}: F.Owned{owner, input, digit}\n    case IndexedFinish{digit}: input\n\ndef main() -> Nat:\n  apply_indexed(Nat, Nat, IndexedBump{3n}, 2n)\n"
+    },
+    "scope": "Actual exact-kernel Linux native C check/execution; concrete3site family/affine owner only, not arbitrary heterogeneous production stack or performance proof.",
+    "limitation": "Uniform Frame<I,O> ADT fails native type refinement. Production Pending/Bound still require checked input/output adjacency and Progress<A> reconciliation; no production CPS change."
+  },
+  "acceptance": {
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "libraryExports": 15,
+    "libraryAssertions": 28,
+    "additionalAssertions": 13,
+    "perImageFixtures": 95,
+    "fullGateExpectedFixtures": 285,
+    "fullRootNativeBuild": "PASS8382/8382 bodies8772events26241msphysical2989784400",
+    "fixedpoint": false,
+    "speedClaim": false
+  },
+  "fullRootNativeProof": {
+    "status": "JS_GENERATED_NOT_YET_EXECUTED",
+    "provenancePath": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57k-full-a-native-build.provenance.json",
+    "provenanceSha256": "b28fd2ffc5a3e65d3da7e3e8b4c512b19f260b7250221ab63324475951bac45e",
+    "sourcePath": "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_v1.bend",
+    "sourceSha256": "e404aea222d4b03b76d33804447bbccd0f7f8712ff7ee95100654525a40f224c",
+    "exports": [
+      "parsed_module",
+      "parse_with_fuel",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step"
+    ],
+    "artifactPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57k-full-a.js",
+    "artifactSha256": "c27cead81e2171be74d19061c5307c216c2c840e66dc422e3007ae03537f068a",
+    "bytes": 12739684,
+    "eventsFullyValidated": 8772,
+    "checkedDefinitions": 8382,
+    "liveBodies": 8382,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "checkedOutputRetention": "native e",
+    "nativeRetention": "native checked e retained through all JS definition folding; scope-local higher caches released between definitions; no serialization or source-value fallback",
+    "nativeCheckedBodies": 8382,
+    "expectedSourceDefinitions": 8382,
+    "toolchain": "CANONICAL NATIVE LOAD/CHECK; CANONICAL JS PREPARE/EMIT/RELEASE; Node/V8 automatic GC",
+    "preparedCount": 8097,
+    "releasedCount": 8490,
+    "maxSimultaneousE": 8382,
+    "maxSimultaneousH": 2,
+    "countsCaveat": "Definition slots, not unique term graphs; signature metadata does not prepare higher bodies",
+    "runtime": {
+      "name": "node",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "heapLimitMiB": 3072,
+      "stackSizeMb": 256,
+      "heapSizeLimitBytes": 3271557120,
+      "manualGC": false
+    },
+    "cpuMs": 36188.972,
+    "compiledExecution": "NOT_RUN",
+    "selfhostGreen": false,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 2924953600,
+      "peakFootprintBytes": 2989784400,
+      "elapsedMs": 26241,
+      "timeoutMs": 600000,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/Users/ilyagulya/Projects/My/bend/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_v1.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step",
+        "--artifact=/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57k-full-a.js",
+        "--report=/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57k-full-a-native-build",
+        "--inputs-sha256=1c1c2d2d96bd347d735bfcc945e84b9a0b0a25c6e46957bb97fe2987b880f03f"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792792836072-2632ecb690f9ce49.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "frozenCorpus": {
+    "status": "PASS",
+    "corpusSha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+    "inputFiles": 50,
+    "moduleCount": 15,
+    "sourceDeclarations": 8403,
+    "compileMs": 142821.056083,
+    "phases": [
+      {
+        "name": "compiler-startup",
+        "wallMs": 159.135375,
+        "cpuMs": 198.269,
+        "memoryEnd": {
+          "rss": 205799424,
+          "heapTotal": 36077568,
+          "heapUsed": 26741128,
+          "external": 23740078,
+          "arrayBuffers": 12773409
+        }
+      },
+      {
+        "name": "load-parse",
+        "wallMs": 5109.865459,
+        "cpuMs": 6513.706,
+        "memoryEnd": {
+          "rss": 937885696,
+          "heapTotal": 627523584,
+          "heapUsed": 426631768,
+          "external": 10991532,
+          "arrayBuffers": 24863
+        }
+      },
+      {
+        "name": "expand",
+        "wallMs": 6835.545000000001,
+        "cpuMs": 7260.557,
+        "memoryEnd": {
+          "rss": 966361088,
+          "heapTotal": 750469120,
+          "heapUsed": 591762408,
+          "external": 10991532,
+          "arrayBuffers": 24863
+        }
+      },
+      {
+        "name": "check",
+        "wallMs": 124914.923208,
+        "cpuMs": 129176.489,
+        "memoryEnd": {
+          "rss": 1720238080,
+          "heapTotal": 1503412224,
+          "heapUsed": 1320440504,
+          "external": 10985907,
+          "arrayBuffers": 24863
+        }
+      },
+      {
+        "name": "emit",
+        "wallMs": 5654.536208000005,
+        "cpuMs": 7671.928,
+        "memoryEnd": {
+          "rss": 2091417600,
+          "heapTotal": 1822998528,
+          "heapUsed": 1636675368,
+          "external": 10985907,
+          "arrayBuffers": 24863
+        }
+      },
+      {
+        "name": "write-and-hash",
+        "wallMs": 137.6781670000055,
+        "cpuMs": 95.208,
+        "memoryEnd": {
+          "rss": 2133770240,
+          "heapTotal": 1837105152,
+          "heapUsed": 1650808712,
+          "external": 25087071,
+          "arrayBuffers": 14126027
+        }
+      },
+      {
+        "name": "output-import",
+        "wallMs": 255.661334000004,
+        "cpuMs": 241.272,
+        "memoryEnd": {
+          "rss": 2287075328,
+          "heapTotal": 1869053952,
+          "heapUsed": 1694231128,
+          "external": 39194035,
+          "arrayBuffers": 28232991
+        }
+      },
+      {
+        "name": "output-semantic-smoke",
+        "wallMs": 13.71366599999601,
+        "cpuMs": 14.953,
+        "memoryEnd": {
+          "rss": 2287861760,
+          "heapTotal": 1870102528,
+          "heapUsed": 1695324880,
+          "external": 39206723,
+          "arrayBuffers": 28245679
+        }
+      }
+    ],
+    "artifact": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-ir57k-compile-a.json.output.mjs",
+      "bytes": 14101164,
+      "sha256": "eb3d374abac9f7e45067174e75c1074966d933467402866eece29556f307559a"
+    },
+    "exportCount": 7720,
+    "exportSetSha256": "99efc6ef8538e35f5b6f549e39296bae814e654d48558f9ca7ba2aae2b1911f4",
+    "outputSmokePassed": true,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 2301886464,
+      "peakFootprintBytes": 2299572496,
+      "elapsedMs": 143446,
+      "timeoutMs": 600000,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "--stack-size=262144",
+        "/Users/ilyagulya/Projects/My/bend/evals/compiler_benchmark.ts",
+        "--worker",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-ir57k-compile-a.json.request.json",
+        "e04c75217d68415d09da7f288e9cb94679bd776db1e4a0665208185c22b8cf29"
+      ],
+      "label": "Comparable full-corpus component compiler",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792792862417-9420e8679b735b91.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "outputSmokeDriver": "Explicit captured frozen-v41 input runtime; not production ABI compatibility"
+  },
+  "firstFullGateFailure": {
+    "guardian": {
+      "status": "FAIL",
+      "reason": "command_exit",
+      "commandExitCode": 2,
+      "commandSignal": 0,
+      "peakRssBytes": 720912384,
+      "peakFootprintBytes": 518120968,
+      "elapsedMs": 6019,
+      "timeoutMs": 600000,
+      "command": [
+        "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_bootstrap_gate.ts",
+        "--component=checkpoints/.ir57k-full-a.js",
+        "--component-build=checkpoints/.ir57k-full-a-native-build.result.json",
+        "--root=checkpoints/.bootstrap_compiler_root_v1.bend",
+        "--root-manifest=checkpoints/selfhost-steps-driver-source-v1.json",
+        "--parser=checkpoints/bootstrap-parser-rebuild-ir57k-admit-a.js",
+        "--parser-build=checkpoints/bootstrap-parser-rebuild-ir57k-admit-a.native-build.result.json",
+        "--report=checkpoints/selfhost-ir57k-bootstrap-a.json",
+        "--worker"
+      ],
+      "label": "Real full selfhost step bootstrap",
+      "exitCode": 1,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792793005947-cc21edc68cf5aab7.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "failure": {
+      "phase": "seed-fixture-root-match-local-order-parse",
+      "error": "[object Object]",
+      "file": "/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-ir57k-bootstrap-a.json.cases/root-match-local-order.bend",
+      "sourceSha256": "9ced588db2bffe85608fb9f9bf9b52aea35eb7b9d136cd0112f80beddaa339e6",
+      "transport": "/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-ir57k-bootstrap-a.json.cases/parse-6.ast.json"
+    },
+    "cause": "Our new positive fixture illegally matched header locals in reverse order and repeated a previously matched binder; native2.0.37 rejects it before checking. Not a lowerer regression. Direct native CLI returned exit1; exact diagnostic and command recorded here.",
+    "nativeDiagnostic": "'a' can't be matched in this position (it is matched after a local statement or after a match on a later binder, it was already matched, or it is a def)",
+    "command": [
+      "bun",
+      "--smol",
+      "bend2/main.ts",
+      "checkpoints/selfhost-ir57k-bootstrap-a.json.cases/root-match-local-order.bend",
+      "--check-only"
+    ],
+    "correction": "Permanent fixture now exercises first, last and gapped ordered subsets, with captures of untested header parameters. No old fixture removed, count95 unchanged. Current full bootstrap-b reuses unchanged native seed/parser artifacts; only test source changed."
+  },
+  "codegenInvestigation": {
+    "findingsSha256": "62ef31d72ad90be9c5ea086a0934a62dc24f726e7986c29cf47efe31807ab1ae",
+    "archiveSha256": "19ef8bd859c8c5991ce898ba23db38e2bf62b264c832ed87adc24c497ce1f8ab",
+    "bothCoverage": {
+      "definitions": 8357,
+      "events": 8750,
+      "cSha256": "e4890debf5e210f8962c1c667a77401414d5ef420bfe98baf68db91218379e2f"
+    },
+    "observedNode26Ms": 300250,
+    "observedNode23Ms": 344297,
+    "observationLimit": "Both runs prof+trace;795962 synchronous trace records dominate native profile bucket. These are NOT normal-codegen CPU costs and do NOT prove a Node-version cause. No source integration. Untraced-observer profile launched separately."
+  }
+}

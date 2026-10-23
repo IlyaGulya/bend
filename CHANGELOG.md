@@ -159,9 +159,10 @@ latest one; the GitHub release carries the same notes.
   frozen corpus and unchanged 7720-export consumer pass; this is not a bootstrap
   fixedpoint or a five-minute build claim.
 - Definition-root matches lower directly into their owning Backend IR code when
-  scrutinees are exactly the nonempty positional header locals and the frame has
-  no instructions or captures. Other matches and returned closures retain their
-  existing lowering. The JavaScript renderer groups consecutive distinct-tag
+  every scrutinee is an already-evaluated header local and the frame has no
+  instructions or captures. Nonempty ordered subsets preserve all original
+  header parameters and operand order; effects and lazy symbols retain ordinary
+  closure lowering. The JavaScript renderer groups distinct-tag
   tests on the same stable local or capture into a switch, preserving lexical
   failure labels, later duplicate-tag cases and wildcard fallthrough.
 - Source map lookup selects the same Patricia branch through a structurally

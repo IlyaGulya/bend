@@ -1481,31 +1481,36 @@ def definition_local(state: State, key: String, code: U32, parameters: List<&2, 
     case False{} Some{native}: definitions(state, rest, registry, BIR.NativeDeclaration{key, native, quantities} <> result)
     case False{} None{}:
       definition_body(state, key, code, parameters, quantities, checked, rest, registry, result)
-# Only the definition's own positional locals may replace the administrative
-# match callable. Keep its authentic header parameters and lexical environment;
-# nested matches and returned lambdas still use their ordinary closure frames.
-def definition_identity(values: List<&2, BIR.Atom>, parameters: List<&2, BIR.Parameter>) -> Bool:
-  match values parameters:
-    case Nil{} Nil{}: True{}
-    case BIR.Local{id} <> rest BIR.Parameter{parameter, _} <> more:
-      Bool.and(U32.is_eq(id, parameter), definition_identity(rest, more))
-    case _ _: False{}
-def definition_identity_frame(frame: Frame, values: List<&2, BIR.Atom>, parameters: List<&2, BIR.Parameter>) -> Bool:
-  match frame parameters:
+# Header locals are already evaluated and remain in this code's lexical frame.
+# A subset or permutation needs no match closure; preserve the original header,
+# scrutinee order and case environment. Never inline lazy symbols or new effects.
+def definition_parameter(id: U32, parameters: List<&2, BIR.Parameter>) -> Bool:
+  match parameters:
+    case Nil{}: False{}
+    case BIR.Parameter{parameter, _} <> rest:
+      Bool.or(U32.is_eq(id, parameter), definition_parameter(id, rest))
+def definition_locals(values: List<&2, BIR.Atom>, parameters: List<&2, BIR.Parameter>) -> Bool:
+  match values:
+    case Nil{}: True{}
+    case BIR.Local{id} <> rest:
+      Bool.and(definition_parameter(id, parameters), definition_locals(rest, parameters))
+    case _ <> _: False{}
+def definition_locals_frame(frame: Frame, values: List<&2, BIR.Atom>, parameters: List<&2, BIR.Parameter>) -> Bool:
+  match frame values:
     case Frame{_, Nil{}, Nil{}, 0} _ <> _:
-      definition_identity(values, parameters)
+      definition_locals(values, parameters)
     case _ _: False{}
 def definition_atom_block(result: LowerResult<BIR.Atom>) -> LowerResult<BIR.Block>:
   match result:
     case LowerResult{state, value}: take_block(state, value)
-def definition_match_identity(identity: Bool, state: State, cases: List<&2, IR.Occurrence>, values: List<&2, BIR.Atom>, env: List<&2, Slot>, registry: Catalog.Registry) -> LowerResult<BIR.Block>:
-  match identity:
+def definition_match_direct(direct: Bool, state: State, cases: List<&2, IR.Occurrence>, values: List<&2, BIR.Atom>, env: List<&2, Slot>, registry: Catalog.Registry) -> LowerResult<BIR.Block>:
+  match direct:
     case True{}: checked_cases(state, cases, values, env, registry)
     case False{}: definition_atom_block(match_values(state, cases, values, env, registry))
 def definition_match_state(state: State, cases: List<&2, IR.Occurrence>, values: List<&2, BIR.Atom>, env: List<&2, Slot>, registry: Catalog.Registry, parameters: List<&2, BIR.Parameter>) -> LowerResult<BIR.Block>:
   match state:
     case State{source, next_code, local, frame, codes, failure}:
-      definition_match_identity(definition_identity_frame(frame, values, parameters), State{source, next_code, local, frame, codes, failure}, cases, values, env, registry)
+      definition_match_direct(definition_locals_frame(frame, values, parameters), State{source, next_code, local, frame, codes, failure}, cases, values, env, registry)
 def definition_match_values(result: LowerResult<List<&2, BIR.Atom>>, cases: List<&2, IR.Occurrence>, env: List<&2, Slot>, registry: Catalog.Registry, parameters: List<&2, BIR.Parameter>) -> LowerResult<BIR.Block>:
   match result:
     case LowerResult{state, values}:

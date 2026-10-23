@@ -185,6 +185,43 @@ duplicate-tag/wildcard:5. Реальный output содержит switch с т�
 не оправданы measured whole-stage результатом; existing128-node guard сохранён.
 Private evidence/patch записаны отдельно, не подменяют production classifier.
 
+Полный57j root затем прошёл8379/8379 native bodies,8769 events,
+25531ms /3015699280physicalbytes. Все94 seed fixtures PASS. Настоящий stage1:
+14370680bytes, SHAeaed045d38ac27213ddbc071d48c75aac094839922306a2a8ff295b1aada971a.
+Stage-one check154055.762834ms; stage-two-check начат329921.296834ms.
+Guardian600040ms снова остановил именно stage-two-check: нет stage2 output/
+byte comparison/emitted fixtures. Profiled unchanged stage1 Base123 check
+12031.690458ms; все2680654 host resumes,1017155 pending,838376 direct совпадают
+с57g. Малое уменьшение числа обёрток не устранило emitted-runtime overhead.
+
+В57k оспорено собственное слишком узкое57j eligibility: полный positional
+header не нужен. Nonempty ordered subsets header locals используют тот же
+code; membership проверяется явно, старый header/Use/env/order не меняются.
+Frame всё ещё без instructions/captures, Symbol/effectful operands сохраняют
+прежний путь. Complete emitter native1719 bodies; actual15-export28 assertions
+плюс13 native-compatible behavior assertions прошли. Полный Base output:
+504→315 code functions,221→31 identity forwarders; structural, не speed proof.
+Первоначальный новый fixture ошибочно включал reversed/repeated match binders:
+native2.0.37 отверг его ещё при parse, oracle правильно остановил полный gate.
+Три старых diagnostic assertions на этом input не считать native compatibility.
+Fixture исправлен на first/last/gapped ordered subsets;95/image сохранены.
+Все прежние cases остались, semantic oracle не ослаблен.
+
+Свежий full root57k нативно проверен8382/8382 bodies,8772 events,26241ms,
+physical2989784400bytes; SHA c27cead81e2171be74d19061c5307c216c2c840e66dc422e3007ae03537f068a.
+Полный frozen compile и unchanged7720-export consumer PASS142821.056083ms,
+check124914.923208ms,emit5654.536208ms,physical2299572496bytes.
+Output14101164bytes SHAeb3d374abac9f7e45067174e75c1074966d933467402866eece29556f307559a.
+Первый bootstrap-a остановлен на invalid новом fixture; bootstrap-b запускает
+исправленный полный corpus с неизменёнными admitted seed/parser artifacts.
+
+Отдельный first-order typed-frame эксперимент на NHS действительно нативно
+проверен и исполнен:359 bodies,523 events; affine Type owner проходит три
+конкретных site-indexed Frame/Input/Output семейства. Duplicate owner и reuse
+frame отклонены kernel. Наивный Frame<I,O> enum не уточняет I/O при constructor
+match и правильно отклонён. Это НЕ доказательство произвольного heterogeneous
+continuation stack или drop-in Progress<A>; production CPS не изменён.
+
 Первый настоящий gate57g остановлен600103ms во время stage-two-check:
 seed93 fixtures прошли; stage-one реально emitted14562034bytes,
 SHA3d7b43c127d2ab4f81dc5c38104dc90c83db3c7554bf6ee729ef27107b8a4c5d.
