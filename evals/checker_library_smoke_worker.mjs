@@ -10,7 +10,7 @@ import {runTemplateSteps,runCheckerSteps,runCheckedInspectionSteps,runLibraryEmi
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
 const tag=value=>value?.$?.split('.').at(-1);
 const ABI=['parsed_module','expand_modules_start','template_step','check_expanded_start','inspect_checked_start','checker_step','emit_modules_start','emit_library_start','emitter_step'];
-const exports=['zero','one','pack','make_pack','apply','identity','identity_probe','erased_probe','specialized_probe'];
+const exports=['zero','one','pack','make_pack','apply','identity','identity_probe','erased_probe','specialized_probe','local_twice','local_unused','local_order','over_order','over_generic','constructor_match'];
 const list=values=>values.reduceRight((tail,head)=>({$:'Con',head,tail}),{$:'Nil'});
 if(isMainThread){
  const request=JSON.parse(readFileSync(process.argv[2],'utf8'));
@@ -100,6 +100,29 @@ if(isMainThread){
   const poison=()=>{erasedCalls++;throw Error('Erased Bend argument was evaluated');};
   expect('erased-expression-keeps-second-live-argument',bit(api.erased_probe(poison,one)),'BitOne');
   expect('erased-expression-not-evaluated',erasedCalls,0);
+  let localCalls=0;
+  expect('shared-local-value',duo(api.local_twice(()=>{localCalls++;return one;},zero)),['BitOne','BitOne']);
+  expect('shared-local-evaluated-once',localCalls,1);
+  let unusedCalls=0;
+  expect('unused-local-result',bit(api.local_unused(()=>{unusedCalls++;return one;},zero)),'BitZero');
+  expect('unused-live-local-still-evaluated',unusedCalls,1);
+  const localOrder=[];
+  expect('ordered-local-values',duo(api.local_order(
+    ()=>{localOrder.push('first');return one;},
+    ()=>{localOrder.push('second');return zero;},zero,one)),['BitOne','BitZero']);
+  expect('local-evaluation-order',localOrder,['first','second']);
+  const namedOrder=[];
+  expect('named-over-application-value',duo(api.over_order(
+    ()=>{namedOrder.push('callee');return one;},
+    ()=>{namedOrder.push('argument');return zero;},zero,one)),['BitOne','BitZero']);
+  expect('named-over-application-order',namedOrder,['callee','argument']);
+  const genericOrder=[];
+  expect('generic-over-application-value',duo(api.over_generic(
+    left=>{genericOrder.push('callee');return right=>{genericOrder.push('apply');return api.pack(left,right);};},
+    ()=>{genericOrder.push('argument');return zero;},one,one)),['BitOne','BitZero']);
+  expect('generic-over-application-order',genericOrder,['callee','argument','apply']);
+  expect('constructor-eliminator-first-arm',bit(api.constructor_match(zero)),'BitOne');
+  expect('constructor-eliminator-default-chain',bit(api.constructor_match(one)),'BitZero');
   if(sha(readFileSync(artifact))!==sha(emitted.source))throw Error('Returned JS changed during consumer execution');
   send({event:'result',result:{passed:true,compilerBootstrapGreen:false,selfhostGreen:false,smokeOnly:true,runtime:{exports,rows,artifactExecutedUnchanged:true},parsedTransport}});
  }catch(error){send({event:'result',result:{passed:false,compilerBootstrapGreen:false,selfhostGreen:false,smokeOnly:true,failure:{phase,error:String(error),diagnostic:error.diagnostic}}});process.exitCode=2;}

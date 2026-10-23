@@ -1,5 +1,7 @@
-/** Own the complete check_modules source closure and its import graph. Native
- * 0.37 matches are factored from authentic declaration ASTs, never core patches.
+/** Own the complete check_modules/inspect_checked closures and their import graph.
+ * The emitter explicitly composes canonical CPS providers before native match
+ * factoring; source and transformed hashes remain distinct in its proof.
+ * Native 0.37 matches are factored from authentic ASTs, never core patches.
  * Regenerate only after parser admission: bun evals/checker_core_owned_source.ts
  */
 import {readFileSync,writeFileSync,mkdirSync,realpathSync} from 'node:fs';
@@ -7,6 +9,9 @@ import {createHash} from 'node:crypto';
 import {dirname,relative,resolve} from 'node:path';
 import {sourceOracle} from './bootstrap_source_oracle.ts';
 import {nativeSourceClosure,normalizeNativeMatchSource} from './native_match_source.ts';
+import {composeCanonicalCPSSource, type CPSCompositionProof} from './canonical_cps_source.ts';
+import {emitterStepConfig} from './js_emit_step_lower.ts';
+import {err_show, type Err} from '../bend2/bend.ts';
 const sourcePath='bend2/selfhost/checker.bend',source=readFileSync(sourcePath,'utf8');
 const dependencyPath='checkpoints/checker-core-dependency.json';
 const dependency=JSON.parse(readFileSync(dependencyPath,'utf8'));
@@ -27,13 +32,22 @@ const componentSource = header + definitions
 const oracle=await sourceOracle(sourcePath,componentSource);
 if(!oracle.accepted)throw Error('Canonical Checker source parse failed: '+String(oracle.error));
 const included=nativeSourceClosure(oracle,'check_modules');
+for(const name of nativeSourceClosure(oracle,'inspect_checked'))included.add(name);
 for(const name of omittedEntrypoints)if(included.has(name))throw Error('CheckerCore root now reaches public Template entrypoint '+name);
 const selected=definitions.filter(match=>included.has(match[1]!));
 if(selected.length!==included.size)throw Error('CheckerCore closure definitions drift');
 const blocks=selected.map(match=>canonicalBlocks.get(match[1]!)!);
 const slicePath='checkpoints/checker_core_owned_v1.bend';
 const modules=new Map<string,{input:string;output:string;original:string;source:string;extractions:unknown[]}>();
-const normalizedRoot=await normalizeNativeMatchSource(sourcePath,header+blocks.join(''));
+async function normalizeOwnedSource(path:string,text:string){
+  try{return await normalizeNativeMatchSource(path,text);}
+  catch(error){
+    if(error&&typeof error==='object'&&'$'in error&&error.$==='Err')
+      throw Error('Owned native-match normalization '+path+': '+err_show(error as Err));
+    throw error;
+  }
+}
+const normalizedRoot=await normalizeOwnedSource(sourcePath,header+blocks.join(''));
 function importSpelling(from:string,to:string):string{
   const path=relative(dirname(from),to).split('\\').join('/');
   return path.startsWith('.')?path:'./'+path;
@@ -50,7 +64,7 @@ async function ownImports(input:string,output:string,text:string):Promise<string
       if(relative(resolve('.'),file).startsWith('..'))throw Error('Owned source import is outside checkout '+file);
       owned={input:file,output:target,original,source:'',extractions:[]};
       modules.set(file,owned);
-      const normalized=await normalizeNativeMatchSource(file,original);
+      const normalized=await normalizeOwnedSource(file,original);
       owned.extractions=normalized.extractions;
       owned.source=await ownImports(file,target,normalized.source);
       const relocated=[...original.matchAll(/^import (\S+) as ([A-Za-z_]\w*)$/gm)].some(item=>{
@@ -68,24 +82,43 @@ async function ownImports(input:string,output:string,text:string):Promise<string
   return text;
 }
 const slice=await ownImports(sourcePath,slicePath,normalizedRoot.source);
-const componentSources:{mode:string;canonical:string;owned:string;canonicalSha256:string;sourceSha256:string;definitionNames:string[];declarationHashes:Record<string,string>;canonicalDefinitionNames:string[];canonicalDeclarationHashes:Record<string,string>;owners:Record<string,string>}[]=[];
+const componentSources:{mode:string;canonical:string;owned:string;canonicalSha256:string;sourceSha256:string;definitionNames:string[];declarationHashes:Record<string,string>;canonicalDefinitionNames:string[];canonicalDeclarationHashes:Record<string,string>;owners:Record<string,string>;composition?:CPSCompositionProof;loweringDefinitionNames?:string[];loweringDeclarationHashes?:Record<string,string>}[]=[];
+const componentInputs=new Map<string,string>();
 for(const[mode,canonical,output]of [['emitter','bend2/selfhost/js_emit.bend','checkpoints/js_emit_owned_v1.bend'],['template','bend2/selfhost/template.bend','checkpoints/template_owned_v1.bend']]){
-  const original=readFileSync(canonical!,'utf8'), normalized=await normalizeNativeMatchSource(canonical!,original);
+  const original=readFileSync(canonical!,'utf8');
+  const closure=mode==='emitter'?emitterStepConfig.providerClosure:undefined;
+  const composition=closure?.length?await composeCanonicalCPSSource(canonical!,closure):undefined;
+  for(const[path,text]of composition?.inputs??[[canonical!,original]]){
+    if(componentInputs.has(path)&&componentInputs.get(path)!==text)throw Error('Mixed component canonical input '+path);
+    componentInputs.set(path,text);
+  }
+  const loweringSource=composition?.source??original;
+  const normalized=await normalizeOwnedSource(canonical!,loweringSource);
   const text=await ownImports(canonical!,output!,normalized.source);
   const starts=[...text.matchAll(/^def ([A-Za-z_]\w*)\(/gm)], canonicalStarts=[...original.matchAll(/^def ([A-Za-z_]\w*)\(/gm)];
-  componentSources.push({mode:mode!,canonical:canonical!,owned:output!,canonicalSha256:sha(original),sourceSha256:sha(text),definitionNames:starts.map(item=>item[1]!),declarationHashes:Object.fromEntries(starts.map((item,index)=>[item[1]!,sha(text.slice(item.index,starts[index+1]?.index??text.length))])),canonicalDefinitionNames:canonicalStarts.map(item=>item[1]!),canonicalDeclarationHashes:Object.fromEntries(canonicalStarts.map((item,index)=>[item[1]!,sha(original.slice(item.index,canonicalStarts[index+1]?.index??original.length))])),owners:Object.fromEntries(normalized.extractions.map(row=>[row.helper,row.owner]))});
-  writeFileSync(output!,text);
+  const loweringStarts=[...loweringSource.matchAll(/^def ([A-Za-z_]\w*)\(/gm)];
+  componentSources.push({mode:mode!,canonical:canonical!,owned:output!,canonicalSha256:sha(original),sourceSha256:sha(text),definitionNames:starts.map(item=>item[1]!),declarationHashes:Object.fromEntries(starts.map((item,index)=>[item[1]!,sha(text.slice(item.index,starts[index+1]?.index??text.length))])),canonicalDefinitionNames:canonicalStarts.map(item=>item[1]!),canonicalDeclarationHashes:Object.fromEntries(canonicalStarts.map((item,index)=>[item[1]!,sha(original.slice(item.index,canonicalStarts[index+1]?.index??original.length))])),owners:Object.fromEntries(normalized.extractions.map(row=>[row.helper,row.owner])),...(composition?{composition:composition.proof,loweringDefinitionNames:loweringStarts.map(item=>item[1]!),loweringDeclarationHashes:Object.fromEntries(loweringStarts.map((item,index)=>[item[1]!,sha(loweringSource.slice(item.index,loweringStarts[index+1]?.index??loweringSource.length))]))}:{})});
+  if(composition){
+    const file=realpathSync(canonical!);
+    if(modules.has(file))throw Error('CPS component was already owned through a native import '+canonical);
+    // Route later component/driver imports through this authenticated root.
+    // Re-owning its raw canonical imports would reintroduce the provider bodies
+    // deliberately moved into CPS, and attempt native-only normalization there.
+    modules.set(file,{input:file,output:resolve(output!),original,source:text,extractions:normalized.extractions});
+  }else writeFileSync(output!,text);
 }
+for(const[path,text]of componentInputs)if(readFileSync(path,'utf8')!==text)throw Error('Component canonical source changed during generation '+path);
 for(const[path,text]of protectedInputs)if(readFileSync(path,'utf8')!==text)throw Error('Protected input changed '+path);
 if(readFileSync(sourcePath,'utf8')!==source)throw Error('Canonical source changed during generation');
 const driver=protectedInputs.get('checkpoints/checker_core_driver.bend')!;
 const anchor='import ./checker_core_slice.bend as CheckerCore';
 if(driver.split(anchor).length!==2)throw Error('Frozen driver import anchor drift');
 const driverPath='checkpoints/checker_core_owned_driver_v1.bend';
-// The driver shares the same owned Ast/Loader identities; copying its JSEmit
-// import graph avoids mixing canonical and owned datatype namespaces.
-const driverSource=await ownImports('checkpoints/checker_core_driver.bend',driverPath,driver.replace(anchor,'import ./checker_core_owned_v1.bend as CheckerCore').replace('import ./checker_core_owned_v1.bend as CheckerCore\n',''));
+// The frozen driver is provenance input, not a production ABI template.
+const driverTemplate='import ../bend2/selfhost/loaded_module.bend as Loader\nimport ../bend2/selfhost/ast.bend as Ast\nimport ../bend2/selfhost/checked_frontend.bend as Checked\nimport ../bend2/selfhost/js_emit.bend as JSEmit\n\ndef parsed_module(namespace: String, module: Ast.Module) -> Loader.LoadedModule:\n  Loader.LoadedModule{namespace, module}\n\ndef check_expanded(modules: List<&2, Loader.LoadedModule>) -> Checked.CheckResult:\n  CheckerCore.check_modules(modules, Nil{})\n\ndef emit_modules(program: Checked.CheckedProgram) -> JSEmit.EmitResult:\n  JSEmit.emit(program)\n';
+const driverSource=await ownImports('checkpoints/checker_core_driver.bend',driverPath,driverTemplate);
 const ownedLoader=modules.get(realpathSync('bend2/selfhost/loaded_module.bend'))!;
+const ownedChecked=modules.get(realpathSync('bend2/selfhost/checked_frontend.bend'))!;
 for(const owned of modules.values()){
   if(readFileSync(owned.input,'utf8')!==owned.original)throw Error('Canonical dependency changed during generation '+owned.input);
   if(owned.output===owned.input)continue;
@@ -93,10 +126,10 @@ for(const owned of modules.values()){
   writeFileSync(owned.output,owned.source);
 }
 writeFileSync(slicePath,slice);
-writeFileSync('checkpoints/checker_core_owned_component_v1.bend','import '+importSpelling('checkpoints/checker_core_owned_component_v1.bend',ownedLoader.output)+' as Loader\nimport ./checker_core_owned_v1.bend as CheckerCore\n\ndef check_expanded(modules: List<&2, Loader.LoadedModule>) -> CheckerCore.CheckResult:\n  CheckerCore.check_modules(modules, Nil{})\n');
+writeFileSync('checkpoints/checker_core_owned_component_v1.bend','import '+importSpelling('checkpoints/checker_core_owned_component_v1.bend',ownedLoader.output)+' as Loader\nimport '+importSpelling('checkpoints/checker_core_owned_component_v1.bend',ownedChecked.output)+' as Checked\nimport ./checker_core_owned_v1.bend as CheckerCore\n\ndef check_expanded(modules: List<&2, Loader.LoadedModule>) -> Checked.CheckResult:\n  CheckerCore.check_modules(modules, Nil{})\n');
 writeFileSync(driverPath,'import ./checker_core_owned_v1.bend as CheckerCore\n'+driverSource);
 const normalizedDefinitions=[...slice.matchAll(/^def ([A-Za-z_]\w*)\(/gm)];
 const normalizedDeclarationHashes=Object.fromEntries(normalizedDefinitions.map((match,index)=>[match[1]!,sha(slice.slice(match.index,normalizedDefinitions[index+1]?.index??slice.length))]));
 const normalizedOwners=Object.fromEntries(normalizedRoot.extractions.map(row=>[row.helper,row.owner]));
-writeFileSync('checkpoints/checker-core-owned-source-v1.json',JSON.stringify({schemaVersion:2,source:sourcePath,sourceSha256:sha(source),slice:slicePath,sliceSha256:sha(slice),root:'check_modules',closureDiscovery:'Fixedpoint of binding-aware authentic sourceOracle Body references over every canonical definition; fresh complete closure, not historical membership.',definitions:selected.length,definitionNames:selected.map(match=>match[1]!),normalizedDefinitionNames:normalizedDefinitions.map(match=>match[1]!),normalizedDeclarationHashes,normalizedOwners,componentSources,driver:driverPath,driverSha256:sha('import ./checker_core_owned_v1.bend as CheckerCore\n'+driverSource),rootClosure:selected.map(match=>({name:match[1]!,exactCanonicalBlockSha256:sha(canonicalBlocks.get(match[1]!)!)})),historicalDefinitionCount:dependency.included.length,exactCanonicalSignaturesBodiesQuantities:false,sourceOnlyParameterMatchFactoring:true,rootExtractions:normalizedRoot.extractions,ownedModules:[...modules.values()].map(owned=>({source:owned.input,sourceSha256:sha(owned.original),output:owned.output,outputSha256:sha(owned.source),extractions:owned.extractions})),unreachableEntrypoints:omittedEntrypoints,protectedInputs:[...protectedInputs].map(([path,text])=>({path,sha256:sha(text)}))},null,2)+'\n');
+writeFileSync('checkpoints/checker-core-owned-source-v1.json',JSON.stringify({schemaVersion:2,source:sourcePath,sourceSha256:sha(source),slice:slicePath,sliceSha256:sha(slice),root:'check_modules',publicRoots:['check_modules','inspect_checked'],closureDiscovery:'Union of fixedpoints of binding-aware authentic sourceOracle Body references from checking and explicit owner-preserving inspection; fresh complete closure, not historical membership.',definitions:selected.length,definitionNames:selected.map(match=>match[1]!),normalizedDefinitionNames:normalizedDefinitions.map(match=>match[1]!),normalizedDeclarationHashes,normalizedOwners,componentSources,driver:driverPath,driverSha256:sha('import ./checker_core_owned_v1.bend as CheckerCore\n'+driverSource),rootClosure:selected.map(match=>({name:match[1]!,exactCanonicalBlockSha256:sha(canonicalBlocks.get(match[1]!)!)})),historicalDefinitionCount:dependency.included.length,exactCanonicalSignaturesBodiesQuantities:false,sourceOnlyParameterMatchFactoring:true,rootExtractions:normalizedRoot.extractions,ownedModules:[...modules.values()].map(owned=>({source:owned.input,sourceSha256:sha(owned.original),output:owned.output,outputSha256:sha(owned.source),extractions:owned.extractions})),unreachableEntrypoints:omittedEntrypoints,protectedInputs:[...protectedInputs].map(([path,text])=>({path,sha256:sha(text)}))},null,2)+'\n');
 console.log(JSON.stringify({slice:slicePath,definitions:selected.length}));

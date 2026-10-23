@@ -14,6 +14,7 @@ import * as B from '../bend2/bend.ts';
 import type {ParserParameter, ParserSignature} from './parser_full_graph.ts';
 import {renderBody} from './parser_full_body_render.ts';
 import {LexicalTypes, freeBinderIds, termChildren, type Binding} from './parser_full_type_env.ts';
+import {composeCanonicalCPSSource, type CPSProviderClosure} from './canonical_cps_source.ts';
 
 export const checkerStepConfig = {
   canonical: 'bend2/selfhost/checker.bend', owned: 'checkpoints/checker_core_owned_v1.bend',
@@ -27,7 +28,7 @@ export const checkerStepConfig = {
   output: 'checkpoints/checker_core_steps_v1.bend',
   component: 'checkpoints/checker_core_steps_component_v1.bend',
   driver: 'checkpoints/checker_core_steps_driver_v1.bend', manifest: 'checkpoints/checker-core-steps-v1.json',
-  mode: 'checker', root: 'check_modules', result: 'CheckResult',
+  mode: 'checker', root: 'check_modules', result: 'Checked.CheckResult',
 } as const;
 export type StepConfig = {
   canonical: string; owned: string; dependency: string; ownedManifest: string; ownedDriver?: string;
@@ -37,6 +38,8 @@ export type StepConfig = {
   output: string; component: string; driver?: string; manifest: string;
   mode: 'checker' | 'emitter' | 'template'; root: string; result: string;
   checkerOutput?: string; checkerManifest?: string;
+  /** Entire canonical provider modules admitted into the same typed CPS boundary. */
+  providerClosure?: CPSProviderClosure;
   generator: string;
 };
 export async function generateNativeSteps(paths: StepConfig) {
@@ -54,7 +57,7 @@ const inputPaths: string[] = [paths.canonical, paths.owned, paths.dependency, pa
 const inputs = new Map(inputPaths.map(path => [path, readFileSync(path, 'utf8')]));
 for (const path of ['evals/checker_core_step_lower.ts', 'evals/checker_core_owned_source.ts', 'evals/js_emit_step_lower.ts', 'evals/template_step_lower.ts',
   'bend2/bend.ts', 'evals/parser_full_graph.ts', 'evals/parser_full_body_render.ts', 'evals/parser_full_type_env.ts',
-  'evals/native_match_source.ts', 'evals/parser_full_declarations.ts', 'evals/bootstrap_source_oracle.ts',
+  'evals/native_match_source.ts', 'evals/parser_full_declarations.ts', 'evals/bootstrap_source_oracle.ts', 'evals/canonical_cps_source.ts',
   ...(paths.generator ? [paths.generator] : [])]) {
   if (!inputs.has(path)) {inputPaths.push(path); inputs.set(path, readFileSync(path, 'utf8'));}
 }
@@ -144,24 +147,41 @@ const header = source.slice(0, starts[0]!.index);
 if (paths.mode === 'checker' && /^import .* as Template$/m.test(header)) throw Error('CheckerCore must not import Template');
 const canonical = inputs.get(paths.canonical)!;
 if (componentProof.canonicalSha256 !== sha(canonical)) throw Error('Owned component is not pinned to its current canonical source');
-const canonicalStarts = [...mask(canonical).matchAll(/^def ([A-Za-z_]\w*)\(/gm)];
-const canonicalBlocks = new Map(canonicalStarts.map((match, i) => [match[1]!, canonical.slice(match.index, canonicalStarts[i + 1]?.index ?? canonical.length)]));
-const canonicalNames=new Set<string>(componentProof.canonicalDefinitionNames);
-for(const name of canonicalNames)if(!names.has(name)||componentProof.canonicalDeclarationHashes[name]!==sha(canonicalBlocks.get(name)??''))
-  throw Error('Canonical declaration lost or changed during native match ownership '+name);
+const originalStarts = [...mask(canonical).matchAll(/^def ([A-Za-z_]\w*)\(/gm)];
+const originalBlocks = new Map(originalStarts.map((match, i) => [match[1]!, canonical.slice(match.index, originalStarts[i + 1]?.index ?? canonical.length)]));
+for(const name of componentProof.canonicalDefinitionNames)
+  if(componentProof.canonicalDeclarationHashes[name]!==sha(originalBlocks.get(name)??''))
+    throw Error('Canonical declaration provenance drift '+name);
+const composition = paths.providerClosure?.length
+  ? await composeCanonicalCPSSource(paths.canonical, paths.providerClosure) : undefined;
+if(JSON.stringify(componentProof.composition)!==JSON.stringify(composition?.proof))
+  throw Error('Canonical provider closure/composition provenance drift');
+if(composition)for(const[path,text]of composition.inputs){
+  if(inputs.has(path)&&inputs.get(path)!==text)throw Error('Composed source input changed '+path);
+  if(!inputs.has(path)){inputPaths.push(path);inputs.set(path,text);}
+}
+const loweringCanonical=composition?.source??canonical;
+const canonicalStarts = [...mask(loweringCanonical).matchAll(/^def ([A-Za-z_]\w*)\(/gm)];
+const canonicalBlocks = new Map(canonicalStarts.map((match, i) => [match[1]!, loweringCanonical.slice(match.index, canonicalStarts[i + 1]?.index ?? loweringCanonical.length)]));
+const canonicalNames=new Set<string>(composition?componentProof.loweringDefinitionNames:componentProof.canonicalDefinitionNames);
+const loweringDeclarationHashes:Record<string,string>=composition?componentProof.loweringDeclarationHashes:componentProof.canonicalDeclarationHashes;
+if(composition&&(canonicalStarts.length!==canonicalNames.size
+  ||composition.proof.declarations.filter(row=>row.kind==='def').length!==canonicalNames.size))
+  throw Error('Complete canonical provider declaration coverage drift');
+for(const name of canonicalNames)if(!names.has(name)||loweringDeclarationHashes[name]!==sha(canonicalBlocks.get(name)??''))
+  throw Error('Authenticated CPS declaration lost or changed during native match ownership '+name);
 for(const name of names)if(!canonicalNames.has(name)&&!canonicalNames.has(componentProof.owners[name]))
   throw Error('Normalized helper has no authenticated canonical owner '+name);
-// CPS already gives computed/nested matches their own typed parameter helpers.
-// Lower the authenticated original declarations directly, rather than turning
-// the native-only factoring helpers into another request/continuation layer.
-// Imported native providers retain their separately authenticated normalization.
+// CPS consumes either exact original blocks or explicitly authenticated AST
+// composition blocks. Provider canonical hashes remain separate and unchanged;
+// native-only factoring helpers never masquerade as canonical declarations.
 source = header + [...canonicalNames].map(name => canonicalBlocks.get(name)!).join('');
 clean = mask(source);
 starts = [...clean.matchAll(/^def ([A-Za-z_]\w*)\(/gm)];
 names = new Set(starts.map(match => match[1]!));
 if (starts.length !== canonicalNames.size || names.size !== canonicalNames.size
   || [...names].some(name => !canonicalNames.has(name)))
-  throw Error('Original canonical CPS declaration coverage drift');
+  throw Error('Authenticated CPS declaration coverage drift');
 const aliases: Record<string, string> = Object.create(null);
 for (const match of header.matchAll(/^import (\S+) as ([A-Za-z_]\w*)$/gm)) aliases[match[2]!] = posix.normalize(match[1]!).replace(/\.bend$/, '');
 for (const imported of Object.values(aliases)) {
@@ -256,7 +276,7 @@ function fail(name: string, reason: string, term?: B.LTerm): never {
 const definitions: Definition[] = starts.map((start, index) => {
   const name = start[1]!, begin = start.index!, end = starts[index + 1]?.index ?? source.length;
   const block = source.slice(begin, end);
-  if(componentProof.canonicalDeclarationHashes[name]!==sha(block))fail(name,'Original declaration is not authenticated by its canonical source manifest');
+  if(loweringDeclarationHashes[name]!==sha(block))fail(name,'CPS declaration is not authenticated by its canonical source/composition manifest');
   const signature = /^def [A-Za-z_]\w*\((.*)\) -> (.*):$/.exec(source.slice(begin, source.indexOf('\n', begin)));
   if (!signature) fail(name, 'Unsupported signature layout');
   const p: B.Parse = {book, dir: resolve(dirname(paths.owned)) + '/', str: source, pos: begin,
@@ -440,14 +460,15 @@ const resultKind = allResultsData ? 'Data' : 'Type';
 const resultQuantity = (name: string): B.Quant => resultKinds[name] === 'Data' ? B.Many() : B.Lone();
 const sourceEdges = new Map([...names].map(name => [name, new Set<string>()]));
 for (const effect of effects) sourceEdges.get(effect.caller)!.add(effect.callee);
-const reachable = new Set<string>(), pending = [paths.root];
+const publicRoots=paths.mode==='checker'?[paths.root,'inspect_checked']:paths.mode==='emitter'?[paths.root,'emit_library']:[paths.root];
+const reachable = new Set<string>(), pending = [...publicRoots];
 while (pending.length) {
   const name = pending.pop()!;
   if (reachable.has(name)) continue;
   if (!sourceEdges.has(name)) throw Error('Native step entry is missing from exact source closure');
   reachable.add(name); pending.push(...sourceEdges.get(name)!);
 }
-if (paths.mode === 'checker' && reachable.size !== names.size) throw Error('Source contains definitions outside the authenticated ' + paths.root + ' closure: ' + [...names].filter(name => !reachable.has(name)).join(', '));
+if (paths.mode === 'checker' && reachable.size !== names.size) throw Error('Source contains definitions outside the authenticated public roots '+publicRoots.join(', ')+': ' + [...names].filter(name => !reachable.has(name)).join(', '));
 // Direct values are deliberately limited to non-constructing projections and
 // selectors with a live source argument. Returning a bound value or a nullary
 // constructor cannot materialize a large constant or rebuild captured records.
@@ -1148,23 +1169,36 @@ def ${chunkFunction}(-A: Type, fuel: Nat, progress: ${progressType}<A>) -> ${pro
 def ${stepFunction}(request: ${requestType}) -> ${progressType}<${resultFunction}(request)>:
   ${chunkFunction}(${resultFunction}(request), ${nativeChunkQuantum}n, ${rawStepFunction}(request))
 `);
-const startArguments = paths.mode === 'checker' ? 'modules, Nil{}' : 'modules';
-chunks.push('\ndef ' + startFunction + '(modules: List<&2, Loader.LoadedModule>) -> ' + progressType + '<' + paths.result + '>:\n  ' + chunkFunction + '(' + paths.result + ', ' + nativeChunkQuantum + 'n, ' + pendingType + '{' + requestGroup.get(paths.root)!.constructor + '{' + requestName.get(paths.root)! + '{' + startArguments + '}}, box => ' + finishedType + '{box}})\n');
+const startInput = paths.mode === 'emitter' ? 'program: Checked.CheckedProgram' : 'modules: List<&2, Loader.LoadedModule>';
+const startArguments = paths.mode === 'checker' ? 'modules, Nil{}' : paths.mode === 'emitter' ? 'program' : 'modules';
+function typedStart(name:string, root:string, parameters:string, arguments_:string, result:string){
+ const group=requestGroup.get(root),request=requestName.get(root);
+ if(!group||!request)throw Error('Missing typed public root '+root);
+ return '\ndef '+name+'('+parameters+') -> '+progressType+'<'+result+'>:\n  '+chunkFunction+'('+result+', '+nativeChunkQuantum+'n, '+pendingType+'{'+group.constructor+'{'+request+'{'+arguments_+'}}, box => '+finishedType+'{box}})\n';
+}
+chunks.push(typedStart(startFunction,paths.root,startInput,startArguments,paths.result));
+if(paths.mode==='checker')chunks.push(typedStart('checker_inspect_start','inspect_checked','program: Checked.CheckedProgram','program','Checked.Inspection'));
+if(paths.mode==='emitter')chunks.push(typedStart('emitter_library_start','emit_library','program: Checked.CheckedProgram, exports: List<&2, String>','program, exports','EmitResult'));
 const output = chunks.join('');
 const alias = paths.mode === 'checker' ? 'CheckerCore' : paths.mode === 'emitter' ? 'JSEmit' : 'Template';
 const wrapper = paths.mode === 'checker' ? 'check_expanded_start' : paths.mode === 'emitter' ? 'emit_modules_start' : 'expand_modules_start';
 const outputImport = './' + posix.basename(paths.output);
-const wrappers = 'def ' + wrapper + '(modules: List<&2, Loader.LoadedModule>) -> ' + alias + '.' + progressType + '<' + alias + '.' + paths.result + '>:\n  ' + alias + '.' + startFunction + '(modules)\n\ndef ' + stepFunction + '(request: ' + alias + '.' + requestType + ') -> ' + alias + '.' + progressType + '<' + alias + '.' + resultFunction + '(request)>:\n  ' + alias + '.' + stepFunction + '(request)';
+const resultType=paths.result.includes('.')?paths.result:alias+'.'+paths.result;
+const wrappers = 'def ' + wrapper + '('+startInput+') -> ' + alias + '.' + progressType + '<' + resultType + '>:\n  ' + alias + '.' + startFunction + '('+(paths.mode==='emitter'?'program':'modules')+')\n\n'
+ + (paths.mode==='checker'?'def inspect_checked_start(program: Checked.CheckedProgram) -> CheckerCore.CheckerProgress<Checked.Inspection>:\n  CheckerCore.checker_inspect_start(program)\n\n':'')
+ + (paths.mode==='emitter'?'def emit_library_start(program: Checked.CheckedProgram, exports: List<&2, String>) -> JSEmit.EmitterProgress<JSEmit.EmitResult>:\n  JSEmit.emitter_library_start(program, exports)\n\n':'')
+ + 'def ' + stepFunction + '(request: ' + alias + '.' + requestType + ') -> ' + alias + '.' + progressType + '<' + alias + '.' + resultFunction + '(request)>:\n  ' + alias + '.' + stepFunction + '(request)';
 const loaderImport=header.match(/^import (\S+) as Loader$/m)?.[0];
-if(!loaderImport)throw Error('Typed step component has no authenticated Loader import');
-const component = loaderImport+'\nimport ' + outputImport + ' as ' + alias + '\n\n' + wrappers + '\n';
+const checkedImport=header.match(/^import (\S+) as Checked$/m)?.[0];
+if(paths.mode!=='emitter'&&!loaderImport||paths.mode!=='template'&&!checkedImport)throw Error('Typed step component has no authenticated boundary import');
+const component = [loaderImport,checkedImport].filter(Boolean).join('\n')+'\nimport ' + outputImport + ' as ' + alias + '\n\n' + wrappers + '\n';
 let driver: string | undefined;
 if (paths.driver) {
 const driverSource = paths.mode === 'checker' ? inputs.get(paths.ownedDriver!)! : inputs.get(paths.checkerOutput!)!;
 const oldImport = paths.mode === 'checker' ? 'import ./checker_core_owned_v1.bend as CheckerCore' : driverSource.match(/^import \S+ as JSEmit$/m)?.[0];
 const oldWrapper = paths.mode === 'checker'
-  ? 'def check_expanded(modules: List<&2, Loader.LoadedModule>) -> CheckerCore.CheckResult:\n  CheckerCore.check_modules(modules, Nil{})'
-  : 'def emit_modules(modules: List<&2, Loader.LoadedModule>) -> JSEmit.EmitResult:\n  JSEmit.emit(modules)';
+  ? 'def check_expanded(modules: List<&2, Loader.LoadedModule>) -> Checked.CheckResult:\n  CheckerCore.check_modules(modules, Nil{})'
+  : 'def emit_modules(program: Checked.CheckedProgram) -> JSEmit.EmitResult:\n  JSEmit.emit(program)';
 if (!oldImport || driverSource.split(oldImport).length !== 2 || driverSource.split(oldWrapper).length !== 2) throw Error('Derived driver wrapper anchor drift');
 driver = driverSource.replace(oldImport, 'import ' + outputImport + ' as ' + alias).replace(oldWrapper, wrappers);
 }
@@ -1193,7 +1227,10 @@ const manifest = {
     selfRecursiveFunctions: [chunkFunction],
   },
   ffi: false, source: paths.owned, sourceSha256: sha(ownedSource), canonical: paths.canonical, canonicalSha256: sha(canonical),
-  loweringSourceSha256: sha(source), loweringSourcePolicy: 'Original authenticated canonical declaration blocks under the owned native-provider header; computed and nested matches factored once by typed CPS, not pre-expanded into source requests.',
+  loweringSourceSha256: sha(source), loweringSourcePolicy: composition
+    ? 'Binding-aware AST composition of every declaration in the explicit canonical provider closure, under the owned native-provider header; exact canonical source/declaration hashes and composed hashes are separate, with complete symbol ownership. Typed CPS factors matches once.'
+    : 'Original authenticated canonical declaration blocks under the owned native-provider header; computed and nested matches factored once by typed CPS, not pre-expanded into source requests.',
+  canonicalComposition: composition?.proof,
   sourceHeaderSha256: sha(header), derivedHeaderSha256: sha(outputHeader),
   sourceTypeDeclarations: [...mask(header).matchAll(/^type ([A-Za-z_]\w*)/gm)].map(match => {
     const name = match[1]!, declaration = book.tlds[name];
@@ -1211,7 +1248,7 @@ const manifest = {
   exactCanonicalCoverage: true, definitionCount: definitions.length, excludedDefinitions: [],
   canonicalCoverage: [...canonicalNames].sort(), nativeMatchNormalizationOwners: componentProof.owners,
   normalizedSourceDeclarationHashes: componentProof.declarationHashes,
-  sourceClosureRoot: paths.root, reachableDefinitions: [...reachable].sort(), ownedManifest: paths.ownedManifest,
+  sourceClosureRoot: paths.root, publicRoots, reachableDefinitions: [...reachable].sort(), ownedManifest: paths.ownedManifest,
   reachableRootSubset: [...reachable].sort(), allCoverage: [...names].sort(),
   outsideRootDefinitions: [...names].filter(name => !reachable.has(name)).sort(), omittedDefinitions: [],
   coverage: definitions.map(def => ({name: def.name, request: requestName.get(def.name), requestEnvelope: requestGroup.get(def.name)!.constructor, stepBody: stepName.get(def.name), pureBody: pureName.get(def.name), sourceSha256: sha(def.block), begin: def.begin, end: def.end, result: def.resultSource,

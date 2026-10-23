@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "status": "INTEGRATION_CHECKPOINT_NOT_ACCEPTED",
+  "version": "57b",
+  "previousCheckpoint": "3728d396",
+  "acceptedNativeBaseline": "2b3efa80",
+  "sourceHashes": {
+    "evals/canonical_cps_source.ts": "b51fc019b299b618647f79a1684ce15aca509a764b8168043fa7337882c095d1",
+    "evals/checker_core_owned_source.ts": "0e08fe550bc46e66905ceba7a037862da3899b0067d49503b47f4472e9e0a0e9",
+    "evals/checker_core_step_lower.ts": "4d48b5b50c695bfb37bd34f4c9ac7ff783f0759e0039afb86510269d6f9b490e",
+    "evals/js_emit_step_lower.ts": "45167b3076719f926b16c5a8497f454585cfc7027433e07cc182e87f42c09e81",
+    "bend2/selfhost/checker.bend": "bd1b04495e305dfa7b45b7e561fa1dc18bf98f55b6ae7e8937193d679e8d9c4b",
+    "evals/checker_library_smoke.ts": "47ff2f270cb818cc377cd7b5b51f83d5c0410e06b51731524a7815a1db73e441",
+    "evals/checker_library_smoke_worker.mjs": "f63fd299ee5587f7be4656aa7d530dfadd97f441138ea5ecb2cabed8e19edbf2"
+  },
+  "changes": [
+    "Binding-aware composition of actual Catalog and Backend declarations into typed emitter CPS closure",
+    "Exact canonical/composed declaration provenance with shared external type identity",
+    "Structural binder resolution without premature native computed-match elaboration",
+    "Owning import routing reuses the composed root",
+    "Removed an unused shadowing checker binder and completed the unannotated checked-pattern metadata branch",
+    "Added emitted-library cases for local evaluation, over-application ordering and explicit constructor eliminators"
+  ],
+  "sourceGeneration": {
+    "status": "PASS",
+    "checkerDefinitions": 1139,
+    "emitterCanonicalDefinitions": 156,
+    "emitterLoweringDefinitions": 326,
+    "providers": [
+      "bend2/selfhost/js_backend.bend",
+      "bend2/selfhost/lower_catalog.bend"
+    ],
+    "elapsedMs": 2770,
+    "peakRssBytes": 557465600,
+    "peakFootprintBytes": 388137920
+  },
+  "firstFailures": [
+    {
+      "phase": "composition",
+      "message": "a parameter or field scrutinee (a match cannot scrutinize a computed value: give it its own def)",
+      "correction": "Removed premature term_higher/term_lower; kept raw source bodies for downstream normalization and formatted native errors"
+    },
+    {
+      "phase": "checker-step-generation",
+      "message": "check_declarations_step: Checker function shadowed by local binder checked_definition",
+      "correction": "Discarded the unused occurrence binding with wildcard"
+    },
+    {
+      "phase": "checker-step-generation",
+      "message": "check_pattern_variable_field_quantity: Native constructor field authentication failed: PatternTyped",
+      "correction": "Published IR.CheckedVariable metadata in the missing None branch"
+    },
+    {
+      "phase": "emitter-step-generation",
+      "message": "cps_provider_1_record_fields: Missing lexical capture type for binder -1",
+      "correction": "NOT_YET_IMPLEMENTED_AT_CHECKPOINT"
+    }
+  ],
+  "constructorShapeScan": {
+    "canonicalASTOnly": true,
+    "nativeValidation": false,
+    "definitions": 1139,
+    "issues": [],
+    "elapsedMs": 2998
+  },
+  "eliminatorRegression": {
+    "baseline": {
+      "imageHash": "14dd1f829459c7bca9f519d6813612e9a7d847dca8d1e942c24a641b25610348",
+      "source": "type Bit is Data:\n  BitZero{}\n  BitOne{}\ndef matcher() -> Bit -> Bit:\n  \\{BitZero: BitOne{}; BitOne: BitZero{}; \\{}}\ndef main() -> Bit:\n  matcher()(BitZero{})\n",
+      "phases": [
+        {
+          "phase": "parse",
+          "result": "ParseSuccess"
+        },
+        {
+          "phase": "expand",
+          "result": "ExpandSuccess"
+        },
+        {
+          "phase": "check",
+          "result": "CheckSuccess"
+        },
+        {
+          "phase": "emit",
+          "result": "EmitSuccess"
+        }
+      ],
+      "outputPatches": 0,
+      "freshCompilerAcceptance": false,
+      "outputHash": "730800cbbc37fdc2f40aa78e8bb36c0817a15bffa100e7d6b0e8b6d6a55cff72",
+      "execution": {
+        "status": 1,
+        "signal": null,
+        "stdout": "",
+        "stderr": "bend: runtime fail-stop\n"
+      },
+      "failure": {
+        "phase": "execute",
+        "message": "Error: Generated program exited 1"
+      }
+    },
+    "official": {
+      "sourceDifference": "Official CLI requires an import Base header; matcher/main definitions are identical",
+      "source": "import Base\n\ntype Bit is Data:\n  BitZero{}\n  BitOne{}\ndef matcher() -> Bit -> Bit:\n  \\{BitZero: BitOne{}; BitOne: BitZero{}; \\{}}\ndef main() -> Bit:\n  matcher()(BitZero{})\n",
+      "inputs": {
+        "bend2/main.ts": "38f77e7f1c2b0239cd8ed4a6baad90439c1d2610b2014573590ec7cf6ad04497",
+        "bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+        "bend2/comp.ts": "8c33864a67f0fd08d1805929c8f48806c040b219126b29bb31f201f45d6b69e6",
+        "bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+        "checkpoints/.ir57-eliminator-official.bend": "f9f9f2fab1f2c15a15d2bcfe9cabe42a9600ae70b024d442080d38028c73fb00",
+        "checkpoints/.ir57-eliminator-official.js": "fb9db25564f4bdbf8cccac39239772c12fbe6acfdbd0f2cb184a96efab67b2de"
+      },
+      "command": "bun --smol bend2/main.ts checkpoints/.ir57-eliminator-official.bend -o checkpoints/.ir57-eliminator-official.js && node checkpoints/.ir57-eliminator-official.js",
+      "compileGuardian": {
+        "status": "PASS",
+        "elapsedMs": 3419,
+        "peakRssBytes": 84951040,
+        "peakFootprintBytes": 44941984
+      },
+      "execution": {
+        "status": 0,
+        "stdout": "BitOne{}\n"
+      },
+      "toolchain": "Pinned 2.0.37 kernel with the repository shared-layout backend; exact input hashes recorded, not a claim of an untouched release checkout."
+    },
+    "initialProbeError": {
+      "phase": "emit",
+      "message": "TypeError: x is not a function",
+      "classification": "HARNESS_ERROR_NOT_COMPILER_EVIDENCE",
+      "cause": "Used the new explicit export-list API against the old root whose library start accepts one argument and hardcodes compiler exports",
+      "correction": "Used the historical executable emission API and executed its untouched output"
+    },
+    "newIRResult": "NOT_RUN"
+  },
+  "acceptance": {
+    "nativeFullRoot": "NOT_RUN",
+    "compiledNewEmitter": "NOT_RUN",
+    "fullCorpus": "NOT_RUN",
+    "stage1Stage2ByteFixedpoint": "NOT_RUN",
+    "performanceImprovement": "NOT_MEASURED",
+    "selfhostGreen": false
+  },
+  "pendingAtSnapshot": "Emitter CPS capture identity -1 must be corrected before native admission; source generation and checker CPS generation are not a working compiler.",
+  "checkerStepGeneration": {
+    "status": "PASS",
+    "definitions": 1139,
+    "sourceCalls": 4210,
+    "pendingSites": 1537,
+    "helpers": 4905,
+    "elapsedMs": 7229,
+    "peakRssBytes": 570736640,
+    "peakFootprintBytes": 649921592,
+    "nativeAdmission": false
+  },
+  "emitterStepGeneration": {
+    "status": "FAIL",
+    "message": "cps_provider_1_record_fields: Missing lexical capture type for binder -1",
+    "elapsedMs": 11335,
+    "peakRssBytes": 287342592,
+    "peakFootprintBytes": 287114032
+  }
+}

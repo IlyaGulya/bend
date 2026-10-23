@@ -18,10 +18,11 @@ Checkpoint реализации57a сохранён отдельно от при
 `compiler-ir-checkpoint-v57a.json` содержит хеши исходников и реальные первые
 native-ошибки. Frontend, catalog, runtime lowering, BIR renderer и consumer
 migration написаны, но новый полный root и runtime ещё не прошли проверку.
-Прямой native build renderer остановился на forward-вызове
-`tail_call_selected`: новые Catalog/Backend providers ещё нужно включить в
-существующую typed CPS closure. Эта интеграция генератора выполняется отдельно;
-активные правки трёх generator-файлов не входят в checkpoint57a.
+Checkpoint57a: `3728d396`. Последующий57b фиксирует интеграцию Catalog/Backend
+в authenticated typed CPS closure; receipt — `compiler-ir-checkpoint-v57b.json`.
+Owned generation прошла; checker CPS с1139 определениями также сгенерирован.
+Emitter CPS пока остановлен: `cps_provider_1_record_fields: Missing lexical
+capture type for binder -1`. Это ещё не native admission и не рабочая сборка.
 
 Явный readback исправлен: runtime body восстанавливается из occurrence children,
 а LocalReference — из lexical term, не подстановленного semantic value.
@@ -32,6 +33,13 @@ inspection/readback и не является BIR backend; обычный JS comp
 
 Новый полный corpus, native owner handoff и stage1/stage2 ещё не проверены.
 Рабочий baseline остаётся55; fixedpoint53 не доказывает новую архитектуру57.
+
+Отдельно реально воспроизведён дефект старого explicit constructor eliminator:
+неизменённый stage1 образ53 проходит parse/expand/check/emit, но его программа
+падает с `bend: runtime fail-stop`; reference CLI с kernel2.0.37 и текущим
+shared-layout backend печатает `BitOne{}`. Точные исходники/хеши/наблюдения
+сохранены в receipt57b. В library smoke добавлены проверки live locals,
+порядка over-application и обеих ветвей eliminator; новый IR их ещё не исполнял.
 
 ## Compiler56 — FIR/BIR architecture preflight, not production acceptance
 

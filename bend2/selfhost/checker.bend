@@ -5819,7 +5819,7 @@ def check_pattern_variable_field_quantity(v_20037182: ArenaStore, v_1: Maybe<&2,
       {ArenaResult{v_20037186, v_20037187} : ArenaResult<PatternTyping>}
     case None{}:
       ArenaResult{v_20037188, +v_20037189} = pattern_value(v_20037182, v_2, v_8)
-      {ArenaResult{v_20037188, PatternTyped{Binding{v_4, v_5, v_6, List.length(&2, Binding, v_11), IR.NoTerm{}} <> v_11, v_20037189}} : ArenaResult<PatternTyping>}
+      {ArenaResult{v_20037188, PatternTyped{Binding{v_4, v_5, v_6, List.length(&2, Binding, v_11), IR.NoTerm{}} <> v_11, v_20037189, IR.CheckedVariable{v_2, IR.CheckedBinding{v_5, v_6, List.length(&2, Binding, v_11)}}}} : ArenaResult<PatternTyping>}
 
 def pattern_result_fits_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
   ArenaResult{v_13, +v_14} = arena_get_node(v_1, v_3)
@@ -11025,7 +11025,7 @@ def check_declarations_prepend(v_1: Declarations, v_2: IR.TopLevel) -> Declarati
 
 def check_declarations_step(v_1: ArenaStore, v_3: ScopedState, v_4: IR.TopLevel, v_6: List<&2, IR.TopLevel>, +v_8: String, +v_10: List<&2, Ast.ModuleImport>, v_11: IR.Names, v_13: Nat, v_14: Scope.ArenaGlobalScope) -> ArenaResult<Declarations>:
   match v_3:
-    case ScopedState{+v_19, +checked_definition}:
+    case ScopedState{+v_19, _}:
       +v_21 = v_19
       ArenaResult{v_25, +v_26} = arena_publish_top_level(v_1, v_4)
       # The open-law tape is carried across declarations, so it must survive rewind
