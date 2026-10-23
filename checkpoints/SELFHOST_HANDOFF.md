@@ -4,6 +4,37 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+## Compiler56 — FIR/BIR architecture preflight, not production acceptance
+
+Selected working compiler55 is committed as2b3efa80. User explicitly redirects
+work from further micro-optimization toward separate Frontend IR / Backend IR
+and substantive refactoring. No production IR cutover or acceleration is claimed.
+compiler-ir-contract-v56.json embeds exact native-checked ownership/ANF models,
+all first failures, commands, sources, limits and an actual accepted-stage1 probe.
+
+Ownership model checks661 bodies, transfers real Arena/IR/signature handles
+through an affine Type result, and preserves source nodes after transient rewind
+and slot reuse. Place owning CheckedProgram above Arena/Scope/IR, never IR->Arena:
+Arena already imports Scope->IR. Capture final published signatures currently
+discarded by check_modules_private's empty case. Source publication fast paths
+assume the entire reachable closure is already source-owned; keep that invariant.
+
+Structured backend model uses owned acyclic blocks and atom-only operations;
+explicit live args, captures, constructor fields and guarded projections.
+Native producer and rendered JS execute result17/noncommuting order and trace
+1,2,9,3; erased/partial/over-application behavior is covered in the small model.
+This is not generic lowering or a complete primitive/runtime descriptor catalog.
+
+Critical actual observation: accepted emitted stage1 checks a real Bit/id/choose
+program successfully, but returned TermLam quantity is None and TermApp has no
+resolved argument quantity. Checker2802-2828 discards formal quantity and returns
+original application ID;3008-3015 discards checked function;10539-10544 publishes
+original elaborated declaration after checking. Thus retaining today's arena
+alone is NOT metadata-complete CheckedFIR. Persist per-checked-occurrence facts,
+not a raw NodeId-only type cache across contexts. Then cut over full lowering and
+JS renderer without Syntax AST readback, migrate callers/oracles explicitly and
+require full corpus plus new genuine stage1/stage2 fixedpoint before selection.
+
 ## Compiler55 — complete native full workload in81.24s
 
 54 is committed as f5d87361.55 applies existing checked chunk64 before EVERY

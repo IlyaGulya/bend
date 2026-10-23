@@ -1,0 +1,761 @@
+{
+  "schema": 1,
+  "version": 56,
+  "parentCommit": "2b3efa80",
+  "status": "ARCHITECTURE_PREFLIGHT_PASS_PRODUCTION_CUTOVER_NOT_IMPLEMENTED",
+  "selectedCompilerVersion": 55,
+  "checksExcluded": 0,
+  "outputPatches": 0,
+  "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+  "compilerSha256": "8c33864a67f0fd08d1805929c8f48806c040b219126b29bb31f201f45d6b69e6",
+  "userDirection": "Separate frontend and backend IR, no new micro-optimization before refactoring.",
+  "ownershipModel": {
+    "status": "PASS",
+    "scope": "Canonical native Bend kernel type-check plus native JS code generation and emitted execution; not native-C ABI, full compiler cutover, or performance proof.",
+    "caps": {
+      "rssBytes": 2147483648,
+      "physicalFootprintBytes": 2147483648,
+      "timeoutMs": 120000,
+      "pollMs": 10,
+      "sampledNotHardQuota": true
+    },
+    "workerCommand": [
+      "bun",
+      "--smol",
+      "checkpoints/.fir56-own-run.ts",
+      "--worker"
+    ],
+    "firstFailures": [
+      {
+        "phase": "execute",
+        "source": "import Base\nimport ../bend2/selfhost/ast.bend as Ast\nimport ../bend2/selfhost/checker_arena.bend as Arena\nimport ../bend2/selfhost/checker_ir.bend as IR\nimport ../bend2/selfhost/scope_lookup.bend as Scope\n\n# Owning transport only: fixture descriptors do not certify semantic checking.\ntype Diagnostic is Data:\n  Diagnostic{file: String, span: Ast.SourceSpan, message: String, expected: String, observed: String}\ntype CheckedProgram is Type:\n  CheckedProgram{source: Arena.Arena, modules: List<&2, IR.LoadedModule>, signatures: List<&2, Scope.ArenaGlobal>}\ntype CheckResult is Type:\n  CheckSuccess{program: CheckedProgram}\n  CheckFailure{diagnostic: Diagnostic}\ntype Store is Type:\n  Store{source: Arena.Arena, transient: Arena.Arena}\ntype Published is Data:\n  Published{modules: List<&2, IR.LoadedModule>, signatures: List<&2, Scope.ArenaGlobal>}\n  Rejected{diagnostic: Diagnostic}\ntype Fixture is Type:\n  Fixture{result: CheckResult, before: U32, after: U32, reused: U32}\ntype Observation is Data:\n  Observation{node: Bool, name: Bool, span: Bool, declaration: Bool, signature: Bool}\ntype Report is Data:\n  Report{observation: Observation, before: U32, after: U32, reused: U32}\n\ndef span() -> Ast.SourceSpan:\n  Ast.SpanOf{\"fixture.bend\", 7n, 19n}\n\ndef span_ok(value: Ast.SourceSpan) -> Bool:\n  match value:\n    case Ast.SpanOf{file, begin, end}:\n      Bool.and(String.eq(file, \"fixture.bend\"), Bool.and(Nat.is_eq(begin, 7n), Nat.is_eq(end, 19n)))\n\n# The failure arm affine-drops both owners; success transfers only source.\ndef finish(store: Store, published: Published) -> CheckResult:\n  match store:\n    case Store{source, _}:\n      match published:\n        case Published{modules, signatures}: CheckSuccess{CheckedProgram{source, modules, signatures}}\n        case Rejected{diagnostic}: CheckFailure{diagnostic}\n\n# Logically readonly: Array access still consumes and returns the owner.\ndef read_node_result(modules: List<&2, IR.LoadedModule>, signatures: List<&2, Scope.ArenaGlobal>, result: Arena.Arena & Arena.Node) -> CheckedProgram & Arena.Node:\n  match result:\n    case Tuple{source, node}: (CheckedProgram{source, modules, signatures}, node)\n\ndef read_node(program: CheckedProgram, id: U32) -> CheckedProgram & Arena.Node:\n  match program:\n    case CheckedProgram{source, modules, signatures}:\n      read_node_result(modules, signatures, Arena.get_node(source, id))\n\ndef observe_name(node_ok: Bool, span: Bool, declaration: Bool, signature: Bool, result: Arena.Arena & String) -> Observation:\n  match result:\n    case Tuple{_, name}: Observation{node_ok, String.eq(name, \"Fixture.target\"), span, declaration, signature}\n\ndef observe_ref(declaration: Bool, signature: Bool, outer_span: Bool, result: Arena.Arena & Arena.Node) -> Observation:\n  match result:\n    case Tuple{source, node}:\n      match node:\n        case Arena.TermRef{key, source_span}: observe_name(True{}, Bool.and(outer_span, span_ok(source_span)), declaration, signature, Arena.name_text(source, key))\n        case _: Observation{False{}, False{}, False{}, declaration, signature}\n\ndef observe_body(declaration: Bool, signature: Bool, result: CheckedProgram & Arena.Node) -> Observation:\n  match result:\n    case Tuple{program, node}:\n      match program:\n        case CheckedProgram{source, _, _}:\n          match node:\n            case Arena.TermBang{child, source_span}: observe_ref(declaration, signature, span_ok(source_span), Arena.get_node(source, child))\n            case _: Observation{False{}, False{}, False{}, declaration, signature}\n\ndef signature_ok(signatures: List<&2, Scope.ArenaGlobal>, +body: U32) -> Bool:\n  match signatures:\n    case Scope.ArenaGlobal{key, _, _, ty, IR.SomeTerm{value}, _} <> Nil{}:\n      Bool.and(String.eq(key, \"Fixture.value\"), Bool.and(U32.is_eq(ty, 0), U32.is_eq(value, body)))\n    case _: False{}\n\n# Consumes CheckedProgram; reads published handles, never reconstructs SyntaxTerm.\ndef lower(program: CheckedProgram) -> Observation:\n  match program:\n    case CheckedProgram{source, +modules, +signatures}:\n      match modules:\n        case IR.LoadedModule{_, IR.Module{_, _, IR.DefTop{IR.Definition{key, _, _, IR.DefTerm{+body}, _, source_span}} <> Nil{}}} <> Nil{}:\n          observe_body(Bool.and(String.eq(key, \"value\"), span_ok(source_span)), signature_ok(signatures, body), read_node(CheckedProgram{source, modules, signatures}, body))\n        case _: Observation{False{}, False{}, False{}, False{}, False{}}\n\ndef consume(fixture: Fixture) -> Report:\n  match fixture:\n    case Fixture{result, before, after, reused}:\n      match result:\n        case CheckSuccess{program}: Report{lower(program), before, after, reused}\n        case CheckFailure{_}: Report{Observation{False{}, False{}, False{}, False{}, False{}}, before, after, reused}\n\ndef fixture_reused(source: Arena.Arena, published: Published, before: U32, after: U32, result: Arena.Arena & U32) -> Fixture:\n  match result:\n    case Tuple{transient, reused}: Fixture{finish(Store{source, transient}, published), before, after, reused}\n\ndef fixture_released(source: Arena.Arena, published: Published, before: U32, result: Arena.Arena & U32) -> Fixture:\n  match result:\n    case Tuple{transient, after}: fixture_reused(source, published, before, after, Arena.put_node(transient, Arena.TermAbsurd{span()}))\n\ndef fixture_count(source: Arena.Arena, published: Published, result: Arena.Arena & U32) -> Fixture:\n  match result:\n    case Tuple{transient, before}: fixture_released(source, published, before, Arena.node_count(Arena.rewind(transient, Arena.Mark{0, 0, 0, 0, 0, 0})))\n\ndef fixture_published(transient: Arena.Arena, result: Arena.Arena & U32) -> Fixture:\n  match result:\n    case Tuple{source, +body}:\n      fixture_count(source, Published{IR.LoadedModule{\"Fixture\", IR.Module{\"fixture.bend\", Nil{}, IR.DefTop{IR.Definition{\"value\", IR.Words{0, 0}, IR.SomeTerm{0}, IR.DefTerm{body}, False{}, span()}} <> Nil{}}} <> Nil{}, Scope.ArenaGlobal{\"Fixture.value\", \"Fixture\", \"value\", 0, IR.SomeTerm{body}, Scope.GlobalDefinition{}} <> Nil{}}, Arena.node_count(transient))\n\n# Finite publication fixture: the only child is already source-owned. No U32 recursion.\ndef fixture_copy(source: Arena.Arena, result: Arena.Arena & Arena.Node) -> Fixture:\n  match result:\n    case Tuple{transient, node}: fixture_published(transient, Arena.put_node(source, node))\n\ndef fixture_temporary(source: Arena.Arena, result: Arena.Arena & U32) -> Fixture:\n  match result:\n    case Tuple{transient, id}: fixture_copy(source, Arena.get_node(transient, id))\n\ndef fixture_source(result: Arena.Arena & U32) -> Fixture:\n  match result:\n    case Tuple{source, id}: fixture_temporary(source, Arena.put_node(Arena.empty(), Arena.TermBang{id, span()}))\n\ndef fixture_named(result: Arena.Arena & U32) -> Fixture:\n  match result:\n    case Tuple{source, id}: fixture_source(Arena.put_node(source, Arena.TermRef{id, span()}))\n\ndef success() -> Report:\n  consume(fixture_named(Arena.name(Arena.empty(), \"Fixture.target\")))\n\ndef failure_result(result: CheckResult) -> Bool:\n  match result:\n    case CheckSuccess{_}: False{}\n    case CheckFailure{Diagnostic{file, source_span, message, expected, observed}}:\n      Bool.and(Bool.and(String.eq(file, \"fixture.bend\"), span_ok(source_span)), Bool.and(String.eq(message, \"rejected\"), Bool.and(String.eq(expected, \"expected\"), String.eq(observed, \"observed\"))))\n\ndef failure() -> Bool:\n  failure_result(finish(Store{Arena.empty(), Arena.empty()}, Rejected{Diagnostic{\"fixture.bend\", span(), \"rejected\", \"expected\", \"observed\"}}))\n",
+        "sourceSha256": "cb42a38840077b2db2db967259064f3076d0beb1c2dac283e1eacb77a8b30b55",
+        "diagnostic": "Error: Ownership execution mismatch: {\"$\":\"Report\",\"observation\":{\"$\":\"Observation\",\"node\":true,\"name\":true,\"span\":true,\"declaration\":true,\"signature\":true},\"before\":1,\"after\":0,\"reused\":0}"
+      }
+    ],
+    "rows": [
+      {
+        "name": "source owner transfer, publication, rewind, slot reuse, lowering",
+        "expected": {
+          "$": "Report",
+          "observation": {
+            "$": "Observation",
+            "node": true,
+            "name": true,
+            "span": true,
+            "declaration": true,
+            "signature": true
+          },
+          "before": 1,
+          "after": 0,
+          "reused": 0
+        },
+        "observed": {
+          "$": "Report",
+          "observation": {
+            "$": "Observation",
+            "node": true,
+            "name": true,
+            "span": true,
+            "declaration": true,
+            "signature": true
+          },
+          "before": 1,
+          "after": 0,
+          "reused": 0
+        }
+      },
+      {
+        "name": "failure diagnostic survives affine owner discard",
+        "expected": true,
+        "observed": true
+      }
+    ],
+    "sources": {
+      "bend": "import Base\nimport ../bend2/selfhost/ast.bend as Ast\nimport ../bend2/selfhost/checker_arena.bend as Arena\nimport ../bend2/selfhost/checker_ir.bend as IR\nimport ../bend2/selfhost/scope_lookup.bend as Scope\n\n# Owning transport only: fixture descriptors do not certify semantic checking.\ntype Diagnostic is Data:\n  Diagnostic{file: String, span: Ast.SourceSpan, message: String, expected: String, observed: String}\ntype CheckedProgram is Type:\n  CheckedProgram{source: Arena.Arena, modules: List<&2, IR.LoadedModule>, signatures: List<&2, Scope.ArenaGlobal>}\ntype CheckResult is Type:\n  CheckSuccess{program: CheckedProgram}\n  CheckFailure{diagnostic: Diagnostic}\ntype Store is Type:\n  Store{source: Arena.Arena, transient: Arena.Arena}\ntype Published is Data:\n  Published{modules: List<&2, IR.LoadedModule>, signatures: List<&2, Scope.ArenaGlobal>}\n  Rejected{diagnostic: Diagnostic}\ntype Fixture is Type:\n  Fixture{result: CheckResult, before: U32, after: U32, reused: U32}\ntype Observation is Data:\n  Observation{node: Bool, name: Bool, span: Bool, declaration: Bool, signature: Bool}\ntype Report is Data:\n  Report{observation: Observation, before: U32, after: U32, reused: U32}\n\ndef span() -> Ast.SourceSpan:\n  Ast.SpanOf{\"fixture.bend\", 7n, 19n}\n\ndef span_ok(value: Ast.SourceSpan) -> Bool:\n  match value:\n    case Ast.SpanOf{file, begin, end}:\n      Bool.and(String.eq(file, \"fixture.bend\"), Bool.and(Nat.is_eq(begin, 7n), Nat.is_eq(end, 19n)))\n\n# The failure arm affine-drops both owners; success transfers only source.\ndef finish(store: Store, published: Published) -> CheckResult:\n  match store:\n    case Store{source, _}:\n      match published:\n        case Published{modules, signatures}: CheckSuccess{CheckedProgram{source, modules, signatures}}\n        case Rejected{diagnostic}: CheckFailure{diagnostic}\n\n# Logically readonly: Array access still consumes and returns the owner.\ndef read_node_result(modules: List<&2, IR.LoadedModule>, signatures: List<&2, Scope.ArenaGlobal>, result: Arena.Arena & Arena.Node) -> CheckedProgram & Arena.Node:\n  match result:\n    case Tuple{source, node}: (CheckedProgram{source, modules, signatures}, node)\n\ndef read_node(program: CheckedProgram, id: U32) -> CheckedProgram & Arena.Node:\n  match program:\n    case CheckedProgram{source, modules, signatures}:\n      read_node_result(modules, signatures, Arena.get_node(source, id))\n\ndef observe_name(node_ok: Bool, span: Bool, declaration: Bool, signature: Bool, result: Arena.Arena & String) -> Observation:\n  match result:\n    case Tuple{_, name}: Observation{node_ok, String.eq(name, \"Fixture.target\"), span, declaration, signature}\n\ndef observe_ref(declaration: Bool, signature: Bool, outer_span: Bool, result: Arena.Arena & Arena.Node) -> Observation:\n  match result:\n    case Tuple{source, node}:\n      match node:\n        case Arena.TermRef{key, source_span}: observe_name(True{}, Bool.and(outer_span, span_ok(source_span)), declaration, signature, Arena.name_text(source, key))\n        case _: Observation{False{}, False{}, False{}, declaration, signature}\n\ndef observe_body(declaration: Bool, signature: Bool, result: CheckedProgram & Arena.Node) -> Observation:\n  match result:\n    case Tuple{program, node}:\n      match program:\n        case CheckedProgram{source, _, _}:\n          match node:\n            case Arena.TermBang{child, source_span}: observe_ref(declaration, signature, span_ok(source_span), Arena.get_node(source, child))\n            case _: Observation{False{}, False{}, False{}, declaration, signature}\n\ndef signature_ok(signatures: List<&2, Scope.ArenaGlobal>, +body: U32) -> Bool:\n  match signatures:\n    case Scope.ArenaGlobal{key, _, _, ty, IR.SomeTerm{value}, _} <> Nil{}:\n      Bool.and(String.eq(key, \"Fixture.value\"), Bool.and(U32.is_eq(ty, 0), U32.is_eq(value, body)))\n    case _: False{}\n\n# Consumes CheckedProgram; reads published handles, never reconstructs SyntaxTerm.\ndef lower(program: CheckedProgram) -> Observation:\n  match program:\n    case CheckedProgram{source, +modules, +signatures}:\n      match modules:\n        case IR.LoadedModule{_, IR.Module{_, _, IR.DefTop{IR.Definition{key, _, _, IR.DefTerm{+body}, _, source_span}} <> Nil{}}} <> Nil{}:\n          observe_body(Bool.and(String.eq(key, \"value\"), span_ok(source_span)), signature_ok(signatures, body), read_node(CheckedProgram{source, modules, signatures}, body))\n        case _: Observation{False{}, False{}, False{}, False{}, False{}}\n\ndef consume(fixture: Fixture) -> Report:\n  match fixture:\n    case Fixture{result, before, after, reused}:\n      match result:\n        case CheckSuccess{program}: Report{lower(program), before, after, reused}\n        case CheckFailure{_}: Report{Observation{False{}, False{}, False{}, False{}, False{}}, before, after, reused}\n\ndef fixture_reused(source: Arena.Arena, published: Published, before: U32, after: U32, result: Arena.Arena & U32) -> Fixture:\n  match result:\n    case Tuple{transient, reused}: Fixture{finish(Store{source, transient}, published), before, after, reused}\n\ndef fixture_released(source: Arena.Arena, published: Published, before: U32, result: Arena.Arena & U32) -> Fixture:\n  match result:\n    case Tuple{transient, after}: fixture_reused(source, published, before, after, Arena.put_node(transient, Arena.TermAbsurd{span()}))\n\ndef fixture_count(source: Arena.Arena, published: Published, result: Arena.Arena & U32) -> Fixture:\n  match result:\n    case Tuple{transient, before}: fixture_released(source, published, before, Arena.node_count(Arena.rewind(transient, Arena.Mark{0, 0, 0, 0, 0, 0})))\n\ndef fixture_published(transient: Arena.Arena, result: Arena.Arena & U32) -> Fixture:\n  match result:\n    case Tuple{source, +body}:\n      fixture_count(source, Published{IR.LoadedModule{\"Fixture\", IR.Module{\"fixture.bend\", Nil{}, IR.DefTop{IR.Definition{\"value\", IR.Words{0, 0}, IR.SomeTerm{0}, IR.DefTerm{body}, False{}, span()}} <> Nil{}}} <> Nil{}, Scope.ArenaGlobal{\"Fixture.value\", \"Fixture\", \"value\", 0, IR.SomeTerm{body}, Scope.GlobalDefinition{}} <> Nil{}}, Arena.node_count(transient))\n\n# Finite publication fixture: the only child is already source-owned. No U32 recursion.\ndef fixture_copy(source: Arena.Arena, result: Arena.Arena & Arena.Node) -> Fixture:\n  match result:\n    case Tuple{transient, node}: fixture_published(transient, Arena.put_node(source, node))\n\ndef fixture_temporary(source: Arena.Arena, result: Arena.Arena & U32) -> Fixture:\n  match result:\n    case Tuple{transient, id}: fixture_copy(source, Arena.get_node(transient, id))\n\ndef fixture_source(result: Arena.Arena & U32) -> Fixture:\n  match result:\n    case Tuple{source, id}: fixture_temporary(source, Arena.put_node(Arena.empty(), Arena.TermBang{id, span()}))\n\ndef fixture_named(result: Arena.Arena & U32) -> Fixture:\n  match result:\n    case Tuple{source, id}: fixture_source(Arena.put_node(source, Arena.TermRef{id, span()}))\n\ndef success() -> Report:\n  consume(fixture_named(Arena.name(Arena.empty(), \"Fixture.target\")))\n\ndef failure_result(result: CheckResult) -> Bool:\n  match result:\n    case CheckSuccess{_}: False{}\n    case CheckFailure{Diagnostic{file, source_span, message, expected, observed}}:\n      Bool.and(Bool.and(String.eq(file, \"fixture.bend\"), span_ok(source_span)), Bool.and(String.eq(message, \"rejected\"), Bool.and(String.eq(expected, \"expected\"), String.eq(observed, \"observed\"))))\n\ndef failure() -> Bool:\n  failure_result(finish(Store{Arena.empty(), Arena.empty()}, Rejected{Diagnostic{\"fixture.bend\", span(), \"rejected\", \"expected\", \"observed\"}}))\n",
+      "driver": "import {createHash} from 'node:crypto';\nimport {readFileSync,writeFileSync,existsSync} from 'node:fs';\nimport {resolve} from 'node:path';\nimport {runHeavyGate} from '../evals/heavy_gate.ts';\nconst root=resolve(import.meta.dir,'..'),prefix=resolve(import.meta.dir,'.fir56-own-'),receipt=prefix+'receipt.json';\nconst hash=(p:string)=>createHash('sha256').update(readFileSync(p)).digest('hex');\nconst command=['bun','--smol','checkpoints/.fir56-own-run.ts','--worker'];\nif(!process.argv.includes('--worker')){\n const guard=await runHeavyGate(command,{label:'FIR56 ownership admission',memoryMiB:2048,rssMiB:2048,timeoutMs:120000,pollMs:10});\n const report=existsSync(receipt)?JSON.parse(readFileSync(receipt,'utf8')):{status:'FAIL',firstFailures:[{phase:'guardian',diagnostic:guard.reason}]};\n report.guardian=guard;report.command='bun --smol checkpoints/.fir56-own-run.ts';\n if(guard.status!=='PASS')report.status='FAIL';\n writeFileSync(receipt,JSON.stringify(report)+'\\n');\n console.log(JSON.stringify({status:report.status,guardian:guard,checkedBodies:report.checkedBodies,rows:report.rows,firstFailures:report.firstFailures,receipt}));\n process.exitCode=report.status==='PASS'?0:1;\n}else{\n const prior=existsSync(receipt)?JSON.parse(readFileSync(receipt,'utf8')):null;\n const report:any={status:'RUNNING',scope:'Canonical native Bend kernel type-check plus native JS code generation and emitted execution; not native-C ABI, full compiler cutover, or performance proof.',caps:{rssBytes:2147483648,physicalFootprintBytes:2147483648,timeoutMs:120000,pollMs:10,sampledNotHardQuota:true},workerCommand:command,firstFailures:prior?.firstFailures??[],rows:[],sources:{bend:readFileSync(prefix+'model.bend','utf8'),driver:readFileSync(import.meta.path,'utf8')},hashes:{}};\n report.previousAttempts=prior?[...(prior.previousAttempts??[]),{status:prior.status,guardian:prior.guardian,hashes:prior.hashes,rows:prior.rows,driverSource:prior.sources.driver}]:[];\n for(const file of ['checkpoints/.fir56-own-model.bend','checkpoints/.fir56-own-run.ts','bend2/bend.ts','bend2/comp.ts','bend2/selfhost/ast.bend','bend2/selfhost/checker_arena.bend','bend2/selfhost/checker_ir.bend','bend2/selfhost/scope_lookup.bend','bend2/selfhost/checker.bend','evals/heavy_gate.ts'])report.hashes[file]=hash(root+'/'+file);\n report.proposal={location:'New checked_frontend.bend above Arena/Scope/IR, imported by Checker and runtime lowering; never add IR->Arena. Move Diagnostic into this boundary to avoid boundary->Checker->boundary cycle; Checker callers migrate to boundary constructors.',types:'type CheckedProgram is Type:\\n  CheckedProgram{source: Arena.Arena, modules: List<&2, IR.LoadedModule>, signatures: List<&2, Scope.ArenaGlobal>}\\ntype CheckResult is Type:\\n  CheckSuccess{program: CheckedProgram}\\n  CheckFailure{diagnostic: Diagnostic}',signatures:['check_modules(modules: List<&2, Loader.LoadedModule>, globals: List<&2, Scope.Global>) -> Checked.CheckResult','arena_check_exit(source: Arena.Arena, result: PrivateResult) -> Checked.CheckResult','read_node(program: CheckedProgram, id: U32) -> CheckedProgram & Arena.Node','lower(program: CheckedProgram) -> RuntimeProgram'],operations:{readonly:'get_node/get_pattern/get_binder/name_text/tape reads consume and return the same Arena owner; returned Data descriptors may be duplicated but retain no owner. read_node exposes this with CheckedProgram threading.',mutating:'Arena.name/put_node/put_binder/reserve_words/set_word and publication append or fill; rewind mutates counts, clears discarded payload and all local caches. Keep these in checker/builder, not readonly backend API.'},success:'Transfer exactly one source Arena into CheckSuccess, preserving published declarations/signatures. Drop transient at final boundary; no decode to SyntaxTerm and no callback capture.',failure:'CheckFailure owns only the current diagnostic; both arenas are affine-discarded. This preserves current failure return convention, not recoverable incremental ownership.',signatureCapture:'Current PrivateSuccess only contains modules; extend it to preserve final published checked global/signature metadata before it is discarded at empty check_modules_private. Model includes an explicit signature list, but does not implement this production change.'};\n report.sourceEvidence=[\n  {file:'bend2/selfhost/checker.bend',lines:'11-22,14189-14231',fact:'Current public CheckResult is Data and exit decodes source arena to AST; ArenaStore/ArenaResult own Type storage.'},\n  {file:'bend2/selfhost/checker_ir.bend',lines:'4-50',fact:'IR stores flat tape ranges, U32 term handles, and declaration/module Data descriptors, not an owning arena.'},\n  {file:'bend2/selfhost/checker_arena.bend',lines:'81-104,420-436,974-980,1030-1037,1296-1301',fact:'Arena is Type with arrays; published descriptors/ranges immutable; reads thread owner; rewind clears region state.'},\n  {file:'bend2/selfhost/checker_arena.bend',lines:'1-3',fact:'Arena imports Scope.'},\n  {file:'bend2/selfhost/scope_lookup.bend',lines:'1-4',fact:'Scope imports IR: IR importing Arena would introduce a cycle.'},\n  {file:'bend2/selfhost/checker.bend',lines:'10520-10544,10620-10628,10658-10669',fact:'Declaration publication and open-law name publication precede release; published declaration accumulates into modules. Final success loses global signature list.'},\n  {file:'bend2/selfhost/checker.bend',lines:'12172-12184,12509-12517,13262-13283,13397-13444,13923-13937,14164-14169',fact:'High bit tags transient nodes/tapes, next bit reverses tapes. Source identity fast paths do not recursively revalidate; transient publication recursively republishes children, and names are interned in source.'}\n ];\n report.requiredPublicationInvariant='Every escaping declaration, signature, scope entry, open-law range and future typed-occurrence annotation must have a transitive closure entirely in live source nodes/patterns/binders/names/tapes before transient rewind. Source-tagged node IDs and forward source ranges are assumed already closed under source ownership; reserving a source range is insufficient until all elements are filled with published child IDs and the descriptor is immutable. Name IDs copied unchanged by publication must always originate in source. New metadata cannot retain transient handles or a context-dependent inferred type keyed only by NodeId.';\n report.remainingQuestions=[\n  'The model demonstrates one source TermRef and one finite published transient TermBang whose child already belongs to source; it is not an exhaustive proof for every publisher/source allocation callsite.',\n  'Raw U32/IR descriptors do not statically enforce arena provenance, bounds, publication completion, or generation; production invariant needs an audit/enforced construction boundary before dropping transient.',\n  'Rewind clears local payload/caches but keeps pool capacity; final affine discard permits reclamation, not a proof of immediate physical memory return in generated JS or native-C.',\n  'Current IR transports checked declarations but lacks complete typed occurrence/resolved symbol/explicit erasure metadata. Parent traced application2802-2828/3008-3015 and lambda6006-6035: do not call this a complete no-reinfer CheckedFIR.',\n  'Final checked global signatures are currently dropped by check_modules_private empty case. Capture final published signatures and assign stable symbol identities in production without changing validation order.',\n  'General U32-handle graph recursion is not structural totality proof. This model uses finite publication and direct reads only; a complete traversal still needs an admissible termination design.'\n ];\n let K:any,phase='pin';\n try{\n  if(report.hashes['bend2/bend.ts']!=='6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e'||report.hashes['bend2/comp.ts']!=='8c33864a67f0fd08d1805929c8f48806c040b219126b29bb31f201f45d6b69e6')throw Error('Canonical source hash mismatch');\n  // Admission seam authenticates official bytes before loading them; static imports run too early.\n  K=await import(root+'/bend2/bend.ts');const C=await import(root+'/bend2/comp.ts');\n  phase='load';const book=K.book_nil();await K.book_load(book,prefix+'model.bend','',new Map());\n  phase='valid';K.book_valid(book);const bodies=Object.entries(book.tlds).filter(([,d]:any)=>d.$==='Def'&&d.v!==null);\n  report.checkedBodies=bodies.length;report.uncheckedBodies=bodies.filter(([,d]:any)=>d.e===undefined).map(([name])=>name);report.holes=book.hols;\n  if(book.hols||report.uncheckedBodies.length)throw Error('Unchecked body or holes');\n  phase='emit';writeFileSync(prefix+'model.mjs',C.js_lib(book,true,{exports:['success','failure']}));report.emittedSha256=hash(prefix+'model.mjs');\n  // Emitted test module does not exist until the preceding checked code-generation phase.\n  phase='execute';const api=(await import(prefix+'model.mjs')).default;\n  const observed=api.success();const expected={$:'Report',observation:{$:'Observation',node:true,name:true,span:true,declaration:true,signature:true},before:1,after:0,reused:0};\n  report.rows.push({name:'source owner transfer, publication, rewind, slot reuse, lowering',expected,observed});\n  if(JSON.stringify(observed)!==JSON.stringify(expected))throw Error('Ownership execution mismatch: '+JSON.stringify(observed));\n  const failure=api.failure();report.rows.push({name:'failure diagnostic survives affine owner discard',expected:true,observed:failure});\n  if(failure!==true)throw Error('Failure ownership mismatch');\n  report.status='PASS';\n }catch(error){report.status='FAIL';report.firstFailures.push({phase,source:report.sources.bend,sourceSha256:report.hashes['checkpoints/.fir56-own-model.bend'],diagnostic:K&&error&&typeof error==='object'&&'$'in error&&error.$==='Err'?K.err_show(error):String(error)});}\n report.lastPhase=phase;writeFileSync(receipt,JSON.stringify(report)+'\\n');process.exitCode=report.status==='PASS'?0:1;\n}\n"
+    },
+    "hashes": {
+      "checkpoints/.fir56-own-model.bend": "cb42a38840077b2db2db967259064f3076d0beb1c2dac283e1eacb77a8b30b55",
+      "checkpoints/.fir56-own-run.ts": "6e3ba77389ba6c8ade919bcc6b51f1050161b420a3458b355f36f326180b1244",
+      "bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+      "bend2/comp.ts": "8c33864a67f0fd08d1805929c8f48806c040b219126b29bb31f201f45d6b69e6",
+      "bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+      "bend2/selfhost/checker_arena.bend": "8860468bdd2995e9b3c46611f99abe16079632305c90fbb7bfb70c7c6f3346d6",
+      "bend2/selfhost/checker_ir.bend": "4e23cbab2f0ae0516e0a9ae0b5ca455741fd49c6222d33817dc8b6fd297b2627",
+      "bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+      "bend2/selfhost/checker.bend": "f166f3b63bc5b8b6403a2e8bc3a83ad424ee95dc8c0065625773e05894ceb479",
+      "evals/heavy_gate.ts": "47a12205abd374fd69d7dac30ee9fb45d7203cad2790870511387cd2efc22251"
+    },
+    "previousAttempts": [
+      {
+        "status": "FAIL",
+        "guardian": {
+          "status": "FAIL",
+          "reason": "command_exit",
+          "commandExitCode": 1,
+          "commandSignal": 0,
+          "peakRssBytes": 141524992,
+          "peakFootprintBytes": 97731232,
+          "elapsedMs": 3532,
+          "timeoutMs": 120000,
+          "command": [
+            "bun",
+            "--smol",
+            "checkpoints/.fir56-own-run.ts",
+            "--worker"
+          ],
+          "label": "FIR56 ownership admission",
+          "exitCode": 1,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792765215508-09cc9a93987a5ab0.json",
+          "memoryLimitBytes": 2147483648,
+          "rssLimitBytes": 2147483648
+        },
+        "hashes": {
+          "checkpoints/.fir56-own-model.bend": "cb42a38840077b2db2db967259064f3076d0beb1c2dac283e1eacb77a8b30b55",
+          "checkpoints/.fir56-own-run.ts": "fd9ae0d8ab5e7dc52c6eac89bee5af7958e32281bf8fd9caa46e68fbad3f53c2",
+          "bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+          "bend2/comp.ts": "8c33864a67f0fd08d1805929c8f48806c040b219126b29bb31f201f45d6b69e6",
+          "bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "bend2/selfhost/checker_arena.bend": "8860468bdd2995e9b3c46611f99abe16079632305c90fbb7bfb70c7c6f3346d6",
+          "bend2/selfhost/checker_ir.bend": "4e23cbab2f0ae0516e0a9ae0b5ca455741fd49c6222d33817dc8b6fd297b2627",
+          "bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+          "bend2/selfhost/checker.bend": "f166f3b63bc5b8b6403a2e8bc3a83ad424ee95dc8c0065625773e05894ceb479",
+          "evals/heavy_gate.ts": "47a12205abd374fd69d7dac30ee9fb45d7203cad2790870511387cd2efc22251"
+        },
+        "rows": [
+          {
+            "name": "source owner transfer, publication, rewind, slot reuse, lowering",
+            "expected": {
+              "$": "Report",
+              "observation": {
+                "$": "Observation",
+                "node": {
+                  "$": "True"
+                },
+                "name": {
+                  "$": "True"
+                },
+                "span": {
+                  "$": "True"
+                },
+                "declaration": {
+                  "$": "True"
+                },
+                "signature": {
+                  "$": "True"
+                }
+              },
+              "before": 1,
+              "after": 0,
+              "reused": 0
+            },
+            "observed": {
+              "$": "Report",
+              "observation": {
+                "$": "Observation",
+                "node": true,
+                "name": true,
+                "span": true,
+                "declaration": true,
+                "signature": true
+              },
+              "before": 1,
+              "after": 0,
+              "reused": 0
+            }
+          }
+        ],
+        "driverSource": "import {createHash} from 'node:crypto';\nimport {readFileSync,writeFileSync,existsSync} from 'node:fs';\nimport {resolve} from 'node:path';\nimport {runHeavyGate} from '../evals/heavy_gate.ts';\nconst root=resolve(import.meta.dir,'..'),prefix=resolve(import.meta.dir,'.fir56-own-'),receipt=prefix+'receipt.json';\nconst hash=(p:string)=>createHash('sha256').update(readFileSync(p)).digest('hex');\nconst command=['bun','--smol','checkpoints/.fir56-own-run.ts','--worker'];\nif(!process.argv.includes('--worker')){\n const guard=await runHeavyGate(command,{label:'FIR56 ownership admission',memoryMiB:2048,rssMiB:2048,timeoutMs:120000,pollMs:10});\n const report=existsSync(receipt)?JSON.parse(readFileSync(receipt,'utf8')):{status:'FAIL',firstFailures:[{phase:'guardian',diagnostic:guard.reason}]};\n report.guardian=guard;report.command='bun --smol checkpoints/.fir56-own-run.ts';\n if(guard.status!=='PASS')report.status='FAIL';\n writeFileSync(receipt,JSON.stringify(report)+'\\n');\n console.log(JSON.stringify({status:report.status,guardian:guard,checkedBodies:report.checkedBodies,rows:report.rows,firstFailures:report.firstFailures,receipt}));\n process.exitCode=report.status==='PASS'?0:1;\n}else{\n const prior=existsSync(receipt)?JSON.parse(readFileSync(receipt,'utf8')):null;\n const report:any={status:'RUNNING',scope:'Canonical native Bend kernel type-check plus native JS code generation and emitted execution; not native-C ABI, full compiler cutover, or performance proof.',caps:{rssBytes:2147483648,physicalFootprintBytes:2147483648,timeoutMs:120000,pollMs:10,sampledNotHardQuota:true},workerCommand:command,firstFailures:prior?.firstFailures??[],rows:[],sources:{bend:readFileSync(prefix+'model.bend','utf8'),driver:readFileSync(import.meta.path,'utf8')},hashes:{}};\n for(const file of ['checkpoints/.fir56-own-model.bend','checkpoints/.fir56-own-run.ts','bend2/bend.ts','bend2/comp.ts','bend2/selfhost/ast.bend','bend2/selfhost/checker_arena.bend','bend2/selfhost/checker_ir.bend','bend2/selfhost/scope_lookup.bend','bend2/selfhost/checker.bend','evals/heavy_gate.ts'])report.hashes[file]=hash(root+'/'+file);\n report.proposal={location:'New checked_frontend.bend above Arena/Scope/IR, imported by Checker and runtime lowering; never add IR->Arena. Move Diagnostic into this boundary to avoid boundary->Checker->boundary cycle; Checker callers migrate to boundary constructors.',types:'type CheckedProgram is Type:\\n  CheckedProgram{source: Arena.Arena, modules: List<&2, IR.LoadedModule>, signatures: List<&2, Scope.ArenaGlobal>}\\ntype CheckResult is Type:\\n  CheckSuccess{program: CheckedProgram}\\n  CheckFailure{diagnostic: Diagnostic}',signatures:['check_modules(modules: List<&2, Loader.LoadedModule>, globals: List<&2, Scope.Global>) -> Checked.CheckResult','arena_check_exit(source: Arena.Arena, result: PrivateResult) -> Checked.CheckResult','read_node(program: CheckedProgram, id: U32) -> CheckedProgram & Arena.Node','lower(program: CheckedProgram) -> RuntimeProgram'],operations:{readonly:'get_node/get_pattern/get_binder/name_text/tape reads consume and return the same Arena owner; returned Data descriptors may be duplicated but retain no owner. read_node exposes this with CheckedProgram threading.',mutating:'Arena.name/put_node/put_binder/reserve_words/set_word and publication append or fill; rewind mutates counts, clears discarded payload and all local caches. Keep these in checker/builder, not readonly backend API.'},success:'Transfer exactly one source Arena into CheckSuccess, preserving published declarations/signatures. Drop transient at final boundary; no decode to SyntaxTerm and no callback capture.',failure:'CheckFailure owns only the current diagnostic; both arenas are affine-discarded. This preserves current failure return convention, not recoverable incremental ownership.',signatureCapture:'Current PrivateSuccess only contains modules; extend it to preserve final published checked global/signature metadata before it is discarded at empty check_modules_private. Model includes an explicit signature list, but does not implement this production change.'};\n report.sourceEvidence=[\n  {file:'bend2/selfhost/checker.bend',lines:'11-22,14189-14231',fact:'Current public CheckResult is Data and exit decodes source arena to AST; ArenaStore/ArenaResult own Type storage.'},\n  {file:'bend2/selfhost/checker_ir.bend',lines:'4-50',fact:'IR stores flat tape ranges, U32 term handles, and declaration/module Data descriptors, not an owning arena.'},\n  {file:'bend2/selfhost/checker_arena.bend',lines:'81-104,420-436,974-980,1030-1037,1296-1301',fact:'Arena is Type with arrays; published descriptors/ranges immutable; reads thread owner; rewind clears region state.'},\n  {file:'bend2/selfhost/checker_arena.bend',lines:'1-3',fact:'Arena imports Scope.'},\n  {file:'bend2/selfhost/scope_lookup.bend',lines:'1-4',fact:'Scope imports IR: IR importing Arena would introduce a cycle.'},\n  {file:'bend2/selfhost/checker.bend',lines:'10520-10544,10620-10628,10658-10669',fact:'Declaration publication and open-law name publication precede release; published declaration accumulates into modules. Final success loses global signature list.'},\n  {file:'bend2/selfhost/checker.bend',lines:'12172-12184,12509-12517,13262-13283,13397-13444,13923-13937,14164-14169',fact:'High bit tags transient nodes/tapes, next bit reverses tapes. Source identity fast paths do not recursively revalidate; transient publication recursively republishes children, and names are interned in source.'}\n ];\n report.requiredPublicationInvariant='Every escaping declaration, signature, scope entry, open-law range and future typed-occurrence annotation must have a transitive closure entirely in live source nodes/patterns/binders/names/tapes before transient rewind. Source-tagged node IDs and forward source ranges are assumed already closed under source ownership; reserving a source range is insufficient until all elements are filled with published child IDs and the descriptor is immutable. Name IDs copied unchanged by publication must always originate in source. New metadata cannot retain transient handles or a context-dependent inferred type keyed only by NodeId.';\n report.remainingQuestions=[\n  'The model demonstrates one source TermRef and one finite published transient TermBang whose child already belongs to source; it is not an exhaustive proof for every publisher/source allocation callsite.',\n  'Raw U32/IR descriptors do not statically enforce arena provenance, bounds, publication completion, or generation; production invariant needs an audit/enforced construction boundary before dropping transient.',\n  'Rewind clears local payload/caches but keeps pool capacity; final affine discard permits reclamation, not a proof of immediate physical memory return in generated JS or native-C.',\n  'Current IR transports checked declarations but lacks complete typed occurrence/resolved symbol/explicit erasure metadata. Parent traced application2802-2828/3008-3015 and lambda6006-6035: do not call this a complete no-reinfer CheckedFIR.',\n  'Final checked global signatures are currently dropped by check_modules_private empty case. Capture final published signatures and assign stable symbol identities in production without changing validation order.',\n  'General U32-handle graph recursion is not structural totality proof. This model uses finite publication and direct reads only; a complete traversal still needs an admissible termination design.'\n ];\n let K:any,phase='pin';\n try{\n  if(report.hashes['bend2/bend.ts']!=='6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e'||report.hashes['bend2/comp.ts']!=='8c33864a67f0fd08d1805929c8f48806c040b219126b29bb31f201f45d6b69e6')throw Error('Canonical source hash mismatch');\n  // Admission seam authenticates official bytes before loading them; static imports run too early.\n  K=await import(root+'/bend2/bend.ts');const C=await import(root+'/bend2/comp.ts');\n  phase='load';const book=K.book_nil();await K.book_load(book,prefix+'model.bend','',new Map());\n  phase='valid';K.book_valid(book);const bodies=Object.entries(book.tlds).filter(([,d]:any)=>d.$==='Def'&&d.v!==null);\n  report.checkedBodies=bodies.length;report.uncheckedBodies=bodies.filter(([,d]:any)=>d.e===undefined).map(([name])=>name);report.holes=book.hols;\n  if(book.hols||report.uncheckedBodies.length)throw Error('Unchecked body or holes');\n  phase='emit';writeFileSync(prefix+'model.mjs',C.js_lib(book,true,{exports:['success','failure']}));report.emittedSha256=hash(prefix+'model.mjs');\n  // Emitted test module does not exist until the preceding checked code-generation phase.\n  phase='execute';const api=(await import(prefix+'model.mjs')).default;\n  const observed=api.success();const expected={$:'Report',observation:{$:'Observation',node:{$:'True'},name:{$:'True'},span:{$:'True'},declaration:{$:'True'},signature:{$:'True'}},before:1,after:0,reused:0};\n  report.rows.push({name:'source owner transfer, publication, rewind, slot reuse, lowering',expected,observed});\n  if(JSON.stringify(observed)!==JSON.stringify(expected))throw Error('Ownership execution mismatch: '+JSON.stringify(observed));\n  const failure=api.failure();report.rows.push({name:'failure diagnostic survives affine owner discard',expected:{$:'True'},observed:failure});\n  if(failure.$!=='True')throw Error('Failure ownership mismatch');\n  report.status='PASS';\n }catch(error){report.status='FAIL';report.firstFailures.push({phase,source:report.sources.bend,sourceSha256:report.hashes['checkpoints/.fir56-own-model.bend'],diagnostic:K&&error&&typeof error==='object'&&'$'in error&&error.$==='Err'?K.err_show(error):String(error)});}\n report.lastPhase=phase;writeFileSync(receipt,JSON.stringify(report)+'\\n');process.exitCode=report.status==='PASS'?0:1;\n}\n"
+      }
+    ],
+    "proposal": {
+      "location": "New checked_frontend.bend above Arena/Scope/IR, imported by Checker and runtime lowering; never add IR->Arena. Move Diagnostic into this boundary to avoid boundary->Checker->boundary cycle; Checker callers migrate to boundary constructors.",
+      "types": "type CheckedProgram is Type:\n  CheckedProgram{source: Arena.Arena, modules: List<&2, IR.LoadedModule>, signatures: List<&2, Scope.ArenaGlobal>}\ntype CheckResult is Type:\n  CheckSuccess{program: CheckedProgram}\n  CheckFailure{diagnostic: Diagnostic}",
+      "signatures": [
+        "check_modules(modules: List<&2, Loader.LoadedModule>, globals: List<&2, Scope.Global>) -> Checked.CheckResult",
+        "arena_check_exit(source: Arena.Arena, result: PrivateResult) -> Checked.CheckResult",
+        "read_node(program: CheckedProgram, id: U32) -> CheckedProgram & Arena.Node",
+        "lower(program: CheckedProgram) -> RuntimeProgram"
+      ],
+      "operations": {
+        "readonly": "get_node/get_pattern/get_binder/name_text/tape reads consume and return the same Arena owner; returned Data descriptors may be duplicated but retain no owner. read_node exposes this with CheckedProgram threading.",
+        "mutating": "Arena.name/put_node/put_binder/reserve_words/set_word and publication append or fill; rewind mutates counts, clears discarded payload and all local caches. Keep these in checker/builder, not readonly backend API."
+      },
+      "success": "Transfer exactly one source Arena into CheckSuccess, preserving published declarations/signatures. Drop transient at final boundary; no decode to SyntaxTerm and no callback capture.",
+      "failure": "CheckFailure owns only the current diagnostic; both arenas are affine-discarded. This preserves current failure return convention, not recoverable incremental ownership.",
+      "signatureCapture": "Current PrivateSuccess only contains modules; extend it to preserve final published checked global/signature metadata before it is discarded at empty check_modules_private. Model includes an explicit signature list, but does not implement this production change."
+    },
+    "sourceEvidence": [
+      {
+        "file": "bend2/selfhost/checker.bend",
+        "lines": "11-22,14189-14231",
+        "fact": "Current public CheckResult is Data and exit decodes source arena to AST; ArenaStore/ArenaResult own Type storage."
+      },
+      {
+        "file": "bend2/selfhost/checker_ir.bend",
+        "lines": "4-50",
+        "fact": "IR stores flat tape ranges, U32 term handles, and declaration/module Data descriptors, not an owning arena."
+      },
+      {
+        "file": "bend2/selfhost/checker_arena.bend",
+        "lines": "81-104,420-436,974-980,1030-1037,1296-1301",
+        "fact": "Arena is Type with arrays; published descriptors/ranges immutable; reads thread owner; rewind clears region state."
+      },
+      {
+        "file": "bend2/selfhost/checker_arena.bend",
+        "lines": "1-3",
+        "fact": "Arena imports Scope."
+      },
+      {
+        "file": "bend2/selfhost/scope_lookup.bend",
+        "lines": "1-4",
+        "fact": "Scope imports IR: IR importing Arena would introduce a cycle."
+      },
+      {
+        "file": "bend2/selfhost/checker.bend",
+        "lines": "10520-10544,10620-10628,10658-10669",
+        "fact": "Declaration publication and open-law name publication precede release; published declaration accumulates into modules. Final success loses global signature list."
+      },
+      {
+        "file": "bend2/selfhost/checker.bend",
+        "lines": "12172-12184,12509-12517,13262-13283,13397-13444,13923-13937,14164-14169",
+        "fact": "High bit tags transient nodes/tapes, next bit reverses tapes. Source identity fast paths do not recursively revalidate; transient publication recursively republishes children, and names are interned in source."
+      }
+    ],
+    "requiredPublicationInvariant": "Every escaping declaration, signature, scope entry, open-law range and future typed-occurrence annotation must have a transitive closure entirely in live source nodes/patterns/binders/names/tapes before transient rewind. Source-tagged node IDs and forward source ranges are assumed already closed under source ownership; reserving a source range is insufficient until all elements are filled with published child IDs and the descriptor is immutable. Name IDs copied unchanged by publication must always originate in source. New metadata cannot retain transient handles or a context-dependent inferred type keyed only by NodeId.",
+    "remainingQuestions": [
+      "The model demonstrates one source TermRef and one finite published transient TermBang whose child already belongs to source; it is not an exhaustive proof for every publisher/source allocation callsite.",
+      "Raw U32/IR descriptors do not statically enforce arena provenance, bounds, publication completion, or generation; production invariant needs an audit/enforced construction boundary before dropping transient.",
+      "Rewind clears local payload/caches but keeps pool capacity; final affine discard permits reclamation, not a proof of immediate physical memory return in generated JS or native-C.",
+      "Current IR transports checked declarations but lacks complete typed occurrence/resolved symbol/explicit erasure metadata. Parent traced application2802-2828/3008-3015 and lambda6006-6035: do not call this a complete no-reinfer CheckedFIR.",
+      "Final checked global signatures are currently dropped by check_modules_private empty case. Capture final published signatures and assign stable symbol identities in production without changing validation order.",
+      "General U32-handle graph recursion is not structural totality proof. This model uses finite publication and direct reads only; a complete traversal still needs an admissible termination design."
+    ],
+    "checkedBodies": 661,
+    "uncheckedBodies": [],
+    "holes": 0,
+    "emittedSha256": "bbe4a35a2ac3433e1e62ab5187f0fd81c2d11351466bcf3ce0c3dcf823ab26f2",
+    "lastPhase": "execute",
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 130121728,
+      "peakFootprintBytes": 89588408,
+      "elapsedMs": 623,
+      "timeoutMs": 120000,
+      "command": [
+        "bun",
+        "--smol",
+        "checkpoints/.fir56-own-run.ts",
+        "--worker"
+      ],
+      "label": "FIR56 ownership admission",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792765246377-1da594f3cdcd559f.json",
+      "memoryLimitBytes": 2147483648,
+      "rssLimitBytes": 2147483648
+    },
+    "command": "bun --smol checkpoints/.fir56-own-run.ts"
+  },
+  "backendOperationModel": {
+    "attempts": [
+      {
+        "commands": [
+          {
+            "command": [
+              "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+              "--smol",
+              "bend2/main.ts",
+              "checkpoints/.bir56-op-model.bend",
+              "-o",
+              "checkpoints/.bir56-op-producer.js"
+            ],
+            "status": 1,
+            "signal": null,
+            "elapsedMs": 991.681084,
+            "stdout": "",
+            "stderr": "SOME PROOFS FAIL\nError:\n- expected : a fresh constructor name (duplicate declaration: Fail)\n- observed : 'Fail'\nLocation:\n35 |   TestTag{value: Atom, constructor: U32, yes: Block, no: Block}\n36>|   Fail{}\n   |   ^^^^\n37 | \n"
+          }
+        ],
+        "status": "FAIL",
+        "error": "Error: Command failed: {\"command\":[\"/opt/homebrew/Cellar/bun/1.4.2/bin/bun\",\"--smol\",\"bend2/main.ts\",\"checkpoints/.bir56-op-model.bend\",\"-o\",\"checkpoints/.bir56-op-producer.js\"],\"status\":1,\"signal\":null,\"elapsedMs\":991.681084,\"stdout\":\"\",\"stderr\":\"SOME PROOFS FAIL\\nError:\\n- expected : a fresh constructor name (duplicate declaration: Fail)\\n- observed : 'Fail'\\nLocation:\\n35 |   TestTag{value: Atom, constructor: U32, yes: Block, no: Block}\\n36>|   Fail{}\\n   |   ^^^^\\n37 | \\n\"}",
+        "guardian": {
+          "status": "FAIL",
+          "reason": "command_exit",
+          "commandExitCode": 1,
+          "commandSignal": 0,
+          "peakRssBytes": 92127232,
+          "peakFootprintBytes": 51086536,
+          "elapsedMs": 1149,
+          "timeoutMs": 120000,
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/.bir56-op-smoke.ts",
+            "--worker"
+          ],
+          "label": "BIR56 structured operation model",
+          "exitCode": 1,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792765198787-0e804b89c55c58c9.json",
+          "memoryLimitBytes": 2147483648,
+          "rssLimitBytes": 2147483648
+        },
+        "sourceHashes": {
+          "checkpoints/.bir56-op-model.bend": "161f3f8dac87ec6379de2d11827ebec062d0e4d4d3a6fbbb83fea5bb47005db4",
+          "checkpoints/.bir56-op-smoke.ts": "621f54a77fff2924bf71e4f55f208dc918f842357acbca21856e966311f8c6db"
+        }
+      },
+      {
+        "commands": [
+          {
+            "command": [
+              "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+              "--smol",
+              "bend2/main.ts",
+              "checkpoints/.bir56-op-model.bend",
+              "-o",
+              "checkpoints/.bir56-op-producer.js"
+            ],
+            "status": 1,
+            "signal": null,
+            "elapsedMs": 579.5471249999999,
+            "stdout": "",
+            "stderr": "SOME PROOFS FAIL\nError:\n- expected : a term (the keyword 'def' cannot head one)\n- observed : 'def'\nLocation:\n123 | \n124>| def fixture() -> Block:\n    | ^^^\n125 |   Let{0, Trace{1, Word{20}},\n"
+          }
+        ],
+        "status": "FAIL",
+        "error": "Error: Command failed: {\"command\":[\"/opt/homebrew/Cellar/bun/1.4.2/bin/bun\",\"--smol\",\"bend2/main.ts\",\"checkpoints/.bir56-op-model.bend\",\"-o\",\"checkpoints/.bir56-op-producer.js\"],\"status\":1,\"signal\":null,\"elapsedMs\":579.5471249999999,\"stdout\":\"\",\"stderr\":\"SOME PROOFS FAIL\\nError:\\n- expected : a term (the keyword 'def' cannot head one)\\n- observed : 'def'\\nLocation:\\n123 | \\n124>| def fixture() -> Block:\\n    | ^^^\\n125 |   Let{0, Trace{1, Word{20}},\\n\"}",
+        "guardian": {
+          "status": "FAIL",
+          "reason": "command_exit",
+          "commandExitCode": 1,
+          "commandSignal": 0,
+          "peakRssBytes": 82116608,
+          "peakFootprintBytes": 46007496,
+          "elapsedMs": 1132,
+          "timeoutMs": 120000,
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/.bir56-op-smoke.ts",
+            "--worker"
+          ],
+          "label": "BIR56 structured operation model",
+          "exitCode": 1,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792765219204-33b61180fdc80843.json",
+          "memoryLimitBytes": 2147483648,
+          "rssLimitBytes": 2147483648
+        },
+        "sourceHashes": {
+          "checkpoints/.bir56-op-model.bend": "8423ab72e0ec46d2cb6ee1a84a8b7f4375a2ea6bbf1a6d992e4928558f2fb7ab",
+          "checkpoints/.bir56-op-smoke.ts": "621f54a77fff2924bf71e4f55f208dc918f842357acbca21856e966311f8c6db"
+        }
+      },
+      {
+        "commands": [
+          {
+            "command": [
+              "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+              "--smol",
+              "bend2/main.ts",
+              "checkpoints/.bir56-op-model.bend",
+              "-o",
+              "checkpoints/.bir56-op-producer.js"
+            ],
+            "status": 0,
+            "signal": null,
+            "elapsedMs": 686.1375,
+            "stdout": "",
+            "stderr": ""
+          },
+          {
+            "command": [
+              "node",
+              "checkpoints/.bir56-op-producer.js"
+            ],
+            "status": 0,
+            "signal": null,
+            "elapsedMs": 68.99883399999999,
+            "stdout": "const $trace=[];function $apply(f,x){return f.code(f.env,x);}\nfunction c0(e,v0,v1){const v2=((v0-v1)>>>0);return v2;}\nfunction c1(e,v0){const v1=((e[0]-v0)>>>0);return v1;}\nfunction c2(e,v0){const v1=($trace.push(9),0);const v2=({code:c1,env:[v0]});return v2;}\nconst result=(()=>{const v0=($trace.push(1),20);const v1=($trace.push(2),3);const v2=c0(null,v0,v1);const v3=({code:c1,env:[v0]});const v4=$apply(v3,v1);const v5=c2(null,v0);const v6=($trace.push(3),4);const v7=$apply(v5,v6);const v9=({tag:70,0:v2,1:v4,2:v7});if(v9.tag===70){const v10=v9[0];const v11=v9[2];const v12=((v10-v11)>>>0);const v13=({tag:71,0:v2,1:v4,2:v7,3:v12});return v13;}else{throw Error('BIR fail-stop');}})();console.log(JSON.stringify({result,trace:$trace}));\n\n",
+            "stderr": ""
+          },
+          {
+            "command": [
+              "node",
+              "checkpoints/.bir56-op-rendered.js"
+            ],
+            "status": 0,
+            "signal": null,
+            "elapsedMs": 192.67987500000004,
+            "stdout": "{\"result\":{\"0\":17,\"1\":17,\"2\":16,\"3\":1,\"tag\":71},\"trace\":[1,2,9,3]}\n",
+            "stderr": ""
+          }
+        ],
+        "status": "PASS",
+        "actual": {
+          "result": {
+            "0": 17,
+            "1": 17,
+            "2": 16,
+            "3": 1,
+            "tag": 71
+          },
+          "trace": [
+            1,
+            2,
+            9,
+            3
+          ]
+        },
+        "expected": {
+          "result": {
+            "0": 17,
+            "1": 17,
+            "2": 16,
+            "3": 1,
+            "tag": 71
+          },
+          "trace": [
+            1,
+            2,
+            9,
+            3
+          ]
+        },
+        "generated": {
+          "producerSha256": "f73685f43defee0a8d60bab13725ff2ebc5bbc4908c1e7b07247592ff7003d18",
+          "rendererOutput": "const $trace=[];function $apply(f,x){return f.code(f.env,x);}\nfunction c0(e,v0,v1){const v2=((v0-v1)>>>0);return v2;}\nfunction c1(e,v0){const v1=((e[0]-v0)>>>0);return v1;}\nfunction c2(e,v0){const v1=($trace.push(9),0);const v2=({code:c1,env:[v0]});return v2;}\nconst result=(()=>{const v0=($trace.push(1),20);const v1=($trace.push(2),3);const v2=c0(null,v0,v1);const v3=({code:c1,env:[v0]});const v4=$apply(v3,v1);const v5=c2(null,v0);const v6=($trace.push(3),4);const v7=$apply(v5,v6);const v9=({tag:70,0:v2,1:v4,2:v7});if(v9.tag===70){const v10=v9[0];const v11=v9[2];const v12=((v10-v11)>>>0);const v13=({tag:71,0:v2,1:v4,2:v7,3:v12});return v13;}else{throw Error('BIR fail-stop');}})();console.log(JSON.stringify({result,trace:$trace}));\n\n",
+          "rendererOutputSha256": "7a9dd929d670ef4e06edb0a79e98e148d09d2e65574ac7b88fc7b722c72e466c"
+        },
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 104316928,
+          "peakFootprintBytes": 65602640,
+          "elapsedMs": 1134,
+          "timeoutMs": 120000,
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+            "--smol",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/.bir56-op-smoke.ts",
+            "--worker"
+          ],
+          "label": "BIR56 structured operation model",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792765236781-235b28aab78653e1.json",
+          "memoryLimitBytes": 2147483648,
+          "rssLimitBytes": 2147483648
+        },
+        "sourceHashes": {
+          "checkpoints/.bir56-op-model.bend": "431290a2b4c8337a3f6f0d2d4a7c9f6363956b6a76f274bf21fcf5f9d8c86a0c",
+          "checkpoints/.bir56-op-smoke.ts": "621f54a77fff2924bf71e4f55f208dc918f842357acbca21856e966311f8c6db"
+        }
+      }
+    ],
+    "status": "MODEL_PASS",
+    "protectedHashes": {
+      "bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+      "bend2/comp.ts": "8c33864a67f0fd08d1805929c8f48806c040b219126b29bb31f201f45d6b69e6",
+      "bend2/main.ts": "38f77e7f1c2b0239cd8ed4a6baad90439c1d2610b2014573590ec7cf6ad04497",
+      "bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+      "evals/heavy_gate.ts": "47a12205abd374fd69d7dac30ee9fb45d7203cad2790870511387cd2efc22251",
+      "evals/heavy_gate_native.c": "f5aecf8308caebc72dccf8986733b37137d448021ee378302cfcd038381b7aa9"
+    },
+    "finalSourceHashes": {
+      "checkpoints/.bir56-op-model.bend": "431290a2b4c8337a3f6f0d2d4a7c9f6363956b6a76f274bf21fcf5f9d8c86a0c",
+      "checkpoints/.bir56-op-smoke.ts": "621f54a77fff2924bf71e4f55f208dc918f842357acbca21856e966311f8c6db"
+    },
+    "sourcesBySha256": {
+      "161f3f8dac87ec6379de2d11827ebec062d0e4d4d3a6fbbb83fea5bb47005db4": {
+        "path": "checkpoints/.bir56-op-model.bend",
+        "source": "import Base\n\ntype Use is Data:\n  Affine{}\n  Many{}\n\ntype Atom is Data:\n  Local{id: U32}\n  Capture{slot: U32}\n  Word{value: U32}\n\ntype Arg is Data:\n  Arg{use: Use, value: Atom}\n\ntype CheckedArg is Data:\n  Erased{source_slot: U32}\n  Live{source_slot: U32, use: Use, value: Atom}\n\ntype Field is Data:\n  Field{identity: U32, slot: U32, use: Use, value: Atom}\n\ntype Op is Data:\n  Copy{value: Atom}\n  Subtract{left: Atom, right: Atom}\n  Trace{event: U32, value: Atom}\n  Closure{code: U32, captures: List<&2, Arg>}\n  Direct{symbol: U32, args: List<&2, Arg>}\n  Apply{fn: Atom, arg: Arg}\n  Construct{constructor: U32, fields: List<&2, Field>}\n  Project{value: Atom, constructor: U32, field: U32, slot: U32}\n\ntype Block is Data:\n  Return{value: Atom}\n  Let{id: U32, op: Op, next: Block}\n  TestTag{value: Atom, constructor: U32, yes: Block, no: Block}\n  Fail{}\n\ntype Code is Data:\n  Code{symbol: U32, params: List<&2, U32>, capture_uses: List<&2, Use>, body: Block}\n\ndef cat(parts: List<&2, String>) -> String:\n  String.join(parts, \"\")\n\ndef atom(value: Atom) -> String:\n  match value:\n    case Local{id}: cat([\"v\", U32.show(id)])\n    case Capture{slot}: cat([\"e[\", U32.show(slot), \"]\"])\n    case Word{value}: U32.show(value)\n\ndef args(values: List<&2, Arg>) -> String:\n  match values:\n    case Nil{}: \"\"\n    case Arg{_, value} <> Nil{}: atom(value)\n    case Arg{_, value} <> rest: cat([atom(value), \",\", args(rest)])\n\ndef fields(values: List<&2, Field>) -> String:\n  match values:\n    case Nil{}: \"\"\n    case Field{_, slot, _, value} <> rest:\n      cat([\",\", U32.show(slot), \":\", atom(value), fields(rest)])\n\ndef direct_args(values: List<&2, Arg>) -> String:\n  match values:\n    case Nil{}: \"\"\n    case _: cat([\",\", args(values)])\n\ndef operation(op: Op) -> String:\n  match op:\n    case Copy{value}: atom(value)\n    case Subtract{left, right}: cat([\"((\", atom(left), \"-\", atom(right), \")>>>0)\"])\n    case Trace{event, value}: cat([\"($trace.push(\", U32.show(event), \"),\", atom(value), \")\"])\n    case Closure{code, captures}: cat([\"({code:c\", U32.show(code), \",env:[\", args(captures), \"]})\"])\n    case Direct{symbol, values}: cat([\"c\", U32.show(symbol), \"(null\", direct_args(values), \")\"])\n    case Apply{fn, Arg{_, value}}: cat([\"$apply(\", atom(fn), \",\", atom(value), \")\"])\n    case Construct{constructor, values}: cat([\"({tag:\", U32.show(constructor), fields(values), \"})\"])\n    case Project{value, _, _, slot}: cat([atom(value), \"[\", U32.show(slot), \"]\"])\n\ndef block(body: Block) -> String:\n  match body:\n    case Return{value}: cat([\"return \", atom(value), \";\"])\n    case Let{id, op, next}: cat([\"const v\", U32.show(id), \"=\", operation(op), \";\", block(next)])\n    case TestTag{value, constructor, yes, no}:\n      cat([\"if(\", atom(value), \".tag===\", U32.show(constructor), \"){\", block(yes), \"}else{\", block(no), \"}\"])\n    case Fail{}: \"throw Error('BIR fail-stop');\"\n\ndef parameters(ids: List<&2, U32>) -> String:\n  match ids:\n    case Nil{}: \"\"\n    case id <> rest: cat([\",v\", U32.show(id), parameters(rest)])\n\ndef code(item: Code) -> String:\n  match item:\n    case Code{symbol, params, _, body}:\n      cat([\"function c\", U32.show(symbol), \"(e\", parameters(params), \"){\", block(body), \"}\\n\"])\n\ndef codes(items: List<&2, Code>) -> String:\n  match items:\n    case Nil{}: \"\"\n    case item <> rest: cat([code(item), codes(rest)])\n\ndef lower_args(items: List<&2, CheckedArg>) -> List<&2, Arg>:\n  match items:\n    case Nil{}: Nil{}\n    case Erased{_} <> rest: lower_args(rest)\n    case Live{_, use, value} <> rest: Arg{use, value} <> lower_args(rest)\n\ndef subtract_code() -> Code:\n  Code{0, [0, 1], [], Let{2, Subtract{Local{0}, Local{1}}, Return{Local{2}}}}\n\ndef partial_code() -> Code:\n  Code{1, [0], [Many{}], Let{1, Subtract{Capture{0}, Local{0}}, Return{Local{1}}}}\n\ndef returning_code() -> Code:\n  Code{2, [0], [], Let{1, Trace{9, Word{0}}, Let{2, Closure{1, [Arg{Many{}, Local{0}}]}, Return{Local{2}}}}}\n\ndef finish_fixture() -> Block:\n  Let{9, Construct{70, [Field{100, 0, Many{}, Local{2}}, Field{101, 1, Affine{}, Local{4}}, Field{102, 2, Many{}, Local{7}}]},\n    TestTag{Local{9}, 70,\n      Let{10, Project{Local{9}, 70, 100, 0},\n        Let{11, Project{Local{9}, 70, 102, 2},\n          Let{12, Subtract{Local{10}, Local{11}},\n            Let{13, Construct{71, [Field{110, 0, Many{}, Local{2}}, Field{111, 1, Many{}, Local{4}}, Field{112, 2, Many{}, Local{7}}, Field{113, 3, Many{}, Local{12}}]}, Return{Local{13}}}}}, Fail{}}}\n\ndef fixture() -> Block:\n  Let{0, Trace{1, Word{20}},\n    Let{1, Trace{2, Word{3}},\n      Let{2, Direct{0, lower_args([Erased{0}, Live{1, Many{}, Local{0}}, Live{2, Affine{}, Local{1}}])},\n        Let{3, Closure{1, [Arg{Many{}, Local{0}}]},\n          Let{4, Apply{Local{3}, Arg{Affine{}, Local{1}}},\n            Let{5, Direct{2, [Arg{Many{}, Local{0}}]},\n              Let{6, Trace{3, Word{4}},\n                Let{7, Apply{Local{5}, Arg{Many{}, Local{6}}}, finish_fixture()}}}}}}}}\n\ndef program() -> String:\n  cat([\"const $trace=[];function $apply(f,x){return f.code(f.env,x);}\\n\",\n    codes([subtract_code(), partial_code(), returning_code()]),\n    \"const result=(()=>{\", block(fixture()), \"})();console.log(JSON.stringify({result,trace:$trace}));\\n\"])\n\ndef main() -> IO(Unit):\n  IO.print(program())\n"
+      },
+      "621f54a77fff2924bf71e4f55f208dc918f842357acbca21856e966311f8c6db": {
+        "path": "checkpoints/.bir56-op-smoke.ts",
+        "source": "import {readFileSync,writeFileSync,existsSync} from 'node:fs';\nimport {createHash} from 'node:crypto';\nimport {spawnSync} from 'node:child_process';\nimport {runHeavyGate} from '../evals/heavy_gate.ts';\nconst stem='checkpoints/.bir56-op-', receipt=stem+'receipt.json';\nconst hash=(p:string)=>createHash('sha256').update(readFileSync(p)).digest('hex');\nconst save=(r:any)=>writeFileSync(receipt,JSON.stringify(r)+'\\n');\nconst sources=Object.fromEntries([stem+'model.bend',stem+'smoke.ts'].map(p=>[p,{sha256:hash(p),source:readFileSync(p,'utf8')}]));\nif(!process.argv.includes('--worker')){\n const before=existsSync(receipt)?JSON.parse(readFileSync(receipt,'utf8')):{attempts:[]};\n save({...before,status:'RUNNING',sources,protectedHashes:Object.fromEntries(['bend2/bend.ts','bend2/comp.ts','bend2/main.ts','bend2/base.bend','evals/heavy_gate.ts','evals/heavy_gate_native.c'].map(p=>[p,hash(p)]))});\n const guardian=await runHeavyGate([process.execPath,'--smol',import.meta.path,'--worker'],{memoryMiB:2048,rssMiB:2048,pollMs:10,timeoutMs:120000,label:'BIR56 structured operation model'});\n const r=JSON.parse(readFileSync(receipt,'utf8'));r.attempts.at(-1).guardian=guardian;r.status=guardian.status==='PASS'&&r.attempts.at(-1).status==='PASS'?'MODEL_PASS':'FAIL';save(r);\n if(r.status!=='MODEL_PASS')process.exitCode=1;\n}else{\n const r=JSON.parse(readFileSync(receipt,'utf8'));const a:any={sources,commands:[],status:'RUNNING'};r.attempts.push(a);save(r);\n const run=(command:string[])=>{const start=performance.now();const p=spawnSync(command[0],command.slice(1),{encoding:'utf8',env:{...process.env,BEND_NO_TELEMETRY:'1'},maxBuffer:16*1024*1024});const row={command,status:p.status,signal:p.signal,elapsedMs:performance.now()-start,stdout:p.stdout,stderr:p.stderr,error:p.error?.message};a.commands.push(row);save(r);if(p.status!==0)throw Error('Command failed: '+JSON.stringify(row));return p.stdout;};\n try{\n  run([process.execPath,'--smol','bend2/main.ts',stem+'model.bend','-o',stem+'producer.js']);\n  const target=run(['node',stem+'producer.js']);writeFileSync(stem+'rendered.js',target);\n  const output=run(['node',stem+'rendered.js']);const actual=JSON.parse(output);const expected={result:{0:17,1:17,2:16,3:1,tag:71},trace:[1,2,9,3]};\n  a.actual=actual;a.expected=expected;a.generated={producerSha256:hash(stem+'producer.js'),rendererOutput:target,rendererOutputSha256:hash(stem+'rendered.js')};\n  if(JSON.stringify(actual)!==JSON.stringify(expected))throw Error('Fixture mismatch');a.status='PASS';save(r);\n }catch(error){a.status='FAIL';a.error=String(error);save(r);console.error(a.error);process.exitCode=1;}\n}\n"
+      },
+      "8423ab72e0ec46d2cb6ee1a84a8b7f4375a2ea6bbf1a6d992e4928558f2fb7ab": {
+        "path": "checkpoints/.bir56-op-model.bend",
+        "source": "import Base\n\ntype Use is Data:\n  Affine{}\n  Many{}\n\ntype Atom is Data:\n  Local{id: U32}\n  Capture{slot: U32}\n  Word{value: U32}\n\ntype Arg is Data:\n  Arg{use: Use, value: Atom}\n\ntype CheckedArg is Data:\n  Erased{source_slot: U32}\n  Live{source_slot: U32, use: Use, value: Atom}\n\ntype Field is Data:\n  Field{identity: U32, slot: U32, use: Use, value: Atom}\n\ntype Op is Data:\n  Copy{value: Atom}\n  Subtract{left: Atom, right: Atom}\n  Trace{event: U32, value: Atom}\n  Closure{code: U32, captures: List<&2, Arg>}\n  Direct{symbol: U32, args: List<&2, Arg>}\n  Apply{fn: Atom, arg: Arg}\n  Construct{constructor: U32, fields: List<&2, Field>}\n  Project{value: Atom, constructor: U32, field: U32, slot: U32}\n\ntype Block is Data:\n  Return{value: Atom}\n  Let{id: U32, op: Op, next: Block}\n  TestTag{value: Atom, constructor: U32, yes: Block, no: Block}\n  BIRFail{}\n\ntype Code is Data:\n  Code{symbol: U32, params: List<&2, U32>, capture_uses: List<&2, Use>, body: Block}\n\ndef cat(parts: List<&2, String>) -> String:\n  String.join(parts, \"\")\n\ndef atom(value: Atom) -> String:\n  match value:\n    case Local{id}: cat([\"v\", U32.show(id)])\n    case Capture{slot}: cat([\"e[\", U32.show(slot), \"]\"])\n    case Word{value}: U32.show(value)\n\ndef args(values: List<&2, Arg>) -> String:\n  match values:\n    case Nil{}: \"\"\n    case Arg{_, value} <> Nil{}: atom(value)\n    case Arg{_, value} <> rest: cat([atom(value), \",\", args(rest)])\n\ndef fields(values: List<&2, Field>) -> String:\n  match values:\n    case Nil{}: \"\"\n    case Field{_, slot, _, value} <> rest:\n      cat([\",\", U32.show(slot), \":\", atom(value), fields(rest)])\n\ndef direct_args(values: List<&2, Arg>) -> String:\n  match values:\n    case Nil{}: \"\"\n    case _: cat([\",\", args(values)])\n\ndef operation(op: Op) -> String:\n  match op:\n    case Copy{value}: atom(value)\n    case Subtract{left, right}: cat([\"((\", atom(left), \"-\", atom(right), \")>>>0)\"])\n    case Trace{event, value}: cat([\"($trace.push(\", U32.show(event), \"),\", atom(value), \")\"])\n    case Closure{code, captures}: cat([\"({code:c\", U32.show(code), \",env:[\", args(captures), \"]})\"])\n    case Direct{symbol, values}: cat([\"c\", U32.show(symbol), \"(null\", direct_args(values), \")\"])\n    case Apply{fn, Arg{_, value}}: cat([\"$apply(\", atom(fn), \",\", atom(value), \")\"])\n    case Construct{constructor, values}: cat([\"({tag:\", U32.show(constructor), fields(values), \"})\"])\n    case Project{value, _, _, slot}: cat([atom(value), \"[\", U32.show(slot), \"]\"])\n\ndef block(body: Block) -> String:\n  match body:\n    case Return{value}: cat([\"return \", atom(value), \";\"])\n    case Let{id, op, next}: cat([\"const v\", U32.show(id), \"=\", operation(op), \";\", block(next)])\n    case TestTag{value, constructor, yes, no}:\n      cat([\"if(\", atom(value), \".tag===\", U32.show(constructor), \"){\", block(yes), \"}else{\", block(no), \"}\"])\n    case BIRFail{}: \"throw Error('BIR fail-stop');\"\n\ndef parameters(ids: List<&2, U32>) -> String:\n  match ids:\n    case Nil{}: \"\"\n    case id <> rest: cat([\",v\", U32.show(id), parameters(rest)])\n\ndef code(item: Code) -> String:\n  match item:\n    case Code{symbol, params, _, body}:\n      cat([\"function c\", U32.show(symbol), \"(e\", parameters(params), \"){\", block(body), \"}\\n\"])\n\ndef codes(items: List<&2, Code>) -> String:\n  match items:\n    case Nil{}: \"\"\n    case item <> rest: cat([code(item), codes(rest)])\n\ndef lower_args(items: List<&2, CheckedArg>) -> List<&2, Arg>:\n  match items:\n    case Nil{}: Nil{}\n    case Erased{_} <> rest: lower_args(rest)\n    case Live{_, use, value} <> rest: Arg{use, value} <> lower_args(rest)\n\ndef subtract_code() -> Code:\n  Code{0, [0, 1], [], Let{2, Subtract{Local{0}, Local{1}}, Return{Local{2}}}}\n\ndef partial_code() -> Code:\n  Code{1, [0], [Many{}], Let{1, Subtract{Capture{0}, Local{0}}, Return{Local{1}}}}\n\ndef returning_code() -> Code:\n  Code{2, [0], [], Let{1, Trace{9, Word{0}}, Let{2, Closure{1, [Arg{Many{}, Local{0}}]}, Return{Local{2}}}}}\n\ndef finish_fixture() -> Block:\n  Let{9, Construct{70, [Field{100, 0, Many{}, Local{2}}, Field{101, 1, Affine{}, Local{4}}, Field{102, 2, Many{}, Local{7}}]},\n    TestTag{Local{9}, 70,\n      Let{10, Project{Local{9}, 70, 100, 0},\n        Let{11, Project{Local{9}, 70, 102, 2},\n          Let{12, Subtract{Local{10}, Local{11}},\n            Let{13, Construct{71, [Field{110, 0, Many{}, Local{2}}, Field{111, 1, Many{}, Local{4}}, Field{112, 2, Many{}, Local{7}}, Field{113, 3, Many{}, Local{12}}]}, Return{Local{13}}}}}, BIRFail{}}}\n\ndef fixture() -> Block:\n  Let{0, Trace{1, Word{20}},\n    Let{1, Trace{2, Word{3}},\n      Let{2, Direct{0, lower_args([Erased{0}, Live{1, Many{}, Local{0}}, Live{2, Affine{}, Local{1}}])},\n        Let{3, Closure{1, [Arg{Many{}, Local{0}}]},\n          Let{4, Apply{Local{3}, Arg{Affine{}, Local{1}}},\n            Let{5, Direct{2, [Arg{Many{}, Local{0}}]},\n              Let{6, Trace{3, Word{4}},\n                Let{7, Apply{Local{5}, Arg{Many{}, Local{6}}}, finish_fixture()}}}}}}}}\n\ndef program() -> String:\n  cat([\"const $trace=[];function $apply(f,x){return f.code(f.env,x);}\\n\",\n    codes([subtract_code(), partial_code(), returning_code()]),\n    \"const result=(()=>{\", block(fixture()), \"})();console.log(JSON.stringify({result,trace:$trace}));\\n\"])\n\ndef main() -> IO(Unit):\n  IO.print(program())\n"
+      },
+      "431290a2b4c8337a3f6f0d2d4a7c9f6363956b6a76f274bf21fcf5f9d8c86a0c": {
+        "path": "checkpoints/.bir56-op-model.bend",
+        "source": "import Base\n\ntype Use is Data:\n  Affine{}\n  Many{}\n\ntype Atom is Data:\n  Local{id: U32}\n  Capture{slot: U32}\n  Word{value: U32}\n\ntype Arg is Data:\n  Arg{use: Use, value: Atom}\n\ntype CheckedArg is Data:\n  Erased{source_slot: U32}\n  Live{source_slot: U32, use: Use, value: Atom}\n\ntype Field is Data:\n  Field{identity: U32, slot: U32, use: Use, value: Atom}\n\ntype Op is Data:\n  Copy{value: Atom}\n  Subtract{left: Atom, right: Atom}\n  Trace{event: U32, value: Atom}\n  Closure{code: U32, captures: List<&2, Arg>}\n  Direct{symbol: U32, args: List<&2, Arg>}\n  Apply{fn: Atom, arg: Arg}\n  Construct{constructor: U32, fields: List<&2, Field>}\n  Project{value: Atom, constructor: U32, field: U32, slot: U32}\n\ntype Block is Data:\n  Return{value: Atom}\n  Let{id: U32, op: Op, next: Block}\n  TestTag{value: Atom, constructor: U32, yes: Block, no: Block}\n  BIRFail{}\n\ntype Code is Data:\n  Code{symbol: U32, params: List<&2, U32>, capture_uses: List<&2, Use>, body: Block}\n\ndef cat(parts: List<&2, String>) -> String:\n  String.join(parts, \"\")\n\ndef atom(value: Atom) -> String:\n  match value:\n    case Local{id}: cat([\"v\", U32.show(id)])\n    case Capture{slot}: cat([\"e[\", U32.show(slot), \"]\"])\n    case Word{value}: U32.show(value)\n\ndef args(values: List<&2, Arg>) -> String:\n  match values:\n    case Nil{}: \"\"\n    case Arg{_, value} <> Nil{}: atom(value)\n    case Arg{_, value} <> rest: cat([atom(value), \",\", args(rest)])\n\ndef fields(values: List<&2, Field>) -> String:\n  match values:\n    case Nil{}: \"\"\n    case Field{_, slot, _, value} <> rest:\n      cat([\",\", U32.show(slot), \":\", atom(value), fields(rest)])\n\ndef direct_args(values: List<&2, Arg>) -> String:\n  match values:\n    case Nil{}: \"\"\n    case _: cat([\",\", args(values)])\n\ndef operation(op: Op) -> String:\n  match op:\n    case Copy{value}: atom(value)\n    case Subtract{left, right}: cat([\"((\", atom(left), \"-\", atom(right), \")>>>0)\"])\n    case Trace{event, value}: cat([\"($trace.push(\", U32.show(event), \"),\", atom(value), \")\"])\n    case Closure{code, captures}: cat([\"({code:c\", U32.show(code), \",env:[\", args(captures), \"]})\"])\n    case Direct{symbol, values}: cat([\"c\", U32.show(symbol), \"(null\", direct_args(values), \")\"])\n    case Apply{fn, Arg{_, value}}: cat([\"$apply(\", atom(fn), \",\", atom(value), \")\"])\n    case Construct{constructor, values}: cat([\"({tag:\", U32.show(constructor), fields(values), \"})\"])\n    case Project{value, _, _, slot}: cat([atom(value), \"[\", U32.show(slot), \"]\"])\n\ndef block(body: Block) -> String:\n  match body:\n    case Return{value}: cat([\"return \", atom(value), \";\"])\n    case Let{id, op, next}: cat([\"const v\", U32.show(id), \"=\", operation(op), \";\", block(next)])\n    case TestTag{value, constructor, yes, no}:\n      cat([\"if(\", atom(value), \".tag===\", U32.show(constructor), \"){\", block(yes), \"}else{\", block(no), \"}\"])\n    case BIRFail{}: \"throw Error('BIR fail-stop');\"\n\ndef parameters(ids: List<&2, U32>) -> String:\n  match ids:\n    case Nil{}: \"\"\n    case id <> rest: cat([\",v\", U32.show(id), parameters(rest)])\n\ndef code(item: Code) -> String:\n  match item:\n    case Code{symbol, params, _, body}:\n      cat([\"function c\", U32.show(symbol), \"(e\", parameters(params), \"){\", block(body), \"}\\n\"])\n\ndef codes(items: List<&2, Code>) -> String:\n  match items:\n    case Nil{}: \"\"\n    case item <> rest: cat([code(item), codes(rest)])\n\ndef lower_args(items: List<&2, CheckedArg>) -> List<&2, Arg>:\n  match items:\n    case Nil{}: Nil{}\n    case Erased{_} <> rest: lower_args(rest)\n    case Live{_, use, value} <> rest: Arg{use, value} <> lower_args(rest)\n\ndef subtract_code() -> Code:\n  Code{0, [0, 1], [], Let{2, Subtract{Local{0}, Local{1}}, Return{Local{2}}}}\n\ndef partial_code() -> Code:\n  Code{1, [0], [Many{}], Let{1, Subtract{Capture{0}, Local{0}}, Return{Local{1}}}}\n\ndef returning_code() -> Code:\n  Code{2, [0], [], Let{1, Trace{9, Word{0}}, Let{2, Closure{1, [Arg{Many{}, Local{0}}]}, Return{Local{2}}}}}\n\ndef finish_fixture() -> Block:\n  Let{9, Construct{70, [Field{100, 0, Many{}, Local{2}}, Field{101, 1, Affine{}, Local{4}}, Field{102, 2, Many{}, Local{7}}]},\n    TestTag{Local{9}, 70,\n      Let{10, Project{Local{9}, 70, 100, 0},\n        Let{11, Project{Local{9}, 70, 102, 2},\n          Let{12, Subtract{Local{10}, Local{11}},\n            Let{13, Construct{71, [Field{110, 0, Many{}, Local{2}}, Field{111, 1, Many{}, Local{4}}, Field{112, 2, Many{}, Local{7}}, Field{113, 3, Many{}, Local{12}}]}, Return{Local{13}}}}}}, BIRFail{}}}\n\ndef fixture() -> Block:\n  Let{0, Trace{1, Word{20}},\n    Let{1, Trace{2, Word{3}},\n      Let{2, Direct{0, lower_args([Erased{0}, Live{1, Many{}, Local{0}}, Live{2, Affine{}, Local{1}}])},\n        Let{3, Closure{1, [Arg{Many{}, Local{0}}]},\n          Let{4, Apply{Local{3}, Arg{Affine{}, Local{1}}},\n            Let{5, Direct{2, [Arg{Many{}, Local{0}}]},\n              Let{6, Trace{3, Word{4}},\n                Let{7, Apply{Local{5}, Arg{Many{}, Local{6}}}, finish_fixture()}}}}}}}}\n\ndef program() -> String:\n  cat([\"const $trace=[];function $apply(f,x){return f.code(f.env,x);}\\n\",\n    codes([subtract_code(), partial_code(), returning_code()]),\n    \"const result=(()=>{\", block(fixture()), \"})();console.log(JSON.stringify({result,trace:$trace}));\\n\"])\n\ndef main() -> IO(Unit):\n  IO.print(program())\n"
+      }
+    },
+    "schema": 1,
+    "evidenceClass": "Canonical unmodified Bend CLI native checking and JS code generation, followed by actual generated producer and generated target JS execution. Language/operation-contract admission only; NOT native-C ABI, compiler-wide lowering, fixedpoint or performance evidence.",
+    "topLevelCommand": [
+      "bun",
+      "--smol",
+      "checkpoints/.bir56-op-smoke.ts"
+    ],
+    "limits": {
+      "memoryMiB": 2048,
+      "rssMiB": 2048,
+      "pollMs": 10,
+      "timeoutMs": 120000,
+      "scope": "Each final smoke attempt: compile producer, execute producer, execute rendered JS under one process-tree guardian. Two source authoring failures retained before passing corrected model.",
+      "guardianCaveat": "10ms sampled limits, not a kernel hard allocation cap."
+    },
+    "boundaryEvidence": [
+      {
+        "path": "bend2/selfhost/ast.bend",
+        "lines": "18-50",
+        "finding": "SyntaxTerm retains annotations, dependent TermAll, optional lambda quantity, source applications, string names, source patterns and telescopes; renaming these nodes or replacing them by handles is not runtime lowering."
+      },
+      {
+        "path": "bend2/selfhost/js_emit.bend",
+        "lines": "369-415,472-528",
+        "finding": "Emitter closes/reduces source type syntax and infers types in EmitEnv, including local and substituted values."
+      },
+      {
+        "path": "bend2/selfhost/js_emit.bend",
+        "lines": "1129-1206",
+        "finding": "Named exact calls consume telescope slots; generic applications reduce each dependent arrow; lambdas use expected formal quantity. QZero removes the argument evaluation/call/lambda, not merely a Type-looking source term."
+      },
+      {
+        "path": "bend2/selfhost/js_emit.bend",
+        "lines": "616-688,1258-1287,1692-1725",
+        "finding": "Constructor argument typing depends on instantiated family parameters. Native representation depends on canonical Base declaration origin, not spelling. Tagged fields use declaration names; erased fields must not shift live projection incorrectly."
+      },
+      {
+        "path": "bend2/selfhost/js_emit.bend",
+        "lines": "1610-1689,1813-1821,2575-2613",
+        "finding": "Matches perform native/tag tests and projections with scope-dependent field typing; runtime type descriptors are distinct from compiler type inference and must not be blanket-erased."
+      },
+      {
+        "path": "bend2/selfhost/checker.bend",
+        "lines": "2797-2828,3008-3015,6006-6018",
+        "provenance": "Parent inspection supplied during this assignment, not independently reread by this worker.",
+        "finding": "Application inference discards checked function/argument terms and returns original application ID with substituted type; lambda check does not necessarily persist expected formal quantity. Existing arena alone is not a metadata-complete CheckedFIR."
+      }
+    ],
+    "contract": {
+      "exactAdmittedTypes": "See finalSourceHashes model.bend source in sourcesBySha256: Use, Atom, Arg, CheckedArg, Field, Op, Block, Code are the exact native-admitted contract subset, not JS-expression strings.",
+      "structure": "Owned acyclic Block: Let(op,next), TestTag(atom,constructor,yes,no), Return(atom), BIRFail. Code bodies are owned trees in a list. Recursion follows direct Block children and list tails only. U32 code/local/constructor/field identities are labels; renderer never recursively dereferences a U32 graph. Code references permit runtime recursion without recursive compiler traversal.",
+      "atoms": "Local SSA-like ID, capture slot, U32 literal. Operands contain no effects. Source lexical indexes/names and dependent types do not enter renderer.",
+      "ops": [
+        "Copy(atom)",
+        "Subtract(U32,U32) modulo 2^32",
+        "Trace(event,atom) fixture-only explicit effect",
+        "Closure(codeId, ordered captures with affine/many use)",
+        "Direct(resolved symbolId, ordered live args with affine/many use): exact ABI entry only",
+        "Apply(closureAtom, live argument): one live runtime arrow",
+        "Construct(resolved constructorId, fields carrying field identity, slot, use, atom)",
+        "Project(atom, constructorId, fieldId, slot) after matching guard"
+      ],
+      "callRules": {
+        "erased": "Checked frontend supplies per-application-occurrence source-slot quantities after dependent instantiation. Erased has no runtime Atom; lower_args consumes it without generating evaluation or Apply. Erased runtime binders/captures/fields disappear. Never erase solely because domain is Type.",
+        "affineMany": "Both are live. Metadata is retained in Arg/Field/capture uses; JS GC ABI renders both equally. Ownership-aware targets must obey the proven usage and representation policy rather than re-infer dependent types. This model does not re-prove quantity correctness of its IR.",
+        "exact": "Direct is legal only with certified complete entry arity and ordered live arguments. Arity means selected runtime entry, not number of source applications. No argument syntax inspection.",
+        "partial": "Lowering emits Closure to a lifted adapter with explicit already-evaluated live captures; the adapter takes remaining live arguments in source order. c1 is the fixture adapter. No generic PAP table or telescope reconstruction in renderer.",
+        "over": "Lowering splits saturated entry call from applications of the returned value. Every later effectful operand is materialized after the appropriate prior application; c2 event9 precedes extra argument event3. Do not flatten an arbitrary application spine into one eager argument array.",
+        "unknownCallee": "Use Apply one certified live arrow at a time. A returned closure carries code/env ABI, not source type syntax. All-erased prefixes consume metadata only; returning erased binders must follow checked erasure semantics."
+      },
+      "closureRules": "Checked lexical binding identities determine free variables. Runtime lowering emits deterministic live capture order, capture uses and code parameter IDs. Code body accesses Capture(slot), never EmitEnv type closures. Model c1 captures x=20 and subtracts its later y.",
+      "constructorRules": "Frontend supplies resolved constructor/family/field identity and instantiated erased/live field decisions; target ABI assigns tag, packed slot or native scalar projection operation. The model records IDs70/71, fields100..113 and numeric slots. Production must map declared names to existing JS ABI property keys/native intrinsics; model numeric-key layout is NOT a proposed silent ABI change.",
+      "matchRules": "Evaluate each scrutinee once in source order; compile checked patterns to ordered TestTag branches and explicit guarded projections. Bindings are fresh local IDs, erased fields have no runtime binding. Nested/multi-scrutinee cases become nested tests; retain source clause order and fail-stop. Native scalar/string/array tests/projectors are explicit target primitive operations, not source-pattern inference.",
+      "productionPrimitiveExtension": "Production adds a closed PrimitiveId plus ordered atoms, runtime representation and effect/calling-convention metadata for existing native operations, scalar tests and conversions. Live type/quantity values lower to structured descriptor constructors and explicit descriptor primitive operations where semantics require them; preserve existing runtime descriptor behavior, not compiler js_type/js_reduce. These extensions are specified requirements, not claimed implemented/tested by this subset."
+    },
+    "metadataOwnership": {
+      "checkedFrontend": [
+        "Stable resolved symbols/binder identities and declaration ownership/import resolution; native intrinsic provenance must be authoritative.",
+        "Per-checked-occurrence application/lambda/constructor/pattern facts: instantiated formal quantity, runtime representation and result call-shape facts. Context and expected type matter; no global NodeId-only inferred-type cache.",
+        "Checked source-slot to runtime-slot mapping, including declaration/result-type arrow boundaries, erased slots, and checked constructor field identities.",
+        "Source evaluation/diagnostic precedence and semantic validity; retain existing checker algorithms. A fact stream must include expected lambda quantity currently omitted by arena output."
+      ],
+      "runtimeLowering": [
+        "ANF local allocation, exact/direct versus unary call selection, partial adapter generation, explicit ordered capture layouts, structured match decision trees.",
+        "Preserve evaluation boundaries before dropping erased syntax; never evaluate a non-live operand. Facts are consumed during lowering, not reconstructed while rendering.",
+        "Choose typed runtime primitive operations and retain live runtime descriptors."
+      ],
+      "targetABI": [
+        "Calling convention (direct/closure/foreign, exact runtime arity, trampoline/tail/force behavior), code symbol naming, environment representation.",
+        "Constructor tag and physical field slot/key layout, scalar packing, native test/projection primitive selection, export wrappers.",
+        "Existing JS GC versus native affine ownership/copy/drop policy, numeric width/wrap and foreign effects. These are ABI choices, not dependent typing."
+      ]
+    },
+    "actualCoverage": [
+      "Exact call with source slots [erased,many,affine] emits two live arguments and yields20-3=17.",
+      "Partial closure captures20 once and later consumes3, yielding17.",
+      "Over-application first executes returning function event9, then extra operand event3; result20-4=16.",
+      "Constructor70 fields include explicit field identities/use/layout; TestTag and Project feed noncommuting17-16=1.",
+      "Expected trace [1,2,9,3], result {0:17,1:17,2:16,3:1,tag:71}; actual matches.",
+      "False match/fail-stop and Copy constructors are admitted and rendered but not executed by this smoke."
+    ],
+    "missingCompilerWideMetadata": [
+      "No production CheckedFIR fact recording or occurrence identity schema exists in this model.",
+      "No generic checked-FIR-to-BIR lowering, free-variable/capture analysis, partial adapter synthesis or source erasure proof: fixture producer hand-builds valid structured BIR and lower_args handles supplied slot facts.",
+      "Production ABI descriptor catalog, all native primitives, live runtime type descriptors, export/foreign wrappers and tail trampoline conventions remain to be migrated without behavior changes.",
+      "No proof/validation layer for scope dominance, field layouts, function arity or usage of arbitrary BIR inputs; fixture is deliberately bounded."
+    ],
+    "nonGoals": [
+      "No production edits, commit, generated compiler root, graph copy or remote run.",
+      "No full compiler cutover or API integration; no claim arena descriptors alone eliminate inference.",
+      "No performance comparison or speed claim, full frozen corpus, C ABI check, selfhost fixedpoint, unsafe code, holes, skipped checks, host typechecking replacement or output patching."
+    ],
+    "cleanup": "Uniquely prefixed throwaway model, runner and generated JS are removed after their exact model/runner sources, generated renderer text, command output and hashes are embedded here. Rehydrate final model/runner paths from sourcesBySha256 and run topLevelCommand to reproduce; compiler-produced JS is regenerated, never patched."
+  },
+  "actualAcceptedCompilerObservation": {
+    "status": "ACTUAL_EMITTED_COMPILER_CHECKED_OUTPUT_OBSERVED",
+    "source": "type Bit is Data:\n  Zero{}\n  One{}\n\ndef id() -> (Bit -> Bit):\n  x => x\n\ndef choose(-erased: Bit, +value: Bit) -> Bit:\n  value\n\ndef main() -> Bit:\n  choose(Zero{}, id(One{}))\n",
+    "image": "/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-stageone-v53d.js",
+    "imageSha256": "14dd1f829459c7bca9f519d6813612e9a7d847dca8d1e942c24a641b25610348",
+    "runtimeSha256": "bc7858ebffa2ae8ba36cf985f7ff97f845c85c66f7f999f4f5dbdb9e4182d71d",
+    "runtime": {
+      "node": "23.11.0",
+      "acorn": "8.14.1",
+      "ada": "3.2.1",
+      "amaro": "0.4.1",
+      "ares": "1.34.4",
+      "brotli": "1.1.0",
+      "cjs_module_lexer": "2.1.0",
+      "cldr": "46.0",
+      "icu": "76.1",
+      "llhttp": "9.2.1",
+      "modules": "131",
+      "napi": "10",
+      "nbytes": "0.1.1",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.64.0",
+      "openssl": "3.0.16",
+      "simdjson": "3.12.2",
+      "simdutf": "6.0.3",
+      "sqlite": "3.49.1",
+      "tz": "2025a",
+      "undici": "6.21.2",
+      "unicode": "16.0",
+      "uv": "1.50.0",
+      "uvwasi": "0.0.21",
+      "v8": "12.9.202.28-node.14",
+      "zlib": "1.3.0.1-motley-788cb3c",
+      "zstd": "1.5.6"
+    },
+    "resultTag": "CheckSuccess",
+    "nodes": [
+      {
+        "tag": "TermLam",
+        "keys": [
+          "$",
+          "quantity",
+          "key",
+          "index",
+          "body",
+          "span"
+        ],
+        "quantity": "None",
+        "span": {
+          "$": "../bend2/selfhost/ast.SpanOf",
+          "file": "/fir56-observation.bend",
+          "beg": 64,
+          "end": 72
+        }
+      },
+      {
+        "tag": "TermApp",
+        "keys": [
+          "$",
+          "fn",
+          "arg",
+          "span"
+        ],
+        "span": {
+          "$": "../bend2/selfhost/ast.SpanOf",
+          "file": "/fir56-observation.bend",
+          "beg": 148,
+          "end": 171
+        }
+      },
+      {
+        "tag": "TermApp",
+        "keys": [
+          "$",
+          "fn",
+          "arg",
+          "span"
+        ],
+        "span": {
+          "$": "../bend2/selfhost/ast.SpanOf",
+          "file": "/fir56-observation.bend",
+          "beg": 148,
+          "end": 161
+        }
+      },
+      {
+        "tag": "TermApp",
+        "keys": [
+          "$",
+          "fn",
+          "arg",
+          "span"
+        ],
+        "span": {
+          "$": "../bend2/selfhost/ast.SpanOf",
+          "file": "/fir56-observation.bend",
+          "beg": 163,
+          "end": 171
+        }
+      }
+    ],
+    "interpretation": "Inspect observed fields: CheckSuccess syntax must not be assumed to contain all per-occurrence call/lambda runtime decisions. This is unchanged accepted compiler behavior, not new IR implementation.",
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "runnerSource": "import{readFileSync,writeFileSync}from'node:fs';\nimport{createHash}from'node:crypto';\nimport{pathToFileURL}from'node:url';\nimport{resolve}from'node:path';\nimport{runTemplateSteps,runCheckerSteps}from'../evals/checker_core_step_runtime.mjs';\nconst image=resolve('checkpoints/selfhost-stageone-v53d.js'),sha=p=>createHash('sha256').update(readFileSync(p)).digest('hex');\nif(sha(image)!=='14dd1f829459c7bca9f519d6813612e9a7d847dca8d1e942c24a641b25610348')throw Error('Accepted emitted image drift');\nconst api=(await import(pathToFileURL(image).href)).default;\nconst tag=x=>typeof x?.$==='string'?x.$.split('.').at(-1):undefined;\nconst end={$:'FeedbackFuelEnd'},prototype={get tail(){return fuel(this.remaining-1);}};\nfunction fuel(n){if(!n)return end;const x=Object.create(prototype);x.$='FeedbackFuelCell';x.remaining=n;return x;}\nconst source='type Bit is Data:\\n  Zero{}\\n  One{}\\n\\ndef id() -> (Bit -> Bit):\\n  x => x\\n\\ndef choose(-erased: Bit, +value: Bit) -> Bit:\\n  value\\n\\ndef main() -> Bit:\\n  choose(Zero{}, id(One{}))\\n';\nconst parsed=api.parse_with_fuel(fuel(8000000),'/fir56-observation.bend',source);\nif(tag(parsed)!=='FeedbackComplete'||tag(parsed.value?.result)!=='ParseSuccess')throw Error('Parse failed '+JSON.stringify(parsed));\nconst expanded=runTemplateSteps(api,{$:'Con',head:api.parsed_module('',parsed.value.result.module),tail:{$:'Nil'}});\nif(tag(expanded)!=='ExpandSuccess')throw Error('Expansion failed '+JSON.stringify(expanded));\nconst checked=runCheckerSteps(api,expanded.modules);\nif(tag(checked)!=='CheckSuccess')throw Error('Checking failed '+JSON.stringify(checked));\nconst nodes=[];function visit(x){if(!x||typeof x!=='object')return;const t=tag(x);if(t==='TermLam'||t==='TermApp')nodes.push({tag:t,keys:Object.keys(x),quantity:tag(x.quantity),span:x.span});for(const [k,v]of Object.entries(x))if(k!=='span')visit(v);}visit(checked.modules);\nconst receipt={status:'ACTUAL_EMITTED_COMPILER_CHECKED_OUTPUT_OBSERVED',source,image,imageSha256:sha(image),runtimeSha256:sha(resolve('evals/checker_core_step_runtime.mjs')),runtime:process.versions,resultTag:tag(checked),nodes,interpretation:'Inspect observed fields: CheckSuccess syntax must not be assumed to contain all per-occurrence call/lambda runtime decisions. This is unchanged accepted compiler behavior, not new IR implementation.',checksExcluded:0,outputPatches:0};writeFileSync('checkpoints/.fir56-observation.json',JSON.stringify(receipt,null,2)+'\\n',{flag:'wx'});console.log(JSON.stringify(receipt));\n",
+    "command": "bun --smol evals/heavy_gate.ts --memory-mib 2048 --rss-mib 2048 --timeout-ms 120000 --poll-ms 10 -- node --max-old-space-size=1536 checkpoints/.fir56-observe.mjs",
+    "guardian": {
+      "status": "PASS",
+      "elapsedMs": 7233,
+      "peakRssBytes": 372178944,
+      "peakFootprintBytes": 354361576,
+      "memoryLimitBytes": 2147483648,
+      "rssLimitBytes": 2147483648,
+      "pollMs": 10,
+      "timeoutMs": 120000
+    }
+  },
+  "decision": {
+    "frontend": "Reuse semantic arena and declaration IR, but persist checked-occurrence facts and final signatures. CheckSuccess must own the arena, not reconstruct Syntax AST.",
+    "backend": "Structured acyclic ANF Block operations with resolved identities, explicit live args/captures/fields, target ABI descriptors. No opaque JS expression strings or dependent source-type reconstruction in renderer.",
+    "migration": "First complete checked occurrence facts and ownership boundary, then full runtime lowering and JS backend integration. Parent owns integration and all callers/gates. Keep current55 baseline until whole corpus/new emitted-stage fixedpoint succeeds.",
+    "limits": [
+      "Native ownership and operation models are not compiler acceptance.",
+      "No inferred type cache keyed solely by raw NodeId across different contexts.",
+      "Source arena publication fast paths require fully source-owned reachable closure.",
+      "Runtime descriptor/FFI/native primitive semantics and legacy output observations must survive cutover.",
+      "No speedup claim; official identical-corpus lead remains."
+    ]
+  },
+  "primaryReferences": [
+    "https://github.com/JetBrains/kotlin/blob/master/docs/fir/fir-basics.md",
+    "https://github.com/JetBrains/kotlin/blob/master/compiler/ir/ReadMe.md"
+  ],
+  "sourceEvidence": [
+    "checker.bend2802-2828 ignores formal quantity and returns original appId after checking arg",
+    "checker.bend3008-3015 discards checked function term",
+    "checker.bend6006-6035 records original optional lambda quantity",
+    "checker.bend10539-10544 checks declaration but passes original elaborated declaration onward",
+    "checker.bend10658-10661 discards final checked global signature list",
+    "checker.bend14214-14228 decodes source arena to syntax at public result",
+    "js_emit.bend1151-1206 recovers application/lambda quantities from type closures"
+  ],
+  "cleanup": {
+    "completedScaffolds": [
+      "checkpoints/.fir56-own-model.bend",
+      "checkpoints/.fir56-own-run.ts",
+      "checkpoints/.fir56-own-model.mjs",
+      "checkpoints/.fir56-own-receipt.json",
+      "checkpoints/.bir56-op-receipt.json",
+      "checkpoints/.fir56-observe.mjs",
+      "checkpoints/.fir56-observation.json"
+    ],
+    "removedBytes": 356544,
+    "exactSourcesAndResultsEmbedded": true,
+    "selectedCompilerImagesRetained": true
+  }
+}
