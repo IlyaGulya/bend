@@ -6937,12 +6937,16 @@ def scalar_schema_26(store: ArenaStore, id: U32, +ns: String, +globals: Scope.Ar
       {ArenaResult{store, valid_0} : ArenaResult<Bool>}
     case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
 
+# Checked bodies erase reply wrappers and resolve family sugar to TermAdt.
+# Recognize that representation with the same canonical names, arities,
+# quantities and de Bruijn indexes as the source equation below.
 def scalar_schema_25(store: ArenaStore, id: U32, +ns: String, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
   ArenaResult{store, +node} = arena_get_node(store, id)
   match node:
     case Arena.BodyReply{term_id, _}:
       ArenaResult{store, +valid_0} = scalar_schema_26(store, term_id, ns, globals)
       {ArenaResult{store, valid_0} : ArenaResult<Bool>}
+    case Arena.TermRef{key_id, _}: scalar_schema_name(store, key_id, ns, globals, "Word.Nil", True{})
     case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
 
 def scalar_schema_27(store: ArenaStore, id: U32, +ns: String, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
@@ -6977,7 +6981,7 @@ def scalar_schema_31(store: ArenaStore, id: U32, +ns: String, +globals: Scope.Ar
       {ArenaResult{store, valid_0} : ArenaResult<Bool>}
     case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
 
-def scalar_schema_30(store: ArenaStore, id: U32, +ns: String, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
+def scalar_schema_30(store: ArenaStore, +id: U32, +ns: String, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
   ArenaResult{store, +node} = arena_get_node(store, id)
   match node:
     case Arena.TermFill{head_id, args_start, args_count, _}:
@@ -6988,15 +6992,16 @@ def scalar_schema_30(store: ArenaStore, id: U32, +ns: String, +globals: Scope.Ar
           ArenaResult{store, +valid_1} = scalar_schema_10(store, item_0, ns, globals)
           {ArenaResult{store, Bool.and(valid_0, valid_1)} : ArenaResult<Bool>}
         case False{}: {ArenaResult{store, False{}} : ArenaResult<Bool>}
+    case Arena.TermAdt{_, _, _, _, _, _}: scalar_schema_9(store, id, ns, globals)
     case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
 
-def scalar_schema_29(store: ArenaStore, id: U32, +ns: String, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
+def scalar_schema_29(store: ArenaStore, +id: U32, +ns: String, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
   ArenaResult{store, +node} = arena_get_node(store, id)
   match node:
     case Arena.BodyReply{term_id, _}:
       ArenaResult{store, +valid_0} = scalar_schema_30(store, term_id, ns, globals)
       {ArenaResult{store, valid_0} : ArenaResult<Bool>}
-    case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
+    case _: scalar_schema_30(store, id, ns, globals)
 
 def scalar_schema_33(store: ArenaStore, id: U32, +ns: String, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
   ArenaResult{store, +node} = arena_get_pattern(store, id)

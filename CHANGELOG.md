@@ -147,6 +147,11 @@ latest one; the GitHub release carries the same notes.
   admitting the owning Checked FIR handoff to the native checker and emitter.
   Full native root validation and a real emitted-library consumer pass; current
   full-corpus performance and bootstrap acceptance are tracked separately.
+- Scalar and string typing certificates recognize checked Word equations after
+  reply-wrapper elimination and family-sugar elaboration. The same canonical
+  constructor identities, arities, quantities and indexes remain mandatory;
+  checked literals no longer fall back to full Word trees solely because of
+  the FIR representation change.
 - Source map lookup selects the same Patricia branch through a structurally
   decreasing worker instead of allocating two recursive branch closures per
   node. Unicode keys, misses and arbitrary public map shapes retain Map.bit

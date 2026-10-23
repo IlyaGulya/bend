@@ -30,7 +30,7 @@ def check_result_output(result: Checked.CheckResult, success: String, failure: S
 
 def check_single_result_output(result: Checked.CheckResult, success: String, failure: String):
   match result:
-    case Checked.CheckSuccess{Checked.CheckedProgram{_, modules, _}}:
+    case Checked.CheckSuccess{Checked.CheckedProgram{_, modules, _, _}}:
       match modules:
         case [_]: IO.print(success)
         case _: IO.print(failure)
@@ -38,7 +38,7 @@ def check_single_result_output(result: Checked.CheckResult, success: String, fai
 
 def check_triple_result_output(result: Checked.CheckResult, success: String, failure: String):
   match result:
-    case Checked.CheckSuccess{Checked.CheckedProgram{_, modules, _}}:
+    case Checked.CheckSuccess{Checked.CheckedProgram{_, modules, _, _}}:
       match modules:
         case [_, _, _]: IO.print(success)
         case _: IO.print(failure)
@@ -75,7 +75,7 @@ def returned_bang_preserved(modules: List<&2, Loader.LoadedModule>) -> Bool:
     case Nil{}: False{}
 def check_bool_module_result(result: Checked.CheckResult):
   match result:
-    case Checked.CheckSuccess{Checked.CheckedProgram{_, modules, _}}:
+    case Checked.CheckSuccess{Checked.CheckedProgram{_, modules, _, _}}:
       match modules:
         case [_]:
           IO.print("checker-constructor-typing-ok")
@@ -96,7 +96,7 @@ def check_bool_module_result(result: Checked.CheckResult):
 
 def check_nested_result(result: Checked.CheckResult):
   match result:
-    case Checked.CheckSuccess{Checked.CheckedProgram{_, modules, _}}:
+    case Checked.CheckSuccess{Checked.CheckedProgram{_, modules, _, _}}:
       match modules:
         case [_]:
           IO.print("checker-nested-match-ok")

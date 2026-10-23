@@ -70,7 +70,7 @@ constant folding читает уже emitted callee. В `comp.ts` checked e те
 unchecked source нет. Builder retention wording/accounting также обновлены;
 из-за изменения producer hashes новый final proof требует свежего parser build.
 
-Полный frozen corpus пока НЕ прошёл: component benchmark достиг600s timeout.
+Первый полный JS component benchmark57 достиг600s timeout.
 Прежние async phase logs не доказывают, в какой фазе процесс был остановлен.
 Не приписывать timeout parser по последней строке stdout. Отдельный exact-input
 probe разобрал largest2.45MB source за3.809s; whole loader прошёл все50 files /
@@ -108,6 +108,53 @@ BodyReply. Это конкретный кандидат причины регр�
 Receipt57e: `compiler-ir-checkpoint-v57e.json`;57f: `compiler-ir-checkpoint-v57f.json`.
 Сначала восстановить точное распознавание checked schema, затем измерить полный
 corpus; свежую immutable parser/producer chain собирать после стабилизации source.
+
+В57g найден и исправлен конкретный scalar/string fast-path regression:
+checked Word equation после materialization содержит прямые reply terms и
+TermAdt вместо source TermFill. Старые scalar_schema_25/_29/_30 отвергали её.
+Теперь checked form распознаётся теми же canonical identity/arity/index guards,
+без unchecked fallback или ослабления schema. Native checker-only build прошёл
+5629/5629 тел за7579ms, physical774348008bytes.
+Base+main123 до исправления:66 TypedOccurrence, depth33; после:один
+ScalarOccurrence{bits:123}; реальный unchanged emitted output печатает123.
+Это measured diagnostic composition: новый checker + прежний full parser/emitter,
+не новый unified full-root/fixedpoint. Исходная scope label throwaway probe
+«full8339-body compiler» неточна для after-run; использованы именно два images.
+
+На полном frozen50-file /15-module /8403-declaration corpus такой composition
+реально выполнил compile и unchanged7720-export consumer:156371.383708ms,
+parse5233.600042,expand6914.034667,check137592.649375,emit6264.322958ms;
+peak physical1707392848bytes. Output14928486bytes,
+SHAe3a0dfc85a863e3883cd54fa5afb4b67cb049f0572234dc5126ae4caeb6f59de.
+Это PASS полного corpus, но не final root admission или stage1/stage2 proof.
+Baseline55 пока остаётся selected; official same-corpus total32002.610417ms
+по-прежнему быстрее. Новая fresh parser chain `ir57g-admit-a` принята75/75,
+unified seed нативно проверил8339 тел за37603ms /2978084712physicalbytes,
+artifact12670329bytes SHA9e1201a3e63d09679795fd4e252ecea847da64e71f7ef1e3c57843ee5b526cf3.
+
+Native phase profiling дополнено actual getrusage user/system CPU и явными
+phase-start records с synchronous progress persistence; version2 ещё требует
+реального native build/run. Endpoint-only codegen RSS не доказывает принадлежность
+guardian peak clang: следующий native run должен снять isolated clang maxRSS.
+Параллельно запущены native57g completion на misakaindrive и независимый
+controlled LLVM-partition build-memory experiment без изменения generated C.
+
+Первый настоящий gate57g остановлен600103ms во время stage-two-check:
+seed93 fixtures прошли; stage-one реально emitted14562034bytes,
+SHA3d7b43c127d2ab4f81dc5c38104dc90c83db3c7554bf6ee729ef27107b8a4c5d.
+Stage-one check занял202934.488791ms; stage-two-check начат459289.589458ms.
+Stage-two output/byte comparison/186 emitted-stage fixtures ещё отсутствуют.
+Лимит не повышать и не объявлять fixedpoint. Actual unchanged stage-one Base123
+probe прошёл ScalarOccurrence{123} и execution123; host resumes2680654 совпадают
+с seed, но profiled check14673.486416ms против seed4382.948584ms.
+Это локализует emitted-runtime cost, а не дополнительные semantic steps.
+Receipt57g: `compiler-ir-checkpoint-v57g.json`.
+
+Четыре CheckedProgram patterns в tests/selfhost/checker.bend обновлены на metadata
+field. Прямой raw CLI check этого теста не прошёл прежний computed match в
+template.bend:327; passing direct-test claim нет. Production CPS closure
+по-прежнему нативно проверена полностью; transitive raw Template не нормализован
+в рамках этой scalar fix.
 
 ## Compiler56 — FIR/BIR architecture preflight, not production acceptance
 
