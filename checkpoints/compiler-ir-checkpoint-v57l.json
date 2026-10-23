@@ -1,0 +1,281 @@
+{
+  "version": "57l",
+  "status": "BOTH_TYPED_CPS_CHUNK_CANDIDATES_REJECTED_NO_CANONICAL_CHANGE",
+  "productionGeneratorSha256": "a4f8a1ba27c6b86f9328149e76357ceb5943ad837cc689e6328db65e006769d6",
+  "baselineStepsSha256": "2f595741666a0f936e6f695938dadd8e0b2a3d3f28c39d06073139d8783898c5",
+  "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+  "boundYield": {
+    "sourceSha256": "d245ba6d2b3ae31eacd2c2c920245755bda64a01222c07719627b36c6f37e646",
+    "changedTemplate": "chunks.push(`\ndef ${chunkFunction}(-A: Type, fuel: Nat, progress: ${progressType}<A>) -> ${progressType}<A>:\n  match fuel progress:\n    case 0n state: state\n    case 1n+rest ${finishedType}{box}: ${finishedType}{box}\n    case 1n+rest ${pendingType}{request, resume}:\n      ${chunkFunction}(A, rest, ${boundType}{${resultFunction}(request), ${rawStepFunction}(request), resume})\n    case 1n+rest ${directType}{R, request, arguments, invoke, resume}:\n      ${chunkFunction}(A, rest, ${boundType}{${resultFunction}(request), invoke(arguments), resume})\n    case 1n+rest ${boundType}{B, inner, resume}:\n      match inner:\n        case ${finishedType}{box}: ${chunkFunction}(A, rest, resume(box))\n        case ${pendingType}{request, next}:\n          ${boundType}{B, ${pendingType}{request, next}, resume}\n        case ${directType}{R, request, arguments, invoke, next}:\n          ${boundType}{B, ${directType}{R, request, arguments, invoke, next}, resume}\n        case ${boundType}{C, nested, next}:\n          ${boundType}{B, ${boundType}{C, nested, next}, resume}\n\ndef ${stepFunction}(request: ${requestType}) -> ${progressType}<${resultFunction}(request)>:\n  ${chunkFunction}(${resultFunction}(request), ${nativeChunkQuantum}n, ${rawStepFunction}(request))\n`);",
+    "nativeProof": {
+      "checksExcluded": 0,
+      "outputPatches": 0,
+      "monitoring": "Linux worker process.resourceUsage maxRSS only; no macOS physical footprint guardian",
+      "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+      "passed": true,
+      "expectedSourceDefinitions": 5629,
+      "checkedDefinitions": 5629,
+      "nativeCheckedBodies": 5629,
+      "artifactSha256": "3485b19de236604ec1c06ceeb6f58adecf8d882505307073febc19d88c820a11",
+      "wallMs": 2886.860592,
+      "cpuMs": 6137.182,
+      "resourceUsage": {
+        "userCPUTime": 5991460,
+        "systemCPUTime": 439897,
+        "maxRSS": 769808,
+        "sharedMemorySize": 0,
+        "unsharedDataSize": 0,
+        "unsharedStackSize": 0,
+        "minorPageFault": 189717,
+        "majorPageFault": 142,
+        "swappedOut": 0,
+        "fsRead": 21768,
+        "fsWrite": 12528,
+        "ipcSent": 0,
+        "ipcReceived": 0,
+        "signalsCount": 0,
+        "voluntaryContextSwitches": 4257,
+        "involuntaryContextSwitches": 847
+      }
+    },
+    "actualConsumerEvidenceSha256": "19c3b6ce761ca2474585233cf48f33da8fc1bcf5fd2364c254affa7244642ae4",
+    "actualConsumer": "Identical complete Base parse/expansion values; seed/candidate/candidate/seed for positive, type-negative, affine-negative. All checked module/diagnostic hashes match; four actual emitted executions print123 newline.",
+    "positiveMeanMs": {
+      "seedWall": 5070.927,
+      "candidateWall": 5080.884,
+      "seedCpu": 8066.17,
+      "candidateCpu": 7156.303
+    },
+    "positiveHostResumes": {
+      "seed": 2680226,
+      "candidate": 7867755
+    },
+    "decision": "Reject:2.94x host callbacks, no positive wall benefit; negative type3.95% slower; Linux shared-process RSS not isolated memory proof.",
+    "executionHistory": "history://BoundYield57L"
+  },
+  "finishedBind": {
+    "sourceSha256": "eeeb3ec2eeb55e258ea3f1be19310fb9faeeb95719bee20dde1dbafd107f5f1f",
+    "changedTemplate": "chunks.push(`\ndef ${prefix}_bind(-A: Type, -B: Type, inner: ${progressType}<B>, resume: (@box: ${valueType}<B> -> ${progressType}<A>)) -> ${progressType}<A>:\n  match inner:\n    case ${finishedType}{box}: resume(box)\n    case state: ${boundType}{B, state, resume}\n\ndef ${chunkFunction}(-A: Type, fuel: Nat, progress: ${progressType}<A>) -> ${progressType}<A>:\n  match fuel progress:\n    case 0n state: state\n    case 1n+rest ${finishedType}{box}: ${finishedType}{box}\n    case 1n+rest ${pendingType}{request, resume}:\n      ${chunkFunction}(A, rest, ${prefix}_bind(A, ${resultFunction}(request), ${rawStepFunction}(request), resume))\n    case 1n+rest ${directType}{R, request, arguments, invoke, resume}:\n      ${chunkFunction}(A, rest, ${prefix}_bind(A, ${resultFunction}(request), invoke(arguments), resume))\n    case 1n+rest ${boundType}{B, inner, resume}:\n      match inner:\n        case ${finishedType}{box}: ${chunkFunction}(A, rest, resume(box))\n        case ${pendingType}{request, next}:\n          ${chunkFunction}(A, rest, ${pendingType}{request, box => ${boundType}{B, next(box), resume}})\n        case ${directType}{R, request, arguments, invoke, next}:\n          ${chunkFunction}(A, rest, ${directType}{R, request, arguments, invoke, box => ${boundType}{B, next(box), resume}})\n        case ${boundType}{C, nested, next}:\n          ${chunkFunction}(A, rest, ${boundType}{C, nested, box => ${boundType}{B, next(box), resume}})\n\ndef ${stepFunction}(request: ${requestType}) -> ${progressType}<${resultFunction}(request)>:\n  ${chunkFunction}(${resultFunction}(request), ${nativeChunkQuantum}n, ${rawStepFunction}(request))\n`);",
+    "summary": {
+      "status": "CORRECT_PRIVATE_CANDIDATE_NOT_A_DEMONSTRATED_WALL_TIME_WINNER",
+      "nhsHeavyLease": "RELEASED",
+      "canonicalFilesChanged": [],
+      "privateSource": "evals/.finishedbind57l.ts",
+      "snapshot": "ssh://nhs/tmp/finishedbind57l-20261024-786c",
+      "baselineStepsSha256": "2f595741666a0f936e6f695938dadd8e0b2a3d3f28c39d06073139d8783898c5",
+      "candidateStepsSha256": "3d73084f5296951e9d13262a6731442418888c7ba43fae920f7f42a3f2f22960",
+      "change": "Nonrecursive typed checker_bind(-A: Type, -B: Type, inner: CheckerProgress<B>, resume: (@box: CheckerValue<B> -> CheckerProgress<A>)); Finished invokes resume(box) directly; all other states keep Bound{B,inner,resume}; Pending and Direct only call bind before structurally recursive chunk. Bound chunk arms untouched.",
+      "nativeFacts": {
+        "candidate": {
+          "definitionCount": 1139,
+          "pureHelpers": 110,
+          "pendingSiteCount": 1537,
+          "nativeChunk": {
+            "function": "checker_chunk",
+            "rawStep": "checker_step_one",
+            "publicStep": "checker_step",
+            "start": "checker_start",
+            "quantum": 64,
+            "fuelType": "Nat",
+            "recursion": "structural Nat",
+            "zeroFuel": "return remaining progress unchanged",
+            "semanticFuelChanged": false,
+            "boundConstructor": "CheckerBound",
+            "boundFields": [
+              "inner",
+              "resume"
+            ],
+            "boundErasedType": "B",
+            "pendingDispatch": "checker_step_one",
+            "directDispatch": "source invoke(arguments)",
+            "finishedTransport": "pass the whole box to resume; unwrap only at the final host root",
+            "selfRecursiveFunctions": [
+              "checker_chunk"
+            ]
+          },
+          "allCoverage": 1139
+        },
+        "baseline": {
+          "definitionCount": 1139,
+          "pureHelpers": 110,
+          "pendingSiteCount": 1537,
+          "nativeChunk": {
+            "function": "checker_chunk",
+            "rawStep": "checker_step_one",
+            "publicStep": "checker_step",
+            "start": "checker_start",
+            "quantum": 64,
+            "fuelType": "Nat",
+            "recursion": "structural Nat",
+            "zeroFuel": "return remaining progress unchanged",
+            "semanticFuelChanged": false,
+            "boundConstructor": "CheckerBound",
+            "boundFields": [
+              "inner",
+              "resume"
+            ],
+            "boundErasedType": "B",
+            "pendingDispatch": "checker_step_one",
+            "directDispatch": "source invoke(arguments)",
+            "finishedTransport": "pass the whole box to resume; unwrap only at the final host root",
+            "selfRecursiveFunctions": [
+              "checker_chunk"
+            ]
+          },
+          "allCoverage": 1139
+        },
+        "classificationIdentical": true
+      },
+      "consumerPassed": true,
+      "checksExcluded": 0,
+      "outputPatches": 0,
+      "pairedInput": "The identical native expanded object is passed to both checkers in both orders; post-run semantic hash confirms input unchanged. Seed native parser/expander/emitter use complete unmodified Base.",
+      "consumerEvidence": "checkpoints/.finishedbind57l-consumer.json",
+      "rows": [
+        {
+          "name": "positive",
+          "result": "CheckSuccess",
+          "means": {
+            "baseline": {
+              "wallMs": 5009.723541500001,
+              "cpuMs": 7825.949500000001,
+              "boundaries": {
+                "pending": 1016984,
+                "direct": 838373,
+                "bound": 824869,
+                "resume": 2680226,
+                "iterations": 5360453
+              }
+            },
+            "candidate": {
+              "wallMs": 5233.784594500001,
+              "cpuMs": 7579.422500000001,
+              "boundaries": {
+                "pending": 963275,
+                "direct": 820133,
+                "bound": 774855,
+                "resume": 2558263,
+                "iterations": 5116527
+              }
+            }
+          },
+          "wallChangePercent": 4.4725233068033,
+          "cpuChangePercent": -3.15012255062469,
+          "resumeReduction": 121963,
+          "resumeReductionPercent": 4.550474474913683,
+          "semanticHash": "9b5fdecd9b477fe927f477fda72bed4c75f263ebede55b17b592369a45997284",
+          "outputSha256": "ec2a673501f8f078cbc5ca2b406c23f1ed82035e4f6f8d98b6ebcb5f525197b3",
+          "actualExecution": {
+            "status": 0,
+            "stdout": "123\n",
+            "stderr": ""
+          }
+        },
+        {
+          "name": "negative-type",
+          "result": "CheckFailure",
+          "means": {
+            "baseline": {
+              "wallMs": 4095.0574545000018,
+              "cpuMs": 5739.3825,
+              "boundaries": {
+                "pending": 1002602,
+                "direct": 808088,
+                "bound": 817061,
+                "resume": 2627751,
+                "iterations": 5255503
+              }
+            },
+            "candidate": {
+              "wallMs": 4166.335863499999,
+              "cpuMs": 5906.8955,
+              "boundaries": {
+                "pending": 948939,
+                "direct": 790445,
+                "bound": 767414,
+                "resume": 2506798,
+                "iterations": 5013597
+              }
+            }
+          },
+          "wallChangePercent": 1.7405960671362575,
+          "cpuChangePercent": 2.918658932385143,
+          "resumeReduction": 120953,
+          "resumeReductionPercent": 4.602909484193899,
+          "semanticHash": "31f2d1d3d9bb9454838fd09058e522c37c61728ddc3fcc64e2bf3adaa02aa41f"
+        },
+        {
+          "name": "negative-quantity",
+          "result": "CheckFailure",
+          "means": {
+            "baseline": {
+              "wallMs": 4175.729333999996,
+              "cpuMs": 6159.3369999999995,
+              "boundaries": {
+                "pending": 1001162,
+                "direct": 807351,
+                "bound": 815040,
+                "resume": 2623553,
+                "iterations": 5247107
+              }
+            },
+            "candidate": {
+              "wallMs": 4258.182976500004,
+              "cpuMs": 5483.4145,
+              "boundaries": {
+                "pending": 947689,
+                "direct": 789214,
+                "bound": 765495,
+                "resume": 2502398,
+                "iterations": 5004797
+              }
+            }
+          },
+          "wallChangePercent": 1.974592601791647,
+          "cpuChangePercent": -10.973948981846583,
+          "resumeReduction": 121155,
+          "resumeReductionPercent": 4.617974174716501,
+          "semanticHash": "22ae9450a8cddafa62a8fd358102ba05598960abcd1875b9679003ae182d2ece"
+        }
+      ],
+      "builds": {
+        "baseline": {
+          "events": 5896,
+          "expectedSourceDefinitions": 5629,
+          "checkedBodies": 5629,
+          "wallMs": 2655.767296,
+          "cpuMs": 5860.218,
+          "bytes": 6853077,
+          "maxRSSKiB": 809028,
+          "guardian": {
+            "status": "NOT_AVAILABLE",
+            "reason": "Linux exploratory build; no macOS physical-footprint guardian"
+          }
+        },
+        "candidate": {
+          "events": 5897,
+          "expectedSourceDefinitions": 5630,
+          "checkedBodies": 5630,
+          "wallMs": 2927.462074,
+          "cpuMs": 5850.603,
+          "bytes": 6493889,
+          "maxRSSKiB": 693372,
+          "guardian": {
+            "status": "NOT_AVAILABLE",
+            "reason": "Linux exploratory build; no macOS physical-footprint guardian"
+          }
+        }
+      },
+      "memoryCaveat": "Node process RSS/heap snapshots and maxRSS only; shared worker/process and retained outputs; no macOS physical-footprint proof or memory-reduction acceptance",
+      "conclusion": "Semantics and actual emitted 123 match, host resumes fall about 4.55–4.62%, and JS artifact shrinks; every individual paired wall-time comparison is slower. No claimed time or physical-footprint win; do not integrate on this evidence. Parent must run accepted Mac gates for any chosen optimization."
+    },
+    "actualConsumerEvidenceSha256": "86a464e8c18dedebdf5b4a9fa0b65939c0f9cff296f00bdb0d41c50d88b1c4cb",
+    "decision": "Reject: native correct and4.55% fewer host resumes but wall slower in every paired comparison (positive4.473%, negatives1.741/1.975%). No whole-speed/physical-memory improvement. No production change.",
+    "executionHistory": "history://FinishedBind57L"
+  },
+  "monitoring": "Linux exploratory actual native checker/consumer only. No macOS process-tree physical-footprint acceptance; never transfer maxRSS/shared process snapshots to memory-win claims.",
+  "semanticFuelChanged": false,
+  "operationalQuantum": 64,
+  "checksExcluded": 0,
+  "outputPatches": 0
+}

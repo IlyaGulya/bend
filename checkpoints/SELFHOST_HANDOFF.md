@@ -222,6 +222,17 @@ frame отклонены kernel. Наивный Frame<I,O> enum не уточн�
 match и правильно отклонён. Это НЕ доказательство произвольного heterogeneous
 continuation stack или drop-in Progress<A>; production CPS не изменён.
 
+57l: два независимых typed chunk эксперимента на NHS не интегрированы.
+Yield nonfinished Bound в host LIFO сохранил результаты, но callbacks выросли
+2680226→7867755; positive wall5070.927→5080.884ms, negative type3.95% хуже.
+Eager bind(Finished, resume) нативно проверил5630 bodies, сократил callbacks4.55%,
+но все paired wall хуже: positive4.473%, negatives1.741/1.975%.
+Оба прошли actual Base123 execution и идентичные negative diagnostics,
+однако «меньше transitions» не равно ускорению. Production chunk64,
+semantic WHNF fuel64, classifier и host driver неизменны.
+Linux RSS shared-process/maxRSS не является accepted Mac physical-memory proof.
+Compact evidence: compiler-ir-checkpoint-v57l.json.
+
 Первый настоящий gate57g остановлен600103ms во время stage-two-check:
 seed93 fixtures прошли; stage-one реально emitted14562034bytes,
 SHA3d7b43c127d2ab4f81dc5c38104dc90c83db3c7554bf6ee729ef27107b8a4c5d.
