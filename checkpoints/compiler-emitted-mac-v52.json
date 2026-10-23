@@ -1,0 +1,1640 @@
+{
+  "status": "FULL_COVERAGE_ACTUAL52_49_REVERSE_ORDER_PASS",
+  "scope": "Fresh actual emitted images, unchanged full50/15/7720 workload, productionruntime; secondhostmacOSARM",
+  "runtime": {
+    "node": "23.11.0",
+    "acorn": "8.14.1",
+    "ada": "3.2.1",
+    "amaro": "0.4.1",
+    "ares": "1.34.4",
+    "brotli": "1.1.0",
+    "cjs_module_lexer": "2.1.0",
+    "cldr": "46.0",
+    "icu": "76.1",
+    "llhttp": "9.2.1",
+    "modules": "131",
+    "napi": "10",
+    "nbytes": "0.1.1",
+    "ncrypto": "0.0.1",
+    "nghttp2": "1.64.0",
+    "openssl": "3.0.16",
+    "simdjson": "3.12.2",
+    "simdutf": "6.0.3",
+    "sqlite": "3.49.1",
+    "tz": "2025a",
+    "undici": "6.21.2",
+    "unicode": "16.0",
+    "uv": "1.50.0",
+    "uvwasi": "0.0.21",
+    "v8": "12.9.202.28-node.14",
+    "zlib": "1.3.0.1-motley-788cb3c",
+    "zstd": "1.5.6"
+  },
+  "host": {
+    "platform": "darwin",
+    "release": "25.5.0",
+    "cpus": 12
+  },
+  "cases": [
+    {
+      "label": "52-first",
+      "image": "checkpoints/selfhost-steps-bootstrap-release237-misaka-v52.json.cases/stage-one.js",
+      "imageSha256": "958ff8b8dd80d2c3cbfb36edb4e76bcc87ab7ee73b8be7942fc7fbcf5e7b47bd",
+      "before": {
+        "load": [
+          3.62060546875,
+          3.09716796875,
+          3.60400390625
+        ],
+        "freeMemory": 283394048,
+        "uptime": 182266,
+        "cpuTimes": [
+          {
+            "user": 32159060,
+            "nice": 0,
+            "sys": 21889030,
+            "idle": 126023540,
+            "irq": 0
+          },
+          {
+            "user": 27398180,
+            "nice": 0,
+            "sys": 18085090,
+            "idle": 134970870,
+            "irq": 0
+          },
+          {
+            "user": 21902140,
+            "nice": 0,
+            "sys": 13092140,
+            "idle": 145919580,
+            "irq": 0
+          },
+          {
+            "user": 18383060,
+            "nice": 0,
+            "sys": 9789290,
+            "idle": 153184670,
+            "irq": 0
+          },
+          {
+            "user": 16345840,
+            "nice": 0,
+            "sys": 7835350,
+            "idle": 157516180,
+            "irq": 0
+          },
+          {
+            "user": 15113000,
+            "nice": 0,
+            "sys": 6576040,
+            "idle": 160208010,
+            "irq": 0
+          },
+          {
+            "user": 31425310,
+            "nice": 0,
+            "sys": 5291960,
+            "idle": 145349820,
+            "irq": 0
+          },
+          {
+            "user": 31279130,
+            "nice": 0,
+            "sys": 5255010,
+            "idle": 145538910,
+            "irq": 0
+          },
+          {
+            "user": 31134710,
+            "nice": 0,
+            "sys": 5214160,
+            "idle": 145735200,
+            "irq": 0
+          },
+          {
+            "user": 31218080,
+            "nice": 0,
+            "sys": 5319830,
+            "idle": 145534940,
+            "irq": 0
+          },
+          {
+            "user": 31069160,
+            "nice": 0,
+            "sys": 5338630,
+            "idle": 145667770,
+            "irq": 0
+          },
+          {
+            "user": 31203550,
+            "nice": 0,
+            "sys": 5296650,
+            "idle": 145576290,
+            "irq": 0
+          }
+        ]
+      },
+      "after": {
+        "load": [
+          3.921875,
+          3.296875,
+          3.63330078125
+        ],
+        "freeMemory": 1972273152,
+        "uptime": 182344,
+        "cpuTimes": [
+          {
+            "user": 32170750,
+            "nice": 0,
+            "sys": 21903330,
+            "idle": 126072860,
+            "irq": 0
+          },
+          {
+            "user": 27407980,
+            "nice": 0,
+            "sys": 18098360,
+            "idle": 135023470,
+            "irq": 0
+          },
+          {
+            "user": 21910000,
+            "nice": 0,
+            "sys": 13101680,
+            "idle": 145978200,
+            "irq": 0
+          },
+          {
+            "user": 18388900,
+            "nice": 0,
+            "sys": 9796530,
+            "idle": 153247950,
+            "irq": 0
+          },
+          {
+            "user": 16350920,
+            "nice": 0,
+            "sys": 7840770,
+            "idle": 157582430,
+            "irq": 0
+          },
+          {
+            "user": 15116800,
+            "nice": 0,
+            "sys": 6580200,
+            "idle": 160277020,
+            "irq": 0
+          },
+          {
+            "user": 31450950,
+            "nice": 0,
+            "sys": 5293620,
+            "idle": 145400120,
+            "irq": 0
+          },
+          {
+            "user": 31301000,
+            "nice": 0,
+            "sys": 5256450,
+            "idle": 145593200,
+            "irq": 0
+          },
+          {
+            "user": 31161320,
+            "nice": 0,
+            "sys": 5215740,
+            "idle": 145784620,
+            "irq": 0
+          },
+          {
+            "user": 31247180,
+            "nice": 0,
+            "sys": 5320850,
+            "idle": 145582440,
+            "irq": 0
+          },
+          {
+            "user": 31112410,
+            "nice": 0,
+            "sys": 5339630,
+            "idle": 145701160,
+            "irq": 0
+          },
+          {
+            "user": 31231860,
+            "nice": 0,
+            "sys": 5297430,
+            "idle": 145624820,
+            "irq": 0
+          }
+        ]
+      },
+      "report": "checkpoints/compiler-actual52-mac-52-first.json",
+      "reportSha256": "9678cd10dcb7db0f35f1b31fab941843d4b806358d85e41a20dbe02e06c2e90a",
+      "result": {
+        "schemaVersion": 1,
+        "status": "PASS",
+        "diagnosticOnly": true,
+        "bootstrapAcceptance": false,
+        "mode": "component",
+        "stopAfter": "compile",
+        "oracleIncluded": false,
+        "checksExcluded": 0,
+        "outputPatches": 0,
+        "corpus": "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+        "corpusSha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+        "root": "/private/tmp/bend-v41-corpus.uXXfVm/checkpoints/.bootstrap_compiler_root_v1.bend",
+        "inputFiles": 50,
+        "runtime": {
+          "versions": {
+            "node": "23.11.0",
+            "acorn": "8.14.1",
+            "ada": "3.2.1",
+            "amaro": "0.4.1",
+            "ares": "1.34.4",
+            "brotli": "1.1.0",
+            "cjs_module_lexer": "2.1.0",
+            "cldr": "46.0",
+            "icu": "76.1",
+            "llhttp": "9.2.1",
+            "modules": "131",
+            "napi": "10",
+            "nbytes": "0.1.1",
+            "ncrypto": "0.0.1",
+            "nghttp2": "1.64.0",
+            "openssl": "3.0.16",
+            "simdjson": "3.12.2",
+            "simdutf": "6.0.3",
+            "sqlite": "3.49.1",
+            "tz": "2025a",
+            "undici": "6.21.2",
+            "unicode": "16.0",
+            "uv": "1.50.0",
+            "uvwasi": "0.0.21",
+            "v8": "12.9.202.28-node.14",
+            "zlib": "1.3.0.1-motley-788cb3c",
+            "zstd": "1.5.6"
+          },
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "limits": {
+          "memoryMiB": 8192,
+          "rssMiB": 8192,
+          "pollMs": 10,
+          "oldGenerationMiB": 6144,
+          "youngGenerationMiB": 128,
+          "stackMiB": 256
+        },
+        "implementationPins": {
+          "/Users/ilyagulya/Projects/My/bend/evals/compiler_benchmark.ts": "82a66e7a51a417fd392693a18863b5562131b103994ab14479dcd4657533b4f1",
+          "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-v41.corpus.json": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+          "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+          "/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-steps-bootstrap-release237-misaka-v52.json.cases/stage-one.js": "958ff8b8dd80d2c3cbfb36edb4e76bcc87ab7ee73b8be7942fc7fbcf5e7b47bd",
+          "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-misaka-v46-official.json.exports.json": "b49ac17d858cff20e3ea8b88f3068b52ca6d0d2045684d4c17d7f318bd3aba18",
+          "/private/tmp/bend-v41-corpus.uXXfVm/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+          "/private/tmp/bend-v41-corpus.uXXfVm/bend2/comp.ts": "56d5727049bc3ef528ef84d3b4712a41a0a8ce0a06437b29d881e71107638c70"
+        },
+        "phases": [
+          {
+            "name": "compiler-startup",
+            "wallMs": 368.650792,
+            "cpuMs": 427.958,
+            "memoryEnd": {
+              "rss": 413089792,
+              "heapTotal": 71991296,
+              "heapUsed": 53751848,
+              "external": 10932600,
+              "arrayBuffers": 31507
+            }
+          },
+          {
+            "name": "load-parse",
+            "wallMs": 4073.331209,
+            "cpuMs": 5637.112,
+            "memoryEnd": {
+              "rss": 1234649088,
+              "heapTotal": 825638912,
+              "heapUsed": 657593864,
+              "external": 10925996,
+              "arrayBuffers": 24863
+            }
+          },
+          {
+            "name": "expand",
+            "wallMs": 3822.556542000001,
+            "cpuMs": 4440.207,
+            "memoryEnd": {
+              "rss": 1326825472,
+              "heapTotal": 718962688,
+              "heapUsed": 257729432,
+              "external": 10925996,
+              "arrayBuffers": 24863
+            }
+          },
+          {
+            "name": "check",
+            "wallMs": 58598.159,
+            "cpuMs": 65229.022,
+            "memoryEnd": {
+              "rss": 1722957824,
+              "heapTotal": 1232650240,
+              "heapUsed": 634937480,
+              "external": 10925996,
+              "arrayBuffers": 24863
+            }
+          },
+          {
+            "name": "emit",
+            "wallMs": 9949.353499999997,
+            "cpuMs": 12083.139,
+            "memoryEnd": {
+              "rss": 1650999296,
+              "heapTotal": 988823552,
+              "heapUsed": 607561072,
+              "external": 10920371,
+              "arrayBuffers": 24863
+            }
+          },
+          {
+            "name": "write-and-hash",
+            "wallMs": 88.85208399999829,
+            "cpuMs": 89.359,
+            "memoryEnd": {
+              "rss": 1711898624,
+              "heapTotal": 1009106944,
+              "heapUsed": 627867424,
+              "external": 31201736,
+              "arrayBuffers": 20306228
+            }
+          },
+          {
+            "name": "output-import",
+            "wallMs": 219.30766600000788,
+            "cpuMs": 220.164,
+            "memoryEnd": {
+              "rss": 1759412224,
+              "heapTotal": 1032536064,
+              "heapUsed": 618650784,
+              "external": 31209736,
+              "arrayBuffers": 20314228
+            }
+          },
+          {
+            "name": "output-semantic-smoke",
+            "wallMs": 9.6284169999999,
+            "cpuMs": 10.631,
+            "memoryEnd": {
+              "rss": 1759559680,
+              "heapTotal": 1032683520,
+              "heapUsed": 619801192,
+              "external": 31209736,
+              "arrayBuffers": 20314228
+            }
+          }
+        ],
+        "moduleCount": 15,
+        "sourceDeclarations": 8403,
+        "checkedModules": 15,
+        "artifact": {
+          "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-actual52-mac-52-first.json.output.mjs",
+          "bytes": 20281365,
+          "sha256": "a1033733403dddb6214b6433ec55cd385fc210ce0d985871259a25487bd06d29"
+        },
+        "compileMs": 76904.717542,
+        "exportCount": 7720,
+        "exportSetSha256": "99efc6ef8538e35f5b6f549e39296bae814e654d48558f9ca7ba2aae2b1911f4",
+        "outputSmokePassed": true,
+        "passed": true,
+        "totalWithOutputSmokeMs": 77158.710334,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 1779433472,
+          "peakFootprintBytes": 1546044992,
+          "elapsedMs": 77499,
+          "timeoutMs": 600000,
+          "command": [
+            "node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "--stack-size=262144",
+            "/Users/ilyagulya/Projects/My/bend/evals/compiler_benchmark.ts",
+            "--worker",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-actual52-mac-52-first.json.request.json",
+            "b2fb81534953c9b650383f3f878f713cc0e0222e53690fc14241e474a6de2778"
+          ],
+          "label": "Comparable full-corpus component compiler",
+          "exitCode": 0,
+          "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792753290981-8f88f2445c1e917a.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        }
+      }
+    },
+    {
+      "label": "49-first",
+      "image": "checkpoints/selfhost-steps-bootstrap-release237-misaka-v49.json.cases/stage-one.js",
+      "imageSha256": "28061d5eab72b2a0bc560c6963b8f22cd863d7572f102cb627d483606f412e81",
+      "before": {
+        "load": [
+          3.921875,
+          3.296875,
+          3.63330078125
+        ],
+        "freeMemory": 1956265984,
+        "uptime": 182344,
+        "cpuTimes": [
+          {
+            "user": 32170750,
+            "nice": 0,
+            "sys": 21903330,
+            "idle": 126072870,
+            "irq": 0
+          },
+          {
+            "user": 27407980,
+            "nice": 0,
+            "sys": 18098360,
+            "idle": 135023480,
+            "irq": 0
+          },
+          {
+            "user": 21910000,
+            "nice": 0,
+            "sys": 13101680,
+            "idle": 145978200,
+            "irq": 0
+          },
+          {
+            "user": 18388910,
+            "nice": 0,
+            "sys": 9796530,
+            "idle": 153247960,
+            "irq": 0
+          },
+          {
+            "user": 16350920,
+            "nice": 0,
+            "sys": 7840770,
+            "idle": 157582430,
+            "irq": 0
+          },
+          {
+            "user": 15116800,
+            "nice": 0,
+            "sys": 6580210,
+            "idle": 160277020,
+            "irq": 0
+          },
+          {
+            "user": 31450970,
+            "nice": 0,
+            "sys": 5293620,
+            "idle": 145400120,
+            "irq": 0
+          },
+          {
+            "user": 31301000,
+            "nice": 0,
+            "sys": 5256450,
+            "idle": 145593210,
+            "irq": 0
+          },
+          {
+            "user": 31161320,
+            "nice": 0,
+            "sys": 5215740,
+            "idle": 145784630,
+            "irq": 0
+          },
+          {
+            "user": 31247180,
+            "nice": 0,
+            "sys": 5320850,
+            "idle": 145582450,
+            "irq": 0
+          },
+          {
+            "user": 31112410,
+            "nice": 0,
+            "sys": 5339630,
+            "idle": 145701160,
+            "irq": 0
+          },
+          {
+            "user": 31231860,
+            "nice": 0,
+            "sys": 5297430,
+            "idle": 145624830,
+            "irq": 0
+          }
+        ]
+      },
+      "after": {
+        "load": [
+          13.4423828125,
+          6.212890625,
+          4.69189453125
+        ],
+        "freeMemory": 2711027712,
+        "uptime": 182449,
+        "cpuTimes": [
+          {
+            "user": 32215760,
+            "nice": 0,
+            "sys": 21926130,
+            "idle": 126108790,
+            "irq": 0
+          },
+          {
+            "user": 27451770,
+            "nice": 0,
+            "sys": 18118960,
+            "idle": 135063100,
+            "irq": 0
+          },
+          {
+            "user": 21951420,
+            "nice": 0,
+            "sys": 13119760,
+            "idle": 146022990,
+            "irq": 0
+          },
+          {
+            "user": 18428540,
+            "nice": 0,
+            "sys": 9812490,
+            "idle": 153296870,
+            "irq": 0
+          },
+          {
+            "user": 16389220,
+            "nice": 0,
+            "sys": 7855500,
+            "idle": 157634150,
+            "irq": 0
+          },
+          {
+            "user": 15154160,
+            "nice": 0,
+            "sys": 6594010,
+            "idle": 160330790,
+            "irq": 0
+          },
+          {
+            "user": 31528970,
+            "nice": 0,
+            "sys": 5299510,
+            "idle": 145421440,
+            "irq": 0
+          },
+          {
+            "user": 31379130,
+            "nice": 0,
+            "sys": 5262490,
+            "idle": 145614250,
+            "irq": 0
+          },
+          {
+            "user": 31238870,
+            "nice": 0,
+            "sys": 5221720,
+            "idle": 145806310,
+            "irq": 0
+          },
+          {
+            "user": 31321480,
+            "nice": 0,
+            "sys": 5326220,
+            "idle": 145608010,
+            "irq": 0
+          },
+          {
+            "user": 31186110,
+            "nice": 0,
+            "sys": 5344620,
+            "idle": 145727720,
+            "irq": 0
+          },
+          {
+            "user": 31305180,
+            "nice": 0,
+            "sys": 5302400,
+            "idle": 145651790,
+            "irq": 0
+          }
+        ]
+      },
+      "report": "checkpoints/compiler-actual52-mac-49-first.json",
+      "reportSha256": "0b9a986ea056e1590d489494f7f946c52f60d683220fe09979a53977893cfaca",
+      "result": {
+        "schemaVersion": 1,
+        "status": "PASS",
+        "diagnosticOnly": true,
+        "bootstrapAcceptance": false,
+        "mode": "component",
+        "stopAfter": "compile",
+        "oracleIncluded": false,
+        "checksExcluded": 0,
+        "outputPatches": 0,
+        "corpus": "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+        "corpusSha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+        "root": "/private/tmp/bend-v41-corpus.uXXfVm/checkpoints/.bootstrap_compiler_root_v1.bend",
+        "inputFiles": 50,
+        "runtime": {
+          "versions": {
+            "node": "23.11.0",
+            "acorn": "8.14.1",
+            "ada": "3.2.1",
+            "amaro": "0.4.1",
+            "ares": "1.34.4",
+            "brotli": "1.1.0",
+            "cjs_module_lexer": "2.1.0",
+            "cldr": "46.0",
+            "icu": "76.1",
+            "llhttp": "9.2.1",
+            "modules": "131",
+            "napi": "10",
+            "nbytes": "0.1.1",
+            "ncrypto": "0.0.1",
+            "nghttp2": "1.64.0",
+            "openssl": "3.0.16",
+            "simdjson": "3.12.2",
+            "simdutf": "6.0.3",
+            "sqlite": "3.49.1",
+            "tz": "2025a",
+            "undici": "6.21.2",
+            "unicode": "16.0",
+            "uv": "1.50.0",
+            "uvwasi": "0.0.21",
+            "v8": "12.9.202.28-node.14",
+            "zlib": "1.3.0.1-motley-788cb3c",
+            "zstd": "1.5.6"
+          },
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "limits": {
+          "memoryMiB": 8192,
+          "rssMiB": 8192,
+          "pollMs": 10,
+          "oldGenerationMiB": 6144,
+          "youngGenerationMiB": 128,
+          "stackMiB": 256
+        },
+        "implementationPins": {
+          "/Users/ilyagulya/Projects/My/bend/evals/compiler_benchmark.ts": "82a66e7a51a417fd392693a18863b5562131b103994ab14479dcd4657533b4f1",
+          "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-v41.corpus.json": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+          "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+          "/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-steps-bootstrap-release237-misaka-v49.json.cases/stage-one.js": "28061d5eab72b2a0bc560c6963b8f22cd863d7572f102cb627d483606f412e81",
+          "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-misaka-v46-official.json.exports.json": "b49ac17d858cff20e3ea8b88f3068b52ca6d0d2045684d4c17d7f318bd3aba18",
+          "/private/tmp/bend-v41-corpus.uXXfVm/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+          "/private/tmp/bend-v41-corpus.uXXfVm/bend2/comp.ts": "56d5727049bc3ef528ef84d3b4712a41a0a8ce0a06437b29d881e71107638c70"
+        },
+        "phases": [
+          {
+            "name": "compiler-startup",
+            "wallMs": 365.8781670000001,
+            "cpuMs": 426.091,
+            "memoryEnd": {
+              "rss": 412385280,
+              "heapTotal": 71974912,
+              "heapUsed": 53727120,
+              "external": 10932600,
+              "arrayBuffers": 31507
+            }
+          },
+          {
+            "name": "load-parse",
+            "wallMs": 4056.7660000000005,
+            "cpuMs": 5592.129,
+            "memoryEnd": {
+              "rss": 1237712896,
+              "heapTotal": 826408960,
+              "heapUsed": 657485928,
+              "external": 10925996,
+              "arrayBuffers": 24863
+            }
+          },
+          {
+            "name": "expand",
+            "wallMs": 4011.416875,
+            "cpuMs": 4743.292,
+            "memoryEnd": {
+              "rss": 1336655872,
+              "heapTotal": 719470592,
+              "heapUsed": 352348528,
+              "external": 10925996,
+              "arrayBuffers": 24863
+            }
+          },
+          {
+            "name": "check",
+            "wallMs": 82246.3995,
+            "cpuMs": 89784.64,
+            "memoryEnd": {
+              "rss": 1825374208,
+              "heapTotal": 1307279360,
+              "heapUsed": 905676056,
+              "external": 10925996,
+              "arrayBuffers": 24863
+            }
+          },
+          {
+            "name": "emit",
+            "wallMs": 13796.178791999992,
+            "cpuMs": 16994.943,
+            "memoryEnd": {
+              "rss": 1694384128,
+              "heapTotal": 993263616,
+              "heapUsed": 755399192,
+              "external": 10920371,
+              "arrayBuffers": 24863
+            }
+          },
+          {
+            "name": "write-and-hash",
+            "wallMs": 101.32312499999534,
+            "cpuMs": 97.321,
+            "memoryEnd": {
+              "rss": 1755283456,
+              "heapTotal": 1013547008,
+              "heapUsed": 775705544,
+              "external": 31201736,
+              "arrayBuffers": 20306228
+            }
+          },
+          {
+            "name": "output-import",
+            "wallMs": 264.8990840000042,
+            "cpuMs": 261.482,
+            "memoryEnd": {
+              "rss": 1802485760,
+              "heapTotal": 1036976128,
+              "heapUsed": 748133640,
+              "external": 31209736,
+              "arrayBuffers": 20314228
+            }
+          },
+          {
+            "name": "output-semantic-smoke",
+            "wallMs": 10.984207999994396,
+            "cpuMs": 12.533,
+            "memoryEnd": {
+              "rss": 1802846208,
+              "heapTotal": 1037123584,
+              "heapUsed": 749281976,
+              "external": 31209736,
+              "arrayBuffers": 20314228
+            }
+          }
+        ],
+        "moduleCount": 15,
+        "sourceDeclarations": 8403,
+        "checkedModules": 15,
+        "artifact": {
+          "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-actual52-mac-49-first.json.output.mjs",
+          "bytes": 20281365,
+          "sha256": "a1033733403dddb6214b6433ec55cd385fc210ce0d985871259a25487bd06d29"
+        },
+        "compileMs": 104584.542625,
+        "exportCount": 7720,
+        "exportSetSha256": "99efc6ef8538e35f5b6f549e39296bae814e654d48558f9ca7ba2aae2b1911f4",
+        "outputSmokePassed": true,
+        "passed": true,
+        "totalWithOutputSmokeMs": 104917.778833,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 1826537472,
+          "peakFootprintBytes": 1618155272,
+          "elapsedMs": 105256,
+          "timeoutMs": 600000,
+          "command": [
+            "node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "--stack-size=262144",
+            "/Users/ilyagulya/Projects/My/bend/evals/compiler_benchmark.ts",
+            "--worker",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-actual52-mac-49-first.json.request.json",
+            "465196d4b928357bd7e0e749f92550de9fa633f66818e49968ab2e8c6b6e59e8"
+          ],
+          "label": "Comparable full-corpus component compiler",
+          "exitCode": 0,
+          "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792753368596-817ca8473d1022f4.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        }
+      }
+    },
+    {
+      "label": "49-second",
+      "image": "checkpoints/selfhost-steps-bootstrap-release237-misaka-v49.json.cases/stage-one.js",
+      "imageSha256": "28061d5eab72b2a0bc560c6963b8f22cd863d7572f102cb627d483606f412e81",
+      "before": {
+        "load": [
+          13.4423828125,
+          6.212890625,
+          4.69189453125
+        ],
+        "freeMemory": 2690269184,
+        "uptime": 182449,
+        "cpuTimes": [
+          {
+            "user": 32215760,
+            "nice": 0,
+            "sys": 21926130,
+            "idle": 126108790,
+            "irq": 0
+          },
+          {
+            "user": 27451770,
+            "nice": 0,
+            "sys": 18118960,
+            "idle": 135063110,
+            "irq": 0
+          },
+          {
+            "user": 21951420,
+            "nice": 0,
+            "sys": 13119760,
+            "idle": 146023000,
+            "irq": 0
+          },
+          {
+            "user": 18428540,
+            "nice": 0,
+            "sys": 9812490,
+            "idle": 153296880,
+            "irq": 0
+          },
+          {
+            "user": 16389230,
+            "nice": 0,
+            "sys": 7855510,
+            "idle": 157634160,
+            "irq": 0
+          },
+          {
+            "user": 15154160,
+            "nice": 0,
+            "sys": 6594010,
+            "idle": 160330800,
+            "irq": 0
+          },
+          {
+            "user": 31528980,
+            "nice": 0,
+            "sys": 5299510,
+            "idle": 145421440,
+            "irq": 0
+          },
+          {
+            "user": 31379140,
+            "nice": 0,
+            "sys": 5262500,
+            "idle": 145614250,
+            "irq": 0
+          },
+          {
+            "user": 31238880,
+            "nice": 0,
+            "sys": 5221720,
+            "idle": 145806310,
+            "irq": 0
+          },
+          {
+            "user": 31321490,
+            "nice": 0,
+            "sys": 5326230,
+            "idle": 145608010,
+            "irq": 0
+          },
+          {
+            "user": 31186120,
+            "nice": 0,
+            "sys": 5344620,
+            "idle": 145727720,
+            "irq": 0
+          },
+          {
+            "user": 31305190,
+            "nice": 0,
+            "sys": 5302400,
+            "idle": 145651790,
+            "irq": 0
+          }
+        ]
+      },
+      "after": {
+        "load": [
+          23.03564453125,
+          12.74609375,
+          7.54638671875
+        ],
+        "freeMemory": 2199060480,
+        "uptime": 182576,
+        "cpuTimes": [
+          {
+            "user": 32290680,
+            "nice": 0,
+            "sys": 21958050,
+            "idle": 126127930,
+            "irq": 0
+          },
+          {
+            "user": 27526930,
+            "nice": 0,
+            "sys": 18148640,
+            "idle": 135084490,
+            "irq": 0
+          },
+          {
+            "user": 22026260,
+            "nice": 0,
+            "sys": 13147420,
+            "idle": 146046900,
+            "irq": 0
+          },
+          {
+            "user": 18502840,
+            "nice": 0,
+            "sys": 9838480,
+            "idle": 153323130,
+            "irq": 0
+          },
+          {
+            "user": 16462750,
+            "nice": 0,
+            "sys": 7880720,
+            "idle": 157662090,
+            "irq": 0
+          },
+          {
+            "user": 15227200,
+            "nice": 0,
+            "sys": 6618450,
+            "idle": 160360100,
+            "irq": 0
+          },
+          {
+            "user": 31637700,
+            "nice": 0,
+            "sys": 5310310,
+            "idle": 145428790,
+            "irq": 0
+          },
+          {
+            "user": 31488500,
+            "nice": 0,
+            "sys": 5273070,
+            "idle": 145621180,
+            "irq": 0
+          },
+          {
+            "user": 31347310,
+            "nice": 0,
+            "sys": 5232180,
+            "idle": 145814300,
+            "irq": 0
+          },
+          {
+            "user": 31428980,
+            "nice": 0,
+            "sys": 5336870,
+            "idle": 145616740,
+            "irq": 0
+          },
+          {
+            "user": 31293890,
+            "nice": 0,
+            "sys": 5355160,
+            "idle": 145736300,
+            "irq": 0
+          },
+          {
+            "user": 31411650,
+            "nice": 0,
+            "sys": 5312860,
+            "idle": 145661760,
+            "irq": 0
+          }
+        ]
+      },
+      "report": "checkpoints/compiler-actual52-mac-49-second.json",
+      "reportSha256": "bd894f5f70a671c11ba67a5be49ce5559e80b1932872830b7e8764e5d2634b23",
+      "result": {
+        "schemaVersion": 1,
+        "status": "PASS",
+        "diagnosticOnly": true,
+        "bootstrapAcceptance": false,
+        "mode": "component",
+        "stopAfter": "compile",
+        "oracleIncluded": false,
+        "checksExcluded": 0,
+        "outputPatches": 0,
+        "corpus": "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+        "corpusSha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+        "root": "/private/tmp/bend-v41-corpus.uXXfVm/checkpoints/.bootstrap_compiler_root_v1.bend",
+        "inputFiles": 50,
+        "runtime": {
+          "versions": {
+            "node": "23.11.0",
+            "acorn": "8.14.1",
+            "ada": "3.2.1",
+            "amaro": "0.4.1",
+            "ares": "1.34.4",
+            "brotli": "1.1.0",
+            "cjs_module_lexer": "2.1.0",
+            "cldr": "46.0",
+            "icu": "76.1",
+            "llhttp": "9.2.1",
+            "modules": "131",
+            "napi": "10",
+            "nbytes": "0.1.1",
+            "ncrypto": "0.0.1",
+            "nghttp2": "1.64.0",
+            "openssl": "3.0.16",
+            "simdjson": "3.12.2",
+            "simdutf": "6.0.3",
+            "sqlite": "3.49.1",
+            "tz": "2025a",
+            "undici": "6.21.2",
+            "unicode": "16.0",
+            "uv": "1.50.0",
+            "uvwasi": "0.0.21",
+            "v8": "12.9.202.28-node.14",
+            "zlib": "1.3.0.1-motley-788cb3c",
+            "zstd": "1.5.6"
+          },
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "limits": {
+          "memoryMiB": 8192,
+          "rssMiB": 8192,
+          "pollMs": 10,
+          "oldGenerationMiB": 6144,
+          "youngGenerationMiB": 128,
+          "stackMiB": 256
+        },
+        "implementationPins": {
+          "/Users/ilyagulya/Projects/My/bend/evals/compiler_benchmark.ts": "82a66e7a51a417fd392693a18863b5562131b103994ab14479dcd4657533b4f1",
+          "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-v41.corpus.json": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+          "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+          "/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-steps-bootstrap-release237-misaka-v49.json.cases/stage-one.js": "28061d5eab72b2a0bc560c6963b8f22cd863d7572f102cb627d483606f412e81",
+          "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-misaka-v46-official.json.exports.json": "b49ac17d858cff20e3ea8b88f3068b52ca6d0d2045684d4c17d7f318bd3aba18",
+          "/private/tmp/bend-v41-corpus.uXXfVm/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+          "/private/tmp/bend-v41-corpus.uXXfVm/bend2/comp.ts": "56d5727049bc3ef528ef84d3b4712a41a0a8ce0a06437b29d881e71107638c70"
+        },
+        "phases": [
+          {
+            "name": "compiler-startup",
+            "wallMs": 383.01149999999996,
+            "cpuMs": 468.305,
+            "memoryEnd": {
+              "rss": 414302208,
+              "heapTotal": 72237056,
+              "heapUsed": 53729936,
+              "external": 10932600,
+              "arrayBuffers": 31507
+            }
+          },
+          {
+            "name": "load-parse",
+            "wallMs": 4545.554375,
+            "cpuMs": 6621.329,
+            "memoryEnd": {
+              "rss": 1249116160,
+              "heapTotal": 826245120,
+              "heapUsed": 657006320,
+              "external": 10925996,
+              "arrayBuffers": 24863
+            }
+          },
+          {
+            "name": "expand",
+            "wallMs": 5162.449624999999,
+            "cpuMs": 5825.066,
+            "memoryEnd": {
+              "rss": 1360789504,
+              "heapTotal": 936345600,
+              "heapUsed": 715787456,
+              "external": 10925996,
+              "arrayBuffers": 24863
+            }
+          },
+          {
+            "name": "check",
+            "wallMs": 100695.420083,
+            "cpuMs": 111128.852,
+            "memoryEnd": {
+              "rss": 1634697216,
+              "heapTotal": 1149534208,
+              "heapUsed": 787779776,
+              "external": 10925996,
+              "arrayBuffers": 24863
+            }
+          },
+          {
+            "name": "emit",
+            "wallMs": 14924.965791999988,
+            "cpuMs": 17764.541,
+            "memoryEnd": {
+              "rss": 1846951936,
+              "heapTotal": 1401765888,
+              "heapUsed": 1176323512,
+              "external": 10925996,
+              "arrayBuffers": 24863
+            }
+          },
+          {
+            "name": "write-and-hash",
+            "wallMs": 259.9973339999997,
+            "cpuMs": 169.901,
+            "memoryEnd": {
+              "rss": 1907867648,
+              "heapTotal": 1422049280,
+              "heapUsed": 1196620584,
+              "external": 31207361,
+              "arrayBuffers": 20306228
+            }
+          },
+          {
+            "name": "output-import",
+            "wallMs": 324.7601250000007,
+            "cpuMs": 314.994,
+            "memoryEnd": {
+              "rss": 1967800320,
+              "heapTotal": 1457799168,
+              "heapUsed": 1185441536,
+              "external": 31215361,
+              "arrayBuffers": 20314228
+            }
+          },
+          {
+            "name": "output-semantic-smoke",
+            "wallMs": 10.359125000002678,
+            "cpuMs": 11.672,
+            "memoryEnd": {
+              "rss": 1968652288,
+              "heapTotal": 1458208768,
+              "heapUsed": 1186588104,
+              "external": 31215361,
+              "arrayBuffers": 20314228
+            }
+          }
+        ],
+        "moduleCount": 15,
+        "sourceDeclarations": 8403,
+        "checkedModules": 15,
+        "artifact": {
+          "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-actual52-mac-49-second.json.output.mjs",
+          "bytes": 20281365,
+          "sha256": "a1033733403dddb6214b6433ec55cd385fc210ce0d985871259a25487bd06d29"
+        },
+        "compileMs": 125974.951667,
+        "exportCount": 7720,
+        "exportSetSha256": "99efc6ef8538e35f5b6f549e39296bae814e654d48558f9ca7ba2aae2b1911f4",
+        "outputSmokePassed": true,
+        "passed": true,
+        "totalWithOutputSmokeMs": 126376.09700000001,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 1969569792,
+          "peakFootprintBytes": 1733700136,
+          "elapsedMs": 126818,
+          "timeoutMs": 600000,
+          "command": [
+            "node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "--stack-size=262144",
+            "/Users/ilyagulya/Projects/My/bend/evals/compiler_benchmark.ts",
+            "--worker",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-actual52-mac-49-second.json.request.json",
+            "7d726eef2df562ee61336022005dba8dce3745662a16fe9e6a650e4c457c71e5"
+          ],
+          "label": "Comparable full-corpus component compiler",
+          "exitCode": 0,
+          "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792753474100-bc97ebc9a327ee03.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        }
+      }
+    },
+    {
+      "label": "52-second",
+      "image": "checkpoints/selfhost-steps-bootstrap-release237-misaka-v52.json.cases/stage-one.js",
+      "imageSha256": "958ff8b8dd80d2c3cbfb36edb4e76bcc87ab7ee73b8be7942fc7fbcf5e7b47bd",
+      "before": {
+        "load": [
+          23.03564453125,
+          12.74609375,
+          7.54638671875
+        ],
+        "freeMemory": 2182201344,
+        "uptime": 182576,
+        "cpuTimes": [
+          {
+            "user": 32290690,
+            "nice": 0,
+            "sys": 21958050,
+            "idle": 126127930,
+            "irq": 0
+          },
+          {
+            "user": 27526940,
+            "nice": 0,
+            "sys": 18148640,
+            "idle": 135084490,
+            "irq": 0
+          },
+          {
+            "user": 22026270,
+            "nice": 0,
+            "sys": 13147420,
+            "idle": 146046900,
+            "irq": 0
+          },
+          {
+            "user": 18502850,
+            "nice": 0,
+            "sys": 9838480,
+            "idle": 153323130,
+            "irq": 0
+          },
+          {
+            "user": 16462760,
+            "nice": 0,
+            "sys": 7880730,
+            "idle": 157662090,
+            "irq": 0
+          },
+          {
+            "user": 15227210,
+            "nice": 0,
+            "sys": 6618450,
+            "idle": 160360100,
+            "irq": 0
+          },
+          {
+            "user": 31637710,
+            "nice": 0,
+            "sys": 5310310,
+            "idle": 145428790,
+            "irq": 0
+          },
+          {
+            "user": 31488520,
+            "nice": 0,
+            "sys": 5273070,
+            "idle": 145621180,
+            "irq": 0
+          },
+          {
+            "user": 31347320,
+            "nice": 0,
+            "sys": 5232180,
+            "idle": 145814300,
+            "irq": 0
+          },
+          {
+            "user": 31429000,
+            "nice": 0,
+            "sys": 5336870,
+            "idle": 145616740,
+            "irq": 0
+          },
+          {
+            "user": 31293900,
+            "nice": 0,
+            "sys": 5355160,
+            "idle": 145736300,
+            "irq": 0
+          },
+          {
+            "user": 31411670,
+            "nice": 0,
+            "sys": 5312860,
+            "idle": 145661760,
+            "irq": 0
+          }
+        ]
+      },
+      "after": {
+        "load": [
+          19.62646484375,
+          15.47119140625,
+          9.349609375
+        ],
+        "freeMemory": 1950547968,
+        "uptime": 182700,
+        "cpuTimes": [
+          {
+            "user": 32357770,
+            "nice": 0,
+            "sys": 21993960,
+            "idle": 126147170,
+            "irq": 0
+          },
+          {
+            "user": 27595330,
+            "nice": 0,
+            "sys": 18180930,
+            "idle": 135106250,
+            "irq": 0
+          },
+          {
+            "user": 22094400,
+            "nice": 0,
+            "sys": 13177630,
+            "idle": 146071210,
+            "irq": 0
+          },
+          {
+            "user": 18570540,
+            "nice": 0,
+            "sys": 9867240,
+            "idle": 153349510,
+            "irq": 0
+          },
+          {
+            "user": 16529970,
+            "nice": 0,
+            "sys": 7908370,
+            "idle": 157690190,
+            "irq": 0
+          },
+          {
+            "user": 15293930,
+            "nice": 0,
+            "sys": 6645270,
+            "idle": 160389600,
+            "irq": 0
+          },
+          {
+            "user": 31744090,
+            "nice": 0,
+            "sys": 5320820,
+            "idle": 145435080,
+            "irq": 0
+          },
+          {
+            "user": 31593300,
+            "nice": 0,
+            "sys": 5283890,
+            "idle": 145628730,
+            "irq": 0
+          },
+          {
+            "user": 31453040,
+            "nice": 0,
+            "sys": 5242790,
+            "idle": 145821150,
+            "irq": 0
+          },
+          {
+            "user": 31533710,
+            "nice": 0,
+            "sys": 5347370,
+            "idle": 145624710,
+            "irq": 0
+          },
+          {
+            "user": 31398090,
+            "nice": 0,
+            "sys": 5365790,
+            "idle": 145744650,
+            "irq": 0
+          },
+          {
+            "user": 31515110,
+            "nice": 0,
+            "sys": 5323400,
+            "idle": 145670940,
+            "irq": 0
+          }
+        ]
+      },
+      "report": "checkpoints/compiler-actual52-mac-52-second.json",
+      "reportSha256": "545c770c5012fe6f2e278e64ed932375e99e0d10bd9a3e0b2695e9401790b545",
+      "result": {
+        "schemaVersion": 1,
+        "status": "PASS",
+        "diagnosticOnly": true,
+        "bootstrapAcceptance": false,
+        "mode": "component",
+        "stopAfter": "compile",
+        "oracleIncluded": false,
+        "checksExcluded": 0,
+        "outputPatches": 0,
+        "corpus": "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+        "corpusSha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+        "root": "/private/tmp/bend-v41-corpus.uXXfVm/checkpoints/.bootstrap_compiler_root_v1.bend",
+        "inputFiles": 50,
+        "runtime": {
+          "versions": {
+            "node": "23.11.0",
+            "acorn": "8.14.1",
+            "ada": "3.2.1",
+            "amaro": "0.4.1",
+            "ares": "1.34.4",
+            "brotli": "1.1.0",
+            "cjs_module_lexer": "2.1.0",
+            "cldr": "46.0",
+            "icu": "76.1",
+            "llhttp": "9.2.1",
+            "modules": "131",
+            "napi": "10",
+            "nbytes": "0.1.1",
+            "ncrypto": "0.0.1",
+            "nghttp2": "1.64.0",
+            "openssl": "3.0.16",
+            "simdjson": "3.12.2",
+            "simdutf": "6.0.3",
+            "sqlite": "3.49.1",
+            "tz": "2025a",
+            "undici": "6.21.2",
+            "unicode": "16.0",
+            "uv": "1.50.0",
+            "uvwasi": "0.0.21",
+            "v8": "12.9.202.28-node.14",
+            "zlib": "1.3.0.1-motley-788cb3c",
+            "zstd": "1.5.6"
+          },
+          "platform": "darwin",
+          "arch": "arm64"
+        },
+        "limits": {
+          "memoryMiB": 8192,
+          "rssMiB": 8192,
+          "pollMs": 10,
+          "oldGenerationMiB": 6144,
+          "youngGenerationMiB": 128,
+          "stackMiB": 256
+        },
+        "implementationPins": {
+          "/Users/ilyagulya/Projects/My/bend/evals/compiler_benchmark.ts": "82a66e7a51a417fd392693a18863b5562131b103994ab14479dcd4657533b4f1",
+          "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-v41.corpus.json": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+          "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+          "/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-steps-bootstrap-release237-misaka-v52.json.cases/stage-one.js": "958ff8b8dd80d2c3cbfb36edb4e76bcc87ab7ee73b8be7942fc7fbcf5e7b47bd",
+          "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-misaka-v46-official.json.exports.json": "b49ac17d858cff20e3ea8b88f3068b52ca6d0d2045684d4c17d7f318bd3aba18",
+          "/private/tmp/bend-v41-corpus.uXXfVm/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+          "/private/tmp/bend-v41-corpus.uXXfVm/bend2/comp.ts": "56d5727049bc3ef528ef84d3b4712a41a0a8ce0a06437b29d881e71107638c70"
+        },
+        "phases": [
+          {
+            "name": "compiler-startup",
+            "wallMs": 491.21704100000005,
+            "cpuMs": 521.575,
+            "memoryEnd": {
+              "rss": 414875648,
+              "heapTotal": 71204864,
+              "heapUsed": 53748248,
+              "external": 10932600,
+              "arrayBuffers": 31507
+            }
+          },
+          {
+            "name": "load-parse",
+            "wallMs": 4764.2405420000005,
+            "cpuMs": 6565.282,
+            "memoryEnd": {
+              "rss": 1240547328,
+              "heapTotal": 825901056,
+              "heapUsed": 657537960,
+              "external": 10925996,
+              "arrayBuffers": 24863
+            }
+          },
+          {
+            "name": "expand",
+            "wallMs": 4959.0738329999995,
+            "cpuMs": 5914.241,
+            "memoryEnd": {
+              "rss": 1343602688,
+              "heapTotal": 719224832,
+              "heapUsed": 326003536,
+              "external": 10925996,
+              "arrayBuffers": 24863
+            }
+          },
+          {
+            "name": "check",
+            "wallMs": 98306.13033300001,
+            "cpuMs": 106911.698,
+            "memoryEnd": {
+              "rss": 1689403392,
+              "heapTotal": 1282129920,
+              "heapUsed": 1043038096,
+              "external": 10925996,
+              "arrayBuffers": 24863
+            }
+          },
+          {
+            "name": "emit",
+            "wallMs": 13704.528040999998,
+            "cpuMs": 16951.075,
+            "memoryEnd": {
+              "rss": 1657552896,
+              "heapTotal": 991444992,
+              "heapUsed": 763625152,
+              "external": 10925996,
+              "arrayBuffers": 24863
+            }
+          },
+          {
+            "name": "write-and-hash",
+            "wallMs": 124.64262499999313,
+            "cpuMs": 102.528,
+            "memoryEnd": {
+              "rss": 1718452224,
+              "heapTotal": 1011728384,
+              "heapUsed": 783930808,
+              "external": 31207361,
+              "arrayBuffers": 20306228
+            }
+          },
+          {
+            "name": "output-import",
+            "wallMs": 254.174125000005,
+            "cpuMs": 250.488,
+            "memoryEnd": {
+              "rss": 1745387520,
+              "heapTotal": 1035157504,
+              "heapUsed": 704519528,
+              "external": 31215561,
+              "arrayBuffers": 20314428
+            }
+          },
+          {
+            "name": "output-semantic-smoke",
+            "wallMs": 10.659874999997555,
+            "cpuMs": 12.077,
+            "memoryEnd": {
+              "rss": 1745534976,
+              "heapTotal": 1035304960,
+              "heapUsed": 705665632,
+              "external": 31215561,
+              "arrayBuffers": 20314428
+            }
+          }
+        ],
+        "moduleCount": 15,
+        "sourceDeclarations": 8403,
+        "checkedModules": 15,
+        "artifact": {
+          "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-actual52-mac-52-second.json.output.mjs",
+          "bytes": 20281365,
+          "sha256": "a1033733403dddb6214b6433ec55cd385fc210ce0d985871259a25487bd06d29"
+        },
+        "compileMs": 122354.03975,
+        "exportCount": 7720,
+        "exportSetSha256": "99efc6ef8538e35f5b6f549e39296bae814e654d48558f9ca7ba2aae2b1911f4",
+        "outputSmokePassed": true,
+        "passed": true,
+        "totalWithOutputSmokeMs": 122691.470667,
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 1783808000,
+          "peakFootprintBytes": 1545717456,
+          "elapsedMs": 123161,
+          "timeoutMs": 600000,
+          "command": [
+            "node",
+            "--experimental-strip-types",
+            "--max-old-space-size=6144",
+            "--max-semi-space-size=128",
+            "--stack-size=262144",
+            "/Users/ilyagulya/Projects/My/bend/evals/compiler_benchmark.ts",
+            "--worker",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-actual52-mac-52-second.json.request.json",
+            "7018ddc5a11948e6d0166767a2ce55c72d381aa8bee14cfc09faf6927b1a2d72"
+          ],
+          "label": "Comparable full-corpus component compiler",
+          "exitCode": 0,
+          "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792753601157-0b864e02ba02edd7.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        }
+      }
+    }
+  ]
+}

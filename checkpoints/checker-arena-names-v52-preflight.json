@@ -1,0 +1,30 @@
+{
+  "status": "FAIL",
+  "command": [
+    "bun",
+    "--smol",
+    "evals/heavy_gate.ts",
+    "--memory-mib",
+    "8192",
+    "--rss-mib",
+    "8192",
+    "--poll-ms",
+    "10",
+    "--",
+    "bun",
+    "--smol",
+    "bend2/main.ts",
+    "tests/reg/checker_arena_names.bend"
+  ],
+  "stdout": "",
+  "stderr": "SOME PROOFS FAIL\nError:\n- message  : a parameter or field scrutinee (a match cannot scrutinize a local binder: give it its own def)\nLocation:\n7 | def wrong(expected: U32, actual: U32) -> U32:\n8>|   same = U32.is_eq(expected, actual)\n  |   ^^^^\n9 |   match same:\nHEAVY_GATE {\"status\":\"FAIL\",\"reason\":\"command_exit\",\"commandExitCode\":1,\"commandSignal\":0,\"peakRssBytes\":65077248,\"peakFootprintBytes\":44073584,\"elapsedMs\":131,\"timeoutMs\":600000,\"command\":[\"bun\",\"--smol\",\"bend2/main.ts\",\"tests/reg/checker_arena_names.bend\"],\"label\":\"heavy command\",\"exitCode\":1,\"reportPath\":\"/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792751309795-2f6d0313e467bf66.json\",\"memoryLimitBytes\":8589934592,\"rssLimitBytes\":8589934592}\n",
+  "exitCode": 1,
+  "signal": null,
+  "elapsedMs": 241.152125,
+  "sourceHashes": {
+    "bend2/selfhost/checker.bend": "f166f3b63bc5b8b6403a2e8bc3a83ad424ee95dc8c0065625773e05894ceb479",
+    "bend2/selfhost/checker_arena.bend": "b09a5f8b00d63d0f6ffa721a78cba7761d42963a64b89c1b5970a0804d948b2b",
+    "tests/reg/checker_arena_names.bend": "3853a74accdcedd051e32723b60aa74eabc0bc24f337e1d1c2194674aa89afb1"
+  },
+  "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e"
+}

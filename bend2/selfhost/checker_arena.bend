@@ -1,6 +1,7 @@
 import Base
 import ./ast.bend as Ast
 import ./scope_lookup.bend as Scope
+import ./index_lookup.bend as IndexLookup
 
 # Compiler-private descriptors retain original spans, arbitrary Nat indexes and
 # quantities. Child/name handles are U32; all list ranges are inline flat tapes.
@@ -1077,14 +1078,16 @@ def name.found(arena: Arena, +text: String, +id: U32, missing: Bool) -> Arena & 
     case False{}: (arena, id)
     case True{}: name.insert(text, put_name_value(arena, text))
 
-def name.result(case_prefix: Array<CasePrefixEntry>, subst_memo: Array<SubstMemoEntry>, node_bounds: Array<Nat>, pattern_depths: Array<Nat>, node_closed: Array<U32>, +text: String, nodes: Array<Node>, patterns: Array<Pattern>, binders: Array<Binder>, words: Array<U32>, naturals: Array<Nat>, names: Array<String>, counts: Array<U32>, depths: Array<Nat>, result: Map<&2, U32> & U32) -> Arena & U32:
+# Hits retain the shared map; only insertion changes its path.
+def name.result(arena: Arena, +text: String, result: Maybe<&2, U32>) -> Arena & U32:
   match result:
-    case Tuple{name_ids, +id}: name.found(Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}, text, id, U32.is_eq(id, 4294967295))
+    case Some{+id}: name.found(arena, text, id, U32.is_eq(id, 4294967295))
+    case None{}: name.found(arena, text, 4294967295, True{})
 
 def name(arena: Arena, +text: String) -> Arena & U32:
   match arena:
-    case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
-      name.result(case_prefix, subst_memo, node_bounds, pattern_depths, node_closed, text, nodes, patterns, binders, words, naturals, names, counts, depths, Map.get(U32, 4294967295, name_ids, text))
+    case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, +name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
+      name.result(Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}, text, IndexLookup.find(U32, name_ids, text))
 
 # Reserve through the pool so Arena metadata is published only once. Every slot
 # is written even when existing capacity contains a discarded or stale value.

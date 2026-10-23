@@ -1,0 +1,1896 @@
+{
+  "schema": 1,
+  "status": "GENUINE_FIXEDPOINT_AND_LOWER_ALLOCATION_PASS_SPEED_NOT_ESTABLISHED",
+  "version": 52,
+  "parentCommit": "f70c39ff",
+  "lastSelectedVersion": 49,
+  "sourceHashes": {
+    "bend2/selfhost/checker.bend": "f166f3b63bc5b8b6403a2e8bc3a83ad424ee95dc8c0065625773e05894ceb479",
+    "bend2/selfhost/checker_arena.bend": "b09a5f8b00d63d0f6ffa721a78cba7761d42963a64b89c1b5970a0804d948b2b",
+    "tests/reg/checker_arena_names.bend": "63fc170fe9ba8f6c5ebd53b516e2ea74b84802d0c1f1bc899d250f90be99873d"
+  },
+  "change": {
+    "checker": "Exact selected49 algorithms restored; rejected50usage-hoist removed",
+    "arena": "Readname_ids through existingIndexLookup.find, retainsharedMap, preserve0andMAXsentinel andrewind semantics",
+    "unmodified": "kernel/compiler/runtime/JS emitter/64WHNFfuel; no newcache, no unsafe"
+  },
+  "recipe": [
+    "#!/bin/sh",
+    "set -eu",
+    "export PATH=\"/Users/ilyagulya/.cache/bend-selfhost-106c7efd/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin\"",
+    "cd \"/Users/ilyagulya/Projects/My/bend\"",
+    "export BEND_NO_TELEMETRY=1",
+    "RUN=release237-misaka-v76",
+    "guard() { bun --smol evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 -- \"$@\"; }",
+    "node checkpoints/.names-smoke-v52.mjs",
+    "guard bun --smol evals/checker_core_owned_source.ts",
+    "guard bun --smol evals/checker_core_step_lower.ts",
+    "guard bun --smol evals/template_step_lower.ts",
+    "guard bun --smol evals/js_emit_step_lower.ts",
+    "bun --smol evals/bootstrap_parser_rebuild.ts --prepare-source --run-id \"$RUN\"",
+    "guard bun --smol evals/bootstrap_parser_public_gate.ts --parser=\"checkpoints/.bootstrap_parser_rebuild_${RUN}_source.bend\" --entry=parse_module_tokens --report=\"checkpoints/bootstrap-parser-rebuild-${RUN}.source-public.json\"",
+    "guard bun --smol evals/bootstrap_parser_fast.ts --parser=\"checkpoints/.bootstrap_parser_rebuild_${RUN}_source.bend\" --entry=parse_module_tokens --public-report=\"checkpoints/bootstrap-parser-rebuild-${RUN}.source-public.json\" --report=\"checkpoints/bootstrap-parser-rebuild-${RUN}.source-semantic.json\"",
+    "bun --smol evals/bootstrap_parser_rebuild.ts --prepare --run-id \"$RUN\" --source-gate \"checkpoints/bootstrap-parser-rebuild-${RUN}.source-semantic.json\"",
+    "bun --smol evals/bootstrap_parser_rebuild.ts --build-native --run-id \"$RUN\"",
+    "guard bun --smol evals/bootstrap_parser_public_gate.ts --parser=\"checkpoints/.bootstrap_parser_rebuild_${RUN}_generated_fuel.bend\" --entry=parse_with_fuel --report=\"checkpoints/bootstrap-parser-rebuild-${RUN}.candidate-public.json\"",
+    "guard bun --smol evals/bootstrap_parser_fast.ts --parser=\"checkpoints/.bootstrap_parser_rebuild_${RUN}_generated_fuel.bend\" --entry=parse_with_fuel --component=\"checkpoints/bootstrap-parser-rebuild-${RUN}.js\" --component-build=\"checkpoints/bootstrap-parser-rebuild-${RUN}.native-build.result.json\" --public-report=\"checkpoints/bootstrap-parser-rebuild-${RUN}.candidate-public.json\" --report=\"checkpoints/bootstrap-parser-rebuild-${RUN}.candidate-semantic.json\"",
+    "bun --smol evals/bootstrap_parser_rebuild.ts --build --run-id \"$RUN\" --candidate-gate \"checkpoints/bootstrap-parser-rebuild-${RUN}.candidate-semantic.json\"",
+    "bun --smol evals/selfhost_driver_source.ts --parser-build=\"checkpoints/bootstrap-parser-rebuild-${RUN}.native-build.result.json\"",
+    "bun --smol evals/checker_core_component_build.ts --file=checkpoints/.bootstrap_compiler_root_v1.bend --exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,checker_step,emit_modules_start,emit_library_start,emitter_step --artifact=checkpoints/selfhost-steps-canonical-release237-misaka-v52-final.js --report=checkpoints/selfhost-steps-native-canonical-release237-misaka-v52-final",
+    "bun --smol evals/checker_core_component_build.ts --file=checkpoints/template_checker_steps_driver_v1.bend --exports=parsed_module,expand_modules_start,template_step,check_expanded_start,checker_step,emit_modules_start,emit_library_probe_start,emitter_step --artifact=checkpoints/library-v52-probe.js --report=checkpoints/library-v52-probe-native",
+    "bun --smol evals/checker_library_smoke.ts --component=checkpoints/library-v52-probe.js --component-build=checkpoints/library-v52-probe-native.result.json --report=checkpoints/library-v52-smoke.json --parser=checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.js --parser-build=checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.native-build.result.json",
+    "bun --smol evals/compiler_benchmark.ts --mode=component --corpus=checkpoints/compiler-benchmark-release237-v41.corpus.json --report=checkpoints/compiler-benchmark-release237-misaka-v52-js.json --component=checkpoints/selfhost-steps-canonical-release237-misaka-v52-final.js --exports=checkpoints/compiler-benchmark-release237-misaka-v46-official.json.exports.json",
+    "",
+    "bun --smol evals/selfhost_bootstrap_gate.ts --component=checkpoints/selfhost-steps-canonical-release237-misaka-v52-final.js --component-build=checkpoints/selfhost-steps-native-canonical-release237-misaka-v52-final.result.json --root=checkpoints/.bootstrap_compiler_root_v1.bend --root-manifest=checkpoints/selfhost-steps-driver-source-v1.json --parser=checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.js --parser-build=checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.native-build.result.json --report=checkpoints/selfhost-steps-bootstrap-release237-misaka-v52.json"
+  ],
+  "regressionLauncherSource": "import{spawnSync}from'node:child_process';import{writeFileSync}from'node:fs';const start=performance.now();const command=['bun','--smol','evals/heavy_gate.ts','--memory-mib','8192','--rss-mib','8192','--poll-ms','10','--','bun','--smol','bend2/main.ts','tests/reg/checker_arena_names.bend'];const r=spawnSync(command[0],command.slice(1),{encoding:'utf8',timeout:600000,maxBuffer:4194304});const report={status:r.status===0&&r.stdout.trim()==='0'?'PASS':'FAIL',command,stdout:r.stdout,stderr:r.stderr,exitCode:r.status,signal:r.signal,elapsedMs:performance.now()-start,sourceHashes:{\"bend2/selfhost/checker.bend\":\"f166f3b63bc5b8b6403a2e8bc3a83ad424ee95dc8c0065625773e05894ceb479\",\"bend2/selfhost/checker_arena.bend\":\"b09a5f8b00d63d0f6ffa721a78cba7761d42963a64b89c1b5970a0804d948b2b\",\"tests/reg/checker_arena_names.bend\":\"63fc170fe9ba8f6c5ebd53b516e2ea74b84802d0c1f1bc899d250f90be99873d\"},kernelSha256:'6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e'};writeFileSync('checkpoints/checker-arena-names-v52-native-smoke.json',JSON.stringify(report,null,2)+'\\n',{flag:'wx'});console.log(JSON.stringify(report));if(report.status!=='PASS')process.exit(1);",
+  "performanceClaim": "Whole-check cumulative allocation estimate172.138GBto147.078GB(-14.558%). NormalLinuxABBA52+17.695%compile coincideswithloadspike; MacBAAB52mean-13.576%alsohassevereloaddrift3.6to23.0. Opposite/noisyhostresults DONOT establishgeneral speeduporintrinsicregression. No normalcontrolreruns planned; retain49asconservativeperformancebaseline.",
+  "checksExcluded": 0,
+  "outputPatches": 0,
+  "fixturePreflight": {
+    "failedReport": "checkpoints/checker-arena-names-v52-preflight.json",
+    "failedSourceSha256": "3853a74accdcedd051e32723b60aa74eabc0bc24f337e1d1c2194674aa89afb1",
+    "failure": "Canonical kernel rejects matching a local binder; fixture factored into dependency-ordered parameter-scrutinee helpers. Compiler name lookup unchanged."
+  },
+  "acceptance": {
+    "receipt": "checkpoints/selfhost-acceptance-release237-misaka-v52.json",
+    "fixedpoint": {
+      "criterion": "Exact emitted UTF-8 JS bytes; no normalization or patching",
+      "equal": true,
+      "stageOneSha256": "958ff8b8dd80d2c3cbfb36edb4e76bcc87ab7ee73b8be7942fc7fbcf5e7b47bd",
+      "stageTwoSha256": "958ff8b8dd80d2c3cbfb36edb4e76bcc87ab7ee73b8be7942fc7fbcf5e7b47bd"
+    },
+    "fixtureExecutions": 273,
+    "nativeBodies": 8173
+  },
+  "allocationBaseline": {
+    "receipt": "checkpoints/compiler-name-map-partition49.json",
+    "analysisSourceSha256": "daff5d7dd5b371471ded921d07bf0f972e960f55e0f15324869fd8771eb9e1bb",
+    "analysisSource": "import fs from 'node:fs';import crypto from 'node:crypto';import {spawnSync} from 'node:child_process';\nconst read=p=>JSON.parse(fs.readFileSync(p)),hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');\nconst compact=read('profiling-quality49-check-compact.json'),profile=compact.allocation.profilePath,profileSha256=hash(profile);if(profileSha256!=='c6908f562c4b5bb153cfba4661cc9935b63188a25237e845dc4b998708a9d22f')throw Error('Unexpected retained profile');\nconst hp=read(profile),decode=s=>(s??'').replace(/^\\$u\\$/,'').replace(/\\$(\\d+)\\$/g,(_,n)=>String.fromCharCode(Number(n))),frame=n=>({name:decode(n.callFrame.functionName)||'(anonymous)',url:n.callFrame.url,line:n.callFrame.lineNumber+1,nodeId:n.id});\nconst selected=new Set(['Map.get.go','Map.lo','Map.hi']),nameOwner='../bend2/selfhost/checker_arena.name',nameInsert=nameOwner+'.insert',compilerUrl='file://'+process.cwd()+'/stage-one49.js';\nconst samples=new Map();let sampleTotal=0;for(const s of hp.samples){const r=samples.get(s.nodeId)??{records:0,estimatedBytes:0};r.records++;r.estimatedBytes+=s.size;samples.set(s.nodeId,r);sampleTotal+=s.size;}\nconst categories=new Map(),bySite=new Map(),consumers=new Map(),seen=new Set();let treeTotal=0,selectedTotal=0,selectedSampleBytes=0,selectedRecords=0,maxDepth=0;\nconst fresh=()=>({estimatedSelfBytes:0,sampleRecordEstimatedBytes:0,sampleRecords:0,treeNodes:0,positiveSelfTreeNodes:0}),add=(r,n)=>{const s=samples.get(n.id)??{records:0,estimatedBytes:0};r.estimatedSelfBytes+=n.selfSize??0;r.sampleRecordEstimatedBytes+=s.estimatedBytes;r.sampleRecords+=s.records;r.treeNodes++;if(n.selfSize)r.positiveSelfTreeNodes++;};\nconst stack=[{node:hp.head,ancestors:[]}];while(stack.length){const {node:n,ancestors}=stack.pop();if(seen.has(n.id))throw Error('Repeated heap tree node '+n.id);seen.add(n.id);treeTotal+=n.selfSize??0;maxDepth=Math.max(maxDepth,ancestors.length);\n const f=frame(n);if(selected.has(f.name)&&f.url===compilerUrl){const chain=[n,...ancestors],frames=chain.map(frame);const nativeOwner=chain.find(x=>x.callFrame.url===compilerUrl&&x.callFrame.functionName.startsWith('$u$')&&!decode(x.callFrame.functionName).startsWith('Map.'));const owner=nativeOwner?decode(nativeOwner.callFrame.functionName):null;const ownerIndex=nativeOwner?chain.indexOf(nativeOwner):chain.length;const mapPath=frames.slice(0,ownerIndex).map(x=>x.name).filter(x=>x.startsWith('Map.'));const getPath=mapPath.some(x=>/^Map\\.get(?:\\.|$)/.test(x)),writePath=mapPath.some(x=>/^Map\\.(?:set|put|ins|del|rem)(?:\\.|$)/.test(x)),seekPath=mapPath.some(x=>/^Map\\.seek(?:\\.|$)/.test(x));let category;\n if(getPath&&owner===nameOwner&&!writePath)category='definite_name_read';else if(getPath)category=owner?'other_get_read_visible_owner':'get_read_owner_unresolved';else if(writePath)category='other_explicit_map_write';else if(seekPath&&owner===nameInsert)category='name_insert_seek_write_source_confirmed';else if(seekPath)category='seek_path_read_write_owner_unresolved';else category='operation_or_owner_unresolved';\n const row=categories.get(category)??{...fresh(),sites:{},topContextCandidates:[]};add(row,n);row.sites[f.name]??=fresh();add(row.sites[f.name],n);if(n.selfSize)row.topContextCandidates.push({estimatedSelfBytes:n.selfSize,sampleRecords:samples.get(n.id)?.records??0,allocationSite:f.name,nearestVisibleNonMapNativeOwner:owner,stack:frames});categories.set(category,row);\n const sr=bySite.get(f.name)??fresh();add(sr,n);bySite.set(f.name,sr);const ck=JSON.stringify([category,owner]);const cr=consumers.get(ck)??{category,nearestVisibleNonMapNativeOwner:owner,...fresh()};add(cr,n);consumers.set(ck,cr);selectedTotal+=n.selfSize??0;selectedSampleBytes+=samples.get(n.id)?.estimatedBytes??0;selectedRecords+=samples.get(n.id)?.records??0;\n }for(const child of n.children??[])stack.push({node:child,ancestors:[n,...ancestors]});}\nif([...categories.values()].reduce((s,r)=>s+r.estimatedSelfBytes,0)!==selectedTotal||[...bySite.values()].reduce((s,r)=>s+r.estimatedSelfBytes,0)!==selectedTotal)throw Error('Partition sum mismatch');\nconst partitions=[...categories].map(([category,{topContextCandidates,...r}])=>({category,...r,percentOfSelected:100*r.estimatedSelfBytes/selectedTotal,percentOfWholeCheck:100*r.estimatedSelfBytes/treeTotal,topFullStackExamples:topContextCandidates.sort((a,b)=>b.estimatedSelfBytes-a.estimatedSelfBytes).slice(0,2)})).sort((a,b)=>b.estimatedSelfBytes-a.estimatedSelfBytes);\nconst control=read('quality-counter49-diagnostic.json'),normal=control.runs.filter(r=>!r.instrumented).map(r=>({label:r.label,compileMs:r.compileMs,checkWallMs:r.checkWallMs,checkWholeProcessCpuMs:r.checkWholeProcessCpuMs,cgroupMemoryPeakBytes:r.guard.memoryPeak,start:r.environmentBefore,end:r.environmentAfter}));\nconst profileBefore=read('profiling-quality49-environment-before.json'),profileAfter=read('profiling-quality49-environment-after.json');\nconst receipt={status:'READ_ONLY_RETAINED_PROFILE_PARTITION_COMPLETE',analysisSource:'analyze49-name-map.mjs',analysisSourceSha256:hash(new URL(import.meta.url)),command:'node analyze49-name-map.mjs',input:{profile,sha256:profileSha256,bytes:fs.statSync(profile).size,compilerSha256:hash('stage-one49.js'),phase:'check',allocationSamplingIntervalBytes:4194304,collectedMinorAndMajorIncluded:true},method:['Decode actual generated names using the existing $u$/numeric-escape convention. Require the pinned stage-one49.js URL. Select only allocation nodes whose own frame is exactly Map.get.go, Map.lo, or Map.hi.','Traverse every raw heap tree node once, assert unique node IDs, and add each selected node selfSize exactly once. Never sum inclusive subtrees or charge an ancestor a second time. Recursive Map.get.go frames do not duplicate their descendant allocation weights.','Use the ENTIRE raw ancestor chain, not the previous14-frame summary. Find nearest visible non-Map generated compiler frame; inspect Map operation frames between allocation node and that owner.','Definite name-read requires nearest owner exactly checker_arena.name plus a visible Map.get-family frame/current site and no write-family frame. Other get paths are separated. Explicit set/put/ins/del/rem frames identify other writes.','A seek path with nearest owner checker_arena.name.insert is a source-confirmed write (actual49line12121 calls Map.set). Seek paths lacking a visible write marker or that exact source owner remain unresolved; no fabricated read/write ownership.','samples.size weights are separately summed by nodeId. Tree selfSize and sample-size sums are retained independently; neither is an exact allocation counter.'],totals:{wholeCheckEstimatedSelfBytes:treeTotal,wholeCheckSampleRecordEstimatedBytes:sampleTotal,wholeCheckSampleRecords:hp.samples.length,visitedTreeNodes:seen.size,maxRecordedStackDepth:maxDepth,selectedEstimatedSelfBytes:selectedTotal,selectedSampleRecordEstimatedBytes:selectedSampleBytes,selectedSampleRecords:selectedRecords,selectedPercentOfWholeCheck:100*selectedTotal/treeTotal},byAllocationSite:Object.fromEntries(bySite),partitions,consumers:[...consumers.values()].sort((a,b)=>b.estimatedSelfBytes-a.estimatedSelfBytes),sourceEvidence:[{lines:'6942-6946',meaning:'Map.lo/hi construct Tuple plus MNode.'},{lines:'7014-7023',meaning:'Map.get.go recursively rebuilds a path using Map.lo/hi; its self allocation is distinct from child self allocation.'},{lines:'12138-12140',meaning:'checker_arena.name evaluates Map.get on name_ids before invoking name.result.'},{lines:'12121',meaning:'checker_arena.name.insert calls Map.set; name-namespace ancestry alone must not label writes as reads.'}],boundaries:['These are cumulative statistical worker-isolate allocation estimates from one instrumented49 run, not exact bytes/object counts, retained memory, CPU cost, or predicted52 speedup.','Visible stack ownership is conservative: inlined/missing caller frames and opaque closures can leave ownership unresolved. The definite category is supported by recorded frames, not proof that every real name-read allocation was captured or attributed there.','Only the three requested allocation sites are partitioned, not all Map-family allocations, all descendants of a name call, or all Arena reconstruction.','Replacing a read may still allocate in IndexLookup.find/Map.bit/Option handling, and optimization can move allocation attribution. Attributed pre-change bytes are not an asserted removable-byte total.'],normal49Controls:{runs:normal,baselineVariation:control.overhead,frequencyEvidence:{normalRunsRecordedFrequency:false,priorSeparateProfileSnapshots:{before:{at:profileBefore.at,cpufreq:profileBefore.cpufreq,procCpuInfo:profileBefore.procCpuInfo},after:{at:profileAfter.at,cpufreq:profileAfter.cpufreq,procCpuInfo:profileAfter.procCpuInfo}},limit:'No readable cpufreq governor/current-frequency interfaces. /proc/cpuinfo MHz snapshots belong to the earlier instrumented profile, not the later normal49 controls; no sustained-frequency or equal-clock assertion.'},confounds:['Normal49 before/after compiled113.842s/119.665s, a5.12% shift; check92.813s/98.104s, a5.70% shift, despite unchanged compiler/runtime/corpus.','Affinity remained allowed0-11 rather than a pinned core. No CPU governor/frequency lock or CPU quota was imposed. Memory cgroups do not isolate CPU scheduling, thermal behavior, host/VM contention, or concurrent V8/GC threads.','Load averages are host-level snapshots, not per-core utilization or exact competing-process attribution. Existing records do not explain the observed baseline drift causally.','Same Node23/cgroup/full workload and output equality are required for52, but an isolated52 timing compared with old49 cannot remove temporal load/frequency confounding. No additional control/profile is launched by this analysis.']},evidenceSha256:Object.fromEntries(['profiling-quality49-check-compact.json','quality-counter49-diagnostic.json','profiling-quality49-environment-before.json','profiling-quality49-environment-after.json'].map(p=>[p,hash(p)])),preservation:{rawProfileWritten:false,heavyBenchmarkProfileOrBuildLaunched:false,permanentCompilerChanges:false,directoryBytesBeforeReceipt:Number(spawnSync('du',['-sb','.'],{encoding:'utf8'}).stdout.split(/\\s/)[0])}};\nif(receipt.preservation.directoryBytesBeforeReceipt>=1073741824)throw Error('Artifact directory cap');fs.writeFileSync('heap49-name-map-partition.json',JSON.stringify(receipt,null,2)+'\\n',{flag:'wx'});console.log(JSON.stringify({status:receipt.status,sourceSha256:receipt.analysisSourceSha256,receiptSha256:hash('heap49-name-map-partition.json'),totals:receipt.totals,byAllocationSite:receipt.byAllocationSite,partitions:partitions.map(({topFullStackExamples,...x})=>x),normalControls:normal,preservation:receipt.preservation}));\n",
+    "scope": "26.551GB definitely recordedname-read estimates, not guaranteedremoved allocation orCPUsaving"
+  },
+  "archiveRecipeSource": "import fs from'node:fs';import{spawnSync}from'node:child_process';import{createHash}from'node:crypto';const root='/Users/ilyagulya/Projects/My/bend';const reportPath=root+'/checkpoints/selfhost-steps-bootstrap-release237-misaka-v52.json';const r=JSON.parse(fs.readFileSync(reportPath));if(!r.passed||!r.fixedpoint.equal||r.fixtureExecutions!==273)throw Error('Full proof required');const members=[\"bend2/base.bend\",\"bend2/bend.ts\",\"bend2/comp.ts\",\"checkpoints/.bootstrap_compiler_root_v1.bend\",\"evals/checker_core_component_build.ts\",\"evals/heavy_gate_native.c\",\"evals/heavy_gate.ts\",\"bend2/effs/args.js\",\"bend2/effs/audio_close.js\",\"bend2/effs/audio_open.js\",\"bend2/effs/audio_write.js\",\"bend2/effs/chan.js\",\"bend2/effs/file_close.js\",\"bend2/effs/file_open.js\",\"bend2/effs/file_read.js\",\"bend2/effs/file_size.js\",\"bend2/effs/file_write.js\",\"bend2/effs/get_env.js\",\"bend2/effs/listener_close.js\",\"bend2/effs/now.js\",\"bend2/effs/print_err.js\",\"bend2/effs/print.js\",\"bend2/effs/process_run.js\",\"bend2/effs/random_u32.js\",\"bend2/effs/sleep.js\",\"bend2/effs/socket_close.js\",\"bend2/effs/spawn.js\",\"bend2/effs/tcp_accept.js\",\"bend2/effs/tcp_connect.js\",\"bend2/effs/tcp_listen.js\",\"bend2/effs/tcp_recv.js\",\"bend2/effs/tcp_send.js\",\"bend2/effs/thread_count.js\",\"bend2/effs/udp_bind.js\",\"bend2/effs/udp_recv_from.js\",\"bend2/effs/udp_send_to.js\",\"bend2/effs/window_close.js\",\"bend2/effs/window_frame.js\",\"bend2/effs/window_grab.js\",\"bend2/effs/window_open.js\",\"bend2/effs/window_set_title.js\",\"bend2/effs/write.js\",\"bend2/selfhost/ast.bend\",\"bend2/selfhost/checker_arena.bend\",\"bend2/selfhost/checker_ir.bend\",\"bend2/selfhost/core.bend\",\"bend2/selfhost/index_lookup.bend\",\"bend2/selfhost/lexer.bend\",\"bend2/selfhost/loaded_module.bend\",\"bend2/selfhost/path.bend\",\"bend2/selfhost/scope_lookup.bend\",\"bend2/selfhost/sha256.bend\",\"checkpoints/checker_core_steps_v1.bend\",\"checkpoints/js_emit_steps_v1.bend\",\"checkpoints/template_steps_v1.bend\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.source-semantic.json\",\"checkpoints/.bootstrap_parser_rebuild_release237-misaka-v76_source.bend\",\"evals/bootstrap_parser_fast.ts\",\"evals/bootstrap_parser_public_gate.ts\",\"evals/bootstrap_ast_transport.ts\",\"evals/parser_full_semantic_normalize.ts\",\"evals/parser_full_graph.ts\",\"evals/bootstrap_source_oracle.ts\",\"evals/bootstrap_parser_eval_abi.ts\",\"evals/parser_full_fuel_smoke.ts\",\"evals/bootstrap_token_worker.mjs\",\"checkpoints/bootstrap-real-source-corpus.json\",\"checkpoints/bootstrap-minimized-stage0-oracle.json\",\"checkpoints/bootstrap-new-minimized-stage0-oracle.json\",\"checkpoints/bootstrap-natural-expression-fixtures.json\",\"checkpoints/bootstrap-binder-identity-fixtures.json\",\"checkpoints/bootstrap-local-pattern-fixtures.json\",\"checkpoints/bootstrap-signature-fixtures.json\",\"checkpoints/bootstrap-empty-match-fixtures.json\",\"checkpoints/bootstrap-newline-expression-fixtures.json\",\"checkpoints/checker_core_owned_driver_v1.bend\",\"bend2/selfhost/js_emit.bend\",\"checkpoints/checker_core_owned_v1.bend\",\"bend2/selfhost/parser.bend\",\"checkpoints/bootstrap-lexer-token-producer-release237-3f009d1f545e5e57741a40ad96bdfa9af66734f33439d5ac0402dd356f9baee1.js\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.source-public.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.source-public.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.prepare.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.source-v1.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.graph.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.current-cut-v1.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.architecture-delta-v1.json\",\"checkpoints/.bootstrap_parser_rebuild_release237-misaka-v76_generated_fuel.bend\",\"checkpoints/.bootstrap_parser_rebuild_release237-misaka-v76_generated_fuel.bend.scorecard.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.native-build.started.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.prepare-source.guardian.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.prepare-source.request.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.prepare-source.jsonl\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.prepare.guardian.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.prepare.request.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.prepare.jsonl\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json\",\"evals/bootstrap_parser_native_semantic_worker.mjs\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.native-build.result.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.native-build.provenance.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.js\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-public.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-public.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-cons.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-cons.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-tuple.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-tuple.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-char.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-char.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-multi.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-multi.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-indexed-erased.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-indexed-erased.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-nat-prefix.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-nat-prefix.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-unsafe-line.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-unsafe-line.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-unsafe-inline.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-unsafe-inline.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-nat-expression-spaced.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-nat-expression-spaced.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-nat-expression-adjacent.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-nat-expression-adjacent.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-nat-expression-rhs-space.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-nat-expression-rhs-space.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-case-binder-identity.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-case-binder-identity.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-tuple-local.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-tuple-local.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-nested-angle-adjacent.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-nested-angle-adjacent.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-nested-angle-spaced.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-nested-angle-spaced.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-multiline-result.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-multiline-result.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-file-result-minimized.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-file-result-minimized.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-pair-chain-minimized.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-pair-chain-minimized.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-generic-pair-chain-minimized.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-generic-pair-chain-minimized.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-empty-match-eof.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-empty-match-eof.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-empty-match-next-declaration.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-empty-match-next-declaration.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-newline-cons-continuation.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-newline-cons-continuation.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-newline-parenthesis-boundary.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-focused-newline-parenthesis-boundary.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-empty.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-empty.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-base-import.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-base-import.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-data-constructors.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-data-constructors.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-constant-definition.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-constant-definition.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-typed-definition.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-typed-definition.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-malformed-definition.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-malformed-definition.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-word-constant.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-word-constant.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-string-constant.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-string-constant.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-char-constant.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-char-constant.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-multiple-arguments.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-multiple-arguments.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-explicit-quantities.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-explicit-quantities.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-untyped-without-law.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-untyped-without-law.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-untyped-law-body.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-untyped-law-body.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-lambda-body.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-lambda-body.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-nested-application.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-nested-application.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-lambda-application.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-lambda-application.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-local-body.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-local-body.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-nested-patterns.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-nested-patterns.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-match-cases.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-match-cases.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-do-return.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-do-return.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-do-typed-bind.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-do-typed-bind.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-parameterized-type.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-parameterized-type.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-reusable-type.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-reusable-type.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-relative-import.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-relative-import.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-external-import-body.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-external-import-body.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-malformed-body.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-malformed-body.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-malformed-type.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-malformed-type.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-malformed-do.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-malformed-do.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-orphan-case.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-whole29-orphan-case.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-number-0.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-number-0.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-number-1.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-number-1.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-number-2.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-number-2.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-number-42.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-number-42.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-number-255.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-number-255.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-char-A.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-char-A.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-char-b.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-char-b.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-char-space.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-char-space.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-string-empty.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-string-empty.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-string-A.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-string-A.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-string-Az.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-string-Az.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-string-unicode.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-string-unicode.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-string-escaped-newline.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-literals-literal-string-escaped-newline.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-real-checker_core_driver.bend.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-real-checker_core_driver.bend.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-real-.parser_definition_body_shape_generated_fuel.bend.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-real-.parser_definition_body_shape_generated_fuel.bend.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-real-base.bend.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-real-base.bend.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-real-loaded_module.bend.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-real-loaded_module.bend.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-real-ast.bend.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-real-ast.bend.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-real-checker_core_slice.bend.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-real-checker_core_slice.bend.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-real-js_emit.bend.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-real-js_emit.bend.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-real-lexer.bend.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-real-lexer.bend.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-real-core.bend.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-real-core.bend.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-real-path.bend.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-semantic.json.case-real-path.bend.json.output.txt\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.native-auth.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.native-build-authorized.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.build-native.guardian.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.build-native.request.json\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.build-native.jsonl\",\"checkpoints/bootstrap-parser-rebuild-release237-misaka-v76.candidate-gates-v1.json\",\"checkpoints/selfhost-steps-bootstrap-release237-misaka-v52.json\",\"checkpoints/selfhost-steps-bootstrap-release237-misaka-v52.json.cases\",\"checkpoints/selfhost-steps-native-canonical-release237-misaka-v52-final.result.json\",\"checkpoints/selfhost-steps-native-canonical-release237-misaka-v52-final.provenance.json\",\"checkpoints/compiler-benchmark-release237-misaka-v52-js.json\",\"checkpoints/library-v52-probe-native.result.json\",\"checkpoints/library-v52-smoke.json\",\"checkpoints/library-v52-smoke.json.cases\",\"checkpoints/checker-arena-names-v52-smoke.json\",\"checkpoints/checker-arena-names-v52-native-smoke.json\",\"checkpoints/.names-smoke-v52.mjs\",\"checkpoints/.remote-misaka-v52.sh\",\"tests/reg/checker_arena_names.bend\"];const archive=root+'/checkpoints/selfhost-steps-bootstrap-release237-misaka-v52.evidence.tar.gz';if(fs.existsSync(archive))throw Error('Archive exists');const args=['-czf',archive,'--',...members];const p=spawnSync('tar',args,{cwd:root,encoding:'utf8',timeout:300000,maxBuffer:4194304});if(p.status)throw Error(p.stderr);const sha=path=>createHash('sha256').update(fs.readFileSync(path)).digest('hex');console.log(JSON.stringify({status:'COMPRESSED_FULL52_EVIDENCE_PRESERVED',command:['tar',...args],archive,archiveBytes:fs.statSync(archive).size,archiveSha256:sha(archive),fullGateSha256:sha(reportPath),members:members.length,rawTransportsNotYetRemoved:true}));",
+  "cleanupRecipeSource": "import fs from 'node:fs';\nimport path from 'node:path';\nimport {createHash} from 'node:crypto';\nconst root='/Users/ilyagulya/Projects/My/bend';\nconst cases=root+'/checkpoints/selfhost-steps-bootstrap-release237-misaka-v52.json.cases';\nconst report=JSON.parse(fs.readFileSync(root+'/checkpoints/selfhost-steps-bootstrap-release237-misaka-v52.json','utf8'));\nif(!report.passed||!report.fixedpoint.equal)throw Error('No accepted proof');\nconst archive=root+'/checkpoints/selfhost-steps-bootstrap-release237-misaka-v52.evidence.tar.gz';\nconst sha=file=>createHash('sha256').update(fs.readFileSync(file)).digest('hex');\nif(sha(archive)!=='f707583bd124493e50fe587e24b8bfeec5684107f6dc80faeec6396c86dfa96b')throw Error('Archive changed');\nconst rows=[...new Map(report.parseRows.map(row=>[row.transport,row.transportSha256])).entries()];\nlet removedBytes=0;\nfor(const [file,hash] of rows){if(path.dirname(file)!==cases||!/^parse-[0-9]+\\.ast\\.json$/.test(path.basename(file)))throw Error('Unsafe cleanup path '+file);if(sha(file)!==hash)throw Error('Transport changed '+file);removedBytes+=fs.statSync(file).size;}\nfor(const [file] of rows)fs.unlinkSync(file);\nfor(const file of ['checkpoints/.remote-misaka-v52.sh','checkpoints/.names-smoke-v52.mjs','checkpoints/.archive-v52.mjs','checkpoints/.cleanup-v52.mjs'])fs.unlinkSync(root+'/'+file);\nconsole.log(JSON.stringify({status:'ARCHIVED_AND_REMOVED_VERIFIED_RAW_TRANSPORTS',removedFiles:rows.length,removedBytes,archive,archiveBytes:fs.statSync(archive).size,archiveSha256:sha(archive),emittedImagesRetained:true,completedRunnerRemoved:true}));",
+  "secondHostControl": {
+    "reason": "Linux52middle-runs overlaploadspike; donotassigncausality. Freshreverseorderonsecondhost.",
+    "sequence": [
+      [
+        "52-first",
+        "checkpoints/selfhost-steps-bootstrap-release237-misaka-v52.json.cases/stage-one.js"
+      ],
+      [
+        "49-first",
+        "checkpoints/selfhost-steps-bootstrap-release237-misaka-v49.json.cases/stage-one.js"
+      ],
+      [
+        "49-second",
+        "checkpoints/selfhost-steps-bootstrap-release237-misaka-v49.json.cases/stage-one.js"
+      ],
+      [
+        "52-second",
+        "checkpoints/selfhost-steps-bootstrap-release237-misaka-v52.json.cases/stage-one.js"
+      ]
+    ],
+    "runnerSource": "import fs from'node:fs';import os from'node:os';import{spawnSync}from'node:child_process';import{createHash}from'node:crypto';const root='/Users/ilyagulya/Projects/My/bend';process.chdir(root);const cases=[[\"52-first\",\"checkpoints/selfhost-steps-bootstrap-release237-misaka-v52.json.cases/stage-one.js\"],[\"49-first\",\"checkpoints/selfhost-steps-bootstrap-release237-misaka-v49.json.cases/stage-one.js\"],[\"49-second\",\"checkpoints/selfhost-steps-bootstrap-release237-misaka-v49.json.cases/stage-one.js\"],[\"52-second\",\"checkpoints/selfhost-steps-bootstrap-release237-misaka-v52.json.cases/stage-one.js\"]];const hash=path=>createHash('sha256').update(fs.readFileSync(path)).digest('hex');const snaps=()=>({load:os.loadavg(),freeMemory:os.freemem(),uptime:os.uptime(),cpuTimes:os.cpus().map(c=>c.times)});const rows=[];for(const[label,image]of cases){const path='checkpoints/compiler-actual52-mac-'+label+'.json';const before=snaps();const args=['--smol','evals/compiler_benchmark.ts','--mode=component','--corpus=checkpoints/compiler-benchmark-release237-v41.corpus.json','--report='+path,'--component='+image,'--exports=checkpoints/compiler-benchmark-release237-misaka-v46-official.json.exports.json'];const p=spawnSync('bun',args,{encoding:'utf8',timeout:600000,maxBuffer:8388608});const after=snaps();if(p.status!==0)throw Error(p.stderr+p.stdout);const r=JSON.parse(fs.readFileSync(path));if(!r.passed||r.checkedModules!==15||r.exportCount!==7720||!r.outputSmokePassed||r.artifact.sha256!=='a1033733403dddb6214b6433ec55cd385fc210ce0d985871259a25487bd06d29')throw Error('Normalrunfailed '+label);rows.push({label,image,imageSha256:hash(image),before,after,report:path,reportSha256:hash(path),result:r});}const status='FULL_COVERAGE_ACTUAL52_49_REVERSE_ORDER_PASS';const result={status,scope:'Fresh actual emitted images, unchanged full50/15/7720 workload, productionruntime; secondhostmacOSARM',runtime:process.versions,host:{platform:os.platform(),release:os.release(),cpus:os.cpus().length},cases:rows};fs.writeFileSync('checkpoints/compiler-actual52-mac-pair.json',JSON.stringify(result,null,2)+'\\n',{flag:'wx'});for(const row of rows)fs.unlinkSync(row.result.artifact.path);console.log(JSON.stringify({status,rows:rows.map(r=>({label:r.label,compileMs:r.result.compileMs,phases:r.result.phases.map(p=>({phase:p.name,wallMs:p.wallMs,cpuMs:p.cpuMs})),loadBefore:r.before.load,loadAfter:r.after.load})),redundantOutputsRemoved:rows.length}));",
+    "command": "PATH=/Users/ilyagulya/.cache/bend-selfhost-106c7efd/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin /Users/ilyagulya/.cache/bend-selfhost-106c7efd/bin/node checkpoints/.pair52-mac.mjs"
+  },
+  "cleanup": {
+    "status": "ARCHIVED_AND_REMOVED_VERIFIED_RAW_TRANSPORTS",
+    "removedFiles": 408,
+    "removedBytes": 1008182658,
+    "archive": "/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-steps-bootstrap-release237-misaka-v52.evidence.tar.gz",
+    "archiveBytes": 69641552,
+    "archiveSha256": "f707583bd124493e50fe587e24b8bfeec5684107f6dc80faeec6396c86dfa96b",
+    "emittedImagesRetained": true,
+    "completedRunnerRemoved": true
+  },
+  "selectedForAcceleration": false,
+  "measured": {
+    "linuxReceipt": "checkpoints/compiler-emitted-linux-v52.json",
+    "linuxSha256": "9e5f293b7918e41ff4b01de316c7812ace7c8150cc9ac2ba64caaf84e3952ac5",
+    "linuxRequiredQualification": "checkpoints/compiler-emitted-linux-v52-load.json",
+    "linuxQualificationSha256": "99cc0bce872093a2361f6772d41e06c7edabdb16ea628cc7e3c865de6a0386e6",
+    "cpuComparison": "checkpoints/compiler-cpu49-v52.json",
+    "cpuComparisonSha256": "06661cae500828c6eec9c6c9d16e929aa51c723995f3ef54c064cd6af97bafa9",
+    "macReceipt": "checkpoints/compiler-emitted-mac-v52.json",
+    "macSha256": "af4d79021960ee4ad0aa02aa93f63073870c0f04844755c23c0876ba64ce483a",
+    "macRows": [
+      {
+        "label": "52-first",
+        "compileMs": 76904.717542,
+        "checkWallMs": 58598.159,
+        "checkCpuMs": 65229.022,
+        "compileCpuMs": 87817.438,
+        "loadBefore": [
+          3.62060546875,
+          3.09716796875,
+          3.60400390625
+        ],
+        "loadAfter": [
+          3.921875,
+          3.296875,
+          3.63330078125
+        ],
+        "outputSha256": "a1033733403dddb6214b6433ec55cd385fc210ce0d985871259a25487bd06d29",
+        "imageSha256": "958ff8b8dd80d2c3cbfb36edb4e76bcc87ab7ee73b8be7942fc7fbcf5e7b47bd"
+      },
+      {
+        "label": "49-first",
+        "compileMs": 104584.542625,
+        "checkWallMs": 82246.3995,
+        "checkCpuMs": 89784.64,
+        "compileCpuMs": 117541.095,
+        "loadBefore": [
+          3.921875,
+          3.296875,
+          3.63330078125
+        ],
+        "loadAfter": [
+          13.4423828125,
+          6.212890625,
+          4.69189453125
+        ],
+        "outputSha256": "a1033733403dddb6214b6433ec55cd385fc210ce0d985871259a25487bd06d29",
+        "imageSha256": "28061d5eab72b2a0bc560c6963b8f22cd863d7572f102cb627d483606f412e81"
+      },
+      {
+        "label": "49-second",
+        "compileMs": 125974.951667,
+        "checkWallMs": 100695.420083,
+        "checkCpuMs": 111128.852,
+        "compileCpuMs": 141808.093,
+        "loadBefore": [
+          13.4423828125,
+          6.212890625,
+          4.69189453125
+        ],
+        "loadAfter": [
+          23.03564453125,
+          12.74609375,
+          7.54638671875
+        ],
+        "outputSha256": "a1033733403dddb6214b6433ec55cd385fc210ce0d985871259a25487bd06d29",
+        "imageSha256": "28061d5eab72b2a0bc560c6963b8f22cd863d7572f102cb627d483606f412e81"
+      },
+      {
+        "label": "52-second",
+        "compileMs": 122354.03975,
+        "checkWallMs": 98306.13033300001,
+        "checkCpuMs": 106911.698,
+        "compileCpuMs": 136863.871,
+        "loadBefore": [
+          23.03564453125,
+          12.74609375,
+          7.54638671875
+        ],
+        "loadAfter": [
+          19.62646484375,
+          15.47119140625,
+          9.349609375
+        ],
+        "outputSha256": "a1033733403dddb6214b6433ec55cd385fc210ce0d985871259a25487bd06d29",
+        "imageSha256": "958ff8b8dd80d2c3cbfb36edb4e76bcc87ab7ee73b8be7942fc7fbcf5e7b47bd"
+      }
+    ],
+    "macSpeedClaim": false,
+    "allocation": {
+      "oldEstimatedBytes": 172138113888,
+      "newEstimatedBytes": 147078030184,
+      "estimatedReductionPercent": 14.5581,
+      "notLiveRam": true,
+      "notCpuShare": true
+    }
+  },
+  "measurementSources": {
+    "run-series52.mjs": {
+      "sha256": "560080a1558849f760603140c555d49192f73b0b9e8e55670ae0dcfa671cc43b",
+      "source": "import fs from 'node:fs';import {createHash} from 'node:crypto';import {resolve} from 'node:path';import {pathToFileURL} from 'node:url';import {Worker} from 'node:worker_threads';\nconst hash=p=>createHash('sha256').update(fs.readFileSync(p)).digest('hex'),save=(p,x)=>fs.writeFileSync(p,JSON.stringify(x,null,2)+'\\n',{flag:'wx'});\nconst [label,image,expectedImageHash]=process.argv.slice(2);if(!['series52-49-before','series52-52-first','series52-52-second','series52-49-after'].includes(label)||!/^stage-one(?:49|52)\\.js$/.test(image)||! /^[a-f0-9]{64}$/.test(expectedImageHash))throw Error('Invalid series recipe');if(process.version!=='v23.11.0')throw Error('Wrong runtime');\nconst runner=resolve('benchmark-linux.ts'),component=resolve(image),driver=resolve('evals/checker_core_step_runtime.mjs');if(hash(runner)!=='107be3470c240af8c069fdc39ccfebd080b473fb727a5943c9979d7370c987eb'||hash(driver)!=='2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd'||hash(component)!==expectedImageHash)throw Error('Pinned identity drift');\nif(label.includes('-49-')&&(image!=='stage-one49.js'||expectedImageHash!=='28061d5eab72b2a0bc560c6963b8f22cd863d7572f102cb627d483606f412e81'))throw Error('Wrong genuine49 control');if(label.includes('-52-')&&image!=='stage-one52.js')throw Error('Wrong genuine52 path');delete process.env.BEND_CHECKER_COUNTS_FILE;\nconst group=fs.readFileSync('/proc/self/cgroup','utf8').trim().split('\\n').find(x=>x.startsWith('0::')).slice(3),cg='/sys/fs/cgroup'+group,safe=p=>{try{return fs.readFileSync(p,'utf8').trim();}catch(e){return {unavailable:String(e)};}};\nconst environment=()=>({at:new Date().toISOString(),loadavg:safe('/proc/loadavg'),allowedCpuAffinity:fs.readFileSync('/proc/self/status','utf8').split('\\n').filter(x=>/^Cpus_allowed(?:_list)?:/.test(x)),cgroup:group,memoryMax:safe(cg+'/memory.max'),memorySwapMax:safe(cg+'/memory.swap.max'),cpuStat:safe(cg+'/cpu.stat'),cpuMax:safe(cg+'/cpu.max'),procCpuInfo:fs.readFileSync('/proc/cpuinfo','utf8').split('\\n').filter(x=>/^(processor|model name|cpu MHz)\\s*:/.test(x)),frequencyScope:'Reported proc/cpuinfo snapshots only, not hardware counters or sustained frequency; no affinity/governor/frequency settings changed.',nodeOptions:process.env.NODE_OPTIONS??null});\nconst o={mode:'component',corpus:resolve('corpus.relocated.json'),report:resolve(label+'.json'),driver,stopAfter:'compile',component,exports:resolve('official.json.exports.json')};if(fs.existsSync(o.report))throw Error('Fresh series report required');\nconst corpus=JSON.parse(fs.readFileSync(o.corpus)),names=JSON.parse(fs.readFileSync(o.exports)).exports;if(corpus.files.length!==50||names.length!==7720)throw Error('Coverage mismatch');\nconst pins=Object.fromEntries([runner,resolve('run-series52.mjs'),o.corpus,o.driver,o.component,o.exports,resolve(corpus.directory,'bend2/bend.ts'),resolve(corpus.directory,'bend2/comp.ts')].map(p=>[p,hash(p)]));const request=o.report+'.request.json';save(request,{options:o,pins});save(label+'.environment-before.json',environment());\nconst worker=new Worker(pathToFileURL(runner),{workerData:{requestPath:request,requestSha256:hash(request)},resourceLimits:{stackSizeMb:256,maxOldGenerationSizeMb:6144,maxYoungGenerationSizeMb:128}});try{await new Promise((yes,no)=>{worker.once('error',no);worker.once('exit',code=>code===0?yes():no(Error('Worker exit '+code)));});}finally{save(label+'.environment-after.json',environment());}\nconst r=JSON.parse(fs.readFileSync(o.report));if(r.status!=='PASS'||r.inputFiles!==50||r.moduleCount!==15||r.checkedModules!==15||r.exportCount!==7720||!r.outputSmokePassed)throw Error('Incomplete full workload');\nconst reference='paired49-actual49.json.output.mjs',bytes=fs.readFileSync(o.report+'.output.mjs'),equal=bytes.equals(fs.readFileSync(reference));save(label+'.output-comparison.json',{status:equal?'PASS':'FAIL',reference,exactByteMatch:equal,bytes:bytes.length,sha256:hash(o.report+'.output.mjs'),exports:r.exportCount,actualOutputImportAndSemanticSmoke:true});if(!equal)throw Error('Output byte mismatch');\nconsole.log(JSON.stringify({status:'PASS',label,componentSha256:hash(component),normalBenchmark:true,compileMs:r.compileMs,totalWithOutputSmokeMs:r.totalWithOutputSmokeMs,phases:r.phases,fullCoverage:true,exactOutputBytes:true}));\n"
+    },
+    "benchmark-quality52.ts": {
+      "sha256": "03d8e254e14cdc674f6a665355d3d21f505ad622753c41d25191bbef4e13c7fc",
+      "source": "import {createHash} from 'node:crypto';\nimport {createCpuProfiler} from './evals/selfhost_cpu_profile.mjs';\nimport {existsSync,mkdirSync,readFileSync,realpathSync,writeFileSync} from 'node:fs';\nimport {dirname,isAbsolute,posix,relative,resolve} from 'node:path';\nimport {fileURLToPath,pathToFileURL} from 'node:url';\nimport {Worker,isMainThread,workerData} from 'node:worker_threads';\ntype Corpus={schemaVersion:number;directory:string;root:string;officialCommit:string;files:{path:string;sha256:string}[]};\ntype Options={mode:'official'|'component';corpus:string;report:string;component?:string;driver:string;exports?:string;stopAfter:'check'|'compile'};\nconst script=fileURLToPath(import.meta.url),repository=resolve(dirname(script),'..');\nconst sha=(bytes:string|Uint8Array)=>createHash('sha256').update(bytes).digest('hex');\nconst hash=(path:string)=>sha(readFileSync(path));\nconst json=(value:unknown)=>JSON.stringify(value,null,2)+'\\n';\nconst save=(path:string,value:unknown,exclusive=false)=>writeFileSync(path,json(value),exclusive?{flag:'wx'}:undefined);\nconst guard={memoryMiB:8192,rssMiB:8192,pollMs:10};\nconst ABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','checker_step','emit_modules_start','emit_library_start','emitter_step'];\nconst tag=(value:any):string|undefined=>typeof value?.$==='string'?value.$.split('.').at(-1):undefined;\nfunction corpusOf(path:string):Corpus{\n const c=JSON.parse(readFileSync(path,'utf8'));\n if(c.schemaVersion!==1||!isAbsolute(c.directory)||typeof c.root!=='string'||!Array.isArray(c.files)||!c.files.length)throw Error('Invalid frozen corpus manifest');\n const seen=new Set<string>();\n for(const row of c.files){\n  if(typeof row.path!=='string'||isAbsolute(row.path)||row.path.split('/').some((part:string)=>part==='..'||part==='')||seen.has(row.path)||!/^([0-9a-f]{64})$/.test(row.sha256))throw Error('Invalid/duplicate frozen source path');\n  seen.add(row.path);\n }\n if(!seen.has(c.root))throw Error('Root is outside frozen input set');\n return c;\n}\nfunction verifyCorpus(c:Corpus):Map<string,string>{\n const directory=realpathSync(c.directory),expected=new Map<string,string>();\n for(const row of c.files){\n  const path=realpathSync(resolve(directory,row.path));\n  if(relative(directory,path).startsWith('..')||hash(path)!==row.sha256)throw Error('Frozen source drift: '+row.path);\n  expected.set(path,row.sha256);\n }\n return expected;\n}\nfunction verifyPins(pins:Record<string,string>){for(const [path,digest]of Object.entries(pins))if(hash(path)!==digest)throw Error('Benchmark implementation drift: '+path);}\nfunction list(rows:any[]):any{return rows.reduceRight((tail,head)=>({$:'Con',head,tail}),{$:'Nil'});}\nfunction items(value:any):any[]{const out=[];while(tag(value)==='Con'){out.push(value.head);value=value.tail;}if(tag(value)!=='Nil')throw Error('Malformed native list');return out;}\nconst fuelEnd=Object.freeze({$:'FeedbackFuelEnd'}),fuelPrototype={get tail(){return fuelNode((this as any).remaining-1);}};\nfunction fuelNode(remaining:number):any{if(!remaining)return fuelEnd;const node=Object.create(fuelPrototype);node.$='FeedbackFuelCell';node.remaining=remaining;return node;}\nfunction parsed(api:any,file:string,source:string):any{\n const feedback=api.parse_with_fuel(fuelNode(8000000),file,source);\n if(tag(feedback)!=='FeedbackComplete'||tag(feedback.value?.result)!=='ParseSuccess')throw Error('Fresh own parse failed: '+file+' '+String(feedback.value?.result?.message??tag(feedback)));\n return feedback.value.result.module;\n}\nfunction loadOwn(api:any,c:Corpus,expected:Map<string,string>){\n const seen=new Map<string,string>(),active=new Set<string>(),observed=new Set<string>(),modules:any[]=[];\n let declarations=0;\n const observe=(path:string)=>{const at=realpathSync(path);if(!expected.has(at))throw Error('Unexpected compiler input: '+at);observed.add(at);return at;};\n const namespace=(parent:string,path:string)=>path==='Base'?'':posix.normalize(isAbsolute(path)?path.replace(/\\.bend$/,''):posix.dirname(parent)+'/'+path.replace(/\\.bend$/,''));\n function visit(path:string,scope:string){\n  const file=observe(path);\n  if(active.has(file))throw Error('Source import cycle: '+file);\n  if(seen.has(file)){if(seen.get(file)!==scope)throw Error('Conflicting source namespace: '+file);return;}\n  seen.set(file,scope);active.add(file);\n  const module=parsed(api,file,readFileSync(file,'utf8'));\n  const tops=items(module.declarations);declarations+=tops.length;\n  for(const top of tops)if(tag(top)==='DefTop'&&tag(top.definition.body)==='DefImports')for(const imported of items(top.definition.body.paths))if(imported.endsWith('.js'))observe(resolve(dirname(file),imported));\n  for(const imported of items(module.imports)){\n   const path=imported.path;\n   if(typeof path!=='string'||/^0x[0-9a-f]+\\//.test(path))throw Error('Nonlocal/malformed import in frozen corpus');\n   const child=path==='Base'?resolve(c.directory,'bend2/base.bend'):resolve(dirname(file),path);\n   if(path.endsWith('.js'))observe(child);else visit(child,namespace(scope,path));\n  }\n  modules.push(api.parsed_module(scope,module));active.delete(file);\n }\n visit(resolve(c.directory,c.root),'');\n if(observed.size!==expected.size||[...expected.keys()].some(path=>!observed.has(path)))throw Error('Own compiler did not load the exact complete frozen corpus');\n return {modules:list(modules),moduleCount:seen.size,declarations,inputFiles:observed.size};\n}\n\nasync function worker(requestPath:string,requestSha256:string){\n const requestBytes=readFileSync(requestPath),request=JSON.parse(requestBytes.toString()),o:Options=request.options;\n if(hash(requestPath)!==requestSha256)throw Error('Benchmark request authentication failed');\n verifyPins(request.pins);\n const corpus=corpusOf(o.corpus),expected=verifyCorpus(corpus),phases:Record<string,unknown>[]=[];\n const report:any={schemaVersion:1,status:'IN_PROGRESS',diagnosticOnly:true,bootstrapAcceptance:false,mode:o.mode,stopAfter:o.stopAfter,oracleIncluded:false,checksExcluded:0,outputPatches:0,corpus:o.corpus,corpusSha256:hash(o.corpus),root:resolve(corpus.directory,corpus.root),inputFiles:expected.size,runtime:{versions:process.versions,platform:process.platform,arch:process.arch},limits:{...guard,oldGenerationMiB:6144,youngGenerationMiB:128,stackMiB:256},implementationPins:request.pins,phases};\n const profiler=createCpuProfiler(resolve('profiling-quality52'),{label:'Actual emitted52 complete frozen compiler workload',componentSha256:hash(o.component!),corpusSha256:hash(o.corpus),diagnosticOnly:true,normalBenchmark:false});\n let profileError:unknown;\n const started=performance.now();\n const phase=async<T>(name:string,action:()=>T|Promise<T>):Promise<T>=>{\n  profiler.mark(name,{boundary:'existing benchmark phase entry; interval ends at next phase mark or final finish'});\n  const wall=performance.now(),cpu=process.cpuUsage();\n  const value=await action(),used=process.cpuUsage(cpu);\n  const row={name,wallMs:performance.now()-wall,cpuMs:(used.user+used.system)/1000,memoryEnd:process.memoryUsage()};phases.push(row);console.log(JSON.stringify({phase:name,...row}));return value;\n };\n let source:string|undefined,api:any,driver:any;\n try{\n  let exportNames:string[]|undefined;\n  if(o.mode==='official'){\n   const loaded=await phase('compiler-startup',async()=>({K:await import(pathToFileURL(resolve(corpus.directory,'bend2/bend.ts')).href),C:await import(pathToFileURL(resolve(corpus.directory,'bend2/comp.ts')).href)}));\n   const {K,C}=loaded,book=K.book_nil(),observed=new Set<string>();\n   class Inputs extends Map<string,string|null>{override set(path:string,namespace:string|null){if(namespace===null)observed.add(realpathSync(path));return super.set(path,namespace);}}\n   await phase('load-parse-expand',()=>K.book_load(book,report.root,'',new Inputs()));\n   for(const def of Object.values(book.tlds) as any[])if(def.$==='Def')for(const path of def.i??[])if(path.endsWith('.js'))observed.add(realpathSync(path));\n   if(observed.size!==expected.size||[...observed].some(path=>!expected.has(path)))throw Error('Official compiler did not load the same complete frozen corpus');\n   await phase('check',()=>K.book_valid(book));\n   if(book.hols)throw Error('Unfilled official book');\n   const definitions=(Object.values(book.tlds) as any[]).filter(def=>def.$==='Def'&&def.v!==null);\n   if(definitions.some(def=>def.e===undefined))throw Error('Official unchecked body');\n   report.checkedBodies=definitions.length;report.validationEvents=book.order.length;\n   if(o.stopAfter==='compile')source=await phase('emit',()=>C.js_lib(book,true));\n  }else{\n   ({api,driver}=await phase('compiler-startup',async()=>({api:(await import(pathToFileURL(o.component!).href)).default,driver:await import(pathToFileURL(o.driver).href)})));\n   if(!api||!ABI.every(key=>typeof api[key]==='function'))throw Error('Compiler component ABI is incomplete');\n   let loaded=await phase('load-parse',()=>loadOwn(api,corpus,expected));report.moduleCount=loaded.moduleCount;report.sourceDeclarations=loaded.declarations;\n   let modules=loaded.modules;loaded=undefined as any;\n   let expanded=await phase('expand',()=>driver.runTemplateSteps({...api,expand_modules_start:(input:any)=>{modules=undefined;return api.expand_modules_start(input);}},modules));\n   if(tag(expanded)!=='ExpandSuccess')throw Error('Own expansion failed: '+JSON.stringify(expanded));\n   let checked=await phase('check',()=>driver.runCheckerSteps({...api,check_expanded_start:(input:any)=>{expanded=undefined;return api.check_expanded_start(input);}},expanded.modules));\n   if(tag(checked)!=='CheckSuccess')throw Error('Own checking failed: '+JSON.stringify(checked.diagnostic,(_,v)=>typeof v==='bigint'?String(v):v));\n   report.checkedModules=items(checked.modules).length;\n   if(report.checkedModules!==report.moduleCount)throw Error('Own checking lost source modules');\n   if(o.stopAfter==='compile'){\n    const receipt=JSON.parse(readFileSync(o.exports!,'utf8'));\n    if(receipt.schemaVersion!==1||receipt.corpusSha256!==report.corpusSha256||!Array.isArray(receipt.exports)||!receipt.exports.length||receipt.exports.some((key:any)=>typeof key!=='string')||new Set(receipt.exports).size!==receipt.exports.length)throw Error('Missing exact official export-set receipt');\n    exportNames=receipt.exports;\n    // Actual public typed emitter request, already used by source library smokes.\n    // Its constructor/field ABI is defined in js_emit_steps_v1.bend, never patched output.\n    const emission={...api,emit_library_start:(input:any)=>{checked=undefined;return api.emitter_step({$:'js_emit_steps_v1.EmitterRequestGroup_8',request:{$:'js_emit_steps_v1.EmitterRequest_emit_library',v_1:input,v_4:list(exportNames!)}});}};\n    const emitted=await phase('emit',()=>driver.runLibraryEmitterSteps(emission,checked.modules));\n    if(tag(emitted)!=='EmitSuccess')throw Error('Own emission failed: '+emitted.message);source=emitted.source;\n   }\n  }\n  if(source!==undefined){\n   const output=o.report+'.output.mjs';\n   report.artifact=await phase('write-and-hash',()=>{writeFileSync(output,source!,{flag:'wx'});const bytes=Buffer.byteLength(source!);return {path:output,bytes,sha256:sha(source!)};});source=undefined;\n  }\n  report.compileMs=performance.now()-started;\n  if(report.artifact){\n   const outputApi=(await phase('output-import',()=>import(pathToFileURL(report.artifact.path).href))).default;\n   const actual=Object.keys(outputApi);\n   if(o.mode==='official'){\n    exportNames=actual;\n    save(o.report+'.exports.json',{schemaVersion:1,corpusSha256:report.corpusSha256,officialCommit:corpus.officialCommit,artifactSha256:report.artifact.sha256,exports:actual},true);\n   }else if(actual.length!==exportNames!.length||actual.some((key,index)=>key!==exportNames![index]))throw Error('Emitted public export set differs from official mode');\n   if(!ABI.every(name=>typeof outputApi[name]==='function'))throw Error('Emitted compiler ABI incomplete');\n   const runtime=driver??await import(pathToFileURL(o.driver).href);\n   await phase('output-semantic-smoke',()=>{\n    const module=parsed(outputApi,resolve(corpus.directory,'benchmark-smoke.bend'),'type Bit is Data:\\n  Zero{}\\n  One{}\\n\\ndef main() -> Bit:\\n  One{}\\n');\n    if(!items(module.declarations).some(top=>tag(top)==='DefTop'&&top.definition.key==='main'))throw Error('Emitted parser lost the actual main declaration');\n    const checked=runtime.runCheckerSteps(outputApi,{$:'Nil'});\n    if(tag(checked)!=='CheckSuccess'||tag(checked.modules)!=='Nil')throw Error('Emitted checker failed empty-module semantics');\n   });\n   report.exportCount=actual.length;report.exportSetSha256=sha(JSON.stringify(actual));report.outputSmokePassed=true;\n  }\n  verifyCorpus(corpus);verifyPins(request.pins);\n  report.status='PASS';report.passed=true;report.totalWithOutputSmokeMs=performance.now()-started;\n }catch(error){profileError=error;report.status='FAIL';report.passed=false;report.error=String(error);report.stack=(error as Error).stack;process.exitCode=1;}finally{profiler.finish(profileError);}\n save(o.report,report);console.log(JSON.stringify({status:report.status,mode:o.mode,compileMs:report.compileMs,report:o.report,error:report.error}));\n}\n\nif(!isMainThread){\n const group=readFileSync('/proc/self/cgroup','utf8').trim().split('\\n').find(x=>x.startsWith('0::'))!.slice(3);\n const at='/sys/fs/cgroup'+group;\n if(readFileSync(at+'/memory.max','utf8').trim()!=='8589934592'||readFileSync(at+'/memory.swap.max','utf8').trim()!=='0')throw Error('Authentic cgroup limits absent');\n await worker(workerData.requestPath,workerData.requestSha256);\n}else{\n const mode=process.argv[2] as 'official'|'component';if(!['official','component'].includes(mode))throw Error('mode');\n const o:Options={mode,corpus:resolve('corpus.relocated.json'),report:resolve(mode+'.json'),driver:resolve('evals/checker_core_step_runtime.mjs'),stopAfter:'compile',...(mode==='component'?{component:resolve('checkpoints/selfhost-steps-canonical-release237-misaka-v46-final.js'),exports:resolve('official.json.exports.json')}:{})};\n if(existsSync(o.report))throw Error('Fresh report required');\n const corpus=corpusOf(o.corpus);verifyCorpus(corpus);\n const paths=[script,o.corpus,o.driver,...(o.component?[o.component]:[]),...(o.exports?[o.exports]:[]),resolve(corpus.directory,'bend2/bend.ts'),resolve(corpus.directory,'bend2/comp.ts')];\n const pins=Object.fromEntries(paths.map(p=>[realpathSync(p),hash(p)]));\n if(hash(resolve(corpus.directory,'bend2/bend.ts'))!=='6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e'||hash(resolve(corpus.directory,'bend2/comp.ts'))!=='56d5727049bc3ef528ef84d3b4712a41a0a8ce0a06437b29d881e71107638c70')throw Error('Official identity');\n const request=o.report+'.request.json';save(request,{options:o,pins},true);\n const execution=new Worker(new URL(import.meta.url),{workerData:{requestPath:request,requestSha256:hash(request)},resourceLimits:{stackSizeMb:256,maxOldGenerationSizeMb:6144,maxYoungGenerationSizeMb:128}});\n await new Promise<void>((done,reject)=>{execution.once('error',reject);execution.once('exit',code=>code===0?done():reject(Error('Benchmark worker failed: '+code)));});\n}\n"
+    },
+    "run-quality52.mjs": {
+      "sha256": "35ba5e0008efb896d002b9b6d1a31bc38786294320f040bedbc512763febbeb3",
+      "source": "import fs from 'node:fs';import {createHash} from 'node:crypto';import {resolve} from 'node:path';import {pathToFileURL} from 'node:url';import {Worker} from 'node:worker_threads';\nconst hash=p=>createHash('sha256').update(fs.readFileSync(p)).digest('hex'),save=(p,x)=>fs.writeFileSync(p,JSON.stringify(x,null,2)+'\\n',{flag:'wx'});\nconst group=fs.readFileSync('/proc/self/cgroup','utf8').trim().split('\\n').find(x=>x.startsWith('0::')).slice(3),cg='/sys/fs/cgroup'+group;\nconst safe=p=>{try{return {value:fs.readFileSync(p,'utf8').trim()};}catch(e){return {unavailable:String(e)};}};\nfunction environment(){const status=fs.readFileSync('/proc/self/status','utf8');const frequencies=[];for(const name of fs.readdirSync('/sys/devices/system/cpu').filter(x=>/^cpu\\d+$/.test(x))){const base='/sys/devices/system/cpu/'+name+'/cpufreq';if(fs.existsSync(base)){const files=fs.readdirSync(base).filter(x=>['scaling_cur_freq','cpuinfo_cur_freq','scaling_governor','scaling_min_freq','scaling_max_freq','cpuinfo_min_freq','cpuinfo_max_freq'].includes(x));frequencies.push({cpu:name,readings:Object.fromEntries(files.map(f=>[f,safe(base+'/'+f)]))});}}return {at:new Date().toISOString(),loadavg:safe('/proc/loadavg'),allowedCpuAffinity:status.split('\\n').filter(x=>/^Cpus_allowed(?:_list)?:/.test(x)),cpuStat:safe(cg+'/cpu.stat'),memoryMax:safe(cg+'/memory.max'),memorySwapMax:safe(cg+'/memory.swap.max'),cpufreq:frequencies,procCpuInfo:fs.readFileSync('/proc/cpuinfo','utf8').split('\\n').filter(x=>/^(processor|model name|cpu MHz)\\s*:/.test(x)),frequencyLimit:frequencies.length?null:'No readable cpufreq directories; proc/cpuinfo MHz is only a reported snapshot, not measured hardware cycles.'};}\nif(process.version!=='v23.11.0')throw Error('Wrong runtime');\nconst component=resolve('stage-one52.js'),helper=resolve('evals/selfhost_cpu_profile.mjs');\nif(hash(component)!=='958ff8b8dd80d2c3cbfb36edb4e76bcc87ab7ee73b8be7942fc7fbcf5e7b47bd'||hash(helper)!=='09682b3127c7b8e5a2b857b6a4d1ae44d67406b80094fe6fd5c8b5f1f2819c7a')throw Error('Compiler/helper drift');\nconst o={mode:'component',corpus:resolve('corpus.relocated.json'),report:resolve('profiling-quality52.json'),driver:resolve('evals/checker_core_step_runtime.mjs'),stopAfter:'compile',component,exports:resolve('official.json.exports.json')};\nif(fs.existsSync(o.report))throw Error('Fresh profile report required');\nconst corpus=JSON.parse(fs.readFileSync(o.corpus)),names=JSON.parse(fs.readFileSync(o.exports)).exports;if(corpus.files.length!==50||names.length!==7720)throw Error('Coverage mismatch');\nconst paths=['benchmark-quality52.ts','benchmark-linux.ts','run-quality52.mjs',helper,o.corpus,o.driver,o.component,o.exports,resolve(corpus.directory,'bend2/bend.ts'),resolve(corpus.directory,'bend2/comp.ts')],pins=Object.fromEntries(paths.map(p=>[fs.realpathSync(p),hash(p)]));\nconst request=o.report+'.request.json';save(request,{options:o,pins});\nsave('profiling-quality52-environment-before.json',environment());\nconst worker=new Worker(pathToFileURL(resolve('benchmark-quality52.ts')),{workerData:{requestPath:request,requestSha256:hash(request)},resourceLimits:{stackSizeMb:256,maxOldGenerationSizeMb:6144,maxYoungGenerationSizeMb:128}});\ntry{await new Promise((yes,no)=>{worker.once('error',no);worker.once('exit',code=>code===0?yes():no(Error('Phase profile worker failed: '+code)));});}finally{save('profiling-quality52-environment-after.json',environment());}\nconst report=JSON.parse(fs.readFileSync(o.report));if(report.status!=='PASS'||report.moduleCount!==15||report.checkedModules!==15||report.inputFiles!==50||report.exportCount!==7720||!report.outputSmokePassed)throw Error('Incomplete phase-profile workload');\nconst bytes=fs.readFileSync(o.report+'.output.mjs'),reference='paired49-actual49.json.output.mjs';const equal=bytes.equals(fs.readFileSync(reference));\nsave('profiling-quality52-output-comparison.json',{status:equal?'PASS':'FAIL',bytes:bytes.length,sha256:hash(o.report+'.output.mjs'),reference,exactByteMatch:equal,emission:true,actualOutputImportAndSemanticSmoke:true,exports:7720});if(!equal)throw Error('Profiled output changed');\n"
+    },
+    "analyze-quality52.mjs": {
+      "sha256": "8b6e1ee9998aa95eae5a06e16638af4509b12824a33d7be2c1bda69cc9a6b1ed",
+      "source": "import fs from 'node:fs';import path from 'node:path';import crypto from 'node:crypto';\nconst hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex');\nconst decode=s=>(s??'').replace(/^\\$u\\$/,'').replace(/\\$(\\d+)\\$/g,(_,n)=>String.fromCharCode(Number(n)));\nconst frame=f=>({function:f.functionName||'(anonymous)',logical:decode(f.functionName)||'(anonymous)',url:f.url,line:f.lineNumber+1,column:f.columnNumber+1});\nconst key=f=>JSON.stringify([f.functionName,f.url,f.lineNumber,f.columnNumber]);\nconst runs=fs.readdirSync('profiling-quality52',{withFileTypes:true}).filter(x=>x.isDirectory()).map(x=>path.join('profiling-quality52',x.name));\nif(runs.length!==1)throw Error('Expected one inspector run');const directory=runs[0],run=JSON.parse(fs.readFileSync(path.join(directory,'run.json')));\nconst summaries=fs.readdirSync(directory).filter(x=>/^\\d+.*\\.json$/.test(x)).sort().map(x=>JSON.parse(fs.readFileSync(path.join(directory,x))));\nlet cpuBytes=0,heapBytes=0;const phases=[];\nfor(const s of summaries){\n const p=JSON.parse(fs.readFileSync(s.profilePath)),hp=JSON.parse(fs.readFileSync(s.allocationProfilePath)),nodes=new Map(p.nodes.map(n=>[n.id,n])),parents=new Map();for(const n of p.nodes)for(const id of n.children??[])parents.set(id,n.id);\n const self=new Map(),contexts=new Map();let totalUs=0,gcUs=0,gcSamples=0;\n for(let i=0;i<p.samples.length;i++){const n=nodes.get(p.samples[i]),us=p.timeDeltas[i],k=key(n.callFrame),r=self.get(k)??{...frame(n.callFrame),samples:0,sampledUs:0};r.samples++;r.sampledUs+=us;self.set(k,r);totalUs+=us;if(n.callFrame.functionName==='(garbage collector)'){gcUs+=us;gcSamples++;}\n  const chain=[];let at=n;while(at){chain.push(frame(at.callFrame));at=nodes.get(parents.get(at.id));}const logical=[];for(const f of chain)if(f.function.startsWith('$u$')&&logical.at(-1)!==f.logical)logical.push(f.logical);const ck=JSON.stringify(logical.slice(0,12));if(!contexts.has(k))contexts.set(k,new Map());const m=contexts.get(k),c=m.get(ck)??{logicalConsumerChain:logical.slice(0,12),fullStack:chain.slice(0,14),samples:0,sampledUs:0};c.samples++;c.sampledUs+=us;m.set(ck,c);\n }\n const topCpu=[...self.entries()].sort((a,b)=>b[1].sampledUs-a[1].sampledUs).slice(0,25).map(([k,r])=>({...r,sampledMs:r.sampledUs/1000,percent:100*r.sampledUs/totalUs,contexts:[...contexts.get(k).values()].sort((a,b)=>b.sampledUs-a.sampledUs).slice(0,2).map(c=>({...c,sampledMs:c.sampledUs/1000}))}));\n const sampleByNode=new Map();let sampleSizeSum=0;for(const sample of hp.samples??[]){sampleSizeSum+=sample.size;const r=sampleByNode.get(sample.nodeId)??{records:0,estimatedBytes:0};r.records++;r.estimatedBytes+=sample.size;sampleByNode.set(sample.nodeId,r);}\n const allocationSites=new Map();let treeSelfSum=0,heapNodeCount=0;\n const visit=(node,chain)=>{heapNodeCount++;const selfSize=node.selfSize??0;treeSelfSum+=selfSize;const frames=[frame(node.callFrame),...chain],k=key(node.callFrame),samples=sampleByNode.get(node.id)??{records:0,estimatedBytes:0};\n  if(selfSize||samples.records){const row=allocationSites.get(k)??{...frame(node.callFrame),estimatedAllocatedBytes:0,sampleRecords:0,sampleEstimatedBytes:0,contexts:[]};row.estimatedAllocatedBytes+=selfSize;row.sampleRecords+=samples.records;row.sampleEstimatedBytes+=samples.estimatedBytes;row.contexts.push({estimatedAllocatedBytes:selfSize,sampleRecords:samples.records,stack:frames.slice(0,14)});allocationSites.set(k,row);}\n  for(const child of node.children??[])visit(child,frames);\n };visit(hp.head,[]);\n const allocations=[...allocationSites.values()].sort((a,b)=>b.estimatedAllocatedBytes-a.estimatedAllocatedBytes).map(r=>({...r,percentOfEstimatedAllocation:100*r.estimatedAllocatedBytes/treeSelfSum,contexts:r.contexts.sort((a,b)=>b.estimatedAllocatedBytes-a.estimatedAllocatedBytes).slice(0,2)}));\n const cpuSize=fs.statSync(s.profilePath).size,heapSize=fs.statSync(s.allocationProfilePath).size;cpuBytes+=cpuSize;heapBytes+=heapSize;\n const row={phase:s.phase,sequence:s.sequence,status:s.status,boundary:s.boundary,instrumentedWallMs:s.wallMs,processCpuMs:s.cpuMs,processCpuUs:s.cpuUs,memoryStart:s.memoryStart,memoryEnd:s.memoryEnd,cpu:{profilePath:s.profilePath,sha256:hash(s.profilePath),bytes:cpuSize,samples:p.samples.length,nodes:p.nodes.length,profileDurationMs:(p.endTime-p.startTime)/1000,totalSampledMs:totalUs/1000,workerGcSampledMs:gcUs/1000,workerGcSamples:gcSamples,workerGcSamplePercent:100*gcUs/totalUs,topSelf:topCpu},allocation:{profilePath:s.allocationProfilePath,sha256:hash(s.allocationProfilePath),bytes:heapSize,samplingIntervalBytes:run.allocationSamplingIntervalBytes,includesCollectedMinorAndMajor:true,statisticalEstimatedAllocatedBytes:treeSelfSum,sumSamplingRecordEstimatedSizes:sampleSizeSum,sampleRecordCount:hp.samples?.length,treeNodeCount:heapNodeCount,topSites:allocations.slice(0,25),topCompilerSites:allocations.filter(r=>r.url.endsWith('/stage-one52.js')).slice(0,20),scope:'Statistical worker-isolate allocation estimates, including objects collected by minor+major GC. Not exact allocation counts, not retained/live bytes or process RSS.'}};\n phases.push(row);fs.writeFileSync('profiling-quality52-'+s.phase+'-summary.json',JSON.stringify(row,null,2)+'\\n',{flag:'wx'});\n}\nconst out={status:'ANALYZED',run,phases,caps:{rawCpuBytes:cpuBytes,rawCpuCapBytes:40*1024*1024,rawHeapBytes:heapBytes,rawHeapCapBytes:25*1024*1024,withinCpuCap:cpuBytes<=40*1024*1024,withinHeapCap:heapBytes<=25*1024*1024},method:{cpu:'Local inspector profile is this worker isolate. Each phase has its own sample denominator; sample-delta self estimates are not whole-process CPU time or hardware cycles. CPU sample GC is only this isolate profiling category, not concurrent/background GC thread CPU.',allocation:'SamplingHeapProfile head.selfSize and samples.size are statistical estimated byte weights; sampleRecords are profiler records, not exact program allocation events. Includes collected objects per unchanged helper.',observerEffect:'Helper stops CPU then allocation sampling: inspector Profiler.stop/materialization can allocate while heap sampling remains active. Raw tables retain these observer/inspector allocation sites; do not attribute them to compiler work.',boundary:'Existing phase.mark at phase entry; prior interval ends at next mark, includes inter-phase validation. Final interval ends at finish. Profile serialization between intervals is excluded from helper phase wall but included in overall instrumented run.'}};\nfs.writeFileSync('profiling-quality52-phase-summaries.json',JSON.stringify(out,null,2)+'\\n',{flag:'wx'});\nconsole.log(JSON.stringify({caps:out.caps,phases:phases.map(p=>({phase:p.phase,instrumentedWallMs:p.instrumentedWallMs,processCpuMs:p.processCpuMs,workerSampledMs:p.cpu.totalSampledMs,workerGcSampledMs:p.cpu.workerGcSampledMs,workerGcPercent:p.cpu.workerGcSamplePercent,allocationEstimatedBytes:p.allocation.statisticalEstimatedAllocatedBytes,allocationSampleRecords:p.allocation.sampleRecordCount,allocationTopSites:p.allocation.topSites.slice(0,5).map(x=>({function:x.logical,line:x.line,url:x.url,estimatedBytes:x.estimatedAllocatedBytes,percent:x.percentOfEstimatedAllocation})),cpuTopSelf:p.cpu.topSelf.slice(0,7).map(x=>({function:x.logical,line:x.line,sampledMs:x.sampledMs,percent:x.percent}))}))}));\n"
+    },
+    "record-series52.mjs": {
+      "sha256": "cadb2a7fdf6bd7abcdf69485f900f96ced41ac9ba186226f18db07c5f07dfdbc",
+      "source": "import fs from 'node:fs';import crypto from 'node:crypto';import {spawnSync} from 'node:child_process';\nconst read=p=>JSON.parse(fs.readFileSync(p)),hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex'),labels=['series52-49-before','series52-52-first','series52-52-second','series52-49-after'];\nconst loadRun=label=>{const suffix=label==='profiling-quality52'?'-':'.',r=read(label+'.json'),g=read(label+'.guard.json'),s=read(label+'.systemd.json'),o=read(label+suffix+'output-comparison.json');if(r.status!=='PASS'||r.inputFiles!==50||r.moduleCount!==15||r.checkedModules!==15||r.exportCount!==7720||!r.outputSmokePassed||!o.exactByteMatch||g.exitCode!==0||s.status!==0||g.memoryMax!=='8589934592'||g.memorySwapMax!=='0')throw Error('Incomplete '+label);return {label,report:r,guard:g,systemd:s,output:o,environmentBefore:read(label+suffix+'environment-before.json'),environmentAfter:read(label+suffix+'environment-after.json')};};\nconst runs=labels.map(loadRun),profileRun=loadRun('profiling-quality52');\nconst metric=(r,k)=>k==='compile'?r.report.compileMs:k==='totalWithOutputSmoke'?r.report.totalWithOutputSmokeMs:r.report.phases.find(p=>p.name===k).wallMs,mean=(a,b)=>(a+b)/2;\nconst normalComparison=Object.fromEntries(['compile','totalWithOutputSmoke','load-parse','expand','check','emit'].map(k=>{const values=runs.map(r=>metric(r,k)),a=mean(values[0],values[3]),b=mean(values[1],values[2]);return [k,{valuesMs:values,actual49MeanMs:a,actual52MeanMs:b,meanSpeedupRatio:a/b,meanTimeReductionPercent:(1-b/a)*100,first52VersusFirst49Percent:(values[1]/values[0]-1)*100,second52VersusLast49Percent:(values[2]/values[3]-1)*100,normal49LastVersusFirstPercent:(values[3]/values[0]-1)*100}];}));\nconst cpuComparison={scope:'Sum of per-phase whole-process cpuMs, not worker-isolate CPU',valuesMs:runs.map(r=>r.report.phases.reduce((s,p)=>s+p.cpuMs,0)),checkValuesMs:runs.map(r=>r.report.phases.find(p=>p.name==='check').cpuMs)};\nconst old=read('profiling-quality49-phase-summaries.json'),now=read('profiling-quality52-phase-summaries.json');if(!now.caps.withinCpuCap||!now.caps.withinHeapCap)throw Error('New raw-profile caps exceeded');\nconst phaseAllocation=now.phases.map(p=>{const a=old.phases.find(x=>x.phase===p.phase);return {phase:p.phase,actual49EstimatedBytes:a.allocation.statisticalEstimatedAllocatedBytes,actual52EstimatedBytes:p.allocation.statisticalEstimatedAllocatedBytes,estimatedByteDelta:p.allocation.statisticalEstimatedAllocatedBytes-a.allocation.statisticalEstimatedAllocatedBytes,estimatedReductionPercent:100*(1-p.allocation.statisticalEstimatedAllocatedBytes/a.allocation.statisticalEstimatedAllocatedBytes),actual49SampleRecords:a.allocation.sampleRecordCount,actual52SampleRecords:p.allocation.sampleRecordCount,actual49InstrumentedWallMs:a.instrumentedWallMs,actual52InstrumentedWallMs:p.instrumentedWallMs,actual49WorkerSampledMs:a.cpu.totalSampledMs,actual52WorkerSampledMs:p.cpu.totalSampledMs,actual49WorkerGcSampledMs:a.cpu.workerGcSampledMs,actual52WorkerGcSampledMs:p.cpu.workerGcSampledMs,actual49WholeProcessCpuMs:a.processCpuMs,actual52WholeProcessCpuMs:p.processCpuMs,cpuProfile:{path:p.cpu.profilePath,sha256:p.cpu.sha256,bytes:p.cpu.bytes},heapProfile:{path:p.allocation.profilePath,sha256:p.allocation.sha256,bytes:p.allocation.bytes},top52AllocationSites:p.allocation.topSites.slice(0,10).map(x=>({name:x.logical,line:x.line,estimatedBytes:x.estimatedAllocatedBytes,sampleRecords:x.sampleRecords})),top52CpuSelf:p.cpu.topSelf.slice(0,10).map(x=>({name:x.logical,line:x.line,sampledMs:x.sampledMs,percent:x.percent}))};});\nconst decode=s=>(s??'').replace(/^\\$u\\$/,'').replace(/\\$(\\d+)\\$/g,(_,n)=>String.fromCharCode(Number(n))),selected=new Set(['Map.get.go','Map.lo','Map.hi']),ownerName='../bend2/selfhost/checker_arena.name';\nfunction ancestry(version,summary){const p=summary.phases.find(x=>x.phase==='check'),hp=read(p.allocation.profilePath),url='file://'+process.cwd()+'/stage-one'+version+'.js',seen=new Set(),sites=new Map(),groups={allMap:0,selectedMapThree:0,definiteNameReadSelectedMapThree:0,allIndexLookupFind:0,indexLookupFindWithVisibleNameAncestor:0,allMapBit:0,mapBitWithVisibleNameAncestor:0,allArenaNameFamily:0},sampleRecords=hp.samples.length;let total=0;const visit=(n,anc)=>{if(seen.has(n.id))throw Error('Repeated tree node');seen.add(n.id);const name=decode(n.callFrame.functionName),size=n.selfSize??0;total+=size;if(n.callFrame.url===url){sites.set(name,(sites.get(name)??0)+size);const chain=[n,...anc],names=chain.map(x=>decode(x.callFrame.functionName)),nameAncestor=chain.some(x=>x.callFrame.url===url&&decode(x.callFrame.functionName)===ownerName);if(name.startsWith('Map.'))groups.allMap+=size;if(name==='Map.bit'){groups.allMapBit+=size;if(nameAncestor)groups.mapBitWithVisibleNameAncestor+=size;}if(name.startsWith('../bend2/selfhost/index_lookup.find')){groups.allIndexLookupFind+=size;if(nameAncestor)groups.indexLookupFindWithVisibleNameAncestor+=size;}if(name===ownerName||name.startsWith(ownerName+'.'))groups.allArenaNameFamily+=size;if(selected.has(name)){groups.selectedMapThree+=size;const owner=chain.find(x=>x.callFrame.url===url&&x.callFrame.functionName.startsWith('$u$')&&!decode(x.callFrame.functionName).startsWith('Map.'));const index=owner?chain.indexOf(owner):chain.length,mapNames=names.slice(0,index);if(owner&&decode(owner.callFrame.functionName)===ownerName&&mapNames.some(x=>/^Map\\.get(?:\\.|$)/.test(x))&&!mapNames.some(x=>/^Map\\.(?:set|put|ins|del|rem)(?:\\.|$)/.test(x)))groups.definiteNameReadSelectedMapThree+=size;}}for(const c of n.children??[])visit(c,[n,...anc]);};visit(hp.head,[]);return {version,rawProfile:p.allocation.profilePath,rawSha256:p.allocation.sha256,wholeCheckEstimatedBytes:total,sampleRecords,groups,siteEstimatedBytes:Object.fromEntries(sites),visitedNodes:seen.size};}\nconst a=ancestry(49,old),b=ancestry(52,now),groupComparison=Object.fromEntries(Object.keys(a.groups).map(k=>[k,{actual49EstimatedBytes:a.groups[k],actual52EstimatedBytes:b.groups[k],estimatedDelta:b.groups[k]-a.groups[k]}]));\nconst siteDeltas=[...new Set([...Object.keys(a.siteEstimatedBytes),...Object.keys(b.siteEstimatedBytes)])].map(name=>({name,actual49EstimatedBytes:a.siteEstimatedBytes[name]??0,actual52EstimatedBytes:b.siteEstimatedBytes[name]??0,estimatedDelta:(b.siteEstimatedBytes[name]??0)-(a.siteEstimatedBytes[name]??0)})).sort((x,y)=>Math.abs(y.estimatedDelta)-Math.abs(x.estimatedDelta)).slice(0,30);\nconst reference=fs.readFileSync('paired49-actual49.json.output.mjs'),cleanup=[];for(const item of [...runs,profileRun]){const p=item.report.artifact.path,bytes=fs.readFileSync(p);if(!bytes.equals(reference)||hash(p)!==item.report.artifact.sha256)throw Error('Output mismatch before requested redundant-artifact cleanup');cleanup.push({path:p,bytes:bytes.length,sha256:hash(p),actualOutputImportAndSemanticSmoke:item.report.outputSmokePassed,exactReferenceByteComparison:true,removed:true});fs.unlinkSync(p);}\nconst evidence=['run-series52.mjs','benchmark-linux.ts','benchmark-quality52.ts','run-quality52.mjs','analyze-quality52.mjs','evals/selfhost_cpu_profile.mjs','profiling-quality52-phase-summaries.json','heap49-name-map-partition.json',...labels.flatMap(l=>[l+'.json',l+'.json.request.json',l+'.guard.json',l+'.systemd.json',l+'.output-comparison.json',l+'.environment-before.json',l+'.environment-after.json']),'profiling-quality52.json','profiling-quality52.json.request.json','profiling-quality52.guard.json','profiling-quality52.systemd.json','profiling-quality52-output-comparison.json'];\nconst receipt={status:'PASS_ACTUAL49_52_52_49_AND_SEPARATE_FULL52_PROFILE',diagnosticOnly:true,bootstrapAcceptance:false,newFixedpoint:false,sourceBackendRuntimeDistinction:{actual49:{file:'stage-one49.js',sha256:hash('stage-one49.js')},actual52:{file:'stage-one52.js',sha256:hash('stage-one52.js'),bytes:fs.statSync('stage-one52.js').size},parentReported52Provenance:{stageOneAndStageTwoSha256:'958ff8b8dd80d2c3cbfb36edb4e76bcc87ab7ee73b8be7942fc7fbcf5e7b47bd',nativeBodies:8173,nativeEvents:8511,fixturesPassed:273,checkerSourceSha256:'f166f3b63bc5b8b6403a2e8bc3a83ad424ee95dc8c0065625773e05894ceb479',arenaSourceSha256:'b09a5f8b00d63d0f6ffa721a78cba7761d42963a64b89c1b5970a0804d948b2b',scope:'Parent reported full acceptance; this experiment independently authenticates transported actual52 image and frozen workload outputs, not a new bootstrap proof.'},normalRuntime:runs[0].report.runtime,seedTimingsCompared:false},normalSequence:labels,runs,normalComparison,cpuComparison,profileRun,profileScope:{sameUnchangedHelper:true,cpuIntervalUs:1000,allocationIntervalBytes:4194304,includesCollectedMinorAndMajor:true,cliCpuProfiler:false,outsideNormalControls:true,phaseRunnerChangeFrom49:'Only profiler output directory and descriptive actual52 label; no benchmark operation/validation changes.',rawCaps:now.caps},phaseAllocation,checkAllocationComparison:{oldProfile:a.rawProfile,newProfile:b.rawProfile,oldRawSha256:a.rawSha256,newRawSha256:b.rawSha256,oldWholeCheckEstimate:a.wholeCheckEstimatedBytes,newWholeCheckEstimate:b.wholeCheckEstimatedBytes,groupComparison,largestSiteDeltas:siteDeltas,method:'One visit per raw heap node; sum selfSize only, normalize generated function names, require actual image URL. Same strict definite-name-read classification as retained49 partition. Group totals overlap by definition and must not be added together.'},limitations:['Normal ABBA comparisons are actual emitted49 versus actual emitted52 on identical frozen inputs, not native-seed comparisons. Two observations per version do not establish a confidence interval or general performance guarantee.','Before/after load, allowed affinity and proc/cpuinfo MHz snapshots are retained, but not controlled CPU frequency or hardware counters. Scheduler/thermal/VM/background-GC confounding remains.','Allocation figures are single-run statistical cumulative-byte point estimates including collected objects, not exact allocation counts or live heap. They are separate from normal benchmark timings.','CPU profile self attribution can fold inlined work into callers. Worker GC samples are not total process/background GC CPU.','Unchanged helper starts CPU profiling before allocation-sampler setup; tiny phases can be dominated by inspector overhead. No overhead subtraction or logical-scheduler-cost claim.','Historical49 profile and current52 profile are not contemporaneous ABBA allocation experiments. Site movement/inlining/sampling noise can affect attribution.'],cleanup:{removedOnlyNewRedundantOutputs:cleanup,existingReferenceRetained:true,oldReceiptsAndRawProfilesUntouched:true,directoryBytesAfterCleanup:Number(spawnSync('du',['-sb','.'],{encoding:'utf8'}).stdout.split(/\\s/)[0])},evidenceSha256:Object.fromEntries(evidence.map(p=>[p,hash(p)])),analysisSourceSha256:hash(new URL(import.meta.url))};if(receipt.cleanup.directoryBytesAfterCleanup>=1073741824)throw Error('Directory cap');fs.writeFileSync('paired52-diagnostic.json',JSON.stringify(receipt,null,2)+'\\n',{flag:'wx'});console.log(JSON.stringify({status:receipt.status,receiptSha256:hash('paired52-diagnostic.json'),normalComparison,cpuComparison,phaseAllocation:phaseAllocation.filter(x=>['check','emit'].includes(x.phase)),groupComparison,cleanup:receipt.cleanup}));\n"
+    },
+    "compare49-52-check-cpu.mjs": {
+      "sha256": "76252dbac0f7cebc69f0889649ab1a7d2e8ccc85fa2e7f17e5cd865cfbfaa2a0",
+      "source": "import fs from 'node:fs';import crypto from 'node:crypto';\nconst read=p=>JSON.parse(fs.readFileSync(p)),hash=p=>crypto.createHash('sha256').update(fs.readFileSync(p)).digest('hex'),decode=s=>(s??'').replace(/^\\$u\\$/,'').replace(/\\$(\\d+)\\$/g,(_,n)=>String.fromCharCode(Number(n)));\nconst find='../bend2/selfhost/index_lookup.find',targets=['runCheckerSteps','runSteps','run_named1','run_named2','run_named3','run_loop','run_force','Map.get.go','Map.lo','Map.hi','Map.bit','String.eq','String.cmp',find,find+'.go',find+'.position',find+'.leaf','(garbage collector)'];\nfunction analyze(version){const s=read('profiling-quality'+version+'-phase-summaries.json').phases.find(x=>x.phase==='check'),p=read(s.cpu.profilePath),nodes=new Map(p.nodes.map(n=>[n.id,n])),parent=new Map(),self=new Map(),inclusive=new Map(),helperFind=new Map();for(const n of p.nodes)for(const c of n.children??[])parent.set(c,n.id);let totalUs=0;for(let i=0;i<p.samples.length;i++){const leaf=nodes.get(p.samples[i]),us=p.timeDeltas[i],name=decode(leaf.callFrame.functionName)||'(anonymous)';totalUs+=us;const key=JSON.stringify([name,leaf.callFrame.url.replace('/stage-one'+version+'.js','/<compiler-image>')]),row=self.get(key)??{name,url:leaf.callFrame.url,lines:new Set(),samples:0,sampledUs:0};row.samples++;row.sampledUs+=us;row.lines.add(leaf.callFrame.lineNumber+1);self.set(key,row);const names=new Set();let n=leaf;while(n){names.add(decode(n.callFrame.functionName)||'(anonymous)');n=nodes.get(parent.get(n.id));}for(const t of targets)if(names.has(t)){const a=inclusive.get(t)??{samples:0,sampledUs:0};a.samples++;a.sampledUs+=us;inclusive.set(t,a);}if(/^run_(?:named\\d+|loop|force)$/.test(name)&&[...names].some(x=>x===find||x.startsWith(find+'.'))){const a=helperFind.get(name)??{samples:0,sampledUs:0};a.samples++;a.sampledUs+=us;helperFind.set(name,a);}}\nconst rows=[...self.values()].map(r=>({...r,lines:[...r.lines],sampledMs:r.sampledUs/1000,percent:100*r.sampledUs/totalUs})).sort((a,b)=>b.sampledUs-a.sampledUs),targetRows=Object.fromEntries(targets.map(t=>{const r=rows.filter(x=>x.name===t),inc=inclusive.get(t)??{samples:0,sampledUs:0};return [t,{selfSamples:r.reduce((a,x)=>a+x.samples,0),selfMs:r.reduce((a,x)=>a+x.sampledMs,0),selfPercent:r.reduce((a,x)=>a+x.percent,0),inclusiveSamples:inc.samples,inclusiveMs:inc.sampledUs/1000,inclusivePercent:100*inc.sampledUs/totalUs,zeroMeaning:'Zero means no retained samples attributed to this label, not zero execution or zero cost.'}];}));return {version,profile:s.cpu.profilePath,profileSha256:hash(s.cpu.profilePath),workerSampleDenominatorMs:totalUs/1000,workerSamples:p.samples.length,instrumentedPhaseWallMs:s.instrumentedWallMs,wholeProcessCpuMs:s.processCpuMs,topSelf:rows.slice(0,20),targets:targetRows,helperSelfWithVisibleFindAncestry:Object.fromEntries([...helperFind].map(([k,v])=>[k,{...v,sampledMs:v.sampledUs/1000,percentOfPhase:100*v.sampledUs/totalUs}]))};}\nconst a=analyze(49),b=analyze(52),comparison=Object.fromEntries(targets.map(t=>[t,{actual49:a.targets[t],actual52:b.targets[t]}]));\nconst declarations=version=>{const text=fs.readFileSync('stage-one'+version+'.js','utf8'),out={};for(const m of text.matchAll(/^var (\\$u\\$[^ =]+)\\s*=/gm)){const name=decode(m[1]);if(!['String.eq','String.cmp','Map.bit',find+'.position',find+'.go',find+'.leaf'].includes(name))continue;const end=text.indexOf('\\n$D[',m.index),declaration=text.slice(m.index,end);out[name]={sha256:crypto.createHash('sha256').update(declaration).digest('hex'),bytes:Buffer.byteLength(declaration),declaration:name==='String.eq'||name===find+'.position'?declaration:undefined};}return out;};const da=declarations(49),db=declarations(52),sourceComparison=Object.fromEntries(Object.keys(da).map(k=>[k,{sameDeclaration:da[k].sha256===db[k]?.sha256,actual49:da[k],actual52:db[k]}]));\nconst receipt={status:'READ_ONLY_CHECK_CPU_COMPARISON_COMPLETE',command:'node compare49-52-check-cpu.mjs',analysisSourceSha256:hash(new URL(import.meta.url)),profiles:[a,b],targetComparison:comparison,sourceComparison,method:['Use original raw000004-check.cpuprofile for49 and52, not whole-run profiles. Sum each sample timeDelta exactly once for exclusive/self attribution. Each phase has its own denominator.','Inclusive target samples use a Set of actual ancestor labels, so recursive frames do not multiply a sample within one target. Inclusive target totals overlap and must not be added.','Helper self samples with visible IndexLookup.find-family ancestry are recorded separately; absent/inlined frames can leave attribution incomplete. These are not exact native-call counts or isolated dispatch costs.','Generated declarations compared directly between the retained pinned49 and52 images. No compiler execution or new profile was performed.'],sourceFindings:['String.eq is already the JavaScript intrinsic (a,b)=>a===b in both images. It is not a source-level Unicode-comparison loop. A separate equality-call overhead explanation is unproven by these samples.','IndexLookup.find.position is a generated pattern dispatch extracting MNode.pos (otherwise0), not a JavaScript intrinsic. find.go calls it on each chosen child before Map.bit; leaf handling calls String.eq and find.leaf. Recursive traversal uses run_named2. These are concrete extra call boundaries to investigate, not a measured explanation of the normal-series slowdown.','Map.bit is already a native JavaScript codePointAt-based implementation returning a Tuple. Inlined allocation/computation can be charged to find.go or a host wrapper instead of its own label.'],limitations:['These profiles come from different times and are instrumented. Do not use their wall/self-time differences to establish normal52 speedup or intrinsic regression.','Self attribution can include inlined callee work. Profile percentages are worker sampling shares, not whole-process CPU or actual call-volume percentages.','An observed aggregate host-load increase does not prove unrelated external work: compiler JIT/GC threads can contribute, and the cause remains unresolved.','The existing normal ABBA series observed52 slower but overlaps a middle-run load spike. No additional heavy runs were launched.'],loadQualification:{file:'paired52-load-qualification.json',sha256:hash('paired52-load-qualification.json')},retainedReproSourceHashes:Object.fromEntries(['run-series52.mjs','benchmark-quality52.ts','run-quality52.mjs','analyze-quality52.mjs','record-series52.mjs','evals/selfhost_cpu_profile.mjs','benchmark-linux.ts'].map(p=>[p,hash(p)]))};fs.writeFileSync('check-cpu49-52-comparison.json',JSON.stringify(receipt,null,2)+'\\n',{flag:'wx'});console.log(JSON.stringify({status:receipt.status,receiptSha256:hash('check-cpu49-52-comparison.json'),sourceSha256:receipt.analysisSourceSha256,denominatorsMs:[a.workerSampleDenominatorMs,b.workerSampleDenominatorMs],comparison,helperFind:[a.helperSelfWithVisibleFindAncestry,b.helperSelfWithVisibleFindAncestry],sourceComparison}));\n"
+    }
+  },
+  "architectureExperiments": {
+    "nativeQuote": {
+      "receipt": {
+        "kind": "direct-style-quote-island",
+        "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+        "sourceSha256": "33841887514ac9a213652407ac8b68f393344a77c5274e1e0918740ce44561b2",
+        "driverSha256": "185a6a4263659ef2504d8d97133d612b5bef5e29e2596278dcea405e03b6c731",
+        "compilerSha256": "8c33864a67f0fd08d1805929c8f48806c040b219126b29bb31f201f45d6b69e6",
+        "baseSha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+        "limits": {
+          "memoryMiB": 2048,
+          "rssMiB": 2048,
+          "timeoutMs": 300000
+        },
+        "patches": 0,
+        "unsafe": false,
+        "semanticRows": [
+          {
+            "name": "empty",
+            "input": {
+              "text": ""
+            },
+            "expected": {
+              "text": "\"\""
+            },
+            "observed": {
+              "text": "\"\""
+            },
+            "equal": true,
+            "elapsedMs": 0.11695800000006784
+          },
+          {
+            "name": "ascii",
+            "input": {
+              "text": "hello"
+            },
+            "expected": {
+              "text": "\"hello\""
+            },
+            "observed": {
+              "text": "\"hello\""
+            },
+            "equal": true,
+            "elapsedMs": 0.1987080000003516
+          },
+          {
+            "name": "six-escapes",
+            "input": {
+              "text": "\"\\\n\r\t\u0000"
+            },
+            "expected": {
+              "text": "\"\\\"\\\\\\n\\r\\t\\u0000\""
+            },
+            "observed": {
+              "text": "\"\\\"\\\\\\n\\r\\t\\u0000\""
+            },
+            "equal": true,
+            "elapsedMs": 0.004166000000168424
+          },
+          {
+            "name": "unchanged-controls",
+            "input": {
+              "text": "\u0001\b\u000b\f\u001f"
+            },
+            "expected": {
+              "text": "\"\u0001\b\u000b\f\u001f\""
+            },
+            "observed": {
+              "text": "\"\u0001\b\u000b\f\u001f\""
+            },
+            "equal": true,
+            "elapsedMs": 0.08829199999991033
+          },
+          {
+            "name": "bmp",
+            "input": {
+              "text": "é漢  "
+            },
+            "expected": {
+              "text": "\"é漢  \""
+            },
+            "observed": {
+              "text": "\"é漢  \""
+            },
+            "equal": true,
+            "elapsedMs": 0.04183400000010806
+          },
+          {
+            "name": "non-bmp",
+            "input": {
+              "text": "😀𝄞􏿿"
+            },
+            "expected": {
+              "text": "\"😀𝄞􏿿\""
+            },
+            "observed": {
+              "text": "\"😀𝄞􏿿\""
+            },
+            "equal": true,
+            "elapsedMs": 0.03158399999983885
+          },
+          {
+            "name": "mixed",
+            "input": {
+              "text": "a😀\n\"\\\u0000z"
+            },
+            "expected": {
+              "text": "\"a😀\\n\\\"\\\\\\u0000z\""
+            },
+            "observed": {
+              "text": "\"a😀\\n\\\"\\\\\\u0000z\""
+            },
+            "equal": true,
+            "elapsedMs": 0.03099999999994907
+          },
+          {
+            "name": "long-ascii-1000",
+            "input": {
+              "utf16Length": 1000,
+              "codepoints": 1000,
+              "sha256": "41edece42d63e8d9bf515a9ba6932e1c20cbc9f5a5d134645adb5db1b9737ea3"
+            },
+            "expected": {
+              "utf16Length": 1002,
+              "codepoints": 1002,
+              "sha256": "955d04731f2adae1d94c940c2b9f72677431310d92f650dc581251045f4dbcdb"
+            },
+            "observed": {
+              "utf16Length": 1002,
+              "codepoints": 1002,
+              "sha256": "955d04731f2adae1d94c940c2b9f72677431310d92f650dc581251045f4dbcdb"
+            },
+            "equal": true,
+            "elapsedMs": 71.86766699999998
+          },
+          {
+            "name": "long-escape-nonbmp-1000",
+            "input": {
+              "utf16Length": 3000,
+              "codepoints": 2000,
+              "sha256": "1765cf06cc2a36eb9b64ea118b6e2ea1b329dc2fb41f61086a4ad74f4fcdd246"
+            },
+            "expected": {
+              "utf16Length": 4002,
+              "codepoints": 3002,
+              "sha256": "7d2a5686aa32ea564fa36450e2ab251cc4035afb255af82edc83a784b88a34bc"
+            },
+            "observed": {
+              "utf16Length": 4002,
+              "codepoints": 3002,
+              "sha256": "7d2a5686aa32ea564fa36450e2ab251cc4035afb255af82edc83a784b88a34bc"
+            },
+            "equal": true,
+            "elapsedMs": 1.4865420000000995
+          },
+          {
+            "name": "long-ascii-10000",
+            "input": {
+              "utf16Length": 10000,
+              "codepoints": 10000,
+              "sha256": "27dd1f61b867b6a0f6e9d8a41c43231de52107e53ae424de8f847b821db4b711"
+            },
+            "expected": {
+              "utf16Length": 10002,
+              "codepoints": 10002,
+              "sha256": "55fc28cd823c04eace36415aeacc6f54abff515b343e71495afd11e1f6da6bb5"
+            },
+            "observed": {
+              "utf16Length": 10002,
+              "codepoints": 10002,
+              "sha256": "55fc28cd823c04eace36415aeacc6f54abff515b343e71495afd11e1f6da6bb5"
+            },
+            "equal": true,
+            "elapsedMs": 224.41533299999992
+          },
+          {
+            "name": "long-escape-nonbmp-10000",
+            "input": {
+              "utf16Length": 30000,
+              "codepoints": 20000,
+              "sha256": "1f925b3aaa74aa293bc164069ab15a66511a65d0f35479d683a6794ec512377f"
+            },
+            "expected": {
+              "utf16Length": 40002,
+              "codepoints": 30002,
+              "sha256": "20abedd4fe1b4ce783805ae2562ac0acf887728660910113687783f511286747"
+            },
+            "observed": {
+              "utf16Length": 40002,
+              "codepoints": 30002,
+              "sha256": "20abedd4fe1b4ce783805ae2562ac0acf887728660910113687783f511286747"
+            },
+            "equal": true,
+            "elapsedMs": 125.72454199999993
+          },
+          {
+            "name": "long-ascii-100000",
+            "input": {
+              "utf16Length": 100000,
+              "codepoints": 100000,
+              "sha256": "6d1cf22d7cc09b085dfc25ee1a1f3ae0265804c607bc2074ad253bcc82fd81ee"
+            },
+            "expected": {
+              "utf16Length": 100002,
+              "codepoints": 100002,
+              "sha256": "54df96ab5649109cbf32a70a39f87a3f22dd210e4770cd25a58cee0bfdbfa08f"
+            },
+            "observed": {
+              "utf16Length": 100002,
+              "codepoints": 100002,
+              "sha256": "54df96ab5649109cbf32a70a39f87a3f22dd210e4770cd25a58cee0bfdbfa08f"
+            },
+            "equal": true,
+            "elapsedMs": 836.6328749999998
+          },
+          {
+            "name": "long-escape-nonbmp-100000",
+            "input": {
+              "utf16Length": 300000,
+              "codepoints": 200000,
+              "sha256": "7db3fdf0a6dff7ceadc0d4b9877a8704f0a051d52972876fcfd5a4a06959f3a4"
+            },
+            "expected": {
+              "utf16Length": 400002,
+              "codepoints": 300002,
+              "sha256": "36f5ae0d83a2b3dfaa169eebf8605a99b82a2922736e41df5ef1f041788596d0"
+            },
+            "observed": {
+              "utf16Length": 400002,
+              "codepoints": 300002,
+              "sha256": "36f5ae0d83a2b3dfaa169eebf8605a99b82a2922736e41df5ef1f041788596d0"
+            },
+            "equal": true,
+            "elapsedMs": 932.9840000000004
+          }
+        ],
+        "modules": [
+          {
+            "path": "/private/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-native-quote-JUrcyY/quote.bend",
+            "namespace": "",
+            "sha256": "33841887514ac9a213652407ac8b68f393344a77c5274e1e0918740ce44561b2"
+          },
+          {
+            "path": "/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+            "namespace": "",
+            "sha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c"
+          }
+        ],
+        "holes": 0,
+        "checkedBodies": [
+          {
+            "name": "Word",
+            "checked": true
+          },
+          {
+            "name": "Pair",
+            "checked": true
+          },
+          {
+            "name": "Exists",
+            "checked": true
+          },
+          {
+            "name": "Or",
+            "checked": true
+          },
+          {
+            "name": "Pair.fst",
+            "checked": true
+          },
+          {
+            "name": "Pair.snd",
+            "checked": true
+          },
+          {
+            "name": "IO",
+            "checked": true
+          },
+          {
+            "name": "IO.pure",
+            "checked": true
+          },
+          {
+            "name": "IO.bind",
+            "checked": true
+          },
+          {
+            "name": "IO.die",
+            "checked": true
+          },
+          {
+            "name": "IO.exit",
+            "checked": true
+          },
+          {
+            "name": "IO.pass",
+            "checked": true
+          },
+          {
+            "name": "IO.try",
+            "checked": true
+          },
+          {
+            "name": "IO.fork.go",
+            "checked": true
+          },
+          {
+            "name": "IO.fork",
+            "checked": true
+          },
+          {
+            "name": "IO.join.go",
+            "checked": true
+          },
+          {
+            "name": "IO.join",
+            "checked": true
+          },
+          {
+            "name": "IO.within",
+            "checked": true
+          },
+          {
+            "name": "Equal.cong",
+            "checked": true
+          },
+          {
+            "name": "Equal.sym",
+            "checked": true
+          },
+          {
+            "name": "Equal.trans",
+            "checked": true
+          },
+          {
+            "name": "Empty.absurd",
+            "checked": true
+          },
+          {
+            "name": "Bool.not",
+            "checked": true
+          },
+          {
+            "name": "Bool.and",
+            "checked": true
+          },
+          {
+            "name": "Bool.or",
+            "checked": true
+          },
+          {
+            "name": "Bool.xor",
+            "checked": true
+          },
+          {
+            "name": "Bool.cmp",
+            "checked": true
+          },
+          {
+            "name": "Bool.full_add",
+            "checked": true
+          },
+          {
+            "name": "Bool.pick",
+            "checked": true
+          },
+          {
+            "name": "Bool.to_u32",
+            "checked": true
+          },
+          {
+            "name": "Cmp.is_lt",
+            "checked": true
+          },
+          {
+            "name": "Cmp.is_eq",
+            "checked": true
+          },
+          {
+            "name": "Cmp.is_gt",
+            "checked": true
+          },
+          {
+            "name": "Cmp.is_le",
+            "checked": true
+          },
+          {
+            "name": "Cmp.is_ge",
+            "checked": true
+          },
+          {
+            "name": "Nat.double",
+            "checked": true
+          },
+          {
+            "name": "Nat.add",
+            "checked": true
+          },
+          {
+            "name": "Nat.sub",
+            "checked": true
+          },
+          {
+            "name": "Nat.mul",
+            "checked": true
+          },
+          {
+            "name": "Nat.divmod.go",
+            "checked": true
+          },
+          {
+            "name": "Nat.divmod",
+            "checked": true
+          },
+          {
+            "name": "Nat.cmp",
+            "checked": true
+          },
+          {
+            "name": "Nat.is_lt",
+            "checked": true
+          },
+          {
+            "name": "Nat.is_eq",
+            "checked": true
+          },
+          {
+            "name": "Nat.is_ne",
+            "checked": true
+          },
+          {
+            "name": "Nat.is_le",
+            "checked": true
+          },
+          {
+            "name": "Nat.is_gt",
+            "checked": true
+          },
+          {
+            "name": "Nat.is_ge",
+            "checked": true
+          },
+          {
+            "name": "Nat.min",
+            "checked": true
+          },
+          {
+            "name": "Nat.max",
+            "checked": true
+          },
+          {
+            "name": "Nat.ge_refl",
+            "checked": true
+          },
+          {
+            "name": "Nat.max_ge_l",
+            "checked": true
+          },
+          {
+            "name": "Nat.max_ge_r",
+            "checked": true
+          },
+          {
+            "name": "Nat.div",
+            "checked": true
+          },
+          {
+            "name": "Nat.mod",
+            "checked": true
+          },
+          {
+            "name": "Nat.pow",
+            "checked": true
+          },
+          {
+            "name": "Maybe.pure",
+            "checked": true
+          },
+          {
+            "name": "Maybe.bind",
+            "checked": true
+          },
+          {
+            "name": "Maybe.default",
+            "checked": true
+          },
+          {
+            "name": "Maybe.is_some",
+            "checked": true
+          },
+          {
+            "name": "Maybe.is_none",
+            "checked": true
+          },
+          {
+            "name": "Maybe.map",
+            "checked": true
+          },
+          {
+            "name": "Maybe.or",
+            "checked": true
+          },
+          {
+            "name": "Result.pure",
+            "checked": true
+          },
+          {
+            "name": "Result.bind",
+            "checked": true
+          },
+          {
+            "name": "Result.default",
+            "checked": true
+          },
+          {
+            "name": "Result.is_done",
+            "checked": true
+          },
+          {
+            "name": "Result.is_fail",
+            "checked": true
+          },
+          {
+            "name": "Result.map",
+            "checked": true
+          },
+          {
+            "name": "List.map",
+            "checked": true
+          },
+          {
+            "name": "List.length",
+            "checked": true
+          },
+          {
+            "name": "List.append",
+            "checked": true
+          },
+          {
+            "name": "List.concat",
+            "checked": true
+          },
+          {
+            "name": "List.reverse.go",
+            "checked": true
+          },
+          {
+            "name": "List.reverse",
+            "checked": true
+          },
+          {
+            "name": "List.is_empty",
+            "checked": true
+          },
+          {
+            "name": "List.head",
+            "checked": true
+          },
+          {
+            "name": "List.tail",
+            "checked": true
+          },
+          {
+            "name": "List.last.go",
+            "checked": true
+          },
+          {
+            "name": "List.last",
+            "checked": true
+          },
+          {
+            "name": "List.get",
+            "checked": true
+          },
+          {
+            "name": "List.set",
+            "checked": true
+          },
+          {
+            "name": "List.take",
+            "checked": true
+          },
+          {
+            "name": "List.drop",
+            "checked": true
+          },
+          {
+            "name": "List.zip",
+            "checked": true
+          },
+          {
+            "name": "List.range.go",
+            "checked": true
+          },
+          {
+            "name": "List.range",
+            "checked": true
+          },
+          {
+            "name": "List.replicate",
+            "checked": true
+          },
+          {
+            "name": "List.filter.put",
+            "checked": true
+          },
+          {
+            "name": "List.filter",
+            "checked": true
+          },
+          {
+            "name": "List.foldl",
+            "checked": true
+          },
+          {
+            "name": "List.foldr",
+            "checked": true
+          },
+          {
+            "name": "List.any",
+            "checked": true
+          },
+          {
+            "name": "List.all",
+            "checked": true
+          },
+          {
+            "name": "List.find.put",
+            "checked": true
+          },
+          {
+            "name": "List.find",
+            "checked": true
+          },
+          {
+            "name": "List.contains",
+            "checked": true
+          },
+          {
+            "name": "List.merge.step",
+            "checked": true
+          },
+          {
+            "name": "List.merge.go",
+            "checked": true
+          },
+          {
+            "name": "List.sort.runs",
+            "checked": true
+          },
+          {
+            "name": "List.sort.pass",
+            "checked": true
+          },
+          {
+            "name": "List.sort.go",
+            "checked": true
+          },
+          {
+            "name": "List.sort",
+            "checked": true
+          },
+          {
+            "name": "List.for_each",
+            "checked": true
+          },
+          {
+            "name": "Word.zero",
+            "checked": true
+          },
+          {
+            "name": "Word.not",
+            "checked": true
+          },
+          {
+            "name": "Word.and",
+            "checked": true
+          },
+          {
+            "name": "Word.or",
+            "checked": true
+          },
+          {
+            "name": "Word.xor",
+            "checked": true
+          },
+          {
+            "name": "Word.shl.put",
+            "checked": true
+          },
+          {
+            "name": "Word.shl",
+            "checked": true
+          },
+          {
+            "name": "Word.shl.out.con",
+            "checked": true
+          },
+          {
+            "name": "Word.shl.out",
+            "checked": true
+          },
+          {
+            "name": "Word.shr.pad",
+            "checked": true
+          },
+          {
+            "name": "Word.shr",
+            "checked": true
+          },
+          {
+            "name": "Word.cmp.fin",
+            "checked": true
+          },
+          {
+            "name": "Word.cmp",
+            "checked": true
+          },
+          {
+            "name": "Word.inc",
+            "checked": true
+          },
+          {
+            "name": "Word.adc",
+            "checked": true
+          },
+          {
+            "name": "Word.adc.con",
+            "checked": true
+          },
+          {
+            "name": "Word.add",
+            "checked": true
+          },
+          {
+            "name": "Word.sub",
+            "checked": true
+          },
+          {
+            "name": "Word.add_comm.arm",
+            "checked": true
+          },
+          {
+            "name": "Word.add_comm.go",
+            "checked": true
+          },
+          {
+            "name": "Word.add_comm",
+            "checked": true
+          },
+          {
+            "name": "Word.to_nat",
+            "checked": true
+          },
+          {
+            "name": "Word.mul.go",
+            "checked": true
+          },
+          {
+            "name": "Word.mul",
+            "checked": true
+          },
+          {
+            "name": "U32.inc",
+            "checked": true
+          },
+          {
+            "name": "U32.add",
+            "checked": true
+          },
+          {
+            "name": "U32.add_comm",
+            "checked": true
+          },
+          {
+            "name": "U32.sub",
+            "checked": true
+          },
+          {
+            "name": "U32.mul",
+            "checked": true
+          },
+          {
+            "name": "U32.not",
+            "checked": true
+          },
+          {
+            "name": "U32.and",
+            "checked": true
+          },
+          {
+            "name": "U32.or",
+            "checked": true
+          },
+          {
+            "name": "U32.xor",
+            "checked": true
+          },
+          {
+            "name": "U32.shl",
+            "checked": true
+          },
+          {
+            "name": "U32.shr",
+            "checked": true
+          },
+          {
+            "name": "U32.shln",
+            "checked": true
+          },
+          {
+            "name": "U32.shrn",
+            "checked": true
+          },
+          {
+            "name": "U32.cmp",
+            "checked": true
+          },
+          {
+            "name": "U32.is_eq",
+            "checked": true
+          },
+          {
+            "name": "U32.is_ne",
+            "checked": true
+          },
+          {
+            "name": "U32.is_lt",
+            "checked": true
+          },
+          {
+            "name": "U32.is_le",
+            "checked": true
+          },
+          {
+            "name": "U32.is_gt",
+            "checked": true
+          },
+          {
+            "name": "U32.is_ge",
+            "checked": true
+          },
+          {
+            "name": "U32.is_zero",
+            "checked": true
+          },
+          {
+            "name": "U32.to_nat",
+            "checked": true
+          },
+          {
+            "name": "U32.from_nat",
+            "checked": true
+          },
+          {
+            "name": "U32.log2.go",
+            "checked": true
+          },
+          {
+            "name": "U32.log2",
+            "checked": true
+          },
+          {
+            "name": "U32.divmod.go.fin",
+            "checked": true
+          },
+          {
+            "name": "U32.divmod.go.shl",
+            "checked": true
+          },
+          {
+            "name": "U32.divmod.go.rec",
+            "checked": true
+          },
+          {
+            "name": "U32.divmod.go",
+            "checked": true
+          },
+          {
+            "name": "U32.div.fin",
+            "checked": true
+          },
+          {
+            "name": "U32.div.if",
+            "checked": true
+          },
+          {
+            "name": "U32.div",
+            "checked": true
+          },
+          {
+            "name": "U32.mod.fin",
+            "checked": true
+          },
+          {
+            "name": "U32.mod.if",
+            "checked": true
+          },
+          {
+            "name": "U32.mod",
+            "checked": true
+          },
+          {
+            "name": "U32.min",
+            "checked": true
+          },
+          {
+            "name": "U32.max",
+            "checked": true
+          },
+          {
+            "name": "U32.clamp",
+            "checked": true
+          },
+          {
+            "name": "U32.pow",
+            "checked": true
+          },
+          {
+            "name": "U32.is_even",
+            "checked": true
+          },
+          {
+            "name": "F32.min",
+            "checked": true
+          },
+          {
+            "name": "F32.max",
+            "checked": true
+          },
+          {
+            "name": "F32.clamp",
+            "checked": true
+          },
+          {
+            "name": "F32.lerp",
+            "checked": true
+          },
+          {
+            "name": "F32.square",
+            "checked": true
+          },
+          {
+            "name": "F32.hypot",
+            "checked": true
+          },
+          {
+            "name": "F32.round",
+            "checked": true
+          },
+          {
+            "name": "F32.pi",
+            "checked": true
+          },
+          {
+            "name": "F32.from_nat",
+            "checked": true
+          },
+          {
+            "name": "F32.to_nat",
+            "checked": true
+          },
+          {
+            "name": "Char.cmp",
+            "checked": true
+          },
+          {
+            "name": "Char.to_u32",
+            "checked": true
+          },
+          {
+            "name": "Char.from_u32",
+            "checked": true
+          },
+          {
+            "name": "Char.is_eq",
+            "checked": true
+          },
+          {
+            "name": "Char.is_digit",
+            "checked": true
+          },
+          {
+            "name": "Char.is_upper",
+            "checked": true
+          },
+          {
+            "name": "Char.is_lower",
+            "checked": true
+          },
+          {
+            "name": "Char.is_alpha",
+            "checked": true
+          },
+          {
+            "name": "Char.is_space",
+            "checked": true
+          },
+          {
+            "name": "Char.to_upper",
+            "checked": true
+          },
+          {
+            "name": "Char.to_lower",
+            "checked": true
+          },
+          {
+            "name": "String.append",
+            "checked": true
+          },
+          {
+            "name": "String.cmp.rec",
+            "checked": true
+          },
+          {
+            "name": "String.cmp",
+            "checked": true
+          },
+          {
+            "name": "String.cmp.fin",
+            "checked": true
+          },
+          {
+            "name": "String.eq",
+            "checked": true
+          },
+          {
+            "name": "String.length",
+            "checked": true
+          },
+          {
+            "name": "String.is_empty",
+            "checked": true
+          },
+          {
+            "name": "String.reverse.go",
+            "checked": true
+          },
+          {
+            "name": "String.reverse",
+            "checked": true
+          },
+          {
+            "name": "String.order",
+            "checked": true
+          },
+          {
+            "name": "String.is_lt",
+            "checked": true
+          },
+          {
+            "name": "String.is_le",
+            "checked": true
+          },
+          {
+            "name": "String.is_gt",
+            "checked": true
+          },
+          {
+            "name": "String.is_ge",
+            "checked": true
+          },
+          {
+            "name": "String.starts_with",
+            "checked": true
+          },
+          {
+            "name": "String.starts_with.if",
+            "checked": true
+          },
+          {
+            "name": "String.ends_with",
+            "checked": true
+          },
+          {
+            "name": "String.contains",
+            "checked": true
+          },
+          {
+            "name": "String.contains.if",
+            "checked": true
+          },
+          {
+            "name": "String.take",
+            "checked": true
+          },
+          {
+            "name": "String.drop",
+            "checked": true
+          },
+          {
+            "name": "String.get",
+            "checked": true
+          },
+          {
+            "name": "String.to_list",
+            "checked": true
+          },
+          {
+            "name": "String.from_list",
+            "checked": true
+          },
+          {
+            "name": "String.concat",
+            "checked": true
+          },
+          {
+            "name": "String.join.go",
+            "checked": true
+          },
+          {
+            "name": "String.join",
+            "checked": true
+          },
+          {
+            "name": "String.split.push",
+            "checked": true
+          },
+          {
+            "name": "String.split.fin",
+            "checked": true
+          },
+          {
+            "name": "String.split",
+            "checked": true
+          },
+          {
+            "name": "String.lines",
+            "checked": true
+          },
+          {
+            "name": "String.repeat",
+            "checked": true
+          },
+          {
+            "name": "String.to_upper",
+            "checked": true
+          },
+          {
+            "name": "String.to_lower",
+            "checked": true
+          },
+          {
+            "name": "String.trim_start",
+            "checked": true
+          },
+          {
+            "name": "String.trim_start.if",
+            "checked": true
+          },
+          {
+            "name": "String.trim_end",
+            "checked": true
+          },
+          {
+            "name": "String.trim",
+            "checked": true
+          },
+          {
+            "name": "Nat.show.put",
+            "checked": true
+          },
+          {
+            "name": "Nat.show.go",
+            "checked": true
+          },
+          {
+            "name": "Nat.show.fin",
+            "checked": true
+          },
+          {
+            "name": "Nat.show",
+            "checked": true
+          },
+          {
+            "name": "Nat.read.go",
+            "checked": true
+          },
+          {
+            "name": "Nat.read.if",
+            "checked": true
+          },
+          {
+            "name": "Nat.read.trim",
+            "checked": true
+          },
+          {
+            "name": "Nat.read.fits",
+            "checked": true
+          },
+          {
+            "name": "Nat.read.gate",
+            "checked": true
+          },
+          {
+            "name": "Nat.read",
+            "checked": true
+          },
+          {
+            "name": "U32.show.go",
+            "checked": true
+          },
+          {
+            "name": "U32.show.fin",
+            "checked": true
+          },
+          {
+            "name": "U32.show.if",
+            "checked": true
+          },
+          {
+            "name": "U32.show",
+            "checked": true
+          },
+          {
+            "name": "U32.read.go",
+            "checked": true
+          },
+          {
+            "name": "U32.read.if",
+            "checked": true
+          },
+          {
+            "name": "U32.read",
+            "checked": true
+          },
+          {
+            "name": "Bool.show",
+            "checked": true
+          },
+          {
+            "name": "Char.show",
+            "checked": true
+          },
+          {
+            "name": "Maybe.show",
+            "checked": true
+          },
+          {
+            "name": "List.show.go",
+            "checked": true
+          },
+          {
+            "name": "List.show",
+            "checked": true
+          },
+          {
+            "name": "Array.size.node",
+            "checked": true
+          },
+          {
+            "name": "Array.size",
+            "checked": true
+          },
+          {
+            "name": "Array.swap.lo",
+            "checked": true
+          },
+          {
+            "name": "Array.swap.hi",
+            "checked": true
+          },
+          {
+            "name": "Array.swap.go",
+            "checked": true
+          },
+          {
+            "name": "Array.swap.at",
+            "checked": true
+          },
+          {
+            "name": "Array.swap",
+            "checked": true
+          },
+          {
+            "name": "Array.clone.node",
+            "checked": true
+          },
+          {
+            "name": "Array.clone",
+            "checked": true
+          },
+          {
+            "name": "Array.fork",
+            "checked": true
+          },
+          {
+            "name": "Array.join",
+            "checked": true
+          },
+          {
+            "name": "Array.new",
+            "checked": true
+          },
+          {
+            "name": "Array.set.fin",
+            "checked": true
+          },
+          {
+            "name": "Array.set",
+            "checked": true
+          },
+          {
+            "name": "Array.get.go",
+            "checked": true
+          },
+          {
+            "name": "Array.get.at",
+            "checked": true
+          },
+          {
+            "name": "Array.get",
+            "checked": true
+          },
+          {
+            "name": "Array.to_list.go",
+            "checked": true
+          },
+          {
+            "name": "Array.to_list",
+            "checked": true
+          },
+          {
+            "name": "Array.map.go",
+            "checked": true
+          },
+          {
+            "name": "Array.map.at",
+            "checked": true
+          },
+          {
+            "name": "Array.map.seed",
+            "checked": true
+          },
+          {
+            "name": "Array.map",
+            "checked": true
+          },
+          {
+            "name": "Map.bit.u",
+            "checked": true
+          },
+          {
+            "name": "Map.bit.chr",
+            "checked": true
+          },
+          {
+            "name": "Map.bit.go.chr",
+            "checked": true
+          },
+          {
+            "name": "Map.bit.go.rec",
+            "checked": true
+          },
+          {
+            "name": "Map.bit.go",
+            "checked": true
+          },
+          {
+            "name": "Map.bit.at",
+            "checked": true
+          },
+          {
+            "name": "Map.bit",
+            "checked": true
+          },
+          {
+            "name": "Map.msb.u",
+            "checked": true
+          },
+          {
+            "name": "Map.msb.u.if",
+            "checked": true
+          },
+          {
+            "name": "Map.diff.chr",
+            "checked": true
+          },
+          {
+            "name": "Map.diff.step",
+            "checked": true
+          },
+          {
+            "name": "Map.diff",
+            "checked": true
+          },
+          {
+            "name": "Map.diff.fin",
+            "checked": true
+          },
+          {
+            "name": "Map.new",
+            "checked": true
+          },
+          {
+            "name": "Map.put.go",
+            "checked": true
+          },
+          {
+            "name": "Map.put",
+            "checked": true
+          },
+          {
+            "name": "Map.ins.splice.bit",
+            "checked": true
+          },
+          {
+            "name": "Map.ins.splice",
+            "checked": true
+          },
+          {
+            "name": "Map.ins.go",
+            "checked": true
+          },
+          {
+            "name": "Map.ins",
+            "checked": true
+          },
+          {
+            "name": "Map.lo",
+            "checked": true
+          },
+          {
+            "name": "Map.hi",
+            "checked": true
+          },
+          {
+            "name": "Map.seek.go",
+            "checked": true
+          },
+          {
+            "name": "Map.seek",
+            "checked": true
+          },
+          {
+            "name": "Map.set.fin.go",
+            "checked": true
+          },
+          {
+            "name": "Map.set.fin",
+            "checked": true
+          },
+          {
+            "name": "Map.set.go",
+            "checked": true
+          },
+          {
+            "name": "Map.set",
+            "checked": true
+          },
+          {
+            "name": "Map.has.leaf",
+            "checked": true
+          },
+          {
+            "name": "Map.has.go",
+            "checked": true
+          },
+          {
+            "name": "Map.has",
+            "checked": true
+          },
+          {
+            "name": "Map.get.leaf",
+            "checked": true
+          },
+          {
+            "name": "Map.get.go",
+            "checked": true
+          },
+          {
+            "name": "Map.get",
+            "checked": true
+          },
+          {
+            "name": "Map.pop.lo",
+            "checked": true
+          },
+          {
+            "name": "Map.pop.hi",
+            "checked": true
+          },
+          {
+            "name": "Map.pop.leaf",
+            "checked": true
+          },
+          {
+            "name": "Map.pop.go",
+            "checked": true
+          },
+          {
+            "name": "Map.pop",
+            "checked": true
+          },
+          {
+            "name": "Map.del.fin",
+            "checked": true
+          },
+          {
+            "name": "Map.del",
+            "checked": true
+          },
+          {
+            "name": "Map.to_list.go",
+            "checked": true
+          },
+          {
+            "name": "Map.to_list",
+            "checked": true
+          },
+          {
+            "name": "Map.keys.go",
+            "checked": true
+          },
+          {
+            "name": "Map.keys",
+            "checked": true
+          },
+          {
+            "name": "Map.from_list.go",
+            "checked": true
+          },
+          {
+            "name": "Map.from_list",
+            "checked": true
+          },
+          {
+            "name": "Map.union",
+            "checked": true
+          },
+          {
+            "name": "Map.size",
+            "checked": true
+          },
+          {
+            "name": "Map.values.go",
+            "checked": true
+          },
+          {
+            "name": "Map.values",
+            "checked": true
+          },
+          {
+            "name": "Set",
+            "checked": true
+          },
+          {
+            "name": "Set.new",
+            "checked": true
+          },
+          {
+            "name": "Set.add",
+            "checked": true
+          },
+          {
+            "name": "Set.has",
+            "checked": true
+          },
+          {
+            "name": "Set.del",
+            "checked": true
+          },
+          {
+            "name": "Set.size",
+            "checked": true
+          },
+          {
+            "name": "Set.to_list",
+            "checked": true
+          },
+          {
+            "name": "Set.from_list.go",
+            "checked": true
+          },
+          {
+            "name": "Set.from_list",
+            "checked": true
+          },
+          {
+            "name": "Image.sink",
+            "checked": true
+          },
+          {
+            "name": "Image.drop.join",
+            "checked": true
+          },
+          {
+            "name": "Image.free",
+            "checked": true
+          },
+          {
+            "name": "Image.drop",
+            "checked": true
+          },
+          {
+            "name": "App.next",
+            "checked": true
+          },
+          {
+            "name": "App.turn",
+            "checked": true
+          },
+          {
+            "name": "App.draw",
+            "checked": true
+          },
+          {
+            "name": "App.step",
+            "checked": true
+          },
+          {
+            "name": "App.loop",
+            "checked": true
+          },
+          {
+            "name": "App.run",
+            "checked": true
+          },
+          {
+            "name": "App.more",
+            "checked": true
+          },
+          {
+            "name": "App.fold",
+            "checked": true
+          },
+          {
+            "name": "App.play",
+            "checked": true
+          },
+          {
+            "name": "js_escape_char",
+            "checked": true
+          },
+          {
+            "name": "js_quote_chars",
+            "checked": true
+          },
+          {
+            "name": "js_quote",
+            "checked": true
+          }
+        ],
+        "checkMs": 450.59462499999995,
+        "emittedSha256": "c4441168b8ed5c5e3ba1fb4862ae6a4930ec1ca5fe82724cd185409dc5c0ce1f",
+        "emittedBytes": 9408,
+        "status": "PASS",
+        "retainedBytes": 14078
+      },
+      "source": {
+        "sha256": "33841887514ac9a213652407ac8b68f393344a77c5274e1e0918740ce44561b2",
+        "content": "import Base\n\ndef js_escape_char(char: Char) -> String:\n  match char:\n    case '\\\"': \"\\\\\\\"\"\n    case '\\\\': \"\\\\\\\\\"\n    case '\\n': \"\\\\n\"\n    case '\\r': \"\\\\r\"\n    case '\\t': \"\\\\t\"\n    case '\\u{0}': \"\\\\u0000\"\n    case _: String.from_list([char])\n\ndef js_quote_chars(chars: List<&2, Char>, acc: String) -> String:\n  match chars:\n    case Nil{}: String.append(acc, \"\\\"\")\n    case +char <> rest:\n      escaped = js_escape_char(char)\n      js_quote_chars(rest, String.append(acc, escaped))\n\ndef js_quote(text: String) -> String:\n  js_quote_chars(String.to_list(text), \"\\\"\")\n"
+      },
+      "driver": {
+        "sha256": "185a6a4263659ef2504d8d97133d612b5bef5e29e2596278dcea405e03b6c731",
+        "content": "import {createHash} from 'node:crypto';\nimport {readFileSync,writeFileSync,statSync,readdirSync} from 'node:fs';\nimport {dirname,join} from 'node:path';\nimport {fileURLToPath} from 'node:url';\nconst root='/Users/ilyagulya/Projects/My/bend';\nconst dir=dirname(fileURLToPath(import.meta.url));\nconst hash=(x:string|Uint8Array)=>createHash('sha256').update(x).digest('hex');\nconst pin='6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e';\nconst report:any={kind:'direct-style-quote-island',kernelSha256:hash(readFileSync(root+'/bend2/bend.ts')),sourceSha256:hash(readFileSync(join(dir,'quote.bend'))),driverSha256:hash(readFileSync(fileURLToPath(import.meta.url))),compilerSha256:hash(readFileSync(root+'/bend2/comp.ts')),baseSha256:hash(readFileSync(root+'/bend2/base.bend')),limits:{memoryMiB:2048,rssMiB:2048,timeoutMs:300000},patches:0,unsafe:false,semanticRows:[]};\nlet K:any;let phase='kernel-pin';\ntry {\n if(report.kernelSha256!==pin)throw Error('kernel pin mismatch');\n K=await import(root+'/bend2/bend.ts');\n // Dynamic loading preserves the experiment's pre-execution kernel hash boundary.\n const C=await import(root+'/bend2/comp.ts');\n phase='load';const book=K.book_nil();const seen=new Map();\n await K.book_load(book,join(dir,'quote.bend'),'',seen);\n report.modules=[...seen].map(([path,namespace])=>({path,namespace,sha256:hash(readFileSync(path))}));\n phase='book_valid';const t=performance.now();K.book_valid(book);\n report.holes=book.hols;\n report.checkedBodies=Object.entries(book.tlds).filter(([,d]:any)=>d.$==='Def'&&d.v!==null).map(([name,d]:any)=>({name,checked:d.e!==undefined}));\n if(book.hols||report.checkedBodies.some((d:any)=>!d.checked))throw Error('Unchecked body or hole');\n report.checkMs=performance.now()-t;\n phase='emit';const image=C.js_lib(book,true,{exports:['js_quote','js_quote_chars','js_escape_char']});\n writeFileSync(join(dir,'quote.mjs'),image,{flag:'wx'});report.emittedSha256=hash(image);report.emittedBytes=Buffer.byteLength(image);\n phase='semantic-smoke';const api=(await import(join(dir,'quote.mjs'))).default;\n const short:[string,string,string][]=[\n  ['empty','','\"\"'],['ascii','hello','\"hello\"'],\n  ['six-escapes','\"\\\\\\n\\r\\t\\0','\"\\\\\"\\\\\\\\\\\\n\\\\r\\\\t\\\\u0000\"'],\n  ['unchanged-controls','\\x01\\b\\v\\f\\x1f\\x7f','\"\\x01\\b\\v\\f\\x1f\\x7f\"'],\n  ['bmp','é漢\\u2028\\u2029','\"é漢\\u2028\\u2029\"'],\n  ['non-bmp','😀𝄞\\u{10ffff}','\"😀𝄞\\u{10ffff}\"'],\n  ['mixed','a😀\\n\"\\\\\\0z','\"a😀\\\\n\\\\\"\\\\\\\\\\\\u0000z\"']\n ];\n const summarize=(s:string)=>s.length<=256?{text:s}:{utf16Length:s.length,codepoints:[...s].length,sha256:hash(s)};\n function smoke(name:string,input:string,expected:string){\n  const row:any={name,input:summarize(input),expected:summarize(expected)};const t=performance.now();\n  try{const observed=api.js_quote(input);row.observed=summarize(observed);row.equal=observed===expected;}\n  catch(error){row.equal=false;row.error=String(error);row.stack=error instanceof Error?error.stack:undefined;}\n  row.elapsedMs=performance.now()-t;report.semanticRows.push(row);\n }\n for(const row of short)smoke(...row);\n for(const n of [1000,10000,100000]){\n  smoke('long-ascii-'+n,'a'.repeat(n),'\"'+'a'.repeat(n)+'\"');\n  smoke('long-escape-nonbmp-'+n,'😀\\n'.repeat(n),'\"'+'😀\\\\n'.repeat(n)+'\"');\n }\n report.status=report.semanticRows.every((r:any)=>r.equal)?'PASS':'SEMANTIC_OR_STACK_LIMIT';\n}catch(error){report.status='FAIL';report.failure={phase,diagnostic:K&&error&&typeof error==='object'&&'$'in error&&error.$==='Err'?K.err_show(error):String(error)};}\nreport.retainedBytes=readdirSync(dir).reduce((s,n)=>s+statSync(join(dir,n)).size,0);\nwriteFileSync(join(dir,'receipt.json'),JSON.stringify(report,null,2)+'\\n',{flag:'wx'});\nconsole.log(JSON.stringify({status:report.status,phase,sourceSha256:report.sourceSha256,checkedBodies:report.checkedBodies?.length,holes:report.holes,checkMs:report.checkMs,emittedSha256:report.emittedSha256,rows:report.semanticRows.map((r:any)=>({name:r.name,equal:r.equal,error:r.error,elapsedMs:r.elapsedMs})),failure:report.failure,receipt:join(dir,'receipt.json')}));\nif(report.status!=='PASS')process.exitCode=1;\n"
+      },
+      "scope": "Isolated kernel-bodycheck/emittedsmoke only, noproductionintegrationorspeedclaim"
+    },
+    "recordElision": {
+      "status": "READ_ONLY_DESIGN_CORRECTED_AFTER_CHALLENGE",
+      "constraint": "Source.resulthelperinliningILLEGAL underbothkernel/selfhostlocal/computedmatchrules; musthappenAFTERfrontendchecking inbackendIR.",
+      "candidate": "Bindactuals onceinorder; splicesingle-armnativeCtor/intrinsictupleproducer; preserveindexevaluation/traps; etaonlySAMEknownconstructortag/alllivefieldprojections/nonvacuum. No mutation. Interopidentity/accessorassumptionsneedexplicitboundary.",
+      "notImplemented": true
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "status": "MEASURED_SLOWDOWN_WITH_MIDDLE_RUN_LOAD_CONFOUND",
+  "pairedReceipt": "paired52-diagnostic.json",
+  "pairedReceiptSha256": "9e5f293b7918e41ff4b01de316c7812ace7c8150cc9ac2ba64caaf84e3952ac5",
+  "normalOrder": ["49", "52", "52", "49"],
+  "normalCompileMs": [102428.802555, 121564.169936, 121563.934612, 104146.392389],
+  "normalCheckWallMs": [80338.649804, 95251.580003, 98259.767147, 82208.098092],
+  "hostOneMinuteLoadBeforeAfter": [[1.30, 1.94], [1.28, 7.60], [7.60, 3.91], [3.91, 2.57]],
+  "observed52MeanCompileIncreasePercent": 17.694723518914767,
+  "observed52MeanCheckIncreasePercent": 19.04965780909482,
+  "causalConclusion": "Indeterminate: the two middle52 runs overlap a substantial host-load spike. This series establishes observed slower timings, not isolated intrinsic compiler regression. Stable49 endpoints do not exclude middle-run contention/frequency effects. No normal speedup established.",
+  "profile52": {
+    "outsideNormalControls": true,
+    "instrumentedCompileMs": 101694.089778,
+    "instrumentedCheckWallMs": 79730.139966,
+    "hostOneMinuteLoadBeforeAfter": [2.57, 2.92],
+    "notNormalSpeedEvidence": true
+  },
+  "allocation": {
+    "scope": "Separate single-profile statistical point estimates, not normal timings",
+    "check49EstimatedBytes": 172138113888,
+    "check52EstimatedBytes": 147078030184,
+    "estimatedReductionPercent": 14.558126110470281,
+    "notExactBytesOrObjectCounts": true
+  },
+  "limits": [
+    "Host load averages are not per-core utilization or causal attribution; timing/frequency snapshots do not isolate competing work.",
+    "Normal per-phase whole-process CPU also increased; this does not itself eliminate frequency, JIT/GC, or host interference explanations.",
+    "cpu.max was unavailable at each owned scope path. No inference about inherited CPU quota is made.",
+    "No extra benchmark/profile/build was launched after discovering this qualification."
+  ],
+  "sourceRecords": [
+    "series52-49-before.environment-before.json",
+    "series52-49-before.environment-after.json",
+    "series52-52-first.environment-before.json",
+    "series52-52-first.environment-after.json",
+    "series52-52-second.environment-before.json",
+    "series52-52-second.environment-after.json",
+    "series52-49-after.environment-before.json",
+    "series52-49-after.environment-after.json",
+    "profiling-quality52-environment-before.json",
+    "profiling-quality52-environment-after.json"
+  ]
+}

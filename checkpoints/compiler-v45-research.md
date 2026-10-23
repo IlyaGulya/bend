@@ -252,3 +252,59 @@ type fallback can change acceptance. Treat this as an atomic differential
 migration, separate from closure/environment normalization. No such rewrite has
 been implemented or advertised as accepted.
 
+
+## Compiler52: measured read-path target, full new fixedpoint
+
+Exact retained49 heap-tree ancestry, summing each node's selfSize once, narrows
+the broad Map claim: Map.get.go/Map.lo/Map.hi total28781971216 estimated bytes;
+26550528752 are definitely name reads (15.424% whole-check allocation estimate),
+not writes.121640400 bytes of seek remain unresolved. Full raw ancestry and
+reproducible partition source are preserved in compiler-name-read-v52.json and
+compiler-name-map-partition49.json. These are estimates, not CPU or promised
+removable-byte totals.
+
+Source52 first restores49 algorithms, then retains the name_ids root across
+IndexLookup.find instead of Map.get's reconstructed map. Some{MAX} still takes
+the historical missing branch; ID0 is valid. The new native regression exercises
+empty/prefix/non-BMP keys, repeat hits without count growth, discarded-name
+removal and ID reuse after rewind, and the maximum-ID marker.
+
+Fresh canonical native root8173/8173 bodies8511events, parser75 and library16
+pass. Real273/273 fixture executions and byte fixedpoint pass. Stage-one
+75633.414ms; stage-two90268.889ms/check57448.326ms; guardian366678ms, physical
+2490795592/RSS3799187456 bytes under8GiB/600s. Bytes18341638, SHA958ff8b8dd80d2c3cbfb36edb4e76bcc87ab7ee73b8be7942fc7fbcf5e7b47bd.
+Native seed63827.886ms/check45596.202ms on frozen50/15/7720 is not an actual
+emitted-runtime comparison. Both actual-image normal series now pass. LinuxABBA
+observes52+17.695% compile time; MacBAAB observes52-13.576%. Both have severe
+run-correlated load changes; opposite signs are not a stable cross-host speed
+result. Keep49 as conservative selected baseline, retain52 as a correct measured
+allocation improvement, and stop repeating these uncontrolled timing loops.
+
+The independent quote island experiment shows the exact three existing quote
+helpers need no CPS: official kernel checks all348 loaded bodies and unpatched
+native JS passes13 exact cases through200000codepoints. This is a subset proof,
+not production integration or a compiler speedup. Growing-prefix String.append
+and codepoint wrapper allocation remain; do not claim linear source work.
+
+Separate cumulative check allocation estimate decreases172138113888→147078030184
+bytes (-14.558%); strict name-read reconstruction sites26550528752→0, replacement
+find-with-name ancestor4009781272. No object-count/live-memory/CPU claim. CPU
+profiles at different times are instrumented and cannot override normal runs.
+The String.eq-slow-Unicode hypothesis is explicitly rejected: both actual images
+use byte-identical native===; find.position adds a real dispatch but its isolated
+normal-time effect remains unmeasured.
+
+The record-elision scout's initial source-inlining proposal was also rejected.
+Both kernel and selfhost forbid matching computed/local binders. Any single-arm
+splice must happen AFTER frontend checking, bind actual arguments once in order,
+preserve intrinsic index evaluation/traps, and eta-collapse only an established
+same constructor with all live field projections and a non-vacuous shape.
+No blanket JS-host identity/getter/proxy guarantee follows from Bend extensional
+equality; those assumptions must be explicit. No such backend pass is implemented.
+
+Historical identical-corpus official Mac phase times explain prioritization:
+load/parse/expand1094.375ms, check993.196ms, emit7947.939ms, total10099.880ms.
+The check gap demands coarse native execution rather than continuing to optimize
+quoting alone. A bounded operational chunk must preserve the independent64WHNF
+semantic fuel and yield without rejecting work; typed affine result/continuation
+transport must be proved, not replaced by host checker logic or unsafe casts.

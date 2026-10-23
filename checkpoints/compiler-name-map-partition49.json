@@ -1,0 +1,1807 @@
+{
+  "status": "READ_ONLY_RETAINED_PROFILE_PARTITION_COMPLETE",
+  "analysisSource": "analyze49-name-map.mjs",
+  "analysisSourceSha256": "daff5d7dd5b371471ded921d07bf0f972e960f55e0f15324869fd8771eb9e1bb",
+  "command": "node analyze49-name-map.mjs",
+  "input": {
+    "profile": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/profiling-quality49/selfhost-1220597-thread-1-ImoXA5/000004-check.heapprofile",
+    "sha256": "c6908f562c4b5bb153cfba4661cc9935b63188a25237e845dc4b998708a9d22f",
+    "bytes": 8576405,
+    "compilerSha256": "28061d5eab72b2a0bc560c6963b8f22cd863d7572f102cb627d483606f412e81",
+    "phase": "check",
+    "allocationSamplingIntervalBytes": 4194304,
+    "collectedMinorAndMajorIncluded": true
+  },
+  "method": [
+    "Decode actual generated names using the existing $u$/numeric-escape convention. Require the pinned stage-one49.js URL. Select only allocation nodes whose own frame is exactly Map.get.go, Map.lo, or Map.hi.",
+    "Traverse every raw heap tree node once, assert unique node IDs, and add each selected node selfSize exactly once. Never sum inclusive subtrees or charge an ancestor a second time. Recursive Map.get.go frames do not duplicate their descendant allocation weights.",
+    "Use the ENTIRE raw ancestor chain, not the previous14-frame summary. Find nearest visible non-Map generated compiler frame; inspect Map operation frames between allocation node and that owner.",
+    "Definite name-read requires nearest owner exactly checker_arena.name plus a visible Map.get-family frame/current site and no write-family frame. Other get paths are separated. Explicit set/put/ins/del/rem frames identify other writes.",
+    "A seek path with nearest owner checker_arena.name.insert is a source-confirmed write (actual49line12121 calls Map.set). Seek paths lacking a visible write marker or that exact source owner remain unresolved; no fabricated read/write ownership.",
+    "samples.size weights are separately summed by nodeId. Tree selfSize and sample-size sums are retained independently; neither is an exact allocation counter."
+  ],
+  "totals": {
+    "wholeCheckEstimatedSelfBytes": 172138113888,
+    "wholeCheckSampleRecordEstimatedBytes": 172138849784,
+    "wholeCheckSampleRecords": 41021,
+    "visitedTreeNodes": 25781,
+    "maxRecordedStackDepth": 128,
+    "selectedEstimatedSelfBytes": 28781971216,
+    "selectedSampleRecordEstimatedBytes": 28782362728,
+    "selectedSampleRecords": 6862,
+    "selectedPercentOfWholeCheck": 16.720278017410315
+  },
+  "byAllocationSite": {
+    "Map.lo": {
+      "estimatedSelfBytes": 9299047752,
+      "sampleRecordEstimatedBytes": 9299215368,
+      "sampleRecords": 2217,
+      "treeNodes": 770,
+      "positiveSelfTreeNodes": 770
+    },
+    "Map.hi": {
+      "estimatedSelfBytes": 11186531136,
+      "sampleRecordEstimatedBytes": 11186742168,
+      "sampleRecords": 2667,
+      "treeNodes": 773,
+      "positiveSelfTreeNodes": 773
+    },
+    "Map.get.go": {
+      "estimatedSelfBytes": 8296392328,
+      "sampleRecordEstimatedBytes": 8296405192,
+      "sampleRecords": 1978,
+      "treeNodes": 2042,
+      "positiveSelfTreeNodes": 613
+    }
+  },
+  "partitions": [
+    {
+      "category": "definite_name_read",
+      "estimatedSelfBytes": 26550528752,
+      "sampleRecordEstimatedBytes": 26550890512,
+      "sampleRecords": 6330,
+      "treeNodes": 3257,
+      "positiveSelfTreeNodes": 1857,
+      "sites": {
+        "Map.get.go": {
+          "estimatedSelfBytes": 8195728304,
+          "sampleRecordEstimatedBytes": 8195741008,
+          "sampleRecords": 1954,
+          "treeNodes": 2004,
+          "positiveSelfTreeNodes": 604
+        },
+        "Map.hi": {
+          "estimatedSelfBytes": 10179864432,
+          "sampleRecordEstimatedBytes": 10180061208,
+          "sampleRecords": 2427,
+          "treeNodes": 637,
+          "positiveSelfTreeNodes": 637
+        },
+        "Map.lo": {
+          "estimatedSelfBytes": 8174936016,
+          "sampleRecordEstimatedBytes": 8175088296,
+          "sampleRecords": 1949,
+          "treeNodes": 616,
+          "positiveSelfTreeNodes": 616
+        }
+      },
+      "percentOfSelected": 92.24708256688294,
+      "percentOfWholeCheck": 15.423968668132872,
+      "topFullStackExamples": [
+        {
+          "estimatedSelfBytes": 268442424,
+          "sampleRecords": 64,
+          "allocationSite": "Map.hi",
+          "nearestVisibleNonMapNativeOwner": "../bend2/selfhost/checker_arena.name",
+          "stack": [
+            {
+              "name": "Map.hi",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6945,
+              "nodeId": 3326
+            },
+            {
+              "name": "Map.get.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 7014,
+              "nodeId": 3246
+            },
+            {
+              "name": "../bend2/selfhost/checker_arena.name",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 12138,
+              "nodeId": 3245
+            },
+            {
+              "name": "checker_core_steps_v1.checker_match_3142",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 33187,
+              "nodeId": 2824
+            },
+            {
+              "name": "checker_core_steps_v1.checker_body_arena_names_cons",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 33194,
+              "nodeId": 2823
+            },
+            {
+              "name": "run_named3",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 58,
+              "nodeId": 129
+            },
+            {
+              "name": "checker_core_steps_v1.checker_step_group_13",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 39060,
+              "nodeId": 128
+            },
+            {
+              "name": "checker_core_steps_v1.checker_step",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 40004,
+              "nodeId": 9
+            },
+            {
+              "name": "checker_step",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 54343,
+              "nodeId": 8
+            },
+            {
+              "name": "runSteps",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+              "line": 20,
+              "nodeId": 7
+            },
+            {
+              "name": "runCheckerSteps",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+              "line": 100,
+              "nodeId": 6
+            },
+            {
+              "name": "(anonymous)",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 111,
+              "nodeId": 5
+            },
+            {
+              "name": "phase",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 82,
+              "nodeId": 4
+            },
+            {
+              "name": "worker",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 73,
+              "nodeId": 3
+            },
+            {
+              "name": "(anonymous)",
+              "url": "",
+              "line": 0,
+              "nodeId": 2
+            },
+            {
+              "name": "(root)",
+              "url": "",
+              "line": 0,
+              "nodeId": 1
+            }
+          ]
+        },
+        {
+          "estimatedSelfBytes": 239081544,
+          "sampleRecords": 57,
+          "allocationSite": "Map.hi",
+          "nearestVisibleNonMapNativeOwner": "../bend2/selfhost/checker_arena.name",
+          "stack": [
+            {
+              "name": "Map.hi",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6945,
+              "nodeId": 5000
+            },
+            {
+              "name": "Map.get.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 7014,
+              "nodeId": 3247
+            },
+            {
+              "name": "Map.get.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 7014,
+              "nodeId": 3246
+            },
+            {
+              "name": "../bend2/selfhost/checker_arena.name",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 12138,
+              "nodeId": 3245
+            },
+            {
+              "name": "checker_core_steps_v1.checker_match_3142",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 33187,
+              "nodeId": 2824
+            },
+            {
+              "name": "checker_core_steps_v1.checker_body_arena_names_cons",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 33194,
+              "nodeId": 2823
+            },
+            {
+              "name": "run_named3",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 58,
+              "nodeId": 129
+            },
+            {
+              "name": "checker_core_steps_v1.checker_step_group_13",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 39060,
+              "nodeId": 128
+            },
+            {
+              "name": "checker_core_steps_v1.checker_step",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 40004,
+              "nodeId": 9
+            },
+            {
+              "name": "checker_step",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 54343,
+              "nodeId": 8
+            },
+            {
+              "name": "runSteps",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+              "line": 20,
+              "nodeId": 7
+            },
+            {
+              "name": "runCheckerSteps",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+              "line": 100,
+              "nodeId": 6
+            },
+            {
+              "name": "(anonymous)",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 111,
+              "nodeId": 5
+            },
+            {
+              "name": "phase",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 82,
+              "nodeId": 4
+            },
+            {
+              "name": "worker",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 73,
+              "nodeId": 3
+            },
+            {
+              "name": "(anonymous)",
+              "url": "",
+              "line": 0,
+              "nodeId": 2
+            },
+            {
+              "name": "(root)",
+              "url": "",
+              "line": 0,
+              "nodeId": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "category": "other_explicit_map_write",
+      "estimatedSelfBytes": 1547748648,
+      "sampleRecordEstimatedBytes": 1547771976,
+      "sampleRecords": 369,
+      "treeNodes": 196,
+      "positiveSelfTreeNodes": 196,
+      "sites": {
+        "Map.hi": {
+          "estimatedSelfBytes": 746610048,
+          "sampleRecordEstimatedBytes": 746621712,
+          "sampleRecords": 178,
+          "treeNodes": 94,
+          "positiveSelfTreeNodes": 94
+        },
+        "Map.lo": {
+          "estimatedSelfBytes": 801138600,
+          "sampleRecordEstimatedBytes": 801150264,
+          "sampleRecords": 191,
+          "treeNodes": 102,
+          "positiveSelfTreeNodes": 102
+        }
+      },
+      "percentOfSelected": 5.377493557979799,
+      "percentOfWholeCheck": 0.8991318732625523,
+      "topFullStackExamples": [
+        {
+          "estimatedSelfBytes": 37749672,
+          "sampleRecords": 9,
+          "allocationSite": "Map.hi",
+          "nearestVisibleNonMapNativeOwner": "checker_core_steps_v1.checker_continuation_189",
+          "stack": [
+            {
+              "name": "Map.hi",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6945,
+              "nodeId": 3950
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 3925
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 3924
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 3923
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 3922
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 3921
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 3920
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 3919
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 3918
+            },
+            {
+              "name": "Map.set",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6984,
+              "nodeId": 3917
+            },
+            {
+              "name": "checker_core_steps_v1.checker_continuation_189",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 14062,
+              "nodeId": 3916
+            },
+            {
+              "name": "(anonymous)",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 14073,
+              "nodeId": 2987
+            },
+            {
+              "name": "runSteps",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+              "line": 20,
+              "nodeId": 7
+            },
+            {
+              "name": "runCheckerSteps",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+              "line": 100,
+              "nodeId": 6
+            },
+            {
+              "name": "(anonymous)",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 111,
+              "nodeId": 5
+            },
+            {
+              "name": "phase",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 82,
+              "nodeId": 4
+            },
+            {
+              "name": "worker",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 73,
+              "nodeId": 3
+            },
+            {
+              "name": "(anonymous)",
+              "url": "",
+              "line": 0,
+              "nodeId": 2
+            },
+            {
+              "name": "(root)",
+              "url": "",
+              "line": 0,
+              "nodeId": 1
+            }
+          ]
+        },
+        {
+          "estimatedSelfBytes": 33555384,
+          "sampleRecords": 8,
+          "allocationSite": "Map.lo",
+          "nearestVisibleNonMapNativeOwner": "../bend2/selfhost/checker_arena.case_prefix_first.missing",
+          "stack": [
+            {
+              "name": "Map.lo",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6942,
+              "nodeId": 17678
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 10802
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 10801
+            },
+            {
+              "name": "Map.set",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6984,
+              "nodeId": 10471
+            },
+            {
+              "name": "../bend2/selfhost/checker_arena.case_prefix_first.missing",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 12606,
+              "nodeId": 10470
+            },
+            {
+              "name": "../bend2/selfhost/checker_arena.case_prefix_first.result",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 12611,
+              "nodeId": 10469
+            },
+            {
+              "name": "checker_core_steps_v1.checker_match_3077",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 32553,
+              "nodeId": 10465
+            },
+            {
+              "name": "checker_core_steps_v1.checker_match_3078",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 32560,
+              "nodeId": 9117
+            },
+            {
+              "name": "checker_core_steps_v1.checker_match_3079",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 32566,
+              "nodeId": 9108
+            },
+            {
+              "name": "checker_core_steps_v1.checker_body_arena_case_prefix_local_build_head",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 32572,
+              "nodeId": 9107
+            },
+            {
+              "name": "(anonymous)",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 32576,
+              "nodeId": 8538
+            },
+            {
+              "name": "runSteps",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+              "line": 20,
+              "nodeId": 7
+            },
+            {
+              "name": "runCheckerSteps",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+              "line": 100,
+              "nodeId": 6
+            },
+            {
+              "name": "(anonymous)",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 111,
+              "nodeId": 5
+            },
+            {
+              "name": "phase",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 82,
+              "nodeId": 4
+            },
+            {
+              "name": "worker",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 73,
+              "nodeId": 3
+            },
+            {
+              "name": "(anonymous)",
+              "url": "",
+              "line": 0,
+              "nodeId": 2
+            },
+            {
+              "name": "(root)",
+              "url": "",
+              "line": 0,
+              "nodeId": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "category": "other_get_read_visible_owner",
+      "estimatedSelfBytes": 394273904,
+      "sampleRecordEstimatedBytes": 394279464,
+      "sampleRecords": 94,
+      "treeNodes": 68,
+      "positiveSelfTreeNodes": 39,
+      "sites": {
+        "Map.get.go": {
+          "estimatedSelfBytes": 100664024,
+          "sampleRecordEstimatedBytes": 100664184,
+          "sampleRecords": 24,
+          "treeNodes": 38,
+          "positiveSelfTreeNodes": 9
+        },
+        "Map.lo": {
+          "estimatedSelfBytes": 167776920,
+          "sampleRecordEstimatedBytes": 167780160,
+          "sampleRecords": 40,
+          "treeNodes": 17,
+          "positiveSelfTreeNodes": 17
+        },
+        "Map.hi": {
+          "estimatedSelfBytes": 125832960,
+          "sampleRecordEstimatedBytes": 125835120,
+          "sampleRecords": 30,
+          "treeNodes": 13,
+          "positiveSelfTreeNodes": 13
+        }
+      },
+      "percentOfSelected": 1.3698641453050364,
+      "percentOfWholeCheck": 0.22904509355582373,
+      "topFullStackExamples": [
+        {
+          "estimatedSelfBytes": 33555384,
+          "sampleRecords": 8,
+          "allocationSite": "Map.lo",
+          "nearestVisibleNonMapNativeOwner": "checker_core_steps_v1.checker_match_3077",
+          "stack": [
+            {
+              "name": "Map.lo",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6942,
+              "nodeId": 12020
+            },
+            {
+              "name": "Map.get.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 7014,
+              "nodeId": 10653
+            },
+            {
+              "name": "Map.get.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 7014,
+              "nodeId": 10467
+            },
+            {
+              "name": "Map.get",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 7025,
+              "nodeId": 10466
+            },
+            {
+              "name": "checker_core_steps_v1.checker_match_3077",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 32553,
+              "nodeId": 10465
+            },
+            {
+              "name": "checker_core_steps_v1.checker_match_3078",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 32560,
+              "nodeId": 9117
+            },
+            {
+              "name": "checker_core_steps_v1.checker_match_3079",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 32566,
+              "nodeId": 9108
+            },
+            {
+              "name": "checker_core_steps_v1.checker_body_arena_case_prefix_local_build_head",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 32572,
+              "nodeId": 9107
+            },
+            {
+              "name": "(anonymous)",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 32576,
+              "nodeId": 8538
+            },
+            {
+              "name": "runSteps",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+              "line": 20,
+              "nodeId": 7
+            },
+            {
+              "name": "runCheckerSteps",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+              "line": 100,
+              "nodeId": 6
+            },
+            {
+              "name": "(anonymous)",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 111,
+              "nodeId": 5
+            },
+            {
+              "name": "phase",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 82,
+              "nodeId": 4
+            },
+            {
+              "name": "worker",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 73,
+              "nodeId": 3
+            },
+            {
+              "name": "(anonymous)",
+              "url": "",
+              "line": 0,
+              "nodeId": 2
+            },
+            {
+              "name": "(root)",
+              "url": "",
+              "line": 0,
+              "nodeId": 1
+            }
+          ]
+        },
+        {
+          "estimatedSelfBytes": 29360880,
+          "sampleRecords": 7,
+          "allocationSite": "Map.hi",
+          "nearestVisibleNonMapNativeOwner": "checker_core_steps_v1.checker_match_3077",
+          "stack": [
+            {
+              "name": "Map.hi",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6945,
+              "nodeId": 16315
+            },
+            {
+              "name": "Map.get.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 7014,
+              "nodeId": 10654
+            },
+            {
+              "name": "Map.get.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 7014,
+              "nodeId": 10653
+            },
+            {
+              "name": "Map.get.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 7014,
+              "nodeId": 10467
+            },
+            {
+              "name": "Map.get",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 7025,
+              "nodeId": 10466
+            },
+            {
+              "name": "checker_core_steps_v1.checker_match_3077",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 32553,
+              "nodeId": 10465
+            },
+            {
+              "name": "checker_core_steps_v1.checker_match_3078",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 32560,
+              "nodeId": 9117
+            },
+            {
+              "name": "checker_core_steps_v1.checker_match_3079",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 32566,
+              "nodeId": 9108
+            },
+            {
+              "name": "checker_core_steps_v1.checker_body_arena_case_prefix_local_build_head",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 32572,
+              "nodeId": 9107
+            },
+            {
+              "name": "(anonymous)",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 32576,
+              "nodeId": 8538
+            },
+            {
+              "name": "runSteps",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+              "line": 20,
+              "nodeId": 7
+            },
+            {
+              "name": "runCheckerSteps",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+              "line": 100,
+              "nodeId": 6
+            },
+            {
+              "name": "(anonymous)",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 111,
+              "nodeId": 5
+            },
+            {
+              "name": "phase",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 82,
+              "nodeId": 4
+            },
+            {
+              "name": "worker",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 73,
+              "nodeId": 3
+            },
+            {
+              "name": "(anonymous)",
+              "url": "",
+              "line": 0,
+              "nodeId": 2
+            },
+            {
+              "name": "(root)",
+              "url": "",
+              "line": 0,
+              "nodeId": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "category": "name_insert_seek_write_source_confirmed",
+      "estimatedSelfBytes": 167779512,
+      "sampleRecordEstimatedBytes": 167780160,
+      "sampleRecords": 40,
+      "treeNodes": 36,
+      "positiveSelfTreeNodes": 36,
+      "sites": {
+        "Map.lo": {
+          "estimatedSelfBytes": 71306352,
+          "sampleRecordEstimatedBytes": 71306568,
+          "sampleRecords": 17,
+          "treeNodes": 16,
+          "positiveSelfTreeNodes": 16
+        },
+        "Map.hi": {
+          "estimatedSelfBytes": 96473160,
+          "sampleRecordEstimatedBytes": 96473592,
+          "sampleRecords": 23,
+          "treeNodes": 20,
+          "positiveSelfTreeNodes": 20
+        }
+      },
+      "percentOfSelected": 0.582932665524767,
+      "percentOfWholeCheck": 0.09746796233004162,
+      "topFullStackExamples": [
+        {
+          "estimatedSelfBytes": 12583296,
+          "sampleRecords": 3,
+          "allocationSite": "Map.hi",
+          "nearestVisibleNonMapNativeOwner": "../bend2/selfhost/checker_arena.name.insert",
+          "stack": [
+            {
+              "name": "Map.hi",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6945,
+              "nodeId": 13994
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 12548
+            },
+            {
+              "name": "../bend2/selfhost/checker_arena.name.insert",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 12117,
+              "nodeId": 6168
+            },
+            {
+              "name": "../bend2/selfhost/checker_arena.name.found",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 12127,
+              "nodeId": 3863
+            },
+            {
+              "name": "../bend2/selfhost/checker_arena.name.result",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 12132,
+              "nodeId": 3862
+            },
+            {
+              "name": "../bend2/selfhost/checker_arena.name",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 12138,
+              "nodeId": 3245
+            },
+            {
+              "name": "checker_core_steps_v1.checker_match_3142",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 33187,
+              "nodeId": 2824
+            },
+            {
+              "name": "checker_core_steps_v1.checker_body_arena_names_cons",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 33194,
+              "nodeId": 2823
+            },
+            {
+              "name": "run_named3",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 58,
+              "nodeId": 129
+            },
+            {
+              "name": "checker_core_steps_v1.checker_step_group_13",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 39060,
+              "nodeId": 128
+            },
+            {
+              "name": "checker_core_steps_v1.checker_step",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 40004,
+              "nodeId": 9
+            },
+            {
+              "name": "checker_step",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 54343,
+              "nodeId": 8
+            },
+            {
+              "name": "runSteps",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+              "line": 20,
+              "nodeId": 7
+            },
+            {
+              "name": "runCheckerSteps",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+              "line": 100,
+              "nodeId": 6
+            },
+            {
+              "name": "(anonymous)",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 111,
+              "nodeId": 5
+            },
+            {
+              "name": "phase",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 82,
+              "nodeId": 4
+            },
+            {
+              "name": "worker",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 73,
+              "nodeId": 3
+            },
+            {
+              "name": "(anonymous)",
+              "url": "",
+              "line": 0,
+              "nodeId": 2
+            },
+            {
+              "name": "(root)",
+              "url": "",
+              "line": 0,
+              "nodeId": 1
+            }
+          ]
+        },
+        {
+          "estimatedSelfBytes": 8388792,
+          "sampleRecords": 2,
+          "allocationSite": "Map.hi",
+          "nearestVisibleNonMapNativeOwner": "../bend2/selfhost/checker_arena.name.insert",
+          "stack": [
+            {
+              "name": "Map.hi",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6945,
+              "nodeId": 24413
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 13554
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 13553
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 12552
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 12551
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 12550
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 12549
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 12548
+            },
+            {
+              "name": "../bend2/selfhost/checker_arena.name.insert",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 12117,
+              "nodeId": 6168
+            },
+            {
+              "name": "../bend2/selfhost/checker_arena.name.found",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 12127,
+              "nodeId": 3863
+            },
+            {
+              "name": "../bend2/selfhost/checker_arena.name.result",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 12132,
+              "nodeId": 3862
+            },
+            {
+              "name": "../bend2/selfhost/checker_arena.name",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 12138,
+              "nodeId": 3245
+            },
+            {
+              "name": "checker_core_steps_v1.checker_match_3142",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 33187,
+              "nodeId": 2824
+            },
+            {
+              "name": "checker_core_steps_v1.checker_body_arena_names_cons",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 33194,
+              "nodeId": 2823
+            },
+            {
+              "name": "run_named3",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 58,
+              "nodeId": 129
+            },
+            {
+              "name": "checker_core_steps_v1.checker_step_group_13",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 39060,
+              "nodeId": 128
+            },
+            {
+              "name": "checker_core_steps_v1.checker_step",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 40004,
+              "nodeId": 9
+            },
+            {
+              "name": "checker_step",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 54343,
+              "nodeId": 8
+            },
+            {
+              "name": "runSteps",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+              "line": 20,
+              "nodeId": 7
+            },
+            {
+              "name": "runCheckerSteps",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+              "line": 100,
+              "nodeId": 6
+            },
+            {
+              "name": "(anonymous)",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 111,
+              "nodeId": 5
+            },
+            {
+              "name": "phase",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 82,
+              "nodeId": 4
+            },
+            {
+              "name": "worker",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 73,
+              "nodeId": 3
+            },
+            {
+              "name": "(anonymous)",
+              "url": "",
+              "line": 0,
+              "nodeId": 2
+            },
+            {
+              "name": "(root)",
+              "url": "",
+              "line": 0,
+              "nodeId": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "category": "seek_path_read_write_owner_unresolved",
+      "estimatedSelfBytes": 121640400,
+      "sampleRecordEstimatedBytes": 121640616,
+      "sampleRecords": 29,
+      "treeNodes": 28,
+      "positiveSelfTreeNodes": 28,
+      "sites": {
+        "Map.lo": {
+          "estimatedSelfBytes": 83889864,
+          "sampleRecordEstimatedBytes": 83890080,
+          "sampleRecords": 20,
+          "treeNodes": 19,
+          "positiveSelfTreeNodes": 19
+        },
+        "Map.hi": {
+          "estimatedSelfBytes": 37750536,
+          "sampleRecordEstimatedBytes": 37750536,
+          "sampleRecords": 9,
+          "treeNodes": 9,
+          "positiveSelfTreeNodes": 9
+        }
+      },
+      "percentOfSelected": 0.42262706430746366,
+      "percentOfWholeCheck": 0.0706644201290274,
+      "topFullStackExamples": [
+        {
+          "estimatedSelfBytes": 8388792,
+          "sampleRecords": 2,
+          "allocationSite": "Map.lo",
+          "nearestVisibleNonMapNativeOwner": null,
+          "stack": [
+            {
+              "name": "Map.lo",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6942,
+              "nodeId": 13552
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 13446
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 13445
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 13444
+            },
+            {
+              "name": "Map.seek",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6959,
+              "nodeId": 13443
+            },
+            {
+              "name": "(anonymous)",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 14436,
+              "nodeId": 2599
+            },
+            {
+              "name": "runSteps",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+              "line": 20,
+              "nodeId": 7
+            },
+            {
+              "name": "runCheckerSteps",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+              "line": 100,
+              "nodeId": 6
+            },
+            {
+              "name": "(anonymous)",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 111,
+              "nodeId": 5
+            },
+            {
+              "name": "phase",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 82,
+              "nodeId": 4
+            },
+            {
+              "name": "worker",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 73,
+              "nodeId": 3
+            },
+            {
+              "name": "(anonymous)",
+              "url": "",
+              "line": 0,
+              "nodeId": 2
+            },
+            {
+              "name": "(root)",
+              "url": "",
+              "line": 0,
+              "nodeId": 1
+            }
+          ]
+        },
+        {
+          "estimatedSelfBytes": 4194504,
+          "sampleRecords": 1,
+          "allocationSite": "Map.lo",
+          "nearestVisibleNonMapNativeOwner": "checker_core_steps_v1.checker_match_252",
+          "stack": [
+            {
+              "name": "Map.lo",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6942,
+              "nodeId": 14835
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 5450
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 5449
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 5448
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 5447
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 5446
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 5445
+            },
+            {
+              "name": "Map.seek.go",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6948,
+              "nodeId": 5444
+            },
+            {
+              "name": "Map.seek",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 6959,
+              "nodeId": 5443
+            },
+            {
+              "name": "checker_core_steps_v1.checker_match_252",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 14493,
+              "nodeId": 3529
+            },
+            {
+              "name": "checker_core_steps_v1.checker_continuation_253",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 14500,
+              "nodeId": 3528
+            },
+            {
+              "name": "(anonymous)",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one49.js",
+              "line": 14503,
+              "nodeId": 2712
+            },
+            {
+              "name": "runSteps",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+              "line": 20,
+              "nodeId": 7
+            },
+            {
+              "name": "runCheckerSteps",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/evals/checker_core_step_runtime.mjs",
+              "line": 100,
+              "nodeId": 6
+            },
+            {
+              "name": "(anonymous)",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 111,
+              "nodeId": 5
+            },
+            {
+              "name": "phase",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 82,
+              "nodeId": 4
+            },
+            {
+              "name": "worker",
+              "url": "file:///home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-quality49.ts",
+              "line": 73,
+              "nodeId": 3
+            },
+            {
+              "name": "(anonymous)",
+              "url": "",
+              "line": 0,
+              "nodeId": 2
+            },
+            {
+              "name": "(root)",
+              "url": "",
+              "line": 0,
+              "nodeId": 1
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "consumers": [
+    {
+      "category": "definite_name_read",
+      "nearestVisibleNonMapNativeOwner": "../bend2/selfhost/checker_arena.name",
+      "estimatedSelfBytes": 26550528752,
+      "sampleRecordEstimatedBytes": 26550890512,
+      "sampleRecords": 6330,
+      "treeNodes": 3257,
+      "positiveSelfTreeNodes": 1857
+    },
+    {
+      "category": "other_get_read_visible_owner",
+      "nearestVisibleNonMapNativeOwner": "checker_core_steps_v1.checker_match_3077",
+      "estimatedSelfBytes": 331357632,
+      "sampleRecordEstimatedBytes": 331362704,
+      "sampleRecords": 79,
+      "treeNodes": 40,
+      "positiveSelfTreeNodes": 28
+    },
+    {
+      "category": "other_explicit_map_write",
+      "nearestVisibleNonMapNativeOwner": "checker_core_steps_v1.checker_continuation_188",
+      "estimatedSelfBytes": 314581968,
+      "sampleRecordEstimatedBytes": 314587800,
+      "sampleRecords": 75,
+      "treeNodes": 32,
+      "positiveSelfTreeNodes": 32
+    },
+    {
+      "category": "other_explicit_map_write",
+      "nearestVisibleNonMapNativeOwner": "checker_core_steps_v1.checker_continuation_189",
+      "estimatedSelfBytes": 272638008,
+      "sampleRecordEstimatedBytes": 272642760,
+      "sampleRecords": 65,
+      "treeNodes": 29,
+      "positiveSelfTreeNodes": 29
+    },
+    {
+      "category": "other_explicit_map_write",
+      "nearestVisibleNonMapNativeOwner": "checker_core_steps_v1.checker_continuation_203",
+      "estimatedSelfBytes": 218110752,
+      "sampleRecordEstimatedBytes": 218114208,
+      "sampleRecords": 52,
+      "treeNodes": 26,
+      "positiveSelfTreeNodes": 26
+    },
+    {
+      "category": "other_explicit_map_write",
+      "nearestVisibleNonMapNativeOwner": null,
+      "estimatedSelfBytes": 209723688,
+      "sampleRecordEstimatedBytes": 209725200,
+      "sampleRecords": 50,
+      "treeNodes": 39,
+      "positiveSelfTreeNodes": 39
+    },
+    {
+      "category": "other_explicit_map_write",
+      "nearestVisibleNonMapNativeOwner": "../bend2/selfhost/checker_arena.case_prefix_first.missing",
+      "estimatedSelfBytes": 205526808,
+      "sampleRecordEstimatedBytes": 205530696,
+      "sampleRecords": 49,
+      "treeNodes": 16,
+      "positiveSelfTreeNodes": 16
+    },
+    {
+      "category": "other_explicit_map_write",
+      "nearestVisibleNonMapNativeOwner": "checker_core_steps_v1.checker_continuation_205",
+      "estimatedSelfBytes": 180360432,
+      "sampleRecordEstimatedBytes": 180363672,
+      "sampleRecords": 43,
+      "treeNodes": 23,
+      "positiveSelfTreeNodes": 23
+    },
+    {
+      "category": "name_insert_seek_write_source_confirmed",
+      "nearestVisibleNonMapNativeOwner": "../bend2/selfhost/checker_arena.name.insert",
+      "estimatedSelfBytes": 167779512,
+      "sampleRecordEstimatedBytes": 167780160,
+      "sampleRecords": 40,
+      "treeNodes": 36,
+      "positiveSelfTreeNodes": 36
+    },
+    {
+      "category": "other_explicit_map_write",
+      "nearestVisibleNonMapNativeOwner": "checker_core_steps_v1.checker_match_252",
+      "estimatedSelfBytes": 83889432,
+      "sampleRecordEstimatedBytes": 83890080,
+      "sampleRecords": 20,
+      "treeNodes": 16,
+      "positiveSelfTreeNodes": 16
+    },
+    {
+      "category": "seek_path_read_write_owner_unresolved",
+      "nearestVisibleNonMapNativeOwner": null,
+      "estimatedSelfBytes": 67111848,
+      "sampleRecordEstimatedBytes": 67112064,
+      "sampleRecords": 16,
+      "treeNodes": 15,
+      "positiveSelfTreeNodes": 15
+    },
+    {
+      "category": "other_get_read_visible_owner",
+      "nearestVisibleNonMapNativeOwner": "../bend2/selfhost/checker_arena.case_prefix_name",
+      "estimatedSelfBytes": 58721928,
+      "sampleRecordEstimatedBytes": 58722416,
+      "sampleRecords": 14,
+      "treeNodes": 21,
+      "positiveSelfTreeNodes": 10
+    },
+    {
+      "category": "other_explicit_map_write",
+      "nearestVisibleNonMapNativeOwner": "checker_core_steps_v1.checker_match_193",
+      "estimatedSelfBytes": 29361528,
+      "sampleRecordEstimatedBytes": 29361528,
+      "sampleRecords": 7,
+      "treeNodes": 7,
+      "positiveSelfTreeNodes": 7
+    },
+    {
+      "category": "seek_path_read_write_owner_unresolved",
+      "nearestVisibleNonMapNativeOwner": "checker_core_steps_v1.checker_continuation_203",
+      "estimatedSelfBytes": 20972520,
+      "sampleRecordEstimatedBytes": 20972520,
+      "sampleRecords": 5,
+      "treeNodes": 5,
+      "positiveSelfTreeNodes": 5
+    },
+    {
+      "category": "other_explicit_map_write",
+      "nearestVisibleNonMapNativeOwner": "checker_core_steps_v1.checker_match_2766",
+      "estimatedSelfBytes": 16778016,
+      "sampleRecordEstimatedBytes": 16778016,
+      "sampleRecords": 4,
+      "treeNodes": 4,
+      "positiveSelfTreeNodes": 4
+    },
+    {
+      "category": "other_explicit_map_write",
+      "nearestVisibleNonMapNativeOwner": "checker_core_steps_v1.checker_continuation_1072",
+      "estimatedSelfBytes": 16778016,
+      "sampleRecordEstimatedBytes": 16778016,
+      "sampleRecords": 4,
+      "treeNodes": 4,
+      "positiveSelfTreeNodes": 4
+    },
+    {
+      "category": "seek_path_read_write_owner_unresolved",
+      "nearestVisibleNonMapNativeOwner": "checker_core_steps_v1.checker_match_252",
+      "estimatedSelfBytes": 12583512,
+      "sampleRecordEstimatedBytes": 12583512,
+      "sampleRecords": 3,
+      "treeNodes": 3,
+      "positiveSelfTreeNodes": 3
+    },
+    {
+      "category": "seek_path_read_write_owner_unresolved",
+      "nearestVisibleNonMapNativeOwner": "checker_core_steps_v1.checker_continuation_205",
+      "estimatedSelfBytes": 12583512,
+      "sampleRecordEstimatedBytes": 12583512,
+      "sampleRecords": 3,
+      "treeNodes": 3,
+      "positiveSelfTreeNodes": 3
+    },
+    {
+      "category": "seek_path_read_write_owner_unresolved",
+      "nearestVisibleNonMapNativeOwner": "checker_core_steps_v1.checker_continuation_189",
+      "estimatedSelfBytes": 4194504,
+      "sampleRecordEstimatedBytes": 4194504,
+      "sampleRecords": 1,
+      "treeNodes": 1,
+      "positiveSelfTreeNodes": 1
+    },
+    {
+      "category": "seek_path_read_write_owner_unresolved",
+      "nearestVisibleNonMapNativeOwner": "checker_core_steps_v1.checker_continuation_188",
+      "estimatedSelfBytes": 4194504,
+      "sampleRecordEstimatedBytes": 4194504,
+      "sampleRecords": 1,
+      "treeNodes": 1,
+      "positiveSelfTreeNodes": 1
+    },
+    {
+      "category": "other_get_read_visible_owner",
+      "nearestVisibleNonMapNativeOwner": "../bend2/selfhost/checker_arena.case_prefix_first",
+      "estimatedSelfBytes": 4194344,
+      "sampleRecordEstimatedBytes": 4194344,
+      "sampleRecords": 1,
+      "treeNodes": 2,
+      "positiveSelfTreeNodes": 1
+    },
+    {
+      "category": "other_get_read_visible_owner",
+      "nearestVisibleNonMapNativeOwner": "checker_core_steps_v1.checker_match_3065",
+      "estimatedSelfBytes": 0,
+      "sampleRecordEstimatedBytes": 0,
+      "sampleRecords": 0,
+      "treeNodes": 5,
+      "positiveSelfTreeNodes": 0
+    }
+  ],
+  "sourceEvidence": [
+    {
+      "lines": "6942-6946",
+      "meaning": "Map.lo/hi construct Tuple plus MNode."
+    },
+    {
+      "lines": "7014-7023",
+      "meaning": "Map.get.go recursively rebuilds a path using Map.lo/hi; its self allocation is distinct from child self allocation."
+    },
+    {
+      "lines": "12138-12140",
+      "meaning": "checker_arena.name evaluates Map.get on name_ids before invoking name.result."
+    },
+    {
+      "lines": "12121",
+      "meaning": "checker_arena.name.insert calls Map.set; name-namespace ancestry alone must not label writes as reads."
+    }
+  ],
+  "boundaries": [
+    "These are cumulative statistical worker-isolate allocation estimates from one instrumented49 run, not exact bytes/object counts, retained memory, CPU cost, or predicted52 speedup.",
+    "Visible stack ownership is conservative: inlined/missing caller frames and opaque closures can leave ownership unresolved. The definite category is supported by recorded frames, not proof that every real name-read allocation was captured or attributed there.",
+    "Only the three requested allocation sites are partitioned, not all Map-family allocations, all descendants of a name call, or all Arena reconstruction.",
+    "Replacing a read may still allocate in IndexLookup.find/Map.bit/Option handling, and optimization can move allocation attribution. Attributed pre-change bytes are not an asserted removable-byte total."
+  ],
+  "normal49Controls": {
+    "runs": [
+      {
+        "label": "quality49-a-before",
+        "compileMs": 113841.524502,
+        "checkWallMs": 92812.54503099999,
+        "checkWholeProcessCpuMs": 105600.788,
+        "cgroupMemoryPeakBytes": "1988947968",
+        "start": {
+          "at": "2026-10-23T09:25:37.924Z",
+          "loadavg": "1.68 2.02 2.53 1/3321 1672500",
+          "allowedCpuAffinity": [
+            "Cpus_allowed:\tfff",
+            "Cpus_allowed_list:\t0-11"
+          ],
+          "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-quality49-a-before.scope",
+          "memoryMax": "8589934592",
+          "memorySwapMax": "0",
+          "cpuStat": "usage_usec 96781\nuser_usec 57493\nsystem_usec 39287\ncore_sched.force_idle_usec 0"
+        },
+        "end": {
+          "at": "2026-10-23T09:27:32.377Z",
+          "loadavg": "3.40 2.52 2.66 1/3297 1752868",
+          "allowedCpuAffinity": [
+            "Cpus_allowed:\tfff",
+            "Cpus_allowed_list:\t0-11"
+          ],
+          "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-quality49-a-before.scope",
+          "memoryMax": "8589934592",
+          "memorySwapMax": "0",
+          "cpuStat": "usage_usec 134980847\nuser_usec 132353290\nsystem_usec 2627557\ncore_sched.force_idle_usec 0"
+        }
+      },
+      {
+        "label": "quality49-a-after",
+        "compileMs": 119665.080753,
+        "checkWallMs": 98103.861007,
+        "checkWholeProcessCpuMs": 112818.162,
+        "cgroupMemoryPeakBytes": "1652592640",
+        "start": {
+          "at": "2026-10-23T09:29:40.527Z",
+          "loadavg": "2.66 2.53 2.65 4/3275 1842795",
+          "allowedCpuAffinity": [
+            "Cpus_allowed:\tfff",
+            "Cpus_allowed_list:\t0-11"
+          ],
+          "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-quality49-a-after.scope",
+          "memoryMax": "8589934592",
+          "memorySwapMax": "0",
+          "cpuStat": "usage_usec 87300\nuser_usec 63217\nsystem_usec 24082\ncore_sched.force_idle_usec 0"
+        },
+        "end": {
+          "at": "2026-10-23T09:31:40.797Z",
+          "loadavg": "3.45 2.89 2.77 2/3334 1921456",
+          "allowedCpuAffinity": [
+            "Cpus_allowed:\tfff",
+            "Cpus_allowed_list:\t0-11"
+          ],
+          "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-quality49-a-after.scope",
+          "memoryMax": "8589934592",
+          "memorySwapMax": "0",
+          "cpuStat": "usage_usec 142541983\nuser_usec 139779083\nsystem_usec 2762900\ncore_sched.force_idle_usec 0"
+        }
+      }
+    ],
+    "baselineVariation": {
+      "compileMs": {
+        "before": 113841.524502,
+        "observer": 127115.506243,
+        "after": 119665.080753,
+        "observerPercentVsBefore": 11.660052690849888,
+        "observerPercentVsAfter": 6.226064816166699,
+        "baselineAfterPercentVsBefore": 5.1154939082862505
+      },
+      "totalWithOutputSmokeMs": {
+        "before": 114195.187653,
+        "observer": 127512.672778,
+        "after": 120037.611439,
+        "observerPercentVsBefore": 11.662037077663246,
+        "observerPercentVsAfter": 6.2272659788791485,
+        "baselineAfterPercentVsBefore": 5.116173374795019
+      },
+      "checkWallMs": {
+        "before": 92812.54503099999,
+        "observer": 102552.047554,
+        "after": 98103.861007,
+        "observerPercentVsBefore": 10.493735000744731,
+        "observerPercentVsAfter": 4.534160532868947,
+        "baselineAfterPercentVsBefore": 5.7010784201992015
+      },
+      "checkWholeProcessCpuMs": {
+        "before": 105600.788,
+        "observer": 115668.746,
+        "after": 112818.162,
+        "observerPercentVsBefore": 9.53397999264929,
+        "observerPercentVsAfter": 2.526706648527033,
+        "baselineAfterPercentVsBefore": 6.83458346920669
+      },
+      "summedPhaseWholeProcessCpuMs": {
+        "before": 134294.306,
+        "observer": 150634.208,
+        "after": 141819.28999999998,
+        "observerPercentVsBefore": 12.167233657695053,
+        "observerPercentVsAfter": 6.215598738366301,
+        "baselineAfterPercentVsBefore": 5.603352982069065
+      }
+    },
+    "frequencyEvidence": {
+      "normalRunsRecordedFrequency": false,
+      "priorSeparateProfileSnapshots": {
+        "before": {
+          "at": "2026-10-23T09:14:06.152Z",
+          "cpufreq": [],
+          "procCpuInfo": [
+            "processor\t: 0",
+            "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+            "cpu MHz\t\t: 3930.210",
+            "processor\t: 1",
+            "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+            "cpu MHz\t\t: 3410.514",
+            "processor\t: 2",
+            "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+            "cpu MHz\t\t: 4833.959",
+            "processor\t: 3",
+            "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+            "cpu MHz\t\t: 3926.532",
+            "processor\t: 4",
+            "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+            "cpu MHz\t\t: 2157.621",
+            "processor\t: 5",
+            "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+            "cpu MHz\t\t: 3276.794",
+            "processor\t: 6",
+            "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+            "cpu MHz\t\t: 4279.012",
+            "processor\t: 7",
+            "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+            "cpu MHz\t\t: 4849.043",
+            "processor\t: 8",
+            "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+            "cpu MHz\t\t: 4753.657",
+            "processor\t: 9",
+            "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+            "cpu MHz\t\t: 4852.223",
+            "processor\t: 10",
+            "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+            "cpu MHz\t\t: 4844.353",
+            "processor\t: 11",
+            "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+            "cpu MHz\t\t: 4161.747"
+          ]
+        },
+        "after": {
+          "at": "2026-10-23T09:16:14.654Z",
+          "cpufreq": [],
+          "procCpuInfo": [
+            "processor\t: 0",
+            "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+            "cpu MHz\t\t: 4101.089",
+            "processor\t: 1",
+            "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+            "cpu MHz\t\t: 4094.443",
+            "processor\t: 2",
+            "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+            "cpu MHz\t\t: 4245.766",
+            "processor\t: 3",
+            "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+            "cpu MHz\t\t: 4376.912",
+            "processor\t: 4",
+            "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+            "cpu MHz\t\t: 4527.082",
+            "processor\t: 5",
+            "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+            "cpu MHz\t\t: 3281.946",
+            "processor\t: 6",
+            "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+            "cpu MHz\t\t: 4488.339",
+            "processor\t: 7",
+            "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+            "cpu MHz\t\t: 4261.647",
+            "processor\t: 8",
+            "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+            "cpu MHz\t\t: 3937.069",
+            "processor\t: 9",
+            "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+            "cpu MHz\t\t: 3984.276",
+            "processor\t: 10",
+            "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+            "cpu MHz\t\t: 4526.135",
+            "processor\t: 11",
+            "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+            "cpu MHz\t\t: 4065.328"
+          ]
+        }
+      },
+      "limit": "No readable cpufreq governor/current-frequency interfaces. /proc/cpuinfo MHz snapshots belong to the earlier instrumented profile, not the later normal49 controls; no sustained-frequency or equal-clock assertion."
+    },
+    "confounds": [
+      "Normal49 before/after compiled113.842s/119.665s, a5.12% shift; check92.813s/98.104s, a5.70% shift, despite unchanged compiler/runtime/corpus.",
+      "Affinity remained allowed0-11 rather than a pinned core. No CPU governor/frequency lock or CPU quota was imposed. Memory cgroups do not isolate CPU scheduling, thermal behavior, host/VM contention, or concurrent V8/GC threads.",
+      "Load averages are host-level snapshots, not per-core utilization or exact competing-process attribution. Existing records do not explain the observed baseline drift causally.",
+      "Same Node23/cgroup/full workload and output equality are required for52, but an isolated52 timing compared with old49 cannot remove temporal load/frequency confounding. No additional control/profile is launched by this analysis."
+    ]
+  },
+  "evidenceSha256": {
+    "profiling-quality49-check-compact.json": "e51588280c9ec552c29c5f3985d5c3cb8f26ade51ca32d1330c61217163b8aab",
+    "quality-counter49-diagnostic.json": "cc72072c6f0e3b2097909c12288d0104ee83babe59cc08c671dfb697ddf5344b",
+    "profiling-quality49-environment-before.json": "a182145439a9ddad82307d0dc0eddf7b526039ce6e11889ccae9e1f2a6ef3164",
+    "profiling-quality49-environment-after.json": "f4797aa2d84f7e17fc7dbebb5eab33198f3b084cbd495feaa77c8831a08b3265"
+  },
+  "preservation": {
+    "rawProfileWritten": false,
+    "heavyBenchmarkProfileOrBuildLaunched": false,
+    "permanentCompilerChanges": false,
+    "directoryBytesBeforeReceipt": 768869098
+  }
+}

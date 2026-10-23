@@ -31,6 +31,9 @@ latest one; the GitHub release carries the same notes.
 - Diagnostic step counters recognize the selfhost emitter's callback names and
   preserve each checker pass in a separate write-once file, so output smokes
   cannot overwrite full-workload measurements.
+- Compiler-private name interning reads its existing immutable index without
+  reconstructing the lookup path; zero IDs, missing markers and rewound IDs
+  retain their previous behavior.
 
 - The complete selfhost parser/Template/Checker/JavaScript compiler root now
   reaches an exact stage-one/stage-two byte fixedpoint using its own emitted

@@ -4,6 +4,59 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+## Compiler52 — full fixedpoint and lower allocation; speed unestablished
+
+Source52 restores selected49 Checker algorithms (rejected50 hoist removed), then
+replaces Arena.name's rebuilding Map.get with existing read-only IndexLookup.find.
+The original name_ids root is retained. ID0, MAX missing marker and names rewind/
+reuse semantics are unchanged. This is not a claim of allocation-free lookup:
+Map.bit/Maybe/record adaptation can still allocate.
+
+`compiler-name-read-v52.json` and
+`selfhost-acceptance-release237-misaka-v52.json` preserve the full proof/recipe.
+Canonical unmodified release2.0.37 kernel6c1df3eb checks8173/8173 bodies and8511
+events, zero exclusions/patches. The native build uses the recorded backend
+8c33864a67f0fd08; do not conflate it with unmodified official-emitter performance.
+Fresh parser76 passes75 semantic/span cases; library consumer16/16; name boundary
+regression passes on the actual native CLI. The fixture's first preflight failed
+because a local binder was matched; it was factored into ordered parameter
+helpers, not bypassed by unsafe.
+
+Actual273/273 seed/stage-one/stage-two fixtures pass. Both unpatched emitted
+images18341638 bytes, SHA
+`958ff8b8dd80d2c3cbfb36edb4e76bcc87ab7ee73b8be7942fc7fbcf5e7b47bd`;
+downloaded cmp0. Stage-one75633.414ms, stage-two90268.889ms (check57448.326ms).
+Full gate366678ms, physical2490795592/RSS3799187456 bytes under unchanged8GiB/
+600s guard. This is still over5min for the entire gate including fixtures.
+
+Native-seed frozen compile63827.886ms/check45596.202ms passes50files/15modules/
+7720exports and actual output smoke, exact historical Mac outputa1033733.
+This is NOT actual emitted52 timing. Genuine actual-image normal controls pass
+on both hosts. Linux49→52→52→49 observes52+17.695% mean compile time, but middle
+runs overlap aggregate load1.28→7.60; cause unresolved. Mac52→49→49→52 observes
+52-13.576% mean compile time, but load3.62→23.04 and large time drift also confound
+that comparison. Do not call either intrinsic speedup/regression established.
+49 remains the last performance-selected baseline; no more repeated timing
+loops are planned on these uncontrolled hosts for this version.
+
+Separate sampled cumulative check allocation falls172138113888→147078030184
+bytes (14.558%); strict recorded name-read Map rebuilding26550528752→0 and the
+replacement find path estimates4009781272 bytes. This is not live RAM or CPU.
+Exact sources, load qualification, both normal series and separate raw-profile
+hashes are in the receipts. String.eq is native=== in both images: the conjecture
+that52 introduced a Unicode equality loop was falsified by actual declarations.
+
+Historical same-input/same-Node23 Mac official baseline:10099.880ms total;
+load/parse/expand1094.375ms,check993.196ms,emit7947.939ms. Main unresolved gap is
+checking execution/representation, not quoting or final JS assembly alone.
+The next architectural experiment must reduce per-operation CPS boundaries;
+do not confuse a fast isolated quote island with solving that gap.
+
+Full evidence archive69641552 bytes, SHA
+`f707583bd124493e50fe587e24b8bfeec5684107f6dc80faeec6396c86dfa96b`,
+copied and hash-verified locally.408 verified raw ASTs1008182658 bytes removed;
+images and compact evidence retained, completed remote launchers removed.
+
 ## Profiling revision51 — actual49, compiler unchanged
 
 User challenged profiling quality and requested fundamental architecture review.
