@@ -1,0 +1,485 @@
+{
+  "status": "PASS_CONSECUTIVE_ACTUAL49_ACTUAL50",
+  "diagnosticOnly": true,
+  "bootstrapAcceptance": false,
+  "newFixedpoint": false,
+  "executionOrder": [
+    "paired50-control49",
+    "paired50-actual50",
+    "counts50(separate instrumented check)"
+  ],
+  "actual49": {
+    "status": "PASS",
+    "coverage": {
+      "files": 50,
+      "modules": 15,
+      "checkedModules": 15,
+      "exports": 7720,
+      "actualOutputImportAndSemanticSmoke": true,
+      "checksExcluded": 0,
+      "outputPatches": 0,
+      "corpusSha256": "6a00a60b7833e1b188b7b1872297df8e00252cf381b1cc4f9d6b670dfe5ff016",
+      "exportSetSha256": "99efc6ef8538e35f5b6f549e39296bae814e654d48558f9ca7ba2aae2b1911f4"
+    },
+    "runtime": {
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      },
+      "platform": "linux",
+      "arch": "x64"
+    },
+    "measurement": {
+      "compileMs": 106869.0484,
+      "totalWithOutputSmokeMs": 107227.313153,
+      "coreMs": 106126.88206799999,
+      "phases": [
+        {
+          "phase": "compiler-startup",
+          "wallMs": 535.097661,
+          "cpuMs": 563.353
+        },
+        {
+          "phase": "load-parse",
+          "wallMs": 7826.992843,
+          "cpuMs": 13326.265
+        },
+        {
+          "phase": "expand",
+          "wallMs": 3665.1786190000003,
+          "cpuMs": 4409.397
+        },
+        {
+          "phase": "check",
+          "wallMs": 83819.789183,
+          "cpuMs": 95894.638
+        },
+        {
+          "phase": "emit",
+          "wallMs": 10814.921422999993,
+          "cpuMs": 14033.157
+        },
+        {
+          "phase": "write-and-hash",
+          "wallMs": 203.5304560000077,
+          "cpuMs": 204.122
+        },
+        {
+          "phase": "output-import",
+          "wallMs": 324.10475000001315,
+          "cpuMs": 325.999
+        },
+        {
+          "phase": "output-semantic-smoke",
+          "wallMs": 13.038514999992913,
+          "cpuMs": 15.542
+        }
+      ],
+      "compilePhaseCpuMs": 128430.932
+    },
+    "output": {
+      "status": "PASS",
+      "outputBytes": 20285397,
+      "outputSha256": "7a3ca3d98b60044e7c00629a5e4b5c3b4d25669eb185979390e46992a27942f1",
+      "compilerSha256": "28061d5eab72b2a0bc560c6963b8f22cd863d7572f102cb627d483606f412e81",
+      "comparisons": [
+        {
+          "reference": "paired49-actual49.json.output.mjs",
+          "exactByteMatch": true
+        }
+      ],
+      "actualOutputImportAndSemanticSmoke": true,
+      "exports": 7720,
+      "bootstrapAcceptance": false
+    },
+    "guard": {
+      "label": "paired50-control49",
+      "command": [
+        "./node-v23.11.0-linux-x64/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "--stack-size=262144",
+        "run-paired50.mjs",
+        "control49"
+      ],
+      "group": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-paired50-control49.scope",
+      "memoryMax": "8589934592",
+      "memorySwapMax": "0",
+      "startedAt": "2026-10-23T08:21:55.897Z",
+      "samples": 431,
+      "elapsedMs": 107586.003664,
+      "memoryPeak": "2093445120",
+      "memoryCurrent": "52490240",
+      "memoryEvents": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+      "cpuStat": "usage_usec 129532256\nuser_usec 127138652\nsystem_usec 2393603\ncore_sched.force_idle_usec 0",
+      "pid": 372959,
+      "exitCode": 0,
+      "signal": null
+    },
+    "systemd": {
+      "command": [
+        "systemd-run",
+        "--user",
+        "--scope",
+        "--quiet",
+        "--unit=bend-native46-elcWbhvH-paired50-control49",
+        "-p",
+        "MemoryMax=8589934592",
+        "-p",
+        "MemorySwapMax=0",
+        "-p",
+        "RuntimeMaxSec=300s",
+        "/usr/bin/node",
+        "guard.mjs",
+        "paired50-control49",
+        "290000",
+        "./node-v23.11.0-linux-x64/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "--stack-size=262144",
+        "run-paired50.mjs",
+        "control49"
+      ],
+      "elapsedMs": 107637,
+      "status": 0,
+      "signal": null,
+      "error": null,
+      "stdout": "",
+      "stderr": "",
+      "systemctlShow": {
+        "status": 0,
+        "stdout": "Result=success\nRuntimeMaxUSec=infinity\nControlGroup=\nMemoryMax=infinity\nMemorySwapMax=infinity\nActiveState=inactive\nSubState=dead\n",
+        "stderr": ""
+      }
+    }
+  },
+  "actual50": {
+    "status": "PASS",
+    "coverage": {
+      "files": 50,
+      "modules": 15,
+      "checkedModules": 15,
+      "exports": 7720,
+      "actualOutputImportAndSemanticSmoke": true,
+      "checksExcluded": 0,
+      "outputPatches": 0,
+      "corpusSha256": "6a00a60b7833e1b188b7b1872297df8e00252cf381b1cc4f9d6b670dfe5ff016",
+      "exportSetSha256": "99efc6ef8538e35f5b6f549e39296bae814e654d48558f9ca7ba2aae2b1911f4"
+    },
+    "runtime": {
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      },
+      "platform": "linux",
+      "arch": "x64"
+    },
+    "measurement": {
+      "compileMs": 133379.102801,
+      "totalWithOutputSmokeMs": 133848.114357,
+      "coreMs": 132503.71902800002,
+      "phases": [
+        {
+          "phase": "compiler-startup",
+          "wallMs": 502.959777,
+          "cpuMs": 524.702
+        },
+        {
+          "phase": "load-parse",
+          "wallMs": 7455.395012999999,
+          "cpuMs": 12511.992
+        },
+        {
+          "phase": "expand",
+          "wallMs": 3549.700242,
+          "cpuMs": 4235.944
+        },
+        {
+          "phase": "check",
+          "wallMs": 100238.431925,
+          "cpuMs": 113513.853
+        },
+        {
+          "phase": "emit",
+          "wallMs": 21260.191848000002,
+          "cpuMs": 25515.495
+        },
+        {
+          "phase": "write-and-hash",
+          "wallMs": 368.895852000016,
+          "cpuMs": 366.787
+        },
+        {
+          "phase": "output-import",
+          "wallMs": 414.21176400000695,
+          "cpuMs": 405.484
+        },
+        {
+          "phase": "output-semantic-smoke",
+          "wallMs": 12.618759000004502,
+          "cpuMs": 14.699
+        }
+      ],
+      "compilePhaseCpuMs": 156668.77300000002
+    },
+    "output": {
+      "status": "PASS",
+      "outputBytes": 20285397,
+      "outputSha256": "7a3ca3d98b60044e7c00629a5e4b5c3b4d25669eb185979390e46992a27942f1",
+      "compilerSha256": "0d2bdf9a378d973f4da497d34e3a580cc878f3d4ca0abcc5e91418e3663478f0",
+      "comparisons": [
+        {
+          "reference": "paired49-actual49.json.output.mjs",
+          "exactByteMatch": true
+        },
+        {
+          "reference": "paired50-control49.json.output.mjs",
+          "exactByteMatch": true
+        }
+      ],
+      "actualOutputImportAndSemanticSmoke": true,
+      "exports": 7720,
+      "bootstrapAcceptance": false
+    },
+    "guard": {
+      "label": "paired50-actual50",
+      "command": [
+        "./node-v23.11.0-linux-x64/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "--stack-size=262144",
+        "run-paired50.mjs",
+        "actual50"
+      ],
+      "group": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-paired50-actual50.scope",
+      "memoryMax": "8589934592",
+      "memorySwapMax": "0",
+      "startedAt": "2026-10-23T08:23:43.547Z",
+      "samples": 538,
+      "elapsedMs": 134299.529924,
+      "memoryPeak": "1951350784",
+      "memoryCurrent": "32927744",
+      "memoryEvents": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+      "cpuStat": "usage_usec 157942464\nuser_usec 155289189\nsystem_usec 2653274\ncore_sched.force_idle_usec 0",
+      "pid": 375529,
+      "exitCode": 0,
+      "signal": null
+    },
+    "systemd": {
+      "command": [
+        "systemd-run",
+        "--user",
+        "--scope",
+        "--quiet",
+        "--unit=bend-native46-elcWbhvH-paired50-actual50",
+        "-p",
+        "MemoryMax=8589934592",
+        "-p",
+        "MemorySwapMax=0",
+        "-p",
+        "RuntimeMaxSec=300s",
+        "/usr/bin/node",
+        "guard.mjs",
+        "paired50-actual50",
+        "290000",
+        "./node-v23.11.0-linux-x64/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "--stack-size=262144",
+        "run-paired50.mjs",
+        "actual50"
+      ],
+      "elapsedMs": 134345,
+      "status": 0,
+      "signal": null,
+      "error": null,
+      "stdout": "",
+      "stderr": "",
+      "systemctlShow": {
+        "status": 0,
+        "stdout": "Result=success\nRuntimeMaxUSec=infinity\nControlGroup=\nMemoryMax=infinity\nMemorySwapMax=infinity\nActiveState=inactive\nSubState=dead\n",
+        "stderr": ""
+      }
+    }
+  },
+  "comparison": {
+    "actual49CompileMs": 106869.0484,
+    "actual50CompileMs": 133379.102801,
+    "actual49CheckMs": 83819.789183,
+    "actual50CheckMs": 100238.431925,
+    "actual49Over50CompileRatio": 0.801242819570074,
+    "actual49Over50CheckRatio": 0.8362041142634326,
+    "actual50CompileChangeFraction": 0.24806110654017943,
+    "actual50CheckChangeFraction": 0.19588026767943667,
+    "actual50CompileCpuChangeFraction": 0.21986791312859122,
+    "outputExactBytes": true,
+    "uncertainty": "One consecutive genuine49then50pair; no repeated/randomized or controlled-load trial. JIT/GC,order,host/thermal variation remain. No Mac comparison or statistical speedup claim. Counter run excluded from timing comparison."
+  },
+  "counterDiagnostic": {
+    "path": "counts50-diagnostic.json",
+    "sha256": "ae59724938fc40aac68e992cd123feae86fb9f3d715c77f9ff2ca212263972d2",
+    "status": "PASS_EXACT_BALANCED_COUNTS",
+    "exact49": {
+      "pending": 80385948,
+      "direct": 81907258,
+      "finished": 162293207,
+      "resume": 162293206,
+      "pendingPlusDirect": 162293206,
+      "schedulerLoopIterations": 324586413,
+      "pendingTargetSum": 80385948,
+      "result": "CheckSuccess",
+      "balanced": true
+    },
+    "exact50": {
+      "pending": 79649208,
+      "direct": 80507718,
+      "finished": 160156927,
+      "resume": 160156926,
+      "pendingPlusDirect": 160156926,
+      "schedulerLoopIterations": 320313853,
+      "pendingTargetSum": 79649208,
+      "result": "CheckSuccess",
+      "balanced": true
+    },
+    "requiredCanonicalTargets": [
+      {
+        "constructor": "checker_core_steps_v1.CheckerRequest_core_subst",
+        "target": "core_subst",
+        "v49": 2002584,
+        "v50": 1637691,
+        "delta50Minus49": -364893
+      },
+      {
+        "constructor": "checker_core_steps_v1.CheckerRequest_function_type_of",
+        "target": "function_type_of",
+        "v49": 732845,
+        "v50": 367957,
+        "delta50Minus49": -364888
+      },
+      {
+        "constructor": "checker_core_steps_v1.CheckerRequest_whnf",
+        "target": "whnf",
+        "v49": 3189738,
+        "v50": 3189703,
+        "delta50Minus49": -35
+      }
+    ],
+    "totalDeltas": {
+      "pending": {
+        "v49": 80385948,
+        "v50": 79649208,
+        "delta50Minus49": -736740,
+        "fractionalChange": -0.009165034665013838
+      },
+      "direct": {
+        "v49": 81907258,
+        "v50": 80507718,
+        "delta50Minus49": -1399540,
+        "fractionalChange": -0.017086886243951716
+      },
+      "finished": {
+        "v49": 162293207,
+        "v50": 160156927,
+        "delta50Minus49": -2136280,
+        "fractionalChange": -0.01316308944464939
+      },
+      "resume": {
+        "v49": 162293206,
+        "v50": 160156926,
+        "delta50Minus49": -2136280,
+        "fractionalChange": -0.013163089525756289
+      },
+      "pendingPlusDirect": {
+        "v49": 162293206,
+        "v50": 160156926,
+        "delta50Minus49": -2136280,
+        "fractionalChange": -0.013163089525756289
+      },
+      "schedulerLoopIterations": {
+        "v49": 324586413,
+        "v50": 320313853,
+        "delta50Minus49": -4272560,
+        "fractionalChange": -0.013163089485202839
+      }
+    }
+  },
+  "guardAuthority": "Each actual systemd user scope has8GiB MemoryMax,no swap,300s RuntimeMax. In-scope memory.max/memory.swap.max/memory.peak/cpu.stat captured; legacy benchmark RSS metadata is not Linux policing.",
+  "evidenceSha256": {
+    "run-paired50.mjs": "2a1022d73fd9ee989cc4d6ad7eb64f485526d273eacff9cbd1b5f71ba4afb8c8",
+    "benchmark-linux.ts": "107be3470c240af8c069fdc39ccfebd080b473fb727a5943c9979d7370c987eb",
+    "corpus.relocated.json": "6a00a60b7833e1b188b7b1872297df8e00252cf381b1cc4f9d6b670dfe5ff016",
+    "official.json.exports.json": "9740412dd732c74160b574acff9ca4ce8c1565b15a51a40f3e49beba08c76914",
+    "paired50-control49.json": "61e687c9523283102ddd382745fadea2b8ff363423af57eda6e047b05b72b1c1",
+    "paired50-control49.json.request.json": "10d31adb677af2cfd8533f8f9be5c83f25333f79ac5fd1cc2f8d6bd62a01afa0",
+    "paired50-control49-output-comparison.json": "66e33dbd62fbf1c8362cc54ea247de56fdf3ab786f355b6d320ba991a42da810",
+    "paired50-control49.guard.json": "1a881d3a5227a064cfc92cd960c0b92f9a3086df8853e175df227c6e97a21225",
+    "paired50-control49.systemd.json": "dd20ee6d157c14e1bb22dabfd401a02cd0b5f111dd8adf41ec615cca691892f2",
+    "paired50-actual50.json": "cdd2df5c4caea4f9ae37b94037c9039d4a1b7ae85038f1d33e932f91c052d138",
+    "paired50-actual50.json.request.json": "d7a7aaed8206864738c9af2080282819397a1d664abc136a58326e28d6e07efe",
+    "paired50-actual50-output-comparison.json": "314374b25201f84a18526da85af5bddf6cd054d7914ff0a90567254c653bebe5",
+    "paired50-actual50.guard.json": "5a71dfc2942bae279520997fac6b69445ab8b24ac8240b2c75dec74151db5c4f",
+    "paired50-actual50.systemd.json": "66db894cf942ebd3be1d17c66cff557dc98d59b2071f59a1e1938e2a5e763556"
+  },
+  "cleanup": {
+    "directoryBytes": 578677523,
+    "oldReceiptsUntouched": true,
+    "compilerImagesUnchanged": true,
+    "permanentSourceChanges": false,
+    "profiling": false,
+    "seedRun": false
+  }
+}

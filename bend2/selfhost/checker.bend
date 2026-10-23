@@ -7275,34 +7275,6 @@ def function_type_of(v_1: ArenaStore, v_3: U32, v_6: List<&2, Binding>, v_7: Sco
     case _:
       {ArenaResult{v_15, None{}} : ArenaResult<Maybe<&2, U32>>}
 
-def function_quantity_from_type_view(v_20038201: ArenaStore, v_0: U32) -> ArenaResult<Maybe<&2, Ast.Quantity>>:
-  ArenaResult{v_20038202, +v_20038203} = arena_get_node(v_20038201, v_0)
-  match v_20038203:
-    case Arena.TermAll{+v_20038210, +v_20038211, +v_20038213, +v_20038214, +v_20038215, +v_20038216}:
-      v_8 = v_20038210
-      {ArenaResult{v_20038202, Some{v_8}} : ArenaResult<Maybe<&2, Ast.Quantity>>}
-    case _:
-      {ArenaResult{v_20038202, None{}} : ArenaResult<Maybe<&2, Ast.Quantity>>}
-
-def function_quantity_from_type(v_20038218: ArenaStore, v_0: U32, v_1: Scope.ArenaGlobalScope) -> ArenaResult<Maybe<&2, Ast.Quantity>>:
-  ArenaResult{v_20038219, +v_20038220} = whnf(v_20038218, 64n, v_0, v_1)
-  ArenaResult{v_20038221, +v_20038222} = function_quantity_from_type_view(v_20038219, v_20038220)
-  {ArenaResult{v_20038221, v_20038222} : ArenaResult<Maybe<&2, Ast.Quantity>>}
-
-def function_argument_quantity_result(v_20038223: ArenaStore, v_1: Maybe<&2, U32>, v_2: Scope.ArenaGlobalScope) -> ArenaResult<Maybe<&2, Ast.Quantity>>:
-  match v_1:
-    case Some{+v_20038224}:
-      v_5 = v_20038224
-      ArenaResult{v_20038225, +v_20038226} = function_quantity_from_type(v_20038223, v_5, v_2)
-      {ArenaResult{v_20038225, v_20038226} : ArenaResult<Maybe<&2, Ast.Quantity>>}
-    case None{}:
-      {ArenaResult{v_20038223, None{}} : ArenaResult<Maybe<&2, Ast.Quantity>>}
-
-def function_argument_quantity(v_20038227: ArenaStore, v_0: U32, v_3: List<&2, Binding>, v_4: Scope.ArenaGlobalScope) -> ArenaResult<Maybe<&2, Ast.Quantity>>:
-  ArenaResult{v_20038228, +v_20038229} = function_type_of(v_20038227, v_0, v_3, v_4)
-  ArenaResult{v_20038230, +v_20038231} = function_argument_quantity_result(v_20038228, v_20038229, v_4)
-  {ArenaResult{v_20038230, v_20038231} : ArenaResult<Maybe<&2, Ast.Quantity>>}
-
 def collect_telescope_quantities_view(v_20038232: ArenaStore, v_0: U32, v_1: U32, v_3: Nat, v_4: Scope.ArenaGlobalScope) -> ArenaResult<IR.Quantities>:
   ArenaResult{v_20038233, +v_20038234} = arena_get_node(v_20038232, v_0)
   match v_20038234:
@@ -7779,48 +7751,30 @@ def term_usage_map_lambda_expected(v_20038676: ArenaStore, v_1: Maybe<&2, U32>, 
       ArenaResult{v_20038684, +v_20038685} = term_usage_map(v_20038682, v_6, Nat.add(v_9, 1n), Binding{v_5, Ast.QMany{}, v_24, List.length(&2, Binding, v_12)} <> v_12, v_13, None{}, v_15)
       {ArenaResult{v_20038684, v_20038685} : ArenaResult<List<&2, UsageEntry>>}
 
-def term_usage_map_argument_expected_view(v_20038686: ArenaStore, v_0: U32) -> ArenaResult<Maybe<&2, U32>>:
-  ArenaResult{v_20038687, +v_20038688} = arena_get_node(v_20038686, v_0)
-  match v_20038688:
-    case Arena.TermAll{+v_20038695, +v_20038696, +v_20038698, +v_20038699, +v_20038700, +v_20038701}:
-      v_11 = v_20038699
-      {ArenaResult{v_20038687, Some{v_11}} : ArenaResult<Maybe<&2, U32>>}
-    case _:
-      {ArenaResult{v_20038687, None{}} : ArenaResult<Maybe<&2, U32>>}
+def term_usage_map_application_live(store: ArenaStore, expected: Maybe<&2, U32>, function: U32, argument: U32, depth: Nat, env: List<&2, Binding>, globals: Scope.ArenaGlobalScope, in_unsafe: Bool) -> ArenaResult<List<&2, UsageEntry>>:
+  ArenaResult{after_function, +function_usage} = term_usage_map(store, function, depth, env, globals, None{}, in_unsafe)
+  ArenaResult{after_argument, +argument_usage} = term_usage_map(after_function, argument, depth, env, globals, expected, in_unsafe)
+  ArenaResult{after_argument, usage_merge(function_usage, argument_usage, False{})}
 
-def term_usage_map_argument_expected(v_20038703: ArenaStore, v_1: Maybe<&2, U32>, v_2: Scope.ArenaGlobalScope) -> ArenaResult<Maybe<&2, U32>>:
-  match v_1:
-    case Some{+v_20038704}:
-      v_5 = v_20038704
-      ArenaResult{v_20038705, +v_20038706} = whnf(v_20038703, 64n, v_5, v_2)
-      ArenaResult{v_20038707, +v_20038708} = term_usage_map_argument_expected_view(v_20038705, v_20038706)
-      {ArenaResult{v_20038707, v_20038708} : ArenaResult<Maybe<&2, U32>>}
-    case None{}:
-      {ArenaResult{v_20038703, None{}} : ArenaResult<Maybe<&2, U32>>}
-
-def term_usage_map_application_quantity(v_1: ArenaStore, v_3: Maybe<&2, Ast.Quantity>, v_5: U32, v_7: U32, v_9: Nat, v_12: List<&2, Binding>, v_13: Scope.ArenaGlobalScope, v_15: Bool) -> ArenaResult<List<&2, UsageEntry>>:
-  match v_3:
-    case Some{+v_21}:
-      match v_21:
+def term_usage_map_application_view(store: ArenaStore, head: U32, function: U32, argument: U32, depth: Nat, env: List<&2, Binding>, globals: Scope.ArenaGlobalScope, in_unsafe: Bool) -> ArenaResult<List<&2, UsageEntry>>:
+  ArenaResult{next, +node} = arena_get_node(store, head)
+  match node:
+    case Arena.TermAll{+quantity, +name, +index, +domain, +body, +span}:
+      match quantity:
         case Ast.QZero{}:
-          ArenaResult{v_25, +v_26} = term_usage_map(v_1, v_5, v_9, v_12, v_13, None{}, v_15)
-          {ArenaResult{v_25, v_26} : ArenaResult<List<&2, UsageEntry>>}
+          term_usage_map(next, function, depth, env, globals, None{}, in_unsafe)
         case _:
-          ArenaResult{v_32, +v_33} = function_type_of(v_1, v_5, v_12, v_13)
-          ArenaResult{v_37, +v_38} = term_usage_map_argument_expected(v_32, v_33, v_13)
-          v_40 = v_38
-          ArenaResult{v_44, +v_45} = term_usage_map(v_37, v_5, v_9, v_12, v_13, None{}, v_15)
-          ArenaResult{v_49, +v_50} = term_usage_map(v_44, v_7, v_9, v_12, v_13, v_40, v_15)
-          v_50000241 = usage_merge(v_45, v_50, False{})
-          {ArenaResult{v_49, v_50000241} : ArenaResult<List<&2, UsageEntry>>}
+          term_usage_map_application_live(next, Some{domain}, function, argument, depth, env, globals, in_unsafe)
     case _:
-      ArenaResult{v_57, +v_58} = function_type_of(v_1, v_5, v_12, v_13)
-      ArenaResult{v_62, +v_63} = term_usage_map_argument_expected(v_57, v_58, v_13)
-      v_65 = v_63
-      ArenaResult{v_69, +v_70} = term_usage_map(v_62, v_5, v_9, v_12, v_13, None{}, v_15)
-      ArenaResult{v_74, +v_75} = term_usage_map(v_69, v_7, v_9, v_12, v_13, v_65, v_15)
-      v_50000242 = usage_merge(v_70, v_75, False{})
-      {ArenaResult{v_74, v_50000242} : ArenaResult<List<&2, UsageEntry>>}
+      term_usage_map_application_live(next, None{}, function, argument, depth, env, globals, in_unsafe)
+
+def term_usage_map_application_head(store: ArenaStore, head: Maybe<&2, U32>, function: U32, argument: U32, depth: Nat, env: List<&2, Binding>, globals: Scope.ArenaGlobalScope, in_unsafe: Bool) -> ArenaResult<List<&2, UsageEntry>>:
+  match head:
+    case Some{+ty}:
+      ArenaResult{next, +reduced} = whnf(store, 64n, ty, globals)
+      term_usage_map_application_view(next, reduced, function, argument, depth, env, globals, in_unsafe)
+    case None{}:
+      term_usage_map_application_live(store, None{}, function, argument, depth, env, globals, in_unsafe)
 
 def term_usage_map_family_result(v_1: ArenaStore, v_3: FamilyLowering, v_5: U32, v_6: IR.Words, v_8: Nat, v_11: List<&2, Binding>, v_12: Scope.ArenaGlobalScope, v_15: Maybe<&2, U32>, v_17: Bool) -> ArenaResult<List<&2, UsageEntry>>:
   match v_3:
@@ -7949,8 +7903,8 @@ def term_usage_map(v_1: ArenaStore, v_3: U32, v_5: Nat, v_8: List<&2, Binding>, 
         case _:
           v_271 = v_236
           v_273 = v_237
-          ArenaResult{v_277, +v_278} = function_argument_quantity(v_242, v_271, v_8, v_9)
-          ArenaResult{v_282, +v_283} = term_usage_map_application_quantity(v_277, v_278, v_271, v_273, v_5, v_8, v_9, v_14)
+          ArenaResult{v_277, +v_278} = function_type_of(v_242, v_271, v_8, v_9)
+          ArenaResult{v_282, +v_283} = term_usage_map_application_head(v_277, v_278, v_271, v_273, v_5, v_8, v_9, v_14)
           {ArenaResult{v_282, v_283} : ArenaResult<List<&2, UsageEntry>>}
     case Arena.TermFill{+v_288, +v_289, +v_290, +v_291}:
       +v_293 = IR.Words{v_289, v_290}

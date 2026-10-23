@@ -1,0 +1,426 @@
+{
+  "status": "PASS_REVERSE_ACTUAL50_ACTUAL49",
+  "diagnosticOnly": true,
+  "bootstrapAcceptance": false,
+  "newFixedpoint": false,
+  "executionOrder": [
+    "actual50",
+    "actual49"
+  ],
+  "actual50": {
+    "status": "PASS",
+    "coverage": {
+      "files": 50,
+      "modules": 15,
+      "checkedModules": 15,
+      "exports": 7720,
+      "actualOutputImportAndSemanticSmoke": true,
+      "checksExcluded": 0,
+      "outputPatches": 0,
+      "corpusSha256": "6a00a60b7833e1b188b7b1872297df8e00252cf381b1cc4f9d6b670dfe5ff016",
+      "exportSetSha256": "99efc6ef8538e35f5b6f549e39296bae814e654d48558f9ca7ba2aae2b1911f4"
+    },
+    "runtime": {
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      },
+      "platform": "linux",
+      "arch": "x64"
+    },
+    "measurement": {
+      "compileMs": 115380.18615000001,
+      "totalWithOutputSmokeMs": 115713.38104400001,
+      "coreMs": 114647.29183100001,
+      "phases": [
+        {
+          "phase": "compiler-startup",
+          "wallMs": 482.738515,
+          "cpuMs": 508.519
+        },
+        {
+          "phase": "load-parse",
+          "wallMs": 7273.762799,
+          "cpuMs": 12412.043
+        },
+        {
+          "phase": "expand",
+          "wallMs": 3575.590276,
+          "cpuMs": 4388.918
+        },
+        {
+          "phase": "check",
+          "wallMs": 91835.639285,
+          "cpuMs": 106611.012
+        },
+        {
+          "phase": "emit",
+          "wallMs": 11962.299471000006,
+          "cpuMs": 15989.569
+        },
+        {
+          "phase": "write-and-hash",
+          "wallMs": 247.16741100000218,
+          "cpuMs": 248.754
+        },
+        {
+          "phase": "output-import",
+          "wallMs": 300.3831979999959,
+          "cpuMs": 301.588
+        },
+        {
+          "phase": "output-semantic-smoke",
+          "wallMs": 11.72564199999033,
+          "cpuMs": 14.059
+        }
+      ],
+      "compilePhaseCpuMs": 140158.81499999997
+    },
+    "output": {
+      "status": "PASS",
+      "outputBytes": 20285397,
+      "outputSha256": "7a3ca3d98b60044e7c00629a5e4b5c3b4d25669eb185979390e46992a27942f1",
+      "compilerSha256": "0d2bdf9a378d973f4da497d34e3a580cc878f3d4ca0abcc5e91418e3663478f0",
+      "comparisons": [
+        {
+          "reference": "paired49-actual49.json.output.mjs",
+          "exactByteMatch": true
+        }
+      ],
+      "actualOutputImportAndSemanticSmoke": true,
+      "exports": 7720,
+      "bootstrapAcceptance": false
+    },
+    "guard": {
+      "label": "reverse50-actual50",
+      "command": [
+        "./node-v23.11.0-linux-x64/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "--stack-size=262144",
+        "run-reverse50.mjs",
+        "actual50"
+      ],
+      "group": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-reverse50-actual50.scope",
+      "memoryMax": "8589934592",
+      "memorySwapMax": "0",
+      "startedAt": "2026-10-23T08:41:47.207Z",
+      "samples": 466,
+      "elapsedMs": 116209.13246,
+      "memoryPeak": "2015997952",
+      "memoryCurrent": "138371072",
+      "memoryEvents": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+      "cpuStat": "usage_usec 141218163\nuser_usec 138548293\nsystem_usec 2669869\ncore_sched.force_idle_usec 0",
+      "pid": 402391,
+      "exitCode": 0,
+      "signal": null
+    },
+    "systemd": {
+      "command": [
+        "systemd-run",
+        "--user",
+        "--scope",
+        "--quiet",
+        "--unit=bend-native46-elcWbhvH-reverse50-actual50",
+        "-p",
+        "MemoryMax=8589934592",
+        "-p",
+        "MemorySwapMax=0",
+        "-p",
+        "RuntimeMaxSec=300s",
+        "/usr/bin/node",
+        "guard.mjs",
+        "reverse50-actual50",
+        "290000",
+        "./node-v23.11.0-linux-x64/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "--stack-size=262144",
+        "run-reverse50.mjs",
+        "actual50"
+      ],
+      "elapsedMs": 116246,
+      "status": 0,
+      "signal": null,
+      "error": null,
+      "stdout": "",
+      "stderr": "",
+      "systemctlShow": {
+        "status": 0,
+        "stdout": "Result=success\nRuntimeMaxUSec=infinity\nControlGroup=\nMemoryMax=infinity\nMemorySwapMax=infinity\nActiveState=inactive\nSubState=dead\n",
+        "stderr": ""
+      }
+    }
+  },
+  "actual49": {
+    "status": "PASS",
+    "coverage": {
+      "files": 50,
+      "modules": 15,
+      "checkedModules": 15,
+      "exports": 7720,
+      "actualOutputImportAndSemanticSmoke": true,
+      "checksExcluded": 0,
+      "outputPatches": 0,
+      "corpusSha256": "6a00a60b7833e1b188b7b1872297df8e00252cf381b1cc4f9d6b670dfe5ff016",
+      "exportSetSha256": "99efc6ef8538e35f5b6f549e39296bae814e654d48558f9ca7ba2aae2b1911f4"
+    },
+    "runtime": {
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      },
+      "platform": "linux",
+      "arch": "x64"
+    },
+    "measurement": {
+      "compileMs": 112587.290276,
+      "totalWithOutputSmokeMs": 112915.899093,
+      "coreMs": 111908.20078099999,
+      "phases": [
+        {
+          "phase": "compiler-startup",
+          "wallMs": 486.063537,
+          "cpuMs": 511.749
+        },
+        {
+          "phase": "load-parse",
+          "wallMs": 7585.615292,
+          "cpuMs": 12761.604
+        },
+        {
+          "phase": "expand",
+          "wallMs": 3804.621445999999,
+          "cpuMs": 4620.675
+        },
+        {
+          "phase": "check",
+          "wallMs": 90216.336665,
+          "cpuMs": 103296.486
+        },
+        {
+          "phase": "emit",
+          "wallMs": 10301.627378000005,
+          "cpuMs": 13221.365
+        },
+        {
+          "phase": "write-and-hash",
+          "wallMs": 190.34736899999552,
+          "cpuMs": 191.817
+        },
+        {
+          "phase": "output-import",
+          "wallMs": 296.9092579999997,
+          "cpuMs": 298.071
+        },
+        {
+          "phase": "output-semantic-smoke",
+          "wallMs": 11.086301000003004,
+          "cpuMs": 13.289
+        }
+      ],
+      "compilePhaseCpuMs": 134603.696
+    },
+    "output": {
+      "status": "PASS",
+      "outputBytes": 20285397,
+      "outputSha256": "7a3ca3d98b60044e7c00629a5e4b5c3b4d25669eb185979390e46992a27942f1",
+      "compilerSha256": "28061d5eab72b2a0bc560c6963b8f22cd863d7572f102cb627d483606f412e81",
+      "comparisons": [
+        {
+          "reference": "paired49-actual49.json.output.mjs",
+          "exactByteMatch": true
+        },
+        {
+          "reference": "reverse50-actual50.json.output.mjs",
+          "exactByteMatch": true
+        }
+      ],
+      "actualOutputImportAndSemanticSmoke": true,
+      "exports": 7720,
+      "bootstrapAcceptance": false
+    },
+    "guard": {
+      "label": "reverse50-control49",
+      "command": [
+        "./node-v23.11.0-linux-x64/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "--stack-size=262144",
+        "run-reverse50.mjs",
+        "control49"
+      ],
+      "group": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-reverse50-control49.scope",
+      "memoryMax": "8589934592",
+      "memorySwapMax": "0",
+      "startedAt": "2026-10-23T08:43:43.474Z",
+      "samples": 452,
+      "elapsedMs": 113248.42986500001,
+      "memoryPeak": "2149986304",
+      "memoryCurrent": "50794496",
+      "memoryEvents": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+      "cpuStat": "usage_usec 135619249\nuser_usec 133137658\nsystem_usec 2481591\ncore_sched.force_idle_usec 0",
+      "pid": 404797,
+      "exitCode": 0,
+      "signal": null
+    },
+    "systemd": {
+      "command": [
+        "systemd-run",
+        "--user",
+        "--scope",
+        "--quiet",
+        "--unit=bend-native46-elcWbhvH-reverse50-control49",
+        "-p",
+        "MemoryMax=8589934592",
+        "-p",
+        "MemorySwapMax=0",
+        "-p",
+        "RuntimeMaxSec=300s",
+        "/usr/bin/node",
+        "guard.mjs",
+        "reverse50-control49",
+        "290000",
+        "./node-v23.11.0-linux-x64/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "--stack-size=262144",
+        "run-reverse50.mjs",
+        "control49"
+      ],
+      "elapsedMs": 113287,
+      "status": 0,
+      "signal": null,
+      "error": null,
+      "stdout": "",
+      "stderr": "",
+      "systemctlShow": {
+        "status": 0,
+        "stdout": "Result=success\nRuntimeMaxUSec=infinity\nControlGroup=\nMemoryMax=infinity\nMemorySwapMax=infinity\nActiveState=inactive\nSubState=dead\n",
+        "stderr": ""
+      }
+    }
+  },
+  "reverseComparison": {
+    "actual50CompileMs": 115380.18615000001,
+    "actual49CompileMs": 112587.290276,
+    "actual50CheckMs": 91835.639285,
+    "actual49CheckMs": 90216.336665,
+    "actual50EmitMs": 11962.299471000006,
+    "actual49EmitMs": 10301.627378000005,
+    "actual50Over49CompileRatio": 1.0248064934075012,
+    "actual50Over49CheckRatio": 1.0179491063355073,
+    "actual50CompileChangeFraction": 0.024806493407501184,
+    "actual50CheckChangeFraction": 0.01794910633550728,
+    "actual50CompileCpuChangeFraction": 0.04127018176380526,
+    "outputExactBytes": true
+  },
+  "priorForwardComparison": {
+    "receipt": "paired50-diagnostic.json",
+    "sha256": "36237dcf14464e287a0518d9ec6a2cb2cd47d1e2a9b7bd7a281cde602ab15444",
+    "executionOrder": [
+      "actual49",
+      "actual50"
+    ],
+    "comparison": {
+      "actual49CompileMs": 106869.0484,
+      "actual50CompileMs": 133379.102801,
+      "actual49CheckMs": 83819.789183,
+      "actual50CheckMs": 100238.431925,
+      "actual49Over50CompileRatio": 0.801242819570074,
+      "actual49Over50CheckRatio": 0.8362041142634326,
+      "actual50CompileChangeFraction": 0.24806110654017943,
+      "actual50CheckChangeFraction": 0.19588026767943667,
+      "actual50CompileCpuChangeFraction": 0.21986791312859122,
+      "outputExactBytes": true,
+      "uncertainty": "One consecutive genuine49then50pair; no repeated/randomized or controlled-load trial. JIT/GC,order,host/thermal variation remain. No Mac comparison or statistical speedup claim. Counter run excluded from timing comparison."
+    }
+  },
+  "bothOrders": {
+    "actual50SlowerCompileBothOrders": true,
+    "actual50SlowerCheckBothOrders": true,
+    "uncertainty": "One forward and one reverse-order pair at different times, not a randomized replicated benchmark or controlled host-frequency/load test. This records both orderings without isolating a checker/JIT/GC/layout/host cause. No profile, counters or seed run added in reverse pair.",
+    "counterInterpretationCorrection": "Prior Pending whnf delta−35 counts only Pending constructor events, NOT all whnf invocations; Direct callbacks remain unattributed by preserved observer."
+  },
+  "guardAuthority": "Real per-run systemd user scopes:MemoryMax8589934592,MemorySwapMax0,RuntimeMaxSec300s. Linux cgroup memory.peak is charged memory, not macOS footprint; legacy benchmark RSS metadata is not the Linux enforcement mechanism.",
+  "evidenceSha256": {
+    "run-reverse50.mjs": "44df35d78f675a3eb806c444bc7c1f6f856b49338ffd443817205371f8c9c178",
+    "benchmark-linux.ts": "107be3470c240af8c069fdc39ccfebd080b473fb727a5943c9979d7370c987eb",
+    "evals/checker_core_step_runtime.mjs": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+    "corpus.relocated.json": "6a00a60b7833e1b188b7b1872297df8e00252cf381b1cc4f9d6b670dfe5ff016",
+    "official.json.exports.json": "9740412dd732c74160b574acff9ca4ce8c1565b15a51a40f3e49beba08c76914",
+    "reverse50-actual50.json": "757c9bd0688b972617f2a271e933d076f9644ddba9b6a5cece4717b35b00155c",
+    "reverse50-actual50.json.request.json": "05e1bd61ffbc79c3bdbc16f38dcede8d2e414265aecbd8756fd491f2e5c30ecc",
+    "reverse50-actual50-output-comparison.json": "0a1fb821b9170658769d4c242e958fe8e101fc61e404fd89e4c03219f5261e81",
+    "reverse50-actual50.guard.json": "94e7cee4f73550b1358860aa8809d8f549234faa32119b211da31678022d7c27",
+    "reverse50-actual50.systemd.json": "bc0dab14c6d0e4f6bcbcd92e6fb19fd221035425cbb75cc94c47834021415f40",
+    "reverse50-control49.json": "2ad5b97b5f620ba7c5955fce20b4804c6db6a0bd826c4f13d3a76bbf85351c55",
+    "reverse50-control49.json.request.json": "108b272217d6da51639139ed3ab689da3cae659715230f66c574cb3fa602376f",
+    "reverse50-control49-output-comparison.json": "60205cebce3ed3cb31a1cef7ec81489b3c6457314fa2595b72cadc5e570f7f87",
+    "reverse50-control49.guard.json": "f597e126a78c82c2414eab457550f22d5d8a2dde698c2b388c1f6abebcff7456",
+    "reverse50-control49.systemd.json": "83ecb22dd386301f9fc06e7b4a23fb7badb8f685a60d2b01485ae12eed433377"
+  },
+  "cleanup": {
+    "directoryBytes": 619295725,
+    "oldReceiptsUntouched": true,
+    "compilerImagesUnchanged": true,
+    "permanentSourceChanges": false,
+    "profiling": false,
+    "counterRun": false,
+    "seedRun": false
+  }
+}

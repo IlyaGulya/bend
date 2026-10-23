@@ -1,0 +1,319 @@
+{
+  "schema": 1,
+  "status": "PASS_EXACT_BALANCED_COUNTS",
+  "diagnosticOnly": true,
+  "normalBenchmark": false,
+  "compilerSha256": "0d2bdf9a378d973f4da497d34e3a580cc878f3d4ca0abcc5e91418e3663478f0",
+  "counterRuntime": {
+    "path": "counts49-runtime.mjs",
+    "sha256": "9bc67992963fbc430070ffc82ad2e07a83f145733951b67bf4ccd97b6ba583d6",
+    "source": "checkpoints/compiler-profile-v46.json .continuations.measurementRuntime",
+    "sourceChanges": 0,
+    "workerImport": "Unchanged benchmark-linux.ts options.driver dynamically imports counts49-runtime.mjs; BEND_CHECKER_COUNTS_FILE points to counts50.counts.json."
+  },
+  "coverage": {
+    "files": 50,
+    "modules": 15,
+    "checkedModules": 15,
+    "stopAfter": "check",
+    "checksExcluded": 0,
+    "outputPatches": 0
+  },
+  "exact49": {
+    "pending": 80385948,
+    "direct": 81907258,
+    "finished": 162293207,
+    "resume": 162293206,
+    "pendingPlusDirect": 162293206,
+    "schedulerLoopIterations": 324586413,
+    "pendingTargetSum": 80385948,
+    "result": "CheckSuccess",
+    "balanced": true
+  },
+  "exact50": {
+    "pending": 79649208,
+    "direct": 80507718,
+    "finished": 160156927,
+    "resume": 160156926,
+    "pendingPlusDirect": 160156926,
+    "schedulerLoopIterations": 320313853,
+    "pendingTargetSum": 79649208,
+    "result": "CheckSuccess",
+    "balanced": true
+  },
+  "totalDeltas": {
+    "pending": {
+      "v49": 80385948,
+      "v50": 79649208,
+      "delta50Minus49": -736740,
+      "fractionalChange": -0.009165034665013838
+    },
+    "direct": {
+      "v49": 81907258,
+      "v50": 80507718,
+      "delta50Minus49": -1399540,
+      "fractionalChange": -0.017086886243951716
+    },
+    "finished": {
+      "v49": 162293207,
+      "v50": 160156927,
+      "delta50Minus49": -2136280,
+      "fractionalChange": -0.01316308944464939
+    },
+    "resume": {
+      "v49": 162293206,
+      "v50": 160156926,
+      "delta50Minus49": -2136280,
+      "fractionalChange": -0.013163089525756289
+    },
+    "pendingPlusDirect": {
+      "v49": 162293206,
+      "v50": 160156926,
+      "delta50Minus49": -2136280,
+      "fractionalChange": -0.013163089525756289
+    },
+    "schedulerLoopIterations": {
+      "v49": 324586413,
+      "v50": 320313853,
+      "delta50Minus49": -4272560,
+      "fractionalChange": -0.013163089485202839
+    }
+  },
+  "requiredCanonicalTargets": [
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_core_subst",
+      "target": "core_subst",
+      "v49": 2002584,
+      "v50": 1637691,
+      "delta50Minus49": -364893
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_function_type_of",
+      "target": "function_type_of",
+      "v49": 732845,
+      "v50": 367957,
+      "delta50Minus49": -364888
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_whnf",
+      "target": "whnf",
+      "v49": 3189738,
+      "v50": 3189703,
+      "delta50Minus49": -35
+    }
+  ],
+  "largestCanonicalTargetChanges": [
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_core_subst",
+      "target": "core_subst",
+      "v49": 2002584,
+      "v50": 1637691,
+      "delta50Minus49": -364893
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_function_type_of",
+      "target": "function_type_of",
+      "v49": 732845,
+      "v50": 367957,
+      "delta50Minus49": -364888
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_arena_subst_memo_lookup",
+      "target": "arena_subst_memo_lookup",
+      "v49": 2293927,
+      "v50": 2287913,
+      "delta50Minus49": -6014
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_lookup_binding_head",
+      "target": "lookup_binding_head",
+      "v49": 736523,
+      "v50": 736204,
+      "delta50Minus49": -319
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_arena_put_node",
+      "target": "arena_put_node",
+      "v49": 4764907,
+      "v50": 4764742,
+      "delta50Minus49": -165
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_arena_bound_node",
+      "target": "arena_bound_node",
+      "v49": 4764907,
+      "v50": 4764742,
+      "delta50Minus49": -165
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_core_shift_open",
+      "target": "core_shift_open",
+      "v49": 354412,
+      "v50": 354319,
+      "delta50Minus49": -93
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_core_subst_open",
+      "target": "core_subst_open",
+      "v49": 1800727,
+      "v50": 1800655,
+      "delta50Minus49": -72
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_whnf",
+      "target": "whnf",
+      "v49": 3189738,
+      "v50": 3189703,
+      "delta50Minus49": -35
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_core_shift",
+      "target": "core_shift",
+      "v49": 1111462,
+      "v50": 1111442,
+      "delta50Minus49": -20
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_core_shift_terms",
+      "target": "core_shift_terms",
+      "v49": 149967,
+      "v50": 149949,
+      "delta50Minus49": -18
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_application_type_view",
+      "target": "application_type_view",
+      "v49": 817869,
+      "v50": 817855,
+      "delta50Minus49": -14
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_arena_words_cons",
+      "target": "arena_words_cons",
+      "v49": 2791646,
+      "v50": 2791634,
+      "delta50Minus49": -12
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_arena_bound_range_loop",
+      "target": "arena_bound_range_loop",
+      "v49": 2548613,
+      "v50": 2548601,
+      "delta50Minus49": -12
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_whnf_beta_try",
+      "target": "whnf_beta_try",
+      "v49": 304332,
+      "v50": 304325,
+      "delta50Minus49": -7
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_whnf_beta_body",
+      "target": "whnf_beta_body",
+      "v49": 304332,
+      "v50": 304325,
+      "delta50Minus49": -7
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_core_subst_terms",
+      "target": "core_subst_terms",
+      "v49": 670299,
+      "v50": 670293,
+      "delta50Minus49": -6
+    }
+  ],
+  "loopDefinition": "Each scheduler for-loop visit is one Pending,Direct,orFinished. Resume is counted inside Finished, not an additional loop iteration. pendingPlusDirect is invocation count, distinct from loop iterations.",
+  "callbackAttribution": {
+    "available": false,
+    "reason": "Exact preserved observer regex only recognizes oldseed$058mangling; own49/50callbacktargets remain unattributed. Direct/resume integer totals exact; optional1/1024samples not logical target attribution.",
+    "directTargets": [
+      [
+        "(unattributed)",
+        78726
+      ]
+    ],
+    "resumeTargets": [
+      [
+        "(unattributed)",
+        156434
+      ]
+    ]
+  },
+  "timingCaveat": "Observation-only counter instrumentation included. Not normal performance measurements and not used in pair speed comparison.",
+  "guard": {
+    "label": "counts50",
+    "command": [
+      "./node-v23.11.0-linux-x64/bin/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "--stack-size=262144",
+      "run-counts50.mjs"
+    ],
+    "group": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-counts50.scope",
+    "memoryMax": "8589934592",
+    "memorySwapMax": "0",
+    "startedAt": "2026-10-23T08:25:57.965Z",
+    "samples": 716,
+    "elapsedMs": 181636.208434,
+    "memoryPeak": "1715568640",
+    "memoryCurrent": "36790272",
+    "memoryEvents": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+    "cpuStat": "usage_usec 199768248\nuser_usec 197654595\nsystem_usec 2113652\ncore_sched.force_idle_usec 0",
+    "pid": 379220,
+    "exitCode": 0,
+    "signal": null
+  },
+  "systemd": {
+    "command": [
+      "systemd-run",
+      "--user",
+      "--scope",
+      "--quiet",
+      "--unit=bend-native46-elcWbhvH-counts50",
+      "-p",
+      "MemoryMax=8589934592",
+      "-p",
+      "MemorySwapMax=0",
+      "-p",
+      "RuntimeMaxSec=300s",
+      "/usr/bin/node",
+      "guard.mjs",
+      "counts50",
+      "290000",
+      "./node-v23.11.0-linux-x64/bin/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "--stack-size=262144",
+      "run-counts50.mjs"
+    ],
+    "elapsedMs": 181704,
+    "status": 0,
+    "signal": null,
+    "error": null,
+    "stdout": "",
+    "stderr": "",
+    "systemctlShow": {
+      "status": 0,
+      "stdout": "Result=success\nRuntimeMaxUSec=infinity\nControlGroup=\nMemoryMax=infinity\nMemorySwapMax=infinity\nActiveState=inactive\nSubState=dead\n",
+      "stderr": ""
+    }
+  },
+  "evidenceSha256": {
+    "counts49.counts.json": "a931932c63a68bd88e2581e0b01a273f33af006b4c0b430f7e60bb4e977456ae",
+    "counts50.counts.json": "5e3f6c95dda38f1057fb0af3be6b625bf0a7e0858ade64d2005130f134c019a3",
+    "counts49-runtime.mjs": "9bc67992963fbc430070ffc82ad2e07a83f145733951b67bf4ccd97b6ba583d6",
+    "run-counts50.mjs": "a289db90a7bd0910e97184b9c20fbad9eac1fd3eafef2c027d0d13da9b7ad016",
+    "counts50.json": "7f10339d02a31ec7069440f31c738eded7e7c9568d6cd91bee1805025264ad77",
+    "counts50.json.request.json": "4a5497242821badd6c85b22ffb20a1da61cc6b8dbddf9ea71e3d5493d3cda139",
+    "counts50.guard.json": "a8adafab61967b148c3de103c6a4ef2d30fbb4ab449177ee19b4aea7e0447f16",
+    "counts50.systemd.json": "77749bd9e57c2533489711ac56a172e8cd02ff2c30868eb90cf6209989432ad0"
+  },
+  "rawReceipt": {
+    "path": "ssh://nhs/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/counts50-diagnostic.json",
+    "sha256": "ae59724938fc40aac68e992cd123feae86fb9f3d715c77f9ff2ca212263972d2"
+  },
+  "interpretation": "Constructor-keyed targets count Pending requests only, not all logical calls including Direct. Direct/Resume exact totals are valid, but old seed callback regex leaves own49/50 targets unattributed. −35 Pending whnf is NOT a total whnf call delta."
+}

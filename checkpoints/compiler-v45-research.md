@@ -154,3 +154,47 @@ application can remove recomputation without a cache or weakened check. Preserve
 erased skipping, missing-type fallback, f-before-arg merge, Lambda beta branch,
 arena lifetime and diagnostics. Benefit is unmeasured and bounded; not an8x claim.
 
+## Version50: less duplication, rejected acceleration
+
+The proposed single callee head was implemented without a cache: seven query
+helpers become three local traversal helpers. Complete native root8155 bodies/
+8493 events,273 fixtures,75 parser cases,16 ESM consumer cases and actual
+stage1/stage2 byte fixedpoint pass. Frozen program output stays byte-identical.
+`selfhost-acceptance-release237-misaka-v50.json` records the genuine proof.
+
+Actual nhs emitted compiler controls, not seed or instrumented timings:
+
+|Order|49 compile(ms)|50 compile(ms)|49 check(ms)|50 check(ms)|
+|---|---:|---:|---:|---:|
+|49 then50|106869|133379|83820|100238|
+|50 then49|112587|115380|90216|91836|
+
+Both orderings favor49, but varying emission and penalty magnitude prevent an
+isolated checker/JIT/GC/host cause claim. Reject50 as acceleration; restore49
+checker for the next candidate, retaining50 source/proof in its checkpoint.
+
+Balanced exact iterations324586413 ->320313853, a4272560/1.316% reduction.
+Pending function_type_of732845 ->367957 and core_subst2002584 ->1637691 look
+large, but deep core_subst_open drops only72 and arena_put_node only165.
+arena_names_cons and arena_copy_word_range are unchanged. This challenges the
+estimated benefit: mostly cheap root bound/memo work was removed, not tree walks.
+Pending whnf−35 is NOT a total whnf-call delta. Direct/Resume totals are exact,
+but the retained seed$058callback regex cannot attribute own49/50 callback targets.
+The full observer source is preserved in compiler-profile-v46.json; absence of
+the cleaned throwaway script is not a missing prerequisite.
+
+Actual emitted49 checking profile: `compiler-emitted-profile49.json`, worker
+SHA958d3f69fb4b656f8e5a0f0cd557ffbf50fe63c0ea704365aaac61e0787e6321,
+17636237 bytes. Same full50-file input; checking-only, not emission/smoke.
+Synchronous named leaves expose Map-family8146ms, scope/index5289ms, native
+primitive-like1430ms; host scheduling19235ms and generated runtime helpers13380ms.
+Inlining and severed CPS ancestry mean none is exact removable logical time.
+Concrete hot consumers include arena_names_cons -> Arena.name -> Map.get.go,
+and whnf_pattern_constructor -> Scope.equal_names -> canonical_name/index lookup.
+
+Next hypothesis, not implemented here: eliminate immediate-Finished Direct
+scheduling using a fully native-checked, nonrecursive source helper. Preserve
+the exact request/result/continuation grades, fallback and single evaluation;
+restrict eager targets so they cannot nest earlier nonpure source body calls.
+Do not turn the host driver into the checker or reset internal closure depth.
+

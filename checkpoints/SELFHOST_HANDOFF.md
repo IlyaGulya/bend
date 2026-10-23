@@ -4,6 +4,37 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+## Latest experiment — Main50/parser75: rejected as acceleration
+
+Version50 removes duplicate callee-type derivation from affine usage; source
+parent `7c33172b`. Correctness is green:8155/8155 native bodies,8493 events,
+75 compiled parser cases,16 real library consumer cases and273/273 fixtures.
+Actual remote/downloaded byte comparison passes. Both images18297014 bytes,
+SHA256 `0d2bdf9a378d973f4da497d34e3a580cc878f3d4ca0abcc5e91418e3663478f0`.
+Stage2 self-compilation164289ms; full gate552466ms, physical2604952224 bytes.
+
+Same nhs runtime/corpus, genuine emitted compilers, all7720 exports and actual
+output import/semantic smoke; all emitted frozen program bytes remain identical:
+
+| Consecutive order |49 compile(ms)|50 compile(ms)|
+|---|---:|---:|
+|49 then50|106869|133379|
+|50 then49|112587|115380|
+
+Both orderings favor49; magnitude varies, and unchanged emission also varies.
+Do not claim an isolated cause or stable24.8% penalty. Exact balanced scheduler
+iterations fall324586413 ->320313853, only1.316%. Removed365k substitution
+requests remove just72 deep core_subst_open visits and165 arena_put_node
+requests; the presumed large algorithmic gain is disproved. Canonical target
+counts are Pending only, not all calls including Direct.
+
+Receipts: `compiler-usage-head-v50.json`, `selfhost-acceptance-release237-misaka-v50.json`,
+`compiler-emitted-linux-v50.json`, `compiler-emitted-linux-v50-reverse.json`,
+`compiler-counts-v49.json`, `compiler-counts-v50.json`. Raw1GB transports were
+verified/archived to66853244 bytes, copied locally and removed.
+**50 is not selected as an acceleration. Restore49checker before the next
+candidate;49remains the last selected compiler.** Never drop the50failure record.
+
 ## Latest acceptance — Main49/parser74 on misakaindrive
 
 Version49, source parent `bc86f3a1`, specializes only exact-arity eligible named

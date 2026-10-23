@@ -1,0 +1,517 @@
+{
+  "schema": 1,
+  "status": "REJECTED_AS_ACCELERATION_GENUINE_FIXEDPOINT_PASS",
+  "version": 50,
+  "sourceParentCommit": "7c33172b",
+  "sourceReceipt": "checkpoints/compiler-usage-head-v50.json",
+  "host": "misakaindrive",
+  "release": "4ff8545f19b09b7d2b8ca2303668100eac8efd66",
+  "releaseKernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+  "parserRunId": "release237-misaka-v75",
+  "sourceHashes": {
+    "bend2/selfhost/checker.bend": "4a2ab3324d4d3f3843cc925f242cd311ad3a26d84876774090b6840042a99d21",
+    "bend2/selfhost/js_emit.bend": "f8b3c64d5a8d62bd63ae171013d885dd5d34dfd359ec5d7d8d7ac9117661dd1d"
+  },
+  "nativeRoot": {
+    "sourceSha256": "9c58757eb5d8d3ce938122abab3a3d8854a2cc3dcd54b80dd49780a0bc8e6c82",
+    "artifactSha256": "c79880583d762e4e4368fa984a379241c0fa97ccb58d5d1df6de9cfa048e1b69",
+    "bytes": 10650368,
+    "checkedBodies": 8155,
+    "expectedSourceDefinitions": 8155,
+    "eventsFullyValidated": 8493,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 2059321344,
+      "peakFootprintBytes": 2652128208,
+      "elapsedMs": 24473,
+      "timeoutMs": 600000,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/Users/ilyagulya/Projects/My/bend/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_v1.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,checker_step,emit_modules_start,emit_library_start,emitter_step",
+        "--artifact=/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-steps-canonical-release237-misaka-v50-final.js",
+        "--report=/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-steps-native-canonical-release237-misaka-v50-final",
+        "--inputs-sha256=ee59db989e721b189a50fc8ec6576c915164474c88ef14d7aeb6dd90e0d70c60"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792742768343-9e2898dcde877065.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "parser": {
+    "status": "PARSER_ACCEPTED_NATIVE_SEMANTICS",
+    "admitted": true,
+    "artifactSha256": "ee68914e5a8e44970bc596afaa87a28282d61b3796d7f5ef3d50b6138235a545",
+    "completed": true,
+    "partial": false,
+    "counts": {
+      "focused": {
+        "total": 23,
+        "accepted": 22,
+        "acceptanceParity": 23,
+        "semanticParity": 23,
+        "literalSpanParity": 23
+      },
+      "whole29": {
+        "total": 29,
+        "accepted": 23,
+        "acceptanceParity": 29,
+        "semanticParity": 29,
+        "literalSpanParity": 29
+      },
+      "literals": {
+        "total": 13,
+        "accepted": 13,
+        "acceptanceParity": 13,
+        "semanticParity": 13,
+        "literalSpanParity": 13
+      },
+      "real": {
+        "total": 10,
+        "accepted": 10,
+        "acceptanceParity": 10,
+        "semanticParity": 10,
+        "literalSpanParity": 10
+      }
+    },
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "sourceSpecificExceptions": 0
+  },
+  "bootstrap": {
+    "status": "PURE_STEP_BOOTSTRAP_FIXEDPOINT",
+    "passed": true,
+    "bootstrapAcceptance": true,
+    "compilerBootstrapGreen": true,
+    "fixtureExecutions": 273,
+    "fixtureByStage": {
+      "seed": {
+        "total": 91,
+        "passed": 91
+      },
+      "stage-one": {
+        "total": 91,
+        "passed": 91
+      },
+      "stage-two": {
+        "total": 91,
+        "passed": 91
+      }
+    },
+    "stageTwoParser": "stage-one emitted parse_with_fuel, not seed parser",
+    "bytes": 18297014,
+    "fixedpoint": {
+      "criterion": "Exact emitted UTF-8 JS bytes; no normalization or patching",
+      "equal": true,
+      "stageOneSha256": "0d2bdf9a378d973f4da497d34e3a580cc878f3d4ca0abcc5e91418e3663478f0",
+      "stageTwoSha256": "0d2bdf9a378d973f4da497d34e3a580cc878f3d4ca0abcc5e91418e3663478f0"
+    },
+    "remoteCmpExitCode": 0,
+    "downloadedCmpExitCode": 0,
+    "downloadedStageSha256": "0d2bdf9a378d973f4da497d34e3a580cc878f3d4ca0abcc5e91418e3663478f0",
+    "phases": [
+      {
+        "stage": "stage-one",
+        "totalMs": 101172.68612500001,
+        "parseAndAdmissionMs": 19466.761000000006,
+        "expandMs": 4524.213084000003,
+        "checkMs": 62149.44675,
+        "emitMs": 15032.265290999989
+      },
+      {
+        "stage": "stage-two",
+        "totalMs": 164289.07891699998,
+        "parseAndAdmissionMs": 28260.309374999983,
+        "expandMs": 7310.493625000003,
+        "checkMs": 112294.061625,
+        "emitMs": 16424.21429199999
+      }
+    ],
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 2381758464,
+      "peakFootprintBytes": 2604952224,
+      "elapsedMs": 552466,
+      "timeoutMs": 600000,
+      "command": [
+        "/Users/ilyagulya/.cache/bend-selfhost-106c7efd/bin/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/selfhost_bootstrap_gate.ts",
+        "--component=checkpoints/selfhost-steps-canonical-release237-misaka-v50-final.js",
+        "--component-build=checkpoints/selfhost-steps-native-canonical-release237-misaka-v50-final.result.json",
+        "--root=checkpoints/.bootstrap_compiler_root_v1.bend",
+        "--root-manifest=checkpoints/selfhost-steps-driver-source-v1.json",
+        "--parser=checkpoints/bootstrap-parser-rebuild-release237-misaka-v75.js",
+        "--parser-build=checkpoints/bootstrap-parser-rebuild-release237-misaka-v75.native-build.result.json",
+        "--report=checkpoints/selfhost-steps-bootstrap-release237-misaka-v50.json",
+        "--worker"
+      ],
+      "label": "Real full selfhost step bootstrap",
+      "exitCode": 0,
+      "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792742931418-b59db64a052eb537.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "workerStackMiB": 256,
+      "workerOldGenerationMiB": 6144,
+      "workerYoungGenerationMiB": 128,
+      "parserFuel": 8000000,
+      "maxHeavyChildren": 1
+    }
+  },
+  "libraryConsumer": {
+    "status": "LIBRARY_CONSUMER_SMOKE_PASS",
+    "passed": true,
+    "artifact": {
+      "event": "artifact",
+      "phase": "emit-library",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/library-v50-smoke.json.cases/consumer.mjs",
+      "sha256": "0c591fcc97e5e259cb6b192e737acbfb667cc37719c307e2762ec138d254f249",
+      "bytes": 55029,
+      "outputPatches": 0,
+      "result": "EmitSuccess"
+    },
+    "runtime": {
+      "exports": [
+        "zero",
+        "one",
+        "pack",
+        "make_pack",
+        "apply",
+        "identity",
+        "identity_probe",
+        "erased_probe",
+        "specialized_probe"
+      ],
+      "rows": [
+        {
+          "name": "zero-nullary",
+          "observed": "BitZero",
+          "expected": "BitZero",
+          "passed": true
+        },
+        {
+          "name": "one-nullary",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "positional-noncommutative",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "positional-reversed-input",
+          "observed": [
+            "BitZero",
+            "BitOne"
+          ],
+          "expected": [
+            "BitZero",
+            "BitOne"
+          ],
+          "passed": true
+        },
+        {
+          "name": "pack-one-argument-is-curried-function",
+          "observed": "function",
+          "expected": "function",
+          "passed": true
+        },
+        {
+          "name": "pack-curried-second-argument",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "returned-curried-function",
+          "observed": "function",
+          "expected": "function",
+          "passed": true
+        },
+        {
+          "name": "higher-order-positional-call",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "over-applied-returned-function",
+          "observed": [
+            "BitOne",
+            "BitZero"
+          ],
+          "expected": [
+            "BitOne",
+            "BitZero"
+          ],
+          "passed": true
+        },
+        {
+          "name": "live-host-callback",
+          "observed": [
+            "BitZero",
+            "BitOne"
+          ],
+          "expected": [
+            "BitZero",
+            "BitOne"
+          ],
+          "passed": true
+        },
+        {
+          "name": "live-host-callback-evaluated-once",
+          "observed": 1,
+          "expected": 1,
+          "passed": true
+        },
+        {
+          "name": "erased-kind-and-type-effective-one-argument",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "ordinary-type-reference-erasure-in-bend-application",
+          "observed": "BitZero",
+          "expected": "BitZero",
+          "passed": true
+        },
+        {
+          "name": "actual-template-specialization",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "erased-expression-keeps-second-live-argument",
+          "observed": "BitOne",
+          "expected": "BitOne",
+          "passed": true
+        },
+        {
+          "name": "erased-expression-not-evaluated",
+          "observed": 0,
+          "expected": 0,
+          "passed": true
+        }
+      ],
+      "artifactExecutedUnchanged": true
+    },
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 422707200,
+      "peakFootprintBytes": 277520000,
+      "elapsedMs": 1936,
+      "timeoutMs": 600000,
+      "command": [
+        "/Users/ilyagulya/.cache/bend-selfhost-106c7efd/bin/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/checker_library_smoke.ts",
+        "--component=checkpoints/library-v50-probe.js",
+        "--component-build=checkpoints/library-v50-probe-native.result.json",
+        "--report=checkpoints/library-v50-smoke.json",
+        "--parser=checkpoints/bootstrap-parser-rebuild-release237-misaka-v75.js",
+        "--parser-build=checkpoints/bootstrap-parser-rebuild-release237-misaka-v75.native-build.result.json",
+        "--worker"
+      ],
+      "label": "Actual checked ESM library consumer smoke",
+      "exitCode": 0,
+      "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792742807542-808f72751459f38a.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "probeNative": {
+      "checkedBodies": 6918,
+      "expectedSourceDefinitions": 6918,
+      "eventsFullyValidated": 7214,
+      "checksExcluded": 0,
+      "outputPatches": 0,
+      "artifactSha256": "ec736ca8e36a041aa79537831ff4bccfa98b398d65f57053915d05e492940ce0",
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1251934208,
+        "peakFootprintBytes": 2176612456,
+        "elapsedMs": 14281,
+        "timeoutMs": 600000,
+        "command": [
+          "node",
+          "--experimental-strip-types",
+          "--max-old-space-size=3072",
+          "/Users/ilyagulya/Projects/My/bend/evals/checker_core_component_build.ts",
+          "--worker",
+          "--file=/Users/ilyagulya/Projects/My/bend/checkpoints/template_checker_steps_driver_v1.bend",
+          "--exports=parsed_module,expand_modules_start,template_step,check_expanded_start,checker_step,emit_modules_start,emit_library_probe_start,emitter_step",
+          "--artifact=/Users/ilyagulya/Projects/My/bend/checkpoints/library-v50-probe.js",
+          "--report=/Users/ilyagulya/Projects/My/bend/checkpoints/library-v50-probe-native",
+          "--inputs-sha256=35bd6e085f74958cb7b89a00894aa5c29023a530d06a28bff4124b4cc840547b"
+        ],
+        "label": "Full-native CheckerCore component JS build",
+        "exitCode": 0,
+        "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792742793104-3e113216ddf6ef60.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    }
+  },
+  "frozenBenchmark": {
+    "status": "PASS",
+    "kind": "Official-generated version50 seed, NOT actual emitted50 performance",
+    "compileMs": 120432.70275,
+    "phases": [
+      {
+        "name": "compiler-startup",
+        "wallMs": 114.69149999999999,
+        "cpuMs": 114.911
+      },
+      {
+        "name": "load-parse",
+        "wallMs": 5636.9823750000005,
+        "cpuMs": 7077.732
+      },
+      {
+        "name": "expand",
+        "wallMs": 5645.669707999999,
+        "cpuMs": 6225.655
+      },
+      {
+        "name": "check",
+        "wallMs": 90399.96741699999,
+        "cpuMs": 94735.366
+      },
+      {
+        "name": "emit",
+        "wallMs": 18460.662666000004,
+        "cpuMs": 20327.239
+      },
+      {
+        "name": "write-and-hash",
+        "wallMs": 167.89754200000607,
+        "cpuMs": 143.574
+      },
+      {
+        "name": "output-import",
+        "wallMs": 355.81391700000677,
+        "cpuMs": 342.113
+      },
+      {
+        "name": "output-semantic-smoke",
+        "wallMs": 31.951499999995576,
+        "cpuMs": 30.993
+      }
+    ],
+    "exportCount": 7720,
+    "exportSetSha256": "99efc6ef8538e35f5b6f549e39296bae814e654d48558f9ca7ba2aae2b1911f4",
+    "output": {
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-misaka-v50-js.json.output.mjs",
+      "bytes": 20281365,
+      "sha256": "a1033733403dddb6214b6433ec55cd385fc210ce0d985871259a25487bd06d29"
+    },
+    "outputSmokePassed": true,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 1102102528,
+      "peakFootprintBytes": 1993460976,
+      "elapsedMs": 121468,
+      "timeoutMs": 600000,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "--stack-size=262144",
+        "/Users/ilyagulya/Projects/My/bend/evals/compiler_benchmark.ts",
+        "--worker",
+        "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-misaka-v50-js.json.request.json",
+        "a9225a72cf25a1007b77e2976b2db2b2002a335857eedecc704816104841ff38"
+      ],
+      "label": "Comparable full-corpus component compiler",
+      "exitCode": 0,
+      "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792742809811-565c127d0089a27f.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "unchanged49OutputBytes": true
+  },
+  "evidence": {
+    "fullGate": "checkpoints/selfhost-steps-bootstrap-release237-misaka-v50.json",
+    "fullGateSha256": "1544844201a24e59eed39a85a66552658774701dcb456d7e6c2a1d9330ec9dcd",
+    "frozenCorpus": "checkpoints/compiler-benchmark-release237-v41.corpus.json",
+    "priorAccepted": "checkpoints/selfhost-acceptance-release237-misaka-v49.json",
+    "archive": {
+      "status": "ARCHIVED_AND_REMOVED_VERIFIED_RAW_TRANSPORTS",
+      "removedFiles": 408,
+      "removedBytes": 1007412532,
+      "archive": "/Users/ilyagulya/Projects/My/bend/checkpoints/selfhost-steps-bootstrap-release237-misaka-v50.evidence.tar.gz",
+      "archiveBytes": 66853244,
+      "archiveSha256": "bb81482ce45568459aecff5ad9265ee1788161a9a6f95bb4304ef3d92eb72e62",
+      "emittedImagesRetained": true,
+      "completedRunnerRemoved": true
+    },
+    "actualEmitted49Profile": "checkpoints/compiler-emitted-profile49.json",
+    "actual49Counters": "checkpoints/compiler-counts-v49.json",
+    "actual50Counters": "checkpoints/compiler-counts-v50.json",
+    "actual50PairedMeasurement": "checkpoints/compiler-emitted-linux-v50.json",
+    "reverseOrderControl": "checkpoints/compiler-emitted-linux-v50-reverse.json",
+    "reverseOrderControlSha256": "a171fe3d94d001f7545184e89e7a658e5196d5031b266ae1da8d49a2d7d2479e"
+  },
+  "selectedForAcceleration": false,
+  "lastSelectedVersion": 49,
+  "speedVerdict": "Both orderings favor49; reverse50/49 compile115380/112587ms and checker91836/90216ms. Reject50asacceleration, preserve genuine fixedpoint proof and do not attribute an isolated cause.",
+  "scope": [
+    "All8155 compiler bodies/8493 events checked; zero exclusions/output patches.",
+    "Full273 fixtures,75 compiled parser semantic/span cases,16 actual consumer cases and real byte fixedpoint pass.",
+    "Actual frozen output remains byte-identical49; complete export-set and semantic smoke pass.",
+    "Stage2 self-compilation164289ms is below5minutes; fullgate552466ms is not.",
+    "Exact totaliterations324586413→320313853,−4272560/1.316%; constructor target deltas are Pending only.",
+    "First consecutive actual49/50 pair106869/133379ms, check83820/100238ms. No observed speedup; unchanged emission also doubles, so cause is not isolated."
+  ]
+}

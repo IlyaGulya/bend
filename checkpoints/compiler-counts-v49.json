@@ -1,0 +1,485 @@
+{
+  "status": "PASS_EXACT_BALANCED_CHECKER_COUNTS",
+  "diagnosticOnly": true,
+  "bootstrapAcceptance": false,
+  "newFixedpoint": false,
+  "normalBenchmark": false,
+  "compiler": {
+    "path": "stage-one49.js",
+    "sha256": "28061d5eab72b2a0bc560c6963b8f22cd863d7572f102cb627d483606f412e81",
+    "bytes": 18330720,
+    "kind": "Actual accepted emitted49, not official-generated seed"
+  },
+  "provenance": {
+    "committedSource": "checkpoints/compiler-profile-v46.json",
+    "sourceField": ".continuations.measurementRuntime",
+    "runtimeSha256": "9bc67992963fbc430070ffc82ad2e07a83f145733951b67bf4ccd97b6ba583d6",
+    "requiredRuntimeSha256": "9bc67992963fbc430070ffc82ad2e07a83f145733951b67bf4ccd97b6ba583d6",
+    "runtimeByteChanges": 0,
+    "callbackObserverRegexChanges": 0,
+    "priorMissingRecipeResolution": "The prior profile-only receipt recorded that the old throwawayfile was absent. This later run recovers its exact full source from the preserved committedJSONfield; old receipts are not modified."
+  },
+  "workerImportRecipe": {
+    "runner": "benchmark-linux.ts",
+    "runnerSha256": "107be3470c240af8c069fdc39ccfebd080b473fb727a5943c9979d7370c987eb",
+    "request": "counts49.json.request.json",
+    "requestDriver": "counts49-runtime.mjs",
+    "operation": "Existing unchanged worker imports options.driver via pathToFileURL. Only request driver path changes to preserved observation-only counter runtime; no compiler source/image/output patch or worker source edit.",
+    "env": {
+      "BEND_CHECKER_COUNTS_FILE": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/counts49.counts.json"
+    },
+    "stopAfter": "check",
+    "workerLimits": {
+      "stackSizeMb": 256,
+      "maxOldGenerationSizeMb": 6144,
+      "maxYoungGenerationSizeMb": 128
+    }
+  },
+  "runtime": {
+    "versions": {
+      "node": "23.11.0",
+      "acorn": "8.14.1",
+      "ada": "3.2.1",
+      "amaro": "0.4.1",
+      "ares": "1.34.4",
+      "brotli": "1.1.0",
+      "cjs_module_lexer": "2.1.0",
+      "cldr": "46.0",
+      "icu": "76.1",
+      "llhttp": "9.2.1",
+      "modules": "131",
+      "napi": "10",
+      "nbytes": "0.1.1",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.64.0",
+      "openssl": "3.0.16",
+      "simdjson": "3.12.2",
+      "simdutf": "6.0.3",
+      "sqlite": "3.49.1",
+      "tz": "2025a",
+      "undici": "6.21.2",
+      "unicode": "16.0",
+      "uv": "1.50.0",
+      "uvwasi": "0.0.21",
+      "v8": "12.9.202.28-node.14",
+      "zlib": "1.3.0.1-motley-788cb3c",
+      "zstd": "1.5.6"
+    },
+    "platform": "linux",
+    "arch": "x64"
+  },
+  "coverage": {
+    "files": 50,
+    "modules": 15,
+    "checkedModules": 15,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "corpusSha256": "6a00a60b7833e1b188b7b1872297df8e00252cf381b1cc4f9d6b670dfe5ff016",
+    "emission": false,
+    "outputSmoke": false
+  },
+  "exactCounts": {
+    "pending": 80385948,
+    "direct": 81907258,
+    "finished": 162293207,
+    "resume": 162293206,
+    "pendingTargetSum": 80385948,
+    "result": "CheckSuccess",
+    "balanced": true,
+    "pendingPlusDirect": 162293206
+  },
+  "pendingTargetKinds": 284,
+  "topPendingTargets": [
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_arena_put_node",
+      "target": "arena_put_node",
+      "count": 4764907,
+      "fractionOfPending": 0.05927537235736773
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_arena_bound_node",
+      "target": "arena_bound_node",
+      "count": 4764907,
+      "fractionOfPending": 0.05927537235736773
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_whnf",
+      "target": "whnf",
+      "count": 3189738,
+      "fractionOfPending": 0.039680293376648364
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_arena_words_cons",
+      "target": "arena_words_cons",
+      "count": 2791646,
+      "fractionOfPending": 0.03472803480528711
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_arena_copy_word_range",
+      "target": "arena_copy_word_range",
+      "count": 2688318,
+      "fractionOfPending": 0.03344263601892211
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_arena_bound_range_loop",
+      "target": "arena_bound_range_loop",
+      "count": 2548613,
+      "fractionOfPending": 0.03170470789247892
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_arena_constructor_owner_view",
+      "target": "arena_constructor_owner_view",
+      "count": 2331913,
+      "fractionOfPending": 0.029008963108825937
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_arena_subst_memo_lookup",
+      "target": "arena_subst_memo_lookup",
+      "count": 2293927,
+      "fractionOfPending": 0.028536417832629155
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_core_subst",
+      "target": "core_subst",
+      "count": 2002584,
+      "fractionOfPending": 0.024912115236857067
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_arena_names_append",
+      "target": "arena_names_append",
+      "count": 1971272,
+      "fractionOfPending": 0.024522594421602144
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_core_pattern_list_depth",
+      "target": "core_pattern_list_depth",
+      "count": 1826927,
+      "fractionOfPending": 0.022726944764027663
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_core_subst_open",
+      "target": "core_subst_open",
+      "count": 1800727,
+      "fractionOfPending": 0.022401017152898415
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_arena_words_append",
+      "target": "arena_words_append",
+      "count": 1509177,
+      "fractionOfPending": 0.018774139480198702
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_scope_segment_name_aliases",
+      "target": "scope_segment_name_aliases",
+      "count": 1421213,
+      "fractionOfPending": 0.017679868625795146
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_core_pattern_depth",
+      "target": "core_pattern_depth",
+      "count": 1367123,
+      "fractionOfPending": 0.017006989828620294
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_usage_get",
+      "target": "usage_get",
+      "count": 1293344,
+      "fractionOfPending": 0.01608918016367736
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_pattern_row_index_segments_complete",
+      "target": "pattern_row_index_segments_complete",
+      "count": 1224563,
+      "fractionOfPending": 0.01523354554455214
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_pattern_values",
+      "target": "pattern_values",
+      "count": 1156185,
+      "fractionOfPending": 0.014382924239445432
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_core_shift",
+      "target": "core_shift",
+      "count": 1111462,
+      "fractionOfPending": 0.013826570783241867
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_arena_names_cons",
+      "target": "arena_names_cons",
+      "count": 1097645,
+      "fractionOfPending": 0.01365468750831924
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_global_segments_has_constructor_owner",
+      "target": "global_segments_has_constructor_owner",
+      "count": 1091025,
+      "fractionOfPending": 0.013572334806575895
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_usage_set",
+      "target": "usage_set",
+      "count": 1062372,
+      "fractionOfPending": 0.013215891911855042
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_whnf_patterns",
+      "target": "whnf_patterns",
+      "count": 1049266,
+      "fractionOfPending": 0.013052853466379473
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_scope_canonical_aliases_filter",
+      "target": "scope_canonical_aliases_filter",
+      "count": 944997,
+      "fractionOfPending": 0.011755748653981166
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_arena_constructor_owner",
+      "target": "arena_constructor_owner",
+      "count": 895033,
+      "fractionOfPending": 0.011134197235566594
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_application_type_view",
+      "target": "application_type_view",
+      "count": 817869,
+      "fractionOfPending": 0.010174278220865168
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_whnf_pattern",
+      "target": "whnf_pattern",
+      "count": 813132,
+      "fractionOfPending": 0.010115350011173595
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_scope_name_is_in",
+      "target": "scope_name_is_in",
+      "count": 772098,
+      "fractionOfPending": 0.009604887660216435
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_apply_prefix",
+      "target": "apply_prefix",
+      "count": 760920,
+      "fractionOfPending": 0.009465833506124727
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_lookup_binding_head",
+      "target": "lookup_binding_head",
+      "count": 736523,
+      "fractionOfPending": 0.00916233518823464
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_function_type_of",
+      "target": "function_type_of",
+      "count": 732845,
+      "fractionOfPending": 0.00911658092282497
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_arena_publish_term_view",
+      "target": "arena_publish_term_view",
+      "count": 712321,
+      "fractionOfPending": 0.008861262667450286
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_core_subst_terms",
+      "target": "core_subst_terms",
+      "count": 670299,
+      "fractionOfPending": 0.008338509611157412
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_equal_raw",
+      "target": "equal_raw",
+      "count": 638331,
+      "fractionOfPending": 0.007940828165639098
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_equal_raw_identity",
+      "target": "equal_raw_identity",
+      "count": 638331,
+      "fractionOfPending": 0.007940828165639098
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_equal_raw_distinct",
+      "target": "equal_raw_distinct",
+      "count": 583740,
+      "fractionOfPending": 0.007261716935900289
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_global_segments_constructor_candidates",
+      "target": "global_segments_constructor_candidates",
+      "count": 550059,
+      "fractionOfPending": 0.0068427257958069984
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_global_segments_family_aliases",
+      "target": "global_segments_family_aliases",
+      "count": 550059,
+      "fractionOfPending": 0.0068427257958069984
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_term_usage_map",
+      "target": "term_usage_map",
+      "count": 546674,
+      "fractionOfPending": 0.006800616446048506
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_canonicalize_term",
+      "target": "canonicalize_term",
+      "count": 536739,
+      "fractionOfPending": 0.006677025193507701
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_whnf_beta_cases_view",
+      "target": "whnf_beta_cases_view",
+      "count": 529245,
+      "fractionOfPending": 0.00658379994473661
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_whnf_beta_case",
+      "target": "whnf_beta_case",
+      "count": 529245,
+      "fractionOfPending": 0.00658379994473661
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_whnf_beta_pattern_result",
+      "target": "whnf_beta_pattern_result",
+      "count": 529245,
+      "fractionOfPending": 0.00658379994473661
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_arena_decode_term_get_node_result_54",
+      "target": "arena_decode_term_get_node_result_54",
+      "count": 467061,
+      "fractionOfPending": 0.0058102319076961065
+    },
+    {
+      "constructor": "checker_core_steps_v1.CheckerRequest_family_constructor_keys_inner",
+      "target": "family_constructor_keys_inner",
+      "count": 449632,
+      "fractionOfPending": 0.00559341540638421
+    }
+  ],
+  "callbackSamples": {
+    "directTargets": [
+      [
+        "(unattributed)",
+        80005
+      ]
+    ],
+    "resumeTargets": [
+      [
+        "(unattributed)",
+        158558
+      ]
+    ],
+    "directSamples": 80005,
+    "resumeSamples": 158558,
+    "attributionAvailable": false,
+    "reason": "Preserved regex recognizes officialseed $checker_core_steps_v1$058...$ mangling, not own emitted $u$...$46$. All unattributed samples are therefore expected and provide no logical callback-target attribution. Direct/resume integer totals remain exact; samples are not logical-call frequencies or time."
+  },
+  "phases": [
+    {
+      "phase": "compiler-startup",
+      "wallMs": 546.0804579999999,
+      "cpuMs": 572.015
+    },
+    {
+      "phase": "load-parse",
+      "wallMs": 7770.721194000001,
+      "cpuMs": 13340.206
+    },
+    {
+      "phase": "expand",
+      "wallMs": 3677.163767,
+      "cpuMs": 4457.143
+    },
+    {
+      "phase": "check",
+      "wallMs": 93780.082168,
+      "cpuMs": 106072.414
+    }
+  ],
+  "instrumentedThroughCheckMs": 105775.464836,
+  "timingCaveat": "Counts/LCG/Function.toString observer overhead included. These are instrumented diagnostic timings, not normal benchmark timings or evidence of speedup.",
+  "guard": {
+    "label": "counts49",
+    "command": [
+      "./node-v23.11.0-linux-x64/bin/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "--stack-size=262144",
+      "run-counts49.mjs"
+    ],
+    "group": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-counts49.scope",
+    "memoryMax": "8589934592",
+    "memorySwapMax": "0",
+    "startedAt": "2026-10-23T08:17:33.456Z",
+    "samples": 424,
+    "elapsedMs": 106089.68204999999,
+    "memoryPeak": "2054201344",
+    "memoryCurrent": "42643456",
+    "memoryEvents": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+    "cpuStat": "usage_usec 125071673\nuser_usec 122565449\nsystem_usec 2506223\ncore_sched.force_idle_usec 0",
+    "pid": 364658,
+    "exitCode": 0,
+    "signal": null
+  },
+  "systemd": {
+    "command": [
+      "systemd-run",
+      "--user",
+      "--scope",
+      "--quiet",
+      "--unit=bend-native46-elcWbhvH-counts49",
+      "-p",
+      "MemoryMax=8589934592",
+      "-p",
+      "MemorySwapMax=0",
+      "-p",
+      "RuntimeMaxSec=300s",
+      "/usr/bin/node",
+      "guard.mjs",
+      "counts49",
+      "290000",
+      "./node-v23.11.0-linux-x64/bin/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "--stack-size=262144",
+      "run-counts49.mjs"
+    ],
+    "elapsedMs": 106130,
+    "status": 0,
+    "signal": null,
+    "error": null,
+    "stdout": "",
+    "stderr": "",
+    "systemctlShow": {
+      "status": 0,
+      "stdout": "Result=success\nRuntimeMaxUSec=infinity\nControlGroup=\nMemoryMax=infinity\nMemorySwapMax=infinity\nActiveState=inactive\nSubState=dead\n",
+      "stderr": ""
+    }
+  },
+  "evidenceSha256": {
+    "counts49-runtime.mjs": "9bc67992963fbc430070ffc82ad2e07a83f145733951b67bf4ccd97b6ba583d6",
+    "run-counts49.mjs": "f3424f5843b3f3d06154b92f4fb274ceefc5673d86b193db49a2d3200f10a856",
+    "counts49.json": "f4d5dbaae3f95280477bfde8f2f9e728eaec1c3a49728687a464bf2037b35b87",
+    "counts49.json.request.json": "296ec54a582e0343c49900913a11196939765e6b8524de030baa6de4f67d5f32",
+    "counts49.counts.json": "a931932c63a68bd88e2581e0b01a273f33af006b4c0b430f7e60bb4e977456ae",
+    "counts49.guard.json": "9a9192cf2ed57590c39cd10f3eafedea32f4cef77585b0f3e14ed00a05103397",
+    "counts49.systemd.json": "537dfa25922cdc75a606b7fd4cec009be51bc54e89d296e6ebf3d812ed10ee93",
+    "benchmark-linux.ts": "107be3470c240af8c069fdc39ccfebd080b473fb727a5943c9979d7370c987eb",
+    "evals/checker_core_step_runtime.mjs": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+    "corpus.relocated.json": "6a00a60b7833e1b188b7b1872297df8e00252cf381b1cc4f9d6b670dfe5ff016"
+  },
+  "cleanup": {
+    "directoryBytes": 519657559,
+    "oldReceiptsUntouched": true,
+    "permanentSourceChanges": false,
+    "coreImageUnchanged": true,
+    "rawCountersRetained": "counts49.counts.json"
+  }
+}
