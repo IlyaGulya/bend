@@ -4,6 +4,19 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+Актуально57n: production FIR→BIR compiler root нативно проверен8382/8382,
+полный frozen corpus/7720 exports прошёл, настоящий unchanged stage1/stage2
+byte fixedpoint есть. ВСЕ285 behavior executions также завершены:95 seed,
+95 stage1,95 stage2; на каждом emitted image64 positive/31 negative и130
+свежих full AST/span approvals, cache hits0. Отдельный full emitted-suite run
+прошёл270081ms /836957800physicalbytes; исходный monolithic600s gate остаётся
+честно FAIL по deadline. Functional IR cutover выполнен; цель по скорости ещё не достигнута.
+Current correctness checkpoint2fabd354/d7e9b9ee и receipt57k/57n. Selected
+performance baseline55 остаётся2b3efa80. Native O0 отвергнут:clang37.22s,
+но whole frozen runtime не закончил check за300s. Parent57p full currentK/O1
+build с private allocation-tight mat_lits comparator сейчас в работе на misaka;
+canonical comp.ts пока85f46bbc..., kernel строго2.0.37, не обновлять.
+
 ## Compiler57 — архитектура и законы, реализация ещё не принята
 
 Нормативный контракт: [SELFHOST_IR_ARCHITECTURE.md](SELFHOST_IR_ARCHITECTURE.md).

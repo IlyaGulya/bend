@@ -1,6 +1,6 @@
 {
   "version": "57k",
-  "status": "TRUE_UNCHANGED_FULL_ROOT_BYTE_FIXEDPOINT_PROVED_FULL_EMITTED_FIXTURES_INCOMPLETE",
+  "status": "PRODUCTION_FIR_BIR_FULL_ROOT_BYTE_FIXEDPOINT_AND_ALL285_BEHAVIORS_PROVED_PERFORMANCE_NOT_ACCEPTED",
   "selectedWorkingBaseline": "2b3efa80",
   "sourceHashes": {
     "bend2/selfhost/js_emit.bend": "1879ff7793f295c88aaccf1f59d20ebe4d292c728451d0191e986032be13faa6",
@@ -276,7 +276,10 @@
     "fixedpoint": true,
     "speedClaim": false,
     "fullGatePassed": false,
-    "fullGateFixtureExecutionsCompleted": 100
+    "fullGateFixtureExecutionsCompleted": 285,
+    "fullBehaviorSuitePassed": true,
+    "monolithic600sGatePassed": false,
+    "speedGoalComplete": false
   },
   "fullRootNativeProof": {
     "status": "JS_GENERATED_NOT_YET_EXECUTED",
@@ -1269,5 +1272,83 @@
       "checkpoints/.ir57k-native-local-order.bend",
       "--check-only"
     ]
+  },
+  "emittedSuites": {
+    "schemaVersion": 1,
+    "status": "EMITTED_SUITES_BEHAVIOR_PASS",
+    "passed": true,
+    "report": "checkpoints/selfhost-ir57k-emitted-suites-b.json",
+    "reportSha256": "535f6619305d38109d54d4767d524d3788c6ff476d740cf43c70df0c7de4ea2b",
+    "runner": "evals/selfhost_emitted_suites.ts",
+    "runnerSha256": "c5d4f96e4b9836601206dd9d896ad07ef98475281955f022f6ef4efb763d0be8",
+    "runnerSnapshot": "checkpoints/selfhost-ir57k-emitted-suites-b.json.cases/selfhost_emitted_suites.ts",
+    "command": "bun --smol evals/selfhost_emitted_suites.ts --fixedpoint-report=checkpoints/selfhost-ir57k-bootstrap-b.json --report=checkpoints/selfhost-ir57k-emitted-suites-b.json",
+    "guardian": {
+      "status": "PASS",
+      "commandExitCode": 0,
+      "elapsedMs": 270081,
+      "timeoutMs": 600000,
+      "peakRssBytes": 2234515456,
+      "peakFootprintBytes": 836957800,
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592,
+      "pollMs": 10
+    },
+    "actualImages": {
+      "stageOne": "checkpoints/selfhost-ir57k-bootstrap-b.json.cases/stage-one.js",
+      "stageTwo": "checkpoints/selfhost-ir57k-bootstrap-b.json.cases/stage-two.js",
+      "bytesEach": 13733899,
+      "sha256Each": "8aacace8d17a5a8d79e909733d03ccd4b82a5c42d9b269a96276925215d02c0b",
+      "comparison": "Buffer.equals on actual unchanged stage files; complete matching sourceHashes and original root parity approvals authenticated"
+    },
+    "evidenceCounts": {
+      "existingSeed": 95,
+      "freshStageOne": 95,
+      "freshStageTwo": 95,
+      "freshEmitted": 190,
+      "total": 285
+    },
+    "stages": [
+      {
+        "stage": "stage-one",
+        "passed": true,
+        "fixtureRows": 95,
+        "accepted": 64,
+        "negative": 31,
+        "fullSemanticSpanApprovals": 130,
+        "cacheMisses": 130,
+        "cacheHits": 0,
+        "workerPassed": true,
+        "workerFixtureExecutions": 95,
+        "workerExitCode": 0
+      },
+      {
+        "stage": "stage-two",
+        "passed": true,
+        "fixtureRows": 95,
+        "accepted": 64,
+        "negative": 31,
+        "fullSemanticSpanApprovals": 130,
+        "cacheMisses": 130,
+        "cacheHits": 0,
+        "workerPassed": true,
+        "workerFixtureExecutions": 95,
+        "workerExitCode": 0
+      }
+    ],
+    "originalMonolithicGate": {
+      "status": "FAIL",
+      "passed": false,
+      "reason": "deadline_exceeded",
+      "elapsedMs": 600028,
+      "timeoutMs": 600000
+    },
+    "monolithicBootstrapAcceptance": false,
+    "selfhostGreen": false,
+    "scope": "Separate complete behavior proof; NOT aggregate 600s bootstrap acceptance or native build+run speed acceptance. Existing gate, worker, compiler, parser and build proofs unchanged.",
+    "earlierFailedAttempt": {
+      "report": "checkpoints/selfhost-ir57k-emitted-suites-a.json",
+      "reason": "Companion initially rejected the existing diagnostic-marker cache lookup protocol; corrected to always reply with a cache MISS and no transport, forcing a fresh parse. No emitted fixture passed in that attempt."
+    }
   }
 }

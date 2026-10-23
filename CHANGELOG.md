@@ -165,6 +165,10 @@ latest one; the GitHub release carries the same notes.
   closure lowering. The JavaScript renderer groups distinct-tag
   tests on the same stable local or capture into a switch, preserving lexical
   failure labels, later duplicate-tag cases and wildcard fallthrough.
+- Complete emitted compiler suites authenticate an existing full-root byte
+  fixedpoint and independently execute every source fixture on both unchanged
+  stage images with fresh parsing and full native AST/span parity. Separate
+  behavior receipts do not waive or relabel the original aggregate deadline.
 - Source map lookup selects the same Patricia branch through a structurally
   decreasing worker instead of allocating two recursive branch closures per
   node. Unicode keys, misses and arbitrary public map shapes retain Map.bit

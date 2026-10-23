@@ -5,9 +5,11 @@
 Это архитектурный контракт текущего перехода compiler57, а не отчёт о принятой
 версии. Рабочая native-версия55 остаётся базовой. Для полного compiler root57k
 реально получены два неизменённых emitted JS stage с точным byte fixedpoint;
-frozen corpus и7720-export consumer также прошли. Все emitted-stage fixtures
-и performance acceptance пока не завершены. Нельзя переносить эти доказательства
-на изменённые checker, lowering или runtime ABI без новой проверки.
+frozen corpus и7720-export consumer также прошли. Все285 seed/stage1/stage2
+behavior executions завершены со свежим parsing и native AST/span parity.
+Performance acceptance остаётся открытой; исходный monolithic600s gate red.
+Нельзя переносить доказательства на изменённые checker, lowering или runtime ABI
+без новой проверки.
 
 Единственный источник этого контракта — этот файл; оперативный статус, команды,
 хеши и результаты находятся в SELFHOST_HANDOFF.md и компактных version receipts.

@@ -1,0 +1,115 @@
+{
+  "version": "57n",
+  "status": "FULL_UNCHANGED_EMITTED_BEHAVIORS_PASS_O0_TRADEOFF_REJECTED",
+  "completedBehavior": {
+    "schemaVersion": 1,
+    "status": "EMITTED_SUITES_BEHAVIOR_PASS",
+    "passed": true,
+    "report": "checkpoints/selfhost-ir57k-emitted-suites-b.json",
+    "reportSha256": "535f6619305d38109d54d4767d524d3788c6ff476d740cf43c70df0c7de4ea2b",
+    "runner": "evals/selfhost_emitted_suites.ts",
+    "runnerSha256": "c5d4f96e4b9836601206dd9d896ad07ef98475281955f022f6ef4efb763d0be8",
+    "runnerSnapshot": "checkpoints/selfhost-ir57k-emitted-suites-b.json.cases/selfhost_emitted_suites.ts",
+    "command": "bun --smol evals/selfhost_emitted_suites.ts --fixedpoint-report=checkpoints/selfhost-ir57k-bootstrap-b.json --report=checkpoints/selfhost-ir57k-emitted-suites-b.json",
+    "guardian": {
+      "status": "PASS",
+      "commandExitCode": 0,
+      "elapsedMs": 270081,
+      "timeoutMs": 600000,
+      "peakRssBytes": 2234515456,
+      "peakFootprintBytes": 836957800,
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592,
+      "pollMs": 10
+    },
+    "actualImages": {
+      "stageOne": "checkpoints/selfhost-ir57k-bootstrap-b.json.cases/stage-one.js",
+      "stageTwo": "checkpoints/selfhost-ir57k-bootstrap-b.json.cases/stage-two.js",
+      "bytesEach": 13733899,
+      "sha256Each": "8aacace8d17a5a8d79e909733d03ccd4b82a5c42d9b269a96276925215d02c0b",
+      "comparison": "Buffer.equals on actual unchanged stage files; complete matching sourceHashes and original root parity approvals authenticated"
+    },
+    "evidenceCounts": {
+      "existingSeed": 95,
+      "freshStageOne": 95,
+      "freshStageTwo": 95,
+      "freshEmitted": 190,
+      "total": 285
+    },
+    "stages": [
+      {
+        "stage": "stage-one",
+        "passed": true,
+        "fixtureRows": 95,
+        "accepted": 64,
+        "negative": 31,
+        "fullSemanticSpanApprovals": 130,
+        "cacheMisses": 130,
+        "cacheHits": 0,
+        "workerPassed": true,
+        "workerFixtureExecutions": 95,
+        "workerExitCode": 0
+      },
+      {
+        "stage": "stage-two",
+        "passed": true,
+        "fixtureRows": 95,
+        "accepted": 64,
+        "negative": 31,
+        "fullSemanticSpanApprovals": 130,
+        "cacheMisses": 130,
+        "cacheHits": 0,
+        "workerPassed": true,
+        "workerFixtureExecutions": 95,
+        "workerExitCode": 0
+      }
+    ],
+    "originalMonolithicGate": {
+      "status": "FAIL",
+      "passed": false,
+      "reason": "deadline_exceeded",
+      "elapsedMs": 600028,
+      "timeoutMs": 600000
+    },
+    "monolithicBootstrapAcceptance": false,
+    "selfhostGreen": false,
+    "scope": "Separate complete behavior proof; NOT aggregate 600s bootstrap acceptance or native build+run speed acceptance. Existing gate, worker, compiler, parser and build proofs unchanged.",
+    "earlierFailedAttempt": {
+      "report": "checkpoints/selfhost-ir57k-emitted-suites-a.json",
+      "reason": "Companion initially rejected the existing diagnostic-marker cache lookup protocol; corrected to always reply with a cache MISS and no transport, forcing a fresh parse. No emitted fixture passed in that attempt."
+    }
+  },
+  "rootByteFixedpointSha256": "8aacace8d17a5a8d79e909733d03ccd4b82a5c42d9b269a96276925215d02c0b",
+  "nativeRootBodies": 8382,
+  "fullFrozenCorpusExports": 7720,
+  "allRequiredBehaviorCount": 285,
+  "checksExcluded": 0,
+  "outputPatches": 0,
+  "sourceAstCacheHits": 0,
+  "monolithic600sGatePassed": false,
+  "performanceAccepted": false,
+  "rejectedO0": {
+    "receipt": "ssh://misakaindrive/private/tmp/native57n-o0-n7luFjoT/artifacts/tradeoff-receipt.json",
+    "receiptSha256": "d3a06d7df8af0d32b29b2fbcc096dd62a1f1c3c4b2c061cde7f6d0116c1aade0",
+    "sameCBytes": 69884362,
+    "sameCSha256": "e4890debf5e210f8962c1c667a77401414d5ef420bfe98baf68db91218379e2f",
+    "isolatedClang": {
+      "wallSeconds": 37.22,
+      "userSeconds": 36.45,
+      "systemSeconds": 0.66,
+      "maxRssBytes": 4304781312,
+      "guardianMs": 37237,
+      "peakPhysicalBytes": 4210773952
+    },
+    "fullFrozenRun": {
+      "status": "FAIL_DEADLINE",
+      "guardianMs": 300012,
+      "lastActivePhase": "check",
+      "parseMs": 24800.199,
+      "expandMs": 57279.63,
+      "output": null,
+      "consumerExecuted": false
+    },
+    "decision": "Reject: cheaper clang but whole unmodified frozen compile fails existing300s limit; no output/consumer and no fabricated combined build+run timing."
+  }
+}
