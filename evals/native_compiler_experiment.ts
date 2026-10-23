@@ -295,7 +295,7 @@ async function main(o:Options){
   if(o.internal)throw Error('Unknown internal operation');
   mkdirSync(dirname(o.report),{recursive:true});
   if([o.report,o.report+'.inputs.json',o.report+'.progress.json',o.report+'.events.jsonl',o.report+'.c-progress.json',o.report+'.c-events.jsonl'].some(existsSync)||o.artifact&&(existsSync(o.artifact)||existsSync(o.artifact+'.c')))throw Error('Use fresh report and artifact paths');
-  const settings={...guard,timeoutMs:o.mode==='build'?o.buildTimeoutMs:o.phase==='compile'?1800000:600000};
+  const settings={...guard,timeoutMs:o.mode==='build'?o.buildTimeoutMs:300000};
   create(o.report,JSON.stringify({status:'IN_PROGRESS',mode:o.mode,boundary,startedAtUnixMs:Date.now(),guard:settings},null,2)+'\n');
   reportWritable=true;
   progress(o,'prerequisites','start');

@@ -38,6 +38,10 @@ latest one; the GitHub release carries the same notes.
   result carrier and explicit continuation stack, preserving semantic reduction
   fuel. The updated JS compiler reaches a full stage-one/stage-two byte fixedpoint;
   this does not certify the separate native C orchestration path.
+- Native selfhost orchestration reconstructs flattened result carriers before
+  resuming continuations or entering final typed adapters, fixing invalid memory
+  access across the C boundary. Full-corpus native compile and output execution
+  now pass; runtime experiments stop at the five-minute target.
 
 - The complete selfhost parser/Template/Checker/JavaScript compiler root now
   reaches an exact stage-one/stage-two byte fixedpoint using its own emitted

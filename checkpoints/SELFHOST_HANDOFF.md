@@ -4,6 +4,36 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+## Compiler54 — full native compile and exact output pass
+
+Version53 is committed as cc5e4b6c.54 changes only native_compiler_host.c and the
+native experiment's runtime deadline: the C boundary reconstructs exactly one
+flattened TemplateValue/CheckerValue/EmitterValue box before resume AND final
+typed adapter. Generated symbolic constructor IDs are required because CID(...)
+does not resolve imported colon-qualified constructors. No backend, source
+algorithm, semantic fuel or JS image changes.
+
+Fresh full native build validates8166 bodies, zero exclusions/patches; explicit
+clang-O1,184972ms, physical5327681440/RSS6840827904 bytes under8GiB600s. Actual
+full frozen50files/15modules/7720exports compile passes91557.188ms (guardian91707ms)
+under tightened300s runtime deadline, physical1424902328/RSS1523810304 bytes.
+Phases: parse3462.637ms, expand7791.109ms, check54306.764ms, emit24498.527ms.
+Native host-boundary calls/resumes:21810643/61979047/16875247 respectively for
+expand/check/emit; these are not all compiler operations or CPU attribution.
+
+All20281365 output bytes match historical Mac SHA
+`a1033733403dddb6214b6433ec55cd385fc210ce0d985871259a25487bd06d29`.
+Actual import checks all7720 exports; emitted parser accepts real source with
+main declaration and emitted checker executes empty-module semantics. Frozen
+output ABI2cad is explicitly pinned. Build/run/smoke recipe278.97s on this run.
+This is not an official-O3 benchmark or native binary fixedpoint. The genuine
+JS53 stage1/stage2 proof remains unchanged; no redundant JS gate was run.
+
+Exact commands, sources, hashes, resource limits and before/after fault evidence:
+`compiler-native-carrier-v54.json`. Historical official identical-corpus total
+10099.880ms is still much faster; do not claim it beaten. Primary remaining cost
+is checking, then emission. Preserve54 before another architecture experiment.
+
 ## Compiler53 — complete JS fixedpoint; native C fault; speed unestablished
 
 Current worktree is candidate53D, not source52: Arena is restored to selected49

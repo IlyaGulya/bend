@@ -367,3 +367,23 @@ not stack overflow. Correct the foreign ABI by rebuilding exactly one box with
 io_box for each family's continuation and terminal return. No backend rewrite,
 stack increase or lowered checking is justified.53 must be committed first;
 the proposed54 C boundary fix remains unimplemented/unverified.
+
+## Compiler54: full native execution closes the carrier ABI bug
+
+Exactly one io_box rebuild at each native Finished boundary fixes both resume
+and final-result paths for Template/Checker/Emitter. Fresh full build8166 checked
+bodies passes, unchanged kernel/backend and explicit clang-O1,184972ms,
+physical5327681440/RSS6840827904 bytes. No generated-C/image patch.
+
+Actual complete frozen corpus50files/15modules/7720exports finishes91557.188ms,
+guardian91707ms under tightened300s runtime cap, physical1424902328/RSS1523810304.
+Parse3462.637ms, expand7791.109ms, check54306.764ms, emit24498.527ms. Output20281365
+bytes SHAa1033733403dddb6214b6433ec55cd385fc210ce0d985871259a25487bd06d29 exactly
+matches historical Mac; actual import/export set, emitted parser real-source and
+checker empty-module semantics pass. Entire build/run/smoke recipe278.97s.
+
+No official speed victory: historical official same corpus10099.880ms is much
+faster, and-O1 is explicitly diagnostic. Native boundary calls/resumes remain
+21810643 expansion,61979047 check,16875247 emit. These counts do not by themselves
+prove dispatch CPU share. JS53 real stage1/stage2 remains unchanged; native binary
+bootstrap remains unproved. Exact evidence: compiler-native-carrier-v54.json.
