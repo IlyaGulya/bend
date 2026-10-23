@@ -49,3 +49,26 @@ update the existing preservation mask19 at702 without clobbering bound or
 constructor certificates. TermSub normalization and rewind/reuse need semantic
 regressions. No such cache is implemented or timed in46; source inspection does
 not establish its full-workload speedup.
+
+## Measured v46 costs after remote acceptance
+
+`compiler-profile-v46.json` records the current CPU profile and balanced exact
+continuation counters:89069047 pending,100069670 direct,189138718 finished,
+189138717 resumes,378277435 host iterations for a complete CheckSuccess.
+The largest request is scope_canonical_name5027639, followed by arena_put_node
+and arena_bound_node4764907 each. Bang validation requests are256983 head/
+416700 argument/298057 argument-list, not the leading source candidate.
+Synchronous owner sampling cannot recover the logical CPS call stack.
+
+Native46 C generation completed in74034ms with8204 bodies/8548 events checked.
+Apple clang21-O1 then exceeded8GiB physical memory; a separate unchanged-C
+-O1-fno-inline-functions experiment also exceeded8GiB after70707ms. Do not
+blame the176MB parent or call disabled inlining a solution.
+
+`compiler-native-linux-v46.json` records actual clang18-O1 success under real
+Linux8GiB/no-swap cgroups, followed by complete native parse/expand/check/emit,
+7720 exports, output import/semantic smoke, and exact native/source-JS output
+parity. Native165222ms core phases versus source-JS85203ms and official13486ms,
+all on the same relocated50-file corpus. Native is1.94x slower than JS, not an
+acceleration. cgroup charged memory is not macOS physical footprint.
+

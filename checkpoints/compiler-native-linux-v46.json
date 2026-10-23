@@ -1,0 +1,703 @@
+{
+  "status": "COMPLETE_NATIVE_FULL_WORKLOAD_DIAGNOSTIC",
+  "bootstrapAcceptance": false,
+  "newFixedpoint": false,
+  "experimentDirectory": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH",
+  "sourceCompilerCommit": "106c7efd",
+  "sourceGeneration": {
+    "status": "LINUX_NATIVE_EXECUTABLE_BUILT_NOT_YET_VALIDATED",
+    "diagnosticOnly": true,
+    "nativeBinaryBootstrap": false,
+    "sourceCompilerCommit": "106c7efd",
+    "sourceGenerationReceipt": {
+      "path": "checkpoints/native46-misaka-o1-build.json",
+      "sha256": "c0563e41b20812a7812b6b5427f437c97dda544fd4673e1ccce618c76686ad95",
+      "originalStatus": "RESOURCE_LIMIT",
+      "checkedDefinitions": 8204,
+      "eventsFullyValidated": 8548,
+      "checksExcluded": 0,
+      "outputPatches": 0,
+      "cSha256": "c6ab20fda3c15c435a86c64aaace67d440af22017e1bb301f8052234c5c81427"
+    },
+    "artifact": "native46",
+    "artifactSha256": "b15aa99ea96778e442a228b9789eed8cb08b47949cd125c5579dfda2f055cb12",
+    "artifactBytes": 24367144,
+    "buildCommand": [
+      "/usr/bin/clang-18",
+      "-std=c11",
+      "-O1",
+      "checkpoints/native46-misaka-o1.c",
+      "-lpthread",
+      "-lm",
+      "-o",
+      "native46"
+    ],
+    "compilerVersion": "Ubuntu clang version 18.1.3 (1ubuntu1)\nTarget: x86_64-pc-linux-gnu\nThread model: posix\nInstalledDir: /usr/bin\n",
+    "platform": "linux",
+    "arch": "x64",
+    "guard": {
+      "label": "compile",
+      "command": [
+        "/usr/bin/clang-18",
+        "-std=c11",
+        "-O1",
+        "checkpoints/native46-misaka-o1.c",
+        "-lpthread",
+        "-lm",
+        "-o",
+        "native46"
+      ],
+      "group": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-compile.scope",
+      "memoryMax": "8589934592",
+      "memorySwapMax": "0",
+      "startedAt": "2026-10-22T15:12:11.997Z",
+      "samples": 763,
+      "elapsedMs": 190702.419386,
+      "memoryPeak": "7241424896",
+      "memoryCurrent": "51036160",
+      "memoryEvents": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+      "cpuStat": "usage_usec 190935686\nuser_usec 188404094\nsystem_usec 2531592\ncore_sched.force_idle_usec 0",
+      "pid": 1852558,
+      "exitCode": 0,
+      "signal": null
+    },
+    "systemd": {
+      "command": [
+        "systemd-run",
+        "--user",
+        "--scope",
+        "--quiet",
+        "--unit=bend-native46-elcWbhvH-compile",
+        "-p",
+        "MemoryMax=8589934592",
+        "-p",
+        "MemorySwapMax=0",
+        "-p",
+        "RuntimeMaxSec=600s",
+        "/usr/bin/node",
+        "guard.mjs",
+        "compile",
+        "590000",
+        "/usr/bin/clang-18",
+        "-std=c11",
+        "-O1",
+        "checkpoints/native46-misaka-o1.c",
+        "-lpthread",
+        "-lm",
+        "-o",
+        "native46"
+      ],
+      "elapsedMs": 190750,
+      "status": 0,
+      "signal": null,
+      "error": null,
+      "stdout": "",
+      "stderr": "",
+      "systemctlShow": {
+        "status": 0,
+        "stdout": "Result=success\nRuntimeMaxUSec=infinity\nControlGroup=\nMemoryMax=infinity\nMemorySwapMax=infinity\nActiveState=inactive\nSubState=dead\n",
+        "stderr": ""
+      }
+    },
+    "metric": "Linux cgroup v2 charged memory.peak, not macOS physical footprint",
+    "officialOptimization": false
+  },
+  "relocation": {
+    "originalDirectory": "/private/tmp/bend-v41-corpus.uXXfVm",
+    "directory": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/corpus",
+    "originalManifestSha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+    "relocatedManifestSha256": "6a00a60b7833e1b188b7b1872297df8e00252cf381b1cc4f9d6b670dfe5ff016",
+    "allOriginalFileHashesUnchanged": true,
+    "inputFiles": 50,
+    "modules": 15,
+    "externalFiles": 35,
+    "exports": 7720,
+    "transferPins": {
+      "checkpoints/native46-misaka-o1.c": "c6ab20fda3c15c435a86c64aaace67d440af22017e1bb301f8052234c5c81427",
+      "checkpoints/native46-misaka-o1-build.json": "c0563e41b20812a7812b6b5427f437c97dda544fd4673e1ccce618c76686ad95",
+      "checkpoints/compiler-benchmark-release237-v41.corpus.json": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+      "checkpoints/compiler-benchmark-release237-v46-official.json.exports.json": "b49ac17d858cff20e3ea8b88f3068b52ca6d0d2045684d4c17d7f318bd3aba18",
+      "checkpoints/selfhost-steps-canonical-release237-misaka-v46-final.js": "898a2c7fb63999dad37ed85b899c62eeec225ae33a898088a91efcbc58fced6c",
+      "evals/native_compiler_experiment.ts": "4e4941efba2f53a34804ab3b5af184f02a27d7585ca2fcc6e0e198aa91615a2e",
+      "evals/native_compiler_host.c": "cbc7bf5638d33d3b6967d0d25333f1f358a8e1a258e3208857416d594122146d",
+      "evals/native_compiler_driver.bend": "81bce6308089e6e9489305f7ada0ea13ae8d34aa668e68c015ce14de04c55afd",
+      "evals/compiler_benchmark.ts": "82a66e7a51a417fd392693a18863b5562131b103994ab14479dcd4657533b4f1",
+      "evals/checker_core_step_runtime.mjs": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+      "corpus/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+      "corpus/bend2/comp.ts": "56d5727049bc3ef528ef84d3b4712a41a0a8ce0a06437b29d881e71107638c70"
+    }
+  },
+  "nodeDistribution": {
+    "url": "https://nodejs.org/dist/v23.11.0/node-v23.11.0-linux-x64.tar.xz",
+    "sha256": "fa9ae28d8796a6cfb7057397e1eea30ca1c61002b42b8897f354563a254e7cf5",
+    "bytes": 30989060,
+    "upstreamChecksums": "https://nodejs.org/dist/v23.11.0/SHASUMS256.txt",
+    "version": "v23.11.0"
+  },
+  "native": {
+    "status": "NATIVE_FULL_COMPILE_AND_SMOKE_PASS",
+    "diagnosticOnly": true,
+    "bootstrapAcceptance": false,
+    "inputFiles": 50,
+    "modules": 15,
+    "externalFiles": 35,
+    "exports": 7720,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "phases": [
+      {
+        "phase": "parse",
+        "elapsedMs": 4162.665,
+        "modules": 15,
+        "sourceBytes": 4333108,
+        "foreignBytes": 25145,
+        "eagerFuelCells": 120000000,
+        "fuelBuildMs": 235.683
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 12345.118,
+        "calls": 31910111,
+        "resumes": 31910111
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 111011.611,
+        "calls": 189138717,
+        "resumes": 189138717
+      },
+      {
+        "phase": "emit",
+        "elapsedMs": 37702.605,
+        "calls": 47354020,
+        "resumes": 47354020
+      }
+    ],
+    "begins": [
+      {
+        "computeThreads": 1,
+        "parserFuel": 8000000,
+        "phase": "compile"
+      }
+    ],
+    "result": {
+      "result": "EmitSuccess",
+      "bytes": 19158366,
+      "modules": 15
+    },
+    "fuel": [
+      {
+        "sourceOrdinal": 1,
+        "cells": 8000000,
+        "elapsedMs": 25.275,
+        "processPeakRssBeforeBytes": 5505024,
+        "processPeakRssAfterBytes": 69468160
+      },
+      {
+        "sourceOrdinal": 2,
+        "cells": 8000000,
+        "elapsedMs": 11.983,
+        "processPeakRssBeforeBytes": 119115776,
+        "processPeakRssAfterBytes": 119115776
+      },
+      {
+        "sourceOrdinal": 3,
+        "cells": 8000000,
+        "elapsedMs": 10.756,
+        "processPeakRssBeforeBytes": 119640064,
+        "processPeakRssAfterBytes": 119640064
+      },
+      {
+        "sourceOrdinal": 4,
+        "cells": 8000000,
+        "elapsedMs": 11.319,
+        "processPeakRssBeforeBytes": 119640064,
+        "processPeakRssAfterBytes": 119640064
+      },
+      {
+        "sourceOrdinal": 5,
+        "cells": 8000000,
+        "elapsedMs": 10.444,
+        "processPeakRssBeforeBytes": 119640064,
+        "processPeakRssAfterBytes": 119640064
+      },
+      {
+        "sourceOrdinal": 6,
+        "cells": 8000000,
+        "elapsedMs": 12.435,
+        "processPeakRssBeforeBytes": 119640064,
+        "processPeakRssAfterBytes": 119640064
+      },
+      {
+        "sourceOrdinal": 7,
+        "cells": 8000000,
+        "elapsedMs": 10.422,
+        "processPeakRssBeforeBytes": 119902208,
+        "processPeakRssAfterBytes": 119902208
+      },
+      {
+        "sourceOrdinal": 8,
+        "cells": 8000000,
+        "elapsedMs": 12.538,
+        "processPeakRssBeforeBytes": 123703296,
+        "processPeakRssAfterBytes": 123703296
+      },
+      {
+        "sourceOrdinal": 9,
+        "cells": 8000000,
+        "elapsedMs": 10.159,
+        "processPeakRssBeforeBytes": 123703296,
+        "processPeakRssAfterBytes": 123703296
+      },
+      {
+        "sourceOrdinal": 10,
+        "cells": 8000000,
+        "elapsedMs": 13.082,
+        "processPeakRssBeforeBytes": 126193664,
+        "processPeakRssAfterBytes": 126193664
+      },
+      {
+        "sourceOrdinal": 11,
+        "cells": 8000000,
+        "elapsedMs": 24.538,
+        "processPeakRssBeforeBytes": 299712512,
+        "processPeakRssAfterBytes": 299712512
+      },
+      {
+        "sourceOrdinal": 12,
+        "cells": 8000000,
+        "elapsedMs": 17.408,
+        "processPeakRssBeforeBytes": 299712512,
+        "processPeakRssAfterBytes": 299712512
+      },
+      {
+        "sourceOrdinal": 13,
+        "cells": 8000000,
+        "elapsedMs": 23.878,
+        "processPeakRssBeforeBytes": 299712512,
+        "processPeakRssAfterBytes": 299712512
+      },
+      {
+        "sourceOrdinal": 14,
+        "cells": 8000000,
+        "elapsedMs": 17.168,
+        "processPeakRssBeforeBytes": 299712512,
+        "processPeakRssAfterBytes": 299712512
+      },
+      {
+        "sourceOrdinal": 15,
+        "cells": 8000000,
+        "elapsedMs": 24.28,
+        "processPeakRssBeforeBytes": 300105728,
+        "processPeakRssAfterBytes": 300105728
+      }
+    ],
+    "outputSha256": "c532278061dbdd5b3bac7c85b16534c4b6808411eda760aaa3ca907b2211e79c",
+    "outputBytes": 19158366,
+    "sourceJsOutputSha256": "c532278061dbdd5b3bac7c85b16534c4b6808411eda760aaa3ca907b2211e79c",
+    "exactByteMatch": true,
+    "outputSemanticSmoke": true
+  },
+  "official": {
+    "compileMs": 13572.368283999998,
+    "totalWithOutputSmokeMs": 13674.710670999999,
+    "phases": [
+      {
+        "phase": "compiler-startup",
+        "wallMs": 58.55745300000001,
+        "cpuMs": 176.509
+      },
+      {
+        "phase": "load-parse-expand",
+        "wallMs": 1549.7704820000001,
+        "cpuMs": 2866.569
+      },
+      {
+        "phase": "check",
+        "wallMs": 1620.158984,
+        "cpuMs": 4134.441
+      },
+      {
+        "phase": "emit",
+        "wallMs": 10316.147729,
+        "cpuMs": 17698.67
+      },
+      {
+        "phase": "write-and-hash",
+        "wallMs": 19.64514500000041,
+        "cpuMs": 19.61
+      },
+      {
+        "phase": "output-import",
+        "wallMs": 84.96380999999928,
+        "cpuMs": 85.397
+      },
+      {
+        "phase": "output-semantic-smoke",
+        "wallMs": 9.861700999999812,
+        "cpuMs": 10.737
+      }
+    ],
+    "inputFiles": 50,
+    "checkedBodies": 8065,
+    "validationEvents": 8403,
+    "exportCount": 7720,
+    "outputSmokePassed": true,
+    "artifact": {
+      "path": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/official.json.output.mjs",
+      "bytes": 7837393,
+      "sha256": "9a49a9800566217ac632c119b555a2eabc07eb4c1196f7e1ad4f83b9e9630ac9"
+    },
+    "runtime": {
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      },
+      "platform": "linux",
+      "arch": "x64"
+    }
+  },
+  "sourceJs": {
+    "compileMs": 85558.383321,
+    "totalWithOutputSmokeMs": 85924.765698,
+    "phases": [
+      {
+        "phase": "compiler-startup",
+        "wallMs": 130.804415,
+        "cpuMs": 139.515
+      },
+      {
+        "phase": "load-parse",
+        "wallMs": 4447.69524,
+        "cpuMs": 6254.617
+      },
+      {
+        "phase": "expand",
+        "wallMs": 3467.7884349999995,
+        "cpuMs": 4122.132
+      },
+      {
+        "phase": "check",
+        "wallMs": 65935.34910299999,
+        "cpuMs": 76033.737
+      },
+      {
+        "phase": "emit",
+        "wallMs": 11352.490126000004,
+        "cpuMs": 13788.298
+      },
+      {
+        "phase": "write-and-hash",
+        "wallMs": 221.79231099999743,
+        "cpuMs": 222.558
+      },
+      {
+        "phase": "output-import",
+        "wallMs": 338.561320000008,
+        "cpuMs": 340.065
+      },
+      {
+        "phase": "output-semantic-smoke",
+        "wallMs": 11.406689999988885,
+        "cpuMs": 13.594
+      }
+    ],
+    "inputFiles": 50,
+    "moduleCount": 15,
+    "checkedModules": 15,
+    "exportCount": 7720,
+    "outputSmokePassed": true,
+    "artifact": {
+      "path": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/component.json.output.mjs",
+      "bytes": 19158366,
+      "sha256": "c532278061dbdd5b3bac7c85b16534c4b6808411eda760aaa3ca907b2211e79c"
+    },
+    "runtime": {
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      },
+      "platform": "linux",
+      "arch": "x64"
+    }
+  },
+  "guards": {
+    "compile": {
+      "wallMs": 190702.419386,
+      "cgroupMemoryPeakBytes": 7241424896,
+      "cpuStat": "usage_usec 190935686\nuser_usec 188404094\nsystem_usec 2531592\ncore_sched.force_idle_usec 0",
+      "memoryEvents": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+      "memoryMax": "8589934592",
+      "memorySwapMax": "0",
+      "command": [
+        "systemd-run",
+        "--user",
+        "--scope",
+        "--quiet",
+        "--unit=bend-native46-elcWbhvH-compile",
+        "-p",
+        "MemoryMax=8589934592",
+        "-p",
+        "MemorySwapMax=0",
+        "-p",
+        "RuntimeMaxSec=600s",
+        "/usr/bin/node",
+        "guard.mjs",
+        "compile",
+        "590000",
+        "/usr/bin/clang-18",
+        "-std=c11",
+        "-O1",
+        "checkpoints/native46-misaka-o1.c",
+        "-lpthread",
+        "-lm",
+        "-o",
+        "native46"
+      ],
+      "guardSha256": "3011ccb3e9ce120b1f62dfeb010bb91ec99d7a27ce232cdaed6fd4d854c37c1c",
+      "systemdSha256": "e68bc85dacc3b51473e3b5cbadc6c17933cb46b64fe4763f6452514090f4f1d0"
+    },
+    "native": {
+      "wallMs": 166035.172437,
+      "cgroupMemoryPeakBytes": 1405952000,
+      "cpuStat": "usage_usec 166285147\nuser_usec 165821052\nsystem_usec 464095\ncore_sched.force_idle_usec 0",
+      "memoryEvents": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+      "memoryMax": "8589934592",
+      "memorySwapMax": "0",
+      "command": [
+        "systemd-run",
+        "--user",
+        "--scope",
+        "--quiet",
+        "--unit=bend-native46-elcWbhvH-native",
+        "-p",
+        "MemoryMax=8589934592",
+        "-p",
+        "MemorySwapMax=0",
+        "-p",
+        "RuntimeMaxSec=300s",
+        "/usr/bin/node",
+        "guard.mjs",
+        "native",
+        "290000",
+        "./native46",
+        "--threads",
+        "1",
+        "--gpu",
+        "off",
+        "--",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/corpus/checkpoints/.bootstrap_compiler_root_v1.bend",
+        "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/corpus/bend2/base.bend",
+        "runtime.tsv",
+        "exports.txt",
+        "compile",
+        "native-output.mjs"
+      ],
+      "guardSha256": "32dc5eda4c27e77ce121c538b0a2ab3c9d604b8a363272058a7bbc10083ff736",
+      "systemdSha256": "9d68eff39cc581f46f2865524c1efa9feea4cdbf67fa0924b7bb5c68a4768107"
+    },
+    "official": {
+      "wallMs": 14151.354121999999,
+      "cgroupMemoryPeakBytes": 3827830784,
+      "cpuStat": "usage_usec 25540367\nuser_usec 23806299\nsystem_usec 1734067\ncore_sched.force_idle_usec 0",
+      "memoryEvents": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+      "memoryMax": "8589934592",
+      "memorySwapMax": "0",
+      "command": [
+        "systemd-run",
+        "--user",
+        "--scope",
+        "--quiet",
+        "--unit=bend-native46-elcWbhvH-official",
+        "-p",
+        "MemoryMax=8589934592",
+        "-p",
+        "MemorySwapMax=0",
+        "-p",
+        "RuntimeMaxSec=300s",
+        "/usr/bin/node",
+        "guard.mjs",
+        "official",
+        "290000",
+        "./node-v23.11.0-linux-x64/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "--stack-size=262144",
+        "benchmark-linux.ts",
+        "official"
+      ],
+      "guardSha256": "36dfeb58238a00708bfe6ebdae62e5b2327c5df4a6a03ace7042a6aa7af3c191",
+      "systemdSha256": "183fc2cb8a17ca9c1e31112041df46af2fed0f1ba33b8c026000b1347c4c2f49"
+    },
+    "component": {
+      "wallMs": 86218.001968,
+      "cgroupMemoryPeakBytes": 2004156416,
+      "cpuStat": "usage_usec 101523653\nuser_usec 99146550\nsystem_usec 2377103\ncore_sched.force_idle_usec 0",
+      "memoryEvents": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+      "memoryMax": "8589934592",
+      "memorySwapMax": "0",
+      "command": [
+        "systemd-run",
+        "--user",
+        "--scope",
+        "--quiet",
+        "--unit=bend-native46-elcWbhvH-component",
+        "-p",
+        "MemoryMax=8589934592",
+        "-p",
+        "MemorySwapMax=0",
+        "-p",
+        "RuntimeMaxSec=300s",
+        "/usr/bin/node",
+        "guard.mjs",
+        "component",
+        "290000",
+        "./node-v23.11.0-linux-x64/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "--stack-size=262144",
+        "benchmark-linux.ts",
+        "component"
+      ],
+      "guardSha256": "e19e2e9ffc0be8defc85e684492166862ad86f325667e794d1bcf5dde66dfbd9",
+      "systemdSha256": "61b5533a7ecceb6594305429439ede9719f36eb68ffb82a3301cde9220ef8165"
+    },
+    "validate": {
+      "wallMs": 472.634043,
+      "cgroupMemoryPeakBytes": 342253568,
+      "cpuStat": "usage_usec 530142\nuser_usec 416829\nsystem_usec 113312\ncore_sched.force_idle_usec 0",
+      "memoryEvents": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+      "memoryMax": "8589934592",
+      "memorySwapMax": "0",
+      "command": [
+        "systemd-run",
+        "--user",
+        "--scope",
+        "--quiet",
+        "--unit=bend-native46-elcWbhvH-validate",
+        "-p",
+        "MemoryMax=8589934592",
+        "-p",
+        "MemorySwapMax=0",
+        "-p",
+        "RuntimeMaxSec=300s",
+        "/usr/bin/node",
+        "guard.mjs",
+        "validate",
+        "290000",
+        "./node-v23.11.0-linux-x64/bin/node",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "--stack-size=262144",
+        "validate-native.mjs"
+      ],
+      "guardSha256": "ecda489e0306ec14fec3e97abf58ae1e9eedc5f7a52734c115a60e9dbf64061d",
+      "systemdSha256": "3fe2411a0b54cf1cda1a20577619a8971d310b0d765649b0f83f90e34d20160a"
+    }
+  },
+  "comparison": {
+    "runsPerBackend": 1,
+    "sameHost": true,
+    "sameRelocatedInputs": true,
+    "same7720Exports": true,
+    "jsRuntime": "authentic upstream Node23.11.0 linux-x64",
+    "nativeRuntime": "unchanged generated C runtime, clang18.1.3 -O1, --threads 1 --gpu off",
+    "corePhaseWallMs": {
+      "native": 165221.999,
+      "official": 13486.077195,
+      "sourceJs": 85203.32290399999
+    },
+    "nativeVsOfficialCoreSlowdown": 12.251301591337214,
+    "nativeVsSourceJsCoreSlowdown": 1.9391497111698144,
+    "nativeProcessWallMs": 166035.172437,
+    "officialCompileMs": 13572.368283999998,
+    "sourceJsCompileMs": 85558.383321,
+    "nativeVsOfficialCompileEndpointSlowdown": 12.233323541089966,
+    "nativeVsSourceJsCompileEndpointSlowdown": 1.9406067061139438,
+    "timingBoundary": "Core sums include fresh IO/parse/expand/check/emit; JS compileMs additionally includes compiler import/write/hash, native process wall includes executable startup/write/exit. Output import+semantic smoke excluded from compile timing and independently passed. Native compiler has one compute thread; Node may use GC/JIT helper threads. Single observations, not statistical averages; no comparison to macOS timings."
+  },
+  "measurementNotes": [
+    "Linux cgroup v2 memory.peak is charged memory, not macOS physical footprint.",
+    "Actual guard authority is *.guard.json plus *.systemd.json and native-enforcement.json. Reused benchmark report limits.memoryMiB/rssMiB/pollMs are legacy declarative metadata, NOT an exercised RSS polling guard. Linux enforced real MemoryMax=8589934592,MemorySwapMax=0; observer samples cgroup stats every250ms. No mac-only heavy_gate was invoked or faked.",
+    "Post-exit systemctl show returns inactive unit defaults (infinity), not execution limits; limits read inside scope and native-enforcement.json capture active properties.",
+    "Guard supervisor uses system Node22.22.1; measured official/source-JS compilers and output-import validation use isolated authentic Node23.11.0."
+  ],
+  "cleanup": {
+    "removed": [
+      "node-v23.11.0-linux-x64.tar.xz"
+    ],
+    "retained": "Bounded isolated experiment directory contains reproducibility sources, single native binary, isolated Node binary, outputs and evidence; no repository files changed, no global installations.",
+    "bytes": 280621151
+  },
+  "host": {
+    "uname": "Linux nanomisaka-homeserver 6.8.0-147-generic #147-Ubuntu SMP PREEMPT_DYNAMIC Thu Sep 24 11:33:16 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux",
+    "cpu": "{\n   \"lscpu\": [\n      {\n         \"field\": \"Architecture:\",\n         \"data\": \"x86_64\"\n      },{\n         \"field\": \"CPU op-mode(s):\",\n         \"data\": \"32-bit, 64-bit\"\n      },{\n         \"field\": \"Address sizes:\",\n         \"data\": \"48 bits physical, 48 bits virtual\"\n      },{\n         \"field\": \"Byte Order:\",\n         \"data\": \"Little Endian\"\n      },{\n         \"field\": \"CPU(s):\",\n         \"data\": \"12\"\n      },{\n         \"field\": \"On-line CPU(s) list:\",\n         \"data\": \"0-11\"\n      },{\n         \"field\": \"Vendor ID:\",\n         \"data\": \"AuthenticAMD\"\n      },{\n         \"field\": \"Model name:\",\n         \"data\": \"AMD Ryzen AI 9 HX 370 w/ Radeon 890M\"\n      },{\n         \"field\": \"CPU family:\",\n         \"data\": \"26\"\n      },{\n         \"field\": \"Model:\",\n         \"data\": \"36\"\n      },{\n         \"field\": \"Thread(s) per core:\",\n         \"data\": \"2\"\n      },{\n         \"field\": \"Core(s) per socket:\",\n         \"data\": \"6\"\n      },{\n         \"field\": \"Socket(s):\",\n         \"data\": \"1\"\n      },{\n         \"field\": \"Stepping:\",\n         \"data\": \"0\"\n      },{\n         \"field\": \"BogoMIPS:\",\n         \"data\": \"3992.41\"\n      },{\n         \"field\": \"Flags:\",\n         \"data\": \"fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx_vnni avx512_bf16 clzero xsaveerptr rdpru amd_ibpb_ret arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm avx512_vp2intersect\"\n      },{\n         \"field\": \"Virtualization:\",\n         \"data\": \"AMD-V\"\n      },{\n         \"field\": \"Hypervisor vendor:\",\n         \"data\": \"Microsoft\"\n      },{\n         \"field\": \"Virtualization type:\",\n         \"data\": \"full\"\n      },{\n         \"field\": \"L1d cache:\",\n         \"data\": \"288 KiB (6 instances)\"\n      },{\n         \"field\": \"L1i cache:\",\n         \"data\": \"192 KiB (6 instances)\"\n      },{\n         \"field\": \"L2 cache:\",\n         \"data\": \"6 MiB (6 instances)\"\n      },{\n         \"field\": \"L3 cache:\",\n         \"data\": \"16 MiB (1 instance)\"\n      },{\n         \"field\": \"NUMA node(s):\",\n         \"data\": \"1\"\n      },{\n         \"field\": \"NUMA node0 CPU(s):\",\n         \"data\": \"0-11\"\n      },{\n         \"field\": \"Vulnerability Gather data sampling:\",\n         \"data\": \"Not affected\"\n      },{\n         \"field\": \"Vulnerability Indirect target selection:\",\n         \"data\": \"Not affected\"\n      },{\n         \"field\": \"Vulnerability Itlb multihit:\",\n         \"data\": \"Not affected\"\n      },{\n         \"field\": \"Vulnerability L1tf:\",\n         \"data\": \"Not affected\"\n      },{\n         \"field\": \"Vulnerability Mds:\",\n         \"data\": \"Not affected\"\n      },{\n         \"field\": \"Vulnerability Meltdown:\",\n         \"data\": \"Not affected\"\n      },{\n         \"field\": \"Vulnerability Mmio stale data:\",\n         \"data\": \"Not affected\"\n      },{\n         \"field\": \"Vulnerability Reg file data sampling:\",\n         \"data\": \"Not affected\"\n      },{\n         \"field\": \"Vulnerability Retbleed:\",\n         \"data\": \"Not affected\"\n      },{\n         \"field\": \"Vulnerability Spec rstack overflow:\",\n         \"data\": \"Not affected\"\n      },{\n         \"field\": \"Vulnerability Spec store bypass:\",\n         \"data\": \"Mitigation; Speculative Store Bypass disabled via prctl\"\n      },{\n         \"field\": \"Vulnerability Spectre v1:\",\n         \"data\": \"Mitigation; usercopy/swapgs barriers and __user pointer sanitization\"\n      },{\n         \"field\": \"Vulnerability Spectre v2:\",\n         \"data\": \"Mitigation; Retpolines; IBPB conditional; IBRS_FW; STIBP always-on; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected\"\n      },{\n         \"field\": \"Vulnerability Srbds:\",\n         \"data\": \"Not affected\"\n      },{\n         \"field\": \"Vulnerability Tsa:\",\n         \"data\": \"Not affected\"\n      },{\n         \"field\": \"Vulnerability Tsx async abort:\",\n         \"data\": \"Not affected\"\n      },{\n         \"field\": \"Vulnerability Vmscape:\",\n         \"data\": \"Not affected\"\n      }\n   ]\n}\n"
+  },
+  "evidenceSha256": {
+    "linux-build.json": "684642387a5c0f79fcae889163e4531aecf0ee6d8bd524bf729c44e85236bdd5",
+    "relocation.json": "41403c7c5cf6dbf99a90cd328a983fcdebe87d3d932b2401d727176883cb12fb",
+    "native-result.json": "9cfa370cd57a791abfb5e17d22190cf698025d9605b88e9a4781cae1036ace89",
+    "official.json": "c4d4715f5b4a372fb7f8ce123bfd15e0cd4c4bd3de537698ff8637969c11d066",
+    "component.json": "f29097f290f4039b09b5ca8b20b824e005da5bce02356498e358eacad548bf7c",
+    "native-enforcement.json": "bc3ac46d9d19d406861eea8a82c9418a06186d4c2d27b7cc68ccc60262a3a5d4",
+    "node-distribution.json": "38dd965639e43e74877e25f200f3347423b3f7ff1bab84b979ce2fb250f5b817",
+    "benchmark-linux.ts": "107be3470c240af8c069fdc39ccfebd080b473fb727a5943c9979d7370c987eb",
+    "guard.mjs": "c9c705ade5ecd026947f7aab73a8f77fdb4b8e3144644fffb2d4e2ef8d3e5af4",
+    "launch.mjs": "ac9913705a99ab2e1ead142665eaf6c4e8021afe266b5cd0d9729c6599c35095",
+    "validate-native.mjs": "bb7297adf2cbb9827998ab556b7dbabd28c50db6401e17d928c61fc05240382f",
+    "runtime.tsv": "62941a9154404f9c71677e309e03b9a7d11b7aa3dddfdeaeb4f83dc146d72805",
+    "exports.txt": "8472512efdfdae7d66af31ca3dfea1ee5a8283f08dd85b5af3082883d3bfd7fd"
+  }
+}

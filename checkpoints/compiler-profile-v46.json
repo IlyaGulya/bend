@@ -1,0 +1,514 @@
+{
+  "schema": 1,
+  "status": "MEASURED_V46_NATIVE_AND_CPS_COSTS_NOT_A_NEW_COMPILER_VERSION",
+  "sourceCommit": "106c7efd",
+  "acceptedFixedpoint": "checkpoints/selfhost-acceptance-release237-misaka-v46.json",
+  "cpuProfile": {
+    "workerProfile": "checkpoints/compiler-profile-release237-misaka-v46.profiles/CPU.20261022.185302.65251.1.002.cpuprofile",
+    "workerSha256": "26ac19a9d77eb76d7d83949329740cba70a6094df10c505c1f48aaeccfdb1a14",
+    "requestSha256": "fc331af589d1d6804bdcdbd8cdaf9e160a233034c6ff837f45385fa496211668",
+    "reportSha256": "b95b4111b7f3e88183f29e87f3c1b80e8157bd8a8ac89b60d095769aeeb37571",
+    "totalSampledMs": 61815.375000003034,
+    "topSelfFunctions": [
+      [
+        "(anonymous)",
+        14145.691999999646
+      ],
+      [
+        "runSteps",
+        7510.448000000158
+      ],
+      [
+        "runCheckerSteps",
+        4855.177000000024
+      ],
+      [
+        "$checker_core_steps_v1$058checker_step$",
+        4409.722000000005
+      ],
+      [
+        "$$$$047bend2$047selfhost$047index_lookup$058find$go$",
+        3173.7209999999905
+      ],
+      [
+        "$Map$get$go$",
+        2690.45799999999
+      ],
+      [
+        "(garbage collector)",
+        2312.170999999993
+      ],
+      [
+        "$template_steps_v1$058template_step$",
+        904.9950000000016
+      ],
+      [
+        "$string_chars_go$",
+        549.209999999929
+      ],
+      [
+        "$checker_core_steps_v1$058checker_pure_arena_get_node$",
+        523.0779999999999
+      ],
+      [
+        "$Map$seek$go$",
+        518.2099999999991
+      ],
+      [
+        "$template_steps_v1$058template_step_group_0$",
+        512.5049999999992
+      ],
+      [
+        "$Map$diff$",
+        506.2909999999995
+      ],
+      [
+        "map_bit",
+        486.6739999999993
+      ],
+      [
+        "f",
+        463.4989999999994
+      ],
+      [
+        "runTemplateSteps",
+        418.99299999999965
+      ],
+      [
+        "run_loop",
+        407.20399999999955
+      ],
+      [
+        "$$$$047bend2$047selfhost$047checker_arena$058get_node$",
+        379.62799999999953
+      ],
+      [
+        "$$$$047bend2$047selfhost$047checker_arena$058word$",
+        324.83099999999973
+      ],
+      [
+        "$checker_core_steps_v1$058checker_pure_arena_get_word$",
+        312.50599999999986
+      ]
+    ],
+    "sourceOwners": [
+      {
+        "owner": "arena_name",
+        "inclusiveSampledMs": 3242.4179999999888,
+        "selfSampledMs": 37.668
+      },
+      {
+        "owner": "arena_names_cons",
+        "inclusiveSampledMs": 1284.8400000000001,
+        "selfSampledMs": 84.46100000000001
+      },
+      {
+        "owner": "arena_get_node",
+        "inclusiveSampledMs": 1149.9160000000015,
+        "selfSampledMs": 523.0779999999999
+      },
+      {
+        "owner": "arena_node_bound",
+        "inclusiveSampledMs": 901.5490000000009,
+        "selfSampledMs": 239.75500000000002
+      },
+      {
+        "owner": "arena_case_prefix_local_build_head",
+        "inclusiveSampledMs": 727.3370000000007,
+        "selfSampledMs": 3.041
+      },
+      {
+        "owner": "arena_words_view",
+        "inclusiveSampledMs": 726.782000000001,
+        "selfSampledMs": 291.9519999999999
+      },
+      {
+        "owner": "arena_put_node_bound",
+        "inclusiveSampledMs": 672.8360000000001,
+        "selfSampledMs": 0
+      },
+      {
+        "owner": "arena_bound_read_region",
+        "inclusiveSampledMs": 661.7939999999999,
+        "selfSampledMs": 50.959
+      },
+      {
+        "owner": "arena_get_node_region",
+        "inclusiveSampledMs": 626.8379999999995,
+        "selfSampledMs": 109.71000000000001
+      },
+      {
+        "owner": "whnf",
+        "inclusiveSampledMs": 623.9949999999998,
+        "selfSampledMs": 204.95299999999997
+      },
+      {
+        "owner": "arena_get_word",
+        "inclusiveSampledMs": 619.2949999999996,
+        "selfSampledMs": 312.50599999999986
+      },
+      {
+        "owner": "global_index_insert",
+        "inclusiveSampledMs": 615.8429999999998,
+        "selfSampledMs": 9.876
+      },
+      {
+        "owner": "core_subst_open",
+        "inclusiveSampledMs": 534.0569999999993,
+        "selfSampledMs": 150.33900000000003
+      },
+      {
+        "owner": "arena_bound_node",
+        "inclusiveSampledMs": 507.4189999999992,
+        "selfSampledMs": 158.084
+      },
+      {
+        "owner": "pattern_value",
+        "inclusiveSampledMs": 478.8739999999996,
+        "selfSampledMs": 49.334
+      },
+      {
+        "owner": "arena_words_view_nonempty",
+        "inclusiveSampledMs": 434.8299999999993,
+        "selfSampledMs": 34.70700000000001
+      },
+      {
+        "owner": "global_index_aliases",
+        "inclusiveSampledMs": 423.91499999999974,
+        "selfSampledMs": 3.042
+      },
+      {
+        "owner": "canonicalize_term",
+        "inclusiveSampledMs": 410.4129999999995,
+        "selfSampledMs": 55.70700000000001
+      },
+      {
+        "owner": "core_subst_at",
+        "inclusiveSampledMs": 389.46299999999957,
+        "selfSampledMs": 64.5
+      },
+      {
+        "owner": "arena_put_word",
+        "inclusiveSampledMs": 332.6629999999998,
+        "selfSampledMs": 75.25
+      }
+    ],
+    "warning": "Sampling maps synchronous generated helper frames to authenticated owners; CPS logical ancestry is lost. These are not full inclusive algorithm timings."
+  },
+  "continuations": {
+    "pending": 89069047,
+    "direct": 100069670,
+    "finished": 189138718,
+    "resume": 189138717,
+    "hostIterations": 378277435,
+    "balanced": true,
+    "result": "CheckSuccess",
+    "topRequests": [
+      [
+        "checker_core_steps_v1.CheckerRequest_scope_canonical_name",
+        5027639
+      ],
+      [
+        "checker_core_steps_v1.CheckerRequest_arena_put_node",
+        4764907
+      ],
+      [
+        "checker_core_steps_v1.CheckerRequest_arena_bound_node",
+        4764907
+      ],
+      [
+        "checker_core_steps_v1.CheckerRequest_whnf",
+        3189738
+      ],
+      [
+        "checker_core_steps_v1.CheckerRequest_arena_words_cons",
+        2791646
+      ],
+      [
+        "checker_core_steps_v1.CheckerRequest_arena_copy_word_range",
+        2688318
+      ],
+      [
+        "checker_core_steps_v1.CheckerRequest_arena_bound_range_loop",
+        2548613
+      ],
+      [
+        "checker_core_steps_v1.CheckerRequest_arena_constructor_owner_view",
+        2331913
+      ],
+      [
+        "checker_core_steps_v1.CheckerRequest_arena_subst_memo_lookup",
+        2293927
+      ],
+      [
+        "checker_core_steps_v1.CheckerRequest_scope_lookup",
+        2220883
+      ],
+      [
+        "checker_core_steps_v1.CheckerRequest_core_subst",
+        2002584
+      ],
+      [
+        "checker_core_steps_v1.CheckerRequest_arena_names_append",
+        1971272
+      ],
+      [
+        "checker_core_steps_v1.CheckerRequest_core_pattern_list_depth",
+        1826927
+      ],
+      [
+        "checker_core_steps_v1.CheckerRequest_core_subst_open",
+        1800727
+      ],
+      [
+        "checker_core_steps_v1.CheckerRequest_arena_words_append",
+        1509177
+      ],
+      [
+        "checker_core_steps_v1.CheckerRequest_scope_segment_name_aliases",
+        1421213
+      ],
+      [
+        "checker_core_steps_v1.CheckerRequest_core_pattern_depth",
+        1367123
+      ],
+      [
+        "checker_core_steps_v1.CheckerRequest_usage_get",
+        1293344
+      ],
+      [
+        "checker_core_steps_v1.CheckerRequest_pattern_row_index_segments_complete",
+        1224563
+      ],
+      [
+        "checker_core_steps_v1.CheckerRequest_pattern_values",
+        1156185
+      ],
+      [
+        "checker_core_steps_v1.CheckerRequest_core_shift",
+        1111462
+      ],
+      [
+        "checker_core_steps_v1.CheckerRequest_arena_names_cons",
+        1097645
+      ],
+      [
+        "checker_core_steps_v1.CheckerRequest_global_segments_has_constructor_owner",
+        1091025
+      ],
+      [
+        "checker_core_steps_v1.CheckerRequest_usage_set",
+        1062372
+      ],
+      [
+        "checker_core_steps_v1.CheckerRequest_whnf_patterns",
+        1049266
+      ]
+    ],
+    "directTargets": [
+      [
+        "scope_index_result",
+        7411
+      ],
+      [
+        "whnf",
+        5548
+      ],
+      [
+        "scope_lookup",
+        5285
+      ],
+      [
+        "scope_canonical_key_result",
+        5277
+      ],
+      [
+        "arena_tape_offset",
+        5074
+      ],
+      [
+        "core_subst_unaffected",
+        4371
+      ],
+      [
+        "arena_range_index",
+        3351
+      ],
+      [
+        "arena_bound_range_word",
+        2445
+      ],
+      [
+        "arena_subst_memo_entry",
+        2313
+      ],
+      [
+        "core_subst_at",
+        2271
+      ],
+      [
+        "arena_subst_memo_lookup_result",
+        2215
+      ],
+      [
+        "arena_bound_range",
+        1759
+      ],
+      [
+        "arena_bound_range_empty",
+        1702
+      ],
+      [
+        "scope_index_name_aliases",
+        1400
+      ],
+      [
+        "arena_bound_range_length",
+        1390
+      ],
+      [
+        "arena_bound_range_loop",
+        1364
+      ],
+      [
+        "arena_bound_range_region",
+        1363
+      ],
+      [
+        "scope_index_name_aliases_result",
+        1345
+      ],
+      [
+        "core_pattern_depth_bound",
+        1332
+      ],
+      [
+        "core_pattern_depth_region",
+        1314
+      ],
+      [
+        "core_shift_unaffected",
+        1111
+      ],
+      [
+        "global_index_has_constructor_owner",
+        1098
+      ],
+      [
+        "family_equal",
+        1056
+      ],
+      [
+        "scope_name_is_in",
+        1017
+      ],
+      [
+        "arena_copy_word_range",
+        971
+      ]
+    ],
+    "sampling": "Exact pending counts; independently pseudorandom 1/1024 callback-target samples, not logical-call time",
+    "rawReceipt": "checkpoints/compiler-counts-release237-misaka-v46.counts.json",
+    "rawReceiptSha256": "1e24c21151c3061524e4ff7de18fb10ae3af64763d6e91c2d9156c830ea2987b",
+    "measurementRuntimeSha256": "9bc67992963fbc430070ffc82ad2e07a83f145733951b67bf4ccd97b6ba583d6",
+    "measurementRuntime": "import {writeFileSync} from 'node:fs';\nlet counters;\nconst increment=(map,key)=>map.set(key,(map.get(key)??0)+1);\nfunction sampleCallback(kind,callback){\n counters[kind]++;\n counters.random=(Math.imul(counters.random,1664525)+1013904223)>>>0;\n if(counters.random>=4194304)return;\n const source=Function.prototype.toString.call(callback.j??callback);\n const target=source.match(/\\$checker_core_steps_v1\\$058([A-Za-z0-9_]+)\\$/)?.[1]??'(unattributed)';\n increment(counters[kind+'Targets'],target);\n}\n\nconst constructorTag=value=>{\n if(value===null||typeof value!=='object'||Array.isArray(value)||typeof value.$!=='string')return undefined;\n const tag=value.$;\n return tag.slice(tag.lastIndexOf('.')+1);\n};\nconst hasConstructorTag=value=>{\n if(value===null||typeof value!=='object'||Array.isArray(value)||typeof value.$!=='string')return false;\n const tag=value.$;\n return tag.length>0&&tag.charCodeAt(tag.length-1)!==46;\n};\nconst invalid=(kind,message)=>{throw Error('Invalid '+kind.toLowerCase()+' step ABI: '+message);};\n\n/**\n * Trusted Node orchestration, outside the native Bend termination proof.\n * Template, checker and emitter logic live in native-validated Bend steps.\n * One LIFO loop passes values through unchanged, including the single native\n * argument record consumed by a source-supplied direct invoker.\n * There are no recursive host calls or host-imposed step/fuel limits.\n */\nfunction runSteps(component,modules,kind,startExport,stepExport,validateResult){\n if(typeof component?.[startExport]!=='function')invalid(kind,'missing '+startExport+' export');\n if(typeof component?.[stepExport]!=='function')invalid(kind,'missing '+stepExport+' export');\n const pendingTag=kind+'Pending',directTag=kind+'Direct',finishedTag=kind+'Finished',pendingSuffix='.'+pendingTag,directSuffix='.'+directTag,finishedSuffix='.'+finishedTag,resumes=[];\n let depth=0,knownPendingTag,knownDirectTag,knownFinishedTag,progress=component[startExport](modules);\n modules=undefined;\n for(;;){\n  const tag=progress?.$;\n  // Matching a progress suffix also proves a nonempty, non-trailing-dot tag.\n  const validProgress=progress!==null&&typeof progress==='object'&&!Array.isArray(progress)&&typeof tag==='string';\n  // A cached kind cannot match another kind's disjoint constructor suffix.\n  if(validProgress&&(tag===knownPendingTag||(tag!==knownDirectTag&&tag!==knownFinishedTag&&(tag===pendingTag||tag.endsWith(pendingSuffix))))){\n   knownPendingTag=tag;\n   if(!Object.hasOwn(progress,'request')||!hasConstructorTag(progress.request))invalid(kind,pendingTag+' requires a constructor-tagged request');\n   if(typeof progress.resume!=='function')invalid(kind,pendingTag+' requires a callable resume');\n   resumes[depth++]=progress.resume;\n   if(counters){counters.pending++;increment(counters.pendingTargets,progress.request.request?.$??progress.request.$);}\n   const request=progress.request;\n   progress=undefined;\n   progress=component[stepExport](request);\n  }else if(validProgress&&(tag===knownDirectTag||(tag!==knownFinishedTag&&(tag===directTag||tag.endsWith(directSuffix))))){\n   knownDirectTag=tag;\n   if(typeof progress.invoke!=='function')invalid(kind,directTag+' requires a callable invoke');\n   if(typeof progress.resume!=='function')invalid(kind,directTag+' requires a callable resume');\n   if(!Object.hasOwn(progress,'arguments'))invalid(kind,directTag+' requires arguments');\n   resumes[depth++]=progress.resume;\n   const invoke=progress.invoke,arguments_=progress.arguments;\n   if(counters)sampleCallback('direct',invoke);\n   progress=undefined;\n   progress=invoke(arguments_);\n  }else if(validProgress&&(tag===knownFinishedTag||tag===finishedTag||tag.endsWith(finishedSuffix))){\n   knownFinishedTag=tag;\n   if(!Object.hasOwn(progress,'value'))invalid(kind,finishedTag+' requires value');\n   if(counters)counters.finished++;\n   const value=progress.value;\n   progress=undefined;\n   if(depth){\n    const resume=resumes[--depth];\n    resumes[depth]=undefined;\n    if(counters)sampleCallback('resume',resume);\n    progress=resume(value);\n   }else{\n    validateResult(value);\n    return value;\n   }\n  }else invalid(kind,'expected '+pendingTag+', '+directTag+' or '+finishedTag+', observed '+String(tag));\n }\n}\n\nfunction validateCheckResult(value){\n const resultTag=constructorTag(value);\n if(resultTag==='CheckSuccess'){\n  if(!Object.hasOwn(value,'modules')||!['Nil','Con'].includes(constructorTag(value.modules)))invalid('Checker','CheckSuccess requires native modules');\n }else if(resultTag==='CheckFailure'){\n  if(!Object.hasOwn(value,'diagnostic')||constructorTag(value.diagnostic)!=='Diagnostic')invalid('Checker','CheckFailure requires a native Diagnostic');\n }else invalid('Checker','expected CheckResult, observed '+String(resultTag));\n}\n\nfunction validateEmitResult(value){\n const resultTag=constructorTag(value);\n if(resultTag==='EmitSuccess'){\n  if(typeof value.source!=='string')invalid('Emitter','EmitSuccess requires source string');\n }else if(resultTag==='EmitFailure'){\n  if(typeof value.message!=='string')invalid('Emitter','EmitFailure requires message string');\n  const span=value.span;\n  if(constructorTag(span)!=='SpanOf'||typeof span.file!=='string'||!Number.isSafeInteger(span.beg)||!Number.isSafeInteger(span.end)||span.beg<0||span.end<span.beg)invalid('Emitter','EmitFailure requires native SourceSpan');\n }else invalid('Emitter','expected EmitResult, observed '+String(resultTag));\n}\n\nfunction validateExpandResult(value){\n const resultTag=constructorTag(value);\n if(resultTag==='ExpandSuccess'){\n  if(!Object.hasOwn(value,'modules')||!['Nil','Con'].includes(constructorTag(value.modules)))invalid('Template','ExpandSuccess requires native modules');\n }else if(resultTag==='ExpandFailure'){\n  if(typeof value.message!=='string')invalid('Template','ExpandFailure requires message string');\n  const span=value.span;\n  if(constructorTag(span)!=='SpanOf'||typeof span.file!=='string'||!Number.isSafeInteger(span.beg)||!Number.isSafeInteger(span.end)||span.beg<0||span.end<span.beg)invalid('Template','ExpandFailure requires native SourceSpan');\n }else invalid('Template','expected ExpandResult, observed '+String(resultTag));\n}\n\nexport function runTemplateSteps(component,modules){\n return runSteps(component,modules,'Template','expand_modules_start','template_step',validateExpandResult);\n}\n\nexport function runCheckerSteps(component,modules){\n counters={pending:0,direct:0,finished:0,resume:0,random:0x9137,pendingTargets:new Map(),directTargets:new Map(),resumeTargets:new Map()};\n const result=runSteps(component,modules,'Checker','check_expanded_start','checker_step',validateCheckResult);\n const report={...counters,pendingTargets:[...counters.pendingTargets],directTargets:[...counters.directTargets],resumeTargets:[...counters.resumeTargets],result:constructorTag(result),sampling:'Exact pending counts; independently pseudorandom 1/1024 callback-target samples, not logical-call time'};\n counters=undefined;\n writeFileSync(process.env.BEND_CHECKER_COUNTS_FILE,JSON.stringify(report));\n return result;\n}\n\nexport function runEmitterSteps(component,modules){\n return runSteps(component,modules,'Emitter','emit_modules_start','emitter_step',validateEmitResult);\n}\n\nexport function runLibraryEmitterSteps(component,modules){\n return runSteps(component,modules,'Emitter','emit_library_start','emitter_step',validateEmitResult);\n}\n",
+    "benchmarkTimingIsInstrumented": true
+  },
+  "rejectedCoverage": {
+    "command": "NODE_V8_COVERAGE=<fresh-dir> node --experimental-strip-types --max-old-space-size=6144 --max-semi-space-size=128 --stack-size=262144 evals/compiler_benchmark.ts --worker <fresh stopAfter=check request> e9bf53e56f106e3a49682da4634e6908025c9e429f57bbe83a8549aeee73b111",
+    "status": "DEADLINE_EXCEEDED",
+    "deadlineMs": 180000,
+    "reason": "Block coverage did not finish parsing before the downward diagnostic deadline. Do not infer call counts from partial coverage."
+  },
+  "nativeMac": {
+    "optimizedBuild": {
+      "status": "RESOURCE_LIMIT",
+      "cPath": "/Users/ilyagulya/Projects/My/bend/checkpoints/native46-misaka-o1.c",
+      "cSha256": "c6ab20fda3c15c435a86c64aaace67d440af22017e1bb301f8052234c5c81427",
+      "eventsFullyValidated": 8548,
+      "checkedDefinitions": 8204,
+      "expectedSourceDefinitions": 8204,
+      "checksExcluded": 0,
+      "outputPatches": 0,
+      "ccOptimization": {
+        "level": 1,
+        "flag": "-O1",
+        "officialDefault": false,
+        "diagnosticTradeoff": true
+      },
+      "guardian": {
+        "status": "RESOURCE_LIMIT",
+        "reason": "physical_footprint_limit",
+        "commandExitCode": -1,
+        "commandSignal": 15,
+        "peakRssBytes": 8554381312,
+        "peakFootprintBytes": 8590066616,
+        "elapsedMs": 150368,
+        "timeoutMs": 600000,
+        "command": [
+          "node",
+          "--experimental-strip-types",
+          "--max-old-space-size=3072",
+          "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_experiment.ts",
+          "--mode=build",
+          "--corpus=checkpoints/compiler-benchmark-release237-v41.corpus.json",
+          "--artifact=checkpoints/native46-misaka-o1",
+          "--report=checkpoints/native46-misaka-o1-build.json",
+          "--cc-opt=1",
+          "--internal=build"
+        ],
+        "label": "Native CPU compiler build",
+        "exitCode": 73,
+        "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792678126902-2b57c94f499e397b.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "lastProgress": {
+        "phase": "clang",
+        "event": "start",
+        "unixMs": 1792678204330,
+        "pid": 74539,
+        "worker": false,
+        "rssBytes": 176521216,
+        "heapUsedBytes": 10431344,
+        "cpuMs": 163180.084,
+        "command": [
+          "clang",
+          "-std=c11",
+          "-O1",
+          "/Users/ilyagulya/Projects/My/bend/checkpoints/native46-misaka-o1.c",
+          "-lpthread",
+          "-lm",
+          "-o",
+          "/Users/ilyagulya/Projects/My/bend/checkpoints/native46-misaka-o1"
+        ]
+      },
+      "codegenMs": 74163.144292
+    },
+    "noInline": {
+      "status": "RESOURCE_LIMIT",
+      "reason": "physical_footprint_limit",
+      "peakFootprintBytes": 8590204320,
+      "peakRssBytes": 7625048064,
+      "elapsedMs": 70707,
+      "timeoutMs": 180000,
+      "command": [
+        "clang",
+        "-std=c11",
+        "-O1",
+        "-fno-inline-functions",
+        "checkpoints/native46-misaka-o1.c",
+        "-lpthread",
+        "-lm",
+        "-o",
+        "checkpoints/native46-misaka-o1-noinline"
+      ]
+    }
+  },
+  "nativeLinux": "checkpoints/compiler-native-linux-v46.json",
+  "decisions": [
+    "Unchanged native C works under8GiB with clang18 on Linux but is1.94x slower than JS on the same host. Reject backend switch as acceleration.",
+    "Do not raise Apple clang memory limits; disabling inlining also exceeded8GiB.",
+    "Bang checks are not the leading measured candidate. Prioritize eliminating repeated normalization and bounded CPS administrative work."
+  ]
+}
