@@ -30,13 +30,18 @@ if(isMainThread){
   if(tag(feedback)!=='FeedbackComplete'||tag(feedback.value?.result)!=='ParseSuccess')throw Error('Target parser did not accept: '+tag(feedback.value?.result??feedback));
   const module=feedback.value.result.module;
   const loaded=component.parsed_module('',module),modules={$:'Con',head:loaded,tail:{$:'Nil'}};
-  if(workerData.emitterGuard){
-   phase('compiled-emitter-guard');
-   const emission=runEmitterSteps(component,modules);
-   if(tag(emission)!=='EmitFailure')throw Error('Unexpanded template reached successful emission');
-   if(emission.span.file!==workerData.file||emission.span.beg!==BigInt(workerData.source.indexOf('~'))||emission.span.end<=emission.span.beg||emission.span.end>BigInt(workerData.source.length))throw Error('Emitter failure did not retain the actual template source span');
+  if(workerData.uncheckedGuard){
+   phase('compiled-checked-boundary-guard');
+   let refused=false;
+   try{runEmitterSteps(component,modules);}catch(error){if(!String(error).includes('expected owning CheckedProgram'))throw error;refused=true;}
+   if(!refused)throw Error('Unchecked syntax crossed the FIR emitter boundary');
+   const checked=runCheckerSteps(component,modules);
+   const rejected=tag(checked)==='CheckSuccess'?runEmitterSteps(component,checked.program):checked;
+   if(!['CheckFailure','EmitFailure'].includes(tag(rejected)))throw Error('Unexpanded template reached successful emission');
+   const {message,span}=tag(rejected)==='CheckFailure'?rejected.diagnostic:rejected;
+   if(span.file!==workerData.file||Number(span.beg)!==workerData.source.indexOf('~')||Number(span.end)<=Number(span.beg)||Number(span.end)>workerData.source.length)throw Error('Typed pipeline failure did not retain the actual template source span');
    phase('complete');
-   parentPort.postMessage({passed:true,status:'PASS',name:workerData.name,criterion:'Direct emission rejects actual parsed unexpanded template',emitterTag:tag(emission),message:emission.message,span:emission.span,checkerRun:false,phases});
+   parentPort.postMessage({passed:true,status:'PASS',name:workerData.name,criterion:'Unchecked syntax cannot cross the emitter boundary; native typed pipeline rejects unexpanded template',checkerTag:tag(checked),rejectionTag:tag(rejected),message,span,uncheckedEmissionRefused:true,phases});
   }else{
   const pending=[module];
   while(pending.length){const value=pending.pop();if(!value||typeof value!=='object')continue;const key=tag(value);if(key==='TemplateBinder'||key==='TermTemplate')throw Error('Target violates already-expanded Template-free precondition');for(const [key,child]of Object.entries(value))if(key!=='$')pending.push(child);}
@@ -47,7 +52,7 @@ if(isMainThread){
   let emitted,emission,output;
   if(accepted){
    phase('compiled-emit');
-   emission=runEmitterSteps(component,checked.modules);
+   emission=runEmitterSteps(component,checked.program);
    if(tag(emission)!=='EmitSuccess')throw Error('Target emission failed: '+emission.message+' at '+emission.span.file+':'+emission.span.beg+'-'+emission.span.end);
    temporary=mkdtempSync(join(tmpdir(),'bend-checker-target-'));const file=join(temporary,'main.js');writeFileSync(file,emission.source);
    phase('emitted-program-run');

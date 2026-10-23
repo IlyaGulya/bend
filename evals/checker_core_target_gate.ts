@@ -30,8 +30,8 @@ const fixtures=[
  {name:'joint-match-incomplete',source:bit+'def xor(left: Bit, right: Bit) -> Bit:\n  match left right:\n    case BitZero{} BitZero{}: BitZero{}\n    case BitZero{} BitOne{}: BitOne{}\n    case BitOne{} BitZero{}: BitOne{}\ndef main() -> Bit:\n  xor(BitOne{}, BitZero{})\n',accepted:false},
  {name:'nested-field-pattern',source:bit+'type Box is Type:\n  Box{value: Bit}\ntype Envelope is Type:\n  Envelope{box: Box}\ndef unwrap(x: Envelope) -> Bit:\n  match x:\n    case Envelope{Box{value}}: value\ndef main() -> Bit:\n  unwrap(Envelope{Box{BitOne{}}})\n',accepted:true,output:'BitOne{}'},
  {name:'partial-family-application',source:bit+'type Family<-A: Type, -B: Type> is Type:\n  FamilyCtr{left: A, right: B}\ndef partial(x: Bit) -> (@-B: Type -> Type):\n  Family(Bit)\ndef main() -> Bit:\n  BitOne{}\n',accepted:true,output:'BitOne{}'},
- {name:'emitter-template-binder-guard',source:'def identity(~A: Type, x: A) -> A:\n  x\n',accepted:false,emitterGuard:true},
- {name:'emitter-template-term-guard',source:bit+'def main() -> Bit:\n  ~BitOne{}\n',accepted:false,emitterGuard:true},
+ {name:'checked-template-binder-guard',source:'def identity(~A: Type, x: A) -> A:\n  x\n',accepted:false,uncheckedGuard:true},
+ {name:'checked-template-term-guard',source:bit+'def main() -> Bit:\n  ~BitOne{}\n',accepted:false,uncheckedGuard:true},
 ];
 const temporary=mkdtempSync(join(tmpdir(),'bend-checker-gate-')),sidecars=report+'.cases';mkdirSync(sidecars,{recursive:true});mkdirSync(dirname(report),{recursive:true});
 const rows:any[]=[];
@@ -39,8 +39,8 @@ function save(){
  const runtime=resolve('evals/checker_core_step_runtime.mjs'),runtimeSha256=sha(runtime);
  const driverBoundary={runtime,runtimeSha256,orchestration:'trusted Node LIFO continuation loop',sharedInternalLoop:'runSteps',nativeTerminationProofIncludesDriver:false};
  writeFileSync(report,JSON.stringify({
-  criterion:'Actual compiled parser -> native Bend checker steps driven by Node -> template-free checked modules -> native Bend JSEmit steps driven by Node -> execute returned emitted JS unchanged',
-  additionalCriterion:'Direct native emission rejects parsed unexpanded template binders/terms with their actual source spans; these guards intentionally skip the template-free checker entrypoint',
+  criterion:'Actual compiled parser -> native Bend checker steps driven by Node -> owning CheckedProgram -> native Bend JSEmit steps driven by Node -> execute returned emitted JS unchanged',
+  additionalCriterion:'Strict emitter boundary refuses raw syntax; native checking then typed emission rejects parsed unexpanded template binders/terms with their actual source spans',
   checkerDriver:{...driverBoundary,startExport:'check_expanded_start',stepExport:'checker_step',checkerLogic:'native-validated Bend steps and continuations'},
   emitterDriver:{...driverBoundary,startExport:'emit_modules_start',stepExport:'emitter_step',emitterLogic:'native-validated Bend steps and continuations'},
   proofBoundary:'Native validation covers checker and emitter Bend steps and their dependent continuations. Both Node request/continuation drivers use one shared trusted LIFO loop and are outside the native termination proof.',

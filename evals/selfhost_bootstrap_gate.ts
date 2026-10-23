@@ -24,7 +24,7 @@ import {spawn} from 'node:child_process';
 import type {ChildProcess} from 'node:child_process';
 import {createInterface} from 'node:readline';
 
-const ABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','checker_step','emit_modules_start','emit_library_start','emitter_step'];
+const ABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','inspect_checked_start','checker_step','emit_modules_start','emit_library_start','emitter_step'];
 const limits={memoryMiB:8192,rssMiB:8192,pollMs:10,workerStackMiB:256,workerOldGenerationMiB:6144,workerYoungGenerationMiB:128,parserFuel:8000000,maxHeavyChildren:1};
 const sha=(bytes:string|Uint8Array)=>createHash('sha256').update(bytes).digest('hex');
 const hash=(path:string)=>sha(readFileSync(path));
@@ -216,9 +216,11 @@ if(!o.worker){
    relocatedHeader=relocatedHeader.replace(change.before+'\n',change.after+'\n');
   }
   if(relocatedHeader!==originalHeader)throw Error('Compiler root must preserve native parser constructor namespaces');
-  const expectedImports='import ../bend2/selfhost/loaded_module.bend as Loader\nimport ./template_steps_v1.bend as Template\nimport ./checker_core_steps_v1.bend as CheckerCore\nimport ./js_emit_steps_v1.bend as JSEmit\n\n';
+  const expectedImports='import ../bend2/selfhost/loaded_module.bend as Loader\nimport ../bend2/selfhost/checked_frontend.bend as Checked\nimport ./template_steps_v1.bend as Template\nimport ./checker_core_steps_v1.bend as CheckerCore\nimport ./js_emit_steps_v1.bend as JSEmit\n\n';
   const expectedPrefix=relocatedHeader+expectedImports;
   if(embedding.start!==expectedPrefix.length||embedding.chars!==declarations.length||embedding.sha256!==sha(declarations)||manifest.parserDeclarationSha256!==sha(declarations)||rootText.slice(0,expectedPrefix.length)!==expectedPrefix||rootText.slice(expectedPrefix.length,expectedPrefix.length+declarations.length)!==declarations||sha(rootText.slice(expectedPrefix.length+declarations.length))!==manifest.wrapperSha256)throw Error('Root does not contain the exact complete accepted parser declaration suffix and import-only prefix');
+  const wrapperNames=[...rootText.slice(expectedPrefix.length+declarations.length).matchAll(/^def ([A-Za-z_]\w*)\(/gm)].map(match=>match[1]);
+  if(JSON.stringify(wrapperNames)!==JSON.stringify(ABI.filter(name=>name!=='parse_with_fuel')))throw Error('Root must expose the exact nine typed compiler wrappers plus the accepted parser entrypoint');
   if(typeof manifest.generator!=='string'||hash(manifest.generator)!==manifest.generatorSha256)throw Error('Root composition generator provenance drift');
   state.inputs[parserSource]=hash(parserSource);state.inputs[manifest.generator]=hash(manifest.generator);
   rootComposition={manifest:o.rootManifest,manifestSha256:hash(o.rootManifest!),rootSha256:hash(o.root),parserSourceSha256:hash(parserSource),parserDeclarationSha256:sha(declarations),embedding,exactParserDeclarations:true};

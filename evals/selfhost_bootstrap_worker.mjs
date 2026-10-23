@@ -16,7 +16,7 @@ async function transportHash(path){
  return hash.digest('hex');
 }
 const tag=value=>value?.$?.split('.').at(-1);
-const ABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','checker_step','emit_modules_start','emit_library_start','emitter_step'];
+const ABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','inspect_checked_start','checker_step','emit_modules_start','emit_library_start','emitter_step'];
 const requiredExports=workerData?.fixture?ABI.filter(name=>name!=='parse_with_fuel'&&name!=='emit_library_start'):ABI;
 const send=message=>parentPort.postMessage(message);
 if(isMainThread){
@@ -204,7 +204,7 @@ if(isMainThread){
    }
    return {...progress,resume:value=>observe(resume(value))};
   }
-  return Object.fromEntries([...Object.entries(component),...exports.map(name=>[name,input=>observe(component[name](input))])]);
+  return Object.fromEntries([...Object.entries(component),...exports.map(name=>[name,(...inputs)=>observe(component[name](...inputs))])]);
  }
  function compile(component,loaded,library){
   let modules=loaded.modules;loaded.modules=undefined;
@@ -214,8 +214,8 @@ if(isMainThread){
   const checkingComponent=profileSteps({...component,check_expanded_start:input=>{expanded=undefined;return component.check_expanded_start(input);}},['check_expanded_start','checker_step']);
   mark(phase.replace(/-expand$/,'')+'-check');let checked=runCheckerSteps(checkingComponent,expanded.modules);
   if(tag(checked)!=='CheckSuccess')failure('check',checked);
-  const emissionComponent=profileSteps({...component,emit_modules_start:input=>{checked=undefined;return component.emit_modules_start(input);},emit_library_start:input=>{checked=undefined;return component.emit_library_start(input);}},['emit_modules_start','emit_library_start','emitter_step']);
-  mark(phase.replace(/-check$/,'')+'-emit');const emitted=library?runLibraryEmitterSteps(emissionComponent,checked.modules):runEmitterSteps(emissionComponent,checked.modules);
+  const emissionComponent=profileSteps({...component,emit_modules_start:input=>{checked=undefined;return component.emit_modules_start(input);},emit_library_start:(input,exports)=>{checked=undefined;return component.emit_library_start(input,exports);}},['emit_modules_start','emit_library_start','emitter_step']);
+  mark(phase.replace(/-check$/,'')+'-emit');const emitted=library?runLibraryEmitterSteps(emissionComponent,checked.program,list(ABI)):runEmitterSteps(emissionComponent,checked.program);
   if(tag(emitted)!=='EmitSuccess')failure('emit',emitted);
   return emitted.source;
  }

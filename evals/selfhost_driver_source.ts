@@ -2,7 +2,7 @@
 /** CLI: bun evals/selfhost_driver_source.ts --parser-build=<fresh native-build.result.json>
  * Require its corresponding fresh final 75-case native semantic acceptance wrapper,
  * authenticate canonical schema3 storage and typed step closures, then compose root scope.
- * Only import paths and the unchanged nine ABI wrappers are composed; no parser
+ * Only import paths and the ten public ABI entries are composed; no parser
  * body, datatype, Request or Kont is rewritten.
  */
 import {readFileSync,writeFileSync,realpathSync} from 'node:fs';
@@ -344,7 +344,6 @@ const manifest='checkpoints/selfhost-steps-driver-source-v1.json';
 const authenticated=readAcceptedParserBuild(parserBuild);
 const {parserSource,source}=authenticated;
 const typedStepInputs:Record<string,string>={};
-let emitLibraryRequestEnvelope:string|undefined;
 for(const [mode,stem]of [['template','template'],['checker','checker-core'],['emitter','js-emit']] as const){
  const path=realpathSync(resolve('checkpoints/'+stem+'-steps-v1.json')),text=readFileSync(path,'utf8');
  const record=object(JSON.parse(text)),{generationManifestSha256,...proof}=record;
@@ -373,10 +372,14 @@ for(const [mode,stem]of [['template','template'],['checker','checker-core'],['em
   if(sha(readFileSync(output))!==digest)throw Error('Typed '+mode+' output drift: '+output);
   typedStepInputs[realpathSync(output)]=digest;
  }
- if(mode==='emitter'){
-  emitLibraryRequestEnvelope=record.coverage?.find((row:any)=>row.name==='emit_library')?.requestEnvelope;
-  if(typeof emitLibraryRequestEnvelope!=='string'||!/^EmitterRequestGroup_[0-9]+$/.test(emitLibraryRequestEnvelope))
-   throw Error('Missing authenticated emit_library request group');
+ if(mode==='checker'&&!record.coverage?.some((row:any)=>row.name==='inspect_checked'))
+  throw Error('Missing owner-preserving checked inspection closure');
+ if(mode==='emitter'&&!record.coverage?.some((row:any)=>row.name==='emit_library'))
+  throw Error('Missing typed library emission closure');
+ if(mode!=='template'){
+  const checked=readFileSync(output,'utf8').match(/^import (\S+) as Checked$/m)?.[1];
+  if(!checked||realpathSync(resolve(dirname(output),checked))!==realpathSync('bend2/selfhost/checked_frontend.bend'))
+   throw Error('Typed '+mode+' must share the canonical owning Checked boundary');
  }
 }
 const declaration=source.match(/^(?:type|def) /m);
@@ -393,7 +396,7 @@ const header=originalHeader.replace(/^import (\S+)( as [A-Za-z_][A-Za-z0-9_]*)?$
 // The parser and the complete native library share lexical import namespaces:
 // constructor tags must remain identical across their authentic AST transport.
 if(header!==originalHeader)throw Error('Compiler root must preserve the accepted parser import header');
-const imports='import ../bend2/selfhost/loaded_module.bend as Loader\nimport ./template_steps_v1.bend as Template\nimport ./checker_core_steps_v1.bend as CheckerCore\nimport ./js_emit_steps_v1.bend as JSEmit\n\n';
+const imports='import ../bend2/selfhost/loaded_module.bend as Loader\nimport ../bend2/selfhost/checked_frontend.bend as Checked\nimport ./template_steps_v1.bend as Template\nimport ./checker_core_steps_v1.bend as CheckerCore\nimport ./js_emit_steps_v1.bend as JSEmit\n\n';
 const wrappers=`
 # Bend owns parsing, expansion, checking and emission; Node drives typed steps.
 def parsed_module(namespace: String, module: Ast.Module) -> Loader.LoadedModule:
@@ -405,17 +408,20 @@ def expand_modules_start(modules: List<&2, Loader.LoadedModule>) -> Template.Tem
 def template_step(request: Template.TemplateRequest) -> Template.TemplateProgress<Template.template_result(request)>:
   Template.template_step(request)
 
-def check_expanded_start(modules: List<&2, Loader.LoadedModule>) -> CheckerCore.CheckerProgress<CheckerCore.CheckResult>:
+def check_expanded_start(modules: List<&2, Loader.LoadedModule>) -> CheckerCore.CheckerProgress<Checked.CheckResult>:
   CheckerCore.checker_start(modules)
+
+def inspect_checked_start(program: Checked.CheckedProgram) -> CheckerCore.CheckerProgress<Checked.Inspection>:
+  CheckerCore.checker_inspect_start(program)
 
 def checker_step(request: CheckerCore.CheckerRequest) -> CheckerCore.CheckerProgress<CheckerCore.checker_result(request)>:
   CheckerCore.checker_step(request)
 
-def emit_modules_start(modules: List<&2, Loader.LoadedModule>) -> JSEmit.EmitterProgress<JSEmit.EmitResult>:
-  JSEmit.emitter_start(modules)
+def emit_modules_start(program: Checked.CheckedProgram) -> JSEmit.EmitterProgress<JSEmit.EmitResult>:
+  JSEmit.emitter_start(program)
 
-def emit_library_start(modules: List<&2, Loader.LoadedModule>) -> JSEmit.EmitterProgress<JSEmit.EmitResult>:
-  JSEmit.emitter_step(JSEmit.${emitLibraryRequestEnvelope}{JSEmit.EmitterRequest_emit_library{modules, ["parsed_module", "parse_with_fuel", "expand_modules_start", "template_step", "check_expanded_start", "checker_step", "emit_modules_start", "emit_library_start", "emitter_step"]}})
+def emit_library_start(program: Checked.CheckedProgram, exports: List<&2, String>) -> JSEmit.EmitterProgress<JSEmit.EmitResult>:
+  JSEmit.emitter_library_start(program, exports)
 
 def emitter_step(request: JSEmit.EmitterRequest) -> JSEmit.EmitterProgress<JSEmit.emitter_result(request)>:
   JSEmit.emitter_step(request)

@@ -21,7 +21,9 @@ const hash=(path:string)=>sha(readFileSync(path));
 const json=(value:unknown)=>JSON.stringify(value,null,2)+'\n';
 const save=(path:string,value:unknown,exclusive=false)=>writeFileSync(path,json(value),exclusive?{flag:'wx'}:undefined);
 const guard={memoryMiB:8192,rssMiB:8192,pollMs:10};
-const ABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','checker_step','emit_modules_start','emit_library_start','emitter_step'];
+const ABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','inspect_checked_start','checker_step','emit_modules_start','emit_library_start','emitter_step'];
+// Frozen output is an explicit historical test input, never a production decoder.
+const frozenV41ABI=ABI.filter(name=>name!=='inspect_checked_start');
 const productionRuntime=resolve(repository,'evals/checker_core_step_runtime.mjs');
 const frozenV41Runtime=resolve(repository,'checkpoints/compiler-benchmark-v41-step-runtime.mjs');
 const frozenV41Manifest=resolve(repository,'checkpoints/compiler-benchmark-release237-v41.corpus.json');
@@ -144,16 +146,15 @@ async function worker(requestPath:string,requestSha256:string){
    if(tag(expanded)!=='ExpandSuccess')throw Error('Own expansion failed: '+JSON.stringify(expanded));
    let checked=await phase('check',()=>driver.runCheckerSteps({...api,check_expanded_start:(input:any)=>{expanded=undefined;return api.check_expanded_start(input);}},expanded.modules));
    if(tag(checked)!=='CheckSuccess')throw Error('Own checking failed: '+JSON.stringify(checked.diagnostic,(_,v)=>typeof v==='bigint'?String(v):v));
-   report.checkedModules=items(checked.modules).length;
+   report.checkedModules=items(checked.program.modules).length;
    if(report.checkedModules!==report.moduleCount)throw Error('Own checking lost source modules');
    if(o.stopAfter==='compile'){
     const receipt=JSON.parse(readFileSync(o.exports!,'utf8'));
     if(receipt.schemaVersion!==1||receipt.corpusSha256!==report.corpusSha256||!Array.isArray(receipt.exports)||!receipt.exports.length||receipt.exports.some((key:any)=>typeof key!=='string')||new Set(receipt.exports).size!==receipt.exports.length)throw Error('Missing exact official export-set receipt');
     exportNames=receipt.exports;
-    // Actual public typed emitter request, already used by source library smokes.
-    // Its constructor/field ABI is defined in js_emit_steps_v1.bend, never patched output.
-    const emission={...api,emit_library_start:(input:any)=>{checked=undefined;return api.emitter_step({$:'js_emit_steps_v1.EmitterRequestGroup_8',request:{$:'js_emit_steps_v1.EmitterRequest_emit_library',v_1:input,v_4:list(exportNames!)}});}};
-    const emitted=await phase('emit',()=>driver.runLibraryEmitterSteps(emission,checked.modules));
+    // The public typed entry owns its FIR input and accepts explicit exports.
+    const emission={...api,emit_library_start:(input:any,exports:any)=>{checked=undefined;return api.emit_library_start(input,exports);}};
+    const emitted=await phase('emit',()=>driver.runLibraryEmitterSteps(emission,checked.program,list(exportNames!)));
     if(tag(emitted)!=='EmitSuccess')throw Error('Own emission failed: '+emitted.message);source=emitted.source;
    }
   }
@@ -169,7 +170,7 @@ async function worker(requestPath:string,requestSha256:string){
     exportNames=actual;
     save(o.report+'.exports.json',{schemaVersion:1,corpusSha256:report.corpusSha256,officialCommit:corpus.officialCommit,artifactSha256:report.artifact.sha256,exports:actual},true);
    }else if(actual.length!==exportNames!.length||actual.some((key,index)=>key!==exportNames![index]))throw Error('Emitted public export set differs from official mode');
-   if(!ABI.every(name=>typeof outputApi[name]==='function'))throw Error('Emitted compiler ABI incomplete');
+   if(!(o.outputSmokeDriver==='frozen-v41'?frozenV41ABI:ABI).every(name=>typeof outputApi[name]==='function'))throw Error('Emitted compiler ABI incomplete');
    const runtimePath=o.outputSmokeDriver==='frozen-v41'?frozenV41Runtime:productionRuntime;
    const runtime=await import(pathToFileURL(runtimePath).href);
    report.outputSmokeRuntime={selection:o.outputSmokeDriver,path:runtimePath,sha256:hash(runtimePath),...(o.outputSmokeDriver==='frozen-v41'?{provenance:'Exact pre-v53 runtime captured from committed52 f99b22db; frozen v41 benchmark input only',expectedSha256:frozenV41RuntimeSha256,corpusReference:frozenV41Manifest}:{progressABI:'boxed-value-bound-v53'})};
@@ -177,7 +178,8 @@ async function worker(requestPath:string,requestSha256:string){
     const module=parsed(outputApi,resolve(corpus.directory,'benchmark-smoke.bend'),'type Bit is Data:\n  Zero{}\n  One{}\n\ndef main() -> Bit:\n  One{}\n');
     if(!items(module.declarations).some(top=>tag(top)==='DefTop'&&top.definition.key==='main'))throw Error('Emitted parser lost the actual main declaration');
     const checked=runtime.runCheckerSteps(outputApi,{$:'Nil'});
-    if(tag(checked)!=='CheckSuccess'||tag(checked.modules)!=='Nil')throw Error('Emitted checker failed empty-module semantics');
+    const checkedModules=o.outputSmokeDriver==='frozen-v41'?checked.modules:checked.program?.modules;
+    if(tag(checked)!=='CheckSuccess'||tag(checkedModules)!=='Nil')throw Error('Emitted checker failed empty-module semantics');
    });
    report.exportCount=actual.length;report.exportSetSha256=sha(JSON.stringify(actual));report.outputSmokePassed=true;
   }

@@ -1,8 +1,8 @@
 #!/usr/bin/env bun
 /** Temporary real consumer smoke, not a compiler-root/bootstrap fixedpoint.
- * Build all eight diagnostic exports with checker_core_component_build.ts:
+ * Build all nine diagnostic exports with checker_core_component_build.ts:
  * --file=checkpoints/template_checker_steps_driver_v1.bend
- * --exports=parsed_module,expand_modules_start,template_step,check_expanded_start,checker_step,emit_modules_start,emit_library_probe_start,emitter_step
+ * --exports=parsed_module,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step
  * Then: bun --smol evals/checker_library_smoke.ts --component=PATH.js
  * --component-build=PREFIX.result.json --report=FRESH.json
  * Required --parser=PATH.js --parser-build=PATH.native-build.result.json from a
@@ -21,7 +21,7 @@ import {spawn} from 'node:child_process';
 import type {ChildProcess} from 'node:child_process';
 import {createInterface} from 'node:readline';
 
-const ABI=['parsed_module','expand_modules_start','template_step','check_expanded_start','checker_step','emit_modules_start','emit_library_probe_start','emitter_step'];
+const ABI=['parsed_module','expand_modules_start','template_step','check_expanded_start','inspect_checked_start','checker_step','emit_modules_start','emit_library_start','emitter_step'];
 const limits={memoryMiB:8192,rssMiB:8192,pollMs:10,workerStackMiB:256,parserFuel:2000000,maxHeavyChildren:1};
 const sha=(bytes:string|Uint8Array)=>createHash('sha256').update(bytes).digest('hex');
 const hash=(path:string)=>sha(readFileSync(path));
@@ -83,8 +83,8 @@ def specialized_probe(x: Bit) -> Bit:
 `;
 const o=optionsOf(),sidecars=o.report+'.cases';
 const root=resolve('checkpoints/template_checker_steps_driver_v1.bend');
-const criterion='Smoke-only real library consumer: accepted compiled parsing with complete semantic AST parity, actual Template expansion, actual Checker CheckSuccess.modules, actual native JSEmit library steps, then positional ESM/curried/erased consumer behavior on the unchanged returned JS.';
-const boundary={orchestration:'trusted Node native List packaging and shared LIFO continuation driver',nativeTerminationProofIncludesDriver:false,hostCheckingExpansionEmission:false,hostParserUse:'full semantic oracle only; never compiler inputs',bootstrapFixedpointClaim:false,fullCompilerRoot:false,libraryStartExport:'emit_library_probe_start',sharedRuntimeStartSelection:'runLibraryEmitterSteps selects actual consumer-only native Bend start',legacyIODriver:false,legacyCBackend:false};
+const criterion='Smoke-only real library consumer: accepted compiled parsing with complete semantic AST parity, actual Template expansion, actual Checked.CheckSuccess.program and owner-preserving inspection, actual native JSEmit library steps, then positional ESM/curried/erased consumer behavior on the unchanged returned JS.';
+const boundary={orchestration:'trusted Node native List packaging and shared LIFO continuation driver',nativeTerminationProofIncludesDriver:false,hostCheckingExpansionEmission:false,hostParserUse:'full semantic oracle only; never compiler inputs',bootstrapFixedpointClaim:false,fullCompilerRoot:false,libraryStartExport:'emit_library_start',sharedRuntimeStartSelection:'runLibraryEmitterSteps selects typed public start with explicit consumer exports',legacyIODriver:false,legacyCBackend:false};
 mkdirSync(dirname(o.report),{recursive:true});
 if(!o.worker){
  if(existsSync(o.report)||existsSync(sidecars))throw Error('Use a fresh report path; evidence is never overwritten');
@@ -106,7 +106,7 @@ if(!o.worker){
   const component=nativeBuild(o.componentBuild,o.component),parser=nativeBuild(acceptedParser.parserBuild,o.parser);
   for(const [path,digest]of Object.entries(acceptedParser.authenticatedInputs))state.inputs[path]=digest;
   state.inputs[acceptedParser.provenancePath]=hash(acceptedParser.provenancePath);
-  if(typeof component.sourcePath!=='string'||realpathSync(component.sourcePath)!==realpathSync(root)||component.sourceSha256!==hash(root)||!Array.isArray(component.exports)||component.exports.length!==ABI.length||!ABI.every(name=>component.exports.includes(name))||!Number.isSafeInteger(component.liveBodies)||component.liveBodies<=0||component.checkedDefinitions<component.liveBodies)throw Error('Component must validate all bodies of this exact eight-export diagnostic root');
+  if(typeof component.sourcePath!=='string'||realpathSync(component.sourcePath)!==realpathSync(root)||component.sourceSha256!==hash(root)||!Array.isArray(component.exports)||component.exports.length!==ABI.length||!ABI.every(name=>component.exports.includes(name))||!Number.isSafeInteger(component.liveBodies)||component.liveBodies<=0||component.checkedDefinitions<component.liveBodies)throw Error('Component must validate all bodies of this exact nine-export diagnostic root');
   const provenance=json(o.componentProvenance),{provenanceSha256,...payload}=provenance;
   if(provenanceSha256!==component.provenanceSha256||sha(JSON.stringify(payload))!==provenanceSha256||provenance.schemaVersion!==4||provenance.sourceSha256!==component.sourceSha256||provenance.checksExcluded!==0||provenance.outputPatches!==0)throw Error('Component complete-source provenance mismatch');
   const componentProducerPins=object(provenance.protectedPins);

@@ -43,7 +43,12 @@ function resolvedSourceBody(body:B.Body, vars:readonly B.PVar[]):B.Body{
 }
 export async function normalizeNativeMatchSource(file:string, source:string) {
   const oracle=await sourceOracle(file,source);
-  if(!oracle.accepted)throw Error('Native match source parse '+file+': '+String(oracle.error));
+  if(!oracle.accepted){
+    const error=oracle.error;
+    const diagnostic=error&&typeof error==='object'&&'$'in error&&error.$==='Err'
+      ?B.err_show(error as B.Err):String(error);
+    throw Error('Native match source parse '+file+': '+diagnostic);
+  }
   const book=oracle.normalizationBook(), declarations=new SourceDeclarations(source);
   const signatures=new Map<string,ParserSignature>();
   for(const declaration of oracle.declarations)if(declaration.body){

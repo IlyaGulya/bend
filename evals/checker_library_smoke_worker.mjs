@@ -5,12 +5,13 @@ import {pathToFileURL} from 'node:url';
 import {createHash} from 'node:crypto';
 import {createInterface} from 'node:readline';
 import {writeNativeAst,readNativeAst} from './bootstrap_ast_transport.ts';
-import {runTemplateSteps,runCheckerSteps,runLibraryEmitterSteps} from './checker_core_step_runtime.mjs';
+import {runTemplateSteps,runCheckerSteps,runCheckedInspectionSteps,runLibraryEmitterSteps} from './checker_core_step_runtime.mjs';
 
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
 const tag=value=>value?.$?.split('.').at(-1);
-const ABI=['parsed_module','expand_modules_start','template_step','check_expanded_start','checker_step','emit_modules_start','emit_library_probe_start','emitter_step'];
+const ABI=['parsed_module','expand_modules_start','template_step','check_expanded_start','inspect_checked_start','checker_step','emit_modules_start','emit_library_start','emitter_step'];
 const exports=['zero','one','pack','make_pack','apply','identity','identity_probe','erased_probe','specialized_probe'];
+const list=values=>values.reduceRight((tail,head)=>({$:'Con',head,tail}),{$:'Nil'});
 if(isMainThread){
  const request=JSON.parse(readFileSync(process.argv[2],'utf8'));
  const worker=new Worker(new URL(import.meta.url),{workerData:request,resourceLimits:{stackSizeMb:256}});
@@ -32,7 +33,7 @@ if(isMainThread){
  };
  try{
   const component=(await import(pathToFileURL(workerData.component).href)).default;
-  if(!component||!ABI.every(name=>typeof component[name]==='function'))throw Error('Diagnostic component lacks all eight real step exports');
+  if(!component||!ABI.every(name=>typeof component[name]==='function'))throw Error('Diagnostic component lacks all nine real step exports');
   const parser=(await import(pathToFileURL(workerData.parser).href)).default;
   if(typeof parser?.parse_with_fuel!=='function')throw Error('Accepted compiled parser lacks parse_with_fuel');
   const source=readFileSync(workerData.file,'utf8');
@@ -60,12 +61,13 @@ if(isMainThread){
   send({event:'stage',phase,result:tag(expanded),transport:expandedTransport});
   mark('check');let checked=runCheckerSteps({...component,check_expanded_start:input=>{expanded=undefined;return component.check_expanded_start(input);}},expanded.modules);
   if(tag(checked)!=='CheckSuccess')fail('check',checked);
-  const checkedTransport=transport('checked',checked);
-  send({event:'stage',phase,result:tag(checked),transport:checkedTransport,emitterInput:'authentic CheckSuccess.modules'});
+  let inspection=runCheckedInspectionSteps({...component,inspect_checked_start:program=>{checked=undefined;return component.inspect_checked_start(program);}},checked.program);
+  if(tag(inspection)==='InspectionFailure')fail('inspection',{diagnostic:inspection.diagnostic});
+  const checkedTransport=transport('checked',inspection.modules);
+  send({event:'stage',phase,result:'CheckSuccess',transport:checkedTransport,emitterInput:'authentic Inspection.program (same owner after explicit readback)'});
   mark('emit-library');
-  // Reuse the one trusted LIFO loop, selecting the consumer-only Bend start.
-  // No compiler API is exported by the resulting program library.
-  const emitted=runLibraryEmitterSteps({...component,emit_library_start:input=>{checked=undefined;return component.emit_library_probe_start(input);}},checked.modules);
+  // Only consumer APIs are requested; no compiler API enters the library.
+  const emitted=runLibraryEmitterSteps({...component,emit_library_start:(program,names)=>{inspection=undefined;return component.emit_library_start(program,names);}},inspection.program,list(exports));
   if(tag(emitted)!=='EmitSuccess')fail('emit',emitted);
   const artifact=join(workerData.sidecars,'consumer.mjs');
   writeFileSync(artifact,emitted.source,{flag:'wx'});

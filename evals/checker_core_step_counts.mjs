@@ -6,6 +6,7 @@
  * Base observer is preserved in compiler-profile-v46.json (9bc67992...583d6).
  */
 import {writeFileSync} from 'node:fs';
+export {runEmitterSteps,runLibraryEmitterSteps,runCheckedInspectionSteps} from './checker_core_step_runtime.mjs';
 let counters;
 const captures=new Map();
 const increment=(map,key)=>map.set(key,(map.get(key)??0)+1);
@@ -106,21 +107,11 @@ function runSteps(component,modules,kind,startExport,stepExport,validateResult){
 function validateCheckResult(value){
  const resultTag=constructorTag(value);
  if(resultTag==='CheckSuccess'){
-  if(!Object.hasOwn(value,'modules')||!['Nil','Con'].includes(constructorTag(value.modules)))invalid('Checker','CheckSuccess requires native modules');
+  const program=value.program;
+  if(constructorTag(program)!=='CheckedProgram'||!Object.hasOwn(program,'source')||!hasConstructorTag(program.source)||!['Nil','Con'].includes(constructorTag(program.modules))||!['Nil','Con'].includes(constructorTag(program.signatures)))invalid('Checker','expected owning CheckedProgram with source, IR modules and signatures');
  }else if(resultTag==='CheckFailure'){
   if(!Object.hasOwn(value,'diagnostic')||constructorTag(value.diagnostic)!=='Diagnostic')invalid('Checker','CheckFailure requires a native Diagnostic');
  }else invalid('Checker','expected CheckResult, observed '+String(resultTag));
-}
-
-function validateEmitResult(value){
- const resultTag=constructorTag(value);
- if(resultTag==='EmitSuccess'){
-  if(typeof value.source!=='string')invalid('Emitter','EmitSuccess requires source string');
- }else if(resultTag==='EmitFailure'){
-  if(typeof value.message!=='string')invalid('Emitter','EmitFailure requires message string');
-  const span=value.span;
-  if(constructorTag(span)!=='SpanOf'||typeof span.file!=='string'||!Number.isSafeInteger(span.beg)||!Number.isSafeInteger(span.end)||span.beg<0||span.end<span.beg)invalid('Emitter','EmitFailure requires native SourceSpan');
- }else invalid('Emitter','expected EmitResult, observed '+String(resultTag));
 }
 
 function validateExpandResult(value){
@@ -151,12 +142,4 @@ export function runCheckerSteps(component,modules){
  writeFileSync(path,JSON.stringify({...report,capture,base,path}),{flag:'wx'});
  captures.set(base,capture);
  return result;
-}
-
-export function runEmitterSteps(component,modules){
- return runSteps(component,modules,'Emitter','emit_modules_start','emitter_step',validateEmitResult);
-}
-
-export function runLibraryEmitterSteps(component,modules){
- return runSteps(component,modules,'Emitter','emit_library_start','emitter_step',validateEmitResult);
 }

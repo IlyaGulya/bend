@@ -17,11 +17,11 @@ const invalid=(kind,message)=>{throw Error('Invalid '+kind.toLowerCase()+' step 
  * single native argument record consumed by a source-supplied direct invoker.
  * There are no recursive host calls or host-imposed step/fuel limits.
  */
-function runSteps(component,modules,kind,startExport,stepExport,validateResult){
+function runSteps(component,modules,kind,startExport,stepExport,validateResult,exports){
  if(typeof component?.[startExport]!=='function')invalid(kind,'missing '+startExport+' export');
  if(typeof component?.[stepExport]!=='function')invalid(kind,'missing '+stepExport+' export');
  const pendingTag=kind+'Pending',directTag=kind+'Direct',boundTag=kind+'Bound',finishedTag=kind+'Finished',valueTag=kind+'Value',pendingSuffix='.'+pendingTag,directSuffix='.'+directTag,boundSuffix='.'+boundTag,finishedSuffix='.'+finishedTag,valueSuffix='.'+valueTag,resumes=[];
- let depth=0,knownPendingTag,knownDirectTag,knownBoundTag,knownFinishedTag,knownValueTag,progress=component[startExport](modules);
+ let depth=0,knownPendingTag,knownDirectTag,knownBoundTag,knownFinishedTag,knownValueTag,progress=exports===undefined?component[startExport](modules):component[startExport](modules,exports);
  modules=undefined;
  for(;;){
   const tag=progress?.$;
@@ -76,10 +76,24 @@ function runSteps(component,modules,kind,startExport,stepExport,validateResult){
 function validateCheckResult(value){
  const resultTag=constructorTag(value);
  if(resultTag==='CheckSuccess'){
-  if(!Object.hasOwn(value,'modules')||!['Nil','Con'].includes(constructorTag(value.modules)))invalid('Checker','CheckSuccess requires native modules');
+  validateCheckedProgram(value.program);
  }else if(resultTag==='CheckFailure'){
   if(!Object.hasOwn(value,'diagnostic')||constructorTag(value.diagnostic)!=='Diagnostic')invalid('Checker','CheckFailure requires a native Diagnostic');
  }else invalid('Checker','expected CheckResult, observed '+String(resultTag));
+}
+
+function validateCheckedProgram(program){
+ if(constructorTag(program)!=='CheckedProgram'||!Object.hasOwn(program,'source')||!hasConstructorTag(program.source)||!['Nil','Con'].includes(constructorTag(program.modules))||!['Nil','Con'].includes(constructorTag(program.signatures)))invalid('Checker','expected owning CheckedProgram with source, IR modules and signatures');
+}
+
+function validateInspection(value){
+ const resultTag=constructorTag(value);
+ if(resultTag==='Inspection'){
+  if(!['Nil','Con'].includes(constructorTag(value.modules)))invalid('Checker','Inspection requires native readback modules');
+ }else if(resultTag==='InspectionFailure'){
+  if(constructorTag(value.diagnostic)!=='Diagnostic')invalid('Checker','InspectionFailure requires a native Diagnostic');
+ }else invalid('Checker','expected owner-preserving Inspection or InspectionFailure');
+ validateCheckedProgram(value.program);
 }
 
 function validateEmitResult(value){
@@ -112,10 +126,18 @@ export function runCheckerSteps(component,modules){
  return runSteps(component,modules,'Checker','check_expanded_start','checker_step',validateCheckResult);
 }
 
-export function runEmitterSteps(component,modules){
- return runSteps(component,modules,'Emitter','emit_modules_start','emitter_step',validateEmitResult);
+export function runCheckedInspectionSteps(component,program){
+ validateCheckedProgram(program);
+ return runSteps(component,program,'Checker','inspect_checked_start','checker_step',validateInspection);
 }
 
-export function runLibraryEmitterSteps(component,modules){
- return runSteps(component,modules,'Emitter','emit_library_start','emitter_step',validateEmitResult);
+export function runEmitterSteps(component,program){
+ validateCheckedProgram(program);
+ return runSteps(component,program,'Emitter','emit_modules_start','emitter_step',validateEmitResult);
+}
+
+export function runLibraryEmitterSteps(component,program,exports){
+ validateCheckedProgram(program);
+ if(!['Nil','Con'].includes(constructorTag(exports)))invalid('Emitter','library start requires explicit native exports list');
+ return runSteps(component,program,'Emitter','emit_library_start','emitter_step',validateEmitResult,exports);
 }

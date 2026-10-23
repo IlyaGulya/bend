@@ -1,0 +1,189 @@
+{
+  "schemaVersion": 1,
+  "status": "IMPLEMENTATION_CHECKPOINT_NOT_ACCEPTED",
+  "version": "57a",
+  "acceptedNativeBaseline": "2b3efa80",
+  "architectureCommit": "9742e03a",
+  "sourceHashes": {
+    "bend2/selfhost/checker.bend": "5e7be15e24d9d2bb2e293ca663dc5894b6cb5a4c3e49cd093a53b10319b924c7",
+    "bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+    "bend2/selfhost/checker_arena.bend": "fb8651ab2e6304faded5eb312ffe95175a177254f7dd704eca7a9b0896a40e31",
+    "bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+    "bend2/selfhost/backend_ir.bend": "0c4c67e38dbf34e04c2378863ec48a7222d2f762551baaa388f200f2a7d8c83b",
+    "bend2/selfhost/js_backend.bend": "fd356eecb2456b096a0d65040a245b3fca042de77b8f9344a23fe6e87703c984",
+    "bend2/selfhost/lower_catalog.bend": "e9cca759b90f049215933a0c7ba95ce1ce40f7ba04159915a6a1ca86986e206b",
+    "bend2/selfhost/js_emit.bend": "6c164705d300631ddee658cd6746179bd47e04c83eaa864180a9300757c361b8",
+    "bend2/selfhost/driver.bend": "cefaafc4fa150af74a3365e608620fe397b15b15ed79745ae94289b01d5d0285",
+    "bend2/selfhost/hybrid_driver.bend": "b91a440ec5de29ab8938da58a35dd37725ba168714d5f062ab85ad8820e1c56f",
+    "evals/selfhost_driver_source.ts": "74dfd3d656fb4c58f8a2d32e9e14026dbcccaa9c8e6d947ddc6d4e96745b69ce",
+    "evals/checker_core_step_runtime.mjs": "f5a22a431b83b4f739bf8022a489a12d2beaa2f04ec7b19ed779981c2a4e5b07",
+    "evals/checker_core_step_counts.mjs": "43e618da27a5d5fcd30246269885779f19c49cb09244c3e3f31c6f4f1e235513",
+    "evals/compiler_benchmark.ts": "33ea3dc466f9d2babecb80b3938e1c888adc5f7d2a41d636aa46247f539ebe83",
+    "evals/selfhost_bootstrap_gate.ts": "473c89f01091936ab329fa5f0598e49775e30ebce5c3cd9025926eff7379f94b",
+    "evals/selfhost_bootstrap_worker.mjs": "310f1240dc2c29e6ca8fb1df2076222b013e5acd91e8ff8991304c6830f8ef55",
+    "evals/checker_library_smoke.ts": "b34322f2f39cdc2dfc4206f42ebdc2d0c97dfc34876234cd343e0b9a000fde99",
+    "evals/checker_library_smoke_worker.mjs": "5e34fae0d32193168bc1cff8062f0286283b6b3e90e8399cbadd21fabeff8851",
+    "evals/checker_core_target_gate.ts": "9bd6a09e783f37bf5b3bf174a82f0e6e16f0e566d1ef8fc54e46b42943bc36bf",
+    "evals/checker_core_target_worker.mjs": "93cf329edd2bb56c7c99da0a7e477fe4143c5385298cd5149eedd07bd2bfbae4",
+    "evals/native_compiler_driver.bend": "f67a359abcd8860e72e1e895ab74cfe8f125068f23a95f77927cb9d78bae3522",
+    "evals/native_compiler_host.c": "29b512852a5d7ce6db1ccd00e1e6de1c494e8d0da1e01dc49b59bedd8ef10d3f",
+    "evals/native_compiler_experiment.ts": "30e3be0ec7e6ffeb94269922bc0ff62a0b41aca6bedb41c1fb4d5052095ad28d",
+    "evals/native_match_source.ts": "ef744c5b0c22f50bf5a659dd81836136f5a488fdc62de895ef3cd22b04a34bb6",
+    "tests/selfhost/checker.bend": "04260e018633d7fc24b2d4871173a2d9bb925ff70838d22a93e8ac8192d87a60",
+    "checkpoints/template_checker_steps_driver_v1.bend": "ce210a5752499cf3267ddd85c204d29e7ce8163ea7d79428aac19b0a7c7d1d99"
+  },
+  "excludedActiveCompositionFiles": [
+    "evals/checker_core_owned_source.ts",
+    "evals/checker_core_step_lower.ts",
+    "evals/js_emit_step_lower.ts"
+  ],
+  "implementation": [
+    "Owning checked frontend with occurrences and published metadata",
+    "Separate structured Backend IR, catalog, FIR lowering and JS renderer",
+    "Production consumers migrated to CheckedProgram and native one-shot owner carriers",
+    "Explicit inspection reconstructs runtime occurrence children and returns owner on success/failure"
+  ],
+  "observations": {
+    "ownedGeneration": {
+      "status": "PASS_BEFORE_LATEST_READBACK_CHANGES",
+      "definitions": 1129,
+      "elapsedMs": 5047,
+      "peakRssBytes": 577912832,
+      "peakFootprintBytes": 339723152,
+      "nativeAdmission": false
+    },
+    "checkerStepGeneration": {
+      "status": "FAIL",
+      "diagnostic": "Unsupported interleaved declarations",
+      "elapsedMs": 125,
+      "correction": "Materialization declaration moved above first function; generation not rerun on latest snapshot"
+    },
+    "nativeProviderAttempts": [
+      {
+        "attempt": "b",
+        "result": {
+          "status": "FAIL",
+          "stage": "validation",
+          "diagnostic": "Error:\n- expected : index\n- observed : index (consumed more than once)\nContext:\n- _    : BIR.Use\n- rest : List<&2, BIR.Use>\nLocation: capture_names\n61 |     case BIR.Parameter{id, _} <> rest: local(id) <> parameter_names(rest)\n62>| def capture_names(values: List<&2, BIR.Use>, index: U32) -> List<&2, String>:\n   |                                              ^^^^^\n63 |   match values:",
+          "checksExcluded": 0,
+          "outputPatches": 0,
+          "compiledExecution": "NOT_RUN",
+          "selfhostGreen": false,
+          "guardian": {
+            "status": "FAIL",
+            "reason": "command_exit",
+            "commandExitCode": 2,
+            "commandSignal": 0,
+            "peakRssBytes": 215465984,
+            "peakFootprintBytes": 174649344,
+            "elapsedMs": 1627,
+            "timeoutMs": 600000,
+            "command": [
+              "node",
+              "--experimental-strip-types",
+              "--max-old-space-size=3072",
+              "/Users/ilyagulya/Projects/My/bend/evals/checker_core_component_build.ts",
+              "--worker",
+              "--file=/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_backend.bend",
+              "--exports=emit",
+              "--artifact=/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-backend-a.js",
+              "--report=/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-backend-b-native-build",
+              "--inputs-sha256=614031fa2dc6eefa7796d02e19c1822eddd8ec03331c1f2314dc658c9c793182"
+            ],
+            "label": "Full-native CheckerCore component JS build",
+            "exitCode": 1,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792774584095-5c60abe88b374763.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          }
+        },
+        "inputs": {
+          "/Users/ilyagulya/Projects/My/bend/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+          "/Users/ilyagulya/Projects/My/bend/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+          "/Users/ilyagulya/Projects/My/bend/bend2/comp.ts": "8c33864a67f0fd08d1805929c8f48806c040b219126b29bb31f201f45d6b69e6",
+          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_backend.bend": "731b8d44db7564577c29c3cad9764d3696b635c5fabe5d04f898bf3f55591c11",
+          "/Users/ilyagulya/Projects/My/bend/evals/checker_core_component_build.ts": "9015dd92cabd6becc382b4f525be879bc91acb08c5afc3124e65fbb29e656024",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate_native.c": "f5aecf8308caebc72dccf8986733b37137d448021ee378302cfcd038381b7aa9",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts": "47a12205abd374fd69d7dac30ee9fb45d7203cad2790870511387cd2efc22251"
+        }
+      },
+      {
+        "attempt": "c",
+        "result": {
+          "status": "FAIL",
+          "stage": "validation",
+          "diagnostic": "Error:\n- expected : a filled definition (an unfilled law is a dead claim: live code cannot use it)\n- observed : tail_call_selected\nContext:\n- code   : U32\n- values : List<&2, String>\n- count  : Nat\nLocation: tail_call\n73 |   +count = List.length(&2, String, values)\n74>|   tail_call_selected(code, values, count, Bool.and(Nat.is_gt(count, 0n), Nat.is_le(count, 32n)))\n   |   ^^^^^^^^^^^^^^^^^^\n75 | def tail_call_selected(code: U32, values: List<&2, String>, count: Nat, selected: Bool) -> String:",
+          "checksExcluded": 0,
+          "outputPatches": 0,
+          "compiledExecution": "NOT_RUN",
+          "selfhostGreen": false,
+          "guardian": {
+            "status": "FAIL",
+            "reason": "command_exit",
+            "commandExitCode": 2,
+            "commandSignal": 0,
+            "peakRssBytes": 190562304,
+            "peakFootprintBytes": 177548952,
+            "elapsedMs": 2492,
+            "timeoutMs": 600000,
+            "command": [
+              "node",
+              "--experimental-strip-types",
+              "--max-old-space-size=3072",
+              "/Users/ilyagulya/Projects/My/bend/evals/checker_core_component_build.ts",
+              "--worker",
+              "--file=/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_backend.bend",
+              "--exports=emit",
+              "--artifact=/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-backend-a.js",
+              "--report=/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57-backend-c-native-build",
+              "--inputs-sha256=30024a547f8233a761797f72c90a060ac953c33b798cf43b8185fec393fb1760"
+            ],
+            "label": "Full-native CheckerCore component JS build",
+            "exitCode": 1,
+            "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792774835132-b99d3f9c466cc83b.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          }
+        },
+        "inputs": {
+          "/Users/ilyagulya/Projects/My/bend/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+          "/Users/ilyagulya/Projects/My/bend/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+          "/Users/ilyagulya/Projects/My/bend/bend2/comp.ts": "8c33864a67f0fd08d1805929c8f48806c040b219126b29bb31f201f45d6b69e6",
+          "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/js_backend.bend": "fd356eecb2456b096a0d65040a245b3fca042de77b8f9344a23fe6e87703c984",
+          "/Users/ilyagulya/Projects/My/bend/evals/checker_core_component_build.ts": "9015dd92cabd6becc382b4f525be879bc91acb08c5afc3124e65fbb29e656024",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate_native.c": "f5aecf8308caebc72dccf8986733b37137d448021ee378302cfcd038381b7aa9",
+          "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts": "47a12205abd374fd69d7dac30ee9fb45d7203cad2790870511387cd2efc22251"
+        }
+      }
+    ],
+    "readbackCorrection": {
+      "status": "SOURCE_IMPLEMENTED_NOT_EXECUTED",
+      "reason": "Semantic local values must not replace lexical runtime local references in explicit AST inspection"
+    },
+    "review": {
+      "status": "STATIC_ONLY",
+      "groundedDefectsReported": 0,
+      "notRuntimeEvidence": true
+    }
+  },
+  "currentBlocker": "Catalog/Backend provider bodies are outside the existing emitter CPS closure; direct backend native validation rejects forward tail_call_selected as an unfilled definition.",
+  "remaining": [
+    "Authenticate and transform the complete emitter provider closure",
+    "Regenerate and natively check full current root without exclusions",
+    "Execute ownership/inspection, erasure, closures, locals, pattern and diagnostic regressions",
+    "Run full frozen corpus and fresh exact-byte stage1/stage2 fixedpoint",
+    "Measure full native build/run and compare the identical corpus to the official compiler"
+  ],
+  "acceptance": {
+    "nativeFullRoot": "NOT_RUN",
+    "compiledNewEmitter": "NOT_RUN",
+    "fullCorpus": "NOT_RUN",
+    "stage1Stage2ByteFixedpoint": "NOT_RUN",
+    "performanceImprovement": "NOT_MEASURED",
+    "selfhostGreen": false
+  },
+  "reproduction": [
+    "bun --smol evals/checker_core_component_build.ts --file=bend2/selfhost/js_backend.bend --exports=emit --artifact=checkpoints/.ir57-repro-backend.js --report=checkpoints/.ir57-repro-backend-native-build"
+  ],
+  "note": "The component builder owns its 8GiB/600s/10ms guardian; do not nest a second heavy_gate lock. This checkpoint preserves incomplete integration, not an accepted compiler release. No generated images, compiler executables or temporary trees are committed."
+}

@@ -39,6 +39,8 @@ const kernelPath = join(root, 'bend2/bend.ts'), compilerPath = join(root, 'bend2
 const bridge = join(root, 'evals/native_compiler_driver.bend');
 const kernelSha256 = '6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e';
 const acceptedCompilerSha256 = '84b19ce89aad6da90b1aedb7b8fff2ed8ef659636754801c91290424c19a7da2';
+const compilerABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','inspect_checked_start','checker_step','emit_modules_start','emit_library_start','emitter_step'];
+const frozenV41CorpusSha256='29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258';
 const guard = {memoryMiB:8192, rssMiB:8192, pollMs:10, timeoutMs:600000};
 const boundary = {host:'trusted C file/import loader and serial affine LIFO continuation driver',
   sourceAlgorithms:'unchanged canonical Bend parser/expansion/checker/JS library emitter',
@@ -68,7 +70,7 @@ function options():Options {
   const mode=flags.get('--mode')!,phase=flags.get('--phase')??'compile',threads=Number(flags.get('--threads')??'1');
   if(!['build','run'].includes(mode)||!['check','compile'].includes(phase)||!Number.isInteger(threads)||threads<1||threads>128)throw Error('Invalid mode, phase, or supported thread count (1..128)');
   if(mode==='build'&&!flags.has('--artifact')||mode==='run'&&!flags.has('--build'))throw Error('Build requires --artifact; run requires --build');
-  if(flags.has('--expect-js')&&(mode!=='run'||phase!=='compile'||flags.has('--exports')))throw Error('--expect-js is a nine-export full-compile smoke only');
+  if(flags.has('--expect-js')&&(mode!=='run'||phase!=='compile'||flags.has('--exports')))throw Error('--expect-js is an explicit frozen v40 full-compile smoke only');
   if(flags.has('--v8-log-dir')&&mode!=='build')throw Error('--v8-log-dir is build-only and not a benchmark timing');
   const buildTimeoutMs=Number(flags.get('--build-timeout-ms')??'600000');
   if(!Number.isSafeInteger(buildTimeoutMs)||buildTimeoutMs<1||buildTimeoutMs>600000||flags.has('--build-timeout-ms')&&mode!=='build')throw Error('--build-timeout-ms is build-only and may only lower the 600000 ms deadline');
@@ -79,7 +81,9 @@ function options():Options {
 }
 function corpus(path:string):Corpus {
   const manifest=json(path) as Corpus;
-  if(!Array.isArray(manifest.files)||manifest.files.length!==50||!Array.isArray(manifest.exports)||manifest.exports.length!==9)throw Error('Expected the exact fifty-file v40 benchmark corpus and nine-export ABI');
+  const frozen=hash(path)===frozenV41CorpusSha256;
+  const expectedABI=frozen?compilerABI.filter(name=>name!=='inspect_checked_start'):compilerABI;
+  if(!Array.isArray(manifest.files)||!manifest.files.length||frozen&&manifest.files.length!==50||!Array.isArray(manifest.exports)||JSON.stringify(manifest.exports)!==JSON.stringify(expectedABI))throw Error('Expected complete compiler corpus and exact public ABI (historical v41 requires its captured manifest hash)');
   manifest.directory=realpathSync(manifest.directory);
   const seen=new Set<string>();
   for(const row of manifest.files){

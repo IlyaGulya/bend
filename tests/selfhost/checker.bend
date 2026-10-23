@@ -1,6 +1,7 @@
 import Base
 import ../../bend2/selfhost/ast.bend as Ast
 import ../../bend2/selfhost/checker.bend as Checker
+import ../../bend2/selfhost/checked_frontend.bend as Checked
 import ../../bend2/selfhost/loaded_module.bend as Loader
 
 def marked_identity_application(term: Ast.SyntaxTerm) -> Bool:
@@ -22,34 +23,40 @@ def print_bang_preserved(preserved: Bool):
     case True{}: IO.print("checker-bang-preserved")
     case False{}: IO.print("checker-bang-not-preserved")
 
-def check_result_output(result: Checker.CheckResult, success: String, failure: String):
+def check_result_output(result: Checked.CheckResult, success: String, failure: String):
   match result:
-    case Checker.CheckSuccess{_}: IO.print(success)
-    case Checker.CheckFailure{_}: IO.print(failure)
+    case Checked.CheckSuccess{_}: IO.print(success)
+    case Checked.CheckFailure{_}: IO.print(failure)
 
-def check_single_result_output(result: Checker.CheckResult, success: String, failure: String):
+def check_single_result_output(result: Checked.CheckResult, success: String, failure: String):
   match result:
-    case Checker.CheckSuccess{modules}:
+    case Checked.CheckSuccess{Checked.CheckedProgram{_, modules, _}}:
       match modules:
         case [_]: IO.print(success)
         case _: IO.print(failure)
-    case Checker.CheckFailure{_}: IO.print(failure)
+    case Checked.CheckFailure{_}: IO.print(failure)
 
-def check_triple_result_output(result: Checker.CheckResult, success: String, failure: String):
+def check_triple_result_output(result: Checked.CheckResult, success: String, failure: String):
   match result:
-    case Checker.CheckSuccess{modules}:
+    case Checked.CheckSuccess{Checked.CheckedProgram{_, modules, _}}:
       match modules:
         case [_, _, _]: IO.print(success)
         case _: IO.print(failure)
-    case Checker.CheckFailure{_}: IO.print(failure)
+    case Checked.CheckFailure{_}: IO.print(failure)
 
-def check_dependent_application(result: Checker.CheckResult):
+def check_dependent_application(result: Checked.CheckResult):
   match result:
-    case Checker.CheckSuccess{modules}:
+    case Checked.CheckSuccess{program}:
       IO.print("checker-dependent-application-ok")
       IO.print("checker-bang-head-ok")
-      print_bang_preserved(returned_bang_preserved(modules))
-    case Checker.CheckFailure{_}: IO.print("checker-dependent-application-failed")
+      print_bang_inspection(Checker.inspect_checked(program))
+    case Checked.CheckFailure{_}: IO.print("checker-dependent-application-failed")
+
+def print_bang_inspection(inspection: Checked.Inspection):
+  match inspection:
+    case Checked.Inspection{_, modules}: print_bang_preserved(returned_bang_preserved(modules))
+    case Checked.InspectionFailure{_, Checked.Diagnostic{_, _, message, _, _}}:
+      IO.print("checker-inspection-failed: " ++ message)
 
 def marked_identity_declaration(declarations: List<&2, Ast.TopLevel>) -> Bool:
   match declarations:
@@ -66,9 +73,9 @@ def returned_bang_preserved(modules: List<&2, Loader.LoadedModule>) -> Bool:
       match loaded:
         case Loader.LoadedModule{ _,  Ast.Module{ _,  _, declarations}}: marked_identity_declaration(declarations)
     case Nil{}: False{}
-def check_bool_module_result(result: Checker.CheckResult):
+def check_bool_module_result(result: Checked.CheckResult):
   match result:
-    case Checker.CheckSuccess{modules}:
+    case Checked.CheckSuccess{Checked.CheckedProgram{_, modules, _}}:
       match modules:
         case [_]:
           IO.print("checker-constructor-typing-ok")
@@ -85,27 +92,27 @@ def check_bool_module_result(result: Checker.CheckResult):
           IO.print("checker-branch-use-alternatives-ok")
           IO.print("checker-pattern-field-scaling-ok")
         case _: IO.print("checker-constructor-typing-failed")
-    case Checker.CheckFailure{_}: IO.print("checker-constructor-typing-failed")
+    case Checked.CheckFailure{_}: IO.print("checker-constructor-typing-failed")
 
-def check_nested_result(result: Checker.CheckResult):
+def check_nested_result(result: Checked.CheckResult):
   match result:
-    case Checker.CheckSuccess{modules}:
+    case Checked.CheckSuccess{Checked.CheckedProgram{_, modules, _}}:
       match modules:
         case [_]:
           IO.print("checker-nested-match-ok")
           IO.print("checker-nested-matrix-match-ok")
         case _: IO.print("checker-nested-match-failed")
-    case Checker.CheckFailure{_}: IO.print("checker-nested-match-failed")
+    case Checked.CheckFailure{_}: IO.print("checker-nested-match-failed")
 
-def check_exhaustiveness_result(result: Checker.CheckResult):
+def check_exhaustiveness_result(result: Checked.CheckResult):
   match result:
-    case Checker.CheckFailure{_}: IO.print("checker-exhaustiveness-error")
-    case Checker.CheckSuccess{_}: IO.print("checker-exhaustiveness-accepted")
+    case Checked.CheckFailure{_}: IO.print("checker-exhaustiveness-error")
+    case Checked.CheckSuccess{_}: IO.print("checker-exhaustiveness-accepted")
 
-def check_affine_result(result: Checker.CheckResult):
+def check_affine_result(result: Checked.CheckResult):
   match result:
-    case Checker.CheckFailure{Checker.Diagnostic{_, _, _, _, _}}: IO.print("checker-affine-duplicate-rejected")
-    case Checker.CheckSuccess{_}: IO.print("checker-affine-duplicate-accepted")
+    case Checked.CheckFailure{Checked.Diagnostic{_, _, _, _, _}}: IO.print("checker-affine-duplicate-rejected")
+    case Checked.CheckSuccess{_}: IO.print("checker-affine-duplicate-accepted")
 
 law main:
   IO(Unit)

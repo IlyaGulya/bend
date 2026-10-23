@@ -7,15 +7,11 @@ import ./template.bend as Template
 import ./loaded_module.bend as Loader
 import ./index_lookup.bend as IndexLookup
 import ./scope_lookup.bend as Scope
+import ./checked_frontend.bend as Checked
 
-type Diagnostic is Data:
-  Diagnostic{file: String, span: Ast.SourceSpan, message: String, expected: String, observed: String}
-type CheckResult is Data:
-  CheckSuccess{modules: List<&2, Loader.LoadedModule>}
-  CheckFailure{diagnostic: Diagnostic}
 type PrivateResult is Data:
-  PrivateSuccess{modules: List<&2, IR.LoadedModule>}
-  PrivateFailure{diagnostic: Diagnostic}
+  PrivateSuccess{modules: List<&2, IR.LoadedModule>, signatures: List<&2, Scope.ArenaGlobal>, metadata: List<&2, Checked.ModuleMetadata>}
+  PrivateFailure{diagnostic: Checked.Diagnostic}
 type ArenaStore is Type:
   ArenaStore{source: Arena.Arena, transient: Arena.Arena}
 type ArenaResult<-T: Type> is Type:
@@ -29,7 +25,7 @@ type PatternRowIndex is Data:
 type PatternRowSelection is Data:
   PatternRowSelection{rows: List<&2, IR.Words>, ranks: List<&2, Nat>}
 type Binding is Data:
-  Binding{key: String, quantity: Ast.Quantity, ty: U32, type_depth: Nat}
+  Binding{key: String, quantity: Ast.Quantity, ty: U32, type_depth: Nat, value: IR.OptionalTerm}
 type UsageEntry is Data:
   Usage{index: Nat, quantity: Ast.Quantity}
 type TermOrder is Data:
@@ -37,35 +33,35 @@ type TermOrder is Data:
   OrderEqual{}
   OrderGreater{}
 type Inference is Data:
-  Inferred{term: U32, ty: U32}
-  InferenceFailure{diagnostic: Diagnostic}
+  Inferred{term: U32, ty: U32, occurrence: IR.Occurrence}
+  InferenceFailure{diagnostic: Checked.Diagnostic}
 type ScrutineeTyping is Data:
-  ScrutineeTypes{types: IR.Words}
-  ScrutineeTypeFailure{diagnostic: Diagnostic}
+  ScrutineeTypes{types: IR.Words, occurrences: List<&2, IR.Occurrence>}
+  ScrutineeTypeFailure{diagnostic: Checked.Diagnostic}
 type PatternTyping is Data:
-  PatternTyped{env: List<&2, Binding>, value: U32}
-  PatternTypeFailure{diagnostic: Diagnostic}
+  PatternTyped{env: List<&2, Binding>, value: U32, pattern: IR.CheckedPattern}
+  PatternTypeFailure{diagnostic: Checked.Diagnostic}
 type CheckedLocalEnv is Data:
-  CheckedLocalEnv{env: List<&2, Binding>}
-  CheckedLocalEnvFailure{diagnostic: Diagnostic}
+  CheckedLocalEnv{env: List<&2, Binding>, values: List<&2, IR.Occurrence>, patterns: List<&2, IR.CheckedPattern>}
+  CheckedLocalEnvFailure{diagnostic: Checked.Diagnostic}
 type PatternFields is Data:
-  PatternFieldsTyped{env: List<&2, Binding>, values: IR.Words, result: U32}
-  PatternFieldsFailure{diagnostic: Diagnostic}
+  PatternFieldsTyped{env: List<&2, Binding>, values: IR.Words, result: U32, patterns: List<&2, IR.CheckedPattern>, layout: List<&2, IR.CheckedBinding>}
+  PatternFieldsFailure{diagnostic: Checked.Diagnostic}
 type FamilyLowering is Data:
   FamilyTerm{term: U32}
-  FamilyFailure{diagnostic: Diagnostic}
+  FamilyFailure{diagnostic: Checked.Diagnostic}
 type State is Data:
   State{globals: List<&2, Scope.ArenaGlobal>}
-  StateFailure{diagnostic: Diagnostic}
+  StateFailure{diagnostic: Checked.Diagnostic}
 type ScopedState is Data:
-  ScopedState{globals: Scope.ArenaGlobalScope}
-  ScopedStateFailure{diagnostic: Diagnostic}
+  ScopedState{globals: Scope.ArenaGlobalScope, checked: Maybe<&2, IR.Occurrence>}
+  ScopedStateFailure{diagnostic: Checked.Diagnostic}
 type DefinitionElaboration is Data:
   DefinitionElaborated{definition: IR.Definition}
-  DefinitionElaborationFailure{diagnostic: Diagnostic}
+  DefinitionElaborationFailure{diagnostic: Checked.Diagnostic}
 type Declarations is Data:
   DeclarationsChecked{globals: List<&2, Scope.ArenaGlobal>, declarations: List<&2, IR.TopLevel>}
-  DeclarationsFailure{diagnostic: Diagnostic}
+  DeclarationsFailure{diagnostic: Checked.Diagnostic}
 type PatternReduction is Data:
   PatternValues{values: IR.Words}
   PatternMismatch{}
@@ -74,10 +70,503 @@ type ScalarLiteralNames is Data:
   ScalarLiteralNames{word: Maybe<&2, U32>, first_bit: Maybe<&2, U32>, second_bit: Maybe<&2, U32>}
 type ScalarLiteralBit is Data:
   ScalarLiteralBit{names: ScalarLiteralNames, valid: Bool}
+type Materialization is Data:
+  Materialized{node: Arena.Node, unchanged: Bool}
+  MaterializationFailure{}
+type ReadbackResult<-T: Type> is Type:
+  ReadbackSuccess{arena: Arena.Arena, value: T}
+  ReadbackFailure{arena: Arena.Arena, diagnostic: Checked.Diagnostic}
 
 # Private algorithms use handles and flat tape cursors. These are mechanically
 # state-threaded versions of the original checker, Core, and Scope algorithms;
 # no computed type, substitution, match, or normalization result is memoized.
+
+
+def inference_keep(result: Inference, occurrence: IR.Occurrence) -> Inference:
+  match result:
+    case Inferred{+term, +ty, _}: Inferred{term, ty, occurrence_retype(occurrence, term, ty)}
+    case InferenceFailure{diagnostic}: InferenceFailure{diagnostic}
+
+def inference_child(result: Inference, child: IR.Occurrence) -> Inference:
+  match result:
+    case Inferred{+term, +ty, IR.TypedOccurrence{_, _, formal, symbol, bindings, children}}:
+      Inferred{term, ty, IR.TypedOccurrence{term, ty, formal, symbol, bindings, child <> children}}
+    case InferenceFailure{diagnostic}: InferenceFailure{diagnostic}
+    case Inferred{_, _, _}: fail(Ast.SpanOf{"", 0n, 0n}, "invalid checked operand accumulator", "the checked aggregate form", "an invalid internal occurrence shape")
+
+def inference_prefix(result: Inference, prefix: List<&2, IR.Occurrence>) -> Inference:
+  match result:
+    case Inferred{+term, +ty, IR.TypedOccurrence{_, _, formal, symbol, bindings, children}}:
+      Inferred{term, ty, IR.TypedOccurrence{term, ty, formal, symbol, bindings, List.append(&2, IR.Occurrence, prefix, children)}}
+    case InferenceFailure{diagnostic}: InferenceFailure{diagnostic}
+    case Inferred{_, _, _}: fail(Ast.SpanOf{"", 0n, 0n}, "invalid checked operand accumulator", "the checked aggregate form", "an invalid internal occurrence shape")
+
+def inference_case_pattern(result: Inference, pattern: IR.CheckedPattern) -> Inference:
+  match result:
+    case Inferred{+term, +ty, IR.CaseOccurrence{_, _, patterns, body}}:
+      Inferred{term, ty, IR.CaseOccurrence{term, ty, pattern <> patterns, body}}
+    case InferenceFailure{diagnostic}: InferenceFailure{diagnostic}
+    case Inferred{_, _, _}: fail(Ast.SpanOf{"", 0n, 0n}, "invalid checked operand accumulator", "the checked aggregate form", "an invalid internal occurrence shape")
+
+def inference_case(store: ArenaStore, result: Inference, +patterns: IR.Words, span: Ast.SourceSpan) -> ArenaResult<Inference>:
+  match result:
+    case Inferred{body, +ty, occurrence}:
+      ArenaResult{store, +term} = arena_put_node(store, Arena.BodyCase{arena_words_start(patterns), arena_words_count(patterns), body, span})
+      {ArenaResult{store, Inferred{term, ty, IR.CaseOccurrence{term, ty, Nil{}, occurrence}}} : ArenaResult<Inference>}
+    case InferenceFailure{diagnostic}: {ArenaResult{store, InferenceFailure{diagnostic}} : ArenaResult<Inference>}
+
+def occurrence_term(occurrence: IR.Occurrence) -> U32:
+  match occurrence:
+    case IR.LocalReferenceOccurrence{_, _, _, value}: value
+    case IR.TypedOccurrence{term, _, _, _, _, _}: term
+    case IR.ScalarOccurrence{term, _, _, _, _}: term
+    case IR.StringOccurrence{term, _, _, _}: term
+    case IR.CaseOccurrence{term, _, _, _}: term
+    case IR.LocalOccurrence{term, _, _, _, _}: term
+
+def occurrence_type(occurrence: IR.Occurrence) -> U32:
+  match occurrence:
+    case IR.LocalReferenceOccurrence{_, ty, _, _}: ty
+    case IR.TypedOccurrence{_, ty, _, _, _, _}: ty
+    case IR.ScalarOccurrence{_, ty, _, _, _}: ty
+    case IR.StringOccurrence{_, ty, _, _}: ty
+    case IR.CaseOccurrence{_, ty, _, _}: ty
+    case IR.LocalOccurrence{_, ty, _, _, _}: ty
+
+def scoped_checked(result: ScopedState, occurrence: IR.Occurrence) -> ScopedState:
+  match result:
+    case ScopedState{globals, _}: ScopedState{globals, Some{occurrence}}
+    case ScopedStateFailure{diagnostic}: ScopedStateFailure{diagnostic}
+
+def checked_definition(value: IR.Definition, occurrence: Maybe<&2, IR.Occurrence>) -> IR.Definition:
+  match value occurrence:
+    case IR.Definition{key, binders, result, _, unsafe, span, _, +definition_facts} Some{+checked}:
+      IR.Definition{key, binders, result, IR.DefTerm{occurrence_term(checked)}, unsafe, span, Some{checked}, definition_facts}
+    case IR.Definition{key, binders, result, body, unsafe, span, _, +definition_facts} None{}:
+      IR.Definition{key, binders, result, body, unsafe, span, None{}, definition_facts}
+
+def occurrence_terms(store: ArenaStore, occurrences: List<&2, IR.Occurrence>) -> ArenaResult<IR.Words>:
+  match occurrences:
+    case Nil{}: {ArenaResult{store, IR.Words{0, 0}} : ArenaResult<IR.Words>}
+    case occurrence <> rest:
+      ArenaResult{store, tail} = occurrence_terms(store, rest)
+      arena_words_cons(store, occurrence_term(occurrence), tail)
+
+def local_bindings(remaining: Nat, env: List<&2, Binding>, result: List<&2, IR.CheckedBinding>) -> List<&2, IR.CheckedBinding>:
+  match remaining env:
+    case 1n+rest binding <> tail: local_bindings(rest, tail, checked_binding(binding) <> result)
+    case _ _: result
+
+def local_term_node(node: Arena.Node, +values: IR.Words, body: U32) -> Maybe<&2, Arena.Node>:
+  match node:
+    case Arena.TermLet{names, names_count, indexes, indexes_count, quantities, quantities_count, _, _, _, span}:
+      Some{Arena.TermLet{names, names_count, indexes, indexes_count, quantities, quantities_count, arena_words_start(values), arena_words_count(values), body, span}}
+    case Arena.BodyLocal{patterns, count, quantity, _, _, _, span}:
+      Some{Arena.BodyLocal{patterns, count, quantity, arena_words_start(values), arena_words_count(values), body, span}}
+    case _: None{}
+
+def local_body_inferred(store: ArenaStore, result: Inference, source: U32, +values: List<&2, IR.Occurrence>, bindings: List<&2, IR.CheckedBinding>, patterns: Maybe<&2, List<&2, IR.CheckedPattern>>) -> ArenaResult<Inference>:
+  match result:
+    case Inferred{body, ty, body_occurrence}:
+      ArenaResult{store, +terms} = occurrence_terms(store, values)
+      ArenaResult{store, reversed} = arena_words_reverse(store, terms)
+      ArenaResult{store, +result_type} = substitute_many(store, reversed, ty)
+      ArenaResult{store, node} = arena_get_node(store, source)
+      match local_term_node(node, terms, body):
+        case Some{rebuilt}:
+          ArenaResult{store, +term} = arena_put_node(store, rebuilt)
+          {ArenaResult{store, Inferred{term, result_type, local_occurrence(term, result_type, values, bindings, body_occurrence, patterns)}} : ArenaResult<Inference>}
+        case None{}:
+          {ArenaResult{store, fail(Ast.SpanOf{"", 0n, 0n}, "invalid checked local form", "a local binding", "an invalid internal occurrence shape")} : ArenaResult<Inference>}
+    case InferenceFailure{diagnostic}: {ArenaResult{store, InferenceFailure{diagnostic}} : ArenaResult<Inference>}
+
+def checked_local_prepend(result: CheckedLocalEnv, occurrence: IR.Occurrence, pattern: IR.CheckedPattern) -> CheckedLocalEnv:
+  match result:
+    case CheckedLocalEnv{env, values, patterns}: CheckedLocalEnv{env, occurrence <> values, pattern <> patterns}
+    case CheckedLocalEnvFailure{diagnostic}: CheckedLocalEnvFailure{diagnostic}
+
+def inspect_checked(program: Checked.CheckedProgram) -> Checked.Inspection:
+  readback(program)
+
+def literal_symbols(names: List<&2, String>, +scope: Scope.ArenaGlobalScope) -> Maybe<&2, List<&2, IR.Symbol>>:
+  match names:
+    case Nil{}: Some{Nil{}}
+    case name <> rest:
+      match Scope.lookup_kind(name, Scope.GlobalConstructor{}, scope):
+        case None{}: None{}
+        case Some{global}:
+          match literal_symbols(rest, scope):
+            case None{}: None{}
+            case Some{symbols}: Some{checked_symbol(global) <> symbols}
+
+def string_occurrence(store: ArenaStore, +term: U32, +ty: U32, chars: List<&2, U32>, names: Ast.StringLiteralNames, scope: Scope.ArenaGlobalScope, span: Ast.SourceSpan) -> ArenaResult<Inference>:
+  match names:
+    case Ast.StringLiteralNames{nil, cons, char, uint, word_nil, word_cons, bit_false, bit_true}:
+      match literal_symbols([nil, cons, char, uint, word_nil, word_cons, bit_false, bit_true], scope):
+        case Some{symbols}: {ArenaResult{store, Inferred{term, ty, IR.StringOccurrence{term, ty, symbols, chars}}} : ArenaResult<Inference>}
+        case None{}: {ArenaResult{store, fail(span, "literal constructor resolution failed", "the certified string constructors", "an unavailable constructor")} : ArenaResult<Inference>}
+
+def scalar_bit_value(store: ArenaStore, id: U32, globals: Scope.ArenaGlobalScope) -> ArenaResult<Maybe<&2, U32>>:
+  ArenaResult{store, node} = arena_get_node(store, id)
+  match node:
+    case Arena.TermCtr{key, _, 0, _}:
+      ArenaResult{store, name} = arena_name_text(store, key)
+      match Scope.lookup_kind(name, Scope.GlobalConstructor{}, globals):
+        case Some{Scope.ArenaGlobal{_, _, "True", _, _, _}}:
+          {ArenaResult{store, Some{1}} : ArenaResult<Maybe<&2, U32>>}
+        case Some{Scope.ArenaGlobal{_, _, "False", _, _, _}}:
+          {ArenaResult{store, Some{0}} : ArenaResult<Maybe<&2, U32>>}
+        case _: {ArenaResult{store, None{}} : ArenaResult<Maybe<&2, U32>>}
+    case _: {ArenaResult{store, None{}} : ArenaResult<Maybe<&2, U32>>}
+
+def scalar_bits(store: ArenaStore, id: U32, remaining: Nat, +globals: Scope.ArenaGlobalScope) -> ArenaResult<Maybe<&2, U32>>:
+  match remaining:
+    case 0n: {ArenaResult{store, Some{0}} : ArenaResult<Maybe<&2, U32>>}
+    case 1n+rest:
+      ArenaResult{store, node} = arena_get_node(store, id)
+      match node:
+        case Arena.TermCtr{_, +start, 2, _}:
+          ArenaResult{store, bit} = arena_get_word(store, start)
+          ArenaResult{store, value} = scalar_bit_value(store, bit, globals)
+          ArenaResult{store, tail} = arena_get_word(store, IR.arena_range_index(start, 1))
+          ArenaResult{store, bits} = scalar_bits(store, tail, rest, globals)
+          match value bits:
+            case Some{head} Some{rest}:
+              {ArenaResult{store, Some{U32.or(head, U32.shl(rest))}} : ArenaResult<Maybe<&2, U32>>}
+            case _ _: {ArenaResult{store, None{}} : ArenaResult<Maybe<&2, U32>>}
+        case _: {ArenaResult{store, None{}} : ArenaResult<Maybe<&2, U32>>}
+
+def scalar_occurrence(store: ArenaStore, +term: U32, +ty: U32, name: String, fields: IR.Words, +globals: Scope.ArenaGlobalScope, span: Ast.SourceSpan) -> ArenaResult<Inference>:
+  match Scope.lookup_kind(name, Scope.GlobalConstructor{}, globals):
+    case Some{global}:
+      +symbol = checked_symbol(global)
+      match symbol:
+        case IR.Symbol{+owner, _, _, _}:
+          match literal_symbols([canonical_key(owner, "WNil"), canonical_key(owner, "WCon"), canonical_key(owner, "False"), canonical_key(owner, "True")], globals):
+            case Some{symbols}:
+              ArenaResult{store, word} = arena_get_word(store, arena_words_start(fields))
+              ArenaResult{store, bits} = scalar_bits(store, word, 32n, globals)
+              match bits:
+                case Some{value}: {ArenaResult{store, Inferred{term, ty, IR.ScalarOccurrence{term, ty, symbol, value, symbols}}} : ArenaResult<Inference>}
+                case None{}: {ArenaResult{store, fail(span, "invalid certified scalar representation", "the certified scalar word", "an invalid internal literal shape")} : ArenaResult<Inference>}
+            case None{}: {ArenaResult{store, fail(span, "literal constructor resolution failed", "the certified word and bit constructors", "an unavailable constructor")} : ArenaResult<Inference>}
+    case None{}: {ArenaResult{store, fail(span, "literal constructor resolution failed", "the certified scalar constructor", "an unavailable constructor")} : ArenaResult<Inference>}
+
+def metadata_sort(store: ArenaStore, ty: U32, +scope: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
+  ArenaResult{store, view} = whnf(store, 64n, ty, scope)
+  ArenaResult{store, node} = arena_get_node(store, view)
+  match node:
+    case Arena.TermType{_, _}: {ArenaResult{store, True{}} : ArenaResult<Bool>}
+    case Arena.TermAll{_, _, _, _, body, _}: metadata_sort(store, body, scope)
+    case _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
+
+def metadata_ordinary(store: ArenaStore, binders: IR.Words) -> ArenaResult<Bool>:
+  ArenaResult{store, view} = arena_words_view(store, binders)
+  match view:
+    case IR.WordNil{}: {ArenaResult{store, True{}} : ArenaResult<Bool>}
+    case IR.WordCons{binder, rest}:
+      ArenaResult{store, item} = arena_get_binder(store, binder)
+      match item:
+        case Arena.Binder{_, _, _, _, _}: metadata_ordinary(store, rest)
+        case Arena.TemplateBinder{_, _, _, _}: {ArenaResult{store, False{}} : ArenaResult<Bool>}
+
+def metadata_prefix(store: ArenaStore, binders: IR.Words, +scope: Scope.ArenaGlobalScope) -> ArenaResult<Nat>:
+  ArenaResult{store, view} = arena_words_view(store, binders)
+  match view:
+    case IR.WordNil{}: {ArenaResult{store, 0n} : ArenaResult<Nat>}
+    case IR.WordCons{binder, rest}:
+      ArenaResult{store, item} = arena_get_binder(store, binder)
+      match item:
+        case Arena.TemplateBinder{_, _, _, _}: {ArenaResult{store, 0n} : ArenaResult<Nat>}
+        case Arena.Binder{_, _, _, ty, _}:
+          ArenaResult{store, normalized} = whnf(store, 64n, ty, scope)
+          ArenaResult{store, node} = arena_get_node(store, normalized)
+          match node:
+            case Arena.TermQuant{}:
+              ArenaResult{store, prefix} = metadata_prefix(store, rest, scope)
+              {ArenaResult{store, Nat.add(1n, prefix)} : ArenaResult<Nat>}
+            case _: {ArenaResult{store, 0n} : ArenaResult<Nat>}
+
+def metadata_index(index: Scope.ArenaGlobalIndex) -> Scope.ArenaGlobalIndex:
+  match index:
+    case Scope.ArenaGlobalIndex{values, constructors, _, complete}:
+      Scope.ArenaGlobalIndex{values, constructors, Map.new(&2, IR.Names), complete}
+
+def metadata_segments(segments: List<&2, Scope.ArenaGlobalSegment>) -> List<&2, Scope.ArenaGlobalSegment>:
+  match segments:
+    case Nil{}: Nil{}
+    case Scope.ArenaGlobalSegment{current, owner, alias, entries, index} <> rest:
+      Scope.ArenaGlobalSegment{current, owner, alias, entries, metadata_index(index)} <> metadata_segments(rest)
+
+def metadata_scope_value(scope: Scope.ArenaGlobalScope) -> Scope.ArenaGlobalScope:
+  match scope:
+    case Scope.ArenaGlobalScope{entries, index, size}: Scope.ArenaGlobalScope{entries, metadata_index(index), size}
+    case Scope.ArenaVisibleScope{segments, lookup}: Scope.ArenaVisibleScope{metadata_segments(segments), lookup}
+    case Scope.ArenaUnsafeScope{inner}: Scope.ArenaUnsafeScope{metadata_scope_value(inner)}
+
+def definition_sort(store: ArenaStore, ordinary: Bool, result: IR.OptionalTerm, occurrence: Maybe<&2, IR.Occurrence>, scope: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
+  match ordinary:
+    case False{}: {ArenaResult{store, False{}} : ArenaResult<Bool>}
+    case True{}:
+      match result:
+        case IR.SomeTerm{ty}: metadata_sort(store, ty, scope)
+        case IR.NoTerm{}:
+          match occurrence:
+            case Some{checked}: metadata_sort(store, occurrence_type(checked), scope)
+            case None{}: {ArenaResult{store, False{}} : ArenaResult<Bool>}
+
+def definition_explicit(result: IR.OptionalTerm, ordinary: Bool) -> Bool:
+  match result:
+    case IR.SomeTerm{_}: ordinary
+    case IR.NoTerm{}: False{}
+
+def definition_classify(store: ArenaStore, definition: IR.Definition, +scope: Scope.ArenaGlobalScope) -> ArenaResult<IR.TopLevel>:
+  match definition:
+    case IR.Definition{key, +binders, +result, body, unsafe, span, +occurrence, _}:
+      ArenaResult{store, +ordinary} = metadata_ordinary(store, binders)
+      ArenaResult{store, type_only} = definition_sort(store, ordinary, result, occurrence, scope)
+      ArenaResult{store, prefix} = metadata_prefix(store, binders, scope)
+      {ArenaResult{store, IR.DefTop{IR.Definition{key, binders, result, body, unsafe, span, occurrence, Some{IR.DefinitionFacts{type_only, definition_explicit(result, ordinary), prefix}}}}} : ArenaResult<IR.TopLevel>}
+
+def require_checked_definition(state: ScopedState, definition: IR.Definition) -> ScopedState:
+  match state definition:
+    case ScopedState{_, None{}} IR.Definition{_, _, _, IR.DefTerm{_}, _, span, _, _}:
+      ScopedStateFailure{Checked.Diagnostic{span_file(span), span, "missing checked definition occurrence", "a checked definition body", "an invalid internal publication state"}}
+    case state _: state
+
+def checked_declaration_result(store: ArenaStore, state: ScopedState, definition: IR.Definition, scope: Scope.ArenaGlobalScope) -> ArenaResult<IR.TopLevel>:
+  match state:
+    case ScopedState{_, occurrence}: definition_classify(store, checked_definition(definition, occurrence), scope)
+    case ScopedStateFailure{_}: {ArenaResult{store, IR.DefTop{definition}} : ArenaResult<IR.TopLevel>}
+
+def local_occurrence(+term: U32, +ty: U32, values: List<&2, IR.Occurrence>, bindings: List<&2, IR.CheckedBinding>, body: IR.Occurrence, patterns: Maybe<&2, List<&2, IR.CheckedPattern>>) -> IR.Occurrence:
+  match patterns:
+    case Some{checked}: IR.LocalOccurrence{term, ty, checked, values, body}
+    case None{}: IR.TypedOccurrence{term, ty, None{}, None{}, bindings, List.append(&2, IR.Occurrence, values, body <> Nil{})}
+
+
+def materialized(store: ArenaStore, node: Arena.Node, unchanged: Bool) -> ArenaResult<Materialization>:
+  {ArenaResult{store, Materialized{node, unchanged}} : ArenaResult<Materialization>}
+
+def occurrence_take(count: Nat, values: List<&2, IR.Occurrence>) -> List<&2, IR.Occurrence>:
+  match count values:
+    case 1n+rest head <> tail: head <> occurrence_take(rest, tail)
+    case _ _: Nil{}
+
+def occurrence_drop(count: Nat, values: List<&2, IR.Occurrence>) -> List<&2, IR.Occurrence>:
+  match count values:
+    case 1n+rest _ <> tail: occurrence_drop(rest, tail)
+    case _ _: values
+
+def occurrence_words_equal(store: ArenaStore, words: IR.Words, occurrences: List<&2, IR.Occurrence>) -> ArenaResult<Bool>:
+  ArenaResult{store, view} = arena_words_view(store, words)
+  match view occurrences:
+    case IR.WordNil{} Nil{}: {ArenaResult{store, True{}} : ArenaResult<Bool>}
+    case IR.WordCons{word, rest} occurrence <> tail:
+      match U32.is_eq(word, occurrence_term(occurrence)):
+        case False{}: {ArenaResult{store, False{}} : ArenaResult<Bool>}
+        case True{}: occurrence_words_equal(store, rest, tail)
+    case _ _: {ArenaResult{store, False{}} : ArenaResult<Bool>}
+
+def materialize_operands(store: ArenaStore, +words: IR.Words, +occurrences: List<&2, IR.Occurrence>) -> ArenaResult<IR.Words>:
+  ArenaResult{store, same} = occurrence_words_equal(store, words, occurrences)
+  match same:
+    case True{}: {ArenaResult{store, words} : ArenaResult<IR.Words>}
+    case False{}: occurrence_terms(store, occurrences)
+
+def materialize_node(store: ArenaStore, node: Arena.Node, children: List<&2, IR.Occurrence>) -> ArenaResult<Materialization>:
+  match node children:
+    case Arena.TermVar{key, index, span} Nil{}: materialized(store, Arena.TermVar{key, index, span}, True{})
+    case Arena.TermRef{key, span} Nil{}: materialized(store, Arena.TermRef{key, span}, True{})
+    case Arena.TermQuant{} Nil{}: materialized(store, Arena.TermQuant{}, True{})
+    case Arena.TermQuantity{quantity, span} Nil{}: materialized(store, Arena.TermQuantity{quantity, span}, True{})
+    case Arena.TermAbsurd{span} Nil{}: materialized(store, Arena.TermAbsurd{span}, True{})
+    case Arena.TermRefl{span} Nil{}: materialized(store, Arena.TermRefl{span}, True{})
+    case Arena.TermHole{key, span} Nil{}: materialized(store, Arena.TermHole{key, span}, True{})
+    case Arena.TermBang{old, span} child <> Nil{}:
+      +value = occurrence_term(child)
+      materialized(store, Arena.TermBang{value, span}, U32.is_eq(old, value))
+    case Arena.TermType{old, span} child <> Nil{}:
+      +value = occurrence_term(child)
+      materialized(store, Arena.TermType{value, span}, U32.is_eq(old, value))
+    case Arena.TermLam{quantity, key, index, old, span} child <> Nil{}:
+      +value = occurrence_term(child)
+      materialized(store, Arena.TermLam{quantity, key, index, value, span}, U32.is_eq(old, value))
+    case Arena.TermApp{old_fn, old_arg, span} fn <> arg <> Nil{}:
+      +new_fn = occurrence_term(fn)
+      +new_arg = occurrence_term(arg)
+      materialized(store, Arena.TermApp{new_fn, new_arg, span}, Bool.and(U32.is_eq(old_fn, new_fn), U32.is_eq(old_arg, new_arg)))
+    case Arena.TermAnn{old_term, old_ty, span} term <> ty <> Nil{}:
+      +new_term = occurrence_term(term)
+      +new_ty = occurrence_term(ty)
+      materialized(store, Arena.TermAnn{new_term, new_ty, span}, Bool.and(U32.is_eq(old_term, new_term), U32.is_eq(old_ty, new_ty)))
+    case Arena.TermMin{old_left, old_right, span} left <> right <> Nil{}:
+      +new_left = occurrence_term(left)
+      +new_right = occurrence_term(right)
+      materialized(store, Arena.TermMin{new_left, new_right, span}, Bool.and(U32.is_eq(old_left, new_left), U32.is_eq(old_right, new_right)))
+    case Arena.TermAll{quantity, key, index, old_domain, old_body, span} domain <> body <> Nil{}:
+      +new_domain = occurrence_term(domain)
+      +new_body = occurrence_term(body)
+      materialized(store, Arena.TermAll{quantity, key, index, new_domain, new_body, span}, Bool.and(U32.is_eq(old_domain, new_domain), U32.is_eq(old_body, new_body)))
+    case Arena.TermMat{key, old_head, old_default, span} head <> default <> Nil{}:
+      +new_head = occurrence_term(head)
+      +new_default = occurrence_term(default)
+      materialized(store, Arena.TermMat{key, new_head, new_default, span}, Bool.and(U32.is_eq(old_head, new_head), U32.is_eq(old_default, new_default)))
+    case Arena.TermEqual{old_left, old_right, old_ty, span} left <> right <> ty <> Nil{}:
+      +new_left = occurrence_term(left)
+      +new_right = occurrence_term(right)
+      +new_ty = occurrence_term(ty)
+      materialized(store, Arena.TermEqual{new_left, new_right, new_ty, span}, Bool.and(U32.is_eq(old_left, new_left), Bool.and(U32.is_eq(old_right, new_right), U32.is_eq(old_ty, new_ty))))
+    case Arena.TermRewrite{old_equation, old_proof, old_body, span} equation <> proof <> body <> Nil{}:
+      +new_equation = occurrence_term(equation)
+      +new_proof = occurrence_term(proof)
+      +new_body = occurrence_term(body)
+      materialized(store, Arena.TermRewrite{new_equation, new_proof, new_body, span}, Bool.and(U32.is_eq(old_equation, new_equation), Bool.and(U32.is_eq(old_proof, new_proof), U32.is_eq(old_body, new_body))))
+    case Arena.TermCtr{key, +start, +count, span} +operands:
+      ArenaResult{store, +values} = materialize_operands(store, IR.Words{start, count}, operands)
+      materialized(store, Arena.TermCtr{key, arena_words_start(values), arena_words_count(values), span}, Bool.and(U32.is_eq(start, arena_words_start(values)), U32.is_eq(count, arena_words_count(values))))
+    case Arena.TermAdt{key, +start, +count, excluded, excluded_count, span} +operands:
+      ArenaResult{store, +values} = materialize_operands(store, IR.Words{start, count}, operands)
+      materialized(store, Arena.TermAdt{key, arena_words_start(values), arena_words_count(values), excluded, excluded_count, span}, Bool.and(U32.is_eq(start, arena_words_start(values)), U32.is_eq(count, arena_words_count(values))))
+    case Arena.BodyMatch{+scrutinees, +count, +cases, +case_count, span} +operands:
+      ArenaResult{store, +values} = materialize_operands(store, IR.Words{scrutinees, count}, occurrence_take(U32.to_nat(count), operands))
+      ArenaResult{store, +rows} = materialize_operands(store, IR.Words{cases, case_count}, occurrence_drop(U32.to_nat(count), operands))
+      materialized(store, Arena.BodyMatch{arena_words_start(values), arena_words_count(values), arena_words_start(rows), arena_words_count(rows), span}, Bool.and(U32.is_eq(scrutinees, arena_words_start(values)), Bool.and(U32.is_eq(count, arena_words_count(values)), Bool.and(U32.is_eq(cases, arena_words_start(rows)), U32.is_eq(case_count, arena_words_count(rows))))))
+    case Arena.TermLet{names, names_count, indexes, indexes_count, quantities, quantities_count, +values_start, +values_count, old_body, span} +operands:
+      match occurrence_drop(U32.to_nat(values_count), operands):
+        case body <> Nil{}:
+          +new_body = occurrence_term(body)
+          ArenaResult{store, +values} = materialize_operands(store, IR.Words{values_start, values_count}, occurrence_take(U32.to_nat(values_count), operands))
+          materialized(store, Arena.TermLet{names, names_count, indexes, indexes_count, quantities, quantities_count, arena_words_start(values), arena_words_count(values), new_body, span}, Bool.and(U32.is_eq(old_body, new_body), Bool.and(U32.is_eq(values_start, arena_words_start(values)), U32.is_eq(values_count, arena_words_count(values)))))
+        case _: {ArenaResult{store, MaterializationFailure{}} : ArenaResult<Materialization>}
+    case _ _: {ArenaResult{store, MaterializationFailure{}} : ArenaResult<Materialization>}
+
+def finish_materialized(store: ArenaStore, result: Materialization, +term: U32, +ty: U32, occurrence: IR.Occurrence) -> ArenaResult<Inference>:
+  match result:
+    case Materialized{_, True{}}: {ArenaResult{store, Inferred{term, ty, occurrence}} : ArenaResult<Inference>}
+    case Materialized{node, False{}}:
+      ArenaResult{store, +rebuilt} = arena_put_node(store, node)
+      {ArenaResult{store, Inferred{rebuilt, ty, occurrence_retype(occurrence, rebuilt, ty)}} : ArenaResult<Inference>}
+    case MaterializationFailure{}:
+      ArenaResult{store, span} = term_span(store, term)
+      {ArenaResult{store, fail(span, "incomplete checked occurrence", "checked operands for the elaborated term", "an invalid internal occurrence shape")} : ArenaResult<Inference>}
+
+def finish_inference(store: ArenaStore, result: Inference) -> ArenaResult<Inference>:
+  match result:
+    case Inferred{+term, +ty, +occurrence}:
+      match occurrence:
+        case IR.TypedOccurrence{_, _, _, _, _, children}:
+          ArenaResult{store, node} = arena_get_node(store, term)
+          ArenaResult{store, materialization} = materialize_node(store, node, children)
+          finish_materialized(store, materialization, term, ty, occurrence)
+        case _: {ArenaResult{store, Inferred{term, ty, occurrence}} : ArenaResult<Inference>}
+    case InferenceFailure{diagnostic}: {ArenaResult{store, InferenceFailure{diagnostic}} : ArenaResult<Inference>}
+
+def infer(store: ArenaStore, term: U32, env: List<&2, Binding>, globals: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
+  ArenaResult{store, result} = infer_raw(store, term, env, globals)
+  finish_inference(store, result)
+
+def check_term(store: ArenaStore, term: U32, env: List<&2, Binding>, globals: Scope.ArenaGlobalScope, ty: U32) -> ArenaResult<Inference>:
+  ArenaResult{store, result} = check_term_raw(store, term, env, globals, ty)
+  finish_inference(store, result)
+
+def restore_head_child(store: ArenaStore, result: Inference, parent: IR.Occurrence) -> ArenaResult<Inference>:
+  match result parent:
+    case Inferred{_, _, child} IR.TypedOccurrence{+term, +ty, formal, symbol, bindings, _ <> rest}:
+      finish_inference(store, Inferred{term, ty, IR.TypedOccurrence{term, ty, formal, symbol, bindings, child <> rest}})
+    case InferenceFailure{diagnostic} _: {ArenaResult{store, InferenceFailure{diagnostic}} : ArenaResult<Inference>}
+    case _ _:
+      {ArenaResult{store, fail(Ast.SpanOf{"", 0n, 0n}, "incomplete named-head occurrence", "checked function operands", "an invalid internal occurrence shape")} : ArenaResult<Inference>}
+
+def restore_named_head(store: ArenaStore, +original: U32, +occurrence: IR.Occurrence) -> ArenaResult<Inference>:
+  ArenaResult{store, node} = arena_get_node(store, original)
+  match node:
+    case Arena.TermBang{raw, span}:
+      +term = occurrence_term(occurrence)
+      +ty = occurrence_type(occurrence)
+      match U32.is_eq(raw, term):
+        case True{}:
+          {ArenaResult{store, Inferred{original, ty, IR.TypedOccurrence{original, ty, None{}, None{}, Nil{}, occurrence <> Nil{}}}} : ArenaResult<Inference>}
+        case False{}:
+          ArenaResult{store, +wrapped} = arena_put_node(store, Arena.TermBang{term, span})
+          {ArenaResult{store, Inferred{wrapped, ty, IR.TypedOccurrence{wrapped, ty, None{}, None{}, Nil{}, occurrence <> Nil{}}}} : ArenaResult<Inference>}
+    case Arena.TermApp{fn, _, _}:
+      match occurrence:
+        case IR.TypedOccurrence{_, _, _, _, _, head <> _}:
+          ArenaResult{store, result} = restore_named_head(store, fn, head)
+          restore_head_child(store, result, occurrence)
+        case _:
+          {ArenaResult{store, fail(Ast.SpanOf{"", 0n, 0n}, "incomplete named-head occurrence", "checked application operands", "an invalid internal occurrence shape")} : ArenaResult<Inference>}
+    case Arena.TermAnn{term, _, _}:
+      match occurrence:
+        case IR.TypedOccurrence{_, _, _, _, _, head <> _}:
+          ArenaResult{store, result} = restore_named_head(store, term, head)
+          restore_head_child(store, result, occurrence)
+        case _:
+          {ArenaResult{store, fail(Ast.SpanOf{"", 0n, 0n}, "incomplete named-head occurrence", "checked annotation operands", "an invalid internal occurrence shape")} : ArenaResult<Inference>}
+    case Arena.TermSub{index, value, body, _}:
+      ArenaResult{store, expanded} = core_subst(store, index, value, body)
+      restore_named_head(store, expanded, occurrence)
+    case _: {ArenaResult{store, Inferred{occurrence_term(occurrence), occurrence_type(occurrence), occurrence}} : ArenaResult<Inference>}
+
+def restore_function_bangs(store: ArenaStore, original: U32, result: Inference) -> ArenaResult<Inference>:
+  match result:
+    case Inferred{_, _, occurrence}: restore_named_head(store, original, occurrence)
+    case InferenceFailure{diagnostic}: {ArenaResult{store, InferenceFailure{diagnostic}} : ArenaResult<Inference>}
+
+def inference_formal(result: Inference, quantity: Ast.Quantity, binding: IR.CheckedBinding) -> Inference:
+  match result:
+    case Inferred{+term, +ty, IR.TypedOccurrence{_, _, _, symbol, bindings, children}}:
+      Inferred{term, ty, IR.TypedOccurrence{term, ty, Some{quantity}, symbol, binding <> bindings, children}}
+    case InferenceFailure{diagnostic}: InferenceFailure{diagnostic}
+    case Inferred{_, _, _}: fail(Ast.SpanOf{"", 0n, 0n}, "invalid formal occurrence", "a checked function form", "an invalid internal occurrence shape")
+
+def typed_leaf(+term: U32, +ty: U32) -> IR.Occurrence:
+  IR.TypedOccurrence{term, ty, None{}, None{}, Nil{}, Nil{}}
+
+def checked_binding(binding: Binding) -> IR.CheckedBinding:
+  match binding:
+    case Binding{_, quantity, ty, depth, _}: IR.CheckedBinding{quantity, ty, depth}
+
+def checked_symbol_kind(kind: Scope.GlobalKind) -> IR.SymbolKind:
+  match kind:
+    case Scope.GlobalFamily{}: IR.FamilySymbol{}
+    case Scope.GlobalConstructor{}: IR.ConstructorSymbol{}
+    case Scope.GlobalDefinition{}: IR.DefinitionSymbol{}
+
+def checked_symbol(global: Scope.ArenaGlobal) -> IR.Symbol:
+  match global:
+    case Scope.ArenaGlobal{_, owner, local, ty, _, kind}:
+      IR.Symbol{owner, local, checked_symbol_kind(kind), ty}
+
+def occurrence_retype(occurrence: IR.Occurrence, term: U32, ty: U32) -> IR.Occurrence:
+  match occurrence:
+    case IR.LocalReferenceOccurrence{source, _, binding, _}: IR.LocalReferenceOccurrence{source, ty, binding, term}
+    case IR.TypedOccurrence{_, _, formal, symbol, bindings, children}:
+      IR.TypedOccurrence{term, ty, formal, symbol, bindings, children}
+    case IR.ScalarOccurrence{_, _, symbol, bits, symbols}: IR.ScalarOccurrence{term, ty, symbol, bits, symbols}
+    case IR.StringOccurrence{_, _, symbols, chars}: IR.StringOccurrence{term, ty, symbols, chars}
+    case IR.CaseOccurrence{_, _, patterns, body}: IR.CaseOccurrence{term, ty, patterns, body}
+    case IR.LocalOccurrence{_, _, patterns, values, body}: IR.LocalOccurrence{term, ty, patterns, values, body}
+
+def occurrence_symbol(occurrence: IR.Occurrence, symbol: IR.Symbol) -> IR.Occurrence:
+  match occurrence:
+    case IR.TypedOccurrence{term, ty, formal, _, bindings, children}:
+      IR.TypedOccurrence{term, ty, formal, Some{symbol}, bindings, children}
+    case IR.ScalarOccurrence{term, ty, _, bits, symbols}: IR.ScalarOccurrence{term, ty, symbol, bits, symbols}
+    case _: occurrence
+
+def inference_symbol(result: Inference, symbol: IR.Symbol) -> Inference:
+  match result:
+    case Inferred{term, ty, occurrence}: Inferred{term, ty, occurrence_symbol(occurrence, symbol)}
+    case InferenceFailure{diagnostic}: InferenceFailure{diagnostic}
+
+def inference_prepend(result: Inference, binding: IR.CheckedBinding, child: IR.Occurrence) -> Inference:
+  match result:
+    case Inferred{term, ty, IR.TypedOccurrence{_, _, formal, symbol, bindings, children}}:
+      Inferred{term, ty, IR.TypedOccurrence{term, ty, formal, symbol, binding <> bindings, child <> children}}
+    case InferenceFailure{diagnostic}: InferenceFailure{diagnostic}
+    case Inferred{_, _, _}: fail(Ast.SpanOf{"", 0n, 0n}, "invalid checked operand accumulator", "the checked aggregate form", "an invalid internal occurrence shape")
 
 def span_file(v_0: Ast.SourceSpan) -> String:
   match v_0:
@@ -176,7 +665,7 @@ def term_span(v_20032509: ArenaStore, v_0: U32) -> ArenaResult<Ast.SourceSpan>:
 
 def fail(+v_0: Ast.SourceSpan, v_2: String, v_4: String, v_6: String) -> Inference:
   v_50000000 = span_file(v_0)
-  v_50000001 = Diagnostic{v_50000000, v_0, v_2, v_4, v_6}
+  v_50000001 = Checked.Diagnostic{v_50000000, v_0, v_2, v_4, v_6}
   InferenceFailure{v_50000001}
 
 def same_quantity(v_0: Ast.Quantity, v_1: Ast.Quantity) -> Bool:
@@ -2280,7 +2769,7 @@ def infer_adt_args_view(v_1: ArenaStore, v_2: IR.Words, v_4: U32, v_6: U32, v_9:
           v_50000020 = fail(v_13, "datatype has too few parameters", "all family parameters", "an underapplied family")
           {ArenaResult{v_25, v_50000020} : ArenaResult<Inference>}
         case _:
-          {ArenaResult{v_25, Inferred{v_12, v_4}} : ArenaResult<Inference>}
+          {ArenaResult{v_25, Inferred{v_12, v_4, typed_leaf(v_12, v_4)}} : ArenaResult<Inference>}
     case IR.WordCons{+v_44, +v_45}:
       +v_47 = v_44
       v_49 = v_45
@@ -2290,19 +2779,19 @@ def infer_adt_args_view(v_1: ArenaStore, v_2: IR.Words, v_4: U32, v_6: U32, v_9:
           v_68 = v_64
           v_70 = v_65
           ArenaResult{v_74, +v_75} = check_term(v_53, v_47, v_9, v_10, v_68)
-          ArenaResult{v_79, +v_80} = infer_adt_arg_check(v_74, v_75, v_49, v_70, v_9, v_10, v_12, v_13)
+          ArenaResult{v_79, +v_80} = infer_adt_arg_check(v_74, v_75, v_49, v_70, v_9, v_10, v_12, v_13, v_61)
           {ArenaResult{v_79, v_80} : ArenaResult<Inference>}
         case _:
           v_50000021 = fail(v_13, "datatype has too many parameters", "a remaining parameter", "an extra parameter")
           {ArenaResult{v_53, v_50000021} : ArenaResult<Inference>}
 
-def infer_adt_arg_check(v_20034323: ArenaStore, v_1: Inference, v_3: IR.Words, v_4: U32, v_7: List<&2, Binding>, v_8: Scope.ArenaGlobalScope, v_9: U32, v_10: Ast.SourceSpan) -> ArenaResult<Inference>:
+def infer_adt_arg_check(v_20034323: ArenaStore, v_1: Inference, v_3: IR.Words, v_4: U32, v_7: List<&2, Binding>, v_8: Scope.ArenaGlobalScope, v_9: U32, v_10: Ast.SourceSpan, quantity: Ast.Quantity) -> ArenaResult<Inference>:
   match v_1:
-    case Inferred{+v_20034324, +v_20034325}:
+    case Inferred{+v_20034324, +v_20034325, +occ_v_20034324}:
       v_14 = v_20034324
       ArenaResult{v_20034326, +v_20034327} = core_subst(v_20034323, 0n, v_14, v_4)
       ArenaResult{v_20034328, +v_20034329} = infer_adt_args(v_20034326, v_3, v_20034327, v_7, v_8, v_9, v_10)
-      {ArenaResult{v_20034328, v_20034329} : ArenaResult<Inference>}
+      {ArenaResult{v_20034328, inference_prepend(v_20034329, IR.CheckedBinding{quantity, v_20034325, List.length(&2, Binding, v_7)}, occ_v_20034324)} : ArenaResult<Inference>}
     case InferenceFailure{+v_20034330}:
       v_18 = v_20034330
       {ArenaResult{v_20034323, InferenceFailure{v_18}} : ArenaResult<Inference>}
@@ -2312,40 +2801,40 @@ def infer_adt_args(v_20034331: ArenaStore, v_1: IR.Words, v_2: U32, v_5: List<&2
   ArenaResult{v_20034334, +v_20034335} = infer_adt_args_view(v_20034332, v_1, v_2, v_20034333, v_5, v_6, v_7, v_8)
   {ArenaResult{v_20034334, v_20034335} : ArenaResult<Inference>}
 
-def validate_terms_result(v_20034336: ArenaStore, v_1: Inference, v_3: IR.Words, v_6: List<&2, Binding>, v_7: Scope.ArenaGlobalScope) -> ArenaResult<Maybe<&2, Diagnostic>>:
+def validate_terms_result(v_20034336: ArenaStore, v_1: Inference, v_3: IR.Words, v_6: List<&2, Binding>, v_7: Scope.ArenaGlobalScope) -> ArenaResult<Maybe<&2, Checked.Diagnostic>>:
   match v_1:
-    case Inferred{+v_20034337, +v_20034338}:
+    case Inferred{+v_20034337, +v_20034338, +occ_v_20034337}:
       ArenaResult{v_20034339, +v_20034340} = validate_terms(v_20034336, v_3, v_6, v_7)
-      {ArenaResult{v_20034339, v_20034340} : ArenaResult<Maybe<&2, Diagnostic>>}
+      {ArenaResult{v_20034339, v_20034340} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
     case InferenceFailure{+v_20034341}:
       v_16 = v_20034341
-      {ArenaResult{v_20034336, Some{v_16}} : ArenaResult<Maybe<&2, Diagnostic>>}
+      {ArenaResult{v_20034336, Some{v_16}} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
 
-def validate_terms(v_20034342: ArenaStore, v_1: IR.Words, v_4: List<&2, Binding>, v_5: Scope.ArenaGlobalScope) -> ArenaResult<Maybe<&2, Diagnostic>>:
+def validate_terms(v_20034342: ArenaStore, v_1: IR.Words, v_4: List<&2, Binding>, v_5: Scope.ArenaGlobalScope) -> ArenaResult<Maybe<&2, Checked.Diagnostic>>:
   ArenaResult{v_20034343, +v_20034344} = arena_words_view(v_20034342, v_1)
   match v_20034344:
     case IR.WordNil{}:
-      {ArenaResult{v_20034343, None{}} : ArenaResult<Maybe<&2, Diagnostic>>}
+      {ArenaResult{v_20034343, None{}} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
     case IR.WordCons{+v_20034345, +v_20034346}:
       +v_10 = v_20034345
       v_11 = v_20034346
       ArenaResult{v_20034347, +v_20034348} = infer(v_20034343, v_10, v_4, v_5)
       ArenaResult{v_20034349, +v_20034350} = validate_terms_result(v_20034347, v_20034348, v_11, v_4, v_5)
-      {ArenaResult{v_20034349, v_20034350} : ArenaResult<Maybe<&2, Diagnostic>>}
+      {ArenaResult{v_20034349, v_20034350} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
 
-def check_local_quantity_map(v_1: ArenaStore, v_2: IR.Names, v_3: IR.Quantities, v_6: List<&2, UsageEntry>, v_8: Nat, v_9: Ast.SourceSpan) -> ArenaResult<Maybe<&2, Diagnostic>>:
+def check_local_quantity_map(v_1: ArenaStore, v_2: IR.Names, v_3: IR.Quantities, v_6: List<&2, UsageEntry>, v_8: Nat, v_9: Ast.SourceSpan) -> ArenaResult<Maybe<&2, Checked.Diagnostic>>:
   ArenaResult{v_17, +v_18} = arena_names_view(v_1, v_2)
   match v_18:
     case IR.NameNil{}:
       ArenaResult{v_22, +v_23} = arena_quantities_view(v_17, v_3)
       match v_23:
         case IR.QuantityNil{}:
-          {ArenaResult{v_22, None{}} : ArenaResult<Maybe<&2, Diagnostic>>}
+          {ArenaResult{v_22, None{}} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
         case _:
           v_50000022 = span_file(v_9)
-          v_50000023 = Diagnostic{v_50000022, v_9, "let binding lists have different lengths", "parallel names and quantities", "inconsistent let binders"}
+          v_50000023 = Checked.Diagnostic{v_50000022, v_9, "let binding lists have different lengths", "parallel names and quantities", "inconsistent let binders"}
           v_50000024 = Some{v_50000023}
-          {ArenaResult{v_22, v_50000024} : ArenaResult<Maybe<&2, Diagnostic>>}
+          {ArenaResult{v_22, v_50000024} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
     case IR.NameCons{+v_29, +v_30}:
       ArenaResult{v_34, +v_35} = arena_quantities_view(v_17, v_3)
       match v_35:
@@ -2359,31 +2848,31 @@ def check_local_quantity_map(v_1: ArenaStore, v_2: IR.Names, v_3: IR.Quantities,
           match v_53:
             case False{}:
               v_50000025 = span_file(v_9)
-              v_50000026 = Diagnostic{v_50000025, v_9, String.append("invalid local binding use quantity for ", v_45), "within the declared quantity", "too many uses"}
+              v_50000026 = Checked.Diagnostic{v_50000025, v_9, String.append("invalid local binding use quantity for ", v_45), "within the declared quantity", "too many uses"}
               +v_56 = Some{v_50000026}
               v_58 = v_34
-              {ArenaResult{v_58, v_56} : ArenaResult<Maybe<&2, Diagnostic>>}
+              {ArenaResult{v_58, v_56} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
             case True{}:
               ArenaResult{v_63, +v_64} = check_local_quantity_map(v_34, v_47, v_43, v_6, v_49, v_9)
               +v_66 = v_64
               v_68 = v_63
-              {ArenaResult{v_68, v_66} : ArenaResult<Maybe<&2, Diagnostic>>}
+              {ArenaResult{v_68, v_66} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
         case _:
           v_50000027 = span_file(v_9)
-          v_50000028 = Diagnostic{v_50000027, v_9, "let binding lists have different lengths", "parallel names and quantities", "inconsistent let binders"}
+          v_50000028 = Checked.Diagnostic{v_50000027, v_9, "let binding lists have different lengths", "parallel names and quantities", "inconsistent let binders"}
           v_50000029 = Some{v_50000028}
-          {ArenaResult{v_34, v_50000029} : ArenaResult<Maybe<&2, Diagnostic>>}
+          {ArenaResult{v_34, v_50000029} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
     case _:
       v_50000030 = span_file(v_9)
-      v_50000031 = Diagnostic{v_50000030, v_9, "let binding lists have different lengths", "parallel names and quantities", "inconsistent let binders"}
+      v_50000031 = Checked.Diagnostic{v_50000030, v_9, "let binding lists have different lengths", "parallel names and quantities", "inconsistent let binders"}
       v_50000032 = Some{v_50000031}
-      {ArenaResult{v_17, v_50000032} : ArenaResult<Maybe<&2, Diagnostic>>}
+      {ArenaResult{v_17, v_50000032} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
 
-def check_local_pattern_usage_map(v_1: ArenaStore, v_2: IR.Words, v_5: List<&2, UsageEntry>, v_7: Nat) -> ArenaResult<Maybe<&2, Diagnostic>>:
+def check_local_pattern_usage_map(v_1: ArenaStore, v_2: IR.Words, v_5: List<&2, UsageEntry>, v_7: Nat) -> ArenaResult<Maybe<&2, Checked.Diagnostic>>:
   ArenaResult{v_15, +v_16} = arena_words_view(v_1, v_2)
   match v_16:
     case IR.WordNil{}:
-      {ArenaResult{v_15, None{}} : ArenaResult<Maybe<&2, Diagnostic>>}
+      {ArenaResult{v_15, None{}} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
     case IR.WordCons{+v_19, +v_20}:
       +v_22 = v_19
       v_24 = v_20
@@ -2400,21 +2889,21 @@ def check_local_pattern_usage_map(v_1: ArenaStore, v_2: IR.Words, v_5: List<&2, 
           match v_56:
             case False{}:
               v_50000033 = span_file(v_50)
-              v_50000034 = Diagnostic{v_50000033, v_50, String.append("invalid local binding use quantity for ", v_46), "within the declared quantity", "too many uses"}
+              v_50000034 = Checked.Diagnostic{v_50000033, v_50, String.append("invalid local binding use quantity for ", v_46), "within the declared quantity", "too many uses"}
               +v_59 = Some{v_50000034}
               v_61 = v_41
-              {ArenaResult{v_61, v_59} : ArenaResult<Maybe<&2, Diagnostic>>}
+              {ArenaResult{v_61, v_59} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
             case True{}:
               ArenaResult{v_66, +v_67} = check_local_pattern_usage_map(v_41, v_24, v_5, v_52)
               +v_69 = v_67
               v_71 = v_66
-              {ArenaResult{v_71, v_69} : ArenaResult<Maybe<&2, Diagnostic>>}
+              {ArenaResult{v_71, v_69} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
         case Arena.PatternCtr{+v_77, +v_78, +v_79, +v_80}:
           v_82 = v_80
           v_50000035 = span_file(v_82)
-          v_50000036 = Diagnostic{v_50000035, v_82, "local bindings require identifier patterns", "one identifier per local value", "a constructor pattern"}
+          v_50000036 = Checked.Diagnostic{v_50000035, v_82, "local bindings require identifier patterns", "one identifier per local value", "a constructor pattern"}
           v_50000037 = Some{v_50000036}
-          {ArenaResult{v_28, v_50000037} : ArenaResult<Maybe<&2, Diagnostic>>}
+          {ArenaResult{v_28, v_50000037} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
 
 def local_pattern_quantities_match(v_1: ArenaStore, v_2: IR.Words, v_3: Ast.Quantity) -> ArenaResult<Bool>:
   ArenaResult{v_10, +v_11} = arena_words_view(v_1, v_2)
@@ -2434,23 +2923,21 @@ def local_pattern_quantities_match(v_1: ArenaStore, v_2: IR.Words, v_3: Ast.Quan
         case Arena.PatternCtr{+v_45, +v_46, +v_47, +v_48}:
           {ArenaResult{v_23, False{}} : ArenaResult<Bool>}
 
-def check_body_local_uses_result(v_20034419: ArenaStore, v_2: Maybe<&2, Diagnostic>, v_4: IR.Words, v_6: IR.Words, v_7: U32, v_8: Ast.SourceSpan, v_11: List<&2, Binding>, v_12: Scope.ArenaGlobalScope, v_15: List<&2, Binding>) -> ArenaResult<Inference>:
+def check_body_local_uses_result(v_20034419: ArenaStore, v_2: Maybe<&2, Checked.Diagnostic>, v_4: IR.Words, v_6: IR.Words, v_7: U32, v_8: Ast.SourceSpan, v_11: List<&2, Binding>, v_12: Scope.ArenaGlobalScope, v_15: List<&2, Binding>, local_term: U32, +values: List<&2, IR.Occurrence>, patterns: List<&2, IR.CheckedPattern>) -> ArenaResult<Inference>:
   match v_2:
     case Some{+v_20034420}:
       v_18 = v_20034420
       {ArenaResult{v_20034419, InferenceFailure{v_18}} : ArenaResult<Inference>}
     case None{}:
-      ArenaResult{v_20034421, +v_20034422} = arena_words_reverse(v_20034419, v_6)
-      ArenaResult{v_20034423, +v_20034424} = substitute_many(v_20034421, v_20034422, v_7)
-      ArenaResult{v_20034425, +v_20034426} = infer(v_20034423, v_20034424, v_11, v_12)
-      {ArenaResult{v_20034425, v_20034426} : ArenaResult<Inference>}
+      ArenaResult{next, result} = infer(v_20034419, v_7, v_15, v_12)
+      local_body_inferred(next, result, local_term, values, local_bindings(List.length(&2, IR.Occurrence, values), v_15, Nil{}), Some{patterns})
 
-def checked_local_env_inference(v_20034427: ArenaStore, v_1: Inference, v_3: String, v_4: Ast.Quantity, v_6: IR.Words, v_8: IR.Words, v_11: List<&2, Binding>, v_14: List<&2, Binding>, v_15: Scope.ArenaGlobalScope, v_16: Ast.SourceSpan) -> ArenaResult<CheckedLocalEnv>:
+def checked_local_env_inference(v_20034427: ArenaStore, v_1: Inference, v_3: String, v_4: Ast.Quantity, v_6: IR.Words, v_8: IR.Words, v_11: List<&2, Binding>, v_14: List<&2, Binding>, v_15: Scope.ArenaGlobalScope, v_16: Ast.SourceSpan, pattern_id: U32) -> ArenaResult<CheckedLocalEnv>:
   match v_1:
-    case Inferred{+v_20034428, +v_20034429}:
+    case Inferred{+v_20034428, +v_20034429, +occ_v_20034428}:
       v_21 = v_20034429
-      ArenaResult{v_20034430, +v_20034431} = checked_local_env(v_20034427, v_6, v_8, v_11, Binding{v_3, v_4, v_21, List.length(&2, Binding, v_11)} <> v_14, v_15, v_16)
-      {ArenaResult{v_20034430, v_20034431} : ArenaResult<CheckedLocalEnv>}
+      ArenaResult{v_20034430, +v_20034431} = checked_local_env(v_20034427, v_6, v_8, v_11, Binding{v_3, v_4, v_21, List.length(&2, Binding, v_11), IR.SomeTerm{v_20034428}} <> v_14, v_15, v_16)
+      {ArenaResult{v_20034430, checked_local_prepend(v_20034431, occ_v_20034428, IR.CheckedVariable{pattern_id, IR.CheckedBinding{v_4, v_21, List.length(&2, Binding, v_11)}})} : ArenaResult<CheckedLocalEnv>}
     case InferenceFailure{+v_20034432}:
       v_25 = v_20034432
       {ArenaResult{v_20034427, CheckedLocalEnvFailure{v_25}} : ArenaResult<CheckedLocalEnv>}
@@ -2462,10 +2949,10 @@ def checked_local_env(v_1: ArenaStore, v_2: IR.Words, v_3: IR.Words, v_6: List<&
       ArenaResult{v_23, +v_24} = arena_words_view(v_18, v_3)
       match v_24:
         case IR.WordNil{}:
-          {ArenaResult{v_23, CheckedLocalEnv{v_9}} : ArenaResult<CheckedLocalEnv>}
+          {ArenaResult{v_23, CheckedLocalEnv{v_9, Nil{}, Nil{}}} : ArenaResult<CheckedLocalEnv>}
         case _:
           v_50000039 = span_file(v_11)
-          v_50000040 = Diagnostic{v_50000039, v_11, "local binding names and values have different lengths", "one value per identifier", "inconsistent local bindings"}
+          v_50000040 = Checked.Diagnostic{v_50000039, v_11, "local binding names and values have different lengths", "one value per identifier", "inconsistent local bindings"}
           v_50000041 = CheckedLocalEnvFailure{v_50000040}
           {ArenaResult{v_23, v_50000041} : ArenaResult<CheckedLocalEnv>}
     case IR.WordCons{+v_30, +v_31}:
@@ -2483,59 +2970,60 @@ def checked_local_env(v_1: ArenaStore, v_2: IR.Words, v_3: IR.Words, v_6: List<&
               v_68 = v_43
               v_70 = v_31
               ArenaResult{v_74, +v_75} = infer(v_55, v_62, v_6, v_10)
-              ArenaResult{v_79, +v_80} = checked_local_env_inference(v_74, v_75, v_66, v_68, v_70, v_64, v_6, v_9, v_10, v_11)
+              ArenaResult{v_79, +v_80} = checked_local_env_inference(v_74, v_75, v_66, v_68, v_70, v_64, v_6, v_9, v_10, v_11, v_30)
               {ArenaResult{v_79, v_80} : ArenaResult<CheckedLocalEnv>}
             case _:
               v_50000042 = span_file(v_11)
-              v_50000043 = Diagnostic{v_50000042, v_11, "local binding names and values have different lengths", "one value per identifier", "inconsistent local bindings"}
+              v_50000043 = Checked.Diagnostic{v_50000042, v_11, "local binding names and values have different lengths", "one value per identifier", "inconsistent local bindings"}
               v_50000044 = CheckedLocalEnvFailure{v_50000043}
               {ArenaResult{v_55, v_50000044} : ArenaResult<CheckedLocalEnv>}
         case _:
           v_50000045 = span_file(v_11)
-          v_50000046 = Diagnostic{v_50000045, v_11, "local binding names and values have different lengths", "one value per identifier", "inconsistent local bindings"}
+          v_50000046 = Checked.Diagnostic{v_50000045, v_11, "local binding names and values have different lengths", "one value per identifier", "inconsistent local bindings"}
           v_50000047 = CheckedLocalEnvFailure{v_50000046}
           {ArenaResult{v_35, v_50000047} : ArenaResult<CheckedLocalEnv>}
     case _:
       v_50000048 = span_file(v_11)
-      v_50000049 = Diagnostic{v_50000048, v_11, "local binding names and values have different lengths", "one value per identifier", "inconsistent local bindings"}
+      v_50000049 = Checked.Diagnostic{v_50000048, v_11, "local binding names and values have different lengths", "one value per identifier", "inconsistent local bindings"}
       v_50000050 = CheckedLocalEnvFailure{v_50000049}
       {ArenaResult{v_18, v_50000050} : ArenaResult<CheckedLocalEnv>}
 
-def check_body_local_env_result(v_20034469: ArenaStore, v_1: CheckedLocalEnv, v_3: IR.Words, v_5: IR.Words, v_6: U32, v_7: Ast.SourceSpan, v_10: List<&2, Binding>, v_11: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
+def check_body_local_env_result(v_20034469: ArenaStore, v_1: CheckedLocalEnv, v_3: IR.Words, v_5: IR.Words, v_6: U32, v_7: Ast.SourceSpan, v_10: List<&2, Binding>, v_11: Scope.ArenaGlobalScope, local_term: U32) -> ArenaResult<Inference>:
   match v_1:
     case CheckedLocalEnvFailure{+v_20034470}:
       v_14 = v_20034470
       {ArenaResult{v_20034469, InferenceFailure{v_14}} : ArenaResult<Inference>}
-    case CheckedLocalEnv{+v_20034471}:
+    case CheckedLocalEnv{+v_20034471, values, patterns}:
       v_16 = v_20034471
       v_18 = arena_words_length(v_3)
       ArenaResult{v_20034472, +v_20034473} = binder_usage_map(v_20034469, v_18, v_6, v_16, v_11, None{}, False{})
       ArenaResult{v_20034474, +v_20034475} = check_local_pattern_usage_map(v_20034472, v_3, v_20034473, v_18)
-      ArenaResult{v_20034476, +v_20034477} = check_body_local_uses_result(v_20034474, v_20034475, v_3, v_5, v_6, v_7, v_10, v_11, v_16)
+      ArenaResult{v_20034476, +v_20034477} = check_body_local_uses_result(v_20034474, v_20034475, v_3, v_5, v_6, v_7, v_10, v_11, v_16, local_term, values, patterns)
       {ArenaResult{v_20034476, v_20034477} : ArenaResult<Inference>}
 
-def check_body_local_quantity_result(v_1: ArenaStore, v_3: Bool, v_4: IR.Words, v_5: Ast.Quantity, v_6: IR.Words, v_8: U32, v_9: Ast.SourceSpan, v_12: List<&2, Binding>, v_13: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
+def check_body_local_quantity_result(v_1: ArenaStore, v_3: Bool, v_4: IR.Words, v_5: Ast.Quantity, v_6: IR.Words, v_8: U32, v_9: Ast.SourceSpan, v_12: List<&2, Binding>, v_13: Scope.ArenaGlobalScope, local_term: U32) -> ArenaResult<Inference>:
   match v_3:
     case True{}:
       ArenaResult{v_20, +v_21} = checked_local_env(v_1, v_4, v_6, v_12, v_12, v_13, v_9)
-      ArenaResult{v_25, +v_26} = check_body_local_env_result(v_20, v_21, v_4, v_6, v_8, v_9, v_12, v_13)
+      ArenaResult{v_25, +v_26} = check_body_local_env_result(v_20, v_21, v_4, v_6, v_8, v_9, v_12, v_13, local_term)
       {ArenaResult{v_25, v_26} : ArenaResult<Inference>}
     case False{}:
       v_50000051 = fail(v_9, "local binder quantity differs from its pattern quantity", "the declared local quantity", "an inconsistent pattern quantity")
       {ArenaResult{v_1, v_50000051} : ArenaResult<Inference>}
 
-def check_body_local_length_result(v_1: ArenaStore, v_3: Bool, v_4: IR.Words, v_5: Ast.Quantity, v_6: IR.Words, v_8: U32, v_9: Ast.SourceSpan, v_12: List<&2, Binding>, v_13: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
+def check_body_local_length_result(v_1: ArenaStore, v_3: Bool, v_4: IR.Words, v_5: Ast.Quantity, v_6: IR.Words, v_8: U32, v_9: Ast.SourceSpan, v_12: List<&2, Binding>, v_13: Scope.ArenaGlobalScope, local_term: U32) -> ArenaResult<Inference>:
   match v_3:
     case True{}:
       ArenaResult{v_20, +v_21} = local_pattern_quantities_match(v_1, v_4, v_5)
-      ArenaResult{v_25, +v_26} = check_body_local_quantity_result(v_20, v_21, v_4, v_5, v_6, v_8, v_9, v_12, v_13)
+      ArenaResult{v_25, +v_26} = check_body_local_quantity_result(v_20, v_21, v_4, v_5, v_6, v_8, v_9, v_12, v_13, local_term)
       {ArenaResult{v_25, v_26} : ArenaResult<Inference>}
     case False{}:
       v_50000052 = fail(v_9, "local binding names and values have different lengths", "one value per name", "mismatched local bindings")
       {ArenaResult{v_1, v_50000052} : ArenaResult<Inference>}
 
 def check_body_local(v_20034488: ArenaStore, v_1: IR.Words, v_2: Ast.Quantity, v_4: IR.Words, v_5: U32, v_6: Ast.SourceSpan, v_9: List<&2, Binding>, v_10: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
-  ArenaResult{v_20034489, +v_20034490} = check_body_local_length_result(v_20034488, Nat.is_eq(arena_words_length(v_1), arena_words_length(v_4)), v_1, v_2, v_4, v_5, v_6, v_9, v_10)
+  ArenaResult{prepared, local_term} = arena_put_node(v_20034488, Arena.BodyLocal{arena_words_start(v_1), arena_words_count(v_1), v_2, arena_words_start(v_4), arena_words_count(v_4), v_5, v_6})
+  ArenaResult{v_20034489, +v_20034490} = check_body_local_length_result(prepared, Nat.is_eq(arena_words_length(v_1), arena_words_length(v_4)), v_1, v_2, v_4, v_5, v_6, v_9, v_10, local_term)
   {ArenaResult{v_20034489, v_20034490} : ArenaResult<Inference>}
 
 def family_head_key(v_20034491: ArenaStore, v_0: U32) -> ArenaResult<Maybe<&2, String>>:
@@ -2657,7 +3145,7 @@ def set_quantity_prefix(v_20034639: ArenaStore, v_1: IR.Words, v_3: Nat, +v_4: A
 
 def family_failure(+v_0: Ast.SourceSpan, v_2: String, v_4: String, v_6: String) -> FamilyLowering:
   v_50000053 = span_file(v_0)
-  v_50000054 = Diagnostic{v_50000053, v_0, v_2, v_4, v_6}
+  v_50000054 = Checked.Diagnostic{v_50000053, v_0, v_2, v_4, v_6}
   FamilyFailure{v_50000054}
 
 def lower_family_sugar_filled(v_20034655: ArenaStore, v_1: Bool, +v_3: IR.Words, v_5: Nat, v_6: Ast.SourceSpan) -> ArenaResult<IR.Words>:
@@ -2799,43 +3287,40 @@ def infer_family_sugar(v_20034741: ArenaStore, v_0: U32, v_2: IR.Words, v_4: Boo
   ArenaResult{v_20034744, +v_20034745} = infer_family_sugar_result(v_20034742, v_20034743, v_8, v_9)
   {ArenaResult{v_20034744, v_20034745} : ArenaResult<Inference>}
 
-def infer_application_check(v_20034746: ArenaStore, v_1: Inference, v_2: U32, v_3: U32) -> ArenaResult<Inference>:
-  match v_1:
-    case Inferred{+v_20034747, +v_20034748}:
-      v_7 = v_20034747
-      ArenaResult{v_20034749, +v_20034750} = core_subst(v_20034746, 0n, v_7, v_3)
-      {ArenaResult{v_20034749, Inferred{v_2, v_20034750}} : ArenaResult<Inference>}
-    case InferenceFailure{+v_20034751}:
-      v_10 = v_20034751
-      {ArenaResult{v_20034746, InferenceFailure{v_10}} : ArenaResult<Inference>}
+def infer_application_check(store: ArenaStore, argument: Inference, +application: U32, codomain: U32, quantity: Ast.Quantity, function_occurrence: IR.Occurrence) -> ArenaResult<Inference>:
+  match argument:
+    case Inferred{arg, _, arg_occurrence}:
+      ArenaResult{store, +ty} = core_subst(store, 0n, arg, codomain)
+      {ArenaResult{store, Inferred{application, ty, IR.TypedOccurrence{application, ty, Some{quantity}, None{}, Nil{}, function_occurrence <> arg_occurrence <> Nil{}}}} : ArenaResult<Inference>}
+    case InferenceFailure{diagnostic}: {ArenaResult{store, InferenceFailure{diagnostic}} : ArenaResult<Inference>}
 
-def infer_application_result_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_7: U32, v_8: Ast.SourceSpan, v_11: List<&2, Binding>, v_12: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
+def infer_application_result_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_7: U32, v_8: Ast.SourceSpan, v_11: List<&2, Binding>, v_12: Scope.ArenaGlobalScope, function_occurrence: IR.Occurrence) -> ArenaResult<Inference>:
   ArenaResult{v_19, +v_20} = arena_get_node(v_1, v_3)
   match v_20:
     case Arena.TermAll{+v_27, +v_28, +v_29, +v_30, +v_31, +v_32}:
       v_34 = v_30
       v_36 = v_31
       ArenaResult{v_40, +v_41} = check_term(v_19, v_7, v_11, v_12, v_34)
-      ArenaResult{v_45, +v_46} = infer_application_check(v_40, v_41, v_5, v_36)
+      ArenaResult{v_45, +v_46} = infer_application_check(v_40, v_41, v_5, v_36, v_27, function_occurrence)
       {ArenaResult{v_45, v_46} : ArenaResult<Inference>}
     case _:
       v_50000068 = fail(v_8, "application target is not a function", "a function type", "a non-function type")
       {ArenaResult{v_19, v_50000068} : ArenaResult<Inference>}
 
-def infer_application_result(v_20034773: ArenaStore, v_0: U32, v_1: U32, v_2: U32, v_3: Ast.SourceSpan, v_6: List<&2, Binding>, v_7: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
+def infer_application_result(v_20034773: ArenaStore, v_0: U32, v_1: U32, v_2: U32, v_3: Ast.SourceSpan, v_6: List<&2, Binding>, v_7: Scope.ArenaGlobalScope, function_occurrence: IR.Occurrence) -> ArenaResult<Inference>:
   ArenaResult{v_20034774, +v_20034775} = whnf(v_20034773, 64n, v_2, v_7)
-  ArenaResult{v_20034776, +v_20034777} = infer_application_result_view(v_20034774, v_20034775, v_0, v_1, v_3, v_6, v_7)
+  ArenaResult{v_20034776, +v_20034777} = infer_application_result_view(v_20034774, v_20034775, v_0, v_1, v_3, v_6, v_7, function_occurrence)
   {ArenaResult{v_20034776, v_20034777} : ArenaResult<Inference>}
 
-def check_infer_term_sort(v_1: ArenaStore, v_3: Inference, v_5: U32, v_6: Ast.SourceSpan) -> ArenaResult<Inference>:
+def check_infer_term_sort(v_1: ArenaStore, v_3: Inference, v_5: U32, v_6: Ast.SourceSpan, quantity: Ast.Quantity, domain: IR.Occurrence) -> ArenaResult<Inference>:
   match v_3:
-    case Inferred{+v_12, +v_13}:
+    case Inferred{+v_12, +v_13, +occ_v_12}:
       ArenaResult{v_17, +v_18} = arena_get_node(v_1, v_13)
       match v_18:
         case Arena.TermType{+v_21, +v_22}:
           ArenaResult{v_26, +v_27} = arena_put_node(v_17, Arena.TermQuantity{Ast.QOne{}, v_6})
           ArenaResult{v_31, +v_32} = arena_put_node(v_26, Arena.TermType{v_27, v_6})
-          {ArenaResult{v_31, Inferred{v_5, v_32}} : ArenaResult<Inference>}
+          {ArenaResult{v_31, Inferred{v_5, v_32, IR.TypedOccurrence{v_5, v_32, Some{quantity}, None{}, Nil{}, domain <> occ_v_12 <> Nil{}}}} : ArenaResult<Inference>}
         case _:
           v_50000069 = fail(v_6, "function codomain is not a type", "a type", "a term")
           {ArenaResult{v_17, v_50000069} : ArenaResult<Inference>}
@@ -2846,30 +3331,30 @@ def check_infer_term_sort(v_1: ArenaStore, v_3: Inference, v_5: U32, v_6: Ast.So
 def infer_global_reference(v_1: Maybe<&2, Scope.ArenaGlobal>, v_3: String, v_4: U32, v_5: Ast.SourceSpan) -> Inference:
   match v_1:
     case Some{+v_20034793}:
-      v_8 = v_20034793
+      +v_8 = v_20034793
       match v_8:
         case Scope.ArenaGlobal{+v_20034794, +v_20034795, +v_20034796, +v_20034797, +v_20034798, +v_20034799}:
           v_18 = v_20034797
-          Inferred{v_4, v_18}
+          Inferred{v_4, v_18, IR.TypedOccurrence{v_4, v_18, None{}, Some{checked_symbol(v_8)}, Nil{}, Nil{}}}
     case None{}:
       fail(v_5, String.append("unknown name ", v_3), "a declared name", v_3)
 
 def infer_global_adt(v_1: ArenaStore, v_3: Maybe<&2, Scope.ArenaGlobal>, v_5: String, v_6: IR.Words, v_8: U32, v_9: Ast.SourceSpan, v_12: List<&2, Binding>, v_13: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
   match v_3:
     case Some{+v_18}:
-      v_20 = v_18
+      +v_20 = v_18
       match v_20:
         case Scope.ArenaGlobal{+v_27, +v_28, +v_29, +v_30, +v_31, +v_32}:
           v_34 = v_30
           ArenaResult{v_38, +v_39} = infer_adt_args(v_1, v_6, v_34, v_12, v_13, v_8, v_9)
-          {ArenaResult{v_38, v_39} : ArenaResult<Inference>}
+          {ArenaResult{v_38, inference_symbol(v_39, checked_symbol(v_20))} : ArenaResult<Inference>}
     case None{}:
       v_50000070 = fail(v_9, String.append("unknown datatype ", v_5), "a declared datatype", v_5)
       {ArenaResult{v_1, v_50000070} : ArenaResult<Inference>}
 
 def binding_type_at(v_20034810: ArenaStore, v_1: Binding, v_3: Nat) -> ArenaResult<U32>:
   match v_1:
-    case Binding{+v_20034811, +v_20034812, +v_20034813, +v_20034814}:
+    case Binding{+v_20034811, +v_20034812, +v_20034813, +v_20034814, _}:
       v_10 = v_20034813
       v_11 = v_20034814
       v_13 = Nat.sub(v_3, v_11)
@@ -2880,46 +3365,71 @@ def binding_type_at(v_20034810: ArenaStore, v_1: Binding, v_3: Nat) -> ArenaResu
           ArenaResult{v_20034816, +v_20034817} = core_shift(v_20034810, 0n, v_13, v_10)
           {ArenaResult{v_20034816, v_20034817} : ArenaResult<U32>}
 
+# Local values participate in semantic reduction, while their occurrence retains
+# the lexical variable. This keeps dependent lets transparent without duplicating
+# their runtime evaluation at each checked use.
+def infer_binding_value(store: ArenaStore, +binding: Binding, depth: Nat, +term: U32, +ty: U32) -> ArenaResult<Inference>:
+  match binding:
+    case Binding{_, _, _, saved_depth, IR.SomeTerm{value}}:
+      ArenaResult{store, +semantic} = core_shift(store, 0n, Nat.sub(depth, saved_depth), value)
+      {ArenaResult{store, Inferred{semantic, ty, IR.LocalReferenceOccurrence{term, ty, checked_binding(binding), semantic}}} : ArenaResult<Inference>}
+    case Binding{_, _, _, _, IR.NoTerm{}}:
+      {ArenaResult{store, Inferred{term, ty, IR.TypedOccurrence{term, ty, None{}, None{}, checked_binding(binding) <> Nil{}, Nil{}}}} : ArenaResult<Inference>}
+
+def reverse_occurrences(values: List<&2, IR.Occurrence>, result: List<&2, IR.Occurrence>) -> List<&2, IR.Occurrence>:
+  match values:
+    case Nil{}: result
+    case value <> rest: reverse_occurrences(rest, value <> result)
+
+def install_local_values(env: List<&2, Binding>, values: List<&2, IR.Occurrence>) -> Maybe<&2, List<&2, Binding>>:
+  match values env:
+    case Nil{} env: Some{env}
+    case +value <> rest Binding{key, quantity, _, depth, _} <> tail:
+      match install_local_values(tail, rest):
+        case Some{env}: Some{Binding{key, quantity, occurrence_type(value), depth, IR.SomeTerm{occurrence_term(value)}} <> env}
+        case None{}: None{}
+    case _ _: None{}
+
 def infer_local_reference(v_1: ArenaStore, v_4: Maybe<&2, Binding>, v_6: String, v_8: Nat, v_10: U32, v_11: Ast.SourceSpan) -> ArenaResult<Inference>:
   match v_4:
     case Some{+v_16}:
       v_18 = v_16
       ArenaResult{v_22, +v_23} = binding_type_at(v_1, v_18, v_8)
-      {ArenaResult{v_22, Inferred{v_10, v_23}} : ArenaResult<Inference>}
+      infer_binding_value(v_22, v_18, v_8, v_10, v_23)
     case None{}:
       v_50000071 = fail(v_11, String.append("unbound variable ", v_6), "a bound variable", v_6)
       {ArenaResult{v_1, v_50000071} : ArenaResult<Inference>}
 
 def infer_term_annotation_result(v_20034822: ArenaStore, v_1: Inference, v_2: U32, v_3: U32, v_4: Ast.SourceSpan, v_7: List<&2, Binding>, v_8: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
   match v_1:
-    case Inferred{+v_20034823, +v_20034824}:
+    case Inferred{+v_20034823, +v_20034824, +occ_v_20034823}:
       v_12 = v_20034823
       ArenaResult{v_20034825, +v_20034826} = check_term(v_20034822, v_2, v_7, v_8, v_12)
-      ArenaResult{v_20034827, +v_20034828} = infer_term_annotation_inner(v_20034825, v_20034826, v_12, v_3, v_4)
+      ArenaResult{v_20034827, +v_20034828} = infer_term_annotation_inner(v_20034825, v_20034826, v_12, v_3, v_4, occ_v_20034823)
       {ArenaResult{v_20034827, v_20034828} : ArenaResult<Inference>}
     case InferenceFailure{+v_20034829}:
       v_17 = v_20034829
       {ArenaResult{v_20034822, InferenceFailure{v_17}} : ArenaResult<Inference>}
 
-def infer_term_annotation_inner(v_20034830: ArenaStore, v_1: Inference, v_2: U32, v_3: U32, v_4: Ast.SourceSpan) -> ArenaResult<Inference>:
+def infer_term_annotation_inner(v_20034830: ArenaStore, v_1: Inference, v_2: U32, v_3: U32, v_4: Ast.SourceSpan, annotation: IR.Occurrence) -> ArenaResult<Inference>:
   match v_1:
-    case Inferred{+v_20034831, +v_20034832}:
+    case Inferred{+v_20034831, +v_20034832, +occ_v_20034831}:
       v_8 = v_20034831
       ArenaResult{v_20034833, +v_20034834} = arena_put_node(v_20034830, Arena.TermAnn{v_8, v_2, v_4})
-      {ArenaResult{v_20034833, Inferred{v_20034834, v_2}} : ArenaResult<Inference>}
+      {ArenaResult{v_20034833, Inferred{v_20034834, v_2, IR.TypedOccurrence{v_20034834, v_2, None{}, None{}, Nil{}, occ_v_20034831 <> annotation <> Nil{}}}} : ArenaResult<Inference>}
     case InferenceFailure{+v_20034835}:
       v_11 = v_20034835
       {ArenaResult{v_20034830, InferenceFailure{v_11}} : ArenaResult<Inference>}
 
 def infer_type_annotation_result(v_1: ArenaStore, v_3: Inference, v_5: U32, v_6: Ast.SourceSpan) -> ArenaResult<Inference>:
   match v_3:
-    case Inferred{+v_12, +v_13}:
+    case Inferred{+v_12, +v_13, +occ_v_12}:
       ArenaResult{v_17, +v_18} = arena_get_node(v_1, v_13)
       match v_18:
         case Arena.TermQuant{}:
           ArenaResult{v_22, +v_23} = arena_put_node(v_17, Arena.TermQuantity{Ast.QOne{}, v_6})
           ArenaResult{v_27, +v_28} = arena_put_node(v_22, Arena.TermType{v_23, v_6})
-          {ArenaResult{v_27, Inferred{v_5, v_28}} : ArenaResult<Inference>}
+          {ArenaResult{v_27, Inferred{v_5, v_28, IR.TypedOccurrence{v_5, v_28, None{}, None{}, Nil{}, occ_v_12 <> Nil{}}}} : ArenaResult<Inference>}
         case _:
           v_50000072 = fail(v_6, "kind annotation is not a quantity", "Quant", "a non-quantity")
           {ArenaResult{v_17, v_50000072} : ArenaResult<Inference>}
@@ -2929,17 +3439,17 @@ def infer_type_annotation_result(v_1: ArenaStore, v_3: Inference, v_5: U32, v_6:
 
 def infer_min_results(v_1: ArenaStore, v_3: Inference, v_5: Inference, v_7: U32, v_8: Ast.SourceSpan) -> ArenaResult<Inference>:
   match v_3:
-    case Inferred{+v_14, +v_15}:
+    case Inferred{+v_14, +v_15, +occ_v_14}:
       ArenaResult{v_19, +v_20} = arena_get_node(v_1, v_15)
       match v_20:
         case Arena.TermQuant{}:
           match v_5:
-            case Inferred{+v_23, +v_24}:
+            case Inferred{+v_23, +v_24, +occ_v_23}:
               ArenaResult{v_28, +v_29} = arena_get_node(v_19, v_24)
               match v_29:
                 case Arena.TermQuant{}:
                   ArenaResult{v_33, +v_34} = arena_put_node(v_28, Arena.TermQuant{})
-                  {ArenaResult{v_33, Inferred{v_7, v_34}} : ArenaResult<Inference>}
+                  {ArenaResult{v_33, Inferred{v_7, v_34, IR.TypedOccurrence{v_7, v_34, None{}, None{}, Nil{}, occ_v_14 <> occ_v_23 <> Nil{}}}} : ArenaResult<Inference>}
                 case _:
                   v_50000073 = fail(v_8, "minimum operands must be quantities", "Quant", "a non-quantity")
                   {ArenaResult{v_28, v_50000073} : ArenaResult<Inference>}
@@ -2969,14 +3479,14 @@ def infer_min_results(v_1: ArenaStore, v_3: Inference, v_5: Inference, v_7: U32,
           v_50000076 = fail(v_8, "minimum operands must be quantities", "Quant", "a non-quantity")
           {ArenaResult{v_1, v_50000076} : ArenaResult<Inference>}
 
-def infer_equal_endpoints(v_20034879: ArenaStore, v_1: Inference, v_3: Inference, v_4: U32, v_5: Ast.SourceSpan) -> ArenaResult<Inference>:
+def infer_equal_endpoints(v_20034879: ArenaStore, v_1: Inference, v_3: Inference, v_4: U32, v_5: Ast.SourceSpan, annotation: IR.Occurrence) -> ArenaResult<Inference>:
   match v_1:
-    case Inferred{+v_20034882, +v_20034883}:
+    case Inferred{+v_20034882, +v_20034883, +occ_v_20034882}:
       match v_3:
-        case Inferred{+v_20034884, +v_20034885}:
+        case Inferred{+v_20034884, +v_20034885, +occ_v_20034884}:
           ArenaResult{v_20034886, +v_20034887} = arena_put_node(v_20034879, Arena.TermQuantity{Ast.QMany{}, v_5})
           ArenaResult{v_20034888, +v_20034889} = arena_put_node(v_20034886, Arena.TermType{v_20034887, v_5})
-          {ArenaResult{v_20034888, Inferred{v_4, v_20034889}} : ArenaResult<Inference>}
+          {ArenaResult{v_20034888, Inferred{v_4, v_20034889, IR.TypedOccurrence{v_4, v_20034889, None{}, None{}, Nil{}, occ_v_20034882 <> occ_v_20034884 <> annotation <> Nil{}}}} : ArenaResult<Inference>}
         case InferenceFailure{+v_20034890}:
           v_22 = v_20034890
           {ArenaResult{v_20034879, InferenceFailure{v_22}} : ArenaResult<Inference>}
@@ -2986,14 +3496,14 @@ def infer_equal_endpoints(v_20034879: ArenaStore, v_1: Inference, v_3: Inference
 
 def infer_equal_type(v_1: ArenaStore, v_3: Inference, v_5: U32, v_7: U32, v_9: U32, v_10: Ast.SourceSpan, v_13: List<&2, Binding>, v_14: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
   match v_3:
-    case Inferred{+v_20, +v_21}:
+    case Inferred{+v_20, +v_21, +occ_v_20}:
       ArenaResult{v_25, +v_26} = arena_get_node(v_1, v_21)
       match v_26:
         case Arena.TermType{+v_29, +v_30}:
           v_32 = v_20
           ArenaResult{v_36, +v_37} = check_term(v_25, v_5, v_13, v_14, v_32)
           ArenaResult{v_41, +v_42} = check_term(v_36, v_7, v_13, v_14, v_32)
-          ArenaResult{v_46, +v_47} = infer_equal_endpoints(v_41, v_37, v_42, v_9, v_10)
+          ArenaResult{v_46, +v_47} = infer_equal_endpoints(v_41, v_37, v_42, v_9, v_10, occ_v_20)
           {ArenaResult{v_46, v_47} : ArenaResult<Inference>}
         case _:
           v_50000077 = fail(v_10, "equation annotation is not a type", "a type", "a non-type")
@@ -3007,9 +3517,9 @@ def infer_equal_type(v_1: ArenaStore, v_3: Inference, v_5: U32, v_7: U32, v_9: U
 
 def infer_application_result_of_function(v_20034916: ArenaStore, v_1: Inference, v_2: U32, v_3: U32, v_4: Ast.SourceSpan, v_7: List<&2, Binding>, v_8: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
   match v_1:
-    case Inferred{+v_20034917, +v_20034918}:
+    case Inferred{+v_20034917, +v_20034918, +occ_v_20034917}:
       v_13 = v_20034918
-      ArenaResult{v_20034919, +v_20034920} = infer_application_result(v_20034916, v_2, v_3, v_13, v_4, v_7, v_8)
+      ArenaResult{v_20034919, +v_20034920} = infer_application_result(v_20034916, v_2, v_3, v_13, v_4, v_7, v_8, occ_v_20034917)
       {ArenaResult{v_20034919, v_20034920} : ArenaResult<Inference>}
     case InferenceFailure{+v_20034921}:
       v_16 = v_20034921
@@ -3025,14 +3535,15 @@ def infer_application_valid(v_20034922: ArenaStore, v_1: Bool, v_2: U32, v_3: U3
     case True{}:
       ArenaResult{v_20034926, +v_20034927} = application_type_view(v_20034922, v_2)
       ArenaResult{v_20034928, +v_20034929} = infer(v_20034926, v_20034927, v_8, v_9)
-      ArenaResult{v_20034930, +v_20034931} = infer_application_result_of_function(v_20034928, v_20034929, v_4, v_3, v_5, v_8, v_9)
+      ArenaResult{restored_store, restored} = restore_function_bangs(v_20034928, v_2, v_20034929)
+      ArenaResult{v_20034930, +v_20034931} = infer_application_result_of_function(restored_store, restored, v_4, v_3, v_5, v_8, v_9)
       +v_20034923 = v_20034931
       v_20034924 = v_20034930
       {ArenaResult{v_20034924, v_20034923} : ArenaResult<Inference>}
 
 def infer_all_domain(v_1: ArenaStore, v_3: Inference, v_4: Ast.Quantity, v_6: String, v_8: U32, v_10: U32, v_12: U32, v_13: Ast.SourceSpan, v_16: List<&2, Binding>, v_17: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
   match v_3:
-    case Inferred{+v_23, +v_24}:
+    case Inferred{+v_23, +v_24, +occ_v_23}:
       v_26 = v_24
       v_50000079 = domain_quantity(v_4, v_17)
       ArenaResult{v_31, +v_32} = arena_put_node(v_1, Arena.TermQuantity{v_50000079, v_13})
@@ -3046,8 +3557,8 @@ def infer_all_domain(v_1: ArenaStore, v_3: Inference, v_4: Ast.Quantity, v_6: St
           v_51 = v_43
           {ArenaResult{v_51, v_49} : ArenaResult<Inference>}
         case True{}:
-          ArenaResult{v_57, +v_58} = infer(v_43, v_10, Binding{v_6, v_4, v_8, List.length(&2, Binding, v_16)} <> v_16, v_17)
-          ArenaResult{v_62, +v_63} = check_infer_term_sort(v_57, v_58, v_12, v_13)
+          ArenaResult{v_57, +v_58} = infer(v_43, v_10, Binding{v_6, v_4, v_8, List.length(&2, Binding, v_16), IR.NoTerm{}} <> v_16, v_17)
+          ArenaResult{v_62, +v_63} = check_infer_term_sort(v_57, v_58, v_12, v_13, v_4, occ_v_23)
           +v_65 = v_63
           v_67 = v_62
           {ArenaResult{v_67, v_65} : ArenaResult<Inference>}
@@ -3055,27 +3566,27 @@ def infer_all_domain(v_1: ArenaStore, v_3: Inference, v_4: Ast.Quantity, v_6: St
       v_72 = v_70
       {ArenaResult{v_1, InferenceFailure{v_72}} : ArenaResult<Inference>}
 
-def infer_let_values(v_20034949: ArenaStore, v_2: Maybe<&2, Diagnostic>, v_5: IR.Names, v_7: IR.Words, v_8: U32, v_9: Ast.SourceSpan, v_12: List<&2, Binding>, v_13: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
+def infer_let_values(v_20034949: ArenaStore, v_2: Maybe<&2, Checked.Diagnostic>, v_5: IR.Names, v_7: IR.Words, v_8: U32, v_9: Ast.SourceSpan, v_12: List<&2, Binding>, v_13: Scope.ArenaGlobalScope, local_env: List<&2, Binding>, local_term: U32) -> ArenaResult<Inference>:
   match v_2:
     case Some{+v_20034950}:
       v_16 = v_20034950
       {ArenaResult{v_20034949, InferenceFailure{v_16}} : ArenaResult<Inference>}
     case None{}:
-      ArenaResult{v_20034951, +v_20034952} = infer_let_lengths(v_20034949, Nat.is_eq(arena_names_length(v_5), arena_words_length(v_7)), v_7, v_8, v_9, v_12, v_13)
+      ArenaResult{v_20034951, +v_20034952} = infer_let_lengths(v_20034949, Nat.is_eq(arena_names_length(v_5), arena_words_length(v_7)), v_7, v_8, v_9, v_12, v_13, local_env, local_term)
       {ArenaResult{v_20034951, v_20034952} : ArenaResult<Inference>}
 
-def infer_let_validated(v_20034953: ArenaStore, v_2: Maybe<&2, Diagnostic>, v_4: IR.Words, v_5: U32, v_6: Ast.SourceSpan, v_9: List<&2, Binding>, v_10: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
-  match v_2:
-    case None{}:
-      ArenaResult{v_20034954, +v_20034955} = arena_words_reverse(v_20034953, v_4)
-      ArenaResult{v_20034956, +v_20034957} = substitute_many(v_20034954, v_20034955, v_5)
-      ArenaResult{v_20034958, +v_20034959} = infer(v_20034956, v_20034957, v_9, v_10)
-      {ArenaResult{v_20034958, v_20034959} : ArenaResult<Inference>}
-    case Some{+v_20034960}:
-      v_15 = v_20034960
-      {ArenaResult{v_20034953, InferenceFailure{v_15}} : ArenaResult<Inference>}
+def infer_let_validated(store: ArenaStore, values: ScrutineeTyping, terms: IR.Words, body: U32, span: Ast.SourceSpan, env: List<&2, Binding>, globals: Scope.ArenaGlobalScope, +local_env: List<&2, Binding>, local_term: U32) -> ArenaResult<Inference>:
+  match values:
+    case ScrutineeTypes{_, +occurrences}:
+      match install_local_values(local_env, reverse_occurrences(occurrences, Nil{})):
+        case Some{+checked_env}:
+          ArenaResult{store, result} = infer(store, body, checked_env, globals)
+          local_body_inferred(store, result, local_term, occurrences, local_bindings(List.length(&2, IR.Occurrence, occurrences), checked_env, Nil{}), None{})
+        case None{}:
+          {ArenaResult{store, fail(span, "invalid checked let environment", "one checked binding per value", "an invalid internal local environment")} : ArenaResult<Inference>}
+    case ScrutineeTypeFailure{diagnostic}: {ArenaResult{store, InferenceFailure{diagnostic}} : ArenaResult<Inference>}
 
-def infer_let_lengths(v_20034961: ArenaStore, v_1: Bool, v_3: IR.Words, v_4: U32, v_5: Ast.SourceSpan, v_8: List<&2, Binding>, v_9: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
+def infer_let_lengths(v_20034961: ArenaStore, v_1: Bool, v_3: IR.Words, v_4: U32, v_5: Ast.SourceSpan, v_8: List<&2, Binding>, v_9: Scope.ArenaGlobalScope, local_env: List<&2, Binding>, local_term: U32) -> ArenaResult<Inference>:
   +v_20034964 = v_1
   match v_20034964:
     case False{}:
@@ -3083,13 +3594,13 @@ def infer_let_lengths(v_20034961: ArenaStore, v_1: Bool, v_3: IR.Words, v_4: U32
       v_20034963 = v_20034961
       {ArenaResult{v_20034963, v_20034962} : ArenaResult<Inference>}
     case True{}:
-      ArenaResult{v_20034965, +v_20034966} = validate_terms(v_20034961, v_3, v_8, v_9)
-      ArenaResult{v_20034967, +v_20034968} = infer_let_validated(v_20034965, v_20034966, v_3, v_4, v_5, v_8, v_9)
+      ArenaResult{v_20034965, +v_20034966} = infer_scrutinee_types(v_20034961, v_3, v_8, v_9)
+      ArenaResult{v_20034967, +v_20034968} = infer_let_validated(v_20034965, v_20034966, v_3, v_4, v_5, v_8, v_9, local_env, local_term)
       +v_20034962 = v_20034968
       v_20034963 = v_20034967
       {ArenaResult{v_20034963, v_20034962} : ArenaResult<Inference>}
 
-def infer(v_1: ArenaStore, v_3: U32, v_6: List<&2, Binding>, v_7: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
+def infer_raw(v_1: ArenaStore, v_3: U32, v_6: List<&2, Binding>, v_7: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
   ArenaResult{v_14, +v_15} = arena_get_node(v_1, v_3)
   match v_15:
     case Arena.TermString{chars, names, span}:
@@ -3158,11 +3669,11 @@ def infer(v_1: ArenaStore, v_3: U32, v_6: List<&2, Binding>, v_7: Scope.ArenaGlo
       {ArenaResult{v_196, v_197} : ArenaResult<Inference>}
     case Arena.TermQuantity{+v_200, +v_201}:
       ArenaResult{v_205, +v_206} = arena_put_node(v_14, Arena.TermQuant{})
-      {ArenaResult{v_205, Inferred{v_3, v_206}} : ArenaResult<Inference>}
+      {ArenaResult{v_205, Inferred{v_3, v_206, typed_leaf(v_3, v_206)}} : ArenaResult<Inference>}
     case Arena.TermQuant{}:
       ArenaResult{v_210, +v_211} = arena_put_node(v_14, Arena.TermQuantity{Ast.QOne{}, Ast.SpanOf{"", 0n, 0n}})
       ArenaResult{v_215, +v_216} = arena_put_node(v_210, Arena.TermType{v_211, Ast.SpanOf{"", 0n, 0n}})
-      {ArenaResult{v_215, Inferred{v_3, v_216}} : ArenaResult<Inference>}
+      {ArenaResult{v_215, Inferred{v_3, v_216, typed_leaf(v_3, v_216)}} : ArenaResult<Inference>}
     case Arena.TermMin{+v_220, +v_221, +v_222}:
       v_224 = v_220
       v_226 = v_221
@@ -3212,7 +3723,7 @@ def infer(v_1: ArenaStore, v_3: U32, v_6: List<&2, Binding>, v_7: Scope.ArenaGlo
       v_381 = arena_names_length(v_363)
       ArenaResult{v_385, +v_386} = binder_usage_map(v_375, v_381, v_369, v_378, v_7, None{}, False{})
       ArenaResult{v_390, +v_391} = check_local_quantity_map(v_385, v_363, v_365, v_386, v_381, v_371)
-      ArenaResult{v_395, +v_396} = infer_let_values(v_390, v_391, v_363, v_367, v_369, v_371, v_6, v_7)
+      ArenaResult{v_395, +v_396} = infer_let_values(v_390, v_391, v_363, v_367, v_369, v_371, v_6, v_7, v_378, v_3)
       {ArenaResult{v_395, v_396} : ArenaResult<Inference>}
     case Arena.BodyLocal{+v_404, +v_405, +v_406, +v_407, +v_408, +v_409, +v_410}:
       +v_412 = IR.Words{v_404, v_405}
@@ -3664,19 +4175,19 @@ def mat_branch_goal(v_20035619: ArenaStore, v_0: U32, v_1: U32, v_3: String, v_5
   ArenaResult{v_20035622, +v_20035623} = mat_branch_goal_view(v_20035620, v_20035621, v_1, v_3, v_5, v_7, v_8, v_9)
   {ArenaResult{v_20035622, v_20035623} : ArenaResult<U32>}
 
-def check_match_default_result(v_1: Inference, v_2: U32, v_3: U32) -> Inference:
+def check_match_default_result(v_1: Inference, v_2: U32, v_3: U32, quantity: Ast.Quantity, head: IR.Occurrence) -> Inference:
   match v_1:
-    case Inferred{+v_20035624, +v_20035625}:
-      Inferred{v_2, v_3}
+    case Inferred{+v_20035624, +v_20035625, +occ_v_20035624}:
+      Inferred{v_2, v_3, IR.TypedOccurrence{v_2, v_3, Some{quantity}, None{}, Nil{}, head <> occ_v_20035624 <> Nil{}}}
     case InferenceFailure{+v_20035626}:
       v_10 = v_20035626
       InferenceFailure{v_10}
 
-def check_match_head_result(v_1: ArenaStore, v_3: Inference, v_5: U32, v_7: U32, v_9: U32, v_11: U32, v_14: List<&2, Binding>, v_15: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
+def check_match_head_result(v_1: ArenaStore, v_3: Inference, v_5: U32, v_7: U32, v_9: U32, v_11: U32, v_14: List<&2, Binding>, v_15: Scope.ArenaGlobalScope, quantity: Ast.Quantity) -> ArenaResult<Inference>:
   match v_3:
-    case Inferred{+v_21, +v_22}:
+    case Inferred{+v_21, +v_22, +occ_v_21}:
       ArenaResult{v_26, +v_27} = check_term(v_1, v_5, v_14, v_15, v_7)
-      v_50000117 = check_match_default_result(v_27, v_9, v_11)
+      v_50000117 = check_match_default_result(v_27, v_9, v_11, quantity, occ_v_21)
       {ArenaResult{v_26, v_50000117} : ArenaResult<Inference>}
     case InferenceFailure{+v_30}:
       v_32 = v_30
@@ -3702,7 +4213,7 @@ def check_match_applied(v_1: ArenaStore, v_4: Maybe<&2, U32>, v_6: String, v_8: 
       ArenaResult{v_84, +v_85} = arena_put_node(v_79, Arena.TermAll{v_24, v_80, v_28, v_75, v_30, v_11})
       v_87 = v_85
       ArenaResult{v_91, +v_92} = check_term(v_84, v_8, v_16, v_17, v_46)
-      ArenaResult{v_96, +v_97} = check_match_head_result(v_91, v_92, v_10, v_87, v_19, v_13, v_16, v_17)
+      ArenaResult{v_96, +v_97} = check_match_head_result(v_91, v_92, v_10, v_87, v_19, v_13, v_16, v_17, v_24)
       {ArenaResult{v_96, v_97} : ArenaResult<Inference>}
     case None{}:
       v_50000122 = fail(v_11, "constructor parameters do not match the datatype", "matching parameter telescope", "incompatible parameters")
@@ -3732,13 +4243,13 @@ def check_match_family_result(v_1: ArenaStore, v_4: Maybe<&2, String>, v_6: Stri
       v_50000123 = fail(v_11, "match branch is not a constructor", "a constructor of the scrutinee datatype", v_6)
       {ArenaResult{v_1, v_50000123} : ArenaResult<Inference>}
 
-def check_match_global(v_20035665: ArenaStore, v_0: Scope.ArenaGlobal, v_2: String, v_3: U32, v_4: U32, v_5: Ast.SourceSpan, v_6: U32, v_9: List<&2, Binding>, v_10: Scope.ArenaGlobalScope, v_11: U32, v_13: String, v_15: String, v_17: IR.Words, v_20: IR.Names, v_21: Ast.Quantity, v_23: String, v_25: Nat, v_26: U32) -> ArenaResult<Inference>:
+def check_match_global(v_20035665: ArenaStore, +v_0: Scope.ArenaGlobal, v_2: String, v_3: U32, v_4: U32, v_5: Ast.SourceSpan, v_6: U32, v_9: List<&2, Binding>, v_10: Scope.ArenaGlobalScope, v_11: U32, v_13: String, v_15: String, v_17: IR.Words, v_20: IR.Names, v_21: Ast.Quantity, v_23: String, v_25: Nat, v_26: U32) -> ArenaResult<Inference>:
   match v_0:
     case Scope.ArenaGlobal{+v_20035666, +v_20035667, +v_20035668, +v_20035669, +v_20035670, +v_20035671}:
       v_37 = v_20035669
       ArenaResult{v_20035672, +v_20035673} = constructor_family(v_20035665, v_37, v_10)
       ArenaResult{v_20035674, +v_20035675} = check_match_family_result(v_20035672, v_20035673, v_2, v_3, v_4, v_5, v_6, v_9, v_10, v_11, v_13, v_15, v_17, v_20, v_21, v_23, v_25, v_26, v_37)
-      {ArenaResult{v_20035674, v_20035675} : ArenaResult<Inference>}
+      {ArenaResult{v_20035674, inference_symbol(v_20035675, checked_symbol(v_0))} : ArenaResult<Inference>}
 
 def check_match_constructor(v_1: ArenaStore, v_3: Maybe<&2, Scope.ArenaGlobal>, v_5: String, v_7: U32, v_9: U32, v_10: Ast.SourceSpan, v_12: U32, v_15: List<&2, Binding>, v_16: Scope.ArenaGlobalScope, v_18: U32, v_20: String, v_22: String, v_23: IR.Words, v_24: IR.Names, v_25: Ast.Quantity, v_27: String, v_29: Nat, v_31: U32) -> ArenaResult<Inference>:
   match v_3:
@@ -4175,7 +4686,7 @@ def refine_binding_types(v_20036155: ArenaStore, v_2: List<&2, Binding>, v_4: Na
       +v_12 = v_20036156
       v_13 = v_20036157
       match v_12:
-        case Binding{+v_20036158, +v_20036159, +v_20036160, +v_20036161}:
+        case Binding{+v_20036158, +v_20036159, +v_20036160, +v_20036161, _}:
           v_18 = v_20036158
           v_19 = v_20036159
           ArenaResult{v_20036162, +v_20036163} = binding_type_at(v_20036155, v_12, v_7)
@@ -4183,7 +4694,7 @@ def refine_binding_types(v_20036155: ArenaStore, v_2: List<&2, Binding>, v_4: Na
           ArenaResult{v_20036164, +v_20036165} = replace_free_term(v_20036162, v_24, v_4, v_5, 0n)
           v_27 = v_20036165
           ArenaResult{v_20036166, +v_20036167} = refine_binding_types(v_20036164, v_13, v_4, v_5, v_7)
-          {ArenaResult{v_20036166, Binding{v_18, v_19, v_27, v_7} <> v_20036167} : ArenaResult<List<&2, Binding>>}
+          {ArenaResult{v_20036166, Binding{v_18, v_19, v_27, v_7, IR.NoTerm{}} <> v_20036167} : ArenaResult<List<&2, Binding>>}
 
 def refine_match_env(v_20036168: ArenaStore, v_2: Maybe<&2, Nat>, v_4: Nat, v_7: List<&2, Binding>, v_8: U32) -> ArenaResult<List<&2, Binding>>:
   match v_2:
@@ -4201,7 +4712,7 @@ def check_body_matrix_result(v_1: Bool, v_2: Ast.SourceSpan, v_3: U32, v_4: U32)
       +v_20036172 = fail(v_2, "match is not exhaustive", "all nested constructor cases", "an uncovered nested constructor")
       v_20036172
     case True{}:
-      +v_20036172 = Inferred{v_4, v_3}
+      +v_20036172 = Inferred{v_4, v_3, typed_leaf(v_4, v_3)}
       v_20036172
 
 def case_pattern_rows_cons(v_1: IR.Words, v_5: Maybe<&2, List<&2, IR.Words>>) -> Maybe<&2, List<&2, IR.Words>>:
@@ -4242,7 +4753,7 @@ def check_body_matrix_rows(v_1: ArenaStore, v_4: Maybe<&2, List<&2, IR.Words>>, 
       v_50000160 = fail(v_7, "invalid match case", "a checked case pattern", "an invalid case")
       {ArenaResult{v_1, v_50000160} : ArenaResult<Inference>}
 
-def check_body_match_type_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: IR.Words, v_8: U32, v_9: Ast.SourceSpan, v_11: U32, v_14: List<&2, Binding>, v_15: Scope.ArenaGlobalScope, v_17: U32) -> ArenaResult<Inference>:
+def check_body_match_type_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: IR.Words, v_8: U32, v_9: Ast.SourceSpan, v_11: U32, v_14: List<&2, Binding>, v_15: Scope.ArenaGlobalScope, v_17: U32, scrutinee: IR.Occurrence) -> ArenaResult<Inference>:
   ArenaResult{v_24, +v_25} = arena_get_node(v_1, v_3)
   match v_25:
     case Arena.TermAdt{+v_32, +v_33, +v_34, +v_35, +v_36, +v_37}:
@@ -4252,32 +4763,32 @@ def check_body_match_type_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: IR.Word
       ArenaResult{v_56, +v_57} = arena_words_cons(v_51, v_8, IR.Words{0, 0})
       ArenaResult{v_61, +v_62} = arena_words_cons(v_56, v_5, IR.Words{0, 0})
       ArenaResult{v_66, +v_67} = check_body_match_many_rows_result(v_61, v_52, v_57, v_62, v_6, v_9, v_11, v_14, v_15, v_17)
-      {ArenaResult{v_66, v_67} : ArenaResult<Inference>}
+      {ArenaResult{v_66, inference_prefix(v_67, scrutinee <> Nil{})} : ArenaResult<Inference>}
     case _:
       v_50000161 = fail(v_9, "match scrutinee is not a datatype", "a datatype", "a non-datatype")
       {ArenaResult{v_24, v_50000161} : ArenaResult<Inference>}
 
-def check_body_match_type(v_20036226: ArenaStore, v_0: U32, v_2: IR.Words, v_3: U32, v_4: Ast.SourceSpan, v_5: U32, v_8: List<&2, Binding>, v_9: Scope.ArenaGlobalScope, v_10: U32) -> ArenaResult<Inference>:
+def check_body_match_type(v_20036226: ArenaStore, v_0: U32, v_2: IR.Words, v_3: U32, v_4: Ast.SourceSpan, v_5: U32, v_8: List<&2, Binding>, v_9: Scope.ArenaGlobalScope, v_10: U32, scrutinee: IR.Occurrence) -> ArenaResult<Inference>:
   ArenaResult{v_20036227, +v_20036228} = whnf(v_20036226, 64n, v_3, v_9)
-  ArenaResult{v_20036229, +v_20036230} = check_body_match_type_view(v_20036227, v_20036228, v_0, v_2, v_3, v_4, v_5, v_8, v_9, v_10)
+  ArenaResult{v_20036229, +v_20036230} = check_body_match_type_view(v_20036227, v_20036228, v_0, v_2, v_3, v_4, v_5, v_8, v_9, v_10, scrutinee)
   {ArenaResult{v_20036229, v_20036230} : ArenaResult<Inference>}
 
-def infer_scrutinee_types_rest(v_20036231: ArenaStore, v_1: ScrutineeTyping, v_2: U32) -> ArenaResult<ScrutineeTyping>:
+def infer_scrutinee_types_rest(v_20036231: ArenaStore, v_1: ScrutineeTyping, v_2: U32, occurrence: IR.Occurrence) -> ArenaResult<ScrutineeTyping>:
   match v_1:
-    case ScrutineeTypes{+v_20036232}:
+    case ScrutineeTypes{+v_20036232, +scrutinee_occurrences}:
       v_5 = v_20036232
       ArenaResult{v_20036233, +v_20036234} = arena_words_cons(v_20036231, v_2, v_5)
-      {ArenaResult{v_20036233, ScrutineeTypes{v_20036234}} : ArenaResult<ScrutineeTyping>}
+      {ArenaResult{v_20036233, ScrutineeTypes{v_20036234, occurrence <> scrutinee_occurrences}} : ArenaResult<ScrutineeTyping>}
     case ScrutineeTypeFailure{+v_20036235}:
       v_7 = v_20036235
       {ArenaResult{v_20036231, ScrutineeTypeFailure{v_7}} : ArenaResult<ScrutineeTyping>}
 
 def infer_scrutinee_types_result(v_20036236: ArenaStore, v_1: Inference, v_3: IR.Words, v_6: List<&2, Binding>, v_7: Scope.ArenaGlobalScope) -> ArenaResult<ScrutineeTyping>:
   match v_1:
-    case Inferred{+v_20036237, +v_20036238}:
+    case Inferred{+v_20036237, +v_20036238, +occ_v_20036237}:
       v_12 = v_20036238
       ArenaResult{v_20036239, +v_20036240} = infer_scrutinee_types(v_20036236, v_3, v_6, v_7)
-      ArenaResult{v_20036241, +v_20036242} = infer_scrutinee_types_rest(v_20036239, v_20036240, v_12)
+      ArenaResult{v_20036241, +v_20036242} = infer_scrutinee_types_rest(v_20036239, v_20036240, v_12, occ_v_20036237)
       {ArenaResult{v_20036241, v_20036242} : ArenaResult<ScrutineeTyping>}
     case InferenceFailure{+v_20036243}:
       v_16 = v_20036243
@@ -4287,7 +4798,7 @@ def infer_scrutinee_types(v_20036244: ArenaStore, v_1: IR.Words, v_4: List<&2, B
   ArenaResult{v_20036245, +v_20036246} = arena_words_view(v_20036244, v_1)
   match v_20036246:
     case IR.WordNil{}:
-      {ArenaResult{v_20036245, ScrutineeTypes{IR.Words{0, 0}}} : ArenaResult<ScrutineeTyping>}
+      {ArenaResult{v_20036245, ScrutineeTypes{IR.Words{0, 0}, Nil{}}} : ArenaResult<ScrutineeTyping>}
     case IR.WordCons{+v_20036247, +v_20036248}:
       +v_9 = v_20036247
       v_10 = v_20036248
@@ -4563,7 +5074,7 @@ def residual_has_reachable_constructor(v_1: ArenaStore, v_3: String, v_4: IR.Wor
 
 def constructor_pattern_reachable_result(v_20036417: ArenaStore, v_1: PatternTyping, v_2: U32, v_4: String, v_5: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
   match v_1:
-    case PatternTyped{+v_20036418, +v_20036419}:
+    case PatternTyped{+v_20036418, +v_20036419, +checked_pattern}:
       {ArenaResult{v_20036417, True{}} : ArenaResult<Bool>}
     case PatternTypeFailure{+v_20036420}:
       ArenaResult{v_20036421, +v_20036422} = constructor_result_possible(v_20036417, v_2, v_4, v_5)
@@ -5176,32 +5687,32 @@ def check_pattern_fields_empty_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_8: Li
   match v_17:
     case Arena.TermAll{+v_24, +v_25, +v_26, +v_27, +v_28, +v_29}:
       v_50000175 = span_file(v_9)
-      v_50000176 = Diagnostic{v_50000175, v_9, "constructor pattern omits fields", "one pattern per constructor field", "too few field patterns"}
+      v_50000176 = Checked.Diagnostic{v_50000175, v_9, "constructor pattern omits fields", "one pattern per constructor field", "too few field patterns"}
       v_50000177 = PatternFieldsFailure{v_50000176}
       {ArenaResult{v_16, v_50000177} : ArenaResult<PatternFields>}
     case _:
-      {ArenaResult{v_16, PatternFieldsTyped{v_8, IR.Words{0, 0}, v_5}} : ArenaResult<PatternFields>}
+      {ArenaResult{v_16, PatternFieldsTyped{v_8, IR.Words{0, 0}, v_5, Nil{}, Nil{}}} : ArenaResult<PatternFields>}
 
-def check_pattern_fields_recursive_result(v_20037106: ArenaStore, v_1: PatternFields, v_3: IR.Words, v_4: U32) -> ArenaResult<PatternFields>:
+def check_pattern_fields_recursive_result(v_20037106: ArenaStore, v_1: PatternFields, v_3: IR.Words, v_4: U32, pattern: IR.CheckedPattern, binding: IR.CheckedBinding) -> ArenaResult<PatternFields>:
   match v_1:
     case PatternFieldsFailure{+v_20037107}:
       v_7 = v_20037107
       {ArenaResult{v_20037106, PatternFieldsFailure{v_7}} : ArenaResult<PatternFields>}
-    case PatternFieldsTyped{+v_20037108, +v_20037109, +v_20037110}:
+    case PatternFieldsTyped{+v_20037108, +v_20037109, +v_20037110, +checked_patterns, +checked_layout}:
       v_10 = v_20037108
       v_11 = v_20037109
       v_12 = v_20037110
       ArenaResult{v_20037111, +v_20037112} = core_pattern_list_depth(v_20037106, v_3)
       ArenaResult{v_20037113, +v_20037114} = core_shift(v_20037111, 0n, v_20037112, v_4)
       ArenaResult{v_20037115, +v_20037116} = arena_words_cons(v_20037113, v_20037114, v_11)
-      {ArenaResult{v_20037115, PatternFieldsTyped{v_10, v_20037116, v_12}} : ArenaResult<PatternFields>}
+      {ArenaResult{v_20037115, PatternFieldsTyped{v_10, v_20037116, v_12, pattern <> checked_patterns, binding <> checked_layout}} : ArenaResult<PatternFields>}
 
-def check_pattern_fields_typed_result(v_20037117: ArenaStore, v_1: PatternTyping, v_3: IR.Words, v_4: U32, v_6: Nat, v_7: Ast.Quantity, v_10: List<&2, Binding>, v_11: Scope.ArenaGlobalScope, v_12: Ast.SourceSpan) -> ArenaResult<PatternFields>:
+def check_pattern_fields_typed_result(v_20037117: ArenaStore, v_1: PatternTyping, v_3: IR.Words, v_4: U32, v_6: Nat, v_7: Ast.Quantity, v_10: List<&2, Binding>, v_11: Scope.ArenaGlobalScope, v_12: Ast.SourceSpan, field: IR.CheckedBinding) -> ArenaResult<PatternFields>:
   match v_1:
     case PatternTypeFailure{+v_20037118}:
       v_15 = v_20037118
       {ArenaResult{v_20037117, PatternFieldsFailure{v_15}} : ArenaResult<PatternFields>}
-    case PatternTyped{+v_20037119, +v_20037120}:
+    case PatternTyped{+v_20037119, +v_20037120, +checked_pattern}:
       v_18 = v_20037119
       v_19 = v_20037120
       v_23 = Nat.sub(List.length(&2, Binding, v_18), List.length(&2, Binding, v_10))
@@ -5209,7 +5720,7 @@ def check_pattern_fields_typed_result(v_20037117: ArenaStore, v_1: PatternTyping
       ArenaResult{v_20037123, +v_20037124} = core_subst(v_20037121, 0n, v_19, v_20037122)
       v_25 = v_20037124
       ArenaResult{v_20037125, +v_20037126} = check_pattern_typed_fields(v_20037123, v_3, v_25, v_6, v_7, v_18, v_11, v_12)
-      ArenaResult{v_20037127, +v_20037128} = check_pattern_fields_recursive_result(v_20037125, v_20037126, v_3, v_19)
+      ArenaResult{v_20037127, +v_20037128} = check_pattern_fields_recursive_result(v_20037125, v_20037126, v_3, v_19, checked_pattern, field)
       {ArenaResult{v_20037127, v_20037128} : ArenaResult<PatternFields>}
 
 def check_pattern_fields_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: IR.Words, v_8: Nat, v_9: Ast.Quantity, v_12: List<&2, Binding>, v_13: Scope.ArenaGlobalScope, v_14: Ast.SourceSpan) -> ArenaResult<PatternFields>:
@@ -5223,11 +5734,11 @@ def check_pattern_fields_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: IR.Words
       v_48 = Nat.add(List.length(&2, Binding, v_12), v_45)
       v_51 = constructor_field_demand(v_9, v_36)
       ArenaResult{v_55, +v_56} = check_pattern_typed(v_44, v_5, v_38, Some{v_51}, v_48, v_12, v_13)
-      ArenaResult{v_60, +v_61} = check_pattern_fields_typed_result(v_55, v_56, v_6, v_40, v_8, v_9, v_12, v_13, v_14)
+      ArenaResult{v_60, +v_61} = check_pattern_fields_typed_result(v_55, v_56, v_6, v_40, v_8, v_9, v_12, v_13, v_14, IR.CheckedBinding{v_36, v_38, List.length(&2, Binding, v_12)})
       {ArenaResult{v_60, v_61} : ArenaResult<PatternFields>}
     case _:
       v_50000178 = span_file(v_14)
-      v_50000179 = Diagnostic{v_50000178, v_14, "constructor pattern has too many fields", "a remaining constructor field", "an extra field pattern"}
+      v_50000179 = Checked.Diagnostic{v_50000178, v_14, "constructor pattern has too many fields", "a remaining constructor field", "an extra field pattern"}
       v_50000180 = PatternFieldsFailure{v_50000179}
       {ArenaResult{v_21, v_50000180} : ArenaResult<PatternFields>}
 
@@ -5250,7 +5761,7 @@ def binding_quantity_result(v_2: Maybe<&2, Binding>) -> Ast.Quantity:
     case Some{+v_20037165}:
       v_4 = v_20037165
       match v_4:
-        case Binding{+v_20037166, +v_20037167, +v_20037168, +v_20037169}:
+        case Binding{+v_20037166, +v_20037167, +v_20037168, +v_20037169, _}:
           v_10 = v_20037167
           v_10
     case None{}:
@@ -5272,13 +5783,13 @@ def check_pattern_variable_result(v_1: ArenaStore, v_3: Bool, v_5: U32, v_7: Str
   match v_21:
     case False{}:
       v_50000181 = span_file(v_16)
-      v_50000182 = Diagnostic{v_50000181, v_16, "pattern quantity exceeds constructor field quantity", "within the field quantity", "an excessive pattern quantity"}
+      v_50000182 = Checked.Diagnostic{v_50000181, v_16, "pattern quantity exceeds constructor field quantity", "within the field quantity", "an excessive pattern quantity"}
       +v_24 = PatternTypeFailure{v_50000182}
       v_26 = v_1
       {ArenaResult{v_26, v_24} : ArenaResult<PatternTyping>}
     case True{}:
       ArenaResult{v_31, +v_32} = pattern_value(v_1, v_5, v_12)
-      +v_35 = PatternTyped{Binding{v_7, v_8, v_10, List.length(&2, Binding, v_15)} <> v_15, v_32}
+      +v_35 = PatternTyped{Binding{v_7, v_8, v_10, List.length(&2, Binding, v_15), IR.NoTerm{}} <> v_15, v_32, IR.CheckedVariable{v_5, IR.CheckedBinding{v_8, v_10, List.length(&2, Binding, v_15)}}}
       v_37 = v_31
       {ArenaResult{v_37, v_35} : ArenaResult<PatternTyping>}
 
@@ -5308,7 +5819,7 @@ def check_pattern_variable_field_quantity(v_20037182: ArenaStore, v_1: Maybe<&2,
       {ArenaResult{v_20037186, v_20037187} : ArenaResult<PatternTyping>}
     case None{}:
       ArenaResult{v_20037188, +v_20037189} = pattern_value(v_20037182, v_2, v_8)
-      {ArenaResult{v_20037188, PatternTyped{Binding{v_4, v_5, v_6, List.length(&2, Binding, v_11)} <> v_11, v_20037189}} : ArenaResult<PatternTyping>}
+      {ArenaResult{v_20037188, PatternTyped{Binding{v_4, v_5, v_6, List.length(&2, Binding, v_11), IR.NoTerm{}} <> v_11, v_20037189}} : ArenaResult<PatternTyping>}
 
 def pattern_result_fits_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
   ArenaResult{v_13, +v_14} = arena_get_node(v_1, v_3)
@@ -5342,12 +5853,12 @@ def pattern_result_fits(v_20037233: ArenaStore, v_0: U32, v_1: U32, v_2: Scope.A
   ArenaResult{v_20037236, +v_20037237} = pattern_result_fits_view(v_20037234, v_0, v_20037235, v_2)
   {ArenaResult{v_20037236, v_20037237} : ArenaResult<Bool>}
 
-def check_pattern_result_view(v_1: ArenaStore, v_3: U32, v_5: String, v_6: IR.Words, v_9: List<&2, Binding>, v_11: U32, v_12: Ast.SourceSpan, v_13: Scope.ArenaGlobalScope) -> ArenaResult<PatternTyping>:
+def check_pattern_result_view(v_1: ArenaStore, v_3: U32, v_5: String, v_6: IR.Words, v_9: List<&2, Binding>, v_11: U32, v_12: Ast.SourceSpan, v_13: Scope.ArenaGlobalScope, pattern_id: U32, symbol: IR.Symbol, patterns: List<&2, IR.CheckedPattern>, layout: List<&2, IR.CheckedBinding>) -> ArenaResult<PatternTyping>:
   ArenaResult{v_20, +v_21} = arena_get_node(v_1, v_3)
   match v_21:
     case Arena.TermAll{+v_28, +v_29, +v_30, +v_31, +v_32, +v_33}:
       v_50000186 = span_file(v_12)
-      v_50000187 = Diagnostic{v_50000186, v_12, "constructor pattern omits fields", "one pattern per constructor field", "too few field patterns"}
+      v_50000187 = Checked.Diagnostic{v_50000186, v_12, "constructor pattern omits fields", "one pattern per constructor field", "too few field patterns"}
       v_50000188 = PatternTypeFailure{v_50000187}
       {ArenaResult{v_20, v_50000188} : ArenaResult<PatternTyping>}
     case _:
@@ -5356,7 +5867,7 @@ def check_pattern_result_view(v_1: ArenaStore, v_3: U32, v_5: String, v_6: IR.Wo
       match v_43:
         case False{}:
           v_50000189 = span_file(v_12)
-          v_50000190 = Diagnostic{v_50000189, v_12, "constructor parameters do not match scrutinee", "the scrutinee datatype instance", "different parameters"}
+          v_50000190 = Checked.Diagnostic{v_50000189, v_12, "constructor parameters do not match scrutinee", "the scrutinee datatype instance", "different parameters"}
           +v_46 = PatternTypeFailure{v_50000190}
           v_48 = v_40
           {ArenaResult{v_48, v_46} : ArenaResult<PatternTyping>}
@@ -5365,28 +5876,28 @@ def check_pattern_result_view(v_1: ArenaStore, v_3: U32, v_5: String, v_6: IR.Wo
           v_50000191 = arena_words_start(v_6)
           v_50000192 = arena_words_count(v_6)
           ArenaResult{v_61, +v_62} = arena_put_node(v_54, Arena.TermCtr{v_55, v_50000191, v_50000192, v_12})
-          +v_64 = PatternTyped{v_9, v_62}
+          +v_64 = PatternTyped{v_9, v_62, IR.CheckedConstructor{pattern_id, symbol, patterns, layout}}
           v_66 = v_61
           {ArenaResult{v_66, v_64} : ArenaResult<PatternTyping>}
 
-def check_pattern_fields_result(v_20037264: ArenaStore, v_1: PatternFields, v_3: String, v_4: U32, v_5: Ast.SourceSpan, v_6: Scope.ArenaGlobalScope) -> ArenaResult<PatternTyping>:
+def check_pattern_fields_result(v_20037264: ArenaStore, v_1: PatternFields, v_3: String, v_4: U32, v_5: Ast.SourceSpan, v_6: Scope.ArenaGlobalScope, pattern_id: U32, symbol: IR.Symbol) -> ArenaResult<PatternTyping>:
   match v_1:
     case PatternFieldsFailure{+v_20037265}:
       v_9 = v_20037265
       {ArenaResult{v_20037264, PatternTypeFailure{v_9}} : ArenaResult<PatternTyping>}
-    case PatternFieldsTyped{+v_20037266, +v_20037267, +v_20037268}:
+    case PatternFieldsTyped{+v_20037266, +v_20037267, +v_20037268, +checked_patterns, +checked_layout}:
       v_12 = v_20037266
       v_13 = v_20037267
       v_14 = v_20037268
       ArenaResult{v_20037269, +v_20037270} = whnf(v_20037264, 64n, v_14, v_6)
-      ArenaResult{v_20037271, +v_20037272} = check_pattern_result_view(v_20037269, v_20037270, v_3, v_13, v_12, v_4, v_5, v_6)
+      ArenaResult{v_20037271, +v_20037272} = check_pattern_result_view(v_20037269, v_20037270, v_3, v_13, v_12, v_4, v_5, v_6, pattern_id, symbol, checked_patterns, checked_layout)
       {ArenaResult{v_20037271, v_20037272} : ArenaResult<PatternTyping>}
 
-def check_pattern_applied_result(v_1: ArenaStore, v_4: Maybe<&2, U32>, v_5: IR.Words, v_7: Maybe<&2, Ast.Quantity>, v_9: String, v_11: U32, v_13: Nat, v_16: List<&2, Binding>, v_17: Ast.SourceSpan, v_18: Scope.ArenaGlobalScope) -> ArenaResult<PatternTyping>:
+def check_pattern_applied_result(v_1: ArenaStore, v_4: Maybe<&2, U32>, v_5: IR.Words, v_7: Maybe<&2, Ast.Quantity>, v_9: String, v_11: U32, v_13: Nat, v_16: List<&2, Binding>, v_17: Ast.SourceSpan, v_18: Scope.ArenaGlobalScope, pattern_id: U32, symbol: IR.Symbol) -> ArenaResult<PatternTyping>:
   match v_4:
     case None{}:
       v_50000193 = span_file(v_17)
-      v_50000194 = Diagnostic{v_50000193, v_17, "constructor parameters do not match datatype", "matching family parameters", "an incompatible constructor"}
+      v_50000194 = Checked.Diagnostic{v_50000193, v_17, "constructor parameters do not match datatype", "matching family parameters", "an incompatible constructor"}
       v_50000195 = PatternTypeFailure{v_50000194}
       {ArenaResult{v_1, v_50000195} : ArenaResult<PatternTyping>}
     case Some{+v_24}:
@@ -5395,14 +5906,14 @@ def check_pattern_applied_result(v_1: ArenaStore, v_4: Maybe<&2, U32>, v_5: IR.W
       ArenaResult{v_35, +v_36} = core_shift(v_30, 0n, v_31, v_11)
       v_38 = v_36
       ArenaResult{v_43, +v_44} = check_pattern_typed_fields(v_35, v_5, v_26, v_13, maybe_quantity_or_one(v_7), v_16, v_18, v_17)
-      ArenaResult{v_48, +v_49} = check_pattern_fields_result(v_43, v_44, v_9, v_38, v_17, v_18)
+      ArenaResult{v_48, +v_49} = check_pattern_fields_result(v_43, v_44, v_9, v_38, v_17, v_18, pattern_id, symbol)
       {ArenaResult{v_48, v_49} : ArenaResult<PatternTyping>}
 
-def check_pattern_family_result(v_1: ArenaStore, v_4: Maybe<&2, String>, v_6: String, v_7: IR.Words, v_9: U32, v_10: IR.Words, v_12: Maybe<&2, Ast.Quantity>, v_14: String, v_16: U32, v_18: Nat, v_21: List<&2, Binding>, v_22: Ast.SourceSpan, v_23: Scope.ArenaGlobalScope) -> ArenaResult<PatternTyping>:
+def check_pattern_family_result(v_1: ArenaStore, v_4: Maybe<&2, String>, v_6: String, v_7: IR.Words, v_9: U32, v_10: IR.Words, v_12: Maybe<&2, Ast.Quantity>, v_14: String, v_16: U32, v_18: Nat, v_21: List<&2, Binding>, v_22: Ast.SourceSpan, v_23: Scope.ArenaGlobalScope, pattern_id: U32, symbol: IR.Symbol) -> ArenaResult<PatternTyping>:
   match v_4:
     case None{}:
       v_50000196 = span_file(v_22)
-      v_50000197 = Diagnostic{v_50000196, v_22, "match pattern is not a constructor", "a datatype constructor", v_14}
+      v_50000197 = Checked.Diagnostic{v_50000196, v_22, "match pattern is not a constructor", "a datatype constructor", v_14}
       v_50000198 = PatternTypeFailure{v_50000197}
       {ArenaResult{v_1, v_50000198} : ArenaResult<PatternTyping>}
     case Some{+v_29}:
@@ -5411,53 +5922,53 @@ def check_pattern_family_result(v_1: ArenaStore, v_4: Maybe<&2, String>, v_6: St
       match v_34:
         case False{}:
           v_50000199 = span_file(v_22)
-          v_50000200 = Diagnostic{v_50000199, v_22, "match constructor belongs to another datatype", v_6, v_31}
+          v_50000200 = Checked.Diagnostic{v_50000199, v_22, "match constructor belongs to another datatype", v_6, v_31}
           +v_37 = PatternTypeFailure{v_50000200}
           v_39 = v_1
           {ArenaResult{v_39, v_37} : ArenaResult<PatternTyping>}
         case True{}:
           ArenaResult{v_44, +v_45} = apply_prefix(v_1, v_7, v_9)
-          ArenaResult{v_49, +v_50} = check_pattern_applied_result(v_44, v_45, v_10, v_12, v_14, v_16, v_18, v_21, v_22, v_23)
+          ArenaResult{v_49, +v_50} = check_pattern_applied_result(v_44, v_45, v_10, v_12, v_14, v_16, v_18, v_21, v_22, v_23, pattern_id, symbol)
           +v_52 = v_50
           v_54 = v_49
           {ArenaResult{v_54, v_52} : ArenaResult<PatternTyping>}
 
-def check_pattern_global(v_20037292: ArenaStore, v_0: Scope.ArenaGlobal, v_2: String, v_4: IR.Words, v_6: IR.Words, v_8: Maybe<&2, Ast.Quantity>, v_10: String, v_11: U32, v_13: Nat, v_16: List<&2, Binding>, v_17: Ast.SourceSpan, v_18: Scope.ArenaGlobalScope) -> ArenaResult<PatternTyping>:
+def check_pattern_global(v_20037292: ArenaStore, +v_0: Scope.ArenaGlobal, v_2: String, v_4: IR.Words, v_6: IR.Words, v_8: Maybe<&2, Ast.Quantity>, v_10: String, v_11: U32, v_13: Nat, v_16: List<&2, Binding>, v_17: Ast.SourceSpan, v_18: Scope.ArenaGlobalScope, pattern_id: U32) -> ArenaResult<PatternTyping>:
   match v_0:
     case Scope.ArenaGlobal{+v_20037293, +v_20037294, +v_20037295, +v_20037296, +v_20037297, +v_20037298}:
       v_29 = v_20037296
       ArenaResult{v_20037299, +v_20037300} = constructor_family(v_20037292, v_29, v_18)
-      ArenaResult{v_20037301, +v_20037302} = check_pattern_family_result(v_20037299, v_20037300, v_2, v_4, v_29, v_6, v_8, v_10, v_11, v_13, v_16, v_17, v_18)
+      ArenaResult{v_20037301, +v_20037302} = check_pattern_family_result(v_20037299, v_20037300, v_2, v_4, v_29, v_6, v_8, v_10, v_11, v_13, v_16, v_17, v_18, pattern_id, checked_symbol(v_0))
       {ArenaResult{v_20037301, v_20037302} : ArenaResult<PatternTyping>}
 
-def check_pattern_global_result(v_1: ArenaStore, v_3: Maybe<&2, Scope.ArenaGlobal>, v_5: String, v_6: IR.Words, v_7: IR.Words, v_9: Maybe<&2, Ast.Quantity>, v_11: String, v_13: U32, v_15: Nat, v_18: List<&2, Binding>, v_19: Ast.SourceSpan, v_20: Scope.ArenaGlobalScope) -> ArenaResult<PatternTyping>:
+def check_pattern_global_result(v_1: ArenaStore, v_3: Maybe<&2, Scope.ArenaGlobal>, v_5: String, v_6: IR.Words, v_7: IR.Words, v_9: Maybe<&2, Ast.Quantity>, v_11: String, v_13: U32, v_15: Nat, v_18: List<&2, Binding>, v_19: Ast.SourceSpan, v_20: Scope.ArenaGlobalScope, pattern_id: U32) -> ArenaResult<PatternTyping>:
   match v_3:
     case None{}:
       v_50000201 = span_file(v_19)
-      v_50000202 = Diagnostic{v_50000201, v_19, String.append("unknown constructor ", v_11), "a declared constructor", v_11}
+      v_50000202 = Checked.Diagnostic{v_50000201, v_19, String.append("unknown constructor ", v_11), "a declared constructor", v_11}
       v_50000203 = PatternTypeFailure{v_50000202}
       {ArenaResult{v_1, v_50000203} : ArenaResult<PatternTyping>}
     case Some{+v_26}:
       v_28 = v_26
-      ArenaResult{v_32, +v_33} = check_pattern_global(v_1, v_28, v_5, v_6, v_7, v_9, v_11, v_13, v_15, v_18, v_19, v_20)
+      ArenaResult{v_32, +v_33} = check_pattern_global(v_1, v_28, v_5, v_6, v_7, v_9, v_11, v_13, v_15, v_18, v_19, v_20, pattern_id)
       {ArenaResult{v_32, v_33} : ArenaResult<PatternTyping>}
 
-def check_pattern_exclusion_result(v_1: ArenaStore, v_3: Bool, v_5: String, v_6: IR.Names, v_8: String, v_9: IR.Words, v_10: IR.Words, v_12: Maybe<&2, Ast.Quantity>, v_14: U32, v_16: Nat, v_19: List<&2, Binding>, v_20: Ast.SourceSpan, v_21: Scope.ArenaGlobalScope) -> ArenaResult<PatternTyping>:
+def check_pattern_exclusion_result(v_1: ArenaStore, v_3: Bool, v_5: String, v_6: IR.Names, v_8: String, v_9: IR.Words, v_10: IR.Words, v_12: Maybe<&2, Ast.Quantity>, v_14: U32, v_16: Nat, v_19: List<&2, Binding>, v_20: Ast.SourceSpan, v_21: Scope.ArenaGlobalScope, pattern_id: U32) -> ArenaResult<PatternTyping>:
   +v_26 = v_3
   match v_26:
     case False{}:
-      ArenaResult{v_31, +v_32} = check_pattern_global_result(v_1, Scope.lookup_kind(v_5, Scope.GlobalConstructor{}, v_21), v_8, v_9, v_10, v_12, v_5, v_14, v_16, v_19, v_20, v_21)
+      ArenaResult{v_31, +v_32} = check_pattern_global_result(v_1, Scope.lookup_kind(v_5, Scope.GlobalConstructor{}, v_21), v_8, v_9, v_10, v_12, v_5, v_14, v_16, v_19, v_20, v_21, pattern_id)
       +v_34 = v_32
       v_36 = v_31
       {ArenaResult{v_36, v_34} : ArenaResult<PatternTyping>}
     case True{}:
       v_50000204 = span_file(v_20)
-      v_50000205 = Diagnostic{v_50000204, v_20, "constructor is excluded from this datatype goal", "a remaining constructor", v_5}
+      v_50000205 = Checked.Diagnostic{v_50000204, v_20, "constructor is excluded from this datatype goal", "a remaining constructor", v_5}
       +v_40 = PatternTypeFailure{v_50000205}
       v_42 = v_1
       {ArenaResult{v_42, v_40} : ArenaResult<PatternTyping>}
 
-def check_pattern_typed_view(v_1: ArenaStore, v_3: U32, v_4: IR.Words, v_6: Maybe<&2, Ast.Quantity>, v_8: String, v_10: U32, v_12: Nat, v_15: List<&2, Binding>, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope) -> ArenaResult<PatternTyping>:
+def check_pattern_typed_view(v_1: ArenaStore, v_3: U32, v_4: IR.Words, v_6: Maybe<&2, Ast.Quantity>, v_8: String, v_10: U32, v_12: Nat, v_15: List<&2, Binding>, v_16: Ast.SourceSpan, v_17: Scope.ArenaGlobalScope, pattern_id: U32) -> ArenaResult<PatternTyping>:
   ArenaResult{v_24, +v_25} = arena_get_node(v_1, v_3)
   match v_25:
     case Arena.TermAdt{+v_32, +v_33, +v_34, +v_35, +v_36, +v_37}:
@@ -5469,11 +5980,11 @@ def check_pattern_typed_view(v_1: ArenaStore, v_3: U32, v_4: IR.Words, v_6: Mayb
       v_52 = v_46
       v_54 = v_48
       ArenaResult{v_58, +v_59} = has_canonical_name(v_41, v_8, v_54, v_17)
-      ArenaResult{v_63, +v_64} = check_pattern_exclusion_result(v_58, v_59, v_8, v_54, v_50, v_52, v_4, v_6, v_10, v_12, v_15, v_16, v_17)
+      ArenaResult{v_63, +v_64} = check_pattern_exclusion_result(v_58, v_59, v_8, v_54, v_50, v_52, v_4, v_6, v_10, v_12, v_15, v_16, v_17, pattern_id)
       {ArenaResult{v_63, v_64} : ArenaResult<PatternTyping>}
     case _:
       v_50000206 = span_file(v_16)
-      v_50000207 = Diagnostic{v_50000206, v_16, "match scrutinee is not a datatype", "a datatype", "a non-datatype"}
+      v_50000207 = Checked.Diagnostic{v_50000206, v_16, "match scrutinee is not a datatype", "a datatype", "a non-datatype"}
       v_50000208 = PatternTypeFailure{v_50000207}
       {ArenaResult{v_24, v_50000208} : ArenaResult<PatternTyping>}
 
@@ -5496,7 +6007,7 @@ def check_pattern_typed(v_20037336: ArenaStore, v_0: U32, v_1: U32, v_3: Maybe<&
       v_24 = v_20037352
       v_25 = v_20037353
       ArenaResult{v_20037356, +v_20037357} = whnf(v_20037354, 64n, v_1, v_9)
-      ArenaResult{v_20037358, +v_20037359} = check_pattern_typed_view(v_20037356, v_20037357, v_24, v_3, v_23, v_1, v_5, v_8, v_25, v_9)
+      ArenaResult{v_20037358, +v_20037359} = check_pattern_typed_view(v_20037356, v_20037357, v_24, v_3, v_23, v_1, v_5, v_8, v_25, v_9, v_0)
       {ArenaResult{v_20037358, v_20037359} : ArenaResult<PatternTyping>}
 
 def pattern_source_span(v_20037360: ArenaStore, v_0: U32) -> ArenaResult<Ast.SourceSpan>:
@@ -5513,7 +6024,7 @@ def pattern_binding_usage_valid(v_2: Maybe<&2, Binding>, v_5: List<&2, UsageEntr
   match v_2:
     case Some{+v_20037374}:
       match v_20037374:
-        case Binding{+v_20037375, +v_20037376, +v_20037377, +v_20037378}:
+        case Binding{+v_20037375, +v_20037376, +v_20037377, +v_20037378, _}:
           v_14 = v_20037376
           quantity_fits(usage_get(v_7, v_5), v_14)
     case None{}:
@@ -5609,7 +6120,7 @@ def check_body_pattern_vector_typed(v_20037445: ArenaStore, v_1: PatternTyping, 
     case PatternTypeFailure{+v_20037446}:
       v_27 = v_20037446
       {ArenaResult{v_20037445, InferenceFailure{v_27}} : ArenaResult<Inference>}
-    case PatternTyped{+v_20037447, +v_20037448}:
+    case PatternTyped{+v_20037447, +v_20037448, +checked_pattern}:
       v_30 = v_20037447
       v_31 = v_20037448
       v_34 = maybe_shift_index(v_22, v_18)
@@ -5620,7 +6131,7 @@ def check_body_pattern_vector_typed(v_20037445: ArenaStore, v_1: PatternTyping, 
       ArenaResult{v_20037453, +v_20037454} = refine_match_env(v_20037451, v_34, v_24, v_30, v_31)
       v_43 = v_20037454
       ArenaResult{v_20037455, +v_20037456} = check_body_pattern_vector(v_20037453, v_3, v_5, v_7, v_40, v_11, v_12, v_37, v_43, v_14, Nat.sub(v_16, v_24), Nat.add(v_18, v_24), v_19)
-      {ArenaResult{v_20037455, v_20037456} : ArenaResult<Inference>}
+      {ArenaResult{v_20037455, inference_case_pattern(v_20037456, checked_pattern)} : ArenaResult<Inference>}
 
 def check_body_pattern_vector(v_1: ArenaStore, v_2: IR.Words, v_4: Nat, v_5: IR.Words, v_6: IR.Words, v_7: IR.Words, v_9: U32, v_11: U32, v_14: List<&2, Binding>, v_15: Scope.ArenaGlobalScope, v_17: Nat, v_19: Nat, v_20: Ast.SourceSpan) -> ArenaResult<Inference>:
   ArenaResult{v_27, +v_28} = arena_words_view(v_1, v_5)
@@ -5644,7 +6155,7 @@ def check_body_pattern_vector(v_1: ArenaStore, v_2: IR.Words, v_4: Nat, v_5: IR.
                   ArenaResult{v_60, +v_61} = check_term(v_47, v_9, v_14, v_15, v_11)
                   +v_63 = v_61
                   v_65 = v_60
-                  {ArenaResult{v_65, v_63} : ArenaResult<Inference>}
+                  inference_case(v_65, v_63, v_2, v_20)
             case _:
               v_50000210 = fail(v_20, "case pattern count differs from scrutinee count", "one pattern and type per scrutinee", "a mismatched pattern vector")
               {ArenaResult{v_37, v_50000210} : ArenaResult<Inference>}
@@ -5684,10 +6195,10 @@ def check_body_pattern_vector(v_1: ArenaStore, v_2: IR.Words, v_4: Nat, v_5: IR.
 
 def check_body_pattern_rows_result(v_20037502: ArenaStore, v_1: Inference, v_3: IR.Words, v_5: IR.Words, v_7: IR.Words, v_9: IR.Words, v_10: U32, v_11: U32, v_14: List<&2, Binding>, v_15: Scope.ArenaGlobalScope, v_16: Ast.SourceSpan, v_19: PatternRowIndex) -> ArenaResult<Inference>:
   match v_1:
-    case Inferred{+v_20037503, +v_20037504}:
+    case Inferred{+v_20037503, +v_20037504, +occ_v_20037503}:
       ArenaResult{history_store, history} = pattern_row_index_add(v_20037502, v_3, v_19)
       ArenaResult{v_20037505, +v_20037506} = check_body_pattern_rows(history_store, v_5, v_7, v_9, v_10, v_11, v_14, v_15, v_16, history)
-      {ArenaResult{v_20037505, v_20037506} : ArenaResult<Inference>}
+      {ArenaResult{v_20037505, inference_child(v_20037506, occ_v_20037503)} : ArenaResult<Inference>}
     case InferenceFailure{+v_20037507}:
       v_27 = v_20037507
       {ArenaResult{v_20037502, InferenceFailure{v_27}} : ArenaResult<Inference>}
@@ -5734,7 +6245,7 @@ def check_body_pattern_rows(v_20037538: ArenaStore, v_1: IR.Words, v_3: IR.Words
   ArenaResult{v_20037539, +v_20037540} = arena_words_view(v_20037538, v_1)
   match v_20037540:
     case IR.WordNil{}:
-      {ArenaResult{v_20037539, Inferred{v_7, v_6}} : ArenaResult<Inference>}
+      {ArenaResult{v_20037539, Inferred{v_7, v_6, typed_leaf(v_7, v_6)}} : ArenaResult<Inference>}
     case IR.WordCons{+v_20037541, +v_20037542}:
       +v_19 = v_20037541
       v_20 = v_20037542
@@ -5746,21 +6257,21 @@ def check_body_match_many_rows_result(v_20037545: ArenaStore, v_1: Inference, v_
     case InferenceFailure{+v_20037546}:
       v_17 = v_20037546
       {ArenaResult{v_20037545, InferenceFailure{v_17}} : ArenaResult<Inference>}
-    case Inferred{+v_20037547, +v_20037548}:
+    case Inferred{+v_20037547, +v_20037548, +occ_v_20037547}:
       ArenaResult{v_20037549, +v_20037550} = case_pattern_rows(v_20037545, v_7)
       ArenaResult{v_20037551, +v_20037552} = check_body_matrix_rows(v_20037549, v_20037550, v_3, v_13, v_8, v_9, v_14)
-      {ArenaResult{v_20037551, v_20037552} : ArenaResult<Inference>}
+      {ArenaResult{v_20037551, inference_keep(v_20037552, occ_v_20037547)} : ArenaResult<Inference>}
 
 def check_body_match_many_types_result(v_20037553: ArenaStore, v_1: ScrutineeTyping, v_3: IR.Words, v_5: IR.Words, v_6: Ast.SourceSpan, v_7: U32, v_10: List<&2, Binding>, v_11: Scope.ArenaGlobalScope, v_12: U32) -> ArenaResult<Inference>:
   match v_1:
     case ScrutineeTypeFailure{+v_20037554}:
       v_15 = v_20037554
       {ArenaResult{v_20037553, InferenceFailure{v_15}} : ArenaResult<Inference>}
-    case ScrutineeTypes{+v_20037555}:
+    case ScrutineeTypes{+v_20037555, +scrutinee_occurrences}:
       v_17 = v_20037555
       ArenaResult{v_20037556, +v_20037557} = check_body_pattern_rows(v_20037553, v_5, v_17, v_3, v_7, v_12, v_10, v_11, v_6, pattern_row_index_empty())
       ArenaResult{v_20037558, +v_20037559} = check_body_match_many_rows_result(v_20037556, v_20037557, v_17, v_3, v_5, v_6, v_7, v_10, v_11, v_12)
-      {ArenaResult{v_20037558, v_20037559} : ArenaResult<Inference>}
+      {ArenaResult{v_20037558, inference_prefix(v_20037559, scrutinee_occurrences)} : ArenaResult<Inference>}
 
 def check_body_match_many(v_20037560: ArenaStore, v_1: IR.Words, v_3: IR.Words, v_4: Ast.SourceSpan, v_5: U32, v_8: List<&2, Binding>, v_9: Scope.ArenaGlobalScope, v_10: U32) -> ArenaResult<Inference>:
   ArenaResult{v_20037561, +v_20037562} = infer_scrutinee_types(v_20037560, v_1, v_8, v_9)
@@ -5769,9 +6280,9 @@ def check_body_match_many(v_20037560: ArenaStore, v_1: IR.Words, v_3: IR.Words, 
 
 def check_body_match_first_result(v_20037565: ArenaStore, v_1: Inference, v_2: U32, v_4: IR.Words, v_5: Ast.SourceSpan, v_6: U32, v_9: List<&2, Binding>, v_10: Scope.ArenaGlobalScope, v_11: U32) -> ArenaResult<Inference>:
   match v_1:
-    case Inferred{+v_20037566, +v_20037567}:
+    case Inferred{+v_20037566, +v_20037567, +occ_v_20037566}:
       v_16 = v_20037567
-      ArenaResult{v_20037568, +v_20037569} = check_body_match_type(v_20037565, v_2, v_4, v_16, v_5, v_6, v_9, v_10, v_11)
+      ArenaResult{v_20037568, +v_20037569} = check_body_match_type(v_20037565, v_2, v_4, v_16, v_5, v_6, v_9, v_10, v_11, occ_v_20037566)
       {ArenaResult{v_20037568, v_20037569} : ArenaResult<Inference>}
     case InferenceFailure{+v_20037570}:
       v_19 = v_20037570
@@ -5810,10 +6321,10 @@ def check_body_match(v_20037588: ArenaStore, v_1: IR.Words, v_3: IR.Words, v_4: 
   ArenaResult{v_20037591, +v_20037592} = check_body_match_valid(v_20037589, v_20037590, v_1, v_3, v_4, v_5, v_8, v_9, v_10)
   {ArenaResult{v_20037591, v_20037592} : ArenaResult<Inference>}
 
-def rewrite_body_result(v_1: Inference, v_2: U32, v_3: U32) -> Inference:
+def rewrite_body_result(v_1: Inference, v_2: U32, v_3: U32, equation: IR.Occurrence, proof: IR.Occurrence) -> Inference:
   match v_1:
-    case Inferred{+v_20037593, +v_20037594}:
-      Inferred{v_2, v_3}
+    case Inferred{+v_20037593, +v_20037594, +occ_v_20037593}:
+      Inferred{v_2, v_3, IR.TypedOccurrence{v_2, v_3, None{}, None{}, Nil{}, equation <> proof <> occ_v_20037593 <> Nil{}}}
     case InferenceFailure{+v_20037595}:
       v_10 = v_20037595
       InferenceFailure{v_10}
@@ -5823,7 +6334,7 @@ def rewrite_motive_application(v_20037596: ArenaStore, v_0: U32, v_1: U32, v_2: 
   ArenaResult{v_20037599, +v_20037600} = arena_put_node(v_20037597, Arena.TermApp{v_20037598, v_2, v_3})
   {ArenaResult{v_20037599, v_20037600} : ArenaResult<U32>}
 
-def rewrite_fits_result(v_1: ArenaStore, v_3: Bool, v_5: U32, v_7: U32, v_9: U32, v_10: Ast.SourceSpan, v_12: U32, v_15: List<&2, Binding>, v_16: Scope.ArenaGlobalScope, v_18: U32) -> ArenaResult<Inference>:
+def rewrite_fits_result(v_1: ArenaStore, v_3: Bool, v_5: U32, v_7: U32, v_9: U32, v_10: Ast.SourceSpan, v_12: U32, v_15: List<&2, Binding>, v_16: Scope.ArenaGlobalScope, v_18: U32, equation: IR.Occurrence, proof: IR.Occurrence) -> ArenaResult<Inference>:
   match v_3:
     case True{}:
       ArenaResult{v_25, +v_26} = arena_put_node(v_1, Arena.TermRefl{v_10})
@@ -5831,27 +6342,27 @@ def rewrite_fits_result(v_1: ArenaStore, v_3: Bool, v_5: U32, v_7: U32, v_9: U32
       ArenaResult{v_35, +v_36} = whnf(v_30, 64n, v_31, v_16)
       v_38 = v_36
       ArenaResult{v_42, +v_43} = check_term(v_35, v_9, v_15, v_16, v_38)
-      v_50000220 = rewrite_body_result(v_43, v_18, v_12)
+      v_50000220 = rewrite_body_result(v_43, v_18, v_12, equation, proof)
       {ArenaResult{v_42, v_50000220} : ArenaResult<Inference>}
     case False{}:
       v_50000221 = fail(v_10, "rewrite result does not fit the goal", "the expected type", "an incompatible rewritten type")
       {ArenaResult{v_1, v_50000221} : ArenaResult<Inference>}
 
-def rewrite_proof_result(v_20037610: ArenaStore, v_1: Inference, v_2: U32, v_3: U32, v_4: U32, v_5: U32, v_6: Ast.SourceSpan, v_7: U32, v_10: List<&2, Binding>, v_11: Scope.ArenaGlobalScope, v_12: U32) -> ArenaResult<Inference>:
+def rewrite_proof_result(v_20037610: ArenaStore, v_1: Inference, v_2: U32, v_3: U32, v_4: U32, v_5: U32, v_6: Ast.SourceSpan, v_7: U32, v_10: List<&2, Binding>, v_11: Scope.ArenaGlobalScope, v_12: U32, equation: IR.Occurrence) -> ArenaResult<Inference>:
   match v_1:
-    case Inferred{+v_20037611, +v_20037612}:
+    case Inferred{+v_20037611, +v_20037612, +occ_v_20037611}:
       v_16 = v_20037611
       ArenaResult{v_20037613, +v_20037614} = rewrite_motive_application(v_20037610, v_16, v_2, v_4, v_6)
       ArenaResult{v_20037615, +v_20037616} = whnf(v_20037613, 64n, v_20037614, v_11)
       v_21 = v_20037616
       ArenaResult{v_20037617, +v_20037618} = fits_term(v_20037615, v_21, v_7, v_11)
-      ArenaResult{v_20037619, +v_20037620} = rewrite_fits_result(v_20037617, v_20037618, v_3, v_16, v_5, v_6, v_7, v_10, v_11, v_12)
+      ArenaResult{v_20037619, +v_20037620} = rewrite_fits_result(v_20037617, v_20037618, v_3, v_16, v_5, v_6, v_7, v_10, v_11, v_12, equation, occ_v_20037611)
       {ArenaResult{v_20037619, v_20037620} : ArenaResult<Inference>}
     case InferenceFailure{+v_20037621}:
       v_25 = v_20037621
       {ArenaResult{v_20037610, InferenceFailure{v_25}} : ArenaResult<Inference>}
 
-def rewrite_equation_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_7: U32, v_9: U32, v_10: Ast.SourceSpan, v_12: U32, v_15: List<&2, Binding>, v_16: Scope.ArenaGlobalScope, v_18: U32) -> ArenaResult<Inference>:
+def rewrite_equation_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_7: U32, v_9: U32, v_10: Ast.SourceSpan, v_12: U32, v_15: List<&2, Binding>, v_16: Scope.ArenaGlobalScope, v_18: U32, equation: IR.Occurrence) -> ArenaResult<Inference>:
   ArenaResult{v_25, +v_26} = arena_get_node(v_1, v_3)
   match v_26:
     case Arena.TermEqual{+v_31, +v_32, +v_33, +v_34}:
@@ -5876,7 +6387,7 @@ def rewrite_equation_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_7: U32, v_9: U3
       ArenaResult{v_104, +v_105} = arena_put_node(v_99, Arena.TermAll{Ast.QOne{}, v_100, 0n, v_40, v_95, v_10})
       v_107 = v_105
       ArenaResult{v_111, +v_112} = check_term(v_104, v_7, v_15, v_16, v_107)
-      ArenaResult{v_116, +v_117} = rewrite_proof_result(v_111, v_112, v_38, v_36, v_5, v_9, v_10, v_12, v_15, v_16, v_18)
+      ArenaResult{v_116, +v_117} = rewrite_proof_result(v_111, v_112, v_38, v_36, v_5, v_9, v_10, v_12, v_15, v_16, v_18, equation)
       {ArenaResult{v_116, v_117} : ArenaResult<Inference>}
     case _:
       v_50000222 = fail(v_10, "rewrite evidence is not an equation", "an equation {a == b : T}", "a non-equation")
@@ -5884,11 +6395,11 @@ def rewrite_equation_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_7: U32, v_9: U3
 
 def rewrite_equation_result(v_20037660: ArenaStore, v_1: Inference, v_2: U32, v_3: U32, v_4: Ast.SourceSpan, v_5: U32, v_8: List<&2, Binding>, v_9: Scope.ArenaGlobalScope, v_10: U32) -> ArenaResult<Inference>:
   match v_1:
-    case Inferred{+v_20037661, +v_20037662}:
+    case Inferred{+v_20037661, +v_20037662, +occ_v_20037661}:
       v_14 = v_20037661
       v_15 = v_20037662
       ArenaResult{v_20037663, +v_20037664} = whnf(v_20037660, 64n, v_15, v_9)
-      ArenaResult{v_20037665, +v_20037666} = rewrite_equation_view(v_20037663, v_20037664, v_14, v_2, v_3, v_4, v_5, v_8, v_9, v_10)
+      ArenaResult{v_20037665, +v_20037666} = rewrite_equation_view(v_20037663, v_20037664, v_14, v_2, v_3, v_4, v_5, v_8, v_9, v_10, occ_v_20037661)
       {ArenaResult{v_20037665, v_20037666} : ArenaResult<Inference>}
     case InferenceFailure{+v_20037667}:
       v_19 = v_20037667
@@ -5947,7 +6458,7 @@ def promotion_domain_valid(v_20037683: ArenaStore, v_0: U32, v_1: Ast.SourceSpan
 
 def promotion_domain_inference(v_20037688: ArenaStore, v_1: Inference, v_2: U32, v_3: Ast.SourceSpan, v_6: List<&2, Binding>, v_7: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
   match v_1:
-    case Inferred{+v_20037689, +v_20037690}:
+    case Inferred{+v_20037689, +v_20037690, +occ_v_20037689}:
       ArenaResult{v_20037691, +v_20037692} = promotion_domain_valid_result(v_20037688, v_1, v_3, v_7)
       {ArenaResult{v_20037691, v_20037692} : ArenaResult<Bool>}
     case InferenceFailure{+v_20037693}:
@@ -5958,7 +6469,7 @@ def promotion_domain_inference(v_20037688: ArenaStore, v_1: Inference, v_2: U32,
 
 def promotion_domain_valid_result(v_1: ArenaStore, v_3: Inference, v_4: Ast.SourceSpan, v_5: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:
   match v_3:
-    case Inferred{+v_11, +v_12}:
+    case Inferred{+v_11, +v_12, +occ_v_11}:
       v_14 = v_12
       v_50000223 = domain_quantity(Ast.QMany{}, v_5)
       ArenaResult{v_19, +v_20} = arena_put_node(v_1, Arena.TermQuantity{v_50000223, v_4})
@@ -5971,7 +6482,7 @@ def promotion_domain_valid_result(v_1: ArenaStore, v_3: Inference, v_4: Ast.Sour
 def check_lambda_domain_result(v_1: ArenaStore, v_3: Bool, +v_5: Maybe<&2, Ast.Quantity>, +v_7: String, +v_9: U32, +v_10: Ast.Quantity, +v_12: U32, +v_14: U32, +v_15: Ast.SourceSpan, +v_17: U32, +v_20: List<&2, Binding>, +v_21: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
   match v_3:
     case True{}:
-      ArenaResult{v_29, +v_30} = check_term(v_1, v_9, Binding{v_7, v_10, v_12, List.length(&2, Binding, v_20)} <> v_20, v_21, v_14)
+      ArenaResult{v_29, +v_30} = check_term(v_1, v_9, Binding{v_7, v_10, v_12, List.length(&2, Binding, v_20), IR.NoTerm{}} <> v_20, v_21, v_14)
       ArenaResult{v_34, +v_35} = check_lambda_body_result(v_29, v_30, v_5, v_7, v_9, v_10, v_12, v_14, v_15, v_17, v_20, v_21)
       {ArenaResult{v_34, v_35} : ArenaResult<Inference>}
     case False{}:
@@ -5985,7 +6496,7 @@ def check_lambda_promotes_result(v_20037715: ArenaStore, v_1: Bool, +v_3: Maybe<
       ArenaResult{v_20037718, +v_20037719} = check_lambda_domain_result(v_20037716, v_20037717, v_3, v_5, v_6, v_7, v_8, v_9, v_10, v_11, v_14, v_15)
       {ArenaResult{v_20037718, v_20037719} : ArenaResult<Inference>}
     case False{}:
-      ArenaResult{v_20037720, +v_20037721} = check_term(v_20037715, v_6, Binding{v_5, v_7, v_8, List.length(&2, Binding, v_14)} <> v_14, v_15, v_9)
+      ArenaResult{v_20037720, +v_20037721} = check_term(v_20037715, v_6, Binding{v_5, v_7, v_8, List.length(&2, Binding, v_14), IR.NoTerm{}} <> v_14, v_15, v_9)
       ArenaResult{v_20037722, +v_20037723} = check_lambda_body_result(v_20037720, v_20037721, v_3, v_5, v_6, v_7, v_8, v_9, v_10, v_11, v_14, v_15)
       {ArenaResult{v_20037722, v_20037723} : ArenaResult<Inference>}
 
@@ -6003,7 +6514,7 @@ def check_lambda_body(v_20037728: ArenaStore, v_1: Maybe<&2, Ast.Quantity>, v_3:
   ArenaResult{v_20037729, +v_20037730} = check_lambda_quantity_result(v_20037728, lambda_quantity(v_1, v_5), v_1, v_3, v_4, v_6, v_7, v_8, v_5, v_9, v_12, v_13)
   {ArenaResult{v_20037729, v_20037730} : ArenaResult<Inference>}
 
-def check_lambda_body_use(v_20037731: ArenaStore, v_1: Bool, v_2: U32, v_4: Maybe<&2, Ast.Quantity>, v_6: String, v_7: Ast.SourceSpan, v_8: U32) -> ArenaResult<Inference>:
+def check_lambda_body_use(v_20037731: ArenaStore, v_1: Bool, v_2: U32, +v_4: Ast.Quantity, v_6: String, v_7: Ast.SourceSpan, +v_8: U32, domain: U32, body: IR.Occurrence, depth: Nat) -> ArenaResult<Inference>:
   +v_20037734 = v_1
   match v_20037734:
     case False{}:
@@ -6012,8 +6523,8 @@ def check_lambda_body_use(v_20037731: ArenaStore, v_1: Bool, v_2: U32, v_4: Mayb
       {ArenaResult{v_20037733, v_20037732} : ArenaResult<Inference>}
     case True{}:
       ArenaResult{v_20037735, +v_20037736} = arena_name(v_20037731, v_6)
-      ArenaResult{v_20037737, +v_20037738} = arena_put_node(v_20037735, Arena.TermLam{v_4, v_20037736, 0n, v_2, v_7})
-      +v_20037732 = Inferred{v_20037738, v_8}
+      ArenaResult{v_20037737, +v_20037738} = arena_put_node(v_20037735, Arena.TermLam{Some{v_4}, v_20037736, 0n, v_2, v_7})
+      +v_20037732 = Inferred{v_20037738, v_8, IR.TypedOccurrence{v_20037738, v_8, Some{v_4}, None{}, IR.CheckedBinding{v_4, domain, depth} <> Nil{}, body <> Nil{}}}
       v_20037733 = v_20037737
       {ArenaResult{v_20037733, v_20037732} : ArenaResult<Inference>}
 
@@ -6028,10 +6539,10 @@ def lambda_usage_valid(v_1: ArenaStore, v_2: Ast.Quantity, v_4: U32, v_7: List<&
 
 def check_lambda_body_result(v_20037743: ArenaStore, v_1: Inference, v_3: Maybe<&2, Ast.Quantity>, v_5: String, v_6: U32, v_7: Ast.Quantity, v_8: U32, v_9: U32, v_10: Ast.SourceSpan, v_11: U32, v_14: List<&2, Binding>, v_15: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
   match v_1:
-    case Inferred{+v_20037744, +v_20037745}:
+    case Inferred{+v_20037744, +v_20037745, +occ_v_20037744}:
       v_19 = v_20037744
-      ArenaResult{v_20037746, +v_20037747} = lambda_usage_valid(v_20037743, v_7, v_6, Binding{v_5, v_7, v_8, List.length(&2, Binding, v_14)} <> v_14, v_15, v_9)
-      ArenaResult{v_20037748, +v_20037749} = check_lambda_body_use(v_20037746, v_20037747, v_19, v_3, v_5, v_10, v_11)
+      ArenaResult{v_20037746, +v_20037747} = lambda_usage_valid(v_20037743, v_7, v_6, Binding{v_5, v_7, v_8, List.length(&2, Binding, v_14), IR.NoTerm{}} <> v_14, v_15, v_9)
+      ArenaResult{v_20037748, +v_20037749} = check_lambda_body_use(v_20037746, v_20037747, v_19, v_7, v_5, v_10, v_11, v_8, occ_v_20037744, List.length(&2, Binding, v_14))
       {ArenaResult{v_20037748, v_20037749} : ArenaResult<Inference>}
     case InferenceFailure{+v_20037750}:
       v_25 = v_20037750
@@ -6060,13 +6571,13 @@ def check_term_constructor_apply(v_1: ArenaStore, v_4: Maybe<&2, U32>, v_6: Stri
       v_50000228 = fail(v_8, "constructor parameter telescope does not match datatype", "constructor parameters", "an incompatible telescope")
       {ArenaResult{v_1, v_50000228} : ArenaResult<Inference>}
 
-def check_term_constructor_global(v_20037774: ArenaStore, v_0: Scope.ArenaGlobal, v_2: String, v_4: IR.Words, v_5: Ast.SourceSpan, v_7: IR.Words, v_8: U32, v_11: List<&2, Binding>, v_12: Scope.ArenaGlobalScope, v_13: U32, v_14: U32) -> ArenaResult<Inference>:
+def check_term_constructor_global(v_20037774: ArenaStore, +v_0: Scope.ArenaGlobal, v_2: String, v_4: IR.Words, v_5: Ast.SourceSpan, v_7: IR.Words, v_8: U32, v_11: List<&2, Binding>, v_12: Scope.ArenaGlobalScope, v_13: U32, v_14: U32) -> ArenaResult<Inference>:
   match v_0:
     case Scope.ArenaGlobal{+v_20037775, +v_20037776, +v_20037777, +v_20037778, +v_20037779, +v_20037780}:
       v_25 = v_20037778
       ArenaResult{v_20037781, +v_20037782} = apply_prefix(v_20037774, v_7, v_25)
       ArenaResult{v_20037783, +v_20037784} = check_term_constructor_apply(v_20037781, v_20037782, v_2, v_4, v_5, v_7, v_8, v_11, v_12, v_13, v_14)
-      {ArenaResult{v_20037783, v_20037784} : ArenaResult<Inference>}
+      {ArenaResult{v_20037783, inference_symbol(v_20037784, checked_symbol(v_0))} : ArenaResult<Inference>}
 
 def check_term_constructor_global_result(v_1: ArenaStore, v_3: Maybe<&2, Scope.ArenaGlobal>, v_5: String, v_6: IR.Words, v_7: Ast.SourceSpan, v_8: IR.Words, v_10: U32, v_13: List<&2, Binding>, v_14: Scope.ArenaGlobalScope, v_16: U32, v_18: U32) -> ArenaResult<Inference>:
   match v_3:
@@ -6286,7 +6797,7 @@ def scalar_schema_9(store: ArenaStore, id: U32, +ns: String, +globals: Scope.Are
       match Bool.and(U32.is_eq(args_count, 1), U32.is_eq(refs_count, 0)):
         case True{}:
           ArenaResult{store, +valid_0} = scalar_schema_name(store, key_id, ns, globals, "Word.Con", True{})
-          ArenaResult{store, +item_0} = arena_get_word(store, arena_range_index(args_start, 0))
+          ArenaResult{store, +item_0} = arena_get_word(store, IR.arena_range_index(args_start, 0))
           ArenaResult{store, +valid_1} = scalar_schema_10(store, item_0, ns, globals)
           {ArenaResult{store, Bool.and(valid_0, valid_1)} : ArenaResult<Bool>}
         case False{}: {ArenaResult{store, False{}} : ArenaResult<Bool>}
@@ -6357,7 +6868,7 @@ def scalar_schema_18(store: ArenaStore, id: U32, +ns: String, +globals: Scope.Ar
       match Bool.and(U32.is_eq(args_count, 1), U32.is_eq(refs_count, 0)):
         case True{}:
           ArenaResult{store, +valid_0} = scalar_schema_name(store, key_id, ns, globals, "Word.Con", True{})
-          ArenaResult{store, +item_0} = arena_get_word(store, arena_range_index(args_start, 0))
+          ArenaResult{store, +item_0} = arena_get_word(store, IR.arena_range_index(args_start, 0))
           ArenaResult{store, +valid_1} = scalar_schema_19(store, item_0, ns, globals)
           {ArenaResult{store, Bool.and(valid_0, valid_1)} : ArenaResult<Bool>}
         case False{}: {ArenaResult{store, False{}} : ArenaResult<Bool>}
@@ -6452,7 +6963,7 @@ def scalar_schema_24(store: ArenaStore, id: U32, +ns: String, +globals: Scope.Ar
       match U32.is_eq(patterns_count, 1):
         case True{}:
           ArenaResult{store, +valid_0} = scalar_schema_25(store, body_id, ns, globals)
-          ArenaResult{store, +item_0} = arena_get_word(store, arena_range_index(patterns_start, 0))
+          ArenaResult{store, +item_0} = arena_get_word(store, IR.arena_range_index(patterns_start, 0))
           ArenaResult{store, +valid_1} = scalar_schema_27(store, item_0, ns, globals)
           {ArenaResult{store, Bool.and(valid_0, valid_1)} : ArenaResult<Bool>}
         case False{}: {ArenaResult{store, False{}} : ArenaResult<Bool>}
@@ -6473,7 +6984,7 @@ def scalar_schema_30(store: ArenaStore, id: U32, +ns: String, +globals: Scope.Ar
       match U32.is_eq(args_count, 1):
         case True{}:
           ArenaResult{store, +valid_0} = scalar_schema_31(store, head_id, ns, globals)
-          ArenaResult{store, +item_0} = arena_get_word(store, arena_range_index(args_start, 0))
+          ArenaResult{store, +item_0} = arena_get_word(store, IR.arena_range_index(args_start, 0))
           ArenaResult{store, +valid_1} = scalar_schema_10(store, item_0, ns, globals)
           {ArenaResult{store, Bool.and(valid_0, valid_1)} : ArenaResult<Bool>}
         case False{}: {ArenaResult{store, False{}} : ArenaResult<Bool>}
@@ -6502,7 +7013,7 @@ def scalar_schema_32(store: ArenaStore, id: U32, +ns: String, +globals: Scope.Ar
       match U32.is_eq(fields_count, 1):
         case True{}:
           ArenaResult{store, +valid_0} = scalar_schema_name(store, key_id, ns, globals, "Succ", True{})
-          ArenaResult{store, +item_0} = arena_get_word(store, arena_range_index(fields_start, 0))
+          ArenaResult{store, +item_0} = arena_get_word(store, IR.arena_range_index(fields_start, 0))
           ArenaResult{store, +valid_1} = scalar_schema_33(store, item_0, ns, globals)
           {ArenaResult{store, Bool.and(valid_0, valid_1)} : ArenaResult<Bool>}
         case False{}: {ArenaResult{store, False{}} : ArenaResult<Bool>}
@@ -6515,7 +7026,7 @@ def scalar_schema_28(store: ArenaStore, id: U32, +ns: String, +globals: Scope.Ar
       match U32.is_eq(patterns_count, 1):
         case True{}:
           ArenaResult{store, +valid_0} = scalar_schema_29(store, body_id, ns, globals)
-          ArenaResult{store, +item_0} = arena_get_word(store, arena_range_index(patterns_start, 0))
+          ArenaResult{store, +item_0} = arena_get_word(store, IR.arena_range_index(patterns_start, 0))
           ArenaResult{store, +valid_1} = scalar_schema_32(store, item_0, ns, globals)
           {ArenaResult{store, Bool.and(valid_0, valid_1)} : ArenaResult<Bool>}
         case False{}: {ArenaResult{store, False{}} : ArenaResult<Bool>}
@@ -6527,11 +7038,11 @@ def scalar_schema_22(store: ArenaStore, id: U32, +ns: String, +globals: Scope.Ar
     case Arena.BodyMatch{scrutinees_start, scrutinees_count, cases_start, cases_count, _}:
       match Bool.and(U32.is_eq(scrutinees_count, 1), U32.is_eq(cases_count, 2)):
         case True{}:
-          ArenaResult{store, +item_0} = arena_get_word(store, arena_range_index(scrutinees_start, 0))
+          ArenaResult{store, +item_0} = arena_get_word(store, IR.arena_range_index(scrutinees_start, 0))
           ArenaResult{store, +valid_0} = scalar_schema_23(store, item_0, ns, globals)
-          ArenaResult{store, +item_1} = arena_get_word(store, arena_range_index(cases_start, 0))
+          ArenaResult{store, +item_1} = arena_get_word(store, IR.arena_range_index(cases_start, 0))
           ArenaResult{store, +valid_1} = scalar_schema_24(store, item_1, ns, globals)
-          ArenaResult{store, +item_2} = arena_get_word(store, arena_range_index(cases_start, 1))
+          ArenaResult{store, +item_2} = arena_get_word(store, IR.arena_range_index(cases_start, 1))
           ArenaResult{store, +valid_2} = scalar_schema_28(store, item_2, ns, globals)
           {ArenaResult{store, Bool.and(Bool.and(valid_0, valid_1), valid_2)} : ArenaResult<Bool>}
         case False{}: {ArenaResult{store, False{}} : ArenaResult<Bool>}
@@ -6731,7 +7242,7 @@ def scalar_closed_word_walk(store: ArenaStore, id: U32, +ns: String, +globals: S
               +names = scalar_literal_word_names(names, key, valid_owner)
               ArenaResult{store, +bit} = arena_get_word(store, start)
               ArenaResult{store, ScalarLiteralBit{names, valid_bit}} = scalar_closed_bit(store, bit, ns, globals, names)
-              ArenaResult{store, +tail} = arena_get_word(store, arena_range_index(start, 1))
+              ArenaResult{store, +tail} = arena_get_word(store, IR.arena_range_index(start, 1))
               ArenaResult{store, +valid_tail} = scalar_closed_word_walk(store, tail, ns, globals, rest, names)
               {ArenaResult{store, Bool.and(valid_owner, Bool.and(valid_bit, valid_tail))} : ArenaResult<Bool>}
             case False{}: {ArenaResult{store, False{}} : ArenaResult<Bool>}
@@ -6844,7 +7355,7 @@ def scalar_constructor_certificate(store: ArenaStore, goal_key: U32, goal_args: 
 
 def scalar_constructor_dispatch(store: ArenaStore, certified: Bool, name: String, fields: IR.Words, span: Ast.SourceSpan, parameters: IR.Words, exclusions: IR.Names, goal: U32, env: List<&2, Binding>, globals: Scope.ArenaGlobalScope, term: U32, view: U32) -> ArenaResult<Inference>:
   match certified:
-    case True{}: {ArenaResult{store, Inferred{term, goal}} : ArenaResult<Inference>}
+    case True{}: scalar_occurrence(store, term, goal, name, fields, globals, span)
     case False{}:
       ArenaResult{store, +excluded} = has_canonical_name(store, name, exclusions, globals)
       check_term_constructor_allowed(store, excluded, name, fields, span, parameters, exclusions, goal, env, globals, term, view)
@@ -6869,7 +7380,7 @@ def check_term_absurd_residual(v_1: Bool, v_2: U32, v_3: Ast.SourceSpan, v_4: U3
   +v_20037814 = v_1
   match v_20037814:
     case False{}:
-      +v_20037813 = Inferred{v_2, v_4}
+      +v_20037813 = Inferred{v_2, v_4, typed_leaf(v_2, v_4)}
       v_20037813
     case True{}:
       +v_20037813 = fail(v_3, "match is not exhaustive", "all remaining constructors", "an uncovered constructor")
@@ -6894,14 +7405,14 @@ def check_term_absurd_input_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: Ast.S
       v_50000233 = fail(v_6, "absurd match requires a datatype", "a datatype", "a non-datatype")
       {ArenaResult{v_16, v_50000233} : ArenaResult<Inference>}
 
-def check_term_absurd_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: Ast.SourceSpan, v_8: U32, v_9: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
+def check_term_absurd_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: Ast.SourceSpan, v_8: U32, v_9: Scope.ArenaGlobalScope, depth: Nat) -> ArenaResult<Inference>:
   ArenaResult{v_16, +v_17} = arena_get_node(v_1, v_3)
   match v_17:
     case Arena.TermAll{+v_24, +v_25, +v_26, +v_27, +v_28, +v_29}:
       v_31 = v_27
       ArenaResult{v_35, +v_36} = whnf(v_16, 64n, v_31, v_9)
       ArenaResult{v_40, +v_41} = check_term_absurd_input_view(v_35, v_36, v_5, v_6, v_8, v_9)
-      {ArenaResult{v_40, v_41} : ArenaResult<Inference>}
+      {ArenaResult{v_40, inference_formal(v_41, v_24, IR.CheckedBinding{v_24, v_27, depth})} : ArenaResult<Inference>}
     case _:
       v_50000234 = fail(v_6, "absurd match requires a function goal", "a dependent function type", "a non-function type")
       {ArenaResult{v_16, v_50000234} : ArenaResult<Inference>}
@@ -6913,7 +7424,7 @@ def check_term_refl_equal(v_1: Bool, v_2: U32, v_3: Ast.SourceSpan, v_4: U32) ->
       +v_20037857 = fail(v_3, "refl endpoints are not convertible", "equal endpoints", "unequal endpoints")
       v_20037857
     case True{}:
-      +v_20037857 = Inferred{v_2, v_4}
+      +v_20037857 = Inferred{v_2, v_4, typed_leaf(v_2, v_4)}
       v_20037857
 
 def check_term_refl_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: Ast.SourceSpan, v_8: U32, v_9: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
@@ -6931,7 +7442,7 @@ def check_term_refl_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: Ast.SourceSpa
 
 def check_term_inferred(v_20037873: ArenaStore, v_1: Inference, v_2: U32, v_3: U32, v_4: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:
   match v_1:
-    case Inferred{+v_20037874, +v_20037875}:
+    case Inferred{+v_20037874, +v_20037875, +occ_v_20037874}:
       v_8 = v_20037874
       v_9 = v_20037875
       ArenaResult{v_20037878, +v_20037879} = fits_term(v_20037873, v_9, v_2, v_4)
@@ -6943,14 +7454,14 @@ def check_term_inferred(v_20037873: ArenaStore, v_1: Inference, v_2: U32, v_3: U
           v_20037877 = v_20037881
           {ArenaResult{v_20037877, v_20037876} : ArenaResult<Inference>}
         case True{}:
-          +v_20037876 = Inferred{v_8, v_2}
+          +v_20037876 = Inferred{v_8, v_2, occurrence_retype(occ_v_20037874, v_8, v_2)}
           v_20037877 = v_20037878
           {ArenaResult{v_20037877, v_20037876} : ArenaResult<Inference>}
     case InferenceFailure{+v_20037883}:
       v_15 = v_20037883
       {ArenaResult{v_20037873, InferenceFailure{v_15}} : ArenaResult<Inference>}
 
-def check_term(v_20037884: ArenaStore, v_0: U32, v_3: List<&2, Binding>, v_4: Scope.ArenaGlobalScope, v_5: U32) -> ArenaResult<Inference>:
+def check_term_raw(v_20037884: ArenaStore, v_0: U32, v_3: List<&2, Binding>, v_4: Scope.ArenaGlobalScope, v_5: U32) -> ArenaResult<Inference>:
   ArenaResult{v_20037885, +v_20037886} = arena_get_node(v_20037884, v_0)
   match v_20037886:
     case Arena.TermHole{+v_20037889, +v_20037891}:
@@ -6965,7 +7476,7 @@ def check_term(v_20037884: ArenaStore, v_0: U32, v_3: List<&2, Binding>, v_4: Sc
           v_20037895 = v_20037892
           {ArenaResult{v_20037895, v_20037894} : ArenaResult<Inference>}
         case True{}:
-          +v_20037894 = Inferred{v_0, v_5}
+          +v_20037894 = Inferred{v_0, v_5, typed_leaf(v_0, v_5)}
           v_20037895 = v_20037892
           {ArenaResult{v_20037895, v_20037894} : ArenaResult<Inference>}
     case Arena.TermLam{+v_20037902, +v_20037903, +v_20037905, +v_20037906, +v_20037907}:
@@ -7002,7 +7513,7 @@ def check_term(v_20037884: ArenaStore, v_0: U32, v_3: List<&2, Binding>, v_4: Sc
     case Arena.TermAbsurd{+v_20037943}:
       v_43 = v_20037943
       ArenaResult{v_20037944, +v_20037945} = whnf(v_20037885, 64n, v_5, v_4)
-      ArenaResult{v_20037946, +v_20037947} = check_term_absurd_view(v_20037944, v_20037945, v_0, v_43, v_5, v_4)
+      ArenaResult{v_20037946, +v_20037947} = check_term_absurd_view(v_20037944, v_20037945, v_0, v_43, v_5, v_4, List.length(&2, Binding, v_3))
       {ArenaResult{v_20037946, v_20037947} : ArenaResult<Inference>}
     case Arena.TermRefl{+v_20037949}:
       v_47 = v_20037949
@@ -7399,7 +7910,7 @@ def usage_unknown_type(v_20038321: ArenaStore, v_0: Ast.SourceSpan) -> ArenaResu
 
 def usage_inferred_type(v_20038326: ArenaStore, v_1: Inference, v_2: Ast.SourceSpan) -> ArenaResult<U32>:
   match v_1:
-    case Inferred{+v_20038327, +v_20038328}:
+    case Inferred{+v_20038327, +v_20038328, +occ_v_20038327}:
       v_6 = v_20038328
       {ArenaResult{v_20038326, v_6} : ArenaResult<U32>}
     case InferenceFailure{+v_20038329}:
@@ -7503,7 +8014,7 @@ def usage_let_env(v_20038403: ArenaStore, v_2: IR.Names, v_4: IR.Quantities, v_6
               v_25 = v_20038415
               ArenaResult{v_20038428, +v_20038429} = usage_value_type(v_20038422, v_28, v_9, v_13, v_15)
               v_32 = v_20038429
-              ArenaResult{v_20038430, +v_20038431} = usage_let_env(v_20038428, v_25, v_27, v_29, v_9, Binding{v_24, v_26, v_32, List.length(&2, Binding, v_9)} <> v_12, v_13, v_15)
+              ArenaResult{v_20038430, +v_20038431} = usage_let_env(v_20038428, v_25, v_27, v_29, v_9, Binding{v_24, v_26, v_32, List.length(&2, Binding, v_9), IR.NoTerm{}} <> v_12, v_13, v_15)
               {ArenaResult{v_20038430, v_20038431} : ArenaResult<List<&2, Binding>>}
             case _:
               {ArenaResult{v_20038422, v_12} : ArenaResult<List<&2, Binding>>}
@@ -7538,7 +8049,7 @@ def usage_local_env(v_20038435: ArenaStore, v_1: IR.Words, v_3: IR.Words, v_6: L
               v_26 = v_20038444
               ArenaResult{v_20038464, +v_20038465} = usage_value_type(v_20038458, v_27, v_6, v_10, v_12)
               v_31 = v_20038465
-              ArenaResult{v_20038466, +v_20038467} = usage_local_env(v_20038464, v_26, v_28, v_6, Binding{v_22, v_24, v_31, List.length(&2, Binding, v_6)} <> v_9, v_10, v_12)
+              ArenaResult{v_20038466, +v_20038467} = usage_local_env(v_20038464, v_26, v_28, v_6, Binding{v_22, v_24, v_31, List.length(&2, Binding, v_6), IR.NoTerm{}} <> v_9, v_10, v_12)
               {ArenaResult{v_20038466, v_20038467} : ArenaResult<List<&2, Binding>>}
             case _:
               {ArenaResult{v_20038458, v_9} : ArenaResult<List<&2, Binding>>}
@@ -7558,7 +8069,7 @@ def usage_pattern_env_result(v_20038487: ArenaStore, v_1: PatternTyping, v_3: IR
   match v_1:
     case PatternTypeFailure{+v_20038488}:
       {ArenaResult{v_20038487, v_10} : ArenaResult<List<&2, Binding>>}
-    case PatternTyped{+v_20038489, +v_20038490}:
+    case PatternTyped{+v_20038489, +v_20038490, +checked_pattern}:
       v_27 = v_20038489
       v_28 = v_20038490
       ArenaResult{v_20038491, +v_20038492} = replace_match_types(v_20038487, v_20, v_17, v_5, v_28)
@@ -7743,12 +8254,12 @@ def term_usage_map_lambda_quantity(v_20038645: ArenaStore, v_1: Maybe<&2, Ast.Qu
   match v_1:
     case Some{+v_20038646}:
       v_19 = v_20038646
-      ArenaResult{v_20038647, +v_20038648} = term_usage_map(v_20038645, v_4, Nat.add(v_7, 1n), Binding{v_3, v_19, v_12, List.length(&2, Binding, v_10)} <> v_10, v_11, Some{v_13}, v_15)
+      ArenaResult{v_20038647, +v_20038648} = term_usage_map(v_20038645, v_4, Nat.add(v_7, 1n), Binding{v_3, v_19, v_12, List.length(&2, Binding, v_10), IR.NoTerm{}} <> v_10, v_11, Some{v_13}, v_15)
       {ArenaResult{v_20038647, v_20038648} : ArenaResult<List<&2, UsageEntry>>}
     case None{}:
       ArenaResult{v_20038649, +v_20038650} = usage_unknown_type(v_20038645, v_5)
       v_25 = v_20038650
-      ArenaResult{v_20038651, +v_20038652} = term_usage_map(v_20038649, v_4, Nat.add(v_7, 1n), Binding{v_3, Ast.QMany{}, v_25, List.length(&2, Binding, v_10)} <> v_10, v_11, None{}, v_15)
+      ArenaResult{v_20038651, +v_20038652} = term_usage_map(v_20038649, v_4, Nat.add(v_7, 1n), Binding{v_3, Ast.QMany{}, v_25, List.length(&2, Binding, v_10), IR.NoTerm{}} <> v_10, v_11, None{}, v_15)
       {ArenaResult{v_20038651, v_20038652} : ArenaResult<List<&2, UsageEntry>>}
 
 def term_usage_map_lambda_view(v_20038653: ArenaStore, v_0: U32, v_2: Maybe<&2, Ast.Quantity>, v_4: String, v_5: U32, v_6: Ast.SourceSpan, v_8: Nat, v_11: List<&2, Binding>, v_12: Scope.ArenaGlobalScope, v_14: Bool) -> ArenaResult<List<&2, UsageEntry>>:
@@ -7763,7 +8274,7 @@ def term_usage_map_lambda_view(v_20038653: ArenaStore, v_0: U32, v_2: Maybe<&2, 
     case _:
       ArenaResult{v_20038672, +v_20038673} = usage_unknown_type(v_20038654, v_6)
       v_35 = v_20038673
-      ArenaResult{v_20038674, +v_20038675} = term_usage_map(v_20038672, v_5, Nat.add(v_8, 1n), Binding{v_4, Ast.QMany{}, v_35, List.length(&2, Binding, v_11)} <> v_11, v_12, None{}, v_14)
+      ArenaResult{v_20038674, +v_20038675} = term_usage_map(v_20038672, v_5, Nat.add(v_8, 1n), Binding{v_4, Ast.QMany{}, v_35, List.length(&2, Binding, v_11), IR.NoTerm{}} <> v_11, v_12, None{}, v_14)
       {ArenaResult{v_20038674, v_20038675} : ArenaResult<List<&2, UsageEntry>>}
 
 def term_usage_map_lambda_expected(v_20038676: ArenaStore, v_1: Maybe<&2, U32>, v_3: Maybe<&2, Ast.Quantity>, v_5: String, v_6: U32, v_7: Ast.SourceSpan, v_9: Nat, v_12: List<&2, Binding>, v_13: Scope.ArenaGlobalScope, v_15: Bool) -> ArenaResult<List<&2, UsageEntry>>:
@@ -7776,7 +8287,7 @@ def term_usage_map_lambda_expected(v_20038676: ArenaStore, v_1: Maybe<&2, U32>, 
     case None{}:
       ArenaResult{v_20038682, +v_20038683} = usage_unknown_type(v_20038676, v_7)
       v_24 = v_20038683
-      ArenaResult{v_20038684, +v_20038685} = term_usage_map(v_20038682, v_6, Nat.add(v_9, 1n), Binding{v_5, Ast.QMany{}, v_24, List.length(&2, Binding, v_12)} <> v_12, v_13, None{}, v_15)
+      ArenaResult{v_20038684, +v_20038685} = term_usage_map(v_20038682, v_6, Nat.add(v_9, 1n), Binding{v_5, Ast.QMany{}, v_24, List.length(&2, Binding, v_12), IR.NoTerm{}} <> v_12, v_13, None{}, v_15)
       {ArenaResult{v_20038684, v_20038685} : ArenaResult<List<&2, UsageEntry>>}
 
 def term_usage_map_argument_expected_view(v_20038686: ArenaStore, v_0: U32) -> ArenaResult<Maybe<&2, U32>>:
@@ -7847,7 +8358,7 @@ def term_usage_map_constructor_result(v_20038741: ArenaStore, v_1: Maybe<&2, U32
 
 def term_usage_map_scrutinee_result(v_1: ArenaStore, v_3: ScrutineeTyping, v_4: IR.Words, v_5: IR.Words, v_8: List<&2, UsageEntry>, v_10: Nat, v_13: List<&2, Binding>, v_14: Scope.ArenaGlobalScope, v_17: Maybe<&2, U32>, v_19: Bool) -> ArenaResult<List<&2, UsageEntry>>:
   match v_3:
-    case ScrutineeTypes{+v_25}:
+    case ScrutineeTypes{+v_25, +scrutinee_occurrences}:
       v_27 = v_25
       ArenaResult{v_31, +v_32} = term_usage_map_cases(v_1, v_5, v_4, v_27, v_10, v_13, v_14, v_17, v_19)
       v_50000244 = usage_merge(v_8, v_32, False{})
@@ -8304,11 +8815,11 @@ def binder_usage_map(v_20039295: ArenaStore, v_1: Nat, v_2: U32, v_5: List<&2, B
       ArenaResult{v_20039297, +v_20039298} = term_usage_map(v_20039295, v_2, 0n, v_5, v_6, v_8, v_10)
       {ArenaResult{v_20039297, v_20039298} : ArenaResult<List<&2, UsageEntry>>}
 
-def check_binder_usage_map(v_1: ArenaStore, v_2: IR.Words, v_4: Nat, v_7: List<&2, UsageEntry>) -> ArenaResult<Maybe<&2, Diagnostic>>:
+def check_binder_usage_map(v_1: ArenaStore, v_2: IR.Words, v_4: Nat, v_7: List<&2, UsageEntry>) -> ArenaResult<Maybe<&2, Checked.Diagnostic>>:
   ArenaResult{v_15, +v_16} = arena_words_view(v_1, v_2)
   match v_16:
     case IR.WordNil{}:
-      {ArenaResult{v_15, None{}} : ArenaResult<Maybe<&2, Diagnostic>>}
+      {ArenaResult{v_15, None{}} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
     case IR.WordCons{+v_19, +v_20}:
       +v_22 = v_19
       v_24 = v_20
@@ -8325,15 +8836,15 @@ def check_binder_usage_map(v_1: ArenaStore, v_2: IR.Words, v_4: Nat, v_7: List<&
           match v_58:
             case False{}:
               v_50000261 = span_file(v_52)
-              v_50000262 = Diagnostic{v_50000261, v_52, String.append("invalid use quantity for ", v_50), "within the binder quantity", "too many uses"}
+              v_50000262 = Checked.Diagnostic{v_50000261, v_52, String.append("invalid use quantity for ", v_50), "within the binder quantity", "too many uses"}
               +v_61 = Some{v_50000262}
               v_63 = v_43
-              {ArenaResult{v_63, v_61} : ArenaResult<Maybe<&2, Diagnostic>>}
+              {ArenaResult{v_63, v_61} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
             case True{}:
               ArenaResult{v_68, +v_69} = check_binder_usage_map(v_43, v_24, v_54, v_7)
               +v_71 = v_69
               v_73 = v_68
-              {ArenaResult{v_73, v_71} : ArenaResult<Maybe<&2, Diagnostic>>}
+              {ArenaResult{v_73, v_71} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
         case Arena.TemplateBinder{+v_79, +v_80, +v_81, +v_82}:
           ArenaResult{v_86, +v_87} = arena_name_text(v_28, v_79)
           +v_89 = v_87
@@ -8344,15 +8855,15 @@ def check_binder_usage_map(v_1: ArenaStore, v_2: IR.Words, v_4: Nat, v_7: List<&
           match v_99:
             case False{}:
               v_50000263 = span_file(v_93)
-              v_50000264 = Diagnostic{v_50000263, v_93, String.append("compile-time template binder used at runtime: ", v_91), "no runtime uses", "a runtime use"}
+              v_50000264 = Checked.Diagnostic{v_50000263, v_93, String.append("compile-time template binder used at runtime: ", v_91), "no runtime uses", "a runtime use"}
               +v_102 = Some{v_50000264}
               v_104 = v_86
-              {ArenaResult{v_104, v_102} : ArenaResult<Maybe<&2, Diagnostic>>}
+              {ArenaResult{v_104, v_102} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
             case True{}:
               ArenaResult{v_109, +v_110} = check_binder_usage_map(v_86, v_24, v_95, v_7)
               +v_112 = v_110
               v_114 = v_109
-              {ArenaResult{v_114, v_112} : ArenaResult<Maybe<&2, Diagnostic>>}
+              {ArenaResult{v_114, v_112} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
 
 def binders_env(v_20039331: ArenaStore, v_1: IR.Words, v_4: List<&2, Binding>) -> ArenaResult<List<&2, Binding>>:
   ArenaResult{v_20039332, +v_20039333} = arena_words_view(v_20039331, v_1)
@@ -8370,14 +8881,14 @@ def binders_env(v_20039331: ArenaStore, v_1: IR.Words, v_4: List<&2, Binding>) -
           v_16 = v_20039338
           v_17 = v_20039340
           v_19 = v_20039342
-          ArenaResult{v_20039346, +v_20039347} = binders_env(v_20039344, v_10, Binding{v_17, v_16, v_19, List.length(&2, Binding, v_4)} <> v_4)
+          ArenaResult{v_20039346, +v_20039347} = binders_env(v_20039344, v_10, Binding{v_17, v_16, v_19, List.length(&2, Binding, v_4), IR.NoTerm{}} <> v_4)
           {ArenaResult{v_20039346, v_20039347} : ArenaResult<List<&2, Binding>>}
         case Arena.TemplateBinder{+v_20039348, +v_20039350, +v_20039351, +v_20039352}:
           ArenaResult{v_20039353, +v_20039354} = arena_name_text(v_20039336, v_20039348)
           +v_20039349 = v_20039354
           v_27 = v_20039349
           v_29 = v_20039351
-          ArenaResult{v_20039355, +v_20039356} = binders_env(v_20039353, v_10, Binding{v_27, Ast.QZero{}, v_29, List.length(&2, Binding, v_4)} <> v_4)
+          ArenaResult{v_20039355, +v_20039356} = binders_env(v_20039353, v_10, Binding{v_27, Ast.QZero{}, v_29, List.length(&2, Binding, v_4), IR.NoTerm{}} <> v_4)
           {ArenaResult{v_20039355, v_20039356} : ArenaResult<List<&2, Binding>>}
 
 def binders_type(v_20039357: ArenaStore, v_1: IR.Words, v_2: U32) -> ArenaResult<U32>:
@@ -8508,22 +9019,16 @@ def apply_prefix(v_20039474: ArenaStore, v_1: IR.Words, v_2: U32) -> ArenaResult
         case _:
           {ArenaResult{v_20039479, None{}} : ArenaResult<Maybe<&2, U32>>}
 
-def check_ctr_fields_result(v_1: Inference, v_2: U32) -> Inference:
-  match v_1:
-    case Inferred{+v_20039499, +v_20039500}:
-      v_7 = v_20039500
-      Inferred{v_2, v_7}
-    case InferenceFailure{+v_20039501}:
-      v_9 = v_20039501
-      InferenceFailure{v_9}
+def check_ctr_fields_result(result: Inference, binding: IR.CheckedBinding, child: IR.Occurrence) -> Inference:
+  inference_prepend(result, binding, child)
 
-def check_ctr_fields_arg(v_1: ArenaStore, v_3: Inference, v_4: IR.Words, v_6: U32, v_8: U32, v_11: List<&2, Binding>, v_12: Scope.ArenaGlobalScope, v_14: U32, v_15: Ast.SourceSpan, v_17: U32) -> ArenaResult<Inference>:
+def check_ctr_fields_arg(v_1: ArenaStore, v_3: Inference, v_4: IR.Words, v_6: U32, v_8: U32, v_11: List<&2, Binding>, v_12: Scope.ArenaGlobalScope, v_14: U32, v_15: Ast.SourceSpan, v_17: U32, quantity: Ast.Quantity) -> ArenaResult<Inference>:
   match v_3:
-    case Inferred{+v_23, +v_24}:
+    case Inferred{+v_23, +v_24, +occ_v_23}:
       v_26 = v_23
       ArenaResult{v_30, +v_31} = core_subst(v_1, 0n, v_26, v_6)
       ArenaResult{v_35, +v_36} = check_ctr_fields(v_30, v_4, v_31, v_8, v_11, v_12, v_14, v_15, v_17)
-      v_50000265 = check_ctr_fields_result(v_36, v_14)
+      v_50000265 = check_ctr_fields_result(v_36, IR.CheckedBinding{quantity, v_24, List.length(&2, Binding, v_11)}, occ_v_23)
       {ArenaResult{v_35, v_50000265} : ArenaResult<Inference>}
     case InferenceFailure{+v_39}:
       v_41 = v_39
@@ -8536,7 +9041,7 @@ def check_ctr_fields_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: IR.Words, v_
       v_39 = v_35
       v_41 = v_36
       ArenaResult{v_45, +v_46} = check_term(v_24, v_5, v_11, v_12, v_39)
-      ArenaResult{v_50, +v_51} = check_ctr_fields_arg(v_45, v_46, v_6, v_41, v_8, v_11, v_12, v_14, v_15, v_17)
+      ArenaResult{v_50, +v_51} = check_ctr_fields_arg(v_45, v_46, v_6, v_41, v_8, v_11, v_12, v_14, v_15, v_17, v_32)
       {ArenaResult{v_50, v_51} : ArenaResult<Inference>}
     case _:
       v_50000266 = fail(v_15, "constructor has too many fields", "a remaining field", "an extra field")
@@ -8549,7 +9054,7 @@ def check_ctr_fields_fit(v_1: Bool, v_2: U32, v_3: U32, v_4: Ast.SourceSpan) -> 
       +v_20039531 = fail(v_4, "constructor result does not match expected datatype", "the expected datatype", "a different result type")
       v_20039531
     case True{}:
-      +v_20039531 = Inferred{v_3, v_2}
+      +v_20039531 = Inferred{v_3, v_2, typed_leaf(v_3, v_2)}
       v_20039531
 
 def check_ctr_fields(v_1: ArenaStore, v_2: IR.Words, v_4: U32, v_6: U32, v_9: List<&2, Binding>, v_10: Scope.ArenaGlobalScope, v_12: U32, v_13: Ast.SourceSpan, v_15: U32) -> ArenaResult<Inference>:
@@ -8566,20 +9071,20 @@ def check_ctr_fields(v_1: ArenaStore, v_2: IR.Words, v_4: U32, v_6: U32, v_9: Li
       ArenaResult{v_46, +v_47} = check_ctr_fields_view(v_41, v_42, v_35, v_37, v_6, v_9, v_10, v_12, v_13, v_15)
       {ArenaResult{v_46, v_47} : ArenaResult<Inference>}
 
-def check_live_fields_result(v_20039544: ArenaStore, v_1: Inference, v_3: IR.Words, v_4: U32, v_6: Nat, v_9: List<&2, Binding>, v_10: Scope.ArenaGlobalScope, v_12: String, v_13: Ast.Quantity, v_14: U32, v_15: Ast.SourceSpan) -> ArenaResult<Maybe<&2, Diagnostic>>:
+def check_live_fields_result(v_20039544: ArenaStore, v_1: Inference, v_3: IR.Words, v_4: U32, v_6: Nat, v_9: List<&2, Binding>, v_10: Scope.ArenaGlobalScope, v_12: String, v_13: Ast.Quantity, v_14: U32, v_15: Ast.SourceSpan) -> ArenaResult<Maybe<&2, Checked.Diagnostic>>:
   match v_1:
-    case Inferred{+v_20039545, +v_20039546}:
-      ArenaResult{v_20039547, +v_20039548} = check_live_fields(v_20039544, v_3, v_4, Nat.add(v_6, 1n), Binding{v_12, v_13, v_14, List.length(&2, Binding, v_9)} <> v_9, v_10)
-      {ArenaResult{v_20039547, v_20039548} : ArenaResult<Maybe<&2, Diagnostic>>}
+    case Inferred{+v_20039545, +v_20039546, +occ_v_20039545}:
+      ArenaResult{v_20039547, +v_20039548} = check_live_fields(v_20039544, v_3, v_4, Nat.add(v_6, 1n), Binding{v_12, v_13, v_14, List.length(&2, Binding, v_9), IR.NoTerm{}} <> v_9, v_10)
+      {ArenaResult{v_20039547, v_20039548} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
     case InferenceFailure{+v_20039549}:
       v_25 = v_20039549
-      {ArenaResult{v_20039544, Some{v_25}} : ArenaResult<Maybe<&2, Diagnostic>>}
+      {ArenaResult{v_20039544, Some{v_25}} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
 
-def check_live_fields(v_1: ArenaStore, v_2: IR.Words, v_4: U32, v_6: Nat, v_9: List<&2, Binding>, v_10: Scope.ArenaGlobalScope) -> ArenaResult<Maybe<&2, Diagnostic>>:
+def check_live_fields(v_1: ArenaStore, v_2: IR.Words, v_4: U32, v_6: Nat, v_9: List<&2, Binding>, v_10: Scope.ArenaGlobalScope) -> ArenaResult<Maybe<&2, Checked.Diagnostic>>:
   ArenaResult{v_18, +v_19} = arena_words_view(v_1, v_2)
   match v_19:
     case IR.WordNil{}:
-      {ArenaResult{v_18, None{}} : ArenaResult<Maybe<&2, Diagnostic>>}
+      {ArenaResult{v_18, None{}} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
     case IR.WordCons{+v_22, +v_23}:
       +v_25 = v_22
       v_27 = v_23
@@ -8596,16 +9101,16 @@ def check_live_fields(v_1: ArenaStore, v_2: IR.Words, v_4: U32, v_6: Nat, v_9: L
           v_64 = v_62
           ArenaResult{v_68, +v_69} = check_term(v_61, v_55, v_9, v_10, v_64)
           ArenaResult{v_73, +v_74} = check_live_fields_result(v_68, v_69, v_27, v_4, v_6, v_9, v_10, v_53, v_51, v_55, v_57)
-          {ArenaResult{v_73, v_74} : ArenaResult<Maybe<&2, Diagnostic>>}
+          {ArenaResult{v_73, v_74} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
         case Arena.TemplateBinder{+v_79, +v_80, +v_81, +v_82}:
           ArenaResult{v_86, +v_87} = arena_name_text(v_31, v_79)
           +v_89 = v_87
           v_91 = v_89
           v_93 = v_82
           v_50000268 = span_file(v_93)
-          v_50000269 = Diagnostic{v_50000268, v_93, String.append("constructor field cannot be a compile-time template binder: ", v_91), "a runtime constructor field", "a template binder"}
+          v_50000269 = Checked.Diagnostic{v_50000268, v_93, String.append("constructor field cannot be a compile-time template binder: ", v_91), "a runtime constructor field", "a template binder"}
           v_50000270 = Some{v_50000269}
-          {ArenaResult{v_86, v_50000270} : ArenaResult<Maybe<&2, Diagnostic>>}
+          {ArenaResult{v_86, v_50000270} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
 
 def live_field_goal(v_20039578: ArenaStore, v_0: Ast.Quantity, v_2: Nat, v_3: U32, v_4: Ast.SourceSpan) -> ArenaResult<U32>:
   match v_0:
@@ -8617,7 +9122,7 @@ def live_field_goal(v_20039578: ArenaStore, v_0: Ast.Quantity, v_2: Nat, v_3: U3
       ArenaResult{v_20039584, +v_20039585} = arena_put_node(v_20039582, Arena.TermType{v_20039583, v_4})
       {ArenaResult{v_20039584, v_20039585} : ArenaResult<U32>}
 
-def check_constructors_fields_result(v_1: ArenaStore, v_4: Maybe<&2, Diagnostic>, v_6: List<&2, IR.ConstructorDecl>, v_8: String, v_9: IR.Words, v_11: U32, v_13: String, v_14: Scope.ArenaGlobalScope, v_15: Scope.ArenaGlobalScope, v_16: Ast.SourceSpan, v_18: String, v_19: Ast.SourceSpan, v_21: U32) -> ArenaResult<ScopedState>:
+def check_constructors_fields_result(v_1: ArenaStore, v_4: Maybe<&2, Checked.Diagnostic>, v_6: List<&2, IR.ConstructorDecl>, v_8: String, v_9: IR.Words, v_11: U32, v_13: String, v_14: Scope.ArenaGlobalScope, v_15: Scope.ArenaGlobalScope, v_16: Ast.SourceSpan, v_18: String, v_19: Ast.SourceSpan, v_21: U32) -> ArenaResult<ScopedState>:
   match v_4:
     case Some{+v_26}:
       v_28 = v_26
@@ -8636,7 +9141,7 @@ def check_constructors_fields_result(v_1: ArenaStore, v_4: Maybe<&2, Diagnostic>
 
 def check_constructors_type_result(v_1: ArenaStore, v_3: Inference, v_4: IR.Words, v_6: List<&2, IR.ConstructorDecl>, v_8: String, v_9: IR.Words, v_11: U32, v_13: String, v_14: Scope.ArenaGlobalScope, v_15: Scope.ArenaGlobalScope, v_16: Ast.SourceSpan, v_18: String, v_19: Ast.SourceSpan, v_21: U32) -> ArenaResult<ScopedState>:
   match v_3:
-    case Inferred{+v_27, +v_28}:
+    case Inferred{+v_27, +v_28, +occ_v_27}:
       ArenaResult{v_32, +v_33} = arena_get_node(v_1, v_28)
       match v_33:
         case Arena.TermType{+v_36, +v_37}:
@@ -8646,7 +9151,7 @@ def check_constructors_type_result(v_1: ArenaStore, v_3: Inference, v_4: IR.Word
           {ArenaResult{v_51, v_52} : ArenaResult<ScopedState>}
         case _:
           v_50000272 = span_file(v_19)
-          v_50000273 = Diagnostic{v_50000272, v_19, String.append("constructor type is invalid: ", v_18), "a constructor telescope returning its family", "an invalid telescope"}
+          v_50000273 = Checked.Diagnostic{v_50000272, v_19, String.append("constructor type is invalid: ", v_18), "a constructor telescope returning its family", "an invalid telescope"}
           v_50000274 = ScopedStateFailure{v_50000273}
           {ArenaResult{v_32, v_50000274} : ArenaResult<ScopedState>}
     case InferenceFailure{+v_57}:
@@ -8657,7 +9162,7 @@ def check_constructors_unique(v_1: ArenaStore, v_3: Maybe<&2, Scope.ArenaGlobal>
   match v_3:
     case Some{+v_24}:
       v_50000275 = span_file(v_19)
-      v_50000276 = Diagnostic{v_50000275, v_19, String.append("duplicate constructor: ", v_18), "a fresh constructor name", "an existing declaration"}
+      v_50000276 = Checked.Diagnostic{v_50000275, v_19, String.append("duplicate constructor: ", v_18), "a fresh constructor name", "an existing declaration"}
       v_50000277 = ScopedStateFailure{v_50000276}
       {ArenaResult{v_1, v_50000277} : ArenaResult<ScopedState>}
     case None{}:
@@ -8684,7 +9189,7 @@ def check_constructors_unique(v_1: ArenaStore, v_3: Maybe<&2, Scope.ArenaGlobal>
 def check_constructors(v_20039639: ArenaStore, v_1: List<&2, IR.ConstructorDecl>, v_3: String, v_5: IR.Words, v_6: U32, v_8: String, v_9: Scope.ArenaGlobalScope, v_10: Scope.ArenaGlobalScope, v_11: Ast.SourceSpan) -> ArenaResult<ScopedState>:
   match v_1:
     case []:
-      {ArenaResult{v_20039639, ScopedState{v_9}} : ArenaResult<ScopedState>}
+      {ArenaResult{v_20039639, ScopedState{v_9, None{}}} : ArenaResult<ScopedState>}
     case +v_20039640 <> +v_20039641:
       +v_15 = v_20039640
       v_16 = v_20039641
@@ -8698,7 +9203,7 @@ def check_constructors(v_20039639: ArenaStore, v_1: List<&2, IR.ConstructorDecl>
 
 def check_type_decl_result(v_1: ArenaStore, v_3: Inference, v_5: String, v_6: IR.Words, v_8: U32, v_10: List<&2, IR.ConstructorDecl>, v_11: Scope.ArenaGlobal, v_12: Scope.ArenaGlobal, v_14: U32, v_16: String, v_17: Scope.ArenaGlobalScope, v_18: Scope.ArenaGlobalScope, v_19: Ast.SourceSpan) -> ArenaResult<ScopedState>:
   match v_3:
-    case Inferred{+v_25, +v_26}:
+    case Inferred{+v_25, +v_26, +occ_v_25}:
       ArenaResult{v_30, +v_31} = arena_get_node(v_1, v_26)
       match v_31:
         case Arena.TermType{+v_34, +v_35}:
@@ -8709,7 +9214,7 @@ def check_type_decl_result(v_1: ArenaStore, v_3: Inference, v_5: String, v_6: IR
           {ArenaResult{v_55, v_56} : ArenaResult<ScopedState>}
         case _:
           v_50000282 = span_file(v_19)
-          v_50000283 = Diagnostic{v_50000282, v_19, String.append("datatype signature is invalid: ", v_5), "a kinded family signature", "an invalid signature"}
+          v_50000283 = Checked.Diagnostic{v_50000282, v_19, String.append("datatype signature is invalid: ", v_5), "a kinded family signature", "an invalid signature"}
           v_50000284 = ScopedStateFailure{v_50000283}
           {ArenaResult{v_30, v_50000284} : ArenaResult<ScopedState>}
     case InferenceFailure{+v_61}:
@@ -8724,7 +9229,7 @@ def check_import_foreign_head(v_1: ArenaStore, v_4: Maybe<&2, String>, v_6: U32,
       match v_24:
         case False{}:
           v_50000285 = span_file(v_13)
-          v_50000286 = Diagnostic{v_50000285, v_13, "foreign definition must return base IO directly", "an IO result", "a non-IO result"}
+          v_50000286 = Checked.Diagnostic{v_50000285, v_13, "foreign definition must return base IO directly", "an IO result", "a non-IO result"}
           +v_27 = ScopedStateFailure{v_50000286}
           v_29 = v_1
           {ArenaResult{v_29, v_27} : ArenaResult<ScopedState>}
@@ -8733,27 +9238,27 @@ def check_import_foreign_head(v_1: ArenaStore, v_4: Maybe<&2, String>, v_6: U32,
           v_50000287 = canonical_key(v_10, v_8)
           ArenaResult{v_40, +v_41} = arena_publish_global(v_34, Scope.ArenaGlobal{v_50000287, v_10, v_8, v_35, IR.NoTerm{}, Scope.GlobalDefinition{}})
           ArenaResult{v_45, +v_46} = global_scope_prepend(v_40, v_41, v_11)
-          +v_48 = ScopedState{v_46}
+          +v_48 = ScopedState{v_46, None{}}
           v_50 = v_45
           {ArenaResult{v_50, v_48} : ArenaResult<ScopedState>}
     case None{}:
       v_50000288 = span_file(v_13)
-      v_50000289 = Diagnostic{v_50000288, v_13, "foreign definition must return base IO directly", "an IO result", "a non-IO result"}
+      v_50000289 = Checked.Diagnostic{v_50000288, v_13, "foreign definition must return base IO directly", "an IO result", "a non-IO result"}
       v_50000290 = ScopedStateFailure{v_50000289}
       {ArenaResult{v_1, v_50000290} : ArenaResult<ScopedState>}
 
 def check_import_type_result(v_1: ArenaStore, v_3: Inference, v_5: String, v_7: U32, v_9: U32, v_11: String, v_12: Scope.ArenaGlobalScope, v_13: Scope.ArenaGlobalScope, v_14: Ast.SourceSpan) -> ArenaResult<ScopedState>:
   match v_3:
-    case Inferred{+v_20, +v_21}:
+    case Inferred{+v_20, +v_21, +occ_v_20}:
       ArenaResult{v_25, +v_26} = arena_get_node(v_1, v_21)
       match v_26:
         case Arena.TermType{+v_29, +v_30}:
           ArenaResult{v_34, +v_35} = foreign_head(v_25, v_9)
-          ArenaResult{v_39, +v_40} = check_import_foreign_head(v_34, v_35, v_7, v_5, v_11, v_12, v_13, v_14)
+          ArenaResult{v_39, +v_40} = check_import_foreign_head(v_34, v_35, v_20, v_5, v_11, v_12, v_13, v_14)
           {ArenaResult{v_39, v_40} : ArenaResult<ScopedState>}
         case _:
           v_50000291 = span_file(v_14)
-          v_50000292 = Diagnostic{v_50000291, v_14, String.append("foreign signature is not a type: ", v_5), "a type", "a non-type"}
+          v_50000292 = Checked.Diagnostic{v_50000291, v_14, String.append("foreign signature is not a type: ", v_5), "a type", "a non-type"}
           v_50000293 = ScopedStateFailure{v_50000292}
           {ArenaResult{v_25, v_50000293} : ArenaResult<ScopedState>}
     case InferenceFailure{+v_45}:
@@ -8833,7 +9338,7 @@ def check_import_definition(v_1: ArenaStore, v_3: String, v_4: IR.Words, v_5: IR
       {ArenaResult{v_34, v_35} : ArenaResult<ScopedState>}
     case IR.NoTerm{}:
       v_50000299 = span_file(v_11)
-      v_50000300 = Diagnostic{v_50000299, v_11, String.append("foreign definition has no signature: ", v_3), "a declared result type", "no result type"}
+      v_50000300 = Checked.Diagnostic{v_50000299, v_11, String.append("foreign definition has no signature: ", v_3), "a declared result type", "no result type"}
       v_50000301 = ScopedStateFailure{v_50000300}
       {ArenaResult{v_1, v_50000301} : ArenaResult<ScopedState>}
 
@@ -9945,22 +10450,22 @@ def recursion_terminates_call_args(v_20041204: ArenaStore, v_1: IR.Words, v_3: S
           ArenaResult{v_20041222, +v_20041223} = recursion_terminates_list(v_20041220, v_32, v_3, v_5, v_7, v_11, v_12)
           {ArenaResult{v_20041222, Bool.and(v_20041221, v_20041223)} : ArenaResult<Bool>}
 
-def check_termination_result(v_1: Bool, v_3: String, v_4: Ast.SourceSpan) -> Maybe<&2, Diagnostic>:
+def check_termination_result(v_1: Bool, v_3: String, v_4: Ast.SourceSpan) -> Maybe<&2, Checked.Diagnostic>:
   +v_8 = v_1
   match v_8:
     case False{}:
       v_50000308 = span_file(v_4)
-      v_50000309 = Diagnostic{v_50000308, v_4, String.append("definition is not structurally terminating: ", v_3), "a strictly decreasing recursive call", "a non-decreasing or unguarded call"}
+      v_50000309 = Checked.Diagnostic{v_50000308, v_4, String.append("definition is not structurally terminating: ", v_3), "a strictly decreasing recursive call", "a non-decreasing or unguarded call"}
       +v_11 = Some{v_50000309}
       v_11
     case True{}:
-      +v_14 = {None{} : Maybe<&2, Diagnostic>}
+      +v_14 = {None{} : Maybe<&2, Checked.Diagnostic>}
       v_14
 
-def check_termination(v_1: ArenaStore, v_3: Bool, v_5: String, v_6: IR.Words, v_8: U32, v_9: Ast.SourceSpan, v_10: Scope.ArenaGlobalScope) -> ArenaResult<Maybe<&2, Diagnostic>>:
+def check_termination(v_1: ArenaStore, v_3: Bool, v_5: String, v_6: IR.Words, v_8: U32, v_9: Ast.SourceSpan, v_10: Scope.ArenaGlobalScope) -> ArenaResult<Maybe<&2, Checked.Diagnostic>>:
   match v_3:
     case True{}:
-      {ArenaResult{v_1, None{}} : ArenaResult<Maybe<&2, Diagnostic>>}
+      {ArenaResult{v_1, None{}} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
     case False{}:
       ArenaResult{v_18, +v_19} = binder_count(v_1, v_6)
       v_21 = v_19
@@ -9970,25 +10475,25 @@ def check_termination(v_1: ArenaStore, v_3: Bool, v_5: String, v_6: IR.Words, v_
       v_35 = v_33
       ArenaResult{v_39, +v_40} = recursion_terminates(v_32, v_8, v_5, v_28, v_35, v_21, v_10)
       v_50000310 = check_termination_result(v_40, v_5, v_9)
-      {ArenaResult{v_39, v_50000310} : ArenaResult<Maybe<&2, Diagnostic>>}
+      {ArenaResult{v_39, v_50000310} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
 
-def validate_definition_termination(v_20041235: ArenaStore, v_2: Maybe<&2, Diagnostic>, v_4: IR.Words, v_5: U32, v_6: U32, v_7: Scope.ArenaGlobalScope, v_9: Bool) -> ArenaResult<Maybe<&2, Diagnostic>>:
+def validate_definition_termination(v_20041235: ArenaStore, v_2: Maybe<&2, Checked.Diagnostic>, v_4: IR.Words, v_5: U32, v_6: U32, v_7: Scope.ArenaGlobalScope, v_9: Bool) -> ArenaResult<Maybe<&2, Checked.Diagnostic>>:
   match v_2:
     case Some{+v_20041236}:
       v_13 = v_20041236
-      {ArenaResult{v_20041235, Some{v_13}} : ArenaResult<Maybe<&2, Diagnostic>>}
+      {ArenaResult{v_20041235, Some{v_13}} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
     case None{}:
       ArenaResult{v_20041237, +v_20041238} = binder_count(v_20041235, v_4)
       v_17 = v_20041238
       ArenaResult{v_20041239, +v_20041240} = binders_env(v_20041237, v_4, [])
       ArenaResult{v_20041241, +v_20041242} = binder_usage_map(v_20041239, v_17, v_5, v_20041240, v_7, Some{v_6}, v_9)
       ArenaResult{v_20041243, +v_20041244} = check_binder_usage_map(v_20041241, v_4, v_17, v_20041242)
-      {ArenaResult{v_20041243, v_20041244} : ArenaResult<Maybe<&2, Diagnostic>>}
+      {ArenaResult{v_20041243, v_20041244} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
 
-def validate_definition_uses(v_20041245: ArenaStore, v_1: Bool, v_3: String, v_5: IR.Words, v_6: U32, v_7: U32, v_8: Ast.SourceSpan, v_9: Scope.ArenaGlobalScope, v_11: Bool) -> ArenaResult<Maybe<&2, Diagnostic>>:
+def validate_definition_uses(v_20041245: ArenaStore, v_1: Bool, v_3: String, v_5: IR.Words, v_6: U32, v_7: U32, v_8: Ast.SourceSpan, v_9: Scope.ArenaGlobalScope, v_11: Bool) -> ArenaResult<Maybe<&2, Checked.Diagnostic>>:
   ArenaResult{v_20041246, +v_20041247} = check_termination(v_20041245, v_1, v_3, v_5, v_6, v_8, v_9)
   ArenaResult{v_20041248, +v_20041249} = validate_definition_termination(v_20041246, v_20041247, v_5, v_6, v_7, v_9, v_11)
-  {ArenaResult{v_20041248, v_20041249} : ArenaResult<Maybe<&2, Diagnostic>>}
+  {ArenaResult{v_20041248, v_20041249} : ArenaResult<Maybe<&2, Checked.Diagnostic>>}
 
 def store_definition_declared(v_1: ArenaStore, v_2: Scope.ArenaGlobal, v_4: String, v_6: String, v_8: U32, v_10: U32, v_11: Scope.ArenaGlobalScope, v_12: Scope.ArenaGlobalScope, v_13: Ast.SourceSpan) -> ArenaResult<ScopedState>:
   match v_2:
@@ -10005,7 +10510,7 @@ def store_definition_declared(v_1: ArenaStore, v_2: Scope.ArenaGlobal, v_4: Stri
               match v_44:
                 case False{}:
                   v_50000311 = span_file(v_13)
-                  v_50000312 = Diagnostic{v_50000311, v_13, String.append("definition does not fill its declared type: ", v_4), "the existing declaration type", "an incompatible inferred type"}
+                  v_50000312 = Checked.Diagnostic{v_50000311, v_13, String.append("definition does not fill its declared type: ", v_4), "the existing declaration type", "an incompatible inferred type"}
                   +v_47 = ScopedStateFailure{v_50000312}
                   v_49 = v_41
                   {ArenaResult{v_49, v_47} : ArenaResult<ScopedState>}
@@ -10013,22 +10518,22 @@ def store_definition_declared(v_1: ArenaStore, v_2: Scope.ArenaGlobal, v_4: Stri
                   v_50000313 = canonical_key(v_6, v_4)
                   ArenaResult{v_55, +v_56} = arena_publish_global(v_41, Scope.ArenaGlobal{v_50000313, v_6, v_4, v_37, IR.SomeTerm{v_10}, Scope.GlobalDefinition{}})
                   ArenaResult{v_60, +v_61} = global_scope_prepend(v_55, v_56, v_11)
-                  +v_63 = ScopedState{v_61}
+                  +v_63 = ScopedState{v_61, None{}}
                   v_65 = v_60
                   {ArenaResult{v_65, v_63} : ArenaResult<ScopedState>}
             case _:
               v_50000314 = span_file(v_13)
-              v_50000315 = Diagnostic{v_50000314, v_13, String.append("duplicate declaration: ", v_4), "a fresh declaration name", "an existing definition"}
+              v_50000315 = Checked.Diagnostic{v_50000314, v_13, String.append("duplicate declaration: ", v_4), "a fresh declaration name", "an existing definition"}
               v_50000316 = ScopedStateFailure{v_50000315}
               {ArenaResult{v_1, v_50000316} : ArenaResult<ScopedState>}
         case _:
           v_50000317 = span_file(v_13)
-          v_50000318 = Diagnostic{v_50000317, v_13, String.append("duplicate declaration: ", v_4), "a fresh declaration name", "an existing definition"}
+          v_50000318 = Checked.Diagnostic{v_50000317, v_13, String.append("duplicate declaration: ", v_4), "a fresh declaration name", "an existing definition"}
           v_50000319 = ScopedStateFailure{v_50000318}
           {ArenaResult{v_1, v_50000319} : ArenaResult<ScopedState>}
     case _:
       v_50000320 = span_file(v_13)
-      v_50000321 = Diagnostic{v_50000320, v_13, String.append("duplicate declaration: ", v_4), "a fresh declaration name", "an existing definition"}
+      v_50000321 = Checked.Diagnostic{v_50000320, v_13, String.append("duplicate declaration: ", v_4), "a fresh declaration name", "an existing definition"}
       v_50000322 = ScopedStateFailure{v_50000321}
       {ArenaResult{v_1, v_50000322} : ArenaResult<ScopedState>}
 
@@ -10038,7 +10543,7 @@ def store_definition_result(v_1: ArenaStore, v_3: Maybe<&2, Scope.ArenaGlobal>, 
       v_50000323 = canonical_key(v_7, v_5)
       ArenaResult{v_22, +v_23} = arena_publish_global(v_1, Scope.ArenaGlobal{v_50000323, v_7, v_5, v_9, IR.SomeTerm{v_11}, Scope.GlobalDefinition{}})
       ArenaResult{v_27, +v_28} = global_scope_prepend(v_22, v_23, v_12)
-      {ArenaResult{v_27, ScopedState{v_28}} : ArenaResult<ScopedState>}
+      {ArenaResult{v_27, ScopedState{v_28, None{}}} : ArenaResult<ScopedState>}
     case Some{+v_30}:
       v_32 = v_30
       ArenaResult{v_36, +v_37} = store_definition_declared(v_1, v_32, v_5, v_7, v_9, v_11, v_12, v_13, v_14)
@@ -10054,7 +10559,7 @@ def store_definition(v_20041285: ArenaStore, v_1: String, v_3: String, v_4: U32,
 
 def check_definition_declared_type(v_1: ArenaStore, v_3: Inference, v_5: String, v_7: U32, v_9: U32, v_11: U32, v_13: U32, v_15: String, v_16: Scope.ArenaGlobalScope, v_17: Scope.ArenaGlobalScope, v_18: Ast.SourceSpan) -> ArenaResult<ScopedState>:
   match v_3:
-    case Inferred{+v_24, +v_25}:
+    case Inferred{+v_24, +v_25, +occ_v_24}:
       ArenaResult{v_29, +v_30} = arena_get_node(v_1, v_25)
       match v_30:
         case Arena.TermType{+v_33, +v_34}:
@@ -10063,18 +10568,18 @@ def check_definition_declared_type(v_1: ArenaStore, v_3: Inference, v_5: String,
           match v_41:
             case False{}:
               v_50000324 = span_file(v_18)
-              v_50000325 = Diagnostic{v_50000324, v_18, String.append("definition body has the wrong type: ", v_5), "the declared result type", "an incompatible inferred type"}
+              v_50000325 = Checked.Diagnostic{v_50000324, v_18, String.append("definition body has the wrong type: ", v_5), "the declared result type", "an incompatible inferred type"}
               +v_44 = ScopedStateFailure{v_50000325}
               v_46 = v_38
               {ArenaResult{v_46, v_44} : ArenaResult<ScopedState>}
             case True{}:
-              ArenaResult{v_51, +v_52} = store_definition(v_38, v_5, v_15, v_7, v_11, v_16, v_17, v_18)
+              ArenaResult{v_51, +v_52} = store_definition(v_38, v_5, v_15, v_24, v_11, v_16, v_17, v_18)
               +v_54 = v_52
               v_56 = v_51
               {ArenaResult{v_56, v_54} : ArenaResult<ScopedState>}
         case _:
           v_50000326 = span_file(v_18)
-          v_50000327 = Diagnostic{v_50000326, v_18, "definition signature is not a type", "a type", "a non-type"}
+          v_50000327 = Checked.Diagnostic{v_50000326, v_18, "definition signature is not a type", "a type", "a non-type"}
           v_50000328 = ScopedStateFailure{v_50000327}
           {ArenaResult{v_29, v_50000328} : ArenaResult<ScopedState>}
     case InferenceFailure{+v_62}:
@@ -10083,15 +10588,15 @@ def check_definition_declared_type(v_1: ArenaStore, v_3: Inference, v_5: String,
 
 def check_definition_inferred_type(v_1: ArenaStore, v_3: Inference, v_5: String, v_7: U32, v_9: U32, v_11: String, v_12: Scope.ArenaGlobalScope, v_13: Scope.ArenaGlobalScope, v_14: Ast.SourceSpan) -> ArenaResult<ScopedState>:
   match v_3:
-    case Inferred{+v_20, +v_21}:
+    case Inferred{+v_20, +v_21, +occ_v_20}:
       ArenaResult{v_25, +v_26} = arena_get_node(v_1, v_21)
       match v_26:
         case Arena.TermType{+v_29, +v_30}:
-          ArenaResult{v_34, +v_35} = store_definition(v_25, v_5, v_11, v_7, v_9, v_12, v_13, v_14)
+          ArenaResult{v_34, +v_35} = store_definition(v_25, v_5, v_11, v_20, v_9, v_12, v_13, v_14)
           {ArenaResult{v_34, v_35} : ArenaResult<ScopedState>}
         case _:
           v_50000329 = span_file(v_14)
-          v_50000330 = Diagnostic{v_50000329, v_14, "inferred definition signature is not a type", "a type", "a non-type"}
+          v_50000330 = Checked.Diagnostic{v_50000329, v_14, "inferred definition signature is not a type", "a type", "a non-type"}
           v_50000331 = ScopedStateFailure{v_50000330}
           {ArenaResult{v_25, v_50000331} : ArenaResult<ScopedState>}
     case InferenceFailure{+v_40}:
@@ -10116,23 +10621,24 @@ def check_definition_finish(v_20041323: ArenaStore, v_0: IR.OptionalTerm, v_2: S
       ArenaResult{v_20041339, +v_20041340} = check_definition_inferred_type(v_20041337, v_20041336, v_2, v_23, v_20041338, v_8, v_9, v_10, v_11)
       {ArenaResult{v_20041339, v_20041340} : ArenaResult<ScopedState>}
 
-def check_definition_uses_result(v_20041341: ArenaStore, v_2: Maybe<&2, Diagnostic>, v_3: IR.OptionalTerm, v_5: String, v_7: IR.Words, v_8: U32, v_9: U32, v_10: U32, v_12: Bool, v_14: String, v_15: Scope.ArenaGlobalScope, v_16: Scope.ArenaGlobalScope, v_17: Ast.SourceSpan) -> ArenaResult<ScopedState>:
+def check_definition_uses_result(v_20041341: ArenaStore, v_2: Maybe<&2, Checked.Diagnostic>, v_3: IR.OptionalTerm, v_5: String, v_7: IR.Words, v_8: U32, v_9: U32, v_10: U32, v_12: Bool, v_14: String, v_15: Scope.ArenaGlobalScope, v_16: Scope.ArenaGlobalScope, v_17: Ast.SourceSpan, occurrence: IR.Occurrence) -> ArenaResult<ScopedState>:
   match v_2:
     case Some{+v_20041342}:
       v_20 = v_20041342
       {ArenaResult{v_20041341, ScopedStateFailure{v_20}} : ArenaResult<ScopedState>}
     case None{}:
-      ArenaResult{v_20041343, +v_20041344} = check_definition_finish(v_20041341, v_3, v_5, v_7, v_9, v_10, v_14, v_15, v_16, v_17)
-      {ArenaResult{v_20041343, v_20041344} : ArenaResult<ScopedState>}
+      ArenaResult{published_store, +published} = arena_publish_occurrence(v_20041341, occurrence)
+      ArenaResult{v_20041343, +v_20041344} = check_definition_finish(published_store, v_3, v_5, v_7, occurrence_term(published), v_10, v_14, v_15, v_16, v_17)
+      {ArenaResult{v_20041343, scoped_checked(v_20041344, published)} : ArenaResult<ScopedState>}
 
 def check_definition_term_result(v_20041345: ArenaStore, v_1: Inference, v_2: IR.OptionalTerm, v_4: String, v_6: IR.Words, v_7: U32, v_9: Bool, v_11: String, v_12: Scope.ArenaGlobalScope, v_13: Scope.ArenaGlobalScope, v_14: Ast.SourceSpan) -> ArenaResult<ScopedState>:
   match v_1:
-    case Inferred{+v_20041346, +v_20041347}:
+    case Inferred{+v_20041346, +v_20041347, +occ_v_20041346}:
       v_18 = v_20041346
       v_19 = v_20041347
       v_22 = definition_expected_body(v_2, v_19)
       ArenaResult{v_20041348, +v_20041349} = validate_definition_uses(v_20041345, v_9, v_4, v_6, v_7, v_22, v_14, v_13, True{})
-      ArenaResult{v_20041350, +v_20041351} = check_definition_uses_result(v_20041348, v_20041349, v_2, v_4, v_6, v_7, v_18, v_19, v_9, v_11, v_12, v_13, v_14)
+      ArenaResult{v_20041350, +v_20041351} = check_definition_uses_result(v_20041348, v_20041349, v_2, v_4, v_6, v_7, v_18, v_19, v_9, v_11, v_12, v_13, v_14, occ_v_20041346)
       {ArenaResult{v_20041350, v_20041351} : ArenaResult<ScopedState>}
     case InferenceFailure{+v_20041352}:
       v_26 = v_20041352
@@ -10198,7 +10704,7 @@ def definition_term_inference(store: ArenaStore, ty: IR.OptionalTerm, term: U32,
 
 def check_definition(v_20041387: ArenaStore, v_0: IR.Definition, v_2: String, v_3: Scope.ArenaGlobalScope, v_4: Scope.ArenaGlobalScope) -> ArenaResult<ScopedState>:
   match v_0:
-    case IR.Definition{+v_20041388, +v_20041389, +v_20041390, +v_20041391, +v_20041392, +v_20041393}:
+    case IR.Definition{+v_20041388, +v_20041389, +v_20041390, +v_20041391, +v_20041392, +v_20041393, +definition_occurrence, +definition_facts}:
       v_12 = v_20041388
       v_13 = v_20041389
       v_14 = v_20041390
@@ -10271,12 +10777,12 @@ def law_quantifier(v_20041435: ArenaStore, v_1: Bool, v_2: Ast.Quantity, v_4: St
 
 def check_law_result(v_1: ArenaStore, v_3: Inference, v_5: String, v_7: U32, v_9: String, v_10: Scope.ArenaGlobalScope, v_11: Scope.ArenaGlobalScope) -> ArenaResult<ScopedState>:
   match v_3:
-    case Inferred{+v_17, +v_18}:
-      ArenaResult{v_22, +v_23} = canonicalize_term(v_1, v_7, v_11)
+    case Inferred{+v_17, +v_18, +occ_v_17}:
+      ArenaResult{v_22, +v_23} = canonicalize_term(v_1, v_17, v_11)
       v_50000333 = canonical_key(v_9, v_5)
       ArenaResult{v_28, +v_29} = arena_publish_global(v_22, Scope.ArenaGlobal{v_50000333, v_9, v_5, v_23, IR.NoTerm{}, Scope.GlobalDefinition{}})
       ArenaResult{v_33, +v_34} = global_scope_prepend(v_28, v_29, v_10)
-      {ArenaResult{v_33, ScopedState{v_34}} : ArenaResult<ScopedState>}
+      {ArenaResult{v_33, ScopedState{v_34, None{}}} : ArenaResult<ScopedState>}
     case InferenceFailure{+v_36}:
       v_38 = v_36
       {ArenaResult{v_1, ScopedStateFailure{v_38}} : ArenaResult<ScopedState>}
@@ -10347,7 +10853,7 @@ def inherit_law_result(v_1: ArenaStore, v_2: IR.OptionalTerm, v_4: U32, v_6: Str
   match v_2:
     case IR.NoTerm{}:
       ArenaResult{v_19, +v_20} = arena_words_reverse(v_1, v_7)
-      {ArenaResult{v_19, DefinitionElaborated{IR.Definition{v_6, v_20, IR.SomeTerm{v_4}, v_8, v_10, v_11}}} : ArenaResult<DefinitionElaboration>}
+      {ArenaResult{v_19, DefinitionElaborated{IR.Definition{v_6, v_20, IR.SomeTerm{v_4}, v_8, v_10, v_11, None{}, None{}}}} : ArenaResult<DefinitionElaboration>}
     case IR.SomeTerm{+v_22}:
       v_24 = v_22
       ArenaResult{v_28, +v_29} = equal_term(v_1, v_24, v_4, v_12)
@@ -10355,13 +10861,13 @@ def inherit_law_result(v_1: ArenaStore, v_2: IR.OptionalTerm, v_4: U32, v_6: Str
       match v_31:
         case False{}:
           v_50000339 = span_file(v_11)
-          v_50000340 = Diagnostic{v_50000339, v_11, String.append("completion result differs from its law: ", v_6), "the declared law result", "an incompatible result annotation"}
+          v_50000340 = Checked.Diagnostic{v_50000339, v_11, String.append("completion result differs from its law: ", v_6), "the declared law result", "an incompatible result annotation"}
           +v_34 = DefinitionElaborationFailure{v_50000340}
           v_36 = v_28
           {ArenaResult{v_36, v_34} : ArenaResult<DefinitionElaboration>}
         case True{}:
           ArenaResult{v_41, +v_42} = arena_words_reverse(v_28, v_7)
-          +v_44 = DefinitionElaborated{IR.Definition{v_6, v_42, IR.SomeTerm{v_4}, v_8, v_10, v_11}}
+          +v_44 = DefinitionElaborated{IR.Definition{v_6, v_42, IR.SomeTerm{v_4}, v_8, v_10, v_11, None{}, None{}}}
           v_46 = v_41
           {ArenaResult{v_46, v_44} : ArenaResult<DefinitionElaboration>}
 
@@ -10393,7 +10899,7 @@ def inherit_law_binder_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: IR.Words, 
           match v_109:
             case False{}:
               v_50000341 = span_file(v_67)
-              v_50000342 = Diagnostic{v_50000341, v_67, String.append("completion binder differs from its law: ", v_63), "the declared law quantity and domain", "an incompatible binder annotation"}
+              v_50000342 = Checked.Diagnostic{v_50000341, v_67, String.append("completion binder differs from its law: ", v_63), "the declared law quantity and domain", "an incompatible binder annotation"}
               +v_112 = DefinitionElaborationFailure{v_50000342}
               v_114 = v_106
               {ArenaResult{v_114, v_112} : ArenaResult<DefinitionElaboration>}
@@ -10406,7 +10912,7 @@ def inherit_law_binder_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: IR.Words, 
         case Arena.TemplateBinder{+v_135, +v_136, +v_137, +v_138}:
           v_140 = v_138
           v_50000343 = span_file(v_140)
-          v_50000344 = Diagnostic{v_50000343, v_140, "law completion cannot introduce a template binder", "a law parameter name", "a compile-time template binder"}
+          v_50000344 = Checked.Diagnostic{v_50000343, v_140, "law completion cannot introduce a template binder", "a law parameter name", "a compile-time template binder"}
           v_50000345 = DefinitionElaborationFailure{v_50000344}
           {ArenaResult{v_41, v_50000345} : ArenaResult<DefinitionElaboration>}
     case _:
@@ -10415,7 +10921,7 @@ def inherit_law_binder_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: IR.Words, 
         case Arena.TemplateBinder{+v_153, +v_154, +v_155, +v_156}:
           v_158 = v_156
           v_50000346 = span_file(v_158)
-          v_50000347 = Diagnostic{v_50000346, v_158, "law completion cannot introduce a template binder", "a law parameter name", "a compile-time template binder"}
+          v_50000347 = Checked.Diagnostic{v_50000346, v_158, "law completion cannot introduce a template binder", "a law parameter name", "a compile-time template binder"}
           v_50000348 = DefinitionElaborationFailure{v_50000347}
           {ArenaResult{v_147, v_50000348} : ArenaResult<DefinitionElaboration>}
         case Arena.Binder{+v_165, +v_166, +v_167, +v_168, +v_169}:
@@ -10424,7 +10930,7 @@ def inherit_law_binder_view(v_1: ArenaStore, v_3: U32, v_5: U32, v_6: IR.Words, 
           v_178 = v_176
           v_180 = v_169
           v_50000349 = span_file(v_180)
-          v_50000350 = Diagnostic{v_50000349, v_180, String.append("law completion has too many parameters: ", v_12), "a remaining law parameter", v_178}
+          v_50000350 = Checked.Diagnostic{v_50000349, v_180, String.append("law completion has too many parameters: ", v_12), "a remaining law parameter", v_178}
           v_50000351 = DefinitionElaborationFailure{v_50000350}
           {ArenaResult{v_173, v_50000351} : ArenaResult<DefinitionElaboration>}
 
@@ -10443,7 +10949,7 @@ def inherit_law_binders(v_20041584: ArenaStore, v_1: IR.Words, v_2: U32, v_4: IR
 
 def inherit_law_definition(v_20041595: ArenaStore, v_0: IR.Definition, v_1: U32, v_2: Scope.ArenaGlobalScope) -> ArenaResult<DefinitionElaboration>:
   match v_0:
-    case IR.Definition{+v_20041596, +v_20041597, +v_20041598, +v_20041599, +v_20041600, +v_20041601}:
+    case IR.Definition{+v_20041596, +v_20041597, +v_20041598, +v_20041599, +v_20041600, +v_20041601, +definition_occurrence, +definition_facts}:
       v_10 = v_20041596
       v_11 = v_20041597
       v_12 = v_20041598
@@ -10469,7 +10975,7 @@ def elaborate_definition_global(v_1: ArenaStore, v_2: Scope.ArenaGlobal, v_3: IR
               match v_32:
                 case False{}:
                   v_50000352 = span_file(v_7)
-                  v_50000353 = Diagnostic{v_50000352, v_7, String.append("duplicate declaration: ", v_6), "a fresh declaration name", "an existing declaration"}
+                  v_50000353 = Checked.Diagnostic{v_50000352, v_7, String.append("duplicate declaration: ", v_6), "a fresh declaration name", "an existing declaration"}
                   +v_35 = DefinitionElaborationFailure{v_50000353}
                   v_37 = v_29
                   {ArenaResult{v_37, v_35} : ArenaResult<DefinitionElaboration>}
@@ -10480,17 +10986,17 @@ def elaborate_definition_global(v_1: ArenaStore, v_2: Scope.ArenaGlobal, v_3: IR
                   {ArenaResult{v_47, v_45} : ArenaResult<DefinitionElaboration>}
             case _:
               v_50000354 = span_file(v_7)
-              v_50000355 = Diagnostic{v_50000354, v_7, String.append("duplicate declaration: ", v_6), "a fresh declaration name", "an existing definition"}
+              v_50000355 = Checked.Diagnostic{v_50000354, v_7, String.append("duplicate declaration: ", v_6), "a fresh declaration name", "an existing definition"}
               v_50000356 = DefinitionElaborationFailure{v_50000355}
               {ArenaResult{v_1, v_50000356} : ArenaResult<DefinitionElaboration>}
         case _:
           v_50000357 = span_file(v_7)
-          v_50000358 = Diagnostic{v_50000357, v_7, String.append("duplicate declaration: ", v_6), "a fresh declaration name", "an existing definition"}
+          v_50000358 = Checked.Diagnostic{v_50000357, v_7, String.append("duplicate declaration: ", v_6), "a fresh declaration name", "an existing definition"}
           v_50000359 = DefinitionElaborationFailure{v_50000358}
           {ArenaResult{v_1, v_50000359} : ArenaResult<DefinitionElaboration>}
     case _:
       v_50000360 = span_file(v_7)
-      v_50000361 = Diagnostic{v_50000360, v_7, String.append("duplicate declaration: ", v_6), "a fresh declaration name", "an existing definition"}
+      v_50000361 = Checked.Diagnostic{v_50000360, v_7, String.append("duplicate declaration: ", v_6), "a fresh declaration name", "an existing definition"}
       v_50000362 = DefinitionElaborationFailure{v_50000361}
       {ArenaResult{v_1, v_50000362} : ArenaResult<DefinitionElaboration>}
 
@@ -10519,7 +11025,7 @@ def check_declarations_prepend(v_1: Declarations, v_2: IR.TopLevel) -> Declarati
 
 def check_declarations_step(v_1: ArenaStore, v_3: ScopedState, v_4: IR.TopLevel, v_6: List<&2, IR.TopLevel>, +v_8: String, +v_10: List<&2, Ast.ModuleImport>, v_11: IR.Names, v_13: Nat, v_14: Scope.ArenaGlobalScope) -> ArenaResult<Declarations>:
   match v_3:
-    case ScopedState{+v_19}:
+    case ScopedState{+v_19, +checked_definition}:
       +v_21 = v_19
       ArenaResult{v_25, +v_26} = arena_publish_top_level(v_1, v_4)
       # The open-law tape is carried across declarations, so it must survive rewind
@@ -10541,7 +11047,9 @@ def check_declarations_definition(v_20041652: ArenaStore, v_1: DefinitionElabora
     case DefinitionElaborated{+v_20041653}:
       v_15 = v_20041653
       ArenaResult{v_20041654, +v_20041655} = check_definition(v_20041652, v_15, v_5, v_8, v_9)
-      ArenaResult{v_20041656, +v_20041657} = check_declarations_step(v_20041654, v_20041655, IR.DefTop{v_15}, v_3, v_5, v_7, v_12, global_scope_size(v_8), v_9)
+      +publication_state = require_checked_definition(v_20041655, v_15)
+      ArenaResult{classified, declaration} = checked_declaration_result(v_20041654, publication_state, v_15, v_9)
+      ArenaResult{v_20041656, +v_20041657} = check_declarations_step(classified, publication_state, declaration, v_3, v_5, v_7, v_12, global_scope_size(v_8), v_9)
       {ArenaResult{v_20041656, v_20041657} : ArenaResult<Declarations>}
     case DefinitionElaborationFailure{+v_20041658}:
       v_20 = v_20041658
@@ -10551,7 +11059,7 @@ def check_declarations_type_result(v_1: ArenaStore, v_3: Maybe<&2, Scope.ArenaGl
   match v_3:
     case Some{+v_21}:
       v_50000364 = span_file(v_16)
-      v_50000365 = Diagnostic{v_50000364, v_16, String.append("duplicate declaration: ", v_15), "a fresh datatype name", "an existing declaration"}
+      v_50000365 = Checked.Diagnostic{v_50000364, v_16, String.append("duplicate declaration: ", v_15), "a fresh datatype name", "an existing declaration"}
       v_50000366 = DeclarationsFailure{v_50000365}
       {ArenaResult{v_1, v_50000366} : ArenaResult<Declarations>}
     case None{}:
@@ -10563,7 +11071,7 @@ def check_declarations_law_result(v_1: ArenaStore, v_3: Maybe<&2, Scope.ArenaGlo
   match v_3:
     case Some{+v_21}:
       v_50000367 = span_file(v_16)
-      v_50000368 = Diagnostic{v_50000367, v_16, String.append("duplicate declaration: ", v_15), "a fresh law name", "an existing declaration"}
+      v_50000368 = Checked.Diagnostic{v_50000367, v_16, String.append("duplicate declaration: ", v_15), "a fresh law name", "an existing declaration"}
       v_50000369 = DeclarationsFailure{v_50000368}
       {ArenaResult{v_1, v_50000369} : ArenaResult<Declarations>}
     case None{}:
@@ -10585,7 +11093,7 @@ def check_declarations(v_1: ArenaStore, v_3: List<&2, IR.TopLevel>, v_5: String,
         case IR.DefTop{+v_24}:
           v_26 = v_24
           match v_26:
-            case IR.Definition{+v_33, +v_34, +v_35, +v_36, +v_37, +v_38}:
+            case IR.Definition{+v_33, +v_34, +v_35, +v_36, +v_37, +v_38, +definition_occurrence, +definition_facts}:
               v_40 = v_33
               v_42 = v_38
               ArenaResult{v_46, +v_47} = elaborate_definition(v_1, v_26, v_5, v_8, v_10, v_40, v_42, v_9)
@@ -10608,14 +11116,25 @@ def check_declarations(v_1: ArenaStore, v_3: List<&2, IR.TopLevel>, v_5: String,
               ArenaResult{v_99, +v_100} = check_declarations_law_result(v_1, Scope.lookup(canonical_key(v_5, v_91), v_8), v_81, v_22, v_5, v_7, v_8, v_10, v_9, v_91, v_93)
               {ArenaResult{v_99, v_100} : ArenaResult<Declarations>}
 
-def check_modules_result(v_1: PrivateResult, v_2: IR.LoadedModule) -> PrivateResult:
-  match v_1:
-    case PrivateSuccess{+v_20041702}:
-      v_5 = v_20041702
-      PrivateSuccess{v_2 <> v_5}
-    case PrivateFailure{+v_20041703}:
-      v_7 = v_20041703
-      PrivateFailure{v_7}
+def metadata_families(store: ArenaStore, declarations: List<&2, IR.TopLevel>, +namespace: String, +scope: Scope.ArenaGlobalScope) -> ArenaResult<List<&2, Checked.FamilyMetadata>>:
+  match declarations:
+    case Nil{}: {ArenaResult{store, Nil{}} : ArenaResult<List<&2, Checked.FamilyMetadata>>}
+    case IR.TypeTop{IR.TypeDecl{key, params, _, _, _}} <> rest:
+      ArenaResult{store, prefix} = metadata_prefix(store, params, scope)
+      ArenaResult{store, families} = metadata_families(store, rest, namespace, scope)
+      {ArenaResult{store, Checked.FamilyMetadata{canonical_key(namespace, key), prefix} <> families} : ArenaResult<List<&2, Checked.FamilyMetadata>>}
+    case _ <> rest: metadata_families(store, rest, namespace, scope)
+
+def check_modules_result(store: ArenaStore, result: PrivateResult, +module: IR.LoadedModule) -> ArenaResult<PrivateResult>:
+  match result:
+    case PrivateFailure{diagnostic}: {ArenaResult{store, PrivateFailure{diagnostic}} : ArenaResult<PrivateResult>}
+    case PrivateSuccess{modules, +signatures, metadata}:
+      match module:
+        case IR.LoadedModule{+namespace, IR.Module{path, imports, declarations}}:
+          ArenaResult{store, +scope} = visible_globals(store, signatures, namespace, imports)
+          ArenaResult{store, families} = metadata_families(store, declarations, namespace, scope)
+          ArenaResult{store, _} = arena_release(store)
+          {ArenaResult{store, PrivateSuccess{module <> modules, signatures, Checked.ModuleMetadata{namespace, path, metadata_scope_value(scope), families} <> metadata}} : ArenaResult<PrivateResult>}
 
 def check_modules_declarations(v_1: ArenaStore, v_3: Declarations, v_5: String, v_7: String, v_9: List<&2, Ast.ModuleImport>, v_11: List<&2, IR.LoadedModule>) -> ArenaResult<PrivateResult>:
   match v_3:
@@ -10624,8 +11143,7 @@ def check_modules_declarations(v_1: ArenaStore, v_3: Declarations, v_5: String, 
       v_22 = v_18
       v_24 = IR.LoadedModule{v_5, IR.Module{v_7, v_9, v_22}}
       ArenaResult{v_28, v_29} = check_modules_private(v_1, v_11, v_20)
-      v_50000372 = check_modules_result(v_29, v_24)
-      {ArenaResult{v_28, v_50000372} : ArenaResult<PrivateResult>}
+      check_modules_result(v_28, v_29, v_24)
     case DeclarationsFailure{+v_32}:
       v_34 = v_32
       {ArenaResult{v_1, PrivateFailure{v_34}} : ArenaResult<PrivateResult>}
@@ -10637,7 +11155,7 @@ def predeclare_definition_signatures(store: ArenaStore, declarations: List<&2, I
   match declarations:
     case Nil{}:
       {ArenaResult{store, visible} : ArenaResult<Scope.ArenaGlobalScope>}
-    case IR.DefTop{IR.Definition{key, binders, result, _, _, _}} <> rest:
+    case IR.DefTop{IR.Definition{key, binders, result, _, _, _, +definition_occurrence, +definition_facts}} <> rest:
       ArenaResult{next, scope} = definition_visible_self(store, result, key, namespace, binders, visible)
       predeclare_definition_signatures(next, rest, namespace, scope)
     case _ <> rest:
@@ -10658,7 +11176,7 @@ def check_modules_module(v_20041707: ArenaStore, v_0: IR.Module, v_2: String, v_
 def check_modules_private(v_20041717: ArenaStore, v_1: List<&2, IR.LoadedModule>, v_3: List<&2, Scope.ArenaGlobal>) -> ArenaResult<PrivateResult>:
   match v_1:
     case []:
-      {ArenaResult{v_20041717, PrivateSuccess{[]}} : ArenaResult<PrivateResult>}
+      {ArenaResult{v_20041717, PrivateSuccess{[], v_3, Nil{}}} : ArenaResult<PrivateResult>}
     case +v_20041718 <> +v_20041719:
       +v_7 = v_20041718
       v_8 = v_20041719
@@ -10819,7 +11337,7 @@ def pattern_row_index_range_region(store: ArenaStore, start: U32, count: U32, te
 def pattern_row_index_range_empty(store: ArenaStore, +start: U32, count: U32, empty: Bool) -> ArenaResult<Bool>:
   match empty:
     case True{}: {ArenaResult{store, True{}} : ArenaResult<Bool>}
-    case False{}: pattern_row_index_range_region(store, start, count, arena_is_transient(start))
+    case False{}: pattern_row_index_range_region(store, start, count, IR.arena_is_transient(start))
 
 def pattern_row_index_range(store: ArenaStore, range: IR.Words) -> ArenaResult<Bool>:
   match range:
@@ -10830,7 +11348,7 @@ def pattern_row_index_pattern_region(store: ArenaStore, id: U32, temporary: Bool
     case ArenaStore{source, transient}:
       match temporary:
         case False{}: pattern_row_index_region_result(transient, Arena.case_prefix_pattern_valid(source, id), False{})
-        case True{}: pattern_row_index_region_result(source, Arena.case_prefix_pattern_valid(transient, arena_node_offset(id)), True{})
+        case True{}: pattern_row_index_region_result(source, Arena.case_prefix_pattern_valid(transient, IR.arena_node_offset(id)), True{})
 
 def pattern_row_index_name_result(+row: IR.Words, index: PatternRowIndex, +name: U32, result: ArenaResult<Bool>) -> ArenaResult<PatternRowIndex>:
   match result:
@@ -10873,7 +11391,7 @@ def pattern_row_index_range_result(+row: IR.Words, index: PatternRowIndex, resul
           ArenaResult{store1, view} = arena_words_view(store, row)
           match view:
             case IR.WordCons{+pattern, rest}:
-              pattern_row_index_pattern_result(row, index, pattern, pattern_row_index_pattern_region(store1, pattern, arena_is_transient(pattern)))
+              pattern_row_index_pattern_result(row, index, pattern, pattern_row_index_pattern_region(store1, pattern, IR.arena_is_transient(pattern)))
             case _:
               {ArenaResult{store1, pattern_row_index_add_head(row, None{}, index)} : ArenaResult<PatternRowIndex>}
 
@@ -11265,7 +11783,7 @@ def arena_constructor_node_has_witness_source(store: ArenaStore, id: U32, tempor
           arena_constructor_trees_are_closed_result(transient, Arena.node_has_flag(source, id, 16))
 
 def arena_constructor_node_has_witness(store: ArenaStore, +id: U32) -> ArenaResult<Bool>:
-  arena_constructor_node_has_witness_source(store, id, arena_is_transient(id))
+  arena_constructor_node_has_witness_source(store, id, IR.arena_is_transient(id))
 
 def arena_constructor_node_certify(store: ArenaStore, id: U32) -> ArenaStore:
   match store:
@@ -11281,7 +11799,7 @@ def arena_constructor_trees_loop(remaining: Nat, +start: U32, +parent: U32, resu
         case True{}:
           match remaining:
             case 0n: {ArenaResult{store, True{}} : ArenaResult<Bool>}
-            case 1n+rest: arena_constructor_trees_word(rest, arena_range_index(start, 1), parent, arena_get_word(store, start))
+            case 1n+rest: arena_constructor_trees_word(rest, IR.arena_range_index(start, 1), parent, arena_get_word(store, start))
 
 def arena_constructor_trees_child(remaining: Nat, start: U32, parent: U32, store: ArenaStore, id: U32, older: Bool) -> ArenaResult<Bool>:
   match older:
@@ -11291,7 +11809,7 @@ def arena_constructor_trees_child(remaining: Nat, start: U32, parent: U32, store
 def arena_constructor_trees_word(remaining: Nat, start: U32, +parent: U32, result: ArenaResult<U32>) -> ArenaResult<Bool>:
   match result:
     case ArenaResult{store, +id}:
-      arena_constructor_trees_child(remaining, start, parent, store, id, Bool.and(Bool.not(arena_is_transient(id)), Arena.case_prefix_less(U32.cmp(id, parent))))
+      arena_constructor_trees_child(remaining, start, parent, store, id, Bool.and(Bool.not(IR.arena_is_transient(id)), Arena.case_prefix_less(U32.cmp(id, parent))))
 
 def arena_constructor_trees_valid(start: U32, count: U32, parent: U32, result: ArenaResult<Bool>) -> ArenaResult<Bool>:
   match result:
@@ -11508,7 +12026,7 @@ def core_pattern_depth_region(store: ArenaStore, +id: U32, temporary: Bool) -> A
           core_pattern_depth_bound(id, arena_bound_source(Arena.bound_read(source, id, True{}), transient))
 
 def core_pattern_depth(store: ArenaStore, +id: U32) -> ArenaResult<Nat>:
-  core_pattern_depth_region(store, id, arena_is_transient(id))
+  core_pattern_depth_region(store, id, IR.arena_is_transient(id))
 
 def core_pattern_depth_open(store: ArenaStore, id: U32) -> ArenaResult<Nat>:
   ArenaResult{store, pattern} = arena_get_pattern(store, id)
@@ -12171,34 +12689,6 @@ def core_subst_terms(v_20042881: ArenaStore, +v_1: Nat, +v_2: U32, +v_4: Nat, v_
 
 # Source storage is immutable except append-only publication. The second region
 # contains per-declaration computations; only published handles may escape rewind.
-def arena_is_transient(+id: U32) -> Bool:
-  U32.is_ne(U32.and(id, 2147483648), 0)
-
-def arena_is_reverse(+start: U32) -> Bool:
-  U32.is_ne(U32.and(start, 1073741824), 0)
-
-def arena_node_offset(id: U32) -> U32:
-  U32.and(id, 2147483647)
-
-def arena_tape_offset(id: U32) -> U32:
-  U32.and(id, 1073741823)
-
-def arena_range_index_direction(start: U32, offset: U32, reverse: Bool) -> U32:
-  match reverse:
-    case False{}: U32.add(start, offset)
-    case True{}: U32.sub(start, offset)
-
-def arena_range_index(+start: U32, offset: U32) -> U32:
-  arena_range_index_direction(start, offset, arena_is_reverse(start))
-
-def arena_range_flip_empty(start: U32, count: U32, empty: Bool) -> U32:
-  match empty:
-    case True{}: start
-    case False{}: U32.xor(arena_range_index(start, U32.sub(count, 1)), 1073741824)
-
-def arena_range_flip(start: U32, +count: U32) -> U32:
-  arena_range_flip_empty(start, count, U32.is_eq(count, 0))
-
 # This source-owned cache contains only immutable raw heads, never alias
 # conclusions. Complete tape bounds and each indexed head are owner-local;
 # any uncertain row becomes a barrier that the original matcher still visits.
@@ -12227,7 +12717,7 @@ def arena_case_prefix_build_head(request: CasePrefixBuild, result: ArenaResult<M
           match head:
             case None{}: arena_case_prefix_save(store, start, count, heads, offset)
             case Some{name}:
-              arena_case_prefix_build(store, CasePrefixBuild{start, count, arena_range_index(cursor, 1), U32.add(offset, 1), remaining, Arena.case_prefix_first(heads, name, offset)})
+              arena_case_prefix_build(store, CasePrefixBuild{start, count, IR.arena_range_index(cursor, 1), U32.add(offset, 1), remaining, Arena.case_prefix_first(heads, name, offset)})
 
 def arena_case_prefix_build_word(request: CasePrefixBuild, result: ArenaResult<U32>) -> ArenaResult<Arena.CasePrefixEntry>:
   match result:
@@ -12283,7 +12773,7 @@ def arena_case_prefix_local_range_region(source: Arena.Arena, transient: Arena.A
 
 def arena_case_prefix_local_range(store: ArenaStore, +start: U32, count: U32) -> ArenaResult<Bool>:
   match store:
-    case ArenaStore{source, transient}: arena_case_prefix_local_range_region(source, transient, start, count, arena_is_transient(start))
+    case ArenaStore{source, transient}: arena_case_prefix_local_range_region(source, transient, start, count, IR.arena_is_transient(start))
 
 def arena_case_prefix_local_descriptor(arena: Arena.Arena, id: U32, pattern: Bool) -> Arena.Arena & Bool:
   match pattern:
@@ -12293,11 +12783,11 @@ def arena_case_prefix_local_descriptor(arena: Arena.Arena, id: U32, pattern: Boo
 def arena_case_prefix_local_descriptor_region(source: Arena.Arena, transient: Arena.Arena, id: U32, pattern: Bool, temporary: Bool) -> ArenaResult<Bool>:
   match temporary:
     case False{}: arena_case_prefix_local_valid_result(transient, arena_case_prefix_local_descriptor(source, id, pattern), False{})
-    case True{}: arena_case_prefix_local_valid_result(source, arena_case_prefix_local_descriptor(transient, arena_node_offset(id), pattern), True{})
+    case True{}: arena_case_prefix_local_valid_result(source, arena_case_prefix_local_descriptor(transient, IR.arena_node_offset(id), pattern), True{})
 
 def arena_case_prefix_local_descriptor_valid(store: ArenaStore, +id: U32, pattern: Bool) -> ArenaResult<Bool>:
   match store:
-    case ArenaStore{source, transient}: arena_case_prefix_local_descriptor_region(source, transient, id, pattern, arena_is_transient(id))
+    case ArenaStore{source, transient}: arena_case_prefix_local_descriptor_region(source, transient, id, pattern, IR.arena_is_transient(id))
 
 def arena_case_prefix_local_text_result(other: Arena.Arena, result: Arena.Arena & Maybe<&2, String>, temporary: Bool) -> ArenaResult<Maybe<&2, String>>:
   match result:
@@ -12321,12 +12811,12 @@ def arena_case_prefix_local_name_region(source: Arena.Arena, transient: Arena.Ar
   match temporary:
     case False{}: arena_case_prefix_local_text_result(transient, arena_case_prefix_local_name_valid(id, Arena.case_prefix_name_valid(source, id)), False{})
     case True{}:
-      +offset = arena_node_offset(id)
+      +offset = IR.arena_node_offset(id)
       arena_case_prefix_local_text_result(source, arena_case_prefix_local_name_valid(offset, Arena.case_prefix_name_valid(transient, offset)), True{})
 
 def arena_case_prefix_local_name(store: ArenaStore, +id: U32) -> ArenaResult<Maybe<&2, String>>:
   match store:
-    case ArenaStore{source, transient}: arena_case_prefix_local_name_region(source, transient, id, arena_is_transient(id))
+    case ArenaStore{source, transient}: arena_case_prefix_local_name_region(source, transient, id, IR.arena_is_transient(id))
 
 def arena_case_prefix_local_pattern_value(result: ArenaResult<Arena.Pattern>) -> ArenaResult<Maybe<&2, String>>:
   match result:
@@ -12389,7 +12879,7 @@ def arena_case_prefix_local_finish_region(store: ArenaStore, +start: U32, +count
           arena_case_prefix_local_save(transient, start, count, heads, barrier, Arena.generation(source))
 
 def arena_case_prefix_local_finish(store: ArenaStore, +start: U32, count: U32, heads: Map<&2, U32>, barrier: U32) -> ArenaResult<Arena.CasePrefixEntry>:
-  arena_case_prefix_local_finish_region(store, start, count, heads, barrier, arena_is_transient(start))
+  arena_case_prefix_local_finish_region(store, start, count, heads, barrier, IR.arena_is_transient(start))
 
 def arena_case_prefix_local_build_head(request: CasePrefixBuild, result: ArenaResult<Maybe<&2, String>>) -> ArenaResult<Arena.CasePrefixEntry>:
   match result:
@@ -12399,7 +12889,7 @@ def arena_case_prefix_local_build_head(request: CasePrefixBuild, result: ArenaRe
           match head:
             case None{}: arena_case_prefix_local_finish(store, start, count, heads, offset)
             case Some{name}:
-              arena_case_prefix_local_build(store, CasePrefixBuild{start, count, arena_range_index(cursor, 1), U32.add(offset, 1), remaining, Arena.case_prefix_first(heads, name, offset)})
+              arena_case_prefix_local_build(store, CasePrefixBuild{start, count, IR.arena_range_index(cursor, 1), U32.add(offset, 1), remaining, Arena.case_prefix_first(heads, name, offset)})
 
 def arena_case_prefix_local_build_word(request: CasePrefixBuild, result: ArenaResult<U32>) -> ArenaResult<Arena.CasePrefixEntry>:
   match result:
@@ -12460,7 +12950,7 @@ def arena_case_prefix_region(store: ArenaStore, start: U32, count: U32, temporar
 def arena_case_prefix_large(store: ArenaStore, +start: U32, count: U32, large: Bool) -> ArenaResult<Arena.CasePrefixEntry>:
   match large:
     case False{}: {ArenaResult{store, Arena.CasePrefixEmpty{}} : ArenaResult<Arena.CasePrefixEntry>}
-    case True{}: arena_case_prefix_region(store, start, count, arena_is_transient(start))
+    case True{}: arena_case_prefix_region(store, start, count, IR.arena_is_transient(start))
 
 def arena_case_prefix_index(store: ArenaStore, cases: IR.Words) -> ArenaResult<Arena.CasePrefixEntry>:
   match cases:
@@ -12473,7 +12963,7 @@ def arena_case_prefix_name(heads: Map<&2, U32>, name: String) -> Map<&2, U32> & 
 def arena_case_prefix_suffix(start: U32, count: U32, offset: U32, empty: Bool) -> IR.Words:
   match empty:
     case True{}: IR.Words{start, 0}
-    case False{}: IR.Words{arena_range_index(start, offset), U32.sub(count, offset)}
+    case False{}: IR.Words{IR.arena_range_index(start, offset), U32.sub(count, offset)}
 
 # The table lives only in transient Arena. Full tagged IDs distinguish regions;
 # neither arbitrary Nat key is narrowed, and hash collisions are exact misses.
@@ -12529,13 +13019,13 @@ def arena_name_text(store: ArenaStore, id: U32) -> ArenaResult<String>:
 def arena_get_node_region(source: Arena.Arena, transient: Arena.Arena, id: U32, temporary: Bool) -> ArenaResult<Arena.Node>:
   match temporary:
     case False{}:
-      arena_get_node_region_get_node_result_2(Arena.get_node(source, arena_node_offset(id)), transient)
+      arena_get_node_region_get_node_result_2(Arena.get_node(source, IR.arena_node_offset(id)), transient)
     case True{}:
-      arena_get_node_region_get_node_result_3(Arena.get_node(transient, arena_node_offset(id)), source)
+      arena_get_node_region_get_node_result_3(Arena.get_node(transient, IR.arena_node_offset(id)), source)
 
 def arena_get_node(store: ArenaStore, +id: U32) -> ArenaResult<Arena.Node>:
   match store:
-    case ArenaStore{source, transient}: arena_get_node_region(source, transient, id, arena_is_transient(id))
+    case ArenaStore{source, transient}: arena_get_node_region(source, transient, id, IR.arena_is_transient(id))
 
 def arena_node_is_closed_source(result: Arena.Arena & Bool, transient: Arena.Arena) -> ArenaResult<Bool>:
   match result:
@@ -12552,7 +13042,7 @@ def arena_node_is_closed_region(source: Arena.Arena, transient: Arena.Arena, +id
 
 def arena_node_is_closed(store: ArenaStore, +id: U32) -> ArenaResult<Bool>:
   match store:
-    case ArenaStore{source, transient}: arena_node_is_closed_region(source, transient, id, arena_is_transient(id))
+    case ArenaStore{source, transient}: arena_node_is_closed_region(source, transient, id, IR.arena_is_transient(id))
 
 def arena_put_node_bound(value: Arena.Node, result: ArenaResult<Nat>) -> ArenaResult<U32>:
   match result:
@@ -12572,13 +13062,13 @@ def arena_put_source_node(store: ArenaStore, value: Arena.Node) -> ArenaResult<U
 def arena_get_pattern_region(source: Arena.Arena, transient: Arena.Arena, id: U32, temporary: Bool) -> ArenaResult<Arena.Pattern>:
   match temporary:
     case False{}:
-      arena_get_pattern_region_get_pattern_result_6(Arena.get_pattern(source, arena_node_offset(id)), transient)
+      arena_get_pattern_region_get_pattern_result_6(Arena.get_pattern(source, IR.arena_node_offset(id)), transient)
     case True{}:
-      arena_get_pattern_region_get_pattern_result_7(Arena.get_pattern(transient, arena_node_offset(id)), source)
+      arena_get_pattern_region_get_pattern_result_7(Arena.get_pattern(transient, IR.arena_node_offset(id)), source)
 
 def arena_get_pattern(store: ArenaStore, +id: U32) -> ArenaResult<Arena.Pattern>:
   match store:
-    case ArenaStore{source, transient}: arena_get_pattern_region(source, transient, id, arena_is_transient(id))
+    case ArenaStore{source, transient}: arena_get_pattern_region(source, transient, id, IR.arena_is_transient(id))
 
 def arena_put_pattern(store: ArenaStore, value: Arena.Pattern) -> ArenaResult<U32>:
   match store:
@@ -12593,13 +13083,13 @@ def arena_put_source_pattern(store: ArenaStore, value: Arena.Pattern) -> ArenaRe
 def arena_get_binder_region(source: Arena.Arena, transient: Arena.Arena, id: U32, temporary: Bool) -> ArenaResult<Arena.Binder>:
   match temporary:
     case False{}:
-      arena_get_binder_region_get_binder_result_10(Arena.get_binder(source, arena_node_offset(id)), transient)
+      arena_get_binder_region_get_binder_result_10(Arena.get_binder(source, IR.arena_node_offset(id)), transient)
     case True{}:
-      arena_get_binder_region_get_binder_result_11(Arena.get_binder(transient, arena_node_offset(id)), source)
+      arena_get_binder_region_get_binder_result_11(Arena.get_binder(transient, IR.arena_node_offset(id)), source)
 
 def arena_get_binder(store: ArenaStore, +id: U32) -> ArenaResult<Arena.Binder>:
   match store:
-    case ArenaStore{source, transient}: arena_get_binder_region(source, transient, id, arena_is_transient(id))
+    case ArenaStore{source, transient}: arena_get_binder_region(source, transient, id, IR.arena_is_transient(id))
 
 def arena_put_binder(store: ArenaStore, value: Arena.Binder) -> ArenaResult<U32>:
   match store:
@@ -12614,13 +13104,13 @@ def arena_put_source_binder(store: ArenaStore, value: Arena.Binder) -> ArenaResu
 def arena_get_word_region(source: Arena.Arena, transient: Arena.Arena, id: U32, temporary: Bool) -> ArenaResult<U32>:
   match temporary:
     case False{}:
-      arena_get_word_region_word_result_14(Arena.word(source, arena_tape_offset(id)), transient)
+      arena_get_word_region_word_result_14(Arena.word(source, IR.arena_tape_offset(id)), transient)
     case True{}:
-      arena_get_word_region_word_result_15(Arena.word(transient, arena_tape_offset(id)), source)
+      arena_get_word_region_word_result_15(Arena.word(transient, IR.arena_tape_offset(id)), source)
 
 def arena_get_word(store: ArenaStore, +id: U32) -> ArenaResult<U32>:
   match store:
-    case ArenaStore{source, transient}: arena_get_word_region(source, transient, id, arena_is_transient(id))
+    case ArenaStore{source, transient}: arena_get_word_region(source, transient, id, IR.arena_is_transient(id))
 
 def arena_put_word(store: ArenaStore, value: U32) -> ArenaResult<U32>:
   match store:
@@ -12635,13 +13125,13 @@ def arena_put_source_word(store: ArenaStore, value: U32) -> ArenaResult<U32>:
 def arena_get_natural_region(source: Arena.Arena, transient: Arena.Arena, id: U32, temporary: Bool) -> ArenaResult<Nat>:
   match temporary:
     case False{}:
-      arena_get_natural_region_natural_result_18(Arena.natural(source, arena_tape_offset(id)), transient)
+      arena_get_natural_region_natural_result_18(Arena.natural(source, IR.arena_tape_offset(id)), transient)
     case True{}:
-      arena_get_natural_region_natural_result_19(Arena.natural(transient, arena_tape_offset(id)), source)
+      arena_get_natural_region_natural_result_19(Arena.natural(transient, IR.arena_tape_offset(id)), source)
 
 def arena_get_natural(store: ArenaStore, +id: U32) -> ArenaResult<Nat>:
   match store:
-    case ArenaStore{source, transient}: arena_get_natural_region(source, transient, id, arena_is_transient(id))
+    case ArenaStore{source, transient}: arena_get_natural_region(source, transient, id, IR.arena_is_transient(id))
 
 def arena_put_natural(store: ArenaStore, value: Nat) -> ArenaResult<U32>:
   match store:
@@ -12666,15 +13156,15 @@ def arena_reserve_source_words(store: ArenaStore, count: U32) -> ArenaResult<U32
 def arena_set_word_region(v_0: Arena.Arena, v_1: Arena.Arena, v_3: U32, v_5: U32, v_7: Bool) -> ArenaStore:
   match v_7:
     case False{}:
-      v_50000430 = Arena.set_word(v_0, arena_tape_offset(v_3), v_5)
+      v_50000430 = Arena.set_word(v_0, IR.arena_tape_offset(v_3), v_5)
       ArenaStore{v_50000430, v_1}
     case True{}:
-      v_50000431 = Arena.set_word(v_1, arena_tape_offset(v_3), v_5)
+      v_50000431 = Arena.set_word(v_1, IR.arena_tape_offset(v_3), v_5)
       ArenaStore{v_0, v_50000431}
 
 def arena_set_word(store: ArenaStore, +id: U32, value: U32) -> ArenaStore:
   match store:
-    case ArenaStore{source, transient}: arena_set_word_region(source, transient, id, value, arena_is_transient(id))
+    case ArenaStore{source, transient}: arena_set_word_region(source, transient, id, value, IR.arena_is_transient(id))
 
 def arena_word_cursor(store: ArenaStore) -> ArenaResult<U32>:
   match store:
@@ -12685,8 +13175,8 @@ def arena_copy_word_range(store: ArenaStore, +source: U32, +destination: U32, re
   match remaining:
     case 0n: store
     case 1n+rest:
-      ArenaResult{next, value} = arena_get_word(store, arena_range_index(source, offset))
-      arena_copy_word_range(arena_set_word(next, arena_range_index(destination, offset), value), source, destination, rest, U32.add(offset, 1))
+      ArenaResult{next, value} = arena_get_word(store, IR.arena_range_index(source, offset))
+      arena_copy_word_range(arena_set_word(next, IR.arena_range_index(destination, offset), value), source, destination, rest, U32.add(offset, 1))
 
 def arena_reserve_naturals(store: ArenaStore, count: U32) -> ArenaResult<U32>:
   match store:
@@ -12701,15 +13191,15 @@ def arena_reserve_source_naturals(store: ArenaStore, count: U32) -> ArenaResult<
 def arena_set_natural_region(v_0: Arena.Arena, v_1: Arena.Arena, v_3: U32, v_5: Nat, v_7: Bool) -> ArenaStore:
   match v_7:
     case False{}:
-      v_50000432 = Arena.set_natural(v_0, arena_tape_offset(v_3), v_5)
+      v_50000432 = Arena.set_natural(v_0, IR.arena_tape_offset(v_3), v_5)
       ArenaStore{v_50000432, v_1}
     case True{}:
-      v_50000433 = Arena.set_natural(v_1, arena_tape_offset(v_3), v_5)
+      v_50000433 = Arena.set_natural(v_1, IR.arena_tape_offset(v_3), v_5)
       ArenaStore{v_0, v_50000433}
 
 def arena_set_natural(store: ArenaStore, +id: U32, value: Nat) -> ArenaStore:
   match store:
-    case ArenaStore{source, transient}: arena_set_natural_region(source, transient, id, value, arena_is_transient(id))
+    case ArenaStore{source, transient}: arena_set_natural_region(source, transient, id, value, IR.arena_is_transient(id))
 
 def arena_natural_cursor(store: ArenaStore) -> ArenaResult<U32>:
   match store:
@@ -12728,12 +13218,12 @@ def arena_bound_transient(result: Arena.Arena & Nat, source: Arena.Arena) -> Are
 
 def arena_bound_read_region(source: Arena.Arena, transient: Arena.Arena, id: U32, temporary: Bool) -> ArenaResult<Nat>:
   match temporary:
-    case False{}: arena_bound_source(Arena.node_bound(source, arena_node_offset(id), False{}), transient)
-    case True{}: arena_bound_transient(Arena.node_bound(transient, arena_node_offset(id), True{}), source)
+    case False{}: arena_bound_source(Arena.node_bound(source, IR.arena_node_offset(id), False{}), transient)
+    case True{}: arena_bound_transient(Arena.node_bound(transient, IR.arena_node_offset(id), True{}), source)
 
 def arena_node_bound(store: ArenaStore, +id: U32) -> ArenaResult<Nat>:
   match store:
-    case ArenaStore{source, transient}: arena_bound_read_region(source, transient, id, arena_is_transient(id))
+    case ArenaStore{source, transient}: arena_bound_read_region(source, transient, id, IR.arena_is_transient(id))
 
 def arena_bound_merge(left: Nat, result: ArenaResult<Nat>) -> ArenaResult<Nat>:
   match result:
@@ -12790,13 +13280,13 @@ def arena_bound_pattern_get(limit: U32, result: ArenaResult<Arena.Pattern>) -> A
 
 def arena_bound_pattern_order(source: Arena.Arena, transient: Arena.Arena, +id: U32, order: Cmp) -> ArenaResult<Nat>:
   match order:
-    case LT{}: arena_bound_pattern_get(arena_node_offset(id), arena_get_pattern(ArenaStore{source, transient}, id))
+    case LT{}: arena_bound_pattern_get(IR.arena_node_offset(id), arena_get_pattern(ArenaStore{source, transient}, id))
     case _: {ArenaResult{ArenaStore{source, transient}, 0n} : ArenaResult<Nat>}
 
 def arena_bound_pattern_count(source: Arena.Arena, +id: U32, +limit: U32, result: Arena.Arena & U32) -> ArenaResult<Nat>:
   match result:
     case Tuple{transient, used}:
-      arena_bound_pattern_order(source, transient, id, U32.cmp(arena_node_offset(id), arena_bound_min(used, limit)))
+      arena_bound_pattern_order(source, transient, id, U32.cmp(IR.arena_node_offset(id), arena_bound_min(used, limit)))
 
 def arena_bound_pattern_region(source: Arena.Arena, transient: Arena.Arena, id: U32, limit: U32, temporary: Bool) -> ArenaResult<Nat>:
   match temporary:
@@ -12805,7 +13295,7 @@ def arena_bound_pattern_region(source: Arena.Arena, transient: Arena.Arena, id: 
 
 def arena_bound_pattern(store: ArenaStore, +id: U32, limit: U32) -> ArenaResult<Nat>:
   match store:
-    case ArenaStore{source, transient}: arena_bound_pattern_region(source, transient, id, limit, arena_is_transient(id))
+    case ArenaStore{source, transient}: arena_bound_pattern_region(source, transient, id, limit, IR.arena_is_transient(id))
 
 def arena_bound_range_combine(left: Nat, pattern: Bool, result: ArenaResult<Nat>) -> ArenaResult<Nat>:
   match result:
@@ -12833,7 +13323,7 @@ def arena_bound_range_loop(remaining: Nat, +start: U32, +offset: U32, +pattern: 
           match encoded:
             case 0n: {ArenaResult{store, 0n} : ArenaResult<Nat>}
             case 1n+left:
-              arena_bound_range_loop(rest, start, U32.add(offset, 1), pattern, limit, arena_bound_range_word(left, pattern, limit, arena_get_word(store, arena_range_index(start, offset))))
+              arena_bound_range_loop(rest, start, U32.add(offset, 1), pattern, limit, arena_bound_range_word(left, pattern, limit, arena_get_word(store, IR.arena_range_index(start, offset))))
 
 def arena_bound_range_length(store: ArenaStore, start: U32, +count: U32, pattern: Bool, limit: U32, order: Cmp) -> ArenaResult<Nat>:
   match order:
@@ -12843,8 +13333,8 @@ def arena_bound_range_length(store: ArenaStore, start: U32, +count: U32, pattern
 def arena_bound_range_start(store: ArenaStore, +start: U32, +count: U32, +used: U32, pattern: Bool, limit: U32, order: Cmp) -> ArenaResult<Nat>:
   match order:
     case LT{}:
-      +offset = arena_tape_offset(start)
-      +reverse = arena_is_reverse(start)
+      +offset = IR.arena_tape_offset(start)
+      +reverse = IR.arena_is_reverse(start)
       match reverse:
         case False{}: arena_bound_range_length(store, start, count, pattern, limit, U32.cmp(count, U32.sub(used, offset)))
         case True{}: arena_bound_range_length(store, start, count, pattern, limit, U32.cmp(count, U32.add(offset, 1)))
@@ -12854,13 +13344,13 @@ def arena_bound_range_source(+start: U32, count: U32, pattern: Bool, limit: U32,
   match result:
     case Tuple{source, used}:
       +bounded = arena_bound_min(used, 1073741824)
-      arena_bound_range_start(ArenaStore{source, transient}, start, count, bounded, pattern, limit, U32.cmp(arena_tape_offset(start), bounded))
+      arena_bound_range_start(ArenaStore{source, transient}, start, count, bounded, pattern, limit, U32.cmp(IR.arena_tape_offset(start), bounded))
 
 def arena_bound_range_transient(+start: U32, count: U32, pattern: Bool, limit: U32, result: Arena.Arena & U32, source: Arena.Arena) -> ArenaResult<Nat>:
   match result:
     case Tuple{transient, used}:
       +bounded = arena_bound_min(used, 1073741824)
-      arena_bound_range_start(ArenaStore{source, transient}, start, count, bounded, pattern, limit, U32.cmp(arena_tape_offset(start), bounded))
+      arena_bound_range_start(ArenaStore{source, transient}, start, count, bounded, pattern, limit, U32.cmp(IR.arena_tape_offset(start), bounded))
 
 def arena_bound_range_region(source: Arena.Arena, transient: Arena.Arena, start: U32, count: U32, pattern: Bool, limit: U32, temporary: Bool) -> ArenaResult<Nat>:
   match temporary:
@@ -12872,7 +13362,7 @@ def arena_bound_range_empty(store: ArenaStore, start: U32, count: U32, pattern: 
     case True{}: {ArenaResult{store, 1n} : ArenaResult<Nat>}
     case False{}:
       match store:
-        case ArenaStore{source, transient}: arena_bound_range_region(source, transient, start, count, pattern, limit, arena_is_transient(start))
+        case ArenaStore{source, transient}: arena_bound_range_region(source, transient, start, count, pattern, limit, IR.arena_is_transient(start))
 
 def arena_bound_range(store: ArenaStore, start: U32, +count: U32, pattern: Bool, limit: U32) -> ArenaResult<Nat>:
   arena_bound_range_empty(store, start, count, pattern, limit, U32.is_eq(count, 0))
@@ -12937,8 +13427,8 @@ def arena_copy_natural_range(store: ArenaStore, +source: U32, +destination: U32,
   match remaining:
     case 0n: store
     case 1n+rest:
-      ArenaResult{next, value} = arena_get_natural(store, arena_range_index(source, offset))
-      arena_copy_natural_range(arena_set_natural(next, arena_range_index(destination, offset), value), source, destination, rest, U32.add(offset, 1))
+      ArenaResult{next, value} = arena_get_natural(store, IR.arena_range_index(source, offset))
+      arena_copy_natural_range(arena_set_natural(next, IR.arena_range_index(destination, offset), value), source, destination, rest, U32.add(offset, 1))
 
 def arena_words_start(range: IR.Words) -> U32:
   match range:
@@ -12960,7 +13450,7 @@ def arena_words_view_nonempty(v_1: ArenaStore, +v_3: U32, v_5: U32, v_7: Bool) -
       {ArenaResult{v_1, IR.WordNil{}} : ArenaResult<IR.WordView>}
     case False{}:
       ArenaResult{v_12, v_13} = arena_get_word(v_1, v_3)
-      v_50000434 = arena_range_index(v_3, 1)
+      v_50000434 = IR.arena_range_index(v_3, 1)
       v_50000435 = IR.Words{v_50000434, U32.sub(v_5, 1)}
       v_50000436 = IR.WordCons{v_13, v_50000435}
       {ArenaResult{v_12, v_50000436} : ArenaResult<IR.WordView>}
@@ -12972,7 +13462,7 @@ def arena_words_view(store: ArenaStore, range: IR.Words) -> ArenaResult<IR.WordV
 def arena_words_prepend_copy(v_1: ArenaStore, v_3: U32, +v_5: U32, +v_7: U32) -> ArenaResult<IR.Words>:
   ArenaResult{v_12, v_13} = arena_reserve_words(v_1, U32.add(v_7, 1))
   +v_15 = U32.or(U32.add(v_13, v_7), 1073741824)
-  v_19 = arena_copy_word_range(v_12, v_5, arena_range_index(v_15, 1), U32.to_nat(v_7), 0)
+  v_19 = arena_copy_word_range(v_12, v_5, IR.arena_range_index(v_15, 1), U32.to_nat(v_7), 0)
   v_50000437 = arena_set_word(v_19, v_15, v_3)
   {ArenaResult{v_50000437, IR.Words{v_15, U32.add(v_7, 1)}} : ArenaResult<IR.Words>}
 
@@ -12984,7 +13474,7 @@ def arena_words_prepend_fast(store: ArenaStore, head: U32, start: U32, +count: U
     case False{}: arena_words_prepend_copy(store, head, start, count)
 
 def arena_words_prepend_count(store: ArenaStore, head: U32, +start: U32, +count: U32, cursor: U32) -> ArenaResult<IR.Words>:
-  arena_words_prepend_fast(store, head, start, count, Bool.or(U32.is_eq(count, 0), Bool.and(Bool.and(arena_is_transient(start), arena_is_reverse(start)), U32.is_eq(U32.add(arena_tape_offset(start), 1), cursor))))
+  arena_words_prepend_fast(store, head, start, count, Bool.or(U32.is_eq(count, 0), Bool.and(Bool.and(IR.arena_is_transient(start), IR.arena_is_reverse(start)), U32.is_eq(U32.add(IR.arena_tape_offset(start), 1), cursor))))
 
 def arena_words_cons(store: ArenaStore, head: U32, tail: IR.Words) -> ArenaResult<IR.Words>:
   match tail:
@@ -12997,7 +13487,7 @@ def arena_words_append_copy(store: ArenaStore, +left: U32, +left_count: U32, +ri
   ArenaResult{next, start} = arena_reserve_words(store, count)
   +destination = U32.or(U32.add(start, U32.sub(count, 1)), 1073741824)
   copied = arena_copy_word_range(next, left, destination, U32.to_nat(left_count), 0)
-  last = arena_copy_word_range(copied, right, arena_range_index(destination, left_count), U32.to_nat(right_count), 0)
+  last = arena_copy_word_range(copied, right, IR.arena_range_index(destination, left_count), U32.to_nat(right_count), 0)
   {ArenaResult{last, IR.Words{destination, count}} : ArenaResult<IR.Words>}
 
 def arena_words_append_select(store: ArenaStore, +left: U32, +left_count: U32, +right: U32, +right_count: U32, empty_left: Bool, empty_right: Bool, adjacent: Bool) -> ArenaResult<IR.Words>:
@@ -13010,12 +13500,12 @@ def arena_words_append_select(store: ArenaStore, +left: U32, +left_count: U32, +
 def arena_words_append(store: ArenaStore, left: IR.Words, right: IR.Words) -> ArenaResult<IR.Words>:
   match left right:
     case IR.Words{+start, +count} IR.Words{+next, +size}:
-      arena_words_append_select(store, start, count, next, size, U32.is_eq(count, 0), U32.is_eq(size, 0), U32.is_eq(arena_range_index(start, count), next))
+      arena_words_append_select(store, start, count, next, size, U32.is_eq(count, 0), U32.is_eq(size, 0), U32.is_eq(IR.arena_range_index(start, count), next))
 
 def arena_words_reverse(v_1: ArenaStore, v_2: IR.Words) -> ArenaResult<IR.Words>:
   match v_2:
     case IR.Words{v_6, +v_7}:
-      v_50000438 = arena_range_flip(v_6, v_7)
+      v_50000438 = IR.arena_range_flip(v_6, v_7)
       v_50000439 = IR.Words{v_50000438, v_7}
       {ArenaResult{v_1, v_50000439} : ArenaResult<IR.Words>}
 
@@ -13040,7 +13530,7 @@ def arena_names_view_nonempty(v_1: ArenaStore, +v_3: U32, v_5: U32, v_7: Bool) -
     case False{}:
       ArenaResult{v_12, v_13} = arena_get_word(v_1, v_3)
       ArenaResult{v_17, v_18} = arena_name_text(v_12, v_13)
-      v_50000440 = arena_range_index(v_3, 1)
+      v_50000440 = IR.arena_range_index(v_3, 1)
       v_50000441 = IR.Names{v_50000440, U32.sub(v_5, 1)}
       v_50000442 = IR.NameCons{v_18, v_50000441}
       {ArenaResult{v_17, v_50000442} : ArenaResult<IR.NameView>}
@@ -13052,7 +13542,7 @@ def arena_names_view(store: ArenaStore, range: IR.Names) -> ArenaResult<IR.NameV
 def arena_names_prepend_copy(v_1: ArenaStore, v_3: U32, +v_5: U32, +v_7: U32) -> ArenaResult<IR.Names>:
   ArenaResult{v_12, v_13} = arena_reserve_words(v_1, U32.add(v_7, 1))
   +v_15 = U32.or(U32.add(v_13, v_7), 1073741824)
-  v_19 = arena_copy_word_range(v_12, v_5, arena_range_index(v_15, 1), U32.to_nat(v_7), 0)
+  v_19 = arena_copy_word_range(v_12, v_5, IR.arena_range_index(v_15, 1), U32.to_nat(v_7), 0)
   v_50000443 = arena_set_word(v_19, v_15, v_3)
   {ArenaResult{v_50000443, IR.Names{v_15, U32.add(v_7, 1)}} : ArenaResult<IR.Names>}
 
@@ -13064,7 +13554,7 @@ def arena_names_prepend_fast(store: ArenaStore, head: U32, start: U32, +count: U
     case False{}: arena_names_prepend_copy(store, head, start, count)
 
 def arena_names_prepend_count(store: ArenaStore, head: U32, +start: U32, +count: U32, cursor: U32) -> ArenaResult<IR.Names>:
-  arena_names_prepend_fast(store, head, start, count, Bool.or(U32.is_eq(count, 0), Bool.and(Bool.and(arena_is_transient(start), arena_is_reverse(start)), U32.is_eq(U32.add(arena_tape_offset(start), 1), cursor))))
+  arena_names_prepend_fast(store, head, start, count, Bool.or(U32.is_eq(count, 0), Bool.and(Bool.and(IR.arena_is_transient(start), IR.arena_is_reverse(start)), U32.is_eq(U32.add(IR.arena_tape_offset(start), 1), cursor))))
 
 def arena_names_cons(store: ArenaStore, head: String, tail: IR.Names) -> ArenaResult<IR.Names>:
   match tail:
@@ -13078,7 +13568,7 @@ def arena_names_append_copy(store: ArenaStore, +left: U32, +left_count: U32, +ri
   ArenaResult{next, start} = arena_reserve_words(store, count)
   +destination = U32.or(U32.add(start, U32.sub(count, 1)), 1073741824)
   copied = arena_copy_word_range(next, left, destination, U32.to_nat(left_count), 0)
-  last = arena_copy_word_range(copied, right, arena_range_index(destination, left_count), U32.to_nat(right_count), 0)
+  last = arena_copy_word_range(copied, right, IR.arena_range_index(destination, left_count), U32.to_nat(right_count), 0)
   {ArenaResult{last, IR.Names{destination, count}} : ArenaResult<IR.Names>}
 
 def arena_names_append_select(store: ArenaStore, +left: U32, +left_count: U32, +right: U32, +right_count: U32, empty_left: Bool, empty_right: Bool, adjacent: Bool) -> ArenaResult<IR.Names>:
@@ -13091,12 +13581,12 @@ def arena_names_append_select(store: ArenaStore, +left: U32, +left_count: U32, +
 def arena_names_append(store: ArenaStore, left: IR.Names, right: IR.Names) -> ArenaResult<IR.Names>:
   match left right:
     case IR.Names{+start, +count} IR.Names{+next, +size}:
-      arena_names_append_select(store, start, count, next, size, U32.is_eq(count, 0), U32.is_eq(size, 0), U32.is_eq(arena_range_index(start, count), next))
+      arena_names_append_select(store, start, count, next, size, U32.is_eq(count, 0), U32.is_eq(size, 0), U32.is_eq(IR.arena_range_index(start, count), next))
 
 def arena_names_reverse(v_1: ArenaStore, v_2: IR.Names) -> ArenaResult<IR.Names>:
   match v_2:
     case IR.Names{v_6, +v_7}:
-      v_50000444 = arena_range_flip(v_6, v_7)
+      v_50000444 = IR.arena_range_flip(v_6, v_7)
       v_50000445 = IR.Names{v_50000444, v_7}
       {ArenaResult{v_1, v_50000445} : ArenaResult<IR.Names>}
 
@@ -13120,7 +13610,7 @@ def arena_naturals_view_nonempty(v_1: ArenaStore, +v_3: U32, v_5: U32, v_7: Bool
       {ArenaResult{v_1, IR.NaturalNil{}} : ArenaResult<IR.NaturalView>}
     case False{}:
       ArenaResult{v_12, v_13} = arena_get_natural(v_1, v_3)
-      v_50000446 = arena_range_index(v_3, 1)
+      v_50000446 = IR.arena_range_index(v_3, 1)
       v_50000447 = IR.Naturals{v_50000446, U32.sub(v_5, 1)}
       v_50000448 = IR.NaturalCons{v_13, v_50000447}
       {ArenaResult{v_12, v_50000448} : ArenaResult<IR.NaturalView>}
@@ -13132,7 +13622,7 @@ def arena_naturals_view(store: ArenaStore, range: IR.Naturals) -> ArenaResult<IR
 def arena_naturals_prepend_copy(v_1: ArenaStore, v_3: Nat, +v_5: U32, +v_7: U32) -> ArenaResult<IR.Naturals>:
   ArenaResult{v_12, v_13} = arena_reserve_naturals(v_1, U32.add(v_7, 1))
   +v_15 = U32.or(U32.add(v_13, v_7), 1073741824)
-  v_19 = arena_copy_natural_range(v_12, v_5, arena_range_index(v_15, 1), U32.to_nat(v_7), 0)
+  v_19 = arena_copy_natural_range(v_12, v_5, IR.arena_range_index(v_15, 1), U32.to_nat(v_7), 0)
   v_50000449 = arena_set_natural(v_19, v_15, v_3)
   {ArenaResult{v_50000449, IR.Naturals{v_15, U32.add(v_7, 1)}} : ArenaResult<IR.Naturals>}
 
@@ -13144,7 +13634,7 @@ def arena_naturals_prepend_fast(store: ArenaStore, head: Nat, start: U32, +count
     case False{}: arena_naturals_prepend_copy(store, head, start, count)
 
 def arena_naturals_prepend_count(store: ArenaStore, head: Nat, +start: U32, +count: U32, cursor: U32) -> ArenaResult<IR.Naturals>:
-  arena_naturals_prepend_fast(store, head, start, count, Bool.or(U32.is_eq(count, 0), Bool.and(Bool.and(arena_is_transient(start), arena_is_reverse(start)), U32.is_eq(U32.add(arena_tape_offset(start), 1), cursor))))
+  arena_naturals_prepend_fast(store, head, start, count, Bool.or(U32.is_eq(count, 0), Bool.and(Bool.and(IR.arena_is_transient(start), IR.arena_is_reverse(start)), U32.is_eq(U32.add(IR.arena_tape_offset(start), 1), cursor))))
 
 def arena_naturals_cons(store: ArenaStore, head: Nat, tail: IR.Naturals) -> ArenaResult<IR.Naturals>:
   match tail:
@@ -13157,7 +13647,7 @@ def arena_naturals_append_copy(store: ArenaStore, +left: U32, +left_count: U32, 
   ArenaResult{next, start} = arena_reserve_naturals(store, count)
   +destination = U32.or(U32.add(start, U32.sub(count, 1)), 1073741824)
   copied = arena_copy_natural_range(next, left, destination, U32.to_nat(left_count), 0)
-  last = arena_copy_natural_range(copied, right, arena_range_index(destination, left_count), U32.to_nat(right_count), 0)
+  last = arena_copy_natural_range(copied, right, IR.arena_range_index(destination, left_count), U32.to_nat(right_count), 0)
   {ArenaResult{last, IR.Naturals{destination, count}} : ArenaResult<IR.Naturals>}
 
 def arena_naturals_append_select(store: ArenaStore, +left: U32, +left_count: U32, +right: U32, +right_count: U32, empty_left: Bool, empty_right: Bool, adjacent: Bool) -> ArenaResult<IR.Naturals>:
@@ -13170,12 +13660,12 @@ def arena_naturals_append_select(store: ArenaStore, +left: U32, +left_count: U32
 def arena_naturals_append(store: ArenaStore, left: IR.Naturals, right: IR.Naturals) -> ArenaResult<IR.Naturals>:
   match left right:
     case IR.Naturals{+start, +count} IR.Naturals{+next, +size}:
-      arena_naturals_append_select(store, start, count, next, size, U32.is_eq(count, 0), U32.is_eq(size, 0), U32.is_eq(arena_range_index(start, count), next))
+      arena_naturals_append_select(store, start, count, next, size, U32.is_eq(count, 0), U32.is_eq(size, 0), U32.is_eq(IR.arena_range_index(start, count), next))
 
 def arena_naturals_reverse(v_1: ArenaStore, v_2: IR.Naturals) -> ArenaResult<IR.Naturals>:
   match v_2:
     case IR.Naturals{v_6, +v_7}:
-      v_50000450 = arena_range_flip(v_6, v_7)
+      v_50000450 = IR.arena_range_flip(v_6, v_7)
       v_50000451 = IR.Naturals{v_50000450, v_7}
       {ArenaResult{v_1, v_50000451} : ArenaResult<IR.Naturals>}
 
@@ -13200,7 +13690,7 @@ def arena_quantities_view_nonempty(v_1: ArenaStore, +v_3: U32, v_5: U32, v_7: Bo
     case False{}:
       ArenaResult{v_12, v_13} = arena_get_word(v_1, v_3)
       v_50000452 = Arena.word_quantity(v_13)
-      v_50000453 = arena_range_index(v_3, 1)
+      v_50000453 = IR.arena_range_index(v_3, 1)
       v_50000454 = IR.Quantities{v_50000453, U32.sub(v_5, 1)}
       v_50000455 = IR.QuantityCons{v_50000452, v_50000454}
       {ArenaResult{v_12, v_50000455} : ArenaResult<IR.QuantityView>}
@@ -13212,7 +13702,7 @@ def arena_quantities_view(store: ArenaStore, range: IR.Quantities) -> ArenaResul
 def arena_quantities_prepend_copy(v_1: ArenaStore, v_3: U32, +v_5: U32, +v_7: U32) -> ArenaResult<IR.Quantities>:
   ArenaResult{v_12, v_13} = arena_reserve_words(v_1, U32.add(v_7, 1))
   +v_15 = U32.or(U32.add(v_13, v_7), 1073741824)
-  v_19 = arena_copy_word_range(v_12, v_5, arena_range_index(v_15, 1), U32.to_nat(v_7), 0)
+  v_19 = arena_copy_word_range(v_12, v_5, IR.arena_range_index(v_15, 1), U32.to_nat(v_7), 0)
   v_50000456 = arena_set_word(v_19, v_15, v_3)
   {ArenaResult{v_50000456, IR.Quantities{v_15, U32.add(v_7, 1)}} : ArenaResult<IR.Quantities>}
 
@@ -13224,7 +13714,7 @@ def arena_quantities_prepend_fast(store: ArenaStore, head: U32, start: U32, +cou
     case False{}: arena_quantities_prepend_copy(store, head, start, count)
 
 def arena_quantities_prepend_count(store: ArenaStore, head: U32, +start: U32, +count: U32, cursor: U32) -> ArenaResult<IR.Quantities>:
-  arena_quantities_prepend_fast(store, head, start, count, Bool.or(U32.is_eq(count, 0), Bool.and(Bool.and(arena_is_transient(start), arena_is_reverse(start)), U32.is_eq(U32.add(arena_tape_offset(start), 1), cursor))))
+  arena_quantities_prepend_fast(store, head, start, count, Bool.or(U32.is_eq(count, 0), Bool.and(Bool.and(IR.arena_is_transient(start), IR.arena_is_reverse(start)), U32.is_eq(U32.add(IR.arena_tape_offset(start), 1), cursor))))
 
 def arena_quantities_cons(store: ArenaStore, head: Ast.Quantity, tail: IR.Quantities) -> ArenaResult<IR.Quantities>:
   match tail:
@@ -13237,7 +13727,7 @@ def arena_quantities_append_copy(store: ArenaStore, +left: U32, +left_count: U32
   ArenaResult{next, start} = arena_reserve_words(store, count)
   +destination = U32.or(U32.add(start, U32.sub(count, 1)), 1073741824)
   copied = arena_copy_word_range(next, left, destination, U32.to_nat(left_count), 0)
-  last = arena_copy_word_range(copied, right, arena_range_index(destination, left_count), U32.to_nat(right_count), 0)
+  last = arena_copy_word_range(copied, right, IR.arena_range_index(destination, left_count), U32.to_nat(right_count), 0)
   {ArenaResult{last, IR.Quantities{destination, count}} : ArenaResult<IR.Quantities>}
 
 def arena_quantities_append_select(store: ArenaStore, +left: U32, +left_count: U32, +right: U32, +right_count: U32, empty_left: Bool, empty_right: Bool, adjacent: Bool) -> ArenaResult<IR.Quantities>:
@@ -13250,12 +13740,12 @@ def arena_quantities_append_select(store: ArenaStore, +left: U32, +left_count: U
 def arena_quantities_append(store: ArenaStore, left: IR.Quantities, right: IR.Quantities) -> ArenaResult<IR.Quantities>:
   match left right:
     case IR.Quantities{+start, +count} IR.Quantities{+next, +size}:
-      arena_quantities_append_select(store, start, count, next, size, U32.is_eq(count, 0), U32.is_eq(size, 0), U32.is_eq(arena_range_index(start, count), next))
+      arena_quantities_append_select(store, start, count, next, size, U32.is_eq(count, 0), U32.is_eq(size, 0), U32.is_eq(IR.arena_range_index(start, count), next))
 
 def arena_quantities_reverse(v_1: ArenaStore, v_2: IR.Quantities) -> ArenaResult<IR.Quantities>:
   match v_2:
     case IR.Quantities{v_6, +v_7}:
-      v_50000457 = arena_range_flip(v_6, v_7)
+      v_50000457 = IR.arena_range_flip(v_6, v_7)
       v_50000458 = IR.Quantities{v_50000457, v_7}
       {ArenaResult{v_1, v_50000458} : ArenaResult<IR.Quantities>}
 
@@ -13263,7 +13753,7 @@ def arena_publish_terms_copy(store: ArenaStore, +start: U32, +destination: U32, 
   match remaining:
     case 0n: store
     case 1n+rest:
-      ArenaResult{next, value} = arena_get_word(store, arena_range_index(start, offset))
+      ArenaResult{next, value} = arena_get_word(store, IR.arena_range_index(start, offset))
       ArenaResult{published, retained} = arena_publish_term(next, value)
       arena_publish_terms_copy(arena_set_word(published, U32.add(destination, offset), retained), start, destination, rest, U32.add(offset, 1))
 
@@ -13280,13 +13770,13 @@ def arena_publish_terms_select(v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Bool,
 
 def arena_publish_terms(store: ArenaStore, range: IR.Words) -> ArenaResult<IR.Words>:
   match range:
-    case IR.Words{+start, +count}: arena_publish_terms_select(store, start, count, U32.is_eq(count, 0), Bool.and(Bool.not(arena_is_transient(start)), Bool.not(arena_is_reverse(start))))
+    case IR.Words{+start, +count}: arena_publish_terms_select(store, start, count, U32.is_eq(count, 0), Bool.and(Bool.not(IR.arena_is_transient(start)), Bool.not(IR.arena_is_reverse(start))))
 
 def arena_publish_patterns_copy(store: ArenaStore, +start: U32, +destination: U32, remaining: Nat, +offset: U32) -> ArenaStore:
   match remaining:
     case 0n: store
     case 1n+rest:
-      ArenaResult{next, value} = arena_get_word(store, arena_range_index(start, offset))
+      ArenaResult{next, value} = arena_get_word(store, IR.arena_range_index(start, offset))
       ArenaResult{published, retained} = arena_publish_pattern(next, value)
       arena_publish_patterns_copy(arena_set_word(published, U32.add(destination, offset), retained), start, destination, rest, U32.add(offset, 1))
 
@@ -13303,13 +13793,13 @@ def arena_publish_patterns_select(v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Bo
 
 def arena_publish_patterns(store: ArenaStore, range: IR.Words) -> ArenaResult<IR.Words>:
   match range:
-    case IR.Words{+start, +count}: arena_publish_patterns_select(store, start, count, U32.is_eq(count, 0), Bool.and(Bool.not(arena_is_transient(start)), Bool.not(arena_is_reverse(start))))
+    case IR.Words{+start, +count}: arena_publish_patterns_select(store, start, count, U32.is_eq(count, 0), Bool.and(Bool.not(IR.arena_is_transient(start)), Bool.not(IR.arena_is_reverse(start))))
 
 def arena_publish_binders_copy(store: ArenaStore, +start: U32, +destination: U32, remaining: Nat, +offset: U32) -> ArenaStore:
   match remaining:
     case 0n: store
     case 1n+rest:
-      ArenaResult{next, value} = arena_get_word(store, arena_range_index(start, offset))
+      ArenaResult{next, value} = arena_get_word(store, IR.arena_range_index(start, offset))
       ArenaResult{published, retained} = arena_publish_binder(next, value)
       arena_publish_binders_copy(arena_set_word(published, U32.add(destination, offset), retained), start, destination, rest, U32.add(offset, 1))
 
@@ -13326,13 +13816,13 @@ def arena_publish_binders_select(v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Boo
 
 def arena_publish_binders(store: ArenaStore, range: IR.Words) -> ArenaResult<IR.Words>:
   match range:
-    case IR.Words{+start, +count}: arena_publish_binders_select(store, start, count, U32.is_eq(count, 0), Bool.and(Bool.not(arena_is_transient(start)), Bool.not(arena_is_reverse(start))))
+    case IR.Words{+start, +count}: arena_publish_binders_select(store, start, count, U32.is_eq(count, 0), Bool.and(Bool.not(IR.arena_is_transient(start)), Bool.not(IR.arena_is_reverse(start))))
 
 def arena_publish_names_copy(store: ArenaStore, +start: U32, +destination: U32, remaining: Nat, +offset: U32) -> ArenaStore:
   match remaining:
     case 0n: store
     case 1n+rest:
-      ArenaResult{next, value} = arena_get_word(store, arena_range_index(start, offset))
+      ArenaResult{next, value} = arena_get_word(store, IR.arena_range_index(start, offset))
       arena_publish_names_copy(arena_set_word(next, U32.add(destination, offset), value), start, destination, rest, U32.add(offset, 1))
 
 def arena_publish_names_select(v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Bool, v_9: Bool) -> ArenaResult<IR.Names>:
@@ -13348,13 +13838,13 @@ def arena_publish_names_select(v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Bool,
 
 def arena_publish_names(store: ArenaStore, range: IR.Names) -> ArenaResult<IR.Names>:
   match range:
-    case IR.Names{+start, +count}: arena_publish_names_select(store, start, count, U32.is_eq(count, 0), Bool.and(Bool.not(arena_is_transient(start)), Bool.not(arena_is_reverse(start))))
+    case IR.Names{+start, +count}: arena_publish_names_select(store, start, count, U32.is_eq(count, 0), Bool.and(Bool.not(IR.arena_is_transient(start)), Bool.not(IR.arena_is_reverse(start))))
 
 def arena_publish_quantities_copy(store: ArenaStore, +start: U32, +destination: U32, remaining: Nat, +offset: U32) -> ArenaStore:
   match remaining:
     case 0n: store
     case 1n+rest:
-      ArenaResult{next, value} = arena_get_word(store, arena_range_index(start, offset))
+      ArenaResult{next, value} = arena_get_word(store, IR.arena_range_index(start, offset))
       arena_publish_quantities_copy(arena_set_word(next, U32.add(destination, offset), value), start, destination, rest, U32.add(offset, 1))
 
 def arena_publish_quantities_select(v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Bool, v_9: Bool) -> ArenaResult<IR.Quantities>:
@@ -13370,13 +13860,13 @@ def arena_publish_quantities_select(v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: 
 
 def arena_publish_quantities(store: ArenaStore, range: IR.Quantities) -> ArenaResult<IR.Quantities>:
   match range:
-    case IR.Quantities{+start, +count}: arena_publish_quantities_select(store, start, count, U32.is_eq(count, 0), Bool.and(Bool.not(arena_is_transient(start)), Bool.not(arena_is_reverse(start))))
+    case IR.Quantities{+start, +count}: arena_publish_quantities_select(store, start, count, U32.is_eq(count, 0), Bool.and(Bool.not(IR.arena_is_transient(start)), Bool.not(IR.arena_is_reverse(start))))
 
 def arena_publish_naturals_copy(store: ArenaStore, +start: U32, +destination: U32, remaining: Nat, +offset: U32) -> ArenaStore:
   match remaining:
     case 0n: store
     case 1n+rest:
-      ArenaResult{next, value} = arena_get_natural(store, arena_range_index(start, offset))
+      ArenaResult{next, value} = arena_get_natural(store, IR.arena_range_index(start, offset))
       arena_publish_naturals_copy(arena_set_natural(next, U32.add(destination, offset), value), start, destination, rest, U32.add(offset, 1))
 
 def arena_publish_naturals_select(v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Bool, v_9: Bool) -> ArenaResult<IR.Naturals>:
@@ -13392,17 +13882,18 @@ def arena_publish_naturals_select(v_1: ArenaStore, +v_3: U32, +v_5: U32, v_7: Bo
 
 def arena_publish_naturals(store: ArenaStore, range: IR.Naturals) -> ArenaResult<IR.Naturals>:
   match range:
-    case IR.Naturals{+start, +count}: arena_publish_naturals_select(store, start, count, U32.is_eq(count, 0), Bool.and(Bool.not(arena_is_transient(start)), Bool.not(arena_is_reverse(start))))
+    case IR.Naturals{+start, +count}: arena_publish_naturals_select(store, start, count, U32.is_eq(count, 0), Bool.and(Bool.not(IR.arena_is_transient(start)), Bool.not(IR.arena_is_reverse(start))))
 
-def arena_publish_term_region(store: ArenaStore, id: U32, temporary: Bool) -> ArenaResult<U32>:
+def arena_publish_term_region(store: ArenaStore, +id: U32, temporary: Bool) -> ArenaResult<U32>:
   match temporary:
     case False{}: {ArenaResult{store, id} : ArenaResult<U32>}
     case True{}:
-      ArenaResult{next, view} = arena_get_node(store, id)
-      arena_publish_term_view(next, view)
+      match store:
+        case ArenaStore{source, transient}:
+          arena_publication_lookup(source, id, Arena.subst_memo_get(transient, id, 0))
 
 def arena_publish_term(store: ArenaStore, +id: U32) -> ArenaResult<U32>:
-  arena_publish_term_region(store, id, arena_is_transient(id))
+  arena_publish_term_region(store, id, IR.arena_is_transient(id))
 
 def arena_publish_term_view(v_1: ArenaStore, v_2: Arena.Node) -> ArenaResult<U32>:
   match v_2:
@@ -13543,7 +14034,7 @@ def arena_publish_pattern_region(store: ArenaStore, id: U32, temporary: Bool) ->
       arena_publish_pattern_view(next, view)
 
 def arena_publish_pattern(store: ArenaStore, +id: U32) -> ArenaResult<U32>:
-  arena_publish_pattern_region(store, id, arena_is_transient(id))
+  arena_publish_pattern_region(store, id, IR.arena_is_transient(id))
 
 def arena_publish_pattern_view(v_1: ArenaStore, v_2: Arena.Pattern) -> ArenaResult<U32>:
   match v_2:
@@ -13563,7 +14054,7 @@ def arena_publish_binder_region(store: ArenaStore, id: U32, temporary: Bool) -> 
       arena_publish_binder_view(next, view)
 
 def arena_publish_binder(store: ArenaStore, +id: U32) -> ArenaResult<U32>:
-  arena_publish_binder_region(store, id, arena_is_transient(id))
+  arena_publish_binder_region(store, id, IR.arena_is_transient(id))
 
 def arena_publish_binder_view(store: ArenaStore, view: Arena.Binder) -> ArenaResult<U32>:
   match view:
@@ -13822,7 +14313,7 @@ def arena_pack_definition(arena: Arena.Arena, value: Ast.Definition) -> Arena.Ar
       result_1 = IR.Words{start_1, count_1}
       (next_1, result_2) = arena_pack_optional_term(next_0, field_2)
       (next_2, result_3) = arena_pack_def_body(next_1, field_3)
-      (next_2, IR.Definition{field_0, result_1, result_2, result_3, field_4, field_5})
+      (next_2, IR.Definition{field_0, result_1, result_2, result_3, field_4, field_5, None{}, None{}})
 
 def arena_pack_type_decl(arena: Arena.Arena, value: Ast.TypeDecl) -> Arena.Arena & IR.TypeDecl:
   match value:
@@ -13920,13 +14411,144 @@ def arena_publish_optional_term(arena: ArenaStore, value: IR.OptionalTerm) -> Ar
       ArenaResult{next_0, result_0} = arena_publish_term(arena, field_0)
       {ArenaResult{next_0, IR.SomeTerm{result_0}} : ArenaResult<IR.OptionalTerm>}
 
+def arena_publish_symbol(store: ArenaStore, symbol: IR.Symbol) -> ArenaResult<IR.Symbol>:
+  match symbol:
+    case IR.Symbol{owner, local, kind, signature}:
+      ArenaResult{store, signature} = arena_publish_term(store, signature)
+      {ArenaResult{store, IR.Symbol{owner, local, kind, signature}} : ArenaResult<IR.Symbol>}
+
+def arena_publish_symbols(store: ArenaStore, symbols: List<&2, IR.Symbol>) -> ArenaResult<List<&2, IR.Symbol>>:
+  match symbols:
+    case Nil{}: {ArenaResult{store, Nil{}} : ArenaResult<List<&2, IR.Symbol>>}
+    case symbol <> rest:
+      ArenaResult{store, symbol} = arena_publish_symbol(store, symbol)
+      ArenaResult{store, rest} = arena_publish_symbols(store, rest)
+      {ArenaResult{store, symbol <> rest} : ArenaResult<List<&2, IR.Symbol>>}
+
+def arena_publish_optional_symbol(store: ArenaStore, symbol: Maybe<&2, IR.Symbol>) -> ArenaResult<Maybe<&2, IR.Symbol>>:
+  match symbol:
+    case None{}: {ArenaResult{store, None{}} : ArenaResult<Maybe<&2, IR.Symbol>>}
+    case Some{value}:
+      ArenaResult{store, value} = arena_publish_symbol(store, value)
+      {ArenaResult{store, Some{value}} : ArenaResult<Maybe<&2, IR.Symbol>>}
+
+def arena_publish_checked_binding(store: ArenaStore, binding: IR.CheckedBinding) -> ArenaResult<IR.CheckedBinding>:
+  match binding:
+    case IR.CheckedBinding{quantity, ty, depth}:
+      ArenaResult{store, ty} = arena_publish_term(store, ty)
+      {ArenaResult{store, IR.CheckedBinding{quantity, ty, depth}} : ArenaResult<IR.CheckedBinding>}
+
+def arena_publish_checked_bindings(store: ArenaStore, bindings: List<&2, IR.CheckedBinding>) -> ArenaResult<List<&2, IR.CheckedBinding>>:
+  match bindings:
+    case Nil{}: {ArenaResult{store, Nil{}} : ArenaResult<List<&2, IR.CheckedBinding>>}
+    case binding <> rest:
+      ArenaResult{store, binding} = arena_publish_checked_binding(store, binding)
+      ArenaResult{store, rest} = arena_publish_checked_bindings(store, rest)
+      {ArenaResult{store, binding <> rest} : ArenaResult<List<&2, IR.CheckedBinding>>}
+
+def arena_publish_checked_pattern(store: ArenaStore, pattern: IR.CheckedPattern) -> ArenaResult<IR.CheckedPattern>:
+  match pattern:
+    case IR.CheckedVariable{pattern, binding}:
+      ArenaResult{store, pattern} = arena_publish_pattern(store, pattern)
+      ArenaResult{store, binding} = arena_publish_checked_binding(store, binding)
+      {ArenaResult{store, IR.CheckedVariable{pattern, binding}} : ArenaResult<IR.CheckedPattern>}
+    case IR.CheckedConstructor{pattern, symbol, fields, layout}:
+      ArenaResult{store, pattern} = arena_publish_pattern(store, pattern)
+      ArenaResult{store, symbol} = arena_publish_symbol(store, symbol)
+      ArenaResult{store, fields} = arena_publish_checked_patterns(store, fields)
+      ArenaResult{store, layout} = arena_publish_checked_bindings(store, layout)
+      {ArenaResult{store, IR.CheckedConstructor{pattern, symbol, fields, layout}} : ArenaResult<IR.CheckedPattern>}
+
+def arena_publish_checked_patterns(store: ArenaStore, patterns: List<&2, IR.CheckedPattern>) -> ArenaResult<List<&2, IR.CheckedPattern>>:
+  match patterns:
+    case Nil{}: {ArenaResult{store, Nil{}} : ArenaResult<List<&2, IR.CheckedPattern>>}
+    case pattern <> rest:
+      ArenaResult{store, pattern} = arena_publish_checked_pattern(store, pattern)
+      ArenaResult{store, rest} = arena_publish_checked_patterns(store, rest)
+      {ArenaResult{store, pattern <> rest} : ArenaResult<List<&2, IR.CheckedPattern>>}
+
+def arena_publish_occurrence(store: ArenaStore, occurrence: IR.Occurrence) -> ArenaResult<IR.Occurrence>:
+  match occurrence:
+    case IR.LocalReferenceOccurrence{term, ty, binding, value}:
+      ArenaResult{store, term} = arena_publish_term(store, term)
+      ArenaResult{store, ty} = arena_publish_term(store, ty)
+      ArenaResult{store, binding} = arena_publish_checked_binding(store, binding)
+      ArenaResult{store, value} = arena_publish_term(store, value)
+      {ArenaResult{store, IR.LocalReferenceOccurrence{term, ty, binding, value}} : ArenaResult<IR.Occurrence>}
+    case IR.TypedOccurrence{term, ty, formal, symbol, bindings, children}:
+      ArenaResult{store, term} = arena_publish_term(store, term)
+      ArenaResult{store, ty} = arena_publish_term(store, ty)
+      ArenaResult{store, symbol} = arena_publish_optional_symbol(store, symbol)
+      ArenaResult{store, bindings} = arena_publish_checked_bindings(store, bindings)
+      ArenaResult{store, children} = arena_publish_occurrences(store, children)
+      {ArenaResult{store, IR.TypedOccurrence{term, ty, formal, symbol, bindings, children}} : ArenaResult<IR.Occurrence>}
+    case IR.ScalarOccurrence{term, ty, symbol, bits, symbols}:
+      ArenaResult{store, term} = arena_publish_term(store, term)
+      ArenaResult{store, ty} = arena_publish_term(store, ty)
+      ArenaResult{store, symbol} = arena_publish_symbol(store, symbol)
+      ArenaResult{store, symbols} = arena_publish_symbols(store, symbols)
+      {ArenaResult{store, IR.ScalarOccurrence{term, ty, symbol, bits, symbols}} : ArenaResult<IR.Occurrence>}
+    case IR.StringOccurrence{term, ty, symbols, chars}:
+      ArenaResult{store, term} = arena_publish_term(store, term)
+      ArenaResult{store, ty} = arena_publish_term(store, ty)
+      ArenaResult{store, symbols} = arena_publish_symbols(store, symbols)
+      {ArenaResult{store, IR.StringOccurrence{term, ty, symbols, chars}} : ArenaResult<IR.Occurrence>}
+    case IR.CaseOccurrence{term, ty, patterns, body}:
+      ArenaResult{store, term} = arena_publish_term(store, term)
+      ArenaResult{store, ty} = arena_publish_term(store, ty)
+      ArenaResult{store, patterns} = arena_publish_checked_patterns(store, patterns)
+      ArenaResult{store, body} = arena_publish_occurrence(store, body)
+      {ArenaResult{store, IR.CaseOccurrence{term, ty, patterns, body}} : ArenaResult<IR.Occurrence>}
+    case IR.LocalOccurrence{term, ty, patterns, values, body}:
+      ArenaResult{store, term} = arena_publish_term(store, term)
+      ArenaResult{store, ty} = arena_publish_term(store, ty)
+      ArenaResult{store, patterns} = arena_publish_checked_patterns(store, patterns)
+      ArenaResult{store, values} = arena_publish_occurrences(store, values)
+      ArenaResult{store, body} = arena_publish_occurrence(store, body)
+      {ArenaResult{store, IR.LocalOccurrence{term, ty, patterns, values, body}} : ArenaResult<IR.Occurrence>}
+
+def arena_publish_occurrences(store: ArenaStore, occurrences: List<&2, IR.Occurrence>) -> ArenaResult<List<&2, IR.Occurrence>>:
+  match occurrences:
+    case Nil{}: {ArenaResult{store, Nil{}} : ArenaResult<List<&2, IR.Occurrence>>}
+    case occurrence <> rest:
+      ArenaResult{store, occurrence} = arena_publish_occurrence(store, occurrence)
+      ArenaResult{store, rest} = arena_publish_occurrences(store, rest)
+      {ArenaResult{store, occurrence <> rest} : ArenaResult<List<&2, IR.Occurrence>>}
+
+def arena_publish_optional_occurrence(store: ArenaStore, occurrence: Maybe<&2, IR.Occurrence>) -> ArenaResult<Maybe<&2, IR.Occurrence>>:
+  match occurrence:
+    case None{}: {ArenaResult{store, None{}} : ArenaResult<Maybe<&2, IR.Occurrence>>}
+    case Some{value}:
+      ArenaResult{store, value} = arena_publish_occurrence(store, value)
+      {ArenaResult{store, Some{value}} : ArenaResult<Maybe<&2, IR.Occurrence>>}
+
+def arena_publication_save(result: ArenaResult<U32>, +id: U32) -> ArenaResult<U32>:
+  match result:
+    case ArenaResult{ArenaStore{source, transient}, +published}:
+      {ArenaResult{ArenaStore{source, Arena.publication_memo_put(transient, id, published)}, published} : ArenaResult<U32>}
+
+def arena_publication_lookup(source: Arena.Arena, +id: U32, result: Arena.Arena & Arena.SubstMemoEntry) -> ArenaResult<U32>:
+  match result:
+    case Tuple{transient, entry}:
+      match entry:
+        case Arena.PublishedTerm{saved, output}:
+          match U32.is_eq(saved, id):
+            case True{}: {ArenaResult{ArenaStore{source, transient}, output} : ArenaResult<U32>}
+            case False{}: arena_publication_uncached(ArenaStore{source, transient}, id)
+        case _: arena_publication_uncached(ArenaStore{source, transient}, id)
+
+def arena_publication_uncached(store: ArenaStore, +id: U32) -> ArenaResult<U32>:
+  ArenaResult{store, node} = arena_get_node(store, id)
+  arena_publication_save(arena_publish_term_view(store, node), id)
+
 def arena_publish_definition(arena: ArenaStore, value: IR.Definition) -> ArenaResult<IR.Definition>:
   match value:
-    case IR.Definition{field_0, field_1, field_2, field_3, field_4, field_5}:
+    case IR.Definition{field_0, field_1, field_2, field_3, field_4, field_5, +definition_occurrence, +definition_facts}:
       ArenaResult{next_0, result_1} = arena_publish_binders(arena, field_1)
       ArenaResult{next_1, result_2} = arena_publish_optional_term(next_0, field_2)
       ArenaResult{next_2, result_3} = arena_publish_def_body(next_1, field_3)
-      {ArenaResult{next_2, IR.Definition{field_0, result_1, result_2, result_3, field_4, field_5}} : ArenaResult<IR.Definition>}
+      ArenaResult{next_3, occurrence} = arena_publish_optional_occurrence(next_2, definition_occurrence)
+      {ArenaResult{next_3, IR.Definition{field_0, result_1, result_2, result_3, field_4, field_5, occurrence, definition_facts}} : ArenaResult<IR.Definition>}
 
 def arena_publish_type_decl(arena: ArenaStore, value: IR.TypeDecl) -> ArenaResult<IR.TypeDecl>:
   match value:
@@ -14005,14 +14627,206 @@ def arena_decode_constructor_decl(arena: Arena.Arena, value: IR.ConstructorDecl)
       (next_0, result_1) = arena_decode_binders(arena, arena_words_start(field_1), arena_words_count(field_1))
       (next_0, Ast.Constructor{field_0, result_1, field_2})
 
-def arena_decode_def_body(arena: Arena.Arena, value: IR.DefBody) -> Arena.Arena & Ast.DefBody:
-  match value:
-    case IR.DefTerm{field_0}:
-      (next_0, result_0) = arena_decode_term(arena, field_0)
-      (next_0, Ast.DefTerm{result_0})
-    case IR.DefImports{field_0}:
-      (next_0, result_0) = arena_decode_names(arena, arena_names_start(field_0), arena_names_count(field_0))
-      (next_0, Ast.DefImports{result_0})
+# Explicit inspection reconstructs lexical runtime bodies from checked children.
+# Semantic handles may already contain local-value substitution, so they are not
+# the runtime syntax source except for atoms and certified pure literals.
+def readback_diagnostic() -> Checked.Diagnostic:
+  Checked.Diagnostic{"", Ast.SpanOf{"", 0n, 0n}, "invalid checked occurrence during readback", "a complete checked occurrence", "an inconsistent checked shape"}
+
+def readback_term(arena: Arena.Arena, term: Ast.SyntaxTerm) -> ReadbackResult<Ast.SyntaxTerm>:
+  {ReadbackSuccess{arena, term} : ReadbackResult<Ast.SyntaxTerm>}
+
+def readback_invalid(arena: Arena.Arena) -> ReadbackResult<Ast.SyntaxTerm>:
+  {ReadbackFailure{arena, readback_diagnostic()} : ReadbackResult<Ast.SyntaxTerm>}
+
+def readback_take(count: Nat, values: List<&2, Ast.SyntaxTerm>) -> List<&2, Ast.SyntaxTerm>:
+  match count values:
+    case 1n+rest value <> tail: value <> readback_take(rest, tail)
+    case _ _: Nil{}
+
+def readback_drop(count: Nat, values: List<&2, Ast.SyntaxTerm>) -> List<&2, Ast.SyntaxTerm>:
+  match count values:
+    case 1n+rest _ <> tail: readback_drop(rest, tail)
+    case _ values: values
+
+def arena_decode_checked_patterns(arena: Arena.Arena, patterns: List<&2, IR.CheckedPattern>) -> ReadbackResult<List<&2, Ast.SyntaxPattern>>:
+  match patterns:
+    case Nil{}: {ReadbackSuccess{arena, Nil{}} : ReadbackResult<List<&2, Ast.SyntaxPattern>>}
+    case pattern <> rest:
+      match arena_decode_checked_pattern(arena, pattern):
+        case ReadbackFailure{arena, diagnostic}: {ReadbackFailure{arena, diagnostic} : ReadbackResult<List<&2, Ast.SyntaxPattern>>}
+        case ReadbackSuccess{arena, pattern}:
+          match arena_decode_checked_patterns(arena, rest):
+            case ReadbackFailure{arena, diagnostic}: {ReadbackFailure{arena, diagnostic} : ReadbackResult<List<&2, Ast.SyntaxPattern>>}
+            case ReadbackSuccess{arena, rest}: {ReadbackSuccess{arena, pattern <> rest} : ReadbackResult<List<&2, Ast.SyntaxPattern>>}
+
+def arena_decode_checked_pattern(arena: Arena.Arena, pattern: IR.CheckedPattern) -> ReadbackResult<Ast.SyntaxPattern>:
+  match pattern:
+    case IR.CheckedVariable{id, IR.CheckedBinding{quantity, _, _}}:
+      (arena, node) = Arena.get_pattern(arena, id)
+      match node:
+        case Arena.PatternVar{key, index, _, span}:
+          (arena, key) = Arena.name_text(arena, key)
+          {ReadbackSuccess{arena, Ast.PatternVar{key, index, quantity, span}} : ReadbackResult<Ast.SyntaxPattern>}
+        case _: {ReadbackFailure{arena, readback_diagnostic()} : ReadbackResult<Ast.SyntaxPattern>}
+    case IR.CheckedConstructor{id, _, +fields, _}:
+      (arena, node) = Arena.get_pattern(arena, id)
+      match node:
+        case Arena.PatternCtr{key, _, count, span}:
+          match Nat.is_eq(U32.to_nat(count), List.length(&2, IR.CheckedPattern, fields)):
+            case False{}: {ReadbackFailure{arena, readback_diagnostic()} : ReadbackResult<Ast.SyntaxPattern>}
+            case True{}:
+              (arena, key) = Arena.name_text(arena, key)
+              match arena_decode_checked_patterns(arena, fields):
+                case ReadbackFailure{arena, diagnostic}: {ReadbackFailure{arena, diagnostic} : ReadbackResult<Ast.SyntaxPattern>}
+                case ReadbackSuccess{arena, fields}: {ReadbackSuccess{arena, Ast.PatternCtr{key, fields, span}} : ReadbackResult<Ast.SyntaxPattern>}
+        case _: {ReadbackFailure{arena, readback_diagnostic()} : ReadbackResult<Ast.SyntaxPattern>}
+
+def arena_decode_occurrences(arena: Arena.Arena, occurrences: List<&2, IR.Occurrence>) -> ReadbackResult<List<&2, Ast.SyntaxTerm>>:
+  match occurrences:
+    case Nil{}: {ReadbackSuccess{arena, Nil{}} : ReadbackResult<List<&2, Ast.SyntaxTerm>>}
+    case occurrence <> rest:
+      match arena_decode_occurrence(arena, occurrence):
+        case ReadbackFailure{arena, diagnostic}: {ReadbackFailure{arena, diagnostic} : ReadbackResult<List<&2, Ast.SyntaxTerm>>}
+        case ReadbackSuccess{arena, term}:
+          match arena_decode_occurrences(arena, rest):
+            case ReadbackFailure{arena, diagnostic}: {ReadbackFailure{arena, diagnostic} : ReadbackResult<List<&2, Ast.SyntaxTerm>>}
+            case ReadbackSuccess{arena, terms}: {ReadbackSuccess{arena, term <> terms} : ReadbackResult<List<&2, Ast.SyntaxTerm>>}
+
+def arena_decode_checked_node_result(result: ReadbackResult<List<&2, Ast.SyntaxTerm>>, node: Arena.Node) -> ReadbackResult<Ast.SyntaxTerm>:
+  match result:
+    case ReadbackFailure{arena, diagnostic}: {ReadbackFailure{arena, diagnostic} : ReadbackResult<Ast.SyntaxTerm>}
+    case ReadbackSuccess{arena, children}: arena_decode_checked_node(arena, node, children)
+
+def arena_decode_checked_node(arena: Arena.Arena, node: Arena.Node, children: List<&2, Ast.SyntaxTerm>) -> ReadbackResult<Ast.SyntaxTerm>:
+  match node children:
+    case Arena.TermVar{key, index, span} Nil{}:
+      (arena, key) = Arena.name_text(arena, key)
+      readback_term(arena, Ast.TermVar{key, index, span})
+    case Arena.TermRef{key, span} Nil{}:
+      (arena, key) = Arena.name_text(arena, key)
+      readback_term(arena, Ast.TermRef{key, span})
+    case Arena.TermQuant{} Nil{}:
+      readback_term(arena, Ast.TermQuant{})
+    case Arena.TermQuantity{quantity, span} Nil{}:
+      readback_term(arena, Ast.TermQuantity{quantity, span})
+    case Arena.TermAbsurd{span} Nil{}:
+      readback_term(arena, Ast.TermAbsurd{span})
+    case Arena.TermRefl{span} Nil{}:
+      readback_term(arena, Ast.TermRefl{span})
+    case Arena.TermHole{key, span} Nil{}:
+      (arena, key) = Arena.name_text(arena, key)
+      readback_term(arena, Ast.TermHole{key, span})
+    case Arena.TermBang{_, span} value <> Nil{}:
+      readback_term(arena, Ast.TermBang{value, span})
+    case Arena.TermType{_, span} kind <> Nil{}:
+      readback_term(arena, Ast.TermType{kind, span})
+    case Arena.TermLam{Some{quantity}, key, index, _, span} body <> Nil{}:
+      (arena, key) = Arena.name_text(arena, key)
+      readback_term(arena, Ast.TermLam{Some{quantity}, key, index, body, span})
+    case Arena.TermApp{_, _, span} fn <> arg <> Nil{}:
+      readback_term(arena, Ast.TermApp{fn, arg, span})
+    case Arena.TermAnn{_, _, span} value <> ty <> Nil{}:
+      readback_term(arena, Ast.TermAnn{value, ty, span})
+    case Arena.TermMin{_, _, span} left <> right <> Nil{}:
+      readback_term(arena, Ast.TermMin{left, right, span})
+    case Arena.TermAll{quantity, key, index, _, _, span} domain <> body <> Nil{}:
+      (arena, key) = Arena.name_text(arena, key)
+      readback_term(arena, Ast.TermAll{quantity, key, index, domain, body, span})
+    case Arena.TermMat{key, _, _, span} head <> default <> Nil{}:
+      (arena, key) = Arena.name_text(arena, key)
+      readback_term(arena, Ast.TermMat{key, head, default, span})
+    case Arena.TermEqual{_, _, _, span} left <> right <> ty <> Nil{}:
+      readback_term(arena, Ast.TermEqual{left, right, ty, span})
+    case Arena.TermRewrite{_, _, _, span} equation <> proof <> body <> Nil{}:
+      readback_term(arena, Ast.TermRewrite{equation, proof, body, span})
+    case Arena.TermCtr{key, _, count, span} +args:
+      match Nat.is_eq(U32.to_nat(count), List.length(&2, Ast.SyntaxTerm, args)):
+        case False{}: readback_invalid(arena)
+        case True{}:
+          (arena, key) = Arena.name_text(arena, key)
+          readback_term(arena, Ast.TermCtr{key, args, span})
+    case Arena.TermAdt{key, _, count, refs, refs_count, span} +args:
+      match Nat.is_eq(U32.to_nat(count), List.length(&2, Ast.SyntaxTerm, args)):
+        case False{}: readback_invalid(arena)
+        case True{}:
+          (arena, key) = Arena.name_text(arena, key)
+          (arena, refs) = arena_decode_names(arena, refs, refs_count)
+          readback_term(arena, Ast.TermAdt{key, args, refs, span})
+    case Arena.BodyMatch{_, +count, _, case_count, span} +terms:
+      match Nat.is_eq(List.length(&2, Ast.SyntaxTerm, terms), Nat.add(U32.to_nat(count), U32.to_nat(case_count))):
+        case False{}: readback_invalid(arena)
+        case True{}: readback_term(arena, Ast.BodyMatch{readback_take(U32.to_nat(count), terms), readback_drop(U32.to_nat(count), terms), span})
+    case Arena.TermLet{names, names_count, indexes, indexes_count, quantities, quantities_count, _, +count, _, span} +terms:
+      match readback_drop(U32.to_nat(count), terms):
+        case body <> Nil{}:
+          (arena, names) = arena_decode_names(arena, names, names_count)
+          (arena, indexes) = arena_decode_naturals(arena, indexes, indexes_count)
+          (arena, quantities) = arena_decode_quantities(arena, quantities, quantities_count)
+          readback_term(arena, Ast.TermLet{names, indexes, quantities, readback_take(U32.to_nat(count), terms), body, span})
+        case _: readback_invalid(arena)
+    case _ _: readback_invalid(arena)
+
+def arena_decode_occurrence(arena: Arena.Arena, occurrence: IR.Occurrence) -> ReadbackResult<Ast.SyntaxTerm>:
+  match occurrence:
+    case IR.TypedOccurrence{term, _, _, _, _, children}:
+      (arena, node) = Arena.get_node(arena, term)
+      arena_decode_checked_node_result(arena_decode_occurrences(arena, children), node)
+    case IR.LocalReferenceOccurrence{term, _, _, _}:
+      (arena, node) = Arena.get_node(arena, term)
+      match node:
+        case Arena.TermVar{key, index, span}:
+          (arena, key) = Arena.name_text(arena, key)
+          readback_term(arena, Ast.TermVar{key, index, span})
+        case _: readback_invalid(arena)
+    case IR.ScalarOccurrence{term, _, _, _, _}:
+      (arena, value) = arena_decode_term(arena, term)
+      readback_term(arena, value)
+    case IR.StringOccurrence{term, _, _, _}:
+      (arena, value) = arena_decode_term(arena, term)
+      readback_term(arena, value)
+    case IR.CaseOccurrence{term, _, +patterns, body}:
+      (arena, node) = Arena.get_node(arena, term)
+      match node:
+        case Arena.BodyCase{_, count, _, span}:
+          match Nat.is_eq(U32.to_nat(count), List.length(&2, IR.CheckedPattern, patterns)):
+            case False{}: readback_invalid(arena)
+            case True{}:
+              match arena_decode_checked_patterns(arena, patterns):
+                case ReadbackFailure{arena, diagnostic}: {ReadbackFailure{arena, diagnostic} : ReadbackResult<Ast.SyntaxTerm>}
+                case ReadbackSuccess{arena, patterns}:
+                  match arena_decode_occurrence(arena, body):
+                    case ReadbackFailure{arena, diagnostic}: {ReadbackFailure{arena, diagnostic} : ReadbackResult<Ast.SyntaxTerm>}
+                    case ReadbackSuccess{arena, body}: readback_term(arena, Ast.BodyCase{patterns, body, span})
+        case _: readback_invalid(arena)
+    case IR.LocalOccurrence{term, _, +patterns, +values, body}:
+      (arena, node) = Arena.get_node(arena, term)
+      match node:
+        case Arena.BodyLocal{_, pattern_count, quantity, _, value_count, _, span}:
+          match Bool.and(Nat.is_eq(U32.to_nat(pattern_count), List.length(&2, IR.CheckedPattern, patterns)), Nat.is_eq(U32.to_nat(value_count), List.length(&2, IR.Occurrence, values))):
+            case False{}: readback_invalid(arena)
+            case True{}:
+              match arena_decode_checked_patterns(arena, patterns):
+                case ReadbackFailure{arena, diagnostic}: {ReadbackFailure{arena, diagnostic} : ReadbackResult<Ast.SyntaxTerm>}
+                case ReadbackSuccess{arena, patterns}:
+                  match arena_decode_occurrences(arena, values):
+                    case ReadbackFailure{arena, diagnostic}: {ReadbackFailure{arena, diagnostic} : ReadbackResult<Ast.SyntaxTerm>}
+                    case ReadbackSuccess{arena, values}:
+                      match arena_decode_occurrence(arena, body):
+                        case ReadbackFailure{arena, diagnostic}: {ReadbackFailure{arena, diagnostic} : ReadbackResult<Ast.SyntaxTerm>}
+                        case ReadbackSuccess{arena, body}: readback_term(arena, Ast.BodyLocal{patterns, quantity, values, body, span})
+        case _: readback_invalid(arena)
+
+def arena_decode_def_body(arena: Arena.Arena, value: IR.DefBody, occurrence: Maybe<&2, IR.Occurrence>) -> ReadbackResult<Ast.DefBody>:
+  match value occurrence:
+    case IR.DefTerm{_} Some{checked}:
+      match arena_decode_occurrence(arena, checked):
+        case ReadbackSuccess{arena, term}: {ReadbackSuccess{arena, Ast.DefTerm{term}} : ReadbackResult<Ast.DefBody>}
+        case ReadbackFailure{arena, diagnostic}: {ReadbackFailure{arena, diagnostic} : ReadbackResult<Ast.DefBody>}
+    case IR.DefImports{+paths} None{}:
+      (arena, paths) = arena_decode_names(arena, arena_names_start(paths), arena_names_count(paths))
+      {ReadbackSuccess{arena, Ast.DefImports{paths}} : ReadbackResult<Ast.DefBody>}
+    case _ _: {ReadbackFailure{arena, readback_diagnostic()} : ReadbackResult<Ast.DefBody>}
 
 def arena_decode_optional_term(arena: Arena.Arena, value: IR.OptionalTerm) -> Arena.Arena & Ast.OptionalTerm:
   match value:
@@ -14022,13 +14836,15 @@ def arena_decode_optional_term(arena: Arena.Arena, value: IR.OptionalTerm) -> Ar
       (next_0, result_0) = arena_decode_term(arena, field_0)
       (next_0, Ast.SomeTerm{result_0})
 
-def arena_decode_definition(arena: Arena.Arena, value: IR.Definition) -> Arena.Arena & Ast.Definition:
+def arena_decode_definition(arena: Arena.Arena, value: IR.Definition) -> ReadbackResult<Ast.Definition>:
   match value:
-    case IR.Definition{field_0, field_1, field_2, field_3, field_4, field_5}:
-      (next_0, result_1) = arena_decode_binders(arena, arena_words_start(field_1), arena_words_count(field_1))
-      (next_1, result_2) = arena_decode_optional_term(next_0, field_2)
-      (next_2, result_3) = arena_decode_def_body(next_1, field_3)
-      (next_2, Ast.Definition{field_0, result_1, result_2, result_3, field_4, field_5})
+    case IR.Definition{key, +binders, result, body, unsafe, span, occurrence, _}:
+      (arena, binders) = arena_decode_binders(arena, arena_words_start(binders), arena_words_count(binders))
+      (arena, result) = arena_decode_optional_term(arena, result)
+      match arena_decode_def_body(arena, body, occurrence):
+        case ReadbackSuccess{arena, body}:
+          {ReadbackSuccess{arena, Ast.Definition{key, binders, result, body, unsafe, span}} : ReadbackResult<Ast.Definition>}
+        case ReadbackFailure{arena, diagnostic}: {ReadbackFailure{arena, diagnostic} : ReadbackResult<Ast.Definition>}
 
 def arena_decode_type_decl(arena: Arena.Arena, value: IR.TypeDecl) -> Arena.Arena & Ast.TypeDecl:
   match value:
@@ -14045,23 +14861,25 @@ def arena_decode_law_decl(arena: Arena.Arena, value: IR.LawDecl) -> Arena.Arena 
       (next_1, result_2) = arena_decode_term(next_0, field_2)
       (next_1, Ast.LawDecl{field_0, result_1, result_2, field_3})
 
-def arena_decode_top_level(arena: Arena.Arena, value: IR.TopLevel) -> Arena.Arena & Ast.TopLevel:
+def arena_decode_top_level(arena: Arena.Arena, value: IR.TopLevel) -> ReadbackResult<Ast.TopLevel>:
   match value:
-    case IR.DefTop{field_0}:
-      (next_0, result_0) = arena_decode_definition(arena, field_0)
-      (next_0, Ast.DefTop{result_0})
-    case IR.TypeTop{field_0}:
-      (next_0, result_0) = arena_decode_type_decl(arena, field_0)
-      (next_0, Ast.TypeTop{result_0})
-    case IR.LawTop{field_0}:
-      (next_0, result_0) = arena_decode_law_decl(arena, field_0)
-      (next_0, Ast.LawTop{result_0})
+    case IR.DefTop{definition}:
+      match arena_decode_definition(arena, definition):
+        case ReadbackSuccess{arena, definition}: {ReadbackSuccess{arena, Ast.DefTop{definition}} : ReadbackResult<Ast.TopLevel>}
+        case ReadbackFailure{arena, diagnostic}: {ReadbackFailure{arena, diagnostic} : ReadbackResult<Ast.TopLevel>}
+    case IR.TypeTop{declaration}:
+      (arena, declaration) = arena_decode_type_decl(arena, declaration)
+      {ReadbackSuccess{arena, Ast.TypeTop{declaration}} : ReadbackResult<Ast.TopLevel>}
+    case IR.LawTop{declaration}:
+      (arena, declaration) = arena_decode_law_decl(arena, declaration)
+      {ReadbackSuccess{arena, Ast.LawTop{declaration}} : ReadbackResult<Ast.TopLevel>}
 
-def arena_decode_module(arena: Arena.Arena, value: IR.Module) -> Arena.Arena & Ast.Module:
+def arena_decode_module(arena: Arena.Arena, value: IR.Module) -> ReadbackResult<Ast.Module>:
   match value:
-    case IR.Module{field_0, field_1, field_2}:
-      (next_0, result_2) = arena_decode_top_level_list(arena, field_2)
-      (next_0, Ast.Module{field_0, field_1, result_2})
+    case IR.Module{path, imports, declarations}:
+      match arena_decode_top_level_list(arena, declarations):
+        case ReadbackSuccess{arena, declarations}: {ReadbackSuccess{arena, Ast.Module{path, imports, declarations}} : ReadbackResult<Ast.Module>}
+        case ReadbackFailure{arena, diagnostic}: {ReadbackFailure{arena, diagnostic} : ReadbackResult<Ast.Module>}
 
 def arena_decode_maybe_term(arena: Arena.Arena, value: Maybe<&2, U32>) -> Arena.Arena & Maybe<&2, Ast.SyntaxTerm>:
   match value:
@@ -14086,13 +14904,16 @@ def arena_decode_clause_list(arena: Arena.Arena, values: List<&2, IR.Clause>) ->
       (last, rest) = arena_decode_clause_list(next, tail)
       (last, checked <> rest)
 
-def arena_decode_top_level_list(arena: Arena.Arena, values: List<&2, IR.TopLevel>) -> Arena.Arena & List<&2, Ast.TopLevel>:
+def arena_decode_top_level_list(arena: Arena.Arena, values: List<&2, IR.TopLevel>) -> ReadbackResult<List<&2, Ast.TopLevel>>:
   match values:
-    case Nil{}: (arena, Nil{})
+    case Nil{}: {ReadbackSuccess{arena, Nil{}} : ReadbackResult<List<&2, Ast.TopLevel>>}
     case head <> tail:
-      (next, checked) = arena_decode_top_level(arena, head)
-      (last, rest) = arena_decode_top_level_list(next, tail)
-      (last, checked <> rest)
+      match arena_decode_top_level(arena, head):
+        case ReadbackFailure{arena, diagnostic}: {ReadbackFailure{arena, diagnostic} : ReadbackResult<List<&2, Ast.TopLevel>>}
+        case ReadbackSuccess{arena, head}:
+          match arena_decode_top_level_list(arena, tail):
+            case ReadbackFailure{arena, diagnostic}: {ReadbackFailure{arena, diagnostic} : ReadbackResult<List<&2, Ast.TopLevel>>}
+            case ReadbackSuccess{arena, tail}: {ReadbackSuccess{arena, head <> tail} : ReadbackResult<List<&2, Ast.TopLevel>>}
 
 # Checker-local boundary adapters. These ID-recursive definitions must remain
 # local to checker.bend so the unchanged checker source/step generators lower
@@ -14203,35 +15024,49 @@ def arena_pack_modules(arena: Arena.Arena, modules: List<&2, Loader.LoadedModule
       (last, tail) = arena_pack_modules(next, rest)
       (last, IR.LoadedModule{namespace, packed} <> tail)
 
-def arena_decode_modules(arena: Arena.Arena, modules: List<&2, IR.LoadedModule>) -> Arena.Arena & List<&2, Loader.LoadedModule>:
+def arena_decode_modules(arena: Arena.Arena, modules: List<&2, IR.LoadedModule>) -> ReadbackResult<List<&2, Loader.LoadedModule>>:
   match modules:
-    case Nil{}: (arena, Nil{})
+    case Nil{}: {ReadbackSuccess{arena, Nil{}} : ReadbackResult<List<&2, Loader.LoadedModule>>}
     case IR.LoadedModule{namespace, module} <> rest:
-      (next, decoded) = arena_decode_module(arena, module)
-      (last, tail) = arena_decode_modules(next, rest)
-      (last, Loader.LoadedModule{namespace, decoded} <> tail)
+      match arena_decode_module(arena, module):
+        case ReadbackFailure{arena, diagnostic}: {ReadbackFailure{arena, diagnostic} : ReadbackResult<List<&2, Loader.LoadedModule>>}
+        case ReadbackSuccess{arena, module}:
+          match arena_decode_modules(arena, rest):
+            case ReadbackFailure{arena, diagnostic}: {ReadbackFailure{arena, diagnostic} : ReadbackResult<List<&2, Loader.LoadedModule>>}
+            case ReadbackSuccess{arena, rest}: {ReadbackSuccess{arena, Loader.LoadedModule{namespace, module} <> rest} : ReadbackResult<List<&2, Loader.LoadedModule>>}
 
-def arena_check_exit(source: Arena.Arena, result: PrivateResult) -> CheckResult:
+def arena_check_exit(source: Arena.Arena, result: PrivateResult) -> Checked.CheckResult:
   match result:
-    case PrivateFailure{diagnostic}: CheckFailure{diagnostic}
-    case PrivateSuccess{modules}:
-      (released, decoded) = arena_decode_modules(source, modules)
-      CheckSuccess{decoded}
+    case PrivateFailure{diagnostic}: Checked.CheckFailure{diagnostic}
+    case PrivateSuccess{modules, signatures, metadata}:
+      Checked.CheckSuccess{Checked.CheckedProgram{source, modules, signatures, metadata}}
 
-def arena_check_result(result: ArenaResult<PrivateResult>) -> CheckResult:
+def arena_check_result(result: ArenaResult<PrivateResult>) -> Checked.CheckResult:
   match result:
     case ArenaResult{ArenaStore{source, _}, checked}: arena_check_exit(source, checked)
 
-def arena_check_entry(modules: List<&2, Loader.LoadedModule>, globals: List<&2, Scope.Global>) -> CheckResult:
+def arena_check_entry(modules: List<&2, Loader.LoadedModule>, globals: List<&2, Scope.Global>) -> Checked.CheckResult:
   (packed, private_modules) = arena_pack_modules(Arena.empty(), modules)
   (source, private_globals) = arena_pack_globals(packed, globals)
   arena_check_result(check_modules_private(ArenaStore{source, Arena.empty()}, private_modules, private_globals))
 
-def check_modules(modules: List<&2, Loader.LoadedModule>, globals: List<&2, Scope.Global>) -> CheckResult:
+def check_modules(modules: List<&2, Loader.LoadedModule>, globals: List<&2, Scope.Global>) -> Checked.CheckResult:
   arena_check_entry(modules, globals)
 
 # Match imported affine storage results through typed parameters: native
 # lowering cannot keep constructor-pattern locals with computed right-hand sides.
+
+# Explicit readback serves semantic inspection and the legacy source backend.
+# Both outcomes retain the owner; normal checked lowering never calls this path.
+def readback_result(modules: List<&2, IR.LoadedModule>, signatures: List<&2, Scope.ArenaGlobal>, result: ReadbackResult<List<&2, Loader.LoadedModule>>, metadata: List<&2, Checked.ModuleMetadata>) -> Checked.Inspection:
+  match result:
+    case ReadbackSuccess{source, decoded}: Checked.Inspection{Checked.CheckedProgram{source, modules, signatures, metadata}, decoded}
+    case ReadbackFailure{source, diagnostic}: Checked.InspectionFailure{Checked.CheckedProgram{source, modules, signatures, metadata}, diagnostic}
+
+def readback(program: Checked.CheckedProgram) -> Checked.Inspection:
+  match program:
+    case Checked.CheckedProgram{source, +modules, signatures, metadata}:
+      readback_result(modules, signatures, arena_decode_modules(source, modules), metadata)
 
 def arena_name_name_result_0(v_70000000: Pair(Arena.Arena, U32), v_9: Arena.Arena) -> ArenaResult<U32>:
   match v_70000000:
@@ -14714,13 +15549,13 @@ def arena_decode_binder_get_binder_result_66(v_70000068: Pair(Arena.Arena, Arena
         case Arena.TemplateBinder{v_30, v_31, v_32, v_33}:
           arena_decode_binder_name_text_result_68(Arena.name_text(v_5, v_30), v_32, v_31, v_33)
 
-def check_template_result(result: Template.ExpandResult) -> CheckResult:
+def check_template_result(result: Template.ExpandResult) -> Checked.CheckResult:
   match result:
     case Template.ExpandSuccess{ expanded}: check_modules(expanded, Nil{})
     case Template.ExpandFailure{message, span}:
-      CheckFailure{ Diagnostic{ span_file(span), span, message,  "a valid template application",  "template expansion failed"}}
+      Checked.CheckFailure{ Checked.Diagnostic{ span_file(span), span, message,  "a valid template application",  "template expansion failed"}}
 
-def check(modules: List<&2, Loader.LoadedModule>) -> CheckResult:
+def check(modules: List<&2, Loader.LoadedModule>) -> Checked.CheckResult:
   check_template_result(Template.expand(modules))
 
 # A compact literal is closed syntax, not a typing certificate. Observation
@@ -14899,7 +15734,7 @@ def check_string_literal(store: ArenaStore, +term: U32, +chars: List<&2, U32>, +
   ArenaResult{store, view} = whnf(store, 64n, goal, scope)
   ArenaResult{store, valid} = string_certificate(store, names, scope, view)
   match valid:
-    case True{}: {ArenaResult{store, Inferred{term, goal}} : ArenaResult<Inference>}
+    case True{}: string_occurrence(store, term, goal, chars, names, scope, span)
     case False{}:
       ArenaResult{store, expanded} = string_desugar_store(store, chars, names, span)
       check_term(store, expanded, env, scope, goal)

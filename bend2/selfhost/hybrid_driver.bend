@@ -1,6 +1,7 @@
 import Base
 import ./loaded_module.bend as Loader
 import ./checker.bend as Checker
+import ./checked_frontend.bend as Checked
 import ./js_emit.bend as JSEmit
 import ./ast.bend as AST
 
@@ -50,7 +51,7 @@ def write_output(output: String, source: String) -> IO(U32):
     opened : Result<&1, &1, U32 & String, File> <- File.open(output, "w")
     return write_opened(output, source, opened)
 
-def emit(checked: List<&2, Loader.LoadedModule>, output: String) -> IO(U32):
+def emit(checked: Checked.CheckedProgram, output: String) -> IO(U32):
   emit_result(JSEmit.emit(checked), output)
 
 def emit_result(result: JSEmit.EmitResult, output: String) -> IO(U32):
@@ -58,11 +59,11 @@ def emit_result(result: JSEmit.EmitResult, output: String) -> IO(U32):
     case JSEmit.EmitFailure{message, span}: report(span, message)
     case JSEmit.EmitSuccess{source}: write_output(output, source)
 
-def compile_checked(result: Checker.CheckResult, output: String) -> IO(U32):
+def compile_checked(result: Checked.CheckResult, output: String) -> IO(U32):
   match result:
-    case Checker.CheckFailure{Checker.Diagnostic{file, span, message, expected, observed}}:
+    case Checked.CheckFailure{Checked.Diagnostic{file, span, message, expected, observed}}:
       report(span, message ++ "\n- expected: " ++ expected ++ "\n- observed: " ++ observed)
-    case Checker.CheckSuccess{modules}: emit(modules, output)
+    case Checked.CheckSuccess{program}: emit(program, output)
 
 def compile(modules: List<&2, Loader.LoadedModule>, output: String) -> IO(U32):
   compile_checked(Checker.check(modules), output)
@@ -71,8 +72,8 @@ def compile(modules: List<&2, Loader.LoadedModule>, output: String) -> IO(U32):
 def parsed_module(namespace: String, module: AST.Module) -> Loader.LoadedModule:
   Loader.LoadedModule{namespace, module}
 
-def check_modules(modules: List<&2, Loader.LoadedModule>) -> Checker.CheckResult:
+def check_modules(modules: List<&2, Loader.LoadedModule>) -> Checked.CheckResult:
   Checker.check(modules)
 
-def emit_modules(modules: List<&2, Loader.LoadedModule>) -> JSEmit.EmitResult:
-  JSEmit.emit(modules)
+def emit_modules(program: Checked.CheckedProgram) -> JSEmit.EmitResult:
+  JSEmit.emit(program)

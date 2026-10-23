@@ -3,6 +3,7 @@
 import Base
 import ../bend2/selfhost/ast.bend as Ast
 import ../bend2/selfhost/loaded_module.bend as Loader
+import ../bend2/selfhost/checked_frontend.bend as Checked
 import ../checkpoints/template_steps_v1.bend as Template
 import ../checkpoints/checker_core_steps_v1.bend as Checker
 import ../checkpoints/js_emit_steps_v1.bend as Emitter
@@ -51,18 +52,18 @@ def native_expand_result(box: Template.TemplateValue<Template.ExpandResult>) -> 
   match box:
     case Template.TemplateValue{value}: native_expand_value(value)
 
-def native_check_value(result: Checker.CheckResult) -> NativeResult<List<&2, Loader.LoadedModule>>:
+def native_check_value(result: Checked.CheckResult) -> NativeResult<List<&2, String> -> Emitter.EmitterProgress<Emitter.EmitResult>>:
   match result:
-    case Checker.CheckSuccess{modules}: NativeAccepted{modules}
-    case Checker.CheckFailure{Checker.Diagnostic{_, _, message, _, _}}: NativeRejected{message}
+    case Checked.CheckSuccess{program}: NativeAccepted{exports => emit_library_start(program, exports)}
+    case Checked.CheckFailure{Checked.Diagnostic{_, _, message, _, _}}: NativeRejected{message}
 
-def native_check_result(box: Checker.CheckerValue<Checker.CheckResult>) -> NativeResult<List<&2, Loader.LoadedModule>>:
+def native_check_result(box: Checker.CheckerValue<Checked.CheckResult>) -> NativeResult<List<&2, String> -> Emitter.EmitterProgress<Emitter.EmitResult>>:
   match box:
     case Checker.CheckerValue{value}: native_check_value(value)
 
-def native_emit(input: List<&2, Loader.LoadedModule> & List<&2, String>) -> Emitter.EmitterProgress<Emitter.EmitResult>:
-  (modules, exports) = input
-  emitter_step(Emitter.EmitterRequestGroup_8{Emitter.EmitterRequest_emit_library{modules, exports}})
+def native_emit(input: (List<&2, String> -> Emitter.EmitterProgress<Emitter.EmitResult>) & List<&2, String>) -> Emitter.EmitterProgress<Emitter.EmitResult>:
+  (emit, exports) = input
+  emit(exports)
 
 def native_emit_value(result: Emitter.EmitResult) -> NativeResult<String>:
   match result:
@@ -77,21 +78,21 @@ def native_emit_result(box: Emitter.EmitterValue<Emitter.EmitResult>) -> NativeR
 # layouts from C without erasing the relationship between next and resume.
 # The existential result type preserves the SAME boxed next/resume domain.
 type NativeTemplateView<-A: Type> is Type:
-  NativeTemplateFinished{box: Template.TemplateValue<A>}
+  NativeTemplateFinished{take: Unit -> Template.TemplateValue<A>}
   NativeTemplateMore{-B: Type, next: Unit -> Template.TemplateProgress<B>, resume: (@box: Template.TemplateValue<B> -> Template.TemplateProgress<A>)}
 
 type NativeCheckerView<-A: Type> is Type:
-  NativeCheckerFinished{box: Checker.CheckerValue<A>}
+  NativeCheckerFinished{take: Unit -> Checker.CheckerValue<A>}
   NativeCheckerMore{-B: Type, next: Unit -> Checker.CheckerProgress<B>, resume: (@box: Checker.CheckerValue<B> -> Checker.CheckerProgress<A>)}
 
 type NativeEmitterView<-A: Type> is Type:
-  NativeEmitterFinished{box: Emitter.EmitterValue<A>}
+  NativeEmitterFinished{take: Unit -> Emitter.EmitterValue<A>}
   NativeEmitterMore{-B: Type, next: Unit -> Emitter.EmitterProgress<B>, resume: (@box: Emitter.EmitterValue<B> -> Emitter.EmitterProgress<A>)}
 
 def native_template_view_ready(-A: Type, progress: Template.TemplateProgress<A>) -> NativeTemplateView<A>:
   match progress:
     case Template.TemplateFinished{box}:
-      NativeTemplateFinished{box}
+      NativeTemplateFinished{unit => box}
     case Template.TemplatePending{request, resume}:
       NativeTemplateMore{Template.template_result(request), unit => template_step(request), resume}
     case Template.TemplateDirect{R, request, arguments, invoke, resume}:
@@ -105,7 +106,7 @@ def native_template_view(-A: Type, progress: Template.TemplateProgress<A>) -> Na
 def native_checker_view_ready(-A: Type, progress: Checker.CheckerProgress<A>) -> NativeCheckerView<A>:
   match progress:
     case Checker.CheckerFinished{box}:
-      NativeCheckerFinished{box}
+      NativeCheckerFinished{unit => box}
     case Checker.CheckerPending{request, resume}:
       NativeCheckerMore{Checker.checker_result(request), unit => checker_step(request), resume}
     case Checker.CheckerDirect{R, request, arguments, invoke, resume}:
@@ -119,7 +120,7 @@ def native_checker_view(-A: Type, progress: Checker.CheckerProgress<A>) -> Nativ
 def native_emitter_view_ready(-A: Type, progress: Emitter.EmitterProgress<A>) -> NativeEmitterView<A>:
   match progress:
     case Emitter.EmitterFinished{box}:
-      NativeEmitterFinished{box}
+      NativeEmitterFinished{unit => box}
     case Emitter.EmitterPending{request, resume}:
       NativeEmitterMore{Emitter.emitter_result(request), unit => emitter_step(request), resume}
     case Emitter.EmitterDirect{R, request, arguments, invoke, resume}:
@@ -138,10 +139,10 @@ def native_experiment(
   expand: List<&2, Loader.LoadedModule> -> Template.TemplateProgress<Template.ExpandResult>,
   template_view: (@-A: Type -> @progress: Template.TemplateProgress<A> -> NativeTemplateView<A>),
   expand_result: Template.TemplateValue<Template.ExpandResult> -> NativeResult<List<&2, Loader.LoadedModule>>,
-  check: List<&2, Loader.LoadedModule> -> Checker.CheckerProgress<Checker.CheckResult>,
+  check: List<&2, Loader.LoadedModule> -> Checker.CheckerProgress<Checked.CheckResult>,
   checker_view: (@-A: Type -> @progress: Checker.CheckerProgress<A> -> NativeCheckerView<A>),
-  check_result: Checker.CheckerValue<Checker.CheckResult> -> NativeResult<List<&2, Loader.LoadedModule>>,
-  emit: (List<&2, Loader.LoadedModule> & List<&2, String>) -> Emitter.EmitterProgress<Emitter.EmitResult>,
+  check_result: Checker.CheckerValue<Checked.CheckResult> -> NativeResult<List<&2, String> -> Emitter.EmitterProgress<Emitter.EmitResult>>,
+  emit: ((List<&2, String> -> Emitter.EmitterProgress<Emitter.EmitResult>) & List<&2, String>) -> Emitter.EmitterProgress<Emitter.EmitResult>,
   emitter_view: (@-A: Type -> @progress: Emitter.EmitterProgress<A> -> NativeEmitterView<A>),
   emit_result: Emitter.EmitterValue<Emitter.EmitResult> -> NativeResult<String>
 ) -> IO(Unit):

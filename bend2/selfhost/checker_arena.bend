@@ -68,6 +68,7 @@ type SubstMemoEntry is Data:
   SubstMemoEmpty{}
   SubstMemoSaved{node_id: U32, index: Nat, value_id: U32, depth: Nat, output_id: U32}
   CtrLeafSaved{key_id: U32, span: Ast.SourceSpan, output_id: U32}
+  PublishedTerm{node_id: U32, output_id: U32}
   ScalarSchemaOpen{scope: Scope.ArenaGlobalScope}
   ScalarSchemaSaved{scope: Scope.ArenaGlobalScope, selected: Scope.ArenaGlobal, valid: Bool}
   StringSchemaSaved{scope: Scope.ArenaGlobalScope, selected: Scope.ArenaGlobal, valid: Bool}
@@ -1318,6 +1319,13 @@ def subst_memo_put(arena: Arena, +node_id: U32, index: Nat, +value_id: U32, dept
   match arena:
     case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
       Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, Array.set(SubstMemoEntry, subst_memo, subst_memo_slot(node_id, value_id), SubstMemoSaved{node_id, index, value_id, depth, output_id})}
+
+# Publication shares semantic handles only. Occurrence facts remain distinct.
+# The transient owner and rewind delimit every memo entry's validity.
+def publication_memo_put(arena: Arena, +node_id: U32, output_id: U32) -> Arena:
+  match arena:
+    case Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, subst_memo}:
+      Arena{nodes, patterns, binders, words, naturals, names, counts, depths, name_ids, node_closed, node_bounds, pattern_depths, case_prefix, Array.set(SubstMemoEntry, subst_memo, subst_memo_slot(node_id, 0), PublishedTerm{node_id, output_id})}
 
 # A declaration inference frame owns this existing source-memo slot. The scope
 # snapshot retains exact alias records, not merely canonical namespace text.

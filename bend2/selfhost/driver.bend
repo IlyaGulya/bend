@@ -1,8 +1,8 @@
 import Base
 import ./ast.bend as AST
 import ./loader.bend as Loader
-import ./loaded_module.bend as Modules
 import ./checker.bend as Checker
+import ./checked_frontend.bend as Checked
 import ./js_emit.bend as JSEmit
 import ./c_emit.bend as CEmit
 
@@ -113,28 +113,37 @@ def compile_c_emit(emitted: CEmit.EmitResult, output: String) -> IO(U32):
     case CEmit.EmitSuccess{source}:
       write_output(output, source)
 
-def dispatch_c(is_c: Bool, checked: List<&2, Modules.LoadedModule>, output: String, runtime: String) -> IO(U32):
+# The legacy full-IO C backend still consumes syntax; this is its explicit
+# readback boundary, not the production JavaScript compilation path.
+def compile_c_inspection(inspection: Checked.Inspection, output: String, runtime: String) -> IO(U32):
+  match inspection:
+    case Checked.Inspection{_, modules}:
+      compile_c_emit(CEmit.emit(modules, runtime), output)
+    case Checked.InspectionFailure{_, Checked.Diagnostic{file, span, message, expected, observed}}:
+      diagnostic(file, span, message, expected, observed)
+
+def dispatch_c(is_c: Bool, checked: Checked.CheckedProgram, output: String, runtime: String) -> IO(U32):
   match is_c:
     case False{}:
       do IO<U32>:
         Unit <- IO.print_err("Error: unsupported output extension: " ++ output ++ "\n" ++ usage() ++ "\n")
         return 1
     case True{}:
-      compile_c_emit(CEmit.emit(checked, runtime), output)
+      compile_c_inspection(Checker.inspect_checked(checked), output, runtime)
 
-def dispatch_output(is_js: Bool, checked: List<&2, Modules.LoadedModule>, output: String, runtime: String) -> IO(U32):
+def dispatch_output(is_js: Bool, checked: Checked.CheckedProgram, output: String, runtime: String) -> IO(U32):
   match is_js:
     case True{}:
       compile_js_emit(JSEmit.emit(checked), output)
     case False{}:
       dispatch_c(String.ends_with(output, ".c"), checked, output, runtime)
 
-def compile_checked(checked_result: Checker.CheckResult, output: String, runtime: String) -> IO(U32):
+def compile_checked(checked_result: Checked.CheckResult, output: String, runtime: String) -> IO(U32):
   match checked_result:
-    case Checker.CheckFailure{Checker.Diagnostic{file, span, message, expected, observed}}:
+    case Checked.CheckFailure{Checked.Diagnostic{file, span, message, expected, observed}}:
       diagnostic(file, span, message, expected, observed)
-    case Checker.CheckSuccess{modules}:
-      dispatch_output(String.ends_with(output, ".js"), modules, output, runtime)
+    case Checked.CheckSuccess{program}:
+      dispatch_output(String.ends_with(output, ".js"), program, output, runtime)
 
 def compile_loaded(loaded: Loader.LoadResult, output: String, runtime: String) -> IO(U32):
   match loaded:

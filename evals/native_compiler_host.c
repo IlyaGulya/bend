@@ -67,7 +67,7 @@ static void native_closed(Term function) {
 }
 
 static Term native_drive(Env e, Term start, Term argument, Term reflect,
-    u32 finished, u32 more, u32 value_box, const char* phase) {
+    u32 finished, u32 more, const char* phase) {
   Term* stack = NULL;
   size_t depth = 0, capacity = 0;
   u64 calls = 0, resumes = 0;
@@ -90,9 +90,9 @@ static Term native_drive(Env e, Term start, Term argument, Term reflect,
       progress = native_apply(e, fs[0], term_pak(CID(Unit), 0));
     } else if (tag == finished) {
       native_fields(e, progress, finished, 1, fs);
-      // The C layout flattens Value<A> inside Finished to its raw A field.
-      // Function arguments are whole values: rebuild the carrier exactly once.
-      Term boxed = io_box(e, value_box, fs[0]);
+      // Bend retains the complete typed box behind a one-word affine closure.
+      // No assumption about the flattened layout of A crosses this boundary.
+      Term boxed = native_apply(e, fs[0], term_pak(CID(Unit), 0));
       if (depth == 0) {
         free(stack);
         fprintf(stderr, "NATIVE_PHASE {\"phase\":\"%s\",\"elapsedMs\":%.3f,\"calls\":%llu,\"resumes\":%llu}\n",
@@ -319,17 +319,15 @@ static Term native_experiment_run(Env e, Term* f, IoWork* work) {
     (double)(io_tick() - started) / 1000000.0, loader.module_count,
     (unsigned long long)loader.source_bytes, (unsigned long long)loader.foreign_bytes,
     (unsigned long long)loader.fuel_cells, (double)loader.fuel_build_ns / 1000000.0);
-  // Imported box constructors use their generated symbolic IDs: CID(...) only
-  // resolves bare/current-namespace names, not the Bend import aliases.
   Term expanded = native_drive(e, f[1], modules, f[2],
-    CID(NativeTemplateFinished), CID(NativeTemplateMore), CID_TEMPLATE_STEPS_V1_TEMPLATEVALUE, "expand");
+    CID(NativeTemplateFinished), CID(NativeTemplateMore), "expand");
   modules = native_accepted(e, native_apply(e, f[3], expanded));
   Term checked = native_drive(e, f[4], modules, f[5],
-    CID(NativeCheckerFinished), CID(NativeCheckerMore), CID_CHECKER_CORE_STEPS_V1_CHECKERVALUE, "check");
-  modules = native_accepted(e, native_apply(e, f[6], checked));
+    CID(NativeCheckerFinished), CID(NativeCheckerMore), "check");
+  Term emit = native_accepted(e, native_apply(e, f[6], checked));
   if (compile) {
-    Term emission = native_drive(e, f[7], io_tup(e, modules, native_exports(e, io_argv[4])), f[8],
-      CID(NativeEmitterFinished), CID(NativeEmitterMore), CID_JS_EMIT_STEPS_V1_EMITTERVALUE, "emit");
+    Term emission = native_drive(e, f[7], io_tup(e, emit, native_exports(e, io_argv[4])), f[8],
+      CID(NativeEmitterFinished), CID(NativeEmitterMore), "emit");
     Term source = native_accepted(e, native_apply(e, f[9], emission));
     u64 length;
     char* bytes = io_cstr(e, source, &length);
@@ -340,7 +338,7 @@ static Term native_experiment_run(Env e, Term* f, IoWork* work) {
     free(bytes);
     printf("NATIVE_RESULT {\"result\":\"EmitSuccess\",\"bytes\":%llu,\"modules\":%zu}\n", (unsigned long long)length, loader.module_count);
   } else {
-    term_drop(e, modules);
+    term_drop(e, emit);
     printf("NATIVE_RESULT {\"result\":\"CheckSuccess\",\"modules\":%zu}\n", loader.module_count);
   }
   return term_pak(CID(Unit), 0);

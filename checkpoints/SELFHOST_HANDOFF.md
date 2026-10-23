@@ -14,12 +14,24 @@
 Неподтверждённый Bend `law` не считается доказательством: нужны связанные с
 production functions проверяемые `def` либо честно обозначенное runtime evidence.
 
-Новые frontend/backend схемы и renderer записаны; checker propagation, catalog,
-runtime lowering и consumer migration входят в текущую незавершённую интеграцию.
-Новый полный root, corpus, native owner handoff и stage1/stage2 ещё не проверены.
+Checkpoint реализации57a сохранён отдельно от принятого baseline:
+`compiler-ir-checkpoint-v57a.json` содержит хеши исходников и реальные первые
+native-ошибки. Frontend, catalog, runtime lowering, BIR renderer и consumer
+migration написаны, но новый полный root и runtime ещё не прошли проверку.
+Прямой native build renderer остановился на forward-вызове
+`tail_call_selected`: новые Catalog/Backend providers ещё нужно включить в
+существующую typed CPS closure. Эта интеграция генератора выполняется отдельно;
+активные правки трёх generator-файлов не входят в checkpoint57a.
+
+Явный readback исправлен: runtime body восстанавливается из occurrence children,
+а LocalReference — из lexical term, не подстановленного semantic value.
+`Inspection`/`InspectionFailure` сохраняют владельца программы; это изменение
+ещё не проверено исполнением. Legacy standalone C использует этот явный
+inspection/readback и не является BIR backend; обычный JS compile path не
+должен делать readback.
+
+Новый полный corpus, native owner handoff и stage1/stage2 ещё не проверены.
 Рабочий baseline остаётся55; fixedpoint53 не доказывает новую архитектуру57.
-Legacy standalone C emission пока использует явный inspection/readback и не
-является BIR backend; обычный JS compile path не должен делать readback.
 
 ## Compiler56 — FIR/BIR architecture preflight, not production acceptance
 
