@@ -42,6 +42,9 @@ latest one; the GitHub release carries the same notes.
   resuming continuations or entering final typed adapters, fixing invalid memory
   access across the C boundary. Full-corpus native compile and output execution
   now pass; runtime experiments stop at the five-minute target.
+- Native progress reflection executes another bounded checked chunk before
+  returning work to the C continuation driver. Full-corpus native output and
+  actual emitted exports/parser/checker execution remain identical.
 
 - The complete selfhost parser/Template/Checker/JavaScript compiler root now
   reaches an exact stage-one/stage-two byte fixedpoint using its own emitted

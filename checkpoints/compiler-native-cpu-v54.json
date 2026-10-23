@@ -1,0 +1,783 @@
+{
+  "schema": 1,
+  "version": 54,
+  "status": "ONE_PHASE_SAMPLED_FULL_NATIVE_COMPILE_AND_ACTUAL_OUTPUT_SMOKE_PASS",
+  "host": "misakaindrive (hostname M-LV6VCFYHGQ)",
+  "os": "macOS 26.5.1 (25F80), ARM64, from sample primary report",
+  "parentCommit": "f5d87361",
+  "binarySha256": "14ba401df39b134a1936c8ca92bfb912386f01598ea55c76e0df096cab1f0dad",
+  "generatedCSha256": "3c9be7ea6e71635febc79c09a8695d90907412343f6de32a65afdda8d5f2ef13",
+  "buildReceipt": "checkpoints/native-compiler-v54-build.json",
+  "buildReceiptSha256": "8affaa5c3efe867040e034726fbed7f217df288ba3d673e75834387cd4c31a2d",
+  "baselineCompileReceipt": "checkpoints/native-compiler-v54-compile.json",
+  "baselineCompileReceiptSha256": "1372823dfaf714f1ab42fa9350eb3e7326313eb3430437e116d9fd9017d0fdb9",
+  "sourcePinsVerifiedBeforeAndAfter": true,
+  "protectedPins": {
+    "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_experiment.ts": "1937d01c80d698407e412a1e1edde7643e6064c82c37eb67ea38d63e4d37d463",
+    "/Users/ilyagulya/Projects/My/bend/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+    "/Users/ilyagulya/Projects/My/bend/bend2/comp.ts": "8c33864a67f0fd08d1805929c8f48806c040b219126b29bb31f201f45d6b69e6",
+    "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_driver.bend": "0c89728199194c8c7448aebbe540f299cf9b030461030ec32ea40bcc6bc72013",
+    "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_host.c": "348df0e4de07e19663473afa1b73136c778b72f1e000b0823415f54aa2283597",
+    "/Users/ilyagulya/Projects/My/bend/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+    "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts": "47a12205abd374fd69d7dac30ee9fb45d7203cad2790870511387cd2efc22251",
+    "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate_native.c": "f5aecf8308caebc72dccf8986733b37137d448021ee378302cfcd038381b7aa9",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-v41.corpus.json": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258"
+  },
+  "loadedInputsPinsReference": "checkpoints/compiler-native-carrier-v54.json /build/loadedInputs; all verified before and after actual compile",
+  "corpus": {
+    "files": 50,
+    "modules": 15,
+    "exports": 7720,
+    "sha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+    "runtimeManifestSha256": "93095f172f0519842e6586b6ccadb01db8dbf68870eb76c8c3b5aa7d88b10355",
+    "exportManifestSha256": "8472512efdfdae7d66af31ca3dfea1ee5a8283f08dd85b5af3082883d3bfd7fd",
+    "everyFrozenFileVerifiedBeforeAfter": true
+  },
+  "nativeCommand": [
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v54",
+    "--threads",
+    "1",
+    "--gpu",
+    "off",
+    "--",
+    "/private/tmp/bend-v41-corpus.uXXfVm/checkpoints/.bootstrap_compiler_root_v1.bend",
+    "/private/tmp/bend-v41-corpus.uXXfVm/bend2/base.bend",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v54-compile.json.runtime.tsv",
+    "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v54-compile.json.exports.txt",
+    "compile",
+    "/tmp/native54-cpu-20261023.output.mjs"
+  ],
+  "commandChange": "Only last argument (fresh output path); all original binary arguments and runtime/export manifests reused unchanged. No compiler rebuild, generated-C patch, source edits, or check exclusions.",
+  "nativePid": 34024,
+  "instrumentedElapsedMs": 90800.942458,
+  "notNormalBenchmark": true,
+  "phases": [
+    {
+      "phase": "parse",
+      "elapsedMs": 4152.52,
+      "modules": 15,
+      "sourceBytes": 4333108,
+      "foreignBytes": 25145,
+      "eagerFuelCells": 120000000,
+      "fuelBuildMs": 163.695
+    },
+    {
+      "phase": "expand",
+      "elapsedMs": 7849.786,
+      "calls": 21810643,
+      "resumes": 21810643
+    },
+    {
+      "phase": "check",
+      "elapsedMs": 54039.437,
+      "calls": 61979047,
+      "resumes": 61979047
+    },
+    {
+      "phase": "emit",
+      "elapsedMs": 24383.76,
+      "calls": 16875247,
+      "resumes": 16875247
+    }
+  ],
+  "phaseCompletionBoundaries": [
+    {
+      "phase": "parse",
+      "elapsedMs": 4152.52,
+      "modules": 15,
+      "sourceBytes": 4333108,
+      "foreignBytes": 25145,
+      "eagerFuelCells": 120000000,
+      "fuelBuildMs": 163.695,
+      "observedElapsedMs": 4176.974875,
+      "observedWall": "2026-10-23T13:40:37.646Z"
+    },
+    {
+      "phase": "expand",
+      "elapsedMs": 7849.786,
+      "calls": 21810643,
+      "resumes": 21810643,
+      "observedElapsedMs": 12026.194875,
+      "observedWall": "2026-10-23T13:40:45.496Z"
+    },
+    {
+      "phase": "check",
+      "elapsedMs": 54039.437,
+      "calls": 61979047,
+      "resumes": 61979047,
+      "observedElapsedMs": 66065.24579100001,
+      "observedWall": "2026-10-23T13:41:39.535Z"
+    },
+    {
+      "phase": "emit",
+      "elapsedMs": 24383.76,
+      "calls": 16875247,
+      "resumes": 16875247,
+      "observedElapsedMs": 90474.614541,
+      "observedWall": "2026-10-23T13:42:03.945Z"
+    }
+  ],
+  "resourceGate": {
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 1450868736,
+      "peakFootprintBytes": 1423460536,
+      "elapsedMs": 91060,
+      "timeoutMs": 300000,
+      "command": [
+        "/Users/ilyagulya/.cache/bend-selfhost-106c7efd/bin/bun",
+        "--smol",
+        "/tmp/native54-cpu-20261023.mjs",
+        "--worker"
+      ],
+      "label": "Native54 phase-sampled full compile",
+      "exitCode": 0,
+      "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792762833269-d8de5eae0d9fb5bc.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "smokeGuardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 382140416,
+      "peakFootprintBytes": 331240728,
+      "elapsedMs": 456,
+      "timeoutMs": 300000,
+      "command": [
+        "node",
+        "--max-old-space-size=3072",
+        "/tmp/native54-cpu-20261023.smoke.mjs"
+      ],
+      "label": "Native54 profiled output actual import smoke",
+      "exitCode": 0,
+      "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792762924345-ba77c13420b35caa.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "pollMs": 10,
+  "profiles": {
+    "check": {
+      "phase": "check",
+      "command": [
+        "/usr/bin/sample",
+        "34024",
+        "10",
+        "1",
+        "-mayDie",
+        "-file",
+        "/tmp/native54-cpu-20261023.check.sample.txt"
+      ],
+      "targetPid": 34024,
+      "requestedDurationSeconds": 10,
+      "samplingIntervalMs": 1,
+      "startElapsedMs": 12026.317416,
+      "startWall": "2026-10-23T13:40:45.496Z",
+      "exitCode": 0,
+      "signal": null,
+      "endElapsedMs": 22159.507541000003,
+      "endWall": "2026-10-23T13:40:55.629Z",
+      "stdout": "",
+      "stderr": "Sampling process 34024 for 10 seconds with 1 millisecond of run time between samples\nSampling completed, processing symbols...\nSample analysis of process 34024 written to file /tmp/native54-cpu-20261023.check.sample.txt\n",
+      "sampleCommandWallMs": 10133.190125000003,
+      "observations": 7676,
+      "threads": [
+        {
+          "label": "Thread_6290350   DispatchQueue_1: com.apple.main-thread  (serial)",
+          "samples": 7676
+        }
+      ],
+      "waitingFramesObserved": false,
+      "unresolvedQuestionMarkFramesObserved": false,
+      "categories": [
+        {
+          "category": "runtime_refcount_drop_share",
+          "selfSamples": 2463,
+          "percent": 32.087
+        },
+        {
+          "category": "generated_map_library",
+          "selfSamples": 1731,
+          "percent": 22.551
+        },
+        {
+          "category": "closure_and_work_dispatch",
+          "selfSamples": 1335,
+          "percent": 17.392
+        },
+        {
+          "category": "generated_checker_lookup_work",
+          "selfSamples": 782,
+          "percent": 10.188
+        },
+        {
+          "category": "generated_string_library",
+          "selfSamples": 476,
+          "percent": 6.201
+        },
+        {
+          "category": "generated_progress_chunk_step_wrappers",
+          "selfSamples": 310,
+          "percent": 4.039
+        },
+        {
+          "category": "generated_helper_attribution_unresolved",
+          "selfSamples": 274,
+          "percent": 3.57
+        },
+        {
+          "category": "host_driver_evaluator_self",
+          "selfSamples": 106,
+          "percent": 1.381
+        },
+        {
+          "category": "runtime_allocation_storage",
+          "selfSamples": 101,
+          "percent": 1.316
+        },
+        {
+          "category": "generated_native_bridge_closures",
+          "selfSamples": 78,
+          "percent": 1.016
+        },
+        {
+          "category": "other_runtime_system_or_unresolved",
+          "selfSamples": 19,
+          "percent": 0.248
+        },
+        {
+          "category": "other_generated_work",
+          "selfSamples": 1,
+          "percent": 0.013
+        }
+      ],
+      "topSelfSymbols": [
+        {
+          "symbol": "term_drop",
+          "samples": 1486,
+          "percent": 19.359
+        },
+        {
+          "symbol": "WL_FID_MAP_BIT_GO",
+          "samples": 961,
+          "percent": 12.52
+        },
+        {
+          "symbol": "WL_FID_CLO_APPLY",
+          "samples": 741,
+          "percent": 9.653
+        },
+        {
+          "symbol": "rfc_wrap",
+          "samples": 689,
+          "percent": 8.976
+        },
+        {
+          "symbol": "WL_FID_MAP_BIT_GO_K5294",
+          "samples": 405,
+          "percent": 5.276
+        },
+        {
+          "symbol": "WL_FID_EXIT",
+          "samples": 374,
+          "percent": 4.872
+        },
+        {
+          "symbol": "WL_FID_STRING_CMP",
+          "samples": 342,
+          "percent": 4.455
+        },
+        {
+          "symbol": "span_fade",
+          "samples": 286,
+          "percent": 3.726
+        },
+        {
+          "symbol": "WL_FID_CHECKER_CORE_STEPS_V1_CHECKER_CHUNK",
+          "samples": 237,
+          "percent": 3.088
+        },
+        {
+          "symbol": "WL_FID_ENTER",
+          "samples": 204,
+          "percent": 2.658
+        },
+        {
+          "symbol": "WL_FID_CHECKER_CORE_STEPS_V1_CHECKER_STEP_ONE",
+          "samples": 186,
+          "percent": 2.423
+        },
+        {
+          "symbol": "WL_FID_MAP_GET_GO",
+          "samples": 113,
+          "percent": 1.472
+        },
+        {
+          "symbol": "WL_FID_STRING_CMP_K13456",
+          "samples": 104,
+          "percent": 1.355
+        },
+        {
+          "symbol": "spare_free",
+          "samples": 67,
+          "percent": 0.873
+        },
+        {
+          "symbol": "WL_FID____BEND2_SELFHOST_INDEX_LOOKUP_FIND_GO",
+          "samples": 43,
+          "percent": 0.56
+        },
+        {
+          "symbol": "WL_FID_MAIN_C34907",
+          "samples": 39,
+          "percent": 0.508
+        },
+        {
+          "symbol": "corpus_eval",
+          "samples": 33,
+          "percent": 0.43
+        },
+        {
+          "symbol": "WL_FID_MAIN_C34908",
+          "samples": 31,
+          "percent": 0.404
+        },
+        {
+          "symbol": "spin_358",
+          "samples": 27,
+          "percent": 0.352
+        },
+        {
+          "symbol": "native_fields",
+          "samples": 27,
+          "percent": 0.352
+        },
+        {
+          "symbol": "native_drive",
+          "samples": 26,
+          "percent": 0.339
+        },
+        {
+          "symbol": "spin_356",
+          "samples": 25,
+          "percent": 0.326
+        },
+        {
+          "symbol": "WL_FID_MAP_GET_GO_K5390",
+          "samples": 24,
+          "percent": 0.313
+        },
+        {
+          "symbol": "WL_FID_MAP_GET_GO_K5388",
+          "samples": 23,
+          "percent": 0.3
+        },
+        {
+          "symbol": "blk_new",
+          "samples": 21,
+          "percent": 0.274
+        }
+      ],
+      "hostAndMemorySelfSymbols": {
+        "term_drop": 1486,
+        "rfc_wrap": 689,
+        "span_fade": 286,
+        "blk_new": 21,
+        "spare_free": 67,
+        "heap_free": 13,
+        "corpus_eval": 33,
+        "native_apply": 20,
+        "term_keep": 2,
+        "native_drive": 26,
+        "native_fields": 27
+      },
+      "profileSha256": "873ded4c36de301ba09d7b7182dd1d19021946c01947e0d810308aeded71e98c",
+      "sampleReportStart": "2026-10-23 18:40:45.533 +0500"
+    },
+    "emit": {
+      "phase": "emit",
+      "command": [
+        "/usr/bin/sample",
+        "34024",
+        "10",
+        "1",
+        "-mayDie",
+        "-file",
+        "/tmp/native54-cpu-20261023.emit.sample.txt"
+      ],
+      "targetPid": 34024,
+      "requestedDurationSeconds": 10,
+      "samplingIntervalMs": 1,
+      "startElapsedMs": 66065.255458,
+      "startWall": "2026-10-23T13:41:39.535Z",
+      "exitCode": 0,
+      "signal": null,
+      "endElapsedMs": 76139.43854100001,
+      "endWall": "2026-10-23T13:41:49.609Z",
+      "stdout": "",
+      "stderr": "Sampling process 34024 for 10 seconds with 1 millisecond of run time between samples\nSampling completed, processing symbols...\nSample analysis of process 34024 written to file /tmp/native54-cpu-20261023.emit.sample.txt\n",
+      "sampleCommandWallMs": 10074.18308300001,
+      "observations": 7655,
+      "threads": [
+        {
+          "label": "Thread_6290350   DispatchQueue_1: com.apple.main-thread  (serial)",
+          "samples": 7655
+        }
+      ],
+      "waitingFramesObserved": false,
+      "unresolvedQuestionMarkFramesObserved": false,
+      "categories": [
+        {
+          "category": "runtime_refcount_drop_share",
+          "selfSamples": 2567,
+          "percent": 33.534
+        },
+        {
+          "category": "generated_string_library",
+          "selfSamples": 1821,
+          "percent": 23.788
+        },
+        {
+          "category": "generated_map_library",
+          "selfSamples": 1179,
+          "percent": 15.402
+        },
+        {
+          "category": "closure_and_work_dispatch",
+          "selfSamples": 1055,
+          "percent": 13.782
+        },
+        {
+          "category": "generated_progress_chunk_step_wrappers",
+          "selfSamples": 304,
+          "percent": 3.971
+        },
+        {
+          "category": "generated_emitter_work",
+          "selfSamples": 278,
+          "percent": 3.632
+        },
+        {
+          "category": "generated_helper_attribution_unresolved",
+          "selfSamples": 147,
+          "percent": 1.92
+        },
+        {
+          "category": "generated_checker_lookup_work",
+          "selfSamples": 99,
+          "percent": 1.293
+        },
+        {
+          "category": "host_driver_evaluator_self",
+          "selfSamples": 82,
+          "percent": 1.071
+        },
+        {
+          "category": "runtime_allocation_storage",
+          "selfSamples": 55,
+          "percent": 0.718
+        },
+        {
+          "category": "generated_native_bridge_closures",
+          "selfSamples": 47,
+          "percent": 0.614
+        },
+        {
+          "category": "other_runtime_system_or_unresolved",
+          "selfSamples": 17,
+          "percent": 0.222
+        },
+        {
+          "category": "other_generated_work",
+          "selfSamples": 4,
+          "percent": 0.052
+        }
+      ],
+      "topSelfSymbols": [
+        {
+          "symbol": "term_drop",
+          "samples": 1304,
+          "percent": 17.035
+        },
+        {
+          "symbol": "WL_FID_STRING_APPEND",
+          "samples": 1017,
+          "percent": 13.285
+        },
+        {
+          "symbol": "rfc_wrap",
+          "samples": 860,
+          "percent": 11.234
+        },
+        {
+          "symbol": "WL_FID_MAP_BIT_GO",
+          "samples": 838,
+          "percent": 10.947
+        },
+        {
+          "symbol": "WL_FID_CLO_APPLY",
+          "samples": 562,
+          "percent": 7.342
+        },
+        {
+          "symbol": "span_fade",
+          "samples": 397,
+          "percent": 5.186
+        },
+        {
+          "symbol": "WL_FID_STRING_CMP",
+          "samples": 334,
+          "percent": 4.363
+        },
+        {
+          "symbol": "WL_FID_STRING_APPEND_K20803",
+          "samples": 333,
+          "percent": 4.35
+        },
+        {
+          "symbol": "WL_FID_MAP_BIT_GO_K5294",
+          "samples": 300,
+          "percent": 3.919
+        },
+        {
+          "symbol": "WL_FID_EXIT",
+          "samples": 288,
+          "percent": 3.762
+        },
+        {
+          "symbol": "WL_FID_JS_EMIT_STEPS_V1_EMITTER_CHUNK",
+          "samples": 227,
+          "percent": 2.965
+        },
+        {
+          "symbol": "WL_FID_ENTER",
+          "samples": 177,
+          "percent": 2.312
+        },
+        {
+          "symbol": "WL_FID_JS_EMIT_STEPS_V1_EMITTER_STEP_ONE",
+          "samples": 97,
+          "percent": 1.267
+        },
+        {
+          "symbol": "WL_FID_STRING_CMP_K13456",
+          "samples": 73,
+          "percent": 0.954
+        },
+        {
+          "symbol": "WL_FID____BEND2_SELFHOST_INDEX_LOOKUP_FIND_GO",
+          "samples": 48,
+          "percent": 0.627
+        },
+        {
+          "symbol": "WL_FID_MAIN_C34914",
+          "samples": 36,
+          "percent": 0.47
+        },
+        {
+          "symbol": "WL_FID____BEND2_SELFHOST_INDEX_LOOKUP_FIND_GO_K12879",
+          "samples": 31,
+          "percent": 0.405
+        },
+        {
+          "symbol": "native_fields",
+          "samples": 30,
+          "percent": 0.392
+        },
+        {
+          "symbol": "heap_free",
+          "samples": 28,
+          "percent": 0.366
+        },
+        {
+          "symbol": "work_loop",
+          "samples": 28,
+          "percent": 0.366
+        },
+        {
+          "symbol": "corpus_eval",
+          "samples": 27,
+          "percent": 0.353
+        },
+        {
+          "symbol": "heap_alloc_miss",
+          "samples": 21,
+          "percent": 0.274
+        },
+        {
+          "symbol": "OUTLINED_FUNCTION_67",
+          "samples": 21,
+          "percent": 0.274
+        },
+        {
+          "symbol": "WL_FID____BEND2_SELFHOST_INDEX_LOOKUP_FIND_GO_K12880",
+          "samples": 20,
+          "percent": 0.261
+        },
+        {
+          "symbol": "___chkstk_darwin",
+          "samples": 17,
+          "percent": 0.222
+        }
+      ],
+      "hostAndMemorySelfSymbols": {
+        "term_drop": 1304,
+        "rfc_wrap": 860,
+        "span_fade": 397,
+        "heap_free": 28,
+        "heap_alloc_miss": 21,
+        "ctr_take": 2,
+        "spare_free": 6,
+        "term_keep": 4,
+        "corpus_eval": 27,
+        "native_apply": 9,
+        "native_fields": 30,
+        "native_drive": 16
+      },
+      "profileSha256": "2a933d1c7d229734d455843e3b61a12bbafe754e803a2b8b9325270666f1099a",
+      "sampleReportStart": "2026-10-23 18:41:39.559 +0500"
+    }
+  },
+  "outputProof": {
+    "status": "NATIVE_FULL_COMPILE_EXACT_OUTPUT_AND_IMPORT_SMOKE_PASS",
+    "nativeReport": "/tmp/native54-cpu-20261023.compile.json",
+    "nativeReportSha256": "bf4a37e710be95f78d952ede952a0a9be71dd215aa65ffc9a865196565e4ec93",
+    "outputSha256": "a1033733403dddb6214b6433ec55cd385fc210ce0d985871259a25487bd06d29",
+    "outputBytes": 20281365,
+    "exports": 7720,
+    "modules": 15,
+    "emittedParserActualSource": true,
+    "emittedCheckerEmptyModules": true,
+    "outputSmokeRuntimeSha256": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+    "runtime": {
+      "node": "23.11.0",
+      "acorn": "8.14.1",
+      "ada": "3.2.1",
+      "amaro": "0.4.1",
+      "ares": "1.34.4",
+      "brotli": "1.1.0",
+      "cjs_module_lexer": "2.1.0",
+      "cldr": "46.0",
+      "icu": "76.1",
+      "llhttp": "9.2.1",
+      "modules": "131",
+      "napi": "10",
+      "nbytes": "0.1.1",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.64.0",
+      "openssl": "3.0.16",
+      "simdjson": "3.12.2",
+      "simdutf": "6.0.3",
+      "sqlite": "3.49.1",
+      "tz": "2025a",
+      "undici": "6.21.2",
+      "unicode": "16.0",
+      "uv": "1.50.0",
+      "uvwasi": "0.0.21",
+      "v8": "12.9.202.28-node.14",
+      "zlib": "1.3.0.1-motley-788cb3c",
+      "zstd": "1.5.6"
+    },
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "nativeBinaryBootstrap": false
+  },
+  "cleanup": {
+    "removedOnlyOwnOutput": "/tmp/native54-cpu-20261023.output.mjs",
+    "sha256": "a1033733403dddb6214b6433ec55cd385fc210ce0d985871259a25487bd06d29",
+    "bytes": 20281365,
+    "afterActualImportProof": true
+  },
+  "method": {
+    "profiler": "/usr/bin/sample, live task PID, 10 seconds each, requested 1 millisecond runtime between samples; no installation or configuration",
+    "triggers": "stderr NATIVE_PHASE expand completion triggers CHECK sample; NATIVE_PHASE check completion triggers EMIT sample. Both commands finish well before their target phase completion.",
+    "durationCaveat": "Sample command wall durations include launch/attach/symbol processing; requested sampling duration is 10s and profiler says completed. 7676/7655 observations, not 10000; nominal interval does not include collection overhead. Report start timestamps and phase observation times recorded.",
+    "selfAccounting": "Exclusive node count = inclusive node count minus immediate children, aggregated by symbol. Sum equals single thread observations; every >=5 symbol matches Apple top-of-stack collapsed summary. Recursive inclusive summary was not summed.",
+    "threads": "Only Thread_6290350 com.apple.main-thread appears in each profile; all captured leaf symbols are native generated/runtime work except stack probe. No sampled waiting/sleep/lock frame or additional waiting thread. This does not assert absence of unobserved waits.",
+    "statisticalLimits": "Statistical wall-time stack observations of a compute-active thread, not hardware CPU cycle counters or exact CPU percentages. Early ten-second windows are not phase-wide representative guarantees. -O1 diagnostic binary; instrumentation time is not an ordinary benchmark.",
+    "inliningLimits": "No ??? frames in either sampled callgraph; symbol names available but no source line/debug inline chain. heap_alloc/term_keep/ctr_take/refcount and other INLINE fast paths can be charged to generated functions. OUTLINED_FUNCTION_* and spin_* helper semantic attribution left unresolved. Thus named runtime self categories are not total allocation/refcount cost, nor is generated work exclusively semantic checking."
+  },
+  "conclusions": [
+    "CHECK named refcount/drop/share self 32.087%, Map library 22.551%, closure/work dispatch 17.392%; checker/lookup-specific generated work 10.188%.",
+    "EMIT named refcount/drop/share self 33.534%, String library 23.788%, Map library 15.402%, closure/work dispatch 13.782%.",
+    "Direct host/evaluator self is only 1.381% CHECK and 1.071% EMIT; native_drive specifically 26/7676 and 16/7655. Inclusive native_drive/corpus_eval encompasses nearly everything and is not itself CPU cost.",
+    "[INFERENCE] Large host boundary counts alone do not prove C driver CPU dominance. Chunking might change dispatch, progress construction and sharing, but samples do not quantify a causal speedup. Map/string traversal and sharing costs deserve attention alongside protocol dispatch."
+  ],
+  "primarySourceReferences": [
+    "evals/native_compiler_host.c:56-61 native_apply calls corpus_eval",
+    "evals/native_compiler_host.c:69-110 native_drive and phase completion record; carrier reconstruction preserved at95",
+    "evals/native_compiler_host.c:318-341 phase handoff and whole output",
+    "bend2/comp.ts:4055-4109 allocator fast/slow/free paths",
+    "bend2/comp.ts:4165-4180 reference sharing;4211-4240 term_drop;4301-4317 ctr_take",
+    "bend2/comp.ts:4590-4603 work_loop;4615-4656 entry and closure dispatch;5548-5570 corpus_eval",
+    "bend2/base.bend:1901-1938 String append/cmp;1967-1968 String.order",
+    "bend2/base.bend:2556-2572 Map.bit.go traversal;2814-2838 Map.get traversal",
+    "evals/native_compiler_experiment.ts:237-290 original full-run acceptance logic mirrored by profiling recipe"
+  ],
+  "rawArtifacts": [
+    {
+      "host": "misakaindrive",
+      "path": "/tmp/native54-cpu-20261023.check.sample.txt",
+      "sha256": "873ded4c36de301ba09d7b7182dd1d19021946c01947e0d810308aeded71e98c"
+    },
+    {
+      "host": "misakaindrive",
+      "path": "/tmp/native54-cpu-20261023.emit.sample.txt",
+      "sha256": "2a933d1c7d229734d455843e3b61a12bbafe754e803a2b8b9325270666f1099a"
+    },
+    {
+      "host": "misakaindrive",
+      "path": "/tmp/native54-cpu-20261023.compile.json",
+      "sha256": "bf4a37e710be95f78d952ede952a0a9be71dd215aa65ffc9a865196565e4ec93"
+    },
+    {
+      "host": "misakaindrive",
+      "path": "/tmp/native54-cpu-20261023.gates.json",
+      "sha256": "b1782bd93686c077257d4c22586125625b155111e8c1fe318b6f919f86e74fc8"
+    },
+    {
+      "host": "misakaindrive",
+      "path": "/tmp/native54-cpu-20261023.smoke.json",
+      "sha256": "688fda3713d4946c450a089e8ce9a2ac353b4bc1fbe0295545302bf5433598c8"
+    },
+    {
+      "host": "misakaindrive",
+      "path": "/tmp/native54-cpu-20261023.cleanup.json",
+      "sha256": "9174515dc2ed4d2be19bd7e48bb45ca211afa18c145b4a1df0cebf7c1c68ca1b"
+    },
+    {
+      "host": "misakaindrive",
+      "path": "/tmp/native54-cpu-20261023.stdout.log",
+      "sha256": "c3f00073d2092707da270c151a1dd9540bbb4b9b8c72920f3c2240df58937c24"
+    },
+    {
+      "host": "misakaindrive",
+      "path": "/tmp/native54-cpu-20261023.stderr.log",
+      "sha256": "c945c4eebe441fb5eac2dfb97dddbcaf420359afc01f9cb7a837816538d5d215"
+    },
+    {
+      "host": "misakaindrive",
+      "path": "/tmp/native54-cpu-20261023.check.sample.log",
+      "sha256": "a1520b4685a60a47a041328798fc2cf824924039b5cc74962268b022a5da9394"
+    },
+    {
+      "host": "misakaindrive",
+      "path": "/tmp/native54-cpu-20261023.emit.sample.log",
+      "sha256": "23a2111d490c91b2c34e86027b2358e49c80eec5d0e936501aa90522d6339861"
+    }
+  ],
+  "executedCommand": "ssh misakaindrive 'export PATH=/Users/ilyagulya/.cache/bend-selfhost-106c7efd/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin; export BEND_NO_TELEMETRY=1; cd /Users/ilyagulya/Projects/My/bend && bun --smol /tmp/native54-cpu-20261023.mjs'",
+  "recipeSource": "import {readFileSync,writeFileSync,existsSync,unlinkSync} from 'node:fs';\nimport {createHash} from 'node:crypto';\nimport {spawn} from 'node:child_process';\nimport {resolve,join} from 'node:path';\nimport {runHeavyGate} from '/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts';\nconst prefix='/tmp/native54-cpu-20261023',reportPath=prefix+'.compile.json';\nconst hash=p=>createHash('sha256').update(readFileSync(p)).digest('hex');\nconst json=p=>JSON.parse(readFileSync(p));\nconst save=(p,v)=>writeFileSync(p,JSON.stringify(v,null,2)+'\\n',{flag:'wx'});\nconst settings={memoryMiB:8192,rssMiB:8192,pollMs:10,timeoutMs:300000,label:'Native54 phase-sampled full compile'};\nif(process.argv.includes('--worker')){\n const old=json('checkpoints/native-compiler-v54-compile.json'),build=json(old.build),corpus=json(old.corpus);\n const command=[...old.command];command[command.length-1]=prefix+'.output.mjs';\n if(existsSync(command.at(-1)))throw Error('Output already exists');\n const verify=()=>{\n  for(const [p,h] of Object.entries({...build.protectedPins,...build.loadedInputs,...old.protectedPins}))if(hash(p)!==h)throw Error('Pin drift '+p);\n  if(hash(build.artifact)!=='14ba401df39b134a1936c8ca92bfb912386f01598ea55c76e0df096cab1f0dad'||hash(build.cPath)!=='3c9be7ea6e71635febc79c09a8695d90907412343f6de32a65afdda8d5f2ef13')throw Error('Binary/C drift');\n  if(corpus.files.length!==50||corpus.files.filter(x=>!x.external).length!==15)throw Error('Corpus cardinality');\n  for(const row of corpus.files)if(hash(resolve(corpus.directory,row.path))!==row.sha256)throw Error('Corpus drift '+row.path);\n  const runtime=corpus.files.map(row=>[row.external?'E':'B',row.namespace??'',resolve(corpus.directory,row.path)].join('\\t')).join('\\n')+'\\n';\n  if(readFileSync(command[8],'utf8')!==runtime||readFileSync(command[9],'utf8')!==old.exports.join('\\n')+'\\n'||old.exports.length!==7720)throw Error('Runtime/export manifest drift');\n };\n verify();\n const phases=[],boundaries=[],fuel=[],begins=[],results=[],samples=[],sampleJobs=[];\n const start=performance.now(),wallStart=new Date().toISOString();\n const child=spawn(command[0],command.slice(1),{stdio:['ignore','pipe','pipe']});\n const profile=phase=>{\n  const argv=['/usr/bin/sample',String(child.pid),'10','1','-mayDie','-file',prefix+'.'+phase+'.sample.txt'];\n  const row={phase,command:argv,targetPid:child.pid,requestedDurationSeconds:10,samplingIntervalMs:1,startElapsedMs:performance.now()-start,startWall:new Date().toISOString()};samples.push(row);\n  const p=spawn(argv[0],argv.slice(1),{stdio:['ignore','pipe','pipe']});let out='',err='';\n  p.stdout.on('data',x=>out+=x);p.stderr.on('data',x=>err+=x);\n  sampleJobs.push(new Promise((yes,no)=>{p.once('error',no);p.once('close',(code,signal)=>{Object.assign(row,{exitCode:code,signal,endElapsedMs:performance.now()-start,endWall:new Date().toISOString(),stdout:out,stderr:err});writeFileSync(prefix+'.'+phase+'.sample.log',out+err,{flag:'wx'});yes();});}));\n };\n const consume=line=>{\n  if(line.startsWith('NATIVE_PHASE ')){const r=JSON.parse(line.slice(13));phases.push(r);boundaries.push({...r,observedElapsedMs:performance.now()-start,observedWall:new Date().toISOString()});if(r.phase==='expand')profile('check');if(r.phase==='check')profile('emit');}\n  if(line.startsWith('NATIVE_FUEL '))fuel.push(JSON.parse(line.slice(12)));\n  if(line.startsWith('NATIVE_BEGIN '))begins.push(JSON.parse(line.slice(13)));\n  if(line.startsWith('NATIVE_RESULT '))results.push(JSON.parse(line.slice(14)));\n };\n let stdout='',stderr='',pendingOut='',pendingErr='';\n child.stdout.on('data',x=>{stdout+=x;pendingOut+=x;let i;while((i=pendingOut.indexOf('\\n'))>=0){consume(pendingOut.slice(0,i));pendingOut=pendingOut.slice(i+1);}});\n child.stderr.on('data',x=>{stderr+=x;pendingErr+=x;let i;while((i=pendingErr.indexOf('\\n'))>=0){consume(pendingErr.slice(0,i));pendingErr=pendingErr.slice(i+1);}});\n const exit=await new Promise((yes,no)=>{child.once('error',no);child.once('close',(code,signal)=>yes({code,signal}));});\n const elapsedMs=performance.now()-start;\n await Promise.all(sampleJobs);\n writeFileSync(prefix+'.stdout.log',stdout,{flag:'wx'});writeFileSync(prefix+'.stderr.log',stderr,{flag:'wx'});\n verify();\n if(exit.code!==0||begins.length!==1||begins[0].computeThreads!==1||results.length!==1||results[0].modules!==15||results[0].result!=='EmitSuccess'||fuel.length!==15||fuel.some(x=>x.cells!==8000000)||JSON.stringify(phases.map(x=>x.phase))!==JSON.stringify(['parse','expand','check','emit']))throw Error('Incomplete native run');\n if(hash(command.at(-1))!=='a1033733403dddb6214b6433ec55cd385fc210ce0d985871259a25487bd06d29'||readFileSync(command.at(-1)).length!==20281365)throw Error('Output mismatch');\n save(reportPath,{status:'NATIVE_FULL_COMPILE_PASS',command,nativePid:child.pid,wallStart,elapsedMs,exit,phases,boundaries,fuel,result:results[0],exports:old.exports,output:command.at(-1),outputSha256:hash(command.at(-1)),outputBytes:20281365,samples,sourcePinsVerifiedBeforeAfter:true,corpusFiles:50,baselineReportSha256:hash('checkpoints/native-compiler-v54-compile.json'),buildReportSha256:hash(old.build),runtimeManifestSha256:hash(command[8]),exportManifestSha256:hash(command[9])});\n}else{\n const guardian=await runHeavyGate([process.execPath,'--smol','/tmp/native54-cpu-20261023.mjs','--worker'],settings);\n if(guardian.status!=='PASS')throw Error('Compile gate '+JSON.stringify(guardian));\n const result=json(reportPath);result.guardian=guardian;writeFileSync(reportPath,JSON.stringify(result,null,2)+'\\n');\n const smokeGuardian=await runHeavyGate(['node','--max-old-space-size=3072','/tmp/native54-cpu-20261023.smoke.mjs'],{...settings,label:'Native54 profiled output actual import smoke'});\n save(prefix+'.gates.json',{guardian,smokeGuardian});\n if(smokeGuardian.status!=='PASS')throw Error('Smoke gate failed');\n unlinkSync(result.output);\n save(prefix+'.cleanup.json',{removedOnlyOwnOutput:result.output,sha256:result.outputSha256,bytes:result.outputBytes,afterActualImportProof:true});\n console.log(JSON.stringify({status:'PROFILE_COMPILE_AND_SMOKE_PASS',reportPath,guardian,smokeGuardian,samples:result.samples}));\n}\n",
+  "recipeSha256": "7c45040f8a786e1e7f8d4cbc10cf0bb725a0290e897da7d05133957aeec4867d",
+  "outputSmokeSource": "import{readFileSync,writeFileSync}from'node:fs';\nimport{createHash}from'node:crypto';\nimport{resolve}from'node:path';\nimport{pathToFileURL}from'node:url';\nconst hash=p=>createHash('sha256').update(readFileSync(p)).digest('hex');\nconst reportPath=resolve('/tmp/native54-cpu-20261023.compile.json');\nconst report=JSON.parse(readFileSync(reportPath));\nif(report.status!=='NATIVE_FULL_COMPILE_PASS'||report.guardian?.status!=='PASS'||report.exports.length!==7720||report.result.modules!==15)throw Error('Missing complete native result');\nconst expected='a1033733403dddb6214b6433ec55cd385fc210ce0d985871259a25487bd06d29';\nif(hash(report.output)!==expected||report.outputSha256!==expected||report.outputBytes!==20281365)throw Error('Native full output differs from exact frozen Mac output');\nconst runtimePath=resolve('checkpoints/compiler-benchmark-v41-step-runtime.mjs');\nif(hash(runtimePath)!=='2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd')throw Error('Frozen output ABI drift');\nconst api=(await import(pathToFileURL(report.output).href)).default;\nconst actual=Object.keys(api);if(actual.length!==report.exports.length||actual.some((name,i)=>name!==report.exports[i]))throw Error('Public export order/set mismatch');\nconst tag=x=>typeof x?.$==='string'?x.$.split('.').at(-1):undefined;\nconst end=Object.freeze({$:'FeedbackFuelEnd'}),prototype={get tail(){return fuel(this.remaining-1);}};\nfunction fuel(n){if(!n)return end;const x=Object.create(prototype);x.$='FeedbackFuelCell';x.remaining=n;return x;}\nconst parsed=api.parse_with_fuel(fuel(8000000),'/native-output-smoke.bend','type Bit is Data:\\n  Zero{}\\n  One{}\\n\\ndef main() -> Bit:\\n  One{}\\n');\nif(tag(parsed)!=='FeedbackComplete'||tag(parsed.value?.result)!=='ParseSuccess')throw Error('Emitted parser failed actual source');\nlet defs=parsed.value.result.module.declarations,main=false;while(tag(defs)==='Con'){if(tag(defs.head)==='DefTop'&&defs.head.definition.key==='main')main=true;defs=defs.tail;}if(tag(defs)!=='Nil'||!main)throw Error('Emitted parser lost declaration');\nconst runtime=await import(pathToFileURL(runtimePath).href),checked=runtime.runCheckerSteps(api,{$:'Nil'});\nif(tag(checked)!=='CheckSuccess'||tag(checked.modules)!=='Nil')throw Error('Emitted checker failed empty-module semantics');\nconst proof={status:'NATIVE_FULL_COMPILE_EXACT_OUTPUT_AND_IMPORT_SMOKE_PASS',nativeReport:reportPath,nativeReportSha256:hash(reportPath),outputSha256:expected,outputBytes:report.outputBytes,exports:actual.length,modules:report.result.modules,emittedParserActualSource:true,emittedCheckerEmptyModules:true,outputSmokeRuntimeSha256:hash(runtimePath),runtime:process.versions,checksExcluded:0,outputPatches:0,nativeBinaryBootstrap:false};\nwriteFileSync('/tmp/native54-cpu-20261023.smoke.json',JSON.stringify(proof,null,2)+'\\n',{flag:'wx'});console.log(JSON.stringify(proof));\n",
+  "smokeRecipeChanges": "Restored v54 recorded smoke verbatim except report path and proof output path.",
+  "outputSmokeSourceSha256": "ad17a28bb5a0c25a2a60b237feea265ade4645806932791e08168f39c75b2f49",
+  "sampleAnalysisSource": "import re, collections\n# Read macOS sample call graph only; ignore recursive inclusive summary.\ndef self_samples(text):\n graph=text.split('Call graph:\\n',1)[1].split('Total number in stack',1)[0]\n nodes=[]; stack=[]; roots=[]\n for line in graph.splitlines():\n  m=re.match(r'^([ +!:|]*)(\\d+) (.*)$',line)\n  if not m: continue\n  n={'depth':len(m[1]),'count':int(m[2]),'label':m[3],'children':[]}\n  while stack and stack[-1]['depth']>=n['depth']: stack.pop()\n  if stack: stack[-1]['children'].append(n)\n  else: roots.append(n)\n  stack.append(n);nodes.append(n)\n counts=collections.Counter()\n for n in nodes:\n  self_count=n['count']-sum(c['count'] for c in n['children'])\n  assert self_count>=0\n  if self_count: counts[n['label'].split('  (in ',1)[0]]+=self_count\n total=sum(r['count'] for r in roots)\n assert sum(counts.values())==total\n # Cross-check Apple's top-of-stack collapsed summary, which suppresses counts below 5.\n summary=text.split('Sort by top of stack, same collapsed (when >= 5):\\n',1)[1].split('Binary Images:',1)[0]\n stated={m[1]:int(m[2]) for line in summary.splitlines() if (m:=re.match(r'^\\s+(\\S+)  .*?\\s+(\\d+)\\s*$',line))}\n assert all(counts[k]==v for k,v in stated.items())\n return counts,total\n\ndef category(s):\n if s in {'term_drop','rfc_wrap','span_fade','rfc_bump','term_keep','ctr_take','span_keep','span_drop'}:return 'runtime_refcount_drop_share'\n if s.startswith(('heap_','spare_','blk_','bank_')):return 'runtime_allocation_storage'\n if s in {'WL_FID_CLO_APPLY','WL_FID_ENTER','WL_FID_EXIT','work_loop'}:return 'closure_and_work_dispatch'\n if s in {'native_drive','native_apply','native_fields','corpus_eval','native_experiment_run'}:return 'host_driver_evaluator_self'\n if s.startswith('WL_FID_MAP_'):return 'generated_map_library'\n if s.startswith('WL_FID_STRING_'):return 'generated_string_library'\n if 'CHECKER_CHUNK' in s or 'EMITTER_CHUNK' in s or s in {'WL_FID_CHECKER_STEP','WL_FID_EMITTER_STEP'}:return 'generated_progress_chunk_step_wrappers'\n if 'CHECKER_' in s or 'INDEX_LOOKUP_' in s or 'SCOPE_LOOKUP_' in s:return 'generated_checker_lookup_work'\n if 'JS_EMIT_STEPS_' in s:return 'generated_emitter_work'\n if s.startswith('WL_FID_MAIN_'):return 'generated_native_bridge_closures'\n if s.startswith(('spin_','OUTLINED_FUNCTION_')):return 'generated_helper_attribution_unresolved'\n if s.startswith('WL_FID_'):return 'other_generated_work'\n return 'other_runtime_system_or_unresolved'\n",
+  "checksExcluded": 0,
+  "outputPatches": 0
+}

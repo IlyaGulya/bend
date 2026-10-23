@@ -387,3 +387,39 @@ faster, and-O1 is explicitly diagnostic. Native boundary calls/resumes remain
 21810643 expansion,61979047 check,16875247 emit. These counts do not by themselves
 prove dispatch CPU share. JS53 real stage1/stage2 remains unchanged; native binary
 bootstrap remains unproved. Exact evidence: compiler-native-carrier-v54.json.
+
+## Native54 CPU profile: direct host-loop dominance is not established
+
+One separate instrumented full workload completes correctly in90800.942ms and
+passes actual output import/parser/checker smoke. /usr/bin/sample targets the
+native PID itself for10s/1ms windows triggered after expansion and checking
+complete.7676 check/7655 emit observations, one compute-active main thread.
+Exclusive leaf accounting subtracts immediate children; recursive inclusive
+native_drive/corpus_eval stacks are NOT summed. No ??? frames, but inlined
+runtime costs and spin/outlined helper semantics are not resolved. Early windows
+are not whole-phase guarantees; sampled percentages are not hardware CPU cycles.
+
+Check self: named refcount/drop/share32.087%, Map22.551%, closure/work dispatch
+17.392%; host/evaluator1.381%, native_drive alone0.339%. Emit: sharing33.534%,
+String23.788%, Map15.402%, dispatch13.782%; host/evaluator1.071%, native_drive0.209%.
+This falsifies treating61.98M host boundary count as proof the C loop itself
+dominates. Batching could still reduce dispatch/progress/sharing costs, but must
+win on a fresh complete normal workload. Full evidence:
+compiler-native-cpu-v54.json; raw samples remain outside Git.
+
+Candidate55 isolated typed reflection model checks365 bodies/zero holes and
+executes42 rows, including noncommuting arithmetic and affine-array transfer.
+Every native reflection applies existing chunk64 before a named ready helper;
+zero quantum preserves the original loop. Deep100000 Bound fixture host
+reflections200005→3077; not CPU or compiler speed evidence. First full native
+preflight correctly rejects a live forward call to not-yet-filled ready helper.
+Helpers are reordered before wrappers; no checking bypass.55B checks8169/8169
+bodies, builds in157171ms under8GiB600s; actual full frozen50files/15modules/
+7720exports compile81244.655ms under8GiB300s. Parse3430.548ms; expand5131.384ms;
+check47591.305ms; emit23521.598ms. Host calls/resumes950796/6328943/1897488.
+Exact20281365-byte outputSHAa103…06d29 and actual ordered export/parser/checker
+smoke pass. Build/run/smoke240.87s. Observed normal54→55 reduction11.26%, only
+one normal run each, not causal randomized proof or official speed victory.
+Runtime physical1425213576/RSS1180401664 bytes; physical peak essentially flat.
+Root53/JS fixedpoint sources remain unchanged; only native bridge changes.
+Select55 with these limits; compiler-native-boundary-v55.json pins complete proof.

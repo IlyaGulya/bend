@@ -88,7 +88,7 @@ type NativeEmitterView<-A: Type> is Type:
   NativeEmitterFinished{box: Emitter.EmitterValue<A>}
   NativeEmitterMore{-B: Type, next: Unit -> Emitter.EmitterProgress<B>, resume: (@box: Emitter.EmitterValue<B> -> Emitter.EmitterProgress<A>)}
 
-def native_template_view(-A: Type, progress: Template.TemplateProgress<A>) -> NativeTemplateView<A>:
+def native_template_view_ready(-A: Type, progress: Template.TemplateProgress<A>) -> NativeTemplateView<A>:
   match progress:
     case Template.TemplateFinished{box}:
       NativeTemplateFinished{box}
@@ -99,7 +99,10 @@ def native_template_view(-A: Type, progress: Template.TemplateProgress<A>) -> Na
     case Template.TemplateBound{B, inner, resume}:
       NativeTemplateMore{B, unit => inner, resume}
 
-def native_checker_view(-A: Type, progress: Checker.CheckerProgress<A>) -> NativeCheckerView<A>:
+def native_template_view(-A: Type, progress: Template.TemplateProgress<A>) -> NativeTemplateView<A>:
+  native_template_view_ready(A, Template.template_chunk(A, 64n, progress))
+
+def native_checker_view_ready(-A: Type, progress: Checker.CheckerProgress<A>) -> NativeCheckerView<A>:
   match progress:
     case Checker.CheckerFinished{box}:
       NativeCheckerFinished{box}
@@ -110,7 +113,10 @@ def native_checker_view(-A: Type, progress: Checker.CheckerProgress<A>) -> Nativ
     case Checker.CheckerBound{B, inner, resume}:
       NativeCheckerMore{B, unit => inner, resume}
 
-def native_emitter_view(-A: Type, progress: Emitter.EmitterProgress<A>) -> NativeEmitterView<A>:
+def native_checker_view(-A: Type, progress: Checker.CheckerProgress<A>) -> NativeCheckerView<A>:
+  native_checker_view_ready(A, Checker.checker_chunk(A, 64n, progress))
+
+def native_emitter_view_ready(-A: Type, progress: Emitter.EmitterProgress<A>) -> NativeEmitterView<A>:
   match progress:
     case Emitter.EmitterFinished{box}:
       NativeEmitterFinished{box}
@@ -120,6 +126,9 @@ def native_emitter_view(-A: Type, progress: Emitter.EmitterProgress<A>) -> Nativ
       NativeEmitterMore{Emitter.emitter_result(request), unit => invoke(arguments), resume}
     case Emitter.EmitterBound{B, inner, resume}:
       NativeEmitterMore{B, unit => inner, resume}
+
+def native_emitter_view(-A: Type, progress: Emitter.EmitterProgress<A>) -> NativeEmitterView<A>:
+  native_emitter_view_ready(A, Emitter.emitter_chunk(A, 64n, progress))
 
 # C drives only the existing typed request/invoke/resume domains. Each affine
 # progress, argument record and continuation is consumed once. Reused callbacks

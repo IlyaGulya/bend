@@ -1,0 +1,2436 @@
+{
+  "schema": 1,
+  "version": 55,
+  "parentCommit": "f5d87361",
+  "status": "ACCEPTED_FULL_NATIVE_COMPILE_EXACT_OUTPUT_PASS",
+  "baseline": {
+    "receipt": "checkpoints/compiler-native-carrier-v54.json",
+    "sha256": "2bb079562227f900ed8f40bffa1dba2bbf9a36a4277d1b9bde9a548d7a5fb652",
+    "compileMs": 91557.18787499999,
+    "phaseRows": [
+      {
+        "phase": "parse",
+        "elapsedMs": 3462.637,
+        "modules": 15,
+        "sourceBytes": 4333108,
+        "foreignBytes": 25145,
+        "eagerFuelCells": 120000000,
+        "fuelBuildMs": 117.166
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 7791.109,
+        "calls": 21810643,
+        "resumes": 21810643
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 54306.764,
+        "calls": 61979047,
+        "resumes": 61979047
+      },
+      {
+        "phase": "emit",
+        "elapsedMs": 24498.527,
+        "calls": 16875247,
+        "resumes": 16875247
+      }
+    ],
+    "outputSha256": "a1033733403dddb6214b6433ec55cd385fc210ce0d985871259a25487bd06d29"
+  },
+  "problem": "Public dispatch/start batch64, but C native_*_view reflects raw progress returned by callbacks; resume/Direct/Bound chains can return to native_drive without a fresh chunk.",
+  "sourceEvidence": [
+    {
+      "file": "evals/checker_core_step_lower.ts",
+      "lines": "1130-1152",
+      "observation": "Operational chunk handles all4states and lowers Nat each transition; only public step/start insert fresh64"
+    },
+    {
+      "file": "evals/native_compiler_driver.bend",
+      "lines": "91-122",
+      "observation": "Each view immediately pattern-matches progress; Direct and Bound thunks return raw progress"
+    },
+    {
+      "file": "evals/native_compiler_host.c",
+      "lines": "69-111",
+      "observation": "Each loop calls native_apply(reflect,...); each More pushes resume and applies next; Finished rebuilds box and applies resume"
+    },
+    {
+      "file": "bend2/comp.ts",
+      "lines": "4494-4502,5548-5577",
+      "observation": "Each native_apply allocates a task, invokes work_loop, and collects root result; not evidence of measured CPU share"
+    }
+  ],
+  "hypothesis": "Call existing checked chunk(A,64,progress) before native view reflection; factor named _ready match to honor native source match restriction. No source algorithm, result ABI, WHNF fuel or JS root change.",
+  "risks": [
+    "Additional chunk/reassociation closure creation may cost more than avoided hostturns",
+    "Generated code size/totality/dependent Type transport must pass real native checking",
+    "Only full comparable corpus and exact emitted output decide acceptance; modelcounts notspeed"
+  ],
+  "acceptance": "Fresh native root+bridge allbodies, fullfrozen50files/15modules/7720exports, exactoutputa1033733 andactualimportsmoke, original8GiB memory and300s runtimecap. Normalrunseparatefromprofile. JS53fixedpointunchangedonlyifroot/inputhashesunchanged.",
+  "model": {
+    "receiptPath": "checkpoints/.native-boundary55-model-receipt.json",
+    "receiptSha256": "32966311150fd40f4a0c3c39faca79e7e4eff0b7b9e18403679aa055b25317b5",
+    "receipt": {
+      "status": "PASS",
+      "scope": "Small typed boundary model, not full compiler acceptance, C ABI execution, or speed evidence",
+      "sourceSha256": "7ba4403d3e18fef6fe885615d93399257987c78ea4b5de226fdddbf07710f41b",
+      "driverSha256": "101a56888f98666dc452579023473762e294176356551bbf14861578ca291be6",
+      "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+      "compilerSha256": "8c33864a67f0fd08d1805929c8f48806c040b219126b29bb31f201f45d6b69e6",
+      "patches": 0,
+      "unsafe": false,
+      "rows": [
+        {
+          "name": "data",
+          "mode": "original",
+          "quantum": 0,
+          "expected": 42,
+          "observed": 42,
+          "hostReflections": 3,
+          "hostResumes": 1,
+          "maxHostContinuationDepth": 1,
+          "elapsedMs": 2.5143749999999727
+        },
+        {
+          "name": "data",
+          "mode": "ready",
+          "quantum": 0,
+          "expected": 42,
+          "observed": 42,
+          "hostReflections": 3,
+          "hostResumes": 1,
+          "maxHostContinuationDepth": 1,
+          "elapsedMs": 6.790915999999925
+        },
+        {
+          "name": "data",
+          "mode": "boundary",
+          "quantum": 0,
+          "expected": 42,
+          "observed": 42,
+          "hostReflections": 3,
+          "hostResumes": 1,
+          "maxHostContinuationDepth": 1,
+          "elapsedMs": 0.23004200000013952
+        },
+        {
+          "name": "data",
+          "mode": "boundary",
+          "quantum": 1,
+          "expected": 42,
+          "observed": 42,
+          "hostReflections": 3,
+          "hostResumes": 1,
+          "maxHostContinuationDepth": 1,
+          "elapsedMs": 0.019375000000081855
+        },
+        {
+          "name": "data",
+          "mode": "boundary",
+          "quantum": 64,
+          "expected": 42,
+          "observed": 42,
+          "hostReflections": 1,
+          "hostResumes": 0,
+          "maxHostContinuationDepth": 0,
+          "elapsedMs": 0.0022910000000138098
+        },
+        {
+          "name": "data",
+          "mode": "fixed64",
+          "quantum": 64,
+          "expected": 42,
+          "observed": 42,
+          "hostReflections": 1,
+          "hostResumes": 0,
+          "maxHostContinuationDepth": 0,
+          "elapsedMs": 0.021500000000060027
+        },
+        {
+          "name": "affine-array",
+          "mode": "original",
+          "quantum": 0,
+          "expected": 42,
+          "observed": 42,
+          "hostReflections": 7,
+          "hostResumes": 3,
+          "maxHostContinuationDepth": 3,
+          "elapsedMs": 0.06283299999995506
+        },
+        {
+          "name": "affine-array",
+          "mode": "ready",
+          "quantum": 0,
+          "expected": 42,
+          "observed": 42,
+          "hostReflections": 7,
+          "hostResumes": 3,
+          "maxHostContinuationDepth": 3,
+          "elapsedMs": 0.012041999999837572
+        },
+        {
+          "name": "affine-array",
+          "mode": "boundary",
+          "quantum": 0,
+          "expected": 42,
+          "observed": 42,
+          "hostReflections": 7,
+          "hostResumes": 3,
+          "maxHostContinuationDepth": 3,
+          "elapsedMs": 0.011583000000200627
+        },
+        {
+          "name": "affine-array",
+          "mode": "boundary",
+          "quantum": 1,
+          "expected": 42,
+          "observed": 42,
+          "hostReflections": 5,
+          "hostResumes": 2,
+          "maxHostContinuationDepth": 2,
+          "elapsedMs": 0.016041999999970358
+        },
+        {
+          "name": "affine-array",
+          "mode": "boundary",
+          "quantum": 64,
+          "expected": 42,
+          "observed": 42,
+          "hostReflections": 1,
+          "hostResumes": 0,
+          "maxHostContinuationDepth": 0,
+          "elapsedMs": 0.011042000000088592
+        },
+        {
+          "name": "affine-array",
+          "mode": "fixed64",
+          "quantum": 64,
+          "expected": 42,
+          "observed": 42,
+          "hostReflections": 1,
+          "hostResumes": 0,
+          "maxHostContinuationDepth": 0,
+          "elapsedMs": 0.006374999999934516
+        },
+        {
+          "name": "direct-affine",
+          "mode": "original",
+          "quantum": 0,
+          "expected": 42,
+          "observed": 42,
+          "hostReflections": 5,
+          "hostResumes": 2,
+          "maxHostContinuationDepth": 2,
+          "elapsedMs": 0.015291000000161148
+        },
+        {
+          "name": "direct-affine",
+          "mode": "ready",
+          "quantum": 0,
+          "expected": 42,
+          "observed": 42,
+          "hostReflections": 5,
+          "hostResumes": 2,
+          "maxHostContinuationDepth": 2,
+          "elapsedMs": 0.022457999999915046
+        },
+        {
+          "name": "direct-affine",
+          "mode": "boundary",
+          "quantum": 0,
+          "expected": 42,
+          "observed": 42,
+          "hostReflections": 5,
+          "hostResumes": 2,
+          "maxHostContinuationDepth": 2,
+          "elapsedMs": 0.009749999999939973
+        },
+        {
+          "name": "direct-affine",
+          "mode": "boundary",
+          "quantum": 1,
+          "expected": 42,
+          "observed": 42,
+          "hostReflections": 3,
+          "hostResumes": 1,
+          "maxHostContinuationDepth": 1,
+          "elapsedMs": 0.013625000000047294
+        },
+        {
+          "name": "direct-affine",
+          "mode": "boundary",
+          "quantum": 64,
+          "expected": 42,
+          "observed": 42,
+          "hostReflections": 1,
+          "hostResumes": 0,
+          "maxHostContinuationDepth": 0,
+          "elapsedMs": 0.004457999999885942
+        },
+        {
+          "name": "direct-affine",
+          "mode": "fixed64",
+          "quantum": 64,
+          "expected": 42,
+          "observed": 42,
+          "hostReflections": 1,
+          "hostResumes": 0,
+          "maxHostContinuationDepth": 0,
+          "elapsedMs": 0.004124999999930878
+        },
+        {
+          "name": "multiply-then-add",
+          "mode": "original",
+          "quantum": 0,
+          "expected": 17,
+          "observed": 17,
+          "hostReflections": 5,
+          "hostResumes": 2,
+          "maxHostContinuationDepth": 2,
+          "elapsedMs": 0.015041999999994005
+        },
+        {
+          "name": "multiply-then-add",
+          "mode": "ready",
+          "quantum": 0,
+          "expected": 17,
+          "observed": 17,
+          "hostReflections": 5,
+          "hostResumes": 2,
+          "maxHostContinuationDepth": 2,
+          "elapsedMs": 0.005666000000019267
+        },
+        {
+          "name": "multiply-then-add",
+          "mode": "boundary",
+          "quantum": 0,
+          "expected": 17,
+          "observed": 17,
+          "hostReflections": 5,
+          "hostResumes": 2,
+          "maxHostContinuationDepth": 2,
+          "elapsedMs": 0.007250000000112777
+        },
+        {
+          "name": "multiply-then-add",
+          "mode": "boundary",
+          "quantum": 1,
+          "expected": 17,
+          "observed": 17,
+          "hostReflections": 3,
+          "hostResumes": 1,
+          "maxHostContinuationDepth": 1,
+          "elapsedMs": 0.007791999999881227
+        },
+        {
+          "name": "multiply-then-add",
+          "mode": "boundary",
+          "quantum": 64,
+          "expected": 17,
+          "observed": 17,
+          "hostReflections": 1,
+          "hostResumes": 0,
+          "maxHostContinuationDepth": 0,
+          "elapsedMs": 0.006125000000110958
+        },
+        {
+          "name": "multiply-then-add",
+          "mode": "fixed64",
+          "quantum": 64,
+          "expected": 17,
+          "observed": 17,
+          "hostReflections": 1,
+          "hostResumes": 0,
+          "maxHostContinuationDepth": 0,
+          "elapsedMs": 0.0028750000001309672
+        },
+        {
+          "name": "add-then-multiply",
+          "mode": "original",
+          "quantum": 0,
+          "expected": 20,
+          "observed": 20,
+          "hostReflections": 5,
+          "hostResumes": 2,
+          "maxHostContinuationDepth": 2,
+          "elapsedMs": 0.0017499999999017746
+        },
+        {
+          "name": "add-then-multiply",
+          "mode": "ready",
+          "quantum": 0,
+          "expected": 20,
+          "observed": 20,
+          "hostReflections": 5,
+          "hostResumes": 2,
+          "maxHostContinuationDepth": 2,
+          "elapsedMs": 0.006750000000010914
+        },
+        {
+          "name": "add-then-multiply",
+          "mode": "boundary",
+          "quantum": 0,
+          "expected": 20,
+          "observed": 20,
+          "hostReflections": 5,
+          "hostResumes": 2,
+          "maxHostContinuationDepth": 2,
+          "elapsedMs": 0.007624999999961801
+        },
+        {
+          "name": "add-then-multiply",
+          "mode": "boundary",
+          "quantum": 1,
+          "expected": 20,
+          "observed": 20,
+          "hostReflections": 3,
+          "hostResumes": 1,
+          "maxHostContinuationDepth": 1,
+          "elapsedMs": 0.006124999999883585
+        },
+        {
+          "name": "add-then-multiply",
+          "mode": "boundary",
+          "quantum": 64,
+          "expected": 20,
+          "observed": 20,
+          "hostReflections": 1,
+          "hostResumes": 0,
+          "maxHostContinuationDepth": 0,
+          "elapsedMs": 0.0031660000001920707
+        },
+        {
+          "name": "add-then-multiply",
+          "mode": "fixed64",
+          "quantum": 64,
+          "expected": 20,
+          "observed": 20,
+          "hostReflections": 1,
+          "hostResumes": 0,
+          "maxHostContinuationDepth": 0,
+          "elapsedMs": 0.004208000000062384
+        },
+        {
+          "name": "affine-multiply-then-add",
+          "mode": "original",
+          "quantum": 0,
+          "expected": 45,
+          "observed": 45,
+          "hostReflections": 9,
+          "hostResumes": 4,
+          "maxHostContinuationDepth": 4,
+          "elapsedMs": 0.004083999999920707
+        },
+        {
+          "name": "affine-multiply-then-add",
+          "mode": "ready",
+          "quantum": 0,
+          "expected": 45,
+          "observed": 45,
+          "hostReflections": 9,
+          "hostResumes": 4,
+          "maxHostContinuationDepth": 4,
+          "elapsedMs": 0.015374999999949068
+        },
+        {
+          "name": "affine-multiply-then-add",
+          "mode": "boundary",
+          "quantum": 0,
+          "expected": 45,
+          "observed": 45,
+          "hostReflections": 9,
+          "hostResumes": 4,
+          "maxHostContinuationDepth": 4,
+          "elapsedMs": 0.015916999999944892
+        },
+        {
+          "name": "affine-multiply-then-add",
+          "mode": "boundary",
+          "quantum": 1,
+          "expected": 45,
+          "observed": 45,
+          "hostReflections": 5,
+          "hostResumes": 2,
+          "maxHostContinuationDepth": 2,
+          "elapsedMs": 0.011790999999902851
+        },
+        {
+          "name": "affine-multiply-then-add",
+          "mode": "boundary",
+          "quantum": 64,
+          "expected": 45,
+          "observed": 45,
+          "hostReflections": 1,
+          "hostResumes": 0,
+          "maxHostContinuationDepth": 0,
+          "elapsedMs": 0.007333000000016909
+        },
+        {
+          "name": "affine-multiply-then-add",
+          "mode": "fixed64",
+          "quantum": 64,
+          "expected": 45,
+          "observed": 45,
+          "hostReflections": 1,
+          "hostResumes": 0,
+          "maxHostContinuationDepth": 0,
+          "elapsedMs": 0.014792000000170447
+        },
+        {
+          "name": "deep100000-noncommuting",
+          "mode": "original",
+          "quantum": 0,
+          "expected": 17,
+          "observed": 17,
+          "hostReflections": 200005,
+          "hostResumes": 100002,
+          "maxHostContinuationDepth": 100002,
+          "elapsedMs": 408.6372919999999
+        },
+        {
+          "name": "deep100000-noncommuting",
+          "mode": "ready",
+          "quantum": 0,
+          "expected": 17,
+          "observed": 17,
+          "hostReflections": 200005,
+          "hostResumes": 100002,
+          "maxHostContinuationDepth": 100002,
+          "elapsedMs": 92.07979100000011
+        },
+        {
+          "name": "deep100000-noncommuting",
+          "mode": "boundary",
+          "quantum": 0,
+          "expected": 17,
+          "observed": 17,
+          "hostReflections": 200005,
+          "hostResumes": 100002,
+          "maxHostContinuationDepth": 100002,
+          "elapsedMs": 198.67558299999996
+        },
+        {
+          "name": "deep100000-noncommuting",
+          "mode": "boundary",
+          "quantum": 1,
+          "expected": 17,
+          "observed": 17,
+          "hostReflections": 100003,
+          "hostResumes": 50001,
+          "maxHostContinuationDepth": 50001,
+          "elapsedMs": 867.561584
+        },
+        {
+          "name": "deep100000-noncommuting",
+          "mode": "boundary",
+          "quantum": 64,
+          "expected": 17,
+          "observed": 17,
+          "hostReflections": 3077,
+          "hostResumes": 1538,
+          "maxHostContinuationDepth": 1538,
+          "elapsedMs": 41.60437499999989
+        },
+        {
+          "name": "deep100000-noncommuting",
+          "mode": "fixed64",
+          "quantum": 64,
+          "expected": 17,
+          "observed": 17,
+          "hostReflections": 3077,
+          "hostResumes": 1538,
+          "maxHostContinuationDepth": 1538,
+          "elapsedMs": 467.01466600000003
+        }
+      ],
+      "firstFailures": [],
+      "holes": 0,
+      "checkedBodies": [
+        {
+          "name": "Word",
+          "checked": true
+        },
+        {
+          "name": "Pair",
+          "checked": true
+        },
+        {
+          "name": "Exists",
+          "checked": true
+        },
+        {
+          "name": "Or",
+          "checked": true
+        },
+        {
+          "name": "Pair.fst",
+          "checked": true
+        },
+        {
+          "name": "Pair.snd",
+          "checked": true
+        },
+        {
+          "name": "IO",
+          "checked": true
+        },
+        {
+          "name": "IO.pure",
+          "checked": true
+        },
+        {
+          "name": "IO.bind",
+          "checked": true
+        },
+        {
+          "name": "IO.die",
+          "checked": true
+        },
+        {
+          "name": "IO.exit",
+          "checked": true
+        },
+        {
+          "name": "IO.pass",
+          "checked": true
+        },
+        {
+          "name": "IO.try",
+          "checked": true
+        },
+        {
+          "name": "IO.fork.go",
+          "checked": true
+        },
+        {
+          "name": "IO.fork",
+          "checked": true
+        },
+        {
+          "name": "IO.join.go",
+          "checked": true
+        },
+        {
+          "name": "IO.join",
+          "checked": true
+        },
+        {
+          "name": "IO.within",
+          "checked": true
+        },
+        {
+          "name": "Equal.cong",
+          "checked": true
+        },
+        {
+          "name": "Equal.sym",
+          "checked": true
+        },
+        {
+          "name": "Equal.trans",
+          "checked": true
+        },
+        {
+          "name": "Empty.absurd",
+          "checked": true
+        },
+        {
+          "name": "Bool.not",
+          "checked": true
+        },
+        {
+          "name": "Bool.and",
+          "checked": true
+        },
+        {
+          "name": "Bool.or",
+          "checked": true
+        },
+        {
+          "name": "Bool.xor",
+          "checked": true
+        },
+        {
+          "name": "Bool.cmp",
+          "checked": true
+        },
+        {
+          "name": "Bool.full_add",
+          "checked": true
+        },
+        {
+          "name": "Bool.pick",
+          "checked": true
+        },
+        {
+          "name": "Bool.to_u32",
+          "checked": true
+        },
+        {
+          "name": "Cmp.is_lt",
+          "checked": true
+        },
+        {
+          "name": "Cmp.is_eq",
+          "checked": true
+        },
+        {
+          "name": "Cmp.is_gt",
+          "checked": true
+        },
+        {
+          "name": "Cmp.is_le",
+          "checked": true
+        },
+        {
+          "name": "Cmp.is_ge",
+          "checked": true
+        },
+        {
+          "name": "Nat.double",
+          "checked": true
+        },
+        {
+          "name": "Nat.add",
+          "checked": true
+        },
+        {
+          "name": "Nat.sub",
+          "checked": true
+        },
+        {
+          "name": "Nat.mul",
+          "checked": true
+        },
+        {
+          "name": "Nat.divmod.go",
+          "checked": true
+        },
+        {
+          "name": "Nat.divmod",
+          "checked": true
+        },
+        {
+          "name": "Nat.cmp",
+          "checked": true
+        },
+        {
+          "name": "Nat.is_lt",
+          "checked": true
+        },
+        {
+          "name": "Nat.is_eq",
+          "checked": true
+        },
+        {
+          "name": "Nat.is_ne",
+          "checked": true
+        },
+        {
+          "name": "Nat.is_le",
+          "checked": true
+        },
+        {
+          "name": "Nat.is_gt",
+          "checked": true
+        },
+        {
+          "name": "Nat.is_ge",
+          "checked": true
+        },
+        {
+          "name": "Nat.min",
+          "checked": true
+        },
+        {
+          "name": "Nat.max",
+          "checked": true
+        },
+        {
+          "name": "Nat.ge_refl",
+          "checked": true
+        },
+        {
+          "name": "Nat.max_ge_l",
+          "checked": true
+        },
+        {
+          "name": "Nat.max_ge_r",
+          "checked": true
+        },
+        {
+          "name": "Nat.div",
+          "checked": true
+        },
+        {
+          "name": "Nat.mod",
+          "checked": true
+        },
+        {
+          "name": "Nat.pow",
+          "checked": true
+        },
+        {
+          "name": "Maybe.pure",
+          "checked": true
+        },
+        {
+          "name": "Maybe.bind",
+          "checked": true
+        },
+        {
+          "name": "Maybe.default",
+          "checked": true
+        },
+        {
+          "name": "Maybe.is_some",
+          "checked": true
+        },
+        {
+          "name": "Maybe.is_none",
+          "checked": true
+        },
+        {
+          "name": "Maybe.map",
+          "checked": true
+        },
+        {
+          "name": "Maybe.or",
+          "checked": true
+        },
+        {
+          "name": "Result.pure",
+          "checked": true
+        },
+        {
+          "name": "Result.bind",
+          "checked": true
+        },
+        {
+          "name": "Result.default",
+          "checked": true
+        },
+        {
+          "name": "Result.is_done",
+          "checked": true
+        },
+        {
+          "name": "Result.is_fail",
+          "checked": true
+        },
+        {
+          "name": "Result.map",
+          "checked": true
+        },
+        {
+          "name": "List.map",
+          "checked": true
+        },
+        {
+          "name": "List.length",
+          "checked": true
+        },
+        {
+          "name": "List.append",
+          "checked": true
+        },
+        {
+          "name": "List.concat",
+          "checked": true
+        },
+        {
+          "name": "List.reverse.go",
+          "checked": true
+        },
+        {
+          "name": "List.reverse",
+          "checked": true
+        },
+        {
+          "name": "List.is_empty",
+          "checked": true
+        },
+        {
+          "name": "List.head",
+          "checked": true
+        },
+        {
+          "name": "List.tail",
+          "checked": true
+        },
+        {
+          "name": "List.last.go",
+          "checked": true
+        },
+        {
+          "name": "List.last",
+          "checked": true
+        },
+        {
+          "name": "List.get",
+          "checked": true
+        },
+        {
+          "name": "List.set",
+          "checked": true
+        },
+        {
+          "name": "List.take",
+          "checked": true
+        },
+        {
+          "name": "List.drop",
+          "checked": true
+        },
+        {
+          "name": "List.zip",
+          "checked": true
+        },
+        {
+          "name": "List.range.go",
+          "checked": true
+        },
+        {
+          "name": "List.range",
+          "checked": true
+        },
+        {
+          "name": "List.replicate",
+          "checked": true
+        },
+        {
+          "name": "List.filter.put",
+          "checked": true
+        },
+        {
+          "name": "List.filter",
+          "checked": true
+        },
+        {
+          "name": "List.foldl",
+          "checked": true
+        },
+        {
+          "name": "List.foldr",
+          "checked": true
+        },
+        {
+          "name": "List.any",
+          "checked": true
+        },
+        {
+          "name": "List.all",
+          "checked": true
+        },
+        {
+          "name": "List.find.put",
+          "checked": true
+        },
+        {
+          "name": "List.find",
+          "checked": true
+        },
+        {
+          "name": "List.contains",
+          "checked": true
+        },
+        {
+          "name": "List.merge.step",
+          "checked": true
+        },
+        {
+          "name": "List.merge.go",
+          "checked": true
+        },
+        {
+          "name": "List.sort.runs",
+          "checked": true
+        },
+        {
+          "name": "List.sort.pass",
+          "checked": true
+        },
+        {
+          "name": "List.sort.go",
+          "checked": true
+        },
+        {
+          "name": "List.sort",
+          "checked": true
+        },
+        {
+          "name": "List.for_each",
+          "checked": true
+        },
+        {
+          "name": "Word.zero",
+          "checked": true
+        },
+        {
+          "name": "Word.not",
+          "checked": true
+        },
+        {
+          "name": "Word.and",
+          "checked": true
+        },
+        {
+          "name": "Word.or",
+          "checked": true
+        },
+        {
+          "name": "Word.xor",
+          "checked": true
+        },
+        {
+          "name": "Word.shl.put",
+          "checked": true
+        },
+        {
+          "name": "Word.shl",
+          "checked": true
+        },
+        {
+          "name": "Word.shl.out.con",
+          "checked": true
+        },
+        {
+          "name": "Word.shl.out",
+          "checked": true
+        },
+        {
+          "name": "Word.shr.pad",
+          "checked": true
+        },
+        {
+          "name": "Word.shr",
+          "checked": true
+        },
+        {
+          "name": "Word.cmp.fin",
+          "checked": true
+        },
+        {
+          "name": "Word.cmp",
+          "checked": true
+        },
+        {
+          "name": "Word.inc",
+          "checked": true
+        },
+        {
+          "name": "Word.adc",
+          "checked": true
+        },
+        {
+          "name": "Word.adc.con",
+          "checked": true
+        },
+        {
+          "name": "Word.add",
+          "checked": true
+        },
+        {
+          "name": "Word.sub",
+          "checked": true
+        },
+        {
+          "name": "Word.add_comm.arm",
+          "checked": true
+        },
+        {
+          "name": "Word.add_comm.go",
+          "checked": true
+        },
+        {
+          "name": "Word.add_comm",
+          "checked": true
+        },
+        {
+          "name": "Word.to_nat",
+          "checked": true
+        },
+        {
+          "name": "Word.mul.go",
+          "checked": true
+        },
+        {
+          "name": "Word.mul",
+          "checked": true
+        },
+        {
+          "name": "U32.inc",
+          "checked": true
+        },
+        {
+          "name": "U32.add",
+          "checked": true
+        },
+        {
+          "name": "U32.add_comm",
+          "checked": true
+        },
+        {
+          "name": "U32.sub",
+          "checked": true
+        },
+        {
+          "name": "U32.mul",
+          "checked": true
+        },
+        {
+          "name": "U32.not",
+          "checked": true
+        },
+        {
+          "name": "U32.and",
+          "checked": true
+        },
+        {
+          "name": "U32.or",
+          "checked": true
+        },
+        {
+          "name": "U32.xor",
+          "checked": true
+        },
+        {
+          "name": "U32.shl",
+          "checked": true
+        },
+        {
+          "name": "U32.shr",
+          "checked": true
+        },
+        {
+          "name": "U32.shln",
+          "checked": true
+        },
+        {
+          "name": "U32.shrn",
+          "checked": true
+        },
+        {
+          "name": "U32.cmp",
+          "checked": true
+        },
+        {
+          "name": "U32.is_eq",
+          "checked": true
+        },
+        {
+          "name": "U32.is_ne",
+          "checked": true
+        },
+        {
+          "name": "U32.is_lt",
+          "checked": true
+        },
+        {
+          "name": "U32.is_le",
+          "checked": true
+        },
+        {
+          "name": "U32.is_gt",
+          "checked": true
+        },
+        {
+          "name": "U32.is_ge",
+          "checked": true
+        },
+        {
+          "name": "U32.is_zero",
+          "checked": true
+        },
+        {
+          "name": "U32.to_nat",
+          "checked": true
+        },
+        {
+          "name": "U32.from_nat",
+          "checked": true
+        },
+        {
+          "name": "U32.log2.go",
+          "checked": true
+        },
+        {
+          "name": "U32.log2",
+          "checked": true
+        },
+        {
+          "name": "U32.divmod.go.fin",
+          "checked": true
+        },
+        {
+          "name": "U32.divmod.go.shl",
+          "checked": true
+        },
+        {
+          "name": "U32.divmod.go.rec",
+          "checked": true
+        },
+        {
+          "name": "U32.divmod.go",
+          "checked": true
+        },
+        {
+          "name": "U32.div.fin",
+          "checked": true
+        },
+        {
+          "name": "U32.div.if",
+          "checked": true
+        },
+        {
+          "name": "U32.div",
+          "checked": true
+        },
+        {
+          "name": "U32.mod.fin",
+          "checked": true
+        },
+        {
+          "name": "U32.mod.if",
+          "checked": true
+        },
+        {
+          "name": "U32.mod",
+          "checked": true
+        },
+        {
+          "name": "U32.min",
+          "checked": true
+        },
+        {
+          "name": "U32.max",
+          "checked": true
+        },
+        {
+          "name": "U32.clamp",
+          "checked": true
+        },
+        {
+          "name": "U32.pow",
+          "checked": true
+        },
+        {
+          "name": "U32.is_even",
+          "checked": true
+        },
+        {
+          "name": "F32.min",
+          "checked": true
+        },
+        {
+          "name": "F32.max",
+          "checked": true
+        },
+        {
+          "name": "F32.clamp",
+          "checked": true
+        },
+        {
+          "name": "F32.lerp",
+          "checked": true
+        },
+        {
+          "name": "F32.square",
+          "checked": true
+        },
+        {
+          "name": "F32.hypot",
+          "checked": true
+        },
+        {
+          "name": "F32.round",
+          "checked": true
+        },
+        {
+          "name": "F32.pi",
+          "checked": true
+        },
+        {
+          "name": "F32.from_nat",
+          "checked": true
+        },
+        {
+          "name": "F32.to_nat",
+          "checked": true
+        },
+        {
+          "name": "Char.cmp",
+          "checked": true
+        },
+        {
+          "name": "Char.to_u32",
+          "checked": true
+        },
+        {
+          "name": "Char.from_u32",
+          "checked": true
+        },
+        {
+          "name": "Char.is_eq",
+          "checked": true
+        },
+        {
+          "name": "Char.is_digit",
+          "checked": true
+        },
+        {
+          "name": "Char.is_upper",
+          "checked": true
+        },
+        {
+          "name": "Char.is_lower",
+          "checked": true
+        },
+        {
+          "name": "Char.is_alpha",
+          "checked": true
+        },
+        {
+          "name": "Char.is_space",
+          "checked": true
+        },
+        {
+          "name": "Char.to_upper",
+          "checked": true
+        },
+        {
+          "name": "Char.to_lower",
+          "checked": true
+        },
+        {
+          "name": "String.append",
+          "checked": true
+        },
+        {
+          "name": "String.cmp.rec",
+          "checked": true
+        },
+        {
+          "name": "String.cmp",
+          "checked": true
+        },
+        {
+          "name": "String.cmp.fin",
+          "checked": true
+        },
+        {
+          "name": "String.eq",
+          "checked": true
+        },
+        {
+          "name": "String.length",
+          "checked": true
+        },
+        {
+          "name": "String.is_empty",
+          "checked": true
+        },
+        {
+          "name": "String.reverse.go",
+          "checked": true
+        },
+        {
+          "name": "String.reverse",
+          "checked": true
+        },
+        {
+          "name": "String.order",
+          "checked": true
+        },
+        {
+          "name": "String.is_lt",
+          "checked": true
+        },
+        {
+          "name": "String.is_le",
+          "checked": true
+        },
+        {
+          "name": "String.is_gt",
+          "checked": true
+        },
+        {
+          "name": "String.is_ge",
+          "checked": true
+        },
+        {
+          "name": "String.starts_with",
+          "checked": true
+        },
+        {
+          "name": "String.starts_with.if",
+          "checked": true
+        },
+        {
+          "name": "String.ends_with",
+          "checked": true
+        },
+        {
+          "name": "String.contains",
+          "checked": true
+        },
+        {
+          "name": "String.contains.if",
+          "checked": true
+        },
+        {
+          "name": "String.take",
+          "checked": true
+        },
+        {
+          "name": "String.drop",
+          "checked": true
+        },
+        {
+          "name": "String.get",
+          "checked": true
+        },
+        {
+          "name": "String.to_list",
+          "checked": true
+        },
+        {
+          "name": "String.from_list",
+          "checked": true
+        },
+        {
+          "name": "String.concat",
+          "checked": true
+        },
+        {
+          "name": "String.join.go",
+          "checked": true
+        },
+        {
+          "name": "String.join",
+          "checked": true
+        },
+        {
+          "name": "String.split.push",
+          "checked": true
+        },
+        {
+          "name": "String.split.fin",
+          "checked": true
+        },
+        {
+          "name": "String.split",
+          "checked": true
+        },
+        {
+          "name": "String.lines",
+          "checked": true
+        },
+        {
+          "name": "String.repeat",
+          "checked": true
+        },
+        {
+          "name": "String.to_upper",
+          "checked": true
+        },
+        {
+          "name": "String.to_lower",
+          "checked": true
+        },
+        {
+          "name": "String.trim_start",
+          "checked": true
+        },
+        {
+          "name": "String.trim_start.if",
+          "checked": true
+        },
+        {
+          "name": "String.trim_end",
+          "checked": true
+        },
+        {
+          "name": "String.trim",
+          "checked": true
+        },
+        {
+          "name": "Nat.show.put",
+          "checked": true
+        },
+        {
+          "name": "Nat.show.go",
+          "checked": true
+        },
+        {
+          "name": "Nat.show.fin",
+          "checked": true
+        },
+        {
+          "name": "Nat.show",
+          "checked": true
+        },
+        {
+          "name": "Nat.read.go",
+          "checked": true
+        },
+        {
+          "name": "Nat.read.if",
+          "checked": true
+        },
+        {
+          "name": "Nat.read.trim",
+          "checked": true
+        },
+        {
+          "name": "Nat.read.fits",
+          "checked": true
+        },
+        {
+          "name": "Nat.read.gate",
+          "checked": true
+        },
+        {
+          "name": "Nat.read",
+          "checked": true
+        },
+        {
+          "name": "U32.show.go",
+          "checked": true
+        },
+        {
+          "name": "U32.show.fin",
+          "checked": true
+        },
+        {
+          "name": "U32.show.if",
+          "checked": true
+        },
+        {
+          "name": "U32.show",
+          "checked": true
+        },
+        {
+          "name": "U32.read.go",
+          "checked": true
+        },
+        {
+          "name": "U32.read.if",
+          "checked": true
+        },
+        {
+          "name": "U32.read",
+          "checked": true
+        },
+        {
+          "name": "Bool.show",
+          "checked": true
+        },
+        {
+          "name": "Char.show",
+          "checked": true
+        },
+        {
+          "name": "Maybe.show",
+          "checked": true
+        },
+        {
+          "name": "List.show.go",
+          "checked": true
+        },
+        {
+          "name": "List.show",
+          "checked": true
+        },
+        {
+          "name": "Array.size.node",
+          "checked": true
+        },
+        {
+          "name": "Array.size",
+          "checked": true
+        },
+        {
+          "name": "Array.swap.lo",
+          "checked": true
+        },
+        {
+          "name": "Array.swap.hi",
+          "checked": true
+        },
+        {
+          "name": "Array.swap.go",
+          "checked": true
+        },
+        {
+          "name": "Array.swap.at",
+          "checked": true
+        },
+        {
+          "name": "Array.swap",
+          "checked": true
+        },
+        {
+          "name": "Array.clone.node",
+          "checked": true
+        },
+        {
+          "name": "Array.clone",
+          "checked": true
+        },
+        {
+          "name": "Array.fork",
+          "checked": true
+        },
+        {
+          "name": "Array.join",
+          "checked": true
+        },
+        {
+          "name": "Array.new",
+          "checked": true
+        },
+        {
+          "name": "Array.set.fin",
+          "checked": true
+        },
+        {
+          "name": "Array.set",
+          "checked": true
+        },
+        {
+          "name": "Array.get.go",
+          "checked": true
+        },
+        {
+          "name": "Array.get.at",
+          "checked": true
+        },
+        {
+          "name": "Array.get",
+          "checked": true
+        },
+        {
+          "name": "Array.to_list.go",
+          "checked": true
+        },
+        {
+          "name": "Array.to_list",
+          "checked": true
+        },
+        {
+          "name": "Array.map.go",
+          "checked": true
+        },
+        {
+          "name": "Array.map.at",
+          "checked": true
+        },
+        {
+          "name": "Array.map.seed",
+          "checked": true
+        },
+        {
+          "name": "Array.map",
+          "checked": true
+        },
+        {
+          "name": "Map.bit.u",
+          "checked": true
+        },
+        {
+          "name": "Map.bit.chr",
+          "checked": true
+        },
+        {
+          "name": "Map.bit.go.chr",
+          "checked": true
+        },
+        {
+          "name": "Map.bit.go.rec",
+          "checked": true
+        },
+        {
+          "name": "Map.bit.go",
+          "checked": true
+        },
+        {
+          "name": "Map.bit.at",
+          "checked": true
+        },
+        {
+          "name": "Map.bit",
+          "checked": true
+        },
+        {
+          "name": "Map.msb.u",
+          "checked": true
+        },
+        {
+          "name": "Map.msb.u.if",
+          "checked": true
+        },
+        {
+          "name": "Map.diff.chr",
+          "checked": true
+        },
+        {
+          "name": "Map.diff.step",
+          "checked": true
+        },
+        {
+          "name": "Map.diff",
+          "checked": true
+        },
+        {
+          "name": "Map.diff.fin",
+          "checked": true
+        },
+        {
+          "name": "Map.new",
+          "checked": true
+        },
+        {
+          "name": "Map.put.go",
+          "checked": true
+        },
+        {
+          "name": "Map.put",
+          "checked": true
+        },
+        {
+          "name": "Map.ins.splice.bit",
+          "checked": true
+        },
+        {
+          "name": "Map.ins.splice",
+          "checked": true
+        },
+        {
+          "name": "Map.ins.go",
+          "checked": true
+        },
+        {
+          "name": "Map.ins",
+          "checked": true
+        },
+        {
+          "name": "Map.lo",
+          "checked": true
+        },
+        {
+          "name": "Map.hi",
+          "checked": true
+        },
+        {
+          "name": "Map.seek.go",
+          "checked": true
+        },
+        {
+          "name": "Map.seek",
+          "checked": true
+        },
+        {
+          "name": "Map.set.fin.go",
+          "checked": true
+        },
+        {
+          "name": "Map.set.fin",
+          "checked": true
+        },
+        {
+          "name": "Map.set.go",
+          "checked": true
+        },
+        {
+          "name": "Map.set",
+          "checked": true
+        },
+        {
+          "name": "Map.has.leaf",
+          "checked": true
+        },
+        {
+          "name": "Map.has.go",
+          "checked": true
+        },
+        {
+          "name": "Map.has",
+          "checked": true
+        },
+        {
+          "name": "Map.get.leaf",
+          "checked": true
+        },
+        {
+          "name": "Map.get.go",
+          "checked": true
+        },
+        {
+          "name": "Map.get",
+          "checked": true
+        },
+        {
+          "name": "Map.pop.lo",
+          "checked": true
+        },
+        {
+          "name": "Map.pop.hi",
+          "checked": true
+        },
+        {
+          "name": "Map.pop.leaf",
+          "checked": true
+        },
+        {
+          "name": "Map.pop.go",
+          "checked": true
+        },
+        {
+          "name": "Map.pop",
+          "checked": true
+        },
+        {
+          "name": "Map.del.fin",
+          "checked": true
+        },
+        {
+          "name": "Map.del",
+          "checked": true
+        },
+        {
+          "name": "Map.to_list.go",
+          "checked": true
+        },
+        {
+          "name": "Map.to_list",
+          "checked": true
+        },
+        {
+          "name": "Map.keys.go",
+          "checked": true
+        },
+        {
+          "name": "Map.keys",
+          "checked": true
+        },
+        {
+          "name": "Map.from_list.go",
+          "checked": true
+        },
+        {
+          "name": "Map.from_list",
+          "checked": true
+        },
+        {
+          "name": "Map.union",
+          "checked": true
+        },
+        {
+          "name": "Map.size",
+          "checked": true
+        },
+        {
+          "name": "Map.values.go",
+          "checked": true
+        },
+        {
+          "name": "Map.values",
+          "checked": true
+        },
+        {
+          "name": "Set",
+          "checked": true
+        },
+        {
+          "name": "Set.new",
+          "checked": true
+        },
+        {
+          "name": "Set.add",
+          "checked": true
+        },
+        {
+          "name": "Set.has",
+          "checked": true
+        },
+        {
+          "name": "Set.del",
+          "checked": true
+        },
+        {
+          "name": "Set.size",
+          "checked": true
+        },
+        {
+          "name": "Set.to_list",
+          "checked": true
+        },
+        {
+          "name": "Set.from_list.go",
+          "checked": true
+        },
+        {
+          "name": "Set.from_list",
+          "checked": true
+        },
+        {
+          "name": "Image.sink",
+          "checked": true
+        },
+        {
+          "name": "Image.drop.join",
+          "checked": true
+        },
+        {
+          "name": "Image.free",
+          "checked": true
+        },
+        {
+          "name": "Image.drop",
+          "checked": true
+        },
+        {
+          "name": "App.next",
+          "checked": true
+        },
+        {
+          "name": "App.turn",
+          "checked": true
+        },
+        {
+          "name": "App.draw",
+          "checked": true
+        },
+        {
+          "name": "App.step",
+          "checked": true
+        },
+        {
+          "name": "App.loop",
+          "checked": true
+        },
+        {
+          "name": "App.run",
+          "checked": true
+        },
+        {
+          "name": "App.more",
+          "checked": true
+        },
+        {
+          "name": "App.fold",
+          "checked": true
+        },
+        {
+          "name": "App.play",
+          "checked": true
+        },
+        {
+          "name": "result_type",
+          "checked": true
+        },
+        {
+          "name": "dispatch",
+          "checked": true
+        },
+        {
+          "name": "chunk",
+          "checked": true
+        },
+        {
+          "name": "twice",
+          "checked": true
+        },
+        {
+          "name": "keep_data",
+          "checked": true
+        },
+        {
+          "name": "owned_result",
+          "checked": true
+        },
+        {
+          "name": "keep_owned",
+          "checked": true
+        },
+        {
+          "name": "read_result",
+          "checked": true
+        },
+        {
+          "name": "read_owned",
+          "checked": true
+        },
+        {
+          "name": "data_program",
+          "checked": true
+        },
+        {
+          "name": "owned_program",
+          "checked": true
+        },
+        {
+          "name": "direct_program",
+          "checked": true
+        },
+        {
+          "name": "allocate",
+          "checked": true
+        },
+        {
+          "name": "native_view_ready",
+          "checked": true
+        },
+        {
+          "name": "native_view",
+          "checked": true
+        },
+        {
+          "name": "native_view64",
+          "checked": true
+        },
+        {
+          "name": "plus_three",
+          "checked": true
+        },
+        {
+          "name": "ordered_program",
+          "checked": true
+        },
+        {
+          "name": "reversed_program",
+          "checked": true
+        },
+        {
+          "name": "ordered_owned",
+          "checked": true
+        }
+      ],
+      "emittedSha256": "aa3a8eb0fdc0edd1725a3e9b1b1ccc76d4b8374f52e8b0773fad7627923f0d30",
+      "sources": {
+        "bend": "import Base\n\ntype Box<-A: Type> is Type:\n  Box{value: A}\n\ntype Request is Type:\n  Number{value: U32}\n  Owned{items: Array<U32>}\n\ndef result_type(request: Request) -> Type:\n  match request:\n    case Number{_}: U32\n    case Owned{_}: Array<U32>\n\ntype Progress<-A: Type> is Type:\n  Finished{box: Box<A>}\n  Pending{request: Request, resume: (@box: Box<result_type(request)> -> Progress<A>)}\n  Direct{-R: Type, -request: Request, arguments: R, invoke: (@arguments: R -> Progress<result_type(request)>), resume: (@box: Box<result_type(request)> -> Progress<A>)}\n  Bound{-B: Type, inner: Progress<B>, resume: (@box: Box<B> -> Progress<A>)}\n\ndef dispatch(request: Request) -> Progress<result_type(request)>:\n  match request:\n    case Number{value}: Finished{Box{value}}\n    case Owned{items}: Finished{Box{items}}\n\n# A scheduling quantum yields its remaining computation, never an error.\n# The bound is operational, unrelated to the checker's WHNF semantic fuel.\ndef chunk(-A: Type, fuel: Nat, progress: Progress<A>) -> Progress<A>:\n  match fuel progress:\n    case 0n state: state\n    case 1n+rest Finished{box}: Finished{box}\n    case 1n+rest Pending{request, resume}:\n      chunk(A, rest, Bound{result_type(request), dispatch(request), resume})\n    case 1n+rest Direct{R, request, arguments, invoke, resume}:\n      chunk(A, rest, Bound{result_type(request), invoke(arguments), resume})\n    case 1n+rest Bound{B, inner, resume}:\n      match inner:\n        case Finished{box}: chunk(A, rest, resume(box))\n        case Pending{request, next}:\n          chunk(A, rest, Pending{request, box => Bound{B, next(box), resume}})\n        case Direct{R, request, arguments, invoke, next}:\n          chunk(A, rest, Direct{R, request, arguments, invoke, box => Bound{B, next(box), resume}})\n        case Bound{C, nested, next}:\n          chunk(A, rest, Bound{C, nested, box => Bound{B, next(box), resume}})\n\ndef twice(box: Box<U32>) -> Progress<U32>:\n  match box:\n    case Box{+value}: Finished{Box{U32.add(value, value)}}\n\ndef keep_data(box: Box<U32>) -> Progress<U32>:\n  Finished{box}\n\ndef owned_result(items: Array<U32>) -> Progress<Array<U32>>:\n  Finished{Box{items}}\n\ndef keep_owned(box: Box<Array<U32>>) -> Progress<Array<U32>>:\n  match box:\n    case Box{items}: Finished{Box{items}}\n\ndef read_result(result: Array<U32> & U32) -> Progress<U32>:\n  match result:\n    case Tuple{_, value}: Finished{Box{value}}\n\ndef read_owned(box: Box<Array<U32>>) -> Progress<U32>:\n  match box:\n    case Box{items}: read_result(Array.get(U32, items, 0))\n\ndef data_program() -> Progress<U32>:\n  Pending{Number{21}, twice}\n\ndef owned_program(items: Array<U32>) -> Progress<U32>:\n  Bound{U32, Bound{Array<U32>, Pending{Owned{items}, keep_owned}, read_owned}, twice}\n\ndef direct_program(items: Array<U32>) -> Progress<U32>:\n  Bound{U32, Direct{Array<U32>, Owned{items}, items, owned_result, read_owned}, twice}\n\ndef allocate() -> Array<U32>:\n  Array.set(U32, Array.new(U32, 0n, 0), 0, 21)\n\ntype NativeView<-A: Type> is Type:\n  NativeFinished{box: Box<A>}\n  NativeMore{-B: Type, next: Unit -> Progress<B>, resume: (@box: Box<B> -> Progress<A>)}\n\ndef native_view_ready(-A: Type, progress: Progress<A>) -> NativeView<A>:\n  match progress:\n    case Finished{box}: NativeFinished{box}\n    case Pending{request, resume}: NativeMore{result_type(request), unit => dispatch(request), resume}\n    case Direct{R, request, arguments, invoke, resume}: NativeMore{result_type(request), unit => invoke(arguments), resume}\n    case Bound{B, inner, resume}: NativeMore{B, unit => inner, resume}\n\ndef native_view(-A: Type, quantum: Nat, progress: Progress<A>) -> NativeView<A>:\n  native_view_ready(A, chunk(A, quantum, progress))\n\ndef native_view64(-A: Type, progress: Progress<A>) -> NativeView<A>:\n  native_view_ready(A, chunk(A, 64n, progress))\n\ndef plus_three(box: Box<U32>) -> Progress<U32>:\n  match box:\n    case Box{value}: Finished{Box{U32.add(value, 3)}}\n\ndef ordered_program() -> Progress<U32>:\n  Bound{U32, Bound{U32, Finished{Box{7}}, twice}, plus_three}\n\ndef reversed_program() -> Progress<U32>:\n  Bound{U32, Bound{U32, Finished{Box{7}}, plus_three}, twice}\n\ndef ordered_owned(items: Array<U32>) -> Progress<U32>:\n  Bound{U32, Bound{U32, Bound{Array<U32>, Pending{Owned{items}, keep_owned}, read_owned}, twice}, plus_three}\n",
+        "driver": "import {createHash} from 'node:crypto';\nimport {readFileSync,writeFileSync} from 'node:fs';\nimport {resolve} from 'node:path';\nconst root=resolve(import.meta.dir,'..'),prefix=resolve(import.meta.dir,'.native-boundary55-model');\nconst hash=(p:string)=>createHash('sha256').update(readFileSync(p)).digest('hex');\nconst report:any={status:'RUNNING',scope:'Small typed boundary model, not full compiler acceptance, C ABI execution, or speed evidence',sourceSha256:hash(prefix+'.bend'),driverSha256:hash(import.meta.path),kernelSha256:hash(root+'/bend2/bend.ts'),compilerSha256:hash(root+'/bend2/comp.ts'),patches:0,unsafe:false,rows:[],firstFailures:[]};\nlet K:any,phase='pin';\ntry {\n if(report.kernelSha256!=='6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e'||report.compilerSha256!=='8c33864a67f0fd08d1805929c8f48806c040b219126b29bb31f201f45d6b69e6')throw Error('Official source pin mismatch');\n K=await import(root+'/bend2/bend.ts');const C=await import(root+'/bend2/comp.ts');\n // Proof seam intentionally loads the official modules only after authenticating their bytes.\n phase='load';const book=K.book_nil();await K.book_load(book,prefix+'.bend','',new Map());\n phase='valid';K.book_valid(book);report.holes=book.hols;report.checkedBodies=Object.entries(book.tlds).filter(([,d]:any)=>d.$==='Def'&&d.v!==null).map(([name,d]:any)=>({name,checked:d.e!==undefined}));\n if(book.hols||report.checkedBodies.some((r:any)=>!r.checked))throw Error('Unchecked body or holes');\n phase='emit';writeFileSync(prefix+'.mjs',C.js_lib(book,true,{exports:['chunk','dispatch','data_program','owned_program','direct_program','allocate','keep_data','native_view_ready','native_view','native_view64','ordered_program','reversed_program','ordered_owned','twice','plus_three']}),{flag:'wx'});report.emittedSha256=hash(prefix+'.mjs');\n phase='execute';const api=(await import(prefix+'.mjs')).default;\n function run(name:string,make:()=>any,mode:string,quantum:number,expected:number){\n  let state=make(),stack:any[]=[],turns=0,resumes=0,maxHostContinuationDepth=0;const start=performance.now();\n  for(;;){\n   turns++;\n   if(mode==='original'){\n    switch(state.$){\n     case'Finished':if(stack.length){state=stack.pop()(state.box);resumes++;}else return finish(state.box);break;\n     case'Pending':stack.push(state.resume);state=api.dispatch(state.request);break;\n     case'Direct':stack.push(state.resume);state=state.invoke(state.arguments);break;\n     case'Bound':stack.push(state.resume);state=state.inner;break;\n     default:throw Error('Unknown original progress');\n    }\n   }else{\n    const view=mode==='fixed64'?api.native_view64(state):mode==='ready'?api.native_view_ready(state):api.native_view(quantum,state);\n    switch(view.$){\n     case'NativeFinished':if(stack.length){state=stack.pop()(view.box);resumes++;}else return finish(view.box);break;\n     case'NativeMore':stack.push(view.resume);state=view.next({$:'Unit'});break;\n     default:throw Error('Unknown view '+view.$);\n    }\n   }\n   maxHostContinuationDepth=Math.max(maxHostContinuationDepth,stack.length);\n  }\n  function finish(box:any){if(box.$!=='Box'||box.value!==expected)throw Error(`${name}/${mode}/${quantum}: expected ${expected}, got ${JSON.stringify(box)}`);const row={name,mode,quantum,expected,observed:box.value,hostReflections:turns,hostResumes:resumes,maxHostContinuationDepth,elapsedMs:performance.now()-start};report.rows.push(row);return row;}\n }\n const cases=[['data',()=>api.data_program(),42],['affine-array',()=>api.owned_program(api.allocate()),42],['direct-affine',()=>api.direct_program(api.allocate()),42],['multiply-then-add',()=>api.ordered_program(),17],['add-then-multiply',()=>api.reversed_program(),20],['affine-multiply-then-add',()=>api.ordered_owned(api.allocate()),45],['deep100000-noncommuting',()=>{let p=api.ordered_program();for(let n=0;n<100000;n++)p={$:'Bound',inner:p,resume:api.keep_data};return p;},17]] as const;\n for(const [name,make,expected]of cases){run(name,make,'original',0,expected);run(name,make,'ready',0,expected);for(const q of[0,1,64])run(name,make,'boundary',q,expected);run(name,make,'fixed64',64,expected);}\n report.status='PASS';\n}catch(error){report.status='FAIL';report.firstFailures.push({phase,diagnostic:K&&error&&typeof error==='object'&&'$'in error&&error.$==='Err'?K.err_show(error):String(error)});}\nreport.sources={bend:readFileSync(prefix+'.bend','utf8'),driver:readFileSync(import.meta.path,'utf8')};\nwriteFileSync(prefix+'.json',JSON.stringify(report,null,2)+'\\n',{flag:'wx'});console.log(JSON.stringify({status:report.status,phase,bodyCount:report.checkedBodies?.length,holes:report.holes,rows:report.rows,firstFailures:report.firstFailures,receipt:prefix+'.json'}));if(report.status!=='PASS')process.exitCode=1;\n"
+      },
+      "bodyCount": 365,
+      "command": "bun --smol evals/heavy_gate.ts --memory-mib 2048 --rss-mib 2048 --timeout-ms 120000 --poll-ms 10 -- bun --smol checkpoints/.native-boundary55-model.ts",
+      "guard": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 184074240,
+        "peakFootprintBytes": 141755088,
+        "elapsedMs": 3570,
+        "timeoutMs": 120000,
+        "command": [
+          "bun",
+          "--smol",
+          "checkpoints/.native-boundary55-model.ts"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792762826939-0ad44f596e9c0a31.json",
+        "memoryLimitBytes": 2147483648,
+        "rssLimitBytes": 2147483648
+      },
+      "proposedProductionReplacement": {
+        "path": "evals/native_compiler_driver.bend",
+        "lines": "91-122",
+        "source": "def native_template_view(-A: Type, progress: Template.TemplateProgress<A>) -> NativeTemplateView<A>:\n  native_template_view_ready(A, Template.template_chunk(A, 64n, progress))\n\ndef native_template_view_ready(-A: Type, progress: Template.TemplateProgress<A>) -> NativeTemplateView<A>:\n  match progress:\n    case Template.TemplateFinished{box}:\n      NativeTemplateFinished{box}\n    case Template.TemplatePending{request, resume}:\n      NativeTemplateMore{Template.template_result(request), unit => template_step(request), resume}\n    case Template.TemplateDirect{R, request, arguments, invoke, resume}:\n      NativeTemplateMore{Template.template_result(request), unit => invoke(arguments), resume}\n    case Template.TemplateBound{B, inner, resume}:\n      NativeTemplateMore{B, unit => inner, resume}\n\ndef native_checker_view(-A: Type, progress: Checker.CheckerProgress<A>) -> NativeCheckerView<A>:\n  native_checker_view_ready(A, Checker.checker_chunk(A, 64n, progress))\n\ndef native_checker_view_ready(-A: Type, progress: Checker.CheckerProgress<A>) -> NativeCheckerView<A>:\n  match progress:\n    case Checker.CheckerFinished{box}:\n      NativeCheckerFinished{box}\n    case Checker.CheckerPending{request, resume}:\n      NativeCheckerMore{Checker.checker_result(request), unit => checker_step(request), resume}\n    case Checker.CheckerDirect{R, request, arguments, invoke, resume}:\n      NativeCheckerMore{Checker.checker_result(request), unit => invoke(arguments), resume}\n    case Checker.CheckerBound{B, inner, resume}:\n      NativeCheckerMore{B, unit => inner, resume}\n\ndef native_emitter_view(-A: Type, progress: Emitter.EmitterProgress<A>) -> NativeEmitterView<A>:\n  native_emitter_view_ready(A, Emitter.emitter_chunk(A, 64n, progress))\n\ndef native_emitter_view_ready(-A: Type, progress: Emitter.EmitterProgress<A>) -> NativeEmitterView<A>:\n  match progress:\n    case Emitter.EmitterFinished{box}:\n      NativeEmitterFinished{box}\n    case Emitter.EmitterPending{request, resume}:\n      NativeEmitterMore{Emitter.emitter_result(request), unit => emitter_step(request), resume}\n    case Emitter.EmitterDirect{R, request, arguments, invoke, resume}:\n      NativeEmitterMore{Emitter.emitter_result(request), unit => invoke(arguments), resume}\n    case Emitter.EmitterBound{B, inner, resume}:\n      NativeEmitterMore{B, unit => inner, resume}\n\n",
+        "prerequisite": "Authenticated generated v53 chunk modules on remote build host, not stale local checkpoints modules"
+      },
+      "expectedMathematics": {
+        "data": "21 * 2 = 42",
+        "affine": "Array[0] = 21, ownership transferred through Box<Array<U32>>, then 21 * 2 = 42",
+        "noncommuting": "7 * 2 + 3 = 17, while (7 + 3) * 2 = 20",
+        "affineNoncommuting": "21 * 2 + 3 = 45",
+        "deep": "100000 identity Bound frames around (7 * 2 + 3) = 17"
+      },
+      "limits": [
+        "365 bodies checked by unchanged official kernel, zero holes; 42 actual executions of unmodified native-emitted JS.",
+        "100000-deep input constructed by host from checked identity continuation and checked noncommuting program; deep constructor builder itself is JS, not a Bend theorem.",
+        "Host is iterative with explicit continuation array; depth counters measure heap continuation entries, NOT native call-stack frames. Completion at depth100000 demonstrates no host recursion overflow for these model cases.",
+        "Nat bounds operational transitions, not arbitrary callback internal computation; no general constant-stack theorem or C backend stack guarantee asserted.",
+        "No C ABI execution, full compiler acceptance, full compiler speed, or CPU attribution claim. Times are uncalibrated single model observations, not performance comparisons.",
+        "Guard samples whole process tree with 2GiB physical footprint and RSS thresholds, 120000ms deadline, 10ms polling; not a hard allocation quota.",
+        "Original v53 BigInt bridge failure remains in immutable prior receipt; this new model uses documented integer Number Nat bridge and had no failures."
+      ],
+      "priorProofSha256": "693b4f65218ed4ec8a0d0600ced5c7d340a99647b5fabb7aa2eead32f320a17e"
+    }
+  },
+  "productionSourceSha256": "ff0e8b1c189f7a571853810bb8bdce68166daf381987cd3566b99982bb4ae82a",
+  "profile": {
+    "receipt": "checkpoints/compiler-native-cpu-v54.json",
+    "sha256": "ff71ab25481c64fb1e93245124fd4c54ae37afd1565f4f2e3abff8342c5e6234",
+    "conclusion": "Driver self only1.38%check/1.07%emit, so count alone falsifies no CPU hypothesis. Refcount/drop32.09%check/33.53%emit andclosure/workdispatch17.39%check/13.78%emit substantial; causal benefit of batching still unestablished."
+  },
+  "recipeSource": "#!/bin/sh\nset -eu\nexport PATH=\"/Users/ilyagulya/.cache/bend-selfhost-106c7efd/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin\"\ncd /Users/ilyagulya/Projects/My/bend\nexport BEND_NO_TELEMETRY=1\nbun --smol evals/native_compiler_experiment.ts --mode=build --corpus=checkpoints/compiler-benchmark-release237-v41.corpus.json --artifact=checkpoints/native-compiler-v55b --report=checkpoints/native-compiler-v55b-build.json --cc-opt=1\nbun --smol evals/native_compiler_experiment.ts --mode=run --corpus=checkpoints/compiler-benchmark-release237-v41.corpus.json --build=checkpoints/native-compiler-v55b-build.json --report=checkpoints/native-compiler-v55b-compile.json --phase=compile --threads=1 --exports=checkpoints/compiler-benchmark-release237-misaka-v46-official.json.exports.json\nbun --smol evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 --timeout-ms 300000 -- node --max-old-space-size=3072 checkpoints/.native55b-output-smoke.mjs\n",
+  "outputSmokeSource": "import{readFileSync,writeFileSync}from'node:fs';\nimport{createHash}from'node:crypto';\nimport{resolve}from'node:path';\nimport{pathToFileURL}from'node:url';\nconst hash=p=>createHash('sha256').update(readFileSync(p)).digest('hex');\nconst reportPath=resolve('checkpoints/native-compiler-v55b-compile.json');\nconst report=JSON.parse(readFileSync(reportPath));\nif(report.status!=='NATIVE_FULL_COMPILE_PASS'||report.guardian?.status!=='PASS'||report.exports.length!==7720||report.result.modules!==15)throw Error('Missing complete native result');\nconst expected='a1033733403dddb6214b6433ec55cd385fc210ce0d985871259a25487bd06d29';\nif(hash(report.output)!==expected||report.outputSha256!==expected||report.outputBytes!==20281365)throw Error('Native full output differs from exact frozen Mac output');\nconst runtimePath=resolve('checkpoints/compiler-benchmark-v41-step-runtime.mjs');\nif(hash(runtimePath)!=='2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd')throw Error('Frozen output ABI drift');\nconst api=(await import(pathToFileURL(report.output).href)).default;\nconst actual=Object.keys(api);if(actual.length!==report.exports.length||actual.some((name,i)=>name!==report.exports[i]))throw Error('Public export order/set mismatch');\nconst tag=x=>typeof x?.$==='string'?x.$.split('.').at(-1):undefined;\nconst end=Object.freeze({$:'FeedbackFuelEnd'}),prototype={get tail(){return fuel(this.remaining-1);}};\nfunction fuel(n){if(!n)return end;const x=Object.create(prototype);x.$='FeedbackFuelCell';x.remaining=n;return x;}\nconst parsed=api.parse_with_fuel(fuel(8000000),'/native-output-smoke.bend','type Bit is Data:\\n  Zero{}\\n  One{}\\n\\ndef main() -> Bit:\\n  One{}\\n');\nif(tag(parsed)!=='FeedbackComplete'||tag(parsed.value?.result)!=='ParseSuccess')throw Error('Emitted parser failed actual source');\nlet defs=parsed.value.result.module.declarations,main=false;while(tag(defs)==='Con'){if(tag(defs.head)==='DefTop'&&defs.head.definition.key==='main')main=true;defs=defs.tail;}if(tag(defs)!=='Nil'||!main)throw Error('Emitted parser lost declaration');\nconst runtime=await import(pathToFileURL(runtimePath).href),checked=runtime.runCheckerSteps(api,{$:'Nil'});\nif(tag(checked)!=='CheckSuccess'||tag(checked.modules)!=='Nil')throw Error('Emitted checker failed empty-module semantics');\nconst proof={status:'NATIVE_FULL_COMPILE_EXACT_OUTPUT_AND_IMPORT_SMOKE_PASS',nativeReport:reportPath,nativeReportSha256:hash(reportPath),outputSha256:expected,outputBytes:report.outputBytes,exports:actual.length,modules:report.result.modules,emittedParserActualSource:true,emittedCheckerEmptyModules:true,outputSmokeRuntimeSha256:hash(runtimePath),runtime:process.versions,checksExcluded:0,outputPatches:0,nativeBinaryBootstrap:false};\nwriteFileSync('checkpoints/native-compiler-v55b-output-smoke.json',JSON.stringify(proof,null,2)+'\\n',{flag:'wx'});console.log(JSON.stringify(proof));\n",
+  "firstAttempt": {
+    "sourceSha256": "442b95ca2195890a4e27475cda20162cd5785b80771f57a1606551095860a9d3",
+    "recipeSource": "#!/bin/sh\nset -eu\nexport PATH=\"/Users/ilyagulya/.cache/bend-selfhost-106c7efd/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin\"\ncd /Users/ilyagulya/Projects/My/bend\nexport BEND_NO_TELEMETRY=1\nbun --smol evals/native_compiler_experiment.ts --mode=build --corpus=checkpoints/compiler-benchmark-release237-v41.corpus.json --artifact=checkpoints/native-compiler-v55 --report=checkpoints/native-compiler-v55-build.json --cc-opt=1\nbun --smol evals/native_compiler_experiment.ts --mode=run --corpus=checkpoints/compiler-benchmark-release237-v41.corpus.json --build=checkpoints/native-compiler-v55-build.json --report=checkpoints/native-compiler-v55-compile.json --phase=compile --threads=1 --exports=checkpoints/compiler-benchmark-release237-misaka-v46-official.json.exports.json\nbun --smol evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 --timeout-ms 300000 -- node --max-old-space-size=3072 checkpoints/.native55-output-smoke.mjs\n",
+    "failure": {
+      "phase": "book_valid",
+      "diagnostic": "Error:\n- expected : a filled definition (an unfilled law is a dead claim: live code cannot use it)\n- observed : native_template_view_ready\nContext:\n- A        : Type\n- progress : Template.TemplateProgress<A>\nLocation: native_template_view\n91 | def native_template_view(-A: Type, progress: Template.TemplateProgress<A>) -> NativeTemplateView<A>:\n92>|   native_template_view_ready(A, Template.template_chunk(A, 64n, progress))\n   |   ^^^^^^^^^^^^^^^^^^^^^^^^^^\n93 | "
+    },
+    "guardian": {
+      "status": "FAIL",
+      "reason": "command_exit",
+      "commandExitCode": 2,
+      "commandSignal": 0,
+      "peakRssBytes": 1293238272,
+      "peakFootprintBytes": 1332636672,
+      "elapsedMs": 2986,
+      "timeoutMs": 600000,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_experiment.ts",
+        "--mode=build",
+        "--corpus=checkpoints/compiler-benchmark-release237-v41.corpus.json",
+        "--artifact=checkpoints/native-compiler-v55",
+        "--report=checkpoints/native-compiler-v55-build.json",
+        "--cc-opt=1",
+        "--internal=build"
+      ],
+      "label": "Native CPU compiler build",
+      "exitCode": 1,
+      "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792763281554-6ab075efd710eea0.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "reportSha256": "c9ef9b71f48a91b6abb334a61c3cd25180b0d70a36d50ff7f247614fa02110f5",
+    "correction": "Move named ready helpers before public wrapper declarations; canonical live forward calls require filled earlier definitions. No model/algorithm/ABI change."
+  },
+  "build": {
+    "reportPath": "checkpoints/native-compiler-v55b-build.json",
+    "reportSha256": "26244594e5d6025a1bf111348f9912dbb5bfd0172990f1e549a7f9f4eb1e3144",
+    "status": "NATIVE_EXECUTABLE_BUILT_NOT_YET_RUN",
+    "checkedDefinitions": 8169,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 7005519872,
+      "peakFootprintBytes": 4902139784,
+      "elapsedMs": 157171,
+      "timeoutMs": 600000,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_experiment.ts",
+        "--mode=build",
+        "--corpus=checkpoints/compiler-benchmark-release237-v41.corpus.json",
+        "--artifact=checkpoints/native-compiler-v55b",
+        "--report=checkpoints/native-compiler-v55b-build.json",
+        "--cc-opt=1",
+        "--internal=build"
+      ],
+      "label": "Native CPU compiler build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792763347544-134af2c995b6c95a.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "artifactSha256": "b0126141beb7de4fd4072d3ec867d70ee5ece118d908dde2875cb8b1ac688c7a",
+    "cSha256": "a1a67a547b04557a6b957bb7b0e6f379552e4bc1f0c99f5834737b45d0a903a0",
+    "protectedPins": {
+      "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_experiment.ts": "1937d01c80d698407e412a1e1edde7643e6064c82c37eb67ea38d63e4d37d463",
+      "/Users/ilyagulya/Projects/My/bend/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+      "/Users/ilyagulya/Projects/My/bend/bend2/comp.ts": "8c33864a67f0fd08d1805929c8f48806c040b219126b29bb31f201f45d6b69e6",
+      "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_driver.bend": "ff0e8b1c189f7a571853810bb8bdce68166daf381987cd3566b99982bb4ae82a",
+      "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_host.c": "348df0e4de07e19663473afa1b73136c778b72f1e000b0823415f54aa2283597",
+      "/Users/ilyagulya/Projects/My/bend/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+      "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate.ts": "47a12205abd374fd69d7dac30ee9fb45d7203cad2790870511387cd2efc22251",
+      "/Users/ilyagulya/Projects/My/bend/evals/heavy_gate_native.c": "f5aecf8308caebc72dccf8986733b37137d448021ee378302cfcd038381b7aa9",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-v41.corpus.json": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258"
+    },
+    "loadedInputs": {
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_v1.bend": "e05dd70863fd56819f27fcd574955da6bef5a77526ba10b179dae72ab75d13f5",
+      "/Users/ilyagulya/Projects/My/bend/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+      "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+      "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/lexer.bend": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+      "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+      "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/template_steps_v1.bend": "669e43923b5c7cde21fc922090d3c7ed674049d5cf44c0f2ac09e4ac901b81b6",
+      "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+      "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/checker_core_steps_v1.bend": "19dac6684fbc5ce007f1d272c0391b4e16af9bce501b5a37df4e48588cb592ac",
+      "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_arena.bend": "8860468bdd2995e9b3c46611f99abe16079632305c90fbb7bfb70c7c6f3346d6",
+      "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+      "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checker_ir.bend": "4e23cbab2f0ae0516e0a9ae0b5ca455741fd49c6222d33817dc8b6fd297b2627",
+      "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/index_lookup.bend": "caef5856607bff18b9a5dfc529eee6c6360a83d0963008420888a998274bd9f2",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/js_emit_steps_v1.bend": "f7d93e8a1145c3c671a042dbab8b6bd06a54361367794a4c0924a46482c81398",
+      "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_driver.bend": "ff0e8b1c189f7a571853810bb8bdce68166daf381987cd3566b99982bb4ae82a",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/print.c": "2693b48e0ad8bba77c2babb1cfe00b4adfd63e68b0688229d7efd3a261af3c46",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/print.js": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/write.c": "8807a5f655db452c1d846354560c26fe1e94289e5dc0be231d0b71ecc876d02f",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/write.js": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/print_err.c": "f84aa11c8d0d6af6fa2fee28411f95714d6744ad97156990e43e55c292c9c6fb",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/print_err.js": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/get_env.c": "508a4aaca91e37b2a0a97770f172100fdbaf4a676aba54623b1cd5d1634805ce",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/get_env.js": "9a4fc592e447607553bdb08b194a9ede90dbae3660507687752f58ea42892dba",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/args.c": "84e12702f78e7cce5d350a3ccc6cfbda66f812496c39f025afe02bdf090880cf",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/args.js": "ed1a7e7b73ae7fe58ac6d428d2762b66f223f4c70a165570fc5d68dc874ddc0b",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/process_run.c": "a8ae18d313840eeb1594d762a1cb08c43b632dce83c76c1c5316870b1b20d320",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/process_run.js": "9ce0c5853ab8059614f115d99b1d0ba845fb23c056a6965a59e645d155bd58c1",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/random_u32.c": "75429b2b42e00562177fe33a5e18d2730478847f58c4038b048e78131e1b8c0a",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/random_u32.js": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/spawn.c": "05e11ae3f1461d9c72440af3b1786c076b418d2faff45639ac25ba464ee73cd5",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/spawn.js": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/sleep.c": "1dde3701026517d5272d2ff5344d3a8643bec264dbad9f266fdae1c4aaf7601c",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/sleep.js": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/now.c": "fc4c1d87a4fb2ace7d5b6c57b434cc3d953a15bdf213020912df6c17aa2352d6",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/now.js": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/thread_count.c": "d4889ed7757dccce03729c9568b88188128f2c1576166a3dc184a8707ed44568",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/thread_count.js": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/chan.c": "f20345b3475168e52d431dabc8c8b9347d73b51b5318aae7890b78c94762f4e6",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/chan.js": "007ff7505af9effc20fccfa3d26eaf89a382d6295839b27df119a1704a3f86d7",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_open.c": "2f5923e325a22eb384edb3fbb023f04ca842d5acd22654983608b575fa7617fa",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_open.js": "dd549f5f05eb896aef9a3a02ffecf2ee902e653f5463be72781edab1cd1180ae",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_read.c": "ab577225fa98a034c09d7eb6326b74808756dc6203b0e2599a459876382f090d",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_read.js": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_size.c": "ed0d74fd6b9f14ea471bfe5dd80ecbb2c5abb6a8406519fb2c7e1a1acf3dd5af",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_size.js": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_write.c": "9da28a35294cbde6a97729be825a31f9cab0b8c9d421a02a4613e688df451214",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_write.js": "4fe307538beb1047add7646f52df6e382a1da5d8999d8fe96969bd5055bc9b59",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_close.c": "033da9beb0b484fbc8784044193bf69004f858f6ad86e0c31b4beb89df1349ca",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/file_close.js": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_listen.c": "efc7528de96abd9f62f299833c1ac7b0e86528292c746b114d2684b5bac52899",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_listen.js": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_accept.c": "bf7ca1685ed388ce97827ea8379881fbdf5359c7c663ad03eeb8da34bd8584ef",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_accept.js": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_connect.c": "8d17c097138709d71e9d9e1fbc4255007c5e80c93ee384c4a3510b6ac8d10da3",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_connect.js": "a20819822e4ce18c8878b94e6ee70466833415eb9ebc2b6a39b65cabfcc553c9",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_send.c": "ed724ef8ce712b113eaac478164802509b41fac4e92435e3df0837d6a8c75632",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_send.js": "ea68cc521fa9b5603c3fccebbf19ecebcd26bf1a8af644ff1f13cd14ba9fe733",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_recv.c": "249c8789cd2f541ad00068882de16a00870c2f81a8168b0ac7a59db1e3cb0c6f",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/tcp_recv.js": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_bind.c": "a1be1bc5c03d430fc6eb43982651073e144872956fadaee98c3700be59352ee3",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_bind.js": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_send_to.c": "b3a87e56958d8071a368da2edb4748e9496b3eed58b93d6cb4f8af398dd1011a",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_send_to.js": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_recv_from.c": "607085b34605af6c888e1de5c3f5cd8f689f221c71a3ef9e2c50f9ac880b1bae",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/udp_recv_from.js": "d6f88b08f578f088b4ff257a7e544e4fbbf46f375aee3881ba4d44e25ed890d8",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/socket_close.c": "abea115d2928d4942a9d89898d2022c0f1b19c52db48d0b060c2356d261bfa77",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/socket_close.js": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/listener_close.c": "11f6bac6342a37e97b9656e96bdca7d052ed0a7a0cab3b05ea87657020cfb7a2",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/listener_close.js": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/window.c": "1d99fc0dd1640602bc4020e62fd28abef44422429ab9970523d25b050f1e6c18",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_open.js": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_frame.js": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_set_title.js": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_grab.js": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/window_close.js": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio.c": "f0fac2bee02918b4958ad1e7508945824fcd98ce9a2e7ede657304c4f8905b85",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_open.js": "6f531ac205dab98dd366111cdcc5eed69fb9058350ca715f3419065cd979b088",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_write.js": "377d3e938ce3cc9f083c662b69d34e3a0cf391c92ddaf3fca8a4b28c78662da7",
+      "/Users/ilyagulya/Projects/My/bend/bend2/effs/audio_close.js": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+      "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_host.c": "348df0e4de07e19663473afa1b73136c778b72f1e000b0823415f54aa2283597"
+    },
+    "buildCommand": [
+      "clang",
+      "-std=c11",
+      "-O1",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v55b.c",
+      "-lpthread",
+      "-lm",
+      "-o",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v55b"
+    ]
+  },
+  "compile": {
+    "reportPath": "checkpoints/native-compiler-v55b-compile.json",
+    "reportSha256": "bdfd5203c69edbcbdd91d0a5d3a7ad7e71cd9756275d8bd1db774e798b0441cb",
+    "status": "NATIVE_FULL_COMPILE_PASS",
+    "elapsedMs": 81244.65491699999,
+    "phases": [
+      {
+        "phase": "parse",
+        "elapsedMs": 3430.548,
+        "modules": 15,
+        "sourceBytes": 4333108,
+        "foreignBytes": 25145,
+        "eagerFuelCells": 120000000,
+        "fuelBuildMs": 118.824
+      },
+      {
+        "phase": "expand",
+        "elapsedMs": 5131.384,
+        "calls": 950796,
+        "resumes": 950796
+      },
+      {
+        "phase": "check",
+        "elapsedMs": 47591.305,
+        "calls": 6328943,
+        "resumes": 6328943
+      },
+      {
+        "phase": "emit",
+        "elapsedMs": 23521.598,
+        "calls": 1897488,
+        "resumes": 1897488
+      }
+    ],
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 1180401664,
+      "peakFootprintBytes": 1425213576,
+      "elapsedMs": 81384,
+      "timeoutMs": 300000,
+      "command": [
+        "/Users/ilyagulya/.cache/bend-selfhost-106c7efd/bin/bun",
+        "--smol",
+        "/Users/ilyagulya/Projects/My/bend/evals/native_compiler_experiment.ts",
+        "--mode=run",
+        "--corpus=checkpoints/compiler-benchmark-release237-v41.corpus.json",
+        "--build=checkpoints/native-compiler-v55b-build.json",
+        "--report=checkpoints/native-compiler-v55b-compile.json",
+        "--phase=compile",
+        "--threads=1",
+        "--exports=checkpoints/compiler-benchmark-release237-misaka-v46-official.json.exports.json",
+        "--internal=run"
+      ],
+      "label": "Native CPU compiler run",
+      "exitCode": 0,
+      "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792763504823-c4c721cdc3ae2ef4.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "command": [
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v55b",
+      "--threads",
+      "1",
+      "--gpu",
+      "off",
+      "--",
+      "/private/tmp/bend-v41-corpus.uXXfVm/checkpoints/.bootstrap_compiler_root_v1.bend",
+      "/private/tmp/bend-v41-corpus.uXXfVm/bend2/base.bend",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v55b-compile.json.runtime.tsv",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v55b-compile.json.exports.txt",
+      "compile",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v55b-compile.json.mjs"
+    ],
+    "result": {
+      "result": "EmitSuccess",
+      "bytes": 20281365,
+      "modules": 15
+    },
+    "exports": 7720,
+    "outputSha256": "a1033733403dddb6214b6433ec55cd385fc210ce0d985871259a25487bd06d29",
+    "outputBytes": 20281365,
+    "boundary": {
+      "host": "trusted C file/import loader and serial affine LIFO continuation driver",
+      "sourceAlgorithms": "unchanged canonical Bend parser/expansion/checker/JS library emitter",
+      "hostChecking": false,
+      "hostParsing": false,
+      "embeddedSource": false,
+      "cachedAst": false,
+      "parserFuelRepresentation": "eager native 8M-cell chain per source; JS harness uses lazy cells for the same finite fuel; allocation time remains included in parse",
+      "fuelMemoryEvidence": "per-source native process RSS high-water before/after allocation (not isolated live-byte attribution); guardian samples whole-tree RSS and physical footprint including fuel",
+      "outputPatches": 0,
+      "checksExcluded": 0,
+      "nativeBinaryBootstrap": false
+    },
+    "ccOptimization": {
+      "level": 1,
+      "flag": "-O1",
+      "officialDefault": false,
+      "diagnosticTradeoff": true
+    },
+    "corpusSha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258"
+  },
+  "outputSmoke": {
+    "status": "NATIVE_FULL_COMPILE_EXACT_OUTPUT_AND_IMPORT_SMOKE_PASS",
+    "nativeReport": "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v55b-compile.json",
+    "nativeReportSha256": "bdfd5203c69edbcbdd91d0a5d3a7ad7e71cd9756275d8bd1db774e798b0441cb",
+    "outputSha256": "a1033733403dddb6214b6433ec55cd385fc210ce0d985871259a25487bd06d29",
+    "outputBytes": 20281365,
+    "exports": 7720,
+    "modules": 15,
+    "emittedParserActualSource": true,
+    "emittedCheckerEmptyModules": true,
+    "outputSmokeRuntimeSha256": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+    "runtime": {
+      "node": "23.11.0",
+      "acorn": "8.14.1",
+      "ada": "3.2.1",
+      "amaro": "0.4.1",
+      "ares": "1.34.4",
+      "brotli": "1.1.0",
+      "cjs_module_lexer": "2.1.0",
+      "cldr": "46.0",
+      "icu": "76.1",
+      "llhttp": "9.2.1",
+      "modules": "131",
+      "napi": "10",
+      "nbytes": "0.1.1",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.64.0",
+      "openssl": "3.0.16",
+      "simdjson": "3.12.2",
+      "simdutf": "6.0.3",
+      "sqlite": "3.49.1",
+      "tz": "2025a",
+      "undici": "6.21.2",
+      "unicode": "16.0",
+      "uv": "1.50.0",
+      "uvwasi": "0.0.21",
+      "v8": "12.9.202.28-node.14",
+      "zlib": "1.3.0.1-motley-788cb3c",
+      "zstd": "1.5.6"
+    },
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "nativeBinaryBootstrap": false
+  },
+  "jsProof": {
+    "version": 53,
+    "sourceUnchanged": true,
+    "receipt": "checkpoints/selfhost-acceptance-release237-misaka-v53.json",
+    "sha256": "0b2571d0eaaadbcc1e2ebb714f2c68bd41ad8f81560bc9cb07335cbaf1f98f8b",
+    "stageOneSha256": "14dd1f829459c7bca9f519d6813612e9a7d847dca8d1e942c24a641b25610348",
+    "stageTwoSha256": "14dd1f829459c7bca9f519d6813612e9a7d847dca8d1e942c24a641b25610348",
+    "fixtures": 273
+  },
+  "recipeWallSeconds": 240.87,
+  "performanceClaim": {
+    "baseline": "compiler-native-carrier-v54.json ordinary full run, not CPU-instrumented timing",
+    "ordinaryBaselineMs": 91557.18787499999,
+    "ordinaryCandidateMs": 81244.65491699999,
+    "observedReductionPercent": 11.263488096728524,
+    "limitation": "One normal run each, no interleaved randomized timing series; accept correct full output and observed reduction, not universal/intrinsic speed proof or victory over official10099.880ms. Physical peak essentially unchanged; RSS lower is not live allocation evidence."
+  },
+  "cleanup": {
+    "scriptSource": "import fs from'node:fs';import{createHash}from'node:crypto';const root='/Users/ilyagulya/Projects/My/bend/';const r=JSON.parse(fs.readFileSync(root+'checkpoints/native-compiler-v55b-compile.json'));const s=JSON.parse(fs.readFileSync(root+'checkpoints/native-compiler-v55b-output-smoke.json'));if(r.status!=='NATIVE_FULL_COMPILE_PASS'||s.status!=='NATIVE_FULL_COMPILE_EXACT_OUTPUT_AND_IMPORT_SMOKE_PASS'||r.output!==root+'checkpoints/native-compiler-v55b-compile.json.mjs'||createHash('sha256').update(fs.readFileSync(r.output)).digest('hex')!=='a1033733403dddb6214b6433ec55cd385fc210ce0d985871259a25487bd06d29')throw Error('Proof/output changed');const removedBytes=fs.statSync(r.output).size;fs.unlinkSync(r.output);for(const p of['checkpoints/.remote-misaka-v55b.sh','checkpoints/.native55b-output-smoke.mjs','checkpoints/.cleanup-native55b.mjs'])fs.unlinkSync(root+p);console.log(JSON.stringify({status:'VERIFIED_REDUNDANT_OUTPUT_AND_COMPLETED_SCRIPTS_REMOVED',removedBytes,nativeExecutableRetained:true,generatedCRetained:true,jsFixedpointImagesRetained:true}));",
+    "status": "VERIFIED_REDUNDANT_OUTPUT_REMOVED_AND_REMAINING_SCAFFOLDS_REMOVED",
+    "removedBytes": 20281365,
+    "hashVerifiedBeforeDeletion": true,
+    "nativeExecutableRetained": true,
+    "generatedCRetained": true,
+    "jsFixedpointImagesRetained": true,
+    "firstCleanupFailure": "After successful output and recipe/smoke deletion, cleanup tried absent .cleanup-native55b.mjs instead of .native55b-cleanup.mjs. Only remaining exact owned scripts were then removed via ssh rm; successful deletion not repeated.",
+    "localScaffoldBytes": 125921,
+    "localScaffolds": [
+      "checkpoints/.native-boundary55-model-receipt.json",
+      "checkpoints/.native-boundary55-model.json",
+      "checkpoints/.native-boundary55-model.mjs",
+      "checkpoints/.native-boundary55-model.ts",
+      "checkpoints/.native-boundary55-model.bend",
+      "checkpoints/.remote-misaka-v55.sh",
+      "checkpoints/.remote-misaka-v55b.sh",
+      "checkpoints/.native55-output-smoke.mjs",
+      "checkpoints/.native55b-output-smoke.mjs",
+      "checkpoints/.native55b-cleanup.mjs"
+    ]
+  }
+}

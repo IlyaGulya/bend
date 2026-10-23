@@ -4,6 +4,36 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+## Compiler55 — complete native full workload in81.24s
+
+54 is committed as f5d87361.55 applies existing checked chunk64 before EVERY
+native progress reflection, with filled ready helpers preceding public wrappers.
+Only evals/native_compiler_driver.bend changes; C carrier ABI, kernel/backend,
+source algorithms, semantic fuel and JS53 fixedpoint sources stay unchanged.
+
+Full native build checks8169/8169 bodies, zero exclusions/patches,157171ms;
+physical4902139784/RSS7005519872 under8GiB600s. Full frozen50files/15modules/
+7720exports compile81244.655ms under8GiB300s; physical1425213576/RSS1180401664.
+Parse3430.548ms; expand5131.384ms/950796 host calls; check47591.305ms/6328943;
+emit23521.598ms/1897488. All20281365 output bytes retain SHAa1033733…06d29;
+actual ordered exports/parser/checker smoke passes. Full recipe240.87s.
+Ordinary54→55 times improve11.26% in this pair, not a randomized speed proof.
+Physical peak is essentially unchanged despite lower RSS. Official historical
+identical-corpus10099.880ms remains much faster. Native binary fixedpoint unproved.
+
+CPU54 instrumented early check/emit10s windows find direct host/evaluator self
+only1.381%/1.071%; check refcount/drop/share32.087%, Map22.551%, dispatch17.392%.
+Do not turn boundary counts into CPU claims. Next concrete target: native C
+Map.bit/string comparison still execute generic structural code, whereas JS
+already has canonical primitives. Preserve checked source semantics and borrowed
+ownership; test empty/Unicode/U32/presence-bit boundaries before full acceptance.
+
+Evidence: compiler-native-boundary-v55.json includes42-row typed model, failed
+forward-declaration preflight, full source/input pins and ordinary run/output
+proof. compiler-native-cpu-v54.json records sampling attribution and limitations.
+Redundant output removed only after byte verification and actual execution;
+native executable/C and JS fixedpoint images retained; no bulk artifacts in Git.
+
 ## Compiler54 — full native compile and exact output pass
 
 Version53 is committed as cc5e4b6c.54 changes only native_compiler_host.c and the
