@@ -185,3 +185,22 @@ test('newline continues infix cons but not parenthesized application',()=>{
  expect(local.k).toBe('BodyLocal');
  expect(ctor(ctor(local.x[3]).x[0]).k).toBe('TermVar');
 },120000);
+test('lambda blocks preserve local quantities and RHS-before-shadowing scope',()=>{
+ for(const prefix of ['', '+'])for(const [localPrefix,quantity]of [['','QOne'],['+','QMany'],['-','QZero']]){
+  const result=parse('def f(outer: Nat) -> Nat -> Nat:\n  '+prefix+'x => '+localPrefix+'x = outer; x\n');
+  expect(result.k).toBe('ParseSuccess');
+  const module=ctor(result.x[0]),definition=ctor(ctor(ctor(module.x[2]).x[0]).x[0]);
+  const lambda=ctor(ctor(ctor(definition.x[3]).x[0]).x[0]);
+  expect(lambda.k).toBe('TermLam');
+  expect(ctor(lambda.x[0]).k).toBe(prefix==='+'?'Some':'None');
+  if(prefix==='+')expect(ctor(ctor(lambda.x[0]).x[0]).k).toBe('QMany');
+  const local=ctor(lambda.x[3]);
+  expect(local.k).toBe('BodyLocal');
+  expect(ctor(local.x[1]).k).toBe(quantity);
+  const value=ctor(ctor(local.x[2]).x[0]),body=ctor(ctor(local.x[3]).x[0]);
+  expect(value.k).toBe('TermVar');
+  expect(B.term_compare('EQ',book,value.x[1],B.Lit('Nat',1))).toBe(true);
+  expect(body.k).toBe('TermVar');
+  expect(B.term_compare('EQ',book,body.x[1],B.Lit('Nat',0))).toBe(true);
+ }
+},120000);

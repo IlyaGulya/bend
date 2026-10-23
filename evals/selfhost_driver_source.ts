@@ -162,9 +162,9 @@ export function authenticateParserSemanticGate(path:string,options:{
  }
  const regression=object(report.publicRegressions),publicPath=realpathSync(regression.reportPath);
  const publicText=read(publicPath),publicReport=object(JSON.parse(publicText));
- if(regression.parserSha256!==parserSha256||regression.passed!==14||regression.assertions!==207||
+ if(regression.parserSha256!==parserSha256||regression.passed!==15||regression.assertions!==264||
   regression.failed!==0||sha(publicText)!==regression.reportSha256||
-  publicReport.parserSha256!==parserSha256||publicReport.passed!==14||publicReport.assertions!==207||
+  publicReport.parserSha256!==parserSha256||publicReport.passed!==15||publicReport.assertions!==264||
   publicReport.failed!==0||publicReport.exitCode!==0||realpathSync(publicReport.parserPath)!==parserPath||
   publicReport.entryPoint!==entryPoint||publicReport.canonicalSha256!==options.canonicalSha256||
   typeof publicReport.rawOutputPath!=='string'||sha(read(publicReport.rawOutputPath))!==publicReport.rawOutputSha256)
@@ -349,7 +349,11 @@ for(const [mode,stem]of [['template','template'],['checker','checker-core'],['em
  const path=realpathSync(resolve('checkpoints/'+stem+'-steps-v1.json')),text=readFileSync(path,'utf8');
  const record=object(JSON.parse(text)),{generationManifestSha256,...proof}=record;
  if(generationManifestSha256!==sha(JSON.stringify(proof))||record.generationConfig?.mode!==mode
-  ||record.exactCanonicalCoverage!==true||record.residualSourceCalls!==0||record.recursiveHelpers!==0
+  ||record.exactCanonicalCoverage!==true||record.residualSourceCalls!==0||record.recursiveHelpers!==1
+  ||record.generatedPrivateRecursiveHelpers!==0||record.progressABI!=='boxed-value-bound-v53'
+  ||record.nativeChunk?.function!==mode+'_chunk'||record.nativeChunk?.rawStep!==mode+'_step_one'
+  ||record.nativeChunk?.quantum!==64||record.nativeChunk?.recursion!=='structural Nat'
+  ||record.nativeChunk?.zeroFuel!=='return remaining progress unchanged'
   ||!Array.isArray(record.excludedDefinitions)||record.excludedDefinitions.length
   ||!Array.isArray(record.omittedDefinitions)||record.omittedDefinitions.length)
   throw Error('Complete current typed '+mode+' source generation proof required');

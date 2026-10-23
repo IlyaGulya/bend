@@ -31,9 +31,13 @@ latest one; the GitHub release carries the same notes.
 - Diagnostic step counters recognize the selfhost emitter's callback names and
   preserve each checker pass in a separate write-once file, so output smokes
   cannot overwrite full-workload measurements.
-- Compiler-private name interning reads its existing immutable index without
-  reconstructing the lookup path; zero IDs, missing markers and rewound IDs
-  retain their previous behavior.
+- Selfhost lambda bodies use the existing block grammar, including local
+  definitions and matches. Local-name lookahead no longer treats an equals
+  inside a lambda as an outer assignment; quantity and lexical scope are retained.
+- Selfhost compiler steps execute bounded checked-Bend chunks with an affine
+  result carrier and explicit continuation stack, preserving semantic reduction
+  fuel. The updated JS compiler reaches a full stage-one/stage-two byte fixedpoint;
+  this does not certify the separate native C orchestration path.
 
 - The complete selfhost parser/Template/Checker/JavaScript compiler root now
   reaches an exact stage-one/stage-two byte fixedpoint using its own emitted

@@ -1,0 +1,338 @@
+{
+  "status": "CAUSE_ESTABLISHED_NO_PRODUCTION_EDITS",
+  "host": "misakaindrive",
+  "binary": {
+    "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d",
+    "sha256": "90b91851394a1282d78a948f1edccc1c8a6f2f91ebd68116d92b8dcfad0983c9",
+    "generatedC": "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d.c",
+    "generatedCSha256": "fa1361f668ce822ccc5960195e28966071fdcf6bda9c8e4491feb0c7d7169b63",
+    "compilerSha256": "8c33864a67f0fd08d1805929c8f48806c040b219126b29bb31f201f45d6b69e6",
+    "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+    "build": "existing clang -std=c11 -O1 C -lpthread -lm; no rebuild"
+  },
+  "input": {
+    "argv": [
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d",
+      "--threads",
+      "1",
+      "--gpu",
+      "off",
+      "--",
+      "/private/tmp/bend-v41-corpus.uXXfVm/checkpoints/.bootstrap_compiler_root_v1.bend",
+      "/private/tmp/bend-v41-corpus.uXXfVm/bend2/base.bend",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d-check.json.runtime.tsv",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d-check.json.exports.txt",
+      "check",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d-check.json.mjs"
+    ],
+    "runtimeTsvSha256": "93095f172f0519842e6586b6ccadb01db8dbf68870eb76c8c3b5aa7d88b10355",
+    "exportsSha256": "124f4748281cb8cf049815fac9201640d34259cac04e58d7b49a9632cb282eaa",
+    "scope": "full original frozen workload; 15 modules, 4333108 source bytes, 25145 foreign bytes; check phase; one CPU compute thread; GPU off; expansion fault before check"
+  },
+  "debugger": {
+    "version": "lldb-2100.0.17.203; Apple Swift 6.3.3; clang-2100.1.1.101",
+    "transport": "ssh xcrun lldb --batch; local DAP has no remote SSH launch facility",
+    "remoteStackLimitKiB": 8176,
+    "stackLimitChanged": false,
+    "bounds": {
+      "rssBytes": 8589934592,
+      "physicalFootprintBytes": 8589934592,
+      "deadlineMsPerRun": 300000
+    },
+    "scripts": [
+      {
+        "remotePath": "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d-fault.lldb",
+        "sha256": "36aa4d40732069f5182d5080dc5945169ea47a4fc5479939e17c01b9e0ff8feb"
+      },
+      {
+        "remotePath": "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d-resume.lldb",
+        "sha256": "6d82607d51a17adb8aecf6a96bcf237ad20ba340c29f68634415ba74efe51e56"
+      },
+      {
+        "remotePath": "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d-resume3.lldb",
+        "sha256": "2f51f85ce47026e8ee776e1598ee626db3287db8f89e08aef39d92de2e642f54"
+      }
+    ],
+    "runs": [
+      {
+        "raw": "checkpoints/native-compiler-v53d-fault.raw.log",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 458637312,
+          "peakFootprintBytes": 390563736,
+          "elapsedMs": 4779,
+          "timeoutMs": 300000,
+          "command": [
+            "xcrun",
+            "lldb",
+            "--batch",
+            "-s",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d-fault.lldb",
+            "--",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--",
+            "/private/tmp/bend-v41-corpus.uXXfVm/checkpoints/.bootstrap_compiler_root_v1.bend",
+            "/private/tmp/bend-v41-corpus.uXXfVm/bend2/base.bend",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d-check.json.runtime.tsv",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d-check.json.exports.txt",
+            "check",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d-check.json.mjs"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792761198255-aa3dbc976ff39a53.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "parse": {
+          "phase": "parse",
+          "elapsedMs": 3823.293,
+          "modules": 15,
+          "sourceBytes": 4333108,
+          "foreignBytes": 25145,
+          "eagerFuelCells": 120000000,
+          "fuelBuildMs": 133.473
+        },
+        "note": "LLDB command status only; compiler stopped at exception, not a compiler acceptance pass",
+        "debuggerSetup": "signal catch succeeded"
+      },
+      {
+        "raw": "checkpoints/native-compiler-v53d-resume.raw.log",
+        "guardian": {
+          "status": "FAIL",
+          "reason": "command_exit",
+          "commandExitCode": 1,
+          "commandSignal": 0,
+          "peakRssBytes": 431996928,
+          "peakFootprintBytes": 374163352,
+          "elapsedMs": 4268,
+          "timeoutMs": 300000,
+          "command": [
+            "xcrun",
+            "lldb",
+            "--batch",
+            "-s",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d-resume.lldb",
+            "--",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--",
+            "/private/tmp/bend-v41-corpus.uXXfVm/checkpoints/.bootstrap_compiler_root_v1.bend",
+            "/private/tmp/bend-v41-corpus.uXXfVm/bend2/base.bend",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d-check.json.runtime.tsv",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d-check.json.exports.txt",
+            "check",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d-check.json.mjs"
+          ],
+          "label": "heavy command",
+          "exitCode": 1,
+          "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792761349301-aca005a87267d262.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "parse": {
+          "phase": "parse",
+          "elapsedMs": 3707.298,
+          "modules": 15,
+          "sourceBytes": 4333108,
+          "foreignBytes": 25145,
+          "eagerFuelCells": 120000000,
+          "fuelBuildMs": 124.676
+        },
+        "note": "LLDB command status only; compiler stopped at exception, not a compiler acceptance pass",
+        "debuggerSetup": "failed address lookup; no resume breakpoint"
+      },
+      {
+        "raw": "checkpoints/native-compiler-v53d-resume2.raw.log",
+        "guardian": {
+          "status": "FAIL",
+          "reason": "command_exit",
+          "commandExitCode": 1,
+          "commandSignal": 0,
+          "peakRssBytes": 457375744,
+          "peakFootprintBytes": 389040024,
+          "elapsedMs": 4032,
+          "timeoutMs": 300000,
+          "command": [
+            "xcrun",
+            "lldb",
+            "--batch",
+            "-s",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d-resume.lldb",
+            "--",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--",
+            "/private/tmp/bend-v41-corpus.uXXfVm/checkpoints/.bootstrap_compiler_root_v1.bend",
+            "/private/tmp/bend-v41-corpus.uXXfVm/bend2/base.bend",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d-check.json.runtime.tsv",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d-check.json.exports.txt",
+            "check",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d-check.json.mjs"
+          ],
+          "label": "heavy command",
+          "exitCode": 1,
+          "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792761379641-a6eccc86b0f3f08f.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "parse": {
+          "phase": "parse",
+          "elapsedMs": 3503.72,
+          "modules": 15,
+          "sourceBytes": 4333108,
+          "foreignBytes": 25145,
+          "eagerFuelCells": 120000000,
+          "fuelBuildMs": 106.521
+        },
+        "note": "LLDB command status only; compiler stopped at exception, not a compiler acceptance pass",
+        "debuggerSetup": "absolute address breakpoint did not fire; symbolic breakpoint used next"
+      },
+      {
+        "raw": "checkpoints/native-compiler-v53d-resume3.raw.log",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 457523200,
+          "peakFootprintBytes": 388024216,
+          "elapsedMs": 4114,
+          "timeoutMs": 300000,
+          "command": [
+            "xcrun",
+            "lldb",
+            "--batch",
+            "-s",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d-resume3.lldb",
+            "--",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--",
+            "/private/tmp/bend-v41-corpus.uXXfVm/checkpoints/.bootstrap_compiler_root_v1.bend",
+            "/private/tmp/bend-v41-corpus.uXXfVm/bend2/base.bend",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d-check.json.runtime.tsv",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d-check.json.exports.txt",
+            "check",
+            "/Users/ilyagulya/Projects/My/bend/checkpoints/native-compiler-v53d-check.json.mjs"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792761427784-dc01ef64f52d3b8a.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "parse": {
+          "phase": "parse",
+          "elapsedMs": 3629.052,
+          "modules": 15,
+          "sourceBytes": 4333108,
+          "foreignBytes": 25145,
+          "eagerFuelCells": 120000000,
+          "fuelBuildMs": 105.336
+        },
+        "note": "LLDB command status only; compiler stopped at exception, not a compiler acceptance pass",
+        "debuggerSetup": "symbolic conditional native_apply breakpoint captured first resume, then exception"
+      }
+    ]
+  },
+  "cause": {
+    "summary": "Foreign C native_drive confuses flattened NativeTemplateFinished payload with a whole TemplateValue constructor. This violates the continuation argument ABI; backend flattening itself is visible and consistent.",
+    "firstResume": {
+      "functionTerm": "0x0325960003fc8e00",
+      "functionId": 9622,
+      "function": "template_chunk_C34824",
+      "argumentTerm": "0x0200150003ddfba8",
+      "actualArgument": "TAG_CTR, CID_CON=21 (raw list payload)",
+      "requiredArgument": "whole TAG_CTR CID_TEMPLATE_STEPS_V1_TEMPLATEVALUE=31 wrapper",
+      "caller": "native_drive+484, evals/native_compiler_host.c:103"
+    },
+    "fault": {
+      "instruction": "WL_FID_TEMPLATE_STEPS_V1_TEMPLATE_CHUNK_C34824+16: ldr x10, [x20, x8, lsl #3]",
+      "pc": "0x10092f15c",
+      "argumentRegisterX27": "0x0003b6a05c000004",
+      "argumentTag": 0,
+      "maskedLocationX8": "0xa05c000004",
+      "heapBaseX20": "0x200000000000",
+      "invalidReadAddress": "0x2502e0000020",
+      "sp": "0x16fdfbcc0",
+      "stackMappedRange": "0x16f604000-0x16fe00000",
+      "backtraceDepth": 10,
+      "notStackOverflow": true,
+      "noEvaluatorReentry": true
+    },
+    "mapping": [
+      "evals/native_compiler_driver.bend:79-81,91-100 declares NativeTemplateFinished{box:TemplateValue<A>}",
+      "generated C:1367910-1367916 takes one flattened field of TemplateFinished and forwards that SAME raw payload into NativeTemplateFinished; it does not construct a CID31 TemplateValue",
+      "generated C:1365426-1365456 continuation expects a whole TemplateValue in r2, reads its payload at term_loc and frees a unary node before constructing a TemplateValue for next(box)",
+      "checkpoints/template_steps_v1.bend:3590-3591, TemplateBound(inner=TemplatePending) box => TemplateBound{B,next(box),resume}",
+      "bend2/comp.ts:1013-1026,1047-1071,1090-1092 recursively flattens nonrecursive constructor fields; unary TemplateValue wrapper disappears inside NativeTemplateFinished",
+      "evals/native_compiler_host.c:92-103 extracts one live field and passes it unchanged as fs[0] to resume (also returns raw fs[0] at depth zero)"
+    ],
+    "smallestProposedFix": "Host ABI correction only: add the appropriate result-box constructor id to native_drive; after extracting Native*Finished field fs[0], reconstruct exactly one whole domain wrapper via existing io_box(e, value_cid, fs[0]); use that boxed Term both for continuation native_apply and depth-zero return to the typed final-result adapter. Supply TemplateValue, CheckerValue, EmitterValue constructor ids at the three callsites. Do not unbox twice, alter the backend, change chunk/fuel semantics, or raise stack limits.",
+    "proposalValidation": "Not implemented or run; parent owns subsequent version integration and acceptance."
+  },
+  "rawArtifacts": [
+    {
+      "path": "checkpoints/native-compiler-v53d-fault.raw.log",
+      "bytes": 10343,
+      "sha256": "6a603e970e3c1d3c319a3fe996cdc1ddfcff010e85496efd36435e616dd3b72c"
+    },
+    {
+      "path": "checkpoints/native-compiler-v53d-resume.raw.log",
+      "bytes": 6380,
+      "sha256": "345af1b7c5b6538d5e05290e61c72d72bb484df0011a5d6326a6ee2957e300ed"
+    },
+    {
+      "path": "checkpoints/native-compiler-v53d-resume2.raw.log",
+      "bytes": 5886,
+      "sha256": "1bb09596fd2b21d9f59d649d9f85a3e9be607151bb0f18d09068d71d32b409ab"
+    },
+    {
+      "path": "checkpoints/native-compiler-v53d-resume3.raw.log",
+      "bytes": 8449,
+      "sha256": "13f5a15853b1c0bc27b3efb52993794181978e336754691234b7acbeb42688e8"
+    },
+    {
+      "path": "checkpoints/native-compiler-v53d-fault.disassembly.log",
+      "bytes": 57252,
+      "sha256": "e3ed88410d8f48a0a6f61edadf2a78ebd605fa34ef0b1a41b0e04da0a86c399f"
+    },
+    {
+      "path": "checkpoints/native-compiler-v53d-fault.source-excerpts.log",
+      "bytes": 4498,
+      "sha256": "ac39c26afec999be87caa4314e2a7c7397bd093136c4f8c763b65d040b086cbd"
+    }
+  ],
+  "changes": {
+    "productionEdits": 0,
+    "binaryPatches": 0,
+    "generatedCPatches": 0,
+    "corpusChanges": 0,
+    "checksSkipped": 0,
+    "debugSymbolRecompiles": 0,
+    "uninstumentedReruns": 0
+  },
+  "sourcePins": {
+    "host": "f108b69596860e2078a33a88d4a73ee87a5b8c329e9ff57065fb34384233c5a8",
+    "driver": "0c89728199194c8c7448aebbe540f299cf9b030461030ec32ea40bcc6bc72013",
+    "template": "669e43923b5c7cde21fc922090d3c7ed674049d5cf44c0f2ac09e4ac901b81b6"
+  },
+  "acceptance": "Diagnostic only: full C compiler check still FAIL; no native check completion, emission, bootstrap or fixedpoint claim. All raw logs, debugger commands, generated C and executable remain outside Git. Compact receipt is eligible evidence for parent checkpoint."
+}

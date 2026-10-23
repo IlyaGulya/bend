@@ -1,0 +1,821 @@
+{
+  "status": "INCOMPLETE_INNER290S_DEADLINE",
+  "compilerVersion": "53D",
+  "host": "nhs",
+  "workspace": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH",
+  "normalBenchmark": true,
+  "image": {
+    "file": "stage-one53d.js",
+    "bytes": 16703923,
+    "sha256": "14dd1f829459c7bca9f519d6813612e9a7d847dca8d1e942c24a641b25610348"
+  },
+  "transfer": {
+    "command": "scp checkpoints/selfhost-stageone-v53d.js nhs:/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one53d.js",
+    "localAndRemoteSha256": "14dd1f829459c7bca9f519d6813612e9a7d847dca8d1e942c24a641b25610348"
+  },
+  "package": {
+    "compilerVersion": "53D",
+    "bootstrapAcceptance": true,
+    "parentReportedGateStatus": "53D full JS root byte fixedpoint and273/273 seed/stage1/stage2 fixtures; broader selfhostGreen false",
+    "genuineImage": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one53d.js",
+    "genuineImageSha256": "14dd1f829459c7bca9f519d6813612e9a7d847dca8d1e942c24a641b25610348",
+    "executionDriver": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/runtime53.mjs",
+    "executionDriverSha256": "bc7858ebffa2ae8ba36cf985f7ff97f845c85c66f7f999f4f5dbdb9e4182d71d",
+    "executionABI": "strict boxed-value-bound-v53 with native coarse64",
+    "outputSmokeDriver": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/frozen-runtime-v41.mjs",
+    "outputSmokeDriverSha256": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+    "outputSmokeSelection": "frozen-v41",
+    "differentArchitecturalPackages": true,
+    "dualDecoder": false,
+    "normalBenchmark": true
+  },
+  "request": {
+    "options": {
+      "mode": "component",
+      "corpus": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/corpus.relocated.json",
+      "report": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/series53d-actual.json",
+      "driver": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/runtime53.mjs",
+      "outputSmokeDriver": "frozen-v41",
+      "stopAfter": "compile",
+      "component": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one53d.js",
+      "exports": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/official.json.exports.json"
+    },
+    "pins": {
+      "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-linux53.ts": "4da4aa04f5eed05051500ac88aa33a003f2d839a583874a72bc7f1a356dd86ef",
+      "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/compiler_benchmark53.source.ts": "dc0a8884318813ab6c9d19fd96eb7df34882ec7634d141bf801451e122259c2e",
+      "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/run-series53d.mjs": "2ee828ea105d52aa093457758750931c4be0ac5c3854aad8f5f68b5ef246ebca",
+      "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/corpus.relocated.json": "6a00a60b7833e1b188b7b1872297df8e00252cf381b1cc4f9d6b670dfe5ff016",
+      "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/checkpoints/compiler-benchmark-release237-v41.corpus.json": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+      "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/runtime53.mjs": "bc7858ebffa2ae8ba36cf985f7ff97f845c85c66f7f999f4f5dbdb9e4182d71d",
+      "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/frozen-runtime-v41.mjs": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+      "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one53d.js": "14dd1f829459c7bca9f519d6813612e9a7d847dca8d1e942c24a641b25610348",
+      "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/official.json.exports.json": "9740412dd732c74160b574acff9ca4ce8c1565b15a51a40f3e49beba08c76914",
+      "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/corpus/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+      "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/corpus/bend2/comp.ts": "56d5727049bc3ef528ef84d3b4712a41a0a8ce0a06437b29d881e71107638c70"
+    }
+  },
+  "guard": {
+    "label": "series53d-actual",
+    "command": [
+      "./node-v23.11.0-linux-x64/bin/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "--stack-size=262144",
+      "run-series53d.mjs"
+    ],
+    "group": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-series53d-actual.scope",
+    "memoryMax": "8589934592",
+    "memorySwapMax": "0",
+    "startedAt": "2026-10-23T13:13:32.862Z",
+    "samples": 1160,
+    "elapsedMs": 290216.58098900004,
+    "memoryPeak": "1960329216",
+    "memoryCurrent": "63635456",
+    "memoryEvents": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+    "cpuStat": "usage_usec 309468256\nuser_usec 306187736\nsystem_usec 3280520\ncore_sched.force_idle_usec 0",
+    "pid": 255135,
+    "internalDeadline": true,
+    "exitCode": null,
+    "signal": "SIGKILL"
+  },
+  "systemd": {
+    "command": [
+      "systemd-run",
+      "--user",
+      "--scope",
+      "--quiet",
+      "--unit=bend-native46-elcWbhvH-series53d-actual",
+      "-p",
+      "MemoryMax=8589934592",
+      "-p",
+      "MemorySwapMax=0",
+      "-p",
+      "RuntimeMaxSec=300s",
+      "/usr/bin/node",
+      "guard.mjs",
+      "series53d-actual",
+      "290000",
+      "./node-v23.11.0-linux-x64/bin/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "--stack-size=262144",
+      "run-series53d.mjs"
+    ],
+    "supervisorVersion": "v22.22.1",
+    "elapsedMs": 290287.725727,
+    "status": 1,
+    "signal": null,
+    "stdout": "",
+    "stderr": "",
+    "liveSystemctlShow": {
+      "status": 0,
+      "stdout": "RuntimeMaxUSec=5min\nControlGroup=/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-series53d-actual.scope\nMemoryMax=8589934592\nMemorySwapMax=0\nActiveState=active\n",
+      "stderr": ""
+    },
+    "loadSamples": [
+      {
+        "at": "2026-10-23T13:13:32.800Z",
+        "loadavg": "22.85 7.54 4.00 42/4075 255127"
+      },
+      {
+        "at": "2026-10-23T13:13:34.806Z",
+        "loadavg": "24.70 8.18 4.23 52/4067 255222"
+      },
+      {
+        "at": "2026-10-23T13:13:36.807Z",
+        "loadavg": "24.70 8.18 4.23 44/4087 255354"
+      },
+      {
+        "at": "2026-10-23T13:13:38.809Z",
+        "loadavg": "26.41 8.81 4.45 52/4072 255442"
+      },
+      {
+        "at": "2026-10-23T13:13:40.811Z",
+        "loadavg": "26.41 8.81 4.45 43/4056 255629"
+      },
+      {
+        "at": "2026-10-23T13:13:42.813Z",
+        "loadavg": "26.41 8.81 4.45 38/4038 255801"
+      },
+      {
+        "at": "2026-10-23T13:13:44.815Z",
+        "loadavg": "27.09 9.25 4.61 41/4065 255855"
+      },
+      {
+        "at": "2026-10-23T13:13:46.817Z",
+        "loadavg": "27.09 9.25 4.61 46/4063 256020"
+      },
+      {
+        "at": "2026-10-23T13:13:48.819Z",
+        "loadavg": "28.53 9.84 4.83 44/4038 256243"
+      },
+      {
+        "at": "2026-10-23T13:13:50.821Z",
+        "loadavg": "28.53 9.84 4.83 40/4085 256344"
+      },
+      {
+        "at": "2026-10-23T13:13:52.823Z",
+        "loadavg": "28.53 9.84 4.83 47/4097 256415"
+      },
+      {
+        "at": "2026-10-23T13:13:54.825Z",
+        "loadavg": "31.21 10.71 5.14 84/4057 256540"
+      },
+      {
+        "at": "2026-10-23T13:13:56.827Z",
+        "loadavg": "31.21 10.71 5.14 47/4065 256674"
+      },
+      {
+        "at": "2026-10-23T13:13:58.829Z",
+        "loadavg": "32.71 11.36 5.38 40/4080 256786"
+      },
+      {
+        "at": "2026-10-23T13:14:00.831Z",
+        "loadavg": "32.71 11.36 5.38 50/4099 256883"
+      },
+      {
+        "at": "2026-10-23T13:14:02.833Z",
+        "loadavg": "32.71 11.36 5.38 52/4102 256945"
+      },
+      {
+        "at": "2026-10-23T13:14:04.835Z",
+        "loadavg": "33.30 11.83 5.57 43/4072 257033"
+      },
+      {
+        "at": "2026-10-23T13:14:06.837Z",
+        "loadavg": "33.30 11.83 5.57 45/4078 257150"
+      },
+      {
+        "at": "2026-10-23T13:14:08.839Z",
+        "loadavg": "33.67 12.27 5.74 39/4064 257336"
+      },
+      {
+        "at": "2026-10-23T13:14:10.842Z",
+        "loadavg": "33.67 12.27 5.74 43/4064 257490"
+      },
+      {
+        "at": "2026-10-23T13:14:12.844Z",
+        "loadavg": "33.67 12.27 5.74 45/4105 257650"
+      },
+      {
+        "at": "2026-10-23T13:14:14.846Z",
+        "loadavg": "34.98 12.89 5.98 43/4031 257731"
+      },
+      {
+        "at": "2026-10-23T13:14:16.849Z",
+        "loadavg": "34.98 12.89 5.98 41/4075 257921"
+      },
+      {
+        "at": "2026-10-23T13:14:18.851Z",
+        "loadavg": "36.34 13.54 6.23 43/4103 258003"
+      },
+      {
+        "at": "2026-10-23T13:14:20.853Z",
+        "loadavg": "36.34 13.54 6.23 48/4108 258066"
+      },
+      {
+        "at": "2026-10-23T13:14:22.855Z",
+        "loadavg": "36.34 13.54 6.23 53/4068 258153"
+      },
+      {
+        "at": "2026-10-23T13:14:24.857Z",
+        "loadavg": "37.04 14.07 6.43 45/4085 258259"
+      },
+      {
+        "at": "2026-10-23T13:14:26.859Z",
+        "loadavg": "37.04 14.07 6.43 45/4109 258367"
+      },
+      {
+        "at": "2026-10-23T13:14:28.862Z",
+        "loadavg": "37.28 14.50 6.62 46/4091 258439"
+      },
+      {
+        "at": "2026-10-23T13:14:30.863Z",
+        "loadavg": "37.28 14.50 6.62 51/4104 258527"
+      },
+      {
+        "at": "2026-10-23T13:14:32.865Z",
+        "loadavg": "37.28 14.50 6.62 50/4091 258658"
+      },
+      {
+        "at": "2026-10-23T13:14:34.867Z",
+        "loadavg": "38.05 15.04 6.83 53/4105 258776"
+      },
+      {
+        "at": "2026-10-23T13:14:36.869Z",
+        "loadavg": "38.05 15.04 6.83 47/4053 258862"
+      },
+      {
+        "at": "2026-10-23T13:14:38.871Z",
+        "loadavg": "38.93 15.60 7.06 47/4090 258978"
+      },
+      {
+        "at": "2026-10-23T13:14:40.873Z",
+        "loadavg": "38.93 15.60 7.06 44/4077 259089"
+      },
+      {
+        "at": "2026-10-23T13:14:42.875Z",
+        "loadavg": "38.93 15.60 7.06 45/4092 259217"
+      },
+      {
+        "at": "2026-10-23T13:14:44.879Z",
+        "loadavg": "39.90 16.19 7.30 45/4083 259237"
+      },
+      {
+        "at": "2026-10-23T13:14:46.881Z",
+        "loadavg": "39.90 16.19 7.30 52/4047 259289"
+      },
+      {
+        "at": "2026-10-23T13:14:48.883Z",
+        "loadavg": "40.55 16.72 7.51 49/4064 259456"
+      },
+      {
+        "at": "2026-10-23T13:14:50.885Z",
+        "loadavg": "40.55 16.72 7.51 49/4043 259559"
+      },
+      {
+        "at": "2026-10-23T13:14:52.887Z",
+        "loadavg": "40.55 16.72 7.51 39/4049 259683"
+      },
+      {
+        "at": "2026-10-23T13:14:54.889Z",
+        "loadavg": "40.90 17.19 7.72 40/4042 259757"
+      },
+      {
+        "at": "2026-10-23T13:14:56.891Z",
+        "loadavg": "40.90 17.19 7.72 49/4054 259830"
+      },
+      {
+        "at": "2026-10-23T13:14:58.893Z",
+        "loadavg": "41.23 17.65 7.92 40/4058 259945"
+      },
+      {
+        "at": "2026-10-23T13:15:00.895Z",
+        "loadavg": "41.23 17.65 7.92 39/4039 260075"
+      },
+      {
+        "at": "2026-10-23T13:15:02.897Z",
+        "loadavg": "41.23 17.65 7.92 46/4030 260254"
+      },
+      {
+        "at": "2026-10-23T13:15:04.900Z",
+        "loadavg": "40.81 17.95 8.07 43/4066 260337"
+      },
+      {
+        "at": "2026-10-23T13:15:06.901Z",
+        "loadavg": "40.81 17.95 8.07 51/4033 260402"
+      },
+      {
+        "at": "2026-10-23T13:15:08.903Z",
+        "loadavg": "41.15 18.40 8.27 37/4015 260621"
+      },
+      {
+        "at": "2026-10-23T13:15:10.905Z",
+        "loadavg": "41.15 18.40 8.27 44/4036 260782"
+      },
+      {
+        "at": "2026-10-23T13:15:12.909Z",
+        "loadavg": "41.15 18.40 8.27 45/4034 260905"
+      },
+      {
+        "at": "2026-10-23T13:15:14.911Z",
+        "loadavg": "41.86 18.93 8.49 40/4005 261024"
+      },
+      {
+        "at": "2026-10-23T13:15:16.913Z",
+        "loadavg": "41.86 18.93 8.49 45/4027 261181"
+      },
+      {
+        "at": "2026-10-23T13:15:18.915Z",
+        "loadavg": "41.79 19.29 8.67 40/4064 261330"
+      },
+      {
+        "at": "2026-10-23T13:15:20.917Z",
+        "loadavg": "41.79 19.29 8.67 47/4046 261394"
+      },
+      {
+        "at": "2026-10-23T13:15:22.919Z",
+        "loadavg": "41.79 19.29 8.67 48/4044 261438"
+      },
+      {
+        "at": "2026-10-23T13:15:24.921Z",
+        "loadavg": "42.13 19.74 8.87 44/4030 261593"
+      },
+      {
+        "at": "2026-10-23T13:15:26.923Z",
+        "loadavg": "42.13 19.74 8.87 40/4053 261677"
+      },
+      {
+        "at": "2026-10-23T13:15:28.925Z",
+        "loadavg": "42.52 20.19 9.07 50/4070 261764"
+      },
+      {
+        "at": "2026-10-23T13:15:30.927Z",
+        "loadavg": "42.52 20.19 9.07 47/4027 261852"
+      },
+      {
+        "at": "2026-10-23T13:15:32.929Z",
+        "loadavg": "42.52 20.19 9.07 50/4041 261957"
+      },
+      {
+        "at": "2026-10-23T13:15:34.931Z",
+        "loadavg": "42.39 20.54 9.24 44/3998 262159"
+      },
+      {
+        "at": "2026-10-23T13:15:36.933Z",
+        "loadavg": "42.39 20.54 9.24 35/4026 262310"
+      },
+      {
+        "at": "2026-10-23T13:15:38.935Z",
+        "loadavg": "42.52 20.93 9.43 56/4034 262469"
+      },
+      {
+        "at": "2026-10-23T13:15:40.937Z",
+        "loadavg": "42.52 20.93 9.43 43/4020 262677"
+      },
+      {
+        "at": "2026-10-23T13:15:42.939Z",
+        "loadavg": "42.52 20.93 9.43 41/4028 262790"
+      },
+      {
+        "at": "2026-10-23T13:15:44.941Z",
+        "loadavg": "42.00 21.18 9.57 41/4022 262923"
+      },
+      {
+        "at": "2026-10-23T13:15:46.943Z",
+        "loadavg": "42.00 21.18 9.57 45/4054 263028"
+      },
+      {
+        "at": "2026-10-23T13:15:48.945Z",
+        "loadavg": "42.32 21.59 9.77 40/4056 263150"
+      },
+      {
+        "at": "2026-10-23T13:15:50.947Z",
+        "loadavg": "42.32 21.59 9.77 46/3995 263193"
+      },
+      {
+        "at": "2026-10-23T13:15:52.949Z",
+        "loadavg": "42.32 21.59 9.77 39/3908 263317"
+      },
+      {
+        "at": "2026-10-23T13:15:54.951Z",
+        "loadavg": "42.62 21.99 9.96 40/3979 263469"
+      },
+      {
+        "at": "2026-10-23T13:15:56.953Z",
+        "loadavg": "42.62 21.99 9.96 37/3983 263535"
+      },
+      {
+        "at": "2026-10-23T13:15:58.955Z",
+        "loadavg": "42.65 22.34 10.14 55/4004 263632"
+      },
+      {
+        "at": "2026-10-23T13:16:00.957Z",
+        "loadavg": "42.65 22.34 10.14 39/3913 263765"
+      },
+      {
+        "at": "2026-10-23T13:16:02.959Z",
+        "loadavg": "42.65 22.34 10.14 40/3960 263888"
+      },
+      {
+        "at": "2026-10-23T13:16:04.961Z",
+        "loadavg": "42.43 22.64 10.30 36/3971 264066"
+      },
+      {
+        "at": "2026-10-23T13:16:06.963Z",
+        "loadavg": "42.43 22.64 10.30 50/3961 264152"
+      },
+      {
+        "at": "2026-10-23T13:16:08.965Z",
+        "loadavg": "42.24 22.93 10.46 36/3910 264268"
+      },
+      {
+        "at": "2026-10-23T13:16:10.967Z",
+        "loadavg": "42.24 22.93 10.46 45/3965 264472"
+      },
+      {
+        "at": "2026-10-23T13:16:12.969Z",
+        "loadavg": "42.24 22.93 10.46 38/3951 264574"
+      },
+      {
+        "at": "2026-10-23T13:16:14.971Z",
+        "loadavg": "42.78 23.36 10.67 45/3934 264708"
+      },
+      {
+        "at": "2026-10-23T13:16:16.973Z",
+        "loadavg": "42.78 23.36 10.67 39/3946 264818"
+      },
+      {
+        "at": "2026-10-23T13:16:18.976Z",
+        "loadavg": "42.88 23.70 10.85 41/3952 264882"
+      },
+      {
+        "at": "2026-10-23T13:16:20.979Z",
+        "loadavg": "42.88 23.70 10.85 44/3948 265067"
+      },
+      {
+        "at": "2026-10-23T13:16:22.980Z",
+        "loadavg": "42.88 23.70 10.85 43/3939 265120"
+      },
+      {
+        "at": "2026-10-23T13:16:24.982Z",
+        "loadavg": "43.13 24.07 11.04 47/3953 265249"
+      },
+      {
+        "at": "2026-10-23T13:16:26.984Z",
+        "loadavg": "43.13 24.07 11.04 44/3981 265349"
+      },
+      {
+        "at": "2026-10-23T13:16:28.986Z",
+        "loadavg": "43.52 24.47 11.24 44/3954 265488"
+      },
+      {
+        "at": "2026-10-23T13:16:30.988Z",
+        "loadavg": "43.52 24.47 11.24 41/3989 265594"
+      },
+      {
+        "at": "2026-10-23T13:16:32.991Z",
+        "loadavg": "43.52 24.47 11.24 46/3984 265651"
+      },
+      {
+        "at": "2026-10-23T13:16:34.993Z",
+        "loadavg": "43.88 24.86 11.43 47/3969 265769"
+      },
+      {
+        "at": "2026-10-23T13:16:36.995Z",
+        "loadavg": "43.88 24.86 11.43 43/3921 265883"
+      },
+      {
+        "at": "2026-10-23T13:16:38.997Z",
+        "loadavg": "43.89 25.18 11.61 40/3933 266018"
+      },
+      {
+        "at": "2026-10-23T13:16:40.999Z",
+        "loadavg": "43.89 25.18 11.61 40/3932 266162"
+      },
+      {
+        "at": "2026-10-23T13:16:43.001Z",
+        "loadavg": "43.89 25.18 11.61 40/3932 266277"
+      },
+      {
+        "at": "2026-10-23T13:16:45.003Z",
+        "loadavg": "43.74 25.46 11.77 49/3932 266410"
+      },
+      {
+        "at": "2026-10-23T13:16:47.005Z",
+        "loadavg": "43.74 25.46 11.77 39/3934 266572"
+      },
+      {
+        "at": "2026-10-23T13:16:49.007Z",
+        "loadavg": "43.84 25.78 11.95 39/3936 266663"
+      },
+      {
+        "at": "2026-10-23T13:16:51.009Z",
+        "loadavg": "43.84 25.78 11.95 37/3937 266832"
+      },
+      {
+        "at": "2026-10-23T13:16:53.011Z",
+        "loadavg": "43.84 25.78 11.95 43/3941 266899"
+      },
+      {
+        "at": "2026-10-23T13:16:55.013Z",
+        "loadavg": "44.09 26.13 12.14 40/3931 266971"
+      },
+      {
+        "at": "2026-10-23T13:16:57.015Z",
+        "loadavg": "44.09 26.13 12.14 37/3941 267136"
+      },
+      {
+        "at": "2026-10-23T13:16:59.017Z",
+        "loadavg": "44.40 26.50 12.33 43/3953 267244"
+      },
+      {
+        "at": "2026-10-23T13:17:01.019Z",
+        "loadavg": "44.40 26.50 12.33 45/3948 267386"
+      },
+      {
+        "at": "2026-10-23T13:17:03.021Z",
+        "loadavg": "44.40 26.50 12.33 41/3939 267531"
+      },
+      {
+        "at": "2026-10-23T13:17:05.023Z",
+        "loadavg": "43.89 26.69 12.47 46/3906 267659"
+      },
+      {
+        "at": "2026-10-23T13:17:07.025Z",
+        "loadavg": "43.89 26.69 12.47 35/3926 267843"
+      },
+      {
+        "at": "2026-10-23T13:17:09.027Z",
+        "loadavg": "43.82 26.96 12.63 39/3909 267931"
+      },
+      {
+        "at": "2026-10-23T13:17:11.029Z",
+        "loadavg": "43.82 26.96 12.63 37/3959 268141"
+      },
+      {
+        "at": "2026-10-23T13:17:13.031Z",
+        "loadavg": "43.82 26.96 12.63 47/3971 268266"
+      },
+      {
+        "at": "2026-10-23T13:17:15.033Z",
+        "loadavg": "43.19 27.11 12.76 45/3984 268400"
+      },
+      {
+        "at": "2026-10-23T13:17:17.035Z",
+        "loadavg": "43.19 27.11 12.76 36/3991 268589"
+      },
+      {
+        "at": "2026-10-23T13:17:19.037Z",
+        "loadavg": "42.94 27.33 12.91 37/4012 268774"
+      },
+      {
+        "at": "2026-10-23T13:17:21.039Z",
+        "loadavg": "42.94 27.33 12.91 45/3980 268971"
+      },
+      {
+        "at": "2026-10-23T13:17:23.041Z",
+        "loadavg": "42.94 27.33 12.91 39/3986 269083"
+      },
+      {
+        "at": "2026-10-23T13:17:25.043Z",
+        "loadavg": "42.54 27.50 13.04 41/3967 269254"
+      },
+      {
+        "at": "2026-10-23T13:17:27.045Z",
+        "loadavg": "42.54 27.50 13.04 39/3992 269438"
+      },
+      {
+        "at": "2026-10-23T13:17:29.047Z",
+        "loadavg": "42.58 27.76 13.20 43/4009 269546"
+      },
+      {
+        "at": "2026-10-23T13:17:31.049Z",
+        "loadavg": "42.58 27.76 13.20 46/4003 269700"
+      },
+      {
+        "at": "2026-10-23T13:17:33.053Z",
+        "loadavg": "42.58 27.76 13.20 42/4020 269838"
+      },
+      {
+        "at": "2026-10-23T13:17:35.055Z",
+        "loadavg": "43.89 28.28 13.45 46/3968 269949"
+      },
+      {
+        "at": "2026-10-23T13:17:37.057Z",
+        "loadavg": "43.89 28.28 13.45 36/4003 270089"
+      },
+      {
+        "at": "2026-10-23T13:17:39.059Z",
+        "loadavg": "43.90 28.54 13.61 47/3997 270145"
+      },
+      {
+        "at": "2026-10-23T13:17:41.061Z",
+        "loadavg": "43.90 28.54 13.61 37/3983 270231"
+      },
+      {
+        "at": "2026-10-23T13:17:43.063Z",
+        "loadavg": "43.90 28.54 13.61 39/4002 270328"
+      },
+      {
+        "at": "2026-10-23T13:17:45.065Z",
+        "loadavg": "43.59 28.73 13.76 43/3982 270369"
+      },
+      {
+        "at": "2026-10-23T13:17:47.068Z",
+        "loadavg": "43.59 28.73 13.76 48/3976 270546"
+      },
+      {
+        "at": "2026-10-23T13:17:49.070Z",
+        "loadavg": "43.62 28.98 13.92 42/3990 270653"
+      },
+      {
+        "at": "2026-10-23T13:17:51.072Z",
+        "loadavg": "43.62 28.98 13.92 39/3989 270746"
+      },
+      {
+        "at": "2026-10-23T13:17:53.074Z",
+        "loadavg": "43.62 28.98 13.92 46/3992 270870"
+      },
+      {
+        "at": "2026-10-23T13:17:55.076Z",
+        "loadavg": "43.73 29.25 14.09 51/3988 270943"
+      },
+      {
+        "at": "2026-10-23T13:17:57.078Z",
+        "loadavg": "43.73 29.25 14.09 35/3993 271101"
+      },
+      {
+        "at": "2026-10-23T13:17:59.080Z",
+        "loadavg": "43.84 29.51 14.25 47/4017 271210"
+      },
+      {
+        "at": "2026-10-23T13:18:01.082Z",
+        "loadavg": "43.84 29.51 14.25 41/3973 271307"
+      },
+      {
+        "at": "2026-10-23T13:18:03.084Z",
+        "loadavg": "43.84 29.51 14.25 44/4014 271474"
+      },
+      {
+        "at": "2026-10-23T13:18:05.086Z",
+        "loadavg": "44.25 29.84 14.44 45/4000 271560"
+      },
+      {
+        "at": "2026-10-23T13:18:07.088Z",
+        "loadavg": "44.25 29.84 14.44 44/3987 271748"
+      },
+      {
+        "at": "2026-10-23T13:18:09.090Z",
+        "loadavg": "44.87 30.20 14.64 35/3998 271820"
+      },
+      {
+        "at": "2026-10-23T13:18:11.092Z",
+        "loadavg": "44.87 30.20 14.64 42/3985 271931"
+      },
+      {
+        "at": "2026-10-23T13:18:13.094Z",
+        "loadavg": "44.87 30.20 14.64 41/3985 272152"
+      },
+      {
+        "at": "2026-10-23T13:18:15.096Z",
+        "loadavg": "44.72 30.42 14.79 68/4018 272279"
+      },
+      {
+        "at": "2026-10-23T13:18:17.098Z",
+        "loadavg": "44.72 30.42 14.79 38/4060 272362"
+      },
+      {
+        "at": "2026-10-23T13:18:19.102Z",
+        "loadavg": "44.82 30.68 14.96 42/4041 272377"
+      },
+      {
+        "at": "2026-10-23T13:18:21.104Z",
+        "loadavg": "44.82 30.68 14.96 46/4036 272431"
+      },
+      {
+        "at": "2026-10-23T13:18:23.087Z",
+        "loadavg": "44.82 30.68 14.96 50/4019 272521"
+      }
+    ]
+  },
+  "environmentBefore": {
+    "at": "2026-10-23T13:13:33.116Z",
+    "loadavg": "22.85 7.54 4.00 48/4066 255150",
+    "allowedCpuAffinity": [
+      "Cpus_allowed:\tfff",
+      "Cpus_allowed_list:\t0-11"
+    ],
+    "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-series53d-actual.scope",
+    "memoryMax": "8589934592",
+    "memorySwapMax": "0",
+    "cpuStat": "usage_usec 180659\nuser_usec 127882\nsystem_usec 52777\ncore_sched.force_idle_usec 0",
+    "cpuMax": {
+      "unavailable": "Error: ENOENT: no such file or directory, open '/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-series53d-actual.scope/cpu.max'"
+    },
+    "procCpuInfo": [
+      "processor\t: 0",
+      "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+      "cpu MHz\t\t: 2933.271",
+      "processor\t: 1",
+      "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+      "cpu MHz\t\t: 4516.120",
+      "processor\t: 2",
+      "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+      "cpu MHz\t\t: 4515.187",
+      "processor\t: 3",
+      "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+      "cpu MHz\t\t: 2933.774",
+      "processor\t: 4",
+      "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+      "cpu MHz\t\t: 4513.569",
+      "processor\t: 5",
+      "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+      "cpu MHz\t\t: 4516.475",
+      "processor\t: 6",
+      "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+      "cpu MHz\t\t: 4516.182",
+      "processor\t: 7",
+      "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+      "cpu MHz\t\t: 4517.841",
+      "processor\t: 8",
+      "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+      "cpu MHz\t\t: 4516.692",
+      "processor\t: 9",
+      "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+      "cpu MHz\t\t: 2933.277",
+      "processor\t: 10",
+      "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+      "cpu MHz\t\t: 2926.051",
+      "processor\t: 11",
+      "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+      "cpu MHz\t\t: 2933.018"
+    ],
+    "frequencyScope": "Reported snapshots only; not hardware counters or controlled/sustained frequency. No affinity/governor changes.",
+    "loadScope": "Aggregate host load; compiler JIT/GC can contribute. External-work causation is not established."
+  },
+  "environmentAfter": {
+    "at": "2026-10-23T13:19:05.421Z",
+    "loadavg": "28.39 28.67 15.05 3/3817 274135"
+  },
+  "loadSummary": {
+    "oneMinuteMin": 22.85,
+    "oneMinuteMax": 44.87,
+    "first": {
+      "at": "2026-10-23T13:13:32.800Z",
+      "loadavg": "22.85 7.54 4.00 42/4075 255127"
+    },
+    "last": {
+      "at": "2026-10-23T13:18:23.087Z",
+      "loadavg": "44.82 30.68 14.96 50/4019 272521"
+    }
+  },
+  "completedPhaseRecords": [
+    {
+      "phase": "compiler-startup",
+      "name": "compiler-startup",
+      "wallMs": 754.1707529999999,
+      "cpuMs": 723.489,
+      "memoryEnd": {
+        "rss": 466599936,
+        "heapTotal": 58732544,
+        "heapUsed": 47596888,
+        "external": 27063457,
+        "arrayBuffers": 16736374
+      }
+    }
+  ],
+  "stderr": "(node:255135) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+  "completion": {
+    "reportExists": false,
+    "outputExists": false,
+    "outputImportAndSmokeProved": false,
+    "expectedOutputBytes": 20285397,
+    "expectedOutputSha256": "7a3ca3d98b60044e7c00629a5e4b5c3b4d25669eb185979390e46992a27942f1"
+  },
+  "fileHashes": {
+    "run-series53d.mjs": "2ee828ea105d52aa093457758750931c4be0ac5c3854aad8f5f68b5ef246ebca",
+    "launch-series53d.mjs": "99a18e90d5e90ab4252ab425310e44854001c30a77ed23a3353c5cc8cac59854",
+    "collect-series53d.mjs": "2b4f51703b710fd482ba79149e4d978b116b5654c54c69ca57342017001bd65f",
+    "guard.mjs": "c9c705ade5ecd026947f7aab73a8f77fdb4b8e3144644fffb2d4e2ef8d3e5af4",
+    "benchmark-linux53.ts": "4da4aa04f5eed05051500ac88aa33a003f2d839a583874a72bc7f1a356dd86ef",
+    "compiler_benchmark53.source.ts": "dc0a8884318813ab6c9d19fd96eb7df34882ec7634d141bf801451e122259c2e",
+    "runtime53.mjs": "bc7858ebffa2ae8ba36cf985f7ff97f845c85c66f7f999f4f5dbdb9e4182d71d",
+    "frozen-runtime-v41.mjs": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+    "stage-one53d.js": "14dd1f829459c7bca9f519d6813612e9a7d847dca8d1e942c24a641b25610348"
+  },
+  "reproductionSources": {
+    "run-series53d.mjs": "import fs from 'node:fs';import {createHash} from 'node:crypto';import {resolve} from 'node:path';import {pathToFileURL} from 'node:url';import {Worker} from 'node:worker_threads';\nconst hash=p=>createHash('sha256').update(fs.readFileSync(p)).digest('hex'),save=(p,x)=>fs.writeFileSync(p,JSON.stringify(x,null,2)+'\\n',{flag:'wx'});\nconst label='series53d-actual',expectedImageHash='14dd1f829459c7bca9f519d6813612e9a7d847dca8d1e942c24a641b25610348';if(process.version!=='v23.11.0')throw Error('Wrong measured runtime');\nconst version='53D',runner=resolve('benchmark-linux53.ts'),component=resolve('stage-one53d.js'),driver=resolve('runtime53.mjs'),frozen=resolve('frozen-runtime-v41.mjs'),referenceManifest=resolve('checkpoints/compiler-benchmark-release237-v41.corpus.json');\nconst oldHash='2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd',newHash='bc7858ebffa2ae8ba36cf985f7ff97f845c85c66f7f999f4f5dbdb9e4182d71d';\nif(hash(runner)!=='4da4aa04f5eed05051500ac88aa33a003f2d839a583874a72bc7f1a356dd86ef'||hash(component)!==expectedImageHash||hash(driver)!==newHash||hash(frozen)!==oldHash||hash(referenceManifest)!=='29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258')throw Error('Pinned runner/image/runtime/frozen-manifest drift');delete process.env.BEND_CHECKER_COUNTS_FILE;\nconst group=fs.readFileSync('/proc/self/cgroup','utf8').trim().split('\\n').find(x=>x.startsWith('0::')).slice(3),cg='/sys/fs/cgroup'+group,safe=p=>{try{return fs.readFileSync(p,'utf8').trim();}catch(e){return {unavailable:String(e)};}};\nconst environment=()=>({at:new Date().toISOString(),loadavg:safe('/proc/loadavg'),allowedCpuAffinity:fs.readFileSync('/proc/self/status','utf8').split('\\n').filter(x=>/^Cpus_allowed(?:_list)?:/.test(x)),cgroup:group,memoryMax:safe(cg+'/memory.max'),memorySwapMax:safe(cg+'/memory.swap.max'),cpuStat:safe(cg+'/cpu.stat'),cpuMax:safe(cg+'/cpu.max'),procCpuInfo:fs.readFileSync('/proc/cpuinfo','utf8').split('\\n').filter(x=>/^(processor|model name|cpu MHz)\\s*:/.test(x)),frequencyScope:'Reported snapshots only; not hardware counters or controlled/sustained frequency. No affinity/governor changes.',loadScope:'Aggregate host load; compiler JIT/GC can contribute. External-work causation is not established.'});\nconst o={mode:'component',corpus:resolve('corpus.relocated.json'),report:resolve(label+'.json'),driver,outputSmokeDriver:'frozen-v41',stopAfter:'compile',component,exports:resolve('official.json.exports.json')};if(fs.existsSync(o.report))throw Error('Fresh report required');\nconst corpus=JSON.parse(fs.readFileSync(o.corpus)),reference=JSON.parse(fs.readFileSync(referenceManifest)),names=JSON.parse(fs.readFileSync(o.exports)).exports,identity=c=>JSON.stringify({officialCommit:c.officialCommit,root:c.root,files:c.files.map(({path,sha256})=>({path,sha256})).sort((a,b)=>a.path.localeCompare(b.path))});if(corpus.files.length!==50||names.length!==7720||identity(corpus)!==identity(reference))throw Error('Frozen full-workload identity mismatch');\nconst paths=[runner,resolve('compiler_benchmark53.source.ts'),resolve('run-series53d.mjs'),o.corpus,referenceManifest,o.driver,frozen,resolve('runtime53.mjs'),o.component,o.exports,resolve(corpus.directory,'bend2/bend.ts'),resolve(corpus.directory,'bend2/comp.ts')],pins=Object.fromEntries(paths.map(p=>[p,hash(p)]));if(hash(resolve(corpus.directory,'bend2/bend.ts'))!=='6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e'||hash(resolve(corpus.directory,'bend2/comp.ts'))!=='56d5727049bc3ef528ef84d3b4712a41a0a8ce0a06437b29d881e71107638c70')throw Error('Official frozen identity drift');\nconst request=o.report+'.request.json';save(request,{options:o,pins});save(label+'.package.json',{compilerVersion:version,bootstrapAcceptance:true,parentReportedGateStatus:'53D full JS root byte fixedpoint and273/273 seed/stage1/stage2 fixtures; broader selfhostGreen false',genuineImage:component,genuineImageSha256:hash(component),executionDriver:driver,executionDriverSha256:hash(driver),executionABI:'strict boxed-value-bound-v53 with native coarse64',outputSmokeDriver:frozen,outputSmokeDriverSha256:hash(frozen),outputSmokeSelection:'frozen-v41',differentArchitecturalPackages:true,dualDecoder:false,normalBenchmark:true});save(label+'.environment-before.json',environment());\nconst worker=new Worker(pathToFileURL(runner),{workerData:{requestPath:request,requestSha256:hash(request)},resourceLimits:{stackSizeMb:256,maxOldGenerationSizeMb:6144,maxYoungGenerationSizeMb:128}});try{await new Promise((yes,no)=>{worker.once('error',no);worker.once('exit',code=>code===0?yes():no(Error('Worker exit '+code)));});}finally{save(label+'.environment-after.json',environment());}\nconst r=JSON.parse(fs.readFileSync(o.report));if(r.status!=='PASS'||r.inputFiles!==50||r.moduleCount!==15||r.checkedModules!==15||r.exportCount!==7720||!r.outputSmokePassed||r.outputSmokeRuntime.selection!=='frozen-v41'||r.outputSmokeRuntime.sha256!==oldHash)throw Error('Incomplete full workload or wrong output smoke ABI');\nconst output=o.report+'.output.mjs',bytes=fs.readFileSync(output),referenceOutput='paired49-actual49.json.output.mjs',equal=bytes.equals(fs.readFileSync(referenceOutput));save(label+'.output-comparison.json',{status:equal?'PASS':'FAIL',reference:referenceOutput,exactByteMatch:equal,bytes:bytes.length,sha256:hash(output),exports:r.exportCount,actualOutputImportAndSemanticSmoke:true,outputSmokeRuntimeSha256:r.outputSmokeRuntime.sha256});if(!equal)throw Error('Full output differs from unchanged frozen reference');\nconsole.log(JSON.stringify({status:'PASS',label,version,executionDriverSha256:hash(driver),outputSmokeDriverSha256:hash(frozen),compileMs:r.compileMs,totalWithOutputSmokeMs:r.totalWithOutputSmokeMs,phases:r.phases,fullCoverage:true,normalBenchmark:true}));\n",
+    "launch-series53d.mjs": "import fs from 'node:fs';import{spawn,spawnSync}from'node:child_process';\nconst label='series53d-actual',unit='bend-native46-elcWbhvH-'+label,args=['--user','--scope','--quiet','--unit='+unit,'-p','MemoryMax=8589934592','-p','MemorySwapMax=0','-p','RuntimeMaxSec=300s','/usr/bin/node','guard.mjs',label,'290000','./node-v23.11.0-linux-x64/bin/node','--experimental-strip-types','--max-old-space-size=6144','--max-semi-space-size=128','--stack-size=262144','run-series53d.mjs'];\nconst start=performance.now(),loads=[],sample=()=>{if(loads.length<160)loads.push({at:new Date().toISOString(),loadavg:fs.readFileSync('/proc/loadavg','utf8').trim()});};sample();const p=spawn('systemd-run',args,{stdio:['ignore','pipe','pipe']});let stdout='',stderr='',live; p.stdout.on('data',b=>stdout+=b);p.stderr.on('data',b=>stderr+=b);const tick=setInterval(sample,2000);const capture=setTimeout(()=>{const r=spawnSync('systemctl',['--user','show',unit+'.scope','-p','RuntimeMaxUSec','-p','MemoryMax','-p','MemorySwapMax','-p','ActiveState','-p','ControlGroup'],{encoding:'utf8'});live={status:r.status,stdout:r.stdout,stderr:r.stderr};},1500);p.on('close',(status,signal)=>{clearInterval(tick);clearTimeout(capture);sample();const result={command:['systemd-run',...args],supervisorVersion:process.version,elapsedMs:performance.now()-start,status,signal,stdout,stderr,liveSystemctlShow:live,loadSamples:loads};fs.writeFileSync(label+'.systemd.json',JSON.stringify(result,null,2)+'\\n',{flag:'wx'});console.log(JSON.stringify(result));process.exitCode=status===0?0:1;});\n",
+    "collect-series53d.mjs": "import fs from'node:fs';import{createHash}from'node:crypto';import{spawnSync}from'node:child_process';const label='series53d-actual',read=p=>JSON.parse(fs.readFileSync(p)),hash=p=>createHash('sha256').update(fs.readFileSync(p)).digest('hex');const s=read(label+'.systemd.json'),g=read(label+'.guard.json'),loads=s.loadSamples.map(x=>Number(x.loadavg.split(' ')[0]));const files=['run-series53d.mjs','launch-series53d.mjs','collect-series53d.mjs','guard.mjs','benchmark-linux53.ts','compiler_benchmark53.source.ts','runtime53.mjs','frozen-runtime-v41.mjs','stage-one53d.js'];const receipt={status:'INCOMPLETE_INNER290S_DEADLINE',compilerVersion:'53D',host:'nhs',workspace:process.cwd(),normalBenchmark:true,image:{file:'stage-one53d.js',bytes:fs.statSync('stage-one53d.js').size,sha256:hash('stage-one53d.js')},transfer:{command:'scp checkpoints/selfhost-stageone-v53d.js nhs:'+process.cwd()+'/stage-one53d.js',localAndRemoteSha256:'14dd1f829459c7bca9f519d6813612e9a7d847dca8d1e942c24a641b25610348'},package:read(label+'.package.json'),request:read(label+'.json.request.json'),guard:g,systemd:s,environmentBefore:read(label+'.environment-before.json'),environmentAfter:{at:new Date().toISOString(),loadavg:fs.readFileSync('/proc/loadavg','utf8').trim()},loadSummary:{oneMinuteMin:Math.min(...loads),oneMinuteMax:Math.max(...loads),first:s.loadSamples[0],last:s.loadSamples.at(-1)},completedPhaseRecords:fs.readFileSync(label+'.stdout.log','utf8').trim().split('\\n').filter(Boolean).map(JSON.parse),stderr:fs.readFileSync(label+'.stderr.log','utf8'),completion:{reportExists:fs.existsSync(label+'.json'),outputExists:fs.existsSync(label+'.json.output.mjs'),outputImportAndSmokeProved:false,expectedOutputBytes:20285397,expectedOutputSha256:'7a3ca3d98b60044e7c00629a5e4b5c3b4d25669eb185979390e46992a27942f1'},fileHashes:Object.fromEntries(files.map(p=>[p,hash(p)])),reproductionSources:Object.fromEntries(['run-series53d.mjs','launch-series53d.mjs','collect-series53d.mjs','guard.mjs'].map(p=>[p,fs.readFileSync(p,'utf8')])),workspaceBytes:Number(spawnSync('du',['-sb',process.cwd()],{encoding:'utf8'}).stdout.split(/\\s/)[0]),analysis:'One fresh full-workload attempt only. Guard killed process at290s; no complete compile/output/import/smoke proof. Only completed startup phase was logged, so unfinished phase timings are unavailable. Aggregate host load is noisy and includes compiler contribution; no speedup/regression claim is justified. No repeat, comparison, CPU profile or heap profile scheduled.',cleanup:{deletedFiles:[],retainedImage:true}};if(receipt.workspaceBytes>=1073741824)throw Error('Workspace cap exceeded');fs.writeFileSync(label+'.compact.json',JSON.stringify(receipt,null,2)+'\\n',{flag:'wx'});console.log(JSON.stringify({status:receipt.status,loadSummary:receipt.loadSummary,memoryPeak:g.memoryPeak,workspaceBytes:receipt.workspaceBytes,liveLimits:s.liveSystemctlShow,reportExists:receipt.completion.reportExists}));\n",
+    "guard.mjs": "import fs from 'node:fs';\nimport path from 'node:path';\nimport {spawn} from 'node:child_process';\nconst [label,deadlineText,command,...args]=process.argv.slice(2);\nconst group=fs.readFileSync('/proc/self/cgroup','utf8').trim().split('\\n').find(x=>x.startsWith('0::')).slice(3);\nconst cg='/sys/fs/cgroup'+group;\nconst read=name=>fs.readFileSync(cg+'/'+name,'utf8').trim();\nconst start=performance.now();\nconst record={label,command:[command,...args],group,memoryMax:read('memory.max'),memorySwapMax:read('memory.swap.max'),startedAt:new Date().toISOString(),samples:0};\nif(record.memoryMax!=='8589934592'||record.memorySwapMax!=='0')throw Error('Real cgroup limits mismatch');\nconst save=()=>{Object.assign(record,{elapsedMs:performance.now()-start,memoryPeak:read('memory.peak'),memoryCurrent:read('memory.current'),memoryEvents:read('memory.events'),cpuStat:read('cpu.stat')});record.samples++;fs.writeFileSync(label+'.guard.json',JSON.stringify(record,null,2)+'\\n');};\nsave();\nconst out=fs.openSync(label+'.stdout.log','wx'),err=fs.openSync(label+'.stderr.log','wx');\nconst child=spawn(command,args,{stdio:['ignore',out,err],detached:true});\nrecord.pid=child.pid;\nconst tick=setInterval(save,250);\nconst timer=setTimeout(()=>{record.internalDeadline=true;try{process.kill(-child.pid,'SIGKILL');}catch{}},Number(deadlineText));\nchild.on('error',error=>{record.spawnError=String(error);});\nchild.on('close',(code,signal)=>{clearInterval(tick);clearTimeout(timer);record.exitCode=code;record.signal=signal;save();fs.closeSync(out);fs.closeSync(err);process.exitCode=code===0?0:1;});\n"
+  },
+  "workspaceBytes": 869013698,
+  "analysis": "One fresh full-workload attempt only. Guard killed process at290s; no complete compile/output/import/smoke proof. Only completed startup phase was logged, so unfinished phase timings are unavailable. Aggregate host load is noisy and includes compiler contribution; no speedup/regression claim is justified. No repeat, comparison, CPU profile or heap profile scheduled.",
+  "cleanup": {
+    "deletedFiles": [],
+    "retainedImage": true
+  }
+}

@@ -42,66 +42,84 @@ def native_parse(input: FeedbackFuel & (String & String)) -> NativeParsed:
   (fuel, (file, source)) = input
   native_parse_result(parse_with_fuel(fuel, file, source))
 
-def native_expand_result(result: Template.ExpandResult) -> NativeResult<List<&2, Loader.LoadedModule>>:
+def native_expand_value(result: Template.ExpandResult) -> NativeResult<List<&2, Loader.LoadedModule>>:
   match result:
     case Template.ExpandSuccess{modules}: NativeAccepted{modules}
     case Template.ExpandFailure{message, _}: NativeRejected{message}
 
-def native_check_result(result: Checker.CheckResult) -> NativeResult<List<&2, Loader.LoadedModule>>:
+def native_expand_result(box: Template.TemplateValue<Template.ExpandResult>) -> NativeResult<List<&2, Loader.LoadedModule>>:
+  match box:
+    case Template.TemplateValue{value}: native_expand_value(value)
+
+def native_check_value(result: Checker.CheckResult) -> NativeResult<List<&2, Loader.LoadedModule>>:
   match result:
     case Checker.CheckSuccess{modules}: NativeAccepted{modules}
     case Checker.CheckFailure{Checker.Diagnostic{_, _, message, _, _}}: NativeRejected{message}
+
+def native_check_result(box: Checker.CheckerValue<Checker.CheckResult>) -> NativeResult<List<&2, Loader.LoadedModule>>:
+  match box:
+    case Checker.CheckerValue{value}: native_check_value(value)
 
 def native_emit(input: List<&2, Loader.LoadedModule> & List<&2, String>) -> Emitter.EmitterProgress<Emitter.EmitResult>:
   (modules, exports) = input
   emitter_step(Emitter.EmitterRequestGroup_8{Emitter.EmitterRequest_emit_library{modules, exports}})
 
-def native_emit_result(result: Emitter.EmitResult) -> NativeResult<String>:
+def native_emit_value(result: Emitter.EmitResult) -> NativeResult<String>:
   match result:
     case Emitter.EmitSuccess{source}: NativeAccepted{source}
     case Emitter.EmitFailure{message, _}: NativeRejected{message}
 
+def native_emit_result(box: Emitter.EmitterValue<Emitter.EmitResult>) -> NativeResult<String>:
+  match box:
+    case Emitter.EmitterValue{value}: native_emit_value(value)
+
 # A nonrecursive reflection step hides the native backend's flattened request
 # layouts from C without erasing the relationship between next and resume.
-# The existential request remains the SAME original typed continuation index.
+# The existential result type preserves the SAME boxed next/resume domain.
 type NativeTemplateView<-A: Type> is Type:
-  NativeTemplateFinished{value: A}
-  NativeTemplateMore{-request: Template.TemplateRequest, next: Unit -> Template.TemplateProgress<Template.template_result(request)>, resume: Template.template_resume_type(Template.TemplateProgress<A>, request)}
+  NativeTemplateFinished{box: Template.TemplateValue<A>}
+  NativeTemplateMore{-B: Type, next: Unit -> Template.TemplateProgress<B>, resume: (@box: Template.TemplateValue<B> -> Template.TemplateProgress<A>)}
 
 type NativeCheckerView<-A: Type> is Type:
-  NativeCheckerFinished{value: A}
-  NativeCheckerMore{-request: Checker.CheckerRequest, next: Unit -> Checker.CheckerProgress<Checker.checker_result(request)>, resume: Checker.checker_resume_type(Checker.CheckerProgress<A>, request)}
+  NativeCheckerFinished{box: Checker.CheckerValue<A>}
+  NativeCheckerMore{-B: Type, next: Unit -> Checker.CheckerProgress<B>, resume: (@box: Checker.CheckerValue<B> -> Checker.CheckerProgress<A>)}
 
 type NativeEmitterView<-A: Type> is Type:
-  NativeEmitterFinished{value: A}
-  NativeEmitterMore{-request: Emitter.EmitterRequest, next: Unit -> Emitter.EmitterProgress<Emitter.emitter_result(request)>, resume: Emitter.emitter_resume_type(Emitter.EmitterProgress<A>, request)}
+  NativeEmitterFinished{box: Emitter.EmitterValue<A>}
+  NativeEmitterMore{-B: Type, next: Unit -> Emitter.EmitterProgress<B>, resume: (@box: Emitter.EmitterValue<B> -> Emitter.EmitterProgress<A>)}
 
 def native_template_view(-A: Type, progress: Template.TemplateProgress<A>) -> NativeTemplateView<A>:
   match progress:
-    case Template.TemplateFinished{value}:
-      NativeTemplateFinished{value}
+    case Template.TemplateFinished{box}:
+      NativeTemplateFinished{box}
     case Template.TemplatePending{request, resume}:
-      NativeTemplateMore{request, unit => template_step(request), resume}
+      NativeTemplateMore{Template.template_result(request), unit => template_step(request), resume}
     case Template.TemplateDirect{R, request, arguments, invoke, resume}:
-      NativeTemplateMore{request, unit => invoke(arguments), resume}
+      NativeTemplateMore{Template.template_result(request), unit => invoke(arguments), resume}
+    case Template.TemplateBound{B, inner, resume}:
+      NativeTemplateMore{B, unit => inner, resume}
 
 def native_checker_view(-A: Type, progress: Checker.CheckerProgress<A>) -> NativeCheckerView<A>:
   match progress:
-    case Checker.CheckerFinished{value}:
-      NativeCheckerFinished{value}
+    case Checker.CheckerFinished{box}:
+      NativeCheckerFinished{box}
     case Checker.CheckerPending{request, resume}:
-      NativeCheckerMore{request, unit => checker_step(request), resume}
+      NativeCheckerMore{Checker.checker_result(request), unit => checker_step(request), resume}
     case Checker.CheckerDirect{R, request, arguments, invoke, resume}:
-      NativeCheckerMore{request, unit => invoke(arguments), resume}
+      NativeCheckerMore{Checker.checker_result(request), unit => invoke(arguments), resume}
+    case Checker.CheckerBound{B, inner, resume}:
+      NativeCheckerMore{B, unit => inner, resume}
 
 def native_emitter_view(-A: Type, progress: Emitter.EmitterProgress<A>) -> NativeEmitterView<A>:
   match progress:
-    case Emitter.EmitterFinished{value}:
-      NativeEmitterFinished{value}
+    case Emitter.EmitterFinished{box}:
+      NativeEmitterFinished{box}
     case Emitter.EmitterPending{request, resume}:
-      NativeEmitterMore{request, unit => emitter_step(request), resume}
+      NativeEmitterMore{Emitter.emitter_result(request), unit => emitter_step(request), resume}
     case Emitter.EmitterDirect{R, request, arguments, invoke, resume}:
-      NativeEmitterMore{request, unit => invoke(arguments), resume}
+      NativeEmitterMore{Emitter.emitter_result(request), unit => invoke(arguments), resume}
+    case Emitter.EmitterBound{B, inner, resume}:
+      NativeEmitterMore{B, unit => inner, resume}
 
 # C drives only the existing typed request/invoke/resume domains. Each affine
 # progress, argument record and continuation is consumed once. Reused callbacks
@@ -110,13 +128,13 @@ def native_experiment(
   parse: (FeedbackFuel & (String & String)) -> NativeParsed,
   expand: List<&2, Loader.LoadedModule> -> Template.TemplateProgress<Template.ExpandResult>,
   template_view: (@-A: Type -> @progress: Template.TemplateProgress<A> -> NativeTemplateView<A>),
-  expand_result: Template.ExpandResult -> NativeResult<List<&2, Loader.LoadedModule>>,
+  expand_result: Template.TemplateValue<Template.ExpandResult> -> NativeResult<List<&2, Loader.LoadedModule>>,
   check: List<&2, Loader.LoadedModule> -> Checker.CheckerProgress<Checker.CheckResult>,
   checker_view: (@-A: Type -> @progress: Checker.CheckerProgress<A> -> NativeCheckerView<A>),
-  check_result: Checker.CheckResult -> NativeResult<List<&2, Loader.LoadedModule>>,
+  check_result: Checker.CheckerValue<Checker.CheckResult> -> NativeResult<List<&2, Loader.LoadedModule>>,
   emit: (List<&2, Loader.LoadedModule> & List<&2, String>) -> Emitter.EmitterProgress<Emitter.EmitResult>,
   emitter_view: (@-A: Type -> @progress: Emitter.EmitterProgress<A> -> NativeEmitterView<A>),
-  emit_result: Emitter.EmitResult -> NativeResult<String>
+  emit_result: Emitter.EmitterValue<Emitter.EmitResult> -> NativeResult<String>
 ) -> IO(Unit):
   import "./native_compiler_host.c"
 

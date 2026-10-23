@@ -308,3 +308,62 @@ The check gap demands coarse native execution rather than continuing to optimize
 quoting alone. A bounded operational chunk must preserve the independent64WHNF
 semantic fuel and yield without rejecting work; typed affine result/continuation
 transport must be proved, not replaced by host checker logic or unsafe casts.
+
+## Compiler53: full new JS fixedpoint; native C runtime fault
+
+The typed small model establishes358/358 native checked bodies and17 unpatched
+execution cases: reusable Data, owned arrays, Direct, nested Bound, quanta0/1/2/4/
+64 and100000-deep progress. Chunk0 yields rather than rejecting. Whole-result
+boxes preserve affine continuation transport; semantic WHNF64 remains separate.
+This is a scheduling prerequisite, not production root/performance acceptance.
+
+Actual attempts challenge the initial assumption that any typed encoding is
+cheap enough for this backend.53A's per-resume match helpers add4410 bodies:
+12583/12583 validate and both stage candidates have identical19176975 bytes, but
+the unchanged600s full gate stops at218/273 passing fixtures.53B uses a single
+generic getter and original-quantity Let, validates8149 bodies and emits native
+JS; its full gate instead exposes missing canonical lambda block grammar.
+53C avoids the parser with two generic higher-order apply helpers;8152 bodies
+validate but native JS generation fails with Invalid string length. The cause
+of that expansion is unproved; do not blame checking or raise memory limits.
+
+53D restores exact compact53B and fixes the actual parser cause. Both lambda
+grades reuse existing body parsing; the outer local-name lookahead stops at
+non-name syntax instead of looking through a lambda for equals. Public15/15,
+264 assertions pass, including local quantity and RHS-before-shadowing scope.
+All admission consumers retain strict totals for the expanded suite. Checker
+and Arena are exact49 to isolate scheduling from source52's read-path change.
+Two independent read-only reviews find no blocking lowering/consumer ABI bug.
+Their explicit limits remain: model identity callbacks alone prove no general
+ordering property, and the model does not exercise production getter/Let.
+Actual53D closes the production correctness prerequisite:8151/8151 native root
+bodies,8492 events, library16/16 and273/273 fixtures pass. Both emitted images
+16703923 bytes have SHA14dd1f829459c7bca9f519d6813612e9a7d847dca8d1e942c24a641b25610348,
+downloaded cmp0. Stage1 root83569.406ms, stage2 root134579.066ms, including semantic
+AST oracle; full gate578861ms under original8GiB600s, physical2595123256 bytes.
+Those root timings are not the official frozen corpus.
+
+No53 speed claim yet. Native-seed frozen compile97942.507ms/check70629.820ms,
+all50files/15modules/7720exports and exact Mac outputa1033733 pass; this is not
+actual emitted-image timing.53A's one actual Linux full frozen compile229364.384ms
+had high drifting load and a different package. Fresh actual53D Linux run hits
+its290s inner deadline without full compile/output smoke; no OOM, peak1960329216
+bytes, load22.85→44.82. This proves no speedup/regression;49 remains selected.
+
+Full native C build succeeds8166 bodies/199660ms/-O1, physical4841764840 bytes.
+Actual runtime parses the full15modules in3653.813ms, then memory-faults entering
+expansion; total4575ms, not resource cap or a completed native compile. Debug the
+fault rather than extrapolating from fast parsing or extending the deadline.
+Exact sources/failures/recipes are in compiler-native-chunk-v53.json. A/B raw
+cleanup frees1043094329+210724614 bytes. Complete D archive71215868 bytes SHA
+b3c2db6518c0f189f821d54f6d8f6a3f2c3a743a70a744bf92bd991f3918a4e9 is verified before
+removing408 raw ASTs1029236281 bytes. Archives/images remain outside Git.
+
+Bounded LLDB on the unchanged native C binary/input establishes the failure:
+backend record flattening removes the unary TemplateValue inside NativeFinished;
+C passes its raw list payload (CID21) as the whole expected TemplateValue(CID31)
+to the first captured resume. The fault has10 frames and an invalid heap location,
+not stack overflow. Correct the foreign ABI by rebuilding exactly one box with
+io_box for each family's continuation and terminal return. No backend rewrite,
+stack increase or lowered checking is justified.53 must be committed first;
+the proposed54 C boundary fix remains unimplemented/unverified.

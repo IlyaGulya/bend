@@ -75,7 +75,7 @@ static Term native_drive(Env e, Term start, Term argument, Term reflect,
   Term progress = native_apply(e, start, argument);
   for (;;) {
     // reflect is polymorphic in its erased result type. It preserves the
-    // original existential request domain in each next/resume pair.
+    // original existential boxed result domain in each next/resume pair.
     progress = native_apply(e, reflect, progress);
     u32 tag = (u32)term_aux(progress);
     Term fs[2];

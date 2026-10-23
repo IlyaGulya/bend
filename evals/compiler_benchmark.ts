@@ -3,6 +3,8 @@
  * Official mode preserves unmodified js_lib(book,true), including its export set.
  * Component mode requests that identical set through the typed emitter API.
  * Source admission/oracle remains in selfhost_bootstrap_gate, never hidden here.
+ * Frozen v41 output uses its explicitly selected captured runtime input; it is
+ * not a production ABI compatibility path or inferred from emitted values.
  */
 import {createHash} from 'node:crypto';
 import {existsSync,mkdirSync,readFileSync,realpathSync,writeFileSync} from 'node:fs';
@@ -12,7 +14,7 @@ import {Worker,isMainThread,workerData} from 'node:worker_threads';
 import {guardHeavyGate,runHeavyGate} from './heavy_gate.ts';
 
 type Corpus={schemaVersion:number;directory:string;root:string;officialCommit:string;files:{path:string;sha256:string}[]};
-type Options={mode:'official'|'component';corpus:string;report:string;component?:string;driver:string;exports?:string;stopAfter:'check'|'compile'};
+type Options={mode:'official'|'component';corpus:string;report:string;component?:string;driver:string;outputSmokeDriver:'production'|'frozen-v41';exports?:string;stopAfter:'check'|'compile'};
 const script=fileURLToPath(import.meta.url),repository=resolve(dirname(script),'..');
 const sha=(bytes:string|Uint8Array)=>createHash('sha256').update(bytes).digest('hex');
 const hash=(path:string)=>sha(readFileSync(path));
@@ -20,21 +22,25 @@ const json=(value:unknown)=>JSON.stringify(value,null,2)+'\n';
 const save=(path:string,value:unknown,exclusive=false)=>writeFileSync(path,json(value),exclusive?{flag:'wx'}:undefined);
 const guard={memoryMiB:8192,rssMiB:8192,pollMs:10};
 const ABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','checker_step','emit_modules_start','emit_library_start','emitter_step'];
+const productionRuntime=resolve(repository,'evals/checker_core_step_runtime.mjs');
+const frozenV41Runtime=resolve(repository,'checkpoints/compiler-benchmark-v41-step-runtime.mjs');
+const frozenV41Manifest=resolve(repository,'checkpoints/compiler-benchmark-release237-v41.corpus.json');
+const frozenV41RuntimeSha256='2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd';
 const tag=(value:any):string|undefined=>typeof value?.$==='string'?value.$.split('.').at(-1):undefined;
 function options():Options{
  const args=new Map<string,string>();
  for(const arg of process.argv.slice(2)){
   const at=arg.indexOf('='),key=arg.slice(0,at),value=arg.slice(at+1);
-  if(at<0||!['--mode','--corpus','--report','--component','--driver','--exports','--stop-after'].includes(key)||!value||args.has(key))throw Error('Expected unique --mode=official|component --corpus=PATH --report=FRESH.json [--component=PATH --driver=PATH --exports=PATH --stop-after=check|compile]');
+  if(at<0||!['--mode','--corpus','--report','--component','--driver','--output-smoke-driver','--exports','--stop-after'].includes(key)||!value||args.has(key))throw Error('Expected unique --mode=official|component --corpus=PATH --report=FRESH.json [--component=PATH --driver=PATH --output-smoke-driver=production|frozen-v41 --exports=PATH --stop-after=check|compile]');
   args.set(key,value);
  }
- const mode=args.get('--mode'),stopAfter=args.get('--stop-after')??'compile';
- if(!['official','component'].includes(mode??'')||!['check','compile'].includes(stopAfter))throw Error('Invalid benchmark mode/phase');
+ const mode=args.get('--mode'),stopAfter=args.get('--stop-after')??'compile',outputSmokeDriver=args.get('--output-smoke-driver')??'production';
+ if(!['official','component'].includes(mode??'')||!['check','compile'].includes(stopAfter)||!['production','frozen-v41'].includes(outputSmokeDriver))throw Error('Invalid benchmark mode/phase/output runtime');
  for(const key of ['--corpus','--report'])if(!args.has(key))throw Error('Missing '+key);
  if(mode==='component'&&!args.has('--component'))throw Error('Component mode requires --component');
  if(mode==='component'&&stopAfter==='compile'&&!args.has('--exports'))throw Error('Component compilation requires the official --exports receipt');
  if(mode==='official'&&(args.has('--component')||args.has('--exports')))throw Error('Official mode has no selected-export override');
- return {mode:mode as Options['mode'],corpus:resolve(args.get('--corpus')!),report:resolve(args.get('--report')!),driver:resolve(args.get('--driver')??resolve(repository,'evals/checker_core_step_runtime.mjs')),component:args.has('--component')?resolve(args.get('--component')!):undefined,exports:args.has('--exports')?resolve(args.get('--exports')!):undefined,stopAfter:stopAfter as Options['stopAfter']};
+ return {mode:mode as Options['mode'],corpus:resolve(args.get('--corpus')!),report:resolve(args.get('--report')!),driver:resolve(args.get('--driver')??productionRuntime),outputSmokeDriver:outputSmokeDriver as Options['outputSmokeDriver'],component:args.has('--component')?resolve(args.get('--component')!):undefined,exports:args.has('--exports')?resolve(args.get('--exports')!):undefined,stopAfter:stopAfter as Options['stopAfter']};
 }
 function corpusOf(path:string):Corpus{
  const c=JSON.parse(readFileSync(path,'utf8'));
@@ -46,6 +52,13 @@ function corpusOf(path:string):Corpus{
  }
  if(!seen.has(c.root))throw Error('Root is outside frozen input set');
  return c;
+}
+function verifyRuntimeSelection(o:Options,c:Corpus){
+ if(o.outputSmokeDriver!=='frozen-v41'&&realpathSync(o.driver)!==realpathSync(frozenV41Runtime))return;
+ if(hash(frozenV41Runtime)!==frozenV41RuntimeSha256)throw Error('Frozen v41 runtime source drift');
+ const reference=corpusOf(frozenV41Manifest);
+ const identity=(corpus:Corpus)=>JSON.stringify({officialCommit:corpus.officialCommit,root:corpus.root,files:corpus.files.map(({path,sha256})=>({path,sha256})).sort((a,b)=>a.path.localeCompare(b.path))});
+ if(identity(c)!==identity(reference))throw Error('Captured old runtime is only a frozen v41 benchmark input');
 }
 function verifyCorpus(c:Corpus):Map<string,string>{
  const directory=realpathSync(c.directory),expected=new Map<string,string>();
@@ -98,6 +111,7 @@ async function worker(requestPath:string,requestSha256:string){
  if(hash(requestPath)!==requestSha256)throw Error('Benchmark request authentication failed');
  verifyPins(request.pins);
  const corpus=corpusOf(o.corpus),expected=verifyCorpus(corpus),phases:Record<string,unknown>[]=[];
+ verifyRuntimeSelection(o,corpus);
  const report:any={schemaVersion:1,status:'IN_PROGRESS',diagnosticOnly:true,bootstrapAcceptance:false,mode:o.mode,stopAfter:o.stopAfter,oracleIncluded:false,checksExcluded:0,outputPatches:0,corpus:o.corpus,corpusSha256:hash(o.corpus),root:resolve(corpus.directory,corpus.root),inputFiles:expected.size,runtime:{versions:process.versions,platform:process.platform,arch:process.arch},limits:{...guard,oldGenerationMiB:6144,youngGenerationMiB:128,stackMiB:256},implementationPins:request.pins,phases};
  const started=performance.now();
  const phase=async<T>(name:string,action:()=>T|Promise<T>):Promise<T>=>{
@@ -156,7 +170,9 @@ async function worker(requestPath:string,requestSha256:string){
     save(o.report+'.exports.json',{schemaVersion:1,corpusSha256:report.corpusSha256,officialCommit:corpus.officialCommit,artifactSha256:report.artifact.sha256,exports:actual},true);
    }else if(actual.length!==exportNames!.length||actual.some((key,index)=>key!==exportNames![index]))throw Error('Emitted public export set differs from official mode');
    if(!ABI.every(name=>typeof outputApi[name]==='function'))throw Error('Emitted compiler ABI incomplete');
-   const runtime=driver??await import(pathToFileURL(o.driver).href);
+   const runtimePath=o.outputSmokeDriver==='frozen-v41'?frozenV41Runtime:productionRuntime;
+   const runtime=await import(pathToFileURL(runtimePath).href);
+   report.outputSmokeRuntime={selection:o.outputSmokeDriver,path:runtimePath,sha256:hash(runtimePath),...(o.outputSmokeDriver==='frozen-v41'?{provenance:'Exact pre-v53 runtime captured from committed52 f99b22db; frozen v41 benchmark input only',expectedSha256:frozenV41RuntimeSha256,corpusReference:frozenV41Manifest}:{progressABI:'boxed-value-bound-v53'})};
    await phase('output-semantic-smoke',()=>{
     const module=parsed(outputApi,resolve(corpus.directory,'benchmark-smoke.bend'),'type Bit is Data:\n  Zero{}\n  One{}\n\ndef main() -> Bit:\n  One{}\n');
     if(!items(module.declarations).some(top=>tag(top)==='DefTop'&&top.definition.key==='main'))throw Error('Emitted parser lost the actual main declaration');
@@ -180,8 +196,8 @@ if(!isMainThread){
 }else{
  const o=options();mkdirSync(dirname(o.report),{recursive:true});
  if(existsSync(o.report)||existsSync(o.report+'.request.json')||existsSync(o.report+'.output.mjs'))throw Error('Use fresh benchmark report/output paths');
- const corpus=corpusOf(o.corpus);verifyCorpus(corpus);
- const paths=[script,o.corpus,o.driver,...(o.component?[o.component]:[]),...(o.exports?[o.exports]:[]),resolve(corpus.directory,'bend2/bend.ts'),resolve(corpus.directory,'bend2/comp.ts')];
+ const corpus=corpusOf(o.corpus);verifyCorpus(corpus);verifyRuntimeSelection(o,corpus);
+ const paths=[script,o.corpus,o.driver,o.outputSmokeDriver==='frozen-v41'?frozenV41Runtime:productionRuntime,...(o.outputSmokeDriver==='frozen-v41'||realpathSync(o.driver)===realpathSync(frozenV41Runtime)?[frozenV41Manifest,frozenV41Runtime]:[]),...(o.component?[o.component]:[]),...(o.exports?[o.exports]:[]),resolve(corpus.directory,'bend2/bend.ts'),resolve(corpus.directory,'bend2/comp.ts')];
  const pins=Object.fromEntries(paths.map(path=>[realpathSync(path),hash(path)]));
  const expectedOfficialKernel='6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e',expectedOfficialCompiler='56d5727049bc3ef528ef84d3b4712a41a0a8ce0a06437b29d881e71107638c70';
  if(pins[realpathSync(resolve(corpus.directory,'bend2/bend.ts'))]!==expectedOfficialKernel||pins[realpathSync(resolve(corpus.directory,'bend2/comp.ts'))]!==expectedOfficialCompiler)throw Error('Unmodified official compiler identity mismatch');

@@ -4,6 +4,74 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+## Compiler53 — complete JS fixedpoint; native C fault; speed unestablished
+
+Current worktree is candidate53D, not source52: Arena is restored to selected49
+to isolate scheduling. The Checker algorithms remain exact selected49. A boxed
+affine result carrier and explicit Bound progress move up to64 operational
+transitions into checked Bend; this does NOT alter the independent64WHNF fuel.
+Production JS/diagnostic/native-C consumers use the new carrier ABI. Frozen v41
+output smoke explicitly uses its recorded old ABI, not a production dual decoder.
+
+`compiler-native-chunk-v53.json` records exact attempted lowerers/commands/hashes.
+The unpatched native chunk model checks358 loaded bodies and passes17 actual
+execution cases, including affine array transport and100000-deep work. This is
+only a prerequisite, not compiler acceptance or a speed result.
+
+53A checks12583/12583 bodies and emits two equal19176975-byte images, SHA
+`34af7cdd109c5249a02dd41906021f7efc90918c95702e471666b75414edd981`.
+The full gate FAILS the original600s deadline at218/273 passing fixtures, so byte
+equality alone is NOT accepted. Per-resume helpers add4410 bodies. A separate
+unpaired actual-image Linux run takes229364.384ms on a noisy host; no speed claim.
+53B reduces this to8149 bodies but exposes a real parser gap at stage-one parse:
+canonical inline local definitions under lambdas.53C's two generic callback
+helpers check8152/8152 bodies but native JS codegen fails with
+`RangeError: Invalid string length`; the expansion cause is not established.
+Both workarounds are rejected, not bypassed with unsafe or increased limits.
+
+53D restores exact53B's compact single-getter/Let lowerer and fixes lambda blocks
+through the existing parse_body grammar. Parallel-name marker lookahead now
+recognizes only a name sequence before equals, not an equals nested in a lambda.
+New public regression covers One/Many/Zero locals under affine/reusable lambdas,
+RHS outer scope before shadowing and the new body binding. Actual public suite
+passes15/15,264 assertions; all admission consumers migrate to the larger suite.
+Fresh parser80 passes all75 native semantic/span cases. Full root8151/8151 bodies,
+8492 events, zero exclusions/patches; library16/16. All273 fixtures pass,91 on
+each of seed/stage1/stage2. Both emitted images16703923 bytes, SHA
+`14dd1f829459c7bca9f519d6813612e9a7d847dca8d1e942c24a641b25610348`;
+downloaded cmp0. Stage1 root83569.406ms, stage2 root134579.066ms, stage2 checking
+98105.959ms. Full gate578861ms, physical2595123256/RSS2638233600 bytes under
+original8GiB600s. These root timings include the gate's semantic AST oracle;
+they are not an identical-corpus speed comparison against official.
+
+Native-seed frozen50file/15module/7720export compile97942.507ms/check70629.820ms
+passes actual import/smoke and exact historical Mac outputa1033733. This is NOT
+actual emitted-image timing. One actual53D Linux run hit its unchanged290s inner
+deadline: no full compile/output smoke,1960329216-byte peak, no OOM. Host load
+22.85→44.82 (max44.87) is high/unstable; no causal speed comparison or rerun loop.
+49 remains the performance-selected baseline.
+
+Full C build also completes:8166 checked bodies,199660ms, explicit clang-O1
+(diagnostic flags, not official-O3 parity), physical4841764840/RSS5904302080.
+Its actual full input parses15modules in3653.813ms, then fails with memory fault
+before expansion completes; total4575ms, not OOM/deadline. Bounded LLDB establishes
+the cause: C field flattening removes TemplateValue inside NativeTemplateFinished,
+but native_drive passes that raw payload to a continuation expecting the box.
+The first resumed argument is CID_CON21, expected TemplateValue31;10-frame fault
+is not stack overflow. Reconstruct the appropriate family's box with io_box at
+the C boundary, including the final return; all three callsites must supply its
+CID. Proposal NOT yet implemented. Evidence: native-compiler-v53d-fault-cause.json.
+Broader selfhostGreen remains false; do not modify backend or increase stack.
+
+Failed A/B raw ASTs are archived and verified before deletion: A removes341
+files1043094329 bytes; B removes132 files210724614 bytes. Archives are local
+ignored artifacts, not Git content. Complete D archive71215868 bytes, SHA
+`b3c2db6518c0f189f821d54f6d8f6a3f2c3a743a70a744bf92bd991f3918a4e9`,
+verified locally/remotely before removing408 raw ASTs1029236281 bytes. Images
+remain; completed remote launchers are removed. Compact acceptance:
+`selfhost-acceptance-release237-misaka-v53.json`. Commit53 before changing source
+for the next version. Do not rerun failed variants or noisy timing loops.
+
 ## Compiler52 — full fixedpoint and lower allocation; speed unestablished
 
 Source52 restores selected49 Checker algorithms (rejected50 hoist removed), then

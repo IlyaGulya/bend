@@ -1,5 +1,5 @@
 #!/usr/bin/env bun
-/** Lower authenticated canonical functions into typed, nonrecursive native steps.
+/** Lower authenticated canonical functions into typed, bounded native chunks.
  * CLI: bun evals/checker_core_step_lower.ts; emitter: bun evals/js_emit_step_lower.ts;
  * template: bun evals/template_step_lower.ts. All entries share this Body-AST/CPS
  * implementation and generate source only. Exact-content complete-input manifest
@@ -42,9 +42,11 @@ export type StepConfig = {
 export async function generateNativeSteps(paths: StepConfig) {
 const protocol = paths.mode === 'checker' ? 'Checker' : paths.mode === 'emitter' ? 'Emitter' : 'Template';
 const prefix = paths.mode;
-const requestType = protocol + 'Request', progressType = protocol + 'Progress';
-const finishedType = protocol + 'Finished', pendingType = protocol + 'Pending', directType = protocol + 'Direct';
+const requestType = protocol + 'Request', progressType = protocol + 'Progress', valueType = protocol + 'Value';
+const finishedType = protocol + 'Finished', pendingType = protocol + 'Pending', directType = protocol + 'Direct', boundType = protocol + 'Bound';
 const resultFunction = prefix + '_result', stepFunction = prefix + '_step', startFunction = prefix + '_start';
+const rawStepFunction = prefix + '_step_one', chunkFunction = prefix + '_chunk', nativeChunkQuantum = 64;
+const unboxFunction = prefix + '_unbox';
 const inputPaths: string[] = [paths.canonical, paths.owned, paths.dependency, paths.frozenSlice, paths.frozenDriver,
   paths.frozenCorpus, paths.kernel, paths.emitter, paths.parser, paths.base, paths.nodePolicy, paths.validationPolicy,
   paths.ownedManifest, ...(paths.ownedDriver ? [paths.ownedDriver] : []), ...(paths.checkerOutput ? [paths.checkerOutput] : []),
@@ -436,7 +438,6 @@ for (const def of definitions) {
 const allResultsData = definitions.every(def => resultKinds[def.name] === 'Data');
 const resultKind = allResultsData ? 'Data' : 'Type';
 const resultQuantity = (name: string): B.Quant => resultKinds[name] === 'Data' ? B.Many() : B.Lone();
-const resumeTypeFunction = prefix + '_resume_type';
 const sourceEdges = new Map([...names].map(name => [name, new Set<string>()]));
 for (const effect of effects) sourceEdges.get(effect.caller)!.add(effect.callee);
 const reachable = new Set<string>(), pending = [paths.root];
@@ -531,8 +532,8 @@ if (paths.mode === 'checker') {
 const signatures = new Map(definitions.map(def => [def.name, {parameters: def.parameters, result: def.result}]));
 const reserved = new Set([...clean.matchAll(/\b[A-Za-z_]\w*\b/g)].map(match => match[0]));
 function reserve(name: string): string {if (reserved.has(name)) throw Error('Generated name collision ' + name); reserved.add(name); return name;}
-for (const name of [requestType, progressType, finishedType, pendingType, directType, resultFunction, stepFunction, startFunction]) reserve(name);
-if (!allResultsData) reserve(resumeTypeFunction);
+for (const name of [requestType, progressType, valueType, finishedType, pendingType, directType, boundType,
+  resultFunction, stepFunction, rawStepFunction, chunkFunction, unboxFunction, startFunction]) reserve(name);
 const requestName = new Map(definitions.map(def => [def.name, reserve(requestType + '_' + def.name)]));
 // Keep request datatypes and dispatch bodies bounded. A single thousands-row
 // dependent match is expensive for both the source checker and native JS.
@@ -541,7 +542,6 @@ const requestGroups = Array.from({length: Math.ceil(definitions.length / request
   type: reserve(requestType + 'Group' + index),
   constructor: reserve(requestType + 'Group_' + index),
   result: reserve(resultFunction + '_group_' + index),
-  resume: reserve(resumeTypeFunction + '_group_' + index),
   step: reserve(stepFunction + '_group_' + index),
   definitions: definitions.slice(index * requestGroupSize, (index + 1) * requestGroupSize),
 }));
@@ -570,6 +570,8 @@ const ref = (k: string): B.LTerm => ({$: 'Ref', k});
 const ctr = (k: string, x: B.LTerm[]): B.LTerm => ({$: 'Ctr', k, x});
 const app = (k: string, xs: B.LTerm[]): B.LTerm => xs.reduce<B.LTerm>((f, x) => ({$: 'App', f, x}), ref(k));
 const progress = (type: B.LTerm): B.LTerm => ({$: 'ADT', k: progressType, x: [type], r: []});
+const boxedValue = (type: B.LTerm): B.LTerm => ({$: 'ADT', k: valueType, x: [type], r: []});
+const finished = (value: B.LTerm): B.LTerm => ctr(finishedType, [ctr(valueType, [value])]);
 const generated: {name: string; parameters: ParserParameter[]; result: B.LTerm; body: B.Body; owner: string; kind: string}[] = [];
 let helperSerial = 0, syntheticId = 1000000, pendingCount = 0, lazyChoices = 0;
 const ownerBindings = new Map<string, Map<number, Binding>>();
@@ -664,13 +666,19 @@ function tailProgress(target: string, values: B.LTerm[], returned: B.LTerm): B.L
     x: tailProgress(target, values, returned.x), T: progress(returned.T)};
   return app(target, values);
 }
+function finishedResult(body: B.Body): B.LTerm | undefined {
+  if (body.$ !== 'Ctr' || body.k !== finishedType || body.x.length !== 1) return;
+  const box = body.x[0]!;
+  if (box.$ !== 'Ctr' || box.k !== valueType || box.x.length !== 1) return;
+  return box.x[0]!;
+}
 function canFuseTail(owner: Definition, target: Definition, values: B.LTerm[], body: B.Body, value: SourceVar): boolean {
   // Strictly decreasing authenticated source order leaves the native helper
   // graph acyclic. Recursion/back edges retain the existing request protocol.
   // Projection-only arguments and a live variable prevent closed-value folding
   // from duplicating large constructor constants through native composition.
-  if (body.$ !== 'Ctr' || body.k !== finishedType || body.x.length !== 1) return false;
-  let returned = body.x[0]!;
+  let returned = finishedResult(body);
+  if (!returned) return false;
   while (returned.$ === 'Ann') returned = returned.x;
   return target.begin < owner.begin && values.every(term => projectionTerm(term, true))
     && values.some((term, index) => target.parameters[index]![0].$ !== 'None' && term.$ === 'Var')
@@ -728,6 +736,17 @@ function factorContinuation(body: B.Body, scope: Map<number, Binding>, result: B
   if (body.$ !== 'Local' && body.$ !== 'Match') return body;
   return factorHelper(body, scope, result, owner, [], 'continuation', 'continuation');
 }
+// One shared parameter-match getter consumes the affine carrier. A single Let
+// restores the authenticated source-result quantity, including reusable Data;
+// existing continuation factoring keeps all matches on named helper parameters.
+function boxedContinuation(body: B.Body, scope: Map<number, Binding>, value: SourceVar, result: B.LTerm, owner: string): B.LTerm {
+  const continuation = factorContinuation(body, scope, result, owner);
+  const binding = scope.get(value.i)!;
+  const next = new Map(scope), box = variable(boxedValue(binding.type), next);
+  const unboxed: B.LTerm = {$: 'Let', k: [value.k], i: [value.i], q: [binding.quantity],
+    v: [app(unboxFunction, [binding.type, box])], f: continuation};
+  return {$: 'Lam', k: box.k, i: box.i, q: B.Lone(), f: unboxed};
+}
 // Generate the pure value closure first, then retain every original typed
 // request handler. Even externally requested pure definitions finish through
 // their checked value helper; no special runtime dispatch or unchecked path.
@@ -737,7 +756,7 @@ for (const {def, direct} of [
 ]) {
   if (!direct && pureNames.has(def.name)) {
     generated.push({name: stepName.get(def.name)!, parameters: def.parameters, result: progress(def.result),
-      body: ctr(finishedType, [app(pureName.get(def.name)!, def.parameters.map(p => B.Var(p[1], p[2])))]),
+      body: finished(app(pureName.get(def.name)!, def.parameters.map(p => B.Var(p[1], p[2])))),
       owner: def.name, kind: 'source-body'});
     continue;
   }
@@ -800,8 +819,7 @@ for (const {def, direct} of [
       const target = byName.get(term.k)!;
       if (target.parameters.length) fail(def.name, 'Unsaturated request escaped normalization', term);
       const next = new Map(scope), value = variable(target.result, next, resultQuantity(target.name));
-      const continuation = factorContinuation(k(value, next), next, def.result, def.name);
-      return delayedProgress(def, target, [], {$: 'Lam', k: value.k, i: value.i, f: continuation, q: resultQuantity(target.name)});
+      return delayedProgress(def, target, [], boxedContinuation(k(value, next), next, value, def.result, def.name));
     }
     if (term.$ === 'App') {
       const [head, args] = B.term_unapply(term);
@@ -828,10 +846,9 @@ for (const {def, direct} of [
         const continuationBody = k(value, next);
         if (canFuseTail(def, target, values, continuationBody, value)) {
           fusedTailSites.push({caller: def.name, callee: target.name});
-          return tailProgress(stepName.get(target.name)!, values, (continuationBody as Extract<B.LTerm, {$: 'Ctr'}>).x[0]!);
+          return tailProgress(stepName.get(target.name)!, values, finishedResult(continuationBody)!);
         }
-        const continuation = factorContinuation(continuationBody, next, def.result, def.name);
-        return delayedProgress(def, target, values, {$: 'Lam', k: value.k, i: value.i, f: continuation, q: resultQuantity(target.name)});
+        return delayedProgress(def, target, values, boxedContinuation(continuationBody, next, value, def.result, def.name));
       }, domains);
     }
     if (term.$ === 'Ctr') {
@@ -855,7 +872,7 @@ for (const {def, direct} of [
     fail(def.name, 'Unsupported effectful term ' + term.$, term);
   }
   function lowerBody(body: B.Body, input: Map<number, Binding>): B.Body {
-    if (body.$ !== 'Local' && body.$ !== 'Match') return lowerTerm(body, input, value => direct ? value : ctr(finishedType, [value]), def.result);
+    if (body.$ !== 'Local' && body.$ !== 'Match') return lowerTerm(body, input, value => direct ? value : finished(value), def.result);
     if (body.$ === 'Local') return sequence(body.v, input, body.v.map(() => body.q), (values, scope) => {
       const next = new Map(scope);
       const continuationTerm = body.f.$ === 'Local' ? body.f.v[0]! : body.f.$ === 'Match' ? body.f.e[0]! : body.f;
@@ -934,6 +951,7 @@ for (const def of generated) {
   }
   function quantities(key: string, constructor: boolean): B.Quant[] {
     if (constructor && key === directType) return [B.None(), B.None(), B.Lone(), B.Lone(), B.Lone()];
+    if (!constructor && key === unboxFunction) return [B.None(), B.Lone()];
     const parameters = generatedSignatures.get(key) ?? requestSignatures.get(key);
     if (parameters) return parameters.map(parameter => parameter[0]);
     let telescope = constructor ? book.ctrs[key]?.T : book.tlds[key]?.T;
@@ -1072,18 +1090,10 @@ for (const group of requestGroups) {
 }
 chunks.push('\ndef ' + resultFunction + '(request: ' + requestType + ') -> ' + resultKind + ':\n  match request:\n');
 for (const group of requestGroups) chunks.push('    case ' + group.constructor + '{inner}: ' + group.result + '(inner)\n');
-// Mixed result kinds retain each continuation's exact source domain and grade.
-if (!allResultsData) {
-  for (const group of requestGroups) {
-    chunks.push('\ndef ' + group.resume + '(-B: Type, request: ' + group.type + ') -> Type:\n  match request:\n');
-    for (const def of group.definitions) chunks.push('    case ' + requestName.get(def.name)! + '{' + def.parameters.map(() => '_').join(', ') + '}: (@' + (resultKinds[def.name] === 'Data' ? '+' : '') + 'value: ' + def.resultSource + ' -> B)\n');
-  }
-  chunks.push('\ndef ' + resumeTypeFunction + '(-B: Type, request: ' + requestType + ') -> Type:\n  match request:\n');
-  for (const group of requestGroups) chunks.push('    case ' + group.constructor + '{inner}: ' + group.resume + '(B, inner)\n');
-}
-const resumeType = allResultsData ? '(@+value: ' + resultFunction + '(request) -> ' + progressType + '<A>)'
-  : resumeTypeFunction + '(' + progressType + '<A>, request)';
-chunks.push('\ntype ' + progressType + '<-A: Type> is Type:\n  ' + finishedType + '{value: A}\n  ' + pendingType + '{request: ' + requestType + ', resume: ' + resumeType + '}\n  ' + directType + '{-R: Type, -request: ' + requestType + ', arguments: R, invoke: (@arguments: R -> ' + progressType + '<' + resultFunction + '(request)>), resume: ' + resumeType + '}\n\n');
+const resumeType = '(@box: ' + valueType + '<' + resultFunction + '(request)> -> ' + progressType + '<A>)';
+chunks.push('\ntype ' + valueType + '<-A: Type> is Type:\n  ' + valueType + '{value: A}\n');
+chunks.push('\ntype ' + progressType + '<-A: Type> is Type:\n  ' + finishedType + '{box: ' + valueType + '<A>}\n  ' + pendingType + '{request: ' + requestType + ', resume: ' + resumeType + '}\n  ' + directType + '{-R: Type, -request: ' + requestType + ', arguments: R, invoke: (@arguments: R -> ' + progressType + '<' + resultFunction + '(request)>), resume: ' + resumeType + '}\n  ' + boundType + '{-B: Type, inner: ' + progressType + '<B>, resume: (@box: ' + valueType + '<B> -> ' + progressType + '<A>)}\n\n');
+chunks.push('def ' + unboxFunction + '(-A: Type, box: ' + valueType + '<A>) -> A:\n  match box:\n    case ' + valueType + '{value}: value\n\n');
 const generatedNames = new Set(generated.map(def => def.name)), positions = new Map(generated.map((def, index) => [def.name, index]));
 const generatedEdges: {from: string; to: string}[] = [];
 for (const [index, def] of generated.entries()) {
@@ -1112,10 +1122,34 @@ for (const group of requestGroups) {
   }
   chunks.push('\n');
 }
-chunks.push('def ' + stepFunction + '(request: ' + requestType + ') -> ' + progressType + '<' + resultFunction + '(request)>:\n  match request:\n');
+chunks.push('def ' + rawStepFunction + '(request: ' + requestType + ') -> ' + progressType + '<' + resultFunction + '(request)>:\n  match request:\n');
 for (const group of requestGroups) chunks.push('    case ' + group.constructor + '{inner}: ' + group.step + '(inner)\n');
+// This operational Nat decreases on every native scheduling transition. Zero
+// returns the remaining computation, independently of canonical semantic fuel.
+chunks.push(`
+def ${chunkFunction}(-A: Type, fuel: Nat, progress: ${progressType}<A>) -> ${progressType}<A>:
+  match fuel progress:
+    case 0n state: state
+    case 1n+rest ${finishedType}{box}: ${finishedType}{box}
+    case 1n+rest ${pendingType}{request, resume}:
+      ${chunkFunction}(A, rest, ${boundType}{${resultFunction}(request), ${rawStepFunction}(request), resume})
+    case 1n+rest ${directType}{R, request, arguments, invoke, resume}:
+      ${chunkFunction}(A, rest, ${boundType}{${resultFunction}(request), invoke(arguments), resume})
+    case 1n+rest ${boundType}{B, inner, resume}:
+      match inner:
+        case ${finishedType}{box}: ${chunkFunction}(A, rest, resume(box))
+        case ${pendingType}{request, next}:
+          ${chunkFunction}(A, rest, ${pendingType}{request, box => ${boundType}{B, next(box), resume}})
+        case ${directType}{R, request, arguments, invoke, next}:
+          ${chunkFunction}(A, rest, ${directType}{R, request, arguments, invoke, box => ${boundType}{B, next(box), resume}})
+        case ${boundType}{C, nested, next}:
+          ${chunkFunction}(A, rest, ${boundType}{C, nested, box => ${boundType}{B, next(box), resume}})
+
+def ${stepFunction}(request: ${requestType}) -> ${progressType}<${resultFunction}(request)>:
+  ${chunkFunction}(${resultFunction}(request), ${nativeChunkQuantum}n, ${rawStepFunction}(request))
+`);
 const startArguments = paths.mode === 'checker' ? 'modules, Nil{}' : 'modules';
-chunks.push('\ndef ' + startFunction + '(modules: List<&2, Loader.LoadedModule>) -> ' + progressType + '<' + paths.result + '>:\n  ' + pendingType + '{' + requestGroup.get(paths.root)!.constructor + '{' + requestName.get(paths.root)! + '{' + startArguments + '}}, +result => ' + finishedType + '{result}}\n');
+chunks.push('\ndef ' + startFunction + '(modules: List<&2, Loader.LoadedModule>) -> ' + progressType + '<' + paths.result + '>:\n  ' + chunkFunction + '(' + paths.result + ', ' + nativeChunkQuantum + 'n, ' + pendingType + '{' + requestGroup.get(paths.root)!.constructor + '{' + requestName.get(paths.root)! + '{' + startArguments + '}}, box => ' + finishedType + '{box}})\n');
 const output = chunks.join('');
 const alias = paths.mode === 'checker' ? 'CheckerCore' : paths.mode === 'emitter' ? 'JSEmit' : 'Template';
 const wrapper = paths.mode === 'checker' ? 'check_expanded_start' : paths.mode === 'emitter' ? 'emit_modules_start' : 'expand_modules_start';
@@ -1138,9 +1172,26 @@ for (const [path, text] of inputs) if (readFileSync(path, 'utf8') !== text || re
 writeChanged(paths.output, output); writeChanged(paths.component, component);
 if (paths.driver && driver !== undefined) writeChanged(paths.driver, driver);
 const manifest = {
-  version: 1, algorithm: 'raw-AST typed request/continuation CPS with bounded dependent request groups, dependency-first ordered match, projection values and bounded nonrecursive storage islands',
+  version: 1, algorithm: 'raw-AST typed boxed-continuation CPS with bounded dependent request groups, dependency-first ordered match, projection values, bounded nonrecursive storage islands and structurally recursive native chunks',
   generationConfig, generationEnvironment, generationInputRealpaths,
-  nativeTerminationClaim: 'Each native step and continuation is nonrecursive; the trusted Node driver loop is not a native termination claim.',
+  nativeTerminationClaim: 'Generated source handlers and continuation helpers form an acyclic declaration graph. The native chunk scheduler is structurally self-recursive on an operational Nat quantum; zero returns the remaining progress, not an error. This does not alter canonical semantic fuel or claim termination of the complete host-driven computation.',
+  progressABI: 'boxed-value-bound-v53',
+  boxedTransport: {
+    type: valueType, constructor: valueType, kind: 'Type', parameter: {name: 'A', kind: 'Type', quantity: 'None'},
+    valueField: 'value', finishedField: 'box', resumeQuantity: 'Lone',
+    resumeDomain: valueType + '<' + resultFunction + '(request)>',
+    unboxFunction, unboxCallsPerResume: 1, unboxGetterCount: 1,
+    unboxing: 'One generic named parameter-match getter consumes the carrier; a single Let restores each authenticated source result quantity: Many for Data, Lone for affine Type; existing continuation helpers retain named parameter matches; no computed/local native matches or unsafe casts',
+  },
+  nativeChunk: {
+    function: chunkFunction, rawStep: rawStepFunction, publicStep: stepFunction, start: startFunction,
+    quantum: nativeChunkQuantum, fuelType: 'Nat', recursion: 'structural Nat',
+    zeroFuel: 'return remaining progress unchanged', semanticFuelChanged: false,
+    boundConstructor: boundType, boundFields: ['inner', 'resume'], boundErasedType: 'B',
+    pendingDispatch: rawStepFunction, directDispatch: 'source invoke(arguments)',
+    finishedTransport: 'pass the whole box to resume; unwrap only at the final host root',
+    selfRecursiveFunctions: [chunkFunction],
+  },
   ffi: false, source: paths.owned, sourceSha256: sha(ownedSource), canonical: paths.canonical, canonicalSha256: sha(canonical),
   loweringSourceSha256: sha(source), loweringSourcePolicy: 'Original authenticated canonical declaration blocks under the owned native-provider header; computed and nested matches factored once by typed CPS, not pre-expanded into source requests.',
   sourceHeaderSha256: sha(header), derivedHeaderSha256: sha(outputHeader),
@@ -1153,9 +1204,9 @@ const manifest = {
     const declaration = book.tlds[key] ?? book.ctrs[key]!;
     return {name: printedKey(key), kind: 'k' in declaration ? 'Ctr' : declaration.$, signature: showTerm(B.term_lower(declaration.T), [], -1)};
   }),
-  authenticatedResultKinds: resultKinds, resumeQuantity: allResultsData ? 'Many' : 'exact source-result kind', resultFunctionKind: resultKind, requestKind,
+  authenticatedResultKinds: resultKinds, resumeQuantity: 'Lone', unboxedResultQuantity: 'exact source-result kind', resultFunctionKind: resultKind, requestKind,
   authenticatedRequestParameterKinds: requestParameterKinds,
-  requestGroupSize, requestGroups: requestGroups.map(group => ({type: group.type, constructor: group.constructor, result: group.result, resume: allResultsData ? undefined : group.resume, step: group.step, definitions: group.definitions.map(def => def.name)})),
+  requestGroupSize, requestGroups: requestGroups.map(group => ({type: group.type, constructor: group.constructor, result: group.result, step: group.step, definitions: group.definitions.map(def => def.name)})),
   administrativeQuantities, administrativeQuantityPolicy: 'Live-use-directed Many promotion only for authenticated Data; canonical request quantities and erased binders unchanged',
   exactCanonicalCoverage: true, definitionCount: definitions.length, excludedDefinitions: [],
   canonicalCoverage: [...canonicalNames].sort(), nativeMatchNormalizationOwners: componentProof.owners,
@@ -1172,12 +1223,12 @@ const manifest = {
   fusedTailSourceCallCount: fusedTailSites.length,
   directSourceCallCount: directCallSites.length,
   directInvocation: {
-    policy: 'Typed source closure only when target precedes owner in authenticated source order; erased request witness preserves exact result/continuation domains and grades; live arguments transferred once into the affine closure; all public request handlers retained; future/self/backedge calls remain pending',
-    constructor: directType, arguments: 'Authentic Base False{}; unused scalar affine callback token; generic five-field Direct ABI unchanged',
+    policy: 'Typed source closure only when target precedes owner in authenticated source order; erased request witness preserves exact result type; affine boxed resume uses one generic parameter-match getter and one quantity-preserving Let; live arguments transferred once into the affine closure; all public request handlers retained; future/self/backedge calls remain pending',
+    constructor: directType, arguments: 'Authentic Base False{}; unused scalar affine callback token; five-field Direct with boxed resume',
     sites: directCallSites, invokers: [], argumentRecords: [], erasedRequestWitnessQuantity: 'None',
   },
   tailCallFusion: {
-    policy: 'Identity Finished continuation only; target precedes owner in authenticated source order; projection-only arguments with a live variable; typed target Progress and all request handlers retained; cycles and closed computations remain pending',
+    policy: 'Identity Finished{Value{value}} continuation only; target precedes owner in authenticated source order; projection-only arguments with a live variable; typed target Progress and all request handlers retained; cycles and closed computations remain pending',
     sites: fusedTailSites,
     recordRoundtrips,
   },
@@ -1192,7 +1243,7 @@ const manifest = {
   },
   syntaxNormalizations: normalizations, authenticatedConstructorPatterns: authenticatedPatterns,
   privateHelpers: generated.filter(def => def.kind !== 'source-body').map(def => ({name: def.name, owner: def.owner, kind: def.kind})),
-  generatedHelperEdges: generatedEdges, residualSourceCalls: 0, residualCheckerCalls: 0, recursiveHelpers: 0,
+  generatedHelperEdges: generatedEdges, residualSourceCalls: 0, residualCheckerCalls: 0, recursiveHelpers: 1, generatedPrivateRecursiveHelpers: 0,
   protectedUnchangedHashes: Object.fromEntries(inputPaths.map(path => [path, sha(inputs.get(path)!)])),
   outputs: Object.fromEntries([[paths.output, output], [paths.component, component],
     ...(paths.driver && driver !== undefined ? [[paths.driver, driver]] : [])].map(([path, text]) => [path!, sha(text!)])),

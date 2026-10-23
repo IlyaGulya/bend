@@ -1884,14 +1884,12 @@ def local_group_has_equal(tokens: List<&2, Lexer.Token>) -> Bool:
   match tokens:
     case +token <> rest:
       match token:
-        case Lexer.TokenInfo{Lexer.NewlineToken{}, _, _, _, _, _}:
-          False{}
-        case Lexer.TokenInfo{Lexer.EndToken{}, _, _, _, _, _}:
-          False{}
         case Lexer.TokenInfo{_, "=", _, _, _, _}:
           True{}
-        case Lexer.TokenInfo{_, _, _, _, _, _}:
+        case Lexer.TokenInfo{Lexer.NameToken{}, _, _, _, _, _}:
           local_group_has_equal(rest)
+        case _:
+          False{}
     case Nil{}:
       False{}
 
@@ -3086,13 +3084,25 @@ def parse_rewrite_motive(+file: String, equation: Ast.SyntaxTerm, +key: String, 
     case Nil{}:
       ((Ast.TermHole{ "parse-error: expected :",  span(file, end, end)}, Nil{}), False{})
 
+# A lambda body is a block, as in the canonical parser's parse_block.
+# Keep the existing local/match grammar and its outer-before-inner scope rules.
+def parse_lambda_block(+file: String, +tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+  parse_lambda_block_scan(file, tokens, skip_lines(tokens), scope, depth)
+
+def parse_lambda_block_scan(+file: String, tokens: List<&2, Lexer.Token>, scanned: List<&2, Lexer.Token>, scope: List<&2, Scope>, depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
+  match scanned:
+    case Lexer.TokenInfo{_, _, _, _, _, col} <> _:
+      parse_body(file, tokens, scope, depth, Nat.sub(col, 1n))
+    case Nil{}:
+      parse_term(file, tokens, scope, depth, 0n)
+
 def parse_name_term(+file: String, +key: String, beg: Nat, end: Nat, tokens: List<&2, Lexer.Token>, scope: List<&2, Scope>, +depth: Nat) -> (Ast.SyntaxTerm & List<&2, Lexer.Token>) & Bool:
   match tokens:
     case +next <> +rest:
       match next:
         case Lexer.TokenInfo{ _, "=>",  _,  _,  _,  _}:
           next_scope = extend_scope(key, depth, scope)
-          with_term_result(parse_term(file, rest, next_scope, (depth + 1n : Nat), 0n), body => after => ok => parse_name_lambda_result(ok, body, after, file, key, beg, end, depth))
+          with_term_result(parse_lambda_block(file, rest, next_scope, (depth + 1n : Nat)), body => after => ok => parse_name_lambda_result(ok, body, after, file, key, beg, end, depth))
         case Lexer.TokenInfo{ _, "{",  _,  _,  _,  _}:
           with_args_result(parse_term_args(file, rest, "}", scope, depth, Nil{}), args => after_args => ok_args => parse_name_constructor_result(ok_args, args, after_args, file, key, beg, end, rest))
         case _:
@@ -3205,7 +3215,7 @@ def parse_many_lambda(+file: String, tokens: List<&2, Lexer.Token>, +beg: Nat, s
               match arrow:
                 case Lexer.TokenInfo{ _, "=>",  _,  _,  _,  _}:
                   next_scope = extend_scope(key, depth, scope)
-                  with_term_result(parse_term(file, after_arrow, next_scope, (depth + 1n : Nat), 0n), body => after_body => ok_body => parse_many_lambda_body_result(ok_body, body, after_body, file, key, beg, end, depth))
+                  with_term_result(parse_lambda_block(file, after_arrow, next_scope, (depth + 1n : Nat)), body => after_body => ok_body => parse_many_lambda_body_result(ok_body, body, after_body, file, key, beg, end, depth))
                 case _:
                   parse_plus_sugar(file, key, beg, name_beg, end, rest, scope, depth)
             case Nil{}:

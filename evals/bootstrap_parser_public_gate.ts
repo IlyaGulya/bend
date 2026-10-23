@@ -18,4 +18,4 @@ const passed=Number(output.match(/(?:^|\n)\s*(\d+) pass\b/)?.[1]??NaN),failed=Nu
 const rawOutputPath=resolve(reportPath+'.output.txt');writeFileSync(rawOutputPath,output,{flag:'wx'});
 if(sha(await Bun.file(parserPath).arrayBuffer())!==parserSha256)throw Error('Parser source changed during public gate');
 writeFileSync(reportPath,JSON.stringify({schemaVersion:1,parserPath:resolve(parserPath),parserSha256,canonicalSha256,entryPoint,publicTestEntryPoint,sourceEntryExplanation:'Source public tests call parse, which executes Lexer.tokens/combine_symbols then parse_module_tokens; generated tests call parse_with_fuel.',command,exitCode,passed,failed,assertions,rawOutputPath,rawOutputSha256:sha(output)},null,2)+'\n',{flag:'wx'});
-if(exitCode!==0||passed!==14||failed!==0||assertions!==207)process.exitCode=2;
+if(exitCode!==0||passed!==15||failed!==0||assertions!==264)process.exitCode=2;

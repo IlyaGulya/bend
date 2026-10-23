@@ -1,0 +1,578 @@
+{
+  "status": "PASS_FULL_FROZEN_WORKLOAD_UNACCEPTED53A_CANDIDATE",
+  "compilerCandidate": "53A",
+  "bootstrapAcceptance": false,
+  "newAcceptedFixedpoint": false,
+  "normalBenchmark": true,
+  "parentReportedProofStatus": {
+    "nativeBodiesChecked": 12583,
+    "nativeBodiesTotal": 12583,
+    "nativeRootPassed": true,
+    "stageOneAndStageTwoImagesProduced": true,
+    "stageOneAndStageTwoByteComparison": "equal, parent-observed",
+    "stageImageSha256": "34af7cdd109c5249a02dd41906021f7efc90918c95702e471666b75414edd981",
+    "fullGateResult": "600s deadline after218/273 passing cases; incomplete",
+    "fixtures": {
+      "seedPassed": 91,
+      "stageOnePassed": 91,
+      "stageTwoPassed": 36,
+      "totalPassed": 218,
+      "totalRequired": 273
+    },
+    "accepted": false,
+    "scope": "Parent-provided provenance; NHS run below is a full frozen benchmark, not completion of that acceptance gate."
+  },
+  "transportedImage": {
+    "file": "stage-one53a.js",
+    "sha256": "34af7cdd109c5249a02dd41906021f7efc90918c95702e471666b75414edd981",
+    "bytes": 19176975
+  },
+  "coverage": {
+    "inputFiles": 50,
+    "modules": 15,
+    "checkedModules": 15,
+    "exports": 7720,
+    "outputSmokePassed": true,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "corpusSha256": "6a00a60b7833e1b188b7b1872297df8e00252cf381b1cc4f9d6b670dfe5ff016"
+  },
+  "package": {
+    "compilerVersion": "53A-unaccepted",
+    "bootstrapAcceptance": false,
+    "parentReportedGateStatus": "600s deadline after218/273 passing fixture cases; not accepted",
+    "genuineImage": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one53a.js",
+    "genuineImageSha256": "34af7cdd109c5249a02dd41906021f7efc90918c95702e471666b75414edd981",
+    "executionDriver": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/runtime53.mjs",
+    "executionDriverSha256": "bc7858ebffa2ae8ba36cf985f7ff97f845c85c66f7f999f4f5dbdb9e4182d71d",
+    "executionABI": "strict boxed-value-bound-v53 with native coarse64",
+    "outputSmokeDriver": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/frozen-runtime-v41.mjs",
+    "outputSmokeDriverSha256": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+    "outputSmokeSelection": "frozen-v41",
+    "differentArchitecturalPackages": true,
+    "dualDecoder": false,
+    "normalBenchmark": true
+  },
+  "packageDistinction": {
+    "execution": "Strict new boxed-value/Bound runtime53; no legacy decoder",
+    "executionDriverSha256": "bc7858ebffa2ae8ba36cf985f7ff97f845c85c66f7f999f4f5dbdb9e4182d71d",
+    "outputSmoke": "Explicit captured frozen-v41 runtime with fixed SHA and original frozen manifest identity validation",
+    "outputSmokeDriverSha256": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+    "historical49ExecutionDriverSha256": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+    "sameRuntimePackageAs49": false,
+    "compilerSourceAlgorithms": "Parent reports exact49 baseline including original rebuilding Arena.name Map.get; no52 read optimization",
+    "macParentWorkingOn53B": "Three generic getters instead of4410 per-resume unbox helpers; not measured here"
+  },
+  "timings": {
+    "compileMs": 229364.38405400002,
+    "totalWithOutputSmokeMs": 229840.556063,
+    "phases": [
+      {
+        "name": "compiler-startup",
+        "wallMs": 764.863946,
+        "cpuMs": 753.8,
+        "memoryEnd": {
+          "rss": 543510528,
+          "heapTotal": 67903488,
+          "heapUsed": 53139120,
+          "external": 29536509,
+          "arrayBuffers": 19209426
+        }
+      },
+      {
+        "name": "load-parse",
+        "wallMs": 8498.699908,
+        "cpuMs": 12037.857,
+        "memoryEnd": {
+          "rss": 1415393280,
+          "heapTotal": 814899200,
+          "heapUsed": 593742936,
+          "external": 10351986,
+          "arrayBuffers": 24863
+        }
+      },
+      {
+        "name": "expand",
+        "wallMs": 10332.220924,
+        "cpuMs": 11911.887,
+        "memoryEnd": {
+          "rss": 1439506432,
+          "heapTotal": 646873088,
+          "heapUsed": 390407088,
+          "external": 10346361,
+          "arrayBuffers": 24863
+        }
+      },
+      {
+        "name": "check",
+        "wallMs": 188799.32069300002,
+        "cpuMs": 205883.232,
+        "memoryEnd": {
+          "rss": 1875333120,
+          "heapTotal": 1079013376,
+          "heapUsed": 772639280,
+          "external": 10345296,
+          "arrayBuffers": 24863
+        }
+      },
+      {
+        "name": "emit",
+        "wallMs": 20618.31827799999,
+        "cpuMs": 25231.187,
+        "memoryEnd": {
+          "rss": 1790124032,
+          "heapTotal": 976752640,
+          "heapUsed": 750173504,
+          "external": 10345296,
+          "arrayBuffers": 24863
+        }
+      },
+      {
+        "name": "write-and-hash",
+        "wallMs": 347.9442080000008,
+        "cpuMs": 341.504,
+        "memoryEnd": {
+          "rss": 1810440192,
+          "heapTotal": 997040128,
+          "heapUsed": 770487416,
+          "external": 30630693,
+          "arrayBuffers": 20310260
+        }
+      },
+      {
+        "name": "output-import",
+        "wallMs": 422.8763340000005,
+        "cpuMs": 424.512,
+        "memoryEnd": {
+          "rss": 1833902080,
+          "heapTotal": 1026945024,
+          "heapUsed": 752294456,
+          "external": 30638693,
+          "arrayBuffers": 20318260
+        }
+      },
+      {
+        "name": "output-semantic-smoke",
+        "wallMs": 16.647395000007236,
+        "cpuMs": 19.04,
+        "memoryEnd": {
+          "rss": 1834426368,
+          "heapTotal": 1027469312,
+          "heapUsed": 753482104,
+          "external": 30651381,
+          "arrayBuffers": 20330948
+        }
+      }
+    ],
+    "phaseCpuScope": "Whole Node process, not exclusively worker isolate"
+  },
+  "report": {
+    "schemaVersion": 1,
+    "status": "PASS",
+    "diagnosticOnly": true,
+    "bootstrapAcceptance": false,
+    "mode": "component",
+    "stopAfter": "compile",
+    "oracleIncluded": false,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "corpus": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/corpus.relocated.json",
+    "corpusSha256": "6a00a60b7833e1b188b7b1872297df8e00252cf381b1cc4f9d6b670dfe5ff016",
+    "root": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/corpus/checkpoints/.bootstrap_compiler_root_v1.bend",
+    "inputFiles": 50,
+    "runtime": {
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      },
+      "platform": "linux",
+      "arch": "x64"
+    },
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "oldGenerationMiB": 6144,
+      "youngGenerationMiB": 128,
+      "stackMiB": 256
+    },
+    "implementationPins": {
+      "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/benchmark-linux53.ts": "4da4aa04f5eed05051500ac88aa33a003f2d839a583874a72bc7f1a356dd86ef",
+      "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/compiler_benchmark53.source.ts": "dc0a8884318813ab6c9d19fd96eb7df34882ec7634d141bf801451e122259c2e",
+      "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/run-series53a.mjs": "a6388ae09167cac21d4a69077901b7049ef1bcd1229e447fe21502570cd70ac3",
+      "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/corpus.relocated.json": "6a00a60b7833e1b188b7b1872297df8e00252cf381b1cc4f9d6b670dfe5ff016",
+      "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/checkpoints/compiler-benchmark-release237-v41.corpus.json": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+      "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/runtime53.mjs": "bc7858ebffa2ae8ba36cf985f7ff97f845c85c66f7f999f4f5dbdb9e4182d71d",
+      "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/frozen-runtime-v41.mjs": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+      "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/stage-one53a.js": "34af7cdd109c5249a02dd41906021f7efc90918c95702e471666b75414edd981",
+      "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/official.json.exports.json": "9740412dd732c74160b574acff9ca4ce8c1565b15a51a40f3e49beba08c76914",
+      "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/corpus/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+      "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/corpus/bend2/comp.ts": "56d5727049bc3ef528ef84d3b4712a41a0a8ce0a06437b29d881e71107638c70"
+    },
+    "phases": [
+      {
+        "name": "compiler-startup",
+        "wallMs": 764.863946,
+        "cpuMs": 753.8,
+        "memoryEnd": {
+          "rss": 543510528,
+          "heapTotal": 67903488,
+          "heapUsed": 53139120,
+          "external": 29536509,
+          "arrayBuffers": 19209426
+        }
+      },
+      {
+        "name": "load-parse",
+        "wallMs": 8498.699908,
+        "cpuMs": 12037.857,
+        "memoryEnd": {
+          "rss": 1415393280,
+          "heapTotal": 814899200,
+          "heapUsed": 593742936,
+          "external": 10351986,
+          "arrayBuffers": 24863
+        }
+      },
+      {
+        "name": "expand",
+        "wallMs": 10332.220924,
+        "cpuMs": 11911.887,
+        "memoryEnd": {
+          "rss": 1439506432,
+          "heapTotal": 646873088,
+          "heapUsed": 390407088,
+          "external": 10346361,
+          "arrayBuffers": 24863
+        }
+      },
+      {
+        "name": "check",
+        "wallMs": 188799.32069300002,
+        "cpuMs": 205883.232,
+        "memoryEnd": {
+          "rss": 1875333120,
+          "heapTotal": 1079013376,
+          "heapUsed": 772639280,
+          "external": 10345296,
+          "arrayBuffers": 24863
+        }
+      },
+      {
+        "name": "emit",
+        "wallMs": 20618.31827799999,
+        "cpuMs": 25231.187,
+        "memoryEnd": {
+          "rss": 1790124032,
+          "heapTotal": 976752640,
+          "heapUsed": 750173504,
+          "external": 10345296,
+          "arrayBuffers": 24863
+        }
+      },
+      {
+        "name": "write-and-hash",
+        "wallMs": 347.9442080000008,
+        "cpuMs": 341.504,
+        "memoryEnd": {
+          "rss": 1810440192,
+          "heapTotal": 997040128,
+          "heapUsed": 770487416,
+          "external": 30630693,
+          "arrayBuffers": 20310260
+        }
+      },
+      {
+        "name": "output-import",
+        "wallMs": 422.8763340000005,
+        "cpuMs": 424.512,
+        "memoryEnd": {
+          "rss": 1833902080,
+          "heapTotal": 1026945024,
+          "heapUsed": 752294456,
+          "external": 30638693,
+          "arrayBuffers": 20318260
+        }
+      },
+      {
+        "name": "output-semantic-smoke",
+        "wallMs": 16.647395000007236,
+        "cpuMs": 19.04,
+        "memoryEnd": {
+          "rss": 1834426368,
+          "heapTotal": 1027469312,
+          "heapUsed": 753482104,
+          "external": 30651381,
+          "arrayBuffers": 20330948
+        }
+      }
+    ],
+    "moduleCount": 15,
+    "sourceDeclarations": 8403,
+    "checkedModules": 15,
+    "artifact": {
+      "path": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/series53a-unaccepted.json.output.mjs",
+      "bytes": 20285397,
+      "sha256": "7a3ca3d98b60044e7c00629a5e4b5c3b4d25669eb185979390e46992a27942f1"
+    },
+    "compileMs": 229364.38405400002,
+    "outputSmokeRuntime": {
+      "selection": "frozen-v41",
+      "path": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/frozen-runtime-v41.mjs",
+      "sha256": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+      "provenance": "Exact pre-v53 runtime captured from committed52 f99b22db; frozen v41 benchmark input only",
+      "expectedSha256": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+      "corpusReference": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/checkpoints/compiler-benchmark-release237-v41.corpus.json"
+    },
+    "exportCount": 7720,
+    "exportSetSha256": "99efc6ef8538e35f5b6f549e39296bae814e654d48558f9ca7ba2aae2b1911f4",
+    "outputSmokePassed": true,
+    "passed": true,
+    "totalWithOutputSmokeMs": 229840.556063
+  },
+  "output": {
+    "status": "PASS",
+    "reference": "paired49-actual49.json.output.mjs",
+    "exactByteMatch": true,
+    "bytes": 20285397,
+    "sha256": "7a3ca3d98b60044e7c00629a5e4b5c3b4d25669eb185979390e46992a27942f1",
+    "exports": 7720,
+    "actualOutputImportAndSemanticSmoke": true,
+    "outputSmokeRuntimeSha256": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd"
+  },
+  "guard": {
+    "label": "series53a-unaccepted",
+    "command": [
+      "./node-v23.11.0-linux-x64/bin/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "--stack-size=262144",
+      "run-series53a.mjs"
+    ],
+    "group": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-series53a-unaccepted.scope",
+    "memoryMax": "8589934592",
+    "memorySwapMax": "0",
+    "startedAt": "2026-10-23T12:07:20.889Z",
+    "samples": 908,
+    "elapsedMs": 230400.227197,
+    "memoryPeak": "1919504384",
+    "memoryCurrent": "65503232",
+    "memoryEvents": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+    "cpuStat": "usage_usec 257863378\nuser_usec 253649790\nsystem_usec 4213588\ncore_sched.force_idle_usec 0",
+    "pid": 4114459,
+    "exitCode": 0,
+    "signal": null
+  },
+  "systemd": {
+    "command": [
+      "systemd-run",
+      "--user",
+      "--scope",
+      "--quiet",
+      "--unit=bend-native46-elcWbhvH-series53a-unaccepted",
+      "-p",
+      "MemoryMax=8589934592",
+      "-p",
+      "MemorySwapMax=0",
+      "-p",
+      "RuntimeMaxSec=300s",
+      "/usr/bin/node",
+      "guard.mjs",
+      "series53a-unaccepted",
+      "290000",
+      "./node-v23.11.0-linux-x64/bin/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=6144",
+      "--max-semi-space-size=128",
+      "--stack-size=262144",
+      "run-series53a.mjs"
+    ],
+    "elapsedMs": 230495,
+    "status": 0,
+    "signal": null,
+    "error": null,
+    "stdout": "",
+    "stderr": "",
+    "systemctlShow": {
+      "status": 0,
+      "stdout": "Result=success\nRuntimeMaxUSec=infinity\nControlGroup=\nMemoryMax=infinity\nMemorySwapMax=infinity\nActiveState=inactive\nSubState=dead\n",
+      "stderr": ""
+    }
+  },
+  "environment": {
+    "before": {
+      "at": "2026-10-23T12:07:21.006Z",
+      "loadavg": "18.70 8.63 4.06 23/3618 4114471",
+      "allowedCpuAffinity": [
+        "Cpus_allowed:\tfff",
+        "Cpus_allowed_list:\t0-11"
+      ],
+      "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-series53a-unaccepted.scope",
+      "memoryMax": "8589934592",
+      "memorySwapMax": "0",
+      "cpuStat": "usage_usec 149811\nuser_usec 107149\nsystem_usec 42661\ncore_sched.force_idle_usec 0",
+      "cpuMax": {
+        "unavailable": "Error: ENOENT: no such file or directory, open '/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-series53a-unaccepted.scope/cpu.max'"
+      },
+      "procCpuInfo": [
+        "processor\t: 0",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4442.825",
+        "processor\t: 1",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 2908.125",
+        "processor\t: 2",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 2907.740",
+        "processor\t: 3",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4445.228",
+        "processor\t: 4",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 2908.311",
+        "processor\t: 5",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4444.658",
+        "processor\t: 6",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 2908.463",
+        "processor\t: 7",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4441.794",
+        "processor\t: 8",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 2908.672",
+        "processor\t: 9",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4444.552",
+        "processor\t: 10",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 2908.195",
+        "processor\t: 11",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4444.056"
+      ],
+      "frequencyScope": "Reported snapshots only; not hardware counters or controlled/sustained frequency. No affinity/governor changes.",
+      "loadScope": "Aggregate host load; compiler JIT/GC can contribute. External-work causation is not established."
+    },
+    "after": {
+      "at": "2026-10-23T12:11:11.213Z",
+      "loadavg": "9.71 11.56 6.49 3/3539 4124539",
+      "allowedCpuAffinity": [
+        "Cpus_allowed:\tfff",
+        "Cpus_allowed_list:\t0-11"
+      ],
+      "cgroup": "/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-series53a-unaccepted.scope",
+      "memoryMax": "8589934592",
+      "memorySwapMax": "0",
+      "cpuStat": "usage_usec 257788106\nuser_usec 253634628\nsystem_usec 4153477\ncore_sched.force_idle_usec 0",
+      "cpuMax": {
+        "unavailable": "Error: ENOENT: no such file or directory, open '/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/bend-native46-elcWbhvH-series53a-unaccepted.scope/cpu.max'"
+      },
+      "procCpuInfo": [
+        "processor\t: 0",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4517.049",
+        "processor\t: 1",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4244.961",
+        "processor\t: 2",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4516.712",
+        "processor\t: 3",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 3757.935",
+        "processor\t: 4",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4555.620",
+        "processor\t: 5",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 3687.062",
+        "processor\t: 6",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4280.189",
+        "processor\t: 7",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4202.444",
+        "processor\t: 8",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 4353.857",
+        "processor\t: 9",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 2928.463",
+        "processor\t: 10",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 3319.115",
+        "processor\t: 11",
+        "model name\t: AMD Ryzen AI 9 HX 370 w/ Radeon 890M",
+        "cpu MHz\t\t: 2488.992"
+      ],
+      "frequencyScope": "Reported snapshots only; not hardware counters or controlled/sustained frequency. No affinity/governor changes.",
+      "loadScope": "Aggregate host load; compiler JIT/GC can contribute. External-work causation is not established."
+    }
+  },
+  "interpretation": [
+    "One actual53A complete-workload candidate run only; no paired reference, ABBA, profile, or baseline follow-up was launched.",
+    "A full frozen benchmark PASS does not make53A an accepted fixedpoint: the parent273-case gate remains incomplete.",
+    "Compiler image plus architectural driver form the measured package. The old frozen output runtime is explicitly selected and authenticated, not a compatibility fallback.",
+    "No intrinsic speedup/regression or official-outperformance claim is established by this unpaired run.",
+    "Host load can include compiler JIT/GC work; external-interference causation is unresolved. Reported MHz snapshots are not controlled frequency or hardware counters.",
+    "Linux cgroup memory.peak is not macOS physical footprint. Finite300s scopes use MemoryMax8589934592 and MemorySwapMax0."
+  ],
+  "evidenceSha256": {
+    "compiler_benchmark53.source.ts": "dc0a8884318813ab6c9d19fd96eb7df34882ec7634d141bf801451e122259c2e",
+    "benchmark-linux53.ts": "4da4aa04f5eed05051500ac88aa33a003f2d839a583874a72bc7f1a356dd86ef",
+    "run-series53a.mjs": "a6388ae09167cac21d4a69077901b7049ef1bcd1229e447fe21502570cd70ac3",
+    "runtime53.mjs": "bc7858ebffa2ae8ba36cf985f7ff97f845c85c66f7f999f4f5dbdb9e4182d71d",
+    "frozen-runtime-v41.mjs": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+    "checkpoints/compiler-benchmark-release237-v41.corpus.json": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+    "series53a-unaccepted.json.request.json": "80f79679c1fb835c527831e4c17e99c232eb20257c753d2022ac7d1b785199b2",
+    "series53a-unaccepted.package.json": "265b8a7b239fcb4e6b38b99d1f1c17d29a69be14ba0a20de6dd78eddc403469e",
+    "series53a-unaccepted.environment-before.json": "2322a23eb553822d44a421b768b4a8181bdcbfa5fbcc8854995d87d5b4e205a6",
+    "series53a-unaccepted.environment-after.json": "faf9879360feb65ae6d702f0a29beda43fba22253059f314959604d4d297f888",
+    "series53a-unaccepted.json": "383cdaa781875d99059c07c952745c548ea1fa2f1242e1f3e6db198a48b54b30",
+    "series53a-unaccepted.guard.json": "2d7101c294f95b28af2d69637cab926942538a3fcd4dae59fee5198ee71e9d35",
+    "series53a-unaccepted.systemd.json": "bdfb87397966b314cb88b729367935a07f285a846f1156eae7bdc04f55f95e55",
+    "series53a-unaccepted.output-comparison.json": "dc23db8394a3ba45e398775b831cc6df1cb2003c2e3b1b4788cc8e0b944b73db"
+  },
+  "analysisSourceSha256": "7c5d170fb328fc3cca9f9a50a07c31217388553272b52890b0a65cbf34d30052",
+  "cleanup": {
+    "newRedundantOutputRemoved": true,
+    "oldArtifactsDeleted": false,
+    "existingReferencePreserved": true,
+    "removed": {
+      "path": "/home/ilyagulya/.cache/bend-native46-linux/run-106c7efd-elcWbhvH/series53a-unaccepted.json.output.mjs",
+      "bytes": 20285397,
+      "sha256": "7a3ca3d98b60044e7c00629a5e4b5c3b4d25669eb185979390e46992a27942f1",
+      "actualImportAndSemanticSmokePassed": true,
+      "exactReferenceByteComparison": true
+    },
+    "directoryBytesAfterOutputCleanup": 852253173
+  }
+}
