@@ -600,9 +600,9 @@ def export_arguments(count: Nat, index: Nat) -> List<&2, String>:
     case 1n+rest: cat(["arguments[", Nat.show(index), "]"]) <> export_arguments(rest, (index + 1n : Nat))
 def export_field(item: BIR.Export) -> String:
   match item:
-    case BIR.Export{+key, None{}}:
+    case BIR.Export{+key, None{}, _, _}:
       cat(["[", js_quote(key), "]:(...args)=>$run($D[", js_quote(key), "],args)"])
-    case BIR.Export{+key, Some{BIR.Entry{code, +arity}}}:
+    case BIR.Export{+key, Some{BIR.Entry{code, +arity}}, _, _}:
       cat(["[", js_quote(key), "](){return arguments.length===", Nat.show(arity), "?run_loop(", call(code, export_arguments(arity, 0n)), "):$run($D[", js_quote(key), "],arguments);}"])
 def export_fields(items: List<&2, BIR.Export>) -> List<&2, String>:
   match items:
