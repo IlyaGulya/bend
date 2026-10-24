@@ -48,7 +48,7 @@ interchangeable.
 - Nothing here claims a mechanized semantic-preservation proof for the
   selfhost FIR → BIR → target pipeline, and none is established in this tree.
   This does **not** deny the separate core theory developed in
-  `bend2/bend.lean`; the gap is specifically the connection from checked FIR
+  `bend2/bendtt.lean`; the gap is specifically the connection from checked FIR
   and BIR to the two production targets. No Lean development is in scope for
   this document.
 - The laws in `checkpoints/SELFHOST_IR_ARCHITECTURE.md` §4 (F1-F3, L1-L7,
@@ -889,7 +889,8 @@ exact path string equality. It never derives, normalizes, or rewrites a path.
   same path under two namespaces (`link_add_namespace`, `47-54`); C rejects it
   in `plan_add` (`c_emit_core.bend:42-58`).
 - Status: **[N]**, **[C]** in both targets, **[M]**
-  `gates/selfhost_cases/missing_c_target.bend` and `missing_js_target.bend`
+  `gates/selfhost_cases/missing_c_target.bend` and
+  `gates/selfhost_cases/missing_js_target.bend`
   pin the diagnostic lanes.
 
 **BL-14 (foreign id spelling).** A target that spells program-owned ids inside
@@ -1484,8 +1485,8 @@ accounting is also not a substitute for O-1..O-6.
 Status: **[N]** for the BIR-side statements; **[O]** for a proof that the
 generated chunked driver realizes them. The existing step receipts
 (`evals/descriptor-nf-step-smoke-receipt.json`,
-`checkpoints/emitter-steps-v1.json`, `checkpoints/js-emit-steps-v1.json`,
-`checkpoints/template-steps-v1.json`, `checkpoints/checker-core-steps-v1.json`)
+`checkpoints/emitter-steps-v1.json`, `checkpoints/template-steps-v1.json`,
+`checkpoints/checker-core-steps-v1.json`)
 are measured artifacts of the driver, not BIR proofs.
 
 ## 7. Open proof obligations
@@ -1605,7 +1606,7 @@ fixed here.
 
 - No mechanized proof of any law stated here, and no Lean development in this
   work. The scope of that statement is the selfhost FIR → BIR → JS/C pipeline;
-  the separate core theory in `bend2/bend.lean` is neither used as evidence for
+  the separate core theory in `bend2/bendtt.lean` is neither used as evidence for
   these laws nor denied by this document.
 - No universal termination, productivity, or effect-order result.
 - No completeness of the `Primitive` catalog, native marker sets, or the
