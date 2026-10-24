@@ -28,11 +28,12 @@ type LinkResult is Data:
 # Base's String.append recurses over its first argument, String.concat recurses
 # over its first element, and String.from_list/String.to_list recurse once per
 # character; every one of those is non-tail, so assembling a large translation
-# unit through them grows the stack with the text. These four helpers hold the
-# stack constant instead: a fixed number of linear passes, one SCon cell per
-# output character (the String is the result, not a copy), and a transient
-# O(total) char list while the pieces are folded. Per-character cost is one cons
-# per pass, not a constant-time guarantee independent of the allocator:
+# unit through them grows the stack with the text. The helpers here are all tail
+# calls: text_of_pieces reverses only the piece list, seeds the accumulator with
+# the last piece and prepends the rest through text_prepend, so no step walks an
+# already built string and the transient character list is bounded by the
+# largest piece. Per-character cost is one cons per pass, not a constant-time
+# guarantee independent of the allocator:
 #   chars_rev(s, acc)     = reverse(s) ++ acc        (walk s forward, cons)
 #   text_of_rev(chars, a) = a with chars prepended in reverse (walk forward, cons
 #                           onto the String as SCon)
@@ -125,18 +126,33 @@ def octals(bytes: List<&2, U32>, +acc: String) -> String:
     case Nil{}: acc
     case +byte <> rest: octals(rest, String.append(acc, oct3(byte)))
 
-def bytes_each(chars: List<&2, Char>, +acc: List<&2, U32>) -> List<&2, U32>:
-  match chars:
-    case Nil{}: acc
-    case +char <> rest: bytes_each(rest, List.append(&2, U32, utf8_bytes(Char.to_u32(char)), acc))
+# Byte width of one code point, computed from the code alone: no byte list and
+# no character list, so a long text costs one SCon walk with head recursion.
+def utf8_width_wide(bmp: Bool) -> Nat:
+  match bmp:
+    case True{}: 3n
+    case False{}: 4n
 
-def bytes_len(bytes: List<&2, U32>) -> Nat:
-  match bytes:
-    case Nil{}: 0n
-    case _ <> rest: Nat.add(1n, bytes_len(rest))
+def utf8_width_two(two: Bool, bmp: Bool) -> Nat:
+  match two:
+    case True{}: 2n
+    case False{}: utf8_width_wide(bmp)
+
+def utf8_width_of(small: Bool, two: Bool, bmp: Bool) -> Nat:
+  match small:
+    case True{}: 1n
+    case False{}: utf8_width_two(two, bmp)
+
+def utf8_width(+code: U32) -> Nat:
+  utf8_width_of(U32.is_lt(code, 128), U32.is_lt(code, 2048), U32.is_lt(code, 65536))
+
+def utf8_len_go(text: String, +acc: Nat) -> Nat:
+  match text:
+    case SNil{}: acc
+    case SCon{head, tail}: utf8_len_go(tail, Nat.add(acc, utf8_width(Char.to_u32(head))))
 
 def utf8_byte_len(+text: String) -> Nat:
-  bytes_len(bytes_each(chars_forward(text), Nil{}))
+  utf8_len_go(text, 0n)
 
 def literal_high(code: U32) -> String:
   octals(utf8_bytes(code), "")
@@ -166,18 +182,17 @@ def literal_piece(char: Char) -> String:
     case '\t': "\\t"
     case _: literal_plain(char)
 
+# Escaped pieces in text order followed by the closing quote: the input is the
+# reversed character list, so consing each escaped piece yields text order, and
+# the closing quote is seeded first. The literal is then built once, without
+# materialising the body and copying it.
 def literal_pieces(chars: List<&2, Char>, +acc: List<&2, String>) -> List<&2, String>:
   match chars:
     case Nil{}: acc
     case +char <> rest: literal_pieces(rest, literal_piece(char) <> acc)
 
-# The body is one built string; both quotes are linked onto it by text_prepend,
-# so no step copies the growing literal.
-def literal_body(chars: List<&2, Char>) -> String:
-  text_of_pieces(List.reverse(&2, String, literal_pieces(chars, Nil{})))
-
 def c_string_literal(+text: String) -> String:
-  text_prepend("\"", text_prepend(literal_body(chars_forward(text)), "\""))
+  text_of_pieces("\"" <> literal_pieces(chars_rev(text, Nil{}), ["\""]))
 
 # Only CodeMode can start an invocation; Key collects a candidate's key.
 type Mode is Data:

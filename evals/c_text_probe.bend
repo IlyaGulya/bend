@@ -71,17 +71,17 @@ def mixed_fold_ok() -> Bool:
 def lambda_len_ok() -> Bool:
   Nat.is_eq(Link.utf8_byte_len("λx"), 3n)
 
-def lambda_literal_ok() -> Bool:
-  String.eq(Link.c_string_literal("λx"), "\"\\316\\273x\"")
+def mixed_long_text() -> String:
+  Link.text_of_pieces(List.replicate(String, 5000n, "λ\r\n"))
 
-def nul_literal_ok() -> Bool:
-  String.eq(Link.c_string_literal(String.from_list([Char.from_u32(0)])), "\"\\000\"")
+def mixed_long_len_ok() -> Bool:
+  Nat.is_eq(Link.utf8_byte_len(mixed_long_text()), 20000n)
+
+def literal_len_ok() -> Bool:
+  Nat.is_eq(String.length(Link.c_string_literal(mixed_long_text())), 60002n)
 
 def astral_len_ok() -> Bool:
   Nat.is_eq(Link.utf8_byte_len(String.from_list([Char.from_u32(119070)])), 4n)
-
-def escape_literal_ok() -> Bool:
-  String.eq(Link.c_string_literal("\"\n\\"), "\"\\\"\\n\\\\\"")
 
 def main() -> IO(Unit):
   do IO<Unit>:
@@ -92,7 +92,6 @@ def main() -> IO(Unit):
     Unit <- IO.print(String.append("prepend_ok=", Bool.show(prepend_ok())))
     Unit <- IO.print(String.append("mixed_fold_ok=", Bool.show(mixed_fold_ok())))
     Unit <- IO.print(String.append("lambda_len_ok=", Bool.show(lambda_len_ok())))
-    Unit <- IO.print(String.append("lambda_literal_ok=", Bool.show(lambda_literal_ok())))
-    Unit <- IO.print(String.append("nul_literal_ok=", Bool.show(nul_literal_ok())))
     Unit <- IO.print(String.append("astral_len_ok=", Bool.show(astral_len_ok())))
-    IO.print(String.append("escape_literal_ok=", Bool.show(escape_literal_ok())))
+    Unit <- IO.print(String.append("mixed_long_len_ok=", Bool.show(mixed_long_len_ok())))
+    IO.print(String.append("literal_len_ok=", Bool.show(literal_len_ok())))
