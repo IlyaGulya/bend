@@ -28,6 +28,11 @@ const json=(path:string)=>object(JSON.parse(readFileSync(path,'utf8')));
 const save=(path:string,value:unknown)=>writeFileSync(path,JSON.stringify(value,(_,v)=>typeof v==='bigint'?String(v):v,2)+'\n');
 const requireProof=(condition:unknown,message:string)=>{if(!condition)throw Error(message);};
 const same=(left:unknown,right:unknown)=>JSON.stringify(left)===JSON.stringify(right);
+const sameMap=(left:unknown,right:unknown)=>{
+ const a=Object.entries(object(left)).sort(([x],[y])=>x.localeCompare(y));
+ const b=Object.entries(object(right)).sort(([x],[y])=>x.localeCompare(y));
+ return a.length===b.length&&a.every(([key,value],index)=>key===b[index][0]&&value===b[index][1]);
+};
 const options=new Map<string,string>();let worker=false;
 for(const argument of process.argv.slice(2)){
  if(argument==='--worker'&&!worker){worker=true;continue;}
@@ -95,8 +100,8 @@ if(!worker){
    requireProof(readFileSync(String(one.path)).equals(readFileSync(String(two.path))),'Native stage bytes differ');
    const closure=one.sourceHashes as Record<string,any>[];
    requireProof(Array.isArray(closure)&&closure.length===Object.keys(request.rootInputs).length,'Incomplete native stage source closure');
-   requireProof(same(request.rootInputs,effectiveInputs),'Gate phase inputs are not the exact js workload');
-   requireProof(same(Object.fromEntries(closure.map((row:any)=>[row.file,row.sourceBytesSha256])),effectiveInputs),'Native stage source closure is not the exact js workload');
+   requireProof(sameMap(request.rootInputs,effectiveInputs),'Gate phase inputs are not the exact js workload');
+   requireProof(sameMap(Object.fromEntries(closure.map((row:any)=>[row.file,row.sourceBytesSha256])),effectiveInputs),'Native stage source closure is not the exact js workload');
    for(const row of closure){requireProof(row.sha256===row.sourceBytesSha256&&request.rootInputs[row.file]===row.sourceBytesSha256,'Native stage source closure mismatch');pin(row.file,row.sourceBytesSha256);}
    const parseRows=original.parseRows as Record<string,any>[],expected=closure.filter(row=>!row.external);
    requireProof(parseRows.length===expected.length&&new Set(parseRows.map(row=>row.file)).size===parseRows.length&&expected.every(row=>parseRows.some(parsed=>parsed.file===row.file)),'Incomplete stage-two root parse approvals');

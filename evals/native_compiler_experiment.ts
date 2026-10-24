@@ -298,7 +298,7 @@ async function runWorker(o:Options){
   const effective=requireCorpusCoversWorkload(input,workload,target);
   const runtimePath=cPhase?realpathSync(o.runtimeC!):undefined,runtimeSha256=runtimePath?hash(runtimePath):undefined;
   const output=o.report+(cPhase?'.c':'.mjs');
-  create(o.report+'.runtime.tsv',runtimeManifest(corpusFor({directory:input.directory,root:input.root,sources:workload.sources,externals:workload.externals})));
+  create(o.report+'.runtime.tsv',runtimeManifest(corpusFor(workload)));
   create(o.report+'.exports.txt',names.join('\n')+'\n');
   const phases:Array<{phase:string}> = [],begins:Array<{computeThreads:number}> = [],results:Array<{result:string;modules:number;bytes?:number}> = [];
   const fuel:Array<Record<string,unknown>> = [];
