@@ -12,10 +12,11 @@ export const sha = bytes => createHash('sha256').update(bytes).digest('hex');
 export const hashPath = path => sha(readFileSync(path));
 
 const importPattern = /^import\s+(\S+)(?:\s+as\s+[A-Za-z_]\w*)?\s*(?:#.*)?$/;
-const foreignPattern = /^\s*import\s+"([^"]+\.js)"\s*$/;
+const foreignPattern = /^\s*import\s+"([^"]+\.(?:js|c))"\s*$/;
 
 /** Trusted host import resolution with the native host's own lexical rule. */
-export function workloadRows(entryPath) {
+export function workloadRows(entryPath, target = 'js') {
+  if (target !== 'js' && target !== 'c') throw Error('Expected explicit native target: js or c');
   const root = realpathSync(entryPath);
   const directory = realpathSync('.');
   const sources = new Map(), externals = new Map();
@@ -41,12 +42,13 @@ export function workloadRows(entryPath) {
     for (const line of text.split('\n')) {
       const imported = importPattern.exec(line);
       if (!imported) continue;
-      const target = imported[1];
-      if (target.endsWith('.js')) continue;
-      const child = target === 'Base' ? resolve('bend2/base.bend') : resolve(posix.dirname(real), target);
-      visit(child, scopeOf(scope, target), active);
+      const importedTarget = imported[1];
+      if (importedTarget.endsWith('.js') || importedTarget.endsWith('.c')) continue;
+      const child = importedTarget === 'Base' ? resolve('bend2/base.bend') : resolve(posix.dirname(real), importedTarget);
+      visit(child, scopeOf(scope, importedTarget), active);
     }
     for (const match of text.matchAll(new RegExp(foreignPattern.source, 'gm'))) {
+      if (target === 'c' ? !match[1].endsWith('.c') : !match[1].endsWith('.js')) continue;
       const ext = realpathSync(resolve(posix.dirname(real), match[1]));
       if (!ext.startsWith(directory + '/')) throw Error('Declared foreign source escaped the repository: ' + ext);
       const digest = hashPath(ext);
@@ -161,8 +163,11 @@ function protocolLines(text, prefix) {
 export function runNativeStage0(binary, work, options) {
   if (!existsSync(binary)) throw Error('Native stage0 binary is missing');
   if (existsSync(work.output)) throw Error('Native stage0 output must be fresh: ' + work.output);
+  const cPhase = work.phase === 'compile-c' || work.phase === 'compile-c-module';
+  if (cPhase !== Boolean(work.runtime)) throw Error('Native C phase requires exactly the runtime source path');
   const command = [binary, '--threads', '1', '--gpu', 'off', '--',
     work.root, work.base, work.manifest, work.exports, work.phase, work.output];
+  if (work.runtime) command.push(realpathSync(work.runtime));
   const started = Date.now();
   const run = spawnSync(command[0], command.slice(1), {encoding: 'utf8', timeout: options.timeoutMs, killSignal: 'SIGKILL', maxBuffer: 1 << 28});
   const stderr = run.stderr ?? '', stdout = run.stdout ?? '';

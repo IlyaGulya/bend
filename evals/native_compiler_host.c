@@ -25,6 +25,7 @@ typedef struct {
   u64 fuel_build_ns;
   u64 fuel_cells;
   u64 parsed_sources;
+  const char* target_suffix;
 } NativeLoader;
 
 static void native_cpu_sample(struct rusage* usage) {
@@ -204,24 +205,30 @@ static bool native_manifest_external(const NativeLoader* loader, const char* rea
   return false;
 }
 
-// The declared `.js` alternative is BIR metadata: the renderer resolves it and
-// joins by that exact resolved path. The host only reads the bytes of the path
-// BIR derives and hands them over as a passive BIR.SourceFile.
+// The declared alternative for the explicit target is BIR metadata: the
+// renderer resolves it and joins by that exact resolved path. The host only
+// reads the bytes of the path BIR derives and hands them over as a passive
+// BIR.SourceFile. The target suffix is chosen by the phase, never guessed.
+static bool native_suffix(const char* name, size_t length, const char* suffix) {
+  size_t suffix_length = strlen(suffix);
+  return length >= suffix_length && strcmp(name + length - suffix_length, suffix) == 0;
+}
+
 static void native_foreign(Env e, NativeLoader* loader, const char* module, const char* declared) {
-  // DefImports may list the native `.c` implementation too. Only the declared
-  // `.js` alternative is a BIR link source; the JS host applies the same rule.
+  // DefImports lists one alternative per target; only the explicit target's
+  // declared alternative is a BIR link source.
   size_t declared_length = strlen(declared);
-  if (declared_length < 3 || strcmp(declared + declared_length - 3, ".js") != 0) return;
+  if (!native_suffix(declared, declared_length, loader->target_suffix)) return;
   char* joined = native_join(module, declared);
   char* key = native_normalized(joined, false);
   free(joined);
   char* real = realpath(key, NULL);
   if (!real) {
-    fprintf(stderr, "native foreign path: %s\n", key);
-    err_fail("native experiment: missing declared JavaScript foreign source");
+    fprintf(stderr, "native foreign target %s path: %s\n", loader->target_suffix, key);
+    err_fail("native experiment: missing declared foreign source for the explicit target");
   }
   if (!native_manifest_external(loader, real)) {
-    fprintf(stderr, "native foreign path: %s\n", real);
+    fprintf(stderr, "native foreign target %s path: %s\n", loader->target_suffix, real);
     err_fail("native experiment: foreign source outside the authenticated manifest");
   }
   u64 length;
@@ -303,7 +310,7 @@ static void native_visit(Env e, NativeLoader* loader, const char* path, const ch
     u64 length;
     char* imported = io_cstr(e, pair[0], &length);
     if (io_nul(imported, length)) err_fail("native experiment: NUL in import");
-    if (length >= 3 && strcmp(imported + length - 3, ".js") == 0) {
+    if (native_suffix(imported, length, ".js") || native_suffix(imported, length, ".c")) {
       // Module-level foreign imports are not BIR link sources; the definition's
       // own DefImports alternatives above are the declared target.
       free(imported);
@@ -393,6 +400,7 @@ static Term native_experiment_run(Env e, Term* f, IoWork* work) {
   struct rusage cpu_started;
   native_phase_start("parse", &cpu_started);
   NativeLoader loader = native_manifest(io_argv[3], io_argv[2], f[0]);
+  loader.target_suffix = action >= 3 ? ".c" : ".js";
   native_visit(e, &loader, io_argv[1], "");
   for (size_t i = 0; i < loader.count; i++) {
     if (loader.inputs[i].state == 0) err_fail("native experiment: workload source was omitted");

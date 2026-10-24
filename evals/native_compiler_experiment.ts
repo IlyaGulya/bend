@@ -22,7 +22,8 @@
  * fixedpoint proof. Selecting direct still invokes the original single-TU CC.
  * Run: bun --smol evals/native_compiler_experiment.ts --mode=run
  *   --corpus=MANIFEST.json --build=BUILD.json --report=FRESH.json
- *   [--phase=check|compile] [--threads=1] [--exports=EXPORTS.json]
+ *   [--phase=check|compile|compile-c|compile-c-module] [--threads=1]
+ *   [--exports=EXPORTS.json] [--runtime-c=RUNTIME.c]
  *   [--expect-js=ACCEPTED_COMPILER.js]
  *
  * Both commands acquire the existing heavy_gate lease. Build uses the unchanged
@@ -71,20 +72,23 @@ let reportWritable=false;
 type CorpusFile = {path:string;sha256:string;namespace?:string;external?:boolean};
 type Corpus = {directory:string;root:string;exports:string[];files:CorpusFile[]};
 type Options = {mode:string;corpus:string;report:string;artifact?:string;build?:string;
-  phase:string;threads:number;exports?:string;expectJs?:string;internal?:string;v8LogDir?:string;buildTimeoutMs:number;traceC:boolean;ccOpt:number;
+  phase:string;threads:number;exports?:string;runtimeC?:string;expectJs?:string;internal?:string;v8LogDir?:string;buildTimeoutMs:number;traceC:boolean;ccOpt:number;
   ccPipeline:'direct'|'llvm-split';llvmBin?:string};
 function options():Options {
   const flags = new Map<string,string>();
   for (const arg of process.argv.slice(2)) {
     const at=arg.indexOf('='), key=arg.slice(0,at), value=arg.slice(at+1);
-    if(at<0||!['--mode','--corpus','--report','--artifact','--build','--phase','--threads','--exports','--expect-js','--internal','--v8-log-dir','--build-timeout-ms','--trace-c','--cc-opt','--cc-pipeline','--llvm-bin'].includes(key)||!value||flags.has(key))throw Error('Expected unique documented --option=value');
+    if(at<0||!['--mode','--corpus','--report','--artifact','--build','--phase','--threads','--exports','--runtime-c','--expect-js','--internal','--v8-log-dir','--build-timeout-ms','--trace-c','--cc-opt','--cc-pipeline','--llvm-bin'].includes(key)||!value||flags.has(key))throw Error('Expected unique documented --option=value');
     flags.set(key,value);
   }
   for(const key of ['--mode','--corpus','--report'])if(!flags.has(key))throw Error('Missing '+key);
   const mode=flags.get('--mode')!,phase=flags.get('--phase')??'compile',threads=Number(flags.get('--threads')??'1');
-  if(!['build','run'].includes(mode)||!['check','compile'].includes(phase)||!Number.isInteger(threads)||threads<1||threads>128)throw Error('Invalid mode, phase, or supported thread count (1..128)');
+  const cPhase=phase.startsWith('compile-c');
+  if(!['build','run'].includes(mode)||!['check','compile','compile-c','compile-c-module'].includes(phase)||!Number.isInteger(threads)||threads<1||threads>128)throw Error('Invalid mode, phase, or supported thread count (1..128)');
   if(mode==='build'&&!flags.has('--artifact')||mode==='run'&&!flags.has('--build'))throw Error('Build requires --artifact; run requires --build');
   if(flags.has('--expect-js')&&(mode!=='run'||phase!=='compile'||flags.has('--exports')))throw Error('--expect-js is an explicit frozen v40 full-compile smoke only');
+  if(flags.has('--runtime-c')&&(mode!=='run'||!cPhase))throw Error('--runtime-c is run-only and C-phase-only');
+  if(mode==='run'&&cPhase&&!flags.has('--runtime-c'))throw Error('A native C phase requires --runtime-c');
   if(flags.has('--v8-log-dir')&&mode!=='build')throw Error('--v8-log-dir is build-only and not a benchmark timing');
   const buildTimeoutMs=Number(flags.get('--build-timeout-ms')??'600000');
   if(!Number.isSafeInteger(buildTimeoutMs)||buildTimeoutMs<1||buildTimeoutMs>600000||flags.has('--build-timeout-ms')&&mode!=='build')throw Error('--build-timeout-ms is build-only and may only lower the 600000 ms deadline');
@@ -96,7 +100,7 @@ function options():Options {
   const ccOpt=Number(flags.get('--cc-opt')??(ccPipeline==='llvm-split'?'1':'3'));
   if(ccPipeline==='llvm-split'&&ccOpt!==1)throw Error('--cc-pipeline=llvm-split requires --cc-opt=1');
   const path=(name:string)=>flags.has(name)?resolve(flags.get(name)!):undefined;
-  return {mode,corpus:path('--corpus')!,report:path('--report')!,artifact:path('--artifact'),build:path('--build'),phase,threads,exports:path('--exports'),expectJs:path('--expect-js'),internal:flags.get('--internal'),v8LogDir:path('--v8-log-dir'),buildTimeoutMs,traceC:flags.has('--trace-c'),ccOpt,ccPipeline:ccPipeline as Options['ccPipeline'],llvmBin:path('--llvm-bin')};
+  return {mode,corpus:path('--corpus')!,report:path('--report')!,artifact:path('--artifact'),build:path('--build'),phase,threads,exports:path('--exports'),runtimeC:path('--runtime-c'),expectJs:path('--expect-js'),internal:flags.get('--internal'),v8LogDir:path('--v8-log-dir'),buildTimeoutMs,traceC:flags.has('--trace-c'),ccOpt,ccPipeline:ccPipeline as Options['ccPipeline'],llvmBin:path('--llvm-bin')};
 }
 function corpus(path:string):Corpus {
   const manifest=json(path) as Corpus;
@@ -284,7 +288,9 @@ async function runWorker(o:Options){
   const input=corpus(o.corpus),build=json(o.build!);
   if(build.status!=='NATIVE_EXECUTABLE_BUILT_NOT_YET_RUN'||build.guardian?.status!=='PASS'||build.kernelSha256!==kernelSha256||build.checksExcluded!==0||build.outputPatches!==0||build.artifactSha256!==hash(build.artifact)||build.cSha256!==hash(build.cPath))throw Error('Native executable lacks a successful full canonical build');
   verify(build.protectedPins);verify(build.loadedInputs);
-  const names=exportNames(o,input),output=o.report+'.mjs';
+  const names=exportNames(o,input),cPhase=o.phase.startsWith('compile-c');
+  const runtimePath=cPhase?realpathSync(o.runtimeC!):undefined,runtimeSha256=runtimePath?hash(runtimePath):undefined;
+  const output=o.report+(cPhase?'.c':'.mjs');
   create(o.report+'.runtime.tsv',input.files.map(row=>[row.external?'E':'B',row.namespace??'',realpathSync(resolve(input.directory,row.path))].join('\t')).join('\n')+'\n');
   create(o.report+'.exports.txt',names.join('\n')+'\n');
   const phases:Array<{phase:string}> = [],begins:Array<{computeThreads:number}> = [],results:Array<{result:string;modules:number;bytes?:number}> = [];
@@ -293,6 +299,8 @@ async function runWorker(o:Options){
   const command=[build.artifact,'--threads',String(o.threads),'--gpu','off','--',
     resolve(input.directory,input.root),resolve(input.directory,'bend2/base.bend'),
     o.report+'.runtime.tsv',o.report+'.exports.txt',o.phase,output];
+  if(runtimePath)command.push(runtimePath);
+  if(runtimePath)progress(o,'runtime-c','pinned',{path:runtimePath,sha256:runtimeSha256});
   const started=performance.now();
   await child(command[0],command.slice(1),line=>{
     if(line.startsWith('NATIVE_PHASE_START ')){
@@ -327,8 +335,10 @@ async function runWorker(o:Options){
   const expectedModules=input.files.filter(row=>!row.external).length;
   if(fuel.length!==expectedModules)throw Error('Missing whole-workload eager-fuel accounting');
   const begin=begins[0];
-  if(begins.length!==1||begin?.computeThreads!==o.threads||results.length!==1||results[0].modules!==expectedModules||results[0].result!==(o.phase==='compile'?'EmitSuccess':'CheckSuccess'))throw Error('Missing complete typed whole-workload result');
-  const expectedPhases=o.phase==='compile'?['parse','expand','check','emit']:['parse','expand','check'];
+  const emitted=o.phase==='compile'||cPhase;
+  if(begins.length!==1||begin?.computeThreads!==o.threads||results.length!==1||results[0].modules!==expectedModules||results[0].result!==(emitted?'EmitSuccess':'CheckSuccess'))throw Error('Missing complete typed whole-workload result');
+  if(runtimePath&&hash(runtimePath)!==runtimeSha256)throw Error('Runtime source drifted during the native C emission');
+  const expectedPhases=cPhase?['parse','expand','check','emit-c']:o.phase==='compile'?['parse','expand','check','emit']:['parse','expand','check'];
   if(JSON.stringify(phases.map(row=>row.phase))!==JSON.stringify(expectedPhases)||JSON.stringify(phaseStarts.map(row=>row.phase))!==JSON.stringify(expectedPhases))throw Error('Missing ordered phase-start/completion evidence');
   let semanticSmoke:unknown={status:'NOT_REQUESTED'};
   if(o.expectJs){
@@ -336,12 +346,13 @@ async function runWorker(o:Options){
     if(hash(output)!==acceptedCompilerSha256||readFileSync(output).length!==readFileSync(o.expectJs).length)throw Error('Native full compiler did not reproduce the accepted compiler bytes');
     semanticSmoke={status:'PASS',kind:'exact accepted full compiler image (all bytes)',expectedSha256:acceptedCompilerSha256,bytes:readFileSync(output).length,nativeBinaryBootstrap:false};
   }
-  save(o.report,{status:o.phase==='compile'?'NATIVE_FULL_COMPILE_PASS':'NATIVE_FULL_CHECK_PASS',boundary,
+  save(o.report,{status:cPhase?'NATIVE_FULL_C_COMPILE_PASS':o.phase==='compile'?'NATIVE_FULL_COMPILE_PASS':'NATIVE_FULL_CHECK_PASS',boundary,
     build:o.build,buildSha256:hash(o.build!),protectedPins,corpus:o.corpus,corpusSha256:hash(o.corpus),
     ccOptimization:build.ccOptimization,
     threads:o.threads,multithread:o.threads>1,command,elapsedMs:performance.now()-started,
     phases,phaseStarts,fuel,result:results[0],exports:names,semanticSmoke,
-    ...(o.phase==='compile'?{output,outputSha256:hash(output),outputBytes:readFileSync(output).length}:{diagnosticOnly:true})});
+    ...(cPhase?{runtimeC:{path:runtimePath,sha256:runtimeSha256}}:{}),
+    ...(emitted?{output,outputSha256:hash(output),outputBytes:readFileSync(output).length}:{diagnosticOnly:true})});
 }
 async function main(o:Options){
   if(o.internal==='build'){await buildWorker(o);return;}
