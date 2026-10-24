@@ -353,6 +353,19 @@ def first_occurrence_type(children: List<&2, IR.Occurrence>) -> Maybe<&2, U32>:
     case Nil{}: None{}
     case child <> _: occurrence_type(child)
 
+# An erased type argument's checked term is the instantiated element type: the
+# value survives erasure even though the argument itself does not.
+def erased_type_term(arguments: List<&2, SourceArgument>) -> Maybe<&2, U32>:
+  match arguments:
+    case Nil{}: None{}
+    case SourceArgument{Ast.QZero{}, occurrence} <> _: Some{occurrence_term(occurrence)}
+    case _ <> rest: erased_type_term(rest)
+
+def parameter_uses(parameters: List<&2, BIR.Parameter>) -> List<&2, BIR.Use>:
+  match parameters:
+    case Nil{}: Nil{}
+    case BIR.Parameter{_, usage} <> rest: usage <> parameter_uses(rest)
+
 def live_argument_type(arguments: List<&2, SourceArgument>) -> Maybe<&2, U32>:
   match arguments:
     case Nil{}: None{}
@@ -691,7 +704,7 @@ def application_header(v_1: State, v_3: Maybe<&2, Catalog.DefinitionHeader>, v_4
 def application_known(state: State, native: Maybe<&2, BIR.Primitive>, fast: Bool, code: U32, parameters: List<&2, BIR.Parameter>, arity: Nat, head: IR.Occurrence, args: List<&2, SourceArgument>, ty: U32, env: List<&2, Slot>, registry: Catalog.Registry, span: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
   match native:
     case Some{primitive}:
-      application_native(state, Bool.and(Nat.is_ge(List.length(&2, SourceArgument, args), arity), Nat.is_eq(List.length(&2, BIR.Parameter, parameters), Catalog.primitive_arity(primitive))), primitive, arity, head, args, ty, env, registry)
+      application_native(state, Bool.and(Nat.is_ge(List.length(&2, SourceArgument, args), arity), Nat.is_eq(List.length(&2, BIR.Parameter, parameters), Catalog.primitive_arity(primitive))), primitive, arity, head, args, parameters, ty, env, registry)
     case None{}:
       application_direct(state, fast, code, parameters, arity, head, args, env, registry, span)
 def native_match_application_native_0(v_33: LowerResult<BIR.Atom>, v_10: List<&2, SourceArgument>, v_13: List<&2, Slot>, v_14: Catalog.Registry) -> LowerResult<BIR.Atom>:
@@ -809,26 +822,38 @@ def partial_array_typed(state: State, op: BIR.Primitive, uses: List<&2, BIR.Use>
   match partial_array_parameters(state, uses):
     case LowerResult{state2, parameters}: partial_array_code(state2, op, captures, parameters, element)
 
-def partial_array_call(state: State, op: BIR.Primitive, ty: U32, args: List<&2, SourceArgument>, env: List<&2, Slot>, registry: Catalog.Registry) -> LowerResult<BIR.Atom>:
+def partial_array_call(state: State, op: BIR.Primitive, args: List<&2, SourceArgument>, parameters: List<&2, BIR.Parameter>, ty: U32, env: List<&2, Slot>, registry: Catalog.Registry) -> LowerResult<BIR.Atom>:
   match argument_prefix(state, List.length(&2, SourceArgument, args), args, env, registry):
     case LowerResult{state2, parts}:
       match parts:
-        case (captures, _): partial_array_build(state2, op, ty, captures, List.length(&2, SourceArgument, args))
+        case (captures, _):
+          remaining = drop_parameters(List.length(&2, BIR.Arg, captures), parameters)
+          match erased_type_term(args):
+            case Some{term}:
+              match describe(state2, term):
+                case LowerResult{state3, Some{element}}: partial_typed(state3, op, captures, remaining, element)
+                case LowerResult{state3, None{}}: fail(state3, "missing checked array element type for a partially applied primitive", no_span())
+            case None{}: partial_array_build(state2, op, ty, captures, List.length(&2, SourceArgument, args))
 
-def application_native_partial(state: State, op: BIR.Primitive, head: IR.Occurrence, args: List<&2, SourceArgument>, ty: U32, env: List<&2, Slot>, registry: Catalog.Registry) -> LowerResult<BIR.Atom>:
+def partial_typed(state: State, op: BIR.Primitive, captures: List<&2, BIR.Arg>, parameters: List<&2, BIR.Parameter>, element: BIR.Descriptor) -> LowerResult<BIR.Atom>:
+  match new_parameters(state, List.length(&2, BIR.Parameter, parameters)):
+    case LowerResult{state2, fresh}:
+      partial_array_code(state2, op, captures, parameterize(fresh, parameter_uses(parameters)), element)
+
+def application_native_partial(state: State, op: BIR.Primitive, head: IR.Occurrence, args: List<&2, SourceArgument>, parameters: List<&2, BIR.Parameter>, ty: U32, env: List<&2, Slot>, registry: Catalog.Registry) -> LowerResult<BIR.Atom>:
   match array_primitive(op):
-    case True{}: partial_array_call(state, op, ty, args, env, registry)
+    case True{}: partial_array_call(state, op, args, parameters, ty, env, registry)
     case False{}: native_match_application_native_0(lower_occurrence(state, head, env, registry), args, env, registry)
 
-def native_match_application_native_4(v_3: Bool, v_1: State, v_4: BIR.Primitive, v_6: Nat, v_7: IR.Occurrence, v_10: List<&2, SourceArgument>, ty: U32, v_13: List<&2, Slot>, v_14: Catalog.Registry, element: Maybe<&2, U32>) -> LowerResult<BIR.Atom>:
+def native_match_application_native_4(v_3: Bool, v_1: State, v_4: BIR.Primitive, v_6: Nat, v_7: IR.Occurrence, v_10: List<&2, SourceArgument>, parameters: List<&2, BIR.Parameter>, ty: U32, v_13: List<&2, Slot>, v_14: Catalog.Registry, element: Maybe<&2, U32>) -> LowerResult<BIR.Atom>:
   match v_3:
     case False{}:
-      application_native_partial(v_1, v_4, v_7, v_10, ty, v_13, v_14)
+      application_native_partial(v_1, v_4, v_7, v_10, parameters, ty, v_13, v_14)
     case True{}:
       native_match_application_native_3(argument_prefix(v_1, v_6, v_10, v_13, v_14), v_4, v_13, v_14, element)
 
-def application_native(v_1: State, v_3: Bool, v_4: BIR.Primitive, v_6: Nat, v_7: IR.Occurrence, v_10: List<&2, SourceArgument>, ty: U32, v_13: List<&2, Slot>, v_14: Catalog.Registry) -> LowerResult<BIR.Atom>:
-  native_match_application_native_4(v_3, v_1, v_4, v_6, v_7, v_10, ty, v_13, v_14, array_element_handle(v_4, v_10))
+def application_native(v_1: State, v_3: Bool, v_4: BIR.Primitive, v_6: Nat, v_7: IR.Occurrence, v_10: List<&2, SourceArgument>, parameters: List<&2, BIR.Parameter>, ty: U32, v_13: List<&2, Slot>, v_14: Catalog.Registry) -> LowerResult<BIR.Atom>:
+  native_match_application_native_4(v_3, v_1, v_4, v_6, v_7, v_10, parameters, ty, v_13, v_14, array_element_handle(v_4, v_10))
 
 def native_match_application_direct_0(v_36: LowerResult<BIR.Atom>, v_13: List<&2, SourceArgument>, v_16: List<&2, Slot>, v_17: Catalog.Registry) -> LowerResult<BIR.Atom>:
   match v_36:
