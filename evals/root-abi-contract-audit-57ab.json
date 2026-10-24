@@ -1,0 +1,65 @@
+{
+  "schema": "root-abi-contract-audit-57ab-v1",
+  "date": "2026-10-24",
+  "tree": {"path": "/private/tmp/bend-fir-integrated57ab", "branch": "work/fir-ir-integrated57ab", "head": "f4da5172 + 9f38ee51 (arena-direct admission)"},
+  "purpose": "Prepare the root/ABI cutover so the final compiler root reaches real C providers instead of JS-only exports, with every caller migrated once on the published interfaces. No heavy run is implied by this file.",
+  "currentExports": {
+    "rootWrappers": ["parsed_module", "expand_modules_start", "template_step", "check_expanded_start", "inspect_checked_start", "checker_step", "emit_modules_start", "emit_library_start", "emitter_step"],
+    "embeddedParserEntry": "parse_with_fuel",
+    "totalPublicNames": 10,
+    "rootClosure": ["checkpoints/template_steps_v1.bend", "checkpoints/checker_core_steps_v1.bend", "checkpoints/js_emit_steps_v1.bend"],
+    "jsEmitProviderClosure": ["bend2/selfhost/backend_lower.bend", "bend2/selfhost/lower_catalog.bend", "bend2/selfhost/js_backend.bend", "bend2/selfhost/descriptor_nf.bend"],
+    "cReachableToday": false,
+    "why": "no C step config exists in this tree (no c_step_lower); js_emit_step_lower's providerClosure names no c_* module, so c_emit/c_backend*/c_parts cannot enter the root"
+  },
+  "sourceFileCarrier": {
+    "type": "backend_ir.SourceFile{path: String, source: String}",
+    "usedBy": ["emit_modules_start", "emit_library_start"],
+    "constraint": "single nominal carrier; the C seam must import BIR.SourceFile and MUST NOT declare a duplicate carrier or copy fields",
+    "note": "NativeSeed's gate-native branch files add endpoints; a second carrier in those files would silently split the contract"
+  },
+  "abiLists": [
+    {"file": "evals/selfhost_bootstrap_gate.ts", "names": 10, "parser": true},
+    {"file": "evals/selfhost_bootstrap_worker.mjs", "names": 10, "parser": true},
+    {"file": "evals/selfhost_emitted_suites.ts", "names": 10, "parser": true},
+    {"file": "evals/compiler_benchmark.ts", "names": 10, "parser": true},
+    {"file": "evals/native_compiler_experiment.ts", "names": 10, "parser": true},
+    {"file": "evals/selfhost_driver_source.ts", "names": 9, "parser": "embedded", "note": "root generator emits exactly these wrappers and refuses shadows"},
+    {"file": "checkpoints/template_checker_steps_driver_v1.bend", "names": 9, "parser": "not in driver", "note": "hand-written composite driver; must gain the C wrappers with the same names as the root"},
+    {"file": "evals/checker_library_smoke.ts", "names": 9, "parser": false},
+    {"file": "evals/checker_library_smoke_worker.mjs", "names": 9, "parser": false}
+  ],
+  "consumers": [
+    {"file": "evals/candidate_host.ts", "uses": ["parsed_module", "parse_with_fuel", "expand_modules_start", "check_expanded_start", "emit_modules_start", "emit_library_start"], "note": "hosts the JS target today; will need the C start/step entries to drive the C target through the same CLI shape"},
+    {"file": "evals/array_fact_dump.ts", "uses": ["parsed_module", "parse_with_fuel", "expand_modules_start", "check_expanded_start", "emitter_request"], "note": "diagnostic; emitter_request is NOT in the joined composite driver, so this file does not run here as-is — it is test scaffolding, not a caller to migrate"},
+    {"file": "evals/fir_foreign_smoke.ts", "uses": ["parsed_module", "expand_modules_start", "template_step", "check_expanded_start", "checker_step", "emit_modules_start", "emit_library_start", "emitter_step"]},
+    {"file": "evals/compiler_benchmark.ts", "uses": "all 10"},
+    {"file": "evals/native_compiler_experiment.ts", "uses": "all 10", "note": "native bridge; consumes BIR.SourceFile paths and bytes"},
+    {"file": "evals/selfhost_bootstrap_gate.ts", "uses": "all 10", "note": "validates the exact root composition prefix and the nine-wrapper order; a C wrapper must be added to both the check and the generated root together"},
+    {"file": "gates/selfhost.ts", "uses": "spawns candidate_host via --stage1", "note": "lane selection by declared .c/.js imports; the .c lane becomes honest only when the candidate exposes the C target"},
+    {"file": "evals/checker_library_smoke.ts", "uses": "9 names", "note": "proves the library entry without the parser"}
+  ],
+  "proposedCInterfaceShape": {
+    "status": "proposal only; FIRAcceptance publishes the real names and types",
+    "keep": "all ten existing names, signatures and semantics unchanged",
+    "add": [
+      {"name": "c_modules_start", "shape": "(program: Checked.CheckedProgram, files: List<&2, BIR.SourceFile>) -> CRun<CResult>", "rationale": "mirrors emit_modules_start for the C target and reuses the single SourceFile carrier"},
+      {"name": "c_library_start", "shape": "(program: Checked.CheckedProgram, exports: List<&2, String>, files: List<&2, BIR.SourceFile>) -> CRun<CResult>", "rationale": "only if the C target publishes a library entry; otherwise drop it rather than invent one"},
+      {"name": "c_step", "shape": "(-R: Type, run: CRun<R>) -> CRun<R>", "rationale": "opaque chunk driver, same quantum discipline as the other three"}
+    ],
+    "rootClosureAddition": "the C step module plus its provider closure (c_emit, c_backend*, whatever FIRAcceptance's CStep config names), so the root genuinely reaches C providers",
+    "callerMigration": "abiLists + consumers above, in one cut, with the gate's expected-wrapper list and the root generator updated together"
+  },
+  "orderingRules": [
+    "the root embeds accepted parser declarations; any source change after parser acceptance invalidates it, so acceptance comes last in the tree",
+    "the gate compares the root composition prefix byte-for-byte including the BIR import line, and requires exactly the ABI-minus-parser wrappers in order; adding C wrappers changes both lists at once",
+    "C seam must import BIR.SourceFile rather than declaring a carrier (NativeSeed resume constraint)"
+  ],
+  "openQuestionsForOwners": [
+    "FIRAcceptance: exact C start/step names, result types, chunk protocol and whether a C library entry exists",
+    "FIRAcceptance: whether the C seam needs the reduced checked FIR or the full CheckedProgram as input",
+    "NativeSeed: which gate-native branch files add native endpoints, so they are reviewed and integrated rather than duplicated",
+    "Main: whether the C wrapper set joins the root's nine (making twelve-ish public names) or ships as a separate component with its own ABI list"
+  ],
+  "claims": {"aggregatePass": false, "comparisonCertificate": false, "bootstrapGreen": false, "cReachable": false}
+}
