@@ -2010,8 +2010,8 @@ def s_st_array(st: AState) -> AState:
 
 def s_st_forced_note(st: AState, +message: String) -> AState:
   match st:
-    case AState{flow, pay, call, hot, ctr, array_hot, elem_unknown, forced, note, +changed, failure}:
-      AState{flow, pay, call, hot, ctr, array_hot, elem_unknown, True{}, s_foreign_add(note, message), Bool.or(changed, Bool.not(forced)), failure}
+    case AState{flow, pay, call, hot, ctr, array_hot, elem_unknown, forced, note, changed, failure}:
+      AState{flow, pay, call, hot, ctr, array_hot, elem_unknown, True{}, s_foreign_add(note, message), changed, failure}
 
 def s_st_fail(st: AState, +message: String) -> AState:
   match st:
@@ -2497,15 +2497,20 @@ def s_demand_heads_go(+heads: List<&2, String>, +st: AState) -> AState:
       next = s_hot_add_head(head, st)
       s_demand_heads_go(rest, next)
 
-def s_demand_unknown(unknown: Bool, st: AState) -> AState:
+
+# The heads a runtime value can actually have: a node is built by a reachable
+# Construct, by an array/primitive result, or by a foreign twin's laid result.
+# An unknown demanded value is sealed over exactly this set, never over the
+# whole catalog: a family with no producer in the program holds no value.
+def s_demand_unknown(unknown: Bool, +facts: Facts, +st: AState) -> AState:
   match unknown:
     case True{}: s_st_forced_note(st, "a shared value's type is not determined by the reachable facts")
     case False{}: st
 
-def s_demand_flow(flow: Flow, st: AState) -> AState:
+def s_demand_flow(flow: Flow, +facts: Facts, +st: AState) -> AState:
   match flow:
     case Flow{heads, unknown}:
-      st1 = s_demand_unknown(unknown, st)
+      st1 = s_demand_unknown(unknown, facts, st)
       s_demand_heads_go(heads, st1)
 
 def s_apply_param_at(found: Maybe<&2, U32>, st: AState, +code: U32, +bkey: String, atom: BIR.Atom) -> AState:
@@ -2545,14 +2550,14 @@ def s_apply_callees_go(+callees: List<&2, Resolved>, +bkey: String, +atom: BIR.A
       next = s_apply_one(st, res, bkey, atom, facts)
       s_apply_callees_go(rest, bkey, atom, facts, next)
 
-def s_apply_unknown_many(many: Bool, +bkey: String, arg: BIR.Atom, +st: AState) -> AState:
+def s_apply_unknown_many(many: Bool, +bkey: String, arg: BIR.Atom, +facts: Facts, +st: AState) -> AState:
   match many:
-    case True{}: s_demand_flow(s_atom_flow(bkey, arg, s_st_flows(st)), st)
+    case True{}: s_demand_flow(s_atom_flow(bkey, arg, s_st_flows(st)), facts, st)
     case False{}: st
 
 def s_apply_callees_known(callees: List<&2, Resolved>, +bkey: String, arg: BIR.Atom, many: Bool, +facts: Facts, +st: AState) -> AState:
   match callees:
-    case Nil{}: s_apply_unknown_many(many, bkey, arg, st)
+    case Nil{}: s_apply_unknown_many(many, bkey, arg, facts, st)
     case _: s_apply_callees_go(callees, bkey, arg, facts, st)
 
 def s_apply_site_add(site: ApplySite, +facts: Facts, +st: AState) -> AState:
@@ -2569,7 +2574,7 @@ def s_round_applies_go(+sites: List<&2, ApplySite>, +facts: Facts, +st: AState) 
 
 def s_demand_site_add(site: DemandSite, +facts: Facts, +st: AState) -> AState:
   match site:
-    case DemandSite{+bkey, atom}: s_demand_flow(s_atom_flow(bkey, atom, s_st_flows(st)), st)
+    case DemandSite{+bkey, atom}: s_demand_flow(s_atom_flow(bkey, atom, s_st_flows(st)), facts, st)
 
 def s_round_demands_go(+sites: List<&2, DemandSite>, +facts: Facts, +st: AState) -> AState:
   match sites:
@@ -2580,7 +2585,7 @@ def s_round_demands_go(+sites: List<&2, DemandSite>, +facts: Facts, +st: AState)
 
 def s_dup_if(dup: Bool, key: String, +facts: Facts, +st: AState) -> AState:
   match dup:
-    case True{}: s_demand_flow(s_flow(s_st_flows(st), key), st)
+    case True{}: s_demand_flow(s_flow(s_st_flows(st), key), facts, st)
     case False{}: st
 
 def s_round_dups_go(+keys: List<&2, String>, +facts: Facts, +st: AState) -> AState:
@@ -2623,6 +2628,9 @@ def s_explore_fields_go(+fields: List<&2, ArmField>, +facts: Facts, +st: AState)
           next = s_explore_heads(s_descriptor_heads(s_catalog_families(s_facts_catalog(facts)), s_catalog_labels(s_facts_catalog(facts)), ty), st)
           s_explore_fields_go(rest, facts, next)
 
+
+# A hot family's parameter fields are instantiated by the actual Construct
+# sites; seal exactly the values those sites store, never the whole catalog.
 def s_expand_attr(ctor_key: String, fields: List<&2, ArmField>, +facts: Facts, +st: AState) -> AState:
   st1 = s_st_ctr_add(st, ctor_key)
   s_explore_fields_go(s_live_fields(fields), facts, st1)
@@ -2711,7 +2719,7 @@ def s_analyze(fuel: Nat, st: AState, +facts: Facts) -> AState:
         case AState{flow, pay, call, hot, ctr, array_hot, elem_unknown, forced, note, changed, failure}:
           match changed:
             case False{}: AState{flow, pay, call, hot, ctr, array_hot, elem_unknown, forced, note, False{}, failure}
-            case True{}: s_analyze(pred, s_analysis_round(AState{flow, pay, call, hot, ctr, array_hot, elem_unknown, forced, note, False{}, failure}, facts), facts)
+            case True{}: s_analyze(pred, s_analysis_round(AState{flow, pay, call, hot, ctr, array_hot, elem_unknown, False{}, Nil{}, False{}, failure}, facts), facts)
 
 # ---------------------------------------------------------------------------
 # Plan assembly
@@ -2745,6 +2753,16 @@ def s_plan_result(st: AState, +facts: Facts) -> SharingResult:
         case Some{message}: SharingFail{message}
         case None{}: SharingOk{s_plan_of(facts, ctr, array_hot, forced, note)}
 
+# A round either stops or adds at least one lattice bit. The lattice is: two
+# flow maps over V value keys and H head keys, V callee sets over T targets,
+# and H hot bits. So 2*V*H + V*T + H + 2 rounds bound every program; V counts
+# bodies, defined values, occurrence keys and symbols, T counts bodies plus
+# foreign targets. No program size can exceed this, and no fixed cap exists.
+def s_bound_total(+values: Nat, +heads: Nat, +targets: Nat) -> Nat:
+  flow = Nat.mul(Nat.mul(Nat.add(values, 1n), heads), 2n)
+  call = Nat.mul(Nat.add(values, 1n), targets)
+  Nat.add(Nat.add(Nat.add(flow, call), heads), 2n)
+
 def s_analysis_bound(+facts: Facts) -> Nat:
   values = Nat.add(
     Nat.add(
@@ -2759,7 +2777,7 @@ def s_analysis_bound(+facts: Facts) -> Nat:
       List.length(&2, String, s_catalog_foreign_keys(s_facts_catalog(facts)))),
     1n)
   heads = Nat.add(List.length(&2, String, s_catalog_family_keys(s_facts_catalog(facts))), 1n)
-  Nat.add(Nat.mul(Nat.add(values, 1n), Nat.add(heads, targets)), 2n)
+  s_bound_total(values, heads, targets)
 
 def s_catalog_result_at(failure: Maybe<&2, String>, +facts: Facts, built: BuiltFacts) -> SharingResult:
   match failure:
