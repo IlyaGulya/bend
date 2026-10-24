@@ -83,6 +83,102 @@ def text_of_string(source: String) -> String:
 def chars_forward(source: String) -> List<&2, Char>:
   List.reverse(&2, Char, chars_rev(source, Nil{}))
 
+# ---------------------------------------------------------------------------
+# C string literals
+#
+# A C literal's bytes are what the runtime reads, and the runtime reads exactly
+# the count the renderer passes, so both come from one UTF-8 encoding of the
+# text. Bytes are written as three-digit octal escapes: unlike \x they cannot
+# absorb a following hex digit, and they are unambiguous for NUL. Printable
+# ASCII stays readable; quote, backslash and the three C whitespace escapes use
+# their short forms. Definitions are ordered because the checker requires a
+# definition before its use and does not accept a computed match scrutinee.
+def utf8_bytes_deep_of(bmp: Bool, +code: U32) -> List<&2, U32>:
+  match bmp:
+    case True{}: [U32.or(224, U32.shrn(code, 12n)), U32.or(128, U32.and(U32.shrn(code, 6n), 63)), U32.or(128, U32.and(code, 63))]
+    case False{}: [U32.or(240, U32.shrn(code, 18n)), U32.or(128, U32.and(U32.shrn(code, 12n), 63)), U32.or(128, U32.and(U32.shrn(code, 6n), 63)), U32.or(128, U32.and(code, 63))]
+
+def utf8_bytes_deep(+code: U32) -> List<&2, U32>:
+  utf8_bytes_deep_of(U32.is_lt(code, 65536), code)
+
+def utf8_bytes_wide_of(two: Bool, +code: U32) -> List<&2, U32>:
+  match two:
+    case True{}: [U32.or(192, U32.shrn(code, 6n)), U32.or(128, U32.and(code, 63))]
+    case False{}: utf8_bytes_deep(code)
+
+def utf8_bytes_wide(+code: U32) -> List<&2, U32>:
+  utf8_bytes_wide_of(U32.is_lt(code, 2048), code)
+
+def utf8_bytes_of(small: Bool, +code: U32) -> List<&2, U32>:
+  match small:
+    case True{}: [code]
+    case False{}: utf8_bytes_wide(code)
+
+def utf8_bytes(+code: U32) -> List<&2, U32>:
+  utf8_bytes_of(U32.is_lt(code, 128), code)
+
+def oct3(+byte: U32) -> String:
+  text_of_pieces(["\\", U32.show(U32.and(U32.shrn(byte, 6n), 7)), U32.show(U32.and(U32.shrn(byte, 3n), 7)), U32.show(U32.and(byte, 7))])
+
+def octals(bytes: List<&2, U32>, +acc: String) -> String:
+  match bytes:
+    case Nil{}: acc
+    case +byte <> rest: octals(rest, String.append(acc, oct3(byte)))
+
+def bytes_each(chars: List<&2, Char>, +acc: List<&2, U32>) -> List<&2, U32>:
+  match chars:
+    case Nil{}: acc
+    case +char <> rest: bytes_each(rest, List.append(&2, U32, utf8_bytes(Char.to_u32(char)), acc))
+
+def bytes_len(bytes: List<&2, U32>) -> Nat:
+  match bytes:
+    case Nil{}: 0n
+    case _ <> rest: Nat.add(1n, bytes_len(rest))
+
+def utf8_byte_len(+text: String) -> Nat:
+  bytes_len(bytes_each(chars_forward(text), Nil{}))
+
+def literal_high(code: U32) -> String:
+  octals(utf8_bytes(code), "")
+
+def literal_wide_of(ascii: Bool, +code: U32, +char: Char) -> String:
+  match ascii:
+    case True{}: String.from_list([char])
+    case False{}: literal_high(code)
+
+def literal_wide(+code: U32, +char: Char) -> String:
+  literal_wide_of(U32.is_lt(code, 127), code, char)
+
+def literal_plain_of(printable: Bool, +char: Char) -> String:
+  match printable:
+    case True{}: literal_wide(Char.to_u32(char), char)
+    case False{}: literal_high(Char.to_u32(char))
+
+def literal_plain(+char: Char) -> String:
+  literal_plain_of(U32.is_ge(Char.to_u32(char), 32), char)
+
+def literal_piece(char: Char) -> String:
+  match char:
+    case '"': "\\\""
+    case '\\': "\\\\"
+    case '\n': "\\n"
+    case '\r': "\\r"
+    case '\t': "\\t"
+    case _: literal_plain(char)
+
+def literal_pieces(chars: List<&2, Char>, +acc: List<&2, String>) -> List<&2, String>:
+  match chars:
+    case Nil{}: acc
+    case +char <> rest: literal_pieces(rest, literal_piece(char) <> acc)
+
+# The body is one built string; both quotes are linked onto it by text_prepend,
+# so no step copies the growing literal.
+def literal_body(chars: List<&2, Char>) -> String:
+  text_of_pieces(List.reverse(&2, String, literal_pieces(chars, Nil{})))
+
+def c_string_literal(+text: String) -> String:
+  text_prepend("\"", text_prepend(literal_body(chars_forward(text)), "\""))
+
 # Only CodeMode can start an invocation; Key collects a candidate's key.
 type Mode is Data:
   CodeMode{}

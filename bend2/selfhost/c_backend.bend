@@ -570,7 +570,7 @@ def export_names(rows: List<&2, ExportRow>, +acc: String) -> String:
     case Nil{}: acc
     case +row <> rest:
       match row:
-        case ExportRow{name, _, _, _}: export_names(rest, Link.text_prepend(c_quote(name), Link.text_prepend(if_first(acc), acc)))
+        case ExportRow{name, _, _, _}: export_names(rest, Link.text_prepend(Link.c_string_literal(name), Link.text_prepend(if_first(acc), acc)))
 
 def if_first(acc: String) -> String:
   match String.is_empty(acc):
@@ -732,31 +732,11 @@ def part_require(parts: List<&2, Part>) -> Maybe<&2, String>:
 # underscore and a literal underscore doubles, so `foo.bar` and `foo_bar` never
 # merge. The runtime's own spellings (Clo~apply, IO~emit, SNil, SCon) are
 # preserved exactly. No unique-suffix guessing: a clash would be a bug here.
-def c_escape_char(+char: Char) -> String:
-  match char:
-    case '\"': "\\\""
-    case '\\': "\\\\"
-    case '\n': "\\n"
-    case '\r': "\\r"
-    case '\t': "\\t"
-    case _: String.from_list([char])
-
 # A C string literal can be long, so the escaped body is accumulated as pieces
 # and concatenated once; escaped_char never grows the stack beyond one character.
 # The closing quote is the seed of the reversed piece list, so escaping never
 # appends to it: pieces are prepended, reversed once (tail), and the opening
 # quote is consed on the front.
-def c_quote_chars(chars: List<&2, Char>) -> String:
-  Link.text_of_pieces("\"" <> List.reverse(&2, String, c_quote_pieces(chars, ["\""])))
-
-def c_quote_pieces(chars: List<&2, Char>, +acc: List<&2, String>) -> List<&2, String>:
-  match chars:
-    case Nil{}: acc
-    case +char <> rest: c_quote_pieces(rest, c_escape_char(char) <> acc)
-
-def c_quote(text: String) -> String:
-  c_quote_chars(Link.chars_forward(text))
-
 def nat_c(value: Nat) -> String:
   cat([Nat.show(value), "ull"])
 
@@ -1162,7 +1142,7 @@ def atom_part(atom: BIR.Atom, +plan: Plan) -> Part:
     case BIR.Word{value}: okp(u32_c(value))
     case BIR.Natural{value}: okp(nat_c(value))
     case BIR.FloatBits{bits}: okp(U32.show(bits))
-    case BIR.Text{+value}: okp(cat(["bend_text(e, ", c_quote(value), ", ", Nat.show(String.length(value)), ")"]))
+    case BIR.Text{+value}: okp(cat(["bend_text(e, ", Link.c_string_literal(value), ", ", Nat.show(Link.utf8_byte_len(value)), ")"]))
     case BIR.Boolean{value}: bool_lit_part(bool_name(value), plan)
     case BIR.Null{}: okp("0")
     case BIR.Undefined{}: okp("0")
