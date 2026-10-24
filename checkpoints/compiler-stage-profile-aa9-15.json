@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "kind": "compiler-stage-profile-aa9-contract-receipt",
+  "diagnosticOnly": true,
+  "acceptanceEvidence": false,
+  "sourceHead": "aa9a39a7",
+  "head": "aa9a39a7c68d5b2c76ddd8451388177907fd213c",
+  "worktree": "/private/tmp/bend-stage-aa9a39a7",
+  "command": "bun test evals/compiler_stage_profile.test.ts --reporter=junit --reporter-outfile=/tmp/stage-aa9-15.junit.xml",
+  "exitCode": 0,
+  "tests": 15,
+  "assertions": 49,
+  "failures": 0,
+  "testNames": [
+    "stage profile binds a registered namespace and retains fully qualified request tags",
+    "stage profile rejects a foreign namespace instead of matching the simple tag",
+    "stage profile retains tags but does not group without a manifest",
+    "stage profile refuses a basename fallback when sources collide",
+    "stage profile reports a pinned source hash mismatch instead of a group",
+    "stage profile counts an erased Direct request as a shape, not a request sample",
+    "stage profile leaves groups conditional without a component receipt",
+    "stage profile treats a receipt without the profiled artifact hash as unverified",
+    "stage profile records a foreign artifact receipt as mismatch",
+    "stage profile upgrades a receipt-bound manifest to exact groups",
+    "typed progress retains the full constructor identity",
+    "completed finish lets the collector mark an open wrapper stage incomplete",
+    "failed finish closes open wrapper stages as failed boundaries",
+    "a rejected end token does not lose the wrapper span",
+    "a closed wrapper stage leaves a complete measurement"
+  ],
+  "historical": {
+    "previousReceipt": "cf099257",
+    "previousTests": 16,
+    "note": "one wording/static metadata test removed by final freeze; source unchanged, no historical repin"
+  },
+  "rawLog": {
+    "path": "/tmp/stage-aa9-15.raw.log",
+    "bytes": 103,
+    "sha256": "bf823737e84f5c1c1b593503f4731f400ab80587ba375bb7f8a39ac9777df184"
+  },
+  "junit": {
+    "path": "/tmp/stage-aa9-15.junit.xml",
+    "bytes": 3217,
+    "sha256": "e57072bee376336200d0cf888b4bd728010ece0ed046d7fc46dc2d8d35a0f6b0"
+  },
+  "inputs": {
+    "evals/compiler_stage_profile.test.ts": "ffd2ab504e4bb23c1711eaba9e1f6a897e1d85d49daec7856197e52f493d92c1",
+    "evals/compiler_stage_profile.mjs": "3e9a679575b4cbd21f5f8263fc13f8bc5d62d63fb720a91f9be8d3f1d3219f07",
+    "evals/compiler_profile.mjs": "99fca04a701af1fec88e49ab3ec4673ada67fd504ed22d6901b1937e997b4ae8"
+  },
+  "runtime": {
+    "bun": "1.4.2",
+    "node": "v23.11.0",
+    "platform": "Darwin",
+    "arch": "arm64"
+  },
+  "freshEmitterManifest": {
+    "path": "checkpoints/emitter-steps-v1.json",
+    "sha256": "63c51f8970fb6aaf024101c70d804893ea757b3c68cfd132b6bdfdd87b096619",
+    "requestGroups": 27,
+    "natCGroupIndices": [
+      6
+    ],
+    "runType": "EmitterRun",
+    "outputPinSha256": "d7dbe31856eb8d9e53eeddefab0ea4eed56eafe6420a7478d4c37b53d63fb956",
+    "actualOutputSha256": "d7dbe31856eb8d9e53eeddefab0ea4eed56eafe6420a7478d4c37b53d63fb956",
+    "outputPinMatches": true
+  },
+  "mechanismFixtureStatus": {
+    "status": "STALE_FAIL",
+    "reason": "fresh manifest has 27 groups and cps_provider_2_nat_c is in group 6; the frozen diagnostic driver/builder hardcode group 7 and 26 cases",
+    "action": "report stale; do not special-case counts or test-run the old nat_c mechanism as coverage",
+    "actualEmitterWorkload": "OPEN: needs a legitimate checker-produced FIR path through a fresh Emitter Run and a regenerated group view/manifest; nat_c scalar leaf is not coverage"
+  },
+  "guardInspection": {
+    "status": "static-checked-not-executed",
+    "builder": "evals/native_stage_profile_build.ts",
+    "call": "runHeavyGate(...,{memoryMiB:8192,rssMiB:8192,pollMs:10,timeoutMs:600000})",
+    "workerLimits": {
+      "stackSizeMb": 256,
+      "maxOldGenerationSizeMb": 3072
+    },
+    "prerequisite": "one actual guarded run after Root parser/component lease frees and fresh Emit/root exists; prefer real Emitter workload over nat_c mechanism"
+  },
+  "notRun": [
+    "heavy/native build",
+    "old fcd C known failure",
+    "guarded builder",
+    "actual Emitter A/B"
+  ],
+  "note": "one fast 15-contract run while Root producer is sparse; frozen canonical source/generator/compiler limits untouched"
+}
