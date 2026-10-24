@@ -4,8 +4,12 @@ Normative specification of the checked frontend IR (FIR) boundary of the self-ho
 compiler. Source of truth for symbols and line numbers: commit `943de390`. Companion
 document: [`BIR_LAWS.md`](./BIR_LAWS.md). This file describes obligations and what
 currently enforces them. It is **not** a proof, a soundness theorem, or a claim that
-successful checking establishes semantic preservation. No mechanized model of FIR, of
-the checker, or of lowering exists in this repository.
+successful checking establishes semantic preservation. No mechanized model or proof of
+this selfhost FIR (its carrier, publication invariants, checker or checker→BIR
+lowering) exists. That statement is about this pipeline only: `bend2/bendtt.lean` is a
+separate Lean development of the Bend kernel, with its own mechanized claims about
+that kernel; it mentions neither `CheckedProgram` nor the selfhost checker, and it
+does not formalize lowering.
 
 ## 0. Notation
 
@@ -34,6 +38,25 @@ Status tags used per law:
 | `[V]` | partly checked by an executable consumer/decoder, not by the producer |
 | `[N]` | normative requirement; **not** established by code or proof |
 
+## 0.1 Relation to the earlier checkpoint contract
+
+`checkpoints/SELFHOST_IR_ARCHITECTURE.md` §4 already listed law IDs F1–F3, L1–L7,
+B1–B2, G1–G2 and K1–K5 as implementation obligations. That document is a historical
+architecture record pinned to the compiler57y/57t sources it discusses; its
+acceptance results are not reclassified here. For the current source `943de390`, this
+file **refines and supersedes** its FIR-side obligations:
+
+| earlier ID | current specification |
+| --- | --- |
+| F1 (publication preserves reachable handles) | FIR-R1–R5 and §13 obligations 1–2 |
+| F2 (occurrence preserves the contextual judgement) | FIR-Q1–Q8 |
+| F3 (affine owner; success/failure/inspection/handoff) | FIR-O1–O4, FIR-I1–I5 |
+
+The lowering/BIR obligations (L1–L7, B1–B2, G1–G2 and the current part of K) are
+owned by `BIR_LAWS.md`; K1–K4 remain historical obligations of the rejected 57r
+design, not the current ABI. The checkpoint file now points here rather than being
+the sole contract.
+
 ## 1. What a successful check grants
 
 `Checker.check(modules)` first expands templates
@@ -45,7 +68,7 @@ signature list. `CheckSuccess{program}` is produced only by `arena_check_exit`
 On success, `F` carries, at most, the following facts:
 
 1. **Ownership** of a single source arena containing every retained term, pattern,
-   binder, tape and signature (`[T]` + `[C]`; §3).
+   binder, tape and signature (`[T]` + `[C]`; §4).
 2. **A checked body occurrence for every term-bodied definition**: each
    `IR.Definition` whose body is `DefTerm{term}` has `checked = Some{occurrence}`;
    `require_checked_definition` turns the missing case into a failure
@@ -100,9 +123,11 @@ signatures, a list of module metadata. It does not guarantee:
 * that an occurrence's `term` really has the type in `ty`;
 * that definitions were reachable from the producer at all.
 
-`WF(F)` below is therefore a **producer contract**, not a predicate encoded in the
-carrier. A consumer that needs more than the shape must re-check it (`[V]`), and no
-consumer currently re-checks all of it. Even `read_node`
+`WF(F)` below is therefore a **presumed producer contract**, not a predicate encoded
+in the carrier and not a proven invariant. A consumer that needs more than the shape
+must re-check it (`[V]`), and no consumer currently re-checks all of it. The API-level
+requirement to accept only producer output is consequently `[N]`, not `[T]`
+(FIR-C1). Even `read_node`
 (`checked_frontend.bend:31-34`) is an unchecked accessor: it calls
 `Arena.get_node(source, id)` with the raw id and no masking or bounds test.
 
@@ -148,21 +173,24 @@ tag says how much is actually established.
 * **WF8 — semantic facts are the checker's decisions.** The quantities, symbols,
   pattern layouts and types recorded in occurrences are the ones this checker
   produced; they are not re-derived, normalized to a canonical form, or proved
-  equal to any external specification. `[T]/[C]`, not `[N]` in the sense of a
-  theorem.
+  equal to any external specification. `[C]`; their semantic adequacy is `[N]` (§13).
 
 ## 4. Ownership and lifetime
 
 **FIR-O1 `[T]`.** `CheckedProgram` is declared `is Type` (affine). `CheckSuccess`
 transfers the sole owner of the source arena and of every handle reachable from the
-program. There is no shared reference and no copy path: duplicating `F` requires
-explicitly matching with `+` fields or constructing a new record.
+program. There is no shared reference and no implicit copy: consuming the record by
+value moves its owning fields, and an owning field cannot legitimately be duplicated.
+A `+` binder annotation does not turn an owning field into a copyable one merely by
+being written; quantities must already permit the use. A consumer that needs the
+program after a read must have it returned (as inspection does, FIR-I1), not copied.
 
-**FIR-O2 `[T]`.** `CheckFailure{diagnostic}` (`checked_frontend.bend:20-22`) carries
-no program. `arena_check_exit` discards the arena on failure
-(`checker.bend:15070-15072`). A failed check therefore yields **no partial
-signatures, no partial module list and no arena owner**. Consumers cannot inspect a
-partially checked prefix.
+**FIR-O2 `[T]` + `[C]`.** `CheckFailure{diagnostic}`
+(`checked_frontend.bend:20-22`) carries no program: that is the `[T]` part, and it is
+why no partial result can be returned. `arena_check_exit` also discards the arena on
+failure (`checker.bend:15070-15072`), which is the `[C]` part. A failed check
+therefore yields **no partial signatures, no partial module list and no arena
+owner**. Consumers cannot inspect a partially checked prefix.
 
 **FIR-O3 `[T]`.** Consumers consume `F`. `lower(program)`, `CEmit.emit(checked, ...)`,
 `JS.emit(program, ...)` take the program by value and return a result that does not
@@ -170,13 +198,14 @@ contain it (`backend_lower.bend:1943-1946`; `c_emit.bend:97-105`). Reusing `F` a
 such a call is an affine violation, not a supported operation. The only consumer
 that returns the owner is inspection (§11).
 
-**FIR-O4 `[C]`.** The producer never hands out a program containing transient
-handles. Per declaration, `check_declarations_step` publishes the elaborated
+**FIR-O4 `[C]/[N]`.** The producer hands out a program containing transient
+handles nowhere on the publication paths it traverses. Per declaration, `check_declarations_step` publishes the elaborated
 top-level, the open-law tape and the new scope entries, *then* calls `arena_release`
 (`checker.bend:11031-11048`); `arena_release` rewinds the transient arena to
 `Mark{0,0,0,0,0,0}` (`checker.bend:13031-13034`; `Arena.rewind`,
 `checker_arena.bend:1297-1308`). A declaration that fails before publication fails
-the whole check rather than escaping half-published state.
+the whole check rather than escaping half-published state. The universal statement
+— that no publication path was missed — is not proved (FIR-R4, §13.1).
 
 ## 5. Arena regions, publication and handle identity
 
@@ -186,7 +215,7 @@ by each accessor's `temporary` flag or by the high bit of the handle
 (`arena_is_transient`, `checker_ir.bend:89-92`; bit 31, bit 30 marks a reversed
 tape cursor, `checker_ir.bend:94-101`).
 
-**FIR-R1 `[T]/[C]` — two lifetimes.** The source region is the only region whose
+**FIR-R1 `[C]/[N]` — two lifetimes.** The source region is the only region whose
 contents may outlive a declaration. The transient region is declaration-local
 scratch; `Arena` carries the memo tables, case-prefix cache and the rewind
 generation on its transient instance (`checker_arena.bend:84-94`). `Arena.rewind`
@@ -340,11 +369,12 @@ cache keyed by term identity. The in-source contract is at
 handles are shared; the child order per constructor is documented there and **only**
 there.
 
-**FIR-Q1 `[T]/[C]` — one term, many occurrences.** The same term handle may be
-checked in different environments and receive different occurrences and types. No
-`term → type` map exists in `F`, and consumers must not build one.
+**FIR-Q1 `[C]` — one term, many occurrences.** The same term handle may be checked
+in different environments and receive different occurrences and types. The carrier
+has no `term → type` map either, but that absence is not a proof that the producer
+never collapsed contexts; the construction is. Consumers must not build such a map.
 
-**FIR-Q2 `[T]/[C]` — fields.** `TypedOccurrence{term, ty, formal, symbol, bindings,
+**FIR-Q2 `[C]` — fields and their child order.** `TypedOccurrence{term, ty, formal, symbol, bindings,
 children}`: `term` is the materialized/published term of this occurrence, `ty` its
 inferred type handle, `formal` the resolved binder quantity for
 `App/Lam/All/Mat/Absurd` only, `symbol` the selected global for named heads only,
@@ -386,7 +416,7 @@ nested variant at `:430-458`). The accepted coverage decision is not stored as a
 proof object in `F`; occurrences record the materialized cases, not the derivation
 that they suffice.
 
-**FIR-Q6 `[T]/[C]` — canonical provenance.** `IR.Symbol{owner, local, kind,
+**FIR-Q6 `[C]` — canonical provenance.** `IR.Symbol{owner, local, kind,
 signature}` (`checker_ir.bend:28-33`) is the resolution result. It is produced from
 the selected `ArenaGlobal` (`checked_symbol`, `checker.bend:537-541`) and uses the
 declaration kind and published type handle. It is not an interned spelling and does
@@ -406,9 +436,9 @@ these bits and runtime numeric semantics.
 
 ## 8. Checked types and descriptors
 
-**FIR-T1 `[T]`.** A checked type is a `U32` handle to a term in the source arena.
-There is no type-expression record, no normalized type form and no descriptor in FIR.
-`ty`/`signature` fields are simply handles.
+**FIR-T1 `[T]`.** In `F`, a checked type is a `U32` handle to a term in the source
+arena. There is no type-expression record, no normalized type form and no descriptor
+in FIR. `ty`/`signature` fields are simply handles.
 
 **FIR-T2 `[C]`.** At the definition boundary the checker inspects the inferred
 *kind* of the declared or inferred signature and requires the node itself to be
@@ -432,9 +462,10 @@ normalizes the descriptor language itself (`DescriptorNf.nf_context`,
 
 ## 9. Failure semantics
 
-**FIR-F1 `[T]`.** Failure is `CheckFailure{diagnostic}`, with no program and no arena
-(§4, FIR-O2). The diagnostic fields are `file`, `span`, `message`, `expected`,
-`observed`; only `span`/`file` are source locations.
+**FIR-F1 `[T]` + `[C]`.** Failure is `CheckFailure{diagnostic}`, with no program
+(`[T]`; §4, FIR-O2) and no arena handed on (`[C]`). The diagnostic fields are
+`file`, `span`, `message`, `expected`, `observed`; only `span`/`file` are source
+locations.
 
 **FIR-F2 `[C]`.** Checking is short-circuiting and reports **one** diagnostic. The
 first failing declaration in source order wins within a module
@@ -467,13 +498,16 @@ read it as rejection.
 A consumer of `F` may assume only the following, and should re-check anything it
 cannot tolerate being wrong.
 
-**FIR-C1 `[T]`.** Accept `F` only from `CheckSuccess`. There is no supported way to
-obtain a partially checked program.
+**FIR-C1 `[N]` — API provenance, not a type check.** Accept `F` only from
+`CheckSuccess`, and do not accept a caller-fabricated record as checked. This is a
+trust boundary, not something the type enforces: §2 shows that a value with the right
+shape is type-legal. There is no supported way to obtain a partially checked program;
+that part is `[T]` via the distinct result constructors.
 
-**FIR-C2 `[C], [V]`.** Treat `modules` and `metadata` as positionally paired in
-input order (FIR-S4); verify namespace/path before use, as lowering does. Do not
-assume source order, uniqueness, or that `signatures` mirrors `modules`, and do not
-re-feed a module list that is not dependency-ordered (FIR-S7).
+**FIR-C2 `[C], [V]`; ordering premise `[N]`.** Treat `modules` and `metadata` as
+positionally paired in input order (FIR-S4); verify namespace/path before use, as
+lowering does. Do not assume source order, uniqueness, or that `signatures` mirrors
+`modules`, and do not re-feed a module list that is not dependency-ordered (FIR-S7).
 
 **FIR-C3 `[C]`.** Resolve module-local names through `ModuleMetadata.scope`, not by
 searching `modules` or the final signature list. Treat `signatures` as an
@@ -493,11 +527,13 @@ the language does not prevent abuse.
 `LowerFailure` also consumes `F`; there is no "try lowering, then inspect" path.
 Inspection (§11) is the only operation that returns the owner.
 
-**FIR-C7 `[T]`.** `lower(F)` returns `Lowered{program: B}` where `B` contains no
-arena handles (`BIR.Program{codes, declarations, constructors, families,
-type_functions, ending}`, `backend_ir.bend:233-234`; atoms carry ids, keys, literals
-and spans only, `backend_ir.bend:11-22`). This is the boundary to `BIR_LAWS.md`:
-everything FIR-specific ends here.
+**FIR-C7 `[T]` (shape) + `[C]`.** `lower(F)` returns `Lowered{program: B}`. The
+field types of `BIR.Program{codes, declarations, constructors, families,
+type_functions, ending}` (`backend_ir.bend:233-234`) contain no `Arena`,
+`Occurrence` or `Scope` objects; atoms carry ids, keys, literals and spans
+(`backend_ir.bend:11-22`). The fields are therefore not arena handles in the type
+sense, and `lower` constructs them from FIR values (`[C]`). This is the boundary to
+`BIR_LAWS.md`: everything FIR-specific ends here.
 
 ## 11. Inspection and readback
 
@@ -639,10 +675,12 @@ is a semantic-preservation proof, and none was executed while writing this file.
   that this is **not** a proof of the full FIR/BIR compiler; it should not be cited
   as one.
 * **`checkpoints/SELFHOST_IR_ARCHITECTURE.md`** carries the earlier prose contract
-  for the same boundary (in Russian) and the explicit caveats that a
-  `CheckedProgram` value is not by itself a validity proof and that resource limits
-  are not semantic verdicts. It also contains one stale claim about a live
-  `dispatch_c → inspect_checked → c_emit` path, corrected in FIR-I4.
+  for the same boundary (in Russian, law IDs F1–F3/L/B/G/K) and the explicit caveats
+  that a `CheckedProgram` value is not by itself a validity proof and that resource
+  limits are not semantic verdicts. Its FIR-side laws are refined/superseded here
+  (§0.1); its historical acceptance receipts remain pinned to their sources. The
+  stale live-`inspect_checked`-C-path claim and the "single source of contract"
+  claim are corrected in that file itself.
 
 No passing native build, fixture, or typecheck of `F` is asserted here. The
 acceptance question "did the compiler accept this source?" is answered only by an
