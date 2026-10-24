@@ -334,15 +334,37 @@ def occurrence_type(occurrence: IR.Occurrence) -> Maybe<&2, U32>:
     case IR.CaseOccurrence{_, ty, _, _}: Some{ty}
     case IR.LocalOccurrence{_, ty, _, _, _}: Some{ty}
 
+def first_binding_type(bindings: List<&2, IR.CheckedBinding>) -> Maybe<&2, U32>:
+  match bindings:
+    case Nil{}: None{}
+    case IR.CheckedBinding{_, ty, _} <> _: Some{ty}
+
 def first_occurrence_type(children: List<&2, IR.Occurrence>) -> Maybe<&2, U32>:
   match children:
     case Nil{}: None{}
     case child <> _: occurrence_type(child)
 
-def first_argument_type(arguments: List<&2, SourceArgument>) -> Maybe<&2, U32>:
+def live_argument_type(arguments: List<&2, SourceArgument>) -> Maybe<&2, U32>:
   match arguments:
     case Nil{}: None{}
+    case SourceArgument{Ast.QZero{}, _} <> rest: live_argument_type(rest)
     case SourceArgument{_, occurrence} <> _: occurrence_type(occurrence)
+
+def last_live_argument_type(arguments: List<&2, SourceArgument>) -> Maybe<&2, U32>:
+  match arguments:
+    case Nil{}: None{}
+    case SourceArgument{Ast.QZero{}, _} <> rest: last_live_argument_type(rest)
+    case SourceArgument{_, occurrence} <> rest:
+      match last_live_argument_type(rest):
+        case Some{ty}: Some{ty}
+        case None{}: occurrence_type(occurrence)
+
+# Array.new's element is the value it is given (its erased -T and depth precede
+# it); every other array primitive operates on its first live argument.
+def array_element_handle(op: BIR.Primitive, arguments: List<&2, SourceArgument>) -> Maybe<&2, U32>:
+  match op:
+    case BIR.PrimArrayNew{}: last_live_argument_type(arguments)
+    case _: live_argument_type(arguments)
 
 def array_element_is_argument(op: BIR.Primitive) -> Bool:
   match op:
@@ -351,6 +373,7 @@ def array_element_is_argument(op: BIR.Primitive) -> Bool:
     case BIR.PrimArraySize{}: True{}
     case BIR.PrimArrayClone{}: True{}
     case BIR.PrimArraySwap{}: True{}
+    case BIR.PrimArrayNode{}: True{}
     case BIR.PrimArrayLeft{}: True{}
     case BIR.PrimArrayRight{}: True{}
     case BIR.PrimArrayLeafValue{}: True{}
@@ -676,7 +699,7 @@ def native_match_application_native_4(v_3: Bool, v_1: State, v_4: BIR.Primitive,
       native_match_application_native_3(argument_prefix(v_1, v_6, v_10, v_13, v_14), v_4, v_13, v_14, element)
 
 def application_native(v_1: State, v_3: Bool, v_4: BIR.Primitive, v_6: Nat, v_7: IR.Occurrence, v_10: List<&2, SourceArgument>, v_13: List<&2, Slot>, v_14: Catalog.Registry) -> LowerResult<BIR.Atom>:
-  native_match_application_native_4(v_3, v_1, v_4, v_6, v_7, v_10, v_13, v_14, first_argument_type(v_10))
+  native_match_application_native_4(v_3, v_1, v_4, v_6, v_7, v_10, v_13, v_14, array_element_handle(v_4, v_10))
 
 def native_match_application_direct_0(v_36: LowerResult<BIR.Atom>, v_13: List<&2, SourceArgument>, v_16: List<&2, Slot>, v_17: Catalog.Registry) -> LowerResult<BIR.Atom>:
   match v_36:
@@ -808,9 +831,9 @@ def native_match_partial_1(v_7: List<&2, BIR.Parameter>, v_1: State, v_3: U32, v
 def partial(v_1: State, v_3: U32, v_5: List<&2, BIR.Arg>, v_7: List<&2, BIR.Parameter>) -> LowerResult<BIR.Atom>:
   native_match_partial_1(v_7, v_1, v_3, v_5)
 
-def tag(state: State, constructor: Catalog.Constructor, value: BIR.Atom) -> LowerResult<BIR.Atom>:
-  tag_native(state, constructor_native(constructor), constructor, value)
-def tag_native(state: State, identity: String, constructor: Catalog.Constructor, value: BIR.Atom) -> LowerResult<BIR.Atom>:
+def tag(state: State, constructor: Catalog.Constructor, value: BIR.Atom, element: Maybe<&2, U32>) -> LowerResult<BIR.Atom>:
+  tag_native(state, constructor_native(constructor), constructor, value, element)
+def tag_native(state: State, identity: String, constructor: Catalog.Constructor, value: BIR.Atom, element: Maybe<&2, U32>) -> LowerResult<BIR.Atom>:
   match identity:
     case "Nat.Zero": primitive(state, BIR.PrimIsNatZero{}, [value])
     case "Nat.Succ": primitive(state, BIR.PrimIsNatSuccessor{}, [value])
@@ -818,15 +841,15 @@ def tag_native(state: State, identity: String, constructor: Catalog.Constructor,
     case "Bool.True": primitive(state, BIR.PrimIsTrue{}, [value])
     case "String.SNil": primitive(state, BIR.PrimIsStringEmpty{}, [value])
     case "String.SCon": primitive(state, BIR.PrimIsStringNonempty{}, [value])
-    case "Array.ALeaf": primitive(state, BIR.PrimIsArrayLeaf{}, [value])
-    case "Array.ANode": primitive(state, BIR.PrimIsArrayNode{}, [value])
+    case "Array.ALeaf": primitive_fact(state, BIR.PrimIsArrayLeaf{}, [value], element)
+    case "Array.ANode": primitive_fact(state, BIR.PrimIsArrayNode{}, [value], element)
     case "Char.Chr": LowerResult{state, BIR.Boolean{True{}}}
     case "U32.U32": LowerResult{state, BIR.Boolean{True{}}}
     case "F32.F32": LowerResult{state, BIR.Boolean{True{}}}
     case _: operation(state, BIR.HasTag{value, constructor_id(constructor), constructor_key(constructor)})
-def project(state: State, constructor: Catalog.Constructor, value: BIR.Atom, index: U32, span: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
-  project_native(state, constructor_native(constructor), constructor, value, index, span)
-def project_native(state: State, identity: String, constructor: Catalog.Constructor, value: BIR.Atom, index: U32, span: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
+def project(state: State, constructor: Catalog.Constructor, value: BIR.Atom, index: U32, span: Ast.SourceSpan, element: Maybe<&2, U32>) -> LowerResult<BIR.Atom>:
+  project_native(state, constructor_native(constructor), constructor, value, index, span, element)
+def project_native(state: State, identity: String, constructor: Catalog.Constructor, value: BIR.Atom, index: U32, span: Ast.SourceSpan, element: Maybe<&2, U32>) -> LowerResult<BIR.Atom>:
   match identity index:
     case "Nat.Succ" 0: primitive(state, BIR.PrimNatPredecessor{}, [value])
     case "String.SCon" 0: primitive(state, BIR.PrimStringHead{}, [value])
@@ -834,9 +857,9 @@ def project_native(state: State, identity: String, constructor: Catalog.Construc
     case "Char.Chr" 0: primitive(state, BIR.PrimCharCode{}, [value])
     case "U32.U32" 0: primitive(state, BIR.PrimU32ToWord{}, [value])
     case "F32.F32" 0: primitive(state, BIR.PrimF32ToWord{}, [value])
-    case "Array.ALeaf" 0: primitive(state, BIR.PrimArrayLeafValue{}, [value])
-    case "Array.ANode" 0: primitive(state, BIR.PrimArrayLeft{}, [value])
-    case "Array.ANode" 1: primitive(state, BIR.PrimArrayRight{}, [value])
+    case "Array.ALeaf" 0: primitive_fact(state, BIR.PrimArrayLeafValue{}, [value], element)
+    case "Array.ANode" 0: primitive_fact(state, BIR.PrimArrayLeft{}, [value], element)
+    case "Array.ANode" 1: primitive_fact(state, BIR.PrimArrayRight{}, [value], element)
     case _ _: project_field(state, Catalog.constructor_field(constructor, index), constructor, value, span)
 def project_field(state: State, field: Maybe<&2, Catalog.ConstructorField>, constructor: Catalog.Constructor, value: BIR.Atom, span: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
   match field:
@@ -924,54 +947,54 @@ def pattern_constructor(state: State, found: Maybe<&2, Catalog.Constructor>, fie
   match found:
     case None{}: LowerResult{state_problem(state, "missing resolved pattern constructor", no_span()), env}
     case Some{constructor}:
-      pattern_scalar(state, closed_scalar(constructor_native(constructor), fields, registry), constructor, fields, layout, value, env, registry, failure)
+      pattern_scalar(state, closed_scalar(constructor_native(constructor), fields, registry), constructor, fields, layout, value, env, registry, failure, first_binding_type(layout))
 def native_match_pattern_scalar_0(v_31: LowerResult<BIR.Atom>, v_13: List<&2, Slot>, v_15: BIR.Block) -> LowerResult<List<&2, Slot>>:
   match v_31:
     case LowerResult{v_24, v_25}:
       LowerResult{guard(v_24, v_25, v_15), v_13}
 
-def native_match_pattern_scalar_1(v_32: LowerResult<BIR.Atom>, v_5: Catalog.Constructor, v_7: List<&2, IR.CheckedPattern>, v_9: List<&2, IR.CheckedBinding>, v_10: BIR.Atom, v_13: List<&2, Slot>, v_14: Catalog.Registry, v_15: BIR.Block) -> LowerResult<List<&2, Slot>>:
+def native_match_pattern_scalar_1(v_32: LowerResult<BIR.Atom>, v_5: Catalog.Constructor, v_7: List<&2, IR.CheckedPattern>, v_9: List<&2, IR.CheckedBinding>, v_10: BIR.Atom, v_13: List<&2, Slot>, v_14: Catalog.Registry, v_15: BIR.Block, element: Maybe<&2, U32>) -> LowerResult<List<&2, Slot>>:
   match v_32:
     case LowerResult{v_29, v_30}:
-      pattern_fields(guard(v_29, v_30, v_15), v_5, v_7, v_9, v_10, 0, v_13, v_14, v_15)
+      pattern_fields(guard(v_29, v_30, v_15), v_5, v_7, v_9, v_10, 0, v_13, v_14, v_15, element)
 
-def native_match_pattern_scalar_2(v_4: Maybe<&2, U32>, v_1: State, v_5: Catalog.Constructor, v_7: List<&2, IR.CheckedPattern>, v_9: List<&2, IR.CheckedBinding>, v_10: BIR.Atom, v_13: List<&2, Slot>, v_14: Catalog.Registry, v_15: BIR.Block) -> LowerResult<List<&2, Slot>>:
+def native_match_pattern_scalar_2(v_4: Maybe<&2, U32>, v_1: State, v_5: Catalog.Constructor, v_7: List<&2, IR.CheckedPattern>, v_9: List<&2, IR.CheckedBinding>, v_10: BIR.Atom, v_13: List<&2, Slot>, v_14: Catalog.Registry, v_15: BIR.Block, element: Maybe<&2, U32>) -> LowerResult<List<&2, Slot>>:
   match v_4:
     case Some{v_20}:
       native_match_pattern_scalar_0(scalar_test(v_1, String.eq(constructor_native(v_5), "F32.F32"), v_10, v_20), v_13, v_15)
     case None{}:
-      native_match_pattern_scalar_1(tag(v_1, v_5, v_10), v_5, v_7, v_9, v_10, v_13, v_14, v_15)
+      native_match_pattern_scalar_1(tag(v_1, v_5, v_10, element), v_5, v_7, v_9, v_10, v_13, v_14, v_15, element)
 
-def pattern_scalar(v_1: State, v_4: Maybe<&2, U32>, v_5: Catalog.Constructor, v_7: List<&2, IR.CheckedPattern>, v_9: List<&2, IR.CheckedBinding>, v_10: BIR.Atom, v_13: List<&2, Slot>, v_14: Catalog.Registry, v_15: BIR.Block) -> LowerResult<List<&2, Slot>>:
-  native_match_pattern_scalar_2(v_4, v_1, v_5, v_7, v_9, v_10, v_13, v_14, v_15)
+def pattern_scalar(v_1: State, v_4: Maybe<&2, U32>, v_5: Catalog.Constructor, v_7: List<&2, IR.CheckedPattern>, v_9: List<&2, IR.CheckedBinding>, v_10: BIR.Atom, v_13: List<&2, Slot>, v_14: Catalog.Registry, v_15: BIR.Block, element: Maybe<&2, U32>) -> LowerResult<List<&2, Slot>>:
+  native_match_pattern_scalar_2(v_4, v_1, v_5, v_7, v_9, v_10, v_13, v_14, v_15, element)
 
 def scalar_test(state: State, floating: Bool, value: BIR.Atom, number: U32) -> LowerResult<BIR.Atom>:
   match floating:
     case True{}: primitive(state, BIR.PrimFloatBitsEqual{}, [value, BIR.Word{number}])
     case False{}: primitive(state, BIR.PrimSameValue{}, [value, BIR.Word{number}])
-def native_match_pattern_fields_0(v_54: LowerResult<List<&2, Slot>>, v_2: Catalog.Constructor, v_7: BIR.Atom, v_9: U32, v_13: Catalog.Registry, v_14: BIR.Block, v_35: List<&2, IR.CheckedPattern>, v_37: List<&2, IR.CheckedBinding>) -> LowerResult<List<&2, Slot>>:
+def native_match_pattern_fields_0(v_54: LowerResult<List<&2, Slot>>, v_2: Catalog.Constructor, v_7: BIR.Atom, v_9: U32, v_13: Catalog.Registry, v_14: BIR.Block, v_35: List<&2, IR.CheckedPattern>, v_37: List<&2, IR.CheckedBinding>, element: Maybe<&2, U32>) -> LowerResult<List<&2, Slot>>:
   match v_54:
     case LowerResult{v_45, v_46}:
-      pattern_fields(v_45, v_2, v_35, v_37, v_7, U32.inc(v_9), v_46, v_13, v_14)
+      pattern_fields(v_45, v_2, v_35, v_37, v_7, U32.inc(v_9), v_46, v_13, v_14, element)
 
-def native_match_pattern_fields_1(v_55: LowerResult<BIR.Atom>, v_2: Catalog.Constructor, v_7: BIR.Atom, v_9: U32, v_12: List<&2, Slot>, v_13: Catalog.Registry, v_14: BIR.Block, v_34: IR.CheckedPattern, v_35: List<&2, IR.CheckedPattern>, v_37: List<&2, IR.CheckedBinding>) -> LowerResult<List<&2, Slot>>:
+def native_match_pattern_fields_1(v_55: LowerResult<BIR.Atom>, v_2: Catalog.Constructor, v_7: BIR.Atom, v_9: U32, v_12: List<&2, Slot>, v_13: Catalog.Registry, v_14: BIR.Block, v_34: IR.CheckedPattern, v_35: List<&2, IR.CheckedPattern>, v_37: List<&2, IR.CheckedBinding>, element: Maybe<&2, U32>) -> LowerResult<List<&2, Slot>>:
   match v_55:
     case LowerResult{v_41, v_42}:
-      native_match_pattern_fields_0(pattern(v_41, v_34, v_42, v_12, v_13, v_14), v_2, v_7, v_9, v_13, v_14, v_35, v_37)
+      native_match_pattern_fields_0(pattern(v_41, v_34, v_42, v_12, v_13, v_14), v_2, v_7, v_9, v_13, v_14, v_35, v_37, element)
 
-def native_match_pattern_fields_2(v_4: List<&2, IR.CheckedPattern>, v_6: List<&2, IR.CheckedBinding>, v_1: State, v_2: Catalog.Constructor, v_7: BIR.Atom, v_9: U32, v_12: List<&2, Slot>, v_13: Catalog.Registry, v_14: BIR.Block) -> LowerResult<List<&2, Slot>>:
+def native_match_pattern_fields_2(v_4: List<&2, IR.CheckedPattern>, v_6: List<&2, IR.CheckedBinding>, v_1: State, v_2: Catalog.Constructor, v_7: BIR.Atom, v_9: U32, v_12: List<&2, Slot>, v_13: Catalog.Registry, v_14: BIR.Block, element: Maybe<&2, U32>) -> LowerResult<List<&2, Slot>>:
   match v_4, v_6:
     case [], []:
       LowerResult{v_1, v_12}
     case v_23 <> v_24, IR.CheckedBinding{Ast.QZero{}, _, _} <> v_27:
-      pattern_fields(v_1, v_2, v_24, v_27, v_7, U32.inc(v_9), erase_pattern(v_23, v_12), v_13, v_14)
+      pattern_fields(v_1, v_2, v_24, v_27, v_7, U32.inc(v_9), erase_pattern(v_23, v_12), v_13, v_14, element)
     case v_34 <> v_35, _ <> v_37:
-      native_match_pattern_fields_1(project(v_1, v_2, v_7, v_9, no_span), v_2, v_7, v_9, v_12, v_13, v_14, v_34, v_35, v_37)
+      native_match_pattern_fields_1(project(v_1, v_2, v_7, v_9, no_span, element), v_2, v_7, v_9, v_12, v_13, v_14, v_34, v_35, v_37, element)
     case _, _:
       LowerResult{state_problem(v_1, "incomplete checked pattern layout", no_span), v_12}
 
-def pattern_fields(v_1: State, v_2: Catalog.Constructor, v_4: List<&2, IR.CheckedPattern>, v_6: List<&2, IR.CheckedBinding>, v_7: BIR.Atom, v_9: U32, v_12: List<&2, Slot>, v_13: Catalog.Registry, v_14: BIR.Block) -> LowerResult<List<&2, Slot>>:
-  native_match_pattern_fields_2(v_4, v_6, v_1, v_2, v_7, v_9, v_12, v_13, v_14)
+def pattern_fields(v_1: State, v_2: Catalog.Constructor, v_4: List<&2, IR.CheckedPattern>, v_6: List<&2, IR.CheckedBinding>, v_7: BIR.Atom, v_9: U32, v_12: List<&2, Slot>, v_13: Catalog.Registry, v_14: BIR.Block, element: Maybe<&2, U32>) -> LowerResult<List<&2, Slot>>:
+  native_match_pattern_fields_2(v_4, v_6, v_1, v_2, v_7, v_9, v_12, v_13, v_14, element)
 
 def native_match_lower_values_0(v_22: LowerResult<List<&2, BIR.Atom>>, v_17: BIR.Atom) -> LowerResult<List<&2, BIR.Atom>>:
   match v_22:
@@ -1478,15 +1501,15 @@ def native_match_matcher_constructor_5(v_71: LowerResult<BIR.Atom>, v_4: Ast.Qua
     case LowerResult{v_39, v_40}:
       native_match_matcher_constructor_4(take_block(v_39, v_40), v_4, v_6, v_9, v_10, v_19, v_23, v_27, v_31)
 
-def native_match_matcher_constructor_6(v_72: LowerResult<BIR.Atom>, v_4: Ast.Quantity, v_6: IR.Occurrence, v_9: List<&2, Slot>, v_10: Catalog.Registry, v_11: Ast.SourceSpan, v_15: Catalog.Constructor, v_19: Frame, v_23: U32, v_27: BIR.Atom, v_31: List<&2, Instruction>) -> LowerResult<BIR.Atom>:
+def native_match_matcher_constructor_6(v_72: LowerResult<BIR.Atom>, v_4: Ast.Quantity, v_6: IR.Occurrence, v_9: List<&2, Slot>, v_10: Catalog.Registry, v_11: Ast.SourceSpan, v_15: Catalog.Constructor, v_19: Frame, v_23: U32, v_27: BIR.Atom, v_31: List<&2, Instruction>, element: Maybe<&2, U32>) -> LowerResult<BIR.Atom>:
   match v_72:
     case LowerResult{v_34, v_35}:
-      native_match_matcher_constructor_5(matcher_fields(v_34, v_15, constructor_quantities(v_15), BIR.Local{v_23}, 0, v_35, v_4, v_11), v_4, v_6, v_9, v_10, v_19, v_23, v_27, v_31)
+      native_match_matcher_constructor_5(matcher_fields(v_34, v_15, constructor_quantities(v_15), BIR.Local{v_23}, 0, v_35, v_4, v_11, element), v_4, v_6, v_9, v_10, v_19, v_23, v_27, v_31)
 
 def native_match_matcher_constructor_7(v_73: LowerResult<List<&2, Instruction>>, v_4: Ast.Quantity, v_5: IR.Occurrence, v_6: IR.Occurrence, v_9: List<&2, Slot>, v_10: Catalog.Registry, v_11: Ast.SourceSpan, v_15: Catalog.Constructor, v_19: Frame, v_23: U32, v_27: BIR.Atom) -> LowerResult<BIR.Atom>:
   match v_73:
     case LowerResult{v_30, v_31}:
-      native_match_matcher_constructor_6(lower_occurrence(v_30, v_5, v_9, v_10), v_4, v_6, v_9, v_10, v_11, v_15, v_19, v_23, v_27, v_31)
+      native_match_matcher_constructor_6(lower_occurrence(v_30, v_5, v_9, v_10), v_4, v_6, v_9, v_10, v_11, v_15, v_19, v_23, v_27, v_31, occurrence_type(v_5))
 
 def native_match_matcher_constructor_8(v_74: LowerResult<BIR.Atom>, v_4: Ast.Quantity, v_5: IR.Occurrence, v_6: IR.Occurrence, v_9: List<&2, Slot>, v_10: Catalog.Registry, v_11: Ast.SourceSpan, v_15: Catalog.Constructor, v_19: Frame, v_23: U32) -> LowerResult<BIR.Atom>:
   match v_74:
@@ -1496,7 +1519,7 @@ def native_match_matcher_constructor_8(v_74: LowerResult<BIR.Atom>, v_4: Ast.Qua
 def native_match_matcher_constructor_9(v_75: LowerResult<U32>, v_4: Ast.Quantity, v_5: IR.Occurrence, v_6: IR.Occurrence, v_9: List<&2, Slot>, v_10: Catalog.Registry, v_11: Ast.SourceSpan, v_15: Catalog.Constructor, v_19: Frame) -> LowerResult<BIR.Atom>:
   match v_75:
     case LowerResult{v_22, v_23}:
-      native_match_matcher_constructor_8(tag(v_22, v_15, BIR.Local{v_23}), v_4, v_5, v_6, v_9, v_10, v_11, v_15, v_19, v_23)
+      native_match_matcher_constructor_8(tag(v_22, v_15, BIR.Local{v_23}, occurrence_type(v_5)), v_4, v_5, v_6, v_9, v_10, v_11, v_15, v_19, v_23)
 
 def native_match_matcher_constructor_10(v_76: LowerResult<Frame>, v_4: Ast.Quantity, v_5: IR.Occurrence, v_6: IR.Occurrence, v_9: List<&2, Slot>, v_10: Catalog.Registry, v_11: Ast.SourceSpan, v_15: Catalog.Constructor) -> LowerResult<BIR.Atom>:
   match v_76:
@@ -1520,27 +1543,27 @@ def matcher_field_use(quantity: BIR.Quantity, input: Ast.Quantity) -> BIR.Use:
   match quantity:
     case BIR.Unrestricted{}: BIR.Many{}
     case _: use(input)
-def native_match_matcher_fields_0(v_28: LowerResult<BIR.Atom>, v_2: Catalog.Constructor, v_5: BIR.Atom, v_7: U32, v_9: Ast.Quantity, v_10: Ast.SourceSpan, v_18: List<&2, BIR.Quantity>) -> LowerResult<BIR.Atom>:
+def native_match_matcher_fields_0(v_28: LowerResult<BIR.Atom>, v_2: Catalog.Constructor, v_5: BIR.Atom, v_7: U32, v_9: Ast.Quantity, v_10: Ast.SourceSpan, v_18: List<&2, BIR.Quantity>, element: Maybe<&2, U32>) -> LowerResult<BIR.Atom>:
   match v_28:
     case LowerResult{v_25, v_26}:
-      matcher_fields(v_25, v_2, v_18, v_5, U32.inc(v_7), v_26, v_9, v_10)
+      matcher_fields(v_25, v_2, v_18, v_5, U32.inc(v_7), v_26, v_9, v_10, element)
 
-def native_match_matcher_fields_1(v_29: LowerResult<BIR.Atom>, v_2: Catalog.Constructor, v_5: BIR.Atom, v_7: U32, v_8: BIR.Atom, v_9: Ast.Quantity, v_10: Ast.SourceSpan, v_17: BIR.Quantity, v_18: List<&2, BIR.Quantity>) -> LowerResult<BIR.Atom>:
+def native_match_matcher_fields_1(v_29: LowerResult<BIR.Atom>, v_2: Catalog.Constructor, v_5: BIR.Atom, v_7: U32, v_8: BIR.Atom, v_9: Ast.Quantity, v_10: Ast.SourceSpan, v_17: BIR.Quantity, v_18: List<&2, BIR.Quantity>, element: Maybe<&2, U32>) -> LowerResult<BIR.Atom>:
   match v_29:
     case LowerResult{v_21, v_22}:
-      native_match_matcher_fields_0(operation(v_21, BIR.Apply{v_8, BIR.Arg{matcher_field_use(v_17, v_9), v_22}}), v_2, v_5, v_7, v_9, v_10, v_18)
+      native_match_matcher_fields_0(operation(v_21, BIR.Apply{v_8, BIR.Arg{matcher_field_use(v_17, v_9), v_22}}), v_2, v_5, v_7, v_9, v_10, v_18, element)
 
-def native_match_matcher_fields_2(v_4: List<&2, BIR.Quantity>, v_1: State, v_2: Catalog.Constructor, v_5: BIR.Atom, v_7: U32, v_8: BIR.Atom, v_9: Ast.Quantity, v_10: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
+def native_match_matcher_fields_2(v_4: List<&2, BIR.Quantity>, v_1: State, v_2: Catalog.Constructor, v_5: BIR.Atom, v_7: U32, v_8: BIR.Atom, v_9: Ast.Quantity, v_10: Ast.SourceSpan, element: Maybe<&2, U32>) -> LowerResult<BIR.Atom>:
   match v_4:
     case []:
       LowerResult{v_1, v_8}
     case BIR.Erased{} <> v_13:
-      matcher_fields(v_1, v_2, v_13, v_5, U32.inc(v_7), v_8, v_9, v_10)
+      matcher_fields(v_1, v_2, v_13, v_5, U32.inc(v_7), v_8, v_9, v_10, element)
     case v_17 <> v_18:
-      native_match_matcher_fields_1(project(v_1, v_2, v_5, v_7, v_10), v_2, v_5, v_7, v_8, v_9, v_10, v_17, v_18)
+      native_match_matcher_fields_1(project(v_1, v_2, v_5, v_7, v_10, element), v_2, v_5, v_7, v_8, v_9, v_10, v_17, v_18, element)
 
-def matcher_fields(v_1: State, v_2: Catalog.Constructor, v_4: List<&2, BIR.Quantity>, v_5: BIR.Atom, v_7: U32, v_8: BIR.Atom, v_9: Ast.Quantity, v_10: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
-  native_match_matcher_fields_2(v_4, v_1, v_2, v_5, v_7, v_8, v_9, v_10)
+def matcher_fields(v_1: State, v_2: Catalog.Constructor, v_4: List<&2, BIR.Quantity>, v_5: BIR.Atom, v_7: U32, v_8: BIR.Atom, v_9: Ast.Quantity, v_10: Ast.SourceSpan, element: Maybe<&2, U32>) -> LowerResult<BIR.Atom>:
+  native_match_matcher_fields_2(v_4, v_1, v_2, v_5, v_7, v_8, v_9, v_10, element)
 
 def native_match_definition_frame_0(v_20: State, v_3: U32, scope: Scope.ArenaGlobalScope) -> State:
   match v_20:
