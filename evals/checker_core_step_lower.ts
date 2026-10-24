@@ -509,6 +509,11 @@ for (const def of definitions) {
 // and the conservative bound predicate over admitted helpers/native storage and
 // scalar operations, with no indirect calls, binders or recursion. Constructor
 // skeletons, including live captures, stay bounded to 128 logical expanded nodes.
+// The arena wrappers are pure projections over the arena's immutable-range
+// tables: their transitive, nonrecursive helper closure is admitted when every
+// source edge is already a direct helper. IR.arena_* are closed bit/range
+// arithmetic on U32 values; they are evaluated directly like the existing
+// Arena/U32/Nat native atoms.
 function closedStorageSize(term: B.LTerm): number {
   if (term.$ === 'Var') return 0;
   if (term.$ === 'Lit') {
@@ -534,7 +539,7 @@ function storageTerm(term: B.LTerm): boolean {
   if (term.$ === 'App') {
     const [head, args] = B.term_unapply(term);
     return head.$ === 'Ref' && (pureNames.has(head.k)
-      || /^(Arena|U32|Nat)\./.test(printedKey(head.k))) && args.every(storageTerm);
+      || /^(Arena|U32|Nat)\.|^IR\.arena_/.test(printedKey(head.k))) && args.every(storageTerm);
   }
   return false;
 }
@@ -1313,7 +1318,7 @@ const manifest = {
   },
   rootMatchContractions,
   pureCallClassification: {
-    policy: 'Live source argument required. Projections do not construct values or call functions. Checker arena wrappers and core_bound_unaffected may compose admitted helpers with native Arena/U32/Nat calls and bounded constructors, in dependency order; no recursion, indirect calls or function binders. All other definitions retain CPS',
+    policy: 'Live source argument required. Projections do not construct values or call functions. Checker arena wrappers and core_bound_unaffected may compose admitted helpers with native Arena/U32/Nat and IR.arena_* scalar range/bit calls and bounded constructors, in dependency order; this admits the nonrecursive arena view/accessor closure but no recursion, indirect calls or function binders. All other definitions retain CPS',
     definitions: pureDefinitions.map(def => ({name: def.name, helper: pureName.get(def.name), resultKind: resultKinds[def.name],
       classification: def.name === 'core_bound_unaffected' ? 'bounded-native-bound-predicate' : storageNames.has(def.name) ? 'bounded-native-storage' : 'nonconstructing-projection',
       dependencies: [...sourceEdges.get(def.name)!], signatureQuantities: def.parameters.map(parameter => parameter[0].$),
