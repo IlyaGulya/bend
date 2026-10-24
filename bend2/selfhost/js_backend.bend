@@ -24,10 +24,11 @@ type SourceFile is Data:
 def js_source(sources: List<&2, String>) -> Maybe<&2, String>:
   match sources:
     case Nil{}: None{}
-    case +path <> rest:
-      match String.ends_with(path, ".js"):
-        case True{}: Some{path}
-        case False{}: js_source(rest)
+    case +path <> rest: js_source_ext(String.ends_with(path, ".js"), path, rest)
+def js_source_ext(ends: Bool, +path: String, rest: List<&2, String>) -> Maybe<&2, String>:
+  match ends:
+    case True{}: Some{path}
+    case False{}: js_source(rest)
 # One path splices once, under one namespace: a second namespace would rewrite
 # its CID(k) differently, so it is a compile error, never a silent first wins.
 def link_add(path: String, namespace: String, span: Ast.SourceSpan, planned: List<&2, LinkSource>) -> LinkResult:
@@ -36,46 +37,58 @@ def link_add(path: String, namespace: String, span: Ast.SourceSpan, planned: Lis
     case +item <> rest:
       match item:
         case LinkSource{+known, known_namespace, _}:
-          match String.eq(path, known):
-            case True{}:
-              match String.eq(namespace, known_namespace):
-                case True{}: LinkSuccess{planned}
-                case False{}: LinkFailure{String.append("bend: ", String.append(path, " is imported from two namespaces")), span}
-            case False{}:
-              match link_add(path, namespace, span, rest):
-                case LinkSuccess{+inner}: LinkSuccess{item <> inner}
-                case LinkFailure{message, failure_span}: LinkFailure{message, failure_span}
+          link_add_known(String.eq(path, known), String.eq(namespace, known_namespace), path, namespace, span, known, planned, item, rest)
+def link_add_known(same_path: Bool, same_namespace: Bool, +path: String, +namespace: String, +span: Ast.SourceSpan, known: String, planned: List<&2, LinkSource>, item: LinkSource, rest: List<&2, LinkSource>) -> LinkResult:
+  match same_path:
+    case True{}: link_add_namespace(same_namespace, path, span, planned)
+    case False{}: link_add_tail(link_add(path, namespace, span, rest), item)
+def link_add_namespace(same_namespace: Bool, +path: String, +span: Ast.SourceSpan, planned: List<&2, LinkSource>) -> LinkResult:
+  match same_namespace:
+    case True{}: LinkSuccess{planned}
+    case False{}: LinkFailure{String.append("bend: ", String.append(path, " is imported from two namespaces")), span}
+def link_add_tail(inner: LinkResult, item: LinkSource) -> LinkResult:
+  match inner:
+    case LinkSuccess{+values}: LinkSuccess{item <> values}
+    case LinkFailure{message, span}: LinkFailure{message, span}
 def link_declarations(items: List<&2, BIR.Declaration>, acc: List<&2, LinkSource>) -> LinkResult:
   match items:
     case Nil{}: LinkSuccess{List.reverse(&2, LinkSource, acc)}
     case +item <> rest:
       match item:
         case BIR.ForeignDeclaration{_, namespace, imported, _, decl_sources, _, span, _, _}:
-          match js_source(decl_sources):
-            case Some{path}:
-              match link_add(path, namespace, span, acc):
-                case LinkSuccess{sources}: link_declarations(rest, sources)
-                case LinkFailure{message, failure_span}: LinkFailure{message, failure_span}
-            case None{}: LinkFailure{String.append("bend: foreign definition has no .js import: ", imported), span}
+          link_declaration_source(js_source(decl_sources), namespace, imported, span, acc, rest)
         case _: link_declarations(rest, acc)
+def link_declaration_source(found: Maybe<&2, String>, +namespace: String, +imported: String, +span: Ast.SourceSpan, acc: List<&2, LinkSource>, rest: List<&2, BIR.Declaration>) -> LinkResult:
+  match found:
+    case Some{+path}: link_declaration_plan(link_add(path, namespace, span, acc), rest)
+    case None{}: LinkFailure{String.append("bend: foreign definition has no .js import: ", imported), span}
+def link_declaration_plan(planned: LinkResult, rest: List<&2, BIR.Declaration>) -> LinkResult:
+  match planned:
+    case LinkSuccess{sources}: link_declarations(rest, sources)
+    case LinkFailure{message, span}: LinkFailure{message, span}
 # A foreign request and a constructor must not share one name: the request
 # escapes as that key while the constructor lives in the same tag space.
 def constructors_named(items: List<&2, BIR.ConstructorLayout>, key: String) -> Bool:
   match items:
     case Nil{}: False{}
     case BIR.ConstructorLayout{_, +known, _, _} <> rest:
-      match String.eq(key, known):
-        case True{}: True{}
-        case False{}: constructors_named(rest, key)
+      constructors_named_same(String.eq(key, known), rest, key)
+def constructors_named_same(same: Bool, rest: List<&2, BIR.ConstructorLayout>, +key: String) -> Bool:
+  match same:
+    case True{}: True{}
+    case False{}: constructors_named(rest, key)
 def foreign_name_check(items: List<&2, BIR.Declaration>, constructors: List<&2, BIR.ConstructorLayout>) -> Maybe<&2, LinkResult>:
   match items:
     case Nil{}: None{}
     case +item <> rest:
       match item:
         case BIR.ForeignDeclaration{key, _, _, _, _, _, span, _, _}:
-          match constructors_named(constructors, key):
-            case True{}: Some{LinkFailure{String.append(key, " names both a constructor and a foreign def: name one apart"), span}}
-            case False{}: foreign_name_check(rest, constructors)
+          foreign_name_check_named(constructors_named(constructors, key), key, span, rest, constructors)
+        case _: foreign_name_check(rest, constructors)
+def foreign_name_check_named(same: Bool, +key: String, +span: Ast.SourceSpan, rest: List<&2, BIR.Declaration>, constructors: List<&2, BIR.ConstructorLayout>) -> Maybe<&2, LinkResult>:
+  match same:
+    case True{}: Some{LinkFailure{String.append(key, " names both a constructor and a foreign def: name one apart"), span}}
+    case False{}: foreign_name_check(rest, constructors)
         case _: foreign_name_check(rest, constructors)
 def link_checked(check: Maybe<&2, LinkResult>, values: List<&2, BIR.Declaration>) -> LinkResult:
   match check:
@@ -110,21 +123,28 @@ type JSKeyScan is Data:
   JSKeyAbsent{}
 
 def js_key_candidate(+namespace: String, +key: String) -> String:
-  match String.eq(namespace, ""):
+  js_key_join(String.eq(namespace, ""), namespace, key)
+def js_key_join(empty: Bool, +namespace: String, +key: String) -> String:
+  match empty:
     case True{}: key
     case False{}: String.append(namespace, String.append(".", key))
 def js_key_member(+keys: Map<&2, Bool>, key: String) -> Bool:
-  match IndexLookup.find(Bool, keys, key):
+  js_key_member_found(IndexLookup.find(Bool, keys, key))
+def js_key_member_found(found: Maybe<&2, Bool>) -> Bool:
+  match found:
     case Some{_}: True{}
     case None{}: False{}
 # The module's own namespace first, then the key as the source spells it.
 def js_key_resolve(+keys: Map<&2, Bool>, +namespace: String, +key: String) -> Maybe<&2, String>:
-  match js_key_member(keys, js_key_candidate(namespace, key)):
+  js_key_resolve_qualified(js_key_member(keys, js_key_candidate(namespace, key)), keys, namespace, key)
+def js_key_resolve_qualified(member: Bool, +keys: Map<&2, Bool>, +namespace: String, +key: String) -> Maybe<&2, String>:
+  match member:
     case True{}: Some{js_key_candidate(namespace, key)}
-    case False{}:
-      match js_key_member(keys, key):
-        case True{}: Some{key}
-        case False{}: None{}
+    case False{}: js_key_resolve_bare(js_key_member(keys, key), key)
+def js_key_resolve_bare(member: Bool, +key: String) -> Maybe<&2, String>:
+  match member:
+    case True{}: Some{key}
+    case False{}: None{}
 
 def js_key_declaration(item: BIR.Declaration, keys: Map<&2, Bool>) -> Map<&2, Bool>:
   match item:
@@ -155,8 +175,10 @@ def js_native_families(items: List<&2, BIR.Family>, natives: Map<&2, String>) ->
   match items:
     case Nil{}: natives
     case BIR.Family{key, _, native, _, _, _} <> rest: js_native_family(native, key, rest, natives)
-# A known type with no native marker is recorded as "" so a head that is
-# absent from this map is an unresolved concrete alias, not an abstract one.
+# A family with no native marker is recorded as ""; a USER TYPE FUNCTION with
+# no native marker is recorded as "TF". A family cannot alias another type, so
+# "" is ordinary; a type function can alias Nat/IO, and classifying it without
+# closed reduction would be a guess, so "TF" is unresolved here.
 def js_native_family(native: Maybe<&2, String>, key: String, rest: List<&2, BIR.Family>, natives: Map<&2, String>) -> Map<&2, String>:
   match native:
     case None{}: js_native_families(rest, Map.set(&2, String, natives, key, ""))
@@ -167,7 +189,7 @@ def js_native_functions(items: List<&2, BIR.TypeFunction>, natives: Map<&2, Stri
     case BIR.TypeFunction{key, native, _, _, _} <> rest: js_native_function(native, key, rest, natives)
 def js_native_function(native: Maybe<&2, String>, key: String, rest: List<&2, BIR.TypeFunction>, natives: Map<&2, String>) -> Map<&2, String>:
   match native:
-    case None{}: js_native_functions(rest, Map.set(&2, String, natives, key, ""))
+    case None{}: js_native_functions(rest, Map.set(&2, String, natives, key, "TF"))
     case Some{name}: js_native_functions(rest, Map.set(&2, String, natives, key, name))
 def js_native_markers(program: BIR.Program) -> Map<&2, String>:
   match program:
@@ -272,8 +294,10 @@ def js_scan_cid_key(pending: JSKeyScan, more: List<&2, Char>, +output: List<&2, 
     case JSKeyFound{key, rest}: js_scan_cid_found(key, rest, output, keys, namespace)
     case JSKeyAbsent{}: js_scan(more, JSCode{}, False{}, '(' <> ('D' <> ('I' <> ('C' <> output))), keys, namespace)
 def js_scan_cid_found(key: String, rest: List<&2, Char>, output: List<&2, Char>, keys: Map<&2, Bool>, namespace: String) -> JSScan:
-  match js_key_resolve(keys, namespace, key):
-    case Some{resolved}: js_scan(rest, JSCode{}, False{}, js_emit_chars(String.to_list(js_quote(resolved)), output), keys, namespace)
+  js_scan_cid_resolved(js_key_resolve(keys, namespace, key), key, rest, output, keys, namespace)
+def js_scan_cid_resolved(resolved: Maybe<&2, String>, +key: String, rest: List<&2, Char>, output: List<&2, Char>, keys: Map<&2, Bool>, namespace: String) -> JSScan:
+  match resolved:
+    case Some{found}: js_scan(rest, JSCode{}, False{}, js_emit_chars(String.to_list(js_quote(found)), output), keys, namespace)
     case None{}: JSScanRefused{String.append("CID(", String.append(key, ") names no constructor or def"))}
 
 def js_collect_key(chars: List<&2, Char>, +collected: List<&2, Char>) -> JSKeyScan:
@@ -331,9 +355,11 @@ def js_source_text(items: List<&2, SourceFile>, path: String) -> Maybe<&2, Strin
   match items:
     case Nil{}: None{}
     case SourceFile{+known, source} <> rest:
-      match String.eq(path, known):
-        case True{}: Some{source}
-        case False{}: js_source_text(rest, path)
+      js_source_text_same(String.eq(path, known), source, rest, path)
+def js_source_text_same(same: Bool, source: String, rest: List<&2, SourceFile>, +path: String) -> Maybe<&2, String>:
+  match same:
+    case True{}: Some{source}
+    case False{}: js_source_text(rest, path)
 
 # Each file is spliced once, in its own function scope, so its state is shared
 # by every def it registers and its helpers cannot shadow the runtime's.
@@ -345,12 +371,15 @@ def js_effect_sources(links: List<&2, LinkSource>, loaded: List<&2, SourceFile>,
     case +link <> rest:
       match link:
         case LinkSource{path, namespace, span}:
-          match js_source_text(loaded, path):
-            case None{}: JSEffectsFailure{String.append("bend: missing JavaScript foreign source ", path), span}
-            case Some{text}:
-              match js_cid(js_scan(String.to_list(text), JSCode{}, False{}, Nil{}, keys, namespace)):
-                case JSCidFailure{message}: JSEffectsFailure{String.append(String.append(path, ": "), message), span}
-                case JSCidDone{source}: js_effect_sources(rest, loaded, keys, js_effect_chunk(source) <> acc)
+          js_effect_text(js_source_text(loaded, path), path, namespace, span, rest, loaded, keys, acc)
+def js_effect_text(found: Maybe<&2, String>, +path: String, +namespace: String, +span: Ast.SourceSpan, rest: List<&2, LinkSource>, loaded: List<&2, SourceFile>, +keys: Map<&2, Bool>, acc: List<&2, String>) -> JSEffects:
+  match found:
+    case None{}: JSEffectsFailure{String.append("bend: missing JavaScript foreign source ", path), span}
+    case Some{text}: js_effect_scan(js_cid(js_scan(String.to_list(text), JSCode{}, False{}, Nil{}, keys, namespace)), path, span, rest, loaded, keys, acc)
+def js_effect_scan(result: JSCidResult, +path: String, +span: Ast.SourceSpan, rest: List<&2, LinkSource>, loaded: List<&2, SourceFile>, +keys: Map<&2, Bool>, acc: List<&2, String>) -> JSEffects:
+  match result:
+    case JSCidFailure{message}: JSEffectsFailure{String.append(String.append(path, ": "), message), span}
+    case JSCidDone{source}: js_effect_sources(rest, loaded, keys, js_effect_chunk(source) <> acc)
 
 type TagArm is Data:
   TagArm{label: U32, condition: U32, tag: String, body: BIR.Block}
@@ -499,30 +528,44 @@ def js_descriptor_head_applied(head: Maybe<&2, JSDescriptorHead>, arg: BIR.Descr
     case Some{JSDescriptorHead{key, args}}: Some{JSDescriptorHead{key, List.append(&2, BIR.Descriptor, args, [arg])}}
     case None{}: None{}
 def js_native_is(+natives: Map<&2, String>, key: String, name: String) -> Bool:
-  match IndexLookup.find(String, natives, key):
-    case Some{found}: String.eq(found, name)
+  js_native_is_found(IndexLookup.find(String, natives, key), name)
+def js_native_is_found(found: Maybe<&2, String>, name: String) -> Bool:
+  match found:
+    case Some{value}: String.eq(value, name)
     case None{}: False{}
 def js_io_answer(value: BIR.Descriptor, +natives: Map<&2, String>) -> Maybe<&2, BIR.Descriptor>:
-  match js_descriptor_head(value):
-    case Some{JSDescriptorHead{key, args}}:
-      match js_native_is(natives, key, "IO"):
-        case True{}: js_first_descriptor(args)
-        case False{}: None{}
+  js_io_answer_head(js_descriptor_head(value), natives)
+def js_io_answer_head(head: Maybe<&2, JSDescriptorHead>, +natives: Map<&2, String>) -> Maybe<&2, BIR.Descriptor>:
+  match head:
+    case Some{JSDescriptorHead{key, args}}: js_io_answer_named(js_native_is(natives, key, "IO"), args)
     case None{}: None{}
+def js_io_answer_named(io: Bool, args: List<&2, BIR.Descriptor>) -> Maybe<&2, BIR.Descriptor>:
+  match io:
+    case True{}: js_first_descriptor(args)
+    case False{}: None{}
 def js_first_descriptor(items: List<&2, BIR.Descriptor>) -> Maybe<&2, BIR.Descriptor>:
   match items:
     case Nil{}: None{}
     case +item <> _: Some{item}
 def js_nat_descriptor(value: BIR.Descriptor, +natives: Map<&2, String>) -> Bool:
-  match js_descriptor_head(value):
-    case Some{JSDescriptorHead{key, args}}:
-      match js_native_is(natives, key, "Nat"):
-        case True{}: Nat.is_eq(List.length(&2, BIR.Descriptor, args), 0n)
-        case False{}: False{}
+  js_nat_descriptor_head(js_descriptor_head(value), natives)
+def js_nat_descriptor_head(head: Maybe<&2, JSDescriptorHead>, +natives: Map<&2, String>) -> Bool:
+  match head:
+    case Some{JSDescriptorHead{key, args}}: js_nat_descriptor_named(js_native_is(natives, key, "Nat"), args)
     case None{}: False{}
+def js_nat_descriptor_named(nat: Bool, args: List<&2, BIR.Descriptor>) -> Bool:
+  match nat:
+    case True{}: js_parameter_arity_count(Nat.is_eq(List.length(&2, BIR.Descriptor, args), 0n))
+    case False{}: False{}
+def js_bool_of_parameter(value: JSParameter) -> Bool:
+  match value:
+    case JSParameterNat{}: True{}
+    case _: False{}
 def js_nat_answer(value: BIR.Descriptor, +natives: Map<&2, String>) -> Bool:
-  match js_io_answer(value, natives):
-    case Some{answer}: js_nat_descriptor(answer, natives)
+  js_nat_answer_io(js_io_answer(value, natives), natives)
+def js_nat_answer_io(answer: Maybe<&2, BIR.Descriptor>, +natives: Map<&2, String>) -> Bool:
+  match answer:
+    case Some{item}: js_nat_descriptor(item, natives)
     case None{}: False{}
 def operation(op: BIR.Op) -> String:
   match op:
@@ -915,7 +958,9 @@ def declaration(item: BIR.Declaration, +natives: Map<&2, String>) -> String:
     case BIR.ForeignDeclaration{key, _, imported, arity, decl_sources, _, _, _, result}:
       foreign_declaration(key, imported, decl_sources, arity, result, natives)
 def foreign_declaration(+key: String, imported: String, sources: List<&2, String>, arity: Nat, result: BIR.Descriptor, +natives: Map<&2, String>) -> String:
-  match js_source(sources):
+  foreign_source(js_source(sources), key, imported, arity, result, natives)
+def foreign_source(chosen: Maybe<&2, String>, +key: String, +imported: String, arity: Nat, result: BIR.Descriptor, +natives: Map<&2, String>) -> String:
+  match chosen:
     case Some{_}: foreign_request(key, arity, js_nat_answer(result, natives))
     case None{}:
       # link() rejects this declaration before emission; keep the render total.
@@ -987,22 +1032,33 @@ type JSParameter is Data:
   JSParameterOther{}
   JSParameterUnresolved{}
 def js_parameter(value: BIR.Descriptor, +natives: Map<&2, String>) -> JSParameter:
-  match js_descriptor_head(value):
-    case Some{JSDescriptorHead{key, args}}:
-      js_parameter_head(js_native_is(natives, key, "Nat"), js_key_member(natives, key), args)
+  js_parameter_head(js_descriptor_head(value), natives, value)
+def js_parameter_head(head: Maybe<&2, JSDescriptorHead>, +natives: Map<&2, String>, value: BIR.Descriptor) -> JSParameter:
+  match head:
+    case Some{JSDescriptorHead{key, args}}: js_parameter_marker(js_native_is(natives, key, "Nat"), IndexLookup.find(String, natives, key), args, value)
     case None{}: js_parameter_unresolved(value)
-# A concrete Nat is guarded; a known non-Nat type is not. A head absent from
-# the type table is an unresolved concrete alias: the build must fail.
-def js_parameter_head(nat: Bool, known: Bool, args: List<&2, BIR.Descriptor>) -> JSParameter:
+# A concrete Nat is guarded; a known non-Nat family is not. A head absent from
+# the type table is an unresolved concrete alias, and a user type function with
+# no native marker is a closed alias this renderer cannot reduce: both fail
+# loudly rather than silently skipping a possible Nat.
+def js_parameter_marker(nat: Bool, marker: Maybe<&2, String>, args: List<&2, BIR.Descriptor>, value: BIR.Descriptor) -> JSParameter:
   match nat:
     case True{}: js_parameter_arity(args)
-    case False{}: js_parameter_known(known)
-def js_parameter_known(known: Bool) -> JSParameter:
-  match known:
-    case True{}: JSParameterOther{}
-    case False{}: JSParameterUnresolved{}
+    case False{}: js_parameter_other(marker, value)
+def js_parameter_other(marker: Maybe<&2, String>, value: BIR.Descriptor) -> JSParameter:
+  match marker:
+    case Some{name}: js_parameter_known(name, value)
+    case None{}: JSParameterUnresolved{}
+def js_parameter_known(name: String, value: BIR.Descriptor) -> JSParameter:
+  js_parameter_alias(String.eq(name, "TF"), value)
+def js_parameter_alias(alias: Bool, value: BIR.Descriptor) -> JSParameter:
+  match alias:
+    case True{}: JSParameterUnresolved{}
+    case False{}: JSParameterOther{}
 def js_parameter_arity(args: List<&2, BIR.Descriptor>) -> JSParameter:
-  match Nat.is_eq(List.length(&2, BIR.Descriptor, args), 0n):
+  js_parameter_arity_count(Nat.is_eq(List.length(&2, BIR.Descriptor, args), 0n))
+def js_parameter_arity_count(empty: Bool) -> JSParameter:
+  match empty:
     case True{}: JSParameterNat{}
     case False{}: JSParameterOther{}
 # An abstract (generic) domain is unconstrained, not Nat: it crosses as it is,
@@ -1023,10 +1079,11 @@ def export_argument(parameter: JSParameter, index: Nat) -> String:
 def export_unresolved(+key: String, items: List<&2, BIR.Descriptor>, +natives: Map<&2, String>) -> Bool:
   match items:
     case Nil{}: False{}
-    case +item <> rest:
-      match js_parameter(item, natives):
-        case JSParameterUnresolved{}: True{}
-        case _: export_unresolved(key, rest, natives)
+    case +item <> rest: export_unresolved_item(js_parameter(item, natives), key, rest, natives)
+def export_unresolved_item(kind: JSParameter, +key: String, rest: List<&2, BIR.Descriptor>, +natives: Map<&2, String>) -> Bool:
+  match kind:
+    case JSParameterUnresolved{}: True{}
+    case _: export_unresolved(key, rest, natives)
 def export_field(item: BIR.Export, +natives: Map<&2, String>) -> String:
   match item:
     case BIR.Export{+key, None{}, +parameters}:
@@ -1047,23 +1104,29 @@ def export_check(items: List<&2, BIR.Export>, +natives: Map<&2, String>) -> Mayb
   match items:
     case Nil{}: None{}
     case BIR.Export{+key, _, parameters} <> rest:
-      match export_unresolved(key, parameters, natives):
-        case True{}: Some{String.append(key, " has an export parameter with no canonical type")}
-        case False{}: export_check(rest, natives)
+      export_check_one(export_unresolved(key, parameters, natives), key, rest, natives)
+def export_check_one(bad: Bool, +key: String, rest: List<&2, BIR.Export>, +natives: Map<&2, String>) -> Maybe<&2, String>:
+  match bad:
+    case True{}: Some{String.append(key, " has an export parameter with no canonical type")}
+    case False{}: export_check(rest, natives)
 def ending_check(item: BIR.Ending, +natives: Map<&2, String>) -> Maybe<&2, String>:
   match item:
     case BIR.Library{exports}: export_check(exports, natives)
     case BIR.Executable{_}: None{}
 def emit_linked(program: BIR.Program, loaded: List<&2, SourceFile>) -> EmitResult:
-  match link(program):
+  emit_linked_plan(link(program), program, loaded)
+def emit_linked_plan(planned: LinkResult, program: BIR.Program, loaded: List<&2, SourceFile>) -> EmitResult:
+  match planned:
     case LinkFailure{message, span}: EmitFailure{message, span}
     case LinkSuccess{sources}: emit_checked(program, sources, loaded)
 def emit_checked(+program: BIR.Program, sources: List<&2, LinkSource>, loaded: List<&2, SourceFile>) -> EmitResult:
   match program:
     case BIR.Program{_, _, _, _, _, end}:
-      match ending_check(end, js_native_markers(program)):
-        case Some{message}: EmitFailure{message, Ast.SpanOf{"", 0n, 0n}}
-        case None{}: emit_effects(program, js_effect_sources(sources, loaded, js_known_keys(program), Nil{}))
+      emit_checked_exports(ending_check(end, js_native_markers(program)), program, sources, loaded)
+def emit_checked_exports(check: Maybe<&2, String>, program: BIR.Program, sources: List<&2, LinkSource>, loaded: List<&2, SourceFile>) -> EmitResult:
+  match check:
+    case Some{message}: EmitFailure{message, Ast.SpanOf{"", 0n, 0n}}
+    case None{}: emit_effects(program, js_effect_sources(sources, loaded, js_known_keys(program), Nil{}))
 def emit_effects(program: BIR.Program, effects: JSEffects) -> EmitResult:
   match effects:
     case JSEffectsFailure{message, span}: EmitFailure{message, span}

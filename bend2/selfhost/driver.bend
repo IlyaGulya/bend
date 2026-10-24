@@ -6,6 +6,7 @@ import ./checked_frontend.bend as Checked
 import ./backend_ir.bend as BIR
 import ./backend_lower.bend as BackendLower
 import ./js_backend.bend as JSBackend
+import ./js_link.bend as JSLink
 import ./c_emit.bend as CEmit
 
 type Config is Data:
@@ -108,43 +109,18 @@ def compile_js_emit(emitted: JSBackend.EmitResult, output: String) -> IO(U32):
     case JSBackend.EmitSuccess{source}:
       write_output(output, source)
 
-# The CLI owns target-link IO for JavaScript too: link() selects the declared
-# .js alternative of every foreign definition, and each selected file must
-# exist before a successful emission. A missing target is a real diagnostic,
-# never a runtime require failure or undefined success.
-type MissingTarget is Data:
-  NoMissingTarget{}
-  MissingTarget{entry: JSBackend.LinkSource}
-
-def check_js_source(entry: JSBackend.LinkSource, rest: List<&2, JSBackend.LinkSource>) -> IO(MissingTarget):
-  match entry:
-    case JSBackend.LinkSource{path, _}:
-      do IO<MissingTarget>:
-        opened : Result<&1, &1, U32 & String, File> <- File.open(path, "r")
-        match opened:
-          case Done{file}:
-            Unit <- File.close(file)
-            return check_js_sources(rest)
-          case Fail{_}:
-            return MissingTarget{entry}
-
-def check_js_sources(sources: List<&2, JSBackend.LinkSource>) -> IO(MissingTarget):
-  match sources:
-    case Nil{}: IO.pure(MissingTarget, NoMissingTarget{})
-    case +entry <> rest: check_js_source(entry, rest)
-
+# The CLI owns target-link IO for JavaScript too: js_link selects the declared
+# .js alternative of every foreign definition and reads exactly those bytes, so
+# the renderer stays pure and a missing target is a compile diagnostic naming
+# the declared path, never a runtime require failure or undefined success.
 def compile_js_linked(program: BIR.Program, output: String) -> IO(U32):
-  match JSBackend.link(program):
-    case JSBackend.LinkFailure{message, span}:
-      emit_diagnostic(span, message)
-    case JSBackend.LinkSuccess{sources}:
-      do IO<U32>:
-        missing : MissingTarget <- check_js_sources(sources)
-        match missing:
-          case MissingTarget{JSBackend.LinkSource{path, span}}:
-            emit_diagnostic(span, String.append("cannot read foreign JS target ", path))
-          case NoMissingTarget{}:
-            return compile_js_emit(JSBackend.emit(program), output)
+  do IO<U32>:
+    loaded : JSLink.LoadResult <- JSLink.load(program)
+    match loaded:
+      case JSLink.LoadFailure{message, span}:
+        emit_diagnostic(span, message)
+      case JSLink.LoadSuccess{files}:
+        return compile_js_emit(JSBackend.emit_linked(program, files), output)
 
 def compile_js(checked: Checked.CheckedProgram, output: String) -> IO(U32):
   match BackendLower.lower(checked):

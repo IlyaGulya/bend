@@ -3,6 +3,10 @@ import ./loaded_module.bend as Loader
 import ./checker.bend as Checker
 import ./checked_frontend.bend as Checked
 import ./js_emit.bend as JSEmit
+import ./backend_ir.bend as BIR
+import ./backend_lower.bend as BackendLower
+import ./js_backend.bend as JSBackend
+import ./js_link.bend as JSLink
 import ./ast.bend as AST
 
 # JS-only driver for already parsed/resolved target modules. Never invokes
@@ -51,8 +55,20 @@ def write_output(output: String, source: String) -> IO(U32):
     opened : Result<&1, &1, U32 & String, File> <- File.open(output, "w")
     return write_opened(output, source, opened)
 
+def emit_lowered(program: BIR.Program, output: String) -> IO(U32):
+  do IO<U32>:
+    loaded : JSLink.LoadResult <- JSLink.load(program)
+    match loaded:
+      case JSLink.LoadFailure{message, span}: report(span, message)
+      case JSLink.LoadSuccess{files}:
+        match JSBackend.emit_linked(program, files):
+          case JSBackend.EmitFailure{message, span}: report(span, message)
+          case JSBackend.EmitSuccess{source}: write_output(output, source)
+
 def emit(checked: Checked.CheckedProgram, output: String) -> IO(U32):
-  emit_result(JSEmit.emit(checked), output)
+  match BackendLower.lower(checked):
+    case BackendLower.LowerFailure{message, span}: report(span, message)
+    case BackendLower.Lowered{program}: emit_lowered(program, output)
 
 def emit_result(result: JSEmit.EmitResult, output: String) -> IO(U32):
   match result:
@@ -75,5 +91,5 @@ def parsed_module(namespace: String, module: AST.Module) -> Loader.LoadedModule:
 def check_modules(modules: List<&2, Loader.LoadedModule>) -> Checked.CheckResult:
   Checker.check(modules)
 
-def emit_modules(program: Checked.CheckedProgram) -> JSEmit.EmitResult:
-  JSEmit.emit(program)
+def emit_modules(program: Checked.CheckedProgram, files: List<&2, JSBackend.SourceFile>) -> JSEmit.EmitResult:
+  JSEmit.emit(program, files)
