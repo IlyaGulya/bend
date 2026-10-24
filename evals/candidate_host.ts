@@ -16,14 +16,14 @@
 import {createHash} from 'node:crypto';
 import {readFileSync,realpathSync,writeFileSync} from 'node:fs';
 import {dirname,isAbsolute,posix,resolve} from 'node:path';
-import {pathToFileURL} from 'node:url';
+import {fileURLToPath,pathToFileURL} from 'node:url';
 import {
  sourceFileEntries,sourceFiles,OFFICIAL_SOURCE_FILE_TAG,
  runTemplateSteps,runCheckerSteps,runLibraryEmitterSteps,runEmitterSteps,
  runCEmitterSteps,runCLibraryEmitterSteps,
 } from './checker_core_step_runtime.mjs';
 
-const ROOT=resolve(import.meta.dir,'..');
+const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 
 function fail(message:string):never{
  console.error('candidate: '+message);
