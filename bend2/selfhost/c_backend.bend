@@ -2708,9 +2708,21 @@ def export_symbol_item(item: BIR.Declaration, key: String, parameter_types: List
   match item:
     case BIR.FunctionDeclaration{_, code, parameters}: Some{ExportRow{key, map_u32(by_key, key), 1n, n}}
     case BIR.LazyDeclaration{_, body}: Some{ExportRow{key, map_u32(by_key, key), 1n, n}}
-    case BIR.ForeignDeclaration{_, _, _, _, _, _, _, _, _}: Some{ExportRow{key, map_u32(by_foreign, key), 1n, n}}
-    case BIR.NativeDeclaration{_, _, _}: Some{ExportRow{key, map_u32(by_native, key), 1n, n}}
+    case BIR.ForeignDeclaration{_, _, _, arity, _, _, _, _, _}: export_foreign(key, n, arity, map_u32(by_foreign, key))
+    case BIR.NativeDeclaration{_, _, quantities}: export_native(key, n, List.length(&2, BIR.Quantity, quantities), map_u32(by_native, key))
     case _: None{}
+
+# The C host ABI is only exact when the published checked parameter count agrees
+# with the stage's own arity: foreign request fields and native quantities.
+def export_foreign(key: String, checked: Nat, declared: Nat, index: U32) -> Maybe<&2, ExportRow>:
+  match Nat.is_eq(checked, declared):
+    case True{}: Some{ExportRow{key, index, 1n, checked}}
+    case False{}: None{}
+
+def export_native(key: String, checked: Nat, quantities: Nat, index: U32) -> Maybe<&2, ExportRow>:
+  match Nat.is_eq(checked, quantities):
+    case True{}: Some{ExportRow{key, index, 1n, checked}}
+    case False{}: None{}
 
 def export_names(rows: List<&2, ExportRow>, acc: List<&2, String>) -> String:
   match rows:
