@@ -125,9 +125,18 @@ def append_patch(st: ShState, at: Nat, to: Nat) -> ShState:
 # Cells
 # ---------------------------------------------------------------------------
 
+type KindOut is Data:
+  KindOk{kind: Nat}
+  KindFailed{message: String}
+
 def show_cell(ctx: CLay.Context, ty: BIR.Descriptor, layout: CLay.Layout, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState) -> Step:
-  m6 = show_kind(ty, families)
+  m6 = show_kind(ctx, ty)
   match m6:
+    case KindFailed{message}: Step{False{}, message, 0n, st}
+    case KindOk{kind}: show_cell_kind(ctx, ty, layout, families, constructors, st, kind)
+
+def show_cell_kind(ctx: CLay.Context, ty: BIR.Descriptor, layout: CLay.Layout, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState, kind: Nat) -> Step:
+  match kind:
     case 5n: append_plain(st, 5n)
     case 0n: append_plain(st, 0n)
     case 1n: append_plain(st, 1n)
@@ -155,15 +164,19 @@ def box_flag(layout: CLay.Layout) -> Nat:
     case CLay.LayoutBox{reason}: 1n
     case _: 0n
 
-def show_kind(ty: BIR.Descriptor, families: List<&2, BIR.Family>) -> Nat:
-  m10 = descriptor_head(ty)
+# The shared oracle decides the printed kind: aliases reduce to their family,
+# and an abstract or open form cannot be printed at all.
+def show_kind(ctx: CLay.Context, ty: BIR.Descriptor) -> KindOut:
+  m10 = CLay.head_native(ctx, ty)
   match m10:
-    case None{}: 7n
-    case Some{key}:
-      m11 = family_native(key, families)
-      match m11:
-        case Some{native}: native_kind(native)
-        case None{}: 7n
+    case CLay.HeadFailed{message}: KindFailed{message}
+    case CLay.HeadBoxed{reason}: KindFailed{"main's type is abstract or open and cannot be printed"}
+    case CLay.HeadFound{key, native}: kind_of_native(native)
+
+def kind_of_native(native: Maybe<&2, String>) -> KindOut:
+  match native:
+    case None{}: KindOk{7n}
+    case Some{tag}: KindOk{native_kind(tag)}
 
 def native_kind(native: String) -> Nat:
   m12 = last_segment(native)
@@ -228,19 +241,25 @@ def show_data_cell(ctx: CLay.Context, ty: BIR.Descriptor, layout: CLay.Layout, f
                   m24 = append_num(p1, count)
                   match m24:
                     case AppendOut{state: p2, at: _}:
-                      m25 = show_arms(ctx, arms, layout, box, count, families, constructors, p2, 0n)
+                      m25 = show_arms(ctx, ty, arms, layout, box, count, families, constructors, p2, 0n)
                       match m25:
                         case Step{ok, message, id, state: after}:
                           match ok:
                             case True{}: Step{True{}, "", at, after}
                             case False{}: Step{False{}, message, 0n, after}
 
-def show_arms(ctx: CLay.Context, arms: List<&2, BIR.DescriptorArm>, layout: CLay.Layout, box: Nat, count: Nat, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState, name_index: Nat) -> Step:
+def show_arms(ctx: CLay.Context, ty: BIR.Descriptor, arms: List<&2, BIR.DescriptorArm>, layout: CLay.Layout, box: Nat, count: Nat, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState, name_index: Nat) -> Step:
   match arms:
     case Nil{}: Step{True{}, "", 0n, st}
     case +arm <> rest:
       match arm:
-        case BIR.DescriptorArm{key, fields}:
+        case BIR.DescriptorArm{key, fields: _}:
+          m24 = CLay.arm_fields(ctx, key, ty)
+          match m24:
+            case CLay.FieldsFailed{message}: Step{False{}, message, 0n, st}
+            case CLay.FieldsFound{fields}: show_arm_one(ctx, ty, rest, key, fields, layout, box, count, families, constructors, st, name_index)
+
+def show_arm_one(ctx: CLay.Context, ty: BIR.Descriptor, rest: List<&2, BIR.DescriptorArm>, key: String, fields: List<&2, BIR.DescriptorField>, layout: CLay.Layout, box: Nat, count: Nat, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState, name_index: Nat) -> Step:
           m26 = append_num(st, name_index)
           match m26:
             case AppendOut{state, at}:
@@ -257,7 +276,7 @@ def show_arms(ctx: CLay.Context, arms: List<&2, BIR.DescriptorArm>, layout: CLay
                           match m30:
                             case Step{ok, message, id, state: after}:
                               match ok:
-                                case True{}: show_arms(ctx, rest, layout, box, count, families, constructors, after, nat_inc(name_index))
+                                case True{}: show_arms(ctx, ty, rest, layout, box, count, families, constructors, after, nat_inc(name_index))
                                 case False{}: Step{False{}, message, 0n, after}
 
 def nat_inc(value: Nat) -> Nat:
