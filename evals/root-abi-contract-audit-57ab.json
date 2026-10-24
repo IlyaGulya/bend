@@ -1,14 +1,37 @@
 {
   "schema": "root-abi-contract-audit-57ab-v2",
   "date": "2026-10-24",
-  "tree": {"path": "/private/tmp/bend-fir-integrated57ab", "branch": "work/fir-ir-integrated57ab", "head": "31b96fd9 (on top of f4da5172 + 9f38ee51)"},
+  "tree": {
+    "path": "/private/tmp/bend-fir-integrated57ab",
+    "branch": "work/fir-ir-integrated57ab",
+    "head": "31b96fd9 (on top of f4da5172 + 9f38ee51)"
+  },
   "purpose": "The root must reach real C providers, not JS-only exports. This file records the published C interface, the exact per-file migration, and the constraints that keep the cut atomic. Implementing the seam is FIRAcceptance's; the root assembly, ABI wrappers and consumer intake are mine.",
   "currentExports": {
-    "rootWrappers": ["parsed_module", "expand_modules_start", "template_step", "check_expanded_start", "inspect_checked_start", "checker_step", "emit_modules_start", "emit_library_start", "emitter_step"],
+    "rootWrappers": [
+      "parsed_module",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step"
+    ],
     "embeddedParserEntry": "parse_with_fuel",
     "totalPublicNames": 10,
-    "rootClosure": ["checkpoints/template_steps_v1.bend", "checkpoints/checker_core_steps_v1.bend", "checkpoints/js_emit_steps_v1.bend"],
-    "jsEmitProviderClosure": ["bend2/selfhost/backend_lower.bend", "bend2/selfhost/lower_catalog.bend", "bend2/selfhost/js_backend.bend", "bend2/selfhost/descriptor_nf.bend"],
+    "rootClosure": [
+      "checkpoints/template_steps_v1.bend",
+      "checkpoints/checker_core_steps_v1.bend",
+      "checkpoints/js_emit_steps_v1.bend"
+    ],
+    "jsEmitProviderClosure": [
+      "bend2/selfhost/backend_lower.bend",
+      "bend2/selfhost/lower_catalog.bend",
+      "bend2/selfhost/js_backend.bend",
+      "bend2/selfhost/descriptor_nf.bend"
+    ],
     "cReachableToday": false,
     "why": "no C step config exists in this tree (no c_step_lower); js_emit_step_lower's providerClosure names no c_* module, so c_emit/c_backend*/c_parts cannot enter the root"
   },
@@ -23,7 +46,11 @@
     "stepModule": {
       "path": "checkpoints/c_emit_steps_v1.bend",
       "component": "checkpoints/c_emit_steps_component_v1.bend",
-      "public": ["cemit_start", "cemit_library_start", "cemit_step"],
+      "public": [
+        "cemit_start",
+        "cemit_library_start",
+        "cemit_step"
+      ],
       "chunk": "same opaque typed-native CPS protocol, structural Nat fuel, quantum 64, only cemit_chunk self-recursive, no host-visible stack or request"
     },
     "resultType": "EmitResult{EmitSuccess{source}|EmitFailure{message,span}}",
@@ -31,35 +58,150 @@
     "runtimeAuthentication": "accepted with one condition: because the runtime is a bare String beside the passive bag, the host reads the declared runtime file (bend2/selfhost/c_runtime.c) and the pass receipt pins its sha256 explicitly; it is not covered by the SourceFile exact-path join and must not be silently defaulted or reconstructed",
     "seamInput": "full owning CheckedProgram (not reduced FIR); lowers once via BackendLower.lower/lower_library, joins BIR ForeignDeclaration.sources (absolute) to the passive bag by exact path, calls CBackend.emit",
     "missingTarget": "a missing declared .c target is a compile failure naming the path, never a silent skip",
-    "providerClosure": ["backend_lower", "lower_catalog", "c_backend", "c_backend_link", "c_backend_layout", "c_backend_physical", "c_backend_sharing", "descriptor_nf"],
+    "providerClosure": [
+      "backend_lower",
+      "lower_catalog",
+      "c_backend",
+      "c_backend_link",
+      "c_backend_layout",
+      "c_backend_physical",
+      "c_backend_sharing",
+      "descriptor_nf"
+    ],
     "wrapperOrder": "old ten in current order, then emit_c_modules_start, emit_c_library_start, c_emitter_step"
   },
   "sourceFileCarrier": {
     "type": "backend_ir.SourceFile{path: String, source: String}",
-    "usedBy": ["emit_modules_start", "emit_library_start", "emit_c_modules_start", "emit_c_library_start"],
+    "usedBy": [
+      "emit_modules_start",
+      "emit_library_start",
+      "emit_c_modules_start",
+      "emit_c_library_start"
+    ],
     "constraint": "single nominal carrier; the C seam imports BIR.SourceFile and MUST NOT declare a duplicate carrier or copy fields",
     "note": "NativeSeed resumes on gate-native branch files; a second carrier there would silently split the contract"
   },
   "abiLists": [
-    {"file": "evals/selfhost_bootstrap_gate.ts", "names": 10, "after": 13, "parser": true, "also": "expected root wrapper order 9 -> 12"},
-    {"file": "evals/selfhost_bootstrap_worker.mjs", "names": 10, "after": 13, "parser": true},
-    {"file": "evals/selfhost_emitted_suites.ts", "names": 10, "after": 13, "parser": true},
-    {"file": "evals/compiler_benchmark.ts", "names": 10, "after": 13, "parser": true},
-    {"file": "evals/native_compiler_experiment.ts", "names": 10, "after": 13, "parser": true},
-    {"file": "evals/selfhost_driver_source.ts", "names": 9, "after": 12, "parser": "embedded"},
-    {"file": "checkpoints/template_checker_steps_driver_v1.bend", "names": 9, "after": 12, "parser": "not in driver"},
-    {"file": "evals/checker_library_smoke.ts", "names": 9, "after": 9, "parser": false, "note": "own component, never builds the root"},
-    {"file": "evals/checker_library_smoke_worker.mjs", "names": 9, "after": 9, "parser": false}
+    {
+      "file": "evals/selfhost_bootstrap_gate.ts",
+      "names": 10,
+      "after": 13,
+      "parser": true,
+      "also": "expected root wrapper order 9 -> 12"
+    },
+    {
+      "file": "evals/selfhost_bootstrap_worker.mjs",
+      "names": 10,
+      "after": 13,
+      "parser": true
+    },
+    {
+      "file": "evals/selfhost_emitted_suites.ts",
+      "names": 10,
+      "after": 13,
+      "parser": true
+    },
+    {
+      "file": "evals/compiler_benchmark.ts",
+      "names": 10,
+      "after": 13,
+      "parser": true
+    },
+    {
+      "file": "evals/native_compiler_experiment.ts",
+      "names": 10,
+      "after": 13,
+      "parser": true
+    },
+    {
+      "file": "evals/selfhost_driver_source.ts",
+      "names": 9,
+      "after": 12,
+      "parser": "embedded"
+    },
+    {
+      "file": "checkpoints/template_checker_steps_driver_v1.bend",
+      "names": 9,
+      "after": 12,
+      "parser": "not in driver"
+    },
+    {
+      "file": "evals/checker_library_smoke.ts",
+      "names": 9,
+      "after": 9,
+      "parser": false,
+      "note": "own component, never builds the root"
+    },
+    {
+      "file": "evals/checker_library_smoke_worker.mjs",
+      "names": 9,
+      "after": 9,
+      "parser": false
+    }
   ],
   "consumers": [
-    {"file": "evals/candidate_host.ts", "uses": ["parsed_module", "parse_with_fuel", "expand_modules_start", "check_expanded_start", "emit_modules_start", "emit_library_start"], "migration": "map -o x.c to emit_c_modules_start / emit_c_library_start with runtime bytes read from the declared runtime path and driven by c_emitter_step"},
-    {"file": "evals/array_fact_dump.ts", "uses": ["parsed_module", "parse_with_fuel", "expand_modules_start", "check_expanded_start", "emitter_request"], "migration": "none; diagnostic scaffolding, emitter_request is not part of the contract and does not exist in the joined composite driver"},
-    {"file": "evals/fir_foreign_smoke.ts", "uses": ["parsed_module", "expand_modules_start", "template_step", "check_expanded_start", "checker_step", "emit_modules_start", "emit_library_start", "emitter_step"], "migration": "extends to drive the C lane through candidate_host once the C lane is real"},
-    {"file": "evals/compiler_benchmark.ts", "uses": "all 10", "migration": "ABI 10->13"},
-    {"file": "evals/native_compiler_experiment.ts", "uses": "all 10", "migration": "ABI 10->13; native bridge reads declared .c targets plus runtime bytes"},
-    {"file": "evals/selfhost_bootstrap_gate.ts", "uses": "all 10", "migration": "ABI 10->13 and expected wrapper order 9->12 in the same commit as the root generator"},
-    {"file": "gates/selfhost.ts", "uses": "spawns candidate_host via --stage1; lane by declared .c/.js imports", "migration": "no edit expected; the .c lane becomes honest when the candidate exposes the C target"},
-    {"file": "evals/checker_library_smoke.ts", "uses": "9 names", "migration": "none expected"}
+    {
+      "file": "evals/candidate_host.ts",
+      "uses": [
+        "parsed_module",
+        "parse_with_fuel",
+        "expand_modules_start",
+        "check_expanded_start",
+        "emit_modules_start",
+        "emit_library_start"
+      ],
+      "migration": "map -o x.c to emit_c_modules_start / emit_c_library_start with runtime bytes read from the declared runtime path and driven by c_emitter_step"
+    },
+    {
+      "file": "evals/array_fact_dump.ts",
+      "uses": [
+        "parsed_module",
+        "parse_with_fuel",
+        "expand_modules_start",
+        "check_expanded_start",
+        "emitter_request"
+      ],
+      "migration": "none; diagnostic scaffolding, emitter_request is not part of the contract and does not exist in the joined composite driver"
+    },
+    {
+      "file": "evals/fir_foreign_smoke.ts",
+      "uses": [
+        "parsed_module",
+        "expand_modules_start",
+        "template_step",
+        "check_expanded_start",
+        "checker_step",
+        "emit_modules_start",
+        "emit_library_start",
+        "emitter_step"
+      ],
+      "migration": "extends to drive the C lane through candidate_host once the C lane is real"
+    },
+    {
+      "file": "evals/compiler_benchmark.ts",
+      "uses": "all 10",
+      "migration": "ABI 10->13"
+    },
+    {
+      "file": "evals/native_compiler_experiment.ts",
+      "uses": "all 10",
+      "migration": "ABI 10->13; native bridge reads declared .c targets plus runtime bytes"
+    },
+    {
+      "file": "evals/selfhost_bootstrap_gate.ts",
+      "uses": "all 10",
+      "migration": "ABI 10->13 and expected wrapper order 9->12 in the same commit as the root generator"
+    },
+    {
+      "file": "gates/selfhost.ts",
+      "uses": "spawns candidate_host via --stage1; lane by declared .c/.js imports",
+      "migration": "no edit expected; the .c lane becomes honest when the candidate exposes the C target"
+    },
+    {
+      "file": "evals/checker_library_smoke.ts",
+      "uses": "9 names",
+      "migration": "none expected"
+    }
   ],
   "orderingRules": [
     "the root embeds accepted parser declarations; any source change after parser acceptance invalidates it, so acceptance comes last in the tree",
@@ -71,5 +213,21 @@
     "NativeSeed: which gate-native branch files add native endpoints, to review rather than duplicate",
     "Main: confirm checker_library_smoke keeps its own 9-name component (my reading: yes, it never builds the root)"
   ],
-  "claims": {"aggregatePass": false, "comparisonCertificate": false, "bootstrapGreen": false, "cReachable": false, "cReachableAfterMigration": true}
+  "claims": {
+    "aggregatePass": false,
+    "comparisonCertificate": false,
+    "bootstrapGreen": false,
+    "cReachable": false,
+    "cReachableAfterMigration": true
+  },
+  "gateFacts": {
+    "requiredExports": "evals/selfhost_bootstrap_gate.ts: full runs require the whole ABI list; fixture runs require ABI minus parse_with_fuel and minus emit_library_start. With the C trio appended, full = 13, fixture = 11; the C names are declared-and-validated, not executed, in a fixture run.",
+    "boundaryFlag": "the gate's boundary statement currently carries legacyCBackend: false; once the root reaches the C seam this flag and the criterion sentence must change in the same commit, otherwise the report would keep excluding the very path we are adding",
+    "expectedWrapperOrder": "the gate compares the root's composition prefix and the nine (now twelve) wrappers in order; the ABI constant order and the root emission order must be identical"
+  },
+  "nativeBridgeFacts": {
+    "host": "evals/native_compiler_host.c builds the passive carrier natively as SourceFile{path,source} via io_node(e, CID(SourceFile), io_str(path), io_str(bytes))",
+    "change": "emit_c_modules_start/emit_c_library_start add one String argument (runtime source bytes) beside the same bag, so the host gains one io_str for runtime and three more export slots; the f[] table, the closed-function loop and the manifest ABI comparison must grow together",
+    "open": "the host's f[] index-to-export mapping was not fully traced yet (the drive calls use f[1]/f[2], f[4]/f[5], f[7]/f[8]); resolve against the bridge TS before editing, do not assume the ABI index order"
+  }
 }
