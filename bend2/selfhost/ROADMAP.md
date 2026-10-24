@@ -35,19 +35,24 @@ Main-scoped facts. A receipt's existence is not acceptance: its recorded status
 is named. Where this note did not verify a record, it says "scope not verified
 by note". A JS-generated report is not a native artifact receipt.
 
+The C renderer changed after the `b0b92b67` / `fcd8cca2` root proof. Those
+root, bridge and execution rows describe that pinned historical source, not a
+fresh proof of the text/UTF-8 fixes. The regenerated emitter below includes the
+new source; its fresh root/body/C-consumer proof is still pending.
+
 | Workstream | Recorded state | Evidence | Remaining |
 |---|---|---|---|
-| Parser acceptance | `PARSER_ACCEPTED_NATIVE_SEMANTICS`; source gate 71 rows, candidate gate 75 rows; 13 export names | `/private/tmp/bend-fir-integrated57ab/checkpoints/bootstrap-parser-rebuild-ir57ab-sharedem-a.result.json`; gate config `...candidate-gates-v1.json` | keep the receipt current; no parser change without a new run |
+| Parser acceptance | Fresh Main-path `PARSER_ACCEPTED_NATIVE_SEMANTICS`; source gate 71 rows, candidate gate 75 rows, both public gates 15 tests; 0 excluded / 0 patches; parser image byte-identical `1464037b` | `0eaf7ff2`; `checkpoints/bootstrap-parser-rebuild-ir57ab-parser-d1bbca.result.json`; provenance record hash `163294d6`, distinct from provenance file hash `3512d1dc` | fresh receipt in Root's own worktree because absolute realpaths are authenticated |
 | FIR check / root + body report | body facts are the same report's `checkedDefinitions` / `liveBodies` / `nativeCheckedBodies`; 11,134 checked definitions, 11,134 live/native checked bodies, 0 excluded, 0 output patches; source `b0b92b67225c1b67972c9fe2a1096962a14926633508936c86d8b93b73cbd36b`, artifact 16,789,267 B, artifact sha `fcd8cca2d566ad80591a74d0000d60eb14c5e82e2427bd28917ea07ecc4cb4d6`; status `JS_GENERATED_NOT_YET_EXECUTED`, `compiledExecution: NOT_RUN`, `selfhostGreen: false`; guardian PASS, peak RSS 3,193,372,672 B / footprint 3,275,034,072 B | `/private/tmp/bend-fir-integrated57ab/checkpoints/root-sharedem-rep.result.json`, `.worker-result.json`, `.guardian.json`, `.metrics.json` | native artifact + execution, not another JS-generation rerun of unchanged source |
 | Full-body component build | 11,134 checked definitions; artifact 16,789,267 B; `checksExcluded 0`; `outputPatches 0`; root `b0b92b67`, manifest `13088d4c` | same `root-sharedem-rep.result.json`; commit `943de390` | native codegen/run; the report already records the JS component build |
-| Shared emitter composition | one generated `emitter_steps_v1.bend`; 2,652,534 B / 3,283 top-level defs (was 3,615,353 B / 4,394 across two modules); module `book_valid` 4,848 events / 4,516 defs / 4,408 checked bodies, 0 holes | commit `9db035a9` | full-root native receipt after the cutover |
+| Shared emitter composition | Regenerated from final C text/UTF-8 source: 1,676 exact canonical coverage rows (+34 / −3 replaced quote helpers), 0 omitted/excluded, residual 0/0; module 2,702,264 B / 3,328 defs / 160 types, sha `d7dbe318`; public 13 and quantum 64 unchanged | `02b48bc0`; `checkpoints/shared-emitter-final-754.receipt.json` | rerun unchanged producers for Root worktree realpaths, then fresh body/consumer proof |
 | BIR lowering / native bridge | bridge drives the one `Emit` engine; 13 public names/arities unchanged; `book_load` + `book_valid`: 11,721 events, 11,164 definitions, 11,164 checked bodies, 0 holes; no codegen run | commit `7dc1ab92` | full 13-root BIR→C emission and run |
-| C lane | C steps tag gate passes and reaches emission; stops in the known `Base String.split` non-tail recursion at artifact line 221913 | commit `6700988b` | resolution inside the checked linear subset; full C artifact and run |
+| C lane | Old `fcd8cca2` fails in non-tail `Base String.split`. New source uses stack-safe prefix text assembly, UTF-8 byte lengths and C11 trigraph-safe literals; real Link probes and actual literal-output→clang byte checks passed. No complete new C translation unit/run yet | `31069361`..`7c8c6aa9`, intake cleanup `74772e89`; UTF-8/astral/trigraph consumer fixtures `56859441` / `0a32d358` | fresh shared-Emit JS component→real checked FIR→C→clang→execution, module/library probes then full matrix |
 | JS lane | `candidate_host` over the frozen root-sharedem artifact: 291,402 bytes / sha256 `43d9e28e` for `tests/run/bang_call.bend` | commit `6700988b` | broader JS acceptance receipt for the agreed corpus |
 | Full native build, NO_TRACE joint control | `ABORTED_NO_TERMINAL_REPORT` — **not** an OOM: dead PIDs, guardian report 0 bytes, last recorded `compile_book` start; exact kill cause unobserved; launcher had a 1200 cap but no exit record | Main-scoped control; no terminal report path available to this note | guardian lifecycle fix before interpreting this control |
 | Guardian lifecycle | Integrated: detached supervisor, early decision receipt, final `complete`/`ownedTreeStopped` contract; lease held until owned descendants are confirmed stopped, never released by timer. Merged focused run: 3 pass / 0 fail / 57 assertions. Earlier unlocalized deadline-test failure remains UNKNOWN; this is not a full-suite green claim. | `a72e87d6`..`1c82c2c5`; receipt `747a42a2`, `evals/heavy_gate_lifecycle.receipt.json` | fresh full-root control; diagnose the preserved deadline risk if encountered |
 | Official TS producer / full native build, traced | 11,164 native-bridge bodies; book heap 1,669,811,048 B; reaches pass 6; OOM; no native artifact | Main-scoped traced run; scope not verified by note | per-structure decomposition; native artifact within the guard |
-| Profiling (actual code) | Producer collector and adapters integrated; wall/user/system CPU, scoped boundary memory, optional statistical profiles, durable coarse crash checkpoints, failure unwind and provenance. Post-pin-fix merged smoke: 10/10 cases, including actual C generation/clang/run and preserved codegen failure. Selfhost stage adapter remains in review; full-root overhead is OPEN. | `3cd1adcd`, `0b0b9c9f`, `d1bbca4e`; `checkpoints/compiler-profile-smoke-receipt-0b0b9c9f.json`; stage branch `72ed7ab0` + `18801723` | stage intake; native emitter attribution; full-input A/B/overhead and retained-byte attribution |
+| Profiling (actual code) | Producer collector and selfhost stage adapters integrated: scoped wall/CPU/memory, optional statistical samples, durable crash checkpoints, failure unwind, artifact-bound manifest attribution. Producer merged smoke 10/10. Typed request/chunk attribution is sampling, not exact substage time; full-root overhead is OPEN | producer `3cd1adcd` / `0b0b9c9f` / `d1bbca4e`; stage `68cde43a`..`754ff301`, merged receipt `cf099257`; profiling docs and compact receipts | fresh-component A/B; actual native Emitter workload; guarded native builder smoke; full-input overhead and retained-byte attribution |
 | Law documents | `FIR_LAWS.md` and `BIR_LAWS.md` are written, reviewed, integrated at `2fcdbaea`, and linked from `ARCHITECTURE.md`; seven written law tasks CLOSED; proof/behavior obligations remain OPEN | `6a7cfc59`/`4417d18a` (FIR), `0695e763`/`8311d6a4`/`2f0e8d3b`/`2fcdbaea` (BIR) | obligation triage; no behavior/proof acceptance |
 
 Table entries are status, not acceptance checkboxes. The current full root
@@ -149,12 +154,13 @@ Goal: per-stage and per-module CPU/memory facts for load → parse → expand �
 check → catalog → BIR → render → link, sufficient to size (or reject) the
 incremental workstreams in §6.
 
-Status: code written at `72ed7ab0`, tiny smoked; **in review, not in
-integration**. Includes `bend2/selfhost/RESEARCH_STAGE_PROFILING.md`,
-`evals/compiler_stage_profile.mjs`, `evals/compiler_stage_report.mjs`,
-candidate-host and bootstrap-worker entry points, and
-`checkpoints/compiler-stage-profile-v1.json`. The checkboxes below are
-acceptance, not writing.
+Status: integrated at `68cde43a`, `dce884f1`, `ffee21ea`, `754ff301`. Includes
+`bend2/selfhost/RESEARCH_STAGE_PROFILING.md`, `evals/compiler_stage_profile.mjs`,
+`evals/compiler_stage_report.mjs`, candidate-host/bootstrap-worker entry points
+and `checkpoints/compiler-stage-profile-v1.json`. The old-component A/B receipt
+is historical after the C renderer update. Native scalar `nat_c` is only a
+mechanism check, not an Emitter workload; the guarded builder path still needs
+an actual guarded run. The checkboxes below are acceptance, not writing.
 
 Deliverables:
 - [ ] One optional stage/profile mode with phase boundaries matching
@@ -189,8 +195,9 @@ Acceptance:
 Native fine/stage current-component followups are active; **full-root overhead
 attribution remains OPEN**.
 
-- [ ] Finish stage-adapter review/intake (`72ed7ab0` + `18801723` and follow-ups);
-  producer collector review/intake and the tiny no-output-change smoke are done.
+- [x] Review and intake producer and stage adapters with honest evidence limits.
+- [ ] Verify the fresh-component A/B and native guarded/workload paths; old
+  component generation or scalar group-tag evidence cannot satisfy them.
 - [ ] Every receipt distinguishes `[M]` measured, `[P]` procedure, `[O]` open.
 - [ ] Every number names its pin; stale pins are marked stale, not reused.
 - [ ] No new timing constant or performance claim enters docs without a receipt.
@@ -519,8 +526,8 @@ be byte-comparable to a clean build.
   `2fcdbaea`; proof/behavior obligations open.
 - `BIR_LAWS.md` — BIR well-formedness/lowering/target laws; integrated at
   `2fcdbaea`; proof/behavior obligations open.
-- `COMPILER_PROFILING.md` — integrated producer profiling and limitations;
-  `RESEARCH_STAGE_PROFILING.md` remains on the stage-adapter review branch.
+- `COMPILER_PROFILING.md` and `RESEARCH_STAGE_PROFILING.md` — integrated
+  profiling implementation, operational scopes and explicit remaining coverage.
 - `RESEARCH_WASM_WASI.md`, `RESEARCH_GPU.md`, `RESEARCH_LLVM.md`,
   `RESEARCH_MLIR.md`, `RESEARCH_ZIG_BACKENDS.md` — integrated backend research
   only, not implemented targets or an approved backend cutover.

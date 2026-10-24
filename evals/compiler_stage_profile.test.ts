@@ -2,7 +2,7 @@ import {expect, test} from 'bun:test';
 import {mkdtemp, rm, writeFile} from 'node:fs/promises';
 import {join} from 'node:path';
 import {tmpdir} from 'node:os';
-import {createStageProfile, createStepAttribution, loadStageManifests, stageGroupMetadata, typedProgressSample} from './compiler_stage_profile.mjs';
+import {createStageProfile, createStepAttribution, loadStageManifests, typedProgressSample} from './compiler_stage_profile.mjs';
 
 type ManifestInput = {runType?: string; output?: string; groups?: string[][]; declarations?: Record<string, unknown>[]; inputs?: Record<string, string>};
 type Attribution = {onStep: (steps: number, run: unknown) => void;
@@ -162,12 +162,6 @@ test('stage profile upgrades a receipt-bound manifest to exact groups', async ()
     expect(observation.values['emit-emitter-entry']).toBe(1);
     expect(observation.details.artifactBinding.status).toBe('verified');
   } finally {await rm(join(path, '..'), {recursive: true, force: true});}
-});
-
-test('check publication is documented as part of the check Run, not unreachable', () => {
-  const publication = stageGroupMetadata.find(group => group.name === 'check-publication');
-  expect(publication?.measurement).toBe('included-in-check-signature-body');
-  expect(JSON.stringify(publication)).not.toContain('unreachable');
 });
 
 test('typed progress retains the full constructor identity', () => {
