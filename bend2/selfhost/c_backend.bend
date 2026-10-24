@@ -895,6 +895,8 @@ def find_cid_row_one(same: Bool, row: CidRow, key: String, rest: List<&2, CidRow
 
 def runtime_cid_aliases(+cids: List<&2, CidRow>) -> Part:
   part_join([
+    runtime_cid_alias("CID_NIL", "Nil", cids),
+    runtime_cid_alias("CID_CON", "Con", cids),
     runtime_cid_alias("CID_TUPLE", "Tuple", cids),
     runtime_cid_alias("CID_SNIL", "SNil", cids),
     runtime_cid_alias("CID_SCON", "SCon", cids),
@@ -2466,13 +2468,13 @@ def leave_ctl(label: U32, +ctx: Ctx) -> Step:
               StepOk{String.concat([caps_assign(caps, 0n), "    WL_JMP(FID_", U32.show(fid), ");\n"]), ctx}
 
 def tail_direct_ctl(+code: U32, args: List<&2, BIR.Arg>, +ctx: Ctx) -> Step:
-  match IndexLookup.find(U32, sig_by_code(ctx), U32.show(code)):
+  match IndexLookup.find(U32, sig_by_code(ctx_sig(ctx)), U32.show(code)):
     case None{}: StepFail{String.concat(["BIR tail call names code ", U32.show(code), " with no entry"])}
     case Some{+target}:
       match arg_strings(args, ctx_plan(ctx)):
         case None{}: StepFail{"BIR tail argument has no C value"}
         case Some{+values}:
-          match Nat.is_eq(List.length(&2, String, values), entry_arity(sig_entries(ctx), target)):
+          match Nat.is_eq(List.length(&2, String, values), entry_arity(sig_entries(ctx_sig(ctx)), target)):
             case False{}: StepFail{"BIR tail call arity disagrees with its entry"}
             case True{}:
               match ctx_self(ctx):
@@ -2498,7 +2500,7 @@ def tail_apply_ctl(fn: BIR.Atom, arg: BIR.Arg, +ctx: Ctx) -> Step:
               StepOk{String.concat(["    r0 = ", fn_text, ";\n    r1 = ", arg_text, ";\n    WL_JMP(FID_CLO_APPLY);\n"]), ctx}
 
 def direct_ctl(result: U32, +code: U32, args: List<&2, BIR.Arg>, next: BIR.Block, +ctx: Ctx) -> Step:
-  match IndexLookup.find(U32, sig_by_code(ctx), U32.show(code)):
+  match IndexLookup.find(U32, sig_by_code(ctx_sig(ctx)), U32.show(code)):
     case None{}: StepFail{String.concat(["BIR call names code ", U32.show(code), " with no entry"])}
     case Some{target}:
       match arg_strings(args, ctx_plan(ctx)):
@@ -2513,11 +2515,11 @@ def apply_ctl(result: U32, fn: BIR.Atom, arg: BIR.Arg, next: BIR.Block, +ctx: Ct
         case BIR.Arg{use, value}:
           match atom_part(value, ctx_plan(ctx)):
             case PartFail{message}: StepFail{message}
-            case PartOk{arg_text}: call_ctl(sig_apply(ctx), [fn_text, arg_text], result, next, ctx)
+            case PartOk{arg_text}: call_ctl(sig_apply(ctx_sig(ctx)), [fn_text, arg_text], result, next, ctx)
 
 def call_ctl(+target: U32, +args: List<&2, String>, result: U32, +next: BIR.Block, +ctx: Ctx) -> Step:
-  match Nat.is_eq(List.length(&2, String, args), entry_arity(sig_entries(ctx), target)):
-    case False{}: StepFail{String.concat(["BIR call passes ", Nat.show(List.length(&2, String, args)), " arguments to an entry of arity ", Nat.show(entry_arity(sig_entries(ctx), target))])}
+  match Nat.is_eq(List.length(&2, String, args), entry_arity(sig_entries(ctx_sig(ctx)), target)):
+    case False{}: StepFail{String.concat(["BIR call passes ", Nat.show(List.length(&2, String, args)), " arguments to an entry of arity ", Nat.show(entry_arity(sig_entries(ctx_sig(ctx)), target))])}
     case True{}:
       match capture_for(next, ctx):
         case None{}: StepFail{"BIR continuation reads a value that is not in scope"}
@@ -2554,7 +2556,7 @@ def cap_stores(+node: String, caps: List<&2, Cap>, +index: Nat) -> String:
 # A foreign or native value is a staged closure; a nullary read yields the
 # arity-one closure the runtime applies once with the continuation.
 def load_symbol_ctl(+result: U32, +key: String, +next: BIR.Block, +ctx: Ctx) -> Step:
-  match find_declaration(key, sig_decls(ctx)):
+  match find_declaration(key, sig_decls(ctx_sig(ctx))):
     case None{}: StepFail{String.concat(["BIR reads `", key, "` with no declaration"])}
     case Some{item}:
       match item:
@@ -2562,19 +2564,19 @@ def load_symbol_ctl(+result: U32, +key: String, +next: BIR.Block, +ctx: Ctx) -> 
           match Nat.is_eq(List.length(&2, BIR.Parameter, parameters), 0n):
             case False{}: StepFail{String.concat(["BIR reads the parameterised `", known, "` as a lazy symbol"])}
             case True{}:
-              match IndexLookup.find(U32, sig_by_code(ctx), U32.show(code)):
+              match IndexLookup.find(U32, sig_by_code(ctx_sig(ctx)), U32.show(code)):
                 case None{}: StepFail{String.concat(["BIR reads code ", U32.show(code), " with no entry"])}
                 case Some{target}: call_ctl(target, Nil{}, result, next, ctx)
         case BIR.LazyDeclaration{known, body}:
-          match IndexLookup.find(U32, sig_by_key(ctx), key):
+          match IndexLookup.find(U32, sig_by_key(ctx_sig(ctx)), key):
             case None{}: StepFail{String.concat(["BIR reads lazy `", key, "` with no entry"])}
             case Some{target}: call_ctl(target, Nil{}, result, next, ctx)
         case BIR.ForeignDeclaration{+key, _, _, arity, _, _, _, _, _}:
-          match IndexLookup.find(U32, sig_by_foreign(ctx), key):
+          match IndexLookup.find(U32, sig_by_foreign(ctx_sig(ctx)), key):
             case Some{fid}: value_bind_entry(result, fid, foreign_stem(key), next, ctx)
             case None{}: StepFail{String.concat(["foreign `", key, "` has no entry"])}
         case BIR.NativeDeclaration{+key, primitive, quantities}:
-          match IndexLookup.find(U32, sig_by_native(ctx), key):
+          match IndexLookup.find(U32, sig_by_native(ctx_sig(ctx)), key):
             case Some{fid}: value_bind_entry(result, fid, native_stem(key), next, ctx)
             case None{}: StepFail{String.concat(["native `", key, "` has no first-class C value"])}
         case _: StepFail{"BIR declaration form has no C value"}
@@ -2588,22 +2590,22 @@ def value_bind_entry(+result: U32, fid: U32, stem: String, next: BIR.Block, +ctx
         case StepOk{body, after}: StepOk{String.concat(["    Term ", lv_name(result), " = ", expr, ";\n", body]), after}
 
 def value_closure(+fid: U32, stem: String, +ctx: Ctx) -> Maybe<&2, String>:
-  +arity = entry_arity(sig_entries(ctx), fid)
+  +arity = entry_arity(sig_entries(ctx_sig(ctx)), fid)
   match Nat.is_eq(arity, 0n):
     case True{}: None{}
     case False{}:
       match Nat.is_eq(arity, 1n):
         case True{}: Some{String.concat(["term_clo(FID_", U32.show(fid), ", 0)"])}
         case False{}:
-          match IndexLookup.find(U32, sig_stages(ctx), stage_key(stem, 0n)):
+          match IndexLookup.find(U32, sig_stages(ctx_sig(ctx)), stage_key(stem, 0n)):
             case Some{stage}: Some{String.concat(["term_clo(FID_", U32.show(stage), ", 0)"])}
             case None{}: None{}
 
 def closure_ctl(result: U32, +code: U32, +captures: List<&2, BIR.Arg>, parameters: List<&2, BIR.Parameter>, next: BIR.Block, +ctx: Ctx) -> Step:
-  match IndexLookup.find(U32, sig_by_code(ctx), U32.show(code)):
+  match IndexLookup.find(U32, sig_by_code(ctx_sig(ctx)), U32.show(code)):
     case None{}: StepFail{String.concat(["BIR closure names code ", U32.show(code), " with no entry"])}
     case Some{+real}:
-      +total = entry_arity(sig_entries(ctx), real)
+      +total = entry_arity(sig_entries(ctx_sig(ctx)), real)
       +captured = List.length(&2, BIR.Arg, captures)
       +remaining = List.length(&2, BIR.Parameter, parameters)
       match Nat.is_eq(remaining, 0n):
@@ -2631,7 +2633,7 @@ def closure_text(+result: U32, +captured: Nat, fid: U32, values: List<&2, String
 def closure_entry(code: U32, +captured: Nat, total: Nat, real: U32, ctx: Ctx) -> Maybe<&2, U32>:
   match Nat.is_eq(Nat.add(captured, 1n), total):
     case True{}: Some{real}
-    case False{}: IndexLookup.find(U32, sig_stages(ctx), stage_key(code_stem(code), captured))
+    case False{}: IndexLookup.find(U32, sig_stages(ctx_sig(ctx)), stage_key(code_stem(code), captured))
 
 def closure_alloc(+node: String, values: List<&2, String>, +index: Nat) -> String:
   match values:
@@ -2732,7 +2734,7 @@ def entry_foreign(+index: U32, +arity: Nat, key: String, args: Nat, +ctx: Ctx) -
     case False{}: StepFail{"BIR foreign entry arity disagrees with its declaration"}
     case True{}:
       +node = String.concat(["nd", U32.show(index)])
-      cid = cid_lookup(key, sig_cids(ctx))
+      cid = cid_lookup(key, sig_cids(ctx_sig(ctx)))
       body = String.concat([
         "    u64 ", node, " = heap_alloc(e, cls_fit(", Nat.show(arity), "));\n",
         stage_stores(node, arity, 0n),
@@ -2743,22 +2745,22 @@ def entry_foreign(+index: U32, +arity: Nat, key: String, args: Nat, +ctx: Ctx) -
 # The top entry calls the main declaration and lets its result reach the root
 # continuation the runtime installed.
 def entry_main(+index: U32, +ctx: Ctx) -> Step:
-  match find_declaration("main", sig_decls(ctx)):
+  match find_declaration("main", sig_decls(ctx_sig(ctx))):
     case None{}: StepFail{"the C target has no root main definition"}
     case Some{item}:
       match item:
         case BIR.FunctionDeclaration{key, code, parameters}:
           match Nat.is_eq(List.length(&2, BIR.Parameter, parameters), 0n):
             case False{}: StepFail{"the C target's main must take no parameters"}
-            case True{}: main_jump(index, IndexLookup.find(U32, sig_by_code(ctx), U32.show(code)), ctx)
-        case BIR.LazyDeclaration{key, body}: main_jump(index, IndexLookup.find(U32, sig_by_key(ctx), key), ctx)
+            case True{}: main_jump(index, IndexLookup.find(U32, sig_by_code(ctx_sig(ctx)), U32.show(code)), ctx)
+        case BIR.LazyDeclaration{key, body}: main_jump(index, IndexLookup.find(U32, sig_by_key(ctx_sig(ctx)), key), ctx)
         case _: StepFail{"a native or foreign declaration cannot be the C target's main"}
 
 def main_jump(index: U32, found: Maybe<&2, U32>, +ctx: Ctx) -> Step:
   match found:
     case None{}: StepFail{"the C target's main declaration has no entry"}
     case Some{+target}:
-      match Nat.is_eq(entry_arity(sig_entries(ctx), target), 0n):
+      match Nat.is_eq(entry_arity(sig_entries(ctx_sig(ctx)), target), 0n):
         case False{}: StepFail{"the C target's main entry must take no parameters"}
         case True{}: entry_add(index, String.concat(["    WL_JMP(FID_", U32.show(target), ");\n"]), ctx)
 
@@ -2846,12 +2848,36 @@ def rows_check(rows: List<&2, SegText>) -> Maybe<&2, String>:
             case True{}: rows_check(rest)
             case False{}: Some{String.concat(["entry ", U32.show(fid), " has an arity or result width the runtime table cannot store"])}
 
+def cid_defines(cids: List<&2, CidRow>) -> String:
+  match cids:
+    case Nil{}: ""
+    case +row <> rest:
+      match row:
+        case CidRow{cid, key, arity}: String.concat(["#define CID_", U32.show(cid), " ", U32.show(cid), "\n", cid_defines(rest)])
+
 def fid_defines(rows: List<&2, SegText>) -> String:
   match rows:
     case Nil{}: ""
     case +row <> rest:
       match row:
         case SegText{+fid, arity, resw, text}: String.concat(["#define FID_", U32.show(fid), " ", U32.show(fid), "\n", fid_defines(rest)])
+
+# CID_T[x] is {arity, hot} for the cid index x (runtime cid_arity/cid_hot).
+# The hot fact is not derivable from BIR today; CIRSharing's seal plan owns it.
+def cid_table(cids: List<&2, CidRow>) -> String:
+  match cids:
+    case Nil{}: "};\n"
+    case +row <> rest:
+      match row:
+        case CidRow{cid, key, arity}: String.concat(["{ ", Nat.show(arity), ", 0 }, ", cid_table(rest)])
+
+def runtime_fid_aliases(+entries: List<&2, Entry>) -> String:
+  String.concat([
+    "#define FID_IO_EMIT FID_", U32.show(rt_entry(entries, 2n)), "\n",
+    "#define FID_CLO_APPLY FID_", U32.show(rt_entry(entries, 3n)), "\n",
+    "#define FID_EXIT FID_", U32.show(rt_entry(entries, 4n)), "\n",
+    "#define FID_ENTER FID_", U32.show(rt_entry(entries, 5n)), "\n"
+  ])
 
 def fid_table(rows: List<&2, SegText>) -> String:
   match rows:
@@ -2934,6 +2960,7 @@ def tables_part(plan: Plan, +rows: List<&2, SegText>, regs: Nat) -> Part:
         part_text(runtime_cid_aliases(cids)),
         cid_defines(cids),
         fid_defines(rows),
+        runtime_fid_aliases(entries),
         runtime_defines(entries), "\n",
         "CONSTV u8 CID_T[][2] = { ", cid_table(cids), "\n",
         "CONSTV u8 FID_T[][3] = { ", fid_table(rows), "\n",
@@ -3084,7 +3111,7 @@ def requests_each(imports: List<&2, CImport>, constructors: List<&2, BIR.Constru
             "/* effect source: ", path, " */\n",
             source, "\n"
           ])
-          part_append(rewrite_source(block, namespace, cids, declarations, by_code, by_key, by_foreign, by_native), requests_each(rest, constructors, declarations, cids, by_code, by_key, by_foreign, by_native))
+          part_join([rewrite_source(block, namespace, cids, declarations, by_code, by_key, by_foreign, by_native), requests_each(rest, constructors, declarations, cids, by_code, by_key, by_foreign, by_native)])
 
 def rewrite_source(source: String, +namespace: String, +cids: List<&2, CidRow>, +declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>) -> Part:
   cid_map = namespaced_map(cid_exact_map(cids), cid_keys(cids), namespace)
