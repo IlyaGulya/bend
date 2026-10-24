@@ -65,6 +65,7 @@ type Src is Data:
 type Job is Data:
   JText{text: String}
   JConv{take: CLay.Unfill, make: CLay.Fill, src: Src, dst: Dst, tag: String}
+  JFail{message: String}
 
 type CellOut is Data:
   CellOk{layout: CLay.Layout, arr: Bool, words: Nat, lgs: Nat}
@@ -259,10 +260,12 @@ def max_term_decl(+pfb: String, +pcount: Nat) -> String:
 def arm_seed(+ppacked: Bool, +pnode_words: Nat, +pt: String, +ptag: String, +pfb: String) -> List<&2, Job>:
   match ppacked:
     case True{}: Nil{}
-    case False{}:
-      match pnode_words:
-        case 0n: Nil{}
-        case _: [JText{join_text(["u64 ", ptag, "s = term_rfc(", pt, ") ? ctr_take(e, ", pt, ", ", Nat.show(pnode_words), ", ", pfb, ") : term_loc(", pt, "); u32 ", ptag, "i = 0;"])}]
+    case False{}: arm_seed_words(pnode_words, pt, ptag, pfb)
+
+def arm_seed_words(+pnode_words: Nat, +pt: String, +ptag: String, +pfb: String) -> List<&2, Job>:
+  match pnode_words:
+    case 0n: Nil{}
+    case _: [JText{join_text(["u64 ", ptag, "s = term_rfc(", pt, ") ? ctr_take(e, ", pt, ", ", Nat.show(pnode_words), ", ", pfb, ") : term_loc(", pt, "); u32 ", ptag, "i = 0;"])}]
 
 def arm_src(+ppacked: Bool, +pnode_words: Nat, +pt: String, +ptag: String, +pfb: String) -> Src:
   match ppacked:
@@ -279,19 +282,16 @@ def nests_jobs(+pw: World, +pnests: List<&2, CLay.Nest>, +psrc: Src, +pdst: Dst,
     case Nil{}: Nil{}
     case +nest <> +rest:
       match nest:
-        case CLay.Nest{at, offset, take, make}: [JConv{take, make, psrc, pdst, ptag}] <> nests_jobs(pw, rest, psrc, pdst, ptag)
+        case CLay.Nest{at, offset, take, make}: List.append(&2, Job, [JConv{take, make, psrc, pdst, ptag}], nests_jobs(pw, rest, psrc, pdst, ptag))
 
 # Expand one conversion into jobs. This function never calls itself or another
 # expander: nested work becomes JConv entries in the returned list.
 
 def jobs_arm_body(+pw: World, +pcid: U32, +ptag_index: Nat, +ppacked: Bool, +pnode_words: Nat, +pfields: List<&2, CLay.Nest>, +pt: String, +pdst: Dst, +ptag: String, +ptagged: Bool, +pfb: String, +pmode: Nat) -> List<&2, Job>:
-  mark = Bool.pick(List<&2, Job>, ptagged, dst_mark(pdst), Nil{})
-  seed = arm_seed(ppacked, pnode_words, pt, ptag, pfb)
-  src = arm_src(ppacked, pnode_words, pt, ptag, pfb)
-  List.append(&2, Job, mark, List.append(&2, Job, seed, nests_jobs(pw, pfields, src, pdst, ptag)))
+  List.append(&2, Job, Bool.pick(List<&2, Job>, ptagged, one_job(JText{dst_mark(pdst)}), Nil{}), List.append(&2, Job, arm_seed(ppacked, pnode_words, pt, ptag, pfb), nests_jobs(pw, pfields, arm_src(ppacked, pnode_words, pt, ptag, pfb), pdst, ptag)))
 
 def jobs_arm(+pw: World, +pcid: U32, +ptag_index: Nat, +ppacked: Bool, +pnode_words: Nat, +pfields: List<&2, CLay.Nest>, +pt: String, +pdst: Dst, +ptag: String, +ptagged: Bool, +pfb: String, +pmode: Nat) -> List<&2, Job>:
-  [JText{join_text(["case ", U32.show(pcid), "u: {"])}] <> jobs_arm_body(pw, pcid, ptag_index, ppacked, pnode_words, pfields, pt, pdst, ptag, ptagged, pfb, pmode) <> [JText{"} break;"}]
+  List.append(&2, Job, [JText{join_text(["case ", U32.show(pcid), "u: {"])}], List.append(&2, Job, jobs_arm_body(pw, pcid, ptag_index, ppacked, pnode_words, pfields, pt, pdst, ptag, ptagged, pfb, pmode), [JText{"} break;"}]))
 
 def arm_jobs(+pw: World, +pfound: Maybe<&2, U32>, +parm: CLay.FormArm, +pt: String, +pdst: Dst, +ptag: String, +ptagged: Bool, +pfb: String, +pmode: Nat) -> List<&2, Job>:
   match pfound:
@@ -337,11 +337,11 @@ def field_pair_jobs(+pw: World, +pfields: List<&2, CLay.Nest>, +pout_fields: Lis
     case Nil{}:
       match pout_fields:
         case Nil{}: Nil{}
-        case _: [JText{"/* field count mismatch */"}]
+        case _: [JFail{"the constructor's slots and fields differ"}]
     case +field <> +rest:
       match pout_fields:
-        case Nil{}: [JText{"/* field count mismatch */"}]
-        case +out_field <> +out_rest: [JConv{nest_take(field), nest_make(out_field), psrc, pdst, ptag}] <> field_pair_jobs(pw, rest, out_rest, psrc, pdst, ptag)
+        case Nil{}: [JFail{"the constructor's slots and fields differ"}]
+        case +out_field <> +out_rest: List.append(&2, Job, [JConv{nest_take(field), nest_make(out_field), psrc, pdst, ptag}], field_pair_jobs(pw, rest, out_rest, psrc, pdst, ptag))
 
 def form_fields(+parm: CLay.FormArm) -> List<&2, CLay.Nest>:
   match parm:
@@ -353,7 +353,7 @@ def forms_arm_case(+pw: World, +pfound: Maybe<&2, CLay.FormArm>, +parm: CLay.For
     case Some{target}:
       match parm:
         case CLay.FormArm{key, tag, packed, node_words, fields}:
-          [JText{join_text(["case ", Nat.show(pindex), ": {"])}] <> field_pair_jobs(pw, fields, form_fields(target), psrc, pdst, ptag) <> [JText{"} break;"}]
+List.append(&2, Job, List.append(&2, Job,           [JText{join_text(["case ", Nat.show(pindex), ": {"])}], field_pair_jobs(pw, fields, form_fields(target), psrc, pdst, ptag)), [JText{"} break;"}])
 
 def form_arm_by_key(+pwant: String, +parms: List<&2, CLay.FormArm>) -> Maybe<&2, CLay.FormArm>:
   match parms:
@@ -402,7 +402,7 @@ def box_arm_jobs(+pw: World, +pfound: Maybe<&2, U32>, +parm: CLay.FormArm, +psrc
         case CLay.FormArm{key, tag, packed, node_words, fields}:
           nw = join_text([ptag, "w"])
           cur = join_text([ptag, "j"])
-          block = List.append(&2, Job, [JText{join_text(["case ", Nat.show(pindex), ": {"])}], List.append(&2, Job, [JText{dst_decl(nw, cur, node_words)}], List.append(&2, Job, nests_jobs(pw, fields, psrc, DstSeq{nw, cur}, join_text([ptag, "x", Nat.show(pindex)])), List.append(&2, Job, pack_jobs(cid, pnode_words, ppacked, nw, pout, ptag), [JText{"} break;"}]))))
+          block = List.append(&2, Job, [JText{join_text(["case ", Nat.show(pindex), ": {"])}], List.append(&2, Job, [JText{dst_decl(nw, cur, node_words)}], List.append(&2, Job, nests_jobs(pw, fields, psrc, DstSeq{nw, cur}, join_text([ptag, "x", Nat.show(pindex)])), List.append(&2, Job, pack_jobs(cid, node_words, packed, nw, pout, ptag), [JText{"} break;"}]))))
           block
 
 def box_cases(+pw: World, +parms: List<&2, CLay.FormArm>, +psrc: Src, +pout: String, +ptag: String, +ptagged: Bool, +pindex: Nat) -> List<&2, Job>:
@@ -443,6 +443,7 @@ def run_jobs(+pfuel: Nat, +pjobs: List<&2, Job>, +pw: World, +pacc: List<&2, Str
         case +job <> +rest:
           match job:
             case JText{text}: run_jobs(p, rest, pw, List.append(&2, String, pacc, [text]))
+            case JFail{message}: CodeFail{message}
             case JConv{take, make, src, dst, tag}: run_jobs(p, List.append(&2, Job, expand_conv(pw, take, make, src, dst, tag), rest), pw, pacc)
 
 # ---------------------------------------------------------------------------
@@ -451,12 +452,12 @@ def run_jobs(+pfuel: Nat, +pjobs: List<&2, Job>, +pw: World, +pacc: List<&2, Str
 
 def fill_plan_jobs(+pfill: CLay.Fill, +pterm: String, +pdst: Dst, +ptag: String) -> List<&2, Job>:
   match pfill:
-    case CLay.FillWord{}: [JText{"/* a data layout produced a one-word fill */"}]
+    case CLay.FillWord{}: [JFail{"a data layout produced a one-word fill"}]
     case CLay.FillForm{words, arms}: [JConv{CLay.UnfillWord{}, pfill, SrcOne{pterm}, pdst, ptag}]
 
 def fill_result_jobs(+pfr: CLay.FillResult, +pterm: String, +pdst: Dst, +ptag: String) -> List<&2, Job>:
   match pfr:
-    case CLay.FillFailed{message}: [JText{join_text(["/* fill failed: ", message, " */"])}]
+    case CLay.FillFailed{message}: [JFail{message}]
     case CLay.FillFound{fill}: fill_plan_jobs(fill, pterm, pdst, ptag)
 
 def fill_data_jobs(+pw: World, +playout: CLay.Layout, +pterm: String, +pdst: Dst, +ptag: String) -> List<&2, Job>:
@@ -473,7 +474,7 @@ def fill_jobs(+pw: World, +playout: CLay.Layout, +pterm: String, +pdst: Dst, +pt
 
 def unfill_result_jobs(+pur: CLay.UnfillResult, +psrc: Src, +pout: String, +ptag: String) -> List<&2, Job>:
   match pur:
-    case CLay.UnfillFailed{message}: [JText{join_text(["/* unfill failed: ", message, " */"])}]
+    case CLay.UnfillFailed{message}: [JFail{message}]
     case CLay.UnfillFound{unfill}: [JConv{unfill, CLay.FillWord{}, psrc, DstSeq{pout, join_text([ptag, "o"])}, ptag}]
 
 # ---------------------------------------------------------------------------
@@ -516,11 +517,11 @@ def operand_name(+playout: CLay.Layout, +puse: BIR.Use, +ptext: String, +ptag: S
 def text_jobs(+plines: List<&2, String>) -> List<&2, Job>:
   match plines:
     case Nil{}: Nil{}
-    case +line <> +rest: [JText{line}] <> text_jobs(rest)
+    case +line <> +rest: List.append(&2, Job, [JText{line}], text_jobs(rest))
 
 def code_jobs(+pcode: Code) -> List<&2, Job>:
   match pcode:
-    case CodeFail{message}: [JText{join_text(["/* code failed: ", message, " */"])}]
+    case CodeFail{message}: [JFail{message}]
     case CodeOk{lines}: text_jobs(lines)
 
 def fill_slots_jobs(+pw: World, +pslots: List<&2, CLay.NodeSlot>, +pfields: List<&2, Operand>) -> List<&2, Job>:
@@ -528,10 +529,10 @@ def fill_slots_jobs(+pw: World, +pslots: List<&2, CLay.NodeSlot>, +pfields: List
     case Nil{}:
       match pfields:
         case Nil{}: Nil{}
-        case _: [JText{"/* field count mismatch */"}]
+        case _: [JFail{"the constructor's slots and fields differ"}]
     case +slot <> +rest:
       match pfields:
-        case Nil{}: [JText{"/* field count mismatch */"}]
+        case Nil{}: [JFail{"the constructor's slots and fields differ"}]
         case +field <> +rest_fields:
           match slot:
             case CLay.NodeSlot{ordinal, offset, layout}:
@@ -566,28 +567,33 @@ def seal_kind(+puse: BIR.Use, +pkind: CLay.CWord, +pcur: String, +pfrom_data: Bo
 def seal_kind_walk(+puse: BIR.Use, +pkinds: List<&2, CLay.CWord>, +pcur: String, +pfrom_data: Bool) -> List<&2, Job>:
   match pkinds:
     case Nil{}: Nil{}
-    case +kind <> +rest: seal_kind(puse, kind, pcur, pfrom_data) <> seal_kind_walk(puse, rest, pcur, pfrom_data)
+    case +kind <> +rest: List.append(&2, Job, seal_kind(puse, kind, pcur, pfrom_data), seal_kind_walk(puse, rest, pcur, pfrom_data))
 
 def seal_slots_jobs(+pw: World, +pslots: List<&2, CLay.NodeSlot>, +pfields: List<&2, Operand>) -> List<&2, Job>:
-  match (pslots, pfields):
-    case (Nil{}, Nil{}): Nil{}
-    case (Nil{}, _): [JText{"/* field count mismatch */"}]
-    case (_, Nil{}): [JText{"/* field count mismatch */"}]
-    case (+slot <> +rest, +field <> +rest_fields):
-      match (slot, field):
-        case (CLay.NodeSlot{ordinal, offset, layout}, Operand{use, text}):
-          List.append(&2, Job, [JText{join_text(["u32 k", U32.show(ordinal), " = ", Nat.show(offset), ";"])}], List.append(&2, Job, seal_kind_walk(use, CLay.layout_kinds(layout), join_text(["k", U32.show(ordinal)]), layout_is_data(layout)), seal_slots_jobs(pw, rest, rest_fields)))
+  match pslots:
+    case Nil{}:
+      match pfields:
+        case Nil{}: Nil{}
+        case _: one_job(JFail{"the constructor's slots and fields differ"})
+    case +slot <> +rest:
+      match pfields:
+        case Nil{}: one_job(JFail{"the constructor's slots and fields differ"})
+        case +field <> +rest_fields:
+          match slot:
+            case CLay.NodeSlot{ordinal, offset, layout}:
+              match field:
+                case Operand{use, text}:
+                  List.append(&2, Job, one_job(JText{String.append(String.append(String.append(String.append("u32 k", U32.show(ordinal)), " = "), Nat.show(offset)), ";")}), List.append(&2, Job, seal_kind_walk(use, CLay.layout_kinds(layout), String.append("k", U32.show(ordinal)), layout_is_data(layout)), seal_slots_jobs(pw, rest, rest_fields)))
+
+def one_job(+pjob: Job) -> List<&2, Job>:
+  [pjob]
 
 def construct_words(+pw: World, +pcid: U32, +pcount: Nat, +pslots: List<&2, CLay.NodeSlot>, +poperands: List<&2, Operand>) -> Part:
-  decl = [JText{dst_decl("w0", "o0", pcount)}]
-  filled = fill_slots_jobs(pw, pslots, poperands)
-  sealed = seal_slots_jobs(pw, pslots, poperands)
-  alloc = [JText{join_text(["u64 n0 = heap_alloc(e, cls_fit(", Nat.show(pcount), ")); for (u32 n0i = 0; n0i < ", Nat.show(pcount), "; n0i += 1) { e.mem[n0 + n0i] = w0[n0i]; }"])}]
-  jobs = List.append(&2, Job, decl, List.append(&2, Job, filled, List.append(&2, Job, sealed, alloc)))
-  part_of(run_jobs(100000n, jobs, pw, Nil{}), join_text(["term_ctr(", U32.show(pcid), "u, n0)"]))
+  jobs = List.append(&2, Job, one_job(JText{dst_decl("w0", "o0", pcount)}), List.append(&2, Job, fill_slots_jobs(pw, pslots, poperands), List.append(&2, Job, seal_slots_jobs(pw, pslots, poperands), one_job(JText{String.append(String.append(String.append(String.append("u64 n0 = heap_alloc(e, cls_fit(", Nat.show(pcount)), ")); for (u32 n0i = 0; n0i < "), Nat.show(pcount)), "; n0i += 1) { e.mem[n0 + n0i] = w0[n0i]; }")}))))
+  part_of(run_jobs(100000n, jobs, pw, Nil{}), String.append(String.append("term_ctr(", U32.show(pcid)), "u, n0)"))
 
 def codeSeqPack(+pcode: Code, +pw: World, +playout: CLay.Layout, +pterm: String, +pcid: U32) -> Code:
-  jobs = List.append(&2, Job, [JText{"u64 w0[1]; w0[0] = 0; u32 o0 = 0;"}], List.append(&2, Job, code_jobs(pcode), fill_jobs(pw, playout, pterm, DstSeq{"w0", "o0"}, "p0")))
+  jobs = List.append(&2, Job, one_job(JText{"u64 w0[1]; w0[0] = 0; u32 o0 = 0;"}), List.append(&2, Job, code_jobs(pcode), fill_jobs(pw, playout, pterm, DstSeq{"w0", "o0"}, "p0")))
   run_jobs(100000n, jobs, pw, Nil{})
 
 def construct_packed_one(+pw: World, +pcid: U32, +pslot: CLay.NodeSlot, +pfield: Operand) -> Part:
@@ -678,12 +684,11 @@ def term_decl_text(+pcount: Nat) -> String:
     case _: join_text(["Term b0f[", Nat.show(pcount), "];"])
 
 def project_words(+pw: World, +playout: CLay.Layout, +poffset: Nat, +pcount: Nat, +pvalue: String) -> Part:
-  decl = [JText{join_text(["Term b0t = ", pvalue, ";", term_decl_text(pcount), "u64 b0s = term_rfc(b0t) ? ctr_take(e, b0t, ", Nat.show(pcount), ", b0f) : term_loc(b0t); u32 b0i = ", Nat.show(poffset), "; Term b0r = 0;"])}]
-  jobs = List.append(&2, Job, decl, unfill_jobs(pw, playout, SrcNode{"b0s", "b0f", "b0i", False{}}, "b0r", "b0"))
+  jobs = List.append(&2, Job, ([JText{join_text(["Term b0t = ", pvalue, ";", term_decl_text(pcount), "u64 b0s = term_rfc(b0t) ? ctr_take(e, b0t, ", Nat.show(pcount), ", b0f) : term_loc(b0t); u32 b0i = ", Nat.show(poffset), "; Term b0r = 0;"])}]), unfill_jobs(pw, playout, SrcNode{"b0s", "b0f", "b0i", False{}}, "b0r", "b0"))
   part_of(run_jobs(100000n, jobs, pw, Nil{}), "b0r")
 
 def project_packed(+pw: World, +playout: CLay.Layout, +pvalue: String) -> Part:
-  jobs = [JText{join_text(["Term b0t = ", pvalue, ";"])}] <> unfill_jobs(pw, playout, SrcOne{"((u64)term_loc(b0t))"}, "b0r", "b0")
+jobs = List.append(&2, Job, [JText{join_text(["Term b0t = ", pvalue, ";"])}], unfill_jobs(pw, playout, SrcOne{"((u64)term_loc(b0t))"}, "b0r", "b0"))
   part_of(run_jobs(100000n, jobs, pw, Nil{}), "b0r")
 
 def project_packed_flag(+ppacked: Bool, +pw: World, +playout: CLay.Layout, +poffset: Nat, +pcount: Nat, +pvalue: String) -> Part:
@@ -856,10 +861,10 @@ def seal_cell_kind(+puse: BIR.Use, +pkind: CLay.CWord, +pcur: String) -> List<&2
 def seal_cell_walk(+puse: BIR.Use, +pkinds: List<&2, CLay.CWord>, +pcur: String) -> List<&2, Job>:
   match pkinds:
     case Nil{}: Nil{}
-    case +kind <> +rest: seal_cell_kind(puse, kind, pcur) <> seal_cell_walk(puse, rest, pcur)
+    case +kind <> +rest: List.append(&2, Job, seal_cell_kind(puse, kind, pcur), seal_cell_walk(puse, rest, pcur))
 
 def elem_fill_operand(+pw: World, +playout: CLay.Layout, +puse: BIR.Use, +pcode: Code, +pterm: String, +ptag: String) -> List<&2, Job>:
-  code_jobs(pcode) <> fill_jobs(pw, playout, pterm, DstSeq{"w0", "o0"}, ptag) <> [JText{"c0 = 0;"}] <> seal_cell_walk(puse, CLay.layout_kinds(playout), "c0")
+List.append(&2, Job, List.append(&2, Job, List.append(&2, Job,   code_jobs(pcode), fill_jobs(pw, playout, pterm, DstSeq{"w0", "o0"}, ptag)), [JText{"c0 = 0;"}]), seal_cell_walk(puse, CLay.layout_kinds(playout), "c0"))
 
 def elem_fill(+pw: World, +playout: CLay.Layout, +puse: BIR.Use, +ptext: String, +ptag: String) -> List<&2, Job>:
   elem_fill_operand(pw, playout, puse, operand_code(playout, puse, ptext, ptag), operand_name(playout, puse, ptext, ptag), ptag)
@@ -880,9 +885,8 @@ def array_new_ops(+pdim: Maybe<&2, Operand>, +pvalue: Maybe<&2, Operand>, +pw: W
       match pvalue:
         case None{}: PartFail{"array_new needs the dimension and the value"}
         case Some{value}:
-          head = [JText{elem_decl(pwords)}]
           tail = List.append(&2, Job, [JText{elem_stores(pwords)}], Nil{})
-          jobs = List.append(&2, Job, head, List.append(&2, Job, elem_fill(pw, playout, operand_use(value), operand_text(value), "an"), tail))
+          jobs = List.append(&2, Job, ([JText{elem_decl(pwords)}]), List.append(&2, Job, elem_fill(pw, playout, operand_use(value), operand_text(value), "an"), tail))
           run_part(jobs, pw, join_text(["blk_new(e, ", arr_flag(parr), ", (u64)(", operand_text(dim), "), ", Nat.show(plgs), ", ", Nat.show(pwords), ", f0)"]))
 
 def tuple_and_code(+ptuple: Part, +pcode: Code) -> Part:
@@ -897,8 +901,7 @@ def array_get_ops(+parray: Maybe<&2, Operand>, +pindex: Maybe<&2, Operand>, +pw:
       match pindex:
         case None{}: PartFail{"array_get needs the array and the index"}
         case Some{index}:
-          decl = [JText{join_text(["Term a0 = ", keep_text(array), "; Term i0 = ", operand_text(index), "; u64 l0 = blk_loc(e.mem, a0); u32 g0 = (u32)blk_at(a0, (u64)(u32)i0, ", Nat.show(plgs), "); u32 c0 = 0; Term r0 = 0;"])}]
-          jobs = List.append(&2, Job, decl, unfill_jobs(pw, playout, SrcBlock{"l0", "g0", parr, True{}, "c0"}, "r0", "ag"))
+          jobs = List.append(&2, Job, ([JText{join_text(["Term a0 = ", keep_text(array), "; Term i0 = ", operand_text(index), "; u64 l0 = blk_loc(e.mem, a0); u32 g0 = (u32)blk_at(a0, (u64)(u32)i0, ", Nat.show(plgs), "); u32 c0 = 0; Term r0 = 0;"])}]), unfill_jobs(pw, playout, SrcBlock{"l0", "g0", parr, True{}, "c0"}, "r0", "ag"))
           code = run_jobs(100000n, jobs, pw, Nil{})
           tuple_and_code(tuple_part(pw, "a0", "r0"), code)
 
@@ -907,9 +910,9 @@ def kinds_jobs(+pkinds: List<&2, CLay.CWord>, +pcur: String) -> List<&2, Job>:
     case Nil{}: Nil{}
     case +kind <> +rest:
       match kind:
-        case CLay.CWord32{}: [JText{join_text([pcur, " += 1;"])}] <> kinds_jobs(rest, pcur)
-        case CLay.CWord64{}: [JText{join_text([pcur, " += 1;"])}] <> kinds_jobs(rest, pcur)
-        case CLay.CWordBox{}: [JText{join_text(["old0[", pcur, "] = blk_read(e.mem, true, l0, g0 + ", pcur, "); ", pcur, " += 1;"])}] <> kinds_jobs(rest, pcur)
+        case CLay.CWord32{}: List.append(&2, Job, [JText{join_text([pcur, " += 1;"])}], kinds_jobs(rest, pcur))
+        case CLay.CWord64{}: List.append(&2, Job, [JText{join_text([pcur, " += 1;"])}], kinds_jobs(rest, pcur))
+        case CLay.CWordBox{}: List.append(&2, Job, [JText{join_text(["old0[", pcur, "] = blk_read(e.mem, true, l0, g0 + ", pcur, "); ", pcur, " += 1;"])}], kinds_jobs(rest, pcur))
 
 def old_read_box(+parr: Bool, +pcur: String) -> List<&2, Job>:
   match parr:
@@ -921,29 +924,28 @@ def kinds_box_jobs(+pkinds: List<&2, CLay.CWord>, +pcur: String, +parr: Bool) ->
     case Nil{}: Nil{}
     case +kind <> +rest:
       match kind:
-        case CLay.CWord32{}: [JText{join_text([pcur, " += 1;"])}] <> kinds_box_jobs(rest, pcur, parr)
-        case CLay.CWord64{}: [JText{join_text([pcur, " += 1;"])}] <> kinds_box_jobs(rest, pcur, parr)
-        case CLay.CWordBox{}: old_read_box(parr, pcur) <> kinds_box_jobs(rest, pcur, parr)
+        case CLay.CWord32{}: List.append(&2, Job, [JText{join_text([pcur, " += 1;"])}], kinds_box_jobs(rest, pcur, parr))
+        case CLay.CWord64{}: List.append(&2, Job, [JText{join_text([pcur, " += 1;"])}], kinds_box_jobs(rest, pcur, parr))
+        case CLay.CWordBox{}: List.append(&2, Job, old_read_box(parr, pcur), kinds_box_jobs(rest, pcur, parr))
 
 def old_sink_jobs(+pkinds: List<&2, CLay.CWord>, +pcur: String) -> List<&2, Job>:
   match pkinds:
     case Nil{}: Nil{}
     case +kind <> +rest:
       match kind:
-        case CLay.CWordBox{}: [JText{join_text(["term_sink(e, old0[", pcur, "]); ", pcur, " += 1;"])}] <> old_sink_jobs(rest, pcur)
-        case _: [JText{join_text([pcur, " += 1;"])}] <> old_sink_jobs(rest, pcur)
+        case CLay.CWordBox{}: List.append(&2, Job, [JText{join_text(["term_sink(e, old0[", pcur, "]); ", pcur, " += 1;"])}], old_sink_jobs(rest, pcur))
+        case _: List.append(&2, Job, [JText{join_text([pcur, " += 1;"])}], old_sink_jobs(rest, pcur))
 
 def write_jobs(+parr: Bool, +pkinds: List<&2, CLay.CWord>, +pcur: String) -> List<&2, Job>:
   match pkinds:
     case Nil{}: Nil{}
-    case +kind <> +rest: [JText{join_text(["blk_write(e.mem, ", arr_flag(parr), ", l0, g0 + ", pcur, ", w0[", pcur, "]); ", pcur, " += 1;"])}] <> write_jobs(parr, rest, pcur)
+    case +kind <> +rest: List.append(&2, Job, [JText{join_text(["blk_write(e.mem, ", arr_flag(parr), ", l0, g0 + ", pcur, ", w0[", pcur, "]); ", pcur, " += 1;"])}], write_jobs(parr, rest, pcur))
 
 def array_set_run(+parray: Operand, +pindex: Operand, +pvalue: Operand, +pw: World, +playout: CLay.Layout, +parr: Bool, +pwords: Nat, +plgs: Nat) -> Part:
   kinds = CLay.layout_kinds(playout)
-  decl = [JText{join_text(["Term a0 = ", keep_text(parray), "; Term i0 = ", operand_text(pindex), "; u64 l0 = blk_loc(e.mem, a0); u32 g0 = (u32)blk_at(a0, (u64)(u32)i0, ", Nat.show(plgs), "); Term old0[", Nat.show(pwords), "]; u32 c0 = 0;"])}]
   old = kinds_box_jobs(kinds, "c0", parr)
   rest = List.append(&2, Job, [JText{"c0 = 0;"}], List.append(&2, Job, write_jobs(parr, kinds, "c0"), List.append(&2, Job, [JText{"c0 = 0;"}], old_sink_jobs(kinds, "c0"))))
-  jobs = List.append(&2, Job, decl, List.append(&2, Job, old, List.append(&2, Job, [JText{elem_decl(pwords)}], List.append(&2, Job, elem_fill(pw, playout, operand_use(pvalue), operand_text(pvalue), "as"), rest))))
+  jobs = List.append(&2, Job, ([JText{join_text(["Term a0 = ", keep_text(parray), "; Term i0 = ", operand_text(pindex), "; u64 l0 = blk_loc(e.mem, a0); u32 g0 = (u32)blk_at(a0, (u64)(u32)i0, ", Nat.show(plgs), "); Term old0[", Nat.show(pwords), "]; u32 c0 = 0;"])}]), List.append(&2, Job, old, List.append(&2, Job, [JText{elem_decl(pwords)}], List.append(&2, Job, elem_fill(pw, playout, operand_use(pvalue), operand_text(pvalue), "as"), rest))))
   part_of(run_jobs(100000n, jobs, pw, Nil{}), "a0")
 
 def array_set_ops(+parray: Maybe<&2, Operand>, +pindex: Maybe<&2, Operand>, +pvalue: Maybe<&2, Operand>, +pw: World, +playout: CLay.Layout, +parr: Bool, +pwords: Nat, +plgs: Nat) -> Part:
@@ -959,11 +961,10 @@ def array_set_ops(+parray: Maybe<&2, Operand>, +pindex: Maybe<&2, Operand>, +pva
 
 def array_swap_run(+parray: Operand, +pindex: Operand, +pvalue: Operand, +pw: World, +playout: CLay.Layout, +parr: Bool, +pwords: Nat, +plgs: Nat) -> Part:
   kinds = CLay.layout_kinds(playout)
-  decl = [JText{join_text(["Term a0 = ", keep_text(parray), "; Term i0 = ", operand_text(pindex), "; u64 l0 = blk_loc(e.mem, a0); u32 g0 = (u32)blk_at(a0, (u64)(u32)i0, ", Nat.show(plgs), "); Term old0[", Nat.show(pwords), "]; u32 c0 = 0; Term r0 = 0;"])}]
   old = kinds_box_jobs(kinds, "c0", parr)
   unfill = unfill_jobs(pw, playout, SrcBuf{"old0", "oc0"}, "r0", "awold")
   rest = List.append(&2, Job, [JText{"c0 = 0;"}], List.append(&2, Job, write_jobs(parr, kinds, "c0"), List.append(&2, Job, [JText{"u32 oc0 = 0;"}], unfill)))
-  jobs = List.append(&2, Job, decl, List.append(&2, Job, old, List.append(&2, Job, [JText{elem_decl(pwords)}], List.append(&2, Job, elem_fill(pw, playout, operand_use(pvalue), operand_text(pvalue), "aw"), rest))))
+  jobs = List.append(&2, Job, ([JText{join_text(["Term a0 = ", keep_text(parray), "; Term i0 = ", operand_text(pindex), "; u64 l0 = blk_loc(e.mem, a0); u32 g0 = (u32)blk_at(a0, (u64)(u32)i0, ", Nat.show(plgs), "); Term old0[", Nat.show(pwords), "]; u32 c0 = 0; Term r0 = 0;"])}]), List.append(&2, Job, old, List.append(&2, Job, [JText{elem_decl(pwords)}], List.append(&2, Job, elem_fill(pw, playout, operand_use(pvalue), operand_text(pvalue), "aw"), rest))))
   code = run_jobs(100000n, jobs, pw, Nil{})
   tuple_and_code(tuple_part(pw, "a0", "r0"), code)
 
@@ -1010,11 +1011,9 @@ def array_node_ops(+pleft: Maybe<&2, Operand>, +pright: Maybe<&2, Operand>) -> P
 def array_leaf_value_use(+puse: BIR.Use, +pw: World, +playout: CLay.Layout, +parr: Bool, +parray: Operand) -> Part:
   match puse:
     case BIR.Many{}:
-      decl = [JText{join_text(["Term a0 = term_keep(e, ", operand_text(parray), ", 1); u64 l0 = blk_loc(e.mem, a0); Term r0 = 0; u32 c0 = 0;"])}]
-      part_of(run_jobs(100000n, List.append(&2, Job, decl, unfill_jobs(pw, playout, SrcBlock{"l0", "0", parr, True{}, "c0"}, "r0", "av")), pw, Nil{}), "r0")
+      part_of(run_jobs(100000n, List.append(&2, Job, one_job(JText{String.append(String.append("Term a0 = term_keep(e, ", operand_text(parray)), ", 1); u64 l0 = blk_loc(e.mem, a0); Term r0 = 0; u32 c0 = 0;")}), unfill_jobs(pw, playout, SrcBlock{"l0", "0", parr, True{}, "c0"}, "r0", "av")), pw, Nil{}), "r0")
     case _:
-      decl = [JText{join_text(["Term a0 = ", operand_text(parray), "; u64 l0 = blk_loc(e.mem, a0); Term r0 = 0; u32 c0 = 0;"])}]
-      jobs = List.append(&2, Job, decl, List.append(&2, Job, unfill_jobs(pw, playout, SrcBlock{"l0", "0", parr, False{}, "c0"}, "r0", "av"), [JText{"blk_free(e, a0);"}]))
+      jobs = List.append(&2, Job, one_job(JText{String.append(String.append("Term a0 = term_keep(e, ", operand_text(parray)), ", 1); u64 l0 = blk_loc(e.mem, a0); Term r0 = 0; u32 c0 = 0;")}), List.append(&2, Job, unfill_jobs(pw, playout, SrcBlock{"l0", "0", parr, False{}, "c0"}, "r0", "av"), one_job(JText{"blk_free(e, a0);"})))
       part_of(run_jobs(100000n, jobs, pw, Nil{}), "r0")
 
 def array_leaf_value_ops(+parray: Maybe<&2, Operand>, +pw: World, +playout: CLay.Layout, +parr: Bool) -> Part:
@@ -1233,8 +1232,9 @@ def show_box_flag(+playout: CLay.Layout) -> Nat:
 
 def show_tag_plain(+pcount: Nat) -> Nat:
   match pcount:
-    case 1n+rest: 1n
-    case _: 0n
+    case 0n: 0n
+    case 1n: 0n
+    case _: 1n
 
 def show_tag_start(+pbox: Nat, +pcount: Nat) -> Nat:
   match pbox:
@@ -1252,7 +1252,7 @@ def show_name_sep(+prest: List<&2, String>) -> String:
 def show_render_names(+pnames: List<&2, String>) -> String:
   match pnames:
     case Nil{}: ""
-    case +name <> +rest: show_quote(name) <> show_name_sep(rest) <> show_render_names(rest)
+    case +name <> +rest: String.append(String.append(show_quote(name), show_name_sep(rest)), show_render_names(rest))
 
 def show_render_sep_flag(+pempty: Bool) -> String:
   match pempty:
@@ -1334,6 +1334,8 @@ def show_arm_layouts_each(+parms: List<&2, CLay.LayArm>, +pkey: String) -> Maybe
 
 def show_arm_layouts(+playout: CLay.Layout, +pkey: String) -> Maybe<&2, List<&2, CLay.Layout>>:
   match playout:
+    case CLay.LayoutWord{word}: None{}
+    case CLay.LayoutBox{reason}: None{}
     case CLay.LayoutData{words, arms}: show_arm_layouts_each(arms, pkey)
 
 def show_node_layout_slots(+pnode: CLay.NodeResult) -> Maybe<&2, List<&2, CLay.NodeSlot>>:
@@ -1440,7 +1442,7 @@ def show_array_cell(+pcell: CLay.CellResult, +pctx: CLay.Context, +pconstructors
 
 def show_array_element(+pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pelement: BIR.Descriptor, +pat: Nat, +pst: ShowState) -> ShowAdvance:
   cell = CLay.array_cell(pctx, pelement)
-  show_array_cell(cell, pctx, pconstructors, pfamilies, element, pat, pst)
+  show_array_cell(cell, pctx, pconstructors, pfamilies, pelement, pat, pst)
 
 def show_array_args(+pargs: CLay.ArgsResult, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +pat: Nat, +pst: ShowState) -> ShowAdvance:
   match pargs:
@@ -1458,14 +1460,20 @@ def box_advance(+pkid: ShowJob, +padv: ShowAdvance) -> ShowAdvance:
   ShowNext{show_next_state(padv), List.append(&2, ShowJob, [pkid], show_next_kids(padv))}
 
 def fields_box_each(+pslots: List<&2, CLay.NodeSlot>, +pfields: List<&2, BIR.DescriptorField>, +pst: ShowState) -> ShowAdvance:
-  match (pslots, pfields):
-    case (Nil{}, Nil{}): ShowNext{pst, Nil{}}
-    case (Nil{}, _): ShowNext{show_state_error(pst, "a constructor node's slots and fields differ"), Nil{}}
-    case (_, Nil{}): ShowNext{show_state_error(pst, "a constructor node's slots and fields differ"), Nil{}}
-    case (+slot <> +rest, +field <> +rest_fields):
-      match (slot, field):
-        case (CLay.NodeSlot{ordinal, offset, layout}, BIR.DescriptorField{key, quantity, ty}):
-          box_advance(ShowNode{ty, layout, Some{List.length(&2, ShowWord, show_words(pst))}}, fields_box_each(rest, rest_fields, show_append_num(show_append_num(show_append_num(pst, offset), 0n), 0n)))
+  match pslots:
+    case Nil{}:
+      match pfields:
+        case Nil{}: ShowNext{pst, Nil{}}
+        case _: ShowNext{show_state_error(pst, "a constructor node's slots and fields differ"), Nil{}}
+    case +slot <> +rest:
+      match pfields:
+        case Nil{}: ShowNext{show_state_error(pst, "a constructor node's slots and fields differ"), Nil{}}
+        case +field <> +rest_fields:
+          match slot:
+            case CLay.NodeSlot{ordinal, offset, layout}:
+              match field:
+                case BIR.DescriptorField{key, quantity, ty}:
+                  box_advance(ShowNode{ty, layout, Some{Nat.add(List.length(&2, ShowWord, show_words(pst)), 1n)}}, fields_box_each(rest, rest_fields, show_append_num(show_append_num(pst, offset), 0n)))
 
 def fields_box_slots(+pslots: Maybe<&2, List<&2, CLay.NodeSlot>>, +pfields: List<&2, BIR.DescriptorField>, +pst: ShowState) -> ShowAdvance:
   match pslots:
@@ -1489,12 +1497,10 @@ def fields_inline_each(+playouts: List<&2, CLay.Layout>, +pfields: List<&2, BIR.
         case +field <> +rest_fields:
           match field:
             case BIR.DescriptorField{key, quantity, ty}:
+              slot_at = Nat.add(List.length(&2, ShowWord, show_words(pst)), 1n)
               st = show_append_num(show_append_num(pst, pat), 0n)
-              slot_at = List.length(&2, ShowWord, show_words(pst))
-              st2 = show_append_num(st, 0n)
-              kid = [ShowNode{ty, layout, Some{slot_at}}]
-              adv = fields_inline_each(rest_layouts, rest_fields, Nat.add(pat, CLay.layout_words(layout)), st2)
-              ShowNext{show_next_state(adv), List.append(&2, ShowJob, kid, show_next_kids(adv))}
+              adv = fields_inline_each(rest_layouts, rest_fields, Nat.add(pat, CLay.layout_words(layout)), st)
+              ShowNext{show_next_state(adv), List.append(&2, ShowJob, [ShowNode{ty, layout, Some{slot_at}}], show_next_kids(adv))}
 
 def fields_inline_layouts(+playouts: Maybe<&2, List<&2, CLay.Layout>>, +pfields: List<&2, BIR.DescriptorField>, +pat: Nat, +pst: ShowState) -> ShowAdvance:
   match playouts:
@@ -1517,21 +1523,21 @@ def show_data_arm_header(+pfields: List<&2, BIR.DescriptorField>, +pkey: String,
   index = List.length(&2, String, show_names(pst))
   st = show_append_num(show_append_cid(show_append_num(pst, index), show_cid_of_key(pkey, pconstructors)), List.length(&2, BIR.DescriptorField, pfields))
   st2 = show_append_name(show_append_num(st, show_arm_bracket(pkey)), pkey)
-  fields_advance(pctx, pconstructors, pfamilies, pkey, pfields, playout, box, count, pst2)
+  fields_advance(pctx, pconstructors, pfamilies, pkey, pfields, playout, pbox, pcount, st2)
 
 def show_data_arm_erased(+perased: Bool, +pfields: List<&2, BIR.DescriptorField>, +pkey: String, +prest: List<&2, BIR.DescriptorArm>, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pbox: Nat, +pcount: Nat, +pst: ShowState) -> ShowAdvance:
   match perased:
     case True{}: ShowNext{show_state_error(pst, "main's type has an erased field and cannot be printed"), Nil{}}
-    case False{}: show_data_arm_header(pfields, pkey, prest, pctx, pconstructors, pfamilies, ty, layout, box, count, pst)
+    case False{}: show_data_arm_header(pfields, pkey, prest, pctx, pconstructors, pfamilies, pty, playout, pbox, pcount, pst)
 
 def show_data_arm_live(+pfields: List<&2, BIR.DescriptorField>, +pkey: String, +prest: List<&2, BIR.DescriptorArm>, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pbox: Nat, +pcount: Nat, +pst: ShowState) -> ShowAdvance:
   erased = show_erased_present(pfields)
-  show_data_arm_erased(erased, pfields, pkey, prest, pctx, pconstructors, pfamilies, ty, layout, box, count, pst)
+  show_data_arm_erased(erased, pfields, pkey, prest, pctx, pconstructors, pfamilies, pty, playout, pbox, pcount, pst)
 
 def show_data_arm(+pfound: CLay.FieldsResult, +pkey: String, +prest: List<&2, BIR.DescriptorArm>, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pbox: Nat, +pcount: Nat, +pst: ShowState) -> ShowAdvance:
   match pfound:
     case CLay.FieldsFailed{message}: ShowNext{show_state_error(pst, message), Nil{}}
-    case CLay.FieldsFound{fields}: show_data_arm_live(fields, pkey, prest, pctx, pconstructors, pfamilies, ty, layout, box, count, pst)
+    case CLay.FieldsFound{fields}: show_data_arm_live(fields, pkey, prest, pctx, pconstructors, pfamilies, pty, playout, pbox, pcount, pst)
 
 def show_data_arms(+parms: List<&2, BIR.DescriptorArm>, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pbox: Nat, +pcount: Nat, +pst: ShowState) -> ShowAdvance:
   match parms:
@@ -1540,44 +1546,44 @@ def show_data_arms(+parms: List<&2, BIR.DescriptorArm>, +pctx: CLay.Context, +pc
       match arm:
         case BIR.DescriptorArm{key, fields}:
           found = CLay.arm_fields(pctx, key, pty)
-          show_data_arm(found, key, rest, pctx, pconstructors, pfamilies, ty, layout, box, count, pst)
+          show_data_arm(found, key, rest, pctx, pconstructors, pfamilies, pty, playout, pbox, pcount, pst)
 
 def show_data_count(+parms: List<&2, BIR.DescriptorArm>, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pat: Nat, +pst: ShowState) -> ShowAdvance:
   box = show_box_flag(playout)
   count = List.length(&2, BIR.DescriptorArm, parms)
   st = show_append_num(show_append_num(show_append_num(pst, 7n), box), count)
-  show_data_arms(parms, pctx, pconstructors, pfamilies, ty, layout, box, count, st)
+  show_data_arms(parms, pctx, pconstructors, pfamilies, pty, playout, box, count, st)
 
 def show_data_arms_maybe(+parms: Maybe<&2, List<&2, BIR.DescriptorArm>>, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pat: Nat, +pst: ShowState, +pkey: String) -> ShowAdvance:
   match parms:
     case None{}: ShowNext{show_state_error(pst, join_text(["the datatype `", pkey, "` has no constructors"])), Nil{}}
-    case Some{values}: show_data_count(values, pctx, pconstructors, pfamilies, ty, layout, pat, pst)
+    case Some{values}: show_data_count(values, pctx, pconstructors, pfamilies, pty, playout, pat, pst)
 
 def show_data_key(+pkey: String, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pat: Nat, +pst: ShowState) -> ShowAdvance:
   arms = family_arms(pkey, pfamilies)
-  show_data_arms_maybe(arms, pctx, pconstructors, pfamilies, ty, layout, pat, pst, pkey)
+  show_data_arms_maybe(arms, pctx, pconstructors, pfamilies, pty, playout, pat, pst, pkey)
 
 def show_data_head(+phead: CLay.HeadResult, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pat: Nat, +pst: ShowState) -> ShowAdvance:
   match phead:
     case CLay.HeadFailed{message}: ShowNext{show_state_error(pst, message), Nil{}}
     case CLay.HeadBoxed{reason}: ShowNext{show_state_error(pst, "main's type is abstract or open and cannot be printed"), Nil{}}
-    case CLay.HeadFound{key, native}: show_data_key(key, pctx, pconstructors, pfamilies, ty, layout, pat, pst)
+    case CLay.HeadFound{key, native}: show_data_key(key, pctx, pconstructors, pfamilies, pty, playout, pat, pst)
 
 def show_advance_data(+pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pat: Nat, +pst: ShowState) -> ShowAdvance:
   head = CLay.head_native(pctx, pty)
-  show_data_head(head, pctx, pconstructors, pfamilies, ty, layout, pat, pst)
+  show_data_head(head, pctx, pconstructors, pfamilies, pty, playout, pat, pst)
 
 def show_advance_n(+pkind: Nat, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pat: Nat, +pst: ShowState) -> ShowAdvance:
   match pkind:
     case 3n: ShowNext{show_append_num(show_append_num(pst, 3n), show_box_flag(playout)), Nil{}}
-    case 6n: show_advance_array(pctx, pconstructors, pfamilies, ty, pat, pst)
-    case 7n: show_advance_data(pctx, pconstructors, pfamilies, ty, playout, pat, pst)
+    case 6n: show_advance_array(pctx, pconstructors, pfamilies, pty, pat, pst)
+    case 7n: show_advance_data(pctx, pconstructors, pfamilies, pty, playout, pat, pst)
     case _: ShowNext{show_append_num(pst, pkind), Nil{}}
 
 def show_advance_kind(+pkind: ShowKind, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pat: Nat, +pst: ShowState) -> ShowAdvance:
   match pkind:
     case ShowKindFailed{message}: ShowNext{show_state_error(pst, message), Nil{}}
-    case ShowKindOk{kind}: show_advance_n(kind, pctx, pconstructors, pfamilies, ty, layout, pat, pst)
+    case ShowKindOk{kind}: show_advance_n(kind, pctx, pconstructors, pfamilies, pty, playout, pat, pst)
 
 def show_advance_memo(+pfound: Maybe<&2, Nat>, +pkey: String, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +ppatch: Maybe<&2, Nat>, +pst: ShowState) -> ShowAdvance:
   match pfound:
@@ -1587,7 +1593,7 @@ def show_advance_memo(+pfound: Maybe<&2, Nat>, +pkey: String, +pctx: CLay.Contex
       memo = Map.set(&2, Nat, show_memo(pst), pkey, at)
       st = show_apply_patch(show_state_set_memo(pst, memo), ppatch, at)
       kind = show_kind(pctx, pty)
-      show_advance_kind(kind, pctx, pconstructors, pfamilies, ty, layout, at, st)
+      show_advance_kind(kind, pctx, pconstructors, pfamilies, pty, playout, at, st)
 
 def show_advance_norm(+pnorm: ShowNorm, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +ppatch: Maybe<&2, Nat>, +pst: ShowState) -> ShowAdvance:
   match pnorm:
@@ -1595,23 +1601,26 @@ def show_advance_norm(+pnorm: ShowNorm, +pctx: CLay.Context, +pconstructors: Lis
     case ShowNormOk{descriptor}:
       key = join_text([show_descriptor_key(descriptor), "@", show_layout_key(playout)])
       found = IndexLookup.find(Nat, show_memo(pst), key)
-      show_advance_memo(found, key, pctx, pconstructors, pfamilies, ty, layout, patch, pst)
+      show_advance_memo(found, key, pctx, pconstructors, pfamilies, pty, playout, ppatch, pst)
 
-def show_norm(+pctx: CLay.Context, +pty: BIR.Descriptor) -> ShowNorm:
-  match CLay.norm(pctx, pty):
+def show_norm_result(+presult: CLay.NormResult) -> ShowNorm:
+  match presult:
     case CLay.NormOk{descriptor}: ShowNormOk{descriptor}
     case CLay.NormFailed{message}: ShowNormFailed{message}
+
+def show_norm(+pctx: CLay.Context, +pty: BIR.Descriptor) -> ShowNorm:
+  show_norm_result(CLay.norm(pctx, pty))
 
 def show_advance_error(+pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +ppatch: Maybe<&2, Nat>, +perror: Maybe<&2, String>, +pst: ShowState) -> ShowAdvance:
   match perror:
     case Some{message}: ShowNext{pst, Nil{}}
     case None{}:
       norm = show_norm(pctx, pty)
-      show_advance_norm(norm, pctx, pconstructors, pfamilies, ty, layout, patch, pst)
+      show_advance_norm(norm, pctx, pconstructors, pfamilies, pty, playout, ppatch, pst)
 
 def show_advance_st(+pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +ppatch: Maybe<&2, Nat>, +pst: ShowState) -> ShowAdvance:
   match pst:
-    case ShowState{words, patches, memo, names, error}: show_advance_error(pctx, pconstructors, pfamilies, ty, layout, patch, error, pst)
+    case ShowState{words, patches, memo, names, error}: show_advance_error(pctx, pconstructors, pfamilies, pty, playout, ppatch, error, pst)
 
 def show_advance_job(+pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pjob: ShowJob, +pst: ShowState) -> ShowAdvance:
   match pjob:
