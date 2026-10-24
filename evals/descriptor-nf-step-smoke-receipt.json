@@ -1,18 +1,22 @@
 {
-  "schema": "descriptor-nf-native-step-smoke-v2",
+  "schema": "descriptor-nf-native-step-smoke-v3",
   "branch": "work/nf-verified57ab",
-  "sourceRevision": "5b595ac7",
-  "intake": {
-    "descriptorNf": {
-      "path": "bend2/selfhost/descriptor_nf.bend",
-      "sha256": "66ccdc331c8d42f5b722e3c740f8631e6b568eaefc95ba47722385990d409f71",
-      "supersedes": "82986f92511b0c18818ca8f19fa20e55e4b9b27725689f89656ff8818d2018de",
-      "changes": [
-        "lambda beta via an environment-capturing closure",
-        "tri-state match binding (unknown scrutinee stays abstract, known mismatch still falls through)",
-        "invalid constructor/quantity/kind applications are DescriptorFailure",
-        "comments state the proven behaviour"
-      ]
+  "supersedes": {
+    "commits": [
+      "5b595ac7",
+      "3606f27f"
+    ],
+    "descriptor_nf_sha256": "66ccdc331c8d42f5b722e3c740f8631e6b568eaefc95ba47722385990d409f71"
+  },
+  "sourceRevision": {
+    "descriptor_nf_sha256": "9c02ae7da9c2d0668dded6825d336e96d8f8fe9d97b43deec061d75e7d4df124",
+    "fixture": {
+      "path": "evals/descriptor_nf_smoke.bend",
+      "sha256": "7799c42e4f035b1078b63ff1328e767d8f836bbe7a5763fa9e614156a5faa162"
+    },
+    "config": {
+      "path": "evals/descriptor_nf_step_smoke.ts",
+      "sha256": "7c5334c4b7678295813ab568d45f34e2bca048576a2e9cf0bcd5339e32f0c258"
     },
     "publicApi": [
       "NfContext",
@@ -22,38 +26,31 @@
       "normalize_in",
       "answer_descriptor"
     ],
-    "backendIr": "unchanged in this revision (Head stays removed)"
-  },
-  "fixture": {
-    "path": "evals/descriptor_nf_smoke.bend",
-    "sha256": "45173751b7c4a7795a9f5c776eaec14f5767fbf0ad9501ebdf0ea7c60b0374e8"
-  },
-  "config": {
-    "path": "evals/descriptor_nf_step_smoke.ts",
-    "sha256": "b8f37f56236c558a699c29aef56770e455535884b6bb8f1357231c0a3f362033",
-    "mode": "template",
-    "root": "main",
-    "result": "NfSmoke",
-    "providerClosure": [
-      "bend2/selfhost/descriptor_nf.bend"
+    "changes": [
+      "lambda beta via an environment-capturing closure",
+      "capture-safe reification: closure sources are shifted by one binder before being substituted, and abstract terms reify their environment instead of leaking open parameters",
+      "tri-state match binding (unknown scrutinee stays abstract, known mismatch falls through)",
+      "invalid constructor/quantity/kind applications are DescriptorFailure",
+      "comments state the proven behaviour"
     ]
   },
   "generated": {
     "component": "checkpoints/descriptor_nf_steps_component_v1.bend",
     "componentSha256": "547ef7d23d35e7d0201db59b6224679e5695b930c94e437e8a07fab1ff2c7304",
-    "stepsSha256": "2862793438b0d5f11c34135436d5500eebceb1341093f86fd32f5425f6fcfc3c",
-    "stepDefinitions": 66,
-    "descriptorNfComposedDeclarations": 56,
+    "stepsSha256": "a249641d46e1386e56302d5d3984d488af15e91f6d908678dfadf2706e275f9e",
+    "stepDefinitions": 75,
+    "privateHelpers": 140,
+    "generatedHelperEdges": 327,
+    "composedDeclarations": {
+      "evals/descriptor_nf_smoke.bend": 20,
+      "bend2/selfhost/descriptor_nf.bend": 63
+    },
     "recursiveHelpers": 1,
     "recursiveFunction": "template_chunk",
     "residualSourceCalls": 0,
     "chunkQuantum": 64,
     "semanticFuelChanged": false,
-    "recursion": "structural Nat",
-    "privateHelpers": 123,
-    "generatedHelperEdges": 262,
-    "fixtureComposedDeclarations": 18,
-    "totalComposedDeclarations": 74
+    "recursion": "structural Nat"
   },
   "native": {
     "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
@@ -61,28 +58,32 @@
     "bookLoadBookValid": "VALID"
   },
   "guardedBuild": {
-    "tree": "work/nf-verified57ab (this worktree, HEAD 5b595ac7)",
     "status": "PASS",
-    "eventsFullyValidated": 774,
-    "checkedDefinitions": 566,
+    "eventsFullyValidated": 800,
+    "checkedDefinitions": 592,
     "checksExcluded": 0,
     "outputPatches": 0,
-    "artifactSha256": "4c93377d7084d4db2312199cfea8069c42f10c14945e8b8bdabdede9b6126c11",
-    "peakRssBytes": 273317888,
-    "peakFootprintBytes": 236441712,
-    "elapsedMs": 895,
+    "artifactSha256": "4dae98563c1093136a8ebb075cc83f31dc56056fee9ca7d15baa20022bc7c89c",
+    "peakRssBytes": 283770880,
+    "peakFootprintBytes": 253433648,
+    "elapsedMs": 665,
     "heapLimitMiB": 3072,
     "runtime": "node",
-    "emission": "guarded checker_core_component_build with --exports=expand_modules_start,template_step; reports under /tmp/nf-step-build3"
+    "emission": "guarded checker_core_component_build, --exports=expand_modules_start,template_step; reports under /tmp/nf-step-build4"
   },
   "execution": {
     "driver": "evals/descriptor_nf_step_smoke.ts --run=ART (opaque Run chunks; no host semantic limit)",
-    "chunks": 155,
-    "observedBits": "11111111111111111111111111111",
-    "assertions": 29,
-    "artifactSha256": "4c93377d7084d4db2312199cfea8069c42f10c14945e8b8bdabdede9b6126c11"
+    "chunks": 165,
+    "observedBits": "11111111111111111111111111111111",
+    "assertions": 32,
+    "artifactSha256": "4dae98563c1093136a8ebb075cc83f31dc56056fee9ca7d15baa20022bc7c89c"
   },
-  "expectedBits": "11111111111111111111111111111",
+  "expectedBits": "11111111111111111111111111111111",
+  "captureBoundaryRegression": [
+    "normalize_closed(Ref K2 [Parameter0]) materializes the partially applied closure; reapplying it to Nat under env [NfType Bool] returns Bool (pre-fix it read the new argument and returned Nat)",
+    "SelfArrow(A)=Arrow(A,A) normalized with A=Nat yields the closed Arrow(Nat,Nat) (pre-fix it stayed Arrow(Parameter0,Parameter0))",
+    "AbsMatch(A)=Match([A],[CtorTrue=>Nat]) normalized with A=Nat reifies the scrutinee to Nat (pre-fix it kept Parameter0)"
+  ],
   "cases": [
     "MyNat alias -> Nat",
     "IO intrinsic answer Nat",
@@ -112,9 +113,11 @@
     "known non-constructor mismatch falls through",
     "constructor application failure",
     "quantity application failure",
-    "kind application failure"
+    "kind application failure",
+    "free-capture partial closure reapplied under a new env -> Bool",
+    "SelfArrow alias reifies its environment -> Arrow(Nat,Nat)",
+    "AbsMatch alias reifies its scrutinee -> Match with Nat"
   ],
   "admissionBoundary": "Only the generated step component under checkpoints/ is natively admitted. The raw canonical fixture and the raw descriptor_nf provider source are NOT admitted without generateNativeSteps; bookLoadBookValid VALID refers to checkpoints/descriptor_nf_steps_component_v1.bend.",
-  "integration": "CLay's composed component changes with this NF revision (NfVal gains NfClosure; CLay layout_val wildcard ec3afb04) and needs its own regeneration; the combined tree must regenerate NF/root/emitter/CLay from 5b595ac7 and rerun the parser receipt and the one gate.",
-  "supersededReceipt": "the previous 19-bit receipt for source 82986f92/component 547ef7d2 is superseded by this revision; artifacts 2fde7ab3 (old) and 4c93377d (new) are not interchangeable."
+  "integration": "This revision supersedes 5b595ac7/3606f27f. CLay must regenerate its composed component again (NfVal is unchanged since NfClosure, but descriptor_nf's declarations changed); the combined tree must regenerate NF/root/emitter/CLay from this commit and rerun the parser receipt and the one gate."
 }

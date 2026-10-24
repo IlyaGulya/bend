@@ -31,7 +31,7 @@ const output = 'checkpoints/descriptor_nf_steps_v1.bend';
 const component = 'checkpoints/descriptor_nf_steps_component_v1.bend';
 const manifest = 'checkpoints/descriptor-nf-steps-v1.json';
 const providers = ['bend2/selfhost/descriptor_nf.bend'];
-const expected = '11111111111111111111111111111';
+const expected = '11111111111111111111111111111111';
 const sha = (text: string) => createHash('sha256').update(text).digest('hex');
 
 /** Same masking rule as the step generator: coordinates stay intact, including

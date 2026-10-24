@@ -230,6 +230,175 @@ def quantity_markers(count: Nat) -> List<&2, NfVal>:
       NfQuantity{BIR.Erased{}} <> quantity_markers(rest)
 
 # ---------------------------------------------------------------------------
+# Capture-safe reification
+# ---------------------------------------------------------------------------
+
+# Reifying an abstract term or a partially applied closure must not let a
+# binder capture a value from the environment where the term was written.
+# `shift_descriptor` adds `amount` to every parameter index at or above the
+# current binder `depth`; a value placed under one new binder is shifted by the
+# same amount at the source's own depth. The walk descends through every
+# descriptor form and counts the binders each scoping form introduces, so it
+# stays faithful under nested lambdas, substitutions, lets and matches.
+
+def pattern_bindings(patterns: List<&2, BIR.DescriptorPattern>) -> Nat:
+  match patterns:
+    case Nil{}:
+      0n
+    case +pattern <> rest:
+      match pattern:
+        case BIR.DescriptorBinder{quantity}:
+          1n+pattern_bindings(rest)
+        case BIR.DescriptorConstructorPattern{key, fields}:
+          Nat.add(pattern_bindings(fields), pattern_bindings(rest))
+
+def descriptor_nth(values: List<&2, BIR.Descriptor>, at: Nat) -> Maybe<&2, BIR.Descriptor>:
+  match values, at:
+    case Nil{}, _:
+      None{}
+    case +value <> rest, 0n:
+      Some{value}
+    case +value <> rest, 1n+prev:
+      descriptor_nth(rest, prev)
+
+def shift_descriptors(values: List<&2, BIR.Descriptor>, +amount: Nat, +depth: Nat) -> List<&2, BIR.Descriptor>:
+  match values:
+    case Nil{}:
+      Nil{}
+    case +value <> rest:
+      shift_descriptor(value, amount, depth) <> shift_descriptors(rest, amount, depth)
+
+def shift_descriptor(descriptor: BIR.Descriptor, +amount: Nat, +depth: Nat) -> BIR.Descriptor:
+  match descriptor:
+    case BIR.DescriptorParameter{index}:
+      match Nat.is_lt(index, depth):
+        case True{}:
+          BIR.DescriptorParameter{index}
+        case False{}:
+          BIR.DescriptorParameter{Nat.add(index, amount)}
+    case BIR.DescriptorNull{}:
+      BIR.DescriptorNull{}
+    case BIR.DescriptorQuantityKind{}:
+      BIR.DescriptorQuantityKind{}
+    case BIR.DescriptorQuantity{quantity}:
+      BIR.DescriptorQuantity{quantity}
+    case BIR.DescriptorKind{quantity}:
+      BIR.DescriptorKind{shift_descriptor(quantity, amount, depth)}
+    case BIR.DescriptorMinimum{left, right}:
+      BIR.DescriptorMinimum{shift_descriptor(left, amount, depth), shift_descriptor(right, amount, depth)}
+    case BIR.DescriptorArrow{quantity, domain, body}:
+      BIR.DescriptorArrow{quantity, shift_descriptor(domain, amount, depth), shift_descriptor(body, amount, depth)}
+    case BIR.DescriptorLambda{quantity, body}:
+      BIR.DescriptorLambda{quantity, shift_descriptor(body, amount, 1n+depth)}
+    case BIR.DescriptorRef{key, args}:
+      BIR.DescriptorRef{key, shift_descriptors(args, amount, depth)}
+    case BIR.DescriptorConstructor{key, args}:
+      BIR.DescriptorConstructor{key, shift_descriptors(args, amount, depth)}
+    case BIR.DescriptorApplication{fn, arg}:
+      BIR.DescriptorApplication{shift_descriptor(fn, amount, depth), shift_descriptor(arg, amount, depth)}
+    case BIR.DescriptorSubstitution{index, value, body}:
+      BIR.DescriptorSubstitution{index, shift_descriptor(value, amount, depth), shift_descriptor(body, amount, 1n+depth)}
+    case BIR.DescriptorLet{values, body}:
+      BIR.DescriptorLet{shift_descriptors(values, amount, depth), shift_descriptor(body, amount, Nat.add(List.length(&2, BIR.Descriptor, values), depth))}
+    case BIR.DescriptorLocal{patterns, values, body}:
+      BIR.DescriptorLocal{patterns, shift_descriptors(values, amount, depth), shift_descriptor(body, amount, Nat.add(pattern_bindings(patterns), depth))}
+    case BIR.DescriptorMatch{values, cases}:
+      BIR.DescriptorMatch{shift_descriptors(values, amount, depth), shift_descriptors(cases, amount, depth)}
+    case BIR.DescriptorCase{patterns, body}:
+      BIR.DescriptorCase{patterns, shift_descriptor(body, amount, Nat.add(pattern_bindings(patterns), depth))}
+    case BIR.DescriptorBind{value, body}:
+      BIR.DescriptorBind{shift_descriptor(value, amount, depth), shift_descriptor(body, amount, 1n+depth)}
+    case BIR.DescriptorEquality{left, right, ty}:
+      BIR.DescriptorEquality{shift_descriptor(left, amount, depth), shift_descriptor(right, amount, depth), shift_descriptor(ty, amount, depth)}
+    case BIR.DescriptorReflexivity{}:
+      BIR.DescriptorReflexivity{}
+    case BIR.DescriptorFailure{message}:
+      BIR.DescriptorFailure{message}
+    case BIR.DescriptorFill{head, args}:
+      BIR.DescriptorFill{shift_descriptor(head, amount, depth), shift_descriptors(args, amount, depth)}
+    case BIR.DescriptorPlus{head, args}:
+      BIR.DescriptorPlus{shift_descriptor(head, amount, depth), shift_descriptors(args, amount, depth)}
+    case BIR.DescriptorNamedFill{key, head, args}:
+      BIR.DescriptorNamedFill{key, shift_descriptor(head, amount, depth), shift_descriptors(args, amount, depth)}
+    case BIR.DescriptorNamedPlus{key, head, args}:
+      BIR.DescriptorNamedPlus{key, shift_descriptor(head, amount, depth), shift_descriptors(args, amount, depth)}
+
+# Substituting the captured environment into an abstract term: a parameter at
+# or above `depth` selects the environment value from the end, shifted under
+# the binders it now sits below; a parameter beyond the captured environment is
+# still free and keeps its index. Anchor patterns and every scoping form keep
+# their own binders.
+def subst_descriptors(values: List<&2, BIR.Descriptor>, +sources: List<&2, BIR.Descriptor>, +depth: Nat) -> List<&2, BIR.Descriptor>:
+  match values:
+    case Nil{}:
+      Nil{}
+    case +value <> rest:
+      subst_descriptor(value, sources, depth) <> subst_descriptors(rest, sources, depth)
+
+def subst_descriptor(descriptor: BIR.Descriptor, +sources: List<&2, BIR.Descriptor>, +depth: Nat) -> BIR.Descriptor:
+  match descriptor:
+    case BIR.DescriptorParameter{index}:
+      match Nat.is_lt(index, depth):
+        case True{}:
+          BIR.DescriptorParameter{index}
+        case False{}:
+          match Nat.is_lt(Nat.sub(index, depth), List.length(&2, BIR.Descriptor, sources)):
+            case False{}:
+              BIR.DescriptorParameter{index}
+            case True{}:
+              match descriptor_nth(sources, Nat.sub(Nat.sub(List.length(&2, BIR.Descriptor, sources), 1n), Nat.sub(index, depth))):
+                case Some{source}:
+                  shift_descriptor(source, depth, 0n)
+                case None{}:
+                  BIR.DescriptorParameter{index}
+    case BIR.DescriptorNull{}:
+      BIR.DescriptorNull{}
+    case BIR.DescriptorQuantityKind{}:
+      BIR.DescriptorQuantityKind{}
+    case BIR.DescriptorQuantity{quantity}:
+      BIR.DescriptorQuantity{quantity}
+    case BIR.DescriptorKind{quantity}:
+      BIR.DescriptorKind{subst_descriptor(quantity, sources, depth)}
+    case BIR.DescriptorMinimum{left, right}:
+      BIR.DescriptorMinimum{subst_descriptor(left, sources, depth), subst_descriptor(right, sources, depth)}
+    case BIR.DescriptorArrow{quantity, domain, body}:
+      BIR.DescriptorArrow{quantity, subst_descriptor(domain, sources, depth), subst_descriptor(body, sources, depth)}
+    case BIR.DescriptorLambda{quantity, body}:
+      BIR.DescriptorLambda{quantity, subst_descriptor(body, sources, 1n+depth)}
+    case BIR.DescriptorRef{key, args}:
+      BIR.DescriptorRef{key, subst_descriptors(args, sources, depth)}
+    case BIR.DescriptorConstructor{key, args}:
+      BIR.DescriptorConstructor{key, subst_descriptors(args, sources, depth)}
+    case BIR.DescriptorApplication{fn, arg}:
+      BIR.DescriptorApplication{subst_descriptor(fn, sources, depth), subst_descriptor(arg, sources, depth)}
+    case BIR.DescriptorSubstitution{index, value, body}:
+      BIR.DescriptorSubstitution{index, subst_descriptor(value, sources, depth), subst_descriptor(body, sources, 1n+depth)}
+    case BIR.DescriptorLet{values, body}:
+      BIR.DescriptorLet{subst_descriptors(values, sources, depth), subst_descriptor(body, sources, Nat.add(List.length(&2, BIR.Descriptor, values), depth))}
+    case BIR.DescriptorLocal{patterns, values, body}:
+      BIR.DescriptorLocal{patterns, subst_descriptors(values, sources, depth), subst_descriptor(body, sources, Nat.add(pattern_bindings(patterns), depth))}
+    case BIR.DescriptorMatch{values, cases}:
+      BIR.DescriptorMatch{subst_descriptors(values, sources, depth), subst_descriptors(cases, sources, depth)}
+    case BIR.DescriptorCase{patterns, body}:
+      BIR.DescriptorCase{patterns, subst_descriptor(body, sources, Nat.add(pattern_bindings(patterns), depth))}
+    case BIR.DescriptorBind{value, body}:
+      BIR.DescriptorBind{subst_descriptor(value, sources, depth), subst_descriptor(body, sources, 1n+depth)}
+    case BIR.DescriptorEquality{left, right, ty}:
+      BIR.DescriptorEquality{subst_descriptor(left, sources, depth), subst_descriptor(right, sources, depth), subst_descriptor(ty, sources, depth)}
+    case BIR.DescriptorReflexivity{}:
+      BIR.DescriptorReflexivity{}
+    case BIR.DescriptorFailure{message}:
+      BIR.DescriptorFailure{message}
+    case BIR.DescriptorFill{head, args}:
+      BIR.DescriptorFill{subst_descriptor(head, sources, depth), subst_descriptors(args, sources, depth)}
+    case BIR.DescriptorPlus{head, args}:
+      BIR.DescriptorPlus{subst_descriptor(head, sources, depth), subst_descriptors(args, sources, depth)}
+    case BIR.DescriptorNamedFill{key, head, args}:
+      BIR.DescriptorNamedFill{key, subst_descriptor(head, sources, depth), subst_descriptors(args, sources, depth)}
+    case BIR.DescriptorNamedPlus{key, head, args}:
+      BIR.DescriptorNamedPlus{key, subst_descriptor(head, sources, depth), subst_descriptors(args, sources, depth)}
+
+# ---------------------------------------------------------------------------
 # Materialization: a normal form as a descriptor
 # ---------------------------------------------------------------------------
 
@@ -253,7 +422,7 @@ def close_sources_reversed(body: BIR.Descriptor, reversed: List<&2, BIR.Descript
     case Nil{}:
       body
     case +source <> rest:
-      BIR.DescriptorSubstitution{at, source, close_sources_reversed(body, rest, 1n+at)}
+      BIR.DescriptorSubstitution{at, shift_descriptor(source, 1n, 0n), close_sources_reversed(body, rest, 1n+at)}
 
 # One structural list walk builds every descriptor: a value's arguments and
 # each remaining sibling are direct fields of the value list being matched, so
@@ -296,6 +465,12 @@ def materialize(val: NfVal) -> BIR.Descriptor:
       source
     case NfClosure{quantity, body, env, sources}:
       BIR.DescriptorLambda{quantity, close_sources(body, sources, 1n)}
+
+# An abstract term was normalized under an environment. Reify that environment
+# into the term before it is exposed, so a later reader never sees an open
+# parameter that the environment already bound.
+def reify_env(source: BIR.Descriptor, +env: List<&2, NfVal>) -> BIR.Descriptor:
+  subst_descriptor(source, materialize_all(env), 0n)
 
 # ---------------------------------------------------------------------------
 # Descriptor patterns
@@ -375,11 +550,11 @@ def nf_descriptor_step(+context: NfContext, descriptor: BIR.Descriptor, +env: Li
   +whole = descriptor
   match whole:
     case BIR.DescriptorNull{}:
-      NfOk{NfOther{whole}}
+      NfOk{NfOther{reify_env(whole, env)}}
     case BIR.DescriptorParameter{index}:
       NfOk{val_at(env, index, whole)}
     case BIR.DescriptorQuantityKind{}:
-      NfOk{NfOther{whole}}
+      NfOk{NfOther{reify_env(whole, env)}}
     case BIR.DescriptorQuantity{quantity}:
       NfOk{NfQuantity{quantity}}
     case BIR.DescriptorKind{quantity}:
@@ -389,9 +564,9 @@ def nf_descriptor_step(+context: NfContext, descriptor: BIR.Descriptor, +env: Li
         case NfFail{message}:
           NfFail{message}
     case BIR.DescriptorMinimum{left, right}:
-      NfOk{NfOther{whole}}
+      NfOk{NfOther{reify_env(whole, env)}}
     case BIR.DescriptorArrow{use, domain, body}:
-      NfOk{NfOther{whole}}
+      NfOk{NfOther{reify_env(whole, env)}}
     case BIR.DescriptorLambda{use, body}:
       NfOk{NfClosure{use, body, env, materialize_all(env)}}
     case BIR.DescriptorRef{key, args}:
@@ -435,7 +610,7 @@ def nf_descriptor_step(+context: NfContext, descriptor: BIR.Descriptor, +env: Li
             case NfBound{bindings}:
               nf_descriptor(context, body, List.append(&2, NfVal, env, bindings), Nat.sub(fuel, 1n))
             case _:
-              NfOk{NfOther{whole}}
+              NfOk{NfOther{reify_env(whole, env)}}
         case NfListFail{message}:
           NfFail{message}
     case BIR.DescriptorMatch{values, cases}:
@@ -445,7 +620,7 @@ def nf_descriptor_step(+context: NfContext, descriptor: BIR.Descriptor, +env: Li
         case NfListFail{message}:
           NfFail{message}
     case BIR.DescriptorCase{patterns, body}:
-      NfOk{NfOther{whole}}
+      NfOk{NfOther{reify_env(whole, env)}}
     case BIR.DescriptorBind{value, body}:
       match nf(context, value, env, fuel):
         case NfOk{val}:
@@ -453,9 +628,9 @@ def nf_descriptor_step(+context: NfContext, descriptor: BIR.Descriptor, +env: Li
         case NfFail{message}:
           NfFail{message}
     case BIR.DescriptorEquality{left, right, ty}:
-      NfOk{NfOther{whole}}
+      NfOk{NfOther{reify_env(whole, env)}}
     case BIR.DescriptorReflexivity{}:
-      NfOk{NfOther{whole}}
+      NfOk{NfOther{reify_env(whole, env)}}
     case BIR.DescriptorFailure{message}:
       NfFail{message}
     case BIR.DescriptorFill{head, args}:
@@ -631,7 +806,7 @@ def nf_reduce_body(+context: NfContext, body: BIR.Descriptor, +env: List<&2, NfV
 def nf_cases(+context: NfContext, cases: List<&2, BIR.Descriptor>, +values: List<&2, NfVal>, +env: List<&2, NfVal>, source: BIR.Descriptor, +fuel: Nat) -> Nf:
   match cases:
     case Nil{}:
-      NfOk{NfOther{source}}
+      NfOk{NfOther{reify_env(source, env)}}
     case +case_body <> rest:
       match case_body:
         case BIR.DescriptorCase{patterns, body}:
@@ -641,7 +816,7 @@ def nf_cases(+context: NfContext, cases: List<&2, BIR.Descriptor>, +values: List
             case NfMismatch{}:
               nf_cases(context, rest, values, env, source, fuel)
             case NfUnknown{}:
-              NfOk{NfOther{source}}
+              NfOk{NfOther{reify_env(source, env)}}
         case BIR.DescriptorFailure{message}:
           NfFail{message}
         case _:
