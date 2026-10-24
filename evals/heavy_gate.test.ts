@@ -2,7 +2,7 @@ import {expect,test} from 'bun:test';
 import {mkdtemp,readdir,readFile,writeFile,rm,access} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join,resolve} from 'node:path';
-import {runHeavyGate,type HeavyGateResult} from './heavy_gate.ts';
+import {classifyGateResult,runHeavyGate,type HeavyGateResult} from './heavy_gate.ts';
 
 const gate=resolve(import.meta.dir,'heavy_gate.ts');
 const safe={memoryMiB:512,rssMiB:512,pollMs:20,termGraceMs:150,timeoutMs:5000};
@@ -331,3 +331,32 @@ await runHeavyGate(${JSON.stringify(command)},${JSON.stringify({...safe,lockPath
   await rm(directory,{recursive:true,force:true});
  }
 },20000);
+
+test('receipt classification forces a nonzero exit when PASS is incomplete',()=>{
+ // Pure contract check through the exported seam: crafted supervisor records,
+ // no process, no acceptance claim. The raw supervisor exit is kept as data.
+ const settings={label:'contract check',memoryMiB:64,rssMiB:64,timeoutMs:5000};
+ const classify=(record:Record<string,unknown>,exit:number)=>classifyGateResult(record,exit,['true'],settings,'/tmp/report.json');
+ const completePass=classify({status:'PASS',reason:'command_exit',reportPhase:'complete',ownedTreeStopped:true},0);
+ expect(completePass.status).toBe('PASS');expect(completePass.exitCode).toBe(0);
+ expect(completePass.supervisorExitCode).toBe(0);expect(completePass.reportPhase).toBe('complete');expect(completePass.ownedTreeStopped).toBe(true);
+ for(const record of [
+  {status:'PASS',reason:'deadline_exceeded',reportPhase:'decision',ownedTreeStopped:false},
+  {status:'PASS',reason:'deadline_exceeded',reportPhase:'complete',ownedTreeStopped:false},
+  {status:'PASS',reason:'deadline_exceeded',reportPhase:'complete',ownedTreeStopped:null},
+  {status:'PASS',reason:'deadline_exceeded'},
+ ]){
+  const rejected=classify(record as Record<string,unknown>,0);
+  expect(rejected.status).toBe('FAIL');
+  expect(rejected.exitCode).toBe(1);
+  expect(rejected.supervisorExitCode).toBe(0);
+  expect(rejected.reason).toBe('deadline_exceeded');
+  expect(rejected.reportPhase==='complete'&&rejected.ownedTreeStopped===true).toBe(false);
+ }
+ const failed=classify({status:'FAIL',reason:'command_exit',reportPhase:'complete',ownedTreeStopped:true},1);
+ expect(failed.status).toBe('FAIL');expect(failed.exitCode).toBe(1);expect(failed.supervisorExitCode).toBe(1);
+ const limited=classify({status:'RESOURCE_LIMIT',reason:'rss_limit',reportPhase:'complete',ownedTreeStopped:true},73);
+ expect(limited.status).toBe('RESOURCE_LIMIT');expect(limited.exitCode).toBe(73);expect(limited.supervisorExitCode).toBe(73);
+ const busy=classify({status:'LOCK_BUSY',reason:'exclusive_lock_busy',reportPhase:'complete',ownedTreeStopped:null},75);
+ expect(busy.status).toBe('LOCK_BUSY');expect(busy.exitCode).toBe(75);expect(busy.supervisorExitCode).toBe(75);
+},5000);

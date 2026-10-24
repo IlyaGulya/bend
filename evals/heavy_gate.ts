@@ -32,6 +32,7 @@ export interface HeavyGateResult {
  status:HeavyGateStatus;
  reportPhase:'decision'|'complete';
  ownedTreeStopped:boolean|null;
+ supervisorExitCode:number;
  reason:string;
  command:string[];
  label:string;
@@ -170,6 +171,24 @@ async function authenticatedLease(timeoutMs:number):Promise<boolean>{
  if(code===2)throw Error('heavy-gate inherited lease deadline expired');
  return code===0;
 }
+/**
+ * Apply the receipt contract to a supervisor record. A decision-phase record is
+ * provisional: the supervisor may still be cleaning the owned tree and can be
+ * killed before the final record. Only a complete record with the owned tree
+ * confirmed stopped may succeed. A rejected PASS must not keep the supervisor's
+ * zero exit: callers/CLI use the effective exitCode, while the raw supervisor
+ * code stays in supervisorExitCode for evidence.
+ */
+export function classifyGateResult(record:Record<string,any>,supervisorExitCode:number,command:readonly string[],settings:{label?:string;memoryMiB:number;rssMiB:number;timeoutMs:number},reportPath:string):HeavyGateResult{
+ if(!['PASS','FAIL','RESOURCE_LIMIT','LOCK_BUSY'].includes(record.status))throw Error('invalid heavy-gate supervisor status');
+ const reportPhase=record.reportPhase==='complete'?'complete':'decision';
+ const ownedTreeStopped=record.ownedTreeStopped===true?true:record.ownedTreeStopped===false?false:null;
+ const incomplete=reportPhase!=='complete'||ownedTreeStopped===false||(ownedTreeStopped===null&&record.status==='PASS');
+ const status=(incomplete&&record.status==='PASS'?'FAIL':record.status) as HeavyGateStatus;
+ const exitCode=incomplete&&supervisorExitCode===0?1:supervisorExitCode;
+ return {...record,status,reportPhase,ownedTreeStopped,supervisorExitCode,command:[...command],label:settings.label,exitCode,
+  reportPath,memoryLimitBytes:settings.memoryMiB*MiB,rssLimitBytes:settings.rssMiB*MiB,timeoutMs:settings.timeoutMs};
+}
 /** Public behavior seam. Never nests: guarded entrypoints authenticate the lease. */
 export async function runHeavyGate(command:readonly string[],options:HeavyGateOptions={}):Promise<HeavyGateResult>{
  if(command.length===0||!command[0])throw Error('heavy-gate requires a command');
@@ -208,17 +227,7 @@ export async function runHeavyGate(command:readonly string[],options:HeavyGateOp
  const reportSize=(await lstat(reportPath)).size;
  if(reportSize===0||reportSize>16384)throw Error(`heavy-gate supervisor exited ${exitCode} without a valid bounded report`);
  const record=JSON.parse(await readFile(reportPath,'utf8'));
- if(!['PASS','FAIL','RESOURCE_LIMIT','LOCK_BUSY'].includes(record.status))throw Error('invalid heavy-gate supervisor status');
- // A decision-phase record is provisional: the supervisor may still be
- // cleaning the owned tree and can be killed before the final record. Only a
- // complete record with the owned tree confirmed stopped may be a success;
- // any missing or provisional evidence is a failure, never PASS.
- const reportPhase=record.reportPhase==='complete'?'complete':'decision';
- const ownedTreeStopped=record.ownedTreeStopped===true?true:record.ownedTreeStopped===false?false:null;
- let status=record.status as HeavyGateStatus;
- if((reportPhase!=='complete'||ownedTreeStopped===false||ownedTreeStopped===null)&&status==='PASS')status='FAIL';
- const result:HeavyGateResult={...record,status,reportPhase,ownedTreeStopped,command:[...command],label:settings.label,exitCode,
-  reportPath,memoryLimitBytes:settings.memoryMiB*MiB,rssLimitBytes:settings.rssMiB*MiB,timeoutMs:settings.timeoutMs};
+ const result=classifyGateResult(record,exitCode,command,settings,reportPath);
  await writeFile(reportPath,JSON.stringify(result)+'\n',{mode:0o600});
  console.error('HEAVY_GATE '+JSON.stringify(result));
  return result;

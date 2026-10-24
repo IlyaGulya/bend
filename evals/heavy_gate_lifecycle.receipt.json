@@ -43,6 +43,14 @@
       "result": "2 pass / 0 fail; 21 expect() calls; [1076.00ms]",
       "receiptEvidence": "both HEAVY_GATE records show reportPhase complete and ownedTreeStopped true; launcher-kill fixture waits for the complete record, not the provisional decision window",
       "note": "one focused run, full raw output saved, no grep"
+    },
+    "focusedExitContract": {
+      "command": "bun test evals/heavy_gate.test.ts -t \"receipt classification\"",
+      "rawOutputPath": "/tmp/gate-evidence/focused-exit-contract.log",
+      "rawOutputSha256": "377d495f8dd3c1b0b061b0b5eeb7637cf3108dd847caf7fc20b4a144f3202fab",
+      "bytes": 118,
+      "result": "1 pass / 0 fail / 34 expect() calls / [102.00ms]",
+      "coverage": "complete PASS stays 0; decision, incomplete-false, null-stopped and missing-phase PASS records are rejected FAIL with exit 1 and supervisorExitCode 0, reason preserved; FAIL stays 1; RESOURCE_LIMIT 73; LOCK_BUSY 75"
     }
   },
   "knownUnlocalizedFailure": {
@@ -79,7 +87,9 @@
     "reportPhase": "decision = provisional terminal reason recorded before destructive cleanup; complete = final record after the loop exits",
     "ownedTreeStopped": "true only when exited && !live was observed; false while a launched owned tree is still present; null only for pre-root error receipts",
     "runHeavyGate": "a decision record, a false stopped state, or PASS with null stopped state is classified as failure, preserving the supervisor reason; only complete + ownedTreeStopped true may be PASS",
-    "consumerRule": "provisional/missing evidence is INCOMPLETE or FAIL, never PASS or observed OOM"
+    "consumerRule": "provisional/missing evidence is INCOMPLETE or FAIL, never PASS or observed OOM",
+    "effectiveExit": "a PASS rejected for incomplete evidence becomes FAIL with a nonzero effective exitCode (1 when the supervisor exited 0); the raw supervisor code is preserved as supervisorExitCode; original terminal reason unchanged. Complete PASS 0 / FAIL 1 / RESOURCE_LIMIT 73 / LOCK_BUSY 75 keep the supervisor exit.",
+    "classificationSeam": "classifyGateResult(record, supervisorExitCode, command, settings, reportPath) is the single exported record-to-result transformation used by runHeavyGate, so guardHeavyGate and the CLI consume the effective nonzero exit."
   },
   "sourceCommit": "b9e418e6"
 }
