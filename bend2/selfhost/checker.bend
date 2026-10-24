@@ -15088,7 +15088,7 @@ def check_modules(modules: List<&2, Loader.LoadedModule>, globals: List<&2, Scop
 # Match imported affine storage results through typed parameters: native
 # lowering cannot keep constructor-pattern locals with computed right-hand sides.
 
-# Explicit readback serves semantic inspection and the legacy source backend.
+# Explicit readback serves semantic inspection only.
 # Both outcomes retain the owner; normal checked lowering never calls this path.
 def readback_result(modules: List<&2, IR.LoadedModule>, signatures: List<&2, Scope.ArenaGlobal>, result: ReadbackResult<List<&2, Loader.LoadedModule>>, metadata: List<&2, Checked.ModuleMetadata>) -> Checked.Inspection:
   match result:
