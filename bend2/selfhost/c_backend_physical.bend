@@ -105,6 +105,7 @@ type ShowNorm is Data:
 type ShowToken is Data:
   ShowTokDesc{descriptor: BIR.Descriptor}
   ShowTokText{text: String}
+  ShowTokPat{pattern: BIR.DescriptorPattern}
 
 def world(+pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pcids: List<&2, CidSym>) -> World:
   World{pctx, pconstructors, pfamilies, pcids}
@@ -1189,17 +1190,6 @@ def show_apply_patch(+pst: ShowState, +ppatch: Maybe<&2, Nat>, +pto: Nat) -> Sho
     case Some{at}: show_append_patch(pst, at, pto)
     case None{}: pst
 
-def show_name_kind(+pname: String) -> Nat:
-  match pname:
-    case "U32": 0n
-    case "F32": 1n
-    case "Nat": 2n
-    case "Char": 3n
-    case "String": 4n
-    case "Eql": 5n
-    case "Array": 6n
-    case _: 7n
-
 def last_segment_list(+pparts: List<&2, String>, +pprevious: String) -> String:
   match pparts:
     case Nil{}: pprevious
@@ -1208,11 +1198,25 @@ def last_segment_list(+pparts: List<&2, String>, +pprevious: String) -> String:
 def last_segment(+pkey: String) -> String:
   last_segment_list(String.split(pkey, '.'), "")
 
+def show_native_kind(+pmarker: String) -> ShowKind:
+  match pmarker:
+    case "U32": ShowKindOk{0n}
+    case "F32": ShowKindOk{1n}
+    case "Nat": ShowKindOk{2n}
+    case "Char": ShowKindOk{3n}
+    case "String": ShowKindOk{4n}
+    case "Eql": ShowKindOk{5n}
+    case "Array": ShowKindOk{6n}
+    case _: ShowKindFailed{String.append("the native marker `", String.append(pmarker, "` has no SHOW kind"))}
+
 def show_kind_head(+phead: CLay.HeadResult) -> ShowKind:
   match phead:
     case CLay.HeadFailed{message}: ShowKindFailed{message}
     case CLay.HeadBoxed{reason}: ShowKindFailed{"main's type is abstract or open and cannot be printed"}
-    case CLay.HeadFound{key, native}: ShowKindOk{show_name_kind(last_segment(key))}
+    case CLay.HeadFound{key, native}:
+      match native:
+        case Some{marker}: show_native_kind(marker)
+        case None{}: ShowKindOk{7n}
 
 def show_kind(+pctx: CLay.Context, +pty: BIR.Descriptor) -> ShowKind:
   head = CLay.head_native(pctx, pty)
@@ -1392,6 +1396,23 @@ def show_quantity_key(+pquantity: BIR.Quantity) -> String:
 
 # --- SHOW advance ---------------------------------------------------------
 
+def show_maybe_quantity_key(+pmaybe: Maybe<&2, BIR.Quantity>) -> String:
+  match pmaybe:
+    case None{}: "-"
+    case Some{quantity}: show_quantity_key(quantity)
+
+def show_pat_tokens(+ppatterns: List<&2, BIR.DescriptorPattern>, +pfirst: Bool) -> List<&2, ShowToken>:
+  match ppatterns:
+    case Nil{}: Nil{}
+    case +pattern <> +rest:
+      sep = Bool.pick(List<&2, ShowToken>, pfirst, Nil{}, [ShowTokText{","}])
+      List.append(&2, ShowToken, sep, List.append(&2, ShowToken, [ShowTokPat{pattern}], show_pat_tokens(rest, False{})))
+
+def show_pat_expand(+ppattern: BIR.DescriptorPattern) -> List<&2, ShowToken>:
+  match ppattern:
+    case BIR.DescriptorBinder{quantity}: [ShowTokText{"b"}, ShowTokText{show_quantity_key(quantity)}]
+    case BIR.DescriptorConstructorPattern{key, fields}: List.append(&2, ShowToken, [ShowTokText{"c"}, ShowTokText{key}, ShowTokText{"("}], List.append(&2, ShowToken, show_pat_tokens(fields, True{}), [ShowTokText{")"}]))
+
 def show_desc_expand(+pty: BIR.Descriptor) -> List<&2, ShowToken>:
   match pty:
     case BIR.DescriptorRef{key, args}: List.append(&2, ShowToken, [ShowTokText{join_text([key, "("])}], List.append(&2, ShowToken, show_arg_tokens(args, True{}), [ShowTokText{")"}]))
@@ -1406,15 +1427,15 @@ def show_desc_expand(+pty: BIR.Descriptor) -> List<&2, ShowToken>:
     case BIR.DescriptorQuantity{quantity}: [ShowTokText{join_text(["Q(", show_quantity_key(quantity), ")"])}]
     case BIR.DescriptorQuantityKind{}: [ShowTokText{"QK"}]
     case BIR.DescriptorMinimum{left, right}: [ShowTokText{"min("}, ShowTokDesc{left}, ShowTokText{","}, ShowTokDesc{right}, ShowTokText{")"}]
-    case BIR.DescriptorArrow{quantity, domain, body}: [ShowTokText{"("}, ShowTokDesc{domain}, ShowTokText{")->"}, ShowTokDesc{body}]
-    case BIR.DescriptorLambda{quantity, body}: [ShowTokText{"\\"}, ShowTokDesc{body}]
+    case BIR.DescriptorArrow{quantity, domain, body}: [ShowTokText{"A"}, ShowTokText{show_quantity_key(quantity)}, ShowTokText{"("}, ShowTokDesc{domain}, ShowTokText{")->"}, ShowTokDesc{body}]
+    case BIR.DescriptorLambda{quantity, body}: [ShowTokText{"L"}, ShowTokText{show_maybe_quantity_key(quantity)}, ShowTokDesc{body}]
     case BIR.DescriptorConstructor{key, args}: List.append(&2, ShowToken, [ShowTokText{join_text(["@", key, "("])}], List.append(&2, ShowToken, show_arg_tokens(args, True{}), [ShowTokText{")"}]))
     case BIR.DescriptorFailure{message}: [ShowTokText{join_text(["!", message])}]
     case BIR.DescriptorSubstitution{index, value, body}: [ShowTokText{join_text(["S", Nat.show(index), "("])}, ShowTokDesc{value}, ShowTokText{";"}, ShowTokDesc{body}, ShowTokText{")"}]
     case BIR.DescriptorLet{values, body}: List.append(&2, ShowToken, [ShowTokText{"L("}], List.append(&2, ShowToken, show_arg_tokens(values, True{}), [ShowTokText{";"}, ShowTokDesc{body}, ShowTokText{")"}]))
-    case BIR.DescriptorLocal{patterns, values, body}: List.append(&2, ShowToken, [ShowTokText{join_text(["Loc(", Nat.show(List.length(&2, BIR.DescriptorPattern, patterns)), ","])}], List.append(&2, ShowToken, show_arg_tokens(values, True{}), [ShowTokText{";"}, ShowTokDesc{body}, ShowTokText{")"}]))
+    case BIR.DescriptorLocal{patterns, values, body}: List.append(&2, ShowToken, [ShowTokText{"Loc("}], List.append(&2, ShowToken, show_pat_tokens(patterns, True{}), List.append(&2, ShowToken, [ShowTokText{";"}], List.append(&2, ShowToken, show_arg_tokens(values, True{}), [ShowTokText{";"}, ShowTokDesc{body}, ShowTokText{")"}]))))
     case BIR.DescriptorMatch{values, cases}: List.append(&2, ShowToken, [ShowTokText{"M("}], List.append(&2, ShowToken, show_arg_tokens(values, True{}), List.append(&2, ShowToken, [ShowTokText{";"}], List.append(&2, ShowToken, show_arg_tokens(cases, True{}), [ShowTokText{")"}]))))
-    case BIR.DescriptorCase{patterns, body}: [ShowTokText{join_text(["C(", Nat.show(List.length(&2, BIR.DescriptorPattern, patterns)), ";"])}, ShowTokDesc{body}, ShowTokText{")"}]
+    case BIR.DescriptorCase{patterns, body}: List.append(&2, ShowToken, [ShowTokText{"C("}], List.append(&2, ShowToken, show_pat_tokens(patterns, True{}), [ShowTokText{";"}, ShowTokDesc{body}, ShowTokText{")"}]))
     case BIR.DescriptorBind{value, body}: [ShowTokText{"B("}, ShowTokDesc{value}, ShowTokText{";"}, ShowTokDesc{body}, ShowTokText{")"}]
     case BIR.DescriptorEquality{left, right, ty}: [ShowTokText{"E("}, ShowTokDesc{left}, ShowTokText{","}, ShowTokDesc{right}, ShowTokText{","}, ShowTokDesc{ty}, ShowTokText{")"}]
     case BIR.DescriptorReflexivity{}: [ShowTokText{"R"}]
@@ -1425,8 +1446,9 @@ def show_render_tokens(+ptokens: List<&2, ShowToken>, +pacc: String) -> Maybe<&2
     case Nil{}: Some{pacc}
     case +tok <> +rest:
       match tok:
-        case ShowTokText{text}: show_render_tokens(rest, join_text([pacc, text]))
+        case ShowTokText{text}: show_render_tokens(rest, join_text([pacc, Nat.show(String.length(text)), ":", text]))
         case ShowTokDesc{descriptor}: show_render_tokens(List.append(&2, ShowToken, show_desc_expand(descriptor), rest), pacc)
+        case ShowTokPat{pattern}: show_render_tokens(List.append(&2, ShowToken, show_pat_expand(pattern), rest), pacc)
 
 def show_descriptor_key(+pty: BIR.Descriptor) -> Maybe<&2, String>:
   show_render_tokens([ShowTokDesc{pty}], "")
