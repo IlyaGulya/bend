@@ -324,7 +324,7 @@ def scan_declaration(item: BIR.Declaration, scan: Scan) -> Scan:
     case BIR.FunctionDeclaration{key, code, parameters}: scan
     case BIR.LazyDeclaration{key, body}: scan_block(body, scan)
     case BIR.NativeDeclaration{key, primitive, quantities}: scan
-    case BIR.ForeignDeclaration{key, _, _, arity, _, _, _, _, _}: scan_foreign(scan, key, arity)
+    case BIR.ForeignDeclaration{key, _, _, arity, _, _, _, _, _, _, _}: scan_foreign(scan, key, arity)
 
 def scan_foreign(scan: Scan, key: String, arity: Nat) -> Scan:
   match scan:
@@ -372,7 +372,7 @@ def scan_fields(fields: List<&2, BIR.Field>, scan: Scan) -> Scan:
 def scan_op(op: BIR.Op, scan: Scan) -> Scan:
   match op:
     case BIR.Copy{value}: scan_atom(value, scan)
-    case BIR.PrimitiveCall{primitive, args}: scan_arguments(args, scan)
+    case BIR.PrimitiveCall{primitive, args, types}: scan_arguments(args, scan)
     case BIR.Closure{code, captures, parameters}: scan_arguments(captures, scan_close(scan, code, List.length(&2, BIR.Arg, captures)))
     case BIR.Direct{code, args}: scan_arguments(args, scan)
     case BIR.Apply{fn, arg}: scan_argument(arg, scan_atom(fn, scan))
@@ -715,7 +715,7 @@ def fid_macros_declarations(declarations: List<&2, BIR.Declaration>, by_code: Ma
       match item:
         case BIR.FunctionDeclaration{key, code, parameters}:
           fid_macros_declarations(rest, by_code, by_foreign, map_set_first(acc, key, fid_symbol_of(key, by_code, by_foreign)))
-        case BIR.ForeignDeclaration{key, _, _, arity, _, _, _, _, _}:
+        case BIR.ForeignDeclaration{key, _, _, arity, _, _, _, _, _, _, _}:
           fid_macros_declarations(rest, by_code, by_foreign, map_set_first(acc, key, fid_symbol_of(key, by_code, by_foreign)))
         case _: fid_macros_declarations(rest, by_code, by_foreign, acc)
 
@@ -1222,7 +1222,7 @@ def find_declaration(key: String, declarations: List<&2, BIR.Declaration>) -> Ma
         case BIR.FunctionDeclaration{key: known, code, parameters}: find_declaration_one(String.eq(key, known), item, key, rest)
         case BIR.LazyDeclaration{key: known, body}: find_declaration_one(String.eq(key, known), item, key, rest)
         case BIR.NativeDeclaration{key: known, primitive, quantities}: find_declaration_one(String.eq(key, known), item, key, rest)
-        case BIR.ForeignDeclaration{key: known, namespace, imported, arity, sources, quantities, span, parameter_types, result}: find_declaration_one(String.eq(key, known), item, key, rest)
+        case BIR.ForeignDeclaration{key: known, namespace, imported, arity, sources, quantities, span, parameter_types, result, _, _}: find_declaration_one(String.eq(key, known), item, key, rest)
         case _: find_declaration(key, rest)
 
 def find_declaration_one(found: Bool, item: BIR.Declaration, key: String, rest: List<&2, BIR.Declaration>) -> Maybe<&2, BIR.Declaration>:
@@ -1248,7 +1248,7 @@ def symbol_emit(item: BIR.Declaration, key: String, entries: List<&2, Entry>, by
       symbol_function(arity, code, real, stages)
     case BIR.LazyDeclaration{key, body}:
       PartOk{cat(["bend_run(e, ", U32.show(map_u32(by_key, key)), ", 0, 0)"])}
-    case BIR.ForeignDeclaration{key, _, _, arity, _, _, _, _, _}:
+    case BIR.ForeignDeclaration{key, _, _, arity, _, _, _, _, _, _, _}:
       PartOk{cat(["bend_closure(e, ", U32.show(map_u32(by_foreign, key)), ", 0, 0)"])}
     case BIR.NativeDeclaration{key, primitive, quantities}:
       failp(cat(["the C target has no first-class native primitive value for `", key, "` (declare it as a def)")])
@@ -1292,7 +1292,7 @@ def call_args(values: List<&2, String>) -> String:
 def op_part(op: BIR.Op, plan: Plan) -> Part:
   match op:
     case BIR.Copy{value}: atom_part(value, plan)
-    case BIR.PrimitiveCall{primitive, args}: prim_call_part(primitive, args, plan)
+    case BIR.PrimitiveCall{primitive, args, types}: prim_call_typed(primitive, args, types, plan)
     case BIR.Closure{code, captures, parameters}: closure_part(code, captures, parameters, plan)
     case BIR.Direct{code, args}: direct_part(code, args, plan)
     case BIR.Apply{fn, arg}: apply_part(fn, arg, plan)
@@ -1568,6 +1568,53 @@ def hastag_node(value: String, cid_part: Part) -> Part:
 # ---------------------------------------------------------------------------
 # Primitives
 # ---------------------------------------------------------------------------
+
+# The checked op carries its instantiated type arguments. Array operations need
+# exactly one element Descriptor; until the CIRLayouts cell plan is consumed the
+# target refuses them instead of assuming arr/lgs/words.
+def prim_call_typed(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, types: List<&2, BIR.Descriptor>, plan: Plan) -> Part:
+  match is_array_primitive(primitive):
+    case True{}: prim_array_part(primitive, args, types, plan)
+    case False{}: prim_call_part(primitive, args, plan)
+
+def prim_array_part(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, types: List<&2, BIR.Descriptor>, plan: Plan) -> Part:
+  match types:
+    case Nil{}: failp(cat(["array primitive `", primitive_label(primitive), "` carries no instantiated element Descriptor; lowering must supply PrimitiveCall.types"]))
+    case _: failp(cat(["array primitive `", primitive_label(primitive), "` needs the CIRLayouts element cell plan (arr/words/lgs) before this target can lay it out"]))
+
+def is_array_primitive(primitive: BIR.Primitive) -> Bool:
+  match primitive:
+    case BIR.PrimArrayNew{}: True{}
+    case BIR.PrimArrayGet{}: True{}
+    case BIR.PrimArraySet{}: True{}
+    case BIR.PrimArraySwap{}: True{}
+    case BIR.PrimArraySize{}: True{}
+    case BIR.PrimArrayClone{}: True{}
+    case BIR.PrimArrayLeaf{}: True{}
+    case BIR.PrimArrayNode{}: True{}
+    case BIR.PrimArrayLeafValue{}: True{}
+    case BIR.PrimArrayLeft{}: True{}
+    case BIR.PrimArrayRight{}: True{}
+    case BIR.PrimIsArrayLeaf{}: True{}
+    case BIR.PrimIsArrayNode{}: True{}
+    case _: False{}
+
+def primitive_label(primitive: BIR.Primitive) -> String:
+  match primitive:
+    case BIR.PrimArrayNew{}: "array_new"
+    case BIR.PrimArrayGet{}: "array_get"
+    case BIR.PrimArraySet{}: "array_set"
+    case BIR.PrimArraySwap{}: "array_swap"
+    case BIR.PrimArraySize{}: "array_size"
+    case BIR.PrimArrayClone{}: "array_clone"
+    case BIR.PrimArrayLeaf{}: "array_leaf"
+    case BIR.PrimArrayNode{}: "array_node"
+    case BIR.PrimArrayLeafValue{}: "array_leaf_value"
+    case BIR.PrimArrayLeft{}: "array_left"
+    case BIR.PrimArrayRight{}: "array_right"
+    case BIR.PrimIsArrayLeaf{}: "is_array_leaf"
+    case BIR.PrimIsArrayNode{}: "is_array_node"
+    case _: "primitive"
 
 def prim_call_part(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, plan: Plan) -> Part:
   match arg_strings(args, plan):
@@ -2003,7 +2050,7 @@ def foreign_types_part(index: U32, key: String, args: Nat, found: Maybe<&2, BIR.
 
 def foreign_types_decl(index: U32, key: String, args: Nat, decl: BIR.Declaration, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Part:
   match decl:
-    case BIR.ForeignDeclaration{_, _, _, _, _, _, _, parameter_types, result}: foreign_types_checked(index, key, args, parameter_types, result, families, cids)
+    case BIR.ForeignDeclaration{_, _, _, _, _, _, _, parameter_types, result, _, _}: foreign_types_checked(index, key, args, parameter_types, result, families, cids)
     case _: PartFail(cat(["foreign `", key, "` is not a ForeignDeclaration"]))
 
 def foreign_types_checked(index: U32, key: String, args: Nat, types: List<&2, BIR.Descriptor>, result: BIR.Descriptor, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Part:
@@ -2038,7 +2085,7 @@ def main_body_item(index: U32, item: BIR.Declaration, by_code: Map<&2, U32>, by_
     case BIR.LazyDeclaration{key, body}:
       PartOk{cat([entry_header(index), "  (void)tc;\n  (void)tn;\n  (void)tb;\n  return bend_run(e, ", U32.show(map_u32(by_key, key)), ", 0, 0);\n}\n\n"])}
     case BIR.NativeDeclaration{key, primitive, quantities}: failp("a native declaration cannot be a program main")
-    case BIR.ForeignDeclaration{key, _, _, arity, _, _, _, _, _}: failp("a foreign declaration cannot be a program main")
+    case BIR.ForeignDeclaration{key, _, _, arity, _, _, _, _, _, _, _}: failp("a foreign declaration cannot be a program main")
     case _: failp("BIR declaration form cannot be a program main")
 
 def entry_body_library(index: U32, plan: Plan) -> Part:
@@ -2235,7 +2282,7 @@ def decl_fid_defines(declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U
           cat([fid_define_at(key, map_u32(by_code, U32.show(code))), decl_fid_defines(rest, by_code, by_key, by_foreign)])
         case BIR.LazyDeclaration{key, body}:
           cat([fid_define_at(key, map_u32(by_key, key)), decl_fid_defines(rest, by_code, by_key, by_foreign)])
-        case BIR.ForeignDeclaration{key, _, _, arity, _, _, _, _, _}:
+        case BIR.ForeignDeclaration{key, _, _, arity, _, _, _, _, _, _, _}:
           cat([fid_define_at(key, map_u32(by_foreign, key)), decl_fid_defines(rest, by_code, by_key, by_foreign)])
         case _: decl_fid_defines(rest, by_code, by_key, by_foreign)
 
@@ -2427,7 +2474,7 @@ def foreign_namespace(key: String, declarations: List<&2, BIR.Declaration>) -> M
 
 def foreign_namespace_item(decl: BIR.Declaration) -> Maybe<&2, String>:
   match decl:
-    case BIR.ForeignDeclaration{_, namespace, _, _, _, _, _, _, _}: Some(namespace)
+    case BIR.ForeignDeclaration{_, namespace, _, _, _, _, _, _, _, _, _}: Some(namespace)
     case _: None{}
 
 def requests_uncovered_one(namespace: Maybe<&2, String>, key: String, rest: List<&2, String>, imports: List<&2, CImport>, declarations: List<&2, BIR.Declaration>) -> Maybe<&2, String>:
@@ -2484,7 +2531,7 @@ def fid_keys(declarations: List<&2, BIR.Declaration>) -> List<&2, String>:
       match item:
         case BIR.FunctionDeclaration{key, _, _}: key <> fid_keys(rest)
         case BIR.LazyDeclaration{key, _}: key <> fid_keys(rest)
-        case BIR.ForeignDeclaration{key, _, _, _, _, _, _, _, _}: key <> fid_keys(rest)
+        case BIR.ForeignDeclaration{key, _, _, _, _, _, _, _, _, _, _}: key <> fid_keys(rest)
         case BIR.NativeDeclaration{key, _, _}: key <> fid_keys(rest)
         case _: fid_keys(rest)
 
@@ -2583,7 +2630,7 @@ def fid_exact_decl(declarations: List<&2, BIR.Declaration>, acc: Map<&2, String>
       match item:
         case BIR.FunctionDeclaration{key, code, parameters}: fid_exact_decl(rest, map_set_first(acc, key, fid_exact_symbol(key, by_code, by_foreign, by_native)), by_code, by_foreign, by_native)
         case BIR.LazyDeclaration{key, body}: fid_exact_decl(rest, map_set_first(acc, key, fid_exact_symbol(key, by_code, by_foreign, by_native)), by_code, by_foreign, by_native)
-        case BIR.ForeignDeclaration{key, namespace, imported, arity, sources, quantities, span, parameter_types, result}: fid_exact_decl(rest, map_set_first(acc, key, fid_exact_symbol(key, by_code, by_foreign, by_native)), by_code, by_foreign, by_native)
+        case BIR.ForeignDeclaration{key, namespace, imported, arity, sources, quantities, span, parameter_types, result, _, _}: fid_exact_decl(rest, map_set_first(acc, key, fid_exact_symbol(key, by_code, by_foreign, by_native)), by_code, by_foreign, by_native)
         case BIR.NativeDeclaration{key, primitive, quantities}: fid_exact_decl(rest, map_set_first(acc, key, fid_exact_symbol(key, by_code, by_foreign, by_native)), by_code, by_foreign, by_native)
         case _: fid_exact_decl(rest, acc, by_code, by_foreign, by_native)
 
@@ -2726,7 +2773,7 @@ def export_symbol_item(item: BIR.Declaration, key: String, parameter_types: List
   match item:
     case BIR.FunctionDeclaration{_, code, parameters}: Some{ExportRow{key, map_u32(by_key, key), 1n, n}}
     case BIR.LazyDeclaration{_, body}: Some{ExportRow{key, map_u32(by_key, key), 1n, n}}
-    case BIR.ForeignDeclaration{_, _, _, arity, _, _, _, _, _}: export_foreign(key, n, arity, map_u32(by_foreign, key))
+    case BIR.ForeignDeclaration{_, _, _, arity, _, _, _, _, _, _, _}: export_foreign(key, n, arity, map_u32(by_foreign, key))
     case BIR.NativeDeclaration{_, _, quantities}: export_native(key, n, List.length(&2, BIR.Quantity, quantities), map_u32(by_native, key))
     case _: None{}
 
