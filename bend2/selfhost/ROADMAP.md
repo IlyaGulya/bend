@@ -45,9 +45,9 @@ by note". A JS-generated report is not a native artifact receipt.
 | C lane | C steps tag gate passes and reaches emission; stops in the known `Base String.split` non-tail recursion at artifact line 221913 | commit `6700988b` | resolution inside the checked linear subset; full C artifact and run |
 | JS lane | `candidate_host` over the frozen root-sharedem artifact: 291,402 bytes / sha256 `43d9e28e` for `tests/run/bang_call.bend` | commit `6700988b` | broader JS acceptance receipt for the agreed corpus |
 | Full native build, NO_TRACE joint control | `ABORTED_NO_TERMINAL_REPORT` — **not** an OOM: dead PIDs, guardian report 0 bytes, last recorded `compile_book` start; exact kill cause unobserved; launcher had a 1200 cap but no exit record | Main-scoped control; no terminal report path available to this note | guardian lifecycle fix before interpreting this control |
-| Guardian lifecycle | fix written at `328cac5d` + `317b38a6` (detached supervisor, overwriting terminal receipt, no timer-based lease release; the reviewed 5 s release branch was removed as unsafe and the lease is held until owned children are confirmed gone); evidence `524aca64`; reviewed; awaiting intake. `heavy_gate.test.ts` 12 pass / 0 fail. One transient deadline-test failure was observed once and not reproduced in 9 later runs; it remains an unlocalized risk and is not outvoted. | commits `328cac5d`, `317b38a6`, `524aca64` (branch; not in integration) | intake; flake disposition; re-run `NO_TRACE` under the fixed lifecycle |
+| Guardian lifecycle | Integrated: detached supervisor, early decision receipt, final `complete`/`ownedTreeStopped` contract; lease held until owned descendants are confirmed stopped, never released by timer. Merged focused run: 3 pass / 0 fail / 57 assertions. Earlier unlocalized deadline-test failure remains UNKNOWN; this is not a full-suite green claim. | `a72e87d6`..`1c82c2c5`; receipt `747a42a2`, `evals/heavy_gate_lifecycle.receipt.json` | fresh full-root control; diagnose the preserved deadline risk if encountered |
 | Official TS producer / full native build, traced | 11,164 native-bridge bodies; book heap 1,669,811,048 B; reaches pass 6; OOM; no native artifact | Main-scoped traced run; scope not verified by note | per-structure decomposition; native artifact within the guard |
-| Profiling (actual code) | **ProducerProfilingImpl** wrote opt-in scoped compiler profiling at `60f20a` (plan/report/smoke) with tiny smoke; **StageProfilingImpl** wrote opt-in stage profiling at `72ed7ab0` (candidate host + bootstrap worker + report) with tiny smoke. Both are in review, **not in integration**. | commits `60f20a`, `72ed7ab0`; smoke receipts on those branches | review/intake; A/B no-output-change; per-module bytes; full-root overhead remains OPEN |
+| Profiling (actual code) | Producer collector and adapters integrated; wall/user/system CPU, scoped boundary memory, optional statistical profiles, durable coarse crash checkpoints, failure unwind and provenance. Post-pin-fix merged smoke: 10/10 cases, including actual C generation/clang/run and preserved codegen failure. Selfhost stage adapter remains in review; full-root overhead is OPEN. | `3cd1adcd`, `0b0b9c9f`, `d1bbca4e`; `checkpoints/compiler-profile-smoke-receipt-0b0b9c9f.json`; stage branch `72ed7ab0` + `18801723` | stage intake; native emitter attribution; full-input A/B/overhead and retained-byte attribution |
 | Law documents | `FIR_LAWS.md` and `BIR_LAWS.md` are written, reviewed, integrated at `2fcdbaea`, and linked from `ARCHITECTURE.md`; seven written law tasks CLOSED; proof/behavior obligations remain OPEN | `6a7cfc59`/`4417d18a` (FIR), `0695e763`/`8311d6a4`/`2f0e8d3b`/`2fcdbaea` (BIR) | obligation triage; no behavior/proof acceptance |
 
 Table entries are status, not acceptance checkboxes. The current full root
@@ -60,7 +60,8 @@ unchanged source.
 
 Owners: **NativeSeedBootstrap** (guardian lifecycle), **ProducerProfilingImpl**
 (official TS producer), and **StageProfilingImpl** (selfhost pipeline). These
-are implementation workstreams, not research notes. None is complete.
+are implementation workstreams, not research notes. Guardian's changed path and
+producer's tiny smoke are verified; complete pipeline coverage remains open.
 
 ### 2.0 Guardian lifecycle — NativeSeedBootstrap
 
@@ -74,34 +75,31 @@ Files owned by NativeSeedBootstrap:
 `evals/heavy_gate.ts`, `evals/heavy_gate_native.c`,
 `evals/heavy_gate.test.ts`.
 
-Status: code written and reviewed at `328cac5d` + `317b38a6`, with evidence at
-`524aca64`; **awaiting intake, not in integration**. The review removed the
-unsafe 5 s timer-based lease release; the lease is held until owned children are
-confirmed gone. The launcher-group-kill regression passes, and the full suite
-reported 12 pass / 0 fail. One transient deadline-test failure was seen once
-(its assertion detail was not retained) and not reproduced in 9 later runs;
-that unlocalized flake remains a risk and is not outvoted by repeated passes.
+Status: integrated at `a72e87d6`..`1c82c2c5`; merged focused evidence at
+`747a42a2`, in `evals/heavy_gate_lifecycle.receipt.json`. One merged command
+exercised normal/failed commands, launcher process-group death and receipt
+classification: **3 pass / 0 fail / 57 assertions**. The earlier unlocalized
+deadline-test failure is still UNKNOWN, not erased by these passes.
 
-- [ ] Always write a terminal report on normal exit, signal, launcher cap, and
-  forced kill; a 0-byte report is a defect. (Implemented at `328cac5d`; pending
-  intake and a fresh control receipt.)
-- [ ] Record the launcher cap event and the child exit/signal in the same
-  receipt, so timeout vs kill vs OOM vs abort is distinguishable.
-- [ ] Ensure no dead PIDs are left after a control returns; reap every child and
-  record its status.
-- [ ] Make `ABORTED_NO_TERMINAL_REPORT` either impossible or an explicit
-  non-success with a terminal report and the observed cause.
-- [ ] Add tests in `evals/heavy_gate.test.ts` that simulate a cap hit, a killed
-  child, and a 0-byte report path, and assert the terminal receipt.
-- [ ] Do not release the lease on a timer while an owned descendant may still
-  be alive; a stuck descendant keeps the lease and a receipt. (Implemented at
-  `317b38a6`; pending intake.)
-- [ ] Re-run the `NO_TRACE` joint control only after the lifecycle tests pass;
-  record it as a control, not as an OOM or a green build.
-- [ ] Resolve or explicitly disposition the unlocalized deadline-test flake;
-  repeated passes do not outvote the observed failure.
-- [ ] Intake `328cac5d` + `317b38a6` and `524aca64`, then mark this section
-  green. No long acceptance run is attempted before that.
+- [x] Keep the supervisor independent of the launcher's process group; publish a
+  decision receipt before cleanup and a complete receipt after confirmed stop.
+- [x] Accept PASS only with `reportPhase: complete` and `ownedTreeStopped: true`;
+  a rejected PASS has a nonzero effective exit while preserving the raw exit.
+- [x] Hold the exclusive lease until `exited && !live`; no timer releases it
+  while an owned descendant may remain.
+- [x] Exercise launcher-group kill and lease reuse with an isolated report
+  directory; preserve unfiltered output from the merged verification.
+- [x] Preserve the unlocalized deadline failure explicitly as UNKNOWN; no
+  polling assertion or repeated-run voting hides it.
+- [ ] Obtain a new full-root control receipt. The old
+  `ABORTED_NO_TERMINAL_REPORT` remains historical, not retroactively diagnosed.
+- [ ] Attribute an external launcher cap to its exact cause when observable;
+  lifeline EOF alone proves launcher loss, not its signal or caller's reason.
+
+An untrappable SIGKILL of the supervisor before any decision can still leave no
+receipt. Missing/provisional evidence is non-success, never inferred OOM/PASS.
+The focused repair verification does not certify the previously failing
+deadline scenario or a complete compiler build.
 
 ### 2.1 ProducerProfilingImpl — official TS producer
 
@@ -109,12 +107,13 @@ Goal: explain the official producer's cost and memory composition well enough
 to distinguish Book retention, stable fact-store growth, current-pass segments,
 and per-definition scratch, without changing what the producer emits.
 
-Status: code written at `60f20a`, tiny smoked; **in review, not in
-integration**. Includes
-`bend2/selfhost/COMPILER_PROFILING.md`, `evals/compiler_profile.mjs`,
-`evals/compiler_profile_smoke.ts`, and
-`checkpoints/compiler-profile-smoke-v1.json`. The checkboxes below are
-acceptance, not writing.
+Status: integrated at `3cd1adcd` + `0b0b9c9f`; merged smoke and guardian-pin
+update at `d1bbca4e`. The first merged attempt failed before any profile case
+because its guardian pins were stale; after that two-pin fix, one run passed
+all 10 cases. Includes `bend2/selfhost/COMPILER_PROFILING.md`,
+`evals/compiler_profile.mjs`, `evals/compiler_profile_smoke.ts`, and the compact
+`checkpoints/compiler-profile-smoke-receipt-0b0b9c9f.json`. Full-root acceptance
+and observer overhead are not established by these tiny cases.
 
 Deliverables:
 - [ ] Stage receipts for `module-import`, `book_load:root`, `book_load:bridge`,
@@ -190,8 +189,8 @@ Acceptance:
 Native fine/stage current-component followups are active; **full-root overhead
 attribution remains OPEN**.
 
-- [ ] Review `60f20a` and `72ed7ab0`; intake only after review and an A/B
-  no-output-change check.
+- [ ] Finish stage-adapter review/intake (`72ed7ab0` + `18801723` and follow-ups);
+  producer collector review/intake and the tiny no-output-change smoke are done.
 - [ ] Every receipt distinguishes `[M]` measured, `[P]` procedure, `[O]` open.
 - [ ] Every number names its pin; stale pins are marked stale, not reused.
 - [ ] No new timing constant or performance claim enters docs without a receipt.
@@ -202,7 +201,7 @@ diagnostic hooks disabled.
 
 ## 3. FIR / BIR / C acceptance backlog
 
-Detailed contracts: `FIR_LAWS.md`, `BIR_LAWS.md` (pending integration), and
+Detailed contracts: integrated `FIR_LAWS.md` and `BIR_LAWS.md`, and
 `RESEARCH_INCREMENTAL.md` for the reuse implications.
 
 ### 3.1 FIR
@@ -231,7 +230,7 @@ Detailed contracts: `FIR_LAWS.md`, `BIR_LAWS.md` (pending integration), and
   (FIR_LAWS O-3).
 - [ ] Occurrence adequacy for every current consumer (FIR_LAWS O-4), including
   child order and the deliberate absence of usage facts.
-- [ ] FIR_LAWS reviewed, integrated, and linked from `ARCHITECTURE.md`.
+- [x] FIR_LAWS reviewed, integrated, and linked from `ARCHITECTURE.md`.
 
 ### 3.2 BIR
 
@@ -245,7 +244,7 @@ Detailed contracts: `FIR_LAWS.md`, `BIR_LAWS.md` (pending integration), and
   current effect surface or listed as an explicit open risk.
 - [ ] C sharing soundness (O-5) and C layout Fill/Unfill (O-4) have either a
   proof argument recorded per case or a fixture receipt.
-- [ ] BIR_LAWS reviewed, integrated, and linked from `ARCHITECTURE.md`; no
+- [x] BIR_LAWS reviewed, integrated, and linked from `ARCHITECTURE.md`; no
   semantic-preservation proof claimed.
 
 ### 3.3 C target
@@ -520,14 +519,13 @@ be byte-comparable to a clean build.
   `2fcdbaea`; proof/behavior obligations open.
 - `BIR_LAWS.md` — BIR well-formedness/lowering/target laws; integrated at
   `2fcdbaea`; proof/behavior obligations open.
-- `COMPILER_PROFILING.md`, `RESEARCH_STAGE_PROFILING.md` — profiling
-  implementation docs on the `60f20a`/`72ed7ab0` review branches, not yet
-  integration.
+- `COMPILER_PROFILING.md` — integrated producer profiling and limitations;
+  `RESEARCH_STAGE_PROFILING.md` remains on the stage-adapter review branch.
 - `RESEARCH_WASM_WASI.md`, `RESEARCH_GPU.md`, `RESEARCH_LLVM.md`,
-  `RESEARCH_MLIR.md`, `RESEARCH_ZIG_BACKENDS.md` — backend research only
-  (drafts on sibling branches; integrate before treating these links as live).
-- `RESEARCH_PROFILING.md` — profiling coverage research (sibling branch;
-  integrate with the profiling implementation receipts).
+  `RESEARCH_MLIR.md`, `RESEARCH_ZIG_BACKENDS.md` — integrated backend research
+  only, not implemented targets or an approved backend cutover.
+- `RESEARCH_PROFILING.md` — integrated coverage research; implementation
+  receipts above distinguish the measured subset from open coverage.
 - `checkpoints/SELFHOST_IR_ARCHITECTURE.md` — earlier F/L/B/G/K law
   obligations and IR architecture.
 - `checkpoints/SELFHOST_HANDOFF.md` — historical implementation handoff;
