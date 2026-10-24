@@ -2866,23 +2866,28 @@ def runtime_defines(+entries: List<&2, Entry>) -> String:
 
 def tables_part(plan: Plan, +rows: List<&2, SegText>, regs: Nat) -> Part:
   match plan:
-    case Plan{+cids, cid_macros, fid_macros, +entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, _, _}:
-      PartOk{String.concat([
-        main_suppress(library),
-        part_text(runtime_cid_aliases(cids)),
-        cid_defines(cids),
-        fid_defines(rows),
-        runtime_defines(entries), "\n",
-        "CONSTV u8 CID_T[][2] = { ", cid_table(cids), "\n",
-        "CONSTV u8 FID_T[][3] = { ", fid_table(rows), "\n",
-        "#define STAT_LEN 0\n\n",
-        wl_macros(regs), "\n",
-        "#define WL_TABLE ", wl_table_text(rows, entries), "\n",
-        "#define MAIN_FID FID_", U32.show(main_fid_index(library, entries)), "\n",
-        "#define MAIN_PURE ", main_pure_text(main_pure), "\n",
-        "#define BLK_SHR ", blk_shr_text(plan), "\n\n",
-        "#if !DEVICE\nstatic const u32 SHOW_DESC[] = { ", show_desc, " };\nstatic const char* SHOW_NAMES[] = { ", show_names, " };\n#endif\n\n"
-      ])}
+    case Plan{+cids, cid_macros, fid_macros, +entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, library, _}:
+      # A missing NativeCID alias is a plan failure: emitting the tables without
+      # it would compile to an undefined symbol, so the Part must propagate.
+      match runtime_cid_aliases(cids):
+        case PartFail{message}: PartFail{message}
+        case PartOk{aliases}:
+          PartOk{String.concat([
+            main_suppress(library),
+            aliases,
+            cid_defines(cids),
+            fid_defines(rows),
+            runtime_defines(entries), "\n",
+            "CONSTV u8 CID_T[][2] = { ", cid_table(cids), "\n",
+            "CONSTV u8 FID_T[][3] = { ", fid_table(rows), "\n",
+            "#define STAT_LEN 0\n\n",
+            wl_macros(regs), "\n",
+            "#define WL_TABLE ", wl_table_text(rows, entries), "\n",
+            "#define MAIN_FID FID_", U32.show(main_fid_index(library, entries)), "\n",
+            "#define MAIN_PURE ", main_pure_text(main_pure), "\n",
+            "#define BLK_SHR ", blk_shr_text(plan), "\n\n",
+            "#if !DEVICE\nstatic const u32 SHOW_DESC[] = { ", show_desc, " };\nstatic const char* SHOW_NAMES[] = { ", show_names, " };\n#endif\n\n"
+          ])}
 
 def main_suppress(library: Bool) -> String:
   match library:
@@ -2910,11 +2915,6 @@ def spins_part() -> Part:
     "static Term bend_text(Env e, const char* p, u64 n);\n",
     "CONSTV u64 STAT_IMG[] = { 0 };\n"
   ]))
-
-def part_text(part: Part) -> String:
-  match part:
-    case PartOk{text}: text
-    case PartFail{message}: ""
 
 def helper_core() -> String:
   cat([
@@ -2955,7 +2955,7 @@ def helper_core() -> String:
 
 def requests_part(plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, _, _}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, library, exports}:
       requests_finish(requests_check(imports, fkeys, declarations, constructors, cids, by_code, by_key, by_foreign, by_native), library, exports, declarations, by_code, by_key, by_foreign, by_native, entries)
 
 def requests_finish(part: Part, library: Bool, exports: List<&2, BIR.Export>, +declarations: List<&2, BIR.Declaration>, +by_code: Map<&2, U32>, +by_key: Map<&2, U32>, +by_foreign: Map<&2, U32>, +by_native: Map<&2, U32>, +entries: List<&2, Entry>) -> Part:
