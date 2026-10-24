@@ -1,6 +1,7 @@
 import Base
 import ./backend_ir.bend as BIR
 import ./index_lookup.bend as IndexLookup
+import ./c_backend_link.bend as Link
 
 # The C target for Backend IR.
 #
@@ -57,6 +58,7 @@ type Kind is Data:
   KindStage{id: U32, count: Nat}
   KindLazy{body: BIR.Block}
   KindForeign{key: String, args: Nat}
+  KindNative{primitive: BIR.Primitive, count: Nat}
   KindMain{}
   KindLibrary{}
   KindEmit{}
@@ -76,6 +78,7 @@ type Build is Data:
     by_code: Map<&2, U32>,
     by_key: Map<&2, U32>,
     by_foreign: Map<&2, U32>,
+    by_native: Map<&2, U32>,
     stages: Map<&2, U32>,
     next: U32
   }
@@ -89,6 +92,7 @@ type Plan is Data:
     by_code: Map<&2, U32>,
     by_key: Map<&2, U32>,
     by_foreign: Map<&2, U32>,
+    by_native: Map<&2, U32>,
     stages: Map<&2, U32>,
     constructors: List<&2, BIR.ConstructorLayout>,
     families: List<&2, BIR.Family>,
@@ -340,7 +344,7 @@ def scan_declaration(item: BIR.Declaration, scan: Scan) -> Scan:
     case BIR.FunctionDeclaration{key, code, parameters}: scan
     case BIR.LazyDeclaration{key, body}: scan_block(body, scan)
     case BIR.NativeDeclaration{key, primitive, quantities}: scan
-    case BIR.ForeignDeclaration{key, path, imported, arity}: scan_foreign(scan, key, arity)
+    case BIR.ForeignDeclaration{key, _, _, arity, _, _, _, _, _}: scan_foreign(scan, key, arity)
 
 def scan_foreign(scan: Scan, key: String, arity: Nat) -> Scan:
   match scan:
@@ -455,11 +459,6 @@ def cid_short(short: String, cids: List<&2, CidRow>) -> Maybe<&2, U32>:
       match row:
         case CidRow{cid, key, arity}: cid_short_one(Bool.or(String.eq(short, key), String.eq(short, last_segment(key))), short, cid, rest)
 
-def cid_short_one(found: Bool, short: String, cid: U32, rest: List<&2, CidRow>) -> Maybe<&2, U32>:
-  match found:
-    case True{}: Some{cid}
-    case False{}: cid_short(short, rest)
-
 def cid_c(short: String, cids: List<&2, CidRow>) -> Part:
   match cid_short(short, cids):
     case Some{cid}: PartOk{String.append(U32.show(cid), "u")}
@@ -483,10 +482,10 @@ def cid_macro_each(cids: List<&2, CidRow>, acc: Map<&2, String>) -> Map<&2, Stri
 def build_entries(program: BIR.Program, scan: Scan) -> Build:
   match program:
     case BIR.Program{codes, declarations, constructors, families, type_functions, end}:
-      build_foreign(scan, build_lazy(declarations, build_codes(codes, declarations, scan, build_new())))
+      build_foreign(scan, build_native(declarations, build_lazy(declarations, build_codes(codes, declarations, scan, build_new()))))
 
 def build_new() -> Build:
-  Build{Nil{}, Map.new(&2, U32), Map.new(&2, U32), Map.new(&2, U32), Map.new(&2, U32), 0u}
+  Build{Nil{}, Map.new(&2, U32), Map.new(&2, U32), Map.new(&2, U32), Map.new(&2, U32), Map.new(&2, U32), 0u}
 
 def build_codes(codes: List<&2, BIR.Code>, declarations: List<&2, BIR.Declaration>, scan: Scan, build: Build) -> Build:
   match codes:
@@ -543,19 +542,19 @@ def build_stage(build: Build, id: U32, captures: Nat, parameters: List<&2, BIR.P
 
 def build_stage_one(build: Build, id: U32, captures: Nat, parameters: List<&2, BIR.Parameter>, body: BIR.Block, stage: Nat, arity: Nat) -> Build:
   match build:
-    case Build{entries, by_code, by_key, by_foreign, stages, next}:
+    case Build{entries, by_code, by_key, by_foreign, by_native, stages, next}:
       entry = Entry{next, Nat.add(stage, 1n), KindStage{id, Nat.add(stage, 1n)}}
       stages_next = Map.set(&2, U32, stage_key(id, stage), next, stages)
-      build_stage(Build{entry <> entries, by_code, by_key, by_foreign, stages_next, U32.inc(next)}, id, captures, parameters, body, Nat.add(stage, 1n), arity)
+      build_stage(Build{entry <> entries, by_code, by_key, by_foreign, by_native, stages_next, U32.inc(next)}, id, captures, parameters, body, Nat.add(stage, 1n), arity)
 
 def stage_key(id: U32, count: Nat) -> String:
   String.append(U32.show(id), String.append(":", Nat.show(count)))
 
 def build_real(build: Build, id: U32, captures: Nat, parameters: List<&2, BIR.Parameter>, body: BIR.Block, arity: Nat) -> Build:
   match build:
-    case Build{entries, by_code, by_key, by_foreign, stages, next}:
+    case Build{entries, by_code, by_key, by_foreign, by_native, stages, next}:
       entry = Entry{next, arity, KindCode{id, captures, parameters, body}}
-      Build{entry <> entries, Map.set(&2, U32, U32.show(id), next, by_code), by_key, by_foreign, stages, U32.inc(next)}
+      Build{entry <> entries, Map.set(&2, U32, U32.show(id), next, by_code), by_key, by_foreign, by_native, stages, U32.inc(next)}
 
 def build_lazy(declarations: List<&2, BIR.Declaration>, build: Build) -> Build:
   match declarations:
@@ -567,9 +566,56 @@ def build_lazy(declarations: List<&2, BIR.Declaration>, build: Build) -> Build:
 
 def build_lazy_one(build: Build, key: String, body: BIR.Block) -> Build:
   match build:
-    case Build{entries, by_code, by_key, by_foreign, stages, next}:
+    case Build{entries, by_code, by_key, by_foreign, by_native, stages, next}:
       entry = Entry{next, 0n, KindLazy{body}}
-      Build{entry <> entries, by_code, Map.set(&2, U32, key, next, by_key), by_foreign, stages, U32.inc(next)}
+      Build{entry <> entries, by_code, Map.set(&2, U32, key, next, by_key), by_foreign, by_native, stages, U32.inc(next)}
+
+
+def live_quantities(quantities: List<&2, BIR.Quantity>, count: Nat) -> Nat:
+  match quantities:
+    case Nil{}: count
+    case +quantity <> rest: live_quantities(rest, live_quantity_next(quantity, count))
+
+def live_quantity_next(quantity: BIR.Quantity, count: Nat) -> Nat:
+  match quantity:
+    case BIR.Erased{}: count
+    case _: Nat.add(count, 1n)
+
+def native_bind(first: Bool, map: Map<&2, U32>, key: String, index: U32) -> Map<&2, U32>:
+  match first:
+    case True{}: Map.set(&2, U32, map, key, index)
+    case False{}: map
+
+def build_native(declarations: List<&2, BIR.Declaration>, build: Build) -> Build:
+  match declarations:
+    case Nil{}: build
+    case +item <> rest:
+      match item:
+        case BIR.NativeDeclaration{key, primitive, quantities}: build_native_one(rest, build, key, primitive, live_quantities(quantities, 0n))
+        case _: build_native(rest, build)
+
+def build_native_one(rest: List<&2, BIR.Declaration>, build: Build, key: String, primitive: BIR.Primitive, count: Nat) -> Build:
+  match Nat.is_eq(count, 0n):
+    case True{}: build_native(rest, build)
+    case False{}: build_native_stage(rest, build, key, primitive, count, 0n, True{})
+
+def build_native_stage(rest: List<&2, BIR.Declaration>, build: Build, key: String, primitive: BIR.Primitive, count: Nat, stage: Nat, first: Bool) -> Build:
+  match build:
+    case Build{entries, by_code, by_key, by_foreign, by_native, stages, next}:
+      match Nat.is_lt(Nat.add(stage, 1n), count):
+        case True{}:
+          entry = Entry{next, Nat.add(stage, 1n), KindStage{0u, Nat.add(stage, 1n)}}
+          bound = native_bind(first, by_native, key, next)
+          build_native_stage(rest, Build{entry <> entries, by_code, by_key, by_foreign, bound, stages, U32.inc(next)}, key, primitive, count, Nat.add(stage, 1n), False{})
+        case False{}:
+          entry = Entry{next, count, KindNative{primitive, count}}
+          bound = native_bind(first, by_native, key, next)
+          build_native(rest, Build{entry <> entries, by_code, by_key, by_foreign, bound, stages, U32.inc(next)})
+
+def arg_names(count: Nat, index: Nat) -> List<&2, String>:
+  match Nat.is_lt(index, count):
+    case True{}: cat(["x[", Nat.show(index), "]"]) <> arg_names(count, Nat.add(index, 1n))
+    case False{}: Nil{}
 
 def build_foreign(scan: Scan, build: Build) -> Build:
   match scan:
@@ -580,17 +626,17 @@ def build_foreign_each(keys: List<&2, String>, farity: Map<&2, Nat>, build: Buil
     case Nil{}: build
     case +key <> rest:
       match build:
-        case Build{entries, by_code, by_key, by_foreign, stages, next}:
+        case Build{entries, by_code, by_key, by_foreign, by_native, stages, next}:
           entry = Entry{next, Nat.add(map_nat(farity, key), 1n), KindForeign{key, map_nat(farity, key)}}
-          build_foreign_each(rest, farity, Build{entry <> entries, by_code, by_key, Map.set(&2, U32, key, next, by_foreign), stages, U32.inc(next)})
+          build_foreign_each(rest, farity, Build{entry <> entries, by_code, by_key, Map.set(&2, U32, key, next, by_foreign), by_native, stages, U32.inc(next)})
 
 # Final order: program entries, the top (main or library action), then the
 # runtime's own four segments, whose bodies the runtime supplies.
 def finish_entries(build: Build, library: Bool) -> Build:
   match build:
-    case Build{entries, by_code, by_key, by_foreign, stages, next}:
+    case Build{entries, by_code, by_key, by_foreign, by_native, stages, next}:
       top = Entry{next, top_arity(library), top_kind(library)}
-      build_runtime(Build{top <> entries, by_code, by_key, by_foreign, stages, U32.inc(next)})
+      build_runtime(Build{top <> entries, by_code, by_key, by_foreign, by_native, stages, U32.inc(next)})
 
 def top_arity(library: Bool) -> Nat:
   match library:
@@ -604,20 +650,20 @@ def top_kind(library: Bool) -> Kind:
 
 def build_runtime(build: Build) -> Build:
   match build:
-    case Build{entries, by_code, by_key, by_foreign, stages, next}:
+    case Build{entries, by_code, by_key, by_foreign, by_native, stages, next}:
       emit = Entry{next, 1n, KindEmit{}}
       apply = Entry{U32.inc(next), 2n, KindApply{}}
       exit = Entry{U32.inc(U32.inc(next)), 0n, KindExit{}}
       enter = Entry{U32.inc(U32.inc(U32.inc(next))), 0n, KindEnter{}}
       last = U32.inc(U32.inc(U32.inc(U32.inc(next))))
-      Build{enter <> exit <> apply <> emit <> entries, by_code, by_key, by_foreign, stages, last}
+      Build{enter <> exit <> apply <> emit <> entries, by_code, by_key, by_foreign, by_native, stages, last}
 
 def entries_ascending(entries: List<&2, Entry>) -> List<&2, Entry>:
   List.reverse(&2, Entry, entries)
 
 def fid_macro_map(declarations: List<&2, BIR.Declaration>, build: Build) -> Map<&2, String>:
   match build:
-    case Build{entries: all, by_code, by_key, by_foreign, stages, next}:
+    case Build{entries: all, by_code, by_key, by_foreign, by_native, stages, next}:
       fid_macros_runtime(fid_macros_declarations(declarations, by_code, by_foreign, Map.new(&2, String)))
 
 def fid_macros_declarations(declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_foreign: Map<&2, U32>, acc: Map<&2, String>) -> Map<&2, String>:
@@ -627,7 +673,7 @@ def fid_macros_declarations(declarations: List<&2, BIR.Declaration>, by_code: Ma
       match item:
         case BIR.FunctionDeclaration{key, code, parameters}:
           fid_macros_declarations(rest, by_code, by_foreign, map_set_first(acc, key, String.append(fid_macro(key), "")))
-        case BIR.ForeignDeclaration{key, path, imported, arity}:
+        case BIR.ForeignDeclaration{key, _, _, arity, _, _, _, _, _}:
           fid_macros_declarations(rest, by_code, by_foreign, map_set_first(acc, key, fid_macro(key)))
         case _: fid_macros_declarations(rest, by_code, by_foreign, acc)
 
@@ -648,7 +694,7 @@ def plan_finish(program: BIR.Program, scan: Scan, cids: List<&2, CidRow>, constr
 def plan_top(program: BIR.Program, scan: Scan, cids: List<&2, CidRow>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, declarations: List<&2, BIR.Declaration>, end: BIR.Ending, imports: List<&2, CImport>) -> PlanResult:
   library = ending_library(end)
   build = finish_entries(build_entries(program, scan), library)
-  PlanOk{Plan{cids, cid_macro_map(cids), fid_macro_map(declarations, build), entries_ascending(build_entries_of(build)), by_code_of(build), by_key_of(build), by_foreign_of(build), stages_of(build), constructors, families, declarations, True{}, "{ 0 }", "", library, ending_exports(end), imports, fkeys_of(scan)}}
+  PlanOk{Plan{cids, cid_macro_map(cids), fid_macro_map(declarations, build), entries_ascending(build_entries_of(build)), by_code_of(build), by_key_of(build), by_foreign_of(build), by_native_of(build), stages_of(build), constructors, families, declarations, True{}, "{ 0 }", "", library, ending_exports(end), imports, fkeys_of(scan)}}
 
 def plan_pure(end: BIR.Ending, families: List<&2, BIR.Family>, inner: PlanResult) -> PlanResult:
   match inner:
@@ -663,8 +709,8 @@ def plan_set_pure(end: BIR.Ending, families: List<&2, BIR.Family>, plan: Plan) -
 
 def plan_set_pure_flags(plan: Plan, pure: Bool, desc: String, names: String) -> Plan:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
-      Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, stages, constructors, families, declarations, pure, desc, names, library, exports, imports, fkeys}
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+      Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, pure, desc, names, library, exports, imports, fkeys}
 
 def fid_macros_runtime(acc: Map<&2, String>) -> Map<&2, String>:
   fid_macros_runtime_one(map_set_first(acc, "Clo~apply", "FID_CLO_APPLY"))
@@ -694,11 +740,11 @@ def plan_executable_io(is_io: Bool, family: BIR.Family, main_type: BIR.Descripto
 
 def plan_executable_show(family: BIR.Family, main_type: BIR.Descriptor, plan: Plan) -> PlanResult:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
       match show_cells(main_type, Nil{}, constructors, families, cids):
         case None{}: PlanFail{"the main value's type has no C show layout"}
         case Some{cells}:
-          PlanOk{Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, stages, constructors, families, declarations, True{}, cells, show_names(constructors), library, exports, imports, fkeys}}
+          PlanOk{Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, True{}, cells, show_names(constructors), library, exports, imports, fkeys}}
 
 def show_names(constructors: List<&2, BIR.ConstructorLayout>) -> String:
   show_names_each(ctor_keys(constructors), Nil{})
@@ -740,23 +786,27 @@ def ending_exports(end: BIR.Ending) -> List<&2, BIR.Export>:
 
 def build_entries_of(build: Build) -> List<&2, Entry>:
   match build:
-    case Build{entries, by_code, by_key, by_foreign, stages, next}: entries
+    case Build{entries, _, _, _, _, _, _}: entries
 
 def by_code_of(build: Build) -> Map<&2, U32>:
   match build:
-    case Build{entries, by_code, by_key, by_foreign, stages, next}: by_code
+    case Build{_, by_code, _, _, _, _, _}: by_code
 
 def by_key_of(build: Build) -> Map<&2, U32>:
   match build:
-    case Build{entries, by_code, by_key, by_foreign, stages, next}: by_key
+    case Build{_, _, by_key, _, _, _, _}: by_key
 
 def by_foreign_of(build: Build) -> Map<&2, U32>:
   match build:
-    case Build{entries, by_code, by_key, by_foreign, stages, next}: by_foreign
+    case Build{_, _, _, by_foreign, _, _, _}: by_foreign
+
+def by_native_of(build: Build) -> Map<&2, U32>:
+  match build:
+    case Build{_, _, _, _, by_native, _, _}: by_native
 
 def stages_of(build: Build) -> Map<&2, U32>:
   match build:
-    case Build{entries, by_code, by_key, by_foreign, stages, next}: stages
+    case Build{_, _, _, _, _, stages, _}: stages
 
 def fkeys_of(scan: Scan) -> List<&2, String>:
   match scan:
@@ -1084,7 +1134,7 @@ def live_index_next(quantity: BIR.Quantity, live: Nat) -> Nat:
 
 def ctor_cid(id: U32, constructors: List<&2, BIR.ConstructorLayout>, cids: List<&2, CidRow>) -> Part:
   match layout_of(id, constructors):
-    case None{}: failp{String.append("BIR names constructor id ", String.append(U32.show(id), " with no layout"))}
+    case None{}: failp(String.append("BIR names constructor id ", String.append(U32.show(id), " with no layout")))
     case Some{row}:
       match row:
         case BIR.ConstructorLayout{id, key, native, fields}: PartOk{String.append(U32.show(cid_lookup(key, cids)), "u")}
@@ -1095,27 +1145,22 @@ def ctor_cid(id: U32, constructors: List<&2, BIR.ConstructorLayout>, cids: List<
 
 def atom_part(atom: BIR.Atom, plan: Plan) -> Part:
   match atom:
-    case BIR.Local{id}: okp{cat(["lv", U32.show(id)])}
-    case BIR.Capture{slot}: okp{cat(["x[", U32.show(slot), "]"])}
+    case BIR.Local{id}: okp(cat(["lv", U32.show(id)]))
+    case BIR.Capture{slot}: okp(cat(["x[", U32.show(slot), "]"]))
     case BIR.Symbol{_, key}: symbol_part(key, plan)
-    case BIR.Word{value}: okp{u32_c(value)}
-    case BIR.Natural{value}: okp{nat_c(value)}
-    case BIR.FloatBits{bits}: okp{U32.show(bits)}
-    case BIR.Text{value}: okp{cat(["bend_text(e, ", c_quote(value), ", ", Nat.show(String.length(value)), ")"])}
-    case BIR.Boolean{value}: bool_atom_part(value, plan)
-    case BIR.Null{}: okp{"0"}
-    case BIR.Undefined{}: okp{"0"}
-    case _: failp{"BIR atom form has no C rendering"}
+    case BIR.Word{value}: okp(u32_c(value))
+    case BIR.Natural{value}: okp(nat_c(value))
+    case BIR.FloatBits{bits}: okp(U32.show(bits))
+    case BIR.Text{value}: okp(cat(["bend_text(e, ", c_quote(value), ", ", Nat.show(String.length(value)), ")"]))
+    case BIR.Boolean{value}: okp(bool_c(value))
+    case BIR.Null{}: okp("0")
+    case BIR.Undefined{}: okp("0")
+    case _: failp("BIR atom form has no C rendering")
 
 def bool_c(value: Bool) -> String:
   match value:
     case True{}: "1"
     case False{}: "0"
-
-def bool_atom_part(value: Bool, plan: Plan) -> Part:
-  match value:
-    case True{}: bool_lit_part("True", plan)
-    case False{}: bool_lit_part("False", plan)
 
 def bool_lit_part(which: String, plan: Plan) -> Part:
   match pcid(which, plan):
@@ -1124,7 +1169,7 @@ def bool_lit_part(which: String, plan: Plan) -> Part:
 
 def symbol_part(key: String, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
       symbol_part_decl(find_declaration(key, declarations), key, plan)
 
 def find_declaration(key: String, declarations: List<&2, BIR.Declaration>) -> Maybe<&2, BIR.Declaration>:
@@ -1135,7 +1180,7 @@ def find_declaration(key: String, declarations: List<&2, BIR.Declaration>) -> Ma
         case BIR.FunctionDeclaration{key: known, code, parameters}: find_declaration_one(String.eq(key, known), item, key, rest)
         case BIR.LazyDeclaration{key: known, body}: find_declaration_one(String.eq(key, known), item, key, rest)
         case BIR.NativeDeclaration{key: known, primitive, quantities}: find_declaration_one(String.eq(key, known), item, key, rest)
-        case BIR.ForeignDeclaration{key: known, namespace, imported, arity, sources, quantities, span}: find_declaration_one(String.eq(key, known), item, key, rest)
+        case BIR.ForeignDeclaration{key: known, namespace, imported, arity, sources, quantities, span, parameter_types, result}: find_declaration_one(String.eq(key, known), item, key, rest)
         case _: find_declaration(key, rest)
 
 def find_declaration_one(found: Bool, item: BIR.Declaration, key: String, rest: List<&2, BIR.Declaration>) -> Maybe<&2, BIR.Declaration>:
@@ -1145,15 +1190,15 @@ def find_declaration_one(found: Bool, item: BIR.Declaration, key: String, rest: 
 
 def symbol_part_decl(found: Maybe<&2, BIR.Declaration>, key: String, plan: Plan) -> Part:
   match found:
-    case None{}: failp{cat(["BIR reads symbol `", key, "` with no declaration"])}
+    case None{}: failp(cat(["BIR reads symbol `", key, "` with no declaration"]))
     case Some{item}: symbol_part_item(item, key, plan)
 
 def symbol_part_item(item: BIR.Declaration, key: String, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
-      symbol_emit(item, key, entries, by_code, by_key, by_foreign, stages)
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+      symbol_emit(item, key, entries, by_code, by_key, by_foreign, by_native, stages)
 
-def symbol_emit(item: BIR.Declaration, key: String, entries: List<&2, Entry>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, stages: Map<&2, U32>) -> Part:
+def symbol_emit(item: BIR.Declaration, key: String, entries: List<&2, Entry>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>, stages: Map<&2, U32>) -> Part:
   match item:
     case BIR.FunctionDeclaration{key, code, parameters}:
       real = map_u32(by_code, U32.show(code))
@@ -1161,11 +1206,16 @@ def symbol_emit(item: BIR.Declaration, key: String, entries: List<&2, Entry>, by
       symbol_function(arity, code, real, stages)
     case BIR.LazyDeclaration{key, body}:
       PartOk{cat(["bend_run(e, ", U32.show(map_u32(by_key, key)), ", 0, 0)"])}
-    case BIR.ForeignDeclaration{key, namespace, imported, arity, sources, quantities, span}:
+    case BIR.ForeignDeclaration{key, _, _, arity, _, _, _, _, _}:
       PartOk{cat(["bend_closure(e, ", U32.show(map_u32(by_foreign, key)), ", 0, 0)"])}
     case BIR.NativeDeclaration{key, primitive, quantities}:
-      failp{cat(["the C target has no first-class native primitive value for `", key, "` (declare it as a def)")]}
-    case _: failp{"BIR declaration form has no C value"}
+      failp(cat(["the C target has no first-class native primitive value for `", key, "` (declare it as a def)")])
+    case _: failp("BIR declaration form has no C value")
+
+def native_value_part(key: String, by_native: Map<&2, U32>) -> Part:
+  match IndexLookup.find(U32, by_native, key):
+    case Some{index}: PartOk(cat(["bend_closure(e, ", U32.show(index), ", 0, 0)"]))
+    case None{}: PartFail(cat(["native declaration `", key, "` has no live parameters, so it has no C value form"]))
 
 def symbol_function(arity: Nat, code: U32, real: U32, stages: Map<&2, U32>) -> Part:
   match Nat.is_eq(arity, 0n):
@@ -1208,26 +1258,26 @@ def op_part(op: BIR.Op, plan: Plan) -> Part:
     case BIR.Construct{constructor, tag, fields}: construct_part(constructor, fields, plan)
     case BIR.Project{value, constructor, field, key}: project_part(value, constructor, field, plan)
     case BIR.HasTag{value, constructor, tag}: hastag_part(value, constructor, plan)
-    case _: failp{"BIR operation form has no C rendering"}
+    case _: failp("BIR operation form has no C rendering")
 
 def direct_part(code: U32, args: List<&2, BIR.Arg>, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
       direct_values(map_u32(by_code, U32.show(code)), arg_strings(args, plan))
 
 def direct_values(real: U32, values: Maybe<&2, List<&2, String>>) -> Part:
   match values:
-    case None{}: failp{"BIR argument has no C value"}
+    case None{}: failp("BIR argument has no C value")
     case Some{args}: PartOk{cat(["bend_run(e, ", U32.show(real), ", ", call_args(args), ", ", Nat.show(List.length(&2, String, args)), ")"])}
 
 def closure_part(code: U32, captures: List<&2, BIR.Arg>, parameters: List<&2, BIR.Parameter>, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
       closure_values(code, List.length(&2, BIR.Arg, captures), parameters, map_u32(by_code, U32.show(code)), stages, arg_strings(captures, plan))
 
 def closure_values(code: U32, count: Nat, parameters: List<&2, BIR.Parameter>, real: U32, stages: Map<&2, U32>, values: Maybe<&2, List<&2, String>>) -> Part:
   match values:
-    case None{}: failp{"BIR capture has no C value"}
+    case None{}: failp("BIR capture has no C value")
     case Some{captures}:
       match List.length(&2, BIR.Parameter, parameters):
         case 0n: PartOk{cat(["bend_run(e, ", U32.show(real), ", ", call_args(captures), ", ", Nat.show(count), ")"])}
@@ -1253,14 +1303,83 @@ def field_values(fields: List<&2, BIR.Field>, plan: Plan) -> List<&2, Part>:
       match field:
         case BIR.Field{_, _, _, value}: atom_part(value, plan) <> field_values(rest, plan)
 
+def all_arms_nullary(arms: List<&2, BIR.DescriptorArm>) -> Bool:
+  match arms:
+    case Nil{}: True{}
+    case +arm <> rest:
+      match arm:
+        case BIR.DescriptorArm{key, fields}: all_arms_nullary_one(Nat.is_eq(List.length(&2, BIR.DescriptorField, live_fields(fields, Nil{})), 0n), rest)
+
+def all_arms_nullary_one(nullary: Bool, rest: List<&2, BIR.DescriptorArm>) -> Bool:
+  match nullary:
+    case True{}: all_arms_nullary(rest)
+    case False{}: False{}
+
+def family_arms_of(key: String, families: List<&2, BIR.Family>) -> Maybe<&2, List<&2, BIR.DescriptorArm>>:
+  match families:
+    case Nil{}: None{}
+    case +family <> rest:
+      match family:
+        case BIR.Family{key: owner, name, native, quantity_prefix, arity, arms}: family_arms_check(arm_member(key, arms), arms, rest)
+
+def arm_member(key: String, arms: List<&2, BIR.DescriptorArm>) -> Bool:
+  match arms:
+    case Nil{}: False{}
+    case +arm <> rest:
+      match arm:
+        case BIR.DescriptorArm{key: known, fields}: arm_member_one(Bool.or(String.eq(key, known), String.eq(last_segment(key), last_segment(known))), key, rest)
+
+def arm_member_one(found: Bool, key: String, rest: List<&2, BIR.DescriptorArm>) -> Bool:
+  match found:
+    case True{}: True{}
+    case False{}: arm_member(key, rest)
+
+def family_arms_check(found: Bool, arms: List<&2, BIR.DescriptorArm>, rest: List<&2, BIR.Family>) -> Maybe<&2, List<&2, BIR.DescriptorArm>>:
+  match found:
+    case True{}: Some(arms)
+    case False{}: family_arms_rest(rest)
+
+def family_arms_rest(rest: List<&2, BIR.Family>) -> Maybe<&2, List<&2, BIR.DescriptorArm>>:
+  match rest:
+    case Nil{}: None{}
+    case +family <> tail:
+      match family:
+        case BIR.Family{key, name, native, quantity_prefix, arity, arms}: Some(arms)
+
+def arm_index(key: String, arms: List<&2, BIR.DescriptorArm>, index: Nat) -> Maybe<&2, Nat>:
+  match arms:
+    case Nil{}: None{}
+    case +arm <> rest:
+      match arm:
+        case BIR.DescriptorArm{key: known, fields}: arm_index_one(Bool.or(String.eq(key, known), String.eq(last_segment(key), last_segment(known))), key, rest, index)
+
+def arm_index_one(found: Bool, key: String, rest: List<&2, BIR.DescriptorArm>, index: Nat) -> Maybe<&2, Nat>:
+  match found:
+    case True{}: Some(index)
+    case False{}: arm_index(key, rest, Nat.add(index, 1n))
+
+# An inline enum is a family with more than one arm, all of them nullary; its
+# values are the raw arm index, exactly as the current C emitter lays them out.
+def inline_tag(key: String, families: List<&2, BIR.Family>) -> Maybe<&2, Nat>:
+  match family_arms_of(key, families):
+    case None{}: None{}
+    case Some{arms}: inline_tag_arms(key, arms)
+
+def inline_tag_arms(key: String, arms: List<&2, BIR.DescriptorArm>) -> Maybe<&2, Nat>:
+  match Bool.and(all_arms_nullary(arms), Nat.is_gt(List.length(&2, BIR.DescriptorArm, arms), 1n)):
+    case True{}: arm_index(key, arms, 0n)
+    case False{}: None{}
+
 def construct_part(constructor: U32, fields: List<&2, BIR.Field>, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
-      construct_values(constructor, native_kind_of(constructor, constructors), field_values(fields, plan), ctor_cid(constructor, constructors, cids), List.length(&2, BIR.Field, fields), packed_ctor(constructor, constructors, families))
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+      match inline_tag(ctor_key_of(constructor, constructors), families):
+        case Some{tag}: PartOk(cat([Nat.show(tag), "ull"]))
+        case None{}: construct_values(constructor, native_kind_of(constructor, constructors), field_values(fields, plan), ctor_cid(constructor, constructors, cids), List.length(&2, BIR.Field, fields), packed_ctor(constructor, constructors, families))
 
 def construct_values(constructor: U32, kind: String, values: List<&2, Part>, cid_part: Part, count: Nat, packed: Bool) -> Part:
   match values_part(values, Nil{}):
-    case None{}: failp{"BIR constructor field has no C value"}
+    case None{}: failp("BIR constructor field has no C value")
     case Some{args}: construct_kind(kind, args, cid_part, count, packed)
 
 def values_part(values: List<&2, Part>, acc: List<&2, String>) -> Maybe<&2, List<&2, String>>:
@@ -1321,7 +1440,7 @@ def base_construct_5(kind: String, args: List<&2, String>) -> Maybe<&2, String>:
 
 def project_part(value: BIR.Atom, constructor: U32, field: U32, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
       project_values(atom_part(value, plan), native_kind_of(constructor, constructors), ctor_key_of(constructor, constructors), field, families)
 
 def ctor_key_of(id: U32, constructors: List<&2, BIR.ConstructorLayout>) -> String:
@@ -1368,8 +1487,15 @@ def project_anode(value: String, field: U32) -> String:
 
 def hastag_part(value: BIR.Atom, constructor: U32, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
-      hastag_values(atom_part(value, plan), native_kind_of(constructor, constructors), ctor_cid(constructor, constructors, cids))
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+      match inline_tag(ctor_key_of(constructor, constructors), families):
+        case Some{tag}: hastag_inline(atom_part(value, plan), tag)
+        case None{}: hastag_values(atom_part(value, plan), native_kind_of(constructor, constructors), ctor_cid(constructor, constructors, cids))
+
+def hastag_inline(value: Part, tag: Nat) -> Part:
+  match value:
+    case PartFail{message}: PartFail{message}
+    case PartOk{text}: PartOk(cat(["(", text, " == ", Nat.show(tag), ")"]))
 
 def hastag_values(value: Part, kind: String, cid_part: Part) -> Part:
   match value:
@@ -1378,32 +1504,32 @@ def hastag_values(value: Part, kind: String, cid_part: Part) -> Part:
 
 def hastag_expr(kind: String, value: String, cid_part: Part) -> Part:
   match String.eq(kind, "natzero"):
-    case True{}: okp{cat(["(", value, " == 0)"])}
+    case True{}: okp(cat(["(", value, " == 0)"]))
     case False{}: hastag_expr_1(kind, value, cid_part)
 
 def hastag_expr_1(kind: String, value: String, cid_part: Part) -> Part:
   match String.eq(kind, "natsucc"):
-    case True{}: okp{cat(["(", value, " > 0)"])}
+    case True{}: okp(cat(["(", value, " > 0)"]))
     case False{}: hastag_expr_2(kind, value, cid_part)
 
 def hastag_expr_2(kind: String, value: String, cid_part: Part) -> Part:
   match String.eq(kind, "u32"):
-    case True{}: okp{"1"}
+    case True{}: okp("1")
     case False{}: hastag_expr_3(kind, value, cid_part)
 
 def hastag_expr_3(kind: String, value: String, cid_part: Part) -> Part:
   match String.eq(kind, "f32"):
-    case True{}: okp{"1"}
+    case True{}: okp("1")
     case False{}: hastag_expr_4(kind, value, cid_part)
 
 def hastag_expr_4(kind: String, value: String, cid_part: Part) -> Part:
   match String.eq(kind, "aleaf"):
-    case True{}: okp{cat(["((u32)blk_cls(", value, ") == 0)"])}
+    case True{}: okp(cat(["((u32)blk_cls(", value, ") == 0)"]))
     case False{}: hastag_expr_5(kind, value, cid_part)
 
 def hastag_expr_5(kind: String, value: String, cid_part: Part) -> Part:
   match String.eq(kind, "anode"):
-    case True{}: okp{cat(["((u32)blk_cls(", value, ") != 0)"])}
+    case True{}: okp(cat(["((u32)blk_cls(", value, ") != 0)"]))
     case False{}: hastag_node(value, cid_part)
 
 def hastag_node(value: String, cid_part: Part) -> Part:
@@ -1417,12 +1543,12 @@ def hastag_node(value: String, cid_part: Part) -> Part:
 
 def prim_call_part(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, plan: Plan) -> Part:
   match arg_strings(args, plan):
-    case None{}: failp{"BIR argument has no C value"}
+    case None{}: failp("BIR argument has no C value")
     case Some{values}: prim_part(primitive, values, plan)
 
 def pcid(short: String, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
       cid_c(short, cids)
 
 def prim_part(primitive: BIR.Primitive, a: List<&2, String>, plan: Plan) -> Part:
@@ -1430,50 +1556,50 @@ def prim_part(primitive: BIR.Primitive, a: List<&2, String>, plan: Plan) -> Part
   a1 = list_at(a, 1n)
   a2 = list_at(a, 2n)
   match primitive:
-    case BIR.PrimU32Add{}: okp{cat(["U32_BIN(", a0, ", +, ", a1, ")"])}
-    case BIR.PrimU32Sub{}: okp{cat(["U32_BIN(", a0, ", -, ", a1, ")"])}
-    case BIR.PrimU32Mul{}: okp{cat(["U32_BIN(", a0, ", *, ", a1, ")"])}
-    case BIR.PrimU32Div{}: okp{cat(["((u32)(", a1, ") == 0 ? 0 : (u64)U32_QUO((u32)(", a0, "), (u32)(", a1, ")))"])}
-    case BIR.PrimU32Mod{}: okp{cat(["((u32)(", a1, ") == 0 ? ", a0, " : U32_BIN(", a0, ", -, U32_QUO((u32)(", a0, "), (u32)(", a1, ")) * ", a1, "))"])}
-    case BIR.PrimU32And{}: okp{cat(["U32_BIN(", a0, ", &, ", a1, ")"])}
-    case BIR.PrimU32Or{}: okp{cat(["U32_BIN(", a0, ", |, ", a1, ")"])}
-    case BIR.PrimU32Xor{}: okp{cat(["U32_BIN(", a0, ", ^, ", a1, ")"])}
-    case BIR.PrimU32IsEq{}: bool_of_part(okp{cat(["U32_BIN(", a0, ", ==, ", a1, ")"])}, plan)
-    case BIR.PrimU32IsNe{}: bool_of_part(okp{cat(["U32_BIN(", a0, ", !=, ", a1, ")"])}, plan)
-    case BIR.PrimU32IsLt{}: bool_of_part(okp{cat(["U32_BIN(", a0, ", <, ", a1, ")"])}, plan)
-    case BIR.PrimU32IsLe{}: bool_of_part(okp{cat(["U32_BIN(", a0, ", <=, ", a1, ")"])}, plan)
-    case BIR.PrimU32IsGt{}: bool_of_part(okp{cat(["U32_BIN(", a0, ", >, ", a1, ")"])}, plan)
-    case BIR.PrimU32IsGe{}: bool_of_part(okp{cat(["U32_BIN(", a0, ", >=, ", a1, ")"])}, plan)
-    case BIR.PrimU32IsZero{}: bool_of_part(okp{cat(["U32_BIN(", a0, ", ==, 0)"])}, plan)
-    case BIR.PrimU32Inc{}: okp{cat(["U32_BIN(", a0, ", +, 1)"])}
-    case BIR.PrimU32Not{}: okp{cat(["((u64)~(u32)(", a0, "))"])}
-    case BIR.PrimU32Shl{}: okp{cat(["U32_BIN(", a0, ", <<, 1)"])}
-    case BIR.PrimU32Shr{}: okp{cat(["U32_BIN(", a0, ", >>, 1)"])}
-    case BIR.PrimU32Shln{}: okp{cat(["(", a1, " >= 32 ? 0 : U32_BIN(", a0, ", <<, ", a1, "))"])}
-    case BIR.PrimU32Shrn{}: okp{cat(["(", a1, " >= 32 ? 0 : U32_BIN(", a0, ", >>, ", a1, "))"])}
-    case BIR.PrimU32ToNat{}: okp{cat(["((u64)", a0, ")"])}
-    case BIR.PrimU32FromNat{}: okp{cat(["((u64)(u32)(", a0, "))"])}
-    case BIR.PrimU32ToF32{}: okp{cat(["f32_rewrap((f32)(u32)(", a0, "))"])}
+    case BIR.PrimU32Add{}: okp(cat(["U32_BIN(", a0, ", +, ", a1, ")"]))
+    case BIR.PrimU32Sub{}: okp(cat(["U32_BIN(", a0, ", -, ", a1, ")"]))
+    case BIR.PrimU32Mul{}: okp(cat(["U32_BIN(", a0, ", *, ", a1, ")"]))
+    case BIR.PrimU32Div{}: okp(cat(["((u32)(", a1, ") == 0 ? 0 : (u64)U32_QUO((u32)(", a0, "), (u32)(", a1, ")))"]))
+    case BIR.PrimU32Mod{}: okp(cat(["((u32)(", a1, ") == 0 ? ", a0, " : U32_BIN(", a0, ", -, U32_QUO((u32)(", a0, "), (u32)(", a1, ")) * ", a1, "))"]))
+    case BIR.PrimU32And{}: okp(cat(["U32_BIN(", a0, ", &, ", a1, ")"]))
+    case BIR.PrimU32Or{}: okp(cat(["U32_BIN(", a0, ", |, ", a1, ")"]))
+    case BIR.PrimU32Xor{}: okp(cat(["U32_BIN(", a0, ", ^, ", a1, ")"]))
+    case BIR.PrimU32IsEq{}: okp(cat(["U32_BIN(", a0, ", ==, ", a1, ")"])), plan
+    case BIR.PrimU32IsNe{}: okp(cat(["U32_BIN(", a0, ", !=, ", a1, ")"])), plan
+    case BIR.PrimU32IsLt{}: okp(cat(["U32_BIN(", a0, ", <, ", a1, ")"])), plan
+    case BIR.PrimU32IsLe{}: okp(cat(["U32_BIN(", a0, ", <=, ", a1, ")"])), plan
+    case BIR.PrimU32IsGt{}: okp(cat(["U32_BIN(", a0, ", >, ", a1, ")"])), plan
+    case BIR.PrimU32IsGe{}: okp(cat(["U32_BIN(", a0, ", >=, ", a1, ")"])), plan
+    case BIR.PrimU32IsZero{}: okp(cat(["U32_BIN(", a0, ", ==, 0)"])), plan
+    case BIR.PrimU32Inc{}: okp(cat(["U32_BIN(", a0, ", +, 1)"]))
+    case BIR.PrimU32Not{}: okp(cat(["((u64)~(u32)(", a0, "))"]))
+    case BIR.PrimU32Shl{}: okp(cat(["U32_BIN(", a0, ", <<, 1)"]))
+    case BIR.PrimU32Shr{}: okp(cat(["U32_BIN(", a0, ", >>, 1)"]))
+    case BIR.PrimU32Shln{}: okp(cat(["(", a1, " >= 32 ? 0 : U32_BIN(", a0, ", <<, ", a1, "))"]))
+    case BIR.PrimU32Shrn{}: okp(cat(["(", a1, " >= 32 ? 0 : U32_BIN(", a0, ", >>, ", a1, "))"]))
+    case BIR.PrimU32ToNat{}: okp(cat(["((u64)", a0, ")"]))
+    case BIR.PrimU32FromNat{}: okp(cat(["((u64)(u32)(", a0, "))"]))
+    case BIR.PrimU32ToF32{}: okp(cat(["f32_rewrap((f32)(u32)(", a0, "))"]))
     case BIR.PrimU32Cmp{}: cmp3_part(a0, a1, plan)
-    case BIR.PrimNatAdd{}: okp{cat(["nat_chk(e, ", a0, " + ", a1, ")"])}
-    case BIR.PrimNatSub{}: okp{cat(["(", a0, " < ", a1, " ? 0 : ", a0, " - ", a1, ")"])}
-    case BIR.PrimNatMul{}: okp{cat(["nat_mul(e, ", a0, ", ", a1, ")"])}
+    case BIR.PrimNatAdd{}: okp(cat(["nat_chk(e, ", a0, " + ", a1, ")"]))
+    case BIR.PrimNatSub{}: okp(cat(["(", a0, " < ", a1, " ? 0 : ", a0, " - ", a1, ")"]))
+    case BIR.PrimNatMul{}: okp(cat(["nat_mul(e, ", a0, ", ", a1, ")"]))
     case BIR.PrimNatCmp{}: cmp3_part(a0, a1, plan)
-    case BIR.PrimNatMin{}: okp{cat(["(", a0, " < ", a1, " ? ", a0, " : ", a1, ")"])}
-    case BIR.PrimNatMax{}: okp{cat(["(", a0, " > ", a1, " ? ", a0, " : ", a1, ")"])}
-    case BIR.PrimNatIsLt{}: bool_of_part(okp{cat(["(", a0, " < ", a1, ")"])}, plan)
-    case BIR.PrimNatDouble{}: okp{cat(["nat_chk(e, ", a0, " + ", a0, ")"])}
-    case BIR.PrimNatPredecessor{}: okp{cat(["bend_nat_pred(", a0, ")"])}
-    case BIR.PrimNatSuccessor{}: okp{cat(["nat_chk(e, ", a0, " + 1)"])}
+    case BIR.PrimNatMin{}: okp(cat(["(", a0, " < ", a1, " ? ", a0, " : ", a1, ")"]))
+    case BIR.PrimNatMax{}: okp(cat(["(", a0, " > ", a1, " ? ", a0, " : ", a1, ")"]))
+    case BIR.PrimNatIsLt{}: okp(cat(["(", a0, " < ", a1, ")"])), plan
+    case BIR.PrimNatDouble{}: okp(cat(["nat_chk(e, ", a0, " + ", a0, ")"]))
+    case BIR.PrimNatPredecessor{}: okp(cat(["bend_nat_pred(", a0, ")"]))
+    case BIR.PrimNatSuccessor{}: okp(cat(["nat_chk(e, ", a0, " + 1)"]))
     case BIR.PrimNatDivmod{}: divmod_part(a0, a1, plan)
-    case BIR.PrimBoolOr{}: bool_or_part(a0, a1, plan)
-    case BIR.PrimBoolXor{}: bool_xor_part(a0, a1, plan)
+    case BIR.PrimBoolOr{}: okp(cat(["(", a0, " || ", a1, ")"]))
+    case BIR.PrimBoolXor{}: okp(cat(["(", a0, " != ", a1, ")"]))
     case BIR.PrimF32Add{}: f32_bin("+", a0, a1)
     case BIR.PrimF32Sub{}: f32_bin("-", a0, a1)
     case BIR.PrimF32Mul{}: f32_bin("*", a0, a1)
     case BIR.PrimF32Div{}: f32_bin("/", a0, a1)
-    case BIR.PrimF32Mod{}: okp{cat(["f32_rewrap((f32)fmod(f32_unbox(", a0, "), f32_unbox(", a1, ")))"])}
-    case BIR.PrimF32Neg{}: okp{cat(["f32_rewrap(-f32_unbox(", a0, "))"])}
+    case BIR.PrimF32Mod{}: okp(cat(["f32_rewrap((f32)fmod(f32_unbox(", a0, "), f32_unbox(", a1, ")))"]))
+    case BIR.PrimF32Neg{}: okp(cat(["f32_rewrap(-f32_unbox(", a0, "))"]))
     case BIR.PrimF32Sqrt{}: f32_un("sqrt", a0)
     case BIR.PrimF32Abs{}: f32_un("fabs", a0)
     case BIR.PrimF32Exp{}: f32_un("exp", a0)
@@ -1492,20 +1618,20 @@ def prim_part(primitive: BIR.Primitive, a: List<&2, String>, plan: Plan) -> Part
     case BIR.PrimF32Floor{}: f32_un("floor", a0)
     case BIR.PrimF32Ceil{}: f32_un("ceil", a0)
     case BIR.PrimF32Trunc{}: f32_un("trunc", a0)
-    case BIR.PrimF32Pow{}: okp{cat(["f32_rewrap((f32)pow(f32_unbox(", a0, "), f32_unbox(", a1, ")))"])}
-    case BIR.PrimF32Atan2{}: okp{cat(["f32_rewrap((f32)atan2(f32_unbox(", a0, "), f32_unbox(", a1, ")))"])}
-    case BIR.PrimF32IsEq{}: bool_of_part(f32_cmp("==", a0, a1), plan)
-    case BIR.PrimF32IsNe{}: bool_of_part(f32_cmp("!=", a0, a1), plan)
-    case BIR.PrimF32IsLt{}: bool_of_part(f32_cmp("<", a0, a1), plan)
-    case BIR.PrimF32IsLe{}: bool_of_part(f32_cmp("<=", a0, a1), plan)
-    case BIR.PrimF32IsGt{}: bool_of_part(f32_cmp(">", a0, a1), plan)
-    case BIR.PrimF32IsGe{}: bool_of_part(f32_cmp(">=", a0, a1), plan)
-    case BIR.PrimF32ToU32{}: okp{cat(["f32_to_u32(", a0, ")"])}
-    case BIR.PrimF32Bits{}: okp{a0}
-    case BIR.PrimF32FromBits{}: okp{a0}
-    case BIR.PrimF32Show{}: okp{cat(["f32_show(e, ", a0, ")"])}
-    case BIR.PrimF32Read{}: okp{cat(["f32_read(e, ", a0, ")"])}
-    case BIR.PrimF32ToNat{}: okp{cat(["bend_f32_to_nat(e, ", a0, ")"])}
+    case BIR.PrimF32Pow{}: okp(cat(["f32_rewrap((f32)pow(f32_unbox(", a0, "), f32_unbox(", a1, ")))"]))
+    case BIR.PrimF32Atan2{}: okp(cat(["f32_rewrap((f32)atan2(f32_unbox(", a0, "), f32_unbox(", a1, ")))"]))
+    case BIR.PrimF32IsEq{}: f32_cmp("==", a0, a1), plan
+    case BIR.PrimF32IsNe{}: f32_cmp("!=", a0, a1), plan
+    case BIR.PrimF32IsLt{}: f32_cmp("<", a0, a1), plan
+    case BIR.PrimF32IsLe{}: f32_cmp("<=", a0, a1), plan
+    case BIR.PrimF32IsGt{}: f32_cmp(">", a0, a1), plan
+    case BIR.PrimF32IsGe{}: f32_cmp(">=", a0, a1), plan
+    case BIR.PrimF32ToU32{}: okp(cat(["f32_to_u32(", a0, ")"]))
+    case BIR.PrimF32Bits{}: okp(a0)
+    case BIR.PrimF32FromBits{}: okp(a0)
+    case BIR.PrimF32Show{}: okp(cat(["f32_show(e, ", a0, ")"]))
+    case BIR.PrimF32Read{}: okp(cat(["f32_read(e, ", a0, ")"]))
+    case BIR.PrimF32ToNat{}: okp(cat(["bend_f32_to_nat(e, ", a0, ")"]))
     case BIR.PrimStringAppend{}: str2("bend_str_append", "SCon", a0, a1, plan)
     case BIR.PrimStringEq{}: str2("bend_str_eq", "SCon", a0, a1, plan)
     case BIR.PrimStringLength{}: str1("bend_str_length", "SCon", a0, plan)
@@ -1514,43 +1640,43 @@ def prim_part(primitive: BIR.Primitive, a: List<&2, String>, plan: Plan) -> Part
     case BIR.PrimStringHead{}: str1("bend_str_head", "SCon", a0, plan)
     case BIR.PrimStringTail{}: str_tail(a0, plan)
     case BIR.PrimMapBit{}: map_bit_part(a0, a1, plan)
-    case BIR.PrimArrayNew{}: okp{cat(["bend_array_new(e, ", a0, ", ", a1, ")"])}
+    case BIR.PrimArrayNew{}: okp(cat(["bend_array_new(e, ", a0, ", ", a1, ")"]))
     case BIR.PrimArrayGet{}: arr2("bend_array_get", a0, a1, plan)
-    case BIR.PrimArraySet{}: okp{cat(["bend_array_set(e, ", a0, ", ", a1, ", ", a2, ")"])}
+    case BIR.PrimArraySet{}: okp(cat(["bend_array_set(e, ", a0, ", ", a1, ", ", a2, ")"]))
     case BIR.PrimArraySwap{}: arr_swap(a0, a1, a2, plan)
     case BIR.PrimArraySize{}: arr1("bend_array_size", a0, plan)
     case BIR.PrimArrayClone{}: arr1("bend_array_clone", a0, plan)
-    case BIR.PrimArrayLeaf{}: okp{cat(["bend_array_leaf(e, ", a0, ")"])}
-    case BIR.PrimArrayNode{}: okp{cat(["blk_node(e, ", a0, ", ", a1, ")"])}
-    case BIR.PrimArrayLeafValue{}: okp{cat(["bend_array_leaf_value(e, ", a0, ")"])}
-    case BIR.PrimArrayLeft{}: okp{cat(["blk_half(e, ", a0, ", 0)"])}
-    case BIR.PrimArrayRight{}: okp{cat(["blk_half(e, ", a0, ", 1)"])}
-    case BIR.PrimIsArrayLeaf{}: bool_of_part(okp{cat(["((u32)blk_cls(", a0, ") == 0)"])}, plan)
-    case BIR.PrimIsArrayNode{}: bool_of_part(okp{cat(["((u32)blk_cls(", a0, ") != 0)"])}, plan)
-    case BIR.PrimIsNatZero{}: bool_of_part(okp{cat(["(", a0, " == 0)"])}, plan)
-    case BIR.PrimIsNatSuccessor{}: bool_of_part(okp{cat(["(", a0, " > 0)"])}, plan)
-    case BIR.PrimIsStringEmpty{}: bool_of_part(str_empty("bend_str_empty", "SNil", a0, plan), plan)
-    case BIR.PrimIsStringNonempty{}: bool_of_part(str_empty_neg(a0, plan), plan)
-    case BIR.PrimIsTrue{}: bool_test_part(a0, "True", plan)
-    case BIR.PrimIsFalse{}: bool_test_part(a0, "False", plan)
-    case BIR.PrimSameValue{}: bool_of_part(okp{cat(["(", a0, " == ", a1, ")"])}, plan)
-    case BIR.PrimFloatBitsEqual{}: bool_of_part(okp{cat(["(", a0, " == ", a1, ")"])}, plan)
+    case BIR.PrimArrayLeaf{}: okp(cat(["bend_array_leaf(e, ", a0, ")"]))
+    case BIR.PrimArrayNode{}: okp(cat(["blk_node(e, ", a0, ", ", a1, ")"]))
+    case BIR.PrimArrayLeafValue{}: okp(cat(["bend_array_leaf_value(e, ", a0, ")"]))
+    case BIR.PrimArrayLeft{}: okp(cat(["blk_half(e, ", a0, ", 0)"]))
+    case BIR.PrimArrayRight{}: okp(cat(["blk_half(e, ", a0, ", 1)"]))
+    case BIR.PrimIsArrayLeaf{}: okp(cat(["((u32)blk_cls(", a0, ") == 0)"])), plan
+    case BIR.PrimIsArrayNode{}: okp(cat(["((u32)blk_cls(", a0, ") != 0)"])), plan
+    case BIR.PrimIsNatZero{}: okp(cat(["(", a0, " == 0)"])), plan
+    case BIR.PrimIsNatSuccessor{}: okp(cat(["(", a0, " > 0)"])), plan
+    case BIR.PrimIsStringEmpty{}: str_empty("bend_str_empty", "SNil", a0, plan), plan
+    case BIR.PrimIsStringNonempty{}: str_empty_neg(a0, plan), plan
+    case BIR.PrimIsTrue{}: okp(cat(["(", a0, " == 1)"]))
+    case BIR.PrimIsFalse{}: okp(cat(["(", a0, " == 0)"]))
+    case BIR.PrimSameValue{}: okp(cat(["(", a0, " == ", a1, ")"])), plan
+    case BIR.PrimFloatBitsEqual{}: okp(cat(["(", a0, " == ", a1, ")"])), plan
     case BIR.PrimCharNew{}: char_new_part(a0, plan)
-    case BIR.PrimCharCode{}: okp{cat(["term_loc(", a0, ")"])}
-    case BIR.PrimWordToU32{}: okp{cat(["term_word(e, ", a0, ")"])}
+    case BIR.PrimCharCode{}: okp(cat(["term_loc(", a0, ")"]))
+    case BIR.PrimWordToU32{}: okp(cat(["term_word(e, ", a0, ")"]))
     case BIR.PrimU32ToWord{}: word_part(a0, plan)
-    case BIR.PrimF32FromWord{}: okp{cat(["term_word(e, ", a0, ")"])}
+    case BIR.PrimF32FromWord{}: okp(cat(["term_word(e, ", a0, ")"]))
     case BIR.PrimF32ToWord{}: word_part(a0, plan)
-    case _: failp{"BIR primitive has no C rendering"}
+    case _: failp("BIR primitive has no C rendering")
 
 def f32_bin(op: String, a0: String, a1: String) -> Part:
-  okp{cat(["f32_rewrap(f32_unbox(", a0, ") ", op, " f32_unbox(", a1, "))"])}
+  okp(cat(["f32_rewrap(f32_unbox(", a0, ") ", op, " f32_unbox(", a1, "))"]))
 
 def f32_un(name: String, a0: String) -> Part:
-  okp{cat(["f32_rewrap((f32)", name, "(f32_unbox(", a0, ")))"])}
+  okp(cat(["f32_rewrap((f32)", name, "(f32_unbox(", a0, ")))"]))
 
 def f32_cmp(op: String, a0: String, a1: String) -> Part:
-  okp{cat(["((u64)(f32_unbox(", a0, ") ", op, " f32_unbox(", a1, ")))"])}
+  okp(cat(["((u64)(f32_unbox(", a0, ") ", op, " f32_unbox(", a1, ")))"]))
 
 def cmp3_part(a0: String, a1: String, plan: Plan) -> Part:
   lt = pcid("LT", plan)
@@ -1689,11 +1815,11 @@ def block_part(block: BIR.Block, plan: Plan) -> Part:
     case BIR.Let{id, op, next}: block_let(id, op, next, plan)
     case BIR.Branch{condition, yes, no}: block_branch(condition, yes, no, plan)
     case BIR.Region{label, body, next}: block_region(label, body, next, plan)
-    case BIR.LeaveRegion{label}: okp{cat(["  goto bend_r", U32.show(label), ";\n"])}
+    case BIR.LeaveRegion{label}: okp(cat(["  goto bend_r", U32.show(label), ";\n"]))
     case BIR.TailDirect{code, args}: block_tail_direct(code, args, plan)
     case BIR.TailApply{fn, arg}: block_tail_apply(fn, arg, plan)
-    case BIR.Failure{message}: okp{cat(["  return bend_fail(e, ", c_quote(message), ");\n"])}
-    case _: failp{"BIR block form has no C rendering"}
+    case BIR.Failure{message}: okp(cat(["  return bend_fail(e, ", c_quote(message), ");\n"]))
+    case _: failp("BIR block form has no C rendering")
 
 def block_return(value: BIR.Atom, plan: Plan) -> Part:
   match atom_part(value, plan):
@@ -1725,36 +1851,11 @@ def cond_part_of(part: Part, plan: Plan) -> Part:
     case PartOk{text}: cond_part(text, plan)
 
 def cond_part(cond: String, plan: Plan) -> Part:
-  match pcid("True", plan):
-    case PartOk{t}: PartOk{cat(["term_aux(", cond, ") == ", t])}
-    case PartFail{message}: PartFail{message}
+  okp(cat(["(", cond, ") != 0"]))
 
-def bool_of_part(part: Part, plan: Plan) -> Part:
-  match part:
-    case PartFail{message}: PartFail{message}
-    case PartOk{cond}: bool_of(cond, plan)
-
-def bool_of(cond: String, plan: Plan) -> Part:
-  match pcid("True", plan) pcid("False", plan):
-    case PartOk{t} PartOk{f}: PartOk{cat(["bend_bool(e, ", t, ", ", f, ", ", cond, ")"])}
-    case PartFail{message} _: PartFail{message}
-    case _ PartFail{message}: PartFail{message}
-
-def bool_or_part(a0: String, a1: String, plan: Plan) -> Part:
-  match pcid("True", plan):
-    case PartOk{t}: PartOk{cat(["(term_aux(", a0, ") == ", t, " ? ", a0, " : ", a1, ")"])}
-    case PartFail{message}: PartFail{message}
-
-def bool_xor_part(a0: String, a1: String, plan: Plan) -> Part:
-  match pcid("True", plan) pcid("False", plan):
-    case PartOk{t} PartOk{f}: PartOk{cat(["bend_bool(e, ", t, ", ", f, ", term_aux(", a0, ") != term_aux(", a1, "))"])}
-    case PartFail{message} _: PartFail{message}
-    case _ PartFail{message}: PartFail{message}
-
-def bool_test_part(a0: String, which: String, plan: Plan) -> Part:
-  match pcid(which, plan):
-    case PartOk{c}: PartOk{cat(["term_aux(", a0, ") == ", c])}
-    case PartFail{message}: PartFail{message}
+# ---------------------------------------------------------------------------
+# Blocks
+# ---------------------------------------------------------------------------
 
 def block_region(label: U32, body: BIR.Block, next: BIR.Block, plan: Plan) -> Part:
   match block_part(body, plan) block_part(next, plan):
@@ -1770,12 +1871,12 @@ def block_tail_direct(code: U32, args: List<&2, BIR.Arg>, plan: Plan) -> Part:
 
 def block_tail_direct_values(code: U32, values: Maybe<&2, List<&2, String>>, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
       tail_direct_values(map_u32(by_code, U32.show(code)), values)
 
 def tail_direct_values(real: U32, values: Maybe<&2, List<&2, String>>) -> Part:
   match values:
-    case None{}: failp{"BIR argument has no C value"}
+    case None{}: failp("BIR argument has no C value")
     case Some{args}: PartOk{tail_direct_text(real, args)}
 
 def tail_direct_text(real: U32, args: List<&2, String>) -> String:
@@ -1815,9 +1916,10 @@ def entry_body_kind(index: U32, arity: Nat, kind: Kind, plan: Plan) -> Part:
     case KindLazy{body}: entry_body_block(index, Nil{}, body, plan)
     case KindStage{id, count}: entry_body_stage(index, count)
     case KindForeign{key, args}: entry_body_foreign(index, key, args, plan)
+    case KindNative{primitive, count}: entry_body_native(index, primitive, count, plan)
     case KindMain{}: entry_body_main(index, plan)
     case KindLibrary{}: entry_body_library(index, plan)
-    case _: okp{""}
+    case _: okp("")
 
 def entry_header(index: U32) -> String:
   cat(["static Term bend_e", U32.show(index), "(Env e, Term* x, u32 n, u32* tc, u32* tn, Term* tb) {\n  (void)n;\n"])
@@ -1834,26 +1936,128 @@ def entry_body_block_params(index: U32, captures: Nat, params: List<&2, BIR.Para
     case PartOk{text}:
       PartOk{cat([entry_header(index), "  (void)tc;\n  (void)tn;\n  (void)tb;\n", locals_decl(block_locals(body, Nil{})), params_bind(params, captures, 0n), text, "  *tc = BEND_NOT_TAIL; return 0;\n}\n\n"])}
 
+def entry_body_native(index: U32, primitive: BIR.Primitive, count: Nat, plan: Plan) -> Part:
+  match prim_part(primitive, arg_names(count, 0n), plan):
+    case PartFail{message}: PartFail{message}
+    case PartOk{text}:
+      PartOk{cat([entry_header(index), "  (void)x;\n  (void)tc;\n  (void)tn;\n  (void)tb;\n  return ", text, ";\n}\n\n"])}
+
 def entry_body_stage(index: U32, count: Nat) -> Part:
-  okp{cat([entry_header(index), "  (void)tc;\n  (void)tn;\n  (void)tb;\n  Term v[BEND_MAX_ARITY];\n  for (u32 j = 0; j < ", Nat.show(count), "; j += 1) { v[j] = x[j]; }\n  return bend_closure(e, ", U32.show(U32.inc(index)), ", ", Nat.show(count), ", v);\n}\n\n"])}
+  okp(cat([entry_header(index), "  (void)tc;\n  (void)tn;\n  (void)tb;\n  Term v[BEND_MAX_ARITY];\n  for (u32 j = 0; j < ", Nat.show(count), "; j += 1) { v[j] = x[j]; }\n  return bend_closure(e, ", U32.show(U32.inc(index)), ", ", Nat.show(count), ", v);\n}\n\n"]))
+
+def inline_enum_cids(ty: BIR.Descriptor, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Maybe<&2, List<&2, U32>>:
+  match descriptor_head(ty):
+    case None{}: None{}
+    case Some{key}:
+      match family_arms_of(key, families):
+        case None{}: None{}
+        case Some{arms}: inline_enum_cids_arms(arms, cids)
+
+def inline_enum_cids_arms(arms: List<&2, BIR.DescriptorArm>, cids: List<&2, CidRow>) -> Maybe<&2, List<&2, U32>>:
+  match Bool.and(all_arms_nullary(arms), Nat.is_gt(List.length(&2, BIR.DescriptorArm, arms), 1n)):
+    case True{}: inline_enum_each(arms, cids, Nil{})
+    case False{}: None{}
+
+def inline_enum_each(arms: List<&2, BIR.DescriptorArm>, cids: List<&2, CidRow>, acc: List<&2, U32>) -> Maybe<&2, List<&2, U32>>:
+  match arms:
+    case Nil{}: Some(List.reverse(&2, U32, acc))
+    case +arm <> rest:
+      match arm:
+        case BIR.DescriptorArm{key, fields}: inline_enum_each(rest, cids, cid_lookup(key, cids) <> acc)
+
+# A foreign parameter whose checked type is an inline enum crosses as the
+# runtime's BOX word, so the raw tag is rebuilt as term_pak(cid, 0) here.
+def box_foreign_args(types: List<&2, BIR.Descriptor>, args: List<&2, String>, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> List<&2, String>:
+  match types:
+    case Nil{}: args
+    case +ty <> rest_types: box_foreign_args_tail(ty, rest_types, args, families, cids)
+
+def box_foreign_args_tail(ty: BIR.Descriptor, rest_types: List<&2, BIR.Descriptor>, args: List<&2, String>, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> List<&2, String>:
+  match args:
+    case Nil{}: args
+    case +arg <> rest: [box_one(ty, arg, families, cids)] <> box_foreign_args(rest_types, rest, families, cids)
+
+def box_one(ty: BIR.Descriptor, arg: String, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> String:
+  match inline_enum_cids(ty, families, cids):
+    case None{}: arg
+    case Some{arms}: box_enum(arms, arg)
+
+def box_enum(arms: List<&2, U32>, arg: String) -> String:
+  match arms:
+    case Nil{}: arg
+    case _: cat(["bend_box_enum(e, (u32[]){", enum_cids(arms), "}, ", Nat.show(List.length(&2, U32, arms)), ", ", arg, ")"])
+
+def enum_cids(arms: List<&2, U32>) -> String:
+  match arms:
+    case Nil{}: ""
+    case +cid <> rest: enum_cids_tail(rest, cat([U32.show(cid), "u"]))
+
+def enum_cids_tail(rest: List<&2, U32>, head: String) -> String:
+  match rest:
+    case Nil{}: head
+    case _: cat([head, ", ", enum_cids(rest)])
 
 def entry_body_foreign(index: U32, key: String, args: Nat, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
-      foreign_body(index, key, args, cid_lookup(key, cids))
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+      foreign_types_part(index, key, args, find_declaration(key, declarations), families, cids)
 
-def foreign_body(index: U32, key: String, args: Nat, cid: U32) -> Part:
+def foreign_types_part(index: U32, key: String, args: Nat, found: Maybe<&2, BIR.Declaration>, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Part:
+  match found:
+    case Some{decl}: foreign_types_decl(index, key, args, decl, families, cids)
+    case None{}: PartFail(cat(["foreign `", key, "` has no declaration"]))
+
+def foreign_types_decl(index: U32, key: String, args: Nat, decl: BIR.Declaration, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Part:
+  match decl:
+    case BIR.ForeignDeclaration{_, _, _, _, _, _, _, parameter_types, result}: foreign_types_checked(index, key, args, parameter_types, result, families, cids)
+    case _: PartFail(cat(["foreign `", key, "` is not a ForeignDeclaration"]))
+
+def foreign_types_checked(index: U32, key: String, args: Nat, types: List<&2, BIR.Descriptor>, result: BIR.Descriptor, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Part:
+  match foreign_result_enum(result, families, cids):
+    case Some{name}: PartFail(cat(["foreign `", key, "` returns the inline enum `", name, "`; BIR has no unbox operation for a foreign result, so the C target cannot turn the foreign BOX word back into a raw tag"]))
+    case None{}: foreign_body_boxed(index, key, args, types, families, cids)
+
+def foreign_result_enum(result: BIR.Descriptor, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Maybe<&2, String>:
+  answer = effect_answer(result)
+  match inline_enum_cids(answer, families, cids):
+    case Some{arms}: descriptor_head(answer)
+    case None{}: None{}
+
+def effect_answer(ty: BIR.Descriptor) -> BIR.Descriptor:
+  match descriptor_head(ty):
+    case Some{key}:
+      match String.eq(key, "IO"):
+        case True{}: effect_answer_arg(ty)
+        case False{}: ty
+    case None{}: ty
+
+def effect_answer_arg(ty: BIR.Descriptor) -> BIR.Descriptor:
+  match ty:
+    case BIR.DescriptorRef{_, args}:
+      match args:
+        case Nil{}: ty
+        case +first <> rest: first
+    case _: ty
+
+def foreign_body_boxed(index: U32, key: String, args: Nat, types: List<&2, BIR.Descriptor>, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Part:
   arity = Nat.add(args, 1n)
-  okp{cat([entry_header(index), "  (void)tc;\n  (void)tn;\n  (void)tb;\n  Term v[BEND_MAX_ARITY];\n  for (u32 j = 0; j < ", Nat.show(arity), "; j += 1) { v[j] = x[j]; }\n  return bend_node(e, ", U32.show(cid), ", ", Nat.show(arity), ", v);\n}\n\n"])}
+  names = arg_names(arity, 0n)
+  boxed = box_foreign_args(types, names, families, cids)
+  PartOk(cat([entry_header(index), "  (void)x;\n  (void)tc;\n  (void)tn;\n  (void)tb;\n  Term v[BEND_MAX_ARITY];\n  ", box_stores(boxed, 0n), "  return bend_node(e, ", U32.show(cid_lookup(key, cids)), ", ", Nat.show(arity), ", v);\n}\n\n"]))
+
+def box_stores(args: List<&2, String>, index: Nat) -> String:
+  match args:
+    case Nil{}: ""
+    case +arg <> rest: cat(["v[", Nat.show(index), "] = ", arg, "; ", box_stores(rest, Nat.add(index, 1n))])
 
 def entry_body_main(index: U32, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
       main_body(index, find_declaration("main", declarations), by_code, by_key, entries)
 
 def main_body(index: U32, found: Maybe<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, entries: List<&2, Entry>) -> Part:
   match found:
-    case None{}: failp{"no root main definition"}
+    case None{}: failp("no root main definition")
     case Some{item}: main_body_item(index, item, by_code, by_key, entries)
 
 def main_body_item(index: U32, item: BIR.Declaration, by_code: Map<&2, U32>, by_key: Map<&2, U32>, entries: List<&2, Entry>) -> Part:
@@ -1861,23 +2065,23 @@ def main_body_item(index: U32, item: BIR.Declaration, by_code: Map<&2, U32>, by_
     case BIR.FunctionDeclaration{key, code, parameters}:
       match List.length(&2, BIR.Parameter, parameters):
         case 0n: PartOk{cat([entry_header(index), "  (void)tc;\n  (void)tn;\n  (void)tb;\n  return bend_run(e, ", U32.show(map_u32(by_code, U32.show(code))), ", 0, 0);\n}\n\n"])}
-        case _: failp{"the C target's main must take no parameters"}
+        case _: failp("the C target's main must take no parameters")
     case BIR.LazyDeclaration{key, body}:
       PartOk{cat([entry_header(index), "  (void)tc;\n  (void)tn;\n  (void)tb;\n  return bend_run(e, ", U32.show(map_u32(by_key, key)), ", 0, 0);\n}\n\n"])}
-    case BIR.NativeDeclaration{key, primitive, quantities}: failp{"a native declaration cannot be a program main"}
-    case BIR.ForeignDeclaration{key, namespace, imported, arity, sources, quantities, span}: failp{"a foreign declaration cannot be a program main"}
-    case _: failp{"BIR declaration form cannot be a program main"}
+    case BIR.NativeDeclaration{key, primitive, quantities}: failp("a native declaration cannot be a program main")
+    case BIR.ForeignDeclaration{key, _, _, arity, _, _, _, _, _}: failp("a foreign declaration cannot be a program main")
+    case _: failp("BIR declaration form cannot be a program main")
 
 def entry_body_library(index: U32, plan: Plan) -> Part:
-  match pcid("Emit", plan) pcid("Unit", plan):
-    case PartOk{emit_cid} PartOk{unit_cid}:
-      PartOk{cat([entry_header(index), "  (void)x;\n  (void)tc;\n  (void)tn;\n  (void)tb;\n  Term v[1];\n  v[0] = term_pak(", unit_cid, ", 0);\n  return bend_node(e, ", emit_cid, ", 1, v);\n}\n\n"])}
-    case PartFail{message} _: PartFail{message}
-    case _ PartFail{message}: PartFail{message}
+  match pcid("Exit", plan):
+    case PartOk{exit_cid}:
+      PartOk(cat([entry_header(index), "  (void)x;\n  (void)tc;\n  (void)tn;\n  (void)tb;\n  Term v[1];\n  v[0] = 0;\n  return bend_node(e, ", exit_cid, ", 1, v);\n}\n\n"]))
+    case PartFail{message}:
+      failp(cat(["the C target needs the IO.OP Exit constructor for a library artifact: ", message]))
 
 def entry_bodies(entries: List<&2, Entry>, plan: Plan) -> Part:
   match entries:
-    case Nil{}: okp{""}
+    case Nil{}: okp("")
     case +entry <> rest: part_append(entry_body(entry, plan), entry_bodies(rest, plan))
 
 def reserved_entry(kind: Kind) -> Bool:
@@ -2018,7 +2222,7 @@ def rt_entry(entries: List<&2, Entry>, want: Nat) -> U32:
 
 def segment_body(index: U32, arity: Nat, kind: Kind) -> Part:
   match reserved_entry(kind):
-    case True{}: okp{""}
+    case True{}: okp("")
     case False{}: PartOk{cat(["  WL_CASE(", U32.show(index), ")\n  {\n", segment_regs(arity, 0n), "    WL_OPEN\n", segment_decl(arity), segment_fills(arity, 0n), "    r0 = bend_run(e, ", U32.show(index), ", ", segment_args(arity), ", ", Nat.show(arity), ");\n    WL_RETN(1);\n  }}\n\n"])}
 
 def segment_regs(arity: Nat, index: Nat) -> String:
@@ -2043,7 +2247,7 @@ def segment_args(arity: Nat) -> String:
 
 def entry_segments(entries: List<&2, Entry>) -> Part:
   match entries:
-    case Nil{}: okp{""}
+    case Nil{}: okp("")
     case +entry <> rest: part_append(entry_segment(entry), entry_segments(rest))
 
 # ---------------------------------------------------------------------------
@@ -2062,7 +2266,7 @@ def decl_fid_defines(declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U
           cat([fid_define_at(key, map_u32(by_code, U32.show(code))), decl_fid_defines(rest, by_code, by_key, by_foreign)])
         case BIR.LazyDeclaration{key, body}:
           cat([fid_define_at(key, map_u32(by_key, key)), decl_fid_defines(rest, by_code, by_key, by_foreign)])
-        case BIR.ForeignDeclaration{key, namespace, imported, arity, sources, quantities, span}:
+        case BIR.ForeignDeclaration{key, _, _, arity, _, _, _, _, _}:
           cat([fid_define_at(key, map_u32(by_foreign, key)), decl_fid_defines(rest, by_code, by_key, by_foreign)])
         case _: decl_fid_defines(rest, by_code, by_key, by_foreign)
 
@@ -2146,6 +2350,7 @@ def helper_core(max: Nat, cases: String) -> String:
     "static Nat bend_f32_to_nat(Env e, Term v) {\n  f32 x = f32_unbox(v);\n  return nat_chk(e, x < 0.0f ? 0 : (u64)x);\n}\n\n",
     "static Term bend_text(Env e, const char* p, u64 n) {\n  return io_str(e, p, n);\n}\n\n",
     "static Term bend_tuple(Env e, u32 cid, Term a, Term b) {\n  u64 l = heap_alloc(e, cls_fit(2));\n  e.mem[l] = a;\n  e.mem[l + 1] = b;\n  return term_ctr(cid, l);\n}\n\n",
+    "static Term bend_box_enum(Env e, const u32* cids, u32 n, u64 tag) {\n  (void)e;\n  return term_pak(tag < (u64)n ? cids[tag] : (n == 0 ? 0 : cids[0]), 0);\n}\n\n",
     "static Term bend_bool(Env e, u32 t, u32 f, u64 c) {\n  (void)e;\n  return term_pak(c != 0 ? t : f, 0);\n}\n\n",
     "static Term bend_cmp3(Env e, u32 lt, u32 eq, u32 gt, Term a, Term b) {\n  return term_pak(a < b ? lt : a == b ? eq : gt, 0);\n}\n\n",
     "static Term bend_divmod(Env e, u32 cid, Term a, Term b) {\n  if (b == 0) {\n    return bend_tuple(e, cid, 0, a);\n  }\n  return bend_tuple(e, cid, a / b, a % b);\n}\n\n",
@@ -2173,7 +2378,7 @@ def helper_core(max: Nat, cases: String) -> String:
 
 def tables_part(plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
       tables_render(plan, cids, entries, declarations, by_code, by_key, by_foreign, main_pure, show_desc, show_names)
 
 def tables_render(plan: Plan, cids: List<&2, CidRow>, entries: List<&2, Entry>, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, main_pure: Bool, show_desc: String, show_names: String) -> Part:
@@ -2210,11 +2415,11 @@ def main_pure_text(pure: Bool) -> String:
     case False{}: "0"
 
 def spins_part() -> Part:
-  okp{"CONSTV u64 STAT_IMG[] = { 0 };\n"}
+  okp("CONSTV u64 STAT_IMG[] = { 0 };\n")
 
 def segments_part(plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
       PartOk{cat(["#if !DEVICE\n", part_text(entry_segments(entries)), "#endif\n"])}
 
 def part_text(part: Part) -> String:
@@ -2269,7 +2474,7 @@ def alias_fid_lines(declarations: List<&2, BIR.Declaration>, namespace: String) 
       match item:
         case BIR.FunctionDeclaration{key, code, parameters}: alias_fid_line(key, rest, namespace)
         case BIR.LazyDeclaration{key, body}: alias_fid_line(key, rest, namespace)
-        case BIR.ForeignDeclaration{key, _, _, _, _, _, _}: alias_fid_line(key, rest, namespace)
+        case BIR.ForeignDeclaration{key, _, _, _, _, _, _, _, _}: alias_fid_line(key, rest, namespace)
         case _: alias_fid_lines(rest, namespace)
 
 def alias_fid_line(key: String, rest: List<&2, BIR.Declaration>, namespace: String) -> String:
@@ -2286,7 +2491,7 @@ def fid_alias_names(declarations: List<&2, BIR.Declaration>, namespace: String, 
       match item:
         case BIR.FunctionDeclaration{key, code, parameters}: fid_alias_name(key, rest, namespace, acc)
         case BIR.LazyDeclaration{key, body}: fid_alias_name(key, rest, namespace, acc)
-        case BIR.ForeignDeclaration{key, _, _, _, _, _, _}: fid_alias_name(key, rest, namespace, acc)
+        case BIR.ForeignDeclaration{key, _, _, _, _, _, _, _, _}: fid_alias_name(key, rest, namespace, acc)
         case _: fid_alias_names(rest, namespace, acc)
 
 def fid_alias_name(key: String, rest: List<&2, BIR.Declaration>, namespace: String, acc: List<&2, String>) -> List<&2, String>:
@@ -2301,13 +2506,13 @@ def alias_pops(names: List<&2, String>) -> String:
 
 def requests_part(plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
-      requests_check(imports, fkeys, declarations, constructors)
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+      requests_check(imports, fkeys, declarations, constructors, cids, declarations)
 
-def requests_check(imports: List<&2, CImport>, fkeys: List<&2, String>, declarations: List<&2, BIR.Declaration>, constructors: List<&2, BIR.ConstructorLayout>) -> Part:
+def requests_check(imports: List<&2, CImport>, fkeys: List<&2, String>, declarations: List<&2, BIR.Declaration>, constructors: List<&2, BIR.ConstructorLayout>, cids: List<&2, CidRow>, decls: List<&2, BIR.Declaration>) -> Part:
   match requests_uncovered(fkeys, imports, declarations):
-    case Some{key}: failp{cat(["no C import source was resolved for foreign `", key, "`; the adapter must pass the selected .c alternative"])}
-    case None{}: requests_each(imports, constructors, declarations)
+    case Some{key}: failp(cat(["no C import source was resolved for foreign `", key, "`; the adapter must pass the selected .c alternative"]))
+    case None{}: requests_each(imports, constructors, decls, cids)
 
 def requests_uncovered(fkeys: List<&2, String>, imports: List<&2, CImport>, declarations: List<&2, BIR.Declaration>) -> Maybe<&2, String>:
   match fkeys:
@@ -2321,16 +2526,16 @@ def foreign_namespace(key: String, declarations: List<&2, BIR.Declaration>) -> M
 
 def foreign_namespace_item(decl: BIR.Declaration) -> Maybe<&2, String>:
   match decl:
-    case BIR.ForeignDeclaration{key, namespace, imported, arity, sources, quantities, span}: Some{namespace}
+    case BIR.ForeignDeclaration{_, namespace, _, _, _, _, _, _, _}: Some(namespace)
     case _: None{}
 
 def requests_uncovered_one(namespace: Maybe<&2, String>, key: String, rest: List<&2, String>, imports: List<&2, CImport>, declarations: List<&2, BIR.Declaration>) -> Maybe<&2, String>:
   match namespace:
-    case None{}: Some{key}
+    case None{}: Some(key)
     case Some{space}:
       match import_has_namespace(imports, space):
         case True{}: requests_uncovered(rest, imports, declarations)
-        case False{}: Some{key}
+        case False{}: Some(key)
 
 def import_has_namespace(imports: List<&2, CImport>, namespace: String) -> Bool:
   match imports:
@@ -2344,9 +2549,9 @@ def import_has_namespace_one(found: Bool, rest: List<&2, CImport>, namespace: St
     case True{}: True{}
     case False{}: import_has_namespace(rest, namespace)
 
-def requests_each(imports: List<&2, CImport>, constructors: List<&2, BIR.ConstructorLayout>, declarations: List<&2, BIR.Declaration>) -> Part:
+def requests_each(imports: List<&2, CImport>, constructors: List<&2, BIR.ConstructorLayout>, declarations: List<&2, BIR.Declaration>, cids: List<&2, CidRow>) -> Part:
   match imports:
-    case Nil{}: okp{""}
+    case Nil{}: okp("")
     case +imp <> rest:
       match imp:
         case CImport{path, namespace, source}:
@@ -2357,7 +2562,33 @@ def requests_each(imports: List<&2, CImport>, constructors: List<&2, BIR.Constru
             alias_close(namespace, constructors, declarations),
             "\n"
           ])
-          part_append(okp{block}, requests_each(rest, constructors, declarations))
+          part_append(rewrite_source(block, namespace, cids, declarations), requests_each(rest, constructors, declarations, cids))
+
+def rewrite_source(source: String, namespace: String, cids: List<&2, CidRow>, declarations: List<&2, BIR.Declaration>) -> Part:
+  cid_map = namespaced_map(cid_exact_map(cids), cid_keys(cids), namespace)
+  fid_exact = fid_exact_map(declarations)
+  fid_map = namespaced_map(fid_exact, fid_keys(declarations), namespace)
+  match Link.rewrite(source, cid_map, fid_map):
+    case Link.LinkSuccess{source: linked}: PartOk(linked)
+    case Link.LinkFailure{message}: PartFail(message)
+
+def cid_keys(cids: List<&2, CidRow>) -> List<&2, String>:
+  match cids:
+    case Nil{}: Nil{}
+    case +row <> rest:
+      match row:
+        case CidRow{_, key, _}: key <> cid_keys(rest)
+
+def fid_keys(declarations: List<&2, BIR.Declaration>) -> List<&2, String>:
+  match declarations:
+    case Nil{}: Nil{}
+    case +item <> rest:
+      match item:
+        case BIR.FunctionDeclaration{key, _, _}: key <> fid_keys(rest)
+        case BIR.LazyDeclaration{key, _}: key <> fid_keys(rest)
+        case BIR.ForeignDeclaration{key, _, _, _, _, _, _, _, _}: key <> fid_keys(rest)
+        case BIR.NativeDeclaration{key, _, _}: key <> fid_keys(rest)
+        case _: fid_keys(rest)
 
 # ---------------------------------------------------------------------------
 # Assembly
@@ -2408,128 +2639,161 @@ def assemble_requests(lines: List<&2, String>, requests: String) -> Maybe<&2, St
 # CID(k) / FID(k) rewriting
 # ---------------------------------------------------------------------------
 
-type Rewrite is Data:
-  RewriteOk{chars: List<&2, Char>}
-  RewriteFail{message: String}
+def cid_exact_map(cids: List<&2, CidRow>) -> Map<&2, String>:
+  cid_exact_each(cids, Map.new(&2, String))
 
-type Taken is Data:
-  Taken{name: String, rest: List<&2, Char>}
+def cid_exact_each(cids: List<&2, CidRow>, acc: Map<&2, String>) -> Map<&2, String>:
+  match cids:
+    case Nil{}: acc
+    case +row <> rest:
+      match row:
+        case CidRow{_, key, _}: cid_exact_each(rest, Map.set(&2, String, acc, key, cid_macro(key)))
 
-def take_chars(chars: List<&2, Char>, count: Nat, acc: List<&2, Char>) -> List<&2, Char>:
-  match chars count:
-    case Nil{} _: List.reverse(&2, Char, acc)
-    case +char <> rest 1n+left: take_chars(rest, left, char <> acc)
-    case _ 0n: List.reverse(&2, Char, acc)
+# A short name is usable only when exactly one emitted key ends with it and no
+# key equals it, so Base's Con/Nil/Some/True can never shadow a user type.
+def cid_short_map(cids: List<&2, CidRow>) -> Map<&2, String>:
+  cid_short_each(cids, Map.new(&2, String), Map.new(&2, Bool))
 
-def drop_chars(chars: List<&2, Char>, count: Nat) -> List<&2, Char>:
-  match chars count:
-    case Nil{} _: Nil{}
-    case +char <> rest 1n+left: drop_chars(rest, left)
-    case _ 0n: chars
+def cid_short_each(cids: List<&2, CidRow>, acc: Map<&2, String>, seen: Map<&2, Bool>) -> Map<&2, String>:
+  match cids:
+    case Nil{}: acc
+    case +row <> rest:
+      match row:
+        case CidRow{_, key, _}: cid_short_each(rest, cid_short_one(acc, seen, key), Map.set(&2, Bool, seen, last_segment(key), True{}))
 
-def starts_with_chars(chars: List<&2, Char>, literal: String) -> Bool:
-  String.eq(String.from_list(take_chars(chars, String.length(literal), Nil{})), literal)
+def cid_short_one(acc: Map<&2, String>, seen: Map<&2, Bool>, key: String) -> Map<&2, String>:
+  match Bool.and(Bool.not(map_flag(seen, last_segment(key))), Bool.not(String.eq(last_segment(key), key))):
+    case True{}: cid_short_set(acc, key)
+    case False{}: Map.delete(&2, String, acc, last_segment(key))
 
-def take_name(chars: List<&2, Char>, acc: List<&2, Char>) -> Maybe<&2, Taken>:
-  match chars:
+def cid_short_set(acc: Map<&2, String>, key: String) -> Map<&2, String>:
+  match IndexLookup.find(String, acc, last_segment(key)):
+    case Some{existing}: acc
+    case None{}: Map.set(&2, String, acc, last_segment(key), cid_macro(key))
+
+def fid_exact_map(declarations: List<&2, BIR.Declaration>) -> Map<&2, String>:
+  fid_exact_decl(declarations, fid_fixed(Map.new(&2, String)))
+
+def fid_short_map(declarations: List<&2, BIR.Declaration>) -> Map<&2, String>:
+  fid_short_each(declarations, Map.new(&2, String), Map.new(&2, Bool))
+
+def fid_short_each(declarations: List<&2, BIR.Declaration>, acc: Map<&2, String>, seen: Map<&2, Bool>) -> Map<&2, String>:
+  match declarations:
+    case Nil{}: acc
+    case +item <> rest:
+      match item:
+        case BIR.FunctionDeclaration{key, code, parameters}: fid_short_each(rest, fid_short_one(acc, seen, key), Map.set(&2, Bool, seen, last_segment(key), True{}))
+        case BIR.LazyDeclaration{key, body}: fid_short_each(rest, fid_short_one(acc, seen, key), Map.set(&2, Bool, seen, last_segment(key), True{}))
+        case BIR.ForeignDeclaration{key, _, _, arity, _, _, _, _, _}: fid_short_each(rest, fid_short_one(acc, seen, key), Map.set(&2, Bool, seen, last_segment(key), True{}))
+        case BIR.NativeDeclaration{key, primitive, quantities}: fid_short_each(rest, fid_short_one(acc, seen, key), Map.set(&2, Bool, seen, last_segment(key), True{}))
+        case _: fid_short_each(rest, acc, seen)
+
+def fid_short_one(acc: Map<&2, String>, seen: Map<&2, Bool>, key: String) -> Map<&2, String>:
+  match Bool.and(Bool.not(map_flag(seen, last_segment(key))), Bool.not(String.eq(last_segment(key), key))):
+    case True{}: fid_short_set(acc, key)
+    case False{}: Map.delete(&2, String, acc, last_segment(key))
+
+def fid_short_set(acc: Map<&2, String>, key: String) -> Map<&2, String>:
+  match IndexLookup.find(String, acc, last_segment(key)):
+    case Some{existing}: acc
+    case None{}: Map.set(&2, String, acc, last_segment(key), fid_macro(key))
+
+def namespaced_map(exact: Map<&2, String>, keys: List<&2, String>, namespace: String) -> Map<&2, String>:
+  namespaced_each(exact, keys, namespace)
+
+def namespaced_each(acc: Map<&2, String>, keys: List<&2, String>, namespace: String) -> Map<&2, String>:
+  match keys:
+    case Nil{}: acc
+    case +key <> rest:
+      match Bool.and(Bool.not(String.is_empty(namespace)), String.starts_with(key, String.append(namespace, "."))):
+        case True{}: namespaced_each(namespaced_set(acc, key, namespace), rest, namespace)
+        case False{}: namespaced_each(acc, rest, namespace)
+
+def namespaced_set(acc: Map<&2, String>, key: String, namespace: String) -> Map<&2, String>:
+  match IndexLookup.find(String, acc, key):
+    case Some{macro}: map_set_first(acc, String.drop(key, String.length(String.append(namespace, "."))), macro)
+    case None{}: acc
+
+def fid_fixed(acc: Map<&2, String>) -> Map<&2, String>:
+  fid_fixed_one(map_set_first(acc, "Clo~apply", "FID_CLO_APPLY"))
+
+def fid_fixed_one(acc: Map<&2, String>) -> Map<&2, String>:
+  map_set_first(acc, "IO~emit", "FID_IO_EMIT")
+
+def fid_exact_decl(declarations: List<&2, BIR.Declaration>, acc: Map<&2, String>) -> Map<&2, String>:
+  match declarations:
+    case Nil{}: acc
+    case +item <> rest:
+      match item:
+        case BIR.FunctionDeclaration{key, code, parameters}: fid_exact_decl(rest, Map.set(&2, String, acc, key, fid_macro(key)))
+        case BIR.LazyDeclaration{key, body}: fid_exact_decl(rest, Map.set(&2, String, acc, key, fid_macro(key)))
+        case BIR.ForeignDeclaration{key, namespace, imported, arity, sources, quantities, span, parameter_types, result}: fid_exact_decl(rest, Map.set(&2, String, acc, key, fid_macro(key)))
+        case BIR.NativeDeclaration{key, primitive, quantities}: fid_exact_decl(rest, Map.set(&2, String, acc, key, fid_macro(key)))
+        case _: fid_exact_decl(rest, acc)
+
+def macro_collision_cids(cids: List<&2, CidRow>) -> Maybe<&2, String>:
+  macro_collision_rows(cids, Map.new(&2, String))
+
+def macro_collision_rows(cids: List<&2, CidRow>, seen: Map<&2, String>) -> Maybe<&2, String>:
+  match cids:
     case Nil{}: None{}
-    case +char <> rest:
-      match String.eq(String.from_list([char]), ")"):
-        case True{}: Some{Taken{String.from_list(List.reverse(&2, Char, acc)), rest}}
-        case False{}: take_name(rest, char <> acc)
+    case +row <> rest:
+      match row:
+        case CidRow{_, key, _}: macro_collision_one(key, cid_macro(key), cids, seen, rest)
 
-def rewrite_text(source: String, cids: Map<&2, String>, fids: Map<&2, String>) -> Rewrite:
-  rewrite_chars(String.to_list(source), cids, fids, Nil{})
-
-def rewrite_chars(chars: List<&2, Char>, cids: Map<&2, String>, fids: Map<&2, String>, out: List<&2, Char>) -> Rewrite:
-  match starts_with_chars(chars, "CID("):
-    case True{}: rewrite_cid(drop_chars(chars, 4n), cids, fids, out)
-    case False{}: rewrite_after_cid(chars, cids, fids, out)
-
-def rewrite_after_cid(chars: List<&2, Char>, cids: Map<&2, String>, fids: Map<&2, String>, out: List<&2, Char>) -> Rewrite:
-  match starts_with_chars(chars, "FID("):
-    case True{}: rewrite_fid(drop_chars(chars, 4n), cids, fids, out)
-    case False{}: rewrite_char(chars, cids, fids, out)
-
-def rewrite_char(chars: List<&2, Char>, cids: Map<&2, String>, fids: Map<&2, String>, out: List<&2, Char>) -> Rewrite:
-  match chars:
-    case Nil{}: RewriteOk{List.reverse(&2, Char, out)}
-    case +char <> rest: rewrite_chars(rest, cids, fids, char <> out)
-
-def rewrite_cid(chars: List<&2, Char>, cids: Map<&2, String>, fids: Map<&2, String>, out: List<&2, Char>) -> Rewrite:
-  match take_name(chars, Nil{}):
-    case None{}: RewriteFail{"a CID( token is not closed by a ) in the runtime or an effect source"}
-    case Some{taken}:
-      match taken:
-        case Taken{name, rest}: rewrite_emit(name, rest, cids, fids, out, "CID")
-
-def rewrite_fid(chars: List<&2, Char>, cids: Map<&2, String>, fids: Map<&2, String>, out: List<&2, Char>) -> Rewrite:
-  match take_name(chars, Nil{}):
-    case None{}: RewriteFail{"a FID( token is not closed by a ) in the runtime or an effect source"}
-    case Some{taken}:
-      match taken:
-        case Taken{name, rest}: rewrite_emit(name, rest, cids, fids, out, "FID")
-
-def rewrite_emit(name: String, rest: List<&2, Char>, cids: Map<&2, String>, fids: Map<&2, String>, out: List<&2, Char>, kind: String) -> Rewrite:
-  match IndexLookup.find(String, pick_map(kind, cids, fids), name):
-    case Some{macro}: rewrite_chars(rest, cids, fids, macro_chars(macro, out))
-    case None{}: rewrite_emit_alias(name, rest, cids, fids, out, kind)
-
-def rewrite_emit_alias(name: String, rest: List<&2, Char>, cids: Map<&2, String>, fids: Map<&2, String>, out: List<&2, Char>, kind: String) -> Rewrite:
-  match IndexLookup.find(String, pick_map(kind, cids, fids), last_segment(name)):
-    case Some{macro}: rewrite_chars(rest, cids, fids, macro_chars(macro, out))
-    case None{}: RewriteFail{cat([kind, "(", name, ") names no constructor or definition the renderer emitted"])}
-
-def pick_map(kind: String, cids: Map<&2, String>, fids: Map<&2, String>) -> Map<&2, String>:
-  match String.eq(kind, "CID"):
-    case True{}: cids
-    case False{}: fids
-
-def macro_chars(macro: String, out: List<&2, Char>) -> List<&2, Char>:
-  macro_chars_each(List.reverse(&2, Char, String.to_list(macro)), out)
-
-def macro_chars_each(chars: List<&2, Char>, out: List<&2, Char>) -> List<&2, Char>:
-  match chars:
-    case Nil{}: out
-    case +char <> rest: macro_chars_each(rest, char <> out)
+def macro_collision_one(key: String, macro: String, cids: List<&2, CidRow>, seen: Map<&2, String>, rest: List<&2, CidRow>) -> Maybe<&2, String>:
+  match IndexLookup.find(String, seen, macro):
+    case Some{other}:
+      match String.eq(other, key):
+        case True{}: macro_collision_rows(rest, seen)
+        case False{}: Some(cat(["constructor keys `", other, "` and `", key, "` both sanitize to macro ", macro]))
+    case None{}: macro_collision_rows(rest, Map.set(&2, String, seen, macro, key))
 
 # ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------
 
-def emit(program: BIR.Program, runtime: String) -> EmitResult:
-  emit_imports(program, runtime, Nil{})
-
-def emit_imports(program: BIR.Program, runtime: String, imports: List<&2, CImport>) -> EmitResult:
+def emit(program: BIR.Program, runtime: String, imports: List<&2, CImport>) -> EmitResult:
   match plan_make(program, imports):
     case PlanFail{message}: EmitFailure{message}
     case PlanOk{plan}: render(plan, runtime)
 
+def template_cid_map(cids: List<&2, CidRow>) -> Map<&2, String>:
+  cid_short_each(cids, cid_exact_map(cids), Map.new(&2, Bool))
+
+def template_fid_map(declarations: List<&2, BIR.Declaration>) -> Map<&2, String>:
+  fid_short_each(declarations, fid_exact_map(declarations), Map.new(&2, Bool))
+
 def render(plan: Plan, runtime: String) -> EmitResult:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
-      render_parts(cids, cid_macros, fid_macros, plan, runtime)
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+      render_checked(cids, declarations, plan, runtime)
 
-def render_parts(cids: List<&2, CidRow>, cid_macros: Map<&2, String>, fid_macros: Map<&2, String>, plan: Plan, runtime: String) -> EmitResult:
+def render_checked(cids: List<&2, CidRow>, declarations: List<&2, BIR.Declaration>, plan: Plan, runtime: String) -> EmitResult:
+  match macro_collision_cids(cids):
+    case Some{message}: EmitFailure(message)
+    case None{}: render_parts(plan, runtime, template_cid_map(cids), template_fid_map(declarations))
+
+def render_parts(plan: Plan, runtime: String, cid_map: Map<&2, String>, fid_map: Map<&2, String>) -> EmitResult:
   tables = tables_part(plan)
   spins = spins_part()
   segments = segments_part(plan)
   requests = requests_part(plan)
   parts = [tables, spins, segments, requests]
   match part_require(parts):
-    case None{}: EmitFailure{part_first(parts)}
+    case None{}: EmitFailure(part_first(parts))
     case Some{_}:
-      render_assemble(runtime, part_text(tables), part_text(spins), part_text(segments), part_text(requests), cid_macros, fid_macros)
+      render_assemble(runtime, part_text(tables), part_text(spins), part_text(segments), part_text(requests), cid_map, fid_map)
 
-def render_assemble(runtime: String, tables: String, spins: String, segments: String, requests: String, cid_macros: Map<&2, String>, fid_macros: Map<&2, String>) -> EmitResult:
+def render_assemble(runtime: String, tables: String, spins: String, segments: String, requests: String, cid_map: Map<&2, String>, fid_map: Map<&2, String>) -> EmitResult:
   match assemble(runtime, tables, spins, segments, requests):
-    case None{}: EmitFailure{"the runtime source is missing one of the // Tables, // Spins, // Segments or // Requests sections"}
-    case Some{source}: render_rewrite(source, cid_macros, fid_macros)
+    case None{}: EmitFailure("the runtime source is missing one of the // Tables, // Spins, // Segments or // Requests sections")
+    case Some{source}: render_rewrite(source, cid_map, fid_map)
 
-def render_rewrite(source: String, cid_macros: Map<&2, String>, fid_macros: Map<&2, String>) -> EmitResult:
-  match rewrite_text(source, cid_macros, fid_macros):
-    case RewriteOk{chars}: EmitSuccess{String.from_list(chars)}
-    case RewriteFail{message}: EmitFailure{message}
+def render_rewrite(source: String, cid_map: Map<&2, String>, fid_map: Map<&2, String>) -> EmitResult:
+  match Link.rewrite(source, cid_map, fid_map):
+    case Link.LinkSuccess{source: linked}: EmitSuccess(linked)
+    case Link.LinkFailure{message}: EmitFailure(message)
 
 # ---------------------------------------------------------------------------
 # Library exports
@@ -2543,40 +2807,41 @@ def render_rewrite(source: String, cid_macros: Map<&2, String>, fid_macros: Map<
 type ExportRow is Data:
   ExportRow{name: String, index: U32, mode: Nat, arity: Nat}
 
-def export_rows(exports: List<&2, BIR.Export>, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> Maybe<&2, List<&2, ExportRow>>:
+def export_rows(exports: List<&2, BIR.Export>, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> Maybe<&2, List<&2, ExportRow>>:
   match exports:
     case Nil{}: Some{Nil{}}
-    case +item <> rest: export_row_pair(export_row(item, declarations, by_code, by_key, by_foreign, stages, entries), export_rows(rest, declarations, by_code, by_key, by_foreign, stages, entries))
+    case +item <> rest: export_row_pair(export_row(item, declarations, by_code, by_key, by_foreign, by_native, stages, entries), export_rows(rest, declarations, by_code, by_key, by_foreign, by_native, stages, entries))
 
 def export_row_pair(one: Maybe<&2, ExportRow>, rest: Maybe<&2, List<&2, ExportRow>>) -> Maybe<&2, List<&2, ExportRow>>:
   match one rest:
     case Some{row} Some{rows}: Some{row <> rows}
     case _ _: None{}
 
-def export_row(item: BIR.Export, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> Maybe<&2, ExportRow>:
+def export_row(item: BIR.Export, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> Maybe<&2, ExportRow>:
   match item:
-    case BIR.Export{key, entry}: export_entry(key, entry, declarations, by_code, by_key, by_foreign, stages, entries)
+    case BIR.Export{key, entry}: export_entry(key, entry, declarations, by_code, by_key, by_foreign, by_native, stages, entries)
 
-def export_entry(key: String, entry: Maybe<&2, BIR.Entry>, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> Maybe<&2, ExportRow>:
+def export_entry(key: String, entry: Maybe<&2, BIR.Entry>, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> Maybe<&2, ExportRow>:
   match entry:
     case Some{item}:
       match item:
         case BIR.Entry{code, arity}: Some{ExportRow{key, map_u32(by_code, U32.show(code)), 0n, arity}}
-    case None{}: export_symbol(key, declarations, by_code, by_key, by_foreign, stages, entries)
+    case None{}: export_symbol(key, declarations, by_code, by_key, by_foreign, by_native, stages, entries)
 
-def export_symbol(key: String, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> Maybe<&2, ExportRow>:
+def export_symbol(key: String, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> Maybe<&2, ExportRow>:
   match find_declaration(key, declarations):
     case None{}: None{}
-    case Some{item}: export_symbol_item(item, key, by_key, by_foreign, stages, entries)
+    case Some{item}: export_symbol_item(item, key, by_key, by_foreign, by_native, stages, entries)
 
-def export_symbol_item(item: BIR.Declaration, key: String, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> Maybe<&2, ExportRow>:
+def export_symbol_item(item: BIR.Declaration, key: String, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> Maybe<&2, ExportRow>:
   match item:
     case BIR.FunctionDeclaration{_, code, parameters}:
       match List.length(&2, BIR.Parameter, parameters):
         case 0n: Some{ExportRow{key, map_u32(by_key, key), 0n, 0n}}
         case _: Some{ExportRow{key, map_u32(stages, stage_key(code, 0n)), 1n, 0n}}
     case BIR.LazyDeclaration{_, body}: Some{ExportRow{key, map_u32(by_key, key), 1n, 0n}}
-    case BIR.ForeignDeclaration{_, _, _, _, _, _, _}: Some{ExportRow{key, map_u32(by_foreign, key), 1n, 0n}}
+    case BIR.ForeignDeclaration{_, _, _, _, _, _, _, _, _}: Some{ExportRow{key, map_u32(by_foreign, key), 1n, 0n}}
+    case BIR.NativeDeclaration{_, _, _}: Some{ExportRow{key, map_u32(by_native, key), 1n, 0n}}
     case _: None{}
 
 def export_names(rows: List<&2, ExportRow>, acc: List<&2, String>) -> String:
@@ -2631,10 +2896,10 @@ def exports_c(rows: List<&2, ExportRow>) -> String:
 
 def exports_block(plan: Plan) -> String:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
-      exports_block_rows(exports, declarations, by_code, by_key, by_foreign, stages, entries)
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+      exports_block_rows(exports, declarations, by_code, by_key, by_foreign, by_native, stages, entries)
 
-def exports_block_rows(exports: List<&2, BIR.Export>, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> String:
-  match export_rows(exports, declarations, by_code, by_key, by_foreign, stages, entries):
+def exports_block_rows(exports: List<&2, BIR.Export>, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> String:
+  match export_rows(exports, declarations, by_code, by_key, by_foreign, by_native, stages, entries):
     case None{}: ""
     case Some{rows}: exports_c(rows)
