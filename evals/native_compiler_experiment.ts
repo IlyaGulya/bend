@@ -282,6 +282,9 @@ function exportNames(o:Options,input:Corpus):string[]{
   return names;
 }
 async function runWorker(o:Options){
+  // This path compiles the authenticated compiler corpus root, not an arbitrary
+  // fixture. Fixture C workloads call authenticateNativeSeedBuild once and then
+  // runNativeStage0 with their phase-specific input manifest; no second CLI.
   await guardHeavyGate(script,{label:'Native CPU compiler execution'});
   reportWritable=true;
   const protectedPins=json(o.report+'.inputs.json') as Record<string,string>;verify(protectedPins);
@@ -382,7 +385,7 @@ async function main(o:Options){
     const guardian=await runHeavyGate(command,{...settings,label:'Native CPU compiler '+o.mode});
     const report=json(o.report),last=existsSync(o.report+'.progress.json')?json(o.report+'.progress.json'):undefined;
     const lastC=existsSync(o.report+'.c-progress.json')?json(o.report+'.c-progress.json'):undefined;
-    const passed=guardian.status==='PASS'&&(o.mode==='build'?report.status==='NATIVE_EXECUTABLE_BUILT_NOT_YET_RUN':['NATIVE_FULL_COMPILE_PASS','NATIVE_FULL_CHECK_PASS'].includes(report.status));
+    const passed=guardian.status==='PASS'&&(o.mode==='build'?report.status==='NATIVE_EXECUTABLE_BUILT_NOT_YET_RUN':['NATIVE_FULL_COMPILE_PASS','NATIVE_FULL_CHECK_PASS','NATIVE_FULL_C_COMPILE_PASS'].includes(report.status));
     save(o.report,{...report,status:passed?report.status:guardian.status==='RESOURCE_LIMIT'?'RESOURCE_LIMIT':'FAIL',guardian,lastProgress:last,lastCProgress:lastC,
       ...(!passed?{failure:report.failure??{phase:last?.phase??'guardian',diagnostic:guardian.reason}}:{})});
     progress(o,'guardian',passed?'complete':'failure',{guardianStatus:guardian.status,reason:guardian.reason,failedPhase:passed?undefined:last?.phase});
