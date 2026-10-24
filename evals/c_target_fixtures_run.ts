@@ -14,15 +14,17 @@ if (!driver) throw Error('usage: --driver=<built bend2 driver>');
 const keep = process.argv.includes('--keep');
 const base = resolve('bend2/base.bend');
 const runtime = resolve('bend2/selfhost/c_runtime.c');
-const fixtures = ['c_target_wide_record', 'c_target_nested_adt', 'c_target_array_u32',
-  'c_target_array_wide', 'c_target_multiarm'];
+const fixtures = ['evals/c_target_wide_record', 'evals/c_target_nested_adt',
+  'evals/c_target_array_u32', 'evals/c_target_array_wide', 'evals/c_target_multiarm',
+  'tests/reg/phys_storage_paths'];
 
 for (const name of fixtures) {
-  const source = resolve('evals/' + name + '.bend');
-  const expected = readFileSync(source, 'utf8').match(/^#\|(\S+)$/m)?.[1];
-  if (expected === undefined) throw Error(name + ': no #| expectation');
-  const c = '/tmp/' + name + '.c';
-  const exe = '/tmp/' + name;
+  const source = resolve(name + '.bend');
+  const expected = [...readFileSync(source, 'utf8').matchAll(/^#\|(.+)$/gm)].map(match => match[1]).join('\n');
+  if (expected.length === 0) throw Error(name + ': no #| expectation');
+  const stem = basename(name);
+  const c = '/tmp/' + stem + '.c';
+  const exe = '/tmp/' + stem;
   const compile = Bun.spawnSync([driver, source, '-o', c, '--base', base, '--runtime-c', runtime],
     {stdout: 'pipe', stderr: 'pipe'});
   if (compile.exitCode !== 0) {

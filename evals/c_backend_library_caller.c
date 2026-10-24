@@ -24,12 +24,14 @@ static u32 index_of(const char* name) {
 
 int main(void) {
   bend_library_init();
-  assert(bend_export_count() == 5);
+  assert(bend_export_count() == 6);
   assert(bend_export_name(0) != 0);
 
   /* direct, exact arity: add(2, 3) == 5 */
   Term ab[2] = {2, 3};
   assert(bend_export_call(index_of("add"), ab, 2) == 5);
+  /* a function declaration exported as a symbol desugars to its code entry */
+  assert(bend_export_call(index_of("symbol_add"), ab, 2) == 5);
 
   /* direct with extra host arguments: partial(5, 7) == 12 */
   Term pb[2] = {5, 7};

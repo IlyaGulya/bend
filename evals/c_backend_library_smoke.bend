@@ -85,6 +85,7 @@ def export(key: String, entry: Maybe<&2, BIR.Entry>, types: List<&2, BIR.Descrip
 def exports() -> List<&2, BIR.Export>:
   [
     export("add", Some{BIR.Entry{1, 2n}}, [u32_type(), u32_type()]),
+    export("symbol_add", None{}, [u32_type(), u32_type()]),
     export("partial", Some{BIR.Entry{2, 1n}}, [u32_type(), u32_type()]),
     export("zero", None{}, Nil{}),
     export("factory", None{}, Nil{}),
