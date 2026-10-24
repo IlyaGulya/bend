@@ -1472,10 +1472,8 @@ def definition(state: State, header: Catalog.DefinitionHeader, checked: Maybe<&2
       definition_kind(state, key, code, parameters, quantities, type_only, primitive, foreign, checked, rest, registry, result)
 def definition_kind(state: State, key: String, code: U32, parameters: List<&2, BIR.Parameter>, quantities: List<&2, BIR.Quantity>, type_only: Bool, primitive: Maybe<&2, BIR.Primitive>, foreign: Maybe<&2, Catalog.Foreign>, checked: Maybe<&2, IR.Occurrence>, rest: List<&2, Catalog.Definition>, registry: Catalog.Registry, result: List<&2, BIR.Declaration>) -> LowerResult<List<&2, BIR.Declaration>>:
   match foreign:
-    case Some{Catalog.Foreign{path, imported, arity}}:
-      definitions(state, rest, registry, BIR.ForeignDeclaration{key, path, imported, arity} <> result)
-    case Some{Catalog.ForeignMissing{_, _}}:
-      definitions(state, rest, registry, BIR.LazyDeclaration{key, BIR.Return{BIR.Undefined{}}} <> result)
+    case Some{Catalog.Foreign{namespace, imported, sources, span}}:
+      definitions(state, rest, registry, BIR.ForeignDeclaration{key, namespace, imported, List.length(&2, BIR.Parameter, parameters), sources, quantities, span} <> result)
     case None{}:
       definition_local(state, key, code, parameters, quantities, type_only, primitive, checked, rest, registry, result)
 def definition_local(state: State, key: String, code: U32, parameters: List<&2, BIR.Parameter>, quantities: List<&2, BIR.Quantity>, type_only: Bool, primitive: Maybe<&2, BIR.Primitive>, checked: Maybe<&2, IR.Occurrence>, rest: List<&2, Catalog.Definition>, registry: Catalog.Registry, result: List<&2, BIR.Declaration>) -> LowerResult<List<&2, BIR.Declaration>>:

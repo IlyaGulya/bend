@@ -10,10 +10,14 @@ type EmitResult is Data:
   EmitSuccess{source: String}
   EmitFailure{message: String, span: Ast.SourceSpan}
 
+def emitted(result: Backend.EmitResult) -> EmitResult:
+  match result:
+    case Backend.EmitFailure{message, span}: EmitFailure{message, span}
+    case Backend.EmitSuccess{source}: EmitSuccess{source}
 def emit_result(result: BackendLower.ProgramResult) -> EmitResult:
   match result:
     case BackendLower.LowerFailure{message, span}: EmitFailure{message, span}
-    case BackendLower.Lowered{program}: EmitSuccess{Backend.emit(program)}
+    case BackendLower.Lowered{program}: emitted(Backend.emit(program))
 def emit(program: Checked.CheckedProgram) -> EmitResult:
   emit_result(BackendLower.lower(program))
 def emit_library(program: Checked.CheckedProgram, exports: List<&2, String>) -> EmitResult:
