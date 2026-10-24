@@ -8,7 +8,7 @@
  * Source-only fixtures are freshly parsed by each image; no AST/cache inputs.
  */
 import {runHeavyGate,guardHeavyGate} from './heavy_gate.ts';
-import {authenticateNativeSeedBuild} from './native_seed_runtime.mjs';
+import {authenticateNativeSeedBuild,requireCorpusCoversWorkload,workloadRows} from './native_seed_runtime.mjs';
 import {parserParity,isolatedParserParity} from './selfhost_parser_parity.ts';
 import {readAcceptedParserBuild} from './selfhost_driver_source.ts';
 import {createHash} from 'node:crypto';
@@ -71,8 +71,11 @@ if(!worker){
    const auth=authenticateNativeSeedBuild(String(native.build),{root:realpathSync(String(request.root)),corpusPath:String(native.corpus),limits});
    const expectedPhases=['parse','expand','check','emit'];
    requireProof(JSON.stringify((nativeRun.phaseStarts??[]).map((row:any)=>row.phase))===JSON.stringify(expectedPhases)&&JSON.stringify((nativeRun.phases??[]).map((row:any)=>row.phase))===JSON.stringify(expectedPhases),'Missing ordered native stage0 phases');
-   const sourceCount=auth.corpus.files.filter((row:any)=>row.external!==true).length;
-   requireProof(nativeRun.sources===sourceCount&&Array.isArray(nativeRun.fuel)&&nativeRun.fuel.length===sourceCount&&nativeRun.fuel.every((row:any)=>row.cells===8000000),'Native stage0 source/cell accounting drift');
+   const workload=workloadRows(realpathSync(String(request.root)),'js');
+   const effective=requireCorpusCoversWorkload(auth.corpus,workload,'js');
+   const effectiveInputs=Object.fromEntries([...workload.sources,...workload.externals].map((row:any)=>[row.file,row.sha256]));
+   requireProof(nativeRun.sources===effective.sources&&Array.isArray(nativeRun.fuel)&&nativeRun.fuel.length===effective.sources&&nativeRun.fuel.every((row:any)=>row.cells===8000000),'Native stage0 js source/cell accounting drift');
+   requireProof(nativeRun.workload?.target==='js'&&nativeRun.workload?.sources===effective.sources&&nativeRun.workload?.externals===effective.externals,'Native stage0 did not record the exact js workload');
    requireProof(auth.binarySha256===native.binarySha256&&auth.binarySha256===seedBuild.binarySha256&&auth.binarySha256===nativeRun.binarySha256,'Native binary identity drift');
    requireProof(auth.corpusSha256===native.corpusSha256&&auth.corpusSha256===nativeRun.corpusSha256,'Native corpus identity drift');
    requireProof(hash(String(native.build))===native.buildSha256&&native.buildSha256===nativeRun.buildSha256&&hash(String(native.build))===hash(String(seedBuild.build)),'Native build identity drift');
@@ -92,6 +95,8 @@ if(!worker){
    requireProof(readFileSync(String(one.path)).equals(readFileSync(String(two.path))),'Native stage bytes differ');
    const closure=one.sourceHashes as Record<string,any>[];
    requireProof(Array.isArray(closure)&&closure.length===Object.keys(request.rootInputs).length,'Incomplete native stage source closure');
+   requireProof(same(request.rootInputs,effectiveInputs),'Gate phase inputs are not the exact js workload');
+   requireProof(same(Object.fromEntries(closure.map((row:any)=>[row.file,row.sourceBytesSha256])),effectiveInputs),'Native stage source closure is not the exact js workload');
    for(const row of closure){requireProof(row.sha256===row.sourceBytesSha256&&request.rootInputs[row.file]===row.sourceBytesSha256,'Native stage source closure mismatch');pin(row.file,row.sourceBytesSha256);}
    const parseRows=original.parseRows as Record<string,any>[],expected=closure.filter(row=>!row.external);
    requireProof(parseRows.length===expected.length&&new Set(parseRows.map(row=>row.file)).size===parseRows.length&&expected.every(row=>parseRows.some(parsed=>parsed.file===row.file)),'Incomplete stage-two root parse approvals');

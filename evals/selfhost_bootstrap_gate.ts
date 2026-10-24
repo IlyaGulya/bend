@@ -14,7 +14,7 @@
  * not turn fixture/cache or parse-only diagnostics into bootstrap acceptance.
  */
 import {runHeavyGate,guardHeavyGate} from './heavy_gate.ts';
-import {authenticateNativeSeedBuild} from './native_seed_runtime.mjs';
+import {authenticateNativeSeedBuild,requireCorpusCoversWorkload,workloadRows} from './native_seed_runtime.mjs';
 import {parserParity,isolatedParserParity} from './selfhost_parser_parity.ts';
 import {decodeNativeAst} from './bootstrap_ast_transport.ts';
 import {readAcceptedParserBuild} from './selfhost_driver_source.ts';
@@ -116,7 +116,11 @@ if(!o.worker){
     corpus:nativeSeed.corpusPath,corpusSha256:nativeSeed.corpusSha256,checkedDefinitions:nativeSeed.report.checkedDefinitions,
     expectedSourceDefinitions:nativeSeed.report.expectedSourceDefinitions,eventsFullyValidated:nativeSeed.report.eventsFullyValidated,
     cPath:nativeSeed.report.cPath,cSha256:nativeSeed.report.cSha256,guardian:nativeSeed.report.guardian};
-   state.nativeSeedInputs=Object.fromEntries(nativeSeed.corpus.files.map((row:any)=>[resolve(nativeSeed.corpus.directory,row.path),row.sha256]));
+   const workload=workloadRows(realpathSync(o.root),'js');
+   const effective=requireCorpusCoversWorkload(nativeSeed.corpus,workload,'js');
+   state.nativeBuildInputs=Object.fromEntries(nativeSeed.corpus.files.map((row:any)=>[resolve(nativeSeed.corpus.directory,row.path),row.sha256]));
+   state.nativeSeedInputs=Object.fromEntries([...workload.sources,...workload.externals].map((row:any)=>[row.file,row.sha256]));
+   state.nativeSeed={...state.nativeSeed,workload:effective};
    const backendIr=realpathSync(resolve('bend2/selfhost/backend_ir.bend'));
    const sourceFileRow=nativeSeed.corpus.files.find((row:any)=>row.external!==true&&typeof row.path==='string'&&realpathSync(resolve(nativeSeed.corpus.directory,row.path))===backendIr);
    if(!sourceFileRow||typeof sourceFileRow.namespace!=='string')throw Error('Native workload does not load the canonical BIR module');

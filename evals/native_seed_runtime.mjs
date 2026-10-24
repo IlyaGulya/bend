@@ -84,6 +84,22 @@ export function corpusFile(rows, out) {
 }
 
 /** Rows `B|E \t namespace \t realpath` exactly as the native host reads them. */
+export function requireCorpusCoversWorkload(corpus, workload, target) {
+  const rows = new Map();
+  for (const row of corpus.files) rows.set(realpathSync(resolve(corpus.directory, row.path)), row);
+  for (const row of workload.sources) {
+    const found = rows.get(row.file);
+    if (!found || found.external === true || found.sha256 !== row.sha256 || found.namespace !== row.namespace)
+      throw Error('Native build corpus does not authenticate the exact ' + target + ' source: ' + row.file);
+  }
+  for (const row of workload.externals) {
+    const found = rows.get(row.file);
+    if (!found || found.external !== true || found.sha256 !== row.sha256)
+      throw Error('Native build corpus does not authenticate the exact ' + target + ' foreign source: ' + row.file);
+  }
+  return {target, sources: workload.sources.length, externals: workload.externals.length};
+}
+
 export function runtimeManifest(corpus) {
   return corpus.files.map(row => {
     const real = realpathSync(resolve(corpus.directory, row.path));

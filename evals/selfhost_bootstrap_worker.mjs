@@ -7,7 +7,7 @@ import {createInterface} from 'node:readline';
 import {spawnSync} from 'node:child_process';
 import {getHeapStatistics} from 'node:v8';
 import {writeNativeAst,decodeNativeAst} from './bootstrap_ast_transport.ts';
-import {runNativeStage0,requireNativeRun,runtimeManifest,workloadRows,corpusFor} from './native_seed_runtime.mjs';
+import {runNativeStage0,requireNativeRun,runtimeManifest,workloadRows,corpusFor,requireCorpusCoversWorkload} from './native_seed_runtime.mjs';
 import {runTemplateSteps,runCheckerSteps,runEmitterSteps,runLibraryEmitterSteps,sourceFiles,sourceFilePath,verifySourceFileCarrier} from './checker_core_step_runtime.mjs';
 
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
@@ -278,15 +278,15 @@ if(isMainThread){
   if(sha(readFileSync(native.corpus))!==native.corpusSha256)throw Error('Native stage0 corpus changed before execution');
   if(sha(readFileSync(native.build))!==native.buildSha256)throw Error('Native stage0 build report changed before execution');
   const corpus=JSON.parse(readFileSync(native.corpus,'utf8'));
-  const sources=corpus.files.filter(row=>row.external!==true).length;
+  const workload=workloadRows(workerData.root,'js');
+  const effective=requireCorpusCoversWorkload(corpus,workload,'js');
+  const sources=workload.sources.length;
   const exportsPath=join(sidecar,'native-exports.txt'),manifestPath=join(sidecar,'native-root.runtime.tsv');
   writeFileSync(exportsPath,ABI.join('\n')+'\n',{flag:'wx'});
   writeFileSync(manifestPath,runtimeManifest(corpus),{flag:'wx'});
-  const sourceHashes=corpus.files.map(row=>{
-   const file=realpathSync(resolve(corpus.directory,row.path));
-   return row.external===true?{file,sha256:row.sha256,sourceBytesSha256:row.sha256,external:true}
-    :{file,sha256:row.sha256,sourceBytesSha256:row.sha256,namespace:row.namespace};
-  });
+  const sourceHashes=[...workload.sources.map(row=>({file:row.file,sha256:row.sha256,sourceBytesSha256:row.sha256,namespace:row.namespace})),
+    ...workload.externals.map(row=>({file:row.file,sha256:row.sha256,sourceBytesSha256:row.sha256,external:true}))]
+    .sort((left,right)=>left.file.localeCompare(right.file));
   const sorted=values=>JSON.stringify([...values].sort((left,right)=>left.file.localeCompare(right.file)));
   mark('native-stage-zero-parse');
   const stageOnePath=join(sidecar,'stage-one.js');
@@ -296,7 +296,7 @@ if(isMainThread){
   artifacts.stageOne={event:'artifact',phase:'native-stage-zero-emit',stage:'stageOne',path:stageOnePath,sha256:stageOneSha,bytes:emitted.bytes.length,sourceHashes};send(artifacts.stageOne);
   const nativeRun={binary:native.binary,binarySha256:native.binarySha256,build:native.build,buildSha256:native.buildSha256,
    corpus:native.corpus,corpusSha256:native.corpusSha256,phases:run.phases,phaseStarts:run.phaseStarts,fuel:run.fuel,
-   begins:run.begins,result:emitted.emit,elapsedMs:run.elapsedMs,sources,foreign:corpus.files.length-sources,
+   begins:run.begins,result:emitted.emit,elapsedMs:run.elapsedMs,sources,foreign:effective.externals,workload:effective,
    stageOne:{path:stageOnePath,sha256:stageOneSha,bytes:emitted.bytes.length}};
   send({event:'native-run',phase:'native-stage-zero',...nativeRun});
   // The native stage0 executes the original seed fixtures through its own

@@ -45,6 +45,7 @@ import {fileURLToPath} from 'node:url';
 import {spawn} from 'node:child_process';
 import {Worker, isMainThread, workerData} from 'node:worker_threads';
 import {runHeavyGate, guardHeavyGate} from './heavy_gate.ts';
+import {requireCorpusCoversWorkload, workloadRows, corpusFor, runtimeManifest} from './native_seed_runtime.mjs';
 import type * as Bend from '../bend2/bend.ts';
 import type * as Comp from '../bend2/comp.ts';
 
@@ -292,9 +293,12 @@ async function runWorker(o:Options){
   if(build.status!=='NATIVE_EXECUTABLE_BUILT_NOT_YET_RUN'||build.guardian?.status!=='PASS'||build.kernelSha256!==kernelSha256||build.checksExcluded!==0||build.outputPatches!==0||build.artifactSha256!==hash(build.artifact)||build.cSha256!==hash(build.cPath))throw Error('Native executable lacks a successful full canonical build');
   verify(build.protectedPins);verify(build.loadedInputs);
   const names=exportNames(o,input),cPhase=o.phase.startsWith('compile-c');
+  const target=cPhase?'c':'js';
+  const workload=workloadRows(resolve(input.directory,input.root),target);
+  const effective=requireCorpusCoversWorkload(input,workload,target);
   const runtimePath=cPhase?realpathSync(o.runtimeC!):undefined,runtimeSha256=runtimePath?hash(runtimePath):undefined;
   const output=o.report+(cPhase?'.c':'.mjs');
-  create(o.report+'.runtime.tsv',input.files.map(row=>[row.external?'E':'B',row.namespace??'',realpathSync(resolve(input.directory,row.path))].join('\t')).join('\n')+'\n');
+  create(o.report+'.runtime.tsv',runtimeManifest(corpusFor({directory:input.directory,root:input.root,sources:workload.sources,externals:workload.externals})));
   create(o.report+'.exports.txt',names.join('\n')+'\n');
   const phases:Array<{phase:string}> = [],begins:Array<{computeThreads:number}> = [],results:Array<{result:string;modules:number;bytes?:number}> = [];
   const fuel:Array<Record<string,unknown>> = [];
@@ -352,7 +356,7 @@ async function runWorker(o:Options){
   save(o.report,{status:cPhase?'NATIVE_FULL_C_COMPILE_PASS':o.phase==='compile'?'NATIVE_FULL_COMPILE_PASS':'NATIVE_FULL_CHECK_PASS',boundary,
     build:o.build,buildSha256:hash(o.build!),protectedPins,corpus:o.corpus,corpusSha256:hash(o.corpus),
     ccOptimization:build.ccOptimization,
-    threads:o.threads,multithread:o.threads>1,command,elapsedMs:performance.now()-started,
+    threads:o.threads,multithread:o.threads>1,command,elapsedMs:performance.now()-started,workload:effective,
     phases,phaseStarts,fuel,result:results[0],exports:names,semanticSmoke,
     ...(cPhase?{runtimeC:{path:runtimePath,sha256:runtimeSha256}}:{}),
     ...(emitted?{output,outputSha256:hash(output),outputBytes:readFileSync(output).length}:{diagnosticOnly:true})});
