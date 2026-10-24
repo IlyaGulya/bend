@@ -67,10 +67,11 @@ FIR obligations listed in `FIR_LAWS.md`, in particular:
 
 - every **designated semantic handle field** reachable from `modules`,
   `signatures`, and `metadata` points to an in-bounds arena object of the role
-  that field expects: `IR.Symbol.ty`, `IR.Occurrence.ty`, definition
-  binder/result/body handles, module roots, `Scope.ArenaGlobal.ty`, and
-  constructor/pattern/binder/tape/name-pool handles match their declared
-  node/pattern/binder/tape-range/name-pool roles. Record-valued fields such as
+  that field expects. The pinned source spells these handles as, for example,
+  `IR.Symbol.signature`, `IR.Occurrence.ty`, `IR.CheckedBinding.ty`,
+  `IR.CheckedVariable.pattern`, `IR.CheckedConstructor.pattern/symbol`,
+  `IR.Definition.binders/result/body`, `IR.TypeDecl.kind`, and
+  `Scope.ArenaGlobal.ty/value`. Record-valued fields such as
   `ModuleMetadata.scope` must themselves satisfy their structural invariants.
   A `U32` is a handle only when its named field has that role; plain payloads —
   literal words, source offsets, lengths, field ordinals, code ids, flags — are
@@ -127,17 +128,23 @@ Fix:
   scheduler order where the source leaves it open, and any other external
   nondeterminism. Two runs with unrelated ξ are not comparable; see (7).
 
-Define `SRun(F, ξ)` and `TRun(T(lower(F)), ξ')` as sets of **finite and
-infinite traces**. A trace is a sequence of observable events ending in one of:
+Define `SRun(F, ξ)` and `TRun(T(lower(F)), ξ')` as sets of **complete
+behaviors**. A behavior is a finite-or-infinite sequence of observable events
+with one of these outcomes:
 
-- `Value(v, τ)` — a returned value of type τ;
-- `Error(class, payload?)` — a runtime failure/error outcome;
-- divergence — no finite end, with an infinite (possibly empty) event sequence.
+- `Value(v, τ, w)` — events `w`, then a returned value of type τ;
+- `Error(class, payload?, w)` — events `w`, then a runtime failure/error
+  outcome;
+- `Diverge(w)` — events `w`, then no termination. `w` may be finite (including
+  the empty visible trace when execution is silent forever) or infinite; the
+  `Diverge` tag keeps a silent infinite execution distinct from "no behavior
+  yet" and from a finite empty trace. There is no "infinite empty sequence":
+  a silent divergence is `Diverge(ε)`.
 
-A finite trace records the externally visible events (standard-stream writes,
-effect requests/answers under ξ, host calls/callbacks, returned values) in
-order. Compile-time diagnostics are not runtime traces: if lowering or a target
-fails, no program and no trace set exists, and the diagnostic is the outcome.
+Visible events are standard-stream writes, effect requests/answers under ξ,
+host calls/callbacks, and returned values, in order. Compile-time diagnostics
+are not runtime behaviors: if lowering or a target fails, no program and no
+behavior set exists, and the diagnostic is the outcome.
 
 **Normative observation relation `≈_obs`.** For the same ξ (or related oracles,
 see 7):
@@ -146,32 +153,45 @@ see 7):
    to target values (a JS value or a C `Term` after ABI conversion) by a
    representation relation derived from τ, the target ABI, and the constructor
    layouts. It is not defined as "same `show` text".
-2. **Event correspondence.** Every finite source trace has a target trace with
-   the same ordered observable events, with payloads related by `≈_τ`, the same
-   effect/operation names, and arguments related by `≈`; every finite target
-   trace has a matching source trace under the same ξ. For a deterministic ξ
-   this is equality of trace sets; otherwise it is the relation of (7).
-3. **Divergence is preserved, not refuted.** If no finite source trace exists
-   under ξ, no finite target trace may exist, and vice versa. This is a
-   statement about trace sets, **not** a claim that any program terminates.
-   A compiler is allowed to preserve divergence; it is not allowed to invent a
-   finite result or fail-stop where the source diverges, or the reverse.
-4. **Executable top-level observation.** For a closed executable, the finite
-   value/effect trace may be projected to what the runtime actually exposes:
-   the final `show` bytes plus exit status for a pure main, or the effect-event
-   trace plus final value/exit for an IO main. This projection is an explicit
-   weakening for the top-level result only; it does not define `≈_τ` and does
-   not apply to library calls. If `show` is undefined/abstract for the main
-   type, a target that refuses to print is a compile/admission outcome, not a
-   value relation.
+2. **Complete-behavior correspondence (includes infinite behaviors).** Every
+   source complete behavior has a target complete behavior of the same kind,
+   and conversely:
+   - `Value(v, τ, w)` corresponds to `Value(t, τ, w')` when `w` and `w'` are
+     event-wise related (same visible operations/arguments under `≈`) and
+     `v ≈_τ t`;
+   - `Error(...)` corresponds to `Error(...)` under the error relation of (6);
+   - `Diverge(w)` corresponds to `Diverge(w')` only when `w` and `w'` are
+     event-wise related. In particular an infinite visible output stream must
+     correspond event-by-event; it is not enough that both sides diverge.
+   For a deterministic ξ this is equality of complete-behavior sets; otherwise
+   it is the allowed-set relation of (7).
+3. **Finite prefixes.** Every finite prefix of a source complete behavior is a
+   prefix of some target complete behavior, and conversely, when both sides are
+   observed under related ξ. This is what constrains mixed finite/infinite
+   nondeterminism: a target may not omit an observable prefix that the source
+   can produce, nor produce one the source cannot. Divergence itself is not
+   refuted: `Diverge` is a legitimate complete behavior, and no termination is
+   asserted. A compiler may preserve divergence, but may not replace a
+   divergent behavior with a finite Value/Error (or the reverse), nor with a
+   divergence whose visible event trace differs.
+4. **Executable top-level observation.** For a closed executable, the complete
+   behavior may be projected to what the runtime actually exposes: for a
+   terminating pure main, the final `show` bytes plus exit status; for an IO
+   main, the effect-event trace plus final value/exit; for divergence, the
+   visible output/effect stream plus nontermination (`Diverge`). This
+   projection is an explicit weakening for the top-level result only; it does
+   not define `≈_τ` and does not apply to library calls. If `show` is
+   undefined/abstract for the main type, a target that refuses to print is a
+   compile/admission outcome, not a value relation.
 5. **Library observation.** `show` text is insufficient: two different
-   closures may print identically. A library observation is a finite,
-   well-typed host interaction sequence: a sequence of calls of exported keys
-   with arguments related by `≈_τ`, callback invocations supplied by the host,
-   and returned callable values (including closures) compared by their behavior
-   under further well-typed calls. Every finite prefix must correspond, and a
-   pair of returned callables is distinguished if any well-typed continuation
-   distinguishes them.
+   closures may print identically. A library observation is a finite or
+   infinite, well-typed host interaction sequence: calls of exported keys with
+   arguments related by `≈_τ`, callback invocations supplied by the host, and
+   returned callable values (including closures) compared by their behavior
+   under further well-typed calls. If a host interaction diverges, it is
+   `Diverge(w)` with a corresponding visible event trace. Every finite prefix
+   must correspond, and a pair of returned callables is distinguished if any
+   well-typed continuation distinguishes them.
 6. **Errors.** The contract must distinguish three things, and this document
    states which it does and does not fix:
    - **error class** — success vs runtime failure vs admission/compile failure;
@@ -498,16 +518,18 @@ computed before `next` runs. `Direct`, `Apply`, `PrimitiveCall`, `Construct`,
 tag, fields}`, `Project{..., constructor, field, key}`, and
 `HasTag{..., constructor, tag}`:
 
-1. `constructor` is the `id` of exactly one `ConstructorLayout` in
-   `Program.constructors`, and its `key` equals `tag` (for `Construct` and
-   `HasTag`) or `key` (for `Project`).
-2. `fields` lists only live fields, in declaration order. For each entry,
-   `Field.identity` is the field's **declared ordinal including erased
-   positions**, and `Field.key` is the declared key of that ordinal.
-3. `Project.field` is the declared ordinal (including erased positions), and
-   `Project.key` is the declared key of that ordinal. It is never an erased
-   field (erased projection is already `Null` before this point).
-4. `ConstructorLayout.fields` has one entry per declared field including erased
+1. `constructor` is the `id` of exactly one `ConstructorLayout L` in
+   `Program.constructors`.
+2. For `Construct` and `HasTag`, `tag = L.key` (the constructor's key). This is
+   the only place a constructor-level key is compared.
+3. For `Project`, `L.fields[field]` exists and is `Some key'` (a live field),
+   and `Project.key = key'`. `Project.field` is the field's **declared ordinal
+   including erased positions**; it is never an erased slot (`L.fields[field] =
+   None`), because an erased projection is already `Null` before this point.
+4. `Construct.fields` lists only live fields, in declaration order. For each
+   entry, `Field.identity` is the field's declared ordinal including erased
+   positions, and `Field.key` is the declared key of that ordinal.
+5. `ConstructorLayout.fields` has one entry per declared field including erased
    positions; `None` marks an erased field and `Some key` marks a live one.
 
 - Mechanism: `field_values` skips a declared erased field and otherwise emits
@@ -1234,10 +1256,11 @@ must not re-infer source facts.
 - `J(B, files)` and `C(B, runtime, files)` return either one emitted program or
   a diagnostic; they never emit a program that used a guessed name, path, type,
   representation, or id.
-- When they emit, the emitted program's finite/infinite trace set stands in
-  `≈_obs` (§1.3) to the source trace set for the same ξ: matching events and
-  values under `≈_τ`, the same error class, and divergence preserved in both
-  directions. No termination is required or implied.
+- When they emit, the emitted program's set of complete behaviors and finite
+  prefixes stands in `≈_obs` (§1.3) to the source set for the same ξ: matching
+  events and values under `≈_τ`, the same error class, and `Diverge` behaviors
+  with corresponding visible event traces (including infinite outputs). No
+  termination is required or implied.
 
 Status: **[N]**; the first half has many concrete **[C]** checks cited below.
 The second half is the unproved semantic law (`≈_obs` is **[O]**). No
@@ -1494,8 +1517,9 @@ would run them, but no receipt was read.
 
 **TL-3.** J and C are two renderings of one BIR semantics. The normative
 statement is: for an admissible B, target-appropriate foreign sources, and
-related ξ, the JS and C trace sets correspond under `≈_obs` (§1.3) — matching
-finite events and values, matching error class, and divergence preserved.
+related ξ, the JS and C sets of complete behaviors and finite prefixes
+correspond under `≈_obs` (§1.3) — matching finite events and values, matching
+error class, and `Diverge` with corresponding infinite visible traces.
 Termination of either side is not required, and `show` text alone is not the
 relation (especially for library callables).
 
@@ -1736,7 +1760,8 @@ fixed here.
   preservation is stated as a trace-set obligation, not as a termination
   theorem.
 - No full definition or proof of the observation/representation relation
-  `≈_obs`/`≈_τ`; §1.3 fixes its shape, and O-7/O-10 leave the full relation
+  `≈_obs`/`≈_τ`; §1.3 fixes its shape (complete behaviors, finite-prefix
+  closure, `Diverge` with visible traces), and O-7/O-10 leave the full relation
   open. Finite fixture observations are partial evidence, not the relation.
 - No equality of allocation addresses, allocation counts, RSS, stack depth,
   timing, or GC schedule; those are not observable. Logical ownership is a
