@@ -1,0 +1,68 @@
+{
+  "schema": "descriptor-nf-native-step-smoke-v1",
+  "base": "work/fir-root-consumers-verified@115522b4 (array fact fixes) + consumer ABI 8e1dc5c2 + NF intake; measured in work/fir-nf-combined57ab@dfcad4b8",
+  "branch": "work/fir-nf-combined57ab",
+  "intake": "descriptor_nf wholesale from 0fe5d8d7 (source sha256 82986f92511b0c18818ca8f19fa20e55e4b9b27725689f89656ff8818d2018de); backend_ir keeps current content minus the unused Head block",
+  "publicApi": [
+    "NfContext",
+    "nf_context",
+    "nf",
+    "normalize",
+    "normalize_in",
+    "answer_descriptor"
+  ],
+  "fixture": {
+    "path": "evals/descriptor_nf_smoke.bend",
+    "sha256": "fc776eac1122325fa9bdc0c250e8bdea41ee0949b28f9e56a2f70b2237fee573"
+  },
+  "config": {
+    "path": "evals/descriptor_nf_step_smoke.ts",
+    "sha256": "6b6f32d26490d6065a77264a1abdb80e46f1afc56b8b55d1fcb374b30f3626da",
+    "mode": "template",
+    "root": "main",
+    "result": "NfSmoke",
+    "providerClosure": [
+      "bend2/selfhost/descriptor_nf.bend"
+    ]
+  },
+  "generated": {
+    "component": "checkpoints/descriptor_nf_steps_component_v1.bend",
+    "componentSha256": "547ef7d23d35e7d0201db59b6224679e5695b930c94e437e8a07fab1ff2c7304",
+    "stepDefinitions": 60,
+    "helpers": 167,
+    "descriptorNfComposedDeclarations": 67,
+    "recursiveHelpers": 1,
+    "recursiveFunction": "template_chunk",
+    "residualSourceCalls": 0,
+    "chunkQuantum": 64,
+    "semanticFuelChanged": false
+  },
+  "native": {
+    "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+    "compilerSha256": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70",
+    "bookLoadBookValid": "VALID"
+  },
+  "execution": {
+    "driver": "evals/descriptor_nf_step_smoke.ts --run=ART (opaque Run chunks; no host semantic limit)",
+    "chunks": 139,
+    "observedBits": "1111111111111111111",
+    "artifactSha256": "2fde7ab3fa1d2c06c7d1dc274c297bfab20fab37f6cc024ab1c4ed919d298943",
+    "emission": "guarded checker_core_component_build with --exports=expand_modules_start,template_step; artifact and report under /tmp"
+  },
+  "expectedBits": "1111111111111111111",
+  "guardedWorkerBuild": "PASS on work/fir-nf-combined57ab@dfcad4b8; see guardedBuild",
+  "admission_boundary": "Only the generated step component under checkpoints/ is natively admitted. The raw canonical fixture and the raw descriptor_nf provider source are NOT admitted without generateNativeSteps; book_valid VALID below refers to checkpoints/descriptor_nf_steps_component_v1.bend.",
+  "clay_reuse": "NativeCLayAdmission composes the CLay entry as canonical with providerClosure including bend2/selfhost/descriptor_nf.bend in template mode, root/result from CLay, reusing evals/descriptor_nf_step_smoke.ts (work/nf-verified57ab 6309cfc9) for owned source, composition proof, manifest and generateNativeSteps.",
+  "guardedBuild": {
+    "tree": "work/fir-nf-combined57ab@dfcad4b8",
+    "status": "PASS",
+    "checkedDefinitions": 542,
+    "eventsFullyValidated": 748,
+    "liveBodies": 542,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "artifactSha256": "2fde7ab3fa1d2c06c7d1dc274c297bfab20fab37f6cc024ab1c4ed919d298943",
+    "sourceSha256": "547ef7d23d35e7d0201db59b6224679e5695b930c94e437e8a07fab1ff2c7304",
+    "guardian": "PASS, peak RSS 264814592 B, footprint 230575088 B, 834 ms"
+  }
+}
