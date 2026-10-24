@@ -127,18 +127,15 @@ def code_seq(+pa: Code, +pb: Code) -> Code:
         case CodeFail{message}: CodeFail{message}
         case CodeOk{more}: CodeOk{List.append(&2, String, lines, more)}
 
-def code_expr(+pcode: Code, +pexpression: String) -> String:
-  match pcode:
-    case CodeFail{+message}: "(0)"
-    case CodeOk{+lines}:
-      match lines:
-        case Nil{}: pexpression
-        case +line <> +rest: join_text(["({\n", String.join(lines, "\n"), "\n", pexpression, ";\n})"])
+def code_text(+plines: List<&2, String>, +pexpression: String) -> String:
+  match plines:
+    case Nil{}: pexpression
+    case +line <> +rest: join_text(["({\n", String.join(plines, "\n"), "\n", pexpression, ";\n})"])
 
 def part_of(+pcode: Code, +pexpression: String) -> Part:
   match pcode:
     case CodeFail{+message}: PartFail{message}
-    case CodeOk{+lines}: PartOk{code_expr(pcode, pexpression)}
+    case CodeOk{+lines}: PartOk(code_text(lines, pexpression))
 
 # ---------------------------------------------------------------------------
 # Lookups
@@ -434,6 +431,12 @@ def expand_conv(+pw: World, +ptake: CLay.Unfill, +pmake: CLay.Fill, +psrc: Src, 
     case CLay.UnfillWord{}: expand_word_take(pw, pmake, psrc, pdst, ptag)
     case CLay.UnfillForm{words, arms}: expand_form_take(pw, arms, pmake, psrc, pdst, ptag)
 
+def work_fuel(+pmeasure: Nat) -> Nat:
+  Nat.mul(64n, Nat.add(1n, pmeasure))
+
+def job_fuel(+pjobs: List<&2, Job>, +pwords: Nat) -> Nat:
+  work_fuel(Nat.add(List.length(&2, Job, pjobs), pwords))
+
 def run_jobs(+pfuel: Nat, +pjobs: List<&2, Job>, +pw: World, +pacc: List<&2, String>) -> Code:
   match pfuel:
     case 0n: CodeFail{"the C conversion exceeds its work fuel"}
@@ -590,11 +593,11 @@ def one_job(+pjob: Job) -> List<&2, Job>:
 
 def construct_words(+pw: World, +pcid: U32, +pcount: Nat, +pslots: List<&2, CLay.NodeSlot>, +poperands: List<&2, Operand>) -> Part:
   jobs = List.append(&2, Job, one_job(JText{dst_decl("w0", "o0", pcount)}), List.append(&2, Job, fill_slots_jobs(pw, pslots, poperands), List.append(&2, Job, seal_slots_jobs(pw, pslots, poperands), one_job(JText{String.append(String.append(String.append(String.append("u64 n0 = heap_alloc(e, cls_fit(", Nat.show(pcount)), ")); for (u32 n0i = 0; n0i < "), Nat.show(pcount)), "; n0i += 1) { e.mem[n0 + n0i] = w0[n0i]; }")}))))
-  part_of(run_jobs(100000n, jobs, pw, Nil{}), String.append(String.append("term_ctr(", U32.show(pcid)), "u, n0)"))
+  part_of(run_jobs(job_fuel(jobs, Nat.add(List.length(&2, CLay.NodeSlot, pslots), pcount)), jobs, pw, Nil{}), String.append(String.append("term_ctr(", U32.show(pcid)), "u, n0)"))
 
 def codeSeqPack(+pcode: Code, +pw: World, +playout: CLay.Layout, +pterm: String, +pcid: U32) -> Code:
   jobs = List.append(&2, Job, one_job(JText{"u64 w0[1]; w0[0] = 0; u32 o0 = 0;"}), List.append(&2, Job, code_jobs(pcode), fill_jobs(pw, playout, pterm, DstSeq{"w0", "o0"}, "p0")))
-  run_jobs(100000n, jobs, pw, Nil{})
+  run_jobs(job_fuel(jobs, 1n), jobs, pw, Nil{})
 
 def construct_packed_one(+pw: World, +pcid: U32, +pslot: CLay.NodeSlot, +pfield: Operand) -> Part:
   match pslot:
@@ -685,11 +688,11 @@ def term_decl_text(+pcount: Nat) -> String:
 
 def project_words(+pw: World, +playout: CLay.Layout, +poffset: Nat, +pcount: Nat, +pvalue: String) -> Part:
   jobs = List.append(&2, Job, ([JText{join_text(["Term b0t = ", pvalue, ";", term_decl_text(pcount), "u64 b0s = term_rfc(b0t) ? ctr_take(e, b0t, ", Nat.show(pcount), ", b0f) : term_loc(b0t); u32 b0i = ", Nat.show(poffset), "; Term b0r = 0;"])}]), unfill_jobs(pw, playout, SrcNode{"b0s", "b0f", "b0i", False{}}, "b0r", "b0"))
-  part_of(run_jobs(100000n, jobs, pw, Nil{}), "b0r")
+  part_of(run_jobs(job_fuel(jobs, 1n), jobs, pw, Nil{}), "b0r")
 
 def project_packed(+pw: World, +playout: CLay.Layout, +pvalue: String) -> Part:
 jobs = List.append(&2, Job, [JText{join_text(["Term b0t = ", pvalue, ";"])}], unfill_jobs(pw, playout, SrcOne{"((u64)term_loc(b0t))"}, "b0r", "b0"))
-  part_of(run_jobs(100000n, jobs, pw, Nil{}), "b0r")
+  part_of(run_jobs(job_fuel(jobs, 1n), jobs, pw, Nil{}), "b0r")
 
 def project_packed_flag(+ppacked: Bool, +pw: World, +playout: CLay.Layout, +poffset: Nat, +pcount: Nat, +pvalue: String) -> Part:
   match ppacked:
@@ -876,7 +879,7 @@ def elem_decl(+pwords: Nat) -> String:
   dst_decl("w0", "o0", pwords)
 
 def run_part(+pjobs: List<&2, Job>, +pw: World, +pexpression: String) -> Part:
-  part_of(run_jobs(100000n, pjobs, pw, Nil{}), pexpression)
+  part_of(run_jobs(job_fuel(pjobs, 1n), pjobs, pw, Nil{}), pexpression)
 
 def array_new_ops(+pdim: Maybe<&2, Operand>, +pvalue: Maybe<&2, Operand>, +pw: World, +playout: CLay.Layout, +parr: Bool, +pwords: Nat, +plgs: Nat) -> Part:
   match pdim:
@@ -902,7 +905,7 @@ def array_get_ops(+parray: Maybe<&2, Operand>, +pindex: Maybe<&2, Operand>, +pw:
         case None{}: PartFail{"array_get needs the array and the index"}
         case Some{index}:
           jobs = List.append(&2, Job, ([JText{join_text(["Term a0 = ", keep_text(array), "; Term i0 = ", operand_text(index), "; u64 l0 = blk_loc(e.mem, a0); u32 g0 = (u32)blk_at(a0, (u64)(u32)i0, ", Nat.show(plgs), "); u32 c0 = 0; Term r0 = 0;"])}]), unfill_jobs(pw, playout, SrcBlock{"l0", "g0", parr, True{}, "c0"}, "r0", "ag"))
-          code = run_jobs(100000n, jobs, pw, Nil{})
+          code = run_jobs(job_fuel(jobs, 1n), jobs, pw, Nil{})
           tuple_and_code(tuple_part(pw, "a0", "r0"), code)
 
 def kinds_jobs(+pkinds: List<&2, CLay.CWord>, +pcur: String) -> List<&2, Job>:
@@ -946,7 +949,7 @@ def array_set_run(+parray: Operand, +pindex: Operand, +pvalue: Operand, +pw: Wor
   old = kinds_box_jobs(kinds, "c0", parr)
   rest = List.append(&2, Job, [JText{"c0 = 0;"}], List.append(&2, Job, write_jobs(parr, kinds, "c0"), List.append(&2, Job, [JText{"c0 = 0;"}], old_sink_jobs(kinds, "c0"))))
   jobs = List.append(&2, Job, ([JText{join_text(["Term a0 = ", keep_text(parray), "; Term i0 = ", operand_text(pindex), "; u64 l0 = blk_loc(e.mem, a0); u32 g0 = (u32)blk_at(a0, (u64)(u32)i0, ", Nat.show(plgs), "); Term old0[", Nat.show(pwords), "]; u32 c0 = 0;"])}]), List.append(&2, Job, old, List.append(&2, Job, [JText{elem_decl(pwords)}], List.append(&2, Job, elem_fill(pw, playout, operand_use(pvalue), operand_text(pvalue), "as"), rest))))
-  part_of(run_jobs(100000n, jobs, pw, Nil{}), "a0")
+  part_of(run_jobs(job_fuel(jobs, 1n), jobs, pw, Nil{}), "a0")
 
 def array_set_ops(+parray: Maybe<&2, Operand>, +pindex: Maybe<&2, Operand>, +pvalue: Maybe<&2, Operand>, +pw: World, +playout: CLay.Layout, +parr: Bool, +pwords: Nat, +plgs: Nat) -> Part:
   match parray:
@@ -965,7 +968,7 @@ def array_swap_run(+parray: Operand, +pindex: Operand, +pvalue: Operand, +pw: Wo
   unfill = unfill_jobs(pw, playout, SrcBuf{"old0", "oc0"}, "r0", "awold")
   rest = List.append(&2, Job, [JText{"c0 = 0;"}], List.append(&2, Job, write_jobs(parr, kinds, "c0"), List.append(&2, Job, [JText{"u32 oc0 = 0;"}], unfill)))
   jobs = List.append(&2, Job, ([JText{join_text(["Term a0 = ", keep_text(parray), "; Term i0 = ", operand_text(pindex), "; u64 l0 = blk_loc(e.mem, a0); u32 g0 = (u32)blk_at(a0, (u64)(u32)i0, ", Nat.show(plgs), "); Term old0[", Nat.show(pwords), "]; u32 c0 = 0; Term r0 = 0;"])}]), List.append(&2, Job, old, List.append(&2, Job, [JText{elem_decl(pwords)}], List.append(&2, Job, elem_fill(pw, playout, operand_use(pvalue), operand_text(pvalue), "aw"), rest))))
-  code = run_jobs(100000n, jobs, pw, Nil{})
+  code = run_jobs(job_fuel(jobs, 1n), jobs, pw, Nil{})
   tuple_and_code(tuple_part(pw, "a0", "r0"), code)
 
 def array_swap_ops(+parray: Maybe<&2, Operand>, +pindex: Maybe<&2, Operand>, +pvalue: Maybe<&2, Operand>, +pw: World, +playout: CLay.Layout, +parr: Bool, +pwords: Nat, +plgs: Nat) -> Part:
@@ -982,14 +985,14 @@ def array_swap_ops(+parray: Maybe<&2, Operand>, +pindex: Maybe<&2, Operand>, +pv
 def array_size_ops(+parray: Maybe<&2, Operand>, +pw: World, +plgs: Nat) -> Part:
   match parray:
     case Some{array}:
-      code = run_jobs(100000n, [JText{join_text(["Term a0 = ", keep_text(array), ";"])}], pw, Nil{})
+      code = run_jobs(job_fuel(one_job(JText{join_text(["Term a0 = ", keep_text(array), ";"])}), 1n), one_job(JText{join_text(["Term a0 = ", keep_text(array), ";"])}), pw, Nil{})
       tuple_and_code(tuple_part(pw, "a0", join_text(["(1ull << (blk_cls(a0) - ", Nat.show(plgs), "))"])), code)
     case None{}: PartFail{"array_size needs the array"}
 
 def array_clone_ops(+parray: Maybe<&2, Operand>, +pw: World) -> Part:
   match parray:
     case Some{array}:
-      code = run_jobs(100000n, [JText{join_text(["Term a0 = ", keep_text(array), ";"])}], pw, Nil{})
+      code = run_jobs(job_fuel(one_job(JText{join_text(["Term a0 = ", keep_text(array), ";"])}), 1n), one_job(JText{join_text(["Term a0 = ", keep_text(array), ";"])}), pw, Nil{})
       tuple_and_code(tuple_part(pw, "a0", "blk_copy(e, a0)"), code)
     case None{}: PartFail{"array_clone needs the array"}
 
@@ -1011,10 +1014,10 @@ def array_node_ops(+pleft: Maybe<&2, Operand>, +pright: Maybe<&2, Operand>) -> P
 def array_leaf_value_use(+puse: BIR.Use, +pw: World, +playout: CLay.Layout, +parr: Bool, +parray: Operand) -> Part:
   match puse:
     case BIR.Many{}:
-      part_of(run_jobs(100000n, List.append(&2, Job, one_job(JText{String.append(String.append("Term a0 = term_keep(e, ", operand_text(parray)), ", 1); u64 l0 = blk_loc(e.mem, a0); Term r0 = 0; u32 c0 = 0;")}), unfill_jobs(pw, playout, SrcBlock{"l0", "0", parr, True{}, "c0"}, "r0", "av")), pw, Nil{}), "r0")
+      part_of(run_jobs(work_fuel(Nat.add(2n, CLay.layout_words(playout))), List.append(&2, Job, one_job(JText{String.append(String.append("Term a0 = term_keep(e, ", operand_text(parray)), ", 1); u64 l0 = blk_loc(e.mem, a0); Term r0 = 0; u32 c0 = 0;")}), unfill_jobs(pw, playout, SrcBlock{"l0", "0", parr, True{}, "c0"}, "r0", "av")), pw, Nil{}), "r0")
     case _:
       jobs = List.append(&2, Job, one_job(JText{String.append(String.append("Term a0 = term_keep(e, ", operand_text(parray)), ", 1); u64 l0 = blk_loc(e.mem, a0); Term r0 = 0; u32 c0 = 0;")}), List.append(&2, Job, unfill_jobs(pw, playout, SrcBlock{"l0", "0", parr, False{}, "c0"}, "r0", "av"), one_job(JText{"blk_free(e, a0);"})))
-      part_of(run_jobs(100000n, jobs, pw, Nil{}), "r0")
+      part_of(run_jobs(job_fuel(jobs, 1n), jobs, pw, Nil{}), "r0")
 
 def array_leaf_value_ops(+parray: Maybe<&2, Operand>, +pw: World, +playout: CLay.Layout, +parr: Bool) -> Part:
   match parray:
@@ -1284,14 +1287,24 @@ def family_arms(+pwant: String, +pfamilies: List<&2, BIR.Family>) -> Maybe<&2, L
           same = String.eq(pwant, key)
           Bool.pick(Maybe<&2, List<&2, BIR.DescriptorArm>>, same, Some{arms}, family_arms(pwant, rest))
 
-def show_cid_of_key(+pwant: String, +pconstructors: List<&2, BIR.ConstructorLayout>) -> Nat:
-  match pconstructors:
-    case Nil{}: 0n
-    case +item <> +rest:
-      match item:
+def ctor_find_key(+pwant: String, +prows: List<&2, BIR.ConstructorLayout>) -> Maybe<&2, BIR.ConstructorLayout>:
+  match prows:
+    case Nil{}: None{}
+    case +row <> +rest:
+      match row:
         case BIR.ConstructorLayout{id, key, native, fields}:
           same = String.eq(key, pwant)
-          Bool.pick(Nat, same, U32.to_nat(id), show_cid_of_key(pwant, rest))
+          Bool.pick(Maybe<&2, BIR.ConstructorLayout>, same, Some{row}, ctor_find_key(pwant, rest))
+
+def show_cid_found(+pfound: Maybe<&2, BIR.ConstructorLayout>) -> Maybe<&2, Nat>:
+  match pfound:
+    case None{}: None{}
+    case Some{row}:
+      match row:
+        case BIR.ConstructorLayout{id, key, native, fields}: Some{U32.to_nat(id)}
+
+def show_cid_of_key(+pwant: String, +pconstructors: List<&2, BIR.ConstructorLayout>) -> Maybe<&2, Nat>:
+  show_cid_found(ctor_find_key(pwant, pconstructors))
 
 def show_arm_bracket_name(+pname: String) -> Nat:
   match pname:
@@ -1417,19 +1430,19 @@ def show_desc_expand(+pty: BIR.Descriptor) -> List<&2, ShowToken>:
     case BIR.DescriptorReflexivity{}: [ShowTokText{"R"}]
     case _: [ShowTokText{"?"}]
 
-def show_render_tokens(+pfuel: Nat, +ptokens: List<&2, ShowToken>, +pacc: String) -> String:
+def show_render_tokens(+pfuel: Nat, +ptokens: List<&2, ShowToken>, +pacc: String) -> Maybe<&2, String>:
   match pfuel:
-    case 0n: pacc
+    case 0n: None{}
     case 1n+p:
       match ptokens:
-        case Nil{}: pacc
+        case Nil{}: Some{pacc}
         case +tok <> +rest:
           match tok:
             case ShowTokText{text}: show_render_tokens(p, rest, join_text([pacc, text]))
             case ShowTokDesc{descriptor}: show_render_tokens(p, List.append(&2, ShowToken, show_desc_expand(descriptor), rest), pacc)
 
-def show_descriptor_key(+pty: BIR.Descriptor) -> String:
-  show_render_tokens(4000n, [ShowTokDesc{pty}], "")
+def show_descriptor_key(+pty: BIR.Descriptor, +pfuel: Nat) -> Maybe<&2, String>:
+  show_render_tokens(pfuel, [ShowTokDesc{pty}], "")
 
 def show_array_cell(+pcell: CLay.CellResult, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pelement: BIR.Descriptor, +pat: Nat, +pst: ShowState) -> ShowAdvance:
   match pcell:
@@ -1521,9 +1534,16 @@ def fields_advance(+pctx: CLay.Context, +pconstructors: List<&2, BIR.Constructor
 
 def show_data_arm_header(+pfields: List<&2, BIR.DescriptorField>, +pkey: String, +prest: List<&2, BIR.DescriptorArm>, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pbox: Nat, +pcount: Nat, +pst: ShowState) -> ShowAdvance:
   index = List.length(&2, String, show_names(pst))
-  st = show_append_num(show_append_cid(show_append_num(pst, index), show_cid_of_key(pkey, pconstructors)), List.length(&2, BIR.DescriptorField, pfields))
-  st2 = show_append_name(show_append_num(st, show_arm_bracket(pkey)), pkey)
-  fields_advance(pctx, pconstructors, pfamilies, pkey, pfields, playout, pbox, pcount, st2)
+  show_data_arm_cid(show_cid_of_key(pkey, pconstructors), pfields, pkey, pctx, pconstructors, pfamilies, playout, pbox, pcount, pst)
+
+def show_data_arm_cid(+pcid: Maybe<&2, Nat>, +pfields: List<&2, BIR.DescriptorField>, +pkey: String, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +playout: CLay.Layout, +pbox: Nat, +pcount: Nat, +pst: ShowState) -> ShowAdvance:
+  match pcid:
+    case None{}: ShowNext{show_state_error(pst, join_text(["the constructor `", pkey, "` has no assigned C id"])), Nil{}}
+    case Some{cid}:
+      index = List.length(&2, String, show_names(pst))
+      st = show_append_num(show_append_cid(show_append_num(pst, index), cid), List.length(&2, BIR.DescriptorField, pfields))
+      st2 = show_append_name(show_append_num(st, show_arm_bracket(pkey)), pkey)
+      fields_advance(pctx, pconstructors, pfamilies, pkey, pfields, playout, pbox, pcount, st2)
 
 def show_data_arm_erased(+perased: Bool, +pfields: List<&2, BIR.DescriptorField>, +pkey: String, +prest: List<&2, BIR.DescriptorArm>, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pbox: Nat, +pcount: Nat, +pst: ShowState) -> ShowAdvance:
   match perased:
@@ -1599,7 +1619,13 @@ def show_advance_norm(+pnorm: ShowNorm, +pctx: CLay.Context, +pconstructors: Lis
   match pnorm:
     case ShowNormFailed{message}: ShowNext{show_state_error(pst, message), Nil{}}
     case ShowNormOk{descriptor}:
-      key = join_text([show_descriptor_key(descriptor), "@", show_layout_key(playout)])
+      show_advance_key(show_descriptor_key(descriptor, work_fuel(Nat.add(8n, CLay.layout_words(playout)))), pctx, pconstructors, pfamilies, pty, playout, ppatch, pst)
+
+def show_advance_key(+pkey: Maybe<&2, String>, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +ppatch: Maybe<&2, Nat>, +pst: ShowState) -> ShowAdvance:
+  match pkey:
+    case None{}: ShowNext{show_state_error(pst, "the show descriptor key did not finish"), Nil{}}
+    case Some{text}:
+      key = join_text([text, "@", show_layout_key(playout)])
       found = IndexLookup.find(Nat, show_memo(pst), key)
       show_advance_memo(found, key, pctx, pconstructors, pfamilies, pty, playout, ppatch, pst)
 
@@ -1670,7 +1696,7 @@ def show_root(+pvl: CLay.LayoutResult, +pctx: CLay.Context, +pmain: BIR.Descript
   match pvl:
     case CLay.LayoutFailed{message}: ShowFail{message}
     case CLay.LayoutFound{layout}:
-      run = run_show(100000n, pctx, pconstructors, pfamilies, [ShowNode{pmain, show_root_layout(layout), None{}}], show_state0())
+      run = run_show(work_fuel(Nat.add(CLay.layout_words(layout), CLay.layout_words(show_root_layout(layout)))), pctx, pconstructors, pfamilies, [ShowNode{pmain, show_root_layout(layout), None{}}], show_state0())
       show_result(run)
 
 # A callable result is ONE Term: a raw word for Nat/U32/F32, a tagged term for
