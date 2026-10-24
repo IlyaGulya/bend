@@ -24,13 +24,24 @@
     }
   },
   "clay": {
-    "current": "work/clay-native57ab@d26bd496",
-    "numbers": "221 definitions / 616 helpers, owned 2880e527, step output b1150172, guarded PASS 254509056 B / 769 ms under the original guards, host Run failures 0 with 1061790 chunks, artifact d0ea9282, F399=0",
-    "scope": "CLay boundary does not compose into the compiler root",
+    "current": "work/clay-native57ab@c3b2354f (against NF 10c2290b)",
+    "numbers": "221 definitions / 616 helpers, owned fed9baa4, step output ebca88c4, guarded PASS 254164992 B / 1276 ms under the original guards, host Run failures 0 with 1061790 chunks, artifact 5449d63f, F399=0",
+    "scope": "standalone CLay+NF closure; does not compose into the compiler root",
+    "next": "regenerates exactly once after the combined pass lands (10c2290b + CPS performance source) and produces one receipt for the combined bytes; no regeneration before Root's signal",
     "superseded": [
-      "d4a2f11e",
-      "f67a5e3a",
-      "4a6b959b"
+      {
+        "commit": "d26bd496",
+        "note": "against NF 3a27aad9"
+      },
+      {
+        "commit": "d4a2f11e"
+      },
+      {
+        "commit": "f67a5e3a"
+      },
+      {
+        "commit": "4a6b959b"
+      }
     ]
   },
   "datatypeHeaders": {
