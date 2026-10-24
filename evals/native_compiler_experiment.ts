@@ -5,8 +5,21 @@
  *   [--v8-log-dir=FRESH_DIRECTORY] (build-only statistical sampling diagnostic)
  *   [--build-timeout-ms=90000] (build-only downward bound; default/max600000)
  *   [--trace-c=true] (per-pass/definition/spin/cache profiling; off by default)
- *   [--cc-opt=0|1|2|3] (build-only; default3 matches official CPU flags;
- *     lower levels are explicitly recorded diagnostic compilation tradeoffs)
+ *   [--cc-pipeline=direct|llvm-split] (build-only; direct by default, no fallback)
+ *   [--llvm-bin=PATH] (split-only opt/llvm-split directory; otherwise use PATH)
+ *   [--cc-opt=0|1|2|3] (direct defaults3; split defaults/requires1)
+ *
+ * llvm-split requires Darwin arm64, Apple clang21 selected by CC, matching
+ * LLVM21 opt/llvm-split and the macOS SDK (SDKROOT or xcrun). It emits raw
+ * bitcode at O1 without LLVM passes, runs mem2reg/always-inline and the normal
+ * CGSCC inliner, splits four ways, then runs at most three O1 backend children
+ * and links normally. Source/ABI/target/tool facts and Darwin time -lp
+ * CPU/maxRSS receipts are preserved per stage. The same outer8GiB/10ms/600s
+ * guardian includes all children; separate codegen exits before the backend.
+ * The whole-build guardian timer includes fresh validation/codegen. Pipeline
+ * and per-stage timers cover only the backend, not a complete producer cycle.
+ * This is an explicit compilation tradeoff, not official-default flags or a
+ * fixedpoint proof. Selecting direct still invokes the original single-TU CC.
  * Run: bun --smol evals/native_compiler_experiment.ts --mode=run
  *   --corpus=MANIFEST.json --build=BUILD.json --report=FRESH.json
  *   [--phase=check|compile] [--threads=1] [--exports=EXPORTS.json]
@@ -58,12 +71,13 @@ let reportWritable=false;
 type CorpusFile = {path:string;sha256:string;namespace?:string;external?:boolean};
 type Corpus = {directory:string;root:string;exports:string[];files:CorpusFile[]};
 type Options = {mode:string;corpus:string;report:string;artifact?:string;build?:string;
-  phase:string;threads:number;exports?:string;expectJs?:string;internal?:string;v8LogDir?:string;buildTimeoutMs:number;traceC:boolean;ccOpt:number};
+  phase:string;threads:number;exports?:string;expectJs?:string;internal?:string;v8LogDir?:string;buildTimeoutMs:number;traceC:boolean;ccOpt:number;
+  ccPipeline:'direct'|'llvm-split';llvmBin?:string};
 function options():Options {
   const flags = new Map<string,string>();
   for (const arg of process.argv.slice(2)) {
     const at=arg.indexOf('='), key=arg.slice(0,at), value=arg.slice(at+1);
-    if(at<0||!['--mode','--corpus','--report','--artifact','--build','--phase','--threads','--exports','--expect-js','--internal','--v8-log-dir','--build-timeout-ms','--trace-c','--cc-opt'].includes(key)||!value||flags.has(key))throw Error('Expected unique documented --option=value');
+    if(at<0||!['--mode','--corpus','--report','--artifact','--build','--phase','--threads','--exports','--expect-js','--internal','--v8-log-dir','--build-timeout-ms','--trace-c','--cc-opt','--cc-pipeline','--llvm-bin'].includes(key)||!value||flags.has(key))throw Error('Expected unique documented --option=value');
     flags.set(key,value);
   }
   for(const key of ['--mode','--corpus','--report'])if(!flags.has(key))throw Error('Missing '+key);
@@ -76,8 +90,13 @@ function options():Options {
   if(!Number.isSafeInteger(buildTimeoutMs)||buildTimeoutMs<1||buildTimeoutMs>600000||flags.has('--build-timeout-ms')&&mode!=='build')throw Error('--build-timeout-ms is build-only and may only lower the 600000 ms deadline');
   if(flags.has('--trace-c')&&(mode!=='build'||flags.get('--trace-c')!=='true'))throw Error('--trace-c=true is a build-only diagnostic');
   if(flags.has('--cc-opt')&&(mode!=='build'||!/^[0-3]$/.test(flags.get('--cc-opt')!)))throw Error('--cc-opt is build-only and must be 0, 1, 2 or 3');
+  const ccPipeline=flags.get('--cc-pipeline')??'direct';
+  if(!['direct','llvm-split'].includes(ccPipeline)||flags.has('--cc-pipeline')&&mode!=='build')throw Error('--cc-pipeline=direct|llvm-split is build-only');
+  if(flags.has('--llvm-bin')&&(mode!=='build'||ccPipeline!=='llvm-split'))throw Error('--llvm-bin requires a build with --cc-pipeline=llvm-split');
+  const ccOpt=Number(flags.get('--cc-opt')??(ccPipeline==='llvm-split'?'1':'3'));
+  if(ccPipeline==='llvm-split'&&ccOpt!==1)throw Error('--cc-pipeline=llvm-split requires --cc-opt=1');
   const path=(name:string)=>flags.has(name)?resolve(flags.get(name)!):undefined;
-  return {mode,corpus:path('--corpus')!,report:path('--report')!,artifact:path('--artifact'),build:path('--build'),phase,threads,exports:path('--exports'),expectJs:path('--expect-js'),internal:flags.get('--internal'),v8LogDir:path('--v8-log-dir'),buildTimeoutMs,traceC:flags.has('--trace-c'),ccOpt:Number(flags.get('--cc-opt')??'3')};
+  return {mode,corpus:path('--corpus')!,report:path('--report')!,artifact:path('--artifact'),build:path('--build'),phase,threads,exports:path('--exports'),expectJs:path('--expect-js'),internal:flags.get('--internal'),v8LogDir:path('--v8-log-dir'),buildTimeoutMs,traceC:flags.has('--trace-c'),ccOpt,ccPipeline:ccPipeline as Options['ccPipeline'],llvmBin:path('--llvm-bin')};
 }
 function corpus(path:string):Corpus {
   const manifest=json(path) as Corpus;
@@ -96,7 +115,7 @@ function corpus(path:string):Corpus {
   return manifest;
 }
 function pins(o:Options):Record<string,string>{
-  const paths=[script,kernelPath,compilerPath,bridge,join(root,'evals/native_compiler_host.c'),join(root,'bend2/base.bend'),join(root,'evals/heavy_gate.ts'),join(root,'evals/heavy_gate_native.c'),o.corpus];
+  const paths=[script,join(root,'evals/native_compiler_llvm.ts'),kernelPath,compilerPath,bridge,join(root,'evals/native_compiler_host.c'),join(root,'bend2/base.bend'),join(root,'evals/heavy_gate.ts'),join(root,'evals/heavy_gate_native.c'),o.corpus];
   const result=Object.fromEntries(paths.map(path=>[realpathSync(path),hash(path)]));
   if(hash(kernelPath)!==kernelSha256)throw Error('Canonical kernel pin mismatch');
   return result;
@@ -232,14 +251,25 @@ async function buildWorker(o:Options){
   await child(codegen[0],codegen.slice(1));
   progress(o,'codegen-process','complete');
   const report=json(o.report),cc=process.env.CC??'clang';
-  // Official CPU flags by default. Explicit lower optimization levels are
-  // authenticated diagnostic tradeoffs, not an official-flags speed claim.
-  const args=['-std=c11','-O'+o.ccOpt,report.cPath,'-lpthread','-lm','-o',o.artifact!];
-  progress(o,'clang','start',{command:[cc,...args]});
-  await child(cc,args);
-  progress(o,'clang','complete',{artifact:o.artifact});
-  verify(report.protectedPins);verify(report.loadedInputs);corpus(o.corpus);
-  save(o.report,{...report,status:'NATIVE_EXECUTABLE_BUILT_NOT_YET_RUN',artifactSha256:hash(o.artifact!),buildCommand:[cc,...args]});
+  if(o.ccPipeline==='llvm-split'){
+    // Backend-only code runs in its own guarded Bun process, never in the
+    // Node codegen workers. Its source is included in the protected pins.
+    progress(o,'llvm-pipeline','start');
+    await child(process.execPath,['--smol',join(root,'evals/native_compiler_llvm.ts'),o.report,cc,o.llvmBin??'']);
+    const pipeline=json(o.report).ccPipeline;
+    progress(o,'llvm-pipeline','complete',{elapsedMs:pipeline.elapsedMs});
+    verify(report.protectedPins);verify(report.loadedInputs);corpus(o.corpus);
+    save(o.report,{...report,status:'NATIVE_EXECUTABLE_BUILT_NOT_YET_RUN',artifactSha256:hash(o.artifact!),
+      ccPipeline:pipeline,buildCommands:pipeline.stages.map((stage:{command:string[]})=>stage.command)});
+  }else{
+    // The original direct CC path remains an explicit genuine alternative.
+    const args=['-std=c11','-O'+o.ccOpt,report.cPath,'-lpthread','-lm','-o',o.artifact!];
+    progress(o,'clang','start',{command:[cc,...args]});
+    await child(cc,args);
+    progress(o,'clang','complete',{artifact:o.artifact});
+    verify(report.protectedPins);verify(report.loadedInputs);corpus(o.corpus);
+    save(o.report,{...report,status:'NATIVE_EXECUTABLE_BUILT_NOT_YET_RUN',artifactSha256:hash(o.artifact!),buildCommand:[cc,...args],ccPipeline:{kind:'direct'}});
+  }
 }
 function exportNames(o:Options,input:Corpus):string[]{
   const data=o.exports?json(o.exports):input.exports;

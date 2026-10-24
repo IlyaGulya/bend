@@ -5,6 +5,12 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- Native compiler builds can explicitly select `--cc-pipeline=llvm-split` on
+  Darwin arm64 with Apple clang21 and matching LLVM21 tools. Four bitcode
+  partitions use at most three backend children under the unchanged whole-build
+  memory/deadline guard. Each stage records real CPU, wall time, maximum RSS and
+  tool/ABI provenance; direct compilation remains the default, without fallback.
+
 - Native heterogeneous continuation stacks run inside checked Bend chunks.
   Node and C consume opaque Run states or one-use native view thunks; public
   export names/count remain ten (nine for subsets). Phase trace version3

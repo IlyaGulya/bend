@@ -18,10 +18,16 @@ Source Run/Stack введён без изменения leaf resume closures/Dir
 Bound association/host LIFO удалены, имена10/9 exports прежние.3helper bodies/mode,
 не3000 frame-site helpers. Все generated wrappers регенерированы, не патчились.
 Native C ТАКЖЕ выполнен: тот же root SHAefab3bf81dd52f597645b20ddda482e11b961d342115ab62152535de55c26d26,
-bridge8409/8811, свежий C+binary+fullfrozen+7720 actual consumer заняли292.887708s
-под прежними8GiB guard. Build199102ms/6249355384physicalbytes, run93164ms/
-1300875376bytes. Это пока PROTOTYPE LLVM pipeline; NativeBitcode57U внедряет
-постоянный runnable source path, wrapper из/tmp не считать завершённой feature.
+bridge8409/8811, prototype fresh C+binary+fullfrozen+7720 consumer занял292.887708s.
+В57u интегрирован ПОСТОЯННЫЙ public `--cc-pipeline=llvm-split` и отдельный pinned
+Bun backend worker, без/tmp/Python-wrapper dependency. Новый полный smokePASS:
+build276744ms/6193748688physicalbytes, frozen93329ms/1300793432bytes,
+7720 actual consumerPASS; whole measured cycle370.743257s, НЕ stable300s.
+Backend97628.932ms близок prototype96612.559ms; fresh TS→C producer174086.786ms
+против prototype97891.856ms при ТОЧНО том же C22e60fac…; причина НЕ установлена.
+Guard8GiB/poll10ms/исходные deadlines прежние. LLVM defaults/requiresO1, four-way
+split/max3 backend children; source/tool/ABI и real Darwin time CPU/maxRSS receipts
+в compiler-ir-checkpoint-v57u.json. Direct default сохранён, отдельно не пересобирался.
 Строго same-host official наM3Pro/Node26.3 теперь8619.362542ms, НЕ старые32s
 другого окружения. Native93s пока намного медленнее; official НЕ обогнан.
 Local JS frozen119083.967ms против старогоK142821.056ms, но native JS seed producer
@@ -79,15 +85,15 @@ Dispatchers3.24/4.65MB; JIT-mechanism лишь INFERENCE, deopt evidence отс�
 existing request dispatchers уже группируются, новый giant dispatcher нарушил этот pattern.
 Small indexed model и native wrong-witness/reuse proofs сохранены отдельно в
 compiler-ir-frame-model-v57r.json; они не дают performance acceptance.
-Следующий57t: native heterogeneous LIFO Stack<A,R> + opaque Run<R>, старые leaf
-resume closures сохранены, Bound association и host LIFO убираются. Нет per-site
-3000 новых helpers/giant dispatcher; это пока design/experiment, НЕ измеренный win.
-StackGenerator57T — local heavy lane, StackRuntime57T — NHS послеR profiling.
-NativeBitcode57U — misaka: matching LLVM bitcode split ДО machine backend,
-на exact successful57q C; без C/JS patches/ослабления guard. Old partition57g
-sampler_error и noLLVM-machine physical failure не доказывают невозможность этого pipeline.
-Parent интегрирует только actual winners. Изменённый Progress/Run ABI требует
-свежей parser75 acceptance chain, полного root/frozen/285 и нового byte fixedpoint.
+После rejected57r принят57t: native heterogeneous LIFO Stack<A,R> + opaque Run<R>,
+старые leaf resume closures сохранены, Bound association и host LIFO удалены.
+Нет per-site3000 helpers/giant dispatcher; functional proof в начале этого handoff.
+57u добавляет supported matching LLVM bitcode split ДО machine backend без
+C/JS patches/ослабления guard. Old partition57g sampler_error и noLLVM-machine
+physical failure не доказывали невозможность этого отдельного pipeline.
+Parent интегрирует только проверенные изменения; memory/functional acceptance
+НЕ означают speed acceptance. Следующая оптимизация внутреннего Run loop остаётся
+private experiment до full native/frozen и нового неизменённого byte fixedpoint/285.
 
 ## Compiler57 — принятый functional FIR/BIR cutover, performance ещё не принят
 

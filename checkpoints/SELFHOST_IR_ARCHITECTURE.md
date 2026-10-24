@@ -22,8 +22,11 @@ giant dispatcher selftime. Это не production cutover и не общее о�
 bounded native Run<R> machine и убирает Bound association/host LIFO. Для нового
 Run ABI выполнены новая parser75 chain, полный native root, frozen, новый
 настоящий byte fixedpoint и285behavior — не перенесены старыеK proofs.
-Fresh current-root native C prototype cycle292.888s прошёл без cachedC под8GiB;
-permanent backend integration ещё в работе. Same-host official8.619s пока быстрее.
+Fresh current-root native C prototype cycle292.888s прошёл без cachedC под8GiB.
+Постоянный57u public llvm-split pipeline также полностью прошёл native/frozen/
+7720 consumer, но занял370.743s: TS→C producer174.087s, backend97.629s, native93.329s.
+Реальные per-stage CPU/maxRSS и tool/ABI pins сохранены; причина producer variance
+не установлена. Stable300s пока НЕ достигнуто. Same-host official8.619s быстрее.
 
 
 Единственный источник этого контракта — этот файл; оперативный статус, команды,
