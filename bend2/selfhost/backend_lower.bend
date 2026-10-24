@@ -391,9 +391,19 @@ def array_element_is_argument(op: BIR.Primitive) -> Bool:
 def array_primitive(+op: BIR.Primitive) -> Bool:
   match op:
     case BIR.PrimArrayNew{}: True{}
+    case BIR.PrimArraySet{}: True{}
+    case BIR.PrimArrayGet{}: True{}
+    case BIR.PrimArraySwap{}: True{}
+    case BIR.PrimArraySize{}: True{}
+    case BIR.PrimArrayClone{}: True{}
     case BIR.PrimArrayLeaf{}: True{}
     case BIR.PrimArrayNode{}: True{}
-    case _: array_element_is_argument(op)
+    case BIR.PrimArrayLeafValue{}: True{}
+    case BIR.PrimArrayLeft{}: True{}
+    case BIR.PrimArrayRight{}: True{}
+    case BIR.PrimIsArrayLeaf{}: True{}
+    case BIR.PrimIsArrayNode{}: True{}
+    case _: False{}
 
 def primitive(state: State, op: BIR.Primitive, values: List<&2, BIR.Atom>) -> LowerResult<BIR.Atom>:
   operation(state, BIR.PrimitiveCall{op, atom_arguments(values), Nil{}})
@@ -660,28 +670,28 @@ def head_definition(head: IR.Occurrence, registry: Catalog.Registry) -> Maybe<&2
     case IR.TypedOccurrence{_, _, _, Some{IR.Symbol{owner, local, IR.DefinitionSymbol{}, signature}}, _, _}:
       Catalog.lookup_definition(registry, IR.Symbol{owner, local, IR.DefinitionSymbol{}, signature})
     case _: None{}
-def applications(state: State, shape: Spine, env: List<&2, Slot>, registry: Catalog.Registry, span: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
+def applications(state: State, shape: Spine, ty: U32, env: List<&2, Slot>, registry: Catalog.Registry, span: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
   match shape:
-    case Spine{head, args}: application_header(state, head_definition(head, registry), head, args, env, registry, span)
+    case Spine{head, args}: application_header(state, head_definition(head, registry), head, args, ty, env, registry, span)
 def native_match_application_header_0(v_38: LowerResult<BIR.Atom>, v_7: List<&2, SourceArgument>, v_10: List<&2, Slot>, v_11: Catalog.Registry) -> LowerResult<BIR.Atom>:
   match v_38:
     case LowerResult{v_33, v_34}:
       apply_rest(v_33, v_34, v_7, v_10, v_11)
 
-def native_match_application_header_1(v_3: Maybe<&2, Catalog.DefinitionHeader>, v_1: State, v_4: IR.Occurrence, v_7: List<&2, SourceArgument>, v_10: List<&2, Slot>, v_11: Catalog.Registry, v_12: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
+def native_match_application_header_1(v_3: Maybe<&2, Catalog.DefinitionHeader>, v_1: State, v_4: IR.Occurrence, v_7: List<&2, SourceArgument>, ty: U32, v_10: List<&2, Slot>, v_11: Catalog.Registry, v_12: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
   match v_3:
     case Some{Catalog.DefinitionHeader{_, _, v_23, v_24, v_25, False{}, v_26, None{}, v_27}}:
-      application_known(v_1, v_26, v_27, v_23, v_24, List.length(&2, BIR.Quantity, v_25), v_4, v_7, v_10, v_11, v_12)
+      application_known(v_1, v_26, v_27, v_23, v_24, List.length(&2, BIR.Quantity, v_25), v_4, v_7, ty, v_10, v_11, v_12)
     case _:
       native_match_application_header_0(lower_occurrence(v_1, v_4, v_10, v_11), v_7, v_10, v_11)
 
-def application_header(v_1: State, v_3: Maybe<&2, Catalog.DefinitionHeader>, v_4: IR.Occurrence, v_7: List<&2, SourceArgument>, v_10: List<&2, Slot>, v_11: Catalog.Registry, v_12: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
-  native_match_application_header_1(v_3, v_1, v_4, v_7, v_10, v_11, v_12)
+def application_header(v_1: State, v_3: Maybe<&2, Catalog.DefinitionHeader>, v_4: IR.Occurrence, v_7: List<&2, SourceArgument>, ty: U32, v_10: List<&2, Slot>, v_11: Catalog.Registry, v_12: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
+  native_match_application_header_1(v_3, v_1, v_4, v_7, ty, v_10, v_11, v_12)
 
-def application_known(state: State, native: Maybe<&2, BIR.Primitive>, fast: Bool, code: U32, parameters: List<&2, BIR.Parameter>, arity: Nat, head: IR.Occurrence, args: List<&2, SourceArgument>, env: List<&2, Slot>, registry: Catalog.Registry, span: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
+def application_known(state: State, native: Maybe<&2, BIR.Primitive>, fast: Bool, code: U32, parameters: List<&2, BIR.Parameter>, arity: Nat, head: IR.Occurrence, args: List<&2, SourceArgument>, ty: U32, env: List<&2, Slot>, registry: Catalog.Registry, span: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
   match native:
     case Some{primitive}:
-      application_native(state, Bool.and(Nat.is_ge(List.length(&2, SourceArgument, args), arity), Nat.is_eq(List.length(&2, BIR.Parameter, parameters), Catalog.primitive_arity(primitive))), primitive, arity, head, args, env, registry)
+      application_native(state, Bool.and(Nat.is_ge(List.length(&2, SourceArgument, args), arity), Nat.is_eq(List.length(&2, BIR.Parameter, parameters), Catalog.primitive_arity(primitive))), primitive, arity, head, args, ty, env, registry)
     case None{}:
       application_direct(state, fast, code, parameters, arity, head, args, env, registry, span)
 def native_match_application_native_0(v_33: LowerResult<BIR.Atom>, v_10: List<&2, SourceArgument>, v_13: List<&2, Slot>, v_14: Catalog.Registry) -> LowerResult<BIR.Atom>:
@@ -780,10 +790,8 @@ def capture_argument_uses(arguments: List<&2, BIR.Arg>) -> List<&2, BIR.Use>:
     case Nil{}: Nil{}
     case BIR.Arg{usage, _} <> rest: usage <> capture_argument_uses(rest)
 
-def partial_array_build(state: State, op: BIR.Primitive, head: IR.Occurrence, captures: List<&2, BIR.Arg>, applied: Nat) -> LowerResult<BIR.Atom>:
-  match occurrence_type(head):
-    case None{}: fail(state, "missing checked partial application type", no_span())
-    case Some{handle}: partial_array_described(state, op, handle, captures, applied)
+def partial_array_build(state: State, op: BIR.Primitive, ty: U32, captures: List<&2, BIR.Arg>, applied: Nat) -> LowerResult<BIR.Atom>:
+  partial_array_described(state, op, ty, captures, applied)
 
 def partial_array_described(state: State, op: BIR.Primitive, handle: U32, captures: List<&2, BIR.Arg>, applied: Nat) -> LowerResult<BIR.Atom>:
   match describe(state, handle):
@@ -801,26 +809,26 @@ def partial_array_typed(state: State, op: BIR.Primitive, uses: List<&2, BIR.Use>
   match partial_array_parameters(state, uses):
     case LowerResult{state2, parameters}: partial_array_code(state2, op, captures, parameters, element)
 
-def partial_array_call(state: State, op: BIR.Primitive, head: IR.Occurrence, args: List<&2, SourceArgument>, env: List<&2, Slot>, registry: Catalog.Registry) -> LowerResult<BIR.Atom>:
+def partial_array_call(state: State, op: BIR.Primitive, ty: U32, args: List<&2, SourceArgument>, env: List<&2, Slot>, registry: Catalog.Registry) -> LowerResult<BIR.Atom>:
   match argument_prefix(state, List.length(&2, SourceArgument, args), args, env, registry):
     case LowerResult{state2, parts}:
       match parts:
-        case (captures, _): partial_array_build(state2, op, head, captures, List.length(&2, SourceArgument, args))
+        case (captures, _): partial_array_build(state2, op, ty, captures, List.length(&2, SourceArgument, args))
 
-def application_native_partial(state: State, op: BIR.Primitive, head: IR.Occurrence, args: List<&2, SourceArgument>, env: List<&2, Slot>, registry: Catalog.Registry) -> LowerResult<BIR.Atom>:
+def application_native_partial(state: State, op: BIR.Primitive, head: IR.Occurrence, args: List<&2, SourceArgument>, ty: U32, env: List<&2, Slot>, registry: Catalog.Registry) -> LowerResult<BIR.Atom>:
   match array_primitive(op):
-    case True{}: partial_array_call(state, op, head, args, env, registry)
+    case True{}: partial_array_call(state, op, ty, args, env, registry)
     case False{}: native_match_application_native_0(lower_occurrence(state, head, env, registry), args, env, registry)
 
-def native_match_application_native_4(v_3: Bool, v_1: State, v_4: BIR.Primitive, v_6: Nat, v_7: IR.Occurrence, v_10: List<&2, SourceArgument>, v_13: List<&2, Slot>, v_14: Catalog.Registry, element: Maybe<&2, U32>) -> LowerResult<BIR.Atom>:
+def native_match_application_native_4(v_3: Bool, v_1: State, v_4: BIR.Primitive, v_6: Nat, v_7: IR.Occurrence, v_10: List<&2, SourceArgument>, ty: U32, v_13: List<&2, Slot>, v_14: Catalog.Registry, element: Maybe<&2, U32>) -> LowerResult<BIR.Atom>:
   match v_3:
     case False{}:
-      application_native_partial(v_1, v_4, v_7, v_10, v_13, v_14)
+      application_native_partial(v_1, v_4, v_7, v_10, ty, v_13, v_14)
     case True{}:
       native_match_application_native_3(argument_prefix(v_1, v_6, v_10, v_13, v_14), v_4, v_13, v_14, element)
 
-def application_native(v_1: State, v_3: Bool, v_4: BIR.Primitive, v_6: Nat, v_7: IR.Occurrence, v_10: List<&2, SourceArgument>, v_13: List<&2, Slot>, v_14: Catalog.Registry) -> LowerResult<BIR.Atom>:
-  native_match_application_native_4(v_3, v_1, v_4, v_6, v_7, v_10, v_13, v_14, array_element_handle(v_4, v_10))
+def application_native(v_1: State, v_3: Bool, v_4: BIR.Primitive, v_6: Nat, v_7: IR.Occurrence, v_10: List<&2, SourceArgument>, ty: U32, v_13: List<&2, Slot>, v_14: Catalog.Registry) -> LowerResult<BIR.Atom>:
+  native_match_application_native_4(v_3, v_1, v_4, v_6, v_7, v_10, ty, v_13, v_14, array_element_handle(v_4, v_10))
 
 def native_match_application_direct_0(v_36: LowerResult<BIR.Atom>, v_13: List<&2, SourceArgument>, v_16: List<&2, Slot>, v_17: Catalog.Registry) -> LowerResult<BIR.Atom>:
   match v_36:
@@ -1264,10 +1272,10 @@ def occurrence_term(occurrence: IR.Occurrence) -> U32:
     case IR.LocalOccurrence{term, _, _, _, _}: term
     case IR.LocalReferenceOccurrence{term, _, _, _}: term
 
-def native_match_lower_0(v_86: LowerResult<Arena.Node>, v_5: List<&2, Slot>, v_6: Catalog.Registry, v_16: Maybe<&2, Ast.Quantity>, v_17: Maybe<&2, IR.Symbol>, v_18: List<&2, IR.CheckedBinding>, v_19: List<&2, IR.Occurrence>) -> LowerResult<BIR.Atom>:
+def native_match_lower_0(v_86: LowerResult<Arena.Node>, v_5: List<&2, Slot>, v_6: Catalog.Registry, ty: U32, v_16: Maybe<&2, Ast.Quantity>, v_17: Maybe<&2, IR.Symbol>, v_18: List<&2, IR.CheckedBinding>, v_19: List<&2, IR.Occurrence>) -> LowerResult<BIR.Atom>:
   match v_86:
     case LowerResult{v_22, v_23}:
-      lower_node(v_22, v_23, v_16, v_17, v_18, v_19, v_5, v_6)
+      lower_node(v_22, v_23, ty, v_16, v_17, v_18, v_19, v_5, v_6)
 
 def native_match_lower_1(v_87: LowerResult<Arena.Node>, v_5: List<&2, Slot>) -> LowerResult<BIR.Atom>:
   match v_87:
@@ -1286,8 +1294,8 @@ def native_match_lower_3(v_89: LowerResult<List<&2, BIR.Atom>>, v_5: List<&2, Sl
 
 def native_match_lower_4(v_2: IR.Occurrence, v_1: State, v_5: List<&2, Slot>, v_6: Catalog.Registry) -> LowerResult<BIR.Atom>:
   match v_2:
-    case IR.TypedOccurrence{v_14, _, v_16, v_17, v_18, v_19}:
-      native_match_lower_0(node(v_1, v_14), v_5, v_6, v_16, v_17, v_18, v_19)
+    case IR.TypedOccurrence{v_14, v_13, v_16, v_17, v_18, v_19}:
+      native_match_lower_0(node(v_1, v_14), v_5, v_6, v_13, v_16, v_17, v_18, v_19)
     case IR.ScalarOccurrence{_, _, v_32, v_33, v_34}:
       scalar_literal(v_1, Catalog.lookup_constructor(v_6, v_32), v_33, v_34, v_6)
     case IR.StringOccurrence{_, _, v_42, v_43}:
@@ -1311,7 +1319,7 @@ def native_match_lower_node_0(v_244: LowerResult<String>) -> LowerResult<BIR.Ato
     case LowerResult{v_174, v_175}:
       LowerResult{push(v_174, Stop{BIR.Failure{String.append("bend: unsolved hole ", v_175)}}), BIR.Null{}}
 
-def native_match_lower_node_1(v_2: Arena.Node, v_1: State, v_4: Maybe<&2, Ast.Quantity>, v_6: Maybe<&2, IR.Symbol>, v_8: List<&2, IR.CheckedBinding>, v_10: List<&2, IR.Occurrence>, v_13: List<&2, Slot>, v_14: Catalog.Registry) -> LowerResult<BIR.Atom>:
+def native_match_lower_node_1(v_2: Arena.Node, v_1: State, ty: U32, v_4: Maybe<&2, Ast.Quantity>, v_6: Maybe<&2, IR.Symbol>, v_8: List<&2, IR.CheckedBinding>, v_10: List<&2, IR.Occurrence>, v_13: List<&2, Slot>, v_14: Catalog.Registry) -> LowerResult<BIR.Atom>:
   match v_2:
     case Arena.TermVar{_, v_20, v_21}:
       variable(v_1, v_13, v_20, v_21)
@@ -1324,7 +1332,7 @@ def native_match_lower_node_1(v_2: Arena.Node, v_1: State, v_4: Maybe<&2, Ast.Qu
     case Arena.TermLam{_, _, _, _, v_49}:
       lambda_checked(v_1, v_4, v_10, v_13, v_14, v_49)
     case Arena.TermApp{_, _, v_56}:
-      application_checked(v_1, v_4, v_10, v_13, v_14, v_56)
+      application_checked(v_1, ty, v_4, v_10, v_13, v_14, v_56)
     case Arena.TermCtr{_, _, _, v_65}:
       constructor_checked(v_1, v_6, v_8, v_10, v_13, v_14, v_65)
     case Arena.TermLet{_, _, _, _, _, _, _, v_84, _, v_86}:
@@ -1372,8 +1380,8 @@ def native_match_lower_node_1(v_2: Arena.Node, v_1: State, v_4: Maybe<&2, Ast.Qu
     case Arena.BodyReply{_, v_243}:
       fail(v_1, "unelaborated reply reached lowering", v_243)
 
-def lower_node(v_1: State, v_2: Arena.Node, v_4: Maybe<&2, Ast.Quantity>, v_6: Maybe<&2, IR.Symbol>, v_8: List<&2, IR.CheckedBinding>, v_10: List<&2, IR.Occurrence>, v_13: List<&2, Slot>, v_14: Catalog.Registry) -> LowerResult<BIR.Atom>:
-  native_match_lower_node_1(v_2, v_1, v_4, v_6, v_8, v_10, v_13, v_14)
+def lower_node(v_1: State, v_2: Arena.Node, ty: U32, v_4: Maybe<&2, Ast.Quantity>, v_6: Maybe<&2, IR.Symbol>, v_8: List<&2, IR.CheckedBinding>, v_10: List<&2, IR.Occurrence>, v_13: List<&2, Slot>, v_14: Catalog.Registry) -> LowerResult<BIR.Atom>:
+  native_match_lower_node_1(v_2, v_1, ty, v_4, v_6, v_8, v_10, v_13, v_14)
 
 def resolved_reference(state: State, symbol: Maybe<&2, IR.Symbol>, registry: Catalog.Registry, span: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
   match symbol:
@@ -1391,20 +1399,20 @@ def rewrite_checked(state: State, children: List<&2, IR.Occurrence>, env: List<&
   match children:
     case _ <> _ <> body <> Nil{}: lower_occurrence(state, body, env, registry)
     case _: fail(state, "incomplete checked rewrite", span)
-def native_match_application_checked_0(v_29: LowerResult<Spine>, v_8: List<&2, Slot>, v_9: Catalog.Registry, v_10: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
+def native_match_application_checked_0(v_29: LowerResult<Spine>, ty: U32, v_8: List<&2, Slot>, v_9: Catalog.Registry, v_10: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
   match v_29:
     case LowerResult{v_20, v_21}:
-      applications(v_20, v_21, v_8, v_9, v_10)
+      applications(v_20, v_21, ty, v_8, v_9, v_10)
 
-def native_match_application_checked_1(v_3: Maybe<&2, Ast.Quantity>, v_5: List<&2, IR.Occurrence>, v_1: State, v_8: List<&2, Slot>, v_9: Catalog.Registry, v_10: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
+def native_match_application_checked_1(v_3: Maybe<&2, Ast.Quantity>, v_5: List<&2, IR.Occurrence>, v_1: State, ty: U32, v_8: List<&2, Slot>, v_9: Catalog.Registry, v_10: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
   match v_3, v_5:
     case Some{v_15}, [v_16, v_17]:
-      native_match_application_checked_0(spine(v_1, v_16, [SourceArgument{v_15, v_17}]), v_8, v_9, v_10)
+      native_match_application_checked_0(spine(v_1, v_16, [SourceArgument{v_15, v_17}]), ty, v_8, v_9, v_10)
     case _, _:
       fail(v_1, "missing checked application quantity/operands", v_10)
 
-def application_checked(v_1: State, v_3: Maybe<&2, Ast.Quantity>, v_5: List<&2, IR.Occurrence>, v_8: List<&2, Slot>, v_9: Catalog.Registry, v_10: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
-  native_match_application_checked_1(v_3, v_5, v_1, v_8, v_9, v_10)
+def application_checked(v_1: State, ty: U32, v_3: Maybe<&2, Ast.Quantity>, v_5: List<&2, IR.Occurrence>, v_8: List<&2, Slot>, v_9: Catalog.Registry, v_10: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
+  native_match_application_checked_1(v_3, v_5, v_1, ty, v_8, v_9, v_10)
 
 def native_match_constructor_checked_0(v_21: LowerResult<List<&2, BIR.Atom>>, v_11: Catalog.Registry, v_12: Ast.SourceSpan, v_16: IR.Symbol, element: Maybe<&2, U32>) -> LowerResult<BIR.Atom>:
   match v_21:
@@ -1768,8 +1776,8 @@ def definition_root_node(result: LowerResult<Arena.Node>, occurrence: IR.Occurre
       definition_root_other(occurrence, state, shape, env, registry)
 def definition_root_other(occurrence: IR.Occurrence, state: State, shape: Arena.Node, env: List<&2, Slot>, registry: Catalog.Registry) -> LowerResult<BIR.Block>:
   match occurrence:
-    case IR.TypedOccurrence{_, _, quantity, symbol, bindings, children}:
-      definition_atom_block(lower_node(state, shape, quantity, symbol, bindings, children, env, registry))
+    case IR.TypedOccurrence{_, ty, quantity, symbol, bindings, children}:
+      definition_atom_block(lower_node(state, shape, ty, quantity, symbol, bindings, children, env, registry))
     case _:
       definition_atom_block(lower_occurrence(state, occurrence, env, registry))
 def definition_root(state: State, occurrence: IR.Occurrence, env: List<&2, Slot>, registry: Catalog.Registry, parameters: List<&2, BIR.Parameter>) -> LowerResult<BIR.Block>:
