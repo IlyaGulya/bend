@@ -1,5 +1,30 @@
 # Self-hosting: полный handoff следующему сеансу
 
+## Status 57ab (IN_PROGRESS) — read before any statement below
+
+- **Current integration candidate: 57ab, IN_PROGRESS. Not accepted.** The common
+  CheckedFIR lowering extraction was reviewed at `768bf3d3`; the full C cutover,
+  schema/runtime/JS-foreign refs and their integration are still under correctness
+  review and have NOT run the actual gates.
+- **No proof is inherited by moved lowering.** The 57aa and 57y fixedpoints,
+  byte sizes and behavior/performance evidence below apply ONLY to their pinned
+  executable/source. A changed lowering, runtime ABI or target renderer requires
+  a NEW proof; none is claimed here.
+- **Official-speed campaign is paused by user.** 57ab prioritizes correct
+  architecture/cutover, not beating the official compiler.
+- **Execution model:** implementation and verification are delegated to task
+  agents in their own sparse worktrees; Main only reviews and integrates.
+  Unintegrated refs include `4d111ad5` (foreign metadata/adapter/runtime),
+  FIRLowering `2c6bc837`/`44b452fc`, and pending CIRRenderer/CIRLayouts/
+  JSIRForeign refs.
+- **Legacy/parity boundaries:** the legacy AST C path still exists in reviewed
+  source until the C cutover is actually integrated; do NOT state that all legacy
+  paths are deleted, that the C target is complete, or that native/foreign ABI
+  parity is proven. Missing-target diagnostics, callback/BOOLEAN boundary policy
+  and hot=0/no-seal remain unverified until actual gate evidence exists.
+- Everything below describes earlier pinned checkpoints. Treat its “current”
+  wording as historical, not as the status of 57ab.
+
 ## 1. Цель и первый шаг
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.

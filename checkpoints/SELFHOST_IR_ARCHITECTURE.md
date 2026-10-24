@@ -1,5 +1,20 @@
 # Selfhost: Checked FIR → Backend IR
 
+## Status 57ab (IN_PROGRESS) — supersedes the pinned 57y status below
+
+- 57ab is the current **IN_PROGRESS** integration candidate: common CheckedFIR
+  lowering extraction reviewed at `768bf3d3`; C cutover/schema/runtime/JS-foreign
+  work is unintegrated and pending correctness review plus actual gates.
+- The 57y/57aa fixedpoints and behavior/performance results below are pinned to
+  THEIR executables. They are not inherited by the moved lowering or by any new
+  C/JS renderer; a new executable needs new stage1/stage2 and behavior proof.
+- Official-speed work is paused by user. Implementation/verification are delegated
+  to task agents in sparse worktrees; Main only reviews/integrates.
+- No full-C/native-parity claim, no “all legacy paths deleted” claim, and no test
+  claim for unintegrated refs (e.g. `4d111ad5`, `2c6bc837`, `44b452fc`, pending
+  CIRRenderer/CIRLayouts/JSIRForeign refs). Foreign boundary policy (BOX/callback
+  conversion) and hot=0/no-seal are unverified target choices until gate evidence.
+
 ## Статус и границы
 
 Это архитектурный контракт принятого functional FIR/BIR cutover compiler57y,
