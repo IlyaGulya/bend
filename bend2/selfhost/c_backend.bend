@@ -793,14 +793,6 @@ def plan_executable_show(family: BIR.Family, main_type: BIR.Descriptor, plan: Pl
         case Phys.ShowOk{desc, names}:
           PlanOk{Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, True{}, desc, names, library, exports, imports, fkeys, ctx}}
 
-def show_names(constructors: List<&2, BIR.ConstructorLayout>) -> String:
-  show_names_each(ctor_keys(constructors), Nil{})
-
-def show_names_each(keys: List<&2, String>, acc: List<&2, String>) -> String:
-  match keys:
-    case Nil{}: String.join(List.reverse(&2, String, acc), ", ")
-    case +key <> rest: show_names_each(rest, c_quote(key) <> acc)
-
 def descriptor_head(descriptor: BIR.Descriptor) -> Maybe<&2, String>:
   match descriptor:
     case BIR.DescriptorRef{key, args}: Some{key}
@@ -860,82 +852,6 @@ def fkeys_of(scan: Scan) -> List<&2, String>:
     case Scan{closures, reads, fkeys, farity}: fkeys
 
 # Descriptor parameter references are de Bruijn indices from the applied end.
-def show_cells(descriptor: BIR.Descriptor, args: List<&2, BIR.Descriptor>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Maybe<&2, String>:
-  match descriptor:
-    case BIR.DescriptorParameter{index}: show_cells(descriptor_arg(args, index), Nil{}, constructors, families, cids)
-    case BIR.DescriptorRef{key, fargs}: show_ref(key, fargs, constructors, families, cids)
-    case BIR.DescriptorKind{quantity}: show_cells(quantity, args, constructors, families, cids)
-    case BIR.DescriptorNull{}: Some{"0"}
-    case _: None{}
-
-def list_at_descriptor(args: List<&2, BIR.Descriptor>, index: Nat) -> BIR.Descriptor:
-  list_at_descriptor_rest(args, index)
-
-def list_at_descriptor_rest(args: List<&2, BIR.Descriptor>, index: Nat) -> BIR.Descriptor:
-  match args:
-    case Nil{}: BIR.DescriptorNull{}
-    case +value <> rest:
-      match index:
-        case 0n: value
-        case 1n+left: list_at_descriptor(rest, left)
-
-# DescriptorParameter is indexed from the applied end, as the JS runtime does.
-def descriptor_arg(args: List<&2, BIR.Descriptor>, index: Nat) -> BIR.Descriptor:
-  count = List.length(&2, BIR.Descriptor, args)
-  descriptor_arg_guard(Nat.is_lt(index, count), args, Nat.sub(Nat.sub(count, 1n), index))
-
-def descriptor_arg_guard(valid: Bool, args: List<&2, BIR.Descriptor>, position: Nat) -> BIR.Descriptor:
-  match valid:
-    case True{}: list_at_descriptor(args, position)
-    case False{}: BIR.DescriptorNull{}
-
-def show_ref(key: String, fargs: List<&2, BIR.Descriptor>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Maybe<&2, String>:
-  match family_key(key, families):
-    case None{}: None{}
-    case Some{family}: show_family(family, fargs, constructors, families, cids)
-
-def show_family(family: BIR.Family, args: List<&2, BIR.Descriptor>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Maybe<&2, String>:
-  match family:
-    case BIR.Family{key, name, native, quantity_prefix, arity, arms}:
-      match native:
-        case Some{tag}: show_native(String.eq(tag, "Nat"), String.eq(tag, "U32"), String.eq(tag, "F32"), String.eq(tag, "Char"), String.eq(tag, "String"), String.eq(tag, "Eql"), String.eq(tag, "Array"), tag, family, args, constructors, families, cids)
-        case None{}: show_data_family(family, args, constructors, families, cids)
-
-def show_native(is_nat: Bool, is_u32: Bool, is_f32: Bool, is_char: Bool, is_string: Bool, is_eql: Bool, is_array: Bool, tag: String, family: BIR.Family, args: List<&2, BIR.Descriptor>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Maybe<&2, String>:
-  match is_nat is_u32 is_f32 is_char is_string is_eql is_array:
-    case True{} _ _ _ _ _ _: Some{"2"}
-    case False{} True{} _ _ _ _ _: Some{"0"}
-    case False{} False{} True{} _ _ _ _: Some{"1"}
-    case False{} False{} False{} True{} _ _ _: Some{"3, 1"}
-    case False{} False{} False{} False{} True{} _ _: Some{"4"}
-    case False{} False{} False{} False{} False{} True{} _: Some{"5"}
-    case False{} False{} False{} False{} False{} False{} True{}: show_array(args, constructors, families, cids)
-    case _: show_data_family(family, args, constructors, families, cids)
-
-def show_array(args: List<&2, BIR.Descriptor>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Maybe<&2, String>:
-  match args:
-    case +element <> rest:
-      match show_cells(element, Nil{}, constructors, families, cids):
-        case Some{cells}: Some{cat(["6, 3, 31, ", cells])}
-        case None{}: None{}
-    case Nil{}: None{}
-
-def show_data_family(family: BIR.Family, args: List<&2, BIR.Descriptor>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Maybe<&2, String>:
-  match family:
-    case BIR.Family{key, name, native, quantity_prefix, arity, arms}: show_data_arms(arms, args, constructors, families, cids)
-
-def show_data_arms(arms: List<&2, BIR.DescriptorArm>, args: List<&2, BIR.Descriptor>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Maybe<&2, String>:
-  match arms:
-    case Nil{}: None{}
-    case +first <> rest: show_data_first(first, arms, args, constructors, families, cids)
-
-def show_data_first(first: BIR.DescriptorArm, arms: List<&2, BIR.DescriptorArm>, args: List<&2, BIR.Descriptor>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Maybe<&2, String>:
-  match bool_arms(arms):
-    case True{}: show_bool(arms, cids)
-    case False{}: show_data_arms_body(arms, args, constructors, families, cids)
-
-# Bool is the runtime's one inline two-arm Data: its arms are the native
-# False/True markers, and its whole show layout is the inline form.
 def bool_arms(arms: List<&2, BIR.DescriptorArm>) -> Bool:
   match arms:
     case Nil{}: False{}
@@ -954,74 +870,6 @@ def bool_arms_tail(is_false: Bool, second: String, tail: List<&2, BIR.Descriptor
   match tail:
     case Nil{}: Bool.and(is_false, String.eq(second, "True"))
     case _: False{}
-
-def show_bool(arms: List<&2, BIR.DescriptorArm>, cids: List<&2, CidRow>) -> Maybe<&2, String>:
-  match arms:
-    case Nil{}: None{}
-    case +false_arm <> rest: show_bool_rest(rest, cids)
-
-def show_bool_rest(rest: List<&2, BIR.DescriptorArm>, cids: List<&2, CidRow>) -> Maybe<&2, String>:
-  match rest:
-    case Nil{}: None{}
-    case +true_arm <> tail: show_bool_cells(cids)
-
-def show_bool_cells(cids: List<&2, CidRow>) -> Maybe<&2, String>:
-  match cid_short("False", cids) cid_short("True", cids):
-    case Some{false_cid} Some{true_cid}:
-      Some{cat(["7, 1, 2, 0, ", U32.show(false_cid), ", 0, 1, ", U32.show(true_cid), ", 0"])}
-    case _ _: None{}
-
-def show_data_arms_body(arms: List<&2, BIR.DescriptorArm>, args: List<&2, BIR.Descriptor>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Maybe<&2, String>:
-  cells = show_arm_cells(arms, args, constructors, families, cids)
-  show_data_wrap(cells, arms)
-
-def show_data_wrap(cells: Maybe<&2, List<&2, String>>, arms: List<&2, BIR.DescriptorArm>) -> Maybe<&2, String>:
-  match cells:
-    case None{}: None{}
-    case Some{parts}: Some{cat([cat(["7, 1, ", Nat.show(List.length(&2, BIR.DescriptorArm, arms)), ", "]), String.join(parts, ", ")])}
-
-def show_arm_cells(arms: List<&2, BIR.DescriptorArm>, args: List<&2, BIR.Descriptor>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Maybe<&2, List<&2, String>>:
-  match arms:
-    case Nil{}: Some{Nil{}}
-    case +arm <> rest: show_arm_pair(show_arm_cell(arm, args, constructors, families, cids), show_arm_cells(rest, args, constructors, families, cids))
-
-def show_arm_pair(one: Maybe<&2, String>, rest: Maybe<&2, List<&2, String>>) -> Maybe<&2, List<&2, String>>:
-  match one rest:
-    case Some{cell} Some{cells}: Some{cell <> cells}
-    case _ _: None{}
-
-def show_arm_cell(arm: BIR.DescriptorArm, args: List<&2, BIR.Descriptor>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Maybe<&2, String>:
-  match arm:
-    case BIR.DescriptorArm{key, fields}: show_arm_cell_fields(key, fields, args, constructors, families, cids)
-
-def show_arm_cell_fields(key: String, fields: List<&2, BIR.DescriptorField>, args: List<&2, BIR.Descriptor>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Maybe<&2, String>:
-  match cid_short(key, cids):
-    case None{}: None{}
-    case Some{cid}:
-      cells = show_field_cells(fields, args, 0n, constructors, families, cids)
-      show_arm_wrap(cells, ctor_index(key, constructors), cid, List.length(&2, BIR.DescriptorField, fields))
-
-def show_arm_wrap(cells: Maybe<&2, List<&2, String>>, name_index: String, cid: U32, count: Nat) -> Maybe<&2, String>:
-  match cells:
-    case None{}: None{}
-    case Some{parts}: Some{cat([name_index, cat([", ", U32.show(cid), ", ", Nat.show(count), cat([", ", String.join(parts, ", ")])])])}
-
-def show_field_cells(fields: List<&2, BIR.DescriptorField>, args: List<&2, BIR.Descriptor>, offset: Nat, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Maybe<&2, List<&2, String>>:
-  match fields:
-    case Nil{}: Some{Nil{}}
-    case +field <> rest:
-      match field:
-        case BIR.DescriptorField{key, quantity, ty}: show_field_pair(show_field_cell(ty, offset, args, constructors, families, cids), show_field_cells(rest, args, Nat.add(offset, 1n), constructors, families, cids))
-
-def show_field_cell(ty: BIR.Descriptor, offset: Nat, args: List<&2, BIR.Descriptor>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Maybe<&2, String>:
-  match show_cells(ty, args, constructors, families, cids):
-    case None{}: None{}
-    case Some{cell}: Some{cat([Nat.show(offset), ", ", cell])}
-
-def show_field_pair(one: Maybe<&2, String>, rest: Maybe<&2, List<&2, String>>) -> Maybe<&2, List<&2, String>>:
-  match one rest:
-    case Some{cell} Some{cells}: Some{cell <> cells}
-    case _ _: None{}
 
 # ---------------------------------------------------------------------------
 # Native constructor layout
