@@ -176,13 +176,34 @@ function descriptorText(value:unknown):string{
   default:return String(kind);
  }
 }
+function atomText(atom:unknown):string{
+ const kind=tag(atom),record=objectOf(atom);
+ switch(kind){
+  case 'Local':return 'Local#'+String(record?.id);
+  case 'Capture':return 'Capture#'+String(record?.slot);
+  case 'Word':return 'Word#'+String(record?.value);
+  case 'Natural':return 'Nat#'+String(record?.value);
+  case 'FloatBits':return 'Float#'+String(record?.bits);
+  case 'Text':return JSON.stringify(String(record?.value));
+  case 'Boolean':return 'Bool#'+String(record?.value);
+  case 'Symbol':return 'Symbol#'+String(record?.id);
+  case 'Null':return 'Null';
+  case 'Undefined':return 'Undefined';
+  default:return String(kind);
+ }
+}
+function argText(arg:unknown):string{
+ const record=objectOf(arg);
+ return atomText(record?.value);
+}
 function opText(op:unknown):string[]{
  const kind=tag(op),record=objectOf(op);
  if(kind==='PrimitiveCall'){
   const name=ARRAY_PRIMITIVES[tag(record?.primitive)??''];
   const types=items(record?.types).map(descriptorText).join(',');
+  const args=items(record?.args).map(argText).join(',');
   if(name===undefined)return types===''?[]:['LEAK non-array primitive carries types=['+types+']'];
-  return [name+' types=['+types+']'];
+  return [name+' ['+args+'] types=['+types+']'];
  }
  if(kind==='LoadSymbol')return ['symbol '+String(record?.key)];
  if(kind==='Apply'||kind==='TailApply')return ['apply'];
