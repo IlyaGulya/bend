@@ -23,4 +23,4 @@ law main:
 def main():
   choose(Value{41n})
 
-#|42
+#|42n
