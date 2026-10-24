@@ -294,5 +294,18 @@
     ],
     "host": "native_compiler_host.c builds SourceFile with CID____BEND2_SELFHOST_BACKEND_IR_SOURCEFILE (guarded by #ifndef) and adds only an effect argv phase string compile-module",
     "implication": "the one-cut ABI change does not have to fold in native-seed names; only the three C wrappers are added"
+  },
+  "generatorModeExtension": {
+    "file": "evals/selfhost_driver_source.ts",
+    "today": "assembleSelfhostDriver iterates exactly three modes template/checker/emitter and validates each manifest: generationManifestSha256 self-hash, generationConfig.mode, exactCanonicalCoverage, residualSourceCalls===0, recursiveHelpers===1, generatedPrivateRecursiveHelpers===0, progressABI==='typed-native-stack-v57t', the whole nativeChunk block (function/rawStep/publicStep/start naming from the mode, quantum 64, Nat fuel, structural Nat recursion, zero-fuel rule, semanticFuelChanged false, castBox/pop/advance naming, exportedResume false, publicStepType, sourceResumeClosuresUnchanged, directInvokeUnchanged, selfRecursiveFunctions==[mode+'_chunk']), the six run/stack constructor names from a {checker:'Checker',emitter:'Emitter',template:'Template'} map, empty excluded/omitted definitions, hash/realpath key equality with per-file verification, producer path+hash identity, output hash identity, and for non-template modes that the module's `import X as Checked` resolves to bend2/selfhost/checked_frontend.bend",
+    "requiredEdit": [
+      "add 'cemit' to the mode list and its manifest stem c-emit-steps-v1.json",
+      "add cemit:'CEmitter' to the run/stack constructor prefix map so CEmitterRun/CEmitterRunFinished/CEmitterRunState/CEmitterStack/CEmitterStackDone/CEmitterStackMore are expected",
+      "register producer evals/c_emit_step_lower.ts and output checkpoints/c_emit_steps_v1.bend",
+      "require a coverage row for the C entries (their manifest already carries emit and emit_library)",
+      "the shared-Checked boundary check applies unchanged (non-template mode)"
+    ],
+    "verifiedAgainstTheirWorktree": "checkpoints/c-emit-steps-v1.json in /private/tmp/bend-fir-croot57ab already satisfies every listed invariant: mode cemit, generator evals/c_emit_step_lower.ts, exactCanonicalCoverage true, residual 0, recursiveHelpers 1, privateRecursive 0, progressABI typed-native-stack-v57t, nativeChunk naming all cemit_*, quantum 64, Nat/structural Nat, zero-fuel rule, semanticFuelChanged false, 68 hashes all present and matching, modules import checked_frontend as Checked, coverage rows include emit and emit_library, generationManifestSha256 self-consistent under JSON.stringify semantics",
+    "blocker": "their branch work/fir-croot57ab is still at 909d651c with this work uncommitted, so the files are not in my tree and the generator extension cannot land yet"
   }
 }
