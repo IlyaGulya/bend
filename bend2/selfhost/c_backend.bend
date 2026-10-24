@@ -1259,6 +1259,13 @@ def op_part(op: BIR.Op, +plan: Plan) -> Part:
     case BIR.LoadSymbol{_, key}: failp("a BIR symbol load is a control operation, not a pure C expression")
     case _: failp("BIR operation form has no C rendering")
 
+# Phys answers in its own Part ADT; the renderer's Part is a distinct type, so
+# every delegated layout answer is translated at this one boundary.
+def phys_part(part: Phys.Part) -> Part:
+  match part:
+    case Phys.PartOk{text}: PartOk{text}
+    case Phys.PartFail{message}: PartFail{message}
+
 def field_values(fields: List<&2, BIR.Field>, +plan: Plan) -> List<&2, Part>:
   match fields:
     case Nil{}: Nil{}
@@ -1323,7 +1330,7 @@ type OperandsOut is Data:
 def construct_part(+constructor: U32, +fields: List<&2, BIR.Field>, +plan: Plan) -> Part:
   match field_operands(fields, plan, Nil{}):
     case OperandsFail{message}: PartFail{message}
-    case OperandsOk{operands}: Phys.construct_part(constructor, operands, phys_world(plan))
+    case OperandsOk{operands}: phys_part(Phys.construct_part(constructor, operands, phys_world(plan)))
 
 def field_operands(fields: List<&2, BIR.Field>, +plan: Plan, +acc: List<&2, Phys.Operand>) -> OperandsOut:
   match fields:
@@ -1346,12 +1353,12 @@ def values_part(values: List<&2, Part>, +acc: List<&2, String>) -> Maybe<&2, Lis
 def project_part(value: BIR.Atom, +constructor: U32, field: U32, +plan: Plan) -> Part:
   match atom_part(value, plan):
     case PartFail{message}: PartFail{message}
-    case PartOk{text}: Phys.project_part(text, constructor, field, phys_world(plan))
+    case PartOk{text}: phys_part(Phys.project_part(text, constructor, field, phys_world(plan)))
 
 def hastag_part(value: BIR.Atom, +constructor: U32, +plan: Plan) -> Part:
   match atom_part(value, plan):
     case PartFail{message}: PartFail{message}
-    case PartOk{text}: Phys.hastag_part(text, constructor, phys_world(plan))
+    case PartOk{text}: phys_part(Phys.hastag_part(text, constructor, phys_world(plan)))
 
 # ---------------------------------------------------------------------------
 # Primitives
@@ -1370,7 +1377,7 @@ def prim_call_typed(+primitive: BIR.Primitive, +args: List<&2, BIR.Arg>, types: 
 def prim_array_part(+primitive: BIR.Primitive, args: List<&2, BIR.Arg>, types: List<&2, BIR.Descriptor>, plan: Plan) -> Part:
   match arg_operands(args, plan, Nil{}):
     case OperandsFail{message}: PartFail{message}
-    case OperandsOk{operands}: Phys.array_part(primitive, operands, types, phys_world(plan))
+    case OperandsOk{operands}: phys_part(Phys.array_part(primitive, operands, types, phys_world(plan)))
 
 def arg_operands(args: List<&2, BIR.Arg>, +plan: Plan, +acc: List<&2, Phys.Operand>) -> OperandsOut:
   match args:
