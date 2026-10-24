@@ -527,12 +527,12 @@ def outer_application(descriptor: BIR.Descriptor) -> Maybe<&2, NfApp>:
     case _:
       None{}
 
-def outer_filled(head: BIR.Descriptor, args: List<&2, BIR.Descriptor>) -> Maybe<&2, NfApp>:
+def outer_filled(head: BIR.Descriptor, extra: List<&2, BIR.Descriptor>) -> Maybe<&2, NfApp>:
   match outer_application(head):
     case Some{app}:
       match app:
-        case NfApp{key, args: known}:
-          Some{NfApp{key, List.append(&2, BIR.Descriptor, known, args)}}
+        case NfApp{key, args}:
+          Some{NfApp{key, List.append(&2, BIR.Descriptor, args, extra)}}
     case None{}:
       None{}
 
@@ -683,14 +683,19 @@ def nf_keys_rest(vals: List<&2, NfVal>) -> String:
 # Head classification over the same normalizer. It is a projection only: the
 # stored Descriptor remains authoritative and is never replaced by a Head.
 def head_of_value(context: NfContext, value: NfVal) -> BIR.Head:
+  match context:
+    case NfContext{families, type_functions}:
+      head_of_value_in(families, type_functions, value)
+
+def head_of_value_in(families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>, value: NfVal) -> BIR.Head:
   match value:
     case NfType{key, args}:
-      match family_of(key, context.families):
+      match family_of(key, families):
         case Some{family}:
           match family:
             case BIR.Family{_, _, native, _, _, _}: BIR.HeadKnown{key, native}
         case None{}:
-          match function_of(key, context.type_functions):
+          match function_of(key, type_functions):
             case Some{_}: BIR.HeadAbstract{}
             case None{}: BIR.HeadOther{}
     case NfCtor{_, _}: BIR.HeadOther{}
