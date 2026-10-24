@@ -151,7 +151,7 @@ def native_stage_checker(start: Unit -> Checker.CheckerRun<Unit>, view: (@-A: Ty
 def native_stage_template_pending(start: Unit -> Template.TemplateRun<Unit>, view: (@-A: Type -> @run: Template.TemplateRun<A> -> NativeTemplateStageView<A>)) -> IO(Unit):
   import "./native_stage_profile_host.c"
 
-def native_stage_emitter(start: Unit -> Emit.EmitterRun<Unit>, view: (@-A: Type -> @run: Emit.EmitterRun<A> -> NativeEmitterStageView<A>)) -> IO(Unit):
+def native_stage_emitter(start: Unit -> Emit.EmitterRun<Emit.cps_provider_2_EmitResult>, view: (@-A: Type -> @run: Emit.EmitterRun<A> -> NativeEmitterStageView<A>), result_status: (@box: Emit.EmitterValue<Emit.cps_provider_2_EmitResult> -> U32)) -> IO(Unit):
   import "./native_stage_profile_host.c"
 
 # The fixture seeds the real generated Run machine with a finite finished-value
@@ -194,35 +194,45 @@ def profile_template_pending_start(unit: Unit) -> Template.TemplateRun<Unit>:
   Template.TemplateRunState{Unit, profile_template_bound(64n, profile_template_pending()), profile_template_stack(0n)}
 
 # A real canonical Emitter request: c_backend.emit renders a BIR.Program. The
-# fixture supplies an empty but well-formed program and a minimal runtime whose
-# four required sections are real; the renderer produces a C translation unit,
-# not a number formatter or an invented CheckedProgram. Sixty-four erased Bound
-# wrappers expose the outer request group at the first chunk boundary.
+# fixture supplies a well-formed empty program and a minimal runtime whose four
+# required sections are real; the renderer must produce a non-empty EmitSuccess
+# C translation unit, not a number formatter or an invented CheckedProgram.
 def profile_emitter_runtime() -> String:
   "// Tables\n// Spins\n// Segments\n// Requests\n"
 
 def profile_emitter_program() -> BIR.Program:
   BIR.Program{Nil{}, Nil{}, Nil{}, Nil{}, Nil{}, BIR.Executable{BIR.DescriptorNull{}}}
 
-def profile_emitter_pending() -> Emit.EmitterProgress<Unit>:
-  Emit.EmitterPending{Emit.EmitterRequestGroup_12{Emit.EmitterRequest_cps_provider_2_emit{
-    profile_emitter_program(), profile_emitter_runtime(), Nil{}}}, box => Emit.EmitterFinished{Emit.EmitterValue{Unit{}}}}
+def profile_emitter_result_status(box: Emit.EmitterValue<Emit.cps_provider_2_EmitResult>) -> U32:
+  match box:
+    case Emit.EmitterValue{value}:
+      match value:
+        case Emit.cps_provider_2_EmitSuccess{source}:
+          match source:
+            case SCon{h, t}: 1
+            case SNil{}: 0
+        case Emit.cps_provider_2_EmitFailure{message}:
+          2
 
-def profile_emitter_resume(box: Emit.EmitterValue<Unit>) -> Emit.EmitterProgress<Unit>:
+def profile_emitter_pending() -> Emit.EmitterProgress<Emit.cps_provider_2_EmitResult>:
+  Emit.EmitterPending{Emit.EmitterRequestGroup_12{Emit.EmitterRequest_cps_provider_2_emit{
+    profile_emitter_program(), profile_emitter_runtime(), Nil{}}}, box => Emit.EmitterFinished{box}}
+
+def profile_emitter_resume(box: Emit.EmitterValue<Emit.cps_provider_2_EmitResult>) -> Emit.EmitterProgress<Emit.cps_provider_2_EmitResult>:
   Emit.EmitterFinished{box}
 
-def profile_emitter_bound(n: Nat, inner: Emit.EmitterProgress<Unit>) -> Emit.EmitterProgress<Unit>:
+def profile_emitter_bound(n: Nat, inner: Emit.EmitterProgress<Emit.cps_provider_2_EmitResult>) -> Emit.EmitterProgress<Emit.cps_provider_2_EmitResult>:
   match n:
     case 0n: inner
-    case 1n+rest: Emit.EmitterBound{Unit, profile_emitter_bound(rest, inner), profile_emitter_resume}
+    case 1n+rest: Emit.EmitterBound{Emit.cps_provider_2_EmitResult, profile_emitter_bound(rest, inner), profile_emitter_resume}
 
-def profile_emitter_stack(n: Nat) -> Emit.EmitterStack<Unit, Unit>:
+def profile_emitter_stack(n: Nat) -> Emit.EmitterStack<Emit.cps_provider_2_EmitResult, Emit.cps_provider_2_EmitResult>:
   match n:
     case 0n: Emit.EmitterStackDone{{==}}
-    case 1n+rest: Emit.EmitterStackMore{Unit, profile_emitter_resume, profile_emitter_stack(rest)}
+    case 1n+rest: Emit.EmitterStackMore{Emit.cps_provider_2_EmitResult, profile_emitter_resume, profile_emitter_stack(rest)}
 
-def profile_emitter_start(unit: Unit) -> Emit.EmitterRun<Unit>:
-  Emit.EmitterRunState{Unit, profile_emitter_bound(64n, profile_emitter_pending()), profile_emitter_stack(0n)}
+def profile_emitter_start(unit: Unit) -> Emit.EmitterRun<Emit.cps_provider_2_EmitResult>:
+  Emit.EmitterRunState{Emit.cps_provider_2_EmitResult, profile_emitter_bound(64n, profile_emitter_pending()), profile_emitter_stack(0n)}
 
 def profile_checker_start(unit: Unit) -> Checker.CheckerRun<Unit>:
   Checker.CheckerRunState{Unit, Checker.CheckerFinished{profile_checker_value()}, profile_checker_stack(200n)}
@@ -232,5 +242,5 @@ def main() -> IO(Unit):
     Unit <- native_stage_template(profile_template_start, native_template_stage_view)
     Unit <- native_stage_checker(profile_checker_start, native_checker_stage_view)
     Unit <- native_stage_template_pending(profile_template_pending_start, native_template_stage_view)
-    Unit <- native_stage_emitter(profile_emitter_start, native_emitter_stage_view)
+    Unit <- native_stage_emitter(profile_emitter_start, native_emitter_stage_view, box => profile_emitter_result_status(box))
     return Unit{}

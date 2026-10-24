@@ -148,13 +148,23 @@ pre-build label fix reached canonical code generation and failed after 12.4 s
 with `RangeError: Maximum call stack size exceeded` in `comp.ts`
 (`emit_ctr`/`ty_adt`/`ty_wnf`), at `peakRssBytes 5,091,704,832` (below the 8 GiB
 limit) and with `ownedTreeStopped: true`. No artifact or native phase row was
-produced. The pre-build attempt failed validation in 68 ms (mixed group label),
+produced. The executed fixture did not witness the EmitResult: its Pending
+resume returned Unit, so a provider failure could not be distinguished; the
+failure itself occurred before native execution, so there is no native witness
+either way.
+
+A later source-only fixture change fixes that hole: the Pending resume now
+forwards the typed `EmitterValue<cps_provider_2_EmitResult>` to the completion,
+and a typed host callback classifies the actual result as non-empty
+`EmitSuccess` (1), empty `EmitSuccess` (0), or `EmitFailure` (2). This change
+passes `book_valid` but is **not executed** and not a PASS; the same guarded
+codegen prerequisite blocks it. It must be run once after that prerequisite is
+fixed. The pre-build attempt failed validation in 68 ms (mixed group label),
 and the actual attempt is preserved in
 `checkpoints/compiler-native-profile-aa9-failure.json`. No stack/heap/deadline
 was raised and the run was not retried. The unverified boundary is diagnostic
 component code generation for this 27-group real-emit driver; it requires a
-compiler/codegen prerequisite outside this profiling scope. The historical
-bounded-mechanism result is not substituted for this failure.
+compiler/codegen prerequisite outside this profiling scope. The historical bounded-mechanism result is not substituted for this failure.
 
 Native coarse rows were read from the preserved diagnostic trace
 `/tmp/signature-publish57z/evidence/comparison/A1.stderr.log`

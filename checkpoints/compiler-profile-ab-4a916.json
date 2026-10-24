@@ -46,7 +46,9 @@
         "sha256": "3005e365bece6ff1da3a6f1637a0ed644401fc2b0bbbec1d49fba8ef600827ba"
       },
       "byteEqual": true,
-      "clangExecution": "NOT RUN: fresh component C is known to fail clang (redefinition of b0r, b0o undeclared); byte equality proves emission only, not execution"
+      "clangExecution": "NOT RUN: fresh component C is known to fail clang (redefinition of b0r, b0o undeclared); byte equality proves emission only, not execution",
+      "executionStatus": "C_EMISSION_EQUIVALENT_NOT_EXECUTED",
+      "equivalenceScope": "byte-for-byte emission with profiling disabled/enabled; not a C program execution pass"
     }
   },
   "profiles": {
@@ -389,5 +391,6 @@
     "scope": "aa9/d7 emitter, 27 groups; guardHeavyGate 8G/10ms/600s; worker 3072/256; real c_backend.emit request",
     "note": "not claimed as compiler workload or exact source CPU attribution"
   },
-  "note": "Profile-on and profile-off outputs are byte-identical. Span/CPU/memory scopes are explicit. Typed progress groups are sampled request-boundary attribution, not exact CPU; exact step counters are host call counts. C execution is not claimed."
+  "note": "Profile-on and profile-off outputs are byte-identical. Span/CPU/memory scopes are explicit. Typed progress groups are sampled request-boundary attribution, not exact CPU; exact step counters are host call counts. C execution is not claimed.",
+  "status": "C_EMISSION_EQUIVALENT_NOT_EXECUTED"
 }
