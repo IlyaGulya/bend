@@ -278,7 +278,9 @@ test('parent death triggers cleanup and automatically releases the stale kernel 
 test('launcher process-group kill leaves the supervisor independent and terminal',async()=>{
  const directory=await mkdtemp(join(tmpdir(),'heavy-gate-test-')),lockPath=join(directory,'gate.lock');
  const ready=join(directory,'ready'),script=join(directory,'launcher.ts');
- const reportDir=join(tmpdir(),`bend-heavy-gate-${process.getuid?.()??0}`);
+ // The launcher subprocess gets a private TMPDIR, so its guardian's own
+ // private report directory cannot collide with concurrent gate runs.
+ const reportDir=join(directory,`bend-heavy-gate-${process.getuid?.()??0}`);
  const before=new Set(await readdir(reportDir).catch(()=>[] as string[]));
  let launcher:Bun.Subprocess|undefined;
  try{
@@ -287,7 +289,7 @@ test('launcher process-group kill leaves the supervisor independent and terminal
 await runHeavyGate(${JSON.stringify(command)},${JSON.stringify({...safe,lockPath,timeoutMs:3000,label:'launcher group kill'})});`);
   // The launcher is its own process-group leader so the fixture can kill the
   // whole group exactly as a job-control launcher would.
-  launcher=Bun.spawn([process.execPath,script],{detached:true,stdio:['ignore','ignore','ignore']});
+  launcher=Bun.spawn([process.execPath,script],{detached:true,stdio:['ignore','ignore','ignore'],env:{...process.env,TMPDIR:directory}});
   await eventually(ready);
   process.kill(-launcher.pid,'SIGKILL');await launcher.exited;
   // The detached native supervisor survives the group kill, observes the

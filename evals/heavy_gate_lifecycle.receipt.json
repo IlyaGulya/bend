@@ -33,7 +33,15 @@
       "[392.00ms]"
     ],
     "reuseProof": "after the detached supervisor stops the owned command and releases the lease, runHeavyGate(['true'], same lockPath) returned PASS; the launcher-kill test waits for that observable release",
-    "fullSuite": "12 pass / 0 fail on repeated runs, with the known unlocalized failure below preserved"
+    "fullSuite": "12 pass / 0 fail on repeated runs, with the known unlocalized failure below preserved",
+    "focusedRun": {
+      "command": "bun test evals/heavy_gate.test.ts -t \"launcher process-group\"",
+      "rawOutputPath": "/tmp/gate-evidence/focused-launcher-kill.log",
+      "rawOutputSha256": "2715cbecea900faa4b2ff28c7c76e1b8d3bffb782cc2433754d1254d7d030d97",
+      "bytes": 556,
+      "result": "1 pass / 0 fail; 5 expect() calls; 1 test; [1476.00ms]",
+      "note": "full raw stdout/stderr saved; the command was not piped through grep; exactly one focused run"
+    }
   },
   "knownUnlocalizedFailure": {
     "test": "deadline cancels authenticated detached descendants without resetting the parent allowance and releases the lease",
@@ -55,5 +63,14 @@
     "noMultiRunVoting": "Repeated passes do not convert an observed failure into green; a new failure is diagnosed from preserved raw output",
     "nextVerification": "after merged source, exactly one focused run with full raw output, routed by Main"
   },
-  "notRun": ["no full native/root build", "no cap/timeout/lock changes", "no duplicate heavy external smoke; the existing launcher-group-kill regression is the changed-path evidence"]
+  "notRun": [
+    "no full native/root build",
+    "no cap/timeout/lock changes",
+    "no duplicate heavy external smoke; the existing launcher-group-kill regression is the changed-path evidence"
+  ],
+  "isolation": {
+    "problem": "the new launcher-group-kill fixture scanned the global private report directory and accepted the first new nonempty JSON, so a concurrent gate could supply a foreign report",
+    "fix": "the launcher subprocess is spawned with TMPDIR set to the fixture directory, so its guardian private report directory is private to this test; the fixture scans only that directory",
+    "scope": "test isolation only; deadline expectations and the unknown-flake risk are unchanged; expectStopped is not weakened or polled"
+  }
 }
