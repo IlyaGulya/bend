@@ -114,8 +114,9 @@ if(!worker){
     if(fixture.accepted)requireProof(existsSync(artifact)&&readFileSync(artifact).length>0&&row.native?.artifactSha256===hash(artifact),'Missing native seed artifact receipt: '+fixture.name);
     else requireProof(!existsSync(artifact)&&row.native?.artifactSha256===null,'Negative native seed row emitted an artifact: '+fixture.name);
     const recordedPhases=Array.isArray(row.native?.phases)?row.native.phases:[];
-    requireProof(recordedPhases[0]==='parse'&&recordedPhases.every((name:string,index:number)=>expectedPhases[index]===name),'Native fixture phase preface drift: '+fixture.name);
-    if(!fixture.accepted)requireProof(recordedPhases[recordedPhases.length-1]===fixture.failurePhase&&!recordedPhases.includes('emit'),'Native negative phase mismatch: '+fixture.name);
+    const failureIndex=expectedPhases.indexOf(String(fixture.failurePhase));
+    if(fixture.accepted)requireProof(JSON.stringify(recordedPhases)===JSON.stringify(expectedPhases),'Accepted native row lacks the complete ordered phases: '+fixture.name);
+    else requireProof(failureIndex>=0&&JSON.stringify(recordedPhases)===JSON.stringify(expectedPhases.slice(0,failureIndex+1)),'Native negative phase prefix mismatch: '+fixture.name);
     if(fixture.accepted)requireProof(typeof row.output==='string'&&typeof fixture.output==='string'&&row.output.replace(/\s+/g,'').replace(/\{\}/g,'')===fixture.output.replace(/\s+/g,'').replace(/\{\}/g,''),'Original expected output mismatch: '+fixture.name);
     else requireProof(typeof fixture.failurePhase==='string'&&row.observedFailure===fixture.failurePhase&&row.diagnostic,'Original negative phase mismatch: '+fixture.name);
    }
