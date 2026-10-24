@@ -1152,15 +1152,15 @@ def atom_part(atom: BIR.Atom, plan: Plan) -> Part:
     case BIR.Natural{value}: okp(nat_c(value))
     case BIR.FloatBits{bits}: okp(U32.show(bits))
     case BIR.Text{value}: okp(cat(["bend_text(e, ", c_quote(value), ", ", Nat.show(String.length(value)), ")"]))
-    case BIR.Boolean{value}: okp(bool_c(value))
+    case BIR.Boolean{value}: bool_lit_part(bool_name(value), plan)
     case BIR.Null{}: okp("0")
     case BIR.Undefined{}: okp("0")
     case _: failp("BIR atom form has no C rendering")
 
-def bool_c(value: Bool) -> String:
+def bool_name(value: Bool) -> String:
   match value:
-    case True{}: "1"
-    case False{}: "0"
+    case True{}: "True"
+    case False{}: "False"
 
 def bool_lit_part(which: String, plan: Plan) -> Part:
   match pcid(which, plan):
@@ -1360,11 +1360,6 @@ def arm_index_one(found: Bool, key: String, rest: List<&2, BIR.DescriptorArm>, i
 
 # An inline enum is a family with more than one arm, all of them nullary; its
 # values are the raw arm index, exactly as the current C emitter lays them out.
-def inline_tag(key: String, families: List<&2, BIR.Family>) -> Maybe<&2, Nat>:
-  match family_arms_of(key, families):
-    case None{}: None{}
-    case Some{arms}: inline_tag_arms(key, arms)
-
 def inline_tag_arms(key: String, arms: List<&2, BIR.DescriptorArm>) -> Maybe<&2, Nat>:
   match Bool.and(all_arms_nullary(arms), Nat.is_gt(List.length(&2, BIR.DescriptorArm, arms), 1n)):
     case True{}: arm_index(key, arms, 0n)
@@ -1373,9 +1368,7 @@ def inline_tag_arms(key: String, arms: List<&2, BIR.DescriptorArm>) -> Maybe<&2,
 def construct_part(constructor: U32, fields: List<&2, BIR.Field>, plan: Plan) -> Part:
   match plan:
     case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
-      match inline_tag(ctor_key_of(constructor, constructors), families):
-        case Some{tag}: PartOk(cat([Nat.show(tag), "ull"]))
-        case None{}: construct_values(constructor, native_kind_of(constructor, constructors), field_values(fields, plan), ctor_cid(constructor, constructors, cids), List.length(&2, BIR.Field, fields), packed_ctor(constructor, constructors, families))
+      construct_values(constructor, native_kind_of(constructor, constructors), field_values(fields, plan), ctor_cid(constructor, constructors, cids), List.length(&2, BIR.Field, fields), packed_ctor(constructor, constructors, families))
 
 def construct_values(constructor: U32, kind: String, values: List<&2, Part>, cid_part: Part, count: Nat, packed: Bool) -> Part:
   match values_part(values, Nil{}):
@@ -1488,14 +1481,7 @@ def project_anode(value: String, field: U32) -> String:
 def hastag_part(value: BIR.Atom, constructor: U32, plan: Plan) -> Part:
   match plan:
     case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
-      match inline_tag(ctor_key_of(constructor, constructors), families):
-        case Some{tag}: hastag_inline(atom_part(value, plan), tag)
-        case None{}: hastag_values(atom_part(value, plan), native_kind_of(constructor, constructors), ctor_cid(constructor, constructors, cids))
-
-def hastag_inline(value: Part, tag: Nat) -> Part:
-  match value:
-    case PartFail{message}: PartFail{message}
-    case PartOk{text}: PartOk(cat(["(", text, " == ", Nat.show(tag), ")"]))
+      hastag_values(atom_part(value, plan), native_kind_of(constructor, constructors), ctor_cid(constructor, constructors, cids))
 
 def hastag_values(value: Part, kind: String, cid_part: Part) -> Part:
   match value:
@@ -1592,8 +1578,8 @@ def prim_part(primitive: BIR.Primitive, a: List<&2, String>, plan: Plan) -> Part
     case BIR.PrimNatPredecessor{}: okp(cat(["bend_nat_pred(", a0, ")"]))
     case BIR.PrimNatSuccessor{}: okp(cat(["nat_chk(e, ", a0, " + 1)"]))
     case BIR.PrimNatDivmod{}: divmod_part(a0, a1, plan)
-    case BIR.PrimBoolOr{}: okp(cat(["(", a0, " || ", a1, ")"]))
-    case BIR.PrimBoolXor{}: okp(cat(["(", a0, " != ", a1, ")"]))
+    case BIR.PrimBoolOr{}: bool2_part("bend_bool_or", a0, a1, plan)
+    case BIR.PrimBoolXor{}: bool2_part("bend_bool_xor", a0, a1, plan)
     case BIR.PrimF32Add{}: f32_bin("+", a0, a1)
     case BIR.PrimF32Sub{}: f32_bin("-", a0, a1)
     case BIR.PrimF32Mul{}: f32_bin("*", a0, a1)
@@ -1657,8 +1643,8 @@ def prim_part(primitive: BIR.Primitive, a: List<&2, String>, plan: Plan) -> Part
     case BIR.PrimIsNatSuccessor{}: okp(cat(["(", a0, " > 0)"])), plan
     case BIR.PrimIsStringEmpty{}: str_empty("bend_str_empty", "SNil", a0, plan), plan
     case BIR.PrimIsStringNonempty{}: str_empty_neg(a0, plan), plan
-    case BIR.PrimIsTrue{}: okp(cat(["(", a0, " == 1)"]))
-    case BIR.PrimIsFalse{}: okp(cat(["(", a0, " == 0)"]))
+    case BIR.PrimIsTrue{}: is_bool_part("True", a0, plan)
+    case BIR.PrimIsFalse{}: is_bool_part("False", a0, plan)
     case BIR.PrimSameValue{}: okp(cat(["(", a0, " == ", a1, ")"])), plan
     case BIR.PrimFloatBitsEqual{}: okp(cat(["(", a0, " == ", a1, ")"])), plan
     case BIR.PrimCharNew{}: char_new_part(a0, plan)
@@ -1677,6 +1663,22 @@ def f32_un(name: String, a0: String) -> Part:
 
 def f32_cmp(op: String, a0: String, a1: String) -> Part:
   okp(cat(["((u64)(f32_unbox(", a0, ") ", op, " f32_unbox(", a1, ")))"]))
+
+def bool2_part(fn: String, a0: String, a1: String, plan: Plan) -> Part:
+  match plan:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+      bool2_c(fn, a0, a1, cid_c("True", cids), cid_c("False", cids))
+
+def bool2_c(fn: String, a0: String, a1: String, t: Part, f: Part) -> Part:
+  match t f:
+    case PartOk{tc} PartOk{fc}: okp(cat([fn, "(e, ", tc, ", ", fc, ", ", a0, ", ", a1, ")"]))
+    case PartFail{message} _: PartFail{message}
+    case _ PartFail{message}: PartFail{message}
+
+def is_bool_part(which: String, value: String, plan: Plan) -> Part:
+  match pcid(which, plan):
+    case PartFail{message}: PartFail{message}
+    case PartOk{cid}: okp(cat(["term_aux(", value, ") == (u64)", cid]))
 
 def cmp3_part(a0: String, a1: String, plan: Plan) -> Part:
   lt = pcid("LT", plan)
@@ -1848,10 +1850,12 @@ def block_branch(condition: BIR.Atom, yes: BIR.Block, no: BIR.Block, plan: Plan)
 def cond_part_of(part: Part, plan: Plan) -> Part:
   match part:
     case PartFail{message}: PartFail{message}
-    case PartOk{text}: cond_part(text, plan)
+    case PartOk{text}: cond_part(text, pcid("True", plan))
 
-def cond_part(cond: String, plan: Plan) -> Part:
-  okp(cat(["(", cond, ") != 0"]))
+def cond_part(cond: String, true_cid: Part) -> Part:
+  match true_cid:
+    case PartFail{message}: PartFail{message}
+    case PartOk{cid}: okp(cat(["term_aux(", cond, ") == (u64)", cid]))
 
 # ---------------------------------------------------------------------------
 # Blocks
@@ -1945,58 +1949,6 @@ def entry_body_native(index: U32, primitive: BIR.Primitive, count: Nat, plan: Pl
 def entry_body_stage(index: U32, count: Nat) -> Part:
   okp(cat([entry_header(index), "  (void)tc;\n  (void)tn;\n  (void)tb;\n  Term v[BEND_MAX_ARITY];\n  for (u32 j = 0; j < ", Nat.show(count), "; j += 1) { v[j] = x[j]; }\n  return bend_closure(e, ", U32.show(U32.inc(index)), ", ", Nat.show(count), ", v);\n}\n\n"]))
 
-def inline_enum_cids(ty: BIR.Descriptor, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Maybe<&2, List<&2, U32>>:
-  match descriptor_head(ty):
-    case None{}: None{}
-    case Some{key}:
-      match family_arms_of(key, families):
-        case None{}: None{}
-        case Some{arms}: inline_enum_cids_arms(arms, cids)
-
-def inline_enum_cids_arms(arms: List<&2, BIR.DescriptorArm>, cids: List<&2, CidRow>) -> Maybe<&2, List<&2, U32>>:
-  match Bool.and(all_arms_nullary(arms), Nat.is_gt(List.length(&2, BIR.DescriptorArm, arms), 1n)):
-    case True{}: inline_enum_each(arms, cids, Nil{})
-    case False{}: None{}
-
-def inline_enum_each(arms: List<&2, BIR.DescriptorArm>, cids: List<&2, CidRow>, acc: List<&2, U32>) -> Maybe<&2, List<&2, U32>>:
-  match arms:
-    case Nil{}: Some(List.reverse(&2, U32, acc))
-    case +arm <> rest:
-      match arm:
-        case BIR.DescriptorArm{key, fields}: inline_enum_each(rest, cids, cid_lookup(key, cids) <> acc)
-
-# A foreign parameter whose checked type is an inline enum crosses as the
-# runtime's BOX word, so the raw tag is rebuilt as term_pak(cid, 0) here.
-def box_foreign_args(types: List<&2, BIR.Descriptor>, args: List<&2, String>, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> List<&2, String>:
-  match types:
-    case Nil{}: args
-    case +ty <> rest_types: box_foreign_args_tail(ty, rest_types, args, families, cids)
-
-def box_foreign_args_tail(ty: BIR.Descriptor, rest_types: List<&2, BIR.Descriptor>, args: List<&2, String>, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> List<&2, String>:
-  match args:
-    case Nil{}: args
-    case +arg <> rest: [box_one(ty, arg, families, cids)] <> box_foreign_args(rest_types, rest, families, cids)
-
-def box_one(ty: BIR.Descriptor, arg: String, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> String:
-  match inline_enum_cids(ty, families, cids):
-    case None{}: arg
-    case Some{arms}: box_enum(arms, arg)
-
-def box_enum(arms: List<&2, U32>, arg: String) -> String:
-  match arms:
-    case Nil{}: arg
-    case _: cat(["bend_box_enum(e, (u32[]){", enum_cids(arms), "}, ", Nat.show(List.length(&2, U32, arms)), ", ", arg, ")"])
-
-def enum_cids(arms: List<&2, U32>) -> String:
-  match arms:
-    case Nil{}: ""
-    case +cid <> rest: enum_cids_tail(rest, cat([U32.show(cid), "u"]))
-
-def enum_cids_tail(rest: List<&2, U32>, head: String) -> String:
-  match rest:
-    case Nil{}: head
-    case _: cat([head, ", ", enum_cids(rest)])
-
 def entry_body_foreign(index: U32, key: String, args: Nat, plan: Plan) -> Part:
   match plan:
     case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
@@ -2013,36 +1965,11 @@ def foreign_types_decl(index: U32, key: String, args: Nat, decl: BIR.Declaration
     case _: PartFail(cat(["foreign `", key, "` is not a ForeignDeclaration"]))
 
 def foreign_types_checked(index: U32, key: String, args: Nat, types: List<&2, BIR.Descriptor>, result: BIR.Descriptor, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Part:
-  match foreign_result_enum(result, families, cids):
-    case Some{name}: PartFail(cat(["foreign `", key, "` returns the inline enum `", name, "`; BIR has no unbox operation for a foreign result, so the C target cannot turn the foreign BOX word back into a raw tag"]))
-    case None{}: foreign_body_boxed(index, key, args, types, families, cids)
-
-def foreign_result_enum(result: BIR.Descriptor, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Maybe<&2, String>:
-  answer = effect_answer(result)
-  match inline_enum_cids(answer, families, cids):
-    case Some{arms}: descriptor_head(answer)
-    case None{}: None{}
-
-def effect_answer(ty: BIR.Descriptor) -> BIR.Descriptor:
-  match descriptor_head(ty):
-    case Some{key}:
-      match String.eq(key, "IO"):
-        case True{}: effect_answer_arg(ty)
-        case False{}: ty
-    case None{}: ty
-
-def effect_answer_arg(ty: BIR.Descriptor) -> BIR.Descriptor:
-  match ty:
-    case BIR.DescriptorRef{_, args}:
-      match args:
-        case Nil{}: ty
-        case +first <> rest: first
-    case _: ty
+  foreign_body_boxed(index, key, args, types, families, cids)
 
 def foreign_body_boxed(index: U32, key: String, args: Nat, types: List<&2, BIR.Descriptor>, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Part:
   arity = Nat.add(args, 1n)
-  names = arg_names(arity, 0n)
-  boxed = box_foreign_args(types, names, families, cids)
+  boxed = arg_names(arity, 0n)
   PartOk(cat([entry_header(index), "  (void)x;\n  (void)tc;\n  (void)tn;\n  (void)tb;\n  Term v[BEND_MAX_ARITY];\n  ", box_stores(boxed, 0n), "  return bend_node(e, ", U32.show(cid_lookup(key, cids)), ", ", Nat.show(arity), ", v);\n}\n\n"]))
 
 def box_stores(args: List<&2, String>, index: Nat) -> String:
@@ -2352,6 +2279,8 @@ def helper_core(max: Nat, cases: String) -> String:
     "static Term bend_tuple(Env e, u32 cid, Term a, Term b) {\n  u64 l = heap_alloc(e, cls_fit(2));\n  e.mem[l] = a;\n  e.mem[l + 1] = b;\n  return term_ctr(cid, l);\n}\n\n",
     "static Term bend_box_enum(Env e, const u32* cids, u32 n, u64 tag) {\n  (void)e;\n  return term_pak(tag < (u64)n ? cids[tag] : (n == 0 ? 0 : cids[0]), 0);\n}\n\n",
     "static Term bend_bool(Env e, u32 t, u32 f, u64 c) {\n  (void)e;\n  return term_pak(c != 0 ? t : f, 0);\n}\n\n",
+    "static Term bend_bool_or(Env e, u32 t, u32 f, Term a, Term b) {\n  (void)e;\n  return term_pak(term_aux(a) == (u64)t || term_aux(b) == (u64)t ? t : f, 0);\n}\n\n",
+    "static Term bend_bool_xor(Env e, u32 t, u32 f, Term a, Term b) {\n  (void)e;\n  return term_pak(term_aux(a) == (u64)t ? term_aux(b) != (u64)t : term_aux(b) == (u64)t ? t : f, 0);\n}\n\n",
     "static Term bend_cmp3(Env e, u32 lt, u32 eq, u32 gt, Term a, Term b) {\n  return term_pak(a < b ? lt : a == b ? eq : gt, 0);\n}\n\n",
     "static Term bend_divmod(Env e, u32 cid, Term a, Term b) {\n  if (b == 0) {\n    return bend_tuple(e, cid, 0, a);\n  }\n  return bend_tuple(e, cid, a / b, a % b);\n}\n\n",
     "static Term bend_str_cons(Env e, u32 scon, u64 ch, Term tail) {\n  u64 l = heap_alloc(e, cls_fit(2));\n  e.mem[l] = ch;\n  e.mem[l + 1] = tail;\n  return term_ctr(scon, l);\n}\n\n",
