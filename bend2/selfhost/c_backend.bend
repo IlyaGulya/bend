@@ -2681,9 +2681,9 @@ def export_row_pair(one: Maybe<&2, ExportRow>, rest: Maybe<&2, List<&2, ExportRo
 
 def export_row(item: BIR.Export, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> Maybe<&2, ExportRow>:
   match item:
-    case BIR.Export{key, entry, parameter_types, result}: export_entry(key, entry, parameter_types, result, declarations, by_code, by_key, by_foreign, by_native, stages, entries)
+    case BIR.Export{key, entry, parameter_types}: export_entry(key, entry, parameter_types, declarations, by_code, by_key, by_foreign, by_native, stages, entries)
 
-def export_entry(key: String, entry: Maybe<&2, BIR.Entry>, parameter_types: List<&2, BIR.Descriptor>, result: BIR.Descriptor, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> Maybe<&2, ExportRow>:
+def export_entry(key: String, entry: Maybe<&2, BIR.Entry>, parameter_types: List<&2, BIR.Descriptor>, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> Maybe<&2, ExportRow>:
   match entry:
     case Some{item}:
       match item:
@@ -2694,8 +2694,17 @@ def export_entry(key: String, entry: Maybe<&2, BIR.Entry>, parameter_types: List
 # is exact only when the checked parameter count agrees; otherwise the export
 # table fails instead of guessing a conversion.
 def export_direct(key: String, code: U32, arity: Nat, parameter_types: List<&2, BIR.Descriptor>, by_code: Map<&2, U32>) -> Maybe<&2, ExportRow>:
-  match Nat.is_eq(arity, List.length(&2, BIR.Descriptor, parameter_types)):
+  checked = List.length(&2, BIR.Descriptor, parameter_types)
+  match Nat.is_eq(arity, checked):
     case True{}: Some{ExportRow{key, map_u32(by_code, U32.show(code)), 0n, arity}}
+    case False{}: export_direct_curried(Nat.is_lt(arity, checked), key, code, arity, checked, by_code)
+
+# A callable whose signature has more arrow domains than the entry's own
+# parameters returns a function: run the entry with its parameters, then apply
+# the remaining host arguments in order.
+def export_direct_curried(has_extra: Bool, key: String, code: U32, arity: Nat, checked: Nat, by_code: Map<&2, U32>) -> Maybe<&2, ExportRow>:
+  match has_extra:
+    case True{}: Some{ExportRow{key, map_u32(by_code, U32.show(code)), 2n, arity}}
     case False{}: None{}
 
 def export_symbol(key: String, parameter_types: List<&2, BIR.Descriptor>, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> Maybe<&2, ExportRow>:
@@ -2769,6 +2778,12 @@ def exports_c(rows: List<&2, ExportRow>) -> String:
         "  if (BEND_EXPORT_MODE[i] == 0) {\n",
         "    if (n != (u32)BEND_EXPORT_ARITY[i]) {\n      return bend_fail(e, \"bend: export called at the wrong arity\");\n    }\n",
         "    return bend_run(e, BEND_EXPORT_INDEX[i], args, n);\n  }\n",
+        "  if (BEND_EXPORT_MODE[i] == 2) {\n",
+        "    u32 k = (u32)BEND_EXPORT_ARITY[i];\n",
+        "    if (n < k) {\n      return bend_fail(e, \"bend: export called at the wrong arity\");\n    }\n",
+        "    Term v = bend_run(e, BEND_EXPORT_INDEX[i], args, k);\n",
+        "    for (u32 j = k; j < n; j += 1) {\n      v = bend_apply(e, v, args[j]);\n    }\n",
+        "    return v;\n  }\n",
         "  Term v = bend_run(e, BEND_EXPORT_INDEX[i], 0, 0);\n",
         "  for (u32 j = 0; j < n; j += 1) {\n    v = bend_apply(e, v, args[j]);\n  }\n",
         "  return v;\n}\n\n"
