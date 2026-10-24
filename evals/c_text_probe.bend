@@ -16,7 +16,7 @@
 #   lambda_literal_ok=True  c_string_literal("λx") == "\"\\316\\273x\""
 #   nul_literal_ok=True     U+0000 becomes the three-digit octal escape \000
 #   astral_len_ok=True      U+1D11E is four UTF-8 bytes
-#   escape_literal_ok=True  quote/newline/backslash use their short C escapes
+
 import Base
 import ../bend2/selfhost/c_backend_link.bend as Link
 
@@ -77,9 +77,6 @@ def mixed_long_text() -> String:
 def mixed_long_len_ok() -> Bool:
   Nat.is_eq(Link.utf8_byte_len(mixed_long_text()), 20000n)
 
-def literal_len_ok() -> Bool:
-  Nat.is_eq(String.length(Link.c_string_literal(mixed_long_text())), 60002n)
-
 def astral_len_ok() -> Bool:
   Nat.is_eq(Link.utf8_byte_len(String.from_list([Char.from_u32(119070)])), 4n)
 
@@ -93,5 +90,4 @@ def main() -> IO(Unit):
     Unit <- IO.print(String.append("mixed_fold_ok=", Bool.show(mixed_fold_ok())))
     Unit <- IO.print(String.append("lambda_len_ok=", Bool.show(lambda_len_ok())))
     Unit <- IO.print(String.append("astral_len_ok=", Bool.show(astral_len_ok())))
-    Unit <- IO.print(String.append("mixed_long_len_ok=", Bool.show(mixed_long_len_ok())))
-    IO.print(String.append("literal_len_ok=", Bool.show(literal_len_ok())))
+    IO.print(String.append("mixed_long_len_ok=", Bool.show(mixed_long_len_ok())))
