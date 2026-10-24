@@ -385,8 +385,42 @@ process.exit(9);`;
   need(adapterRecords.filter(row => row.kind === 'compiler-memo-sizes').every(row =>
     row.units === 'entries' && Object.keys(row.values ?? {}).length > 0),
     'Adapter memo sizes are not nonempty entry counts');
+  const idProfile = await createCompilerProfile({directory: join(direct, 'profile-ids'),
+    execution: {stage: 'collector-id-contract'}, rawDetail: false, sampling: false});
+  const firstId = idProfile.record({kind: 'contract', scope: 'observation id check', units: 'events', value: 1});
+  const secondId = idProfile.record({kind: 'contract', scope: 'observation id check', units: 'events', value: 2});
+  const idSummary = idProfile.finish('completed');
+  const idCheckpoint = json(join(idProfile.runDirectory, 'checkpoint.json'));
+  need(firstId.id === 1 && secondId.id === 2, 'Observation ids are not 1,2: ' + firstId.id + ',' + secondId.id);
+  need(idSummary.observations.length === 2 && idSummary.summary.observationCount === 2 &&
+    idSummary.summary.observations === 2 && idSummary.summary.aggregatedFineObservations === 0,
+    'Observation counts are not exact');
+  need(idCheckpoint.counts.observations === 2 && idCheckpoint.recentObservations.length === 2,
+    'Checkpoint observation counts are not exact');
+
+  const guardProfile = await createCompilerProfile({directory: join(direct, 'profile-unwind-contract'),
+    execution: {stage: 'collector-unwind-contract'}, rawDetail: false, sampling: false});
+  const openToken = guardProfile.begin('open');
+  const foreignProfile = await createCompilerProfile({directory: join(direct, 'profile-foreign-token'),
+    execution: {stage: 'collector-foreign-token'}, rawDetail: false, sampling: false});
+  const foreignToken = foreignProfile.begin('foreign');
+  let foreignRejected = false, staleRejected = false;
+  try { guardProfile.abortOpen('aborted', {}, {keep: foreignToken}); }
+  catch (error) { foreignRejected = /different compiler profile/.test(String(error)); }
+  guardProfile.end(openToken, 'completed');
+  const staleToken = guardProfile.begin('stale');
+  guardProfile.end(staleToken, 'completed');
+  try { guardProfile.abortOpen('aborted', {}, {keep: staleToken}); }
+  catch (error) { staleRejected = /not an open span/.test(String(error)); }
+  need(foreignRejected && staleRejected, 'abortOpen did not validate keep ownership/openness');
+  foreignProfile.end(foreignToken, 'completed');
+  guardProfile.finish('completed');
+  foreignProfile.finish('completed');
   evidence.cases.collectorContract = {cyclicArrayRejected: true, nonRawReleaseRows: 0,
-    adapterReleaseEvents: 2, adapterSpanNames: adapterSpans, adapterUnits: [...adapterUnits]};
+    adapterReleaseEvents: 2, adapterSpanNames: adapterSpans, adapterUnits: [...adapterUnits],
+    observationIds: [firstId.id, secondId.id], observationCount: idSummary.summary.observationCount,
+    checkpointObservationCount: idCheckpoint.counts.observations,
+    foreignKeepRejected: foreignRejected, staleKeepRejected: staleRejected};
 
   for (const path of ['evals/compiler_profile.mjs', 'evals/selfhost_cpu_profile.mjs',
     'evals/native_compiler_experiment.ts', 'evals/checker_core_component_build.ts',

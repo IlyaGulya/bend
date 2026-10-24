@@ -132,6 +132,7 @@ export async function createCompilerProfile(config = {}) {
   const rawDetail = config.rawDetail === true;
   const startedAt = new Date().toISOString();
   const startMonotonicMs = performance.now();
+  const cpuStart = cpuSnapshot();
   const samplingConfig = config.sampling === true ? {}
     : config.sampling && typeof config.sampling === 'object' ? config.sampling : null;
   const cpuIntervalUs = samplingConfig?.cpuIntervalUs ?? 1000;
@@ -225,7 +226,7 @@ export async function createCompilerProfile(config = {}) {
   // Coarse, atomic crash evidence. Fine raw events are streamed to events.jsonl
   // and are deliberately not checkpointed, so this file stays bounded.
   function writeCheckpoint(finalStatus, finalError) {
-    const cpu = process.cpuUsage(), memory = process.memoryUsage();
+    const cpu = cpuSnapshot();
     const checkpoint = {
       schemaVersion: COMPILER_PROFILE_SCHEMA_VERSION,
       kind: 'compiler-profile-checkpoint',
@@ -241,8 +242,9 @@ export async function createCompilerProfile(config = {}) {
       updatedAt: new Date().toISOString(),
       elapsedMs: performance.now() - startMonotonicMs,
       process: {
-        cpu: {kind: 'process-boundary-delta', scope: 'every thread in this process; child processes excluded',
-          userMs: cpu.user / 1000, systemMs: cpu.system / 1000},
+        cpu: {kind: 'process-boundary-delta',
+          scope: 'process.cpuUsage delta since collector creation; every thread in this process; child processes excluded',
+          userMs: cpu.userMs - cpuStart.userMs, systemMs: cpu.systemMs - cpuStart.systemMs},
         memory: memorySnapshot(),
       },
       activeSpans: stack.filter(span => !span.excluded).map(span => ({
@@ -454,7 +456,6 @@ export async function createCompilerProfile(config = {}) {
       source: source ?? null,
       details: details === undefined ? null : serializable(details),
     };
-    observationSequence += 1;
     if (aggregateOnly) {
       fineObservations.count += 1;
       if (Object.hasOwn(fineObservations.kinds, kind) || Object.keys(fineObservations.kinds).length < 64)
@@ -475,8 +476,13 @@ export async function createCompilerProfile(config = {}) {
     const finalStatus = normalizeStatus(status, 'aborted');
     if (!['failed', 'aborted'].includes(finalStatus)) fail('abortOpen status must be failed or aborted');
     if (details !== null && typeof details !== 'object') fail('abortOpen details must be an object');
-    const keepId = options.keep?.id;
-    const keepIndex = keepId === undefined ? -1 : stack.findIndex(span => span.id === keepId);
+    const keep = options.keep;
+    if (keep !== undefined) {
+      if (!keep || typeof keep.id !== 'number') fail('abortOpen keep must be a token returned by begin');
+      if (keep.profileId !== profileId) fail('abortOpen keep token belongs to a different compiler profile');
+      if (!stack.some(span => span.id === keep.id)) fail('abortOpen keep token is not an open span');
+    }
+    const keepIndex = keep === undefined ? -1 : stack.findIndex(span => span.id === keep.id);
     let closed = 0;
     while (stack.length > keepIndex + 1) {
       const span = stack.pop();

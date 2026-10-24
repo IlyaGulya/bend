@@ -14,7 +14,7 @@
     "fullroot overhead/control and complete stage coverage are not established by a tiny smoke run"
   ],
   "source": {
-    "evals/compiler_profile.mjs": "118c792418071dc98e7cf62bab6bbe87426648e987d2b9dabc4a42a0069e718d",
+    "evals/compiler_profile.mjs": "99fca04a701af1fec88e49ab3ec4673ada67fd504ed22d6901b1937e997b4ae8",
     "evals/selfhost_cpu_profile.mjs": "5d5fc8d329a3b600522c58eeac59c49c515109bc7f48845d8177cb520129a1c0",
     "evals/native_compiler_experiment.ts": "acf8371500009002366f0758280ca3383fcb3cb607a3469d30b73a146c97ae57",
     "evals/checker_core_component_build.ts": "5dac037234b0c1703b31eb4f0552cd054a28e5f13187198e2d20c0c62b9ca864",
@@ -125,7 +125,7 @@
       "activeSpans": [
         "compile-book"
       ],
-      "observations": 2,
+      "observations": 1,
       "recentObservationKinds": [
         "exact-counter"
       ]
@@ -142,7 +142,15 @@
         "lines",
         "UTF-16 code units",
         "boolean"
-      ]
+      ],
+      "observationIds": [
+        1,
+        2
+      ],
+      "observationCount": 2,
+      "checkpointObservationCount": 2,
+      "foreignKeepRejected": true,
+      "staleKeepRejected": true
     }
   },
   "status": "PASS",
