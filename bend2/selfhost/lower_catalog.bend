@@ -40,7 +40,7 @@ type Preparation is Data:
 type Arms is Data:
   Arms{arms: List<&2, BIR.DescriptorArm>, state: Preparation}
 type ExportFacts is Data:
-  ExportFacts{parameter_types: List<&2, BIR.Descriptor>, result: BIR.Descriptor}
+  ExportFacts{parameter_types: List<&2, BIR.Descriptor>}
 # Field identities are source-slot ordinals, including erased positions. The
 # named property exists only for a live field; slot lookup never compacts IDs.
 type ConstructorField is Data:
@@ -758,36 +758,52 @@ def export_definition(key: String, definitions: List<&2, Definition>) -> Maybe<&
             case True{}: Some{definition}
             case False{}: export_definition(key, rest)
 
-def export_result_type(source: Arena.Arena, result: IR.OptionalTerm, scope: Scope.ArenaGlobalScope) -> CatalogResult<BIR.Descriptor>:
-  match result:
-    case IR.NoTerm{}:
-      CatalogResult{source, BIR.DescriptorFailure{"bend: exported definition has no checked result type"}}
-    case IR.SomeTerm{term}:
-      descriptor(source, term, scope)
+def export_signature(key: String, signatures: List<&2, Scope.ArenaGlobal>) -> Maybe<&2, U32>:
+  match signatures:
+    case Nil{}: None{}
+    case +signature <> rest:
+      match signature:
+        case Scope.ArenaGlobal{known, _, _, ty, _, _}:
+          match String.eq(key, known):
+            case True{}: Some{ty}
+            case False{}: export_signature(key, rest)
+
+# A host-callable signature is the full published function type: every live
+# arrow domain, including domains after a returned arrow. Erased/template
+# binders are dropped exactly as BIR.Parameters drops them.
+def live_arrow_types(value: BIR.Descriptor) -> List<&2, BIR.Descriptor>:
+  match value:
+    case BIR.DescriptorArrow{quantity, domain, body}:
+      match quantity:
+        case BIR.Erased{}: live_arrow_types(body)
+        case _: domain <> live_arrow_types(body)
+    case _: Nil{}
 
 # Export host ABI facts are computed once from the published checked signature
-# and law telescope of the exported definition. A missing prepared definition
-# is an explicit descriptor failure, never a guessed type.
-def export_facts(v_0: Arena.Arena, key: String, definitions: List<&2, Definition>) -> CatalogResult<ExportFacts>:
+# of the exported definition. A missing definition or signature is an explicit
+# descriptor failure, never empty guessed types.
+def export_facts(v_0: Arena.Arena, key: String, definitions: List<&2, Definition>, signatures: List<&2, Scope.ArenaGlobal>) -> CatalogResult<ExportFacts>:
   match export_definition(key, definitions):
     case None{}:
-      CatalogResult{v_0, ExportFacts{[], BIR.DescriptorFailure{String.append("bend: exported definition is not prepared: ", key)}}}
-    case Some{Definition{_, binders, result, _, _, scope, _, _}}:
-      match live_parameter_types(v_0, binders, scope, Nil{}):
-        case CatalogResult{v_20, parameter_types}:
-          match export_result_type(v_20, result, scope):
-            case CatalogResult{v_21, result_type}:
-              CatalogResult{v_21, ExportFacts{parameter_types, result_type}}
+      CatalogResult{v_0, ExportFacts{[BIR.DescriptorFailure{String.append("bend: exported definition is not prepared: ", key)}]}}
+    case Some{Definition{_, _, _, _, _, scope, _, _}}:
+      match export_signature(key, signatures):
+        case None{}:
+          CatalogResult{v_0, ExportFacts{[BIR.DescriptorFailure{String.append("bend: exported definition has no published signature: ", key)}]}}
+        case Some{ty}:
+          match descriptor(v_0, ty, scope):
+            case CatalogResult{v_20, signature}:
+              CatalogResult{v_20, ExportFacts{live_arrow_types(signature)}}
 
-def exports(keys: List<&2, String>, registry: Registry, v_0: Arena.Arena, definitions: List<&2, Definition>) -> CatalogResult<List<&2, BIR.Export>>:
+def exports(keys: List<&2, String>, registry: Registry, v_0: Arena.Arena, definitions: List<&2, Definition>, signatures: List<&2, Scope.ArenaGlobal>) -> CatalogResult<List<&2, BIR.Export>>:
   match keys:
     case Nil{}: CatalogResult{v_0, Nil{}}
     case key <> rest:
-      match export_facts(v_0, key, definitions):
-        case CatalogResult{v_20, ExportFacts{parameter_types, result_type}}:
-          match exports(rest, registry, v_20, definitions):
+      match export_facts(v_0, key, definitions, signatures):
+        case CatalogResult{v_20, ExportFacts{parameter_types}}:
+          match exports(rest, registry, v_20, definitions, signatures):
             case CatalogResult{v_21, tail}:
-              CatalogResult{v_21, BIR.Export{key, export_entry(definition_key(registry, key)), parameter_types, result_type} <> tail}
+              CatalogResult{v_21, BIR.Export{key, export_entry(definition_key(registry, key)), parameter_types} <> tail}
 
 # Reachability is a visited-set walk, not reduction and not fuel-bounded.
 # Register before traversing a body so recursive descriptor functions terminate.
@@ -1376,10 +1392,10 @@ def native_match_prepare_modules_2(v_2: List<&2, IR.LoadedModule>, v_4: List<&2,
 def prepare_modules(v_0: Arena.Arena, v_2: List<&2, IR.LoadedModule>, v_4: List<&2, Checked.ModuleMetadata>, v_6: Bool, v_8: Preparation) -> CatalogResult<Preparation>:
   native_match_prepare_modules_2(v_2, v_4, v_0, v_6, v_8)
 
-def ending(requested: Maybe<&2, List<&2, String>>, main: Maybe<&2, BIR.Descriptor>, registry: Registry, v_0: Arena.Arena, definitions: List<&2, Definition>) -> CatalogResult<BIR.Ending>:
+def ending(requested: Maybe<&2, List<&2, String>>, main: Maybe<&2, BIR.Descriptor>, registry: Registry, v_0: Arena.Arena, definitions: List<&2, Definition>, signatures: List<&2, Scope.ArenaGlobal>) -> CatalogResult<BIR.Ending>:
   match requested:
     case Some{keys}:
-      match exports(keys, registry, v_0, definitions):
+      match exports(keys, registry, v_0, definitions, signatures):
         case CatalogResult{v_20, values}: CatalogResult{v_20, BIR.Library{values}}
     case None{}:
       match main:
@@ -1389,7 +1405,7 @@ def native_match_build_finish_0(v_74: CatalogResult<Needed>, v_2: List<&2, IR.Lo
   match v_74:
     case CatalogResult{v_40, Needed{v_41, _}}:
       v_44 = Registry{v_27, v_29}
-      match ending(v_10, v_34, v_44, v_40, v_25):
+      match ending(v_10, v_34, v_44, v_40, v_25, v_4):
         case CatalogResult{v_42, v_43}:
           v_48 = Catalog{List.reverse(&2, Definition, v_25), v_44, List.reverse(&2, BIR.ConstructorLayout, v_28), List.reverse(&2, BIR.Family, v_30), v_41, v_31, v_43}
           Built{Checked.CheckedProgram{v_42, v_2, v_4, v_6}, v_48}
