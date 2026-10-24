@@ -15,6 +15,7 @@ export const cemitStepConfig: StepConfig = {
   generator: 'evals/c_emit_step_lower.ts',
   providerClosure: ['bend2/selfhost/backend_lower.bend', 'bend2/selfhost/lower_catalog.bend',
     'bend2/selfhost/descriptor_nf.bend', 'bend2/selfhost/c_backend.bend',
+    'bend2/selfhost/c_backend_link.bend',
     'bend2/selfhost/c_backend_layout.bend', 'bend2/selfhost/c_backend_physical.bend'],
   ownedDriver: undefined, driver: undefined,
   checkerOutput: undefined, checkerManifest: undefined,
