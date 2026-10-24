@@ -951,13 +951,6 @@ def key_layout(+key: String, constructors: List<&2, BIR.ConstructorLayout>) -> M
             case True{}: Some{row}
             case False{}: key_layout(key, rest)
 
-def native_kind_of(+id: U32, constructors: List<&2, BIR.ConstructorLayout>) -> String:
-  match layout_of(id, constructors):
-    case Some{row}:
-      match row:
-        case BIR.ConstructorLayout{id, key, native, fields}: native_kind(native)
-    case None{}: "plain"
-
 def native_kind(native: Maybe<&2, String>) -> String:
   match native:
     case None{}: "generic"
@@ -996,32 +989,6 @@ def native_marker_5(marker: String) -> String:
   match String.eq(marker, "Array.ANode"):
     case True{}: "anode"
     case False{}: "generic"
-
-def packed_ctor(+id: U32, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>) -> Bool:
-  match layout_of(id, constructors):
-    case None{}: False{}
-    case Some{row}:
-      match row:
-        case BIR.ConstructorLayout{id, key, native, fields}: packed_arm(key, families)
-
-def packed_arm(+key: String, families: List<&2, BIR.Family>) -> Bool:
-  match arm_of(key, families):
-    case None{}: False{}
-    case Some{arm}:
-      match arm:
-        case BIR.DescriptorArm{key, fields}: packed_fields(fields)
-
-def packed_fields(fields: List<&2, BIR.DescriptorField>) -> Bool:
-  match live_fields(fields, Nil{}):
-    case +only <> Nil{}:
-      match only:
-        case BIR.DescriptorField{key, quantity, ty}: field_w32(ty)
-    case _: False{}
-
-def field_w32(ty: BIR.Descriptor) -> Bool:
-  match descriptor_head(ty):
-    case None{}: False{}
-    case Some{+key}: field_w32_key(String.eq(last_segment(key), "U32"), String.eq(last_segment(key), "F32"))
 
 def field_w32_key(is_u32: Bool, is_f32: Bool) -> Bool:
   match is_u32:
@@ -1080,13 +1047,6 @@ def live_index_next(quantity: BIR.Quantity, +live: Nat) -> Nat:
   match quantity:
     case BIR.Erased{}: live
     case _: Nat.add(live, 1n)
-
-def ctor_cid(+id: U32, constructors: List<&2, BIR.ConstructorLayout>, cids: List<&2, CidRow>) -> Part:
-  match layout_of(id, constructors):
-    case None{}: failp(String.append("BIR names constructor id ", String.append(U32.show(id), " with no layout")))
-    case Some{row}:
-      match row:
-        case BIR.ConstructorLayout{id, key, native, fields}: PartOk{String.append(U32.show(cid_lookup(key, cids)), "u")}
 
 # ---------------------------------------------------------------------------
 # Atoms and operations
@@ -1229,13 +1189,6 @@ def all_arms_nullary_one(nullary: Bool, rest: List<&2, BIR.DescriptorArm>) -> Bo
     case True{}: all_arms_nullary(rest)
     case False{}: False{}
 
-def family_arms_of(key: String, families: List<&2, BIR.Family>) -> Maybe<&2, List<&2, BIR.DescriptorArm>>:
-  match families:
-    case Nil{}: None{}
-    case +family <> rest:
-      match family:
-        case BIR.Family{owner, name, native, quantity_prefix, arity, +arms}: family_arms_check(arm_member(key, arms), arms, rest)
-
 def arm_member(+key: String, arms: List<&2, BIR.DescriptorArm>) -> Bool:
   match arms:
     case Nil{}: False{}
@@ -1312,11 +1265,6 @@ def field_operands(fields: List<&2, BIR.Field>, +plan: Plan, +acc: List<&2, Phys
             case PartFail{message}: OperandsFail{message}
             case PartOk{text}: field_operands(rest, plan, Phys.Operand{use, text} <> acc)
 
-def construct_values(constructor: U32, kind: String, values: List<&2, Part>, cid_part: Part, count: Nat, packed: Bool) -> Part:
-  match values_part(values, Nil{}):
-    case None{}: failp("BIR constructor field has no C value")
-    case Some{args}: construct_kind(kind, args, cid_part, count, packed)
-
 def values_part(values: List<&2, Part>, +acc: List<&2, String>) -> Maybe<&2, List<&2, String>>:
   match values:
     case Nil{}: Some{List.reverse(&2, String, acc)}
@@ -1324,29 +1272,6 @@ def values_part(values: List<&2, Part>, +acc: List<&2, String>) -> Maybe<&2, Lis
       match part:
         case PartFail{message}: None{}
         case PartOk{text}: values_part(rest, text <> acc)
-
-def construct_kind(kind: String, +args: List<&2, String>, cid_part: Part, count: Nat, packed: Bool) -> Part:
-  match base_construct(kind, args):
-    case Some{text}: PartOk{text}
-    case None{}:
-      match cid_part:
-        case PartFail{message}: PartFail{message}
-        case PartOk{cid}: construct_generic(args, cid, count, packed)
-
-def construct_generic(args: List<&2, String>, +cid: String, +count: Nat, packed: Bool) -> Part:
-  match Nat.is_eq(count, 0n):
-    case True{}: PartOk{cat(["term_pak(", cid, ", 0)"])}
-    case False{}: construct_generic_n(args, cid, count, packed)
-
-def construct_generic_n(+args: List<&2, String>, +cid: String, +count: Nat, packed: Bool) -> Part:
-  match Bool.and(packed, Nat.is_eq(count, 1n)):
-    case True{}: PartOk{cat(["term_pak(", cid, ", (u64)(", list_at(args, 0n), "))"])}
-    case False{}: PartOk{cat(["bend_node(e, ", cid, ", ", Nat.show(count), ", ", call_args(args), ")"])}
-
-def base_construct(+kind: String, args: List<&2, String>) -> Maybe<&2, String>:
-  match String.eq(kind, "natzero"):
-    case True{}: Some{"0"}
-    case False{}: base_construct_1(kind, args)
 
 def base_construct_1(+kind: String, +args: List<&2, String>) -> Maybe<&2, String>:
   match String.eq(kind, "natsucc"):
@@ -1385,26 +1310,6 @@ def ctor_key_of(+id: U32, constructors: List<&2, BIR.ConstructorLayout>) -> Stri
         case BIR.ConstructorLayout{id, key, native, fields}: key
     case None{}: ""
 
-def project_values(value: Part, kind: String, key: String, field: U32, families: List<&2, BIR.Family>) -> Part:
-  match value:
-    case PartFail{message}: PartFail{message}
-    case PartOk{text}: PartOk{project_expr(kind, text, key, field, families)}
-
-def project_expr(+kind: String, +value: String, key: String, field: U32, families: List<&2, BIR.Family>) -> String:
-  match String.eq(kind, "natsucc"):
-    case True{}: cat(["bend_nat_pred(", value, ")"])
-    case False{}: project_expr_1(kind, value, key, field, families)
-
-def project_expr_1(+kind: String, +value: String, key: String, field: U32, families: List<&2, BIR.Family>) -> String:
-  match String.eq(kind, "u32"):
-    case True{}: cat(["term_word(e, ", value, ")"])
-    case False{}: project_expr_2(kind, value, key, field, families)
-
-def project_expr_2(+kind: String, +value: String, key: String, field: U32, families: List<&2, BIR.Family>) -> String:
-  match String.eq(kind, "f32"):
-    case True{}: value
-    case False{}: project_expr_3(kind, value, key, field, families)
-
 def project_expr_3(+kind: String, +value: String, key: String, field: U32, families: List<&2, BIR.Family>) -> String:
   match String.eq(kind, "aleaf"):
     case True{}: cat(["bend_array_leaf_value(e, ", value, ")"])
@@ -1424,26 +1329,6 @@ def hastag_part(value: BIR.Atom, +constructor: U32, +plan: Plan) -> Part:
   match atom_part(value, plan):
     case PartFail{message}: PartFail{message}
     case PartOk{text}: Phys.hastag_part(text, constructor, phys_world(plan))
-
-def hastag_values(value: Part, kind: String, cid_part: Part) -> Part:
-  match value:
-    case PartFail{message}: PartFail{message}
-    case PartOk{text}: hastag_expr(kind, text, cid_part)
-
-def hastag_expr(+kind: String, +value: String, cid_part: Part) -> Part:
-  match String.eq(kind, "natzero"):
-    case True{}: okp(cat(["(", value, " == 0)"]))
-    case False{}: hastag_expr_1(kind, value, cid_part)
-
-def hastag_expr_1(+kind: String, +value: String, cid_part: Part) -> Part:
-  match String.eq(kind, "natsucc"):
-    case True{}: okp(cat(["(", value, " > 0)"]))
-    case False{}: hastag_expr_2(kind, value, cid_part)
-
-def hastag_expr_2(+kind: String, value: String, cid_part: Part) -> Part:
-  match String.eq(kind, "u32"):
-    case True{}: okp("1")
-    case False{}: hastag_expr_3(kind, value, cid_part)
 
 def hastag_expr_3(+kind: String, value: String, cid_part: Part) -> Part:
   match String.eq(kind, "f32"):
