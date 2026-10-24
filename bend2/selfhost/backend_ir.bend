@@ -232,3 +232,8 @@ type Ending is Data:
   Library{exports: List<&2, Export>}
 type Program is Data:
   Program{codes: List<&2, Code>, declarations: List<&2, Declaration>, constructors: List<&2, ConstructorLayout>, families: List<&2, Family>, type_functions: List<&2, TypeFunction>, ending: Ending}
+
+# A passive target source carried from an IO adapter to a renderer: the bytes
+# and the exact declared path, never a target guess or a rewritten specifier.
+type SourceFile is Data:
+  SourceFile{path: String, source: String}
