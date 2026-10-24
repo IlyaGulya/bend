@@ -2,6 +2,7 @@ import Base
 import ./backend_ir.bend as BIR
 import ./index_lookup.bend as IndexLookup
 import ./c_backend_link.bend as Link
+import ./c_backend_layout.bend as CLay
 
 # The C target for Backend IR.
 #
@@ -103,7 +104,8 @@ type Plan is Data:
     library: Bool,
     exports: List<&2, BIR.Export>,
     imports: List<&2, CImport>,
-    fkeys: List<&2, String>
+    fkeys: List<&2, String>,
+    ctx: CLay.Context
   }
 
 type PlanResult is Data:
@@ -735,8 +737,9 @@ def plan_finish(program: BIR.Program, scan: Scan, cids: List<&2, CidRow>, constr
 
 def plan_top(program: BIR.Program, scan: Scan, cids: List<&2, CidRow>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, declarations: List<&2, BIR.Declaration>, end: BIR.Ending, imports: List<&2, CImport>) -> PlanResult:
   library = ending_library(end)
+  ctx = CLay.context(program)
   build = finish_entries(build_entries(program, scan), library)
-  PlanOk{Plan{cids, cid_macro_map(cids), fid_macro_map(declarations, build), entries_ascending(build_entries_of(build)), by_code_of(build), by_key_of(build), by_foreign_of(build), by_native_of(build), stages_of(build), constructors, families, declarations, True{}, "{ 0 }", "", library, ending_exports(end), imports, fkeys_of(scan)}}
+  PlanOk{Plan{cids, cid_macro_map(cids), fid_macro_map(declarations, build), entries_ascending(build_entries_of(build)), by_code_of(build), by_key_of(build), by_foreign_of(build), by_native_of(build), stages_of(build), constructors, families, declarations, True{}, "{ 0 }", "", library, ending_exports(end), imports, fkeys_of(scan), ctx}}
 
 def plan_pure(end: BIR.Ending, families: List<&2, BIR.Family>, inner: PlanResult) -> PlanResult:
   match inner:
@@ -751,8 +754,8 @@ def plan_set_pure(end: BIR.Ending, families: List<&2, BIR.Family>, plan: Plan) -
 
 def plan_set_pure_flags(plan: Plan, pure: Bool, desc: String, names: String) -> Plan:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
-      Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, pure, desc, names, library, exports, imports, fkeys}
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys, ctx}:
+      Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, pure, desc, names, library, exports, imports, fkeys, ctx}
 
 def fid_macros_runtime(acc: Map<&2, String>) -> Map<&2, String>:
   fid_macros_runtime_one(map_set_first(acc, "Clo~apply", "FID_CLO_APPLY"))
@@ -782,11 +785,11 @@ def plan_executable_io(is_io: Bool, family: BIR.Family, main_type: BIR.Descripto
 
 def plan_executable_show(family: BIR.Family, main_type: BIR.Descriptor, plan: Plan) -> PlanResult:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys, ctx}:
       match show_cells(main_type, Nil{}, constructors, families, cids):
         case None{}: PlanFail{"the main value's type has no C show layout"}
         case Some{cells}:
-          PlanOk{Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, True{}, cells, show_names(constructors), library, exports, imports, fkeys}}
+          PlanOk{Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, True{}, cells, show_names(constructors), library, exports, imports, fkeys, ctx}}
 
 def show_names(constructors: List<&2, BIR.ConstructorLayout>) -> String:
   show_names_each(ctor_keys(constructors), Nil{})
@@ -1211,7 +1214,7 @@ def bool_lit_part(which: String, plan: Plan) -> Part:
 
 def symbol_part(key: String, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys, ctx}:
       symbol_part_decl(find_declaration(key, declarations), key, plan)
 
 def find_declaration(key: String, declarations: List<&2, BIR.Declaration>) -> Maybe<&2, BIR.Declaration>:
@@ -1237,7 +1240,7 @@ def symbol_part_decl(found: Maybe<&2, BIR.Declaration>, key: String, plan: Plan)
 
 def symbol_part_item(item: BIR.Declaration, key: String, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys, ctx}:
       symbol_emit(item, key, entries, by_code, by_key, by_foreign, by_native, stages)
 
 def symbol_emit(item: BIR.Declaration, key: String, entries: List<&2, Entry>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>, stages: Map<&2, U32>) -> Part:
@@ -1304,7 +1307,7 @@ def op_part(op: BIR.Op, plan: Plan) -> Part:
 
 def direct_part(code: U32, args: List<&2, BIR.Arg>, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys, ctx}:
       direct_values(map_u32(by_code, U32.show(code)), arg_strings(args, plan))
 
 def direct_values(real: U32, values: Maybe<&2, List<&2, String>>) -> Part:
@@ -1314,7 +1317,7 @@ def direct_values(real: U32, values: Maybe<&2, List<&2, String>>) -> Part:
 
 def closure_part(code: U32, captures: List<&2, BIR.Arg>, parameters: List<&2, BIR.Parameter>, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys, ctx}:
       closure_values(code, List.length(&2, BIR.Arg, captures), parameters, map_u32(by_code, U32.show(code)), stages, arg_strings(captures, plan))
 
 def closure_values(code: U32, count: Nat, parameters: List<&2, BIR.Parameter>, real: U32, stages: Map<&2, U32>, values: Maybe<&2, List<&2, String>>) -> Part:
@@ -1409,7 +1412,7 @@ def inline_tag_arms(key: String, arms: List<&2, BIR.DescriptorArm>) -> Maybe<&2,
 
 def construct_part(constructor: U32, fields: List<&2, BIR.Field>, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys, ctx}:
       construct_values(constructor, native_kind_of(constructor, constructors), field_values(fields, plan), ctor_cid(constructor, constructors, cids), List.length(&2, BIR.Field, fields), packed_ctor(constructor, constructors, families))
 
 def construct_values(constructor: U32, kind: String, values: List<&2, Part>, cid_part: Part, count: Nat, packed: Bool) -> Part:
@@ -1475,7 +1478,7 @@ def base_construct_5(kind: String, args: List<&2, String>) -> Maybe<&2, String>:
 
 def project_part(value: BIR.Atom, constructor: U32, field: U32, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys, ctx}:
       project_values(atom_part(value, plan), native_kind_of(constructor, constructors), ctor_key_of(constructor, constructors), field, families)
 
 def ctor_key_of(id: U32, constructors: List<&2, BIR.ConstructorLayout>) -> String:
@@ -1522,7 +1525,7 @@ def project_anode(value: String, field: U32) -> String:
 
 def hastag_part(value: BIR.Atom, constructor: U32, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys, ctx}:
       hastag_values(atom_part(value, plan), native_kind_of(constructor, constructors), ctor_cid(constructor, constructors, cids))
 
 def hastag_values(value: Part, kind: String, cid_part: Part) -> Part:
@@ -1623,7 +1626,7 @@ def prim_call_part(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, plan: Plan
 
 def pcid(short: String, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys, ctx}:
       cid_c(short, cids)
 
 def prim_part(primitive: BIR.Primitive, a: List<&2, String>, plan: Plan) -> Part:
@@ -1755,7 +1758,7 @@ def f32_cmp(op: String, a0: String, a1: String) -> Part:
 
 def bool2_part(fn: String, a0: String, a1: String, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys, ctx}:
       bool2_c(fn, a0, a1, cid_c("True", cids), cid_c("False", cids))
 
 def bool2_c(fn: String, a0: String, a1: String, t: Part, f: Part) -> Part:
@@ -1964,7 +1967,7 @@ def block_tail_direct(code: U32, args: List<&2, BIR.Arg>, plan: Plan) -> Part:
 
 def block_tail_direct_values(code: U32, values: Maybe<&2, List<&2, String>>, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys, ctx}:
       tail_direct_values(map_u32(by_code, U32.show(code)), values)
 
 def tail_direct_values(real: U32, values: Maybe<&2, List<&2, String>>) -> Part:
@@ -2040,7 +2043,7 @@ def entry_body_stage(index: U32, count: Nat) -> Part:
 
 def entry_body_foreign(index: U32, key: String, args: Nat, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys, ctx}:
       foreign_types_part(index, key, args, find_declaration(key, declarations), families, cids)
 
 def foreign_types_part(index: U32, key: String, args: Nat, found: Maybe<&2, BIR.Declaration>, families: List<&2, BIR.Family>, cids: List<&2, CidRow>) -> Part:
@@ -2068,7 +2071,7 @@ def box_stores(args: List<&2, String>, index: Nat) -> String:
 
 def entry_body_main(index: U32, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys, ctx}:
       main_body(index, find_declaration("main", declarations), by_code, by_key, entries)
 
 def main_body(index: U32, found: Maybe<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, entries: List<&2, Entry>) -> Part:
@@ -2396,7 +2399,7 @@ def helper_core(max: Nat, cases: String) -> String:
 
 def tables_part(plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys, ctx}:
       tables_render(plan, cids, entries, declarations, by_code, by_key, by_foreign, main_pure, show_desc, show_names)
 
 def tables_render(plan: Plan, cids: List<&2, CidRow>, entries: List<&2, Entry>, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, main_pure: Bool, show_desc: String, show_names: String) -> Part:
@@ -2440,7 +2443,7 @@ def spins_part() -> Part:
 
 def segments_part(plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys, ctx}:
       PartOk{cat(["#if !DEVICE\n", part_text(entry_segments(entries)), "#endif\n"])}
 
 def part_text(part: Part) -> String:
@@ -2454,7 +2457,7 @@ def part_text(part: Part) -> String:
 
 def requests_part(plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys, ctx}:
       requests_check(imports, fkeys, declarations, constructors, cids, declarations)
 
 def requests_check(imports: List<&2, CImport>, fkeys: List<&2, String>, declarations: List<&2, BIR.Declaration>, constructors: List<&2, BIR.ConstructorLayout>, cids: List<&2, CidRow>, decls: List<&2, BIR.Declaration>) -> Part:
@@ -2673,12 +2676,12 @@ def emit(program: BIR.Program, runtime: String, imports: List<&2, CImport>) -> E
 
 def render(plan: Plan, runtime: String) -> EmitResult:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys, ctx}:
       render_checked(cids, declarations, plan, runtime)
 
 def render_checked(cids: List<&2, CidRow>, declarations: List<&2, BIR.Declaration>, plan: Plan, runtime: String) -> EmitResult:
   match plan:
-    case Plan{by_code, by_foreign, by_native, declarations: plan_decls, cids: plan_cids, cid_macros, fid_macros, entries, by_key, stages, constructors, families, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{by_code, by_foreign, by_native, declarations: plan_decls, cids: plan_cids, cid_macros, fid_macros, entries, by_key, stages, constructors, families, main_pure, show_desc, show_names, library, exports, imports, fkeys, ctx}:
       match macro_collision_cids(cids):
         case Some{message}: EmitFailure(message)
         case None{}: render_parts(plan, runtime, cid_exact_map(cids), fid_exact_map(plan_decls, by_code, by_foreign, by_native))
@@ -2847,7 +2850,7 @@ def exports_c(rows: List<&2, ExportRow>) -> String:
 
 def exports_part(plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys, ctx}:
       match export_rows(exports, declarations, by_code, by_key, by_foreign, by_native, stages, entries):
         case None{}: failp("a library export names no callable, or its checked parameter count disagrees with its entry")
         case Some{rows}: okp(exports_c(rows))
