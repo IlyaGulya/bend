@@ -3,7 +3,8 @@
 #
 # `Mark` has four constructors and the match also needs a default arm; the
 # tagged value is produced from a run-time Bool so the tag test is real. The
-# local `plus3` is a first-class closure applied inside `apply_once`.
+# local `plus3` is a first-class closure applied inside `apply_once`; a function
+# value has kind Type and is affine, so it is applied once, not copied.
 # Expected: mark(D)=4, apply_once(plus3,3)=plus3(6)=9, sum=13.
 import Base
 

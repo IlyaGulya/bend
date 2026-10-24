@@ -7,6 +7,9 @@ import Base
 type Cell is Data:
   Cell{a: U32, b: U32, c: U32, d: U32}
 
+def make(+i: U32) -> Cell:
+  Cell{U32.add(i, 3), U32.add(i, 1), U32.mul(i, 2), U32.add(i, 5)}
+
 def weigh(c: Cell) -> U32:
   match c:
     case Cell{a, b, c2, d}: U32.add(a, U32.add(b, U32.add(c2, d)))
@@ -28,8 +31,8 @@ def after_get(pair: Array<Cell> & Cell) -> U32:
   U32.add(weigh(cell), both_sizes(Array.clone(Cell, arr)))
 
 def main() -> IO(Unit):
-  a = Array.new(Cell, 0n, Cell{3, 1, 0, 5})
-  b = Array.set(Cell, a, 0, Cell{4, 2, 2, 6})
+  a = Array.new(Cell, 0n, make(0))
+  b = Array.set(Cell, a, 0, make(1))
   IO.print(U32.show(after_get(Array.get(Cell, b, 0))))
 
 #|16

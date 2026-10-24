@@ -26,10 +26,9 @@ def show_holder(h: Holder, got: Char) -> IO(Unit):
         IO.print(U32.show(Char.to_u32(got)))
 
 def main() -> IO(Unit):
-  c1 = first("λx")
-  c2 = first("λx")
-  a = Array.new(Char, 0n, c2)
-  show_holder(Holder{c1}, char_of(Array.get(Char, a, 0)))
+  +c = first("λx")
+  a = Array.new(Char, 0n, c)
+  show_holder(Holder{c}, char_of(Array.get(Char, a, 0)))
 
 #|955
 #|955
