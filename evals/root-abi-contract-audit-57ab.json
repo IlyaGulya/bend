@@ -263,5 +263,13 @@
     },
     "abiConstants": "append emit_c_modules_start, emit_c_library_start, c_emitter_step to the six root-facing lists; checker_library_smoke stays at nine",
     "unverified": "the exact CEmit module public names must be confirmed against FIRAcceptance's generated manifest (cemit_start/cemit_library_start/cemit_step) before this text is applied"
+  },
+  "decisions": {
+    "requiredExports": "Main decided: full runs require ALL THIRTEEN names, fixture runs keep the existing rule (ABI minus parse_with_fuel and emit_library_start) = 11. C exports are never exempted for convenience. The original ten remain covered.",
+    "runtimeString": "Main approved runtime: String as an explicit CBackend API argument (loaded runtime SOURCE bytes, not a path), and confirmed it is not a duplicate passive carrier: the single-carrier rule forbids nominal SourceFile copies, not a primitive String parameter. The host must still authenticate the actual runtime file hash it read.",
+    "legacyCBackend": "Read the field's real semantics before touching it: it means 'the legacy AST C backend is not in use'. The new c_emit seam is a new backend, so the flag STAYS false; the gate now carries legacyCBackendMeans to say so explicitly.",
+    "criterionWording": "Updated the full-run criterion to the full native validated closure plus byte-identical JS (the JS byte fixed point) plus full semantic AST oracle parity, and stated in the criterion that C emission is not exercised by this lane.",
+    "cSurfaceFields": "The gate now reports cSurface from observed root text only: which C exports are required, whether the seam import is present, which C wrappers exist, and emissionExercised (false unless a lane really ran C). Declared exports alone never become a C behaviour claim; that belongs to FIRAcceptance's authenticated C fixture rows.",
+    "ownership": "Main applies other branches' merges; I own ABI/generation/report wording and the single fresh full root pass after the C module lands."
   }
 }
