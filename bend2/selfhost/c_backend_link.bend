@@ -22,6 +22,47 @@ type LinkResult is Data:
   LinkSuccess{source: String}
   LinkFailure{message: String}
 
+# ---------------------------------------------------------------------------
+# Linear text construction
+#
+# Base's String.append recurses over its first argument, String.concat recurses
+# over its first element, and String.from_list/String.to_list recurse once per
+# character; every one of those is non-tail, so assembling a large translation
+# unit through them grows the stack with the text. These four helpers build the
+# same text in one pass with tail calls only:
+#   chars_rev(s, acc)     = reverse(s) ++ acc        (walk s forward, cons)
+#   text_of_rev(chars, a) = a with chars prepended in reverse (walk forward, cons
+#                           onto the String as SCon)
+#   pieces_rev(parts, a)  = reverse(parts) concatenated onto a char list
+#   text_of_pieces(parts) = parts concatenated in order
+# Concatenating k parts costs one walk over each part's characters, so nothing
+# is copied twice and no chunk size has to be chosen.
+def chars_rev(source: String, +acc: List<&2, Char>) -> List<&2, Char>:
+  match source:
+    case SNil{}: acc
+    case SCon{head, tail}: chars_rev(tail, head <> acc)
+
+def text_of_rev(chars: List<&2, Char>, +acc: String) -> String:
+  match chars:
+    case Nil{}: acc
+    case +char <> rest: text_of_rev(rest, SCon{char, acc})
+
+def pieces_rev(parts: List<&2, String>, +acc: List<&2, Char>) -> List<&2, Char>:
+  match parts:
+    case Nil{}: acc
+    case +part <> rest: pieces_rev(rest, chars_rev(part, acc))
+
+def text_of_pieces(parts: List<&2, String>) -> String:
+  text_of_rev(pieces_rev(parts, Nil{}), "")
+
+def text_of_string(source: String) -> String:
+  text_of_rev(chars_rev(source, Nil{}), "")
+
+# The scanner reads characters in text order; chars_rev hands back the reverse,
+# so the forward list is one tail-recursive List.reverse away.
+def chars_forward(source: String) -> List<&2, Char>:
+  List.reverse(&2, Char, chars_rev(source, Nil{}))
+
 # Only CodeMode can start an invocation; Key collects a candidate's key.
 type Mode is Data:
   CodeMode{}
@@ -40,7 +81,7 @@ type Scan is Data:
 def link_complete(failure: Maybe<&2, String>, output: List<&2, Char>) -> LinkResult:
   match failure:
     case Some{message}: LinkFailure{message}
-    case None{}: LinkSuccess{String.from_list(List.reverse(&2, Char, output))}
+    case None{}: LinkSuccess{text_of_rev(output, "")}
 
 def link_result(result: Scan) -> LinkResult:
   match result:
@@ -148,7 +189,7 @@ def flush_empty(head: Char, output: List<&2, Char>) -> List<&2, Char>:
   ')' <> ('(' <> ('D' <> ('I' <> (head <> output))))
 
 def key_text(collected: List<&2, Char>) -> String:
-  String.from_list(List.reverse(&2, Char, collected))
+  text_of_rev(collected, "")
 
 
 
@@ -269,5 +310,5 @@ def scan(chars: List<&2, Char>, +mode: Mode, +word: Bool, +failure: Maybe<&2, St
             case _: scan(rest, mode, is_word(char), failure, char <> output, cids, fids)
 
 def rewrite(source: String, cids: Map<&2, String>, fids: Map<&2, String>) -> LinkResult:
-  link_result(scan(String.to_list(source), CodeMode{}, False{}, None{}, Nil{}, cids, fids))
+  link_result(scan(chars_forward(source), CodeMode{}, False{}, None{}, Nil{}, cids, fids))
 

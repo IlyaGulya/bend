@@ -234,7 +234,7 @@ def foreign_stem(key: String) -> String:
   String.append("f", key)
 
 def stage_key(stem: String, count: Nat) -> String:
-  String.concat([stem, ":", Nat.show(count)])
+  cat([stem, ":", Nat.show(count)])
 
 # A code read as a value must curry from zero arguments; a code reached only
 # through closures needs a wrapper from its smallest captured prefix; a code
@@ -586,7 +586,7 @@ def export_values(rows: List<&2, ExportRow>, which: Nat, +acc: String) -> String
 
 def export_value(index: U32, mode: Nat, arity: Nat, which: Nat) -> String:
   match Nat.is_eq(which, 0n):
-    case True{}: String.concat([U32.show(index), "u"])
+    case True{}: cat([U32.show(index), "u"])
     case False{}:
       match Nat.is_eq(which, 1n):
         case True{}: Nat.show(mode)
@@ -603,7 +603,7 @@ def exports_c(library: Bool, rows: List<&2, ExportRow>) -> String:
   match library:
     case False{}: ""
     case True{}:
-      String.concat([
+      cat([
         "\n// Library exports\n",
         "#define BEND_EXPORT_COUNT ", Nat.show(List.length(&2, ExportRow, rows)), "\n",
         "static const char* BEND_EXPORT_NAMES[] = { ", export_list(export_names(rows, ""), "0"), " };\n",
@@ -691,7 +691,7 @@ def fkeys_of(scan: Scan) -> List<&2, String>:
 # ---------------------------------------------------------------------------
 
 def cat(parts: List<&2, String>) -> String:
-  String.join(parts, "")
+  Link.text_of_pieces(parts)
 
 def okp(text: String) -> Part:
   PartOk{text}
@@ -710,7 +710,7 @@ def part_join(parts: List<&2, Part>) -> Part:
 def part_append(text: String, rest: Part) -> Part:
   match rest:
     case PartFail{message}: PartFail{message}
-    case PartOk{after}: PartOk{String.append(text, after)}
+    case PartOk{after}: PartOk{cat([text, after])}
 
 def part_first(parts: List<&2, Part>) -> String:
   match parts:
@@ -741,13 +741,18 @@ def c_escape_char(+char: Char) -> String:
     case '\t': "\\t"
     case _: String.from_list([char])
 
+# A C string literal can be long, so the escaped body is accumulated as pieces
+# and concatenated once; escaped_char never grows the stack beyond one character.
 def c_quote_chars(chars: List<&2, Char>) -> String:
+  cat(List.append(&2, String, List.reverse(&2, String, c_quote_pieces(chars, Nil{})), ["\""]))
+
+def c_quote_pieces(chars: List<&2, Char>, +acc: List<&2, String>) -> List<&2, String>:
   match chars:
-    case Nil{}: "\""
-    case +char <> rest: String.append(c_escape_char(char), c_quote_chars(rest))
+    case Nil{}: acc
+    case +char <> rest: c_quote_pieces(rest, c_escape_char(char) <> acc)
 
 def c_quote(text: String) -> String:
-  String.append("\"", c_quote_chars(String.to_list(text)))
+  cat(["\"", c_quote_chars(Link.chars_forward(text))])
 
 def nat_c(value: Nat) -> String:
   cat([Nat.show(value), "ull"])
@@ -2034,20 +2039,20 @@ def a_decls(count: Nat) -> String:
 
 def a_decls_at(+index: Nat, +count: Nat) -> String:
   match Nat.is_lt(index, count):
-    case True{}: String.concat(["    Term ", a_name(index), " = ", r_name(index), ";\n", a_decls_at(Nat.add(index, 1n), count)])
+    case True{}: cat(["    Term ", a_name(index), " = ", r_name(index), ";\n", a_decls_at(Nat.add(index, 1n), count)])
     case False{}: ""
 
 def x_decl(+count: Nat) -> String:
   match Nat.is_eq(count, 0n):
     case True{}: ""
-    case False{}: String.concat(["    Term x[", Nat.show(count), "];\n"])
+    case False{}: cat(["    Term x[", Nat.show(count), "];\n"])
 
 def x_fill_a(count: Nat) -> String:
   x_fill_a_at(0n, count)
 
 def x_fill_a_at(+index: Nat, +count: Nat) -> String:
   match Nat.is_lt(index, count):
-    case True{}: String.concat(["    x[", Nat.show(index), "] = a", Nat.show(index), ";\n", x_fill_a_at(Nat.add(index, 1n), count)])
+    case True{}: cat(["    x[", Nat.show(index), "] = a", Nat.show(index), ";\n", x_fill_a_at(Nat.add(index, 1n), count)])
     case False{}: ""
 
 def params_bind(params: List<&2, BIR.Parameter>, +captures: Nat, +index: Nat) -> String:
@@ -2056,7 +2061,7 @@ def params_bind(params: List<&2, BIR.Parameter>, +captures: Nat, +index: Nat) ->
     case +param <> rest:
       match param:
         case BIR.Parameter{id, use}:
-          String.concat(["    Term ", lv_name(id), " = ", a_name(Nat.add(captures, index)), ";\n", params_bind(rest, captures, Nat.add(index, 1n))])
+          cat(["    Term ", lv_name(id), " = ", a_name(Nat.add(captures, index)), ";\n", params_bind(rest, captures, Nat.add(index, 1n))])
 
 def params_env(params: List<&2, BIR.Parameter>, +captures: Nat, +index: Nat, +acc: List<&2, Env>) -> List<&2, Env>:
   match params:
@@ -2064,7 +2069,7 @@ def params_env(params: List<&2, BIR.Parameter>, +captures: Nat, +index: Nat, +ac
     case +param <> rest:
       match param:
         case BIR.Parameter{id, use}:
-          params_env(rest, captures, Nat.add(index, 1n), Env{id, String.concat(["a", Nat.show(Nat.add(captures, index))])} <> acc)
+          params_env(rest, captures, Nat.add(index, 1n), Env{id, cat(["a", Nat.show(Nat.add(captures, index))])} <> acc)
 
 def a_caps(count: Nat) -> List<&2, String>:
   a_caps_at(0n, count)
@@ -2079,35 +2084,35 @@ def caps_assign(caps: List<&2, Cap>, +index: Nat) -> String:
     case Nil{}: ""
     case +cap <> rest:
       match cap:
-        case CapLocal{id, expr}: String.concat(["    ", r_name(index), " = ", expr, ";\n", caps_assign(rest, Nat.add(index, 1n))])
-        case CapSlot{slot, expr}: String.concat(["    ", r_name(index), " = ", expr, ";\n", caps_assign(rest, Nat.add(index, 1n))])
+        case CapLocal{id, expr}: cat(["    ", r_name(index), " = ", expr, ";\n", caps_assign(rest, Nat.add(index, 1n))])
+        case CapSlot{slot, expr}: cat(["    ", r_name(index), " = ", expr, ";\n", caps_assign(rest, Nat.add(index, 1n))])
 
 def regs_assign(values: List<&2, String>, +index: Nat) -> String:
   match values:
     case Nil{}: ""
-    case +value <> rest: String.concat(["    ", r_name(index), " = ", value, ";\n", regs_assign(rest, Nat.add(index, 1n))])
+    case +value <> rest: cat(["    ", r_name(index), " = ", value, ";\n", regs_assign(rest, Nat.add(index, 1n))])
 
 def k_decls(caps: List<&2, Cap>, +index: Nat) -> String:
   match caps:
     case Nil{}: ""
     case +cap <> rest:
-      String.concat(["    Term k", Nat.show(index), " = STK(", Nat.show(index), ");\n", k_decls(rest, Nat.add(index, 1n))])
+      cat(["    Term k", Nat.show(index), " = STK(", Nat.show(index), ");\n", k_decls(rest, Nat.add(index, 1n))])
 
 def cap_intro(caps: List<&2, Cap>, +index: Nat, +locals: String, +slots: String) -> String:
   match caps:
-    case Nil{}: String.concat([locals, slots])
+    case Nil{}: cat([locals, slots])
     case +cap <> rest:
       match cap:
-        case CapLocal{id, expr}: cap_intro(rest, Nat.add(index, 1n), String.concat([locals, "    Term ", lv_name(id), " = k", Nat.show(index), ";\n"]), slots)
-        case CapSlot{slot, expr}: cap_intro(rest, Nat.add(index, 1n), locals, String.concat([slots, "    x[", U32.show(slot), "] = k", Nat.show(index), ";\n"]))
+        case CapLocal{id, expr}: cap_intro(rest, Nat.add(index, 1n), cat([locals, "    Term ", lv_name(id), " = k", Nat.show(index), ";\n"]), slots)
+        case CapSlot{slot, expr}: cap_intro(rest, Nat.add(index, 1n), locals, cat([slots, "    x[", U32.show(slot), "] = k", Nat.show(index), ";\n"]))
 
 def cap_intro_a(caps: List<&2, Cap>, +index: Nat, +locals: String, +slots: String) -> String:
   match caps:
-    case Nil{}: String.concat([locals, slots])
+    case Nil{}: cat([locals, slots])
     case +cap <> rest:
       match cap:
-        case CapLocal{id, expr}: cap_intro_a(rest, Nat.add(index, 1n), String.concat([locals, "    Term ", lv_name(id), " = a", Nat.show(index), ";\n"]), slots)
-        case CapSlot{slot, expr}: cap_intro_a(rest, Nat.add(index, 1n), locals, String.concat([slots, "    x[", U32.show(slot), "] = a", Nat.show(index), ";\n"]))
+        case CapLocal{id, expr}: cap_intro_a(rest, Nat.add(index, 1n), cat([locals, "    Term ", lv_name(id), " = a", Nat.show(index), ";\n"]), slots)
+        case CapSlot{slot, expr}: cap_intro_a(rest, Nat.add(index, 1n), locals, cat([slots, "    x[", U32.show(slot), "] = a", Nat.show(index), ";\n"]))
 
 def cap_locals_env(caps: List<&2, Cap>, +acc: List<&2, Env>) -> List<&2, Env>:
   match caps:
@@ -2140,7 +2145,7 @@ def cap_slots_exprs(+caps: List<&2, Cap>, +count: Nat, +index: Nat, +acc: List<&
 
 def cap_slot_value(found: Bool, slot: U32) -> String:
   match found:
-    case True{}: String.concat(["x[", U32.show(slot), "]"])
+    case True{}: cat(["x[", U32.show(slot), "]"])
     case False{}: "0"
 
 # comp.ts call frame: the caller pushes [held words..., continuation FID] and
@@ -2148,7 +2153,7 @@ def cap_slot_value(found: Bool, slot: U32) -> String:
 # words (WL_POPN(caps)), finds them at STK(0..caps-1), and the return words in
 # r0... No task trio is installed at a call site.
 def cont_prologue(+caps: List<&2, Cap>, caps_n: Nat, result: U32) -> String:
-  String.concat([
+  cat([
     "    WL_POPN(", Nat.show(List.length(&2, Cap, caps)), ");\n",
     x_decl(caps_n),
     cap_stk_intro(caps, 0n, "", ""),
@@ -2157,21 +2162,21 @@ def cont_prologue(+caps: List<&2, Cap>, caps_n: Nat, result: U32) -> String:
 
 def cap_stk_intro(+caps: List<&2, Cap>, +index: Nat, +locals: String, +slots: String) -> String:
   match caps:
-    case Nil{}: String.concat([locals, slots])
+    case Nil{}: cat([locals, slots])
     case +cap <> rest:
       match cap:
-        case CapLocal{id, expr}: cap_stk_intro(rest, Nat.add(index, 1n), String.concat([locals, "    Term ", lv_name(id), " = STK(", Nat.show(index), ");\n"]), slots)
-        case CapSlot{slot, expr}: cap_stk_intro(rest, Nat.add(index, 1n), locals, String.concat([slots, "    x[", U32.show(slot), "] = STK(", Nat.show(index), ");\n"]))
+        case CapLocal{id, expr}: cap_stk_intro(rest, Nat.add(index, 1n), cat([locals, "    Term ", lv_name(id), " = STK(", Nat.show(index), ");\n"]), slots)
+        case CapSlot{slot, expr}: cap_stk_intro(rest, Nat.add(index, 1n), locals, cat([slots, "    x[", U32.show(slot), "] = STK(", Nat.show(index), ");\n"]))
 
 def region_prologue(+caps: List<&2, Cap>, caps_n: Nat) -> String:
-  String.concat([a_decls(List.length(&2, Cap, caps)), x_decl(caps_n), cap_intro_a(caps, 0n, "", "")])
+  cat([a_decls(List.length(&2, Cap, caps)), x_decl(caps_n), cap_intro_a(caps, 0n, "", "")])
 
 def a_rebinds(count: Nat) -> String:
   a_rebinds_at(0n, count)
 
 def a_rebinds_at(+index: Nat, +count: Nat) -> String:
   match Nat.is_lt(index, count):
-    case True{}: String.concat(["    ", a_name(index), " = ", r_name(index), ";\n", a_rebinds_at(Nat.add(index, 1n), count)])
+    case True{}: cat(["    ", a_name(index), " = ", r_name(index), ";\n", a_rebinds_at(Nat.add(index, 1n), count)])
     case False{}: ""
 
 # Runtime-owned entries have symbolic WL_CASE definitions in the template, so a
@@ -2189,13 +2194,13 @@ def fid_name(+target: U32, +entries: List<&2, Entry>) -> String:
             case False{}:
               match U32.is_eq(target, rt_entry(entries, 5n)):
                 case True{}: "FID_ENTER"
-                case False{}: String.concat(["FID_", U32.show(target)])
+                case False{}: cat(["FID_", U32.show(target)])
 
 # comp.ts reads a segment's incoming registers and stack words before
 # WL_OPEN: WL_OPEN declares the outgoing register bank, so a read after it
 # would see an uninitialised local. The prologue therefore stays outside.
 def case_text(+index: U32, +prologue: String, +body: String, +spin: Bool) -> String:
-  String.concat(["  WL_CASE(FID_", U32.show(index), ")\n  {\n", prologue, "    WL_OPEN\n", spin_open(spin), body, spin_close(spin), "  }}\n\n"])
+  cat(["  WL_CASE(FID_", U32.show(index), ")\n  {\n", prologue, "    WL_OPEN\n", spin_open(spin), body, spin_close(spin), "  }}\n\n"])
 
 def spin_open(spin: Bool) -> String:
   match spin:
@@ -2224,7 +2229,7 @@ def block_ctl(block: BIR.Block, +ctx: Ctx) -> Step:
 def return_ctl(value: BIR.Atom, +ctx: Ctx) -> Step:
   match atom_part(value, ctx_plan(ctx)):
     case PartFail{message}: StepFail{message}
-    case PartOk{text}: StepOk{String.concat(["    r0 = ", text, ";\n    WL_RETN(1);\n"]), ctx}
+    case PartOk{text}: StepOk{cat(["    r0 = ", text, ";\n    WL_RETN(1);\n"]), ctx}
 
 def failure_ctl(ctx: Ctx) -> Step:
   StepOk{"    err_post(e.mem, ERR_TAGS);\n    return 0;\n", ctx}
@@ -2243,7 +2248,7 @@ def pure_let(+id: U32, op: BIR.Op, next: BIR.Block, +ctx: Ctx) -> Step:
     case PartOk{text}:
       match block_ctl(next, Ctx{ctx_sig(ctx), ctx_plan(ctx), Env{id, lv_name(id)} <> ctx_env(ctx), ctx_caps(ctx), ctx_caps_n(ctx), ctx_regions(ctx), ctx_self(ctx), ctx_next(ctx), ctx_segs(ctx), ctx_outs(ctx), ctx_spin(ctx), ctx_max(ctx)}):
         case StepFail{message}: StepFail{message}
-        case StepOk{body, after}: StepOk{String.concat(["    Term ", lv_name(id), " = ", text, ";\n", body]), after}
+        case StepOk{body, after}: StepOk{cat(["    Term ", lv_name(id), " = ", text, ";\n", body]), after}
 
 def cond_part_of(part: Part, plan: Plan) -> Part:
   match part:
@@ -2268,7 +2273,7 @@ def branch_ctl(condition: BIR.Atom, yes: BIR.Block, no: BIR.Block, +ctx: Ctx) ->
               match block_ctl(no, cy):
                 case StepFail{message}: StepFail{message}
                 case StepOk{tn, cn}:
-                  StepOk{String.concat(["    if (", cond, ") {\n", ty, "    } else {\n", tn, "    }\n"]), cn}
+                  StepOk{cat(["    if (", cond, ") {\n", ty, "    } else {\n", tn, "    }\n"]), cn}
 
 # A region's next block runs in its own entry and is reached only by
 # LeaveRegion, whose tail jump reuses the current frame.
@@ -2309,11 +2314,11 @@ def leave_ctl(label: U32, +ctx: Ctx) -> Step:
           match refs_caps(refs, ctx):
             case None{}: StepFail{"BIR LeaveRegion reads a value that is not in scope"}
             case Some{caps}:
-              StepOk{String.concat([caps_assign(caps, 0n), "    WL_JMP(", fid_name(fid, sig_entries(ctx_sig(ctx))), ");\n"]), ctx}
+              StepOk{cat([caps_assign(caps, 0n), "    WL_JMP(", fid_name(fid, sig_entries(ctx_sig(ctx))), ");\n"]), ctx}
 
 def tail_direct_ctl(+code: U32, args: List<&2, BIR.Arg>, +ctx: Ctx) -> Step:
   match IndexLookup.find(U32, sig_by_code(ctx_sig(ctx)), U32.show(code)):
-    case None{}: StepFail{String.concat(["BIR tail call names code ", U32.show(code), " with no entry"])}
+    case None{}: StepFail{cat(["BIR tail call names code ", U32.show(code), " with no entry"])}
     case Some{+target}:
       match arg_strings(args, ctx_plan(ctx)):
         case None{}: StepFail{"BIR tail argument has no C value"}
@@ -2325,12 +2330,12 @@ def tail_direct_ctl(+code: U32, args: List<&2, BIR.Arg>, +ctx: Ctx) -> Step:
                 case Some{self}:
                   match U32.is_eq(self, target):
                     case True{}: self_tail(target, values, ctx)
-                    case False{}: StepOk{String.concat([regs_assign(values, 0n), "    WL_JMP(", fid_name(target, sig_entries(ctx_sig(ctx))), ");\n"]), ctx}
-                case None{}: StepOk{String.concat([regs_assign(values, 0n), "    WL_JMP(", fid_name(target, sig_entries(ctx_sig(ctx))), ");\n"]), ctx}
+                    case False{}: StepOk{cat([regs_assign(values, 0n), "    WL_JMP(", fid_name(target, sig_entries(ctx_sig(ctx))), ");\n"]), ctx}
+                case None{}: StepOk{cat([regs_assign(values, 0n), "    WL_JMP(", fid_name(target, sig_entries(ctx_sig(ctx))), ");\n"]), ctx}
 
 def self_tail(+target: U32, values: List<&2, String>, +ctx: Ctx) -> Step:
   +arity = entry_arity(sig_entries(ctx_sig(ctx)), target)
-  text = String.concat([regs_assign(values, 0n), a_rebinds(arity), "    WL_AGAIN(", fid_name(target, sig_entries(ctx_sig(ctx))), ");\n"])
+  text = cat([regs_assign(values, 0n), a_rebinds(arity), "    WL_AGAIN(", fid_name(target, sig_entries(ctx_sig(ctx))), ");\n"])
   StepOk{text, Ctx{ctx_sig(ctx), ctx_plan(ctx), ctx_env(ctx), ctx_caps(ctx), ctx_caps_n(ctx), ctx_regions(ctx), ctx_self(ctx), ctx_next(ctx), ctx_segs(ctx), ctx_outs(ctx), True{}, ctx_max(ctx)}}
 
 def tail_apply_ctl(fn: BIR.Atom, arg: BIR.Arg, +ctx: Ctx) -> Step:
@@ -2342,11 +2347,11 @@ def tail_apply_ctl(fn: BIR.Atom, arg: BIR.Arg, +ctx: Ctx) -> Step:
           match atom_part(value, ctx_plan(ctx)):
             case PartFail{message}: StepFail{message}
             case PartOk{arg_text}:
-              StepOk{String.concat(["    r0 = ", fn_text, ";\n    r1 = ", arg_text, ";\n    WL_JMP(FID_CLO_APPLY);\n"]), ctx}
+              StepOk{cat(["    r0 = ", fn_text, ";\n    r1 = ", arg_text, ";\n    WL_JMP(FID_CLO_APPLY);\n"]), ctx}
 
 def direct_ctl(result: U32, +code: U32, args: List<&2, BIR.Arg>, next: BIR.Block, +ctx: Ctx) -> Step:
   match IndexLookup.find(U32, sig_by_code(ctx_sig(ctx)), U32.show(code)):
-    case None{}: StepFail{String.concat(["BIR call names code ", U32.show(code), " with no entry"])}
+    case None{}: StepFail{cat(["BIR call names code ", U32.show(code), " with no entry"])}
     case Some{target}:
       match arg_strings(args, ctx_plan(ctx)):
         case None{}: StepFail{"BIR call argument has no C value"}
@@ -2364,7 +2369,7 @@ def apply_ctl(result: U32, fn: BIR.Atom, arg: BIR.Arg, next: BIR.Block, +ctx: Ct
 
 def call_ctl(+target: U32, +args: List<&2, String>, result: U32, +next: BIR.Block, +ctx: Ctx) -> Step:
   match Nat.is_eq(List.length(&2, String, args), entry_arity(sig_entries(ctx_sig(ctx)), target)):
-    case False{}: StepFail{String.concat(["BIR call passes ", Nat.show(List.length(&2, String, args)), " arguments to an entry of arity ", Nat.show(entry_arity(sig_entries(ctx_sig(ctx)), target))])}
+    case False{}: StepFail{cat(["BIR call passes ", Nat.show(List.length(&2, String, args)), " arguments to an entry of arity ", Nat.show(entry_arity(sig_entries(ctx_sig(ctx)), target))])}
     case True{}:
       match capture_for(next, ctx):
         case None{}: StepFail{"BIR continuation reads a value that is not in scope"}
@@ -2383,16 +2388,16 @@ def call_done(target: U32, args: List<&2, String>, +caps: List<&2, Cap>, result:
 def arg_stores(+node: String, args: List<&2, String>, +index: Nat) -> String:
   match args:
     case Nil{}: ""
-    case +arg <> rest: String.concat(["      e.mem[", node, " + ", Nat.show(index), "] = ", arg, ";\n", arg_stores(node, rest, Nat.add(index, 1n))])
+    case +arg <> rest: cat(["      e.mem[", node, " + ", Nat.show(index), "] = ", arg, ";\n", arg_stores(node, rest, Nat.add(index, 1n))])
 
 # A call site follows comp.ts exactly: the sync path stores the continuation
 # frame as plain words and pushes it; the sequential path builds the
 # continuation task from the current frame's WL_CONT/WL_IDX and does not
 # touch the stack. Both share the callee register load.
 def call_head(+fid: U32, +count: Nat, +caps: List<&2, Cap>, +args: List<&2, String>, +target: U32, +entries: List<&2, Entry>) -> String:
-  +node = String.concat(["kc", U32.show(fid)])
-  +callee = String.concat(["kc", U32.show(fid), "t"])
-  String.concat([
+  +node = cat(["kc", U32.show(fid)])
+  +callee = cat(["kc", U32.show(fid), "t"])
+  cat([
     "    if (seq) {\n",
     "      WL_ROOM(", Nat.show(Nat.add(count, 1n)), ");\n",
     cap_stk_stores(caps, 0n),
@@ -2418,43 +2423,43 @@ def cap_stk_stores(+caps: List<&2, Cap>, +index: Nat) -> String:
     case Nil{}: ""
     case +cap <> rest:
       match cap:
-        case CapLocal{id, expr}: String.concat(["    STK(", Nat.show(index), ") = ", expr, ";\n", cap_stk_stores(rest, Nat.add(index, 1n))])
-        case CapSlot{slot, expr}: String.concat(["    STK(", Nat.show(index), ") = ", expr, ";\n", cap_stk_stores(rest, Nat.add(index, 1n))])
+        case CapLocal{id, expr}: cat(["    STK(", Nat.show(index), ") = ", expr, ";\n", cap_stk_stores(rest, Nat.add(index, 1n))])
+        case CapSlot{slot, expr}: cat(["    STK(", Nat.show(index), ") = ", expr, ";\n", cap_stk_stores(rest, Nat.add(index, 1n))])
 
 def cap_stores(+node: String, caps: List<&2, Cap>, +index: Nat) -> String:
   match caps:
     case Nil{}: ""
     case +cap <> rest:
       match cap:
-        case CapLocal{id, expr}: String.concat(["    e.mem[", node, " + ", Nat.show(index), "] = ", expr, ";\n", cap_stores(node, rest, Nat.add(index, 1n))])
-        case CapSlot{slot, expr}: String.concat(["    e.mem[", node, " + ", Nat.show(index), "] = ", expr, ";\n", cap_stores(node, rest, Nat.add(index, 1n))])
+        case CapLocal{id, expr}: cat(["    e.mem[", node, " + ", Nat.show(index), "] = ", expr, ";\n", cap_stores(node, rest, Nat.add(index, 1n))])
+        case CapSlot{slot, expr}: cat(["    e.mem[", node, " + ", Nat.show(index), "] = ", expr, ";\n", cap_stores(node, rest, Nat.add(index, 1n))])
 
 # A foreign or native value is a staged closure; a nullary read yields the
 # arity-one closure the runtime applies once with the continuation.
 def load_symbol_ctl(+result: U32, +key: String, +next: BIR.Block, +ctx: Ctx) -> Step:
   match find_declaration(key, sig_decls(ctx_sig(ctx))):
-    case None{}: StepFail{String.concat(["BIR reads `", key, "` with no declaration"])}
+    case None{}: StepFail{cat(["BIR reads `", key, "` with no declaration"])}
     case Some{item}:
       match item:
         case BIR.FunctionDeclaration{known, +code, parameters}:
           match Nat.is_eq(List.length(&2, BIR.Parameter, parameters), 0n):
-            case False{}: StepFail{String.concat(["BIR reads the parameterised `", known, "` as a lazy symbol"])}
+            case False{}: StepFail{cat(["BIR reads the parameterised `", known, "` as a lazy symbol"])}
             case True{}:
               match IndexLookup.find(U32, sig_by_code(ctx_sig(ctx)), U32.show(code)):
-                case None{}: StepFail{String.concat(["BIR reads code ", U32.show(code), " with no entry"])}
+                case None{}: StepFail{cat(["BIR reads code ", U32.show(code), " with no entry"])}
                 case Some{target}: call_ctl(target, Nil{}, result, next, ctx)
         case BIR.LazyDeclaration{known, body}:
           match IndexLookup.find(U32, sig_by_key(ctx_sig(ctx)), key):
-            case None{}: StepFail{String.concat(["BIR reads lazy `", key, "` with no entry"])}
+            case None{}: StepFail{cat(["BIR reads lazy `", key, "` with no entry"])}
             case Some{target}: call_ctl(target, Nil{}, result, next, ctx)
         case BIR.ForeignDeclaration{+key, _, _, arity, _, _, _, _, _}:
           match IndexLookup.find(U32, sig_by_foreign(ctx_sig(ctx)), key):
             case Some{fid}: value_bind_entry(result, fid, foreign_stem(key), next, ctx)
-            case None{}: StepFail{String.concat(["foreign `", key, "` has no entry"])}
+            case None{}: StepFail{cat(["foreign `", key, "` has no entry"])}
         case BIR.NativeDeclaration{+key, primitive, quantities}:
           match IndexLookup.find(U32, sig_by_native(ctx_sig(ctx)), key):
             case Some{fid}: value_bind_entry(result, fid, native_stem(key), next, ctx)
-            case None{}: StepFail{String.concat(["native `", key, "` has no first-class C value"])}
+            case None{}: StepFail{cat(["native `", key, "` has no first-class C value"])}
         case _: StepFail{"BIR declaration form has no C value"}
 
 def value_bind_entry(+result: U32, fid: U32, stem: String, next: BIR.Block, +ctx: Ctx) -> Step:
@@ -2463,7 +2468,7 @@ def value_bind_entry(+result: U32, fid: U32, stem: String, next: BIR.Block, +ctx
     case Some{expr}:
       match block_ctl(next, Ctx{ctx_sig(ctx), ctx_plan(ctx), Env{result, lv_name(result)} <> ctx_env(ctx), ctx_caps(ctx), ctx_caps_n(ctx), ctx_regions(ctx), ctx_self(ctx), ctx_next(ctx), ctx_segs(ctx), ctx_outs(ctx), ctx_spin(ctx), ctx_max(ctx)}):
         case StepFail{message}: StepFail{message}
-        case StepOk{body, after}: StepOk{String.concat(["    Term ", lv_name(result), " = ", expr, ";\n", body]), after}
+        case StepOk{body, after}: StepOk{cat(["    Term ", lv_name(result), " = ", expr, ";\n", body]), after}
 
 def value_closure(+fid: U32, stem: String, +ctx: Ctx) -> Maybe<&2, String>:
   +arity = entry_arity(sig_entries(ctx_sig(ctx)), fid)
@@ -2471,15 +2476,15 @@ def value_closure(+fid: U32, stem: String, +ctx: Ctx) -> Maybe<&2, String>:
     case True{}: None{}
     case False{}:
       match Nat.is_eq(arity, 1n):
-        case True{}: Some{String.concat(["term_clo(FID_", U32.show(fid), ", 0)"])}
+        case True{}: Some{cat(["term_clo(FID_", U32.show(fid), ", 0)"])}
         case False{}:
           match IndexLookup.find(U32, sig_stages(ctx_sig(ctx)), stage_key(stem, 0n)):
-            case Some{stage}: Some{String.concat(["term_clo(FID_", U32.show(stage), ", 0)"])}
+            case Some{stage}: Some{cat(["term_clo(FID_", U32.show(stage), ", 0)"])}
             case None{}: None{}
 
 def closure_ctl(result: U32, +code: U32, +captures: List<&2, BIR.Arg>, parameters: List<&2, BIR.Parameter>, next: BIR.Block, +ctx: Ctx) -> Step:
   match IndexLookup.find(U32, sig_by_code(ctx_sig(ctx)), U32.show(code)):
-    case None{}: StepFail{String.concat(["BIR closure names code ", U32.show(code), " with no entry"])}
+    case None{}: StepFail{cat(["BIR closure names code ", U32.show(code), " with no entry"])}
     case Some{+real}:
       +total = entry_arity(sig_entries(ctx_sig(ctx)), real)
       +captured = List.length(&2, BIR.Arg, captures)
@@ -2500,11 +2505,11 @@ def closure_bind(+result: U32, code: U32, +captured: Nat, total: Nat, real: U32,
     case Some{fid}:
       match block_ctl(next, Ctx{ctx_sig(ctx), ctx_plan(ctx), Env{result, lv_name(result)} <> ctx_env(ctx), ctx_caps(ctx), ctx_caps_n(ctx), ctx_regions(ctx), ctx_self(ctx), ctx_next(ctx), ctx_segs(ctx), ctx_outs(ctx), ctx_spin(ctx), ctx_max(ctx)}):
         case StepFail{message}: StepFail{message}
-        case StepOk{body, after}: StepOk{String.concat([closure_text(result, captured, fid, values), body]), after}
+        case StepOk{body, after}: StepOk{cat([closure_text(result, captured, fid, values), body]), after}
 
 def closure_text(+result: U32, +captured: Nat, fid: U32, values: List<&2, String>) -> String:
-  +node = String.concat(["nd", U32.show(result)])
-  String.concat([closure_alloc_decl(captured, node, values), "    Term ", lv_name(result), " = term_clo(FID_", U32.show(fid), ", ", closure_ptr(captured, node), ");\n"])
+  +node = cat(["nd", U32.show(result)])
+  cat([closure_alloc_decl(captured, node, values), "    Term ", lv_name(result), " = term_clo(FID_", U32.show(fid), ", ", closure_ptr(captured, node), ");\n"])
 
 def closure_entry(code: U32, +captured: Nat, total: Nat, real: U32, ctx: Ctx) -> Maybe<&2, U32>:
   match Nat.is_eq(Nat.add(captured, 1n), total):
@@ -2515,12 +2520,12 @@ def closure_alloc(+node: String, values: List<&2, String>, +index: Nat) -> Strin
   match values:
     case Nil{}: ""
     case +value <> rest:
-      String.concat(["    e.mem[", node, " + ", Nat.show(index), "] = ", value, ";\n", closure_alloc(node, rest, Nat.add(index, 1n))])
+      cat(["    e.mem[", node, " + ", Nat.show(index), "] = ", value, ";\n", closure_alloc(node, rest, Nat.add(index, 1n))])
 
 def closure_alloc_decl(+captured: Nat, +node: String, values: List<&2, String>) -> String:
   match Nat.is_eq(captured, 0n):
     case True{}: ""
-    case False{}: String.concat(["    u64 ", node, " = heap_alloc(e, cls_fit(", Nat.show(captured), "));\n", closure_alloc(node, values, 0n)])
+    case False{}: cat(["    u64 ", node, " = heap_alloc(e, cls_fit(", Nat.show(captured), "));\n", closure_alloc(node, values, 0n)])
 
 def closure_ptr(captured: Nat, node: String) -> String:
   match Nat.is_eq(captured, 0n):
@@ -2574,13 +2579,13 @@ def entry_code(+index: U32, +arity: Nat, +captures: Nat, +params: List<&2, BIR.P
       match block_ctl(body, Ctx{ctx_sig(ctx), ctx_plan(ctx), params_env(params, captures, 0n, Nil{}), a_caps(captures), captures, Nil{}, Some{index}, ctx_next(ctx), ctx_segs(ctx), ctx_outs(ctx), False{}, ctx_max(ctx)}):
         case StepFail{message}: StepFail{message}
         case StepOk{text, +after}:
-          entry_add(index, String.concat([a_decls(arity), x_decl(captures)]), String.concat([x_fill_a(captures), params_bind(params, captures, 0n), text]), ctx_spin(after), after)
+          entry_add(index, cat([a_decls(arity), x_decl(captures)]), cat([x_fill_a(captures), params_bind(params, captures, 0n), text]), ctx_spin(after), after)
 
 
 def entry_stage(+index: U32, +arity: Nat, next: U32, ctx: Ctx) -> Step:
-  +node = String.concat(["nd", U32.show(index)])
+  +node = cat(["nd", U32.show(index)])
   stores = stage_stores(node, arity, 0n)
-  body = String.concat([
+  body = cat([
     "    u64 ", node, " = heap_alloc(e, cls_fit(", Nat.show(arity), "));\n",
     stores,
     "    r0 = term_clo(FID_", U32.show(next), ", ", node, ");\n    WL_RETN(1);\n"
@@ -2589,7 +2594,7 @@ def entry_stage(+index: U32, +arity: Nat, next: U32, ctx: Ctx) -> Step:
 
 def stage_stores(+node: String, +count: Nat, +index: Nat) -> String:
   match Nat.is_lt(index, count):
-    case True{}: String.concat(["    e.mem[", node, " + ", Nat.show(index), "] = a", Nat.show(index), ";\n", stage_stores(node, count, Nat.add(index, 1n))])
+    case True{}: cat(["    e.mem[", node, " + ", Nat.show(index), "] = a", Nat.show(index), ";\n", stage_stores(node, count, Nat.add(index, 1n))])
     case False{}: ""
 
 def entry_lazy(index: U32, arity: Nat, body: BIR.Block, +ctx: Ctx) -> Step:
@@ -2603,7 +2608,7 @@ def entry_native(index: U32, +arity: Nat, primitive: BIR.Primitive, +count: Nat,
     case True{}:
       match prim_part(primitive, a_names(count), ctx_plan(ctx)):
         case PartFail{message}: StepFail{message}
-        case PartOk{text}: entry_add(index, a_decls(arity), String.concat(["    r0 = ", text, ";\n    WL_RETN(1);\n"]), False{}, ctx)
+        case PartOk{text}: entry_add(index, a_decls(arity), cat(["    r0 = ", text, ";\n    WL_RETN(1);\n"]), False{}, ctx)
 
 def a_names(count: Nat) -> List<&2, String>:
   a_caps(count)
@@ -2612,9 +2617,9 @@ def entry_foreign(+index: U32, +arity: Nat, key: String, args: Nat, +ctx: Ctx) -
   match Nat.is_eq(arity, Nat.add(args, 1n)):
     case False{}: StepFail{"BIR foreign entry arity disagrees with its declaration"}
     case True{}:
-      +node = String.concat(["nd", U32.show(index)])
+      +node = cat(["nd", U32.show(index)])
       cid = cid_lookup(key, sig_cids(ctx_sig(ctx)))
-      body = String.concat([
+      body = cat([
         "    u64 ", node, " = heap_alloc(e, cls_fit(", Nat.show(arity), "));\n",
         stage_stores(node, arity, 0n),
         "    r0 = term_ctr(", U32.show(cid), ", ", node, ");\n    WL_RETN(1);\n"
@@ -2641,7 +2646,7 @@ def main_jump(index: U32, found: Maybe<&2, U32>, +ctx: Ctx) -> Step:
     case Some{+target}:
       match Nat.is_eq(entry_arity(sig_entries(ctx_sig(ctx)), target), 0n):
         case False{}: StepFail{"the C target's main entry must take no parameters"}
-        case True{}: entry_add(index, "", String.concat(["    WL_JMP(", fid_name(target, sig_entries(ctx_sig(ctx))), ");\n"]), False{}, ctx)
+        case True{}: entry_add(index, "", cat(["    WL_JMP(", fid_name(target, sig_entries(ctx_sig(ctx))), ");\n"]), False{}, ctx)
 
 # -- control plan -----------------------------------------------------------
 
@@ -2651,7 +2656,7 @@ def control_build(+plan: Plan) -> Control:
       match entries_ctl(entries, Ctx{Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, rt_entry(entries, 3n)}, plan, Nil{}, Nil{}, 0n, Nil{}, None{}, U32.from_nat(List.length(&2, Entry, entries)), Nil{}, Nil{}, False{}, max_arity(entries)}):
         case StepFail{message}: ControlFail{message}
         case StepOk{_, +done}:
-          ControlOk{String.concat([outs_text(ctx_outs(done), ""), segs_text(ctx_segs(done), "")]), rows_add_segs(ctx_segs(done), rows_add_entries(entries, Nil{})), ctx_max(done)}
+          ControlOk{cat([outs_text(ctx_outs(done), ""), segs_text(ctx_segs(done), "")]), rows_add_segs(ctx_segs(done), rows_add_entries(entries, Nil{})), ctx_max(done)}
 
 def outs_text(outs: List<&2, String>, +acc: String) -> String:
   match outs:
@@ -2726,21 +2731,21 @@ def rows_check(rows: List<&2, SegText>) -> Maybe<&2, String>:
         case SegText{fid, arity, resw, text}:
           match Bool.and(Nat.is_le(arity, 255n), Nat.is_le(resw, 255n)):
             case True{}: rows_check(rest)
-            case False{}: Some{String.concat(["entry ", U32.show(fid), " has an arity or result width the runtime table cannot store"])}
+            case False{}: Some{cat(["entry ", U32.show(fid), " has an arity or result width the runtime table cannot store"])}
 
 def cid_defines(cids: List<&2, CidRow>) -> String:
   match cids:
     case Nil{}: ""
     case +row <> rest:
       match row:
-        case CidRow{cid, key, arity, _}: String.concat(["#define CID_", U32.show(cid), " ", U32.show(cid), "\n", cid_defines(rest)])
+        case CidRow{cid, key, arity, _}: cat(["#define CID_", U32.show(cid), " ", U32.show(cid), "\n", cid_defines(rest)])
 
 def fid_defines(rows: List<&2, SegText>) -> String:
   match rows:
     case Nil{}: ""
     case +row <> rest:
       match row:
-        case SegText{+fid, arity, resw, text}: String.concat(["#define FID_", U32.show(fid), " ", U32.show(fid), "\n", fid_defines(rest)])
+        case SegText{+fid, arity, resw, text}: cat(["#define FID_", U32.show(fid), " ", U32.show(fid), "\n", fid_defines(rest)])
 
 # CID_T[x] is {arity, hot} for the cid index x (runtime cid_arity/cid_hot).
 # The hot fact is not derivable from BIR today; CIRSharing's seal plan owns it.
@@ -2764,14 +2769,14 @@ def cid_table(cids: List<&2, CidRow>) -> String:
     case Nil{}: "};\n"
     case +row <> rest:
       match row:
-        case CidRow{cid, key, arity, hot}: String.concat(["{ ", Nat.show(arity), ", ", hot_text(hot), " }, ", cid_table(rest)])
+        case CidRow{cid, key, arity, hot}: cat(["{ ", Nat.show(arity), ", ", hot_text(hot), " }, ", cid_table(rest)])
 
 def fid_table(rows: List<&2, SegText>) -> String:
   match rows:
     case Nil{}: " };\n"
     case +row <> rest:
       match row:
-        case SegText{fid, arity, resw, text}: String.concat(["{ ", Nat.show(arity), ", ", Nat.show(resw), ", 2 }, ", fid_table(rest)])
+        case SegText{fid, arity, resw, text}: cat(["{ ", Nat.show(arity), ", ", Nat.show(resw), ", 2 }, ", fid_table(rest)])
 
 # The runtime owns the IO_EMIT/CLO_APPLY/EXIT/ENTER cases under their symbolic
 # names; their numeric rows must not also appear in WL_TABLE or the linker sees
@@ -2788,7 +2793,7 @@ def wl_table_rows(rows: List<&2, SegText>, +entries: List<&2, Entry>) -> String:
         case SegText{+fid, arity, resw, text}:
           match wl_row_text(fid, entries):
             case None{}: wl_table_rows(rest, entries)
-            case Some{name}: String.concat([name, " ", wl_table_rows(rest, entries)])
+            case Some{name}: cat([name, " ", wl_table_rows(rest, entries)])
 
 # One row per fid index. ENTER is dispatched by work_loop directly, so the
 # table omits it (the template appends its declaration). The runtime-owned
@@ -2808,7 +2813,7 @@ def wl_row_name(+fid: U32, +entries: List<&2, Entry>) -> String:
             case False{}:
               match U32.is_eq(fid, rt_entry(entries, 5n)):
                 case True{}: "WL_X(FID_ENTER)"
-                case False{}: String.concat(["WL_X(FID_", U32.show(fid), ")"])
+                case False{}: cat(["WL_X(FID_", U32.show(fid), ")"])
 
 # -- runtime tables ---------------------------------------------------------
 
@@ -2826,25 +2831,25 @@ def register_names(count: Nat) -> String:
 def register_list(names: List<&2, String>, +prefix: String) -> String:
   match names:
     case Nil{}: ""
-    case +name <> rest: String.concat([prefix, name, register_tail(rest, prefix)])
+    case +name <> rest: cat([prefix, name, register_tail(rest, prefix)])
 
 def register_tail(+rest: List<&2, String>, prefix: String) -> String:
   match rest:
     case Nil{}: ""
-    case _: String.concat([", ", register_list(rest, prefix)])
+    case _: cat([", ", register_list(rest, prefix)])
 
 def wl_load_rows(+count: Nat, +index: Nat) -> String:
   match Nat.is_lt(index, count):
-    case True{}: String.concat(["    if ((N) <= ", Nat.show(index), ") break; ", r_name(index), " = e.mem[(A) + ", Nat.show(index), "]; \\\n", wl_load_rows(count, Nat.add(index, 1n))])
+    case True{}: cat(["    if ((N) <= ", Nat.show(index), ") break; ", r_name(index), " = e.mem[(A) + ", Nat.show(index), "]; \\\n", wl_load_rows(count, Nat.add(index, 1n))])
     case False{}: ""
 
 def wl_last_rows(+count: Nat, +index: Nat) -> String:
   match Nat.is_lt(index, count):
-    case True{}: String.concat(["    case ", Nat.show(index), ": ", r_name(index), " = (X); \\\n      break; \\\n", wl_last_rows(count, Nat.add(index, 1n))])
+    case True{}: cat(["    case ", Nat.show(index), ": ", r_name(index), " = (X); \\\n      break; \\\n", wl_last_rows(count, Nat.add(index, 1n))])
     case False{}: ""
 
 def wl_macros(+regs: Nat) -> String:
-  String.concat([
+  cat([
     "#define WL_RESW 1\n#define BANGS 0\n\n",
     "#define WL_BANK Term ", register_names(regs), ";\n\n",
     "#define WL_LOAD(A, N) do { \\\n", wl_load_rows(regs, 0n), "  } while (0);\n\n",
@@ -2856,7 +2861,7 @@ def wl_macros(+regs: Nat) -> String:
   ])
 
 def runtime_defines(+entries: List<&2, Entry>) -> String:
-  String.concat([
+  cat([
     "#define FID_MAIN ", U32.show(rt_entry(entries, 1n)), "\n",
     "#define FID_IO_EMIT ", U32.show(rt_entry(entries, 2n)), "\n",
     "#define FID_CLO_APPLY ", U32.show(rt_entry(entries, 3n)), "\n",
@@ -2872,7 +2877,7 @@ def tables_part(plan: Plan, +rows: List<&2, SegText>, regs: Nat) -> Part:
       match runtime_cid_aliases(cids):
         case PartFail{message}: PartFail{message}
         case PartOk{aliases}:
-          PartOk{String.concat([
+          PartOk{cat([
             main_suppress(library),
             aliases,
             cid_defines(cids),
@@ -2909,7 +2914,7 @@ def main_pure_text(pure: Bool) -> String:
 # before the Segments slot. bend_text alone needs io_str, which the runtime
 # defines after Spins, so it is declared here and defined in Requests.
 def spins_part() -> Part:
-  okp(String.concat([
+  okp(cat([
     "typedef u64 Nat;\n",
     helper_core(),
     "static Term bend_text(Env e, const char* p, u64 n);\n",
@@ -2965,7 +2970,7 @@ def requests_finish(part: Part, library: Bool, exports: List<&2, BIR.Export>, +d
     case PartOk{text}:
       match export_rows(exports, declarations, by_code, by_key, by_foreign, by_native, entries):
         case None{}: PartFail{"a library export names no callable, or its checked parameter count disagrees with its entry"}
-        case Some{rows}: PartOk{String.concat([text, "static Term bend_text(Env e, const char* p, u64 n) {\n  return io_str(e, p, n);\n}\n", exports_c(library, rows)])}
+        case Some{rows}: PartOk{cat([text, "static Term bend_text(Env e, const char* p, u64 n) {\n  return io_str(e, p, n);\n}\n", exports_c(library, rows)])}
 
 def requests_check(+imports: List<&2, CImport>, fkeys: List<&2, String>, +declarations: List<&2, BIR.Declaration>, constructors: List<&2, BIR.ConstructorLayout>, cids: List<&2, CidRow>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>) -> Part:
   match requests_uncovered(fkeys, imports, declarations):
@@ -3070,8 +3075,36 @@ def insert_prefix(found: Maybe<&2, List<&2, String>>, line: String) -> Maybe<&2,
     case None{}: None{}
     case Some{lines}: Some{line <> lines}
 
+# One line can be thousands of characters (the runtime's WL_TABLE row is 13 KB),
+# so a line is built by the same reversed-character fold as everything else
+# instead of String.from_list or String.split.
+def split_lines(text: String) -> List<&2, String>:
+  split_lines_each(Link.chars_rev(text, Nil{}), Nil{}, Nil{})
+
+def split_lines_each(chars: List<&2, Char>, +cur: List<&2, Char>, +acc: List<&2, String>) -> List<&2, String>:
+  match chars:
+    case Nil{}: line_text(cur) <> acc
+    case +char <> rest:
+      match Char.is_eq(char, '\n'):
+        case True{}: split_lines_each(rest, Nil{}, line_text(cur) <> acc)
+        case False{}: split_lines_each(rest, char <> cur, acc)
+
+def line_text(chars: List<&2, Char>) -> String:
+  Link.text_of_rev(List.reverse(&2, Char, chars), "")
+
+def join_lines(lines: List<&2, String>) -> String:
+  Link.text_of_pieces(join_pieces(lines, True{}, Nil{}))
+
+def join_pieces(lines: List<&2, String>, first: Bool, +acc: List<&2, String>) -> List<&2, String>:
+  match lines:
+    case Nil{}: List.reverse(&2, String, acc)
+    case +line <> rest:
+      match first:
+        case True{}: join_pieces(rest, False{}, line <> acc)
+        case False{}: join_pieces(rest, False{}, line <> ("\n" <> acc))
+
 def assemble(template: String, tables: String, spins: String, segments: String, requests: String) -> Maybe<&2, String>:
-  match insert_section(String.split(template, '\n'), "// Tables", tables):
+  match insert_section(split_lines(template), "// Tables", tables):
     case None{}: None{}
     case Some{one}: assemble_spins(one, spins, segments, requests)
 
@@ -3088,7 +3121,7 @@ def assemble_segments(lines: List<&2, String>, segments: String, requests: Strin
 def assemble_requests(lines: List<&2, String>, requests: String) -> Maybe<&2, String>:
   match insert_section(lines, "// Requests", requests):
     case None{}: None{}
-    case Some{one}: Some{String.join(one, "\n")}
+    case Some{one}: Some{join_lines(one)}
 
 # ---------------------------------------------------------------------------
 # CID(k) / FID(k) rewriting
@@ -3196,7 +3229,7 @@ def render_parts(+plan: Plan, runtime: String, cid_map: Map<&2, String>, fid_map
             case PartOk{tables} PartOk{spins} PartOk{requests}: render_assemble(runtime, tables, spins, segments_text(segments), requests, cid_map, fid_map)
 
 def segments_text(segments: String) -> String:
-  String.concat(["#if !DEVICE\n", segments, "#endif\n"])
+  cat(["#if !DEVICE\n", segments, "#endif\n"])
 
 def render_assemble(runtime: String, tables: String, spins: String, segments: String, requests: String, cid_map: Map<&2, String>, fid_map: Map<&2, String>) -> EmitResult:
   match assemble(runtime, tables, spins, segments, requests):
