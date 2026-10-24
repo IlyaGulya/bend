@@ -2661,6 +2661,15 @@ def render_rewrite(source: String, cid_map: Map<&2, String>, fid_map: Map<&2, St
 # Library exports
 # ---------------------------------------------------------------------------
 #
+# Chosen host ABI (declared, not inferred): one BOX Term per BIR parameter,
+# capture, result, closure word and export argument. WORDS values (U32, F32,
+# Nat) are BOX-compatible raw words in that slot, so no per-code type annotation
+# and no result descriptor are needed to choose a register width. `bend_export_call`
+# returns one Term. Entry.arity is the semantic live argument count, not a
+# flattened word count. CLay converts physical node/field/array storage and
+# foreign adapter payloads; it never changes this callee ABI. A 0-arity or lazy
+# export is evaluated on every read/call and never cached (law B2).
+#
 # A library artifact is still one runtime translation unit, so the host reaches
 # the exports through this small C ABI. A `fast` entry calls its code directly;
 # an entry-less export evaluates the symbol and applies the arguments, which is
