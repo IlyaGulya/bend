@@ -70,9 +70,10 @@ is extrapolated from them.
    is downstream of the official producer and is a separate, measurable cost.
 6. **Reuse now:** phase instrumentation and bounded measurement; removal of
    redundant whole-output materializations and the whole-source `CID/FID`
-   rewrite for Bend-generated code; a fast development C tier alongside the
-   `-O3` release tier. Per-`BIR.Code` boundaries are a later step: the catalog and descriptor
-   normalizer are whole-program, so a dependency split must come first.
+   rewrite for Bend-generated code; a development C tier via the existing
+   `--cc-opt=0..3` control rather than a second CLI. Per-`BIR.Code` boundaries
+   are a later step: the catalog and descriptor normalizer are whole-program,
+   so a dependency split must come first.
    **Future work:** a definition-level dependency graph and cache keys, stable
    IDs across edits, compiler-side release/ownership, and a separate-compilation
    ABI. **Do not transfer:** Zig's lazy analysis as a way to check fewer Bend
@@ -494,8 +495,8 @@ The table separates (a) changes that are local to the current C/JS renderers,
 | Bounded in-flight work + backpressure | No producer/consumer split yet; `compile_book` is a whole-program fixed point | Add a bounded phase queue only after a real split; first measure the current per-pass retained set | Queue depth and peak never exceed declared caps; no dropped diagnostics |
 | Typed relocations instead of whole-source textual fixup | `render_assemble` produces the whole source, then `Link.rewrite` scans it once (`c_backend.bend:3201-3209`; `c_backend_link.bend:1-12`) | Emit final `CID`/`FID` spellings directly for Bend-generated code; restrict rewrite to foreign effect sources | Byte-identical `.c` output for the corpus; one fewer full-source traversal/materialization |
 | Late/streamed lowering | `render_assemble` concatenates runtime + tables + spins + segments + requests (`c_backend.bend:3201-3204`) | Stream parts to the output file/buffer in order; avoid holding several whole-program char lists | Byte-identical `.c`; lower peak; clang result unchanged |
-| Debug vs release tiering | The CPU C path uses `-O3` by default (`main.ts:451`); the JS lane exists and does not invoke clang (relative performance unmeasured here) | Add an explicit dev tier (`-O0`/`-O1 -g`) beside release `-O3` | Same program outputs on the test corpus; measure wall/peak; no OOM claim |
-| Phase instrumentation (Tracy/progress) | `evals/heavy_gate.ts` guard; `BEND_*_TRACE_FILE` hooks | Add phase timers and peak sampling at catalog/lower/render/rewrite/clang/link | Per-phase wall and peak for a fixed input, recorded with the existing guard |
+| Debug vs release tiering | The CPU C path uses `-O3` by default (`main.ts:451`), and `evals/native_compiler_experiment.ts` already has a build-only `--cc-opt=0..3` control (default 3) | Reuse `--cc-opt=0..3` for the dev tier; do not add a second CLI. If `-g` is needed, extend that existing control | Same program outputs on the test corpus; measure wall/peak; no OOM claim |
+| Phase instrumentation (Tracy/progress) | `evals/heavy_gate.ts` guard; `--trace-c=true` already provides per-pass/definition/spin/cache profiling; `BEND_*_TRACE_FILE` hooks | Reuse `--trace-c` and the existing report/guard; add only peak sampling at catalog/lower/render/rewrite/clang/link, not a second instrumentation CLI | Per-phase wall and peak for a fixed input, recorded with the existing guard |
 | Dense IR + flat tapes | Already present in `checker_arena.bend` and BIR `U32` ids | Keep; do not port Zig's liveness bits or register allocation—C owns those | No change required |
 
 Why the C-renderer changes are legitimate “reuse”: the analogous Zig design is
@@ -668,12 +669,14 @@ The Zig evidence supports the following order:
    on a fixed input. No semantic change, no new dependency. This is the only
    way to distinguish “the fixed point retains too much” from “one phase peaks
    too high”; the current project state lacks that attribution.
-2. **Now:** remove redundant whole-program copies and the whole-source rewrite
-   in `c_backend` for generated code. Byte-identical C output is the acceptance
-   gate; lower peak is the expected, measured effect.
-3. **Now:** add a development C tier (`-O0`/`-O1 -g`) beside release `-O3`.
-   This is a user-facing latency/memory experiment, not an OOM fix and not a
-   code-quality claim.
+2. **Now:** remove redundant whole-program materializations and the whole-source
+   rewrite in `c_backend` for generated code. Byte-identical C output is the
+   acceptance gate; lower peak is the expected, measured effect.
+3. **Now:** compare the existing build-only `--cc-opt=0`/`1` against the default
+   `3` in `evals/native_compiler_experiment.ts`; reuse that control, do not add
+   a second CLI. If `-g` is required, extend the existing control explicitly.
+   This is a latency/memory experiment, not an OOM fix and not a code-quality
+   claim.
 4. **Only after 1–3:** prototype definition-level invalidation at the BIR
    boundary, with explicit dependency facts and stable IDs. Do not call it
    “incremental compilation” until invalidation is sound on a type/layout change,
@@ -704,37 +707,42 @@ public13 ABI and the existing test corpus.
 
 ### E1 — Producer phase accounting (recommended first)
 
-* **Change:** use `compile_book`'s existing `file_observe` pass markers and the
+* **Change:** use `compile_book`'s existing `file_observe` pass markers, the
+  existing `--trace-c=true` per-pass/definition/spin/cache profiling, and the
   existing `evals/heavy_gate.ts` sampler; record per-pass `FL.own/hot/stat`
   sizes, `FL.segs/spins/img` sizes, wall time, peak physical footprint, and
-  exit reason. Optionally add the same for `c_backend` render phases.
+  exit reason. Extend the existing report with peak sampling if needed; do not
+  add a second instrumentation CLI.
 * **Acceptance:** a fixed input produces a complete per-pass table; the sum of
   observed phases is consistent with total wall; no semantic output change;
   no claim about allocation cause beyond what is sampled. If the guard trips,
   report `RESOURCE_LIMIT`, not FAIL.
 * **Why:** the current OOM is known by pass number, not by retained set.
 
-### E2 — C emission without whole-source copies (recommended second)
+### E2 — C emission without whole-source rewrite/materialization (recommended second)
 
 * **Change:** emit final `CID`/`FID` spellings for Bend-generated code; apply
   `Link.rewrite` only to foreign effect sources; stream the runtime/tables/
   segments/requests parts in order instead of concatenating several whole
-  strings.
+  char lists.
 * **Acceptance:** byte-identical `.c` for a fixed corpus (hash comparison);
   same compiled program behavior; lower or equal peak physical footprint;
   no new dependency. If hashes differ, stop and explain the spelling delta.
 * **Why:** this is the Zig “typed relocation instead of textual rewrite” lesson
   at the scale Bend can test now.
 
-### E3 — Development C tier
+### E3 — Existing `--cc-opt` dev-tier comparison
 
-* **Change:** add an explicit `-O0`/`-O1 -g` mode for development builds,
-  selected by a flag; keep `-O3` for release.
+* **Change:** use the existing build-only `--cc-opt=0..3` control in
+  `evals/native_compiler_experiment.ts` (default 3; `--cc-pipeline=llvm-split`
+  requires 1). Compare 0/1 with 3 on fixed inputs. Do not add a new CLI. `-g`
+  is not currently part of this control; if debug symbols are required, extend
+  it explicitly rather than creating a parallel flag.
 * **Acceptance:** identical program outputs on the test corpus; record wall
-  and peak for both modes on fixed inputs; no claim that it fixes the producer
+  and peak for each level on fixed inputs; no claim that it fixes the producer
   OOM and no claim about release code quality.
 * **Why:** Zig's own backend is a Debug-tier tool; the lesson is tiering, not
-  “fast compiler replaces optimizing compiler”.
+  “fast compiler replaces optimizing compiler”. Bend already has the control.
 
 ### E4 — Definition-level invalidation prototype (future, only after E1–E3)
 
@@ -846,6 +854,8 @@ Bend sources at `f46ad0f6`:
 * `bend2/selfhost/c_backend_link.bend:1-12`
 * `bend2/selfhost/js_emit.bend:20-33`; `bend2/selfhost/js_backend.bend:1139-1160`
 * `evals/native_compiler_llvm.ts:73-100` (existing C→LLVM split lane)
+* `evals/native_compiler_experiment.ts:10,97,101,271` (existing
+  `--cc-opt=0..3` and `--trace-c` controls)
 * `evals/heavy_gate.ts` (resource guard)
 
 Peer notes (read, not edited): `RESEARCH_LLVM.md` in
