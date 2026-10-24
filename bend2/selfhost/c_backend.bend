@@ -152,9 +152,13 @@ def part_require(parts: List<&2, Part>) -> Maybe<&2, String>:
         case PartFail{message}: None{}
         case PartOk{text}: part_require(rest)
 
+# Macro names are injective over source keys: a separator . ~ - ? becomes one
+# underscore and a literal underscore doubles, so `foo.bar` and `foo_bar` never
+# merge. The runtime's own spellings (Clo~apply, IO~emit, SNil, SCon) are
+# preserved exactly. No unique-suffix guessing: a clash would be a bug here.
 def ident_char(char: Char) -> Char:
   match char:
-    case '_': '_'
+    case '_': '~'
     case _: ident_alpha(Bool.or(Char.is_alpha(char), Char.is_digit(char)), char)
 
 def ident_alpha(valid: Bool, char: Char) -> Char:
@@ -170,11 +174,24 @@ def ident_chars(chars: List<&2, Char>) -> List<&2, Char>:
     case Nil{}: Nil{}
     case +char <> rest: ident_char(char) <> ident_chars(rest)
 
+def c_macro_text(mapped: String) -> String:
+  String.from_list(c_macro_chars(String.to_list(mapped)))
+
+def c_macro_chars(chars: List<&2, Char>) -> List<&2, Char>:
+  match chars:
+    case Nil{}: Nil{}
+    case +char <> rest: c_macro_char(char) <> c_macro_chars(rest)
+
+def c_macro_char(char: Char) -> List<&2, Char>:
+  match char:
+    case '~': ['_', '_']
+    case _: [char]
+
 def cid_macro(name: String) -> String:
-  String.append("CID_", String.to_upper(clean(name)))
+  String.append("CID_", String.to_upper(c_macro_text(clean(name))))
 
 def fid_macro(name: String) -> String:
-  String.append("FID_", String.to_upper(clean(name)))
+  String.append("FID_", String.to_upper(c_macro_text(clean(name))))
 
 def c_escape_char(char: Char) -> String:
   match char:
@@ -452,12 +469,17 @@ def cid_lookup_one(same: Bool, key: String, cid: U32, rest: List<&2, CidRow>) ->
     case True{}: cid
     case False{}: cid_lookup(key, rest)
 
+def cid_short_one(same: Bool, short: String, cid: U32, rest: List<&2, CidRow>) -> Maybe<&2, U32>:
+  match same:
+    case True{}: Some{cid}
+    case False{}: cid_short(short, rest)
+
 def cid_short(short: String, cids: List<&2, CidRow>) -> Maybe<&2, U32>:
   match cids:
     case Nil{}: None{}
     case +row <> rest:
       match row:
-        case CidRow{cid, key, arity}: cid_short_one(Bool.or(String.eq(short, key), String.eq(short, last_segment(key))), short, cid, rest)
+        case CidRow{cid, key, arity}: cid_short_one(String.eq(short, key), short, cid, rest)
 
 def cid_c(short: String, cids: List<&2, CidRow>) -> Part:
   match cid_short(short, cids):
@@ -2360,79 +2382,6 @@ def part_text(part: Part) -> String:
 # Effect sources
 # ---------------------------------------------------------------------------
 
-def alias_open(namespace: String, constructors: List<&2, BIR.ConstructorLayout>, declarations: List<&2, BIR.Declaration>) -> String:
-  match String.is_empty(namespace):
-    case True{}: ""
-    case False{}:
-      cat([
-        alias_ctor_lines(ctor_keys(constructors), namespace),
-        alias_fid_lines(declarations, namespace)
-      ])
-
-def alias_close(namespace: String, constructors: List<&2, BIR.ConstructorLayout>, declarations: List<&2, BIR.Declaration>) -> String:
-  match String.is_empty(namespace):
-    case True{}: ""
-    case False{}:
-      cat([
-        alias_pops(fid_alias_names(declarations, namespace, Nil{})),
-        alias_pops(ctor_alias_names(ctor_keys(constructors), namespace, Nil{}))
-      ])
-
-def alias_ctor_lines(keys: List<&2, String>, namespace: String) -> String:
-  match keys:
-    case Nil{}: ""
-    case +key <> rest:
-      match String.starts_with(key, String.append(namespace, ".")):
-        case True{}:
-          short = String.drop(key, String.length(String.append(namespace, ".")))
-          cat(["#pragma push_macro(", c_quote(cid_macro(short)), ")\n#define ", cid_macro(short), " ", cid_macro(key), "\n", alias_ctor_lines(rest, namespace)])
-        case False{}: alias_ctor_lines(rest, namespace)
-
-def ctor_alias_names(keys: List<&2, String>, namespace: String, acc: List<&2, String>) -> List<&2, String>:
-  match keys:
-    case Nil{}: acc
-    case +key <> rest:
-      match String.starts_with(key, String.append(namespace, ".")):
-        case True{}: ctor_alias_names(rest, namespace, cid_macro(String.drop(key, String.length(String.append(namespace, ".")))) <> acc)
-        case False{}: ctor_alias_names(rest, namespace, acc)
-
-def alias_fid_lines(declarations: List<&2, BIR.Declaration>, namespace: String) -> String:
-  match declarations:
-    case Nil{}: ""
-    case +item <> rest:
-      match item:
-        case BIR.FunctionDeclaration{key, code, parameters}: alias_fid_line(key, rest, namespace)
-        case BIR.LazyDeclaration{key, body}: alias_fid_line(key, rest, namespace)
-        case BIR.ForeignDeclaration{key, _, _, _, _, _, _, _, _}: alias_fid_line(key, rest, namespace)
-        case _: alias_fid_lines(rest, namespace)
-
-def alias_fid_line(key: String, rest: List<&2, BIR.Declaration>, namespace: String) -> String:
-  match String.starts_with(key, String.append(namespace, ".")):
-    case True{}:
-      short = String.drop(key, String.length(String.append(namespace, ".")))
-      cat(["#pragma push_macro(", c_quote(fid_macro(short)), ")\n#define ", fid_macro(short), " ", fid_macro(key), "\n", alias_fid_lines(rest, namespace)])
-    case False{}: alias_fid_lines(rest, namespace)
-
-def fid_alias_names(declarations: List<&2, BIR.Declaration>, namespace: String, acc: List<&2, String>) -> List<&2, String>:
-  match declarations:
-    case Nil{}: acc
-    case +item <> rest:
-      match item:
-        case BIR.FunctionDeclaration{key, code, parameters}: fid_alias_name(key, rest, namespace, acc)
-        case BIR.LazyDeclaration{key, body}: fid_alias_name(key, rest, namespace, acc)
-        case BIR.ForeignDeclaration{key, _, _, _, _, _, _, _, _}: fid_alias_name(key, rest, namespace, acc)
-        case _: fid_alias_names(rest, namespace, acc)
-
-def fid_alias_name(key: String, rest: List<&2, BIR.Declaration>, namespace: String, acc: List<&2, String>) -> List<&2, String>:
-  match String.starts_with(key, String.append(namespace, ".")):
-    case True{}: fid_alias_names(rest, namespace, fid_macro(String.drop(key, String.length(String.append(namespace, ".")))) <> acc)
-    case False{}: fid_alias_names(rest, namespace, acc)
-
-def alias_pops(names: List<&2, String>) -> String:
-  match names:
-    case Nil{}: ""
-    case +name <> rest: cat(["#pragma pop_macro(", c_quote(name), ")\n", alias_pops(rest)])
-
 def requests_part(plan: Plan) -> Part:
   match plan:
     case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
@@ -2486,10 +2435,7 @@ def requests_each(imports: List<&2, CImport>, constructors: List<&2, BIR.Constru
         case CImport{path, namespace, source}:
           block = cat([
             "/* effect source: ", path, " */\n",
-            alias_open(namespace, constructors, declarations),
-            source, "\n",
-            alias_close(namespace, constructors, declarations),
-            "\n"
+            source, "\n"
           ])
           part_append(rewrite_source(block, namespace, cids, declarations), requests_each(rest, constructors, declarations, cids))
 
@@ -2580,67 +2526,25 @@ def cid_exact_each(cids: List<&2, CidRow>, acc: Map<&2, String>) -> Map<&2, Stri
 
 # A short name is usable only when exactly one emitted key ends with it and no
 # key equals it, so Base's Con/Nil/Some/True can never shadow a user type.
-def cid_short_map(cids: List<&2, CidRow>) -> Map<&2, String>:
-  cid_short_each(cids, Map.new(&2, String), Map.new(&2, Bool))
-
-def cid_short_each(cids: List<&2, CidRow>, acc: Map<&2, String>, seen: Map<&2, Bool>) -> Map<&2, String>:
-  match cids:
-    case Nil{}: acc
-    case +row <> rest:
-      match row:
-        case CidRow{_, key, _}: cid_short_each(rest, cid_short_one(acc, seen, key), Map.set(&2, Bool, seen, last_segment(key), True{}))
-
-def cid_short_one(acc: Map<&2, String>, seen: Map<&2, Bool>, key: String) -> Map<&2, String>:
-  match Bool.and(Bool.not(map_flag(seen, last_segment(key))), Bool.not(String.eq(last_segment(key), key))):
-    case True{}: cid_short_set(acc, key)
-    case False{}: Map.delete(&2, String, acc, last_segment(key))
-
-def cid_short_set(acc: Map<&2, String>, key: String) -> Map<&2, String>:
-  match IndexLookup.find(String, acc, last_segment(key)):
-    case Some{existing}: acc
-    case None{}: Map.set(&2, String, acc, last_segment(key), cid_macro(key))
-
 def fid_exact_map(declarations: List<&2, BIR.Declaration>) -> Map<&2, String>:
   fid_exact_decl(declarations, fid_fixed(Map.new(&2, String)))
-
-def fid_short_map(declarations: List<&2, BIR.Declaration>) -> Map<&2, String>:
-  fid_short_each(declarations, Map.new(&2, String), Map.new(&2, Bool))
-
-def fid_short_each(declarations: List<&2, BIR.Declaration>, acc: Map<&2, String>, seen: Map<&2, Bool>) -> Map<&2, String>:
-  match declarations:
-    case Nil{}: acc
-    case +item <> rest:
-      match item:
-        case BIR.FunctionDeclaration{key, code, parameters}: fid_short_each(rest, fid_short_one(acc, seen, key), Map.set(&2, Bool, seen, last_segment(key), True{}))
-        case BIR.LazyDeclaration{key, body}: fid_short_each(rest, fid_short_one(acc, seen, key), Map.set(&2, Bool, seen, last_segment(key), True{}))
-        case BIR.ForeignDeclaration{key, _, _, arity, _, _, _, _, _}: fid_short_each(rest, fid_short_one(acc, seen, key), Map.set(&2, Bool, seen, last_segment(key), True{}))
-        case BIR.NativeDeclaration{key, primitive, quantities}: fid_short_each(rest, fid_short_one(acc, seen, key), Map.set(&2, Bool, seen, last_segment(key), True{}))
-        case _: fid_short_each(rest, acc, seen)
-
-def fid_short_one(acc: Map<&2, String>, seen: Map<&2, Bool>, key: String) -> Map<&2, String>:
-  match Bool.and(Bool.not(map_flag(seen, last_segment(key))), Bool.not(String.eq(last_segment(key), key))):
-    case True{}: fid_short_set(acc, key)
-    case False{}: Map.delete(&2, String, acc, last_segment(key))
-
-def fid_short_set(acc: Map<&2, String>, key: String) -> Map<&2, String>:
-  match IndexLookup.find(String, acc, last_segment(key)):
-    case Some{existing}: acc
-    case None{}: Map.set(&2, String, acc, last_segment(key), fid_macro(key))
 
 def namespaced_map(exact: Map<&2, String>, keys: List<&2, String>, namespace: String) -> Map<&2, String>:
   namespaced_each(exact, keys, namespace)
 
+# Exactly as comp.ts c_ids: a source names `namespace:key` first, then the bare
+# authoritative key. No suffix, case or segment guessing.
 def namespaced_each(acc: Map<&2, String>, keys: List<&2, String>, namespace: String) -> Map<&2, String>:
   match keys:
     case Nil{}: acc
     case +key <> rest:
-      match Bool.and(Bool.not(String.is_empty(namespace)), String.starts_with(key, String.append(namespace, "."))):
+      match Bool.not(String.is_empty(namespace)):
         case True{}: namespaced_each(namespaced_set(acc, key, namespace), rest, namespace)
         case False{}: namespaced_each(acc, rest, namespace)
 
 def namespaced_set(acc: Map<&2, String>, key: String, namespace: String) -> Map<&2, String>:
   match IndexLookup.find(String, acc, key):
-    case Some{macro}: map_set_first(acc, String.drop(key, String.length(String.append(namespace, "."))), macro)
+    case Some{macro}: map_set_first(acc, String.append(namespace, String.append(":", key)), macro)
     case None{}: acc
 
 def fid_fixed(acc: Map<&2, String>) -> Map<&2, String>:
@@ -2687,12 +2591,6 @@ def emit(program: BIR.Program, runtime: String, imports: List<&2, CImport>) -> E
     case PlanFail{message}: EmitFailure{message}
     case PlanOk{plan}: render(plan, runtime)
 
-def template_cid_map(cids: List<&2, CidRow>) -> Map<&2, String>:
-  cid_short_each(cids, cid_exact_map(cids), Map.new(&2, Bool))
-
-def template_fid_map(declarations: List<&2, BIR.Declaration>) -> Map<&2, String>:
-  fid_short_each(declarations, fid_exact_map(declarations), Map.new(&2, Bool))
-
 def render(plan: Plan, runtime: String) -> EmitResult:
   match plan:
     case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
@@ -2701,7 +2599,7 @@ def render(plan: Plan, runtime: String) -> EmitResult:
 def render_checked(cids: List<&2, CidRow>, declarations: List<&2, BIR.Declaration>, plan: Plan, runtime: String) -> EmitResult:
   match macro_collision_cids(cids):
     case Some{message}: EmitFailure(message)
-    case None{}: render_parts(plan, runtime, template_cid_map(cids), template_fid_map(declarations))
+    case None{}: render_parts(plan, runtime, cid_exact_map(cids), fid_exact_map(declarations))
 
 def render_parts(plan: Plan, runtime: String, cid_map: Map<&2, String>, fid_map: Map<&2, String>) -> EmitResult:
   tables = tables_part(plan)
