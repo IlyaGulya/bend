@@ -1,22 +1,19 @@
 {
-  "schema": "descriptor-nf-native-step-smoke-v3",
+  "schema": "descriptor-nf-native-step-smoke-v4",
   "branch": "work/nf-verified57ab",
   "supersedes": {
-    "commits": [
-      "5b595ac7",
-      "3606f27f"
-    ],
-    "descriptor_nf_sha256": "66ccdc331c8d42f5b722e3c740f8631e6b568eaefc95ba47722385990d409f71"
+    "commit": "30aaa33e",
+    "descriptor_nf_sha256": "9c02ae7da9c2d0668dded6825d336e96d8f8fe9d97b43deec061d75e7d4df124"
   },
   "sourceRevision": {
-    "descriptor_nf_sha256": "9c02ae7da9c2d0668dded6825d336e96d8f8fe9d97b43deec061d75e7d4df124",
+    "descriptor_nf_sha256": "79591089ede2107d84c803a76c2e415ad35a0c358563d76aec7af46ee7b4ba98",
     "fixture": {
       "path": "evals/descriptor_nf_smoke.bend",
-      "sha256": "7799c42e4f035b1078b63ff1328e767d8f836bbe7a5763fa9e614156a5faa162"
+      "sha256": "b352bcf861b3a53e073d4f626ffc5b27314b26b51bb33896a606d46f2d3b13d8"
     },
     "config": {
       "path": "evals/descriptor_nf_step_smoke.ts",
-      "sha256": "7c5334c4b7678295813ab568d45f34e2bca048576a2e9cf0bcd5339e32f0c258"
+      "sha256": "7ebdeccd4d1324c5c9703849e486be5acfaaa28b28e35177df5df851eb77d8bd"
     },
     "publicApi": [
       "NfContext",
@@ -28,22 +25,24 @@
     ],
     "changes": [
       "lambda beta via an environment-capturing closure",
-      "capture-safe reification: closure sources are shifted by one binder before being substituted, and abstract terms reify their environment instead of leaking open parameters",
+      "closure materialization is a let of the captured environment around the lambda (no index shifting, no copies, no second evaluator)",
+      "arrows normalize domain and body under the environment and keep their shape; a stuck match keeps its normalized scrutinees and original cases",
       "tri-state match binding (unknown scrutinee stays abstract, known mismatch falls through)",
       "invalid constructor/quantity/kind applications are DescriptorFailure",
       "comments state the proven behaviour"
-    ]
+    ],
+    "removed": "shift_descriptor/subst_descriptor and their binder-index model were deleted; the counterexample Substitution{1,Ref Nat,Parameter0} under [Bool] (Bool) versus a naive depth+1 shift under [Bool,U32] (U32) is no longer representable."
   },
   "generated": {
     "component": "checkpoints/descriptor_nf_steps_component_v1.bend",
     "componentSha256": "547ef7d23d35e7d0201db59b6224679e5695b930c94e437e8a07fab1ff2c7304",
-    "stepsSha256": "a249641d46e1386e56302d5d3984d488af15e91f6d908678dfadf2706e275f9e",
-    "stepDefinitions": 75,
-    "privateHelpers": 140,
-    "generatedHelperEdges": 327,
+    "stepsSha256": "66855b7c70507358cf7a8f17c59bcc094db98ba215f3ca5ad1b2b7550b6c5634",
+    "stepDefinitions": 67,
+    "privateHelpers": 135,
+    "generatedHelperEdges": 290,
     "composedDeclarations": {
-      "evals/descriptor_nf_smoke.bend": 20,
-      "bend2/selfhost/descriptor_nf.bend": 63
+      "evals/descriptor_nf_smoke.bend": 21,
+      "bend2/selfhost/descriptor_nf.bend": 54
     },
     "recursiveHelpers": 1,
     "recursiveFunction": "template_chunk",
@@ -59,26 +58,26 @@
   },
   "guardedBuild": {
     "status": "PASS",
-    "eventsFullyValidated": 800,
-    "checkedDefinitions": 592,
+    "eventsFullyValidated": 787,
+    "checkedDefinitions": 579,
     "checksExcluded": 0,
     "outputPatches": 0,
-    "artifactSha256": "4dae98563c1093136a8ebb075cc83f31dc56056fee9ca7d15baa20022bc7c89c",
-    "peakRssBytes": 283770880,
-    "peakFootprintBytes": 253433648,
-    "elapsedMs": 665,
+    "artifactSha256": "81541d4a8fa650218675bdd6afddcabc81e45a77cd55ea514f7cc8dc6a20bc1d",
+    "peakRssBytes": 281329664,
+    "peakFootprintBytes": 245388480,
+    "elapsedMs": 650,
     "heapLimitMiB": 3072,
     "runtime": "node",
-    "emission": "guarded checker_core_component_build, --exports=expand_modules_start,template_step; reports under /tmp/nf-step-build4"
+    "emission": "guarded checker_core_component_build, --exports=expand_modules_start,template_step; reports under /tmp/nf-step-build5"
   },
   "execution": {
     "driver": "evals/descriptor_nf_step_smoke.ts --run=ART (opaque Run chunks; no host semantic limit)",
-    "chunks": 165,
-    "observedBits": "11111111111111111111111111111111",
-    "assertions": 32,
-    "artifactSha256": "4dae98563c1093136a8ebb075cc83f31dc56056fee9ca7d15baa20022bc7c89c"
+    "chunks": 168,
+    "observedBits": "111111111111111111111111111111111",
+    "assertions": 33,
+    "artifactSha256": "81541d4a8fa650218675bdd6afddcabc81e45a77cd55ea514f7cc8dc6a20bc1d"
   },
-  "expectedBits": "11111111111111111111111111111111",
+  "expectedBits": "111111111111111111111111111111111",
   "captureBoundaryRegression": [
     "normalize_closed(Ref K2 [Parameter0]) materializes the partially applied closure; reapplying it to Nat under env [NfType Bool] returns Bool (pre-fix it read the new argument and returned Nat)",
     "SelfArrow(A)=Arrow(A,A) normalized with A=Nat yields the closed Arrow(Nat,Nat) (pre-fix it stayed Arrow(Parameter0,Parameter0))",
@@ -118,6 +117,33 @@
     "SelfArrow alias reifies its environment -> Arrow(Nat,Nat)",
     "AbsMatch alias reifies its scrutinee -> Match with Nat"
   ],
-  "admissionBoundary": "Only the generated step component under checkpoints/ is natively admitted. The raw canonical fixture and the raw descriptor_nf provider source are NOT admitted without generateNativeSteps; bookLoadBookValid VALID refers to checkpoints/descriptor_nf_steps_component_v1.bend.",
-  "integration": "This revision supersedes 5b595ac7/3606f27f. CLay must regenerate its composed component again (NfVal is unchanged since NfClosure, but descriptor_nf's declarations changed); the combined tree must regenerate NF/root/emitter/CLay from this commit and rerun the parser receipt and the one gate."
+  "admissionBoundary": "Only the generated step component under checkpoints/ is natively admitted. The raw fixture and raw descriptor_nf source are NOT admitted without generateNativeSteps; bookLoadBookValid VALID refers to checkpoints/descriptor_nf_steps_component_v1.bend.",
+  "integration": "Supersedes 30aaa33e. CLay must regenerate again; the combined tree must regenerate NF/root/emitter/CLay from this commit and rerun the parser receipt and the one gate.",
+  "boundaryProof": {
+    "method": "real descriptor_nf step pipeline (compose, native-match factorization, step lowering, native emit, host Run)",
+    "preFixSource": "30aaa33e (shift-based reification) run with this fixture",
+    "preFixBits": "111111111111111111111101111111110",
+    "postFixBits": "111111111111111111111111111111111",
+    "assertions": 33,
+    "failingBefore": [
+      {
+        "position": 33,
+        "case": "TypeFunction K3 arity2 body Lambda(None,Parameter2); normalize_closed(Ref K3 [Parameter1,Parameter0]); apply to U32 under env [NfType Nat,NfType Bool]",
+        "before": "Bool (constant-one shift ignored earlier inserted slots)",
+        "after": "Nat (first capture)"
+      },
+      {
+        "position": 23,
+        "case": "partial closure materialization shape",
+        "before": "Lambda(Substitution{1,Parameter1,Parameter1})",
+        "after": "DescriptorLet{[Ref Nat],Lambda(...)} (the semantic reapplication bit passed before and after; this bit records the exact shape Main authorised)"
+      }
+    ],
+    "alreadyFixedOn30aaa33e": [
+      "free-capture reapplication returns Bool",
+      "SelfArrow(A)=Arrow(A,A) with Nat returns Arrow(Nat,Nat)",
+      "AbsMatch(A) with Nat keeps the normalized Nat scrutinee"
+    ]
+  },
+  "scope": "GuardedNF33 scoped evidence: the generated descriptor_nf step component is natively admitted and executed. Not full-root acceptance. Compiler phase timing, deadline, fixedpoint status and CPS overhead belong to RootABIConsumers' measured work under the same original limits; this receipt makes no timing, deadline or full-root claim."
 }

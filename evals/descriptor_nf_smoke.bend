@@ -17,6 +17,7 @@ def smoke_functions() -> List<&2, BIR.TypeFunction>:
    BIR.TypeFunction{"MyIO", None{}, 0n, 0n, BIR.DescriptorRef{"IO", [BIR.DescriptorRef{"Nat", Nil{}}]}},
    BIR.TypeFunction{"Id", None{}, 0n, 1n, BIR.DescriptorParameter{0n}},
    BIR.TypeFunction{"K2", None{}, 0n, 1n, BIR.DescriptorLambda{None{}, BIR.DescriptorParameter{1n}}},
+   BIR.TypeFunction{"K3", None{}, 0n, 2n, BIR.DescriptorLambda{None{}, BIR.DescriptorParameter{2n}}},
    BIR.TypeFunction{"SelfArrow", None{}, 0n, 1n, BIR.DescriptorArrow{BIR.Erased{}, BIR.DescriptorParameter{0n}, BIR.DescriptorParameter{0n}}},
    BIR.TypeFunction{"AbsMatch", None{}, 0n, 1n, BIR.DescriptorMatch{[BIR.DescriptorParameter{0n}], [BIR.DescriptorCase{[BIR.DescriptorConstructorPattern{"True", Nil{}}], BIR.DescriptorRef{"Nat", Nil{}}}]}},
    BIR.TypeFunction{"K", None{}, 0n, 1n, BIR.DescriptorRef{"Bool", Nil{}}},
@@ -44,9 +45,20 @@ def is_bool(value: BIR.Descriptor) -> Bool:
         case _: False{}
     case _: False{}
 
-def is_lambda(value: BIR.Descriptor) -> Bool:
+def single_nat(values: List<&2, BIR.Descriptor>) -> Bool:
+  match values:
+    case +first <> rest:
+      match rest:
+        case Nil{}: is_nat(first)
+        case _: False{}
+    case _: False{}
+
+def is_let_nat_lambda(value: BIR.Descriptor) -> Bool:
   match value:
-    case BIR.DescriptorLambda{_, _}: True{}
+    case BIR.DescriptorLet{values, body}:
+      match body:
+        case BIR.DescriptorLambda{quantity, inner}: single_nat(values)
+        case _: False{}
     case _: False{}
 
 def is_arrow_nat(value: BIR.Descriptor) -> Bool:
@@ -174,9 +186,11 @@ def main(modules: List<&2, Loader.LoadedModule>) -> NfSmoke:
   quantity_app = NF.normalize_closed(f, t, BIR.DescriptorApplication{BIR.DescriptorQuantity{BIR.Erased{}}, BIR.DescriptorRef{"Nat", Nil{}}})
   kind_app = NF.normalize_closed(f, t, BIR.DescriptorApplication{BIR.DescriptorKind{BIR.DescriptorRef{"Nat", Nil{}}}, BIR.DescriptorRef{"Bool", Nil{}}})
   free_partial = NF.normalize_closed(f, t, BIR.DescriptorRef{"K2", [BIR.DescriptorParameter{0n}]})
+  k3_partial = NF.normalize_closed(f, t, BIR.DescriptorRef{"K3", [BIR.DescriptorParameter{1n}, BIR.DescriptorParameter{0n}]})
+  k3_applied = NF.normalize(NF.nf_context(f, t), BIR.DescriptorApplication{k3_partial, BIR.DescriptorRef{"U32", Nil{}}}, [NF.NfType{"Nat", Nil{}}, NF.NfType{"Bool", Nil{}}], 1024n)
   free_reapplied = NF.normalize(NF.nf_context(f, t), BIR.DescriptorApplication{free_partial, BIR.DescriptorRef{"Nat", Nil{}}}, [NF.NfType{"Bool", Nil{}}], 1024n)
   arrow_alias = NF.normalize_closed(f, t, BIR.DescriptorRef{"SelfArrow", [BIR.DescriptorRef{"Nat", Nil{}}]})
   match_alias = NF.normalize_closed(f, t, BIR.DescriptorRef{"AbsMatch", [BIR.DescriptorRef{"Nat", Nil{}}]})
-  boundary_bits = String.append(String.append(bit(is_bool(free_reapplied)), bit(is_arrow_nat(arrow_alias))), bit(is_match_with_nat(match_alias)))
-  new_bits = String.append(bit(is_nat(lambda_beta)), String.append(bit(is_nat(higher_order)), String.append(bit(is_nat(captured)), String.append(bit(is_lambda(partial)), String.append(bit(is_nat(reapplied)), String.append(bit(is_match_source(abstract_match)), String.append(bit(is_bool(known_mismatch)), String.append(bit(is_failure_with(ctor_app, "the constructor `C` is applied to an argument")), String.append(bit(is_failure_with(quantity_app, "a quantity is applied to an argument")), bit(is_failure_with(kind_app, "a kind is applied to an argument")))))))))))
+  boundary_bits = String.append(String.append(String.append(bit(is_bool(free_reapplied)), bit(is_arrow_nat(arrow_alias))), bit(is_match_with_nat(match_alias))), bit(is_nat(k3_applied)))
+  new_bits = String.append(bit(is_nat(lambda_beta)), String.append(bit(is_nat(higher_order)), String.append(bit(is_nat(captured)), String.append(bit(is_let_nat_lambda(partial)), String.append(bit(is_nat(reapplied)), String.append(bit(is_match_source(abstract_match)), String.append(bit(is_bool(known_mismatch)), String.append(bit(is_failure_with(ctor_app, "the constructor `C` is applied to an argument")), String.append(bit(is_failure_with(quantity_app, "a quantity is applied to an argument")), bit(is_failure_with(kind_app, "a kind is applied to an argument")))))))))))
   NfSmoke{String.append(String.append(String.append(String.append(String.append(five, rest), both), extra), cases_bits), String.append(new_bits, boundary_bits))}
