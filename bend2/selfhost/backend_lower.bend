@@ -349,6 +349,7 @@ def array_element_is_argument(op: BIR.Primitive) -> Bool:
     case BIR.PrimArraySet{}: True{}
     case BIR.PrimArraySize{}: True{}
     case BIR.PrimArrayClone{}: True{}
+    case BIR.PrimArraySwap{}: True{}
     case BIR.PrimArrayLeft{}: True{}
     case BIR.PrimArrayRight{}: True{}
     case BIR.PrimArrayLeafValue{}: True{}
