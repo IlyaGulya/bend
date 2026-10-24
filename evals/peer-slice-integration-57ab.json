@@ -11,9 +11,17 @@
     "receipt": "GuardedNF33: 787 events / 579 checked definitions / 0 excluded / 0 patches, artifact 81541d4a, 168 chunks, 33/33 assertions",
     "scope": "component evidence only; no timing or deadline claim",
     "superseded": [
+      "3a27aad9",
       "30aaa33e",
       "5b595ac7"
-    ]
+    ],
+    "pendingCarry": {
+      "commit": "10c2290b",
+      "descriptorNfSha256": "faa6681b32c42a498e7646d46f80c924d6761958eaa872abf90909ac1ba040fc",
+      "receipt": "GuardedNF: 803 events / 594 checked definitions / 0 excluded / 0 patches, artifact 45f87d9d, 173 chunks, 33/33",
+      "generation": "69 definitions / 148 helpers / 316 edges, one recursive helper, quantum 64, semanticFuelChanged false",
+      "reasonDeferred": "not carried into this frozen tree because it moves js_emit bytes and the emitter counts, and Main froze b0ec90a3 as the comparison baseline for the assigned CPS performance slice; it lands in the single final integration pass together with that slice's source, followed by one regeneration, one fresh parser acceptance and the gate"
+    }
   },
   "clay": {
     "current": "work/clay-native57ab@d26bd496",
