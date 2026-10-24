@@ -23,15 +23,15 @@ def js_escape_char(char: Char) -> String:
     case '\u{0}': "\\u0000"
     case _: String.from_list([char])
 
-def js_quote_chars(chars: List<&2, Char>, acc: String) -> String:
+# Only the bounded escape is on append's left; never copy a growing prefix.
+def js_quote_chars(chars: List<&2, Char>) -> String:
   match chars:
-    case Nil{}: String.append(acc, "\"")
+    case Nil{}: "\""
     case +char <> rest:
-      escaped = js_escape_char(char)
-      js_quote_chars(rest, String.append(acc, escaped))
+      String.append(js_escape_char(char), js_quote_chars(rest))
 
 def js_quote(text: String) -> String:
-  js_quote_chars(String.to_list(text), "\"")
+  String.append("\"", js_quote_chars(String.to_list(text)))
 
 def bool_source(value: Bool) -> String:
   match value:

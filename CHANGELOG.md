@@ -5,6 +5,10 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- JavaScript source quoting no longer repeatedly copies a growing string prefix
+  on native backends. Each bounded escape is prepended to the escaped suffix;
+  escape bytes and character order are unchanged.
+
 - Native compiler builds can explicitly select `--cc-pipeline=llvm-split` on
   Darwin arm64 with Apple clang21 and matching LLVM21 tools. Four bitcode
   partitions use at most three backend children under the unchanged whole-build

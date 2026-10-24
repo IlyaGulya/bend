@@ -2,12 +2,12 @@
 
 ## Статус и границы
 
-Это архитектурный контракт принятого functional FIR/BIR cutover compiler57t,
+Это архитектурный контракт принятого functional FIR/BIR cutover compiler57w,
 не победа над official. Историческая performance-версия55 остаётся reference.
-Полный57t root8391/8787 нативно проверен; новый unchanged stage1/stage2 exact
-byte fixedpoint и frozen7720-export consumer прошли. Все285 обязательных
-seed/stage1/stage2 behavior executions завершены с fresh native AST/span parity.
-Original monolithic600s gate остаётся red; отдельная полная behavior proof его не перекрашивает.
+Полный57w root8390/8786 нативно проверен; новый unchanged stage1/stage2 exact
+byte fixedpoint13739105bytes/d5052bb4… и frozen7720-export consumer прошли.
+Все285 обязательных seed/stage1/stage2 behavior executions завершены с fresh
+native AST/span parity. Original monolithic600s red, отдельная proof его не перекрашивает.
 Нельзя переносить доказательства на изменённые checker, lowering или runtime ABI
 без новой проверки.
 В57q current native C root8400/8796 реально собранO1 под прежним8GiB guard и
@@ -27,6 +27,12 @@ Fresh current-root native C prototype cycle292.888s прошёл без cachedC 
 7720 consumer, но занял370.743s: TS→C producer174.087s, backend97.629s, native93.329s.
 Реальные per-stage CPU/maxRSS и tool/ABI pins сохранены; причина producer variance
 не установлена. Stable300s пока НЕ достигнуто. Same-host official8.619s быстрее.
+57w устраняет growing-prefix copies при JS quoting. На полном native frozen
+emit20.839599→6.703796s, compile93.177938→79.231488s, все7720 consumers/bytes
+прежние. Свежий native build+run+consumer354.712666s пока выше300s; checker
+62.408978s и TS→C producer171.733252s остаются главными задачами.
+Runtimephysical вырос примерно70MB; JS fullcompile не ускорился. Source
+quote change получила СВОИ свежие parser/native/fixedpoint/285 proofs, не старыеT.
 
 
 Единственный источник этого контракта — этот файл; оперативный статус, команды,

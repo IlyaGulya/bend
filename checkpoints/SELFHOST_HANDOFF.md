@@ -4,7 +4,26 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
-СЕЙЧАС canonical57t typed-native-stack принят по functional correctness:
+СЕЙЧАС принят57w quote fix: js_backend.bend строит quoted suffix из bounded
+left fragments вместо копирования growing accumulator. FreshW parser75,
+полный native root8390/8786 и frozen15modules/8403decls/7720exports прошли.
+Новый настоящий unchanged stage1/stage2 byte fixedpoint ПРОШЁЛ:13739105bytes,
+SHAd5052bb405213398f566c4d824ab1440e67414795b47d4d4641562098508e47b,
+actual parent cmp/shasum/wc подтверждены; stage2 использует stage1 parser+compiler.
+ВСЕ285 required behaviors завершены:95seed+95freshstage1+95freshstage2; каждый
+image64positive/31negative/130fresh fullAST-span approvals/cachehits0.
+Emitted-suite guardPASS235438ms/898021736physicalbytes. Original monolithic600s
+остаётсяFAIL600029ms: byte comparison505117ms,95seed+63stage1 rows успели.
+Fresh nativeC8408/8810 и exacteb3/14101164 output/7720 actual consumer тожеPASS:
+native compile79.231488s противT93.177938s, emit6.703796s против20.839599s.
+Checker62.408978s пока прежний. Full build+native+consumer354.712666s выше300;
+producer171.733252s/backend98.905105s, buildphysical6193830608bytes.
+Native runtimephysical1370982584bytes противT1300793432bytes:~70MB increase
+не скрыт. JS fullcompile119.323493s НЕ ускорился противT119.083967s.
+Receipt compiler-ir-checkpoint-v57w.json сохраняет source/proof/tool/CPU/limits.
+Kernel6c1df3…/comp5b934…/Base323827… прежние; oldT proofs не переносились наW.
+
+### Предыдущий accepted57t typed-native-stack (история)
 fresh parser75, public native root8391/8391 bodies8787events, frozen15modules/
 7720exports и НОВЫЙ настоящий unchanged stage1/stage2 byte fixedpoint прошли.
 Stage images13739548bytes, SHA256c26cebdcf555b03605df7ae88e22c1a6a76ec9bc2ce712fbb487dfbe4ce6d832;
