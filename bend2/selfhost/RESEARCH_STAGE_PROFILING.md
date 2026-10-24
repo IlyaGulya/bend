@@ -79,6 +79,14 @@ group.
 A boundary `heapUsed` delta is not allocation or retained bytes. RSS is
 process-wide. Nested span CPU overlaps and is never made exclusive.
 
+Finish semantics are fail-closed. A normal `completed` finish leaves any open
+wrapper stage to the collector: the report keeps `workloadStatus: completed`
+but records `measurementStatus: incomplete`, `incompleteEvidence: true`, and the
+unclosed span names with `closeStatus: aborted`. A known failure explicitly
+closes open stages as `failed`, yielding a failed workload with complete
+measurement and failed span names. Wrapper spans are popped only after the
+collector accepts the close; a rejected close does not hide the stage.
+
 ## Stage coverage actually implemented
 
 | Group | Granularity |

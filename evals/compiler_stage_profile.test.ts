@@ -2,7 +2,7 @@ import {expect, test} from 'bun:test';
 import {mkdtemp, rm, writeFile} from 'node:fs/promises';
 import {join} from 'node:path';
 import {tmpdir} from 'node:os';
-import {createStepAttribution, loadStageManifests, stageGroupMetadata, typedProgressSample} from './compiler_stage_profile.mjs';
+import {createStageProfile, createStepAttribution, loadStageManifests, stageGroupMetadata, typedProgressSample} from './compiler_stage_profile.mjs';
 
 type ManifestInput = {runType?: string; output?: string; groups?: string[][]; declarations?: Record<string, unknown>[]; inputs?: Record<string, string>};
 type Attribution = {onStep: (steps: number, run: unknown) => void;
@@ -174,4 +174,60 @@ test('typed progress retains the full constructor identity', () => {
   const sample = typedProgressSample(run('emitter_steps_v1', 'emit'));
   expect(sample?.runNamespace).toBe('emitter_steps_v1');
   expect(sample?.request).toBe('emitter_steps_v1.EmitterRequest_emit');
+});
+
+test('completed finish lets the collector mark an open wrapper stage incomplete', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'bend-stage-finish-open-'));
+  try {
+    const stage = await createStageProfile({directory, execution: {stage: 'finish-test'}});
+    stage.span('leaked-stage');
+    const report = await stage.finish('completed');
+    expect(report.workloadStatus).toBe('completed');
+    expect(report.measurementStatus).toBe('incomplete');
+    expect(report.incompleteEvidence).toBe(true);
+    expect(report.summary.unclosedSpans).toEqual({count: 1, names: ['leaked-stage'], closeStatus: 'aborted'});
+    expect(report.summary.abortedSpans).toContain('leaked-stage');
+    expect(stage.finished).toBe(true);
+  } finally {await rm(directory, {recursive: true, force: true});}
+});
+
+test('failed finish closes open wrapper stages as failed boundaries', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'bend-stage-finish-failed-'));
+  try {
+    const stage = await createStageProfile({directory, execution: {stage: 'finish-failed-test'}});
+    stage.span('failed-stage');
+    const report = await stage.finish('failed', Error('step failed'));
+    expect(report.workloadStatus).toBe('failed');
+    expect(report.measurementStatus).toBe('complete');
+    expect(report.incompleteEvidence).toBe(false);
+    expect(report.summary.failedSpans).toContain('failed-stage');
+    expect(report.summary.unclosedSpans.count).toBe(0);
+  } finally {await rm(directory, {recursive: true, force: true});}
+});
+
+test('a rejected end token does not lose the wrapper span', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'bend-stage-end-rejected-'));
+  try {
+    const stage = await createStageProfile({directory, execution: {stage: 'end-rejected-test'}});
+    const first = stage.span('retained-first');
+    const second = stage.span('retained-second');
+    expect(() => stage.end(first)).toThrow();
+    const report = await stage.finish('completed');
+    expect(report.summary.unclosedSpans.names).toEqual(['retained-first', 'retained-second']);
+    expect(first).toBeDefined(); expect(second).toBeDefined();
+  } finally {await rm(directory, {recursive: true, force: true});}
+});
+
+test('a closed wrapper stage leaves a complete measurement', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'bend-stage-finish-closed-'));
+  try {
+    const stage = await createStageProfile({directory, execution: {stage: 'finish-closed-test'}});
+    const token = stage.span('closed-stage');
+    stage.end(token, 'completed', {result: 'ok'});
+    const report = await stage.finish('completed');
+    expect(report.measurementStatus).toBe('complete');
+    expect(report.incompleteEvidence).toBe(false);
+    expect(report.summary.unclosedSpans.count).toBe(0);
+    expect(report.spans.map(span => [span.name, span.status])).toContainEqual(['closed-stage', 'completed']);
+  } finally {await rm(directory, {recursive: true, force: true});}
 });

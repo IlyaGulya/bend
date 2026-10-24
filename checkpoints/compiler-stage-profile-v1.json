@@ -7,14 +7,14 @@
   "implementation": {
     "evals/candidate_host.ts": "a56f57e32d0fa475a0564f18a3930137a084cb6a4ce49b05f496e76331d2a22a",
     "evals/checker_core_step_runtime.mjs": "a52b065e99126f6b0fe47d4d74538757faa1e3f8652ba3f4bb818c64498e32d5",
-    "evals/compiler_stage_profile.mjs": "e495639c3411f66c8e30fe8066acc2c53e1addfeca19592255ea04adaa083d84",
-    "evals/compiler_stage_profile.test.ts": "17a51b564005e76163394b32a37600289765da3b018854e27443ca353760e5e3",
+    "evals/compiler_stage_profile.mjs": "3e9a679575b4cbd21f5f8263fc13f8bc5d62d63fb720a91f9be8d3f1d3219f07",
+    "evals/compiler_stage_profile.test.ts": "b2b3248c8f663744d7fedb3c16a1ace0d9f1bddf83eb934ed33f4e001637c44a",
     "evals/compiler_stage_report.mjs": "9e1ea10cb15628ffef28dc5ed6076e79b46ff80c57a344b599f109eb78ce560e",
     "evals/native_stage_profile_build.ts": "d74309d4d6d448224b3d2096e4c577cf16f1ea2c9619613cc96dc5de726d81f7",
     "evals/native_stage_profile_driver.bend": "33b9a65705133ae2f92f69135499284835f3becc8c1c13afb02edf05adb3e25f",
     "evals/native_stage_profile_host.c": "c76e87a152b3d68800c408de266c7a77ea9a4a80fad2599e6c1b1f1f428f1026",
     "evals/selfhost_bootstrap_worker.mjs": "bb9dd197c5ea12ae0d376aac3823ec63abb4a29d41ecf3b6a26f0b1998c6a908",
-    "bend2/selfhost/RESEARCH_STAGE_PROFILING.md": "1ac06dff2db85744880a03617c4bf3282f7ff6b521be72259505f73abb15a2b0"
+    "bend2/selfhost/RESEARCH_STAGE_PROFILING.md": "9ae4426977f5104ee97d6032686376a571086e50bb5ab89d8644d10d1abbcea6"
   },
   "collectorDependency": {
     "path": "evals/compiler_profile.mjs",
@@ -167,7 +167,7 @@
         }
       ]
     },
-    "tests": "bun test evals/compiler_stage_profile.test.ts: 12 passed, 0 failed (foreign namespace, unregistered namespace, no receipt, receipt without profiled hash, foreign artifact mismatch, basename collision, source-hash mismatch, erased Direct, publication wording, full tag identity, verified receipt)"
+    "tests": "bun test evals/compiler_stage_profile.test.ts: 16 passed, 0 failed (classification, artifact binding, finish fail-closed contract, rejected close retention)"
   },
   "validJs": {
     "offArtifactSha256": "5db9119d4f0a8d35ec3c809d1c41b0ad767e0b45d27dcef3aca8bde0063a609c",
@@ -921,5 +921,36 @@
     "native chunk attribution counts progress shapes/outer groups only; no source substage, per-function or exclusive CPU",
     "native mechanism run predates guarded builder wiring; actual Emitter workload OPEN",
     "component manifest must match artifact receipt and generated output pins"
-  ]
+  ],
+  "finishContract": {
+    "completedWithOpenStage": {
+      "workloadStatus": "completed",
+      "measurementStatus": "incomplete",
+      "incompleteEvidence": true,
+      "unclosedSpans": {
+        "count": 1,
+        "names": [
+          "leaked-stage"
+        ],
+        "closeStatus": "aborted"
+      },
+      "abortedSpans": [
+        "leaked-stage"
+      ]
+    },
+    "failedWithOpenStage": {
+      "workloadStatus": "failed",
+      "measurementStatus": "complete",
+      "incompleteEvidence": false,
+      "failedSpans": [
+        "failed-stage"
+      ],
+      "unclosedSpans": {
+        "count": 0,
+        "names": [],
+        "closeStatus": "aborted"
+      }
+    },
+    "note": "captured from the real collector; a rejected wrapper close is tested separately and does not hide the stage"
+  }
 }

@@ -469,7 +469,7 @@ export async function createStageProfile({directory, execution, rawDetail = fals
   const table = loadStageManifests(manifestPaths, {artifactSha256: artifact?.sha256 ?? null, receipt});
   const profile = await createCompilerProfile({directory, execution, rawDetail});
   const open = [];
-  let finished = false;
+  let finished = false, result;
   const api = {
     profile,
     runDirectory: profile.runDirectory,
@@ -484,30 +484,40 @@ export async function createStageProfile({directory, execution, rawDetail = fals
     end(token, status = 'completed', details = {}) {
       const top = open.at(-1);
       if (top === undefined || top.token !== token) throw Error('Stage span stack violation: ' + (top?.name ?? 'empty'));
-      open.pop();
       profile.end(token, status, details);
+      open.pop();
     },
     record(observation) {profile.record(observation);},
     fail(error) {
-      if (finished) return;
+      if (finished) return result ?? profile.reportPath;
       const message = error instanceof Error ? error.message : String(error);
+      // A known failure is a real boundary: close each open stage explicitly as
+      // failed before the collector finalizes.
       while (open.length > 0) {
-        const top = open.pop();
+        const top = open.at(-1);
         profile.end(top.token, 'failed', {closeReason: 'candidate host terminated', error: message});
+        open.pop();
       }
-      profile.finish('failed', error);
+      result = profile.finish('failed', error);
       finished = true;
+      return result ?? profile.reportPath;
     },
     finish(status = 'completed', error) {
-      if (finished) return profile.reportPath;
-      while (open.length > 0) {
-        const top = open.pop();
-        profile.end(top.token, status === 'completed' ? 'aborted' : 'failed',
-          {closeReason: 'stage profile finished with span still open'});
+      if (finished) return result ?? profile.reportPath;
+      if (status === 'failed') {
+        while (open.length > 0) {
+          const top = open.at(-1);
+          profile.end(top.token, 'failed', {closeReason: 'stage profile failed with span still open', error: error instanceof Error ? error.message : String(error ?? '')});
+          open.pop();
+        }
       }
-      profile.finish(status, error);
+      // A completed/aborted finish leaves the open stack to the collector so
+      // its fail-closed contract marks measurementStatus incomplete. The wrapper
+      // clears its stack only after the collector has observed and closed it.
+      result = profile.finish(status, error);
+      open.length = 0;
       finished = true;
-      return profile.reportPath;
+      return result ?? profile.reportPath;
     },
   };
   profile.record({
