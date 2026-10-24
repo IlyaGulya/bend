@@ -227,7 +227,14 @@
   },
   "nativeBridgeFacts": {
     "host": "evals/native_compiler_host.c builds the passive carrier natively as SourceFile{path,source} via io_node(e, CID(SourceFile), io_str(path), io_str(bytes))",
-    "change": "emit_c_modules_start/emit_c_library_start add one String argument (runtime source bytes) beside the same bag, so the host gains one io_str for runtime and three more export slots; the f[] table, the closed-function loop and the manifest ABI comparison must grow together",
-    "open": "the host's f[] index-to-export mapping was not fully traced yet (the drive calls use f[1]/f[2], f[4]/f[5], f[7]/f[8]); resolve against the bridge TS before editing, do not assume the ABI index order"
+    "resolvedMapping": "f[0..9] are NOT the public ABI order; they are the parameter order of native_experiment in evals/native_compiler_driver.bend: f0=native_parse, f1=expand_modules_start, f2=native_template_view, f3=native_expand_result, f4=check_expanded_start, f5=native_checker_view, f6=native_check_result, f7=native_emit, f8=native_emitter_view, f9=native_emit_result. The 10-name ABI list is used for the manifest export validation, not for indexing f[].",
+    "nativeEmitSeam": "the compile lane calls emit_library_start(program, exports, files) through native_emit_start/native_emit, i.e. the native bridge currently exercises the JS library entry with the passive bag",
+    "cExtensionShape": [
+      "add native_c_emit_start(program, arguments: List<&2, String> & String & List<&2, BIR.SourceFile>) calling emit_c_library_start(program, exports, runtime, files)",
+      "add native_c_emit_value/native_c_emit_result over CEmit.EmitResult and a native_c_emitter_view using cemit_chunk (same opaque typed-native protocol, quantum 64)",
+      "extend native_experiment parameters by four (c emit start, view, result, and the runtime string is carried in the argument tuple), extend the host's f[] loop bound and its drive calls, and add the runtime bytes io_str",
+      "the runtime source bytes need the same hash pin as the JS hosts"
+    ],
+    "constraint": "no duplicate carrier: the host keeps building BIR.SourceFile from path+bytes; only one extra String (runtime) is added"
   }
 }
