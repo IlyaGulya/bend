@@ -340,6 +340,7 @@ type cps_provider_4_ShowNorm is Data:
 type cps_provider_4_ShowToken is Data:
   cps_provider_4_ShowTokDesc{descriptor: BIR.Descriptor}
   cps_provider_4_ShowTokText{text: String}
+  cps_provider_4_ShowTokPat{pattern: BIR.DescriptorPattern}
 
 type cps_provider_5_NfVal is Data:
   cps_provider_5_NfType{key: String, args: List<&2, cps_provider_5_NfVal>}
@@ -9892,25 +9893,6 @@ def cps_provider_4_show_apply_patch(+v_1: cps_provider_4_ShowState, +v_4: Maybe<
     case None{}:
       v_1
 
-def cps_provider_4_show_name_kind(+v_1: String) -> Nat:
-  match v_1:
-    case "U32":
-      0n
-    case "F32":
-      1n
-    case "Nat":
-      2n
-    case "Char":
-      3n
-    case "String":
-      4n
-    case "Eql":
-      5n
-    case "Array":
-      6n
-    case _:
-      7n
-
 def cps_provider_4_last_segment_list(+v_2: List<&2, String>, +v_4: String) -> String:
   match v_2:
     case []:
@@ -9921,6 +9903,25 @@ def cps_provider_4_last_segment_list(+v_2: List<&2, String>, +v_4: String) -> St
 def cps_provider_4_last_segment(+v_1: String) -> String:
   cps_provider_4_last_segment_list(String.split(v_1, '.'), "")
 
+def cps_provider_4_show_native_kind(+v_1: String) -> cps_provider_4_ShowKind:
+  match v_1:
+    case "U32":
+      cps_provider_4_ShowKindOk{0n}
+    case "F32":
+      cps_provider_4_ShowKindOk{1n}
+    case "Nat":
+      cps_provider_4_ShowKindOk{2n}
+    case "Char":
+      cps_provider_4_ShowKindOk{3n}
+    case "String":
+      cps_provider_4_ShowKindOk{4n}
+    case "Eql":
+      cps_provider_4_ShowKindOk{5n}
+    case "Array":
+      cps_provider_4_ShowKindOk{6n}
+    case _:
+      cps_provider_4_ShowKindFailed{String.append("the native marker `", String.append(v_1, "` has no SHOW kind"))}
+
 def cps_provider_4_show_kind_head(+v_0: cps_provider_3_HeadResult) -> cps_provider_4_ShowKind:
   match v_0:
     case cps_provider_3_HeadFailed{v_3}:
@@ -9928,7 +9929,11 @@ def cps_provider_4_show_kind_head(+v_0: cps_provider_3_HeadResult) -> cps_provid
     case cps_provider_3_HeadBoxed{v_5}:
       cps_provider_4_ShowKindFailed{"main's type is abstract or open and cannot be printed"}
     case cps_provider_3_HeadFound{v_8, v_9}:
-      cps_provider_4_ShowKindOk{cps_provider_4_show_name_kind(cps_provider_4_last_segment(v_8))}
+      match v_9:
+        case Some{v_11}:
+          cps_provider_4_show_native_kind(v_11)
+        case None{}:
+          cps_provider_4_ShowKindOk{7n}
 
 def cps_provider_4_show_kind(+v_0: cps_provider_3_Context, +v_1: BIR.Descriptor) -> cps_provider_4_ShowKind:
   v_4 = cps_provider_3_head_native(v_0, v_1)
@@ -10158,6 +10163,28 @@ def cps_provider_4_show_quantity_key(+v_0: BIR.Quantity) -> String:
     case _:
       "?"
 
+def cps_provider_4_show_maybe_quantity_key(+v_1: Maybe<&2, BIR.Quantity>) -> String:
+  match v_1:
+    case None{}:
+      "-"
+    case Some{v_4}:
+      cps_provider_4_show_quantity_key(v_4)
+
+def cps_provider_4_show_pat_tokens(+v_1: List<&2, BIR.DescriptorPattern>, +v_3: Bool) -> List<&2, cps_provider_4_ShowToken>:
+  match v_1:
+    case []:
+      []
+    case +v_8 <> +v_9:
+      v_13 = Bool.pick(List<&2, cps_provider_4_ShowToken>, v_3, [], [cps_provider_4_ShowTokText{","}])
+      List.append(&2, cps_provider_4_ShowToken, v_13, List.append(&2, cps_provider_4_ShowToken, [cps_provider_4_ShowTokPat{v_8}], cps_provider_4_show_pat_tokens(v_9, False{})))
+
+def cps_provider_4_show_pat_expand(+v_0: BIR.DescriptorPattern) -> List<&2, cps_provider_4_ShowToken>:
+  match v_0:
+    case BIR.DescriptorBinder{v_4}:
+      [cps_provider_4_ShowTokText{"b"}, cps_provider_4_ShowTokText{cps_provider_4_show_quantity_key(v_4)}]
+    case BIR.DescriptorConstructorPattern{v_8, v_9}:
+      List.append(&2, cps_provider_4_ShowToken, [cps_provider_4_ShowTokText{"c"}, cps_provider_4_ShowTokText{v_8}, cps_provider_4_ShowTokText{"("}], List.append(&2, cps_provider_4_ShowToken, cps_provider_4_show_pat_tokens(v_9, True{}), [cps_provider_4_ShowTokText{")"}]))
+
 def cps_provider_4_show_desc_expand(+v_0: BIR.Descriptor) -> List<&2, cps_provider_4_ShowToken>:
   match v_0:
     case BIR.DescriptorRef{v_5, v_6}:
@@ -10185,27 +10212,27 @@ def cps_provider_4_show_desc_expand(+v_0: BIR.Descriptor) -> List<&2, cps_provid
     case BIR.DescriptorMinimum{v_60, v_61}:
       [cps_provider_4_ShowTokText{"min("}, cps_provider_4_ShowTokDesc{v_60}, cps_provider_4_ShowTokText{","}, cps_provider_4_ShowTokDesc{v_61}, cps_provider_4_ShowTokText{")"}]
     case BIR.DescriptorArrow{v_65, v_66, v_67}:
-      [cps_provider_4_ShowTokText{"("}, cps_provider_4_ShowTokDesc{v_66}, cps_provider_4_ShowTokText{")->"}, cps_provider_4_ShowTokDesc{v_67}]
-    case BIR.DescriptorLambda{v_70, v_71}:
-      [cps_provider_4_ShowTokText{"\\"}, cps_provider_4_ShowTokDesc{v_71}]
-    case BIR.DescriptorConstructor{v_74, v_75}:
-      List.append(&2, cps_provider_4_ShowToken, [cps_provider_4_ShowTokText{cps_provider_4_join_text(["@", v_74, "("])}], List.append(&2, cps_provider_4_ShowToken, cps_provider_4_show_arg_tokens(v_75, True{}), [cps_provider_4_ShowTokText{")"}]))
-    case BIR.DescriptorFailure{v_81}:
-      [cps_provider_4_ShowTokText{cps_provider_4_join_text(["!", v_81])}]
-    case BIR.DescriptorSubstitution{v_86, v_87, v_88}:
-      [cps_provider_4_ShowTokText{cps_provider_4_join_text(["S", Nat.show(v_86), "("])}, cps_provider_4_ShowTokDesc{v_87}, cps_provider_4_ShowTokText{";"}, cps_provider_4_ShowTokDesc{v_88}, cps_provider_4_ShowTokText{")"}]
-    case BIR.DescriptorLet{v_92, v_93}:
-      List.append(&2, cps_provider_4_ShowToken, [cps_provider_4_ShowTokText{"L("}], List.append(&2, cps_provider_4_ShowToken, cps_provider_4_show_arg_tokens(v_92, True{}), [cps_provider_4_ShowTokText{";"}, cps_provider_4_ShowTokDesc{v_93}, cps_provider_4_ShowTokText{")"}]))
-    case BIR.DescriptorLocal{v_100, v_101, v_102}:
-      List.append(&2, cps_provider_4_ShowToken, [cps_provider_4_ShowTokText{cps_provider_4_join_text(["Loc(", Nat.show(List.length(&2, BIR.DescriptorPattern, v_100)), ","])}], List.append(&2, cps_provider_4_ShowToken, cps_provider_4_show_arg_tokens(v_101, True{}), [cps_provider_4_ShowTokText{";"}, cps_provider_4_ShowTokDesc{v_102}, cps_provider_4_ShowTokText{")"}]))
-    case BIR.DescriptorMatch{v_109, v_110}:
-      List.append(&2, cps_provider_4_ShowToken, [cps_provider_4_ShowTokText{"M("}], List.append(&2, cps_provider_4_ShowToken, cps_provider_4_show_arg_tokens(v_109, True{}), List.append(&2, cps_provider_4_ShowToken, [cps_provider_4_ShowTokText{";"}], List.append(&2, cps_provider_4_ShowToken, cps_provider_4_show_arg_tokens(v_110, True{}), [cps_provider_4_ShowTokText{")"}]))))
-    case BIR.DescriptorCase{v_119, v_120}:
-      [cps_provider_4_ShowTokText{cps_provider_4_join_text(["C(", Nat.show(List.length(&2, BIR.DescriptorPattern, v_119)), ";"])}, cps_provider_4_ShowTokDesc{v_120}, cps_provider_4_ShowTokText{")"}]
-    case BIR.DescriptorBind{v_124, v_125}:
-      [cps_provider_4_ShowTokText{"B("}, cps_provider_4_ShowTokDesc{v_124}, cps_provider_4_ShowTokText{";"}, cps_provider_4_ShowTokDesc{v_125}, cps_provider_4_ShowTokText{")"}]
-    case BIR.DescriptorEquality{v_129, v_130, v_131}:
-      [cps_provider_4_ShowTokText{"E("}, cps_provider_4_ShowTokDesc{v_129}, cps_provider_4_ShowTokText{","}, cps_provider_4_ShowTokDesc{v_130}, cps_provider_4_ShowTokText{","}, cps_provider_4_ShowTokDesc{v_131}, cps_provider_4_ShowTokText{")"}]
+      [cps_provider_4_ShowTokText{"A"}, cps_provider_4_ShowTokText{cps_provider_4_show_quantity_key(v_65)}, cps_provider_4_ShowTokText{"("}, cps_provider_4_ShowTokDesc{v_66}, cps_provider_4_ShowTokText{")->"}, cps_provider_4_ShowTokDesc{v_67}]
+    case BIR.DescriptorLambda{v_71, v_72}:
+      [cps_provider_4_ShowTokText{"L"}, cps_provider_4_ShowTokText{cps_provider_4_show_maybe_quantity_key(v_71)}, cps_provider_4_ShowTokDesc{v_72}]
+    case BIR.DescriptorConstructor{v_76, v_77}:
+      List.append(&2, cps_provider_4_ShowToken, [cps_provider_4_ShowTokText{cps_provider_4_join_text(["@", v_76, "("])}], List.append(&2, cps_provider_4_ShowToken, cps_provider_4_show_arg_tokens(v_77, True{}), [cps_provider_4_ShowTokText{")"}]))
+    case BIR.DescriptorFailure{v_83}:
+      [cps_provider_4_ShowTokText{cps_provider_4_join_text(["!", v_83])}]
+    case BIR.DescriptorSubstitution{v_88, v_89, v_90}:
+      [cps_provider_4_ShowTokText{cps_provider_4_join_text(["S", Nat.show(v_88), "("])}, cps_provider_4_ShowTokDesc{v_89}, cps_provider_4_ShowTokText{";"}, cps_provider_4_ShowTokDesc{v_90}, cps_provider_4_ShowTokText{")"}]
+    case BIR.DescriptorLet{v_94, v_95}:
+      List.append(&2, cps_provider_4_ShowToken, [cps_provider_4_ShowTokText{"L("}], List.append(&2, cps_provider_4_ShowToken, cps_provider_4_show_arg_tokens(v_94, True{}), [cps_provider_4_ShowTokText{";"}, cps_provider_4_ShowTokDesc{v_95}, cps_provider_4_ShowTokText{")"}]))
+    case BIR.DescriptorLocal{v_102, v_103, v_104}:
+      List.append(&2, cps_provider_4_ShowToken, [cps_provider_4_ShowTokText{"Loc("}], List.append(&2, cps_provider_4_ShowToken, cps_provider_4_show_pat_tokens(v_102, True{}), List.append(&2, cps_provider_4_ShowToken, [cps_provider_4_ShowTokText{";"}], List.append(&2, cps_provider_4_ShowToken, cps_provider_4_show_arg_tokens(v_103, True{}), [cps_provider_4_ShowTokText{";"}, cps_provider_4_ShowTokDesc{v_104}, cps_provider_4_ShowTokText{")"}]))))
+    case BIR.DescriptorMatch{v_113, v_114}:
+      List.append(&2, cps_provider_4_ShowToken, [cps_provider_4_ShowTokText{"M("}], List.append(&2, cps_provider_4_ShowToken, cps_provider_4_show_arg_tokens(v_113, True{}), List.append(&2, cps_provider_4_ShowToken, [cps_provider_4_ShowTokText{";"}], List.append(&2, cps_provider_4_ShowToken, cps_provider_4_show_arg_tokens(v_114, True{}), [cps_provider_4_ShowTokText{")"}]))))
+    case BIR.DescriptorCase{v_123, v_124}:
+      List.append(&2, cps_provider_4_ShowToken, [cps_provider_4_ShowTokText{"C("}], List.append(&2, cps_provider_4_ShowToken, cps_provider_4_show_pat_tokens(v_123, True{}), [cps_provider_4_ShowTokText{";"}, cps_provider_4_ShowTokDesc{v_124}, cps_provider_4_ShowTokText{")"}]))
+    case BIR.DescriptorBind{v_130, v_131}:
+      [cps_provider_4_ShowTokText{"B("}, cps_provider_4_ShowTokDesc{v_130}, cps_provider_4_ShowTokText{";"}, cps_provider_4_ShowTokDesc{v_131}, cps_provider_4_ShowTokText{")"}]
+    case BIR.DescriptorEquality{v_135, v_136, v_137}:
+      [cps_provider_4_ShowTokText{"E("}, cps_provider_4_ShowTokDesc{v_135}, cps_provider_4_ShowTokText{","}, cps_provider_4_ShowTokDesc{v_136}, cps_provider_4_ShowTokText{","}, cps_provider_4_ShowTokDesc{v_137}, cps_provider_4_ShowTokText{")"}]
     case BIR.DescriptorReflexivity{}:
       [cps_provider_4_ShowTokText{"R"}]
     case _:
@@ -10218,9 +10245,11 @@ def cps_provider_4_show_render_tokens(+v_2: List<&2, cps_provider_4_ShowToken>, 
     case +v_9 <> +v_10:
       match v_9:
         case cps_provider_4_ShowTokText{v_12}:
-          cps_provider_4_show_render_tokens(v_10, cps_provider_4_join_text([v_4, v_12]))
+          cps_provider_4_show_render_tokens(v_10, cps_provider_4_join_text([v_4, Nat.show(String.length(v_12)), ":", v_12]))
         case cps_provider_4_ShowTokDesc{v_16}:
           cps_provider_4_show_render_tokens(List.append(&2, cps_provider_4_ShowToken, cps_provider_4_show_desc_expand(v_16), v_10), v_4)
+        case cps_provider_4_ShowTokPat{v_21}:
+          cps_provider_4_show_render_tokens(List.append(&2, cps_provider_4_ShowToken, cps_provider_4_show_pat_expand(v_21), v_10), v_4)
 
 def cps_provider_4_show_descriptor_key(+v_0: BIR.Descriptor) -> Maybe<&2, String>:
   cps_provider_4_show_render_tokens([cps_provider_4_ShowTokDesc{v_0}], "")

@@ -340,6 +340,7 @@ type cps_provider_4_ShowNorm is Data:
 type cps_provider_4_ShowToken is Data:
   cps_provider_4_ShowTokDesc{descriptor: BIR.Descriptor}
   cps_provider_4_ShowTokText{text: String}
+  cps_provider_4_ShowTokPat{pattern: BIR.DescriptorPattern}
 
 type cps_provider_5_NfVal is Data:
   cps_provider_5_NfType{key: String, args: List<&2, cps_provider_5_NfVal>}
@@ -1488,9 +1489,9 @@ type CEmitterRequestGroup16 is Type:
   CEmitterRequest_cps_provider_4_show_append_name{+v_1: cps_provider_4_ShowState, +v_3: String}
   CEmitterRequest_cps_provider_4_show_append_patch{+v_1: cps_provider_4_ShowState, +v_3: Nat, +v_5: Nat}
   CEmitterRequest_cps_provider_4_show_apply_patch{+v_1: cps_provider_4_ShowState, +v_4: Maybe<&2, Nat>, +v_6: Nat}
-  CEmitterRequest_cps_provider_4_show_name_kind{+v_1: String}
   CEmitterRequest_cps_provider_4_last_segment_list{+v_2: List<&2, String>, +v_4: String}
   CEmitterRequest_cps_provider_4_last_segment{+v_1: String}
+  CEmitterRequest_cps_provider_4_show_native_kind{+v_1: String}
   CEmitterRequest_cps_provider_4_show_kind_head{+v_1: cps_provider_3_HeadResult}
   CEmitterRequest_cps_provider_4_show_kind{+v_1: cps_provider_3_Context, +v_2: BIR.Descriptor}
   CEmitterRequest_cps_provider_4_show_box_flag{+v_1: cps_provider_3_Layout}
@@ -1521,6 +1522,9 @@ type CEmitterRequestGroup16 is Type:
   CEmitterRequest_cps_provider_4_show_layout_key{+v_1: cps_provider_3_Layout}
   CEmitterRequest_cps_provider_4_show_arg_tokens{+v_1: List<&2, BIR.Descriptor>, +v_3: Bool}
   CEmitterRequest_cps_provider_4_show_quantity_key{+v_0: BIR.Quantity}
+  CEmitterRequest_cps_provider_4_show_maybe_quantity_key{+v_1: Maybe<&2, BIR.Quantity>}
+  CEmitterRequest_cps_provider_4_show_pat_tokens{+v_1: List<&2, BIR.DescriptorPattern>, +v_3: Bool}
+  CEmitterRequest_cps_provider_4_show_pat_expand{+v_0: BIR.DescriptorPattern}
   CEmitterRequest_cps_provider_4_show_desc_expand{+v_0: BIR.Descriptor}
   CEmitterRequest_cps_provider_4_show_render_tokens{+v_2: List<&2, cps_provider_4_ShowToken>, +v_4: String}
   CEmitterRequest_cps_provider_4_show_descriptor_key{+v_0: BIR.Descriptor}
@@ -1541,11 +1545,11 @@ type CEmitterRequestGroup16 is Type:
   CEmitterRequest_cps_provider_4_show_data_arm_erased{+v_1: Bool, +v_3: List<&2, BIR.DescriptorField>, +v_5: String, +v_7: List<&2, BIR.DescriptorArm>, +v_9: cps_provider_3_Context, +v_11: List<&2, BIR.ConstructorLayout>, +v_13: List<&2, BIR.Family>, +v_14: BIR.Descriptor, +v_16: cps_provider_3_Layout, +v_18: Nat, +v_20: Nat, +v_22: cps_provider_4_ShowState}
   CEmitterRequest_cps_provider_4_show_data_arm_live{+v_1: List<&2, BIR.DescriptorField>, +v_3: String, +v_5: List<&2, BIR.DescriptorArm>, +v_7: cps_provider_3_Context, +v_9: List<&2, BIR.ConstructorLayout>, +v_11: List<&2, BIR.Family>, +v_12: BIR.Descriptor, +v_14: cps_provider_3_Layout, +v_16: Nat, +v_18: Nat, +v_20: cps_provider_4_ShowState}
   CEmitterRequest_cps_provider_4_show_data_arm{+v_1: cps_provider_3_FieldsResult, +v_3: String, +v_5: List<&2, BIR.DescriptorArm>, +v_7: cps_provider_3_Context, +v_9: List<&2, BIR.ConstructorLayout>, +v_11: List<&2, BIR.Family>, +v_12: BIR.Descriptor, +v_14: cps_provider_3_Layout, +v_16: Nat, +v_18: Nat, +v_20: cps_provider_4_ShowState}
+
+type CEmitterRequestGroup17 is Type:
   CEmitterRequest_cps_provider_4_show_data_arms{+v_1: List<&2, BIR.DescriptorArm>, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: cps_provider_3_Layout, +v_12: Nat, +v_14: Nat, +v_16: cps_provider_4_ShowState}
   CEmitterRequest_cps_provider_4_show_data_count{+v_1: List<&2, BIR.DescriptorArm>, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: cps_provider_3_Layout, +v_12: Nat, +v_14: cps_provider_4_ShowState}
   CEmitterRequest_cps_provider_4_show_data_arms_maybe{+v_2: Maybe<&2, List<&2, BIR.DescriptorArm>>, +v_4: cps_provider_3_Context, +v_6: List<&2, BIR.ConstructorLayout>, +v_8: List<&2, BIR.Family>, +v_9: BIR.Descriptor, +v_11: cps_provider_3_Layout, +v_13: Nat, +v_15: cps_provider_4_ShowState, +v_17: String}
-
-type CEmitterRequestGroup17 is Type:
   CEmitterRequest_cps_provider_4_show_data_key{+v_1: String, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: cps_provider_3_Layout, +v_12: Nat, +v_14: cps_provider_4_ShowState}
   CEmitterRequest_cps_provider_4_show_data_head{+v_1: cps_provider_3_HeadResult, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: cps_provider_3_Layout, +v_12: Nat, +v_14: cps_provider_4_ShowState}
   CEmitterRequest_cps_provider_4_show_advance_data{+v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>, +v_6: BIR.Descriptor, +v_8: cps_provider_3_Layout, +v_10: Nat, +v_12: cps_provider_4_ShowState}
@@ -1607,11 +1611,11 @@ type CEmitterRequestGroup17 is Type:
   CEmitterRequest_cps_provider_5_nf_reduce{+v_1: cps_provider_5_NfContext, v_2: BIR.TypeFunction, v_5: List<&2, cps_provider_5_NfVal>, +v_7: Nat}
   CEmitterRequest_cps_provider_5_nf_reduce_apply{v_1: cps_provider_5_NfArity, +v_3: cps_provider_5_NfContext, v_5: String, v_7: Nat, +v_9: Nat, v_10: BIR.Descriptor, +v_13: List<&2, cps_provider_5_NfVal>, +v_15: Nat}
   CEmitterRequest_cps_provider_5_nf_reduce_body{+v_1: cps_provider_5_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_5_NfVal>, v_8: List<&2, cps_provider_5_NfVal>, +v_10: Nat}
+
+type CEmitterRequestGroup18 is Type:
   CEmitterRequest_cps_provider_5_nf_cases{+v_1: cps_provider_5_NfContext, v_3: List<&2, BIR.Descriptor>, +v_6: List<&2, cps_provider_5_NfVal>, +v_9: List<&2, cps_provider_5_NfVal>, v_10: BIR.Descriptor, +v_12: Nat}
   CEmitterRequest_cps_provider_5_normalize{+v_1: cps_provider_5_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_5_NfVal>, +v_7: Nat}
   CEmitterRequest_cps_provider_5_normalize_closed{v_1: List<&2, BIR.Family>, v_3: List<&2, BIR.TypeFunction>, v_4: BIR.Descriptor}
-
-type CEmitterRequestGroup18 is Type:
   CEmitterRequest_cps_provider_5_normalize_in{+v_1: cps_provider_5_NfContext, v_2: BIR.Descriptor}
   CEmitterRequest_cps_provider_5_outer_application{+v_0: BIR.Descriptor}
   CEmitterRequest_cps_provider_5_outer_walk{+v_0: BIR.Descriptor, v_2: List<&2, BIR.Descriptor>}
@@ -1673,11 +1677,11 @@ type CEmitterRequestGroup18 is Type:
   CEmitterRequest_cps_provider_6_native_match_descriptor_node_9{v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_3: Ast.Quantity, v_5: U32}
   CEmitterRequest_cps_provider_6_native_match_descriptor_node_10{v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_3: Maybe<&2, Ast.Quantity>}
   CEmitterRequest_cps_provider_6_native_match_descriptor_node_11{v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_2: BIR.Descriptor}
+
+type CEmitterRequestGroup19 is Type:
   CEmitterRequest_cps_provider_6_native_match_descriptor_node_12{v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_4: U32}
   CEmitterRequest_cps_provider_6_native_match_descriptor_node_13{v_2: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_4: String}
   CEmitterRequest_cps_provider_6_native_match_descriptor_node_14{v_2: cps_provider_6_CatalogResult<String>, v_3: Scope.ArenaGlobalScope, v_5: U32, v_7: U32}
-
-type CEmitterRequestGroup19 is Type:
   CEmitterRequest_cps_provider_6_native_match_descriptor_node_15{v_2: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_3: Scope.ArenaGlobalScope, v_5: U32}
   CEmitterRequest_cps_provider_6_native_match_descriptor_node_16{v_2: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_3: Scope.ArenaGlobalScope, v_5: U32}
   CEmitterRequest_cps_provider_6_native_match_descriptor_node_17{v_2: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_4: String}
@@ -1739,11 +1743,11 @@ type CEmitterRequestGroup19 is Type:
   CEmitterRequest_cps_provider_6_get_type_functions{v_1: cps_provider_6_Catalog}
   CEmitterRequest_cps_provider_6_get_next_code{v_1: cps_provider_6_Catalog}
   CEmitterRequest_cps_provider_6_get_ending{v_1: cps_provider_6_Catalog}
+
+type CEmitterRequestGroup20 is Type:
   CEmitterRequest_cps_provider_6_native_match_insert_definition_0{v_2: Maybe<&2, cps_provider_6_Definition>, +v_4: String, v_6: cps_provider_6_Definition, +v_9: Map<&2, cps_provider_6_Definition>}
   CEmitterRequest_cps_provider_6_insert_definition{+v_1: String, v_3: cps_provider_6_Definition, +v_6: Map<&2, cps_provider_6_Definition>}
   CEmitterRequest_cps_provider_6_native_match_insert_constructor_0{v_2: Maybe<&2, cps_provider_6_Constructor>, +v_4: String, v_6: cps_provider_6_Constructor, +v_9: Map<&2, cps_provider_6_Constructor>}
-
-type CEmitterRequestGroup20 is Type:
   CEmitterRequest_cps_provider_6_insert_constructor{+v_1: String, v_3: cps_provider_6_Constructor, +v_6: Map<&2, cps_provider_6_Constructor>}
   CEmitterRequest_cps_provider_6_normalize_descriptor_value{v_0: BIR.Descriptor, +v_2: cps_provider_5_NfContext}
   CEmitterRequest_cps_provider_6_normalize_descriptors{v_1: List<&2, BIR.Descriptor>, +v_3: cps_provider_5_NfContext}
@@ -1805,11 +1809,11 @@ type CEmitterRequestGroup20 is Type:
   CEmitterRequest_cps_provider_6_live_parameter_binder{v_0: Arena.Arena, v_1: Arena.Binder, v_2: Scope.ArenaGlobalScope, v_4: List<&2, BIR.Descriptor>, v_6: U32, v_8: U32}
   CEmitterRequest_cps_provider_6_live_parameter_quantity{v_0: BIR.Quantity, v_1: Arena.Arena, v_3: U32, v_4: Scope.ArenaGlobalScope, v_6: List<&2, BIR.Descriptor>, v_8: U32, v_10: U32}
   CEmitterRequest_cps_provider_6_definition_foreign{v_0: Arena.Arena, v_1: IR.DefBody, v_3: String, v_5: String, v_7: String, v_8: Ast.SourceSpan, v_9: IR.Words, v_10: IR.OptionalTerm, v_11: Scope.ArenaGlobalScope}
+
+type CEmitterRequestGroup21 is Type:
   CEmitterRequest_cps_provider_6_definition_fast{v_1: Bool, v_3: Bool, v_5: List<&2, BIR.Parameter>, v_7: Maybe<&2, BIR.Primitive>, v_10: Maybe<&2, cps_provider_6_Foreign>}
   CEmitterRequest_cps_provider_6_definition_primitive{v_1: Bool, v_4: Maybe<&2, cps_provider_6_Foreign>, v_6: Bool, v_8: String}
   CEmitterRequest_cps_provider_6_native_match_main_descriptor_0{v_1: cps_provider_6_CatalogResult<BIR.Descriptor>}
-
-type CEmitterRequestGroup21 is Type:
   CEmitterRequest_cps_provider_6_native_match_main_descriptor_1{v_1: Bool, v_2: IR.OptionalTerm, v_3: Arena.Arena, v_4: Scope.ArenaGlobalScope}
   CEmitterRequest_cps_provider_6_native_match_main_descriptor_2{v_1: Maybe<&2, BIR.Descriptor>, v_2: Arena.Arena, v_4: String, v_5: IR.OptionalTerm, v_6: Scope.ArenaGlobalScope}
   CEmitterRequest_cps_provider_6_main_descriptor{v_0: Arena.Arena, v_2: String, v_3: IR.OptionalTerm, v_4: Scope.ArenaGlobalScope, v_6: Maybe<&2, BIR.Descriptor>}
@@ -2977,9 +2981,9 @@ def cemit_result_group_16(request: CEmitterRequestGroup16) -> Type:
     case CEmitterRequest_cps_provider_4_show_append_name{_, _}: cps_provider_4_ShowState
     case CEmitterRequest_cps_provider_4_show_append_patch{_, _, _}: cps_provider_4_ShowState
     case CEmitterRequest_cps_provider_4_show_apply_patch{_, _, _}: cps_provider_4_ShowState
-    case CEmitterRequest_cps_provider_4_show_name_kind{_}: Nat
     case CEmitterRequest_cps_provider_4_last_segment_list{_, _}: String
     case CEmitterRequest_cps_provider_4_last_segment{_}: String
+    case CEmitterRequest_cps_provider_4_show_native_kind{_}: cps_provider_4_ShowKind
     case CEmitterRequest_cps_provider_4_show_kind_head{_}: cps_provider_4_ShowKind
     case CEmitterRequest_cps_provider_4_show_kind{_, _}: cps_provider_4_ShowKind
     case CEmitterRequest_cps_provider_4_show_box_flag{_}: Nat
@@ -3010,6 +3014,9 @@ def cemit_result_group_16(request: CEmitterRequestGroup16) -> Type:
     case CEmitterRequest_cps_provider_4_show_layout_key{_}: String
     case CEmitterRequest_cps_provider_4_show_arg_tokens{_, _}: List<&2, cps_provider_4_ShowToken>
     case CEmitterRequest_cps_provider_4_show_quantity_key{_}: String
+    case CEmitterRequest_cps_provider_4_show_maybe_quantity_key{_}: String
+    case CEmitterRequest_cps_provider_4_show_pat_tokens{_, _}: List<&2, cps_provider_4_ShowToken>
+    case CEmitterRequest_cps_provider_4_show_pat_expand{_}: List<&2, cps_provider_4_ShowToken>
     case CEmitterRequest_cps_provider_4_show_desc_expand{_}: List<&2, cps_provider_4_ShowToken>
     case CEmitterRequest_cps_provider_4_show_render_tokens{_, _}: Maybe<&2, String>
     case CEmitterRequest_cps_provider_4_show_descriptor_key{_}: Maybe<&2, String>
@@ -3030,12 +3037,12 @@ def cemit_result_group_16(request: CEmitterRequestGroup16) -> Type:
     case CEmitterRequest_cps_provider_4_show_data_arm_erased{_, _, _, _, _, _, _, _, _, _, _, _}: cps_provider_4_ShowAdvance
     case CEmitterRequest_cps_provider_4_show_data_arm_live{_, _, _, _, _, _, _, _, _, _, _}: cps_provider_4_ShowAdvance
     case CEmitterRequest_cps_provider_4_show_data_arm{_, _, _, _, _, _, _, _, _, _, _}: cps_provider_4_ShowAdvance
-    case CEmitterRequest_cps_provider_4_show_data_arms{_, _, _, _, _, _, _, _, _}: cps_provider_4_ShowAdvance
-    case CEmitterRequest_cps_provider_4_show_data_count{_, _, _, _, _, _, _, _}: cps_provider_4_ShowAdvance
-    case CEmitterRequest_cps_provider_4_show_data_arms_maybe{_, _, _, _, _, _, _, _, _}: cps_provider_4_ShowAdvance
 
 def cemit_result_group_17(request: CEmitterRequestGroup17) -> Type:
   match request:
+    case CEmitterRequest_cps_provider_4_show_data_arms{_, _, _, _, _, _, _, _, _}: cps_provider_4_ShowAdvance
+    case CEmitterRequest_cps_provider_4_show_data_count{_, _, _, _, _, _, _, _}: cps_provider_4_ShowAdvance
+    case CEmitterRequest_cps_provider_4_show_data_arms_maybe{_, _, _, _, _, _, _, _, _}: cps_provider_4_ShowAdvance
     case CEmitterRequest_cps_provider_4_show_data_key{_, _, _, _, _, _, _, _}: cps_provider_4_ShowAdvance
     case CEmitterRequest_cps_provider_4_show_data_head{_, _, _, _, _, _, _, _}: cps_provider_4_ShowAdvance
     case CEmitterRequest_cps_provider_4_show_advance_data{_, _, _, _, _, _, _}: cps_provider_4_ShowAdvance
@@ -3097,12 +3104,12 @@ def cemit_result_group_17(request: CEmitterRequestGroup17) -> Type:
     case CEmitterRequest_cps_provider_5_nf_reduce{_, _, _, _}: cps_provider_5_Nf
     case CEmitterRequest_cps_provider_5_nf_reduce_apply{_, _, _, _, _, _, _, _}: cps_provider_5_Nf
     case CEmitterRequest_cps_provider_5_nf_reduce_body{_, _, _, _, _}: cps_provider_5_Nf
-    case CEmitterRequest_cps_provider_5_nf_cases{_, _, _, _, _, _}: cps_provider_5_Nf
-    case CEmitterRequest_cps_provider_5_normalize{_, _, _, _}: BIR.Descriptor
-    case CEmitterRequest_cps_provider_5_normalize_closed{_, _, _}: BIR.Descriptor
 
 def cemit_result_group_18(request: CEmitterRequestGroup18) -> Type:
   match request:
+    case CEmitterRequest_cps_provider_5_nf_cases{_, _, _, _, _, _}: cps_provider_5_Nf
+    case CEmitterRequest_cps_provider_5_normalize{_, _, _, _}: BIR.Descriptor
+    case CEmitterRequest_cps_provider_5_normalize_closed{_, _, _}: BIR.Descriptor
     case CEmitterRequest_cps_provider_5_normalize_in{_, _}: BIR.Descriptor
     case CEmitterRequest_cps_provider_5_outer_application{_}: Maybe<&2, cps_provider_5_NfApp>
     case CEmitterRequest_cps_provider_5_outer_walk{_, _}: Maybe<&2, cps_provider_5_NfApp>
@@ -3164,12 +3171,12 @@ def cemit_result_group_18(request: CEmitterRequestGroup18) -> Type:
     case CEmitterRequest_cps_provider_6_native_match_descriptor_node_9{_, _, _, _}: cps_provider_6_CatalogResult<BIR.Descriptor>
     case CEmitterRequest_cps_provider_6_native_match_descriptor_node_10{_, _}: cps_provider_6_CatalogResult<BIR.Descriptor>
     case CEmitterRequest_cps_provider_6_native_match_descriptor_node_11{_, _}: cps_provider_6_CatalogResult<BIR.Descriptor>
-    case CEmitterRequest_cps_provider_6_native_match_descriptor_node_12{_, _, _}: cps_provider_6_CatalogResult<BIR.Descriptor>
-    case CEmitterRequest_cps_provider_6_native_match_descriptor_node_13{_, _}: cps_provider_6_CatalogResult<BIR.Descriptor>
-    case CEmitterRequest_cps_provider_6_native_match_descriptor_node_14{_, _, _, _}: cps_provider_6_CatalogResult<BIR.Descriptor>
 
 def cemit_result_group_19(request: CEmitterRequestGroup19) -> Type:
   match request:
+    case CEmitterRequest_cps_provider_6_native_match_descriptor_node_12{_, _, _}: cps_provider_6_CatalogResult<BIR.Descriptor>
+    case CEmitterRequest_cps_provider_6_native_match_descriptor_node_13{_, _}: cps_provider_6_CatalogResult<BIR.Descriptor>
+    case CEmitterRequest_cps_provider_6_native_match_descriptor_node_14{_, _, _, _}: cps_provider_6_CatalogResult<BIR.Descriptor>
     case CEmitterRequest_cps_provider_6_native_match_descriptor_node_15{_, _, _}: cps_provider_6_CatalogResult<BIR.Descriptor>
     case CEmitterRequest_cps_provider_6_native_match_descriptor_node_16{_, _, _}: cps_provider_6_CatalogResult<BIR.Descriptor>
     case CEmitterRequest_cps_provider_6_native_match_descriptor_node_17{_, _}: cps_provider_6_CatalogResult<BIR.Descriptor>
@@ -3231,12 +3238,12 @@ def cemit_result_group_19(request: CEmitterRequestGroup19) -> Type:
     case CEmitterRequest_cps_provider_6_get_type_functions{_}: List<&2, BIR.TypeFunction>
     case CEmitterRequest_cps_provider_6_get_next_code{_}: U32
     case CEmitterRequest_cps_provider_6_get_ending{_}: BIR.Ending
-    case CEmitterRequest_cps_provider_6_native_match_insert_definition_0{_, _, _, _}: Map<&2, cps_provider_6_Definition>
-    case CEmitterRequest_cps_provider_6_insert_definition{_, _, _}: Map<&2, cps_provider_6_Definition>
-    case CEmitterRequest_cps_provider_6_native_match_insert_constructor_0{_, _, _, _}: Map<&2, cps_provider_6_Constructor>
 
 def cemit_result_group_20(request: CEmitterRequestGroup20) -> Type:
   match request:
+    case CEmitterRequest_cps_provider_6_native_match_insert_definition_0{_, _, _, _}: Map<&2, cps_provider_6_Definition>
+    case CEmitterRequest_cps_provider_6_insert_definition{_, _, _}: Map<&2, cps_provider_6_Definition>
+    case CEmitterRequest_cps_provider_6_native_match_insert_constructor_0{_, _, _, _}: Map<&2, cps_provider_6_Constructor>
     case CEmitterRequest_cps_provider_6_insert_constructor{_, _, _}: Map<&2, cps_provider_6_Constructor>
     case CEmitterRequest_cps_provider_6_normalize_descriptor_value{_, _}: BIR.Descriptor
     case CEmitterRequest_cps_provider_6_normalize_descriptors{_, _}: List<&2, BIR.Descriptor>
@@ -3298,12 +3305,12 @@ def cemit_result_group_20(request: CEmitterRequestGroup20) -> Type:
     case CEmitterRequest_cps_provider_6_live_parameter_binder{_, _, _, _, _, _}: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>
     case CEmitterRequest_cps_provider_6_live_parameter_quantity{_, _, _, _, _, _, _}: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>
     case CEmitterRequest_cps_provider_6_definition_foreign{_, _, _, _, _, _, _, _, _}: cps_provider_6_CatalogResult<Maybe<&2, cps_provider_6_Foreign>>
-    case CEmitterRequest_cps_provider_6_definition_fast{_, _, _, _, _}: Bool
-    case CEmitterRequest_cps_provider_6_definition_primitive{_, _, _, _}: Maybe<&2, BIR.Primitive>
-    case CEmitterRequest_cps_provider_6_native_match_main_descriptor_0{_}: cps_provider_6_CatalogResult<Maybe<&2, BIR.Descriptor>>
 
 def cemit_result_group_21(request: CEmitterRequestGroup21) -> Type:
   match request:
+    case CEmitterRequest_cps_provider_6_definition_fast{_, _, _, _, _}: Bool
+    case CEmitterRequest_cps_provider_6_definition_primitive{_, _, _, _}: Maybe<&2, BIR.Primitive>
+    case CEmitterRequest_cps_provider_6_native_match_main_descriptor_0{_}: cps_provider_6_CatalogResult<Maybe<&2, BIR.Descriptor>>
     case CEmitterRequest_cps_provider_6_native_match_main_descriptor_1{_, _, _, _}: cps_provider_6_CatalogResult<Maybe<&2, BIR.Descriptor>>
     case CEmitterRequest_cps_provider_6_native_match_main_descriptor_2{_, _, _, _, _}: cps_provider_6_CatalogResult<Maybe<&2, BIR.Descriptor>>
     case CEmitterRequest_cps_provider_6_main_descriptor{_, _, _, _, _}: cps_provider_6_CatalogResult<Maybe<&2, BIR.Descriptor>>
@@ -13834,7 +13841,7 @@ def cemit_match_1124(+v_1005030: BIR.Descriptor) -> CEmitterProgress<cps_provide
       CEmitterFinished{CEmitterValue{cps_provider_3_NormOk{v_9}}}
 
 def cemit_body_cps_provider_3_norm(+v_1: cps_provider_3_Context, +v_2: BIR.Descriptor) -> CEmitterProgress<cps_provider_3_NormResult>:
-  CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_normalize{cemit_pure_cps_provider_3_context_nf(v_1), v_2, [], 1024n}}, v_1005031 => +v_1005030 = cemit_unbox(BIR.Descriptor, v_1005031); cemit_match_1124(v_1005030)}
+  CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_5_normalize{cemit_pure_cps_provider_3_context_nf(v_1), v_2, [], 1024n}}, v_1005031 => +v_1005030 = cemit_unbox(BIR.Descriptor, v_1005031); cemit_match_1124(v_1005030)}
 
 def cemit_match_1125(+v_8: cps_provider_5_NfVal) -> CEmitterProgress<cps_provider_3_ArgsResult>:
   match v_8:
@@ -13894,7 +13901,7 @@ def cemit_match_1132(+v_12: BIR.DescriptorField, +v_1: cps_provider_3_Context, +
     case BIR.DescriptorField{+v_17, +v_18, +v_19}:
       v_1005047 = {v_17 : Maybe<&2, String>}
       v_1005048 = {v_18 : BIR.Quantity}
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_normalize{cemit_pure_cps_provider_3_context_nf(v_1), v_19, v_4, 1024n}}, v_1005052 => +v_1005049 = cemit_unbox(BIR.Descriptor, v_1005052); cemit_continuation_1131(v_1005047, v_1005048, v_1005049, v_1, v_4, v_13, v_8)}
+      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_5_normalize{cemit_pure_cps_provider_3_context_nf(v_1), v_19, v_4, 1024n}}, v_1005052 => +v_1005049 = cemit_unbox(BIR.Descriptor, v_1005052); cemit_continuation_1131(v_1005047, v_1005048, v_1005049, v_1, v_4, v_13, v_8)}
 
 def cemit_match_1133(+v_6: List<&2, BIR.DescriptorField>, +v_8: List<&2, BIR.DescriptorField>, +v_1: cps_provider_3_Context, +v_4: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<cps_provider_3_FieldsResult>:
   match v_6:
@@ -15922,25 +15929,6 @@ def cemit_match_1399(+v_4: Maybe<&2, Nat>, +v_1: cps_provider_4_ShowState, +v_6:
 def cemit_body_cps_provider_4_show_apply_patch(+v_1: cps_provider_4_ShowState, +v_4: Maybe<&2, Nat>, +v_6: Nat) -> CEmitterProgress<cps_provider_4_ShowState>:
   cemit_match_1399(v_4, v_1, v_6)
 
-def cemit_body_cps_provider_4_show_name_kind(+v_1: String) -> CEmitterProgress<Nat>:
-  match v_1:
-    case "U32":
-      CEmitterFinished{CEmitterValue{0n}}
-    case "F32":
-      CEmitterFinished{CEmitterValue{1n}}
-    case "Nat":
-      CEmitterFinished{CEmitterValue{2n}}
-    case "Char":
-      CEmitterFinished{CEmitterValue{3n}}
-    case "String":
-      CEmitterFinished{CEmitterValue{4n}}
-    case "Eql":
-      CEmitterFinished{CEmitterValue{5n}}
-    case "Array":
-      CEmitterFinished{CEmitterValue{6n}}
-    case _:
-      CEmitterFinished{CEmitterValue{7n}}
-
 def cemit_body_cps_provider_4_last_segment_list(+v_2: List<&2, String>, +v_4: String) -> CEmitterProgress<String>:
   match v_2:
     case []:
@@ -15951,6 +15939,32 @@ def cemit_body_cps_provider_4_last_segment_list(+v_2: List<&2, String>, +v_4: St
 def cemit_body_cps_provider_4_last_segment(+v_1: String) -> CEmitterProgress<String>:
   CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_last_segment_list{String.split(v_1, '.'), ""}}, False{}, v_1006161 => cemit_body_cps_provider_4_last_segment_list(String.split(v_1, '.'), ""), v_1006160 => +v_1006159 = cemit_unbox(String, v_1006160); CEmitterFinished{CEmitterValue{v_1006159}}}
 
+def cemit_body_cps_provider_4_show_native_kind(+v_1: String) -> CEmitterProgress<cps_provider_4_ShowKind>:
+  match v_1:
+    case "U32":
+      CEmitterFinished{CEmitterValue{cps_provider_4_ShowKindOk{0n}}}
+    case "F32":
+      CEmitterFinished{CEmitterValue{cps_provider_4_ShowKindOk{1n}}}
+    case "Nat":
+      CEmitterFinished{CEmitterValue{cps_provider_4_ShowKindOk{2n}}}
+    case "Char":
+      CEmitterFinished{CEmitterValue{cps_provider_4_ShowKindOk{3n}}}
+    case "String":
+      CEmitterFinished{CEmitterValue{cps_provider_4_ShowKindOk{4n}}}
+    case "Eql":
+      CEmitterFinished{CEmitterValue{cps_provider_4_ShowKindOk{5n}}}
+    case "Array":
+      CEmitterFinished{CEmitterValue{cps_provider_4_ShowKindOk{6n}}}
+    case _:
+      CEmitterFinished{CEmitterValue{cps_provider_4_ShowKindFailed{String.append("the native marker `", String.append(v_1, "` has no SHOW kind"))}}}
+
+def cemit_match_1402(v_10: Maybe<&2, String>) -> CEmitterProgress<cps_provider_4_ShowKind>:
+  match v_10:
+    case Some{v_12}:
+      cemit_body_cps_provider_4_show_native_kind(v_12)
+    case None{}:
+      CEmitterFinished{CEmitterValue{cps_provider_4_ShowKindOk{7n}}}
+
 def cemit_body_cps_provider_4_show_kind_head(+v_1: cps_provider_3_HeadResult) -> CEmitterProgress<cps_provider_4_ShowKind>:
   match v_1:
     case cps_provider_3_HeadFailed{v_4}:
@@ -15958,14 +15972,14 @@ def cemit_body_cps_provider_4_show_kind_head(+v_1: cps_provider_3_HeadResult) ->
     case cps_provider_3_HeadBoxed{v_6}:
       CEmitterFinished{CEmitterValue{cps_provider_4_ShowKindFailed{"main's type is abstract or open and cannot be printed"}}}
     case cps_provider_3_HeadFound{v_9, v_10}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_last_segment{v_9}}, False{}, v_1006167 => cemit_body_cps_provider_4_last_segment(v_9), v_1006166 => +v_1006162 = cemit_unbox(String, v_1006166); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_name_kind{v_1006162}}, False{}, v_1006165 => cemit_body_cps_provider_4_show_name_kind(v_1006162), v_1006164 => +v_1006163 = cemit_unbox(Nat, v_1006164); CEmitterFinished{CEmitterValue{cps_provider_4_ShowKindOk{v_1006163}}}}}
+      cemit_match_1402(v_10)
 
-def cemit_continuation_1403(+v_1006168: cps_provider_3_HeadResult) -> CEmitterProgress<cps_provider_4_ShowKind>:
-  v_6 = v_1006168
+def cemit_continuation_1404(+v_1006163: cps_provider_3_HeadResult) -> CEmitterProgress<cps_provider_4_ShowKind>:
+  v_6 = v_1006163
   cemit_body_cps_provider_4_show_kind_head(v_6)
 
 def cemit_body_cps_provider_4_show_kind(+v_1: cps_provider_3_Context, +v_2: BIR.Descriptor) -> CEmitterProgress<cps_provider_4_ShowKind>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_3_head_native{v_1, v_2}}, False{}, v_1006171 => cemit_body_cps_provider_3_head_native(v_1, v_2), v_1006170 => +v_1006168 = cemit_unbox(cps_provider_3_HeadResult, v_1006170); cemit_continuation_1403(v_1006168)}
+  CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_3_head_native{v_1, v_2}}, False{}, v_1006166 => cemit_body_cps_provider_3_head_native(v_1, v_2), v_1006165 => +v_1006163 = cemit_unbox(cps_provider_3_HeadResult, v_1006165); cemit_continuation_1404(v_1006163)}
 
 def cemit_body_cps_provider_4_show_box_flag(+v_1: cps_provider_3_Layout) -> CEmitterProgress<Nat>:
   match v_1:
@@ -15991,7 +16005,7 @@ def cemit_body_cps_provider_4_show_tag_start(+v_1: Nat, +v_3: Nat) -> CEmitterPr
       cemit_body_cps_provider_4_show_tag_plain(v_3)
 
 def cemit_body_cps_provider_4_show_quote(+v_1: String) -> CEmitterProgress<String>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{["\"", v_1, "\""]}}, False{}, v_1006175 => cemit_body_cps_provider_4_join_text(["\"", v_1, "\""]), v_1006174 => +v_1006173 = cemit_unbox(String, v_1006174); CEmitterFinished{CEmitterValue{v_1006173}}}
+  CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{["\"", v_1, "\""]}}, False{}, v_1006170 => cemit_body_cps_provider_4_join_text(["\"", v_1, "\""]), v_1006169 => +v_1006168 = cemit_unbox(String, v_1006169); CEmitterFinished{CEmitterValue{v_1006168}}}
 
 def cemit_body_cps_provider_4_show_name_sep(+v_2: List<&2, String>) -> CEmitterProgress<String>:
   match v_2:
@@ -16005,7 +16019,7 @@ def cemit_body_cps_provider_4_show_render_names(+v_2: List<&2, String>) -> CEmit
     case []:
       CEmitterFinished{CEmitterValue{""}}
     case +v_6 <> +v_7:
-      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_quote{v_6}}, False{}, v_1006183 => cemit_body_cps_provider_4_show_quote(v_6), v_1006182 => +v_1006176 = cemit_unbox(String, v_1006182); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_name_sep{v_7}}, False{}, v_1006181 => cemit_body_cps_provider_4_show_name_sep(v_7), v_1006180 => +v_1006177 = cemit_unbox(String, v_1006180); CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_render_names{v_7}}, v_1006179 => +v_1006178 = cemit_unbox(String, v_1006179); CEmitterFinished{CEmitterValue{String.append(String.append(v_1006176, v_1006177), v_1006178)}}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_quote{v_6}}, False{}, v_1006178 => cemit_body_cps_provider_4_show_quote(v_6), v_1006177 => +v_1006171 = cemit_unbox(String, v_1006177); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_name_sep{v_7}}, False{}, v_1006176 => cemit_body_cps_provider_4_show_name_sep(v_7), v_1006175 => +v_1006172 = cemit_unbox(String, v_1006175); CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_render_names{v_7}}, v_1006174 => +v_1006173 = cemit_unbox(String, v_1006174); CEmitterFinished{CEmitterValue{String.append(String.append(v_1006171, v_1006172), v_1006173)}}}}}
 
 def cemit_body_cps_provider_4_show_render_sep_flag(+v_1: Bool) -> CEmitterProgress<String>:
   match v_1:
@@ -16023,66 +16037,66 @@ def cemit_body_cps_provider_4_show_render_word(+v_1: cps_provider_4_ShowWord) ->
     case cps_provider_4_ShowNum{v_4}:
       CEmitterFinished{CEmitterValue{Nat.show(v_4)}}
     case cps_provider_4_ShowCid{v_6}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{["CID_", Nat.show(v_6)]}}, False{}, v_1006187 => cemit_body_cps_provider_4_join_text(["CID_", Nat.show(v_6)]), v_1006186 => +v_1006185 = cemit_unbox(String, v_1006186); CEmitterFinished{CEmitterValue{v_1006185}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{["CID_", Nat.show(v_6)]}}, False{}, v_1006182 => cemit_body_cps_provider_4_join_text(["CID_", Nat.show(v_6)]), v_1006181 => +v_1006180 = cemit_unbox(String, v_1006181); CEmitterFinished{CEmitterValue{v_1006180}}}
 
 def cemit_body_cps_provider_4_show_render_words(+v_2: List<&2, cps_provider_4_ShowWord>, +v_4: String) -> CEmitterProgress<String>:
   match v_2:
     case []:
       CEmitterFinished{CEmitterValue{v_4}}
     case +v_8 <> +v_9:
-      +v_1006188 = {v_9 : List<&2, cps_provider_4_ShowWord>}
-      v_1006189 = {v_4 : String}
-      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_render_sep{v_4}}, False{}, v_1006200 => cemit_body_cps_provider_4_show_render_sep(v_4), v_1006199 => +v_1006190 = cemit_unbox(String, v_1006199); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_render_word{v_8}}, False{}, v_1006198 => cemit_body_cps_provider_4_show_render_word(v_8), v_1006197 => +v_1006191 = cemit_unbox(String, v_1006197); CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{[v_1006189, v_1006190, v_1006191]}}, False{}, v_1006196 => cemit_body_cps_provider_4_join_text([v_1006189, v_1006190, v_1006191]), v_1006195 => +v_1006192 = cemit_unbox(String, v_1006195); CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_render_words{v_1006188, v_1006192}}, v_1006194 => +v_1006193 = cemit_unbox(String, v_1006194); CEmitterFinished{CEmitterValue{v_1006193}}}}}}
+      +v_1006183 = {v_9 : List<&2, cps_provider_4_ShowWord>}
+      v_1006184 = {v_4 : String}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_render_sep{v_4}}, False{}, v_1006195 => cemit_body_cps_provider_4_show_render_sep(v_4), v_1006194 => +v_1006185 = cemit_unbox(String, v_1006194); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_render_word{v_8}}, False{}, v_1006193 => cemit_body_cps_provider_4_show_render_word(v_8), v_1006192 => +v_1006186 = cemit_unbox(String, v_1006192); CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{[v_1006184, v_1006185, v_1006186]}}, False{}, v_1006191 => cemit_body_cps_provider_4_join_text([v_1006184, v_1006185, v_1006186]), v_1006190 => +v_1006187 = cemit_unbox(String, v_1006190); CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_render_words{v_1006183, v_1006187}}, v_1006189 => +v_1006188 = cemit_unbox(String, v_1006189); CEmitterFinished{CEmitterValue{v_1006188}}}}}}
 
-def cemit_match_1412(v_1006201: Bool, +v_1: String, +v_9: List<&2, BIR.Family>, v_21: List<&2, BIR.DescriptorArm>) -> CEmitterProgress<Maybe<&2, List<&2, BIR.DescriptorArm>>>:
-  match v_1006201:
+def cemit_match_1413(v_1006196: Bool, +v_1: String, +v_9: List<&2, BIR.Family>, v_21: List<&2, BIR.DescriptorArm>) -> CEmitterProgress<Maybe<&2, List<&2, BIR.DescriptorArm>>>:
+  match v_1006196:
     case False{}:
-      CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_family_arms{v_1, v_9}}, v_1006203 => +v_1006202 = cemit_unbox(Maybe<&2, List<&2, BIR.DescriptorArm>>, v_1006203); CEmitterFinished{CEmitterValue{v_1006202}}}
+      CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_family_arms{v_1, v_9}}, v_1006198 => +v_1006197 = cemit_unbox(Maybe<&2, List<&2, BIR.DescriptorArm>>, v_1006198); CEmitterFinished{CEmitterValue{v_1006197}}}
     case True{}:
       CEmitterFinished{CEmitterValue{Some{v_21}}}
 
-def cemit_match_1413(+v_8: BIR.Family, +v_1: String, +v_9: List<&2, BIR.Family>) -> CEmitterProgress<Maybe<&2, List<&2, BIR.DescriptorArm>>>:
+def cemit_match_1414(+v_8: BIR.Family, +v_1: String, +v_9: List<&2, BIR.Family>) -> CEmitterProgress<Maybe<&2, List<&2, BIR.DescriptorArm>>>:
   match v_8:
     case BIR.Family{v_16, v_17, v_18, v_19, v_20, v_21}:
       v_23 = String.eq(v_1, v_16)
-      v_1006201 = v_23
-      cemit_match_1412(v_1006201, v_1, v_9, v_21)
+      v_1006196 = v_23
+      cemit_match_1413(v_1006196, v_1, v_9, v_21)
 
-def cemit_match_1414(+v_3: List<&2, BIR.Family>, +v_1: String) -> CEmitterProgress<Maybe<&2, List<&2, BIR.DescriptorArm>>>:
+def cemit_match_1415(+v_3: List<&2, BIR.Family>, +v_1: String) -> CEmitterProgress<Maybe<&2, List<&2, BIR.DescriptorArm>>>:
   match v_3:
     case []:
       CEmitterFinished{CEmitterValue{None{}}}
     case +v_8 <> +v_9:
-      cemit_match_1413(v_8, v_1, v_9)
+      cemit_match_1414(v_8, v_1, v_9)
 
 def cemit_body_cps_provider_4_family_arms(+v_1: String, +v_3: List<&2, BIR.Family>) -> CEmitterProgress<Maybe<&2, List<&2, BIR.DescriptorArm>>>:
-  cemit_match_1414(v_3, v_1)
+  cemit_match_1415(v_3, v_1)
 
-def cemit_match_1415(v_1006204: Bool, +v_1: String, +v_8: List<&2, BIR.ConstructorLayout>, +v_7: BIR.ConstructorLayout) -> CEmitterProgress<Maybe<&2, BIR.ConstructorLayout>>:
-  match v_1006204:
+def cemit_match_1416(v_1006199: Bool, +v_1: String, +v_8: List<&2, BIR.ConstructorLayout>, +v_7: BIR.ConstructorLayout) -> CEmitterProgress<Maybe<&2, BIR.ConstructorLayout>>:
+  match v_1006199:
     case False{}:
-      CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_ctor_find_key{v_1, v_8}}, v_1006206 => +v_1006205 = cemit_unbox(Maybe<&2, BIR.ConstructorLayout>, v_1006206); CEmitterFinished{CEmitterValue{v_1006205}}}
+      CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_ctor_find_key{v_1, v_8}}, v_1006201 => +v_1006200 = cemit_unbox(Maybe<&2, BIR.ConstructorLayout>, v_1006201); CEmitterFinished{CEmitterValue{v_1006200}}}
     case True{}:
       CEmitterFinished{CEmitterValue{Some{v_7}}}
 
-def cemit_match_1416(+v_7: BIR.ConstructorLayout, +v_1: String, +v_8: List<&2, BIR.ConstructorLayout>) -> CEmitterProgress<Maybe<&2, BIR.ConstructorLayout>>:
+def cemit_match_1417(+v_7: BIR.ConstructorLayout, +v_1: String, +v_8: List<&2, BIR.ConstructorLayout>) -> CEmitterProgress<Maybe<&2, BIR.ConstructorLayout>>:
   match v_7:
     case BIR.ConstructorLayout{v_13, v_14, v_15, v_16}:
       v_18 = String.eq(v_14, v_1)
-      v_1006204 = v_18
-      cemit_match_1415(v_1006204, v_1, v_8, v_7)
+      v_1006199 = v_18
+      cemit_match_1416(v_1006199, v_1, v_8, v_7)
 
-def cemit_match_1417(+v_3: List<&2, BIR.ConstructorLayout>, +v_1: String) -> CEmitterProgress<Maybe<&2, BIR.ConstructorLayout>>:
+def cemit_match_1418(+v_3: List<&2, BIR.ConstructorLayout>, +v_1: String) -> CEmitterProgress<Maybe<&2, BIR.ConstructorLayout>>:
   match v_3:
     case []:
       CEmitterFinished{CEmitterValue{None{}}}
     case +v_7 <> +v_8:
-      cemit_match_1416(v_7, v_1, v_8)
+      cemit_match_1417(v_7, v_1, v_8)
 
 def cemit_body_cps_provider_4_ctor_find_key(+v_1: String, +v_3: List<&2, BIR.ConstructorLayout>) -> CEmitterProgress<Maybe<&2, BIR.ConstructorLayout>>:
-  cemit_match_1417(v_3, v_1)
+  cemit_match_1418(v_3, v_1)
 
-def cemit_match_1418(v_5: BIR.ConstructorLayout) -> CEmitterProgress<Maybe<&2, Nat>>:
+def cemit_match_1419(v_5: BIR.ConstructorLayout) -> CEmitterProgress<Maybe<&2, Nat>>:
   match v_5:
     case BIR.ConstructorLayout{v_10, v_11, v_12, v_13}:
       CEmitterFinished{CEmitterValue{Some{U32.to_nat(v_10)}}}
@@ -16092,10 +16106,10 @@ def cemit_body_cps_provider_4_show_cid_found(+v_1: Maybe<&2, BIR.ConstructorLayo
     case None{}:
       CEmitterFinished{CEmitterValue{None{}}}
     case Some{v_5}:
-      cemit_match_1418(v_5)
+      cemit_match_1419(v_5)
 
 def cemit_body_cps_provider_4_show_cid_of_key(+v_1: String, +v_3: List<&2, BIR.ConstructorLayout>) -> CEmitterProgress<Maybe<&2, Nat>>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_ctor_find_key{v_1, v_3}}, False{}, v_1006210 => cemit_body_cps_provider_4_ctor_find_key(v_1, v_3), v_1006209 => +v_1006207 = cemit_unbox(Maybe<&2, BIR.ConstructorLayout>, v_1006209); cemit_body_cps_provider_4_show_cid_found(v_1006207)}
+  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_ctor_find_key{v_1, v_3}}, False{}, v_1006205 => cemit_body_cps_provider_4_ctor_find_key(v_1, v_3), v_1006204 => +v_1006202 = cemit_unbox(Maybe<&2, BIR.ConstructorLayout>, v_1006204); cemit_body_cps_provider_4_show_cid_found(v_1006202)}
 
 def cemit_body_cps_provider_4_show_arm_bracket_name(+v_1: String) -> CEmitterProgress<Nat>:
   match v_1:
@@ -16109,69 +16123,69 @@ def cemit_body_cps_provider_4_show_arm_bracket_name(+v_1: String) -> CEmitterPro
       CEmitterFinished{CEmitterValue{0n}}
 
 def cemit_body_cps_provider_4_show_arm_bracket(+v_1: String) -> CEmitterProgress<Nat>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_last_segment{v_1}}, False{}, v_1006214 => cemit_body_cps_provider_4_last_segment(v_1), v_1006213 => +v_1006211 = cemit_unbox(String, v_1006213); cemit_body_cps_provider_4_show_arm_bracket_name(v_1006211)}
+  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_last_segment{v_1}}, False{}, v_1006209 => cemit_body_cps_provider_4_last_segment(v_1), v_1006208 => +v_1006206 = cemit_unbox(String, v_1006208); cemit_body_cps_provider_4_show_arm_bracket_name(v_1006206)}
 
-def cemit_match_1421(v_11: BIR.Quantity, +v_6: List<&2, BIR.DescriptorField>) -> CEmitterProgress<Bool>:
+def cemit_match_1422(v_11: BIR.Quantity, +v_6: List<&2, BIR.DescriptorField>) -> CEmitterProgress<Bool>:
   match v_11:
     case BIR.Erased{}:
       CEmitterFinished{CEmitterValue{True{}}}
     case _:
-      CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_erased_present{v_6}}, v_1006216 => +v_1006215 = cemit_unbox(Bool, v_1006216); CEmitterFinished{CEmitterValue{v_1006215}}}
+      CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_erased_present{v_6}}, v_1006211 => +v_1006210 = cemit_unbox(Bool, v_1006211); CEmitterFinished{CEmitterValue{v_1006210}}}
 
-def cemit_match_1422(+v_5: BIR.DescriptorField, +v_6: List<&2, BIR.DescriptorField>) -> CEmitterProgress<Bool>:
+def cemit_match_1423(+v_5: BIR.DescriptorField, +v_6: List<&2, BIR.DescriptorField>) -> CEmitterProgress<Bool>:
   match v_5:
     case BIR.DescriptorField{v_10, v_11, v_12}:
-      cemit_match_1421(v_11, v_6)
+      cemit_match_1422(v_11, v_6)
 
 def cemit_body_cps_provider_4_show_erased_present(+v_1: List<&2, BIR.DescriptorField>) -> CEmitterProgress<Bool>:
   match v_1:
     case []:
       CEmitterFinished{CEmitterValue{False{}}}
     case +v_5 <> +v_6:
-      cemit_match_1422(v_5, v_6)
+      cemit_match_1423(v_5, v_6)
 
-def cemit_match_1424(v_1006217: Bool, +v_10: List<&2, BIR.DescriptorField>, +v_3: Nat, +v_5: Nat, +v_9: BIR.DescriptorField) -> CEmitterProgress<Maybe<&2, BIR.DescriptorField>>:
-  match v_1006217:
+def cemit_match_1425(v_1006212: Bool, +v_10: List<&2, BIR.DescriptorField>, +v_3: Nat, +v_5: Nat, +v_9: BIR.DescriptorField) -> CEmitterProgress<Maybe<&2, BIR.DescriptorField>>:
+  match v_1006212:
     case False{}:
-      CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_field_at_each{v_10, v_3, Nat.add(v_5, 1n)}}, v_1006219 => +v_1006218 = cemit_unbox(Maybe<&2, BIR.DescriptorField>, v_1006219); CEmitterFinished{CEmitterValue{v_1006218}}}
+      CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_field_at_each{v_10, v_3, Nat.add(v_5, 1n)}}, v_1006214 => +v_1006213 = cemit_unbox(Maybe<&2, BIR.DescriptorField>, v_1006214); CEmitterFinished{CEmitterValue{v_1006213}}}
     case True{}:
       CEmitterFinished{CEmitterValue{Some{v_9}}}
 
-def cemit_match_1425(+v_1: List<&2, BIR.DescriptorField>, +v_5: Nat, +v_3: Nat) -> CEmitterProgress<Maybe<&2, BIR.DescriptorField>>:
+def cemit_match_1426(+v_1: List<&2, BIR.DescriptorField>, +v_5: Nat, +v_3: Nat) -> CEmitterProgress<Maybe<&2, BIR.DescriptorField>>:
   match v_1:
     case []:
       CEmitterFinished{CEmitterValue{None{}}}
     case +v_9 <> +v_10:
       v_12 = Nat.is_eq(v_5, v_3)
-      v_1006217 = v_12
-      cemit_match_1424(v_1006217, v_10, v_3, v_5, v_9)
+      v_1006212 = v_12
+      cemit_match_1425(v_1006212, v_10, v_3, v_5, v_9)
 
 def cemit_body_cps_provider_4_show_field_at_each(+v_1: List<&2, BIR.DescriptorField>, +v_3: Nat, +v_5: Nat) -> CEmitterProgress<Maybe<&2, BIR.DescriptorField>>:
-  cemit_match_1425(v_1, v_5, v_3)
+  cemit_match_1426(v_1, v_5, v_3)
 
 def cemit_body_cps_provider_4_show_field_at(+v_1: List<&2, BIR.DescriptorField>, +v_3: U32) -> CEmitterProgress<Maybe<&2, BIR.DescriptorField>>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_field_at_each{v_1, U32.to_nat(v_3), 0n}}, False{}, v_1006222 => cemit_body_cps_provider_4_show_field_at_each(v_1, U32.to_nat(v_3), 0n), v_1006221 => +v_1006220 = cemit_unbox(Maybe<&2, BIR.DescriptorField>, v_1006221); CEmitterFinished{CEmitterValue{v_1006220}}}
+  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_field_at_each{v_1, U32.to_nat(v_3), 0n}}, False{}, v_1006217 => cemit_body_cps_provider_4_show_field_at_each(v_1, U32.to_nat(v_3), 0n), v_1006216 => +v_1006215 = cemit_unbox(Maybe<&2, BIR.DescriptorField>, v_1006216); CEmitterFinished{CEmitterValue{v_1006215}}}
 
-def cemit_match_1426(v_1006223: Bool, +v_11: List<&2, cps_provider_3_LayArm>, +v_4: String, v_15: List<&2, cps_provider_3_Layout>) -> CEmitterProgress<Maybe<&2, List<&2, cps_provider_3_Layout>>>:
-  match v_1006223:
+def cemit_match_1427(v_1006218: Bool, +v_11: List<&2, cps_provider_3_LayArm>, +v_4: String, v_15: List<&2, cps_provider_3_Layout>) -> CEmitterProgress<Maybe<&2, List<&2, cps_provider_3_Layout>>>:
+  match v_1006218:
     case False{}:
-      CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arm_layouts_each{v_11, v_4}}, v_1006225 => +v_1006224 = cemit_unbox(Maybe<&2, List<&2, cps_provider_3_Layout>>, v_1006225); CEmitterFinished{CEmitterValue{v_1006224}}}
+      CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arm_layouts_each{v_11, v_4}}, v_1006220 => +v_1006219 = cemit_unbox(Maybe<&2, List<&2, cps_provider_3_Layout>>, v_1006220); CEmitterFinished{CEmitterValue{v_1006219}}}
     case True{}:
       CEmitterFinished{CEmitterValue{Some{v_15}}}
 
-def cemit_match_1427(+v_10: cps_provider_3_LayArm, +v_4: String, +v_11: List<&2, cps_provider_3_LayArm>) -> CEmitterProgress<Maybe<&2, List<&2, cps_provider_3_Layout>>>:
+def cemit_match_1428(+v_10: cps_provider_3_LayArm, +v_4: String, +v_11: List<&2, cps_provider_3_LayArm>) -> CEmitterProgress<Maybe<&2, List<&2, cps_provider_3_Layout>>>:
   match v_10:
     case cps_provider_3_LayArm{v_14, v_15}:
       v_17 = String.eq(v_14, v_4)
-      v_1006223 = v_17
-      cemit_match_1426(v_1006223, v_11, v_4, v_15)
+      v_1006218 = v_17
+      cemit_match_1427(v_1006218, v_11, v_4, v_15)
 
 def cemit_body_cps_provider_4_show_arm_layouts_each(+v_2: List<&2, cps_provider_3_LayArm>, +v_4: String) -> CEmitterProgress<Maybe<&2, List<&2, cps_provider_3_Layout>>>:
   match v_2:
     case []:
       CEmitterFinished{CEmitterValue{None{}}}
     case +v_10 <> +v_11:
-      cemit_match_1427(v_10, v_4, v_11)
+      cemit_match_1428(v_10, v_4, v_11)
 
 def cemit_body_cps_provider_4_show_arm_layouts(+v_1: cps_provider_3_Layout, +v_3: String) -> CEmitterProgress<Maybe<&2, List<&2, cps_provider_3_Layout>>>:
   match v_1:
@@ -16182,7 +16196,7 @@ def cemit_body_cps_provider_4_show_arm_layouts(+v_1: cps_provider_3_Layout, +v_3
     case cps_provider_3_LayoutData{v_13, v_14}:
       cemit_body_cps_provider_4_show_arm_layouts_each(v_14, v_3)
 
-def cemit_match_1430(v_8: cps_provider_3_Node) -> CEmitterProgress<Maybe<&2, List<&2, cps_provider_3_NodeSlot>>>:
+def cemit_match_1431(v_8: cps_provider_3_Node) -> CEmitterProgress<Maybe<&2, List<&2, cps_provider_3_NodeSlot>>>:
   match v_8:
     case cps_provider_3_Node{v_12, v_13, v_14}:
       CEmitterFinished{CEmitterValue{Some{v_13}}}
@@ -16192,7 +16206,7 @@ def cemit_body_cps_provider_4_show_node_layout_slots(+v_1: cps_provider_3_NodeRe
     case cps_provider_3_NodeFailed{v_6}:
       CEmitterFinished{CEmitterValue{None{}}}
     case cps_provider_3_NodeFound{v_8}:
-      cemit_match_1430(v_8)
+      cemit_match_1431(v_8)
 
 def cemit_body_cps_provider_4_show_word_key(+v_1: cps_provider_3_CWord) -> CEmitterProgress<String>:
   match v_1:
@@ -16208,66 +16222,66 @@ def cemit_body_cps_provider_4_show_box_key(+v_1: cps_provider_3_BoxReason) -> CE
     case cps_provider_3_BoxOpen{}:
       CEmitterFinished{CEmitterValue{"open"}}
     case cps_provider_3_BoxUnresolved{v_4}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{["unresolved:", v_4]}}, False{}, v_1006229 => cemit_body_cps_provider_4_join_text(["unresolved:", v_4]), v_1006228 => +v_1006227 = cemit_unbox(String, v_1006228); CEmitterFinished{CEmitterValue{v_1006227}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{["unresolved:", v_4]}}, False{}, v_1006224 => cemit_body_cps_provider_4_join_text(["unresolved:", v_4]), v_1006223 => +v_1006222 = cemit_unbox(String, v_1006223); CEmitterFinished{CEmitterValue{v_1006222}}}
     case cps_provider_3_BoxArray{}:
       CEmitterFinished{CEmitterValue{"array"}}
     case cps_provider_3_BoxIo{}:
       CEmitterFinished{CEmitterValue{"io"}}
     case cps_provider_3_BoxRecursive{v_7}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{["rec:", v_7]}}, False{}, v_1006232 => cemit_body_cps_provider_4_join_text(["rec:", v_7]), v_1006231 => +v_1006230 = cemit_unbox(String, v_1006231); CEmitterFinished{CEmitterValue{v_1006230}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{["rec:", v_7]}}, False{}, v_1006227 => cemit_body_cps_provider_4_join_text(["rec:", v_7]), v_1006226 => +v_1006225 = cemit_unbox(String, v_1006226); CEmitterFinished{CEmitterValue{v_1006225}}}
     case cps_provider_3_BoxWide{v_10}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{["wide:", Nat.show(v_10)]}}, False{}, v_1006235 => cemit_body_cps_provider_4_join_text(["wide:", Nat.show(v_10)]), v_1006234 => +v_1006233 = cemit_unbox(String, v_1006234); CEmitterFinished{CEmitterValue{v_1006233}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{["wide:", Nat.show(v_10)]}}, False{}, v_1006230 => cemit_body_cps_provider_4_join_text(["wide:", Nat.show(v_10)]), v_1006229 => +v_1006228 = cemit_unbox(String, v_1006229); CEmitterFinished{CEmitterValue{v_1006228}}}
 
-def cemit_match_1434(+v_6: cps_provider_3_LayArm, +v_7: List<&2, cps_provider_3_LayArm>) -> CEmitterProgress<String>:
+def cemit_match_1435(+v_6: cps_provider_3_LayArm, +v_7: List<&2, cps_provider_3_LayArm>) -> CEmitterProgress<String>:
   match v_6:
     case cps_provider_3_LayArm{v_10, v_11}:
-      v_1006236 = {v_10 : String}
-      v_1006237 = {"/" : String}
-      v_1006238 = {Nat.show(List.length(&2, cps_provider_3_Layout, v_11)) : String}
-      v_1006239 = {";" : String}
-      CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arm_keys{v_7}}, v_1006244 => +v_1006240 = cemit_unbox(String, v_1006244); CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{[v_1006236, v_1006237, v_1006238, v_1006239, v_1006240]}}, False{}, v_1006243 => cemit_body_cps_provider_4_join_text([v_1006236, v_1006237, v_1006238, v_1006239, v_1006240]), v_1006242 => +v_1006241 = cemit_unbox(String, v_1006242); CEmitterFinished{CEmitterValue{v_1006241}}}}
+      v_1006231 = {v_10 : String}
+      v_1006232 = {"/" : String}
+      v_1006233 = {Nat.show(List.length(&2, cps_provider_3_Layout, v_11)) : String}
+      v_1006234 = {";" : String}
+      CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arm_keys{v_7}}, v_1006239 => +v_1006235 = cemit_unbox(String, v_1006239); CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{[v_1006231, v_1006232, v_1006233, v_1006234, v_1006235]}}, False{}, v_1006238 => cemit_body_cps_provider_4_join_text([v_1006231, v_1006232, v_1006233, v_1006234, v_1006235]), v_1006237 => +v_1006236 = cemit_unbox(String, v_1006237); CEmitterFinished{CEmitterValue{v_1006236}}}}
 
 def cemit_body_cps_provider_4_show_arm_keys(+v_2: List<&2, cps_provider_3_LayArm>) -> CEmitterProgress<String>:
   match v_2:
     case []:
       CEmitterFinished{CEmitterValue{""}}
     case +v_6 <> +v_7:
-      cemit_match_1434(v_6, v_7)
+      cemit_match_1435(v_6, v_7)
 
 def cemit_body_cps_provider_4_show_layout_key(+v_1: cps_provider_3_Layout) -> CEmitterProgress<String>:
   match v_1:
     case cps_provider_3_LayoutWord{v_4}:
-      v_1006245 = {"w" : String}
-      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_word_key{v_4}}, False{}, v_1006251 => cemit_body_cps_provider_4_show_word_key(v_4), v_1006250 => +v_1006246 = cemit_unbox(String, v_1006250); CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{[v_1006245, v_1006246]}}, False{}, v_1006249 => cemit_body_cps_provider_4_join_text([v_1006245, v_1006246]), v_1006248 => +v_1006247 = cemit_unbox(String, v_1006248); CEmitterFinished{CEmitterValue{v_1006247}}}}
+      v_1006240 = {"w" : String}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_word_key{v_4}}, False{}, v_1006246 => cemit_body_cps_provider_4_show_word_key(v_4), v_1006245 => +v_1006241 = cemit_unbox(String, v_1006245); CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{[v_1006240, v_1006241]}}, False{}, v_1006244 => cemit_body_cps_provider_4_join_text([v_1006240, v_1006241]), v_1006243 => +v_1006242 = cemit_unbox(String, v_1006243); CEmitterFinished{CEmitterValue{v_1006242}}}}
     case cps_provider_3_LayoutBox{v_8}:
-      v_1006252 = {"B" : String}
-      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_box_key{v_8}}, False{}, v_1006258 => cemit_body_cps_provider_4_show_box_key(v_8), v_1006257 => +v_1006253 = cemit_unbox(String, v_1006257); CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{[v_1006252, v_1006253]}}, False{}, v_1006256 => cemit_body_cps_provider_4_join_text([v_1006252, v_1006253]), v_1006255 => +v_1006254 = cemit_unbox(String, v_1006255); CEmitterFinished{CEmitterValue{v_1006254}}}}
+      v_1006247 = {"B" : String}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_box_key{v_8}}, False{}, v_1006253 => cemit_body_cps_provider_4_show_box_key(v_8), v_1006252 => +v_1006248 = cemit_unbox(String, v_1006252); CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{[v_1006247, v_1006248]}}, False{}, v_1006251 => cemit_body_cps_provider_4_join_text([v_1006247, v_1006248]), v_1006250 => +v_1006249 = cemit_unbox(String, v_1006250); CEmitterFinished{CEmitterValue{v_1006249}}}}
     case cps_provider_3_LayoutData{v_13, v_14}:
-      v_1006259 = {"D" : String}
-      v_1006260 = {Nat.show(List.length(&2, cps_provider_3_CWord, v_13)) : String}
-      v_1006261 = {":" : String}
-      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arm_keys{v_14}}, False{}, v_1006267 => cemit_body_cps_provider_4_show_arm_keys(v_14), v_1006266 => +v_1006262 = cemit_unbox(String, v_1006266); CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{[v_1006259, v_1006260, v_1006261, v_1006262]}}, False{}, v_1006265 => cemit_body_cps_provider_4_join_text([v_1006259, v_1006260, v_1006261, v_1006262]), v_1006264 => +v_1006263 = cemit_unbox(String, v_1006264); CEmitterFinished{CEmitterValue{v_1006263}}}}
+      v_1006254 = {"D" : String}
+      v_1006255 = {Nat.show(List.length(&2, cps_provider_3_CWord, v_13)) : String}
+      v_1006256 = {":" : String}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arm_keys{v_14}}, False{}, v_1006262 => cemit_body_cps_provider_4_show_arm_keys(v_14), v_1006261 => +v_1006257 = cemit_unbox(String, v_1006261); CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{[v_1006254, v_1006255, v_1006256, v_1006257]}}, False{}, v_1006260 => cemit_body_cps_provider_4_join_text([v_1006254, v_1006255, v_1006256, v_1006257]), v_1006259 => +v_1006258 = cemit_unbox(String, v_1006259); CEmitterFinished{CEmitterValue{v_1006258}}}}
 
-def cemit_match_1437(v_1006268: Bool, +v_8: BIR.Descriptor, +v_9: List<&2, BIR.Descriptor>) -> CEmitterProgress<List<&2, cps_provider_4_ShowToken>>:
-  match v_1006268:
+def cemit_match_1438(v_1006263: Bool, +v_8: BIR.Descriptor, +v_9: List<&2, BIR.Descriptor>) -> CEmitterProgress<List<&2, cps_provider_4_ShowToken>>:
+  match v_1006263:
     case False{}:
       v_13 = {[cps_provider_4_ShowTokText{","}] : List<&2, cps_provider_4_ShowToken>}
-      v_1006269 = {v_13 : List<&2, cps_provider_4_ShowToken>}
-      v_1006270 = {[cps_provider_4_ShowTokDesc{v_8}] : List<&2, cps_provider_4_ShowToken>}
-      CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arg_tokens{v_9, False{}}}, v_1006272 => +v_1006271 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006272); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, v_1006269, List.append(&2, cps_provider_4_ShowToken, v_1006270, v_1006271))}}}
+      v_1006264 = {v_13 : List<&2, cps_provider_4_ShowToken>}
+      v_1006265 = {[cps_provider_4_ShowTokDesc{v_8}] : List<&2, cps_provider_4_ShowToken>}
+      CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arg_tokens{v_9, False{}}}, v_1006267 => +v_1006266 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006267); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, v_1006264, List.append(&2, cps_provider_4_ShowToken, v_1006265, v_1006266))}}}
     case True{}:
       v_13 = {[] : List<&2, cps_provider_4_ShowToken>}
-      v_1006273 = {v_13 : List<&2, cps_provider_4_ShowToken>}
-      v_1006274 = {[cps_provider_4_ShowTokDesc{v_8}] : List<&2, cps_provider_4_ShowToken>}
-      CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arg_tokens{v_9, False{}}}, v_1006276 => +v_1006275 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006276); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, v_1006273, List.append(&2, cps_provider_4_ShowToken, v_1006274, v_1006275))}}}
+      v_1006268 = {v_13 : List<&2, cps_provider_4_ShowToken>}
+      v_1006269 = {[cps_provider_4_ShowTokDesc{v_8}] : List<&2, cps_provider_4_ShowToken>}
+      CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arg_tokens{v_9, False{}}}, v_1006271 => +v_1006270 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006271); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, v_1006268, List.append(&2, cps_provider_4_ShowToken, v_1006269, v_1006270))}}}
 
 def cemit_body_cps_provider_4_show_arg_tokens(+v_1: List<&2, BIR.Descriptor>, +v_3: Bool) -> CEmitterProgress<List<&2, cps_provider_4_ShowToken>>:
   match v_1:
     case []:
       CEmitterFinished{CEmitterValue{[]}}
     case +v_8 <> +v_9:
-      v_1006268 = v_3
-      cemit_match_1437(v_1006268, v_8, v_9)
+      v_1006263 = v_3
+      cemit_match_1438(v_1006263, v_8, v_9)
 
 def cemit_body_cps_provider_4_show_quantity_key(+v_0: BIR.Quantity) -> CEmitterProgress<String>:
   match v_0:
@@ -16280,457 +16294,504 @@ def cemit_body_cps_provider_4_show_quantity_key(+v_0: BIR.Quantity) -> CEmitterP
     case _:
       CEmitterFinished{CEmitterValue{"?"}}
 
-def cemit_continuation_1440(v_110: List<&2, BIR.Descriptor>, v_1006335: List<&2, cps_provider_4_ShowToken>, +v_1006336: List<&2, cps_provider_4_ShowToken>) -> CEmitterProgress<List<&2, cps_provider_4_ShowToken>>:
-  v_1006337 = {[cps_provider_4_ShowTokText{";"}] : List<&2, cps_provider_4_ShowToken>}
-  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arg_tokens{v_110, True{}}}, False{}, v_1006340 => cemit_body_cps_provider_4_show_arg_tokens(v_110, True{}), v_1006339 => +v_1006338 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006339); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, v_1006335, List.append(&2, cps_provider_4_ShowToken, v_1006336, List.append(&2, cps_provider_4_ShowToken, v_1006337, List.append(&2, cps_provider_4_ShowToken, v_1006338, [cps_provider_4_ShowTokText{")"}]))))}}}
+def cemit_body_cps_provider_4_show_maybe_quantity_key(+v_1: Maybe<&2, BIR.Quantity>) -> CEmitterProgress<String>:
+  match v_1:
+    case None{}:
+      CEmitterFinished{CEmitterValue{"-"}}
+    case Some{v_4}:
+      cemit_body_cps_provider_4_show_quantity_key(v_4)
+
+def cemit_match_1442(v_1006273: Bool, +v_8: BIR.DescriptorPattern, +v_9: List<&2, BIR.DescriptorPattern>) -> CEmitterProgress<List<&2, cps_provider_4_ShowToken>>:
+  match v_1006273:
+    case False{}:
+      v_13 = {[cps_provider_4_ShowTokText{","}] : List<&2, cps_provider_4_ShowToken>}
+      v_1006274 = {v_13 : List<&2, cps_provider_4_ShowToken>}
+      v_1006275 = {[cps_provider_4_ShowTokPat{v_8}] : List<&2, cps_provider_4_ShowToken>}
+      CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_pat_tokens{v_9, False{}}}, v_1006277 => +v_1006276 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006277); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, v_1006274, List.append(&2, cps_provider_4_ShowToken, v_1006275, v_1006276))}}}
+    case True{}:
+      v_13 = {[] : List<&2, cps_provider_4_ShowToken>}
+      v_1006278 = {v_13 : List<&2, cps_provider_4_ShowToken>}
+      v_1006279 = {[cps_provider_4_ShowTokPat{v_8}] : List<&2, cps_provider_4_ShowToken>}
+      CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_pat_tokens{v_9, False{}}}, v_1006281 => +v_1006280 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006281); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, v_1006278, List.append(&2, cps_provider_4_ShowToken, v_1006279, v_1006280))}}}
+
+def cemit_body_cps_provider_4_show_pat_tokens(+v_1: List<&2, BIR.DescriptorPattern>, +v_3: Bool) -> CEmitterProgress<List<&2, cps_provider_4_ShowToken>>:
+  match v_1:
+    case []:
+      CEmitterFinished{CEmitterValue{[]}}
+    case +v_8 <> +v_9:
+      v_1006273 = v_3
+      cemit_match_1442(v_1006273, v_8, v_9)
+
+def cemit_body_cps_provider_4_show_pat_expand(+v_0: BIR.DescriptorPattern) -> CEmitterProgress<List<&2, cps_provider_4_ShowToken>>:
+  match v_0:
+    case BIR.DescriptorBinder{v_4}:
+      v_1006282 = {cps_provider_4_ShowTokText{"b"} : cps_provider_4_ShowToken}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_quantity_key{v_4}}, False{}, v_1006285 => cemit_body_cps_provider_4_show_quantity_key(v_4), v_1006284 => +v_1006283 = cemit_unbox(String, v_1006284); CEmitterFinished{CEmitterValue{[v_1006282, cps_provider_4_ShowTokText{v_1006283}]}}}
+    case BIR.DescriptorConstructorPattern{v_8, v_9}:
+      v_1006286 = {[cps_provider_4_ShowTokText{"c"}, cps_provider_4_ShowTokText{v_8}, cps_provider_4_ShowTokText{"("}] : List<&2, cps_provider_4_ShowToken>}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_pat_tokens{v_9, True{}}}, False{}, v_1006289 => cemit_body_cps_provider_4_show_pat_tokens(v_9, True{}), v_1006288 => +v_1006287 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006288); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, v_1006286, List.append(&2, cps_provider_4_ShowToken, v_1006287, [cps_provider_4_ShowTokText{")"}]))}}}
+
+def cemit_continuation_1445(v_103: List<&2, BIR.Descriptor>, v_1006350: List<&2, cps_provider_4_ShowToken>, +v_1006351: List<&2, cps_provider_4_ShowToken>, v_104: BIR.Descriptor) -> CEmitterProgress<List<&2, cps_provider_4_ShowToken>>:
+  v_1006352 = {[cps_provider_4_ShowTokText{";"}] : List<&2, cps_provider_4_ShowToken>}
+  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arg_tokens{v_103, True{}}}, False{}, v_1006355 => cemit_body_cps_provider_4_show_arg_tokens(v_103, True{}), v_1006354 => +v_1006353 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006354); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, v_1006350, List.append(&2, cps_provider_4_ShowToken, v_1006351, List.append(&2, cps_provider_4_ShowToken, v_1006352, List.append(&2, cps_provider_4_ShowToken, v_1006353, [cps_provider_4_ShowTokText{";"}, cps_provider_4_ShowTokDesc{v_104}, cps_provider_4_ShowTokText{")"}]))))}}}
+
+def cemit_continuation_1446(v_114: List<&2, BIR.Descriptor>, v_1006358: List<&2, cps_provider_4_ShowToken>, +v_1006359: List<&2, cps_provider_4_ShowToken>) -> CEmitterProgress<List<&2, cps_provider_4_ShowToken>>:
+  v_1006360 = {[cps_provider_4_ShowTokText{";"}] : List<&2, cps_provider_4_ShowToken>}
+  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arg_tokens{v_114, True{}}}, False{}, v_1006363 => cemit_body_cps_provider_4_show_arg_tokens(v_114, True{}), v_1006362 => +v_1006361 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006362); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, v_1006358, List.append(&2, cps_provider_4_ShowToken, v_1006359, List.append(&2, cps_provider_4_ShowToken, v_1006360, List.append(&2, cps_provider_4_ShowToken, v_1006361, [cps_provider_4_ShowTokText{")"}]))))}}}
 
 def cemit_body_cps_provider_4_show_desc_expand(+v_0: BIR.Descriptor) -> CEmitterProgress<List<&2, cps_provider_4_ShowToken>>:
   match v_0:
     case BIR.DescriptorRef{v_5, v_6}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{[v_5, "("]}}, False{}, v_1006282 => cemit_body_cps_provider_4_join_text([v_5, "("]), v_1006281 => +v_1006277 = cemit_unbox(String, v_1006281); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arg_tokens{v_6, True{}}}, False{}, v_1006280 => cemit_body_cps_provider_4_show_arg_tokens(v_6, True{}), v_1006279 => +v_1006278 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006279); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, [cps_provider_4_ShowTokText{v_1006277}], List.append(&2, cps_provider_4_ShowToken, v_1006278, [cps_provider_4_ShowTokText{")"}]))}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{[v_5, "("]}}, False{}, v_1006295 => cemit_body_cps_provider_4_join_text([v_5, "("]), v_1006294 => +v_1006290 = cemit_unbox(String, v_1006294); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arg_tokens{v_6, True{}}}, False{}, v_1006293 => cemit_body_cps_provider_4_show_arg_tokens(v_6, True{}), v_1006292 => +v_1006291 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006292); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, [cps_provider_4_ShowTokText{v_1006290}], List.append(&2, cps_provider_4_ShowToken, v_1006291, [cps_provider_4_ShowTokText{")"}]))}}}}
     case BIR.DescriptorApplication{v_13, v_14}:
       CEmitterFinished{CEmitterValue{[cps_provider_4_ShowTokDesc{v_13}, cps_provider_4_ShowTokText{"<"}, cps_provider_4_ShowTokDesc{v_14}, cps_provider_4_ShowTokText{">"}]}}
     case BIR.DescriptorFill{v_17, v_18}:
-      v_1006283 = {[cps_provider_4_ShowTokDesc{v_17}, cps_provider_4_ShowTokText{"["}] : List<&2, cps_provider_4_ShowToken>}
-      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arg_tokens{v_18, True{}}}, False{}, v_1006286 => cemit_body_cps_provider_4_show_arg_tokens(v_18, True{}), v_1006285 => +v_1006284 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006285); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, List.append(&2, cps_provider_4_ShowToken, v_1006283, v_1006284), [cps_provider_4_ShowTokText{"]"}])}}}
+      v_1006296 = {[cps_provider_4_ShowTokDesc{v_17}, cps_provider_4_ShowTokText{"["}] : List<&2, cps_provider_4_ShowToken>}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arg_tokens{v_18, True{}}}, False{}, v_1006299 => cemit_body_cps_provider_4_show_arg_tokens(v_18, True{}), v_1006298 => +v_1006297 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006298); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, List.append(&2, cps_provider_4_ShowToken, v_1006296, v_1006297), [cps_provider_4_ShowTokText{"]"}])}}}
     case BIR.DescriptorPlus{v_24, v_25}:
-      v_1006287 = {[cps_provider_4_ShowTokDesc{v_24}, cps_provider_4_ShowTokText{"+["}] : List<&2, cps_provider_4_ShowToken>}
-      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arg_tokens{v_25, True{}}}, False{}, v_1006290 => cemit_body_cps_provider_4_show_arg_tokens(v_25, True{}), v_1006289 => +v_1006288 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006289); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, List.append(&2, cps_provider_4_ShowToken, v_1006287, v_1006288), [cps_provider_4_ShowTokText{"]"}])}}}
+      v_1006300 = {[cps_provider_4_ShowTokDesc{v_24}, cps_provider_4_ShowTokText{"+["}] : List<&2, cps_provider_4_ShowToken>}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arg_tokens{v_25, True{}}}, False{}, v_1006303 => cemit_body_cps_provider_4_show_arg_tokens(v_25, True{}), v_1006302 => +v_1006301 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006302); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, List.append(&2, cps_provider_4_ShowToken, v_1006300, v_1006301), [cps_provider_4_ShowTokText{"]"}])}}}
     case BIR.DescriptorNamedFill{v_32, v_33, v_34}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{[v_32, ":"]}}, False{}, v_1006296 => cemit_body_cps_provider_4_join_text([v_32, ":"]), v_1006295 => +v_1006291 = cemit_unbox(String, v_1006295); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arg_tokens{v_34, True{}}}, False{}, v_1006294 => cemit_body_cps_provider_4_show_arg_tokens(v_34, True{}), v_1006293 => +v_1006292 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006293); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, [cps_provider_4_ShowTokText{v_1006291}, cps_provider_4_ShowTokDesc{v_33}, cps_provider_4_ShowTokText{"["}], List.append(&2, cps_provider_4_ShowToken, v_1006292, [cps_provider_4_ShowTokText{"]"}]))}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{[v_32, ":"]}}, False{}, v_1006309 => cemit_body_cps_provider_4_join_text([v_32, ":"]), v_1006308 => +v_1006304 = cemit_unbox(String, v_1006308); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arg_tokens{v_34, True{}}}, False{}, v_1006307 => cemit_body_cps_provider_4_show_arg_tokens(v_34, True{}), v_1006306 => +v_1006305 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006306); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, [cps_provider_4_ShowTokText{v_1006304}, cps_provider_4_ShowTokDesc{v_33}, cps_provider_4_ShowTokText{"["}], List.append(&2, cps_provider_4_ShowToken, v_1006305, [cps_provider_4_ShowTokText{"]"}]))}}}}
     case BIR.DescriptorNamedPlus{v_42, v_43, v_44}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{[v_42, ":"]}}, False{}, v_1006302 => cemit_body_cps_provider_4_join_text([v_42, ":"]), v_1006301 => +v_1006297 = cemit_unbox(String, v_1006301); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arg_tokens{v_44, True{}}}, False{}, v_1006300 => cemit_body_cps_provider_4_show_arg_tokens(v_44, True{}), v_1006299 => +v_1006298 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006299); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, [cps_provider_4_ShowTokText{v_1006297}, cps_provider_4_ShowTokDesc{v_43}, cps_provider_4_ShowTokText{"+["}], List.append(&2, cps_provider_4_ShowToken, v_1006298, [cps_provider_4_ShowTokText{"]"}]))}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{[v_42, ":"]}}, False{}, v_1006315 => cemit_body_cps_provider_4_join_text([v_42, ":"]), v_1006314 => +v_1006310 = cemit_unbox(String, v_1006314); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arg_tokens{v_44, True{}}}, False{}, v_1006313 => cemit_body_cps_provider_4_show_arg_tokens(v_44, True{}), v_1006312 => +v_1006311 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006312); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, [cps_provider_4_ShowTokText{v_1006310}, cps_provider_4_ShowTokDesc{v_43}, cps_provider_4_ShowTokText{"+["}], List.append(&2, cps_provider_4_ShowToken, v_1006311, [cps_provider_4_ShowTokText{"]"}]))}}}}
     case BIR.DescriptorParameter{v_50}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{["#", Nat.show(v_50)]}}, False{}, v_1006305 => cemit_body_cps_provider_4_join_text(["#", Nat.show(v_50)]), v_1006304 => +v_1006303 = cemit_unbox(String, v_1006304); CEmitterFinished{CEmitterValue{[cps_provider_4_ShowTokText{v_1006303}]}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{["#", Nat.show(v_50)]}}, False{}, v_1006318 => cemit_body_cps_provider_4_join_text(["#", Nat.show(v_50)]), v_1006317 => +v_1006316 = cemit_unbox(String, v_1006317); CEmitterFinished{CEmitterValue{[cps_provider_4_ShowTokText{v_1006316}]}}}
     case BIR.DescriptorNull{}:
       CEmitterFinished{CEmitterValue{[cps_provider_4_ShowTokText{"null"}]}}
     case BIR.DescriptorKind{v_53}:
       CEmitterFinished{CEmitterValue{[cps_provider_4_ShowTokText{"K("}, cps_provider_4_ShowTokDesc{v_53}, cps_provider_4_ShowTokText{")"}]}}
     case BIR.DescriptorQuantity{v_55}:
-      v_1006306 = {"Q(" : String}
-      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_quantity_key{v_55}}, False{}, v_1006312 => cemit_body_cps_provider_4_show_quantity_key(v_55), v_1006311 => +v_1006307 = cemit_unbox(String, v_1006311); CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{[v_1006306, v_1006307, ")"]}}, False{}, v_1006310 => cemit_body_cps_provider_4_join_text([v_1006306, v_1006307, ")"]), v_1006309 => +v_1006308 = cemit_unbox(String, v_1006309); CEmitterFinished{CEmitterValue{[cps_provider_4_ShowTokText{v_1006308}]}}}}
+      v_1006319 = {"Q(" : String}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_quantity_key{v_55}}, False{}, v_1006325 => cemit_body_cps_provider_4_show_quantity_key(v_55), v_1006324 => +v_1006320 = cemit_unbox(String, v_1006324); CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{[v_1006319, v_1006320, ")"]}}, False{}, v_1006323 => cemit_body_cps_provider_4_join_text([v_1006319, v_1006320, ")"]), v_1006322 => +v_1006321 = cemit_unbox(String, v_1006322); CEmitterFinished{CEmitterValue{[cps_provider_4_ShowTokText{v_1006321}]}}}}
     case BIR.DescriptorQuantityKind{}:
       CEmitterFinished{CEmitterValue{[cps_provider_4_ShowTokText{"QK"}]}}
     case BIR.DescriptorMinimum{v_60, v_61}:
       CEmitterFinished{CEmitterValue{[cps_provider_4_ShowTokText{"min("}, cps_provider_4_ShowTokDesc{v_60}, cps_provider_4_ShowTokText{","}, cps_provider_4_ShowTokDesc{v_61}, cps_provider_4_ShowTokText{")"}]}}
     case BIR.DescriptorArrow{v_65, v_66, v_67}:
-      CEmitterFinished{CEmitterValue{[cps_provider_4_ShowTokText{"("}, cps_provider_4_ShowTokDesc{v_66}, cps_provider_4_ShowTokText{")->"}, cps_provider_4_ShowTokDesc{v_67}]}}
-    case BIR.DescriptorLambda{v_70, v_71}:
-      CEmitterFinished{CEmitterValue{[cps_provider_4_ShowTokText{"\\"}, cps_provider_4_ShowTokDesc{v_71}]}}
-    case BIR.DescriptorConstructor{v_74, v_75}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{["@", v_74, "("]}}, False{}, v_1006318 => cemit_body_cps_provider_4_join_text(["@", v_74, "("]), v_1006317 => +v_1006313 = cemit_unbox(String, v_1006317); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arg_tokens{v_75, True{}}}, False{}, v_1006316 => cemit_body_cps_provider_4_show_arg_tokens(v_75, True{}), v_1006315 => +v_1006314 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006315); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, [cps_provider_4_ShowTokText{v_1006313}], List.append(&2, cps_provider_4_ShowToken, v_1006314, [cps_provider_4_ShowTokText{")"}]))}}}}
-    case BIR.DescriptorFailure{v_81}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{["!", v_81]}}, False{}, v_1006321 => cemit_body_cps_provider_4_join_text(["!", v_81]), v_1006320 => +v_1006319 = cemit_unbox(String, v_1006320); CEmitterFinished{CEmitterValue{[cps_provider_4_ShowTokText{v_1006319}]}}}
-    case BIR.DescriptorSubstitution{v_86, v_87, v_88}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{["S", Nat.show(v_86), "("]}}, False{}, v_1006324 => cemit_body_cps_provider_4_join_text(["S", Nat.show(v_86), "("]), v_1006323 => +v_1006322 = cemit_unbox(String, v_1006323); CEmitterFinished{CEmitterValue{[cps_provider_4_ShowTokText{v_1006322}, cps_provider_4_ShowTokDesc{v_87}, cps_provider_4_ShowTokText{";"}, cps_provider_4_ShowTokDesc{v_88}, cps_provider_4_ShowTokText{")"}]}}}
-    case BIR.DescriptorLet{v_92, v_93}:
-      v_1006325 = {[cps_provider_4_ShowTokText{"L("}] : List<&2, cps_provider_4_ShowToken>}
-      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arg_tokens{v_92, True{}}}, False{}, v_1006328 => cemit_body_cps_provider_4_show_arg_tokens(v_92, True{}), v_1006327 => +v_1006326 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006327); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, v_1006325, List.append(&2, cps_provider_4_ShowToken, v_1006326, [cps_provider_4_ShowTokText{";"}, cps_provider_4_ShowTokDesc{v_93}, cps_provider_4_ShowTokText{")"}]))}}}
-    case BIR.DescriptorLocal{v_100, v_101, v_102}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{["Loc(", Nat.show(List.length(&2, BIR.DescriptorPattern, v_100)), ","]}}, False{}, v_1006334 => cemit_body_cps_provider_4_join_text(["Loc(", Nat.show(List.length(&2, BIR.DescriptorPattern, v_100)), ","]), v_1006333 => +v_1006329 = cemit_unbox(String, v_1006333); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arg_tokens{v_101, True{}}}, False{}, v_1006332 => cemit_body_cps_provider_4_show_arg_tokens(v_101, True{}), v_1006331 => +v_1006330 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006331); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, [cps_provider_4_ShowTokText{v_1006329}], List.append(&2, cps_provider_4_ShowToken, v_1006330, [cps_provider_4_ShowTokText{";"}, cps_provider_4_ShowTokDesc{v_102}, cps_provider_4_ShowTokText{")"}]))}}}}
-    case BIR.DescriptorMatch{v_109, v_110}:
-      v_1006335 = {[cps_provider_4_ShowTokText{"M("}] : List<&2, cps_provider_4_ShowToken>}
-      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arg_tokens{v_109, True{}}}, False{}, v_1006342 => cemit_body_cps_provider_4_show_arg_tokens(v_109, True{}), v_1006341 => +v_1006336 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006341); cemit_continuation_1440(v_110, v_1006335, v_1006336)}
-    case BIR.DescriptorCase{v_119, v_120}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{["C(", Nat.show(List.length(&2, BIR.DescriptorPattern, v_119)), ";"]}}, False{}, v_1006345 => cemit_body_cps_provider_4_join_text(["C(", Nat.show(List.length(&2, BIR.DescriptorPattern, v_119)), ";"]), v_1006344 => +v_1006343 = cemit_unbox(String, v_1006344); CEmitterFinished{CEmitterValue{[cps_provider_4_ShowTokText{v_1006343}, cps_provider_4_ShowTokDesc{v_120}, cps_provider_4_ShowTokText{")"}]}}}
-    case BIR.DescriptorBind{v_124, v_125}:
-      CEmitterFinished{CEmitterValue{[cps_provider_4_ShowTokText{"B("}, cps_provider_4_ShowTokDesc{v_124}, cps_provider_4_ShowTokText{";"}, cps_provider_4_ShowTokDesc{v_125}, cps_provider_4_ShowTokText{")"}]}}
-    case BIR.DescriptorEquality{v_129, v_130, v_131}:
-      CEmitterFinished{CEmitterValue{[cps_provider_4_ShowTokText{"E("}, cps_provider_4_ShowTokDesc{v_129}, cps_provider_4_ShowTokText{","}, cps_provider_4_ShowTokDesc{v_130}, cps_provider_4_ShowTokText{","}, cps_provider_4_ShowTokDesc{v_131}, cps_provider_4_ShowTokText{")"}]}}
+      v_1006326 = {cps_provider_4_ShowTokText{"A"} : cps_provider_4_ShowToken}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_quantity_key{v_65}}, False{}, v_1006329 => cemit_body_cps_provider_4_show_quantity_key(v_65), v_1006328 => +v_1006327 = cemit_unbox(String, v_1006328); CEmitterFinished{CEmitterValue{[v_1006326, cps_provider_4_ShowTokText{v_1006327}, cps_provider_4_ShowTokText{"("}, cps_provider_4_ShowTokDesc{v_66}, cps_provider_4_ShowTokText{")->"}, cps_provider_4_ShowTokDesc{v_67}]}}}
+    case BIR.DescriptorLambda{v_71, v_72}:
+      v_1006330 = {cps_provider_4_ShowTokText{"L"} : cps_provider_4_ShowToken}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_maybe_quantity_key{v_71}}, False{}, v_1006333 => cemit_body_cps_provider_4_show_maybe_quantity_key(v_71), v_1006332 => +v_1006331 = cemit_unbox(String, v_1006332); CEmitterFinished{CEmitterValue{[v_1006330, cps_provider_4_ShowTokText{v_1006331}, cps_provider_4_ShowTokDesc{v_72}]}}}
+    case BIR.DescriptorConstructor{v_76, v_77}:
+      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{["@", v_76, "("]}}, False{}, v_1006339 => cemit_body_cps_provider_4_join_text(["@", v_76, "("]), v_1006338 => +v_1006334 = cemit_unbox(String, v_1006338); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arg_tokens{v_77, True{}}}, False{}, v_1006337 => cemit_body_cps_provider_4_show_arg_tokens(v_77, True{}), v_1006336 => +v_1006335 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006336); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, [cps_provider_4_ShowTokText{v_1006334}], List.append(&2, cps_provider_4_ShowToken, v_1006335, [cps_provider_4_ShowTokText{")"}]))}}}}
+    case BIR.DescriptorFailure{v_83}:
+      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{["!", v_83]}}, False{}, v_1006342 => cemit_body_cps_provider_4_join_text(["!", v_83]), v_1006341 => +v_1006340 = cemit_unbox(String, v_1006341); CEmitterFinished{CEmitterValue{[cps_provider_4_ShowTokText{v_1006340}]}}}
+    case BIR.DescriptorSubstitution{v_88, v_89, v_90}:
+      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{["S", Nat.show(v_88), "("]}}, False{}, v_1006345 => cemit_body_cps_provider_4_join_text(["S", Nat.show(v_88), "("]), v_1006344 => +v_1006343 = cemit_unbox(String, v_1006344); CEmitterFinished{CEmitterValue{[cps_provider_4_ShowTokText{v_1006343}, cps_provider_4_ShowTokDesc{v_89}, cps_provider_4_ShowTokText{";"}, cps_provider_4_ShowTokDesc{v_90}, cps_provider_4_ShowTokText{")"}]}}}
+    case BIR.DescriptorLet{v_94, v_95}:
+      v_1006346 = {[cps_provider_4_ShowTokText{"L("}] : List<&2, cps_provider_4_ShowToken>}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arg_tokens{v_94, True{}}}, False{}, v_1006349 => cemit_body_cps_provider_4_show_arg_tokens(v_94, True{}), v_1006348 => +v_1006347 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006348); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, v_1006346, List.append(&2, cps_provider_4_ShowToken, v_1006347, [cps_provider_4_ShowTokText{";"}, cps_provider_4_ShowTokDesc{v_95}, cps_provider_4_ShowTokText{")"}]))}}}
+    case BIR.DescriptorLocal{v_102, v_103, v_104}:
+      v_1006350 = {[cps_provider_4_ShowTokText{"Loc("}] : List<&2, cps_provider_4_ShowToken>}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_pat_tokens{v_102, True{}}}, False{}, v_1006357 => cemit_body_cps_provider_4_show_pat_tokens(v_102, True{}), v_1006356 => +v_1006351 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006356); cemit_continuation_1445(v_103, v_1006350, v_1006351, v_104)}
+    case BIR.DescriptorMatch{v_113, v_114}:
+      v_1006358 = {[cps_provider_4_ShowTokText{"M("}] : List<&2, cps_provider_4_ShowToken>}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arg_tokens{v_113, True{}}}, False{}, v_1006365 => cemit_body_cps_provider_4_show_arg_tokens(v_113, True{}), v_1006364 => +v_1006359 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006364); cemit_continuation_1446(v_114, v_1006358, v_1006359)}
+    case BIR.DescriptorCase{v_123, v_124}:
+      v_1006366 = {[cps_provider_4_ShowTokText{"C("}] : List<&2, cps_provider_4_ShowToken>}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_pat_tokens{v_123, True{}}}, False{}, v_1006369 => cemit_body_cps_provider_4_show_pat_tokens(v_123, True{}), v_1006368 => +v_1006367 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006368); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowToken, v_1006366, List.append(&2, cps_provider_4_ShowToken, v_1006367, [cps_provider_4_ShowTokText{";"}, cps_provider_4_ShowTokDesc{v_124}, cps_provider_4_ShowTokText{")"}]))}}}
+    case BIR.DescriptorBind{v_130, v_131}:
+      CEmitterFinished{CEmitterValue{[cps_provider_4_ShowTokText{"B("}, cps_provider_4_ShowTokDesc{v_130}, cps_provider_4_ShowTokText{";"}, cps_provider_4_ShowTokDesc{v_131}, cps_provider_4_ShowTokText{")"}]}}
+    case BIR.DescriptorEquality{v_135, v_136, v_137}:
+      CEmitterFinished{CEmitterValue{[cps_provider_4_ShowTokText{"E("}, cps_provider_4_ShowTokDesc{v_135}, cps_provider_4_ShowTokText{","}, cps_provider_4_ShowTokDesc{v_136}, cps_provider_4_ShowTokText{","}, cps_provider_4_ShowTokDesc{v_137}, cps_provider_4_ShowTokText{")"}]}}
     case BIR.DescriptorReflexivity{}:
       CEmitterFinished{CEmitterValue{[cps_provider_4_ShowTokText{"R"}]}}
     case _:
       CEmitterFinished{CEmitterValue{[cps_provider_4_ShowTokText{"?"}]}}
 
-def cemit_match_1442(+v_9: cps_provider_4_ShowToken, +v_10: List<&2, cps_provider_4_ShowToken>, +v_4: String) -> CEmitterProgress<Maybe<&2, String>>:
+def cemit_match_1448(+v_9: cps_provider_4_ShowToken, +v_10: List<&2, cps_provider_4_ShowToken>, +v_4: String) -> CEmitterProgress<Maybe<&2, String>>:
   match v_9:
-    case cps_provider_4_ShowTokText{v_12}:
-      +v_1006346 = {v_10 : List<&2, cps_provider_4_ShowToken>}
-      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{[v_4, v_12]}}, False{}, v_1006351 => cemit_body_cps_provider_4_join_text([v_4, v_12]), v_1006350 => +v_1006347 = cemit_unbox(String, v_1006350); CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_render_tokens{v_1006346, v_1006347}}, v_1006349 => +v_1006348 = cemit_unbox(Maybe<&2, String>, v_1006349); CEmitterFinished{CEmitterValue{v_1006348}}}}
+    case cps_provider_4_ShowTokText{+v_12}:
+      +v_1006370 = {v_10 : List<&2, cps_provider_4_ShowToken>}
+      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{[v_4, Nat.show(String.length(v_12)), ":", v_12]}}, False{}, v_1006375 => cemit_body_cps_provider_4_join_text([v_4, Nat.show(String.length(v_12)), ":", v_12]), v_1006374 => +v_1006371 = cemit_unbox(String, v_1006374); CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_render_tokens{v_1006370, v_1006371}}, v_1006373 => +v_1006372 = cemit_unbox(Maybe<&2, String>, v_1006373); CEmitterFinished{CEmitterValue{v_1006372}}}}
     case cps_provider_4_ShowTokDesc{v_16}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_desc_expand{v_16}}, False{}, v_1006356 => cemit_body_cps_provider_4_show_desc_expand(v_16), v_1006355 => +v_1006352 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006355); CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_render_tokens{List.append(&2, cps_provider_4_ShowToken, v_1006352, v_10), v_4}}, v_1006354 => +v_1006353 = cemit_unbox(Maybe<&2, String>, v_1006354); CEmitterFinished{CEmitterValue{v_1006353}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_desc_expand{v_16}}, False{}, v_1006380 => cemit_body_cps_provider_4_show_desc_expand(v_16), v_1006379 => +v_1006376 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006379); CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_render_tokens{List.append(&2, cps_provider_4_ShowToken, v_1006376, v_10), v_4}}, v_1006378 => +v_1006377 = cemit_unbox(Maybe<&2, String>, v_1006378); CEmitterFinished{CEmitterValue{v_1006377}}}}
+    case cps_provider_4_ShowTokPat{v_21}:
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_pat_expand{v_21}}, False{}, v_1006385 => cemit_body_cps_provider_4_show_pat_expand(v_21), v_1006384 => +v_1006381 = cemit_unbox(List<&2, cps_provider_4_ShowToken>, v_1006384); CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_render_tokens{List.append(&2, cps_provider_4_ShowToken, v_1006381, v_10), v_4}}, v_1006383 => +v_1006382 = cemit_unbox(Maybe<&2, String>, v_1006383); CEmitterFinished{CEmitterValue{v_1006382}}}}
 
 def cemit_body_cps_provider_4_show_render_tokens(+v_2: List<&2, cps_provider_4_ShowToken>, +v_4: String) -> CEmitterProgress<Maybe<&2, String>>:
   match v_2:
     case []:
       CEmitterFinished{CEmitterValue{Some{v_4}}}
     case +v_9 <> +v_10:
-      cemit_match_1442(v_9, v_10, v_4)
+      cemit_match_1448(v_9, v_10, v_4)
 
 def cemit_body_cps_provider_4_show_descriptor_key(+v_0: BIR.Descriptor) -> CEmitterProgress<Maybe<&2, String>>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_render_tokens{[cps_provider_4_ShowTokDesc{v_0}], ""}}, False{}, v_1006359 => cemit_body_cps_provider_4_show_render_tokens([cps_provider_4_ShowTokDesc{v_0}], ""), v_1006358 => +v_1006357 = cemit_unbox(Maybe<&2, String>, v_1006358); CEmitterFinished{CEmitterValue{v_1006357}}}
+  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_render_tokens{[cps_provider_4_ShowTokDesc{v_0}], ""}}, False{}, v_1006388 => cemit_body_cps_provider_4_show_render_tokens([cps_provider_4_ShowTokDesc{v_0}], ""), v_1006387 => +v_1006386 = cemit_unbox(Maybe<&2, String>, v_1006387); CEmitterFinished{CEmitterValue{v_1006386}}}
 
-def cemit_continuation_1444(+v_1006365: cps_provider_4_ShowState, +v_8: BIR.Descriptor, v_23: cps_provider_3_Layout, +v_10: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  v_31 = v_1006365
+def cemit_continuation_1450(+v_1006394: cps_provider_4_ShowState, +v_8: BIR.Descriptor, v_23: cps_provider_3_Layout, +v_10: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+  v_31 = v_1006394
   CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_31, [cps_provider_4_ShowNode{v_8, v_23, Some{Nat.add(v_10, 1n)}}]}}}
 
-def cemit_match_1445(v_18: cps_provider_3_Cell, +v_12: cps_provider_4_ShowState, +v_8: BIR.Descriptor, +v_10: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1451(v_18: cps_provider_3_Cell, +v_12: cps_provider_4_ShowState, +v_8: BIR.Descriptor, +v_10: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_18:
     case cps_provider_3_Cell{v_23, v_24, v_25, v_26}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_12, 6n}}, False{}, v_1006371 => cemit_body_cps_provider_4_show_append_num(v_12, 6n), v_1006370 => +v_1006363 = cemit_unbox(cps_provider_4_ShowState, v_1006370); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_1006363, 0n}}, False{}, v_1006369 => cemit_body_cps_provider_4_show_append_num(v_1006363, 0n), v_1006368 => +v_1006364 = cemit_unbox(cps_provider_4_ShowState, v_1006368); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_1006364, v_26}}, False{}, v_1006367 => cemit_body_cps_provider_4_show_append_num(v_1006364, v_26), v_1006366 => +v_1006365 = cemit_unbox(cps_provider_4_ShowState, v_1006366); cemit_continuation_1444(v_1006365, v_8, v_23, v_10)}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_12, 6n}}, False{}, v_1006400 => cemit_body_cps_provider_4_show_append_num(v_12, 6n), v_1006399 => +v_1006392 = cemit_unbox(cps_provider_4_ShowState, v_1006399); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_1006392, 0n}}, False{}, v_1006398 => cemit_body_cps_provider_4_show_append_num(v_1006392, 0n), v_1006397 => +v_1006393 = cemit_unbox(cps_provider_4_ShowState, v_1006397); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_1006393, v_26}}, False{}, v_1006396 => cemit_body_cps_provider_4_show_append_num(v_1006393, v_26), v_1006395 => +v_1006394 = cemit_unbox(cps_provider_4_ShowState, v_1006395); cemit_continuation_1450(v_1006394, v_8, v_23, v_10)}}}
 
-def cemit_match_1446(+v_1: cps_provider_3_CellResult, +v_12: cps_provider_4_ShowState, +v_8: BIR.Descriptor, +v_10: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1452(+v_1: cps_provider_3_CellResult, +v_12: cps_provider_4_ShowState, +v_8: BIR.Descriptor, +v_10: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_1:
     case cps_provider_3_CellFailed{v_15}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_12, v_15}}, False{}, v_1006362 => cemit_body_cps_provider_4_show_state_error(v_12, v_15), v_1006361 => +v_1006360 = cemit_unbox(cps_provider_4_ShowState, v_1006361); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006360, []}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_12, v_15}}, False{}, v_1006391 => cemit_body_cps_provider_4_show_state_error(v_12, v_15), v_1006390 => +v_1006389 = cemit_unbox(cps_provider_4_ShowState, v_1006390); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006389, []}}}}
     case cps_provider_3_CellFound{v_18}:
-      cemit_match_1445(v_18, v_12, v_8, v_10)
+      cemit_match_1451(v_18, v_12, v_8, v_10)
 
 def cemit_body_cps_provider_4_show_array_cell(+v_1: cps_provider_3_CellResult, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: Nat, +v_12: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  cemit_match_1446(v_1, v_12, v_8, v_10)
+  cemit_match_1452(v_1, v_12, v_8, v_10)
 
-def cemit_continuation_1447(+v_1006372: cps_provider_3_CellResult, +v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>, +v_6: BIR.Descriptor, +v_8: Nat, +v_10: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  v_14 = v_1006372
+def cemit_continuation_1453(+v_1006401: cps_provider_3_CellResult, +v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>, +v_6: BIR.Descriptor, +v_8: Nat, +v_10: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+  v_14 = v_1006401
   cemit_body_cps_provider_4_show_array_cell(v_14, v_1, v_3, v_5, v_6, v_8, v_10)
 
 def cemit_body_cps_provider_4_show_array_element(+v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>, +v_6: BIR.Descriptor, +v_8: Nat, +v_10: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_3_array_cell{v_1, v_6}}, False{}, v_1006375 => cemit_body_cps_provider_3_array_cell(v_1, v_6), v_1006374 => +v_1006372 = cemit_unbox(cps_provider_3_CellResult, v_1006374); cemit_continuation_1447(v_1006372, v_1, v_3, v_5, v_6, v_8, v_10)}
+  CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_3_array_cell{v_1, v_6}}, False{}, v_1006404 => cemit_body_cps_provider_3_array_cell(v_1, v_6), v_1006403 => +v_1006401 = cemit_unbox(cps_provider_3_CellResult, v_1006403); cemit_continuation_1453(v_1006401, v_1, v_3, v_5, v_6, v_8, v_10)}
 
-def cemit_match_1448(v_18: List<&2, BIR.Descriptor>, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_10: Nat, +v_12: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1454(v_18: List<&2, BIR.Descriptor>, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_10: Nat, +v_12: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_18:
     case +v_21 <> +v_22:
       cemit_body_cps_provider_4_show_array_element(v_3, v_5, v_7, v_21, v_10, v_12)
     case []:
-      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_12, "an Array descriptor without an element type cannot be printed"}}, False{}, v_1006382 => cemit_body_cps_provider_4_show_state_error(v_12, "an Array descriptor without an element type cannot be printed"), v_1006381 => +v_1006380 = cemit_unbox(cps_provider_4_ShowState, v_1006381); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006380, []}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_12, "an Array descriptor without an element type cannot be printed"}}, False{}, v_1006411 => cemit_body_cps_provider_4_show_state_error(v_12, "an Array descriptor without an element type cannot be printed"), v_1006410 => +v_1006409 = cemit_unbox(cps_provider_4_ShowState, v_1006410); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006409, []}}}}
 
-def cemit_match_1449(+v_1: cps_provider_3_ArgsResult, +v_12: cps_provider_4_ShowState, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_10: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1455(+v_1: cps_provider_3_ArgsResult, +v_12: cps_provider_4_ShowState, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_10: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_1:
     case cps_provider_3_ArgsFailed{v_15}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_12, v_15}}, False{}, v_1006378 => cemit_body_cps_provider_4_show_state_error(v_12, v_15), v_1006377 => +v_1006376 = cemit_unbox(cps_provider_4_ShowState, v_1006377); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006376, []}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_12, v_15}}, False{}, v_1006407 => cemit_body_cps_provider_4_show_state_error(v_12, v_15), v_1006406 => +v_1006405 = cemit_unbox(cps_provider_4_ShowState, v_1006406); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006405, []}}}}
     case cps_provider_3_ArgsOk{v_18}:
-      cemit_match_1448(v_18, v_3, v_5, v_7, v_10, v_12)
+      cemit_match_1454(v_18, v_3, v_5, v_7, v_10, v_12)
 
 def cemit_body_cps_provider_4_show_array_args(+v_1: cps_provider_3_ArgsResult, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: Nat, +v_12: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  cemit_match_1449(v_1, v_12, v_3, v_5, v_7, v_10)
+  cemit_match_1455(v_1, v_12, v_3, v_5, v_7, v_10)
 
-def cemit_continuation_1450(+v_1006383: cps_provider_3_ArgsResult, +v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>, +v_6: BIR.Descriptor, +v_8: Nat, +v_10: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  v_14 = v_1006383
+def cemit_continuation_1456(+v_1006412: cps_provider_3_ArgsResult, +v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>, +v_6: BIR.Descriptor, +v_8: Nat, +v_10: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+  v_14 = v_1006412
   cemit_body_cps_provider_4_show_array_args(v_14, v_1, v_3, v_5, v_6, v_8, v_10)
 
 def cemit_body_cps_provider_4_show_advance_array(+v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>, +v_6: BIR.Descriptor, +v_8: Nat, +v_10: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_3_head_args{v_1, v_6}}, False{}, v_1006386 => cemit_body_cps_provider_3_head_args(v_1, v_6), v_1006385 => +v_1006383 = cemit_unbox(cps_provider_3_ArgsResult, v_1006385); cemit_continuation_1450(v_1006383, v_1, v_3, v_5, v_6, v_8, v_10)}
+  CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_3_head_args{v_1, v_6}}, False{}, v_1006415 => cemit_body_cps_provider_3_head_args(v_1, v_6), v_1006414 => +v_1006412 = cemit_unbox(cps_provider_3_ArgsResult, v_1006414); cemit_continuation_1456(v_1006412, v_1, v_3, v_5, v_6, v_8, v_10)}
 
 def cemit_body_cps_provider_4_box_advance(+v_1: cps_provider_4_ShowJob, +v_3: cps_provider_4_ShowAdvance) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{cemit_pure_cps_provider_4_show_next_state(v_3), List.append(&2, cps_provider_4_ShowJob, [v_1], cemit_pure_cps_provider_4_show_next_kids(v_3))}}}
 
-def cemit_match_1451(+v_4: List<&2, BIR.DescriptorField>, +v_6: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1457(+v_4: List<&2, BIR.DescriptorField>, +v_6: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_4:
     case []:
       CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_6, []}}}
     case _:
-      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_6, "a constructor node's slots and fields differ"}}, False{}, v_1006389 => cemit_body_cps_provider_4_show_state_error(v_6, "a constructor node's slots and fields differ"), v_1006388 => +v_1006387 = cemit_unbox(cps_provider_4_ShowState, v_1006388); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006387, []}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_6, "a constructor node's slots and fields differ"}}, False{}, v_1006418 => cemit_body_cps_provider_4_show_state_error(v_6, "a constructor node's slots and fields differ"), v_1006417 => +v_1006416 = cemit_unbox(cps_provider_4_ShowState, v_1006417); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006416, []}}}}
 
-def cemit_match_1452(+v_18: BIR.DescriptorField, v_25: cps_provider_3_Layout, +v_6: cps_provider_4_ShowState, +v_14: List<&2, cps_provider_3_NodeSlot>, +v_19: List<&2, BIR.DescriptorField>, v_24: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1458(+v_18: BIR.DescriptorField, v_25: cps_provider_3_Layout, +v_6: cps_provider_4_ShowState, +v_14: List<&2, cps_provider_3_NodeSlot>, +v_19: List<&2, BIR.DescriptorField>, v_24: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_18:
     case BIR.DescriptorField{v_29, v_30, v_31}:
-      +v_1006393 = {cps_provider_4_ShowNode{v_31, v_25, Some{Nat.add(List.length(&2, cps_provider_4_ShowWord, cemit_pure_cps_provider_4_show_words(v_6)), 1n)}} : cps_provider_4_ShowJob}
-      +v_1006394 = {v_14 : List<&2, cps_provider_3_NodeSlot>}
-      +v_1006395 = {v_19 : List<&2, BIR.DescriptorField>}
-      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_6, v_24}}, False{}, v_1006404 => cemit_body_cps_provider_4_show_append_num(v_6, v_24), v_1006403 => +v_1006396 = cemit_unbox(cps_provider_4_ShowState, v_1006403); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_1006396, 0n}}, False{}, v_1006402 => cemit_body_cps_provider_4_show_append_num(v_1006396, 0n), v_1006401 => +v_1006397 = cemit_unbox(cps_provider_4_ShowState, v_1006401); CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_fields_box_each{v_1006394, v_1006395, v_1006397}}, v_1006400 => +v_1006398 = cemit_unbox(cps_provider_4_ShowAdvance, v_1006400); cemit_body_cps_provider_4_box_advance(v_1006393, v_1006398)}}}
+      +v_1006422 = {cps_provider_4_ShowNode{v_31, v_25, Some{Nat.add(List.length(&2, cps_provider_4_ShowWord, cemit_pure_cps_provider_4_show_words(v_6)), 1n)}} : cps_provider_4_ShowJob}
+      +v_1006423 = {v_14 : List<&2, cps_provider_3_NodeSlot>}
+      +v_1006424 = {v_19 : List<&2, BIR.DescriptorField>}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_6, v_24}}, False{}, v_1006433 => cemit_body_cps_provider_4_show_append_num(v_6, v_24), v_1006432 => +v_1006425 = cemit_unbox(cps_provider_4_ShowState, v_1006432); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_1006425, 0n}}, False{}, v_1006431 => cemit_body_cps_provider_4_show_append_num(v_1006425, 0n), v_1006430 => +v_1006426 = cemit_unbox(cps_provider_4_ShowState, v_1006430); CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_fields_box_each{v_1006423, v_1006424, v_1006426}}, v_1006429 => +v_1006427 = cemit_unbox(cps_provider_4_ShowAdvance, v_1006429); cemit_body_cps_provider_4_box_advance(v_1006422, v_1006427)}}}
 
-def cemit_match_1453(+v_13: cps_provider_3_NodeSlot, +v_18: BIR.DescriptorField, +v_6: cps_provider_4_ShowState, +v_14: List<&2, cps_provider_3_NodeSlot>, +v_19: List<&2, BIR.DescriptorField>) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1459(+v_13: cps_provider_3_NodeSlot, +v_18: BIR.DescriptorField, +v_6: cps_provider_4_ShowState, +v_14: List<&2, cps_provider_3_NodeSlot>, +v_19: List<&2, BIR.DescriptorField>) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_13:
     case cps_provider_3_NodeSlot{v_23, v_24, v_25}:
-      cemit_match_1452(v_18, v_25, v_6, v_14, v_19, v_24)
+      cemit_match_1458(v_18, v_25, v_6, v_14, v_19, v_24)
 
-def cemit_match_1454(+v_4: List<&2, BIR.DescriptorField>, +v_6: cps_provider_4_ShowState, +v_13: cps_provider_3_NodeSlot, +v_14: List<&2, cps_provider_3_NodeSlot>) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1460(+v_4: List<&2, BIR.DescriptorField>, +v_6: cps_provider_4_ShowState, +v_13: cps_provider_3_NodeSlot, +v_14: List<&2, cps_provider_3_NodeSlot>) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_4:
     case []:
-      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_6, "a constructor node's slots and fields differ"}}, False{}, v_1006392 => cemit_body_cps_provider_4_show_state_error(v_6, "a constructor node's slots and fields differ"), v_1006391 => +v_1006390 = cemit_unbox(cps_provider_4_ShowState, v_1006391); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006390, []}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_6, "a constructor node's slots and fields differ"}}, False{}, v_1006421 => cemit_body_cps_provider_4_show_state_error(v_6, "a constructor node's slots and fields differ"), v_1006420 => +v_1006419 = cemit_unbox(cps_provider_4_ShowState, v_1006420); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006419, []}}}}
     case +v_18 <> +v_19:
-      cemit_match_1453(v_13, v_18, v_6, v_14, v_19)
+      cemit_match_1459(v_13, v_18, v_6, v_14, v_19)
 
 def cemit_body_cps_provider_4_fields_box_each(+v_2: List<&2, cps_provider_3_NodeSlot>, +v_4: List<&2, BIR.DescriptorField>, +v_6: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_2:
     case []:
-      cemit_match_1451(v_4, v_6)
+      cemit_match_1457(v_4, v_6)
     case +v_13 <> +v_14:
-      cemit_match_1454(v_4, v_6, v_13, v_14)
+      cemit_match_1460(v_4, v_6, v_13, v_14)
 
-def cemit_match_1456(+v_3: Maybe<&2, List<&2, cps_provider_3_NodeSlot>>, +v_7: cps_provider_4_ShowState, +v_5: List<&2, BIR.DescriptorField>) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1462(+v_3: Maybe<&2, List<&2, cps_provider_3_NodeSlot>>, +v_7: cps_provider_4_ShowState, +v_5: List<&2, BIR.DescriptorField>) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_3:
     case None{}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_7, "a constructor node has no slots for SHOW"}}, False{}, v_1006407 => cemit_body_cps_provider_4_show_state_error(v_7, "a constructor node has no slots for SHOW"), v_1006406 => +v_1006405 = cemit_unbox(cps_provider_4_ShowState, v_1006406); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006405, []}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_7, "a constructor node has no slots for SHOW"}}, False{}, v_1006436 => cemit_body_cps_provider_4_show_state_error(v_7, "a constructor node has no slots for SHOW"), v_1006435 => +v_1006434 = cemit_unbox(cps_provider_4_ShowState, v_1006435); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006434, []}}}}
     case Some{v_11}:
       cemit_body_cps_provider_4_fields_box_each(v_11, v_5, v_7)
 
 def cemit_body_cps_provider_4_fields_box_slots(+v_3: Maybe<&2, List<&2, cps_provider_3_NodeSlot>>, +v_5: List<&2, BIR.DescriptorField>, +v_7: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  cemit_match_1456(v_3, v_7, v_5)
+  cemit_match_1462(v_3, v_7, v_5)
 
-def cemit_continuation_1457(+v_1006410: Maybe<&2, List<&2, cps_provider_3_NodeSlot>>, +v_5: List<&2, BIR.DescriptorField>, +v_7: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  v_14 = v_1006410
+def cemit_continuation_1463(+v_1006439: Maybe<&2, List<&2, cps_provider_3_NodeSlot>>, +v_5: List<&2, BIR.DescriptorField>, +v_7: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+  v_14 = v_1006439
   cemit_body_cps_provider_4_fields_box_slots(v_14, v_5, v_7)
 
-def cemit_continuation_1458(+v_1006409: cps_provider_3_NodeResult, +v_5: List<&2, BIR.DescriptorField>, +v_7: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  v_11 = v_1006409
-  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_node_layout_slots{v_11}}, False{}, v_1006413 => cemit_body_cps_provider_4_show_node_layout_slots(v_11), v_1006412 => +v_1006410 = cemit_unbox(Maybe<&2, List<&2, cps_provider_3_NodeSlot>>, v_1006412); cemit_continuation_1457(v_1006410, v_5, v_7)}
+def cemit_continuation_1464(+v_1006438: cps_provider_3_NodeResult, +v_5: List<&2, BIR.DescriptorField>, +v_7: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+  v_11 = v_1006438
+  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_node_layout_slots{v_11}}, False{}, v_1006442 => cemit_body_cps_provider_4_show_node_layout_slots(v_11), v_1006441 => +v_1006439 = cemit_unbox(Maybe<&2, List<&2, cps_provider_3_NodeSlot>>, v_1006441); cemit_continuation_1463(v_1006439, v_5, v_7)}
 
 def cemit_body_cps_provider_4_fields_box(+v_1: cps_provider_3_Context, +v_3: String, +v_5: List<&2, BIR.DescriptorField>, +v_7: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_12{CEmitterRequest_cps_provider_3_node_layout{v_1, v_3}}, False{}, v_1006415 => cemit_body_cps_provider_3_node_layout(v_1, v_3), v_1006414 => +v_1006409 = cemit_unbox(cps_provider_3_NodeResult, v_1006414); cemit_continuation_1458(v_1006409, v_5, v_7)}
+  CEmitterDirect{Bool, CEmitterRequestGroup_12{CEmitterRequest_cps_provider_3_node_layout{v_1, v_3}}, False{}, v_1006444 => cemit_body_cps_provider_3_node_layout(v_1, v_3), v_1006443 => +v_1006438 = cemit_unbox(cps_provider_3_NodeResult, v_1006443); cemit_continuation_1464(v_1006438, v_5, v_7)}
 
-def cemit_match_1459(+v_4: List<&2, BIR.DescriptorField>, +v_8: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1465(+v_4: List<&2, BIR.DescriptorField>, +v_8: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_4:
     case []:
       CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_8, []}}}
     case _:
-      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_8, "an inline arm's fields and layouts differ"}}, False{}, v_1006418 => cemit_body_cps_provider_4_show_state_error(v_8, "an inline arm's fields and layouts differ"), v_1006417 => +v_1006416 = cemit_unbox(cps_provider_4_ShowState, v_1006417); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006416, []}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_8, "an inline arm's fields and layouts differ"}}, False{}, v_1006447 => cemit_body_cps_provider_4_show_state_error(v_8, "an inline arm's fields and layouts differ"), v_1006446 => +v_1006445 = cemit_unbox(cps_provider_4_ShowState, v_1006446); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006445, []}}}}
 
-def cemit_continuation_1460(+v_1006428: cps_provider_4_ShowAdvance, v_27: BIR.Descriptor, +v_15: cps_provider_3_Layout, v_31: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  +v_39 = v_1006428
+def cemit_continuation_1466(+v_1006457: cps_provider_4_ShowAdvance, v_27: BIR.Descriptor, +v_15: cps_provider_3_Layout, v_31: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+  +v_39 = v_1006457
   CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{cemit_pure_cps_provider_4_show_next_state(v_39), List.append(&2, cps_provider_4_ShowJob, [cps_provider_4_ShowNode{v_27, v_15, Some{v_31}}], cemit_pure_cps_provider_4_show_next_kids(v_39))}}}
 
-def cemit_continuation_1461(+v_1006423: cps_provider_4_ShowState, +v_16: List<&2, cps_provider_3_Layout>, +v_21: List<&2, BIR.DescriptorField>, +v_6: Nat, +v_15: cps_provider_3_Layout, v_27: BIR.Descriptor, v_31: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  v_35 = v_1006423
-  +v_1006424 = {v_16 : List<&2, cps_provider_3_Layout>}
-  +v_1006425 = {v_21 : List<&2, BIR.DescriptorField>}
-  v_1006426 = {v_6 : Nat}
-  CEmitterDirect{Bool, CEmitterRequestGroup_12{CEmitterRequest_cps_provider_3_layout_words{v_15}}, False{}, v_1006431 => cemit_body_cps_provider_3_layout_words(v_15), v_1006430 => +v_1006427 = cemit_unbox(Nat, v_1006430); CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_fields_inline_each{v_1006424, v_1006425, Nat.add(v_1006426, v_1006427), v_35}}, v_1006429 => +v_1006428 = cemit_unbox(cps_provider_4_ShowAdvance, v_1006429); cemit_continuation_1460(v_1006428, v_27, v_15, v_31)}}
+def cemit_continuation_1467(+v_1006452: cps_provider_4_ShowState, +v_16: List<&2, cps_provider_3_Layout>, +v_21: List<&2, BIR.DescriptorField>, +v_6: Nat, +v_15: cps_provider_3_Layout, v_27: BIR.Descriptor, v_31: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+  v_35 = v_1006452
+  +v_1006453 = {v_16 : List<&2, cps_provider_3_Layout>}
+  +v_1006454 = {v_21 : List<&2, BIR.DescriptorField>}
+  v_1006455 = {v_6 : Nat}
+  CEmitterDirect{Bool, CEmitterRequestGroup_12{CEmitterRequest_cps_provider_3_layout_words{v_15}}, False{}, v_1006460 => cemit_body_cps_provider_3_layout_words(v_15), v_1006459 => +v_1006456 = cemit_unbox(Nat, v_1006459); CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_fields_inline_each{v_1006453, v_1006454, Nat.add(v_1006455, v_1006456), v_35}}, v_1006458 => +v_1006457 = cemit_unbox(cps_provider_4_ShowAdvance, v_1006458); cemit_continuation_1466(v_1006457, v_27, v_15, v_31)}}
 
-def cemit_match_1462(+v_20: BIR.DescriptorField, +v_8: cps_provider_4_ShowState, +v_6: Nat, +v_16: List<&2, cps_provider_3_Layout>, +v_21: List<&2, BIR.DescriptorField>, +v_15: cps_provider_3_Layout) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1468(+v_20: BIR.DescriptorField, +v_8: cps_provider_4_ShowState, +v_6: Nat, +v_16: List<&2, cps_provider_3_Layout>, +v_21: List<&2, BIR.DescriptorField>, +v_15: cps_provider_3_Layout) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_20:
     case BIR.DescriptorField{v_25, v_26, v_27}:
       v_31 = Nat.add(List.length(&2, cps_provider_4_ShowWord, cemit_pure_cps_provider_4_show_words(v_8)), 1n)
-      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_8, v_6}}, False{}, v_1006435 => cemit_body_cps_provider_4_show_append_num(v_8, v_6), v_1006434 => +v_1006422 = cemit_unbox(cps_provider_4_ShowState, v_1006434); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_1006422, 0n}}, False{}, v_1006433 => cemit_body_cps_provider_4_show_append_num(v_1006422, 0n), v_1006432 => +v_1006423 = cemit_unbox(cps_provider_4_ShowState, v_1006432); cemit_continuation_1461(v_1006423, v_16, v_21, v_6, v_15, v_27, v_31)}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_8, v_6}}, False{}, v_1006464 => cemit_body_cps_provider_4_show_append_num(v_8, v_6), v_1006463 => +v_1006451 = cemit_unbox(cps_provider_4_ShowState, v_1006463); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_1006451, 0n}}, False{}, v_1006462 => cemit_body_cps_provider_4_show_append_num(v_1006451, 0n), v_1006461 => +v_1006452 = cemit_unbox(cps_provider_4_ShowState, v_1006461); cemit_continuation_1467(v_1006452, v_16, v_21, v_6, v_15, v_27, v_31)}}
 
-def cemit_match_1463(+v_4: List<&2, BIR.DescriptorField>, +v_8: cps_provider_4_ShowState, +v_6: Nat, +v_16: List<&2, cps_provider_3_Layout>, +v_15: cps_provider_3_Layout) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1469(+v_4: List<&2, BIR.DescriptorField>, +v_8: cps_provider_4_ShowState, +v_6: Nat, +v_16: List<&2, cps_provider_3_Layout>, +v_15: cps_provider_3_Layout) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_4:
     case []:
-      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_8, "an inline arm's fields and layouts differ"}}, False{}, v_1006421 => cemit_body_cps_provider_4_show_state_error(v_8, "an inline arm's fields and layouts differ"), v_1006420 => +v_1006419 = cemit_unbox(cps_provider_4_ShowState, v_1006420); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006419, []}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_8, "an inline arm's fields and layouts differ"}}, False{}, v_1006450 => cemit_body_cps_provider_4_show_state_error(v_8, "an inline arm's fields and layouts differ"), v_1006449 => +v_1006448 = cemit_unbox(cps_provider_4_ShowState, v_1006449); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006448, []}}}}
     case +v_20 <> +v_21:
-      cemit_match_1462(v_20, v_8, v_6, v_16, v_21, v_15)
+      cemit_match_1468(v_20, v_8, v_6, v_16, v_21, v_15)
 
-def cemit_match_1464(+v_2: List<&2, cps_provider_3_Layout>, +v_4: List<&2, BIR.DescriptorField>, +v_8: cps_provider_4_ShowState, +v_6: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1470(+v_2: List<&2, cps_provider_3_Layout>, +v_4: List<&2, BIR.DescriptorField>, +v_8: cps_provider_4_ShowState, +v_6: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_2:
     case []:
-      cemit_match_1459(v_4, v_8)
+      cemit_match_1465(v_4, v_8)
     case +v_15 <> +v_16:
-      cemit_match_1463(v_4, v_8, v_6, v_16, v_15)
+      cemit_match_1469(v_4, v_8, v_6, v_16, v_15)
 
 def cemit_body_cps_provider_4_fields_inline_each(+v_2: List<&2, cps_provider_3_Layout>, +v_4: List<&2, BIR.DescriptorField>, +v_6: Nat, +v_8: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  cemit_match_1464(v_2, v_4, v_8, v_6)
+  cemit_match_1470(v_2, v_4, v_8, v_6)
 
-def cemit_match_1465(+v_3: Maybe<&2, List<&2, cps_provider_3_Layout>>, +v_9: cps_provider_4_ShowState, +v_5: List<&2, BIR.DescriptorField>, +v_7: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1471(+v_3: Maybe<&2, List<&2, cps_provider_3_Layout>>, +v_9: cps_provider_4_ShowState, +v_5: List<&2, BIR.DescriptorField>, +v_7: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_3:
     case None{}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_9, "the inline layout has no SHOW arm"}}, False{}, v_1006438 => cemit_body_cps_provider_4_show_state_error(v_9, "the inline layout has no SHOW arm"), v_1006437 => +v_1006436 = cemit_unbox(cps_provider_4_ShowState, v_1006437); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006436, []}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_9, "the inline layout has no SHOW arm"}}, False{}, v_1006467 => cemit_body_cps_provider_4_show_state_error(v_9, "the inline layout has no SHOW arm"), v_1006466 => +v_1006465 = cemit_unbox(cps_provider_4_ShowState, v_1006466); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006465, []}}}}
     case Some{v_13}:
       cemit_body_cps_provider_4_fields_inline_each(v_13, v_5, v_7, v_9)
 
 def cemit_body_cps_provider_4_fields_inline_layouts(+v_3: Maybe<&2, List<&2, cps_provider_3_Layout>>, +v_5: List<&2, BIR.DescriptorField>, +v_7: Nat, +v_9: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  cemit_match_1465(v_3, v_9, v_5, v_7)
+  cemit_match_1471(v_3, v_9, v_5, v_7)
 
-def cemit_continuation_1466(+v_1006440: Maybe<&2, List<&2, cps_provider_3_Layout>>, +v_5: List<&2, BIR.DescriptorField>, +v_11: Nat, +v_13: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  v_17 = v_1006440
+def cemit_continuation_1472(+v_1006469: Maybe<&2, List<&2, cps_provider_3_Layout>>, +v_5: List<&2, BIR.DescriptorField>, +v_11: Nat, +v_13: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+  v_17 = v_1006469
   cemit_body_cps_provider_4_fields_inline_layouts(v_17, v_5, v_11, v_13)
 
 def cemit_body_cps_provider_4_fields_inline(+v_1: cps_provider_3_Context, +v_3: String, +v_5: List<&2, BIR.DescriptorField>, +v_7: cps_provider_3_Layout, +v_9: Nat, +v_11: Nat, +v_13: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arm_layouts{v_7, v_3}}, False{}, v_1006443 => cemit_body_cps_provider_4_show_arm_layouts(v_7, v_3), v_1006442 => +v_1006440 = cemit_unbox(Maybe<&2, List<&2, cps_provider_3_Layout>>, v_1006442); cemit_continuation_1466(v_1006440, v_5, v_11, v_13)}
+  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arm_layouts{v_7, v_3}}, False{}, v_1006472 => cemit_body_cps_provider_4_show_arm_layouts(v_7, v_3), v_1006471 => +v_1006469 = cemit_unbox(Maybe<&2, List<&2, cps_provider_3_Layout>>, v_1006471); cemit_continuation_1472(v_1006469, v_5, v_11, v_13)}
 
-def cemit_match_1467(+v_13: Nat, +v_1: cps_provider_3_Context, +v_7: String, +v_9: List<&2, BIR.DescriptorField>, +v_17: cps_provider_4_ShowState, +v_11: cps_provider_3_Layout, +v_15: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1473(+v_13: Nat, +v_1: cps_provider_3_Context, +v_7: String, +v_9: List<&2, BIR.DescriptorField>, +v_17: cps_provider_4_ShowState, +v_11: cps_provider_3_Layout, +v_15: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_13:
     case 1n:
       cemit_body_cps_provider_4_fields_box(v_1, v_7, v_9, v_17)
     case _:
-      +v_1006445 = {v_1 : cps_provider_3_Context}
-      +v_1006446 = {v_7 : String}
-      +v_1006447 = {v_9 : List<&2, BIR.DescriptorField>}
-      +v_1006448 = {v_11 : cps_provider_3_Layout}
-      +v_1006449 = {v_15 : Nat}
-      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_tag_start{v_13, v_15}}, False{}, v_1006453 => cemit_body_cps_provider_4_show_tag_start(v_13, v_15), v_1006452 => +v_1006450 = cemit_unbox(Nat, v_1006452); cemit_body_cps_provider_4_fields_inline(v_1006445, v_1006446, v_1006447, v_1006448, v_1006449, v_1006450, v_17)}
+      +v_1006474 = {v_1 : cps_provider_3_Context}
+      +v_1006475 = {v_7 : String}
+      +v_1006476 = {v_9 : List<&2, BIR.DescriptorField>}
+      +v_1006477 = {v_11 : cps_provider_3_Layout}
+      +v_1006478 = {v_15 : Nat}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_tag_start{v_13, v_15}}, False{}, v_1006482 => cemit_body_cps_provider_4_show_tag_start(v_13, v_15), v_1006481 => +v_1006479 = cemit_unbox(Nat, v_1006481); cemit_body_cps_provider_4_fields_inline(v_1006474, v_1006475, v_1006476, v_1006477, v_1006478, v_1006479, v_17)}
 
 def cemit_body_cps_provider_4_fields_advance(+v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>, +v_7: String, +v_9: List<&2, BIR.DescriptorField>, +v_11: cps_provider_3_Layout, +v_13: Nat, +v_15: Nat, +v_17: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  cemit_match_1467(v_13, v_1, v_7, v_9, v_17, v_11, v_15)
+  cemit_match_1473(v_13, v_1, v_7, v_9, v_17, v_11, v_15)
 
 def cemit_body_cps_provider_4_show_data_arm_header(+v_1: List<&2, BIR.DescriptorField>, +v_3: String, +v_5: List<&2, BIR.DescriptorArm>, +v_7: cps_provider_3_Context, +v_9: List<&2, BIR.ConstructorLayout>, +v_11: List<&2, BIR.Family>, +v_12: BIR.Descriptor, +v_14: cps_provider_3_Layout, +v_16: Nat, +v_18: Nat, +v_20: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   v_25 = List.length(&2, String, cemit_pure_cps_provider_4_show_names(v_20))
-  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_cid_of_key{v_3, v_9}}, False{}, v_1006458 => cemit_body_cps_provider_4_show_cid_of_key(v_3, v_9), v_1006457 => +v_1006454 = cemit_unbox(Maybe<&2, Nat>, v_1006457); CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_data_arm_cid{v_1006454, v_1, v_3, v_7, v_9, v_11, v_14, v_16, v_18, v_20}}, v_1006456 => +v_1006455 = cemit_unbox(cps_provider_4_ShowAdvance, v_1006456); CEmitterFinished{CEmitterValue{v_1006455}}}}
+  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_cid_of_key{v_3, v_9}}, False{}, v_1006487 => cemit_body_cps_provider_4_show_cid_of_key(v_3, v_9), v_1006486 => +v_1006483 = cemit_unbox(Maybe<&2, Nat>, v_1006486); CEmitterPending{CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_data_arm_cid{v_1006483, v_1, v_3, v_7, v_9, v_11, v_14, v_16, v_18, v_20}}, v_1006485 => +v_1006484 = cemit_unbox(cps_provider_4_ShowAdvance, v_1006485); CEmitterFinished{CEmitterValue{v_1006484}}}}
 
-def cemit_continuation_1468(+v_1006472: cps_provider_4_ShowState, +v_8: cps_provider_3_Context, +v_10: List<&2, BIR.ConstructorLayout>, +v_12: List<&2, BIR.Family>, +v_6: String, +v_4: List<&2, BIR.DescriptorField>, +v_14: cps_provider_3_Layout, +v_16: Nat, +v_18: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  v_39 = v_1006472
+def cemit_continuation_1474(+v_1006501: cps_provider_4_ShowState, +v_8: cps_provider_3_Context, +v_10: List<&2, BIR.ConstructorLayout>, +v_12: List<&2, BIR.Family>, +v_6: String, +v_4: List<&2, BIR.DescriptorField>, +v_14: cps_provider_3_Layout, +v_16: Nat, +v_18: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+  v_39 = v_1006501
   cemit_body_cps_provider_4_fields_advance(v_8, v_10, v_12, v_6, v_4, v_14, v_16, v_18, v_39)
 
-def cemit_continuation_1469(+v_1006468: cps_provider_4_ShowState, +v_6: String, +v_8: cps_provider_3_Context, +v_10: List<&2, BIR.ConstructorLayout>, +v_12: List<&2, BIR.Family>, +v_4: List<&2, BIR.DescriptorField>, +v_14: cps_provider_3_Layout, +v_16: Nat, +v_18: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  v_34 = v_1006468
-  +v_1006469 = {v_34 : cps_provider_4_ShowState}
-  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arm_bracket{v_6}}, False{}, v_1006479 => cemit_body_cps_provider_4_show_arm_bracket(v_6), v_1006478 => +v_1006470 = cemit_unbox(Nat, v_1006478); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_1006469, v_1006470}}, False{}, v_1006477 => cemit_body_cps_provider_4_show_append_num(v_1006469, v_1006470), v_1006476 => +v_1006471 = cemit_unbox(cps_provider_4_ShowState, v_1006476); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_name{v_1006471, v_6}}, False{}, v_1006475 => cemit_body_cps_provider_4_show_append_name(v_1006471, v_6), v_1006474 => +v_1006472 = cemit_unbox(cps_provider_4_ShowState, v_1006474); cemit_continuation_1468(v_1006472, v_8, v_10, v_12, v_6, v_4, v_14, v_16, v_18)}}}
+def cemit_continuation_1475(+v_1006497: cps_provider_4_ShowState, +v_6: String, +v_8: cps_provider_3_Context, +v_10: List<&2, BIR.ConstructorLayout>, +v_12: List<&2, BIR.Family>, +v_4: List<&2, BIR.DescriptorField>, +v_14: cps_provider_3_Layout, +v_16: Nat, +v_18: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+  v_34 = v_1006497
+  +v_1006498 = {v_34 : cps_provider_4_ShowState}
+  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_arm_bracket{v_6}}, False{}, v_1006508 => cemit_body_cps_provider_4_show_arm_bracket(v_6), v_1006507 => +v_1006499 = cemit_unbox(Nat, v_1006507); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_1006498, v_1006499}}, False{}, v_1006506 => cemit_body_cps_provider_4_show_append_num(v_1006498, v_1006499), v_1006505 => +v_1006500 = cemit_unbox(cps_provider_4_ShowState, v_1006505); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_name{v_1006500, v_6}}, False{}, v_1006504 => cemit_body_cps_provider_4_show_append_name(v_1006500, v_6), v_1006503 => +v_1006501 = cemit_unbox(cps_provider_4_ShowState, v_1006503); cemit_continuation_1474(v_1006501, v_8, v_10, v_12, v_6, v_4, v_14, v_16, v_18)}}}
 
-def cemit_match_1470(+v_2: Maybe<&2, Nat>, +v_20: cps_provider_4_ShowState, +v_6: String, +v_4: List<&2, BIR.DescriptorField>, +v_8: cps_provider_3_Context, +v_10: List<&2, BIR.ConstructorLayout>, +v_12: List<&2, BIR.Family>, +v_14: cps_provider_3_Layout, +v_16: Nat, +v_18: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1476(+v_2: Maybe<&2, Nat>, +v_20: cps_provider_4_ShowState, +v_6: String, +v_4: List<&2, BIR.DescriptorField>, +v_8: cps_provider_3_Context, +v_10: List<&2, BIR.ConstructorLayout>, +v_12: List<&2, BIR.Family>, +v_14: cps_provider_3_Layout, +v_16: Nat, +v_18: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_2:
     case None{}:
-      +v_1006459 = {v_20 : cps_provider_4_ShowState}
-      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{["the constructor `", v_6, "` has no assigned C id"]}}, False{}, v_1006465 => cemit_body_cps_provider_4_join_text(["the constructor `", v_6, "` has no assigned C id"]), v_1006464 => +v_1006460 = cemit_unbox(String, v_1006464); CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_1006459, v_1006460}}, False{}, v_1006463 => cemit_body_cps_provider_4_show_state_error(v_1006459, v_1006460), v_1006462 => +v_1006461 = cemit_unbox(cps_provider_4_ShowState, v_1006462); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006461, []}}}}}
+      +v_1006488 = {v_20 : cps_provider_4_ShowState}
+      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{["the constructor `", v_6, "` has no assigned C id"]}}, False{}, v_1006494 => cemit_body_cps_provider_4_join_text(["the constructor `", v_6, "` has no assigned C id"]), v_1006493 => +v_1006489 = cemit_unbox(String, v_1006493); CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_1006488, v_1006489}}, False{}, v_1006492 => cemit_body_cps_provider_4_show_state_error(v_1006488, v_1006489), v_1006491 => +v_1006490 = cemit_unbox(cps_provider_4_ShowState, v_1006491); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006490, []}}}}}
     case Some{v_25}:
       v_29 = List.length(&2, String, cemit_pure_cps_provider_4_show_names(v_20))
-      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_20, v_29}}, False{}, v_1006485 => cemit_body_cps_provider_4_show_append_num(v_20, v_29), v_1006484 => +v_1006466 = cemit_unbox(cps_provider_4_ShowState, v_1006484); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_cid{v_1006466, v_25}}, False{}, v_1006483 => cemit_body_cps_provider_4_show_append_cid(v_1006466, v_25), v_1006482 => +v_1006467 = cemit_unbox(cps_provider_4_ShowState, v_1006482); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_1006467, List.length(&2, BIR.DescriptorField, v_4)}}, False{}, v_1006481 => cemit_body_cps_provider_4_show_append_num(v_1006467, List.length(&2, BIR.DescriptorField, v_4)), v_1006480 => +v_1006468 = cemit_unbox(cps_provider_4_ShowState, v_1006480); cemit_continuation_1469(v_1006468, v_6, v_8, v_10, v_12, v_4, v_14, v_16, v_18)}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_20, v_29}}, False{}, v_1006514 => cemit_body_cps_provider_4_show_append_num(v_20, v_29), v_1006513 => +v_1006495 = cemit_unbox(cps_provider_4_ShowState, v_1006513); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_cid{v_1006495, v_25}}, False{}, v_1006512 => cemit_body_cps_provider_4_show_append_cid(v_1006495, v_25), v_1006511 => +v_1006496 = cemit_unbox(cps_provider_4_ShowState, v_1006511); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_1006496, List.length(&2, BIR.DescriptorField, v_4)}}, False{}, v_1006510 => cemit_body_cps_provider_4_show_append_num(v_1006496, List.length(&2, BIR.DescriptorField, v_4)), v_1006509 => +v_1006497 = cemit_unbox(cps_provider_4_ShowState, v_1006509); cemit_continuation_1475(v_1006497, v_6, v_8, v_10, v_12, v_4, v_14, v_16, v_18)}}}
 
 def cemit_body_cps_provider_4_show_data_arm_cid(+v_2: Maybe<&2, Nat>, +v_4: List<&2, BIR.DescriptorField>, +v_6: String, +v_8: cps_provider_3_Context, +v_10: List<&2, BIR.ConstructorLayout>, +v_12: List<&2, BIR.Family>, +v_14: cps_provider_3_Layout, +v_16: Nat, +v_18: Nat, +v_20: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  cemit_match_1470(v_2, v_20, v_6, v_4, v_8, v_10, v_12, v_14, v_16, v_18)
+  cemit_match_1476(v_2, v_20, v_6, v_4, v_8, v_10, v_12, v_14, v_16, v_18)
 
-def cemit_match_1471(+v_1: Bool, +v_22: cps_provider_4_ShowState, +v_3: List<&2, BIR.DescriptorField>, +v_5: String, +v_7: List<&2, BIR.DescriptorArm>, +v_9: cps_provider_3_Context, +v_11: List<&2, BIR.ConstructorLayout>, +v_13: List<&2, BIR.Family>, +v_14: BIR.Descriptor, +v_16: cps_provider_3_Layout, +v_18: Nat, +v_20: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1477(+v_1: Bool, +v_22: cps_provider_4_ShowState, +v_3: List<&2, BIR.DescriptorField>, +v_5: String, +v_7: List<&2, BIR.DescriptorArm>, +v_9: cps_provider_3_Context, +v_11: List<&2, BIR.ConstructorLayout>, +v_13: List<&2, BIR.Family>, +v_14: BIR.Descriptor, +v_16: cps_provider_3_Layout, +v_18: Nat, +v_20: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_1:
     case True{}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_22, "main's type has an erased field and cannot be printed"}}, False{}, v_1006488 => cemit_body_cps_provider_4_show_state_error(v_22, "main's type has an erased field and cannot be printed"), v_1006487 => +v_1006486 = cemit_unbox(cps_provider_4_ShowState, v_1006487); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006486, []}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_22, "main's type has an erased field and cannot be printed"}}, False{}, v_1006517 => cemit_body_cps_provider_4_show_state_error(v_22, "main's type has an erased field and cannot be printed"), v_1006516 => +v_1006515 = cemit_unbox(cps_provider_4_ShowState, v_1006516); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006515, []}}}}
     case False{}:
       cemit_body_cps_provider_4_show_data_arm_header(v_3, v_5, v_7, v_9, v_11, v_13, v_14, v_16, v_18, v_20, v_22)
 
 def cemit_body_cps_provider_4_show_data_arm_erased(+v_1: Bool, +v_3: List<&2, BIR.DescriptorField>, +v_5: String, +v_7: List<&2, BIR.DescriptorArm>, +v_9: cps_provider_3_Context, +v_11: List<&2, BIR.ConstructorLayout>, +v_13: List<&2, BIR.Family>, +v_14: BIR.Descriptor, +v_16: cps_provider_3_Layout, +v_18: Nat, +v_20: Nat, +v_22: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  cemit_match_1471(v_1, v_22, v_3, v_5, v_7, v_9, v_11, v_13, v_14, v_16, v_18, v_20)
+  cemit_match_1477(v_1, v_22, v_3, v_5, v_7, v_9, v_11, v_13, v_14, v_16, v_18, v_20)
 
-def cemit_continuation_1472(+v_1006490: Bool, +v_1: List<&2, BIR.DescriptorField>, +v_3: String, +v_5: List<&2, BIR.DescriptorArm>, +v_7: cps_provider_3_Context, +v_9: List<&2, BIR.ConstructorLayout>, +v_11: List<&2, BIR.Family>, +v_12: BIR.Descriptor, +v_14: cps_provider_3_Layout, +v_16: Nat, +v_18: Nat, +v_20: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  v_24 = v_1006490
+def cemit_continuation_1478(+v_1006519: Bool, +v_1: List<&2, BIR.DescriptorField>, +v_3: String, +v_5: List<&2, BIR.DescriptorArm>, +v_7: cps_provider_3_Context, +v_9: List<&2, BIR.ConstructorLayout>, +v_11: List<&2, BIR.Family>, +v_12: BIR.Descriptor, +v_14: cps_provider_3_Layout, +v_16: Nat, +v_18: Nat, +v_20: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+  v_24 = v_1006519
   cemit_body_cps_provider_4_show_data_arm_erased(v_24, v_1, v_3, v_5, v_7, v_9, v_11, v_12, v_14, v_16, v_18, v_20)
 
 def cemit_body_cps_provider_4_show_data_arm_live(+v_1: List<&2, BIR.DescriptorField>, +v_3: String, +v_5: List<&2, BIR.DescriptorArm>, +v_7: cps_provider_3_Context, +v_9: List<&2, BIR.ConstructorLayout>, +v_11: List<&2, BIR.Family>, +v_12: BIR.Descriptor, +v_14: cps_provider_3_Layout, +v_16: Nat, +v_18: Nat, +v_20: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_erased_present{v_1}}, False{}, v_1006493 => cemit_body_cps_provider_4_show_erased_present(v_1), v_1006492 => +v_1006490 = cemit_unbox(Bool, v_1006492); cemit_continuation_1472(v_1006490, v_1, v_3, v_5, v_7, v_9, v_11, v_12, v_14, v_16, v_18, v_20)}
+  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_erased_present{v_1}}, False{}, v_1006522 => cemit_body_cps_provider_4_show_erased_present(v_1), v_1006521 => +v_1006519 = cemit_unbox(Bool, v_1006521); cemit_continuation_1478(v_1006519, v_1, v_3, v_5, v_7, v_9, v_11, v_12, v_14, v_16, v_18, v_20)}
 
-def cemit_match_1473(+v_1: cps_provider_3_FieldsResult, +v_20: cps_provider_4_ShowState, +v_3: String, +v_5: List<&2, BIR.DescriptorArm>, +v_7: cps_provider_3_Context, +v_9: List<&2, BIR.ConstructorLayout>, +v_11: List<&2, BIR.Family>, +v_12: BIR.Descriptor, +v_14: cps_provider_3_Layout, +v_16: Nat, +v_18: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1479(+v_1: cps_provider_3_FieldsResult, +v_20: cps_provider_4_ShowState, +v_3: String, +v_5: List<&2, BIR.DescriptorArm>, +v_7: cps_provider_3_Context, +v_9: List<&2, BIR.ConstructorLayout>, +v_11: List<&2, BIR.Family>, +v_12: BIR.Descriptor, +v_14: cps_provider_3_Layout, +v_16: Nat, +v_18: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_1:
     case cps_provider_3_FieldsFailed{v_23}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_20, v_23}}, False{}, v_1006496 => cemit_body_cps_provider_4_show_state_error(v_20, v_23), v_1006495 => +v_1006494 = cemit_unbox(cps_provider_4_ShowState, v_1006495); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006494, []}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_20, v_23}}, False{}, v_1006525 => cemit_body_cps_provider_4_show_state_error(v_20, v_23), v_1006524 => +v_1006523 = cemit_unbox(cps_provider_4_ShowState, v_1006524); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006523, []}}}}
     case cps_provider_3_FieldsFound{v_26}:
       cemit_body_cps_provider_4_show_data_arm_live(v_26, v_3, v_5, v_7, v_9, v_11, v_12, v_14, v_16, v_18, v_20)
 
 def cemit_body_cps_provider_4_show_data_arm(+v_1: cps_provider_3_FieldsResult, +v_3: String, +v_5: List<&2, BIR.DescriptorArm>, +v_7: cps_provider_3_Context, +v_9: List<&2, BIR.ConstructorLayout>, +v_11: List<&2, BIR.Family>, +v_12: BIR.Descriptor, +v_14: cps_provider_3_Layout, +v_16: Nat, +v_18: Nat, +v_20: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  cemit_match_1473(v_1, v_20, v_3, v_5, v_7, v_9, v_11, v_12, v_14, v_16, v_18)
+  cemit_match_1479(v_1, v_20, v_3, v_5, v_7, v_9, v_11, v_12, v_14, v_16, v_18)
 
-def cemit_continuation_1474(+v_1006498: cps_provider_3_FieldsResult, v_24: String, +v_21: List<&2, BIR.DescriptorArm>, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: cps_provider_3_Layout, +v_12: Nat, +v_14: Nat, +v_16: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  v_28 = v_1006498
+def cemit_continuation_1480(+v_1006527: cps_provider_3_FieldsResult, v_24: String, +v_21: List<&2, BIR.DescriptorArm>, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: cps_provider_3_Layout, +v_12: Nat, +v_14: Nat, +v_16: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+  v_28 = v_1006527
   cemit_body_cps_provider_4_show_data_arm(v_28, v_24, v_21, v_3, v_5, v_7, v_8, v_10, v_12, v_14, v_16)
 
-def cemit_match_1475(+v_20: BIR.DescriptorArm, +v_3: cps_provider_3_Context, +v_8: BIR.Descriptor, +v_21: List<&2, BIR.DescriptorArm>, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_10: cps_provider_3_Layout, +v_12: Nat, +v_14: Nat, +v_16: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1481(+v_20: BIR.DescriptorArm, +v_3: cps_provider_3_Context, +v_8: BIR.Descriptor, +v_21: List<&2, BIR.DescriptorArm>, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_10: cps_provider_3_Layout, +v_12: Nat, +v_14: Nat, +v_16: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_20:
     case BIR.DescriptorArm{+v_24, v_25}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_3_arm_fields{v_3, v_24, v_8}}, False{}, v_1006501 => cemit_body_cps_provider_3_arm_fields(v_3, v_24, v_8), v_1006500 => +v_1006498 = cemit_unbox(cps_provider_3_FieldsResult, v_1006500); cemit_continuation_1474(v_1006498, v_24, v_21, v_3, v_5, v_7, v_8, v_10, v_12, v_14, v_16)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_3_arm_fields{v_3, v_24, v_8}}, False{}, v_1006530 => cemit_body_cps_provider_3_arm_fields(v_3, v_24, v_8), v_1006529 => +v_1006527 = cemit_unbox(cps_provider_3_FieldsResult, v_1006529); cemit_continuation_1480(v_1006527, v_24, v_21, v_3, v_5, v_7, v_8, v_10, v_12, v_14, v_16)}
 
-def cemit_match_1476(+v_1: List<&2, BIR.DescriptorArm>, +v_16: cps_provider_4_ShowState, +v_3: cps_provider_3_Context, +v_8: BIR.Descriptor, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_10: cps_provider_3_Layout, +v_12: Nat, +v_14: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1482(+v_1: List<&2, BIR.DescriptorArm>, +v_16: cps_provider_4_ShowState, +v_3: cps_provider_3_Context, +v_8: BIR.Descriptor, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_10: cps_provider_3_Layout, +v_12: Nat, +v_14: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_1:
     case []:
       CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_16, []}}}
     case +v_20 <> +v_21:
-      cemit_match_1475(v_20, v_3, v_8, v_21, v_5, v_7, v_10, v_12, v_14, v_16)
+      cemit_match_1481(v_20, v_3, v_8, v_21, v_5, v_7, v_10, v_12, v_14, v_16)
 
 def cemit_body_cps_provider_4_show_data_arms(+v_1: List<&2, BIR.DescriptorArm>, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: cps_provider_3_Layout, +v_12: Nat, +v_14: Nat, +v_16: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  cemit_match_1476(v_1, v_16, v_3, v_8, v_5, v_7, v_10, v_12, v_14)
+  cemit_match_1482(v_1, v_16, v_3, v_8, v_5, v_7, v_10, v_12, v_14)
 
-def cemit_continuation_1477(+v_1006505: cps_provider_4_ShowState, +v_1: List<&2, BIR.DescriptorArm>, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: cps_provider_3_Layout, v_18: Nat, v_20: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  v_25 = v_1006505
+def cemit_continuation_1483(+v_1006534: cps_provider_4_ShowState, +v_1: List<&2, BIR.DescriptorArm>, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: cps_provider_3_Layout, v_18: Nat, v_20: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+  v_25 = v_1006534
   cemit_body_cps_provider_4_show_data_arms(v_1, v_3, v_5, v_7, v_8, v_10, v_18, v_20, v_25)
 
-def cemit_continuation_1478(+v_1006502: Nat, +v_1: List<&2, BIR.DescriptorArm>, +v_14: cps_provider_4_ShowState, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: cps_provider_3_Layout) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  +v_18 = v_1006502
+def cemit_continuation_1484(+v_1006531: Nat, +v_1: List<&2, BIR.DescriptorArm>, +v_14: cps_provider_4_ShowState, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: cps_provider_3_Layout) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+  +v_18 = v_1006531
   +v_20 = List.length(&2, BIR.DescriptorArm, v_1)
-  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_14, 7n}}, False{}, v_1006512 => cemit_body_cps_provider_4_show_append_num(v_14, 7n), v_1006511 => +v_1006503 = cemit_unbox(cps_provider_4_ShowState, v_1006511); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_1006503, v_18}}, False{}, v_1006510 => cemit_body_cps_provider_4_show_append_num(v_1006503, v_18), v_1006509 => +v_1006504 = cemit_unbox(cps_provider_4_ShowState, v_1006509); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_1006504, v_20}}, False{}, v_1006508 => cemit_body_cps_provider_4_show_append_num(v_1006504, v_20), v_1006507 => +v_1006505 = cemit_unbox(cps_provider_4_ShowState, v_1006507); cemit_continuation_1477(v_1006505, v_1, v_3, v_5, v_7, v_8, v_10, v_18, v_20)}}}
+  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_14, 7n}}, False{}, v_1006541 => cemit_body_cps_provider_4_show_append_num(v_14, 7n), v_1006540 => +v_1006532 = cemit_unbox(cps_provider_4_ShowState, v_1006540); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_1006532, v_18}}, False{}, v_1006539 => cemit_body_cps_provider_4_show_append_num(v_1006532, v_18), v_1006538 => +v_1006533 = cemit_unbox(cps_provider_4_ShowState, v_1006538); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_1006533, v_20}}, False{}, v_1006537 => cemit_body_cps_provider_4_show_append_num(v_1006533, v_20), v_1006536 => +v_1006534 = cemit_unbox(cps_provider_4_ShowState, v_1006536); cemit_continuation_1483(v_1006534, v_1, v_3, v_5, v_7, v_8, v_10, v_18, v_20)}}}
 
 def cemit_body_cps_provider_4_show_data_count(+v_1: List<&2, BIR.DescriptorArm>, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: cps_provider_3_Layout, +v_12: Nat, +v_14: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_box_flag{v_10}}, False{}, v_1006514 => cemit_body_cps_provider_4_show_box_flag(v_10), v_1006513 => +v_1006502 = cemit_unbox(Nat, v_1006513); cemit_continuation_1478(v_1006502, v_1, v_14, v_3, v_5, v_7, v_8, v_10)}
+  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_box_flag{v_10}}, False{}, v_1006543 => cemit_body_cps_provider_4_show_box_flag(v_10), v_1006542 => +v_1006531 = cemit_unbox(Nat, v_1006542); cemit_continuation_1484(v_1006531, v_1, v_14, v_3, v_5, v_7, v_8, v_10)}
 
-def cemit_match_1479(+v_2: Maybe<&2, List<&2, BIR.DescriptorArm>>, +v_15: cps_provider_4_ShowState, +v_17: String, +v_4: cps_provider_3_Context, +v_6: List<&2, BIR.ConstructorLayout>, +v_8: List<&2, BIR.Family>, +v_9: BIR.Descriptor, +v_11: cps_provider_3_Layout, +v_13: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1485(+v_2: Maybe<&2, List<&2, BIR.DescriptorArm>>, +v_15: cps_provider_4_ShowState, +v_17: String, +v_4: cps_provider_3_Context, +v_6: List<&2, BIR.ConstructorLayout>, +v_8: List<&2, BIR.Family>, +v_9: BIR.Descriptor, +v_11: cps_provider_3_Layout, +v_13: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_2:
     case None{}:
-      +v_1006515 = {v_15 : cps_provider_4_ShowState}
-      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{["the datatype `", v_17, "` has no constructors"]}}, False{}, v_1006521 => cemit_body_cps_provider_4_join_text(["the datatype `", v_17, "` has no constructors"]), v_1006520 => +v_1006516 = cemit_unbox(String, v_1006520); CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_1006515, v_1006516}}, False{}, v_1006519 => cemit_body_cps_provider_4_show_state_error(v_1006515, v_1006516), v_1006518 => +v_1006517 = cemit_unbox(cps_provider_4_ShowState, v_1006518); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006517, []}}}}}
+      +v_1006544 = {v_15 : cps_provider_4_ShowState}
+      CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{["the datatype `", v_17, "` has no constructors"]}}, False{}, v_1006550 => cemit_body_cps_provider_4_join_text(["the datatype `", v_17, "` has no constructors"]), v_1006549 => +v_1006545 = cemit_unbox(String, v_1006549); CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_1006544, v_1006545}}, False{}, v_1006548 => cemit_body_cps_provider_4_show_state_error(v_1006544, v_1006545), v_1006547 => +v_1006546 = cemit_unbox(cps_provider_4_ShowState, v_1006547); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006546, []}}}}}
     case Some{v_22}:
       cemit_body_cps_provider_4_show_data_count(v_22, v_4, v_6, v_8, v_9, v_11, v_13, v_15)
 
 def cemit_body_cps_provider_4_show_data_arms_maybe(+v_2: Maybe<&2, List<&2, BIR.DescriptorArm>>, +v_4: cps_provider_3_Context, +v_6: List<&2, BIR.ConstructorLayout>, +v_8: List<&2, BIR.Family>, +v_9: BIR.Descriptor, +v_11: cps_provider_3_Layout, +v_13: Nat, +v_15: cps_provider_4_ShowState, +v_17: String) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  cemit_match_1479(v_2, v_15, v_17, v_4, v_6, v_8, v_9, v_11, v_13)
+  cemit_match_1485(v_2, v_15, v_17, v_4, v_6, v_8, v_9, v_11, v_13)
 
-def cemit_continuation_1480(+v_1006523: Maybe<&2, List<&2, BIR.DescriptorArm>>, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: cps_provider_3_Layout, +v_12: Nat, +v_14: cps_provider_4_ShowState, +v_1: String) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  v_18 = v_1006523
+def cemit_continuation_1486(+v_1006552: Maybe<&2, List<&2, BIR.DescriptorArm>>, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: cps_provider_3_Layout, +v_12: Nat, +v_14: cps_provider_4_ShowState, +v_1: String) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+  v_18 = v_1006552
   cemit_body_cps_provider_4_show_data_arms_maybe(v_18, v_3, v_5, v_7, v_8, v_10, v_12, v_14, v_1)
 
 def cemit_body_cps_provider_4_show_data_key(+v_1: String, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: cps_provider_3_Layout, +v_12: Nat, +v_14: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_family_arms{v_1, v_7}}, False{}, v_1006526 => cemit_body_cps_provider_4_family_arms(v_1, v_7), v_1006525 => +v_1006523 = cemit_unbox(Maybe<&2, List<&2, BIR.DescriptorArm>>, v_1006525); cemit_continuation_1480(v_1006523, v_3, v_5, v_7, v_8, v_10, v_12, v_14, v_1)}
+  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_family_arms{v_1, v_7}}, False{}, v_1006555 => cemit_body_cps_provider_4_family_arms(v_1, v_7), v_1006554 => +v_1006552 = cemit_unbox(Maybe<&2, List<&2, BIR.DescriptorArm>>, v_1006554); cemit_continuation_1486(v_1006552, v_3, v_5, v_7, v_8, v_10, v_12, v_14, v_1)}
 
-def cemit_match_1481(+v_1: cps_provider_3_HeadResult, +v_14: cps_provider_4_ShowState, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: cps_provider_3_Layout, +v_12: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1487(+v_1: cps_provider_3_HeadResult, +v_14: cps_provider_4_ShowState, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: cps_provider_3_Layout, +v_12: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_1:
     case cps_provider_3_HeadFailed{v_17}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_14, v_17}}, False{}, v_1006529 => cemit_body_cps_provider_4_show_state_error(v_14, v_17), v_1006528 => +v_1006527 = cemit_unbox(cps_provider_4_ShowState, v_1006528); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006527, []}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_14, v_17}}, False{}, v_1006558 => cemit_body_cps_provider_4_show_state_error(v_14, v_17), v_1006557 => +v_1006556 = cemit_unbox(cps_provider_4_ShowState, v_1006557); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006556, []}}}}
     case cps_provider_3_HeadBoxed{v_20}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_14, "main's type is abstract or open and cannot be printed"}}, False{}, v_1006532 => cemit_body_cps_provider_4_show_state_error(v_14, "main's type is abstract or open and cannot be printed"), v_1006531 => +v_1006530 = cemit_unbox(cps_provider_4_ShowState, v_1006531); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006530, []}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_14, "main's type is abstract or open and cannot be printed"}}, False{}, v_1006561 => cemit_body_cps_provider_4_show_state_error(v_14, "main's type is abstract or open and cannot be printed"), v_1006560 => +v_1006559 = cemit_unbox(cps_provider_4_ShowState, v_1006560); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006559, []}}}}
     case cps_provider_3_HeadFound{v_24, v_25}:
       cemit_body_cps_provider_4_show_data_key(v_24, v_3, v_5, v_7, v_8, v_10, v_12, v_14)
 
 def cemit_body_cps_provider_4_show_data_head(+v_1: cps_provider_3_HeadResult, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: cps_provider_3_Layout, +v_12: Nat, +v_14: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  cemit_match_1481(v_1, v_14, v_3, v_5, v_7, v_8, v_10, v_12)
+  cemit_match_1487(v_1, v_14, v_3, v_5, v_7, v_8, v_10, v_12)
 
-def cemit_continuation_1482(+v_1006534: cps_provider_3_HeadResult, +v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>, +v_6: BIR.Descriptor, +v_8: cps_provider_3_Layout, +v_10: Nat, +v_12: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  v_16 = v_1006534
+def cemit_continuation_1488(+v_1006563: cps_provider_3_HeadResult, +v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>, +v_6: BIR.Descriptor, +v_8: cps_provider_3_Layout, +v_10: Nat, +v_12: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+  v_16 = v_1006563
   cemit_body_cps_provider_4_show_data_head(v_16, v_1, v_3, v_5, v_6, v_8, v_10, v_12)
 
 def cemit_body_cps_provider_4_show_advance_data(+v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>, +v_6: BIR.Descriptor, +v_8: cps_provider_3_Layout, +v_10: Nat, +v_12: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_3_head_native{v_1, v_6}}, False{}, v_1006537 => cemit_body_cps_provider_3_head_native(v_1, v_6), v_1006536 => +v_1006534 = cemit_unbox(cps_provider_3_HeadResult, v_1006536); cemit_continuation_1482(v_1006534, v_1, v_3, v_5, v_6, v_8, v_10, v_12)}
+  CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_3_head_native{v_1, v_6}}, False{}, v_1006566 => cemit_body_cps_provider_3_head_native(v_1, v_6), v_1006565 => +v_1006563 = cemit_unbox(cps_provider_3_HeadResult, v_1006565); cemit_continuation_1488(v_1006563, v_1, v_3, v_5, v_6, v_8, v_10, v_12)}
 
-def cemit_match_1483(+v_1: Nat, +v_14: cps_provider_4_ShowState, +v_10: cps_provider_3_Layout, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_12: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1489(+v_1: Nat, +v_14: cps_provider_4_ShowState, +v_10: cps_provider_3_Layout, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_12: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_1:
     case 3n:
-      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_14, 3n}}, False{}, v_1006546 => cemit_body_cps_provider_4_show_append_num(v_14, 3n), v_1006545 => +v_1006538 = cemit_unbox(cps_provider_4_ShowState, v_1006545); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_box_flag{v_10}}, False{}, v_1006544 => cemit_body_cps_provider_4_show_box_flag(v_10), v_1006543 => +v_1006539 = cemit_unbox(Nat, v_1006543); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_1006538, v_1006539}}, False{}, v_1006542 => cemit_body_cps_provider_4_show_append_num(v_1006538, v_1006539), v_1006541 => +v_1006540 = cemit_unbox(cps_provider_4_ShowState, v_1006541); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006540, []}}}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_14, 3n}}, False{}, v_1006575 => cemit_body_cps_provider_4_show_append_num(v_14, 3n), v_1006574 => +v_1006567 = cemit_unbox(cps_provider_4_ShowState, v_1006574); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_box_flag{v_10}}, False{}, v_1006573 => cemit_body_cps_provider_4_show_box_flag(v_10), v_1006572 => +v_1006568 = cemit_unbox(Nat, v_1006572); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_1006567, v_1006568}}, False{}, v_1006571 => cemit_body_cps_provider_4_show_append_num(v_1006567, v_1006568), v_1006570 => +v_1006569 = cemit_unbox(cps_provider_4_ShowState, v_1006570); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006569, []}}}}}}
     case 6n:
       cemit_body_cps_provider_4_show_advance_array(v_3, v_5, v_7, v_8, v_12, v_14)
     case 7n:
       cemit_body_cps_provider_4_show_advance_data(v_3, v_5, v_7, v_8, v_10, v_12, v_14)
     case _:
-      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_14, v_1}}, False{}, v_1006551 => cemit_body_cps_provider_4_show_append_num(v_14, v_1), v_1006550 => +v_1006549 = cemit_unbox(cps_provider_4_ShowState, v_1006550); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006549, []}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_append_num{v_14, v_1}}, False{}, v_1006580 => cemit_body_cps_provider_4_show_append_num(v_14, v_1), v_1006579 => +v_1006578 = cemit_unbox(cps_provider_4_ShowState, v_1006579); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006578, []}}}}
 
 def cemit_body_cps_provider_4_show_advance_n(+v_1: Nat, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: cps_provider_3_Layout, +v_12: Nat, +v_14: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  cemit_match_1483(v_1, v_14, v_10, v_3, v_5, v_7, v_8, v_12)
+  cemit_match_1489(v_1, v_14, v_10, v_3, v_5, v_7, v_8, v_12)
 
-def cemit_match_1484(+v_1: cps_provider_4_ShowKind, +v_14: cps_provider_4_ShowState, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: cps_provider_3_Layout, +v_12: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1490(+v_1: cps_provider_4_ShowKind, +v_14: cps_provider_4_ShowState, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: cps_provider_3_Layout, +v_12: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_1:
     case cps_provider_4_ShowKindFailed{v_17}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_14, v_17}}, False{}, v_1006554 => cemit_body_cps_provider_4_show_state_error(v_14, v_17), v_1006553 => +v_1006552 = cemit_unbox(cps_provider_4_ShowState, v_1006553); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006552, []}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_14, v_17}}, False{}, v_1006583 => cemit_body_cps_provider_4_show_state_error(v_14, v_17), v_1006582 => +v_1006581 = cemit_unbox(cps_provider_4_ShowState, v_1006582); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006581, []}}}}
     case cps_provider_4_ShowKindOk{v_20}:
       cemit_body_cps_provider_4_show_advance_n(v_20, v_3, v_5, v_7, v_8, v_10, v_12, v_14)
 
 def cemit_body_cps_provider_4_show_advance_kind(+v_1: cps_provider_4_ShowKind, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: cps_provider_3_Layout, +v_12: Nat, +v_14: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  cemit_match_1484(v_1, v_14, v_3, v_5, v_7, v_8, v_10, v_12)
+  cemit_match_1490(v_1, v_14, v_3, v_5, v_7, v_8, v_10, v_12)
 
-def cemit_continuation_1485(+v_1006561: cps_provider_4_ShowKind, +v_6: cps_provider_3_Context, +v_8: List<&2, BIR.ConstructorLayout>, +v_10: List<&2, BIR.Family>, +v_11: BIR.Descriptor, +v_13: cps_provider_3_Layout, v_26: Nat, v_34: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  v_37 = v_1006561
+def cemit_continuation_1491(+v_1006590: cps_provider_4_ShowKind, +v_6: cps_provider_3_Context, +v_8: List<&2, BIR.ConstructorLayout>, +v_10: List<&2, BIR.Family>, +v_11: BIR.Descriptor, +v_13: cps_provider_3_Layout, v_26: Nat, v_34: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+  v_37 = v_1006590
   cemit_body_cps_provider_4_show_advance_kind(v_37, v_6, v_8, v_10, v_11, v_13, v_26, v_34)
 
-def cemit_continuation_1486(+v_1006560: cps_provider_4_ShowState, +v_6: cps_provider_3_Context, +v_11: BIR.Descriptor, +v_8: List<&2, BIR.ConstructorLayout>, +v_10: List<&2, BIR.Family>, +v_13: cps_provider_3_Layout, v_26: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  v_34 = v_1006560
-  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_kind{v_6, v_11}}, False{}, v_1006564 => cemit_body_cps_provider_4_show_kind(v_6, v_11), v_1006563 => +v_1006561 = cemit_unbox(cps_provider_4_ShowKind, v_1006563); cemit_continuation_1485(v_1006561, v_6, v_8, v_10, v_11, v_13, v_26, v_34)}
+def cemit_continuation_1492(+v_1006589: cps_provider_4_ShowState, +v_6: cps_provider_3_Context, +v_11: BIR.Descriptor, +v_8: List<&2, BIR.ConstructorLayout>, +v_10: List<&2, BIR.Family>, +v_13: cps_provider_3_Layout, v_26: Nat) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+  v_34 = v_1006589
+  CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_kind{v_6, v_11}}, False{}, v_1006593 => cemit_body_cps_provider_4_show_kind(v_6, v_11), v_1006592 => +v_1006590 = cemit_unbox(cps_provider_4_ShowKind, v_1006592); cemit_continuation_1491(v_1006590, v_6, v_8, v_10, v_11, v_13, v_26, v_34)}
 
-def cemit_match_1487(+v_2: Maybe<&2, Nat>, +v_18: cps_provider_4_ShowState, +v_16: Maybe<&2, Nat>, +v_4: String, +v_6: cps_provider_3_Context, +v_11: BIR.Descriptor, +v_8: List<&2, BIR.ConstructorLayout>, +v_10: List<&2, BIR.Family>, +v_13: cps_provider_3_Layout) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1493(+v_2: Maybe<&2, Nat>, +v_18: cps_provider_4_ShowState, +v_16: Maybe<&2, Nat>, +v_4: String, +v_6: cps_provider_3_Context, +v_11: BIR.Descriptor, +v_8: List<&2, BIR.ConstructorLayout>, +v_10: List<&2, BIR.Family>, +v_13: cps_provider_3_Layout) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_2:
     case Some{v_21}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_apply_patch{v_18, v_16, v_21}}, False{}, v_1006558 => cemit_body_cps_provider_4_show_apply_patch(v_18, v_16, v_21), v_1006557 => +v_1006556 = cemit_unbox(cps_provider_4_ShowState, v_1006557); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006556, []}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_apply_patch{v_18, v_16, v_21}}, False{}, v_1006587 => cemit_body_cps_provider_4_show_apply_patch(v_18, v_16, v_21), v_1006586 => +v_1006585 = cemit_unbox(cps_provider_4_ShowState, v_1006586); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006585, []}}}}
     case None{}:
       +v_26 = List.length(&2, cps_provider_4_ShowWord, cemit_pure_cps_provider_4_show_words(v_18))
       v_30 = Map.set(&2, Nat, cemit_pure_cps_provider_4_show_memo(v_18), v_4, v_26)
-      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_set_memo{v_18, v_30}}, False{}, v_1006568 => cemit_body_cps_provider_4_show_state_set_memo(v_18, v_30), v_1006567 => +v_1006559 = cemit_unbox(cps_provider_4_ShowState, v_1006567); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_apply_patch{v_1006559, v_16, v_26}}, False{}, v_1006566 => cemit_body_cps_provider_4_show_apply_patch(v_1006559, v_16, v_26), v_1006565 => +v_1006560 = cemit_unbox(cps_provider_4_ShowState, v_1006565); cemit_continuation_1486(v_1006560, v_6, v_11, v_8, v_10, v_13, v_26)}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_set_memo{v_18, v_30}}, False{}, v_1006597 => cemit_body_cps_provider_4_show_state_set_memo(v_18, v_30), v_1006596 => +v_1006588 = cemit_unbox(cps_provider_4_ShowState, v_1006596); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_apply_patch{v_1006588, v_16, v_26}}, False{}, v_1006595 => cemit_body_cps_provider_4_show_apply_patch(v_1006588, v_16, v_26), v_1006594 => +v_1006589 = cemit_unbox(cps_provider_4_ShowState, v_1006594); cemit_continuation_1492(v_1006589, v_6, v_11, v_8, v_10, v_13, v_26)}}
 
 def cemit_body_cps_provider_4_show_advance_memo(+v_2: Maybe<&2, Nat>, +v_4: String, +v_6: cps_provider_3_Context, +v_8: List<&2, BIR.ConstructorLayout>, +v_10: List<&2, BIR.Family>, +v_11: BIR.Descriptor, +v_13: cps_provider_3_Layout, +v_16: Maybe<&2, Nat>, +v_18: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  cemit_match_1487(v_2, v_18, v_16, v_4, v_6, v_11, v_8, v_10, v_13)
+  cemit_match_1493(v_2, v_18, v_16, v_4, v_6, v_11, v_8, v_10, v_13)
 
-def cemit_match_1488(+v_1: cps_provider_4_ShowNorm, +v_15: cps_provider_4_ShowState, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: cps_provider_3_Layout, +v_13: Maybe<&2, Nat>) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1494(+v_1: cps_provider_4_ShowNorm, +v_15: cps_provider_4_ShowState, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: cps_provider_3_Layout, +v_13: Maybe<&2, Nat>) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_1:
     case cps_provider_4_ShowNormFailed{v_18}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_15, v_18}}, False{}, v_1006571 => cemit_body_cps_provider_4_show_state_error(v_15, v_18), v_1006570 => +v_1006569 = cemit_unbox(cps_provider_4_ShowState, v_1006570); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006569, []}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_15, v_18}}, False{}, v_1006600 => cemit_body_cps_provider_4_show_state_error(v_15, v_18), v_1006599 => +v_1006598 = cemit_unbox(cps_provider_4_ShowState, v_1006599); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006598, []}}}}
     case cps_provider_4_ShowNormOk{v_21}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_descriptor_key{v_21}}, False{}, v_1006576 => cemit_body_cps_provider_4_show_descriptor_key(v_21), v_1006575 => +v_1006572 = cemit_unbox(Maybe<&2, String>, v_1006575); CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_4_show_advance_key{v_1006572, v_3, v_5, v_7, v_8, v_10, v_13, v_15}}, v_1006574 => +v_1006573 = cemit_unbox(cps_provider_4_ShowAdvance, v_1006574); CEmitterFinished{CEmitterValue{v_1006573}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_descriptor_key{v_21}}, False{}, v_1006605 => cemit_body_cps_provider_4_show_descriptor_key(v_21), v_1006604 => +v_1006601 = cemit_unbox(Maybe<&2, String>, v_1006604); CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_4_show_advance_key{v_1006601, v_3, v_5, v_7, v_8, v_10, v_13, v_15}}, v_1006603 => +v_1006602 = cemit_unbox(cps_provider_4_ShowAdvance, v_1006603); CEmitterFinished{CEmitterValue{v_1006602}}}}
 
 def cemit_body_cps_provider_4_show_advance_norm(+v_1: cps_provider_4_ShowNorm, +v_3: cps_provider_3_Context, +v_5: List<&2, BIR.ConstructorLayout>, +v_7: List<&2, BIR.Family>, +v_8: BIR.Descriptor, +v_10: cps_provider_3_Layout, +v_13: Maybe<&2, Nat>, +v_15: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  cemit_match_1488(v_1, v_15, v_3, v_5, v_7, v_8, v_10, v_13)
+  cemit_match_1494(v_1, v_15, v_3, v_5, v_7, v_8, v_10, v_13)
 
-def cemit_continuation_1489(+v_1006583: String, +v_16: cps_provider_4_ShowState, +v_4: cps_provider_3_Context, +v_6: List<&2, BIR.ConstructorLayout>, +v_8: List<&2, BIR.Family>, +v_9: BIR.Descriptor, +v_11: cps_provider_3_Layout, +v_14: Maybe<&2, Nat>) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  +v_24 = v_1006583
+def cemit_continuation_1495(+v_1006612: String, +v_16: cps_provider_4_ShowState, +v_4: cps_provider_3_Context, +v_6: List<&2, BIR.ConstructorLayout>, +v_8: List<&2, BIR.Family>, +v_9: BIR.Descriptor, +v_11: cps_provider_3_Layout, +v_14: Maybe<&2, Nat>) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+  +v_24 = v_1006612
   v_28 = IndexLookup.find(Nat, cemit_pure_cps_provider_4_show_memo(v_16), v_24)
   cemit_body_cps_provider_4_show_advance_memo(v_28, v_24, v_4, v_6, v_8, v_9, v_11, v_14, v_16)
 
-def cemit_match_1490(+v_2: Maybe<&2, String>, +v_16: cps_provider_4_ShowState, +v_11: cps_provider_3_Layout, +v_4: cps_provider_3_Context, +v_6: List<&2, BIR.ConstructorLayout>, +v_8: List<&2, BIR.Family>, +v_9: BIR.Descriptor, +v_14: Maybe<&2, Nat>) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1496(+v_2: Maybe<&2, String>, +v_16: cps_provider_4_ShowState, +v_11: cps_provider_3_Layout, +v_4: cps_provider_3_Context, +v_6: List<&2, BIR.ConstructorLayout>, +v_8: List<&2, BIR.Family>, +v_9: BIR.Descriptor, +v_14: Maybe<&2, Nat>) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_2:
     case None{}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_16, "the show descriptor key did not finish"}}, False{}, v_1006579 => cemit_body_cps_provider_4_show_state_error(v_16, "the show descriptor key did not finish"), v_1006578 => +v_1006577 = cemit_unbox(cps_provider_4_ShowState, v_1006578); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006577, []}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state_error{v_16, "the show descriptor key did not finish"}}, False{}, v_1006608 => cemit_body_cps_provider_4_show_state_error(v_16, "the show descriptor key did not finish"), v_1006607 => +v_1006606 = cemit_unbox(cps_provider_4_ShowState, v_1006607); CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_1006606, []}}}}
     case Some{v_20}:
-      v_1006580 = {v_20 : String}
-      v_1006581 = {"@" : String}
-      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_layout_key{v_11}}, False{}, v_1006588 => cemit_body_cps_provider_4_show_layout_key(v_11), v_1006587 => +v_1006582 = cemit_unbox(String, v_1006587); CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{[v_1006580, v_1006581, v_1006582]}}, False{}, v_1006586 => cemit_body_cps_provider_4_join_text([v_1006580, v_1006581, v_1006582]), v_1006585 => +v_1006583 = cemit_unbox(String, v_1006585); cemit_continuation_1489(v_1006583, v_16, v_4, v_6, v_8, v_9, v_11, v_14)}}
+      v_1006609 = {v_20 : String}
+      v_1006610 = {"@" : String}
+      CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_layout_key{v_11}}, False{}, v_1006617 => cemit_body_cps_provider_4_show_layout_key(v_11), v_1006616 => +v_1006611 = cemit_unbox(String, v_1006616); CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_4_join_text{[v_1006609, v_1006610, v_1006611]}}, False{}, v_1006615 => cemit_body_cps_provider_4_join_text([v_1006609, v_1006610, v_1006611]), v_1006614 => +v_1006612 = cemit_unbox(String, v_1006614); cemit_continuation_1495(v_1006612, v_16, v_4, v_6, v_8, v_9, v_11, v_14)}}
 
 def cemit_body_cps_provider_4_show_advance_key(+v_2: Maybe<&2, String>, +v_4: cps_provider_3_Context, +v_6: List<&2, BIR.ConstructorLayout>, +v_8: List<&2, BIR.Family>, +v_9: BIR.Descriptor, +v_11: cps_provider_3_Layout, +v_14: Maybe<&2, Nat>, +v_16: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  cemit_match_1490(v_2, v_16, v_11, v_4, v_6, v_8, v_9, v_14)
+  cemit_match_1496(v_2, v_16, v_11, v_4, v_6, v_8, v_9, v_14)
 
 def cemit_body_cps_provider_4_show_norm_result(+v_1: cps_provider_3_NormResult) -> CEmitterProgress<cps_provider_4_ShowNorm>:
   match v_1:
@@ -16740,98 +16801,98 @@ def cemit_body_cps_provider_4_show_norm_result(+v_1: cps_provider_3_NormResult) 
       CEmitterFinished{CEmitterValue{cps_provider_4_ShowNormFailed{v_6}}}
 
 def cemit_body_cps_provider_4_show_norm(+v_1: cps_provider_3_Context, +v_2: BIR.Descriptor) -> CEmitterProgress<cps_provider_4_ShowNorm>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_3_norm{v_1, v_2}}, False{}, v_1006592 => cemit_body_cps_provider_3_norm(v_1, v_2), v_1006591 => +v_1006589 = cemit_unbox(cps_provider_3_NormResult, v_1006591); cemit_body_cps_provider_4_show_norm_result(v_1006589)}
+  CEmitterDirect{Bool, CEmitterRequestGroup_13{CEmitterRequest_cps_provider_3_norm{v_1, v_2}}, False{}, v_1006621 => cemit_body_cps_provider_3_norm(v_1, v_2), v_1006620 => +v_1006618 = cemit_unbox(cps_provider_3_NormResult, v_1006620); cemit_body_cps_provider_4_show_norm_result(v_1006618)}
 
-def cemit_continuation_1492(+v_1006593: cps_provider_4_ShowNorm, +v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>, +v_6: BIR.Descriptor, +v_8: cps_provider_3_Layout, +v_11: Maybe<&2, Nat>, +v_16: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  v_22 = v_1006593
+def cemit_continuation_1498(+v_1006622: cps_provider_4_ShowNorm, +v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>, +v_6: BIR.Descriptor, +v_8: cps_provider_3_Layout, +v_11: Maybe<&2, Nat>, +v_16: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+  v_22 = v_1006622
   cemit_body_cps_provider_4_show_advance_norm(v_22, v_1, v_3, v_5, v_6, v_8, v_11, v_16)
 
-def cemit_match_1493(+v_14: Maybe<&2, String>, +v_16: cps_provider_4_ShowState, +v_1: cps_provider_3_Context, +v_6: BIR.Descriptor, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>, +v_8: cps_provider_3_Layout, +v_11: Maybe<&2, Nat>) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1499(+v_14: Maybe<&2, String>, +v_16: cps_provider_4_ShowState, +v_1: cps_provider_3_Context, +v_6: BIR.Descriptor, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>, +v_8: cps_provider_3_Layout, +v_11: Maybe<&2, Nat>) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_14:
     case Some{v_19}:
       CEmitterFinished{CEmitterValue{cps_provider_4_ShowNext{v_16, []}}}
     case None{}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_4_show_norm{v_1, v_6}}, False{}, v_1006596 => cemit_body_cps_provider_4_show_norm(v_1, v_6), v_1006595 => +v_1006593 = cemit_unbox(cps_provider_4_ShowNorm, v_1006595); cemit_continuation_1492(v_1006593, v_1, v_3, v_5, v_6, v_8, v_11, v_16)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_4_show_norm{v_1, v_6}}, False{}, v_1006625 => cemit_body_cps_provider_4_show_norm(v_1, v_6), v_1006624 => +v_1006622 = cemit_unbox(cps_provider_4_ShowNorm, v_1006624); cemit_continuation_1498(v_1006622, v_1, v_3, v_5, v_6, v_8, v_11, v_16)}
 
 def cemit_body_cps_provider_4_show_advance_error(+v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>, +v_6: BIR.Descriptor, +v_8: cps_provider_3_Layout, +v_11: Maybe<&2, Nat>, +v_14: Maybe<&2, String>, +v_16: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  cemit_match_1493(v_14, v_16, v_1, v_6, v_3, v_5, v_8, v_11)
+  cemit_match_1499(v_14, v_16, v_1, v_6, v_3, v_5, v_8, v_11)
 
-def cemit_match_1494(+v_13: cps_provider_4_ShowState, +v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>, +v_6: BIR.Descriptor, +v_8: cps_provider_3_Layout, +v_11: Maybe<&2, Nat>) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1500(+v_13: cps_provider_4_ShowState, +v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>, +v_6: BIR.Descriptor, +v_8: cps_provider_3_Layout, +v_11: Maybe<&2, Nat>) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_13:
     case cps_provider_4_ShowState{v_20, v_21, v_22, v_23, v_24}:
       cemit_body_cps_provider_4_show_advance_error(v_1, v_3, v_5, v_6, v_8, v_11, v_24, v_13)
 
 def cemit_body_cps_provider_4_show_advance_st(+v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>, +v_6: BIR.Descriptor, +v_8: cps_provider_3_Layout, +v_11: Maybe<&2, Nat>, +v_13: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  cemit_match_1494(v_13, v_1, v_3, v_5, v_6, v_8, v_11)
+  cemit_match_1500(v_13, v_1, v_3, v_5, v_6, v_8, v_11)
 
-def cemit_match_1495(+v_7: cps_provider_4_ShowJob, +v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>, +v_9: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
+def cemit_match_1501(+v_7: cps_provider_4_ShowJob, +v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>, +v_9: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
   match v_7:
     case cps_provider_4_ShowNode{v_14, v_15, v_16}:
       cemit_body_cps_provider_4_show_advance_st(v_1, v_3, v_5, v_14, v_15, v_16, v_9)
 
 def cemit_body_cps_provider_4_show_advance_job(+v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>, +v_7: cps_provider_4_ShowJob, +v_9: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowAdvance>:
-  cemit_match_1495(v_7, v_1, v_3, v_5, v_9)
+  cemit_match_1501(v_7, v_1, v_3, v_5, v_9)
 
-def cemit_continuation_1496(+v_1006599: cps_provider_4_ShowAdvance, +v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>, +v_15: List<&2, cps_provider_4_ShowJob>) -> CEmitterProgress<cps_provider_4_ShowRun>:
-  +v_18 = v_1006599
-  CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_4_run_show{v_1, v_3, v_5, List.append(&2, cps_provider_4_ShowJob, cemit_pure_cps_provider_4_show_next_kids(v_18), v_15), cemit_pure_cps_provider_4_show_next_state(v_18)}}, v_1006601 => +v_1006600 = cemit_unbox(cps_provider_4_ShowRun, v_1006601); CEmitterFinished{CEmitterValue{v_1006600}}}
+def cemit_continuation_1502(+v_1006628: cps_provider_4_ShowAdvance, +v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>, +v_15: List<&2, cps_provider_4_ShowJob>) -> CEmitterProgress<cps_provider_4_ShowRun>:
+  +v_18 = v_1006628
+  CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_4_run_show{v_1, v_3, v_5, List.append(&2, cps_provider_4_ShowJob, cemit_pure_cps_provider_4_show_next_kids(v_18), v_15), cemit_pure_cps_provider_4_show_next_state(v_18)}}, v_1006630 => +v_1006629 = cemit_unbox(cps_provider_4_ShowRun, v_1006630); CEmitterFinished{CEmitterValue{v_1006629}}}
 
-def cemit_match_1497(+v_8: List<&2, cps_provider_4_ShowJob>, +v_10: cps_provider_4_ShowState, +v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>) -> CEmitterProgress<cps_provider_4_ShowRun>:
+def cemit_match_1503(+v_8: List<&2, cps_provider_4_ShowJob>, +v_10: cps_provider_4_ShowState, +v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>) -> CEmitterProgress<cps_provider_4_ShowRun>:
   match v_8:
     case []:
       CEmitterFinished{CEmitterValue{cps_provider_4_ShowDone{v_10}}}
     case +v_14 <> +v_15:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_4_show_advance_job{v_1, v_3, v_5, v_14, v_10}}, False{}, v_1006603 => cemit_body_cps_provider_4_show_advance_job(v_1, v_3, v_5, v_14, v_10), v_1006602 => +v_1006599 = cemit_unbox(cps_provider_4_ShowAdvance, v_1006602); cemit_continuation_1496(v_1006599, v_1, v_3, v_5, v_15)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_4_show_advance_job{v_1, v_3, v_5, v_14, v_10}}, False{}, v_1006632 => cemit_body_cps_provider_4_show_advance_job(v_1, v_3, v_5, v_14, v_10), v_1006631 => +v_1006628 = cemit_unbox(cps_provider_4_ShowAdvance, v_1006631); cemit_continuation_1502(v_1006628, v_1, v_3, v_5, v_15)}
 
 def cemit_body_cps_provider_4_run_show(+v_1: cps_provider_3_Context, +v_3: List<&2, BIR.ConstructorLayout>, +v_5: List<&2, BIR.Family>, +v_8: List<&2, cps_provider_4_ShowJob>, +v_10: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowRun>:
-  cemit_match_1497(v_8, v_10, v_1, v_3, v_5)
+  cemit_match_1503(v_8, v_10, v_1, v_3, v_5)
 
-def cemit_match_1498(v_1006604: Bool, +v_13: cps_provider_4_ShowWord, +v_14: List<&2, cps_provider_4_ShowWord>, +v_4: Nat, +v_6: cps_provider_4_ShowWord, +v_8: Nat) -> CEmitterProgress<List<&2, cps_provider_4_ShowWord>>:
-  match v_1006604:
+def cemit_match_1504(v_1006633: Bool, +v_13: cps_provider_4_ShowWord, +v_14: List<&2, cps_provider_4_ShowWord>, +v_4: Nat, +v_6: cps_provider_4_ShowWord, +v_8: Nat) -> CEmitterProgress<List<&2, cps_provider_4_ShowWord>>:
+  match v_1006633:
     case False{}:
-      v_1006605 = {[v_13] : List<&2, cps_provider_4_ShowWord>}
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_4_show_set_word{v_14, v_4, v_6, Nat.add(v_8, 1n)}}, v_1006607 => +v_1006606 = cemit_unbox(List<&2, cps_provider_4_ShowWord>, v_1006607); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowWord, v_1006605, v_1006606)}}}
+      v_1006634 = {[v_13] : List<&2, cps_provider_4_ShowWord>}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_4_show_set_word{v_14, v_4, v_6, Nat.add(v_8, 1n)}}, v_1006636 => +v_1006635 = cemit_unbox(List<&2, cps_provider_4_ShowWord>, v_1006636); CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowWord, v_1006634, v_1006635)}}}
     case True{}:
       CEmitterFinished{CEmitterValue{List.append(&2, cps_provider_4_ShowWord, [v_6], v_14)}}
 
-def cemit_match_1499(+v_2: List<&2, cps_provider_4_ShowWord>, +v_8: Nat, +v_4: Nat, +v_6: cps_provider_4_ShowWord) -> CEmitterProgress<List<&2, cps_provider_4_ShowWord>>:
+def cemit_match_1505(+v_2: List<&2, cps_provider_4_ShowWord>, +v_8: Nat, +v_4: Nat, +v_6: cps_provider_4_ShowWord) -> CEmitterProgress<List<&2, cps_provider_4_ShowWord>>:
   match v_2:
     case []:
       CEmitterFinished{CEmitterValue{[]}}
     case +v_13 <> +v_14:
       v_16 = Nat.is_eq(v_8, v_4)
-      v_1006604 = v_16
-      cemit_match_1498(v_1006604, v_13, v_14, v_4, v_6, v_8)
+      v_1006633 = v_16
+      cemit_match_1504(v_1006633, v_13, v_14, v_4, v_6, v_8)
 
 def cemit_body_cps_provider_4_show_set_word(+v_2: List<&2, cps_provider_4_ShowWord>, +v_4: Nat, +v_6: cps_provider_4_ShowWord, +v_8: Nat) -> CEmitterProgress<List<&2, cps_provider_4_ShowWord>>:
-  cemit_match_1499(v_2, v_8, v_4, v_6)
+  cemit_match_1505(v_2, v_8, v_4, v_6)
 
-def cemit_match_1500(+v_10: cps_provider_4_ShowPatch, +v_2: List<&2, cps_provider_4_ShowWord>, +v_11: List<&2, cps_provider_4_ShowPatch>) -> CEmitterProgress<List<&2, cps_provider_4_ShowWord>>:
+def cemit_match_1506(+v_10: cps_provider_4_ShowPatch, +v_2: List<&2, cps_provider_4_ShowWord>, +v_11: List<&2, cps_provider_4_ShowPatch>) -> CEmitterProgress<List<&2, cps_provider_4_ShowWord>>:
   match v_10:
     case cps_provider_4_ShowPatchAt{v_14, v_15}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_4_show_set_word{v_2, v_14, cps_provider_4_ShowNum{v_15}, 0n}}, False{}, v_1006612 => cemit_body_cps_provider_4_show_set_word(v_2, v_14, cps_provider_4_ShowNum{v_15}, 0n), v_1006611 => +v_1006608 = cemit_unbox(List<&2, cps_provider_4_ShowWord>, v_1006611); CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_4_show_apply_patches{v_1006608, v_11}}, v_1006610 => +v_1006609 = cemit_unbox(List<&2, cps_provider_4_ShowWord>, v_1006610); CEmitterFinished{CEmitterValue{v_1006609}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_4_show_set_word{v_2, v_14, cps_provider_4_ShowNum{v_15}, 0n}}, False{}, v_1006641 => cemit_body_cps_provider_4_show_set_word(v_2, v_14, cps_provider_4_ShowNum{v_15}, 0n), v_1006640 => +v_1006637 = cemit_unbox(List<&2, cps_provider_4_ShowWord>, v_1006640); CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_4_show_apply_patches{v_1006637, v_11}}, v_1006639 => +v_1006638 = cemit_unbox(List<&2, cps_provider_4_ShowWord>, v_1006639); CEmitterFinished{CEmitterValue{v_1006638}}}}
 
-def cemit_match_1501(+v_5: List<&2, cps_provider_4_ShowPatch>, +v_2: List<&2, cps_provider_4_ShowWord>) -> CEmitterProgress<List<&2, cps_provider_4_ShowWord>>:
+def cemit_match_1507(+v_5: List<&2, cps_provider_4_ShowPatch>, +v_2: List<&2, cps_provider_4_ShowWord>) -> CEmitterProgress<List<&2, cps_provider_4_ShowWord>>:
   match v_5:
     case []:
       CEmitterFinished{CEmitterValue{v_2}}
     case +v_10 <> +v_11:
-      cemit_match_1500(v_10, v_2, v_11)
+      cemit_match_1506(v_10, v_2, v_11)
 
 def cemit_body_cps_provider_4_show_apply_patches(+v_2: List<&2, cps_provider_4_ShowWord>, +v_5: List<&2, cps_provider_4_ShowPatch>) -> CEmitterProgress<List<&2, cps_provider_4_ShowWord>>:
-  cemit_match_1501(v_5, v_2)
+  cemit_match_1507(v_5, v_2)
 
 def cemit_body_cps_provider_4_show_finish(+v_2: Maybe<&2, String>, +v_4: cps_provider_4_ShowState) -> CEmitterProgress<cps_provider_4_ShowOut>:
   match v_2:
     case Some{v_7}:
       CEmitterFinished{CEmitterValue{cps_provider_4_ShowFail{v_7}}}
     case None{}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_4_show_apply_patches{cemit_pure_cps_provider_4_show_words(v_4), cemit_pure_cps_provider_4_show_patches(v_4)}}, False{}, v_1006621 => cemit_body_cps_provider_4_show_apply_patches(cemit_pure_cps_provider_4_show_words(v_4), cemit_pure_cps_provider_4_show_patches(v_4)), v_1006620 => +v_1006613 = cemit_unbox(List<&2, cps_provider_4_ShowWord>, v_1006620); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_render_words{v_1006613, ""}}, False{}, v_1006619 => cemit_body_cps_provider_4_show_render_words(v_1006613, ""), v_1006618 => +v_1006614 = cemit_unbox(String, v_1006618); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_render_names{cemit_pure_cps_provider_4_show_names(v_4)}}, False{}, v_1006617 => cemit_body_cps_provider_4_show_render_names(cemit_pure_cps_provider_4_show_names(v_4)), v_1006616 => +v_1006615 = cemit_unbox(String, v_1006616); CEmitterFinished{CEmitterValue{cps_provider_4_ShowOk{v_1006614, v_1006615}}}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_4_show_apply_patches{cemit_pure_cps_provider_4_show_words(v_4), cemit_pure_cps_provider_4_show_patches(v_4)}}, False{}, v_1006650 => cemit_body_cps_provider_4_show_apply_patches(cemit_pure_cps_provider_4_show_words(v_4), cemit_pure_cps_provider_4_show_patches(v_4)), v_1006649 => +v_1006642 = cemit_unbox(List<&2, cps_provider_4_ShowWord>, v_1006649); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_render_words{v_1006642, ""}}, False{}, v_1006648 => cemit_body_cps_provider_4_show_render_words(v_1006642, ""), v_1006647 => +v_1006643 = cemit_unbox(String, v_1006647); CEmitterDirect{Bool, CEmitterRequestGroup_16{CEmitterRequest_cps_provider_4_show_render_names{cemit_pure_cps_provider_4_show_names(v_4)}}, False{}, v_1006646 => cemit_body_cps_provider_4_show_render_names(cemit_pure_cps_provider_4_show_names(v_4)), v_1006645 => +v_1006644 = cemit_unbox(String, v_1006645); CEmitterFinished{CEmitterValue{cps_provider_4_ShowOk{v_1006643, v_1006644}}}}}}
 
 def cemit_body_cps_provider_4_show_result(+v_1: cps_provider_4_ShowRun) -> CEmitterProgress<cps_provider_4_ShowOut>:
   match v_1:
     case cps_provider_4_ShowDone{+v_4}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_4_show_finish{cemit_pure_cps_provider_4_show_error(v_4), v_4}}, False{}, v_1006624 => cemit_body_cps_provider_4_show_finish(cemit_pure_cps_provider_4_show_error(v_4), v_4), v_1006623 => +v_1006622 = cemit_unbox(cps_provider_4_ShowOut, v_1006623); CEmitterFinished{CEmitterValue{v_1006622}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_4_show_finish{cemit_pure_cps_provider_4_show_error(v_4), v_4}}, False{}, v_1006653 => cemit_body_cps_provider_4_show_finish(cemit_pure_cps_provider_4_show_error(v_4), v_4), v_1006652 => +v_1006651 = cemit_unbox(cps_provider_4_ShowOut, v_1006652); CEmitterFinished{CEmitterValue{v_1006651}}}
 
 def cemit_body_cps_provider_4_show_root_layout(+v_1: cps_provider_3_Layout) -> CEmitterProgress<cps_provider_3_Layout>:
   match v_1:
@@ -16842,57 +16903,57 @@ def cemit_body_cps_provider_4_show_root_layout(+v_1: cps_provider_3_Layout) -> C
     case cps_provider_3_LayoutData{v_9, v_10}:
       CEmitterFinished{CEmitterValue{cps_provider_3_LayoutBox{cps_provider_3_BoxWide{List.length(&2, cps_provider_3_CWord, v_9)}}}}
 
-def cemit_continuation_1505(+v_1006631: cps_provider_4_ShowRun) -> CEmitterProgress<cps_provider_4_ShowOut>:
-  v_18 = v_1006631
+def cemit_continuation_1511(+v_1006660: cps_provider_4_ShowRun) -> CEmitterProgress<cps_provider_4_ShowOut>:
+  v_18 = v_1006660
   cemit_body_cps_provider_4_show_result(v_18)
 
-def cemit_match_1506(+v_1: cps_provider_3_LayoutResult, +v_3: cps_provider_3_Context, +v_6: List<&2, BIR.ConstructorLayout>, +v_8: List<&2, BIR.Family>, +v_4: BIR.Descriptor) -> CEmitterProgress<cps_provider_4_ShowOut>:
+def cemit_match_1512(+v_1: cps_provider_3_LayoutResult, +v_3: cps_provider_3_Context, +v_6: List<&2, BIR.ConstructorLayout>, +v_8: List<&2, BIR.Family>, +v_4: BIR.Descriptor) -> CEmitterProgress<cps_provider_4_ShowOut>:
   match v_1:
     case cps_provider_3_LayoutFailed{v_11}:
       CEmitterFinished{CEmitterValue{cps_provider_4_ShowFail{v_11}}}
     case cps_provider_3_LayoutFound{v_13}:
-      +v_1006625 = {v_3 : cps_provider_3_Context}
-      +v_1006626 = {v_6 : List<&2, BIR.ConstructorLayout>}
-      +v_1006627 = {v_8 : List<&2, BIR.Family>}
-      v_1006628 = {v_4 : BIR.Descriptor}
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_4_show_root_layout{v_13}}, False{}, v_1006638 => cemit_body_cps_provider_4_show_root_layout(v_13), v_1006637 => +v_1006629 = cemit_unbox(cps_provider_3_Layout, v_1006637); CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state0{}}, False{}, v_1006636 => cemit_body_cps_provider_4_show_state0, v_1006635 => +v_1006630 = cemit_unbox(cps_provider_4_ShowState, v_1006635); CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_4_run_show{v_1006625, v_1006626, v_1006627, [cps_provider_4_ShowNode{v_1006628, v_1006629, None{}}], v_1006630}}, False{}, v_1006634 => cemit_body_cps_provider_4_run_show(v_1006625, v_1006626, v_1006627, [cps_provider_4_ShowNode{v_1006628, v_1006629, None{}}], v_1006630), v_1006633 => +v_1006631 = cemit_unbox(cps_provider_4_ShowRun, v_1006633); cemit_continuation_1505(v_1006631)}}}
+      +v_1006654 = {v_3 : cps_provider_3_Context}
+      +v_1006655 = {v_6 : List<&2, BIR.ConstructorLayout>}
+      +v_1006656 = {v_8 : List<&2, BIR.Family>}
+      v_1006657 = {v_4 : BIR.Descriptor}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_4_show_root_layout{v_13}}, False{}, v_1006667 => cemit_body_cps_provider_4_show_root_layout(v_13), v_1006666 => +v_1006658 = cemit_unbox(cps_provider_3_Layout, v_1006666); CEmitterDirect{Bool, CEmitterRequestGroup_15{CEmitterRequest_cps_provider_4_show_state0{}}, False{}, v_1006665 => cemit_body_cps_provider_4_show_state0, v_1006664 => +v_1006659 = cemit_unbox(cps_provider_4_ShowState, v_1006664); CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_4_run_show{v_1006654, v_1006655, v_1006656, [cps_provider_4_ShowNode{v_1006657, v_1006658, None{}}], v_1006659}}, False{}, v_1006663 => cemit_body_cps_provider_4_run_show(v_1006654, v_1006655, v_1006656, [cps_provider_4_ShowNode{v_1006657, v_1006658, None{}}], v_1006659), v_1006662 => +v_1006660 = cemit_unbox(cps_provider_4_ShowRun, v_1006662); cemit_continuation_1511(v_1006660)}}}
 
 def cemit_body_cps_provider_4_show_root(+v_1: cps_provider_3_LayoutResult, +v_3: cps_provider_3_Context, +v_4: BIR.Descriptor, +v_6: List<&2, BIR.ConstructorLayout>, +v_8: List<&2, BIR.Family>) -> CEmitterProgress<cps_provider_4_ShowOut>:
-  cemit_match_1506(v_1, v_3, v_6, v_8, v_4)
+  cemit_match_1512(v_1, v_3, v_6, v_8, v_4)
 
-def cemit_continuation_1507(+v_1006639: cps_provider_3_LayoutResult, +v_1: cps_provider_3_Context, +v_2: BIR.Descriptor, +v_4: List<&2, BIR.ConstructorLayout>, +v_6: List<&2, BIR.Family>) -> CEmitterProgress<cps_provider_4_ShowOut>:
-  v_10 = v_1006639
+def cemit_continuation_1513(+v_1006668: cps_provider_3_LayoutResult, +v_1: cps_provider_3_Context, +v_2: BIR.Descriptor, +v_4: List<&2, BIR.ConstructorLayout>, +v_6: List<&2, BIR.Family>) -> CEmitterProgress<cps_provider_4_ShowOut>:
+  v_10 = v_1006668
   cemit_body_cps_provider_4_show_root(v_10, v_1, v_2, v_4, v_6)
 
 def cemit_body_cps_provider_4_show_build(+v_1: cps_provider_3_Context, +v_2: BIR.Descriptor, +v_4: List<&2, BIR.ConstructorLayout>, +v_6: List<&2, BIR.Family>) -> CEmitterProgress<cps_provider_4_ShowOut>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_12{CEmitterRequest_cps_provider_3_value_layout{v_1, v_2}}, False{}, v_1006642 => cemit_body_cps_provider_3_value_layout(v_1, v_2), v_1006641 => +v_1006639 = cemit_unbox(cps_provider_3_LayoutResult, v_1006641); cemit_continuation_1507(v_1006639, v_1, v_2, v_4, v_6)}
+  CEmitterDirect{Bool, CEmitterRequestGroup_12{CEmitterRequest_cps_provider_3_value_layout{v_1, v_2}}, False{}, v_1006671 => cemit_body_cps_provider_3_value_layout(v_1, v_2), v_1006670 => +v_1006668 = cemit_unbox(cps_provider_3_LayoutResult, v_1006670); cemit_continuation_1513(v_1006668, v_1, v_2, v_4, v_6)}
 
-def cemit_match_1508(+v_5: BIR.Family, v_6: List<&2, BIR.Family>) -> CEmitterProgress<Map<&2, BIR.Family>>:
+def cemit_match_1514(+v_5: BIR.Family, v_6: List<&2, BIR.Family>) -> CEmitterProgress<Map<&2, BIR.Family>>:
   match v_5:
     case BIR.Family{v_13, v_14, v_15, v_16, v_17, v_18}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_family_index{v_6}}, v_1006644 => +v_1006643 = cemit_unbox(Map<&2, BIR.Family>, v_1006644); CEmitterFinished{CEmitterValue{Map.set(&2, BIR.Family, v_1006643, v_13, v_5)}}}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_family_index{v_6}}, v_1006673 => +v_1006672 = cemit_unbox(Map<&2, BIR.Family>, v_1006673); CEmitterFinished{CEmitterValue{Map.set(&2, BIR.Family, v_1006672, v_13, v_5)}}}
 
 def cemit_body_cps_provider_5_family_index(v_1: List<&2, BIR.Family>) -> CEmitterProgress<Map<&2, BIR.Family>>:
   match v_1:
     case []:
       CEmitterFinished{CEmitterValue{Map.new(&2, BIR.Family)}}
     case +v_5 <> v_6:
-      cemit_match_1508(v_5, v_6)
+      cemit_match_1514(v_5, v_6)
 
-def cemit_match_1510(+v_5: BIR.TypeFunction, v_6: List<&2, BIR.TypeFunction>) -> CEmitterProgress<Map<&2, BIR.TypeFunction>>:
+def cemit_match_1516(+v_5: BIR.TypeFunction, v_6: List<&2, BIR.TypeFunction>) -> CEmitterProgress<Map<&2, BIR.TypeFunction>>:
   match v_5:
     case BIR.TypeFunction{v_12, v_13, v_14, v_15, v_16}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_function_index{v_6}}, v_1006646 => +v_1006645 = cemit_unbox(Map<&2, BIR.TypeFunction>, v_1006646); CEmitterFinished{CEmitterValue{Map.set(&2, BIR.TypeFunction, v_1006645, v_12, v_5)}}}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_function_index{v_6}}, v_1006675 => +v_1006674 = cemit_unbox(Map<&2, BIR.TypeFunction>, v_1006675); CEmitterFinished{CEmitterValue{Map.set(&2, BIR.TypeFunction, v_1006674, v_12, v_5)}}}
 
 def cemit_body_cps_provider_5_function_index(v_1: List<&2, BIR.TypeFunction>) -> CEmitterProgress<Map<&2, BIR.TypeFunction>>:
   match v_1:
     case []:
       CEmitterFinished{CEmitterValue{Map.new(&2, BIR.TypeFunction)}}
     case +v_5 <> v_6:
-      cemit_match_1510(v_5, v_6)
+      cemit_match_1516(v_5, v_6)
 
 def cemit_body_cps_provider_5_nf_context(v_1: List<&2, BIR.Family>, v_3: List<&2, BIR.TypeFunction>) -> CEmitterProgress<cps_provider_5_NfContext>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_family_index{v_1}}, False{}, v_1006652 => cemit_body_cps_provider_5_family_index(v_1), v_1006651 => +v_1006647 = cemit_unbox(Map<&2, BIR.Family>, v_1006651); CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_function_index{v_3}}, False{}, v_1006650 => cemit_body_cps_provider_5_function_index(v_3), v_1006649 => +v_1006648 = cemit_unbox(Map<&2, BIR.TypeFunction>, v_1006649); CEmitterFinished{CEmitterValue{cps_provider_5_NfContext{v_1006647, v_1006648}}}}}
+  CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_family_index{v_1}}, False{}, v_1006681 => cemit_body_cps_provider_5_family_index(v_1), v_1006680 => +v_1006676 = cemit_unbox(Map<&2, BIR.Family>, v_1006680); CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_function_index{v_3}}, False{}, v_1006679 => cemit_body_cps_provider_5_function_index(v_3), v_1006678 => +v_1006677 = cemit_unbox(Map<&2, BIR.TypeFunction>, v_1006678); CEmitterFinished{CEmitterValue{cps_provider_5_NfContext{v_1006676, v_1006677}}}}}
 
 def cemit_body_cps_provider_5_default_fuel() -> CEmitterProgress<Nat>:
   CEmitterFinished{CEmitterValue{1024n}}
@@ -16903,49 +16964,49 @@ def cemit_body_cps_provider_5_family_of(+v_1: String, +v_3: Map<&2, BIR.Family>)
 def cemit_body_cps_provider_5_function_of(+v_1: String, +v_3: Map<&2, BIR.TypeFunction>) -> CEmitterProgress<Maybe<&2, BIR.TypeFunction>>:
   CEmitterFinished{CEmitterValue{IndexLookup.find(BIR.TypeFunction, v_3, v_1)}}
 
-def cemit_match_1512(v_10: BIR.Family) -> CEmitterProgress<Maybe<&2, String>>:
+def cemit_match_1518(v_10: BIR.Family) -> CEmitterProgress<Maybe<&2, String>>:
   match v_10:
     case BIR.Family{v_17, v_18, v_19, v_20, v_21, v_22}:
       CEmitterFinished{CEmitterValue{v_19}}
 
-def cemit_match_1513(v_25: BIR.TypeFunction) -> CEmitterProgress<Maybe<&2, String>>:
+def cemit_match_1519(v_25: BIR.TypeFunction) -> CEmitterProgress<Maybe<&2, String>>:
   match v_25:
     case BIR.TypeFunction{v_31, v_32, v_33, v_34, v_35}:
       CEmitterFinished{CEmitterValue{v_32}}
 
-def cemit_match_1514(+v_1006654: Maybe<&2, BIR.TypeFunction>) -> CEmitterProgress<Maybe<&2, String>>:
-  match v_1006654:
+def cemit_match_1520(+v_1006683: Maybe<&2, BIR.TypeFunction>) -> CEmitterProgress<Maybe<&2, String>>:
+  match v_1006683:
     case Some{v_25}:
-      cemit_match_1513(v_25)
+      cemit_match_1519(v_25)
     case None{}:
       CEmitterFinished{CEmitterValue{None{}}}
 
-def cemit_match_1515(+v_1006653: Maybe<&2, BIR.Family>, +v_1: String, +v_5: Map<&2, BIR.TypeFunction>) -> CEmitterProgress<Maybe<&2, String>>:
-  match v_1006653:
+def cemit_match_1521(+v_1006682: Maybe<&2, BIR.Family>, +v_1: String, +v_5: Map<&2, BIR.TypeFunction>) -> CEmitterProgress<Maybe<&2, String>>:
+  match v_1006682:
     case Some{v_10}:
-      cemit_match_1512(v_10)
+      cemit_match_1518(v_10)
     case None{}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_function_of{v_1, v_5}}, False{}, v_1006656 => cemit_body_cps_provider_5_function_of(v_1, v_5), v_1006655 => +v_1006654 = cemit_unbox(Maybe<&2, BIR.TypeFunction>, v_1006655); cemit_match_1514(v_1006654)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_function_of{v_1, v_5}}, False{}, v_1006685 => cemit_body_cps_provider_5_function_of(v_1, v_5), v_1006684 => +v_1006683 = cemit_unbox(Maybe<&2, BIR.TypeFunction>, v_1006684); cemit_match_1520(v_1006683)}
 
 def cemit_body_cps_provider_5_native_of(+v_1: String, +v_3: Map<&2, BIR.Family>, +v_5: Map<&2, BIR.TypeFunction>) -> CEmitterProgress<Maybe<&2, String>>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_family_of{v_1, v_3}}, False{}, v_1006658 => cemit_body_cps_provider_5_family_of(v_1, v_3), v_1006657 => +v_1006653 = cemit_unbox(Maybe<&2, BIR.Family>, v_1006657); cemit_match_1515(v_1006653, v_1, v_5)}
+  CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_family_of{v_1, v_3}}, False{}, v_1006687 => cemit_body_cps_provider_5_family_of(v_1, v_3), v_1006686 => +v_1006682 = cemit_unbox(Maybe<&2, BIR.Family>, v_1006686); cemit_match_1521(v_1006682, v_1, v_5)}
 
 def cemit_body_cps_provider_5_val_nth(+v_2: List<&2, cps_provider_5_NfVal>, v_4: Nat) -> CEmitterProgress<cps_provider_5_NfVal>:
   match v_2, v_4:
     case +v_8 <> v_9, 0n:
       CEmitterFinished{CEmitterValue{v_8}}
     case +v_13 <> v_14, 1n+v_15:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_val_nth{v_14, v_15}}, v_1006660 => +v_1006659 = cemit_unbox(cps_provider_5_NfVal, v_1006660); CEmitterFinished{CEmitterValue{v_1006659}}}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_val_nth{v_14, v_15}}, v_1006689 => +v_1006688 = cemit_unbox(cps_provider_5_NfVal, v_1006689); CEmitterFinished{CEmitterValue{v_1006688}}}
     case _, _:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfMissing{BIR.DescriptorNull{}}}}
 
 def cemit_body_cps_provider_5_val_at(+v_2: List<&2, cps_provider_5_NfVal>, +v_4: Nat, v_5: BIR.Descriptor) -> CEmitterProgress<cps_provider_5_NfVal>:
-  CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_val_at_choose{Nat.is_lt(v_4, List.length(&2, cps_provider_5_NfVal, v_2)), v_2, v_4, v_5}}, v_1006662 => +v_1006661 = cemit_unbox(cps_provider_5_NfVal, v_1006662); CEmitterFinished{CEmitterValue{v_1006661}}}
+  CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_val_at_choose{Nat.is_lt(v_4, List.length(&2, cps_provider_5_NfVal, v_2)), v_2, v_4, v_5}}, v_1006691 => +v_1006690 = cemit_unbox(cps_provider_5_NfVal, v_1006691); CEmitterFinished{CEmitterValue{v_1006690}}}
 
 def cemit_body_cps_provider_5_val_at_choose(v_1: Bool, +v_4: List<&2, cps_provider_5_NfVal>, +v_6: Nat, v_7: BIR.Descriptor) -> CEmitterProgress<cps_provider_5_NfVal>:
   match v_1:
     case True{}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_val_nth{v_4, Nat.sub(Nat.sub(List.length(&2, cps_provider_5_NfVal, v_4), 1n), v_6)}}, False{}, v_1006665 => cemit_body_cps_provider_5_val_nth(v_4, Nat.sub(Nat.sub(List.length(&2, cps_provider_5_NfVal, v_4), 1n), v_6)), v_1006664 => +v_1006663 = cemit_unbox(cps_provider_5_NfVal, v_1006664); CEmitterFinished{CEmitterValue{v_1006663}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_val_nth{v_4, Nat.sub(Nat.sub(List.length(&2, cps_provider_5_NfVal, v_4), 1n), v_6)}}, False{}, v_1006694 => cemit_body_cps_provider_5_val_nth(v_4, Nat.sub(Nat.sub(List.length(&2, cps_provider_5_NfVal, v_4), 1n), v_6)), v_1006693 => +v_1006692 = cemit_unbox(cps_provider_5_NfVal, v_1006693); CEmitterFinished{CEmitterValue{v_1006692}}}
     case False{}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfMissing{v_7}}}
 
@@ -16956,89 +17017,89 @@ def cemit_body_cps_provider_5_first_vals(v_2: List<&2, cps_provider_5_NfVal>, +v
     case [], _:
       CEmitterFinished{CEmitterValue{[]}}
     case +v_14 <> v_15, 1n+v_16:
-      v_1006666 = {v_14 : cps_provider_5_NfVal}
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_first_vals{v_15, v_16}}, v_1006668 => +v_1006667 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006668); CEmitterFinished{CEmitterValue{v_1006666 <> v_1006667}}}
+      v_1006695 = {v_14 : cps_provider_5_NfVal}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_first_vals{v_15, v_16}}, v_1006697 => +v_1006696 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006697); CEmitterFinished{CEmitterValue{v_1006695 <> v_1006696}}}
 
-def cemit_match_1519(+v_2: List<&2, cps_provider_5_NfVal>, +v_4: Nat) -> CEmitterProgress<List<&2, cps_provider_5_NfVal>>:
+def cemit_match_1525(+v_2: List<&2, cps_provider_5_NfVal>, +v_4: Nat) -> CEmitterProgress<List<&2, cps_provider_5_NfVal>>:
   match v_2, v_4:
     case _, 0n:
       CEmitterFinished{CEmitterValue{v_2}}
     case [], _:
       CEmitterFinished{CEmitterValue{[]}}
     case +v_14 <> v_15, 1n+v_16:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_drop_vals{v_15, v_16}}, v_1006670 => +v_1006669 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006670); CEmitterFinished{CEmitterValue{v_1006669}}}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_drop_vals{v_15, v_16}}, v_1006699 => +v_1006698 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006699); CEmitterFinished{CEmitterValue{v_1006698}}}
 
 def cemit_body_cps_provider_5_drop_vals(v_2: List<&2, cps_provider_5_NfVal>, +v_4: Nat) -> CEmitterProgress<List<&2, cps_provider_5_NfVal>>:
-  cemit_match_1519(v_2, v_4)
+  cemit_match_1525(v_2, v_4)
 
-def cemit_match_1520(+v_2: List<&2, cps_provider_5_NfVal>, +v_4: Nat, v_6: cps_provider_5_NfVal) -> CEmitterProgress<List<&2, cps_provider_5_NfVal>>:
+def cemit_match_1526(+v_2: List<&2, cps_provider_5_NfVal>, +v_4: Nat, v_6: cps_provider_5_NfVal) -> CEmitterProgress<List<&2, cps_provider_5_NfVal>>:
   match v_2, v_4:
     case _, 0n:
       CEmitterFinished{CEmitterValue{v_6 <> v_2}}
     case [], 1n+v_12:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_insert_before{[], v_12, v_6}}, v_1006672 => +v_1006671 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006672); CEmitterFinished{CEmitterValue{v_1006671}}}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_insert_before{[], v_12, v_6}}, v_1006701 => +v_1006700 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006701); CEmitterFinished{CEmitterValue{v_1006700}}}
     case +v_17 <> v_18, 1n+v_19:
-      v_1006673 = {v_17 : cps_provider_5_NfVal}
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_insert_before{v_18, v_19, v_6}}, v_1006675 => +v_1006674 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006675); CEmitterFinished{CEmitterValue{v_1006673 <> v_1006674}}}
+      v_1006702 = {v_17 : cps_provider_5_NfVal}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_insert_before{v_18, v_19, v_6}}, v_1006704 => +v_1006703 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006704); CEmitterFinished{CEmitterValue{v_1006702 <> v_1006703}}}
 
 def cemit_body_cps_provider_5_insert_before(v_2: List<&2, cps_provider_5_NfVal>, +v_4: Nat, v_6: cps_provider_5_NfVal) -> CEmitterProgress<List<&2, cps_provider_5_NfVal>>:
-  cemit_match_1520(v_2, v_4, v_6)
+  cemit_match_1526(v_2, v_4, v_6)
 
 def cemit_body_cps_provider_5_append_vals(v_2: List<&2, cps_provider_5_NfVal>, v_5: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<List<&2, cps_provider_5_NfVal>>:
   match v_2:
     case []:
       CEmitterFinished{CEmitterValue{v_5}}
     case +v_10 <> v_11:
-      v_1006676 = {v_10 : cps_provider_5_NfVal}
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_append_vals{v_11, v_5}}, v_1006678 => +v_1006677 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006678); CEmitterFinished{CEmitterValue{v_1006676 <> v_1006677}}}
+      v_1006705 = {v_10 : cps_provider_5_NfVal}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_append_vals{v_11, v_5}}, v_1006707 => +v_1006706 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006707); CEmitterFinished{CEmitterValue{v_1006705 <> v_1006706}}}
 
 def cemit_body_cps_provider_5_quantity_markers(v_1: Nat) -> CEmitterProgress<List<&2, cps_provider_5_NfVal>>:
   match v_1:
     case 0n:
       CEmitterFinished{CEmitterValue{[]}}
     case 1n+v_5:
-      v_1006679 = {cps_provider_5_NfQuantity{BIR.Erased{}} : cps_provider_5_NfVal}
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_quantity_markers{v_5}}, v_1006681 => +v_1006680 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006681); CEmitterFinished{CEmitterValue{v_1006679 <> v_1006680}}}
+      v_1006708 = {cps_provider_5_NfQuantity{BIR.Erased{}} : cps_provider_5_NfVal}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_quantity_markers{v_5}}, v_1006710 => +v_1006709 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006710); CEmitterFinished{CEmitterValue{v_1006708 <> v_1006709}}}
 
-def cemit_match_1523(+v_6: cps_provider_5_NfVal, v_7: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<List<&2, BIR.Descriptor>>:
+def cemit_match_1529(+v_6: cps_provider_5_NfVal, v_7: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<List<&2, BIR.Descriptor>>:
   match v_6:
     case cps_provider_5_NfType{v_10, v_11}:
-      v_1006682 = {v_10 : String}
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_11}}, v_1006686 => +v_1006683 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006686); CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_7}}, v_1006685 => +v_1006684 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006685); CEmitterFinished{CEmitterValue{BIR.DescriptorRef{v_1006682, v_1006683} <> v_1006684}}}}
+      v_1006711 = {v_10 : String}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_11}}, v_1006715 => +v_1006712 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006715); CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_7}}, v_1006714 => +v_1006713 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006714); CEmitterFinished{CEmitterValue{BIR.DescriptorRef{v_1006711, v_1006712} <> v_1006713}}}}
     case cps_provider_5_NfCtor{v_16, v_17}:
-      v_1006687 = {v_16 : String}
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_17}}, v_1006691 => +v_1006688 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006691); CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_7}}, v_1006690 => +v_1006689 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006690); CEmitterFinished{CEmitterValue{BIR.DescriptorConstructor{v_1006687, v_1006688} <> v_1006689}}}}
+      v_1006716 = {v_16 : String}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_17}}, v_1006720 => +v_1006717 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006720); CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_7}}, v_1006719 => +v_1006718 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006719); CEmitterFinished{CEmitterValue{BIR.DescriptorConstructor{v_1006716, v_1006717} <> v_1006718}}}}
     case cps_provider_5_NfQuantity{v_21}:
-      v_1006692 = {BIR.DescriptorQuantity{v_21} : BIR.Descriptor}
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_7}}, v_1006694 => +v_1006693 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006694); CEmitterFinished{CEmitterValue{v_1006692 <> v_1006693}}}
+      v_1006721 = {BIR.DescriptorQuantity{v_21} : BIR.Descriptor}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_7}}, v_1006723 => +v_1006722 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006723); CEmitterFinished{CEmitterValue{v_1006721 <> v_1006722}}}
     case cps_provider_5_NfKind{v_24}:
-      v_1006695 = {BIR.DescriptorKind{v_24} : BIR.Descriptor}
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_7}}, v_1006697 => +v_1006696 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006697); CEmitterFinished{CEmitterValue{v_1006695 <> v_1006696}}}
+      v_1006724 = {BIR.DescriptorKind{v_24} : BIR.Descriptor}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_7}}, v_1006726 => +v_1006725 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006726); CEmitterFinished{CEmitterValue{v_1006724 <> v_1006725}}}
     case cps_provider_5_NfOther{v_27}:
-      v_1006698 = {v_27 : BIR.Descriptor}
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_7}}, v_1006700 => +v_1006699 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006700); CEmitterFinished{CEmitterValue{v_1006698 <> v_1006699}}}
+      v_1006727 = {v_27 : BIR.Descriptor}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_7}}, v_1006729 => +v_1006728 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006729); CEmitterFinished{CEmitterValue{v_1006727 <> v_1006728}}}
     case cps_provider_5_NfMissing{v_30}:
-      v_1006701 = {v_30 : BIR.Descriptor}
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_7}}, v_1006703 => +v_1006702 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006703); CEmitterFinished{CEmitterValue{v_1006701 <> v_1006702}}}
+      v_1006730 = {v_30 : BIR.Descriptor}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_7}}, v_1006732 => +v_1006731 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006732); CEmitterFinished{CEmitterValue{v_1006730 <> v_1006731}}}
     case cps_provider_5_NfClosure{v_36, v_37, v_38, v_39}:
-      v_1006704 = {BIR.DescriptorLet{v_39, BIR.DescriptorLambda{v_36, v_37}} : BIR.Descriptor}
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_7}}, v_1006706 => +v_1006705 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006706); CEmitterFinished{CEmitterValue{v_1006704 <> v_1006705}}}
+      v_1006733 = {BIR.DescriptorLet{v_39, BIR.DescriptorLambda{v_36, v_37}} : BIR.Descriptor}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_7}}, v_1006735 => +v_1006734 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006735); CEmitterFinished{CEmitterValue{v_1006733 <> v_1006734}}}
 
 def cemit_body_cps_provider_5_materialize_all(v_2: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<List<&2, BIR.Descriptor>>:
   match v_2:
     case []:
       CEmitterFinished{CEmitterValue{[]}}
     case +v_6 <> v_7:
-      cemit_match_1523(v_6, v_7)
+      cemit_match_1529(v_6, v_7)
 
 def cemit_body_cps_provider_5_materialize(v_1: cps_provider_5_NfVal) -> CEmitterProgress<BIR.Descriptor>:
   match v_1:
     case cps_provider_5_NfType{v_4, v_5}:
-      v_1006707 = {v_4 : String}
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_5}}, False{}, v_1006710 => cemit_body_cps_provider_5_materialize_all(v_5), v_1006709 => +v_1006708 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006709); CEmitterFinished{CEmitterValue{BIR.DescriptorRef{v_1006707, v_1006708}}}}
+      v_1006736 = {v_4 : String}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_5}}, False{}, v_1006739 => cemit_body_cps_provider_5_materialize_all(v_5), v_1006738 => +v_1006737 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006738); CEmitterFinished{CEmitterValue{BIR.DescriptorRef{v_1006736, v_1006737}}}}
     case cps_provider_5_NfCtor{v_9, v_10}:
-      v_1006711 = {v_9 : String}
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_10}}, False{}, v_1006714 => cemit_body_cps_provider_5_materialize_all(v_10), v_1006713 => +v_1006712 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006713); CEmitterFinished{CEmitterValue{BIR.DescriptorConstructor{v_1006711, v_1006712}}}}
+      v_1006740 = {v_9 : String}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_10}}, False{}, v_1006743 => cemit_body_cps_provider_5_materialize_all(v_10), v_1006742 => +v_1006741 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006742); CEmitterFinished{CEmitterValue{BIR.DescriptorConstructor{v_1006740, v_1006741}}}}
     case cps_provider_5_NfQuantity{v_13}:
       CEmitterFinished{CEmitterValue{BIR.DescriptorQuantity{v_13}}}
     case cps_provider_5_NfKind{v_15}:
@@ -17050,357 +17111,357 @@ def cemit_body_cps_provider_5_materialize(v_1: cps_provider_5_NfVal) -> CEmitter
     case cps_provider_5_NfClosure{v_24, v_25, v_26, v_27}:
       CEmitterFinished{CEmitterValue{BIR.DescriptorLet{v_27, BIR.DescriptorLambda{v_24, v_25}}}}
 
-def cemit_match_1526(+v_3: List<&2, cps_provider_5_NfVal>, v_0: BIR.Descriptor) -> CEmitterProgress<BIR.Descriptor>:
+def cemit_match_1532(+v_3: List<&2, cps_provider_5_NfVal>, v_0: BIR.Descriptor) -> CEmitterProgress<BIR.Descriptor>:
   match v_3:
     case []:
       CEmitterFinished{CEmitterValue{v_0}}
     case +v_6 <> v_7:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_3}}, False{}, v_1006717 => cemit_body_cps_provider_5_materialize_all(v_3), v_1006716 => +v_1006715 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006716); CEmitterFinished{CEmitterValue{BIR.DescriptorLet{v_1006715, v_0}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_3}}, False{}, v_1006746 => cemit_body_cps_provider_5_materialize_all(v_3), v_1006745 => +v_1006744 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006745); CEmitterFinished{CEmitterValue{BIR.DescriptorLet{v_1006744, v_0}}}}
 
 def cemit_body_cps_provider_5_reify_env(v_0: BIR.Descriptor, +v_3: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<BIR.Descriptor>:
-  cemit_match_1526(v_3, v_0)
+  cemit_match_1532(v_3, v_0)
 
 def cemit_body_cps_provider_5_status_combine(v_1: cps_provider_5_NfStatus, v_3: cps_provider_5_NfStatus) -> CEmitterProgress<cps_provider_5_NfStatus>:
   CEmitterFinished{CEmitterValue{cemit_pure_cps_provider_5_status_combine(v_1, v_3)}}
 
-def cemit_match_1527(v_1006720: Bool, v_20: List<&2, BIR.DescriptorPattern>, v_24: List<&2, cps_provider_5_NfVal>, v_11: List<&2, BIR.DescriptorPattern>, v_13: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<cps_provider_5_NfStatus>:
-  match v_1006720:
+def cemit_match_1533(v_1006749: Bool, v_20: List<&2, BIR.DescriptorPattern>, v_24: List<&2, cps_provider_5_NfVal>, v_11: List<&2, BIR.DescriptorPattern>, v_13: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<cps_provider_5_NfStatus>:
+  match v_1006749:
     case False{}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfStatusNo{}}}
     case True{}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_status{v_20, v_24}}, v_1006724 => +v_1006721 = cemit_unbox(cps_provider_5_NfStatus, v_1006724); CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_status{v_11, v_13}}, v_1006723 => +v_1006722 = cemit_unbox(cps_provider_5_NfStatus, v_1006723); CEmitterFinished{CEmitterValue{cemit_pure_cps_provider_5_status_combine(v_1006721, v_1006722)}}}}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_status{v_20, v_24}}, v_1006753 => +v_1006750 = cemit_unbox(cps_provider_5_NfStatus, v_1006753); CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_status{v_11, v_13}}, v_1006752 => +v_1006751 = cemit_unbox(cps_provider_5_NfStatus, v_1006752); CEmitterFinished{CEmitterValue{cemit_pure_cps_provider_5_status_combine(v_1006750, v_1006751)}}}}
 
-def cemit_match_1528(+v_12: cps_provider_5_NfVal, v_19: String, v_20: List<&2, BIR.DescriptorPattern>, v_11: List<&2, BIR.DescriptorPattern>, v_13: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<cps_provider_5_NfStatus>:
+def cemit_match_1534(+v_12: cps_provider_5_NfVal, v_19: String, v_20: List<&2, BIR.DescriptorPattern>, v_11: List<&2, BIR.DescriptorPattern>, v_13: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<cps_provider_5_NfStatus>:
   match v_12:
     case cps_provider_5_NfCtor{v_23, v_24}:
-      v_1006720 = {String.eq(v_19, v_23) : Bool}
-      cemit_match_1527(v_1006720, v_20, v_24, v_11, v_13)
+      v_1006749 = {String.eq(v_19, v_23) : Bool}
+      cemit_match_1533(v_1006749, v_20, v_24, v_11, v_13)
     case cps_provider_5_NfMissing{v_29}:
-      v_1006725 = {cps_provider_5_NfStatusMaybe{} : cps_provider_5_NfStatus}
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_status{v_11, v_13}}, v_1006727 => +v_1006726 = cemit_unbox(cps_provider_5_NfStatus, v_1006727); CEmitterFinished{CEmitterValue{cemit_pure_cps_provider_5_status_combine(v_1006725, v_1006726)}}}
+      v_1006754 = {cps_provider_5_NfStatusMaybe{} : cps_provider_5_NfStatus}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_status{v_11, v_13}}, v_1006756 => +v_1006755 = cemit_unbox(cps_provider_5_NfStatus, v_1006756); CEmitterFinished{CEmitterValue{cemit_pure_cps_provider_5_status_combine(v_1006754, v_1006755)}}}
     case cps_provider_5_NfOther{v_33}:
-      v_1006728 = {cps_provider_5_NfStatusMaybe{} : cps_provider_5_NfStatus}
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_status{v_11, v_13}}, v_1006730 => +v_1006729 = cemit_unbox(cps_provider_5_NfStatus, v_1006730); CEmitterFinished{CEmitterValue{cemit_pure_cps_provider_5_status_combine(v_1006728, v_1006729)}}}
+      v_1006757 = {cps_provider_5_NfStatusMaybe{} : cps_provider_5_NfStatus}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_status{v_11, v_13}}, v_1006759 => +v_1006758 = cemit_unbox(cps_provider_5_NfStatus, v_1006759); CEmitterFinished{CEmitterValue{cemit_pure_cps_provider_5_status_combine(v_1006757, v_1006758)}}}
     case _:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfStatusNo{}}}
 
-def cemit_match_1529(+v_10: BIR.DescriptorPattern, v_11: List<&2, BIR.DescriptorPattern>, v_13: List<&2, cps_provider_5_NfVal>, +v_12: cps_provider_5_NfVal) -> CEmitterProgress<cps_provider_5_NfStatus>:
+def cemit_match_1535(+v_10: BIR.DescriptorPattern, v_11: List<&2, BIR.DescriptorPattern>, v_13: List<&2, cps_provider_5_NfVal>, +v_12: cps_provider_5_NfVal) -> CEmitterProgress<cps_provider_5_NfStatus>:
   match v_10:
     case BIR.DescriptorBinder{v_15}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_status{v_11, v_13}}, v_1006719 => +v_1006718 = cemit_unbox(cps_provider_5_NfStatus, v_1006719); CEmitterFinished{CEmitterValue{v_1006718}}}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_status{v_11, v_13}}, v_1006748 => +v_1006747 = cemit_unbox(cps_provider_5_NfStatus, v_1006748); CEmitterFinished{CEmitterValue{v_1006747}}}
     case BIR.DescriptorConstructorPattern{v_19, v_20}:
-      cemit_match_1528(v_12, v_19, v_20, v_11, v_13)
+      cemit_match_1534(v_12, v_19, v_20, v_11, v_13)
 
 def cemit_body_cps_provider_5_bind_status(v_1: List<&2, BIR.DescriptorPattern>, v_4: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<cps_provider_5_NfStatus>:
   match v_1, v_4:
     case [], []:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfStatusOk{}}}
     case +v_10 <> v_11, +v_12 <> v_13:
-      cemit_match_1529(v_10, v_11, v_13, v_12)
+      cemit_match_1535(v_10, v_11, v_13, v_12)
     case _, _:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfStatusNo{}}}
 
-def cemit_match_1531(+v_13: cps_provider_5_NfVal, v_21: List<&2, BIR.DescriptorPattern>, v_12: List<&2, BIR.DescriptorPattern>, v_14: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<List<&2, cps_provider_5_NfVal>>:
+def cemit_match_1537(+v_13: cps_provider_5_NfVal, v_21: List<&2, BIR.DescriptorPattern>, v_12: List<&2, BIR.DescriptorPattern>, v_14: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<List<&2, cps_provider_5_NfVal>>:
   match v_13:
     case cps_provider_5_NfCtor{v_24, v_25}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_values{v_21, v_25}}, v_1006738 => +v_1006734 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006738); CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_values{v_12, v_14}}, v_1006737 => +v_1006735 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006737); cemit_body_cps_provider_5_append_vals(v_1006734, v_1006735)}}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_values{v_21, v_25}}, v_1006767 => +v_1006763 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006767); CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_values{v_12, v_14}}, v_1006766 => +v_1006764 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006766); cemit_body_cps_provider_5_append_vals(v_1006763, v_1006764)}}
     case _:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_values{v_12, v_14}}, v_1006740 => +v_1006739 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006740); CEmitterFinished{CEmitterValue{v_1006739}}}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_values{v_12, v_14}}, v_1006769 => +v_1006768 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006769); CEmitterFinished{CEmitterValue{v_1006768}}}
 
-def cemit_match_1532(+v_11: BIR.DescriptorPattern, +v_13: cps_provider_5_NfVal, v_12: List<&2, BIR.DescriptorPattern>, v_14: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<List<&2, cps_provider_5_NfVal>>:
+def cemit_match_1538(+v_11: BIR.DescriptorPattern, +v_13: cps_provider_5_NfVal, v_12: List<&2, BIR.DescriptorPattern>, v_14: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<List<&2, cps_provider_5_NfVal>>:
   match v_11:
     case BIR.DescriptorBinder{v_16}:
-      v_1006731 = {v_13 : cps_provider_5_NfVal}
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_values{v_12, v_14}}, v_1006733 => +v_1006732 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006733); CEmitterFinished{CEmitterValue{v_1006731 <> v_1006732}}}
+      v_1006760 = {v_13 : cps_provider_5_NfVal}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_values{v_12, v_14}}, v_1006762 => +v_1006761 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006762); CEmitterFinished{CEmitterValue{v_1006760 <> v_1006761}}}
     case BIR.DescriptorConstructorPattern{v_20, v_21}:
-      cemit_match_1531(v_13, v_21, v_12, v_14)
+      cemit_match_1537(v_13, v_21, v_12, v_14)
 
 def cemit_body_cps_provider_5_bind_values(v_1: List<&2, BIR.DescriptorPattern>, v_4: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<List<&2, cps_provider_5_NfVal>>:
   match v_1, v_4:
     case [], []:
       CEmitterFinished{CEmitterValue{[]}}
     case +v_11 <> v_12, +v_13 <> v_14:
-      cemit_match_1532(v_11, v_13, v_12, v_14)
+      cemit_match_1538(v_11, v_13, v_12, v_14)
     case _, _:
       CEmitterFinished{CEmitterValue{[]}}
 
-def cemit_match_1534(+v_1006741: cps_provider_5_NfStatus, v_1: List<&2, BIR.DescriptorPattern>, v_4: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<cps_provider_5_NfBind>:
-  match v_1006741:
+def cemit_match_1540(+v_1006770: cps_provider_5_NfStatus, v_1: List<&2, BIR.DescriptorPattern>, v_4: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<cps_provider_5_NfBind>:
+  match v_1006770:
     case cps_provider_5_NfStatusOk{}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_values{v_1, v_4}}, False{}, v_1006744 => cemit_body_cps_provider_5_bind_values(v_1, v_4), v_1006743 => +v_1006742 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006743); CEmitterFinished{CEmitterValue{cps_provider_5_NfBound{v_1006742}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_values{v_1, v_4}}, False{}, v_1006773 => cemit_body_cps_provider_5_bind_values(v_1, v_4), v_1006772 => +v_1006771 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006772); CEmitterFinished{CEmitterValue{cps_provider_5_NfBound{v_1006771}}}}
     case cps_provider_5_NfStatusNo{}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfMismatch{}}}
     case cps_provider_5_NfStatusMaybe{}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfUnknown{}}}
 
 def cemit_body_cps_provider_5_bind_patterns(+v_1: List<&2, BIR.DescriptorPattern>, +v_4: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<cps_provider_5_NfBind>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_status{v_1, v_4}}, False{}, v_1006746 => cemit_body_cps_provider_5_bind_status(v_1, v_4), v_1006745 => +v_1006741 = cemit_unbox(cps_provider_5_NfStatus, v_1006745); cemit_match_1534(v_1006741, v_1, v_4)}
+  CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_status{v_1, v_4}}, False{}, v_1006775 => cemit_body_cps_provider_5_bind_status(v_1, v_4), v_1006774 => +v_1006770 = cemit_unbox(cps_provider_5_NfStatus, v_1006774); cemit_match_1540(v_1006770, v_1, v_4)}
 
-def cemit_match_1535(v_1006747: Bool, +v_1: cps_provider_5_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_5_NfVal>, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
-  match v_1006747:
+def cemit_match_1541(v_1006776: Bool, +v_1: cps_provider_5_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_5_NfVal>, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
+  match v_1006776:
     case True{}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{"the type expression did not normalize within its reduction budget"}}}
     case False{}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_descriptor{v_1, v_2, v_5, Nat.sub(v_7, 1n)}}, v_1006749 => +v_1006748 = cemit_unbox(cps_provider_5_Nf, v_1006749); CEmitterFinished{CEmitterValue{v_1006748}}}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_descriptor{v_1, v_2, v_5, Nat.sub(v_7, 1n)}}, v_1006778 => +v_1006777 = cemit_unbox(cps_provider_5_Nf, v_1006778); CEmitterFinished{CEmitterValue{v_1006777}}}
 
 def cemit_body_cps_provider_5_nf(+v_1: cps_provider_5_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_5_NfVal>, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
-  v_1006747 = {Nat.is_eq(v_7, 0n) : Bool}
-  cemit_match_1535(v_1006747, v_1, v_2, v_5, v_7)
+  v_1006776 = {Nat.is_eq(v_7, 0n) : Bool}
+  cemit_match_1541(v_1006776, v_1, v_2, v_5, v_7)
 
-def cemit_match_1536(v_1006750: Bool, +v_1: cps_provider_5_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_5_NfVal>, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
-  match v_1006750:
+def cemit_match_1542(v_1006779: Bool, +v_1: cps_provider_5_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_5_NfVal>, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
+  match v_1006779:
     case True{}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{"the type expression did not normalize within its reduction budget"}}}
     case False{}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_descriptor_step{v_1, v_2, v_5, v_7}}, v_1006752 => +v_1006751 = cemit_unbox(cps_provider_5_Nf, v_1006752); CEmitterFinished{CEmitterValue{v_1006751}}}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_descriptor_step{v_1, v_2, v_5, v_7}}, v_1006781 => +v_1006780 = cemit_unbox(cps_provider_5_Nf, v_1006781); CEmitterFinished{CEmitterValue{v_1006780}}}
 
 def cemit_body_cps_provider_5_nf_descriptor(+v_1: cps_provider_5_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_5_NfVal>, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
-  v_1006750 = {Nat.is_eq(v_7, 0n) : Bool}
-  cemit_match_1536(v_1006750, v_1, v_2, v_5, v_7)
+  v_1006779 = {Nat.is_eq(v_7, 0n) : Bool}
+  cemit_match_1542(v_1006779, v_1, v_2, v_5, v_7)
 
-def cemit_match_1537(+v_1006754: cps_provider_5_Nf, v_2: BIR.Quantity, v_15: cps_provider_5_NfVal) -> CEmitterProgress<cps_provider_5_Nf>:
-  match v_1006754:
+def cemit_match_1543(+v_1006783: cps_provider_5_Nf, v_2: BIR.Quantity, v_15: cps_provider_5_NfVal) -> CEmitterProgress<cps_provider_5_Nf>:
+  match v_1006783:
     case cps_provider_5_NfFail{v_18}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{v_18}}}
     case cps_provider_5_NfOk{v_20}:
-      v_1006755 = {v_2 : BIR.Quantity}
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize{v_15}}, False{}, v_1006761 => cemit_body_cps_provider_5_materialize(v_15), v_1006760 => +v_1006756 = cemit_unbox(BIR.Descriptor, v_1006760); CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize{v_20}}, False{}, v_1006759 => cemit_body_cps_provider_5_materialize(v_20), v_1006758 => +v_1006757 = cemit_unbox(BIR.Descriptor, v_1006758); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfOther{BIR.DescriptorArrow{v_1006755, v_1006756, v_1006757}}}}}}}
+      v_1006784 = {v_2 : BIR.Quantity}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize{v_15}}, False{}, v_1006790 => cemit_body_cps_provider_5_materialize(v_15), v_1006789 => +v_1006785 = cemit_unbox(BIR.Descriptor, v_1006789); CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize{v_20}}, False{}, v_1006788 => cemit_body_cps_provider_5_materialize(v_20), v_1006787 => +v_1006786 = cemit_unbox(BIR.Descriptor, v_1006787); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfOther{BIR.DescriptorArrow{v_1006784, v_1006785, v_1006786}}}}}}}
 
-def cemit_match_1538(+v_1006753: cps_provider_5_Nf, +v_1: cps_provider_5_NfContext, v_4: BIR.Descriptor, +v_7: List<&2, cps_provider_5_NfVal>, +v_9: Nat, v_2: BIR.Quantity) -> CEmitterProgress<cps_provider_5_Nf>:
-  match v_1006753:
+def cemit_match_1544(+v_1006782: cps_provider_5_Nf, +v_1: cps_provider_5_NfContext, v_4: BIR.Descriptor, +v_7: List<&2, cps_provider_5_NfVal>, +v_9: Nat, v_2: BIR.Quantity) -> CEmitterProgress<cps_provider_5_Nf>:
+  match v_1006782:
     case cps_provider_5_NfFail{v_13}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{v_13}}}
     case cps_provider_5_NfOk{v_15}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf{v_1, v_4, v_7, v_9}}, False{}, v_1006763 => cemit_body_cps_provider_5_nf(v_1, v_4, v_7, v_9), v_1006762 => +v_1006754 = cemit_unbox(cps_provider_5_Nf, v_1006762); cemit_match_1537(v_1006754, v_2, v_15)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf{v_1, v_4, v_7, v_9}}, False{}, v_1006792 => cemit_body_cps_provider_5_nf(v_1, v_4, v_7, v_9), v_1006791 => +v_1006783 = cemit_unbox(cps_provider_5_Nf, v_1006791); cemit_match_1543(v_1006783, v_2, v_15)}
 
 def cemit_body_cps_provider_5_nf_arrow(+v_1: cps_provider_5_NfContext, v_2: BIR.Quantity, v_3: BIR.Descriptor, v_4: BIR.Descriptor, +v_7: List<&2, cps_provider_5_NfVal>, +v_9: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf{v_1, v_3, v_7, v_9}}, False{}, v_1006765 => cemit_body_cps_provider_5_nf(v_1, v_3, v_7, v_9), v_1006764 => +v_1006753 = cemit_unbox(cps_provider_5_Nf, v_1006764); cemit_match_1538(v_1006753, v_1, v_4, v_7, v_9, v_2)}
+  CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf{v_1, v_3, v_7, v_9}}, False{}, v_1006794 => cemit_body_cps_provider_5_nf(v_1, v_3, v_7, v_9), v_1006793 => +v_1006782 = cemit_unbox(cps_provider_5_Nf, v_1006793); cemit_match_1544(v_1006782, v_1, v_4, v_7, v_9, v_2)}
 
-def cemit_match_1539(+v_1006775: cps_provider_5_Nf) -> CEmitterProgress<cps_provider_5_Nf>:
-  match v_1006775:
+def cemit_match_1545(+v_1006804: cps_provider_5_Nf) -> CEmitterProgress<cps_provider_5_Nf>:
+  match v_1006804:
     case cps_provider_5_NfOk{v_22}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize{v_22}}, False{}, v_1006778 => cemit_body_cps_provider_5_materialize(v_22), v_1006777 => +v_1006776 = cemit_unbox(BIR.Descriptor, v_1006777); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfKind{v_1006776}}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize{v_22}}, False{}, v_1006807 => cemit_body_cps_provider_5_materialize(v_22), v_1006806 => +v_1006805 = cemit_unbox(BIR.Descriptor, v_1006806); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfKind{v_1006805}}}}}
     case cps_provider_5_NfFail{v_25}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{v_25}}}
 
-def cemit_match_1540(+v_1006791: cps_provider_5_NfList, +v_1: cps_provider_5_NfContext, v_45: String, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
-  match v_1006791:
+def cemit_match_1546(+v_1006820: cps_provider_5_NfList, +v_1: cps_provider_5_NfContext, v_45: String, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
+  match v_1006820:
     case cps_provider_5_NfListOk{v_49}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_named{v_1, v_45, v_49, v_7}}, v_1006793 => +v_1006792 = cemit_unbox(cps_provider_5_Nf, v_1006793); CEmitterFinished{CEmitterValue{v_1006792}}}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_named{v_1, v_45, v_49, v_7}}, v_1006822 => +v_1006821 = cemit_unbox(cps_provider_5_Nf, v_1006822); CEmitterFinished{CEmitterValue{v_1006821}}}
     case cps_provider_5_NfListFail{v_52}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{v_52}}}
 
-def cemit_match_1541(+v_1006795: cps_provider_5_NfList, v_55: String) -> CEmitterProgress<cps_provider_5_Nf>:
-  match v_1006795:
+def cemit_match_1547(+v_1006824: cps_provider_5_NfList, v_55: String) -> CEmitterProgress<cps_provider_5_Nf>:
+  match v_1006824:
     case cps_provider_5_NfListOk{v_59}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfCtor{v_55, v_59}}}}
     case cps_provider_5_NfListFail{v_61}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{v_61}}}
 
-def cemit_match_1542(+v_1006798: cps_provider_5_Nf, +v_1: cps_provider_5_NfContext, v_68: cps_provider_5_NfVal, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
-  match v_1006798:
+def cemit_match_1548(+v_1006827: cps_provider_5_Nf, +v_1: cps_provider_5_NfContext, v_68: cps_provider_5_NfVal, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
+  match v_1006827:
     case cps_provider_5_NfOk{v_71}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_apply{v_1, v_68, [v_71], v_7}}, v_1006800 => +v_1006799 = cemit_unbox(cps_provider_5_Nf, v_1006800); CEmitterFinished{CEmitterValue{v_1006799}}}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_apply{v_1, v_68, [v_71], v_7}}, v_1006829 => +v_1006828 = cemit_unbox(cps_provider_5_Nf, v_1006829); CEmitterFinished{CEmitterValue{v_1006828}}}
     case cps_provider_5_NfFail{v_74}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{v_74}}}
 
-def cemit_match_1543(+v_1006797: cps_provider_5_Nf, +v_1: cps_provider_5_NfContext, v_65: BIR.Descriptor, +v_5: List<&2, cps_provider_5_NfVal>, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
-  match v_1006797:
+def cemit_match_1549(+v_1006826: cps_provider_5_Nf, +v_1: cps_provider_5_NfContext, v_65: BIR.Descriptor, +v_5: List<&2, cps_provider_5_NfVal>, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
+  match v_1006826:
     case cps_provider_5_NfOk{v_68}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf{v_1, v_65, v_5, v_7}}, False{}, v_1006802 => cemit_body_cps_provider_5_nf(v_1, v_65, v_5, v_7), v_1006801 => +v_1006798 = cemit_unbox(cps_provider_5_Nf, v_1006801); cemit_match_1542(v_1006798, v_1, v_68, v_7)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf{v_1, v_65, v_5, v_7}}, False{}, v_1006831 => cemit_body_cps_provider_5_nf(v_1, v_65, v_5, v_7), v_1006830 => +v_1006827 = cemit_unbox(cps_provider_5_Nf, v_1006830); cemit_match_1548(v_1006827, v_1, v_68, v_7)}
     case cps_provider_5_NfFail{v_76}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{v_76}}}
 
-def cemit_match_1544(+v_1006805: cps_provider_5_Nf, +v_1: cps_provider_5_NfContext, v_82: BIR.Descriptor, +v_5: List<&2, cps_provider_5_NfVal>, v_80: Nat, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
-  match v_1006805:
+def cemit_match_1550(+v_1006834: cps_provider_5_Nf, +v_1: cps_provider_5_NfContext, v_82: BIR.Descriptor, +v_5: List<&2, cps_provider_5_NfVal>, v_80: Nat, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
+  match v_1006834:
     case cps_provider_5_NfOk{v_85}:
-      +v_1006806 = {v_1 : cps_provider_5_NfContext}
-      v_1006807 = {v_82 : BIR.Descriptor}
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_insert_before{v_5, Nat.sub(List.length(&2, cps_provider_5_NfVal, v_5), v_80), v_85}}, False{}, v_1006813 => cemit_body_cps_provider_5_insert_before(v_5, Nat.sub(List.length(&2, cps_provider_5_NfVal, v_5), v_80), v_85), v_1006812 => +v_1006808 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006812); CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_descriptor{v_1006806, v_1006807, v_1006808, Nat.sub(v_7, 1n)}}, False{}, v_1006811 => cemit_body_cps_provider_5_nf_descriptor(v_1006806, v_1006807, v_1006808, Nat.sub(v_7, 1n)), v_1006810 => +v_1006809 = cemit_unbox(cps_provider_5_Nf, v_1006810); CEmitterFinished{CEmitterValue{v_1006809}}}}
+      +v_1006835 = {v_1 : cps_provider_5_NfContext}
+      v_1006836 = {v_82 : BIR.Descriptor}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_insert_before{v_5, Nat.sub(List.length(&2, cps_provider_5_NfVal, v_5), v_80), v_85}}, False{}, v_1006842 => cemit_body_cps_provider_5_insert_before(v_5, Nat.sub(List.length(&2, cps_provider_5_NfVal, v_5), v_80), v_85), v_1006841 => +v_1006837 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006841); CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_descriptor{v_1006835, v_1006836, v_1006837, Nat.sub(v_7, 1n)}}, False{}, v_1006840 => cemit_body_cps_provider_5_nf_descriptor(v_1006835, v_1006836, v_1006837, Nat.sub(v_7, 1n)), v_1006839 => +v_1006838 = cemit_unbox(cps_provider_5_Nf, v_1006839); CEmitterFinished{CEmitterValue{v_1006838}}}}
     case cps_provider_5_NfFail{v_90}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{v_90}}}
 
-def cemit_match_1545(+v_1006816: cps_provider_5_NfList, +v_1: cps_provider_5_NfContext, v_94: BIR.Descriptor, +v_5: List<&2, cps_provider_5_NfVal>, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
-  match v_1006816:
+def cemit_match_1551(+v_1006845: cps_provider_5_NfList, +v_1: cps_provider_5_NfContext, v_94: BIR.Descriptor, +v_5: List<&2, cps_provider_5_NfVal>, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
+  match v_1006845:
     case cps_provider_5_NfListOk{v_97}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_descriptor{v_1, v_94, List.append(&2, cps_provider_5_NfVal, v_5, v_97), Nat.sub(v_7, 1n)}}, False{}, v_1006819 => cemit_body_cps_provider_5_nf_descriptor(v_1, v_94, List.append(&2, cps_provider_5_NfVal, v_5, v_97), Nat.sub(v_7, 1n)), v_1006818 => +v_1006817 = cemit_unbox(cps_provider_5_Nf, v_1006818); CEmitterFinished{CEmitterValue{v_1006817}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_descriptor{v_1, v_94, List.append(&2, cps_provider_5_NfVal, v_5, v_97), Nat.sub(v_7, 1n)}}, False{}, v_1006848 => cemit_body_cps_provider_5_nf_descriptor(v_1, v_94, List.append(&2, cps_provider_5_NfVal, v_5, v_97), Nat.sub(v_7, 1n)), v_1006847 => +v_1006846 = cemit_unbox(cps_provider_5_Nf, v_1006847); CEmitterFinished{CEmitterValue{v_1006846}}}
     case cps_provider_5_NfListFail{v_101}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{v_101}}}
 
-def cemit_match_1546(+v_1006822: cps_provider_5_NfBind, +v_1: cps_provider_5_NfContext, v_107: BIR.Descriptor, +v_5: List<&2, cps_provider_5_NfVal>, +v_7: Nat, +v_10: BIR.Descriptor) -> CEmitterProgress<cps_provider_5_Nf>:
-  match v_1006822:
+def cemit_match_1552(+v_1006851: cps_provider_5_NfBind, +v_1: cps_provider_5_NfContext, v_107: BIR.Descriptor, +v_5: List<&2, cps_provider_5_NfVal>, +v_7: Nat, +v_10: BIR.Descriptor) -> CEmitterProgress<cps_provider_5_Nf>:
+  match v_1006851:
     case cps_provider_5_NfBound{v_113}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_descriptor{v_1, v_107, List.append(&2, cps_provider_5_NfVal, v_5, v_113), Nat.sub(v_7, 1n)}}, False{}, v_1006825 => cemit_body_cps_provider_5_nf_descriptor(v_1, v_107, List.append(&2, cps_provider_5_NfVal, v_5, v_113), Nat.sub(v_7, 1n)), v_1006824 => +v_1006823 = cemit_unbox(cps_provider_5_Nf, v_1006824); CEmitterFinished{CEmitterValue{v_1006823}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_descriptor{v_1, v_107, List.append(&2, cps_provider_5_NfVal, v_5, v_113), Nat.sub(v_7, 1n)}}, False{}, v_1006854 => cemit_body_cps_provider_5_nf_descriptor(v_1, v_107, List.append(&2, cps_provider_5_NfVal, v_5, v_113), Nat.sub(v_7, 1n)), v_1006853 => +v_1006852 = cemit_unbox(cps_provider_5_Nf, v_1006853); CEmitterFinished{CEmitterValue{v_1006852}}}
     case _:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_reify_env{v_10, v_5}}, False{}, v_1006828 => cemit_body_cps_provider_5_reify_env(v_10, v_5), v_1006827 => +v_1006826 = cemit_unbox(BIR.Descriptor, v_1006827); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfOther{v_1006826}}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_reify_env{v_10, v_5}}, False{}, v_1006857 => cemit_body_cps_provider_5_reify_env(v_10, v_5), v_1006856 => +v_1006855 = cemit_unbox(BIR.Descriptor, v_1006856); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfOther{v_1006855}}}}}
 
-def cemit_match_1547(+v_1006821: cps_provider_5_NfList, v_105: List<&2, BIR.DescriptorPattern>, +v_1: cps_provider_5_NfContext, v_107: BIR.Descriptor, +v_5: List<&2, cps_provider_5_NfVal>, +v_7: Nat, +v_10: BIR.Descriptor) -> CEmitterProgress<cps_provider_5_Nf>:
-  match v_1006821:
+def cemit_match_1553(+v_1006850: cps_provider_5_NfList, v_105: List<&2, BIR.DescriptorPattern>, +v_1: cps_provider_5_NfContext, v_107: BIR.Descriptor, +v_5: List<&2, cps_provider_5_NfVal>, +v_7: Nat, +v_10: BIR.Descriptor) -> CEmitterProgress<cps_provider_5_Nf>:
+  match v_1006850:
     case cps_provider_5_NfListOk{v_110}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_patterns{v_105, v_110}}, False{}, v_1006830 => cemit_body_cps_provider_5_bind_patterns(v_105, v_110), v_1006829 => +v_1006822 = cemit_unbox(cps_provider_5_NfBind, v_1006829); cemit_match_1546(v_1006822, v_1, v_107, v_5, v_7, v_10)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_patterns{v_105, v_110}}, False{}, v_1006859 => cemit_body_cps_provider_5_bind_patterns(v_105, v_110), v_1006858 => +v_1006851 = cemit_unbox(cps_provider_5_NfBind, v_1006858); cemit_match_1552(v_1006851, v_1, v_107, v_5, v_7, v_10)}
     case cps_provider_5_NfListFail{v_120}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{v_120}}}
 
-def cemit_match_1548(+v_1006832: cps_provider_5_NfList, +v_1: cps_provider_5_NfContext, v_124: List<&2, BIR.Descriptor>, +v_5: List<&2, cps_provider_5_NfVal>, +v_10: BIR.Descriptor, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
-  match v_1006832:
+def cemit_match_1554(+v_1006861: cps_provider_5_NfList, +v_1: cps_provider_5_NfContext, v_124: List<&2, BIR.Descriptor>, +v_5: List<&2, cps_provider_5_NfVal>, +v_10: BIR.Descriptor, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
+  match v_1006861:
     case cps_provider_5_NfListOk{v_127}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_cases{v_1, v_124, v_127, v_5, v_10, v_7}}, v_1006834 => +v_1006833 = cemit_unbox(cps_provider_5_Nf, v_1006834); CEmitterFinished{CEmitterValue{v_1006833}}}
+      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_5_nf_cases{v_1, v_124, v_127, v_5, v_10, v_7}}, v_1006863 => +v_1006862 = cemit_unbox(cps_provider_5_Nf, v_1006863); CEmitterFinished{CEmitterValue{v_1006862}}}
     case cps_provider_5_NfListFail{v_130}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{v_130}}}
 
-def cemit_match_1549(+v_1006839: cps_provider_5_Nf, +v_1: cps_provider_5_NfContext, v_139: BIR.Descriptor, +v_5: List<&2, cps_provider_5_NfVal>, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
-  match v_1006839:
+def cemit_match_1555(+v_1006868: cps_provider_5_Nf, +v_1: cps_provider_5_NfContext, v_139: BIR.Descriptor, +v_5: List<&2, cps_provider_5_NfVal>, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
+  match v_1006868:
     case cps_provider_5_NfOk{v_142}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_descriptor{v_1, v_139, List.append(&2, cps_provider_5_NfVal, v_5, [v_142]), Nat.sub(v_7, 1n)}}, False{}, v_1006842 => cemit_body_cps_provider_5_nf_descriptor(v_1, v_139, List.append(&2, cps_provider_5_NfVal, v_5, [v_142]), Nat.sub(v_7, 1n)), v_1006841 => +v_1006840 = cemit_unbox(cps_provider_5_Nf, v_1006841); CEmitterFinished{CEmitterValue{v_1006840}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_descriptor{v_1, v_139, List.append(&2, cps_provider_5_NfVal, v_5, [v_142]), Nat.sub(v_7, 1n)}}, False{}, v_1006871 => cemit_body_cps_provider_5_nf_descriptor(v_1, v_139, List.append(&2, cps_provider_5_NfVal, v_5, [v_142]), Nat.sub(v_7, 1n)), v_1006870 => +v_1006869 = cemit_unbox(cps_provider_5_Nf, v_1006870); CEmitterFinished{CEmitterValue{v_1006869}}}
     case cps_provider_5_NfFail{v_146}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{v_146}}}
 
-def cemit_match_1550(+v_1006855: cps_provider_5_NfList, +v_1: cps_provider_5_NfContext, v_170: String, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
-  match v_1006855:
+def cemit_match_1556(+v_1006884: cps_provider_5_NfList, +v_1: cps_provider_5_NfContext, v_170: String, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
+  match v_1006884:
     case cps_provider_5_NfListOk{v_175}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_named{v_1, v_170, v_175, v_7}}, v_1006857 => +v_1006856 = cemit_unbox(cps_provider_5_Nf, v_1006857); CEmitterFinished{CEmitterValue{v_1006856}}}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_named{v_1, v_170, v_175, v_7}}, v_1006886 => +v_1006885 = cemit_unbox(cps_provider_5_Nf, v_1006886); CEmitterFinished{CEmitterValue{v_1006885}}}
     case cps_provider_5_NfListFail{v_178}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{v_178}}}
 
-def cemit_match_1551(+v_1006859: cps_provider_5_NfList, +v_1: cps_provider_5_NfContext, v_182: String, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
-  match v_1006859:
+def cemit_match_1557(+v_1006888: cps_provider_5_NfList, +v_1: cps_provider_5_NfContext, v_182: String, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
+  match v_1006888:
     case cps_provider_5_NfListOk{v_187}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_named{v_1, v_182, v_187, v_7}}, v_1006861 => +v_1006860 = cemit_unbox(cps_provider_5_Nf, v_1006861); CEmitterFinished{CEmitterValue{v_1006860}}}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_named{v_1, v_182, v_187, v_7}}, v_1006890 => +v_1006889 = cemit_unbox(cps_provider_5_Nf, v_1006890); CEmitterFinished{CEmitterValue{v_1006889}}}
     case cps_provider_5_NfListFail{v_190}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{v_190}}}
 
-def cemit_match_1552(+v_10: BIR.Descriptor, +v_5: List<&2, cps_provider_5_NfVal>, +v_1: cps_provider_5_NfContext, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
+def cemit_match_1558(+v_10: BIR.Descriptor, +v_5: List<&2, cps_provider_5_NfVal>, +v_1: cps_provider_5_NfContext, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
   match v_10:
     case BIR.DescriptorNull{}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_reify_env{v_10, v_5}}, False{}, v_1006768 => cemit_body_cps_provider_5_reify_env(v_10, v_5), v_1006767 => +v_1006766 = cemit_unbox(BIR.Descriptor, v_1006767); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfOther{v_1006766}}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_reify_env{v_10, v_5}}, False{}, v_1006797 => cemit_body_cps_provider_5_reify_env(v_10, v_5), v_1006796 => +v_1006795 = cemit_unbox(BIR.Descriptor, v_1006796); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfOther{v_1006795}}}}}
     case BIR.DescriptorParameter{v_13}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_val_at{v_5, v_13, v_10}}, False{}, v_1006771 => cemit_body_cps_provider_5_val_at(v_5, v_13, v_10), v_1006770 => +v_1006769 = cemit_unbox(cps_provider_5_NfVal, v_1006770); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{v_1006769}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_val_at{v_5, v_13, v_10}}, False{}, v_1006800 => cemit_body_cps_provider_5_val_at(v_5, v_13, v_10), v_1006799 => +v_1006798 = cemit_unbox(cps_provider_5_NfVal, v_1006799); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{v_1006798}}}}
     case BIR.DescriptorQuantityKind{}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_reify_env{v_10, v_5}}, False{}, v_1006774 => cemit_body_cps_provider_5_reify_env(v_10, v_5), v_1006773 => +v_1006772 = cemit_unbox(BIR.Descriptor, v_1006773); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfOther{v_1006772}}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_reify_env{v_10, v_5}}, False{}, v_1006803 => cemit_body_cps_provider_5_reify_env(v_10, v_5), v_1006802 => +v_1006801 = cemit_unbox(BIR.Descriptor, v_1006802); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfOther{v_1006801}}}}}
     case BIR.DescriptorQuantity{v_17}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfQuantity{v_17}}}}
     case BIR.DescriptorKind{v_19}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf{v_1, v_19, v_5, v_7}}, False{}, v_1006780 => cemit_body_cps_provider_5_nf(v_1, v_19, v_5, v_7), v_1006779 => +v_1006775 = cemit_unbox(cps_provider_5_Nf, v_1006779); cemit_match_1539(v_1006775)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf{v_1, v_19, v_5, v_7}}, False{}, v_1006809 => cemit_body_cps_provider_5_nf(v_1, v_19, v_5, v_7), v_1006808 => +v_1006804 = cemit_unbox(cps_provider_5_Nf, v_1006808); cemit_match_1545(v_1006804)}
     case BIR.DescriptorMinimum{v_28, v_29}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_reify_env{v_10, v_5}}, False{}, v_1006783 => cemit_body_cps_provider_5_reify_env(v_10, v_5), v_1006782 => +v_1006781 = cemit_unbox(BIR.Descriptor, v_1006782); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfOther{v_1006781}}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_reify_env{v_10, v_5}}, False{}, v_1006812 => cemit_body_cps_provider_5_reify_env(v_10, v_5), v_1006811 => +v_1006810 = cemit_unbox(BIR.Descriptor, v_1006811); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfOther{v_1006810}}}}}
     case BIR.DescriptorArrow{v_34, v_35, v_36}:
       cemit_body_cps_provider_5_nf_arrow(v_1, v_34, v_35, v_36, v_5, v_7)
     case BIR.DescriptorLambda{v_40, v_41}:
-      v_1006785 = {v_40 : Maybe<&2, BIR.Quantity>}
-      v_1006786 = {v_41 : BIR.Descriptor}
-      v_1006787 = {v_5 : List<&2, cps_provider_5_NfVal>}
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_5}}, False{}, v_1006790 => cemit_body_cps_provider_5_materialize_all(v_5), v_1006789 => +v_1006788 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006789); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfClosure{v_1006785, v_1006786, v_1006787, v_1006788}}}}}
+      v_1006814 = {v_40 : Maybe<&2, BIR.Quantity>}
+      v_1006815 = {v_41 : BIR.Descriptor}
+      v_1006816 = {v_5 : List<&2, cps_provider_5_NfVal>}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize_all{v_5}}, False{}, v_1006819 => cemit_body_cps_provider_5_materialize_all(v_5), v_1006818 => +v_1006817 = cemit_unbox(List<&2, BIR.Descriptor>, v_1006818); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfClosure{v_1006814, v_1006815, v_1006816, v_1006817}}}}}
     case BIR.DescriptorRef{v_45, v_46}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_all{v_1, v_46, v_5, v_7}}, v_1006794 => +v_1006791 = cemit_unbox(cps_provider_5_NfList, v_1006794); cemit_match_1540(v_1006791, v_1, v_45, v_7)}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_all{v_1, v_46, v_5, v_7}}, v_1006823 => +v_1006820 = cemit_unbox(cps_provider_5_NfList, v_1006823); cemit_match_1546(v_1006820, v_1, v_45, v_7)}
     case BIR.DescriptorConstructor{v_55, v_56}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_all{v_1, v_56, v_5, v_7}}, v_1006796 => +v_1006795 = cemit_unbox(cps_provider_5_NfList, v_1006796); cemit_match_1541(v_1006795, v_55)}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_all{v_1, v_56, v_5, v_7}}, v_1006825 => +v_1006824 = cemit_unbox(cps_provider_5_NfList, v_1006825); cemit_match_1547(v_1006824, v_55)}
     case BIR.DescriptorApplication{v_64, v_65}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf{v_1, v_64, v_5, v_7}}, False{}, v_1006804 => cemit_body_cps_provider_5_nf(v_1, v_64, v_5, v_7), v_1006803 => +v_1006797 = cemit_unbox(cps_provider_5_Nf, v_1006803); cemit_match_1543(v_1006797, v_1, v_65, v_5, v_7)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf{v_1, v_64, v_5, v_7}}, False{}, v_1006833 => cemit_body_cps_provider_5_nf(v_1, v_64, v_5, v_7), v_1006832 => +v_1006826 = cemit_unbox(cps_provider_5_Nf, v_1006832); cemit_match_1549(v_1006826, v_1, v_65, v_5, v_7)}
     case BIR.DescriptorSubstitution{v_80, v_81, v_82}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf{v_1, v_81, v_5, v_7}}, False{}, v_1006815 => cemit_body_cps_provider_5_nf(v_1, v_81, v_5, v_7), v_1006814 => +v_1006805 = cemit_unbox(cps_provider_5_Nf, v_1006814); cemit_match_1544(v_1006805, v_1, v_82, v_5, v_80, v_7)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf{v_1, v_81, v_5, v_7}}, False{}, v_1006844 => cemit_body_cps_provider_5_nf(v_1, v_81, v_5, v_7), v_1006843 => +v_1006834 = cemit_unbox(cps_provider_5_Nf, v_1006843); cemit_match_1550(v_1006834, v_1, v_82, v_5, v_80, v_7)}
     case BIR.DescriptorLet{v_93, v_94}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_all{v_1, v_93, v_5, v_7}}, v_1006820 => +v_1006816 = cemit_unbox(cps_provider_5_NfList, v_1006820); cemit_match_1545(v_1006816, v_1, v_94, v_5, v_7)}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_all{v_1, v_93, v_5, v_7}}, v_1006849 => +v_1006845 = cemit_unbox(cps_provider_5_NfList, v_1006849); cemit_match_1551(v_1006845, v_1, v_94, v_5, v_7)}
     case BIR.DescriptorLocal{v_105, v_106, v_107}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_all{v_1, v_106, v_5, v_7}}, v_1006831 => +v_1006821 = cemit_unbox(cps_provider_5_NfList, v_1006831); cemit_match_1547(v_1006821, v_105, v_1, v_107, v_5, v_7, v_10)}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_all{v_1, v_106, v_5, v_7}}, v_1006860 => +v_1006850 = cemit_unbox(cps_provider_5_NfList, v_1006860); cemit_match_1553(v_1006850, v_105, v_1, v_107, v_5, v_7, v_10)}
     case BIR.DescriptorMatch{v_123, v_124}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_all{v_1, v_123, v_5, v_7}}, v_1006835 => +v_1006832 = cemit_unbox(cps_provider_5_NfList, v_1006835); cemit_match_1548(v_1006832, v_1, v_124, v_5, v_10, v_7)}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_all{v_1, v_123, v_5, v_7}}, v_1006864 => +v_1006861 = cemit_unbox(cps_provider_5_NfList, v_1006864); cemit_match_1554(v_1006861, v_1, v_124, v_5, v_10, v_7)}
     case BIR.DescriptorCase{v_133, v_134}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_reify_env{v_10, v_5}}, False{}, v_1006838 => cemit_body_cps_provider_5_reify_env(v_10, v_5), v_1006837 => +v_1006836 = cemit_unbox(BIR.Descriptor, v_1006837); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfOther{v_1006836}}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_reify_env{v_10, v_5}}, False{}, v_1006867 => cemit_body_cps_provider_5_reify_env(v_10, v_5), v_1006866 => +v_1006865 = cemit_unbox(BIR.Descriptor, v_1006866); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfOther{v_1006865}}}}}
     case BIR.DescriptorBind{v_138, v_139}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf{v_1, v_138, v_5, v_7}}, False{}, v_1006844 => cemit_body_cps_provider_5_nf(v_1, v_138, v_5, v_7), v_1006843 => +v_1006839 = cemit_unbox(cps_provider_5_Nf, v_1006843); cemit_match_1549(v_1006839, v_1, v_139, v_5, v_7)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf{v_1, v_138, v_5, v_7}}, False{}, v_1006873 => cemit_body_cps_provider_5_nf(v_1, v_138, v_5, v_7), v_1006872 => +v_1006868 = cemit_unbox(cps_provider_5_Nf, v_1006872); cemit_match_1555(v_1006868, v_1, v_139, v_5, v_7)}
     case BIR.DescriptorEquality{v_150, v_151, v_152}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_reify_env{v_10, v_5}}, False{}, v_1006847 => cemit_body_cps_provider_5_reify_env(v_10, v_5), v_1006846 => +v_1006845 = cemit_unbox(BIR.Descriptor, v_1006846); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfOther{v_1006845}}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_reify_env{v_10, v_5}}, False{}, v_1006876 => cemit_body_cps_provider_5_reify_env(v_10, v_5), v_1006875 => +v_1006874 = cemit_unbox(BIR.Descriptor, v_1006875); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfOther{v_1006874}}}}}
     case BIR.DescriptorReflexivity{}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_reify_env{v_10, v_5}}, False{}, v_1006850 => cemit_body_cps_provider_5_reify_env(v_10, v_5), v_1006849 => +v_1006848 = cemit_unbox(BIR.Descriptor, v_1006849); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfOther{v_1006848}}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_reify_env{v_10, v_5}}, False{}, v_1006879 => cemit_body_cps_provider_5_reify_env(v_10, v_5), v_1006878 => +v_1006877 = cemit_unbox(BIR.Descriptor, v_1006878); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfOther{v_1006877}}}}}
     case BIR.DescriptorFailure{v_156}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{v_156}}}
     case BIR.DescriptorFill{v_159, v_160}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_apply_args{v_1, v_159, v_160, v_5, v_10, v_7}}, v_1006852 => +v_1006851 = cemit_unbox(cps_provider_5_Nf, v_1006852); CEmitterFinished{CEmitterValue{v_1006851}}}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_apply_args{v_1, v_159, v_160, v_5, v_10, v_7}}, v_1006881 => +v_1006880 = cemit_unbox(cps_provider_5_Nf, v_1006881); CEmitterFinished{CEmitterValue{v_1006880}}}
     case BIR.DescriptorPlus{v_164, v_165}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_apply_args{v_1, v_164, v_165, v_5, v_10, v_7}}, v_1006854 => +v_1006853 = cemit_unbox(cps_provider_5_Nf, v_1006854); CEmitterFinished{CEmitterValue{v_1006853}}}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_apply_args{v_1, v_164, v_165, v_5, v_10, v_7}}, v_1006883 => +v_1006882 = cemit_unbox(cps_provider_5_Nf, v_1006883); CEmitterFinished{CEmitterValue{v_1006882}}}
     case BIR.DescriptorNamedFill{v_170, v_171, v_172}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_all{v_1, v_172, v_5, v_7}}, v_1006858 => +v_1006855 = cemit_unbox(cps_provider_5_NfList, v_1006858); cemit_match_1550(v_1006855, v_1, v_170, v_7)}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_all{v_1, v_172, v_5, v_7}}, v_1006887 => +v_1006884 = cemit_unbox(cps_provider_5_NfList, v_1006887); cemit_match_1556(v_1006884, v_1, v_170, v_7)}
     case BIR.DescriptorNamedPlus{v_182, v_183, v_184}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_all{v_1, v_184, v_5, v_7}}, v_1006862 => +v_1006859 = cemit_unbox(cps_provider_5_NfList, v_1006862); cemit_match_1551(v_1006859, v_1, v_182, v_7)}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_all{v_1, v_184, v_5, v_7}}, v_1006891 => +v_1006888 = cemit_unbox(cps_provider_5_NfList, v_1006891); cemit_match_1557(v_1006888, v_1, v_182, v_7)}
 
 def cemit_body_cps_provider_5_nf_descriptor_step(+v_1: cps_provider_5_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_5_NfVal>, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
   +v_10 = v_2
-  cemit_match_1552(v_10, v_5, v_1, v_7)
+  cemit_match_1558(v_10, v_5, v_1, v_7)
 
-def cemit_match_1553(+v_1006864: cps_provider_5_NfList, v_18: cps_provider_5_NfVal) -> CEmitterProgress<cps_provider_5_NfList>:
-  match v_1006864:
+def cemit_match_1559(+v_1006893: cps_provider_5_NfList, v_18: cps_provider_5_NfVal) -> CEmitterProgress<cps_provider_5_NfList>:
+  match v_1006893:
     case cps_provider_5_NfListFail{v_21}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfListFail{v_21}}}
     case cps_provider_5_NfListOk{v_23}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfListOk{v_18 <> v_23}}}
 
-def cemit_match_1554(+v_1006863: cps_provider_5_Nf, +v_1: cps_provider_5_NfContext, v_13: List<&2, BIR.Descriptor>, +v_6: List<&2, cps_provider_5_NfVal>, +v_8: Nat) -> CEmitterProgress<cps_provider_5_NfList>:
-  match v_1006863:
+def cemit_match_1560(+v_1006892: cps_provider_5_Nf, +v_1: cps_provider_5_NfContext, v_13: List<&2, BIR.Descriptor>, +v_6: List<&2, cps_provider_5_NfVal>, +v_8: Nat) -> CEmitterProgress<cps_provider_5_NfList>:
+  match v_1006892:
     case cps_provider_5_NfFail{v_16}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfListFail{v_16}}}
     case cps_provider_5_NfOk{v_18}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_all{v_1, v_13, v_6, v_8}}, v_1006865 => +v_1006864 = cemit_unbox(cps_provider_5_NfList, v_1006865); cemit_match_1553(v_1006864, v_18)}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_all{v_1, v_13, v_6, v_8}}, v_1006894 => +v_1006893 = cemit_unbox(cps_provider_5_NfList, v_1006894); cemit_match_1559(v_1006893, v_18)}
 
-def cemit_match_1555(v_3: List<&2, BIR.Descriptor>, +v_1: cps_provider_5_NfContext, +v_6: List<&2, cps_provider_5_NfVal>, +v_8: Nat) -> CEmitterProgress<cps_provider_5_NfList>:
+def cemit_match_1561(v_3: List<&2, BIR.Descriptor>, +v_1: cps_provider_5_NfContext, +v_6: List<&2, cps_provider_5_NfVal>, +v_8: Nat) -> CEmitterProgress<cps_provider_5_NfList>:
   match v_3:
     case []:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfListOk{[]}}}
     case +v_12 <> v_13:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf{v_1, v_12, v_6, v_8}}, False{}, v_1006867 => cemit_body_cps_provider_5_nf(v_1, v_12, v_6, v_8), v_1006866 => +v_1006863 = cemit_unbox(cps_provider_5_Nf, v_1006866); cemit_match_1554(v_1006863, v_1, v_13, v_6, v_8)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf{v_1, v_12, v_6, v_8}}, False{}, v_1006896 => cemit_body_cps_provider_5_nf(v_1, v_12, v_6, v_8), v_1006895 => +v_1006892 = cemit_unbox(cps_provider_5_Nf, v_1006895); cemit_match_1560(v_1006892, v_1, v_13, v_6, v_8)}
 
 def cemit_body_cps_provider_5_nf_all(+v_1: cps_provider_5_NfContext, v_3: List<&2, BIR.Descriptor>, +v_6: List<&2, cps_provider_5_NfVal>, +v_8: Nat) -> CEmitterProgress<cps_provider_5_NfList>:
-  cemit_match_1555(v_3, v_1, v_6, v_8)
+  cemit_match_1561(v_3, v_1, v_6, v_8)
 
-def cemit_match_1556(+v_1006869: cps_provider_5_NfList, +v_1: cps_provider_5_NfContext, v_16: cps_provider_5_NfVal, v_8: BIR.Descriptor, +v_10: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
-  match v_1006869:
+def cemit_match_1562(+v_1006898: cps_provider_5_NfList, +v_1: cps_provider_5_NfContext, v_16: cps_provider_5_NfVal, v_8: BIR.Descriptor, +v_10: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
+  match v_1006898:
     case cps_provider_5_NfListFail{v_19}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{v_19}}}
     case cps_provider_5_NfListOk{v_21}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_apply_source{v_1, v_16, v_21, v_8, v_10}}, v_1006871 => +v_1006870 = cemit_unbox(cps_provider_5_Nf, v_1006871); CEmitterFinished{CEmitterValue{v_1006870}}}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_apply_source{v_1, v_16, v_21, v_8, v_10}}, v_1006900 => +v_1006899 = cemit_unbox(cps_provider_5_Nf, v_1006900); CEmitterFinished{CEmitterValue{v_1006899}}}
 
-def cemit_match_1557(+v_1006868: cps_provider_5_Nf, +v_1: cps_provider_5_NfContext, v_4: List<&2, BIR.Descriptor>, +v_7: List<&2, cps_provider_5_NfVal>, +v_10: Nat, v_8: BIR.Descriptor) -> CEmitterProgress<cps_provider_5_Nf>:
-  match v_1006868:
+def cemit_match_1563(+v_1006897: cps_provider_5_Nf, +v_1: cps_provider_5_NfContext, v_4: List<&2, BIR.Descriptor>, +v_7: List<&2, cps_provider_5_NfVal>, +v_10: Nat, v_8: BIR.Descriptor) -> CEmitterProgress<cps_provider_5_Nf>:
+  match v_1006897:
     case cps_provider_5_NfFail{v_14}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{v_14}}}
     case cps_provider_5_NfOk{v_16}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_all{v_1, v_4, v_7, v_10}}, False{}, v_1006873 => cemit_body_cps_provider_5_nf_all(v_1, v_4, v_7, v_10), v_1006872 => +v_1006869 = cemit_unbox(cps_provider_5_NfList, v_1006872); cemit_match_1556(v_1006869, v_1, v_16, v_8, v_10)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_all{v_1, v_4, v_7, v_10}}, False{}, v_1006902 => cemit_body_cps_provider_5_nf_all(v_1, v_4, v_7, v_10), v_1006901 => +v_1006898 = cemit_unbox(cps_provider_5_NfList, v_1006901); cemit_match_1562(v_1006898, v_1, v_16, v_8, v_10)}
 
 def cemit_body_cps_provider_5_nf_apply_args(+v_1: cps_provider_5_NfContext, v_2: BIR.Descriptor, v_4: List<&2, BIR.Descriptor>, +v_7: List<&2, cps_provider_5_NfVal>, v_8: BIR.Descriptor, +v_10: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf{v_1, v_2, v_7, v_10}}, False{}, v_1006875 => cemit_body_cps_provider_5_nf(v_1, v_2, v_7, v_10), v_1006874 => +v_1006868 = cemit_unbox(cps_provider_5_Nf, v_1006874); cemit_match_1557(v_1006868, v_1, v_4, v_7, v_10, v_8)}
+  CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf{v_1, v_2, v_7, v_10}}, False{}, v_1006904 => cemit_body_cps_provider_5_nf(v_1, v_2, v_7, v_10), v_1006903 => +v_1006897 = cemit_unbox(cps_provider_5_Nf, v_1006903); cemit_match_1563(v_1006897, v_1, v_4, v_7, v_10, v_8)}
 
-def cemit_match_1558(+v_6: List<&2, cps_provider_5_NfVal>, v_3: cps_provider_5_NfVal, +v_1: cps_provider_5_NfContext, +v_9: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
+def cemit_match_1564(+v_6: List<&2, cps_provider_5_NfVal>, v_3: cps_provider_5_NfVal, +v_1: cps_provider_5_NfContext, +v_9: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
   match v_6:
     case []:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{v_3}}}
     case _:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_apply{v_1, v_3, v_6, v_9}}, v_1006877 => +v_1006876 = cemit_unbox(cps_provider_5_Nf, v_1006877); CEmitterFinished{CEmitterValue{v_1006876}}}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_apply{v_1, v_3, v_6, v_9}}, v_1006906 => +v_1006905 = cemit_unbox(cps_provider_5_Nf, v_1006906); CEmitterFinished{CEmitterValue{v_1006905}}}
 
 def cemit_body_cps_provider_5_nf_apply_source(+v_1: cps_provider_5_NfContext, v_3: cps_provider_5_NfVal, v_6: List<&2, cps_provider_5_NfVal>, v_7: BIR.Descriptor, +v_9: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
-  cemit_match_1558(v_6, v_3, v_1, v_9)
+  cemit_match_1564(v_6, v_3, v_1, v_9)
 
-def cemit_match_1559(+v_1006878: cps_provider_5_Nf, +v_1: cps_provider_5_NfContext, v_13: List<&2, cps_provider_5_NfVal>, +v_8: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
-  match v_1006878:
+def cemit_match_1565(+v_1006907: cps_provider_5_Nf, +v_1: cps_provider_5_NfContext, v_13: List<&2, cps_provider_5_NfVal>, +v_8: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
+  match v_1006907:
     case cps_provider_5_NfFail{v_16}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{v_16}}}
     case cps_provider_5_NfOk{v_18}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_apply{v_1, v_18, v_13, Nat.sub(v_8, 1n)}}, v_1006880 => +v_1006879 = cemit_unbox(cps_provider_5_Nf, v_1006880); CEmitterFinished{CEmitterValue{v_1006879}}}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_apply{v_1, v_18, v_13, Nat.sub(v_8, 1n)}}, v_1006909 => +v_1006908 = cemit_unbox(cps_provider_5_Nf, v_1006909); CEmitterFinished{CEmitterValue{v_1006908}}}
 
-def cemit_match_1560(v_6: List<&2, cps_provider_5_NfVal>, v_3: cps_provider_5_NfVal, +v_1: cps_provider_5_NfContext, +v_8: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
+def cemit_match_1566(v_6: List<&2, cps_provider_5_NfVal>, v_3: cps_provider_5_NfVal, +v_1: cps_provider_5_NfContext, +v_8: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
   match v_6:
     case []:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{v_3}}}
     case +v_12 <> v_13:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_apply_one{v_1, v_3, v_12, Nat.sub(v_8, 1n)}}, v_1006881 => +v_1006878 = cemit_unbox(cps_provider_5_Nf, v_1006881); cemit_match_1559(v_1006878, v_1, v_13, v_8)}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_apply_one{v_1, v_3, v_12, Nat.sub(v_8, 1n)}}, v_1006910 => +v_1006907 = cemit_unbox(cps_provider_5_Nf, v_1006910); cemit_match_1565(v_1006907, v_1, v_13, v_8)}
 
 def cemit_body_cps_provider_5_nf_apply(+v_1: cps_provider_5_NfContext, v_3: cps_provider_5_NfVal, v_6: List<&2, cps_provider_5_NfVal>, +v_8: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
-  cemit_match_1560(v_6, v_3, v_1, v_8)
+  cemit_match_1566(v_6, v_3, v_1, v_8)
 
-def cemit_match_1561(v_3: cps_provider_5_NfVal, +v_1: cps_provider_5_NfContext, v_5: cps_provider_5_NfVal, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
+def cemit_match_1567(v_3: cps_provider_5_NfVal, +v_1: cps_provider_5_NfContext, v_5: cps_provider_5_NfVal, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
   match v_3:
     case cps_provider_5_NfType{v_11, v_12}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_named{v_1, v_11, List.append(&2, cps_provider_5_NfVal, v_12, [v_5]), Nat.sub(v_7, 1n)}}, v_1006883 => +v_1006882 = cemit_unbox(cps_provider_5_Nf, v_1006883); CEmitterFinished{CEmitterValue{v_1006882}}}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_named{v_1, v_11, List.append(&2, cps_provider_5_NfVal, v_12, [v_5]), Nat.sub(v_7, 1n)}}, v_1006912 => +v_1006911 = cemit_unbox(cps_provider_5_Nf, v_1006912); CEmitterFinished{CEmitterValue{v_1006911}}}
     case cps_provider_5_NfClosure{v_19, v_20, v_21, v_22}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_descriptor{v_1, v_20, List.append(&2, cps_provider_5_NfVal, v_21, [v_5]), Nat.sub(v_7, 1n)}}, False{}, v_1006886 => cemit_body_cps_provider_5_nf_descriptor(v_1, v_20, List.append(&2, cps_provider_5_NfVal, v_21, [v_5]), Nat.sub(v_7, 1n)), v_1006885 => +v_1006884 = cemit_unbox(cps_provider_5_Nf, v_1006885); CEmitterFinished{CEmitterValue{v_1006884}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_descriptor{v_1, v_20, List.append(&2, cps_provider_5_NfVal, v_21, [v_5]), Nat.sub(v_7, 1n)}}, False{}, v_1006915 => cemit_body_cps_provider_5_nf_descriptor(v_1, v_20, List.append(&2, cps_provider_5_NfVal, v_21, [v_5]), Nat.sub(v_7, 1n)), v_1006914 => +v_1006913 = cemit_unbox(cps_provider_5_Nf, v_1006914); CEmitterFinished{CEmitterValue{v_1006913}}}
     case cps_provider_5_NfCtor{v_27, v_28}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{String.append("the constructor `", String.append(v_27, "` is applied to an argument"))}}}
     case cps_provider_5_NfQuantity{v_30}:
@@ -17408,193 +17469,193 @@ def cemit_match_1561(v_3: cps_provider_5_NfVal, +v_1: cps_provider_5_NfContext, 
     case cps_provider_5_NfKind{v_32}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{"a kind is applied to an argument"}}}
     case cps_provider_5_NfOther{v_34}:
-      v_1006887 = {v_34 : BIR.Descriptor}
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize{v_5}}, False{}, v_1006890 => cemit_body_cps_provider_5_materialize(v_5), v_1006889 => +v_1006888 = cemit_unbox(BIR.Descriptor, v_1006889); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfOther{BIR.DescriptorApplication{v_1006887, v_1006888}}}}}}
+      v_1006916 = {v_34 : BIR.Descriptor}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize{v_5}}, False{}, v_1006919 => cemit_body_cps_provider_5_materialize(v_5), v_1006918 => +v_1006917 = cemit_unbox(BIR.Descriptor, v_1006918); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfOther{BIR.DescriptorApplication{v_1006916, v_1006917}}}}}}
     case cps_provider_5_NfMissing{v_37}:
-      v_1006891 = {v_37 : BIR.Descriptor}
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize{v_5}}, False{}, v_1006894 => cemit_body_cps_provider_5_materialize(v_5), v_1006893 => +v_1006892 = cemit_unbox(BIR.Descriptor, v_1006893); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfMissing{BIR.DescriptorApplication{v_1006891, v_1006892}}}}}}
+      v_1006920 = {v_37 : BIR.Descriptor}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_materialize{v_5}}, False{}, v_1006923 => cemit_body_cps_provider_5_materialize(v_5), v_1006922 => +v_1006921 = cemit_unbox(BIR.Descriptor, v_1006922); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfMissing{BIR.DescriptorApplication{v_1006920, v_1006921}}}}}}
 
 def cemit_body_cps_provider_5_nf_apply_one(+v_1: cps_provider_5_NfContext, v_3: cps_provider_5_NfVal, v_5: cps_provider_5_NfVal, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
-  cemit_match_1561(v_3, v_1, v_5, v_7)
+  cemit_match_1567(v_3, v_1, v_5, v_7)
 
 def cemit_body_cps_provider_5_intrinsic_io(+v_0: BIR.TypeFunction) -> CEmitterProgress<Bool>:
   CEmitterFinished{CEmitterValue{cemit_pure_cps_provider_5_intrinsic_io(v_0)}}
 
-def cemit_match_1562(v_4: BIR.TypeFunction, v_7: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<cps_provider_5_Nf>:
+def cemit_match_1568(v_4: BIR.TypeFunction, v_7: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<cps_provider_5_Nf>:
   match v_4:
     case BIR.TypeFunction{v_16, v_17, v_18, v_19, v_20}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfType{v_16, v_7}}}}
 
-def cemit_match_1563(v_1: Bool, v_4: BIR.TypeFunction, v_7: List<&2, cps_provider_5_NfVal>, +v_3: cps_provider_5_NfContext, +v_9: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
+def cemit_match_1569(v_1: Bool, v_4: BIR.TypeFunction, v_7: List<&2, cps_provider_5_NfVal>, +v_3: cps_provider_5_NfContext, +v_9: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
   match v_1:
     case True{}:
-      cemit_match_1562(v_4, v_7)
+      cemit_match_1568(v_4, v_7)
     case False{}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_reduce{v_3, v_4, v_7, Nat.sub(v_9, 1n)}}, v_1006896 => +v_1006895 = cemit_unbox(cps_provider_5_Nf, v_1006896); CEmitterFinished{CEmitterValue{v_1006895}}}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_reduce{v_3, v_4, v_7, Nat.sub(v_9, 1n)}}, v_1006925 => +v_1006924 = cemit_unbox(cps_provider_5_Nf, v_1006925); CEmitterFinished{CEmitterValue{v_1006924}}}
 
 def cemit_body_cps_provider_5_nf_named_io(v_1: Bool, +v_3: cps_provider_5_NfContext, v_4: BIR.TypeFunction, v_7: List<&2, cps_provider_5_NfVal>, +v_9: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
-  cemit_match_1563(v_1, v_4, v_7, v_3, v_9)
+  cemit_match_1569(v_1, v_4, v_7, v_3, v_9)
 
-def cemit_match_1564(+v_1006901: Maybe<&2, BIR.Family>, v_6: List<&2, cps_provider_5_NfVal>, +v_3: String) -> CEmitterProgress<cps_provider_5_Nf>:
-  match v_1006901:
+def cemit_match_1570(+v_1006930: Maybe<&2, BIR.Family>, v_6: List<&2, cps_provider_5_NfVal>, +v_3: String) -> CEmitterProgress<cps_provider_5_Nf>:
+  match v_1006930:
     case Some{v_23}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_family{v_23, v_6}}, v_1006903 => +v_1006902 = cemit_unbox(cps_provider_5_Nf, v_1006903); CEmitterFinished{CEmitterValue{v_1006902}}}
+      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_family{v_23, v_6}}, v_1006932 => +v_1006931 = cemit_unbox(cps_provider_5_Nf, v_1006932); CEmitterFinished{CEmitterValue{v_1006931}}}
     case None{}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfType{v_3, v_6}}}}
 
-def cemit_match_1565(+v_1006897: Maybe<&2, BIR.TypeFunction>, +v_1: cps_provider_5_NfContext, v_6: List<&2, cps_provider_5_NfVal>, +v_8: Nat, +v_3: String, v_12: Map<&2, BIR.Family>) -> CEmitterProgress<cps_provider_5_Nf>:
-  match v_1006897:
+def cemit_match_1571(+v_1006926: Maybe<&2, BIR.TypeFunction>, +v_1: cps_provider_5_NfContext, v_6: List<&2, cps_provider_5_NfVal>, +v_8: Nat, +v_3: String, v_12: Map<&2, BIR.Family>) -> CEmitterProgress<cps_provider_5_Nf>:
+  match v_1006926:
     case Some{v_16}:
       +v_18 = v_16
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_named_io{cemit_pure_cps_provider_5_intrinsic_io(v_18), v_1, v_18, v_6, v_8}}, False{}, v_1006900 => cemit_body_cps_provider_5_nf_named_io(cemit_pure_cps_provider_5_intrinsic_io(v_18), v_1, v_18, v_6, v_8), v_1006899 => +v_1006898 = cemit_unbox(cps_provider_5_Nf, v_1006899); CEmitterFinished{CEmitterValue{v_1006898}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_named_io{cemit_pure_cps_provider_5_intrinsic_io(v_18), v_1, v_18, v_6, v_8}}, False{}, v_1006929 => cemit_body_cps_provider_5_nf_named_io(cemit_pure_cps_provider_5_intrinsic_io(v_18), v_1, v_18, v_6, v_8), v_1006928 => +v_1006927 = cemit_unbox(cps_provider_5_Nf, v_1006928); CEmitterFinished{CEmitterValue{v_1006927}}}
     case None{}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_family_of{v_3, v_12}}, False{}, v_1006905 => cemit_body_cps_provider_5_family_of(v_3, v_12), v_1006904 => +v_1006901 = cemit_unbox(Maybe<&2, BIR.Family>, v_1006904); cemit_match_1564(v_1006901, v_6, v_3)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_family_of{v_3, v_12}}, False{}, v_1006934 => cemit_body_cps_provider_5_family_of(v_3, v_12), v_1006933 => +v_1006930 = cemit_unbox(Maybe<&2, BIR.Family>, v_1006933); cemit_match_1570(v_1006930, v_6, v_3)}
 
 def cemit_body_cps_provider_5_nf_named(+v_1: cps_provider_5_NfContext, +v_3: String, v_6: List<&2, cps_provider_5_NfVal>, +v_8: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
   match v_1:
     case cps_provider_5_NfContext{v_12, v_13}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_function_of{v_3, v_13}}, False{}, v_1006907 => cemit_body_cps_provider_5_function_of(v_3, v_13), v_1006906 => +v_1006897 = cemit_unbox(Maybe<&2, BIR.TypeFunction>, v_1006906); cemit_match_1565(v_1006897, v_1, v_6, v_8, v_3, v_12)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_function_of{v_3, v_13}}, False{}, v_1006936 => cemit_body_cps_provider_5_function_of(v_3, v_13), v_1006935 => +v_1006926 = cemit_unbox(Maybe<&2, BIR.TypeFunction>, v_1006935); cemit_match_1571(v_1006926, v_1, v_6, v_8, v_3, v_12)}
 
 def cemit_body_cps_provider_5_nf_arity(+v_2: List<&2, cps_provider_5_NfVal>, +v_4: Nat, +v_6: Nat) -> CEmitterProgress<cps_provider_5_NfArity>:
   CEmitterFinished{CEmitterValue{cps_provider_5_NfArity{Nat.is_eq(Nat.add(List.length(&2, cps_provider_5_NfVal, v_2), v_4), v_6), Nat.is_eq(List.length(&2, cps_provider_5_NfVal, v_2), v_6), Nat.is_lt(List.length(&2, cps_provider_5_NfVal, v_2), v_6)}}}
 
-def cemit_match_1567(v_0: BIR.Family, +v_6: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<cps_provider_5_Nf>:
+def cemit_match_1573(v_0: BIR.Family, +v_6: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<cps_provider_5_Nf>:
   match v_0:
     case BIR.Family{v_13, v_14, v_15, v_16, v_17, v_18}:
       +v_20 = v_16
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_arity{v_6, v_20, v_17}}, False{}, v_1006912 => cemit_body_cps_provider_5_nf_arity(v_6, v_20, v_17), v_1006911 => +v_1006908 = cemit_unbox(cps_provider_5_NfArity, v_1006911); CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_family_apply{v_1006908, v_13, v_20, v_6}}, v_1006910 => +v_1006909 = cemit_unbox(cps_provider_5_Nf, v_1006910); CEmitterFinished{CEmitterValue{v_1006909}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_arity{v_6, v_20, v_17}}, False{}, v_1006941 => cemit_body_cps_provider_5_nf_arity(v_6, v_20, v_17), v_1006940 => +v_1006937 = cemit_unbox(cps_provider_5_NfArity, v_1006940); CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_family_apply{v_1006937, v_13, v_20, v_6}}, v_1006939 => +v_1006938 = cemit_unbox(cps_provider_5_Nf, v_1006939); CEmitterFinished{CEmitterValue{v_1006938}}}}
 
 def cemit_body_cps_provider_5_nf_family(v_0: BIR.Family, v_3: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<cps_provider_5_Nf>:
   +v_6 = v_3
-  cemit_match_1567(v_0, v_6)
+  cemit_match_1573(v_0, v_6)
 
-def cemit_match_1568(v_15: Bool, v_3: String, v_8: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<cps_provider_5_Nf>:
+def cemit_match_1574(v_15: Bool, v_3: String, v_8: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<cps_provider_5_Nf>:
   match v_15:
     case True{}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfType{v_3, v_8}}}}
     case False{}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{String.append("the type `", String.append(v_3, "` is applied past its declared parameter count"))}}}
 
-def cemit_match_1569(v_14: Bool, v_3: String, v_8: List<&2, cps_provider_5_NfVal>, v_15: Bool) -> CEmitterProgress<cps_provider_5_Nf>:
+def cemit_match_1575(v_14: Bool, v_3: String, v_8: List<&2, cps_provider_5_NfVal>, v_15: Bool) -> CEmitterProgress<cps_provider_5_Nf>:
   match v_14:
     case True{}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfType{v_3, v_8}}}}
     case False{}:
-      cemit_match_1568(v_15, v_3, v_8)
+      cemit_match_1574(v_15, v_3, v_8)
 
-def cemit_match_1570(v_13: Bool, v_3: String, v_5: Nat, v_8: List<&2, cps_provider_5_NfVal>, v_14: Bool, v_15: Bool) -> CEmitterProgress<cps_provider_5_Nf>:
+def cemit_match_1576(v_13: Bool, v_3: String, v_5: Nat, v_8: List<&2, cps_provider_5_NfVal>, v_14: Bool, v_15: Bool) -> CEmitterProgress<cps_provider_5_Nf>:
   match v_13:
     case True{}:
-      v_1006913 = {v_3 : String}
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_quantity_markers{v_5}}, False{}, v_1006916 => cemit_body_cps_provider_5_quantity_markers(v_5), v_1006915 => +v_1006914 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006915); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfType{v_1006913, List.append(&2, cps_provider_5_NfVal, v_1006914, v_8)}}}}}
+      v_1006942 = {v_3 : String}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_quantity_markers{v_5}}, False{}, v_1006945 => cemit_body_cps_provider_5_quantity_markers(v_5), v_1006944 => +v_1006943 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006944); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfType{v_1006942, List.append(&2, cps_provider_5_NfVal, v_1006943, v_8)}}}}}
     case False{}:
-      cemit_match_1569(v_14, v_3, v_8, v_15)
+      cemit_match_1575(v_14, v_3, v_8, v_15)
 
 def cemit_body_cps_provider_5_nf_family_apply(v_1: cps_provider_5_NfArity, v_3: String, v_5: Nat, v_8: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<cps_provider_5_Nf>:
   match v_1:
     case cps_provider_5_NfArity{v_13, v_14, v_15}:
-      cemit_match_1570(v_13, v_3, v_5, v_8, v_14, v_15)
+      cemit_match_1576(v_13, v_3, v_5, v_8, v_14, v_15)
 
-def cemit_match_1572(v_2: BIR.TypeFunction, +v_10: List<&2, cps_provider_5_NfVal>, +v_1: cps_provider_5_NfContext, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
+def cemit_match_1578(v_2: BIR.TypeFunction, +v_10: List<&2, cps_provider_5_NfVal>, +v_1: cps_provider_5_NfContext, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
   match v_2:
     case BIR.TypeFunction{v_16, v_17, v_18, v_19, v_20}:
       +v_22 = v_18
       +v_24 = v_19
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_arity{v_10, v_22, v_24}}, False{}, v_1006921 => cemit_body_cps_provider_5_nf_arity(v_10, v_22, v_24), v_1006920 => +v_1006917 = cemit_unbox(cps_provider_5_NfArity, v_1006920); CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_reduce_apply{v_1006917, v_1, v_16, v_22, v_24, v_20, v_10, v_7}}, v_1006919 => +v_1006918 = cemit_unbox(cps_provider_5_Nf, v_1006919); CEmitterFinished{CEmitterValue{v_1006918}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_arity{v_10, v_22, v_24}}, False{}, v_1006950 => cemit_body_cps_provider_5_nf_arity(v_10, v_22, v_24), v_1006949 => +v_1006946 = cemit_unbox(cps_provider_5_NfArity, v_1006949); CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_reduce_apply{v_1006946, v_1, v_16, v_22, v_24, v_20, v_10, v_7}}, v_1006948 => +v_1006947 = cemit_unbox(cps_provider_5_Nf, v_1006948); CEmitterFinished{CEmitterValue{v_1006947}}}}
 
 def cemit_body_cps_provider_5_nf_reduce(+v_1: cps_provider_5_NfContext, v_2: BIR.TypeFunction, v_5: List<&2, cps_provider_5_NfVal>, +v_7: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
   +v_10 = v_5
-  cemit_match_1572(v_2, v_10, v_1, v_7)
+  cemit_match_1578(v_2, v_10, v_1, v_7)
 
-def cemit_match_1573(v_22: Bool, v_5: String, +v_13: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<cps_provider_5_Nf>:
+def cemit_match_1579(v_22: Bool, v_5: String, +v_13: List<&2, cps_provider_5_NfVal>) -> CEmitterProgress<cps_provider_5_Nf>:
   match v_22:
     case True{}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfType{v_5, v_13}}}}
     case False{}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{String.append("the type function `", String.append(v_5, "` is applied past its declared parameter count"))}}}
 
-def cemit_match_1574(v_21: Bool, +v_3: cps_provider_5_NfContext, v_10: BIR.Descriptor, +v_13: List<&2, cps_provider_5_NfVal>, +v_9: Nat, +v_15: Nat, v_22: Bool, v_5: String) -> CEmitterProgress<cps_provider_5_Nf>:
+def cemit_match_1580(v_21: Bool, +v_3: cps_provider_5_NfContext, v_10: BIR.Descriptor, +v_13: List<&2, cps_provider_5_NfVal>, +v_9: Nat, +v_15: Nat, v_22: Bool, v_5: String) -> CEmitterProgress<cps_provider_5_Nf>:
   match v_21:
     case True{}:
-      +v_1006929 = {v_3 : cps_provider_5_NfContext}
-      v_1006930 = {v_10 : BIR.Descriptor}
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_first_vals{v_13, v_9}}, False{}, v_1006938 => cemit_body_cps_provider_5_first_vals(v_13, v_9), v_1006937 => +v_1006931 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006937); CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_drop_vals{v_13, v_9}}, False{}, v_1006936 => cemit_body_cps_provider_5_drop_vals(v_13, v_9), v_1006935 => +v_1006932 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006935); CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_reduce_body{v_1006929, v_1006930, v_1006931, v_1006932, Nat.sub(v_15, 1n)}}, v_1006934 => +v_1006933 = cemit_unbox(cps_provider_5_Nf, v_1006934); CEmitterFinished{CEmitterValue{v_1006933}}}}}
+      +v_1006958 = {v_3 : cps_provider_5_NfContext}
+      v_1006959 = {v_10 : BIR.Descriptor}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_first_vals{v_13, v_9}}, False{}, v_1006967 => cemit_body_cps_provider_5_first_vals(v_13, v_9), v_1006966 => +v_1006960 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006966); CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_drop_vals{v_13, v_9}}, False{}, v_1006965 => cemit_body_cps_provider_5_drop_vals(v_13, v_9), v_1006964 => +v_1006961 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006964); CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_reduce_body{v_1006958, v_1006959, v_1006960, v_1006961, Nat.sub(v_15, 1n)}}, v_1006963 => +v_1006962 = cemit_unbox(cps_provider_5_Nf, v_1006963); CEmitterFinished{CEmitterValue{v_1006962}}}}}
     case False{}:
-      cemit_match_1573(v_22, v_5, v_13)
+      cemit_match_1579(v_22, v_5, v_13)
 
-def cemit_match_1575(v_20: Bool, +v_3: cps_provider_5_NfContext, v_10: BIR.Descriptor, v_7: Nat, +v_13: List<&2, cps_provider_5_NfVal>, +v_15: Nat, v_21: Bool, +v_9: Nat, v_22: Bool, v_5: String) -> CEmitterProgress<cps_provider_5_Nf>:
+def cemit_match_1581(v_20: Bool, +v_3: cps_provider_5_NfContext, v_10: BIR.Descriptor, v_7: Nat, +v_13: List<&2, cps_provider_5_NfVal>, +v_15: Nat, v_21: Bool, +v_9: Nat, v_22: Bool, v_5: String) -> CEmitterProgress<cps_provider_5_Nf>:
   match v_20:
     case True{}:
-      +v_1006922 = {v_3 : cps_provider_5_NfContext}
-      v_1006923 = {v_10 : BIR.Descriptor}
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_quantity_markers{v_7}}, False{}, v_1006928 => cemit_body_cps_provider_5_quantity_markers(v_7), v_1006927 => +v_1006924 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006927); CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_reduce_body{v_1006922, v_1006923, List.append(&2, cps_provider_5_NfVal, v_1006924, v_13), [], Nat.sub(v_15, 1n)}}, v_1006926 => +v_1006925 = cemit_unbox(cps_provider_5_Nf, v_1006926); CEmitterFinished{CEmitterValue{v_1006925}}}}
+      +v_1006951 = {v_3 : cps_provider_5_NfContext}
+      v_1006952 = {v_10 : BIR.Descriptor}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_quantity_markers{v_7}}, False{}, v_1006957 => cemit_body_cps_provider_5_quantity_markers(v_7), v_1006956 => +v_1006953 = cemit_unbox(List<&2, cps_provider_5_NfVal>, v_1006956); CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_reduce_body{v_1006951, v_1006952, List.append(&2, cps_provider_5_NfVal, v_1006953, v_13), [], Nat.sub(v_15, 1n)}}, v_1006955 => +v_1006954 = cemit_unbox(cps_provider_5_Nf, v_1006955); CEmitterFinished{CEmitterValue{v_1006954}}}}
     case False{}:
-      cemit_match_1574(v_21, v_3, v_10, v_13, v_9, v_15, v_22, v_5)
+      cemit_match_1580(v_21, v_3, v_10, v_13, v_9, v_15, v_22, v_5)
 
-def cemit_match_1576(v_1: cps_provider_5_NfArity, +v_3: cps_provider_5_NfContext, v_10: BIR.Descriptor, v_7: Nat, +v_13: List<&2, cps_provider_5_NfVal>, +v_15: Nat, +v_9: Nat, v_5: String) -> CEmitterProgress<cps_provider_5_Nf>:
+def cemit_match_1582(v_1: cps_provider_5_NfArity, +v_3: cps_provider_5_NfContext, v_10: BIR.Descriptor, v_7: Nat, +v_13: List<&2, cps_provider_5_NfVal>, +v_15: Nat, +v_9: Nat, v_5: String) -> CEmitterProgress<cps_provider_5_Nf>:
   match v_1:
     case cps_provider_5_NfArity{v_20, v_21, v_22}:
-      cemit_match_1575(v_20, v_3, v_10, v_7, v_13, v_15, v_21, v_9, v_22, v_5)
+      cemit_match_1581(v_20, v_3, v_10, v_7, v_13, v_15, v_21, v_9, v_22, v_5)
 
 def cemit_body_cps_provider_5_nf_reduce_apply(v_1: cps_provider_5_NfArity, +v_3: cps_provider_5_NfContext, v_5: String, v_7: Nat, +v_9: Nat, v_10: BIR.Descriptor, +v_13: List<&2, cps_provider_5_NfVal>, +v_15: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
-  cemit_match_1576(v_1, v_3, v_10, v_7, v_13, v_15, v_9, v_5)
+  cemit_match_1582(v_1, v_3, v_10, v_7, v_13, v_15, v_9, v_5)
 
-def cemit_match_1577(+v_1006939: cps_provider_5_Nf, +v_1: cps_provider_5_NfContext, v_8: List<&2, cps_provider_5_NfVal>, +v_10: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
-  match v_1006939:
+def cemit_match_1583(+v_1006968: cps_provider_5_Nf, +v_1: cps_provider_5_NfContext, v_8: List<&2, cps_provider_5_NfVal>, +v_10: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
+  match v_1006968:
     case cps_provider_5_NfFail{v_14}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{v_14}}}
     case cps_provider_5_NfOk{v_16}:
       cemit_body_cps_provider_5_nf_apply(v_1, v_16, v_8, v_10)
 
 def cemit_body_cps_provider_5_nf_reduce_body(+v_1: cps_provider_5_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_5_NfVal>, v_8: List<&2, cps_provider_5_NfVal>, +v_10: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_descriptor{v_1, v_2, v_5, Nat.sub(v_10, 1n)}}, False{}, v_1006942 => cemit_body_cps_provider_5_nf_descriptor(v_1, v_2, v_5, Nat.sub(v_10, 1n)), v_1006941 => +v_1006939 = cemit_unbox(cps_provider_5_Nf, v_1006941); cemit_match_1577(v_1006939, v_1, v_8, v_10)}
+  CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_descriptor{v_1, v_2, v_5, Nat.sub(v_10, 1n)}}, False{}, v_1006971 => cemit_body_cps_provider_5_nf_descriptor(v_1, v_2, v_5, Nat.sub(v_10, 1n)), v_1006970 => +v_1006968 = cemit_unbox(cps_provider_5_Nf, v_1006970); cemit_match_1583(v_1006968, v_1, v_8, v_10)}
 
-def cemit_match_1578(+v_1006946: cps_provider_5_NfBind, +v_1: cps_provider_5_NfContext, v_22: BIR.Descriptor, +v_9: List<&2, cps_provider_5_NfVal>, +v_12: Nat, v_18: List<&2, BIR.Descriptor>, +v_6: List<&2, cps_provider_5_NfVal>, v_10: BIR.Descriptor) -> CEmitterProgress<cps_provider_5_Nf>:
-  match v_1006946:
+def cemit_match_1584(+v_1006975: cps_provider_5_NfBind, +v_1: cps_provider_5_NfContext, v_22: BIR.Descriptor, +v_9: List<&2, cps_provider_5_NfVal>, +v_12: Nat, v_18: List<&2, BIR.Descriptor>, +v_6: List<&2, cps_provider_5_NfVal>, v_10: BIR.Descriptor) -> CEmitterProgress<cps_provider_5_Nf>:
+  match v_1006975:
     case cps_provider_5_NfBound{v_25}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_descriptor{v_1, v_22, List.append(&2, cps_provider_5_NfVal, v_9, v_25), Nat.sub(v_12, 1n)}}, False{}, v_1006949 => cemit_body_cps_provider_5_nf_descriptor(v_1, v_22, List.append(&2, cps_provider_5_NfVal, v_9, v_25), Nat.sub(v_12, 1n)), v_1006948 => +v_1006947 = cemit_unbox(cps_provider_5_Nf, v_1006948); CEmitterFinished{CEmitterValue{v_1006947}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_descriptor{v_1, v_22, List.append(&2, cps_provider_5_NfVal, v_9, v_25), Nat.sub(v_12, 1n)}}, False{}, v_1006978 => cemit_body_cps_provider_5_nf_descriptor(v_1, v_22, List.append(&2, cps_provider_5_NfVal, v_9, v_25), Nat.sub(v_12, 1n)), v_1006977 => +v_1006976 = cemit_unbox(cps_provider_5_Nf, v_1006977); CEmitterFinished{CEmitterValue{v_1006976}}}
     case cps_provider_5_NfMismatch{}:
-      CEmitterPending{CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_cases{v_1, v_18, v_6, v_9, v_10, v_12}}, v_1006951 => +v_1006950 = cemit_unbox(cps_provider_5_Nf, v_1006951); CEmitterFinished{CEmitterValue{v_1006950}}}
+      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_5_nf_cases{v_1, v_18, v_6, v_9, v_10, v_12}}, v_1006980 => +v_1006979 = cemit_unbox(cps_provider_5_Nf, v_1006980); CEmitterFinished{CEmitterValue{v_1006979}}}
     case cps_provider_5_NfUnknown{}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_reify_env{v_10, v_9}}, False{}, v_1006954 => cemit_body_cps_provider_5_reify_env(v_10, v_9), v_1006953 => +v_1006952 = cemit_unbox(BIR.Descriptor, v_1006953); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfOther{v_1006952}}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_reify_env{v_10, v_9}}, False{}, v_1006983 => cemit_body_cps_provider_5_reify_env(v_10, v_9), v_1006982 => +v_1006981 = cemit_unbox(BIR.Descriptor, v_1006982); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfOther{v_1006981}}}}}
 
-def cemit_match_1579(+v_17: BIR.Descriptor, +v_6: List<&2, cps_provider_5_NfVal>, +v_1: cps_provider_5_NfContext, +v_9: List<&2, cps_provider_5_NfVal>, +v_12: Nat, v_18: List<&2, BIR.Descriptor>, v_10: BIR.Descriptor) -> CEmitterProgress<cps_provider_5_Nf>:
+def cemit_match_1585(+v_17: BIR.Descriptor, +v_6: List<&2, cps_provider_5_NfVal>, +v_1: cps_provider_5_NfContext, +v_9: List<&2, cps_provider_5_NfVal>, +v_12: Nat, v_18: List<&2, BIR.Descriptor>, v_10: BIR.Descriptor) -> CEmitterProgress<cps_provider_5_Nf>:
   match v_17:
     case BIR.DescriptorCase{v_21, v_22}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_patterns{v_21, v_6}}, False{}, v_1006956 => cemit_body_cps_provider_5_bind_patterns(v_21, v_6), v_1006955 => +v_1006946 = cemit_unbox(cps_provider_5_NfBind, v_1006955); cemit_match_1578(v_1006946, v_1, v_22, v_9, v_12, v_18, v_6, v_10)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_bind_patterns{v_21, v_6}}, False{}, v_1006985 => cemit_body_cps_provider_5_bind_patterns(v_21, v_6), v_1006984 => +v_1006975 = cemit_unbox(cps_provider_5_NfBind, v_1006984); cemit_match_1584(v_1006975, v_1, v_22, v_9, v_12, v_18, v_6, v_10)}
     case BIR.DescriptorFailure{v_31}:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{v_31}}}
     case _:
       CEmitterFinished{CEmitterValue{cps_provider_5_NfFail{"descriptor match case is not a case"}}}
 
-def cemit_match_1580(v_3: List<&2, BIR.Descriptor>, v_10: BIR.Descriptor, +v_9: List<&2, cps_provider_5_NfVal>, +v_6: List<&2, cps_provider_5_NfVal>, +v_1: cps_provider_5_NfContext, +v_12: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
+def cemit_match_1586(v_3: List<&2, BIR.Descriptor>, v_10: BIR.Descriptor, +v_9: List<&2, cps_provider_5_NfVal>, +v_6: List<&2, cps_provider_5_NfVal>, +v_1: cps_provider_5_NfContext, +v_12: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
   match v_3:
     case []:
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_reify_env{v_10, v_9}}, False{}, v_1006945 => cemit_body_cps_provider_5_reify_env(v_10, v_9), v_1006944 => +v_1006943 = cemit_unbox(BIR.Descriptor, v_1006944); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfOther{v_1006943}}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_reify_env{v_10, v_9}}, False{}, v_1006974 => cemit_body_cps_provider_5_reify_env(v_10, v_9), v_1006973 => +v_1006972 = cemit_unbox(BIR.Descriptor, v_1006973); CEmitterFinished{CEmitterValue{cps_provider_5_NfOk{cps_provider_5_NfOther{v_1006972}}}}}
     case +v_17 <> v_18:
-      cemit_match_1579(v_17, v_6, v_1, v_9, v_12, v_18, v_10)
+      cemit_match_1585(v_17, v_6, v_1, v_9, v_12, v_18, v_10)
 
 def cemit_body_cps_provider_5_nf_cases(+v_1: cps_provider_5_NfContext, v_3: List<&2, BIR.Descriptor>, +v_6: List<&2, cps_provider_5_NfVal>, +v_9: List<&2, cps_provider_5_NfVal>, v_10: BIR.Descriptor, +v_12: Nat) -> CEmitterProgress<cps_provider_5_Nf>:
-  cemit_match_1580(v_3, v_10, v_9, v_6, v_1, v_12)
+  cemit_match_1586(v_3, v_10, v_9, v_6, v_1, v_12)
 
-def cemit_match_1581(+v_1006957: cps_provider_5_Nf) -> CEmitterProgress<BIR.Descriptor>:
-  match v_1006957:
+def cemit_match_1587(+v_1006986: cps_provider_5_Nf) -> CEmitterProgress<BIR.Descriptor>:
+  match v_1006986:
     case cps_provider_5_NfFail{v_10}:
       CEmitterFinished{CEmitterValue{BIR.DescriptorFailure{v_10}}}
     case cps_provider_5_NfOk{v_12}:
       cemit_body_cps_provider_5_materialize(v_12)
 
 def cemit_body_cps_provider_5_normalize(+v_1: cps_provider_5_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_5_NfVal>, +v_7: Nat) -> CEmitterProgress<BIR.Descriptor>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf{v_1, v_2, v_5, v_7}}, False{}, v_1006960 => cemit_body_cps_provider_5_nf(v_1, v_2, v_5, v_7), v_1006959 => +v_1006957 = cemit_unbox(cps_provider_5_Nf, v_1006959); cemit_match_1581(v_1006957)}
+  CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf{v_1, v_2, v_5, v_7}}, False{}, v_1006989 => cemit_body_cps_provider_5_nf(v_1, v_2, v_5, v_7), v_1006988 => +v_1006986 = cemit_unbox(cps_provider_5_Nf, v_1006988); cemit_match_1587(v_1006986)}
 
 def cemit_body_cps_provider_5_normalize_closed(v_1: List<&2, BIR.Family>, v_3: List<&2, BIR.TypeFunction>, v_4: BIR.Descriptor) -> CEmitterProgress<BIR.Descriptor>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_context{v_1, v_3}}, False{}, v_1006966 => cemit_body_cps_provider_5_nf_context(v_1, v_3), v_1006965 => +v_1006961 = cemit_unbox(cps_provider_5_NfContext, v_1006965); CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_normalize{v_1006961, v_4, [], 1024n}}, False{}, v_1006964 => cemit_body_cps_provider_5_normalize(v_1006961, v_4, [], 1024n), v_1006963 => +v_1006962 = cemit_unbox(BIR.Descriptor, v_1006963); CEmitterFinished{CEmitterValue{v_1006962}}}}
+  CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_context{v_1, v_3}}, False{}, v_1006995 => cemit_body_cps_provider_5_nf_context(v_1, v_3), v_1006994 => +v_1006990 = cemit_unbox(cps_provider_5_NfContext, v_1006994); CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_5_normalize{v_1006990, v_4, [], 1024n}}, False{}, v_1006993 => cemit_body_cps_provider_5_normalize(v_1006990, v_4, [], 1024n), v_1006992 => +v_1006991 = cemit_unbox(BIR.Descriptor, v_1006992); CEmitterFinished{CEmitterValue{v_1006991}}}}
 
 def cemit_body_cps_provider_5_normalize_in(+v_1: cps_provider_5_NfContext, v_2: BIR.Descriptor) -> CEmitterProgress<BIR.Descriptor>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_normalize{v_1, v_2, [], 1024n}}, False{}, v_1006969 => cemit_body_cps_provider_5_normalize(v_1, v_2, [], 1024n), v_1006968 => +v_1006967 = cemit_unbox(BIR.Descriptor, v_1006968); CEmitterFinished{CEmitterValue{v_1006967}}}
+  CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_5_normalize{v_1, v_2, [], 1024n}}, False{}, v_1006998 => cemit_body_cps_provider_5_normalize(v_1, v_2, [], 1024n), v_1006997 => +v_1006996 = cemit_unbox(BIR.Descriptor, v_1006997); CEmitterFinished{CEmitterValue{v_1006996}}}
 
 def cemit_body_cps_provider_5_outer_application(+v_0: BIR.Descriptor) -> CEmitterProgress<Maybe<&2, cps_provider_5_NfApp>>:
-  CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_5_outer_walk{v_0, []}}, v_1006971 => +v_1006970 = cemit_unbox(Maybe<&2, cps_provider_5_NfApp>, v_1006971); CEmitterFinished{CEmitterValue{v_1006970}}}
+  CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_5_outer_walk{v_0, []}}, v_1007000 => +v_1006999 = cemit_unbox(Maybe<&2, cps_provider_5_NfApp>, v_1007000); CEmitterFinished{CEmitterValue{v_1006999}}}
 
 def cemit_body_cps_provider_5_outer_walk(+v_0: BIR.Descriptor, v_2: List<&2, BIR.Descriptor>) -> CEmitterProgress<Maybe<&2, cps_provider_5_NfApp>>:
   match v_0:
@@ -17605,74 +17666,74 @@ def cemit_body_cps_provider_5_outer_walk(+v_0: BIR.Descriptor, v_2: List<&2, BIR
     case BIR.DescriptorNamedPlus{v_18, v_19, v_20}:
       CEmitterFinished{CEmitterValue{Some{cps_provider_5_NfApp{v_18, List.append(&2, BIR.Descriptor, v_20, v_2)}}}}
     case BIR.DescriptorFill{v_23, v_24}:
-      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_5_outer_walk{v_23, List.append(&2, BIR.Descriptor, v_24, v_2)}}, v_1006973 => +v_1006972 = cemit_unbox(Maybe<&2, cps_provider_5_NfApp>, v_1006973); CEmitterFinished{CEmitterValue{v_1006972}}}
+      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_5_outer_walk{v_23, List.append(&2, BIR.Descriptor, v_24, v_2)}}, v_1007002 => +v_1007001 = cemit_unbox(Maybe<&2, cps_provider_5_NfApp>, v_1007002); CEmitterFinished{CEmitterValue{v_1007001}}}
     case BIR.DescriptorPlus{v_28, v_29}:
-      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_5_outer_walk{v_28, List.append(&2, BIR.Descriptor, v_29, v_2)}}, v_1006975 => +v_1006974 = cemit_unbox(Maybe<&2, cps_provider_5_NfApp>, v_1006975); CEmitterFinished{CEmitterValue{v_1006974}}}
+      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_5_outer_walk{v_28, List.append(&2, BIR.Descriptor, v_29, v_2)}}, v_1007004 => +v_1007003 = cemit_unbox(Maybe<&2, cps_provider_5_NfApp>, v_1007004); CEmitterFinished{CEmitterValue{v_1007003}}}
     case BIR.DescriptorApplication{v_33, v_34}:
-      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_5_outer_walk{v_33, List.append(&2, BIR.Descriptor, [v_34], v_2)}}, v_1006977 => +v_1006976 = cemit_unbox(Maybe<&2, cps_provider_5_NfApp>, v_1006977); CEmitterFinished{CEmitterValue{v_1006976}}}
+      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_5_outer_walk{v_33, List.append(&2, BIR.Descriptor, [v_34], v_2)}}, v_1007006 => +v_1007005 = cemit_unbox(Maybe<&2, cps_provider_5_NfApp>, v_1007006); CEmitterFinished{CEmitterValue{v_1007005}}}
     case _:
       CEmitterFinished{CEmitterValue{None{}}}
 
-def cemit_match_1583(+v_5: BIR.Descriptor, +v_1: cps_provider_5_NfContext) -> CEmitterProgress<BIR.Descriptor>:
+def cemit_match_1589(+v_5: BIR.Descriptor, +v_1: cps_provider_5_NfContext) -> CEmitterProgress<BIR.Descriptor>:
   match v_5:
     case BIR.DescriptorFailure{_}:
       CEmitterFinished{CEmitterValue{v_5}}
     case _:
-      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_5_answer_normalized{v_1, v_5}}, v_1006980 => +v_1006979 = cemit_unbox(BIR.Descriptor, v_1006980); CEmitterFinished{CEmitterValue{v_1006979}}}
+      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_5_answer_normalized{v_1, v_5}}, v_1007009 => +v_1007008 = cemit_unbox(BIR.Descriptor, v_1007009); CEmitterFinished{CEmitterValue{v_1007008}}}
 
-def cemit_continuation_1584(+v_1006978: BIR.Descriptor, +v_1: cps_provider_5_NfContext) -> CEmitterProgress<BIR.Descriptor>:
-  v_5 = v_1006978
-  cemit_match_1583(v_5, v_1)
+def cemit_continuation_1590(+v_1007007: BIR.Descriptor, +v_1: cps_provider_5_NfContext) -> CEmitterProgress<BIR.Descriptor>:
+  v_5 = v_1007007
+  cemit_match_1589(v_5, v_1)
 
 def cemit_body_cps_provider_5_answer_in(+v_1: cps_provider_5_NfContext, v_2: BIR.Descriptor) -> CEmitterProgress<BIR.Descriptor>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_normalize{v_1, v_2, [], 1024n}}, False{}, v_1006982 => cemit_body_cps_provider_5_normalize(v_1, v_2, [], 1024n), v_1006981 => +v_1006978 = cemit_unbox(BIR.Descriptor, v_1006981); cemit_continuation_1584(v_1006978, v_1)}
+  CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_5_normalize{v_1, v_2, [], 1024n}}, False{}, v_1007011 => cemit_body_cps_provider_5_normalize(v_1, v_2, [], 1024n), v_1007010 => +v_1007007 = cemit_unbox(BIR.Descriptor, v_1007010); cemit_continuation_1590(v_1007007, v_1)}
 
 def cemit_body_cps_provider_5_answer_descriptor(v_0: BIR.Descriptor, v_2: List<&2, BIR.Family>, v_4: List<&2, BIR.TypeFunction>) -> CEmitterProgress<BIR.Descriptor>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_context{v_2, v_4}}, False{}, v_1006986 => cemit_body_cps_provider_5_nf_context(v_2, v_4), v_1006985 => +v_1006983 = cemit_unbox(cps_provider_5_NfContext, v_1006985); cemit_body_cps_provider_5_answer_in(v_1006983, v_0)}
+  CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_context{v_2, v_4}}, False{}, v_1007015 => cemit_body_cps_provider_5_nf_context(v_2, v_4), v_1007014 => +v_1007012 = cemit_unbox(cps_provider_5_NfContext, v_1007014); cemit_body_cps_provider_5_answer_in(v_1007012, v_0)}
 
-def cemit_match_1585(v_9: List<&2, BIR.Descriptor>, +v_2: BIR.Descriptor) -> CEmitterProgress<BIR.Descriptor>:
+def cemit_match_1591(v_9: List<&2, BIR.Descriptor>, +v_2: BIR.Descriptor) -> CEmitterProgress<BIR.Descriptor>:
   match v_9:
     case []:
       CEmitterFinished{CEmitterValue{v_2}}
     case +v_13 <> v_14:
       CEmitterFinished{CEmitterValue{v_13}}
 
-def cemit_match_1586(+v_1006988: Bool, +v_2: BIR.Descriptor, v_9: List<&2, BIR.Descriptor>) -> CEmitterProgress<BIR.Descriptor>:
-  match v_1006988:
+def cemit_match_1592(+v_1007017: Bool, +v_2: BIR.Descriptor, v_9: List<&2, BIR.Descriptor>) -> CEmitterProgress<BIR.Descriptor>:
+  match v_1007017:
     case False{}:
       CEmitterFinished{CEmitterValue{v_2}}
     case True{}:
-      cemit_match_1585(v_9, v_2)
+      cemit_match_1591(v_9, v_2)
 
-def cemit_match_1587(v_5: cps_provider_5_NfApp, +v_1: cps_provider_5_NfContext, +v_2: BIR.Descriptor) -> CEmitterProgress<BIR.Descriptor>:
+def cemit_match_1593(v_5: cps_provider_5_NfApp, +v_1: cps_provider_5_NfContext, +v_2: BIR.Descriptor) -> CEmitterProgress<BIR.Descriptor>:
   match v_5:
     case cps_provider_5_NfApp{v_8, v_9}:
-      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_5_is_io_head_in{v_1, v_8}}, v_1006989 => +v_1006988 = cemit_unbox(Bool, v_1006989); cemit_match_1586(v_1006988, v_2, v_9)}
+      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_5_is_io_head_in{v_1, v_8}}, v_1007018 => +v_1007017 = cemit_unbox(Bool, v_1007018); cemit_match_1592(v_1007017, v_2, v_9)}
 
-def cemit_match_1588(+v_1006987: Maybe<&2, cps_provider_5_NfApp>, +v_2: BIR.Descriptor, +v_1: cps_provider_5_NfContext) -> CEmitterProgress<BIR.Descriptor>:
-  match v_1006987:
+def cemit_match_1594(+v_1007016: Maybe<&2, cps_provider_5_NfApp>, +v_2: BIR.Descriptor, +v_1: cps_provider_5_NfContext) -> CEmitterProgress<BIR.Descriptor>:
+  match v_1007016:
     case None{}:
       CEmitterFinished{CEmitterValue{v_2}}
     case Some{v_5}:
-      cemit_match_1587(v_5, v_1, v_2)
+      cemit_match_1593(v_5, v_1, v_2)
 
 def cemit_body_cps_provider_5_answer_normalized(+v_1: cps_provider_5_NfContext, +v_2: BIR.Descriptor) -> CEmitterProgress<BIR.Descriptor>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_5_outer_application{v_2}}, False{}, v_1006991 => cemit_body_cps_provider_5_outer_application(v_2), v_1006990 => +v_1006987 = cemit_unbox(Maybe<&2, cps_provider_5_NfApp>, v_1006990); cemit_match_1588(v_1006987, v_2, v_1)}
+  CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_5_outer_application{v_2}}, False{}, v_1007020 => cemit_body_cps_provider_5_outer_application(v_2), v_1007019 => +v_1007016 = cemit_unbox(Maybe<&2, cps_provider_5_NfApp>, v_1007019); cemit_match_1594(v_1007016, v_2, v_1)}
 
 def cemit_body_cps_provider_5_is_io_head_in(+v_1: cps_provider_5_NfContext, +v_3: String) -> CEmitterProgress<Bool>:
   match v_1:
     case cps_provider_5_NfContext{v_7, v_8}:
-      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_5_is_io_head{v_3, v_7, v_8}}, v_1006993 => +v_1006992 = cemit_unbox(Bool, v_1006993); CEmitterFinished{CEmitterValue{v_1006992}}}
+      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_5_is_io_head{v_3, v_7, v_8}}, v_1007022 => +v_1007021 = cemit_unbox(Bool, v_1007022); CEmitterFinished{CEmitterValue{v_1007021}}}
 
-def cemit_match_1590(+v_1006994: Maybe<&2, String>) -> CEmitterProgress<Bool>:
-  match v_1006994:
+def cemit_match_1596(+v_1007023: Maybe<&2, String>) -> CEmitterProgress<Bool>:
+  match v_1007023:
     case Some{v_9}:
       CEmitterFinished{CEmitterValue{String.eq(v_9, "IO")}}
     case None{}:
       CEmitterFinished{CEmitterValue{False{}}}
 
 def cemit_body_cps_provider_5_is_io_head(+v_1: String, +v_3: Map<&2, BIR.Family>, +v_5: Map<&2, BIR.TypeFunction>) -> CEmitterProgress<Bool>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_native_of{v_1, v_3, v_5}}, False{}, v_1006996 => cemit_body_cps_provider_5_native_of(v_1, v_3, v_5), v_1006995 => +v_1006994 = cemit_unbox(Maybe<&2, String>, v_1006995); cemit_match_1590(v_1006994)}
+  CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_native_of{v_1, v_3, v_5}}, False{}, v_1007025 => cemit_body_cps_provider_5_native_of(v_1, v_3, v_5), v_1007024 => +v_1007023 = cemit_unbox(Maybe<&2, String>, v_1007024); cemit_match_1596(v_1007023)}
 
 def cemit_body_cps_provider_6_qualify(+v_1: String, v_3: String) -> CEmitterProgress<String>:
   CEmitterFinished{CEmitterValue{Scope.canonical_key(v_1, v_3, String.eq(v_1, ""))}}
@@ -17692,7 +17753,7 @@ def cemit_body_cps_provider_6_optional_quantity(v_1: Maybe<&2, Ast.Quantity>) ->
     case Some{v_4}:
       CEmitterFinished{CEmitterValue{Some{cemit_pure_cps_provider_6_quantity(v_4)}}}
 
-def cemit_match_1593(v_2: BIR.Quantity, v_4: List<&2, BIR.Parameter>, v_1: U32) -> CEmitterProgress<List<&2, BIR.Parameter>>:
+def cemit_match_1599(v_2: BIR.Quantity, v_4: List<&2, BIR.Parameter>, v_1: U32) -> CEmitterProgress<List<&2, BIR.Parameter>>:
   match v_2:
     case BIR.Erased{}:
       CEmitterFinished{CEmitterValue{v_4}}
@@ -17702,9 +17763,9 @@ def cemit_match_1593(v_2: BIR.Quantity, v_4: List<&2, BIR.Parameter>, v_1: U32) 
       CEmitterFinished{CEmitterValue{BIR.Parameter{v_1, BIR.Many{}} <> v_4}}
 
 def cemit_body_cps_provider_6_parameter(v_1: U32, v_2: BIR.Quantity, v_4: List<&2, BIR.Parameter>) -> CEmitterProgress<List<&2, BIR.Parameter>>:
-  cemit_match_1593(v_2, v_4, v_1)
+  cemit_match_1599(v_2, v_4, v_1)
 
-def cemit_match_1594(v_2: BIR.Quantity, v_1: String) -> CEmitterProgress<Maybe<&2, String>>:
+def cemit_match_1600(v_2: BIR.Quantity, v_1: String) -> CEmitterProgress<Maybe<&2, String>>:
   match v_2:
     case BIR.Erased{}:
       CEmitterFinished{CEmitterValue{None{}}}
@@ -17712,9 +17773,9 @@ def cemit_match_1594(v_2: BIR.Quantity, v_1: String) -> CEmitterProgress<Maybe<&
       CEmitterFinished{CEmitterValue{Some{v_1}}}
 
 def cemit_body_cps_provider_6_field_key(v_1: String, v_2: BIR.Quantity) -> CEmitterProgress<Maybe<&2, String>>:
-  cemit_match_1594(v_2, v_1)
+  cemit_match_1600(v_2, v_1)
 
-def cemit_match_1595(v_4: Bool, +v_1: String, v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<String>:
+def cemit_match_1601(v_4: Bool, +v_1: String, v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<String>:
   match v_4:
     case True{}:
       CEmitterFinished{CEmitterValue{Scope.canonical_name_result(v_1, Scope.lookup_kind(v_1, Scope.GlobalConstructor{}, v_2))}}
@@ -17722,24 +17783,24 @@ def cemit_match_1595(v_4: Bool, +v_1: String, v_2: Scope.ArenaGlobalScope) -> CE
       CEmitterFinished{CEmitterValue{Scope.canonical_name(v_1, v_2)}}
 
 def cemit_body_cps_provider_6_canonical(v_1: String, v_2: Scope.ArenaGlobalScope, v_4: Bool) -> CEmitterProgress<String>:
-  cemit_match_1595(v_4, v_1, v_2)
+  cemit_match_1601(v_4, v_1, v_2)
 
 def cemit_body_cps_provider_6_native_match_descriptor_0(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Node>, v_4: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_3:
     case (v_8, v_9):
-      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_descriptor_node{v_8, v_9, v_4}}, v_1006999 => v_1006998 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1006999); CEmitterFinished{CEmitterValue{v_1006998}}}
+      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_descriptor_node{v_8, v_9, v_4}}, v_1007028 => v_1007027 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007028); CEmitterFinished{CEmitterValue{v_1007027}}}
 
 def cemit_body_cps_provider_6_descriptor(v_0: Arena.Arena, v_2: U32, v_3: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_native_match_descriptor_0{Arena.get_node(v_0, v_2), v_3}}, False{}, v_1007003 => cemit_body_cps_provider_6_native_match_descriptor_0(Arena.get_node(v_0, v_2), v_3), v_1007002 => v_1007001 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007002); CEmitterFinished{CEmitterValue{v_1007001}}}
+  CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_native_match_descriptor_0{Arena.get_node(v_0, v_2), v_3}}, False{}, v_1007032 => cemit_body_cps_provider_6_native_match_descriptor_0(Arena.get_node(v_0, v_2), v_3), v_1007031 => v_1007030 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007031); CEmitterFinished{CEmitterValue{v_1007030}}}
 
 def cemit_body_cps_provider_6_native_match_descriptor_name_0(v_4: Sigma<&1, &1, Arena.Arena, _ => String>, v_5: Scope.ArenaGlobalScope, v_7: Bool) -> CEmitterProgress<cps_provider_6_CatalogResult<String>>:
   match v_4:
     case (v_12, v_13):
-      v_1007004 = {v_12 : Arena.Arena}
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_canonical{v_13, v_5, v_7}}, False{}, v_1007007 => cemit_body_cps_provider_6_canonical(v_13, v_5, v_7), v_1007006 => +v_1007005 = cemit_unbox(String, v_1007006); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007004, v_1007005}}}}
+      v_1007033 = {v_12 : Arena.Arena}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_canonical{v_13, v_5, v_7}}, False{}, v_1007036 => cemit_body_cps_provider_6_canonical(v_13, v_5, v_7), v_1007035 => +v_1007034 = cemit_unbox(String, v_1007035); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007033, v_1007034}}}}
 
 def cemit_body_cps_provider_6_descriptor_name(v_0: Arena.Arena, v_2: U32, v_3: Scope.ArenaGlobalScope, v_5: Bool) -> CEmitterProgress<cps_provider_6_CatalogResult<String>>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_native_match_descriptor_name_0{Arena.name_text(v_0, v_2), v_3, v_5}}, False{}, v_1007011 => cemit_body_cps_provider_6_native_match_descriptor_name_0(Arena.name_text(v_0, v_2), v_3, v_5), v_1007010 => v_1007009 = cemit_unbox(cps_provider_6_CatalogResult<String>, v_1007010); CEmitterFinished{CEmitterValue{v_1007009}}}
+  CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_native_match_descriptor_name_0{Arena.name_text(v_0, v_2), v_3, v_5}}, False{}, v_1007040 => cemit_body_cps_provider_6_native_match_descriptor_name_0(Arena.name_text(v_0, v_2), v_3, v_5), v_1007039 => v_1007038 = cemit_unbox(cps_provider_6_CatalogResult<String>, v_1007039); CEmitterFinished{CEmitterValue{v_1007038}}}
 
 def cemit_body_cps_provider_6_native_match_descriptors_0(v_2: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_3: BIR.Descriptor) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_2:
@@ -17749,25 +17810,25 @@ def cemit_body_cps_provider_6_native_match_descriptors_0(v_2: cps_provider_6_Cat
 def cemit_body_cps_provider_6_native_match_descriptors_1(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_3: U32, v_5: U32, v_6: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_1:
     case cps_provider_6_CatalogResult{v_11, v_12}:
-      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptors{v_11, IR.arena_range_index(v_3, 1), U32.sub(v_5, 1), v_6}}, v_1007014 => v_1007012 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007014); cemit_body_cps_provider_6_native_match_descriptors_0(v_1007012, v_12)}
+      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptors{v_11, IR.arena_range_index(v_3, 1), U32.sub(v_5, 1), v_6}}, v_1007043 => v_1007041 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007043); cemit_body_cps_provider_6_native_match_descriptors_0(v_1007041, v_12)}
 
-def cemit_match_1600(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, +v_9: Scope.ArenaGlobalScope, v_6: U32, v_8: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
+def cemit_match_1606(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, +v_9: Scope.ArenaGlobalScope, v_6: U32, v_8: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_4:
     case (v_14, v_15):
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_14, v_15, v_9}}, False{}, v_1007018 => cemit_body_cps_provider_6_descriptor(v_14, v_15, v_9), v_1007017 => v_1007015 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007017); cemit_body_cps_provider_6_native_match_descriptors_1(v_1007015, v_6, v_8, v_9)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_14, v_15, v_9}}, False{}, v_1007047 => cemit_body_cps_provider_6_descriptor(v_14, v_15, v_9), v_1007046 => v_1007044 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007046); cemit_body_cps_provider_6_native_match_descriptors_1(v_1007044, v_6, v_8, v_9)}
 
 def cemit_body_cps_provider_6_native_match_descriptors_2(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_6: U32, v_8: U32, v_9: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
-  cemit_match_1600(v_4, v_9, v_6, v_8)
+  cemit_match_1606(v_4, v_9, v_6, v_8)
 
-def cemit_match_1601(+v_1: U32, v_2: Arena.Arena, +v_4: U32, v_5: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
+def cemit_match_1607(+v_1: U32, v_2: Arena.Arena, +v_4: U32, v_5: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_1:
     case 0:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_2, []}}}
     case _:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_native_match_descriptors_2{Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5}}, False{}, v_1007022 => cemit_body_cps_provider_6_native_match_descriptors_2(Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5), v_1007021 => v_1007020 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007021); CEmitterFinished{CEmitterValue{v_1007020}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_native_match_descriptors_2{Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5}}, False{}, v_1007051 => cemit_body_cps_provider_6_native_match_descriptors_2(Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5), v_1007050 => v_1007049 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007050); CEmitterFinished{CEmitterValue{v_1007049}}}
 
 def cemit_body_cps_provider_6_native_match_descriptors_3(v_1: U32, v_2: Arena.Arena, v_4: U32, v_5: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
-  cemit_match_1601(v_1, v_2, v_4, v_5)
+  cemit_match_1607(v_1, v_2, v_4, v_5)
 
 def cemit_body_cps_provider_6_descriptors(v_0: Arena.Arena, v_2: U32, v_4: U32, v_5: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
   cemit_body_cps_provider_6_native_match_descriptors_3(v_4, v_0, v_2, v_5)
@@ -17780,30 +17841,30 @@ def cemit_body_cps_provider_6_native_match_descriptor_patterns_0(v_2: cps_provid
 def cemit_body_cps_provider_6_native_match_descriptor_patterns_1(v_1: cps_provider_6_CatalogResult<BIR.DescriptorPattern>, v_3: U32, v_5: U32, v_6: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>>:
   match v_1:
     case cps_provider_6_CatalogResult{v_11, v_12}:
-      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_patterns{v_11, IR.arena_range_index(v_3, 1), U32.sub(v_5, 1), v_6}}, v_1007026 => v_1007024 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_1007026); cemit_body_cps_provider_6_native_match_descriptor_patterns_0(v_1007024, v_12)}
+      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_patterns{v_11, IR.arena_range_index(v_3, 1), U32.sub(v_5, 1), v_6}}, v_1007055 => v_1007053 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_1007055); cemit_body_cps_provider_6_native_match_descriptor_patterns_0(v_1007053, v_12)}
 
-def cemit_match_1604(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Pattern>, +v_8: Scope.ArenaGlobalScope, v_5: U32, v_7: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>>:
+def cemit_match_1610(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Pattern>, +v_8: Scope.ArenaGlobalScope, v_5: U32, v_7: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>>:
   match v_3:
     case (v_13, v_14):
-      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_pattern{v_13, v_14, v_8}}, v_1007029 => v_1007027 = cemit_unbox(cps_provider_6_CatalogResult<BIR.DescriptorPattern>, v_1007029); cemit_body_cps_provider_6_native_match_descriptor_patterns_1(v_1007027, v_5, v_7, v_8)}
+      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_pattern{v_13, v_14, v_8}}, v_1007058 => v_1007056 = cemit_unbox(cps_provider_6_CatalogResult<BIR.DescriptorPattern>, v_1007058); cemit_body_cps_provider_6_native_match_descriptor_patterns_1(v_1007056, v_5, v_7, v_8)}
 
 def cemit_body_cps_provider_6_native_match_descriptor_patterns_2(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Pattern>, v_5: U32, v_7: U32, v_8: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>>:
-  cemit_match_1604(v_3, v_8, v_5, v_7)
+  cemit_match_1610(v_3, v_8, v_5, v_7)
 
 def cemit_body_cps_provider_6_native_match_descriptor_patterns_3(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_6: U32, v_8: U32, v_9: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>>:
   match v_4:
     case (v_14, v_15):
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_native_match_descriptor_patterns_2{Arena.get_pattern(v_14, v_15), v_6, v_8, v_9}}, False{}, v_1007033 => cemit_body_cps_provider_6_native_match_descriptor_patterns_2(Arena.get_pattern(v_14, v_15), v_6, v_8, v_9), v_1007032 => v_1007031 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_1007032); CEmitterFinished{CEmitterValue{v_1007031}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_native_match_descriptor_patterns_2{Arena.get_pattern(v_14, v_15), v_6, v_8, v_9}}, False{}, v_1007062 => cemit_body_cps_provider_6_native_match_descriptor_patterns_2(Arena.get_pattern(v_14, v_15), v_6, v_8, v_9), v_1007061 => v_1007060 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_1007061); CEmitterFinished{CEmitterValue{v_1007060}}}
 
-def cemit_match_1606(+v_1: U32, v_2: Arena.Arena, +v_4: U32, v_5: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>>:
+def cemit_match_1612(+v_1: U32, v_2: Arena.Arena, +v_4: U32, v_5: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>>:
   match v_1:
     case 0:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_2, []}}}
     case _:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_native_match_descriptor_patterns_3{Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5}}, False{}, v_1007037 => cemit_body_cps_provider_6_native_match_descriptor_patterns_3(Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5), v_1007036 => v_1007035 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_1007036); CEmitterFinished{CEmitterValue{v_1007035}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_native_match_descriptor_patterns_3{Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5}}, False{}, v_1007066 => cemit_body_cps_provider_6_native_match_descriptor_patterns_3(Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5), v_1007065 => v_1007064 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_1007065); CEmitterFinished{CEmitterValue{v_1007064}}}
 
 def cemit_body_cps_provider_6_native_match_descriptor_patterns_4(v_1: U32, v_2: Arena.Arena, v_4: U32, v_5: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>>:
-  cemit_match_1606(v_1, v_2, v_4, v_5)
+  cemit_match_1612(v_1, v_2, v_4, v_5)
 
 def cemit_body_cps_provider_6_descriptor_patterns(v_0: Arena.Arena, v_2: U32, v_4: U32, v_5: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>>:
   cemit_body_cps_provider_6_native_match_descriptor_patterns_4(v_4, v_0, v_2, v_5)
@@ -17813,28 +17874,28 @@ def cemit_body_cps_provider_6_native_match_descriptor_pattern_0(v_2: cps_provide
     case cps_provider_6_CatalogResult{v_8, v_9}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_8, BIR.DescriptorConstructorPattern{v_4, v_9}}}}
 
-def cemit_match_1608(v_2: cps_provider_6_CatalogResult<String>, v_5: U32, v_7: U32, v_3: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.DescriptorPattern>>:
+def cemit_match_1614(v_2: cps_provider_6_CatalogResult<String>, v_5: U32, v_7: U32, v_3: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.DescriptorPattern>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_11, v_12}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_patterns{v_11, v_5, v_7, v_3}}, False{}, v_1007042 => cemit_body_cps_provider_6_descriptor_patterns(v_11, v_5, v_7, v_3), v_1007041 => v_1007039 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_1007041); cemit_body_cps_provider_6_native_match_descriptor_pattern_0(v_1007039, v_12)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_patterns{v_11, v_5, v_7, v_3}}, False{}, v_1007071 => cemit_body_cps_provider_6_descriptor_patterns(v_11, v_5, v_7, v_3), v_1007070 => v_1007068 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_1007070); cemit_body_cps_provider_6_native_match_descriptor_pattern_0(v_1007068, v_12)}
 
 def cemit_body_cps_provider_6_native_match_descriptor_pattern_1(v_2: cps_provider_6_CatalogResult<String>, v_3: Scope.ArenaGlobalScope, v_5: U32, v_7: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.DescriptorPattern>>:
-  cemit_match_1608(v_2, v_5, v_7, v_3)
+  cemit_match_1614(v_2, v_5, v_7, v_3)
 
-def cemit_match_1609(v_0: Arena.Pattern, v_1: Arena.Arena, +v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.DescriptorPattern>>:
+def cemit_match_1615(v_0: Arena.Pattern, v_1: Arena.Arena, +v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.DescriptorPattern>>:
   match v_0:
     case Arena.PatternVar{_, _, v_10, _}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1, BIR.DescriptorBinder{cemit_pure_cps_provider_6_quantity(v_10)}}}}
     case Arena.PatternCtr{v_17, v_18, v_19, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_name{v_1, v_17, v_2, True{}}}, False{}, v_1007046 => cemit_body_cps_provider_6_descriptor_name(v_1, v_17, v_2, True{}), v_1007045 => v_1007043 = cemit_unbox(cps_provider_6_CatalogResult<String>, v_1007045); cemit_body_cps_provider_6_native_match_descriptor_pattern_1(v_1007043, v_2, v_18, v_19)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_name{v_1, v_17, v_2, True{}}}, False{}, v_1007075 => cemit_body_cps_provider_6_descriptor_name(v_1, v_17, v_2, True{}), v_1007074 => v_1007072 = cemit_unbox(cps_provider_6_CatalogResult<String>, v_1007074); cemit_body_cps_provider_6_native_match_descriptor_pattern_1(v_1007072, v_2, v_18, v_19)}
 
 def cemit_body_cps_provider_6_native_match_descriptor_pattern_2(v_0: Arena.Pattern, v_1: Arena.Arena, v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.DescriptorPattern>>:
-  cemit_match_1609(v_0, v_1, v_2)
+  cemit_match_1615(v_0, v_1, v_2)
 
 def cemit_body_cps_provider_6_descriptor_pattern(v_0: Arena.Arena, v_1: Arena.Pattern, v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.DescriptorPattern>>:
   cemit_body_cps_provider_6_native_match_descriptor_pattern_2(v_1, v_0, v_2)
 
-def cemit_match_1610(+v_0: BIR.Descriptor, v_1: BIR.Descriptor) -> CEmitterProgress<BIR.Descriptor>:
+def cemit_match_1616(+v_0: BIR.Descriptor, v_1: BIR.Descriptor) -> CEmitterProgress<BIR.Descriptor>:
   match v_0:
     case BIR.DescriptorRef{v_4, v_5}:
       CEmitterFinished{CEmitterValue{BIR.DescriptorRef{v_4, List.append(&2, BIR.Descriptor, v_5, [v_1])}}}
@@ -17842,62 +17903,62 @@ def cemit_match_1610(+v_0: BIR.Descriptor, v_1: BIR.Descriptor) -> CEmitterProgr
       CEmitterFinished{CEmitterValue{BIR.DescriptorApplication{v_0, v_1}}}
 
 def cemit_body_cps_provider_6_descriptor_apply(v_0: BIR.Descriptor, v_1: BIR.Descriptor) -> CEmitterProgress<BIR.Descriptor>:
-  cemit_match_1610(v_0, v_1)
+  cemit_match_1616(v_0, v_1)
 
-def cemit_match_1611(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_8: U32, v_3: List<&2, BIR.Descriptor>, v_5: Bool, v_6: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
+def cemit_match_1617(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_8: U32, v_3: List<&2, BIR.Descriptor>, v_5: Bool, v_6: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_6_CatalogResult{v_12, v_13}:
-      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_sugar{v_12, v_8, v_13 <> v_3, v_5, v_6}}, v_1007049 => v_1007048 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007049); CEmitterFinished{CEmitterValue{v_1007048}}}
+      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_sugar{v_12, v_8, v_13 <> v_3, v_5, v_6}}, v_1007078 => v_1007077 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007078); CEmitterFinished{CEmitterValue{v_1007077}}}
 
 def cemit_body_cps_provider_6_native_match_descriptor_sugar_0(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_3: List<&2, BIR.Descriptor>, v_5: Bool, v_6: Scope.ArenaGlobalScope, v_8: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
-  cemit_match_1611(v_1, v_8, v_3, v_5, v_6)
+  cemit_match_1617(v_1, v_8, v_3, v_5, v_6)
 
 def cemit_body_cps_provider_6_native_match_descriptor_sugar_1(v_2: cps_provider_6_CatalogResult<String>, v_4: List<&2, BIR.Descriptor>, v_6: Bool) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_10, +v_11}:
-      v_1007050 = {v_10 : Arena.Arena}
-      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_named_sugar{v_11, BIR.DescriptorRef{v_11, []}, v_4, v_6}}, v_1007052 => +v_1007051 = cemit_unbox(BIR.Descriptor, v_1007052); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007050, v_1007051}}}}
+      v_1007079 = {v_10 : Arena.Arena}
+      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_named_sugar{v_11, BIR.DescriptorRef{v_11, []}, v_4, v_6}}, v_1007081 => +v_1007080 = cemit_unbox(BIR.Descriptor, v_1007081); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007079, v_1007080}}}}
 
-def cemit_match_1613(v_2: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, +v_8: String, v_4: List<&2, BIR.Descriptor>, v_6: Bool) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
+def cemit_match_1619(v_2: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, +v_8: String, v_4: List<&2, BIR.Descriptor>, v_6: Bool) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_12, +v_13}:
-      v_1007053 = {v_12 : Arena.Arena}
-      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_named_sugar{v_8, BIR.DescriptorRef{v_8, v_13}, List.append(&2, BIR.Descriptor, v_13, v_4), v_6}}, v_1007055 => +v_1007054 = cemit_unbox(BIR.Descriptor, v_1007055); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007053, v_1007054}}}}
+      v_1007082 = {v_12 : Arena.Arena}
+      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_named_sugar{v_8, BIR.DescriptorRef{v_8, v_13}, List.append(&2, BIR.Descriptor, v_13, v_4), v_6}}, v_1007084 => +v_1007083 = cemit_unbox(BIR.Descriptor, v_1007084); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007082, v_1007083}}}}
 
 def cemit_body_cps_provider_6_native_match_descriptor_sugar_2(v_2: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_4: List<&2, BIR.Descriptor>, v_6: Bool, v_8: String) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
-  cemit_match_1613(v_2, v_8, v_4, v_6)
+  cemit_match_1619(v_2, v_8, v_4, v_6)
 
-def cemit_match_1614(v_2: cps_provider_6_CatalogResult<String>, v_9: U32, v_11: U32, v_7: Scope.ArenaGlobalScope, v_4: List<&2, BIR.Descriptor>, v_6: Bool) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
+def cemit_match_1620(v_2: cps_provider_6_CatalogResult<String>, v_9: U32, v_11: U32, v_7: Scope.ArenaGlobalScope, v_4: List<&2, BIR.Descriptor>, v_6: Bool) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_15, v_16}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptors{v_15, v_9, v_11, v_7}}, False{}, v_1007059 => cemit_body_cps_provider_6_descriptors(v_15, v_9, v_11, v_7), v_1007058 => v_1007056 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007058); cemit_body_cps_provider_6_native_match_descriptor_sugar_2(v_1007056, v_4, v_6, v_16)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptors{v_15, v_9, v_11, v_7}}, False{}, v_1007088 => cemit_body_cps_provider_6_descriptors(v_15, v_9, v_11, v_7), v_1007087 => v_1007085 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007087); cemit_body_cps_provider_6_native_match_descriptor_sugar_2(v_1007085, v_4, v_6, v_16)}
 
 def cemit_body_cps_provider_6_native_match_descriptor_sugar_3(v_2: cps_provider_6_CatalogResult<String>, v_4: List<&2, BIR.Descriptor>, v_6: Bool, v_7: Scope.ArenaGlobalScope, v_9: U32, v_11: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
-  cemit_match_1614(v_2, v_9, v_11, v_7, v_4, v_6)
+  cemit_match_1620(v_2, v_9, v_11, v_7, v_4, v_6)
 
 def cemit_body_cps_provider_6_native_match_descriptor_sugar_4(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_3: List<&2, BIR.Descriptor>, v_5: Bool) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_6_CatalogResult{v_9, v_10}:
-      v_1007060 = {v_9 : Arena.Arena}
-      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_unnamed_sugar{v_10, v_3, v_5}}, v_1007062 => +v_1007061 = cemit_unbox(BIR.Descriptor, v_1007062); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007060, v_1007061}}}}
+      v_1007089 = {v_9 : Arena.Arena}
+      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_unnamed_sugar{v_10, v_3, v_5}}, v_1007091 => +v_1007090 = cemit_unbox(BIR.Descriptor, v_1007091); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007089, v_1007090}}}}
 
-def cemit_match_1616(+v_0: Arena.Node, v_6: Arena.Arena, v_2: List<&2, BIR.Descriptor>, v_4: Bool, +v_5: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
+def cemit_match_1622(+v_0: Arena.Node, v_6: Arena.Arena, v_2: List<&2, BIR.Descriptor>, v_4: Bool, +v_5: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_0:
     case Arena.TermAnn{v_11, _, _}:
-      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_sugar{v_6, v_11, v_2, v_4, v_5}}, v_1007064 => v_1007063 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007064); CEmitterFinished{CEmitterValue{v_1007063}}}
+      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_sugar{v_6, v_11, v_2, v_4, v_5}}, v_1007093 => v_1007092 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007093); CEmitterFinished{CEmitterValue{v_1007092}}}
     case Arena.TermBang{v_17, _}:
-      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_sugar{v_6, v_17, v_2, v_4, v_5}}, v_1007066 => v_1007065 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007066); CEmitterFinished{CEmitterValue{v_1007065}}}
+      CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_sugar{v_6, v_17, v_2, v_4, v_5}}, v_1007095 => v_1007094 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007095); CEmitterFinished{CEmitterValue{v_1007094}}}
     case Arena.TermApp{v_23, v_24, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_6, v_24, v_5}}, False{}, v_1007070 => cemit_body_cps_provider_6_descriptor(v_6, v_24, v_5), v_1007069 => v_1007067 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007069); cemit_body_cps_provider_6_native_match_descriptor_sugar_0(v_1007067, v_2, v_4, v_5, v_23)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_6, v_24, v_5}}, False{}, v_1007099 => cemit_body_cps_provider_6_descriptor(v_6, v_24, v_5), v_1007098 => v_1007096 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007098); cemit_body_cps_provider_6_native_match_descriptor_sugar_0(v_1007096, v_2, v_4, v_5, v_23)}
     case Arena.TermRef{v_30, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_name{v_6, v_30, v_5, False{}}}, False{}, v_1007074 => cemit_body_cps_provider_6_descriptor_name(v_6, v_30, v_5, False{}), v_1007073 => v_1007071 = cemit_unbox(cps_provider_6_CatalogResult<String>, v_1007073); cemit_body_cps_provider_6_native_match_descriptor_sugar_1(v_1007071, v_2, v_4)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_name{v_6, v_30, v_5, False{}}}, False{}, v_1007103 => cemit_body_cps_provider_6_descriptor_name(v_6, v_30, v_5, False{}), v_1007102 => v_1007100 = cemit_unbox(cps_provider_6_CatalogResult<String>, v_1007102); cemit_body_cps_provider_6_native_match_descriptor_sugar_1(v_1007100, v_2, v_4)}
     case Arena.TermAdt{v_40, v_41, v_42, _, _, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_name{v_6, v_40, v_5, False{}}}, False{}, v_1007078 => cemit_body_cps_provider_6_descriptor_name(v_6, v_40, v_5, False{}), v_1007077 => v_1007075 = cemit_unbox(cps_provider_6_CatalogResult<String>, v_1007077); cemit_body_cps_provider_6_native_match_descriptor_sugar_3(v_1007075, v_2, v_4, v_5, v_41, v_42)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_name{v_6, v_40, v_5, False{}}}, False{}, v_1007107 => cemit_body_cps_provider_6_descriptor_name(v_6, v_40, v_5, False{}), v_1007106 => v_1007104 = cemit_unbox(cps_provider_6_CatalogResult<String>, v_1007106); cemit_body_cps_provider_6_native_match_descriptor_sugar_3(v_1007104, v_2, v_4, v_5, v_41, v_42)}
     case _:
-      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_descriptor_node{v_6, v_0, v_5}}, v_1007081 => v_1007079 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007081); cemit_body_cps_provider_6_native_match_descriptor_sugar_4(v_1007079, v_2, v_4)}
+      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_descriptor_node{v_6, v_0, v_5}}, v_1007110 => v_1007108 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007110); cemit_body_cps_provider_6_native_match_descriptor_sugar_4(v_1007108, v_2, v_4)}
 
 def cemit_body_cps_provider_6_native_match_descriptor_sugar_5(v_0: Arena.Node, v_2: List<&2, BIR.Descriptor>, v_4: Bool, v_5: Scope.ArenaGlobalScope, v_6: Arena.Arena) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
-  cemit_match_1616(v_0, v_6, v_2, v_4, v_5)
+  cemit_match_1622(v_0, v_6, v_2, v_4, v_5)
 
 def cemit_body_cps_provider_6_native_match_descriptor_sugar_6(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Node>, v_5: List<&2, BIR.Descriptor>, v_7: Bool, v_8: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_3:
@@ -17905,9 +17966,9 @@ def cemit_body_cps_provider_6_native_match_descriptor_sugar_6(v_3: Sigma<&1, &1,
       cemit_body_cps_provider_6_native_match_descriptor_sugar_5(v_13, v_5, v_7, v_8, v_12)
 
 def cemit_body_cps_provider_6_descriptor_sugar(v_0: Arena.Arena, v_2: U32, v_4: List<&2, BIR.Descriptor>, v_6: Bool, v_7: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_native_match_descriptor_sugar_6{Arena.get_node(v_0, v_2), v_4, v_6, v_7}}, False{}, v_1007086 => cemit_body_cps_provider_6_native_match_descriptor_sugar_6(Arena.get_node(v_0, v_2), v_4, v_6, v_7), v_1007085 => v_1007084 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007085); CEmitterFinished{CEmitterValue{v_1007084}}}
+  CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_native_match_descriptor_sugar_6{Arena.get_node(v_0, v_2), v_4, v_6, v_7}}, False{}, v_1007115 => cemit_body_cps_provider_6_native_match_descriptor_sugar_6(Arena.get_node(v_0, v_2), v_4, v_6, v_7), v_1007114 => v_1007113 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007114); CEmitterFinished{CEmitterValue{v_1007113}}}
 
-def cemit_match_1618(v_6: Bool, v_1: String, v_2: BIR.Descriptor, v_4: List<&2, BIR.Descriptor>) -> CEmitterProgress<BIR.Descriptor>:
+def cemit_match_1624(v_6: Bool, v_1: String, v_2: BIR.Descriptor, v_4: List<&2, BIR.Descriptor>) -> CEmitterProgress<BIR.Descriptor>:
   match v_6:
     case False{}:
       CEmitterFinished{CEmitterValue{BIR.DescriptorNamedFill{v_1, v_2, v_4}}}
@@ -17915,9 +17976,9 @@ def cemit_match_1618(v_6: Bool, v_1: String, v_2: BIR.Descriptor, v_4: List<&2, 
       CEmitterFinished{CEmitterValue{BIR.DescriptorNamedPlus{v_1, v_2, v_4}}}
 
 def cemit_body_cps_provider_6_named_sugar(v_1: String, v_2: BIR.Descriptor, v_4: List<&2, BIR.Descriptor>, v_6: Bool) -> CEmitterProgress<BIR.Descriptor>:
-  cemit_match_1618(v_6, v_1, v_2, v_4)
+  cemit_match_1624(v_6, v_1, v_2, v_4)
 
-def cemit_match_1619(v_4: Bool, v_0: BIR.Descriptor, v_2: List<&2, BIR.Descriptor>) -> CEmitterProgress<BIR.Descriptor>:
+def cemit_match_1625(v_4: Bool, v_0: BIR.Descriptor, v_2: List<&2, BIR.Descriptor>) -> CEmitterProgress<BIR.Descriptor>:
   match v_4:
     case False{}:
       CEmitterFinished{CEmitterValue{BIR.DescriptorFill{v_0, v_2}}}
@@ -17925,15 +17986,15 @@ def cemit_match_1619(v_4: Bool, v_0: BIR.Descriptor, v_2: List<&2, BIR.Descripto
       CEmitterFinished{CEmitterValue{BIR.DescriptorPlus{v_0, v_2}}}
 
 def cemit_body_cps_provider_6_unnamed_sugar(v_0: BIR.Descriptor, v_2: List<&2, BIR.Descriptor>, v_4: Bool) -> CEmitterProgress<BIR.Descriptor>:
-  cemit_match_1619(v_4, v_0, v_2)
+  cemit_match_1625(v_4, v_0, v_2)
 
-def cemit_match_1620(v_0: Ast.StringLiteralNames, +v_1: Scope.ArenaGlobalScope) -> CEmitterProgress<Ast.StringLiteralNames>:
+def cemit_match_1626(v_0: Ast.StringLiteralNames, +v_1: Scope.ArenaGlobalScope) -> CEmitterProgress<Ast.StringLiteralNames>:
   match v_0:
     case Ast.StringLiteralNames{v_10, v_11, v_12, v_13, v_14, v_15, v_16, v_17}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_canonical{v_10, v_1, True{}}}, False{}, v_1007110 => cemit_body_cps_provider_6_canonical(v_10, v_1, True{}), v_1007109 => +v_1007087 = cemit_unbox(String, v_1007109); CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_canonical{v_11, v_1, True{}}}, False{}, v_1007108 => cemit_body_cps_provider_6_canonical(v_11, v_1, True{}), v_1007107 => +v_1007088 = cemit_unbox(String, v_1007107); CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_canonical{v_12, v_1, True{}}}, False{}, v_1007106 => cemit_body_cps_provider_6_canonical(v_12, v_1, True{}), v_1007105 => +v_1007089 = cemit_unbox(String, v_1007105); CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_canonical{v_13, v_1, True{}}}, False{}, v_1007104 => cemit_body_cps_provider_6_canonical(v_13, v_1, True{}), v_1007103 => +v_1007090 = cemit_unbox(String, v_1007103); CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_canonical{v_14, v_1, True{}}}, False{}, v_1007102 => cemit_body_cps_provider_6_canonical(v_14, v_1, True{}), v_1007101 => +v_1007091 = cemit_unbox(String, v_1007101); CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_canonical{v_15, v_1, True{}}}, False{}, v_1007100 => cemit_body_cps_provider_6_canonical(v_15, v_1, True{}), v_1007099 => +v_1007092 = cemit_unbox(String, v_1007099); CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_canonical{v_16, v_1, True{}}}, False{}, v_1007098 => cemit_body_cps_provider_6_canonical(v_16, v_1, True{}), v_1007097 => +v_1007093 = cemit_unbox(String, v_1007097); CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_canonical{v_17, v_1, True{}}}, False{}, v_1007096 => cemit_body_cps_provider_6_canonical(v_17, v_1, True{}), v_1007095 => +v_1007094 = cemit_unbox(String, v_1007095); CEmitterFinished{CEmitterValue{Ast.StringLiteralNames{v_1007087, v_1007088, v_1007089, v_1007090, v_1007091, v_1007092, v_1007093, v_1007094}}}}}}}}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_canonical{v_10, v_1, True{}}}, False{}, v_1007139 => cemit_body_cps_provider_6_canonical(v_10, v_1, True{}), v_1007138 => +v_1007116 = cemit_unbox(String, v_1007138); CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_canonical{v_11, v_1, True{}}}, False{}, v_1007137 => cemit_body_cps_provider_6_canonical(v_11, v_1, True{}), v_1007136 => +v_1007117 = cemit_unbox(String, v_1007136); CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_canonical{v_12, v_1, True{}}}, False{}, v_1007135 => cemit_body_cps_provider_6_canonical(v_12, v_1, True{}), v_1007134 => +v_1007118 = cemit_unbox(String, v_1007134); CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_canonical{v_13, v_1, True{}}}, False{}, v_1007133 => cemit_body_cps_provider_6_canonical(v_13, v_1, True{}), v_1007132 => +v_1007119 = cemit_unbox(String, v_1007132); CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_canonical{v_14, v_1, True{}}}, False{}, v_1007131 => cemit_body_cps_provider_6_canonical(v_14, v_1, True{}), v_1007130 => +v_1007120 = cemit_unbox(String, v_1007130); CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_canonical{v_15, v_1, True{}}}, False{}, v_1007129 => cemit_body_cps_provider_6_canonical(v_15, v_1, True{}), v_1007128 => +v_1007121 = cemit_unbox(String, v_1007128); CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_canonical{v_16, v_1, True{}}}, False{}, v_1007127 => cemit_body_cps_provider_6_canonical(v_16, v_1, True{}), v_1007126 => +v_1007122 = cemit_unbox(String, v_1007126); CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_canonical{v_17, v_1, True{}}}, False{}, v_1007125 => cemit_body_cps_provider_6_canonical(v_17, v_1, True{}), v_1007124 => +v_1007123 = cemit_unbox(String, v_1007124); CEmitterFinished{CEmitterValue{Ast.StringLiteralNames{v_1007116, v_1007117, v_1007118, v_1007119, v_1007120, v_1007121, v_1007122, v_1007123}}}}}}}}}}}
 
 def cemit_body_cps_provider_6_string_names(v_0: Ast.StringLiteralNames, v_1: Scope.ArenaGlobalScope) -> CEmitterProgress<Ast.StringLiteralNames>:
-  cemit_match_1620(v_0, v_1)
+  cemit_match_1626(v_0, v_1)
 
 def cemit_body_cps_provider_6_string_bit(v_1: U32, v_2: Ast.StringLiteralNames) -> CEmitterProgress<BIR.Descriptor>:
   match v_1, v_2:
@@ -17942,29 +18003,29 @@ def cemit_body_cps_provider_6_string_bit(v_1: U32, v_2: Ast.StringLiteralNames) 
     case _, Ast.StringLiteralNames{_, _, _, _, _, _, _, v_36}:
       CEmitterFinished{CEmitterValue{BIR.DescriptorConstructor{v_36, []}}}
 
-def cemit_match_1622(v_1: Nat, +v_4: Ast.StringLiteralNames, +v_3: U32) -> CEmitterProgress<BIR.Descriptor>:
+def cemit_match_1628(v_1: Nat, +v_4: Ast.StringLiteralNames, +v_3: U32) -> CEmitterProgress<BIR.Descriptor>:
   match v_1, v_4:
     case 0n, Ast.StringLiteralNames{_, _, _, _, v_17, _, _, _}:
       CEmitterFinished{CEmitterValue{BIR.DescriptorConstructor{v_17, []}}}
     case 1n+v_30, Ast.StringLiteralNames{_, _, _, _, _, v_36, _, _}:
-      v_1007111 = {v_36 : String}
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_string_bit{U32.and(v_3, 1), v_4}}, False{}, v_1007116 => cemit_body_cps_provider_6_string_bit(U32.and(v_3, 1), v_4), v_1007115 => +v_1007112 = cemit_unbox(BIR.Descriptor, v_1007115); CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_string_word{v_30, U32.shr(v_3), v_4}}, v_1007114 => +v_1007113 = cemit_unbox(BIR.Descriptor, v_1007114); CEmitterFinished{CEmitterValue{BIR.DescriptorConstructor{v_1007111, [v_1007112, v_1007113]}}}}}
+      v_1007140 = {v_36 : String}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_string_bit{U32.and(v_3, 1), v_4}}, False{}, v_1007145 => cemit_body_cps_provider_6_string_bit(U32.and(v_3, 1), v_4), v_1007144 => +v_1007141 = cemit_unbox(BIR.Descriptor, v_1007144); CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_string_word{v_30, U32.shr(v_3), v_4}}, v_1007143 => +v_1007142 = cemit_unbox(BIR.Descriptor, v_1007143); CEmitterFinished{CEmitterValue{BIR.DescriptorConstructor{v_1007140, [v_1007141, v_1007142]}}}}}
 
 def cemit_body_cps_provider_6_string_word(v_1: Nat, v_3: U32, v_4: Ast.StringLiteralNames) -> CEmitterProgress<BIR.Descriptor>:
-  cemit_match_1622(v_1, v_4, v_3)
+  cemit_match_1628(v_1, v_4, v_3)
 
-def cemit_match_1623(v_2: List<&2, U32>, +v_3: Ast.StringLiteralNames) -> CEmitterProgress<BIR.Descriptor>:
+def cemit_match_1629(v_2: List<&2, U32>, +v_3: Ast.StringLiteralNames) -> CEmitterProgress<BIR.Descriptor>:
   match v_2, v_3:
     case [], Ast.StringLiteralNames{v_12, _, _, _, _, _, _, _}:
       CEmitterFinished{CEmitterValue{BIR.DescriptorConstructor{v_12, []}}}
     case v_30 <> v_31, Ast.StringLiteralNames{_, v_33, v_34, v_35, _, _, _, _}:
-      v_1007117 = {v_33 : String}
-      v_1007118 = {v_34 : String}
-      v_1007119 = {v_35 : String}
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_string_word{32n, v_30, v_3}}, False{}, v_1007124 => cemit_body_cps_provider_6_string_word(32n, v_30, v_3), v_1007123 => +v_1007120 = cemit_unbox(BIR.Descriptor, v_1007123); CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_string_descriptor{v_31, v_3}}, v_1007122 => +v_1007121 = cemit_unbox(BIR.Descriptor, v_1007122); CEmitterFinished{CEmitterValue{BIR.DescriptorConstructor{v_1007117, [BIR.DescriptorConstructor{v_1007118, [BIR.DescriptorConstructor{v_1007119, [v_1007120]}]}, v_1007121]}}}}}
+      v_1007146 = {v_33 : String}
+      v_1007147 = {v_34 : String}
+      v_1007148 = {v_35 : String}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_string_word{32n, v_30, v_3}}, False{}, v_1007153 => cemit_body_cps_provider_6_string_word(32n, v_30, v_3), v_1007152 => +v_1007149 = cemit_unbox(BIR.Descriptor, v_1007152); CEmitterPending{CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_string_descriptor{v_31, v_3}}, v_1007151 => +v_1007150 = cemit_unbox(BIR.Descriptor, v_1007151); CEmitterFinished{CEmitterValue{BIR.DescriptorConstructor{v_1007146, [BIR.DescriptorConstructor{v_1007147, [BIR.DescriptorConstructor{v_1007148, [v_1007149]}]}, v_1007150]}}}}}
 
 def cemit_body_cps_provider_6_string_descriptor(v_2: List<&2, U32>, v_3: Ast.StringLiteralNames) -> CEmitterProgress<BIR.Descriptor>:
-  cemit_match_1623(v_2, v_3)
+  cemit_match_1629(v_2, v_3)
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_0(v_2: cps_provider_6_CatalogResult<String>) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_2:
@@ -17976,26 +18037,26 @@ def cemit_body_cps_provider_6_native_match_descriptor_node_1(v_1: cps_provider_6
     case cps_provider_6_CatalogResult{v_8, v_9}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_8, BIR.DescriptorSubstitution{v_3, v_4, v_9}}}}
 
-def cemit_match_1626(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_6: U32, v_2: Scope.ArenaGlobalScope, v_4: Nat) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
+def cemit_match_1632(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_6: U32, v_2: Scope.ArenaGlobalScope, v_4: Nat) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_6_CatalogResult{v_10, v_11}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_10, v_6, v_2}}, False{}, v_1007128 => cemit_body_cps_provider_6_descriptor(v_10, v_6, v_2), v_1007127 => v_1007125 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007127); cemit_body_cps_provider_6_native_match_descriptor_node_1(v_1007125, v_4, v_11)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_10, v_6, v_2}}, False{}, v_1007157 => cemit_body_cps_provider_6_descriptor(v_10, v_6, v_2), v_1007156 => v_1007154 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007156); cemit_body_cps_provider_6_native_match_descriptor_node_1(v_1007154, v_4, v_11)}
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_2(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_4: Nat, v_6: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
-  cemit_match_1626(v_1, v_6, v_2, v_4)
+  cemit_match_1632(v_1, v_6, v_2, v_4)
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_3(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_3: List<&2, BIR.Descriptor>) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_6_CatalogResult{v_7, v_8}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_7, BIR.DescriptorLet{v_3, v_8}}}}
 
-def cemit_match_1628(v_2: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_5: U32, v_3: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
+def cemit_match_1634(v_2: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_5: U32, v_3: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_9, v_10}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_9, v_5, v_3}}, False{}, v_1007132 => cemit_body_cps_provider_6_descriptor(v_9, v_5, v_3), v_1007131 => v_1007129 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007131); cemit_body_cps_provider_6_native_match_descriptor_node_3(v_1007129, v_10)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_9, v_5, v_3}}, False{}, v_1007161 => cemit_body_cps_provider_6_descriptor(v_9, v_5, v_3), v_1007160 => v_1007158 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007160); cemit_body_cps_provider_6_native_match_descriptor_node_3(v_1007158, v_10)}
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_4(v_2: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_3: Scope.ArenaGlobalScope, v_5: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
-  cemit_match_1628(v_2, v_5, v_3)
+  cemit_match_1634(v_2, v_5, v_3)
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_5(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_1:
@@ -18007,122 +18068,122 @@ def cemit_body_cps_provider_6_native_match_descriptor_node_6(v_1: cps_provider_6
     case cps_provider_6_CatalogResult{v_6, v_7}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_6, BIR.DescriptorMinimum{v_2, v_7}}}}
 
-def cemit_match_1631(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_4: U32, v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
+def cemit_match_1637(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_4: U32, v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_6_CatalogResult{v_8, v_9}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_8, v_4, v_2}}, False{}, v_1007136 => cemit_body_cps_provider_6_descriptor(v_8, v_4, v_2), v_1007135 => v_1007133 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007135); cemit_body_cps_provider_6_native_match_descriptor_node_6(v_1007133, v_9)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_8, v_4, v_2}}, False{}, v_1007165 => cemit_body_cps_provider_6_descriptor(v_8, v_4, v_2), v_1007164 => v_1007162 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007164); cemit_body_cps_provider_6_native_match_descriptor_node_6(v_1007162, v_9)}
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_7(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_4: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
-  cemit_match_1631(v_1, v_4, v_2)
+  cemit_match_1637(v_1, v_4, v_2)
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_8(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_2: Ast.Quantity, v_3: BIR.Descriptor) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_6_CatalogResult{v_7, v_8}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_7, BIR.DescriptorArrow{cemit_pure_cps_provider_6_quantity(v_2), v_3, v_8}}}}
 
-def cemit_match_1633(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_5: U32, v_2: Scope.ArenaGlobalScope, v_3: Ast.Quantity) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
+def cemit_match_1639(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_5: U32, v_2: Scope.ArenaGlobalScope, v_3: Ast.Quantity) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_6_CatalogResult{v_9, v_10}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_9, v_5, v_2}}, False{}, v_1007140 => cemit_body_cps_provider_6_descriptor(v_9, v_5, v_2), v_1007139 => v_1007137 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007139); cemit_body_cps_provider_6_native_match_descriptor_node_8(v_1007137, v_3, v_10)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_9, v_5, v_2}}, False{}, v_1007169 => cemit_body_cps_provider_6_descriptor(v_9, v_5, v_2), v_1007168 => v_1007166 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007168); cemit_body_cps_provider_6_native_match_descriptor_node_8(v_1007166, v_3, v_10)}
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_9(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_3: Ast.Quantity, v_5: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
-  cemit_match_1633(v_1, v_5, v_2, v_3)
+  cemit_match_1639(v_1, v_5, v_2, v_3)
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_10(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_3: Maybe<&2, Ast.Quantity>) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_6_CatalogResult{v_7, v_8}:
-      v_1007141 = {v_7 : Arena.Arena}
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_optional_quantity{v_3}}, False{}, v_1007144 => cemit_body_cps_provider_6_optional_quantity(v_3), v_1007143 => +v_1007142 = cemit_unbox(Maybe<&2, BIR.Quantity>, v_1007143); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007141, BIR.DescriptorLambda{v_1007142, v_8}}}}}
+      v_1007170 = {v_7 : Arena.Arena}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_optional_quantity{v_3}}, False{}, v_1007173 => cemit_body_cps_provider_6_optional_quantity(v_3), v_1007172 => +v_1007171 = cemit_unbox(Maybe<&2, BIR.Quantity>, v_1007172); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007170, BIR.DescriptorLambda{v_1007171, v_8}}}}}
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_11(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_2: BIR.Descriptor) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_6_CatalogResult{v_6, v_7}:
-      v_1007145 = {v_6 : Arena.Arena}
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_apply{v_2, v_7}}, False{}, v_1007148 => cemit_body_cps_provider_6_descriptor_apply(v_2, v_7), v_1007147 => +v_1007146 = cemit_unbox(BIR.Descriptor, v_1007147); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007145, v_1007146}}}}
+      v_1007174 = {v_6 : Arena.Arena}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_apply{v_2, v_7}}, False{}, v_1007177 => cemit_body_cps_provider_6_descriptor_apply(v_2, v_7), v_1007176 => +v_1007175 = cemit_unbox(BIR.Descriptor, v_1007176); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007174, v_1007175}}}}
 
-def cemit_match_1636(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_4: U32, v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
+def cemit_match_1642(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_4: U32, v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_6_CatalogResult{v_8, v_9}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_8, v_4, v_2}}, False{}, v_1007152 => cemit_body_cps_provider_6_descriptor(v_8, v_4, v_2), v_1007151 => v_1007149 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007151); cemit_body_cps_provider_6_native_match_descriptor_node_11(v_1007149, v_9)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_8, v_4, v_2}}, False{}, v_1007181 => cemit_body_cps_provider_6_descriptor(v_8, v_4, v_2), v_1007180 => v_1007178 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007180); cemit_body_cps_provider_6_native_match_descriptor_node_11(v_1007178, v_9)}
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_12(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_4: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
-  cemit_match_1636(v_1, v_4, v_2)
+  cemit_match_1642(v_1, v_4, v_2)
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_13(v_2: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_4: String) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_8, v_9}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_8, BIR.DescriptorRef{v_4, v_9}}}}
 
-def cemit_match_1638(v_2: cps_provider_6_CatalogResult<String>, v_5: U32, v_7: U32, v_3: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
+def cemit_match_1644(v_2: cps_provider_6_CatalogResult<String>, v_5: U32, v_7: U32, v_3: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_11, v_12}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptors{v_11, v_5, v_7, v_3}}, False{}, v_1007156 => cemit_body_cps_provider_6_descriptors(v_11, v_5, v_7, v_3), v_1007155 => v_1007153 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007155); cemit_body_cps_provider_6_native_match_descriptor_node_13(v_1007153, v_12)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptors{v_11, v_5, v_7, v_3}}, False{}, v_1007185 => cemit_body_cps_provider_6_descriptors(v_11, v_5, v_7, v_3), v_1007184 => v_1007182 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007184); cemit_body_cps_provider_6_native_match_descriptor_node_13(v_1007182, v_12)}
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_14(v_2: cps_provider_6_CatalogResult<String>, v_3: Scope.ArenaGlobalScope, v_5: U32, v_7: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
-  cemit_match_1638(v_2, v_5, v_7, v_3)
+  cemit_match_1644(v_2, v_5, v_7, v_3)
 
-def cemit_match_1639(v_2: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_5: U32, v_3: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
+def cemit_match_1645(v_2: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_5: U32, v_3: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_9, v_10}:
       cemit_body_cps_provider_6_descriptor_sugar(v_9, v_5, v_10, False{}, v_3)
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_15(v_2: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_3: Scope.ArenaGlobalScope, v_5: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
-  cemit_match_1639(v_2, v_5, v_3)
+  cemit_match_1645(v_2, v_5, v_3)
 
-def cemit_match_1640(v_2: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_5: U32, v_3: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
+def cemit_match_1646(v_2: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_5: U32, v_3: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_9, v_10}:
       cemit_body_cps_provider_6_descriptor_sugar(v_9, v_5, v_10, True{}, v_3)
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_16(v_2: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_3: Scope.ArenaGlobalScope, v_5: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
-  cemit_match_1640(v_2, v_5, v_3)
+  cemit_match_1646(v_2, v_5, v_3)
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_17(v_2: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_4: String) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_8, v_9}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_8, BIR.DescriptorConstructor{v_4, v_9}}}}
 
-def cemit_match_1642(v_2: cps_provider_6_CatalogResult<String>, v_5: U32, v_7: U32, v_3: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
+def cemit_match_1648(v_2: cps_provider_6_CatalogResult<String>, v_5: U32, v_7: U32, v_3: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_11, v_12}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptors{v_11, v_5, v_7, v_3}}, False{}, v_1007162 => cemit_body_cps_provider_6_descriptors(v_11, v_5, v_7, v_3), v_1007161 => v_1007159 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007161); cemit_body_cps_provider_6_native_match_descriptor_node_17(v_1007159, v_12)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptors{v_11, v_5, v_7, v_3}}, False{}, v_1007191 => cemit_body_cps_provider_6_descriptors(v_11, v_5, v_7, v_3), v_1007190 => v_1007188 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007190); cemit_body_cps_provider_6_native_match_descriptor_node_17(v_1007188, v_12)}
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_18(v_2: cps_provider_6_CatalogResult<String>, v_3: Scope.ArenaGlobalScope, v_5: U32, v_7: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
-  cemit_match_1642(v_2, v_5, v_7, v_3)
+  cemit_match_1648(v_2, v_5, v_7, v_3)
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_19(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_2: BIR.Descriptor) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_6_CatalogResult{v_6, v_7}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_6, BIR.DescriptorBind{v_2, v_7}}}}
 
-def cemit_match_1644(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_4: U32, v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
+def cemit_match_1650(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_4: U32, v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_6_CatalogResult{v_8, v_9}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_8, v_4, v_2}}, False{}, v_1007166 => cemit_body_cps_provider_6_descriptor(v_8, v_4, v_2), v_1007165 => v_1007163 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007165); cemit_body_cps_provider_6_native_match_descriptor_node_19(v_1007163, v_9)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_8, v_4, v_2}}, False{}, v_1007195 => cemit_body_cps_provider_6_descriptor(v_8, v_4, v_2), v_1007194 => v_1007192 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007194); cemit_body_cps_provider_6_native_match_descriptor_node_19(v_1007192, v_9)}
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_20(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_4: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
-  cemit_match_1644(v_1, v_4, v_2)
+  cemit_match_1650(v_1, v_4, v_2)
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_21(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_2: BIR.Descriptor, v_3: BIR.Descriptor) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_6_CatalogResult{v_7, v_8}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_7, BIR.DescriptorEquality{v_2, v_3, v_8}}}}
 
-def cemit_match_1646(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_4: U32, v_2: Scope.ArenaGlobalScope, v_5: BIR.Descriptor) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
+def cemit_match_1652(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_4: U32, v_2: Scope.ArenaGlobalScope, v_5: BIR.Descriptor) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_6_CatalogResult{v_9, v_10}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_9, v_4, v_2}}, False{}, v_1007170 => cemit_body_cps_provider_6_descriptor(v_9, v_4, v_2), v_1007169 => v_1007167 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007169); cemit_body_cps_provider_6_native_match_descriptor_node_21(v_1007167, v_5, v_10)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_9, v_4, v_2}}, False{}, v_1007199 => cemit_body_cps_provider_6_descriptor(v_9, v_4, v_2), v_1007198 => v_1007196 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007198); cemit_body_cps_provider_6_native_match_descriptor_node_21(v_1007196, v_5, v_10)}
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_22(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_4: U32, v_5: BIR.Descriptor) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
-  cemit_match_1646(v_1, v_4, v_2, v_5)
+  cemit_match_1652(v_1, v_4, v_2, v_5)
 
-def cemit_match_1647(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_4: U32, +v_2: Scope.ArenaGlobalScope, v_6: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
+def cemit_match_1653(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_4: U32, +v_2: Scope.ArenaGlobalScope, v_6: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_6_CatalogResult{v_10, v_11}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_10, v_4, v_2}}, False{}, v_1007174 => cemit_body_cps_provider_6_descriptor(v_10, v_4, v_2), v_1007173 => v_1007171 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007173); cemit_body_cps_provider_6_native_match_descriptor_node_22(v_1007171, v_2, v_6, v_11)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_10, v_4, v_2}}, False{}, v_1007203 => cemit_body_cps_provider_6_descriptor(v_10, v_4, v_2), v_1007202 => v_1007200 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007202); cemit_body_cps_provider_6_native_match_descriptor_node_22(v_1007200, v_2, v_6, v_11)}
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_23(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_4: U32, v_6: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
-  cemit_match_1647(v_1, v_4, v_2, v_6)
+  cemit_match_1653(v_1, v_4, v_2, v_6)
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_24(v_4: Sigma<&1, &1, Arena.Arena, _ => String>) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_4:
@@ -18134,100 +18195,100 @@ def cemit_body_cps_provider_6_native_match_descriptor_node_25(v_2: cps_provider_
     case cps_provider_6_CatalogResult{v_8, v_9}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_8, BIR.DescriptorMatch{v_4, v_9}}}}
 
-def cemit_match_1650(v_2: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_5: U32, v_7: U32, v_3: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
+def cemit_match_1656(v_2: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_5: U32, v_7: U32, v_3: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_11, v_12}:
-      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_descriptor_cases{v_11, v_5, v_7, v_3}}, v_1007177 => v_1007175 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007177); cemit_body_cps_provider_6_native_match_descriptor_node_25(v_1007175, v_12)}
+      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_descriptor_cases{v_11, v_5, v_7, v_3}}, v_1007206 => v_1007204 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007206); cemit_body_cps_provider_6_native_match_descriptor_node_25(v_1007204, v_12)}
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_26(v_2: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_3: Scope.ArenaGlobalScope, v_5: U32, v_7: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
-  cemit_match_1650(v_2, v_5, v_7, v_3)
+  cemit_match_1656(v_2, v_5, v_7, v_3)
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_27(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_3: List<&2, BIR.DescriptorPattern>, v_5: List<&2, BIR.Descriptor>) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case cps_provider_6_CatalogResult{v_9, v_10}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_9, BIR.DescriptorLocal{v_3, v_5, v_10}}}}
 
-def cemit_match_1652(v_2: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_5: U32, v_3: Scope.ArenaGlobalScope, v_7: List<&2, BIR.DescriptorPattern>) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
+def cemit_match_1658(v_2: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_5: U32, v_3: Scope.ArenaGlobalScope, v_7: List<&2, BIR.DescriptorPattern>) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_11, v_12}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_11, v_5, v_3}}, False{}, v_1007181 => cemit_body_cps_provider_6_descriptor(v_11, v_5, v_3), v_1007180 => v_1007178 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007180); cemit_body_cps_provider_6_native_match_descriptor_node_27(v_1007178, v_7, v_12)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_11, v_5, v_3}}, False{}, v_1007210 => cemit_body_cps_provider_6_descriptor(v_11, v_5, v_3), v_1007209 => v_1007207 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007209); cemit_body_cps_provider_6_native_match_descriptor_node_27(v_1007207, v_7, v_12)}
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_28(v_2: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_3: Scope.ArenaGlobalScope, v_5: U32, v_7: List<&2, BIR.DescriptorPattern>) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
-  cemit_match_1652(v_2, v_5, v_3, v_7)
+  cemit_match_1658(v_2, v_5, v_3, v_7)
 
-def cemit_match_1653(v_2: cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_5: U32, v_7: U32, +v_3: Scope.ArenaGlobalScope, v_9: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
+def cemit_match_1659(v_2: cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_5: U32, v_7: U32, +v_3: Scope.ArenaGlobalScope, v_9: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_13, v_14}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptors{v_13, v_5, v_7, v_3}}, False{}, v_1007185 => cemit_body_cps_provider_6_descriptors(v_13, v_5, v_7, v_3), v_1007184 => v_1007182 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007184); cemit_body_cps_provider_6_native_match_descriptor_node_28(v_1007182, v_3, v_9, v_14)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptors{v_13, v_5, v_7, v_3}}, False{}, v_1007214 => cemit_body_cps_provider_6_descriptors(v_13, v_5, v_7, v_3), v_1007213 => v_1007211 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007213); cemit_body_cps_provider_6_native_match_descriptor_node_28(v_1007211, v_3, v_9, v_14)}
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_29(v_2: cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_3: Scope.ArenaGlobalScope, v_5: U32, v_7: U32, v_9: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
-  cemit_match_1653(v_2, v_5, v_7, v_3, v_9)
+  cemit_match_1659(v_2, v_5, v_7, v_3, v_9)
 
-def cemit_match_1654(v_0: Arena.Node, v_1: Arena.Arena, +v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
+def cemit_match_1660(v_0: Arena.Node, v_1: Arena.Arena, +v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_0:
     case Arena.TermVar{_, v_8, _}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1, BIR.DescriptorParameter{v_8}}}}
     case Arena.TermRef{v_12, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_name{v_1, v_12, v_2, False{}}}, False{}, v_1007189 => cemit_body_cps_provider_6_descriptor_name(v_1, v_12, v_2, False{}), v_1007188 => v_1007186 = cemit_unbox(cps_provider_6_CatalogResult<String>, v_1007188); cemit_body_cps_provider_6_native_match_descriptor_node_0(v_1007186)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_name{v_1, v_12, v_2, False{}}}, False{}, v_1007218 => cemit_body_cps_provider_6_descriptor_name(v_1, v_12, v_2, False{}), v_1007217 => v_1007215 = cemit_unbox(cps_provider_6_CatalogResult<String>, v_1007217); cemit_body_cps_provider_6_native_match_descriptor_node_0(v_1007215)}
     case Arena.TermBang{v_18, _}:
       cemit_body_cps_provider_6_descriptor(v_1, v_18, v_2)
     case Arena.TermSub{v_25, v_26, v_27, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_1, v_26, v_2}}, False{}, v_1007194 => cemit_body_cps_provider_6_descriptor(v_1, v_26, v_2), v_1007193 => v_1007191 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007193); cemit_body_cps_provider_6_native_match_descriptor_node_2(v_1007191, v_2, v_25, v_27)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_1, v_26, v_2}}, False{}, v_1007223 => cemit_body_cps_provider_6_descriptor(v_1, v_26, v_2), v_1007222 => v_1007220 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007222); cemit_body_cps_provider_6_native_match_descriptor_node_2(v_1007220, v_2, v_25, v_27)}
     case Arena.TermLet{_, _, _, _, _, _, v_47, v_48, v_49, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptors{v_1, v_47, v_48, v_2}}, False{}, v_1007198 => cemit_body_cps_provider_6_descriptors(v_1, v_47, v_48, v_2), v_1007197 => v_1007195 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007197); cemit_body_cps_provider_6_native_match_descriptor_node_4(v_1007195, v_2, v_49)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptors{v_1, v_47, v_48, v_2}}, False{}, v_1007227 => cemit_body_cps_provider_6_descriptors(v_1, v_47, v_48, v_2), v_1007226 => v_1007224 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007226); cemit_body_cps_provider_6_native_match_descriptor_node_4(v_1007224, v_2, v_49)}
     case Arena.TermAnn{v_56, _, _}:
       cemit_body_cps_provider_6_descriptor(v_1, v_56, v_2)
     case Arena.TermTemplate{_, _}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1, BIR.DescriptorFailure{"bend: unexpanded template"}}}}
     case Arena.TermType{v_66, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_1, v_66, v_2}}, False{}, v_1007203 => cemit_body_cps_provider_6_descriptor(v_1, v_66, v_2), v_1007202 => v_1007200 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007202); cemit_body_cps_provider_6_native_match_descriptor_node_5(v_1007200)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_1, v_66, v_2}}, False{}, v_1007232 => cemit_body_cps_provider_6_descriptor(v_1, v_66, v_2), v_1007231 => v_1007229 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007231); cemit_body_cps_provider_6_native_match_descriptor_node_5(v_1007229)}
     case Arena.TermQuant{}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1, BIR.DescriptorQuantityKind{}}}}
     case Arena.TermQuantity{v_72, _}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1, BIR.DescriptorQuantity{cemit_pure_cps_provider_6_quantity(v_72)}}}}
     case Arena.TermMin{v_78, v_79, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_1, v_78, v_2}}, False{}, v_1007207 => cemit_body_cps_provider_6_descriptor(v_1, v_78, v_2), v_1007206 => v_1007204 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007206); cemit_body_cps_provider_6_native_match_descriptor_node_7(v_1007204, v_2, v_79)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_1, v_78, v_2}}, False{}, v_1007236 => cemit_body_cps_provider_6_descriptor(v_1, v_78, v_2), v_1007235 => v_1007233 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007235); cemit_body_cps_provider_6_native_match_descriptor_node_7(v_1007233, v_2, v_79)}
     case Arena.TermAll{v_89, _, _, v_92, v_93, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_1, v_92, v_2}}, False{}, v_1007211 => cemit_body_cps_provider_6_descriptor(v_1, v_92, v_2), v_1007210 => v_1007208 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007210); cemit_body_cps_provider_6_native_match_descriptor_node_9(v_1007208, v_2, v_89, v_93)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_1, v_92, v_2}}, False{}, v_1007240 => cemit_body_cps_provider_6_descriptor(v_1, v_92, v_2), v_1007239 => v_1007237 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007239); cemit_body_cps_provider_6_native_match_descriptor_node_9(v_1007237, v_2, v_89, v_93)}
     case Arena.TermLam{v_102, _, _, v_105, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_1, v_105, v_2}}, False{}, v_1007215 => cemit_body_cps_provider_6_descriptor(v_1, v_105, v_2), v_1007214 => v_1007212 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007214); cemit_body_cps_provider_6_native_match_descriptor_node_10(v_1007212, v_102)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_1, v_105, v_2}}, False{}, v_1007244 => cemit_body_cps_provider_6_descriptor(v_1, v_105, v_2), v_1007243 => v_1007241 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007243); cemit_body_cps_provider_6_native_match_descriptor_node_10(v_1007241, v_102)}
     case Arena.TermApp{v_112, v_113, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_1, v_112, v_2}}, False{}, v_1007219 => cemit_body_cps_provider_6_descriptor(v_1, v_112, v_2), v_1007218 => v_1007216 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007218); cemit_body_cps_provider_6_native_match_descriptor_node_12(v_1007216, v_2, v_113)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_1, v_112, v_2}}, False{}, v_1007248 => cemit_body_cps_provider_6_descriptor(v_1, v_112, v_2), v_1007247 => v_1007245 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007247); cemit_body_cps_provider_6_native_match_descriptor_node_12(v_1007245, v_2, v_113)}
     case Arena.TermAdt{v_123, v_124, v_125, _, _, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_name{v_1, v_123, v_2, False{}}}, False{}, v_1007223 => cemit_body_cps_provider_6_descriptor_name(v_1, v_123, v_2, False{}), v_1007222 => v_1007220 = cemit_unbox(cps_provider_6_CatalogResult<String>, v_1007222); cemit_body_cps_provider_6_native_match_descriptor_node_14(v_1007220, v_2, v_124, v_125)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_name{v_1, v_123, v_2, False{}}}, False{}, v_1007252 => cemit_body_cps_provider_6_descriptor_name(v_1, v_123, v_2, False{}), v_1007251 => v_1007249 = cemit_unbox(cps_provider_6_CatalogResult<String>, v_1007251); cemit_body_cps_provider_6_native_match_descriptor_node_14(v_1007249, v_2, v_124, v_125)}
     case Arena.TermFill{v_135, v_136, v_137, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptors{v_1, v_136, v_137, v_2}}, False{}, v_1007227 => cemit_body_cps_provider_6_descriptors(v_1, v_136, v_137, v_2), v_1007226 => v_1007224 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007226); cemit_body_cps_provider_6_native_match_descriptor_node_15(v_1007224, v_2, v_135)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptors{v_1, v_136, v_137, v_2}}, False{}, v_1007256 => cemit_body_cps_provider_6_descriptors(v_1, v_136, v_137, v_2), v_1007255 => v_1007253 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007255); cemit_body_cps_provider_6_native_match_descriptor_node_15(v_1007253, v_2, v_135)}
     case Arena.TermPlus{v_145, v_146, v_147, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptors{v_1, v_146, v_147, v_2}}, False{}, v_1007231 => cemit_body_cps_provider_6_descriptors(v_1, v_146, v_147, v_2), v_1007230 => v_1007228 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007230); cemit_body_cps_provider_6_native_match_descriptor_node_16(v_1007228, v_2, v_145)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptors{v_1, v_146, v_147, v_2}}, False{}, v_1007260 => cemit_body_cps_provider_6_descriptors(v_1, v_146, v_147, v_2), v_1007259 => v_1007257 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007259); cemit_body_cps_provider_6_native_match_descriptor_node_16(v_1007257, v_2, v_145)}
     case Arena.TermCtr{v_155, v_156, v_157, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_name{v_1, v_155, v_2, True{}}}, False{}, v_1007235 => cemit_body_cps_provider_6_descriptor_name(v_1, v_155, v_2, True{}), v_1007234 => v_1007232 = cemit_unbox(cps_provider_6_CatalogResult<String>, v_1007234); cemit_body_cps_provider_6_native_match_descriptor_node_18(v_1007232, v_2, v_156, v_157)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_name{v_1, v_155, v_2, True{}}}, False{}, v_1007264 => cemit_body_cps_provider_6_descriptor_name(v_1, v_155, v_2, True{}), v_1007263 => v_1007261 = cemit_unbox(cps_provider_6_CatalogResult<String>, v_1007263); cemit_body_cps_provider_6_native_match_descriptor_node_18(v_1007261, v_2, v_156, v_157)}
     case Arena.TermString{v_164, v_165, _}:
-      v_1007236 = {v_1 : Arena.Arena}
-      v_1007237 = {v_164 : List<&2, U32>}
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_string_names{v_165, v_2}}, False{}, v_1007243 => cemit_body_cps_provider_6_string_names(v_165, v_2), v_1007242 => +v_1007238 = cemit_unbox(Ast.StringLiteralNames, v_1007242); CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_string_descriptor{v_1007237, v_1007238}}, False{}, v_1007241 => cemit_body_cps_provider_6_string_descriptor(v_1007237, v_1007238), v_1007240 => +v_1007239 = cemit_unbox(BIR.Descriptor, v_1007240); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007236, v_1007239}}}}}
+      v_1007265 = {v_1 : Arena.Arena}
+      v_1007266 = {v_164 : List<&2, U32>}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_string_names{v_165, v_2}}, False{}, v_1007272 => cemit_body_cps_provider_6_string_names(v_165, v_2), v_1007271 => +v_1007267 = cemit_unbox(Ast.StringLiteralNames, v_1007271); CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_string_descriptor{v_1007266, v_1007267}}, False{}, v_1007270 => cemit_body_cps_provider_6_string_descriptor(v_1007266, v_1007267), v_1007269 => +v_1007268 = cemit_unbox(BIR.Descriptor, v_1007269); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007265, v_1007268}}}}}
     case Arena.TermMat{_, v_174, v_175, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_1, v_175, v_2}}, False{}, v_1007247 => cemit_body_cps_provider_6_descriptor(v_1, v_175, v_2), v_1007246 => v_1007244 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007246); cemit_body_cps_provider_6_native_match_descriptor_node_20(v_1007244, v_2, v_174)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_1, v_175, v_2}}, False{}, v_1007276 => cemit_body_cps_provider_6_descriptor(v_1, v_175, v_2), v_1007275 => v_1007273 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007275); cemit_body_cps_provider_6_native_match_descriptor_node_20(v_1007273, v_2, v_174)}
     case Arena.TermAbsurd{_}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1, BIR.DescriptorFailure{"bend: runtime fail-stop"}}}}
     case Arena.TermEqual{v_185, v_186, v_187, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_1, v_185, v_2}}, False{}, v_1007251 => cemit_body_cps_provider_6_descriptor(v_1, v_185, v_2), v_1007250 => v_1007248 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007250); cemit_body_cps_provider_6_native_match_descriptor_node_23(v_1007248, v_2, v_186, v_187)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_1, v_185, v_2}}, False{}, v_1007280 => cemit_body_cps_provider_6_descriptor(v_1, v_185, v_2), v_1007279 => v_1007277 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007279); cemit_body_cps_provider_6_native_match_descriptor_node_23(v_1007277, v_2, v_186, v_187)}
     case Arena.TermRefl{_}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1, BIR.DescriptorReflexivity{}}}}
     case Arena.TermRewrite{_, _, v_199, _}:
       cemit_body_cps_provider_6_descriptor(v_1, v_199, v_2)
     case Arena.TermHole{v_204, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_native_match_descriptor_node_24{Arena.name_text(v_1, v_204)}}, False{}, v_1007256 => cemit_body_cps_provider_6_native_match_descriptor_node_24(Arena.name_text(v_1, v_204)), v_1007255 => v_1007254 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007255); CEmitterFinished{CEmitterValue{v_1007254}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_native_match_descriptor_node_24{Arena.name_text(v_1, v_204)}}, False{}, v_1007285 => cemit_body_cps_provider_6_native_match_descriptor_node_24(Arena.name_text(v_1, v_204)), v_1007284 => v_1007283 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007284); CEmitterFinished{CEmitterValue{v_1007283}}}
     case Arena.BodyMatch{v_212, v_213, v_214, v_215, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptors{v_1, v_212, v_213, v_2}}, False{}, v_1007260 => cemit_body_cps_provider_6_descriptors(v_1, v_212, v_213, v_2), v_1007259 => v_1007257 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007259); cemit_body_cps_provider_6_native_match_descriptor_node_26(v_1007257, v_2, v_214, v_215)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptors{v_1, v_212, v_213, v_2}}, False{}, v_1007289 => cemit_body_cps_provider_6_descriptors(v_1, v_212, v_213, v_2), v_1007288 => v_1007286 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007288); cemit_body_cps_provider_6_native_match_descriptor_node_26(v_1007286, v_2, v_214, v_215)}
     case Arena.BodyCase{_, _, v_225, _}:
       cemit_body_cps_provider_6_descriptor(v_1, v_225, v_2)
     case Arena.BodyLocal{v_235, v_236, _, v_238, v_239, v_240, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_patterns{v_1, v_235, v_236, v_2}}, False{}, v_1007265 => cemit_body_cps_provider_6_descriptor_patterns(v_1, v_235, v_236, v_2), v_1007264 => v_1007262 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_1007264); cemit_body_cps_provider_6_native_match_descriptor_node_29(v_1007262, v_2, v_238, v_239, v_240)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_patterns{v_1, v_235, v_236, v_2}}, False{}, v_1007294 => cemit_body_cps_provider_6_descriptor_patterns(v_1, v_235, v_236, v_2), v_1007293 => v_1007291 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_1007293); cemit_body_cps_provider_6_native_match_descriptor_node_29(v_1007291, v_2, v_238, v_239, v_240)}
     case Arena.BodyReply{v_246, _}:
       cemit_body_cps_provider_6_descriptor(v_1, v_246, v_2)
 
 def cemit_body_cps_provider_6_native_match_descriptor_node_30(v_0: Arena.Node, v_1: Arena.Arena, v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
-  cemit_match_1654(v_0, v_1, v_2)
+  cemit_match_1660(v_0, v_1, v_2)
 
 def cemit_body_cps_provider_6_descriptor_node(v_0: Arena.Arena, v_1: Arena.Node, v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   cemit_body_cps_provider_6_native_match_descriptor_node_30(v_1, v_0, v_2)
@@ -18240,30 +18301,30 @@ def cemit_body_cps_provider_6_native_match_descriptor_cases_0(v_2: cps_provider_
 def cemit_body_cps_provider_6_native_match_descriptor_cases_1(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_3: U32, v_5: U32, v_6: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_1:
     case cps_provider_6_CatalogResult{v_11, v_12}:
-      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_descriptor_cases{v_11, IR.arena_range_index(v_3, 1), U32.sub(v_5, 1), v_6}}, v_1007270 => v_1007268 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007270); cemit_body_cps_provider_6_native_match_descriptor_cases_0(v_1007268, v_12)}
+      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_descriptor_cases{v_11, IR.arena_range_index(v_3, 1), U32.sub(v_5, 1), v_6}}, v_1007299 => v_1007297 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007299); cemit_body_cps_provider_6_native_match_descriptor_cases_0(v_1007297, v_12)}
 
-def cemit_match_1657(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Node>, +v_8: Scope.ArenaGlobalScope, v_5: U32, v_7: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
+def cemit_match_1663(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Node>, +v_8: Scope.ArenaGlobalScope, v_5: U32, v_7: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_3:
     case (v_13, v_14):
-      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_descriptor_case{v_13, v_14, v_8}}, v_1007273 => v_1007271 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007273); cemit_body_cps_provider_6_native_match_descriptor_cases_1(v_1007271, v_5, v_7, v_8)}
+      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_descriptor_case{v_13, v_14, v_8}}, v_1007302 => v_1007300 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007302); cemit_body_cps_provider_6_native_match_descriptor_cases_1(v_1007300, v_5, v_7, v_8)}
 
 def cemit_body_cps_provider_6_native_match_descriptor_cases_2(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Node>, v_5: U32, v_7: U32, v_8: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
-  cemit_match_1657(v_3, v_8, v_5, v_7)
+  cemit_match_1663(v_3, v_8, v_5, v_7)
 
 def cemit_body_cps_provider_6_native_match_descriptor_cases_3(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_6: U32, v_8: U32, v_9: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_4:
     case (v_14, v_15):
-      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_native_match_descriptor_cases_2{Arena.get_node(v_14, v_15), v_6, v_8, v_9}}, False{}, v_1007277 => cemit_body_cps_provider_6_native_match_descriptor_cases_2(Arena.get_node(v_14, v_15), v_6, v_8, v_9), v_1007276 => v_1007275 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007276); CEmitterFinished{CEmitterValue{v_1007275}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_native_match_descriptor_cases_2{Arena.get_node(v_14, v_15), v_6, v_8, v_9}}, False{}, v_1007306 => cemit_body_cps_provider_6_native_match_descriptor_cases_2(Arena.get_node(v_14, v_15), v_6, v_8, v_9), v_1007305 => v_1007304 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007305); CEmitterFinished{CEmitterValue{v_1007304}}}
 
-def cemit_match_1659(+v_1: U32, v_2: Arena.Arena, +v_4: U32, v_5: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
+def cemit_match_1665(+v_1: U32, v_2: Arena.Arena, +v_4: U32, v_5: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_1:
     case 0:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_2, []}}}
     case _:
-      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_native_match_descriptor_cases_3{Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5}}, False{}, v_1007281 => cemit_body_cps_provider_6_native_match_descriptor_cases_3(Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5), v_1007280 => v_1007279 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007280); CEmitterFinished{CEmitterValue{v_1007279}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_native_match_descriptor_cases_3{Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5}}, False{}, v_1007310 => cemit_body_cps_provider_6_native_match_descriptor_cases_3(Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5), v_1007309 => v_1007308 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007309); CEmitterFinished{CEmitterValue{v_1007308}}}
 
 def cemit_body_cps_provider_6_native_match_descriptor_cases_4(v_1: U32, v_2: Arena.Arena, v_4: U32, v_5: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
-  cemit_match_1659(v_1, v_2, v_4, v_5)
+  cemit_match_1665(v_1, v_2, v_4, v_5)
 
 def cemit_body_cps_provider_6_descriptor_cases(v_0: Arena.Arena, v_2: U32, v_4: U32, v_5: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
   cemit_body_cps_provider_6_native_match_descriptor_cases_4(v_4, v_0, v_2, v_5)
@@ -18273,79 +18334,79 @@ def cemit_body_cps_provider_6_native_match_descriptor_case_0(v_1: cps_provider_6
     case cps_provider_6_CatalogResult{v_7, v_8}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_7, BIR.DescriptorCase{v_3, v_8}}}}
 
-def cemit_match_1661(v_2: cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_5: U32, v_3: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
+def cemit_match_1667(v_2: cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_5: U32, v_3: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_9, v_10}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_9, v_5, v_3}}, False{}, v_1007286 => cemit_body_cps_provider_6_descriptor(v_9, v_5, v_3), v_1007285 => v_1007283 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007285); cemit_body_cps_provider_6_native_match_descriptor_case_0(v_1007283, v_10)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_9, v_5, v_3}}, False{}, v_1007315 => cemit_body_cps_provider_6_descriptor(v_9, v_5, v_3), v_1007314 => v_1007312 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007314); cemit_body_cps_provider_6_native_match_descriptor_case_0(v_1007312, v_10)}
 
 def cemit_body_cps_provider_6_native_match_descriptor_case_1(v_2: cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_3: Scope.ArenaGlobalScope, v_5: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
-  cemit_match_1661(v_2, v_5, v_3)
+  cemit_match_1667(v_2, v_5, v_3)
 
-def cemit_match_1662(v_0: Arena.Node, v_1: Arena.Arena, +v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
+def cemit_match_1668(v_0: Arena.Node, v_1: Arena.Arena, +v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_0:
     case Arena.BodyCase{v_8, v_9, v_10, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_patterns{v_1, v_8, v_9, v_2}}, False{}, v_1007290 => cemit_body_cps_provider_6_descriptor_patterns(v_1, v_8, v_9, v_2), v_1007289 => v_1007287 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_1007289); cemit_body_cps_provider_6_native_match_descriptor_case_1(v_1007287, v_2, v_10)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_patterns{v_1, v_8, v_9, v_2}}, False{}, v_1007319 => cemit_body_cps_provider_6_descriptor_patterns(v_1, v_8, v_9, v_2), v_1007318 => v_1007316 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_1007318); cemit_body_cps_provider_6_native_match_descriptor_case_1(v_1007316, v_2, v_10)}
     case _:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1, BIR.DescriptorFailure{"bend: malformed type match"}}}}
 
 def cemit_body_cps_provider_6_native_match_descriptor_case_2(v_0: Arena.Node, v_1: Arena.Arena, v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
-  cemit_match_1662(v_0, v_1, v_2)
+  cemit_match_1668(v_0, v_1, v_2)
 
 def cemit_body_cps_provider_6_descriptor_case(v_0: Arena.Arena, v_1: Arena.Node, v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   cemit_body_cps_provider_6_native_match_descriptor_case_2(v_1, v_0, v_2)
 
-def cemit_match_1663(v_2: cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_6: Arena.Binder, v_4: U32, v_5: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
+def cemit_match_1669(v_2: cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_6: Arena.Binder, v_4: U32, v_5: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_11, v_12}:
-      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_telescope_binder{v_11, v_6, v_4, v_5, v_12}}, v_1007293 => v_1007292 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_1007293); CEmitterFinished{CEmitterValue{v_1007292}}}
+      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_telescope_binder{v_11, v_6, v_4, v_5, v_12}}, v_1007322 => v_1007321 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_1007322); CEmitterFinished{CEmitterValue{v_1007321}}}
 
 def cemit_body_cps_provider_6_native_match_telescope_0(v_2: cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_4: U32, v_5: Scope.ArenaGlobalScope, v_6: Arena.Binder) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
-  cemit_match_1663(v_2, v_6, v_4, v_5)
+  cemit_match_1669(v_2, v_6, v_4, v_5)
 
-def cemit_match_1664(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_8: U32, v_10: U32, +v_5: U32, +v_6: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
+def cemit_match_1670(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_8: U32, v_10: U32, +v_5: U32, +v_6: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
   match v_3:
     case (v_15, v_16):
-      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_telescope{v_15, IR.Words{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, U32.add(v_5, 1), v_6}}, v_1007296 => v_1007294 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_1007296); cemit_body_cps_provider_6_native_match_telescope_0(v_1007294, v_5, v_6, v_16)}
+      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_telescope{v_15, IR.Words{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, U32.add(v_5, 1), v_6}}, v_1007325 => v_1007323 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_1007325); cemit_body_cps_provider_6_native_match_telescope_0(v_1007323, v_5, v_6, v_16)}
 
 def cemit_body_cps_provider_6_native_match_telescope_1(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_5: U32, v_6: Scope.ArenaGlobalScope, v_8: U32, v_10: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
-  cemit_match_1664(v_3, v_8, v_10, v_5, v_6)
+  cemit_match_1670(v_3, v_8, v_10, v_5, v_6)
 
 def cemit_body_cps_provider_6_native_match_telescope_2(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_6: U32, v_7: Scope.ArenaGlobalScope, v_9: U32, v_11: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
   match v_4:
     case (v_16, v_17):
-      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_native_match_telescope_1{Arena.get_binder(v_16, v_17), v_6, v_7, v_9, v_11}}, False{}, v_1007300 => cemit_body_cps_provider_6_native_match_telescope_1(Arena.get_binder(v_16, v_17), v_6, v_7, v_9, v_11), v_1007299 => v_1007298 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_1007299); CEmitterFinished{CEmitterValue{v_1007298}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_native_match_telescope_1{Arena.get_binder(v_16, v_17), v_6, v_7, v_9, v_11}}, False{}, v_1007329 => cemit_body_cps_provider_6_native_match_telescope_1(Arena.get_binder(v_16, v_17), v_6, v_7, v_9, v_11), v_1007328 => v_1007327 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_1007328); CEmitterFinished{CEmitterValue{v_1007327}}}
 
 def cemit_body_cps_provider_6_native_match_telescope_3(v_0: IR.Words, v_1: Arena.Arena, v_3: U32, v_4: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
   match v_0:
     case IR.Words{v_8, 0}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1, cps_provider_6_Telescope{[], [], [], True{}}}}}
     case IR.Words{+v_11, v_12}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_native_match_telescope_2{Arena.word(v_1, IR.arena_tape_offset(v_11)), v_3, v_4, v_11, v_12}}, False{}, v_1007304 => cemit_body_cps_provider_6_native_match_telescope_2(Arena.word(v_1, IR.arena_tape_offset(v_11)), v_3, v_4, v_11, v_12), v_1007303 => v_1007302 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_1007303); CEmitterFinished{CEmitterValue{v_1007302}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_native_match_telescope_2{Arena.word(v_1, IR.arena_tape_offset(v_11)), v_3, v_4, v_11, v_12}}, False{}, v_1007333 => cemit_body_cps_provider_6_native_match_telescope_2(Arena.word(v_1, IR.arena_tape_offset(v_11)), v_3, v_4, v_11, v_12), v_1007332 => v_1007331 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_1007332); CEmitterFinished{CEmitterValue{v_1007331}}}
 
 def cemit_body_cps_provider_6_telescope(v_0: Arena.Arena, v_1: IR.Words, v_3: U32, v_4: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
   cemit_body_cps_provider_6_native_match_telescope_3(v_1, v_0, v_3, v_4)
 
-def cemit_continuation_1667(+v_23: BIR.Quantity, v_8: List<&2, BIR.Quantity>, v_14: String, v_1007306: Arena.Arena, +v_1007307: List<&2, BIR.Parameter>, v_20: BIR.Descriptor, v_10: List<&2, BIR.DescriptorField>, v_12: Bool) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
-  v_1007308 = {v_23 <> v_8 : List<&2, BIR.Quantity>}
-  CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_field_key{v_14, v_23}}, False{}, v_1007311 => cemit_body_cps_provider_6_field_key(v_14, v_23), v_1007310 => +v_1007309 = cemit_unbox(Maybe<&2, String>, v_1007310); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007306, cps_provider_6_Telescope{v_1007307, v_1007308, BIR.DescriptorField{v_1007309, v_23, v_20} <> v_10, v_12}}}}}
+def cemit_continuation_1673(+v_23: BIR.Quantity, v_8: List<&2, BIR.Quantity>, v_14: String, v_1007335: Arena.Arena, +v_1007336: List<&2, BIR.Parameter>, v_20: BIR.Descriptor, v_10: List<&2, BIR.DescriptorField>, v_12: Bool) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
+  v_1007337 = {v_23 <> v_8 : List<&2, BIR.Quantity>}
+  CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_field_key{v_14, v_23}}, False{}, v_1007340 => cemit_body_cps_provider_6_field_key(v_14, v_23), v_1007339 => +v_1007338 = cemit_unbox(Maybe<&2, String>, v_1007339); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007335, cps_provider_6_Telescope{v_1007336, v_1007337, BIR.DescriptorField{v_1007338, v_23, v_20} <> v_10, v_12}}}}}
 
-def cemit_match_1668(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_4: Ast.Quantity, v_3: U32, v_6: List<&2, BIR.Parameter>, v_8: List<&2, BIR.Quantity>, v_14: String, v_10: List<&2, BIR.DescriptorField>, v_12: Bool) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
+def cemit_match_1674(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_4: Ast.Quantity, v_3: U32, v_6: List<&2, BIR.Parameter>, v_8: List<&2, BIR.Quantity>, v_14: String, v_10: List<&2, BIR.DescriptorField>, v_12: Bool) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
   match v_1:
     case cps_provider_6_CatalogResult{v_19, v_20}:
       +v_23 = cemit_pure_cps_provider_6_quantity(v_4)
-      v_1007306 = {v_19 : Arena.Arena}
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_parameter{v_3, v_23, v_6}}, False{}, v_1007313 => cemit_body_cps_provider_6_parameter(v_3, v_23, v_6), v_1007312 => +v_1007307 = cemit_unbox(List<&2, BIR.Parameter>, v_1007312); cemit_continuation_1667(v_23, v_8, v_14, v_1007306, v_1007307, v_20, v_10, v_12)}
+      v_1007335 = {v_19 : Arena.Arena}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_parameter{v_3, v_23, v_6}}, False{}, v_1007342 => cemit_body_cps_provider_6_parameter(v_3, v_23, v_6), v_1007341 => +v_1007336 = cemit_unbox(List<&2, BIR.Parameter>, v_1007341); cemit_continuation_1673(v_23, v_8, v_14, v_1007335, v_1007336, v_20, v_10, v_12)}
 
 def cemit_body_cps_provider_6_native_match_telescope_binder_0(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_3: U32, v_4: Ast.Quantity, v_6: List<&2, BIR.Parameter>, v_8: List<&2, BIR.Quantity>, v_10: List<&2, BIR.DescriptorField>, v_12: Bool, v_14: String) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
-  cemit_match_1668(v_1, v_4, v_3, v_6, v_8, v_14, v_10, v_12)
+  cemit_match_1674(v_1, v_4, v_3, v_6, v_8, v_14, v_10, v_12)
 
-def cemit_match_1669(v_4: Sigma<&1, &1, Arena.Arena, _ => String>, v_10: U32, v_7: Scope.ArenaGlobalScope, v_6: U32, v_8: Ast.Quantity, v_12: List<&2, BIR.Parameter>, v_14: List<&2, BIR.Quantity>, v_16: List<&2, BIR.DescriptorField>, v_18: Bool) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
+def cemit_match_1675(v_4: Sigma<&1, &1, Arena.Arena, _ => String>, v_10: U32, v_7: Scope.ArenaGlobalScope, v_6: U32, v_8: Ast.Quantity, v_12: List<&2, BIR.Parameter>, v_14: List<&2, BIR.Quantity>, v_16: List<&2, BIR.DescriptorField>, v_18: Bool) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
   match v_4:
     case (v_23, v_24):
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_23, v_10, v_7}}, False{}, v_1007317 => cemit_body_cps_provider_6_descriptor(v_23, v_10, v_7), v_1007316 => v_1007314 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007316); cemit_body_cps_provider_6_native_match_telescope_binder_0(v_1007314, v_6, v_8, v_12, v_14, v_16, v_18, v_24)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_23, v_10, v_7}}, False{}, v_1007346 => cemit_body_cps_provider_6_descriptor(v_23, v_10, v_7), v_1007345 => v_1007343 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007345); cemit_body_cps_provider_6_native_match_telescope_binder_0(v_1007343, v_6, v_8, v_12, v_14, v_16, v_18, v_24)}
 
 def cemit_body_cps_provider_6_native_match_telescope_binder_1(v_4: Sigma<&1, &1, Arena.Arena, _ => String>, v_6: U32, v_7: Scope.ArenaGlobalScope, v_8: Ast.Quantity, v_10: U32, v_12: List<&2, BIR.Parameter>, v_14: List<&2, BIR.Quantity>, v_16: List<&2, BIR.DescriptorField>, v_18: Bool) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
-  cemit_match_1669(v_4, v_10, v_7, v_6, v_8, v_12, v_14, v_16, v_18)
+  cemit_match_1675(v_4, v_10, v_7, v_6, v_8, v_12, v_14, v_16, v_18)
 
 def cemit_body_cps_provider_6_native_match_telescope_binder_2(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_3: List<&2, BIR.Parameter>, v_5: List<&2, BIR.Quantity>, v_7: List<&2, BIR.DescriptorField>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
   match v_1:
@@ -18355,9 +18416,9 @@ def cemit_body_cps_provider_6_native_match_telescope_binder_2(v_1: cps_provider_
 def cemit_body_cps_provider_6_native_match_telescope_binder_3(v_0: Arena.Binder, v_2: cps_provider_6_Telescope, v_3: Arena.Arena, v_5: U32, v_6: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
   match v_0, v_2:
     case Arena.Binder{v_18, v_19, _, v_21, _}, cps_provider_6_Telescope{v_23, v_24, v_25, v_26}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_native_match_telescope_binder_1{Arena.name_text(v_3, v_19), v_5, v_6, v_18, v_21, v_23, v_24, v_25, v_26}}, False{}, v_1007321 => cemit_body_cps_provider_6_native_match_telescope_binder_1(Arena.name_text(v_3, v_19), v_5, v_6, v_18, v_21, v_23, v_24, v_25, v_26), v_1007320 => v_1007319 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_1007320); CEmitterFinished{CEmitterValue{v_1007319}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_native_match_telescope_binder_1{Arena.name_text(v_3, v_19), v_5, v_6, v_18, v_21, v_23, v_24, v_25, v_26}}, False{}, v_1007350 => cemit_body_cps_provider_6_native_match_telescope_binder_1(Arena.name_text(v_3, v_19), v_5, v_6, v_18, v_21, v_23, v_24, v_25, v_26), v_1007349 => v_1007348 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_1007349); CEmitterFinished{CEmitterValue{v_1007348}}}
     case Arena.TemplateBinder{_, _, v_38, _}, cps_provider_6_Telescope{v_40, v_41, v_42, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_3, v_38, v_6}}, False{}, v_1007325 => cemit_body_cps_provider_6_descriptor(v_3, v_38, v_6), v_1007324 => v_1007322 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007324); cemit_body_cps_provider_6_native_match_telescope_binder_2(v_1007322, v_40, v_41, v_42)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_3, v_38, v_6}}, False{}, v_1007354 => cemit_body_cps_provider_6_descriptor(v_3, v_38, v_6), v_1007353 => v_1007351 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007353); cemit_body_cps_provider_6_native_match_telescope_binder_2(v_1007351, v_40, v_41, v_42)}
 
 def cemit_body_cps_provider_6_telescope_binder(v_0: Arena.Arena, v_1: Arena.Binder, v_3: U32, v_4: Scope.ArenaGlobalScope, v_6: cps_provider_6_Telescope) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
   cemit_body_cps_provider_6_native_match_telescope_binder_3(v_1, v_6, v_0, v_3, v_4)
@@ -18367,31 +18428,31 @@ def cemit_body_cps_provider_6_field_names(v_1: List<&2, BIR.DescriptorField>) ->
     case []:
       CEmitterFinished{CEmitterValue{[]}}
     case BIR.DescriptorField{v_9, _, _} <> v_12:
-      v_1007327 = {v_9 : Maybe<&2, String>}
-      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_field_names{v_12}}, v_1007329 => +v_1007328 = cemit_unbox(List<&2, Maybe<&2, String>>, v_1007329); CEmitterFinished{CEmitterValue{v_1007327 <> v_1007328}}}
+      v_1007356 = {v_9 : Maybe<&2, String>}
+      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_field_names{v_12}}, v_1007358 => +v_1007357 = cemit_unbox(List<&2, Maybe<&2, String>>, v_1007358); CEmitterFinished{CEmitterValue{v_1007356 <> v_1007357}}}
 
 def cemit_body_cps_provider_6_fields_quantities(v_1: List<&2, BIR.DescriptorField>) -> CEmitterProgress<List<&2, BIR.Quantity>>:
   match v_1:
     case []:
       CEmitterFinished{CEmitterValue{[]}}
     case BIR.DescriptorField{_, v_8, _} <> v_10:
-      v_1007330 = {v_8 : BIR.Quantity}
-      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_fields_quantities{v_10}}, v_1007332 => +v_1007331 = cemit_unbox(List<&2, BIR.Quantity>, v_1007332); CEmitterFinished{CEmitterValue{v_1007330 <> v_1007331}}}
+      v_1007359 = {v_8 : BIR.Quantity}
+      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_fields_quantities{v_10}}, v_1007361 => +v_1007360 = cemit_unbox(List<&2, BIR.Quantity>, v_1007361); CEmitterFinished{CEmitterValue{v_1007359 <> v_1007360}}}
 
 def cemit_body_cps_provider_6_base_imports(v_1: List<&2, Ast.ModuleImport>) -> CEmitterProgress<Bool>:
   match v_1:
     case []:
       CEmitterFinished{CEmitterValue{False{}}}
     case Ast.ModuleImport{v_7, _, _} <> v_10:
-      v_1007333 = {String.eq(v_7, "Base") : Bool}
-      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_base_imports{v_10}}, v_1007335 => +v_1007334 = cemit_unbox(Bool, v_1007335); CEmitterFinished{CEmitterValue{Bool.or(v_1007333, v_1007334)}}}
+      v_1007362 = {String.eq(v_7, "Base") : Bool}
+      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_base_imports{v_10}}, v_1007364 => +v_1007363 = cemit_unbox(Bool, v_1007364); CEmitterFinished{CEmitterValue{Bool.or(v_1007362, v_1007363)}}}
 
 def cemit_body_cps_provider_6_base_imported(v_1: List<&2, IR.LoadedModule>) -> CEmitterProgress<Bool>:
   match v_1:
     case []:
       CEmitterFinished{CEmitterValue{False{}}}
     case IR.LoadedModule{_, IR.Module{_, v_10, _}} <> v_12:
-      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_base_imports{v_10}}, False{}, v_1007340 => cemit_body_cps_provider_6_base_imports(v_10), v_1007339 => +v_1007336 = cemit_unbox(Bool, v_1007339); CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_base_imported{v_12}}, v_1007338 => +v_1007337 = cemit_unbox(Bool, v_1007338); CEmitterFinished{CEmitterValue{Bool.or(v_1007336, v_1007337)}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_base_imports{v_10}}, False{}, v_1007369 => cemit_body_cps_provider_6_base_imports(v_10), v_1007368 => +v_1007365 = cemit_unbox(Bool, v_1007368); CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_base_imported{v_12}}, v_1007367 => +v_1007366 = cemit_unbox(Bool, v_1007367); CEmitterFinished{CEmitterValue{Bool.or(v_1007365, v_1007366)}}}}
 
 def cemit_body_cps_provider_6_base_source(+v_1: String, v_3: Bool) -> CEmitterProgress<Bool>:
   CEmitterFinished{CEmitterValue{Bool.and(v_3, Bool.or(String.eq(v_1, "bend2/base.bend"), String.ends_with(v_1, "/bend2/base.bend")))}}
@@ -18404,51 +18465,51 @@ def cemit_body_cps_provider_6_native_marker(v_1: Bool, v_3: String) -> CEmitterP
       CEmitterFinished{CEmitterValue{None{}}}
 
 def cemit_body_cps_provider_6_short_key(v_1: String) -> CEmitterProgress<String>:
-  CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_short_chars{String.to_list(v_1), []}}, v_1007342 => +v_1007341 = cemit_unbox(String, v_1007342); CEmitterFinished{CEmitterValue{v_1007341}}}
+  CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_short_chars{String.to_list(v_1), []}}, v_1007371 => +v_1007370 = cemit_unbox(String, v_1007371); CEmitterFinished{CEmitterValue{v_1007370}}}
 
 def cemit_body_cps_provider_6_short_chars(v_2: List<&2, Char>, v_5: List<&2, Char>) -> CEmitterProgress<String>:
   match v_2:
     case []:
       CEmitterFinished{CEmitterValue{String.from_list(List.reverse(&2, Char, v_5))}}
     case '.' <> v_9:
-      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_short_chars{v_9, []}}, v_1007344 => +v_1007343 = cemit_unbox(String, v_1007344); CEmitterFinished{CEmitterValue{v_1007343}}}
+      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_short_chars{v_9, []}}, v_1007373 => +v_1007372 = cemit_unbox(String, v_1007373); CEmitterFinished{CEmitterValue{v_1007372}}}
     case '/' <> v_12:
-      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_short_chars{v_12, []}}, v_1007346 => +v_1007345 = cemit_unbox(String, v_1007346); CEmitterFinished{CEmitterValue{v_1007345}}}
+      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_short_chars{v_12, []}}, v_1007375 => +v_1007374 = cemit_unbox(String, v_1007375); CEmitterFinished{CEmitterValue{v_1007374}}}
     case v_16 <> v_17:
-      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_short_chars{v_17, v_16 <> v_5}}, v_1007348 => +v_1007347 = cemit_unbox(String, v_1007348); CEmitterFinished{CEmitterValue{v_1007347}}}
+      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_short_chars{v_17, v_16 <> v_5}}, v_1007377 => +v_1007376 = cemit_unbox(String, v_1007377); CEmitterFinished{CEmitterValue{v_1007376}}}
 
 def cemit_body_cps_provider_6_constructor_native(v_1: Bool, v_3: String, v_5: String) -> CEmitterProgress<Maybe<&2, String>>:
   match v_1:
     case True{}:
-      v_1007349 = {v_3 : String}
-      v_1007350 = {"." : String}
-      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_short_key{v_5}}, False{}, v_1007353 => cemit_body_cps_provider_6_short_key(v_5), v_1007352 => +v_1007351 = cemit_unbox(String, v_1007352); CEmitterFinished{CEmitterValue{Some{String.append(v_1007349, String.append(v_1007350, v_1007351))}}}}
+      v_1007378 = {v_3 : String}
+      v_1007379 = {"." : String}
+      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_short_key{v_5}}, False{}, v_1007382 => cemit_body_cps_provider_6_short_key(v_5), v_1007381 => +v_1007380 = cemit_unbox(String, v_1007381); CEmitterFinished{CEmitterValue{Some{String.append(v_1007378, String.append(v_1007379, v_1007380))}}}}
     case False{}:
       CEmitterFinished{CEmitterValue{Some{String.append("Data.", v_5)}}}
 
 def cemit_body_cps_provider_6_primitive_name(v_1: String) -> CEmitterProgress<String>:
-  CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_primitive_chars{String.to_list(String.to_lower(v_1))}}, v_1007355 => +v_1007354 = cemit_unbox(List<&2, Char>, v_1007355); CEmitterFinished{CEmitterValue{String.from_list(v_1007354)}}}
+  CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_primitive_chars{String.to_list(String.to_lower(v_1))}}, v_1007384 => +v_1007383 = cemit_unbox(List<&2, Char>, v_1007384); CEmitterFinished{CEmitterValue{String.from_list(v_1007383)}}}
 
 def cemit_body_cps_provider_6_primitive_chars(v_2: List<&2, Char>) -> CEmitterProgress<List<&2, Char>>:
   match v_2:
     case []:
       CEmitterFinished{CEmitterValue{[]}}
     case '.' <> v_6:
-      v_1007356 = {'_' : Char}
-      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_primitive_chars{v_6}}, v_1007358 => +v_1007357 = cemit_unbox(List<&2, Char>, v_1007358); CEmitterFinished{CEmitterValue{v_1007356 <> v_1007357}}}
+      v_1007385 = {'_' : Char}
+      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_primitive_chars{v_6}}, v_1007387 => +v_1007386 = cemit_unbox(List<&2, Char>, v_1007387); CEmitterFinished{CEmitterValue{v_1007385 <> v_1007386}}}
     case '/' <> v_9:
-      v_1007359 = {'_' : Char}
-      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_primitive_chars{v_9}}, v_1007361 => +v_1007360 = cemit_unbox(List<&2, Char>, v_1007361); CEmitterFinished{CEmitterValue{v_1007359 <> v_1007360}}}
+      v_1007388 = {'_' : Char}
+      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_primitive_chars{v_9}}, v_1007390 => +v_1007389 = cemit_unbox(List<&2, Char>, v_1007390); CEmitterFinished{CEmitterValue{v_1007388 <> v_1007389}}}
     case v_13 <> v_14:
-      v_1007362 = {v_13 : Char}
-      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_primitive_chars{v_14}}, v_1007364 => +v_1007363 = cemit_unbox(List<&2, Char>, v_1007364); CEmitterFinished{CEmitterValue{v_1007362 <> v_1007363}}}
+      v_1007391 = {v_13 : Char}
+      CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_primitive_chars{v_14}}, v_1007393 => +v_1007392 = cemit_unbox(List<&2, Char>, v_1007393); CEmitterFinished{CEmitterValue{v_1007391 <> v_1007392}}}
 
 def cemit_body_cps_provider_6_primitive(v_1: Bool, v_3: String) -> CEmitterProgress<Maybe<&2, BIR.Primitive>>:
   match v_1:
     case False{}:
       CEmitterFinished{CEmitterValue{None{}}}
     case True{}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_primitive_name{v_3}}, False{}, v_1007369 => cemit_body_cps_provider_6_primitive_name(v_3), v_1007368 => +v_1007365 = cemit_unbox(String, v_1007368); CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_primitive_named{v_1007365}}, v_1007367 => +v_1007366 = cemit_unbox(Maybe<&2, BIR.Primitive>, v_1007367); CEmitterFinished{CEmitterValue{v_1007366}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_primitive_name{v_3}}, False{}, v_1007398 => cemit_body_cps_provider_6_primitive_name(v_3), v_1007397 => +v_1007394 = cemit_unbox(String, v_1007397); CEmitterPending{CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_primitive_named{v_1007394}}, v_1007396 => +v_1007395 = cemit_unbox(Maybe<&2, BIR.Primitive>, v_1007396); CEmitterFinished{CEmitterValue{v_1007395}}}}
 
 def cemit_body_cps_provider_6_primitive_named(v_1: String) -> CEmitterProgress<Maybe<&2, BIR.Primitive>>:
   match v_1:
@@ -18634,12 +18695,12 @@ def cemit_body_cps_provider_6_constructor_key(v_1: cps_provider_6_Registry, v_3:
       CEmitterFinished{CEmitterValue{IndexLookup.find(cps_provider_6_Constructor, v_9, v_3)}}
 
 def cemit_body_cps_provider_6_lookup_definition(v_1: cps_provider_6_Registry, v_2: IR.Symbol) -> CEmitterProgress<Maybe<&2, cps_provider_6_DefinitionHeader>>:
-  v_1007370 = {v_1 : cps_provider_6_Registry}
-  CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_symbol_key{v_2}}, False{}, v_1007374 => cemit_body_cps_provider_6_symbol_key(v_2), v_1007373 => +v_1007371 = cemit_unbox(String, v_1007373); cemit_body_cps_provider_6_definition_key(v_1007370, v_1007371)}
+  v_1007399 = {v_1 : cps_provider_6_Registry}
+  CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_symbol_key{v_2}}, False{}, v_1007403 => cemit_body_cps_provider_6_symbol_key(v_2), v_1007402 => +v_1007400 = cemit_unbox(String, v_1007402); cemit_body_cps_provider_6_definition_key(v_1007399, v_1007400)}
 
 def cemit_body_cps_provider_6_lookup_constructor(v_1: cps_provider_6_Registry, v_2: IR.Symbol) -> CEmitterProgress<Maybe<&2, cps_provider_6_Constructor>>:
-  v_1007375 = {v_1 : cps_provider_6_Registry}
-  CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_symbol_key{v_2}}, False{}, v_1007379 => cemit_body_cps_provider_6_symbol_key(v_2), v_1007378 => +v_1007376 = cemit_unbox(String, v_1007378); cemit_body_cps_provider_6_constructor_key(v_1007375, v_1007376)}
+  v_1007404 = {v_1 : cps_provider_6_Registry}
+  CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_symbol_key{v_2}}, False{}, v_1007408 => cemit_body_cps_provider_6_symbol_key(v_2), v_1007407 => +v_1007405 = cemit_unbox(String, v_1007407); cemit_body_cps_provider_6_constructor_key(v_1007404, v_1007405)}
 
 def cemit_body_cps_provider_6_get_definitions(v_1: cps_provider_6_Catalog) -> CEmitterProgress<List<&2, cps_provider_6_Definition>>:
   CEmitterFinished{CEmitterValue{cemit_pure_cps_provider_6_get_definitions(v_1)}}
@@ -18662,7 +18723,7 @@ def cemit_body_cps_provider_6_get_next_code(v_1: cps_provider_6_Catalog) -> CEmi
 def cemit_body_cps_provider_6_get_ending(v_1: cps_provider_6_Catalog) -> CEmitterProgress<BIR.Ending>:
   CEmitterFinished{CEmitterValue{cemit_pure_cps_provider_6_get_ending(v_1)}}
 
-def cemit_match_1684(v_2: Maybe<&2, cps_provider_6_Definition>, +v_9: Map<&2, cps_provider_6_Definition>, +v_4: String, v_6: cps_provider_6_Definition) -> CEmitterProgress<Map<&2, cps_provider_6_Definition>>:
+def cemit_match_1690(v_2: Maybe<&2, cps_provider_6_Definition>, +v_9: Map<&2, cps_provider_6_Definition>, +v_4: String, v_6: cps_provider_6_Definition) -> CEmitterProgress<Map<&2, cps_provider_6_Definition>>:
   match v_2:
     case Some{_}:
       CEmitterFinished{CEmitterValue{v_9}}
@@ -18670,12 +18731,12 @@ def cemit_match_1684(v_2: Maybe<&2, cps_provider_6_Definition>, +v_9: Map<&2, cp
       CEmitterFinished{CEmitterValue{Map.set(&2, cps_provider_6_Definition, v_9, v_4, v_6)}}
 
 def cemit_body_cps_provider_6_native_match_insert_definition_0(v_2: Maybe<&2, cps_provider_6_Definition>, +v_4: String, v_6: cps_provider_6_Definition, +v_9: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<Map<&2, cps_provider_6_Definition>>:
-  cemit_match_1684(v_2, v_9, v_4, v_6)
+  cemit_match_1690(v_2, v_9, v_4, v_6)
 
 def cemit_body_cps_provider_6_insert_definition(+v_1: String, v_3: cps_provider_6_Definition, +v_6: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<Map<&2, cps_provider_6_Definition>>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_native_match_insert_definition_0{IndexLookup.find(cps_provider_6_Definition, v_6, v_1), v_1, v_3, v_6}}, False{}, v_1007382 => cemit_body_cps_provider_6_native_match_insert_definition_0(IndexLookup.find(cps_provider_6_Definition, v_6, v_1), v_1, v_3, v_6), v_1007381 => +v_1007380 = cemit_unbox(Map<&2, cps_provider_6_Definition>, v_1007381); CEmitterFinished{CEmitterValue{v_1007380}}}
+  CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_native_match_insert_definition_0{IndexLookup.find(cps_provider_6_Definition, v_6, v_1), v_1, v_3, v_6}}, False{}, v_1007411 => cemit_body_cps_provider_6_native_match_insert_definition_0(IndexLookup.find(cps_provider_6_Definition, v_6, v_1), v_1, v_3, v_6), v_1007410 => +v_1007409 = cemit_unbox(Map<&2, cps_provider_6_Definition>, v_1007410); CEmitterFinished{CEmitterValue{v_1007409}}}
 
-def cemit_match_1685(v_2: Maybe<&2, cps_provider_6_Constructor>, +v_9: Map<&2, cps_provider_6_Constructor>, +v_4: String, v_6: cps_provider_6_Constructor) -> CEmitterProgress<Map<&2, cps_provider_6_Constructor>>:
+def cemit_match_1691(v_2: Maybe<&2, cps_provider_6_Constructor>, +v_9: Map<&2, cps_provider_6_Constructor>, +v_4: String, v_6: cps_provider_6_Constructor) -> CEmitterProgress<Map<&2, cps_provider_6_Constructor>>:
   match v_2:
     case Some{_}:
       CEmitterFinished{CEmitterValue{v_9}}
@@ -18683,10 +18744,10 @@ def cemit_match_1685(v_2: Maybe<&2, cps_provider_6_Constructor>, +v_9: Map<&2, c
       CEmitterFinished{CEmitterValue{Map.set(&2, cps_provider_6_Constructor, v_9, v_4, v_6)}}
 
 def cemit_body_cps_provider_6_native_match_insert_constructor_0(v_2: Maybe<&2, cps_provider_6_Constructor>, +v_4: String, v_6: cps_provider_6_Constructor, +v_9: Map<&2, cps_provider_6_Constructor>) -> CEmitterProgress<Map<&2, cps_provider_6_Constructor>>:
-  cemit_match_1685(v_2, v_9, v_4, v_6)
+  cemit_match_1691(v_2, v_9, v_4, v_6)
 
 def cemit_body_cps_provider_6_insert_constructor(+v_1: String, v_3: cps_provider_6_Constructor, +v_6: Map<&2, cps_provider_6_Constructor>) -> CEmitterProgress<Map<&2, cps_provider_6_Constructor>>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_native_match_insert_constructor_0{IndexLookup.find(cps_provider_6_Constructor, v_6, v_1), v_1, v_3, v_6}}, False{}, v_1007385 => cemit_body_cps_provider_6_native_match_insert_constructor_0(IndexLookup.find(cps_provider_6_Constructor, v_6, v_1), v_1, v_3, v_6), v_1007384 => +v_1007383 = cemit_unbox(Map<&2, cps_provider_6_Constructor>, v_1007384); CEmitterFinished{CEmitterValue{v_1007383}}}
+  CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_native_match_insert_constructor_0{IndexLookup.find(cps_provider_6_Constructor, v_6, v_1), v_1, v_3, v_6}}, False{}, v_1007414 => cemit_body_cps_provider_6_native_match_insert_constructor_0(IndexLookup.find(cps_provider_6_Constructor, v_6, v_1), v_1, v_3, v_6), v_1007413 => +v_1007412 = cemit_unbox(Map<&2, cps_provider_6_Constructor>, v_1007413); CEmitterFinished{CEmitterValue{v_1007412}}}
 
 def cemit_body_cps_provider_6_normalize_descriptor_value(v_0: BIR.Descriptor, +v_2: cps_provider_5_NfContext) -> CEmitterProgress<BIR.Descriptor>:
   cemit_body_cps_provider_5_normalize_in(v_2, v_0)
@@ -18696,42 +18757,42 @@ def cemit_body_cps_provider_6_normalize_descriptors(v_1: List<&2, BIR.Descriptor
     case []:
       CEmitterFinished{CEmitterValue{[]}}
     case +v_7 <> v_8:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_normalize_descriptor_value{v_7, v_3}}, False{}, v_1007391 => cemit_body_cps_provider_6_normalize_descriptor_value(v_7, v_3), v_1007390 => +v_1007387 = cemit_unbox(BIR.Descriptor, v_1007390); CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_normalize_descriptors{v_8, v_3}}, v_1007389 => +v_1007388 = cemit_unbox(List<&2, BIR.Descriptor>, v_1007389); CEmitterFinished{CEmitterValue{v_1007387 <> v_1007388}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_normalize_descriptor_value{v_7, v_3}}, False{}, v_1007420 => cemit_body_cps_provider_6_normalize_descriptor_value(v_7, v_3), v_1007419 => +v_1007416 = cemit_unbox(BIR.Descriptor, v_1007419); CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_normalize_descriptors{v_8, v_3}}, v_1007418 => +v_1007417 = cemit_unbox(List<&2, BIR.Descriptor>, v_1007418); CEmitterFinished{CEmitterValue{v_1007416 <> v_1007417}}}}
 
 def cemit_body_cps_provider_6_normalize_foreign(v_2: Maybe<&2, cps_provider_6_Foreign>, +v_4: cps_provider_5_NfContext) -> CEmitterProgress<Maybe<&2, cps_provider_6_Foreign>>:
   match v_2:
     case None{}:
       CEmitterFinished{CEmitterValue{None{}}}
     case Some{cps_provider_6_Foreign{v_13, v_14, v_15, v_16, v_17, v_18}}:
-      v_1007392 = {v_13 : String}
-      v_1007393 = {v_14 : String}
-      v_1007394 = {v_15 : List<&2, String>}
-      v_1007395 = {v_16 : Ast.SourceSpan}
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_normalize_descriptors{v_17, v_4}}, False{}, v_1007401 => cemit_body_cps_provider_6_normalize_descriptors(v_17, v_4), v_1007400 => +v_1007396 = cemit_unbox(List<&2, BIR.Descriptor>, v_1007400); CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_normalize_descriptor_value{v_18, v_4}}, False{}, v_1007399 => cemit_body_cps_provider_6_normalize_descriptor_value(v_18, v_4), v_1007398 => +v_1007397 = cemit_unbox(BIR.Descriptor, v_1007398); CEmitterFinished{CEmitterValue{Some{cps_provider_6_Foreign{v_1007392, v_1007393, v_1007394, v_1007395, v_1007396, v_1007397}}}}}}
+      v_1007421 = {v_13 : String}
+      v_1007422 = {v_14 : String}
+      v_1007423 = {v_15 : List<&2, String>}
+      v_1007424 = {v_16 : Ast.SourceSpan}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_normalize_descriptors{v_17, v_4}}, False{}, v_1007430 => cemit_body_cps_provider_6_normalize_descriptors(v_17, v_4), v_1007429 => +v_1007425 = cemit_unbox(List<&2, BIR.Descriptor>, v_1007429); CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_normalize_descriptor_value{v_18, v_4}}, False{}, v_1007428 => cemit_body_cps_provider_6_normalize_descriptor_value(v_18, v_4), v_1007427 => +v_1007426 = cemit_unbox(BIR.Descriptor, v_1007427); CEmitterFinished{CEmitterValue{Some{cps_provider_6_Foreign{v_1007421, v_1007422, v_1007423, v_1007424, v_1007425, v_1007426}}}}}}
 
 def cemit_body_cps_provider_6_normalize_foreign_header(v_1: cps_provider_6_DefinitionHeader, +v_3: cps_provider_5_NfContext) -> CEmitterProgress<cps_provider_6_DefinitionHeader>:
   match v_1:
     case cps_provider_6_DefinitionHeader{v_14, v_15, v_16, v_17, v_18, v_19, v_20, v_21, v_22}:
-      v_1007402 = {v_14 : IR.Symbol}
-      v_1007403 = {v_15 : String}
-      v_1007404 = {v_16 : U32}
-      v_1007405 = {v_17 : List<&2, BIR.Parameter>}
-      v_1007406 = {v_18 : List<&2, BIR.Quantity>}
-      v_1007407 = {v_19 : Bool}
-      v_1007408 = {v_20 : Maybe<&2, BIR.Primitive>}
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_normalize_foreign{v_21, v_3}}, False{}, v_1007411 => cemit_body_cps_provider_6_normalize_foreign(v_21, v_3), v_1007410 => +v_1007409 = cemit_unbox(Maybe<&2, cps_provider_6_Foreign>, v_1007410); CEmitterFinished{CEmitterValue{cps_provider_6_DefinitionHeader{v_1007402, v_1007403, v_1007404, v_1007405, v_1007406, v_1007407, v_1007408, v_1007409, v_22}}}}
+      v_1007431 = {v_14 : IR.Symbol}
+      v_1007432 = {v_15 : String}
+      v_1007433 = {v_16 : U32}
+      v_1007434 = {v_17 : List<&2, BIR.Parameter>}
+      v_1007435 = {v_18 : List<&2, BIR.Quantity>}
+      v_1007436 = {v_19 : Bool}
+      v_1007437 = {v_20 : Maybe<&2, BIR.Primitive>}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_normalize_foreign{v_21, v_3}}, False{}, v_1007440 => cemit_body_cps_provider_6_normalize_foreign(v_21, v_3), v_1007439 => +v_1007438 = cemit_unbox(Maybe<&2, cps_provider_6_Foreign>, v_1007439); CEmitterFinished{CEmitterValue{cps_provider_6_DefinitionHeader{v_1007431, v_1007432, v_1007433, v_1007434, v_1007435, v_1007436, v_1007437, v_1007438, v_22}}}}
 
 def cemit_body_cps_provider_6_normalize_foreign_definition(v_1: cps_provider_6_Definition, +v_3: cps_provider_5_NfContext) -> CEmitterProgress<cps_provider_6_Definition>:
   match v_1:
     case cps_provider_6_Definition{v_13, v_14, v_15, v_16, v_17, v_18, v_19, v_20}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_normalize_foreign_header{v_13, v_3}}, False{}, v_1007414 => cemit_body_cps_provider_6_normalize_foreign_header(v_13, v_3), v_1007413 => +v_1007412 = cemit_unbox(cps_provider_6_DefinitionHeader, v_1007413); CEmitterFinished{CEmitterValue{cps_provider_6_Definition{v_1007412, v_14, v_15, v_16, v_17, v_18, v_19, v_20}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_normalize_foreign_header{v_13, v_3}}, False{}, v_1007443 => cemit_body_cps_provider_6_normalize_foreign_header(v_13, v_3), v_1007442 => +v_1007441 = cemit_unbox(cps_provider_6_DefinitionHeader, v_1007442); CEmitterFinished{CEmitterValue{cps_provider_6_Definition{v_1007441, v_14, v_15, v_16, v_17, v_18, v_19, v_20}}}}
 
 def cemit_body_cps_provider_6_normalize_foreign_definitions(v_2: List<&2, cps_provider_6_Definition>, +v_4: cps_provider_5_NfContext) -> CEmitterProgress<List<&2, cps_provider_6_Definition>>:
   match v_2:
     case []:
       CEmitterFinished{CEmitterValue{[]}}
     case +v_9 <> v_10:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_normalize_foreign_definition{v_9, v_4}}, False{}, v_1007419 => cemit_body_cps_provider_6_normalize_foreign_definition(v_9, v_4), v_1007418 => +v_1007415 = cemit_unbox(cps_provider_6_Definition, v_1007418); CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_normalize_foreign_definitions{v_10, v_4}}, v_1007417 => +v_1007416 = cemit_unbox(List<&2, cps_provider_6_Definition>, v_1007417); CEmitterFinished{CEmitterValue{v_1007415 <> v_1007416}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_normalize_foreign_definition{v_9, v_4}}, False{}, v_1007448 => cemit_body_cps_provider_6_normalize_foreign_definition(v_9, v_4), v_1007447 => +v_1007444 = cemit_unbox(cps_provider_6_Definition, v_1007447); CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_normalize_foreign_definitions{v_10, v_4}}, v_1007446 => +v_1007445 = cemit_unbox(List<&2, cps_provider_6_Definition>, v_1007446); CEmitterFinished{CEmitterValue{v_1007444 <> v_1007445}}}}
 
 def cemit_body_cps_provider_6_export_entry(v_2: Maybe<&2, cps_provider_6_DefinitionHeader>) -> CEmitterProgress<Maybe<&2, BIR.Entry>>:
   match v_2:
@@ -18740,146 +18801,146 @@ def cemit_body_cps_provider_6_export_entry(v_2: Maybe<&2, cps_provider_6_Definit
     case _:
       CEmitterFinished{CEmitterValue{None{}}}
 
-def cemit_match_1692(v_1007420: Bool, +v_9: cps_provider_6_Definition, v_1: String, v_10: List<&2, cps_provider_6_Definition>) -> CEmitterProgress<Maybe<&2, cps_provider_6_Definition>>:
-  match v_1007420:
+def cemit_match_1698(v_1007449: Bool, +v_9: cps_provider_6_Definition, v_1: String, v_10: List<&2, cps_provider_6_Definition>) -> CEmitterProgress<Maybe<&2, cps_provider_6_Definition>>:
+  match v_1007449:
     case True{}:
       CEmitterFinished{CEmitterValue{Some{v_9}}}
     case False{}:
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_export_definition{v_1, v_10}}, v_1007422 => +v_1007421 = cemit_unbox(Maybe<&2, cps_provider_6_Definition>, v_1007422); CEmitterFinished{CEmitterValue{v_1007421}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_export_definition{v_1, v_10}}, v_1007451 => +v_1007450 = cemit_unbox(Maybe<&2, cps_provider_6_Definition>, v_1007451); CEmitterFinished{CEmitterValue{v_1007450}}}
 
-def cemit_match_1693(+v_9: cps_provider_6_Definition, +v_1: String, v_10: List<&2, cps_provider_6_Definition>) -> CEmitterProgress<Maybe<&2, cps_provider_6_Definition>>:
+def cemit_match_1699(+v_9: cps_provider_6_Definition, +v_1: String, v_10: List<&2, cps_provider_6_Definition>) -> CEmitterProgress<Maybe<&2, cps_provider_6_Definition>>:
   match v_9:
     case cps_provider_6_Definition{cps_provider_6_DefinitionHeader{_, v_28, _, _, _, _, _, _, _}, _, _, _, _, _, _, _}:
-      v_1007420 = {String.eq(v_1, v_28) : Bool}
-      cemit_match_1692(v_1007420, v_9, v_1, v_10)
+      v_1007449 = {String.eq(v_1, v_28) : Bool}
+      cemit_match_1698(v_1007449, v_9, v_1, v_10)
 
-def cemit_match_1694(v_4: List<&2, cps_provider_6_Definition>, v_1: String) -> CEmitterProgress<Maybe<&2, cps_provider_6_Definition>>:
+def cemit_match_1700(v_4: List<&2, cps_provider_6_Definition>, v_1: String) -> CEmitterProgress<Maybe<&2, cps_provider_6_Definition>>:
   match v_4:
     case []:
       CEmitterFinished{CEmitterValue{None{}}}
     case +v_9 <> v_10:
-      cemit_match_1693(v_9, v_1, v_10)
+      cemit_match_1699(v_9, v_1, v_10)
 
 def cemit_body_cps_provider_6_export_definition(v_1: String, v_4: List<&2, cps_provider_6_Definition>) -> CEmitterProgress<Maybe<&2, cps_provider_6_Definition>>:
-  cemit_match_1694(v_4, v_1)
+  cemit_match_1700(v_4, v_1)
 
-def cemit_match_1695(v_1007423: Bool, v_19: U32, v_1: String, v_9: List<&2, Scope.ArenaGlobal>) -> CEmitterProgress<Maybe<&2, U32>>:
-  match v_1007423:
+def cemit_match_1701(v_1007452: Bool, v_19: U32, v_1: String, v_9: List<&2, Scope.ArenaGlobal>) -> CEmitterProgress<Maybe<&2, U32>>:
+  match v_1007452:
     case True{}:
       CEmitterFinished{CEmitterValue{Some{v_19}}}
     case False{}:
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_export_signature{v_1, v_9}}, v_1007425 => +v_1007424 = cemit_unbox(Maybe<&2, U32>, v_1007425); CEmitterFinished{CEmitterValue{v_1007424}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_export_signature{v_1, v_9}}, v_1007454 => +v_1007453 = cemit_unbox(Maybe<&2, U32>, v_1007454); CEmitterFinished{CEmitterValue{v_1007453}}}
 
-def cemit_match_1696(+v_8: Scope.ArenaGlobal, +v_1: String, v_9: List<&2, Scope.ArenaGlobal>) -> CEmitterProgress<Maybe<&2, U32>>:
+def cemit_match_1702(+v_8: Scope.ArenaGlobal, +v_1: String, v_9: List<&2, Scope.ArenaGlobal>) -> CEmitterProgress<Maybe<&2, U32>>:
   match v_8:
     case Scope.ArenaGlobal{v_16, _, _, v_19, _, _}:
-      v_1007423 = {String.eq(v_1, v_16) : Bool}
-      cemit_match_1695(v_1007423, v_19, v_1, v_9)
+      v_1007452 = {String.eq(v_1, v_16) : Bool}
+      cemit_match_1701(v_1007452, v_19, v_1, v_9)
 
-def cemit_match_1697(v_3: List<&2, Scope.ArenaGlobal>, v_1: String) -> CEmitterProgress<Maybe<&2, U32>>:
+def cemit_match_1703(v_3: List<&2, Scope.ArenaGlobal>, v_1: String) -> CEmitterProgress<Maybe<&2, U32>>:
   match v_3:
     case []:
       CEmitterFinished{CEmitterValue{None{}}}
     case +v_8 <> v_9:
-      cemit_match_1696(v_8, v_1, v_9)
+      cemit_match_1702(v_8, v_1, v_9)
 
 def cemit_body_cps_provider_6_export_signature(v_1: String, v_3: List<&2, Scope.ArenaGlobal>) -> CEmitterProgress<Maybe<&2, U32>>:
-  cemit_match_1697(v_3, v_1)
+  cemit_match_1703(v_3, v_1)
 
-def cemit_match_1698(v_5: BIR.Quantity, v_7: BIR.Descriptor, v_6: BIR.Descriptor) -> CEmitterProgress<List<&2, BIR.Descriptor>>:
+def cemit_match_1704(v_5: BIR.Quantity, v_7: BIR.Descriptor, v_6: BIR.Descriptor) -> CEmitterProgress<List<&2, BIR.Descriptor>>:
   match v_5:
     case BIR.Erased{}:
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_live_arrow_types{v_7}}, v_1007427 => +v_1007426 = cemit_unbox(List<&2, BIR.Descriptor>, v_1007427); CEmitterFinished{CEmitterValue{v_1007426}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_live_arrow_types{v_7}}, v_1007456 => +v_1007455 = cemit_unbox(List<&2, BIR.Descriptor>, v_1007456); CEmitterFinished{CEmitterValue{v_1007455}}}
     case _:
-      v_1007428 = {v_6 : BIR.Descriptor}
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_live_arrow_types{v_7}}, v_1007430 => +v_1007429 = cemit_unbox(List<&2, BIR.Descriptor>, v_1007430); CEmitterFinished{CEmitterValue{v_1007428 <> v_1007429}}}
+      v_1007457 = {v_6 : BIR.Descriptor}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_live_arrow_types{v_7}}, v_1007459 => +v_1007458 = cemit_unbox(List<&2, BIR.Descriptor>, v_1007459); CEmitterFinished{CEmitterValue{v_1007457 <> v_1007458}}}
 
 def cemit_body_cps_provider_6_live_arrow_types(v_0: BIR.Descriptor) -> CEmitterProgress<List<&2, BIR.Descriptor>>:
   match v_0:
     case BIR.DescriptorArrow{v_5, v_6, v_7}:
-      cemit_match_1698(v_5, v_7, v_6)
+      cemit_match_1704(v_5, v_7, v_6)
     case _:
       CEmitterFinished{CEmitterValue{[]}}
 
-def cemit_match_1700(v_1007433: cps_provider_6_CatalogResult<BIR.Descriptor>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_ExportFacts>>:
-  match v_1007433:
+def cemit_match_1706(v_1007462: cps_provider_6_CatalogResult<BIR.Descriptor>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_ExportFacts>>:
+  match v_1007462:
     case cps_provider_6_CatalogResult{v_33, v_34}:
-      v_1007434 = {v_33 : Arena.Arena}
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_live_arrow_types{v_34}}, False{}, v_1007437 => cemit_body_cps_provider_6_live_arrow_types(v_34), v_1007436 => +v_1007435 = cemit_unbox(List<&2, BIR.Descriptor>, v_1007436); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007434, cps_provider_6_ExportFacts{v_1007435}}}}}
+      v_1007463 = {v_33 : Arena.Arena}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_live_arrow_types{v_34}}, False{}, v_1007466 => cemit_body_cps_provider_6_live_arrow_types(v_34), v_1007465 => +v_1007464 = cemit_unbox(List<&2, BIR.Descriptor>, v_1007465); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007463, cps_provider_6_ExportFacts{v_1007464}}}}}
 
-def cemit_match_1701(+v_1007432: Maybe<&2, U32>, v_0: Arena.Arena, v_2: String, v_24: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_ExportFacts>>:
-  match v_1007432:
+def cemit_match_1707(+v_1007461: Maybe<&2, U32>, v_0: Arena.Arena, v_2: String, v_24: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_ExportFacts>>:
+  match v_1007461:
     case None{}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_0, cps_provider_6_ExportFacts{[BIR.DescriptorFailure{String.append("bend: exported definition has no published signature: ", v_2)}]}}}}
     case Some{v_29}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_0, v_29, v_24}}, False{}, v_1007439 => cemit_body_cps_provider_6_descriptor(v_0, v_29, v_24), v_1007438 => v_1007433 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007438); cemit_match_1700(v_1007433)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_0, v_29, v_24}}, False{}, v_1007468 => cemit_body_cps_provider_6_descriptor(v_0, v_29, v_24), v_1007467 => v_1007462 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007467); cemit_match_1706(v_1007462)}
 
-def cemit_match_1702(+v_1007431: Maybe<&2, cps_provider_6_Definition>, v_0: Arena.Arena, +v_2: String, v_7: List<&2, Scope.ArenaGlobal>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_ExportFacts>>:
-  match v_1007431:
+def cemit_match_1708(+v_1007460: Maybe<&2, cps_provider_6_Definition>, v_0: Arena.Arena, +v_2: String, v_7: List<&2, Scope.ArenaGlobal>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_ExportFacts>>:
+  match v_1007460:
     case None{}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_0, cps_provider_6_ExportFacts{[BIR.DescriptorFailure{String.append("bend: exported definition is not prepared: ", v_2)}]}}}}
     case Some{cps_provider_6_Definition{_, _, _, _, _, v_24, _, _}}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_export_signature{v_2, v_7}}, False{}, v_1007441 => cemit_body_cps_provider_6_export_signature(v_2, v_7), v_1007440 => +v_1007432 = cemit_unbox(Maybe<&2, U32>, v_1007440); cemit_match_1701(v_1007432, v_0, v_2, v_24)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_export_signature{v_2, v_7}}, False{}, v_1007470 => cemit_body_cps_provider_6_export_signature(v_2, v_7), v_1007469 => +v_1007461 = cemit_unbox(Maybe<&2, U32>, v_1007469); cemit_match_1707(v_1007461, v_0, v_2, v_24)}
 
 def cemit_body_cps_provider_6_export_facts(v_0: Arena.Arena, +v_2: String, v_5: List<&2, cps_provider_6_Definition>, v_7: List<&2, Scope.ArenaGlobal>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_ExportFacts>>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_export_definition{v_2, v_5}}, False{}, v_1007443 => cemit_body_cps_provider_6_export_definition(v_2, v_5), v_1007442 => +v_1007431 = cemit_unbox(Maybe<&2, cps_provider_6_Definition>, v_1007442); cemit_match_1702(v_1007431, v_0, v_2, v_7)}
+  CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_export_definition{v_2, v_5}}, False{}, v_1007472 => cemit_body_cps_provider_6_export_definition(v_2, v_5), v_1007471 => +v_1007460 = cemit_unbox(Maybe<&2, cps_provider_6_Definition>, v_1007471); cemit_match_1708(v_1007460, v_0, v_2, v_7)}
 
-def cemit_match_1703(v_1007445: cps_provider_6_CatalogResult<List<&2, BIR.Export>>, +v_17: String, v_4: cps_provider_6_Registry, v_23: List<&2, BIR.Descriptor>, +v_12: cps_provider_5_NfContext) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Export>>>:
-  match v_1007445:
+def cemit_match_1709(v_1007474: cps_provider_6_CatalogResult<List<&2, BIR.Export>>, +v_17: String, v_4: cps_provider_6_Registry, v_23: List<&2, BIR.Descriptor>, +v_12: cps_provider_5_NfContext) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Export>>>:
+  match v_1007474:
     case cps_provider_6_CatalogResult{v_27, v_28}:
-      v_1007446 = {v_27 : Arena.Arena}
-      v_1007447 = {v_17 : String}
-      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_definition_key{v_4, v_17}}, False{}, v_1007456 => cemit_body_cps_provider_6_definition_key(v_4, v_17), v_1007455 => +v_1007448 = cemit_unbox(Maybe<&2, cps_provider_6_DefinitionHeader>, v_1007455); CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_export_entry{v_1007448}}, False{}, v_1007454 => cemit_body_cps_provider_6_export_entry(v_1007448), v_1007453 => +v_1007449 = cemit_unbox(Maybe<&2, BIR.Entry>, v_1007453); CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_normalize_descriptors{v_23, v_12}}, False{}, v_1007452 => cemit_body_cps_provider_6_normalize_descriptors(v_23, v_12), v_1007451 => +v_1007450 = cemit_unbox(List<&2, BIR.Descriptor>, v_1007451); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007446, BIR.Export{v_1007447, v_1007449, v_1007450} <> v_28}}}}}}
+      v_1007475 = {v_27 : Arena.Arena}
+      v_1007476 = {v_17 : String}
+      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_definition_key{v_4, v_17}}, False{}, v_1007485 => cemit_body_cps_provider_6_definition_key(v_4, v_17), v_1007484 => +v_1007477 = cemit_unbox(Maybe<&2, cps_provider_6_DefinitionHeader>, v_1007484); CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_export_entry{v_1007477}}, False{}, v_1007483 => cemit_body_cps_provider_6_export_entry(v_1007477), v_1007482 => +v_1007478 = cemit_unbox(Maybe<&2, BIR.Entry>, v_1007482); CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_normalize_descriptors{v_23, v_12}}, False{}, v_1007481 => cemit_body_cps_provider_6_normalize_descriptors(v_23, v_12), v_1007480 => +v_1007479 = cemit_unbox(List<&2, BIR.Descriptor>, v_1007480); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007475, BIR.Export{v_1007476, v_1007478, v_1007479} <> v_28}}}}}}
 
-def cemit_match_1704(v_1007444: cps_provider_6_CatalogResult<cps_provider_6_ExportFacts>, v_18: List<&2, String>, +v_4: cps_provider_6_Registry, v_8: List<&2, cps_provider_6_Definition>, v_10: List<&2, Scope.ArenaGlobal>, +v_12: cps_provider_5_NfContext, v_17: String) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Export>>>:
-  match v_1007444:
+def cemit_match_1710(v_1007473: cps_provider_6_CatalogResult<cps_provider_6_ExportFacts>, v_18: List<&2, String>, +v_4: cps_provider_6_Registry, v_8: List<&2, cps_provider_6_Definition>, v_10: List<&2, Scope.ArenaGlobal>, +v_12: cps_provider_5_NfContext, v_17: String) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Export>>>:
+  match v_1007473:
     case cps_provider_6_CatalogResult{v_22, cps_provider_6_ExportFacts{v_23}}:
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_exports{v_18, v_4, v_22, v_8, v_10, v_12}}, v_1007457 => v_1007445 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Export>>, v_1007457); cemit_match_1703(v_1007445, v_17, v_4, v_23, v_12)}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_exports{v_18, v_4, v_22, v_8, v_10, v_12}}, v_1007486 => v_1007474 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Export>>, v_1007486); cemit_match_1709(v_1007474, v_17, v_4, v_23, v_12)}
 
-def cemit_match_1705(v_2: List<&2, String>, v_5: Arena.Arena, +v_8: List<&2, cps_provider_6_Definition>, +v_10: List<&2, Scope.ArenaGlobal>, v_4: cps_provider_6_Registry, +v_12: cps_provider_5_NfContext) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Export>>>:
+def cemit_match_1711(v_2: List<&2, String>, v_5: Arena.Arena, +v_8: List<&2, cps_provider_6_Definition>, +v_10: List<&2, Scope.ArenaGlobal>, v_4: cps_provider_6_Registry, +v_12: cps_provider_5_NfContext) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Export>>>:
   match v_2:
     case []:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_5, []}}}
     case +v_17 <> v_18:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_export_facts{v_5, v_17, v_8, v_10}}, False{}, v_1007459 => cemit_body_cps_provider_6_export_facts(v_5, v_17, v_8, v_10), v_1007458 => v_1007444 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_ExportFacts>, v_1007458); cemit_match_1704(v_1007444, v_18, v_4, v_8, v_10, v_12, v_17)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_export_facts{v_5, v_17, v_8, v_10}}, False{}, v_1007488 => cemit_body_cps_provider_6_export_facts(v_5, v_17, v_8, v_10), v_1007487 => v_1007473 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_ExportFacts>, v_1007487); cemit_match_1710(v_1007473, v_18, v_4, v_8, v_10, v_12, v_17)}
 
 def cemit_body_cps_provider_6_exports(v_2: List<&2, String>, v_4: cps_provider_6_Registry, v_5: Arena.Arena, v_8: List<&2, cps_provider_6_Definition>, v_10: List<&2, Scope.ArenaGlobal>, +v_12: cps_provider_5_NfContext) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Export>>>:
-  cemit_match_1705(v_2, v_5, v_8, v_10, v_4, v_12)
+  cemit_match_1711(v_2, v_5, v_8, v_10, v_4, v_12)
 
-def cemit_match_1706(v_2: Maybe<&2, Bool>, v_3: Arena.Arena, v_10: cps_provider_6_Needed, +v_8: Map<&2, cps_provider_6_Definition>, +v_5: String, v_12: List<&2, BIR.TypeFunction>, v_15: Map<&2, Bool>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
+def cemit_match_1712(v_2: Maybe<&2, Bool>, v_3: Arena.Arena, v_10: cps_provider_6_Needed, +v_8: Map<&2, cps_provider_6_Definition>, +v_5: String, v_12: List<&2, BIR.TypeFunction>, v_15: Map<&2, Bool>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
   match v_2:
     case Some{_}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_3, v_10}}}
     case None{}:
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_definition{v_3, IndexLookup.find(cps_provider_6_Definition, v_8, v_5), v_8, v_12, Map.set(&2, Bool, v_15, v_5, True{})}}, v_1007461 => v_1007460 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007461); CEmitterFinished{CEmitterValue{v_1007460}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_definition{v_3, IndexLookup.find(cps_provider_6_Definition, v_8, v_5), v_8, v_12, Map.set(&2, Bool, v_15, v_5, True{})}}, v_1007490 => v_1007489 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007490); CEmitterFinished{CEmitterValue{v_1007489}}}
 
 def cemit_body_cps_provider_6_native_match_needed_ref_0(v_2: Maybe<&2, Bool>, v_3: Arena.Arena, v_5: String, v_8: Map<&2, cps_provider_6_Definition>, v_10: cps_provider_6_Needed, v_12: List<&2, BIR.TypeFunction>, v_15: Map<&2, Bool>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
-  cemit_match_1706(v_2, v_3, v_10, v_8, v_5, v_12, v_15)
+  cemit_match_1712(v_2, v_3, v_10, v_8, v_5, v_12, v_15)
 
-def cemit_match_1707(+v_1: cps_provider_6_Needed, +v_4: String, v_2: Arena.Arena, v_7: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
+def cemit_match_1713(+v_1: cps_provider_6_Needed, +v_4: String, v_2: Arena.Arena, v_7: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
   match v_1:
     case cps_provider_6_Needed{v_12, +v_13}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_native_match_needed_ref_0{IndexLookup.find(Bool, v_13, v_4), v_2, v_4, v_7, v_1, v_12, v_13}}, False{}, v_1007464 => cemit_body_cps_provider_6_native_match_needed_ref_0(IndexLookup.find(Bool, v_13, v_4), v_2, v_4, v_7, v_1, v_12, v_13), v_1007463 => v_1007462 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007463); CEmitterFinished{CEmitterValue{v_1007462}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_native_match_needed_ref_0{IndexLookup.find(Bool, v_13, v_4), v_2, v_4, v_7, v_1, v_12, v_13}}, False{}, v_1007493 => cemit_body_cps_provider_6_native_match_needed_ref_0(IndexLookup.find(Bool, v_13, v_4), v_2, v_4, v_7, v_1, v_12, v_13), v_1007492 => v_1007491 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007492); CEmitterFinished{CEmitterValue{v_1007491}}}
 
 def cemit_body_cps_provider_6_native_match_needed_ref_1(v_1: cps_provider_6_Needed, v_2: Arena.Arena, v_4: String, v_7: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
-  cemit_match_1707(v_1, v_4, v_2, v_7)
+  cemit_match_1713(v_1, v_4, v_2, v_7)
 
 def cemit_body_cps_provider_6_needed_ref(v_0: Arena.Arena, v_2: String, v_5: Map<&2, cps_provider_6_Definition>, v_7: cps_provider_6_Needed) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
   cemit_body_cps_provider_6_native_match_needed_ref_1(v_7, v_0, v_2, v_5)
 
-def cemit_match_1708(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_11: String, v_19: Maybe<&2, String>, v_21: Nat, v_13: List<&2, BIR.Quantity>, v_15: U32, v_16: Scope.ArenaGlobalScope, v_4: Map<&2, cps_provider_6_Definition>, v_6: List<&2, BIR.TypeFunction>, v_9: Map<&2, Bool>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
+def cemit_match_1714(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_11: String, v_19: Maybe<&2, String>, v_21: Nat, v_13: List<&2, BIR.Quantity>, v_15: U32, v_16: Scope.ArenaGlobalScope, v_4: Map<&2, cps_provider_6_Definition>, v_6: List<&2, BIR.TypeFunction>, v_9: Map<&2, Bool>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
   match v_1:
     case cps_provider_6_CatalogResult{v_26, v_27}:
       v_29 = {BIR.TypeFunction{v_11, v_19, v_21, List.length(&2, BIR.Quantity, v_13), v_27} : BIR.TypeFunction}
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_26, v_15, v_16, v_4, cps_provider_6_Needed{v_29 <> v_6, v_9}}}, v_1007467 => v_1007466 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007467); CEmitterFinished{CEmitterValue{v_1007466}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_26, v_15, v_16, v_4, cps_provider_6_Needed{v_29 <> v_6, v_9}}}, v_1007496 => v_1007495 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007496); CEmitterFinished{CEmitterValue{v_1007495}}}
 
 def cemit_body_cps_provider_6_native_match_needed_definition_0(v_1: cps_provider_6_CatalogResult<BIR.Descriptor>, v_4: Map<&2, cps_provider_6_Definition>, v_6: List<&2, BIR.TypeFunction>, v_9: Map<&2, Bool>, v_11: String, v_13: List<&2, BIR.Quantity>, v_15: U32, v_16: Scope.ArenaGlobalScope, v_19: Maybe<&2, String>, v_21: Nat) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
-  cemit_match_1708(v_1, v_11, v_19, v_21, v_13, v_15, v_16, v_4, v_6, v_9)
+  cemit_match_1714(v_1, v_11, v_19, v_21, v_13, v_15, v_16, v_4, v_6, v_9)
 
 def cemit_body_cps_provider_6_native_match_needed_definition_1(v_2: Maybe<&2, cps_provider_6_Definition>, v_3: Arena.Arena, v_6: Map<&2, cps_provider_6_Definition>, v_8: List<&2, BIR.TypeFunction>, v_11: Map<&2, Bool>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
   match v_2:
     case Some{cps_provider_6_Definition{cps_provider_6_DefinitionHeader{_, v_30, _, _, v_33, _, _, None{}, _}, _, _, IR.DefTerm{+v_39}, _, +v_41, v_42, v_43}}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_3, v_39, v_41}}, False{}, v_1007471 => cemit_body_cps_provider_6_descriptor(v_3, v_39, v_41), v_1007470 => v_1007468 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007470); cemit_body_cps_provider_6_native_match_needed_definition_0(v_1007468, v_6, v_8, v_11, v_30, v_33, v_39, v_41, v_42, v_43)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_3, v_39, v_41}}, False{}, v_1007500 => cemit_body_cps_provider_6_descriptor(v_3, v_39, v_41), v_1007499 => v_1007497 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007499); cemit_body_cps_provider_6_native_match_needed_definition_0(v_1007497, v_6, v_8, v_11, v_30, v_33, v_39, v_41, v_42, v_43)}
     case _:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_3, cps_provider_6_Needed{v_8, v_11}}}}
 
@@ -18889,25 +18950,25 @@ def cemit_body_cps_provider_6_needed_definition(v_0: Arena.Arena, v_3: Maybe<&2,
 def cemit_body_cps_provider_6_native_match_needed_terms_0(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_4: U32, v_6: U32, v_7: Scope.ArenaGlobalScope, v_10: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_15, v_16}:
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_terms{v_15, IR.arena_range_index(v_4, 1), U32.sub(v_6, 1), v_7, v_10, v_16}}, v_1007474 => v_1007473 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007474); CEmitterFinished{CEmitterValue{v_1007473}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_terms{v_15, IR.arena_range_index(v_4, 1), U32.sub(v_6, 1), v_7, v_10, v_16}}, v_1007503 => v_1007502 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007503); CEmitterFinished{CEmitterValue{v_1007502}}}
 
-def cemit_match_1711(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, +v_9: Scope.ArenaGlobalScope, +v_12: Map<&2, cps_provider_6_Definition>, v_14: cps_provider_6_Needed, v_6: U32, v_8: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
+def cemit_match_1717(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, +v_9: Scope.ArenaGlobalScope, +v_12: Map<&2, cps_provider_6_Definition>, v_14: cps_provider_6_Needed, v_6: U32, v_8: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
   match v_4:
     case (v_19, v_20):
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_19, v_20, v_9, v_12, v_14}}, v_1007477 => v_1007475 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007477); cemit_body_cps_provider_6_native_match_needed_terms_0(v_1007475, v_6, v_8, v_9, v_12)}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_19, v_20, v_9, v_12, v_14}}, v_1007506 => v_1007504 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007506); cemit_body_cps_provider_6_native_match_needed_terms_0(v_1007504, v_6, v_8, v_9, v_12)}
 
 def cemit_body_cps_provider_6_native_match_needed_terms_1(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_6: U32, v_8: U32, v_9: Scope.ArenaGlobalScope, v_12: Map<&2, cps_provider_6_Definition>, v_14: cps_provider_6_Needed) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
-  cemit_match_1711(v_4, v_9, v_12, v_14, v_6, v_8)
+  cemit_match_1717(v_4, v_9, v_12, v_14, v_6, v_8)
 
-def cemit_match_1712(+v_1: U32, v_2: Arena.Arena, v_10: cps_provider_6_Needed, +v_4: U32, v_5: Scope.ArenaGlobalScope, v_8: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
+def cemit_match_1718(+v_1: U32, v_2: Arena.Arena, v_10: cps_provider_6_Needed, +v_4: U32, v_5: Scope.ArenaGlobalScope, v_8: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
   match v_1:
     case 0:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_2, v_10}}}
     case _:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_native_match_needed_terms_1{Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5, v_8, v_10}}, False{}, v_1007481 => cemit_body_cps_provider_6_native_match_needed_terms_1(Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5, v_8, v_10), v_1007480 => v_1007479 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007480); CEmitterFinished{CEmitterValue{v_1007479}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_native_match_needed_terms_1{Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5, v_8, v_10}}, False{}, v_1007510 => cemit_body_cps_provider_6_native_match_needed_terms_1(Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5, v_8, v_10), v_1007509 => v_1007508 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007509); CEmitterFinished{CEmitterValue{v_1007508}}}
 
 def cemit_body_cps_provider_6_native_match_needed_terms_2(v_1: U32, v_2: Arena.Arena, v_4: U32, v_5: Scope.ArenaGlobalScope, v_8: Map<&2, cps_provider_6_Definition>, v_10: cps_provider_6_Needed) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
-  cemit_match_1712(v_1, v_2, v_10, v_4, v_5, v_8)
+  cemit_match_1718(v_1, v_2, v_10, v_4, v_5, v_8)
 
 def cemit_body_cps_provider_6_needed_terms(v_0: Arena.Arena, v_2: U32, v_4: U32, v_5: Scope.ArenaGlobalScope, v_8: Map<&2, cps_provider_6_Definition>, v_10: cps_provider_6_Needed) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
   cemit_body_cps_provider_6_native_match_needed_terms_2(v_4, v_0, v_2, v_5, v_8, v_10)
@@ -18915,100 +18976,100 @@ def cemit_body_cps_provider_6_needed_terms(v_0: Arena.Arena, v_2: U32, v_4: U32,
 def cemit_body_cps_provider_6_native_match_needed_pair_0(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_4: U32, v_5: Scope.ArenaGlobalScope, v_8: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_13, v_14}:
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_13, v_4, v_5, v_8, v_14}}, v_1007484 => v_1007483 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007484); CEmitterFinished{CEmitterValue{v_1007483}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_13, v_4, v_5, v_8, v_14}}, v_1007513 => v_1007512 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007513); CEmitterFinished{CEmitterValue{v_1007512}}}
 
 def cemit_body_cps_provider_6_needed_pair(v_0: Arena.Arena, v_2: U32, v_4: U32, +v_5: Scope.ArenaGlobalScope, +v_8: Map<&2, cps_provider_6_Definition>, v_10: cps_provider_6_Needed) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
-  CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_0, v_2, v_5, v_8, v_10}}, v_1007487 => v_1007485 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007487); cemit_body_cps_provider_6_native_match_needed_pair_0(v_1007485, v_4, v_5, v_8)}
+  CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_0, v_2, v_5, v_8, v_10}}, v_1007516 => v_1007514 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007516); cemit_body_cps_provider_6_native_match_needed_pair_0(v_1007514, v_4, v_5, v_8)}
 
 def cemit_body_cps_provider_6_native_match_needed_term_0(v_2: cps_provider_6_CatalogResult<String>, v_5: Map<&2, cps_provider_6_Definition>, v_7: cps_provider_6_Needed) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_12, v_13}:
       cemit_body_cps_provider_6_needed_ref(v_12, v_13, v_5, v_7)
 
-def cemit_match_1715(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_8: U32, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
+def cemit_match_1721(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_8: U32, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_13, v_14}:
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_13, v_8, v_3, v_6, v_14}}, v_1007490 => v_1007489 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007490); CEmitterFinished{CEmitterValue{v_1007489}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_13, v_8, v_3, v_6, v_14}}, v_1007519 => v_1007518 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007519); CEmitterFinished{CEmitterValue{v_1007518}}}
 
 def cemit_body_cps_provider_6_native_match_needed_term_1(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_6_Definition>, v_8: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
-  cemit_match_1715(v_2, v_8, v_3, v_6)
+  cemit_match_1721(v_2, v_8, v_3, v_6)
 
-def cemit_match_1716(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_8: U32, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
+def cemit_match_1722(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_8: U32, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_13, v_14}:
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_13, v_8, v_3, v_6, v_14}}, v_1007492 => v_1007491 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007492); CEmitterFinished{CEmitterValue{v_1007491}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_13, v_8, v_3, v_6, v_14}}, v_1007521 => v_1007520 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007521); CEmitterFinished{CEmitterValue{v_1007520}}}
 
 def cemit_body_cps_provider_6_native_match_needed_term_2(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_6_Definition>, v_8: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
-  cemit_match_1716(v_2, v_8, v_3, v_6)
+  cemit_match_1722(v_2, v_8, v_3, v_6)
 
-def cemit_match_1717(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_8: U32, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
+def cemit_match_1723(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_8: U32, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_13, v_14}:
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_13, v_8, v_3, v_6, v_14}}, v_1007494 => v_1007493 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007494); CEmitterFinished{CEmitterValue{v_1007493}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_13, v_8, v_3, v_6, v_14}}, v_1007523 => v_1007522 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007523); CEmitterFinished{CEmitterValue{v_1007522}}}
 
 def cemit_body_cps_provider_6_native_match_needed_term_3(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_6_Definition>, v_8: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
-  cemit_match_1717(v_2, v_8, v_3, v_6)
+  cemit_match_1723(v_2, v_8, v_3, v_6)
 
-def cemit_match_1718(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_8: U32, v_10: U32, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
+def cemit_match_1724(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_8: U32, v_10: U32, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_15, v_16}:
       cemit_body_cps_provider_6_needed_terms(v_15, v_8, v_10, v_3, v_6, v_16)
 
 def cemit_body_cps_provider_6_native_match_needed_term_4(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_6_Definition>, v_8: U32, v_10: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
-  cemit_match_1718(v_2, v_8, v_10, v_3, v_6)
+  cemit_match_1724(v_2, v_8, v_10, v_3, v_6)
 
-def cemit_match_1719(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_8: U32, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
+def cemit_match_1725(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_8: U32, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_13, v_14}:
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_13, v_8, v_3, v_6, v_14}}, v_1007497 => v_1007496 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007497); CEmitterFinished{CEmitterValue{v_1007496}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_13, v_8, v_3, v_6, v_14}}, v_1007526 => v_1007525 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007526); CEmitterFinished{CEmitterValue{v_1007525}}}
 
 def cemit_body_cps_provider_6_native_match_needed_term_5(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_6_Definition>, v_8: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
-  cemit_match_1719(v_2, v_8, v_3, v_6)
+  cemit_match_1725(v_2, v_8, v_3, v_6)
 
-def cemit_match_1720(v_0: Arena.Node, v_7: Arena.Arena, +v_1: Scope.ArenaGlobalScope, +v_4: Map<&2, cps_provider_6_Definition>, v_6: cps_provider_6_Needed) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
+def cemit_match_1726(v_0: Arena.Node, v_7: Arena.Arena, +v_1: Scope.ArenaGlobalScope, +v_4: Map<&2, cps_provider_6_Definition>, v_6: cps_provider_6_Needed) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
   match v_0:
     case Arena.TermRef{v_12, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_name{v_7, v_12, v_1, False{}}}, False{}, v_1007501 => cemit_body_cps_provider_6_descriptor_name(v_7, v_12, v_1, False{}), v_1007500 => v_1007498 = cemit_unbox(cps_provider_6_CatalogResult<String>, v_1007500); cemit_body_cps_provider_6_native_match_needed_term_0(v_1007498, v_4, v_6)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor_name{v_7, v_12, v_1, False{}}}, False{}, v_1007530 => cemit_body_cps_provider_6_descriptor_name(v_7, v_12, v_1, False{}), v_1007529 => v_1007527 = cemit_unbox(cps_provider_6_CatalogResult<String>, v_1007529); cemit_body_cps_provider_6_native_match_needed_term_0(v_1007527, v_4, v_6)}
     case Arena.TermBang{v_18, _}:
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_7, v_18, v_1, v_4, v_6}}, v_1007503 => v_1007502 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007503); CEmitterFinished{CEmitterValue{v_1007502}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_7, v_18, v_1, v_4, v_6}}, v_1007532 => v_1007531 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007532); CEmitterFinished{CEmitterValue{v_1007531}}}
     case Arena.TermSub{_, v_26, v_27, _}:
       cemit_body_cps_provider_6_needed_pair(v_7, v_26, v_27, v_1, v_4, v_6)
     case Arena.TermLet{_, _, _, _, _, _, v_46, v_47, v_48, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_terms{v_7, v_46, v_47, v_1, v_4, v_6}}, False{}, v_1007508 => cemit_body_cps_provider_6_needed_terms(v_7, v_46, v_47, v_1, v_4, v_6), v_1007507 => v_1007505 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007507); cemit_body_cps_provider_6_native_match_needed_term_1(v_1007505, v_1, v_4, v_48)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_terms{v_7, v_46, v_47, v_1, v_4, v_6}}, False{}, v_1007537 => cemit_body_cps_provider_6_needed_terms(v_7, v_46, v_47, v_1, v_4, v_6), v_1007536 => v_1007534 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007536); cemit_body_cps_provider_6_native_match_needed_term_1(v_1007534, v_1, v_4, v_48)}
     case Arena.TermAnn{v_55, v_56, _}:
       cemit_body_cps_provider_6_needed_pair(v_7, v_55, v_56, v_1, v_4, v_6)
     case Arena.TermType{v_61, _}:
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_7, v_61, v_1, v_4, v_6}}, v_1007511 => v_1007510 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007511); CEmitterFinished{CEmitterValue{v_1007510}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_7, v_61, v_1, v_4, v_6}}, v_1007540 => v_1007539 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007540); CEmitterFinished{CEmitterValue{v_1007539}}}
     case Arena.TermMin{v_67, v_68, _}:
       cemit_body_cps_provider_6_needed_pair(v_7, v_67, v_68, v_1, v_4, v_6)
     case Arena.TermAll{_, _, _, v_80, v_81, _}:
       cemit_body_cps_provider_6_needed_pair(v_7, v_80, v_81, v_1, v_4, v_6)
     case Arena.TermLam{_, _, _, v_92, _}:
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_7, v_92, v_1, v_4, v_6}}, v_1007515 => v_1007514 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007515); CEmitterFinished{CEmitterValue{v_1007514}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_7, v_92, v_1, v_4, v_6}}, v_1007544 => v_1007543 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007544); CEmitterFinished{CEmitterValue{v_1007543}}}
     case Arena.TermApp{v_98, v_99, _}:
       cemit_body_cps_provider_6_needed_pair(v_7, v_98, v_99, v_1, v_4, v_6)
     case Arena.TermAdt{_, v_109, v_110, _, _, _}:
       cemit_body_cps_provider_6_needed_terms(v_7, v_109, v_110, v_1, v_4, v_6)
     case Arena.TermFill{v_119, v_120, v_121, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_terms{v_7, v_120, v_121, v_1, v_4, v_6}}, False{}, v_1007521 => cemit_body_cps_provider_6_needed_terms(v_7, v_120, v_121, v_1, v_4, v_6), v_1007520 => v_1007518 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007520); cemit_body_cps_provider_6_native_match_needed_term_2(v_1007518, v_1, v_4, v_119)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_terms{v_7, v_120, v_121, v_1, v_4, v_6}}, False{}, v_1007550 => cemit_body_cps_provider_6_needed_terms(v_7, v_120, v_121, v_1, v_4, v_6), v_1007549 => v_1007547 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007549); cemit_body_cps_provider_6_native_match_needed_term_2(v_1007547, v_1, v_4, v_119)}
     case Arena.TermPlus{v_129, v_130, v_131, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_terms{v_7, v_130, v_131, v_1, v_4, v_6}}, False{}, v_1007525 => cemit_body_cps_provider_6_needed_terms(v_7, v_130, v_131, v_1, v_4, v_6), v_1007524 => v_1007522 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007524); cemit_body_cps_provider_6_native_match_needed_term_3(v_1007522, v_1, v_4, v_129)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_terms{v_7, v_130, v_131, v_1, v_4, v_6}}, False{}, v_1007554 => cemit_body_cps_provider_6_needed_terms(v_7, v_130, v_131, v_1, v_4, v_6), v_1007553 => v_1007551 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007553); cemit_body_cps_provider_6_native_match_needed_term_3(v_1007551, v_1, v_4, v_129)}
     case Arena.TermCtr{_, v_140, v_141, _}:
       cemit_body_cps_provider_6_needed_terms(v_7, v_140, v_141, v_1, v_4, v_6)
     case Arena.TermMat{_, v_149, v_150, _}:
       cemit_body_cps_provider_6_needed_pair(v_7, v_149, v_150, v_1, v_4, v_6)
     case Arena.TermEqual{_, _, v_159, _}:
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_7, v_159, v_1, v_4, v_6}}, v_1007529 => v_1007528 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007529); CEmitterFinished{CEmitterValue{v_1007528}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_7, v_159, v_1, v_4, v_6}}, v_1007558 => v_1007557 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007558); CEmitterFinished{CEmitterValue{v_1007557}}}
     case Arena.TermRewrite{_, _, v_168, _}:
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_7, v_168, v_1, v_4, v_6}}, v_1007531 => v_1007530 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007531); CEmitterFinished{CEmitterValue{v_1007530}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_7, v_168, v_1, v_4, v_6}}, v_1007560 => v_1007559 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007560); CEmitterFinished{CEmitterValue{v_1007559}}}
     case Arena.BodyMatch{v_176, v_177, v_178, v_179, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_terms{v_7, v_176, v_177, v_1, v_4, v_6}}, False{}, v_1007535 => cemit_body_cps_provider_6_needed_terms(v_7, v_176, v_177, v_1, v_4, v_6), v_1007534 => v_1007532 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007534); cemit_body_cps_provider_6_native_match_needed_term_4(v_1007532, v_1, v_4, v_178, v_179)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_terms{v_7, v_176, v_177, v_1, v_4, v_6}}, False{}, v_1007564 => cemit_body_cps_provider_6_needed_terms(v_7, v_176, v_177, v_1, v_4, v_6), v_1007563 => v_1007561 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007563); cemit_body_cps_provider_6_native_match_needed_term_4(v_1007561, v_1, v_4, v_178, v_179)}
     case Arena.BodyCase{_, _, v_189, _}:
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_7, v_189, v_1, v_4, v_6}}, v_1007537 => v_1007536 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007537); CEmitterFinished{CEmitterValue{v_1007536}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_7, v_189, v_1, v_4, v_6}}, v_1007566 => v_1007565 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007566); CEmitterFinished{CEmitterValue{v_1007565}}}
     case Arena.BodyLocal{_, _, _, v_202, v_203, v_204, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_terms{v_7, v_202, v_203, v_1, v_4, v_6}}, False{}, v_1007541 => cemit_body_cps_provider_6_needed_terms(v_7, v_202, v_203, v_1, v_4, v_6), v_1007540 => v_1007538 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007540); cemit_body_cps_provider_6_native_match_needed_term_5(v_1007538, v_1, v_4, v_204)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_terms{v_7, v_202, v_203, v_1, v_4, v_6}}, False{}, v_1007570 => cemit_body_cps_provider_6_needed_terms(v_7, v_202, v_203, v_1, v_4, v_6), v_1007569 => v_1007567 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007569); cemit_body_cps_provider_6_native_match_needed_term_5(v_1007567, v_1, v_4, v_204)}
     case Arena.BodyReply{v_210, _}:
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_7, v_210, v_1, v_4, v_6}}, v_1007543 => v_1007542 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007543); CEmitterFinished{CEmitterValue{v_1007542}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_7, v_210, v_1, v_4, v_6}}, v_1007572 => v_1007571 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007572); CEmitterFinished{CEmitterValue{v_1007571}}}
     case Arena.TermVar{_, _, _}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_7, v_6}}}
     case Arena.TermTemplate{_, _}:
@@ -19027,7 +19088,7 @@ def cemit_match_1720(v_0: Arena.Node, v_7: Arena.Arena, +v_1: Scope.ArenaGlobalS
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_7, v_6}}}
 
 def cemit_body_cps_provider_6_native_match_needed_term_6(v_0: Arena.Node, v_1: Scope.ArenaGlobalScope, v_4: Map<&2, cps_provider_6_Definition>, v_6: cps_provider_6_Needed, v_7: Arena.Arena) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
-  cemit_match_1720(v_0, v_7, v_1, v_4, v_6)
+  cemit_match_1726(v_0, v_7, v_1, v_4, v_6)
 
 def cemit_body_cps_provider_6_native_match_needed_term_7(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Node>, v_4: Scope.ArenaGlobalScope, v_7: Map<&2, cps_provider_6_Definition>, v_9: cps_provider_6_Needed) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
   match v_3:
@@ -19035,61 +19096,61 @@ def cemit_body_cps_provider_6_native_match_needed_term_7(v_3: Sigma<&1, &1, Aren
       cemit_body_cps_provider_6_native_match_needed_term_6(v_15, v_4, v_7, v_9, v_14)
 
 def cemit_body_cps_provider_6_needed_term(v_0: Arena.Arena, v_2: U32, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_6_Definition>, v_8: cps_provider_6_Needed) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_native_match_needed_term_7{Arena.get_node(v_0, v_2), v_3, v_6, v_8}}, False{}, v_1007548 => cemit_body_cps_provider_6_native_match_needed_term_7(Arena.get_node(v_0, v_2), v_3, v_6, v_8), v_1007547 => v_1007546 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007547); CEmitterFinished{CEmitterValue{v_1007546}}}
+  CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_native_match_needed_term_7{Arena.get_node(v_0, v_2), v_3, v_6, v_8}}, False{}, v_1007577 => cemit_body_cps_provider_6_native_match_needed_term_7(Arena.get_node(v_0, v_2), v_3, v_6, v_8), v_1007576 => v_1007575 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007576); CEmitterFinished{CEmitterValue{v_1007575}}}
 
-def cemit_match_1722(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_8: List<&2, cps_provider_6_Root>, v_5: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
+def cemit_match_1728(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_8: List<&2, cps_provider_6_Root>, v_5: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_13, v_14}:
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_roots{v_13, v_8, v_5, v_14}}, v_1007550 => v_1007549 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007550); CEmitterFinished{CEmitterValue{v_1007549}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_roots{v_13, v_8, v_5, v_14}}, v_1007579 => v_1007578 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007579); CEmitterFinished{CEmitterValue{v_1007578}}}
 
 def cemit_body_cps_provider_6_native_match_needed_roots_0(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_5: Map<&2, cps_provider_6_Definition>, v_8: List<&2, cps_provider_6_Root>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
-  cemit_match_1722(v_2, v_8, v_5)
+  cemit_match_1728(v_2, v_8, v_5)
 
-def cemit_match_1723(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_8: List<&2, cps_provider_6_Root>, v_5: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
+def cemit_match_1729(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_8: List<&2, cps_provider_6_Root>, v_5: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_13, v_14}:
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_roots{v_13, v_8, v_5, v_14}}, v_1007552 => v_1007551 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007552); CEmitterFinished{CEmitterValue{v_1007551}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_roots{v_13, v_8, v_5, v_14}}, v_1007581 => v_1007580 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007581); CEmitterFinished{CEmitterValue{v_1007580}}}
 
 def cemit_body_cps_provider_6_native_match_needed_roots_1(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_5: Map<&2, cps_provider_6_Definition>, v_8: List<&2, cps_provider_6_Root>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
-  cemit_match_1723(v_2, v_8, v_5)
+  cemit_match_1729(v_2, v_8, v_5)
 
-def cemit_match_1724(v_2: List<&2, cps_provider_6_Root>, v_3: Arena.Arena, v_8: cps_provider_6_Needed, +v_6: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
+def cemit_match_1730(v_2: List<&2, cps_provider_6_Root>, v_3: Arena.Arena, v_8: cps_provider_6_Needed, +v_6: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
   match v_2:
     case []:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_3, v_8}}}
     case cps_provider_6_TermRoot{v_14, v_15} <> v_16:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_3, v_14, v_15, v_6, v_8}}, False{}, v_1007556 => cemit_body_cps_provider_6_needed_term(v_3, v_14, v_15, v_6, v_8), v_1007555 => v_1007553 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007555); cemit_body_cps_provider_6_native_match_needed_roots_0(v_1007553, v_6, v_16)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_term{v_3, v_14, v_15, v_6, v_8}}, False{}, v_1007585 => cemit_body_cps_provider_6_needed_term(v_3, v_14, v_15, v_6, v_8), v_1007584 => v_1007582 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007584); cemit_body_cps_provider_6_native_match_needed_roots_0(v_1007582, v_6, v_16)}
     case cps_provider_6_DefinitionRoot{v_21} <> v_22:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_ref{v_3, v_21, v_6, v_8}}, False{}, v_1007560 => cemit_body_cps_provider_6_needed_ref(v_3, v_21, v_6, v_8), v_1007559 => v_1007557 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007559); cemit_body_cps_provider_6_native_match_needed_roots_1(v_1007557, v_6, v_22)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_ref{v_3, v_21, v_6, v_8}}, False{}, v_1007589 => cemit_body_cps_provider_6_needed_ref(v_3, v_21, v_6, v_8), v_1007588 => v_1007586 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007588); cemit_body_cps_provider_6_native_match_needed_roots_1(v_1007586, v_6, v_22)}
 
 def cemit_body_cps_provider_6_native_match_needed_roots_2(v_2: List<&2, cps_provider_6_Root>, v_3: Arena.Arena, v_6: Map<&2, cps_provider_6_Definition>, v_8: cps_provider_6_Needed) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
-  cemit_match_1724(v_2, v_3, v_8, v_6)
+  cemit_match_1730(v_2, v_3, v_8, v_6)
 
 def cemit_body_cps_provider_6_needed_roots(v_0: Arena.Arena, v_3: List<&2, cps_provider_6_Root>, v_6: Map<&2, cps_provider_6_Definition>, v_8: cps_provider_6_Needed) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Needed>>:
   cemit_body_cps_provider_6_native_match_needed_roots_2(v_3, v_0, v_6, v_8)
 
-def cemit_match_1725(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_9: U32, v_11: U32, +v_4: Scope.ArenaGlobalScope, v_7: List<&2, cps_provider_6_Root>) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>>:
+def cemit_match_1731(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_9: U32, v_11: U32, +v_4: Scope.ArenaGlobalScope, v_7: List<&2, cps_provider_6_Root>) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>>:
   match v_3:
     case (v_17, v_18):
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_binder_roots{v_17, IR.Words{IR.arena_range_index(v_9, 1), U32.sub(v_11, 1)}, v_4, cps_provider_6_TermRoot{cemit_pure_cps_provider_6_binder_type(v_18), v_4} <> v_7}}, v_1007563 => v_1007562 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>, v_1007563); CEmitterFinished{CEmitterValue{v_1007562}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_binder_roots{v_17, IR.Words{IR.arena_range_index(v_9, 1), U32.sub(v_11, 1)}, v_4, cps_provider_6_TermRoot{cemit_pure_cps_provider_6_binder_type(v_18), v_4} <> v_7}}, v_1007592 => v_1007591 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>, v_1007592); CEmitterFinished{CEmitterValue{v_1007591}}}
 
 def cemit_body_cps_provider_6_native_match_binder_roots_0(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_4: Scope.ArenaGlobalScope, v_7: List<&2, cps_provider_6_Root>, v_9: U32, v_11: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>>:
-  cemit_match_1725(v_3, v_9, v_11, v_4, v_7)
+  cemit_match_1731(v_3, v_9, v_11, v_4, v_7)
 
 def cemit_body_cps_provider_6_native_match_binder_roots_1(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_5: Scope.ArenaGlobalScope, v_8: List<&2, cps_provider_6_Root>, v_10: U32, v_12: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>>:
   match v_4:
     case (v_18, v_19):
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_native_match_binder_roots_0{Arena.get_binder(v_18, v_19), v_5, v_8, v_10, v_12}}, False{}, v_1007567 => cemit_body_cps_provider_6_native_match_binder_roots_0(Arena.get_binder(v_18, v_19), v_5, v_8, v_10, v_12), v_1007566 => v_1007565 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>, v_1007566); CEmitterFinished{CEmitterValue{v_1007565}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_native_match_binder_roots_0{Arena.get_binder(v_18, v_19), v_5, v_8, v_10, v_12}}, False{}, v_1007596 => cemit_body_cps_provider_6_native_match_binder_roots_0(Arena.get_binder(v_18, v_19), v_5, v_8, v_10, v_12), v_1007595 => v_1007594 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>, v_1007595); CEmitterFinished{CEmitterValue{v_1007594}}}
 
-def cemit_match_1727(v_0: IR.Words, v_1: Arena.Arena, v_5: List<&2, cps_provider_6_Root>, v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>>:
+def cemit_match_1733(v_0: IR.Words, v_1: Arena.Arena, v_5: List<&2, cps_provider_6_Root>, v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>>:
   match v_0:
     case IR.Words{_, 0}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1, v_5}}}
     case IR.Words{+v_13, v_14}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_native_match_binder_roots_1{Arena.word(v_1, IR.arena_tape_offset(v_13)), v_2, v_5, v_13, v_14}}, False{}, v_1007571 => cemit_body_cps_provider_6_native_match_binder_roots_1(Arena.word(v_1, IR.arena_tape_offset(v_13)), v_2, v_5, v_13, v_14), v_1007570 => v_1007569 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>, v_1007570); CEmitterFinished{CEmitterValue{v_1007569}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_native_match_binder_roots_1{Arena.word(v_1, IR.arena_tape_offset(v_13)), v_2, v_5, v_13, v_14}}, False{}, v_1007600 => cemit_body_cps_provider_6_native_match_binder_roots_1(Arena.word(v_1, IR.arena_tape_offset(v_13)), v_2, v_5, v_13, v_14), v_1007599 => v_1007598 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>, v_1007599); CEmitterFinished{CEmitterValue{v_1007598}}}
 
 def cemit_body_cps_provider_6_native_match_binder_roots_2(v_0: IR.Words, v_1: Arena.Arena, v_2: Scope.ArenaGlobalScope, v_5: List<&2, cps_provider_6_Root>) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>>:
-  cemit_match_1727(v_0, v_1, v_5, v_2)
+  cemit_match_1733(v_0, v_1, v_5, v_2)
 
 def cemit_body_cps_provider_6_binder_roots(v_0: Arena.Arena, v_1: IR.Words, v_2: Scope.ArenaGlobalScope, v_5: List<&2, cps_provider_6_Root>) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>>:
   cemit_body_cps_provider_6_native_match_binder_roots_2(v_1, v_0, v_2, v_5)
@@ -19097,7 +19158,7 @@ def cemit_body_cps_provider_6_binder_roots(v_0: Arena.Arena, v_1: IR.Words, v_2:
 def cemit_body_cps_provider_6_binder_type(v_0: Arena.Binder) -> CEmitterProgress<U32>:
   CEmitterFinished{CEmitterValue{cemit_pure_cps_provider_6_binder_type(v_0)}}
 
-def cemit_match_1728(v_0: IR.OptionalTerm, v_4: List<&2, cps_provider_6_Root>, v_1: Scope.ArenaGlobalScope) -> CEmitterProgress<List<&2, cps_provider_6_Root>>:
+def cemit_match_1734(v_0: IR.OptionalTerm, v_4: List<&2, cps_provider_6_Root>, v_1: Scope.ArenaGlobalScope) -> CEmitterProgress<List<&2, cps_provider_6_Root>>:
   match v_0:
     case IR.NoTerm{}:
       CEmitterFinished{CEmitterValue{v_4}}
@@ -19105,7 +19166,7 @@ def cemit_match_1728(v_0: IR.OptionalTerm, v_4: List<&2, cps_provider_6_Root>, v
       CEmitterFinished{CEmitterValue{cps_provider_6_TermRoot{v_8, v_1} <> v_4}}
 
 def cemit_body_cps_provider_6_result_roots(v_0: IR.OptionalTerm, v_1: Scope.ArenaGlobalScope, v_4: List<&2, cps_provider_6_Root>) -> CEmitterProgress<List<&2, cps_provider_6_Root>>:
-  cemit_match_1728(v_0, v_4, v_1)
+  cemit_match_1734(v_0, v_4, v_1)
 
 def cemit_body_cps_provider_6_type_root(v_1: Bool, v_3: String, v_6: List<&2, cps_provider_6_Root>) -> CEmitterProgress<List<&2, cps_provider_6_Root>>:
   match v_1:
@@ -19117,19 +19178,19 @@ def cemit_body_cps_provider_6_type_root(v_1: Bool, v_3: String, v_6: List<&2, cp
 def cemit_body_cps_provider_6_preparation_failure(v_1: cps_provider_6_Preparation, v_3: String) -> CEmitterProgress<cps_provider_6_Preparation>:
   match v_1:
     case cps_provider_6_Preparation{v_17, v_18, v_19, v_20, v_21, v_22, v_23, v_24, v_25, v_26, v_27, v_28}:
-      v_1007573 = {v_17 : List<&2, cps_provider_6_Definition>}
-      v_1007574 = {v_18 : Map<&2, cps_provider_6_Definition>}
-      v_1007575 = {v_19 : Map<&2, cps_provider_6_DefinitionHeader>}
-      v_1007576 = {v_20 : List<&2, BIR.ConstructorLayout>}
-      v_1007577 = {v_21 : Map<&2, cps_provider_6_Constructor>}
-      v_1007578 = {v_22 : List<&2, BIR.Family>}
-      v_1007579 = {v_23 : U32}
-      v_1007580 = {v_24 : U32}
-      v_1007581 = {v_25 : List<&2, cps_provider_6_Root>}
-      v_1007582 = {v_26 : Maybe<&2, BIR.Descriptor>}
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_first_failure{v_27, v_3}}, v_1007584 => +v_1007583 = cemit_unbox(Maybe<&2, String>, v_1007584); CEmitterFinished{CEmitterValue{cps_provider_6_Preparation{v_1007573, v_1007574, v_1007575, v_1007576, v_1007577, v_1007578, v_1007579, v_1007580, v_1007581, v_1007582, v_1007583, v_28}}}}
+      v_1007602 = {v_17 : List<&2, cps_provider_6_Definition>}
+      v_1007603 = {v_18 : Map<&2, cps_provider_6_Definition>}
+      v_1007604 = {v_19 : Map<&2, cps_provider_6_DefinitionHeader>}
+      v_1007605 = {v_20 : List<&2, BIR.ConstructorLayout>}
+      v_1007606 = {v_21 : Map<&2, cps_provider_6_Constructor>}
+      v_1007607 = {v_22 : List<&2, BIR.Family>}
+      v_1007608 = {v_23 : U32}
+      v_1007609 = {v_24 : U32}
+      v_1007610 = {v_25 : List<&2, cps_provider_6_Root>}
+      v_1007611 = {v_26 : Maybe<&2, BIR.Descriptor>}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_first_failure{v_27, v_3}}, v_1007613 => +v_1007612 = cemit_unbox(Maybe<&2, String>, v_1007613); CEmitterFinished{CEmitterValue{cps_provider_6_Preparation{v_1007602, v_1007603, v_1007604, v_1007605, v_1007606, v_1007607, v_1007608, v_1007609, v_1007610, v_1007611, v_1007612, v_28}}}}
 
-def cemit_match_1731(+v_2: Maybe<&2, String>, v_4: String) -> CEmitterProgress<Maybe<&2, String>>:
+def cemit_match_1737(+v_2: Maybe<&2, String>, v_4: String) -> CEmitterProgress<Maybe<&2, String>>:
   match v_2:
     case Some{_}:
       CEmitterFinished{CEmitterValue{v_2}}
@@ -19137,9 +19198,9 @@ def cemit_match_1731(+v_2: Maybe<&2, String>, v_4: String) -> CEmitterProgress<M
       CEmitterFinished{CEmitterValue{Some{v_4}}}
 
 def cemit_body_cps_provider_6_first_failure(v_2: Maybe<&2, String>, v_4: String) -> CEmitterProgress<Maybe<&2, String>>:
-  cemit_match_1731(v_2, v_4)
+  cemit_match_1737(v_2, v_4)
 
-def cemit_match_1732(v_2: Maybe<&2, cps_provider_6_DefinitionHeader>, +v_9: Map<&2, cps_provider_6_DefinitionHeader>, +v_4: String, v_6: cps_provider_6_DefinitionHeader) -> CEmitterProgress<Map<&2, cps_provider_6_DefinitionHeader>>:
+def cemit_match_1738(v_2: Maybe<&2, cps_provider_6_DefinitionHeader>, +v_9: Map<&2, cps_provider_6_DefinitionHeader>, +v_4: String, v_6: cps_provider_6_DefinitionHeader) -> CEmitterProgress<Map<&2, cps_provider_6_DefinitionHeader>>:
   match v_2:
     case Some{_}:
       CEmitterFinished{CEmitterValue{v_9}}
@@ -19147,10 +19208,10 @@ def cemit_match_1732(v_2: Maybe<&2, cps_provider_6_DefinitionHeader>, +v_9: Map<
       CEmitterFinished{CEmitterValue{Map.set(&2, cps_provider_6_DefinitionHeader, v_9, v_4, v_6)}}
 
 def cemit_body_cps_provider_6_native_match_header_insert_0(v_2: Maybe<&2, cps_provider_6_DefinitionHeader>, +v_4: String, v_6: cps_provider_6_DefinitionHeader, +v_9: Map<&2, cps_provider_6_DefinitionHeader>) -> CEmitterProgress<Map<&2, cps_provider_6_DefinitionHeader>>:
-  cemit_match_1732(v_2, v_9, v_4, v_6)
+  cemit_match_1738(v_2, v_9, v_4, v_6)
 
 def cemit_body_cps_provider_6_header_insert(+v_1: String, v_3: cps_provider_6_DefinitionHeader, +v_6: Map<&2, cps_provider_6_DefinitionHeader>) -> CEmitterProgress<Map<&2, cps_provider_6_DefinitionHeader>>:
-  CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_native_match_header_insert_0{IndexLookup.find(cps_provider_6_DefinitionHeader, v_6, v_1), v_1, v_3, v_6}}, False{}, v_1007587 => cemit_body_cps_provider_6_native_match_header_insert_0(IndexLookup.find(cps_provider_6_DefinitionHeader, v_6, v_1), v_1, v_3, v_6), v_1007586 => +v_1007585 = cemit_unbox(Map<&2, cps_provider_6_DefinitionHeader>, v_1007586); CEmitterFinished{CEmitterValue{v_1007585}}}
+  CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_native_match_header_insert_0{IndexLookup.find(cps_provider_6_DefinitionHeader, v_6, v_1), v_1, v_3, v_6}}, False{}, v_1007616 => cemit_body_cps_provider_6_native_match_header_insert_0(IndexLookup.find(cps_provider_6_DefinitionHeader, v_6, v_1), v_1, v_3, v_6), v_1007615 => +v_1007614 = cemit_unbox(Map<&2, cps_provider_6_DefinitionHeader>, v_1007615); CEmitterFinished{CEmitterValue{v_1007614}}}
 
 def cemit_body_cps_provider_6_value_insert(v_2: Maybe<&2, Bool>, v_3: IR.DefBody, v_5: String, v_7: cps_provider_6_Definition, v_10: Map<&2, cps_provider_6_Definition>) -> CEmitterProgress<Map<&2, cps_provider_6_Definition>>:
   match v_2, v_3:
@@ -19159,41 +19220,41 @@ def cemit_body_cps_provider_6_value_insert(v_2: Maybe<&2, Bool>, v_3: IR.DefBody
     case _, _:
       CEmitterFinished{CEmitterValue{v_10}}
 
-def cemit_match_1734(v_4: Sigma<&1, &1, Arena.Arena, _ => String>, v_8: U32, v_10: U32, +v_6: String, v_13: List<&2, String>) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, String>>>:
+def cemit_match_1740(v_4: Sigma<&1, &1, Arena.Arena, _ => String>, v_8: U32, v_10: U32, +v_6: String, v_13: List<&2, String>) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, String>>>:
   match v_4:
     case (v_19, v_20):
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_foreign_sources{v_19, IR.Names{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, v_6, Path.resolve(v_6, v_20) <> v_13}}, v_1007590 => v_1007589 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, String>>, v_1007590); CEmitterFinished{CEmitterValue{v_1007589}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_foreign_sources{v_19, IR.Names{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, v_6, Path.resolve(v_6, v_20) <> v_13}}, v_1007619 => v_1007618 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, String>>, v_1007619); CEmitterFinished{CEmitterValue{v_1007618}}}
 
 def cemit_body_cps_provider_6_native_match_foreign_sources_1(v_4: Sigma<&1, &1, Arena.Arena, _ => String>, v_6: String, v_8: U32, v_10: U32, v_13: List<&2, String>) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, String>>>:
-  cemit_match_1734(v_4, v_8, v_10, v_6, v_13)
+  cemit_match_1740(v_4, v_8, v_10, v_6, v_13)
 
 def cemit_body_cps_provider_6_native_match_foreign_sources_0(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_6: String, v_8: U32, v_10: U32, v_13: List<&2, String>) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, String>>>:
   match v_4:
     case (v_19, v_20):
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_native_match_foreign_sources_1{Arena.name_text(v_19, v_20), v_6, v_8, v_10, v_13}}, False{}, v_1007594 => cemit_body_cps_provider_6_native_match_foreign_sources_1(Arena.name_text(v_19, v_20), v_6, v_8, v_10, v_13), v_1007593 => v_1007592 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, String>>, v_1007593); CEmitterFinished{CEmitterValue{v_1007592}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_native_match_foreign_sources_1{Arena.name_text(v_19, v_20), v_6, v_8, v_10, v_13}}, False{}, v_1007623 => cemit_body_cps_provider_6_native_match_foreign_sources_1(Arena.name_text(v_19, v_20), v_6, v_8, v_10, v_13), v_1007622 => v_1007621 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, String>>, v_1007622); CEmitterFinished{CEmitterValue{v_1007621}}}
 
-def cemit_match_1736(v_1: IR.Names, v_0: Arena.Arena, v_6: List<&2, String>, v_3: String) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, String>>>:
+def cemit_match_1742(v_1: IR.Names, v_0: Arena.Arena, v_6: List<&2, String>, v_3: String) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, String>>>:
   match v_1:
     case IR.Names{_, 0}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_0, List.reverse(&2, String, v_6)}}}
     case IR.Names{+v_15, v_16}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_native_match_foreign_sources_0{Arena.word(v_0, IR.arena_tape_offset(v_15)), v_3, v_15, v_16, v_6}}, False{}, v_1007598 => cemit_body_cps_provider_6_native_match_foreign_sources_0(Arena.word(v_0, IR.arena_tape_offset(v_15)), v_3, v_15, v_16, v_6), v_1007597 => v_1007596 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, String>>, v_1007597); CEmitterFinished{CEmitterValue{v_1007596}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_native_match_foreign_sources_0{Arena.word(v_0, IR.arena_tape_offset(v_15)), v_3, v_15, v_16, v_6}}, False{}, v_1007627 => cemit_body_cps_provider_6_native_match_foreign_sources_0(Arena.word(v_0, IR.arena_tape_offset(v_15)), v_3, v_15, v_16, v_6), v_1007626 => v_1007625 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, String>>, v_1007626); CEmitterFinished{CEmitterValue{v_1007625}}}
 
 def cemit_body_cps_provider_6_foreign_sources(v_0: Arena.Arena, v_1: IR.Names, v_3: String, v_6: List<&2, String>) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, String>>>:
-  cemit_match_1736(v_1, v_0, v_6, v_3)
+  cemit_match_1742(v_1, v_0, v_6, v_3)
 
-def cemit_match_1737(v_1007599: Bool, +v_1: String, v_3: String) -> CEmitterProgress<String>:
-  match v_1007599:
+def cemit_match_1743(v_1007628: Bool, +v_1: String, v_3: String) -> CEmitterProgress<String>:
+  match v_1007628:
     case True{}:
       CEmitterFinished{CEmitterValue{""}}
     case False{}:
       CEmitterFinished{CEmitterValue{String.take(v_1, Nat.sub(String.length(v_1), Nat.add(String.length(v_3), 1n)))}}
 
 def cemit_body_cps_provider_6_foreign_namespace(+v_1: String, +v_3: String) -> CEmitterProgress<String>:
-  v_1007599 = {String.eq(v_1, v_3) : Bool}
-  cemit_match_1737(v_1007599, v_1, v_3)
+  v_1007628 = {String.eq(v_1, v_3) : Bool}
+  cemit_match_1743(v_1007628, v_1, v_3)
 
-def cemit_match_1738(v_1: IR.OptionalTerm, v_0: Arena.Arena, v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
+def cemit_match_1744(v_1: IR.OptionalTerm, v_0: Arena.Arena, v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
   match v_1:
     case IR.NoTerm{}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_0, BIR.DescriptorFailure{"bend: foreign definition has no checked result type"}}}}
@@ -19201,80 +19262,80 @@ def cemit_match_1738(v_1: IR.OptionalTerm, v_0: Arena.Arena, v_2: Scope.ArenaGlo
       cemit_body_cps_provider_6_descriptor(v_0, v_5, v_2)
 
 def cemit_body_cps_provider_6_foreign_result_type(v_0: Arena.Arena, v_1: IR.OptionalTerm, v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Descriptor>>:
-  cemit_match_1738(v_1, v_0, v_2)
+  cemit_match_1744(v_1, v_0, v_2)
 
-def cemit_match_1739(v_1: IR.Words, v_0: Arena.Arena, v_4: List<&2, BIR.Descriptor>, v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
+def cemit_match_1745(v_1: IR.Words, v_0: Arena.Arena, v_4: List<&2, BIR.Descriptor>, v_2: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_1:
     case IR.Words{_, 0}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_0, List.reverse(&2, BIR.Descriptor, v_4)}}}
     case IR.Words{+v_11, v_12}:
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_native_match_live_parameter_types_2{Arena.word(v_0, IR.arena_tape_offset(v_11)), v_2, v_4, v_11, v_12}}, v_1007603 => v_1007602 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007603); CEmitterFinished{CEmitterValue{v_1007602}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_native_match_live_parameter_types_2{Arena.word(v_0, IR.arena_tape_offset(v_11)), v_2, v_4, v_11, v_12}}, v_1007632 => v_1007631 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007632); CEmitterFinished{CEmitterValue{v_1007631}}}
 
 def cemit_body_cps_provider_6_live_parameter_types(v_0: Arena.Arena, v_1: IR.Words, v_2: Scope.ArenaGlobalScope, v_4: List<&2, BIR.Descriptor>) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
-  cemit_match_1739(v_1, v_0, v_4, v_2)
+  cemit_match_1745(v_1, v_0, v_4, v_2)
 
 def cemit_body_cps_provider_6_native_match_live_parameter_types_2(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_5: Scope.ArenaGlobalScope, v_7: List<&2, BIR.Descriptor>, v_9: U32, v_11: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_4:
     case (v_16, v_17):
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_native_match_live_parameter_types_1{Arena.get_binder(v_16, v_17), v_5, v_7, v_9, v_11}}, v_1007606 => v_1007605 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007606); CEmitterFinished{CEmitterValue{v_1007605}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_native_match_live_parameter_types_1{Arena.get_binder(v_16, v_17), v_5, v_7, v_9, v_11}}, v_1007635 => v_1007634 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007635); CEmitterFinished{CEmitterValue{v_1007634}}}
 
 def cemit_body_cps_provider_6_native_match_live_parameter_types_1(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_4: Scope.ArenaGlobalScope, v_6: List<&2, BIR.Descriptor>, v_8: U32, v_10: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_3:
     case (v_15, v_16):
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_live_parameter_binder{v_15, v_16, v_4, v_6, v_8, v_10}}, v_1007608 => v_1007607 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007608); CEmitterFinished{CEmitterValue{v_1007607}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_live_parameter_binder{v_15, v_16, v_4, v_6, v_8, v_10}}, v_1007637 => v_1007636 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007637); CEmitterFinished{CEmitterValue{v_1007636}}}
 
-def cemit_match_1742(v_1: Arena.Binder, v_0: Arena.Arena, v_2: Scope.ArenaGlobalScope, v_4: List<&2, BIR.Descriptor>, v_6: U32, v_8: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
+def cemit_match_1748(v_1: Arena.Binder, v_0: Arena.Arena, v_2: Scope.ArenaGlobalScope, v_4: List<&2, BIR.Descriptor>, v_6: U32, v_8: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_1:
     case Arena.Binder{v_16, _, _, v_19, _}:
-      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_live_parameter_quantity{cemit_pure_cps_provider_6_quantity(v_16), v_0, v_19, v_2, v_4, v_6, v_8}}, v_1007610 => v_1007609 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007610); CEmitterFinished{CEmitterValue{v_1007609}}}
+      CEmitterPending{CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_live_parameter_quantity{cemit_pure_cps_provider_6_quantity(v_16), v_0, v_19, v_2, v_4, v_6, v_8}}, v_1007639 => v_1007638 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007639); CEmitterFinished{CEmitterValue{v_1007638}}}
     case Arena.TemplateBinder{_, _, _, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_live_parameter_types{v_0, IR.Words{IR.arena_range_index(v_6, 1), U32.sub(v_8, 1)}, v_2, v_4}}, False{}, v_1007613 => cemit_body_cps_provider_6_live_parameter_types(v_0, IR.Words{IR.arena_range_index(v_6, 1), U32.sub(v_8, 1)}, v_2, v_4), v_1007612 => v_1007611 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007612); CEmitterFinished{CEmitterValue{v_1007611}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_live_parameter_types{v_0, IR.Words{IR.arena_range_index(v_6, 1), U32.sub(v_8, 1)}, v_2, v_4}}, False{}, v_1007642 => cemit_body_cps_provider_6_live_parameter_types(v_0, IR.Words{IR.arena_range_index(v_6, 1), U32.sub(v_8, 1)}, v_2, v_4), v_1007641 => v_1007640 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007641); CEmitterFinished{CEmitterValue{v_1007640}}}
 
 def cemit_body_cps_provider_6_live_parameter_binder(v_0: Arena.Arena, v_1: Arena.Binder, v_2: Scope.ArenaGlobalScope, v_4: List<&2, BIR.Descriptor>, v_6: U32, v_8: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
-  cemit_match_1742(v_1, v_0, v_2, v_4, v_6, v_8)
+  cemit_match_1748(v_1, v_0, v_2, v_4, v_6, v_8)
 
-def cemit_match_1743(v_1007617: cps_provider_6_CatalogResult<BIR.Descriptor>, v_8: U32, v_10: U32, v_4: Scope.ArenaGlobalScope, v_6: List<&2, BIR.Descriptor>) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
-  match v_1007617:
+def cemit_match_1749(v_1007646: cps_provider_6_CatalogResult<BIR.Descriptor>, v_8: U32, v_10: U32, v_4: Scope.ArenaGlobalScope, v_6: List<&2, BIR.Descriptor>) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
+  match v_1007646:
     case cps_provider_6_CatalogResult{v_19, v_20}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_live_parameter_types{v_19, IR.Words{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, v_4, v_20 <> v_6}}, False{}, v_1007620 => cemit_body_cps_provider_6_live_parameter_types(v_19, IR.Words{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, v_4, v_20 <> v_6), v_1007619 => v_1007618 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007619); CEmitterFinished{CEmitterValue{v_1007618}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_live_parameter_types{v_19, IR.Words{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, v_4, v_20 <> v_6}}, False{}, v_1007649 => cemit_body_cps_provider_6_live_parameter_types(v_19, IR.Words{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, v_4, v_20 <> v_6), v_1007648 => v_1007647 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007648); CEmitterFinished{CEmitterValue{v_1007647}}}
 
-def cemit_match_1744(v_0: BIR.Quantity, v_1: Arena.Arena, v_8: U32, v_10: U32, +v_4: Scope.ArenaGlobalScope, v_6: List<&2, BIR.Descriptor>, v_3: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
+def cemit_match_1750(v_0: BIR.Quantity, v_1: Arena.Arena, v_8: U32, v_10: U32, +v_4: Scope.ArenaGlobalScope, v_6: List<&2, BIR.Descriptor>, v_3: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
   match v_0:
     case BIR.Erased{}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_live_parameter_types{v_1, IR.Words{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, v_4, v_6}}, False{}, v_1007616 => cemit_body_cps_provider_6_live_parameter_types(v_1, IR.Words{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, v_4, v_6), v_1007615 => v_1007614 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007615); CEmitterFinished{CEmitterValue{v_1007614}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_live_parameter_types{v_1, IR.Words{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, v_4, v_6}}, False{}, v_1007645 => cemit_body_cps_provider_6_live_parameter_types(v_1, IR.Words{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, v_4, v_6), v_1007644 => v_1007643 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007644); CEmitterFinished{CEmitterValue{v_1007643}}}
     case _:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_1, v_3, v_4}}, False{}, v_1007622 => cemit_body_cps_provider_6_descriptor(v_1, v_3, v_4), v_1007621 => v_1007617 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007621); cemit_match_1743(v_1007617, v_8, v_10, v_4, v_6)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_1, v_3, v_4}}, False{}, v_1007651 => cemit_body_cps_provider_6_descriptor(v_1, v_3, v_4), v_1007650 => v_1007646 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007650); cemit_match_1749(v_1007646, v_8, v_10, v_4, v_6)}
 
 def cemit_body_cps_provider_6_live_parameter_quantity(v_0: BIR.Quantity, v_1: Arena.Arena, v_3: U32, v_4: Scope.ArenaGlobalScope, v_6: List<&2, BIR.Descriptor>, v_8: U32, v_10: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>>:
-  cemit_match_1744(v_0, v_1, v_8, v_10, v_4, v_6, v_3)
+  cemit_match_1750(v_0, v_1, v_8, v_10, v_4, v_6, v_3)
 
-def cemit_match_1745(v_1007625: cps_provider_6_CatalogResult<BIR.Descriptor>, v_5: String, +v_7: String, v_23: List<&2, String>, v_8: Ast.SourceSpan, v_28: List<&2, BIR.Descriptor>) -> CEmitterProgress<cps_provider_6_CatalogResult<Maybe<&2, cps_provider_6_Foreign>>>:
-  match v_1007625:
+def cemit_match_1751(v_1007654: cps_provider_6_CatalogResult<BIR.Descriptor>, v_5: String, +v_7: String, v_23: List<&2, String>, v_8: Ast.SourceSpan, v_28: List<&2, BIR.Descriptor>) -> CEmitterProgress<cps_provider_6_CatalogResult<Maybe<&2, cps_provider_6_Foreign>>>:
+  match v_1007654:
     case cps_provider_6_CatalogResult{v_32, v_33}:
-      v_1007626 = {v_32 : Arena.Arena}
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_foreign_namespace{v_5, v_7}}, False{}, v_1007629 => cemit_body_cps_provider_6_foreign_namespace(v_5, v_7), v_1007628 => +v_1007627 = cemit_unbox(String, v_1007628); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007626, Some{cps_provider_6_Foreign{v_1007627, v_7, v_23, v_8, v_28, v_33}}}}}}
+      v_1007655 = {v_32 : Arena.Arena}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_foreign_namespace{v_5, v_7}}, False{}, v_1007658 => cemit_body_cps_provider_6_foreign_namespace(v_5, v_7), v_1007657 => +v_1007656 = cemit_unbox(String, v_1007657); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007655, Some{cps_provider_6_Foreign{v_1007656, v_7, v_23, v_8, v_28, v_33}}}}}}
 
-def cemit_match_1746(v_1007624: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_10: IR.OptionalTerm, v_11: Scope.ArenaGlobalScope, v_5: String, v_7: String, v_23: List<&2, String>, v_8: Ast.SourceSpan) -> CEmitterProgress<cps_provider_6_CatalogResult<Maybe<&2, cps_provider_6_Foreign>>>:
-  match v_1007624:
+def cemit_match_1752(v_1007653: cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_10: IR.OptionalTerm, v_11: Scope.ArenaGlobalScope, v_5: String, v_7: String, v_23: List<&2, String>, v_8: Ast.SourceSpan) -> CEmitterProgress<cps_provider_6_CatalogResult<Maybe<&2, cps_provider_6_Foreign>>>:
+  match v_1007653:
     case cps_provider_6_CatalogResult{v_27, v_28}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_foreign_result_type{v_27, v_10, v_11}}, False{}, v_1007631 => cemit_body_cps_provider_6_foreign_result_type(v_27, v_10, v_11), v_1007630 => v_1007625 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007630); cemit_match_1745(v_1007625, v_5, v_7, v_23, v_8, v_28)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_foreign_result_type{v_27, v_10, v_11}}, False{}, v_1007660 => cemit_body_cps_provider_6_foreign_result_type(v_27, v_10, v_11), v_1007659 => v_1007654 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007659); cemit_match_1751(v_1007654, v_5, v_7, v_23, v_8, v_28)}
 
-def cemit_match_1747(v_1007623: cps_provider_6_CatalogResult<List<&2, String>>, v_9: IR.Words, +v_11: Scope.ArenaGlobalScope, v_10: IR.OptionalTerm, v_5: String, v_7: String, v_8: Ast.SourceSpan) -> CEmitterProgress<cps_provider_6_CatalogResult<Maybe<&2, cps_provider_6_Foreign>>>:
-  match v_1007623:
+def cemit_match_1753(v_1007652: cps_provider_6_CatalogResult<List<&2, String>>, v_9: IR.Words, +v_11: Scope.ArenaGlobalScope, v_10: IR.OptionalTerm, v_5: String, v_7: String, v_8: Ast.SourceSpan) -> CEmitterProgress<cps_provider_6_CatalogResult<Maybe<&2, cps_provider_6_Foreign>>>:
+  match v_1007652:
     case cps_provider_6_CatalogResult{v_22, v_23}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_live_parameter_types{v_22, v_9, v_11, []}}, False{}, v_1007633 => cemit_body_cps_provider_6_live_parameter_types(v_22, v_9, v_11, []), v_1007632 => v_1007624 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007632); cemit_match_1746(v_1007624, v_10, v_11, v_5, v_7, v_23, v_8)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_live_parameter_types{v_22, v_9, v_11, []}}, False{}, v_1007662 => cemit_body_cps_provider_6_live_parameter_types(v_22, v_9, v_11, []), v_1007661 => v_1007653 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Descriptor>>, v_1007661); cemit_match_1752(v_1007653, v_10, v_11, v_5, v_7, v_23, v_8)}
 
-def cemit_match_1748(v_1: IR.DefBody, v_0: Arena.Arena, v_3: String, v_9: IR.Words, v_11: Scope.ArenaGlobalScope, v_10: IR.OptionalTerm, v_5: String, v_7: String, v_8: Ast.SourceSpan) -> CEmitterProgress<cps_provider_6_CatalogResult<Maybe<&2, cps_provider_6_Foreign>>>:
+def cemit_match_1754(v_1: IR.DefBody, v_0: Arena.Arena, v_3: String, v_9: IR.Words, v_11: Scope.ArenaGlobalScope, v_10: IR.OptionalTerm, v_5: String, v_7: String, v_8: Ast.SourceSpan) -> CEmitterProgress<cps_provider_6_CatalogResult<Maybe<&2, cps_provider_6_Foreign>>>:
   match v_1:
     case IR.DefTerm{_}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_0, None{}}}}
     case IR.DefImports{v_18}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_foreign_sources{v_0, v_18, v_3, []}}, False{}, v_1007635 => cemit_body_cps_provider_6_foreign_sources(v_0, v_18, v_3, []), v_1007634 => v_1007623 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, String>>, v_1007634); cemit_match_1747(v_1007623, v_9, v_11, v_10, v_5, v_7, v_8)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_foreign_sources{v_0, v_18, v_3, []}}, False{}, v_1007664 => cemit_body_cps_provider_6_foreign_sources(v_0, v_18, v_3, []), v_1007663 => v_1007652 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, String>>, v_1007663); cemit_match_1753(v_1007652, v_9, v_11, v_10, v_5, v_7, v_8)}
 
 def cemit_body_cps_provider_6_definition_foreign(v_0: Arena.Arena, v_1: IR.DefBody, v_3: String, v_5: String, v_7: String, v_8: Ast.SourceSpan, v_9: IR.Words, v_10: IR.OptionalTerm, v_11: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<Maybe<&2, cps_provider_6_Foreign>>>:
-  cemit_match_1748(v_1, v_0, v_3, v_9, v_11, v_10, v_5, v_7, v_8)
+  cemit_match_1754(v_1, v_0, v_3, v_9, v_11, v_10, v_5, v_7, v_8)
 
-def cemit_match_1749(v_5: List<&2, BIR.Parameter>, v_7: Maybe<&2, BIR.Primitive>, v_10: Maybe<&2, cps_provider_6_Foreign>, v_1: Bool, v_3: Bool) -> CEmitterProgress<Bool>:
+def cemit_match_1755(v_5: List<&2, BIR.Parameter>, v_7: Maybe<&2, BIR.Primitive>, v_10: Maybe<&2, cps_provider_6_Foreign>, v_1: Bool, v_3: Bool) -> CEmitterProgress<Bool>:
   match v_5, v_7, v_10:
     case _ <> _, None{}, None{}:
       CEmitterFinished{CEmitterValue{Bool.and(v_1, Bool.not(v_3))}}
@@ -19282,7 +19343,7 @@ def cemit_match_1749(v_5: List<&2, BIR.Parameter>, v_7: Maybe<&2, BIR.Primitive>
       CEmitterFinished{CEmitterValue{False{}}}
 
 def cemit_body_cps_provider_6_definition_fast(v_1: Bool, v_3: Bool, v_5: List<&2, BIR.Parameter>, v_7: Maybe<&2, BIR.Primitive>, v_10: Maybe<&2, cps_provider_6_Foreign>) -> CEmitterProgress<Bool>:
-  cemit_match_1749(v_5, v_7, v_10, v_1, v_3)
+  cemit_match_1755(v_5, v_7, v_10, v_1, v_3)
 
 def cemit_body_cps_provider_6_definition_primitive(v_1: Bool, v_4: Maybe<&2, cps_provider_6_Foreign>, v_6: Bool, v_8: String) -> CEmitterProgress<Maybe<&2, BIR.Primitive>>:
   match v_1, v_4:
@@ -19299,19 +19360,19 @@ def cemit_body_cps_provider_6_native_match_main_descriptor_0(v_1: cps_provider_6
 def cemit_body_cps_provider_6_native_match_main_descriptor_1(v_1: Bool, v_2: IR.OptionalTerm, v_3: Arena.Arena, v_4: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<Maybe<&2, BIR.Descriptor>>>:
   match v_1, v_2:
     case True{}, IR.SomeTerm{v_8}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_3, v_8, v_4}}, False{}, v_1007640 => cemit_body_cps_provider_6_descriptor(v_3, v_8, v_4), v_1007639 => v_1007637 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007639); cemit_body_cps_provider_6_native_match_main_descriptor_0(v_1007637)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_descriptor{v_3, v_8, v_4}}, False{}, v_1007669 => cemit_body_cps_provider_6_descriptor(v_3, v_8, v_4), v_1007668 => v_1007666 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Descriptor>, v_1007668); cemit_body_cps_provider_6_native_match_main_descriptor_0(v_1007666)}
     case _, _:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_3, None{}}}}
 
-def cemit_match_1753(+v_1: Maybe<&2, BIR.Descriptor>, v_2: Arena.Arena, v_4: String, v_5: IR.OptionalTerm, v_6: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<Maybe<&2, BIR.Descriptor>>>:
+def cemit_match_1759(+v_1: Maybe<&2, BIR.Descriptor>, v_2: Arena.Arena, v_4: String, v_5: IR.OptionalTerm, v_6: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<Maybe<&2, BIR.Descriptor>>>:
   match v_1:
     case Some{_}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_2, v_1}}}
     case None{}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_native_match_main_descriptor_1{String.eq(v_4, "main"), v_5, v_2, v_6}}, False{}, v_1007643 => cemit_body_cps_provider_6_native_match_main_descriptor_1(String.eq(v_4, "main"), v_5, v_2, v_6), v_1007642 => v_1007641 = cemit_unbox(cps_provider_6_CatalogResult<Maybe<&2, BIR.Descriptor>>, v_1007642); CEmitterFinished{CEmitterValue{v_1007641}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_native_match_main_descriptor_1{String.eq(v_4, "main"), v_5, v_2, v_6}}, False{}, v_1007672 => cemit_body_cps_provider_6_native_match_main_descriptor_1(String.eq(v_4, "main"), v_5, v_2, v_6), v_1007671 => v_1007670 = cemit_unbox(cps_provider_6_CatalogResult<Maybe<&2, BIR.Descriptor>>, v_1007671); CEmitterFinished{CEmitterValue{v_1007670}}}
 
 def cemit_body_cps_provider_6_native_match_main_descriptor_2(v_1: Maybe<&2, BIR.Descriptor>, v_2: Arena.Arena, v_4: String, v_5: IR.OptionalTerm, v_6: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<Maybe<&2, BIR.Descriptor>>>:
-  cemit_match_1753(v_1, v_2, v_4, v_5, v_6)
+  cemit_match_1759(v_1, v_2, v_4, v_5, v_6)
 
 def cemit_body_cps_provider_6_main_descriptor(v_0: Arena.Arena, v_2: String, v_3: IR.OptionalTerm, v_4: Scope.ArenaGlobalScope, v_6: Maybe<&2, BIR.Descriptor>) -> CEmitterProgress<cps_provider_6_CatalogResult<Maybe<&2, BIR.Descriptor>>>:
   cemit_body_cps_provider_6_native_match_main_descriptor_2(v_6, v_0, v_2, v_3, v_4)
@@ -19325,105 +19386,105 @@ def cemit_body_cps_provider_6_signature_symbol(v_0: Scope.ArenaGlobal) -> CEmitt
     case Scope.ArenaGlobal{_, v_27, v_28, v_29, _, Scope.GlobalConstructor{}}:
       CEmitterFinished{CEmitterValue{IR.Symbol{v_27, v_28, IR.ConstructorSymbol{}, v_29}}}
 
-def cemit_match_1755(v_1: IR.Definition, v_0: Arena.Arena, +v_3: String, +v_8: Scope.ArenaGlobalScope, v_5: String, v_7: Bool, v_10: cps_provider_6_Preparation) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+def cemit_match_1761(v_1: IR.Definition, v_0: Arena.Arena, +v_3: String, +v_8: Scope.ArenaGlobalScope, v_5: String, v_7: Bool, v_10: cps_provider_6_Preparation) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   match v_1:
     case IR.Definition{+v_23, v_24, v_25, +v_26, _, v_28, v_29, Some{IR.DefinitionFacts{v_30, v_31, v_32}}}:
-      v_1007645 = {v_0 : Arena.Arena}
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_qualify{v_3, v_23}}, False{}, v_1007653 => cemit_body_cps_provider_6_qualify(v_3, v_23), v_1007652 => +v_1007646 = cemit_unbox(String, v_1007652); CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_qualify{v_3, v_23}}, False{}, v_1007651 => cemit_body_cps_provider_6_qualify(v_3, v_23), v_1007650 => +v_1007647 = cemit_unbox(String, v_1007650); CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_definition_symbol{v_1007645, Scope.lookup_kind(v_1007646, Scope.GlobalDefinition{}, v_8), v_1007647, v_23, v_24, v_25, v_26, v_29, Bool.and(v_30, cemit_pure_cps_provider_6_is_term(v_26)), v_31, v_32, v_5, v_7, v_8, v_10, v_28}}, v_1007649 => v_1007648 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007649); CEmitterFinished{CEmitterValue{v_1007648}}}}}
+      v_1007674 = {v_0 : Arena.Arena}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_qualify{v_3, v_23}}, False{}, v_1007682 => cemit_body_cps_provider_6_qualify(v_3, v_23), v_1007681 => +v_1007675 = cemit_unbox(String, v_1007681); CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_qualify{v_3, v_23}}, False{}, v_1007680 => cemit_body_cps_provider_6_qualify(v_3, v_23), v_1007679 => +v_1007676 = cemit_unbox(String, v_1007679); CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_definition_symbol{v_1007674, Scope.lookup_kind(v_1007675, Scope.GlobalDefinition{}, v_8), v_1007676, v_23, v_24, v_25, v_26, v_29, Bool.and(v_30, cemit_pure_cps_provider_6_is_term(v_26)), v_31, v_32, v_5, v_7, v_8, v_10, v_28}}, v_1007678 => v_1007677 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007678); CEmitterFinished{CEmitterValue{v_1007677}}}}}
     case IR.Definition{v_44, _, _, _, _, _, _, None{}}:
-      v_1007654 = {v_0 : Arena.Arena}
-      v_1007655 = {v_10 : cps_provider_6_Preparation}
-      v_1007656 = {"bend: missing checked declaration facts for " : String}
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_qualify{v_3, v_44}}, False{}, v_1007662 => cemit_body_cps_provider_6_qualify(v_3, v_44), v_1007661 => +v_1007657 = cemit_unbox(String, v_1007661); CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_preparation_failure{v_1007655, String.append(v_1007656, v_1007657)}}, False{}, v_1007660 => cemit_body_cps_provider_6_preparation_failure(v_1007655, String.append(v_1007656, v_1007657)), v_1007659 => +v_1007658 = cemit_unbox(cps_provider_6_Preparation, v_1007659); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007654, v_1007658}}}}}
+      v_1007683 = {v_0 : Arena.Arena}
+      v_1007684 = {v_10 : cps_provider_6_Preparation}
+      v_1007685 = {"bend: missing checked declaration facts for " : String}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_qualify{v_3, v_44}}, False{}, v_1007691 => cemit_body_cps_provider_6_qualify(v_3, v_44), v_1007690 => +v_1007686 = cemit_unbox(String, v_1007690); CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_preparation_failure{v_1007684, String.append(v_1007685, v_1007686)}}, False{}, v_1007689 => cemit_body_cps_provider_6_preparation_failure(v_1007684, String.append(v_1007685, v_1007686)), v_1007688 => +v_1007687 = cemit_unbox(cps_provider_6_Preparation, v_1007688); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007683, v_1007687}}}}}
 
 def cemit_body_cps_provider_6_prepare_definition(v_0: Arena.Arena, v_1: IR.Definition, v_3: String, v_5: String, v_7: Bool, v_8: Scope.ArenaGlobalScope, v_10: cps_provider_6_Preparation) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  cemit_match_1755(v_1, v_0, v_3, v_8, v_5, v_7, v_10)
+  cemit_match_1761(v_1, v_0, v_3, v_8, v_5, v_7, v_10)
 
-def cemit_continuation_1756(+v_1007663: Map<&2, cps_provider_6_Definition>, v_43: Arena.Arena, v_35: cps_provider_6_Definition, v_8: List<&2, cps_provider_6_Definition>, +v_4: String, v_33: cps_provider_6_DefinitionHeader, v_14: Map<&2, cps_provider_6_DefinitionHeader>, v_16: List<&2, BIR.ConstructorLayout>, v_19: Map<&2, cps_provider_6_Constructor>, v_21: List<&2, BIR.Family>, v_23: U32, v_25: U32, v_38: List<&2, cps_provider_6_Root>, v_44: Maybe<&2, BIR.Descriptor>, v_28: Maybe<&2, String>, v_31: Map<&2, Bool>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  v_48 = v_1007663
-  v_1007664 = {v_43 : Arena.Arena}
-  v_1007665 = {v_35 <> v_8 : List<&2, cps_provider_6_Definition>}
-  v_1007666 = {v_48 : Map<&2, cps_provider_6_Definition>}
-  CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_header_insert{v_4, v_33, v_14}}, False{}, v_1007669 => cemit_body_cps_provider_6_header_insert(v_4, v_33, v_14), v_1007668 => +v_1007667 = cemit_unbox(Map<&2, cps_provider_6_DefinitionHeader>, v_1007668); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007664, cps_provider_6_Preparation{v_1007665, v_1007666, v_1007667, v_16, v_19, v_21, U32.add(v_23, 1), v_25, v_38, v_44, v_28, Map.set(&2, Bool, v_31, v_4, True{})}}}}}
+def cemit_continuation_1762(+v_1007692: Map<&2, cps_provider_6_Definition>, v_43: Arena.Arena, v_35: cps_provider_6_Definition, v_8: List<&2, cps_provider_6_Definition>, +v_4: String, v_33: cps_provider_6_DefinitionHeader, v_14: Map<&2, cps_provider_6_DefinitionHeader>, v_16: List<&2, BIR.ConstructorLayout>, v_19: Map<&2, cps_provider_6_Constructor>, v_21: List<&2, BIR.Family>, v_23: U32, v_25: U32, v_38: List<&2, cps_provider_6_Root>, v_44: Maybe<&2, BIR.Descriptor>, v_28: Maybe<&2, String>, v_31: Map<&2, Bool>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+  v_48 = v_1007692
+  v_1007693 = {v_43 : Arena.Arena}
+  v_1007694 = {v_35 <> v_8 : List<&2, cps_provider_6_Definition>}
+  v_1007695 = {v_48 : Map<&2, cps_provider_6_Definition>}
+  CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_header_insert{v_4, v_33, v_14}}, False{}, v_1007698 => cemit_body_cps_provider_6_header_insert(v_4, v_33, v_14), v_1007697 => +v_1007696 = cemit_unbox(Map<&2, cps_provider_6_DefinitionHeader>, v_1007697); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007693, cps_provider_6_Preparation{v_1007694, v_1007695, v_1007696, v_16, v_19, v_21, U32.add(v_23, 1), v_25, v_38, v_44, v_28, Map.set(&2, Bool, v_31, v_4, True{})}}}}}
 
-def cemit_match_1757(v_2: cps_provider_6_CatalogResult<Maybe<&2, BIR.Descriptor>>, +v_31: Map<&2, Bool>, +v_4: String, v_5: IR.DefBody, +v_35: cps_provider_6_Definition, v_11: Map<&2, cps_provider_6_Definition>, v_8: List<&2, cps_provider_6_Definition>, v_33: cps_provider_6_DefinitionHeader, v_14: Map<&2, cps_provider_6_DefinitionHeader>, v_16: List<&2, BIR.ConstructorLayout>, v_19: Map<&2, cps_provider_6_Constructor>, v_21: List<&2, BIR.Family>, v_23: U32, v_25: U32, v_38: List<&2, cps_provider_6_Root>, v_28: Maybe<&2, String>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+def cemit_match_1763(v_2: cps_provider_6_CatalogResult<Maybe<&2, BIR.Descriptor>>, +v_31: Map<&2, Bool>, +v_4: String, v_5: IR.DefBody, +v_35: cps_provider_6_Definition, v_11: Map<&2, cps_provider_6_Definition>, v_8: List<&2, cps_provider_6_Definition>, v_33: cps_provider_6_DefinitionHeader, v_14: Map<&2, cps_provider_6_DefinitionHeader>, v_16: List<&2, BIR.ConstructorLayout>, v_19: Map<&2, cps_provider_6_Constructor>, v_21: List<&2, BIR.Family>, v_23: U32, v_25: U32, v_38: List<&2, cps_provider_6_Root>, v_28: Maybe<&2, String>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_43, v_44}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_value_insert{IndexLookup.find(Bool, v_31, v_4), v_5, v_4, v_35, v_11}}, False{}, v_1007671 => cemit_body_cps_provider_6_value_insert(IndexLookup.find(Bool, v_31, v_4), v_5, v_4, v_35, v_11), v_1007670 => +v_1007663 = cemit_unbox(Map<&2, cps_provider_6_Definition>, v_1007670); cemit_continuation_1756(v_1007663, v_43, v_35, v_8, v_4, v_33, v_14, v_16, v_19, v_21, v_23, v_25, v_38, v_44, v_28, v_31)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_value_insert{IndexLookup.find(Bool, v_31, v_4), v_5, v_4, v_35, v_11}}, False{}, v_1007700 => cemit_body_cps_provider_6_value_insert(IndexLookup.find(Bool, v_31, v_4), v_5, v_4, v_35, v_11), v_1007699 => +v_1007692 = cemit_unbox(Map<&2, cps_provider_6_Definition>, v_1007699); cemit_continuation_1762(v_1007692, v_43, v_35, v_8, v_4, v_33, v_14, v_16, v_19, v_21, v_23, v_25, v_38, v_44, v_28, v_31)}
 
 def cemit_body_cps_provider_6_native_match_prepare_definition_symbol_0(v_2: cps_provider_6_CatalogResult<Maybe<&2, BIR.Descriptor>>, v_4: String, v_5: IR.DefBody, v_8: List<&2, cps_provider_6_Definition>, v_11: Map<&2, cps_provider_6_Definition>, v_14: Map<&2, cps_provider_6_DefinitionHeader>, v_16: List<&2, BIR.ConstructorLayout>, v_19: Map<&2, cps_provider_6_Constructor>, v_21: List<&2, BIR.Family>, v_23: U32, v_25: U32, v_28: Maybe<&2, String>, v_31: Map<&2, Bool>, v_33: cps_provider_6_DefinitionHeader, v_35: cps_provider_6_Definition, v_38: List<&2, cps_provider_6_Root>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  cemit_match_1757(v_2, v_31, v_4, v_5, v_35, v_11, v_8, v_33, v_14, v_16, v_19, v_21, v_23, v_25, v_38, v_28)
+  cemit_match_1763(v_2, v_31, v_4, v_5, v_35, v_11, v_8, v_33, v_14, v_16, v_19, v_21, v_23, v_25, v_38, v_28)
 
-def cemit_continuation_1758(+v_1007675: List<&2, cps_provider_6_Root>, v_47: Arena.Arena, +v_5: String, v_6: IR.OptionalTerm, v_10: Scope.ArenaGlobalScope, v_32: Maybe<&2, BIR.Descriptor>, v_7: IR.DefBody, v_13: List<&2, cps_provider_6_Definition>, v_16: Map<&2, cps_provider_6_Definition>, v_19: Map<&2, cps_provider_6_DefinitionHeader>, v_21: List<&2, BIR.ConstructorLayout>, v_24: Map<&2, cps_provider_6_Constructor>, v_26: List<&2, BIR.Family>, v_28: U32, v_30: U32, v_35: Maybe<&2, String>, v_38: Map<&2, Bool>, v_40: cps_provider_6_DefinitionHeader, v_42: cps_provider_6_Definition) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  v_53 = v_1007675
-  CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_main_descriptor{v_47, v_5, v_6, v_10, v_32}}, False{}, v_1007679 => cemit_body_cps_provider_6_main_descriptor(v_47, v_5, v_6, v_10, v_32), v_1007678 => v_1007676 = cemit_unbox(cps_provider_6_CatalogResult<Maybe<&2, BIR.Descriptor>>, v_1007678); cemit_body_cps_provider_6_native_match_prepare_definition_symbol_0(v_1007676, v_5, v_7, v_13, v_16, v_19, v_21, v_24, v_26, v_28, v_30, v_35, v_38, v_40, v_42, v_53)}
+def cemit_continuation_1764(+v_1007704: List<&2, cps_provider_6_Root>, v_47: Arena.Arena, +v_5: String, v_6: IR.OptionalTerm, v_10: Scope.ArenaGlobalScope, v_32: Maybe<&2, BIR.Descriptor>, v_7: IR.DefBody, v_13: List<&2, cps_provider_6_Definition>, v_16: Map<&2, cps_provider_6_Definition>, v_19: Map<&2, cps_provider_6_DefinitionHeader>, v_21: List<&2, BIR.ConstructorLayout>, v_24: Map<&2, cps_provider_6_Constructor>, v_26: List<&2, BIR.Family>, v_28: U32, v_30: U32, v_35: Maybe<&2, String>, v_38: Map<&2, Bool>, v_40: cps_provider_6_DefinitionHeader, v_42: cps_provider_6_Definition) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+  v_53 = v_1007704
+  CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_main_descriptor{v_47, v_5, v_6, v_10, v_32}}, False{}, v_1007708 => cemit_body_cps_provider_6_main_descriptor(v_47, v_5, v_6, v_10, v_32), v_1007707 => v_1007705 = cemit_unbox(cps_provider_6_CatalogResult<Maybe<&2, BIR.Descriptor>>, v_1007707); cemit_body_cps_provider_6_native_match_prepare_definition_symbol_0(v_1007705, v_5, v_7, v_13, v_16, v_19, v_21, v_24, v_26, v_28, v_30, v_35, v_38, v_40, v_42, v_53)}
 
-def cemit_match_1759(v_3: cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>, v_9: Bool, +v_7: IR.DefBody, +v_5: String, +v_6: IR.OptionalTerm, +v_10: Scope.ArenaGlobalScope, v_32: Maybe<&2, BIR.Descriptor>, v_13: List<&2, cps_provider_6_Definition>, v_16: Map<&2, cps_provider_6_Definition>, v_19: Map<&2, cps_provider_6_DefinitionHeader>, v_21: List<&2, BIR.ConstructorLayout>, v_24: Map<&2, cps_provider_6_Constructor>, v_26: List<&2, BIR.Family>, v_28: U32, v_30: U32, v_35: Maybe<&2, String>, v_38: Map<&2, Bool>, v_40: cps_provider_6_DefinitionHeader, v_42: cps_provider_6_Definition) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+def cemit_match_1765(v_3: cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>, v_9: Bool, +v_7: IR.DefBody, +v_5: String, +v_6: IR.OptionalTerm, +v_10: Scope.ArenaGlobalScope, v_32: Maybe<&2, BIR.Descriptor>, v_13: List<&2, cps_provider_6_Definition>, v_16: Map<&2, cps_provider_6_Definition>, v_19: Map<&2, cps_provider_6_DefinitionHeader>, v_21: List<&2, BIR.ConstructorLayout>, v_24: Map<&2, cps_provider_6_Constructor>, v_26: List<&2, BIR.Family>, v_28: U32, v_30: U32, v_35: Maybe<&2, String>, v_38: Map<&2, Bool>, v_40: cps_provider_6_DefinitionHeader, v_42: cps_provider_6_Definition) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   match v_3:
     case cps_provider_6_CatalogResult{v_47, v_48}:
-      v_1007672 = {Bool.and(v_9, cemit_pure_cps_provider_6_is_term(v_7)) : Bool}
-      v_1007673 = {v_5 : String}
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_result_roots{v_6, v_10, v_48}}, False{}, v_1007683 => cemit_body_cps_provider_6_result_roots(v_6, v_10, v_48), v_1007682 => +v_1007674 = cemit_unbox(List<&2, cps_provider_6_Root>, v_1007682); CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_type_root{v_1007672, v_1007673, v_1007674}}, False{}, v_1007681 => cemit_body_cps_provider_6_type_root(v_1007672, v_1007673, v_1007674), v_1007680 => +v_1007675 = cemit_unbox(List<&2, cps_provider_6_Root>, v_1007680); cemit_continuation_1758(v_1007675, v_47, v_5, v_6, v_10, v_32, v_7, v_13, v_16, v_19, v_21, v_24, v_26, v_28, v_30, v_35, v_38, v_40, v_42)}}
+      v_1007701 = {Bool.and(v_9, cemit_pure_cps_provider_6_is_term(v_7)) : Bool}
+      v_1007702 = {v_5 : String}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_result_roots{v_6, v_10, v_48}}, False{}, v_1007712 => cemit_body_cps_provider_6_result_roots(v_6, v_10, v_48), v_1007711 => +v_1007703 = cemit_unbox(List<&2, cps_provider_6_Root>, v_1007711); CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_type_root{v_1007701, v_1007702, v_1007703}}, False{}, v_1007710 => cemit_body_cps_provider_6_type_root(v_1007701, v_1007702, v_1007703), v_1007709 => +v_1007704 = cemit_unbox(List<&2, cps_provider_6_Root>, v_1007709); cemit_continuation_1764(v_1007704, v_47, v_5, v_6, v_10, v_32, v_7, v_13, v_16, v_19, v_21, v_24, v_26, v_28, v_30, v_35, v_38, v_40, v_42)}}
 
 def cemit_body_cps_provider_6_native_match_prepare_definition_symbol_1(v_3: cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>, v_5: String, v_6: IR.OptionalTerm, v_7: IR.DefBody, v_9: Bool, v_10: Scope.ArenaGlobalScope, v_13: List<&2, cps_provider_6_Definition>, v_16: Map<&2, cps_provider_6_Definition>, v_19: Map<&2, cps_provider_6_DefinitionHeader>, v_21: List<&2, BIR.ConstructorLayout>, v_24: Map<&2, cps_provider_6_Constructor>, v_26: List<&2, BIR.Family>, v_28: U32, v_30: U32, v_32: Maybe<&2, BIR.Descriptor>, v_35: Maybe<&2, String>, v_38: Map<&2, Bool>, v_40: cps_provider_6_DefinitionHeader, v_42: cps_provider_6_Definition) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  cemit_match_1759(v_3, v_9, v_7, v_5, v_6, v_10, v_32, v_13, v_16, v_19, v_21, v_24, v_26, v_28, v_30, v_35, v_38, v_40, v_42)
+  cemit_match_1765(v_3, v_9, v_7, v_5, v_6, v_10, v_32, v_13, v_16, v_19, v_21, v_24, v_26, v_28, v_30, v_35, v_38, v_40, v_42)
 
-def cemit_continuation_1760(v_1007685: cps_provider_6_DefinitionHeader, v_1007686: IR.Words, v_1007687: IR.OptionalTerm, v_1007688: IR.DefBody, v_1007689: Maybe<&2, IR.Occurrence>, v_1007690: Scope.ArenaGlobalScope, +v_1007691: Maybe<&2, String>, v_12: Nat, v_21: Arena.Arena, v_4: IR.Words, +v_15: Scope.ArenaGlobalScope, v_51: List<&2, cps_provider_6_Root>, v_3: String, v_5: IR.OptionalTerm, v_6: IR.DefBody, v_10: Bool, v_43: List<&2, cps_provider_6_Definition>, v_44: Map<&2, cps_provider_6_Definition>, v_45: Map<&2, cps_provider_6_DefinitionHeader>, v_46: List<&2, BIR.ConstructorLayout>, v_47: Map<&2, cps_provider_6_Constructor>, v_48: List<&2, BIR.Family>, v_49: U32, v_50: U32, v_52: Maybe<&2, BIR.Descriptor>, v_53: Maybe<&2, String>, v_54: Map<&2, Bool>, v_57: cps_provider_6_DefinitionHeader) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  v_60 = {cps_provider_6_Definition{v_1007685, v_1007686, v_1007687, v_1007688, v_1007689, v_1007690, v_1007691, v_12} : cps_provider_6_Definition}
-  CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_binder_roots{v_21, v_4, v_15, v_51}}, False{}, v_1007695 => cemit_body_cps_provider_6_binder_roots(v_21, v_4, v_15, v_51), v_1007694 => v_1007692 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>, v_1007694); cemit_body_cps_provider_6_native_match_prepare_definition_symbol_1(v_1007692, v_3, v_5, v_6, v_10, v_15, v_43, v_44, v_45, v_46, v_47, v_48, v_49, v_50, v_52, v_53, v_54, v_57, v_60)}
+def cemit_continuation_1766(v_1007714: cps_provider_6_DefinitionHeader, v_1007715: IR.Words, v_1007716: IR.OptionalTerm, v_1007717: IR.DefBody, v_1007718: Maybe<&2, IR.Occurrence>, v_1007719: Scope.ArenaGlobalScope, +v_1007720: Maybe<&2, String>, v_12: Nat, v_21: Arena.Arena, v_4: IR.Words, +v_15: Scope.ArenaGlobalScope, v_51: List<&2, cps_provider_6_Root>, v_3: String, v_5: IR.OptionalTerm, v_6: IR.DefBody, v_10: Bool, v_43: List<&2, cps_provider_6_Definition>, v_44: Map<&2, cps_provider_6_Definition>, v_45: Map<&2, cps_provider_6_DefinitionHeader>, v_46: List<&2, BIR.ConstructorLayout>, v_47: Map<&2, cps_provider_6_Constructor>, v_48: List<&2, BIR.Family>, v_49: U32, v_50: U32, v_52: Maybe<&2, BIR.Descriptor>, v_53: Maybe<&2, String>, v_54: Map<&2, Bool>, v_57: cps_provider_6_DefinitionHeader) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+  v_60 = {cps_provider_6_Definition{v_1007714, v_1007715, v_1007716, v_1007717, v_1007718, v_1007719, v_1007720, v_12} : cps_provider_6_Definition}
+  CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_binder_roots{v_21, v_4, v_15, v_51}}, False{}, v_1007724 => cemit_body_cps_provider_6_binder_roots(v_21, v_4, v_15, v_51), v_1007723 => v_1007721 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>, v_1007723); cemit_body_cps_provider_6_native_match_prepare_definition_symbol_1(v_1007721, v_3, v_5, v_6, v_10, v_15, v_43, v_44, v_45, v_46, v_47, v_48, v_49, v_50, v_52, v_53, v_54, v_57, v_60)}
 
-def cemit_continuation_1761(+v_1007684: IR.Symbol, +v_3: String, +v_49: U32, v_18: List<&2, BIR.Parameter>, v_20: List<&2, BIR.Quantity>, +v_10: Bool, v_26: Maybe<&2, BIR.Primitive>, v_24: Maybe<&2, cps_provider_6_Foreign>, v_28: Bool, +v_4: IR.Words, +v_5: IR.OptionalTerm, +v_6: IR.DefBody, v_8: Maybe<&2, IR.Occurrence>, +v_15: Scope.ArenaGlobalScope, v_14: Bool, v_12: Nat, v_21: Arena.Arena, v_51: List<&2, cps_provider_6_Root>, v_43: List<&2, cps_provider_6_Definition>, v_44: Map<&2, cps_provider_6_Definition>, v_45: Map<&2, cps_provider_6_DefinitionHeader>, v_46: List<&2, BIR.ConstructorLayout>, v_47: Map<&2, cps_provider_6_Constructor>, v_48: List<&2, BIR.Family>, v_50: U32, v_52: Maybe<&2, BIR.Descriptor>, v_53: Maybe<&2, String>, v_54: Map<&2, Bool>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  +v_57 = {cps_provider_6_DefinitionHeader{v_1007684, v_3, v_49, v_18, v_20, v_10, v_26, v_24, v_28} : cps_provider_6_DefinitionHeader}
-  v_1007685 = {v_57 : cps_provider_6_DefinitionHeader}
-  v_1007686 = {v_4 : IR.Words}
-  v_1007687 = {v_5 : IR.OptionalTerm}
-  v_1007688 = {v_6 : IR.DefBody}
-  v_1007689 = {v_8 : Maybe<&2, IR.Occurrence>}
-  v_1007690 = {v_15 : Scope.ArenaGlobalScope}
-  CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_native_marker{v_14, v_3}}, False{}, v_1007697 => cemit_body_cps_provider_6_native_marker(v_14, v_3), v_1007696 => +v_1007691 = cemit_unbox(Maybe<&2, String>, v_1007696); cemit_continuation_1760(v_1007685, v_1007686, v_1007687, v_1007688, v_1007689, v_1007690, v_1007691, v_12, v_21, v_4, v_15, v_51, v_3, v_5, v_6, v_10, v_43, v_44, v_45, v_46, v_47, v_48, v_49, v_50, v_52, v_53, v_54, v_57)}
+def cemit_continuation_1767(+v_1007713: IR.Symbol, +v_3: String, +v_49: U32, v_18: List<&2, BIR.Parameter>, v_20: List<&2, BIR.Quantity>, +v_10: Bool, v_26: Maybe<&2, BIR.Primitive>, v_24: Maybe<&2, cps_provider_6_Foreign>, v_28: Bool, +v_4: IR.Words, +v_5: IR.OptionalTerm, +v_6: IR.DefBody, v_8: Maybe<&2, IR.Occurrence>, +v_15: Scope.ArenaGlobalScope, v_14: Bool, v_12: Nat, v_21: Arena.Arena, v_51: List<&2, cps_provider_6_Root>, v_43: List<&2, cps_provider_6_Definition>, v_44: Map<&2, cps_provider_6_Definition>, v_45: Map<&2, cps_provider_6_DefinitionHeader>, v_46: List<&2, BIR.ConstructorLayout>, v_47: Map<&2, cps_provider_6_Constructor>, v_48: List<&2, BIR.Family>, v_50: U32, v_52: Maybe<&2, BIR.Descriptor>, v_53: Maybe<&2, String>, v_54: Map<&2, Bool>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+  +v_57 = {cps_provider_6_DefinitionHeader{v_1007713, v_3, v_49, v_18, v_20, v_10, v_26, v_24, v_28} : cps_provider_6_DefinitionHeader}
+  v_1007714 = {v_57 : cps_provider_6_DefinitionHeader}
+  v_1007715 = {v_4 : IR.Words}
+  v_1007716 = {v_5 : IR.OptionalTerm}
+  v_1007717 = {v_6 : IR.DefBody}
+  v_1007718 = {v_8 : Maybe<&2, IR.Occurrence>}
+  v_1007719 = {v_15 : Scope.ArenaGlobalScope}
+  CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_native_marker{v_14, v_3}}, False{}, v_1007726 => cemit_body_cps_provider_6_native_marker(v_14, v_3), v_1007725 => +v_1007720 = cemit_unbox(Maybe<&2, String>, v_1007725); cemit_continuation_1766(v_1007714, v_1007715, v_1007716, v_1007717, v_1007718, v_1007719, v_1007720, v_12, v_21, v_4, v_15, v_51, v_3, v_5, v_6, v_10, v_43, v_44, v_45, v_46, v_47, v_48, v_49, v_50, v_52, v_53, v_54, v_57)}
 
-def cemit_match_1762(v_1: cps_provider_6_Preparation, v_16: Scope.ArenaGlobal, v_3: String, v_18: List<&2, BIR.Parameter>, v_20: List<&2, BIR.Quantity>, v_10: Bool, v_26: Maybe<&2, BIR.Primitive>, v_24: Maybe<&2, cps_provider_6_Foreign>, v_28: Bool, v_4: IR.Words, v_5: IR.OptionalTerm, v_6: IR.DefBody, v_8: Maybe<&2, IR.Occurrence>, v_15: Scope.ArenaGlobalScope, v_14: Bool, v_12: Nat, v_21: Arena.Arena) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+def cemit_match_1768(v_1: cps_provider_6_Preparation, v_16: Scope.ArenaGlobal, v_3: String, v_18: List<&2, BIR.Parameter>, v_20: List<&2, BIR.Quantity>, v_10: Bool, v_26: Maybe<&2, BIR.Primitive>, v_24: Maybe<&2, cps_provider_6_Foreign>, v_28: Bool, v_4: IR.Words, v_5: IR.OptionalTerm, v_6: IR.DefBody, v_8: Maybe<&2, IR.Occurrence>, v_15: Scope.ArenaGlobalScope, v_14: Bool, v_12: Nat, v_21: Arena.Arena) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   match v_1:
     case cps_provider_6_Preparation{v_43, v_44, v_45, v_46, v_47, v_48, v_49, v_50, v_51, v_52, v_53, v_54}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_signature_symbol{v_16}}, False{}, v_1007699 => cemit_body_cps_provider_6_signature_symbol(v_16), v_1007698 => +v_1007684 = cemit_unbox(IR.Symbol, v_1007698); cemit_continuation_1761(v_1007684, v_3, v_49, v_18, v_20, v_10, v_26, v_24, v_28, v_4, v_5, v_6, v_8, v_15, v_14, v_12, v_21, v_51, v_43, v_44, v_45, v_46, v_47, v_48, v_50, v_52, v_53, v_54)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_signature_symbol{v_16}}, False{}, v_1007728 => cemit_body_cps_provider_6_signature_symbol(v_16), v_1007727 => +v_1007713 = cemit_unbox(IR.Symbol, v_1007727); cemit_continuation_1767(v_1007713, v_3, v_49, v_18, v_20, v_10, v_26, v_24, v_28, v_4, v_5, v_6, v_8, v_15, v_14, v_12, v_21, v_51, v_43, v_44, v_45, v_46, v_47, v_48, v_50, v_52, v_53, v_54)}
 
 def cemit_body_cps_provider_6_native_match_prepare_definition_symbol_2(v_1: cps_provider_6_Preparation, v_3: String, v_4: IR.Words, v_5: IR.OptionalTerm, v_6: IR.DefBody, v_8: Maybe<&2, IR.Occurrence>, v_10: Bool, v_12: Nat, v_14: Bool, v_15: Scope.ArenaGlobalScope, v_16: Scope.ArenaGlobal, v_18: List<&2, BIR.Parameter>, v_20: List<&2, BIR.Quantity>, v_21: Arena.Arena, v_24: Maybe<&2, cps_provider_6_Foreign>, v_26: Maybe<&2, BIR.Primitive>, v_28: Bool) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  cemit_match_1762(v_1, v_16, v_3, v_18, v_20, v_10, v_26, v_24, v_28, v_4, v_5, v_6, v_8, v_15, v_14, v_12, v_21)
+  cemit_match_1768(v_1, v_16, v_3, v_18, v_20, v_10, v_26, v_24, v_28, v_4, v_5, v_6, v_8, v_15, v_14, v_12, v_21)
 
-def cemit_continuation_1763(+v_1007701: Bool, v_21: cps_provider_6_Preparation, v_5: String, v_6: IR.Words, v_7: IR.OptionalTerm, v_8: IR.DefBody, v_10: Maybe<&2, IR.Occurrence>, v_12: Bool, v_16: Nat, v_18: Bool, v_19: Scope.ArenaGlobalScope, v_22: Scope.ArenaGlobal, v_24: List<&2, BIR.Parameter>, v_26: List<&2, BIR.Quantity>, v_31: Arena.Arena, v_32: Maybe<&2, cps_provider_6_Foreign>, v_35: Maybe<&2, BIR.Primitive>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  v_38 = v_1007701
+def cemit_continuation_1769(+v_1007730: Bool, v_21: cps_provider_6_Preparation, v_5: String, v_6: IR.Words, v_7: IR.OptionalTerm, v_8: IR.DefBody, v_10: Maybe<&2, IR.Occurrence>, v_12: Bool, v_16: Nat, v_18: Bool, v_19: Scope.ArenaGlobalScope, v_22: Scope.ArenaGlobal, v_24: List<&2, BIR.Parameter>, v_26: List<&2, BIR.Quantity>, v_31: Arena.Arena, v_32: Maybe<&2, cps_provider_6_Foreign>, v_35: Maybe<&2, BIR.Primitive>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+  v_38 = v_1007730
   cemit_body_cps_provider_6_native_match_prepare_definition_symbol_2(v_21, v_5, v_6, v_7, v_8, v_10, v_12, v_16, v_18, v_19, v_22, v_24, v_26, v_31, v_32, v_35, v_38)
 
-def cemit_continuation_1764(+v_1007700: Maybe<&2, BIR.Primitive>, v_14: Bool, +v_12: Bool, +v_24: List<&2, BIR.Parameter>, +v_32: Maybe<&2, cps_provider_6_Foreign>, v_21: cps_provider_6_Preparation, v_5: String, v_6: IR.Words, v_7: IR.OptionalTerm, v_8: IR.DefBody, v_10: Maybe<&2, IR.Occurrence>, v_16: Nat, v_18: Bool, v_19: Scope.ArenaGlobalScope, v_22: Scope.ArenaGlobal, v_26: List<&2, BIR.Quantity>, v_31: Arena.Arena) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  +v_35 = v_1007700
-  CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_definition_fast{v_14, v_12, v_24, v_35, v_32}}, False{}, v_1007704 => cemit_body_cps_provider_6_definition_fast(v_14, v_12, v_24, v_35, v_32), v_1007703 => +v_1007701 = cemit_unbox(Bool, v_1007703); cemit_continuation_1763(v_1007701, v_21, v_5, v_6, v_7, v_8, v_10, v_12, v_16, v_18, v_19, v_22, v_24, v_26, v_31, v_32, v_35)}
+def cemit_continuation_1770(+v_1007729: Maybe<&2, BIR.Primitive>, v_14: Bool, +v_12: Bool, +v_24: List<&2, BIR.Parameter>, +v_32: Maybe<&2, cps_provider_6_Foreign>, v_21: cps_provider_6_Preparation, v_5: String, v_6: IR.Words, v_7: IR.OptionalTerm, v_8: IR.DefBody, v_10: Maybe<&2, IR.Occurrence>, v_16: Nat, v_18: Bool, v_19: Scope.ArenaGlobalScope, v_22: Scope.ArenaGlobal, v_26: List<&2, BIR.Quantity>, v_31: Arena.Arena) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+  +v_35 = v_1007729
+  CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_definition_fast{v_14, v_12, v_24, v_35, v_32}}, False{}, v_1007733 => cemit_body_cps_provider_6_definition_fast(v_14, v_12, v_24, v_35, v_32), v_1007732 => +v_1007730 = cemit_unbox(Bool, v_1007732); cemit_continuation_1769(v_1007730, v_21, v_5, v_6, v_7, v_8, v_10, v_12, v_16, v_18, v_19, v_22, v_24, v_26, v_31, v_32, v_35)}
 
-def cemit_match_1765(v_3: cps_provider_6_CatalogResult<Maybe<&2, cps_provider_6_Foreign>>, +v_12: Bool, +v_18: Bool, +v_5: String, v_14: Bool, v_24: List<&2, BIR.Parameter>, v_21: cps_provider_6_Preparation, v_6: IR.Words, v_7: IR.OptionalTerm, v_8: IR.DefBody, v_10: Maybe<&2, IR.Occurrence>, v_16: Nat, v_19: Scope.ArenaGlobalScope, v_22: Scope.ArenaGlobal, v_26: List<&2, BIR.Quantity>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+def cemit_match_1771(v_3: cps_provider_6_CatalogResult<Maybe<&2, cps_provider_6_Foreign>>, +v_12: Bool, +v_18: Bool, +v_5: String, v_14: Bool, v_24: List<&2, BIR.Parameter>, v_21: cps_provider_6_Preparation, v_6: IR.Words, v_7: IR.OptionalTerm, v_8: IR.DefBody, v_10: Maybe<&2, IR.Occurrence>, v_16: Nat, v_19: Scope.ArenaGlobalScope, v_22: Scope.ArenaGlobal, v_26: List<&2, BIR.Quantity>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   match v_3:
     case cps_provider_6_CatalogResult{v_31, +v_32}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_definition_primitive{v_12, v_32, v_18, v_5}}, False{}, v_1007706 => cemit_body_cps_provider_6_definition_primitive(v_12, v_32, v_18, v_5), v_1007705 => +v_1007700 = cemit_unbox(Maybe<&2, BIR.Primitive>, v_1007705); cemit_continuation_1764(v_1007700, v_14, v_12, v_24, v_32, v_21, v_5, v_6, v_7, v_8, v_10, v_16, v_18, v_19, v_22, v_26, v_31)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_definition_primitive{v_12, v_32, v_18, v_5}}, False{}, v_1007735 => cemit_body_cps_provider_6_definition_primitive(v_12, v_32, v_18, v_5), v_1007734 => +v_1007729 = cemit_unbox(Maybe<&2, BIR.Primitive>, v_1007734); cemit_continuation_1770(v_1007729, v_14, v_12, v_24, v_32, v_21, v_5, v_6, v_7, v_8, v_10, v_16, v_18, v_19, v_22, v_26, v_31)}
 
 def cemit_body_cps_provider_6_native_match_prepare_definition_symbol_3(v_3: cps_provider_6_CatalogResult<Maybe<&2, cps_provider_6_Foreign>>, v_5: String, v_6: IR.Words, v_7: IR.OptionalTerm, v_8: IR.DefBody, v_10: Maybe<&2, IR.Occurrence>, v_12: Bool, v_14: Bool, v_16: Nat, v_18: Bool, v_19: Scope.ArenaGlobalScope, v_21: cps_provider_6_Preparation, v_22: Scope.ArenaGlobal, v_24: List<&2, BIR.Parameter>, v_26: List<&2, BIR.Quantity>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  cemit_match_1765(v_3, v_12, v_18, v_5, v_14, v_24, v_21, v_6, v_7, v_8, v_10, v_16, v_19, v_22, v_26)
+  cemit_match_1771(v_3, v_12, v_18, v_5, v_14, v_24, v_21, v_6, v_7, v_8, v_10, v_16, v_19, v_22, v_26)
 
-def cemit_match_1766(v_2: cps_provider_6_CatalogResult<cps_provider_6_Telescope>, +v_9: IR.DefBody, v_19: String, +v_4: String, v_6: String, v_26: Ast.SourceSpan, +v_7: IR.Words, +v_8: IR.OptionalTerm, +v_22: Scope.ArenaGlobalScope, v_11: Maybe<&2, IR.Occurrence>, v_13: Bool, v_15: Bool, v_17: Nat, v_21: Bool, v_24: cps_provider_6_Preparation, v_25: Scope.ArenaGlobal) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+def cemit_match_1772(v_2: cps_provider_6_CatalogResult<cps_provider_6_Telescope>, +v_9: IR.DefBody, v_19: String, +v_4: String, v_6: String, v_26: Ast.SourceSpan, +v_7: IR.Words, +v_8: IR.OptionalTerm, +v_22: Scope.ArenaGlobalScope, v_11: Maybe<&2, IR.Occurrence>, v_13: Bool, v_15: Bool, v_17: Nat, v_21: Bool, v_24: cps_provider_6_Preparation, v_25: Scope.ArenaGlobal) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_34, cps_provider_6_Telescope{v_35, v_36, _, _}}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_definition_foreign{v_34, v_9, v_19, v_4, v_6, v_26, v_7, v_8, v_22}}, False{}, v_1007710 => cemit_body_cps_provider_6_definition_foreign(v_34, v_9, v_19, v_4, v_6, v_26, v_7, v_8, v_22), v_1007709 => v_1007707 = cemit_unbox(cps_provider_6_CatalogResult<Maybe<&2, cps_provider_6_Foreign>>, v_1007709); cemit_body_cps_provider_6_native_match_prepare_definition_symbol_3(v_1007707, v_4, v_7, v_8, v_9, v_11, v_13, v_15, v_17, v_21, v_22, v_24, v_25, v_35, v_36)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_definition_foreign{v_34, v_9, v_19, v_4, v_6, v_26, v_7, v_8, v_22}}, False{}, v_1007739 => cemit_body_cps_provider_6_definition_foreign(v_34, v_9, v_19, v_4, v_6, v_26, v_7, v_8, v_22), v_1007738 => v_1007736 = cemit_unbox(cps_provider_6_CatalogResult<Maybe<&2, cps_provider_6_Foreign>>, v_1007738); cemit_body_cps_provider_6_native_match_prepare_definition_symbol_3(v_1007736, v_4, v_7, v_8, v_9, v_11, v_13, v_15, v_17, v_21, v_22, v_24, v_25, v_35, v_36)}
 
 def cemit_body_cps_provider_6_native_match_prepare_definition_symbol_4(v_2: cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_4: String, v_6: String, v_7: IR.Words, v_8: IR.OptionalTerm, v_9: IR.DefBody, v_11: Maybe<&2, IR.Occurrence>, v_13: Bool, v_15: Bool, v_17: Nat, v_19: String, v_21: Bool, v_22: Scope.ArenaGlobalScope, v_24: cps_provider_6_Preparation, v_25: Scope.ArenaGlobal, v_26: Ast.SourceSpan) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  cemit_match_1766(v_2, v_9, v_19, v_4, v_6, v_26, v_7, v_8, v_22, v_11, v_13, v_15, v_17, v_21, v_24, v_25)
+  cemit_match_1772(v_2, v_9, v_19, v_4, v_6, v_26, v_7, v_8, v_22, v_11, v_13, v_15, v_17, v_21, v_24, v_25)
 
-def cemit_match_1767(v_1: Maybe<&2, Scope.ArenaGlobal>, v_2: Arena.Arena, v_24: cps_provider_6_Preparation, v_4: String, +v_7: IR.Words, v_6: String, v_8: IR.OptionalTerm, v_9: IR.DefBody, v_11: Maybe<&2, IR.Occurrence>, v_13: Bool, v_15: Bool, v_17: Nat, v_19: String, v_21: Bool, v_22: Scope.ArenaGlobalScope, v_25: Ast.SourceSpan) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+def cemit_match_1773(v_1: Maybe<&2, Scope.ArenaGlobal>, v_2: Arena.Arena, v_24: cps_provider_6_Preparation, v_4: String, +v_7: IR.Words, v_6: String, v_8: IR.OptionalTerm, v_9: IR.DefBody, v_11: Maybe<&2, IR.Occurrence>, v_13: Bool, v_15: Bool, v_17: Nat, v_19: String, v_21: Bool, v_22: Scope.ArenaGlobalScope, v_25: Ast.SourceSpan) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   match v_1:
     case None{}:
-      v_1007711 = {v_2 : Arena.Arena}
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_preparation_failure{v_24, String.append("bend: missing published definition signature for ", v_4)}}, False{}, v_1007714 => cemit_body_cps_provider_6_preparation_failure(v_24, String.append("bend: missing published definition signature for ", v_4)), v_1007713 => +v_1007712 = cemit_unbox(cps_provider_6_Preparation, v_1007713); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007711, v_1007712}}}}
+      v_1007740 = {v_2 : Arena.Arena}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_preparation_failure{v_24, String.append("bend: missing published definition signature for ", v_4)}}, False{}, v_1007743 => cemit_body_cps_provider_6_preparation_failure(v_24, String.append("bend: missing published definition signature for ", v_4)), v_1007742 => +v_1007741 = cemit_unbox(cps_provider_6_Preparation, v_1007742); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007740, v_1007741}}}}
     case Some{v_30}:
-      CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_live_telescope{v_2, v_7, 0}}, v_1007717 => v_1007715 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_1007717); cemit_body_cps_provider_6_native_match_prepare_definition_symbol_4(v_1007715, v_4, v_6, v_7, v_8, v_9, v_11, v_13, v_15, v_17, v_19, v_21, v_22, v_24, v_30, v_25)}
+      CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_live_telescope{v_2, v_7, 0}}, v_1007746 => v_1007744 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_1007746); cemit_body_cps_provider_6_native_match_prepare_definition_symbol_4(v_1007744, v_4, v_6, v_7, v_8, v_9, v_11, v_13, v_15, v_17, v_19, v_21, v_22, v_24, v_30, v_25)}
 
 def cemit_body_cps_provider_6_native_match_prepare_definition_symbol_5(v_1: Maybe<&2, Scope.ArenaGlobal>, v_2: Arena.Arena, v_4: String, v_6: String, v_7: IR.Words, v_8: IR.OptionalTerm, v_9: IR.DefBody, v_11: Maybe<&2, IR.Occurrence>, v_13: Bool, v_15: Bool, v_17: Nat, v_19: String, v_21: Bool, v_22: Scope.ArenaGlobalScope, v_24: cps_provider_6_Preparation, v_25: Ast.SourceSpan) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  cemit_match_1767(v_1, v_2, v_24, v_4, v_7, v_6, v_8, v_9, v_11, v_13, v_15, v_17, v_19, v_21, v_22, v_25)
+  cemit_match_1773(v_1, v_2, v_24, v_4, v_7, v_6, v_8, v_9, v_11, v_13, v_15, v_17, v_19, v_21, v_22, v_25)
 
 def cemit_body_cps_provider_6_prepare_definition_symbol(v_0: Arena.Arena, v_2: Maybe<&2, Scope.ArenaGlobal>, v_4: String, v_6: String, v_7: IR.Words, v_8: IR.OptionalTerm, v_9: IR.DefBody, v_11: Maybe<&2, IR.Occurrence>, v_13: Bool, v_15: Bool, v_17: Nat, v_19: String, v_21: Bool, v_22: Scope.ArenaGlobalScope, v_24: cps_provider_6_Preparation, v_25: Ast.SourceSpan) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   cemit_body_cps_provider_6_native_match_prepare_definition_symbol_5(v_2, v_0, v_4, v_6, v_7, v_8, v_9, v_11, v_13, v_15, v_17, v_19, v_21, v_22, v_24, v_25)
@@ -19431,120 +19492,120 @@ def cemit_body_cps_provider_6_prepare_definition_symbol(v_0: Arena.Arena, v_2: M
 def cemit_body_cps_provider_6_is_term(v_0: IR.DefBody) -> CEmitterProgress<Bool>:
   CEmitterFinished{CEmitterValue{cemit_pure_cps_provider_6_is_term(v_0)}}
 
-def cemit_match_1768(v_2: cps_provider_6_CatalogResult<cps_provider_6_Arms>, v_6: String, v_4: List<&2, BIR.DescriptorField>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Arms>>:
+def cemit_match_1774(v_2: cps_provider_6_CatalogResult<cps_provider_6_Arms>, v_6: String, v_4: List<&2, BIR.DescriptorField>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Arms>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_12, cps_provider_6_Arms{v_13, v_14}}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_12, cps_provider_6_Arms{BIR.DescriptorArm{v_6, v_4} <> v_13, v_14}}}}
 
 def cemit_body_cps_provider_6_native_match_prepare_constructors_0(v_2: cps_provider_6_CatalogResult<cps_provider_6_Arms>, v_4: List<&2, BIR.DescriptorField>, v_6: String) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Arms>>:
-  cemit_match_1768(v_2, v_6, v_4)
+  cemit_match_1774(v_2, v_6, v_4)
 
-def cemit_continuation_1769(v_1007719: List<&2, cps_provider_6_Definition>, v_1007720: Map<&2, cps_provider_6_Definition>, v_1007721: Map<&2, cps_provider_6_DefinitionHeader>, v_1007722: List<&2, BIR.ConstructorLayout>, +v_1007723: Map<&2, cps_provider_6_Constructor>, v_34: List<&2, BIR.Family>, v_36: U32, v_38: U32, v_55: List<&2, cps_provider_6_Root>, v_40: Maybe<&2, BIR.Descriptor>, v_43: Maybe<&2, String>, v_46: Map<&2, Bool>, v_54: Arena.Arena, v_14: List<&2, IR.ConstructorDecl>, v_5: String, v_7: String, v_9: Nat, v_11: Bool, v_12: Scope.ArenaGlobalScope, v_16: List<&2, BIR.DescriptorField>, v_18: String) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Arms>>:
-  v_58 = {cps_provider_6_Preparation{v_1007719, v_1007720, v_1007721, v_1007722, v_1007723, v_34, v_36, U32.add(v_38, 1), v_55, v_40, v_43, v_46} : cps_provider_6_Preparation}
-  CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_constructors{v_54, v_14, v_5, v_7, v_9, v_11, v_12, v_58}}, v_1007726 => v_1007724 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Arms>, v_1007726); cemit_body_cps_provider_6_native_match_prepare_constructors_0(v_1007724, v_16, v_18)}
+def cemit_continuation_1775(v_1007748: List<&2, cps_provider_6_Definition>, v_1007749: Map<&2, cps_provider_6_Definition>, v_1007750: Map<&2, cps_provider_6_DefinitionHeader>, v_1007751: List<&2, BIR.ConstructorLayout>, +v_1007752: Map<&2, cps_provider_6_Constructor>, v_34: List<&2, BIR.Family>, v_36: U32, v_38: U32, v_55: List<&2, cps_provider_6_Root>, v_40: Maybe<&2, BIR.Descriptor>, v_43: Maybe<&2, String>, v_46: Map<&2, Bool>, v_54: Arena.Arena, v_14: List<&2, IR.ConstructorDecl>, v_5: String, v_7: String, v_9: Nat, v_11: Bool, v_12: Scope.ArenaGlobalScope, v_16: List<&2, BIR.DescriptorField>, v_18: String) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Arms>>:
+  v_58 = {cps_provider_6_Preparation{v_1007748, v_1007749, v_1007750, v_1007751, v_1007752, v_34, v_36, U32.add(v_38, 1), v_55, v_40, v_43, v_46} : cps_provider_6_Preparation}
+  CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_constructors{v_54, v_14, v_5, v_7, v_9, v_11, v_12, v_58}}, v_1007755 => v_1007753 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Arms>, v_1007755); cemit_body_cps_provider_6_native_match_prepare_constructors_0(v_1007753, v_16, v_18)}
 
-def cemit_match_1770(v_3: cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>, v_21: List<&2, cps_provider_6_Definition>, v_24: Map<&2, cps_provider_6_Definition>, v_27: Map<&2, cps_provider_6_DefinitionHeader>, v_47: BIR.ConstructorLayout, v_29: List<&2, BIR.ConstructorLayout>, +v_18: String, v_49: cps_provider_6_Constructor, v_32: Map<&2, cps_provider_6_Constructor>, v_34: List<&2, BIR.Family>, v_36: U32, v_38: U32, v_40: Maybe<&2, BIR.Descriptor>, v_43: Maybe<&2, String>, v_46: Map<&2, Bool>, v_14: List<&2, IR.ConstructorDecl>, v_5: String, v_7: String, v_9: Nat, v_11: Bool, v_12: Scope.ArenaGlobalScope, v_16: List<&2, BIR.DescriptorField>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Arms>>:
+def cemit_match_1776(v_3: cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>, v_21: List<&2, cps_provider_6_Definition>, v_24: Map<&2, cps_provider_6_Definition>, v_27: Map<&2, cps_provider_6_DefinitionHeader>, v_47: BIR.ConstructorLayout, v_29: List<&2, BIR.ConstructorLayout>, +v_18: String, v_49: cps_provider_6_Constructor, v_32: Map<&2, cps_provider_6_Constructor>, v_34: List<&2, BIR.Family>, v_36: U32, v_38: U32, v_40: Maybe<&2, BIR.Descriptor>, v_43: Maybe<&2, String>, v_46: Map<&2, Bool>, v_14: List<&2, IR.ConstructorDecl>, v_5: String, v_7: String, v_9: Nat, v_11: Bool, v_12: Scope.ArenaGlobalScope, v_16: List<&2, BIR.DescriptorField>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Arms>>:
   match v_3:
     case cps_provider_6_CatalogResult{v_54, v_55}:
-      v_1007719 = {v_21 : List<&2, cps_provider_6_Definition>}
-      v_1007720 = {v_24 : Map<&2, cps_provider_6_Definition>}
-      v_1007721 = {v_27 : Map<&2, cps_provider_6_DefinitionHeader>}
-      v_1007722 = {v_47 <> v_29 : List<&2, BIR.ConstructorLayout>}
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_insert_constructor{v_18, v_49, v_32}}, False{}, v_1007728 => cemit_body_cps_provider_6_insert_constructor(v_18, v_49, v_32), v_1007727 => +v_1007723 = cemit_unbox(Map<&2, cps_provider_6_Constructor>, v_1007727); cemit_continuation_1769(v_1007719, v_1007720, v_1007721, v_1007722, v_1007723, v_34, v_36, v_38, v_55, v_40, v_43, v_46, v_54, v_14, v_5, v_7, v_9, v_11, v_12, v_16, v_18)}
+      v_1007748 = {v_21 : List<&2, cps_provider_6_Definition>}
+      v_1007749 = {v_24 : Map<&2, cps_provider_6_Definition>}
+      v_1007750 = {v_27 : Map<&2, cps_provider_6_DefinitionHeader>}
+      v_1007751 = {v_47 <> v_29 : List<&2, BIR.ConstructorLayout>}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_insert_constructor{v_18, v_49, v_32}}, False{}, v_1007757 => cemit_body_cps_provider_6_insert_constructor(v_18, v_49, v_32), v_1007756 => +v_1007752 = cemit_unbox(Map<&2, cps_provider_6_Constructor>, v_1007756); cemit_continuation_1775(v_1007748, v_1007749, v_1007750, v_1007751, v_1007752, v_34, v_36, v_38, v_55, v_40, v_43, v_46, v_54, v_14, v_5, v_7, v_9, v_11, v_12, v_16, v_18)}
 
 def cemit_body_cps_provider_6_native_match_prepare_constructors_1(v_3: cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>, v_5: String, v_7: String, v_9: Nat, v_11: Bool, v_12: Scope.ArenaGlobalScope, v_14: List<&2, IR.ConstructorDecl>, v_16: List<&2, BIR.DescriptorField>, v_18: String, v_21: List<&2, cps_provider_6_Definition>, v_24: Map<&2, cps_provider_6_Definition>, v_27: Map<&2, cps_provider_6_DefinitionHeader>, v_29: List<&2, BIR.ConstructorLayout>, v_32: Map<&2, cps_provider_6_Constructor>, v_34: List<&2, BIR.Family>, v_36: U32, v_38: U32, v_40: Maybe<&2, BIR.Descriptor>, v_43: Maybe<&2, String>, v_46: Map<&2, Bool>, v_47: BIR.ConstructorLayout, v_49: cps_provider_6_Constructor) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Arms>>:
-  cemit_match_1770(v_3, v_21, v_24, v_27, v_47, v_29, v_18, v_49, v_32, v_34, v_36, v_38, v_40, v_43, v_46, v_14, v_5, v_7, v_9, v_11, v_12, v_16)
+  cemit_match_1776(v_3, v_21, v_24, v_27, v_47, v_29, v_18, v_49, v_32, v_34, v_36, v_38, v_40, v_43, v_46, v_14, v_5, v_7, v_9, v_11, v_12, v_16)
 
-def cemit_continuation_1771(v_1007733: BIR.ConstructorLayout, v_1007734: List<&2, BIR.Quantity>, v_1007735: Nat, +v_1007736: String, v_14: Arena.Arena, v_11: IR.Words, +v_10: Scope.ArenaGlobalScope, v_43: List<&2, cps_provider_6_Root>, v_3: String, v_5: String, v_7: Nat, v_9: Bool, v_13: List<&2, IR.ConstructorDecl>, v_18: List<&2, BIR.DescriptorField>, v_20: String, v_35: List<&2, cps_provider_6_Definition>, v_36: Map<&2, cps_provider_6_Definition>, v_37: Map<&2, cps_provider_6_DefinitionHeader>, v_38: List<&2, BIR.ConstructorLayout>, v_39: Map<&2, cps_provider_6_Constructor>, v_40: List<&2, BIR.Family>, v_41: U32, v_42: U32, v_44: Maybe<&2, BIR.Descriptor>, v_45: Maybe<&2, String>, v_46: Map<&2, Bool>, v_50: BIR.ConstructorLayout) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Arms>>:
-  v_53 = {cps_provider_6_Constructor{v_1007733, v_1007734, v_1007735, v_1007736} : cps_provider_6_Constructor}
-  CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_binder_roots{v_14, v_11, v_10, v_43}}, False{}, v_1007740 => cemit_body_cps_provider_6_binder_roots(v_14, v_11, v_10, v_43), v_1007739 => v_1007737 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>, v_1007739); cemit_body_cps_provider_6_native_match_prepare_constructors_1(v_1007737, v_3, v_5, v_7, v_9, v_10, v_13, v_18, v_20, v_35, v_36, v_37, v_38, v_39, v_40, v_41, v_42, v_44, v_45, v_46, v_50, v_53)}
+def cemit_continuation_1777(v_1007762: BIR.ConstructorLayout, v_1007763: List<&2, BIR.Quantity>, v_1007764: Nat, +v_1007765: String, v_14: Arena.Arena, v_11: IR.Words, +v_10: Scope.ArenaGlobalScope, v_43: List<&2, cps_provider_6_Root>, v_3: String, v_5: String, v_7: Nat, v_9: Bool, v_13: List<&2, IR.ConstructorDecl>, v_18: List<&2, BIR.DescriptorField>, v_20: String, v_35: List<&2, cps_provider_6_Definition>, v_36: Map<&2, cps_provider_6_Definition>, v_37: Map<&2, cps_provider_6_DefinitionHeader>, v_38: List<&2, BIR.ConstructorLayout>, v_39: Map<&2, cps_provider_6_Constructor>, v_40: List<&2, BIR.Family>, v_41: U32, v_42: U32, v_44: Maybe<&2, BIR.Descriptor>, v_45: Maybe<&2, String>, v_46: Map<&2, Bool>, v_50: BIR.ConstructorLayout) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Arms>>:
+  v_53 = {cps_provider_6_Constructor{v_1007762, v_1007763, v_1007764, v_1007765} : cps_provider_6_Constructor}
+  CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_binder_roots{v_14, v_11, v_10, v_43}}, False{}, v_1007769 => cemit_body_cps_provider_6_binder_roots(v_14, v_11, v_10, v_43), v_1007768 => v_1007766 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>, v_1007768); cemit_body_cps_provider_6_native_match_prepare_constructors_1(v_1007766, v_3, v_5, v_7, v_9, v_10, v_13, v_18, v_20, v_35, v_36, v_37, v_38, v_39, v_40, v_41, v_42, v_44, v_45, v_46, v_50, v_53)}
 
-def cemit_continuation_1772(v_1007729: U32, v_1007730: String, +v_1007731: Maybe<&2, String>, +v_1007732: List<&2, Maybe<&2, String>>, v_16: List<&2, BIR.Quantity>, +v_7: Nat, +v_3: String, +v_5: String, v_14: Arena.Arena, v_11: IR.Words, v_10: Scope.ArenaGlobalScope, v_43: List<&2, cps_provider_6_Root>, v_9: Bool, v_13: List<&2, IR.ConstructorDecl>, v_18: List<&2, BIR.DescriptorField>, v_20: String, v_35: List<&2, cps_provider_6_Definition>, v_36: Map<&2, cps_provider_6_Definition>, v_37: Map<&2, cps_provider_6_DefinitionHeader>, v_38: List<&2, BIR.ConstructorLayout>, v_39: Map<&2, cps_provider_6_Constructor>, v_40: List<&2, BIR.Family>, v_41: U32, v_42: U32, v_44: Maybe<&2, BIR.Descriptor>, v_45: Maybe<&2, String>, v_46: Map<&2, Bool>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Arms>>:
-  +v_50 = {BIR.ConstructorLayout{v_1007729, v_1007730, v_1007731, v_1007732} : BIR.ConstructorLayout}
-  v_1007733 = {v_50 : BIR.ConstructorLayout}
-  v_1007734 = {v_16 : List<&2, BIR.Quantity>}
-  v_1007735 = {v_7 : Nat}
-  CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_qualify{v_3, v_5}}, False{}, v_1007742 => cemit_body_cps_provider_6_qualify(v_3, v_5), v_1007741 => +v_1007736 = cemit_unbox(String, v_1007741); cemit_continuation_1771(v_1007733, v_1007734, v_1007735, v_1007736, v_14, v_11, v_10, v_43, v_3, v_5, v_7, v_9, v_13, v_18, v_20, v_35, v_36, v_37, v_38, v_39, v_40, v_41, v_42, v_44, v_45, v_46, v_50)}
+def cemit_continuation_1778(v_1007758: U32, v_1007759: String, +v_1007760: Maybe<&2, String>, +v_1007761: List<&2, Maybe<&2, String>>, v_16: List<&2, BIR.Quantity>, +v_7: Nat, +v_3: String, +v_5: String, v_14: Arena.Arena, v_11: IR.Words, v_10: Scope.ArenaGlobalScope, v_43: List<&2, cps_provider_6_Root>, v_9: Bool, v_13: List<&2, IR.ConstructorDecl>, v_18: List<&2, BIR.DescriptorField>, v_20: String, v_35: List<&2, cps_provider_6_Definition>, v_36: Map<&2, cps_provider_6_Definition>, v_37: Map<&2, cps_provider_6_DefinitionHeader>, v_38: List<&2, BIR.ConstructorLayout>, v_39: Map<&2, cps_provider_6_Constructor>, v_40: List<&2, BIR.Family>, v_41: U32, v_42: U32, v_44: Maybe<&2, BIR.Descriptor>, v_45: Maybe<&2, String>, v_46: Map<&2, Bool>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Arms>>:
+  +v_50 = {BIR.ConstructorLayout{v_1007758, v_1007759, v_1007760, v_1007761} : BIR.ConstructorLayout}
+  v_1007762 = {v_50 : BIR.ConstructorLayout}
+  v_1007763 = {v_16 : List<&2, BIR.Quantity>}
+  v_1007764 = {v_7 : Nat}
+  CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_qualify{v_3, v_5}}, False{}, v_1007771 => cemit_body_cps_provider_6_qualify(v_3, v_5), v_1007770 => +v_1007765 = cemit_unbox(String, v_1007770); cemit_continuation_1777(v_1007762, v_1007763, v_1007764, v_1007765, v_14, v_11, v_10, v_43, v_3, v_5, v_7, v_9, v_13, v_18, v_20, v_35, v_36, v_37, v_38, v_39, v_40, v_41, v_42, v_44, v_45, v_46, v_50)}
 
-def cemit_match_1773(v_1: cps_provider_6_Preparation, +v_20: String, +v_9: Bool, +v_5: String, +v_18: List<&2, BIR.DescriptorField>, v_16: List<&2, BIR.Quantity>, v_7: Nat, v_3: String, v_14: Arena.Arena, v_11: IR.Words, v_10: Scope.ArenaGlobalScope, v_13: List<&2, IR.ConstructorDecl>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Arms>>:
+def cemit_match_1779(v_1: cps_provider_6_Preparation, +v_20: String, +v_9: Bool, +v_5: String, +v_18: List<&2, BIR.DescriptorField>, v_16: List<&2, BIR.Quantity>, v_7: Nat, v_3: String, v_14: Arena.Arena, v_11: IR.Words, v_10: Scope.ArenaGlobalScope, v_13: List<&2, IR.ConstructorDecl>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Arms>>:
   match v_1:
     case cps_provider_6_Preparation{v_35, v_36, v_37, v_38, v_39, v_40, v_41, +v_42, v_43, v_44, v_45, v_46}:
-      v_1007729 = {v_42 : U32}
-      v_1007730 = {v_20 : String}
-      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_constructor_native{v_9, v_5, v_20}}, False{}, v_1007746 => cemit_body_cps_provider_6_constructor_native(v_9, v_5, v_20), v_1007745 => +v_1007731 = cemit_unbox(Maybe<&2, String>, v_1007745); CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_field_names{v_18}}, False{}, v_1007744 => cemit_body_cps_provider_6_field_names(v_18), v_1007743 => +v_1007732 = cemit_unbox(List<&2, Maybe<&2, String>>, v_1007743); cemit_continuation_1772(v_1007729, v_1007730, v_1007731, v_1007732, v_16, v_7, v_3, v_5, v_14, v_11, v_10, v_43, v_9, v_13, v_18, v_20, v_35, v_36, v_37, v_38, v_39, v_40, v_41, v_42, v_44, v_45, v_46)}}
+      v_1007758 = {v_42 : U32}
+      v_1007759 = {v_20 : String}
+      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_constructor_native{v_9, v_5, v_20}}, False{}, v_1007775 => cemit_body_cps_provider_6_constructor_native(v_9, v_5, v_20), v_1007774 => +v_1007760 = cemit_unbox(Maybe<&2, String>, v_1007774); CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_field_names{v_18}}, False{}, v_1007773 => cemit_body_cps_provider_6_field_names(v_18), v_1007772 => +v_1007761 = cemit_unbox(List<&2, Maybe<&2, String>>, v_1007772); cemit_continuation_1778(v_1007758, v_1007759, v_1007760, v_1007761, v_16, v_7, v_3, v_5, v_14, v_11, v_10, v_43, v_9, v_13, v_18, v_20, v_35, v_36, v_37, v_38, v_39, v_40, v_41, v_42, v_44, v_45, v_46)}}
 
 def cemit_body_cps_provider_6_native_match_prepare_constructors_2(v_1: cps_provider_6_Preparation, v_3: String, v_5: String, v_7: Nat, v_9: Bool, v_10: Scope.ArenaGlobalScope, v_11: IR.Words, v_13: List<&2, IR.ConstructorDecl>, v_14: Arena.Arena, v_16: List<&2, BIR.Quantity>, v_18: List<&2, BIR.DescriptorField>, v_20: String) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Arms>>:
-  cemit_match_1773(v_1, v_20, v_9, v_5, v_18, v_16, v_7, v_3, v_14, v_11, v_10, v_13)
+  cemit_match_1779(v_1, v_20, v_9, v_5, v_18, v_16, v_7, v_3, v_14, v_11, v_10, v_13)
 
-def cemit_continuation_1774(+v_1007747: String, v_13: cps_provider_6_Preparation, v_4: String, v_6: String, v_8: Nat, v_10: Bool, v_11: Scope.ArenaGlobalScope, v_16: IR.Words, v_18: List<&2, IR.ConstructorDecl>, v_26: Arena.Arena, v_28: List<&2, BIR.Quantity>, v_29: List<&2, BIR.DescriptorField>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Arms>>:
-  v_33 = v_1007747
+def cemit_continuation_1780(+v_1007776: String, v_13: cps_provider_6_Preparation, v_4: String, v_6: String, v_8: Nat, v_10: Bool, v_11: Scope.ArenaGlobalScope, v_16: IR.Words, v_18: List<&2, IR.ConstructorDecl>, v_26: Arena.Arena, v_28: List<&2, BIR.Quantity>, v_29: List<&2, BIR.DescriptorField>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Arms>>:
+  v_33 = v_1007776
   cemit_body_cps_provider_6_native_match_prepare_constructors_2(v_13, v_4, v_6, v_8, v_10, v_11, v_16, v_18, v_26, v_28, v_29, v_33)
 
-def cemit_match_1775(v_2: cps_provider_6_CatalogResult<cps_provider_6_Telescope>, +v_4: String, v_15: String, v_13: cps_provider_6_Preparation, v_6: String, v_8: Nat, v_10: Bool, v_11: Scope.ArenaGlobalScope, v_16: IR.Words, v_18: List<&2, IR.ConstructorDecl>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Arms>>:
+def cemit_match_1781(v_2: cps_provider_6_CatalogResult<cps_provider_6_Telescope>, +v_4: String, v_15: String, v_13: cps_provider_6_Preparation, v_6: String, v_8: Nat, v_10: Bool, v_11: Scope.ArenaGlobalScope, v_16: IR.Words, v_18: List<&2, IR.ConstructorDecl>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Arms>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_26, cps_provider_6_Telescope{_, v_28, v_29, _}}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_qualify{v_4, v_15}}, False{}, v_1007750 => cemit_body_cps_provider_6_qualify(v_4, v_15), v_1007749 => +v_1007747 = cemit_unbox(String, v_1007749); cemit_continuation_1774(v_1007747, v_13, v_4, v_6, v_8, v_10, v_11, v_16, v_18, v_26, v_28, v_29)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_qualify{v_4, v_15}}, False{}, v_1007779 => cemit_body_cps_provider_6_qualify(v_4, v_15), v_1007778 => +v_1007776 = cemit_unbox(String, v_1007778); cemit_continuation_1780(v_1007776, v_13, v_4, v_6, v_8, v_10, v_11, v_16, v_18, v_26, v_28, v_29)}
 
 def cemit_body_cps_provider_6_native_match_prepare_constructors_3(v_2: cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_4: String, v_6: String, v_8: Nat, v_10: Bool, v_11: Scope.ArenaGlobalScope, v_13: cps_provider_6_Preparation, v_15: String, v_16: IR.Words, v_18: List<&2, IR.ConstructorDecl>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Arms>>:
-  cemit_match_1775(v_2, v_4, v_15, v_13, v_6, v_8, v_10, v_11, v_16, v_18)
+  cemit_match_1781(v_2, v_4, v_15, v_13, v_6, v_8, v_10, v_11, v_16, v_18)
 
-def cemit_match_1776(v_1: List<&2, IR.ConstructorDecl>, v_2: Arena.Arena, v_13: cps_provider_6_Preparation, +v_11: Scope.ArenaGlobalScope, v_4: String, v_6: String, v_8: Nat, v_10: Bool) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Arms>>:
+def cemit_match_1782(v_1: List<&2, IR.ConstructorDecl>, v_2: Arena.Arena, v_13: cps_provider_6_Preparation, +v_11: Scope.ArenaGlobalScope, v_4: String, v_6: String, v_8: Nat, v_10: Bool) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Arms>>:
   match v_1:
     case []:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_2, cps_provider_6_Arms{[], v_13}}}}
     case IR.Constructor{v_20, +v_21, _} <> v_23:
-      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_telescope{v_2, v_21, 0, v_11}}, False{}, v_1007754 => cemit_body_cps_provider_6_telescope(v_2, v_21, 0, v_11), v_1007753 => v_1007751 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_1007753); cemit_body_cps_provider_6_native_match_prepare_constructors_3(v_1007751, v_4, v_6, v_8, v_10, v_11, v_13, v_20, v_21, v_23)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_telescope{v_2, v_21, 0, v_11}}, False{}, v_1007783 => cemit_body_cps_provider_6_telescope(v_2, v_21, 0, v_11), v_1007782 => v_1007780 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_1007782); cemit_body_cps_provider_6_native_match_prepare_constructors_3(v_1007780, v_4, v_6, v_8, v_10, v_11, v_13, v_20, v_21, v_23)}
 
 def cemit_body_cps_provider_6_native_match_prepare_constructors_4(v_1: List<&2, IR.ConstructorDecl>, v_2: Arena.Arena, v_4: String, v_6: String, v_8: Nat, v_10: Bool, v_11: Scope.ArenaGlobalScope, v_13: cps_provider_6_Preparation) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Arms>>:
-  cemit_match_1776(v_1, v_2, v_13, v_11, v_4, v_6, v_8, v_10)
+  cemit_match_1782(v_1, v_2, v_13, v_11, v_4, v_6, v_8, v_10)
 
 def cemit_body_cps_provider_6_prepare_constructors(v_0: Arena.Arena, v_2: List<&2, IR.ConstructorDecl>, v_4: String, v_6: String, v_8: Nat, v_10: Bool, v_11: Scope.ArenaGlobalScope, v_13: cps_provider_6_Preparation) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Arms>>:
   cemit_body_cps_provider_6_native_match_prepare_constructors_4(v_2, v_0, v_4, v_6, v_8, v_10, v_11, v_13)
 
-def cemit_continuation_1777(v_1007756: String, v_1007757: String, +v_1007758: Maybe<&2, String>, v_8: Nat, v_14: Nat, v_16: List<&2, BIR.DescriptorArm>, v_19: List<&2, cps_provider_6_Definition>, v_22: Map<&2, cps_provider_6_Definition>, v_25: Map<&2, cps_provider_6_DefinitionHeader>, v_27: List<&2, BIR.ConstructorLayout>, v_30: Map<&2, cps_provider_6_Constructor>, v_32: List<&2, BIR.Family>, v_34: U32, v_36: U32, v_12: U32, +v_6: Scope.ArenaGlobalScope, v_52: List<&2, cps_provider_6_Root>, v_38: Maybe<&2, BIR.Descriptor>, v_41: Maybe<&2, String>, v_44: Map<&2, Bool>, v_51: Arena.Arena, +v_46: String) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  v_55 = {BIR.Family{v_1007756, v_1007757, v_1007758, v_8, v_14, v_16} : BIR.Family}
+def cemit_continuation_1783(v_1007785: String, v_1007786: String, +v_1007787: Maybe<&2, String>, v_8: Nat, v_14: Nat, v_16: List<&2, BIR.DescriptorArm>, v_19: List<&2, cps_provider_6_Definition>, v_22: Map<&2, cps_provider_6_Definition>, v_25: Map<&2, cps_provider_6_DefinitionHeader>, v_27: List<&2, BIR.ConstructorLayout>, v_30: Map<&2, cps_provider_6_Constructor>, v_32: List<&2, BIR.Family>, v_34: U32, v_36: U32, v_12: U32, +v_6: Scope.ArenaGlobalScope, v_52: List<&2, cps_provider_6_Root>, v_38: Maybe<&2, BIR.Descriptor>, v_41: Maybe<&2, String>, v_44: Map<&2, Bool>, v_51: Arena.Arena, +v_46: String) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+  v_55 = {BIR.Family{v_1007785, v_1007786, v_1007787, v_8, v_14, v_16} : BIR.Family}
   v_57 = {cps_provider_6_Preparation{v_19, v_22, v_25, v_27, v_30, v_55 <> v_32, v_34, v_36, cps_provider_6_TermRoot{v_12, v_6} <> v_52, v_38, v_41, v_44} : cps_provider_6_Preparation}
-  v_1007759 = {v_51 : Arena.Arena}
-  CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_block_family{Scope.lookup_kind(v_46, Scope.GlobalFamily{}, v_6), v_46, v_57}}, v_1007761 => +v_1007760 = cemit_unbox(cps_provider_6_Preparation, v_1007761); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007759, v_1007760}}}}
+  v_1007788 = {v_51 : Arena.Arena}
+  CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_block_family{Scope.lookup_kind(v_46, Scope.GlobalFamily{}, v_6), v_46, v_57}}, v_1007790 => +v_1007789 = cemit_unbox(cps_provider_6_Preparation, v_1007790); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007788, v_1007789}}}}
 
-def cemit_match_1778(v_3: cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>, +v_46: String, +v_10: String, v_5: Bool, v_8: Nat, v_14: Nat, v_16: List<&2, BIR.DescriptorArm>, v_19: List<&2, cps_provider_6_Definition>, v_22: Map<&2, cps_provider_6_Definition>, v_25: Map<&2, cps_provider_6_DefinitionHeader>, v_27: List<&2, BIR.ConstructorLayout>, v_30: Map<&2, cps_provider_6_Constructor>, v_32: List<&2, BIR.Family>, v_34: U32, v_36: U32, v_12: U32, v_6: Scope.ArenaGlobalScope, v_38: Maybe<&2, BIR.Descriptor>, v_41: Maybe<&2, String>, v_44: Map<&2, Bool>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+def cemit_match_1784(v_3: cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>, +v_46: String, +v_10: String, v_5: Bool, v_8: Nat, v_14: Nat, v_16: List<&2, BIR.DescriptorArm>, v_19: List<&2, cps_provider_6_Definition>, v_22: Map<&2, cps_provider_6_Definition>, v_25: Map<&2, cps_provider_6_DefinitionHeader>, v_27: List<&2, BIR.ConstructorLayout>, v_30: Map<&2, cps_provider_6_Constructor>, v_32: List<&2, BIR.Family>, v_34: U32, v_36: U32, v_12: U32, v_6: Scope.ArenaGlobalScope, v_38: Maybe<&2, BIR.Descriptor>, v_41: Maybe<&2, String>, v_44: Map<&2, Bool>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   match v_3:
     case cps_provider_6_CatalogResult{v_51, v_52}:
-      v_1007756 = {v_46 : String}
-      v_1007757 = {v_10 : String}
-      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_native_marker{v_5, v_10}}, False{}, v_1007763 => cemit_body_cps_provider_6_native_marker(v_5, v_10), v_1007762 => +v_1007758 = cemit_unbox(Maybe<&2, String>, v_1007762); cemit_continuation_1777(v_1007756, v_1007757, v_1007758, v_8, v_14, v_16, v_19, v_22, v_25, v_27, v_30, v_32, v_34, v_36, v_12, v_6, v_52, v_38, v_41, v_44, v_51, v_46)}
+      v_1007785 = {v_46 : String}
+      v_1007786 = {v_10 : String}
+      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_native_marker{v_5, v_10}}, False{}, v_1007792 => cemit_body_cps_provider_6_native_marker(v_5, v_10), v_1007791 => +v_1007787 = cemit_unbox(Maybe<&2, String>, v_1007791); cemit_continuation_1783(v_1007785, v_1007786, v_1007787, v_8, v_14, v_16, v_19, v_22, v_25, v_27, v_30, v_32, v_34, v_36, v_12, v_6, v_52, v_38, v_41, v_44, v_51, v_46)}
 
 def cemit_body_cps_provider_6_native_match_prepare_family_0(v_3: cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>, v_5: Bool, v_6: Scope.ArenaGlobalScope, v_8: Nat, v_10: String, v_12: U32, v_14: Nat, v_16: List<&2, BIR.DescriptorArm>, v_19: List<&2, cps_provider_6_Definition>, v_22: Map<&2, cps_provider_6_Definition>, v_25: Map<&2, cps_provider_6_DefinitionHeader>, v_27: List<&2, BIR.ConstructorLayout>, v_30: Map<&2, cps_provider_6_Constructor>, v_32: List<&2, BIR.Family>, v_34: U32, v_36: U32, v_38: Maybe<&2, BIR.Descriptor>, v_41: Maybe<&2, String>, v_44: Map<&2, Bool>, v_46: String) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  cemit_match_1778(v_3, v_46, v_10, v_5, v_8, v_14, v_16, v_19, v_22, v_25, v_27, v_30, v_32, v_34, v_36, v_12, v_6, v_38, v_41, v_44)
+  cemit_match_1784(v_3, v_46, v_10, v_5, v_8, v_14, v_16, v_19, v_22, v_25, v_27, v_30, v_32, v_34, v_36, v_12, v_6, v_38, v_41, v_44)
 
-def cemit_continuation_1779(+v_1007764: String, v_16: Arena.Arena, v_11: IR.Words, +v_6: Scope.ArenaGlobalScope, v_41: List<&2, cps_provider_6_Root>, v_5: Bool, v_8: Nat, v_10: String, v_13: U32, v_15: Nat, v_18: List<&2, BIR.DescriptorArm>, v_33: List<&2, cps_provider_6_Definition>, v_34: Map<&2, cps_provider_6_Definition>, v_35: Map<&2, cps_provider_6_DefinitionHeader>, v_36: List<&2, BIR.ConstructorLayout>, v_37: Map<&2, cps_provider_6_Constructor>, v_38: List<&2, BIR.Family>, v_39: U32, v_40: U32, v_42: Maybe<&2, BIR.Descriptor>, v_43: Maybe<&2, String>, v_44: Map<&2, Bool>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  v_47 = v_1007764
-  CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_binder_roots{v_16, v_11, v_6, v_41}}, False{}, v_1007768 => cemit_body_cps_provider_6_binder_roots(v_16, v_11, v_6, v_41), v_1007767 => v_1007765 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>, v_1007767); cemit_body_cps_provider_6_native_match_prepare_family_0(v_1007765, v_5, v_6, v_8, v_10, v_13, v_15, v_18, v_33, v_34, v_35, v_36, v_37, v_38, v_39, v_40, v_42, v_43, v_44, v_47)}
+def cemit_continuation_1785(+v_1007793: String, v_16: Arena.Arena, v_11: IR.Words, +v_6: Scope.ArenaGlobalScope, v_41: List<&2, cps_provider_6_Root>, v_5: Bool, v_8: Nat, v_10: String, v_13: U32, v_15: Nat, v_18: List<&2, BIR.DescriptorArm>, v_33: List<&2, cps_provider_6_Definition>, v_34: Map<&2, cps_provider_6_Definition>, v_35: Map<&2, cps_provider_6_DefinitionHeader>, v_36: List<&2, BIR.ConstructorLayout>, v_37: Map<&2, cps_provider_6_Constructor>, v_38: List<&2, BIR.Family>, v_39: U32, v_40: U32, v_42: Maybe<&2, BIR.Descriptor>, v_43: Maybe<&2, String>, v_44: Map<&2, Bool>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+  v_47 = v_1007793
+  CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_binder_roots{v_16, v_11, v_6, v_41}}, False{}, v_1007797 => cemit_body_cps_provider_6_binder_roots(v_16, v_11, v_6, v_41), v_1007796 => v_1007794 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, cps_provider_6_Root>>, v_1007796); cemit_body_cps_provider_6_native_match_prepare_family_0(v_1007794, v_5, v_6, v_8, v_10, v_13, v_15, v_18, v_33, v_34, v_35, v_36, v_37, v_38, v_39, v_40, v_42, v_43, v_44, v_47)}
 
-def cemit_match_1780(v_1: cps_provider_6_Preparation, v_3: String, +v_10: String, v_16: Arena.Arena, v_11: IR.Words, v_6: Scope.ArenaGlobalScope, v_5: Bool, v_8: Nat, v_13: U32, v_15: Nat, v_18: List<&2, BIR.DescriptorArm>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+def cemit_match_1786(v_1: cps_provider_6_Preparation, v_3: String, +v_10: String, v_16: Arena.Arena, v_11: IR.Words, v_6: Scope.ArenaGlobalScope, v_5: Bool, v_8: Nat, v_13: U32, v_15: Nat, v_18: List<&2, BIR.DescriptorArm>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   match v_1:
     case cps_provider_6_Preparation{v_33, v_34, v_35, v_36, v_37, v_38, v_39, v_40, v_41, v_42, v_43, v_44}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_qualify{v_3, v_10}}, False{}, v_1007770 => cemit_body_cps_provider_6_qualify(v_3, v_10), v_1007769 => +v_1007764 = cemit_unbox(String, v_1007769); cemit_continuation_1779(v_1007764, v_16, v_11, v_6, v_41, v_5, v_8, v_10, v_13, v_15, v_18, v_33, v_34, v_35, v_36, v_37, v_38, v_39, v_40, v_42, v_43, v_44)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_qualify{v_3, v_10}}, False{}, v_1007799 => cemit_body_cps_provider_6_qualify(v_3, v_10), v_1007798 => +v_1007793 = cemit_unbox(String, v_1007798); cemit_continuation_1785(v_1007793, v_16, v_11, v_6, v_41, v_5, v_8, v_10, v_13, v_15, v_18, v_33, v_34, v_35, v_36, v_37, v_38, v_39, v_40, v_42, v_43, v_44)}
 
 def cemit_body_cps_provider_6_native_match_prepare_family_1(v_1: cps_provider_6_Preparation, v_3: String, v_5: Bool, v_6: Scope.ArenaGlobalScope, v_8: Nat, v_10: String, v_11: IR.Words, v_13: U32, v_15: Nat, v_16: Arena.Arena, v_18: List<&2, BIR.DescriptorArm>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  cemit_match_1780(v_1, v_3, v_10, v_16, v_11, v_6, v_5, v_8, v_13, v_15, v_18)
+  cemit_match_1786(v_1, v_3, v_10, v_16, v_11, v_6, v_5, v_8, v_13, v_15, v_18)
 
 def cemit_body_cps_provider_6_native_match_prepare_family_2(v_2: cps_provider_6_CatalogResult<cps_provider_6_Arms>, v_4: String, v_6: Bool, v_7: Scope.ArenaGlobalScope, v_9: Nat, v_11: String, v_12: IR.Words, v_14: U32, v_16: Nat) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_22, cps_provider_6_Arms{v_23, v_24}}:
       cemit_body_cps_provider_6_native_match_prepare_family_1(v_24, v_4, v_6, v_7, v_9, v_11, v_12, v_14, v_16, v_22, v_23)
 
-def cemit_continuation_1782(+v_1007772: Nat, v_1: Arena.Arena, v_21: List<&2, IR.ConstructorDecl>, +v_3: String, +v_18: String, +v_5: Bool, +v_6: Scope.ArenaGlobalScope, v_10: cps_provider_6_Preparation, v_8: Nat, v_19: IR.Words, v_20: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  +v_25 = v_1007772
-  CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_constructors{v_1, v_21, v_3, v_18, v_25, v_5, v_6, v_10}}, False{}, v_1007776 => cemit_body_cps_provider_6_prepare_constructors(v_1, v_21, v_3, v_18, v_25, v_5, v_6, v_10), v_1007775 => v_1007773 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Arms>, v_1007775); cemit_body_cps_provider_6_native_match_prepare_family_2(v_1007773, v_3, v_5, v_6, v_8, v_18, v_19, v_20, v_25)}
+def cemit_continuation_1788(+v_1007801: Nat, v_1: Arena.Arena, v_21: List<&2, IR.ConstructorDecl>, +v_3: String, +v_18: String, +v_5: Bool, +v_6: Scope.ArenaGlobalScope, v_10: cps_provider_6_Preparation, v_8: Nat, v_19: IR.Words, v_20: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+  +v_25 = v_1007801
+  CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_constructors{v_1, v_21, v_3, v_18, v_25, v_5, v_6, v_10}}, False{}, v_1007805 => cemit_body_cps_provider_6_prepare_constructors(v_1, v_21, v_3, v_18, v_25, v_5, v_6, v_10), v_1007804 => v_1007802 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Arms>, v_1007804); cemit_body_cps_provider_6_native_match_prepare_family_2(v_1007802, v_3, v_5, v_6, v_8, v_18, v_19, v_20, v_25)}
 
-def cemit_match_1783(v_0: IR.TypeDecl, v_1: Arena.Arena, v_3: String, v_5: Bool, v_6: Scope.ArenaGlobalScope, v_10: cps_provider_6_Preparation, v_8: Nat) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+def cemit_match_1789(v_0: IR.TypeDecl, v_1: Arena.Arena, v_3: String, v_5: Bool, v_6: Scope.ArenaGlobalScope, v_10: cps_provider_6_Preparation, v_8: Nat) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   match v_0:
     case IR.TypeDecl{v_18, +v_19, v_20, v_21, _}:
-      CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_words_count{v_19}}, v_1007777 => +v_1007772 = cemit_unbox(Nat, v_1007777); cemit_continuation_1782(v_1007772, v_1, v_21, v_3, v_18, v_5, v_6, v_10, v_8, v_19, v_20)}
+      CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_words_count{v_19}}, v_1007806 => +v_1007801 = cemit_unbox(Nat, v_1007806); cemit_continuation_1788(v_1007801, v_1, v_21, v_3, v_18, v_5, v_6, v_10, v_8, v_19, v_20)}
 
 def cemit_body_cps_provider_6_native_match_prepare_family_3(v_0: IR.TypeDecl, v_1: Arena.Arena, v_3: String, v_5: Bool, v_6: Scope.ArenaGlobalScope, v_8: Nat, v_10: cps_provider_6_Preparation) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  cemit_match_1783(v_0, v_1, v_3, v_5, v_6, v_10, v_8)
+  cemit_match_1789(v_0, v_1, v_3, v_5, v_6, v_10, v_8)
 
 def cemit_body_cps_provider_6_prepare_family(v_0: Arena.Arena, v_1: IR.TypeDecl, v_3: String, v_5: Bool, v_6: Scope.ArenaGlobalScope, v_8: Nat, v_10: cps_provider_6_Preparation) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   cemit_body_cps_provider_6_native_match_prepare_family_3(v_1, v_0, v_3, v_5, v_6, v_8, v_10)
@@ -19554,88 +19615,88 @@ def cemit_body_cps_provider_6_words_count(v_0: IR.Words) -> CEmitterProgress<Nat
     case IR.Words{_, v_5}:
       CEmitterFinished{CEmitterValue{U32.to_nat(v_5)}}
 
-def cemit_continuation_1785(+v_1007779: IR.Symbol, +v_3: String, +v_27: U32, v_21: List<&2, cps_provider_6_Definition>, v_22: Map<&2, cps_provider_6_Definition>, v_23: Map<&2, cps_provider_6_DefinitionHeader>, v_24: List<&2, BIR.ConstructorLayout>, v_25: Map<&2, cps_provider_6_Constructor>, v_26: List<&2, BIR.Family>, v_28: U32, v_29: List<&2, cps_provider_6_Root>, v_30: Maybe<&2, BIR.Descriptor>, v_31: Maybe<&2, String>, v_32: Map<&2, Bool>) -> CEmitterProgress<cps_provider_6_Preparation>:
-  v_35 = {cps_provider_6_DefinitionHeader{v_1007779, v_3, v_27, [], [], True{}, None{}, None{}, False{}} : cps_provider_6_DefinitionHeader}
-  v_1007780 = {v_21 : List<&2, cps_provider_6_Definition>}
-  v_1007781 = {v_22 : Map<&2, cps_provider_6_Definition>}
-  CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_header_insert{v_3, v_35, v_23}}, False{}, v_1007784 => cemit_body_cps_provider_6_header_insert(v_3, v_35, v_23), v_1007783 => +v_1007782 = cemit_unbox(Map<&2, cps_provider_6_DefinitionHeader>, v_1007783); CEmitterFinished{CEmitterValue{cps_provider_6_Preparation{v_1007780, v_1007781, v_1007782, v_24, v_25, v_26, v_27, v_28, v_29, v_30, v_31, v_32}}}}
+def cemit_continuation_1791(+v_1007808: IR.Symbol, +v_3: String, +v_27: U32, v_21: List<&2, cps_provider_6_Definition>, v_22: Map<&2, cps_provider_6_Definition>, v_23: Map<&2, cps_provider_6_DefinitionHeader>, v_24: List<&2, BIR.ConstructorLayout>, v_25: Map<&2, cps_provider_6_Constructor>, v_26: List<&2, BIR.Family>, v_28: U32, v_29: List<&2, cps_provider_6_Root>, v_30: Maybe<&2, BIR.Descriptor>, v_31: Maybe<&2, String>, v_32: Map<&2, Bool>) -> CEmitterProgress<cps_provider_6_Preparation>:
+  v_35 = {cps_provider_6_DefinitionHeader{v_1007808, v_3, v_27, [], [], True{}, None{}, None{}, False{}} : cps_provider_6_DefinitionHeader}
+  v_1007809 = {v_21 : List<&2, cps_provider_6_Definition>}
+  v_1007810 = {v_22 : Map<&2, cps_provider_6_Definition>}
+  CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_header_insert{v_3, v_35, v_23}}, False{}, v_1007813 => cemit_body_cps_provider_6_header_insert(v_3, v_35, v_23), v_1007812 => +v_1007811 = cemit_unbox(Map<&2, cps_provider_6_DefinitionHeader>, v_1007812); CEmitterFinished{CEmitterValue{cps_provider_6_Preparation{v_1007809, v_1007810, v_1007811, v_24, v_25, v_26, v_27, v_28, v_29, v_30, v_31, v_32}}}}
 
-def cemit_match_1786(v_1: Maybe<&2, Scope.ArenaGlobal>, +v_5: cps_provider_6_Preparation, v_3: String) -> CEmitterProgress<cps_provider_6_Preparation>:
+def cemit_match_1792(v_1: Maybe<&2, Scope.ArenaGlobal>, +v_5: cps_provider_6_Preparation, v_3: String) -> CEmitterProgress<cps_provider_6_Preparation>:
   match v_1, v_5:
     case Some{v_20}, cps_provider_6_Preparation{v_21, v_22, v_23, v_24, v_25, v_26, v_27, v_28, v_29, v_30, v_31, v_32}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_signature_symbol{v_20}}, False{}, v_1007786 => cemit_body_cps_provider_6_signature_symbol(v_20), v_1007785 => +v_1007779 = cemit_unbox(IR.Symbol, v_1007785); cemit_continuation_1785(v_1007779, v_3, v_27, v_21, v_22, v_23, v_24, v_25, v_26, v_28, v_29, v_30, v_31, v_32)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_signature_symbol{v_20}}, False{}, v_1007815 => cemit_body_cps_provider_6_signature_symbol(v_20), v_1007814 => +v_1007808 = cemit_unbox(IR.Symbol, v_1007814); cemit_continuation_1791(v_1007808, v_3, v_27, v_21, v_22, v_23, v_24, v_25, v_26, v_28, v_29, v_30, v_31, v_32)}
     case None{}, _:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_preparation_failure{v_5, String.append("bend: missing published family signature for ", v_3)}}, False{}, v_1007789 => cemit_body_cps_provider_6_preparation_failure(v_5, String.append("bend: missing published family signature for ", v_3)), v_1007788 => +v_1007787 = cemit_unbox(cps_provider_6_Preparation, v_1007788); CEmitterFinished{CEmitterValue{v_1007787}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_preparation_failure{v_5, String.append("bend: missing published family signature for ", v_3)}}, False{}, v_1007818 => cemit_body_cps_provider_6_preparation_failure(v_5, String.append("bend: missing published family signature for ", v_3)), v_1007817 => +v_1007816 = cemit_unbox(cps_provider_6_Preparation, v_1007817); CEmitterFinished{CEmitterValue{v_1007816}}}
 
 def cemit_body_cps_provider_6_block_family(v_1: Maybe<&2, Scope.ArenaGlobal>, v_3: String, v_5: cps_provider_6_Preparation) -> CEmitterProgress<cps_provider_6_Preparation>:
-  cemit_match_1786(v_1, v_5, v_3)
+  cemit_match_1792(v_1, v_5, v_3)
 
-def cemit_match_1787(v_1: List<&2, IR.Clause>, +v_3: U32) -> CEmitterProgress<Maybe<&2, cps_provider_6_Telescope>>:
+def cemit_match_1793(v_1: List<&2, IR.Clause>, +v_3: U32) -> CEmitterProgress<Maybe<&2, cps_provider_6_Telescope>>:
   match v_1:
     case []:
       CEmitterFinished{CEmitterValue{Some{cps_provider_6_Telescope{[], [], [], True{}}}}}
     case IR.ClauseFor{True{}, v_11, _, _, None{}, _} <> v_15:
-      v_1007790 = {cemit_pure_cps_provider_6_quantity(v_11) : BIR.Quantity}
-      v_1007791 = {v_3 : U32}
-      CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_law_telescope{v_15, U32.add(v_3, 1)}}, v_1007795 => +v_1007792 = cemit_unbox(Maybe<&2, cps_provider_6_Telescope>, v_1007795); CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_law_telescope_cons{v_1007790, v_1007791, v_1007792}}, v_1007794 => +v_1007793 = cemit_unbox(Maybe<&2, cps_provider_6_Telescope>, v_1007794); CEmitterFinished{CEmitterValue{v_1007793}}}}
+      v_1007819 = {cemit_pure_cps_provider_6_quantity(v_11) : BIR.Quantity}
+      v_1007820 = {v_3 : U32}
+      CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_law_telescope{v_15, U32.add(v_3, 1)}}, v_1007824 => +v_1007821 = cemit_unbox(Maybe<&2, cps_provider_6_Telescope>, v_1007824); CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_law_telescope_cons{v_1007819, v_1007820, v_1007821}}, v_1007823 => +v_1007822 = cemit_unbox(Maybe<&2, cps_provider_6_Telescope>, v_1007823); CEmitterFinished{CEmitterValue{v_1007822}}}}
     case _ <> _:
       CEmitterFinished{CEmitterValue{None{}}}
 
 def cemit_body_cps_provider_6_law_telescope(v_1: List<&2, IR.Clause>, v_3: U32) -> CEmitterProgress<Maybe<&2, cps_provider_6_Telescope>>:
-  cemit_match_1787(v_1, v_3)
+  cemit_match_1793(v_1, v_3)
 
-def cemit_match_1788(v_5: Maybe<&2, cps_provider_6_Telescope>, v_2: U32, +v_0: BIR.Quantity) -> CEmitterProgress<Maybe<&2, cps_provider_6_Telescope>>:
+def cemit_match_1794(v_5: Maybe<&2, cps_provider_6_Telescope>, v_2: U32, +v_0: BIR.Quantity) -> CEmitterProgress<Maybe<&2, cps_provider_6_Telescope>>:
   match v_5:
     case None{}:
       CEmitterFinished{CEmitterValue{None{}}}
     case Some{cps_provider_6_Telescope{v_12, v_13, v_14, v_15}}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_parameter{v_2, v_0, v_12}}, False{}, v_1007798 => cemit_body_cps_provider_6_parameter(v_2, v_0, v_12), v_1007797 => +v_1007796 = cemit_unbox(List<&2, BIR.Parameter>, v_1007797); CEmitterFinished{CEmitterValue{Some{cps_provider_6_Telescope{v_1007796, v_0 <> v_13, v_14, v_15}}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_parameter{v_2, v_0, v_12}}, False{}, v_1007827 => cemit_body_cps_provider_6_parameter(v_2, v_0, v_12), v_1007826 => +v_1007825 = cemit_unbox(List<&2, BIR.Parameter>, v_1007826); CEmitterFinished{CEmitterValue{Some{cps_provider_6_Telescope{v_1007825, v_0 <> v_13, v_14, v_15}}}}}
 
 def cemit_body_cps_provider_6_law_telescope_cons(v_0: BIR.Quantity, v_2: U32, v_5: Maybe<&2, cps_provider_6_Telescope>) -> CEmitterProgress<Maybe<&2, cps_provider_6_Telescope>>:
-  cemit_match_1788(v_5, v_2, v_0)
+  cemit_match_1794(v_5, v_2, v_0)
 
-def cemit_match_1789(v_1: IR.LawDecl, v_0: Arena.Arena, v_5: Bool, +v_3: String, +v_6: Scope.ArenaGlobalScope, v_8: cps_provider_6_Preparation) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+def cemit_match_1795(v_1: IR.LawDecl, v_0: Arena.Arena, v_5: Bool, +v_3: String, +v_6: Scope.ArenaGlobalScope, v_8: cps_provider_6_Preparation) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   match v_1:
     case IR.LawDecl{+v_15, v_16, v_17, _}:
-      v_1007799 = {v_0 : Arena.Arena}
-      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_primitive{v_5, v_15}}, False{}, v_1007813 => cemit_body_cps_provider_6_primitive(v_5, v_15), v_1007812 => +v_1007800 = cemit_unbox(Maybe<&2, BIR.Primitive>, v_1007812); CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_law_telescope{v_16, 0}}, False{}, v_1007811 => cemit_body_cps_provider_6_law_telescope(v_16, 0), v_1007810 => +v_1007801 = cemit_unbox(Maybe<&2, cps_provider_6_Telescope>, v_1007810); CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_qualify{v_3, v_15}}, False{}, v_1007809 => cemit_body_cps_provider_6_qualify(v_3, v_15), v_1007808 => +v_1007802 = cemit_unbox(String, v_1007808); CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_qualify{v_3, v_15}}, False{}, v_1007807 => cemit_body_cps_provider_6_qualify(v_3, v_15), v_1007806 => +v_1007803 = cemit_unbox(String, v_1007806); CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_native_law{v_1007799, v_1007800, v_1007801, Scope.lookup_kind(v_1007802, Scope.GlobalDefinition{}, v_6), v_1007803, v_17, v_6, v_8}}, v_1007805 => v_1007804 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007805); CEmitterFinished{CEmitterValue{v_1007804}}}}}}}
+      v_1007828 = {v_0 : Arena.Arena}
+      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_primitive{v_5, v_15}}, False{}, v_1007842 => cemit_body_cps_provider_6_primitive(v_5, v_15), v_1007841 => +v_1007829 = cemit_unbox(Maybe<&2, BIR.Primitive>, v_1007841); CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_law_telescope{v_16, 0}}, False{}, v_1007840 => cemit_body_cps_provider_6_law_telescope(v_16, 0), v_1007839 => +v_1007830 = cemit_unbox(Maybe<&2, cps_provider_6_Telescope>, v_1007839); CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_qualify{v_3, v_15}}, False{}, v_1007838 => cemit_body_cps_provider_6_qualify(v_3, v_15), v_1007837 => +v_1007831 = cemit_unbox(String, v_1007837); CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_qualify{v_3, v_15}}, False{}, v_1007836 => cemit_body_cps_provider_6_qualify(v_3, v_15), v_1007835 => +v_1007832 = cemit_unbox(String, v_1007835); CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_native_law{v_1007828, v_1007829, v_1007830, Scope.lookup_kind(v_1007831, Scope.GlobalDefinition{}, v_6), v_1007832, v_17, v_6, v_8}}, v_1007834 => v_1007833 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007834); CEmitterFinished{CEmitterValue{v_1007833}}}}}}}
 
 def cemit_body_cps_provider_6_prepare_law(v_0: Arena.Arena, v_1: IR.LawDecl, v_3: String, v_5: Bool, v_6: Scope.ArenaGlobalScope, v_8: cps_provider_6_Preparation) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  cemit_match_1789(v_1, v_0, v_5, v_3, v_6, v_8)
+  cemit_match_1795(v_1, v_0, v_5, v_3, v_6, v_8)
 
-def cemit_continuation_1790(+v_1007822: IR.Symbol, +v_9: String, +v_53: U32, v_28: List<&2, BIR.Parameter>, v_29: List<&2, BIR.Quantity>, v_27: BIR.Primitive, +v_11: U32, v_12: Scope.ArenaGlobalScope, v_0: Arena.Arena, v_47: List<&2, cps_provider_6_Definition>, v_48: Map<&2, cps_provider_6_Definition>, v_49: Map<&2, cps_provider_6_DefinitionHeader>, v_50: List<&2, BIR.ConstructorLayout>, v_51: Map<&2, cps_provider_6_Constructor>, v_52: List<&2, BIR.Family>, v_54: U32, v_55: List<&2, cps_provider_6_Root>, v_56: Maybe<&2, BIR.Descriptor>, v_57: Maybe<&2, String>, v_58: Map<&2, Bool>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  +v_61 = {cps_provider_6_DefinitionHeader{v_1007822, v_9, v_53, v_28, v_29, False{}, Some{v_27}, None{}, False{}} : cps_provider_6_DefinitionHeader}
+def cemit_continuation_1796(+v_1007851: IR.Symbol, +v_9: String, +v_53: U32, v_28: List<&2, BIR.Parameter>, v_29: List<&2, BIR.Quantity>, v_27: BIR.Primitive, +v_11: U32, v_12: Scope.ArenaGlobalScope, v_0: Arena.Arena, v_47: List<&2, cps_provider_6_Definition>, v_48: Map<&2, cps_provider_6_Definition>, v_49: Map<&2, cps_provider_6_DefinitionHeader>, v_50: List<&2, BIR.ConstructorLayout>, v_51: Map<&2, cps_provider_6_Constructor>, v_52: List<&2, BIR.Family>, v_54: U32, v_55: List<&2, cps_provider_6_Root>, v_56: Maybe<&2, BIR.Descriptor>, v_57: Maybe<&2, String>, v_58: Map<&2, Bool>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+  +v_61 = {cps_provider_6_DefinitionHeader{v_1007851, v_9, v_53, v_28, v_29, False{}, Some{v_27}, None{}, False{}} : cps_provider_6_DefinitionHeader}
   v_63 = {cps_provider_6_Definition{v_61, IR.Words{0, 0}, IR.SomeTerm{v_11}, IR.DefTerm{v_11}, None{}, v_12, Some{v_9}, 0n} : cps_provider_6_Definition}
-  v_1007823 = {v_0 : Arena.Arena}
-  v_1007824 = {v_63 <> v_47 : List<&2, cps_provider_6_Definition>}
-  v_1007825 = {v_48 : Map<&2, cps_provider_6_Definition>}
-  CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_header_insert{v_9, v_61, v_49}}, False{}, v_1007828 => cemit_body_cps_provider_6_header_insert(v_9, v_61, v_49), v_1007827 => +v_1007826 = cemit_unbox(Map<&2, cps_provider_6_DefinitionHeader>, v_1007827); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007823, cps_provider_6_Preparation{v_1007824, v_1007825, v_1007826, v_50, v_51, v_52, U32.add(v_53, 1), v_54, v_55, v_56, v_57, v_58}}}}}
+  v_1007852 = {v_0 : Arena.Arena}
+  v_1007853 = {v_63 <> v_47 : List<&2, cps_provider_6_Definition>}
+  v_1007854 = {v_48 : Map<&2, cps_provider_6_Definition>}
+  CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_header_insert{v_9, v_61, v_49}}, False{}, v_1007857 => cemit_body_cps_provider_6_header_insert(v_9, v_61, v_49), v_1007856 => +v_1007855 = cemit_unbox(Map<&2, cps_provider_6_DefinitionHeader>, v_1007856); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007852, cps_provider_6_Preparation{v_1007853, v_1007854, v_1007855, v_50, v_51, v_52, U32.add(v_53, 1), v_54, v_55, v_56, v_57, v_58}}}}}
 
-def cemit_match_1791(v_14: cps_provider_6_Preparation, v_34: Scope.ArenaGlobal, v_9: String, v_28: List<&2, BIR.Parameter>, v_29: List<&2, BIR.Quantity>, v_27: BIR.Primitive, v_11: U32, v_12: Scope.ArenaGlobalScope, v_0: Arena.Arena) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+def cemit_match_1797(v_14: cps_provider_6_Preparation, v_34: Scope.ArenaGlobal, v_9: String, v_28: List<&2, BIR.Parameter>, v_29: List<&2, BIR.Quantity>, v_27: BIR.Primitive, v_11: U32, v_12: Scope.ArenaGlobalScope, v_0: Arena.Arena) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   match v_14:
     case cps_provider_6_Preparation{v_47, v_48, v_49, v_50, v_51, v_52, v_53, v_54, v_55, v_56, v_57, v_58}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_signature_symbol{v_34}}, False{}, v_1007830 => cemit_body_cps_provider_6_signature_symbol(v_34), v_1007829 => +v_1007822 = cemit_unbox(IR.Symbol, v_1007829); cemit_continuation_1790(v_1007822, v_9, v_53, v_28, v_29, v_27, v_11, v_12, v_0, v_47, v_48, v_49, v_50, v_51, v_52, v_54, v_55, v_56, v_57, v_58)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_signature_symbol{v_34}}, False{}, v_1007859 => cemit_body_cps_provider_6_signature_symbol(v_34), v_1007858 => +v_1007851 = cemit_unbox(IR.Symbol, v_1007858); cemit_continuation_1796(v_1007851, v_9, v_53, v_28, v_29, v_27, v_11, v_12, v_0, v_47, v_48, v_49, v_50, v_51, v_52, v_54, v_55, v_56, v_57, v_58)}
 
-def cemit_match_1792(v_7: Maybe<&2, Scope.ArenaGlobal>, v_0: Arena.Arena, v_14: cps_provider_6_Preparation, v_9: String, v_28: List<&2, BIR.Parameter>, v_29: List<&2, BIR.Quantity>, v_27: BIR.Primitive, v_11: U32, v_12: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+def cemit_match_1798(v_7: Maybe<&2, Scope.ArenaGlobal>, v_0: Arena.Arena, v_14: cps_provider_6_Preparation, v_9: String, v_28: List<&2, BIR.Parameter>, v_29: List<&2, BIR.Quantity>, v_27: BIR.Primitive, v_11: U32, v_12: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   match v_7:
     case None{}:
-      v_1007818 = {v_0 : Arena.Arena}
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_preparation_failure{v_14, String.append("bend: missing published native law signature for ", v_9)}}, False{}, v_1007821 => cemit_body_cps_provider_6_preparation_failure(v_14, String.append("bend: missing published native law signature for ", v_9)), v_1007820 => +v_1007819 = cemit_unbox(cps_provider_6_Preparation, v_1007820); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007818, v_1007819}}}}
+      v_1007847 = {v_0 : Arena.Arena}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_preparation_failure{v_14, String.append("bend: missing published native law signature for ", v_9)}}, False{}, v_1007850 => cemit_body_cps_provider_6_preparation_failure(v_14, String.append("bend: missing published native law signature for ", v_9)), v_1007849 => +v_1007848 = cemit_unbox(cps_provider_6_Preparation, v_1007849); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007847, v_1007848}}}}
     case Some{v_34}:
-      cemit_match_1791(v_14, v_34, v_9, v_28, v_29, v_27, v_11, v_12, v_0)
+      cemit_match_1797(v_14, v_34, v_9, v_28, v_29, v_27, v_11, v_12, v_0)
 
-def cemit_match_1793(v_2: Maybe<&2, BIR.Primitive>, v_5: Maybe<&2, cps_provider_6_Telescope>, v_0: Arena.Arena, v_14: cps_provider_6_Preparation, v_7: Maybe<&2, Scope.ArenaGlobal>, v_9: String, v_11: U32, v_12: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+def cemit_match_1799(v_2: Maybe<&2, BIR.Primitive>, v_5: Maybe<&2, cps_provider_6_Telescope>, v_0: Arena.Arena, v_14: cps_provider_6_Preparation, v_7: Maybe<&2, Scope.ArenaGlobal>, v_9: String, v_11: U32, v_12: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   match v_2, v_5:
     case None{}, _:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_0, v_14}}}
     case Some{v_20}, None{}:
-      v_1007814 = {v_0 : Arena.Arena}
-      CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_block_family{v_7, v_9, v_14}}, False{}, v_1007817 => cemit_body_cps_provider_6_block_family(v_7, v_9, v_14), v_1007816 => +v_1007815 = cemit_unbox(cps_provider_6_Preparation, v_1007816); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007814, v_1007815}}}}
+      v_1007843 = {v_0 : Arena.Arena}
+      CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_block_family{v_7, v_9, v_14}}, False{}, v_1007846 => cemit_body_cps_provider_6_block_family(v_7, v_9, v_14), v_1007845 => +v_1007844 = cemit_unbox(cps_provider_6_Preparation, v_1007845); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007843, v_1007844}}}}
     case Some{v_27}, Some{cps_provider_6_Telescope{v_28, v_29, _, _}}:
-      cemit_match_1792(v_7, v_0, v_14, v_9, v_28, v_29, v_27, v_11, v_12)
+      cemit_match_1798(v_7, v_0, v_14, v_9, v_28, v_29, v_27, v_11, v_12)
 
 def cemit_body_cps_provider_6_prepare_native_law(v_0: Arena.Arena, v_2: Maybe<&2, BIR.Primitive>, v_5: Maybe<&2, cps_provider_6_Telescope>, v_7: Maybe<&2, Scope.ArenaGlobal>, v_9: String, v_11: U32, v_12: Scope.ArenaGlobalScope, v_14: cps_provider_6_Preparation) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  cemit_match_1793(v_2, v_5, v_0, v_14, v_7, v_9, v_11, v_12)
+  cemit_match_1799(v_2, v_5, v_0, v_14, v_7, v_9, v_11, v_12)
 
 def cemit_body_cps_provider_6_family_key(v_0: IR.TypeDecl, v_2: String) -> CEmitterProgress<String>:
   match v_0:
@@ -19647,69 +19708,69 @@ def cemit_body_cps_provider_6_native_match_prepare_declarations_0(v_1: List<&2, 
     case []:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_2, v_4}}}
     case _ <> _:
-      v_1007832 = {v_2 : Arena.Arena}
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_preparation_failure{v_4, "bend: unmatched checked family metadata"}}, False{}, v_1007835 => cemit_body_cps_provider_6_preparation_failure(v_4, "bend: unmatched checked family metadata"), v_1007834 => +v_1007833 = cemit_unbox(cps_provider_6_Preparation, v_1007834); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007832, v_1007833}}}}
+      v_1007861 = {v_2 : Arena.Arena}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_preparation_failure{v_4, "bend: unmatched checked family metadata"}}, False{}, v_1007864 => cemit_body_cps_provider_6_preparation_failure(v_4, "bend: unmatched checked family metadata"), v_1007863 => +v_1007862 = cemit_unbox(cps_provider_6_Preparation, v_1007863); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007861, v_1007862}}}}
 
-def cemit_match_1796(v_2: cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_13: List<&2, IR.TopLevel>, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: List<&2, Checked.FamilyMetadata>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+def cemit_match_1802(v_2: cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_13: List<&2, IR.TopLevel>, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: List<&2, Checked.FamilyMetadata>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_18, v_19}:
-      CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_declarations{v_18, v_13, v_4, v_6, v_8, v_9, v_11, v_19}}, v_1007837 => v_1007836 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007837); CEmitterFinished{CEmitterValue{v_1007836}}}
+      CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_declarations{v_18, v_13, v_4, v_6, v_8, v_9, v_11, v_19}}, v_1007866 => v_1007865 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007866); CEmitterFinished{CEmitterValue{v_1007865}}}
 
 def cemit_body_cps_provider_6_native_match_prepare_declarations_1(v_2: cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: List<&2, Checked.FamilyMetadata>, v_13: List<&2, IR.TopLevel>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  cemit_match_1796(v_2, v_13, v_4, v_6, v_8, v_9, v_11)
+  cemit_match_1802(v_2, v_13, v_4, v_6, v_8, v_9, v_11)
 
-def cemit_match_1797(v_2: cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_11: List<&2, IR.TopLevel>, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_13: List<&2, Checked.FamilyMetadata>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+def cemit_match_1803(v_2: cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_11: List<&2, IR.TopLevel>, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_13: List<&2, Checked.FamilyMetadata>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_18, v_19}:
-      CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_declarations{v_18, v_11, v_4, v_6, v_8, v_9, v_13, v_19}}, v_1007839 => v_1007838 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007839); CEmitterFinished{CEmitterValue{v_1007838}}}
+      CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_declarations{v_18, v_11, v_4, v_6, v_8, v_9, v_13, v_19}}, v_1007868 => v_1007867 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007868); CEmitterFinished{CEmitterValue{v_1007867}}}
 
 def cemit_body_cps_provider_6_native_match_prepare_declarations_2(v_2: cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: List<&2, IR.TopLevel>, v_13: List<&2, Checked.FamilyMetadata>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  cemit_match_1797(v_2, v_11, v_4, v_6, v_8, v_9, v_13)
+  cemit_match_1803(v_2, v_11, v_4, v_6, v_8, v_9, v_13)
 
-def cemit_match_1798(v_1: Bool, v_2: Arena.Arena, v_11: cps_provider_6_Preparation, v_12: IR.TypeDecl, +v_4: String, +v_8: Bool, +v_9: Scope.ArenaGlobalScope, v_16: Nat, v_6: String, v_14: List<&2, IR.TopLevel>, v_18: List<&2, Checked.FamilyMetadata>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+def cemit_match_1804(v_1: Bool, v_2: Arena.Arena, v_11: cps_provider_6_Preparation, v_12: IR.TypeDecl, +v_4: String, +v_8: Bool, +v_9: Scope.ArenaGlobalScope, v_16: Nat, v_6: String, v_14: List<&2, IR.TopLevel>, v_18: List<&2, Checked.FamilyMetadata>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   match v_1:
     case False{}:
-      v_1007840 = {v_2 : Arena.Arena}
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_preparation_failure{v_11, "bend: checked family metadata identity mismatch"}}, False{}, v_1007843 => cemit_body_cps_provider_6_preparation_failure(v_11, "bend: checked family metadata identity mismatch"), v_1007842 => +v_1007841 = cemit_unbox(cps_provider_6_Preparation, v_1007842); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007840, v_1007841}}}}
+      v_1007869 = {v_2 : Arena.Arena}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_preparation_failure{v_11, "bend: checked family metadata identity mismatch"}}, False{}, v_1007872 => cemit_body_cps_provider_6_preparation_failure(v_11, "bend: checked family metadata identity mismatch"), v_1007871 => +v_1007870 = cemit_unbox(cps_provider_6_Preparation, v_1007871); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007869, v_1007870}}}}
     case True{}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_family{v_2, v_12, v_4, v_8, v_9, v_16, v_11}}, False{}, v_1007847 => cemit_body_cps_provider_6_prepare_family(v_2, v_12, v_4, v_8, v_9, v_16, v_11), v_1007846 => v_1007844 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007846); cemit_body_cps_provider_6_native_match_prepare_declarations_2(v_1007844, v_4, v_6, v_8, v_9, v_14, v_18)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_family{v_2, v_12, v_4, v_8, v_9, v_16, v_11}}, False{}, v_1007876 => cemit_body_cps_provider_6_prepare_family(v_2, v_12, v_4, v_8, v_9, v_16, v_11), v_1007875 => v_1007873 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007875); cemit_body_cps_provider_6_native_match_prepare_declarations_2(v_1007873, v_4, v_6, v_8, v_9, v_14, v_18)}
 
 def cemit_body_cps_provider_6_native_match_prepare_declarations_3(v_1: Bool, v_2: Arena.Arena, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: cps_provider_6_Preparation, v_12: IR.TypeDecl, v_14: List<&2, IR.TopLevel>, v_16: Nat, v_18: List<&2, Checked.FamilyMetadata>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  cemit_match_1798(v_1, v_2, v_11, v_12, v_4, v_8, v_9, v_16, v_6, v_14, v_18)
+  cemit_match_1804(v_1, v_2, v_11, v_12, v_4, v_8, v_9, v_16, v_6, v_14, v_18)
 
-def cemit_match_1799(v_1: List<&2, Checked.FamilyMetadata>, v_2: Arena.Arena, v_11: cps_provider_6_Preparation, +v_12: IR.TypeDecl, +v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_14: List<&2, IR.TopLevel>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+def cemit_match_1805(v_1: List<&2, Checked.FamilyMetadata>, v_2: Arena.Arena, v_11: cps_provider_6_Preparation, +v_12: IR.TypeDecl, +v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_14: List<&2, IR.TopLevel>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   match v_1:
     case []:
-      v_1007848 = {v_2 : Arena.Arena}
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_preparation_failure{v_11, "bend: missing checked family metadata"}}, False{}, v_1007851 => cemit_body_cps_provider_6_preparation_failure(v_11, "bend: missing checked family metadata"), v_1007850 => +v_1007849 = cemit_unbox(cps_provider_6_Preparation, v_1007850); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007848, v_1007849}}}}
+      v_1007877 = {v_2 : Arena.Arena}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_preparation_failure{v_11, "bend: missing checked family metadata"}}, False{}, v_1007880 => cemit_body_cps_provider_6_preparation_failure(v_11, "bend: missing checked family metadata"), v_1007879 => +v_1007878 = cemit_unbox(cps_provider_6_Preparation, v_1007879); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007877, v_1007878}}}}
     case Checked.FamilyMetadata{v_21, v_22} <> v_23:
-      v_1007852 = {v_21 : String}
-      CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_family_key{v_12, v_4}}, False{}, v_1007858 => cemit_body_cps_provider_6_family_key(v_12, v_4), v_1007857 => +v_1007853 = cemit_unbox(String, v_1007857); CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_native_match_prepare_declarations_3{String.eq(v_1007852, v_1007853), v_2, v_4, v_6, v_8, v_9, v_11, v_12, v_14, v_22, v_23}}, False{}, v_1007856 => cemit_body_cps_provider_6_native_match_prepare_declarations_3(String.eq(v_1007852, v_1007853), v_2, v_4, v_6, v_8, v_9, v_11, v_12, v_14, v_22, v_23), v_1007855 => v_1007854 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007855); CEmitterFinished{CEmitterValue{v_1007854}}}}
+      v_1007881 = {v_21 : String}
+      CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_family_key{v_12, v_4}}, False{}, v_1007887 => cemit_body_cps_provider_6_family_key(v_12, v_4), v_1007886 => +v_1007882 = cemit_unbox(String, v_1007886); CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_native_match_prepare_declarations_3{String.eq(v_1007881, v_1007882), v_2, v_4, v_6, v_8, v_9, v_11, v_12, v_14, v_22, v_23}}, False{}, v_1007885 => cemit_body_cps_provider_6_native_match_prepare_declarations_3(String.eq(v_1007881, v_1007882), v_2, v_4, v_6, v_8, v_9, v_11, v_12, v_14, v_22, v_23), v_1007884 => v_1007883 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007884); CEmitterFinished{CEmitterValue{v_1007883}}}}
 
 def cemit_body_cps_provider_6_native_match_prepare_declarations_4(v_1: List<&2, Checked.FamilyMetadata>, v_2: Arena.Arena, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: cps_provider_6_Preparation, v_12: IR.TypeDecl, v_14: List<&2, IR.TopLevel>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  cemit_match_1799(v_1, v_2, v_11, v_12, v_4, v_6, v_8, v_9, v_14)
+  cemit_match_1805(v_1, v_2, v_11, v_12, v_4, v_6, v_8, v_9, v_14)
 
-def cemit_match_1800(v_2: cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_13: List<&2, IR.TopLevel>, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: List<&2, Checked.FamilyMetadata>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+def cemit_match_1806(v_2: cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_13: List<&2, IR.TopLevel>, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: List<&2, Checked.FamilyMetadata>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_18, v_19}:
-      CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_declarations{v_18, v_13, v_4, v_6, v_8, v_9, v_11, v_19}}, v_1007860 => v_1007859 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007860); CEmitterFinished{CEmitterValue{v_1007859}}}
+      CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_declarations{v_18, v_13, v_4, v_6, v_8, v_9, v_11, v_19}}, v_1007889 => v_1007888 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007889); CEmitterFinished{CEmitterValue{v_1007888}}}
 
 def cemit_body_cps_provider_6_native_match_prepare_declarations_5(v_2: cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: List<&2, Checked.FamilyMetadata>, v_13: List<&2, IR.TopLevel>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  cemit_match_1800(v_2, v_13, v_4, v_6, v_8, v_9, v_11)
+  cemit_match_1806(v_2, v_13, v_4, v_6, v_8, v_9, v_11)
 
-def cemit_match_1801(v_1: List<&2, IR.TopLevel>, v_11: List<&2, Checked.FamilyMetadata>, v_2: Arena.Arena, v_13: cps_provider_6_Preparation, +v_4: String, +v_6: String, +v_8: Bool, +v_9: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+def cemit_match_1807(v_1: List<&2, IR.TopLevel>, v_11: List<&2, Checked.FamilyMetadata>, v_2: Arena.Arena, v_13: cps_provider_6_Preparation, +v_4: String, +v_6: String, +v_8: Bool, +v_9: Scope.ArenaGlobalScope) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   match v_1:
     case []:
       cemit_body_cps_provider_6_native_match_prepare_declarations_0(v_11, v_2, v_13)
     case IR.DefTop{v_19} <> v_20:
-      CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_definition{v_2, v_19, v_4, v_6, v_8, v_9, v_13}}, False{}, v_1007865 => cemit_body_cps_provider_6_prepare_definition(v_2, v_19, v_4, v_6, v_8, v_9, v_13), v_1007864 => v_1007862 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007864); cemit_body_cps_provider_6_native_match_prepare_declarations_1(v_1007862, v_4, v_6, v_8, v_9, v_11, v_20)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_definition{v_2, v_19, v_4, v_6, v_8, v_9, v_13}}, False{}, v_1007894 => cemit_body_cps_provider_6_prepare_definition(v_2, v_19, v_4, v_6, v_8, v_9, v_13), v_1007893 => v_1007891 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007893); cemit_body_cps_provider_6_native_match_prepare_declarations_1(v_1007891, v_4, v_6, v_8, v_9, v_11, v_20)}
     case IR.TypeTop{v_25} <> v_26:
       cemit_body_cps_provider_6_native_match_prepare_declarations_4(v_11, v_2, v_4, v_6, v_8, v_9, v_13, v_25, v_26)
     case IR.LawTop{v_30} <> v_31:
-      CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_law{v_2, v_30, v_4, v_8, v_9, v_13}}, False{}, v_1007870 => cemit_body_cps_provider_6_prepare_law(v_2, v_30, v_4, v_8, v_9, v_13), v_1007869 => v_1007867 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007869); cemit_body_cps_provider_6_native_match_prepare_declarations_5(v_1007867, v_4, v_6, v_8, v_9, v_11, v_31)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_law{v_2, v_30, v_4, v_8, v_9, v_13}}, False{}, v_1007899 => cemit_body_cps_provider_6_prepare_law(v_2, v_30, v_4, v_8, v_9, v_13), v_1007898 => v_1007896 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007898); cemit_body_cps_provider_6_native_match_prepare_declarations_5(v_1007896, v_4, v_6, v_8, v_9, v_11, v_31)}
 
 def cemit_body_cps_provider_6_native_match_prepare_declarations_6(v_1: List<&2, IR.TopLevel>, v_2: Arena.Arena, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: List<&2, Checked.FamilyMetadata>, v_13: cps_provider_6_Preparation) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  cemit_match_1801(v_1, v_11, v_2, v_13, v_4, v_6, v_8, v_9)
+  cemit_match_1807(v_1, v_11, v_2, v_13, v_4, v_6, v_8, v_9)
 
 def cemit_body_cps_provider_6_prepare_declarations(v_0: Arena.Arena, v_2: List<&2, IR.TopLevel>, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: List<&2, Checked.FamilyMetadata>, v_13: cps_provider_6_Preparation) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   cemit_body_cps_provider_6_native_match_prepare_declarations_6(v_2, v_0, v_4, v_6, v_8, v_9, v_11, v_13)
@@ -19719,168 +19780,168 @@ def cemit_body_cps_provider_6_reset_module(v_1: cps_provider_6_Preparation) -> C
     case cps_provider_6_Preparation{v_15, v_16, v_17, v_18, v_19, v_20, v_21, v_22, v_23, v_24, v_25, _}:
       CEmitterFinished{CEmitterValue{cps_provider_6_Preparation{v_15, v_16, v_17, v_18, v_19, v_20, v_21, v_22, v_23, v_24, v_25, MTip{}}}}
 
-def cemit_match_1803(v_2: cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_6: List<&2, IR.LoadedModule>, v_8: List<&2, Checked.ModuleMetadata>, v_4: Bool) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+def cemit_match_1809(v_2: cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_6: List<&2, IR.LoadedModule>, v_8: List<&2, Checked.ModuleMetadata>, v_4: Bool) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_13, v_14}:
-      CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_modules{v_13, v_6, v_8, v_4, v_14}}, v_1007873 => v_1007872 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007873); CEmitterFinished{CEmitterValue{v_1007872}}}
+      CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_modules{v_13, v_6, v_8, v_4, v_14}}, v_1007902 => v_1007901 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007902); CEmitterFinished{CEmitterValue{v_1007901}}}
 
 def cemit_body_cps_provider_6_native_match_prepare_modules_0(v_2: cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_4: Bool, v_6: List<&2, IR.LoadedModule>, v_8: List<&2, Checked.ModuleMetadata>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  cemit_match_1803(v_2, v_6, v_8, v_4)
+  cemit_match_1809(v_2, v_6, v_8, v_4)
 
-def cemit_continuation_1804(v_15: Scope.ArenaGlobalScope, v_17: List<&2, Checked.FamilyMetadata>, v_6: cps_provider_6_Preparation, v_1007878: Arena.Arena, v_1007879: List<&2, IR.TopLevel>, v_1007880: String, v_1007881: String, +v_1007882: Bool, v_4: Bool, v_14: List<&2, IR.LoadedModule>, v_19: List<&2, Checked.ModuleMetadata>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  v_1007883 = {v_15 : Scope.ArenaGlobalScope}
-  v_1007884 = {v_17 : List<&2, Checked.FamilyMetadata>}
-  CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_reset_module{v_6}}, False{}, v_1007891 => cemit_body_cps_provider_6_reset_module(v_6), v_1007890 => +v_1007885 = cemit_unbox(cps_provider_6_Preparation, v_1007890); CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_declarations{v_1007878, v_1007879, v_1007880, v_1007881, v_1007882, v_1007883, v_1007884, v_1007885}}, False{}, v_1007889 => cemit_body_cps_provider_6_prepare_declarations(v_1007878, v_1007879, v_1007880, v_1007881, v_1007882, v_1007883, v_1007884, v_1007885), v_1007888 => v_1007886 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007888); cemit_body_cps_provider_6_native_match_prepare_modules_0(v_1007886, v_4, v_14, v_19)}}
+def cemit_continuation_1810(v_15: Scope.ArenaGlobalScope, v_17: List<&2, Checked.FamilyMetadata>, v_6: cps_provider_6_Preparation, v_1007907: Arena.Arena, v_1007908: List<&2, IR.TopLevel>, v_1007909: String, v_1007910: String, +v_1007911: Bool, v_4: Bool, v_14: List<&2, IR.LoadedModule>, v_19: List<&2, Checked.ModuleMetadata>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+  v_1007912 = {v_15 : Scope.ArenaGlobalScope}
+  v_1007913 = {v_17 : List<&2, Checked.FamilyMetadata>}
+  CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_reset_module{v_6}}, False{}, v_1007920 => cemit_body_cps_provider_6_reset_module(v_6), v_1007919 => +v_1007914 = cemit_unbox(cps_provider_6_Preparation, v_1007919); CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_declarations{v_1007907, v_1007908, v_1007909, v_1007910, v_1007911, v_1007912, v_1007913, v_1007914}}, False{}, v_1007918 => cemit_body_cps_provider_6_prepare_declarations(v_1007907, v_1007908, v_1007909, v_1007910, v_1007911, v_1007912, v_1007913, v_1007914), v_1007917 => v_1007915 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007917); cemit_body_cps_provider_6_native_match_prepare_modules_0(v_1007915, v_4, v_14, v_19)}}
 
-def cemit_match_1805(v_1: Bool, v_2: Arena.Arena, v_6: cps_provider_6_Preparation, v_12: List<&2, IR.TopLevel>, v_8: String, +v_10: String, +v_4: Bool, v_15: Scope.ArenaGlobalScope, v_17: List<&2, Checked.FamilyMetadata>, v_14: List<&2, IR.LoadedModule>, v_19: List<&2, Checked.ModuleMetadata>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+def cemit_match_1811(v_1: Bool, v_2: Arena.Arena, v_6: cps_provider_6_Preparation, v_12: List<&2, IR.TopLevel>, v_8: String, +v_10: String, +v_4: Bool, v_15: Scope.ArenaGlobalScope, v_17: List<&2, Checked.FamilyMetadata>, v_14: List<&2, IR.LoadedModule>, v_19: List<&2, Checked.ModuleMetadata>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   match v_1:
     case False{}:
-      v_1007874 = {v_2 : Arena.Arena}
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_preparation_failure{v_6, "bend: checked module metadata identity mismatch"}}, False{}, v_1007877 => cemit_body_cps_provider_6_preparation_failure(v_6, "bend: checked module metadata identity mismatch"), v_1007876 => +v_1007875 = cemit_unbox(cps_provider_6_Preparation, v_1007876); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007874, v_1007875}}}}
+      v_1007903 = {v_2 : Arena.Arena}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_preparation_failure{v_6, "bend: checked module metadata identity mismatch"}}, False{}, v_1007906 => cemit_body_cps_provider_6_preparation_failure(v_6, "bend: checked module metadata identity mismatch"), v_1007905 => +v_1007904 = cemit_unbox(cps_provider_6_Preparation, v_1007905); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007903, v_1007904}}}}
     case True{}:
-      v_1007878 = {v_2 : Arena.Arena}
-      v_1007879 = {v_12 : List<&2, IR.TopLevel>}
-      v_1007880 = {v_8 : String}
-      v_1007881 = {v_10 : String}
-      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_base_source{v_10, v_4}}, False{}, v_1007893 => cemit_body_cps_provider_6_base_source(v_10, v_4), v_1007892 => +v_1007882 = cemit_unbox(Bool, v_1007892); cemit_continuation_1804(v_15, v_17, v_6, v_1007878, v_1007879, v_1007880, v_1007881, v_1007882, v_4, v_14, v_19)}
+      v_1007907 = {v_2 : Arena.Arena}
+      v_1007908 = {v_12 : List<&2, IR.TopLevel>}
+      v_1007909 = {v_8 : String}
+      v_1007910 = {v_10 : String}
+      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_base_source{v_10, v_4}}, False{}, v_1007922 => cemit_body_cps_provider_6_base_source(v_10, v_4), v_1007921 => +v_1007911 = cemit_unbox(Bool, v_1007921); cemit_continuation_1810(v_15, v_17, v_6, v_1007907, v_1007908, v_1007909, v_1007910, v_1007911, v_4, v_14, v_19)}
 
 def cemit_body_cps_provider_6_native_match_prepare_modules_1(v_1: Bool, v_2: Arena.Arena, v_4: Bool, v_6: cps_provider_6_Preparation, v_8: String, v_10: String, v_12: List<&2, IR.TopLevel>, v_14: List<&2, IR.LoadedModule>, v_15: Scope.ArenaGlobalScope, v_17: List<&2, Checked.FamilyMetadata>, v_19: List<&2, Checked.ModuleMetadata>) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  cemit_match_1805(v_1, v_2, v_6, v_12, v_8, v_10, v_4, v_15, v_17, v_14, v_19)
+  cemit_match_1811(v_1, v_2, v_6, v_12, v_8, v_10, v_4, v_15, v_17, v_14, v_19)
 
-def cemit_match_1806(v_1: List<&2, IR.LoadedModule>, v_3: List<&2, Checked.ModuleMetadata>, v_4: Arena.Arena, v_8: cps_provider_6_Preparation, v_6: Bool) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
+def cemit_match_1812(v_1: List<&2, IR.LoadedModule>, v_3: List<&2, Checked.ModuleMetadata>, v_4: Arena.Arena, v_8: cps_provider_6_Preparation, v_6: Bool) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   match v_1, v_3:
     case [], []:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_4, v_8}}}
     case IR.LoadedModule{+v_21, IR.Module{+v_22, _, v_24}} <> v_25, Checked.ModuleMetadata{v_26, v_27, v_28, v_29} <> v_30:
-      CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_native_match_prepare_modules_1{Bool.and(String.eq(v_21, v_26), String.eq(v_22, v_27)), v_4, v_6, v_8, v_21, v_22, v_24, v_25, v_28, v_29, v_30}}, False{}, v_1007896 => cemit_body_cps_provider_6_native_match_prepare_modules_1(Bool.and(String.eq(v_21, v_26), String.eq(v_22, v_27)), v_4, v_6, v_8, v_21, v_22, v_24, v_25, v_28, v_29, v_30), v_1007895 => v_1007894 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007895); CEmitterFinished{CEmitterValue{v_1007894}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_native_match_prepare_modules_1{Bool.and(String.eq(v_21, v_26), String.eq(v_22, v_27)), v_4, v_6, v_8, v_21, v_22, v_24, v_25, v_28, v_29, v_30}}, False{}, v_1007925 => cemit_body_cps_provider_6_native_match_prepare_modules_1(Bool.and(String.eq(v_21, v_26), String.eq(v_22, v_27)), v_4, v_6, v_8, v_21, v_22, v_24, v_25, v_28, v_29, v_30), v_1007924 => v_1007923 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007924); CEmitterFinished{CEmitterValue{v_1007923}}}
     case _, _:
-      v_1007897 = {v_4 : Arena.Arena}
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_preparation_failure{v_8, "bend: missing or unmatched checked module metadata"}}, False{}, v_1007900 => cemit_body_cps_provider_6_preparation_failure(v_8, "bend: missing or unmatched checked module metadata"), v_1007899 => +v_1007898 = cemit_unbox(cps_provider_6_Preparation, v_1007899); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007897, v_1007898}}}}
+      v_1007926 = {v_4 : Arena.Arena}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_preparation_failure{v_8, "bend: missing or unmatched checked module metadata"}}, False{}, v_1007929 => cemit_body_cps_provider_6_preparation_failure(v_8, "bend: missing or unmatched checked module metadata"), v_1007928 => +v_1007927 = cemit_unbox(cps_provider_6_Preparation, v_1007928); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007926, v_1007927}}}}
 
 def cemit_body_cps_provider_6_native_match_prepare_modules_2(v_1: List<&2, IR.LoadedModule>, v_3: List<&2, Checked.ModuleMetadata>, v_4: Arena.Arena, v_6: Bool, v_8: cps_provider_6_Preparation) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
-  cemit_match_1806(v_1, v_3, v_4, v_8, v_6)
+  cemit_match_1812(v_1, v_3, v_4, v_8, v_6)
 
 def cemit_body_cps_provider_6_prepare_modules(v_0: Arena.Arena, v_2: List<&2, IR.LoadedModule>, v_4: List<&2, Checked.ModuleMetadata>, v_6: Bool, v_8: cps_provider_6_Preparation) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Preparation>>:
   cemit_body_cps_provider_6_native_match_prepare_modules_2(v_2, v_4, v_0, v_6, v_8)
 
-def cemit_match_1807(v_1007902: cps_provider_6_CatalogResult<List<&2, BIR.Export>>) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Ending>>:
-  match v_1007902:
+def cemit_match_1813(v_1007931: cps_provider_6_CatalogResult<List<&2, BIR.Export>>) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Ending>>:
+  match v_1007931:
     case cps_provider_6_CatalogResult{v_22, v_23}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_22, BIR.Library{v_23}}}}
 
-def cemit_match_1808(v_5: Maybe<&2, BIR.Descriptor>, v_8: Arena.Arena) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Ending>>:
+def cemit_match_1814(v_5: Maybe<&2, BIR.Descriptor>, v_8: Arena.Arena) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Ending>>:
   match v_5:
     case Some{v_25}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_8, BIR.Executable{v_25}}}}
     case None{}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_8, BIR.Executable{BIR.DescriptorNull{}}}}}
 
-def cemit_match_1809(v_3: Maybe<&2, List<&2, String>>, v_7: cps_provider_6_Registry, v_8: Arena.Arena, v_11: List<&2, cps_provider_6_Definition>, v_13: List<&2, Scope.ArenaGlobal>, +v_15: cps_provider_5_NfContext, v_5: Maybe<&2, BIR.Descriptor>) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Ending>>:
+def cemit_match_1815(v_3: Maybe<&2, List<&2, String>>, v_7: cps_provider_6_Registry, v_8: Arena.Arena, v_11: List<&2, cps_provider_6_Definition>, v_13: List<&2, Scope.ArenaGlobal>, +v_15: cps_provider_5_NfContext, v_5: Maybe<&2, BIR.Descriptor>) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Ending>>:
   match v_3:
     case Some{v_18}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_exports{v_18, v_7, v_8, v_11, v_13, v_15}}, False{}, v_1007904 => cemit_body_cps_provider_6_exports(v_18, v_7, v_8, v_11, v_13, v_15), v_1007903 => v_1007902 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Export>>, v_1007903); cemit_match_1807(v_1007902)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_exports{v_18, v_7, v_8, v_11, v_13, v_15}}, False{}, v_1007933 => cemit_body_cps_provider_6_exports(v_18, v_7, v_8, v_11, v_13, v_15), v_1007932 => v_1007931 = cemit_unbox(cps_provider_6_CatalogResult<List<&2, BIR.Export>>, v_1007932); cemit_match_1813(v_1007931)}
     case None{}:
-      cemit_match_1808(v_5, v_8)
+      cemit_match_1814(v_5, v_8)
 
 def cemit_body_cps_provider_6_ending(v_3: Maybe<&2, List<&2, String>>, v_5: Maybe<&2, BIR.Descriptor>, v_7: cps_provider_6_Registry, v_8: Arena.Arena, v_11: List<&2, cps_provider_6_Definition>, v_13: List<&2, Scope.ArenaGlobal>, +v_15: cps_provider_5_NfContext) -> CEmitterProgress<cps_provider_6_CatalogResult<BIR.Ending>>:
-  cemit_match_1809(v_3, v_7, v_8, v_11, v_13, v_15, v_5)
+  cemit_match_1815(v_3, v_7, v_8, v_11, v_13, v_15, v_5)
 
-def cemit_match_1810(v_1007907: cps_provider_6_CatalogResult<BIR.Ending>, v_46: List<&2, cps_provider_6_Definition>, v_38: cps_provider_6_Registry, v_20: List<&2, BIR.ConstructorLayout>, v_40: List<&2, BIR.Family>, v_35: List<&2, BIR.TypeFunction>, v_27: U32, v_4: List<&2, IR.LoadedModule>, v_6: List<&2, Scope.ArenaGlobal>, v_8: List<&2, Checked.ModuleMetadata>) -> CEmitterProgress<cps_provider_6_BuildResult>:
-  match v_1007907:
+def cemit_match_1816(v_1007936: cps_provider_6_CatalogResult<BIR.Ending>, v_46: List<&2, cps_provider_6_Definition>, v_38: cps_provider_6_Registry, v_20: List<&2, BIR.ConstructorLayout>, v_40: List<&2, BIR.Family>, v_35: List<&2, BIR.TypeFunction>, v_27: U32, v_4: List<&2, IR.LoadedModule>, v_6: List<&2, Scope.ArenaGlobal>, v_8: List<&2, Checked.ModuleMetadata>) -> CEmitterProgress<cps_provider_6_BuildResult>:
+  match v_1007936:
     case cps_provider_6_CatalogResult{v_50, v_51}:
       v_54 = {cps_provider_6_Catalog{List.reverse(&2, cps_provider_6_Definition, v_46), v_38, List.reverse(&2, BIR.ConstructorLayout, v_20), v_40, v_35, v_27, v_51} : cps_provider_6_Catalog}
       CEmitterFinished{CEmitterValue{cps_provider_6_Built{Checked.CheckedProgram{v_50, v_4, v_6, v_8}, v_54}}}
 
-def cemit_continuation_1811(+v_1007906: List<&2, cps_provider_6_Definition>, v_12: Maybe<&2, List<&2, String>>, v_29: Maybe<&2, BIR.Descriptor>, +v_38: cps_provider_6_Registry, v_34: Arena.Arena, +v_6: List<&2, Scope.ArenaGlobal>, v_43: cps_provider_5_NfContext, v_20: List<&2, BIR.ConstructorLayout>, v_40: List<&2, BIR.Family>, v_35: List<&2, BIR.TypeFunction>, v_27: U32, v_4: List<&2, IR.LoadedModule>, v_8: List<&2, Checked.ModuleMetadata>) -> CEmitterProgress<cps_provider_6_BuildResult>:
-  +v_46 = v_1007906
-  CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_ending{v_12, v_29, v_38, v_34, v_46, v_6, v_43}}, False{}, v_1007909 => cemit_body_cps_provider_6_ending(v_12, v_29, v_38, v_34, v_46, v_6, v_43), v_1007908 => v_1007907 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Ending>, v_1007908); cemit_match_1810(v_1007907, v_46, v_38, v_20, v_40, v_35, v_27, v_4, v_6, v_8)}
+def cemit_continuation_1817(+v_1007935: List<&2, cps_provider_6_Definition>, v_12: Maybe<&2, List<&2, String>>, v_29: Maybe<&2, BIR.Descriptor>, +v_38: cps_provider_6_Registry, v_34: Arena.Arena, +v_6: List<&2, Scope.ArenaGlobal>, v_43: cps_provider_5_NfContext, v_20: List<&2, BIR.ConstructorLayout>, v_40: List<&2, BIR.Family>, v_35: List<&2, BIR.TypeFunction>, v_27: U32, v_4: List<&2, IR.LoadedModule>, v_8: List<&2, Checked.ModuleMetadata>) -> CEmitterProgress<cps_provider_6_BuildResult>:
+  +v_46 = v_1007935
+  CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_ending{v_12, v_29, v_38, v_34, v_46, v_6, v_43}}, False{}, v_1007938 => cemit_body_cps_provider_6_ending(v_12, v_29, v_38, v_34, v_46, v_6, v_43), v_1007937 => v_1007936 = cemit_unbox(cps_provider_6_CatalogResult<BIR.Ending>, v_1007937); cemit_match_1816(v_1007936, v_46, v_38, v_20, v_40, v_35, v_27, v_4, v_6, v_8)}
 
-def cemit_continuation_1812(+v_1007905: cps_provider_5_NfContext, v_15: List<&2, cps_provider_6_Definition>, v_12: Maybe<&2, List<&2, String>>, v_29: Maybe<&2, BIR.Descriptor>, v_38: cps_provider_6_Registry, v_34: Arena.Arena, v_6: List<&2, Scope.ArenaGlobal>, v_20: List<&2, BIR.ConstructorLayout>, v_40: List<&2, BIR.Family>, v_35: List<&2, BIR.TypeFunction>, v_27: U32, v_4: List<&2, IR.LoadedModule>, v_8: List<&2, Checked.ModuleMetadata>) -> CEmitterProgress<cps_provider_6_BuildResult>:
-  +v_43 = v_1007905
-  CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_normalize_foreign_definitions{v_15, v_43}}, False{}, v_1007911 => cemit_body_cps_provider_6_normalize_foreign_definitions(v_15, v_43), v_1007910 => +v_1007906 = cemit_unbox(List<&2, cps_provider_6_Definition>, v_1007910); cemit_continuation_1811(v_1007906, v_12, v_29, v_38, v_34, v_6, v_43, v_20, v_40, v_35, v_27, v_4, v_8)}
+def cemit_continuation_1818(+v_1007934: cps_provider_5_NfContext, v_15: List<&2, cps_provider_6_Definition>, v_12: Maybe<&2, List<&2, String>>, v_29: Maybe<&2, BIR.Descriptor>, v_38: cps_provider_6_Registry, v_34: Arena.Arena, v_6: List<&2, Scope.ArenaGlobal>, v_20: List<&2, BIR.ConstructorLayout>, v_40: List<&2, BIR.Family>, v_35: List<&2, BIR.TypeFunction>, v_27: U32, v_4: List<&2, IR.LoadedModule>, v_8: List<&2, Checked.ModuleMetadata>) -> CEmitterProgress<cps_provider_6_BuildResult>:
+  +v_43 = v_1007934
+  CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_normalize_foreign_definitions{v_15, v_43}}, False{}, v_1007940 => cemit_body_cps_provider_6_normalize_foreign_definitions(v_15, v_43), v_1007939 => +v_1007935 = cemit_unbox(List<&2, cps_provider_6_Definition>, v_1007939); cemit_continuation_1817(v_1007935, v_12, v_29, v_38, v_34, v_6, v_43, v_20, v_40, v_35, v_27, v_4, v_8)}
 
-def cemit_match_1813(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_18: Map<&2, cps_provider_6_DefinitionHeader>, v_23: Map<&2, cps_provider_6_Constructor>, v_25: List<&2, BIR.Family>, v_15: List<&2, cps_provider_6_Definition>, v_12: Maybe<&2, List<&2, String>>, v_29: Maybe<&2, BIR.Descriptor>, v_6: List<&2, Scope.ArenaGlobal>, v_20: List<&2, BIR.ConstructorLayout>, v_27: U32, v_4: List<&2, IR.LoadedModule>, v_8: List<&2, Checked.ModuleMetadata>) -> CEmitterProgress<cps_provider_6_BuildResult>:
+def cemit_match_1819(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_18: Map<&2, cps_provider_6_DefinitionHeader>, v_23: Map<&2, cps_provider_6_Constructor>, v_25: List<&2, BIR.Family>, v_15: List<&2, cps_provider_6_Definition>, v_12: Maybe<&2, List<&2, String>>, v_29: Maybe<&2, BIR.Descriptor>, v_6: List<&2, Scope.ArenaGlobal>, v_20: List<&2, BIR.ConstructorLayout>, v_27: U32, v_4: List<&2, IR.LoadedModule>, v_8: List<&2, Checked.ModuleMetadata>) -> CEmitterProgress<cps_provider_6_BuildResult>:
   match v_2:
     case cps_provider_6_CatalogResult{v_34, cps_provider_6_Needed{+v_35, _}}:
       v_38 = {cps_provider_6_Registry{v_18, v_23} : cps_provider_6_Registry}
       +v_40 = List.reverse(&2, BIR.Family, v_25)
-      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_context{v_40, v_35}}, False{}, v_1007913 => cemit_body_cps_provider_5_nf_context(v_40, v_35), v_1007912 => +v_1007905 = cemit_unbox(cps_provider_5_NfContext, v_1007912); cemit_continuation_1812(v_1007905, v_15, v_12, v_29, v_38, v_34, v_6, v_20, v_40, v_35, v_27, v_4, v_8)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_17{CEmitterRequest_cps_provider_5_nf_context{v_40, v_35}}, False{}, v_1007942 => cemit_body_cps_provider_5_nf_context(v_40, v_35), v_1007941 => +v_1007934 = cemit_unbox(cps_provider_5_NfContext, v_1007941); cemit_continuation_1818(v_1007934, v_15, v_12, v_29, v_38, v_34, v_6, v_20, v_40, v_35, v_27, v_4, v_8)}
 
 def cemit_body_cps_provider_6_native_match_build_finish_0(v_2: cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_4: List<&2, IR.LoadedModule>, v_6: List<&2, Scope.ArenaGlobal>, v_8: List<&2, Checked.ModuleMetadata>, v_12: Maybe<&2, List<&2, String>>, v_15: List<&2, cps_provider_6_Definition>, v_18: Map<&2, cps_provider_6_DefinitionHeader>, v_20: List<&2, BIR.ConstructorLayout>, v_23: Map<&2, cps_provider_6_Constructor>, v_25: List<&2, BIR.Family>, v_27: U32, v_29: Maybe<&2, BIR.Descriptor>) -> CEmitterProgress<cps_provider_6_BuildResult>:
-  cemit_match_1813(v_2, v_18, v_23, v_25, v_15, v_12, v_29, v_6, v_20, v_27, v_4, v_8)
+  cemit_match_1819(v_2, v_18, v_23, v_25, v_15, v_12, v_29, v_6, v_20, v_27, v_4, v_8)
 
 def cemit_body_cps_provider_6_native_match_build_finish_1(v_1: cps_provider_6_Preparation, v_2: Arena.Arena, v_4: List<&2, IR.LoadedModule>, v_6: List<&2, Scope.ArenaGlobal>, v_8: List<&2, Checked.ModuleMetadata>, v_12: Maybe<&2, List<&2, String>>) -> CEmitterProgress<cps_provider_6_BuildResult>:
   match v_1:
     case cps_provider_6_Preparation{v_25, v_26, v_27, v_28, v_29, v_30, v_31, _, v_33, v_34, None{}, _}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_roots{v_2, List.reverse(&2, cps_provider_6_Root, v_33), v_26, cps_provider_6_Needed{[], MTip{}}}}, False{}, v_1007917 => cemit_body_cps_provider_6_needed_roots(v_2, List.reverse(&2, cps_provider_6_Root, v_33), v_26, cps_provider_6_Needed{[], MTip{}}), v_1007916 => v_1007914 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007916); cemit_body_cps_provider_6_native_match_build_finish_0(v_1007914, v_4, v_6, v_8, v_12, v_25, v_27, v_28, v_29, v_30, v_31, v_34)}
+      CEmitterDirect{Bool, CEmitterRequestGroup_20{CEmitterRequest_cps_provider_6_needed_roots{v_2, List.reverse(&2, cps_provider_6_Root, v_33), v_26, cps_provider_6_Needed{[], MTip{}}}}, False{}, v_1007946 => cemit_body_cps_provider_6_needed_roots(v_2, List.reverse(&2, cps_provider_6_Root, v_33), v_26, cps_provider_6_Needed{[], MTip{}}), v_1007945 => v_1007943 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Needed>, v_1007945); cemit_body_cps_provider_6_native_match_build_finish_0(v_1007943, v_4, v_6, v_8, v_12, v_25, v_27, v_28, v_29, v_30, v_31, v_34)}
     case cps_provider_6_Preparation{_, _, _, _, _, _, _, _, _, _, Some{v_61}, _}:
       CEmitterFinished{CEmitterValue{cps_provider_6_BuildFailure{Checked.CheckedProgram{v_2, v_4, v_6, v_8}, v_61}}}
 
 def cemit_body_cps_provider_6_build_finish(v_0: Arena.Arena, v_2: List<&2, IR.LoadedModule>, v_4: List<&2, Scope.ArenaGlobal>, v_6: List<&2, Checked.ModuleMetadata>, v_10: Maybe<&2, List<&2, String>>, v_12: cps_provider_6_Preparation) -> CEmitterProgress<cps_provider_6_BuildResult>:
   cemit_body_cps_provider_6_native_match_build_finish_1(v_12, v_0, v_2, v_4, v_6, v_10)
 
-def cemit_match_1815(v_2: cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_8: List<&2, IR.LoadedModule>, v_10: List<&2, Scope.ArenaGlobal>, v_12: List<&2, Checked.ModuleMetadata>, v_6: Maybe<&2, List<&2, String>>) -> CEmitterProgress<cps_provider_6_BuildResult>:
+def cemit_match_1821(v_2: cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_8: List<&2, IR.LoadedModule>, v_10: List<&2, Scope.ArenaGlobal>, v_12: List<&2, Checked.ModuleMetadata>, v_6: Maybe<&2, List<&2, String>>) -> CEmitterProgress<cps_provider_6_BuildResult>:
   match v_2:
     case cps_provider_6_CatalogResult{v_16, v_17}:
       cemit_body_cps_provider_6_build_finish(v_16, v_8, v_10, v_12, v_6, v_17)
 
 def cemit_body_cps_provider_6_native_match_build_0(v_2: cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_6: Maybe<&2, List<&2, String>>, v_8: List<&2, IR.LoadedModule>, v_10: List<&2, Scope.ArenaGlobal>, v_12: List<&2, Checked.ModuleMetadata>) -> CEmitterProgress<cps_provider_6_BuildResult>:
-  cemit_match_1815(v_2, v_8, v_10, v_12, v_6)
+  cemit_match_1821(v_2, v_8, v_10, v_12, v_6)
 
 def cemit_body_cps_provider_6_native_match_build_1(v_0: Checked.CheckedProgram, v_4: Maybe<&2, List<&2, String>>) -> CEmitterProgress<cps_provider_6_BuildResult>:
   match v_0:
     case Checked.CheckedProgram{v_10, +v_11, v_12, +v_13}:
       v_15 = {cps_provider_6_Preparation{[], MTip{}, MTip{}, [], MTip{}, [], 0, 0, [], None{}, None{}, MTip{}} : cps_provider_6_Preparation}
-      v_1007920 = {v_10 : Arena.Arena}
-      v_1007921 = {v_11 : List<&2, IR.LoadedModule>}
-      v_1007922 = {v_13 : List<&2, Checked.ModuleMetadata>}
-      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_base_imported{v_11}}, False{}, v_1007929 => cemit_body_cps_provider_6_base_imported(v_11), v_1007928 => +v_1007923 = cemit_unbox(Bool, v_1007928); CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_modules{v_1007920, v_1007921, v_1007922, v_1007923, v_15}}, False{}, v_1007927 => cemit_body_cps_provider_6_prepare_modules(v_1007920, v_1007921, v_1007922, v_1007923, v_15), v_1007926 => v_1007924 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007926); cemit_body_cps_provider_6_native_match_build_0(v_1007924, v_4, v_11, v_12, v_13)}}
+      v_1007949 = {v_10 : Arena.Arena}
+      v_1007950 = {v_11 : List<&2, IR.LoadedModule>}
+      v_1007951 = {v_13 : List<&2, Checked.ModuleMetadata>}
+      CEmitterDirect{Bool, CEmitterRequestGroup_19{CEmitterRequest_cps_provider_6_base_imported{v_11}}, False{}, v_1007958 => cemit_body_cps_provider_6_base_imported(v_11), v_1007957 => +v_1007952 = cemit_unbox(Bool, v_1007957); CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_prepare_modules{v_1007949, v_1007950, v_1007951, v_1007952, v_15}}, False{}, v_1007956 => cemit_body_cps_provider_6_prepare_modules(v_1007949, v_1007950, v_1007951, v_1007952, v_15), v_1007955 => v_1007953 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Preparation>, v_1007955); cemit_body_cps_provider_6_native_match_build_0(v_1007953, v_4, v_11, v_12, v_13)}}
 
 def cemit_body_cps_provider_6_build(v_0: Checked.CheckedProgram, v_4: Maybe<&2, List<&2, String>>) -> CEmitterProgress<cps_provider_6_BuildResult>:
   cemit_body_cps_provider_6_native_match_build_1(v_0, v_4)
 
-def cemit_match_1817(v_2: cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_5: Arena.Binder, v_4: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
+def cemit_match_1823(v_2: cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_5: Arena.Binder, v_4: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
   match v_2:
     case cps_provider_6_CatalogResult{v_10, v_11}:
-      v_1007931 = {v_10 : Arena.Arena}
-      CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_live_binder{v_5, v_4, v_11}}, v_1007933 => +v_1007932 = cemit_unbox(cps_provider_6_Telescope, v_1007933); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007931, v_1007932}}}}
+      v_1007960 = {v_10 : Arena.Arena}
+      CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_live_binder{v_5, v_4, v_11}}, v_1007962 => +v_1007961 = cemit_unbox(cps_provider_6_Telescope, v_1007962); CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1007960, v_1007961}}}}
 
 def cemit_body_cps_provider_6_native_match_live_telescope_0(v_2: cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_4: U32, v_5: Arena.Binder) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
-  cemit_match_1817(v_2, v_5, v_4)
+  cemit_match_1823(v_2, v_5, v_4)
 
-def cemit_match_1818(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_7: U32, v_9: U32, +v_5: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
+def cemit_match_1824(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_7: U32, v_9: U32, +v_5: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
   match v_3:
     case (v_14, v_15):
-      CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_live_telescope{v_14, IR.Words{IR.arena_range_index(v_7, 1), U32.sub(v_9, 1)}, U32.add(v_5, 1)}}, v_1007936 => v_1007934 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_1007936); cemit_body_cps_provider_6_native_match_live_telescope_0(v_1007934, v_5, v_15)}
+      CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_live_telescope{v_14, IR.Words{IR.arena_range_index(v_7, 1), U32.sub(v_9, 1)}, U32.add(v_5, 1)}}, v_1007965 => v_1007963 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_1007965); cemit_body_cps_provider_6_native_match_live_telescope_0(v_1007963, v_5, v_15)}
 
 def cemit_body_cps_provider_6_native_match_live_telescope_1(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_5: U32, v_7: U32, v_9: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
-  cemit_match_1818(v_3, v_7, v_9, v_5)
+  cemit_match_1824(v_3, v_7, v_9, v_5)
 
 def cemit_body_cps_provider_6_native_match_live_telescope_2(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_6: U32, v_8: U32, v_10: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
   match v_4:
     case (v_15, v_16):
-      CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_native_match_live_telescope_1{Arena.get_binder(v_15, v_16), v_6, v_8, v_10}}, False{}, v_1007940 => cemit_body_cps_provider_6_native_match_live_telescope_1(Arena.get_binder(v_15, v_16), v_6, v_8, v_10), v_1007939 => v_1007938 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_1007939); CEmitterFinished{CEmitterValue{v_1007938}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_native_match_live_telescope_1{Arena.get_binder(v_15, v_16), v_6, v_8, v_10}}, False{}, v_1007969 => cemit_body_cps_provider_6_native_match_live_telescope_1(Arena.get_binder(v_15, v_16), v_6, v_8, v_10), v_1007968 => v_1007967 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_1007968); CEmitterFinished{CEmitterValue{v_1007967}}}
 
 def cemit_body_cps_provider_6_native_match_live_telescope_3(v_0: IR.Words, v_1: Arena.Arena, v_3: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
   match v_0:
     case IR.Words{_, 0}:
       CEmitterFinished{CEmitterValue{cps_provider_6_CatalogResult{v_1, cps_provider_6_Telescope{[], [], [], True{}}}}}
     case IR.Words{+v_10, v_11}:
-      CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_native_match_live_telescope_2{Arena.word(v_1, IR.arena_tape_offset(v_10)), v_3, v_10, v_11}}, False{}, v_1007944 => cemit_body_cps_provider_6_native_match_live_telescope_2(Arena.word(v_1, IR.arena_tape_offset(v_10)), v_3, v_10, v_11), v_1007943 => v_1007942 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_1007943); CEmitterFinished{CEmitterValue{v_1007942}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_native_match_live_telescope_2{Arena.word(v_1, IR.arena_tape_offset(v_10)), v_3, v_10, v_11}}, False{}, v_1007973 => cemit_body_cps_provider_6_native_match_live_telescope_2(Arena.word(v_1, IR.arena_tape_offset(v_10)), v_3, v_10, v_11), v_1007972 => v_1007971 = cemit_unbox(cps_provider_6_CatalogResult<cps_provider_6_Telescope>, v_1007972); CEmitterFinished{CEmitterValue{v_1007971}}}
 
 def cemit_body_cps_provider_6_live_telescope(v_0: Arena.Arena, v_1: IR.Words, v_3: U32) -> CEmitterProgress<cps_provider_6_CatalogResult<cps_provider_6_Telescope>>:
   cemit_body_cps_provider_6_native_match_live_telescope_3(v_1, v_0, v_3)
 
-def cemit_match_1821(v_0: Arena.Binder, v_4: cps_provider_6_Telescope, v_2: U32) -> CEmitterProgress<cps_provider_6_Telescope>:
+def cemit_match_1827(v_0: Arena.Binder, v_4: cps_provider_6_Telescope, v_2: U32) -> CEmitterProgress<cps_provider_6_Telescope>:
   match v_0, v_4:
     case Arena.Binder{v_15, _, _, _, _}, cps_provider_6_Telescope{v_20, v_21, v_22, v_23}:
       +v_26 = cemit_pure_cps_provider_6_quantity(v_15)
-      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_parameter{v_2, v_26, v_20}}, False{}, v_1007948 => cemit_body_cps_provider_6_parameter(v_2, v_26, v_20), v_1007947 => +v_1007946 = cemit_unbox(List<&2, BIR.Parameter>, v_1007947); CEmitterFinished{CEmitterValue{cps_provider_6_Telescope{v_1007946, v_26 <> v_21, v_22, v_23}}}}
+      CEmitterDirect{Bool, CEmitterRequestGroup_18{CEmitterRequest_cps_provider_6_parameter{v_2, v_26, v_20}}, False{}, v_1007977 => cemit_body_cps_provider_6_parameter(v_2, v_26, v_20), v_1007976 => +v_1007975 = cemit_unbox(List<&2, BIR.Parameter>, v_1007976); CEmitterFinished{CEmitterValue{cps_provider_6_Telescope{v_1007975, v_26 <> v_21, v_22, v_23}}}}
     case Arena.TemplateBinder{_, _, _, _}, cps_provider_6_Telescope{v_40, v_41, v_42, _}:
       CEmitterFinished{CEmitterValue{cps_provider_6_Telescope{v_40, BIR.Erased{} <> v_41, v_42, False{}}}}
 
 def cemit_body_cps_provider_6_live_binder(v_0: Arena.Binder, v_2: U32, v_4: cps_provider_6_Telescope) -> CEmitterProgress<cps_provider_6_Telescope>:
-  cemit_match_1821(v_0, v_4, v_2)
+  cemit_match_1827(v_0, v_4, v_2)
 
 def cemit_body_cps_provider_6_primitive_arity(v_0: BIR.Primitive) -> CEmitterProgress<Nat>:
   match v_0:
@@ -20107,20 +20168,20 @@ def cemit_body_cps_provider_6_primitive_arity(v_0: BIR.Primitive) -> CEmitterPro
     case BIR.PrimFloatBitsEqual{}:
       CEmitterFinished{CEmitterValue{2n}}
 
-def cemit_match_1823(v_1: cps_provider_6_Constructor, +v_3: U32) -> CEmitterProgress<Maybe<&2, cps_provider_6_ConstructorField>>:
+def cemit_match_1829(v_1: cps_provider_6_Constructor, +v_3: U32) -> CEmitterProgress<Maybe<&2, cps_provider_6_ConstructorField>>:
   match v_1:
     case cps_provider_6_Constructor{BIR.ConstructorLayout{_, _, _, v_16}, v_17, _, _}:
-      CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_constructor_field_at{v_16, v_17, U32.to_nat(v_3), v_3}}, v_1007950 => +v_1007949 = cemit_unbox(Maybe<&2, cps_provider_6_ConstructorField>, v_1007950); CEmitterFinished{CEmitterValue{v_1007949}}}
+      CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_constructor_field_at{v_16, v_17, U32.to_nat(v_3), v_3}}, v_1007979 => +v_1007978 = cemit_unbox(Maybe<&2, cps_provider_6_ConstructorField>, v_1007979); CEmitterFinished{CEmitterValue{v_1007978}}}
 
 def cemit_body_cps_provider_6_constructor_field(v_1: cps_provider_6_Constructor, v_3: U32) -> CEmitterProgress<Maybe<&2, cps_provider_6_ConstructorField>>:
-  cemit_match_1823(v_1, v_3)
+  cemit_match_1829(v_1, v_3)
 
 def cemit_body_cps_provider_6_constructor_field_at(v_3: List<&2, Maybe<&2, String>>, v_5: List<&2, BIR.Quantity>, v_7: Nat, v_9: U32) -> CEmitterProgress<Maybe<&2, cps_provider_6_ConstructorField>>:
   match v_3, v_5, v_7:
     case v_16 <> _, v_18 <> _, 0n:
       CEmitterFinished{CEmitterValue{Some{cps_provider_6_ConstructorField{v_9, v_16, v_18}}}}
     case _ <> v_26, _ <> v_28, 1n+v_29:
-      CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_constructor_field_at{v_26, v_28, v_29, v_9}}, v_1007952 => +v_1007951 = cemit_unbox(Maybe<&2, cps_provider_6_ConstructorField>, v_1007952); CEmitterFinished{CEmitterValue{v_1007951}}}
+      CEmitterPending{CEmitterRequestGroup_21{CEmitterRequest_cps_provider_6_constructor_field_at{v_26, v_28, v_29, v_9}}, v_1007981 => +v_1007980 = cemit_unbox(Maybe<&2, cps_provider_6_ConstructorField>, v_1007981); CEmitterFinished{CEmitterValue{v_1007980}}}
     case _, _, _:
       CEmitterFinished{CEmitterValue{None{}}}
 
@@ -21206,9 +21267,9 @@ def cemit_step_group_16(request: CEmitterRequestGroup16) -> CEmitterProgress<cem
     case CEmitterRequest_cps_provider_4_show_append_name{arg_0, arg_1}: cemit_body_cps_provider_4_show_append_name(arg_0, arg_1)
     case CEmitterRequest_cps_provider_4_show_append_patch{arg_0, arg_1, arg_2}: cemit_body_cps_provider_4_show_append_patch(arg_0, arg_1, arg_2)
     case CEmitterRequest_cps_provider_4_show_apply_patch{arg_0, arg_1, arg_2}: cemit_body_cps_provider_4_show_apply_patch(arg_0, arg_1, arg_2)
-    case CEmitterRequest_cps_provider_4_show_name_kind{arg_0}: cemit_body_cps_provider_4_show_name_kind(arg_0)
     case CEmitterRequest_cps_provider_4_last_segment_list{arg_0, arg_1}: cemit_body_cps_provider_4_last_segment_list(arg_0, arg_1)
     case CEmitterRequest_cps_provider_4_last_segment{arg_0}: cemit_body_cps_provider_4_last_segment(arg_0)
+    case CEmitterRequest_cps_provider_4_show_native_kind{arg_0}: cemit_body_cps_provider_4_show_native_kind(arg_0)
     case CEmitterRequest_cps_provider_4_show_kind_head{arg_0}: cemit_body_cps_provider_4_show_kind_head(arg_0)
     case CEmitterRequest_cps_provider_4_show_kind{arg_0, arg_1}: cemit_body_cps_provider_4_show_kind(arg_0, arg_1)
     case CEmitterRequest_cps_provider_4_show_box_flag{arg_0}: cemit_body_cps_provider_4_show_box_flag(arg_0)
@@ -21239,6 +21300,9 @@ def cemit_step_group_16(request: CEmitterRequestGroup16) -> CEmitterProgress<cem
     case CEmitterRequest_cps_provider_4_show_layout_key{arg_0}: cemit_body_cps_provider_4_show_layout_key(arg_0)
     case CEmitterRequest_cps_provider_4_show_arg_tokens{arg_0, arg_1}: cemit_body_cps_provider_4_show_arg_tokens(arg_0, arg_1)
     case CEmitterRequest_cps_provider_4_show_quantity_key{arg_0}: cemit_body_cps_provider_4_show_quantity_key(arg_0)
+    case CEmitterRequest_cps_provider_4_show_maybe_quantity_key{arg_0}: cemit_body_cps_provider_4_show_maybe_quantity_key(arg_0)
+    case CEmitterRequest_cps_provider_4_show_pat_tokens{arg_0, arg_1}: cemit_body_cps_provider_4_show_pat_tokens(arg_0, arg_1)
+    case CEmitterRequest_cps_provider_4_show_pat_expand{arg_0}: cemit_body_cps_provider_4_show_pat_expand(arg_0)
     case CEmitterRequest_cps_provider_4_show_desc_expand{arg_0}: cemit_body_cps_provider_4_show_desc_expand(arg_0)
     case CEmitterRequest_cps_provider_4_show_render_tokens{arg_0, arg_1}: cemit_body_cps_provider_4_show_render_tokens(arg_0, arg_1)
     case CEmitterRequest_cps_provider_4_show_descriptor_key{arg_0}: cemit_body_cps_provider_4_show_descriptor_key(arg_0)
@@ -21259,12 +21323,12 @@ def cemit_step_group_16(request: CEmitterRequestGroup16) -> CEmitterProgress<cem
     case CEmitterRequest_cps_provider_4_show_data_arm_erased{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7, arg_8, arg_9, arg_10, arg_11}: cemit_body_cps_provider_4_show_data_arm_erased(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7, arg_8, arg_9, arg_10, arg_11)
     case CEmitterRequest_cps_provider_4_show_data_arm_live{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7, arg_8, arg_9, arg_10}: cemit_body_cps_provider_4_show_data_arm_live(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7, arg_8, arg_9, arg_10)
     case CEmitterRequest_cps_provider_4_show_data_arm{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7, arg_8, arg_9, arg_10}: cemit_body_cps_provider_4_show_data_arm(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7, arg_8, arg_9, arg_10)
-    case CEmitterRequest_cps_provider_4_show_data_arms{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7, arg_8}: cemit_body_cps_provider_4_show_data_arms(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7, arg_8)
-    case CEmitterRequest_cps_provider_4_show_data_count{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7}: cemit_body_cps_provider_4_show_data_count(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7)
-    case CEmitterRequest_cps_provider_4_show_data_arms_maybe{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7, arg_8}: cemit_body_cps_provider_4_show_data_arms_maybe(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7, arg_8)
 
 def cemit_step_group_17(request: CEmitterRequestGroup17) -> CEmitterProgress<cemit_result_group_17(request)>:
   match request:
+    case CEmitterRequest_cps_provider_4_show_data_arms{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7, arg_8}: cemit_body_cps_provider_4_show_data_arms(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7, arg_8)
+    case CEmitterRequest_cps_provider_4_show_data_count{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7}: cemit_body_cps_provider_4_show_data_count(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7)
+    case CEmitterRequest_cps_provider_4_show_data_arms_maybe{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7, arg_8}: cemit_body_cps_provider_4_show_data_arms_maybe(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7, arg_8)
     case CEmitterRequest_cps_provider_4_show_data_key{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7}: cemit_body_cps_provider_4_show_data_key(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7)
     case CEmitterRequest_cps_provider_4_show_data_head{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7}: cemit_body_cps_provider_4_show_data_head(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7)
     case CEmitterRequest_cps_provider_4_show_advance_data{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6}: cemit_body_cps_provider_4_show_advance_data(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6)
@@ -21326,12 +21390,12 @@ def cemit_step_group_17(request: CEmitterRequestGroup17) -> CEmitterProgress<cem
     case CEmitterRequest_cps_provider_5_nf_reduce{arg_0, arg_1, arg_2, arg_3}: cemit_body_cps_provider_5_nf_reduce(arg_0, arg_1, arg_2, arg_3)
     case CEmitterRequest_cps_provider_5_nf_reduce_apply{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7}: cemit_body_cps_provider_5_nf_reduce_apply(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7)
     case CEmitterRequest_cps_provider_5_nf_reduce_body{arg_0, arg_1, arg_2, arg_3, arg_4}: cemit_body_cps_provider_5_nf_reduce_body(arg_0, arg_1, arg_2, arg_3, arg_4)
-    case CEmitterRequest_cps_provider_5_nf_cases{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5}: cemit_body_cps_provider_5_nf_cases(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5)
-    case CEmitterRequest_cps_provider_5_normalize{arg_0, arg_1, arg_2, arg_3}: cemit_body_cps_provider_5_normalize(arg_0, arg_1, arg_2, arg_3)
-    case CEmitterRequest_cps_provider_5_normalize_closed{arg_0, arg_1, arg_2}: cemit_body_cps_provider_5_normalize_closed(arg_0, arg_1, arg_2)
 
 def cemit_step_group_18(request: CEmitterRequestGroup18) -> CEmitterProgress<cemit_result_group_18(request)>:
   match request:
+    case CEmitterRequest_cps_provider_5_nf_cases{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5}: cemit_body_cps_provider_5_nf_cases(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5)
+    case CEmitterRequest_cps_provider_5_normalize{arg_0, arg_1, arg_2, arg_3}: cemit_body_cps_provider_5_normalize(arg_0, arg_1, arg_2, arg_3)
+    case CEmitterRequest_cps_provider_5_normalize_closed{arg_0, arg_1, arg_2}: cemit_body_cps_provider_5_normalize_closed(arg_0, arg_1, arg_2)
     case CEmitterRequest_cps_provider_5_normalize_in{arg_0, arg_1}: cemit_body_cps_provider_5_normalize_in(arg_0, arg_1)
     case CEmitterRequest_cps_provider_5_outer_application{arg_0}: cemit_body_cps_provider_5_outer_application(arg_0)
     case CEmitterRequest_cps_provider_5_outer_walk{arg_0, arg_1}: cemit_body_cps_provider_5_outer_walk(arg_0, arg_1)
@@ -21393,12 +21457,12 @@ def cemit_step_group_18(request: CEmitterRequestGroup18) -> CEmitterProgress<cem
     case CEmitterRequest_cps_provider_6_native_match_descriptor_node_9{arg_0, arg_1, arg_2, arg_3}: cemit_body_cps_provider_6_native_match_descriptor_node_9(arg_0, arg_1, arg_2, arg_3)
     case CEmitterRequest_cps_provider_6_native_match_descriptor_node_10{arg_0, arg_1}: cemit_body_cps_provider_6_native_match_descriptor_node_10(arg_0, arg_1)
     case CEmitterRequest_cps_provider_6_native_match_descriptor_node_11{arg_0, arg_1}: cemit_body_cps_provider_6_native_match_descriptor_node_11(arg_0, arg_1)
-    case CEmitterRequest_cps_provider_6_native_match_descriptor_node_12{arg_0, arg_1, arg_2}: cemit_body_cps_provider_6_native_match_descriptor_node_12(arg_0, arg_1, arg_2)
-    case CEmitterRequest_cps_provider_6_native_match_descriptor_node_13{arg_0, arg_1}: cemit_body_cps_provider_6_native_match_descriptor_node_13(arg_0, arg_1)
-    case CEmitterRequest_cps_provider_6_native_match_descriptor_node_14{arg_0, arg_1, arg_2, arg_3}: cemit_body_cps_provider_6_native_match_descriptor_node_14(arg_0, arg_1, arg_2, arg_3)
 
 def cemit_step_group_19(request: CEmitterRequestGroup19) -> CEmitterProgress<cemit_result_group_19(request)>:
   match request:
+    case CEmitterRequest_cps_provider_6_native_match_descriptor_node_12{arg_0, arg_1, arg_2}: cemit_body_cps_provider_6_native_match_descriptor_node_12(arg_0, arg_1, arg_2)
+    case CEmitterRequest_cps_provider_6_native_match_descriptor_node_13{arg_0, arg_1}: cemit_body_cps_provider_6_native_match_descriptor_node_13(arg_0, arg_1)
+    case CEmitterRequest_cps_provider_6_native_match_descriptor_node_14{arg_0, arg_1, arg_2, arg_3}: cemit_body_cps_provider_6_native_match_descriptor_node_14(arg_0, arg_1, arg_2, arg_3)
     case CEmitterRequest_cps_provider_6_native_match_descriptor_node_15{arg_0, arg_1, arg_2}: cemit_body_cps_provider_6_native_match_descriptor_node_15(arg_0, arg_1, arg_2)
     case CEmitterRequest_cps_provider_6_native_match_descriptor_node_16{arg_0, arg_1, arg_2}: cemit_body_cps_provider_6_native_match_descriptor_node_16(arg_0, arg_1, arg_2)
     case CEmitterRequest_cps_provider_6_native_match_descriptor_node_17{arg_0, arg_1}: cemit_body_cps_provider_6_native_match_descriptor_node_17(arg_0, arg_1)
@@ -21460,12 +21524,12 @@ def cemit_step_group_19(request: CEmitterRequestGroup19) -> CEmitterProgress<cem
     case CEmitterRequest_cps_provider_6_get_type_functions{arg_0}: cemit_body_cps_provider_6_get_type_functions(arg_0)
     case CEmitterRequest_cps_provider_6_get_next_code{arg_0}: cemit_body_cps_provider_6_get_next_code(arg_0)
     case CEmitterRequest_cps_provider_6_get_ending{arg_0}: cemit_body_cps_provider_6_get_ending(arg_0)
-    case CEmitterRequest_cps_provider_6_native_match_insert_definition_0{arg_0, arg_1, arg_2, arg_3}: cemit_body_cps_provider_6_native_match_insert_definition_0(arg_0, arg_1, arg_2, arg_3)
-    case CEmitterRequest_cps_provider_6_insert_definition{arg_0, arg_1, arg_2}: cemit_body_cps_provider_6_insert_definition(arg_0, arg_1, arg_2)
-    case CEmitterRequest_cps_provider_6_native_match_insert_constructor_0{arg_0, arg_1, arg_2, arg_3}: cemit_body_cps_provider_6_native_match_insert_constructor_0(arg_0, arg_1, arg_2, arg_3)
 
 def cemit_step_group_20(request: CEmitterRequestGroup20) -> CEmitterProgress<cemit_result_group_20(request)>:
   match request:
+    case CEmitterRequest_cps_provider_6_native_match_insert_definition_0{arg_0, arg_1, arg_2, arg_3}: cemit_body_cps_provider_6_native_match_insert_definition_0(arg_0, arg_1, arg_2, arg_3)
+    case CEmitterRequest_cps_provider_6_insert_definition{arg_0, arg_1, arg_2}: cemit_body_cps_provider_6_insert_definition(arg_0, arg_1, arg_2)
+    case CEmitterRequest_cps_provider_6_native_match_insert_constructor_0{arg_0, arg_1, arg_2, arg_3}: cemit_body_cps_provider_6_native_match_insert_constructor_0(arg_0, arg_1, arg_2, arg_3)
     case CEmitterRequest_cps_provider_6_insert_constructor{arg_0, arg_1, arg_2}: cemit_body_cps_provider_6_insert_constructor(arg_0, arg_1, arg_2)
     case CEmitterRequest_cps_provider_6_normalize_descriptor_value{arg_0, arg_1}: cemit_body_cps_provider_6_normalize_descriptor_value(arg_0, arg_1)
     case CEmitterRequest_cps_provider_6_normalize_descriptors{arg_0, arg_1}: cemit_body_cps_provider_6_normalize_descriptors(arg_0, arg_1)
@@ -21527,12 +21591,12 @@ def cemit_step_group_20(request: CEmitterRequestGroup20) -> CEmitterProgress<cem
     case CEmitterRequest_cps_provider_6_live_parameter_binder{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5}: cemit_body_cps_provider_6_live_parameter_binder(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5)
     case CEmitterRequest_cps_provider_6_live_parameter_quantity{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6}: cemit_body_cps_provider_6_live_parameter_quantity(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6)
     case CEmitterRequest_cps_provider_6_definition_foreign{arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7, arg_8}: cemit_body_cps_provider_6_definition_foreign(arg_0, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6, arg_7, arg_8)
-    case CEmitterRequest_cps_provider_6_definition_fast{arg_0, arg_1, arg_2, arg_3, arg_4}: cemit_body_cps_provider_6_definition_fast(arg_0, arg_1, arg_2, arg_3, arg_4)
-    case CEmitterRequest_cps_provider_6_definition_primitive{arg_0, arg_1, arg_2, arg_3}: cemit_body_cps_provider_6_definition_primitive(arg_0, arg_1, arg_2, arg_3)
-    case CEmitterRequest_cps_provider_6_native_match_main_descriptor_0{arg_0}: cemit_body_cps_provider_6_native_match_main_descriptor_0(arg_0)
 
 def cemit_step_group_21(request: CEmitterRequestGroup21) -> CEmitterProgress<cemit_result_group_21(request)>:
   match request:
+    case CEmitterRequest_cps_provider_6_definition_fast{arg_0, arg_1, arg_2, arg_3, arg_4}: cemit_body_cps_provider_6_definition_fast(arg_0, arg_1, arg_2, arg_3, arg_4)
+    case CEmitterRequest_cps_provider_6_definition_primitive{arg_0, arg_1, arg_2, arg_3}: cemit_body_cps_provider_6_definition_primitive(arg_0, arg_1, arg_2, arg_3)
+    case CEmitterRequest_cps_provider_6_native_match_main_descriptor_0{arg_0}: cemit_body_cps_provider_6_native_match_main_descriptor_0(arg_0)
     case CEmitterRequest_cps_provider_6_native_match_main_descriptor_1{arg_0, arg_1, arg_2, arg_3}: cemit_body_cps_provider_6_native_match_main_descriptor_1(arg_0, arg_1, arg_2, arg_3)
     case CEmitterRequest_cps_provider_6_native_match_main_descriptor_2{arg_0, arg_1, arg_2, arg_3, arg_4}: cemit_body_cps_provider_6_native_match_main_descriptor_2(arg_0, arg_1, arg_2, arg_3, arg_4)
     case CEmitterRequest_cps_provider_6_main_descriptor{arg_0, arg_1, arg_2, arg_3, arg_4}: cemit_body_cps_provider_6_main_descriptor(arg_0, arg_1, arg_2, arg_3, arg_4)
