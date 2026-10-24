@@ -1,0 +1,113 @@
+{
+  "schema": "fir-root-final4-aa9-receipt-v1",
+  "date": "2026-10-25",
+  "worktree": "/private/tmp/bend-fir-root-aa9",
+  "branch": "work/fir-root-aa9",
+  "cherries": [
+    "75fce97c c_backend Bool-valued primitives (e2deb492)",
+    "e394a5da c_backend complete Bool packing + fail-closed SNil cid (f272a189)"
+  ],
+  "derivedNumbers": {
+    "note": "counts are derived from this run, not inherited: canonical emitter defs 1680, manifest coverage 1680, body checkedDefinitions 11191"
+  },
+  "sourceStepOutputs": {
+    "emitterModule": {
+      "path": "checkpoints/emitter_steps_v1.bend",
+      "sha256": "156a74755552831812c4b0e1951965f8563665e9802479d70d491c998fff2cf2"
+    },
+    "emitterComponent": {
+      "path": "checkpoints/emitter_steps_component_v1.bend",
+      "sha256": "e6bd090dc9b2a0b381e4a896922c91869571445b194a60898d893e1f2ce3b3c8"
+    },
+    "emitterManifest": {
+      "path": "checkpoints/emitter-steps-v1.json",
+      "sha256": "a7a1ffca0746583d30a92ee4052c463cef6b5a34776cdae166a36f8928c1b3d6",
+      "coverageRows": 1680,
+      "excluded": 0,
+      "omitted": 0,
+      "residualSourceCalls": 0,
+      "recursiveHelpers": 1
+    },
+    "templateSteps": {
+      "path": "checkpoints/template_steps_v1.bend",
+      "unchanged": true
+    },
+    "checkerSteps": {
+      "path": "checkpoints/checker_core_steps_v1.bend",
+      "unchanged": true
+    }
+  },
+  "root": {
+    "path": "checkpoints/.bootstrap_compiler_root_v1.bend",
+    "sha256": "b0b92b67225c1b67972c9fe2a1096962a14926633508936c86d8b93b73cbd36b",
+    "unchanged": true,
+    "manifest": {
+      "path": "checkpoints/selfhost-steps-driver-source-v1.json",
+      "sha256": "84c6dd1b1fef217288067c8adf1d"
+    }
+  },
+  "parserReuse": {
+    "verdict": "REUSED",
+    "run": "ir-aa9-1",
+    "check": "45/45 pins matching sha256 and realpath, guard 8192/8192/10 and runtime node 23.11.0 / 3072 / 256 identical, 0 drift",
+    "receiptFileSha256": "50ab974f7267a792c0af9d0556ebb156772cd5639a63b915558941a710218ec8",
+    "provenanceFileSha256": "180a91ba4db79d1473ee38eb9577a8dfa6bbfde5c96868a5e686962c15086faa",
+    "provenanceRecordSha256": "24108d71fb18e6dff88a983549c43f195046784141af9fc6a3f50a96bf1eb1c4",
+    "artifact": {
+      "path": "checkpoints/bootstrap-parser-rebuild-ir-aa9-1.js",
+      "sha256": "1464037ba20c190ea51083d5824665fa665ce8d5657264544f4515e2339a3ee0"
+    }
+  },
+  "componentBodyProof": {
+    "artifact": {
+      "path": "checkpoints/root-final4-art.js",
+      "sha256": "5205478f22cc6dc7ea7de5b343e40b575044e0965a173c9c539a84be564646c9",
+      "bytes": 16932690,
+      "tracked": false
+    },
+    "receipt": {
+      "path": "checkpoints/root-final4-rep.result.json",
+      "fileSha256": "c0875ba243821f0a14c3e3ab122ad510ec7c7079e9fedff3060d1e4289354009"
+    },
+    "status": "JS_GENERATED_NOT_YET_EXECUTED",
+    "checkedDefinitions": 11191,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "provenanceFileSha256": "bd57bc9914680f24872829f7b8fdd8948a36c6a3738cee698e5a7f66a186dfb3",
+    "provenanceRecordSha256": "accd0641a18ba50340be3780e25a3ba48cf9e4bb447aba8a68c7198107e77c02",
+    "emitterPinInLoadedInputs": {
+      "emitter_steps_v1.bend": "156a74755552831812c4b0e1951965f8563665e9802479d70d491c998fff2cf2"
+    }
+  },
+  "preserved": [
+    "root-final-art.js 4a91665c (b0r)",
+    "root-final2-art.js 3fee8bac (c0)",
+    "root-final3-art.js 5b92478f (clang clean, Nat runtime fail)"
+  ],
+  "carrier": {
+    "type": "BIR.SourceFile{path, source}",
+    "tag": "../bend2/selfhost/backend_ir.SourceFile"
+  },
+  "host": {
+    "candidateHost": "evals/candidate_host.ts a56f57e32d0fa475a0564f18a3930137a084cb6a4ce49b05f496e76331d2a22a",
+    "stepRuntime": "evals/checker_core_step_runtime.mjs a52b065e99126f6b0fe47d4d74538757faa1e3f8652ba3f4bb818c64498e32d5"
+  },
+  "limits": {
+    "guardian": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "worker": {
+      "heapMiB": 3072,
+      "stackMiB": 256
+    }
+  },
+  "claims": {
+    "aggregatePass": false,
+    "bootstrapGreen": false,
+    "cReachable": false,
+    "comparisonCertificate": false
+  }
+}

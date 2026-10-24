@@ -4587,6 +4587,45 @@ def cps_provider_2_pcid(v_1: String, v_3: cps_provider_2_Plan) -> cps_provider_2
     case cps_provider_2_Plan{v_26, v_27, v_28, v_29, v_30, v_31, v_32, v_33, v_34, v_35, v_36, v_37, v_38, v_39, v_40, v_41, v_42, v_43, v_44, _, _}:
       cps_provider_2_cid_c(v_1, v_26)
 
+def native_match_cps_provider_2_str_bool2_0(v_16: cps_provider_2_Part, v_1: String, v_5: String, v_7: String, v_9: cps_provider_2_Plan) -> cps_provider_2_Part:
+  match v_16:
+    case cps_provider_2_PartFail{v_13}:
+      cps_provider_2_PartFail{v_13}
+    case cps_provider_2_PartOk{v_15}:
+      cps_provider_2_bool_part(cps_provider_2_cat([v_1, "(e, ", v_15, ", ", v_5, ", ", v_7, ")"]), v_9)
+
+def cps_provider_2_str_bool2(v_1: String, v_3: String, v_5: String, v_7: String, v_9: cps_provider_2_Plan) -> cps_provider_2_Part:
+  native_match_cps_provider_2_str_bool2_0(cps_provider_2_pcid(v_3, v_9), v_1, v_5, v_7, v_9)
+
+def cps_provider_2_bool_str_empty_of(v_1: Bool, v_3: String, v_5: cps_provider_2_Plan) -> cps_provider_2_Part:
+  match v_1:
+    case True{}:
+      cps_provider_2_bool_part(cps_provider_2_cat(["(!", v_3, ")"]), v_5)
+    case False{}:
+      cps_provider_2_bool_part(v_3, v_5)
+
+def native_match_cps_provider_2_bool_str_empty_0(v_12: cps_provider_2_Part, v_1: Bool, v_3: String, v_5: cps_provider_2_Plan) -> cps_provider_2_Part:
+  match v_12:
+    case cps_provider_2_PartFail{v_9}:
+      cps_provider_2_PartFail{v_9}
+    case cps_provider_2_PartOk{v_11}:
+      cps_provider_2_bool_str_empty_of(v_1, cps_provider_2_cat(["bend_str_empty(", v_3, ", ", v_11, ")"]), v_5)
+
+def cps_provider_2_bool_str_empty(v_1: Bool, v_3: String, v_5: cps_provider_2_Plan) -> cps_provider_2_Part:
+  native_match_cps_provider_2_bool_str_empty_0(cps_provider_2_pcid("SNil", v_5), v_1, v_3, v_5)
+
+def native_match_cps_provider_2_bool_part_0(v_21: cps_provider_2_Part, v_22: cps_provider_2_Part, v_1: String) -> cps_provider_2_Part:
+  match v_21, v_22:
+    case cps_provider_2_PartOk{v_9}, cps_provider_2_PartOk{v_10}:
+      cps_provider_2_okp(cps_provider_2_cat(["bend_bool(e, ", v_9, ", ", v_10, ", (u64)(", v_1, "))"]))
+    case cps_provider_2_PartFail{v_15}, _:
+      cps_provider_2_PartFail{v_15}
+    case _, cps_provider_2_PartFail{v_20}:
+      cps_provider_2_PartFail{v_20}
+
+def cps_provider_2_bool_part(v_1: String, v_3: cps_provider_2_Plan) -> cps_provider_2_Part:
+  native_match_cps_provider_2_bool_part_0(cps_provider_2_pcid("True", v_3), cps_provider_2_pcid("False", v_3), v_1)
+
 def native_match_cps_provider_2_prim_part_0(v_0: BIR.Primitive, +v_5: cps_provider_2_Plan, +v_9: String, +v_12: String, +v_15: String) -> cps_provider_2_Part:
   match v_0:
     case BIR.PrimU32Add{}:
@@ -4606,19 +4645,19 @@ def native_match_cps_provider_2_prim_part_0(v_0: BIR.Primitive, +v_5: cps_provid
     case BIR.PrimU32Xor{}:
       cps_provider_2_okp(cps_provider_2_cat(["U32_BIN(", v_9, ", ^, ", v_12, ")"]))
     case BIR.PrimU32IsEq{}:
-      cps_provider_2_okp(cps_provider_2_cat(["U32_BIN(", v_9, ", ==, ", v_12, ")"]))
+      cps_provider_2_bool_part(cps_provider_2_cat(["U32_BIN(", v_9, ", ==, ", v_12, ")"]), v_5)
     case BIR.PrimU32IsNe{}:
-      cps_provider_2_okp(cps_provider_2_cat(["U32_BIN(", v_9, ", !=, ", v_12, ")"]))
+      cps_provider_2_bool_part(cps_provider_2_cat(["U32_BIN(", v_9, ", !=, ", v_12, ")"]), v_5)
     case BIR.PrimU32IsLt{}:
-      cps_provider_2_okp(cps_provider_2_cat(["U32_BIN(", v_9, ", <, ", v_12, ")"]))
+      cps_provider_2_bool_part(cps_provider_2_cat(["U32_BIN(", v_9, ", <, ", v_12, ")"]), v_5)
     case BIR.PrimU32IsLe{}:
-      cps_provider_2_okp(cps_provider_2_cat(["U32_BIN(", v_9, ", <=, ", v_12, ")"]))
+      cps_provider_2_bool_part(cps_provider_2_cat(["U32_BIN(", v_9, ", <=, ", v_12, ")"]), v_5)
     case BIR.PrimU32IsGt{}:
-      cps_provider_2_okp(cps_provider_2_cat(["U32_BIN(", v_9, ", >, ", v_12, ")"]))
+      cps_provider_2_bool_part(cps_provider_2_cat(["U32_BIN(", v_9, ", >, ", v_12, ")"]), v_5)
     case BIR.PrimU32IsGe{}:
-      cps_provider_2_okp(cps_provider_2_cat(["U32_BIN(", v_9, ", >=, ", v_12, ")"]))
+      cps_provider_2_bool_part(cps_provider_2_cat(["U32_BIN(", v_9, ", >=, ", v_12, ")"]), v_5)
     case BIR.PrimU32IsZero{}:
-      cps_provider_2_okp(cps_provider_2_cat(["U32_BIN(", v_9, ", ==, 0)"]))
+      cps_provider_2_bool_part(cps_provider_2_cat([v_9, " == 0"]), v_5)
     case BIR.PrimU32Inc{}:
       cps_provider_2_okp(cps_provider_2_cat(["U32_BIN(", v_9, ", +, 1)"]))
     case BIR.PrimU32Not{}:
@@ -4652,7 +4691,7 @@ def native_match_cps_provider_2_prim_part_0(v_0: BIR.Primitive, +v_5: cps_provid
     case BIR.PrimNatMax{}:
       cps_provider_2_okp(cps_provider_2_cat(["(", v_9, " > ", v_12, " ? ", v_9, " : ", v_12, ")"]))
     case BIR.PrimNatIsLt{}:
-      cps_provider_2_okp(cps_provider_2_cat(["(", v_9, " < ", v_12, ")"]))
+      cps_provider_2_bool_part(cps_provider_2_cat(["(", v_9, " < ", v_12, ")"]), v_5)
     case BIR.PrimNatDouble{}:
       cps_provider_2_okp(cps_provider_2_cat(["nat_chk(e, ", v_9, " + ", v_9, ")"]))
     case BIR.PrimNatPredecessor{}:
@@ -4718,17 +4757,17 @@ def native_match_cps_provider_2_prim_part_0(v_0: BIR.Primitive, +v_5: cps_provid
     case BIR.PrimF32Atan2{}:
       cps_provider_2_okp(cps_provider_2_cat(["f32_rewrap((f32)atan2(f32_unbox(", v_9, "), f32_unbox(", v_12, ")))"]))
     case BIR.PrimF32IsEq{}:
-      cps_provider_2_f32_cmp("==", v_9, v_12)
+      cps_provider_2_f32_cmp("==", v_9, v_12, v_5)
     case BIR.PrimF32IsNe{}:
-      cps_provider_2_f32_cmp("!=", v_9, v_12)
+      cps_provider_2_f32_cmp("!=", v_9, v_12, v_5)
     case BIR.PrimF32IsLt{}:
-      cps_provider_2_f32_cmp("<", v_9, v_12)
+      cps_provider_2_f32_cmp("<", v_9, v_12, v_5)
     case BIR.PrimF32IsLe{}:
-      cps_provider_2_f32_cmp("<=", v_9, v_12)
+      cps_provider_2_f32_cmp("<=", v_9, v_12, v_5)
     case BIR.PrimF32IsGt{}:
-      cps_provider_2_f32_cmp(">", v_9, v_12)
+      cps_provider_2_f32_cmp(">", v_9, v_12, v_5)
     case BIR.PrimF32IsGe{}:
-      cps_provider_2_f32_cmp(">=", v_9, v_12)
+      cps_provider_2_f32_cmp(">=", v_9, v_12, v_5)
     case BIR.PrimF32ToU32{}:
       cps_provider_2_okp(cps_provider_2_cat(["f32_to_u32(", v_9, ")"]))
     case BIR.PrimF32Bits{}:
@@ -4744,7 +4783,7 @@ def native_match_cps_provider_2_prim_part_0(v_0: BIR.Primitive, +v_5: cps_provid
     case BIR.PrimStringAppend{}:
       cps_provider_2_failp("a string append is emitted by append_part, which needs its operand quantities")
     case BIR.PrimStringEq{}:
-      cps_provider_2_str2("bend_str_eq", "SCon", v_9, v_12, v_5)
+      cps_provider_2_str_bool2("bend_str_eq", "SCon", v_9, v_12, v_5)
     case BIR.PrimStringLength{}:
       cps_provider_2_str1("bend_str_length", "SCon", v_9, v_5)
     case BIR.PrimStringToList{}:
@@ -4780,25 +4819,25 @@ def native_match_cps_provider_2_prim_part_0(v_0: BIR.Primitive, +v_5: cps_provid
     case BIR.PrimArrayRight{}:
       cps_provider_2_okp(cps_provider_2_cat(["blk_half(e, ", v_9, ", 1)"]))
     case BIR.PrimIsArrayLeaf{}:
-      cps_provider_2_okp(cps_provider_2_cat(["((u32)blk_cls(", v_9, ") == 0)"]))
+      cps_provider_2_bool_part(cps_provider_2_cat(["((u32)blk_cls(", v_9, ") == 0)"]), v_5)
     case BIR.PrimIsArrayNode{}:
-      cps_provider_2_okp(cps_provider_2_cat(["((u32)blk_cls(", v_9, ") != 0)"]))
+      cps_provider_2_bool_part(cps_provider_2_cat(["((u32)blk_cls(", v_9, ") != 0)"]), v_5)
     case BIR.PrimIsNatZero{}:
-      cps_provider_2_okp(cps_provider_2_cat(["(", v_9, " == 0)"]))
+      cps_provider_2_bool_part(cps_provider_2_cat(["(", v_9, " == 0)"]), v_5)
     case BIR.PrimIsNatSuccessor{}:
-      cps_provider_2_okp(cps_provider_2_cat(["(", v_9, " > 0)"]))
+      cps_provider_2_bool_part(cps_provider_2_cat(["(", v_9, " > 0)"]), v_5)
     case BIR.PrimIsStringEmpty{}:
-      cps_provider_2_str_empty("bend_str_empty", "SNil", v_9, v_5)
+      cps_provider_2_bool_str_empty(False{}, v_9, v_5)
     case BIR.PrimIsStringNonempty{}:
-      cps_provider_2_str_empty_neg(v_9, v_5)
+      cps_provider_2_bool_str_empty(True{}, v_9, v_5)
     case BIR.PrimIsTrue{}:
       cps_provider_2_is_bool_part("True", v_9, v_5)
     case BIR.PrimIsFalse{}:
       cps_provider_2_is_bool_part("False", v_9, v_5)
     case BIR.PrimSameValue{}:
-      cps_provider_2_okp(cps_provider_2_cat(["(", v_9, " == ", v_12, ")"]))
+      cps_provider_2_bool_part(cps_provider_2_cat(["(", v_9, " == ", v_12, ")"]), v_5)
     case BIR.PrimFloatBitsEqual{}:
-      cps_provider_2_okp(cps_provider_2_cat(["(", v_9, " == ", v_12, ")"]))
+      cps_provider_2_bool_part(cps_provider_2_cat(["(", v_9, " == ", v_12, ")"]), v_5)
     case BIR.PrimCharNew{}:
       cps_provider_2_char_new_part(v_9, v_5)
     case BIR.PrimCharCode{}:
@@ -4826,8 +4865,8 @@ def cps_provider_2_f32_bin(v_1: String, v_3: String, v_5: String) -> cps_provide
 def cps_provider_2_f32_un(v_1: String, v_3: String) -> cps_provider_2_Part:
   cps_provider_2_okp(cps_provider_2_cat(["f32_rewrap((f32)", v_1, "(f32_unbox(", v_3, ")))"]))
 
-def cps_provider_2_f32_cmp(v_1: String, v_3: String, v_5: String) -> cps_provider_2_Part:
-  cps_provider_2_okp(cps_provider_2_cat(["((u64)(f32_unbox(", v_3, ") ", v_1, " f32_unbox(", v_5, ")))"]))
+def cps_provider_2_f32_cmp(v_1: String, v_3: String, v_5: String, v_7: cps_provider_2_Plan) -> cps_provider_2_Part:
+  cps_provider_2_bool_part(cps_provider_2_cat(["((u64)(f32_unbox(", v_3, ") ", v_1, " f32_unbox(", v_5, ")))"]), v_7)
 
 def cps_provider_2_bool2_part(v_1: String, v_3: String, v_5: String, v_7: cps_provider_2_Plan) -> cps_provider_2_Part:
   match v_7:
@@ -4843,15 +4882,15 @@ def cps_provider_2_bool2_c(v_1: String, v_3: String, v_5: String, v_7: cps_provi
     case _, cps_provider_2_PartFail{v_24}:
       cps_provider_2_PartFail{v_24}
 
-def native_match_cps_provider_2_is_bool_part_0(v_12: cps_provider_2_Part, v_3: String) -> cps_provider_2_Part:
+def native_match_cps_provider_2_is_bool_part_0(v_12: cps_provider_2_Part, v_3: String, v_5: cps_provider_2_Plan) -> cps_provider_2_Part:
   match v_12:
     case cps_provider_2_PartFail{v_9}:
       cps_provider_2_PartFail{v_9}
     case cps_provider_2_PartOk{v_11}:
-      cps_provider_2_okp(cps_provider_2_cat(["term_aux(", v_3, ") == (u64)", v_11]))
+      cps_provider_2_bool_part(cps_provider_2_cat(["term_aux(", v_3, ") == (u64)", v_11]), v_5)
 
 def cps_provider_2_is_bool_part(v_1: String, v_3: String, v_5: cps_provider_2_Plan) -> cps_provider_2_Part:
-  native_match_cps_provider_2_is_bool_part_0(cps_provider_2_pcid(v_1, v_5), v_3)
+  native_match_cps_provider_2_is_bool_part_0(cps_provider_2_pcid(v_1, v_5), v_3, v_5)
 
 def native_match_cps_provider_2_cmp3_part_0(v_9: cps_provider_2_Part, v_12: cps_provider_2_Part, v_15: cps_provider_2_Part, v_1: String, v_3: String) -> cps_provider_2_Part:
   match v_9, v_12, v_15:
@@ -4881,16 +4920,6 @@ def cps_provider_2_divmod_part(v_1: String, v_3: String, v_5: cps_provider_2_Pla
   v_9 = cps_provider_2_pcid("Tuple", v_5)
   native_match_cps_provider_2_divmod_part_0(v_9, v_1, v_3)
 
-def native_match_cps_provider_2_str2_0(v_16: cps_provider_2_Part, v_1: String, v_5: String, v_7: String) -> cps_provider_2_Part:
-  match v_16:
-    case cps_provider_2_PartFail{v_13}:
-      cps_provider_2_PartFail{v_13}
-    case cps_provider_2_PartOk{v_15}:
-      cps_provider_2_PartOk{cps_provider_2_cat([v_1, "(e, ", v_15, ", ", v_5, ", ", v_7, ")"])}
-
-def cps_provider_2_str2(v_1: String, v_3: String, v_5: String, v_7: String, v_9: cps_provider_2_Plan) -> cps_provider_2_Part:
-  native_match_cps_provider_2_str2_0(cps_provider_2_pcid(v_3, v_9), v_1, v_5, v_7)
-
 def native_match_cps_provider_2_str1_0(v_14: cps_provider_2_Part, v_1: String, v_5: String) -> cps_provider_2_Part:
   match v_14:
     case cps_provider_2_PartFail{v_11}:
@@ -4900,26 +4929,6 @@ def native_match_cps_provider_2_str1_0(v_14: cps_provider_2_Part, v_1: String, v
 
 def cps_provider_2_str1(v_1: String, v_3: String, v_5: String, v_7: cps_provider_2_Plan) -> cps_provider_2_Part:
   native_match_cps_provider_2_str1_0(cps_provider_2_pcid(v_3, v_7), v_1, v_5)
-
-def native_match_cps_provider_2_str_empty_0(v_14: cps_provider_2_Part, v_1: String, v_5: String) -> cps_provider_2_Part:
-  match v_14:
-    case cps_provider_2_PartFail{v_11}:
-      cps_provider_2_PartFail{v_11}
-    case cps_provider_2_PartOk{v_13}:
-      cps_provider_2_PartOk{cps_provider_2_cat([v_1, "(", v_5, ", ", v_13, ")"])}
-
-def cps_provider_2_str_empty(v_1: String, v_3: String, v_5: String, v_7: cps_provider_2_Plan) -> cps_provider_2_Part:
-  native_match_cps_provider_2_str_empty_0(cps_provider_2_pcid(v_3, v_7), v_1, v_5)
-
-def native_match_cps_provider_2_str_empty_neg_0(v_10: cps_provider_2_Part, v_1: String) -> cps_provider_2_Part:
-  match v_10:
-    case cps_provider_2_PartFail{v_7}:
-      cps_provider_2_PartFail{v_7}
-    case cps_provider_2_PartOk{v_9}:
-      cps_provider_2_PartOk{cps_provider_2_cat(["(!bend_str_empty(", v_1, ", ", v_9, "))"])}
-
-def cps_provider_2_str_empty_neg(v_1: String, v_3: cps_provider_2_Plan) -> cps_provider_2_Part:
-  native_match_cps_provider_2_str_empty_neg_0(cps_provider_2_pcid("SNil", v_3), v_1)
 
 def native_match_cps_provider_2_str_tail_0(v_20: cps_provider_2_Part, v_21: cps_provider_2_Part, v_1: String) -> cps_provider_2_Part:
   match v_20, v_21:
