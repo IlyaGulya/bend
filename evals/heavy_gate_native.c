@@ -307,8 +307,6 @@ int main(int argc, char **argv) {
   const char *reason = NULL;
   uint64_t stopping = 0;
   int killed = 0, exited = 0, exit_status = 0, live = 1, parent_open = 1;
-  const uint64_t cleanup_bound = 5000; /* ms after SIGKILL delivery */
-  uint64_t kill_deadline = 0;
   for (;;) {
     int status;
     pid_t reaped;
@@ -338,14 +336,7 @@ int main(int argc, char **argv) {
     }
     if (stopping) {
       terminate_tree(root, killed ? SIGKILL : SIGTERM);
-      if (!killed && millis() - stopping >= (uint64_t)grace) { terminate_tree(root, SIGKILL); killed = 1; kill_deadline = millis(); }
-      else if (killed && millis() - kill_deadline >= cleanup_bound) {
-        /* A descendant can stay unkillable or unconfirmable (e.g. stopped in
-           the kernel). Holding the lease forever with no terminal outcome is
-           worse than an honest incomplete cleanup receipt. */
-        reason = "cleanup_incomplete";
-        break;
-      }
+      if (!killed && millis() - stopping >= (uint64_t)grace) { terminate_tree(root, SIGKILL); killed = 1; }
     }
     if (exited && !live) break;
     struct pollfd parent = { .fd = 0, .events = POLLIN | POLLHUP };

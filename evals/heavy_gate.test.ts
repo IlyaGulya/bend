@@ -303,8 +303,16 @@ await runHeavyGate(${JSON.stringify(command)},${JSON.stringify({...safe,lockPath
   }
   expect(receipt).toBeDefined();
   expect(receipt!.status).toBe('FAIL');
-  expect(['interrupted','deadline_exceeded','command_signal','descendants_after_exit','cleanup_incomplete']).toContain(receipt!.reason);
-  expect((await runHeavyGate(['true'],{...safe,lockPath})).status).toBe('PASS');
+  expect(['interrupted','deadline_exceeded','command_signal','descendants_after_exit']).toContain(receipt!.reason);
+  // The provisional receipt may land while owned cleanup is still running;
+  // the lease is released only after the owned tree is confirmed gone.
+  const leaseDeadline=Date.now()+8000;let probe:HeavyGateResult|undefined;
+  while(Date.now()<leaseDeadline){
+   probe=await runHeavyGate(['true'],{...safe,lockPath});
+   if(probe.status==='PASS')break;
+   await Bun.sleep(50);
+  }
+  expect(probe?.status).toBe('PASS');
   await expectStopped(Number((await readFile(ready,'utf8')).trim()));
  }finally{
   if(launcher)launcher.kill('SIGKILL');
