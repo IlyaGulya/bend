@@ -142,13 +142,17 @@ export function authenticateNativeSeedBuild(reportPath, options) {
       sources.set(real, row);
     }
   }
-  const closed = workloadRows(options.root);
-  if (sources.size !== closed.sources.length || externals.size !== closed.externals.length)
+  const closed = workloadRows(options.root), closedC = workloadRows(options.root, 'c');
+  const keySet = rows => [...rows.keys()].sort().join('\n');
+  const union = new Map([...closed.externals, ...closedC.externals].map(row => [row.file, row]));
+  const expectedExternals = [new Map(closed.externals.map(row => [row.file, row])), new Map(closedC.externals.map(row => [row.file, row])), union];
+  const foreignClosure = expectedExternals.find(rows => keySet(rows) === keySet(externals));
+  if (sources.size !== closed.sources.length || !foreignClosure)
     throw Error('Native stage0 corpus is not the complete current root closure');
   for (const row of closed.sources) if (sources.get(row.file)?.sha256 !== row.sha256 || sources.get(row.file)?.namespace !== row.namespace)
     throw Error('Native stage0 source closure differs from the current root: ' + row.file);
-  for (const row of closed.externals) if (externals.get(row.file)?.sha256 !== row.sha256)
-    throw Error('Native stage0 foreign closure differs from the current root: ' + row.file);
+  for (const [file, row] of foreignClosure) if (externals.get(file)?.sha256 !== row.sha256)
+    throw Error('Native stage0 foreign closure differs from the current root: ' + file);
   return {reportFile, report, binary, binarySha256: report.artifactSha256, corpus, corpusPath, corpusSha256: hashPath(corpusPath),
     protectedPins: pins, loadedInputs: loaded};
 }
