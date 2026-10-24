@@ -60,6 +60,7 @@ if(!worker){
   const original=json(fixedpointReport),requestPath=join(fixedpointReport+'.cases','request.json');pin(requestPath,hash(requestPath));
   const request=json(requestPath);
   const nativeMode=original.status==='NATIVE_SEED_BOOTSTRAP_FIXEDPOINT';
+  let one:any,two:any,fixtures:any,sourceFileTag:string;
   if(nativeMode){
    requireProof(request.report===fixedpointReport&&request.sidecars===fixedpointReport+'.cases'&&request.worker===true&&!request.fixture&&!request.parseOnly&&!request.profileRoot,'Original request is not a full bootstrap request');
    requireProof(original.passed===true&&original.seedMode==='native'&&original.guardian?.status==='PASS'&&original.guardian.timeoutMs===600000&&original.guardian.memoryLimitBytes===8192*1024*1024&&original.guardian.rssLimitBytes===8192*1024*1024,'Expected complete native seed certificate');
@@ -83,7 +84,7 @@ if(!worker){
    for(const [path,digest]of Object.entries(accepted.authenticatedInputs))pin(path,digest);
    requireProof(accepted.parserSource===request.parserSource,'Original accepted parser chain mismatch');
    for(const key of ['parser','parserBuild','root','rootManifest'])requireProof(typeof request[key]==='string'&&inputs[request[key]]===hash(request[key]),'Request not authenticated by original inputs: '+key);
-   const artifacts=object(original.artifacts),one=object(artifacts.stageOne),two=object(artifacts.stageTwo);
+   const artifacts=object(original.artifacts);one=object(artifacts.stageOne);two=object(artifacts.stageTwo);
    for(const [artifact,name]of [[one,'stage-one'],[two,'stage-two']] as const){
     requireProof(artifact.path===join(String(request.sidecars),name+'.js')&&artifact.bytes===stageBytes&&artifact.sha256===stageSha256,'Wrong native emitted image chain');
     pin(artifact.path,String(artifact.sha256));requireProof(readFileSync(String(artifact.path)).length===stageBytes,'Emitted image size mismatch');
@@ -98,7 +99,7 @@ if(!worker){
     requireProof(row.phase==='stage-two-parse'&&row.oracleAccepted===true&&row.fullSemanticAST===true&&row.semanticParity===true&&row.stage0ASTHash===row.compiledASTHash&&/^[0-9a-f]{64}$/.test(String(row.stage0ASTHash))&&row.parserFeedback==='FeedbackComplete'&&row.parserFuel===limits.parserFuel&&row.parserSha256===stageSha256&&row.sourceBytesSha256===inputs[row.file]&&row.sourceSha256===sha(readFileSync(row.file,'utf8')),'Missing complete stage-two semantic approval: '+row.file);
     pin(String(row.transport),String(row.transportSha256));
    }
-   const fixtures=request.fixtures as Record<string,any>[],seedRows=original.fixtureRows.filter((row:Record<string,any>)=>row.stage==='seed');
+   fixtures=request.fixtures as Record<string,any>;const seedRows=original.fixtureRows.filter((row:Record<string,any>)=>row.stage==='seed');
    requireProof(Array.isArray(fixtures)&&fixtures.length===95&&new Set(fixtures.map(row=>row.name)).size===95&&seedRows.length===95,'Missing complete 95 original fixtures/native seed rows');
    for(const fixture of fixtures){
     const row=seedRows.find((row:Record<string,any>)=>row.name===fixture.name);
@@ -125,44 +126,7 @@ if(!worker){
    const backendIr=realpathSync(resolve('bend2/selfhost/backend_ir.bend'));
    const sourceFileRow=auth.corpus.files.find((row:any)=>row.external!==true&&typeof row.path==='string'&&realpathSync(resolve(auth.corpus.directory,row.path))===backendIr);
    requireProof(sourceFileRow&&typeof sourceFileRow.namespace==='string','Native workload does not load the canonical BIR module');
-   const sourceFileTag=sourceFileRow.namespace+'.SourceFile';
-   for(const [name,image]of [['stage-one',one],['stage-two',two]] as const){
-    phase=name+'-imports';rehash();
-    const api=(await import(pathToFileURL(String(image.path)).href)).default;
-    requireProof(api&&ABI.every(key=>typeof api[key]==='function'),'Unchanged emitted image lacks full ABI: '+name);
-    const directory=join(sidecars,name);mkdirSync(directory);
-    const stage:Record<string,any>={stage:name,image:image.path,imageSha256:image.sha256,requiredExports:ABI,fixtureRows:[],parseRows:[],events:[],passed:false};stages.push(stage);flush();
-    const freshRequest={...request,native:undefined,nativeBuild:undefined,nativeCorpus:undefined,parser:image.path,component:image.path,parserSha256:image.sha256,componentSha256:image.sha256,sidecars:directory,report,fixture:'authenticated-complete-emitted-suite',parseOnly:false,profileRoot:false,fixtures,sourceFileTag,selfhostImage:{stage:name,path:image.path,sha256:image.sha256,bytes:image.bytes},expectedRoot:{path:realpathSync(request.root),sha256:hash(request.root)}};
-    const freshPath=join(directory,'request.json');save(freshPath,freshRequest);pin(freshPath,hash(freshPath));
-    child=spawn('node',[resolve('evals/selfhost_bootstrap_worker.mjs'),freshPath],{stdio:['pipe','pipe','inherit']});
-    stage.command=['node',resolve('evals/selfhost_bootstrap_worker.mjs'),freshPath];
-    const completed=new Promise<number>((done,reject)=>{child!.once('error',reject);child!.once('close',code=>done(code??125));});
-    for await(const line of createInterface({input:child.stdout!})){
-     const message=object(JSON.parse(line));if(typeof message.phase==='string')phase=message.phase;
-     if(message.event==='parse-cache'){
-      requireProof(Number.isSafeInteger(message.id)&&message.parserSha256===image.sha256,'Malformed fresh-only cache lookup');
-      stage.cacheMisses=(stage.cacheMisses??0)+1;child.stdin!.write(JSON.stringify({id:message.id,approved:true})+'\n');
-     }else if(message.event==='parse'){
-      requireProof(Number.isSafeInteger(message.id)&&message.parserSha256===image.sha256,'Wrong emitted parser approval request');
-      const file=realpathSync(message.file),source=readFileSync(file,'utf8'),transport=realpathSync(message.transport);
-      requireProof(file===message.file&&sha(source)===message.sourceSha256&&hash(file)===message.sourceBytesSha256&&transport.startsWith(directory+'/'),'Source/transport changed during emitted parsing');
-      pin(file,message.sourceBytesSha256);
-      const parity=await parserParity({file,source,transport,recordInputs:false});
-      requireProof(parity.stage0ASTHash===parity.compiledASTHash&&hash(transport)===parity.transportSha256,'Complete semantic AST/transport mismatch: '+file);
-      stage.parseRows.push({phase,file,sourceSha256:sha(source),sourceBytesSha256:message.sourceBytesSha256,parserSha256:image.sha256,parserFuel:limits.parserFuel,parserFeedback:'FeedbackComplete',oracleAccepted:true,fullSemanticAST:true,transport,transportSha256:parity.transportSha256,stage0ASTHash:parity.stage0ASTHash,compiledASTHash:parity.compiledASTHash,semanticParity:true});flush();
-      child.stdin!.write(JSON.stringify({id:message.id,approved:true,transportSha256:parity.transportSha256})+'\n');
-     }else if(message.event==='fixture'){stage.fixtureRows.push({...message,workerStage:message.stage,stage:name});flush();}
-     else if(message.event==='result'){requireProof(!stage.workerResult,'Duplicate worker result');stage.workerResult=object(message.result);flush();}
-     else if(message.event==='parse-cache-used'||message.event==='parse-cache-rejected'||message.event==='artifact')throw Error('Forbidden cache/root emission in emitted fixture runner');
-     else if(message.event==='phase'&&message.phase==='complete'){stage.events.push(message);flush();}
-    }
-    const exit=await completed;child=undefined;stage.exitCode=exit;
-    requireProof(exit===0&&stage.workerResult?.passed===true&&stage.workerResult.fixtureExecutions===95&&stage.fixtureRows.length===95,'Emitted worker did not finish all 95 fixtures: '+name);
-    for(const row of stage.parseRows)requireProof(hash(row.transport)===row.transportSha256,'Fresh full AST transport changed');
-    rehash();stage.passed=true;flush();
-   }
-   requireProof(stages.length===2&&stages.every(stage=>stage.passed&&stage.fixtureRows.length===95),'Both unchanged images must finish independently');
-   rehash();state.evidenceCounts={existingSeed:95,freshStageOne:95,freshStageTwo:95,freshEmitted:190,total:285};state.passed=true;state.status='EMITTED_SUITES_BEHAVIOR_PASS';flush();
+   sourceFileTag=sourceFileRow.namespace+'.SourceFile';
   }else{
   requireProof(request.report===fixedpointReport&&request.sidecars===fixedpointReport+'.cases'&&request.worker===true&&!request.fixture&&!request.parseOnly&&!request.profileRoot,'Original request is not a full bootstrap request');
   requireProof(original.status==='FAIL'&&original.passed===false&&original.guardian?.status==='FAIL'&&original.guardian.reason==='deadline_exceeded'&&original.guardian.timeoutMs===600000,'Expected honestly failed original monolithic deadline');
@@ -196,7 +160,7 @@ if(!worker){
   requireProof(request.parserSha256===hash(request.parser)&&request.parserSha256===accepted.accepted.artifactSha256,'Original seed parser hash mismatch');
   const composition=object(original.rootComposition),manifest=json(request.rootManifest),parserText=readFileSync(accepted.parserSource,'utf8'),rootText=readFileSync(request.root,'utf8'),declarations=parserText.slice(parserText.search(/^(?:type|def) /m));
   requireProof(same(composition,request.rootComposition)&&composition.exactParserDeclarations===true&&composition.manifest===request.rootManifest&&composition.manifestSha256===hash(request.rootManifest)&&composition.rootSha256===hash(request.root)&&composition.parserSourceSha256===hash(accepted.parserSource)&&composition.parserDeclarationSha256===sha(declarations)&&rootText.slice(composition.embedding.start,composition.embedding.start+composition.embedding.chars)===declarations&&same(composition.embedding,manifest.embedding)&&manifest.outputSha256===hash(request.root)&&manifest.parserBodiesChanged===0&&manifest.parserDatatypesChanged===0&&manifest.parserRequestKontChanged===false,'Exact accepted parser/root composition mismatch');
-  const artifacts=object(original.artifacts),one=object(artifacts.stageOne),two=object(artifacts.stageTwo);
+  const artifacts=object(original.artifacts);one=object(artifacts.stageOne);two=object(artifacts.stageTwo);
   for(const [artifact,name]of [[one,'stage-one'],[two,'stage-two']] as const){
    requireProof(artifact.path===join(request.sidecars,name+'.js')&&artifact.bytes===stageBytes&&artifact.sha256===stageSha256,'Wrong independently pinned emitted image chain');
    pin(artifact.path,artifact.sha256);requireProof(readFileSync(artifact.path).length===artifact.bytes,'Emitted image size mismatch');
@@ -205,6 +169,10 @@ if(!worker){
   const closure=one.sourceHashes as Record<string,any>[];
   requireProof(Array.isArray(closure)&&closure.length===Object.keys(request.rootInputs).length&&new Set(closure.map(row=>row.file)).size===closure.length,'Incomplete/duplicate stage source closure');
   for(const row of closure){requireProof(row.sha256===row.sourceBytesSha256&&request.rootInputs[row.file]===row.sourceBytesSha256,'Stage source closure mismatch');pin(row.file,row.sourceBytesSha256);}
+  const backendIr=realpathSync(resolve('bend2/selfhost/backend_ir.bend'));
+  const sourceRow=closure.find(row=>realpathSync(row.file)===backendIr);
+  requireProof(sourceRow&&typeof sourceRow.namespace==='string','Legacy stage closure has no canonical BIR module');
+  sourceFileTag=sourceRow.namespace+'.SourceFile';
   const events=original.events as Record<string,any>[];
   const index=(name:string)=>events.findIndex(row=>row.event==='phase'&&row.phase===name);
   requireProof(index('stage-one-execute')>=0&&index('stage-two-parse')>index('stage-one-execute')&&index('fixedpoint-byte-comparison')>index('stage-two-parse')&&index('stage-two-execute')>index('fixedpoint-byte-comparison'),'Missing actual Root comparison or stage-two execution chain');
@@ -216,7 +184,7 @@ if(!worker){
    requireProof(rows.length===expected.length&&new Set(rows.map((row:Record<string,any>)=>row.file)).size===rows.length&&expected.every(row=>rows.some((parsed:Record<string,any>)=>parsed.file===row.file)),'Incomplete actual root parse approvals: '+parsePhase);
    for(const row of rows){authenticatedParse(row,parserSha);pin(row.transport,row.transportSha256);}
   }
-  const fixtures=request.fixtures as Record<string,any>[],seedRows=original.fixtureRows.filter((row:Record<string,any>)=>row.stage==='seed');
+  fixtures=request.fixtures as Record<string,any>;const seedRows=original.fixtureRows.filter((row:Record<string,any>)=>row.stage==='seed');
   requireProof(Array.isArray(fixtures)&&fixtures.length===95&&new Set(fixtures.map(row=>row.name)).size===95&&seedRows.length===95&&new Set(seedRows.map((row:Record<string,any>)=>row.name)).size===95,'Missing complete 95 original fixtures/seed rows');
   // Same printed-constructor equivalence as the unchanged worker (empty braces
   // and whitespace do not change the constructor tree).
@@ -233,6 +201,7 @@ if(!worker){
   state.originalMonolithicGate={status:original.status,passed:false,guardian:original.guardian,acceptance:false};
   state.nativeSeedCoverage={checkedDefinitions:bodies,eventsFullyValidated:proof.eventsFullyValidated,component:request.component,sha256:request.componentSha256,provenancePath,provenanceSha256};
   state.existingSeedRows=seedRows;state.fixtureInputsSha256=sha(JSON.stringify(fixtures));flush();
+  }
   for(const [name,image]of [['stage-one',one],['stage-two',two]] as const){
    phase=name+'-imports';rehash();
    // The fixture marker selects the worker's existing fixtures-only branch,
@@ -242,7 +211,7 @@ if(!worker){
    requireProof(api&&ABI.every(key=>typeof api[key]==='function'),'Unchanged emitted image lacks full ABI: '+name);
    const directory=join(sidecars,name);mkdirSync(directory);
    const stage:Record<string,any>={stage:name,image:image.path,imageSha256:image.sha256,requiredExports:ABI,fixtureRows:[],parseRows:[],events:[],passed:false};stages.push(stage);flush();
-   const freshRequest={...request,parser:image.path,component:image.path,parserSha256:image.sha256,componentSha256:image.sha256,sidecars:directory,report,fixture:'authenticated-complete-emitted-suite',parseOnly:false,profileRoot:false,fixtures};
+   const freshRequest={...request,native:undefined,nativeBuild:undefined,nativeCorpus:undefined,parser:image.path,component:image.path,parserSha256:image.sha256,componentSha256:image.sha256,sidecars:directory,report,fixture:'authenticated-complete-emitted-suite',parseOnly:false,profileRoot:false,fixtures,sourceFileTag,selfhostImage:{stage:name,path:image.path,sha256:image.sha256,bytes:image.bytes},expectedRoot:{path:realpathSync(request.root),sha256:hash(request.root)}};
    const freshPath=join(directory,'request.json');save(freshPath,freshRequest);pin(freshPath,hash(freshPath));
    child=spawn('node',[resolve('evals/selfhost_bootstrap_worker.mjs'),freshPath],{stdio:['pipe','pipe','inherit']});
    stage.command=['node',resolve('evals/selfhost_bootstrap_worker.mjs'),freshPath];
@@ -284,6 +253,5 @@ if(!worker){
   }
   requireProof(stages.length===2&&stages.every(stage=>stage.passed&&stage.fixtureRows.length===95),'Both unchanged images must finish independently');
   rehash();state.evidenceCounts={existingSeed:95,freshStageOne:95,freshStageTwo:95,freshEmitted:190,total:285};state.passed=true;state.status='EMITTED_SUITES_BEHAVIOR_PASS';flush();
-  }
  }catch(error){child?.kill('SIGTERM');state.passed=false;state.status='FAIL';state.failure={phase,error:String(error),stack:error instanceof Error?error.stack:undefined};flush();process.exitCode=2;}
 }
