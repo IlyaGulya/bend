@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 /** Lower authenticated canonical functions into typed, bounded native chunks.
- * CLI: bun evals/checker_core_step_lower.ts; emitter: bun evals/js_emit_step_lower.ts;
+ * CLI: bun evals/checker_core_step_lower.ts; emitter: bun evals/emitter_step_lower.ts;
  * template: bun evals/template_step_lower.ts. All entries share this Body-AST/CPS
  * implementation and generate source only. Exact-content complete-input manifest
  * reuse saves generation, never native validation; canonical schema4 builds check
@@ -30,16 +30,23 @@ export const checkerStepConfig = {
   driver: 'checkpoints/checker_core_steps_driver_v1.bend', manifest: 'checkpoints/checker-core-steps-v1.json',
   mode: 'checker', root: 'check_modules', result: 'Checked.CheckResult',
 } as const;
+/** One native emitter entry path inside a shared generated composition. */
+export type StepEntry = {mode: 'emitter' | 'cemit'; root: string; libraryRoot: string};
 export type StepConfig = {
   canonical: string; owned: string; dependency: string; ownedManifest: string; ownedDriver?: string;
   frozenSlice: string; frozenDriver: string; frozenCorpus: string;
   kernel: string; emitter: string; parser: string; base: string;
   nodePolicy: string; validationPolicy: string;
   output: string; component: string; driver?: string; manifest: string;
-  mode: 'checker' | 'emitter' | 'cemit' | 'template'; root: string; result: string;
-  checkerOutput?: string; checkerManifest?: string;
+  mode: 'checker' | 'emitter' | 'template'; root: string; result: string;
   /** Entire canonical provider modules admitted into the same typed CPS boundary. */
   providerClosure?: CPSProviderClosure;
+  /** Every target entry path in one generated composition. When present the
+   * module is generated once for all entries and uses this config's protocol
+   * (mode `emitter` keeps the established Emitter Run tags). */
+  entries?: readonly StepEntry[];
+  /** Component alias; defaults to the historical per-mode alias. */
+  componentAlias?: string;
   /** Retained for callers that set it, but the composer now orders composed
    * datatypes by dependency SCC itself: dependency-first across acyclic groups and
    * source order inside one genuinely mutual group, so no flag is needed. */
@@ -47,7 +54,7 @@ export type StepConfig = {
   generator: string;
 };
 export async function generateNativeSteps(paths: StepConfig) {
-const protocol = paths.mode === 'checker' ? 'Checker' : paths.mode === 'emitter' ? 'Emitter' : paths.mode === 'cemit' ? 'CEmitter' : 'Template';
+const protocol = paths.mode === 'checker' ? 'Checker' : paths.mode === 'emitter' ? 'Emitter' : 'Template';
 const prefix = paths.mode;
 const requestType = protocol + 'Request', progressType = protocol + 'Progress', valueType = protocol + 'Value';
 const finishedType = protocol + 'Finished', pendingType = protocol + 'Pending', directType = protocol + 'Direct', boundType = protocol + 'Bound';
@@ -57,12 +64,15 @@ const castBoxFunction = prefix + '_cast_box', popFunction = prefix + '_pop', adv
 const resultFunction = prefix + '_result', stepFunction = prefix + '_step', startFunction = prefix + '_start';
 const rawStepFunction = prefix + '_step_one', chunkFunction = prefix + '_chunk', nativeChunkQuantum = 64;
 const unboxFunction = prefix + '_unbox';
+const entries: readonly StepEntry[] | undefined = paths.entries ?? (paths.mode === 'emitter'
+  ? [{mode: 'emitter', root: paths.root, libraryRoot: 'emit_library'}] : undefined);
+const startNames = entries ? entries.flatMap(entry => entry.mode === 'emitter'
+  ? ['emitter_start', 'emitter_library_start'] : ['cemit_start', 'cemit_library_start']) : [];
 const inputPaths: string[] = [paths.canonical, paths.owned, paths.dependency, paths.frozenSlice, paths.frozenDriver,
   paths.frozenCorpus, paths.kernel, paths.emitter, paths.parser, paths.base, paths.nodePolicy, paths.validationPolicy,
-  paths.ownedManifest, ...(paths.ownedDriver ? [paths.ownedDriver] : []), ...(paths.checkerOutput ? [paths.checkerOutput] : []),
-  ...(paths.checkerManifest ? [paths.checkerManifest] : [])];
+  paths.ownedManifest, ...(paths.ownedDriver ? [paths.ownedDriver] : [])];
 const inputs = new Map(inputPaths.map(path => [path, readFileSync(path, 'utf8')]));
-for (const path of ['evals/checker_core_step_lower.ts', 'evals/checker_core_owned_source.ts', 'evals/js_emit_step_lower.ts', 'evals/template_step_lower.ts',
+for (const path of ['evals/checker_core_step_lower.ts', 'evals/checker_core_owned_source.ts', 'evals/emitter_step_lower.ts', 'evals/template_step_lower.ts',
   'bend2/bend.ts', 'evals/parser_full_graph.ts', 'evals/parser_full_body_render.ts', 'evals/parser_full_type_env.ts',
   'evals/native_match_source.ts', 'evals/parser_full_declarations.ts', 'evals/bootstrap_source_oracle.ts', 'evals/canonical_cps_source.ts',
   ...(paths.generator ? [paths.generator] : [])]) {
@@ -77,32 +87,6 @@ const generationEnvironment = {
   library: resolve(process.env.BEND_LIB ?? posix.join(homedir(), '.bend', 'lib')), hub: B.BEND_HUB,
   runtime: Object.fromEntries(Object.entries(process.versions).sort(([a], [b]) => a.localeCompare(b))),
 };
-if (paths.mode === 'emitter') {
-  if (!paths.checkerManifest || !paths.checkerOutput) throw Error('Combined emitter driver requires authenticated generated checker inputs');
-  const checkerManifest = JSON.parse(inputs.get(paths.checkerManifest)!);
-  const {generationManifestSha256: checkerDigest, ...checkerAuthenticated} = checkerManifest;
-  if (checkerDigest !== sha(JSON.stringify(checkerAuthenticated)))
-    throw Error('Generated checker manifest provenance drift');
-  if (!checkerManifest.protectedUnchangedHashes || typeof checkerManifest.protectedUnchangedHashes !== 'object')
-    throw Error('Generated checker manifest must authenticate its generation inputs');
-  for (const [path, hash] of Object.entries(checkerManifest.protectedUnchangedHashes)) {
-    const text = inputs.get(path) ?? readFileSync(path, 'utf8');
-    if (sha(text) !== hash || (checkerManifest.generationInputRealpaths
-      && realpathSync(path) !== checkerManifest.generationInputRealpaths[path]))
-      throw Error('Generated checker input provenance drift: ' + path);
-    if (!inputs.has(path)) {inputPaths.push(path); inputs.set(path, text);}
-  }
-  if (checkerManifest.outputs?.[paths.checkerOutput] !== sha(inputs.get(paths.checkerOutput)!))
-    throw Error('Generated checker driver is not authenticated by its manifest');
-  for (const [path, hash] of Object.entries(checkerManifest.outputs as Record<string, string>)) {
-    const text = inputs.get(path) ?? readFileSync(path, 'utf8');
-    if (sha(text) !== hash) throw Error('Generated checker output provenance drift: ' + path);
-    if (!inputs.has(path)) {inputPaths.push(path); inputs.set(path, text);}
-  }
-  for (const path of ['evals/checker_core_step_lower.ts', 'evals/js_emit_step_lower.ts', 'evals/parser_full_body_render.ts', 'evals/parser_full_type_env.ts']) {
-    if (!inputs.has(path)) {inputPaths.push(path); inputs.set(path, readFileSync(path, 'utf8'));}
-  }
-}
 function writeChanged(path: string, text: string) {
   if (!existsSync(path) || readFileSync(path, 'utf8') !== text) writeFileSync(path, text);
 }
@@ -467,7 +451,7 @@ const resultKind = allResultsData ? 'Data' : 'Type';
 const resultQuantity = (name: string): B.Quant => resultKinds[name] === 'Data' ? B.Many() : B.Lone();
 const sourceEdges = new Map([...names].map(name => [name, new Set<string>()]));
 for (const effect of effects) sourceEdges.get(effect.caller)!.add(effect.callee);
-const publicRoots=paths.mode==='checker'?[paths.root,'inspect_checked']:paths.mode==='emitter'||paths.mode==='cemit'?[paths.root,'emit_library']:[paths.root];
+const publicRoots=paths.mode==='checker'?[paths.root,'inspect_checked']:entries?[...new Set(entries.flatMap(entry=>[entry.root,entry.libraryRoot]))]:[paths.root];
 const reachable = new Set<string>(), pending = [...publicRoots];
 while (pending.length) {
   const name = pending.pop()!;
@@ -569,6 +553,10 @@ for (const name of [requestType, progressType, valueType, finishedType, pendingT
   resultFunction, stepFunction, rawStepFunction, chunkFunction, unboxFunction, startFunction,
   stackType, stackDoneType, stackMoreType, runType, runFinishedType, runStateType,
   castBoxFunction, popFunction, advanceFunction]) reserve(name);
+for (const name of startNames) if (name !== startFunction) {
+  if (reserved.has(name)) throw Error('Generated name collision ' + name);
+  reserved.add(name);
+}
 const requestName = new Map(definitions.map(def => [def.name, reserve(requestType + '_' + def.name)]));
 // Keep request datatypes and dispatch bodies bounded. A single thousands-row
 // dependent match is expensive for both the source checker and native JS.
@@ -1208,48 +1196,71 @@ def ${stepFunction}(-R: Type, run: ${runType}<R>) -> ${runType}<R>:
   ${chunkFunction}(R, ${nativeChunkQuantum}n, run)
 `);
 const emitterFiles = 'files: List<&2, BIR.SourceFile>';
-const startInput = paths.mode === 'emitter' ? 'program: Checked.CheckedProgram, ' + emitterFiles
-  : paths.mode === 'cemit' ? 'program: Checked.CheckedProgram, runtime: String, ' + emitterFiles
-  : 'modules: List<&2, Loader.LoadedModule>';
-const startArguments = paths.mode === 'checker' ? 'modules, Nil{}'
-  : paths.mode === 'emitter' ? 'program, files'
-  : paths.mode === 'cemit' ? 'program, runtime, files'
-  : 'modules';
+const startInput = 'modules: List<&2, Loader.LoadedModule>';
+const startArguments = paths.mode === 'checker' ? 'modules, Nil{}' : 'modules';
 function typedStart(name:string, root:string, parameters:string, arguments_:string, result:string){
  const group=requestGroup.get(root),request=requestName.get(root);
  if(!group||!request)throw Error('Missing typed public root '+root);
  return '\ndef '+name+'('+parameters+') -> '+runType+'<'+result+'>:\n  '+chunkFunction+'('+result+', '+nativeChunkQuantum+'n, '+runStateType+'{'+result+', '+pendingType+'{'+group.constructor+'{'+request+'{'+arguments_+'}}, box => '+finishedType+'{box}}, '+stackDoneType+'{{==}}})\n';
 }
-chunks.push(typedStart(startFunction,paths.root,startInput,startArguments,paths.result));
-if(paths.mode==='checker')chunks.push(typedStart('checker_inspect_start','inspect_checked','program: Checked.CheckedProgram','program','Checked.Inspection'));
-if(paths.mode==='emitter')chunks.push(typedStart('emitter_library_start','emit_library','program: Checked.CheckedProgram, exports: List<&2, String>, ' + emitterFiles,'program, exports, files','EmitResult'));
-if(paths.mode==='cemit')chunks.push(typedStart('cemit_library_start','emit_library','program: Checked.CheckedProgram, exports: List<&2, String>, runtime: String, ' + emitterFiles,'program, exports, runtime, files','EmitResult'));
+if (entries && paths.mode !== 'checker') {
+  for (const entry of entries) {
+    if (entry.mode === 'emitter') {
+      chunks.push(typedStart('emitter_start', entry.root, 'program: Checked.CheckedProgram, ' + emitterFiles, 'program, files', paths.result));
+      chunks.push(typedStart('emitter_library_start', entry.libraryRoot, 'program: Checked.CheckedProgram, exports: List<&2, String>, ' + emitterFiles, 'program, exports, files', paths.result));
+    } else {
+      chunks.push(typedStart('cemit_start', entry.root, 'program: Checked.CheckedProgram, runtime: String, ' + emitterFiles, 'program, runtime, files', paths.result));
+      chunks.push(typedStart('cemit_library_start', entry.libraryRoot, 'program: Checked.CheckedProgram, exports: List<&2, String>, runtime: String, ' + emitterFiles, 'program, exports, runtime, files', paths.result));
+    }
+  }
+} else {
+  chunks.push(typedStart(startFunction, paths.root, startInput, startArguments, paths.result));
+  if (paths.mode === 'checker') chunks.push(typedStart('checker_inspect_start', 'inspect_checked', 'program: Checked.CheckedProgram', 'program', 'Checked.Inspection'));
+}
 const output = chunks.join('');
-const alias = paths.mode === 'checker' ? 'CheckerCore' : paths.mode === 'emitter' ? 'JSEmit' : paths.mode === 'cemit' ? 'CEmit' : 'Template';
-const wrapper = paths.mode === 'checker' ? 'check_expanded_start' : paths.mode === 'emitter' ? 'emit_modules_start' : paths.mode === 'cemit' ? 'emit_c_modules_start' : 'expand_modules_start';
+const alias = paths.componentAlias ?? (paths.mode === 'checker' ? 'CheckerCore' : paths.mode === 'emitter' ? 'JSEmit' : 'Template');
 const outputImport = './' + posix.basename(paths.output);
 const resultType=paths.result.includes('.')?paths.result:alias+'.'+paths.result;
-const startCall = paths.mode==='emitter' ? 'program, files' : paths.mode==='cemit' ? 'program, runtime, files' : 'modules';
-const publicStep = paths.mode==='cemit' ? 'c_emitter_step' : stepFunction;
-const wrappers = 'def ' + wrapper + '('+startInput+') -> ' + alias + '.' + runType + '<' + resultType + '>:\n  ' + alias + '.' + startFunction + '('+startCall+')\n\n'
- + (paths.mode==='checker'?'def inspect_checked_start(program: Checked.CheckedProgram) -> CheckerCore.CheckerRun<Checked.Inspection>:\n  CheckerCore.checker_inspect_start(program)\n\n':'')
- + (paths.mode==='emitter'?'def emit_library_start(program: Checked.CheckedProgram, exports: List<&2, String>, ' + emitterFiles + ') -> JSEmit.EmitterRun<JSEmit.EmitResult>:\n  JSEmit.emitter_library_start(program, exports, files)\n\n':'')
- + (paths.mode==='cemit'?'def emit_c_library_start(program: Checked.CheckedProgram, exports: List<&2, String>, runtime: String, ' + emitterFiles + ') -> CEmit.CEmitterRun<CEmit.EmitResult>:\n  CEmit.cemit_library_start(program, exports, runtime, files)\n\n':'')
- + 'def ' + publicStep + '(-R: Type, run: ' + alias + '.' + runType + '<R>) -> ' + alias + '.' + runType + '<R>:\n  ' + alias + '.' + stepFunction + '(R, run)';
+let wrappers: string;
+if (entries && paths.mode !== 'checker') {
+  // One component exposes every target entry path of the shared composition.
+  // Every wrapper keeps the established public name and arity; both targets
+  // use the same Run engine, so no per-target scheduler is visible here.
+  const run = alias + '.' + runType;
+  const rows: string[] = [];
+  for (const entry of entries) {
+    if (entry.mode === 'emitter') {
+      rows.push('def emit_modules_start(program: Checked.CheckedProgram, ' + emitterFiles + ') -> ' + run + '<' + resultType + '>:\n  ' + alias + '.emitter_start(program, files)');
+      rows.push('def emit_library_start(program: Checked.CheckedProgram, exports: List<&2, String>, ' + emitterFiles + ') -> ' + run + '<' + resultType + '>:\n  ' + alias + '.emitter_library_start(program, exports, files)');
+      rows.push('def emitter_step(-R: Type, run: ' + run + '<R>) -> ' + run + '<R>:\n  ' + alias + '.emitter_step(R, run)');
+    } else {
+      rows.push('def emit_c_modules_start(program: Checked.CheckedProgram, runtime: String, ' + emitterFiles + ') -> ' + run + '<' + resultType + '>:\n  ' + alias + '.cemit_start(program, runtime, files)');
+      rows.push('def emit_c_library_start(program: Checked.CheckedProgram, exports: List<&2, String>, runtime: String, ' + emitterFiles + ') -> ' + run + '<' + resultType + '>:\n  ' + alias + '.cemit_library_start(program, exports, runtime, files)');
+      rows.push('def c_emitter_step(-R: Type, run: ' + run + '<R>) -> ' + run + '<R>:\n  ' + alias + '.emitter_step(R, run)');
+    }
+  }
+  wrappers = rows.join('\n\n');
+} else {
+  const wrapper = paths.mode === 'checker' ? 'check_expanded_start' : paths.mode === 'template' ? 'expand_modules_start' : '';
+  const startCall = paths.mode === 'checker' ? 'modules' : 'modules';
+  if (!wrapper) throw Error('Unsupported step component mode ' + paths.mode);
+  wrappers = 'def ' + wrapper + '('+startInput+') -> ' + alias + '.' + runType + '<' + resultType + '>:\n  ' + alias + '.' + startFunction + '('+startCall+')\n\n'
+   + (paths.mode==='checker'?'def inspect_checked_start(program: Checked.CheckedProgram) -> CheckerCore.CheckerRun<Checked.Inspection>:\n  CheckerCore.checker_inspect_start(program)\n\n':'')
+   + 'def ' + stepFunction + '(-R: Type, run: ' + alias + '.' + runType + '<R>) -> ' + alias + '.' + runType + '<R>:\n  ' + alias + '.' + stepFunction + '(R, run)';
+}
 const loaderImport=header.match(/^import (\S+) as Loader$/m)?.[0];
 const birImport=header.match(/^import (\S+) as BIR$/m)?.[0];
-if((paths.mode==='emitter'||paths.mode==='cemit')&&!birImport)throw Error('Emitter component needs the authenticated backend_ir import for BIR.SourceFile');
+if(paths.mode==='emitter'&&!birImport)throw Error('Emitter component needs the authenticated backend_ir import for BIR.SourceFile');
 const checkedImport=header.match(/^import (\S+) as Checked$/m)?.[0];
-if((paths.mode==='checker'||paths.mode==='template')&&!loaderImport||(paths.mode==='emitter'||paths.mode==='cemit')&&!checkedImport)throw Error('Typed step component has no authenticated boundary import');
+if((paths.mode==='checker'||paths.mode==='template')&&!loaderImport||paths.mode==='emitter'&&!checkedImport)throw Error('Typed step component has no authenticated boundary import');
 const component = [loaderImport,checkedImport,birImport].filter(Boolean).join('\n')+'\nimport ' + outputImport + ' as ' + alias + '\n\n' + wrappers + '\n';
 let driver: string | undefined;
 if (paths.driver) {
-const driverSource = paths.mode === 'checker' ? inputs.get(paths.ownedDriver!)! : inputs.get(paths.checkerOutput!)!;
-const oldImport = paths.mode === 'checker' ? 'import ./checker_core_owned_v1.bend as CheckerCore' : driverSource.match(/^import \S+ as JSEmit$/m)?.[0];
-const oldWrapper = paths.mode === 'checker'
-  ? 'def check_expanded(modules: List<&2, Loader.LoadedModule>) -> Checked.CheckResult:\n  CheckerCore.check_modules(modules, Nil{})'
-  : 'def emit_modules(program: Checked.CheckedProgram, files: List<&2, BIR.SourceFile>) -> JSEmit.EmitResult:\n  JSEmit.emit(program, files)';
-if (!oldImport || driverSource.split(oldImport).length !== 2 || driverSource.split(oldWrapper).length !== 2) throw Error('Derived driver wrapper anchor drift');
+if (paths.mode !== 'checker' || !paths.ownedDriver) throw Error('Only the checker component derives a driver');
+const driverSource = inputs.get(paths.ownedDriver)!;
+const oldImport = 'import ./checker_core_owned_v1.bend as CheckerCore';
+const oldWrapper = 'def check_expanded(modules: List<&2, Loader.LoadedModule>) -> Checked.CheckResult:\n  CheckerCore.check_modules(modules, Nil{})';
+if (driverSource.split(oldImport).length !== 2 || driverSource.split(oldWrapper).length !== 2) throw Error('Derived driver wrapper anchor drift');
 driver = driverSource.replace(oldImport, 'import ' + outputImport + ' as ' + alias).replace(oldWrapper, wrappers);
 }
 for (const [path, text] of inputs) if (readFileSync(path, 'utf8') !== text || realpathSync(path) !== generationInputRealpaths[path]) throw Error('Input changed during generation: ' + path);
