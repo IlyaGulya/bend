@@ -1440,16 +1440,31 @@ def pcid(short: String, plan: Plan) -> Part:
     case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, _, _}:
       cid_c(short, cids)
 
+# The string predicates need the SNil cid; a missing one must stay a plan
+# failure, so the lookup returns Part and the condition is only built on PartOk.
+def str_bool2(name: String, cid: String, a0: String, a1: String, plan: Plan) -> Part:
+  match pcid(cid, plan):
+    case PartFail{message}: PartFail{message}
+    case PartOk{c}: bool_part(cat([name, "(e, ", c, ", ", a0, ", ", a1, ")"]), plan)
+
+def bool_str_empty_of(negative: Bool, cond: String, plan: Plan) -> Part:
+  match negative:
+    case True{}: bool_part(cat(["(!", cond, ")"]), plan)
+    case False{}: bool_part(cond, plan)
+
+def bool_str_empty(negative: Bool, a0: String, plan: Plan) -> Part:
+  match pcid("SNil", plan):
+    case PartFail{message}: PartFail{message}
+    case PartOk{snil}: bool_str_empty_of(negative, cat(["bend_str_empty(", a0, ", ", snil, ")"]), plan)
+
+# Every Bool-valued primitive yields a Term: the runtime represents Bool as
+# term_pak(True cid) / term_pak(False cid), so a raw C condition returned from a
+# primitive cannot be matched by a tag test (term_aux of 0/1 is not a cid).
 def bool_part(cond: String, plan: Plan) -> Part:
   match pcid("True", plan) pcid("False", plan):
     case PartOk{t} PartOk{f}: okp(cat(["bend_bool(e, ", t, ", ", f, ", (u64)(", cond, "))"]))
     case PartFail{message} _: PartFail{message}
     case _ PartFail{message}: PartFail{message}
-
-def snil_cid(plan: Plan) -> String:
-  match pcid("SNil", plan):
-    case PartOk{cid}: cid
-    case PartFail{message}: "0"
 
 def prim_part(primitive: BIR.Primitive, +a: List<&2, String>, +plan: Plan) -> Part:
   +a0 = list_at(a, 0n)
@@ -1464,12 +1479,12 @@ def prim_part(primitive: BIR.Primitive, +a: List<&2, String>, +plan: Plan) -> Pa
     case BIR.PrimU32And{}: okp(cat(["U32_BIN(", a0, ", &, ", a1, ")"]))
     case BIR.PrimU32Or{}: okp(cat(["U32_BIN(", a0, ", |, ", a1, ")"]))
     case BIR.PrimU32Xor{}: okp(cat(["U32_BIN(", a0, ", ^, ", a1, ")"]))
-    case BIR.PrimU32IsEq{}: okp(cat(["U32_BIN(", a0, ", ==, ", a1, ")"]))
-    case BIR.PrimU32IsNe{}: okp(cat(["U32_BIN(", a0, ", !=, ", a1, ")"]))
-    case BIR.PrimU32IsLt{}: okp(cat(["U32_BIN(", a0, ", <, ", a1, ")"]))
-    case BIR.PrimU32IsLe{}: okp(cat(["U32_BIN(", a0, ", <=, ", a1, ")"]))
-    case BIR.PrimU32IsGt{}: okp(cat(["U32_BIN(", a0, ", >, ", a1, ")"]))
-    case BIR.PrimU32IsGe{}: okp(cat(["U32_BIN(", a0, ", >=, ", a1, ")"]))
+    case BIR.PrimU32IsEq{}: bool_part(cat(["U32_BIN(", a0, ", ==, ", a1, ")"]), plan)
+    case BIR.PrimU32IsNe{}: bool_part(cat(["U32_BIN(", a0, ", !=, ", a1, ")"]), plan)
+    case BIR.PrimU32IsLt{}: bool_part(cat(["U32_BIN(", a0, ", <, ", a1, ")"]), plan)
+    case BIR.PrimU32IsLe{}: bool_part(cat(["U32_BIN(", a0, ", <=, ", a1, ")"]), plan)
+    case BIR.PrimU32IsGt{}: bool_part(cat(["U32_BIN(", a0, ", >, ", a1, ")"]), plan)
+    case BIR.PrimU32IsGe{}: bool_part(cat(["U32_BIN(", a0, ", >=, ", a1, ")"]), plan)
     case BIR.PrimU32IsZero{}: bool_part(cat([a0, " == 0"]), plan)
     case BIR.PrimU32Inc{}: okp(cat(["U32_BIN(", a0, ", +, 1)"]))
     case BIR.PrimU32Not{}: okp(cat(["((u64)~(u32)(", a0, "))"]))
@@ -1487,7 +1502,7 @@ def prim_part(primitive: BIR.Primitive, +a: List<&2, String>, +plan: Plan) -> Pa
     case BIR.PrimNatCmp{}: cmp3_part(a0, a1, plan)
     case BIR.PrimNatMin{}: okp(cat(["(", a0, " < ", a1, " ? ", a0, " : ", a1, ")"]))
     case BIR.PrimNatMax{}: okp(cat(["(", a0, " > ", a1, " ? ", a0, " : ", a1, ")"]))
-    case BIR.PrimNatIsLt{}: okp(cat(["(", a0, " < ", a1, ")"]))
+    case BIR.PrimNatIsLt{}: bool_part(cat(["(", a0, " < ", a1, ")"]), plan)
     case BIR.PrimNatDouble{}: okp(cat(["nat_chk(e, ", a0, " + ", a0, ")"]))
     case BIR.PrimNatPredecessor{}: okp(cat(["bend_nat_pred(", a0, ")"]))
     case BIR.PrimNatSuccessor{}: okp(cat(["nat_chk(e, ", a0, " + 1)"]))
@@ -1520,12 +1535,12 @@ def prim_part(primitive: BIR.Primitive, +a: List<&2, String>, +plan: Plan) -> Pa
     case BIR.PrimF32Trunc{}: f32_un("trunc", a0)
     case BIR.PrimF32Pow{}: okp(cat(["f32_rewrap((f32)pow(f32_unbox(", a0, "), f32_unbox(", a1, ")))"]))
     case BIR.PrimF32Atan2{}: okp(cat(["f32_rewrap((f32)atan2(f32_unbox(", a0, "), f32_unbox(", a1, ")))"]))
-    case BIR.PrimF32IsEq{}: f32_cmp("==", a0, a1)
-    case BIR.PrimF32IsNe{}: f32_cmp("!=", a0, a1)
-    case BIR.PrimF32IsLt{}: f32_cmp("<", a0, a1)
-    case BIR.PrimF32IsLe{}: f32_cmp("<=", a0, a1)
-    case BIR.PrimF32IsGt{}: f32_cmp(">", a0, a1)
-    case BIR.PrimF32IsGe{}: f32_cmp(">=", a0, a1)
+    case BIR.PrimF32IsEq{}: f32_cmp("==", a0, a1, plan)
+    case BIR.PrimF32IsNe{}: f32_cmp("!=", a0, a1, plan)
+    case BIR.PrimF32IsLt{}: f32_cmp("<", a0, a1, plan)
+    case BIR.PrimF32IsLe{}: f32_cmp("<=", a0, a1, plan)
+    case BIR.PrimF32IsGt{}: f32_cmp(">", a0, a1, plan)
+    case BIR.PrimF32IsGe{}: f32_cmp(">=", a0, a1, plan)
     case BIR.PrimF32ToU32{}: okp(cat(["f32_to_u32(", a0, ")"]))
     case BIR.PrimF32Bits{}: okp(a0)
     case BIR.PrimF32FromBits{}: okp(a0)
@@ -1533,7 +1548,7 @@ def prim_part(primitive: BIR.Primitive, +a: List<&2, String>, +plan: Plan) -> Pa
     case BIR.PrimF32Read{}: okp(cat(["f32_read(e, ", a0, ")"]))
     case BIR.PrimF32ToNat{}: okp(cat(["bend_f32_to_nat(e, ", a0, ")"]))
     case BIR.PrimStringAppend{}: failp("a string append is emitted by append_part, which needs its operand quantities")
-    case BIR.PrimStringEq{}: str2("bend_str_eq", "SCon", a0, a1, plan)
+    case BIR.PrimStringEq{}: str_bool2("bend_str_eq", "SCon", a0, a1, plan)
     case BIR.PrimStringLength{}: str1("bend_str_length", "SCon", a0, plan)
     case BIR.PrimStringToList{}: str_to_list(a0, plan)
     case BIR.PrimStringCmp{}: str_cmp(a0, a1, plan)
@@ -1555,8 +1570,8 @@ def prim_part(primitive: BIR.Primitive, +a: List<&2, String>, +plan: Plan) -> Pa
     case BIR.PrimIsArrayNode{}: bool_part(cat(["((u32)blk_cls(", a0, ") != 0)"]), plan)
     case BIR.PrimIsNatZero{}: bool_part(cat(["(", a0, " == 0)"]), plan)
     case BIR.PrimIsNatSuccessor{}: bool_part(cat(["(", a0, " > 0)"]), plan)
-    case BIR.PrimIsStringEmpty{}: bool_part(cat(["bend_str_empty(", a0, ", ", snil_cid(plan), ")"]), plan)
-    case BIR.PrimIsStringNonempty{}: bool_part(cat(["(!bend_str_empty(", a0, ", ", snil_cid(plan), "))"]), plan)
+    case BIR.PrimIsStringEmpty{}: bool_str_empty(False{}, a0, plan)
+    case BIR.PrimIsStringNonempty{}: bool_str_empty(True{}, a0, plan)
     case BIR.PrimIsTrue{}: is_bool_part("True", a0, plan)
     case BIR.PrimIsFalse{}: is_bool_part("False", a0, plan)
     case BIR.PrimSameValue{}: bool_part(cat(["(", a0, " == ", a1, ")"]), plan)
@@ -1575,8 +1590,8 @@ def f32_bin(op: String, a0: String, a1: String) -> Part:
 def f32_un(name: String, a0: String) -> Part:
   okp(cat(["f32_rewrap((f32)", name, "(f32_unbox(", a0, ")))"]))
 
-def f32_cmp(op: String, a0: String, a1: String) -> Part:
-  okp(cat(["((u64)(f32_unbox(", a0, ") ", op, " f32_unbox(", a1, ")))"]))
+def f32_cmp(op: String, a0: String, a1: String, plan: Plan) -> Part:
+  bool_part(cat(["((u64)(f32_unbox(", a0, ") ", op, " f32_unbox(", a1, ")))"]), plan)
 
 def bool2_part(fn: String, a0: String, a1: String, plan: Plan) -> Part:
   match plan:
@@ -1610,11 +1625,6 @@ def divmod_part(a0: String, a1: String, plan: Plan) -> Part:
   match tuple:
     case PartFail{message}: PartFail{message}
     case PartOk{t}: PartOk{cat(["bend_divmod(e, ", t, ", ", a0, ", ", a1, ")"])}
-
-def str2(name: String, cid: String, a0: String, a1: String, plan: Plan) -> Part:
-  match pcid(cid, plan):
-    case PartFail{message}: PartFail{message}
-    case PartOk{c}: PartOk{cat([name, "(e, ", c, ", ", a0, ", ", a1, ")"])}
 
 def str1(name: String, cid: String, a0: String, plan: Plan) -> Part:
   match pcid(cid, plan):
@@ -1687,9 +1697,6 @@ def arr_swap(a0: String, a1: String, a2: String, plan: Plan) -> Part:
     case PartFail{message}: PartFail{message}
     case PartOk{t}: PartOk{cat(["bend_array_swap(e, ", t, ", ", a0, ", ", a1, ", ", a2, ")"])}
 
-# Every Bool-valued primitive yields a Term: the runtime represents Bool as
-# term_pak(True cid) / term_pak(False cid), so a raw C condition returned from a
-# primitive cannot be matched by a tag test (term_aux of 0/1 is not a cid).
 def char_new_part(a0: String, plan: Plan) -> Part:
   match pcid("Chr", plan):
     case PartFail{message}: PartFail{message}
