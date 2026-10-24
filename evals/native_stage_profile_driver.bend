@@ -3,6 +3,7 @@ import ../checkpoints/template_steps_v1.bend as Template
 import ../checkpoints/checker_core_steps_v1.bend as Checker
 import ../checkpoints/emitter_steps_v1.bend as Emit
 import ../bend2/selfhost/backend_ir.bend as BIR
+import ./native_stage_profile_emit_fixture.bend as EmitFixture
 
 # Diagnostic-only typed view for the native chunk driver. It reports the
 # operational shape of the progress value after one bounded chunk (64 native
@@ -198,10 +199,10 @@ def profile_template_pending_start(unit: Unit) -> Template.TemplateRun<Unit>:
 # required sections are real; the renderer must produce a non-empty EmitSuccess
 # C translation unit, not a number formatter or an invented CheckedProgram.
 def profile_emitter_runtime() -> String:
-  "// Tables\n// Spins\n// Segments\n// Requests\n"
+  EmitFixture.runtime()
 
 def profile_emitter_program() -> BIR.Program:
-  BIR.Program{Nil{}, Nil{}, Nil{}, Nil{}, Nil{}, BIR.Executable{BIR.DescriptorNull{}}}
+  EmitFixture.program()
 
 def profile_emitter_result_status(box: Emit.EmitterValue<Emit.cps_provider_2_EmitResult>) -> U32:
   match box:

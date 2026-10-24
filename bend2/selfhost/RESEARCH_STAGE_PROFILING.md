@@ -139,9 +139,24 @@ fixed 300 s clang and 120 s fixture-child deadlines.
 
 The fixture matches all 27 current Emitter request groups and requests the real
 canonical `c_backend.emit` group (group 12, label
-`mixed:layouts+render-c`), with a well-formed empty `BIR.Program` and a minimal
-real runtime carrying the four required sections. It is not a scalar
-number-formatter fixture. The driver source passes `book_valid`.
+`mixed:layouts+render-c`). Its program is the complete canonical smoke BIR from
+`evals/c_backend_smoke.bend` (main/add/cap/zero codes, declarations,
+constructors, U32 family; known result 26), factored as passive data in
+`evals/native_stage_profile_emit_fixture.bend`; its runtime is the real
+`evals/c_backend_runtime.bend` source. It does not import `c_backend.bend`'s
+computed emit check, and it is not a scalar number-formatter or empty-program
+fixture. The driver source passes `book_valid`.
+
+The typed resume forwards the actual `EmitterValue<cps_provider_2_EmitResult>`
+to completion, and the host calls the typed classifier: non-empty `EmitSuccess`
+(1), empty `EmitSuccess` (0), `EmitFailure` (2); a non-1 status fails the phase.
+This removes the prior failure-to-Unit drop.
+
+A stopped Node 23.11 attempt is preserved but is not counted: it used the
+placeholder fixture and was interrupted on instruction after 102 s, peak RSS
+3,029,139,456 B, with `ownedTreeStopped: true` and no result. Its command ran
+Node through `guardHeavyGate`, but it establishes neither workload success nor
+a Node cap result.
 
 **The prior native attempt was rejected as wrong runtime, not classified as a
 Node-caps blocker.** The actual guarded attempt invoked
@@ -161,14 +176,8 @@ Its required invocation is `node --experimental-strip-types
 evals/native_stage_profile_build.ts --artifact-dir=DIR`; the whole build still
 uses `guardHeavyGate` with the inherited lease, 8 GiB/10 ms/600 s policy and no
 `--internal` bypass. One compliant Node 23.11 worker 3072/256 run is authorized
-but pending a free Root/FIR lane. Until that actual Node run exists, native
-profiling is UNVERIFIED and no Node-cap blocker is claimed.
-
-A later source-only fixture change fixes the prior Unit-drop hole: the Pending
-resume forwards the typed `EmitterValue<cps_provider_2_EmitResult>` to
-completion, and a typed host callback classifies non-empty `EmitSuccess` (1),
-empty `EmitSuccess` (0), or `EmitFailure` (2). It passes `book_valid` but is not
-executed; it is not a PASS and must run after the runtime prerequisite.
+with the corrected canonical fixture. Until that actual Node run exists,
+native profiling is UNVERIFIED and no Node-cap blocker is claimed.
 
 Native coarse rows were read from the preserved diagnostic trace
 `/tmp/signature-publish57z/evidence/comparison/A1.stderr.log`

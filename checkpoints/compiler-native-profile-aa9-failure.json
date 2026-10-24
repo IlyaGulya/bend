@@ -89,5 +89,24 @@
       "timeoutMs": 600000
     },
     "status": "AUTHORIZED BUT NOT RUN"
+  },
+  "prematureNodeAttempt": {
+    "log": "/tmp/native-diag-node-aa9.log",
+    "sha256": "debf8aec34fa92e8618862215f1894773bda21f09f5ccf3355d52d38da81b262",
+    "runtime": "node v23.11.0 via guardHeavyGate",
+    "elapsedMs": 102259,
+    "peakRssBytes": 3029139456,
+    "peakGiB": 2.821,
+    "status": "interrupted",
+    "ownTreeStopped": true,
+    "reason": "main STOP: placeholder empty program/minimal runtime fixture was not legitimate",
+    "countsAsCompliantResult": false
+  },
+  "fixtureStatus": {
+    "status": "corrected source-validated",
+    "program": "evals/native_stage_profile_emit_fixture.bend data copied from canonical evals/c_backend_smoke.bend",
+    "runtime": "evals/c_backend_runtime.bend",
+    "typedWitness": "nonempty EmitSuccess 1 / empty success 0 / failure 2",
+    "executed": false
   }
 }
