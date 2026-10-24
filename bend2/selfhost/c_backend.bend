@@ -1440,6 +1440,17 @@ def pcid(short: String, plan: Plan) -> Part:
     case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, _, _}:
       cid_c(short, cids)
 
+def bool_part(cond: String, plan: Plan) -> Part:
+  match pcid("True", plan) pcid("False", plan):
+    case PartOk{t} PartOk{f}: okp(cat(["bend_bool(e, ", t, ", ", f, ", (u64)(", cond, "))"]))
+    case PartFail{message} _: PartFail{message}
+    case _ PartFail{message}: PartFail{message}
+
+def snil_cid(plan: Plan) -> String:
+  match pcid("SNil", plan):
+    case PartOk{cid}: cid
+    case PartFail{message}: "0"
+
 def prim_part(primitive: BIR.Primitive, +a: List<&2, String>, +plan: Plan) -> Part:
   +a0 = list_at(a, 0n)
   +a1 = list_at(a, 1n)
@@ -1459,7 +1470,7 @@ def prim_part(primitive: BIR.Primitive, +a: List<&2, String>, +plan: Plan) -> Pa
     case BIR.PrimU32IsLe{}: okp(cat(["U32_BIN(", a0, ", <=, ", a1, ")"]))
     case BIR.PrimU32IsGt{}: okp(cat(["U32_BIN(", a0, ", >, ", a1, ")"]))
     case BIR.PrimU32IsGe{}: okp(cat(["U32_BIN(", a0, ", >=, ", a1, ")"]))
-    case BIR.PrimU32IsZero{}: okp(cat(["U32_BIN(", a0, ", ==, 0)"]))
+    case BIR.PrimU32IsZero{}: bool_part(cat([a0, " == 0"]), plan)
     case BIR.PrimU32Inc{}: okp(cat(["U32_BIN(", a0, ", +, 1)"]))
     case BIR.PrimU32Not{}: okp(cat(["((u64)~(u32)(", a0, "))"]))
     case BIR.PrimU32Shl{}: okp(cat(["U32_BIN(", a0, ", <<, 1)"]))
@@ -1540,16 +1551,16 @@ def prim_part(primitive: BIR.Primitive, +a: List<&2, String>, +plan: Plan) -> Pa
     case BIR.PrimArrayLeafValue{}: okp(cat(["bend_array_leaf_value(e, ", a0, ")"]))
     case BIR.PrimArrayLeft{}: okp(cat(["blk_half(e, ", a0, ", 0)"]))
     case BIR.PrimArrayRight{}: okp(cat(["blk_half(e, ", a0, ", 1)"]))
-    case BIR.PrimIsArrayLeaf{}: okp(cat(["((u32)blk_cls(", a0, ") == 0)"]))
-    case BIR.PrimIsArrayNode{}: okp(cat(["((u32)blk_cls(", a0, ") != 0)"]))
-    case BIR.PrimIsNatZero{}: okp(cat(["(", a0, " == 0)"]))
-    case BIR.PrimIsNatSuccessor{}: okp(cat(["(", a0, " > 0)"]))
-    case BIR.PrimIsStringEmpty{}: str_empty("bend_str_empty", "SNil", a0, plan)
-    case BIR.PrimIsStringNonempty{}: str_empty_neg(a0, plan)
+    case BIR.PrimIsArrayLeaf{}: bool_part(cat(["((u32)blk_cls(", a0, ") == 0)"]), plan)
+    case BIR.PrimIsArrayNode{}: bool_part(cat(["((u32)blk_cls(", a0, ") != 0)"]), plan)
+    case BIR.PrimIsNatZero{}: bool_part(cat(["(", a0, " == 0)"]), plan)
+    case BIR.PrimIsNatSuccessor{}: bool_part(cat(["(", a0, " > 0)"]), plan)
+    case BIR.PrimIsStringEmpty{}: bool_part(cat(["bend_str_empty(", a0, ", ", snil_cid(plan), ")"]), plan)
+    case BIR.PrimIsStringNonempty{}: bool_part(cat(["(!bend_str_empty(", a0, ", ", snil_cid(plan), "))"]), plan)
     case BIR.PrimIsTrue{}: is_bool_part("True", a0, plan)
     case BIR.PrimIsFalse{}: is_bool_part("False", a0, plan)
-    case BIR.PrimSameValue{}: okp(cat(["(", a0, " == ", a1, ")"]))
-    case BIR.PrimFloatBitsEqual{}: okp(cat(["(", a0, " == ", a1, ")"]))
+    case BIR.PrimSameValue{}: bool_part(cat(["(", a0, " == ", a1, ")"]), plan)
+    case BIR.PrimFloatBitsEqual{}: bool_part(cat(["(", a0, " == ", a1, ")"]), plan)
     case BIR.PrimCharNew{}: char_new_part(a0, plan)
     case BIR.PrimCharCode{}: okp(cat(["term_loc(", a0, ")"]))
     case BIR.PrimWordToU32{}: okp(cat(["term_word(e, ", a0, ")"]))
@@ -1581,7 +1592,7 @@ def bool2_c(fn: String, a0: String, a1: String, t: Part, f: Part) -> Part:
 def is_bool_part(which: String, value: String, plan: Plan) -> Part:
   match pcid(which, plan):
     case PartFail{message}: PartFail{message}
-    case PartOk{cid}: okp(cat(["term_aux(", value, ") == (u64)", cid]))
+    case PartOk{cid}: bool_part(cat(["term_aux(", value, ") == (u64)", cid]), plan)
 
 def cmp3_part(a0: String, a1: String, +plan: Plan) -> Part:
   lt = pcid("LT", plan)
@@ -1609,16 +1620,6 @@ def str1(name: String, cid: String, a0: String, plan: Plan) -> Part:
   match pcid(cid, plan):
     case PartFail{message}: PartFail{message}
     case PartOk{c}: PartOk{cat([name, "(e, ", c, ", ", a0, ")"])}
-
-def str_empty(name: String, cid: String, a0: String, plan: Plan) -> Part:
-  match pcid(cid, plan):
-    case PartFail{message}: PartFail{message}
-    case PartOk{c}: PartOk{cat([name, "(", a0, ", ", c, ")"])}
-
-def str_empty_neg(a0: String, plan: Plan) -> Part:
-  match pcid("SNil", plan):
-    case PartFail{message}: PartFail{message}
-    case PartOk{c}: PartOk{cat(["(!bend_str_empty(", a0, ", ", c, "))"])}
 
 def str_tail(a0: String, +plan: Plan) -> Part:
   match pcid("SCon", plan) pcid("SNil", plan):
@@ -1686,6 +1687,9 @@ def arr_swap(a0: String, a1: String, a2: String, plan: Plan) -> Part:
     case PartFail{message}: PartFail{message}
     case PartOk{t}: PartOk{cat(["bend_array_swap(e, ", t, ", ", a0, ", ", a1, ", ", a2, ")"])}
 
+# Every Bool-valued primitive yields a Term: the runtime represents Bool as
+# term_pak(True cid) / term_pak(False cid), so a raw C condition returned from a
+# primitive cannot be matched by a tag test (term_aux of 0/1 is not a cid).
 def char_new_part(a0: String, plan: Plan) -> Part:
   match pcid("Chr", plan):
     case PartFail{message}: PartFail{message}
