@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "kind": "heavy_gate_lifecycle_evidence",
+  "branch": "work/gate-lifecycle",
+  "worktree": "/private/tmp/bend-gate57ab",
+  "parentCommit": "f46ad0f6",
+  "commits": {
+    "328cac5d": "detached supervisor; terminal receipt at decision; report fd overwritten",
+    "317b38a6": "remove bounded cleanup release; lease released only on exited && !live"
+  },
+  "environment": {
+    "os": "macOS 25.6.0 arm64",
+    "runtime": "bun 1.4.2",
+    "nativeHelper": "heavy_gate_native.c compiled by the existing prepareNativeHelper path with the platform clang; no flags or limits changed",
+    "limits": "guard limits untouched; focused fixtures used memoryMiB 512, rssMiB 512, pollMs 20, termGraceMs 150, timeoutMs 5000 (deadline fixture 2000, launcher fixture 3000)"
+  },
+  "before": {
+    "defect": "launcher process-group SIGKILL killed the supervisor with the launcher; no terminal guardian receipt; experiment report can remain IN_PROGRESS",
+    "fixture": "launcher.ts calls runHeavyGate(['/bin/sh','-c','echo $$ > ready; exec sleep 30'], {lockPath: private, timeoutMs: 3000}); launcher spawned detached; test kills the launcher's process group with SIGKILL after the command starts",
+    "command": "bun test evals/heavy_gate.test.ts -t \"launcher process-group\"",
+    "rawOutputObserved": [
+      "(fail) launcher process-group kill leaves the supervisor independent and terminal [8343.39ms]",
+      "error: expect(received).toBeDefined()",
+      "Received: undefined"
+    ],
+    "rawOutputRetention": "The failing assertion text above was retained in the session transcript; no file copy was written. The test command was not piped through grep for this run."
+  },
+  "after": {
+    "fix": "supervisor spawned detached; stdin lifeline EOF/termination handled natively; terminal reason written immediately at decision (report fd overwritten, one bounded record); a provisional receipt may precede cleanup, final record supersedes it",
+    "sameFixtureResult": [
+      "1 pass / 11 filtered out / 0 fail",
+      "5 expect() calls",
+      "[392.00ms]"
+    ],
+    "reuseProof": "after the detached supervisor stops the owned command and releases the lease, runHeavyGate(['true'], same lockPath) returned PASS; the launcher-kill test waits for that observable release",
+    "fullSuite": "12 pass / 0 fail on repeated runs, with the known unlocalized failure below preserved"
+  },
+  "knownUnlocalizedFailure": {
+    "test": "deadline cancels authenticated detached descendants without resetting the parent allowance and releases the lease",
+    "observedCount": 1,
+    "rawOutputObserved": "(fail) ... [2703.03ms] ; 11 pass ; 1 fail",
+    "lostDetail": "The command piped bun test through grep -E for pass/fail summary, so the assertion text, diff and stderr were discarded. No artifact or file copy exists. The exact failing assertion is UNKNOWN.",
+    "reproduction": "Not reproduced in 4 isolated deadline-test runs or 5 subsequent full-suite runs; those passes do not erase this observation.",
+    "classification": "NOT classified as fixture or guard. The gate returned at 2703.03 ms, inside the test's <5000 ms bound, so the failure occurred after return among: TERM marker existence, single-shot expectStopped(root/child), receipt fields, or lease-reuse PASS. The guard's only release path is exited && !live; no evidence establishes that invariant was violated, but the exact cause is unknown.",
+    "risk": "Emitted with explicit risk. Not hidden by polling expectStopped, not outvoted by repeated passes."
+  },
+  "releasePathAudit": [
+    "lock_error / LOCK_BUSY / sampler_unavailable / subreaper_unavailable / launch_error: close before a command root exists (or on root < 0)",
+    "lease_error: kill(root,SIGKILL) and waitpid(root) before close",
+    "normal and launcher-death paths: close only when exited && !live, after SIGTERM, grace, SIGKILL of the owned tree",
+    "untrappable SIGKILL of the supervisor before any terminal decision: receipt may be absent; classify incomplete, never PASS/OOM"
+  ],
+  "evidencePolicy": {
+    "futureTestCommands": "MUST write full raw stdout/stderr to a file and preserve it; never pipe test output through grep or any assertion-discarding filter",
+    "noMultiRunVoting": "Repeated passes do not convert an observed failure into green; a new failure is diagnosed from preserved raw output",
+    "nextVerification": "after merged source, exactly one focused run with full raw output, routed by Main"
+  },
+  "notRun": ["no full native/root build", "no cap/timeout/lock changes", "no duplicate heavy external smoke; the existing launcher-group-kill regression is the changed-path evidence"]
+}
