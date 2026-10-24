@@ -271,5 +271,28 @@
     "criterionWording": "Updated the full-run criterion to the full native validated closure plus byte-identical JS (the JS byte fixed point) plus full semantic AST oracle parity, and stated in the criterion that C emission is not exercised by this lane.",
     "cSurfaceFields": "The gate now reports cSurface from observed root text only: which C exports are required, whether the seam import is present, which C wrappers exist, and emissionExercised (false unless a lane really ran C). Declared exports alone never become a C behaviour claim; that belongs to FIRAcceptance's authenticated C fixture rows.",
     "ownership": "Main applies other branches' merges; I own ABI/generation/report wording and the single fresh full root pass after the C module lands."
+  },
+  "sharedHostFactory": {
+    "file": "evals/checker_core_step_runtime.mjs",
+    "today": "runEmitterSteps pushes [program, files] and runLibraryEmitterSteps pushes [program, exports, files] into runSteps with validateEmitResult; validateSourceFiles enforces the native List<&2, BIR.SourceFile> shape by unwrapping Nil/Con and checking path/source strings",
+    "cAdditions": [
+      "runCModulesSteps(component, program, runtime, files): require a string runtime (the actual runtime source bytes), validateSourceFiles(files), runSteps(component, [program, runtime, files], 'CEmitter', 'emit_c_modules_start', 'c_emitter_step', validateEmitResult)",
+      "runCLibrarySteps(component, program, exports, runtime, files): same with 'emit_c_library_start' and the exports list validated like the JS library entry"
+    ],
+    "reuse": "EmitResult{EmitSuccess{source}|EmitFailure{message,span}} is the same shape FIRAcceptance published, so validateEmitResult is reused unchanged; all JS hosts keep using the single factory"
+  },
+  "extraAbiLists": {
+    "evals/fir_foreign_smoke.ts:58 componentExports + fir_foreign_smoke_worker.mjs:17 needed": "eight names (no parser, no inspect_checked_start); these build the foreign-smoke component, not the root, so they stay at eight unless the C lane is added to that smoke",
+    "dev scratch": "evals/.tagged_dispatch_live_v32*.{ts,mjs} and evals/.checker_cpu_profile.mjs carry older eight-name lists; they are dot-prefixed development scratch and are not part of the contract"
+  },
+  "nativeSeedReview": {
+    "confirmedBy": "NativeSeedBootstrap",
+    "newCompilerAbi": "none; their gate-native files add no endpoint, export name or field read on BIR.SourceFile or the root declarations",
+    "bridgeLocal": [
+      "internal ADT type NativeEmit is Data: NativeLibrary{exports, files} / NativeModule{files}; a bridge request selector, not a second carrier, and the files list is passed unchanged",
+      "native_experiment keeps the same ten parameters and arities"
+    ],
+    "host": "native_compiler_host.c builds SourceFile with CID____BEND2_SELFHOST_BACKEND_IR_SOURCEFILE (guarded by #ifndef) and adds only an effect argv phase string compile-module",
+    "implication": "the one-cut ABI change does not have to fold in native-seed names; only the three C wrappers are added"
   }
 }
