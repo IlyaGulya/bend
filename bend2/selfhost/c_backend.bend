@@ -1279,10 +1279,38 @@ def inline_tag_arms(key: String, +arms: List<&2, BIR.DescriptorArm>) -> Maybe<&2
     case True{}: arm_index(key, arms, 0n)
     case False{}: None{}
 
-def construct_part(+constructor: U32, +fields: List<&2, BIR.Field>, +plan: Plan) -> Part:
+# The physical world is the storage module's own context: the CLay context plus
+# the constructor/family facts and the canonical CID rows the layout needs.
+def phys_world(+plan: Plan) -> Phys.World:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, +constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
-      construct_values(constructor, native_kind_of(constructor, constructors), field_values(fields, plan), ctor_cid(constructor, constructors, cids), List.length(&2, BIR.Field, fields), packed_ctor(constructor, constructors, families))
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
+      Phys.world(ctx, constructors, families, phys_cids(cids))
+
+def phys_cids(cids: List<&2, CidRow>) -> List<&2, Phys.CidSym>:
+  match cids:
+    case Nil{}: Nil{}
+    case +row <> rest:
+      match row:
+        case CidRow{cid, key, arity, hot}: Phys.CidSym{cid, key} <> phys_cids(rest)
+
+type OperandsOut is Data:
+  OperandsOk{operands: List<&2, Phys.Operand>}
+  OperandsFail{message: String}
+
+def construct_part(+constructor: U32, +fields: List<&2, BIR.Field>, +plan: Plan) -> Part:
+  match field_operands(fields, plan, Nil{}):
+    case OperandsFail{message}: PartFail{message}
+    case OperandsOk{operands}: Phys.construct_part(constructor, operands, phys_world(plan))
+
+def field_operands(fields: List<&2, BIR.Field>, +plan: Plan, +acc: List<&2, Phys.Operand>) -> OperandsOut:
+  match fields:
+    case Nil{}: OperandsOk{List.reverse(&2, Phys.Operand, acc)}
+    case +field <> rest:
+      match field:
+        case BIR.Field{identity, key, use, value}:
+          match atom_part(value, plan):
+            case PartFail{message}: OperandsFail{message}
+            case PartOk{text}: field_operands(rest, plan, Phys.Operand{use, text} <> acc)
 
 def construct_values(constructor: U32, kind: String, values: List<&2, Part>, cid_part: Part, count: Nat, packed: Bool) -> Part:
   match values_part(values, Nil{}):
@@ -1346,9 +1374,9 @@ def base_construct_5(kind: String, +args: List<&2, String>) -> Maybe<&2, String>
     case False{}: None{}
 
 def project_part(value: BIR.Atom, +constructor: U32, field: U32, +plan: Plan) -> Part:
-  match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, +constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
-      project_values(atom_part(value, plan), native_kind_of(constructor, constructors), ctor_key_of(constructor, constructors), field, families)
+  match atom_part(value, plan):
+    case PartFail{message}: PartFail{message}
+    case PartOk{text}: Phys.project_part(text, constructor, field, phys_world(plan))
 
 def ctor_key_of(+id: U32, constructors: List<&2, BIR.ConstructorLayout>) -> String:
   match layout_of(id, constructors):
@@ -1393,9 +1421,9 @@ def project_anode(+value: String, field: U32) -> String:
     case False{}: cat(["blk_half(e, ", value, ", 1)"])
 
 def hastag_part(value: BIR.Atom, +constructor: U32, +plan: Plan) -> Part:
-  match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, +constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
-      hastag_values(atom_part(value, plan), native_kind_of(constructor, constructors), ctor_cid(constructor, constructors, cids))
+  match atom_part(value, plan):
+    case PartFail{message}: PartFail{message}
+    case PartOk{text}: Phys.hastag_part(text, constructor, phys_world(plan))
 
 def hastag_values(value: Part, kind: String, cid_part: Part) -> Part:
   match value:
