@@ -75,7 +75,7 @@ function args_parse(){
  return {candidate:resolve(values.get('--candidate')!),parser:values.has('--parser')?resolve(values.get('--parser')!):undefined,
   base:resolve(values.get('--base')??posix.join(ROOT,'bend2/base.bend')),exports:values.get('--exports')?.split(','),
   library:flags.has('--library')||output.endsWith('.mjs'),input:resolve(positional[0]!),output:resolve(output),
-  runtime:values.has('--runtime-c')?resolve(values.get('--runtime-c')!):undefined};
+  runtimeC:values.has('--runtime-c')?resolve(values.get('--runtime-c')!):undefined};
 }
 
 const o=args_parse();
