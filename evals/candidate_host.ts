@@ -14,7 +14,8 @@
 // usage: bun evals/candidate_host.ts --candidate=PATH [--parser=PATH]
 //   [--base=PATH] [--library] [--exports=a,b] <input.bend> -o <output>
 //   Opt-in diagnostic stage report: [--stage-profile=DIR] [--stage-progress]
-//   [--stage-manifest=PATH ...]. Ordinary output and diagnostics are unchanged.
+//   [--stage-manifest=PATH ...] [--stage-receipt=PATH ...]. Ordinary output and
+//   diagnostics are unchanged.
 import {createHash} from 'node:crypto';
 import {readFileSync,realpathSync,writeFileSync} from 'node:fs';
 import {dirname,isAbsolute,posix,resolve} from 'node:path';
@@ -54,7 +55,7 @@ function items(value:unknown):unknown[]{
 const list=(values:unknown[]):unknown=>values.reduceRight((tail,head)=>({$:'Con',head,tail}),{$:'Nil'});
 
 function args_parse(){
- const values=new Map<string,string>(),flags=new Set<string>(),positional:string[]=[],manifests:string[]=[];
+ const values=new Map<string,string>(),flags=new Set<string>(),positional:string[]=[],manifests:string[]=[],receipts:string[]=[];
  const rest=process.argv.slice(2);
  for(let i=0;i<rest.length;i+=1){
   const arg=rest[i]!;
@@ -67,9 +68,9 @@ function args_parse(){
   }
   if(arg.startsWith('--')){
    const at=arg.indexOf('='),name=at<0?arg:arg.slice(0,at),value=at<0?rest[++i]:arg.slice(at+1);
-   if(name==='--stage-manifest'){
-    if(value===undefined)fail('--stage-manifest needs one path');
-    manifests.push(resolve(value));
+   if(name==='--stage-manifest'||name==='--stage-receipt'){
+    if(value===undefined)fail(name+' needs one path');
+    (name==='--stage-manifest'?manifests:receipts).push(resolve(value));
     continue;
    }
    if(!['--candidate','--parser','--base','--exports','--runtime-c','--source-tag','--stage-profile'].includes(name)||value===undefined||values.has(name))fail('unknown or duplicate option '+arg);
@@ -90,7 +91,7 @@ function args_parse(){
   runtimeC:values.has('--runtime-c')?resolve(values.get('--runtime-c')!):undefined,
   sourceTag:values.get('--source-tag')??OFFICIAL_SOURCE_FILE_TAG,
   stageProfile:values.has('--stage-profile')?resolve(values.get('--stage-profile')!):undefined,
-  stageManifests:manifests,stageProgress:flags.has('--stage-progress')};
+  stageManifests:manifests,stageReceipts:receipts,stageProgress:flags.has('--stage-progress')};
 }
 
 const o=args_parse();
@@ -101,6 +102,7 @@ if(o.stageProfile!==undefined){
  const inputPath=realpathSync(o.input),parserPath=realpathSync(o.parser??o.candidate);
  stage=await createStageProfile({
   directory:o.stageProfile,rawDetail:o.stageProgress,manifestPaths:o.stageManifests,
+  artifact:{path:realpathSync(o.candidate),sha256:fileSha(o.candidate)},receiptPaths:o.stageReceipts,
   execution:{stage:'selfhost-candidate',mode:'typed-step',target,
    sourcePath:inputPath,sourceSha256:fileSha(inputPath),
    candidatePath:realpathSync(o.candidate),candidateSha256:fileSha(o.candidate),
@@ -183,6 +185,7 @@ visit(o.input,'');
 stage?.end(parseSpan!,'completed',{modules:modules.length,foreignFiles:files.length});
 stage?.record({kind:'phase-exact-counters',scope:'candidate host',name:'parse-import-fuel',
  values:{modules:modules.length,parses:parsedSources,fuelCells,sourceBytes,foreignFiles:files.length,parserFuelCellsPerParse:8000000},
+ unitsByField:{modules:'modules',parses:'parses',fuelCells:'fuel-cells',sourceBytes:'bytes',foreignFiles:'files',parserFuelCellsPerParse:'fuel-cells'},
  source:'candidate_host.ts',details:{phase:'parse-import-fuel',
   note:'one eager parser feedback chain per parsed module; fuelCells is the exact constructed cell count, not semantic fuel consumed'}});
 const bag=sourceFiles(files,o.sourceTag);
@@ -253,6 +256,7 @@ writeFileSync(o.output,source);
 stage?.end(outputSpan!,'completed',{output:o.output,bytes:Buffer.byteLength(source)});
 stage?.record({kind:'phase-exact-counters',scope:'candidate host',name:'output-write',
  values:{bytes:Buffer.byteLength(source),modules:modules.length,foreignFiles:files.length},
+ unitsByField:{bytes:'bytes',modules:'modules',foreignFiles:'files'},
  source:'candidate_host.ts',details:{phase:'output-write',note:'bytes are the emitted source size; the hash is content identity, not a performance metric'}});
 if(stage!==undefined)stage.finish('completed');
 const result:Record<string,unknown>={output:o.output,bytes:Buffer.byteLength(source),sha256:digest,target,library:o.library,exports:o.library?exports:undefined,modules:seen.size,foreignFiles:files.length,runtime:target==='c'?o.runtimeC:undefined};

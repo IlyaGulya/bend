@@ -67,6 +67,7 @@ profile.record({
   values: {phaseRows: phaseRows.length,
     fuelRows: observations.filter(row => row.kind === 'native-fuel-exact').length,
     resultRows: observations.filter(row => row.kind === 'native-result').length},
+  unitsByField: {phaseRows: 'rows', fuelRows: 'rows', resultRows: 'rows'},
   source: 'native compiler stderr',
   details: {
     coarsePhases: phaseRows.map(row => row.name),

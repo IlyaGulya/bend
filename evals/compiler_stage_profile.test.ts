@@ -49,10 +49,10 @@ test('stage profile binds a registered namespace and retains fully qualified req
     const table = loadStageManifests([path]);
     expect(table.namespaces).toEqual(['emitter_steps_v1']);
     const observation = observe(createStepAttribution('emit', 'Emitter', table), run('emitter_steps_v1', 'emit'));
-    expect(observation.values['emit-emitter-entry']).toBe(1);
+    expect(observation.values['declared:emit-emitter-entry']).toBe(1);
     expect(observation.details.requestSamples['emitter_steps_v1.EmitterRequest_emit']).toBe(1);
     expect(observation.details.observedRunNamespace).toBe('emitter_steps_v1');
-    expect(observation.details.groupBases['emit-emitter-entry']).toEqual(['declared-canonical-source']);
+    expect(observation.details.groupBases['declared:emit-emitter-entry']).toEqual(['declared-canonical-source+artifact-binding-unverified']);
   } finally {await rm(join(path, '..'), {recursive: true, force: true});}
 });
 
@@ -85,8 +85,8 @@ test('stage profile refuses a basename fallback when sources collide', async () 
   try {
     const table = loadStageManifests([path]);
     const observation = observe(createStepAttribution('emit', 'Emitter', table), run('emitter_steps_v1', 'x'));
-    expect(observation.values['module:a/descriptor_nf.bend']).toBe(1);
-    expect(observation.values['emit-descriptor-nf']).toBeUndefined();
+    expect(observation.values['declared:module:a/descriptor_nf.bend']).toBe(1);
+    expect(observation.values['declared:emit-descriptor-nf']).toBeUndefined();
     expect(table.provenance[0].basenameCollisions).toEqual([{basename: 'descriptor_nf.bend', sources: ['a/descriptor_nf.bend', 'b/descriptor_nf.bend']}]);
   } finally {await rm(join(path, '..'), {recursive: true, force: true});}
 });
@@ -101,7 +101,7 @@ test('stage profile reports a pinned source hash mismatch instead of a group', a
     const table = loadStageManifests([path]);
     expect(table.provenance[0].sourceVerification[0].status).toBe('mismatch');
     const observation = observe(createStepAttribution('emit', 'Emitter', table), run('emitter_steps_v1', 'emit'));
-    expect(observation.values['unverified-source']).toBe(1);
+    expect(observation.values['declared:unverified-source']).toBe(1);
   } finally {await rm(join(path, '..'), {recursive: true, force: true});}
 });
 
@@ -109,6 +109,59 @@ test('stage profile counts an erased Direct request as a shape, not a request sa
   const observation = observe(createStepAttribution('emit', 'Emitter', undefined), run('emitter_steps_v1'));
   expect(observation.details.progressShapes).toEqual({Direct: 1});
   expect(observation.values.requestBoundarySamples).toBe(0);
+});
+
+test('stage profile leaves groups conditional without a component receipt', async () => {
+  const path = await manifest({groups: [['emit']]});
+  try {
+    const table = loadStageManifests([path]);
+    expect(table.provenance[0].artifactBinding.status).toBe('unverified');
+    const observation = observe(createStepAttribution('emit', 'Emitter', table), run('emitter_steps_v1', 'emit'));
+    expect(observation.values['declared:emit-emitter-entry']).toBe(1);
+    expect(observation.details.artifactBinding.status).toBe('unverified');
+  } finally {await rm(join(path, '..'), {recursive: true, force: true});}
+});
+
+test('stage profile treats a receipt without the profiled artifact hash as unverified', async () => {
+  const path = await manifest({groups: [['emit']]});
+  try {
+    const table = loadStageManifests([path], {artifactSha256: null,
+      receipt: {path: 'receipt.json', sha256: 'c'.repeat(64), artifactSha256: 'b'.repeat(64),
+        provenancePath: null, loadedInputs: {}, protectedPins: {}}});
+    expect(table.provenance[0].artifactBinding.status).toBe('unverified');
+    expect(table.provenance[0].artifactBinding.reason).toBe('no profiled artifact hash supplied');
+  } finally {await rm(join(path, '..'), {recursive: true, force: true});}
+});
+
+test('stage profile records a foreign artifact receipt as mismatch', async () => {
+  const path = await manifest({groups: [['emit']]});
+  try {
+    const table = loadStageManifests([path], {artifactSha256: 'd'.repeat(64),
+      receipt: {path: 'receipt.json', sha256: 'c'.repeat(64), artifactSha256: 'b'.repeat(64),
+        provenancePath: null, loadedInputs: {}, protectedPins: {}}});
+    expect(table.provenance[0].artifactBinding.status).toBe('mismatch');
+    const observation = observe(createStepAttribution('emit', 'Emitter', table), run('emitter_steps_v1', 'emit'));
+    expect(observation.values['declared:emit-emitter-entry']).toBe(1);
+  } finally {await rm(join(path, '..'), {recursive: true, force: true});}
+});
+
+test('stage profile upgrades a receipt-bound manifest to exact groups', async () => {
+  const path = await manifest({groups: [['emit']], declarations: [{kind: 'def', name: 'emit', canonicalName: 'emit', source: 'bend2/selfhost/emitter.bend'}]});
+  const document = JSON.parse(await (await import('node:fs/promises')).readFile(path, 'utf8'));
+  document.outputs = {'checkpoints/emitter_steps_v1.bend': 'a'.repeat(64)};
+  await (await import('node:fs/promises')).writeFile(path, JSON.stringify(document));
+  const receiptPath = join(path, '..', 'receipt.json');
+  await (await import('node:fs/promises')).writeFile(receiptPath, JSON.stringify({artifactSha256: 'b'.repeat(64),
+    loadedInputs: {'/build/checkpoints/emitter_steps_v1.bend': 'a'.repeat(64)}}));
+  try {
+    const table = loadStageManifests([path], {artifactSha256: 'b'.repeat(64),
+      receipt: {path: receiptPath, sha256: 'c'.repeat(64), artifactSha256: 'b'.repeat(64),
+        provenancePath: null, loadedInputs: {'/build/checkpoints/emitter_steps_v1.bend': 'a'.repeat(64)}, protectedPins: {}}});
+    expect(table.provenance[0].artifactBinding.status).toBe('verified');
+    const observation = observe(createStepAttribution('emit', 'Emitter', table), run('emitter_steps_v1', 'emit'));
+    expect(observation.values['emit-emitter-entry']).toBe(1);
+    expect(observation.details.artifactBinding.status).toBe('verified');
+  } finally {await rm(join(path, '..'), {recursive: true, force: true});}
 });
 
 test('check publication is documented as part of the check Run, not unreachable', () => {

@@ -20,7 +20,8 @@ Candidate (real typed-step library, JS or C target):
 ```sh
 bun evals/candidate_host.ts --candidate=COMPONENT.js [--parser=PARSER.js] \
   --stage-profile=DIR [--stage-progress] \
-  [--stage-manifest=MANIFEST.json ...] INPUT.bend -o OUT.mjs
+  [--stage-manifest=MANIFEST.json ...] [--stage-receipt=RECEIPT.json ...] \
+  INPUT.bend -o OUT.mjs
 ```
 
 Bootstrap worker (full-root selfhost lane), environment-only:
@@ -44,7 +45,18 @@ retained but remain `unclassified`. With it, grouping requires:
 
 1. the observed Run namespace to equal a registered manifest output namespace;
 2. the exact fully qualified request constructor to be registered; and
-3. the declared canonical source path (not just a basename) to map to a group.
+3. the declared canonical source path (not just a basename) to map to a group;
+4. for exact (unprefixed) group names, the compiled component artifact must be
+   bound to a build receipt: the receipt's `artifactSha256` must equal the
+   candidate hash, and the manifest's required generated engine output pin must
+   equal the receipt's `loadedInputs` hash. Receipts may be result or provenance
+   documents; `provenancePath` is followed.
+
+Without a verified artifact binding, groups are still reported but every key is
+prefixed `declared:` and the attribution/report records
+`artifactBinding: {status: 'unverified'|'mismatch', reason, checks}` with a
+`+artifact-binding-...` basis. A stale artifact plus a fresh manifest therefore
+cannot be presented as an exact canonical stage.
 
 An unmatched tag stays `unclassified` with a reason (`namespace-mismatch`,
 `unregistered-namespace`, `unmapped-request`, `manifest-conflict`). A
@@ -85,7 +97,7 @@ process-wide. Nested span CPU overlaps and is never made exclusive.
 | C link planning | Sampled attribution, canonical `c_backend_link`; source planning only, not the external linker |
 | emitter entry | Sampled attribution, canonical `emitter` |
 | link | **Unreachable in `candidate_host`**: it emits source only; linking belongs to `native_compiler_experiment` |
-| native chunk attribution | Diagnostic typed view counts, per native phase, the operational progress shape code (0 Finished, 1 Pending, 2 Direct, 3 Bound) after each bounded chunk; verified on a bounded native fixture over the real generated Template/Checker Run machines. No source substage and no exact CPU share is claimed. |
+| native chunk attribution | Diagnostic typed view counts, per native phase, the operational progress shape code and, for Emitter, only the outer request-group variant. Verified as a mechanism/group-tag check on a bounded native fixture; actual Emitter workload coverage remains OPEN pending a fresh CIR-regenerated component and real FIR/BIR input. No source substage, per-function or exact CPU share is claimed. |
 
 ## Verification in this tree
 
@@ -115,11 +127,32 @@ Bounded diagnostic native component
 kernel `6c1df3eb…`, compiler `a84170d5…`): three phases ran within the tool
 deadline, with real generated Template/Checker Run machines and a finite seeded
 Run. Observed chunk transitions: template 2 (`Finished` 1, `Bound` 1), checker
-3 (`Finished` 3), template-pending 2 (`Finished` 1, `Pending` 1). Shape codes
-0, 1 and 3 were therefore exercised natively; code 2 (`Direct`) is exercised by
-real JS Run samples, not by this bounded fixture. This is operational chunk
-attribution only: no source substage, compiler workload, acceptance or exclusive
-CPU claim.
+3 (`Finished` 3), template-pending 2 (`Finished` 1, `Pending` 1), and the
+Emitter phase reports its outer request group. The Emitter fixture seeds 64
+erased `Bound` wrappers around an `EmitterRequestGroup_7` Pending request for
+`c_backend.nat_c(5n)`. That request is a number-to-C-string scalar leaf, not a
+real checker-produced FIR program and not a full canonical BIR renderer entry:
+it validates only the outer-group tag mechanism. The first chunk boundary
+classifies that outer group; group 7 is homogeneous in the registered manifest
+and maps to `render-c`; mixed groups remain `mixed:<labels>`, and Direct remains
+`direct` with an erased request. Shape codes 0, 1 and 3 are exercised natively;
+code 2 (`Direct`) is exercised by real JS Run samples.
+
+**Actual Emitter workload coverage is OPEN.** It requires a fresh component
+built after the pending CIR source fix, fed by real checker-produced FIR (or a
+legitimate canonical BIR renderer entry), then re-profiled with a manifest and
+artifact receipt bound to that fresh artifact. The bounded fixture above is a
+mechanism/group-tag check only; it is not a substitute and is not recorded as
+actual workload coverage. No source-substage, source-call, per-function or
+exclusive-CPU claim is made.
+
+The builder now runs the entire load/validation/`compile_book`/clang/run build
+under the existing `heavy_gate` supervisor (8 GiB memory/RSS, 10 ms sampling,
+600 s hard deadline), with fixed internal 300 s clang and 120 s fixture-child
+deadlines; code generation itself uses the canonical 256 MiB stack and 3072 MiB
+old-generation cap. The native mechanism result retained here was produced
+before that supervisor wiring; future runs must use the guarded builder. No
+heap or stack bound was raised.
 
 Compact evidence: `checkpoints/compiler-stage-profile-v1.json`.
 Raw profiles stay outside Git.
@@ -131,15 +164,34 @@ driver with a diagnostic C host (`evals/native_stage_profile_host.c`). It is not
 the production `native_experiment`: the 14 callback positions, 13 public names,
 quantum 64 and ordinary hot path are untouched. The driver advances one chunk
 per view call, reconstructs the affine Run state once (never inspecting request
-payloads), and reports a numeric progress-shape code (0 Finished, 1 Pending,
-2 Direct, 3 Bound) plus wall and `RUSAGE_SELF` CPU for the phase.
+payloads), and reports numeric stage codes plus wall and `RUSAGE_SELF` CPU for
+the phase.
+
+Template/checker codes: 0 Finished, 1 Pending, 2 Direct, 3 Bound. Emitter codes:
+0 Finished, 1 Direct (erased scheduling request), 2 Bound, and 100+N when the
+Pending progress carries outer `EmitterRequestGroup_N`. For Emitter only that
+outer variant is matched; the payload stays owned and untouched. The builder
+labels each group from the registered manifest's `requestGroups` and canonical
+source composition: homogeneous groups get `catalog`, `backend-lowering`,
+`descriptor-nf`, `layouts`, `sharing`, `render-js`, `render-c`, `link-planning`
+or `emitter-entry`; mixed groups get `mixed:<labels>` and stay unclassified as
+one stage. The fixture requests a real canonical `c_backend.nat_c(5n)` renderer
+entry through Emitter group 7; it does not fabricate a `CheckSuccess`.
 
 `node --experimental-strip-types --max-old-space-size=4096
 evals/native_stage_profile_build.ts --artifact-dir=DIR --timeout-ms=180000`
 builds only the diagnostic driver (real generated Template/Checker Run machines,
 not the full compiler root) and runs a finite seeded Run under a tool deadline.
+The builder also binds its native artifact to the manifest's required generated
+engine output pin (`artifactBinding: verified-by-builder`); a pin mismatch fails
+the build instead of labelling groups. Emitter group labels are outer
+request-group sets from `requestGroups` plus canonical source composition, not
+per-function phase measurements.
+
 It is operational chunk attribution, not a source substage span and not a
-compiler-workload CPU measurement.
+compiler-workload CPU measurement. `nativeTraceObservations` reports
+per-field units via `unitsByField` for rows that mix milliseconds, bytes and
+counts.
 
 Native coarse rows were read from the preserved diagnostic trace
 `/tmp/signature-publish57z/evidence/comparison/A1.stderr.log`

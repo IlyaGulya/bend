@@ -225,6 +225,7 @@ if(isMainThread){
  function compile(component,loaded,library,sourceFileTag){
   if(stageProfile!==undefined)stageProfile.record({kind:'phase-exact-counters',scope:'bootstrap worker',name:'parse-import-fuel',
    values:{sourceFiles:loaded.sourceHashes.length,foreignFiles:loaded.files.length,parserFuel:workerData.limits.parserFuel},
+   unitsByField:{sourceFiles:'files',foreignFiles:'files',parserFuel:'fuel-cells'},
    source:'selfhost_bootstrap_worker.mjs',details:{phase:'parse-import-fuel',
     note:'exact source-file count and the requested parser fuel; the worker materializes the finite fuel chain lazily, so no cell count is claimed'}});
   let modules=loaded.modules,files=sourceFiles(loaded.files,sourceFileTag);loaded.modules=undefined;loaded.files=undefined;

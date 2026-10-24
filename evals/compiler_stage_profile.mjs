@@ -101,7 +101,43 @@ function protocolOf(manifest) {
  * definition. Returns an empty table when no manifest was supplied so callers
  * still get exact request tags with an explicit unclassified marker.
  */
-export function loadStageManifests(paths) {
+function readReceipt(path) {
+  const document = JSON.parse(readFileSync(path, 'utf8'));
+  let provenance = document;
+  if (typeof document.provenancePath === 'string') provenance = JSON.parse(readFileSync(document.provenancePath, 'utf8'));
+  const artifactSha256 = typeof document.artifactSha256 === 'string' ? document.artifactSha256 : null;
+  return {
+    path: realpathSync(path), sha256: sha256(readFileSync(path)), artifactSha256,
+    provenancePath: provenance === document ? null : realpathSync(document.provenancePath),
+    loadedInputs: provenance.loadedInputs ?? document.loadedInputs ?? {},
+    protectedPins: provenance.protectedPins ?? document.protectedPins ?? {},
+  };
+}
+
+function bindManifestToReceipt(manifest, receipt, artifactSha256) {
+  if (receipt === undefined) return {status: 'unverified', reason: 'no component build receipt supplied', checks: []};
+  if (receipt.artifactSha256 === null) return {status: 'unverified', reason: 'receipt has no artifactSha256', checks: []};
+  if (artifactSha256 === null) return {status: 'unverified', reason: 'no profiled artifact hash supplied', checks: []};
+  if (receipt.artifactSha256 !== artifactSha256)
+    return {status: 'mismatch', reason: 'receipt artifact hash differs from the profiled component', checks: []};
+  const outputs = manifest.outputs ?? {};
+  const entries = Object.entries(outputs);
+  if (entries.length === 0) return {status: 'unverified', reason: 'manifest has no generated output pins', checks: []};
+  const checks = entries.map(([output, expected]) => {
+    const match = Object.entries(receipt.loadedInputs).find(([path]) => path === output || path.endsWith('/' + output));
+    return {output, expectedSha256: expected, actualSha256: match?.[1] ?? null,
+      status: match === undefined ? 'missing' : match[1] === expected ? 'verified' : 'mismatch'};
+  });
+  if (checks.some(check => check.status === 'mismatch')) return {status: 'mismatch', reason: 'generated output pin differs from receipt', checks};
+  const requiredOutput = manifest.generationConfig?.output;
+  const required = checks.find(check => check.output === requiredOutput);
+  if (required === undefined || required.status !== 'verified')
+    return {status: 'unverified', reason: 'receipt does not load the required generated engine output', checks};
+  return {status: 'verified', reason: null, checks,
+    note: 'all outputs shared between manifest and receipt must match; unloaded sibling outputs are recorded but not required'};
+}
+
+export function loadStageManifests(paths, binding = {}) {
   const requestToGroup = new Map();
   const provenance = [];
   const conflicts = [];
@@ -115,6 +151,7 @@ export function loadStageManifests(paths) {
     const namespace = typeof output === 'string' && output ? output.split('/').at(-1).replace(/\.bend$/, '') : undefined;
     if (namespace === undefined || !namespace) throw Error('Stage manifest has no output module namespace for request tags: ' + path);
     namespaces.add(namespace);
+    const artifactBinding = bindManifestToReceipt(document, binding.receipt, binding.artifactSha256 ?? null);
     const sourceOf = new Map();
     const sources = new Set();
     for (const declaration of document.canonicalComposition?.declarations ?? []) {
@@ -169,11 +206,13 @@ export function loadStageManifests(paths) {
       const tag = namespace + '.' + protocol + 'Request_' + name;
       const source = sourceOf.get(name) ?? null;
       const classified = groupOfSource(source);
+      const group = artifactBinding.status === 'verified' ? classified.group : 'declared:' + classified.group;
+      const basis = artifactBinding.status === 'verified' ? classified.basis : classified.basis + '+artifact-binding-' + artifactBinding.status;
       const previous = requestToGroup.get(tag);
-      if (previous !== undefined && previous.group !== classified.group) {
-        conflicts.push({tag, previous: previous.group, next: classified.group, manifest: path});
-        requestToGroup.set(tag, {group: 'unclassified-conflict', basis: 'manifest-conflict', source: null, protocol, namespace});
-      } else requestToGroup.set(tag, {group: classified.group, basis: classified.basis, source, protocol, namespace});
+      if (previous !== undefined && previous.group !== group) {
+        conflicts.push({tag, previous: previous.group, next: group, manifest: path});
+        requestToGroup.set(tag, {group: 'unclassified-conflict', basis: 'manifest-conflict', source: null, protocol, namespace, artifactBinding: artifactBinding.status});
+      } else requestToGroup.set(tag, {group, basis, source, protocol, namespace, artifactBinding: artifactBinding.status});
     };
     for (const group of document.requestGroups ?? []) {
       for (const name of group.definitions ?? []) {
@@ -196,6 +235,7 @@ export function loadStageManifests(paths) {
       definitionsWithCanonicalSource: definitions.filter(name => sourceOf.has(name)).length,
       canonicalSources: [...sources].sort(),
       sourceVerification,
+      artifactBinding,
       basenameCollisions: [...basenameOwners.entries()].filter(([, owners]) => owners.length > 1)
         .map(([basename, owners]) => ({basename, sources: owners.sort()})),
       canonicalSourceSha256: document.canonicalComposition?.inputs,
@@ -307,6 +347,8 @@ export function createStepAttribution(phase, protocol, table) {
           progressShapes: Object.fromEntries([...shapes.entries()].sort(([a], [b]) => a.localeCompare(b))),
           requestSamples: Object.fromEntries([...requests.entries()].sort(([a], [b]) => a.localeCompare(b))),
           observedRunNamespace: observedNamespace,
+          artifactBinding: table?.provenance?.find(row => row.namespace === observedNamespace)?.artifactBinding
+            ?? {status: 'unverified', reason: 'no manifest registered for the observed Run namespace', checks: []},
           registeredManifestNamespaces: table?.namespaces ?? [],
           groupBases: Object.fromEntries([...groupBases.entries()].map(([group, bases]) => [group, [...bases].sort()])),
           unclassifiedSamples: unclassified,
@@ -336,6 +378,7 @@ export function nativeTraceObservations(text) {
       observations.push({
         kind: 'native-begin', scope: 'native child process', name: 'begin',
         values: {computeThreads: row.computeThreads, parserFuel: row.parserFuel},
+        unitsByField: {computeThreads: 'threads', parserFuel: 'fuel-cells'},
         source: 'native_compiler_host.c NATIVE_BEGIN',
         details: {phase: row.phase, phaseTraceVersion: row.phaseTraceVersion},
       });
@@ -345,9 +388,10 @@ export function nativeTraceObservations(text) {
       const row = JSON.parse(trimmed.slice('NATIVE_FUEL '.length));
       observations.push({
         kind: 'native-fuel-exact', scope: 'native child process', name: 'parser-fuel-' + row.sourceOrdinal,
-        units: 'milliseconds',
         values: {elapsedMs: row.elapsedMs, cells: row.cells, processPeakRssBeforeBytes: row.processPeakRssBeforeBytes,
           processPeakRssAfterBytes: row.processPeakRssAfterBytes},
+        unitsByField: {elapsedMs: 'milliseconds', cells: 'fuel-cells',
+          processPeakRssBeforeBytes: 'bytes', processPeakRssAfterBytes: 'bytes'},
         source: 'native_compiler_host.c NATIVE_FUEL',
         details: {sourceOrdinal: row.sourceOrdinal,
           note: 'eager parser fuel cells constructed for one source; peak RSS before/after includes the whole process'},
@@ -359,11 +403,12 @@ export function nativeTraceObservations(text) {
       if (typeof row.phase !== 'string') continue;
       observations.push({
         kind: 'native-phase-coarse-span', scope: 'native child process', name: row.phase,
-        units: 'milliseconds',
         values: {
           elapsedMs: row.elapsedMs, userCpuMs: row.userCpuMs, systemCpuMs: row.systemCpuMs,
           ...(row.chunkAdvances === undefined ? {} : {chunkAdvances: row.chunkAdvances, chunkQuantum: row.chunkQuantum}),
         },
+        unitsByField: {elapsedMs: 'milliseconds', userCpuMs: 'milliseconds', systemCpuMs: 'milliseconds',
+          ...(row.chunkAdvances === undefined ? {} : {chunkAdvances: 'host-step-calls', chunkQuantum: 'steps-per-call'})},
         source: 'native_compiler_host.c NATIVE_PHASE (getrusage RUSAGE_SELF + monotonic wall)',
         details: {
           granularity: 'coarse phase boundary; CPU is process-wide including compute threads and is not exclusive across overlapping phases',
@@ -378,17 +423,22 @@ export function nativeTraceObservations(text) {
       if (typeof row.phase !== 'string') continue;
       observations.push({
         kind: 'native-chunk-profile', scope: 'diagnostic native chunk view', name: row.phase,
-        units: 'milliseconds',
         values: {
           elapsedMs: row.elapsedMs, userCpuMs: row.userCpuMs, systemCpuMs: row.systemCpuMs,
           chunkAdvances: row.chunkAdvances, chunkQuantum: row.chunkQuantum,
           shapeFinished: row.shapeFinished, shapePending: row.shapePending,
           shapeDirect: row.shapeDirect, shapeBound: row.shapeBound,
         },
+        unitsByField: {elapsedMs: 'milliseconds', userCpuMs: 'milliseconds', systemCpuMs: 'milliseconds',
+          chunkAdvances: 'host-step-calls', chunkQuantum: 'steps-per-call',
+          shapeFinished: 'chunk-boundary-samples', shapePending: 'chunk-boundary-samples',
+          shapeDirect: 'chunk-boundary-samples', shapeBound: 'chunk-boundary-samples'},
         source: 'evals/native_stage_profile_host.c NATIVE_CHUNK_PROFILE',
         details: {
           evidenceType: 'operational chunk attribution, not a source substage span or CPU share',
           granularity: 'one sample after each bounded chunk view; shape counts the typed progress constructor only (Finished/Pending/Direct/Bound); request payloads are never read',
+          requestGroups: row.requestGroups ?? {},
+          requestGroupsUnits: 'chunk-boundary-samples by outer Emitter request-group variant (100+N code N in the C counter); payload untouched',
           scopeNote: 'CPU is process-wide RUSAGE_SELF and is not exclusive across overlapping work',
         },
       });
@@ -399,6 +449,7 @@ export function nativeTraceObservations(text) {
       observations.push({
         kind: 'native-result', scope: 'native child process', name: 'result',
         values: {bytes: row.bytes, modules: row.modules},
+        unitsByField: {bytes: 'bytes', modules: 'modules'},
         source: 'native_compiler_host.c NATIVE_RESULT', details: {result: row.result},
       });
     }
@@ -411,9 +462,11 @@ export function nativeTraceObservations(text) {
  * run identity and report; this wrapper only guarantees nested closures and
  * honest failure statuses for spans a caller left open.
  */
-export async function createStageProfile({directory, execution, rawDetail = false, manifestPaths = []}) {
+export async function createStageProfile({directory, execution, rawDetail = false, manifestPaths = [], artifact, receiptPaths = []}) {
   const {createCompilerProfile} = await import('./compiler_profile.mjs');
-  const table = loadStageManifests(manifestPaths);
+  const receipts = receiptPaths.map(readReceipt);
+  const receipt = receipts.find(candidate => artifact !== undefined && candidate.artifactSha256 === artifact.sha256) ?? receipts[0];
+  const table = loadStageManifests(manifestPaths, {artifactSha256: artifact?.sha256 ?? null, receipt});
   const profile = await createCompilerProfile({directory, execution, rawDetail});
   const open = [];
   let finished = false;
@@ -468,7 +521,9 @@ export async function createStageProfile({directory, execution, rawDetail = fals
     kind: 'stage-attribution-table', scope: 'canonical generator manifest', name: 'typed-request-groups',
     values: {requestConstructors: table.requestToGroup.size, conflicts: table.conflicts.length},
     source: 'typed-step generator manifest',
-    details: {manifests: table.provenance, conflicts: table.conflicts},
+    details: {manifests: table.provenance, conflicts: table.conflicts,
+      artifact: artifact ?? null, receipt: receipt === undefined ? null : {path: receipt.path, sha256: receipt.sha256,
+        artifactSha256: receipt.artifactSha256, provenancePath: receipt.provenancePath}},
   });
   return api;
 }

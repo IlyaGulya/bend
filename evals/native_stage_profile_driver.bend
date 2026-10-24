@@ -1,6 +1,7 @@
 import Base
 import ../checkpoints/template_steps_v1.bend as Template
 import ../checkpoints/checker_core_steps_v1.bend as Checker
+import ../checkpoints/emitter_steps_v1.bend as Emit
 
 # Diagnostic-only typed view for the native chunk driver. It reports the
 # operational shape of the progress value after one bounded chunk (64 native
@@ -13,6 +14,76 @@ type NativeTemplateStageView<-A: Type> is Type:
 type NativeCheckerStageView<-A: Type> is Type:
   NativeCheckerStageFinished{take: Unit -> Checker.CheckerValue<A>}
   NativeCheckerStageMore{next: Unit -> Checker.CheckerRun<A>, stage: U32}
+
+type NativeEmitterStageView<-A: Type> is Type:
+  NativeEmitterStageFinished{take: Unit -> Emit.EmitterValue<A>}
+  NativeEmitterStageMore{next: Unit -> Emit.EmitterRun<A>, stage: U32}
+
+# Emitter stage codes: 0 Finished, 1 Direct (erased scheduling request),
+# 2 Bound, 100+N Pending whose outer request-group variant is N. Only the
+# outer request group is classified; payload fields stay owned and untouched.
+def native_emitter_stage_state(-A: Type, -B: Type, progress: Emit.EmitterProgress<B>, stack: Emit.EmitterStack<B, A>) -> NativeEmitterStageView<A>:
+  match progress:
+    case Emit.EmitterFinished{box}:
+      NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterFinished{box}, stack}, 0}
+    case Emit.EmitterPending{request, resume}:
+      match request:
+        case Emit.EmitterRequestGroup_0{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_0{inner}, resume}, stack}, 100}
+        case Emit.EmitterRequestGroup_1{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_1{inner}, resume}, stack}, 101}
+        case Emit.EmitterRequestGroup_2{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_2{inner}, resume}, stack}, 102}
+        case Emit.EmitterRequestGroup_3{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_3{inner}, resume}, stack}, 103}
+        case Emit.EmitterRequestGroup_4{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_4{inner}, resume}, stack}, 104}
+        case Emit.EmitterRequestGroup_5{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_5{inner}, resume}, stack}, 105}
+        case Emit.EmitterRequestGroup_6{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_6{inner}, resume}, stack}, 106}
+        case Emit.EmitterRequestGroup_7{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_7{inner}, resume}, stack}, 107}
+        case Emit.EmitterRequestGroup_8{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_8{inner}, resume}, stack}, 108}
+        case Emit.EmitterRequestGroup_9{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_9{inner}, resume}, stack}, 109}
+        case Emit.EmitterRequestGroup_10{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_10{inner}, resume}, stack}, 110}
+        case Emit.EmitterRequestGroup_11{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_11{inner}, resume}, stack}, 111}
+        case Emit.EmitterRequestGroup_12{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_12{inner}, resume}, stack}, 112}
+        case Emit.EmitterRequestGroup_13{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_13{inner}, resume}, stack}, 113}
+        case Emit.EmitterRequestGroup_14{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_14{inner}, resume}, stack}, 114}
+        case Emit.EmitterRequestGroup_15{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_15{inner}, resume}, stack}, 115}
+        case Emit.EmitterRequestGroup_16{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_16{inner}, resume}, stack}, 116}
+        case Emit.EmitterRequestGroup_17{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_17{inner}, resume}, stack}, 117}
+        case Emit.EmitterRequestGroup_18{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_18{inner}, resume}, stack}, 118}
+        case Emit.EmitterRequestGroup_19{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_19{inner}, resume}, stack}, 119}
+        case Emit.EmitterRequestGroup_20{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_20{inner}, resume}, stack}, 120}
+        case Emit.EmitterRequestGroup_21{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_21{inner}, resume}, stack}, 121}
+        case Emit.EmitterRequestGroup_22{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_22{inner}, resume}, stack}, 122}
+        case Emit.EmitterRequestGroup_23{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_23{inner}, resume}, stack}, 123}
+        case Emit.EmitterRequestGroup_24{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_24{inner}, resume}, stack}, 124}
+        case Emit.EmitterRequestGroup_25{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_25{inner}, resume}, stack}, 125}
+    case Emit.EmitterDirect{R, request, arguments, invoke, resume}:
+      NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterDirect{R, request, arguments, invoke, resume}, stack}, 1}
+    case Emit.EmitterBound{C, inner, resume}:
+      NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterBound{C, inner, resume}, stack}, 2}
 
 def native_template_stage_state(-A: Type, -B: Type, progress: Template.TemplateProgress<B>, stack: Template.TemplateStack<B, A>) -> NativeTemplateStageView<A>:
   match progress:
@@ -55,6 +126,16 @@ def native_checker_stage_ready(-A: Type, run: Checker.CheckerRun<A>) -> NativeCh
 
 def native_checker_stage_view(-A: Type, run: Checker.CheckerRun<A>) -> NativeCheckerStageView<A>:
   native_checker_stage_ready(A, Checker.checker_chunk(A, 64n, run))
+
+def native_emitter_stage_ready(-A: Type, run: Emit.EmitterRun<A>) -> NativeEmitterStageView<A>:
+  match run:
+    case Emit.EmitterRunFinished{box}:
+      NativeEmitterStageFinished{unit => box}
+    case Emit.EmitterRunState{B, progress, stack}:
+      native_emitter_stage_state(A, B, progress, stack)
+
+def native_emitter_stage_view(-A: Type, run: Emit.EmitterRun<A>) -> NativeEmitterStageView<A>:
+  native_emitter_stage_ready(A, Emit.emitter_chunk(A, 64n, run))
 # Profile-only native entry points. The production native_experiment keeps its
 # 14 callback positions and 13 public names; this diagnostic driver is built as
 # a separate small component and never participates in acceptance.
@@ -65,6 +146,9 @@ def native_stage_checker(start: Unit -> Checker.CheckerRun<Unit>, view: (@-A: Ty
   import "./native_stage_profile_host.c"
 
 def native_stage_template_pending(start: Unit -> Template.TemplateRun<Unit>, view: (@-A: Type -> @run: Template.TemplateRun<A> -> NativeTemplateStageView<A>)) -> IO(Unit):
+  import "./native_stage_profile_host.c"
+
+def native_stage_emitter(start: Unit -> Emit.EmitterRun<Unit>, view: (@-A: Type -> @run: Emit.EmitterRun<A> -> NativeEmitterStageView<A>)) -> IO(Unit):
   import "./native_stage_profile_host.c"
 
 # The fixture seeds the real generated Run machine with a finite finished-value
@@ -106,6 +190,28 @@ def profile_template_start(unit: Unit) -> Template.TemplateRun<Unit>:
 def profile_template_pending_start(unit: Unit) -> Template.TemplateRun<Unit>:
   Template.TemplateRunState{Unit, profile_template_bound(64n, profile_template_pending()), profile_template_stack(0n)}
 
+# A real canonical Emitter request: c_backend.nat_c renders a Nat. The fixture
+# seeds 64 erased Bound wrappers around the Pending request so the first chunk
+# boundary exposes the outer request group; it does not fabricate a CheckedProgram.
+def profile_emitter_pending() -> Emit.EmitterProgress<Unit>:
+  Emit.EmitterPending{Emit.EmitterRequestGroup_7{Emit.EmitterRequest_cps_provider_2_nat_c{5n}}, box => Emit.EmitterFinished{Emit.EmitterValue{Unit{}}}}
+
+def profile_emitter_resume(box: Emit.EmitterValue<Unit>) -> Emit.EmitterProgress<Unit>:
+  Emit.EmitterFinished{box}
+
+def profile_emitter_bound(n: Nat, inner: Emit.EmitterProgress<Unit>) -> Emit.EmitterProgress<Unit>:
+  match n:
+    case 0n: inner
+    case 1n+rest: Emit.EmitterBound{Unit, profile_emitter_bound(rest, inner), profile_emitter_resume}
+
+def profile_emitter_stack(n: Nat) -> Emit.EmitterStack<Unit, Unit>:
+  match n:
+    case 0n: Emit.EmitterStackDone{{==}}
+    case 1n+rest: Emit.EmitterStackMore{Unit, profile_emitter_resume, profile_emitter_stack(rest)}
+
+def profile_emitter_start(unit: Unit) -> Emit.EmitterRun<Unit>:
+  Emit.EmitterRunState{Unit, profile_emitter_bound(64n, profile_emitter_pending()), profile_emitter_stack(0n)}
+
 def profile_checker_start(unit: Unit) -> Checker.CheckerRun<Unit>:
   Checker.CheckerRunState{Unit, Checker.CheckerFinished{profile_checker_value()}, profile_checker_stack(200n)}
 
@@ -114,4 +220,5 @@ def main() -> IO(Unit):
     Unit <- native_stage_template(profile_template_start, native_template_stage_view)
     Unit <- native_stage_checker(profile_checker_start, native_checker_stage_view)
     Unit <- native_stage_template_pending(profile_template_pending_start, native_template_stage_view)
+    Unit <- native_stage_emitter(profile_emitter_start, native_emitter_stage_view)
     return Unit{}
