@@ -235,14 +235,14 @@ if(isMainThread){
   const result=value();if(at!==text.length)throw Error('Trailing printed value content at '+at);
   return JSON.stringify(result);
  }
- async function runFixtures(parser,component,parserSha256,compilerSha256,stage){
+ async function runFixtures(parser,component,parserSha256,compilerSha256,stage,sourceFileTag='SourceFile'){
   for(const fixture of workerData.fixtures){
    mark(stage+'-fixture-'+fixture.name+'-parse');
    const loaded=await load(fixture.file,parser,component,parserSha256);
    let output,diagnostic,observedFailure;
    try{
     mark(stage+'-fixture-'+fixture.name);
-    const source=compile(component,loaded,false);
+    const source=compile(component,loaded,false,sourceFileTag);
     if(!fixture.accepted)throw Error('Consumer-visible failure was incorrectly accepted: '+fixture.name);
     const artifact=join(workerData.sidecars,stage+'-'+fixture.name+'.js');writeFileSync(artifact,source,{flag:'wx'});
     mark(stage+'-fixture-'+fixture.name+'-execute');
@@ -354,7 +354,7 @@ if(isMainThread){
   const seedParser=(await import(pathToFileURL(workerData.parser).href)).default;
   const seed=exportsOf(await import(pathToFileURL(workerData.component).href),workerData.component);
   const seedParserSha=workerData.parserSha256;
-  if(!workerData.parseOnly&&!workerData.profileRoot)await runFixtures(seedParser,seed,seedParserSha,workerData.componentSha256,'seed');
+  if(!workerData.parseOnly&&!workerData.profileRoot)await runFixtures(seedParser,seed,seedParserSha,workerData.componentSha256,'seed',workerData.fixture?(workerData.sourceFileTag??'SourceFile'):'SourceFile');
   if(workerData.fixture){
    authenticateSources();
    mark('complete');send({event:'result',result:{passed:true,compilerBootstrapGreen:false,selfhostGreen:false,diagnosticFixture:workerData.fixture,fixtureExecutions:fixtures.length}});
@@ -391,8 +391,8 @@ if(isMainThread){
   // stages still execute every fixture before bootstrap acceptance is published.
   mark('stage-two-execute');const stage2=exportsOf(await import(pathToFileURL(secondPath).href),secondPath);
   stageTwo=undefined;
-  await runFixtures(stage1,stage1,artifacts.stageOne.sha256,artifacts.stageOne.sha256,'stage-one');
-  await runFixtures(stage2,stage2,artifacts.stageTwo.sha256,artifacts.stageTwo.sha256,'stage-two');
+  await runFixtures(stage1,stage1,artifacts.stageOne.sha256,artifacts.stageOne.sha256,'stage-one',workerData.sourceFileTag??'SourceFile');
+  await runFixtures(stage2,stage2,artifacts.stageTwo.sha256,artifacts.stageTwo.sha256,'stage-two',workerData.sourceFileTag??'SourceFile');
   authenticateSources();
   mark('complete');send({event:'result',result:{passed:true,compilerBootstrapGreen:true,selfhostGreen:false,fixedpoint:{criterion:'Exact emitted UTF-8 JS bytes; no normalization or patching',equal:true,stageOneSha256:artifacts.stageOne.sha256,stageTwoSha256:artifacts.stageTwo.sha256},stageTwoParser:'stage-one emitted parse_with_fuel, not seed parser',fullCompilerRoot:workerData.root,legacyFullIODriver:false,fixtureExecutions:fixtures.length}});
   }
