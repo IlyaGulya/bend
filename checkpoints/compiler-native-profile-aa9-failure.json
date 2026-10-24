@@ -64,7 +64,7 @@
     "capsEstablished": false,
     "classification": "REJECTED_WRONG_RUNTIME_BUN"
   },
-  "decision": "Rejected: wrong runtime (Bun/JSC). Worker resourceLimits were declared but not established as enforced. No retroactive Node 3072/256 claim and no Node-cap blockage claim. The compliant Node 23.11 run is pending a free lane.",
+  "decision": "Actual Node 23.11 run is now the terminal native evidence: codegen and native execution succeeded, the typed witness saw EmitFailure (status 2), and the host failed rather than dropping to Unit. This is not a caps/OOM result and not a profiling PASS. No retry or cap change.",
   "jsCProfileEvidence": "checkpoints/compiler-profile-ab-4a916.json",
   "note": "C emission byte equality on 4a916 is proven separately; clang execution is not claimed.",
   "status": "REJECTED_WRONG_RUNTIME_BUN",
@@ -107,6 +107,80 @@
     "program": "evals/native_stage_profile_emit_fixture.bend data copied from canonical evals/c_backend_smoke.bend",
     "runtime": "evals/c_backend_runtime.bend",
     "typedWitness": "nonempty EmitSuccess 1 / empty success 0 / failure 2",
-    "executed": false
+    "executed": true,
+    "result": "EmitFailure (status 2); no EmitSuccess"
+  },
+  "compliantNodeAttempt": {
+    "status": "EMIT_FAILURE_WITNESSED",
+    "log": "/tmp/native-diag-node-canonical.log",
+    "sha256": "4273ccc51f20e3719c25fd2953daad932d7e22e5f128dd9b8fa7f2bfd88f744d",
+    "bytes": 2660,
+    "runtime": "node v23.11.0/V8",
+    "execPath": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+    "command": [
+      "node",
+      "--experimental-strip-types",
+      "evals/native_stage_profile_build.ts",
+      "--artifact-dir=/tmp/native-stage-node-canonical"
+    ],
+    "guard": "guardHeavyGate inherited lease; 8 GiB/10 ms/600 s; no --internal",
+    "workerLimits": {
+      "stackSizeMb": 256,
+      "maxOldGenerationSizeMb": 3072
+    },
+    "elapsedMs": 217834,
+    "peakRssBytes": 6606716928,
+    "peakGB": 6.607,
+    "peakGiB": 6.153,
+    "memoryLimitBytes": 8589934592,
+    "exitCode": 1,
+    "ownedTreeStopped": true,
+    "reportPhase": "complete",
+    "nativeArtifactProduced": true,
+    "phases": [
+      {
+        "name": "template-chunks",
+        "chunkAdvances": 2,
+        "shapes": {
+          "finished": 1,
+          "bound": 1
+        }
+      },
+      {
+        "name": "checker-chunks",
+        "chunkAdvances": 3,
+        "shapes": {
+          "finished": 3
+        }
+      },
+      {
+        "name": "template-pending-chunks",
+        "chunkAdvances": 2,
+        "shapes": {
+          "finished": 1,
+          "pending": 1
+        }
+      },
+      {
+        "name": "emitter-chunks",
+        "chunkAdvances": 3,
+        "shapes": {
+          "finished": 2
+        },
+        "requestGroups": {
+          "12": 1
+        },
+        "fixtureResultStatus": 2,
+        "elapsedMs": 12.678
+      }
+    ],
+    "typedWitness": "fixtureResultStatus 2 = EmitFailure; non-empty EmitSuccess was not observed; the host failed the phase instead of dropping the result",
+    "testedFixture": "evals/native_stage_profile_emit_fixture.bend (canonical c_backend_smoke BIR data) + evals/c_backend_runtime.bend real runtime",
+    "classification": "ACTUAL_NODE_EMIT_FAILURE",
+    "nativeProfilingPass": false,
+    "reason": "canonical c_backend.emit returned EmitFailure for the canonical smoke program/runtime under the aa9/d7 generated Emitter; exact failure message not surfaced by this host",
+    "noRetry": true,
+    "capRaise": false,
+    "guardReportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792874487175-0f1a34dbad1bd7c0.json"
   }
 }

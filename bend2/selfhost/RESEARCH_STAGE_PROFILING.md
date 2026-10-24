@@ -175,9 +175,17 @@ The builder now requires Node/V8 and fails fast under Bun/JSC before the guard.
 Its required invocation is `node --experimental-strip-types
 evals/native_stage_profile_build.ts --artifact-dir=DIR`; the whole build still
 uses `guardHeavyGate` with the inherited lease, 8 GiB/10 ms/600 s policy and no
-`--internal` bypass. One compliant Node 23.11 worker 3072/256 run is authorized
-with the corrected canonical fixture. Until that actual Node run exists,
-native profiling is UNVERIFIED and no Node-cap blocker is claimed.
+`--internal` bypass. The compliant Node 23.11/V8 run is complete and is the terminal native evidence:
+codegen and native execution succeeded, the typed witness saw
+`fixtureResultStatus 2` (`EmitFailure`) for the canonical smoke program/runtime
+through Emitter group 12, and the host failed the phase instead of dropping it.
+The run took 217.8 s, peak RSS 6,606,716,928 B (6.607 GB / 6.153 GiB), below
+the 8 GiB guard, with four phase rows (template 2, checker 3, template-pending 2,
+emitter 3 advances; group 12 observed once). This is a real canonical
+`EmitFailure`, not an OOM/stack-cap failure and not a profiling PASS. The exact
+failure message was not surfaced by this host. No rerun or cap change was made.
+The native codegen/runtime prerequisite from the rejected Bun attempt is now
+established under Node; actual Emitter workload success remains OPEN.
 
 Native coarse rows were read from the preserved diagnostic trace
 `/tmp/signature-publish57z/evidence/comparison/A1.stderr.log`
