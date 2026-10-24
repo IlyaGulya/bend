@@ -62,7 +62,7 @@ if(isMainThread){
    if(output!==workerData.output)throw Error('Emitted target output mismatch: expected '+workerData.output+' observed '+output);
   }
   phase('complete');
-  parentPort.postMessage({passed:true,status:'PASS',name:workerData.name,accepted,checkerTag:tag(checked),diagnostic:accepted?undefined:checked.diagnostic,emitterTag:tag(emission),emitted,output,templateFreePrecondition:true,checkerDriver:'trusted Node LIFO continuation loop outside native termination proof',emitterDriver:'trusted Node LIFO continuation loop outside native termination proof',phases});
+  parentPort.postMessage({passed:true,status:'PASS',name:workerData.name,accepted,checkerTag:tag(checked),diagnostic:accepted?undefined:checked.diagnostic,emitterTag:tag(emission),emitted,output,templateFreePrecondition:true,checkerDriver:'trusted Node opaque native Run chunk loop outside native termination proof',emitterDriver:'trusted Node opaque native Run chunk loop outside native termination proof',phases});
   }
  }catch(error){parentPort.postMessage({passed:false,status:'FAIL',name:workerData.name,error:String(error),diagnostic:observedCheck?.diagnostic,parseFailure:tag(observedParse)==='ParseFailure'?observedParse:undefined,phases});}
  finally{if(temporary)rmSync(temporary,{recursive:true,force:true});}

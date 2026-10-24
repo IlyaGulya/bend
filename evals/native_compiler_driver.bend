@@ -52,16 +52,16 @@ def native_expand_result(box: Template.TemplateValue<Template.ExpandResult>) -> 
   match box:
     case Template.TemplateValue{value}: native_expand_value(value)
 
-def native_check_value(result: Checked.CheckResult) -> NativeResult<(List<&2, String> -> Emitter.EmitterProgress<Emitter.EmitResult>)>:
+def native_check_value(result: Checked.CheckResult) -> NativeResult<(List<&2, String> -> Emitter.EmitterRun<Emitter.EmitResult>)>:
   match result:
     case Checked.CheckSuccess{program}: NativeAccepted{exports => emit_library_start(program, exports)}
     case Checked.CheckFailure{Checked.Diagnostic{_, _, message, _, _}}: NativeRejected{message}
 
-def native_check_result(box: Checker.CheckerValue<Checked.CheckResult>) -> NativeResult<(List<&2, String> -> Emitter.EmitterProgress<Emitter.EmitResult>)>:
+def native_check_result(box: Checker.CheckerValue<Checked.CheckResult>) -> NativeResult<(List<&2, String> -> Emitter.EmitterRun<Emitter.EmitResult>)>:
   match box:
     case Checker.CheckerValue{value}: native_check_value(value)
 
-def native_emit(input: (List<&2, String> -> Emitter.EmitterProgress<Emitter.EmitResult>) & List<&2, String>) -> Emitter.EmitterProgress<Emitter.EmitResult>:
+def native_emit(input: (List<&2, String> -> Emitter.EmitterRun<Emitter.EmitResult>) & List<&2, String>) -> Emitter.EmitterRun<Emitter.EmitResult>:
   (emit, exports) = input
   emit(exports)
 
@@ -74,76 +74,62 @@ def native_emit_result(box: Emitter.EmitterValue<Emitter.EmitResult>) -> NativeR
   match box:
     case Emitter.EmitterValue{value}: native_emit_value(value)
 
-# A nonrecursive reflection step hides the native backend's flattened request
-# layouts from C without erasing the relationship between next and resume.
-# The existential result type preserves the SAME boxed next/resume domain.
+# Native reflection advances chunk64 before exposing only one owning thunk.
+# C never observes the existential progress/stack or a source continuation.
 type NativeTemplateView<-A: Type> is Type:
   NativeTemplateFinished{take: Unit -> Template.TemplateValue<A>}
-  NativeTemplateMore{-B: Type, next: Unit -> Template.TemplateProgress<B>, resume: (@box: Template.TemplateValue<B> -> Template.TemplateProgress<A>)}
+  NativeTemplateMore{next: Unit -> Template.TemplateRun<A>}
 
 type NativeCheckerView<-A: Type> is Type:
   NativeCheckerFinished{take: Unit -> Checker.CheckerValue<A>}
-  NativeCheckerMore{-B: Type, next: Unit -> Checker.CheckerProgress<B>, resume: (@box: Checker.CheckerValue<B> -> Checker.CheckerProgress<A>)}
+  NativeCheckerMore{next: Unit -> Checker.CheckerRun<A>}
 
 type NativeEmitterView<-A: Type> is Type:
   NativeEmitterFinished{take: Unit -> Emitter.EmitterValue<A>}
-  NativeEmitterMore{-B: Type, next: Unit -> Emitter.EmitterProgress<B>, resume: (@box: Emitter.EmitterValue<B> -> Emitter.EmitterProgress<A>)}
+  NativeEmitterMore{next: Unit -> Emitter.EmitterRun<A>}
 
-def native_template_view_ready(-A: Type, progress: Template.TemplateProgress<A>) -> NativeTemplateView<A>:
-  match progress:
-    case Template.TemplateFinished{box}:
+def native_template_view_ready(-A: Type, run: Template.TemplateRun<A>) -> NativeTemplateView<A>:
+  match run:
+    case Template.TemplateRunFinished{box}:
       NativeTemplateFinished{unit => box}
-    case Template.TemplatePending{request, resume}:
-      NativeTemplateMore{Template.template_result(request), unit => template_step(request), resume}
-    case Template.TemplateDirect{R, request, arguments, invoke, resume}:
-      NativeTemplateMore{Template.template_result(request), unit => invoke(arguments), resume}
-    case Template.TemplateBound{B, inner, resume}:
-      NativeTemplateMore{B, unit => inner, resume}
+    case Template.TemplateRunState{B, progress, stack}:
+      NativeTemplateMore{unit => Template.TemplateRunState{B, progress, stack}}
 
-def native_template_view(-A: Type, progress: Template.TemplateProgress<A>) -> NativeTemplateView<A>:
-  native_template_view_ready(A, Template.template_chunk(A, 64n, progress))
+def native_template_view(-A: Type, run: Template.TemplateRun<A>) -> NativeTemplateView<A>:
+  native_template_view_ready(A, Template.template_chunk(A, 64n, run))
 
-def native_checker_view_ready(-A: Type, progress: Checker.CheckerProgress<A>) -> NativeCheckerView<A>:
-  match progress:
-    case Checker.CheckerFinished{box}:
+def native_checker_view_ready(-A: Type, run: Checker.CheckerRun<A>) -> NativeCheckerView<A>:
+  match run:
+    case Checker.CheckerRunFinished{box}:
       NativeCheckerFinished{unit => box}
-    case Checker.CheckerPending{request, resume}:
-      NativeCheckerMore{Checker.checker_result(request), unit => checker_step(request), resume}
-    case Checker.CheckerDirect{R, request, arguments, invoke, resume}:
-      NativeCheckerMore{Checker.checker_result(request), unit => invoke(arguments), resume}
-    case Checker.CheckerBound{B, inner, resume}:
-      NativeCheckerMore{B, unit => inner, resume}
+    case Checker.CheckerRunState{B, progress, stack}:
+      NativeCheckerMore{unit => Checker.CheckerRunState{B, progress, stack}}
 
-def native_checker_view(-A: Type, progress: Checker.CheckerProgress<A>) -> NativeCheckerView<A>:
-  native_checker_view_ready(A, Checker.checker_chunk(A, 64n, progress))
+def native_checker_view(-A: Type, run: Checker.CheckerRun<A>) -> NativeCheckerView<A>:
+  native_checker_view_ready(A, Checker.checker_chunk(A, 64n, run))
 
-def native_emitter_view_ready(-A: Type, progress: Emitter.EmitterProgress<A>) -> NativeEmitterView<A>:
-  match progress:
-    case Emitter.EmitterFinished{box}:
+def native_emitter_view_ready(-A: Type, run: Emitter.EmitterRun<A>) -> NativeEmitterView<A>:
+  match run:
+    case Emitter.EmitterRunFinished{box}:
       NativeEmitterFinished{unit => box}
-    case Emitter.EmitterPending{request, resume}:
-      NativeEmitterMore{Emitter.emitter_result(request), unit => emitter_step(request), resume}
-    case Emitter.EmitterDirect{R, request, arguments, invoke, resume}:
-      NativeEmitterMore{Emitter.emitter_result(request), unit => invoke(arguments), resume}
-    case Emitter.EmitterBound{B, inner, resume}:
-      NativeEmitterMore{B, unit => inner, resume}
+    case Emitter.EmitterRunState{B, progress, stack}:
+      NativeEmitterMore{unit => Emitter.EmitterRunState{B, progress, stack}}
 
-def native_emitter_view(-A: Type, progress: Emitter.EmitterProgress<A>) -> NativeEmitterView<A>:
-  native_emitter_view_ready(A, Emitter.emitter_chunk(A, 64n, progress))
+def native_emitter_view(-A: Type, run: Emitter.EmitterRun<A>) -> NativeEmitterView<A>:
+  native_emitter_view_ready(A, Emitter.emitter_chunk(A, 64n, run))
 
-# C drives only the existing typed request/invoke/resume domains. Each affine
-# progress, argument record and continuation is consumed once. Reused callbacks
-# below are closed, capture-free values (the C boundary checks that fact).
+# Reused callbacks below are closed and capture-free. The native Run preserves
+# the original source/result relationship; each returned thunk is consumed once.
 def native_experiment(
   parse: (FeedbackFuel & (String & String)) -> NativeParsed,
-  expand: List<&2, Loader.LoadedModule> -> Template.TemplateProgress<Template.ExpandResult>,
-  template_view: (@-A: Type -> @progress: Template.TemplateProgress<A> -> NativeTemplateView<A>),
+  expand: List<&2, Loader.LoadedModule> -> Template.TemplateRun<Template.ExpandResult>,
+  template_view: (@-A: Type -> @run: Template.TemplateRun<A> -> NativeTemplateView<A>),
   expand_result: Template.TemplateValue<Template.ExpandResult> -> NativeResult<List<&2, Loader.LoadedModule>>,
-  check: List<&2, Loader.LoadedModule> -> Checker.CheckerProgress<Checked.CheckResult>,
-  checker_view: (@-A: Type -> @progress: Checker.CheckerProgress<A> -> NativeCheckerView<A>),
-  check_result: Checker.CheckerValue<Checked.CheckResult> -> NativeResult<(List<&2, String> -> Emitter.EmitterProgress<Emitter.EmitResult>)>,
-  emit: ((List<&2, String> -> Emitter.EmitterProgress<Emitter.EmitResult>) & List<&2, String>) -> Emitter.EmitterProgress<Emitter.EmitResult>,
-  emitter_view: (@-A: Type -> @progress: Emitter.EmitterProgress<A> -> NativeEmitterView<A>),
+  check: List<&2, Loader.LoadedModule> -> Checker.CheckerRun<Checked.CheckResult>,
+  checker_view: (@-A: Type -> @run: Checker.CheckerRun<A> -> NativeCheckerView<A>),
+  check_result: Checker.CheckerValue<Checked.CheckResult> -> NativeResult<(List<&2, String> -> Emitter.EmitterRun<Emitter.EmitResult>)>,
+  emit: ((List<&2, String> -> Emitter.EmitterRun<Emitter.EmitResult>) & List<&2, String>) -> Emitter.EmitterRun<Emitter.EmitResult>,
+  emitter_view: (@-A: Type -> @run: Emitter.EmitterRun<A> -> NativeEmitterView<A>),
   emit_result: Emitter.EmitterValue<Emitter.EmitResult> -> NativeResult<String>
 ) -> IO(Unit):
   import "./native_compiler_host.c"

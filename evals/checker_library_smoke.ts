@@ -103,7 +103,7 @@ def constructor_match() -> (Bit -> Bit):
 const o=optionsOf(),sidecars=o.report+'.cases';
 const root=resolve('checkpoints/template_checker_steps_driver_v1.bend');
 const criterion='Smoke-only real library consumer: accepted compiled parsing with complete semantic AST parity, actual Template expansion, actual Checked.CheckSuccess.program and owner-preserving inspection, actual native JSEmit library steps, then positional ESM/curried/erased consumer behavior on the unchanged returned JS.';
-const boundary={orchestration:'trusted Node native List packaging and shared LIFO continuation driver',nativeTerminationProofIncludesDriver:false,hostCheckingExpansionEmission:false,hostParserUse:'full semantic oracle only; never compiler inputs',bootstrapFixedpointClaim:false,fullCompilerRoot:false,libraryStartExport:'emit_library_start',sharedRuntimeStartSelection:'runLibraryEmitterSteps selects typed public start with explicit consumer exports',legacyIODriver:false,legacyCBackend:false};
+const boundary={orchestration:'trusted Node native List packaging and shared opaque native Run chunk driver',nativeTerminationProofIncludesDriver:false,hostCheckingExpansionEmission:false,hostParserUse:'full semantic oracle only; never compiler inputs',bootstrapFixedpointClaim:false,fullCompilerRoot:false,libraryStartExport:'emit_library_start',sharedRuntimeStartSelection:'runLibraryEmitterSteps selects typed public start with explicit consumer exports',legacyIODriver:false,legacyCBackend:false};
 mkdirSync(dirname(o.report),{recursive:true});
 if(!o.worker){
  if(existsSync(o.report)||existsSync(sidecars))throw Error('Use a fresh report path; evidence is never overwritten');

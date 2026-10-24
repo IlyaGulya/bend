@@ -37,13 +37,13 @@ const temporary=mkdtempSync(join(tmpdir(),'bend-checker-gate-')),sidecars=report
 const rows:any[]=[];
 function save(){
  const runtime=resolve('evals/checker_core_step_runtime.mjs'),runtimeSha256=sha(runtime);
- const driverBoundary={runtime,runtimeSha256,orchestration:'trusted Node LIFO continuation loop',sharedInternalLoop:'runSteps',nativeTerminationProofIncludesDriver:false};
+ const driverBoundary={runtime,runtimeSha256,orchestration:'trusted Node opaque native Run chunk loop',sharedInternalLoop:'runSteps',nativeTerminationProofIncludesDriver:false};
  writeFileSync(report,JSON.stringify({
   criterion:'Actual compiled parser -> native Bend checker steps driven by Node -> owning CheckedProgram -> native Bend JSEmit steps driven by Node -> execute returned emitted JS unchanged',
   additionalCriterion:'Strict emitter boundary refuses raw syntax; native checking then typed emission rejects parsed unexpanded template binders/terms with their actual source spans',
   checkerDriver:{...driverBoundary,startExport:'check_expanded_start',stepExport:'checker_step',checkerLogic:'native-validated Bend steps and continuations'},
   emitterDriver:{...driverBoundary,startExport:'emit_modules_start',stepExport:'emitter_step',emitterLogic:'native-validated Bend steps and continuations'},
-  proofBoundary:'Native validation covers checker and emitter Bend steps and their dependent continuations. Both Node request/continuation drivers use one shared trusted LIFO loop and are outside the native termination proof.',
+  proofBoundary:'Native validation covers checker and emitter Bend steps and their dependent continuations. Both Node opaque Run drivers use one shared trusted chunk loop and are outside the native termination proof.',
   parser,parserSha256:sha(parser),component:resolve(component!),componentSha256:sha(component!),
   limits:{memoryMiB:8192,rssMiB:8192,pollMs:10,workerStackMiB:256,parserFuel:2000000,maxHeavyChildren:1},
   finished:rows.length===fixtures.length,passed:rows.length===fixtures.length&&rows.every(row=>row.passed),rows,

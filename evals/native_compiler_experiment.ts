@@ -16,7 +16,7 @@
  * canonical kernel, validates every body in the compiler root and host bridge,
  * then calls compile_book and clang (official CPU flags by default). Run
  * freshly reads the entire frozen corpus and uses only Bend parsing/expansion/
- * checking/emission. C owns IO/import loading and affine LIFO continuation
+ * checking/emission. C owns IO/import loading and opaque native Run chunk
  * orchestration, outside Bend's totality proof. No ASTs are serialized or cached.
  * A byte-identical accepted JS image is an optional semantic smoke, not a native
  * binary bootstrap/fixedpoint proof. Multithread results are separate runs.
@@ -42,7 +42,7 @@ const acceptedCompilerSha256 = '84b19ce89aad6da90b1aedb7b8fff2ed8ef659636754801c
 const compilerABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','inspect_checked_start','checker_step','emit_modules_start','emit_library_start','emitter_step'];
 const frozenV41CorpusSha256='29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258';
 const guard = {memoryMiB:8192, rssMiB:8192, pollMs:10, timeoutMs:600000};
-const boundary = {host:'trusted C file/import loader and serial affine LIFO continuation driver',
+const boundary = {host:'trusted C file/import loader and serial opaque native Run chunk driver',
   sourceAlgorithms:'unchanged canonical Bend parser/expansion/checker/JS library emitter',
   hostChecking:false, hostParsing:false, embeddedSource:false, cachedAst:false,
   parserFuelRepresentation:'eager native 8M-cell chain per source; JS harness uses lazy cells for the same finite fuel; allocation time remains included in parse',
@@ -284,7 +284,7 @@ async function runWorker(o:Options){
     }
     if(line.startsWith('NATIVE_BEGIN ')){
       const row=jsonRecord(line.slice(13));
-      if(typeof row.computeThreads!=='number'||row.phaseTraceVersion!==2)throw Error('Malformed native runtime/phase-trace record');
+      if(typeof row.computeThreads!=='number'||row.phaseTraceVersion!==3)throw Error('Malformed native runtime/phase-trace record');
       begins.push({...row,computeThreads:row.computeThreads});
     }
     if(line.startsWith('NATIVE_RESULT ')){

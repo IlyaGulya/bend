@@ -1,5 +1,5 @@
 // Trusted orchestration only: runtime file IO, import resolution and the same
-// LIFO continuation machine as checker_core_step_runtime.mjs. No parser,
+// opaque chunk machine as checker_core_step_runtime.mjs. No parser,
 // elaborator, checker, emitter, source literal or expected result lives here.
 // Included unchanged by compile_book's ordinary foreign-effect mechanism.
 
@@ -83,50 +83,39 @@ static void native_closed(Term function) {
 
 static Term native_drive(Env e, Term start, Term argument, Term reflect,
     u32 finished, u32 more, const char* phase) {
-  Term* stack = NULL;
-  size_t depth = 0, capacity = 0;
-  u64 calls = 0, resumes = 0;
+  u64 chunk_advances = 0;
   u64 started = io_tick();
   struct rusage cpu_started;
   native_phase_start(phase, &cpu_started);
-  Term progress = native_apply(e, start, argument);
+  Term run = native_apply(e, start, argument);
   for (;;) {
-    // reflect is polymorphic in its erased result type. It preserves the
-    // original existential boxed result domain in each next/resume pair.
-    progress = native_apply(e, reflect, progress);
-    u32 tag = (u32)term_aux(progress);
-    Term fs[2];
+    // The polymorphic native view preserves the original result type, executes
+    // chunk64, and hides the existential RunState behind one owning thunk.
+    Term input = run;
+    run = TERM_HOLE;
+    Term view = native_apply(e, reflect, input);
+    chunk_advances += 1;
+    u32 tag = (u32)term_aux(view);
+    Term thunk;
     if (tag == more) {
-      native_fields(e, progress, more, 2, fs);
-      if (depth == capacity) {
-        capacity = capacity ? capacity * 2 : 256;
-        stack = io_mem(realloc(stack, capacity * sizeof(Term)));
-      }
-      stack[depth++] = fs[1];
-      calls += 1;
-      progress = native_apply(e, fs[0], term_pak(CID(Unit), 0));
+      native_fields(e, view, more, 1, &thunk);
+      view = TERM_HOLE;
+      run = native_apply(e, thunk, term_pak(CID(Unit), 0));
     } else if (tag == finished) {
-      native_fields(e, progress, finished, 1, fs);
-      // Bend retains the complete typed box behind a one-word affine closure.
-      // No assumption about the flattened layout of A crosses this boundary.
-      Term boxed = native_apply(e, fs[0], term_pak(CID(Unit), 0));
-      if (depth == 0) {
-        free(stack);
-        struct rusage cpu_finished;
-        native_cpu_sample(&cpu_finished);
-        fprintf(stderr, "NATIVE_PHASE {\"phase\":\"%s\",\"elapsedMs\":%.3f,\"userCpuMs\":%.3f,\"systemCpuMs\":%.3f,\"calls\":%llu,\"resumes\":%llu}\n",
-          phase, (double)(io_tick() - started) / 1000000.0,
-          native_cpu_ms(&cpu_started.ru_utime, &cpu_finished.ru_utime),
-          native_cpu_ms(&cpu_started.ru_stime, &cpu_finished.ru_stime),
-          (unsigned long long)calls, (unsigned long long)resumes);
-        return boxed;
-      }
-      Term resume = stack[--depth];
-      stack[depth] = TERM_HOLE;
-      resumes += 1;
-      progress = native_apply(e, resume, boxed);
+      native_fields(e, view, finished, 1, &thunk);
+      view = TERM_HOLE;
+      // No flattened Value<A> layout is assumed at the C boundary.
+      Term boxed = native_apply(e, thunk, term_pak(CID(Unit), 0));
+      struct rusage cpu_finished;
+      native_cpu_sample(&cpu_finished);
+      fprintf(stderr, "NATIVE_PHASE {\"phase\":\"%s\",\"elapsedMs\":%.3f,\"userCpuMs\":%.3f,\"systemCpuMs\":%.3f,\"chunkAdvances\":%llu,\"chunkQuantum\":64}\n",
+        phase, (double)(io_tick() - started) / 1000000.0,
+        native_cpu_ms(&cpu_started.ru_utime, &cpu_finished.ru_utime),
+        native_cpu_ms(&cpu_started.ru_stime, &cpu_finished.ru_stime),
+        (unsigned long long)chunk_advances);
+      return boxed;
     } else {
-      err_fail("native experiment: invalid progress constructor");
+      err_fail("native experiment: invalid run view constructor");
     }
   }
 }
@@ -323,7 +312,7 @@ static Term native_experiment_run(Env e, Term* f, IoWork* work) {
   for (u32 i = 0; i < 10; i++) native_closed(f[i]);
   bool compile = strcmp(io_argv[5], "compile") == 0;
   if (!compile && strcmp(io_argv[5], "check") != 0) err_fail("native experiment: invalid phase");
-  fprintf(stderr, "NATIVE_BEGIN {\"computeThreads\":%u,\"parserFuel\":8000000,\"phase\":\"%s\",\"phaseTraceVersion\":2}\n", pool_size, io_argv[5]);
+  fprintf(stderr, "NATIVE_BEGIN {\"computeThreads\":%u,\"parserFuel\":8000000,\"phase\":\"%s\",\"phaseTraceVersion\":3}\n", pool_size, io_argv[5]);
   u64 started = io_tick();
   struct rusage cpu_started;
   native_phase_start("parse", &cpu_started);

@@ -2,8 +2,9 @@
 /** Complete behavior evidence for both unchanged images of an existing root
  * fixedpoint certificate. This is NOT the monolithic 600s bootstrap gate.
  * bun --smol evals/selfhost_emitted_suites.ts \
- *   --fixedpoint-report=checkpoints/selfhost-ir57k-bootstrap-b.json \
- *   --report=checkpoints/selfhost-ir57k-emitted-suites-a.json
+ *   --fixedpoint-report=checkpoints/selfhost-ir57t-bootstrap-a.json \
+ *   --stage-sha256=c26cebdcf555b03605df7ae88e22c1a6a76ec9bc2ce712fbb487dfbe4ce6d832 \
+ *   --stage-bytes=13739548 --report=checkpoints/selfhost-ir57t-emitted-suites-a.json
  * Source-only fixtures are freshly parsed by each image; no AST/cache inputs.
  */
 import {runHeavyGate,guardHeavyGate} from './heavy_gate.ts';
@@ -30,10 +31,12 @@ const options=new Map<string,string>();let worker=false;
 for(const argument of process.argv.slice(2)){
  if(argument==='--worker'&&!worker){worker=true;continue;}
  const at=argument.indexOf('='),key=argument.slice(0,at),value=argument.slice(at+1);
- requireProof(at>0&&['--fixedpoint-report','--report'].includes(key)&&value&&!options.has(key),'Expected unique --fixedpoint-report=PATH --report=FRESH.json');options.set(key,value);
+ requireProof(at>0&&['--fixedpoint-report','--stage-sha256','--stage-bytes','--report'].includes(key)&&value&&!options.has(key),'Expected unique --fixedpoint-report=PATH --stage-sha256=SHA256 --stage-bytes=COUNT --report=FRESH.json');options.set(key,value);
 }
-requireProof(options.size===2,'Both report arguments are required');
+requireProof(options.size===4,'Both reports and independently observed stage fingerprint are required');
 const fixedpointReport=resolve(options.get('--fixedpoint-report')!),report=resolve(options.get('--report')!),sidecars=report+'.cases';
+const stageSha256=options.get('--stage-sha256')!,stageBytes=Number(options.get('--stage-bytes'));
+requireProof(/^[0-9a-f]{64}$/.test(stageSha256)&&Number.isSafeInteger(stageBytes)&&stageBytes>0,'Expected exact SHA256 and positive stage byte count');
 const criterion='Authenticated root byte fixedpoint and original 95 seed results plus 95 freshly executed fixtures on EACH unchanged emitted image. Separate behavior proof, not aggregate bootstrap/speed acceptance.';
 if(!worker){
  requireProof(!existsSync(report)&&!existsSync(sidecars),'Use fresh report and sidecar paths');mkdirSync(dirname(report),{recursive:true});
@@ -45,7 +48,7 @@ if(!worker){
 }else{
  await guardHeavyGate(import.meta.path,{label:'Both unchanged emitted compiler semantic suites'});
  mkdirSync(sidecars,{recursive:true});
- const inputs:Record<string,string>={},stages:Record<string,any>[]=[],state:Record<string,any>={status:'IN_PROGRESS',passed:false,criterion,limits,requiredExports:ABI,fixedpointReport,inputs,stages,monolithicBootstrapAcceptance:false,selfhostGreen:false};
+ const inputs:Record<string,string>={},stages:Record<string,any>[]=[],state:Record<string,any>={status:'IN_PROGRESS',passed:false,criterion,limits,requiredExports:ABI,fixedpointReport,expectedStage:{sha256:stageSha256,bytes:stageBytes},inputs,stages,monolithicBootstrapAcceptance:false,selfhostGreen:false};
  const flush=()=>save(report,state);
  let child:ChildProcess|undefined,phase='authentication';
  const pin=(path:string,digest:string)=>{requireProof(typeof digest==='string'&&/^[0-9a-f]{64}$/.test(digest)&&realpathSync(path)===path&&hash(path)===digest&&(!inputs[path]||inputs[path]===digest),'Input/proof drift: '+path);inputs[path]=digest;};
@@ -89,7 +92,7 @@ if(!worker){
   requireProof(same(composition,request.rootComposition)&&composition.exactParserDeclarations===true&&composition.manifest===request.rootManifest&&composition.manifestSha256===hash(request.rootManifest)&&composition.rootSha256===hash(request.root)&&composition.parserSourceSha256===hash(accepted.parserSource)&&composition.parserDeclarationSha256===sha(declarations)&&rootText.slice(composition.embedding.start,composition.embedding.start+composition.embedding.chars)===declarations&&same(composition.embedding,manifest.embedding)&&manifest.outputSha256===hash(request.root)&&manifest.parserBodiesChanged===0&&manifest.parserDatatypesChanged===0&&manifest.parserRequestKontChanged===false,'Exact accepted parser/root composition mismatch');
   const artifacts=object(original.artifacts),one=object(artifacts.stageOne),two=object(artifacts.stageTwo);
   for(const [artifact,name]of [[one,'stage-one'],[two,'stage-two']] as const){
-   requireProof(artifact.path===join(request.sidecars,name+'.js')&&artifact.bytes===13733899&&artifact.sha256==='8aacace8d17a5a8d79e909733d03ccd4b82a5c42d9b269a96276925215d02c0b','Wrong actual K emitted image chain');
+   requireProof(artifact.path===join(request.sidecars,name+'.js')&&artifact.bytes===stageBytes&&artifact.sha256===stageSha256,'Wrong independently pinned emitted image chain');
    pin(artifact.path,artifact.sha256);requireProof(readFileSync(artifact.path).length===artifact.bytes,'Emitted image size mismatch');
   }
   requireProof(readFileSync(one.path).equals(readFileSync(two.path))&&same(one.sourceHashes,two.sourceHashes),'Actual unchanged stage bytes/sourceHashes differ');

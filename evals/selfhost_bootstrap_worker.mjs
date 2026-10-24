@@ -185,26 +185,16 @@ if(isMainThread){
  // A bounded profile timeout is failure, never bootstrap acceptance.
  function profileSteps(component,exports){
   if(!workerData.profileRoot)return component;
-  let requests=0,lastHeartbeat=performance.now(),definition;
-  function observe(progress){
-   const boundary=tag(progress);
-   if(!boundary.endsWith('Pending')&&!boundary.endsWith('Direct'))return progress;
-   // Observe the real argument record, never reconstruct the erased request.
-   const leaf=progress.request?.request??progress.request??progress.arguments,leafTag=tag(leaf);
-   if(leafTag==='CheckerRequest_check_definition'||leafTag==='CheckerArguments_check_definition')definition=leaf.v_2?.key??definition;
-   if((++requests&1023)===0){
+  let chunkAdvances=0,lastHeartbeat=performance.now();
+  return Object.fromEntries([...Object.entries(component),...exports.filter(name=>name.endsWith('_step')).map(name=>[name,run=>{
+   chunkAdvances++;
+   if((chunkAdvances&1023)===0){
     const now=performance.now();
-    if(now-lastHeartbeat>=1000){lastHeartbeat=now;send({event:'profile-progress',phase,requests,definition,requestTag:leaf?.$??progress.$,phaseElapsedMs:now-phaseStarted,...process.memoryUsage()});}
+    if(now-lastHeartbeat>=1000){lastHeartbeat=now;send({event:'profile-progress',phase,phaseTraceVersion:3,chunkAdvances,chunkQuantum:64,countScope:'Opaque native Run step calls only; initial start chunk excluded',phaseElapsedMs:now-phaseStarted,...process.memoryUsage()});}
     if(now-phaseStarted>300000){const error=Error('Full-root profiling phase exceeded the 300000 ms target: '+phase);error.phase=phase;throw error;}
    }
-   const resume=progress.resume;
-   if(boundary.endsWith('Direct')){
-    const invoke=progress.invoke;
-    return {...progress,invoke:arguments_=>observe(invoke(arguments_)),resume:value=>observe(resume(value))};
-   }
-   return {...progress,resume:value=>observe(resume(value))};
-  }
-  return Object.fromEntries([...Object.entries(component),...exports.map(name=>[name,(...inputs)=>observe(component[name](...inputs))])]);
+   return component[name](run);
+  }])]);
  }
  function compile(component,loaded,library){
   let modules=loaded.modules;loaded.modules=undefined;

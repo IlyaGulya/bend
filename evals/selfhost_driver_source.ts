@@ -349,10 +349,18 @@ for(const [mode,stem]of [['template','template'],['checker','checker-core'],['em
  const record=object(JSON.parse(text)),{generationManifestSha256,...proof}=record;
  if(generationManifestSha256!==sha(JSON.stringify(proof))||record.generationConfig?.mode!==mode
   ||record.exactCanonicalCoverage!==true||record.residualSourceCalls!==0||record.recursiveHelpers!==1
-  ||record.generatedPrivateRecursiveHelpers!==0||record.progressABI!=='boxed-value-bound-v53'
+  ||record.generatedPrivateRecursiveHelpers!==0||record.progressABI!=='typed-native-stack-v57t'
   ||record.nativeChunk?.function!==mode+'_chunk'||record.nativeChunk?.rawStep!==mode+'_step_one'
-  ||record.nativeChunk?.quantum!==64||record.nativeChunk?.recursion!=='structural Nat'
-  ||record.nativeChunk?.zeroFuel!=='return remaining progress unchanged'
+  ||record.nativeChunk?.publicStep!==mode+'_step'||record.nativeChunk?.start!==mode+'_start'
+  ||record.nativeChunk?.quantum!==64||record.nativeChunk?.fuelType!=='Nat'||record.nativeChunk?.recursion!=='structural Nat'
+  ||record.nativeChunk?.zeroFuel!=='return remaining Run unchanged'||record.nativeChunk?.semanticFuelChanged!==false
+  ||record.nativeChunk?.castBoxFunction!==mode+'_cast_box'||record.nativeChunk?.popFunction!==mode+'_pop'
+  ||record.nativeChunk?.advanceFunction!==mode+'_advance'||record.nativeChunk?.exportedResume!==false
+  ||record.nativeChunk?.publicStepType!=='-R: Type, Run<R> -> Run<R>'
+  ||record.nativeChunk?.sourceResumeClosuresUnchanged!==true||record.nativeChunk?.directInvokeUnchanged!==true
+  ||JSON.stringify(record.nativeChunk?.selfRecursiveFunctions)!==JSON.stringify([mode+'_chunk'])
+  ||['runType','runFinishedConstructor','runStateConstructor','stackType','stackDoneConstructor','stackMoreConstructor'].some((key,index)=>
+    record.nativeChunk?.[key]!==({checker:'Checker',emitter:'Emitter',template:'Template'}[mode])+['Run','RunFinished','RunState','Stack','StackDone','StackMore'][index])
   ||!Array.isArray(record.excludedDefinitions)||record.excludedDefinitions.length
   ||!Array.isArray(record.omittedDefinitions)||record.omittedDefinitions.length)
   throw Error('Complete current typed '+mode+' source generation proof required');
@@ -402,29 +410,29 @@ const wrappers=`
 def parsed_module(namespace: String, module: Ast.Module) -> Loader.LoadedModule:
   Loader.LoadedModule{namespace, module}
 
-def expand_modules_start(modules: List<&2, Loader.LoadedModule>) -> Template.TemplateProgress<Template.ExpandResult>:
+def expand_modules_start(modules: List<&2, Loader.LoadedModule>) -> Template.TemplateRun<Template.ExpandResult>:
   Template.template_start(modules)
 
-def template_step(request: Template.TemplateRequest) -> Template.TemplateProgress<Template.template_result(request)>:
-  Template.template_step(request)
+def template_step(-R: Type, run: Template.TemplateRun<R>) -> Template.TemplateRun<R>:
+  Template.template_step(R, run)
 
-def check_expanded_start(modules: List<&2, Loader.LoadedModule>) -> CheckerCore.CheckerProgress<Checked.CheckResult>:
+def check_expanded_start(modules: List<&2, Loader.LoadedModule>) -> CheckerCore.CheckerRun<Checked.CheckResult>:
   CheckerCore.checker_start(modules)
 
-def inspect_checked_start(program: Checked.CheckedProgram) -> CheckerCore.CheckerProgress<Checked.Inspection>:
+def inspect_checked_start(program: Checked.CheckedProgram) -> CheckerCore.CheckerRun<Checked.Inspection>:
   CheckerCore.checker_inspect_start(program)
 
-def checker_step(request: CheckerCore.CheckerRequest) -> CheckerCore.CheckerProgress<CheckerCore.checker_result(request)>:
-  CheckerCore.checker_step(request)
+def checker_step(-R: Type, run: CheckerCore.CheckerRun<R>) -> CheckerCore.CheckerRun<R>:
+  CheckerCore.checker_step(R, run)
 
-def emit_modules_start(program: Checked.CheckedProgram) -> JSEmit.EmitterProgress<JSEmit.EmitResult>:
+def emit_modules_start(program: Checked.CheckedProgram) -> JSEmit.EmitterRun<JSEmit.EmitResult>:
   JSEmit.emitter_start(program)
 
-def emit_library_start(program: Checked.CheckedProgram, exports: List<&2, String>) -> JSEmit.EmitterProgress<JSEmit.EmitResult>:
+def emit_library_start(program: Checked.CheckedProgram, exports: List<&2, String>) -> JSEmit.EmitterRun<JSEmit.EmitResult>:
   JSEmit.emitter_library_start(program, exports)
 
-def emitter_step(request: JSEmit.EmitterRequest) -> JSEmit.EmitterProgress<JSEmit.emitter_result(request)>:
-  JSEmit.emitter_step(request)
+def emitter_step(-R: Type, run: JSEmit.EmitterRun<R>) -> JSEmit.EmitterRun<R>:
+  JSEmit.emitter_step(R, run)
 `;
 const existing=new Set([...declarations.matchAll(/^def ([^ (]+)\(/gm)].map(x=>x[1]));
 for(const match of wrappers.matchAll(/^def ([^ (]+)\(/gm))if(existing.has(match[1]))throw Error('Compiler wrapper shadows parser definition: '+match[1]);

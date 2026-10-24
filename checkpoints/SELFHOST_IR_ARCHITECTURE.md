@@ -2,12 +2,12 @@
 
 ## Статус и границы
 
-Это архитектурный контракт принятого functional FIR/BIR cutover compiler57,
-не performance acceptance. Рабочая performance-версия55 остаётся базовой. Для полного compiler root57k
-реально получены два неизменённых emitted JS stage с точным byte fixedpoint;
-frozen corpus и7720-export consumer также прошли. Все285 seed/stage1/stage2
-behavior executions завершены со свежим parsing и native AST/span parity.
-Performance acceptance остаётся открытой; исходный monolithic600s gate red.
+Это архитектурный контракт принятого functional FIR/BIR cutover compiler57t,
+не победа над official. Историческая performance-версия55 остаётся reference.
+Полный57t root8391/8787 нативно проверен; новый unchanged stage1/stage2 exact
+byte fixedpoint и frozen7720-export consumer прошли. Все285 обязательных
+seed/stage1/stage2 behavior executions завершены с fresh native AST/span parity.
+Original monolithic600s gate остаётся red; отдельная полная behavior proof его не перекрашивает.
 Нельзя переносить доказательства на изменённые checker, lowering или runtime ABI
 без новой проверки.
 В57q current native C root8400/8796 реально собранO1 под прежним8GiB guard и
@@ -18,9 +18,12 @@ bytesK; новый native-produced seed повторно проверен пол
 57r candidates полно нативно проверены, но ОБА отвергнуты по same-host untraced
 JS performance: Frame+Leaf3.25×/flat8.72× slower. Более низкий GC не компенсировал
 giant dispatcher selftime. Это не production cutover и не общее отрицание defunctionalization.
-Следующий57t experiment сохраняет leaf resume closures, переносит heterogeneous
-Stack<A,R> внутрь bounded native Run<R> machine и убирает Bound association/host LIFO.
-Изменённый Run ABI требует новой полной проверки; small affine type model её не заменяет.
+57t сохраняет leaf resume closures, переносит heterogeneous Stack<A,R> внутрь
+bounded native Run<R> machine и убирает Bound association/host LIFO. Для нового
+Run ABI выполнены новая parser75 chain, полный native root, frozen, новый
+настоящий byte fixedpoint и285behavior — не перенесены старыеK proofs.
+Fresh current-root native C prototype cycle292.888s прошёл без cachedC под8GiB;
+permanent backend integration ещё в работе. Same-host official8.619s пока быстрее.
 
 
 Единственный источник этого контракта — этот файл; оперативный статус, команды,
@@ -182,6 +185,11 @@ Obs включает завершение/ошибку, результат с у
 | K2 | Defunctionalization сохраняет исходный порядок и quantities capture telescope, включая erased type parameters; affine continuation не копируется. | Зависимый live capture, erased existential type capture; native rejection повторного использования owning continuation. |
 | K3 | Composition возобновляет first до next и переносит исходный boxed value без подмены. | Неперестановочный trace через разные промежуточные типы; JS/C совпадение фактического результата. |
 | K4 | Операционная квота chunk остаётся структурной; opaque host только передаёт first-order frame в соответствующий native resumer. | Полный source/body admission и root ABI callers, nested Pending/Direct/Bound, новый fixedpoint/behavior/performance run; small model недостаточна. |
+| K5 | `Run<R>` владеет progress некоторого A и `Stack<A,R>`; push/pop сохраняют этот индекс, `StackDone` завершает только через checked `A == R`, каждый переход расходует одну единицу operational fuel. | Native wrong-domain/owning-stack-reuse rejection, реальное прохождение Pending/Direct и более64 Bound frames; новый полный source/native/fixedpoint/frozen run. |
+
+K1–K4 задают обязательства возможной defunctionalization57r, НЕ тип публичного
+ABI текущего57t. Оба измеренных57r implementations отвергнуты; datatype
+Continuation в57t не вводится. Для57t действует K5 и прежние F/L/B/G законы.
 
 57r small model в `compiler-ir-frame-model-v57r.json` реально прошла native2.0.37,
 JS и clangO1/C для indexed per-site constructors, Compose/Identity, dependent live
@@ -191,6 +199,23 @@ generator cutover/K4 или ускорения. Unindexed FrameOutput, возв�
 captured type как live Type, был отвергнут; quantities нельзя «исправлять» promotion.
 Checked equality lifting использует motive `Value<_>`/`Progress<_>`; atomic `_`
 не означает автоматическую конгруэнтность семейства. Evidence сохраняет первые ошибки.
+
+57t — другая scheduling architecture: исходные source resume closures сохранены.
+`Stack<A,R>` хранит typed resume до следующего промежуточного типа B и хвост
+`Stack<B,R>`; `Run<R>` хранит текущий existential progress/stack либо конечный box.
+Bound только push-ится, Finished только pop-ится; association closures/Compose
+не создаются. Chunk структурно убывает по Nat64 и возвращает остаточный Run.
+Node и C не видят внутренний stack/request: передают owning Run в следующий
+native chunk, а C скрывает flattened layout за одноразовым next/take thunk.
+Это control protocol реализации компилятора, НЕ третий language IR; FIR/BIR
+и их semantic/ownership contracts прежние.
+
+Private native model364 bodies реально прошла JS/C,80 Bound frames, зависимые
+Nat/Owned requests и Direct; wrong-domain/reused-stack programs отвергнуты.
+Полный canonical57t root8391/8787 уже прошёл public native producer и fresh
+parser75 barrier. На complete-Base paired checker CPU−20.58%, wall−16.35%;
+это локальный checker-only result. Теперь новый полный native root/frozen/
+fixedpoint/285 также завершён; исходный K result не переносился на новый ABI.
 
 
 ### Как объявлять `law` в Bend

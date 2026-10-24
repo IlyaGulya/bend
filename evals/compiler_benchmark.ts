@@ -23,7 +23,7 @@ const save=(path:string,value:unknown,exclusive=false)=>writeFileSync(path,json(
 const guard={memoryMiB:8192,rssMiB:8192,pollMs:10};
 const ABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','inspect_checked_start','checker_step','emit_modules_start','emit_library_start','emitter_step'];
 // Frozen output is an explicit historical test input, never a production decoder.
-const frozenV41ABI=ABI.filter(name=>name!=='inspect_checked_start');
+const frozenV41ABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','checker_step','emit_modules_start','emit_library_start','emitter_step'];
 const productionRuntime=resolve(repository,'evals/checker_core_step_runtime.mjs');
 const frozenV41Runtime=resolve(repository,'checkpoints/compiler-benchmark-v41-step-runtime.mjs');
 const frozenV41Manifest=resolve(repository,'checkpoints/compiler-benchmark-release237-v41.corpus.json');
@@ -177,7 +177,7 @@ async function worker(requestPath:string,requestSha256:string){
    if(!(o.outputSmokeDriver==='frozen-v41'?frozenV41ABI:ABI).every(name=>typeof outputApi[name]==='function'))throw Error('Emitted compiler ABI incomplete');
    const runtimePath=o.outputSmokeDriver==='frozen-v41'?frozenV41Runtime:productionRuntime;
    const runtime=await import(pathToFileURL(runtimePath).href);
-   report.outputSmokeRuntime={selection:o.outputSmokeDriver,path:runtimePath,sha256:hash(runtimePath),...(o.outputSmokeDriver==='frozen-v41'?{provenance:'Exact pre-v53 runtime captured from committed52 f99b22db; frozen v41 benchmark input only',expectedSha256:frozenV41RuntimeSha256,corpusReference:frozenV41Manifest}:{progressABI:'boxed-value-bound-v53'})};
+   report.outputSmokeRuntime={selection:o.outputSmokeDriver,path:runtimePath,sha256:hash(runtimePath),...(o.outputSmokeDriver==='frozen-v41'?{provenance:'Exact pre-v53 runtime captured from committed52 f99b22db; frozen v41 benchmark input only',expectedSha256:frozenV41RuntimeSha256,corpusReference:frozenV41Manifest}:{progressABI:'typed-native-stack-v57t'})};
    await phase('output-semantic-smoke',()=>{
     const module=parsed(outputApi,resolve(corpus.directory,'benchmark-smoke.bend'),'type Bit is Data:\n  Zero{}\n  One{}\n\ndef main() -> Bit:\n  One{}\n');
     if(!items(module.declarations).some(top=>tag(top)==='DefTop'&&top.definition.key==='main'))throw Error('Emitted parser lost the actual main declaration');

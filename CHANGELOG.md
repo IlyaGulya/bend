@@ -5,10 +5,16 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
-- The in-progress selfhost FIR/Backend IR cutover has a native-checked JS
-  pipeline (all6910 bodies, no exclusions) and an exercised owning
-  check/inspection/lowering path. Full-root and fresh fixedpoint acceptance
-  are still pending; the selected complete compiler remains version55.
+- Native heterogeneous continuation stacks run inside checked Bend chunks.
+  Node and C consume opaque Run states or one-use native view thunks; public
+  export names/count remain ten (nine for subsets). Phase trace version3
+  counts chunk advances, not historical request/resume boundaries. Frozen-v41
+  remains an explicit historical input. Emitted-stage suites require independent
+  SHA256/byte-count pins and retain full native/source/parser/span authentication.
+- The owning FIR → Backend IR compiler cutover has a complete native-validated
+  root, a new unchanged stage1/stage2 byte fixedpoint and all285 required
+  seed/stage1/stage2 behavior executions. The aggregate 600s gate remains an
+  honest deadline failure; separate complete behavior evidence does not waive it.
 - Explicit constructor eliminators in that pipeline produce callable matchers
   instead of eagerly evaluating the fallback. A program rejected at runtime
   by the unchanged previous stage-one output now executes as `BitOne{}`.

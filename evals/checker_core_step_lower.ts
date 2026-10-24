@@ -47,6 +47,9 @@ const protocol = paths.mode === 'checker' ? 'Checker' : paths.mode === 'emitter'
 const prefix = paths.mode;
 const requestType = protocol + 'Request', progressType = protocol + 'Progress', valueType = protocol + 'Value';
 const finishedType = protocol + 'Finished', pendingType = protocol + 'Pending', directType = protocol + 'Direct', boundType = protocol + 'Bound';
+const stackType = protocol + 'Stack', stackDoneType = protocol + 'StackDone', stackMoreType = protocol + 'StackMore';
+const runType = protocol + 'Run', runFinishedType = protocol + 'RunFinished', runStateType = protocol + 'RunState';
+const castBoxFunction = prefix + '_cast_box', popFunction = prefix + '_pop', advanceFunction = prefix + '_advance';
 const resultFunction = prefix + '_result', stepFunction = prefix + '_step', startFunction = prefix + '_start';
 const rawStepFunction = prefix + '_step_one', chunkFunction = prefix + '_chunk', nativeChunkQuantum = 64;
 const unboxFunction = prefix + '_unbox';
@@ -554,7 +557,9 @@ const signatures = new Map(definitions.map(def => [def.name, {parameters: def.pa
 const reserved = new Set([...clean.matchAll(/\b[A-Za-z_]\w*\b/g)].map(match => match[0]));
 function reserve(name: string): string {if (reserved.has(name)) throw Error('Generated name collision ' + name); reserved.add(name); return name;}
 for (const name of [requestType, progressType, valueType, finishedType, pendingType, directType, boundType,
-  resultFunction, stepFunction, rawStepFunction, chunkFunction, unboxFunction, startFunction]) reserve(name);
+  resultFunction, stepFunction, rawStepFunction, chunkFunction, unboxFunction, startFunction,
+  stackType, stackDoneType, stackMoreType, runType, runFinishedType, runStateType,
+  castBoxFunction, popFunction, advanceFunction]) reserve(name);
 const requestName = new Map(definitions.map(def => [def.name, reserve(requestType + '_' + def.name)]));
 // Keep request datatypes and dispatch bodies bounded. A single thousands-row
 // dependent match is expensive for both the source checker and native JS.
@@ -1120,6 +1125,20 @@ for (const group of requestGroups) chunks.push('    case ' + group.constructor +
 const resumeType = '(@box: ' + valueType + '<' + resultFunction + '(request)> -> ' + progressType + '<A>)';
 chunks.push('\ntype ' + valueType + '<-A: Type> is Type:\n  ' + valueType + '{value: A}\n');
 chunks.push('\ntype ' + progressType + '<-A: Type> is Type:\n  ' + finishedType + '{box: ' + valueType + '<A>}\n  ' + pendingType + '{request: ' + requestType + ', resume: ' + resumeType + '}\n  ' + directType + '{-R: Type, -request: ' + requestType + ', arguments: R, invoke: (@arguments: R -> ' + progressType + '<' + resultFunction + '(request)>), resume: ' + resumeType + '}\n  ' + boundType + '{-B: Type, inner: ' + progressType + '<B>, resume: (@box: ' + valueType + '<B> -> ' + progressType + '<A>)}\n\n');
+chunks.push(`
+type ${stackType}<-A: Type, -R: Type> is Type:
+  ${stackDoneType}{equation: {A == R : Type}}
+  ${stackMoreType}{-B: Type, resume: (@box: ${valueType}<A> -> ${progressType}<B>), rest: ${stackType}<B, R>}
+
+type ${runType}<-R: Type> is Type:
+  ${runFinishedType}{box: ${valueType}<R>}
+  ${runStateType}{-A: Type, progress: ${progressType}<A>, stack: ${stackType}<A, R>}
+
+def ${castBoxFunction}(-A: Type, -R: Type, equation: {A == R : Type}, box: ${valueType}<A>) -> ${valueType}<R>:
+  %equation : ${valueType}<_>
+  box
+
+`);
 chunks.push('def ' + unboxFunction + '(-A: Type, box: ' + valueType + '<A>) -> A:\n  match box:\n    case ' + valueType + '{value}: value\n\n');
 const generatedNames = new Set(generated.map(def => def.name)), positions = new Map(generated.map((def, index) => [def.name, index]));
 const generatedEdges: {from: string; to: string}[] = [];
@@ -1151,36 +1170,40 @@ for (const group of requestGroups) {
 }
 chunks.push('def ' + rawStepFunction + '(request: ' + requestType + ') -> ' + progressType + '<' + resultFunction + '(request)>:\n  match request:\n');
 for (const group of requestGroups) chunks.push('    case ' + group.constructor + '{inner}: ' + group.step + '(inner)\n');
-// This operational Nat decreases on every native scheduling transition. Zero
-// returns the remaining computation, independently of canonical semantic fuel.
+// Each transition consumes the current progress and heterogeneous native stack
+// once. Source resume/invoke closures are retained without Bound association.
 chunks.push(`
-def ${chunkFunction}(-A: Type, fuel: Nat, progress: ${progressType}<A>) -> ${progressType}<A>:
-  match fuel progress:
-    case 0n state: state
-    case 1n+rest ${finishedType}{box}: ${finishedType}{box}
-    case 1n+rest ${pendingType}{request, resume}:
-      ${chunkFunction}(A, rest, ${boundType}{${resultFunction}(request), ${rawStepFunction}(request), resume})
-    case 1n+rest ${directType}{R, request, arguments, invoke, resume}:
-      ${chunkFunction}(A, rest, ${boundType}{${resultFunction}(request), invoke(arguments), resume})
-    case 1n+rest ${boundType}{B, inner, resume}:
-      match inner:
-        case ${finishedType}{box}: ${chunkFunction}(A, rest, resume(box))
-        case ${pendingType}{request, next}:
-          ${chunkFunction}(A, rest, ${pendingType}{request, box => ${boundType}{B, next(box), resume}})
-        case ${directType}{R, request, arguments, invoke, next}:
-          ${chunkFunction}(A, rest, ${directType}{R, request, arguments, invoke, box => ${boundType}{B, next(box), resume}})
-        case ${boundType}{C, nested, next}:
-          ${chunkFunction}(A, rest, ${boundType}{C, nested, box => ${boundType}{B, next(box), resume}})
+def ${popFunction}(-A: Type, -R: Type, stack: ${stackType}<A, R>, box: ${valueType}<A>) -> ${runType}<R>:
+  match stack:
+    case ${stackDoneType}{equation}: ${runFinishedType}{${castBoxFunction}(A, R, equation, box)}
+    case ${stackMoreType}{B, resume, rest}: ${runStateType}{B, resume(box), rest}
 
-def ${stepFunction}(request: ${requestType}) -> ${progressType}<${resultFunction}(request)>:
-  ${chunkFunction}(${resultFunction}(request), ${nativeChunkQuantum}n, ${rawStepFunction}(request))
+def ${advanceFunction}(-A: Type, -R: Type, progress: ${progressType}<A>, stack: ${stackType}<A, R>) -> ${runType}<R>:
+  match progress:
+    case ${finishedType}{box}: ${popFunction}(A, R, stack, box)
+    case ${pendingType}{request, resume}:
+      ${runStateType}{${resultFunction}(request), ${rawStepFunction}(request), ${stackMoreType}{A, resume, stack}}
+    case ${directType}{T, request, arguments, invoke, resume}:
+      ${runStateType}{${resultFunction}(request), invoke(arguments), ${stackMoreType}{A, resume, stack}}
+    case ${boundType}{B, inner, resume}:
+      ${runStateType}{B, inner, ${stackMoreType}{A, resume, stack}}
+
+def ${chunkFunction}(-R: Type, fuel: Nat, run: ${runType}<R>) -> ${runType}<R>:
+  match fuel run:
+    case 0n state: state
+    case 1n+rest ${runFinishedType}{box}: ${runFinishedType}{box}
+    case 1n+rest ${runStateType}{A, progress, stack}:
+      ${chunkFunction}(R, rest, ${advanceFunction}(A, R, progress, stack))
+
+def ${stepFunction}(-R: Type, run: ${runType}<R>) -> ${runType}<R>:
+  ${chunkFunction}(R, ${nativeChunkQuantum}n, run)
 `);
 const startInput = paths.mode === 'emitter' ? 'program: Checked.CheckedProgram' : 'modules: List<&2, Loader.LoadedModule>';
 const startArguments = paths.mode === 'checker' ? 'modules, Nil{}' : paths.mode === 'emitter' ? 'program' : 'modules';
 function typedStart(name:string, root:string, parameters:string, arguments_:string, result:string){
  const group=requestGroup.get(root),request=requestName.get(root);
  if(!group||!request)throw Error('Missing typed public root '+root);
- return '\ndef '+name+'('+parameters+') -> '+progressType+'<'+result+'>:\n  '+chunkFunction+'('+result+', '+nativeChunkQuantum+'n, '+pendingType+'{'+group.constructor+'{'+request+'{'+arguments_+'}}, box => '+finishedType+'{box}})\n';
+ return '\ndef '+name+'('+parameters+') -> '+runType+'<'+result+'>:\n  '+chunkFunction+'('+result+', '+nativeChunkQuantum+'n, '+runStateType+'{'+result+', '+pendingType+'{'+group.constructor+'{'+request+'{'+arguments_+'}}, box => '+finishedType+'{box}}, '+stackDoneType+'{{==}}})\n';
 }
 chunks.push(typedStart(startFunction,paths.root,startInput,startArguments,paths.result));
 if(paths.mode==='checker')chunks.push(typedStart('checker_inspect_start','inspect_checked','program: Checked.CheckedProgram','program','Checked.Inspection'));
@@ -1190,10 +1213,10 @@ const alias = paths.mode === 'checker' ? 'CheckerCore' : paths.mode === 'emitter
 const wrapper = paths.mode === 'checker' ? 'check_expanded_start' : paths.mode === 'emitter' ? 'emit_modules_start' : 'expand_modules_start';
 const outputImport = './' + posix.basename(paths.output);
 const resultType=paths.result.includes('.')?paths.result:alias+'.'+paths.result;
-const wrappers = 'def ' + wrapper + '('+startInput+') -> ' + alias + '.' + progressType + '<' + resultType + '>:\n  ' + alias + '.' + startFunction + '('+(paths.mode==='emitter'?'program':'modules')+')\n\n'
- + (paths.mode==='checker'?'def inspect_checked_start(program: Checked.CheckedProgram) -> CheckerCore.CheckerProgress<Checked.Inspection>:\n  CheckerCore.checker_inspect_start(program)\n\n':'')
- + (paths.mode==='emitter'?'def emit_library_start(program: Checked.CheckedProgram, exports: List<&2, String>) -> JSEmit.EmitterProgress<JSEmit.EmitResult>:\n  JSEmit.emitter_library_start(program, exports)\n\n':'')
- + 'def ' + stepFunction + '(request: ' + alias + '.' + requestType + ') -> ' + alias + '.' + progressType + '<' + alias + '.' + resultFunction + '(request)>:\n  ' + alias + '.' + stepFunction + '(request)';
+const wrappers = 'def ' + wrapper + '('+startInput+') -> ' + alias + '.' + runType + '<' + resultType + '>:\n  ' + alias + '.' + startFunction + '('+(paths.mode==='emitter'?'program':'modules')+')\n\n'
+ + (paths.mode==='checker'?'def inspect_checked_start(program: Checked.CheckedProgram) -> CheckerCore.CheckerRun<Checked.Inspection>:\n  CheckerCore.checker_inspect_start(program)\n\n':'')
+ + (paths.mode==='emitter'?'def emit_library_start(program: Checked.CheckedProgram, exports: List<&2, String>) -> JSEmit.EmitterRun<JSEmit.EmitResult>:\n  JSEmit.emitter_library_start(program, exports)\n\n':'')
+ + 'def ' + stepFunction + '(-R: Type, run: ' + alias + '.' + runType + '<R>) -> ' + alias + '.' + runType + '<R>:\n  ' + alias + '.' + stepFunction + '(R, run)';
 const loaderImport=header.match(/^import (\S+) as Loader$/m)?.[0];
 const checkedImport=header.match(/^import (\S+) as Checked$/m)?.[0];
 if(paths.mode!=='emitter'&&!loaderImport||paths.mode!=='template'&&!checkedImport)throw Error('Typed step component has no authenticated boundary import');
@@ -1212,10 +1235,10 @@ for (const [path, text] of inputs) if (readFileSync(path, 'utf8') !== text || re
 writeChanged(paths.output, output); writeChanged(paths.component, component);
 if (paths.driver && driver !== undefined) writeChanged(paths.driver, driver);
 const manifest = {
-  version: 1, algorithm: 'raw-AST typed boxed-continuation CPS with bounded dependent request groups, dependency-first ordered match, projection values, bounded nonrecursive storage islands and structurally recursive native chunks',
+  version: 1, algorithm: 'raw-AST typed boxed-continuation CPS with bounded dependent request groups, dependency-first ordered match, projection values, bounded nonrecursive storage islands and structurally recursive native heterogeneous-stack chunks',
   generationConfig, generationEnvironment, generationInputRealpaths,
-  nativeTerminationClaim: 'Generated source handlers and continuation helpers form an acyclic declaration graph. The native chunk scheduler is structurally self-recursive on an operational Nat quantum; zero returns the remaining progress, not an error. This does not alter canonical semantic fuel or claim termination of the complete host-driven computation.',
-  progressABI: 'boxed-value-bound-v53',
+  nativeTerminationClaim: 'Generated source handlers and continuation helpers form an acyclic declaration graph. Only the native chunk scheduler is self-recursive, structurally decreasing an operational Nat on every RunState transition. Zero returns the remaining Run unchanged; RunFinished returns directly. Native push/pop transfers affine progress, resume and stack once, never reassociates Bound and never allocates composition closures. This does not alter canonical semantic fuel or claim termination of the complete host-driven computation.',
+  progressABI: 'typed-native-stack-v57t',
   boxedTransport: {
     type: valueType, constructor: valueType, kind: 'Type', parameter: {name: 'A', kind: 'Type', quantity: 'None'},
     valueField: 'value', finishedField: 'box', resumeQuantity: 'Lone',
@@ -1226,10 +1249,16 @@ const manifest = {
   nativeChunk: {
     function: chunkFunction, rawStep: rawStepFunction, publicStep: stepFunction, start: startFunction,
     quantum: nativeChunkQuantum, fuelType: 'Nat', recursion: 'structural Nat',
-    zeroFuel: 'return remaining progress unchanged', semanticFuelChanged: false,
+    zeroFuel: 'return remaining Run unchanged', semanticFuelChanged: false,
     boundConstructor: boundType, boundFields: ['inner', 'resume'], boundErasedType: 'B',
     pendingDispatch: rawStepFunction, directDispatch: 'source invoke(arguments)',
-    finishedTransport: 'pass the whole box to resume; unwrap only at the final host root',
+    finishedTransport: 'native stack pop passes whole box to source resume; StackDone consumes checked equality through Value<_> and returns RunFinished',
+    runType, runFinishedConstructor: runFinishedType, runStateConstructor: runStateType,
+    stackType, stackDoneConstructor: stackDoneType, stackMoreConstructor: stackMoreType,
+    castBoxFunction, popFunction, advanceFunction,
+    stackOwnership: 'Affine heterogeneous native LIFO; no host stack, no Bound reassociation, no Compose nodes, no per-site constructors',
+    sourceResumeClosuresUnchanged: true, directInvokeUnchanged: true,
+    publicStepType: '-R: Type, Run<R> -> Run<R>', exportedResume: false,
     selfRecursiveFunctions: [chunkFunction],
   },
   ffi: false, source: paths.owned, sourceSha256: sha(ownedSource), canonical: paths.canonical, canonicalSha256: sha(canonical),

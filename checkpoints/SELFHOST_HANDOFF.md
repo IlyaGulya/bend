@@ -4,15 +4,41 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
-Актуально57q: production FIR→BIR compiler root нативно проверен8382/8382,
+СЕЙЧАС canonical57t typed-native-stack принят по functional correctness:
+fresh parser75, public native root8391/8391 bodies8787events, frozen15modules/
+7720exports и НОВЫЙ настоящий unchanged stage1/stage2 byte fixedpoint прошли.
+Stage images13739548bytes, SHA256c26cebdcf555b03605df7ae88e22c1a6a76ec9bc2ce712fbb487dfbe4ce6d832;
+actual cmp/shasum выполнены, stage2 использует stage1 parser+compiler, source/AST patches0.
+ВСЕ обязательные285 behavior executions завершены:95seed +95freshstage1+
+95freshstage2, каждый emitted image64positive/31negative/130fresh fullAST/span
+approvals, cachehits0. Отдельный emitted-suite guardPASS237847ms/1009990040physicalbytes.
+Original monolithic600s остаётсяFAIL: byte comparison уже прошёл на507222ms,
+95seed+62stage1 rows успели, это не перекрашено в aggregate acceptance.
+Source Run/Stack введён без изменения leaf resume closures/Direct.invoke;
+Bound association/host LIFO удалены, имена10/9 exports прежние.3helper bodies/mode,
+не3000 frame-site helpers. Все generated wrappers регенерированы, не патчились.
+Native C ТАКЖЕ выполнен: тот же root SHAefab3bf81dd52f597645b20ddda482e11b961d342115ab62152535de55c26d26,
+bridge8409/8811, свежий C+binary+fullfrozen+7720 actual consumer заняли292.887708s
+под прежними8GiB guard. Build199102ms/6249355384physicalbytes, run93164ms/
+1300875376bytes. Это пока PROTOTYPE LLVM pipeline; NativeBitcode57U внедряет
+постоянный runnable source path, wrapper из/tmp не считать завершённой feature.
+Строго same-host official наM3Pro/Node26.3 теперь8619.362542ms, НЕ старые32s
+другого окружения. Native93s пока намного медленнее; official НЕ обогнан.
+Local JS frozen119083.967ms против старогоK142821.056ms, но native JS seed producer
+51114ms противQ25347ms: path-specific regression не скрыта. Основной receipt:
+compiler-ir-checkpoint-v57t.json. Все source/semantic/native proof pins в нём.
+
+### Предыдущий correctness checkpoint57q/K (история)
+
+В57q: production FIR→BIR compiler root нативно проверен8382/8382,
 полный frozen corpus/7720 exports прошёл, настоящий unchanged stage1/stage2
 byte fixedpoint есть. ВСЕ285 behavior executions также завершены:95 seed,
 95 stage1,95 stage2; на каждом emitted image64 positive/31 negative и130
 свежих full AST/span approvals, cache hits0. Отдельный full emitted-suite run
 прошёл270081ms /836957800physicalbytes; исходный monolithic600s gate остаётся
 честно FAIL по deadline. Functional IR cutover выполнен; цель по скорости ещё не достигнута.
-Current correctness checkpoint2fabd354/d7e9b9ee и receipt57k/57n. Selected
-performance baseline55 остаётся2b3efa80. Native O0 отвергнут:clang37.22s,
+Предыдущий correctness checkpoint2fabd354/d7e9b9ee и receipt57k/57n. Исторический
+performance baseline55 —2b3efa80, не automatic winner новыхT runs. Native O0 отвергнут:clang37.22s,
 но whole frozen runtime не закончил check за300s. В57p coverage JSON keys
 заменены allocation-tight structural comparison. В57q интегрированы короткие
 private FID symbols без изменения numeric IDs, CID и foreign resolver keys;
