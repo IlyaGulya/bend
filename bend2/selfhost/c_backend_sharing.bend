@@ -55,6 +55,12 @@ import ./index_lookup.bend as IndexLookup
 #     never a subset);
 #   * Nat/U32/F32 heads are words, not nodes: a duplicated word never seeds
 #     their constructors, though a hot field type may still reach them;
+#   * a demanded function value needs no constructor sealed: the runtime keeps a
+#     closure by term_keep and a closure node carries no declared constructor
+#     field, so the synthetic function head is never expanded into the hot set.
+#     (The reference reads an arrow type as unknown and seals everything; that
+#     is not needed to keep the C target sound and it collapses every program
+#     with a high-order helper to all-hot, so it is deliberately not copied.)
 #   * foreign declaration cids stay cold: the foreign twin lays its own node
 #     under the produced constructor's cid and seals through the constructor
 #     hot bit (tests/io/foreign_shared.c), so the declaration cid itself is
@@ -1642,8 +1648,7 @@ def s_is_bind(+by_code: Map<&2, String>, +code: U32) -> Bool:
 
 def s_sites_direct(+out: SitesOut, +bkey: String, +code: U32, +args: List<&2, BIR.Arg>, +by_code: Map<&2, String>) -> SitesOut:
   with_call = s_sites_call(out, CallSite{bkey, code, args})
-  with_demands = s_sites_args_go(args, bkey, with_call)
-  s_sites_bind_at(s_is_bind(by_code, code), with_demands, bkey, args)
+  s_sites_bind_at(s_is_bind(by_code, code), with_call, bkey, args)
 
 def s_sites_apply_at(+out: SitesOut, +bkey: String, fn: BIR.Atom, arg: BIR.Arg) -> SitesOut:
   match arg:
@@ -1686,8 +1691,7 @@ def s_sites_primitive(+primitive: BIR.Primitive, types: List<&2, BIR.Descriptor>
 def s_sites_op(op: BIR.Op, +bkey: String, +by_code: Map<&2, String>, +out: SitesOut) -> SitesOut:
   match op:
     case BIR.Closure{code, +captures, parameters}:
-      next = s_sites_closure(out, ClosureSite{bkey, code, captures})
-      s_sites_args_go(captures, bkey, s_sites_symbols_args_go(captures, next))
+      s_sites_symbols_args_go(captures, s_sites_closure(out, ClosureSite{bkey, code, captures}))
     case BIR.Direct{code, +args}:
       s_sites_symbols_args_go(args, s_sites_direct(out, bkey, code, args, by_code))
     case BIR.Apply{+fn, +arg}:
@@ -2429,54 +2433,6 @@ def s_round_captures_go(+sites: List<&2, ClosureSite>, +facts: Facts, +st: AStat
       next = s_capture_site_add(site, facts, st)
       s_round_captures_go(rest, facts, next)
 
-def s_apply_param_at(found: Maybe<&2, U32>, st: AState, +code: U32, +bkey: String, atom: BIR.Atom) -> AState:
-  match found:
-    case None{}: st
-    case Some{param}: s_st_add_atom(st, s_body_local(s_code_body(code), param), bkey, atom)
-
-def s_apply_param0(st: AState, +code: U32, +bkey: String, atom: BIR.Atom, +facts: Facts) -> AState:
-  s_apply_param_at(s_param_at(IndexLookup.find(List<&2, U32>, s_decls_params(s_facts_decls(facts)), U32.show(code)), 0n), st, code, bkey, atom)
-
-def s_apply_row_kind(kind: String, +st: AState, +row: DeclRow, +bkey: String, atom: BIR.Atom, +facts: Facts) -> AState:
-  match kind:
-    case "fn": s_apply_param0(st, s_row_code(row), bkey, atom, facts)
-    case _: st
-
-def s_apply_row(+st: AState, +row: DeclRow, +bkey: String, atom: BIR.Atom, +facts: Facts) -> AState:
-  s_apply_row_kind(s_row_kind(row), st, row, bkey, atom, facts)
-
-def s_apply_decl_row(found: Maybe<&2, DeclRow>, st: AState, +bkey: String, atom: BIR.Atom, +facts: Facts) -> AState:
-  match found:
-    case None{}: st
-    case Some{+row}: s_apply_row(st, row, bkey, atom, facts)
-
-def s_apply_decl(st: AState, +key: String, +bkey: String, atom: BIR.Atom, +facts: Facts) -> AState:
-  s_apply_decl_row(s_decl_row(s_facts_decls(facts), key), st, bkey, atom, facts)
-
-def s_apply_one(+st: AState, res: Resolved, +bkey: String, +atom: BIR.Atom, +facts: Facts) -> AState:
-  match res:
-    case ResolvedCode{code}: s_apply_param0(st, code, bkey, atom, facts)
-    case ResolvedDecl{+key}: s_apply_decl(st, key, bkey, atom, facts)
-    case ResolvedNone{}: st
-
-def s_apply_callees_go(+callees: List<&2, Resolved>, +bkey: String, +atom: BIR.Atom, +facts: Facts, +st: AState) -> AState:
-  match callees:
-    case Nil{}: st
-    case +res <> rest:
-      next = s_apply_one(st, res, bkey, atom, facts)
-      s_apply_callees_go(rest, bkey, atom, facts, next)
-
-def s_apply_site_add(site: ApplySite, +facts: Facts, +st: AState) -> AState:
-  match site:
-    case ApplySite{+bkey, fn, arg, many}: s_apply_callees_go(s_atom_call(bkey, fn, s_st_calls(st)), bkey, arg, facts, st)
-
-def s_round_applies_go(+sites: List<&2, ApplySite>, +facts: Facts, +st: AState) -> AState:
-  match sites:
-    case Nil{}: st
-    case +site <> rest:
-      next = s_apply_site_add(site, facts, st)
-      s_round_applies_go(rest, facts, next)
-
 def s_bind_param_at(found: Maybe<&2, U32>, st: AState, +code: U32, answer: Flow) -> AState:
   match found:
     case None{}: st
@@ -2531,15 +2487,8 @@ def s_demand_array(is_array: Bool, st: AState) -> AState:
     case True{}: s_st_array(st)
     case False{}: st
 
-def s_hot_fn_at(on: Bool, st: AState) -> AState:
-  match on:
-    case True{}: s_st_forced_note(st, "a function value is shared; every constructor is sealed")
-    case False{}: st
-
 def s_hot_add_head(+head: String, +st: AState) -> AState:
-  st1 = s_st_hot_add(st, head)
-  st2 = s_demand_array(String.eq(head, s_family("Array")), st1)
-  s_hot_fn_at(String.eq(head, s_function_head()), st2)
+  s_demand_array(String.eq(head, s_family("Array")), s_st_hot_add(st, head))
 
 def s_demand_heads_go(+heads: List<&2, String>, +st: AState) -> AState:
   match heads:
@@ -2558,6 +2507,65 @@ def s_demand_flow(flow: Flow, st: AState) -> AState:
     case Flow{heads, unknown}:
       st1 = s_demand_unknown(unknown, st)
       s_demand_heads_go(heads, st1)
+
+def s_apply_param_at(found: Maybe<&2, U32>, st: AState, +code: U32, +bkey: String, atom: BIR.Atom) -> AState:
+  match found:
+    case None{}: st
+    case Some{param}: s_st_add_atom(st, s_body_local(s_code_body(code), param), bkey, atom)
+
+def s_apply_param0(st: AState, +code: U32, +bkey: String, atom: BIR.Atom, +facts: Facts) -> AState:
+  s_apply_param_at(s_param_at(IndexLookup.find(List<&2, U32>, s_decls_params(s_facts_decls(facts)), U32.show(code)), 0n), st, code, bkey, atom)
+
+def s_apply_row_kind(kind: String, +st: AState, +row: DeclRow, +bkey: String, atom: BIR.Atom, +facts: Facts) -> AState:
+  match kind:
+    case "fn": s_apply_param0(st, s_row_code(row), bkey, atom, facts)
+    case _: st
+
+def s_apply_row(+st: AState, +row: DeclRow, +bkey: String, atom: BIR.Atom, +facts: Facts) -> AState:
+  s_apply_row_kind(s_row_kind(row), st, row, bkey, atom, facts)
+
+def s_apply_decl_row(found: Maybe<&2, DeclRow>, st: AState, +bkey: String, atom: BIR.Atom, +facts: Facts) -> AState:
+  match found:
+    case None{}: st
+    case Some{+row}: s_apply_row(st, row, bkey, atom, facts)
+
+def s_apply_decl(st: AState, +key: String, +bkey: String, atom: BIR.Atom, +facts: Facts) -> AState:
+  s_apply_decl_row(s_decl_row(s_facts_decls(facts), key), st, bkey, atom, facts)
+
+def s_apply_one(+st: AState, res: Resolved, +bkey: String, +atom: BIR.Atom, +facts: Facts) -> AState:
+  match res:
+    case ResolvedCode{code}: s_apply_param0(st, code, bkey, atom, facts)
+    case ResolvedDecl{+key}: s_apply_decl(st, key, bkey, atom, facts)
+    case ResolvedNone{}: st
+
+def s_apply_callees_go(+callees: List<&2, Resolved>, +bkey: String, +atom: BIR.Atom, +facts: Facts, +st: AState) -> AState:
+  match callees:
+    case Nil{}: st
+    case +res <> rest:
+      next = s_apply_one(st, res, bkey, atom, facts)
+      s_apply_callees_go(rest, bkey, atom, facts, next)
+
+def s_apply_unknown_many(many: Bool, +bkey: String, arg: BIR.Atom, +st: AState) -> AState:
+  match many:
+    case True{}: s_demand_flow(s_atom_flow(bkey, arg, s_st_flows(st)), st)
+    case False{}: st
+
+def s_apply_callees_known(callees: List<&2, Resolved>, +bkey: String, arg: BIR.Atom, many: Bool, +facts: Facts, +st: AState) -> AState:
+  match callees:
+    case Nil{}: s_apply_unknown_many(many, bkey, arg, st)
+    case _: s_apply_callees_go(callees, bkey, arg, facts, st)
+
+def s_apply_site_add(site: ApplySite, +facts: Facts, +st: AState) -> AState:
+  match site:
+    case ApplySite{+bkey, fn, arg, many}:
+      s_apply_callees_known(s_atom_call(bkey, fn, s_st_calls(st)), bkey, arg, many, facts, st)
+
+def s_round_applies_go(+sites: List<&2, ApplySite>, +facts: Facts, +st: AState) -> AState:
+  match sites:
+    case Nil{}: st
+    case +site <> rest:
+      next = s_apply_site_add(site, facts, st)
+      s_round_applies_go(rest, facts, next)
 
 def s_demand_site_add(site: DemandSite, +facts: Facts, +st: AState) -> AState:
   match site:
@@ -2677,8 +2685,7 @@ def s_expand_families_go(+keys: List<&2, String>, +facts: Facts, +st: AState) ->
       s_expand_families_go(rest, facts, next)
 
 def s_round_hot(+st: AState, +facts: Facts) -> AState:
-  st1 = s_hot_fn_at(s_flag_has(s_st_hot_map(st), s_function_head()), st)
-  s_expand_families_go(s_catalog_family_keys(s_facts_catalog(facts)), facts, st1)
+  s_expand_families_go(s_catalog_family_keys(s_facts_catalog(facts)), facts, st)
 
 def s_analysis_round(st: AState, +facts: Facts) -> AState:
   st1 = s_round_results_go(s_built_bodies(s_facts_built(facts)), facts, st)
@@ -2731,25 +2738,12 @@ def s_plan_of_catalog(+catalog: Catalog, +ctr: Map<&2, Bool>, array_hot: Bool, +
 def s_plan_of(+facts: Facts, +ctr: Map<&2, Bool>, array_hot: Bool, +forced: Bool, +note: List<&2, String>) -> SharingPlan:
   s_plan_of_catalog(s_facts_catalog(facts), ctr, array_hot, forced, note)
 
-def s_list_empty(+items: List<&2, BodyRow>) -> Bool:
-  match items:
-    case Nil{}: True{}
-    case _: False{}
-
-def s_built_no_bodies(built: BuiltFacts) -> Bool:
-  s_list_empty(s_built_bodies(built))
-
-def s_plan_result_ok(no_bodies: Bool, +ctr: Map<&2, Bool>, array_hot: Bool, +forced: Bool, +note: List<&2, String>, +facts: Facts) -> SharingResult:
-  match no_bodies:
-    case True{}: SharingOk{s_plan_of(facts, ctr, array_hot, True{}, ["no body is reachable from the program ending: every constructor is sealed"])}
-    case False{}: SharingOk{s_plan_of(facts, ctr, array_hot, forced, note)}
-
 def s_plan_result(st: AState, +facts: Facts) -> SharingResult:
   match st:
     case AState{flow, pay, call, hot, ctr, array_hot, elem_unknown, forced, note, changed, failure}:
       match failure:
         case Some{message}: SharingFail{message}
-        case None{}: s_plan_result_ok(s_built_no_bodies(s_facts_built(facts)), ctr, array_hot, forced, note, facts)
+        case None{}: SharingOk{s_plan_of(facts, ctr, array_hot, forced, note)}
 
 def s_analysis_bound(+facts: Facts) -> Nat:
   values = Nat.add(
