@@ -1,0 +1,454 @@
+{
+  "schemaVersion": 1,
+  "version": "compiler57z-private-literal-schema-frame",
+  "status": "REJECTED_COMPLETE_COMPILER_ACCELERATION_NOT_DEMONSTRATED_NO_CANONICAL_EDITS",
+  "packet": {
+    "status": "MEASURED_REJECTION_FOR_COMPLETE_COMPILER_ACCELERATION",
+    "sourcePatch": "/private/tmp/body-schema57z.hzvjxv06/evidence/source.patch",
+    "sourcePatchSha256": "7eb4f5e879f3f7ff8a279117af12b4ed3164fb6f37083c676e9d902dc5241313",
+    "candidateSourcePins": {
+      "bend2/selfhost/checker.bend": "c3786fd79ea28b637e07b91c90d991d94e746c2ccde73ad3700812f1e126b0d2",
+      "bend2/selfhost/checker_arena.bend": "5c739a029c7e2de10ab8f22eae917e1ddc2e76f7fd7a246f296efc7a9839fede"
+    },
+    "unchangedKernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+    "unchangedCanonicalCompilerSha256": "9704b4bbd00c834df65b21a34f57cfc4ff4f6afc1878f161565a52f7fcf00d9c",
+    "pairedSubset": {
+      "basis": "retained uninstrumented W/noCursor on both sides; A producer5b9, B canonical9704 Cgen-only; not currentY proof",
+      "allDeclaredSamples": [
+        {
+          "label": "A1-stress",
+          "checkerWallMs": 1319.742,
+          "checkerCpuMs": 1319.739,
+          "chunkAdvances": 347576,
+          "processWallSeconds": 1.7068279579999999,
+          "maxRssBytes": 131678208,
+          "sampledRssBytes": 132841472,
+          "sampledPhysicalBytes": 117474072,
+          "guardianStatus": "PASS"
+        },
+        {
+          "label": "B1-stress",
+          "checkerWallMs": 1277.884,
+          "checkerCpuMs": 1277.875,
+          "chunkAdvances": 332164,
+          "processWallSeconds": 1.7324420420000006,
+          "maxRssBytes": 132759552,
+          "sampledRssBytes": 133988352,
+          "sampledPhysicalBytes": 118621000,
+          "guardianStatus": "PASS"
+        },
+        {
+          "label": "B2-stress",
+          "checkerWallMs": 1266.855,
+          "checkerCpuMs": 1266.8509999999999,
+          "chunkAdvances": 332164,
+          "processWallSeconds": 1.7007086670000007,
+          "maxRssBytes": 132759552,
+          "sampledRssBytes": 133922816,
+          "sampledPhysicalBytes": 118522648,
+          "guardianStatus": "PASS"
+        },
+        {
+          "label": "A2-stress",
+          "checkerWallMs": 1376.911,
+          "checkerCpuMs": 1376.907,
+          "chunkAdvances": 347576,
+          "processWallSeconds": 1.824757,
+          "maxRssBytes": 131678208,
+          "sampledRssBytes": 132907008,
+          "sampledPhysicalBytes": 117572424,
+          "guardianStatus": "PASS"
+        }
+      ],
+      "checkCpuRatio": 0.9436633506956419,
+      "checkCpuImprovementPercent": 5.6336649304358115,
+      "checkWallRatio": 0.9436657219152779,
+      "checkWallImprovementPercent": 5.633427808472213,
+      "nativeRunRequestsScope": "chunkAdvances counts whole-check host scheduler chunk64 advances; not source-exclusive cost or allocation lifetimes",
+      "nativeBehavior": {
+        "supportedPairedCases": 8,
+        "baselineUnsupportedPositive": {
+          "name": "nat_literal_no_arithmetic",
+          "originalExpectedAccepted": true,
+          "baselineActual": "template application requires a compile-time template argument",
+          "baselinePhase": "expand",
+          "passed": false,
+          "scope": "Original4097n compile-time Nat template fixture is unsupported in the retained W baseline; retain original FAIL and compare candidate same rejection. Separate plain7n custom Nat fixture exercises reachable constructor checking without templates."
+        }
+      },
+      "actualMixedConsumer": {
+        "status": "PASS",
+        "outputPatches": 0,
+        "assertions": 5,
+        "outputSha256": "856391237700b58a9cb73567cce6fc2454522c13ef6492a8a28d0f48eb9a4ec2",
+        "outputBytes": 276721,
+        "wallMs": 5.974375000000002,
+        "cpuMs": 6.828,
+        "maxRssBytes": 58605568
+      },
+      "actualMixedConsumerGuardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 58277888,
+        "peakFootprintBytes": 23300664,
+        "elapsedMs": 86,
+        "timeoutMs": 600000,
+        "command": [
+          "/opt/homebrew/bin/node",
+          "consume-mixed.mjs"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792812562230-cef797e176742881.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    "original95": {
+      "status": "ORIGINAL95_NATIVE_COMPILE_AND_ACTUAL_CONSUMER_PASS",
+      "actualNativeCompileAndOutputConsumerAccepts": 64,
+      "expectedNativeRejects": 31,
+      "negativeGuardStatus": "FAIL retained; ordinary command_exit, never relabeled PASS",
+      "allBehaviorAssertionsPassed": true,
+      "receipt": "/private/tmp/body-schema57z.hzvjxv06/observed/original95/receipt.json",
+      "receiptSha256": "7e24a853654ee7d9aab2d34701364b47b01d4c1c84e534c33183a8de6bb42354"
+    },
+    "fullCycleDecision": {
+      "cpuThresholdPercent": 5,
+      "bothCandidatesBelowBothBaselines": true,
+      "meetsThreshold": true,
+      "repeatedFullTimingTrials": 0,
+      "latestYCycleCount": 1
+    },
+    "scopeLimits": [
+      "Native C rejection bridge exposes diagnostic message only; paired message parity observed, rich diagnostic span parity not claimed. Source spans and all diagnostic paths unchanged.",
+      "Two scalar selections plus one string selection per exact owned definition frame; collisions/rewind/finish discard the entire frame; no cross-scope/name-only reuse.",
+      "Original custom4097n template-positive expectation remains unsupported in baseline and candidate, not passed. Plain7n customNat source is separately accepted.",
+      "Baseline/candidate stress has two samples each; no significance or full-root speedup inferred from subset alone."
+    ],
+    "recommendation": "Do not integrate for the stated full-compiler acceleration goal. Mixed-type schema churn is real and the fully implemented private candidate is semantically correct on exercised cases, but the one final currentY full native sample shows no complete-check gain. Preserve the coherent patch for review; no canonical changes and no additional timing trials.",
+    "fullCurrentY": {
+      "status": "CURRENT_Y_SCHEMA_FULL_NATIVE_PASS",
+      "sourceSnapshotSha256": "005ae5ddac84178cd7ea28a0538b5440cd8ed8e77af7fd253e61c0eff95118c2",
+      "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+      "compilerSha256": "9704b4bbd00c834df65b21a34f57cfc4ff4f6afc1878f161565a52f7fcf00d9c",
+      "baseSha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+      "indexLookupSha256": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
+      "generatedCheckerSha256": "61f30475776558544b784ef9767fff9c5114379fa2500f4621c564a102dadd4b",
+      "cSha256": "cfc03ab82e885cfa14c1296d8ebb6e53c578c15b7a5e1193a9e45e2b50119a4d",
+      "binarySha256": "5a9640b9fb6898cc8838311866fdc73ec741df0f11bcfe601d7d09d2dc70593b",
+      "checkedDefinitions": 8419,
+      "eventsFullyValidated": 8823,
+      "canonicalValidationMs": 1425.4657499999998,
+      "producerCodegenMs": 128876.12241699999,
+      "backendMs": 97990.37020899999,
+      "stages": [
+        {
+          "name": "owned",
+          "command": [
+            "/usr/bin/time",
+            "-lp",
+            "/opt/homebrew/bin/bun",
+            "--smol",
+            "evals/heavy_gate.ts",
+            "--memory-mib",
+            "8192",
+            "--rss-mib",
+            "8192",
+            "--poll-ms",
+            "10",
+            "--timeout-ms",
+            "600000",
+            "--",
+            "/opt/homebrew/bin/bun",
+            "--smol",
+            "evals/checker_core_owned_source.ts"
+          ],
+          "exitCode": 0,
+          "wallSeconds": 4.157165667,
+          "userSeconds": 5.2,
+          "systemSeconds": 0.21,
+          "maxRssBytes": 772751360
+        },
+        {
+          "name": "steps",
+          "command": [
+            "/usr/bin/time",
+            "-lp",
+            "/opt/homebrew/bin/bun",
+            "--smol",
+            "evals/heavy_gate.ts",
+            "--memory-mib",
+            "8192",
+            "--rss-mib",
+            "8192",
+            "--poll-ms",
+            "10",
+            "--timeout-ms",
+            "600000",
+            "--",
+            "/opt/homebrew/bin/bun",
+            "--smol",
+            "evals/checker_core_step_lower.ts"
+          ],
+          "exitCode": 0,
+          "wallSeconds": 1.8797558749999999,
+          "userSeconds": 2.57,
+          "systemSeconds": 0.12,
+          "maxRssBytes": 566296576
+        },
+        {
+          "name": "build",
+          "command": [
+            "/usr/bin/time",
+            "-lp",
+            "/opt/homebrew/bin/bun",
+            "--smol",
+            "/private/tmp/body-schema57z.hzvjxv06/currentY/evals/native_compiler_experiment.ts",
+            "--mode=build",
+            "--cc-pipeline=llvm-split",
+            "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+            "--corpus=/private/tmp/body-schema57z.hzvjxv06/currentY/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+            "--artifact=/private/tmp/body-schema57z.hzvjxv06/currentY/artifacts/compiler",
+            "--report=/private/tmp/body-schema57z.hzvjxv06/currentY/artifacts/build.json"
+          ],
+          "exitCode": 0,
+          "wallSeconds": 231.024442792,
+          "userSeconds": 604.98,
+          "systemSeconds": 13.22,
+          "maxRssBytes": 6257524736
+        },
+        {
+          "name": "frozen",
+          "command": [
+            "/usr/bin/time",
+            "-lp",
+            "/opt/homebrew/bin/bun",
+            "--smol",
+            "/private/tmp/body-schema57z.hzvjxv06/currentY/evals/native_compiler_experiment.ts",
+            "--mode=run",
+            "--corpus=/private/tmp/body-schema57z.hzvjxv06/currentY/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+            "--build=/private/tmp/body-schema57z.hzvjxv06/currentY/artifacts/build.json",
+            "--report=/private/tmp/body-schema57z.hzvjxv06/currentY/artifacts/frozen-compile.json",
+            "--phase=compile",
+            "--threads=1",
+            "--exports=/private/tmp/body-schema57z.hzvjxv06/currentY/checkpoints/compiler-benchmark-ir57-official-a.json.exports.json"
+          ],
+          "exitCode": 0,
+          "wallSeconds": 77.945348792,
+          "userSeconds": 76.92,
+          "systemSeconds": 2.05,
+          "maxRssBytes": 1275133952
+        },
+        {
+          "name": "consumer",
+          "command": [
+            "/usr/bin/time",
+            "-lp",
+            "/opt/homebrew/bin/bun",
+            "--smol",
+            "/private/tmp/body-schema57z.hzvjxv06/currentY/consumer_guard.ts"
+          ],
+          "exitCode": 0,
+          "wallSeconds": 0.42980145899997524,
+          "userSeconds": 0.31,
+          "systemSeconds": 0.04,
+          "maxRssBytes": 307331072
+        }
+      ],
+      "buildGuardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 6381158400,
+        "peakFootprintBytes": 6201744128,
+        "elapsedMs": 230881,
+        "timeoutMs": 600000,
+        "command": [
+          "/opt/homebrew/Cellar/bun/1.2.5/bin/bun",
+          "--smol",
+          "/private/tmp/body-schema57z.hzvjxv06/currentY/evals/native_compiler_experiment.ts",
+          "--mode=build",
+          "--cc-pipeline=llvm-split",
+          "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+          "--corpus=/private/tmp/body-schema57z.hzvjxv06/currentY/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+          "--artifact=/private/tmp/body-schema57z.hzvjxv06/currentY/artifacts/compiler",
+          "--report=/private/tmp/body-schema57z.hzvjxv06/currentY/artifacts/build.json",
+          "--internal=build"
+        ],
+        "label": "Native CPU compiler build",
+        "exitCode": 0,
+        "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792812675327-5a8c5dc6fbd927eb.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "runGuardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1352417280,
+        "peakFootprintBytes": 1302530136,
+        "elapsedMs": 77817,
+        "timeoutMs": 300000,
+        "command": [
+          "/opt/homebrew/Cellar/bun/1.2.5/bin/bun",
+          "--smol",
+          "/private/tmp/body-schema57z.hzvjxv06/currentY/evals/native_compiler_experiment.ts",
+          "--mode=run",
+          "--corpus=/private/tmp/body-schema57z.hzvjxv06/currentY/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+          "--build=/private/tmp/body-schema57z.hzvjxv06/currentY/artifacts/build.json",
+          "--report=/private/tmp/body-schema57z.hzvjxv06/currentY/artifacts/frozen-compile.json",
+          "--phase=compile",
+          "--threads=1",
+          "--exports=/private/tmp/body-schema57z.hzvjxv06/currentY/checkpoints/compiler-benchmark-ir57-official-a.json.exports.json",
+          "--internal=run"
+        ],
+        "label": "Native CPU compiler run",
+        "exitCode": 0,
+        "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792812906337-b86dff0b99a13b2a.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "phases": [
+        {
+          "phase": "parse",
+          "elapsedMs": 3448.164,
+          "userCpuMs": 3424.968,
+          "systemCpuMs": 23.158,
+          "modules": 15,
+          "sourceBytes": 4333108,
+          "foreignBytes": 25145,
+          "eagerFuelCells": 120000000,
+          "fuelBuildMs": 119.247
+        },
+        {
+          "phase": "expand",
+          "elapsedMs": 4625.495,
+          "userCpuMs": 4620.9,
+          "systemCpuMs": 4.571,
+          "chunkAdvances": 998037,
+          "chunkQuantum": 64
+        },
+        {
+          "phase": "check",
+          "elapsedMs": 60939.876,
+          "userCpuMs": 60839.076,
+          "systemCpuMs": 98.773,
+          "chunkAdvances": 11253804,
+          "chunkQuantum": 64
+        },
+        {
+          "phase": "emit",
+          "elapsedMs": 6641.346,
+          "userCpuMs": 6613.918,
+          "systemCpuMs": 27.407,
+          "chunkAdvances": 514432,
+          "chunkQuantum": 64
+        }
+      ],
+      "actual7720Consumer": {
+        "status": "PASS",
+        "kind": "actual unchanged native emitted frozen-v41 library consumer",
+        "output": "/private/tmp/body-schema57z.hzvjxv06/currentY/artifacts/frozen-compile.json.mjs",
+        "outputPatches": 0,
+        "fixedpoint": false,
+        "exports": 7720,
+        "exportSetSha256": "99efc6ef8538e35f5b6f549e39296bae814e654d48558f9ca7ba2aae2b1911f4",
+        "parserPassed": true,
+        "checkerPassed": true,
+        "outputSha256": "eb3d374abac9f7e45067174e75c1074966d933467402866eece29556f307559a",
+        "outputBytes": 14101164,
+        "runtimeSha256": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+        "exportsReceiptSha256": "b49ac17d858cff20e3ea8b88f3068b52ca6d0d2045684d4c17d7f318bd3aba18",
+        "manifestSha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+        "elapsedMs": 223.12854100000004,
+        "cpuMs": 243.099,
+        "maxRssBytes": 306495488
+      },
+      "actualConsumerGuardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 306987008,
+        "peakFootprintBytes": 232199160,
+        "elapsedMs": 298,
+        "timeoutMs": 300000,
+        "command": [
+          "node",
+          "--max-old-space-size=3072",
+          "/private/tmp/body-schema57z.hzvjxv06/currentY/consume_native.mjs"
+        ],
+        "label": "Native57g unchanged full frozen output actual captured consumer",
+        "exitCode": 0,
+        "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792812984288-a87f550604b4d19f.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "nativeCompileElapsedMs": 77662.111875,
+      "outputBytes": 14101164,
+      "outputSha256": "eb3d374abac9f7e45067174e75c1074966d933467402866eece29556f307559a",
+      "exportCount": 7720
+    },
+    "fullNativeComparison": {
+      "kind": "Historical retained cursorY baseline vs the one final currentY+schema sample; unpaired, not evidence of a statistically established regression",
+      "baselineReceipt": "/private/tmp/bend-index-cursor57w/full-native/proof/frozen-compile.json",
+      "baselineReceiptSha256": "1ab41810131fa677d304a05ed446a885f204cf835f470b0596ec69ca5d8ab65e",
+      "baselineCheckerCpuMs": 60728.635,
+      "candidateCheckerCpuMs": 60937.849,
+      "checkerCpuChangePercent": 0.3445063436713136,
+      "baselineCheckerWallMs": 60729.247,
+      "candidateCheckerWallMs": 60939.876,
+      "checkerWallChangePercent": 0.34683288597336936,
+      "baselineCompileElapsedMs": 77486.61795799999,
+      "candidateCompileElapsedMs": 77662.111875,
+      "baselineChunkAdvances": 11254765,
+      "candidateChunkAdvances": 11253804,
+      "chunkAdvanceReduction": 961,
+      "chunkAdvanceReductionPercent": 0.00853860564836717
+    },
+    "lease": {
+      "state": "RELEASED",
+      "grantedTo": "NativeAlloc57Z",
+      "noFurtherNativeRuns": true,
+      "baselineCPreserved": true
+    },
+    "verification": {
+      "builds": "Exact official2.0.37 source kernel; native producers validated every8413 W and8419 currentY retained body; all respective events8816/8823. Both complete guarded builds passed.",
+      "privateGeneration": "Original owned-source and typed checker-step generators reused unchanged, canonicalCoverage1140 definitions, omitted/excluded empty, residualSourceCalls0; typed-native-stack-v57t unchanged, checker_chunk sole native recursive helper.",
+      "publicGuardExactness": "Original native generic run/consumer route used8GiB sampled RSS+physical/10ms, run300000ms and build600000ms; old-generation3072MiB and workerstack256MiB unchanged. Direct paired subset used equal600000ms watchdog on A/B, all samples completed below2seconds native command; do not claim it reran the public route300000ms watchdog. No fuel/kernel/ABI/table-cap changes.",
+      "notRun": "No repeated full timing, no JS-only speed acceptance, no canonical formatter/lint/test/generator edits, no native binary bootstrap claim."
+    },
+    "evidencePaths": {
+      "privateW": "/private/tmp/body-schema57z.hzvjxv06",
+      "privateCurrentYRemote": "misakaindrive:/private/tmp/body-schema57z.hzvjxv06/currentY",
+      "patch": "/private/tmp/body-schema57z.hzvjxv06/evidence/source.patch",
+      "design": "/private/tmp/body-schema57z.hzvjxv06/evidence/design.json",
+      "producer": "/private/tmp/body-schema57z.hzvjxv06/observed/producer.json",
+      "pairedSubset": "/private/tmp/body-schema57z.hzvjxv06/observed/subset-final/receipt.json",
+      "original95": "/private/tmp/body-schema57z.hzvjxv06/observed/original95/receipt.json",
+      "fullCycle": "/private/tmp/body-schema57z.hzvjxv06/observed/currentY/cycle.json",
+      "rawFailures": [
+        "/private/tmp/body-schema57z.hzvjxv06/evidence/launcher-failure-1.json",
+        "/private/tmp/body-schema57z.hzvjxv06/evidence/fixture-trials",
+        "/private/tmp/body-schema57z.hzvjxv06/observed/subset/receipt.json",
+        "/private/tmp/body-schema57z.hzvjxv06/observed/subset2/receipt.json"
+      ]
+    }
+  },
+  "packetSha256": "c065419a711c2940f59ea8715e4007969f73e73a2e5c2c4c517f0b8bfada98ad",
+  "sourcePatch": "--- a/bend2/selfhost/checker.bend\n+++ b/bend2/selfhost/checker.bend\n@@ -7287,35 +7287,45 @@\n         case False{}: {ArenaResult{store, False{}} : ArenaResult<Bool>}\n \n # Reuse is confined to one definition_term_inference invocation. That entry\n-# installs ScalarSchemaOpen with its exact immutable scope; its typing closure\n+# installs LiteralSchemaFrame with its exact immutable scope; its typing closure\n # threads this scope unchanged, and scalar_frame_finish clears the lane before\n # declaration publication, alias refresh or another definition can change it.\n # Literal observation may append source nodes, but never changes existing scope\n # records/handles or rewinds source storage. Memo collisions invalidate reuse.\n # The selected constructor comparison is not a general scope-equality key.\n # General callers without an owned definition frame validate the whole schema.\n+# Two scalar selections and one string selection coexist in this bounded frame.\n+# Alternating U32/F32/String literals do not discard each other's schemas.\n+# A third scalar selection replaces the older entry only after full validation.\n def scalar_frame_store(store: ArenaStore, entry: Arena.SubstMemoEntry) -> ArenaStore:\n   match store:\n     case ArenaStore{source, transient}: ArenaStore{Arena.scalar_frame_set(source, entry), transient}\n \n-def scalar_schema_prepare_result(+scope: Scope.ArenaGlobalScope, +selected: Scope.ArenaGlobal, result: ArenaResult<Bool>) -> ArenaResult<Bool>:\n+def scalar_schema_prepare_result(+scope: Scope.ArenaGlobalScope, previous: Maybe<&2, Arena.LiteralSchemaFact>, string: Maybe<&2, Arena.LiteralSchemaFact>, +selected: Scope.ArenaGlobal, result: ArenaResult<Bool>) -> ArenaResult<Bool>:\n   match result:\n     case ArenaResult{store, +valid}:\n-      {ArenaResult{scalar_frame_store(store, Arena.ScalarSchemaSaved{scope, selected, valid}), valid} : ArenaResult<Bool>}\n-\n-def scalar_schema_prepare(store: ArenaStore, +scope: Scope.ArenaGlobalScope, +selected: Scope.ArenaGlobal, +ns: String, +globals: Scope.ArenaGlobalScope, local: String) -> ArenaResult<Bool>:\n-  scalar_schema_prepare_result(scope, selected, scalar_schema_builtin(store, ns, globals, local))\n-\n-def scalar_schema_prepared_entry(store: ArenaStore, entry: Arena.SubstMemoEntry, +selected: Scope.ArenaGlobal, +ns: String, +globals: Scope.ArenaGlobalScope, local: String) -> ArenaResult<Bool>:\n-  match entry:\n-    case Arena.ScalarSchemaOpen{scope}:\n-      scalar_schema_prepare(store, scope, selected, ns, globals, local)\n-    case Arena.StringSchemaSaved{scope, _, _}:\n-      scalar_schema_prepare(store, scope, selected, ns, globals, local)\n-    case Arena.ScalarSchemaSaved{scope, saved, valid}:\n+      {ArenaResult{scalar_frame_store(store, Arena.LiteralSchemaFrame{scope, Some{Arena.LiteralSchemaFact{selected, valid}}, previous, string}), valid} : ArenaResult<Bool>}\n+\n+def scalar_schema_prepare(store: ArenaStore, +scope: Scope.ArenaGlobalScope, previous: Maybe<&2, Arena.LiteralSchemaFact>, string: Maybe<&2, Arena.LiteralSchemaFact>, +selected: Scope.ArenaGlobal, +ns: String, +globals: Scope.ArenaGlobalScope, local: String) -> ArenaResult<Bool>:\n+  scalar_schema_prepare_result(scope, previous, string, selected, scalar_schema_builtin(store, ns, globals, local))\n+\n+def scalar_schema_prepared_second(store: ArenaStore, scope: Scope.ArenaGlobalScope, previous: Maybe<&2, Arena.LiteralSchemaFact>, other: Maybe<&2, Arena.LiteralSchemaFact>, string: Maybe<&2, Arena.LiteralSchemaFact>, +selected: Scope.ArenaGlobal, +ns: String, +globals: Scope.ArenaGlobalScope, +local: String) -> ArenaResult<Bool>:\n+  match other:\n+    case Some{Arena.LiteralSchemaFact{saved, valid}}:\n       match scalar_global_identity(Some{selected}, Some{saved}):\n         case True{}: {ArenaResult{store, valid} : ArenaResult<Bool>}\n-        case False{}: scalar_schema_prepare(store, scope, selected, ns, globals, local)\n+        case False{}: scalar_schema_prepare(store, scope, previous, string, selected, ns, globals, local)\n+    case None{}: scalar_schema_prepare(store, scope, previous, string, selected, ns, globals, local)\n+\n+def scalar_schema_prepared_entry(store: ArenaStore, entry: Arena.SubstMemoEntry, +selected: Scope.ArenaGlobal, +ns: String, +globals: Scope.ArenaGlobalScope, +local: String) -> ArenaResult<Bool>:\n+  match entry:\n+    case Arena.LiteralSchemaFrame{scope, +scalar, other, string}:\n+      match scalar:\n+        case Some{Arena.LiteralSchemaFact{saved, valid}}:\n+          match scalar_global_identity(Some{selected}, Some{saved}):\n+            case True{}: {ArenaResult{store, valid} : ArenaResult<Bool>}\n+            case False{}: scalar_schema_prepared_second(store, scope, scalar, other, string, selected, ns, globals, local)\n+        case None{}: scalar_schema_prepared_second(store, scope, scalar, other, string, selected, ns, globals, local)\n     case _: scalar_schema_builtin(store, ns, globals, local)\n \n def scalar_schema_prepared_result(transient: Arena.Arena, +selected: Scope.ArenaGlobal, +ns: String, +globals: Scope.ArenaGlobalScope, local: String, result: Arena.Arena & Arena.SubstMemoEntry) -> ArenaResult<Bool>:\n@@ -10705,7 +10715,7 @@\n       {ArenaResult{scalar_frame_store(store, Arena.SubstMemoEmpty{}), value} : ArenaResult<Inference>}\n \n def definition_term_inference(store: ArenaStore, ty: IR.OptionalTerm, term: U32, binders: IR.Words, +scope: Scope.ArenaGlobalScope) -> ArenaResult<Inference>:\n-  scalar_frame_finish(definition_term_inference_uncached(scalar_frame_store(store, Arena.ScalarSchemaOpen{scope}), ty, term, binders, scope))\n+  scalar_frame_finish(definition_term_inference_uncached(scalar_frame_store(store, Arena.LiteralSchemaFrame{scope, None{}, None{}, None{}}), ty, term, binders, scope))\n \n def check_definition(v_20041387: ArenaStore, v_0: IR.Definition, v_2: String, v_3: Scope.ArenaGlobalScope, v_4: Scope.ArenaGlobalScope) -> ArenaResult<ScopedState>:\n   match v_0:\n@@ -15689,26 +15699,25 @@\n   ArenaResult{store, +cons_ctor} = string_schema_constructor(store, ns, scope, \"SCon\", [\"Char\", \"String\"], \"String\")\n   {ArenaResult{store, Bool.and(scalar, Bool.and(char_family, Bool.and(string_family, Bool.and(char_ctor, Bool.and(nil_ctor, cons_ctor)))))} : ArenaResult<Bool>}\n \n-def string_schema_prepare(+frame: Scope.ArenaGlobalScope, +selected: Scope.ArenaGlobal, result: ArenaResult<Bool>) -> ArenaResult<Bool>:\n+def string_schema_prepare(+frame: Scope.ArenaGlobalScope, scalar: Maybe<&2, Arena.LiteralSchemaFact>, other: Maybe<&2, Arena.LiteralSchemaFact>, +selected: Scope.ArenaGlobal, result: ArenaResult<Bool>) -> ArenaResult<Bool>:\n   match result:\n     case ArenaResult{store, +valid}:\n-      {ArenaResult{scalar_frame_store(store, Arena.StringSchemaSaved{frame, selected, valid}), valid} : ArenaResult<Bool>}\n-\n-# Like ScalarSchemaSaved, this is a fact owned by the active definition frame,\n-# not a cache usable under arbitrary scopes sharing SNil. Only the exact scope\n-# installed by definition_term_inference reaches here while that frame is live;\n-# no typing helper replaces aliases/constructors, and finish clears both saved\n-# variants. Without that frame, the default branch re-proves every schema.\n+      {ArenaResult{scalar_frame_store(store, Arena.LiteralSchemaFrame{frame, scalar, other, Some{Arena.LiteralSchemaFact{selected, valid}}}), valid} : ArenaResult<Bool>}\n+\n+# All entries are facts owned by the active definition frame, not a cache\n+# usable under arbitrary scopes sharing SNil. Only the exact scope installed\n+# by definition_term_inference reaches here while that frame is live; no typing\n+# helper replaces aliases/constructors, and finish clears the complete frame.\n+# Without that frame, the default branch re-proves every schema.\n def string_schema_entry(store: ArenaStore, entry: Arena.SubstMemoEntry, +selected: Scope.ArenaGlobal, +ns: String, +scope: Scope.ArenaGlobalScope) -> ArenaResult<Bool>:\n   match entry:\n-    case Arena.ScalarSchemaOpen{frame}:\n-      string_schema_prepare(frame, selected, string_schema(store, ns, scope))\n-    case Arena.ScalarSchemaSaved{frame, _, _}:\n-      string_schema_prepare(frame, selected, string_schema(store, ns, scope))\n-    case Arena.StringSchemaSaved{frame, saved, valid}:\n-      match scalar_global_identity(Some{selected}, Some{saved}):\n-        case True{}: {ArenaResult{store, valid} : ArenaResult<Bool>}\n-        case False{}: string_schema_prepare(frame, selected, string_schema(store, ns, scope))\n+    case Arena.LiteralSchemaFrame{frame, scalar, other, string}:\n+      match string:\n+        case Some{Arena.LiteralSchemaFact{saved, valid}}:\n+          match scalar_global_identity(Some{selected}, Some{saved}):\n+            case True{}: {ArenaResult{store, valid} : ArenaResult<Bool>}\n+            case False{}: string_schema_prepare(frame, scalar, other, selected, string_schema(store, ns, scope))\n+        case None{}: string_schema_prepare(frame, scalar, other, selected, string_schema(store, ns, scope))\n     case _: string_schema(store, ns, scope)\n \n def string_schema_frame(transient: Arena.Arena, selected: Scope.ArenaGlobal, ns: String, scope: Scope.ArenaGlobalScope, result: Arena.Arena & Arena.SubstMemoEntry) -> ArenaResult<Bool>:\n--- a/bend2/selfhost/checker_arena.bend\n+++ b/bend2/selfhost/checker_arena.bend\n@@ -62,6 +62,9 @@\n type NamePool is Type:\n   NamePool{items: Array<String>, used: U32, capacity: U32, depth: Nat}\n \n+type LiteralSchemaFact is Data:\n+  LiteralSchemaFact{selected: Scope.ArenaGlobal, valid: Bool}\n+\n # A slot owns only an exact signature and its live result handle, never an Arena.\n # Nat index/depth remain arbitrary precision; hashes only choose a candidate.\n type SubstMemoEntry is Data:\n@@ -69,9 +72,7 @@\n   SubstMemoSaved{node_id: U32, index: Nat, value_id: U32, depth: Nat, output_id: U32}\n   CtrLeafSaved{key_id: U32, span: Ast.SourceSpan, output_id: U32}\n   PublishedTerm{node_id: U32, output_id: U32}\n-  ScalarSchemaOpen{scope: Scope.ArenaGlobalScope}\n-  ScalarSchemaSaved{scope: Scope.ArenaGlobalScope, selected: Scope.ArenaGlobal, valid: Bool}\n-  StringSchemaSaved{scope: Scope.ArenaGlobalScope, selected: Scope.ArenaGlobal, valid: Bool}\n+  LiteralSchemaFrame{scope: Scope.ArenaGlobalScope, scalar: Maybe<&2, LiteralSchemaFact>, other: Maybe<&2, LiteralSchemaFact>, string: Maybe<&2, LiteralSchemaFact>}\n \n # Scope-independent constructor-prefix summaries; source range tags stay in the\n # exact key. Slots survive appends, but every rewind invalidates range reuse.\n",
+  "sourcePatchSha256": "7eb4f5e879f3f7ff8a279117af12b4ed3164fb6f37083c676e9d902dc5241313",
+  "parentReview": {
+    "allChangedLinesRead": true,
+    "exportedVariantCallsitesSearched": "bend2;evals;tests; onlychecker.bend/checker_arena.bend",
+    "identity": "Existingowner/local/typeID/valueID/kind equality unchanged, alias querykey intentionally notidentity.",
+    "lifetime": "Sameexactdefinition-owned immutableScope; memo0/fullrewind-collision invalidation andscalar_frame_finish clearunchanged. ScalarfactsandStringfactbounded; thirdscalar evictsolderinsertion afterfullvalidation, no cross-scope reuse.",
+    "semanticReview": "No eligibility checks removed; non-frame callers stillfullschema. Rootwin mandatory; doNOTintegrate justbecausemixedmicroimproved."
+  },
+  "decision": "NativeWmixedABBA5.6337%CPUlower, butcompletecurrentYcheck60939.876mswall/60937.849CPU vsretained60729.247/60728.635; +0.347/+0.345%singleunpairednotprovenregression. Fullchunkadvances11254765->11253804 only961(0.00854%)fewer. Full8419/8823+7720eb3allguardsPASS. Rejectforcomplete-compileracceleration, noextraunchangedtimingruns/newFPneeded."
+}

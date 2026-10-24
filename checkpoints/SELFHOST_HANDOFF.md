@@ -41,8 +41,22 @@ Full8408/8810+50files+actual7720consumer/eb3 и все original guardsPASS.
 внутри каждого пока отдельно не разложены. Inner clock brackets18.357CPUms
 не являются causal upper bound всего overhead; ничего не вычтено.
 Exact patch/pins/coverage/limits: compiler-ir-profile-v57x-intervals.json.
-Две private source-работы: frame-local schema memo против scalar/String churn;
-validated signature/publication reuse без удаления infer/type checks.
+Оба targeted source-кандидата57z ОТКЛОНЕНЫ, canonical57y не менялся:
+- Publication: второй alias уже source-ID/memo hit, не повторный recursive copy.
+  ABBA3001signature subsetCPU815.233/815.933/816.789/818.795ms, gain0.08% при
+  criterion3%;95 native behaviorsPASS, additional invalid fixtureFAIL сохранён.
+  Raw forward predeclares11156–11178 не являются checked signatures; finishinfer
+  не удалять. Exact evidence: compiler-ir-profile-v57z-signature.json.
+- Frame-local schema: native mixedABBA meanCPU−5.63%, но latestYfullcheck
+  60939.876wall/60937.849CPUms против60729.247/60728.635ms (одиночные unpaired
+  samples, не доказанная regression). Requests/chunkAdvances−961/11254765,
+  всего0.00854%; полной компиляции выигрыш не доказан. Fresh8419/8823+
+  actual7720consumer/eb3 originalguardsPASS. Дополнительный~4097n custom-Nat
+  template-positive unsupported наA/B сохранёнFAIL, не зачтён за положительный.
+  Exact safe patch/95behaviors/fullproof: compiler-ir-profile-v57z-schema.json.
+Следующие независимые проверки: actual native heap allocation requests по
+phase/ctor/class (не H_BUMP/RSS/live-node proxy) и first-order continuations
+на настоящем native subset; прежнее JS-only отрицание не переносить на C.
 
 Host compiler57x: принят exactcomp9704b4bbd00c834df65b21a34f57cfc4ff4f6afc1878f161565a52f7fcf00d9c,
 только mat_lits lazy comparison вместо двух полных term_lower trees.159cases/

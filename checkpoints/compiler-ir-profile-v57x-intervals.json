@@ -6613,6 +6613,33 @@
       }
     },
     "path": "/tmp/native-cgen57w.tSPii1QT/heap57y-compact-receipt.json",
-    "sha256": "27a719a0fcd3eaf3a4dd3fdf8cbe14044157680780e16dc54346a416b19c7190"
+    "sha256": "27a719a0fcd3eaf3a4dd3fdf8cbe14044157680780e16dc54346a416b19c7190",
+    "postDecisionCleanup": {
+      "status": "REMOVED_ONLY_FOUR_OWN_DUPLICATE_C_OUTPUTS",
+      "files": [
+        {
+          "path": "/private/tmp/native-heap57y.eW4j1e78/A1/compiler.c",
+          "bytes": 68281000,
+          "sha256": "d3229a601002f5c07c51927517e3d16f3539d7d28f9843dc09684b07a39d9be9"
+        },
+        {
+          "path": "/private/tmp/native-heap57y.eW4j1e78/B1/compiler.c",
+          "bytes": 68281000,
+          "sha256": "d3229a601002f5c07c51927517e3d16f3539d7d28f9843dc09684b07a39d9be9"
+        },
+        {
+          "path": "/private/tmp/native-heap57y.eW4j1e78/B2/compiler.c",
+          "bytes": 68281000,
+          "sha256": "d3229a601002f5c07c51927517e3d16f3539d7d28f9843dc09684b07a39d9be9"
+        },
+        {
+          "path": "/private/tmp/native-heap57y.eW4j1e78/A2/compiler.c",
+          "bytes": 68281000,
+          "sha256": "d3229a601002f5c07c51927517e3d16f3539d7d28f9843dc09684b07a39d9be9"
+        }
+      ],
+      "bytesRemoved": 273124000,
+      "reason": "Allfourdeclaredproducertrialsrecordedanddecisionrejected; exactD322C/binaryacceptedW retainedinprimarynative-w/native-xw namespaces forcurrentcomparisons. Sources/metadata/receiptsnotdeleted."
+    }
   }
 }

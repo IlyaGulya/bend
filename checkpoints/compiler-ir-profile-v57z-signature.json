@@ -1,0 +1,673 @@
+{
+  "schemaVersion": 1,
+  "version": "compiler57z-private-signature-publication",
+  "status": "REJECTED_NO_MATERIAL_NATIVE_SUBSET_GAIN_NO_CANONICAL_EDITS",
+  "packetSha256": "313e55fb38b9e3d9930aea58805660556b9acb964ac2fbc280ed04eb547bf2e1",
+  "packet": {
+    "status": "REJECTED_NO_MATERIAL_NATIVE_SUBSET_GAIN",
+    "decision": "Do not integrate signature publication candidate. Exact handle reuse is conservative but saves only already-cheap source-ID branches and guaranteed root memo hits. Fixed ABBA gives0.0799% checker CPU/0.0805% checker wall mean improvement and interleaved samples, below predeclared3% criterion. No final frozen full trial or7720 consumer was warranted or run.",
+    "canonicalEdits": false,
+    "permanentTestsOrDocsChanged": false,
+    "source": {
+      "candidate": "/private/tmp/signature-publish57z/bend2/selfhost/checker.bend",
+      "beforeSha256": "f01dbf58d8effae632b7da69eecc0a9652dc4ae3c40a6691208e54bf49716330",
+      "candidateSha256": "83466820155a363d5ffc6ed0ca9a5e534881cdef22df917365603e33a942edd9",
+      "cleanPatch": "/private/tmp/signature-publish57z/signature-publish.patch",
+      "patchSha256": "9f0c25082ac5a1658487b257afd9c17ef96a00e8c5c1d2bea9d9b02129d9fcce",
+      "changedFunction": "definition_visible_self",
+      "functionSignaturesChanged": false,
+      "irRepresentationChanged": false,
+      "analysis": "/private/tmp/signature-publish57z/source-analysis.json",
+      "analysisSha256": "f48c0d7581f680451b6f69df3fd0fb4d51a01506e7eba0161273eab4baeacca5"
+    },
+    "baseline": {
+      "namespace": "/private/tmp/native-w57v.QZEhzCu0",
+      "kind": "authenticated retained uninstrumented W/noCursor; NOT latestY/cursor57x",
+      "report": "/private/tmp/native-w57v.QZEhzCu0/artifacts/build.json",
+      "reportSha256": "570211a00a0f4f50c4c440e1adffef1a59bbc7ff6c8f7c69f9b0e1a0a97ec975",
+      "originalCAndBinaryRetained": true,
+      "baselineBuildNotRerun": true,
+      "indexLookupSha256": "caef5856607bff18b9a5dfc529eee6c6360a83d0963008420888a998274bd9f2",
+      "sourceBasisDecision": "Parent directed W baseline because cursor57x intentionally deleted its C. No missingC check bypass; candidate private index restored toW. Comp9704 is accepted Cgen-only change; no native algorithm delta except signature candidate."
+    },
+    "producers": {
+      "comparisonW": {
+        "report": "/private/tmp/signature-publish57z/evidence/w/build.json",
+        "reportSha256": "720c9220b6eed87b9147556ea87325e850370eeff5034b5e157eeb009487c8ed",
+        "sourceRootSha256": "efab3bf81dd52f597645b20ddda482e11b961d342115ab62152535de55c26d26",
+        "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+        "compilerSha256": "9704b4bbd00c834df65b21a34f57cfc4ff4f6afc1878f161565a52f7fcf00d9c",
+        "cSha256": "39017ff5d3312bf9da73ba7f622c418b68a8049e71a030c92715a46eba4b8366",
+        "binarySha256": "937289b5edcdf7ec614ea2fac02cd3b5cbfda7844f2b33f61e793c3e36c8e5bf",
+        "allBodiesValidated": true,
+        "checkedDefinitions": 8407,
+        "eventsFullyValidated": 8809,
+        "validationMs": 1298.693042,
+        "codegenMs": 86416.57149999999,
+        "pipelineMs": 107690.16062499999,
+        "runtime": {
+          "name": "node",
+          "node": "26.3.0",
+          "heapLimitMiB": 3072,
+          "stackMiB": 256,
+          "manualGC": false,
+          "profiling": null
+        },
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 6372671488,
+          "peakFootprintBytes": 6193486544,
+          "elapsedMs": 197980,
+          "timeoutMs": 600000,
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.2.5/bin/bun",
+            "--smol",
+            "/private/tmp/signature-publish57z-w/evals/native_compiler_experiment.ts",
+            "--mode=build",
+            "--cc-pipeline=llvm-split",
+            "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+            "--corpus=checkpoints/compiler-benchmark-release237-v41.corpus.json",
+            "--artifact=artifacts/compiler",
+            "--report=artifacts/build.json",
+            "--internal=build"
+          ],
+          "label": "Native CPU compiler build",
+          "exitCode": 0,
+          "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792811481540-cf420fcaf8fb0d42.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "totalTimeLP": {
+          "wallSeconds": 198.1,
+          "userSeconds": 408.45,
+          "systemSeconds": 10.8,
+          "maxRssBytes": 6248759296,
+          "cpuSeconds": 419.25
+        }
+      },
+      "priorCurrentRootNoncomparative": {
+        "report": "/private/tmp/signature-publish57z/evidence/current/build.json",
+        "reportSha256": "a4ded071007c26130137f8d54fdf4d74b50eb5b18c7827ca4c331cece37cc2e3",
+        "sourceRootSha256": "efab3bf81dd52f597645b20ddda482e11b961d342115ab62152535de55c26d26",
+        "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+        "compilerSha256": "9704b4bbd00c834df65b21a34f57cfc4ff4f6afc1878f161565a52f7fcf00d9c",
+        "cSha256": "450f0e5bdedd1b8b7dcb0ff0fbec2c4e63fed8017599e3934e94b9769ba66eba",
+        "binarySha256": "97b981afd673ae1cc49dcbd312da49fc1eadfc54081d0c647d5f8a2be02abe0f",
+        "allBodiesValidated": true,
+        "checkedDefinitions": 8413,
+        "eventsFullyValidated": 8816,
+        "validationMs": 1283.658333,
+        "codegenMs": 86711.457125,
+        "pipelineMs": 99982.11200000001,
+        "runtime": {
+          "name": "node",
+          "node": "26.3.0",
+          "heapLimitMiB": 3072,
+          "stackMiB": 256,
+          "manualGC": false,
+          "profiling": null
+        },
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 6373212160,
+          "peakFootprintBytes": 6193797792,
+          "elapsedMs": 190534,
+          "timeoutMs": 600000,
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.2.5/bin/bun",
+            "--smol",
+            "/private/tmp/signature-publish57z/evals/native_compiler_experiment.ts",
+            "--mode=build",
+            "--cc-pipeline=llvm-split",
+            "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+            "--corpus=checkpoints/compiler-benchmark-release237-v41.corpus.json",
+            "--artifact=artifacts/compiler",
+            "--report=artifacts/build.json",
+            "--internal=build"
+          ],
+          "label": "Native CPU compiler build",
+          "exitCode": 0,
+          "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792811230408-8dd61b09a49cf457.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "totalTimeLP": {
+          "wallSeconds": 190.64,
+          "userSeconds": 411,
+          "systemSeconds": 11.17,
+          "maxRssBytes": 6249381888,
+          "cpuSeconds": 422.17
+        }
+      }
+    },
+    "tools": {
+      "versions": {
+        "clang": "Apple clang version 21.0.0 (clang-2100.1.1.101)\nTarget: arm64-apple-darwin25.5.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin",
+        "opt": "Homebrew LLVM version 21.1.8\n  Optimized build.\n  Default target: arm64-apple-darwin25.5.0\n  Host CPU: apple-m3",
+        "llvm-split": "Homebrew LLVM version 21.1.8\n  Optimized build."
+      },
+      "pins": {
+        "/usr/bin/clang": "179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818",
+        "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/opt": "f0c47819a5c4bccebc4fde8494977ec0bb223e2d47a62c376372942445708e14",
+        "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/llvm-split": "548df9b6333fe8a7a9931962a4ca87d89d2c5a13ba48909dd77c8b8984cdab57",
+        "/usr/bin/time": "d2210b72e8c978748a0f0ac7d0819dda4dd411bb7a2e9730476038b0d695e7a2"
+      },
+      "pipeline": "llvm-split/O1/four partitions/max3 backend children; exact public runner unchanged"
+    },
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "producerTimeoutMs": 600000,
+      "nativeRunTimeoutMs": 300000,
+      "nodeOldGenerationMiB": 3072,
+      "nodeStackMiB": 256,
+      "nativeThreads": 1,
+      "gpu": "off",
+      "parserFuelPerSource": 8000000,
+      "manualGC": false,
+      "profiling": false,
+      "capsOrFuelIncreased": false
+    },
+    "comparison": {
+      "inputSourceSha256": "e4ca0cc4e160d4e394ee995dde6df8ad211c558e92fae81ee915502ffa0e7f04",
+      "definitions": 3001,
+      "sequence": [
+        "A1",
+        "B1",
+        "B2",
+        "A2"
+      ],
+      "samples": [
+        {
+          "label": "A1",
+          "nativeCheckCpuMs": 815.233,
+          "nativeCheckWallMs": 815.236,
+          "chunkAdvances": 143884,
+          "wholeCommandWallSeconds": 1.28966575,
+          "wholeCommandCpuSeconds": 1.1400000000000001,
+          "timeMaxRssBytes": 142229504,
+          "guardianStatus": "PASS",
+          "guardianPeakRssBytes": 280936448,
+          "guardianPeakFootprintBytes": 244335984,
+          "report": "/private/tmp/signature-publish57z-w/comparison/A1.json",
+          "reportSha256": "913d9590a05bcf921c2b889ae8ae961f70de961302c7c4318f6fe81a079faa1e",
+          "command": [
+            "/opt/homebrew/bin/bun",
+            "--smol",
+            "/private/tmp/native-w57v.QZEhzCu0/evals/native_compiler_experiment.ts",
+            "--mode=run",
+            "--corpus=/private/tmp/signature-publish57z-w/checkpoints/signature-cases/signature-heavy.corpus.json",
+            "--build=/private/tmp/native-w57v.QZEhzCu0/artifacts/build.json",
+            "--report=/private/tmp/signature-publish57z-w/comparison/A1.json",
+            "--phase=check",
+            "--threads=1",
+            "--exports=/private/tmp/signature-publish57z-w/main-exports.json"
+          ]
+        },
+        {
+          "label": "B1",
+          "nativeCheckCpuMs": 815.933,
+          "nativeCheckWallMs": 815.935,
+          "chunkAdvances": 142665,
+          "wholeCommandWallSeconds": 2.4397858329999997,
+          "wholeCommandCpuSeconds": 1.3499999999999999,
+          "timeMaxRssBytes": 142262272,
+          "guardianStatus": "PASS",
+          "guardianPeakRssBytes": 281133056,
+          "guardianPeakFootprintBytes": 242632096,
+          "report": "/private/tmp/signature-publish57z-w/comparison/B1.json",
+          "reportSha256": "fee342daa93768d534f37f38b213100950197c220519ab6b9fb35a8cdcdaee41",
+          "command": [
+            "/opt/homebrew/bin/bun",
+            "--smol",
+            "/private/tmp/signature-publish57z-w/evals/native_compiler_experiment.ts",
+            "--mode=run",
+            "--corpus=/private/tmp/signature-publish57z-w/checkpoints/signature-cases/signature-heavy.corpus.json",
+            "--build=/private/tmp/signature-publish57z-w/artifacts/build.json",
+            "--report=/private/tmp/signature-publish57z-w/comparison/B1.json",
+            "--phase=check",
+            "--threads=1",
+            "--exports=/private/tmp/signature-publish57z-w/main-exports.json"
+          ]
+        },
+        {
+          "label": "B2",
+          "nativeCheckCpuMs": 816.789,
+          "nativeCheckWallMs": 816.792,
+          "chunkAdvances": 142665,
+          "wholeCommandWallSeconds": 1.2722362079999998,
+          "wholeCommandCpuSeconds": 1.1400000000000001,
+          "timeMaxRssBytes": 142065664,
+          "guardianStatus": "PASS",
+          "guardianPeakRssBytes": 280985600,
+          "guardianPeakFootprintBytes": 244303264,
+          "report": "/private/tmp/signature-publish57z-w/comparison/B2.json",
+          "reportSha256": "e29334c7e1e0b963bf794daed47065646c2067850b93ebd257d8e47dff2300cd",
+          "command": [
+            "/opt/homebrew/bin/bun",
+            "--smol",
+            "/private/tmp/signature-publish57z-w/evals/native_compiler_experiment.ts",
+            "--mode=run",
+            "--corpus=/private/tmp/signature-publish57z-w/checkpoints/signature-cases/signature-heavy.corpus.json",
+            "--build=/private/tmp/signature-publish57z-w/artifacts/build.json",
+            "--report=/private/tmp/signature-publish57z-w/comparison/B2.json",
+            "--phase=check",
+            "--threads=1",
+            "--exports=/private/tmp/signature-publish57z-w/main-exports.json"
+          ]
+        },
+        {
+          "label": "A2",
+          "nativeCheckCpuMs": 818.795,
+          "nativeCheckWallMs": 818.807,
+          "chunkAdvances": 143884,
+          "wholeCommandWallSeconds": 1.285940417,
+          "wholeCommandCpuSeconds": 1.1500000000000001,
+          "timeMaxRssBytes": 142262272,
+          "guardianStatus": "PASS",
+          "guardianPeakRssBytes": 280936448,
+          "guardianPeakFootprintBytes": 244204960,
+          "report": "/private/tmp/signature-publish57z-w/comparison/A2.json",
+          "reportSha256": "4c59f37b5da380851fa1e2b8ba6b3a3bc78a1d805bd06101c5dcc03cdeb6c035",
+          "command": [
+            "/opt/homebrew/bin/bun",
+            "--smol",
+            "/private/tmp/native-w57v.QZEhzCu0/evals/native_compiler_experiment.ts",
+            "--mode=run",
+            "--corpus=/private/tmp/signature-publish57z-w/checkpoints/signature-cases/signature-heavy.corpus.json",
+            "--build=/private/tmp/native-w57v.QZEhzCu0/artifacts/build.json",
+            "--report=/private/tmp/signature-publish57z-w/comparison/A2.json",
+            "--phase=check",
+            "--threads=1",
+            "--exports=/private/tmp/signature-publish57z-w/main-exports.json"
+          ]
+        }
+      ],
+      "checkerCpuGainPercent": 0.07992519100038509,
+      "checkerWallGainPercent": 0.0805364363116623,
+      "eachBFasterThanEachA": false,
+      "samplesRetained": true,
+      "selectedLuckyResult": false,
+      "notWholeCycleTiming": true
+    },
+    "semanticEvidence": {
+      "originalExistingCases": 95,
+      "positiveActualNativeFullCompiles": 64,
+      "positiveActualEmittedMainConsumers": 64,
+      "negativeActualNativeRejections": 31,
+      "all95ExpectedBehaviorMatched": true,
+      "negativeGuardianStatus": "31 original FAIL/command_exit reports retained as expected semantic rejections, NEVER recolored as guardianPASS",
+      "positiveGuardianStatus": "64 original compiler guardiansPASS",
+      "sampleGuardianStatus": "all4PASS",
+      "actualEmittedConsumerScope": "Each unchanged emitted library imported in Node and public main() result compared to literal fixture expectation; these small consumers were NOT separately guarded or timed, so no guarded-consumer memory claim.",
+      "newBoundaryPairs": [
+        {
+          "name": "signature-inferred-dependent",
+          "initialExpectedAccepted": true,
+          "reports": {
+            "A": {
+              "path": "/private/tmp/signature-publish57z-w/comparison/A-signature-inferred-dependent.json",
+              "sha256": "47d7eb1ab1c19d17897e3d98c60814cf2b583db16a44371474af636251194767",
+              "status": "FAIL",
+              "guardian": {
+                "status": "FAIL",
+                "reason": "command_exit",
+                "commandExitCode": 2,
+                "commandSignal": 0,
+                "peakRssBytes": 211877888,
+                "peakFootprintBytes": 183764192,
+                "elapsedMs": 221,
+                "timeoutMs": 300000,
+                "command": [
+                  "/opt/homebrew/Cellar/bun/1.2.5/bin/bun",
+                  "--smol",
+                  "/private/tmp/native-w57v.QZEhzCu0/evals/native_compiler_experiment.ts",
+                  "--mode=run",
+                  "--corpus=/private/tmp/signature-publish57z-w/checkpoints/signature-cases/signature-inferred-dependent.corpus.json",
+                  "--build=/private/tmp/native-w57v.QZEhzCu0/artifacts/build.json",
+                  "--report=/private/tmp/signature-publish57z-w/comparison/A-signature-inferred-dependent.json",
+                  "--phase=compile",
+                  "--threads=1",
+                  "--exports=/private/tmp/signature-publish57z-w/main-exports.json",
+                  "--internal=run"
+                ],
+                "label": "Native CPU compiler run",
+                "exitCode": 1,
+                "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792811834271-97c469b98eb8b363.json",
+                "memoryLimitBytes": 8589934592,
+                "rssLimitBytes": 8589934592
+              },
+              "failurePhase": "parse",
+              "diagnostic": [
+                "native parser file: /private/tmp/signature-publish57z-w/checkpoints/signature-cases/signature-inferred-dependent.bend",
+                "invalid or unsupported top-level syntax",
+                "bend: native experiment: actual Bend parser failed"
+              ]
+            },
+            "B": {
+              "path": "/private/tmp/signature-publish57z-w/comparison/B-signature-inferred-dependent.json",
+              "sha256": "21514fe836bb031e53783f3641b3796e180396cb07e352d80b0c68b3be616a24",
+              "status": "FAIL",
+              "guardian": {
+                "status": "FAIL",
+                "reason": "command_exit",
+                "commandExitCode": 2,
+                "commandSignal": 0,
+                "peakRssBytes": 211943424,
+                "peakFootprintBytes": 183747808,
+                "elapsedMs": 208,
+                "timeoutMs": 300000,
+                "command": [
+                  "/opt/homebrew/Cellar/bun/1.2.5/bin/bun",
+                  "--smol",
+                  "/private/tmp/signature-publish57z-w/evals/native_compiler_experiment.ts",
+                  "--mode=run",
+                  "--corpus=/private/tmp/signature-publish57z-w/checkpoints/signature-cases/signature-inferred-dependent.corpus.json",
+                  "--build=/private/tmp/signature-publish57z-w/artifacts/build.json",
+                  "--report=/private/tmp/signature-publish57z-w/comparison/B-signature-inferred-dependent.json",
+                  "--phase=compile",
+                  "--threads=1",
+                  "--exports=/private/tmp/signature-publish57z-w/main-exports.json",
+                  "--internal=run"
+                ],
+                "label": "Native CPU compiler run",
+                "exitCode": 1,
+                "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792811754481-92f38807a051c915.json",
+                "memoryLimitBytes": 8589934592,
+                "rssLimitBytes": 8589934592
+              },
+              "failurePhase": "parse",
+              "diagnostic": [
+                "native parser file: /private/tmp/signature-publish57z-w/checkpoints/signature-cases/signature-inferred-dependent.bend",
+                "invalid or unsupported top-level syntax",
+                "bend: native experiment: actual Bend parser failed"
+              ]
+            }
+          },
+          "sameActualOutcome": true
+        },
+        {
+          "name": "signature-non-type",
+          "initialExpectedAccepted": false,
+          "reports": {
+            "A": {
+              "path": "/private/tmp/signature-publish57z-w/comparison/A-signature-non-type.json",
+              "sha256": "3862917103a6307d835d18aef468d4bc6d212028df924ff997766a0e303b20ad",
+              "status": "FAIL",
+              "guardian": {
+                "status": "FAIL",
+                "reason": "command_exit",
+                "commandExitCode": 2,
+                "commandSignal": 0,
+                "peakRssBytes": 211927040,
+                "peakFootprintBytes": 185648352,
+                "elapsedMs": 209,
+                "timeoutMs": 300000,
+                "command": [
+                  "/opt/homebrew/Cellar/bun/1.2.5/bin/bun",
+                  "--smol",
+                  "/private/tmp/native-w57v.QZEhzCu0/evals/native_compiler_experiment.ts",
+                  "--mode=run",
+                  "--corpus=/private/tmp/signature-publish57z-w/checkpoints/signature-cases/signature-non-type.corpus.json",
+                  "--build=/private/tmp/native-w57v.QZEhzCu0/artifacts/build.json",
+                  "--report=/private/tmp/signature-publish57z-w/comparison/A-signature-non-type.json",
+                  "--phase=compile",
+                  "--threads=1",
+                  "--exports=/private/tmp/signature-publish57z-w/main-exports.json",
+                  "--internal=run"
+                ],
+                "label": "Native CPU compiler run",
+                "exitCode": 1,
+                "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792811834584-6584d2ce0d2e214e.json",
+                "memoryLimitBytes": 8589934592,
+                "rssLimitBytes": 8589934592
+              },
+              "failurePhase": "check",
+              "diagnostic": [
+                "constructor requires a datatype goal",
+                "bend: native experiment: Bend rejected the input"
+              ]
+            },
+            "B": {
+              "path": "/private/tmp/signature-publish57z-w/comparison/B-signature-non-type.json",
+              "sha256": "49223e2d64054f1877218df204e53713d23c24961ca24f99861f2437c6c8b6fb",
+              "status": "FAIL",
+              "guardian": {
+                "status": "FAIL",
+                "reason": "command_exit",
+                "commandExitCode": 2,
+                "commandSignal": 0,
+                "peakRssBytes": 212205568,
+                "peakFootprintBytes": 183682272,
+                "elapsedMs": 209,
+                "timeoutMs": 300000,
+                "command": [
+                  "/opt/homebrew/Cellar/bun/1.2.5/bin/bun",
+                  "--smol",
+                  "/private/tmp/signature-publish57z-w/evals/native_compiler_experiment.ts",
+                  "--mode=run",
+                  "--corpus=/private/tmp/signature-publish57z-w/checkpoints/signature-cases/signature-non-type.corpus.json",
+                  "--build=/private/tmp/signature-publish57z-w/artifacts/build.json",
+                  "--report=/private/tmp/signature-publish57z-w/comparison/B-signature-non-type.json",
+                  "--phase=compile",
+                  "--threads=1",
+                  "--exports=/private/tmp/signature-publish57z-w/main-exports.json",
+                  "--internal=run"
+                ],
+                "label": "Native CPU compiler run",
+                "exitCode": 1,
+                "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792811834883-857b712672edd993.json",
+                "memoryLimitBytes": 8589934592,
+                "rssLimitBytes": 8589934592
+              },
+              "failurePhase": "check",
+              "diagnostic": [
+                "constructor requires a datatype goal",
+                "bend: native experiment: Bend rejected the input"
+              ]
+            }
+          },
+          "sameActualOutcome": true
+        },
+        {
+          "name": "signature-invalid-binder",
+          "initialExpectedAccepted": false,
+          "reports": {
+            "A": {
+              "path": "/private/tmp/signature-publish57z-w/comparison/A-signature-invalid-binder.json",
+              "sha256": "073762bd3256b4f961af7e5c12c7de8c1c275b692268d09efc9e5a8f0a1f7a90",
+              "status": "FAIL",
+              "guardian": {
+                "status": "FAIL",
+                "reason": "command_exit",
+                "commandExitCode": 2,
+                "commandSignal": 0,
+                "peakRssBytes": 211927040,
+                "peakFootprintBytes": 183780624,
+                "elapsedMs": 210,
+                "timeoutMs": 300000,
+                "command": [
+                  "/opt/homebrew/Cellar/bun/1.2.5/bin/bun",
+                  "--smol",
+                  "/private/tmp/native-w57v.QZEhzCu0/evals/native_compiler_experiment.ts",
+                  "--mode=run",
+                  "--corpus=/private/tmp/signature-publish57z-w/checkpoints/signature-cases/signature-invalid-binder.corpus.json",
+                  "--build=/private/tmp/native-w57v.QZEhzCu0/artifacts/build.json",
+                  "--report=/private/tmp/signature-publish57z-w/comparison/A-signature-invalid-binder.json",
+                  "--phase=compile",
+                  "--threads=1",
+                  "--exports=/private/tmp/signature-publish57z-w/main-exports.json",
+                  "--internal=run"
+                ],
+                "label": "Native CPU compiler run",
+                "exitCode": 1,
+                "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792811835183-3168549d50acb849.json",
+                "memoryLimitBytes": 8589934592,
+                "rssLimitBytes": 8589934592
+              },
+              "failurePhase": "check",
+              "diagnostic": [
+                "term form cannot infer",
+                "bend: native experiment: Bend rejected the input"
+              ]
+            },
+            "B": {
+              "path": "/private/tmp/signature-publish57z-w/comparison/B-signature-invalid-binder.json",
+              "sha256": "8336991ecd75d9c6a03752b129c9c0d7143e6b903e2b96d27a3456107fb2877f",
+              "status": "FAIL",
+              "guardian": {
+                "status": "FAIL",
+                "reason": "command_exit",
+                "commandExitCode": 2,
+                "commandSignal": 0,
+                "peakRssBytes": 211861504,
+                "peakFootprintBytes": 183583968,
+                "elapsedMs": 210,
+                "timeoutMs": 300000,
+                "command": [
+                  "/opt/homebrew/Cellar/bun/1.2.5/bin/bun",
+                  "--smol",
+                  "/private/tmp/signature-publish57z-w/evals/native_compiler_experiment.ts",
+                  "--mode=run",
+                  "--corpus=/private/tmp/signature-publish57z-w/checkpoints/signature-cases/signature-invalid-binder.corpus.json",
+                  "--build=/private/tmp/signature-publish57z-w/artifacts/build.json",
+                  "--report=/private/tmp/signature-publish57z-w/comparison/B-signature-invalid-binder.json",
+                  "--phase=compile",
+                  "--threads=1",
+                  "--exports=/private/tmp/signature-publish57z-w/main-exports.json",
+                  "--internal=run"
+                ],
+                "label": "Native CPU compiler run",
+                "exitCode": 1,
+                "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792811835484-4707e40fbb60baee.json",
+                "memoryLimitBytes": 8589934592,
+                "rssLimitBytes": 8589934592
+              },
+              "failurePhase": "check",
+              "diagnostic": [
+                "term form cannot infer",
+                "bend: native experiment: Bend rejected the input"
+              ]
+            }
+          },
+          "sameActualOutcome": true
+        },
+        {
+          "name": "signature-invalid-order",
+          "initialExpectedAccepted": false,
+          "reports": {
+            "A": {
+              "path": "/private/tmp/signature-publish57z-w/comparison/A-signature-invalid-order.json",
+              "sha256": "6e6f1492ac76817ea1fd5d5af0b61c48380212d882822984617548a631901209",
+              "status": "FAIL",
+              "guardian": {
+                "status": "FAIL",
+                "reason": "command_exit",
+                "commandExitCode": 2,
+                "commandSignal": 0,
+                "peakRssBytes": 212107264,
+                "peakFootprintBytes": 183862472,
+                "elapsedMs": 210,
+                "timeoutMs": 300000,
+                "command": [
+                  "/opt/homebrew/Cellar/bun/1.2.5/bin/bun",
+                  "--smol",
+                  "/private/tmp/native-w57v.QZEhzCu0/evals/native_compiler_experiment.ts",
+                  "--mode=run",
+                  "--corpus=/private/tmp/signature-publish57z-w/checkpoints/signature-cases/signature-invalid-order.corpus.json",
+                  "--build=/private/tmp/native-w57v.QZEhzCu0/artifacts/build.json",
+                  "--report=/private/tmp/signature-publish57z-w/comparison/A-signature-invalid-order.json",
+                  "--phase=compile",
+                  "--threads=1",
+                  "--exports=/private/tmp/signature-publish57z-w/main-exports.json",
+                  "--internal=run"
+                ],
+                "label": "Native CPU compiler run",
+                "exitCode": 1,
+                "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792811835783-44cbe5282499eea6.json",
+                "memoryLimitBytes": 8589934592,
+                "rssLimitBytes": 8589934592
+              },
+              "failurePhase": "check",
+              "diagnostic": [
+                "unknown name missing",
+                "bend: native experiment: Bend rejected the input"
+              ]
+            },
+            "B": {
+              "path": "/private/tmp/signature-publish57z-w/comparison/B-signature-invalid-order.json",
+              "sha256": "2912fab5683f87a1256428e3c3eea92b41d4d262e4797f33ee2c4924ee716e78",
+              "status": "FAIL",
+              "guardian": {
+                "status": "FAIL",
+                "reason": "command_exit",
+                "commandExitCode": 2,
+                "commandSignal": 0,
+                "peakRssBytes": 212287488,
+                "peakFootprintBytes": 183829752,
+                "elapsedMs": 209,
+                "timeoutMs": 300000,
+                "command": [
+                  "/opt/homebrew/Cellar/bun/1.2.5/bin/bun",
+                  "--smol",
+                  "/private/tmp/signature-publish57z-w/evals/native_compiler_experiment.ts",
+                  "--mode=run",
+                  "--corpus=/private/tmp/signature-publish57z-w/checkpoints/signature-cases/signature-invalid-order.corpus.json",
+                  "--build=/private/tmp/signature-publish57z-w/artifacts/build.json",
+                  "--report=/private/tmp/signature-publish57z-w/comparison/B-signature-invalid-order.json",
+                  "--phase=compile",
+                  "--threads=1",
+                  "--exports=/private/tmp/signature-publish57z-w/main-exports.json",
+                  "--internal=run"
+                ],
+                "label": "Native CPU compiler run",
+                "exitCode": 1,
+                "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792811836088-512eb377e757ecd9.json",
+                "memoryLimitBytes": 8589934592,
+                "rssLimitBytes": 8589934592
+              },
+              "failurePhase": "check",
+              "diagnostic": [
+                "unknown name missing",
+                "bend: native experiment: Bend rejected the input"
+              ]
+            }
+          },
+          "sameActualOutcome": true
+        }
+      ],
+      "originalFailedHarness": {
+        "path": "/private/tmp/signature-publish57z/evidence/comparison/receipt.json",
+        "sha256": "cc338c8700e56f3e40956b83a6402228037a61ce2bea6962e2180932dad4933a",
+        "status": "FAIL",
+        "error": "signature-inferred-dependent",
+        "reason": "New positive inferred-function syntax is unsupported by actual native parser on BOTH A/B. Initial FAIL preserved. No candidate case or ABBA sample rerun. Remaining new cases completed separately."
+      },
+      "completion": {
+        "path": "/private/tmp/signature-publish57z/evidence/comparison/completion.json",
+        "sha256": "0eac2ad57a9bf65352a436435e2d3ec7cde1e77ae3c4806656a579b7353398ae",
+        "status": "COMPLETE_SAME_NATIVE_OUTCOMES"
+      },
+      "coverage": "Explicit dependent signatures, dependent law completions, forward references+badforwardbody, recursive structural positive/negative, self opacity, imported aliases+family mismatches, copied/affine/erased quantity cases, wrong inferred types; three new signature/order negatives exactly same phase/messages onA/B.",
+      "nativeSpanScopeLimit": "Existing native bridge discards diagnostic span fields; this trial does NOT claim independent native span equality or full integration acceptance. Candidate never changes span assembly or inference/diagnostic ordering.",
+      "nativeFrozenFullTrial": false,
+      "actual7720Consumer": false
+    },
+    "scopeLimits": [
+      "No full current-root final frozen consumer proof requested after predeclared subset rejection.",
+      "Initial current-root/cursor candidate build was started before parent W-basis decision and retained only as complete noncomparative native-kernel validation; not used as a speed sample.",
+      "Benchmark branch counts are derived from exact generated source and arena ownership laws, not runtime instrumentation or allocation lifetimes.",
+      "Publish+type-finishing6.634021CPU interval is entry-delimited, not exclusive function ownership."
+    ],
+    "resourceLease": "Released explicitly toBodySchemaCache57Z andMain after final native child; no further heavy jobs."
+  },
+  "sourcePatch": "--- a/bend2/selfhost/checker.bend\n+++ b/bend2/selfhost/checker.bend\n@@ -10678,10 +10678,13 @@\n       v_14 = v_12\n       ArenaResult{v_18, +v_19} = binders_type(v_1, v_7, v_14)\n       v_21 = v_19\n-      ArenaResult{v_25, +v_26} = arena_publish_global(v_18, Scope.ArenaGlobal{v_4, v_6, v_4, v_21, IR.NoTerm{}, Scope.GlobalDefinition{}})\n+      # Both aliases own the same published signature; publish the handle once.\n+      # Signature inference remains in check_definition_finish, in source order.\n+      ArenaResult{v_25, +published_type} = arena_publish_term(v_18, v_21)\n+      v_26 = Scope.ArenaGlobal{v_4, v_6, v_4, published_type, IR.NoTerm{}, Scope.GlobalDefinition{}}\n       v_50000332 = canonical_key(v_6, v_4)\n-      ArenaResult{v_31, +v_32} = arena_publish_global(v_25, Scope.ArenaGlobal{v_50000332, v_6, v_4, v_21, IR.NoTerm{}, Scope.GlobalDefinition{}})\n-      ArenaResult{v_36, +v_37} = global_scope_prepend(v_31, v_32, v_8)\n+      v_32 = Scope.ArenaGlobal{v_50000332, v_6, v_4, published_type, IR.NoTerm{}, Scope.GlobalDefinition{}}\n+      ArenaResult{v_36, +v_37} = global_scope_prepend(v_25, v_32, v_8)\n       ArenaResult{v_41, +v_42} = global_scope_prepend(v_36, v_26, v_37)\n       {ArenaResult{v_41, v_42} : ArenaResult<Scope.ArenaGlobalScope>}\n     case IR.NoTerm{}:\n",
+  "decision": "Existing secondaliaspublication alreadyfastsource-ID/memohit, notrepeatedrecursivecopy. Native3001definitionABBA only~0.08%gain, belowpredeclared3%; doNOTintegrate, no furtherfull-frozenrun. Finishinfer/typechecksremain. Actualoriginalfailuresretained, no spanparityclaimfornativebridge."
+}
