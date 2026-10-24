@@ -99,6 +99,13 @@ type NfBind is Data:
   NfMismatch{}
   NfUnknown{}
 
+# Whether one case's pattern list can match: a definite mismatch anywhere in
+# the list decides the case even if another scrutinee is still unknown.
+type NfStatus is Data:
+  NfStatusOk{}
+  NfStatusNo{}
+  NfStatusMaybe{}
+
 type Nf is Data:
   NfOk{val: NfVal}
   NfFail{message: String}
@@ -279,61 +286,85 @@ def materialize(val: NfVal) -> BIR.Descriptor:
     case NfClosure{quantity, body, env, sources}:
       BIR.DescriptorLet{sources, BIR.DescriptorLambda{quantity, body}}
 
+# An opaque term was normalized under an environment. One let binds that
+# environment back around the raw form: its values evaluate where the term was
+# written, before any new binder, so no parameter index is ever rewritten.
+def reify_env(source: BIR.Descriptor, +env: List<&2, NfVal>) -> BIR.Descriptor:
+  match env:
+    case Nil{}:
+      source
+    case +value <> rest:
+      BIR.DescriptorLet{materialize_all(env), source}
+
 # ---------------------------------------------------------------------------
 # Descriptor patterns
 # ---------------------------------------------------------------------------
 
-# One structural walk binds every pattern against its value. A binder always
-# matches. A constructor pattern against a constructor value compares keys: a
-# different key is a definite mismatch, and its fields recurse; against any
-# known non-constructor value it is a definite mismatch too, exactly like the
-# runtime's `$type_pattern`. Against a value that is not known yet (a missing
-# binder, or an abstract term) the answer is unknown, and the caller must make
-# the whole match abstract instead of trying the next case. A scrutinee-count
-# mismatch is a definite mismatch. Field bindings precede the remaining
-# pattern bindings, matching the runtime's binding push order.
-def bind_patterns(patterns: List<&2, BIR.DescriptorPattern>, values: List<&2, NfVal>) -> NfBind:
+# The status walk visits every pattern, so a known mismatch in a later pattern
+# beats an unknown earlier one: patterns [True,True] against [missing,False]
+# is a definite no and the next case may run. Bindings are only collected when
+# the whole list is a definite yes, which keeps first-match precedence exact.
+def status_combine(left: NfStatus, right: NfStatus) -> NfStatus:
+  match left:
+    case NfStatusNo{}:
+      NfStatusNo{}
+    case NfStatusMaybe{}:
+      match right:
+        case NfStatusNo{}: NfStatusNo{}
+        case _: NfStatusMaybe{}
+    case NfStatusOk{}:
+      right
+
+def bind_status(patterns: List<&2, BIR.DescriptorPattern>, values: List<&2, NfVal>) -> NfStatus:
   match patterns, values:
     case Nil{}, Nil{}:
-      NfBound{Nil{}}
+      NfStatusOk{}
     case +pattern <> rest, +value <> vrest:
       match pattern:
         case BIR.DescriptorBinder{quantity}:
-          match bind_patterns(rest, vrest):
-            case NfBound{bindings}:
-              NfBound{value <> bindings}
-            case NfMismatch{}:
-              NfMismatch{}
-            case NfUnknown{}:
-              NfUnknown{}
+          bind_status(rest, vrest)
         case BIR.DescriptorConstructorPattern{key, fields}:
           match value:
             case NfCtor{known, args}:
               match String.eq(key, known):
                 case False{}:
-                  NfMismatch{}
+                  NfStatusNo{}
                 case True{}:
-                  match bind_patterns(fields, args):
-                    case NfBound{bindings}:
-                      match bind_patterns(rest, vrest):
-                        case NfBound{tail}:
-                          NfBound{append_vals(bindings, tail)}
-                        case NfMismatch{}:
-                          NfMismatch{}
-                        case NfUnknown{}:
-                          NfUnknown{}
-                    case NfMismatch{}:
-                      NfMismatch{}
-                    case NfUnknown{}:
-                      NfUnknown{}
+                  status_combine(bind_status(fields, args), bind_status(rest, vrest))
             case NfMissing{source}:
-              NfUnknown{}
+              status_combine(NfStatusMaybe{}, bind_status(rest, vrest))
             case NfOther{source}:
-              NfUnknown{}
+              status_combine(NfStatusMaybe{}, bind_status(rest, vrest))
             case _:
-              NfMismatch{}
+              NfStatusNo{}
     case _, _:
+      NfStatusNo{}
+
+def bind_values(patterns: List<&2, BIR.DescriptorPattern>, values: List<&2, NfVal>) -> List<&2, NfVal>:
+  match patterns, values:
+    case Nil{}, Nil{}:
+      Nil{}
+    case +pattern <> rest, +value <> vrest:
+      match pattern:
+        case BIR.DescriptorBinder{quantity}:
+          value <> bind_values(rest, vrest)
+        case BIR.DescriptorConstructorPattern{key, fields}:
+          match value:
+            case NfCtor{known, args}:
+              append_vals(bind_values(fields, args), bind_values(rest, vrest))
+            case _:
+              bind_values(rest, vrest)
+    case _, _:
+      Nil{}
+
+def bind_patterns(patterns: List<&2, BIR.DescriptorPattern>, values: List<&2, NfVal>) -> NfBind:
+  match bind_status(patterns, values):
+    case NfStatusOk{}:
+      NfBound{bind_values(patterns, values)}
+    case NfStatusNo{}:
       NfMismatch{}
+    case NfStatusMaybe{}:
+      NfUnknown{}
 
 # ---------------------------------------------------------------------------
 # Normalization
@@ -372,11 +403,11 @@ def nf_descriptor_step(+context: NfContext, descriptor: BIR.Descriptor, +env: Li
   +whole = descriptor
   match whole:
     case BIR.DescriptorNull{}:
-      NfOk{NfOther{whole}}
+      NfOk{NfOther{reify_env(whole, env)}}
     case BIR.DescriptorParameter{index}:
       NfOk{val_at(env, index, whole)}
     case BIR.DescriptorQuantityKind{}:
-      NfOk{NfOther{whole}}
+      NfOk{NfOther{reify_env(whole, env)}}
     case BIR.DescriptorQuantity{quantity}:
       NfOk{NfQuantity{quantity}}
     case BIR.DescriptorKind{quantity}:
@@ -386,7 +417,7 @@ def nf_descriptor_step(+context: NfContext, descriptor: BIR.Descriptor, +env: Li
         case NfFail{message}:
           NfFail{message}
     case BIR.DescriptorMinimum{left, right}:
-      NfOk{NfOther{whole}}
+      NfOk{NfOther{reify_env(whole, env)}}
     case BIR.DescriptorArrow{use, domain, body}:
       nf_arrow(context, use, domain, body, env, fuel)
     case BIR.DescriptorLambda{use, body}:
@@ -432,17 +463,17 @@ def nf_descriptor_step(+context: NfContext, descriptor: BIR.Descriptor, +env: Li
             case NfBound{bindings}:
               nf_descriptor(context, body, List.append(&2, NfVal, env, bindings), Nat.sub(fuel, 1n))
             case _:
-              NfOk{NfOther{whole}}
+              NfOk{NfOther{reify_env(whole, env)}}
         case NfListFail{message}:
           NfFail{message}
     case BIR.DescriptorMatch{values, cases}:
       match nf_all(context, values, env, fuel):
         case NfListOk{vals}:
-          nf_cases(context, cases, cases, vals, env, whole, fuel)
+          nf_cases(context, cases, vals, env, whole, fuel)
         case NfListFail{message}:
           NfFail{message}
     case BIR.DescriptorCase{patterns, body}:
-      NfOk{NfOther{whole}}
+      NfOk{NfOther{reify_env(whole, env)}}
     case BIR.DescriptorBind{value, body}:
       match nf(context, value, env, fuel):
         case NfOk{val}:
@@ -450,9 +481,9 @@ def nf_descriptor_step(+context: NfContext, descriptor: BIR.Descriptor, +env: Li
         case NfFail{message}:
           NfFail{message}
     case BIR.DescriptorEquality{left, right, ty}:
-      NfOk{NfOther{whole}}
+      NfOk{NfOther{reify_env(whole, env)}}
     case BIR.DescriptorReflexivity{}:
-      NfOk{NfOther{whole}}
+      NfOk{NfOther{reify_env(whole, env)}}
     case BIR.DescriptorFailure{message}:
       NfFail{message}
     case BIR.DescriptorFill{head, args}:
@@ -625,10 +656,10 @@ def nf_reduce_body(+context: NfContext, body: BIR.Descriptor, +env: List<&2, NfV
     case NfOk{val}:
       nf_apply(context, val, extra, fuel)
 
-def nf_cases(+context: NfContext, cases: List<&2, BIR.Descriptor>, +all_cases: List<&2, BIR.Descriptor>, +values: List<&2, NfVal>, +env: List<&2, NfVal>, source: BIR.Descriptor, +fuel: Nat) -> Nf:
+def nf_cases(+context: NfContext, cases: List<&2, BIR.Descriptor>, +values: List<&2, NfVal>, +env: List<&2, NfVal>, source: BIR.Descriptor, +fuel: Nat) -> Nf:
   match cases:
     case Nil{}:
-      NfOk{NfOther{BIR.DescriptorMatch{materialize_all(values), all_cases}}}
+      NfOk{NfOther{reify_env(source, env)}}
     case +case_body <> rest:
       match case_body:
         case BIR.DescriptorCase{patterns, body}:
@@ -636,9 +667,9 @@ def nf_cases(+context: NfContext, cases: List<&2, BIR.Descriptor>, +all_cases: L
             case NfBound{bindings}:
               nf_descriptor(context, body, List.append(&2, NfVal, env, bindings), Nat.sub(fuel, 1n))
             case NfMismatch{}:
-              nf_cases(context, rest, all_cases, values, env, source, fuel)
+              nf_cases(context, rest, values, env, source, fuel)
             case NfUnknown{}:
-              NfOk{NfOther{source}}
+              NfOk{NfOther{reify_env(source, env)}}
         case BIR.DescriptorFailure{message}:
           NfFail{message}
         case _:
