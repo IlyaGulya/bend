@@ -127,24 +127,25 @@ def octals(bytes: List<&2, U32>, +acc: String) -> String:
     case +byte <> rest: octals(rest, String.append(acc, oct3(byte)))
 
 # Byte width of one code point, computed from the code alone: no byte list and
-# no character list, so a long text costs one SCon walk with head recursion.
+# no character list, so a long text costs one tail SCon walk. Thresholds are
+# cascaded, as in utf8_bytes, so an ASCII character performs one comparison.
 def utf8_width_wide(bmp: Bool) -> Nat:
   match bmp:
     case True{}: 3n
     case False{}: 4n
 
-def utf8_width_two(two: Bool, bmp: Bool) -> Nat:
+def utf8_width_two(two: Bool, +code: U32) -> Nat:
   match two:
     case True{}: 2n
-    case False{}: utf8_width_wide(bmp)
+    case False{}: utf8_width_wide(U32.is_lt(code, 65536))
 
-def utf8_width_of(small: Bool, two: Bool, bmp: Bool) -> Nat:
+def utf8_width_of(small: Bool, +code: U32) -> Nat:
   match small:
     case True{}: 1n
-    case False{}: utf8_width_two(two, bmp)
+    case False{}: utf8_width_two(U32.is_lt(code, 2048), code)
 
 def utf8_width(+code: U32) -> Nat:
-  utf8_width_of(U32.is_lt(code, 128), U32.is_lt(code, 2048), U32.is_lt(code, 65536))
+  utf8_width_of(U32.is_lt(code, 128), code)
 
 def utf8_len_go(text: String, +acc: Nat) -> Nat:
   match text:
@@ -177,6 +178,7 @@ def literal_piece(char: Char) -> String:
   match char:
     case '"': "\\\""
     case '\\': "\\\\"
+    case '?': "\\?"
     case '\n': "\\n"
     case '\r': "\\r"
     case '\t': "\\t"

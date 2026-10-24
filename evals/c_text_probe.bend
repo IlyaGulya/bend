@@ -77,6 +77,12 @@ def mixed_long_text() -> String:
 def mixed_long_len_ok() -> Bool:
   Nat.is_eq(Link.utf8_byte_len(mixed_long_text()), 20000n)
 
+def trigraph_text() -> String:
+  "??=??/??'??(??)??!??<??>??-"
+
+def trigraph_len_ok() -> Bool:
+  Nat.is_eq(Link.utf8_byte_len(trigraph_text()), 27n)
+
 def astral_len_ok() -> Bool:
   Nat.is_eq(Link.utf8_byte_len(String.from_list([Char.from_u32(119070)])), 4n)
 
@@ -90,4 +96,5 @@ def main() -> IO(Unit):
     Unit <- IO.print(String.append("mixed_fold_ok=", Bool.show(mixed_fold_ok())))
     Unit <- IO.print(String.append("lambda_len_ok=", Bool.show(lambda_len_ok())))
     Unit <- IO.print(String.append("astral_len_ok=", Bool.show(astral_len_ok())))
-    IO.print(String.append("mixed_long_len_ok=", Bool.show(mixed_long_len_ok())))
+    Unit <- IO.print(String.append("mixed_long_len_ok=", Bool.show(mixed_long_len_ok())))
+    IO.print(String.append("trigraph_len_ok=", Bool.show(trigraph_len_ok())))
