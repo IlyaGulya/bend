@@ -93,6 +93,9 @@
     "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/backend_ir.bend": "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/backend_ir.bend",
     "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/js_emit.bend": "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/js_emit.bend",
     "/private/tmp/bend-fir-integrated57ab/checkpoints/js_emit_owned_v1.bend": "/private/tmp/bend-fir-integrated57ab/checkpoints/js_emit_owned_v1.bend",
+    "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_backend_sharing.bend": "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_backend_sharing.bend",
+    "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_emit_core.bend": "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_emit_core.bend",
+    "/private/tmp/bend-fir-integrated57ab/checkpoints/c_emit_owned_v1.bend": "/private/tmp/bend-fir-integrated57ab/checkpoints/c_emit_owned_v1.bend",
     "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/core.bend": "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/core.bend",
     "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/sha256.bend": "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/sha256.bend",
     "bend2/selfhost/ast.bend": "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/ast.bend",
@@ -18428,9 +18431,9 @@
     "bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
     "evals/heavy_gate.ts": "47a12205abd374fd69d7dac30ee9fb45d7203cad2790870511387cd2efc22251",
     "evals/validation_profile.ts": "d0bfd8124b334cb1db4792e49675290a971ae82730e57029173b07ff23d6938d",
-    "checkpoints/checker-core-owned-source-v1.json": "d7c45259f6c1cd4204e07518ec0033efafb9a39e4a120d7c5adf30de4ee9b644",
-    "evals/checker_core_step_lower.ts": "79f2f55f9783c1185a9acfd2e071d578e60f3bb3410c5b4e17a81a3d45fee8ef",
-    "evals/checker_core_owned_source.ts": "686655154860abeb77c1bdd4279a838b2efedbd941ce0bfb3c66560129f69b87",
+    "checkpoints/checker-core-owned-source-v1.json": "8d3e95f42c7af8263c76f378b263e6da28e88201e448e6d13554736f8f98dcf6",
+    "evals/checker_core_step_lower.ts": "da60d94c5504723d41069cb9035c7892d98083014266eb2c9113a5df5c2e2211",
+    "evals/checker_core_owned_source.ts": "533be4117c3d603e3b8b8b560d54fd1845850db59fa4ec36d20e85277d7cacb4",
     "evals/js_emit_step_lower.ts": "60913a5d1a1a4571401ae8a4ef885045c4df0c996df8461d0fc8be1f454fb6e4",
     "evals/template_step_lower.ts": "24bb3b87949f3d68073e2ec407c339b75f5124a877106d24fbc27ca9dbb95de3",
     "evals/parser_full_graph.ts": "27f985053761fd8192b845988f6047e59355faf686b3c36f079d3d8fad545f86",
@@ -18451,6 +18454,9 @@
     "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/backend_ir.bend": "3614f816b109012c2ccb202ce6164efad9d82b1bf5f9decbc52c27ebaafe94c5",
     "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/js_emit.bend": "e0e986cc94705472fd7303575ac6c35efe2ea20299dfb1c1b5f6cf89b3da1dab",
     "/private/tmp/bend-fir-integrated57ab/checkpoints/js_emit_owned_v1.bend": "a667a0492c1d7de772424c4f3cecc6962cf57d3dc255bb60602254dc13e76eba",
+    "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_backend_sharing.bend": "ffaf97c528c88490fca33a5115e6a6e479d451bc0726cc4f0cb6c5b9b6119edb",
+    "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_emit_core.bend": "f690db5b6054d4f647b5c02e1281923d5cc66b24c8c2fff7859d811efc5ba380",
+    "/private/tmp/bend-fir-integrated57ab/checkpoints/c_emit_owned_v1.bend": "8e678fdf724890dd1ccac3d6b9d306d36657f877ab3908f14fbc1a753fed96e4",
     "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
     "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
     "bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
@@ -18469,5 +18475,5 @@
     "nativeBuildRun": false,
     "testsRun": false
   },
-  "generationManifestSha256": "937c21ac57bbf4d2957452cee73aaaf3112ba900f7adaa3b9780d92eecc09f29"
+  "generationManifestSha256": "feea726647135d3b62cbb8b937c187514faf305df73256d1a7c82d373695f8f0"
 }

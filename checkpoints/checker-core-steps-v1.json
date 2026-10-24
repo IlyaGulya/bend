@@ -96,6 +96,9 @@
     "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/backend_ir.bend": "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/backend_ir.bend",
     "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/js_emit.bend": "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/js_emit.bend",
     "/private/tmp/bend-fir-integrated57ab/checkpoints/js_emit_owned_v1.bend": "/private/tmp/bend-fir-integrated57ab/checkpoints/js_emit_owned_v1.bend",
+    "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_backend_sharing.bend": "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_backend_sharing.bend",
+    "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_emit_core.bend": "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_emit_core.bend",
+    "/private/tmp/bend-fir-integrated57ab/checkpoints/c_emit_owned_v1.bend": "/private/tmp/bend-fir-integrated57ab/checkpoints/c_emit_owned_v1.bend",
     "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/core.bend": "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/core.bend",
     "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/sha256.bend": "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/sha256.bend",
     "bend2/selfhost/ast.bend": "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/ast.bend",
@@ -167,10 +170,10 @@
   },
   "ffi": false,
   "source": "checkpoints/checker_core_owned_v1.bend",
-  "sourceSha256": "1017cefba3bb12241eb7bae5c2e56c1b3696f8798eccfd02188bb4dd323e727c",
+  "sourceSha256": "26a5190448f591357274f971e1150e2ca5c366328486a20af1dc761b5311c210",
   "canonical": "bend2/selfhost/checker.bend",
-  "canonicalSha256": "7ce24b4d109ad11da3eb8a374e093ae0b39353a576234342ab5e5cdddae0c8dc",
-  "loweringSourceSha256": "5a8cf8570685644557f4b838e32ccd0861e0a0597e79dbce2cb42a89f9c8bd09",
+  "canonicalSha256": "541a4b057c79f159cdc13017ba669adce8c58055f18431a0b281c723eccb39bc",
+  "loweringSourceSha256": "08ebb6ab1efab2119192dcfa28eaa917ce6ea2d82a16e6625084ddb8cbf83948",
   "loweringSourcePolicy": "Original authenticated canonical declaration blocks under the owned native-provider header; computed and nested matches factored once by typed CPS, not pre-expanded into source requests.",
   "sourceHeaderSha256": "5ad70cac570b1b7b28c1ae5559e277e01b56020fbf83ebbc4878be7e19b59d19",
   "derivedHeaderSha256": "5ad70cac570b1b7b28c1ae5559e277e01b56020fbf83ebbc4878be7e19b59d19",
@@ -51394,7 +51397,7 @@
     "native_match_arena_check_entry_0": "1d0ccdc808cb273de27907edecb0bec3e1fa5f8df3049fac26a63e3f0dd30d60",
     "native_match_arena_check_entry_1": "d83fe2b71eebacc073d460b056263a420362270e413da02c2077340d9b6b3614",
     "arena_check_entry": "9067540c20accae09d3125073d124406e0b58eff5d154efd92c71aba249dfa1d",
-    "check_modules": "76ef66470628d40ffafacb245fc2661a69d692b5ae64215f0bdc131652b4677a",
+    "check_modules": "2d67089f4ec1590c13616910be65c13832266bd1df1ce7280af6cace6b8c924b",
     "readback_result": "a28189f4798d5ecec85afeff81e57b9d4e68af41780e7e46d64ab3f23543c6f0",
     "readback": "bba597326cb0ef5c60e79e7b69e10c0267c69eb813903c8e61f49d1bdb5a5f71",
     "arena_name_name_result_0": "1653138a858aefa5a67e26bfa77129d5dd7907bc75e3610ab9d77f65ff3f711d",
@@ -66756,9 +66759,9 @@
       "request": "CheckerRequest_check_modules",
       "requestEnvelope": "CheckerRequestGroup_16",
       "stepBody": "checker_body_check_modules",
-      "sourceSha256": "76ef66470628d40ffafacb245fc2661a69d692b5ae64215f0bdc131652b4677a",
+      "sourceSha256": "2d67089f4ec1590c13616910be65c13832266bd1df1ce7280af6cace6b8c924b",
       "begin": 851645,
-      "end": 852114,
+      "end": 852089,
       "result": "Checked.CheckResult",
       "signature": "def check_modules(v_1: List<&2, Loader.LoadedModule>, v_3: List<&2, Scope.Global>) -> Checked.CheckResult"
     },
@@ -66768,8 +66771,8 @@
       "requestEnvelope": "CheckerRequestGroup_16",
       "stepBody": "checker_body_readback_result",
       "sourceSha256": "a28189f4798d5ecec85afeff81e57b9d4e68af41780e7e46d64ab3f23543c6f0",
-      "begin": 852114,
-      "end": 852631,
+      "begin": 852089,
+      "end": 852606,
       "result": "Checked.Inspection",
       "signature": "def readback_result(v_1: List<&2, IR.LoadedModule>, v_3: List<&2, Scope.ArenaGlobal>, v_6: ReadbackResult<List<&2, Loader.LoadedModule>>, v_8: List<&2, Checked.ModuleMetadata>) -> Checked.Inspection"
     },
@@ -66779,8 +66782,8 @@
       "requestEnvelope": "CheckerRequestGroup_16",
       "stepBody": "checker_body_readback",
       "sourceSha256": "bba597326cb0ef5c60e79e7b69e10c0267c69eb813903c8e61f49d1bdb5a5f71",
-      "begin": 852631,
-      "end": 852883,
+      "begin": 852606,
+      "end": 852858,
       "result": "Checked.Inspection",
       "signature": "def readback(v_0: Checked.CheckedProgram) -> Checked.Inspection"
     },
@@ -66791,8 +66794,8 @@
       "stepBody": "checker_body_arena_name_name_result_0",
       "pureBody": "checker_pure_arena_name_name_result_0",
       "sourceSha256": "1653138a858aefa5a67e26bfa77129d5dd7907bc75e3610ab9d77f65ff3f711d",
-      "begin": 852883,
-      "end": 853099,
+      "begin": 852858,
+      "end": 853074,
       "result": "ArenaResult<U32>",
       "signature": "def arena_name_name_result_0(v_2: Pair(Arena.Arena, U32), v_3: Arena.Arena) -> ArenaResult<U32>"
     },
@@ -66803,8 +66806,8 @@
       "stepBody": "checker_body_arena_get_node_region_get_node_result_2",
       "pureBody": "checker_pure_arena_get_node_region_get_node_result_2",
       "sourceSha256": "f894fd41adf0867620be540a3c8072a34f9c19358448decb1909bb6707b3a34e",
-      "begin": 853099,
-      "end": 853351,
+      "begin": 853074,
+      "end": 853326,
       "result": "ArenaResult<Arena.Node>",
       "signature": "def arena_get_node_region_get_node_result_2(v_1: Pair(Arena.Arena, Arena.Node), v_2: Arena.Arena) -> ArenaResult<Arena.Node>"
     },
@@ -66815,8 +66818,8 @@
       "stepBody": "checker_body_arena_get_node_region_get_node_result_3",
       "pureBody": "checker_pure_arena_get_node_region_get_node_result_3",
       "sourceSha256": "7f98efdd4d27e7e77bd6b672b3d4cfd90e73332a18c8432bcf4e3b23f224363e",
-      "begin": 853351,
-      "end": 853603,
+      "begin": 853326,
+      "end": 853578,
       "result": "ArenaResult<Arena.Node>",
       "signature": "def arena_get_node_region_get_node_result_3(v_1: Pair(Arena.Arena, Arena.Node), v_2: Arena.Arena) -> ArenaResult<Arena.Node>"
     },
@@ -66827,8 +66830,8 @@
       "stepBody": "checker_body_arena_put_node_put_node_result_4",
       "pureBody": "checker_pure_arena_put_node_put_node_result_4",
       "sourceSha256": "41d45d3b035ffe65bba57eca0b84ef1f912edea346b80ff039e477c026077214",
-      "begin": 853603,
-      "end": 853847,
+      "begin": 853578,
+      "end": 853822,
       "result": "ArenaResult<U32>",
       "signature": "def arena_put_node_put_node_result_4(v_2: Pair(Arena.Arena, U32), v_3: Arena.Arena) -> ArenaResult<U32>"
     },
@@ -66839,8 +66842,8 @@
       "stepBody": "checker_body_arena_put_source_node_put_node_result_5",
       "pureBody": "checker_pure_arena_put_source_node_put_node_result_5",
       "sourceSha256": "5a5f3ee76ec04bae2182643a913d9803aca3e0815acd188c2e58bb7d5ac119ce",
-      "begin": 853847,
-      "end": 854078,
+      "begin": 853822,
+      "end": 854053,
       "result": "ArenaResult<U32>",
       "signature": "def arena_put_source_node_put_node_result_5(v_2: Pair(Arena.Arena, U32), v_3: Arena.Arena) -> ArenaResult<U32>"
     },
@@ -66851,8 +66854,8 @@
       "stepBody": "checker_body_arena_get_pattern_region_get_pattern_result_6",
       "pureBody": "checker_pure_arena_get_pattern_region_get_pattern_result_6",
       "sourceSha256": "fe30f23f1f8503ba406c45669e837db1928fd40a4b1636a66e81c66a4ffc20dc",
-      "begin": 854078,
-      "end": 854345,
+      "begin": 854053,
+      "end": 854320,
       "result": "ArenaResult<Arena.Pattern>",
       "signature": "def arena_get_pattern_region_get_pattern_result_6(v_1: Pair(Arena.Arena, Arena.Pattern), v_2: Arena.Arena) -> ArenaResult<Arena.Pattern>"
     },
@@ -66863,8 +66866,8 @@
       "stepBody": "checker_body_arena_get_pattern_region_get_pattern_result_7",
       "pureBody": "checker_pure_arena_get_pattern_region_get_pattern_result_7",
       "sourceSha256": "a894a9efe83c643e0fac6963cc86721c7aa071cc9bc04504e401b4608f5f98e6",
-      "begin": 854345,
-      "end": 854612,
+      "begin": 854320,
+      "end": 854587,
       "result": "ArenaResult<Arena.Pattern>",
       "signature": "def arena_get_pattern_region_get_pattern_result_7(v_1: Pair(Arena.Arena, Arena.Pattern), v_2: Arena.Arena) -> ArenaResult<Arena.Pattern>"
     },
@@ -66875,8 +66878,8 @@
       "stepBody": "checker_body_arena_put_pattern_put_pattern_result_8",
       "pureBody": "checker_pure_arena_put_pattern_put_pattern_result_8",
       "sourceSha256": "d32f810bd8ebef6677efba5267dba1cc9f1838a77ef30c500433ad01ae44c401",
-      "begin": 854612,
-      "end": 854862,
+      "begin": 854587,
+      "end": 854837,
       "result": "ArenaResult<U32>",
       "signature": "def arena_put_pattern_put_pattern_result_8(v_2: Pair(Arena.Arena, U32), v_3: Arena.Arena) -> ArenaResult<U32>"
     },
@@ -66887,8 +66890,8 @@
       "stepBody": "checker_body_arena_put_source_pattern_put_pattern_result_9",
       "pureBody": "checker_pure_arena_put_source_pattern_put_pattern_result_9",
       "sourceSha256": "8db83409e97148b02acf6802d066356cc9730e31a2aa2d5b862783fc9bcac8bb",
-      "begin": 854862,
-      "end": 855099,
+      "begin": 854837,
+      "end": 855074,
       "result": "ArenaResult<U32>",
       "signature": "def arena_put_source_pattern_put_pattern_result_9(v_2: Pair(Arena.Arena, U32), v_3: Arena.Arena) -> ArenaResult<U32>"
     },
@@ -66899,8 +66902,8 @@
       "stepBody": "checker_body_arena_get_binder_region_get_binder_result_10",
       "pureBody": "checker_pure_arena_get_binder_region_get_binder_result_10",
       "sourceSha256": "22f15b41ee30e6007147be8b871838f2f3a7e39ba05a4a5738c7dd14aeb36b4e",
-      "begin": 855099,
-      "end": 855362,
+      "begin": 855074,
+      "end": 855337,
       "result": "ArenaResult<Arena.Binder>",
       "signature": "def arena_get_binder_region_get_binder_result_10(v_1: Pair(Arena.Arena, Arena.Binder), v_2: Arena.Arena) -> ArenaResult<Arena.Binder>"
     },
@@ -66911,8 +66914,8 @@
       "stepBody": "checker_body_arena_get_binder_region_get_binder_result_11",
       "pureBody": "checker_pure_arena_get_binder_region_get_binder_result_11",
       "sourceSha256": "cde93998ac6082a09666532d555f77d4f41d4d5063f47b57d3db863bced4a868",
-      "begin": 855362,
-      "end": 855625,
+      "begin": 855337,
+      "end": 855600,
       "result": "ArenaResult<Arena.Binder>",
       "signature": "def arena_get_binder_region_get_binder_result_11(v_1: Pair(Arena.Arena, Arena.Binder), v_2: Arena.Arena) -> ArenaResult<Arena.Binder>"
     },
@@ -66923,8 +66926,8 @@
       "stepBody": "checker_body_arena_put_binder_put_binder_result_12",
       "pureBody": "checker_pure_arena_put_binder_put_binder_result_12",
       "sourceSha256": "89f75fe8443c1e47526458cbe19b045abda0e959e6ae24efdd6e76f5220618fd",
-      "begin": 855625,
-      "end": 855874,
+      "begin": 855600,
+      "end": 855849,
       "result": "ArenaResult<U32>",
       "signature": "def arena_put_binder_put_binder_result_12(v_2: Pair(Arena.Arena, U32), v_3: Arena.Arena) -> ArenaResult<U32>"
     },
@@ -66935,8 +66938,8 @@
       "stepBody": "checker_body_arena_put_source_binder_put_binder_result_13",
       "pureBody": "checker_pure_arena_put_source_binder_put_binder_result_13",
       "sourceSha256": "21802994d8f49c893df273bef8f70d9cc63d751d9d8e7b2c4226f8139bfba476",
-      "begin": 855874,
-      "end": 856110,
+      "begin": 855849,
+      "end": 856085,
       "result": "ArenaResult<U32>",
       "signature": "def arena_put_source_binder_put_binder_result_13(v_2: Pair(Arena.Arena, U32), v_3: Arena.Arena) -> ArenaResult<U32>"
     },
@@ -66947,8 +66950,8 @@
       "stepBody": "checker_body_arena_get_word_region_word_result_14",
       "pureBody": "checker_pure_arena_get_word_region_word_result_14",
       "sourceSha256": "6b7b6fc9d197ddf96e46c538ee0d2a21d38f14afad58d154854e835b25dc9db6",
-      "begin": 856110,
-      "end": 856338,
+      "begin": 856085,
+      "end": 856313,
       "result": "ArenaResult<U32>",
       "signature": "def arena_get_word_region_word_result_14(v_2: Pair(Arena.Arena, U32), v_3: Arena.Arena) -> ArenaResult<U32>"
     },
@@ -66959,8 +66962,8 @@
       "stepBody": "checker_body_arena_get_word_region_word_result_15",
       "pureBody": "checker_pure_arena_get_word_region_word_result_15",
       "sourceSha256": "599cea50fa55dc1b9575bf4c129cf9b8acc8f3fd24dca1f55ff00b0943fe8d20",
-      "begin": 856338,
-      "end": 856566,
+      "begin": 856313,
+      "end": 856541,
       "result": "ArenaResult<U32>",
       "signature": "def arena_get_word_region_word_result_15(v_2: Pair(Arena.Arena, U32), v_3: Arena.Arena) -> ArenaResult<U32>"
     },
@@ -66971,8 +66974,8 @@
       "stepBody": "checker_body_arena_put_word_put_word_result_16",
       "pureBody": "checker_pure_arena_put_word_put_word_result_16",
       "sourceSha256": "2e8b0e2fb5e017ac3e9db0703c0bcb5a4c65537cefb25c221526083954b8b671",
-      "begin": 856566,
-      "end": 856811,
+      "begin": 856541,
+      "end": 856786,
       "result": "ArenaResult<U32>",
       "signature": "def arena_put_word_put_word_result_16(v_2: Pair(Arena.Arena, U32), v_3: Arena.Arena) -> ArenaResult<U32>"
     },
@@ -66983,8 +66986,8 @@
       "stepBody": "checker_body_arena_get_natural_region_natural_result_18",
       "pureBody": "checker_pure_arena_get_natural_region_natural_result_18",
       "sourceSha256": "e5c185bbbd3a2f3255e93b45fb6ffdee1e66bedfc72d8ed1116fcbaa2161c2c2",
-      "begin": 856811,
-      "end": 857045,
+      "begin": 856786,
+      "end": 857020,
       "result": "ArenaResult<Nat>",
       "signature": "def arena_get_natural_region_natural_result_18(v_2: Pair(Arena.Arena, Nat), v_3: Arena.Arena) -> ArenaResult<Nat>"
     },
@@ -66995,8 +66998,8 @@
       "stepBody": "checker_body_arena_get_natural_region_natural_result_19",
       "pureBody": "checker_pure_arena_get_natural_region_natural_result_19",
       "sourceSha256": "8c141d042e2def00c37c835f116461e132b3175c736b18155f3cd2d68f8e1e94",
-      "begin": 857045,
-      "end": 857279,
+      "begin": 857020,
+      "end": 857254,
       "result": "ArenaResult<Nat>",
       "signature": "def arena_get_natural_region_natural_result_19(v_2: Pair(Arena.Arena, Nat), v_3: Arena.Arena) -> ArenaResult<Nat>"
     },
@@ -67007,8 +67010,8 @@
       "stepBody": "checker_body_arena_reserve_words_reserve_words_result_22",
       "pureBody": "checker_pure_arena_reserve_words_reserve_words_result_22",
       "sourceSha256": "f6ee5b3dd1b591eaddffe04299c1f36cee4c2ef72f8db867d29aa398f28b0397",
-      "begin": 857279,
-      "end": 857534,
+      "begin": 857254,
+      "end": 857509,
       "result": "ArenaResult<U32>",
       "signature": "def arena_reserve_words_reserve_words_result_22(v_2: Pair(Arena.Arena, U32), v_3: Arena.Arena) -> ArenaResult<U32>"
     },
@@ -67019,8 +67022,8 @@
       "stepBody": "checker_body_arena_reserve_source_words_reserve_words_result_23",
       "pureBody": "checker_pure_arena_reserve_source_words_reserve_words_result_23",
       "sourceSha256": "aaabf454259d3df530af7bbf0f1bd3f9b5c1686648450cad312be82592c1ee2e",
-      "begin": 857534,
-      "end": 857776,
+      "begin": 857509,
+      "end": 857751,
       "result": "ArenaResult<U32>",
       "signature": "def arena_reserve_source_words_reserve_words_result_23(v_2: Pair(Arena.Arena, U32), v_3: Arena.Arena) -> ArenaResult<U32>"
     },
@@ -67031,8 +67034,8 @@
       "stepBody": "checker_body_arena_word_cursor_word_count_result_24",
       "pureBody": "checker_pure_arena_word_cursor_word_count_result_24",
       "sourceSha256": "d4f59b2d50ef250cec64fb8ee17fab9eb72a79fa6c0536cd3646c86ce3ba53e6",
-      "begin": 857776,
-      "end": 858006,
+      "begin": 857751,
+      "end": 857981,
       "result": "ArenaResult<U32>",
       "signature": "def arena_word_cursor_word_count_result_24(v_2: Pair(Arena.Arena, U32), v_3: Arena.Arena) -> ArenaResult<U32>"
     },
@@ -67043,8 +67046,8 @@
       "stepBody": "checker_body_arena_reserve_source_naturals_reserve_naturals_result_26",
       "pureBody": "checker_pure_arena_reserve_source_naturals_reserve_naturals_result_26",
       "sourceSha256": "94e1b0cb87df41ee59359f684aace9b958b574a0d5ad75b72ae282fc88a631b4",
-      "begin": 858006,
-      "end": 858254,
+      "begin": 857981,
+      "end": 858229,
       "result": "ArenaResult<U32>",
       "signature": "def arena_reserve_source_naturals_reserve_naturals_result_26(v_2: Pair(Arena.Arena, U32), v_3: Arena.Arena) -> ArenaResult<U32>"
     },
@@ -67054,8 +67057,8 @@
       "requestEnvelope": "CheckerRequestGroup_16",
       "stepBody": "checker_body_arena_pack_terms_reserve_words_result_28",
       "sourceSha256": "91c6d339c955bc7be65d8e277ffe304ee3303fad2d932c8d383b040c22c5de96",
-      "begin": 858254,
-      "end": 858535,
+      "begin": 858229,
+      "end": 858510,
       "result": "Pair(Arena.Arena, Pair(U32, U32))",
       "signature": "def arena_pack_terms_reserve_words_result_28(v_2: Pair(Arena.Arena, U32), +v_4: List<&2, Ast.SyntaxTerm>, +v_6: U32) -> Pair(Arena.Arena, Pair(U32, U32))"
     },
@@ -67065,8 +67068,8 @@
       "requestEnvelope": "CheckerRequestGroup_16",
       "stepBody": "checker_body_arena_pack_patterns_reserve_words_result_29",
       "sourceSha256": "8c0105a648ef3d3c30c752b4642dad2722ee9e1c1bc9f4646781c647e8e22d8c",
-      "begin": 858535,
-      "end": 858825,
+      "begin": 858510,
+      "end": 858800,
       "result": "Pair(Arena.Arena, Pair(U32, U32))",
       "signature": "def arena_pack_patterns_reserve_words_result_29(v_2: Pair(Arena.Arena, U32), +v_4: List<&2, Ast.SyntaxPattern>, +v_6: U32) -> Pair(Arena.Arena, Pair(U32, U32))"
     },
@@ -67076,8 +67079,8 @@
       "requestEnvelope": "CheckerRequestGroup_16",
       "stepBody": "checker_body_arena_pack_binders_reserve_words_result_30",
       "sourceSha256": "c467df20177cf0b60110bc25616cb763d45005544f82b0d1c63074d4a1fdafa8",
-      "begin": 858825,
-      "end": 859113,
+      "begin": 858800,
+      "end": 859088,
       "result": "Pair(Arena.Arena, Pair(U32, U32))",
       "signature": "def arena_pack_binders_reserve_words_result_30(v_2: Pair(Arena.Arena, U32), +v_4: List<&2, Ast.TelescopeItem>, +v_6: U32) -> Pair(Arena.Arena, Pair(U32, U32))"
     },
@@ -67087,8 +67090,8 @@
       "requestEnvelope": "CheckerRequestGroup_16",
       "stepBody": "checker_body_arena_pack_names_at_name_result_31",
       "sourceSha256": "65c9154bf2e5f29068a091a00312f0f87d092d74075f9653ee2992591a365b19",
-      "begin": 859113,
-      "end": 859363,
+      "begin": 859088,
+      "end": 859338,
       "result": "Arena.Arena",
       "signature": "def arena_pack_names_at_name_result_31(v_2: Pair(Arena.Arena, U32), +v_4: U32, v_7: List<&2, String>) -> Arena.Arena"
     },
@@ -67098,8 +67101,8 @@
       "requestEnvelope": "CheckerRequestGroup_16",
       "stepBody": "checker_body_arena_pack_names_reserve_words_result_32",
       "sourceSha256": "d0f8e004a530751b5af78dd4237b660e5f65390587a59090ad8b316c2db6f09f",
-      "begin": 859363,
-      "end": 859638,
+      "begin": 859338,
+      "end": 859613,
       "result": "Pair(Arena.Arena, Pair(U32, U32))",
       "signature": "def arena_pack_names_reserve_words_result_32(v_2: Pair(Arena.Arena, U32), +v_5: List<&2, String>, +v_7: U32) -> Pair(Arena.Arena, Pair(U32, U32))"
     },
@@ -67109,8 +67112,8 @@
       "requestEnvelope": "CheckerRequestGroup_16",
       "stepBody": "checker_body_arena_pack_naturals_reserve_naturals_result_33",
       "sourceSha256": "0eabba6d07c63d15fc237084343103dc943e60f2df143f6e5617ac5daffa614b",
-      "begin": 859638,
-      "end": 859919,
+      "begin": 859613,
+      "end": 859894,
       "result": "Pair(Arena.Arena, Pair(U32, U32))",
       "signature": "def arena_pack_naturals_reserve_naturals_result_33(v_2: Pair(Arena.Arena, U32), +v_5: List<&2, Nat>, +v_7: U32) -> Pair(Arena.Arena, Pair(U32, U32))"
     },
@@ -67120,8 +67123,8 @@
       "requestEnvelope": "CheckerRequestGroup_16",
       "stepBody": "checker_body_arena_pack_quantities_reserve_words_result_34",
       "sourceSha256": "a5fb9fdbb9fdb51237de6a765288089ddd7f2a0756c6112987755c2cb0385722",
-      "begin": 859919,
-      "end": 860208,
+      "begin": 859894,
+      "end": 860183,
       "result": "Pair(Arena.Arena, Pair(U32, U32))",
       "signature": "def arena_pack_quantities_reserve_words_result_34(v_2: Pair(Arena.Arena, U32), +v_4: List<&2, Ast.Quantity>, +v_6: U32) -> Pair(Arena.Arena, Pair(U32, U32))"
     },
@@ -67132,8 +67135,8 @@
       "stepBody": "checker_body_arena_pack_term_name_result_35",
       "pureBody": "checker_pure_arena_pack_term_name_result_35",
       "sourceSha256": "33d731675d2b46a387af0ec352d9320edc1498e83c7a56281cc3f9064bd053c1",
-      "begin": 860208,
-      "end": 860439,
+      "begin": 860183,
+      "end": 860414,
       "result": "Pair(Arena.Arena, U32)",
       "signature": "def arena_pack_term_name_result_35(v_2: Pair(Arena.Arena, U32), v_4: Nat, v_5: Ast.SourceSpan) -> Pair(Arena.Arena, U32)"
     },
@@ -67144,8 +67147,8 @@
       "stepBody": "checker_body_arena_pack_term_name_result_36",
       "pureBody": "checker_pure_arena_pack_term_name_result_36",
       "sourceSha256": "9f50718556f91f982173e396ad2c7ebcfc2be1cd27120b2fe9126d136e72fe71",
-      "begin": 860439,
-      "end": 860657,
+      "begin": 860414,
+      "end": 860632,
       "result": "Pair(Arena.Arena, U32)",
       "signature": "def arena_pack_term_name_result_36(v_2: Pair(Arena.Arena, U32), v_3: Ast.SourceSpan) -> Pair(Arena.Arena, U32)"
     },
@@ -67155,8 +67158,8 @@
       "requestEnvelope": "CheckerRequestGroup_16",
       "stepBody": "checker_body_arena_pack_term_name_result_37",
       "sourceSha256": "3bf587c6e071c3acf165107e4436ea0329cff441d6df6d1fd2a365467e7c9e04",
-      "begin": 860657,
-      "end": 861094,
+      "begin": 860632,
+      "end": 861069,
       "result": "Pair(Arena.Arena, U32)",
       "signature": "def arena_pack_term_name_result_37(v_2: Pair(Arena.Arena, U32), v_3: Ast.SyntaxTerm, v_4: Ast.SyntaxTerm, v_5: Ast.Quantity, v_7: Nat, v_8: Ast.SourceSpan) -> Pair(Arena.Arena, U32)"
     },
@@ -67166,8 +67169,8 @@
       "requestEnvelope": "CheckerRequestGroup_16",
       "stepBody": "checker_body_arena_pack_term_name_result_38",
       "sourceSha256": "999b2fda61da94449dd5668a985541e99d5a851b724d120f977379a569245193",
-      "begin": 861094,
-      "end": 861459,
+      "begin": 861069,
+      "end": 861434,
       "result": "Pair(Arena.Arena, U32)",
       "signature": "def arena_pack_term_name_result_38(v_2: Pair(Arena.Arena, U32), v_3: Ast.SyntaxTerm, v_5: Maybe<&2, Ast.Quantity>, v_7: Nat, v_8: Ast.SourceSpan) -> Pair(Arena.Arena, U32)"
     },
@@ -67177,8 +67180,8 @@
       "requestEnvelope": "CheckerRequestGroup_16",
       "stepBody": "checker_body_arena_pack_term_name_result_39",
       "sourceSha256": "bd2da476b275c4345596ffc669e2a9c713d04f7dc545331cff4353d9795889df",
-      "begin": 861459,
-      "end": 861891,
+      "begin": 861434,
+      "end": 861866,
       "result": "Pair(Arena.Arena, U32)",
       "signature": "def arena_pack_term_name_result_39(v_2: Pair(Arena.Arena, U32), v_4: List<&2, Ast.SyntaxTerm>, v_7: List<&2, String>, v_8: Ast.SourceSpan) -> Pair(Arena.Arena, U32)"
     },
@@ -67188,8 +67191,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_arena_pack_term_name_result_40",
       "sourceSha256": "360de94c81e827a766bdf559a1bb261bb4ff9e2a41d8fceec987237236653beb",
-      "begin": 861891,
-      "end": 862326,
+      "begin": 861866,
+      "end": 862301,
       "result": "Pair(Arena.Arena, U32)",
       "signature": "def arena_pack_term_name_result_40(v_2: Pair(Arena.Arena, U32), v_4: List<&2, Ast.SyntaxTerm>, v_5: Ast.SourceSpan) -> Pair(Arena.Arena, U32)"
     },
@@ -67199,8 +67202,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_arena_pack_term_name_result_41",
       "sourceSha256": "6decb32439d7921a94decdf1d7c6345a0578fe5987ae064fc857cc5f24295746",
-      "begin": 862326,
-      "end": 862716,
+      "begin": 862301,
+      "end": 862691,
       "result": "Pair(Arena.Arena, U32)",
       "signature": "def arena_pack_term_name_result_41(v_2: Pair(Arena.Arena, U32), v_3: Ast.SyntaxTerm, v_4: Ast.SyntaxTerm, v_5: Ast.SourceSpan) -> Pair(Arena.Arena, U32)"
     },
@@ -67211,8 +67214,8 @@
       "stepBody": "checker_body_arena_pack_term_name_result_42",
       "pureBody": "checker_pure_arena_pack_term_name_result_42",
       "sourceSha256": "9fa3d59d478642b08bbf8f6e7926966964813c3773a46f0680317db2ed71c5a5",
-      "begin": 862716,
-      "end": 862941,
+      "begin": 862691,
+      "end": 862916,
       "result": "Pair(Arena.Arena, U32)",
       "signature": "def arena_pack_term_name_result_42(v_2: Pair(Arena.Arena, U32), v_3: Ast.SourceSpan) -> Pair(Arena.Arena, U32)"
     },
@@ -67223,8 +67226,8 @@
       "stepBody": "checker_body_arena_pack_pattern_name_result_43",
       "pureBody": "checker_pure_arena_pack_pattern_name_result_43",
       "sourceSha256": "3cb37f6881839a02608ebdacdd7036cf94fa97cd98a223c36730e149966e91ce",
-      "begin": 862941,
-      "end": 863207,
+      "begin": 862916,
+      "end": 863182,
       "result": "Pair(Arena.Arena, U32)",
       "signature": "def arena_pack_pattern_name_result_43(v_2: Pair(Arena.Arena, U32), v_4: Nat, v_5: Ast.Quantity, v_6: Ast.SourceSpan) -> Pair(Arena.Arena, U32)"
     },
@@ -67234,8 +67237,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_arena_pack_pattern_name_result_44",
       "sourceSha256": "d644a9c39cd352747ad709b97c75d33e2f533f22e88cd455eeb6f05af41e1a62",
-      "begin": 863207,
-      "end": 863540,
+      "begin": 863182,
+      "end": 863515,
       "result": "Pair(Arena.Arena, U32)",
       "signature": "def arena_pack_pattern_name_result_44(v_2: Pair(Arena.Arena, U32), v_4: List<&2, Ast.SyntaxPattern>, v_5: Ast.SourceSpan) -> Pair(Arena.Arena, U32)"
     },
@@ -67245,8 +67248,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_arena_pack_binder_name_result_45",
       "sourceSha256": "b34e066ee183c03047f972f1a80ead7fdc32e026d12f0fba4904d49cea96ad23",
-      "begin": 863540,
-      "end": 863879,
+      "begin": 863515,
+      "end": 863854,
       "result": "Pair(Arena.Arena, U32)",
       "signature": "def arena_pack_binder_name_result_45(v_2: Pair(Arena.Arena, U32), v_3: Ast.SyntaxTerm, v_4: Ast.Quantity, v_6: Nat, v_7: Ast.SourceSpan) -> Pair(Arena.Arena, U32)"
     },
@@ -67256,8 +67259,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_arena_pack_binder_name_result_46",
       "sourceSha256": "16639ed16d0d204b9ecc9c5937f4739b7e4292fd650f239b717a4ce823e5c34f",
-      "begin": 863879,
-      "end": 864202,
+      "begin": 863854,
+      "end": 864177,
       "result": "Pair(Arena.Arena, U32)",
       "signature": "def arena_pack_binder_name_result_46(v_2: Pair(Arena.Arena, U32), v_3: Ast.SyntaxTerm, v_5: Nat, v_6: Ast.SourceSpan) -> Pair(Arena.Arena, U32)"
     },
@@ -67267,8 +67270,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_arena_decode_terms_go_word_result_47",
       "sourceSha256": "b0836c5e2e88a541b1013ce408ace2e6786494f719f887ab1f9c521ea8d7a92e",
-      "begin": 864202,
-      "end": 864541,
+      "begin": 864177,
+      "end": 864516,
       "result": "Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>)",
       "signature": "def arena_decode_terms_go_word_result_47(v_2: Pair(Arena.Arena, U32), +v_4: U32, v_6: Nat) -> Pair(Arena.Arena, List<&2, Ast.SyntaxTerm>)"
     },
@@ -67278,8 +67281,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_arena_decode_patterns_go_word_result_48",
       "sourceSha256": "5f7e2235a2d863636efa295f825bf828c7085c9e6ef04525d4ed9dd38f9ee05a",
-      "begin": 864541,
-      "end": 864892,
+      "begin": 864516,
+      "end": 864867,
       "result": "Pair(Arena.Arena, List<&2, Ast.SyntaxPattern>)",
       "signature": "def arena_decode_patterns_go_word_result_48(v_2: Pair(Arena.Arena, U32), +v_4: U32, v_6: Nat) -> Pair(Arena.Arena, List<&2, Ast.SyntaxPattern>)"
     },
@@ -67289,8 +67292,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_arena_decode_binders_go_word_result_49",
       "sourceSha256": "63532bd633a4357e01ddc1e5763e2a2e75f4ecb8552deefe95bbc2fb087cde7a",
-      "begin": 864892,
-      "end": 865240,
+      "begin": 864867,
+      "end": 865215,
       "result": "Pair(Arena.Arena, List<&2, Ast.TelescopeItem>)",
       "signature": "def arena_decode_binders_go_word_result_49(v_2: Pair(Arena.Arena, U32), +v_4: U32, v_6: Nat) -> Pair(Arena.Arena, List<&2, Ast.TelescopeItem>)"
     },
@@ -67300,8 +67303,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_arena_decode_names_go_name_text_result_51",
       "sourceSha256": "40d2a3e0d9548e70ca2df527ede3b1e99ea0939b6beeda1a690acdb31ac8a2eb",
-      "begin": 865240,
-      "end": 865528,
+      "begin": 865215,
+      "end": 865503,
       "result": "Pair(Arena.Arena, List<&2, String>)",
       "signature": "def arena_decode_names_go_name_text_result_51(v_2: Pair(Arena.Arena, String), +v_4: U32, v_6: Nat) -> Pair(Arena.Arena, List<&2, String>)"
     },
@@ -67311,8 +67314,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_arena_decode_names_go_word_result_50",
       "sourceSha256": "c630a2fdb54bf7217ded67d17e6b14f5827e6fb93dac895413d1e5dffb3185b4",
-      "begin": 865528,
-      "end": 865797,
+      "begin": 865503,
+      "end": 865772,
       "result": "Pair(Arena.Arena, List<&2, String>)",
       "signature": "def arena_decode_names_go_word_result_50(v_2: Pair(Arena.Arena, U32), +v_4: U32, v_6: Nat) -> Pair(Arena.Arena, List<&2, String>)"
     },
@@ -67322,8 +67325,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_arena_decode_naturals_go_natural_result_52",
       "sourceSha256": "39dd73829c5f63aec32da85e128e18c73be12982b1b17c1a30a4bf1c8c9d39ac",
-      "begin": 865797,
-      "end": 866083,
+      "begin": 865772,
+      "end": 866058,
       "result": "Pair(Arena.Arena, List<&2, Nat>)",
       "signature": "def arena_decode_naturals_go_natural_result_52(v_2: Pair(Arena.Arena, Nat), +v_4: U32, v_6: Nat) -> Pair(Arena.Arena, List<&2, Nat>)"
     },
@@ -67333,8 +67336,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_arena_decode_quantities_go_word_result_53",
       "sourceSha256": "0c95d437da1e3fa3478596787c24dd4c378e29ae9eaeffc50e5529bae895500a",
-      "begin": 866083,
-      "end": 866418,
+      "begin": 866058,
+      "end": 866393,
       "result": "Pair(Arena.Arena, List<&2, Ast.Quantity>)",
       "signature": "def arena_decode_quantities_go_word_result_53(v_2: Pair(Arena.Arena, U32), +v_4: U32, v_6: Nat) -> Pair(Arena.Arena, List<&2, Ast.Quantity>)"
     },
@@ -67345,8 +67348,8 @@
       "stepBody": "checker_body_arena_decode_term_name_text_result_55",
       "pureBody": "checker_pure_arena_decode_term_name_text_result_55",
       "sourceSha256": "fc1f45949ada3b0090d6ea56c1690b9f3689713b20747b230050f82017da0981",
-      "begin": 866418,
-      "end": 866658,
+      "begin": 866393,
+      "end": 866633,
       "result": "Pair(Arena.Arena, Ast.SyntaxTerm)",
       "signature": "def arena_decode_term_name_text_result_55(v_2: Pair(Arena.Arena, String), v_4: Nat, v_5: Ast.SourceSpan) -> Pair(Arena.Arena, Ast.SyntaxTerm)"
     },
@@ -67357,8 +67360,8 @@
       "stepBody": "checker_body_arena_decode_term_name_text_result_56",
       "pureBody": "checker_pure_arena_decode_term_name_text_result_56",
       "sourceSha256": "7f944b915953304704ccce1843c0d1bb6b21f5d5cf061e3b831990be36f73b74",
-      "begin": 866658,
-      "end": 866881,
+      "begin": 866633,
+      "end": 866856,
       "result": "Pair(Arena.Arena, Ast.SyntaxTerm)",
       "signature": "def arena_decode_term_name_text_result_56(v_2: Pair(Arena.Arena, String), v_3: Ast.SourceSpan) -> Pair(Arena.Arena, Ast.SyntaxTerm)"
     },
@@ -67368,8 +67371,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_arena_decode_term_name_text_result_57",
       "sourceSha256": "4ccd41501f8e85eed15d6c313f9dd52d4cec79117a1c2bb72dad28fb94c53094",
-      "begin": 866881,
-      "end": 867305,
+      "begin": 866856,
+      "end": 867280,
       "result": "Pair(Arena.Arena, Ast.SyntaxTerm)",
       "signature": "def arena_decode_term_name_text_result_57(v_2: Pair(Arena.Arena, String), v_4: U32, v_6: U32, v_7: Ast.Quantity, v_9: Nat, v_10: Ast.SourceSpan) -> Pair(Arena.Arena, Ast.SyntaxTerm)"
     },
@@ -67379,8 +67382,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_arena_decode_term_name_text_result_58",
       "sourceSha256": "6e135201745909a20ded4f8fc214f624e66d89045d72e492d9b01eb84bcb6cac",
-      "begin": 867305,
-      "end": 867666,
+      "begin": 867280,
+      "end": 867641,
       "result": "Pair(Arena.Arena, Ast.SyntaxTerm)",
       "signature": "def arena_decode_term_name_text_result_58(v_2: Pair(Arena.Arena, String), v_4: U32, v_6: Maybe<&2, Ast.Quantity>, v_8: Nat, v_9: Ast.SourceSpan) -> Pair(Arena.Arena, Ast.SyntaxTerm)"
     },
@@ -67390,8 +67393,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_arena_decode_term_name_text_result_59",
       "sourceSha256": "acfc89f48d94fa9c512a809aebf0aafe4b5e7c19bf40e04adfe3aac5811b6f30",
-      "begin": 867666,
-      "end": 868083,
+      "begin": 867641,
+      "end": 868058,
       "result": "Pair(Arena.Arena, Ast.SyntaxTerm)",
       "signature": "def arena_decode_term_name_text_result_59(v_2: Pair(Arena.Arena, String), v_4: U32, v_6: U32, v_8: U32, v_10: U32, v_11: Ast.SourceSpan) -> Pair(Arena.Arena, Ast.SyntaxTerm)"
     },
@@ -67401,8 +67404,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_arena_decode_term_name_text_result_60",
       "sourceSha256": "6f9f7d9cdb6f966114dbf793c57aa83fcb9b5771a2246e299f6cb296eafe734d",
-      "begin": 868083,
-      "end": 868406,
+      "begin": 868058,
+      "end": 868381,
       "result": "Pair(Arena.Arena, Ast.SyntaxTerm)",
       "signature": "def arena_decode_term_name_text_result_60(v_2: Pair(Arena.Arena, String), v_4: U32, v_6: U32, v_7: Ast.SourceSpan) -> Pair(Arena.Arena, Ast.SyntaxTerm)"
     },
@@ -67412,8 +67415,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_arena_decode_term_name_text_result_61",
       "sourceSha256": "1d55da07d3ec5582c7e81150b2a108b165f40fd153d13d43234448aadf14c9ba",
-      "begin": 868406,
-      "end": 868783,
+      "begin": 868381,
+      "end": 868758,
       "result": "Pair(Arena.Arena, Ast.SyntaxTerm)",
       "signature": "def arena_decode_term_name_text_result_61(v_2: Pair(Arena.Arena, String), v_4: U32, v_6: U32, v_7: Ast.SourceSpan) -> Pair(Arena.Arena, Ast.SyntaxTerm)"
     },
@@ -67424,8 +67427,8 @@
       "stepBody": "checker_body_arena_decode_term_name_text_result_62",
       "pureBody": "checker_pure_arena_decode_term_name_text_result_62",
       "sourceSha256": "195337d0cb0d537410e2a145c1973ea73e2227519f9ad2ab98f015bad91378de",
-      "begin": 868783,
-      "end": 869013,
+      "begin": 868758,
+      "end": 868988,
       "result": "Pair(Arena.Arena, Ast.SyntaxTerm)",
       "signature": "def arena_decode_term_name_text_result_62(v_2: Pair(Arena.Arena, String), v_3: Ast.SourceSpan) -> Pair(Arena.Arena, Ast.SyntaxTerm)"
     },
@@ -67435,8 +67438,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_arena_decode_term_get_node_result_54",
       "sourceSha256": "124d08d5728f051964ae085c203ac165e3353f55a69c8b2af0f1efd53e605c1c",
-      "begin": 869013,
-      "end": 874633,
+      "begin": 868988,
+      "end": 874608,
       "result": "Pair(Arena.Arena, Ast.SyntaxTerm)",
       "signature": "def arena_decode_term_get_node_result_54(v_1: Pair(Arena.Arena, Arena.Node)) -> Pair(Arena.Arena, Ast.SyntaxTerm)"
     },
@@ -67447,8 +67450,8 @@
       "stepBody": "checker_body_arena_decode_pattern_name_text_result_64",
       "pureBody": "checker_pure_arena_decode_pattern_name_text_result_64",
       "sourceSha256": "bd0d88cea1c737741658303a4a8aa0caf3e5544db7222c21d2ae5a485f7aa4c4",
-      "begin": 874633,
-      "end": 874908,
+      "begin": 874608,
+      "end": 874883,
       "result": "Pair(Arena.Arena, Ast.SyntaxPattern)",
       "signature": "def arena_decode_pattern_name_text_result_64(v_2: Pair(Arena.Arena, String), v_4: Nat, v_5: Ast.Quantity, v_6: Ast.SourceSpan) -> Pair(Arena.Arena, Ast.SyntaxPattern)"
     },
@@ -67458,8 +67461,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_arena_decode_pattern_name_text_result_65",
       "sourceSha256": "1cbc88362e72ad32c7a0166d142f7c994eb27ea7f5ad1beb2384e82bf529b254",
-      "begin": 874908,
-      "end": 875229,
+      "begin": 874883,
+      "end": 875204,
       "result": "Pair(Arena.Arena, Ast.SyntaxPattern)",
       "signature": "def arena_decode_pattern_name_text_result_65(v_2: Pair(Arena.Arena, String), v_4: U32, v_6: U32, v_7: Ast.SourceSpan) -> Pair(Arena.Arena, Ast.SyntaxPattern)"
     },
@@ -67469,8 +67472,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_arena_decode_pattern_get_pattern_result_63",
       "sourceSha256": "45591e9641c7b7e211ea82859dac2fc3b3d3fa863e14116facc7d5e5e5ab8f03",
-      "begin": 875229,
-      "end": 875726,
+      "begin": 875204,
+      "end": 875701,
       "result": "Pair(Arena.Arena, Ast.SyntaxPattern)",
       "signature": "def arena_decode_pattern_get_pattern_result_63(v_1: Pair(Arena.Arena, Arena.Pattern)) -> Pair(Arena.Arena, Ast.SyntaxPattern)"
     },
@@ -67480,8 +67483,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_arena_decode_binder_name_text_result_67",
       "sourceSha256": "62bbe6f8ebf591a99acc4728150983808a47d2ec57973c955fde780214a01006",
-      "begin": 875726,
-      "end": 876064,
+      "begin": 875701,
+      "end": 876039,
       "result": "Pair(Arena.Arena, Ast.TelescopeItem)",
       "signature": "def arena_decode_binder_name_text_result_67(v_2: Pair(Arena.Arena, String), v_4: U32, v_5: Ast.Quantity, v_7: Nat, v_8: Ast.SourceSpan) -> Pair(Arena.Arena, Ast.TelescopeItem)"
     },
@@ -67491,8 +67494,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_arena_decode_binder_name_text_result_68",
       "sourceSha256": "2da4caacd457707323ce7fde844e7e2c278baf9b7c4dbdfb2eff3bcfbfa44676",
-      "begin": 876064,
-      "end": 876384,
+      "begin": 876039,
+      "end": 876359,
       "result": "Pair(Arena.Arena, Ast.TelescopeItem)",
       "signature": "def arena_decode_binder_name_text_result_68(v_2: Pair(Arena.Arena, String), v_4: U32, v_6: Nat, v_7: Ast.SourceSpan) -> Pair(Arena.Arena, Ast.TelescopeItem)"
     },
@@ -67502,8 +67505,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_arena_decode_binder_get_binder_result_66",
       "sourceSha256": "0f99677d2d620421c0d587a97bc3707aba26e899c6294888d12cabae81c041d1",
-      "begin": 876384,
-      "end": 876888,
+      "begin": 876359,
+      "end": 876863,
       "result": "Pair(Arena.Arena, Ast.TelescopeItem)",
       "signature": "def arena_decode_binder_get_binder_result_66(v_1: Pair(Arena.Arena, Arena.Binder)) -> Pair(Arena.Arena, Ast.TelescopeItem)"
     },
@@ -67513,8 +67516,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_string_pack_store",
       "sourceSha256": "d714907596d2509a5c06b0bf56c664efd5ec07fd38f1a36be76767eeca078805",
-      "begin": 876888,
-      "end": 877153,
+      "begin": 876863,
+      "end": 877128,
       "result": "ArenaResult<U32>",
       "signature": "def string_pack_store(v_1: ArenaStore, v_2: Ast.SyntaxTerm) -> ArenaResult<U32>"
     },
@@ -67524,8 +67527,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_string_unfold_store",
       "sourceSha256": "f0e662ca0d932f3a5e84956f4af3aa444c1987e152afd4df7f90a4ce8fd794dd",
-      "begin": 877153,
-      "end": 877359,
+      "begin": 877128,
+      "end": 877334,
       "result": "ArenaResult<U32>",
       "signature": "def string_unfold_store(v_1: ArenaStore, v_4: List<&2, U32>, v_5: Ast.StringLiteralNames, v_6: Ast.SourceSpan) -> ArenaResult<U32>"
     },
@@ -67535,8 +67538,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_string_desugar_store",
       "sourceSha256": "f2cf5a15bc944e0f183b54785abb7b334214d5d377e449946d7526d3c7b05e19",
-      "begin": 877359,
-      "end": 877567,
+      "begin": 877334,
+      "end": 877542,
       "result": "ArenaResult<U32>",
       "signature": "def string_desugar_store(v_1: ArenaStore, v_4: List<&2, U32>, v_5: Ast.StringLiteralNames, v_6: Ast.SourceSpan) -> ArenaResult<U32>"
     },
@@ -67546,8 +67549,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_string_canonical_names",
       "sourceSha256": "e4441ca256075e334df2d2f61db0b19ecc991f5563c4e1b08b1edcd3a22c2699",
-      "begin": 877567,
-      "end": 878124,
+      "begin": 877542,
+      "end": 878099,
       "result": "Ast.StringLiteralNames",
       "signature": "def string_canonical_names(v_0: Ast.StringLiteralNames, +v_1: Scope.ArenaGlobalScope) -> Ast.StringLiteralNames"
     },
@@ -67557,8 +67560,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_string_names_equal",
       "sourceSha256": "b41018f3de8c4ad4e2ecb16fb15b6e24d6f48f8089a143c2d3e083d3559a9d00",
-      "begin": 878124,
-      "end": 878705,
+      "begin": 878099,
+      "end": 878680,
       "result": "Bool",
       "signature": "def string_names_equal(v_0: Ast.StringLiteralNames, v_1: Ast.StringLiteralNames, +v_2: Scope.ArenaGlobalScope) -> Bool"
     },
@@ -67568,8 +67571,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_string_chars_equal",
       "sourceSha256": "a331c906175dadc1154d074d0900ef9c911f7931cbb9679bca73251fb91b7671",
-      "begin": 878705,
-      "end": 879232,
+      "begin": 878680,
+      "end": 879207,
       "result": "Bool",
       "signature": "def string_chars_equal(v_2: List<&2, U32>, v_5: List<&2, U32>) -> Bool"
     },
@@ -67579,8 +67582,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_string_literal_positive",
       "sourceSha256": "20b064668102e381ed6b638e97fe2681efb04f3a977825d842d8025de683b933",
-      "begin": 879232,
-      "end": 879426,
+      "begin": 879207,
+      "end": 879401,
       "result": "Bool",
       "signature": "def string_literal_positive(v_1: Bool, v_4: List<&2, U32>, v_7: List<&2, U32>) -> Bool"
     },
@@ -67590,8 +67593,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_equal_raw_distinct",
       "sourceSha256": "8b7003e5418e7fbb596a89865680c68a07236e318dd5bf527c4e872601332c99",
-      "begin": 879426,
-      "end": 880832,
+      "begin": 879401,
+      "end": 880807,
       "result": "ArenaResult<Bool>",
       "signature": "def equal_raw_distinct(v_1: ArenaStore, +v_3: U32, +v_5: U32, +v_6: Scope.ArenaGlobalScope) -> ArenaResult<Bool>"
     },
@@ -67601,8 +67604,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_string_constructor_identity",
       "sourceSha256": "d88d832613ffe9682f3a3554148c2082ad58e587af21556e3f738acc113ca6cf",
-      "begin": 880832,
-      "end": 881119,
+      "begin": 880807,
+      "end": 881094,
       "result": "Bool",
       "signature": "def string_constructor_identity(+v_1: String, +v_3: String, +v_4: Scope.ArenaGlobalScope, +v_6: String) -> Bool"
     },
@@ -67612,8 +67615,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_string_names_schema",
       "sourceSha256": "c2de2a294289364007317f0e84df7cfa1f119f42b049bbb489c8aa27a22b70b8",
-      "begin": 881119,
-      "end": 881865,
+      "begin": 881094,
+      "end": 881840,
       "result": "Bool",
       "signature": "def string_names_schema(v_0: Ast.StringLiteralNames, +v_2: String, +v_3: Scope.ArenaGlobalScope) -> Bool"
     },
@@ -67623,8 +67626,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_string_schema_ref",
       "sourceSha256": "905293c36e0be862895699459ef8d9cf3e15d1b86a16ae436460e91de34f8bda",
-      "begin": 881865,
-      "end": 882224,
+      "begin": 881840,
+      "end": 882199,
       "result": "ArenaResult<Bool>",
       "signature": "def string_schema_ref(v_1: ArenaStore, v_3: U32, +v_5: String, +v_6: Scope.ArenaGlobalScope, v_8: String) -> ArenaResult<Bool>"
     },
@@ -67634,8 +67637,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_string_schema_adt",
       "sourceSha256": "080de4550da3d5543633a7c0c7823028e1abbb75c91106cc9d8e006d59f0debf",
-      "begin": 882224,
-      "end": 882780,
+      "begin": 882199,
+      "end": 882755,
       "result": "ArenaResult<Bool>",
       "signature": "def string_schema_adt(v_1: ArenaStore, v_3: U32, +v_5: String, +v_6: Scope.ArenaGlobalScope, v_8: String) -> ArenaResult<Bool>"
     },
@@ -67645,8 +67648,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_string_schema_family",
       "sourceSha256": "450827991da7d50266b0ee7909b69efe2c43634bd020ef80e8daec9d6114b694",
-      "begin": 882780,
-      "end": 883742,
+      "begin": 882755,
+      "end": 883717,
       "result": "ArenaResult<Bool>",
       "signature": "def string_schema_family(v_1: ArenaStore, +v_3: String, +v_4: Scope.ArenaGlobalScope, +v_6: String) -> ArenaResult<Bool>"
     },
@@ -67656,8 +67659,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_string_schema_fields",
       "sourceSha256": "af2ebe3c0a79d85232f35c9ee59ab05b546790f6943c8c8d6c5bfb45909c605a",
-      "begin": 883742,
-      "end": 884573,
+      "begin": 883717,
+      "end": 884548,
       "result": "ArenaResult<Bool>",
       "signature": "def string_schema_fields(v_1: ArenaStore, v_3: U32, v_6: List<&2, String>, +v_8: String, +v_10: Nat, +v_12: String, +v_13: Scope.ArenaGlobalScope) -> ArenaResult<Bool>"
     },
@@ -67667,8 +67670,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_string_schema_constructor",
       "sourceSha256": "ff4509a0c36e9b9316ebae6fa641603b9dadb9d8542aaba3c77bf5d5516e3379",
-      "begin": 884573,
-      "end": 885267,
+      "begin": 884548,
+      "end": 885242,
       "result": "ArenaResult<Bool>",
       "signature": "def string_schema_constructor(v_1: ArenaStore, +v_3: String, +v_4: Scope.ArenaGlobalScope, +v_6: String, v_9: List<&2, String>, v_11: String) -> ArenaResult<Bool>"
     },
@@ -67678,8 +67681,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_string_schema",
       "sourceSha256": "1d957d3a9f0f929170590164e328b0942aa1c6723249497a7be480c003866a29",
-      "begin": 885267,
-      "end": 886104,
+      "begin": 885242,
+      "end": 886079,
       "result": "ArenaResult<Bool>",
       "signature": "def string_schema(v_1: ArenaStore, +v_3: String, +v_4: Scope.ArenaGlobalScope) -> ArenaResult<Bool>"
     },
@@ -67689,8 +67692,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_string_schema_prepare",
       "sourceSha256": "1aa5da98be9ae06044e9fab3a2b9fd201dedf1ab4dbbdde4e51928ba3fdfdb10",
-      "begin": 886104,
-      "end": 886810,
+      "begin": 886079,
+      "end": 886785,
       "result": "ArenaResult<Bool>",
       "signature": "def string_schema_prepare(+v_0: Scope.ArenaGlobalScope, +v_1: Scope.ArenaGlobal, v_4: ArenaResult<Bool>) -> ArenaResult<Bool>"
     },
@@ -67700,8 +67703,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_string_schema_entry",
       "sourceSha256": "e96c6c1dbe0882c70b516468cb1be04e0b6a0b6049743717c4d2f6d049df7ec4",
-      "begin": 886810,
-      "end": 887565,
+      "begin": 886785,
+      "end": 887540,
       "result": "ArenaResult<Bool>",
       "signature": "def string_schema_entry(v_1: ArenaStore, v_2: Arena.SubstMemoEntry, +v_3: Scope.ArenaGlobal, +v_5: String, +v_6: Scope.ArenaGlobalScope) -> ArenaResult<Bool>"
     },
@@ -67711,8 +67714,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_string_schema_frame",
       "sourceSha256": "498760b449ab96da1752663659d3a971e663e812fb0712fe80e1c6fff8fa64f5",
-      "begin": 887565,
-      "end": 887878,
+      "begin": 887540,
+      "end": 887853,
       "result": "ArenaResult<Bool>",
       "signature": "def string_schema_frame(v_0: Arena.Arena, v_1: Scope.ArenaGlobal, v_3: String, v_4: Scope.ArenaGlobalScope, v_5: Pair(Arena.Arena, Arena.SubstMemoEntry)) -> ArenaResult<Bool>"
     },
@@ -67722,8 +67725,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_string_schema_prepared",
       "sourceSha256": "1cb93ffe75c6c984f99882d8120fba7aadbc7bc20ff29806d4c8fcbd053b769b",
-      "begin": 887878,
-      "end": 888158,
+      "begin": 887853,
+      "end": 888133,
       "result": "ArenaResult<Bool>",
       "signature": "def string_schema_prepared(v_1: ArenaStore, v_2: Scope.ArenaGlobal, v_4: String, v_5: Scope.ArenaGlobalScope) -> ArenaResult<Bool>"
     },
@@ -67733,8 +67736,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_string_certificate",
       "sourceSha256": "107e3156dcce8b7fb13372e621e3884129ed610b3c4fd5143cca10b6daacac12",
-      "begin": 888158,
-      "end": 889089,
+      "begin": 888133,
+      "end": 889064,
       "result": "ArenaResult<Bool>",
       "signature": "def string_certificate(v_1: ArenaStore, +v_2: Ast.StringLiteralNames, +v_3: Scope.ArenaGlobalScope, v_5: U32) -> ArenaResult<Bool>"
     },
@@ -67744,8 +67747,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_check_string_literal",
       "sourceSha256": "86b25783ce35b26cf4cab04de62ffbaa4018eef9c5358f3341096833f90dfe93",
-      "begin": 889089,
-      "end": 889706,
+      "begin": 889064,
+      "end": 889681,
       "result": "ArenaResult<Inference>",
       "signature": "def check_string_literal(v_1: ArenaStore, +v_3: U32, +v_6: List<&2, U32>, +v_7: Ast.StringLiteralNames, +v_8: Ast.SourceSpan, +v_11: List<&2, Binding>, +v_12: Scope.ArenaGlobalScope, +v_14: U32) -> ArenaResult<Inference>"
     },
@@ -67755,8 +67758,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_term_descend_live",
       "sourceSha256": "69e579bee7d32aed68c7a8dc75bfd4c36c216f199fc80456506cd68777a01387",
-      "begin": 889706,
-      "end": 890489,
+      "begin": 889681,
+      "end": 890464,
       "result": "ArenaResult<TermOrder>",
       "signature": "def term_descend_live(v_1: ArenaStore, +v_3: U32, +v_5: U32) -> ArenaResult<TermOrder>"
     },
@@ -67766,8 +67769,8 @@
       "requestEnvelope": "CheckerRequestGroup_17",
       "stepBody": "checker_body_string_observe_zero",
       "sourceSha256": "3fe3ce954d0e739610ec8bed7c681220e45c00e95c97b11d2e9d3ea382437329",
-      "begin": 890489,
-      "end": 890782,
+      "begin": 890464,
+      "end": 890757,
       "result": "ArenaResult<U32>",
       "signature": "def string_observe_zero(v_1: ArenaStore, +v_3: U32) -> ArenaResult<U32>"
     }
@@ -104316,7 +104319,7 @@
     {
       "caller": "readback",
       "callee": "readback_result",
-      "offset": 852796,
+      "offset": 852771,
       "line": 14867,
       "context": "terminal",
       "erased": false,
@@ -104325,7 +104328,7 @@
     {
       "caller": "readback",
       "callee": "arena_decode_modules",
-      "offset": 852833,
+      "offset": 852808,
       "line": 14867,
       "context": "terminal/argument",
       "erased": false,
@@ -104334,7 +104337,7 @@
     {
       "caller": "arena_pack_terms_reserve_words_result_28",
       "callee": "arena_pack_terms_at",
-      "offset": 858473,
+      "offset": 858448,
       "line": 14982,
       "context": "local",
       "erased": false,
@@ -104343,7 +104346,7 @@
     {
       "caller": "arena_pack_patterns_reserve_words_result_29",
       "callee": "arena_pack_patterns_at",
-      "offset": 858760,
+      "offset": 858735,
       "line": 14988,
       "context": "local",
       "erased": false,
@@ -104352,7 +104355,7 @@
     {
       "caller": "arena_pack_binders_reserve_words_result_30",
       "callee": "arena_pack_binders_at",
-      "offset": 859049,
+      "offset": 859024,
       "line": 14994,
       "context": "local",
       "erased": false,
@@ -104361,7 +104364,7 @@
     {
       "caller": "arena_pack_names_at_name_result_31",
       "callee": "arena_pack_names_at",
-      "offset": 859287,
+      "offset": 859262,
       "line": 15000,
       "context": "terminal",
       "erased": false,
@@ -104370,7 +104373,7 @@
     {
       "caller": "arena_pack_names_reserve_words_result_32",
       "callee": "arena_pack_names_at",
-      "offset": 859575,
+      "offset": 859550,
       "line": 15005,
       "context": "local",
       "erased": false,
@@ -104379,7 +104382,7 @@
     {
       "caller": "arena_pack_naturals_reserve_naturals_result_33",
       "callee": "arena_pack_naturals_at",
-      "offset": 859853,
+      "offset": 859828,
       "line": 15011,
       "context": "local",
       "erased": false,
@@ -104388,7 +104391,7 @@
     {
       "caller": "arena_pack_quantities_reserve_words_result_34",
       "callee": "arena_pack_quantities_at",
-      "offset": 860141,
+      "offset": 860116,
       "line": 15017,
       "context": "local",
       "erased": false,
@@ -104397,7 +104400,7 @@
     {
       "caller": "arena_pack_term_name_result_37",
       "callee": "arena_pack_term",
-      "offset": 860925,
+      "offset": 860900,
       "line": 15033,
       "context": "local",
       "erased": false,
@@ -104406,7 +104409,7 @@
     {
       "caller": "arena_pack_term_name_result_37",
       "callee": "arena_pack_term",
-      "offset": 860978,
+      "offset": 860953,
       "line": 15034,
       "context": "local",
       "erased": false,
@@ -104415,7 +104418,7 @@
     {
       "caller": "arena_pack_term_name_result_38",
       "callee": "arena_pack_term",
-      "offset": 861350,
+      "offset": 861325,
       "line": 15040,
       "context": "local",
       "erased": false,
@@ -104424,7 +104427,7 @@
     {
       "caller": "arena_pack_term_name_result_39",
       "callee": "arena_pack_terms",
-      "offset": 861713,
+      "offset": 861688,
       "line": 15046,
       "context": "local",
       "erased": false,
@@ -104433,7 +104436,7 @@
     {
       "caller": "arena_pack_term_name_result_39",
       "callee": "arena_pack_names",
-      "offset": 861774,
+      "offset": 861749,
       "line": 15047,
       "context": "local",
       "erased": false,
@@ -104442,7 +104445,7 @@
     {
       "caller": "arena_pack_term_name_result_40",
       "callee": "arena_pack_terms",
-      "offset": 862219,
+      "offset": 862194,
       "line": 15056,
       "context": "local",
       "erased": false,
@@ -104451,7 +104454,7 @@
     {
       "caller": "arena_pack_term_name_result_41",
       "callee": "arena_pack_term",
-      "offset": 862561,
+      "offset": 862536,
       "line": 15062,
       "context": "local",
       "erased": false,
@@ -104460,7 +104463,7 @@
     {
       "caller": "arena_pack_term_name_result_41",
       "callee": "arena_pack_term",
-      "offset": 862614,
+      "offset": 862589,
       "line": 15063,
       "context": "local",
       "erased": false,
@@ -104469,7 +104472,7 @@
     {
       "caller": "arena_pack_pattern_name_result_44",
       "callee": "arena_pack_patterns",
-      "offset": 863435,
+      "offset": 863410,
       "line": 15079,
       "context": "local",
       "erased": false,
@@ -104478,7 +104481,7 @@
     {
       "caller": "arena_pack_binder_name_result_45",
       "callee": "arena_pack_term",
-      "offset": 863778,
+      "offset": 863753,
       "line": 15085,
       "context": "local",
       "erased": false,
@@ -104487,7 +104490,7 @@
     {
       "caller": "arena_pack_binder_name_result_46",
       "callee": "arena_pack_term",
-      "offset": 864098,
+      "offset": 864073,
       "line": 15091,
       "context": "local",
       "erased": false,
@@ -104496,7 +104499,7 @@
     {
       "caller": "arena_decode_terms_go_word_result_47",
       "callee": "arena_decode_term",
-      "offset": 864412,
+      "offset": 864387,
       "line": 15097,
       "context": "local",
       "erased": false,
@@ -104505,7 +104508,7 @@
     {
       "caller": "arena_decode_terms_go_word_result_47",
       "callee": "arena_decode_terms_go",
-      "offset": 864463,
+      "offset": 864438,
       "line": 15098,
       "context": "local",
       "erased": false,
@@ -104514,7 +104517,7 @@
     {
       "caller": "arena_decode_patterns_go_word_result_48",
       "callee": "arena_decode_pattern",
-      "offset": 864757,
+      "offset": 864732,
       "line": 15104,
       "context": "local",
       "erased": false,
@@ -104523,7 +104526,7 @@
     {
       "caller": "arena_decode_patterns_go_word_result_48",
       "callee": "arena_decode_patterns_go",
-      "offset": 864811,
+      "offset": 864786,
       "line": 15105,
       "context": "local",
       "erased": false,
@@ -104532,7 +104535,7 @@
     {
       "caller": "arena_decode_binders_go_word_result_49",
       "callee": "arena_decode_binder",
-      "offset": 865107,
+      "offset": 865082,
       "line": 15111,
       "context": "local",
       "erased": false,
@@ -104541,7 +104544,7 @@
     {
       "caller": "arena_decode_binders_go_word_result_49",
       "callee": "arena_decode_binders_go",
-      "offset": 865160,
+      "offset": 865135,
       "line": 15112,
       "context": "local",
       "erased": false,
@@ -104550,7 +104553,7 @@
     {
       "caller": "arena_decode_names_go_name_text_result_51",
       "callee": "arena_decode_names_go",
-      "offset": 865450,
+      "offset": 865425,
       "line": 15118,
       "context": "local",
       "erased": false,
@@ -104559,7 +104562,7 @@
     {
       "caller": "arena_decode_names_go_word_result_50",
       "callee": "arena_decode_names_go_name_text_result_51",
-      "offset": 865715,
+      "offset": 865690,
       "line": 15124,
       "context": "terminal",
       "erased": false,
@@ -104568,7 +104571,7 @@
     {
       "caller": "arena_decode_naturals_go_natural_result_52",
       "callee": "arena_decode_naturals_go",
-      "offset": 866002,
+      "offset": 865977,
       "line": 15129,
       "context": "local",
       "erased": false,
@@ -104577,7 +104580,7 @@
     {
       "caller": "arena_decode_quantities_go_word_result_53",
       "callee": "arena_decode_quantities_go",
-      "offset": 866335,
+      "offset": 866310,
       "line": 15136,
       "context": "local",
       "erased": false,
@@ -104586,7 +104589,7 @@
     {
       "caller": "arena_decode_term_name_text_result_57",
       "callee": "arena_decode_term",
-      "offset": 867148,
+      "offset": 867123,
       "line": 15152,
       "context": "local",
       "erased": false,
@@ -104595,7 +104598,7 @@
     {
       "caller": "arena_decode_term_name_text_result_57",
       "callee": "arena_decode_term",
-      "offset": 867203,
+      "offset": 867178,
       "line": 15153,
       "context": "local",
       "erased": false,
@@ -104604,7 +104607,7 @@
     {
       "caller": "arena_decode_term_name_text_result_58",
       "callee": "arena_decode_term",
-      "offset": 867571,
+      "offset": 867546,
       "line": 15159,
       "context": "local",
       "erased": false,
@@ -104613,7 +104616,7 @@
     {
       "caller": "arena_decode_term_name_text_result_59",
       "callee": "arena_decode_terms",
-      "offset": 867924,
+      "offset": 867899,
       "line": 15165,
       "context": "local",
       "erased": false,
@@ -104622,7 +104625,7 @@
     {
       "caller": "arena_decode_term_name_text_result_59",
       "callee": "arena_decode_names",
-      "offset": 867987,
+      "offset": 867962,
       "line": 15166,
       "context": "local",
       "erased": false,
@@ -104631,7 +104634,7 @@
     {
       "caller": "arena_decode_term_name_text_result_60",
       "callee": "arena_decode_terms",
-      "offset": 868317,
+      "offset": 868292,
       "line": 15172,
       "context": "local",
       "erased": false,
@@ -104640,7 +104643,7 @@
     {
       "caller": "arena_decode_term_name_text_result_61",
       "callee": "arena_decode_term",
-      "offset": 868640,
+      "offset": 868615,
       "line": 15178,
       "context": "local",
       "erased": false,
@@ -104649,7 +104652,7 @@
     {
       "caller": "arena_decode_term_name_text_result_61",
       "callee": "arena_decode_term",
-      "offset": 868695,
+      "offset": 868670,
       "line": 15179,
       "context": "local",
       "erased": false,
@@ -104658,7 +104661,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term_name_text_result_55",
-      "offset": 869249,
+      "offset": 869224,
       "line": 15192,
       "context": "terminal",
       "erased": false,
@@ -104667,7 +104670,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term_name_text_result_56",
-      "offset": 869377,
+      "offset": 869352,
       "line": 15194,
       "context": "terminal",
       "erased": false,
@@ -104676,7 +104679,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term",
-      "offset": 869515,
+      "offset": 869490,
       "line": 15196,
       "context": "local",
       "erased": false,
@@ -104685,7 +104688,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term",
-      "offset": 869664,
+      "offset": 869639,
       "line": 15199,
       "context": "local",
       "erased": false,
@@ -104694,7 +104697,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term",
-      "offset": 869718,
+      "offset": 869693,
       "line": 15200,
       "context": "local",
       "erased": false,
@@ -104703,7 +104706,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_names",
-      "offset": 869915,
+      "offset": 869890,
       "line": 15203,
       "context": "local",
       "erased": false,
@@ -104712,7 +104715,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_naturals",
-      "offset": 869976,
+      "offset": 869951,
       "line": 15204,
       "context": "local",
       "erased": false,
@@ -104721,7 +104724,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_quantities",
-      "offset": 870041,
+      "offset": 870016,
       "line": 15205,
       "context": "local",
       "erased": false,
@@ -104730,7 +104733,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_terms",
-      "offset": 870108,
+      "offset": 870083,
       "line": 15206,
       "context": "local",
       "erased": false,
@@ -104739,7 +104742,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term",
-      "offset": 870170,
+      "offset": 870145,
       "line": 15207,
       "context": "local",
       "erased": false,
@@ -104748,7 +104751,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term",
-      "offset": 870341,
+      "offset": 870316,
       "line": 15210,
       "context": "local",
       "erased": false,
@@ -104757,7 +104760,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term",
-      "offset": 870397,
+      "offset": 870372,
       "line": 15211,
       "context": "local",
       "erased": false,
@@ -104766,7 +104769,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term",
-      "offset": 870555,
+      "offset": 870530,
       "line": 15214,
       "context": "local",
       "erased": false,
@@ -104775,7 +104778,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term",
-      "offset": 870705,
+      "offset": 870680,
       "line": 15217,
       "context": "local",
       "erased": false,
@@ -104784,7 +104787,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term",
-      "offset": 871017,
+      "offset": 870992,
       "line": 15224,
       "context": "local",
       "erased": false,
@@ -104793,7 +104796,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term",
-      "offset": 871074,
+      "offset": 871049,
       "line": 15225,
       "context": "local",
       "erased": false,
@@ -104802,7 +104805,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term_name_text_result_57",
-      "offset": 871238,
+      "offset": 871213,
       "line": 15228,
       "context": "terminal",
       "erased": false,
@@ -104811,7 +104814,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term_name_text_result_58",
-      "offset": 871413,
+      "offset": 871388,
       "line": 15230,
       "context": "terminal",
       "erased": false,
@@ -104820,7 +104823,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term",
-      "offset": 871584,
+      "offset": 871559,
       "line": 15232,
       "context": "local",
       "erased": false,
@@ -104829,7 +104832,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term",
-      "offset": 871641,
+      "offset": 871616,
       "line": 15233,
       "context": "local",
       "erased": false,
@@ -104838,7 +104841,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term_name_text_result_59",
-      "offset": 871805,
+      "offset": 871780,
       "line": 15236,
       "context": "terminal",
       "erased": false,
@@ -104847,7 +104850,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term",
-      "offset": 871991,
+      "offset": 871966,
       "line": 15238,
       "context": "local",
       "erased": false,
@@ -104856,7 +104859,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_terms",
-      "offset": 872048,
+      "offset": 872023,
       "line": 15239,
       "context": "local",
       "erased": false,
@@ -104865,7 +104868,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term",
-      "offset": 872225,
+      "offset": 872200,
       "line": 15242,
       "context": "local",
       "erased": false,
@@ -104874,7 +104877,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_terms",
-      "offset": 872282,
+      "offset": 872257,
       "line": 15243,
       "context": "local",
       "erased": false,
@@ -104883,7 +104886,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term_name_text_result_60",
-      "offset": 872544,
+      "offset": 872519,
       "line": 15248,
       "context": "terminal",
       "erased": false,
@@ -104892,7 +104895,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term_name_text_result_61",
-      "offset": 872698,
+      "offset": 872673,
       "line": 15250,
       "context": "terminal",
       "erased": false,
@@ -104901,7 +104904,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term",
-      "offset": 872948,
+      "offset": 872923,
       "line": 15254,
       "context": "local",
       "erased": false,
@@ -104910,7 +104913,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term",
-      "offset": 873005,
+      "offset": 872980,
       "line": 15255,
       "context": "local",
       "erased": false,
@@ -104919,7 +104922,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term",
-      "offset": 873064,
+      "offset": 873039,
       "line": 15256,
       "context": "local",
       "erased": false,
@@ -104928,7 +104931,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term",
-      "offset": 873317,
+      "offset": 873292,
       "line": 15261,
       "context": "local",
       "erased": false,
@@ -104937,7 +104940,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term",
-      "offset": 873374,
+      "offset": 873349,
       "line": 15262,
       "context": "local",
       "erased": false,
@@ -104946,7 +104949,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term",
-      "offset": 873433,
+      "offset": 873408,
       "line": 15263,
       "context": "local",
       "erased": false,
@@ -104955,7 +104958,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term_name_text_result_62",
-      "offset": 873581,
+      "offset": 873556,
       "line": 15266,
       "context": "terminal",
       "erased": false,
@@ -104964,7 +104967,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_terms",
-      "offset": 873747,
+      "offset": 873722,
       "line": 15268,
       "context": "local",
       "erased": false,
@@ -104973,7 +104976,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_terms",
-      "offset": 873812,
+      "offset": 873787,
       "line": 15269,
       "context": "local",
       "erased": false,
@@ -104982,7 +104985,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_patterns",
-      "offset": 873990,
+      "offset": 873965,
       "line": 15272,
       "context": "local",
       "erased": false,
@@ -104991,7 +104994,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term",
-      "offset": 874058,
+      "offset": 874033,
       "line": 15273,
       "context": "local",
       "erased": false,
@@ -105000,7 +105003,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_patterns",
-      "offset": 874249,
+      "offset": 874224,
       "line": 15276,
       "context": "local",
       "erased": false,
@@ -105009,7 +105012,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_terms",
-      "offset": 874317,
+      "offset": 874292,
       "line": 15277,
       "context": "local",
       "erased": false,
@@ -105018,7 +105021,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term",
-      "offset": 874384,
+      "offset": 874359,
       "line": 15278,
       "context": "local",
       "erased": false,
@@ -105027,7 +105030,7 @@
     {
       "caller": "arena_decode_term_get_node_result_54",
       "callee": "arena_decode_term",
-      "offset": 874555,
+      "offset": 874530,
       "line": 15281,
       "context": "local",
       "erased": false,
@@ -105036,7 +105039,7 @@
     {
       "caller": "arena_decode_pattern_name_text_result_65",
       "callee": "arena_decode_patterns",
-      "offset": 875141,
+      "offset": 875116,
       "line": 15292,
       "context": "local",
       "erased": false,
@@ -105045,7 +105048,7 @@
     {
       "caller": "arena_decode_pattern_get_pattern_result_63",
       "callee": "arena_decode_pattern_name_text_result_64",
-      "offset": 875486,
+      "offset": 875461,
       "line": 15300,
       "context": "terminal",
       "erased": false,
@@ -105054,7 +105057,7 @@
     {
       "caller": "arena_decode_pattern_get_pattern_result_63",
       "callee": "arena_decode_pattern_name_text_result_65",
-      "offset": 875638,
+      "offset": 875613,
       "line": 15302,
       "context": "terminal",
       "erased": false,
@@ -105063,7 +105066,7 @@
     {
       "caller": "arena_decode_binder_name_text_result_67",
       "callee": "arena_decode_term",
-      "offset": 875978,
+      "offset": 875953,
       "line": 15307,
       "context": "local",
       "erased": false,
@@ -105072,7 +105075,7 @@
     {
       "caller": "arena_decode_binder_name_text_result_68",
       "callee": "arena_decode_term",
-      "offset": 876296,
+      "offset": 876271,
       "line": 15313,
       "context": "local",
       "erased": false,
@@ -105081,7 +105084,7 @@
     {
       "caller": "arena_decode_binder_get_binder_result_66",
       "callee": "arena_decode_binder_name_text_result_67",
-      "offset": 876640,
+      "offset": 876615,
       "line": 15321,
       "context": "terminal",
       "erased": false,
@@ -105090,7 +105093,7 @@
     {
       "caller": "arena_decode_binder_get_binder_result_66",
       "callee": "arena_decode_binder_name_text_result_68",
-      "offset": 876801,
+      "offset": 876776,
       "line": 15323,
       "context": "terminal",
       "erased": false,
@@ -105099,7 +105102,7 @@
     {
       "caller": "string_pack_store",
       "callee": "arena_pack_term",
-      "offset": 877048,
+      "offset": 877023,
       "line": 15328,
       "context": "local",
       "erased": false,
@@ -105108,7 +105111,7 @@
     {
       "caller": "string_unfold_store",
       "callee": "string_pack_store",
-      "offset": 877294,
+      "offset": 877269,
       "line": 15332,
       "context": "terminal",
       "erased": false,
@@ -105117,7 +105120,7 @@
     {
       "caller": "string_desugar_store",
       "callee": "string_pack_store",
-      "offset": 877501,
+      "offset": 877476,
       "line": 15335,
       "context": "terminal",
       "erased": false,
@@ -105126,7 +105129,7 @@
     {
       "caller": "string_chars_equal",
       "callee": "string_chars_equal",
-      "offset": 878943,
+      "offset": 878918,
       "line": 15353,
       "context": "terminal",
       "erased": false,
@@ -105135,7 +105138,7 @@
     {
       "caller": "string_literal_positive",
       "callee": "string_chars_equal",
-      "offset": 879393,
+      "offset": 879368,
       "line": 15362,
       "context": "terminal",
       "erased": false,
@@ -105144,7 +105147,7 @@
     {
       "caller": "equal_raw_distinct",
       "callee": "arena_get_node",
-      "offset": 879574,
+      "offset": 879549,
       "line": 15365,
       "context": "local",
       "erased": false,
@@ -105153,7 +105156,7 @@
     {
       "caller": "equal_raw_distinct",
       "callee": "arena_get_node",
-      "offset": 879629,
+      "offset": 879604,
       "line": 15366,
       "context": "local",
       "erased": false,
@@ -105162,7 +105165,7 @@
     {
       "caller": "equal_raw_distinct",
       "callee": "string_literal_positive",
-      "offset": 879785,
+      "offset": 879760,
       "line": 15369,
       "context": "match",
       "erased": false,
@@ -105171,7 +105174,7 @@
     {
       "caller": "equal_raw_distinct",
       "callee": "string_names_equal",
-      "offset": 879809,
+      "offset": 879784,
       "line": 15369,
       "context": "match/argument",
       "erased": false,
@@ -105180,7 +105183,7 @@
     {
       "caller": "equal_raw_distinct",
       "callee": "string_unfold_store",
-      "offset": 880008,
+      "offset": 879983,
       "line": 15372,
       "context": "local",
       "erased": false,
@@ -105189,7 +105192,7 @@
     {
       "caller": "equal_raw_distinct",
       "callee": "string_unfold_store",
-      "offset": 880104,
+      "offset": 880079,
       "line": 15373,
       "context": "local",
       "erased": false,
@@ -105198,7 +105201,7 @@
     {
       "caller": "equal_raw_distinct",
       "callee": "equal_raw",
-      "offset": 880167,
+      "offset": 880142,
       "line": 15374,
       "context": "terminal",
       "erased": false,
@@ -105207,7 +105210,7 @@
     {
       "caller": "equal_raw_distinct",
       "callee": "string_unfold_store",
-      "offset": 880301,
+      "offset": 880276,
       "line": 15376,
       "context": "local",
       "erased": false,
@@ -105216,7 +105219,7 @@
     {
       "caller": "equal_raw_distinct",
       "callee": "equal_raw",
-      "offset": 880354,
+      "offset": 880329,
       "line": 15377,
       "context": "terminal",
       "erased": false,
@@ -105225,7 +105228,7 @@
     {
       "caller": "equal_raw_distinct",
       "callee": "string_unfold_store",
-      "offset": 880481,
+      "offset": 880456,
       "line": 15379,
       "context": "local",
       "erased": false,
@@ -105234,7 +105237,7 @@
     {
       "caller": "equal_raw_distinct",
       "callee": "equal_raw",
-      "offset": 880534,
+      "offset": 880509,
       "line": 15380,
       "context": "terminal",
       "erased": false,
@@ -105243,7 +105246,7 @@
     {
       "caller": "equal_raw_distinct",
       "callee": "equal_raw_ordinary",
-      "offset": 880588,
+      "offset": 880563,
       "line": 15381,
       "context": "terminal",
       "erased": false,
@@ -105252,7 +105255,7 @@
     {
       "caller": "string_constructor_identity",
       "callee": "scalar_global_identity",
-      "offset": 880954,
+      "offset": 880929,
       "line": 15387,
       "context": "terminal",
       "erased": false,
@@ -105261,7 +105264,7 @@
     {
       "caller": "string_constructor_identity",
       "callee": "canonical_key",
-      "offset": 881054,
+      "offset": 881029,
       "line": 15387,
       "context": "terminal/argument/argument",
       "erased": false,
@@ -105270,7 +105273,7 @@
     {
       "caller": "string_names_schema",
       "callee": "string_constructor_identity",
-      "offset": 881356,
+      "offset": 881331,
       "line": 15392,
       "context": "terminal/argument",
       "erased": false,
@@ -105279,7 +105282,7 @@
     {
       "caller": "string_names_schema",
       "callee": "string_constructor_identity",
-      "offset": 881418,
+      "offset": 881393,
       "line": 15392,
       "context": "terminal/argument/argument",
       "erased": false,
@@ -105288,7 +105291,7 @@
     {
       "caller": "string_names_schema",
       "callee": "string_constructor_identity",
-      "offset": 881481,
+      "offset": 881456,
       "line": 15392,
       "context": "terminal/argument/argument/argument",
       "erased": false,
@@ -105297,7 +105300,7 @@
     {
       "caller": "string_names_schema",
       "callee": "string_constructor_identity",
-      "offset": 881543,
+      "offset": 881518,
       "line": 15392,
       "context": "terminal/argument/argument/argument/argument",
       "erased": false,
@@ -105306,7 +105309,7 @@
     {
       "caller": "string_names_schema",
       "callee": "string_constructor_identity",
-      "offset": 881605,
+      "offset": 881580,
       "line": 15392,
       "context": "terminal/argument/argument/argument/argument/argument",
       "erased": false,
@@ -105315,7 +105318,7 @@
     {
       "caller": "string_names_schema",
       "callee": "string_constructor_identity",
-      "offset": 881672,
+      "offset": 881647,
       "line": 15392,
       "context": "terminal/argument/argument/argument/argument/argument/argument",
       "erased": false,
@@ -105324,7 +105327,7 @@
     {
       "caller": "string_names_schema",
       "callee": "string_constructor_identity",
-      "offset": 881740,
+      "offset": 881715,
       "line": 15392,
       "context": "terminal/argument/argument/argument/argument/argument/argument/argument",
       "erased": false,
@@ -105333,7 +105336,7 @@
     {
       "caller": "string_names_schema",
       "callee": "string_constructor_identity",
-      "offset": 881800,
+      "offset": 881775,
       "line": 15392,
       "context": "terminal/argument/argument/argument/argument/argument/argument/argument",
       "erased": false,
@@ -105342,7 +105345,7 @@
     {
       "caller": "string_schema_ref",
       "callee": "arena_get_node",
-      "offset": 882029,
+      "offset": 882004,
       "line": 15395,
       "context": "local",
       "erased": false,
@@ -105351,7 +105354,7 @@
     {
       "caller": "string_schema_ref",
       "callee": "scalar_schema_name",
-      "offset": 882101,
+      "offset": 882076,
       "line": 15397,
       "context": "terminal",
       "erased": false,
@@ -105360,7 +105363,7 @@
     {
       "caller": "string_schema_adt",
       "callee": "arena_get_node",
-      "offset": 882388,
+      "offset": 882363,
       "line": 15401,
       "context": "local",
       "erased": false,
@@ -105369,7 +105372,7 @@
     {
       "caller": "string_schema_adt",
       "callee": "scalar_schema_name",
-      "offset": 882585,
+      "offset": 882560,
       "line": 15405,
       "context": "terminal",
       "erased": false,
@@ -105378,7 +105381,7 @@
     {
       "caller": "string_schema_family",
       "callee": "canonical_key",
-      "offset": 882932,
+      "offset": 882907,
       "line": 15410,
       "context": "match/argument",
       "erased": false,
@@ -105387,7 +105390,7 @@
     {
       "caller": "string_schema_family",
       "callee": "scalar_schema_0",
-      "offset": 883124,
+      "offset": 883099,
       "line": 15412,
       "context": "local",
       "erased": false,
@@ -105396,7 +105399,7 @@
     {
       "caller": "string_schema_family",
       "callee": "string_schema_adt",
-      "offset": 883203,
+      "offset": 883178,
       "line": 15413,
       "context": "local",
       "erased": false,
@@ -105405,7 +105408,7 @@
     {
       "caller": "string_schema_family",
       "callee": "canonical_key",
-      "offset": 883302,
+      "offset": 883277,
       "line": 15414,
       "context": "terminal/argument/argument",
       "erased": false,
@@ -105414,7 +105417,7 @@
     {
       "caller": "string_schema_fields",
       "callee": "string_schema_adt",
-      "offset": 883950,
+      "offset": 883925,
       "line": 15422,
       "context": "terminal",
       "erased": false,
@@ -105423,7 +105426,7 @@
     {
       "caller": "string_schema_fields",
       "callee": "arena_get_node",
-      "offset": 884055,
+      "offset": 884030,
       "line": 15424,
       "context": "local",
       "erased": false,
@@ -105432,7 +105435,7 @@
     {
       "caller": "string_schema_fields",
       "callee": "string_schema_ref",
-      "offset": 884211,
+      "offset": 884186,
       "line": 15427,
       "context": "local",
       "erased": false,
@@ -105441,7 +105444,7 @@
     {
       "caller": "string_schema_fields",
       "callee": "string_schema_fields",
-      "offset": 884302,
+      "offset": 884277,
       "line": 15428,
       "context": "local",
       "erased": false,
@@ -105450,7 +105453,7 @@
     {
       "caller": "string_schema_constructor",
       "callee": "canonical_key",
-      "offset": 884772,
+      "offset": 884747,
       "line": 15433,
       "context": "match/argument",
       "erased": false,
@@ -105459,7 +105462,7 @@
     {
       "caller": "string_schema_constructor",
       "callee": "string_schema_fields",
-      "offset": 884967,
+      "offset": 884942,
       "line": 15435,
       "context": "local",
       "erased": false,
@@ -105468,7 +105471,7 @@
     {
       "caller": "string_schema_constructor",
       "callee": "canonical_key",
-      "offset": 885080,
+      "offset": 885055,
       "line": 15436,
       "context": "terminal/argument/argument",
       "erased": false,
@@ -105477,7 +105480,7 @@
     {
       "caller": "string_schema",
       "callee": "scalar_schema_builtin",
-      "offset": 885403,
+      "offset": 885378,
       "line": 15440,
       "context": "local",
       "erased": false,
@@ -105486,7 +105489,7 @@
     {
       "caller": "string_schema",
       "callee": "string_schema_family",
-      "offset": 885487,
+      "offset": 885462,
       "line": 15441,
       "context": "local",
       "erased": false,
@@ -105495,7 +105498,7 @@
     {
       "caller": "string_schema",
       "callee": "string_schema_family",
-      "offset": 885573,
+      "offset": 885548,
       "line": 15442,
       "context": "local",
       "erased": false,
@@ -105504,7 +105507,7 @@
     {
       "caller": "string_schema",
       "callee": "string_schema_constructor",
-      "offset": 885657,
+      "offset": 885632,
       "line": 15443,
       "context": "local",
       "erased": false,
@@ -105513,7 +105516,7 @@
     {
       "caller": "string_schema",
       "callee": "string_schema_constructor",
-      "offset": 885759,
+      "offset": 885734,
       "line": 15444,
       "context": "local",
       "erased": false,
@@ -105522,7 +105525,7 @@
     {
       "caller": "string_schema",
       "callee": "string_schema_constructor",
-      "offset": 885860,
+      "offset": 885835,
       "line": 15445,
       "context": "local",
       "erased": false,
@@ -105531,7 +105534,7 @@
     {
       "caller": "string_schema_prepare",
       "callee": "scalar_frame_store",
-      "offset": 886313,
+      "offset": 886288,
       "line": 15451,
       "context": "terminal",
       "erased": false,
@@ -105540,7 +105543,7 @@
     {
       "caller": "string_schema_entry",
       "callee": "string_schema_prepare",
-      "offset": 887040,
+      "offset": 887015,
       "line": 15461,
       "context": "terminal",
       "erased": false,
@@ -105549,7 +105552,7 @@
     {
       "caller": "string_schema_entry",
       "callee": "string_schema",
-      "offset": 887079,
+      "offset": 887054,
       "line": 15461,
       "context": "terminal/argument",
       "erased": false,
@@ -105558,7 +105561,7 @@
     {
       "caller": "string_schema_entry",
       "callee": "string_schema_prepare",
-      "offset": 887165,
+      "offset": 887140,
       "line": 15463,
       "context": "terminal",
       "erased": false,
@@ -105567,7 +105570,7 @@
     {
       "caller": "string_schema_entry",
       "callee": "string_schema",
-      "offset": 887204,
+      "offset": 887179,
       "line": 15463,
       "context": "terminal/argument",
       "erased": false,
@@ -105576,7 +105579,7 @@
     {
       "caller": "string_schema_entry",
       "callee": "scalar_global_identity",
-      "offset": 887304,
+      "offset": 887279,
       "line": 15465,
       "context": "match",
       "erased": false,
@@ -105585,7 +105588,7 @@
     {
       "caller": "string_schema_entry",
       "callee": "string_schema_prepare",
-      "offset": 887448,
+      "offset": 887423,
       "line": 15467,
       "context": "terminal",
       "erased": false,
@@ -105594,7 +105597,7 @@
     {
       "caller": "string_schema_entry",
       "callee": "string_schema",
-      "offset": 887487,
+      "offset": 887462,
       "line": 15467,
       "context": "terminal/argument",
       "erased": false,
@@ -105603,7 +105606,7 @@
     {
       "caller": "string_schema_entry",
       "callee": "string_schema",
-      "offset": 887532,
+      "offset": 887507,
       "line": 15468,
       "context": "terminal",
       "erased": false,
@@ -105612,7 +105615,7 @@
     {
       "caller": "string_schema_frame",
       "callee": "string_schema_entry",
-      "offset": 887798,
+      "offset": 887773,
       "line": 15472,
       "context": "terminal",
       "erased": false,
@@ -105621,7 +105624,7 @@
     {
       "caller": "string_schema_prepared",
       "callee": "string_schema_frame",
-      "offset": 888073,
+      "offset": 888048,
       "line": 15476,
       "context": "terminal",
       "erased": false,
@@ -105630,7 +105633,7 @@
     {
       "caller": "string_certificate",
       "callee": "string_names_schema",
-      "offset": 888573,
+      "offset": 888548,
       "line": 15485,
       "context": "match",
       "erased": false,
@@ -105639,7 +105642,7 @@
     {
       "caller": "string_certificate",
       "callee": "string_schema_adt",
-      "offset": 888767,
+      "offset": 888742,
       "line": 15488,
       "context": "local",
       "erased": false,
@@ -105648,7 +105651,7 @@
     {
       "caller": "string_certificate",
       "callee": "string_schema_prepared",
-      "offset": 888966,
+      "offset": 888941,
       "line": 15491,
       "context": "terminal",
       "erased": false,
@@ -105657,7 +105660,7 @@
     {
       "caller": "check_string_literal",
       "callee": "whnf",
-      "offset": 889348,
+      "offset": 889323,
       "line": 15495,
       "context": "local",
       "erased": false,
@@ -105666,7 +105669,7 @@
     {
       "caller": "check_string_literal",
       "callee": "string_certificate",
-      "offset": 889408,
+      "offset": 889383,
       "line": 15496,
       "context": "local",
       "erased": false,
@@ -105675,7 +105678,7 @@
     {
       "caller": "check_string_literal",
       "callee": "string_occurrence",
-      "offset": 889486,
+      "offset": 889461,
       "line": 15498,
       "context": "terminal",
       "erased": false,
@@ -105684,7 +105687,7 @@
     {
       "caller": "check_string_literal",
       "callee": "string_desugar_store",
-      "offset": 889605,
+      "offset": 889580,
       "line": 15500,
       "context": "local",
       "erased": false,
@@ -105693,7 +105696,7 @@
     {
       "caller": "check_string_literal",
       "callee": "check_term",
-      "offset": 889659,
+      "offset": 889634,
       "line": 15501,
       "context": "terminal",
       "erased": false,
@@ -105702,7 +105705,7 @@
     {
       "caller": "term_descend_live",
       "callee": "arena_get_node",
-      "offset": 889825,
+      "offset": 889800,
       "line": 15504,
       "context": "local",
       "erased": false,
@@ -105711,7 +105714,7 @@
     {
       "caller": "term_descend_live",
       "callee": "arena_get_node",
-      "offset": 889879,
+      "offset": 889854,
       "line": 15505,
       "context": "local",
       "erased": false,
@@ -105720,7 +105723,7 @@
     {
       "caller": "term_descend_live",
       "callee": "string_unfold_store",
-      "offset": 890007,
+      "offset": 889982,
       "line": 15508,
       "context": "local",
       "erased": false,
@@ -105729,7 +105732,7 @@
     {
       "caller": "term_descend_live",
       "callee": "term_descend_live",
-      "offset": 890060,
+      "offset": 890035,
       "line": 15509,
       "context": "terminal",
       "erased": false,
@@ -105738,7 +105741,7 @@
     {
       "caller": "term_descend_live",
       "callee": "string_unfold_store",
-      "offset": 890188,
+      "offset": 890163,
       "line": 15511,
       "context": "local",
       "erased": false,
@@ -105747,7 +105750,7 @@
     {
       "caller": "term_descend_live",
       "callee": "term_descend_live",
-      "offset": 890241,
+      "offset": 890216,
       "line": 15512,
       "context": "terminal",
       "erased": false,
@@ -105756,7 +105759,7 @@
     {
       "caller": "term_descend_live",
       "callee": "term_descend_ordinary",
-      "offset": 890296,
+      "offset": 890271,
       "line": 15513,
       "context": "terminal",
       "erased": false,
@@ -105765,7 +105768,7 @@
     {
       "caller": "string_observe_zero",
       "callee": "arena_get_node",
-      "offset": 890592,
+      "offset": 890567,
       "line": 15518,
       "context": "local",
       "erased": false,
@@ -105774,7 +105777,7 @@
     {
       "caller": "string_observe_zero",
       "callee": "string_unfold_store",
-      "offset": 890679,
+      "offset": 890654,
       "line": 15520,
       "context": "terminal",
       "erased": false,
@@ -164196,8 +164199,8 @@
   "recursiveHelpers": 1,
   "generatedPrivateRecursiveHelpers": 0,
   "protectedUnchangedHashes": {
-    "bend2/selfhost/checker.bend": "7ce24b4d109ad11da3eb8a374e093ae0b39353a576234342ab5e5cdddae0c8dc",
-    "checkpoints/checker_core_owned_v1.bend": "1017cefba3bb12241eb7bae5c2e56c1b3696f8798eccfd02188bb4dd323e727c",
+    "bend2/selfhost/checker.bend": "541a4b057c79f159cdc13017ba669adce8c58055f18431a0b281c723eccb39bc",
+    "checkpoints/checker_core_owned_v1.bend": "26a5190448f591357274f971e1150e2ca5c366328486a20af1dc761b5311c210",
     "checkpoints/checker-core-dependency.json": "6bea0f7605adc3f2004d6dc0ee4f46e350cf2f9671ddfb66f41cc9127b1d0111",
     "checkpoints/checker_core_slice.bend": "dfededaa2637240d7e1409488eed11e8ad995da63eb40e8a2ada4adcfe7b1690",
     "checkpoints/checker_core_driver.bend": "25593371e3c4077865f5265e967f3a672ab123b19d672aea85330500f8c46b18",
@@ -164208,10 +164211,10 @@
     "bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
     "evals/heavy_gate.ts": "47a12205abd374fd69d7dac30ee9fb45d7203cad2790870511387cd2efc22251",
     "evals/validation_profile.ts": "d0bfd8124b334cb1db4792e49675290a971ae82730e57029173b07ff23d6938d",
-    "checkpoints/checker-core-owned-source-v1.json": "d7c45259f6c1cd4204e07518ec0033efafb9a39e4a120d7c5adf30de4ee9b644",
+    "checkpoints/checker-core-owned-source-v1.json": "8d3e95f42c7af8263c76f378b263e6da28e88201e448e6d13554736f8f98dcf6",
     "checkpoints/checker_core_owned_driver_v1.bend": "dc0db1976cc74d7c7df108c4bdc72a6551a2a05a4b3c9727bdced13fc0c90f87",
-    "evals/checker_core_step_lower.ts": "79f2f55f9783c1185a9acfd2e071d578e60f3bb3410c5b4e17a81a3d45fee8ef",
-    "evals/checker_core_owned_source.ts": "686655154860abeb77c1bdd4279a838b2efedbd941ce0bfb3c66560129f69b87",
+    "evals/checker_core_step_lower.ts": "da60d94c5504723d41069cb9035c7892d98083014266eb2c9113a5df5c2e2211",
+    "evals/checker_core_owned_source.ts": "533be4117c3d603e3b8b8b560d54fd1845850db59fa4ec36d20e85277d7cacb4",
     "evals/js_emit_step_lower.ts": "60913a5d1a1a4571401ae8a4ef885045c4df0c996df8461d0fc8be1f454fb6e4",
     "evals/template_step_lower.ts": "24bb3b87949f3d68073e2ec407c339b75f5124a877106d24fbc27ca9dbb95de3",
     "evals/parser_full_graph.ts": "27f985053761fd8192b845988f6047e59355faf686b3c36f079d3d8fad545f86",
@@ -164232,6 +164235,9 @@
     "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/backend_ir.bend": "3614f816b109012c2ccb202ce6164efad9d82b1bf5f9decbc52c27ebaafe94c5",
     "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/js_emit.bend": "e0e986cc94705472fd7303575ac6c35efe2ea20299dfb1c1b5f6cf89b3da1dab",
     "/private/tmp/bend-fir-integrated57ab/checkpoints/js_emit_owned_v1.bend": "a667a0492c1d7de772424c4f3cecc6962cf57d3dc255bb60602254dc13e76eba",
+    "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_backend_sharing.bend": "ffaf97c528c88490fca33a5115e6a6e479d451bc0726cc4f0cb6c5b9b6119edb",
+    "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_emit_core.bend": "f690db5b6054d4f647b5c02e1281923d5cc66b24c8c2fff7859d811efc5ba380",
+    "/private/tmp/bend-fir-integrated57ab/checkpoints/c_emit_owned_v1.bend": "8e678fdf724890dd1ccac3d6b9d306d36657f877ab3908f14fbc1a753fed96e4",
     "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
     "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
     "bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
@@ -164254,5 +164260,5 @@
     "nativeBuildRun": false,
     "testsRun": false
   },
-  "generationManifestSha256": "cc6b0be80ca1c1d805f3f16f3e228f4a3d6ab7613e7bfc83fdb50e5942c125fe"
+  "generationManifestSha256": "9947ba5e866cda151e32b45c57c6f2fb1516168ae891fe439a8afca82aef0307"
 }
