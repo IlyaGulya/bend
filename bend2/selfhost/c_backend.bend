@@ -570,7 +570,7 @@ def export_names(rows: List<&2, ExportRow>, +acc: String) -> String:
     case Nil{}: acc
     case +row <> rest:
       match row:
-        case ExportRow{name, _, _, _}: export_names(rest, String.append(c_quote(name), String.append(if_first(acc), acc)))
+        case ExportRow{name, _, _, _}: export_names(rest, Link.text_prepend(c_quote(name), Link.text_prepend(if_first(acc), acc)))
 
 def if_first(acc: String) -> String:
   match String.is_empty(acc):
@@ -582,7 +582,7 @@ def export_values(rows: List<&2, ExportRow>, which: Nat, +acc: String) -> String
     case Nil{}: acc
     case +row <> rest:
       match row:
-        case ExportRow{_, index, mode, arity}: export_values(rest, which, String.append(export_value(index, mode, arity, which), String.append(if_first(acc), acc)))
+        case ExportRow{_, index, mode, arity}: export_values(rest, which, Link.text_prepend(export_value(index, mode, arity, which), Link.text_prepend(if_first(acc), acc)))
 
 def export_value(index: U32, mode: Nat, arity: Nat, which: Nat) -> String:
   match Nat.is_eq(which, 0n):
@@ -710,7 +710,7 @@ def part_join(parts: List<&2, Part>) -> Part:
 def part_append(text: String, rest: Part) -> Part:
   match rest:
     case PartFail{message}: PartFail{message}
-    case PartOk{after}: PartOk{cat([text, after])}
+    case PartOk{after}: PartOk{Link.text_prepend(text, after)}
 
 def part_first(parts: List<&2, Part>) -> String:
   match parts:
@@ -743,8 +743,11 @@ def c_escape_char(+char: Char) -> String:
 
 # A C string literal can be long, so the escaped body is accumulated as pieces
 # and concatenated once; escaped_char never grows the stack beyond one character.
+# The closing quote is the seed of the reversed piece list, so escaping never
+# appends to it: pieces are prepended, reversed once (tail), and the opening
+# quote is consed on the front.
 def c_quote_chars(chars: List<&2, Char>) -> String:
-  cat(List.append(&2, String, List.reverse(&2, String, c_quote_pieces(chars, Nil{})), ["\""]))
+  Link.text_of_pieces("\"" <> List.reverse(&2, String, c_quote_pieces(chars, ["\""])))
 
 def c_quote_pieces(chars: List<&2, Char>, +acc: List<&2, String>) -> List<&2, String>:
   match chars:
@@ -752,7 +755,7 @@ def c_quote_pieces(chars: List<&2, Char>, +acc: List<&2, String>) -> List<&2, St
     case +char <> rest: c_quote_pieces(rest, c_escape_char(char) <> acc)
 
 def c_quote(text: String) -> String:
-  cat(["\"", c_quote_chars(Link.chars_forward(text))])
+  c_quote_chars(Link.chars_forward(text))
 
 def nat_c(value: Nat) -> String:
   cat([Nat.show(value), "ull"])
@@ -2661,14 +2664,14 @@ def control_build(+plan: Plan) -> Control:
 def outs_text(outs: List<&2, String>, +acc: String) -> String:
   match outs:
     case Nil{}: acc
-    case +text <> rest: outs_text(rest, String.append(text, acc))
+    case +text <> rest: outs_text(rest, Link.text_prepend(text, acc))
 
 def segs_text(segs: List<&2, SegText>, +acc: String) -> String:
   match segs:
     case Nil{}: acc
     case +seg <> rest:
       match seg:
-        case SegText{fid, arity, resw, text}: segs_text(rest, String.append(text, acc))
+        case SegText{fid, arity, resw, text}: segs_text(rest, Link.text_prepend(text, acc))
 
 def rt_entry(entries: List<&2, Entry>, want: Nat) -> U32:
   match entry_at_kind(entries, want):

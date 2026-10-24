@@ -52,13 +52,28 @@ def text_of_rev(chars: List<&2, Char>, +acc: String) -> String:
     case Nil{}: acc
     case +char <> rest: text_of_rev(rest, SCon{char, acc})
 
-def pieces_rev(parts: List<&2, String>, +acc: List<&2, Char>) -> List<&2, Char>:
+# text_prepend links a source in front of an already built string without
+# walking or copying that string: chars_rev holds only the source's characters,
+# and each one is consed onto acc.
+def text_prepend(source: String, +acc: String) -> String:
+  text_of_rev(chars_rev(source, Nil{}), acc)
+
+# Pieces are folded from the end: the last piece becomes the accumulator, and
+# every earlier piece is prepended. No step walks the accumulator, so k pieces
+# cost one pass over their own characters and the temporary character list never
+# exceeds the largest piece.
+def pieces_fold(parts: List<&2, String>, +acc: String) -> String:
   match parts:
     case Nil{}: acc
-    case +part <> rest: pieces_rev(rest, chars_rev(part, acc))
+    case +part <> rest: pieces_fold(rest, text_prepend(part, acc))
+
+def pieces_from_end(reversed: List<&2, String>) -> String:
+  match reversed:
+    case Nil{}: ""
+    case +last <> rest: pieces_fold(rest, last)
 
 def text_of_pieces(parts: List<&2, String>) -> String:
-  text_of_rev(pieces_rev(parts, Nil{}), "")
+  pieces_from_end(List.reverse(&2, String, parts))
 
 def text_of_string(source: String) -> String:
   text_of_rev(chars_rev(source, Nil{}), "")

@@ -53,9 +53,18 @@ def long_piece() -> String:
 def long_ok() -> Bool:
   Nat.is_eq(String.length(long_piece()), 13000n)
 
+def prepend_ok() -> Bool:
+  String.eq(Link.text_prepend("ab", "cd"), "abcd")
+
+def mixed_fold_ok() -> Bool:
+  mixed = Link.text_of_pieces(["a", "b", "c", long_piece()])
+  Nat.is_eq(String.length(mixed), 13003n)
+
 def main() -> IO(Unit):
   do IO<Unit>:
     Unit <- IO.print(String.append("pieces_ok=", Bool.show(pieces_ok())))
     Unit <- IO.print(String.append("rewrite_ok=", Bool.show(rewrite_ok())))
     Unit <- IO.print(String.append("missing_ok=", Bool.show(missing_ok())))
-    IO.print(String.append("long_ok=", Bool.show(long_ok())))
+    Unit <- IO.print(String.append("long_ok=", Bool.show(long_ok())))
+    Unit <- IO.print(String.append("prepend_ok=", Bool.show(prepend_ok())))
+    IO.print(String.append("mixed_fold_ok=", Bool.show(mixed_fold_ok())))
