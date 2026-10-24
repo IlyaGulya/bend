@@ -28,15 +28,20 @@ type LinkResult is Data:
 # Base's String.append recurses over its first argument, String.concat recurses
 # over its first element, and String.from_list/String.to_list recurse once per
 # character; every one of those is non-tail, so assembling a large translation
-# unit through them grows the stack with the text. These four helpers build the
-# same text in one pass with tail calls only:
+# unit through them grows the stack with the text. These four helpers hold the
+# stack constant instead: a fixed number of linear passes, one SCon cell per
+# output character (the String is the result, not a copy), and a transient
+# O(total) char list while the pieces are folded. Per-character cost is one cons
+# per pass, not a constant-time guarantee independent of the allocator:
 #   chars_rev(s, acc)     = reverse(s) ++ acc        (walk s forward, cons)
 #   text_of_rev(chars, a) = a with chars prepended in reverse (walk forward, cons
 #                           onto the String as SCon)
 #   pieces_rev(parts, a)  = reverse(parts) concatenated onto a char list
 #   text_of_pieces(parts) = parts concatenated in order
-# Concatenating k parts costs one walk over each part's characters, so nothing
-# is copied twice and no chunk size has to be chosen.
+# Concatenating k parts therefore costs one walk over each part's characters and
+# no choice of chunk size; if peak temporary space ever matters, folding pieces
+# in reverse keeps the temporary list at the largest piece instead of the whole
+# text, at the cost of rebuilding each piece separately.
 def chars_rev(source: String, +acc: List<&2, Char>) -> List<&2, Char>:
   match source:
     case SNil{}: acc
