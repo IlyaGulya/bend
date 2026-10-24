@@ -334,5 +334,22 @@
     ],
     "theirBlocker": "four Phys.Part/local Part mismatches in c_backend.bend, escalated to CIRRenderer; the current manifest was generated from the pre-fix tree and must not be used",
     "myRemainingQueue": "root generator extension, ABI constants, composite driver, native driver/host, then one fresh parser acceptance + root build + single gate"
+  },
+  "preparedNativeCut": {
+    "baseVersion": "NativeSeedBootstrap's work/native-seed57ab 8f457023, which introduces the NativeEmit selector; the joined tree still has the older direct native_emit_start, so this patch must land AFTER Main merges the native branch",
+    "driverAdditions": [
+      "type NativeCEmit is Data: NativeCLibrary{exports: List<&2, String>, runtime: String, files: List<&2, BIR.SourceFile>} | NativeCModule{runtime: String, files: List<&2, BIR.SourceFile>}",
+      "native_c_emit_start(program, request: NativeCEmit) -> CEmitter.CEmitterRun<CEmitter.EmitResult> matching to emit_c_library_start(program, exports, runtime, files) / emit_c_modules_start(program, runtime, files)",
+      "native_c_emit_value/native_c_emit_result over CEmitter.EmitResult returning NativeResult<String>",
+      "type NativeCEmitterView<-A: Type> with Finished{take: Unit -> CEmitter.CEmitterValue<A>} / More{next: Unit -> CEmitter.CEmitterRun<A>}",
+      "native_c_emitter_view(-A, run) = view_ready(A, CEmitter.cemit_chunk(A, 64n, run))",
+      "extend native_experiment's parameter list by four (c start, c view, c result are values; the runtime string rides in the request) and pass them from main()"
+    ],
+    "hostAdditions": [
+      "extend the f[] closed-function loop to the new parameter count and add the C drive call with CID(NativeCEmitterFinished)/CID(NativeCEmitterMore) and phase string \"emit-c\"",
+      "build the NativeCEmit request with io_tup over (exports?, runtime string, files list); the runtime bytes arrive as an extra io_str, the passive carrier construction is unchanged",
+      "record the runtime file hash the host actually read so the receipt can pin it"
+    ],
+    "ordering": "after the native-seed merge; otherwise this patch would be written against the older shape and conflict"
   }
 }
