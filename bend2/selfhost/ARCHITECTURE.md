@@ -1,5 +1,12 @@
 # Self-host parser architecture: current boundary and historical graph
 
+## IR specifications
+
+This file records the parser migration history. The compiler's checked-FIR and backend-IR boundaries are specified separately:
+
+- [`FIR_LAWS.md`](./FIR_LAWS.md) — what `Checked.CheckedProgram` guarantees (ownership, publication, signatures, occurrences, failure), what it does not, and the open proof obligations.
+- [`BIR_LAWS.md`](./BIR_LAWS.md) — the lowering contract and `BIR.Program` well-formedness, consuming FIR as specified in `FIR_LAWS.md`.
+
 At baseline `f640d74948c5db9f6b2298db721327b61f894711`, the main grammar SCC contained **161 functions**. Its demonstrated shortest do-expression cycle was `parse_do_return → parse_do_return_scan → parse_term → parse_atom → parse_atom_scan → parse_do_atom → parse_do_atom_args_result → parse_do_atom_colon → parse_do_return`. This is a cross-boundary cycle through the shared expression parser, not an isolated do-scanner recursion.
 
 **Decision:** a local do scanner is insufficient. A separate expression parser returns a remainder that Bend cannot prove decreases relative to the do driver's input: `driver(after, ...)` fails with “expected: a decreasing self-call” even when that parser consumes a token. Use the generated, typed Request/Kont feedback cut, not a handwritten whole-parser migration, arbitrary fuel, or unchecked same-token recursion. The checkpointed canonical intrinsic repairs are recorded below; parity/span differences remain untouched.
