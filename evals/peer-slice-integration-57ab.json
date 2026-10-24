@@ -78,5 +78,11 @@
       "diagnosticOnly": true
     },
     "receipt": "evals/selfhost-root-phase-profile-57ab.json"
+  },
+  "jsForeignConsumer": {
+    "gate": "gates/selfhost.ts from 9ca9679e (taken at 890f8b44): run() merges the spawn env once with the caller env last, inner_compiler() derives the inner build from the stage command (stage 1 = bun evals/candidate_host.ts --candidate=<component>)",
+    "provenanceRun": "four host-export fixtures PASS js against component 8935d503 (combined-root6, scoped old source) with BEND_MAIN_TS, BEND_INNER_LIBRARY_RUNNER and BEND_INNER_LIBRARY_COMPILER unset, so the inner library was built by the candidate image",
+    "correctedClaim": "earlier four/five-fixture PASS lines in this thread, produced with the pre-fix gate (env merged twice, inner_compiler passing the image), are behavioral evidence only; their inner-build provenance was not the candidate and must not be quoted as such",
+    "scoped": "component 8935d503 predates NF 10c2290b; the final pass re-runs these fixtures on the final component and JSIRForeign issues the receipt"
   }
 }
