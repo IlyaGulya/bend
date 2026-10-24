@@ -62,7 +62,7 @@ function args_parse(){
   }
   if(arg.startsWith('--')){
    const at=arg.indexOf('='),name=at<0?arg:arg.slice(0,at),value=at<0?rest[++i]:arg.slice(at+1);
-   if(!['--candidate','--parser','--base','--exports','--runtime-c'].includes(name)||value===undefined||values.has(name))fail('unknown or duplicate option '+arg);
+   if(!['--candidate','--parser','--base','--exports','--runtime-c','--source-tag'].includes(name)||value===undefined||values.has(name))fail('unknown or duplicate option '+arg);
    values.set(name,value);
    continue;
   }
@@ -70,12 +70,14 @@ function args_parse(){
  }
  if(positional.length!==1)fail('expected exactly one input .bend file');
  if(!values.has('--candidate'))fail('required --candidate=PATH');
+ if(values.has('--source-tag')){const sourceTag=values.get('--source-tag')!;if(!sourceTag||/[\r\n\t]/.test(sourceTag))fail('--source-tag needs one nominal constructor tag');}
  if(!values.has('-o'))fail('required -o <output>');
  const output=values.get('-o')!;
  return {candidate:resolve(values.get('--candidate')!),parser:values.has('--parser')?resolve(values.get('--parser')!):undefined,
   base:resolve(values.get('--base')??posix.join(ROOT,'bend2/base.bend')),exports:values.get('--exports')?.split(','),
   library:flags.has('--library')||output.endsWith('.mjs'),input:resolve(positional[0]!),output:resolve(output),
-  runtimeC:values.has('--runtime-c')?resolve(values.get('--runtime-c')!):undefined};
+  runtimeC:values.has('--runtime-c')?resolve(values.get('--runtime-c')!):undefined,
+  sourceTag:values.get('--source-tag')??OFFICIAL_SOURCE_FILE_TAG};
 }
 
 const o=args_parse();
@@ -136,7 +138,7 @@ function visit(file:string,scope:string){
  modules.push(candidate!.parsed_module(scope,module));
 }
 visit(o.input,'');
-const bag=sourceFiles(files,OFFICIAL_SOURCE_FILE_TAG);
+const bag=sourceFiles(files,o.sourceTag);
 
 function checkedProgram():unknown{
  const loaded=list(modules);
