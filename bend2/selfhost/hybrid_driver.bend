@@ -91,5 +91,5 @@ def parsed_module(namespace: String, module: AST.Module) -> Loader.LoadedModule:
 def check_modules(modules: List<&2, Loader.LoadedModule>) -> Checked.CheckResult:
   Checker.check(modules)
 
-def emit_modules(program: Checked.CheckedProgram, files: List<&2, JSBackend.SourceFile>) -> JSEmit.EmitResult:
+def emit_modules(program: Checked.CheckedProgram, files: List<&2, BIR.SourceFile>) -> JSEmit.EmitResult:
   JSEmit.emit(program, files)

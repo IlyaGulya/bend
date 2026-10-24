@@ -7,7 +7,7 @@ import {createInterface} from 'node:readline';
 import {spawnSync} from 'node:child_process';
 import {getHeapStatistics} from 'node:v8';
 import {writeNativeAst,decodeNativeAst} from './bootstrap_ast_transport.ts';
-import {runTemplateSteps,runCheckerSteps,runEmitterSteps,runLibraryEmitterSteps} from './checker_core_step_runtime.mjs';
+import {runTemplateSteps,runCheckerSteps,runEmitterSteps,runLibraryEmitterSteps,sourceFiles,sourceFilePath} from './checker_core_step_runtime.mjs';
 
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
 async function transportHash(path){
@@ -76,12 +76,18 @@ if(isMainThread){
   return feedback.value.result;
  }
  async function load(root,parser,component,parserSha256){
-  const modules=[],parked=[],admissions=[],assignments=new Map(),active=new Set(),sourceHashes=[];
-  const externalImport=(file,span)=>{
-   const external=realpathSync(file),digest=sha(readFileSync(external));
+  const modules=[],parked=[],admissions=[],assignments=new Map(),active=new Set(),sourceHashes=[],foreignSources=new Map();
+  const externalImport=(module,declared,span)=>{
+   // The declared alternative is BIR metadata; the host only reads the bytes
+   // of the path BIR resolves from it and keys the bag by that same path.
+   const key=sourceFilePath(module,declared),external=realpathSync(key);
+   const bytes=readFileSync(key),source=bytes.toString('utf8'),digest=sha(bytes);
    pinSource(external,digest);
    if(!sourceHashes.some(row=>row.file===external))sourceHashes.push({file:external,sha256:digest,sourceBytesSha256:digest,external:true});
-   send({event:'external-import',phase,file:external,sourceSha256:digest,span});
+   const known=foreignSources.get(key);
+   if(known!==undefined&&known!==source)throw Error('Declared source path resolves to different bytes: '+key);
+   foreignSources.set(key,source);
+   send({event:'external-import',phase,file:external,declaredPath:declared,sourceSha256:digest,span});
   };
   // The host admits transports serially in its existing oracle loop. Retain at
   // most that admission and one parse-ahead result; imports come only from the
@@ -137,7 +143,7 @@ if(isMainThread){
     if(tag(declaration)!=='DefTop'||tag(declaration.definition.body)!=='DefImports')continue;
     for(const path of items(declaration.definition.body.paths)){
      if(typeof path!=='string')throw Error('Malformed actual AST foreign path');
-     if(path.endsWith('.js'))externalImport(resolve(dirname(at),path),declaration.definition.span);
+     if(path.endsWith('.js'))externalImport(at,path,declaration.definition.span);
     }
    }
    // The parser's immutable Data tree is the exact graph just serialized.
@@ -160,7 +166,7 @@ if(isMainThread){
     if(path.endsWith('.js')){
      // Foreign import metadata belongs to the original parsed Module. Host IO
      // authenticates its bytes but never parses it as Bend or rewrites the AST.
-     externalImport(child,imported.span);
+     externalImport(at,path,imported.span);
      continue;
     }
     await visit(child,namespace(scope,path),imported.span);
@@ -180,7 +186,7 @@ if(isMainThread){
    modules.push(component.parsed_module(row.scope,row.module));row.module=undefined;
    mark(phase,{file:row.file,parserBoundary:'retained-input-complete'});
   }
-  return {modules:list(modules),sourceHashes};
+  return {modules:list(modules),sourceHashes,files:[...foreignSources].map(([path,source])=>({path,source}))};
  }
  // A bounded profile timeout is failure, never bootstrap acceptance.
  function profileSteps(component,exports){
@@ -197,15 +203,16 @@ if(isMainThread){
   }])]);
  }
  function compile(component,loaded,library){
-  let modules=loaded.modules;loaded.modules=undefined;
+  let modules=loaded.modules,files=sourceFiles(loaded.files);loaded.modules=undefined;loaded.files=undefined;
   const expansionComponent=profileSteps({...component,expand_modules_start:input=>{modules=undefined;return component.expand_modules_start(input);}},['expand_modules_start','template_step']);
   mark(phase+'-expand');let expanded=runTemplateSteps(expansionComponent,modules);
   if(tag(expanded)!=='ExpandSuccess')failure('expand',expanded);
   const checkingComponent=profileSteps({...component,check_expanded_start:input=>{expanded=undefined;return component.check_expanded_start(input);}},['check_expanded_start','checker_step']);
   mark(phase.replace(/-expand$/,'')+'-check');let checked=runCheckerSteps(checkingComponent,expanded.modules);
   if(tag(checked)!=='CheckSuccess')failure('check',checked);
-  const emissionComponent=profileSteps({...component,emit_modules_start:input=>{checked=undefined;return component.emit_modules_start(input);},emit_library_start:(input,exports)=>{checked=undefined;return component.emit_library_start(input,exports);}},['emit_modules_start','emit_library_start','emitter_step']);
-  mark(phase.replace(/-check$/,'')+'-emit');const emitted=library?runLibraryEmitterSteps(emissionComponent,checked.program,list(ABI)):runEmitterSteps(emissionComponent,checked.program);
+  const emissionComponent=profileSteps({...component,emit_modules_start:(input,sources)=>{checked=undefined;return component.emit_modules_start(input,sources);},emit_library_start:(program,names,sources)=>{checked=undefined;return component.emit_library_start(program,names,sources);}},['emit_modules_start','emit_library_start','emitter_step']);
+  mark(phase.replace(/-check$/,'')+'-emit');const emitted=library?runLibraryEmitterSteps(emissionComponent,checked.program,list(ABI),files):runEmitterSteps(emissionComponent,checked.program,files);
+  files=undefined;
   if(tag(emitted)!=='EmitSuccess')failure('emit',emitted);
   return emitted.source;
  }

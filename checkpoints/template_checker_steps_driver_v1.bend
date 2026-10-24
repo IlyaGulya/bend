@@ -2,6 +2,7 @@ import Base
 import ../bend2/selfhost/loaded_module.bend as Loader
 import ../bend2/selfhost/ast.bend as Ast
 import ../bend2/selfhost/checked_frontend.bend as Checked
+import ../bend2/selfhost/backend_ir.bend as BIR
 import ./template_steps_v1.bend as Template
 import ./checker_core_steps_v1.bend as CheckerCore
 import ./js_emit_steps_v1.bend as JSEmit
@@ -25,11 +26,11 @@ def inspect_checked_start(program: Checked.CheckedProgram) -> CheckerCore.Checke
 def checker_step(-R: Type, run: CheckerCore.CheckerRun<R>) -> CheckerCore.CheckerRun<R>:
   CheckerCore.checker_step(R, run)
 
-def emit_modules_start(program: Checked.CheckedProgram) -> JSEmit.EmitterRun<JSEmit.EmitResult>:
-  JSEmit.emitter_start(program)
+def emit_modules_start(program: Checked.CheckedProgram, files: List<&2, BIR.SourceFile>) -> JSEmit.EmitterRun<JSEmit.EmitResult>:
+  JSEmit.emitter_start(program, files)
 
-def emit_library_start(program: Checked.CheckedProgram, exports: List<&2, String>) -> JSEmit.EmitterRun<JSEmit.EmitResult>:
-  JSEmit.emitter_library_start(program, exports)
+def emit_library_start(program: Checked.CheckedProgram, exports: List<&2, String>, files: List<&2, BIR.SourceFile>) -> JSEmit.EmitterRun<JSEmit.EmitResult>:
+  JSEmit.emitter_library_start(program, exports, files)
 
 def emitter_step(-R: Type, run: JSEmit.EmitterRun<R>) -> JSEmit.EmitterRun<R>:
   JSEmit.emitter_step(R, run)

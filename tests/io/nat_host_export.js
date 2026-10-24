@@ -14,8 +14,24 @@ def inc(n: Nat) -> Nat:
 def add(a: Nat, b: Nat) -> Nat:
   Nat.add(a, b)
 `);
-    const built = child.spawnSync(process.execPath,
-      [path.resolve("bend2/main.ts"), input, "-o", output], {
+    const given = process.env.BEND_INNER_LIBRARY_COMPILER;
+    // The ordinary-lane default locates stage 0 by file, never by the
+    // caller's cwd (the emitted program may run from anywhere); the gate
+    // supplies the compiler under test explicitly.
+    const mainTs = given === undefined
+      ? [process.env.BEND_MAIN_TS, path.resolve("bend2/main.ts"),
+        path.resolve("..", "..", "bend2/main.ts"),
+        path.resolve(typeof __dirname === "string" ? __dirname : ".", "..", "..", "bend2/main.ts")]
+        .find((p) => typeof p === "string" && fs.existsSync(p))
+      : undefined;
+    if (given === undefined && mainTs === undefined) {
+      return 1;
+    }
+    const compiler = given === undefined
+      ? [process.execPath, mainTs]
+      : JSON.parse(given);
+    const built = child.spawnSync(compiler[0],
+      [...compiler.slice(1), input, "-o", output], {
         encoding: "utf8",
         env: { ...process.env, HOME: dir, BEND_ORIGIN: "http://127.0.0.1:9" },
       });

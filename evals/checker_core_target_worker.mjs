@@ -4,7 +4,7 @@ import {resolve,join} from 'node:path';
 import {tmpdir} from 'node:os';
 import {pathToFileURL} from 'node:url';
 import {spawnSync} from 'node:child_process';
-import {runCheckerSteps,runEmitterSteps} from './checker_core_step_runtime.mjs';
+import {runCheckerSteps,runEmitterSteps,sourceFilesFor,declaredSourcePaths} from './checker_core_step_runtime.mjs';
 
 const tag=value=>value?.$?.split('.').at(-1);
 if(isMainThread){
@@ -30,13 +30,14 @@ if(isMainThread){
   if(tag(feedback)!=='FeedbackComplete'||tag(feedback.value?.result)!=='ParseSuccess')throw Error('Target parser did not accept: '+tag(feedback.value?.result??feedback));
   const module=feedback.value.result.module;
   const loaded=component.parsed_module('',module),modules={$:'Con',head:loaded,tail:{$:'Nil'}};
+  const files=sourceFilesFor(workerData.file,declaredSourcePaths(module));
   if(workerData.uncheckedGuard){
    phase('compiled-checked-boundary-guard');
    let refused=false;
-   try{runEmitterSteps(component,modules);}catch(error){if(!String(error).includes('expected owning CheckedProgram'))throw error;refused=true;}
+   try{runEmitterSteps(component,modules,files);}catch(error){if(!String(error).includes('expected owning CheckedProgram'))throw error;refused=true;}
    if(!refused)throw Error('Unchecked syntax crossed the FIR emitter boundary');
    const checked=runCheckerSteps(component,modules);
-   const rejected=tag(checked)==='CheckSuccess'?runEmitterSteps(component,checked.program):checked;
+   const rejected=tag(checked)==='CheckSuccess'?runEmitterSteps(component,checked.program,files):checked;
    if(!['CheckFailure','EmitFailure'].includes(tag(rejected)))throw Error('Unexpanded template reached successful emission');
    const {message,span}=tag(rejected)==='CheckFailure'?rejected.diagnostic:rejected;
    if(span.file!==workerData.file||Number(span.beg)!==workerData.source.indexOf('~')||Number(span.end)<=Number(span.beg)||Number(span.end)>workerData.source.length)throw Error('Typed pipeline failure did not retain the actual template source span');
@@ -52,7 +53,7 @@ if(isMainThread){
   let emitted,emission,output;
   if(accepted){
    phase('compiled-emit');
-   emission=runEmitterSteps(component,checked.program);
+   emission=runEmitterSteps(component,checked.program,files);
    if(tag(emission)!=='EmitSuccess')throw Error('Target emission failed: '+emission.message+' at '+emission.span.file+':'+emission.span.beg+'-'+emission.span.end);
    temporary=mkdtempSync(join(tmpdir(),'bend-checker-target-'));const file=join(temporary,'main.js');writeFileSync(file,emission.source);
    phase('emitted-program-run');

@@ -5,7 +5,7 @@ import {pathToFileURL} from 'node:url';
 import {createHash} from 'node:crypto';
 import {createInterface} from 'node:readline';
 import {writeNativeAst,readNativeAst} from './bootstrap_ast_transport.ts';
-import {runTemplateSteps,runCheckerSteps,runCheckedInspectionSteps,runLibraryEmitterSteps} from './checker_core_step_runtime.mjs';
+import {runTemplateSteps,runCheckerSteps,runCheckedInspectionSteps,runLibraryEmitterSteps,sourceFilesFor,declaredSourcePaths} from './checker_core_step_runtime.mjs';
 
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
 const tag=value=>value?.$?.split('.').at(-1);
@@ -54,7 +54,11 @@ if(isMainThread){
   let restored=await readNativeAst(parsedTransport.path);
   if(restored.sha256!==parsedTransport.sha256||tag(restored.value)!=='ParseSuccess')throw Error('Approved parser transport changed before actual consumer input');
   parsed=restored.value;restored=undefined;
-  let modules={$:'Con',head:component.parsed_module('',parsed.module),tail:{$:'Nil'}};parsed=undefined;
+  let modules={$:'Con',head:component.parsed_module('',parsed.module),tail:{$:'Nil'}};
+  // The passive bag carries only the bytes of this source's declared `.js`
+  // alternatives; this consumer library declares none.
+  const files=sourceFilesFor(workerData.file,declaredSourcePaths(parsed.module));
+  parsed=undefined;
   mark('expand');let expanded=runTemplateSteps({...component,expand_modules_start:input=>{modules=undefined;return component.expand_modules_start(input);}},modules);
   if(tag(expanded)!=='ExpandSuccess')fail('expand',expanded);
   const expandedTransport=transport('expanded',expanded);
@@ -67,7 +71,7 @@ if(isMainThread){
   send({event:'stage',phase,result:'CheckSuccess',transport:checkedTransport,emitterInput:'authentic Inspection.program (same owner after explicit readback)'});
   mark('emit-library');
   // Only consumer APIs are requested; no compiler API enters the library.
-  const emitted=runLibraryEmitterSteps({...component,emit_library_start:(program,names)=>{inspection=undefined;return component.emit_library_start(program,names);}},inspection.program,list(exports));
+  const emitted=runLibraryEmitterSteps({...component,emit_library_start:(program,names,sources)=>{inspection=undefined;return component.emit_library_start(program,names,sources);}},inspection.program,list(exports),files);
   if(tag(emitted)!=='EmitSuccess')fail('emit',emitted);
   const artifact=join(workerData.sidecars,'consumer.mjs');
   writeFileSync(artifact,emitted.source,{flag:'wx'});

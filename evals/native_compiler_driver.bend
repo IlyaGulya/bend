@@ -3,6 +3,7 @@
 import Base
 import ../bend2/selfhost/ast.bend as Ast
 import ../bend2/selfhost/loaded_module.bend as Loader
+import ../bend2/selfhost/backend_ir.bend as BIR
 import ../bend2/selfhost/checked_frontend.bend as Checked
 import ../checkpoints/template_steps_v1.bend as Template
 import ../checkpoints/checker_core_steps_v1.bend as Checker
@@ -11,7 +12,7 @@ import ../checkpoints/js_emit_steps_v1.bend as Emitter
 # The loader closure owns the parser's original immutable Module. The host can
 # inspect import paths but cannot replace a parsed tree or checked result.
 type NativeParsed is Type:
-  NativeParsed{imports: List<&2, String>, load: String -> Loader.LoadedModule}
+  NativeParsed{imports: List<&2, String>, foreign: List<&2, String>, load: String -> Loader.LoadedModule}
   NativeParseFailure{message: String}
 
 type NativeResult<-A: Type> is Type:
@@ -25,10 +26,38 @@ def native_import_paths(imports: List<&2, Ast.ModuleImport>) -> List<&2, String>
     case Nil{}:
       Nil{}
 
+# The declared `.js` alternatives are BIR metadata. The host only reads their
+# bytes; it never derives a target path or a namespace of its own.
+def native_js_paths(paths: List<&2, String>, rest: List<&2, String>) -> List<&2, String>:
+  match paths:
+    case Nil{}: rest
+    case +path <> tail: native_js_path(path, tail, rest)
+def native_js_path(+path: String, tail: List<&2, String>, rest: List<&2, String>) -> List<&2, String>:
+  match String.ends_with(path, ".js"):
+    case True{}: path <> native_js_paths(tail, rest)
+    case False{}: native_js_paths(tail, rest)
+
+def native_foreign_body(body: Ast.DefBody, rest: List<&2, String>) -> List<&2, String>:
+  match body:
+    case Ast.DefImports{paths}: native_js_paths(paths, rest)
+    case _: rest
+
+def native_foreign_definition(definition: Ast.Definition, rest: List<&2, String>) -> List<&2, String>:
+  match definition:
+    case Ast.Definition{_, _, _, body, _, _}: native_foreign_body(body, rest)
+
+def native_foreign_paths(declarations: List<&2, Ast.TopLevel>) -> List<&2, String>:
+  match declarations:
+    case Nil{}: Nil{}
+    case +top <> rest:
+      match top:
+        case Ast.DefTop{definition}: native_foreign_definition(definition, native_foreign_paths(rest))
+        case _: native_foreign_paths(rest)
+
 def native_parse_success(+module: Ast.Module) -> NativeParsed:
   match module:
-    case Ast.Module{_, imports, _}:
-      NativeParsed{native_import_paths(imports), namespace => parsed_module(namespace, module)}
+    case Ast.Module{_, imports, declarations}:
+      NativeParsed{native_import_paths(imports), native_foreign_paths(declarations), namespace => parsed_module(namespace, module)}
 
 def native_parse_result(result: FeedbackRun) -> NativeParsed:
   match result:
@@ -52,18 +81,22 @@ def native_expand_result(box: Template.TemplateValue<Template.ExpandResult>) -> 
   match box:
     case Template.TemplateValue{value}: native_expand_value(value)
 
-def native_check_value(result: Checked.CheckResult) -> NativeResult<(List<&2, String> -> Emitter.EmitterRun<Emitter.EmitResult>)>:
+def native_emit_start(program: Checked.CheckedProgram, arguments: List<&2, String> & List<&2, BIR.SourceFile>) -> Emitter.EmitterRun<Emitter.EmitResult>:
+  (exports, files) = arguments
+  emit_library_start(program, exports, files)
+
+def native_check_value(result: Checked.CheckResult) -> NativeResult<(List<&2, String> & List<&2, BIR.SourceFile>) -> Emitter.EmitterRun<Emitter.EmitResult>>:
   match result:
-    case Checked.CheckSuccess{program}: NativeAccepted{exports => emit_library_start(program, exports)}
+    case Checked.CheckSuccess{program}: NativeAccepted{arguments => native_emit_start(program, arguments)}
     case Checked.CheckFailure{Checked.Diagnostic{_, _, message, _, _}}: NativeRejected{message}
 
-def native_check_result(box: Checker.CheckerValue<Checked.CheckResult>) -> NativeResult<(List<&2, String> -> Emitter.EmitterRun<Emitter.EmitResult>)>:
+def native_check_result(box: Checker.CheckerValue<Checked.CheckResult>) -> NativeResult<(List<&2, String> & List<&2, BIR.SourceFile>) -> Emitter.EmitterRun<Emitter.EmitResult>>:
   match box:
     case Checker.CheckerValue{value}: native_check_value(value)
 
-def native_emit(input: (List<&2, String> -> Emitter.EmitterRun<Emitter.EmitResult>) & List<&2, String>) -> Emitter.EmitterRun<Emitter.EmitResult>:
-  (emit, exports) = input
-  emit(exports)
+def native_emit(input: ((List<&2, String> & List<&2, BIR.SourceFile>) -> Emitter.EmitterRun<Emitter.EmitResult>) & (List<&2, String> & List<&2, BIR.SourceFile>)) -> Emitter.EmitterRun<Emitter.EmitResult>:
+  (emit, arguments) = input
+  emit(arguments)
 
 def native_emit_value(result: Emitter.EmitResult) -> NativeResult<String>:
   match result:
@@ -127,8 +160,8 @@ def native_experiment(
   expand_result: Template.TemplateValue<Template.ExpandResult> -> NativeResult<List<&2, Loader.LoadedModule>>,
   check: List<&2, Loader.LoadedModule> -> Checker.CheckerRun<Checked.CheckResult>,
   checker_view: (@-A: Type -> @run: Checker.CheckerRun<A> -> NativeCheckerView<A>),
-  check_result: Checker.CheckerValue<Checked.CheckResult> -> NativeResult<(List<&2, String> -> Emitter.EmitterRun<Emitter.EmitResult>)>,
-  emit: ((List<&2, String> -> Emitter.EmitterRun<Emitter.EmitResult>) & List<&2, String>) -> Emitter.EmitterRun<Emitter.EmitResult>,
+  check_result: Checker.CheckerValue<Checked.CheckResult> -> NativeResult<(List<&2, String> & List<&2, BIR.SourceFile>) -> Emitter.EmitterRun<Emitter.EmitResult>>,
+  emit: (((List<&2, String> & List<&2, BIR.SourceFile>) -> Emitter.EmitterRun<Emitter.EmitResult>) & (List<&2, String> & List<&2, BIR.SourceFile>)) -> Emitter.EmitterRun<Emitter.EmitResult>,
   emitter_view: (@-A: Type -> @run: Emitter.EmitterRun<A> -> NativeEmitterView<A>),
   emit_result: Emitter.EmitterValue<Emitter.EmitResult> -> NativeResult<String>
 ) -> IO(Unit):
