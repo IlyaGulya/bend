@@ -2544,6 +2544,12 @@ def entry_kind_ctl(+index: U32, +arity: Nat, kind: EntryKind, +ctx: Ctx) -> Step
     case KindExit{}: entry_reserved(index, ctx)
     case KindEnter{}: entry_reserved(index, ctx)
 
+# A library's top entry is never entered: `main` is suppressed and the host
+# drives the export table instead. It exists so the top fid slot holds a real,
+# trivial segment rather than a dangling index.
+def entry_library(+index: U32, +ctx: Ctx) -> Step:
+  entry_add(index, "", "    r0 = 0;\n    WL_RETN(1);\n", False{}, ctx)
+
 def entry_reserved(index: U32, ctx: Ctx) -> Step:
   StepOk{"", ctx}
 
