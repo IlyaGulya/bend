@@ -76,9 +76,6 @@ def pieces_from_end(reversed: List<&2, String>) -> String:
 def text_of_pieces(parts: List<&2, String>) -> String:
   pieces_from_end(List.reverse(&2, String, parts))
 
-def text_of_string(source: String) -> String:
-  text_of_rev(chars_rev(source, Nil{}), "")
-
 # The scanner reads characters in text order; chars_rev hands back the reverse,
 # so the forward list is one tail-recursive List.reverse away.
 def chars_forward(source: String) -> List<&2, Char>:

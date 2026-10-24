@@ -732,11 +732,6 @@ def part_require(parts: List<&2, Part>) -> Maybe<&2, String>:
 # underscore and a literal underscore doubles, so `foo.bar` and `foo_bar` never
 # merge. The runtime's own spellings (Clo~apply, IO~emit, SNil, SCon) are
 # preserved exactly. No unique-suffix guessing: a clash would be a bug here.
-# A C string literal can be long, so the escaped body is accumulated as pieces
-# and concatenated once; escaped_char never grows the stack beyond one character.
-# The closing quote is the seed of the reversed piece list, so escaping never
-# appends to it: pieces are prepended, reversed once (tail), and the opening
-# quote is consed on the front.
 def nat_c(value: Nat) -> String:
   cat([Nat.show(value), "ull"])
 
