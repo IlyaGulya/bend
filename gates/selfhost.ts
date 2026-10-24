@@ -49,12 +49,11 @@ function run(bin: string, args: string[], cwd: string,
     cwd,
     encoding: "utf8",
     maxBuffer: 1 << 28,
-    env: { ...process.env, ...env },
     // The stage-0 CLI performs a daily release check whose notice lands on
     // stderr once per host/day; it is not program behavior and would make
     // the comparison depend on the calendar. BEND_NO_TELEMETRY is the
     // documented switch that skips it.
-    env: { ...process.env, BEND_NO_TELEMETRY: "1" },
+    env: { ...process.env, BEND_NO_TELEMETRY: "1", ...env },
   });
   if (got.error !== undefined) {
     return { code: 127, out: got.stdout ?? "", err: String(got.error) };
@@ -254,16 +253,16 @@ const HOST_EXPORT_FIXTURES = new Set([
   "generic_export_identity.bend",
 ]);
 
+// The inner build takes the same command shape as the outer compile: the
+// stage executable, its fixed arguments, then `<input> -o <output>`. Stage 1 is
+// therefore whatever process drives the candidate image (for the JS target,
+// `bun evals/candidate_host.ts --candidate=<component>`), never the image
+// alone, and its library entry is selected by the `.mjs` output path.
 function inner_compiler(stage: Stage): string[] {
-  if (stage.name === "stage 0") {
-    return [BUN, path.join(ROOT, "bend2/main.ts")];
+  if (stage.command.bin === "") {
+    fail("host-export fixture needs the stage " + (stage.name === "stage 0" ? 0 : 1) + " compiler");
   }
-  const runner = process.env.BEND_INNER_LIBRARY_RUNNER;
-  if (runner === undefined || runner === "" || stage.command.bin === "") {
-    fail("host-export fixture needs BEND_INNER_LIBRARY_RUNNER and a stage 1 compiler");
-  }
-  return [BUN, runner, "--candidate", stage.command.bin,
-    ...stage.command.args, "--library"];
+  return [stage.command.bin, ...stage.command.args];
 }
 
 function host_export_env(stage: Stage): Record<string, string> {
