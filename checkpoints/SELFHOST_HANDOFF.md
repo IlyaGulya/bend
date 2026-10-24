@@ -10,6 +10,37 @@
   byte sizes and behavior/performance evidence below apply ONLY to their pinned
   executable/source. A changed lowering, runtime ABI or target renderer requires
   a NEW proof; none is claimed here.
+- **Accepted narrow helper proof (d1437a74):** the standalone lexical C id
+  helper `bend2/selfhost/c_backend_link.bend` is integrated ALONE for the PENDING
+  BIR→C renderer. It is not wired into the live canonical C emitter, and the
+  legacy C path is untouched. It resolves whole `CID(<key>)`/`FID(<key>)`
+  spellings: comments, quoted/character/backtick literals and `MY_CID(...)` stay
+  untouched; a backslash splices the next line for both LF and CRLF, so `MY_\` +
+  newline + `CID(any)` remains one identifier; only the exact
+  `[A-Za-z0-9_.~/-]` key is looked up and a miss is `LinkFailure` naming that
+  spelling. Observed evidence, separated:
+  - historical `56988`/`ba98f426`: ALL PROOFS CHECK plus an 86-case differential
+    in interp/JS and 20 native cases, zero model mismatches and interp/JS byte
+    identity;
+  - `d1437a74` (e8 splice/key-once): interp/native helper runs plus emitted LF
+    and CRLF snippets built with clang and executed returning 40 through
+    `MY_CID`; ALL PROOFS CHECK;
+  - new `tests/run/c_backend_link.bend`: interpreted, C (`clang -O1`) and JS runs
+    each print the same six tokens for whole CID/FID, comment/literal
+    passthrough, LF+CRLF continuation and the exact-miss category.
+  This proof covers ONLY that standalone helper.
+  Reproduce the NEW permanent fixture only (six tokens per lane; it does not
+  re-run the historical 56988 differential or the e8 clang-40 splice proof):
+
+  ```bash
+  bun bend2/main.ts bend2/selfhost/c_backend_link.bend --check-only  # ALL PROOFS CHECK
+  bun bend2/main.ts tests/run/c_backend_link.bend                     # interp tokens
+  bun bend2/main.ts tests/run/c_backend_link.bend -o /tmp/link.c && clang -O1 /tmp/link.c -o /tmp/link && /tmp/link
+  bun bend2/main.ts tests/run/c_backend_link.bend -o /tmp/link.js && bun /tmp/link.js
+  ```
+- **Whole 57ab remains IN_PROGRESS; the C target is unaccepted.** The linker
+  integration is not a C-cutover, backend-ABI or all-legacy-deleted claim, and
+  no 57y/57aa fixedpoint or behavior proof is inherited by it.
 - **Official-speed campaign is paused by user.** 57ab prioritizes correct
   architecture/cutover, not beating the official compiler.
 - **Execution model:** implementation and verification are delegated to task

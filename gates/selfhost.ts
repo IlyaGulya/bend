@@ -144,6 +144,9 @@ function default_files(): string[] {
     "tests/run/descriptor_show.bend",
     // A failed nested pattern row falls through to the later rows.
     "tests/run/word_match_coverage.bend",
+    // Lexical C id linker: whole CID/FID keys, comment/literal passthrough,
+    // LF/CRLF spliced identifiers, and the exact-key miss category.
+    "tests/run/c_backend_link.bend",
     "tests/run/state_machine.bend",
     // Current foreign ABI: native callback into a Bend closure, own-type
     // layout, shared sealed values, nullary constructors, and one shared .js

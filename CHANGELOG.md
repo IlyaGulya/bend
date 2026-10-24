@@ -5,6 +5,16 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- A standalone selfhost helper now resolves hand-written `CID(<key>)` and
+  `FID(<key>)` markers lexically for the pending BIR→C renderer: whole markers
+  link by exact key, comments and quoted/character literals stay untouched, an
+  LF or CRLF backslash splice keeps an identifier as one token, and a missing key
+  is a link failure naming the spelling. The helper is integrated alone; the live
+  canonical C emitter and the legacy C path are untouched. Verified by ALL PROOFS
+  CHECK plus interpreted, JS and C (`clang -O1`) consumer regression runs; the new
+  `tests/run/c_backend_link.bend` pin covers comments, literals, LF/CRLF
+  continuations and the exact-miss category.
+
 - Native C value layouts box records wider than eight words instead of carrying
   large inline intermediates. Scalar word encoding and the physical runtime
   layout limit are unchanged; JavaScript value layouts are unchanged.

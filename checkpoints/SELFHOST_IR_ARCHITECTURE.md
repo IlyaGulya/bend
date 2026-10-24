@@ -5,6 +5,18 @@
 - 57ab is the current **IN_PROGRESS** integration candidate: common CheckedFIR
   lowering extraction reviewed at `768bf3d3`; C cutover/schema/runtime/JS-foreign
   work is unintegrated and pending correctness review plus actual gates.
+- Narrow accepted slice inside 57ab: the STANDALONE lexical C id helper
+  (`bend2/selfhost/c_backend_link.bend`) at `d1437a74`, for the PENDING BIR→C
+  renderer. It is not wired into the live canonical C emitter; the legacy C path
+  is untouched. It links only whole `CID(<key>)`/`FID(<key>)` keys, copies
+  comments and literals, keeps a backslash-spliced LF/CRLF continuation part of
+  the same identifier, and reports an exact-key miss as `LinkFailure`. Observed
+  evidence: ALL PROOFS CHECK; historical `56988`/`ba98f426` 86-case interp/JS
+  plus 20 native differential with zero mismatches; `d1437a74` interp/native
+  helper plus clang-built LF and CRLF emitted snippets returning 40; permanent
+  `tests/run/c_backend_link.bend` regression printed by interp/C/JS. This does
+  not accept the C target, the FIR/BIR cutover, live emitter wiring or any
+  unchanged fixedpoint.
 - The 57y/57aa fixedpoints and behavior/performance results below are pinned to
   THEIR executables. They are not inherited by the moved lowering or by any new
   C/JS renderer; a new executable needs new stage1/stage2 and behavior proof.
