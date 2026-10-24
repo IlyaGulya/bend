@@ -55,6 +55,8 @@ type Part is Data:
 
 type CidRow is Data:
   CidRow{cid: U32, key: String, arity: Nat, hot: Bool}
+type ExportRow is Data:
+  ExportRow{name: String, index: U32, mode: Nat, arity: Nat}
 type EntryKind is Data:
   KindCode{id: U32, captures: Nat, params: List<&2, BIR.Parameter>, body: BIR.Block}
   KindStage{next: U32}
@@ -62,6 +64,7 @@ type EntryKind is Data:
   KindForeign{key: String, args: Nat}
   KindNative{primitive: BIR.Primitive, count: Nat}
   KindMain{}
+  KindLibrary{}
   KindEmit{}
   KindApply{}
   KindExit{}
@@ -104,7 +107,9 @@ type Plan is Data:
     imports: List<&2, CImport>,
     fkeys: List<&2, String>,
     ctx: CLay.Context,
-    sharing: Sharing.SharingPlan, sharing}
+    sharing: Sharing.SharingPlan,
+    library: Bool,
+    exports: List<&2, BIR.Export>}
 
 # The stable entry facts control generation consults: every lookup is by the
 # exact numeric id or declared key, never by a suffix.
@@ -267,6 +272,7 @@ def entry_kind_arity(kind: EntryKind) -> Nat:
     case KindForeign{key, args}: Nat.add(args, 1n)
     case KindNative{primitive, count}: count
     case KindMain{}: 0n
+    case KindLibrary{}: 0n
     case KindEmit{}: 1n
     case KindApply{}: 2n
     case KindExit{}: 0n
@@ -357,11 +363,16 @@ def foreign_stage_start(read: Bool, arity: Nat) -> Nat:
 
 # The main entry is the program's top segment: it tail-calls the main
 # declaration, and the runtime's four own segments follow it.
-def finish_entries(build: Build) -> Build:
+def finish_entries(build: Build, library: Bool) -> Build:
   match build:
     case Build{entries, by_code, by_key, by_foreign, by_native, stages, +next}:
       last = U32.inc(U32.inc(U32.inc(U32.inc(U32.inc(next)))))
-      Build{finish_top(Entry{next, 0n, KindMain{}}, Entry{U32.inc(next), 1n, KindEmit{}}, Entry{U32.inc(U32.inc(next)), 2n, KindApply{}}, Entry{U32.inc(U32.inc(U32.inc(next))), 0n, KindExit{}}, Entry{U32.inc(U32.inc(U32.inc(U32.inc(next)))), 0n, KindEnter{}}, entries), by_code, by_key, by_foreign, by_native, stages, last}
+      Build{finish_top(Entry{next, 0n, top_entry_kind(library)}, Entry{U32.inc(next), 1n, KindEmit{}}, Entry{U32.inc(U32.inc(next)), 2n, KindApply{}}, Entry{U32.inc(U32.inc(U32.inc(next))), 0n, KindExit{}}, Entry{U32.inc(U32.inc(U32.inc(U32.inc(next)))), 0n, KindEnter{}}, entries), by_code, by_key, by_foreign, by_native, stages, last}
+
+def top_entry_kind(library: Bool) -> EntryKind:
+  match library:
+    case True{}: KindLibrary{}
+    case False{}: KindMain{}
 
 def finish_top(top: Entry, emit: Entry, apply: Entry, exit: Entry, enter: Entry, entries: List<&2, Entry>) -> List<&2, Entry>:
   enter <> exit <> apply <> emit <> (top <> entries)
@@ -395,12 +406,22 @@ def fid_macros_declarations(declarations: List<&2, BIR.Declaration>, +by_code: M
 # Plan: main kind, native constructor tables, show descriptors
 # ---------------------------------------------------------------------------
 
+def ending_library(end: BIR.Ending) -> Bool:
+  match end:
+    case BIR.Library{exports}: True{}
+    case BIR.Executable{main_type}: False{}
+
+def ending_exports(end: BIR.Ending) -> List<&2, BIR.Export>:
+  match end:
+    case BIR.Library{exports}: exports
+    case BIR.Executable{main_type}: Nil{}
+
 def plan_make(+program: BIR.Program, imports: List<&2, CImport>) -> PlanResult:
   +scan = scan_program(program)
   sharing_result = Sharing.sharing_plan(program)
   match sharing_result:
     case Sharing.SharingFail{message}: PlanFail{message}
-    case Sharing.SharingOk{plan: plan_hot}:
+    case Sharing.SharingOk{plan_hot}:
       cids = cid_rows(program, scan, plan_hot)
       match program:
         case BIR.Program{codes, declarations, constructors, families, type_functions, end}:
@@ -410,8 +431,10 @@ def plan_finish(program: BIR.Program, scan: Scan, cids: List<&2, CidRow>, constr
   plan_pure(end, families, plan_top(program, scan, cids, constructors, families, declarations, end, imports, sharing))
 
 def plan_top(+program: BIR.Program, +scan: Scan, +cids: List<&2, CidRow>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, +declarations: List<&2, BIR.Declaration>, end: BIR.Ending, imports: List<&2, CImport>, sharing: Sharing.SharingPlan) -> PlanResult:
-  +build = finish_entries(build_entries(program, scan))
-  PlanOk{Plan{cids, cid_macro_map(cids), fid_macro_map(declarations, build), entries_ascending(build_entries_of(build)), by_code_of(build), by_key_of(build), by_foreign_of(build), by_native_of(build), stages_of(build), constructors, families, declarations, True{}, "{ 0 }", "", imports, fkeys_of(scan), CLay.context(program), sharing}}
+  +library = ending_library(end)
+  +exports = ending_exports(end)
+  +build = finish_entries(build_entries(program, scan), library)
+  PlanOk{Plan{cids, cid_macro_map(cids), fid_macro_map(declarations, build), entries_ascending(build_entries_of(build)), by_code_of(build), by_key_of(build), by_foreign_of(build), by_native_of(build), stages_of(build), constructors, families, declarations, True{}, "{ 0 }", "", imports, fkeys_of(scan), CLay.context(program), sharing, library, exports}}
 
 def plan_pure(end: BIR.Ending, families: List<&2, BIR.Family>, inner: PlanResult) -> PlanResult:
   match inner:
@@ -422,13 +445,13 @@ def plan_pure(end: BIR.Ending, families: List<&2, BIR.Family>, inner: PlanResult
 # MAIN_FID; a library ending has no C consumer, so it is refused, never invented.
 def plan_set_pure(end: BIR.Ending, families: List<&2, BIR.Family>, plan: Plan) -> PlanResult:
   match end:
-    case BIR.Library{exports}: PlanFail{"the C target emits an executable: a library ending has no C runtime entry point"}
+    case BIR.Library{exports}: plan_library(exports, plan)
     case BIR.Executable{main_type}: plan_executable(main_type, families, plan)
 
 def plan_set_pure_flags(plan: Plan, pure: Bool, desc: String, names: String) -> Plan:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
-      Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, pure, desc, names, imports, fkeys, ctx, sharing}
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, library, exports}:
+      Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, pure, desc, names, imports, fkeys, ctx, sharing, library, exports}
 
 def fid_macros_runtime(acc: Map<&2, String>) -> Map<&2, String>:
   fid_macros_runtime_one(map_set_first(acc, "Clo~apply", "FID_CLO_APPLY"))
@@ -458,12 +481,140 @@ def plan_executable_io(is_io: Bool, family: BIR.Family, main_type: BIR.Descripto
 
 def plan_executable_show(family: BIR.Family, main_type: BIR.Descriptor, plan: Plan) -> PlanResult:
   match plan:
-    case Plan{+cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, +constructors, +families, declarations, main_pure, _, _, imports, fkeys, ctx, sharing}:
+    case Plan{+cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, +constructors, +families, declarations, main_pure, _, _, imports, fkeys, ctx, sharing, _, _}:
       show = Phys.show_build(ctx, main_type, constructors, families)
       match show:
         case Phys.ShowFail{message}: PlanFail{message}
         case Phys.ShowOk{desc, names}:
-          PlanOk{Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, True{}, desc, names, imports, fkeys, ctx, sharing}}
+          PlanOk{Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, True{}, desc, names, imports, fkeys, ctx, sharing, False{}, Nil{}}}
+# A library ending publishes a small, renderer-owned C ABI over the same
+# runtime translation unit. Every export runs through the ordinary task and
+# segment path (task_node + corpus_eval), one BOX Term per argument/result,
+# and Entry.arity is the semantic argument count. Mode 0 calls an entry
+# exactly; mode 2 calls its parameters and then applies the remaining
+# arguments in order; mode 1 evaluates the declaration and applies every
+# argument, so a zero-arity or lazy factory re-evaluates on each call.
+def plan_library(exports: List<&2, BIR.Export>, plan: Plan) -> PlanResult:
+  match plan:
+    case Plan{cids, cid_macros, fid_macros, +entries, +by_code, +by_key, +by_foreign, +by_native, +stages, +constructors, +families, +declarations, main_pure, _, _, +imports, +fkeys, +ctx, +sharing, _, _}:
+      match export_rows(exports, declarations, by_code, by_key, by_foreign, by_native, entries):
+        case None{}: PlanFail{"a library export names no callable, or its checked parameter count disagrees with its entry"}
+        case Some{rows}:
+          PlanOk{Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, False{}, "{ 0 }", "", imports, fkeys, ctx, sharing, True{}, exports}}
+
+def export_rows(exports: List<&2, BIR.Export>, +declarations: List<&2, BIR.Declaration>, +by_code: Map<&2, U32>, +by_key: Map<&2, U32>, +by_foreign: Map<&2, U32>, +by_native: Map<&2, U32>, +entries: List<&2, Entry>) -> Maybe<&2, List<&2, ExportRow>>:
+  match exports:
+    case Nil{}: Some{Nil{}}
+    case +item <> rest: export_row_pair(export_row(item, declarations, by_code, by_key, by_foreign, by_native, entries), export_rows(rest, declarations, by_code, by_key, by_foreign, by_native, entries))
+
+def export_row_pair(one: Maybe<&2, ExportRow>, rest: Maybe<&2, List<&2, ExportRow>>) -> Maybe<&2, List<&2, ExportRow>>:
+  match one rest:
+    case Some{row} Some{rows}: Some{row <> rows}
+    case _ _: None{}
+
+def export_row(item: BIR.Export, +declarations: List<&2, BIR.Declaration>, +by_code: Map<&2, U32>, +by_key: Map<&2, U32>, +by_foreign: Map<&2, U32>, +by_native: Map<&2, U32>, +entries: List<&2, Entry>) -> Maybe<&2, ExportRow>:
+  match item:
+    case BIR.Export{key, entry, parameter_types}:
+      match entry:
+        case Some{item}: export_direct(key, item, List.length(&2, BIR.Descriptor, parameter_types), by_code)
+        case None{}: export_symbol(key, List.length(&2, BIR.Descriptor, parameter_types), declarations, by_key, by_foreign, by_native)
+
+def export_direct(key: String, entry: BIR.Entry, checked: Nat, +by_code: Map<&2, U32>) -> Maybe<&2, ExportRow>:
+  match entry:
+    case BIR.Entry{code, arity}:
+      match Nat.is_eq(arity, checked):
+        case True{}: Some{ExportRow{key, map_u32(by_code, U32.show(code)), 0n, arity}}
+        case False{}: export_direct_curried(Nat.is_lt(arity, checked), key, code, arity, by_code)
+
+def export_direct_curried(has_extra: Bool, +key: String, +code: U32, +arity: Nat, +by_code: Map<&2, U32>) -> Maybe<&2, ExportRow>:
+  match has_extra:
+    case True{}: Some{ExportRow{key, map_u32(by_code, U32.show(code)), 2n, arity}}
+    case False{}: None{}
+
+def export_symbol(key: String, checked: Nat, +declarations: List<&2, BIR.Declaration>, +by_key: Map<&2, U32>, +by_foreign: Map<&2, U32>, +by_native: Map<&2, U32>) -> Maybe<&2, ExportRow>:
+  match find_declaration(key, declarations):
+    case None{}: None{}
+    case Some{item}: export_symbol_item(key, checked, item, by_key, by_foreign, by_native)
+
+def export_symbol_item(key: String, checked: Nat, item: BIR.Declaration, +by_key: Map<&2, U32>, +by_foreign: Map<&2, U32>, +by_native: Map<&2, U32>) -> Maybe<&2, ExportRow>:
+  match item:
+    case BIR.FunctionDeclaration{_, code, parameters}:
+      match Nat.is_eq(List.length(&2, BIR.Parameter, parameters), checked):
+        case True{}: Some{ExportRow{key, map_u32(by_key, key), 1n, checked}}
+        case False{}: None{}
+    case BIR.LazyDeclaration{_, body}: Some{ExportRow{key, map_u32(by_key, key), 1n, checked}}
+    case BIR.ForeignDeclaration{_, _, _, arity, _, _, _, _, _}: export_declared(key, checked, arity, map_u32(by_foreign, key))
+    case BIR.NativeDeclaration{_, _, quantities}: export_declared(key, checked, List.length(&2, BIR.Quantity, quantities), map_u32(by_native, key))
+    case _: None{}
+
+def export_declared(key: String, checked: Nat, declared: Nat, index: U32) -> Maybe<&2, ExportRow>:
+  match Nat.is_eq(checked, declared):
+    case True{}: Some{ExportRow{key, index, 1n, checked}}
+    case False{}: None{}
+
+def export_names(rows: List<&2, ExportRow>, +acc: String) -> String:
+  match rows:
+    case Nil{}: acc
+    case +row <> rest:
+      match row:
+        case ExportRow{name, _, _, _}: export_names(rest, String.append(c_quote(name), String.append(if_first(acc), acc)))
+
+def if_first(acc: String) -> String:
+  match String.is_empty(acc):
+    case True{}: ""
+    case False{}: ", "
+
+def export_values(rows: List<&2, ExportRow>, which: Nat, +acc: String) -> String:
+  match rows:
+    case Nil{}: acc
+    case +row <> rest:
+      match row:
+        case ExportRow{_, index, mode, arity}: export_values(rest, which, String.append(export_value(index, mode, arity, which), String.append(if_first(acc), acc)))
+
+def export_value(index: U32, mode: Nat, arity: Nat, which: Nat) -> String:
+  match Nat.is_eq(which, 0n):
+    case True{}: String.concat([U32.show(index), "u"])
+    case False{}:
+      match Nat.is_eq(which, 1n):
+        case True{}: Nat.show(mode)
+        case False{}: Nat.show(arity)
+
+def exports_c(library: Bool, rows: List<&2, ExportRow>) -> String:
+  match library:
+    case False{}: ""
+    case True{}:
+      String.concat([
+        "\n// Library exports\n",
+        "#define BEND_EXPORT_COUNT ", Nat.show(List.length(&2, ExportRow, rows)), "\n",
+        "static const char* BEND_EXPORT_NAMES[] = { ", export_names(rows, ""), " };\n",
+        "static const u32 BEND_EXPORT_ENTRY[] = { ", export_values(rows, 0n, ""), " };\n",
+        "static const u8 BEND_EXPORT_MODE[] = { ", export_values(rows, 1n, ""), " };\n",
+        "static const u32 BEND_EXPORT_ARITY[] = { ", export_values(rows, 2n, ""), " };\n",
+        "static u64* BEND_EXPORT_CORPUS;\n\n",
+        "u32 bend_export_count(void) { return BEND_EXPORT_COUNT; }\n",
+        "const char* bend_export_name(u32 i) { return i < BEND_EXPORT_COUNT ? BEND_EXPORT_NAMES[i] : 0; }\n",
+        "u32 bend_export_arity(u32 i) { return i < BEND_EXPORT_COUNT ? BEND_EXPORT_ARITY[i] : 0; }\n\n",
+        "void bend_library_init(void) { if (BEND_EXPORT_CORPUS == 0) { BEND_EXPORT_CORPUS = corpus_setup(false, 1, 0); } }\n\n",
+        "static Term bend_export_run(u32 fid, const Term* args, u32 n) {\n",
+        "  Env e = { BEND_EXPORT_CORPUS, ALC[0] };\n",
+        "  Term t = term_tsk(fid, task_node(e, fid, TERM_HOLE, 0, 0));\n",
+        "  for (u32 i = 0; i < n; i += 1) { e.mem[term_loc(t) + i] = args[i]; }\n",
+        "  return corpus_eval(e.mem, t);\n}\n\n",
+        "static Term bend_export_apply_one(Term fun, Term arg) {\n",
+        "  Env e = { BEND_EXPORT_CORPUS, ALC[0] };\n",
+        "  Term t = term_tsk(FID_CLO_APPLY, task_node(e, FID_CLO_APPLY, TERM_HOLE, 0, 0));\n",
+        "  e.mem[term_loc(t)] = fun;\n  e.mem[term_loc(t) + 1] = arg;\n",
+        "  return corpus_eval(e.mem, t);\n}\n\n",
+        "Term bend_export_apply(Term fun, const Term* args, u32 n) {\n",
+        "  Term v = fun;\n  for (u32 i = 0; i < n; i += 1) { v = bend_export_apply_one(v, args[i]); }\n  return v;\n}\n\n",
+        "Term bend_export_call(u32 i, const Term* args, u32 n) {\n",
+        "  if (i >= BEND_EXPORT_COUNT) { err_fail(\"bend: export index out of range\"); }\n",
+        "  u32 ar = BEND_EXPORT_ARITY[i];\n",
+        "  if (BEND_EXPORT_MODE[i] == 0) {\n    if (n != ar) { err_fail(\"bend: export called at the wrong arity\"); }\n    return bend_export_run(BEND_EXPORT_ENTRY[i], args, n);\n  }\n",
+        "  if (BEND_EXPORT_MODE[i] == 2) {\n    if (n < ar) { err_fail(\"bend: export called with too few arguments\"); }\n    Term v = bend_export_run(BEND_EXPORT_ENTRY[i], args, ar);\n    for (u32 j = ar; j < n; j += 1) { v = bend_export_apply_one(v, args[j]); }\n    return v;\n  }\n",
+        "  Term v = bend_export_run(BEND_EXPORT_ENTRY[i], 0, 0);\n  for (u32 j = 0; j < n; j += 1) { v = bend_export_apply_one(v, args[j]); }\n  return v;\n}\n"
+      ])
+
 
 def descriptor_head(descriptor: BIR.Descriptor) -> Maybe<&2, String>:
   match descriptor:
@@ -816,7 +967,7 @@ def cid_lookup(+key: String, cids: List<&2, CidRow>) -> U32:
     case Nil{}: 0
     case +row <> rest:
       match row:
-        case CidRow{cid, known, arity}: cid_lookup_one(String.eq(key, known), key, cid, rest)
+        case CidRow{cid, known, arity, _}: cid_lookup_one(String.eq(key, known), key, cid, rest)
 
 def cid_lookup_one(same: Bool, key: String, cid: U32, rest: List<&2, CidRow>) -> U32:
   match same:
@@ -833,7 +984,7 @@ def cid_short(+short: String, cids: List<&2, CidRow>) -> Maybe<&2, U32>:
     case Nil{}: None{}
     case +row <> rest:
       match row:
-        case CidRow{cid, key, arity}: cid_short_one(String.eq(short, key), short, cid, rest)
+        case CidRow{cid, key, arity, _}: cid_short_one(String.eq(short, key), short, cid, rest)
 
 def cid_c(+short: String, cids: List<&2, CidRow>) -> Part:
   match cid_short(short, cids):
@@ -856,14 +1007,14 @@ def runtime_cid_alias(+alias: String, +key: String, cids: List<&2, CidRow>) -> P
     case None{}: PartFail{cat(["the program has no `", key, "` constructor for the runtime symbol ", alias])}
     case Some{row}:
       match row:
-        case CidRow{cid, key, arity}: okp(cat(["#define ", alias, " ", cid_symbol(cid), "\n"]))
+        case CidRow{cid, key, arity, _}: okp(cat(["#define ", alias, " ", cid_symbol(cid), "\n"]))
 
 def find_cid_row(+key: String, cids: List<&2, CidRow>) -> Maybe<&2, CidRow>:
   match cids:
     case Nil{}: None{}
     case +row <> rest:
       match row:
-        case CidRow{_, known, _}: find_cid_row_one(String.eq(key, known), row, key, rest)
+        case CidRow{_, known, _, _}: find_cid_row_one(String.eq(key, known), row, key, rest)
 
 def find_cid_row_one(same: Bool, row: CidRow, key: String, rest: List<&2, CidRow>) -> Maybe<&2, CidRow>:
   match same:
@@ -891,14 +1042,14 @@ def runtime_cid_aliases(+cids: List<&2, CidRow>) -> Part:
 
 def cid_of_row(row: CidRow) -> U32:
   match row:
-    case CidRow{cid, key, arity}: cid
+    case CidRow{cid, key, arity, _}: cid
 
 def cid_macro_each(cids: List<&2, CidRow>, +acc: Map<&2, String>) -> Map<&2, String>:
   match cids:
     case Nil{}: acc
     case +row <> rest:
       match row:
-        case CidRow{_, key, _}:
+        case CidRow{_, key, _, _}:
           cid_macro_each(rest, map_set_first(acc, key, cid_symbol(cid_of_row(row))))
 
 # ---------------------------------------------------------------------------
@@ -1033,7 +1184,7 @@ def bool_lit_part(which: String, plan: Plan) -> Part:
 
 def symbol_part(+key: String, +plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, _, _}:
       symbol_part_decl(find_declaration(key, declarations), key, plan)
 
 def find_declaration(+key: String, declarations: List<&2, BIR.Declaration>) -> Maybe<&2, BIR.Declaration>:
@@ -1059,7 +1210,7 @@ def symbol_part_decl(found: Maybe<&2, BIR.Declaration>, +key: String, plan: Plan
 
 def symbol_part_item(item: BIR.Declaration, +key: String, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, +entries, by_code, by_key, by_foreign, by_native, +stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
+    case Plan{cids, cid_macros, fid_macros, +entries, by_code, by_key, by_foreign, by_native, +stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, _, _}:
       match item:
         case BIR.FunctionDeclaration{known, +code, parameters}:
           symbol_value(IndexLookup.find(U32, by_code, U32.show(code)), code_stem(code), entries, stages)
@@ -1174,7 +1325,7 @@ def arm_index_one(found: Bool, key: String, rest: List<&2, BIR.DescriptorArm>, +
 # values are the raw arm index, exactly as the current C emitter lays them out.
 def phys_world(+plan: Plan) -> Phys.World:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, _, _}:
       Phys.world(ctx, constructors, families, phys_cids(cids))
 
 def phys_cids(cids: List<&2, CidRow>) -> List<&2, Phys.CidSym>:
@@ -1309,7 +1460,7 @@ def prim_call_part(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, +plan: Pla
 
 def pcid(short: String, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, _, _}:
       cid_c(short, cids)
 
 def prim_part(primitive: BIR.Primitive, +a: List<&2, String>, +plan: Plan) -> Part:
@@ -1441,7 +1592,7 @@ def f32_cmp(op: String, a0: String, a1: String) -> Part:
 
 def bool2_part(fn: String, a0: String, a1: String, plan: Plan) -> Part:
   match plan:
-    case Plan{+cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
+    case Plan{+cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, _, _}:
       bool2_c(fn, a0, a1, cid_c("True", cids), cid_c("False", cids))
 
 def bool2_c(fn: String, a0: String, a1: String, t: Part, f: Part) -> Part:
@@ -2387,6 +2538,7 @@ def entry_kind_ctl(+index: U32, +arity: Nat, kind: EntryKind, +ctx: Ctx) -> Step
     case KindForeign{key, args}: entry_foreign(index, arity, key, args, ctx)
     case KindNative{primitive, count}: entry_native(index, arity, primitive, count, ctx)
     case KindMain{}: entry_main(index, ctx)
+    case KindLibrary{}: entry_library(index, ctx)
     case KindEmit{}: entry_reserved(index, ctx)
     case KindApply{}: entry_reserved(index, ctx)
     case KindExit{}: entry_reserved(index, ctx)
@@ -2478,7 +2630,7 @@ def main_jump(index: U32, found: Maybe<&2, U32>, +ctx: Ctx) -> Step:
 
 def control_build(+plan: Plan) -> Control:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, +entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
+    case Plan{cids, cid_macros, fid_macros, +entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, _, _}:
       match entries_ctl(entries, Ctx{Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, rt_entry(entries, 3n)}, plan, Nil{}, Nil{}, 0n, Nil{}, None{}, U32.from_nat(List.length(&2, Entry, entries)), Nil{}, Nil{}, False{}, max_arity(entries)}):
         case StepFail{message}: ControlFail{message}
         case StepOk{_, +done}:
@@ -2516,6 +2668,7 @@ def entry_at_kind(entries: List<&2, Entry>, +want: Nat) -> Maybe<&2, Entry>:
 def kind_want(kind: EntryKind) -> Nat:
   match kind:
     case KindMain{}: 1n
+    case KindLibrary{}: 6n
     case KindEmit{}: 2n
     case KindApply{}: 3n
     case KindExit{}: 4n
@@ -2563,7 +2716,7 @@ def cid_defines(cids: List<&2, CidRow>) -> String:
     case Nil{}: ""
     case +row <> rest:
       match row:
-        case CidRow{cid, key, arity}: String.concat(["#define CID_", U32.show(cid), " ", U32.show(cid), "\n", cid_defines(rest)])
+        case CidRow{cid, key, arity, _}: String.concat(["#define CID_", U32.show(cid), " ", U32.show(cid), "\n", cid_defines(rest)])
 
 def fid_defines(rows: List<&2, SegText>) -> String:
   match rows:
@@ -2581,7 +2734,7 @@ def hot_text(hot: Bool) -> String:
 
 def blk_shr_text(plan: Plan) -> String:
   match plan:
-    case Plan{sharing, cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, _, _}:
       array_shared_text(Sharing.array_shared(sharing))
 
 def array_shared_text(shared: Bool) -> String:
@@ -2696,8 +2849,9 @@ def runtime_defines(+entries: List<&2, Entry>) -> String:
 
 def tables_part(plan: Plan, +rows: List<&2, SegText>, regs: Nat) -> Part:
   match plan:
-    case Plan{+cids, cid_macros, fid_macros, +entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
+    case Plan{+cids, cid_macros, fid_macros, +entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, _, _}:
       PartOk{String.concat([
+        main_suppress(library),
         part_text(runtime_cid_aliases(cids)),
         cid_defines(cids),
         fid_defines(rows),
@@ -2707,11 +2861,21 @@ def tables_part(plan: Plan, +rows: List<&2, SegText>, regs: Nat) -> Part:
         "#define STAT_LEN 0\n\n",
         wl_macros(regs), "\n",
         "#define WL_TABLE ", wl_table_text(rows, entries), "\n",
-        "#define MAIN_FID FID_", U32.show(rt_entry(entries, 1n)), "\n",
+        "#define MAIN_FID FID_", U32.show(main_fid_index(library, entries)), "\n",
         "#define MAIN_PURE ", main_pure_text(main_pure), "\n",
         "#define BLK_SHR ", blk_shr_text(plan), "\n\n",
         "#if !DEVICE\nstatic const u32 SHOW_DESC[] = { ", show_desc, " };\nstatic const char* SHOW_NAMES[] = { ", show_names, " };\n#endif\n\n"
       ])}
+
+def main_suppress(library: Bool) -> String:
+  match library:
+    case True{}: "#define main bend_library_unused_main\n"
+    case False{}: ""
+
+def main_fid_index(library: Bool, entries: List<&2, Entry>) -> U32:
+  match library:
+    case True{}: rt_entry(entries, 6n)
+    case False{}: rt_entry(entries, 1n)
 
 def main_pure_text(pure: Bool) -> String:
   match pure:
@@ -2774,13 +2938,16 @@ def helper_core() -> String:
 
 def requests_part(plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
-      requests_finish(requests_check(imports, fkeys, declarations, constructors, cids, by_code, by_key, by_foreign, by_native))
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, _, _}:
+      requests_finish(requests_check(imports, fkeys, declarations, constructors, cids, by_code, by_key, by_foreign, by_native), library, exports, declarations, by_code, by_key, by_foreign, by_native, entries)
 
-def requests_finish(part: Part) -> Part:
+def requests_finish(part: Part, library: Bool, exports: List<&2, BIR.Export>, +declarations: List<&2, BIR.Declaration>, +by_code: Map<&2, U32>, +by_key: Map<&2, U32>, +by_foreign: Map<&2, U32>, +by_native: Map<&2, U32>, +entries: List<&2, Entry>) -> Part:
   match part:
     case PartFail{message}: PartFail{message}
-    case PartOk{text}: PartOk{String.concat([text, "static Term bend_text(Env e, const char* p, u64 n) {\n  return io_str(e, p, n);\n}\n"])}
+    case PartOk{text}:
+      match export_rows(exports, declarations, by_code, by_key, by_foreign, by_native, entries):
+        case None{}: PartFail{"a library export names no callable, or its checked parameter count disagrees with its entry"}
+        case Some{rows}: PartOk{String.concat([text, "static Term bend_text(Env e, const char* p, u64 n) {\n  return io_str(e, p, n);\n}\n", exports_c(library, rows)])}
 
 def requests_check(+imports: List<&2, CImport>, fkeys: List<&2, String>, +declarations: List<&2, BIR.Declaration>, constructors: List<&2, BIR.ConstructorLayout>, cids: List<&2, CidRow>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>) -> Part:
   match requests_uncovered(fkeys, imports, declarations):
@@ -2847,7 +3014,7 @@ def cid_keys(cids: List<&2, CidRow>) -> List<&2, String>:
     case Nil{}: Nil{}
     case +row <> rest:
       match row:
-        case CidRow{_, key, _}: key <> cid_keys(rest)
+        case CidRow{_, key, _, _}: key <> cid_keys(rest)
 
 def fid_keys(declarations: List<&2, BIR.Declaration>) -> List<&2, String>:
   match declarations:
@@ -2917,7 +3084,7 @@ def cid_exact_each(cids: List<&2, CidRow>, +acc: Map<&2, String>) -> Map<&2, Str
     case Nil{}: acc
     case +row <> rest:
       match row:
-        case CidRow{cid, key, _}: cid_exact_each(rest, Map.set(&2, String, acc, key, cid_symbol(cid)))
+        case CidRow{cid, key, _, _}: cid_exact_each(rest, Map.set(&2, String, acc, key, cid_symbol(cid)))
 
 # Exactly as comp.ts c_ids: a source names `namespace:key` first, then the bare
 # authoritative key. No suffix, case or segment guessing.
@@ -2971,7 +3138,7 @@ def macro_collision_rows(+cids: List<&2, CidRow>, seen: Map<&2, String>) -> Mayb
     case Nil{}: None{}
     case +row <> rest:
       match row:
-        case CidRow{cid, key, _}: macro_collision_one(key, cid_symbol(cid), cids, seen, rest)
+        case CidRow{cid, key, _, _}: macro_collision_one(key, cid_symbol(cid), cids, seen, rest)
 
 def macro_collision_one(+key: String, +macro: String, cids: List<&2, CidRow>, +seen: Map<&2, String>, +rest: List<&2, CidRow>) -> Maybe<&2, String>:
   match IndexLookup.find(String, seen, macro):
@@ -2992,7 +3159,7 @@ def emit(program: BIR.Program, runtime: String, imports: List<&2, CImport>) -> E
 
 def render(+plan: Plan, runtime: String) -> EmitResult:
   match plan:
-    case Plan{+cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
+    case Plan{+cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, _, _}:
       match macro_collision_cids(cids):
         case Some{message}: EmitFailure{message}
         case None{}: render_parts(plan, runtime, cid_exact_map(cids), fid_exact_map(declarations, by_code, by_key, by_foreign, by_native))
