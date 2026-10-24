@@ -156,43 +156,6 @@ def part_require(parts: List<&2, Part>) -> Maybe<&2, String>:
 # underscore and a literal underscore doubles, so `foo.bar` and `foo_bar` never
 # merge. The runtime's own spellings (Clo~apply, IO~emit, SNil, SCon) are
 # preserved exactly. No unique-suffix guessing: a clash would be a bug here.
-def ident_char(char: Char) -> Char:
-  match char:
-    case '_': '~'
-    case _: ident_alpha(Bool.or(Char.is_alpha(char), Char.is_digit(char)), char)
-
-def ident_alpha(valid: Bool, char: Char) -> Char:
-  match valid:
-    case True{}: char
-    case False{}: '_'
-
-def clean(name: String) -> String:
-  String.from_list(ident_chars(String.to_list(name)))
-
-def ident_chars(chars: List<&2, Char>) -> List<&2, Char>:
-  match chars:
-    case Nil{}: Nil{}
-    case +char <> rest: ident_char(char) <> ident_chars(rest)
-
-def c_macro_text(mapped: String) -> String:
-  String.from_list(c_macro_chars(String.to_list(mapped)))
-
-def c_macro_chars(chars: List<&2, Char>) -> List<&2, Char>:
-  match chars:
-    case Nil{}: Nil{}
-    case +char <> rest: c_macro_char(char) <> c_macro_chars(rest)
-
-def c_macro_char(char: Char) -> List<&2, Char>:
-  match char:
-    case '~': ['_', '_']
-    case _: [char]
-
-def cid_macro(name: String) -> String:
-  String.append("CID_", String.to_upper(c_macro_text(clean(name))))
-
-def fid_macro(name: String) -> String:
-  String.append("FID_", String.to_upper(c_macro_text(clean(name))))
-
 def c_escape_char(char: Char) -> String:
   match char:
     case '\"': "\\\""
@@ -489,13 +452,70 @@ def cid_c(short: String, cids: List<&2, CidRow>) -> Part:
 def cid_macro_map(cids: List<&2, CidRow>) -> Map<&2, String>:
   cid_macro_each(cids, Map.new(&2, String))
 
+# A CID symbol is its stable numeric id. Source keys are never turned into C
+# identifiers: exact keys live only in lookup/display/export strings.
+def cid_symbol(index: U32) -> String:
+  String.append("CID_", U32.show(index))
+
+def fid_symbol(index: U32) -> String:
+  String.append("FID_", U32.show(index))
+
+def fid_symbol_of(key: String, by_code: Map<&2, U32>, by_foreign: Map<&2, U32>) -> String:
+  match IndexLookup.find(U32, by_code, key):
+    case Some{index}: fid_symbol(index)
+    case None{}: fid_symbol(map_u32(by_foreign, key))
+
+# The regenerated runtime template still spells the fixed prelude constructors
+# symbolically (gen_c_runtime.ts maps CID(k)/FID(k) to CID_<UPPER(k)>). These
+# aliases are the only authoritative symbolic names: each resolves through its
+# exact program key and a missing key is a hard error, never a guessed name.
+def runtime_cid_alias(alias: String, key: String, cids: List<&2, CidRow>) -> Part:
+  match find_cid_row(key, cids):
+    case None{}: PartFail(cat(["the program has no `", key, "` constructor for the runtime symbol ", alias]))
+    case Some{row}:
+      match row:
+        case CidRow{cid, key, arity}: okp(cat(["#define ", alias, " ", cid_symbol(cid), "\n"]))
+
+def find_cid_row(key: String, cids: List<&2, CidRow>) -> Maybe<&2, CidRow>:
+  match cids:
+    case Nil{}: None{}
+    case +row <> rest:
+      match row:
+        case CidRow{_, key: known, _}: find_cid_row_one(String.eq(key, known), row, key, rest)
+
+def find_cid_row_one(same: Bool, row: CidRow, key: String, rest: List<&2, CidRow>) -> Maybe<&2, CidRow>:
+  match same:
+    case True{}: Some{row}
+    case False{}: find_cid_row(key, rest)
+
+def runtime_cid_aliases(cids: List<&2, CidRow>) -> Part:
+  part_join([
+    runtime_cid_alias("CID_TUPLE", "Tuple", cids),
+    runtime_cid_alias("CID_SNIL", "SNil", cids),
+    runtime_cid_alias("CID_SCON", "SCon", cids),
+    runtime_cid_alias("CID_WCON", "WCon", cids),
+    runtime_cid_alias("CID_EMIT", "Emit", cids),
+    runtime_cid_alias("CID_HALT", "Halt", cids),
+    runtime_cid_alias("CID_EXIT", "Exit", cids),
+    runtime_cid_alias("CID_FAIL", "Fail", cids),
+    runtime_cid_alias("CID_DONE", "Done", cids),
+    runtime_cid_alias("CID_READY", "Ready", cids),
+    runtime_cid_alias("CID_WAIT", "Wait", cids),
+    runtime_cid_alias("CID_NONE", "None", cids),
+    runtime_cid_alias("CID_SOME", "Some", cids)
+  ])
+
+def cid_of_row(row: CidRow) -> U32:
+  match row:
+    case CidRow{cid, key, arity}: cid
+
 def cid_macro_each(cids: List<&2, CidRow>, acc: Map<&2, String>) -> Map<&2, String>:
   match cids:
     case Nil{}: acc
     case +row <> rest:
       match row:
         case CidRow{_, key, _}:
-          cid_macro_each(rest, map_set_first(map_set_first(acc, key, cid_macro(key)), last_segment(key), cid_macro(key)))
+          cid_macro_each(rest, map_set_first(acc, key, cid_symbol(cid_of_row(row))))
 
 # ---------------------------------------------------------------------------
 # Entries
@@ -694,9 +714,9 @@ def fid_macros_declarations(declarations: List<&2, BIR.Declaration>, by_code: Ma
     case +item <> rest:
       match item:
         case BIR.FunctionDeclaration{key, code, parameters}:
-          fid_macros_declarations(rest, by_code, by_foreign, map_set_first(acc, key, String.append(fid_macro(key), "")))
+          fid_macros_declarations(rest, by_code, by_foreign, map_set_first(acc, key, fid_symbol_of(key, by_code, by_foreign)))
         case BIR.ForeignDeclaration{key, _, _, arity, _, _, _, _, _}:
-          fid_macros_declarations(rest, by_code, by_foreign, map_set_first(acc, key, fid_macro(key)))
+          fid_macros_declarations(rest, by_code, by_foreign, map_set_first(acc, key, fid_symbol_of(key, by_code, by_foreign)))
         case _: fid_macros_declarations(rest, by_code, by_foreign, acc)
 
 # ---------------------------------------------------------------------------
@@ -2051,7 +2071,7 @@ def entry_segment(entry: Entry) -> Part:
 
 def cid_define(row: CidRow) -> String:
   match row:
-    case CidRow{cid, key, arity}: cat(["#define ", cid_macro(key), " ", U32.show(cid), "\n"])
+    case CidRow{cid, key, arity}: cat(["#define ", cid_symbol(cid), " ", U32.show(cid), "\n"])
 
 def cid_defines(cids: List<&2, CidRow>) -> String:
   match cids:
@@ -2204,7 +2224,7 @@ def entry_segments(entries: List<&2, Entry>) -> Part:
 # ---------------------------------------------------------------------------
 
 def fid_define_at(key: String, index: U32) -> String:
-  cat(["#define ", fid_macro(key), " ", U32.show(index), "\n"])
+  cat(["#define ", fid_symbol(index), " ", U32.show(index), "\n"])
 
 def decl_fid_defines(declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>) -> String:
   match declarations:
@@ -2339,6 +2359,7 @@ def tables_render(plan: Plan, cids: List<&2, CidRow>, entries: List<&2, Entry>, 
     case PartFail{message}: PartFail{message}
     case PartOk{body_text}:
       PartOk{cat([
+        part_text(runtime_cid_aliases(cids)),
         cid_defines(cids),
         decl_fid_defines(declarations, by_code, by_key, by_foreign),
         runtime_defines(entries), "\n",
@@ -2522,12 +2543,12 @@ def cid_exact_each(cids: List<&2, CidRow>, acc: Map<&2, String>) -> Map<&2, Stri
     case Nil{}: acc
     case +row <> rest:
       match row:
-        case CidRow{_, key, _}: cid_exact_each(rest, Map.set(&2, String, acc, key, cid_macro(key)))
+        case CidRow{cid, key, _}: cid_exact_each(rest, Map.set(&2, String, acc, key, cid_symbol(cid)))
 
 # A short name is usable only when exactly one emitted key ends with it and no
 # key equals it, so Base's Con/Nil/Some/True can never shadow a user type.
-def fid_exact_map(declarations: List<&2, BIR.Declaration>) -> Map<&2, String>:
-  fid_exact_decl(declarations, fid_fixed(Map.new(&2, String)))
+def fid_exact_map(declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>) -> Map<&2, String>:
+  fid_exact_decl(declarations, fid_fixed(Map.new(&2, String)), by_code, by_foreign, by_native)
 
 def namespaced_map(exact: Map<&2, String>, keys: List<&2, String>, namespace: String) -> Map<&2, String>:
   namespaced_each(exact, keys, namespace)
@@ -2553,16 +2574,26 @@ def fid_fixed(acc: Map<&2, String>) -> Map<&2, String>:
 def fid_fixed_one(acc: Map<&2, String>) -> Map<&2, String>:
   map_set_first(acc, "IO~emit", "FID_IO_EMIT")
 
-def fid_exact_decl(declarations: List<&2, BIR.Declaration>, acc: Map<&2, String>) -> Map<&2, String>:
+def fid_exact_decl(declarations: List<&2, BIR.Declaration>, acc: Map<&2, String>, by_code: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>) -> Map<&2, String>:
   match declarations:
     case Nil{}: acc
     case +item <> rest:
       match item:
-        case BIR.FunctionDeclaration{key, code, parameters}: fid_exact_decl(rest, Map.set(&2, String, acc, key, fid_macro(key)))
-        case BIR.LazyDeclaration{key, body}: fid_exact_decl(rest, Map.set(&2, String, acc, key, fid_macro(key)))
-        case BIR.ForeignDeclaration{key, namespace, imported, arity, sources, quantities, span, parameter_types, result}: fid_exact_decl(rest, Map.set(&2, String, acc, key, fid_macro(key)))
-        case BIR.NativeDeclaration{key, primitive, quantities}: fid_exact_decl(rest, Map.set(&2, String, acc, key, fid_macro(key)))
-        case _: fid_exact_decl(rest, acc)
+        case BIR.FunctionDeclaration{key, code, parameters}: fid_exact_decl(rest, map_set_first(acc, key, fid_exact_symbol(key, by_code, by_foreign, by_native)), by_code, by_foreign, by_native)
+        case BIR.LazyDeclaration{key, body}: fid_exact_decl(rest, map_set_first(acc, key, fid_exact_symbol(key, by_code, by_foreign, by_native)), by_code, by_foreign, by_native)
+        case BIR.ForeignDeclaration{key, namespace, imported, arity, sources, quantities, span, parameter_types, result}: fid_exact_decl(rest, map_set_first(acc, key, fid_exact_symbol(key, by_code, by_foreign, by_native)), by_code, by_foreign, by_native)
+        case BIR.NativeDeclaration{key, primitive, quantities}: fid_exact_decl(rest, map_set_first(acc, key, fid_exact_symbol(key, by_code, by_foreign, by_native)), by_code, by_foreign, by_native)
+        case _: fid_exact_decl(rest, acc, by_code, by_foreign, by_native)
+
+def fid_exact_symbol(key: String, by_code: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>) -> String:
+  match IndexLookup.find(U32, by_code, key):
+    case Some{index}: fid_symbol(index)
+    case None{}: fid_native_symbol(key, by_foreign, by_native)
+
+def fid_native_symbol(key: String, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>) -> String:
+  match IndexLookup.find(U32, by_native, key):
+    case Some{index}: fid_symbol(index)
+    case None{}: fid_symbol(map_u32(by_foreign, key))
 
 def macro_collision_cids(cids: List<&2, CidRow>) -> Maybe<&2, String>:
   macro_collision_rows(cids, Map.new(&2, String))
@@ -2572,7 +2603,7 @@ def macro_collision_rows(cids: List<&2, CidRow>, seen: Map<&2, String>) -> Maybe
     case Nil{}: None{}
     case +row <> rest:
       match row:
-        case CidRow{_, key, _}: macro_collision_one(key, cid_macro(key), cids, seen, rest)
+        case CidRow{cid, key, _}: macro_collision_one(key, cid_symbol(cid), cids, seen, rest)
 
 def macro_collision_one(key: String, macro: String, cids: List<&2, CidRow>, seen: Map<&2, String>, rest: List<&2, CidRow>) -> Maybe<&2, String>:
   match IndexLookup.find(String, seen, macro):
@@ -2597,9 +2628,11 @@ def render(plan: Plan, runtime: String) -> EmitResult:
       render_checked(cids, declarations, plan, runtime)
 
 def render_checked(cids: List<&2, CidRow>, declarations: List<&2, BIR.Declaration>, plan: Plan, runtime: String) -> EmitResult:
-  match macro_collision_cids(cids):
-    case Some{message}: EmitFailure(message)
-    case None{}: render_parts(plan, runtime, cid_exact_map(cids), fid_exact_map(declarations))
+  match plan:
+    case Plan{by_code, by_foreign, by_native, declarations: plan_decls, cids: plan_cids, cid_macros, fid_macros, entries, by_key, stages, constructors, families, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
+      match macro_collision_cids(cids):
+        case Some{message}: EmitFailure(message)
+        case None{}: render_parts(plan, runtime, cid_exact_map(cids), fid_exact_map(plan_decls, by_code, by_foreign, by_native))
 
 def render_parts(plan: Plan, runtime: String, cid_map: Map<&2, String>, fid_map: Map<&2, String>) -> EmitResult:
   tables = tables_part(plan)
