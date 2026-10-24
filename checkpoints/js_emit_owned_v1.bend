@@ -1,2938 +1,7134 @@
 import Base
-import ../bend2/selfhost/ast.bend as AST
-import ../bend2/selfhost/path.bend as Path
-import ../bend2/selfhost/loaded_module.bend as Loader
+import ../bend2/selfhost/ast.bend as Ast
+import ../bend2/selfhost/checked_frontend.bend as Checked
+import ../bend2/selfhost/backend_ir.bend as BIR
+import ../bend2/selfhost/checker_arena.bend as Arena
+import ../bend2/selfhost/checker_ir.bend as IR
+import ../bend2/selfhost/scope_lookup.bend as Scope
 import ../bend2/selfhost/index_lookup.bend as IndexLookup
+import ../bend2/selfhost/path.bend as Path
 
 type EmitResult is Data:
   EmitSuccess{source: String}
-  EmitFailure{message: String, span: AST.SourceSpan}
-
-# A closure keeps dependent types in their declaration/lexical scope. Extending
-# an environment never rewrites (or accidentally captures) a signature.
-# Modules are the checker's elaborated output: law completion is not repeated
-# here. Telescope closures share the original AST instead of synthesizing
-# lambda/arrow nodes or substituting a whole dependent signature per argument.
-# Original owners, not inferred closures, are indexed once per emission. Value
-# and constructor hits use flat maps; only type owners need ordered fallback.
-# Module-local first owners still block later same-module declarations.
-type EmitConstructorOwner is Data:
-  EmitConstructorOwner{family: AST.TypeDecl, constructor: AST.ConstructorDecl}
-# Alias layouts share resolved namespaces, prefixes and metadata source across
-# every scope for a module. The path index is built once, with first-owner wins.
-type EmitAlias is Data:
-  EmitAlias{alias: String, prefix: String, namespace: String, length: Nat}
-# This shared layout records Base authority and exact operation identities.
-# Missing entries are negative results, not suffix-based fallbacks.
-type EmitAliases is Data:
-  EmitAliases{entries: List<&2, EmitAlias>, source: String, native: Bool, operations: Map<&2, String>}
-type EmitModuleIndex is Data:
-  EmitModuleIndex{namespace: String, imports: EmitAliases, values: Map<&2, AST.Definition>, constructors: Map<&2, EmitConstructorOwner>, types: Map<&2, List<&2, AST.TopLevel>>}
-type EmitCatalog is Data:
-  EmitCatalog{layouts: List<&2, EmitModuleIndex>, values: Map<&2, EmitModuleIndex>, constructors: Map<&2, EmitModuleIndex>, types: Map<&2, List<&2, EmitModuleIndex>>}
-type EmitScope is Data:
-  EmitScope{namespace: String, imports: EmitAliases, catalog: EmitCatalog}
-# Captures are self-recursive, not mutually recursive through EmitEnv/Binding.
-# Their parallel lists share the original environment tails; env_bind and
-# env_insert_binding extend all three lists together.
-type EmitClosure is Data:
-  EmitClosure{term: AST.SyntaxTerm, scope: EmitScope, names: List<&2, String>, types: List<&2, Maybe<&2, EmitClosure>>, values: List<&2, Maybe<&2, EmitClosure>>, depth: Nat}
-  EmitInferred{binders: List<&2, AST.TelescopeItem>, body: AST.SyntaxTerm, scope: EmitScope, names: List<&2, String>, types: List<&2, Maybe<&2, EmitClosure>>, values: List<&2, Maybe<&2, EmitClosure>>, depth: Nat}
-  EmitDeclared{binders: List<&2, AST.TelescopeItem>, result: AST.OptionalTerm, scope: EmitScope, names: List<&2, String>, types: List<&2, Maybe<&2, EmitClosure>>, values: List<&2, Maybe<&2, EmitClosure>>, depth: Nat}
-  EmitDefinition{key: String, binders: List<&2, AST.TelescopeItem>, body: AST.SyntaxTerm, scope: EmitScope, names: List<&2, String>, types: List<&2, Maybe<&2, EmitClosure>>, values: List<&2, Maybe<&2, EmitClosure>>, depth: Nat}
-type EmitEnv is Data:
-  EmitEnv{scope: EmitScope, names: List<&2, String>, types: List<&2, Maybe<&2, EmitClosure>>, values: List<&2, Maybe<&2, EmitClosure>>, depth: Nat}
-type EmitBinding is Data:
-  EmitBinding{name: String, ty: Maybe<&2, EmitClosure>, value: Maybe<&2, EmitClosure>}
-type EmitPatternResult is Data:
-  EmitMatched{env: EmitEnv}
-  EmitDifferent{}
-  EmitNeutral{}
-type EmitConstructor is Data:
-  EmitConstructor{key: String, family: String, params: List<&2, AST.TelescopeItem>, fields: List<&2, AST.TelescopeItem>, env: EmitEnv}
-type EmitTypeDefinition is Data:
-  EmitTypeDefinition{key: String, binders: List<&2, AST.TelescopeItem>, body: AST.SyntaxTerm, env: EmitEnv}
-type EmitTypeNeeded is Data:
-  EmitTypeNeeded{definitions: List<&2, EmitTypeDefinition>, seen: Map<&2, Bool>}
-type EmitSwitchRow is Data:
-  EmitSwitchRow{tag: String, term: AST.SyntaxTerm}
-type EmitNamed is Data:
-  EmitNamed{key: String, definition: AST.Definition, env: EmitEnv}
-  EmitNamedNative{key: String, binders: List<&2, AST.TelescopeItem>, env: EmitEnv}
-  EmitNamedBlocked{}
-type EmitPrimitive is Data:
-  EmitPrimitive{parameters: List<&2, String>, body: String}
-def js_value_indices(modules: List<&2, Loader.LoadedModule>) -> EmitCatalog:
-  js_catalog(js_value_indices_at(modules, js_namespace_indices(modules), modules))
-def js_catalog(+layouts: List<&2, EmitModuleIndex>) -> EmitCatalog:
-  js_catalog_at(layouts, EmitCatalog{layouts, MTip{}, MTip{}, MTip{}})
-def js_catalog_at(remaining: List<&2, EmitModuleIndex>, catalog: EmitCatalog) -> EmitCatalog:
-  match remaining:
-    case Nil{}: catalog
-    case +layout <> rest: js_catalog_module(layout, js_catalog_at(rest, catalog))
-def js_catalog_module(+layout: EmitModuleIndex, catalog: EmitCatalog) -> EmitCatalog:
-  match layout catalog:
-    case EmitModuleIndex{_, _, values, constructors, types} EmitCatalog{layouts, value_owners, constructor_owners, type_owners}:
-      EmitCatalog{layouts, js_catalog_values(values, layout, value_owners), js_catalog_constructors(constructors, layout, constructor_owners), js_catalog_types(types, layout, type_owners)}
-def js_catalog_values(entries: Map<&2, AST.Definition>, layout: EmitModuleIndex, owners: Map<&2, EmitModuleIndex>) -> Map<&2, EmitModuleIndex>:
-  match entries:
-    case MTip{}: owners
-    case MLeaf{key, AST.Definition{_, _, _, AST.DefTerm{_}, _, _}}: Map.set(&2, EmitModuleIndex, owners, key, layout)
-    case MLeaf{_, _}: owners
-    case MNode{_, lo, hi}: js_catalog_values(lo, layout, js_catalog_values(hi, layout, owners))
-def js_catalog_constructors(entries: Map<&2, EmitConstructorOwner>, layout: EmitModuleIndex, owners: Map<&2, EmitModuleIndex>) -> Map<&2, EmitModuleIndex>:
-  match entries:
-    case MTip{}: owners
-    case MLeaf{key, _}: Map.set(&2, EmitModuleIndex, owners, key, layout)
-    case MNode{_, lo, hi}: js_catalog_constructors(lo, layout, js_catalog_constructors(hi, layout, owners))
-def js_catalog_types(entries: Map<&2, List<&2, AST.TopLevel>>, layout: EmitModuleIndex, owners: Map<&2, List<&2, EmitModuleIndex>>) -> Map<&2, List<&2, EmitModuleIndex>>:
-  match entries:
-    case MTip{}: owners
-    case MLeaf{key, _}: js_catalog_type_insert(IndexLookup.find(List<&2, EmitModuleIndex>, owners, key), key, layout, owners)
-    case MNode{_, lo, hi}: js_catalog_types(lo, layout, js_catalog_types(hi, layout, owners))
-def js_catalog_type_insert(found: Maybe<&2, List<&2, EmitModuleIndex>>, key: String, layout: EmitModuleIndex, owners: Map<&2, List<&2, EmitModuleIndex>>) -> Map<&2, List<&2, EmitModuleIndex>>:
-  match found:
-    case None{}: Map.set(&2, List<&2, EmitModuleIndex>, owners, key, [layout])
-    case Some{rest}: Map.set(&2, List<&2, EmitModuleIndex>, owners, key, layout <> rest)
-def js_catalog_layouts(catalog: EmitCatalog) -> List<&2, EmitModuleIndex>:
-  match catalog:
-    case EmitCatalog{layouts, _, _, _}: layouts
-def js_namespace_indices(modules: List<&2, Loader.LoadedModule>) -> Map<&2, String>:
-  match modules:
-    case Nil{}: MTip{}
-    case Loader.LoadedModule{namespace, AST.Module{path, _, _}} <> rest:
-      Map.set(&2, String, js_namespace_indices(rest), Path.normalize(path), namespace)
-def js_value_indices_at(modules: List<&2, Loader.LoadedModule>, paths: Map<&2, String>, all_modules: List<&2, Loader.LoadedModule>) -> List<&2, EmitModuleIndex>:
-  match modules:
-    case Nil{}: Nil{}
-    case Loader.LoadedModule{namespace, AST.Module{path, imports, declarations}} <> rest:
-      native = js_base_source(path, all_modules)
-      EmitModuleIndex{namespace, js_resolved_aliases(js_resolved_alias_entries(imports, paths), native, js_native_operations(native, namespace, declarations)), js_value_declarations(namespace, declarations), js_constructor_indices(namespace, declarations), js_type_indices(namespace, declarations)} <> js_value_indices_at(rest, paths, all_modules)
-def js_value_declarations(namespace: String, declarations: List<&2, AST.TopLevel>) -> Map<&2, AST.Definition>:
-  match declarations:
-    case Nil{}: MTip{}
-    case AST.DefTop{definition} <> rest:
-      js_value_declaration(definition, namespace, js_value_declarations(namespace, rest))
-    case _ <> rest: js_value_declarations(namespace, rest)
-def js_value_declaration(+definition: AST.Definition, namespace: String, index: Map<&2, AST.Definition>) -> Map<&2, AST.Definition>:
-  match definition:
-    case AST.Definition{key, _, _, _, _, _}:
-      Map.set(&2, AST.Definition, index, qualify(namespace, key), definition)
-def js_constructor_indices(namespace: String, declarations: List<&2, AST.TopLevel>) -> Map<&2, EmitConstructorOwner>:
-  match declarations:
-    case Nil{}: MTip{}
-    case AST.TypeTop{family} <> rest:
-      js_constructor_index_family(family, namespace, js_constructor_indices(namespace, rest))
-    case _ <> rest: js_constructor_indices(namespace, rest)
-def js_constructor_index_family(+family: AST.TypeDecl, namespace: String, index: Map<&2, EmitConstructorOwner>) -> Map<&2, EmitConstructorOwner>:
-  match family:
-    case AST.TypeDecl{_, _, _, constructors, _}:
-      js_constructor_index_items(constructors, family, namespace, index)
-def js_constructor_index_items(constructors: List<&2, AST.ConstructorDecl>, +family: AST.TypeDecl, namespace: String, index: Map<&2, EmitConstructorOwner>) -> Map<&2, EmitConstructorOwner>:
-  match constructors:
-    case Nil{}: index
-    case +constructor <> rest:
-      match constructor:
-        case AST.Constructor{key, _, _}:
-          Map.set(&2, EmitConstructorOwner, js_constructor_index_items(rest, family, namespace, index), qualify(namespace, key), EmitConstructorOwner{family, constructor})
-
-# Same-key declarations retain source order. Ordinary laws can fall through,
-# while a matching definition or native law still blocks later declarations.
-def js_type_indices(namespace: String, declarations: List<&2, AST.TopLevel>) -> Map<&2, List<&2, AST.TopLevel>>:
-  match declarations:
-    case Nil{}: MTip{}
-    case +declaration <> rest:
-      js_type_index_declaration(declaration, namespace, js_type_indices(namespace, rest))
-def js_type_index_declaration(+declaration: AST.TopLevel, namespace: String, index: Map<&2, List<&2, AST.TopLevel>>) -> Map<&2, List<&2, AST.TopLevel>>:
-  match declaration:
-    case AST.DefTop{AST.Definition{key, _, _, _, _, _}}:
-      js_type_index_insert(qualify(namespace, key), declaration, index)
-    case AST.TypeTop{AST.TypeDecl{key, _, _, _, _}}:
-      js_type_index_insert(qualify(namespace, key), declaration, index)
-    case AST.LawTop{AST.LawDecl{key, _, _, _}}:
-      js_type_index_insert(qualify(namespace, key), declaration, index)
-def js_type_index_insert(key: String, declaration: AST.TopLevel, +index: Map<&2, List<&2, AST.TopLevel>>) -> Map<&2, List<&2, AST.TopLevel>>:
-  js_type_index_found(IndexLookup.find(List<&2, AST.TopLevel>, index, key), key, declaration, index)
-def js_type_index_found(found: Maybe<&2, List<&2, AST.TopLevel>>, key: String, declaration: AST.TopLevel, index: Map<&2, List<&2, AST.TopLevel>>) -> Map<&2, List<&2, AST.TopLevel>>:
-  match found:
-    case None{}: Map.set(&2, List<&2, AST.TopLevel>, index, key, [declaration])
-    case Some{rest}: Map.set(&2, List<&2, AST.TopLevel>, index, key, declaration <> rest)
-
-def js_escape_char(char: Char) -> String:
-  match char:
-    case '\"': "\\\""
-    case '\\': "\\\\"
-    case '\n': "\\n"
-    case '\r': "\\r"
-    case '\t': "\\t"
-    case '\u{0}': "\\u0000"
-    case _: String.from_list([char])
-
-def js_comma_prefix(first: Bool) -> String:
-  match first:
-    case True{}: ""
-    case False{}: ","
-
-def js_quote_chars(chars: List<&2, Char>, acc: String) -> String:
-  match chars:
-    case Nil{}: String.append(acc, "\"")
-    case +char <> rest:
-      escaped = js_escape_char(char)
-      js_quote_chars(rest, String.append(acc, escaped))
-
-def js_quote(text: String) -> String:
-  js_quote_chars(String.to_list(text), "\"")
-
-# Injective ASCII identifiers for statically resolved entries. Dollar and every
-# non-alphanumeric/non-underscore scalar are escaped, including separators.
-def js_named_identifier_char(plain: Bool, char: Char, code: U32) -> String:
-  match plain:
-    case True{}: Char.show(char)
-    case False{}: String.append("$", String.append(U32.show(code), "$"))
-def js_named_identifier_chars(text: String, acc: String) -> String:
-  match text:
-    case SNil{}: acc
-    case SCon{+char, rest}:
-      code = Char.to_u32(char)
-      plain = Bool.or(U32.is_eq(code, 95), Bool.or(Bool.and(U32.is_ge(code, 48), U32.is_le(code, 57)), Bool.or(Bool.and(U32.is_ge(code, 65), U32.is_le(code, 90)), Bool.and(U32.is_ge(code, 97), U32.is_le(code, 122)))))
-      js_named_identifier_chars(rest, String.append(acc, js_named_identifier_char(plain, char, code)))
-def js_named_identifier(key: String) -> String:
-  js_named_identifier_chars(key, "$u$")
-
-
-def env_binding(env: EmitEnv, index: Nat) -> Maybe<&2, EmitBinding>:
-  match env:
-    case EmitEnv{_, names, types, values, _}: env_binding_at(names, types, values, index)
-def env_binding_at(names: List<&2, String>, types: List<&2, Maybe<&2, EmitClosure>>, values: List<&2, Maybe<&2, EmitClosure>>, index: Nat) -> Maybe<&2, EmitBinding>:
-  match names types values:
-    case +name <> more_names +ty <> more_types +value <> more_values:
-      match index:
-        case 0n: Some{EmitBinding{name, ty, value}}
-        case _: env_binding_at(more_names, more_types, more_values, (index - 1n : Nat))
-    case _ _ _: None{}
-# Computed lookups enter typed helpers so native matches inspect parameters.
-def env_at_binding(binding: Maybe<&2, EmitBinding>) -> String:
-  match binding:
-    case None{}: "undefined"
-    case Some{EmitBinding{name, _, _}}: name
-def env_at(env: EmitEnv, index: Nat) -> String:
-  env_at_binding(env_binding(env, index))
-def env_bind(name: String, ty: Maybe<&2, EmitClosure>, value: Maybe<&2, EmitClosure>, env: EmitEnv) -> EmitEnv:
-  match env:
-    case EmitEnv{scope, names, types, values, depth}: EmitEnv{scope, name <> names, ty <> types, value <> values, (depth + 1n : Nat)}
-def env_push(name: String, env: EmitEnv) -> EmitEnv:
-  env_bind(name, None{}, None{}, env)
-def js_close(term: AST.SyntaxTerm, env: EmitEnv) -> EmitClosure:
-  match env:
-    case EmitEnv{scope, names, types, values, depth}: EmitClosure{term, scope, names, types, values, depth}
-def js_close_inferred(binders: List<&2, AST.TelescopeItem>, body: AST.SyntaxTerm, env: EmitEnv) -> EmitClosure:
-  match env:
-    case EmitEnv{scope, names, types, values, depth}: EmitInferred{binders, body, scope, names, types, values, depth}
-def js_close_declared(binders: List<&2, AST.TelescopeItem>, result: AST.OptionalTerm, env: EmitEnv) -> EmitClosure:
-  match env:
-    case EmitEnv{scope, names, types, values, depth}: EmitDeclared{binders, result, scope, names, types, values, depth}
-def js_close_definition(key: String, binders: List<&2, AST.TelescopeItem>, body: AST.SyntaxTerm, env: EmitEnv) -> EmitClosure:
-  match env:
-    case EmitEnv{scope, names, types, values, depth}: EmitDefinition{key, binders, body, scope, names, types, values, depth}
-def js_closure_env(value: EmitClosure) -> EmitEnv:
-  match value:
-    case EmitClosure{_, scope, names, types, values, depth}: EmitEnv{scope, names, types, values, depth}
-    case EmitInferred{_, _, scope, names, types, values, depth}: EmitEnv{scope, names, types, values, depth}
-    case EmitDeclared{_, _, scope, names, types, values, depth}: EmitEnv{scope, names, types, values, depth}
-    case EmitDefinition{_, _, _, scope, names, types, values, depth}: EmitEnv{scope, names, types, values, depth}
-
-
-# Resolve aliases by the same longest-prefix rule as the emitted $key.
-def js_scope_key(key: String, scope: EmitScope) -> String:
-  match scope:
-    case EmitScope{namespace, EmitAliases{entries, _, _, _}, _}:
-      js_scope_alias(key, entries, qualify(namespace, key), 0n)
-def js_scope_alias(key: String, imports: List<&2, EmitAlias>, found: String, length: Nat) -> String:
-  match imports:
-    case Nil{}: found
-    case EmitAlias{_, prefix, namespace, prefix_length} <> rest:
-      js_scope_alias_match(Bool.and(String.starts_with(key, prefix), Nat.is_gt(prefix_length, length)), key, prefix_length, namespace, rest, found, length)
-def js_scope_alias_match(matches: Bool, key: String, prefix_length: Nat, namespace: String, rest: List<&2, EmitAlias>, found: String, length: Nat) -> String:
-  match matches:
-    case False{}: js_scope_alias(key, rest, found, length)
-    case True{}:
-      js_scope_alias(key, rest, qualify(namespace, String.drop(key, prefix_length)), prefix_length)
-
-def js_global(key: String, env: EmitEnv) -> Maybe<&2, EmitClosure>:
-  match env:
-    case EmitEnv{scope, _, _, _, _}:
-      match scope:
-        case EmitScope{_, _, catalog}:
-          js_global_fallback(js_global_lookup(js_scope_key(key, scope), catalog), key, catalog)
-def js_global_fallback(found: Maybe<&2, EmitClosure>, key: String, catalog: EmitCatalog) -> Maybe<&2, EmitClosure>:
-  match found:
-    case Some{_}: found
-    case None{}: js_global_lookup(key, catalog)
-def js_global_lookup(key: String, +catalog: EmitCatalog) -> Maybe<&2, EmitClosure>:
-  match catalog:
-    case EmitCatalog{_, owners, _, _}:
-      js_global_owner(IndexLookup.find(EmitModuleIndex, owners, key), key, catalog)
-def js_global_owner(found: Maybe<&2, EmitModuleIndex>, key: String, catalog: EmitCatalog) -> Maybe<&2, EmitClosure>:
-  match found:
-    case None{}: None{}
-    case Some{+layout}:
-      match layout:
-        case EmitModuleIndex{_, _, values, _, _}:
-          js_global_definition(IndexLookup.find(AST.Definition, values, key), key, js_owner_env(layout, catalog))
-def js_owner_env(layout: EmitModuleIndex, catalog: EmitCatalog) -> EmitEnv:
-  match layout:
-    case EmitModuleIndex{namespace, imports, _, _, _}:
-      EmitEnv{EmitScope{namespace, imports, catalog}, Nil{}, Nil{}, Nil{}, 0n}
-def js_global_definition(found: Maybe<&2, AST.Definition>, key: String, env: EmitEnv) -> Maybe<&2, EmitClosure>:
-  match found:
-    case Some{AST.Definition{_, binders, _, AST.DefTerm{term}, _, _}}:
-      Some{js_close_definition(key, binders, term, env)}
-    case _: None{}
-
-def js_global_type(key: String, env: EmitEnv) -> Maybe<&2, EmitClosure>:
-  match env:
-    case EmitEnv{scope, _, _, _, _}:
-      match scope:
-        case EmitScope{_, _, catalog}:
-          js_global_type_fallback(js_global_type_lookup(js_scope_key(key, scope), catalog), key, catalog)
-def js_global_type_fallback(found: Maybe<&2, EmitClosure>, key: String, catalog: EmitCatalog) -> Maybe<&2, EmitClosure>:
-  match found:
-    case Some{_}: found
-    case None{}: js_global_type_lookup(key, catalog)
-def js_global_type_lookup(key: String, +catalog: EmitCatalog) -> Maybe<&2, EmitClosure>:
-  match catalog:
-    case EmitCatalog{_, _, _, owners}:
-      js_global_type_owners(IndexLookup.find(List<&2, EmitModuleIndex>, owners, key), key, catalog)
-def js_global_type_owners(found: Maybe<&2, List<&2, EmitModuleIndex>>, key: String, catalog: EmitCatalog) -> Maybe<&2, EmitClosure>:
-  match found:
-    case None{}: None{}
-    case Some{owners}: js_global_type_modules(key, owners, catalog)
-def js_global_type_modules(key: String, rest: List<&2, EmitModuleIndex>, catalog: EmitCatalog) -> Maybe<&2, EmitClosure>:
-  match rest:
-    case Nil{}: None{}
-    case EmitModuleIndex{namespace, imports, _, _, types} <> more:
-      env = EmitEnv{EmitScope{namespace, imports, catalog}, Nil{}, Nil{}, Nil{}, 0n}
-      js_global_type_next(js_global_type_index(IndexLookup.find(List<&2, AST.TopLevel>, types, key), env), key, more, catalog)
-
-def js_global_type_next(found: Maybe<&2, EmitClosure>, key: String, rest: List<&2, EmitModuleIndex>, catalog: EmitCatalog) -> Maybe<&2, EmitClosure>:
-  match found:
-    case Some{_}: found
-    case None{}: js_global_type_modules(key, rest, catalog)
-
-def js_global_type_index(found: Maybe<&2, List<&2, AST.TopLevel>>, env: EmitEnv) -> Maybe<&2, EmitClosure>:
-  match found:
-    case None{}: None{}
-    case Some{declarations}: js_global_type_decls(declarations, env)
-
-def js_global_type_decls(declarations: List<&2, AST.TopLevel>, env: EmitEnv) -> Maybe<&2, EmitClosure>:
-  match declarations:
-    case Nil{}: None{}
-    case AST.DefTop{AST.Definition{_, binders, result, body, _, _}} <> _:
-      js_global_type_definition(binders, result, body, env)
-    case AST.TypeTop{AST.TypeDecl{_, params, kind, _, _}} <> _:
-      Some{js_close_declared(params, AST.SomeTerm{kind}, env)}
-    case AST.LawTop{AST.LawDecl{name, clauses, body, _}} <> rest:
-      js_global_native_law_operation(js_native_operation(name, env), clauses, body, rest, env)
-
-def js_global_type_definition(binders: List<&2, AST.TelescopeItem>, result: AST.OptionalTerm, body: AST.DefBody, env: EmitEnv) -> Maybe<&2, EmitClosure>:
-  match result:
-    case AST.SomeTerm{_}: Some{js_close_declared(binders, result, env)}
-    case AST.NoTerm{}:
-      match body:
-        case AST.DefTerm{term}: js_type_definition(binders, term, env)
-        case AST.DefImports{_}: None{}
-
-def js_global_native_law_operation(operation: Maybe<&2, String>, clauses: List<&2, AST.Clause>, body: AST.SyntaxTerm, rest: List<&2, AST.TopLevel>, env: EmitEnv) -> Maybe<&2, EmitClosure>:
-  match operation:
-    case Some{_}: js_native_law_type(js_native_law_binders(clauses, 0n), body, env)
-    case None{}: js_global_type_decls(rest, env)
-
-def js_native_law_type(binders: Maybe<&2, List<&2, AST.TelescopeItem>>, body: AST.SyntaxTerm, env: EmitEnv) -> Maybe<&2, EmitClosure>:
-  match binders:
-    case Some{items}: Some{js_close_declared(items, AST.SomeTerm{body}, env)}
-    case None{}: None{}
-def js_native_law_binders(clauses: List<&2, AST.Clause>, index: Nat) -> Maybe<&2, List<&2, AST.TelescopeItem>>:
-  match clauses:
-    case Nil{}: Some{Nil{}}
-    case AST.ClauseFor{True{}, quantity, key, ty, None{}, span} <> rest:
-      js_native_law_binder(AST.Binder{quantity, key, index, ty, span}, js_native_law_binders(rest, (index + 1n : Nat)))
-    case _ <> _: None{}
-def js_native_law_binder(binder: AST.TelescopeItem, rest: Maybe<&2, List<&2, AST.TelescopeItem>>) -> Maybe<&2, List<&2, AST.TelescopeItem>>:
-  match rest:
-    case Some{items}: Some{binder <> items}
-    case None{}: None{}
-def js_type_definition(binders: List<&2, AST.TelescopeItem>, term: AST.SyntaxTerm, env: EmitEnv) -> Maybe<&2, EmitClosure>:
-  match binders:
-    case Nil{}: js_type(term, env)
-    case _: Some{js_close_inferred(binders, term, env)}
-
-# Only type computation is reduced; emitted arguments are never evaluated here.
-def js_reduce_env(value: EmitClosure, env: EmitEnv) -> EmitClosure:
-  match value:
-    case EmitDefinition{_, Nil{}, body, _, _, _, _, _}: js_reduce(js_close(body, env))
-    case EmitDefinition{_, _, _, _, _, _, _, _}: value
-    case EmitDeclared{Nil{}, AST.SomeTerm{result}, _, _, _, _, _}: js_reduce(js_close(result, env))
-    case EmitDeclared{_, _, _, _, _, _, _}: value
-    case EmitInferred{Nil{}, body, _, _, _, _, _}: js_reduce_inferred(js_type(body, env), value)
-    case EmitInferred{_, _, _, _, _, _, _}: value
-    case EmitClosure{term, _, _, _, _, _}:
-      match term:
-        case AST.TermAnn{inner, _, _}: js_reduce(js_close(inner, env))
-        case AST.TermVar{_, index, _}: js_reduce_binding(env_binding(env, index), value)
-        case AST.TermRef{key, _}: js_reduce_global(js_global(key, env), value)
-        case AST.TermApp{fn, arg, _}: js_reduce_app(js_reduce(js_close(fn, env)), js_close(arg, env), value)
-        case AST.TermSub{index, inner, body, _}: js_reduce(js_close(body, env_insert_binding(env, index, EmitBinding{"null", js_type(inner, env), Some{js_close(inner, env)}})))
-        case AST.TermLet{_, _, _, values, body, _}: js_reduce(js_close(body, js_value_env(values, env)))
-        case AST.BodyReply{inner, _}: js_reduce(js_close(inner, env))
-        case AST.BodyLocal{patterns, _, values, body, _}:
-          js_reduce_local(js_reduce_patterns(patterns, js_closure_terms(values, env), env), body, value)
-        case AST.BodyMatch{scrutinees, cases, _}:
-          js_reduce_cases(cases, js_closure_terms(scrutinees, env), env, value)
-        case AST.TermRewrite{_, _, body, _}: js_reduce(js_close(body, env))
-        case _: value
-def js_reduce(value: EmitClosure) -> EmitClosure:
-  js_reduce_env(value, js_closure_env(value))
-def js_reduce_inferred(found: Maybe<&2, EmitClosure>, original: EmitClosure) -> EmitClosure:
-  match found:
-    case Some{ty}: js_reduce(ty)
-    case None{}: original
-def js_reduce_binding(found: Maybe<&2, EmitBinding>, original: EmitClosure) -> EmitClosure:
-  match found:
-    case Some{EmitBinding{_, _, Some{value}}}: js_reduce(value)
-    case _: original
-def js_reduce_global(found: Maybe<&2, EmitClosure>, original: EmitClosure) -> EmitClosure:
-  match found:
-    case None{}: original
-    case Some{value}: js_reduce(value)
-def js_reduce_app_env(fn: EmitClosure, arg: EmitClosure, original: EmitClosure, env: EmitEnv) -> EmitClosure:
-  match fn:
-    case EmitClosure{AST.TermLam{_, _, _, body, _}, _, _, _, _, _}:
-      js_reduce(js_close(body, env_bind("null", None{}, Some{arg}, env)))
-    case EmitDefinition{key, AST.Binder{_, _, _, domain, _} <> rest, body, _, _, _, _, _}:
-      js_reduce(js_close_definition(key, rest, body, env_bind("null", Some{js_close(domain, env)}, Some{arg}, env)))
-    case _: original
-def js_reduce_app(fn: EmitClosure, arg: EmitClosure, original: EmitClosure) -> EmitClosure:
-  js_reduce_app_env(fn, arg, original, js_closure_env(fn))
-def js_reduce_patterns(patterns: List<&2, AST.SyntaxPattern>, values: List<&2, EmitClosure>, env: EmitEnv) -> EmitPatternResult:
-  match patterns values:
-    case Nil{} Nil{}: EmitMatched{env}
-    case +pattern <> rest +value <> more:
-      js_reduce_patterns_next(js_reduce_pattern(pattern, value, env), rest, more)
-    case _ _: EmitDifferent{}
-def js_reduce_patterns_next(result: EmitPatternResult, patterns: List<&2, AST.SyntaxPattern>, values: List<&2, EmitClosure>) -> EmitPatternResult:
-  match result:
-    case EmitMatched{env}: js_reduce_patterns(patterns, values, env)
-    case _: result
-def js_reduce_pattern(pattern: AST.SyntaxPattern, value: EmitClosure, env: EmitEnv) -> EmitPatternResult:
-  match pattern:
-    case AST.PatternVar{_, _, _, _}: EmitMatched{env_bind("null", None{}, Some{value}, env)}
-    case AST.PatternCtr{key, fields, _}: js_reduce_pattern_view(key, fields, js_reduce(value), env)
-def js_reduce_pattern_view_env(key: String, fields: List<&2, AST.SyntaxPattern>, value: EmitClosure, env: EmitEnv, value_env: EmitEnv) -> EmitPatternResult:
-  match value:
-    case EmitClosure{AST.TermCtr{name, args, _}, _, _, _, _, _}:
-      js_reduce_pattern_key(js_same_scoped_key(key, env, name, value_env), fields, js_closure_terms(args, value_env), env)
-    case EmitClosure{AST.TermString{chars, names, span}, _, _, _, _, _}:
-      js_reduce_pattern_view(key, fields, js_close(AST.string_unfold(chars, names, span), value_env), env)
-    case _: EmitNeutral{}
-def js_reduce_pattern_view(key: String, fields: List<&2, AST.SyntaxPattern>, value: EmitClosure, env: EmitEnv) -> EmitPatternResult:
-  js_reduce_pattern_view_env(key, fields, value, env, js_closure_env(value))
-def js_same_scoped_key(left: String, left_env: EmitEnv, right: String, right_env: EmitEnv) -> Bool:
-  js_same_constructor_key(js_constructor_decl(left, left_env), js_constructor_decl(right, right_env))
-def js_same_constructor_key(left: Maybe<&2, EmitConstructor>, right: Maybe<&2, EmitConstructor>) -> Bool:
-  match left right:
-    case Some{EmitConstructor{left_key, _, _, _, _}} Some{EmitConstructor{right_key, _, _, _, _}}: String.eq(left_key, right_key)
-    case _ _: False{}
-def js_reduce_pattern_key(equal: Bool, fields: List<&2, AST.SyntaxPattern>, args: List<&2, EmitClosure>, env: EmitEnv) -> EmitPatternResult:
-  match equal:
-    case True{}: js_reduce_patterns(fields, args, env)
-    case False{}: EmitDifferent{}
-def js_reduce_local(result: EmitPatternResult, body: AST.SyntaxTerm, original: EmitClosure) -> EmitClosure:
-  match result:
-    case EmitMatched{env}: js_reduce(js_close(body, env))
-    case _: original
-def js_reduce_cases(cases: List<&2, AST.SyntaxTerm>, values: List<&2, EmitClosure>, env: EmitEnv, original: EmitClosure) -> EmitClosure:
-  match cases:
-    case Nil{}: original
-    case AST.BodyCase{patterns, body, _} <> rest:
-      js_reduce_case_result(js_reduce_patterns(patterns, values, env), body, rest, values, env, original)
-    case _ <> rest: js_reduce_cases(rest, values, env, original)
-def js_reduce_case_result(result: EmitPatternResult, body: AST.SyntaxTerm, rest: List<&2, AST.SyntaxTerm>, values: List<&2, EmitClosure>, env: EmitEnv, original: EmitClosure) -> EmitClosure:
-  match result:
-    case EmitMatched{bound}: js_reduce(js_close(body, bound))
-    case EmitDifferent{}: js_reduce_cases(rest, values, env, original)
-    case EmitNeutral{}: original
-def js_value_env(values: List<&2, AST.SyntaxTerm>, env: EmitEnv) -> EmitEnv:
-  js_value_env_at(values, env, env)
-def js_value_env_at(values: List<&2, AST.SyntaxTerm>, source: EmitEnv, env: EmitEnv) -> EmitEnv:
-  match values:
-    case Nil{}: env
-    case +value <> rest:
-      js_value_env_at(rest, source, env_bind("null", js_type(value, source), Some{js_close(value, source)}, env))
-
-def js_type(term: AST.SyntaxTerm, env: EmitEnv) -> Maybe<&2, EmitClosure>:
-  match term:
-    case AST.TermVar{_, index, _}: js_binding_type(env_binding(env, index))
-    case AST.TermRef{key, _}: js_global_type(key, env)
-    case AST.TermAdt{key, args, _, _}: js_apply_type_args(js_global_type(key, env), js_closure_terms(args, env))
-    case AST.TermAnn{_, ty, _}: Some{js_close(ty, env)}
-    case AST.TermBang{inner, _}: js_type(inner, env)
-    case AST.TermPlus{head, Nil{}, _}: js_type(head, env)
-    case AST.TermApp{fn, arg, _}: js_apply_type(js_type(fn, env), js_close(arg, env))
-    case AST.TermSub{index, value, body, _}: js_type(body, env_insert_binding(env, index, EmitBinding{"null", js_type(value, env), Some{js_close(value, env)}}))
-    case AST.TermLet{_, _, _, values, body, _}: js_type(body, js_value_env(values, env))
-    case AST.TermRewrite{_, _, body, _}: js_type(body, env)
-    case AST.BodyReply{inner, _}: js_type(inner, env)
-    case AST.BodyLocal{patterns, _, values, body, _}: js_type_local(patterns, values, body, env)
-    case AST.BodyMatch{scrutinees, cases, _}: js_type_cases(cases, scrutinees, env)
-    case AST.BodyCase{_, body, _}: js_type(body, env)
-    case _: None{}
-def js_binding_type(found: Maybe<&2, EmitBinding>) -> Maybe<&2, EmitClosure>:
-  match found:
-    case Some{EmitBinding{_, None{}, Some{value}}}: js_type_value(value)
-    case Some{EmitBinding{_, ty, _}}: ty
-    case None{}: None{}
-def js_type_value(value: EmitClosure) -> Maybe<&2, EmitClosure>:
-  match value:
-    case EmitClosure{term, _, _, _, _, _}: js_type(term, js_closure_env(value))
-    case _: None{}
-def js_type_local(patterns: List<&2, AST.SyntaxPattern>, values: List<&2, AST.SyntaxTerm>, body: AST.SyntaxTerm, env: EmitEnv) -> Maybe<&2, EmitClosure>:
-  types = js_pattern_types(patterns, js_scrutinee_types(values, env), env)
-  names = patterns_vars(patterns, scrutinee_names(List.length(&2, AST.SyntaxTerm, values), env), env)
-  neutral = env_names_typed(names, types, env)
-  matched = js_reduce_patterns(patterns, js_closure_terms(values, env), env)
-  js_type_local_refined(matched, types, body, env, neutral)
-def js_type_local_refined(result: EmitPatternResult, types: List<&2, Maybe<&2, EmitClosure>>, body: AST.SyntaxTerm, source: EmitEnv, neutral: EmitEnv) -> Maybe<&2, EmitClosure>:
-  match result source:
-    case EmitMatched{EmitEnv{scope, names, _, values, depth}} EmitEnv{_, _, source_types, _, _}:
-      refined_types = List.append(&2, Maybe<&2, EmitClosure>, List.reverse(&2, Maybe<&2, EmitClosure>, types), source_types)
-      js_type(body, EmitEnv{scope, names, refined_types, values, depth})
-    case _ _: js_type(body, neutral)
-def js_apply_type_args(found: Maybe<&2, EmitClosure>, args: List<&2, EmitClosure>) -> Maybe<&2, EmitClosure>:
-  match args:
-    case Nil{}: found
-    case +arg <> rest: js_apply_type_args(js_apply_type(found, arg), rest)
-def js_apply_type(found: Maybe<&2, EmitClosure>, arg: EmitClosure) -> Maybe<&2, EmitClosure>:
-  match found:
-    case None{}: None{}
-    case Some{ty}: js_apply_type_view(js_reduce(ty), arg)
-def js_apply_type_view_env(ty: EmitClosure, arg: EmitClosure, env: EmitEnv) -> Maybe<&2, EmitClosure>:
-  match ty:
-    case EmitClosure{AST.TermAll{_, _, _, domain, body, _}, _, _, _, _, _}:
-      Some{js_close(body, env_bind("null", Some{js_close(domain, env)}, Some{arg}, env))}
-    case EmitInferred{AST.Binder{_, _, _, domain, _} <> rest, body, _, _, _, _, _}:
-      js_type_definition(rest, body, env_bind("null", Some{js_close(domain, env)}, Some{arg}, env))
-    case EmitDeclared{AST.Binder{_, _, _, domain, _} <> rest, result, _, _, _, _, _}:
-      Some{js_close_declared(rest, result, env_bind("null", Some{js_close(domain, env)}, Some{arg}, env))}
-    case _: None{}
-def js_apply_type_view(ty: EmitClosure, arg: EmitClosure) -> Maybe<&2, EmitClosure>:
-  js_apply_type_view_env(ty, arg, js_closure_env(ty))
-def js_type_cases(cases: List<&2, AST.SyntaxTerm>, scrutinees: List<&2, AST.SyntaxTerm>, env: EmitEnv) -> Maybe<&2, EmitClosure>:
-  match cases:
-    case Nil{}: None{}
-    case AST.BodyCase{patterns, body, _} <> _:
-      types = js_pattern_types(patterns, js_scrutinee_types(scrutinees, env), env)
-      js_type(body, env_names_typed(patterns_vars(patterns, scrutinee_names(List.length(&2, AST.SyntaxTerm, scrutinees), env), env), types, env))
-    case _ <> rest: js_type_cases(rest, scrutinees, env)
-
-def env_insert_binding(env: EmitEnv, index: Nat, binding: EmitBinding) -> EmitEnv:
-  match env binding:
-    case EmitEnv{scope, names, types, values, depth} EmitBinding{name, ty, value}:
-      EmitEnv{scope, env_insert_names(names, index, name), env_insert_closures(types, index, ty), env_insert_closures(values, index, value), (depth + 1n : Nat)}
-def env_insert_names(names: List<&2, String>, index: Nat, name: String) -> List<&2, String>:
-  match names:
-    case Nil{}: [name]
-    case +value <> rest:
-      match index:
-        case 0n: name <> (value <> rest)
-        case _: value <> env_insert_names(rest, (index - 1n : Nat), name)
-def env_insert_closures(values: List<&2, Maybe<&2, EmitClosure>>, index: Nat, value: Maybe<&2, EmitClosure>) -> List<&2, Maybe<&2, EmitClosure>>:
-  match values:
-    case Nil{}: [value]
-    case +found <> rest:
-      match index:
-        case 0n: value <> (found <> rest)
-        case _: found <> env_insert_closures(rest, (index - 1n : Nat), value)
-def env_names_typed(names: List<&2, String>, types: List<&2, Maybe<&2, EmitClosure>>, env: EmitEnv) -> EmitEnv:
-  match names types:
-    case +name <> rest +ty <> more: env_names_typed(rest, more, env_bind(name, ty, None{}, env))
-    case +name <> rest Nil{}: env_names_typed(rest, Nil{}, env_push(name, env))
-    case Nil{} _: env
-def js_scrutinee_types(terms: List<&2, AST.SyntaxTerm>, env: EmitEnv) -> List<&2, Maybe<&2, EmitClosure>>:
-  match terms:
-    case Nil{}: Nil{}
-    case +term <> rest: js_type(term, env) <> js_scrutinee_types(rest, env)
-def js_pattern_types(patterns: List<&2, AST.SyntaxPattern>, types: List<&2, Maybe<&2, EmitClosure>>, env: EmitEnv) -> List<&2, Maybe<&2, EmitClosure>>:
-  match patterns types:
-    case +pattern <> rest +ty <> more:
-      List.append(&2, Maybe<&2, EmitClosure>, js_pattern_type(pattern, ty, env), js_pattern_types(rest, more, env))
-    case +pattern <> rest Nil{}:
-      List.append(&2, Maybe<&2, EmitClosure>, js_pattern_type(pattern, None{}, env), js_pattern_types(rest, Nil{}, env))
-    case Nil{} _: Nil{}
-def js_pattern_type(pattern: AST.SyntaxPattern, ty: Maybe<&2, EmitClosure>, env: EmitEnv) -> List<&2, Maybe<&2, EmitClosure>>:
-  match pattern:
-    case AST.PatternVar{_, _, _, _}: [ty]
-    case AST.PatternCtr{key, fields, _}:
-      js_pattern_types(fields, js_field_types(js_constructor_signature(key, ty, env)), env)
-def js_field_types(found: Maybe<&2, EmitClosure>) -> List<&2, Maybe<&2, EmitClosure>>:
-  match found:
-    case None{}: Nil{}
-    case Some{ty}: js_field_types_view(js_reduce(ty))
-def js_field_types_view_env(ty: EmitClosure, env: EmitEnv) -> List<&2, Maybe<&2, EmitClosure>>:
-  match ty:
-    case EmitClosure{AST.TermAll{_, _, _, domain, body, _}, _, _, _, _, _}:
-      Some{js_close(domain, env)} <> js_field_types(Some{js_close(body, env_bind("null", Some{js_close(domain, env)}, None{}, env))})
-    case EmitDeclared{AST.Binder{_, _, _, domain, _} <> rest, result, _, _, _, _, _}:
-      Some{js_close(domain, env)} <> js_field_types(Some{js_close_declared(rest, result, env_bind("null", Some{js_close(domain, env)}, None{}, env))})
-    case _: Nil{}
-def js_field_types_view(ty: EmitClosure) -> List<&2, Maybe<&2, EmitClosure>>:
-  js_field_types_view_env(ty, js_closure_env(ty))
-
-def js_constructor_decl(key: String, env: EmitEnv) -> Maybe<&2, EmitConstructor>:
-  match env:
-    case EmitEnv{scope, _, _, _, _}:
-      match scope:
-        case EmitScope{_, _, catalog}:
-          js_constructor_decl_fallback(js_constructor_lookup(js_scope_key(key, scope), catalog), key, catalog)
-def js_constructor_decl_fallback(found: Maybe<&2, EmitConstructor>, key: String, catalog: EmitCatalog) -> Maybe<&2, EmitConstructor>:
-  match found:
-    case Some{_}: found
-    case None{}: js_constructor_lookup(key, catalog)
-def js_constructor_lookup(key: String, +catalog: EmitCatalog) -> Maybe<&2, EmitConstructor>:
-  match catalog:
-    case EmitCatalog{_, _, owners, _}:
-      js_constructor_index_owner(IndexLookup.find(EmitModuleIndex, owners, key), key, catalog)
-def js_constructor_index_owner(found: Maybe<&2, EmitModuleIndex>, key: String, catalog: EmitCatalog) -> Maybe<&2, EmitConstructor>:
-  match found:
-    case None{}: None{}
-    case Some{+layout}:
-      match layout:
-        case EmitModuleIndex{_, _, _, constructors, _}:
-          js_constructor_owner(IndexLookup.find(EmitConstructorOwner, constructors, key), key, js_owner_env(layout, catalog))
-def js_constructor_owner(found: Maybe<&2, EmitConstructorOwner>, key: String, env: EmitEnv) -> Maybe<&2, EmitConstructor>:
-  match found:
-    case Some{EmitConstructorOwner{AST.TypeDecl{family, params, _, _, _}, AST.Constructor{_, fields, _}}}:
-      Some{EmitConstructor{key, family, params, fields, env}}
-    case None{}: None{}
-def js_constructor_signature(key: String, ty: Maybe<&2, EmitClosure>, env: EmitEnv) -> Maybe<&2, EmitClosure>:
-  js_constructor_signature_found(js_constructor_decl(key, env), ty)
-def js_constructor_signature_found(found: Maybe<&2, EmitConstructor>, ty: Maybe<&2, EmitClosure>) -> Maybe<&2, EmitClosure>:
-  match found:
-    case None{}: None{}
-    case Some{EmitConstructor{_, _, params, fields, env}}:
-      js_constructor_parameter_types(params, fields, env, js_family_parameter_arguments(params, ty))
-def js_family_parameter_arguments(params: List<&2, AST.TelescopeItem>, ty: Maybe<&2, EmitClosure>) -> List<&2, EmitClosure>:
-  match ty:
-    case None{}: Nil{}
-    case Some{value}: js_family_parameter_view(params, js_reduce(value))
-def js_family_parameter_view_env(params: List<&2, AST.TelescopeItem>, value: EmitClosure, env: EmitEnv) -> List<&2, EmitClosure>:
-  match value:
-    case EmitClosure{AST.TermFill{head, args, span}, _, _, _, _, _}:
-      supplied = List.append(&2, EmitClosure, js_family_arguments_view(js_close(head, env)), js_closure_terms(args, env))
-      js_family_fill_arguments(params, supplied, AST.QOne{}, span, env)
-    case EmitClosure{AST.TermPlus{head, args, span}, _, _, _, _, _}:
-      supplied = List.append(&2, EmitClosure, js_family_arguments_view(js_close(head, env)), js_closure_terms(args, env))
-      js_family_fill_arguments(params, supplied, AST.QMany{}, span, env)
-    case _: js_family_arguments_view(value)
-def js_family_parameter_view(params: List<&2, AST.TelescopeItem>, value: EmitClosure) -> List<&2, EmitClosure>:
-  js_family_parameter_view_env(params, value, js_closure_env(value))
-def js_family_arguments_view_env(value: EmitClosure, env: EmitEnv) -> List<&2, EmitClosure>:
-  match value:
-    case EmitClosure{AST.TermAdt{_, args, _, _}, _, _, _, _, _}: js_closure_terms(args, env)
-    case EmitClosure{AST.TermApp{fn, arg, _}, _, _, _, _, _}:
-      List.append(&2, EmitClosure, js_family_arguments_view(js_close(fn, env)), [js_close(arg, env)])
-    case EmitClosure{AST.TermAnn{inner, _, _}, _, _, _, _, _}: js_family_arguments_view(js_close(inner, env))
-    case _: Nil{}
-def js_family_arguments_view(value: EmitClosure) -> List<&2, EmitClosure>:
-  js_family_arguments_view_env(value, js_closure_env(value))
-def js_family_fill_arguments(params: List<&2, AST.TelescopeItem>, supplied: List<&2, EmitClosure>, quantity: AST.Quantity, span: AST.SourceSpan, env: EmitEnv) -> List<&2, EmitClosure>:
-  count = js_family_quant_prefix(params, env)
-  js_family_fill_missing(Nat.is_eq((List.length(&2, EmitClosure, supplied) + count : Nat), List.length(&2, AST.TelescopeItem, params)), supplied, count, quantity, span, env)
-def js_family_quant_prefix(params: List<&2, AST.TelescopeItem>, env: EmitEnv) -> Nat:
-  match params:
-    case AST.Binder{_, _, _, domain, _} <> rest:
-      js_family_quant_domain(js_reduce(js_close(domain, env)), rest, env)
-    case _: 0n
-def js_family_quant_domain(domain: EmitClosure, rest: List<&2, AST.TelescopeItem>, env: EmitEnv) -> Nat:
-  match domain:
-    case EmitClosure{AST.TermQuant{}, _, _, _, _, _}: (1n + js_family_quant_prefix(rest, env_push("null", env)) : Nat)
-    case _: 0n
-def js_family_fill_missing(missing: Bool, supplied: List<&2, EmitClosure>, count: Nat, quantity: AST.Quantity, span: AST.SourceSpan, env: EmitEnv) -> List<&2, EmitClosure>:
-  match missing:
-    case True{}: List.append(&2, EmitClosure, js_quantity_closures(count, quantity, span, env), supplied)
-    case False{}:
-      match quantity:
-        case AST.QMany{}: js_family_promote_arguments(supplied, count, span, env)
-        case _: supplied
-def js_quantity_closures(count: Nat, quantity: AST.Quantity, span: AST.SourceSpan, env: EmitEnv) -> List<&2, EmitClosure>:
-  match count:
-    case 0n: Nil{}
-    case _: js_close(AST.TermQuantity{quantity, span}, env) <> js_quantity_closures((count - 1n : Nat), quantity, span, env)
-def js_family_promote_arguments(args: List<&2, EmitClosure>, count: Nat, span: AST.SourceSpan, env: EmitEnv) -> List<&2, EmitClosure>:
-  match args count:
-    case _ 0n: args
-    case +_ <> rest _: js_close(AST.TermQuantity{AST.QMany{}, span}, env) <> js_family_promote_arguments(rest, (count - 1n : Nat), span, env)
-    case Nil{} _: Nil{}
-def js_closure_terms(terms: List<&2, AST.SyntaxTerm>, env: EmitEnv) -> List<&2, EmitClosure>:
-  match terms:
-    case Nil{}: Nil{}
-    case +term <> rest: js_close(term, env) <> js_closure_terms(rest, env)
-def js_constructor_parameter_types(params: List<&2, AST.TelescopeItem>, fields: List<&2, AST.TelescopeItem>, env: EmitEnv, args: List<&2, EmitClosure>) -> Maybe<&2, EmitClosure>:
-  match params args:
-    case Nil{} _: Some{js_close_declared(fields, AST.NoTerm{}, env)}
-    case AST.Binder{_, _, _, domain, _} <> rest +arg <> more:
-      js_constructor_parameter_types(rest, fields, env_bind("null", Some{js_close(domain, env)}, Some{arg}, env), more)
-    case AST.Binder{_, _, _, domain, _} <> rest Nil{}:
-      js_constructor_parameter_types(rest, fields, env_bind("null", Some{js_close(domain, env)}, None{}, env), Nil{})
-    case _ _: None{}
-
-
-
-
-def js_choose(key: String, suffix: String, expression: String, other: String) -> String:
-  js_choose_result(js_key_matches(key, suffix), expression, other)
-def js_key_matches(key: String, name: String) -> Bool:
-  Bool.pick(Bool, String.eq(key, name), True{}, Bool.pick(Bool, String.ends_with(key, String.append(".", name)), True{}, String.ends_with(key, String.append("/", name))))
-def js_choose_exact(key: String, name: String, expression: String, other: String) -> String:
-  js_choose_result(String.eq(key, name), expression, other)
-
-def js_choose_result(matches: Bool, expression: String, other: String) -> String:
-  match matches:
-    case True{}: expression
-    case False{}: other
-def js_reference(key: String) -> String:
-  String.append("$resolve(", String.append(js_quote(key), ", $scope, $aliases)"))
-# Native operation identities are local declaration names, never user suffixes.
-def js_native_operations(native: Bool, namespace: String, declarations: List<&2, AST.TopLevel>) -> Map<&2, String>:
-  match native:
-    case False{}: MTip{}
-    case True{}: js_native_operation_declarations(namespace, declarations)
-def js_native_operation_declarations(namespace: String, declarations: List<&2, AST.TopLevel>) -> Map<&2, String>:
-  match declarations:
-    case Nil{}: MTip{}
-    case AST.DefTop{AST.Definition{key, _, _, _, _, _}} <> rest:
-      js_native_operation_insert_keys(namespace, key, js_native_operation_declarations(namespace, rest))
-    case AST.LawTop{AST.LawDecl{key, _, _, _}} <> rest:
-      js_native_operation_insert_keys(namespace, key, js_native_operation_declarations(namespace, rest))
-    case _ <> rest: js_native_operation_declarations(namespace, rest)
-def js_native_operation_insert_keys(namespace: String, key: String, operations: Map<&2, String>) -> Map<&2, String>:
-  match namespace:
-    case "": js_native_operation_insert(key, operations)
-    case _: js_native_operation_insert(qualify(namespace, key), js_native_operation_insert(key, operations))
-def js_native_operation_insert(key: String, operations: Map<&2, String>) -> Map<&2, String>:
-  js_native_operation_insert_found(js_native_operation_origin(True{}, key), key, operations)
-def js_native_operation_insert_found(found: Maybe<&2, String>, key: String, operations: Map<&2, String>) -> Map<&2, String>:
-  match found:
-    case None{}: operations
-    case Some{operation}: Map.set(&2, String, operations, key, operation)
-def js_native_operation_origin(native: Bool, key: String) -> Maybe<&2, String>:
-  match native:
-    case False{}: None{}
-    case True{}:
-      operation = js_native_operation_name(key)
-      js_native_operation_known(js_is_native(operation), operation)
-def js_native_operation(key: String, env: EmitEnv) -> Maybe<&2, String>:
-  match env:
-    case EmitEnv{EmitScope{_, EmitAliases{_, _, _, operations}, _}, _, _, _, _}:
-      IndexLookup.find(String, operations, key)
-def js_native_operation_known(known: Bool, operation: String) -> Maybe<&2, String>:
-  match known:
-    case True{}: Some{operation}
-    case False{}: None{}
-def js_native_operation_name(key: String) -> String:
-  chars = String.to_list(String.to_lower(key))
-  String.from_list(List.reverse(&2, Char, js_native_operation_chars(chars, Nil{})))
-def js_native_operation_chars(chars: List<&2, Char>, acc: List<&2, Char>) -> List<&2, Char>:
-  match chars:
-    case Nil{}: acc
-    case '.' <> rest: js_native_operation_chars(rest, '_' <> acc)
-    case '/' <> rest: js_native_operation_chars(rest, '_' <> acc)
-    case +char <> rest: js_native_operation_chars(rest, char <> acc)
-
-def suffix_any(key: String, first: String, rest: String) -> Bool:
-  Bool.pick(Bool, js_key_matches(key, first), True{}, js_key_matches(key, rest))
-
-def js_native_u32(key: String) -> Bool:
-  Bool.pick(Bool, js_native_u32_1(key), True{}, js_native_u32_2(key))
-def js_native_u32_1(key: String) -> Bool:
-  Bool.pick(Bool, suffix_any(key, "u32_add", "u32_sub"), True{}, Bool.pick(Bool, suffix_any(key, "u32_mul", "u32_div"), True{}, Bool.pick(Bool, suffix_any(key, "u32_mod", "u32_and"), True{}, Bool.pick(Bool, suffix_any(key, "u32_or", "u32_xor"), True{}, Bool.pick(Bool, suffix_any(key, "u32_is_eq", "u32_is_ne"), True{}, suffix_any(key, "u32_is_lt", "u32_is_le"))))))
-
-def js_native_u32_2(key: String) -> Bool:
-  Bool.pick(Bool, suffix_any(key, "u32_is_gt", "u32_is_ge"), True{}, Bool.pick(Bool, suffix_any(key, "u32_inc", "u32_not"), True{}, Bool.pick(Bool, suffix_any(key, "u32_shl", "u32_shr"), True{}, Bool.pick(Bool, suffix_any(key, "u32_shln", "u32_shrn"), True{}, Bool.pick(Bool, suffix_any(key, "u32_cmp", "u32_is_zero"), True{}, Bool.pick(Bool, suffix_any(key, "u32_to_nat", "u32_from_nat"), True{}, suffix_any(key, "u32_to_f32", "u32_to_f32")))))))
-
-def js_native_f32(key: String) -> Bool:
-  Bool.pick(Bool, js_native_f32_1(key), True{}, js_native_f32_2(key))
-def js_native_f32_1(key: String) -> Bool:
-  Bool.pick(Bool, suffix_any(key, "f32_add", "f32_sub"), True{}, Bool.pick(Bool, suffix_any(key, "f32_mul", "f32_div"), True{}, Bool.pick(Bool, suffix_any(key, "f32_mod", "f32_neg"), True{}, Bool.pick(Bool, suffix_any(key, "f32_is_eq", "f32_is_ne"), True{}, Bool.pick(Bool, suffix_any(key, "f32_is_lt", "f32_is_le"), True{}, Bool.pick(Bool, suffix_any(key, "f32_is_gt", "f32_is_ge"), True{}, Bool.pick(Bool, suffix_any(key, "f32_sqrt", "f32_abs"), True{}, suffix_any(key, "f32_exp", "f32_log"))))))))
-
-def js_native_f32_2(key: String) -> Bool:
-  Bool.pick(Bool, suffix_any(key, "f32_log2", "f32_log10"), True{}, Bool.pick(Bool, suffix_any(key, "f32_sin", "f32_cos"), True{}, Bool.pick(Bool, suffix_any(key, "f32_tan", "f32_pow"), True{}, Bool.pick(Bool, suffix_any(key, "f32_atan2", "f32_floor"), True{}, Bool.pick(Bool, suffix_any(key, "f32_ceil", "f32_trunc"), True{}, Bool.pick(Bool, suffix_any(key, "f32_to_u32", "f32_bits"), True{}, Bool.pick(Bool, suffix_any(key, "f32_show", "f32_read"), True{}, Bool.pick(Bool, suffix_any(key, "u32_to_f32", "u32_to_f32"), True{}, js_native_f32_extra(key)))))))))
-def js_native_f32_extra(key: String) -> Bool:
-  Bool.pick(Bool, suffix_any(key, "f32_asin", "f32_acos"), True{}, Bool.pick(Bool, suffix_any(key, "f32_atan", "f32_sinh"), True{}, suffix_any(key, "f32_cosh", "f32_tanh")))
-
-def js_native_misc(key: String) -> Bool:
-  Bool.pick(Bool, js_native_misc_1(key), True{}, js_native_misc_2(key))
-def js_native_misc_1(key: String) -> Bool:
-  Bool.or(suffix_any(key, "nat_min", "nat_max"), Bool.or(suffix_any(key, "map_bit", "string_cmp"), Bool.or(suffix_any(key, "string_to_list", "string_eq"), Bool.pick(Bool, suffix_any(key, "nat_add", "nat_sub"), True{}, Bool.pick(Bool, suffix_any(key, "nat_mul", "nat_double"), True{}, Bool.pick(Bool, suffix_any(key, "nat_cmp", "nat_is_lt"), True{}, Bool.pick(Bool, suffix_any(key, "nat_divmod", "string_append"), True{}, suffix_any(key, "string_length", "bool_or"))))))))
-
-def js_native_misc_2(key: String) -> Bool:
-  Bool.pick(Bool, suffix_any(key, "bool_xor", "array_new"), True{}, Bool.pick(Bool, suffix_any(key, "array_set", "array_get"), True{}, Bool.pick(Bool, suffix_any(key, "array_swap", "array_size"), True{}, suffix_any(key, "array_clone", "array_clone"))))
-
-def js_is_native(key: String) -> Bool:
-  Bool.pick(Bool, js_native_u32(key), True{}, Bool.pick(Bool, js_native_f32(key), True{}, js_native_misc(key)))
-
-# Only decode the exact lambda shapes in the existing primitive expression
-# table. Its reachable fallback remains unsupported (notably ordinary F32).
-def js_native_primitive(operation: String) -> Maybe<&2, EmitPrimitive>:
-  js_native_primitive_shape(js_reference_old(operation))
-def js_native_primitive_shape(expression: String) -> Maybe<&2, EmitPrimitive>:
-  js_native_primitive_shape_match(String.starts_with(expression, "(a)=>(i)=>(v)=>"), expression)
-def js_native_primitive_shape_match(matches: Bool, expression: String) -> Maybe<&2, EmitPrimitive>:
-  match matches:
-    case True{}: Some{EmitPrimitive{"a" <> "i" <> "v" <> Nil{}, String.drop(expression, 15n)}}
-    case False{}: js_native_primitive_binary(expression)
-def js_native_primitive_binary(expression: String) -> Maybe<&2, EmitPrimitive>:
-  js_native_primitive_binary_match(String.starts_with(expression, "(a)=>(b)=>"), expression)
-def js_native_primitive_binary_match(matches: Bool, expression: String) -> Maybe<&2, EmitPrimitive>:
-  match matches:
-    case True{}: Some{EmitPrimitive{"a" <> "b" <> Nil{}, String.drop(expression, 10n)}}
-    case False{}: js_native_primitive_indexed(expression)
-def js_native_primitive_indexed(expression: String) -> Maybe<&2, EmitPrimitive>:
-  js_native_primitive_indexed_match(String.starts_with(expression, "(a)=>(i)=>"), expression)
-def js_native_primitive_indexed_match(matches: Bool, expression: String) -> Maybe<&2, EmitPrimitive>:
-  match matches:
-    case True{}: Some{EmitPrimitive{"a" <> "i" <> Nil{}, String.drop(expression, 10n)}}
-    case False{}: js_native_primitive_position(expression)
-def js_native_primitive_position(expression: String) -> Maybe<&2, EmitPrimitive>:
-  js_native_primitive_position_match(String.starts_with(expression, "(key)=>(position)=>"), expression)
-def js_native_primitive_position_match(matches: Bool, expression: String) -> Maybe<&2, EmitPrimitive>:
-  match matches:
-    case True{}: Some{EmitPrimitive{"key" <> "position" <> Nil{}, String.drop(expression, 19n)}}
-    case False{}: js_native_primitive_unary(expression)
-def js_native_primitive_unary(expression: String) -> Maybe<&2, EmitPrimitive>:
-  js_native_primitive_unary_match(String.starts_with(expression, "(a)=>"), expression)
-def js_native_primitive_unary_match(matches: Bool, expression: String) -> Maybe<&2, EmitPrimitive>:
-  match matches:
-    case True{}: Some{EmitPrimitive{"a" <> Nil{}, String.drop(expression, 5n)}}
-    case False{}: js_native_primitive_text(expression)
-def js_native_primitive_text(expression: String) -> Maybe<&2, EmitPrimitive>:
-  js_native_primitive_text_match(String.starts_with(expression, "(text)=>"), expression)
-def js_native_primitive_text_match(matches: Bool, expression: String) -> Maybe<&2, EmitPrimitive>:
-  match matches:
-    case True{}: Some{EmitPrimitive{"text" <> Nil{}, String.drop(expression, 8n)}}
-    case False{}: None{}
-def js_native_primitive_binders(binders: List<&2, AST.TelescopeItem>) -> Maybe<&2, Nat>:
-  match binders:
-    case Nil{}: Some{0n}
-    case AST.Binder{quantity, _, _, _, _} <> rest:
-      js_native_primitive_count(js_native_primitive_binders(rest), quantity)
-    case AST.TemplateBinder{_, _, _, _} <> _: None{}
-def js_native_primitive_count(rest: Maybe<&2, Nat>, quantity: AST.Quantity) -> Maybe<&2, Nat>:
-  match rest quantity:
-    case Some{count} AST.QZero{}: Some{count}
-    case Some{count} _: Some{Nat.add(count, 1n)}
-    case None{} _: None{}
-def js_native_primitive_checked(operation: Maybe<&2, String>, binders: List<&2, AST.TelescopeItem>) -> Maybe<&2, EmitPrimitive>:
-  match operation:
-    case None{}: None{}
-    case Some{name}: js_native_primitive_arity(js_native_primitive(name), js_native_primitive_binders(binders))
-def js_native_primitive_arity(primitive: Maybe<&2, EmitPrimitive>, count: Maybe<&2, Nat>) -> Maybe<&2, EmitPrimitive>:
-  match primitive count:
-    case Some{EmitPrimitive{parameters, body}} Some{live}:
-      js_native_primitive_arity_match(Nat.is_eq(List.length(&2, String, parameters), live), parameters, body)
-    case _ _: None{}
-def js_native_primitive_arity_match(matches: Bool, parameters: List<&2, String>, body: String) -> Maybe<&2, EmitPrimitive>:
-  match matches:
-    case True{}: Some{EmitPrimitive{parameters, body}}
-    case False{}: None{}
-
-def js_reference_old(key: String) -> String:
-  js_choose(key, "u32_add", "(a)=>(b)=>((a+b)>>>0)", js_reference_2(key))
-
-def js_reference_2(key: String) -> String:
-  js_choose(key, "u32_sub", "(a)=>(b)=>((a-b)>>>0)", js_reference_3(key))
-
-def js_reference_3(key: String) -> String:
-  js_choose(key, "u32_mul", "(a)=>(b)=>(Math.imul(a,b)>>>0)", js_reference_4(key))
-
-def js_reference_4(key: String) -> String:
-  js_choose(key, "u32_div", "(a)=>(b)=>(b===0?0:(a/b)>>>0)", js_reference_5(key))
-
-def js_reference_5(key: String) -> String:
-  js_choose(key, "nat_add", "(a)=>(b)=>nat_chk(a+b)", js_reference_6(key))
-
-def js_reference_6(key: String) -> String:
-  js_choose(key, "nat_sub", "(a)=>(b)=>(a<b?0:a-b)", js_reference_7(key))
-
-def js_reference_7(key: String) -> String:
-  js_choose(key, "nat_mul", "(a)=>(b)=>nat_chk(a*b)", js_reference_8(key))
-
-def js_reference_8(key: String) -> String:
-  js_choose(key, "nat_cmp", "(a)=>(b)=>cmp_new(a,b)", js_reference_nat_bounds(key))
-def js_reference_nat_bounds(key: String) -> String:
-  js_choose(key, "nat_min", "(a)=>(b)=>(a<b?a:b)", js_choose(key, "nat_max", "(a)=>(b)=>(a>b?a:b)", js_reference_9(key)))
-
-def js_reference_9(key: String) -> String:
-  js_choose(key, "string_append", "(a)=>(b)=>a+b", js_reference_10(key))
-
-def js_reference_10(key: String) -> String:
-  js_choose(key, "bool_or", "(a)=>(b)=>a||b", js_reference_11(key))
-
-def js_reference_11(key: String) -> String:
-  js_choose(key, "bool_xor", "(a)=>(b)=>a!==b", js_reference_12(key))
-
-def js_reference_12(key: String) -> String:
-  js_choose(key, "u32_is_zero", "(a)=>a===0", js_reference_more(key))
-
-
-def js_reference_more(key: String) -> String:
-  js_ref_f32_extra(key)
-
-def js_ref_f32_extra(key: String) -> String:
-  js_choose(key, "f32_asin", "(a)=>Math.fround(Math.asin(a))", js_choose(key, "f32_acos", "(a)=>Math.fround(Math.acos(a))", js_choose(key, "f32_atan", "(a)=>Math.fround(Math.atan(a))", js_choose(key, "f32_sinh", "(a)=>Math.fround(Math.sinh(a))", js_choose(key, "f32_cosh", "(a)=>Math.fround(Math.cosh(a))", js_choose(key, "f32_tanh", "(a)=>Math.fround(Math.tanh(a))", js_ref_strings(key)))))))
-
-def js_ref_u32(key: String) -> String:
-  js_choose(key, "u32_mod", "(a)=>(b)=>(b===0?a:a%b)", js_choose(key, "u32_and", "(a)=>(b)=>((a&b)>>>0)", js_choose(key, "u32_or", "(a)=>(b)=>((a|b)>>>0)", js_choose(key, "u32_xor", "(a)=>(b)=>((a^b)>>>0)", js_choose(key, "u32_is_eq", "(a)=>(b)=>a===b", js_choose(key, "u32_is_ne", "(a)=>(b)=>a!==b", js_choose(key, "u32_is_lt", "(a)=>(b)=>a<b", js_choose(key, "u32_is_le", "(a)=>(b)=>a<=b", js_ref_u32_2(key)))))))))
-
-def js_ref_u32_2(key: String) -> String:
-  js_choose(key, "u32_is_gt", "(a)=>(b)=>a>b", js_choose(key, "u32_is_ge", "(a)=>(b)=>a>=b", js_ref_u32_3(key)))
-
-def js_ref_u32_3(key: String) -> String:
-  js_choose(key, "u32_inc", "(a)=>(a+1)>>>0", js_choose(key, "u32_not", "(a)=>(~a)>>>0", js_choose(key, "u32_shl", "(a)=>(a<<1)>>>0", js_choose(key, "u32_shr", "(a)=>a>>>1", js_choose(key, "u32_shln", "(a)=>(b)=>b>=32?0:(a<<b)>>>0", js_choose(key, "u32_shrn", "(a)=>(b)=>b>=32?0:a>>>b", js_choose(key, "u32_cmp", "(a)=>(b)=>cmp_new(a,b)", js_choose(key, "u32_to_nat", "(a)=>a", js_choose(key, "u32_from_nat", "(a)=>a>>>0", js_ref_nat(key))))))))))
-def js_ref_f32(key: String) -> String:
-  js_choose(key, "f32_add", "(a)=>(b)=>Math.fround(a+b)", js_choose(key, "f32_sub", "(a)=>(b)=>Math.fround(a-b)", js_choose(key, "f32_mul", "(a)=>(b)=>Math.fround(a*b)", js_choose(key, "f32_div", "(a)=>(b)=>Math.fround(a/b)", js_choose(key, "f32_mod", "(a)=>(b)=>Math.fround(a%b)", js_choose(key, "f32_neg", "(a)=>-a", js_choose(key, "f32_sqrt", "(a)=>Math.fround(Math.sqrt(a))", js_choose(key, "f32_abs", "(a)=>Math.fround(Math.abs(a))", js_ref_f32_2(key)))))))))
-
-def js_ref_f32_2(key: String) -> String:
-  js_choose(key, "f32_to_u32", "(a)=>(a>=1&&a<4294967296?Math.floor(a):0)", js_choose(key, "f32_bits", "(a)=>f32_bits(a)", js_choose(key, "f32_show", "(a)=>f32_show(a)", js_choose(key, "f32_read", "(a)=>f32_read(a)", js_ref_f32_3(key)))))
-
-def js_ref_f32_3(key: String) -> String:
-  js_choose(key, "f32_is_eq", "(a)=>(b)=>a===b", js_choose(key, "f32_is_ne", "(a)=>(b)=>a!==b", js_choose(key, "f32_is_lt", "(a)=>(b)=>a<b", js_choose(key, "f32_is_le", "(a)=>(b)=>a<=b", js_choose(key, "f32_is_gt", "(a)=>(b)=>a>b", js_choose(key, "f32_is_ge", "(a)=>(b)=>a>=b", js_choose(key, "f32_pow", "(a)=>(b)=>Math.fround(Math.pow(a,b))", js_choose(key, "f32_atan2", "(a)=>(b)=>Math.fround(Math.atan2(a,b))", js_choose(key, "f32_exp", "(a)=>Math.fround(Math.exp(a))", js_choose(key, "f32_log", "(a)=>Math.fround(Math.log(a))", js_choose(key, "f32_log2", "(a)=>Math.fround(Math.log2(a))", js_choose(key, "f32_log10", "(a)=>Math.fround(Math.log10(a))", js_choose(key, "f32_sin", "(a)=>Math.fround(Math.sin(a))", js_choose(key, "f32_cos", "(a)=>Math.fround(Math.cos(a))", js_choose(key, "f32_tan", "(a)=>Math.fround(Math.tan(a))", js_choose(key, "f32_floor", "(a)=>Math.fround(Math.floor(a))", js_choose(key, "f32_ceil", "(a)=>Math.fround(Math.ceil(a))", js_choose(key, "f32_trunc", "(a)=>Math.fround(Math.trunc(a))", js_choose(key, "f32_to_nat", "(a)=>Math.floor(a)", js_choose(key, "u32_to_f32", "(a)=>Math.fround(a)", String.append("$D[", String.append(js_quote(key), "]"))))))))))))))))))))))
-def js_ref_nat(key: String) -> String:
-  js_choose(key, "nat_double", "(a)=>nat_chk(a+a)", js_choose(key, "nat_is_lt", "(a)=>(b)=>a<b", js_choose(key, "nat_divmod", "(a)=>(b)=>nat_divmod(a,b)", String.append("$D[", String.append(js_quote(key), "]")))))
-def js_ref_strings(key: String) -> String:
-  js_choose(key, "string_eq", "(a)=>(b)=>a===b", js_choose(key, "map_bit", "(key)=>(position)=>{const character=Math.floor(position/33);if(character>=key.length)return tuple(key,false);const offset=position%33;let at=0;for(let i=0;i<character&&at<key.length;i++)at+=key.codePointAt(at)>65535?2:1;return tuple(key,at<key.length&&(offset===0||((key.codePointAt(at)>>>(32-offset))&1)!==0));}", js_choose(key, "string_cmp", "(a)=>(b)=>{let i=0,j=0,order=0;if(a!==b){while(i<a.length&&j<b.length){const x=a.codePointAt(i),y=b.codePointAt(j);if(x!==y){order=x<y?-1:1;break;}i+=x>65535?2:1;j+=y>65535?2:1;}if(order===0)order=i<a.length?1:j<b.length?-1:0;}return tuple(tuple(a,b),cmp_new(order,0));}", js_ref_array(key))))
-
-def js_ref_array(key: String) -> String:
-  js_choose(key, "string_to_list", "(text)=>{let tail={$:\"Nil\"};for(let i=text.length;i>0;){const end=i,low=text.charCodeAt(--i);if(low>=0xDC00&&low<=0xDFFF&&i>0){const high=text.charCodeAt(i-1);if(high>=0xD800&&high<=0xDBFF)--i;}tail={$:\"Con\",head:text.slice(i,end),tail};}return tail;}", js_choose(key, "string_length", "(a)=>[...a].length", js_choose(key, "array_new", "(a)=>(b)=>array_new(a,b)", js_choose(key, "array_set", "(a)=>(i)=>(v)=>(a[i%a.length]=v,a)", js_choose(key, "array_get", "(a)=>(i)=>tuple(a,a[i%a.length])", js_choose(key, "array_swap", "(a)=>(i)=>(v)=>array_swap(a,i,v)", js_choose(key, "array_size", "(a)=>tuple(a,a.length)", js_choose(key, "array_clone", "(a)=>tuple(a,a.slice())", js_ref_u32(key)))))))))
-
-def js_term(term: AST.SyntaxTerm, env: EmitEnv) -> String:
-  js_term_expected(term, env, None{})
-def js_term_expected(term: AST.SyntaxTerm, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  match term:
-    case AST.TermVar{_, index, _}: env_at(env, index)
-    case AST.TermRef{key, _}: js_reference(key)
-    case AST.TermBang{AST.TermRef{key, _}, _}: js_reference(key)
-    case AST.TermCtr{key, args, _}: js_constructor(key, args, env, expected)
-    case AST.TermString{chars, names, span}: js_string_literal(chars, names, span, env, expected)
-    case AST.TermType{_, _}: "null"
-    case AST.TermQuant{}: "null"
-    case AST.TermQuantity{_, _}: "null"
-    case AST.TermMin{_, _, _}: "null"
-    case AST.TermAll{_, _, _, _, _, _}: "null"
-    case AST.TermAdt{_, _, _, _}: "null"
-    case AST.TermEqual{_, _, _, _}: "null"
-    case AST.TermRefl{_}: "null"
-    case AST.TermAnn{inner, ty, _}: js_term_expected(inner, env, Some{js_close(ty, env)})
-    case AST.TermFill{head, _, _}: js_term_expected(head, env, None{})
-    case AST.TermPlus{head, _, _}: js_term_expected(head, env, None{})
-    case AST.TermApp{_, _, _}: String.append("run_loop(", String.append(js_app_spine(term, env, True{}), ")"))
-    case _: String.append("run_loop(", String.append(js_term_tail_expected(term, env, expected), ")"))
-#
-# Runtime binders receive strict operands; constructor fields are emitted strict.
-# Named function entries are closures, and deferred $D getters force their value
-# on every access (never cache a nullary mutable factory). Keep the resolver's
-# alias/shadow order. A lambda's expected formal quantity may erase its binder
-# and expose its body's request, so every lambda retains the outer force.
-# Tail expressions may return a request. Strict operands still use js_term.
-# No request escapes a source closure's public curried calling convention.
-def js_term_tail_expected(term: AST.SyntaxTerm, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  match term:
-    case AST.TermVar{ _, index,  _}: env_at(env, index)
-    case AST.TermRef{key,  _}: js_reference(key)
-
-    case AST.TermSub{index, value, body, _}: js_term_sub(index, value, body, env, expected)
-    case AST.TermLet{keys,  _, quantities, values, body,  _}:
-      js_term_let(keys, quantities, values, body, env, env, expected, 0n)
-    case AST.TermType{ _,  _}: "null"
-    case AST.TermQuant{}: "null"
-    case AST.TermQuantity{ _,  _}: "null"
-    case AST.TermMin{ _,  _,  _}: "null"
-    case AST.TermAll{ _,  _,  _,  _,  _,  _}: "null"
-    case AST.TermLam{quantity, _, _, body, _}: js_lambda(quantity, body, env, expected)
-    case AST.TermAnn{term, ty, _}: js_term_tail_expected(term, env, Some{js_close(ty, env)})
-    case AST.TermBang{ AST.TermRef{key,  _},  _}: js_reference(key)
-    case AST.TermBang{ _,  _}: "(()=>{throw \"bend: bang head must be a named reference\"})()"
-    case AST.TermFill{head,  _,  _}: js_term_tail_expected(head, env, None{})
-    case AST.TermPlus{head,  _,  _}: js_term_tail_expected(head, env, None{})
-    case AST.TermApp{ _,  _,  _}: js_app_spine(term, env, False{})
-    case AST.TermAdt{ _,  _,  _,  _}: "null"
-    case AST.TermCtr{key, args, _}: js_constructor(key, args, env, expected)
-    case AST.TermString{chars, names, span}: js_string_literal(chars, names, span, env, expected)
-    case AST.TermMat{_, head, matched, _}: js_match(head, matched, env, expected)
-    case AST.TermAbsurd{span}: "(()=>{throw \"bend: runtime fail-stop\"})()"
-    case AST.TermEqual{ _,  _,  _,  _}: "null"
-    case AST.TermRefl{ _}: "null"
-    case AST.TermRewrite{ _,  _, body,  _}: js_term_tail_expected(body, env, expected)
-    case AST.TermHole{key, span}: String.append("(()=>{throw ", String.append(js_quote(String.append("bend: unsolved hole ", key)), "})()"))
-    case AST.BodyReply{term,  _}: js_term_tail_expected(term, env, expected)
-    case AST.BodyLocal{patterns, _, values, body, _}:
-      js_body_local(patterns, values, body, env, env, expected)
-    case AST.BodyCase{_, body, _}: js_term_tail_expected(body, env, expected)
-    case AST.BodyMatch{scrutinees, cases, _}:
-      js_body_match(scrutinees, cases, env, expected)
-    case AST.TermTemplate{_, _}: "(()=>{throw \"bend: unexpanded template\"})()"
-
-# Function and case bodies already own a lexical block. Emit their local
-# bindings and matches there rather than allocating an immediately invoked
-# closure for each syntax node. Value operands still use the strict emitter.
-def js_statement_tail(term: AST.SyntaxTerm, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  match term:
-    case AST.BodyReply{inner, _}: js_statement_tail(inner, env, expected)
-    case AST.BodyCase{_, inner, _}: js_statement_tail(inner, env, expected)
-    case AST.TermAnn{inner, ty, _}: js_statement_tail(inner, env, Some{js_close(ty, env)})
-    case AST.TermRewrite{_, _, inner, _}: js_statement_tail(inner, env, expected)
-    case AST.BodyLocal{patterns, _, values, body, _}:
-      js_statement_local(patterns, values, body, env, env, expected)
-    case AST.BodyMatch{scrutinees, cases, _}:
-      js_statement_match(scrutinees, cases, env, expected)
-    case _: String.append("return ", String.append(js_term_tail_expected(term, env, expected), ";"))
-def js_statement_local(patterns: List<&2, AST.SyntaxPattern>, values: List<&2, AST.SyntaxTerm>, body: AST.SyntaxTerm, source: EmitEnv, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  match patterns values:
-    case Nil{} Nil{}: js_statement_tail(body, env, expected)
-    case AST.PatternVar{_, _, AST.QZero{}, _} <> rest +value <> more:
-      js_statement_local(rest, more, body, source, env_bind("null", js_type(value, source), Some{js_close(value, source)}, env), expected)
-    case AST.PatternVar{_, _, _, _} <> rest +value <> more:
-      name = String.append("$local", Nat.show(env_depth(env)))
-      bound = env_bind(name, js_type(value, source), Some{js_close(value, source)}, env)
-      prefix = String.append("const ", String.append(name, String.append(" = ", String.append(js_term(value, source), ";\n"))))
-      String.append(prefix, js_statement_local(rest, more, body, source, bound, expected))
-    case AST.PatternCtr{_, _, _} <> _ +_ <> _:
-      String.append("return ", String.append(js_body_local_constructor(patterns, values, body, source, env, expected), ";"))
-    case _ _: "throw \"bend: malformed local bindings\";"
-def js_statement_match(scrutinees: List<&2, AST.SyntaxTerm>, cases: List<&2, AST.SyntaxTerm>, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  count = List.length(&2, AST.SyntaxTerm, scrutinees)
-  values = scrutinee_names(count, env)
-  branch_env = env_reserve_names(count, env)
-  String.append(js_scrutinees(scrutinees, env, 0n), js_cases_dispatch(cases, values, scrutinees, branch_env, expected))
-def js_statement_result(body: AST.SyntaxTerm, env: EmitEnv, result: AST.OptionalTerm) -> String:
-  match result:
-    case AST.SomeTerm{ty}: js_statement_tail(body, env, Some{js_close(ty, env)})
-    case AST.NoTerm{}: js_statement_tail(body, env, None{})
-
-def js_app_spine(term: AST.SyntaxTerm, env: EmitEnv, strict: Bool) -> String:
-  js_app_spine_result(js_app_spine_at(term, Nil{}), env, strict)
-
-def js_app_spine_result(spine: AST.SyntaxTerm & List<&2, AST.SyntaxTerm>, env: EmitEnv, strict: Bool) -> String:
-  match spine:
-    case (head, args):
-      js_app_dispatch(head, args, env, strict)
-
-def js_app_dispatch(head: AST.SyntaxTerm, args: List<&2, AST.SyntaxTerm>, env: EmitEnv, strict: Bool) -> String:
-  match head:
-    case AST.TermRef{key, _}: js_named_app(key, args, env, strict)
-    case AST.TermBang{AST.TermRef{key, _}, _}:
-      js_named_app(key, args, env, strict)
-    case AST.TermBang{_, _}: "(()=>{throw \"bend: bang head must be a named reference\"})()"
-    case _: js_app_chain(js_term(head, env), js_type(head, env), args, env)
-# Resolve through the same immutable ordered type owners as checked signatures.
-# A foreign/native/type owner blocks a global fallback even when unsupported.
-def js_named_owner(key: String, env: EmitEnv) -> Maybe<&2, EmitNamed>:
-  match env:
-    case EmitEnv{+scope, _, _, _, _}:
-      match scope:
-        case EmitScope{_, _, catalog}:
-          js_named_fallback(js_named_lookup(js_scope_key(key, scope), catalog), key, catalog)
-def js_named_fallback(found: Maybe<&2, EmitNamed>, key: String, catalog: EmitCatalog) -> Maybe<&2, EmitNamed>:
-  match found:
-    case Some{_}: found
-    case None{}: js_named_lookup(key, catalog)
-def js_named_lookup(key: String, +catalog: EmitCatalog) -> Maybe<&2, EmitNamed>:
-  match catalog:
-    case EmitCatalog{_, _, _, owners}:
-      js_named_layouts(IndexLookup.find(List<&2, EmitModuleIndex>, owners, key), key, catalog)
-def js_named_layouts(found: Maybe<&2, List<&2, EmitModuleIndex>>, key: String, catalog: EmitCatalog) -> Maybe<&2, EmitNamed>:
-  match found:
-    case None{}: None{}
-    case Some{Nil{}}: None{}
-    case Some{+layout <> rest}:
-      match layout:
-        case EmitModuleIndex{_, _, _, _, types}:
-          js_named_next(js_named_declarations(IndexLookup.find(List<&2, AST.TopLevel>, types, key), key, js_owner_env(layout, catalog)), rest, key, catalog)
-def js_named_next(found: Maybe<&2, EmitNamed>, rest: List<&2, EmitModuleIndex>, key: String, catalog: EmitCatalog) -> Maybe<&2, EmitNamed>:
-  match found:
-    case Some{_}: found
-    case None{}: js_named_layouts(Some{rest}, key, catalog)
-def js_named_declarations(found: Maybe<&2, List<&2, AST.TopLevel>>, key: String, env: EmitEnv) -> Maybe<&2, EmitNamed>:
-  match found:
-    case None{}: None{}
-    case Some{Nil{}}: None{}
-    case Some{AST.DefTop{definition} <> _}: Some{EmitNamed{key, definition, env}}
-    case Some{AST.TypeTop{_} <> _}: Some{EmitNamedBlocked{}}
-    case Some{AST.LawTop{AST.LawDecl{name, clauses, _, _}} <> rest}:
-      js_named_native_law(js_native_operation(name, env), js_native_law_binders(clauses, 0n), rest, key, env)
-def js_named_native_law(operation: Maybe<&2, String>, binders: Maybe<&2, List<&2, AST.TelescopeItem>>, rest: List<&2, AST.TopLevel>, key: String, env: EmitEnv) -> Maybe<&2, EmitNamed>:
-  match operation binders:
-    case Some{_} Some{items}: Some{EmitNamedNative{key, items, env}}
-    case Some{_} None{}: Some{EmitNamedBlocked{}}
-    case None{} _: js_named_declarations(Some{rest}, key, env)
-def js_named_app(key: String, args: List<&2, AST.SyntaxTerm>, env: EmitEnv, strict: Bool) -> String:
-  js_named_app_found(js_named_owner(key, env), key, args, env, strict)
-def js_named_app_found(found: Maybe<&2, EmitNamed>, key: String, args: List<&2, AST.SyntaxTerm>, env: EmitEnv, strict: Bool) -> String:
-  match found:
-    case Some{EmitNamed{resolved, AST.Definition{_, +binders, +result, AST.DefTerm{+term}, _, _}, +owner}}:
-      js_named_app_native(js_native_primitive_checked(js_native_operation(resolved, owner), binders), resolved, binders, result, term, args, owner, key, env, strict)
-    case Some{EmitNamedNative{resolved, +binders, +owner}}:
-      js_named_native_law_app(js_native_primitive_checked(js_native_operation(resolved, owner), binders), resolved, binders, args, owner, key, env)
-    case _: js_app_chain(js_reference(key), js_global_type(key, env), args, env)
-# Native laws use the same checked telescope and fixed primitive shape that
-# emitted their $U entry. Unsupported laws retain the curried resolver path.
-def js_named_native_law_app(primitive: Maybe<&2, EmitPrimitive>, resolved: String, binders: List<&2, AST.TelescopeItem>, args: List<&2, AST.SyntaxTerm>, owner: EmitEnv, key: String, env: EmitEnv) -> String:
-  match primitive:
-    case Some{_}: js_native_app_args(js_named_args(binders, args, owner, env), resolved, key, args, env)
-    case None{}: js_app_chain(js_reference(key), js_global_type(key, env), args, env)
-def js_named_app_native(primitive: Maybe<&2, EmitPrimitive>, resolved: String, binders: List<&2, AST.TelescopeItem>, result: AST.OptionalTerm, term: AST.SyntaxTerm, args: List<&2, AST.SyntaxTerm>, owner: EmitEnv, key: String, env: EmitEnv, strict: Bool) -> String:
-  match primitive:
-    case Some{_}: js_native_app_args(js_named_args(binders, args, owner, env), resolved, key, args, env)
-    case None{}: js_named_app_eligible(js_named_eligible(resolved, binders, result, term, owner), resolved, binders, args, owner, key, env, strict)
-def js_native_app_args(found: Maybe<&2, List<&2, String>>, resolved: String, key: String, args: List<&2, AST.SyntaxTerm>, env: EmitEnv) -> String:
-  match found:
-    case Some{values}:
-      String.append(js_named_identifier(resolved), String.append("(", String.append(String.join(values, ","), ")")))
-    case None{}: js_app_chain(js_reference(key), js_global_type(key, env), args, env)
-def js_named_app_eligible(eligible: Bool, resolved: String, binders: List<&2, AST.TelescopeItem>, args: List<&2, AST.SyntaxTerm>, owner: EmitEnv, key: String, env: EmitEnv, strict: Bool) -> String:
-  match eligible:
-    case True{}: js_named_app_args(js_named_args(binders, args, owner, env), resolved, key, args, env, strict)
-    case False{}: js_app_chain(js_reference(key), js_global_type(key, env), args, env)
-def js_named_tail_selected(resolved: String, +values: List<&2, String>, count: Nat, selected: Bool) -> String:
-  match selected:
-    case True{}:
-      prefix = String.append("run_named", String.append(Nat.show(count), String.append("(", String.append(js_named_identifier(resolved), ","))))
-      String.append(prefix, String.append(String.join(values, ","), ",$td)"))
-    case False{}: String.append("run_many(", String.append(js_named_identifier(resolved), String.append(",[", String.append(String.join(values, ","), "],$td)"))))
-
-def js_named_tail(resolved: String, +values: List<&2, String>) -> String:
-  count = List.length(&2, String, values)
-  js_named_tail_selected(resolved, values, count, Bool.and(Nat.is_gt(count, 0n), Nat.is_le(count, 32n)))
-
-def js_named_app_args(found: Maybe<&2, List<&2, String>>, resolved: String, key: String, args: List<&2, AST.SyntaxTerm>, env: EmitEnv, strict: Bool) -> String:
-  match found:
-    case Some{values}:
-      match strict:
-        case True{}: String.append(js_named_identifier(resolved), String.append("(", String.append(String.join(values, ","), ")")))
-        case False{}: js_named_tail(resolved, values)
-    case None{}: js_app_chain(js_reference(key), js_global_type(key, env), args, env)
-# Consume dependent metadata in declaration scope, evaluating only live operands
-# in the caller's scope. Both JS call operands and array literals are left-to-right.
-# Strict calls retain their caller's run_loop. Ordinary tail calls batch at
-# most sixty-four direct calls before yielding the same trampoline request.
-# The private depth argument is local to each chain; dynamic closures keep
-# the existing trampoline. Strict recursion still needs nested forcing.
-def js_named_args(binders: List<&2, AST.TelescopeItem>, args: List<&2, AST.SyntaxTerm>, owner: EmitEnv, env: EmitEnv) -> Maybe<&2, List<&2, String>>:
-  match binders args:
-    case Nil{} Nil{}: Some{Nil{}}
-    case AST.Binder{quantity, _, _, domain, _} <> rest +arg <> more:
-      bound = env_bind("null", Some{js_close(domain, owner)}, Some{js_close(arg, env)}, owner)
-      js_named_arg(js_named_args(rest, more, bound, env), quantity, arg, domain, owner, env)
-    case _ _: None{}
-def js_named_arg(rest: Maybe<&2, List<&2, String>>, quantity: AST.Quantity, arg: AST.SyntaxTerm, domain: AST.SyntaxTerm, owner: EmitEnv, env: EmitEnv) -> Maybe<&2, List<&2, String>>:
-  match rest:
-    case None{}: None{}
-    case Some{values}:
-      match quantity:
-        case AST.QZero{}: Some{values}
-        case _: Some{js_term_expected(arg, env, Some{js_close(domain, owner)}) <> values}
-def js_app_spine_at(term: AST.SyntaxTerm, args: List<&2, AST.SyntaxTerm>) -> AST.SyntaxTerm & List<&2, AST.SyntaxTerm>:
-  match term:
-    case AST.TermApp{fn, arg,  _}: js_app_spine_at(fn, arg <> args)
-    case _: (term, args)
-# Source argument syntax is not an erasure test. Consume every formal slot,
-# but emit a call (and its argument expression) only for a live quantity.
-# Consequently partial applications retain exactly the declaration/lambda ABI,
-# including erased value arguments and arrows in a declared result type.
-def js_app_chain_args(args: List<&2, AST.SyntaxTerm>, ty: Maybe<&2, EmitClosure>, fn: String, env: EmitEnv) -> String:
-  match args:
-    case Nil{}: fn
-    case +arg <> rest:
-      match ty:
-        case None{}: "(()=>{throw \"bend: application has no checked signature\"})()"
-        case Some{value}: js_app_arrow(fn, js_reduce(value), arg, rest, env)
-def js_app_chain(fn: String, ty: Maybe<&2, EmitClosure>, args: List<&2, AST.SyntaxTerm>, env: EmitEnv) -> String:
-  js_app_chain_args(args, ty, fn, env)
-def js_app_arrow_env(fn: String, ty: EmitClosure, arg: AST.SyntaxTerm, rest: List<&2, AST.SyntaxTerm>, env: EmitEnv, type_env: EmitEnv) -> String:
-  match ty:
-    case EmitClosure{AST.TermAll{quantity, _, _, domain, codomain, _}, _, _, _, _, _}:
-      next = Some{js_close(codomain, env_bind("null", Some{js_close(domain, type_env)}, Some{js_close(arg, env)}, type_env))}
-      js_app_quantity(quantity, fn, Some{js_close(domain, type_env)}, next, arg, rest, env)
-    case EmitInferred{AST.Binder{quantity, _, _, domain, _} <> more, body, _, _, _, _, _}:
-      bound = env_bind("null", Some{js_close(domain, type_env)}, Some{js_close(arg, env)}, type_env)
-      js_app_quantity(quantity, fn, Some{js_close(domain, type_env)}, Some{js_close_inferred(more, body, bound)}, arg, rest, env)
-    case EmitDeclared{AST.Binder{quantity, _, _, domain, _} <> more, result, _, _, _, _, _}:
-      bound = env_bind("null", Some{js_close(domain, type_env)}, Some{js_close(arg, env)}, type_env)
-      js_app_quantity(quantity, fn, Some{js_close(domain, type_env)}, Some{js_close_declared(more, result, bound)}, arg, rest, env)
-    case _: "(()=>{throw \"bend: application signature is not a function\"})()"
-def js_app_arrow(fn: String, ty: EmitClosure, arg: AST.SyntaxTerm, rest: List<&2, AST.SyntaxTerm>, env: EmitEnv) -> String:
-  js_app_arrow_env(fn, ty, arg, rest, env, js_closure_env(ty))
-def js_app_quantity(quantity: AST.Quantity, fn: String, domain: Maybe<&2, EmitClosure>, next: Maybe<&2, EmitClosure>, arg: AST.SyntaxTerm, rest: List<&2, AST.SyntaxTerm>, env: EmitEnv) -> String:
-  match quantity:
-    case AST.QZero{}: js_app_chain(fn, next, rest, env)
+  EmitFailure{message: String, span: Ast.SourceSpan}
+
+type cps_provider_1_ProgramResult is Data:
+  cps_provider_1_Lowered{program: BIR.Program}
+  cps_provider_1_LowerFailure{message: String, span: Ast.SourceSpan}
+
+type cps_provider_1_Problem is Data:
+  cps_provider_1_Problem{message: String, span: Ast.SourceSpan}
+
+type cps_provider_1_Slot is Data:
+  cps_provider_1_ErasedSlot{}
+  cps_provider_1_Slot{owner: U32, identity: U32, value: BIR.Atom, use: BIR.Use}
+
+type cps_provider_1_Capture is Data:
+  cps_provider_1_Capture{slot: cps_provider_1_Slot, index: U32}
+
+type cps_provider_1_Instruction is Data:
+  cps_provider_1_Bind{id: U32, op: BIR.Op}
+  cps_provider_1_Guard{condition: BIR.Atom, failure: BIR.Block}
+  cps_provider_1_Stop{failure: BIR.Block}
+
+type cps_provider_1_Frame is Data:
+  cps_provider_1_Frame{owner: U32, instructions: List<&2, cps_provider_1_Instruction>, captures: List<&2, cps_provider_1_Capture>, capture_count: U32}
+
+type cps_provider_2_NfContext is Data:
+  cps_provider_2_NfContext{families: Map<&2, BIR.Family>, type_functions: Map<&2, BIR.TypeFunction>}
+
+type cps_provider_1_State is Type:
+  cps_provider_1_State{source: Arena.Arena, next_code: U32, next_local: U32, frame: cps_provider_1_Frame, codes: List<&2, BIR.Code>, failure: Maybe<&2, cps_provider_1_Problem>, scope: Maybe<&2, Scope.ArenaGlobalScope>, normalizer: Maybe<&2, cps_provider_2_NfContext>}
+
+type cps_provider_1_LowerResult<-T: Type> is Type:
+  cps_provider_1_LowerResult{state: cps_provider_1_State, value: T}
+
+type cps_provider_1_CodeRef is Data:
+  cps_provider_1_CodeRef{code: U32, parameters: List<&2, BIR.Parameter>, captures: List<&2, cps_provider_1_Capture>}
+
+type cps_provider_1_SourceArgument is Data:
+  cps_provider_1_SourceArgument{quantity: Ast.Quantity, occurrence: IR.Occurrence}
+
+type cps_provider_1_Spine is Data:
+  cps_provider_1_Spine{head: IR.Occurrence, args: List<&2, cps_provider_1_SourceArgument>}
+
+type cps_provider_1_TemplateResult is Type:
+  cps_provider_1_TemplateResult{source: Arena.Arena, problem: Maybe<&2, cps_provider_1_Problem>}
+
+type cps_provider_1_Prepared is Type:
+  cps_provider_1_Prepared{program: Checked.CheckedProgram, problem: Maybe<&2, cps_provider_1_Problem>}
+
+type cps_provider_1_ArrowFacts is Data:
+  cps_provider_1_ArrowFacts{uses: List<&2, BIR.Use>, domains: List<&2, BIR.Descriptor>}
+
+type cps_provider_2_NfVal is Data:
+  cps_provider_2_NfType{key: String, args: List<&2, cps_provider_2_NfVal>}
+  cps_provider_2_NfCtor{key: String, args: List<&2, cps_provider_2_NfVal>}
+  cps_provider_2_NfQuantity{quantity: BIR.Quantity}
+  cps_provider_2_NfKind{quantity: BIR.Descriptor}
+  cps_provider_2_NfOther{source: BIR.Descriptor}
+  cps_provider_2_NfMissing{source: BIR.Descriptor}
+  cps_provider_2_NfClosure{quantity: Maybe<&2, BIR.Quantity>, body: BIR.Descriptor, env: List<&2, cps_provider_2_NfVal>, sources: List<&2, BIR.Descriptor>}
+
+type cps_provider_2_NfBind is Data:
+  cps_provider_2_NfBound{bindings: List<&2, cps_provider_2_NfVal>}
+  cps_provider_2_NfMismatch{}
+  cps_provider_2_NfUnknown{}
+
+type cps_provider_2_NfStatus is Data:
+  cps_provider_2_NfStatusOk{}
+  cps_provider_2_NfStatusNo{}
+  cps_provider_2_NfStatusMaybe{}
+
+type cps_provider_2_Nf is Data:
+  cps_provider_2_NfOk{val: cps_provider_2_NfVal}
+  cps_provider_2_NfFail{message: String}
+
+type cps_provider_2_NfList is Data:
+  cps_provider_2_NfListOk{vals: List<&2, cps_provider_2_NfVal>}
+  cps_provider_2_NfListFail{message: String}
+
+type cps_provider_2_NfApp is Data:
+  cps_provider_2_NfApp{key: String, args: List<&2, BIR.Descriptor>}
+
+type cps_provider_2_NfArity is Data:
+  cps_provider_2_NfArity{complete: Bool, exact: Bool, under: Bool}
+
+type cps_provider_3_EmitResult is Data:
+  cps_provider_3_EmitSuccess{source: String}
+  cps_provider_3_EmitFailure{message: String, span: Ast.SourceSpan}
+
+type cps_provider_3_LinkSource is Data:
+  cps_provider_3_LinkSource{path: String, namespace: String, span: Ast.SourceSpan}
+
+type cps_provider_3_LinkResult is Data:
+  cps_provider_3_LinkSuccess{sources: List<&2, cps_provider_3_LinkSource>}
+  cps_provider_3_LinkFailure{message: String, span: Ast.SourceSpan}
+
+type cps_provider_3_JSParameter is Data:
+  cps_provider_3_JSParameterNat{}
+  cps_provider_3_JSParameterOther{}
+  cps_provider_3_JSParameterUnresolved{}
+
+type cps_provider_3_JSCidResult is Data:
+  cps_provider_3_JSCidDone{source: String}
+  cps_provider_3_JSCidFailure{message: String}
+
+type cps_provider_3_JSMode is Data:
+  cps_provider_3_JSCode{}
+  cps_provider_3_JSLineComment{}
+  cps_provider_3_JSBlockComment{}
+  cps_provider_3_JSDoubleQuote{}
+  cps_provider_3_JSSingleQuote{}
+  cps_provider_3_JSBacktick{}
+
+type cps_provider_3_JSScan is Data:
+  cps_provider_3_JSScanComplete{output: List<&2, Char>}
+  cps_provider_3_JSScanRefused{message: String}
+
+type cps_provider_3_JSKeyScan is Data:
+  cps_provider_3_JSKeyFound{key: String, rest: List<&2, Char>}
+  cps_provider_3_JSKeyAbsent{}
+
+type cps_provider_3_JSEffects is Data:
+  cps_provider_3_JSEffectsReady{text: String}
+  cps_provider_3_JSEffectsFailure{message: String, span: Ast.SourceSpan}
+
+type cps_provider_3_TagArm is Data:
+  cps_provider_3_TagArm{label: U32, condition: U32, tag: String, body: BIR.Block}
+
+type cps_provider_3_TaggedRegion is Data:
+  cps_provider_3_TaggedRegion{label: U32, condition: U32, subject: BIR.Atom, tag: String, body: BIR.Block, rest: BIR.Block}
+
+type cps_provider_3_TagGroup is Data:
+  cps_provider_3_TagGroup{arms: List<&2, cps_provider_3_TagArm>, rest: BIR.Block, count: Nat}
+
+type cps_provider_3_JSDescriptorHead is Data:
+  cps_provider_3_JSDescriptorHead{key: String, args: List<&2, BIR.Descriptor>}
+
+type cps_provider_4_Foreign is Data:
+  cps_provider_4_Foreign{namespace: String, imported: String, sources: List<&2, String>, span: Ast.SourceSpan, parameter_types: List<&2, BIR.Descriptor>, result: BIR.Descriptor}
+
+type cps_provider_4_DefinitionHeader is Data:
+  cps_provider_4_DefinitionHeader{symbol: IR.Symbol, key: String, code: U32, parameters: List<&2, BIR.Parameter>, quantities: List<&2, BIR.Quantity>, type_only: Bool, primitive: Maybe<&2, BIR.Primitive>, foreign: Maybe<&2, cps_provider_4_Foreign>, fast: Bool}
+
+type cps_provider_4_Definition is Data:
+  cps_provider_4_Definition{header: cps_provider_4_DefinitionHeader, binders: IR.Words, result: IR.OptionalTerm, body: IR.DefBody, checked: Maybe<&2, IR.Occurrence>, scope: Scope.ArenaGlobalScope, native: Maybe<&2, String>, quantity_prefix: Nat}
+
+type cps_provider_4_Constructor is Data:
+  cps_provider_4_Constructor{layout: BIR.ConstructorLayout, quantities: List<&2, BIR.Quantity>, parameters: Nat, family: String}
+
+type cps_provider_4_Registry is Data:
+  cps_provider_4_Registry{definitions: Map<&2, cps_provider_4_DefinitionHeader>, constructors: Map<&2, cps_provider_4_Constructor>}
+
+type cps_provider_4_Catalog is Data:
+  cps_provider_4_Catalog{definitions: List<&2, cps_provider_4_Definition>, registry: cps_provider_4_Registry, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>, next_code: U32, ending: BIR.Ending}
+
+type cps_provider_4_BuildResult is Type:
+  cps_provider_4_Built{program: Checked.CheckedProgram, catalog: cps_provider_4_Catalog}
+  cps_provider_4_BuildFailure{program: Checked.CheckedProgram, message: String}
+
+type cps_provider_4_CatalogResult<-T: Type> is Type:
+  cps_provider_4_CatalogResult{source: Arena.Arena, value: T}
+
+type cps_provider_4_Telescope is Data:
+  cps_provider_4_Telescope{parameters: List<&2, BIR.Parameter>, quantities: List<&2, BIR.Quantity>, fields: List<&2, BIR.DescriptorField>, fixed: Bool}
+
+type cps_provider_4_Needed is Data:
+  cps_provider_4_Needed{functions: List<&2, BIR.TypeFunction>, seen: Map<&2, Bool>}
+
+type cps_provider_4_Root is Data:
+  cps_provider_4_TermRoot{term: U32, scope: Scope.ArenaGlobalScope}
+  cps_provider_4_DefinitionRoot{key: String}
+
+type cps_provider_4_Preparation is Data:
+  cps_provider_4_Preparation{definitions: List<&2, cps_provider_4_Definition>, index: Map<&2, cps_provider_4_Definition>, headers: Map<&2, cps_provider_4_DefinitionHeader>, constructors: List<&2, BIR.ConstructorLayout>, constructor_index: Map<&2, cps_provider_4_Constructor>, families: List<&2, BIR.Family>, next_code: U32, next_constructor: U32, roots: List<&2, cps_provider_4_Root>, main: Maybe<&2, BIR.Descriptor>, failure: Maybe<&2, String>, module_values: Map<&2, Bool>}
+
+type cps_provider_4_Arms is Data:
+  cps_provider_4_Arms{arms: List<&2, BIR.DescriptorArm>, state: cps_provider_4_Preparation}
+
+type cps_provider_4_ExportFacts is Data:
+  cps_provider_4_ExportFacts{parameter_types: List<&2, BIR.Descriptor>}
+
+type cps_provider_4_ConstructorField is Data:
+  cps_provider_4_ConstructorField{identity: U32, key: Maybe<&2, String>, quantity: BIR.Quantity}
+
+def emitted(v_0: cps_provider_3_EmitResult) -> EmitResult:
+  match v_0:
+    case cps_provider_3_EmitFailure{v_4, v_5}:
+      EmitFailure{v_4, v_5}
+    case cps_provider_3_EmitSuccess{v_7}:
+      EmitSuccess{v_7}
+
+def emit_result(v_0: cps_provider_1_ProgramResult, v_2: List<&2, BIR.SourceFile>) -> EmitResult:
+  match v_0:
+    case cps_provider_1_LowerFailure{v_6, v_7}:
+      EmitFailure{v_6, v_7}
+    case cps_provider_1_Lowered{v_9}:
+      emitted(cps_provider_3_emit_linked(v_9, v_2))
+
+def emit(v_0: Checked.CheckedProgram, v_2: List<&2, BIR.SourceFile>) -> EmitResult:
+  emit_result(cps_provider_1_lower(v_0), v_2)
+
+def emit_library(v_0: Checked.CheckedProgram, v_3: List<&2, String>, v_5: List<&2, BIR.SourceFile>) -> EmitResult:
+  emit_result(cps_provider_1_lower_library(v_0, v_3), v_5)
+
+def cps_provider_1_use(v_0: Ast.Quantity) -> BIR.Use:
+  match v_0:
+    case Ast.QMany{}:
+      BIR.Many{}
     case _:
-      source = String.append("run_tail(run_loop(", String.append(fn, String.append("),", String.append(js_term_expected(arg, env, domain), ")"))))
-      js_app_chain(source, next, rest, env)
+      BIR.Affine{}
 
-def js_lambda(quantity: Maybe<&2, AST.Quantity>, body: AST.SyntaxTerm, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  match expected:
-    case Some{ty}: js_lambda_view(quantity, body, env, js_reduce(ty))
-    case None{}: js_lambda_untyped(quantity, body, env)
-def js_lambda_view_env(quantity: Maybe<&2, AST.Quantity>, body: AST.SyntaxTerm, env: EmitEnv, expected: EmitClosure, type_env: EmitEnv) -> String:
-  match expected:
-    case EmitClosure{AST.TermAll{formal, _, _, domain, codomain, _}, _, _, _, _, _}:
-      name = js_binder_name(formal, String.append("$x", Nat.show(env_depth(env))))
-      bound = env_bind(name, Some{js_close(domain, type_env)}, None{}, env)
-      next = Some{js_close(codomain, env_bind(name, Some{js_close(domain, type_env)}, None{}, type_env))}
-      js_lambda_quantity(formal, name, body, bound, next)
-    case _: "(()=>{throw \"bend: lambda signature is not a function\"})()"
-def js_lambda_view(quantity: Maybe<&2, AST.Quantity>, body: AST.SyntaxTerm, env: EmitEnv, expected: EmitClosure) -> String:
-  js_lambda_view_env(quantity, body, env, expected, js_closure_env(expected))
-def js_binder_name(quantity: AST.Quantity, name: String) -> String:
-  match quantity:
-    case AST.QZero{}: "null"
-    case _: name
-def js_lambda_untyped(quantity: Maybe<&2, AST.Quantity>, body: AST.SyntaxTerm, env: EmitEnv) -> String:
-  match quantity:
-    case Some{AST.QZero{}}: js_term_tail_expected(body, env_push("null", env), None{})
-    case _: "(()=>{throw \"bend: lambda has no checked signature\"})()"
-def js_lambda_quantity(quantity: AST.Quantity, name: String, body: AST.SyntaxTerm, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  match quantity:
-    case AST.QZero{}: js_term_tail_expected(body, env, expected)
-    case _: js_closure(name, js_term_tail_expected(body, env, expected))
-#
-# One callable serves strict foreign calls and raw trampoline entry. The private
-# symbol selects raw mode; incidental extra callback arguments cannot select it.
-# A defaulted second formal preserves the public one-argument function length.
-def js_closure(name: String, body: String) -> String:
-  String.append("run_clo((", String.append(name, String.append(",$raw=undefined)=>run_force(", String.append(body, ",$raw))"))))
-def env_depth(env: EmitEnv) -> Nat:
-  match env:
-    case EmitEnv{_, _, _, _, depth}: depth
-# Depth allocates fresh JS identifiers; binder lookup uses the captured lists.
-# Reserving a match scope never inserts or shifts a source-language binder.
-def env_reserve_names(count: Nat, env: EmitEnv) -> EmitEnv:
-  match env:
-    case EmitEnv{scope, names, types, values, depth}:
-      EmitEnv{scope, names, types, values, ((depth + count : Nat) + 1n : Nat)}
-
-def js_term_sub(index: Nat, value: AST.SyntaxTerm, body: AST.SyntaxTerm, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  name = String.append("$sub", Nat.show(env_depth(env)))
-  bound = env_insert_binding(env, index, EmitBinding{name, js_type(value, env), Some{js_close(value, env)}})
-  String.append("((", String.append(name, String.append(") => ", String.append(js_term_tail_expected(body, bound, expected), String.append(")(", String.append(js_term(value, env), ")"))))))
-def js_term_let(keys: List<&2, String>, quantities: List<&2, AST.Quantity>, values: List<&2, AST.SyntaxTerm>, body: AST.SyntaxTerm, source_env: EmitEnv, env: EmitEnv, expected: Maybe<&2, EmitClosure>, index: Nat) -> String:
-  match keys quantities values:
-    case Nil{} Nil{} Nil{}: js_term_tail_expected(body, env, expected)
-    case +key <> more_keys AST.QZero{} <> more_quantities +value <> more_values:
-      bound = env_bind("null", js_type(value, source_env), Some{js_close(value, source_env)}, env)
-      js_term_let(more_keys, more_quantities, more_values, body, source_env, bound, expected, (index + 1n : Nat))
-    case +key <> more_keys +quantity <> more_quantities +value <> more_values:
-      name = String.append("$l", Nat.show(env_depth(env)))
-      bound = env_bind(name, js_type(value, source_env), Some{js_close(value, source_env)}, env)
-      String.append("((", String.append(name, String.append(") => ", String.append(js_term_let(more_keys, more_quantities, more_values, body, source_env, bound, expected, (index + 1n : Nat)), String.append(")(", String.append(js_term(value, source_env), ")"))))))
-    case _ _ _: "(()=>{throw \"bend: malformed let bindings\"})()"
-def js_body_local(patterns: List<&2, AST.SyntaxPattern>, values: List<&2, AST.SyntaxTerm>, body: AST.SyntaxTerm, source: EmitEnv, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  match patterns values:
-    case Nil{} Nil{}: js_term_tail_expected(body, env, expected)
-    case AST.PatternVar{_, _, AST.QZero{}, _} <> rest +value <> more:
-      js_body_local(rest, more, body, source, env_bind("null", js_type(value, source), Some{js_close(value, source)}, env), expected)
-    case AST.PatternVar{_, _, _, _} <> rest +value <> more:
-      name = String.append("$local", Nat.show(env_depth(env)))
-      bound = env_bind(name, js_type(value, source), Some{js_close(value, source)}, env)
-      String.append("((", String.append(name, String.append(") => ", String.append(js_body_local(rest, more, body, source, bound, expected), String.append(")(", String.append(js_term(value, source), ")"))))))
-    case AST.PatternCtr{_, _, _} <> _ +_ <> _:
-      js_body_local_constructor(patterns, values, body, source, env, expected)
-    case _ _: "(()=>{throw \"bend: malformed local bindings\"})()"
-def js_body_local_constructor(patterns: List<&2, AST.SyntaxPattern>, values: List<&2, AST.SyntaxTerm>, body: AST.SyntaxTerm, source: EmitEnv, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  count = List.length(&2, AST.SyntaxTerm, values)
-  names = scrutinee_names(count, source)
-  types = js_pattern_types(patterns, js_scrutinee_types(values, source), source)
-  branch = js_case_typed(patterns, body, names, types, env_reserve_names(count, env), expected)
-  prefix = String.append("(()=>{", js_scrutinees(values, source, 0n))
-  String.append(prefix, String.append(branch, "throw \"bend: runtime fail-stop\";})()"))
-
-def js_constructor(key: String, args: List<&2, AST.SyntaxTerm>, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  native = js_constructor_native(js_constructor_native_identity(key, env))
-  js_constructor_literal(js_native_word_literal(native, key, args, env), native, key, args, env, expected)
-def js_constructor_literal(literal: Maybe<&2, String>, native: String, key: String, args: List<&2, AST.SyntaxTerm>, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  match literal:
-    case Some{source}: source
-    case None{}: js_constructor_render(native, key, js_constructor_args(args, js_constructor_signature(key, expected, env), env), env)
-# Only native scalar wrappers consume a closed Word; explicit Word values retain
-# their constructor representation. Decode source nodes, never emitted JS text.
-def js_native_word_literal(native: String, key: String, args: List<&2, AST.SyntaxTerm>, env: EmitEnv) -> Maybe<&2, String>:
-  match native args:
-    case "U" +word <> Nil{}: js_native_word_declared(js_word_identity(js_constructor_decl(key, env)), native, word, env)
-    case "F" +word <> Nil{}: js_native_word_declared(js_word_identity(js_constructor_decl(key, env)), native, word, env)
-    case _ _: None{}
-def js_native_word_declared(identity: String, native: String, word: AST.SyntaxTerm, env: EmitEnv) -> Maybe<&2, String>:
-  match identity native:
-    case "U32.U32" "U": js_word_literal_render(js_closed_word(32n, word, env), False{})
-    case "F32.F32" "F": js_word_literal_render(js_closed_word(32n, word, env), True{})
-    case _ _: None{}
-def js_word_literal_render(value: Maybe<&2, Nat>, floating: Bool) -> Maybe<&2, String>:
-  match value floating:
-    case Some{bits} False{}: Some{Nat.show(bits)}
-    case Some{bits} True{}: Some{String.append("f32_from_bits(", String.append(Nat.show(bits), ")"))}
-    case None{} _: None{}
-# Unlike the general native identity fallback, folding requires a declaration
-# whose original environment proves that it comes from the canonical Base.
-def js_word_identity(found: Maybe<&2, EmitConstructor>) -> String:
-  match found:
-    case Some{EmitConstructor{canonical, family, _, _, declaration_env}}:
-      js_constructor_native_origin(js_base_origin(declaration_env), family, canonical)
-    case None{}: ""
-def js_closed_word(+remaining: Nat, term: AST.SyntaxTerm, env: EmitEnv) -> Maybe<&2, Nat>:
-  match term:
-    case AST.TermAnn{inner, _, _}: js_closed_word(remaining, inner, env)
-    case AST.TermCtr{key, args, _}:
-      js_closed_word_constructor(remaining, js_word_identity(js_constructor_decl(key, env)), args, env)
-    case _: None{}
-def js_closed_word_constructor(+remaining: Nat, identity: String, args: List<&2, AST.SyntaxTerm>, env: EmitEnv) -> Maybe<&2, Nat>:
-  match remaining identity args:
-    case 0n "Word.Nil.WNil" Nil{}: Some{0n}
-    case 1n+rest "Word.Con.WCon" +bit <> +tail <> Nil{}:
-      js_closed_word_bit(js_closed_bit(bit, env), rest, tail, env)
-    case _ _ _: None{}
-def js_closed_bit(term: AST.SyntaxTerm, env: EmitEnv) -> Maybe<&2, Nat>:
-  match term:
-    case AST.TermAnn{inner, _, _}: js_closed_bit(inner, env)
-    case AST.TermCtr{key, Nil{}, _}: js_closed_bit_identity(js_word_identity(js_constructor_decl(key, env)))
-    case _: None{}
-def js_closed_bit_identity(identity: String) -> Maybe<&2, Nat>:
-  match identity:
-    case "Bool.False": Some{0n}
-    case "Bool.True": Some{1n}
-    case _: None{}
-def js_closed_word_bit(bit: Maybe<&2, Nat>, remaining: Nat, tail: AST.SyntaxTerm, env: EmitEnv) -> Maybe<&2, Nat>:
-  match bit:
-    case None{}: None{}
-    case Some{low}: js_closed_word_combine(low, js_closed_word(remaining, tail, env))
-def js_closed_word_combine(low: Nat, tail: Maybe<&2, Nat>) -> Maybe<&2, Nat>:
-  match tail:
-    case Some{high}: Some{((high * 2n : Nat) + low : Nat)}
-    case None{}: None{}
-
-def js_string_literal(+chars: List<&2, U32>, +names: AST.StringLiteralNames, +span: AST.SourceSpan, +env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  js_string_literal_authorized(js_string_names_native(names, env), chars, names, span, env, expected)
-def js_string_literal_authorized(authorized: Bool, +chars: List<&2, U32>, names: AST.StringLiteralNames, span: AST.SourceSpan, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  match authorized:
-    case True{}: js_string_literal_payload(js_string_scalar_chars(chars), chars, names, span, env, expected)
-    case False{}: js_term_expected(AST.string_desugar(chars, names, span), env, expected)
-def js_string_literal_payload(payload: Maybe<&2, List<&2, Char>>, chars: List<&2, U32>, names: AST.StringLiteralNames, span: AST.SourceSpan, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  match payload:
-    case Some{values}: js_quote(String.from_list(values))
-    case None{}: js_term_expected(AST.string_desugar(chars, names, span), env, expected)
-def js_string_scalar_chars(chars: List<&2, U32>) -> Maybe<&2, List<&2, Char>>:
-  match chars:
-    case Nil{}: Some{Nil{}}
-    case +value <> rest:
-      js_string_scalar_char(Bool.and(U32.is_le(value, 1114111), Bool.or(U32.is_lt(value, 55296), U32.is_gt(value, 57343))), value, rest)
-def js_string_scalar_char(valid: Bool, value: U32, rest: List<&2, U32>) -> Maybe<&2, List<&2, Char>>:
-  match valid:
-    case False{}: None{}
-    case True{}: js_string_scalar_cons(js_string_scalar_chars(rest), value)
-def js_string_scalar_cons(rest: Maybe<&2, List<&2, Char>>, value: U32) -> Maybe<&2, List<&2, Char>>:
-  match rest:
-    case None{}: None{}
-    case Some{values}: Some{Char.from_u32(value) <> values}
-def js_string_names_native(names: AST.StringLiteralNames, +env: EmitEnv) -> Bool:
-  match names:
-    case AST.StringLiteralNames{nil, cons, char, uint, word_nil, word_cons, bit_false, bit_true}:
-      Bool.and(js_string_constructor_native(nil, "String.SNil", env), Bool.and(js_string_constructor_native(cons, "String.SCon", env), Bool.and(js_string_constructor_native(char, "Char.Chr", env), Bool.and(js_string_constructor_native(uint, "U32.U32", env), Bool.and(js_string_constructor_native(word_nil, "Word.Nil.WNil", env), Bool.and(js_string_constructor_native(word_cons, "Word.Con.WCon", env), Bool.and(js_string_constructor_native(bit_false, "Bool.False", env), js_string_constructor_native(bit_true, "Bool.True", env))))))))
-def js_string_constructor_native(+key: String, +identity: String, +env: EmitEnv) -> Bool:
-  Bool.and(String.eq(js_word_identity(js_constructor_decl(key, env)), identity), js_string_constructor_schema(key, identity, env))
-def js_string_constructor_schema(key: String, identity: String, env: EmitEnv) -> Bool:
-  match env:
-    case EmitEnv{+scope, _, _, _, _}:
-      match scope:
-        case EmitScope{_, _, EmitCatalog{_, _, owners, _}}:
-          js_string_schema_owner(IndexLookup.find(EmitModuleIndex, owners, js_scope_key(key, scope)), key, identity, scope)
-def js_string_schema_owner(found: Maybe<&2, EmitModuleIndex>, key: String, identity: String, scope: EmitScope) -> Bool:
-  match found:
-    case Some{EmitModuleIndex{namespace, _, _, constructors, _}}:
-      js_string_schema_decl(IndexLookup.find(EmitConstructorOwner, constructors, js_scope_key(key, scope)), identity, namespace)
-    case None{}:
-      match scope:
-        case EmitScope{_, _, EmitCatalog{_, _, owners, _}}:
-          js_string_schema_global(IndexLookup.find(EmitModuleIndex, owners, key), key, identity)
-def js_string_schema_global(found: Maybe<&2, EmitModuleIndex>, key: String, identity: String) -> Bool:
-  match found:
-    case Some{EmitModuleIndex{namespace, _, _, constructors, _}}: js_string_schema_decl(IndexLookup.find(EmitConstructorOwner, constructors, key), identity, namespace)
-    case None{}: False{}
-def js_string_schema_decl(found: Maybe<&2, EmitConstructorOwner>, identity: String, namespace: String) -> Bool:
-  match found:
-    case Some{EmitConstructorOwner{AST.TypeDecl{_, params, AST.TermType{AST.TermQuantity{AST.QMany{}, _}, _}, _, _}, AST.Constructor{_, fields, _}}}:
-      js_string_schema_fields(identity, params, fields, namespace)
-    case _: False{}
-def js_string_schema_fields(identity: String, params: List<&2, AST.TelescopeItem>, fields: List<&2, AST.TelescopeItem>, +namespace: String) -> Bool:
-  match identity params fields:
-    case "String.SNil" Nil{} Nil{}: True{}
-    case "Bool.False" Nil{} Nil{}: True{}
-    case "Bool.True" Nil{} Nil{}: True{}
-    case "Word.Nil.WNil" Nil{} Nil{}: True{}
-    case "String.SCon" Nil{} AST.Binder{AST.QOne{}, _, 0n, head, _} <> AST.Binder{AST.QOne{}, _, 1n, tail, _} <> Nil{}:
-      Bool.and(js_string_schema_ref(head, "Char", namespace), js_string_schema_ref(tail, "String", namespace))
-    case "Char.Chr" Nil{} AST.Binder{AST.QOne{}, _, 0n, code, _} <> Nil{}: js_string_schema_ref(code, "U32", namespace)
-    case "U32.U32" Nil{} AST.Binder{AST.QOne{}, _, 0n, AST.TermApp{word, count, _}, _} <> Nil{}:
-      Bool.and(js_string_schema_ref(word, "Word", namespace), js_string_schema_nat(count, 32n, namespace))
-    case "Word.Con.WCon" AST.Binder{AST.QZero{}, _, 0n, param, _} <> Nil{} AST.Binder{AST.QOne{}, _, 1n, head, _} <> AST.Binder{AST.QOne{}, _, 2n, AST.TermApp{word, AST.TermVar{_, 1n, _}, _}, _} <> Nil{}:
-      Bool.and(js_string_schema_ref(param, "Nat", namespace), Bool.and(js_string_schema_ref(head, "Bool", namespace), js_string_schema_ref(word, "Word", namespace)))
-    case _ _ _: False{}
-def js_string_schema_nat(term: AST.SyntaxTerm, count: Nat, +namespace: String) -> Bool:
-  match term count:
-    case AST.TermCtr{key, Nil{}, _} 0n: js_string_schema_key(key, "Zero", namespace)
-    case AST.TermCtr{key, [rest], _} 1n+more:
-      Bool.and(js_string_schema_key(key, "Succ", namespace), js_string_schema_nat(rest, more, namespace))
-    case _ _: False{}
-def js_string_schema_ref(term: AST.SyntaxTerm, expected: String, namespace: String) -> Bool:
-  match term:
-    case AST.TermRef{key, _}: js_string_schema_key(key, expected, namespace)
-    case _: False{}
-def js_string_schema_key(+key: String, +expected: String, namespace: String) -> Bool:
-  Bool.or(String.eq(key, expected), String.eq(key, qualify(namespace, expected)))
-# Keep formal slots aligned while rendering; literal records omit erased slots.
-# Erased arguments become no expressions, so even a proof with effects is unused.
-def js_constructor_args(args: List<&2, AST.SyntaxTerm>, signature: Maybe<&2, EmitClosure>, env: EmitEnv) -> List<&2, String>:
-  match args:
-    case Nil{}: Nil{}
-    case +arg <> rest:
-      match signature:
-        case Some{ty}: js_constructor_arg_view(arg, rest, js_reduce(ty), env)
-        case None{}: js_term(arg, env) <> js_constructor_args(rest, None{}, env)
-def js_constructor_arg_view_env(arg: AST.SyntaxTerm, rest: List<&2, AST.SyntaxTerm>, signature: EmitClosure, env: EmitEnv, type_env: EmitEnv) -> List<&2, String>:
-  match signature:
-    case EmitClosure{AST.TermAll{quantity, _, _, domain, body, _}, _, _, _, _, _}:
-      next = Some{js_close(body, env_bind("null", Some{js_close(domain, type_env)}, Some{js_close(arg, env)}, type_env))}
-      js_constructor_arg_quantity(quantity, arg, Some{js_close(domain, type_env)}, env) <> js_constructor_args(rest, next, env)
-    case EmitDeclared{AST.Binder{quantity, _, _, domain, _} <> rest_fields, result, _, _, _, _, _}:
-      bound = env_bind("null", Some{js_close(domain, type_env)}, Some{js_close(arg, env)}, type_env)
-      js_constructor_arg_quantity(quantity, arg, Some{js_close(domain, type_env)}, env) <> js_constructor_args(rest, Some{js_close_declared(rest_fields, result, bound)}, env)
-    case _: js_term(arg, env) <> js_constructor_args(rest, None{}, env)
-def js_constructor_arg_view(arg: AST.SyntaxTerm, rest: List<&2, AST.SyntaxTerm>, signature: EmitClosure, env: EmitEnv) -> List<&2, String>:
-  js_constructor_arg_view_env(arg, rest, signature, env, js_closure_env(signature))
-def js_constructor_arg_quantity(quantity: AST.Quantity, arg: AST.SyntaxTerm, domain: Maybe<&2, EmitClosure>, env: EmitEnv) -> String:
-  match quantity:
-    case AST.QZero{}: "null"
-    case _: js_term_expected(arg, env, domain)
-def js_constructor_native(key: String) -> String:
-  js_choose_exact(key, "Nat.Zero", "NZ", js_choose_exact(key, "Bool.False", "BF", js_choose_exact(key, "Bool.True", "BT", js_choose_exact(key, "String.SNil", "SN", js_choose_exact(key, "Nat.Succ", "NS", js_choose_exact(key, "Char.Chr", "CH", js_choose_exact(key, "String.SCon", "SC", js_choose_exact(key, "U32.U32", "U", js_choose_exact(key, "F32.F32", "F", js_choose_exact(key, "Array.ALeaf", "AL", js_choose_exact(key, "Array.ANode", "AN", "")))))))))))
-def js_constructor_native_identity_found(found: Maybe<&2, EmitConstructor>, key: String) -> String:
-  match found:
-    case Some{EmitConstructor{canonical, family, _, _, declaration_env}}:
-      js_constructor_native_origin(js_base_origin(declaration_env), family, canonical)
-    case None{}: key
-def js_constructor_native_identity(key: String, env: EmitEnv) -> String:
-  js_constructor_native_identity_found(js_constructor_decl(key, env), key)
-def js_constructor_native_origin(native: Bool, family: String, key: String) -> String:
-  match native:
-    case True{}: String.append(family, String.append(".", ctor_short(key)))
-    case False{}: String.append("Data.", key)
-def js_base_origin(env: EmitEnv) -> Bool:
-  match env:
-    case EmitEnv{EmitScope{_, EmitAliases{_, _, native, _}, _}, _, _, _, _}:
-      native
-def js_base_source_suffix(matches: Bool, modules: List<&2, Loader.LoadedModule>) -> Bool:
-  match matches:
-    case True{}: js_base_imported(modules)
-    case False{}: False{}
-def js_base_source_exact(matches: Bool, path: String, modules: List<&2, Loader.LoadedModule>) -> Bool:
-  match matches:
-    case True{}: js_base_imported(modules)
-    case False{}: js_base_source_suffix(String.ends_with(path, "/bend2/base.bend"), modules)
-def js_base_source(path: String, modules: List<&2, Loader.LoadedModule>) -> Bool:
-  js_base_source_exact(String.eq(path, "bend2/base.bend"), path, modules)
-def js_base_imported(modules: List<&2, Loader.LoadedModule>) -> Bool:
-  match modules:
-    case Nil{}: False{}
-    case Loader.LoadedModule{_, AST.Module{_, imports, _}} <> rest:
-      js_base_imported_next(js_base_imports(imports), rest)
-def js_base_imported_next(found: Bool, rest: List<&2, Loader.LoadedModule>) -> Bool:
-  match found:
-    case True{}: True{}
-    case False{}: js_base_imported(rest)
-def js_base_imports(imports: List<&2, AST.ModuleImport>) -> Bool:
-  match imports:
-    case Nil{}: False{}
-    case AST.ModuleImport{path, _, _} <> rest:
-      js_base_imports_next(String.eq(path, "Base"), rest)
-def js_base_imports_next(found: Bool, rest: List<&2, AST.ModuleImport>) -> Bool:
-  match found:
-    case True{}: True{}
-    case False{}: js_base_imports(rest)
-def js_source_at(sources: List<&2, String>, index: Nat) -> String:
-  match sources:
-    case Nil{}: "undefined"
-    case +source <> rest:
-      match index:
-        case 0n: source
-        case _: js_source_at(rest, (index - 1n : Nat))
-def js_sources(sources: List<&2, String>) -> String:
-  match sources:
-    case Nil{}: ""
-    case +source <> rest:
-      match rest:
-        case Nil{}: source
-        case _: String.append(source, String.append(", ", js_sources(rest)))
-def js_constructor_render(native: String, key: String, sources: List<&2, String>, env: EmitEnv) -> String:
-  match native:
-    case "NZ": "0"
-    case "BF": "false"
-    case "BT": "true"
-    case "SN": "\"\""
-    case "NS": String.append("nat_chk(", String.append(js_source_at(sources, 0n), " + 1)"))
-    case "CH": String.append("char_new(", String.append(js_source_at(sources, 0n), ")"))
-    case "SC": String.append("(", String.append(js_source_at(sources, 0n), String.append(" + ", String.append(js_source_at(sources, 1n), ")"))))
-    case "U": String.append("word_to_u32(", String.append(js_source_at(sources, 0n), ")"))
-    case "F": String.append("f32_from_bits(word_to_u32(", String.append(js_source_at(sources, 0n), "))"))
-    case "AL": String.append("[", String.append(js_source_at(sources, 0n), "]"))
-    case "AN": String.append("array_node(", String.append(js_source_at(sources, 0n), String.append(", ", String.append(js_source_at(sources, 1n), ")"))))
-    case _: js_constructor_record(js_constructor_decl(key, env), key, sources)
-def js_constructor_record(found: Maybe<&2, EmitConstructor>, key: String, sources: List<&2, String>) -> String:
-  match found:
-    case Some{EmitConstructor{canonical, _, _, fields, _}}:
-      js_constructor_record_exact(js_constructor_record_fields(fields, sources), canonical)
-    case None{}: String.append("$ctr(", String.append(js_quote(key), String.append(", [", String.append(js_sources(sources), "], $scope, $aliases)"))))
-def js_constructor_record_exact(fields: Maybe<&2, String>, key: String) -> String:
-  match fields:
-    case Some{source}: String.append("({$:", String.append(js_quote(key), String.append(source, "})")))
-    case None{}: "(()=>{throw \"bend: constructor field count mismatch\"})()"
-# Literal properties evaluate live arguments left-to-right; erased slots never
-# become expressions or properties. __proto__ must be an own data property.
-def js_constructor_record_fields(fields: List<&2, AST.TelescopeItem>, sources: List<&2, String>) -> Maybe<&2, String>:
-  match fields sources:
-    case Nil{} Nil{}: Some{""}
-    case AST.Binder{AST.QZero{}, _, _, _, _} <> rest _ <> more:
-      js_constructor_record_fields(rest, more)
-    case AST.Binder{_, name, _, _, _} <> rest +source <> more:
-      js_constructor_record_field(js_constructor_record_fields(rest, more), name, source)
-    case _ _: None{}
-def js_constructor_record_field(rest: Maybe<&2, String>, name: String, source: String) -> Maybe<&2, String>:
-  match rest:
-    case None{}: None{}
-    case Some{suffix}: Some{String.append(", ", String.append(js_object_key(name), String.append(source, suffix)))}
-def js_object_key(name: String) -> String:
-  match name:
-    case "__proto__": "[\"__proto__\"]:"
-    case _: String.append(js_quote(name), ":")
-def ctor_short(key: String) -> String:
-  ctor_short_chars(List.reverse(&2, Char, String.to_list(key)), Nil{})
-
-def ctor_short_chars(reversed_key: List<&2, Char>, suffix: List<&2, Char>) -> String:
-  match reversed_key:
-    case Nil{}: String.from_list(suffix)
-    case +char <> rest:
-      match char:
-        case '.': String.from_list(suffix)
-        case '/': String.from_list(suffix)
-        case _: ctor_short_chars(rest, char <> suffix)
-
-def js_match(head: AST.SyntaxTerm, matched: AST.SyntaxTerm, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  name = String.append("$v", Nat.show(env_depth(env)))
-  bound = env_bind(name, js_type(matched, env), Some{js_close(matched, env)}, env)
-  prefix = String.append("(()=>{const ", String.append(name, "="))
-  String.append(prefix, String.append(js_term(matched, env), String.append("; return ", String.append(js_term_tail_expected(head, bound, expected), ";})()"))))
-
-
-def pattern_test(pattern: AST.SyntaxPattern, value: String, env: EmitEnv) -> String:
-  match pattern:
-    case AST.PatternVar{ _,  _,  _,  _}: "true"
-    case AST.PatternCtr{key, fields, _}: pattern_test_constructor(js_constructor_decl(key, env), key, fields, value, env)
-
-def pattern_test_constructor(found: Maybe<&2, EmitConstructor>, key: String, fields: List<&2, AST.SyntaxPattern>, value: String, env: EmitEnv) -> String:
-  match found:
-    case None{}: pattern_test_ctor(key, fields, value, env)
-    case Some{EmitConstructor{canonical, family, _, binders, declaration_env}}:
-      identity = js_constructor_native_origin(js_base_origin(declaration_env), family, canonical)
-      pattern_test_native_literal(js_native_word_pattern(identity, fields, env), identity, canonical, fields, binders, value, env)
-def pattern_test_constructor_tagged(tagged: Bool, key: String, tag: String, fields: List<&2, AST.SyntaxPattern>, binders: List<&2, AST.TelescopeItem>, value: String, env: EmitEnv) -> String:
-  match tagged:
-    case False{}: pattern_test_ctor(key, fields, value, env)
-    case True{}:
-      String.append("(", String.append(value, String.append(" && ", String.append(value, String.append(".$ === ", String.append(js_quote(tag), String.append(" && ", String.append(pattern_decl_fields_test(fields, binders, value, env), ")"))))))))
-# A native scalar's complete Base Word pattern observes only its 32 bits.
-# Open/nested consumer patterns and explicit Word values keep normal projections.
-def pattern_test_native_literal(bits: Maybe<&2, Nat>, key: String, tag: String, fields: List<&2, AST.SyntaxPattern>, binders: List<&2, AST.TelescopeItem>, value: String, env: EmitEnv) -> String:
-  match bits:
-    case None{}: pattern_test_constructor_tagged(String.eq(js_constructor_native(key), ""), key, tag, fields, binders, value, env)
-    case Some{number}:
-      pattern_test_native_bits(String.eq(key, "F32.F32"), number, value)
-def pattern_test_native_bits(floating: Bool, bits: Nat, value: String) -> String:
-  match floating:
-    case False{}: String.append("((", String.append(value, String.append(" >>> 0) === ", String.append(Nat.show(bits), ")"))))
-    case True{}: String.append("(f32_bits(", String.append(value, String.append(") === ", String.append(Nat.show(bits), ")"))))
-def js_native_word_pattern(identity: String, fields: List<&2, AST.SyntaxPattern>, env: EmitEnv) -> Maybe<&2, Nat>:
-  match identity fields:
-    case "U32.U32" +word <> Nil{}: js_closed_word_pattern(32n, word, env)
-    case "F32.F32" +word <> Nil{}: js_closed_word_pattern(32n, word, env)
-    case _ _: None{}
-def js_closed_word_pattern(+remaining: Nat, pattern: AST.SyntaxPattern, env: EmitEnv) -> Maybe<&2, Nat>:
-  match pattern:
-    case AST.PatternCtr{key, fields, _}:
-      js_closed_word_pattern_constructor(remaining, js_word_identity(js_constructor_decl(key, env)), fields, env)
-    case _: None{}
-def js_closed_word_pattern_constructor(+remaining: Nat, identity: String, fields: List<&2, AST.SyntaxPattern>, env: EmitEnv) -> Maybe<&2, Nat>:
-  match remaining identity fields:
-    case 0n "Word.Nil.WNil" Nil{}: Some{0n}
-    case 1n+rest "Word.Con.WCon" +bit <> +tail <> Nil{}:
-      js_closed_word_pattern_bit(js_closed_bit_pattern(bit, env), rest, tail, env)
-    case _ _ _: None{}
-def js_closed_bit_pattern(pattern: AST.SyntaxPattern, env: EmitEnv) -> Maybe<&2, Nat>:
-  match pattern:
-    case AST.PatternCtr{key, Nil{}, _}: js_closed_bit_identity(js_word_identity(js_constructor_decl(key, env)))
-    case _: None{}
-def js_closed_word_pattern_bit(bit: Maybe<&2, Nat>, remaining: Nat, tail: AST.SyntaxPattern, env: EmitEnv) -> Maybe<&2, Nat>:
-  match bit:
-    case None{}: None{}
-    case Some{low}: js_closed_word_combine(low, js_closed_word_pattern(remaining, tail, env))
-# Both source and native constructors expose ordinary named data properties.
-def js_field_projection(value: String, name: String) -> String:
-  String.append("(", String.append(value, String.append(")[", String.append(js_quote(name), "]"))))
-def pattern_decl_fields_test(fields: List<&2, AST.SyntaxPattern>, binders: List<&2, AST.TelescopeItem>, value: String, env: EmitEnv) -> String:
-  match fields binders:
-    case Nil{} Nil{}: "true"
-    case _ <> rest AST.Binder{AST.QZero{}, _, _, _, _} <> more:
-      pattern_decl_fields_test(rest, more, value, env)
-    case +field <> rest AST.Binder{_, name, _, _, _} <> more:
-      field_value = js_field_projection(value, name)
-      String.append("(", String.append(pattern_test(field, field_value, env), String.append(" && ", String.append(pattern_decl_fields_test(rest, more, value, env), ")"))))
-    case _ _: "false"
-
-# Select the representation before recursively emitting child patterns.
-# Eager choice arguments multiply nested work and build discarded huge strings.
-def pattern_test_ctor(key: String, fields: List<&2, AST.SyntaxPattern>, value: String, env: EmitEnv) -> String:
-  pattern_test_true(String.eq(key, "Bool.True"), key, fields, value, env)
-
-def pattern_test_true(matches: Bool, key: String, fields: List<&2, AST.SyntaxPattern>, value: String, env: EmitEnv) -> String:
-  match matches:
-    case True{}: String.append("(", String.append(value, " === true)"))
-    case False{}: pattern_test_false(String.eq(key, "Bool.False"), key, fields, value, env)
-
-def pattern_test_false(matches: Bool, key: String, fields: List<&2, AST.SyntaxPattern>, value: String, env: EmitEnv) -> String:
-  match matches:
-    case True{}: String.append("(", String.append(value, " === false)"))
-    case False{}: pattern_test_zero(String.eq(key, "Nat.Zero"), key, fields, value, env)
-
-def pattern_test_zero(matches: Bool, key: String, fields: List<&2, AST.SyntaxPattern>, value: String, env: EmitEnv) -> String:
-  match matches:
-    case True{}: String.append("(", String.append(value, " === 0)"))
-    case False{}: pattern_test_succ(String.eq(key, "Nat.Succ"), key, fields, value, env)
-
-def pattern_test_succ(matches: Bool, key: String, fields: List<&2, AST.SyntaxPattern>, value: String, env: EmitEnv) -> String:
-  match matches:
-    case True{}:
-      child = String.append("(", String.append(value, " - 1)"))
-      String.append("(", String.append(value, String.append(" > 0 && ", String.append(patterns_test(fields, [child], env), ")"))))
-    case False{}: pattern_test_snil(String.eq(key, "String.SNil"), key, fields, value, env)
-
-def pattern_test_snil(matches: Bool, key: String, fields: List<&2, AST.SyntaxPattern>, value: String, env: EmitEnv) -> String:
-  match matches:
-    case True{}: String.append("(", String.append(value, " === \"\")"))
-    case False{}: pattern_test_scon(String.eq(key, "String.SCon"), key, fields, value, env)
-
-def pattern_test_scon(matches: Bool, key: String, fields: List<&2, AST.SyntaxPattern>, value: String, env: EmitEnv) -> String:
-  match matches:
-    case True{}:
-      children = {[pattern_string_field_value(value, 0n), pattern_string_field_value(value, 1n)]: List<&2, String>}
-      String.append("(", String.append(value, String.append(" !== \"\" && ", String.append(patterns_test(fields, children, env), ")"))))
-    case False{}: pattern_test_u32(String.eq(key, "U32.U32"), key, fields, value, env)
-
-def pattern_test_u32(matches: Bool, key: String, fields: List<&2, AST.SyntaxPattern>, value: String, env: EmitEnv) -> String:
-  match matches:
-    case True{}:
-      child = String.append("u32_to_word(", String.append(value, ")"))
-      patterns_test(fields, [child], env)
-    case False{}: pattern_test_f32(String.eq(key, "F32.F32"), key, fields, value, env)
-
-def pattern_test_f32(matches: Bool, key: String, fields: List<&2, AST.SyntaxPattern>, value: String, env: EmitEnv) -> String:
-  match matches:
-    case True{}:
-      child = String.append("u32_to_word(f32_bits(", String.append(value, "))"))
-      patterns_test(fields, [child], env)
-    case False{}: pattern_test_aleaf(String.eq(key, "Array.ALeaf"), key, fields, value, env)
-
-def pattern_test_aleaf(matches: Bool, key: String, fields: List<&2, AST.SyntaxPattern>, value: String, env: EmitEnv) -> String:
-  match matches:
-    case True{}:
-      String.append("(", String.append(value, String.append(".length === 1 && ", String.append(patterns_test(fields, [String.append(value, "[0]")], env), ")"))))
-    case False{}: pattern_test_anode(String.eq(key, "Array.ANode"), key, fields, value, env)
-
-def pattern_test_anode(matches: Bool, key: String, fields: List<&2, AST.SyntaxPattern>, value: String, env: EmitEnv) -> String:
-  match matches:
-    case True{}:
-      children = {[pattern_array_field_value(value, 0n), pattern_array_field_value(value, 1n)]: List<&2, String>}
-      String.append("(", String.append(value, String.append(".length !== 1 && ", String.append(patterns_test(fields, children, env), ")"))))
-    case False{}: pattern_test_char(String.eq(key, "Char.Chr"), key, fields, value, env)
-
-def pattern_test_char(matches: Bool, key: String, fields: List<&2, AST.SyntaxPattern>, value: String, env: EmitEnv) -> String:
-  match matches:
-    case True{}: patterns_test(fields, [String.append(value, ".codePointAt(0)")], env)
-    case False{}:
-      String.append("(", String.append(value, String.append(" && ", String.append(value, String.append(".$ === ", String.append(js_quote(key), String.append(" && ", String.append(pattern_fields_test(fields, key, value, 0n, env), ")"))))))))
-def pattern_fields_test(fields: List<&2, AST.SyntaxPattern>, key: String, value: String, index: Nat, env: EmitEnv) -> String:
-  match fields:
-    case Nil{}: "true"
-    case AST.PatternVar{_, _, AST.QZero{}, _} <> rest:
-      pattern_fields_test(rest, key, value, index, env)
-    case +field <> rest:
-      field_value = js_positional_projection(value, key, index)
-      String.append("(", String.append(pattern_test(field, field_value, env), String.append(" && ", String.append(pattern_fields_test(rest, key, value, (index + 1n : Nat), env), ")"))))
-
-def patterns_test(patterns: List<&2, AST.SyntaxPattern>, values: List<&2, String>, env: EmitEnv) -> String:
-  match patterns values:
-    case Nil{} Nil{}: "true"
-    case +pattern <> more_patterns +value <> more_values:
-      String.append("(", String.append(pattern_test(pattern, value, env), String.append(" && ", String.append(patterns_test(more_patterns, more_values, env), ")"))))
-    case _ _: "false"
-
-def pattern_vars(pattern: AST.SyntaxPattern, value: String, env: EmitEnv) -> List<&2, String>:
-  match pattern:
-    case AST.PatternVar{ _,  _,  AST.QZero{},  _}: ["null"]
-    case AST.PatternVar{ _,  _,  _,  _}: [value]
-    case AST.PatternCtr{key, fields, _}: pattern_vars_constructor(js_constructor_decl(key, env), key, fields, value, env)
-
-def pattern_vars_constructor(found: Maybe<&2, EmitConstructor>, key: String, fields: List<&2, AST.SyntaxPattern>, value: String, env: EmitEnv) -> List<&2, String>:
-  match found:
-    case None{}: pattern_vars_ctr(key, fields, value, env)
-    case Some{EmitConstructor{canonical, family, _, binders, declaration_env}}:
-      identity = js_constructor_native_origin(js_base_origin(declaration_env), family, canonical)
-      pattern_vars_constructor_tagged(String.eq(js_constructor_native(identity), ""), identity, fields, binders, value, env)
-def pattern_vars_constructor_tagged(tagged: Bool, key: String, fields: List<&2, AST.SyntaxPattern>, binders: List<&2, AST.TelescopeItem>, value: String, env: EmitEnv) -> List<&2, String>:
-  match tagged:
-    case False{}: pattern_vars_ctr(key, fields, value, env)
-    case True{}: pattern_decl_fields_vars(fields, binders, value, env)
-def pattern_erased_vars(pattern: AST.SyntaxPattern) -> List<&2, String>:
-  match pattern:
-    case AST.PatternVar{_, _, _, _}: ["null"]
-    case AST.PatternCtr{_, fields, _}: patterns_erased_vars(fields)
-def patterns_erased_vars(patterns: List<&2, AST.SyntaxPattern>) -> List<&2, String>:
-  match patterns:
-    case Nil{}: Nil{}
-    case +pattern <> rest:
-      List.append(&2, String, pattern_erased_vars(pattern), patterns_erased_vars(rest))
-def pattern_decl_fields_vars(fields: List<&2, AST.SyntaxPattern>, binders: List<&2, AST.TelescopeItem>, value: String, env: EmitEnv) -> List<&2, String>:
-  match fields binders:
-    case Nil{} Nil{}: Nil{}
-    case +field <> rest AST.Binder{AST.QZero{}, _, _, _, _} <> more:
-      List.append(&2, String, pattern_erased_vars(field), pattern_decl_fields_vars(rest, more, value, env))
-    case +field <> rest AST.Binder{_, name, _, _, _} <> more:
-      field_value = js_field_projection(value, name)
-      List.append(&2, String, pattern_vars(field, field_value, env), pattern_decl_fields_vars(rest, more, value, env))
-    case _ _: Nil{}
-
-def pattern_vars_ctr(key: String, fields: List<&2, AST.SyntaxPattern>, value: String, env: EmitEnv) -> List<&2, String>:
-  pattern_vars_succ(String.eq(key, "Nat.Succ"), key, fields, value, env)
-
-def pattern_vars_succ(matches: Bool, key: String, fields: List<&2, AST.SyntaxPattern>, value: String, env: EmitEnv) -> List<&2, String>:
-  match matches:
-    case True{}:
-      child = String.append("(", String.append(value, " - 1)"))
-      patterns_vars(fields, [child], env)
-    case False{}: pattern_vars_scon(String.eq(key, "String.SCon"), key, fields, value, env)
-
-def pattern_vars_scon(matches: Bool, key: String, fields: List<&2, AST.SyntaxPattern>, value: String, env: EmitEnv) -> List<&2, String>:
-  match matches:
-    case True{}: pattern_string_fields(fields, value, 0n, env)
-    case False{}: pattern_vars_char(String.eq(key, "Char.Chr"), key, fields, value, env)
-
-def pattern_vars_char(matches: Bool, key: String, fields: List<&2, AST.SyntaxPattern>, value: String, env: EmitEnv) -> List<&2, String>:
-  match matches:
-    case True{}: patterns_vars(fields, [String.append(value, ".codePointAt(0)")], env)
-    case False{}: pattern_vars_u32(String.eq(key, "U32.U32"), key, fields, value, env)
-
-def pattern_vars_u32(matches: Bool, key: String, fields: List<&2, AST.SyntaxPattern>, value: String, env: EmitEnv) -> List<&2, String>:
-  match matches:
-    case True{}:
-      child = String.append("u32_to_word(", String.append(value, ")"))
-      patterns_vars(fields, [child], env)
-    case False{}: pattern_vars_f32(String.eq(key, "F32.F32"), key, fields, value, env)
-
-def pattern_vars_f32(matches: Bool, key: String, fields: List<&2, AST.SyntaxPattern>, value: String, env: EmitEnv) -> List<&2, String>:
-  match matches:
-    case True{}:
-      child = String.append("u32_to_word(f32_bits(", String.append(value, "))"))
-      patterns_vars(fields, [child], env)
-    case False{}: pattern_vars_aleaf(String.eq(key, "Array.ALeaf"), key, fields, value, env)
-
-def pattern_vars_aleaf(matches: Bool, key: String, fields: List<&2, AST.SyntaxPattern>, value: String, env: EmitEnv) -> List<&2, String>:
-  match matches:
-    case True{}: patterns_vars(fields, [String.append(value, "[0]")], env)
-    case False{}: pattern_vars_anode(String.eq(key, "Array.ANode"), key, fields, value, env)
-
-def pattern_vars_anode(matches: Bool, key: String, fields: List<&2, AST.SyntaxPattern>, value: String, env: EmitEnv) -> List<&2, String>:
-  match matches:
-    case True{}: pattern_array_fields(fields, value, 0n, env)
-    case False{}: pattern_fields_vars(fields, key, value, 0n, env)
-
-def pattern_array_field_value(value: String, index: Nat) -> String:
-  match index:
-    case 0n: String.append(value, String.append(".slice(0, ", String.append(value, String.append(".length >> 1", ")"))))
-    case _: String.append(value, String.append(".slice(", String.append(value, String.append(".length >> 1", ")"))))
-
-def pattern_array_fields(fields: List<&2, AST.SyntaxPattern>, value: String, index: Nat, env: EmitEnv) -> List<&2, String>:
-  match fields:
-    case Nil{}: Nil{}
-    case +field <> rest:
-      field_value = pattern_array_field_value(value, index)
-      List.append(&2, String, pattern_vars(field, field_value, env), pattern_array_fields(rest, value, (index + 1n : Nat), env))
-
-def pattern_string_field_value(value: String, index: Nat) -> String:
-  match index:
-    case 0n: String.append("String.fromCodePoint(", String.append(value, ".codePointAt(0))"))
-    case _: String.append("$string_tail(", String.append(value, ")"))
-
-def pattern_string_fields(fields: List<&2, AST.SyntaxPattern>, value: String, index: Nat, env: EmitEnv) -> List<&2, String>:
-  match fields:
-    case Nil{}: Nil{}
-    case +field <> rest:
-      field_value = pattern_string_field_value(value, index)
-      List.append(&2, String, pattern_vars(field, field_value, env), pattern_string_fields(rest, value, (index + 1n : Nat), env))
-
-def pattern_fields_vars(fields: List<&2, AST.SyntaxPattern>, key: String, value: String, index: Nat, env: EmitEnv) -> List<&2, String>:
-  match fields:
-    case Nil{}: Nil{}
-    case AST.PatternVar{_, _, AST.QZero{}, _} <> rest:
-      "null" <> pattern_fields_vars(rest, key, value, index, env)
-    case +field <> rest:
-      field_value = js_positional_projection(value, key, index)
-      List.append(&2, String, pattern_vars(field, field_value, env), pattern_fields_vars(rest, key, value, (index + 1n : Nat), env))
-def js_positional_projection(value: String, key: String, index: Nat) -> String:
-  String.append("$project(", String.append(value, String.append(",", String.append(js_quote(key), String.append(",", String.append(Nat.show(index), ",$scope,$aliases)"))))))
-
-def patterns_vars(patterns: List<&2, AST.SyntaxPattern>, values: List<&2, String>, env: EmitEnv) -> List<&2, String>:
-  match patterns values:
-    case Nil{} Nil{}: Nil{}
-    case +pattern <> more_patterns +value <> more_values:
-      List.append(&2, String, pattern_vars(pattern, value, env), patterns_vars(more_patterns, more_values, env))
-    case _ _: Nil{}
-
-def js_case(patterns: List<&2, AST.SyntaxPattern>, body: AST.SyntaxTerm, values: List<&2, String>, scrutinees: List<&2, AST.SyntaxTerm>, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  types = js_pattern_types(patterns, js_scrutinee_types(scrutinees, env), env)
-  js_case_typed(patterns, body, values, types, env, expected)
-def js_case_typed(patterns: List<&2, AST.SyntaxPattern>, body: AST.SyntaxTerm, values: List<&2, String>, types: List<&2, Maybe<&2, EmitClosure>>, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  test = patterns_test(patterns, values, env)
-  String.append("if (", String.append(test, String.append(") ", js_case_block_typed(patterns, body, values, types, env, expected))))
-def js_case_block_typed(patterns: List<&2, AST.SyntaxPattern>, body: AST.SyntaxTerm, values: List<&2, String>, types: List<&2, Maybe<&2, EmitClosure>>, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  projections = patterns_vars(patterns, values, env)
-  names = js_case_binding_names(projections, env_depth(env))
-  case_env = env_names_typed(names, types, env)
-  bindings = js_case_bindings(projections, names)
-  String.append("{ ", String.append(bindings, String.append(js_statement_tail(body, case_env, expected), " }")))
-# Snapshot branch projections before nested matches can shadow their scrutinees.
-# Erased pattern slots stay null and never evaluate a projection.
-def js_case_binding_names(values: List<&2, String>, index: Nat) -> List<&2, String>:
-  match values:
-    case Nil{}: Nil{}
-    case +value <> rest:
-      js_case_binding_name(String.eq(value, "null"), index) <> js_case_binding_names(rest, (index + 1n : Nat))
-def js_case_binding_name(erased: Bool, index: Nat) -> String:
-  match erased:
-    case True{}: "null"
-    case False{}: String.append("$p", Nat.show(index))
-def js_case_bindings(values: List<&2, String>, names: List<&2, String>) -> String:
-  match values names:
-    case Nil{} Nil{}: ""
-    case +value <> rest +name <> more:
-      js_case_binding_source(String.eq(name, "null"), name, value, js_case_bindings(rest, more))
-    case _ _: "throw \"bend: malformed pattern bindings\";"
-def js_case_binding_source(erased: Bool, name: String, value: String, rest: String) -> String:
-  match erased:
-    case True{}: rest
-    case False{}:
-      String.append("const ", String.append(name, String.append("=", String.append(value, String.append(";", rest)))))
-
-def js_cases(cases: List<&2, AST.SyntaxTerm>, values: List<&2, String>, scrutinees: List<&2, AST.SyntaxTerm>, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  match cases:
-    case Nil{}: "throw \"bend: runtime fail-stop\";"
-    case +term <> rest:
-      match term:
-        case AST.BodyCase{patterns, body, _}:
-          String.append(js_case(patterns, body, values, scrutinees, env, expected), String.append("\n", js_cases(rest, values, scrutinees, env, expected)))
-        case _: js_cases(rest, values, scrutinees, env, expected)
-
-# A single pass records resolved canonical tags in the existing persistent Map.
-# Any native head, nested field, unknown row or tag collision keeps ordered tests.
-def js_switch_tags(cases: List<&2, AST.SyntaxTerm>, env: EmitEnv, seen: Map<&2, Bool>) -> Maybe<&2, List<&2, String>>:
-  match cases:
-    case Nil{}: Some{Nil{}}
-    case AST.BodyCase{AST.PatternCtr{key, fields, _} <> Nil{}, _, _} <> rest:
-      js_switch_tag_fields(js_switch_fields(fields), key, rest, env, seen)
-    case _ <> _: None{}
-def js_switch_fields(fields: List<&2, AST.SyntaxPattern>) -> Bool:
-  match fields:
-    case Nil{}: True{}
-    case AST.PatternVar{_, _, _, _} <> rest: js_switch_fields(rest)
-    case _ <> _: False{}
-def js_switch_tag_constructor(found: Maybe<&2, EmitConstructor>, rest: List<&2, AST.SyntaxTerm>, env: EmitEnv, seen: Map<&2, Bool>) -> Maybe<&2, List<&2, String>>:
-  match found:
-    case None{}: None{}
-    case Some{EmitConstructor{canonical, family, _, _, declaration_env}}:
-      identity = js_constructor_native_origin(js_base_origin(declaration_env), family, canonical)
-      js_switch_tag_native(String.eq(js_constructor_native(identity), ""), canonical, rest, env, seen)
-def js_switch_tag_fields(variables: Bool, key: String, rest: List<&2, AST.SyntaxTerm>, env: EmitEnv, seen: Map<&2, Bool>) -> Maybe<&2, List<&2, String>>:
-  match variables:
-    case False{}: None{}
-    case True{}: js_switch_tag_constructor(js_constructor_decl(key, env), rest, env, seen)
-def js_switch_tag_seen(found: Maybe<&2, Bool>, tag: String, rest: List<&2, AST.SyntaxTerm>, env: EmitEnv, seen: Map<&2, Bool>) -> Maybe<&2, List<&2, String>>:
-  match found:
-    case Some{_}: None{}
-    case None{}:
-      js_switch_tag_rest(tag, js_switch_tags(rest, env, Map.set(&2, Bool, seen, tag, True{})))
-def js_switch_tag_native(tagged: Bool, tag: String, rest: List<&2, AST.SyntaxTerm>, env: EmitEnv, seen: Map<&2, Bool>) -> Maybe<&2, List<&2, String>>:
-  match tagged:
-    case False{}: None{}
-    case True{}: js_switch_tag_ordered(js_switch_bmp_tag(tag), tag, rest, env, seen)
-def js_switch_tag_ordered(ordered: Bool, tag: String, rest: List<&2, AST.SyntaxTerm>, env: EmitEnv, seen: Map<&2, Bool>) -> Maybe<&2, List<&2, String>>:
-  match ordered:
-    case False{}: None{}
-    case True{}: js_switch_tag_seen(IndexLookup.find(Bool, seen, tag), tag, rest, env, seen)
-# Code-point and UTF-16 order agree for BMP tags. Astral namespace paths retain
-# ordered case tests instead of a binary tree sorted with a different comparator.
-def js_switch_bmp_tag(tag: String) -> Bool:
-  match tag:
-    case SNil{}: True{}
-    case SCon{char, rest}: js_switch_bmp_tail(U32.is_le(Char.to_u32(char), 65535), rest)
-def js_switch_bmp_tail(bmp: Bool, rest: String) -> Bool:
-  match bmp:
-    case False{}: False{}
-    case True{}: js_switch_bmp_tag(rest)
-def js_switch_tag_rest(tag: String, rest: Maybe<&2, List<&2, String>>) -> Maybe<&2, List<&2, String>>:
-  match rest:
-    case None{}: None{}
-    case Some{tags}: Some{tag <> tags}
-def js_switch_cases(cases: List<&2, AST.SyntaxTerm>, tags: List<&2, String>, values: List<&2, String>, scrutinees: List<&2, AST.SyntaxTerm>, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  match cases tags:
-    case Nil{} Nil{}: "default: { throw \"bend: runtime fail-stop\"; }\n"
-    case AST.BodyCase{patterns, body, _} <> rest +tag <> more:
-      types = js_pattern_types(patterns, js_scrutinee_types(scrutinees, env), env)
-      branch = String.append("case ", String.append(js_quote(tag), String.append(": ", js_case_block_typed(patterns, body, values, types, env, expected))))
-      String.append(branch, String.append("\n", js_switch_cases(rest, more, values, scrutinees, env, expected)))
-    case _ _: "default: { throw \"bend: malformed switch cases\"; }\n"
-
-# Pair each resolved canonical tag with its original case before sorting; no AST
-# or field layout is rewritten. The BMP eligibility certificate above guarantees
-# that String.is_le agrees with the generated JavaScript UTF-16 comparison.
-def js_switch_pairs(cases: List<&2, AST.SyntaxTerm>, tags: List<&2, String>) -> List<&2, EmitSwitchRow>:
-  match cases tags:
-    case +term <> rest +tag <> more:
-      EmitSwitchRow{tag, term} <> js_switch_pairs(rest, more)
-    case _ _: Nil{}
-def js_switch_row_le(left: EmitSwitchRow, right: EmitSwitchRow) -> Bool:
-  match left right:
-    case EmitSwitchRow{left_tag, _} EmitSwitchRow{right_tag, _}:
-      String.is_le(left_tag, right_tag)
-
-# Keep the comparator a saturated source call: typed steps cannot pass a pending
-# computation as the higher-order callback of the native Base List.sort.
-def js_switch_sort(count: Nat, +rows: List<&2, EmitSwitchRow>) -> List<&2, EmitSwitchRow>:
-  match count:
-    case 0n: Nil{}
-    case 1n: rows
+def cps_provider_1_bir_use(v_0: BIR.Quantity) -> BIR.Use:
+  match v_0:
+    case BIR.Unrestricted{}:
+      BIR.Many{}
     case _:
-      half = Nat.div(count, 2n)
-      left = List.take(&2, EmitSwitchRow, rows, half)
-      right = List.drop(&2, EmitSwitchRow, rows, half)
-      js_switch_merge(js_switch_sort(half, left), js_switch_sort((count - half : Nat), right))
-def js_switch_merge(left: List<&2, EmitSwitchRow>, right: List<&2, EmitSwitchRow>) -> List<&2, EmitSwitchRow>:
-  match left:
-    case Nil{}: right
-    case +head <> +tail:
-      js_switch_merge_right(right, head, tail)
-def js_switch_merge_right(right: List<&2, EmitSwitchRow>, +head: EmitSwitchRow, +tail: List<&2, EmitSwitchRow>) -> List<&2, EmitSwitchRow>:
-  match right:
-    case Nil{}: head <> tail
-    case +other <> +rest:
-      js_switch_merge_order(js_switch_row_le(head, other), head, tail, other, rest)
-def js_switch_merge_order(first: Bool, +head: EmitSwitchRow, +tail: List<&2, EmitSwitchRow>, +other: EmitSwitchRow, +rest: List<&2, EmitSwitchRow>) -> List<&2, EmitSwitchRow>:
-  match first:
-    case True{}: head <> js_switch_merge(tail, other <> rest)
-    case False{}: other <> js_switch_merge(head <> tail, rest)
+      BIR.Affine{}
 
-# Only exact equality at a leaf selects a case. Missing tags fall through the
-# entire tree to the one original fail-stop after it, not one per leaf.
-def js_switch_tree(count: Nat, rows: List<&2, EmitSwitchRow>, name: String, values: List<&2, String>, scrutinees: List<&2, AST.SyntaxTerm>, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  match count:
-    case 0n: ""
-    case 1n: js_switch_tree_leaf(rows, name, values, scrutinees, env, expected)
-    case _:
-      half = Nat.div(count, 2n)
-      left = List.take(&2, EmitSwitchRow, rows, half)
-      right = List.drop(&2, EmitSwitchRow, rows, half)
-      js_switch_tree_split(right, left, half, (count - half : Nat), name, values, scrutinees, env, expected)
-def js_switch_tree_leaf(rows: List<&2, EmitSwitchRow>, name: String, values: List<&2, String>, scrutinees: List<&2, AST.SyntaxTerm>, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  match rows:
-    case EmitSwitchRow{tag, AST.BodyCase{patterns, body, _}} <> Nil{}:
-      types = js_pattern_types(patterns, js_scrutinee_types(scrutinees, env), env)
-      branch = js_case_block_typed(patterns, body, values, types, env, expected)
-      String.append("if (", String.append(name, String.append(" === ", String.append(js_quote(tag), String.append(") ", String.append(branch, "\n"))))))
-    case _: "throw \"bend: malformed switch cases\";"
-def js_switch_tree_split(right: List<&2, EmitSwitchRow>, left: List<&2, EmitSwitchRow>, left_count: Nat, right_count: Nat, name: String, values: List<&2, String>, scrutinees: List<&2, AST.SyntaxTerm>, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  match right:
-    case EmitSwitchRow{pivot, _} <> _:
-      left_source = js_switch_tree(left_count, left, name, values, scrutinees, env, expected)
-      right_source = js_switch_tree(right_count, right, name, values, scrutinees, env, expected)
-      test = String.append("if (", String.append(name, String.append(" < ", String.append(js_quote(pivot), ") {\n"))))
-      String.append(test, String.append(left_source, String.append("} else {\n", String.append(right_source, "}\n"))))
-    case Nil{}: "throw \"bend: malformed switch cases\";"
-def js_cases_dispatch_size(large: Bool, count: Nat, keys: List<&2, String>, value: String, cases: List<&2, AST.SyntaxTerm>, values: List<&2, String>, scrutinees: List<&2, AST.SyntaxTerm>, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  match large:
-    case False{}:
-      prefix = String.append("switch (", String.append(value, String.append(" && ", String.append(value, ".$) {\n"))))
-      String.append(prefix, String.append(js_switch_cases(cases, keys, values, scrutinees, env, expected), "}"))
-    case True{}:
-      name = String.append("$tag", Nat.show(env_depth(env)))
-      branch_env = env_reserve_names(1n, env)
-      rows = js_switch_sort(count, js_switch_pairs(cases, keys))
-      prefix = String.append("const ", String.append(name, String.append(" = ", String.append(value, String.append(" && ", String.append(value, ".$;\n"))))))
-      tree = js_switch_tree(count, rows, name, values, scrutinees, branch_env, expected)
-      guarded = String.append("if (typeof ", String.append(name, String.append(" === \"string\") {\n", String.append(tree, "}\n"))))
-      String.append(prefix, String.append(guarded, "throw \"bend: runtime fail-stop\";"))
-def js_cases_dispatch_values(values: List<&2, String>, scrutinees: List<&2, AST.SyntaxTerm>, cases: List<&2, AST.SyntaxTerm>, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  match values scrutinees cases:
-    case +value <> Nil{} _ <> Nil{} _ <> _:
-      js_cases_dispatch_switch(js_switch_tags(cases, env, MTip{}), value, cases, values, scrutinees, env, expected)
-    case _ _ _: js_cases(cases, values, scrutinees, env, expected)
-def js_cases_dispatch(cases: List<&2, AST.SyntaxTerm>, values: List<&2, String>, scrutinees: List<&2, AST.SyntaxTerm>, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  js_cases_dispatch_values(values, scrutinees, cases, env, expected)
-def js_cases_dispatch_switch(tags: Maybe<&2, List<&2, String>>, value: String, cases: List<&2, AST.SyntaxTerm>, values: List<&2, String>, scrutinees: List<&2, AST.SyntaxTerm>, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  match tags:
-    case None{}: js_cases(cases, values, scrutinees, env, expected)
-    case Some{keys}:
-      count = List.length(&2, String, keys)
-      js_cases_dispatch_size(Nat.is_ge(count, 32n), count, keys, value, cases, values, scrutinees, env, expected)
+def cps_provider_1_no_span() -> Ast.SourceSpan:
+  Ast.SpanOf{"", 0n, 0n}
 
-def js_scrutinees(scrutinees: List<&2, AST.SyntaxTerm>, env: EmitEnv, index: Nat) -> String:
-  match scrutinees:
-    case Nil{}: ""
-    case +term <> rest:
-      name = String.append("$s", Nat.show((env_depth(env) + index : Nat)))
-      String.append("const ", String.append(name, String.append(" = ", String.append(js_term(term, env), String.append(";\n", js_scrutinees(rest, env, (index + 1n : Nat)))))))
-
-def scrutinee_names(count: Nat, env: EmitEnv) -> List<&2, String>:
-  scrutinee_names_at(count, env_depth(env))
-
-def scrutinee_names_at(count: Nat, index: Nat) -> List<&2, String>:
-  match count:
-    case 0n: Nil{}
-    case _: String.append("$s", Nat.show(index)) <> scrutinee_names_at((count - 1n : Nat), (index + 1n : Nat))
-
-def js_body_match(scrutinees: List<&2, AST.SyntaxTerm>, cases: List<&2, AST.SyntaxTerm>, env: EmitEnv, expected: Maybe<&2, EmitClosure>) -> String:
-  String.append("(()=>{", String.append(js_statement_match(scrutinees, cases, env, expected), "})()"))
-
-def js_binders(binders: List<&2, AST.TelescopeItem>, env: EmitEnv, body: AST.SyntaxTerm, result: AST.OptionalTerm) -> String:
-  match binders:
-    case Nil{}:
-      match result:
-        case AST.SomeTerm{ty}: js_term_tail_expected(body, env, Some{js_close(ty, env)})
-        case AST.NoTerm{}: js_term_tail_expected(body, env, None{})
-    case AST.Binder{AST.QZero{}, _, _, ty, _} <> rest:
-      js_binders(rest, env_bind("null", Some{js_close(ty, env)}, None{}, env), body, result)
-    case AST.Binder{_, _, _, ty, _} <> rest:
-      name = String.append("$a", Nat.show(env_depth(env)))
-      js_closure(name, js_binders(rest, env_bind(name, Some{js_close(ty, env)}, None{}, env), body, result))
-    case AST.TemplateBinder{_, _, _, _} <> rest: js_binders(rest, env_push("null", env), body, result)
-def js_decl(namespace: String, source_path: String, declaration: AST.TopLevel, env: EmitEnv) -> String:
-  match declaration:
-    case AST.DefTop{AST.Definition{key, binders, result, body, _, _}}:
-      match body:
-        case AST.DefTerm{term}:
-          js_decl_term(js_definition_is_type(binders, result, term, env), qualify(namespace, key), binders, result, term, env)
-        case AST.DefImports{paths}:
-          full_key = qualify(namespace, key)
-          js_decl_deferred_value(full_key, js_foreign(paths, key, source_path, binders))
-    case AST.TypeTop{ _}: ""
-    case AST.LawTop{AST.LawDecl{key, clauses, _, _}}:
-      js_decl_native_law(js_native_operation(key, env), js_native_law_binders(clauses, 0n), qualify(namespace, key))
-def js_decl_term(type_only: Bool, key: String, binders: List<&2, AST.TelescopeItem>, result: AST.OptionalTerm, term: AST.SyntaxTerm, env: EmitEnv) -> String:
-  match type_only:
-    case True{}: ""
-    case False{}:
-      js_decl_term_operation(js_native_operation(key, env), key, binders, result, term, env)
-def js_decl_term_operation(operation: Maybe<&2, String>, key: String, binders: List<&2, AST.TelescopeItem>, result: AST.OptionalTerm, term: AST.SyntaxTerm, env: EmitEnv) -> String:
-  match operation:
-    case Some{name}: js_decl_native_value(key, name, binders)
-    case None{}: js_decl_named(js_named_eligible(key, binders, result, term, env), key, binders, result, term, env)
-# Only a fixed, explicitly checked telescope has an uncurried entry. Nullary
-# factories, templates, native/foreign bodies and inferred signatures keep ABI.
-def js_named_eligible(key: String, +binders: List<&2, AST.TelescopeItem>, +result: AST.OptionalTerm, +term: AST.SyntaxTerm, +env: EmitEnv) -> Bool:
-  js_named_eligible_operation(js_native_operation(key, env), binders, result, term, env)
-def js_named_eligible_operation(operation: Maybe<&2, String>, +binders: List<&2, AST.TelescopeItem>, +result: AST.OptionalTerm, +term: AST.SyntaxTerm, +env: EmitEnv) -> Bool:
-  match operation:
-    case Some{_}: False{}
+def cps_provider_1_problem_first(v_2: Maybe<&2, cps_provider_1_Problem>, v_4: String, v_5: Ast.SourceSpan) -> Maybe<&2, cps_provider_1_Problem>:
+  match v_2:
     case None{}:
-      Bool.and(js_named_fixed(binders, result), Bool.and(js_definition_has_live_binder(binders), Bool.not(js_definition_is_type(binders, result, term, env))))
-def js_named_fixed(binders: List<&2, AST.TelescopeItem>, result: AST.OptionalTerm) -> Bool:
-  match binders:
-    case AST.Binder{_, _, _, _, _} <> rest: js_named_fixed(rest, result)
-    case AST.TemplateBinder{_, _, _, _} <> _: False{}
-    case Nil{}:
-      match result:
-        case AST.SomeTerm{_}: True{}
-        case AST.NoTerm{}: False{}
-def js_decl_named(eligible: Bool, key: String, binders: List<&2, AST.TelescopeItem>, result: AST.OptionalTerm, term: AST.SyntaxTerm, env: EmitEnv) -> String:
-  match eligible:
-    case False{}: js_decl_value(js_definition_has_live_binder(binders), key, js_binders(binders, env, term, result))
+      Some{cps_provider_1_Problem{v_4, v_5}}
+    case Some{_}:
+      v_2
+
+def cps_provider_1_fail(v_1: cps_provider_1_State, v_3: String, v_4: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_State{v_14, v_15, v_16, v_17, v_18, v_19, v_20, v_21}:
+      cps_provider_1_LowerResult{cps_provider_1_State{v_14, v_15, v_16, v_17, v_18, cps_provider_1_problem_first(v_19, v_3, v_4), v_20, v_21}, BIR.Null{}}
+
+def cps_provider_1_native_match_state_problem_0(v_1: cps_provider_1_LowerResult<BIR.Atom>) -> cps_provider_1_State:
+  match v_1:
+    case cps_provider_1_LowerResult{v_5, _}:
+      v_5
+
+def cps_provider_1_state_problem(v_1: cps_provider_1_State, v_3: String, v_4: Ast.SourceSpan) -> cps_provider_1_State:
+  cps_provider_1_native_match_state_problem_0(cps_provider_1_fail(v_1, v_3, v_4))
+
+def cps_provider_1_native_match_node_0(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Node>, v_5: U32, v_7: U32, v_9: cps_provider_1_Frame, v_11: List<&2, BIR.Code>, v_14: Maybe<&2, cps_provider_1_Problem>, v_16: Maybe<&2, Scope.ArenaGlobalScope>, v_18: Maybe<&2, cps_provider_2_NfContext>) -> cps_provider_1_LowerResult<Arena.Node>:
+  match v_3:
+    case (v_22, v_23):
+      cps_provider_1_LowerResult{cps_provider_1_State{v_22, v_5, v_7, v_9, v_11, v_14, v_16, v_18}, v_23}
+
+def cps_provider_1_native_match_node_1(v_1: cps_provider_1_State, v_3: U32) -> cps_provider_1_LowerResult<Arena.Node>:
+  match v_1:
+    case cps_provider_1_State{v_13, v_14, v_15, v_16, v_17, v_18, v_19, v_20}:
+      cps_provider_1_native_match_node_0(Arena.get_node(v_13, v_3), v_14, v_15, v_16, v_17, v_18, v_19, v_20)
+
+def cps_provider_1_node(v_1: cps_provider_1_State, v_3: U32) -> cps_provider_1_LowerResult<Arena.Node>:
+  cps_provider_1_native_match_node_1(v_1, v_3)
+
+def cps_provider_1_native_match_name_0(v_4: Sigma<&1, &1, Arena.Arena, _ => String>, v_6: U32, v_8: U32, v_10: cps_provider_1_Frame, v_12: List<&2, BIR.Code>, v_15: Maybe<&2, cps_provider_1_Problem>, v_17: Maybe<&2, Scope.ArenaGlobalScope>, v_19: Maybe<&2, cps_provider_2_NfContext>) -> cps_provider_1_LowerResult<String>:
+  match v_4:
+    case (v_24, v_25):
+      cps_provider_1_LowerResult{cps_provider_1_State{v_24, v_6, v_8, v_10, v_12, v_15, v_17, v_19}, v_25}
+
+def cps_provider_1_native_match_name_1(v_1: cps_provider_1_State, v_3: U32) -> cps_provider_1_LowerResult<String>:
+  match v_1:
+    case cps_provider_1_State{v_14, v_15, v_16, v_17, v_18, v_19, v_20, v_21}:
+      cps_provider_1_native_match_name_0(Arena.name_text(v_14, v_3), v_15, v_16, v_17, v_18, v_19, v_20, v_21)
+
+def cps_provider_1_name(v_1: cps_provider_1_State, v_3: U32) -> cps_provider_1_LowerResult<String>:
+  cps_provider_1_native_match_name_1(v_1, v_3)
+
+def cps_provider_1_fresh(v_1: cps_provider_1_State) -> cps_provider_1_LowerResult<U32>:
+  match v_1:
+    case cps_provider_1_State{v_12, v_13, v_14, v_15, v_16, v_17, v_18, v_19}:
+      cps_provider_1_LowerResult{cps_provider_1_State{v_12, v_13, U32.inc(v_14), v_15, v_16, v_17, v_18, v_19}, v_14}
+
+def cps_provider_1_reserve(v_1: cps_provider_1_State, v_3: U32) -> cps_provider_1_State:
+  match v_1:
+    case cps_provider_1_State{v_13, v_14, v_15, v_16, v_17, v_18, v_19, v_20}:
+      cps_provider_1_State{v_13, v_14, U32.max(v_15, v_3), v_16, v_17, v_18, v_19, v_20}
+
+def cps_provider_1_push(v_1: cps_provider_1_State, v_3: cps_provider_1_Instruction) -> cps_provider_1_State:
+  match v_1:
+    case cps_provider_1_State{v_16, v_17, v_18, cps_provider_1_Frame{v_19, v_20, v_21, v_22}, v_23, v_24, v_25, v_26}:
+      cps_provider_1_State{v_16, v_17, v_18, cps_provider_1_Frame{v_19, v_3 <> v_20, v_21, v_22}, v_23, v_24, v_25, v_26}
+
+def cps_provider_1_native_match_operation_0(v_2: cps_provider_1_LowerResult<U32>, v_3: BIR.Op) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_7, v_8}:
+      cps_provider_1_LowerResult{cps_provider_1_push(v_7, cps_provider_1_Bind{v_8, v_3}), BIR.Local{v_8}}
+
+def cps_provider_1_operation(v_1: cps_provider_1_State, v_2: BIR.Op) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_operation_0(cps_provider_1_fresh(v_1), v_2)
+
+def cps_provider_1_guard(v_1: cps_provider_1_State, v_2: BIR.Atom, v_3: BIR.Block) -> cps_provider_1_State:
+  match v_2:
+    case BIR.Boolean{True{}}:
+      v_1
+    case BIR.Boolean{False{}}:
+      cps_provider_1_push(v_1, cps_provider_1_Stop{v_3})
+    case _:
+      cps_provider_1_push(v_1, cps_provider_1_Guard{v_2, v_3})
+
+def cps_provider_1_prefix(v_2: List<&2, cps_provider_1_Instruction>, v_3: BIR.Block) -> BIR.Block:
+  match v_2:
+    case []:
+      v_3
+    case cps_provider_1_Bind{v_7, v_8} <> v_9:
+      cps_provider_1_prefix(v_9, BIR.Let{v_7, v_8, v_3})
+    case cps_provider_1_Guard{v_14, v_15} <> v_16:
+      cps_provider_1_prefix(v_16, BIR.Branch{v_14, v_3, v_15})
+    case cps_provider_1_Stop{v_20} <> v_21:
+      cps_provider_1_prefix(v_21, v_20)
+
+def cps_provider_1_finish(v_2: List<&2, cps_provider_1_Instruction>, v_3: BIR.Atom) -> BIR.Block:
+  match v_2, v_3:
+    case cps_provider_1_Bind{v_8, v_9} <> v_10, BIR.Local{v_11}:
+      cps_provider_1_finish_last(U32.is_eq(v_8, v_11), v_8, v_9, v_10, v_11)
+    case _, _:
+      cps_provider_1_prefix(v_2, BIR.Return{v_3})
+
+def cps_provider_1_finish_last(v_1: Bool, v_3: U32, v_4: BIR.Op, v_7: List<&2, cps_provider_1_Instruction>, v_9: U32) -> BIR.Block:
+  match v_1, v_4:
+    case True{}, BIR.Direct{v_12, v_13}:
+      cps_provider_1_prefix(v_7, BIR.TailDirect{v_12, v_13})
+    case True{}, BIR.Apply{v_17, v_18}:
+      cps_provider_1_prefix(v_7, BIR.TailApply{v_17, v_18})
+    case _, _:
+      cps_provider_1_prefix(v_7, BIR.Let{v_3, v_4, BIR.Return{BIR.Local{v_9}}})
+
+def cps_provider_1_slot_at(v_2: List<&2, cps_provider_1_Slot>, v_4: Nat) -> Maybe<&2, cps_provider_1_Slot>:
+  match v_2, v_4:
+    case v_9 <> _, 0n:
+      Some{v_9}
+    case _ <> v_15, 1n+v_16:
+      cps_provider_1_slot_at(v_15, v_16)
+    case [], _:
+      None{}
+
+def cps_provider_1_capture_found(v_2: List<&2, cps_provider_1_Capture>, v_4: U32, v_6: U32) -> Maybe<&2, U32>:
+  match v_2:
+    case []:
+      None{}
+    case cps_provider_1_Capture{cps_provider_1_Slot{v_15, v_16, _, _}, v_19} <> v_20:
+      cps_provider_1_capture_found_next(Bool.and(U32.is_eq(v_15, v_4), U32.is_eq(v_16, v_6)), v_19, v_20, v_4, v_6)
+    case _ <> v_25:
+      cps_provider_1_capture_found(v_25, v_4, v_6)
+
+def cps_provider_1_capture_found_next(v_1: Bool, v_3: U32, v_6: List<&2, cps_provider_1_Capture>, v_8: U32, v_10: U32) -> Maybe<&2, U32>:
+  match v_1:
     case True{}:
-      prefix = String.append("var ", String.append(js_named_identifier(key), " = ("))
-      body = js_named_body(binders, env, term, result, True{})
-      String.append(prefix, String.append(body, String.append(";\n", js_decl_value(True{}, key, js_named_facade(binders, env, key, Nil{})))))
-def js_named_body(binders: List<&2, AST.TelescopeItem>, env: EmitEnv, body: AST.SyntaxTerm, result: AST.OptionalTerm, first: Bool) -> String:
-  match binders:
-    case Nil{}: String.append(",$td=0) => {", String.append(js_statement_result(body, env, result), "}"))
-    case AST.Binder{AST.QZero{}, _, _, ty, _} <> rest:
-      js_named_body(rest, env_bind("null", Some{js_close(ty, env)}, None{}, env), body, result, first)
-    case AST.Binder{_, _, _, ty, _} <> rest:
-      name = String.append("$a", Nat.show(env_depth(env)))
-      String.append(js_comma_prefix(first), String.append(name, js_named_body(rest, env_bind(name, Some{js_close(ty, env)}, None{}, env), body, result, False{})))
-    case AST.TemplateBinder{_, _, _, _} <> rest: js_named_body(rest, env_push("null", env), body, result, first)
-def js_named_facade(binders: List<&2, AST.TelescopeItem>, env: EmitEnv, key: String, names: List<&2, String>) -> String:
-  match binders:
-    case Nil{}:
-      js_named_tail(key, List.reverse(&2, String, names))
-    case AST.Binder{AST.QZero{}, _, _, ty, _} <> rest:
-      js_named_facade(rest, env_bind("null", Some{js_close(ty, env)}, None{}, env), key, names)
-    case AST.Binder{_, _, _, ty, _} <> rest:
-      name = String.append("$a", Nat.show(env_depth(env)))
-      js_closure(name, js_named_facade(rest, env_bind(name, Some{js_close(ty, env)}, None{}, env), key, name <> names))
-    case AST.TemplateBinder{_, _, _, _} <> rest: js_named_facade(rest, env_push("null", env), key, names)
-def js_decl_native_law(operation: Maybe<&2, String>, binders: Maybe<&2, List<&2, AST.TelescopeItem>>, key: String) -> String:
-  match operation binders:
-    case Some{name} Some{items}: js_decl_native_value(key, name, items)
-    case _ _: ""
-def js_decl_native_value(key: String, operation: String, binders: List<&2, AST.TelescopeItem>) -> String:
-  runtime = js_decl_native_runtime(js_native_primitive_checked(Some{operation}, binders), key, operation)
-  prefix = String.append("$TYPEF[", String.append(js_quote(key), String.append("]={n:", Nat.show(List.length(&2, AST.TelescopeItem, binders)))))
-  quantities = String.append(",q:[", String.append(js_type_field_quantities(binders, True{}), "],intrinsic:$D["))
-  metadata = String.append(prefix, String.append(quantities, String.append(js_quote(key), "]};\n")))
-  String.append(runtime, metadata)
-def js_decl_native_runtime(primitive: Maybe<&2, EmitPrimitive>, key: String, operation: String) -> String:
-  match primitive:
-    case None{}: js_decl_value(True{}, key, js_reference_old(operation))
-    case Some{EmitPrimitive{parameters, body}}:
-      entry = String.append("var ", String.append(js_named_identifier(key), String.append("=(", String.append(String.join(parameters, ","), String.append(")=>", String.append(body, ";\n"))))))
-      String.append(entry, js_decl_value(True{}, key, js_native_facade(parameters, parameters, key)))
-def js_native_facade(parameters: List<&2, String>, names: List<&2, String>, key: String) -> String:
-  match parameters:
-    case Nil{}:
-      String.append(js_named_identifier(key), String.append("(", String.append(String.join(names, ","), ")")))
-    case name <> rest:
-      String.append("(", String.append(name, String.append(")=>", js_native_facade(rest, names, key))))
-# Register functions directly; evaluate nullary definitions on every reference.
-# Affine results may own mutable arrays, so even successful results cannot be cached.
-# Unused values and foreign module initializers never execute during registration.
-def js_definition_has_live_binder(binders: List<&2, AST.TelescopeItem>) -> Bool:
-  match binders:
-    case Nil{}: False{}
-    case AST.Binder{AST.QZero{}, _, _, _, _} <> rest: js_definition_has_live_binder(rest)
-    case AST.Binder{_, _, _, _, _} <> _: True{}
-    case AST.TemplateBinder{_, _, _, _} <> rest: js_definition_has_live_binder(rest)
-def js_decl_value(function_value: Bool, key: String, value: String) -> String:
-  match function_value:
-    case True{}:
-      String.append("$D[", String.append(js_quote(key), String.append("] = ", String.append(value, ";"))))
-    case False{}: js_decl_deferred_value(key, value)
-def js_decl_deferred_value(key: String, value: String) -> String:
-  quoted = js_quote(key)
-  prefix = String.append("Object.defineProperty($D,", String.append(quoted, ",{enumerable:true,configurable:true,get(){return run_loop("))
-  String.append(prefix, String.append(value, ");}});"))
-def js_definition_is_type(binders: List<&2, AST.TelescopeItem>, result: AST.OptionalTerm, body: AST.SyntaxTerm, env: EmitEnv) -> Bool:
-  match binders:
-    case AST.Binder{_, _, _, domain, _} <> rest:
-      js_definition_is_type(rest, result, body, env_bind("null", Some{js_close(domain, env)}, None{}, env))
-    case AST.TemplateBinder{_, _, _, _} <> _: False{}
-    case Nil{}:
-      match result:
-        case AST.SomeTerm{ty}: js_type_is_sort(js_reduce(js_close(ty, env)))
-        case AST.NoTerm{}: js_inferred_is_sort(js_type(body, env))
-def js_inferred_is_sort(found: Maybe<&2, EmitClosure>) -> Bool:
-  match found:
-    case Some{ty}: js_type_is_sort(js_reduce(ty))
-    case None{}: False{}
-def js_type_is_sort(ty: EmitClosure) -> Bool:
-  match ty:
-    case EmitClosure{AST.TermType{_, _}, _, _, _, _, _}: True{}
-    case EmitClosure{AST.TermAll{_, _, _, domain, body, _}, _, _, _, _, _}:
-      env = js_closure_env(ty)
-      js_type_is_sort(js_reduce(js_close(body, env_bind("null", Some{js_close(domain, env)}, None{}, env))))
-    case _: False{}
-
-def js_live_binders(binders: List<&2, AST.TelescopeItem>) -> Nat:
-  match binders:
-    case Nil{}: 0n
-    case +binder <> rest:
-      match binder:
-        case AST.Binder{ AST.QZero{},  _,  _,  _,  _}: js_live_binders(rest)
-        case AST.Binder{ _,  _,  _,  _,  _}: (1n + js_live_binders(rest) : Nat)
-        case AST.TemplateBinder{ _,  _,  _,  _}: js_live_binders(rest)
-def js_foreign(paths: List<&2, String>, key: String, source_path: String, binders: List<&2, AST.TelescopeItem>) -> String:
-  match paths:
-    case Nil{}: "undefined"
-    case +path <> rest:
-      js_foreign_path(String.ends_with(path, ".js"), rest, path, key, source_path, binders)
-
-def js_foreign_path(is_js: Bool, rest: List<&2, String>, path: String, key: String, source_path: String, binders: List<&2, AST.TelescopeItem>) -> String:
-  match is_js:
-    case True{}: String.append("$effect(require(", String.append(js_quote(Path.resolve(source_path, path)), String.append(")[", String.append(js_quote(key), String.append("], require(", String.append(js_quote(Path.resolve(source_path, path)), String.append(")[", String.append(js_quote(String.append(key, "_need")), String.append("], ", String.append(Nat.show(js_live_binders(binders)), ")"))))))))))
-    case False{}: js_foreign(rest, key, source_path, binders)
-
-def js_decls(namespace: String, source_path: String, declarations: List<&2, AST.TopLevel>, env: EmitEnv) -> String:
-  match declarations:
-    case Nil{}: ""
-    case +declaration <> rest: String.append(js_decl(namespace, source_path, declaration, env), String.append("\n", js_decls(namespace, source_path, rest, env)))
-
-def alias_namespace(module_path: String, import_path: String, paths: Map<&2, String>) -> String:
-  alias_namespace_base(String.eq(import_path, "Base"), module_path, import_path, paths)
-
-def alias_namespace_base(is_base: Bool, module_path: String, import_path: String, paths: Map<&2, String>) -> String:
-  match is_base:
-    case True{}: ""
+      Some{v_3}
     case False{}:
-      alias_namespace_found(IndexLookup.find(String, paths, Path.resolve(module_path, import_path)))
+      cps_provider_1_capture_found(v_6, v_8, v_10)
 
-def alias_namespace_found(found: Maybe<&2, String>) -> String:
-  match found:
-    case Some{value}: value
-    case None{}: ""
+def cps_provider_1_resolve(v_1: cps_provider_1_State, v_3: cps_provider_1_Slot) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_3:
+    case cps_provider_1_ErasedSlot{}:
+      cps_provider_1_LowerResult{v_1, BIR.Null{}}
+    case cps_provider_1_Slot{v_9, v_10, v_11, v_12}:
+      cps_provider_1_resolve_live(v_1, v_9, v_10, v_11, v_12)
 
-def js_resolved_alias_entries(imports: List<&2, AST.ModuleImport>, paths: Map<&2, String>) -> List<&2, EmitAlias>:
-  match imports:
-    case Nil{}: Nil{}
-    case AST.ModuleImport{path, alias, AST.SpanOf{file, _, _}} <> rest:
-      prefix = String.append(alias, ".")
-      EmitAlias{alias, prefix, alias_namespace(file, path, paths), String.length(prefix)} <> js_resolved_alias_entries(rest, paths)
-def js_resolved_aliases(+entries: List<&2, EmitAlias>, native: Bool, operations: Map<&2, String>) -> EmitAliases:
-  EmitAliases{entries, js_alias_source(entries), native, operations}
-def js_aliases(imports: EmitAliases) -> String:
-  match imports:
-    case EmitAliases{_, source, _, _}: source
-def js_alias_source(imports: List<&2, EmitAlias>) -> String:
-  match imports:
-    case Nil{}: "{}"
-    case EmitAlias{alias, _, namespace, _} <> rest:
-      prefix = String.append("{", js_quote(alias))
-      named = String.append(prefix, String.append(":", js_quote(namespace)))
-      String.append(named, String.append(js_alias_entries(rest), "}"))
-def js_alias_entries(imports: List<&2, EmitAlias>) -> String:
-  match imports:
-    case Nil{}: ""
-    case EmitAlias{alias, _, namespace, _} <> rest:
-      entry = String.append(",", js_quote(alias))
-      named = String.append(entry, String.append(":", js_quote(namespace)))
-      String.append(named, js_alias_entries(rest))
+def cps_provider_1_resolve_live(v_1: cps_provider_1_State, v_3: U32, v_5: U32, v_6: BIR.Atom, v_7: BIR.Use) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_State{v_20, v_21, v_22, cps_provider_1_Frame{v_23, v_24, v_25, v_26}, v_27, v_28, v_29, v_30}:
+      cps_provider_1_resolve_owner(U32.is_eq(v_23, v_3), cps_provider_1_State{v_20, v_21, v_22, cps_provider_1_Frame{v_23, v_24, v_25, v_26}, v_27, v_28, v_29, v_30}, cps_provider_1_Slot{v_3, v_5, v_6, v_7})
 
-# Lexical blocks retain each module's scope/aliases. Var entries are hoisted to
-# the shared JS module, preserving forward calls and ordered duplicate writes.
-def js_module(namespace: String, module: AST.Module, imports: EmitAliases, catalog: EmitCatalog) -> String:
-  match module:
-    case AST.Module{path, _, declarations}:
-      opener = String.append("{const $scope=", js_quote(namespace))
-      aliases = String.append(";const $aliases=", js_aliases(imports))
-      env = EmitEnv{EmitScope{namespace, imports, catalog}, Nil{}, Nil{}, Nil{}, 0n}
-      body = String.append(opener, String.append(aliases, String.append(";\n", js_decls(namespace, path, declarations, env))))
-      String.append(body, "}\n")
+def cps_provider_1_native_match_resolve_owner_0(v_1: cps_provider_1_State, v_3: cps_provider_1_Slot, v_5: U32, v_7: U32) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_State{v_20, v_21, v_22, cps_provider_1_Frame{v_23, v_24, v_25, v_26}, v_27, v_28, v_29, v_30}:
+      cps_provider_1_resolve_capture(cps_provider_1_capture_found(v_25, v_5, v_7), v_20, v_21, v_22, v_23, v_24, v_25, v_26, v_27, v_28, v_3, v_29, v_30)
 
-def js_modules(modules: List<&2, Loader.LoadedModule>, catalog: EmitCatalog) -> String:
-  js_modules_at(modules, catalog, js_catalog_layouts(catalog))
-def js_modules_at(remaining: List<&2, Loader.LoadedModule>, catalog: EmitCatalog, layouts: List<&2, EmitModuleIndex>) -> String:
-  match remaining layouts:
-    case Loader.LoadedModule{namespace, module} <> rest EmitModuleIndex{_, imports, _, _, _} <> next:
-      String.append(js_module(namespace, module, imports, catalog), js_modules_at(rest, catalog, next))
-    case _ _: ""
-def qualify(namespace: String, key: String) -> String:
-  qualify_result(String.eq(namespace, ""), namespace, key)
+def cps_provider_1_native_match_resolve_owner_1(v_1: Bool, v_3: cps_provider_1_Slot, v_5: cps_provider_1_State) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1, v_3:
+    case True{}, cps_provider_1_Slot{_, _, v_13, _}:
+      cps_provider_1_LowerResult{v_5, v_13}
+    case _, cps_provider_1_Slot{v_21, v_22, _, _}:
+      cps_provider_1_native_match_resolve_owner_0(v_5, v_3, v_21, v_22)
+    case _, _:
+      cps_provider_1_LowerResult{v_5, BIR.Null{}}
 
-def qualify_result(empty: Bool, namespace: String, key: String) -> String:
-  match empty:
-    case True{}: key
-    case False{}: String.append(namespace, String.append(".", key))
-def first_span(left: Maybe<&2, AST.SourceSpan>, right: Maybe<&2, AST.SourceSpan>) -> Maybe<&2, AST.SourceSpan>:
-  match left:
-    case Some{value}: Some(value)
-    case None{}: right
+def cps_provider_1_resolve_owner(v_1: Bool, v_3: cps_provider_1_State, v_5: cps_provider_1_Slot) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_resolve_owner_1(v_1, v_5, v_3)
 
-def error_terms(terms: List<&2, AST.SyntaxTerm>) -> Maybe<&2, AST.SourceSpan>:
-  match terms:
-    case Nil{}: None{}
-    case +term <> rest: first_span(error_term(term), error_terms(rest))
+def cps_provider_1_resolve_capture(v_2: Maybe<&2, U32>, v_3: Arena.Arena, v_5: U32, v_7: U32, v_9: U32, v_12: List<&2, cps_provider_1_Instruction>, v_15: List<&2, cps_provider_1_Capture>, v_17: U32, v_19: List<&2, BIR.Code>, v_22: Maybe<&2, cps_provider_1_Problem>, v_24: cps_provider_1_Slot, v_26: Maybe<&2, Scope.ArenaGlobalScope>, v_28: Maybe<&2, cps_provider_2_NfContext>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case Some{v_31}:
+      cps_provider_1_LowerResult{cps_provider_1_State{v_3, v_5, v_7, cps_provider_1_Frame{v_9, v_12, v_15, v_17}, v_19, v_22, v_26, v_28}, BIR.Capture{v_31}}
+    case None{}:
+      cps_provider_1_LowerResult{cps_provider_1_State{v_3, v_5, v_7, cps_provider_1_Frame{v_9, v_12, cps_provider_1_Capture{v_24, v_17} <> v_15, U32.inc(v_17)}, v_19, v_22, v_26, v_28}, BIR.Capture{v_17}}
 
-def error_term(term: AST.SyntaxTerm) -> Maybe<&2, AST.SourceSpan>:
-  match term:
-    case AST.TermHole{ _, span}: Some(span)
-    case AST.TermVar{ _,  _,  _}: None{}
-    case AST.TermRef{ _,  _}: None{}
-    case AST.TermBang{term,  _}: error_term(term)
-    case AST.TermSub{ _, value, body,  _}: first_span(error_term(value), error_term(body))
-    case AST.TermLet{ _,  _,  _, values, body,  _}: first_span(error_terms(values), error_term(body))
-    case AST.TermType{kind,  _}: error_term(kind)
-    case AST.TermAnn{term, ty,  _}: first_span(error_term(term), error_term(ty))
-    case AST.TermTemplate{term,  _}: error_term(term)
-    case AST.TermQuant{}: None{}
-    case AST.TermQuantity{ _,  _}: None{}
-    case AST.TermMin{left, right,  _}: first_span(error_term(left), error_term(right))
-    case AST.TermAll{ _,  _,  _, ty, body,  _}: first_span(error_term(ty), error_term(body))
-    case AST.TermLam{ _,  _,  _, body,  _}: error_term(body)
-    case AST.TermApp{fn, arg,  _}: first_span(error_term(fn), error_term(arg))
-    case AST.TermAdt{ _, args,  _,  _}: error_terms(args)
-    case AST.TermCtr{ _, args,  _}: error_terms(args)
-    case AST.TermString{_, _, _}: None{}
-    case AST.TermFill{head, args,  _}: first_span(error_term(head), error_terms(args))
-    case AST.TermPlus{head, args,  _}: first_span(error_term(head), error_terms(args))
-    case AST.TermMat{ _, head, matched,  _}: first_span(error_term(head), error_term(matched))
-    case AST.TermAbsurd{ _}: None{}
-    case AST.TermEqual{left, right, ty,  _}: first_span(error_term(left), first_span(error_term(right), error_term(ty)))
-    case AST.TermRefl{ _}: None{}
-    case AST.TermRewrite{equation, proof, body,  _}: first_span(error_term(equation), first_span(error_term(proof), error_term(body)))
-    case AST.BodyMatch{scrutinees, cases,  _}: first_span(error_terms(scrutinees), error_terms(cases))
-    case AST.BodyCase{ _, body,  _}: error_term(body)
-    case AST.BodyLocal{ _,  _, values, body,  _}: first_span(error_terms(values), error_term(body))
-    case AST.BodyReply{term,  _}: error_term(term)
+def cps_provider_1_variable(v_1: cps_provider_1_State, v_4: List<&2, cps_provider_1_Slot>, v_6: Nat, v_7: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_variable_found(v_1, cps_provider_1_slot_at(v_4, v_6), v_7)
 
-def error_optional_term(result: AST.OptionalTerm) -> Maybe<&2, AST.SourceSpan>:
-  match result:
-    case AST.NoTerm{}: None{}
-    case AST.SomeTerm{term}: error_term(term)
-def error_def_body(body: AST.DefBody) -> Maybe<&2, AST.SourceSpan>:
-  match body:
-    case AST.DefTerm{term}: error_term(term)
-    case AST.DefImports{ _}: None{}
+def cps_provider_1_variable_found(v_1: cps_provider_1_State, v_4: Maybe<&2, cps_provider_1_Slot>, v_5: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_4:
+    case Some{v_8}:
+      cps_provider_1_resolve(v_1, v_8)
+    case None{}:
+      cps_provider_1_fail(v_1, "missing checked lexical binding", v_5)
 
-def error_decl(declaration: AST.TopLevel) -> Maybe<&2, AST.SourceSpan>:
-  match declaration:
-    case AST.DefTop{ AST.Definition{ _, binders, result, body,  _, span}}:
-      result_error = error_optional_term(result)
-      binder_errors = error_binders(binders)
-      body_error = error_def_body(body)
-      first_span(result_error, first_span(binder_errors, body_error))
-    case AST.TypeTop{ AST.TypeDecl{ _, params, kind, constructors,  _}}:
-      first_span(error_term(kind), first_span(error_binders(params), error_constructors(constructors)))
-    case AST.LawTop{ AST.LawDecl{ _, clauses, body,  _}}:
-      first_span(error_clauses(clauses), error_term(body))
+def cps_provider_1_native_match_bind_slot_0(v_1: cps_provider_1_Frame, v_2: BIR.Atom, v_3: BIR.Use, v_5: U32, v_6: Arena.Arena, v_8: U32, v_10: U32, v_12: List<&2, BIR.Code>, v_15: Maybe<&2, cps_provider_1_Problem>, v_17: Maybe<&2, Scope.ArenaGlobalScope>, v_19: Maybe<&2, cps_provider_2_NfContext>) -> cps_provider_1_LowerResult<cps_provider_1_Slot>:
+  match v_1:
+    case cps_provider_1_Frame{v_26, _, _, _}:
+      cps_provider_1_LowerResult{cps_provider_1_State{v_6, v_8, v_10, v_1, v_12, v_15, v_17, v_19}, cps_provider_1_Slot{v_26, v_5, v_2, v_3}}
 
-def error_binders(binders: List<&2, AST.TelescopeItem>) -> Maybe<&2, AST.SourceSpan>:
-  match binders:
-    case Nil{}: None{}
-    case +binder <> rest:
-      match binder:
-        case AST.Binder{ _,  _,  _, ty,  _}: first_span(error_term(ty), error_binders(rest))
-        case AST.TemplateBinder{ _,  _, ty,  _}: first_span(error_term(ty), error_binders(rest))
+def cps_provider_1_native_match_bind_slot_1(v_1: cps_provider_1_State, v_2: BIR.Atom, v_3: BIR.Use, v_5: U32) -> cps_provider_1_LowerResult<cps_provider_1_Slot>:
+  match v_1:
+    case cps_provider_1_State{v_16, v_17, v_18, v_19, v_20, v_21, v_22, v_23}:
+      cps_provider_1_native_match_bind_slot_0(v_19, v_2, v_3, v_5, v_16, v_17, v_18, v_20, v_21, v_22, v_23)
 
-def error_constructors(constructors: List<&2, AST.ConstructorDecl>) -> Maybe<&2, AST.SourceSpan>:
-  match constructors:
-    case Nil{}: None{}
-    case +constructor <> rest:
-      match constructor:
-        case AST.Constructor{ _, fields,  _}: first_span(error_binders(fields), error_constructors(rest))
+def cps_provider_1_native_match_bind_slot_2(v_2: cps_provider_1_LowerResult<U32>, v_3: BIR.Atom, v_4: BIR.Use) -> cps_provider_1_LowerResult<cps_provider_1_Slot>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_9, v_10}:
+      cps_provider_1_native_match_bind_slot_1(v_9, v_3, v_4, v_10)
 
-def error_condition(condition: Maybe<&2, AST.SyntaxTerm>) -> Maybe<&2, AST.SourceSpan>:
-  match condition:
-    case None{}: None{}
-    case Some{term}: error_term(term)
+def cps_provider_1_bind_slot(v_1: cps_provider_1_State, v_2: BIR.Atom, v_3: BIR.Use) -> cps_provider_1_LowerResult<cps_provider_1_Slot>:
+  cps_provider_1_native_match_bind_slot_2(cps_provider_1_fresh(v_1), v_2, v_3)
 
-def error_clauses(clauses: List<&2, AST.Clause>) -> Maybe<&2, AST.SourceSpan>:
-  match clauses:
-    case Nil{}: None{}
-    case +clause <> rest:
-      match clause:
-        case AST.ClauseFor{ _,  _,  _, ty, condition,  _}:
-          condition_error = error_condition(condition)
-          first_span(error_term(ty), first_span(condition_error, error_clauses(rest)))
+def cps_provider_1_enter(v_1: cps_provider_1_State) -> cps_provider_1_LowerResult<cps_provider_1_Frame>:
+  match v_1:
+    case cps_provider_1_State{v_12, v_13, v_14, v_15, v_16, v_17, v_18, v_19}:
+      cps_provider_1_LowerResult{cps_provider_1_State{v_12, U32.inc(v_13), v_14, cps_provider_1_Frame{v_13, [], [], 0}, v_16, v_17, v_18, v_19}, v_15}
 
-def error_decls(declarations: List<&2, AST.TopLevel>) -> Maybe<&2, AST.SourceSpan>:
-  match declarations:
-    case Nil{}: None{}
-    case +declaration <> rest: first_span(error_decl(declaration), error_decls(rest))
+def cps_provider_1_capture_uses(v_2: List<&2, cps_provider_1_Capture>) -> List<&2, BIR.Use>:
+  match v_2:
+    case []:
+      []
+    case cps_provider_1_Capture{cps_provider_1_Slot{_, _, _, v_13}, _} <> v_15:
+      v_13 <> cps_provider_1_capture_uses(v_15)
+    case _ <> v_20:
+      cps_provider_1_capture_uses(v_20)
 
-def error_modules(modules: List<&2, Loader.LoadedModule>) -> Maybe<&2, AST.SourceSpan>:
-  match modules:
-    case Nil{}: None{}
-    case +loaded <> rest:
-      match loaded:
-        case Loader.LoadedModule{ _,  AST.Module{ _,  _, declarations}}:
-          first_span(error_decls(declarations), error_modules(rest))
-def template_terms(terms: List<&2, AST.SyntaxTerm>) -> Maybe<&2, AST.SourceSpan>:
-  match terms:
-    case Nil{}: None{}
-    case +term <> rest: first_span(template_term(term), template_terms(rest))
-def template_term(term: AST.SyntaxTerm) -> Maybe<&2, AST.SourceSpan>:
-  match term:
-    case AST.TermTemplate{ _, span}: Some(span)
-    case AST.TermVar{ _,  _,  _}: None{}
-    case AST.TermRef{ _,  _}: None{}
-    case AST.TermBang{term,  _}: template_term(term)
-    case AST.TermSub{ _, value, body,  _}: first_span(template_term(value), template_term(body))
-    case AST.TermLet{ _,  _,  _, values, body,  _}: first_span(template_terms(values), template_term(body))
-    case AST.TermAnn{term, ty,  _}: first_span(template_term(term), template_term(ty))
-    case AST.TermType{kind,  _}: template_term(kind)
-    case AST.TermQuant{}: None{}
-    case AST.TermQuantity{ _,  _}: None{}
-    case AST.TermMin{left, right,  _}: first_span(template_term(left), template_term(right))
-    case AST.TermAll{ _,  _,  _, ty, body,  _}: first_span(template_term(ty), template_term(body))
-    case AST.TermLam{ _,  _,  _, body,  _}: template_term(body)
-    case AST.TermApp{fn, arg,  _}: first_span(template_term(fn), template_term(arg))
-    case AST.TermAdt{ _, args,  _,  _}: template_terms(args)
-    case AST.TermFill{head, args,  _}: first_span(template_term(head), template_terms(args))
-    case AST.TermPlus{head, args,  _}: first_span(template_term(head), template_terms(args))
-    case AST.TermCtr{ _, args,  _}: template_terms(args)
-    case AST.TermString{_, _, _}: None{}
-    case AST.TermMat{ _, head, matched,  _}: first_span(template_term(head), template_term(matched))
-    case AST.TermAbsurd{ _}: None{}
-    case AST.TermEqual{left, right, ty,  _}: first_span(template_term(left), first_span(template_term(right), template_term(ty)))
-    case AST.TermRefl{ _}: None{}
-    case AST.TermRewrite{equation, proof, body,  _}: first_span(template_term(equation), first_span(template_term(proof), template_term(body)))
-    case AST.TermHole{ _,  _}: None{}
-    case AST.BodyMatch{scrutinees, cases,  _}: first_span(template_terms(scrutinees), template_terms(cases))
-    case AST.BodyCase{ _, body,  _}: template_term(body)
-    case AST.BodyLocal{ _,  _, values, body,  _}: first_span(template_terms(values), template_term(body))
-    case AST.BodyReply{term,  _}: template_term(term)
-def template_binders(binders: List<&2, AST.TelescopeItem>) -> Maybe<&2, AST.SourceSpan>:
-  match binders:
-    case Nil{}: None{}
-    case +binder <> rest:
-      match binder:
-        case AST.Binder{ _,  _,  _, ty,  _}: first_span(template_term(ty), template_binders(rest))
-        case AST.TemplateBinder{ _,  _,  _, span}: Some(span)
-def template_constructors(constructors: List<&2, AST.ConstructorDecl>) -> Maybe<&2, AST.SourceSpan>:
-  match constructors:
-    case Nil{}: None{}
-    case +constructor <> rest:
-      match constructor:
-        case AST.Constructor{ _, fields,  _}: first_span(template_binders(fields), template_constructors(rest))
-def template_condition(condition: Maybe<&2, AST.SyntaxTerm>) -> Maybe<&2, AST.SourceSpan>:
-  match condition:
-    case None{}: None{}
-    case Some{term}: template_term(term)
+def cps_provider_1_leave(v_1: cps_provider_1_State, v_3: cps_provider_1_Frame, v_5: List<&2, BIR.Parameter>, v_6: BIR.Block) -> cps_provider_1_LowerResult<cps_provider_1_CodeRef>:
+  match v_1:
+    case cps_provider_1_State{v_20, v_21, v_22, cps_provider_1_Frame{v_23, _, v_25, _}, v_27, v_28, v_29, v_30}:
+      v_33 = List.reverse(&2, cps_provider_1_Capture, v_25)
+      cps_provider_1_LowerResult{cps_provider_1_State{v_20, v_21, v_22, v_3, BIR.Code{v_23, cps_provider_1_capture_uses(v_33), v_5, v_6} <> v_27, v_28, v_29, v_30}, cps_provider_1_CodeRef{v_23, v_5, v_33}}
 
-def template_clauses(clauses: List<&2, AST.Clause>) -> Maybe<&2, AST.SourceSpan>:
-  match clauses:
-    case Nil{}: None{}
-    case +clause <> rest:
-      match clause:
-        case AST.ClauseFor{ _,  _,  _, ty, condition,  _}:
-          condition_template = template_condition(condition)
-          first_span(template_term(ty), first_span(condition_template, template_clauses(rest)))
-def template_optional_term(result: AST.OptionalTerm) -> Maybe<&2, AST.SourceSpan>:
-  match result:
-    case AST.NoTerm{}: None{}
-    case AST.SomeTerm{term}: template_term(term)
-def template_def_body(body: AST.DefBody) -> Maybe<&2, AST.SourceSpan>:
-  match body:
-    case AST.DefTerm{term}: template_term(term)
-    case AST.DefImports{ _}: None{}
+def cps_provider_1_leave_value(v_1: cps_provider_1_State, v_3: cps_provider_1_Frame, v_5: List<&2, BIR.Parameter>, v_6: BIR.Atom) -> cps_provider_1_LowerResult<cps_provider_1_CodeRef>:
+  match v_1:
+    case cps_provider_1_State{v_20, v_21, v_22, cps_provider_1_Frame{v_23, v_24, v_25, v_26}, v_27, v_28, v_29, v_30}:
+      cps_provider_1_leave(cps_provider_1_State{v_20, v_21, v_22, cps_provider_1_Frame{v_23, [], v_25, v_26}, v_27, v_28, v_29, v_30}, v_3, v_5, cps_provider_1_finish(v_24, v_6))
 
-def template_decl(declaration: AST.TopLevel) -> Maybe<&2, AST.SourceSpan>:
-  match declaration:
-    case AST.DefTop{ AST.Definition{ _, binders, result, body,  _,  _}}:
-      result_template = template_optional_term(result)
-      body_template = template_def_body(body)
-      first_span(result_template, first_span(template_binders(binders), body_template))
-    case AST.TypeTop{ AST.TypeDecl{ _, params, kind, constructors,  _}}:
-      first_span(template_term(kind), first_span(template_binders(params), template_constructors(constructors)))
-    case AST.LawTop{ AST.LawDecl{ _, clauses, body,  _}}:
-      first_span(template_clauses(clauses), template_term(body))
-def template_decls(declarations: List<&2, AST.TopLevel>) -> Maybe<&2, AST.SourceSpan>:
-  match declarations:
-    case Nil{}: None{}
-    case +declaration <> rest: first_span(template_decl(declaration), template_decls(rest))
-def template_modules(modules: List<&2, Loader.LoadedModule>) -> Maybe<&2, AST.SourceSpan>:
-  match modules:
-    case Nil{}: None{}
-    case +loaded <> rest:
-      match loaded:
-        case Loader.LoadedModule{ _,  AST.Module{ _,  _, declarations}}:
-          first_span(template_decls(declarations), template_modules(rest))
-def has_js_import(paths: List<&2, String>) -> Bool:
-  match paths:
-    case Nil{}: False{}
-    case +path <> rest: Bool.or(String.ends_with(path, ".js"), has_js_import(rest))
+def cps_provider_1_capture_arguments(v_1: cps_provider_1_State, v_4: List<&2, cps_provider_1_Capture>) -> cps_provider_1_LowerResult<List<&2, BIR.Arg>>:
+  match v_4:
+    case []:
+      cps_provider_1_LowerResult{v_1, []}
+    case cps_provider_1_Capture{v_10, _} <> v_12:
+      cps_provider_1_capture_argument(v_1, v_10, v_12)
 
-def foreign_error_decl(declaration: AST.TopLevel) -> Maybe<&2, AST.SourceSpan>:
-  match declaration:
-    case AST.DefTop{ AST.Definition{ _,  _,  _, body,  _, span}}:
-      match body:
-        case AST.DefImports{paths}: foreign_error_js(has_js_import(paths), span)
-        case AST.DefTerm{ _}: None{}
-    case AST.TypeTop{ _}: None{}
-    case AST.LawTop{ _}: None{}
+def cps_provider_1_native_match_capture_argument_0(v_2: cps_provider_1_LowerResult<List<&2, BIR.Arg>>, v_3: BIR.Use, v_4: BIR.Atom) -> cps_provider_1_LowerResult<List<&2, BIR.Arg>>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_9, v_10}:
+      cps_provider_1_LowerResult{v_9, BIR.Arg{v_3, v_4} <> v_10}
 
-def foreign_error_js(found: Bool, span: AST.SourceSpan) -> Maybe<&2, AST.SourceSpan>:
-  match found:
-    case True{}: None{}
-    case False{}: Some(span)
+def cps_provider_1_native_match_capture_argument_1(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_4: List<&2, cps_provider_1_Capture>, v_5: BIR.Use) -> cps_provider_1_LowerResult<List<&2, BIR.Arg>>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_10, v_11}:
+      cps_provider_1_native_match_capture_argument_0(cps_provider_1_capture_arguments(v_10, v_4), v_5, v_11)
 
-def foreign_error_decls(declarations: List<&2, AST.TopLevel>) -> Maybe<&2, AST.SourceSpan>:
-  match declarations:
-    case Nil{}: None{}
-    case +declaration <> rest: first_span(foreign_error_decl(declaration), foreign_error_decls(rest))
+def cps_provider_1_native_match_capture_argument_2(v_1: cps_provider_1_Slot, v_3: cps_provider_1_State, v_6: List<&2, cps_provider_1_Capture>) -> cps_provider_1_LowerResult<List<&2, BIR.Arg>>:
+  match v_1:
+    case cps_provider_1_Slot{_, _, _, v_16}:
+      cps_provider_1_native_match_capture_argument_1(cps_provider_1_resolve(v_3, v_1), v_6, v_16)
+    case cps_provider_1_ErasedSlot{}:
+      cps_provider_1_capture_arguments(v_3, v_6)
 
-def foreign_error_modules(modules: List<&2, Loader.LoadedModule>) -> Maybe<&2, AST.SourceSpan>:
-  match modules:
-    case Nil{}: None{}
-    case +loaded <> rest:
-      match loaded:
-        case Loader.LoadedModule{ _,  AST.Module{ _,  _, declarations}}:
-          first_span(foreign_error_decls(declarations), foreign_error_modules(rest))
+def cps_provider_1_capture_argument(v_1: cps_provider_1_State, v_3: cps_provider_1_Slot, v_6: List<&2, cps_provider_1_Capture>) -> cps_provider_1_LowerResult<List<&2, BIR.Arg>>:
+  cps_provider_1_native_match_capture_argument_2(v_3, v_1, v_6)
 
+def cps_provider_1_native_match_close_0(v_2: cps_provider_1_LowerResult<List<&2, BIR.Arg>>, v_4: U32, v_6: List<&2, BIR.Parameter>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_10, v_11}:
+      cps_provider_1_operation(v_10, BIR.Closure{v_4, v_11, v_6})
 
-# Match the native JS ABI: ordinary objects with named, writable, configurable
-# data properties, and no positional symbol or per-instance getter closures.
-# Runtime metadata retains erased formal slots but never stores them in values.
-# Strict operands and public facades force every private tail request before it
-# can enter a Bend value. One module-local register bank therefore owns the only
-# pending request. The loop captures and clears every argument before invoking
-# its target, so strict nested/reentrant calls can safely reuse the same bank.
-def js_runtime() -> String:
-  "const $D = Object.create(null);\nconst $BEND_TAIL = Symbol(\"bend.tail\");\nconst $td = 64;\nconst $TAIL_PENDING = Object.create(null), $tailArgs = Array(32);\nlet $tailFn, $tailCount=0, $tailUnary, $tailRest;\nfunction tail_many(f,a) { $tailFn=f; $tailCount=-2; $tailRest=a; return $TAIL_PENDING; }\nfunction tail_unary(f,x) { $tailFn=f; $tailCount=-1; $tailUnary=x; return $TAIL_PENDING; }\nfunction tail_named(f,n) { $tailFn=f; $tailCount=n; return $TAIL_PENDING; }\nfunction $run(f, xs) { let x=run_loop(f); for (const a of xs) x=run_loop(x(a)); return x; }\nfunction run_loop(x) { while (x===$TAIL_PENDING) { const f=$tailFn, count=$tailCount; $tailFn=undefined; $tailCount=0; if(count===-1) { const a=$tailUnary; $tailUnary=undefined; x=f(a,$BEND_TAIL); } else x=tail_dispatch(f,count); } return x; }\nfunction tail_dispatch(f,count) { switch(count) {\ncase -2: { const a=$tailRest; $tailRest=undefined; return f(...a); }\ncase 1: { const a0=$tailArgs[0]; $tailArgs[0]=undefined; return f(a0); }\ncase 2: { const a0=$tailArgs[0],a1=$tailArgs[1]; $tailArgs[0]=$tailArgs[1]=undefined; return f(a0,a1); }\ncase 3: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=undefined; return f(a0,a1,a2); }\ncase 4: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=undefined; return f(a0,a1,a2,a3); }\ncase 5: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=undefined; return f(a0,a1,a2,a3,a4); }\ncase 6: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=undefined; return f(a0,a1,a2,a3,a4,a5); }\ncase 7: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=undefined; return f(a0,a1,a2,a3,a4,a5,a6); }\ncase 8: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7); }\ncase 9: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8); }\ncase 10: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9); }\ncase 11: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10); }\ncase 12: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11); }\ncase 13: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12); }\ncase 14: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13); }\ncase 15: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14); }\ncase 16: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15); }\ncase 17: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16); }\ncase 18: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17); }\ncase 19: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18); }\ncase 20: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19); }\ncase 21: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20); }\ncase 22: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21); }\ncase 23: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22); }\ncase 24: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23); }\ncase 25: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24); }\ncase 26: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25); }\ncase 27: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26); }\ncase 28: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27); }\ncase 29: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28); }\ncase 30: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29); }\ncase 31: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29],a30=$tailArgs[30]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=$tailArgs[30]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30); }\ncase 32: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29],a30=$tailArgs[30],a31=$tailArgs[31]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=$tailArgs[30]=$tailArgs[31]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31); }\ndefault: throw \"bend: invalid private tail frame\";\n} }\nfunction run_force(x,raw) { return raw===$BEND_TAIL?x:run_loop(x); }\nfunction run_many(f,a,d=$td) { return d<64?f(...a,d+1):tail_many(f,a); }\nfunction run_tail(f,x) { const j=f[$BEND_TAIL]; return j ? tail_unary(j,x) : f(x); }\nfunction run_clo(j) { j[$BEND_TAIL]=j; return j; }\nfunction nat_chk(x) { if(x>281474976710655) throw \"bend: a Nat past the largest immediate 2^48-1\"; return x; }\nfunction char_new(x) { if(x>0x10ffff || (x>=0xd800 && x<=0xdfff)) throw \"bend: \"+x+\" is not a Unicode scalar value\"; return String.fromCodePoint(x); }\nfunction cmp_new(a,b) { return {$:a<b?\"LT\":a===b?\"EQ\":\"GT\"}; }\nfunction word_to_u32(w) { let x=0; for(let i=0;w.$===\"WCon\";i++,w=w.tail) if(w.head)x|=1<<i; return x>>>0; }\nfunction u32_to_word(x) { let w={$:\"WNil\"}; for(let i=31;i>=0;i--) w={$:\"WCon\",head:!!((x>>>i)&1),tail:w}; return w; }\nfunction run_named1(f,a0,d) { return d<64?f(a0,d+1):($tailArgs[0]=a0,tail_named(f,1)); }\nfunction run_named2(f,a0,a1,d) { return d<64?f(a0,a1,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,tail_named(f,2)); }\nfunction run_named3(f,a0,a1,a2,d) { return d<64?f(a0,a1,a2,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,tail_named(f,3)); }\nfunction run_named4(f,a0,a1,a2,a3,d) { return d<64?f(a0,a1,a2,a3,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,tail_named(f,4)); }\nfunction run_named5(f,a0,a1,a2,a3,a4,d) { return d<64?f(a0,a1,a2,a3,a4,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,tail_named(f,5)); }\nfunction run_named6(f,a0,a1,a2,a3,a4,a5,d) { return d<64?f(a0,a1,a2,a3,a4,a5,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,tail_named(f,6)); }\nfunction run_named7(f,a0,a1,a2,a3,a4,a5,a6,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,tail_named(f,7)); }\nfunction run_named8(f,a0,a1,a2,a3,a4,a5,a6,a7,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,tail_named(f,8)); }\nfunction run_named9(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,tail_named(f,9)); }\nfunction run_named10(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,tail_named(f,10)); }\nfunction run_named11(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,tail_named(f,11)); }\nfunction run_named12(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,tail_named(f,12)); }\nfunction run_named13(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,tail_named(f,13)); }\nfunction run_named14(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,tail_named(f,14)); }\nfunction run_named15(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,tail_named(f,15)); }\nfunction run_named16(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,tail_named(f,16)); }\nfunction run_named17(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,tail_named(f,17)); }\nfunction run_named18(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,tail_named(f,18)); }\nfunction run_named19(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,tail_named(f,19)); }\nfunction run_named20(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,tail_named(f,20)); }\nfunction run_named21(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,tail_named(f,21)); }\nfunction run_named22(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,tail_named(f,22)); }\nfunction run_named23(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,tail_named(f,23)); }\nfunction run_named24(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,tail_named(f,24)); }\nfunction run_named25(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,tail_named(f,25)); }\nfunction run_named26(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,tail_named(f,26)); }\nfunction run_named27(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,tail_named(f,27)); }\nfunction run_named28(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,tail_named(f,28)); }\nfunction run_named29(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,tail_named(f,29)); }\nfunction run_named30(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,tail_named(f,30)); }\nfunction run_named31(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,$tailArgs[30]=a30,tail_named(f,31)); }\nfunction run_named32(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,$tailArgs[30]=a30,$tailArgs[31]=a31,tail_named(f,32)); }\n"
-def js_runtime_extra() -> String:
-  "function f32_from_bits(x) { return new Float32Array(new Uint32Array([x]).buffer)[0]; }\nfunction f32_bits(x) { return new Uint32Array(new Float32Array([x]).buffer)[0]; }\nfunction tuple(a,b) { return {$:\"Tuple\",fst:a,snd:b}; }\nfunction f32_show(x) { if(x!==x) return \"nan\"; if(!Number.isFinite(x)||Object.is(x,-0)) return x<0?\"-inf\":x===0?\"-0\":\"inf\"; let s=\"x\"; for(let p=1;p<=9&&Math.fround(Number(s))!==x;p++) s=String(Number(x.toExponential(p-1))); return s; }\nfunction f32_read(s) { const re=/^\\s*[+-]?((\\d+\\.?\\d*|\\.\\d+)(e[+-]?\\d+)?|inf(inity)?|nan)$/i; const v=Number(s.replace(/inf\\w*/i,\"Infinity\")); return re.test(s)?{$:\"Some\",value:Math.fround(v)}:{$:\"None\"}; }\nfunction nat_divmod(a,b) { return b===0?tuple(0,a):tuple(Math.trunc(a/b),a%b); }\nfunction array_new(n,v) { if(n>31) throw \"bend: an array past the deepest block class 31\"; return Array(2 ** n).fill(v); }\nfunction array_node(a,b) { if(a.length!==b.length) throw \"bend: runtime fail-stop\"; return a.concat(b); }\n"
-def js_runtime_array() -> String:
+def cps_provider_1_native_match_close_1(v_1: cps_provider_1_CodeRef, v_3: cps_provider_1_State) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_CodeRef{v_8, v_9, v_10}:
+      cps_provider_1_native_match_close_0(cps_provider_1_capture_arguments(v_3, v_10), v_8, v_9)
+
+def cps_provider_1_close(v_1: cps_provider_1_State, v_3: cps_provider_1_CodeRef) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_close_1(v_3, v_1)
+
+def cps_provider_1_native_match_call_reference_0(v_2: cps_provider_1_LowerResult<List<&2, BIR.Arg>>, v_4: List<&2, BIR.Arg>, v_6: U32) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_10, v_11}:
+      cps_provider_1_operation(v_10, BIR.Direct{v_6, List.append(&2, BIR.Arg, v_11, v_4)})
+
+def cps_provider_1_native_match_call_reference_1(v_1: cps_provider_1_CodeRef, v_3: cps_provider_1_State, v_5: List<&2, BIR.Arg>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_CodeRef{v_10, _, v_12}:
+      cps_provider_1_native_match_call_reference_0(cps_provider_1_capture_arguments(v_3, v_12), v_5, v_10)
+
+def cps_provider_1_call_reference(v_1: cps_provider_1_State, v_3: cps_provider_1_CodeRef, v_5: List<&2, BIR.Arg>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_call_reference_1(v_3, v_1, v_5)
+
+def cps_provider_1_constructor_native(v_0: cps_provider_4_Constructor) -> String:
+  match v_0:
+    case cps_provider_4_Constructor{BIR.ConstructorLayout{_, _, Some{v_11}, _}, _, _, _}:
+      v_11
+    case _:
+      ""
+
+def cps_provider_1_constructor_id(v_0: cps_provider_4_Constructor) -> U32:
+  match v_0:
+    case cps_provider_4_Constructor{BIR.ConstructorLayout{v_9, _, _, _}, _, _, _}:
+      v_9
+
+def cps_provider_1_constructor_key(v_0: cps_provider_4_Constructor) -> String:
+  match v_0:
+    case cps_provider_4_Constructor{BIR.ConstructorLayout{_, v_10, _, _}, _, _, _}:
+      v_10
+
+def cps_provider_1_atom_arguments(v_1: List<&2, BIR.Atom>) -> List<&2, BIR.Arg>:
+  match v_1:
+    case []:
+      []
+    case v_5 <> v_6:
+      BIR.Arg{BIR.Affine{}, v_5} <> cps_provider_1_atom_arguments(v_6)
+
+def native_match_cps_provider_1_describe_0(v_38: cps_provider_4_CatalogResult<BIR.Descriptor>, v_15: U32, v_16: U32, v_17: cps_provider_1_Frame, v_18: List<&2, BIR.Code>, v_19: Maybe<&2, cps_provider_1_Problem>, v_24: Scope.ArenaGlobalScope, +v_25: cps_provider_2_NfContext) -> cps_provider_1_LowerResult<Maybe<&2, BIR.Descriptor>>:
+  match v_38:
+    case cps_provider_4_CatalogResult{v_29, v_30}:
+      cps_provider_1_LowerResult{cps_provider_1_State{v_29, v_15, v_16, v_17, v_18, v_19, Some{v_24}, Some{v_25}}, Some{cps_provider_2_normalize_in(v_25, v_30)}}
+
+def native_match_cps_provider_1_describe_1(+v_20: Maybe<&2, Scope.ArenaGlobalScope>, +v_21: Maybe<&2, cps_provider_2_NfContext>, v_3: U32, v_14: Arena.Arena, v_15: U32, v_16: U32, v_17: cps_provider_1_Frame, v_18: List<&2, BIR.Code>, v_19: Maybe<&2, cps_provider_1_Problem>) -> cps_provider_1_LowerResult<Maybe<&2, BIR.Descriptor>>:
+  match v_20, v_21:
+    case Some{v_24}, Some{+v_25}:
+      native_match_cps_provider_1_describe_0(cps_provider_4_descriptor(v_14, v_3, v_24), v_15, v_16, v_17, v_18, v_19, v_24, v_25)
+    case _, _:
+      cps_provider_1_LowerResult{cps_provider_1_State{v_14, v_15, v_16, v_17, v_18, cps_provider_1_problem_first(v_19, "missing definition scope for a checked descriptor", cps_provider_1_no_span), v_20, v_21}, None{}}
+
+def native_match_cps_provider_1_describe_2(v_1: cps_provider_1_State, v_3: U32) -> cps_provider_1_LowerResult<Maybe<&2, BIR.Descriptor>>:
+  match v_1:
+    case cps_provider_1_State{v_14, v_15, v_16, v_17, v_18, v_19, +v_20, +v_21}:
+      native_match_cps_provider_1_describe_1(v_20, v_21, v_3, v_14, v_15, v_16, v_17, v_18, v_19)
+
+def cps_provider_1_describe(v_1: cps_provider_1_State, v_3: U32) -> cps_provider_1_LowerResult<Maybe<&2, BIR.Descriptor>>:
+  native_match_cps_provider_1_describe_2(v_1, v_3)
+
+def native_match_cps_provider_1_element_value_0(v_15: cps_provider_1_LowerResult<Maybe<&2, BIR.Descriptor>>) -> cps_provider_1_LowerResult<List<&2, BIR.Descriptor>>:
+  match v_15:
+    case cps_provider_1_LowerResult{v_9, Some{v_10}}:
+      cps_provider_1_LowerResult{v_9, [v_10]}
+    case cps_provider_1_LowerResult{v_12, None{}}:
+      cps_provider_1_LowerResult{cps_provider_1_state_problem(v_12, "missing checked array element type", cps_provider_1_no_span), []}
+
+def cps_provider_1_element_value(v_1: cps_provider_1_State, v_3: U32) -> cps_provider_1_LowerResult<List<&2, BIR.Descriptor>>:
+  native_match_cps_provider_1_element_value_0(cps_provider_1_describe(v_1, v_3))
+
+def cps_provider_1_single_argument(v_0: BIR.Descriptor) -> Maybe<&2, BIR.Descriptor>:
+  match v_0:
+    case BIR.DescriptorRef{_, [v_5]}:
+      Some{v_5}
+    case BIR.DescriptorApplication{_, v_9}:
+      Some{v_9}
+    case BIR.DescriptorFill{_, [v_13]}:
+      Some{v_13}
+    case BIR.DescriptorPlus{_, [v_17]}:
+      Some{v_17}
+    case BIR.DescriptorNamedFill{_, _, [v_23]}:
+      Some{v_23}
+    case BIR.DescriptorNamedPlus{_, _, [v_29]}:
+      Some{v_29}
+    case _:
+      None{}
+
+def native_match_cps_provider_1_element_argument_0(v_21: Maybe<&2, BIR.Descriptor>, v_9: cps_provider_1_State) -> cps_provider_1_LowerResult<List<&2, BIR.Descriptor>>:
+  match v_21:
+    case Some{v_13}:
+      cps_provider_1_LowerResult{v_9, [v_13]}
+    case None{}:
+      cps_provider_1_LowerResult{cps_provider_1_state_problem(v_9, "checked array type has no element argument", cps_provider_1_no_span), []}
+
+def native_match_cps_provider_1_element_argument_1(v_20: cps_provider_1_LowerResult<List<&2, BIR.Descriptor>>) -> cps_provider_1_LowerResult<List<&2, BIR.Descriptor>>:
+  match v_20:
+    case cps_provider_1_LowerResult{v_9, [v_10]}:
+      native_match_cps_provider_1_element_argument_0(cps_provider_1_single_argument(v_10), v_9)
+    case cps_provider_1_LowerResult{v_18, _}:
+      cps_provider_1_LowerResult{v_18, []}
+
+def cps_provider_1_element_argument(v_1: cps_provider_1_State, v_3: U32) -> cps_provider_1_LowerResult<List<&2, BIR.Descriptor>>:
+  native_match_cps_provider_1_element_argument_1(cps_provider_1_element_value(v_1, v_3))
+
+def cps_provider_1_primitive_element(v_1: cps_provider_1_State, +v_2: BIR.Primitive, +v_4: List<&2, BIR.Atom>, v_7: Maybe<&2, U32>, v_9: Bool) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_7, v_9:
+    case Some{v_12}, True{}:
+      cps_provider_1_primitive_types(v_2, cps_provider_1_atom_arguments(v_4), cps_provider_1_element_argument(v_1, v_12))
+    case Some{v_17}, False{}:
+      cps_provider_1_primitive_types(v_2, cps_provider_1_atom_arguments(v_4), cps_provider_1_element_value(v_1, v_17))
+    case None{}, _:
+      cps_provider_1_fail(v_1, "missing checked array element type", cps_provider_1_no_span)
+
+def cps_provider_1_primitive_types(v_0: BIR.Primitive, v_2: List<&2, BIR.Arg>, v_5: cps_provider_1_LowerResult<List<&2, BIR.Descriptor>>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_5:
+    case cps_provider_1_LowerResult{v_9, v_10}:
+      cps_provider_1_operation(v_9, BIR.PrimitiveCall{v_0, v_2, v_10})
+
+def cps_provider_1_occurrence_type(v_0: IR.Occurrence) -> Maybe<&2, U32>:
+  match v_0:
+    case IR.TypedOccurrence{_, v_10, _, _, _, _}:
+      Some{v_10}
+    case IR.LocalReferenceOccurrence{_, v_20, _, _}:
+      Some{v_20}
+    case IR.ScalarOccurrence{_, v_29, _, _, _}:
+      Some{v_29}
+    case IR.StringOccurrence{_, v_38, _, _}:
+      Some{v_38}
+    case IR.CaseOccurrence{_, v_46, _, _}:
+      Some{v_46}
+    case IR.LocalOccurrence{_, v_55, _, _, _}:
+      Some{v_55}
+
+def cps_provider_1_first_binding_type(v_1: List<&2, IR.CheckedBinding>) -> Maybe<&2, U32>:
+  match v_1:
+    case []:
+      None{}
+    case IR.CheckedBinding{_, v_9, _} <> _:
+      Some{v_9}
+
+def cps_provider_1_first_occurrence_type(v_1: List<&2, IR.Occurrence>) -> Maybe<&2, U32>:
+  match v_1:
+    case []:
+      None{}
+    case v_6 <> _:
+      cps_provider_1_occurrence_type(v_6)
+
+def cps_provider_1_erased_type_term(v_2: List<&2, cps_provider_1_SourceArgument>) -> Maybe<&2, U32>:
+  match v_2:
+    case []:
+      None{}
+    case cps_provider_1_SourceArgument{Ast.QZero{}, v_7} <> _:
+      Some{cps_provider_1_occurrence_term(v_7)}
+    case _ <> v_13:
+      cps_provider_1_erased_type_term(v_13)
+
+def cps_provider_1_parameter_uses(v_1: List<&2, BIR.Parameter>) -> List<&2, BIR.Use>:
+  match v_1:
+    case []:
+      []
+    case BIR.Parameter{_, v_7} <> v_8:
+      v_7 <> cps_provider_1_parameter_uses(v_8)
+
+def cps_provider_1_live_argument_type(v_2: List<&2, cps_provider_1_SourceArgument>) -> Maybe<&2, U32>:
+  match v_2:
+    case []:
+      None{}
+    case cps_provider_1_SourceArgument{Ast.QZero{}, _} <> v_8:
+      cps_provider_1_live_argument_type(v_8)
+    case cps_provider_1_SourceArgument{_, v_14} <> _:
+      cps_provider_1_occurrence_type(v_14)
+
+def native_match_cps_provider_1_last_live_argument_type_0(v_21: Maybe<&2, U32>, v_14: IR.Occurrence) -> Maybe<&2, U32>:
+  match v_21:
+    case Some{v_18}:
+      Some{v_18}
+    case None{}:
+      cps_provider_1_occurrence_type(v_14)
+
+def native_match_cps_provider_1_last_live_argument_type_1(v_2: List<&2, cps_provider_1_SourceArgument>) -> Maybe<&2, U32>:
+  match v_2:
+    case []:
+      None{}
+    case cps_provider_1_SourceArgument{Ast.QZero{}, _} <> v_8:
+      cps_provider_1_last_live_argument_type(v_8)
+    case cps_provider_1_SourceArgument{_, v_14} <> v_15:
+      native_match_cps_provider_1_last_live_argument_type_0(cps_provider_1_last_live_argument_type(v_15), v_14)
+
+def cps_provider_1_last_live_argument_type(v_2: List<&2, cps_provider_1_SourceArgument>) -> Maybe<&2, U32>:
+  native_match_cps_provider_1_last_live_argument_type_1(v_2)
+
+def cps_provider_1_array_element_handle(v_0: BIR.Primitive, v_3: List<&2, cps_provider_1_SourceArgument>) -> Maybe<&2, U32>:
+  match v_0:
+    case BIR.PrimArrayNew{}:
+      cps_provider_1_last_live_argument_type(v_3)
+    case _:
+      cps_provider_1_live_argument_type(v_3)
+
+def cps_provider_1_array_element_is_argument(v_0: BIR.Primitive) -> Bool:
+  match v_0:
+    case BIR.PrimArrayGet{}:
+      True{}
+    case BIR.PrimArraySet{}:
+      True{}
+    case BIR.PrimArraySize{}:
+      True{}
+    case BIR.PrimArrayClone{}:
+      True{}
+    case BIR.PrimArraySwap{}:
+      True{}
+    case BIR.PrimArrayNode{}:
+      True{}
+    case BIR.PrimArrayLeft{}:
+      True{}
+    case BIR.PrimArrayRight{}:
+      True{}
+    case BIR.PrimIsArrayNode{}:
+      True{}
+    case _:
+      False{}
+
+def cps_provider_1_array_primitive(+v_0: BIR.Primitive) -> Bool:
+  match v_0:
+    case BIR.PrimArrayNew{}:
+      True{}
+    case BIR.PrimArraySet{}:
+      True{}
+    case BIR.PrimArrayGet{}:
+      True{}
+    case BIR.PrimArraySwap{}:
+      True{}
+    case BIR.PrimArraySize{}:
+      True{}
+    case BIR.PrimArrayClone{}:
+      True{}
+    case BIR.PrimArrayLeaf{}:
+      True{}
+    case BIR.PrimArrayNode{}:
+      True{}
+    case BIR.PrimArrayLeafValue{}:
+      True{}
+    case BIR.PrimArrayLeft{}:
+      True{}
+    case BIR.PrimArrayRight{}:
+      True{}
+    case BIR.PrimIsArrayLeaf{}:
+      True{}
+    case BIR.PrimIsArrayNode{}:
+      True{}
+    case _:
+      False{}
+
+def cps_provider_1_primitive(v_1: cps_provider_1_State, v_2: BIR.Primitive, v_4: List<&2, BIR.Atom>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_operation(v_1, BIR.PrimitiveCall{v_2, cps_provider_1_atom_arguments(v_4), []})
+
+def native_match_cps_provider_1_primitive_call_0(v_8: Bool, v_1: cps_provider_1_State, +v_2: BIR.Primitive, +v_4: List<&2, BIR.Arg>, v_7: Maybe<&2, U32>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_8:
+    case True{}:
+      cps_provider_1_primitive_call_element(v_1, v_2, v_4, v_7)
+    case False{}:
+      cps_provider_1_operation(v_1, BIR.PrimitiveCall{v_2, v_4, []})
+
+def cps_provider_1_primitive_call(v_1: cps_provider_1_State, +v_2: BIR.Primitive, +v_4: List<&2, BIR.Arg>, v_7: Maybe<&2, U32>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  native_match_cps_provider_1_primitive_call_0(cps_provider_1_array_primitive(v_2), v_1, v_2, v_4, v_7)
+
+def cps_provider_1_primitive_call_element(v_1: cps_provider_1_State, +v_2: BIR.Primitive, +v_4: List<&2, BIR.Arg>, v_7: Maybe<&2, U32>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_7:
+    case Some{v_10}:
+      cps_provider_1_primitive_types(v_2, v_4, cps_provider_1_element_fact(v_1, v_10, cps_provider_1_array_element_is_argument(v_2)))
+    case None{}:
+      cps_provider_1_fail(v_1, "missing checked array element type", cps_provider_1_no_span)
+
+def cps_provider_1_element_fact(v_1: cps_provider_1_State, v_3: U32, v_5: Bool) -> cps_provider_1_LowerResult<List<&2, BIR.Descriptor>>:
+  match v_5:
+    case True{}:
+      cps_provider_1_element_argument(v_1, v_3)
+    case False{}:
+      cps_provider_1_element_value(v_1, v_3)
+
+def cps_provider_1_effective_arrayed(v_0: BIR.Primitive, v_2: Bool) -> Bool:
+  match v_2:
+    case True{}:
+      True{}
+    case False{}:
+      cps_provider_1_array_element_is_argument(v_0)
+
+def native_match_cps_provider_1_primitive_fact_0(v_10: Bool, v_1: cps_provider_1_State, +v_2: BIR.Primitive, +v_4: List<&2, BIR.Atom>, v_7: Maybe<&2, U32>, v_9: Bool) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_10:
+    case True{}:
+      cps_provider_1_primitive_element(v_1, v_2, v_4, v_7, cps_provider_1_effective_arrayed(v_2, v_9))
+    case False{}:
+      cps_provider_1_primitive(v_1, v_2, v_4)
+
+def cps_provider_1_primitive_fact(v_1: cps_provider_1_State, +v_2: BIR.Primitive, +v_4: List<&2, BIR.Atom>, v_7: Maybe<&2, U32>, v_9: Bool) -> cps_provider_1_LowerResult<BIR.Atom>:
+  native_match_cps_provider_1_primitive_fact_0(cps_provider_1_array_primitive(v_2), v_1, v_2, v_4, v_7, v_9)
+
+def cps_provider_1_field_values(v_1: cps_provider_1_State, v_2: cps_provider_4_Constructor, v_4: List<&2, BIR.Atom>, v_6: U32, v_7: Ast.SourceSpan) -> cps_provider_1_LowerResult<List<&2, BIR.Field>>:
+  match v_4:
+    case []:
+      cps_provider_1_LowerResult{v_1, []}
+    case v_12 <> v_13:
+      cps_provider_1_field_value(v_1, cps_provider_4_constructor_field(v_2, v_6), v_2, v_12, v_13, v_6, v_7)
+
+def cps_provider_1_native_match_field_value_0(v_2: cps_provider_1_LowerResult<List<&2, BIR.Field>>, v_3: BIR.Atom, v_5: U32, v_7: String, v_8: BIR.Quantity) -> cps_provider_1_LowerResult<List<&2, BIR.Field>>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_13, v_14}:
+      cps_provider_1_LowerResult{v_13, BIR.Field{v_5, v_7, cps_provider_1_bir_use(v_8), v_3} <> v_14}
+
+def cps_provider_1_native_match_field_value_1(v_1: Maybe<&2, cps_provider_4_ConstructorField>, v_3: cps_provider_1_State, v_4: cps_provider_4_Constructor, v_5: BIR.Atom, v_7: List<&2, BIR.Atom>, v_9: U32, v_10: Ast.SourceSpan) -> cps_provider_1_LowerResult<List<&2, BIR.Field>>:
+  match v_1:
+    case Some{cps_provider_4_ConstructorField{_, _, BIR.Erased{}}}:
+      cps_provider_1_field_values(v_3, v_4, v_7, U32.inc(v_9), v_10)
+    case Some{cps_provider_4_ConstructorField{v_21, Some{v_22}, v_23}}:
+      cps_provider_1_native_match_field_value_0(cps_provider_1_field_values(v_3, v_4, v_7, U32.inc(v_9), v_10), v_5, v_21, v_22, v_23)
+    case _:
+      cps_provider_1_LowerResult{cps_provider_1_state_problem(v_3, "missing checked constructor field layout", v_10), []}
+
+def cps_provider_1_field_value(v_1: cps_provider_1_State, v_3: Maybe<&2, cps_provider_4_ConstructorField>, v_4: cps_provider_4_Constructor, v_5: BIR.Atom, v_7: List<&2, BIR.Atom>, v_9: U32, v_10: Ast.SourceSpan) -> cps_provider_1_LowerResult<List<&2, BIR.Field>>:
+  cps_provider_1_native_match_field_value_1(v_3, v_1, v_4, v_5, v_7, v_9, v_10)
+
+def cps_provider_1_construct(v_1: cps_provider_1_State, v_2: cps_provider_4_Constructor, v_4: List<&2, BIR.Atom>, v_5: Ast.SourceSpan, v_8: Maybe<&2, U32>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_construct_native(v_1, cps_provider_1_constructor_native(v_2), v_2, v_4, v_5, v_8)
+
+def cps_provider_1_native_match_construct_native_0(v_2: cps_provider_1_LowerResult<List<&2, BIR.Field>>, v_3: cps_provider_4_Constructor) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_7, v_8}:
+      cps_provider_1_operation(v_7, BIR.Construct{cps_provider_1_constructor_id(v_3), cps_provider_1_constructor_key(v_3), v_8})
+
+def cps_provider_1_native_match_construct_native_1(v_1: String, v_3: List<&2, BIR.Atom>, v_5: cps_provider_1_State, v_6: cps_provider_4_Constructor, v_7: Ast.SourceSpan, v_10: Maybe<&2, U32>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1, v_3:
+    case "Nat.Zero", []:
+      cps_provider_1_LowerResult{v_5, BIR.Natural{0n}}
+    case "Bool.False", []:
+      cps_provider_1_LowerResult{v_5, BIR.Boolean{False{}}}
+    case "Bool.True", []:
+      cps_provider_1_LowerResult{v_5, BIR.Boolean{True{}}}
+    case "String.SNil", []:
+      cps_provider_1_LowerResult{v_5, BIR.Text{""}}
+    case "Nat.Succ", [v_13]:
+      cps_provider_1_primitive(v_5, BIR.PrimNatSuccessor{}, [v_13])
+    case "Char.Chr", [v_16]:
+      cps_provider_1_primitive(v_5, BIR.PrimCharNew{}, [v_16])
+    case "String.SCon", [v_20, v_21]:
+      cps_provider_1_primitive(v_5, BIR.PrimStringAppend{}, [v_20, v_21])
+    case "U32.U32", [v_24]:
+      cps_provider_1_primitive(v_5, BIR.PrimWordToU32{}, [v_24])
+    case "F32.F32", [v_27]:
+      cps_provider_1_primitive(v_5, BIR.PrimF32FromWord{}, [v_27])
+    case "Array.ALeaf", [v_30]:
+      cps_provider_1_primitive_fact(v_5, BIR.PrimArrayLeaf{}, [v_30], v_10, False{})
+    case "Array.ANode", [v_34, v_35]:
+      cps_provider_1_primitive_fact(v_5, BIR.PrimArrayNode{}, [v_34, v_35], v_10, False{})
+    case _, _:
+      cps_provider_1_native_match_construct_native_0(cps_provider_1_field_values(v_5, v_6, v_3, 0, v_7), v_6)
+
+def cps_provider_1_construct_native(v_1: cps_provider_1_State, v_3: String, v_4: cps_provider_4_Constructor, v_6: List<&2, BIR.Atom>, v_7: Ast.SourceSpan, v_10: Maybe<&2, U32>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_construct_native_1(v_3, v_6, v_1, v_4, v_7, v_10)
+
+def cps_provider_1_construct_symbol(v_1: cps_provider_1_State, v_2: cps_provider_4_Registry, v_3: IR.Symbol, v_5: List<&2, BIR.Atom>, v_6: Ast.SourceSpan, v_9: Maybe<&2, U32>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_construct_found(v_1, cps_provider_4_lookup_constructor(v_2, v_3), v_5, v_6, v_9)
+
+def cps_provider_1_construct_found(v_1: cps_provider_1_State, v_3: Maybe<&2, cps_provider_4_Constructor>, v_5: List<&2, BIR.Atom>, v_6: Ast.SourceSpan, v_9: Maybe<&2, U32>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_3:
+    case None{}:
+      cps_provider_1_fail(v_1, "missing resolved constructor", v_6)
+    case Some{v_13}:
+      cps_provider_1_construct(v_1, v_13, v_5, v_6, v_9)
+
+def cps_provider_1_native_match_constructor_operands_0(v_2: cps_provider_1_LowerResult<List<&2, BIR.Atom>>) -> cps_provider_1_LowerResult<List<&2, BIR.Atom>>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_7, v_8}:
+      cps_provider_1_LowerResult{v_7, BIR.Null{} <> v_8}
+
+def cps_provider_1_native_match_constructor_operands_1(v_2: cps_provider_1_LowerResult<List<&2, BIR.Atom>>, v_3: BIR.Atom) -> cps_provider_1_LowerResult<List<&2, BIR.Atom>>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_8, v_9}:
+      cps_provider_1_LowerResult{v_8, v_3 <> v_9}
+
+def cps_provider_1_native_match_constructor_operands_2(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_4: List<&2, cps_provider_1_Slot>, v_5: cps_provider_4_Registry, v_6: Ast.SourceSpan, v_8: List<&2, IR.Occurrence>, v_10: List<&2, IR.CheckedBinding>) -> cps_provider_1_LowerResult<List<&2, BIR.Atom>>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_15, v_16}:
+      cps_provider_1_native_match_constructor_operands_1(cps_provider_1_constructor_operands(v_15, v_8, v_10, v_4, v_5, v_6), v_16)
+
+def cps_provider_1_native_match_constructor_operands_3(v_1: List<&2, IR.Occurrence>, v_3: List<&2, IR.CheckedBinding>, v_5: cps_provider_1_State, v_8: List<&2, cps_provider_1_Slot>, v_9: cps_provider_4_Registry, v_10: Ast.SourceSpan) -> cps_provider_1_LowerResult<List<&2, BIR.Atom>>:
+  match v_1, v_3:
+    case [], []:
+      cps_provider_1_LowerResult{v_5, []}
+    case _ <> v_19, IR.CheckedBinding{Ast.QZero{}, _, _} <> v_22:
+      cps_provider_1_native_match_constructor_operands_0(cps_provider_1_constructor_operands(v_5, v_19, v_22, v_8, v_9, v_10))
+    case v_29 <> v_30, _ <> v_32:
+      cps_provider_1_native_match_constructor_operands_2(cps_provider_1_lower_occurrence(v_5, v_29, v_8, v_9), v_8, v_9, v_10, v_30, v_32)
+    case _, _:
+      cps_provider_1_LowerResult{cps_provider_1_state_problem(v_5, "incomplete checked constructor operands", v_10), []}
+
+def cps_provider_1_constructor_operands(v_1: cps_provider_1_State, v_3: List<&2, IR.Occurrence>, v_5: List<&2, IR.CheckedBinding>, v_8: List<&2, cps_provider_1_Slot>, v_9: cps_provider_4_Registry, v_10: Ast.SourceSpan) -> cps_provider_1_LowerResult<List<&2, BIR.Atom>>:
+  cps_provider_1_native_match_constructor_operands_3(v_3, v_5, v_1, v_8, v_9, v_10)
+
+def cps_provider_1_reference(v_1: cps_provider_1_State, v_3: Maybe<&2, cps_provider_4_DefinitionHeader>, v_4: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_3:
+    case None{}:
+      cps_provider_1_fail(v_1, "missing resolved definition", v_4)
+    case Some{cps_provider_4_DefinitionHeader{_, v_17, v_18, v_19, _, v_21, v_22, v_23, _}}:
+      cps_provider_1_reference_kind(v_1, v_17, v_18, v_19, v_21, v_22, v_23)
+
+def cps_provider_1_native_match_reference_kind_0(v_1: Bool, v_3: Maybe<&2, BIR.Primitive>, v_5: Maybe<&2, cps_provider_4_Foreign>, v_7: List<&2, BIR.Parameter>, v_9: cps_provider_1_State, v_11: String, v_13: U32) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1, v_3, v_5, v_7:
+    case True{}, _, _, _:
+      cps_provider_1_LowerResult{v_9, BIR.Null{}}
+    case False{}, Some{_}, _, _:
+      cps_provider_1_LowerResult{v_9, BIR.Symbol{v_13, v_11}}
+    case False{}, None{}, None{}, _ <> _:
+      cps_provider_1_LowerResult{v_9, BIR.Symbol{v_13, v_11}}
+    case _, _, _, _:
+      cps_provider_1_operation(v_9, BIR.LoadSymbol{v_13, v_11})
+
+def cps_provider_1_reference_kind(v_1: cps_provider_1_State, v_3: String, v_5: U32, v_7: List<&2, BIR.Parameter>, v_9: Bool, v_11: Maybe<&2, BIR.Primitive>, v_13: Maybe<&2, cps_provider_4_Foreign>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_reference_kind_0(v_9, v_11, v_13, v_7, v_1, v_3, v_5)
+
+def cps_provider_1_symbol_value(v_1: cps_provider_1_State, v_2: IR.Symbol, v_3: cps_provider_4_Registry, v_4: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case IR.Symbol{_, _, IR.FamilySymbol{}, _}:
+      cps_provider_1_LowerResult{v_1, BIR.Null{}}
+    case IR.Symbol{_, _, IR.ConstructorSymbol{}, _}:
+      cps_provider_1_construct_symbol(v_1, v_3, v_2, [], v_4, None{})
+    case _:
+      cps_provider_1_reference(v_1, cps_provider_4_lookup_definition(v_3, v_2), v_4)
+
+def cps_provider_1_string_authorized(v_0: cps_provider_4_Registry, v_2: List<&2, IR.Symbol>, v_5: List<&2, String>) -> Bool:
+  match v_2, v_5:
+    case [], []:
+      True{}
+    case v_11 <> v_12, v_13 <> v_14:
+      cps_provider_1_string_authorized_found(cps_provider_4_lookup_constructor(v_0, v_11), v_0, v_13, v_12, v_14)
+    case _, _:
+      False{}
+
+def cps_provider_1_string_authorized_found(v_1: Maybe<&2, cps_provider_4_Constructor>, v_2: cps_provider_4_Registry, v_4: String, v_6: List<&2, IR.Symbol>, v_9: List<&2, String>) -> Bool:
+  match v_1:
+    case None{}:
+      False{}
+    case Some{v_12}:
+      Bool.and(String.eq(cps_provider_1_constructor_native(v_12), v_4), cps_provider_1_string_authorized(v_2, v_6, v_9))
+
+def cps_provider_1_scalar_characters(v_2: List<&2, U32>) -> Maybe<&2, List<&2, Char>>:
+  match v_2:
+    case []:
+      Some{[]}
+    case v_8 <> v_9:
+      cps_provider_1_scalar_character(Bool.and(U32.is_le(v_8, 1114111), Bool.or(U32.is_lt(v_8, 55296), U32.is_gt(v_8, 57343))), v_8, v_9)
+
+def cps_provider_1_scalar_character(v_1: Bool, v_3: U32, v_6: List<&2, U32>) -> Maybe<&2, List<&2, Char>>:
+  match v_1:
+    case False{}:
+      None{}
+    case True{}:
+      cps_provider_1_scalar_character_rest(v_3, cps_provider_1_scalar_characters(v_6))
+
+def cps_provider_1_scalar_character_rest(v_1: U32, v_5: Maybe<&2, List<&2, Char>>) -> Maybe<&2, List<&2, Char>>:
+  match v_5:
+    case None{}:
+      None{}
+    case Some{v_10}:
+      Some{Char.from_u32(v_1) <> v_10}
+
+def cps_provider_1_native_match_literal_word_0(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_2: cps_provider_4_Registry, v_3: IR.Symbol, v_4: Ast.SourceSpan, v_5: BIR.Atom) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_9, v_10}:
+      cps_provider_1_construct_symbol(v_9, v_2, v_3, [v_5, v_10], v_4, None{})
+
+def cps_provider_1_native_match_literal_word_1(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_2: cps_provider_4_Registry, v_4: U32, v_5: IR.Symbol, v_6: IR.Symbol, v_7: IR.Symbol, v_8: IR.Symbol, v_9: Ast.SourceSpan, v_11: Nat) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_15, v_16}:
+      cps_provider_1_native_match_literal_word_0(cps_provider_1_literal_word(v_15, v_2, v_11, U32.shr(v_4), v_5, v_6, v_7, v_8, v_9), v_2, v_6, v_9, v_16)
+
+def cps_provider_1_native_match_literal_word_2(v_1: Nat, v_3: cps_provider_1_State, v_4: cps_provider_4_Registry, v_6: U32, v_7: IR.Symbol, v_8: IR.Symbol, v_9: IR.Symbol, v_10: IR.Symbol, v_11: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case 0n:
+      cps_provider_1_construct_symbol(v_3, v_4, v_7, [], v_11, None{})
+    case 1n+v_15:
+      cps_provider_1_native_match_literal_word_1(cps_provider_1_literal_bit(v_3, v_4, U32.is_eq(U32.and(v_6, 1), 0), v_9, v_10, v_11), v_4, v_6, v_7, v_8, v_9, v_10, v_11, v_15)
+
+def cps_provider_1_literal_word(v_1: cps_provider_1_State, v_2: cps_provider_4_Registry, v_4: Nat, v_6: U32, v_7: IR.Symbol, v_8: IR.Symbol, v_9: IR.Symbol, v_10: IR.Symbol, v_11: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_literal_word_2(v_4, v_1, v_2, v_6, v_7, v_8, v_9, v_10, v_11)
+
+def cps_provider_1_literal_bit(v_1: cps_provider_1_State, v_2: cps_provider_4_Registry, v_4: Bool, v_5: IR.Symbol, v_6: IR.Symbol, v_7: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_4:
+    case True{}:
+      cps_provider_1_construct_symbol(v_1, v_2, v_5, [], v_7, None{})
+    case False{}:
+      cps_provider_1_construct_symbol(v_1, v_2, v_6, [], v_7, None{})
+
+def cps_provider_1_literal_string(v_1: cps_provider_1_State, v_2: cps_provider_4_Registry, v_5: List<&2, U32>, v_7: List<&2, IR.Symbol>, v_8: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_literal_string_authorized(v_1, v_2, v_5, v_7, v_8, cps_provider_1_string_authorized(v_2, v_7, ["String.SNil", "String.SCon", "Char.Chr", "U32.U32", "Word.Nil.WNil", "Word.Con.WCon", "Bool.False", "Bool.True"]))
+
+def cps_provider_1_literal_string_authorized(v_1: cps_provider_1_State, v_2: cps_provider_4_Registry, v_5: List<&2, U32>, v_7: List<&2, IR.Symbol>, v_8: Ast.SourceSpan, v_10: Bool) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_10:
+    case True{}:
+      cps_provider_1_literal_string_payload(v_1, v_2, v_5, v_7, v_8, cps_provider_1_scalar_characters(v_5))
+    case False{}:
+      cps_provider_1_literal_string_records(v_1, v_2, v_5, v_7, v_8)
+
+def cps_provider_1_literal_string_payload(v_1: cps_provider_1_State, v_2: cps_provider_4_Registry, v_5: List<&2, U32>, v_7: List<&2, IR.Symbol>, v_8: Ast.SourceSpan, v_12: Maybe<&2, List<&2, Char>>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_12:
+    case Some{v_15}:
+      cps_provider_1_LowerResult{v_1, BIR.Text{String.from_list(v_15)}}
+    case None{}:
+      cps_provider_1_literal_string_records(v_1, v_2, v_5, v_7, v_8)
+
+def cps_provider_1_literal_string_records(v_1: cps_provider_1_State, v_2: cps_provider_4_Registry, v_5: List<&2, U32>, v_7: List<&2, IR.Symbol>, v_8: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_7:
+    case [v_18, v_19, v_20, v_21, v_22, v_23, v_24, v_25]:
+      cps_provider_1_literal_string_items(v_1, v_2, v_5, v_18, v_19, v_20, v_21, v_22, v_23, v_24, v_25, v_8)
+    case _:
+      cps_provider_1_fail(v_1, "incomplete checked string literal identities", v_8)
+
+def cps_provider_1_native_match_literal_string_items_0(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_2: cps_provider_4_Registry, v_3: IR.Symbol, v_4: Ast.SourceSpan, v_5: BIR.Atom) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_9, v_10}:
+      cps_provider_1_construct_symbol(v_9, v_2, v_3, [v_5, v_10], v_4, None{})
+
+def cps_provider_1_native_match_literal_string_items_1(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_2: cps_provider_4_Registry, v_3: IR.Symbol, v_4: IR.Symbol, v_5: IR.Symbol, v_6: IR.Symbol, v_7: IR.Symbol, v_8: IR.Symbol, v_9: IR.Symbol, v_10: IR.Symbol, v_11: Ast.SourceSpan, v_14: List<&2, U32>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_18, v_19}:
+      cps_provider_1_native_match_literal_string_items_0(cps_provider_1_literal_string_items(v_18, v_2, v_14, v_3, v_4, v_5, v_6, v_7, v_8, v_9, v_10, v_11), v_2, v_4, v_11, v_19)
+
+def cps_provider_1_native_match_literal_string_items_2(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_2: cps_provider_4_Registry, v_3: IR.Symbol, v_4: IR.Symbol, v_5: IR.Symbol, v_6: IR.Symbol, v_7: IR.Symbol, v_8: IR.Symbol, v_9: IR.Symbol, v_10: IR.Symbol, v_11: Ast.SourceSpan, v_14: List<&2, U32>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_18, v_19}:
+      cps_provider_1_native_match_literal_string_items_1(cps_provider_1_construct_symbol(v_18, v_2, v_5, [v_19], v_11, None{}), v_2, v_3, v_4, v_5, v_6, v_7, v_8, v_9, v_10, v_11, v_14)
+
+def cps_provider_1_native_match_literal_string_items_3(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_2: cps_provider_4_Registry, v_3: IR.Symbol, v_4: IR.Symbol, v_5: IR.Symbol, v_6: IR.Symbol, v_7: IR.Symbol, v_8: IR.Symbol, v_9: IR.Symbol, v_10: IR.Symbol, v_11: Ast.SourceSpan, v_14: List<&2, U32>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_18, v_19}:
+      cps_provider_1_native_match_literal_string_items_2(cps_provider_1_construct_symbol(v_18, v_2, v_6, [v_19], v_11, None{}), v_2, v_3, v_4, v_5, v_6, v_7, v_8, v_9, v_10, v_11, v_14)
+
+def cps_provider_1_native_match_literal_string_items_4(v_2: List<&2, U32>, v_4: cps_provider_1_State, v_5: cps_provider_4_Registry, v_6: IR.Symbol, v_7: IR.Symbol, v_8: IR.Symbol, v_9: IR.Symbol, v_10: IR.Symbol, v_11: IR.Symbol, v_12: IR.Symbol, v_13: IR.Symbol, v_14: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case []:
+      cps_provider_1_construct_symbol(v_4, v_5, v_6, [], v_14, None{})
+    case v_19 <> v_20:
+      cps_provider_1_native_match_literal_string_items_3(cps_provider_1_literal_word(v_4, v_5, 32n, v_19, v_10, v_11, v_12, v_13, v_14), v_5, v_6, v_7, v_8, v_9, v_10, v_11, v_12, v_13, v_14, v_20)
+
+def cps_provider_1_literal_string_items(v_1: cps_provider_1_State, v_2: cps_provider_4_Registry, v_5: List<&2, U32>, v_6: IR.Symbol, v_7: IR.Symbol, v_8: IR.Symbol, v_9: IR.Symbol, v_10: IR.Symbol, v_11: IR.Symbol, v_12: IR.Symbol, v_13: IR.Symbol, v_14: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_literal_string_items_4(v_5, v_1, v_2, v_6, v_7, v_8, v_9, v_10, v_11, v_12, v_13, v_14)
+
+def cps_provider_1_native_match_spine_0(v_1: cps_provider_1_LowerResult<Arena.Node>, v_2: IR.Occurrence, v_5: List<&2, cps_provider_1_SourceArgument>, v_7: List<&2, IR.Occurrence>) -> cps_provider_1_LowerResult<cps_provider_1_Spine>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_12, v_13}:
+      cps_provider_1_spine_shape(v_12, v_13, v_2, v_7, v_5)
+
+def cps_provider_1_native_match_spine_1(v_0: IR.Occurrence, v_2: cps_provider_1_State, v_5: List<&2, cps_provider_1_SourceArgument>) -> cps_provider_1_LowerResult<cps_provider_1_Spine>:
+  match v_0:
+    case IR.TypedOccurrence{v_14, _, _, _, _, v_19}:
+      cps_provider_1_native_match_spine_0(cps_provider_1_node(v_2, v_14), v_0, v_5, v_19)
+    case _:
+      cps_provider_1_LowerResult{v_2, cps_provider_1_Spine{v_0, v_5}}
+
+def cps_provider_1_spine(v_1: cps_provider_1_State, v_2: IR.Occurrence, v_5: List<&2, cps_provider_1_SourceArgument>) -> cps_provider_1_LowerResult<cps_provider_1_Spine>:
+  cps_provider_1_native_match_spine_1(v_2, v_1, v_5)
+
+def cps_provider_1_spine_shape(v_1: cps_provider_1_State, v_2: Arena.Node, v_3: IR.Occurrence, v_5: List<&2, IR.Occurrence>, v_8: List<&2, cps_provider_1_SourceArgument>) -> cps_provider_1_LowerResult<cps_provider_1_Spine>:
+  match v_2, v_3, v_5:
+    case Arena.TermApp{_, _, _}, IR.TypedOccurrence{_, _, Some{v_27}, _, _, _}, [v_31, v_32]:
+      cps_provider_1_spine(v_1, v_31, cps_provider_1_SourceArgument{v_27, v_32} <> v_8)
+    case Arena.TermAnn{_, _, _}, _, [v_44, _]:
+      cps_provider_1_spine(v_1, v_44, v_8)
+    case Arena.TermBang{_, _}, _, [v_54]:
+      cps_provider_1_spine(v_1, v_54, v_8)
+    case _, _, _:
+      cps_provider_1_LowerResult{v_1, cps_provider_1_Spine{v_3, v_8}}
+
+def cps_provider_1_head_definition(v_0: IR.Occurrence, v_1: cps_provider_4_Registry) -> Maybe<&2, cps_provider_4_DefinitionHeader>:
+  match v_0:
+    case IR.TypedOccurrence{_, _, _, Some{IR.Symbol{v_14, v_15, IR.DefinitionSymbol{}, v_16}}, _, _}:
+      cps_provider_4_lookup_definition(v_1, IR.Symbol{v_14, v_15, IR.DefinitionSymbol{}, v_16})
+    case _:
+      None{}
+
+def cps_provider_1_applications(v_1: cps_provider_1_State, v_3: cps_provider_1_Spine, v_5: U32, v_8: List<&2, cps_provider_1_Slot>, v_9: cps_provider_4_Registry, v_10: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_3:
+    case cps_provider_1_Spine{v_14, v_15}:
+      cps_provider_1_application_header(v_1, cps_provider_1_head_definition(v_14, v_9), v_14, v_15, v_5, v_8, v_9, v_10)
+
+def cps_provider_1_native_match_application_header_0(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_4: List<&2, cps_provider_1_SourceArgument>, v_7: List<&2, cps_provider_1_Slot>, v_8: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_12, v_13}:
+      cps_provider_1_apply_rest(v_12, v_13, v_4, v_7, v_8)
+
+def cps_provider_1_native_match_application_header_1(v_1: Maybe<&2, cps_provider_4_DefinitionHeader>, v_3: cps_provider_1_State, v_4: IR.Occurrence, v_7: List<&2, cps_provider_1_SourceArgument>, v_9: U32, v_12: List<&2, cps_provider_1_Slot>, v_13: cps_provider_4_Registry, v_14: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case Some{cps_provider_4_DefinitionHeader{_, _, v_25, v_26, v_27, False{}, v_28, None{}, v_29}}:
+      cps_provider_1_application_known(v_3, v_28, v_29, v_25, v_26, List.length(&2, BIR.Quantity, v_27), v_4, v_7, v_9, v_12, v_13, v_14)
+    case _:
+      cps_provider_1_native_match_application_header_0(cps_provider_1_lower_occurrence(v_3, v_4, v_12, v_13), v_7, v_12, v_13)
+
+def cps_provider_1_application_header(v_1: cps_provider_1_State, v_3: Maybe<&2, cps_provider_4_DefinitionHeader>, v_4: IR.Occurrence, v_7: List<&2, cps_provider_1_SourceArgument>, v_9: U32, v_12: List<&2, cps_provider_1_Slot>, v_13: cps_provider_4_Registry, v_14: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_application_header_1(v_3, v_1, v_4, v_7, v_9, v_12, v_13, v_14)
+
+def cps_provider_1_application_known(v_1: cps_provider_1_State, v_3: Maybe<&2, BIR.Primitive>, v_5: Bool, v_7: U32, v_9: List<&2, BIR.Parameter>, v_11: Nat, v_12: IR.Occurrence, v_15: List<&2, cps_provider_1_SourceArgument>, v_17: U32, v_20: List<&2, cps_provider_1_Slot>, v_21: cps_provider_4_Registry, v_22: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_3:
+    case Some{v_25}:
+      cps_provider_1_application_native(v_1, Bool.and(Nat.is_ge(List.length(&2, cps_provider_1_SourceArgument, v_15), v_11), Nat.is_eq(List.length(&2, BIR.Parameter, v_9), cps_provider_4_primitive_arity(v_25))), v_25, v_11, v_12, v_15, v_9, v_17, v_20, v_21)
+    case None{}:
+      cps_provider_1_application_direct(v_1, v_5, v_7, v_9, v_11, v_12, v_15, v_20, v_21, v_22)
+
+def cps_provider_1_native_match_application_native_0(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_4: List<&2, cps_provider_1_SourceArgument>, v_7: List<&2, cps_provider_1_Slot>, v_8: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_12, v_13}:
+      cps_provider_1_apply_rest(v_12, v_13, v_4, v_7, v_8)
+
+def cps_provider_1_native_match_application_native_1(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_4: List<&2, cps_provider_1_Slot>, v_5: cps_provider_4_Registry, v_8: List<&2, cps_provider_1_SourceArgument>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_12, v_13}:
+      cps_provider_1_apply_rest(v_12, v_13, v_8, v_4, v_5)
+
+def cps_provider_1_native_match_application_native_2(v_6: Sigma<&1, &1, List<&2, BIR.Arg>, _ => List<&2, cps_provider_1_SourceArgument>>, v_7: BIR.Primitive, v_10: List<&2, cps_provider_1_Slot>, v_11: cps_provider_4_Registry, v_13: cps_provider_1_State, v_16: Maybe<&2, U32>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_6:
+    case (v_20, v_21):
+      cps_provider_1_native_match_application_native_1(cps_provider_1_primitive_call(v_13, v_7, v_20, v_16), v_10, v_11, v_21)
+
+def cps_provider_1_native_match_application_native_3(v_5: cps_provider_1_LowerResult<Pair(List<&2, BIR.Arg>, List<&2, cps_provider_1_SourceArgument>)>, v_6: BIR.Primitive, v_9: List<&2, cps_provider_1_Slot>, v_10: cps_provider_4_Registry, v_13: Maybe<&2, U32>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_5:
+    case cps_provider_1_LowerResult{v_17, v_18}:
+      cps_provider_1_native_match_application_native_2(v_18, v_6, v_9, v_10, v_17, v_13)
+
+def native_match_cps_provider_1_arrow_facts_0(v_0: BIR.Descriptor, v_6: Nat) -> cps_provider_1_ArrowFacts:
+  match v_0:
+    case BIR.DescriptorArrow{v_10, v_11, v_12}:
+      cps_provider_1_arrow_facts(v_12, v_6)
+    case _:
+      cps_provider_1_ArrowFacts{[], []}
+
+def native_match_cps_provider_1_arrow_facts_1(v_2: Nat, v_0: BIR.Descriptor) -> cps_provider_1_ArrowFacts:
+  match v_2:
+    case 0n:
+      cps_provider_1_arrow_facts_rest(v_0)
+    case 1n+v_6:
+      native_match_cps_provider_1_arrow_facts_0(v_0, v_6)
+
+def cps_provider_1_arrow_facts(v_0: BIR.Descriptor, v_2: Nat) -> cps_provider_1_ArrowFacts:
+  native_match_cps_provider_1_arrow_facts_1(v_2, v_0)
+
+def native_match_cps_provider_1_arrow_facts_rest_0(v_16: cps_provider_1_ArrowFacts, v_5: BIR.Quantity, v_6: BIR.Descriptor) -> cps_provider_1_ArrowFacts:
+  match v_16:
+    case cps_provider_1_ArrowFacts{v_11, v_12}:
+      cps_provider_1_ArrowFacts{cps_provider_1_bir_use(v_5) <> v_11, v_6 <> v_12}
+
+def native_match_cps_provider_1_arrow_facts_rest_1(v_0: BIR.Descriptor) -> cps_provider_1_ArrowFacts:
+  match v_0:
+    case BIR.DescriptorArrow{v_5, v_6, v_7}:
+      native_match_cps_provider_1_arrow_facts_rest_0(cps_provider_1_arrow_facts_rest(v_7), v_5, v_6)
+    case _:
+      cps_provider_1_ArrowFacts{[], []}
+
+def cps_provider_1_arrow_facts_rest(v_0: BIR.Descriptor) -> cps_provider_1_ArrowFacts:
+  native_match_cps_provider_1_arrow_facts_rest_1(v_0)
+
+def cps_provider_1_last_domain(v_1: List<&2, BIR.Descriptor>) -> Maybe<&2, BIR.Descriptor>:
+  match v_1:
+    case []:
+      None{}
+    case v_5 <> v_6:
+      cps_provider_1_last_domain_rest(v_6, v_5)
+
+def cps_provider_1_last_domain_rest(v_1: List<&2, BIR.Descriptor>, +v_2: BIR.Descriptor) -> Maybe<&2, BIR.Descriptor>:
+  match v_1:
+    case []:
+      Some{v_2}
+    case v_6 <> v_7:
+      cps_provider_1_last_domain_rest(v_7, v_6)
+
+def cps_provider_1_first_element_argument(v_1: List<&2, BIR.Descriptor>) -> Maybe<&2, BIR.Descriptor>:
+  match v_1:
+    case []:
+      None{}
+    case v_5 <> _:
+      cps_provider_1_single_argument(v_5)
+
+def cps_provider_1_partial_element(v_0: BIR.Primitive, v_2: List<&2, BIR.Descriptor>) -> Maybe<&2, BIR.Descriptor>:
+  match v_0:
+    case BIR.PrimArrayNew{}:
+      cps_provider_1_last_domain(v_2)
+    case _:
+      cps_provider_1_first_element_argument(v_2)
+
+def cps_provider_1_parameterize(v_1: List<&2, BIR.Parameter>, v_3: List<&2, BIR.Use>) -> List<&2, BIR.Parameter>:
+  match v_1, v_3:
+    case [], _:
+      []
+    case BIR.Parameter{v_12, _} <> v_14, v_15 <> v_16:
+      BIR.Parameter{v_12, v_15} <> cps_provider_1_parameterize(v_14, v_16)
+    case _, []:
+      []
+
+def native_match_cps_provider_1_partial_array_parameters_0(v_11: cps_provider_1_LowerResult<List<&2, BIR.Parameter>>, v_3: List<&2, BIR.Use>) -> cps_provider_1_LowerResult<List<&2, BIR.Parameter>>:
+  match v_11:
+    case cps_provider_1_LowerResult{v_9, v_10}:
+      cps_provider_1_LowerResult{v_9, cps_provider_1_parameterize(v_10, v_3)}
+
+def cps_provider_1_partial_array_parameters(v_1: cps_provider_1_State, v_3: List<&2, BIR.Use>) -> cps_provider_1_LowerResult<List<&2, BIR.Parameter>>:
+  native_match_cps_provider_1_partial_array_parameters_0(cps_provider_1_new_parameters(v_1, List.length(&2, BIR.Use, v_3)), v_3)
+
+def native_match_cps_provider_1_partial_array_code_0(v_14: cps_provider_1_LowerResult<U32>, v_2: BIR.Primitive, v_4: List<&2, BIR.Arg>, v_6: List<&2, BIR.Parameter>, v_7: BIR.Descriptor) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_14:
+    case cps_provider_1_LowerResult{v_12, v_13}:
+      cps_provider_1_partial_array_body(v_12, v_2, v_4, v_6, v_7, v_13)
+
+def cps_provider_1_partial_array_code(v_1: cps_provider_1_State, v_2: BIR.Primitive, v_4: List<&2, BIR.Arg>, v_6: List<&2, BIR.Parameter>, v_7: BIR.Descriptor) -> cps_provider_1_LowerResult<BIR.Atom>:
+  native_match_cps_provider_1_partial_array_code_0(cps_provider_1_fresh(v_1), v_2, v_4, v_6, v_7)
+
+def cps_provider_1_partial_block(+v_1: U32, v_2: BIR.Op) -> BIR.Block:
+  BIR.Let{v_1, v_2, BIR.Return{BIR.Local{v_1}}}
+
+def cps_provider_1_partial_call(v_0: BIR.Primitive, v_2: List<&2, BIR.Arg>, v_4: List<&2, BIR.Parameter>, v_5: BIR.Descriptor) -> BIR.Op:
+  BIR.PrimitiveCall{v_0, List.append(&2, BIR.Arg, cps_provider_1_indexed_captures(v_2, 0), cps_provider_1_parameter_arguments(v_4)), [v_5]}
+
+def cps_provider_1_partial_array_body(v_1: cps_provider_1_State, v_2: BIR.Primitive, v_4: List<&2, BIR.Arg>, v_6: List<&2, BIR.Parameter>, v_7: BIR.Descriptor, +v_9: U32) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_State{v_19, v_20, v_21, v_22, v_23, v_24, v_25, v_26}:
+      v_30 = cps_provider_1_partial_block(v_9, cps_provider_1_partial_call(v_2, v_4, v_6, v_7))
+      v_33 = BIR.Code{v_20, cps_provider_1_capture_argument_uses(v_4), v_6, v_30}
+      cps_provider_1_operation(cps_provider_1_State{v_19, U32.inc(v_20), v_21, v_22, v_33 <> v_23, v_24, v_25, v_26}, BIR.Closure{v_20, v_4, v_6})
+
+def cps_provider_1_capture_argument_uses(v_1: List<&2, BIR.Arg>) -> List<&2, BIR.Use>:
+  match v_1:
+    case []:
+      []
+    case BIR.Arg{v_6, _} <> v_8:
+      v_6 <> cps_provider_1_capture_argument_uses(v_8)
+
+def cps_provider_1_partial_array_build(v_1: cps_provider_1_State, v_2: BIR.Primitive, v_4: U32, v_6: List<&2, BIR.Arg>, v_8: Nat) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_partial_array_described(v_1, v_2, v_4, v_6, v_8)
+
+def native_match_cps_provider_1_partial_array_described_0(v_19: cps_provider_1_LowerResult<Maybe<&2, BIR.Descriptor>>, v_2: BIR.Primitive, v_6: List<&2, BIR.Arg>, v_8: Nat) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_19:
+    case cps_provider_1_LowerResult{v_12, None{}}:
+      cps_provider_1_fail(v_12, "missing checked partial application type", cps_provider_1_no_span)
+    case cps_provider_1_LowerResult{v_17, Some{v_18}}:
+      cps_provider_1_partial_array_facts(v_17, v_2, cps_provider_1_arrow_facts(v_18, v_8), v_6)
+
+def cps_provider_1_partial_array_described(v_1: cps_provider_1_State, v_2: BIR.Primitive, v_4: U32, v_6: List<&2, BIR.Arg>, v_8: Nat) -> cps_provider_1_LowerResult<BIR.Atom>:
+  native_match_cps_provider_1_partial_array_described_0(cps_provider_1_describe(v_1, v_4), v_2, v_6, v_8)
+
+def native_match_cps_provider_1_partial_array_facts_0(v_17: Maybe<&2, BIR.Descriptor>, v_1: cps_provider_1_State, v_2: BIR.Primitive, v_6: List<&2, BIR.Arg>, v_10: List<&2, BIR.Use>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_17:
+    case None{}:
+      cps_provider_1_fail(v_1, "missing checked array element type for a partially applied primitive", cps_provider_1_no_span)
+    case Some{v_16}:
+      cps_provider_1_partial_array_typed(v_1, v_2, v_10, v_6, v_16)
+
+def native_match_cps_provider_1_partial_array_facts_1(v_4: cps_provider_1_ArrowFacts, v_1: cps_provider_1_State, v_2: BIR.Primitive, v_6: List<&2, BIR.Arg>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_4:
+    case cps_provider_1_ArrowFacts{v_10, v_11}:
+      native_match_cps_provider_1_partial_array_facts_0(cps_provider_1_partial_element(v_2, v_11), v_1, v_2, v_6, v_10)
+
+def cps_provider_1_partial_array_facts(v_1: cps_provider_1_State, v_2: BIR.Primitive, v_4: cps_provider_1_ArrowFacts, v_6: List<&2, BIR.Arg>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  native_match_cps_provider_1_partial_array_facts_1(v_4, v_1, v_2, v_6)
+
+def native_match_cps_provider_1_partial_array_typed_0(v_14: cps_provider_1_LowerResult<List<&2, BIR.Parameter>>, v_2: BIR.Primitive, v_6: List<&2, BIR.Arg>, v_7: BIR.Descriptor) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_14:
+    case cps_provider_1_LowerResult{v_12, v_13}:
+      cps_provider_1_partial_array_code(v_12, v_2, v_6, v_13, v_7)
+
+def cps_provider_1_partial_array_typed(v_1: cps_provider_1_State, v_2: BIR.Primitive, v_4: List<&2, BIR.Use>, v_6: List<&2, BIR.Arg>, v_7: BIR.Descriptor) -> cps_provider_1_LowerResult<BIR.Atom>:
+  native_match_cps_provider_1_partial_array_typed_0(cps_provider_1_partial_array_parameters(v_1, v_4), v_2, v_6, v_7)
+
+def native_match_cps_provider_1_partial_array_call_0(v_46: cps_provider_1_LowerResult<Maybe<&2, BIR.Descriptor>>, v_2: BIR.Primitive, v_24: List<&2, BIR.Arg>, v_28: List<&2, BIR.Parameter>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_46:
+    case cps_provider_1_LowerResult{v_35, Some{v_36}}:
+      cps_provider_1_partial_typed(v_35, v_2, v_24, v_28, v_36)
+    case cps_provider_1_LowerResult{v_39, None{}}:
+      cps_provider_1_fail(v_39, "missing checked array element type for a partially applied primitive", cps_provider_1_no_span)
+
+def native_match_cps_provider_1_partial_array_call_1(v_45: Maybe<&2, U32>, v_2: BIR.Primitive, v_5: List<&2, cps_provider_1_SourceArgument>, v_9: U32, v_20: cps_provider_1_State, v_24: List<&2, BIR.Arg>, v_28: List<&2, BIR.Parameter>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_45:
+    case Some{v_31}:
+      native_match_cps_provider_1_partial_array_call_0(cps_provider_1_describe(v_20, v_31), v_2, v_24, v_28)
+    case None{}:
+      cps_provider_1_partial_array_build(v_20, v_2, v_9, v_24, List.length(&2, cps_provider_1_SourceArgument, v_5))
+
+def native_match_cps_provider_1_partial_array_call_2(v_21: Sigma<&1, &1, List<&2, BIR.Arg>, _ => List<&2, cps_provider_1_SourceArgument>>, v_2: BIR.Primitive, v_5: List<&2, cps_provider_1_SourceArgument>, v_7: List<&2, BIR.Parameter>, v_9: U32, v_20: cps_provider_1_State) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_21:
+    case (v_24, _):
+      v_28 = cps_provider_1_drop_parameters(List.length(&2, BIR.Arg, v_24), v_7)
+      native_match_cps_provider_1_partial_array_call_1(cps_provider_1_erased_type_term(v_5), v_2, v_5, v_9, v_20, v_24, v_28)
+
+def native_match_cps_provider_1_partial_array_call_3(v_44: cps_provider_1_LowerResult<Pair(List<&2, BIR.Arg>, List<&2, cps_provider_1_SourceArgument>)>, v_2: BIR.Primitive, v_5: List<&2, cps_provider_1_SourceArgument>, v_7: List<&2, BIR.Parameter>, v_9: U32) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_44:
+    case cps_provider_1_LowerResult{v_20, v_21}:
+      native_match_cps_provider_1_partial_array_call_2(v_21, v_2, v_5, v_7, v_9, v_20)
+
+def cps_provider_1_partial_array_call(v_1: cps_provider_1_State, v_2: BIR.Primitive, v_5: List<&2, cps_provider_1_SourceArgument>, v_7: List<&2, BIR.Parameter>, v_9: U32, v_12: List<&2, cps_provider_1_Slot>, v_14: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Atom>:
+  native_match_cps_provider_1_partial_array_call_3(cps_provider_1_argument_prefix(v_1, List.length(&2, cps_provider_1_SourceArgument, v_5), v_5, v_12, v_14), v_2, v_5, v_7, v_9)
+
+def native_match_cps_provider_1_partial_typed_0(v_14: cps_provider_1_LowerResult<List<&2, BIR.Parameter>>, v_2: BIR.Primitive, v_4: List<&2, BIR.Arg>, v_6: List<&2, BIR.Parameter>, v_7: BIR.Descriptor) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_14:
+    case cps_provider_1_LowerResult{v_12, v_13}:
+      cps_provider_1_partial_array_code(v_12, v_2, v_4, cps_provider_1_parameterize(v_13, cps_provider_1_parameter_uses(v_6)), v_7)
+
+def cps_provider_1_partial_typed(v_1: cps_provider_1_State, v_2: BIR.Primitive, v_4: List<&2, BIR.Arg>, v_6: List<&2, BIR.Parameter>, v_7: BIR.Descriptor) -> cps_provider_1_LowerResult<BIR.Atom>:
+  native_match_cps_provider_1_partial_typed_0(cps_provider_1_new_parameters(v_1, List.length(&2, BIR.Parameter, v_6)), v_2, v_4, v_6, v_7)
+
+def native_match_cps_provider_1_application_native_partial_0(v_16: Bool, v_1: cps_provider_1_State, v_2: BIR.Primitive, v_3: IR.Occurrence, v_6: List<&2, cps_provider_1_SourceArgument>, v_8: List<&2, BIR.Parameter>, v_10: U32, v_13: List<&2, cps_provider_1_Slot>, v_15: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_16:
+    case True{}:
+      cps_provider_1_partial_array_call(v_1, v_2, v_6, v_8, v_10, v_13, v_15)
+    case False{}:
+      cps_provider_1_native_match_application_native_0(cps_provider_1_lower_occurrence(v_1, v_3, v_13, v_15), v_6, v_13, v_15)
+
+def cps_provider_1_application_native_partial(v_1: cps_provider_1_State, v_2: BIR.Primitive, v_3: IR.Occurrence, v_6: List<&2, cps_provider_1_SourceArgument>, v_8: List<&2, BIR.Parameter>, v_10: U32, v_13: List<&2, cps_provider_1_Slot>, v_15: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Atom>:
+  native_match_cps_provider_1_application_native_partial_0(cps_provider_1_array_primitive(v_2), v_1, v_2, v_3, v_6, v_8, v_10, v_13, v_15)
+
+def cps_provider_1_native_match_application_native_4(v_1: Bool, v_3: cps_provider_1_State, v_4: BIR.Primitive, v_6: Nat, v_7: IR.Occurrence, v_10: List<&2, cps_provider_1_SourceArgument>, v_12: List<&2, BIR.Parameter>, v_14: U32, v_17: List<&2, cps_provider_1_Slot>, v_18: cps_provider_4_Registry, v_21: Maybe<&2, U32>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case False{}:
+      cps_provider_1_application_native_partial(v_3, v_4, v_7, v_10, v_12, v_14, v_17, v_18)
+    case True{}:
+      cps_provider_1_native_match_application_native_3(cps_provider_1_argument_prefix(v_3, v_6, v_10, v_17, v_18), v_4, v_17, v_18, v_21)
+
+def cps_provider_1_application_native(v_1: cps_provider_1_State, v_3: Bool, v_4: BIR.Primitive, v_6: Nat, v_7: IR.Occurrence, v_10: List<&2, cps_provider_1_SourceArgument>, v_12: List<&2, BIR.Parameter>, v_14: U32, v_17: List<&2, cps_provider_1_Slot>, v_18: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_application_native_4(v_3, v_1, v_4, v_6, v_7, v_10, v_12, v_14, v_17, v_18, cps_provider_1_array_element_handle(v_4, v_10))
+
+def cps_provider_1_native_match_application_direct_0(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_4: List<&2, cps_provider_1_SourceArgument>, v_7: List<&2, cps_provider_1_Slot>, v_8: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_12, v_13}:
+      cps_provider_1_apply_rest(v_12, v_13, v_4, v_7, v_8)
+
+def cps_provider_1_native_match_application_direct_1(v_6: Sigma<&1, &1, List<&2, BIR.Arg>, _ => List<&2, cps_provider_1_SourceArgument>>, v_8: U32, v_10: List<&2, BIR.Parameter>, v_12: Nat, v_15: List<&2, cps_provider_1_Slot>, v_16: cps_provider_4_Registry, v_17: Ast.SourceSpan, v_19: Nat, v_21: cps_provider_1_State) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_6:
+    case (v_25, v_26):
+      cps_provider_1_application_direct_values(v_21, Nat.is_ge(v_19, v_12), v_8, v_10, v_25, v_26, v_15, v_16, v_17)
+
+def cps_provider_1_native_match_application_direct_2(v_5: cps_provider_1_LowerResult<Pair(List<&2, BIR.Arg>, List<&2, cps_provider_1_SourceArgument>)>, v_7: U32, v_9: List<&2, BIR.Parameter>, v_11: Nat, v_14: List<&2, cps_provider_1_Slot>, v_15: cps_provider_4_Registry, v_16: Ast.SourceSpan, v_18: Nat) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_5:
+    case cps_provider_1_LowerResult{v_22, v_23}:
+      cps_provider_1_native_match_application_direct_1(v_23, v_7, v_9, v_11, v_14, v_15, v_16, v_18, v_22)
+
+def cps_provider_1_native_match_application_direct_3(v_1: Bool, v_3: cps_provider_1_State, v_5: U32, v_7: List<&2, BIR.Parameter>, v_9: Nat, v_10: IR.Occurrence, v_13: List<&2, cps_provider_1_SourceArgument>, v_16: List<&2, cps_provider_1_Slot>, v_17: cps_provider_4_Registry, v_18: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case False{}:
+      cps_provider_1_native_match_application_direct_0(cps_provider_1_lower_occurrence(v_3, v_10, v_16, v_17), v_13, v_16, v_17)
+    case True{}:
+      v_24 = List.length(&2, cps_provider_1_SourceArgument, v_13)
+      cps_provider_1_native_match_application_direct_2(cps_provider_1_argument_prefix(v_3, Nat.min(v_9, v_24), v_13, v_16, v_17), v_5, v_7, v_9, v_16, v_17, v_18, v_24)
+
+def cps_provider_1_application_direct(v_1: cps_provider_1_State, v_3: Bool, v_5: U32, v_7: List<&2, BIR.Parameter>, v_9: Nat, v_10: IR.Occurrence, v_13: List<&2, cps_provider_1_SourceArgument>, v_16: List<&2, cps_provider_1_Slot>, v_17: cps_provider_4_Registry, v_18: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_application_direct_3(v_3, v_1, v_5, v_7, v_9, v_10, v_13, v_16, v_17, v_18)
+
+def cps_provider_1_native_match_application_direct_values_0(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_4: List<&2, cps_provider_1_SourceArgument>, v_7: List<&2, cps_provider_1_Slot>, v_8: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_12, v_13}:
+      cps_provider_1_apply_rest(v_12, v_13, v_4, v_7, v_8)
+
+def cps_provider_1_native_match_application_direct_values_1(v_1: Bool, v_3: cps_provider_1_State, v_5: U32, v_7: List<&2, BIR.Parameter>, v_9: List<&2, BIR.Arg>, v_12: List<&2, cps_provider_1_SourceArgument>, v_15: List<&2, cps_provider_1_Slot>, v_16: cps_provider_4_Registry, v_17: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case True{}:
+      cps_provider_1_native_match_application_direct_values_0(cps_provider_1_direct_arity(v_3, Nat.is_eq(List.length(&2, BIR.Parameter, v_7), List.length(&2, BIR.Arg, v_9)), v_5, v_9, v_17), v_12, v_15, v_16)
+    case False{}:
+      cps_provider_1_partial(v_3, v_5, v_9, cps_provider_1_drop_parameters(List.length(&2, BIR.Arg, v_9), v_7))
+
+def cps_provider_1_application_direct_values(v_1: cps_provider_1_State, v_3: Bool, v_5: U32, v_7: List<&2, BIR.Parameter>, v_9: List<&2, BIR.Arg>, v_12: List<&2, cps_provider_1_SourceArgument>, v_15: List<&2, cps_provider_1_Slot>, v_16: cps_provider_4_Registry, v_17: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_application_direct_values_1(v_3, v_1, v_5, v_7, v_9, v_12, v_15, v_16, v_17)
+
+def cps_provider_1_direct_arity(v_1: cps_provider_1_State, v_3: Bool, v_5: U32, v_7: List<&2, BIR.Arg>, v_8: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_3:
+    case True{}:
+      cps_provider_1_operation(v_1, BIR.Direct{v_5, v_7})
+    case False{}:
+      cps_provider_1_fail(v_1, "checked call quantity/entry arity mismatch", v_8)
+
+def cps_provider_1_native_match_argument_prefix_0(v_6: Sigma<&1, &1, List<&2, BIR.Arg>, _ => List<&2, cps_provider_1_SourceArgument>>, v_7: Ast.Quantity, v_8: BIR.Atom, v_10: cps_provider_1_State) -> cps_provider_1_LowerResult<Pair(List<&2, BIR.Arg>, List<&2, cps_provider_1_SourceArgument>)>:
+  match v_6:
+    case (v_18, v_19):
+      cps_provider_1_LowerResult{v_10, (BIR.Arg{cps_provider_1_use(v_7), v_8} <> v_18, v_19)}
+
+def cps_provider_1_native_match_argument_prefix_1(v_5: cps_provider_1_LowerResult<Pair(List<&2, BIR.Arg>, List<&2, cps_provider_1_SourceArgument>)>, v_6: Ast.Quantity, v_7: BIR.Atom) -> cps_provider_1_LowerResult<Pair(List<&2, BIR.Arg>, List<&2, cps_provider_1_SourceArgument>)>:
+  match v_5:
+    case cps_provider_1_LowerResult{v_15, v_16}:
+      cps_provider_1_native_match_argument_prefix_0(v_16, v_6, v_7, v_15)
+
+def cps_provider_1_native_match_argument_prefix_2(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_4: List<&2, cps_provider_1_Slot>, v_5: cps_provider_4_Registry, v_7: Nat, v_8: Ast.Quantity, v_11: List<&2, cps_provider_1_SourceArgument>) -> cps_provider_1_LowerResult<Pair(List<&2, BIR.Arg>, List<&2, cps_provider_1_SourceArgument>)>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_19, v_20}:
+      cps_provider_1_native_match_argument_prefix_1(cps_provider_1_argument_prefix(v_19, v_7, v_11, v_4, v_5), v_8, v_20)
+
+def cps_provider_1_native_match_argument_prefix_3(v_1: Nat, v_4: List<&2, cps_provider_1_SourceArgument>, v_6: cps_provider_1_State, v_9: List<&2, cps_provider_1_Slot>, v_10: cps_provider_4_Registry) -> cps_provider_1_LowerResult<Pair(List<&2, BIR.Arg>, List<&2, cps_provider_1_SourceArgument>)>:
+  match v_1, v_4:
+    case 0n, _:
+      cps_provider_1_LowerResult{v_6, ([], v_4)}
+    case 1n+v_21, cps_provider_1_SourceArgument{Ast.QZero{}, _} <> v_23:
+      cps_provider_1_argument_prefix(v_6, v_21, v_23, v_9, v_10)
+    case 1n+v_29, cps_provider_1_SourceArgument{v_30, v_31} <> v_32:
+      cps_provider_1_native_match_argument_prefix_2(cps_provider_1_lower_occurrence(v_6, v_31, v_9, v_10), v_9, v_10, v_29, v_30, v_32)
+    case _, []:
+      cps_provider_1_LowerResult{cps_provider_1_state_problem(v_6, "missing checked call operands", cps_provider_1_no_span), ([], [])}
+
+def cps_provider_1_argument_prefix(v_1: cps_provider_1_State, v_3: Nat, v_6: List<&2, cps_provider_1_SourceArgument>, v_9: List<&2, cps_provider_1_Slot>, v_10: cps_provider_4_Registry) -> cps_provider_1_LowerResult<Pair(List<&2, BIR.Arg>, List<&2, cps_provider_1_SourceArgument>)>:
+  cps_provider_1_native_match_argument_prefix_3(v_3, v_6, v_1, v_9, v_10)
+
+def cps_provider_1_native_match_apply_rest_0(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_4: List<&2, cps_provider_1_Slot>, v_5: cps_provider_4_Registry, v_8: List<&2, cps_provider_1_SourceArgument>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_12, v_13}:
+      cps_provider_1_apply_rest(v_12, v_13, v_8, v_4, v_5)
+
+def cps_provider_1_native_match_apply_rest_1(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_2: BIR.Atom, v_5: List<&2, cps_provider_1_Slot>, v_6: cps_provider_4_Registry, v_7: Ast.Quantity, v_10: List<&2, cps_provider_1_SourceArgument>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_14, v_15}:
+      cps_provider_1_native_match_apply_rest_0(cps_provider_1_operation(v_14, BIR.Apply{v_2, BIR.Arg{cps_provider_1_use(v_7), v_15}}), v_5, v_6, v_10)
+
+def cps_provider_1_native_match_apply_rest_2(v_2: List<&2, cps_provider_1_SourceArgument>, v_4: cps_provider_1_State, v_5: BIR.Atom, v_8: List<&2, cps_provider_1_Slot>, v_9: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case []:
+      cps_provider_1_LowerResult{v_4, v_5}
+    case cps_provider_1_SourceArgument{Ast.QZero{}, _} <> v_14:
+      cps_provider_1_apply_rest(v_4, v_5, v_14, v_8, v_9)
+    case cps_provider_1_SourceArgument{v_19, v_20} <> v_21:
+      cps_provider_1_native_match_apply_rest_1(cps_provider_1_lower_occurrence(v_4, v_20, v_8, v_9), v_5, v_8, v_9, v_19, v_21)
+
+def cps_provider_1_apply_rest(v_1: cps_provider_1_State, v_2: BIR.Atom, v_5: List<&2, cps_provider_1_SourceArgument>, v_8: List<&2, cps_provider_1_Slot>, v_9: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_apply_rest_2(v_5, v_1, v_2, v_8, v_9)
+
+def cps_provider_1_drop_parameters(v_1: Nat, v_3: List<&2, BIR.Parameter>) -> List<&2, BIR.Parameter>:
+  match v_1, v_3:
+    case 0n, _:
+      v_3
+    case 1n+v_10, _ <> v_12:
+      cps_provider_1_drop_parameters(v_10, v_12)
+    case _, []:
+      []
+
+def cps_provider_1_argument_uses(v_1: List<&2, BIR.Arg>) -> List<&2, BIR.Use>:
+  match v_1:
+    case []:
+      []
+    case BIR.Arg{v_6, _} <> v_8:
+      v_6 <> cps_provider_1_argument_uses(v_8)
+
+def cps_provider_1_indexed_captures(v_1: List<&2, BIR.Arg>, v_3: U32) -> List<&2, BIR.Arg>:
+  match v_1:
+    case []:
+      []
+    case BIR.Arg{v_8, _} <> v_10:
+      BIR.Arg{v_8, BIR.Capture{v_3}} <> cps_provider_1_indexed_captures(v_10, U32.inc(v_3))
+
+def cps_provider_1_parameter_arguments(v_1: List<&2, BIR.Parameter>) -> List<&2, BIR.Arg>:
+  match v_1:
+    case []:
+      []
+    case BIR.Parameter{v_6, v_7} <> v_8:
+      BIR.Arg{v_7, BIR.Local{v_6}} <> cps_provider_1_parameter_arguments(v_8)
+
+def cps_provider_1_native_match_partial_0(v_1: cps_provider_1_State, v_3: U32, v_5: List<&2, BIR.Arg>, v_7: List<&2, BIR.Parameter>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_State{v_17, v_18, v_19, v_20, v_21, v_22, v_23, v_24}:
+      v_28 = List.append(&2, BIR.Arg, cps_provider_1_indexed_captures(v_5, 0), cps_provider_1_parameter_arguments(v_7))
+      v_31 = BIR.Code{v_18, cps_provider_1_argument_uses(v_5), v_7, BIR.TailDirect{v_3, v_28}}
+      cps_provider_1_operation(cps_provider_1_State{v_17, U32.inc(v_18), v_19, v_20, v_31 <> v_21, v_22, v_23, v_24}, BIR.Closure{v_18, v_5, v_7})
+
+def cps_provider_1_native_match_partial_1(v_1: List<&2, BIR.Parameter>, v_3: cps_provider_1_State, v_5: U32, v_7: List<&2, BIR.Arg>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case []:
+      cps_provider_1_operation(v_3, BIR.Direct{v_5, v_7})
+    case _:
+      cps_provider_1_native_match_partial_0(v_3, v_5, v_7, v_1)
+
+def cps_provider_1_partial(v_1: cps_provider_1_State, v_3: U32, v_5: List<&2, BIR.Arg>, v_7: List<&2, BIR.Parameter>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_partial_1(v_7, v_1, v_3, v_5)
+
+def cps_provider_1_tag(v_1: cps_provider_1_State, v_2: cps_provider_4_Constructor, v_3: BIR.Atom, v_6: Maybe<&2, U32>, v_8: Bool) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_tag_native(v_1, cps_provider_1_constructor_native(v_2), v_2, v_3, v_6, v_8)
+
+def cps_provider_1_tag_native(v_1: cps_provider_1_State, v_3: String, v_4: cps_provider_4_Constructor, v_5: BIR.Atom, v_8: Maybe<&2, U32>, v_10: Bool) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_3:
+    case "Nat.Zero":
+      cps_provider_1_primitive(v_1, BIR.PrimIsNatZero{}, [v_5])
+    case "Nat.Succ":
+      cps_provider_1_primitive(v_1, BIR.PrimIsNatSuccessor{}, [v_5])
+    case "Bool.False":
+      cps_provider_1_primitive(v_1, BIR.PrimIsFalse{}, [v_5])
+    case "Bool.True":
+      cps_provider_1_primitive(v_1, BIR.PrimIsTrue{}, [v_5])
+    case "String.SNil":
+      cps_provider_1_primitive(v_1, BIR.PrimIsStringEmpty{}, [v_5])
+    case "String.SCon":
+      cps_provider_1_primitive(v_1, BIR.PrimIsStringNonempty{}, [v_5])
+    case "Array.ALeaf":
+      cps_provider_1_primitive_fact(v_1, BIR.PrimIsArrayLeaf{}, [v_5], v_8, v_10)
+    case "Array.ANode":
+      cps_provider_1_primitive_fact(v_1, BIR.PrimIsArrayNode{}, [v_5], v_8, v_10)
+    case "Char.Chr":
+      cps_provider_1_LowerResult{v_1, BIR.Boolean{True{}}}
+    case "U32.U32":
+      cps_provider_1_LowerResult{v_1, BIR.Boolean{True{}}}
+    case "F32.F32":
+      cps_provider_1_LowerResult{v_1, BIR.Boolean{True{}}}
+    case _:
+      cps_provider_1_operation(v_1, BIR.HasTag{v_5, cps_provider_1_constructor_id(v_4), cps_provider_1_constructor_key(v_4)})
+
+def cps_provider_1_project(v_1: cps_provider_1_State, v_2: cps_provider_4_Constructor, v_3: BIR.Atom, v_5: U32, v_6: Ast.SourceSpan, v_9: Maybe<&2, U32>, v_11: Bool) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_project_native(v_1, cps_provider_1_constructor_native(v_2), v_2, v_3, v_5, v_6, v_9, v_11)
+
+def cps_provider_1_project_native(v_1: cps_provider_1_State, v_3: String, v_4: cps_provider_4_Constructor, v_5: BIR.Atom, v_7: U32, v_8: Ast.SourceSpan, v_11: Maybe<&2, U32>, v_13: Bool) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_3, v_7:
+    case "Nat.Succ", 0:
+      cps_provider_1_primitive(v_1, BIR.PrimNatPredecessor{}, [v_5])
+    case "String.SCon", 0:
+      cps_provider_1_primitive(v_1, BIR.PrimStringHead{}, [v_5])
+    case "String.SCon", 1:
+      cps_provider_1_primitive(v_1, BIR.PrimStringTail{}, [v_5])
+    case "Char.Chr", 0:
+      cps_provider_1_primitive(v_1, BIR.PrimCharCode{}, [v_5])
+    case "U32.U32", 0:
+      cps_provider_1_primitive(v_1, BIR.PrimU32ToWord{}, [v_5])
+    case "F32.F32", 0:
+      cps_provider_1_primitive(v_1, BIR.PrimF32ToWord{}, [v_5])
+    case "Array.ALeaf", 0:
+      cps_provider_1_primitive_fact(v_1, BIR.PrimArrayLeafValue{}, [v_5], v_11, v_13)
+    case "Array.ANode", 0:
+      cps_provider_1_primitive_fact(v_1, BIR.PrimArrayLeft{}, [v_5], v_11, v_13)
+    case "Array.ANode", 1:
+      cps_provider_1_primitive_fact(v_1, BIR.PrimArrayRight{}, [v_5], v_11, v_13)
+    case _, _:
+      cps_provider_1_project_field(v_1, cps_provider_4_constructor_field(v_4, v_7), v_4, v_5, v_8)
+
+def cps_provider_1_project_field(v_1: cps_provider_1_State, v_3: Maybe<&2, cps_provider_4_ConstructorField>, v_4: cps_provider_4_Constructor, v_5: BIR.Atom, v_6: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_3:
+    case Some{cps_provider_4_ConstructorField{_, _, BIR.Erased{}}}:
+      cps_provider_1_LowerResult{v_1, BIR.Null{}}
+    case Some{cps_provider_4_ConstructorField{v_15, Some{v_16}, _}}:
+      cps_provider_1_operation(v_1, BIR.Project{v_5, cps_provider_1_constructor_id(v_4), v_15, v_16})
+    case _:
+      cps_provider_1_fail(v_1, "missing checked field projection", v_6)
+
+def cps_provider_1_pattern_identity(v_0: IR.CheckedPattern, v_1: cps_provider_4_Registry) -> String:
+  match v_0:
+    case IR.CheckedConstructor{_, v_8, _, _}:
+      cps_provider_1_pattern_identity_found(cps_provider_4_lookup_constructor(v_1, v_8))
+    case _:
+      ""
+
+def cps_provider_1_pattern_identity_found(v_1: Maybe<&2, cps_provider_4_Constructor>) -> String:
+  match v_1:
+    case None{}:
+      ""
+    case Some{v_4}:
+      cps_provider_1_constructor_native(v_4)
+
+def cps_provider_1_closed_bit(v_0: IR.CheckedPattern, v_1: cps_provider_4_Registry) -> Maybe<&2, U32>:
+  match v_0:
+    case IR.CheckedConstructor{_, _, [], _}:
+      cps_provider_1_closed_bit_identity(cps_provider_1_pattern_identity(v_0, v_1))
+    case _:
+      None{}
+
+def cps_provider_1_closed_bit_identity(v_1: String) -> Maybe<&2, U32>:
+  match v_1:
+    case "Bool.False":
+      Some{0}
+    case "Bool.True":
+      Some{1}
+    case _:
+      None{}
+
+def cps_provider_1_closed_word(v_1: Nat, v_2: IR.CheckedPattern, v_3: cps_provider_4_Registry) -> Maybe<&2, U32>:
+  cps_provider_1_closed_word_identity(v_1, cps_provider_1_pattern_identity(v_2, v_3), v_2, v_3)
+
+def cps_provider_1_closed_word_identity(v_1: Nat, v_3: String, v_4: IR.CheckedPattern, v_5: cps_provider_4_Registry) -> Maybe<&2, U32>:
+  match v_1, v_3, v_4:
+    case 0n, "Word.Nil.WNil", IR.CheckedConstructor{_, _, [], _}:
+      Some{0}
+    case 1n+v_20, "Word.Con.WCon", IR.CheckedConstructor{_, _, [v_23, v_24], _}:
+      cps_provider_1_closed_word_parts(cps_provider_1_closed_bit(v_23, v_5), cps_provider_1_closed_word(v_20, v_24, v_5))
+    case _, _, _:
+      None{}
+
+def cps_provider_1_closed_word_parts(v_2: Maybe<&2, U32>, v_5: Maybe<&2, U32>) -> Maybe<&2, U32>:
+  match v_2, v_5:
+    case Some{v_10}, Some{v_11}:
+      Some{U32.or(v_10, U32.shl(v_11))}
+    case _, _:
+      None{}
+
+def cps_provider_1_closed_scalar(v_1: String, v_3: List<&2, IR.CheckedPattern>, v_4: cps_provider_4_Registry) -> Maybe<&2, U32>:
+  match v_1, v_3:
+    case "U32.U32", [v_8]:
+      cps_provider_1_closed_word(32n, v_8, v_4)
+    case "F32.F32", [v_11]:
+      cps_provider_1_closed_word(32n, v_11, v_4)
+    case _, _:
+      None{}
+
+def cps_provider_1_erase_pattern(v_0: IR.CheckedPattern, v_3: List<&2, cps_provider_1_Slot>) -> List<&2, cps_provider_1_Slot>:
+  match v_0:
+    case IR.CheckedVariable{_, _}:
+      cps_provider_1_ErasedSlot{} <> v_3
+    case IR.CheckedConstructor{_, _, v_16, _}:
+      cps_provider_1_erase_patterns(v_16, v_3)
+
+def cps_provider_1_erase_patterns(v_1: List<&2, IR.CheckedPattern>, v_4: List<&2, cps_provider_1_Slot>) -> List<&2, cps_provider_1_Slot>:
+  match v_1:
+    case []:
+      v_4
+    case v_9 <> v_10:
+      cps_provider_1_erase_patterns(v_10, cps_provider_1_erase_pattern(v_9, v_4))
+
+def cps_provider_1_native_match_patterns_0(v_3: cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>, v_4: cps_provider_4_Registry, v_5: BIR.Block, v_7: List<&2, IR.CheckedPattern>, v_9: List<&2, BIR.Atom>) -> cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>:
+  match v_3:
+    case cps_provider_1_LowerResult{v_15, v_16}:
+      cps_provider_1_patterns(v_15, v_7, v_9, v_16, v_4, v_5)
+
+def cps_provider_1_native_match_patterns_1(v_1: List<&2, IR.CheckedPattern>, v_3: List<&2, BIR.Atom>, v_5: cps_provider_1_State, v_8: List<&2, cps_provider_1_Slot>, v_9: cps_provider_4_Registry, v_10: BIR.Block) -> cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>:
+  match v_1, v_3:
+    case [], []:
+      cps_provider_1_LowerResult{v_5, v_8}
+    case v_18 <> v_19, v_20 <> v_21:
+      cps_provider_1_native_match_patterns_0(cps_provider_1_pattern(v_5, v_18, v_20, v_8, v_9, v_10), v_9, v_10, v_19, v_21)
+    case _, _:
+      cps_provider_1_LowerResult{cps_provider_1_state_problem(v_5, "checked pattern/scrutinee arity mismatch", cps_provider_1_no_span), v_8}
+
+def cps_provider_1_patterns(v_1: cps_provider_1_State, v_3: List<&2, IR.CheckedPattern>, v_5: List<&2, BIR.Atom>, v_8: List<&2, cps_provider_1_Slot>, v_9: cps_provider_4_Registry, v_10: BIR.Block) -> cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>:
+  cps_provider_1_native_match_patterns_1(v_3, v_5, v_1, v_8, v_9, v_10)
+
+def cps_provider_1_native_match_pattern_0(v_2: cps_provider_1_LowerResult<cps_provider_1_Slot>, v_5: List<&2, cps_provider_1_Slot>) -> cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_11, v_12}:
+      cps_provider_1_LowerResult{v_11, v_12 <> v_5}
+
+def cps_provider_1_native_match_pattern_1(v_0: IR.CheckedPattern, v_2: cps_provider_1_State, v_3: BIR.Atom, v_6: List<&2, cps_provider_1_Slot>, v_7: cps_provider_4_Registry, v_8: BIR.Block) -> cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>:
+  match v_0:
+    case IR.CheckedVariable{_, IR.CheckedBinding{Ast.QZero{}, _, _}}:
+      cps_provider_1_LowerResult{v_2, cps_provider_1_ErasedSlot{} <> v_6}
+    case IR.CheckedVariable{_, IR.CheckedBinding{v_23, _, _}}:
+      cps_provider_1_native_match_pattern_0(cps_provider_1_bind_slot(v_2, v_3, cps_provider_1_use(v_23)), v_6)
+    case IR.CheckedConstructor{_, v_34, v_35, v_36}:
+      cps_provider_1_pattern_constructor(v_2, cps_provider_4_lookup_constructor(v_7, v_34), v_35, v_36, v_3, v_6, v_7, v_8)
+
+def cps_provider_1_pattern(v_1: cps_provider_1_State, v_2: IR.CheckedPattern, v_3: BIR.Atom, v_6: List<&2, cps_provider_1_Slot>, v_7: cps_provider_4_Registry, v_8: BIR.Block) -> cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>:
+  cps_provider_1_native_match_pattern_1(v_2, v_1, v_3, v_6, v_7, v_8)
+
+def cps_provider_1_pattern_constructor(v_1: cps_provider_1_State, v_3: Maybe<&2, cps_provider_4_Constructor>, v_5: List<&2, IR.CheckedPattern>, v_7: List<&2, IR.CheckedBinding>, v_8: BIR.Atom, v_11: List<&2, cps_provider_1_Slot>, v_12: cps_provider_4_Registry, v_13: BIR.Block) -> cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>:
+  match v_3:
+    case None{}:
+      cps_provider_1_LowerResult{cps_provider_1_state_problem(v_1, "missing resolved pattern constructor", cps_provider_1_no_span), v_11}
+    case Some{v_20}:
+      cps_provider_1_pattern_scalar(v_1, cps_provider_1_closed_scalar(cps_provider_1_constructor_native(v_20), v_5, v_12), v_20, v_5, v_7, v_8, v_11, v_12, v_13, cps_provider_1_first_binding_type(v_7))
+
+def cps_provider_1_native_match_pattern_scalar_0(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_4: List<&2, cps_provider_1_Slot>, v_5: BIR.Block) -> cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_11, v_12}:
+      cps_provider_1_LowerResult{cps_provider_1_guard(v_11, v_12, v_5), v_4}
+
+def cps_provider_1_native_match_pattern_scalar_1(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_2: cps_provider_4_Constructor, v_4: List<&2, IR.CheckedPattern>, v_6: List<&2, IR.CheckedBinding>, v_7: BIR.Atom, v_10: List<&2, cps_provider_1_Slot>, v_11: cps_provider_4_Registry, v_12: BIR.Block, v_15: Maybe<&2, U32>) -> cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_21, v_22}:
+      cps_provider_1_pattern_fields(cps_provider_1_guard(v_21, v_22, v_12), v_2, v_4, v_6, v_7, 0, v_10, v_11, v_12, v_15)
+
+def cps_provider_1_native_match_pattern_scalar_2(v_2: Maybe<&2, U32>, v_4: cps_provider_1_State, v_5: cps_provider_4_Constructor, v_7: List<&2, IR.CheckedPattern>, v_9: List<&2, IR.CheckedBinding>, v_10: BIR.Atom, v_13: List<&2, cps_provider_1_Slot>, v_14: cps_provider_4_Registry, v_15: BIR.Block, v_18: Maybe<&2, U32>) -> cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>:
+  match v_2:
+    case Some{v_23}:
+      cps_provider_1_native_match_pattern_scalar_0(cps_provider_1_scalar_test(v_4, String.eq(cps_provider_1_constructor_native(v_5), "F32.F32"), v_10, v_23), v_13, v_15)
+    case None{}:
+      cps_provider_1_native_match_pattern_scalar_1(cps_provider_1_tag(v_4, v_5, v_10, v_18, False{}), v_5, v_7, v_9, v_10, v_13, v_14, v_15, v_18)
+
+def cps_provider_1_pattern_scalar(v_1: cps_provider_1_State, v_4: Maybe<&2, U32>, v_5: cps_provider_4_Constructor, v_7: List<&2, IR.CheckedPattern>, v_9: List<&2, IR.CheckedBinding>, v_10: BIR.Atom, v_13: List<&2, cps_provider_1_Slot>, v_14: cps_provider_4_Registry, v_15: BIR.Block, v_18: Maybe<&2, U32>) -> cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>:
+  cps_provider_1_native_match_pattern_scalar_2(v_4, v_1, v_5, v_7, v_9, v_10, v_13, v_14, v_15, v_18)
+
+def cps_provider_1_scalar_test(v_1: cps_provider_1_State, v_3: Bool, v_4: BIR.Atom, v_6: U32) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_3:
+    case True{}:
+      cps_provider_1_primitive(v_1, BIR.PrimFloatBitsEqual{}, [v_4, BIR.Word{v_6}])
+    case False{}:
+      cps_provider_1_primitive(v_1, BIR.PrimSameValue{}, [v_4, BIR.Word{v_6}])
+
+def cps_provider_1_native_match_pattern_fields_0(v_3: cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>, v_4: cps_provider_4_Constructor, v_5: BIR.Atom, v_7: U32, v_8: cps_provider_4_Registry, v_9: BIR.Block, v_11: List<&2, IR.CheckedPattern>, v_13: List<&2, IR.CheckedBinding>, v_16: Maybe<&2, U32>) -> cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>:
+  match v_3:
+    case cps_provider_1_LowerResult{v_22, v_23}:
+      cps_provider_1_pattern_fields(v_22, v_4, v_11, v_13, v_5, U32.inc(v_7), v_23, v_8, v_9, v_16)
+
+def cps_provider_1_native_match_pattern_fields_1(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_2: cps_provider_4_Constructor, v_3: BIR.Atom, v_5: U32, v_8: List<&2, cps_provider_1_Slot>, v_9: cps_provider_4_Registry, v_10: BIR.Block, v_11: IR.CheckedPattern, v_13: List<&2, IR.CheckedPattern>, v_15: List<&2, IR.CheckedBinding>, v_18: Maybe<&2, U32>) -> cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_24, v_25}:
+      cps_provider_1_native_match_pattern_fields_0(cps_provider_1_pattern(v_24, v_11, v_25, v_8, v_9, v_10), v_2, v_3, v_5, v_9, v_10, v_13, v_15, v_18)
+
+def cps_provider_1_native_match_pattern_fields_2(v_1: List<&2, IR.CheckedPattern>, v_3: List<&2, IR.CheckedBinding>, v_5: cps_provider_1_State, v_6: cps_provider_4_Constructor, v_7: BIR.Atom, v_9: U32, v_12: List<&2, cps_provider_1_Slot>, v_13: cps_provider_4_Registry, v_14: BIR.Block, v_17: Maybe<&2, U32>) -> cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>:
+  match v_1, v_3:
+    case [], []:
+      cps_provider_1_LowerResult{v_5, v_12}
+    case v_26 <> v_27, IR.CheckedBinding{Ast.QZero{}, _, _} <> v_30:
+      cps_provider_1_pattern_fields(v_5, v_6, v_27, v_30, v_7, U32.inc(v_9), cps_provider_1_erase_pattern(v_26, v_12), v_13, v_14, v_17)
+    case v_37 <> v_38, _ <> v_40:
+      cps_provider_1_native_match_pattern_fields_1(cps_provider_1_project(v_5, v_6, v_7, v_9, cps_provider_1_no_span, v_17, False{}), v_6, v_7, v_9, v_12, v_13, v_14, v_37, v_38, v_40, v_17)
+    case _, _:
+      cps_provider_1_LowerResult{cps_provider_1_state_problem(v_5, "incomplete checked pattern layout", cps_provider_1_no_span), v_12}
+
+def cps_provider_1_pattern_fields(v_1: cps_provider_1_State, v_2: cps_provider_4_Constructor, v_4: List<&2, IR.CheckedPattern>, v_6: List<&2, IR.CheckedBinding>, v_7: BIR.Atom, v_9: U32, v_12: List<&2, cps_provider_1_Slot>, v_13: cps_provider_4_Registry, v_14: BIR.Block, v_17: Maybe<&2, U32>) -> cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>:
+  cps_provider_1_native_match_pattern_fields_2(v_4, v_6, v_1, v_2, v_7, v_9, v_12, v_13, v_14, v_17)
+
+def cps_provider_1_native_match_lower_values_0(v_2: cps_provider_1_LowerResult<List<&2, BIR.Atom>>, v_3: BIR.Atom) -> cps_provider_1_LowerResult<List<&2, BIR.Atom>>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_8, v_9}:
+      cps_provider_1_LowerResult{v_8, v_3 <> v_9}
+
+def cps_provider_1_native_match_lower_values_1(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_4: List<&2, cps_provider_1_Slot>, v_5: cps_provider_4_Registry, v_7: List<&2, IR.Occurrence>) -> cps_provider_1_LowerResult<List<&2, BIR.Atom>>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_12, v_13}:
+      cps_provider_1_native_match_lower_values_0(cps_provider_1_lower_values(v_12, v_7, v_4, v_5), v_13)
+
+def cps_provider_1_native_match_lower_values_2(v_1: List<&2, IR.Occurrence>, v_3: cps_provider_1_State, v_6: List<&2, cps_provider_1_Slot>, v_7: cps_provider_4_Registry) -> cps_provider_1_LowerResult<List<&2, BIR.Atom>>:
+  match v_1:
+    case []:
+      cps_provider_1_LowerResult{v_3, []}
+    case v_12 <> v_13:
+      cps_provider_1_native_match_lower_values_1(cps_provider_1_lower_occurrence(v_3, v_12, v_6, v_7), v_6, v_7, v_13)
+
+def cps_provider_1_lower_values(v_1: cps_provider_1_State, v_3: List<&2, IR.Occurrence>, v_6: List<&2, cps_provider_1_Slot>, v_7: cps_provider_4_Registry) -> cps_provider_1_LowerResult<List<&2, BIR.Atom>>:
+  cps_provider_1_native_match_lower_values_2(v_3, v_1, v_6, v_7)
+
+def cps_provider_1_native_match_new_parameters_0(v_2: cps_provider_1_LowerResult<List<&2, BIR.Parameter>>, v_4: U32) -> cps_provider_1_LowerResult<List<&2, BIR.Parameter>>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_9, v_10}:
+      cps_provider_1_LowerResult{v_9, BIR.Parameter{v_4, BIR.Affine{}} <> v_10}
+
+def cps_provider_1_native_match_new_parameters_1(v_2: cps_provider_1_LowerResult<U32>, v_4: Nat) -> cps_provider_1_LowerResult<List<&2, BIR.Parameter>>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_9, v_10}:
+      cps_provider_1_native_match_new_parameters_0(cps_provider_1_new_parameters(v_9, v_4), v_10)
+
+def cps_provider_1_native_match_new_parameters_2(v_1: Nat, v_3: cps_provider_1_State) -> cps_provider_1_LowerResult<List<&2, BIR.Parameter>>:
+  match v_1:
+    case 0n:
+      cps_provider_1_LowerResult{v_3, []}
+    case 1n+v_7:
+      cps_provider_1_native_match_new_parameters_1(cps_provider_1_fresh(v_3), v_7)
+
+def cps_provider_1_new_parameters(v_1: cps_provider_1_State, v_3: Nat) -> cps_provider_1_LowerResult<List<&2, BIR.Parameter>>:
+  cps_provider_1_native_match_new_parameters_2(v_3, v_1)
+
+def cps_provider_1_parameter_values(v_1: List<&2, BIR.Parameter>) -> List<&2, BIR.Atom>:
+  match v_1:
+    case []:
+      []
+    case BIR.Parameter{v_6, _} <> v_8:
+      BIR.Local{v_6} <> cps_provider_1_parameter_values(v_8)
+
+def cps_provider_1_native_match_checked_cases_0(v_1: cps_provider_1_LowerResult<BIR.Block>, v_3: U32, v_4: BIR.Block) -> cps_provider_1_LowerResult<BIR.Block>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_8, v_9}:
+      cps_provider_1_LowerResult{v_8, BIR.Region{v_3, v_4, v_9}}
+
+def cps_provider_1_native_match_checked_cases_1(v_1: cps_provider_1_LowerResult<BIR.Block>, v_3: List<&2, BIR.Atom>, v_6: List<&2, cps_provider_1_Slot>, v_7: cps_provider_4_Registry, v_9: List<&2, IR.Occurrence>, v_11: U32) -> cps_provider_1_LowerResult<BIR.Block>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_15, v_16}:
+      cps_provider_1_native_match_checked_cases_0(cps_provider_1_checked_cases(v_15, v_9, v_3, v_6, v_7), v_11, v_16)
+
+def cps_provider_1_native_match_checked_cases_2(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_3: List<&2, BIR.Atom>, v_6: List<&2, cps_provider_1_Slot>, v_7: cps_provider_4_Registry, v_9: List<&2, IR.Occurrence>, v_11: U32) -> cps_provider_1_LowerResult<BIR.Block>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_15, v_16}:
+      cps_provider_1_native_match_checked_cases_1(cps_provider_1_take_block(v_15, v_16), v_3, v_6, v_7, v_9, v_11)
+
+def cps_provider_1_native_match_checked_cases_3(v_3: cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>, v_5: List<&2, BIR.Atom>, v_8: List<&2, cps_provider_1_Slot>, v_9: cps_provider_4_Registry, v_10: IR.Occurrence, v_12: List<&2, IR.Occurrence>, v_14: U32) -> cps_provider_1_LowerResult<BIR.Block>:
+  match v_3:
+    case cps_provider_1_LowerResult{v_18, v_19}:
+      cps_provider_1_native_match_checked_cases_2(cps_provider_1_lower_occurrence(v_18, v_10, v_19, v_9), v_5, v_8, v_9, v_12, v_14)
+
+def cps_provider_1_native_match_checked_cases_4(v_2: cps_provider_1_LowerResult<U32>, v_4: List<&2, BIR.Atom>, v_7: List<&2, cps_provider_1_Slot>, v_8: cps_provider_4_Registry, v_10: List<&2, IR.CheckedPattern>, v_11: IR.Occurrence, v_13: List<&2, IR.Occurrence>) -> cps_provider_1_LowerResult<BIR.Block>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_17, v_18}:
+      cps_provider_1_native_match_checked_cases_3(cps_provider_1_patterns(v_17, v_10, v_4, v_7, v_8, BIR.LeaveRegion{v_18}), v_4, v_7, v_8, v_11, v_13, v_18)
+
+def cps_provider_1_native_match_checked_cases_5(v_1: List<&2, IR.Occurrence>, v_3: cps_provider_1_State, v_5: List<&2, BIR.Atom>, v_8: List<&2, cps_provider_1_Slot>, v_9: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Block>:
+  match v_1:
+    case []:
+      cps_provider_1_LowerResult{v_3, BIR.Failure{"bend: runtime fail-stop"}}
+    case IR.CaseOccurrence{_, _, v_18, v_19} <> v_20:
+      cps_provider_1_native_match_checked_cases_4(cps_provider_1_fresh(v_3), v_5, v_8, v_9, v_18, v_19, v_20)
+    case _ <> _:
+      cps_provider_1_LowerResult{cps_provider_1_state_problem(v_3, "missing checked match row", cps_provider_1_no_span), BIR.Failure{"bend: malformed checked match"}}
+
+def cps_provider_1_checked_cases(v_1: cps_provider_1_State, v_3: List<&2, IR.Occurrence>, v_5: List<&2, BIR.Atom>, v_8: List<&2, cps_provider_1_Slot>, v_9: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Block>:
+  cps_provider_1_native_match_checked_cases_5(v_3, v_1, v_5, v_8, v_9)
+
+def cps_provider_1_take_block(v_1: cps_provider_1_State, v_2: BIR.Atom) -> cps_provider_1_LowerResult<BIR.Block>:
+  match v_1:
+    case cps_provider_1_State{v_15, v_16, v_17, cps_provider_1_Frame{v_18, v_19, v_20, v_21}, v_22, v_23, v_24, v_25}:
+      cps_provider_1_LowerResult{cps_provider_1_State{v_15, v_16, v_17, cps_provider_1_Frame{v_18, [], v_20, v_21}, v_22, v_23, v_24, v_25}, cps_provider_1_finish(v_19, v_2)}
+
+def cps_provider_1_native_match_match_values_0(v_2: cps_provider_1_LowerResult<cps_provider_1_CodeRef>, v_4: List<&2, BIR.Atom>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_8, v_9}:
+      cps_provider_1_call_reference(v_8, v_9, cps_provider_1_atom_arguments(v_4))
+
+def cps_provider_1_native_match_match_values_1(v_1: cps_provider_1_LowerResult<BIR.Block>, v_3: List<&2, BIR.Atom>, v_5: cps_provider_1_Frame, v_7: List<&2, BIR.Parameter>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_11, v_12}:
+      cps_provider_1_native_match_match_values_0(cps_provider_1_leave(v_11, v_5, v_7, v_12), v_3)
+
+def cps_provider_1_native_match_match_values_2(v_2: cps_provider_1_LowerResult<List<&2, BIR.Parameter>>, v_4: List<&2, IR.Occurrence>, v_6: List<&2, BIR.Atom>, v_9: List<&2, cps_provider_1_Slot>, v_10: cps_provider_4_Registry, v_12: cps_provider_1_Frame) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_16, v_17}:
+      cps_provider_1_native_match_match_values_1(cps_provider_1_checked_cases(v_16, v_4, cps_provider_1_parameter_values(v_17), v_9, v_10), v_6, v_12, v_17)
+
+def cps_provider_1_native_match_match_values_3(v_2: cps_provider_1_LowerResult<cps_provider_1_Frame>, v_4: List<&2, IR.Occurrence>, v_6: List<&2, BIR.Atom>, v_9: List<&2, cps_provider_1_Slot>, v_10: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_14, v_15}:
+      cps_provider_1_native_match_match_values_2(cps_provider_1_new_parameters(v_14, List.length(&2, BIR.Atom, v_6)), v_4, v_6, v_9, v_10, v_15)
+
+def cps_provider_1_match_values(v_1: cps_provider_1_State, v_3: List<&2, IR.Occurrence>, v_5: List<&2, BIR.Atom>, v_8: List<&2, cps_provider_1_Slot>, v_9: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_match_values_3(cps_provider_1_enter(v_1), v_3, v_5, v_8, v_9)
+
+def cps_provider_1_native_match_split_occurrences_0(v_5: Sigma<&1, &1, List<&2, IR.Occurrence>, _ => List<&2, IR.Occurrence>>, v_6: IR.Occurrence) -> Pair(List<&2, IR.Occurrence>, List<&2, IR.Occurrence>):
+  match v_5:
+    case (v_12, v_13):
+      (v_6 <> v_12, v_13)
+
+def cps_provider_1_native_match_split_occurrences_1(v_1: U32, v_3: List<&2, IR.Occurrence>) -> Pair(List<&2, IR.Occurrence>, List<&2, IR.Occurrence>):
+  match v_1, v_3:
+    case 0, _:
+      ([], v_3)
+    case _, v_13 <> v_14:
+      cps_provider_1_native_match_split_occurrences_0(cps_provider_1_split_occurrences(U32.sub(v_1, 1), v_14), v_13)
+    case _, []:
+      ([], [])
+
+def cps_provider_1_split_occurrences(v_1: U32, v_3: List<&2, IR.Occurrence>) -> Pair(List<&2, IR.Occurrence>, List<&2, IR.Occurrence>):
+  cps_provider_1_native_match_split_occurrences_1(v_1, v_3)
+
+def cps_provider_1_native_match_lower_match_0(v_2: cps_provider_1_LowerResult<List<&2, BIR.Atom>>, v_5: List<&2, cps_provider_1_Slot>, v_6: cps_provider_4_Registry, v_8: List<&2, IR.Occurrence>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_12, v_13}:
+      cps_provider_1_match_values(v_12, v_8, v_13, v_5, v_6)
+
+def cps_provider_1_native_match_lower_match_1(v_5: Sigma<&1, &1, List<&2, IR.Occurrence>, _ => List<&2, IR.Occurrence>>, v_7: cps_provider_1_State, v_10: List<&2, cps_provider_1_Slot>, v_11: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_5:
+    case (v_15, v_16):
+      cps_provider_1_native_match_lower_match_0(cps_provider_1_lower_values(v_7, v_15, v_10, v_11), v_10, v_11, v_16)
+
+def cps_provider_1_lower_match(v_1: cps_provider_1_State, v_3: U32, v_5: List<&2, IR.Occurrence>, v_8: List<&2, cps_provider_1_Slot>, v_9: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_lower_match_1(cps_provider_1_split_occurrences(v_3, v_5), v_1, v_8, v_9)
+
+def cps_provider_1_occurrence_term(v_0: IR.Occurrence) -> U32:
+  match v_0:
+    case IR.TypedOccurrence{v_8, _, _, _, _, _}:
+      v_8
+    case IR.ScalarOccurrence{v_19, _, _, _, _}:
+      v_19
+    case IR.StringOccurrence{v_28, _, _, _}:
+      v_28
+    case IR.CaseOccurrence{v_36, _, _, _}:
+      v_36
+    case IR.LocalOccurrence{v_45, _, _, _, _}:
+      v_45
+    case IR.LocalReferenceOccurrence{v_54, _, _, _}:
+      v_54
+
+def cps_provider_1_native_match_lower_0(v_1: cps_provider_1_LowerResult<Arena.Node>, v_4: List<&2, cps_provider_1_Slot>, v_5: cps_provider_4_Registry, v_7: U32, v_9: Maybe<&2, Ast.Quantity>, v_11: Maybe<&2, IR.Symbol>, v_13: List<&2, IR.CheckedBinding>, v_15: List<&2, IR.Occurrence>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_19, v_20}:
+      cps_provider_1_lower_node(v_19, v_20, v_7, v_9, v_11, v_13, v_15, v_4, v_5)
+
+def cps_provider_1_native_match_lower_1(v_1: cps_provider_1_LowerResult<Arena.Node>, v_4: List<&2, cps_provider_1_Slot>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_8, v_9}:
+      cps_provider_1_lexical_reference(v_8, v_9, v_4)
+
+def cps_provider_1_native_match_lower_2(v_3: cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>, v_4: cps_provider_4_Registry, v_5: IR.Occurrence) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_3:
+    case cps_provider_1_LowerResult{v_9, v_10}:
+      cps_provider_1_lower_occurrence(v_9, v_5, v_10, v_4)
+
+def cps_provider_1_native_match_lower_3(v_2: cps_provider_1_LowerResult<List<&2, BIR.Atom>>, v_5: List<&2, cps_provider_1_Slot>, v_6: cps_provider_4_Registry, v_8: List<&2, IR.CheckedPattern>, v_9: IR.Occurrence) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_13, v_14}:
+      cps_provider_1_native_match_lower_2(cps_provider_1_patterns(v_13, v_8, v_14, v_5, v_6, BIR.Failure{"bend: runtime fail-stop"}), v_6, v_9)
+
+def cps_provider_1_native_match_lower_4(v_0: IR.Occurrence, v_2: cps_provider_1_State, v_5: List<&2, cps_provider_1_Slot>, v_6: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_0:
+    case IR.TypedOccurrence{v_14, v_15, v_16, v_17, v_18, v_19}:
+      cps_provider_1_native_match_lower_0(cps_provider_1_node(v_2, v_14), v_5, v_6, v_15, v_16, v_17, v_18, v_19)
+    case IR.ScalarOccurrence{_, _, v_29, v_30, v_31}:
+      cps_provider_1_scalar_literal(v_2, cps_provider_4_lookup_constructor(v_6, v_29), v_30, v_31, v_6)
+    case IR.StringOccurrence{_, _, v_39, v_40}:
+      cps_provider_1_literal_string(v_2, v_6, v_40, v_39, cps_provider_1_no_span)
+    case IR.LocalReferenceOccurrence{v_47, _, _, _}:
+      cps_provider_1_native_match_lower_1(cps_provider_1_node(v_2, v_47), v_5)
+    case IR.LocalOccurrence{_, _, v_60, v_61, v_62}:
+      cps_provider_1_native_match_lower_3(cps_provider_1_local_values(v_2, v_60, v_61, v_5, v_6), v_5, v_6, v_60, v_62)
+    case IR.CaseOccurrence{_, _, _, _}:
+      cps_provider_1_fail(v_2, "checked case escaped its match", cps_provider_1_no_span)
+
+def cps_provider_1_lower_occurrence(v_1: cps_provider_1_State, v_2: IR.Occurrence, v_5: List<&2, cps_provider_1_Slot>, v_6: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_lower_4(v_2, v_1, v_5, v_6)
+
+def cps_provider_1_lexical_reference(v_1: cps_provider_1_State, v_2: Arena.Node, v_5: List<&2, cps_provider_1_Slot>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case Arena.TermVar{_, v_11, v_12}:
+      cps_provider_1_variable(v_1, v_5, v_11, v_12)
+    case _:
+      cps_provider_1_fail(v_1, "checked local reference lost lexical identity", cps_provider_1_no_span)
+
+def cps_provider_1_native_match_lower_node_0(v_2: cps_provider_1_LowerResult<String>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_6, v_7}:
+      cps_provider_1_LowerResult{cps_provider_1_push(v_6, cps_provider_1_Stop{BIR.Failure{String.append("bend: unsolved hole ", v_7)}}), BIR.Null{}}
+
+def cps_provider_1_native_match_lower_node_1(v_0: Arena.Node, v_2: cps_provider_1_State, v_4: U32, v_6: Maybe<&2, Ast.Quantity>, v_8: Maybe<&2, IR.Symbol>, v_10: List<&2, IR.CheckedBinding>, v_12: List<&2, IR.Occurrence>, v_15: List<&2, cps_provider_1_Slot>, v_16: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_0:
+    case Arena.TermVar{_, v_22, v_23}:
+      cps_provider_1_variable(v_2, v_15, v_22, v_23)
+    case Arena.TermRef{_, v_28}:
+      cps_provider_1_resolved_reference(v_2, v_8, v_16, v_28)
+    case Arena.TermBang{_, v_33}:
+      cps_provider_1_only_child(v_2, v_12, v_15, v_16, v_33)
+    case Arena.TermAnn{_, _, v_40}:
+      cps_provider_1_annotated_child(v_2, v_12, v_15, v_16, v_40)
+    case Arena.TermLam{_, _, _, _, v_51}:
+      cps_provider_1_lambda_checked(v_2, v_6, v_12, v_15, v_16, v_51)
+    case Arena.TermApp{_, _, v_58}:
+      cps_provider_1_application_checked(v_2, v_4, v_6, v_12, v_15, v_16, v_58)
+    case Arena.TermCtr{_, _, _, v_67}:
+      cps_provider_1_constructor_checked(v_2, v_8, v_10, v_12, v_15, v_16, v_67)
+    case Arena.TermLet{_, _, _, _, _, _, _, v_86, _, v_88}:
+      cps_provider_1_let_checked(v_2, v_86, v_10, v_12, v_15, v_16, v_88)
+    case Arena.BodyMatch{_, v_96, _, _, _}:
+      cps_provider_1_lower_match(v_2, v_96, v_12, v_15, v_16)
+    case Arena.TermMat{_, _, _, v_108}:
+      cps_provider_1_matcher_checked(v_2, v_6, v_8, v_12, v_15, v_16, v_108)
+    case Arena.TermAbsurd{v_111}:
+      cps_provider_1_absurd_checked(v_2, v_6, v_111)
+    case Arena.TermRewrite{_, _, _, v_120}:
+      cps_provider_1_rewrite_checked(v_2, v_12, v_15, v_16, v_120)
+    case Arena.TermType{_, _}:
+      cps_provider_1_LowerResult{v_2, BIR.Null{}}
+    case Arena.TermQuant{}:
+      cps_provider_1_LowerResult{v_2, BIR.Null{}}
+    case Arena.TermQuantity{_, _}:
+      cps_provider_1_LowerResult{v_2, BIR.Null{}}
+    case Arena.TermMin{_, _, _}:
+      cps_provider_1_LowerResult{v_2, BIR.Null{}}
+    case Arena.TermAll{_, _, _, _, _, _}:
+      cps_provider_1_LowerResult{v_2, BIR.Null{}}
+    case Arena.TermAdt{_, _, _, _, _, _}:
+      cps_provider_1_LowerResult{v_2, BIR.Null{}}
+    case Arena.TermEqual{_, _, _, _}:
+      cps_provider_1_LowerResult{v_2, BIR.Null{}}
+    case Arena.TermRefl{_}:
+      cps_provider_1_LowerResult{v_2, BIR.Null{}}
+    case Arena.TermHole{v_172, v_173}:
+      cps_provider_1_native_match_lower_node_0(cps_provider_1_name(v_2, v_172))
+    case Arena.TermTemplate{_, v_179}:
+      cps_provider_1_fail(v_2, "unexpanded template reached JS emission", v_179)
+    case Arena.TermString{_, _, v_186}:
+      cps_provider_1_fail(v_2, "missing checked string literal certificate", v_186)
+    case Arena.TermSub{_, _, _, v_195}:
+      cps_provider_1_fail(v_2, "unelaborated substitution reached lowering", v_195)
+    case Arena.TermFill{_, _, _, v_204}:
+      cps_provider_1_fail(v_2, "unelaborated fill reached lowering", v_204)
+    case Arena.TermPlus{_, _, _, v_213}:
+      cps_provider_1_fail(v_2, "unelaborated plus reached lowering", v_213)
+    case Arena.BodyCase{_, _, _, v_222}:
+      cps_provider_1_fail(v_2, "missing checked case facts", v_222)
+    case Arena.BodyLocal{_, _, _, _, _, _, v_237}:
+      cps_provider_1_fail(v_2, "missing checked local facts", v_237)
+    case Arena.BodyReply{_, v_242}:
+      cps_provider_1_fail(v_2, "unelaborated reply reached lowering", v_242)
+
+def cps_provider_1_lower_node(v_1: cps_provider_1_State, v_2: Arena.Node, v_4: U32, v_6: Maybe<&2, Ast.Quantity>, v_8: Maybe<&2, IR.Symbol>, v_10: List<&2, IR.CheckedBinding>, v_12: List<&2, IR.Occurrence>, v_15: List<&2, cps_provider_1_Slot>, v_16: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_lower_node_1(v_2, v_1, v_4, v_6, v_8, v_10, v_12, v_15, v_16)
+
+def cps_provider_1_resolved_reference(v_1: cps_provider_1_State, v_3: Maybe<&2, IR.Symbol>, v_4: cps_provider_4_Registry, v_5: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_3:
+    case Some{v_8}:
+      cps_provider_1_symbol_value(v_1, v_8, v_4, v_5)
+    case None{}:
+      cps_provider_1_fail(v_1, "missing checked reference identity", v_5)
+
+def cps_provider_1_only_child(v_1: cps_provider_1_State, v_3: List<&2, IR.Occurrence>, v_6: List<&2, cps_provider_1_Slot>, v_7: cps_provider_4_Registry, v_8: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_3:
+    case [v_11]:
+      cps_provider_1_lower_occurrence(v_1, v_11, v_6, v_7)
+    case _:
+      cps_provider_1_fail(v_1, "incomplete checked unary operand", v_8)
+
+def cps_provider_1_annotated_child(v_1: cps_provider_1_State, v_3: List<&2, IR.Occurrence>, v_6: List<&2, cps_provider_1_Slot>, v_7: cps_provider_4_Registry, v_8: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_3:
+    case [v_12, _]:
+      cps_provider_1_lower_occurrence(v_1, v_12, v_6, v_7)
+    case _:
+      cps_provider_1_fail(v_1, "incomplete checked annotation", v_8)
+
+def cps_provider_1_rewrite_checked(v_1: cps_provider_1_State, v_3: List<&2, IR.Occurrence>, v_6: List<&2, cps_provider_1_Slot>, v_7: cps_provider_4_Registry, v_8: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_3:
+    case [_, _, v_15]:
+      cps_provider_1_lower_occurrence(v_1, v_15, v_6, v_7)
+    case _:
+      cps_provider_1_fail(v_1, "incomplete checked rewrite", v_8)
+
+def cps_provider_1_native_match_application_checked_0(v_2: cps_provider_1_LowerResult<cps_provider_1_Spine>, v_4: U32, v_7: List<&2, cps_provider_1_Slot>, v_8: cps_provider_4_Registry, v_9: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_13, v_14}:
+      cps_provider_1_applications(v_13, v_14, v_4, v_7, v_8, v_9)
+
+def cps_provider_1_native_match_application_checked_1(v_1: Maybe<&2, Ast.Quantity>, v_3: List<&2, IR.Occurrence>, v_5: cps_provider_1_State, v_7: U32, v_10: List<&2, cps_provider_1_Slot>, v_11: cps_provider_4_Registry, v_12: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1, v_3:
+    case Some{v_17}, [v_18, v_19]:
+      cps_provider_1_native_match_application_checked_0(cps_provider_1_spine(v_5, v_18, [cps_provider_1_SourceArgument{v_17, v_19}]), v_7, v_10, v_11, v_12)
+    case _, _:
+      cps_provider_1_fail(v_5, "missing checked application quantity/operands", v_12)
+
+def cps_provider_1_application_checked(v_1: cps_provider_1_State, v_3: U32, v_5: Maybe<&2, Ast.Quantity>, v_7: List<&2, IR.Occurrence>, v_10: List<&2, cps_provider_1_Slot>, v_11: cps_provider_4_Registry, v_12: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_application_checked_1(v_5, v_7, v_1, v_3, v_10, v_11, v_12)
+
+def cps_provider_1_native_match_constructor_checked_0(v_2: cps_provider_1_LowerResult<List<&2, BIR.Atom>>, v_3: cps_provider_4_Registry, v_4: Ast.SourceSpan, v_5: IR.Symbol, v_8: Maybe<&2, U32>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_12, v_13}:
+      cps_provider_1_construct_symbol(v_12, v_3, v_5, v_13, v_4, v_8)
+
+def cps_provider_1_native_match_constructor_checked_1(v_1: Maybe<&2, IR.Symbol>, v_3: cps_provider_1_State, v_5: List<&2, IR.CheckedBinding>, v_7: List<&2, IR.Occurrence>, v_10: List<&2, cps_provider_1_Slot>, v_11: cps_provider_4_Registry, v_12: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case None{}:
+      cps_provider_1_fail(v_3, "missing checked constructor identity", v_12)
+    case Some{v_16}:
+      cps_provider_1_native_match_constructor_checked_0(cps_provider_1_constructor_operands(v_3, v_7, v_5, v_10, v_11, v_12), v_11, v_12, v_16, cps_provider_1_first_occurrence_type(v_7))
+
+def cps_provider_1_constructor_checked(v_1: cps_provider_1_State, v_3: Maybe<&2, IR.Symbol>, v_5: List<&2, IR.CheckedBinding>, v_7: List<&2, IR.Occurrence>, v_10: List<&2, cps_provider_1_Slot>, v_11: cps_provider_4_Registry, v_12: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_constructor_checked_1(v_3, v_1, v_5, v_7, v_10, v_11, v_12)
+
+def cps_provider_1_native_match_lambda_checked_0(v_2: cps_provider_1_LowerResult<cps_provider_1_CodeRef>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_6, v_7}:
+      cps_provider_1_close(v_6, v_7)
+
+def cps_provider_1_native_match_lambda_checked_1(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_2: Ast.Quantity, v_4: cps_provider_1_Frame, v_6: U32) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_10, v_11}:
+      cps_provider_1_native_match_lambda_checked_0(cps_provider_1_leave_value(v_10, v_4, [BIR.Parameter{v_6, cps_provider_1_use(v_2)}], v_11))
+
+def cps_provider_1_native_match_lambda_checked_2(v_2: cps_provider_1_LowerResult<cps_provider_1_Slot>, v_5: List<&2, cps_provider_1_Slot>, v_6: cps_provider_4_Registry, v_7: Ast.Quantity, v_8: IR.Occurrence, v_10: cps_provider_1_Frame, v_12: U32) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_16, v_17}:
+      cps_provider_1_native_match_lambda_checked_1(cps_provider_1_lower_occurrence(v_16, v_8, v_17 <> v_5, v_6), v_7, v_10, v_12)
+
+def cps_provider_1_native_match_lambda_checked_3(v_2: cps_provider_1_LowerResult<U32>, v_5: List<&2, cps_provider_1_Slot>, v_6: cps_provider_4_Registry, v_7: Ast.Quantity, v_8: IR.Occurrence, v_10: cps_provider_1_Frame) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_14, v_15}:
+      cps_provider_1_native_match_lambda_checked_2(cps_provider_1_bind_slot(v_14, BIR.Local{v_15}, cps_provider_1_use(v_7)), v_5, v_6, v_7, v_8, v_10, v_15)
+
+def cps_provider_1_native_match_lambda_checked_4(v_2: cps_provider_1_LowerResult<cps_provider_1_Frame>, v_5: List<&2, cps_provider_1_Slot>, v_6: cps_provider_4_Registry, v_7: Ast.Quantity, v_8: IR.Occurrence) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_12, v_13}:
+      cps_provider_1_native_match_lambda_checked_3(cps_provider_1_fresh(v_12), v_5, v_6, v_7, v_8, v_13)
+
+def cps_provider_1_native_match_lambda_checked_5(v_1: Maybe<&2, Ast.Quantity>, v_3: List<&2, IR.Occurrence>, v_5: cps_provider_1_State, v_8: List<&2, cps_provider_1_Slot>, v_9: cps_provider_4_Registry, v_10: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1, v_3:
+    case Some{Ast.QZero{}}, [v_13]:
+      cps_provider_1_lower_occurrence(v_5, v_13, cps_provider_1_ErasedSlot{} <> v_8, v_9)
+    case Some{v_17}, [v_18]:
+      cps_provider_1_native_match_lambda_checked_4(cps_provider_1_enter(v_5), v_8, v_9, v_17, v_18)
+    case _, _:
+      cps_provider_1_fail(v_5, "missing checked lambda quantity/body", v_10)
+
+def cps_provider_1_lambda_checked(v_1: cps_provider_1_State, v_3: Maybe<&2, Ast.Quantity>, v_5: List<&2, IR.Occurrence>, v_8: List<&2, cps_provider_1_Slot>, v_9: cps_provider_4_Registry, v_10: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_lambda_checked_5(v_3, v_5, v_1, v_8, v_9, v_10)
+
+def cps_provider_1_native_match_absurd_checked_0(v_2: cps_provider_1_LowerResult<cps_provider_1_CodeRef>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_6, v_7}:
+      cps_provider_1_close(v_6, v_7)
+
+def cps_provider_1_native_match_absurd_checked_1(v_2: cps_provider_1_LowerResult<U32>, v_3: Ast.Quantity, v_5: cps_provider_1_Frame) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_9, v_10}:
+      cps_provider_1_native_match_absurd_checked_0(cps_provider_1_leave(v_9, v_5, [BIR.Parameter{v_10, cps_provider_1_use(v_3)}], BIR.Failure{"bend: runtime fail-stop"}))
+
+def cps_provider_1_native_match_absurd_checked_2(v_2: cps_provider_1_LowerResult<cps_provider_1_Frame>, v_3: Ast.Quantity) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_7, v_8}:
+      cps_provider_1_native_match_absurd_checked_1(cps_provider_1_fresh(v_7), v_3, v_8)
+
+def cps_provider_1_native_match_absurd_checked_3(v_1: Maybe<&2, Ast.Quantity>, v_3: cps_provider_1_State, v_4: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case Some{Ast.QZero{}}:
+      cps_provider_1_fail(v_3, "erased absurd scrutinee reached live lowering", v_4)
+    case Some{v_8}:
+      cps_provider_1_native_match_absurd_checked_2(cps_provider_1_enter(v_3), v_8)
+    case None{}:
+      cps_provider_1_fail(v_3, "missing checked absurd quantity", v_4)
+
+def cps_provider_1_absurd_checked(v_1: cps_provider_1_State, v_3: Maybe<&2, Ast.Quantity>, v_4: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_absurd_checked_3(v_3, v_1, v_4)
+
+def cps_provider_1_native_match_local_values_0(v_2: cps_provider_1_LowerResult<List<&2, BIR.Atom>>) -> cps_provider_1_LowerResult<List<&2, BIR.Atom>>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_7, v_8}:
+      cps_provider_1_LowerResult{v_7, BIR.Null{} <> v_8}
+
+def cps_provider_1_native_match_local_values_1(v_2: cps_provider_1_LowerResult<List<&2, BIR.Atom>>, v_3: BIR.Atom) -> cps_provider_1_LowerResult<List<&2, BIR.Atom>>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_8, v_9}:
+      cps_provider_1_LowerResult{v_8, v_3 <> v_9}
+
+def cps_provider_1_native_match_local_values_2(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_4: List<&2, cps_provider_1_Slot>, v_5: cps_provider_4_Registry, v_7: List<&2, IR.CheckedPattern>, v_9: List<&2, IR.Occurrence>) -> cps_provider_1_LowerResult<List<&2, BIR.Atom>>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_14, v_15}:
+      cps_provider_1_native_match_local_values_1(cps_provider_1_local_values(v_14, v_7, v_9, v_4, v_5), v_15)
+
+def cps_provider_1_native_match_local_values_3(v_1: List<&2, IR.CheckedPattern>, v_3: List<&2, IR.Occurrence>, v_5: cps_provider_1_State, v_8: List<&2, cps_provider_1_Slot>, v_9: cps_provider_4_Registry) -> cps_provider_1_LowerResult<List<&2, BIR.Atom>>:
+  match v_1, v_3:
+    case [], []:
+      cps_provider_1_LowerResult{v_5, []}
+    case IR.CheckedVariable{_, IR.CheckedBinding{Ast.QZero{}, _, _}} <> v_21, _ <> v_23:
+      cps_provider_1_native_match_local_values_0(cps_provider_1_local_values(v_5, v_21, v_23, v_8, v_9))
+    case _ <> v_31, v_32 <> v_33:
+      cps_provider_1_native_match_local_values_2(cps_provider_1_lower_occurrence(v_5, v_32, v_8, v_9), v_8, v_9, v_31, v_33)
+    case _, _:
+      cps_provider_1_LowerResult{cps_provider_1_state_problem(v_5, "incomplete checked local values", cps_provider_1_no_span), []}
+
+def cps_provider_1_local_values(v_1: cps_provider_1_State, v_3: List<&2, IR.CheckedPattern>, v_5: List<&2, IR.Occurrence>, v_8: List<&2, cps_provider_1_Slot>, v_9: cps_provider_4_Registry) -> cps_provider_1_LowerResult<List<&2, BIR.Atom>>:
+  cps_provider_1_native_match_local_values_3(v_3, v_5, v_1, v_8, v_9)
+
+def cps_provider_1_native_match_let_checked_0(v_3: cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>, v_4: cps_provider_4_Registry, v_5: IR.Occurrence) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_3:
+    case cps_provider_1_LowerResult{v_9, v_10}:
+      cps_provider_1_lower_occurrence(v_9, v_5, v_10, v_4)
+
+def cps_provider_1_native_match_let_checked_1(v_5: Sigma<&1, &1, List<&2, IR.Occurrence>, _ => List<&2, IR.Occurrence>>, v_7: cps_provider_1_State, v_9: List<&2, IR.CheckedBinding>, v_12: List<&2, cps_provider_1_Slot>, v_13: cps_provider_4_Registry, v_14: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_5:
+    case (v_18, [v_19]):
+      cps_provider_1_native_match_let_checked_0(cps_provider_1_let_bindings(v_7, v_18, v_9, v_12, v_12, v_13, v_14), v_13, v_19)
+    case _:
+      cps_provider_1_fail(v_7, "incomplete checked let body", v_14)
+
+def cps_provider_1_let_checked(v_1: cps_provider_1_State, v_3: U32, v_5: List<&2, IR.CheckedBinding>, v_7: List<&2, IR.Occurrence>, v_10: List<&2, cps_provider_1_Slot>, v_11: cps_provider_4_Registry, v_12: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_let_checked_1(cps_provider_1_split_occurrences(v_3, v_7), v_1, v_5, v_10, v_11, v_12)
+
+def cps_provider_1_native_match_let_bindings_0(v_2: cps_provider_1_LowerResult<cps_provider_1_Slot>, v_5: List<&2, cps_provider_1_Slot>, v_8: List<&2, cps_provider_1_Slot>, v_9: cps_provider_4_Registry, v_10: Ast.SourceSpan, v_12: List<&2, IR.Occurrence>, v_14: List<&2, IR.CheckedBinding>) -> cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_20, v_21}:
+      cps_provider_1_let_bindings(v_20, v_12, v_14, v_5, v_21 <> v_8, v_9, v_10)
+
+def cps_provider_1_native_match_let_bindings_1(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_4: List<&2, cps_provider_1_Slot>, v_7: List<&2, cps_provider_1_Slot>, v_8: cps_provider_4_Registry, v_9: Ast.SourceSpan, v_11: List<&2, IR.Occurrence>, v_12: Ast.Quantity, v_14: List<&2, IR.CheckedBinding>) -> cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_20, v_21}:
+      cps_provider_1_native_match_let_bindings_0(cps_provider_1_bind_slot(v_20, v_21, cps_provider_1_use(v_12)), v_4, v_7, v_8, v_9, v_11, v_14)
+
+def cps_provider_1_native_match_let_bindings_2(v_1: List<&2, IR.Occurrence>, v_3: List<&2, IR.CheckedBinding>, v_5: cps_provider_1_State, v_8: List<&2, cps_provider_1_Slot>, v_11: List<&2, cps_provider_1_Slot>, v_12: cps_provider_4_Registry, v_13: Ast.SourceSpan) -> cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>:
+  match v_1, v_3:
+    case [], []:
+      cps_provider_1_LowerResult{v_5, v_11}
+    case _ <> v_23, IR.CheckedBinding{Ast.QZero{}, _, _} <> v_26:
+      cps_provider_1_let_bindings(v_5, v_23, v_26, v_8, cps_provider_1_ErasedSlot{} <> v_11, v_12, v_13)
+    case v_34 <> v_35, IR.CheckedBinding{v_36, _, _} <> v_39:
+      cps_provider_1_native_match_let_bindings_1(cps_provider_1_lower_occurrence(v_5, v_34, v_8, v_12), v_8, v_11, v_12, v_13, v_35, v_36, v_39)
+    case _, _:
+      cps_provider_1_LowerResult{cps_provider_1_state_problem(v_5, "incomplete checked let bindings", v_13), v_11}
+
+def cps_provider_1_let_bindings(v_1: cps_provider_1_State, v_3: List<&2, IR.Occurrence>, v_5: List<&2, IR.CheckedBinding>, v_8: List<&2, cps_provider_1_Slot>, v_11: List<&2, cps_provider_1_Slot>, v_12: cps_provider_4_Registry, v_13: Ast.SourceSpan) -> cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>:
+  cps_provider_1_native_match_let_bindings_2(v_3, v_5, v_1, v_8, v_11, v_12, v_13)
+
+def cps_provider_1_scalar_literal(v_1: cps_provider_1_State, v_3: Maybe<&2, cps_provider_4_Constructor>, v_5: U32, v_7: List<&2, IR.Symbol>, v_8: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_3:
+    case None{}:
+      cps_provider_1_fail(v_1, "missing certified scalar constructor", cps_provider_1_no_span)
+    case Some{v_13}:
+      cps_provider_1_scalar_literal_native(v_1, cps_provider_1_constructor_native(v_13), v_13, v_5, v_7, v_8)
+
+def cps_provider_1_native_match_scalar_literal_native_0(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_2: cps_provider_4_Constructor) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_6, v_7}:
+      cps_provider_1_construct(v_6, v_2, [v_7], cps_provider_1_no_span, None{})
+
+def cps_provider_1_native_match_scalar_literal_native_1(v_1: List<&2, IR.Symbol>, v_3: cps_provider_1_State, v_4: cps_provider_4_Constructor, v_6: U32, v_7: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case [v_13, v_14, v_15, v_16]:
+      cps_provider_1_native_match_scalar_literal_native_0(cps_provider_1_literal_word(v_3, v_7, 32n, v_6, v_13, v_14, v_15, v_16, cps_provider_1_no_span), v_4)
+    case _:
+      cps_provider_1_fail(v_3, "incomplete certified scalar identities", cps_provider_1_no_span)
+
+def cps_provider_1_native_match_scalar_literal_native_2(v_1: String, v_3: cps_provider_1_State, v_4: cps_provider_4_Constructor, v_6: U32, v_8: List<&2, IR.Symbol>, v_9: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case "U32.U32":
+      cps_provider_1_LowerResult{v_3, BIR.Word{v_6}}
+    case "F32.F32":
+      cps_provider_1_LowerResult{v_3, BIR.FloatBits{v_6}}
+    case _:
+      cps_provider_1_native_match_scalar_literal_native_1(v_8, v_3, v_4, v_6, v_9)
+
+def cps_provider_1_scalar_literal_native(v_1: cps_provider_1_State, v_3: String, v_4: cps_provider_4_Constructor, v_6: U32, v_8: List<&2, IR.Symbol>, v_9: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_scalar_literal_native_2(v_3, v_1, v_4, v_6, v_8, v_9)
+
+def cps_provider_1_take_instructions(v_1: cps_provider_1_State) -> cps_provider_1_LowerResult<List<&2, cps_provider_1_Instruction>>:
+  match v_1:
+    case cps_provider_1_State{v_16, v_17, v_18, cps_provider_1_Frame{v_19, v_20, v_21, v_22}, v_23, v_24, v_25, v_26}:
+      cps_provider_1_LowerResult{cps_provider_1_State{v_16, v_17, v_18, cps_provider_1_Frame{v_19, [], v_21, v_22}, v_23, v_24, v_25, v_26}, v_20}
+
+def cps_provider_1_matcher_checked(v_1: cps_provider_1_State, v_3: Maybe<&2, Ast.Quantity>, v_5: Maybe<&2, IR.Symbol>, v_7: List<&2, IR.Occurrence>, v_10: List<&2, cps_provider_1_Slot>, v_11: cps_provider_4_Registry, v_12: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_3, v_5, v_7:
+    case Some{Ast.QZero{}}, _, _:
+      cps_provider_1_fail(v_1, "erased matcher scrutinee reached live lowering", v_12)
+    case Some{v_23}, Some{v_24}, [v_25, v_26]:
+      cps_provider_1_matcher_constructor(v_1, cps_provider_4_lookup_constructor(v_11, v_24), v_23, v_25, v_26, v_10, v_11, v_12)
+    case _, _, _:
+      cps_provider_1_fail(v_1, "incomplete checked matcher facts", v_12)
+
+def cps_provider_1_native_match_matcher_constructor_0(v_2: cps_provider_1_LowerResult<cps_provider_1_CodeRef>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_6, v_7}:
+      cps_provider_1_close(v_6, v_7)
+
+def cps_provider_1_native_match_matcher_constructor_1(v_1: cps_provider_1_LowerResult<BIR.Block>, v_2: Ast.Quantity, v_4: cps_provider_1_Frame, v_6: U32, v_7: BIR.Atom, v_10: List<&2, cps_provider_1_Instruction>, v_11: BIR.Block) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_15, v_16}:
+      v_19 = cps_provider_1_prefix(v_10, BIR.Branch{v_7, v_11, v_16})
+      cps_provider_1_native_match_matcher_constructor_0(cps_provider_1_leave(v_15, v_4, [BIR.Parameter{v_6, cps_provider_1_use(v_2)}], v_19))
+
+def cps_provider_1_native_match_matcher_constructor_2(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_2: Ast.Quantity, v_4: cps_provider_1_Frame, v_6: U32, v_7: BIR.Atom, v_10: List<&2, cps_provider_1_Instruction>, v_11: BIR.Block) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_15, v_16}:
+      cps_provider_1_native_match_matcher_constructor_1(cps_provider_1_take_block(v_15, v_16), v_2, v_4, v_6, v_7, v_10, v_11)
+
+def cps_provider_1_native_match_matcher_constructor_3(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_2: Ast.Quantity, v_4: cps_provider_1_Frame, v_6: U32, v_7: BIR.Atom, v_10: List<&2, cps_provider_1_Instruction>, v_11: BIR.Block) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_15, v_16}:
+      cps_provider_1_native_match_matcher_constructor_2(cps_provider_1_operation(v_15, BIR.Apply{v_16, BIR.Arg{cps_provider_1_use(v_2), BIR.Local{v_6}}}), v_2, v_4, v_6, v_7, v_10, v_11)
+
+def cps_provider_1_native_match_matcher_constructor_4(v_1: cps_provider_1_LowerResult<BIR.Block>, v_2: Ast.Quantity, v_3: IR.Occurrence, v_6: List<&2, cps_provider_1_Slot>, v_7: cps_provider_4_Registry, v_9: cps_provider_1_Frame, v_11: U32, v_12: BIR.Atom, v_15: List<&2, cps_provider_1_Instruction>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_19, v_20}:
+      cps_provider_1_native_match_matcher_constructor_3(cps_provider_1_lower_occurrence(v_19, v_3, v_6, v_7), v_2, v_9, v_11, v_12, v_15, v_20)
+
+def cps_provider_1_native_match_matcher_constructor_5(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_2: Ast.Quantity, v_3: IR.Occurrence, v_6: List<&2, cps_provider_1_Slot>, v_7: cps_provider_4_Registry, v_9: cps_provider_1_Frame, v_11: U32, v_12: BIR.Atom, v_15: List<&2, cps_provider_1_Instruction>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_19, v_20}:
+      cps_provider_1_native_match_matcher_constructor_4(cps_provider_1_take_block(v_19, v_20), v_2, v_3, v_6, v_7, v_9, v_11, v_12, v_15)
+
+def cps_provider_1_native_match_matcher_constructor_6(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_2: Ast.Quantity, v_3: IR.Occurrence, v_6: List<&2, cps_provider_1_Slot>, v_7: cps_provider_4_Registry, v_8: Ast.SourceSpan, v_9: cps_provider_4_Constructor, v_11: cps_provider_1_Frame, v_13: U32, v_14: BIR.Atom, v_17: List<&2, cps_provider_1_Instruction>, v_20: Maybe<&2, U32>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_24, v_25}:
+      cps_provider_1_native_match_matcher_constructor_5(cps_provider_1_matcher_fields(v_24, v_9, cps_provider_1_constructor_quantities(v_9), BIR.Local{v_13}, 0, v_25, v_2, v_8, v_20), v_2, v_3, v_6, v_7, v_11, v_13, v_14, v_17)
+
+def cps_provider_1_native_match_matcher_constructor_7(v_3: cps_provider_1_LowerResult<List<&2, cps_provider_1_Instruction>>, v_4: Ast.Quantity, v_5: IR.Occurrence, v_6: IR.Occurrence, v_9: List<&2, cps_provider_1_Slot>, v_10: cps_provider_4_Registry, v_11: Ast.SourceSpan, v_12: cps_provider_4_Constructor, v_14: cps_provider_1_Frame, v_16: U32, v_17: BIR.Atom) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_3:
+    case cps_provider_1_LowerResult{v_21, v_22}:
+      cps_provider_1_native_match_matcher_constructor_6(cps_provider_1_lower_occurrence(v_21, v_5, v_9, v_10), v_4, v_6, v_9, v_10, v_11, v_12, v_14, v_16, v_17, v_22, cps_provider_1_occurrence_type(v_5))
+
+def cps_provider_1_native_match_matcher_constructor_8(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_2: Ast.Quantity, v_3: IR.Occurrence, v_4: IR.Occurrence, v_7: List<&2, cps_provider_1_Slot>, v_8: cps_provider_4_Registry, v_9: Ast.SourceSpan, v_10: cps_provider_4_Constructor, v_12: cps_provider_1_Frame, v_14: U32) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_18, v_19}:
+      cps_provider_1_native_match_matcher_constructor_7(cps_provider_1_take_instructions(v_18), v_2, v_3, v_4, v_7, v_8, v_9, v_10, v_12, v_14, v_19)
+
+def cps_provider_1_native_match_matcher_constructor_9(v_2: cps_provider_1_LowerResult<U32>, v_3: Ast.Quantity, v_4: IR.Occurrence, v_5: IR.Occurrence, v_8: List<&2, cps_provider_1_Slot>, v_9: cps_provider_4_Registry, v_10: Ast.SourceSpan, v_11: cps_provider_4_Constructor, v_13: cps_provider_1_Frame) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_17, v_18}:
+      cps_provider_1_native_match_matcher_constructor_8(cps_provider_1_tag(v_17, v_11, BIR.Local{v_18}, cps_provider_1_occurrence_type(v_4), True{}), v_3, v_4, v_5, v_8, v_9, v_10, v_11, v_13, v_18)
+
+def cps_provider_1_native_match_matcher_constructor_10(v_2: cps_provider_1_LowerResult<cps_provider_1_Frame>, v_3: Ast.Quantity, v_4: IR.Occurrence, v_5: IR.Occurrence, v_8: List<&2, cps_provider_1_Slot>, v_9: cps_provider_4_Registry, v_10: Ast.SourceSpan, v_11: cps_provider_4_Constructor) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_15, v_16}:
+      cps_provider_1_native_match_matcher_constructor_9(cps_provider_1_fresh(v_15), v_3, v_4, v_5, v_8, v_9, v_10, v_11, v_16)
+
+def cps_provider_1_native_match_matcher_constructor_11(v_1: Maybe<&2, cps_provider_4_Constructor>, v_3: cps_provider_1_State, v_4: Ast.Quantity, v_5: IR.Occurrence, v_6: IR.Occurrence, v_9: List<&2, cps_provider_1_Slot>, v_10: cps_provider_4_Registry, v_11: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case None{}:
+      cps_provider_1_fail(v_3, "missing checked matcher constructor", v_11)
+    case Some{v_15}:
+      cps_provider_1_native_match_matcher_constructor_10(cps_provider_1_enter(v_3), v_4, v_5, v_6, v_9, v_10, v_11, v_15)
+
+def cps_provider_1_matcher_constructor(v_1: cps_provider_1_State, v_3: Maybe<&2, cps_provider_4_Constructor>, v_4: Ast.Quantity, v_5: IR.Occurrence, v_6: IR.Occurrence, v_9: List<&2, cps_provider_1_Slot>, v_10: cps_provider_4_Registry, v_11: Ast.SourceSpan) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_matcher_constructor_11(v_3, v_1, v_4, v_5, v_6, v_9, v_10, v_11)
+
+def cps_provider_1_constructor_quantities(v_0: cps_provider_4_Constructor) -> List<&2, BIR.Quantity>:
+  match v_0:
+    case cps_provider_4_Constructor{_, v_7, _, _}:
+      v_7
+
+def cps_provider_1_matcher_field_use(v_0: BIR.Quantity, v_1: Ast.Quantity) -> BIR.Use:
+  match v_0:
+    case BIR.Unrestricted{}:
+      BIR.Many{}
+    case _:
+      cps_provider_1_use(v_1)
+
+def cps_provider_1_native_match_matcher_fields_0(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_2: cps_provider_4_Constructor, v_3: BIR.Atom, v_5: U32, v_6: Ast.Quantity, v_7: Ast.SourceSpan, v_9: List<&2, BIR.Quantity>, v_12: Maybe<&2, U32>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_16, v_17}:
+      cps_provider_1_matcher_fields(v_16, v_2, v_9, v_3, U32.inc(v_5), v_17, v_6, v_7, v_12)
+
+def cps_provider_1_native_match_matcher_fields_1(v_1: cps_provider_1_LowerResult<BIR.Atom>, v_2: cps_provider_4_Constructor, v_3: BIR.Atom, v_5: U32, v_6: BIR.Atom, v_7: Ast.Quantity, v_8: Ast.SourceSpan, v_9: BIR.Quantity, v_11: List<&2, BIR.Quantity>, v_14: Maybe<&2, U32>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_18, v_19}:
+      cps_provider_1_native_match_matcher_fields_0(cps_provider_1_operation(v_18, BIR.Apply{v_6, BIR.Arg{cps_provider_1_matcher_field_use(v_9, v_7), v_19}}), v_2, v_3, v_5, v_7, v_8, v_11, v_14)
+
+def cps_provider_1_native_match_matcher_fields_2(v_1: List<&2, BIR.Quantity>, v_3: cps_provider_1_State, v_4: cps_provider_4_Constructor, v_5: BIR.Atom, v_7: U32, v_8: BIR.Atom, v_9: Ast.Quantity, v_10: Ast.SourceSpan, v_13: Maybe<&2, U32>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  match v_1:
+    case []:
+      cps_provider_1_LowerResult{v_3, v_8}
+    case BIR.Erased{} <> v_16:
+      cps_provider_1_matcher_fields(v_3, v_4, v_16, v_5, U32.inc(v_7), v_8, v_9, v_10, v_13)
+    case v_20 <> v_21:
+      cps_provider_1_native_match_matcher_fields_1(cps_provider_1_project(v_3, v_4, v_5, v_7, v_10, v_13, True{}), v_4, v_5, v_7, v_8, v_9, v_10, v_20, v_21, v_13)
+
+def cps_provider_1_matcher_fields(v_1: cps_provider_1_State, v_2: cps_provider_4_Constructor, v_4: List<&2, BIR.Quantity>, v_5: BIR.Atom, v_7: U32, v_8: BIR.Atom, v_9: Ast.Quantity, v_10: Ast.SourceSpan, v_13: Maybe<&2, U32>) -> cps_provider_1_LowerResult<BIR.Atom>:
+  cps_provider_1_native_match_matcher_fields_2(v_4, v_1, v_2, v_5, v_7, v_8, v_9, v_10, v_13)
+
+def cps_provider_1_native_match_definition_frame_0(v_1: cps_provider_1_State, v_3: U32, v_4: Scope.ArenaGlobalScope) -> cps_provider_1_State:
+  match v_1:
+    case cps_provider_1_State{v_14, v_15, v_16, _, v_18, v_19, _, v_21}:
+      cps_provider_1_State{v_14, v_15, v_16, cps_provider_1_Frame{v_3, [], [], 0}, v_18, v_19, Some{v_4}, v_21}
+
+def cps_provider_1_definition_frame(v_1: cps_provider_1_State, v_3: U32, v_5: U32, v_6: Scope.ArenaGlobalScope) -> cps_provider_1_State:
+  cps_provider_1_native_match_definition_frame_0(cps_provider_1_reserve(v_1, v_5), v_3, v_6)
+
+def cps_provider_1_definition_env(v_1: cps_provider_1_State, v_3: List<&2, BIR.Quantity>, v_5: List<&2, BIR.Parameter>, v_7: U32, v_10: List<&2, cps_provider_1_Slot>) -> cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>:
+  match v_3, v_5:
+    case [], []:
+      cps_provider_1_LowerResult{v_1, v_10}
+    case BIR.Erased{} <> v_16, _:
+      cps_provider_1_definition_env(v_1, v_16, v_5, v_7, cps_provider_1_ErasedSlot{} <> v_10)
+    case _ <> v_25, BIR.Parameter{v_26, v_27} <> v_28:
+      cps_provider_1_definition_env(v_1, v_25, v_28, v_7, cps_provider_1_Slot{v_7, v_26, BIR.Local{v_26}, v_27} <> v_10)
+    case _, _:
+      cps_provider_1_LowerResult{cps_provider_1_state_problem(v_1, "declaration telescope/live parameter mismatch", cps_provider_1_no_span), v_10}
+
+def cps_provider_1_definitions(v_1: cps_provider_1_State, v_3: List<&2, cps_provider_4_Definition>, v_4: cps_provider_4_Registry, v_6: List<&2, BIR.Declaration>) -> cps_provider_1_LowerResult<List<&2, BIR.Declaration>>:
+  match v_3:
+    case []:
+      cps_provider_1_LowerResult{v_1, List.reverse(&2, BIR.Declaration, v_6)}
+    case cps_provider_4_Definition{v_18, _, _, _, v_22, v_23, _, _} <> v_26:
+      cps_provider_1_definition(v_1, v_18, v_22, v_26, v_4, v_6, v_23)
+
+def cps_provider_1_definition(v_1: cps_provider_1_State, v_2: cps_provider_4_DefinitionHeader, v_4: Maybe<&2, IR.Occurrence>, v_6: List<&2, cps_provider_4_Definition>, v_7: cps_provider_4_Registry, v_9: List<&2, BIR.Declaration>, v_10: Scope.ArenaGlobalScope) -> cps_provider_1_LowerResult<List<&2, BIR.Declaration>>:
+  match v_2:
+    case cps_provider_4_DefinitionHeader{_, v_23, v_24, v_25, v_26, v_27, v_28, v_29, _}:
+      cps_provider_1_definition_kind(v_1, v_23, v_24, v_25, v_26, v_27, v_28, v_29, v_4, v_6, v_7, v_9, v_10)
+
+def cps_provider_1_definition_kind(v_1: cps_provider_1_State, v_3: String, v_5: U32, v_7: List<&2, BIR.Parameter>, v_9: List<&2, BIR.Quantity>, v_11: Bool, v_13: Maybe<&2, BIR.Primitive>, v_15: Maybe<&2, cps_provider_4_Foreign>, v_17: Maybe<&2, IR.Occurrence>, v_19: List<&2, cps_provider_4_Definition>, v_20: cps_provider_4_Registry, v_22: List<&2, BIR.Declaration>, v_23: Scope.ArenaGlobalScope) -> cps_provider_1_LowerResult<List<&2, BIR.Declaration>>:
+  match v_15:
+    case Some{cps_provider_4_Foreign{v_32, v_33, v_34, v_35, v_36, v_37}}:
+      cps_provider_1_definitions(v_1, v_19, v_20, BIR.ForeignDeclaration{v_3, v_32, v_33, List.length(&2, BIR.Parameter, v_7), v_34, v_9, v_35, v_36, v_37} <> v_22)
+    case None{}:
+      cps_provider_1_definition_local(v_1, v_3, v_5, v_7, v_9, v_11, v_13, v_17, v_19, v_20, v_22, v_23)
+
+def cps_provider_1_definition_local(v_1: cps_provider_1_State, v_3: String, v_5: U32, v_7: List<&2, BIR.Parameter>, v_9: List<&2, BIR.Quantity>, v_11: Bool, v_13: Maybe<&2, BIR.Primitive>, v_15: Maybe<&2, IR.Occurrence>, v_17: List<&2, cps_provider_4_Definition>, v_18: cps_provider_4_Registry, v_20: List<&2, BIR.Declaration>, v_21: Scope.ArenaGlobalScope) -> cps_provider_1_LowerResult<List<&2, BIR.Declaration>>:
+  match v_11, v_13:
+    case True{}, _:
+      cps_provider_1_definitions(v_1, v_17, v_18, v_20)
+    case False{}, Some{v_28}:
+      cps_provider_1_definitions(v_1, v_17, v_18, BIR.NativeDeclaration{v_3, v_28, v_9} <> v_20)
+    case False{}, None{}:
+      cps_provider_1_definition_body(v_1, v_3, v_5, v_7, v_9, v_15, v_17, v_18, v_20, v_21)
+
+def cps_provider_1_definition_parameter(v_1: U32, v_3: List<&2, BIR.Parameter>) -> Bool:
+  match v_3:
+    case []:
+      False{}
+    case BIR.Parameter{v_8, _} <> v_10:
+      Bool.or(U32.is_eq(v_1, v_8), cps_provider_1_definition_parameter(v_1, v_10))
+
+def cps_provider_1_definition_locals(v_1: List<&2, BIR.Atom>, v_3: List<&2, BIR.Parameter>) -> Bool:
+  match v_1:
+    case []:
+      True{}
+    case BIR.Local{v_7} <> v_8:
+      Bool.and(cps_provider_1_definition_parameter(v_7, v_3), cps_provider_1_definition_locals(v_8, v_3))
+    case _ <> _:
+      False{}
+
+def cps_provider_1_definition_locals_frame(v_1: cps_provider_1_Frame, v_3: List<&2, BIR.Atom>, v_5: List<&2, BIR.Parameter>) -> Bool:
+  match v_1, v_3:
+    case cps_provider_1_Frame{_, [], [], 0}, _ <> _:
+      cps_provider_1_definition_locals(v_3, v_5)
+    case _, _:
+      False{}
+
+def cps_provider_1_definition_atom_block(v_1: cps_provider_1_LowerResult<BIR.Atom>) -> cps_provider_1_LowerResult<BIR.Block>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_5, v_6}:
+      cps_provider_1_take_block(v_5, v_6)
+
+def cps_provider_1_definition_match_direct(v_1: Bool, v_3: cps_provider_1_State, v_5: List<&2, IR.Occurrence>, v_7: List<&2, BIR.Atom>, v_10: List<&2, cps_provider_1_Slot>, v_11: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Block>:
+  match v_1:
+    case True{}:
+      cps_provider_1_checked_cases(v_3, v_5, v_7, v_10, v_11)
+    case False{}:
+      cps_provider_1_definition_atom_block(cps_provider_1_match_values(v_3, v_5, v_7, v_10, v_11))
+
+def cps_provider_1_definition_match_state(v_1: cps_provider_1_State, v_3: List<&2, IR.Occurrence>, v_5: List<&2, BIR.Atom>, v_8: List<&2, cps_provider_1_Slot>, v_9: cps_provider_4_Registry, v_11: List<&2, BIR.Parameter>) -> cps_provider_1_LowerResult<BIR.Block>:
+  match v_1:
+    case cps_provider_1_State{v_21, v_22, v_23, v_24, v_25, v_26, v_27, v_28}:
+      cps_provider_1_definition_match_direct(cps_provider_1_definition_locals_frame(v_24, v_5, v_11), cps_provider_1_State{v_21, v_22, v_23, v_24, v_25, v_26, v_27, v_28}, v_3, v_5, v_8, v_9)
+
+def cps_provider_1_definition_match_values(v_2: cps_provider_1_LowerResult<List<&2, BIR.Atom>>, v_4: List<&2, IR.Occurrence>, v_7: List<&2, cps_provider_1_Slot>, v_8: cps_provider_4_Registry, v_10: List<&2, BIR.Parameter>) -> cps_provider_1_LowerResult<BIR.Block>:
+  match v_2:
+    case cps_provider_1_LowerResult{v_14, v_15}:
+      cps_provider_1_definition_match_state(v_14, v_4, v_15, v_7, v_8, v_10)
+
+def cps_provider_1_definition_match_parts(v_3: Pair(List<&2, IR.Occurrence>, List<&2, IR.Occurrence>), v_5: cps_provider_1_State, v_8: List<&2, cps_provider_1_Slot>, v_9: cps_provider_4_Registry, v_11: List<&2, BIR.Parameter>) -> cps_provider_1_LowerResult<BIR.Block>:
+  match v_3:
+    case (v_15, v_16):
+      cps_provider_1_definition_match_values(cps_provider_1_lower_values(v_5, v_15, v_8, v_9), v_16, v_8, v_9, v_11)
+
+def cps_provider_1_definition_root_node(v_1: cps_provider_1_LowerResult<Arena.Node>, v_2: IR.Occurrence, v_4: List<&2, IR.Occurrence>, v_7: List<&2, cps_provider_1_Slot>, v_8: cps_provider_4_Registry, v_10: List<&2, BIR.Parameter>) -> cps_provider_1_LowerResult<BIR.Block>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_18, Arena.BodyMatch{_, v_20, _, _, _}}:
+      cps_provider_1_definition_match_parts(cps_provider_1_split_occurrences(v_20, v_4), v_18, v_7, v_8, v_10)
+    case cps_provider_1_LowerResult{v_28, v_29}:
+      cps_provider_1_definition_root_other(v_2, v_28, v_29, v_7, v_8)
+
+def cps_provider_1_definition_root_other(v_0: IR.Occurrence, v_2: cps_provider_1_State, v_3: Arena.Node, v_6: List<&2, cps_provider_1_Slot>, v_7: cps_provider_4_Registry) -> cps_provider_1_LowerResult<BIR.Block>:
+  match v_0:
+    case IR.TypedOccurrence{_, v_16, v_17, v_18, v_19, v_20}:
+      cps_provider_1_definition_atom_block(cps_provider_1_lower_node(v_2, v_3, v_16, v_17, v_18, v_19, v_20, v_6, v_7))
+    case _:
+      cps_provider_1_definition_atom_block(cps_provider_1_lower_occurrence(v_2, v_0, v_6, v_7))
+
+def cps_provider_1_definition_root(v_1: cps_provider_1_State, v_2: IR.Occurrence, v_5: List<&2, cps_provider_1_Slot>, v_6: cps_provider_4_Registry, v_8: List<&2, BIR.Parameter>) -> cps_provider_1_LowerResult<BIR.Block>:
+  match v_2:
+    case IR.TypedOccurrence{v_16, _, _, _, _, v_21}:
+      cps_provider_1_definition_root_node(cps_provider_1_node(v_1, v_16), v_2, v_21, v_5, v_6, v_8)
+    case _:
+      cps_provider_1_definition_atom_block(cps_provider_1_lower_occurrence(v_1, v_2, v_5, v_6))
+
+def cps_provider_1_native_match_definition_body_0(v_1: cps_provider_1_LowerResult<BIR.Block>, v_3: String, v_5: U32, v_7: List<&2, BIR.Parameter>, v_9: List<&2, cps_provider_4_Definition>, v_10: cps_provider_4_Registry, v_12: List<&2, BIR.Declaration>) -> cps_provider_1_LowerResult<List<&2, BIR.Declaration>>:
+  match v_1:
+    case cps_provider_1_LowerResult{v_17, v_18}:
+      cps_provider_1_definition_complete(v_17, v_3, v_5, v_7, v_18, v_9, v_10, v_12)
+
+def cps_provider_1_native_match_definition_body_2(v_3: cps_provider_1_LowerResult<List<&2, cps_provider_1_Slot>>, v_5: String, v_7: U32, v_9: List<&2, BIR.Parameter>, v_11: List<&2, cps_provider_4_Definition>, v_12: cps_provider_4_Registry, v_14: List<&2, BIR.Declaration>, v_15: IR.Occurrence) -> cps_provider_1_LowerResult<List<&2, BIR.Declaration>>:
+  match v_3:
+    case cps_provider_1_LowerResult{v_20, v_21}:
+      cps_provider_1_native_match_definition_body_0(cps_provider_1_definition_root(v_20, v_15, v_21, v_12, v_9), v_5, v_7, v_9, v_11, v_12, v_14)
+
+def cps_provider_1_native_match_definition_body_3(v_1: Maybe<&2, IR.Occurrence>, v_3: cps_provider_1_State, v_5: String, v_7: U32, v_9: List<&2, BIR.Parameter>, v_11: List<&2, BIR.Quantity>, v_13: List<&2, cps_provider_4_Definition>, v_14: cps_provider_4_Registry, v_16: List<&2, BIR.Declaration>, v_17: Scope.ArenaGlobalScope) -> cps_provider_1_LowerResult<List<&2, BIR.Declaration>>:
+  match v_1:
+    case None{}:
+      cps_provider_1_definitions(cps_provider_1_state_problem(v_3, String.append("missing checked body: ", v_5), cps_provider_1_no_span), v_13, v_14, v_16)
+    case Some{v_24}:
+      v_27 = cps_provider_1_definition_frame(v_3, v_7, U32.from_nat(List.length(&2, BIR.Quantity, v_11)), v_17)
+      cps_provider_1_native_match_definition_body_2(cps_provider_1_definition_env(v_27, v_11, v_9, v_7, []), v_5, v_7, v_9, v_13, v_14, v_16, v_24)
+
+def cps_provider_1_definition_body(v_1: cps_provider_1_State, v_3: String, v_5: U32, v_7: List<&2, BIR.Parameter>, v_9: List<&2, BIR.Quantity>, v_11: Maybe<&2, IR.Occurrence>, v_13: List<&2, cps_provider_4_Definition>, v_14: cps_provider_4_Registry, v_16: List<&2, BIR.Declaration>, v_17: Scope.ArenaGlobalScope) -> cps_provider_1_LowerResult<List<&2, BIR.Declaration>>:
+  cps_provider_1_native_match_definition_body_3(v_11, v_1, v_3, v_5, v_7, v_9, v_13, v_14, v_16, v_17)
+
+def cps_provider_1_definition_complete(v_1: cps_provider_1_State, v_3: String, v_5: U32, v_7: List<&2, BIR.Parameter>, v_8: BIR.Block, v_10: List<&2, cps_provider_4_Definition>, v_11: cps_provider_4_Registry, v_13: List<&2, BIR.Declaration>) -> cps_provider_1_LowerResult<List<&2, BIR.Declaration>>:
+  match v_1:
+    case cps_provider_1_State{v_27, v_28, v_29, cps_provider_1_Frame{v_30, v_31, v_32, v_33}, v_34, v_35, v_36, v_37}:
+      cps_provider_1_definition_closed(U32.is_eq(v_33, 0), cps_provider_1_State{v_27, v_28, v_29, cps_provider_1_Frame{v_30, v_31, v_32, v_33}, v_34, v_35, v_36, v_37}, v_3, v_5, v_7, v_8, v_10, v_11, v_13)
+
+def cps_provider_1_native_match_definition_closed_0(v_1: cps_provider_1_State, v_3: String, v_5: U32, v_7: List<&2, BIR.Parameter>, v_8: BIR.Block, v_10: List<&2, cps_provider_4_Definition>, v_11: cps_provider_4_Registry, v_13: List<&2, BIR.Declaration>) -> cps_provider_1_LowerResult<List<&2, BIR.Declaration>>:
+  match v_1:
+    case cps_provider_1_State{v_24, v_25, v_26, v_27, v_28, v_29, v_30, v_31}:
+      cps_provider_1_definitions(cps_provider_1_State{v_24, v_25, v_26, v_27, BIR.Code{v_5, [], v_7, v_8} <> v_28, v_29, v_30, v_31}, v_10, v_11, BIR.FunctionDeclaration{v_3, v_5, v_7} <> v_13)
+
+def cps_provider_1_native_match_definition_closed_1(v_1: Bool, v_3: List<&2, BIR.Parameter>, v_5: cps_provider_1_State, v_7: String, v_9: U32, v_10: BIR.Block, v_12: List<&2, cps_provider_4_Definition>, v_13: cps_provider_4_Registry, v_15: List<&2, BIR.Declaration>) -> cps_provider_1_LowerResult<List<&2, BIR.Declaration>>:
+  match v_1, v_3:
+    case False{}, _:
+      cps_provider_1_definitions(cps_provider_1_state_problem(v_5, "top-level definition has free captures", cps_provider_1_no_span), v_12, v_13, v_15)
+    case True{}, []:
+      cps_provider_1_definitions(v_5, v_12, v_13, BIR.LazyDeclaration{v_7, v_10} <> v_15)
+    case True{}, _:
+      cps_provider_1_native_match_definition_closed_0(v_5, v_7, v_9, v_3, v_10, v_12, v_13, v_15)
+
+def cps_provider_1_definition_closed(v_1: Bool, v_3: cps_provider_1_State, v_5: String, v_7: U32, v_9: List<&2, BIR.Parameter>, v_10: BIR.Block, v_12: List<&2, cps_provider_4_Definition>, v_13: cps_provider_4_Registry, v_15: List<&2, BIR.Declaration>) -> cps_provider_1_LowerResult<List<&2, BIR.Declaration>>:
+  cps_provider_1_native_match_definition_closed_1(v_1, v_9, v_3, v_5, v_7, v_10, v_12, v_13, v_15)
+
+def cps_provider_1_native_match_template_binders_0(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_5: U32, v_7: U32) -> cps_provider_1_TemplateResult:
+  match v_3:
+    case (v_11, v_12):
+      cps_provider_1_template_binder(v_11, v_12, IR.Words{IR.arena_range_index(v_5, 1), U32.sub(v_7, 1)})
+
+def cps_provider_1_native_match_template_binders_1(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_6: U32, v_8: U32) -> cps_provider_1_TemplateResult:
+  match v_4:
+    case (v_12, v_13):
+      cps_provider_1_native_match_template_binders_0(Arena.get_binder(v_12, v_13), v_6, v_8)
+
+def cps_provider_1_native_match_template_binders_2(v_2: Maybe<&2, cps_provider_1_Problem>, v_3: IR.Words, v_4: Arena.Arena) -> cps_provider_1_TemplateResult:
+  match v_2, v_3:
+    case Some{_}, _:
+      cps_provider_1_TemplateResult{v_4, v_2}
+    case None{}, IR.Words{_, 0}:
+      cps_provider_1_TemplateResult{v_4, None{}}
+    case None{}, IR.Words{v_14, v_15}:
+      cps_provider_1_native_match_template_binders_1(Arena.word(v_4, IR.arena_tape_offset(v_14)), v_14, v_15)
+
+def cps_provider_1_template_binders(v_0: Arena.Arena, v_1: IR.Words, v_4: Maybe<&2, cps_provider_1_Problem>) -> cps_provider_1_TemplateResult:
+  cps_provider_1_native_match_template_binders_2(v_4, v_1, v_0)
+
+def cps_provider_1_template_binder(v_0: Arena.Arena, v_1: Arena.Binder, v_2: IR.Words) -> cps_provider_1_TemplateResult:
+  match v_1:
+    case Arena.TemplateBinder{_, _, _, v_11}:
+      cps_provider_1_TemplateResult{v_0, Some{cps_provider_1_Problem{"unexpanded template binder reached JS emission", v_11}}}
+    case _:
+      cps_provider_1_template_binders(v_0, v_2, None{})
+
+def cps_provider_1_native_match_template_declarations_0(v_2: Maybe<&2, cps_provider_1_Problem>, v_4: List<&2, IR.TopLevel>, v_5: Arena.Arena) -> cps_provider_1_TemplateResult:
+  match v_2, v_4:
+    case Some{_}, _:
+      cps_provider_1_TemplateResult{v_5, v_2}
+    case None{}, []:
+      cps_provider_1_TemplateResult{v_5, None{}}
+    case None{}, v_13 <> v_14:
+      cps_provider_1_template_declaration_result(cps_provider_1_template_declaration(v_5, v_13), v_14)
+
+def cps_provider_1_template_declarations(v_0: Arena.Arena, v_2: List<&2, IR.TopLevel>, v_5: Maybe<&2, cps_provider_1_Problem>) -> cps_provider_1_TemplateResult:
+  cps_provider_1_native_match_template_declarations_0(v_5, v_2, v_0)
+
+def cps_provider_1_template_declaration_result(v_1: cps_provider_1_TemplateResult, v_3: List<&2, IR.TopLevel>) -> cps_provider_1_TemplateResult:
+  match v_1:
+    case cps_provider_1_TemplateResult{v_7, v_8}:
+      cps_provider_1_template_declarations(v_7, v_3, v_8)
+
+def cps_provider_1_template_declaration(v_0: Arena.Arena, v_1: IR.TopLevel) -> cps_provider_1_TemplateResult:
+  match v_1:
+    case IR.DefTop{IR.Definition{_, v_12, _, _, _, _, _, _}}:
+      cps_provider_1_template_binders(v_0, v_12, None{})
+    case IR.TypeTop{IR.TypeDecl{_, v_26, _, v_28, _}}:
+      cps_provider_1_template_constructor_result(cps_provider_1_template_binders(v_0, v_26, None{}), v_28)
+    case IR.LawTop{_}:
+      cps_provider_1_TemplateResult{v_0, None{}}
+
+def cps_provider_1_template_constructor_result(v_1: cps_provider_1_TemplateResult, v_3: List<&2, IR.ConstructorDecl>) -> cps_provider_1_TemplateResult:
+  match v_1:
+    case cps_provider_1_TemplateResult{v_7, v_8}:
+      cps_provider_1_template_constructors(v_7, v_3, v_8)
+
+def cps_provider_1_native_match_template_constructors_0(v_2: Maybe<&2, cps_provider_1_Problem>, v_4: List<&2, IR.ConstructorDecl>, v_5: Arena.Arena) -> cps_provider_1_TemplateResult:
+  match v_2, v_4:
+    case Some{_}, _:
+      cps_provider_1_TemplateResult{v_5, v_2}
+    case None{}, []:
+      cps_provider_1_TemplateResult{v_5, None{}}
+    case None{}, IR.Constructor{_, v_16, _} <> v_18:
+      cps_provider_1_template_constructor_result(cps_provider_1_template_binders(v_5, v_16, None{}), v_18)
+
+def cps_provider_1_template_constructors(v_0: Arena.Arena, v_2: List<&2, IR.ConstructorDecl>, v_5: Maybe<&2, cps_provider_1_Problem>) -> cps_provider_1_TemplateResult:
+  cps_provider_1_native_match_template_constructors_0(v_5, v_2, v_0)
+
+def cps_provider_1_native_match_template_modules_0(v_2: Maybe<&2, cps_provider_1_Problem>, v_4: List<&2, IR.LoadedModule>, v_5: Arena.Arena) -> cps_provider_1_TemplateResult:
+  match v_2, v_4:
+    case Some{_}, _:
+      cps_provider_1_TemplateResult{v_5, v_2}
+    case None{}, []:
+      cps_provider_1_TemplateResult{v_5, None{}}
+    case None{}, IR.LoadedModule{_, IR.Module{_, _, v_19}} <> v_20:
+      cps_provider_1_template_module_result(cps_provider_1_template_declarations(v_5, v_19, None{}), v_20)
+
+def cps_provider_1_template_modules(v_0: Arena.Arena, v_2: List<&2, IR.LoadedModule>, v_5: Maybe<&2, cps_provider_1_Problem>) -> cps_provider_1_TemplateResult:
+  cps_provider_1_native_match_template_modules_0(v_5, v_2, v_0)
+
+def cps_provider_1_template_module_result(v_1: cps_provider_1_TemplateResult, v_3: List<&2, IR.LoadedModule>) -> cps_provider_1_TemplateResult:
+  match v_1:
+    case cps_provider_1_TemplateResult{v_7, v_8}:
+      cps_provider_1_template_modules(v_7, v_3, v_8)
+
+def cps_provider_1_prepare(v_0: Checked.CheckedProgram) -> cps_provider_1_Prepared:
+  match v_0:
+    case Checked.CheckedProgram{v_6, v_7, v_8, v_9}:
+      cps_provider_1_prepare_result(cps_provider_1_template_modules(v_6, v_7, None{}), v_7, v_8, v_9)
+
+def cps_provider_1_prepare_result(v_1: cps_provider_1_TemplateResult, v_3: List<&2, IR.LoadedModule>, v_5: List<&2, Scope.ArenaGlobal>, v_7: List<&2, Checked.ModuleMetadata>) -> cps_provider_1_Prepared:
+  match v_1:
+    case cps_provider_1_TemplateResult{v_11, v_12}:
+      cps_provider_1_Prepared{Checked.CheckedProgram{v_11, v_3, v_5, v_7}, v_12}
+
+def cps_provider_1_lower(v_0: Checked.CheckedProgram) -> cps_provider_1_ProgramResult:
+  cps_provider_1_lower_prepared(cps_provider_1_prepare(v_0), None{})
+
+def cps_provider_1_lower_library(v_0: Checked.CheckedProgram, v_3: List<&2, String>) -> cps_provider_1_ProgramResult:
+  cps_provider_1_lower_prepared(cps_provider_1_prepare(v_0), Some{v_3})
+
+def cps_provider_1_lower_prepared(v_1: cps_provider_1_Prepared, v_5: Maybe<&2, List<&2, String>>) -> cps_provider_1_ProgramResult:
+  match v_1:
+    case cps_provider_1_Prepared{_, Some{cps_provider_1_Problem{v_11, v_12}}}:
+      cps_provider_1_LowerFailure{v_11, v_12}
+    case cps_provider_1_Prepared{v_14, None{}}:
+      cps_provider_1_lower_catalog(cps_provider_4_build(v_14, v_5))
+
+def cps_provider_1_lower_catalog(v_0: cps_provider_4_BuildResult) -> cps_provider_1_ProgramResult:
+  match v_0:
+    case cps_provider_4_BuildFailure{_, v_5}:
+      cps_provider_1_LowerFailure{v_5, cps_provider_1_no_span}
+    case cps_provider_4_Built{Checked.CheckedProgram{v_18, _, _, _}, cps_provider_4_Catalog{v_22, v_23, v_24, v_25, v_26, v_27, v_28}}:
+      v_30 = cps_provider_1_State{v_18, v_27, 0, cps_provider_1_Frame{0, [], [], 0}, [], None{}, None{}, Some{cps_provider_2_nf_context(v_25, v_26)}}
+      cps_provider_1_lower_definitions(cps_provider_1_definitions(v_30, v_22, v_23, []), v_24, v_25, v_26, v_28)
+
+def cps_provider_1_lower_definitions(v_2: cps_provider_1_LowerResult<List<&2, BIR.Declaration>>, v_4: List<&2, BIR.ConstructorLayout>, v_6: List<&2, BIR.Family>, v_8: List<&2, BIR.TypeFunction>, v_9: BIR.Ending) -> cps_provider_1_ProgramResult:
+  match v_2:
+    case cps_provider_1_LowerResult{cps_provider_1_State{_, _, _, _, v_24, v_25, v_26, v_27}, v_28}:
+      cps_provider_1_lower_complete(v_25, v_24, v_28, v_4, v_6, v_8, v_9)
+
+def cps_provider_1_lower_complete(v_2: Maybe<&2, cps_provider_1_Problem>, v_4: List<&2, BIR.Code>, v_6: List<&2, BIR.Declaration>, v_8: List<&2, BIR.ConstructorLayout>, v_10: List<&2, BIR.Family>, v_12: List<&2, BIR.TypeFunction>, v_13: BIR.Ending) -> cps_provider_1_ProgramResult:
+  match v_2:
+    case Some{cps_provider_1_Problem{v_17, v_18}}:
+      cps_provider_1_LowerFailure{v_17, v_18}
+    case None{}:
+      cps_provider_1_Lowered{BIR.Program{List.reverse(&2, BIR.Code, v_4), v_6, v_8, v_10, v_12, v_13}}
+
+def cps_provider_2_family_index(v_1: List<&2, BIR.Family>) -> Map<&2, BIR.Family>:
+  match v_1:
+    case []:
+      Map.new(&2, BIR.Family)
+    case +v_5 <> v_6:
+      match v_5:
+        case BIR.Family{v_13, v_14, v_15, v_16, v_17, v_18}:
+          Map.set(&2, BIR.Family, cps_provider_2_family_index(v_6), v_13, v_5)
+
+def cps_provider_2_function_index(v_1: List<&2, BIR.TypeFunction>) -> Map<&2, BIR.TypeFunction>:
+  match v_1:
+    case []:
+      Map.new(&2, BIR.TypeFunction)
+    case +v_5 <> v_6:
+      match v_5:
+        case BIR.TypeFunction{v_12, v_13, v_14, v_15, v_16}:
+          Map.set(&2, BIR.TypeFunction, cps_provider_2_function_index(v_6), v_12, v_5)
+
+def cps_provider_2_nf_context(v_1: List<&2, BIR.Family>, v_3: List<&2, BIR.TypeFunction>) -> cps_provider_2_NfContext:
+  cps_provider_2_NfContext{cps_provider_2_family_index(v_1), cps_provider_2_function_index(v_3)}
+
+def cps_provider_2_default_fuel() -> Nat:
+  1024n
+
+def cps_provider_2_family_of(+v_1: String, +v_3: Map<&2, BIR.Family>) -> Maybe<&2, BIR.Family>:
+  IndexLookup.find(BIR.Family, v_3, v_1)
+
+def cps_provider_2_function_of(+v_1: String, +v_3: Map<&2, BIR.TypeFunction>) -> Maybe<&2, BIR.TypeFunction>:
+  IndexLookup.find(BIR.TypeFunction, v_3, v_1)
+
+def native_match_cps_provider_2_native_of_0(v_10: BIR.Family) -> Maybe<&2, String>:
+  match v_10:
+    case BIR.Family{v_17, v_18, v_19, v_20, v_21, v_22}:
+      v_19
+
+def native_match_cps_provider_2_native_of_1(v_25: BIR.TypeFunction) -> Maybe<&2, String>:
+  match v_25:
+    case BIR.TypeFunction{v_31, v_32, v_33, v_34, v_35}:
+      v_32
+
+def native_match_cps_provider_2_native_of_2(v_37: Maybe<&2, BIR.TypeFunction>) -> Maybe<&2, String>:
+  match v_37:
+    case Some{v_25}:
+      native_match_cps_provider_2_native_of_1(v_25)
+    case None{}:
+      None{}
+
+def native_match_cps_provider_2_native_of_3(v_36: Maybe<&2, BIR.Family>, +v_1: String, +v_5: Map<&2, BIR.TypeFunction>) -> Maybe<&2, String>:
+  match v_36:
+    case Some{v_10}:
+      native_match_cps_provider_2_native_of_0(v_10)
+    case None{}:
+      native_match_cps_provider_2_native_of_2(cps_provider_2_function_of(v_1, v_5))
+
+def cps_provider_2_native_of(+v_1: String, +v_3: Map<&2, BIR.Family>, +v_5: Map<&2, BIR.TypeFunction>) -> Maybe<&2, String>:
+  native_match_cps_provider_2_native_of_3(cps_provider_2_family_of(v_1, v_3), v_1, v_5)
+
+def cps_provider_2_val_nth(+v_2: List<&2, cps_provider_2_NfVal>, v_4: Nat) -> cps_provider_2_NfVal:
+  match v_2, v_4:
+    case +v_8 <> v_9, 0n:
+      v_8
+    case +v_13 <> v_14, 1n+v_15:
+      cps_provider_2_val_nth(v_14, v_15)
+    case _, _:
+      cps_provider_2_NfMissing{BIR.DescriptorNull{}}
+
+def cps_provider_2_val_at(+v_2: List<&2, cps_provider_2_NfVal>, +v_4: Nat, v_5: BIR.Descriptor) -> cps_provider_2_NfVal:
+  cps_provider_2_val_at_choose(Nat.is_lt(v_4, List.length(&2, cps_provider_2_NfVal, v_2)), v_2, v_4, v_5)
+
+def cps_provider_2_val_at_choose(v_1: Bool, +v_4: List<&2, cps_provider_2_NfVal>, +v_6: Nat, v_7: BIR.Descriptor) -> cps_provider_2_NfVal:
+  match v_1:
+    case True{}:
+      cps_provider_2_val_nth(v_4, Nat.sub(Nat.sub(List.length(&2, cps_provider_2_NfVal, v_4), 1n), v_6))
+    case False{}:
+      cps_provider_2_NfMissing{v_7}
+
+def cps_provider_2_first_vals(v_2: List<&2, cps_provider_2_NfVal>, +v_4: Nat) -> List<&2, cps_provider_2_NfVal>:
+  match v_2, v_4:
+    case _, 0n:
+      []
+    case [], _:
+      []
+    case +v_14 <> v_15, 1n+v_16:
+      v_14 <> cps_provider_2_first_vals(v_15, v_16)
+
+def cps_provider_2_drop_vals(v_2: List<&2, cps_provider_2_NfVal>, +v_4: Nat) -> List<&2, cps_provider_2_NfVal>:
+  match v_2, v_4:
+    case _, 0n:
+      v_2
+    case [], _:
+      []
+    case +v_14 <> v_15, 1n+v_16:
+      cps_provider_2_drop_vals(v_15, v_16)
+
+def cps_provider_2_insert_before(v_2: List<&2, cps_provider_2_NfVal>, +v_4: Nat, v_6: cps_provider_2_NfVal) -> List<&2, cps_provider_2_NfVal>:
+  match v_2, v_4:
+    case _, 0n:
+      v_6 <> v_2
+    case [], 1n+v_12:
+      cps_provider_2_insert_before([], v_12, v_6)
+    case +v_17 <> v_18, 1n+v_19:
+      v_17 <> cps_provider_2_insert_before(v_18, v_19, v_6)
+
+def cps_provider_2_append_vals(v_2: List<&2, cps_provider_2_NfVal>, v_5: List<&2, cps_provider_2_NfVal>) -> List<&2, cps_provider_2_NfVal>:
+  match v_2:
+    case []:
+      v_5
+    case +v_10 <> v_11:
+      v_10 <> cps_provider_2_append_vals(v_11, v_5)
+
+def cps_provider_2_quantity_markers(v_1: Nat) -> List<&2, cps_provider_2_NfVal>:
+  match v_1:
+    case 0n:
+      []
+    case 1n+v_5:
+      cps_provider_2_NfQuantity{BIR.Erased{}} <> cps_provider_2_quantity_markers(v_5)
+
+def cps_provider_2_materialize_all(v_2: List<&2, cps_provider_2_NfVal>) -> List<&2, BIR.Descriptor>:
+  match v_2:
+    case []:
+      []
+    case +v_6 <> v_7:
+      match v_6:
+        case cps_provider_2_NfType{v_10, v_11}:
+          BIR.DescriptorRef{v_10, cps_provider_2_materialize_all(v_11)} <> cps_provider_2_materialize_all(v_7)
+        case cps_provider_2_NfCtor{v_16, v_17}:
+          BIR.DescriptorConstructor{v_16, cps_provider_2_materialize_all(v_17)} <> cps_provider_2_materialize_all(v_7)
+        case cps_provider_2_NfQuantity{v_21}:
+          BIR.DescriptorQuantity{v_21} <> cps_provider_2_materialize_all(v_7)
+        case cps_provider_2_NfKind{v_24}:
+          BIR.DescriptorKind{v_24} <> cps_provider_2_materialize_all(v_7)
+        case cps_provider_2_NfOther{v_27}:
+          v_27 <> cps_provider_2_materialize_all(v_7)
+        case cps_provider_2_NfMissing{v_30}:
+          v_30 <> cps_provider_2_materialize_all(v_7)
+        case cps_provider_2_NfClosure{v_36, v_37, v_38, v_39}:
+          BIR.DescriptorLet{v_39, BIR.DescriptorLambda{v_36, v_37}} <> cps_provider_2_materialize_all(v_7)
+
+def cps_provider_2_materialize(v_1: cps_provider_2_NfVal) -> BIR.Descriptor:
+  match v_1:
+    case cps_provider_2_NfType{v_4, v_5}:
+      BIR.DescriptorRef{v_4, cps_provider_2_materialize_all(v_5)}
+    case cps_provider_2_NfCtor{v_9, v_10}:
+      BIR.DescriptorConstructor{v_9, cps_provider_2_materialize_all(v_10)}
+    case cps_provider_2_NfQuantity{v_13}:
+      BIR.DescriptorQuantity{v_13}
+    case cps_provider_2_NfKind{v_15}:
+      BIR.DescriptorKind{v_15}
+    case cps_provider_2_NfOther{v_17}:
+      v_17
+    case cps_provider_2_NfMissing{v_19}:
+      v_19
+    case cps_provider_2_NfClosure{v_24, v_25, v_26, v_27}:
+      BIR.DescriptorLet{v_27, BIR.DescriptorLambda{v_24, v_25}}
+
+def cps_provider_2_reify_env(v_0: BIR.Descriptor, +v_3: List<&2, cps_provider_2_NfVal>) -> BIR.Descriptor:
+  match v_3:
+    case []:
+      v_0
+    case +v_6 <> v_7:
+      BIR.DescriptorLet{cps_provider_2_materialize_all(v_3), v_0}
+
+def cps_provider_2_status_combine(v_1: cps_provider_2_NfStatus, v_3: cps_provider_2_NfStatus) -> cps_provider_2_NfStatus:
+  match v_1:
+    case cps_provider_2_NfStatusNo{}:
+      cps_provider_2_NfStatusNo{}
+    case cps_provider_2_NfStatusMaybe{}:
+      match v_3:
+        case cps_provider_2_NfStatusNo{}:
+          cps_provider_2_NfStatusNo{}
+        case _:
+          cps_provider_2_NfStatusMaybe{}
+    case cps_provider_2_NfStatusOk{}:
+      v_3
+
+def native_match_cps_provider_2_bind_status_0(v_42: Bool, v_11: List<&2, BIR.DescriptorPattern>, v_13: List<&2, cps_provider_2_NfVal>, v_20: List<&2, BIR.DescriptorPattern>, v_24: List<&2, cps_provider_2_NfVal>) -> cps_provider_2_NfStatus:
+  match v_42:
+    case False{}:
+      cps_provider_2_NfStatusNo{}
+    case True{}:
+      cps_provider_2_status_combine(cps_provider_2_bind_status(v_20, v_24), cps_provider_2_bind_status(v_11, v_13))
+
+def native_match_cps_provider_2_bind_status_1(+v_12: cps_provider_2_NfVal, v_11: List<&2, BIR.DescriptorPattern>, v_13: List<&2, cps_provider_2_NfVal>, v_19: String, v_20: List<&2, BIR.DescriptorPattern>) -> cps_provider_2_NfStatus:
+  match v_12:
+    case cps_provider_2_NfCtor{v_23, v_24}:
+      native_match_cps_provider_2_bind_status_0(String.eq(v_19, v_23), v_11, v_13, v_20, v_24)
+    case cps_provider_2_NfMissing{v_29}:
+      cps_provider_2_status_combine(cps_provider_2_NfStatusMaybe{}, cps_provider_2_bind_status(v_11, v_13))
+    case cps_provider_2_NfOther{v_33}:
+      cps_provider_2_status_combine(cps_provider_2_NfStatusMaybe{}, cps_provider_2_bind_status(v_11, v_13))
+    case _:
+      cps_provider_2_NfStatusNo{}
+
+def native_match_cps_provider_2_bind_status_2(+v_10: BIR.DescriptorPattern, v_11: List<&2, BIR.DescriptorPattern>, +v_12: cps_provider_2_NfVal, v_13: List<&2, cps_provider_2_NfVal>) -> cps_provider_2_NfStatus:
+  match v_10:
+    case BIR.DescriptorBinder{v_15}:
+      cps_provider_2_bind_status(v_11, v_13)
+    case BIR.DescriptorConstructorPattern{v_19, v_20}:
+      native_match_cps_provider_2_bind_status_1(v_12, v_11, v_13, v_19, v_20)
+
+def native_match_cps_provider_2_bind_status_3(v_1: List<&2, BIR.DescriptorPattern>, v_4: List<&2, cps_provider_2_NfVal>) -> cps_provider_2_NfStatus:
+  match v_1, v_4:
+    case [], []:
+      cps_provider_2_NfStatusOk{}
+    case +v_10 <> v_11, +v_12 <> v_13:
+      native_match_cps_provider_2_bind_status_2(v_10, v_11, v_12, v_13)
+    case _, _:
+      cps_provider_2_NfStatusNo{}
+
+def cps_provider_2_bind_status(v_1: List<&2, BIR.DescriptorPattern>, v_4: List<&2, cps_provider_2_NfVal>) -> cps_provider_2_NfStatus:
+  native_match_cps_provider_2_bind_status_3(v_1, v_4)
+
+def native_match_cps_provider_2_bind_values_0(+v_13: cps_provider_2_NfVal, v_12: List<&2, BIR.DescriptorPattern>, v_14: List<&2, cps_provider_2_NfVal>, v_21: List<&2, BIR.DescriptorPattern>) -> List<&2, cps_provider_2_NfVal>:
+  match v_13:
+    case cps_provider_2_NfCtor{v_24, v_25}:
+      cps_provider_2_append_vals(cps_provider_2_bind_values(v_21, v_25), cps_provider_2_bind_values(v_12, v_14))
+    case _:
+      cps_provider_2_bind_values(v_12, v_14)
+
+def native_match_cps_provider_2_bind_values_1(+v_11: BIR.DescriptorPattern, v_12: List<&2, BIR.DescriptorPattern>, +v_13: cps_provider_2_NfVal, v_14: List<&2, cps_provider_2_NfVal>) -> List<&2, cps_provider_2_NfVal>:
+  match v_11:
+    case BIR.DescriptorBinder{v_16}:
+      v_13 <> cps_provider_2_bind_values(v_12, v_14)
+    case BIR.DescriptorConstructorPattern{v_20, v_21}:
+      native_match_cps_provider_2_bind_values_0(v_13, v_12, v_14, v_21)
+
+def native_match_cps_provider_2_bind_values_2(v_1: List<&2, BIR.DescriptorPattern>, v_4: List<&2, cps_provider_2_NfVal>) -> List<&2, cps_provider_2_NfVal>:
+  match v_1, v_4:
+    case [], []:
+      []
+    case +v_11 <> v_12, +v_13 <> v_14:
+      native_match_cps_provider_2_bind_values_1(v_11, v_12, v_13, v_14)
+    case _, _:
+      []
+
+def cps_provider_2_bind_values(v_1: List<&2, BIR.DescriptorPattern>, v_4: List<&2, cps_provider_2_NfVal>) -> List<&2, cps_provider_2_NfVal>:
+  native_match_cps_provider_2_bind_values_2(v_1, v_4)
+
+def native_match_cps_provider_2_bind_patterns_0(v_5: cps_provider_2_NfStatus, v_1: List<&2, BIR.DescriptorPattern>, v_4: List<&2, cps_provider_2_NfVal>) -> cps_provider_2_NfBind:
+  match v_5:
+    case cps_provider_2_NfStatusOk{}:
+      cps_provider_2_NfBound{cps_provider_2_bind_values(v_1, v_4)}
+    case cps_provider_2_NfStatusNo{}:
+      cps_provider_2_NfMismatch{}
+    case cps_provider_2_NfStatusMaybe{}:
+      cps_provider_2_NfUnknown{}
+
+def cps_provider_2_bind_patterns(v_1: List<&2, BIR.DescriptorPattern>, v_4: List<&2, cps_provider_2_NfVal>) -> cps_provider_2_NfBind:
+  native_match_cps_provider_2_bind_patterns_0(cps_provider_2_bind_status(v_1, v_4), v_1, v_4)
+
+def native_match_cps_provider_2_nf_0(v_8: Bool, +v_1: cps_provider_2_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_2_NfVal>, +v_7: Nat) -> cps_provider_2_Nf:
+  match v_8:
+    case True{}:
+      cps_provider_2_NfFail{"the type expression did not normalize within its reduction budget"}
+    case False{}:
+      cps_provider_2_nf_descriptor(v_1, v_2, v_5, Nat.sub(v_7, 1n))
+
+def cps_provider_2_nf(+v_1: cps_provider_2_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_2_NfVal>, +v_7: Nat) -> cps_provider_2_Nf:
+  native_match_cps_provider_2_nf_0(Nat.is_eq(v_7, 0n), v_1, v_2, v_5, v_7)
+
+def native_match_cps_provider_2_nf_descriptor_0(v_8: Bool, +v_1: cps_provider_2_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_2_NfVal>, +v_7: Nat) -> cps_provider_2_Nf:
+  match v_8:
+    case True{}:
+      cps_provider_2_NfFail{"the type expression did not normalize within its reduction budget"}
+    case False{}:
+      cps_provider_2_nf_descriptor_step(v_1, v_2, v_5, v_7)
+
+def cps_provider_2_nf_descriptor(+v_1: cps_provider_2_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_2_NfVal>, +v_7: Nat) -> cps_provider_2_Nf:
+  native_match_cps_provider_2_nf_descriptor_0(Nat.is_eq(v_7, 0n), v_1, v_2, v_5, v_7)
+
+def native_match_cps_provider_2_nf_arrow_0(v_22: cps_provider_2_Nf, v_2: BIR.Quantity, v_15: cps_provider_2_NfVal) -> cps_provider_2_Nf:
+  match v_22:
+    case cps_provider_2_NfFail{v_18}:
+      cps_provider_2_NfFail{v_18}
+    case cps_provider_2_NfOk{v_20}:
+      cps_provider_2_NfOk{cps_provider_2_NfOther{BIR.DescriptorArrow{v_2, cps_provider_2_materialize(v_15), cps_provider_2_materialize(v_20)}}}
+
+def native_match_cps_provider_2_nf_arrow_1(v_21: cps_provider_2_Nf, +v_1: cps_provider_2_NfContext, v_2: BIR.Quantity, v_4: BIR.Descriptor, +v_7: List<&2, cps_provider_2_NfVal>, +v_9: Nat) -> cps_provider_2_Nf:
+  match v_21:
+    case cps_provider_2_NfFail{v_13}:
+      cps_provider_2_NfFail{v_13}
+    case cps_provider_2_NfOk{v_15}:
+      native_match_cps_provider_2_nf_arrow_0(cps_provider_2_nf(v_1, v_4, v_7, v_9), v_2, v_15)
+
+def cps_provider_2_nf_arrow(+v_1: cps_provider_2_NfContext, v_2: BIR.Quantity, v_3: BIR.Descriptor, v_4: BIR.Descriptor, +v_7: List<&2, cps_provider_2_NfVal>, +v_9: Nat) -> cps_provider_2_Nf:
+  native_match_cps_provider_2_nf_arrow_1(cps_provider_2_nf(v_1, v_3, v_7, v_9), v_1, v_2, v_4, v_7, v_9)
+
+def native_match_cps_provider_2_nf_descriptor_step_0(v_191: cps_provider_2_Nf) -> cps_provider_2_Nf:
+  match v_191:
+    case cps_provider_2_NfOk{v_22}:
+      cps_provider_2_NfOk{cps_provider_2_NfKind{cps_provider_2_materialize(v_22)}}
+    case cps_provider_2_NfFail{v_25}:
+      cps_provider_2_NfFail{v_25}
+
+def native_match_cps_provider_2_nf_descriptor_step_1(v_192: cps_provider_2_NfList, +v_1: cps_provider_2_NfContext, +v_7: Nat, v_45: String) -> cps_provider_2_Nf:
+  match v_192:
+    case cps_provider_2_NfListOk{v_49}:
+      cps_provider_2_nf_named(v_1, v_45, v_49, v_7)
+    case cps_provider_2_NfListFail{v_52}:
+      cps_provider_2_NfFail{v_52}
+
+def native_match_cps_provider_2_nf_descriptor_step_2(v_193: cps_provider_2_NfList, v_55: String) -> cps_provider_2_Nf:
+  match v_193:
+    case cps_provider_2_NfListOk{v_59}:
+      cps_provider_2_NfOk{cps_provider_2_NfCtor{v_55, v_59}}
+    case cps_provider_2_NfListFail{v_61}:
+      cps_provider_2_NfFail{v_61}
+
+def native_match_cps_provider_2_nf_descriptor_step_3(v_195: cps_provider_2_Nf, +v_1: cps_provider_2_NfContext, +v_7: Nat, v_68: cps_provider_2_NfVal) -> cps_provider_2_Nf:
+  match v_195:
+    case cps_provider_2_NfOk{v_71}:
+      cps_provider_2_nf_apply(v_1, v_68, [v_71], v_7)
+    case cps_provider_2_NfFail{v_74}:
+      cps_provider_2_NfFail{v_74}
+
+def native_match_cps_provider_2_nf_descriptor_step_4(v_194: cps_provider_2_Nf, +v_1: cps_provider_2_NfContext, +v_5: List<&2, cps_provider_2_NfVal>, +v_7: Nat, v_65: BIR.Descriptor) -> cps_provider_2_Nf:
+  match v_194:
+    case cps_provider_2_NfOk{v_68}:
+      native_match_cps_provider_2_nf_descriptor_step_3(cps_provider_2_nf(v_1, v_65, v_5, v_7), v_1, v_7, v_68)
+    case cps_provider_2_NfFail{v_76}:
+      cps_provider_2_NfFail{v_76}
+
+def native_match_cps_provider_2_nf_descriptor_step_5(v_196: cps_provider_2_Nf, +v_1: cps_provider_2_NfContext, +v_5: List<&2, cps_provider_2_NfVal>, +v_7: Nat, v_80: Nat, v_82: BIR.Descriptor) -> cps_provider_2_Nf:
+  match v_196:
+    case cps_provider_2_NfOk{v_85}:
+      cps_provider_2_nf_descriptor(v_1, v_82, cps_provider_2_insert_before(v_5, Nat.sub(List.length(&2, cps_provider_2_NfVal, v_5), v_80), v_85), Nat.sub(v_7, 1n))
+    case cps_provider_2_NfFail{v_90}:
+      cps_provider_2_NfFail{v_90}
+
+def native_match_cps_provider_2_nf_descriptor_step_6(v_197: cps_provider_2_NfList, +v_1: cps_provider_2_NfContext, +v_5: List<&2, cps_provider_2_NfVal>, +v_7: Nat, v_94: BIR.Descriptor) -> cps_provider_2_Nf:
+  match v_197:
+    case cps_provider_2_NfListOk{v_97}:
+      cps_provider_2_nf_descriptor(v_1, v_94, List.append(&2, cps_provider_2_NfVal, v_5, v_97), Nat.sub(v_7, 1n))
+    case cps_provider_2_NfListFail{v_101}:
+      cps_provider_2_NfFail{v_101}
+
+def native_match_cps_provider_2_nf_descriptor_step_7(v_199: cps_provider_2_NfBind, +v_1: cps_provider_2_NfContext, +v_5: List<&2, cps_provider_2_NfVal>, +v_7: Nat, +v_10: BIR.Descriptor, v_107: BIR.Descriptor) -> cps_provider_2_Nf:
+  match v_199:
+    case cps_provider_2_NfBound{v_113}:
+      cps_provider_2_nf_descriptor(v_1, v_107, List.append(&2, cps_provider_2_NfVal, v_5, v_113), Nat.sub(v_7, 1n))
+    case _:
+      cps_provider_2_NfOk{cps_provider_2_NfOther{cps_provider_2_reify_env(v_10, v_5)}}
+
+def native_match_cps_provider_2_nf_descriptor_step_8(v_198: cps_provider_2_NfList, +v_1: cps_provider_2_NfContext, +v_5: List<&2, cps_provider_2_NfVal>, +v_7: Nat, +v_10: BIR.Descriptor, v_105: List<&2, BIR.DescriptorPattern>, v_107: BIR.Descriptor) -> cps_provider_2_Nf:
+  match v_198:
+    case cps_provider_2_NfListOk{v_110}:
+      native_match_cps_provider_2_nf_descriptor_step_7(cps_provider_2_bind_patterns(v_105, v_110), v_1, v_5, v_7, v_10, v_107)
+    case cps_provider_2_NfListFail{v_120}:
+      cps_provider_2_NfFail{v_120}
+
+def native_match_cps_provider_2_nf_descriptor_step_9(v_200: cps_provider_2_NfList, +v_1: cps_provider_2_NfContext, +v_5: List<&2, cps_provider_2_NfVal>, +v_7: Nat, +v_10: BIR.Descriptor, v_124: List<&2, BIR.Descriptor>) -> cps_provider_2_Nf:
+  match v_200:
+    case cps_provider_2_NfListOk{v_127}:
+      cps_provider_2_nf_cases(v_1, v_124, v_127, v_5, v_10, v_7)
+    case cps_provider_2_NfListFail{v_130}:
+      cps_provider_2_NfFail{v_130}
+
+def native_match_cps_provider_2_nf_descriptor_step_10(v_201: cps_provider_2_Nf, +v_1: cps_provider_2_NfContext, +v_5: List<&2, cps_provider_2_NfVal>, +v_7: Nat, v_139: BIR.Descriptor) -> cps_provider_2_Nf:
+  match v_201:
+    case cps_provider_2_NfOk{v_142}:
+      cps_provider_2_nf_descriptor(v_1, v_139, List.append(&2, cps_provider_2_NfVal, v_5, [v_142]), Nat.sub(v_7, 1n))
+    case cps_provider_2_NfFail{v_146}:
+      cps_provider_2_NfFail{v_146}
+
+def native_match_cps_provider_2_nf_descriptor_step_11(v_202: cps_provider_2_NfList, +v_1: cps_provider_2_NfContext, +v_7: Nat, v_170: String) -> cps_provider_2_Nf:
+  match v_202:
+    case cps_provider_2_NfListOk{v_175}:
+      cps_provider_2_nf_named(v_1, v_170, v_175, v_7)
+    case cps_provider_2_NfListFail{v_178}:
+      cps_provider_2_NfFail{v_178}
+
+def native_match_cps_provider_2_nf_descriptor_step_12(v_203: cps_provider_2_NfList, +v_1: cps_provider_2_NfContext, +v_7: Nat, v_182: String) -> cps_provider_2_Nf:
+  match v_203:
+    case cps_provider_2_NfListOk{v_187}:
+      cps_provider_2_nf_named(v_1, v_182, v_187, v_7)
+    case cps_provider_2_NfListFail{v_190}:
+      cps_provider_2_NfFail{v_190}
+
+def native_match_cps_provider_2_nf_descriptor_step_13(+v_10: BIR.Descriptor, +v_1: cps_provider_2_NfContext, +v_5: List<&2, cps_provider_2_NfVal>, +v_7: Nat) -> cps_provider_2_Nf:
+  match v_10:
+    case BIR.DescriptorNull{}:
+      cps_provider_2_NfOk{cps_provider_2_NfOther{cps_provider_2_reify_env(v_10, v_5)}}
+    case BIR.DescriptorParameter{v_13}:
+      cps_provider_2_NfOk{cps_provider_2_val_at(v_5, v_13, v_10)}
+    case BIR.DescriptorQuantityKind{}:
+      cps_provider_2_NfOk{cps_provider_2_NfOther{cps_provider_2_reify_env(v_10, v_5)}}
+    case BIR.DescriptorQuantity{v_17}:
+      cps_provider_2_NfOk{cps_provider_2_NfQuantity{v_17}}
+    case BIR.DescriptorKind{v_19}:
+      native_match_cps_provider_2_nf_descriptor_step_0(cps_provider_2_nf(v_1, v_19, v_5, v_7))
+    case BIR.DescriptorMinimum{v_28, v_29}:
+      cps_provider_2_NfOk{cps_provider_2_NfOther{cps_provider_2_reify_env(v_10, v_5)}}
+    case BIR.DescriptorArrow{v_34, v_35, v_36}:
+      cps_provider_2_nf_arrow(v_1, v_34, v_35, v_36, v_5, v_7)
+    case BIR.DescriptorLambda{v_40, v_41}:
+      cps_provider_2_NfOk{cps_provider_2_NfClosure{v_40, v_41, v_5, cps_provider_2_materialize_all(v_5)}}
+    case BIR.DescriptorRef{v_45, v_46}:
+      native_match_cps_provider_2_nf_descriptor_step_1(cps_provider_2_nf_all(v_1, v_46, v_5, v_7), v_1, v_7, v_45)
+    case BIR.DescriptorConstructor{v_55, v_56}:
+      native_match_cps_provider_2_nf_descriptor_step_2(cps_provider_2_nf_all(v_1, v_56, v_5, v_7), v_55)
+    case BIR.DescriptorApplication{v_64, v_65}:
+      native_match_cps_provider_2_nf_descriptor_step_4(cps_provider_2_nf(v_1, v_64, v_5, v_7), v_1, v_5, v_7, v_65)
+    case BIR.DescriptorSubstitution{v_80, v_81, v_82}:
+      native_match_cps_provider_2_nf_descriptor_step_5(cps_provider_2_nf(v_1, v_81, v_5, v_7), v_1, v_5, v_7, v_80, v_82)
+    case BIR.DescriptorLet{v_93, v_94}:
+      native_match_cps_provider_2_nf_descriptor_step_6(cps_provider_2_nf_all(v_1, v_93, v_5, v_7), v_1, v_5, v_7, v_94)
+    case BIR.DescriptorLocal{v_105, v_106, v_107}:
+      native_match_cps_provider_2_nf_descriptor_step_8(cps_provider_2_nf_all(v_1, v_106, v_5, v_7), v_1, v_5, v_7, v_10, v_105, v_107)
+    case BIR.DescriptorMatch{v_123, v_124}:
+      native_match_cps_provider_2_nf_descriptor_step_9(cps_provider_2_nf_all(v_1, v_123, v_5, v_7), v_1, v_5, v_7, v_10, v_124)
+    case BIR.DescriptorCase{v_133, v_134}:
+      cps_provider_2_NfOk{cps_provider_2_NfOther{cps_provider_2_reify_env(v_10, v_5)}}
+    case BIR.DescriptorBind{v_138, v_139}:
+      native_match_cps_provider_2_nf_descriptor_step_10(cps_provider_2_nf(v_1, v_138, v_5, v_7), v_1, v_5, v_7, v_139)
+    case BIR.DescriptorEquality{v_150, v_151, v_152}:
+      cps_provider_2_NfOk{cps_provider_2_NfOther{cps_provider_2_reify_env(v_10, v_5)}}
+    case BIR.DescriptorReflexivity{}:
+      cps_provider_2_NfOk{cps_provider_2_NfOther{cps_provider_2_reify_env(v_10, v_5)}}
+    case BIR.DescriptorFailure{v_156}:
+      cps_provider_2_NfFail{v_156}
+    case BIR.DescriptorFill{v_159, v_160}:
+      cps_provider_2_nf_apply_args(v_1, v_159, v_160, v_5, v_10, v_7)
+    case BIR.DescriptorPlus{v_164, v_165}:
+      cps_provider_2_nf_apply_args(v_1, v_164, v_165, v_5, v_10, v_7)
+    case BIR.DescriptorNamedFill{v_170, v_171, v_172}:
+      native_match_cps_provider_2_nf_descriptor_step_11(cps_provider_2_nf_all(v_1, v_172, v_5, v_7), v_1, v_7, v_170)
+    case BIR.DescriptorNamedPlus{v_182, v_183, v_184}:
+      native_match_cps_provider_2_nf_descriptor_step_12(cps_provider_2_nf_all(v_1, v_184, v_5, v_7), v_1, v_7, v_182)
+
+def cps_provider_2_nf_descriptor_step(+v_1: cps_provider_2_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_2_NfVal>, +v_7: Nat) -> cps_provider_2_Nf:
+  +v_10 = v_2
+  native_match_cps_provider_2_nf_descriptor_step_13(v_10, v_1, v_5, v_7)
+
+def native_match_cps_provider_2_nf_all_0(v_25: cps_provider_2_NfList, v_18: cps_provider_2_NfVal) -> cps_provider_2_NfList:
+  match v_25:
+    case cps_provider_2_NfListFail{v_21}:
+      cps_provider_2_NfListFail{v_21}
+    case cps_provider_2_NfListOk{v_23}:
+      cps_provider_2_NfListOk{v_18 <> v_23}
+
+def native_match_cps_provider_2_nf_all_1(v_24: cps_provider_2_Nf, +v_1: cps_provider_2_NfContext, +v_6: List<&2, cps_provider_2_NfVal>, +v_8: Nat, v_13: List<&2, BIR.Descriptor>) -> cps_provider_2_NfList:
+  match v_24:
+    case cps_provider_2_NfFail{v_16}:
+      cps_provider_2_NfListFail{v_16}
+    case cps_provider_2_NfOk{v_18}:
+      native_match_cps_provider_2_nf_all_0(cps_provider_2_nf_all(v_1, v_13, v_6, v_8), v_18)
+
+def native_match_cps_provider_2_nf_all_2(v_3: List<&2, BIR.Descriptor>, +v_1: cps_provider_2_NfContext, +v_6: List<&2, cps_provider_2_NfVal>, +v_8: Nat) -> cps_provider_2_NfList:
+  match v_3:
+    case []:
+      cps_provider_2_NfListOk{[]}
+    case +v_12 <> v_13:
+      native_match_cps_provider_2_nf_all_1(cps_provider_2_nf(v_1, v_12, v_6, v_8), v_1, v_6, v_8, v_13)
+
+def cps_provider_2_nf_all(+v_1: cps_provider_2_NfContext, v_3: List<&2, BIR.Descriptor>, +v_6: List<&2, cps_provider_2_NfVal>, +v_8: Nat) -> cps_provider_2_NfList:
+  native_match_cps_provider_2_nf_all_2(v_3, v_1, v_6, v_8)
+
+def native_match_cps_provider_2_nf_apply_args_0(v_23: cps_provider_2_NfList, +v_1: cps_provider_2_NfContext, v_8: BIR.Descriptor, +v_10: Nat, v_16: cps_provider_2_NfVal) -> cps_provider_2_Nf:
+  match v_23:
+    case cps_provider_2_NfListFail{v_19}:
+      cps_provider_2_NfFail{v_19}
+    case cps_provider_2_NfListOk{v_21}:
+      cps_provider_2_nf_apply_source(v_1, v_16, v_21, v_8, v_10)
+
+def native_match_cps_provider_2_nf_apply_args_1(v_22: cps_provider_2_Nf, +v_1: cps_provider_2_NfContext, v_4: List<&2, BIR.Descriptor>, +v_7: List<&2, cps_provider_2_NfVal>, v_8: BIR.Descriptor, +v_10: Nat) -> cps_provider_2_Nf:
+  match v_22:
+    case cps_provider_2_NfFail{v_14}:
+      cps_provider_2_NfFail{v_14}
+    case cps_provider_2_NfOk{v_16}:
+      native_match_cps_provider_2_nf_apply_args_0(cps_provider_2_nf_all(v_1, v_4, v_7, v_10), v_1, v_8, v_10, v_16)
+
+def cps_provider_2_nf_apply_args(+v_1: cps_provider_2_NfContext, v_2: BIR.Descriptor, v_4: List<&2, BIR.Descriptor>, +v_7: List<&2, cps_provider_2_NfVal>, v_8: BIR.Descriptor, +v_10: Nat) -> cps_provider_2_Nf:
+  native_match_cps_provider_2_nf_apply_args_1(cps_provider_2_nf(v_1, v_2, v_7, v_10), v_1, v_4, v_7, v_8, v_10)
+
+def cps_provider_2_nf_apply_source(+v_1: cps_provider_2_NfContext, v_3: cps_provider_2_NfVal, v_6: List<&2, cps_provider_2_NfVal>, v_7: BIR.Descriptor, +v_9: Nat) -> cps_provider_2_Nf:
+  match v_6:
+    case []:
+      cps_provider_2_NfOk{v_3}
+    case _:
+      cps_provider_2_nf_apply(v_1, v_3, v_6, v_9)
+
+def native_match_cps_provider_2_nf_apply_0(v_19: cps_provider_2_Nf, +v_1: cps_provider_2_NfContext, +v_8: Nat, v_13: List<&2, cps_provider_2_NfVal>) -> cps_provider_2_Nf:
+  match v_19:
+    case cps_provider_2_NfFail{v_16}:
+      cps_provider_2_NfFail{v_16}
+    case cps_provider_2_NfOk{v_18}:
+      cps_provider_2_nf_apply(v_1, v_18, v_13, Nat.sub(v_8, 1n))
+
+def native_match_cps_provider_2_nf_apply_1(v_6: List<&2, cps_provider_2_NfVal>, +v_1: cps_provider_2_NfContext, v_3: cps_provider_2_NfVal, +v_8: Nat) -> cps_provider_2_Nf:
+  match v_6:
+    case []:
+      cps_provider_2_NfOk{v_3}
+    case +v_12 <> v_13:
+      native_match_cps_provider_2_nf_apply_0(cps_provider_2_nf_apply_one(v_1, v_3, v_12, Nat.sub(v_8, 1n)), v_1, v_8, v_13)
+
+def cps_provider_2_nf_apply(+v_1: cps_provider_2_NfContext, v_3: cps_provider_2_NfVal, v_6: List<&2, cps_provider_2_NfVal>, +v_8: Nat) -> cps_provider_2_Nf:
+  native_match_cps_provider_2_nf_apply_1(v_6, v_1, v_3, v_8)
+
+def cps_provider_2_nf_apply_one(+v_1: cps_provider_2_NfContext, v_3: cps_provider_2_NfVal, v_5: cps_provider_2_NfVal, +v_7: Nat) -> cps_provider_2_Nf:
+  match v_3:
+    case cps_provider_2_NfType{v_11, v_12}:
+      cps_provider_2_nf_named(v_1, v_11, List.append(&2, cps_provider_2_NfVal, v_12, [v_5]), Nat.sub(v_7, 1n))
+    case cps_provider_2_NfClosure{v_19, v_20, v_21, v_22}:
+      cps_provider_2_nf_descriptor(v_1, v_20, List.append(&2, cps_provider_2_NfVal, v_21, [v_5]), Nat.sub(v_7, 1n))
+    case cps_provider_2_NfCtor{v_27, v_28}:
+      cps_provider_2_NfFail{String.append("the constructor `", String.append(v_27, "` is applied to an argument"))}
+    case cps_provider_2_NfQuantity{v_30}:
+      cps_provider_2_NfFail{"a quantity is applied to an argument"}
+    case cps_provider_2_NfKind{v_32}:
+      cps_provider_2_NfFail{"a kind is applied to an argument"}
+    case cps_provider_2_NfOther{v_34}:
+      cps_provider_2_NfOk{cps_provider_2_NfOther{BIR.DescriptorApplication{v_34, cps_provider_2_materialize(v_5)}}}
+    case cps_provider_2_NfMissing{v_37}:
+      cps_provider_2_NfOk{cps_provider_2_NfMissing{BIR.DescriptorApplication{v_37, cps_provider_2_materialize(v_5)}}}
+
+def cps_provider_2_intrinsic_io(+v_0: BIR.TypeFunction) -> Bool:
+  match v_0:
+    case BIR.TypeFunction{v_7, v_8, v_9, v_10, v_11}:
+      match v_8:
+        case Some{"IO"}:
+          True{}
+        case _:
+          False{}
+
+def cps_provider_2_nf_named_io(v_1: Bool, +v_3: cps_provider_2_NfContext, v_4: BIR.TypeFunction, v_7: List<&2, cps_provider_2_NfVal>, +v_9: Nat) -> cps_provider_2_Nf:
+  match v_1:
+    case True{}:
+      match v_4:
+        case BIR.TypeFunction{v_16, v_17, v_18, v_19, v_20}:
+          cps_provider_2_NfOk{cps_provider_2_NfType{v_16, v_7}}
+    case False{}:
+      cps_provider_2_nf_reduce(v_3, v_4, v_7, Nat.sub(v_9, 1n))
+
+def native_match_cps_provider_2_nf_named_0(v_25: Maybe<&2, BIR.Family>, +v_3: String, v_6: List<&2, cps_provider_2_NfVal>) -> cps_provider_2_Nf:
+  match v_25:
+    case Some{v_23}:
+      cps_provider_2_nf_family(v_23, v_6)
+    case None{}:
+      cps_provider_2_NfOk{cps_provider_2_NfType{v_3, v_6}}
+
+def native_match_cps_provider_2_nf_named_1(v_24: Maybe<&2, BIR.TypeFunction>, +v_1: cps_provider_2_NfContext, +v_3: String, v_6: List<&2, cps_provider_2_NfVal>, +v_8: Nat, v_12: Map<&2, BIR.Family>) -> cps_provider_2_Nf:
+  match v_24:
+    case Some{v_16}:
+      +v_18 = v_16
+      cps_provider_2_nf_named_io(cps_provider_2_intrinsic_io(v_18), v_1, v_18, v_6, v_8)
+    case None{}:
+      native_match_cps_provider_2_nf_named_0(cps_provider_2_family_of(v_3, v_12), v_3, v_6)
+
+def native_match_cps_provider_2_nf_named_2(+v_1: cps_provider_2_NfContext, +v_3: String, v_6: List<&2, cps_provider_2_NfVal>, +v_8: Nat) -> cps_provider_2_Nf:
+  match v_1:
+    case cps_provider_2_NfContext{v_12, v_13}:
+      native_match_cps_provider_2_nf_named_1(cps_provider_2_function_of(v_3, v_13), v_1, v_3, v_6, v_8, v_12)
+
+def cps_provider_2_nf_named(+v_1: cps_provider_2_NfContext, +v_3: String, v_6: List<&2, cps_provider_2_NfVal>, +v_8: Nat) -> cps_provider_2_Nf:
+  native_match_cps_provider_2_nf_named_2(v_1, v_3, v_6, v_8)
+
+def cps_provider_2_nf_arity(+v_2: List<&2, cps_provider_2_NfVal>, +v_4: Nat, +v_6: Nat) -> cps_provider_2_NfArity:
+  cps_provider_2_NfArity{Nat.is_eq(Nat.add(List.length(&2, cps_provider_2_NfVal, v_2), v_4), v_6), Nat.is_eq(List.length(&2, cps_provider_2_NfVal, v_2), v_6), Nat.is_lt(List.length(&2, cps_provider_2_NfVal, v_2), v_6)}
+
+def native_match_cps_provider_2_nf_family_0(v_0: BIR.Family, +v_6: List<&2, cps_provider_2_NfVal>) -> cps_provider_2_Nf:
+  match v_0:
+    case BIR.Family{v_13, v_14, v_15, v_16, v_17, v_18}:
+      +v_20 = v_16
+      cps_provider_2_nf_family_apply(cps_provider_2_nf_arity(v_6, v_20, v_17), v_13, v_20, v_6)
+
+def cps_provider_2_nf_family(v_0: BIR.Family, v_3: List<&2, cps_provider_2_NfVal>) -> cps_provider_2_Nf:
+  +v_6 = v_3
+  native_match_cps_provider_2_nf_family_0(v_0, v_6)
+
+def cps_provider_2_nf_family_apply(v_1: cps_provider_2_NfArity, v_3: String, v_5: Nat, v_8: List<&2, cps_provider_2_NfVal>) -> cps_provider_2_Nf:
+  match v_1:
+    case cps_provider_2_NfArity{v_13, v_14, v_15}:
+      match v_13:
+        case True{}:
+          cps_provider_2_NfOk{cps_provider_2_NfType{v_3, List.append(&2, cps_provider_2_NfVal, cps_provider_2_quantity_markers(v_5), v_8)}}
+        case False{}:
+          match v_14:
+            case True{}:
+              cps_provider_2_NfOk{cps_provider_2_NfType{v_3, v_8}}
+            case False{}:
+              match v_15:
+                case True{}:
+                  cps_provider_2_NfOk{cps_provider_2_NfType{v_3, v_8}}
+                case False{}:
+                  cps_provider_2_NfFail{String.append("the type `", String.append(v_3, "` is applied past its declared parameter count"))}
+
+def native_match_cps_provider_2_nf_reduce_0(v_2: BIR.TypeFunction, +v_1: cps_provider_2_NfContext, +v_7: Nat, +v_10: List<&2, cps_provider_2_NfVal>) -> cps_provider_2_Nf:
+  match v_2:
+    case BIR.TypeFunction{v_16, v_17, v_18, v_19, v_20}:
+      +v_22 = v_18
+      +v_24 = v_19
+      cps_provider_2_nf_reduce_apply(cps_provider_2_nf_arity(v_10, v_22, v_24), v_1, v_16, v_22, v_24, v_20, v_10, v_7)
+
+def cps_provider_2_nf_reduce(+v_1: cps_provider_2_NfContext, v_2: BIR.TypeFunction, v_5: List<&2, cps_provider_2_NfVal>, +v_7: Nat) -> cps_provider_2_Nf:
+  +v_10 = v_5
+  native_match_cps_provider_2_nf_reduce_0(v_2, v_1, v_7, v_10)
+
+def cps_provider_2_nf_reduce_apply(v_1: cps_provider_2_NfArity, +v_3: cps_provider_2_NfContext, v_5: String, v_7: Nat, +v_9: Nat, v_10: BIR.Descriptor, +v_13: List<&2, cps_provider_2_NfVal>, +v_15: Nat) -> cps_provider_2_Nf:
+  match v_1:
+    case cps_provider_2_NfArity{v_20, v_21, v_22}:
+      match v_20:
+        case True{}:
+          cps_provider_2_nf_reduce_body(v_3, v_10, List.append(&2, cps_provider_2_NfVal, cps_provider_2_quantity_markers(v_7), v_13), [], Nat.sub(v_15, 1n))
+        case False{}:
+          match v_21:
+            case True{}:
+              cps_provider_2_nf_reduce_body(v_3, v_10, cps_provider_2_first_vals(v_13, v_9), cps_provider_2_drop_vals(v_13, v_9), Nat.sub(v_15, 1n))
+            case False{}:
+              match v_22:
+                case True{}:
+                  cps_provider_2_NfOk{cps_provider_2_NfType{v_5, v_13}}
+                case False{}:
+                  cps_provider_2_NfFail{String.append("the type function `", String.append(v_5, "` is applied past its declared parameter count"))}
+
+def native_match_cps_provider_2_nf_reduce_body_0(v_17: cps_provider_2_Nf, +v_1: cps_provider_2_NfContext, v_8: List<&2, cps_provider_2_NfVal>, +v_10: Nat) -> cps_provider_2_Nf:
+  match v_17:
+    case cps_provider_2_NfFail{v_14}:
+      cps_provider_2_NfFail{v_14}
+    case cps_provider_2_NfOk{v_16}:
+      cps_provider_2_nf_apply(v_1, v_16, v_8, v_10)
+
+def cps_provider_2_nf_reduce_body(+v_1: cps_provider_2_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_2_NfVal>, v_8: List<&2, cps_provider_2_NfVal>, +v_10: Nat) -> cps_provider_2_Nf:
+  native_match_cps_provider_2_nf_reduce_body_0(cps_provider_2_nf_descriptor(v_1, v_2, v_5, Nat.sub(v_10, 1n)), v_1, v_8, v_10)
+
+def native_match_cps_provider_2_nf_cases_0(v_34: cps_provider_2_NfBind, +v_1: cps_provider_2_NfContext, +v_6: List<&2, cps_provider_2_NfVal>, +v_9: List<&2, cps_provider_2_NfVal>, v_10: BIR.Descriptor, +v_12: Nat, v_18: List<&2, BIR.Descriptor>, v_22: BIR.Descriptor) -> cps_provider_2_Nf:
+  match v_34:
+    case cps_provider_2_NfBound{v_25}:
+      cps_provider_2_nf_descriptor(v_1, v_22, List.append(&2, cps_provider_2_NfVal, v_9, v_25), Nat.sub(v_12, 1n))
+    case cps_provider_2_NfMismatch{}:
+      cps_provider_2_nf_cases(v_1, v_18, v_6, v_9, v_10, v_12)
+    case cps_provider_2_NfUnknown{}:
+      cps_provider_2_NfOk{cps_provider_2_NfOther{cps_provider_2_reify_env(v_10, v_9)}}
+
+def native_match_cps_provider_2_nf_cases_1(+v_17: BIR.Descriptor, +v_1: cps_provider_2_NfContext, +v_6: List<&2, cps_provider_2_NfVal>, +v_9: List<&2, cps_provider_2_NfVal>, v_10: BIR.Descriptor, +v_12: Nat, v_18: List<&2, BIR.Descriptor>) -> cps_provider_2_Nf:
+  match v_17:
+    case BIR.DescriptorCase{v_21, v_22}:
+      native_match_cps_provider_2_nf_cases_0(cps_provider_2_bind_patterns(v_21, v_6), v_1, v_6, v_9, v_10, v_12, v_18, v_22)
+    case BIR.DescriptorFailure{v_31}:
+      cps_provider_2_NfFail{v_31}
+    case _:
+      cps_provider_2_NfFail{"descriptor match case is not a case"}
+
+def native_match_cps_provider_2_nf_cases_2(v_3: List<&2, BIR.Descriptor>, +v_1: cps_provider_2_NfContext, +v_6: List<&2, cps_provider_2_NfVal>, +v_9: List<&2, cps_provider_2_NfVal>, v_10: BIR.Descriptor, +v_12: Nat) -> cps_provider_2_Nf:
+  match v_3:
+    case []:
+      cps_provider_2_NfOk{cps_provider_2_NfOther{cps_provider_2_reify_env(v_10, v_9)}}
+    case +v_17 <> v_18:
+      native_match_cps_provider_2_nf_cases_1(v_17, v_1, v_6, v_9, v_10, v_12, v_18)
+
+def cps_provider_2_nf_cases(+v_1: cps_provider_2_NfContext, v_3: List<&2, BIR.Descriptor>, +v_6: List<&2, cps_provider_2_NfVal>, +v_9: List<&2, cps_provider_2_NfVal>, v_10: BIR.Descriptor, +v_12: Nat) -> cps_provider_2_Nf:
+  native_match_cps_provider_2_nf_cases_2(v_3, v_1, v_6, v_9, v_10, v_12)
+
+def native_match_cps_provider_2_normalize_0(v_13: cps_provider_2_Nf) -> BIR.Descriptor:
+  match v_13:
+    case cps_provider_2_NfFail{v_10}:
+      BIR.DescriptorFailure{v_10}
+    case cps_provider_2_NfOk{v_12}:
+      cps_provider_2_materialize(v_12)
+
+def cps_provider_2_normalize(+v_1: cps_provider_2_NfContext, v_2: BIR.Descriptor, +v_5: List<&2, cps_provider_2_NfVal>, +v_7: Nat) -> BIR.Descriptor:
+  native_match_cps_provider_2_normalize_0(cps_provider_2_nf(v_1, v_2, v_5, v_7))
+
+def cps_provider_2_normalize_closed(v_1: List<&2, BIR.Family>, v_3: List<&2, BIR.TypeFunction>, v_4: BIR.Descriptor) -> BIR.Descriptor:
+  cps_provider_2_normalize(cps_provider_2_nf_context(v_1, v_3), v_4, [], 1024n)
+
+def cps_provider_2_normalize_in(+v_1: cps_provider_2_NfContext, v_2: BIR.Descriptor) -> BIR.Descriptor:
+  cps_provider_2_normalize(v_1, v_2, [], 1024n)
+
+def cps_provider_2_outer_application(+v_0: BIR.Descriptor) -> Maybe<&2, cps_provider_2_NfApp>:
+  cps_provider_2_outer_walk(v_0, [])
+
+def cps_provider_2_outer_walk(+v_0: BIR.Descriptor, v_2: List<&2, BIR.Descriptor>) -> Maybe<&2, cps_provider_2_NfApp>:
+  match v_0:
+    case BIR.DescriptorRef{v_7, v_8}:
+      Some{cps_provider_2_NfApp{v_7, List.append(&2, BIR.Descriptor, v_8, v_2)}}
+    case BIR.DescriptorNamedFill{v_12, v_13, v_14}:
+      Some{cps_provider_2_NfApp{v_12, List.append(&2, BIR.Descriptor, v_14, v_2)}}
+    case BIR.DescriptorNamedPlus{v_18, v_19, v_20}:
+      Some{cps_provider_2_NfApp{v_18, List.append(&2, BIR.Descriptor, v_20, v_2)}}
+    case BIR.DescriptorFill{v_23, v_24}:
+      cps_provider_2_outer_walk(v_23, List.append(&2, BIR.Descriptor, v_24, v_2))
+    case BIR.DescriptorPlus{v_28, v_29}:
+      cps_provider_2_outer_walk(v_28, List.append(&2, BIR.Descriptor, v_29, v_2))
+    case BIR.DescriptorApplication{v_33, v_34}:
+      cps_provider_2_outer_walk(v_33, List.append(&2, BIR.Descriptor, [v_34], v_2))
+    case _:
+      None{}
+
+def native_match_cps_provider_2_answer_in_0(v_5: BIR.Descriptor, +v_1: cps_provider_2_NfContext) -> BIR.Descriptor:
+  match v_5:
+    case BIR.DescriptorFailure{_}:
+      v_5
+    case _:
+      cps_provider_2_answer_normalized(v_1, v_5)
+
+def cps_provider_2_answer_in(+v_1: cps_provider_2_NfContext, v_2: BIR.Descriptor) -> BIR.Descriptor:
+  v_5 = cps_provider_2_normalize(v_1, v_2, [], 1024n)
+  native_match_cps_provider_2_answer_in_0(v_5, v_1)
+
+def cps_provider_2_answer_descriptor(v_0: BIR.Descriptor, v_2: List<&2, BIR.Family>, v_4: List<&2, BIR.TypeFunction>) -> BIR.Descriptor:
+  cps_provider_2_answer_in(cps_provider_2_nf_context(v_2, v_4), v_0)
+
+def native_match_cps_provider_2_answer_normalized_0(v_9: List<&2, BIR.Descriptor>, +v_2: BIR.Descriptor) -> BIR.Descriptor:
+  match v_9:
+    case []:
+      v_2
+    case +v_13 <> v_14:
+      v_13
+
+def native_match_cps_provider_2_answer_normalized_1(v_16: Bool, +v_2: BIR.Descriptor, v_9: List<&2, BIR.Descriptor>) -> BIR.Descriptor:
+  match v_16:
+    case False{}:
+      v_2
+    case True{}:
+      native_match_cps_provider_2_answer_normalized_0(v_9, v_2)
+
+def native_match_cps_provider_2_answer_normalized_2(v_5: cps_provider_2_NfApp, +v_1: cps_provider_2_NfContext, +v_2: BIR.Descriptor) -> BIR.Descriptor:
+  match v_5:
+    case cps_provider_2_NfApp{v_8, v_9}:
+      native_match_cps_provider_2_answer_normalized_1(cps_provider_2_is_io_head_in(v_1, v_8), v_2, v_9)
+
+def native_match_cps_provider_2_answer_normalized_3(v_15: Maybe<&2, cps_provider_2_NfApp>, +v_1: cps_provider_2_NfContext, +v_2: BIR.Descriptor) -> BIR.Descriptor:
+  match v_15:
+    case None{}:
+      v_2
+    case Some{v_5}:
+      native_match_cps_provider_2_answer_normalized_2(v_5, v_1, v_2)
+
+def cps_provider_2_answer_normalized(+v_1: cps_provider_2_NfContext, +v_2: BIR.Descriptor) -> BIR.Descriptor:
+  native_match_cps_provider_2_answer_normalized_3(cps_provider_2_outer_application(v_2), v_1, v_2)
+
+def cps_provider_2_is_io_head_in(+v_1: cps_provider_2_NfContext, +v_3: String) -> Bool:
+  match v_1:
+    case cps_provider_2_NfContext{v_7, v_8}:
+      cps_provider_2_is_io_head(v_3, v_7, v_8)
+
+def native_match_cps_provider_2_is_io_head_0(v_10: Maybe<&2, String>) -> Bool:
+  match v_10:
+    case Some{v_9}:
+      String.eq(v_9, "IO")
+    case None{}:
+      False{}
+
+def cps_provider_2_is_io_head(+v_1: String, +v_3: Map<&2, BIR.Family>, +v_5: Map<&2, BIR.TypeFunction>) -> Bool:
+  native_match_cps_provider_2_is_io_head_0(cps_provider_2_native_of(v_1, v_3, v_5))
+
+def cps_provider_3_js_source(v_2: List<&2, String>) -> Maybe<&2, String>:
+  match v_2:
+    case []:
+      None{}
+    case +v_7 <> v_8:
+      cps_provider_3_js_source_ext(String.ends_with(v_7, ".js"), v_7, v_8)
+
+def cps_provider_3_js_source_ext(v_1: Bool, +v_3: String, v_6: List<&2, String>) -> Maybe<&2, String>:
+  match v_1:
+    case True{}:
+      Some{v_3}
+    case False{}:
+      cps_provider_3_js_source(v_6)
+
+def cps_provider_3_link_add(v_1: String, v_3: String, v_4: Ast.SourceSpan, v_7: List<&2, cps_provider_3_LinkSource>) -> cps_provider_3_LinkResult:
+  match v_7:
+    case []:
+      cps_provider_3_LinkSuccess{[cps_provider_3_LinkSource{v_1, v_3, v_4}]}
+    case +v_11 <> v_12:
+      match v_11:
+        case cps_provider_3_LinkSource{+v_16, v_17, _}:
+          cps_provider_3_link_add_known(String.eq(v_1, v_16), String.eq(v_3, v_17), v_1, v_3, v_4, v_16, v_7, v_11, v_12)
+
+def cps_provider_3_link_add_known(v_1: Bool, v_3: Bool, +v_5: String, +v_7: String, +v_8: Ast.SourceSpan, v_10: String, v_13: List<&2, cps_provider_3_LinkSource>, v_15: cps_provider_3_LinkSource, v_18: List<&2, cps_provider_3_LinkSource>) -> cps_provider_3_LinkResult:
+  match v_1:
+    case True{}:
+      cps_provider_3_link_add_namespace(v_3, v_5, v_8, v_13)
+    case False{}:
+      cps_provider_3_link_add_tail(cps_provider_3_link_add(v_5, v_7, v_8, v_18), v_15)
+
+def cps_provider_3_link_add_namespace(v_1: Bool, +v_3: String, +v_4: Ast.SourceSpan, v_7: List<&2, cps_provider_3_LinkSource>) -> cps_provider_3_LinkResult:
+  match v_1:
+    case True{}:
+      cps_provider_3_LinkSuccess{v_7}
+    case False{}:
+      cps_provider_3_LinkFailure{String.append("bend: ", String.append(v_3, " is imported from two namespaces")), v_4}
+
+def cps_provider_3_link_add_tail(v_1: cps_provider_3_LinkResult, v_3: cps_provider_3_LinkSource) -> cps_provider_3_LinkResult:
+  match v_1:
+    case cps_provider_3_LinkSuccess{+v_6}:
+      cps_provider_3_LinkSuccess{v_3 <> v_6}
+    case cps_provider_3_LinkFailure{v_9, v_10}:
+      cps_provider_3_LinkFailure{v_9, v_10}
+
+def cps_provider_3_link_declarations(v_1: List<&2, BIR.Declaration>, v_4: List<&2, cps_provider_3_LinkSource>) -> cps_provider_3_LinkResult:
+  match v_1:
+    case []:
+      cps_provider_3_LinkSuccess{List.reverse(&2, cps_provider_3_LinkSource, v_4)}
+    case +v_9 <> v_10:
+      match v_9:
+        case BIR.ForeignDeclaration{_, v_21, v_22, _, v_24, _, v_26, _, _}:
+          cps_provider_3_link_declaration_source(cps_provider_3_js_source(v_24), v_21, v_22, v_26, v_4, v_10)
+        case _:
+          cps_provider_3_link_declarations(v_10, v_4)
+
+def cps_provider_3_link_declaration_source(v_2: Maybe<&2, String>, +v_4: String, +v_6: String, +v_7: Ast.SourceSpan, v_10: List<&2, cps_provider_3_LinkSource>, v_12: List<&2, BIR.Declaration>) -> cps_provider_3_LinkResult:
+  match v_2:
+    case Some{+v_15}:
+      cps_provider_3_link_declaration_plan(cps_provider_3_link_add(v_15, v_4, v_7, v_10), v_12)
+    case None{}:
+      cps_provider_3_LinkFailure{String.append("bend: foreign definition has no .js import: ", v_6), v_7}
+
+def cps_provider_3_link_declaration_plan(v_1: cps_provider_3_LinkResult, v_3: List<&2, BIR.Declaration>) -> cps_provider_3_LinkResult:
+  match v_1:
+    case cps_provider_3_LinkSuccess{v_6}:
+      cps_provider_3_link_declarations(v_3, v_6)
+    case cps_provider_3_LinkFailure{v_10, v_11}:
+      cps_provider_3_LinkFailure{v_10, v_11}
+
+def cps_provider_3_constructors_named(v_1: List<&2, BIR.ConstructorLayout>, v_3: String) -> Bool:
+  match v_1:
+    case []:
+      False{}
+    case BIR.ConstructorLayout{_, +v_11, _, _} <> v_14:
+      cps_provider_3_constructors_named_same(String.eq(v_3, v_11), v_14, v_3)
+
+def cps_provider_3_constructors_named_same(v_1: Bool, v_3: List<&2, BIR.ConstructorLayout>, +v_5: String) -> Bool:
+  match v_1:
+    case True{}:
+      True{}
+    case False{}:
+      cps_provider_3_constructors_named(v_3, v_5)
+
+def cps_provider_3_foreign_name_check(v_1: List<&2, BIR.Declaration>, v_3: List<&2, BIR.ConstructorLayout>) -> Maybe<&2, cps_provider_3_LinkResult>:
+  match v_1:
+    case []:
+      None{}
+    case +v_8 <> v_9:
+      match v_8:
+        case BIR.ForeignDeclaration{v_19, _, _, _, _, _, v_25, _, _}:
+          cps_provider_3_foreign_name_check_named(cps_provider_3_constructors_named(v_3, v_19), v_19, v_25, v_9, v_3)
+        case _:
+          cps_provider_3_foreign_name_check(v_9, v_3)
+
+def cps_provider_3_foreign_name_check_named(v_1: Bool, +v_3: String, +v_4: Ast.SourceSpan, v_6: List<&2, BIR.Declaration>, v_8: List<&2, BIR.ConstructorLayout>) -> Maybe<&2, cps_provider_3_LinkResult>:
+  match v_1:
+    case True{}:
+      Some{cps_provider_3_LinkFailure{String.append(v_3, " names both a constructor and a foreign def: name one apart"), v_4}}
+    case False{}:
+      cps_provider_3_foreign_name_check(v_6, v_8)
+    case _:
+      cps_provider_3_foreign_name_check(v_6, v_8)
+
+def cps_provider_3_link_checked(v_2: Maybe<&2, cps_provider_3_LinkResult>, v_4: List<&2, BIR.Declaration>) -> cps_provider_3_LinkResult:
+  match v_2:
+    case Some{v_7}:
+      v_7
+    case None{}:
+      cps_provider_3_link_declarations(v_4, [])
+
+def cps_provider_3_link(v_0: BIR.Program) -> cps_provider_3_LinkResult:
+  match v_0:
+    case BIR.Program{_, v_9, v_10, _, _, _}:
+      cps_provider_3_link_checked(cps_provider_3_foreign_name_check(v_9, v_10), v_9)
+
+def cps_provider_3_js_key_candidate(+v_1: String, +v_3: String) -> String:
+  cps_provider_3_js_key_join(String.eq(v_1, ""), v_1, v_3)
+
+def cps_provider_3_js_key_join(v_1: Bool, +v_3: String, +v_5: String) -> String:
+  match v_1:
+    case True{}:
+      v_5
+    case False{}:
+      String.append(v_3, String.append(".", v_5))
+
+def cps_provider_3_js_key_member(+v_2: Map<&2, Bool>, v_4: String) -> Bool:
+  cps_provider_3_js_key_member_found(IndexLookup.find(Bool, v_2, v_4))
+
+def cps_provider_3_js_key_member_found(v_2: Maybe<&2, Bool>) -> Bool:
+  match v_2:
+    case Some{_}:
+      True{}
+    case None{}:
+      False{}
+
+def cps_provider_3_js_key_resolve(+v_2: Map<&2, Bool>, +v_4: String, +v_6: String) -> Maybe<&2, String>:
+  cps_provider_3_js_key_resolve_qualified(cps_provider_3_js_key_member(v_2, cps_provider_3_js_key_candidate(v_4, v_6)), v_2, v_4, v_6)
+
+def cps_provider_3_js_key_resolve_qualified(v_1: Bool, +v_4: Map<&2, Bool>, +v_6: String, +v_8: String) -> Maybe<&2, String>:
+  match v_1:
+    case True{}:
+      Some{cps_provider_3_js_key_candidate(v_6, v_8)}
+    case False{}:
+      cps_provider_3_js_key_resolve_bare(cps_provider_3_js_key_member(v_4, v_8), v_8)
+
+def cps_provider_3_js_key_resolve_bare(v_1: Bool, +v_3: String) -> Maybe<&2, String>:
+  match v_1:
+    case True{}:
+      Some{v_3}
+    case False{}:
+      None{}
+
+def cps_provider_3_js_key_declaration(v_0: BIR.Declaration, v_3: Map<&2, Bool>) -> Map<&2, Bool>:
+  match v_0:
+    case BIR.FunctionDeclaration{v_9, _, _}:
+      Map.set(&2, Bool, v_3, v_9, True{})
+    case BIR.LazyDeclaration{v_15, _}:
+      Map.set(&2, Bool, v_3, v_15, True{})
+    case BIR.NativeDeclaration{v_21, _, _}:
+      Map.set(&2, Bool, v_3, v_21, True{})
+    case BIR.ForeignDeclaration{v_34, _, _, _, _, _, _, _, _}:
+      Map.set(&2, Bool, v_3, v_34, True{})
+
+def cps_provider_3_js_key_declarations(v_1: List<&2, BIR.Declaration>, v_4: Map<&2, Bool>) -> Map<&2, Bool>:
+  match v_1:
+    case []:
+      v_4
+    case +v_9 <> v_10:
+      cps_provider_3_js_key_declarations(v_10, cps_provider_3_js_key_declaration(v_9, v_4))
+
+def cps_provider_3_js_key_layouts(v_1: List<&2, BIR.ConstructorLayout>, v_4: Map<&2, Bool>) -> Map<&2, Bool>:
+  match v_1:
+    case []:
+      v_4
+    case BIR.ConstructorLayout{_, v_13, _, _} <> v_16:
+      cps_provider_3_js_key_layouts(v_16, Map.set(&2, Bool, v_4, v_13, True{}))
+
+def cps_provider_3_js_key_families(v_1: List<&2, BIR.Family>, v_4: Map<&2, Bool>) -> Map<&2, Bool>:
+  match v_1:
+    case []:
+      v_4
+    case BIR.Family{v_14, _, _, _, _, _} <> v_20:
+      cps_provider_3_js_key_families(v_20, Map.set(&2, Bool, v_4, v_14, True{}))
+
+def cps_provider_3_js_key_functions(v_1: List<&2, BIR.TypeFunction>, v_4: Map<&2, Bool>) -> Map<&2, Bool>:
+  match v_1:
+    case []:
+      v_4
+    case BIR.TypeFunction{v_13, _, _, _, _} <> v_18:
+      cps_provider_3_js_key_functions(v_18, Map.set(&2, Bool, v_4, v_13, True{}))
+
+def cps_provider_3_js_native_families(v_1: List<&2, BIR.Family>, v_4: Map<&2, String>) -> Map<&2, String>:
+  match v_1:
+    case []:
+      v_4
+    case BIR.Family{v_14, _, v_16, _, _, _} <> v_20:
+      cps_provider_3_js_native_family(v_16, v_14, v_20, v_4)
+
+def cps_provider_3_js_native_family(v_2: Maybe<&2, String>, v_4: String, v_6: List<&2, BIR.Family>, v_9: Map<&2, String>) -> Map<&2, String>:
+  match v_2:
+    case None{}:
+      cps_provider_3_js_native_families(v_6, Map.set(&2, String, v_9, v_4, ""))
+    case Some{v_15}:
+      cps_provider_3_js_native_families(v_6, Map.set(&2, String, v_9, v_4, v_15))
+
+def cps_provider_3_js_native_functions(v_1: List<&2, BIR.TypeFunction>, v_4: Map<&2, String>) -> Map<&2, String>:
+  match v_1:
+    case []:
+      v_4
+    case BIR.TypeFunction{v_13, v_14, _, _, _} <> v_18:
+      cps_provider_3_js_native_function(v_14, v_13, v_18, v_4)
+
+def cps_provider_3_js_native_function(v_2: Maybe<&2, String>, v_4: String, v_6: List<&2, BIR.TypeFunction>, v_9: Map<&2, String>) -> Map<&2, String>:
+  match v_2:
+    case None{}:
+      cps_provider_3_js_native_functions(v_6, Map.set(&2, String, v_9, v_4, "TF"))
+    case Some{v_15}:
+      cps_provider_3_js_native_functions(v_6, Map.set(&2, String, v_9, v_4, v_15))
+
+def cps_provider_3_js_native_markers(v_0: BIR.Program) -> Map<&2, String>:
+  match v_0:
+    case BIR.Program{_, _, _, v_12, v_13, _}:
+      cps_provider_3_js_native_functions(v_13, cps_provider_3_js_native_families(v_12, Map.new(&2, String)))
+
+def cps_provider_3_js_known_keys(v_0: BIR.Program) -> Map<&2, Bool>:
+  match v_0:
+    case BIR.Program{_, v_10, v_11, v_12, v_13, _}:
+      cps_provider_3_js_key_functions(v_13, cps_provider_3_js_key_families(v_12, cps_provider_3_js_key_layouts(v_11, cps_provider_3_js_key_declarations(v_10, Map.new(&2, Bool)))))
+
+def cps_provider_3_js_cid(v_1: cps_provider_3_JSScan) -> cps_provider_3_JSCidResult:
+  match v_1:
+    case cps_provider_3_JSScanComplete{v_4}:
+      cps_provider_3_JSCidDone{String.from_list(List.reverse(&2, Char, v_4))}
+    case cps_provider_3_JSScanRefused{v_7}:
+      cps_provider_3_JSCidFailure{v_7}
+
+def cps_provider_3_js_word(+v_1: Char) -> Bool:
+  match v_1:
+    case '_':
+      True{}
+    case _:
+      Bool.or(Char.is_alpha(v_1), Char.is_digit(v_1))
+
+def cps_provider_3_js_key_char(+v_1: Char) -> Bool:
+  match v_1:
+    case '.':
+      True{}
+    case '/':
+      True{}
+    case '~':
+      True{}
+    case '-':
+      True{}
+    case _:
+      cps_provider_3_js_word(v_1)
+
+def cps_provider_3_js_text_closes(v_2: List<&2, Char>, +v_4: Char, +v_6: Bool) -> Bool:
+  match v_2:
+    case []:
+      False{}
+    case '\\' <> v_9:
+      cps_provider_3_js_text_closes_escape(v_9, v_4, v_6)
+    case +v_13 <> v_14:
+      cps_provider_3_js_text_closes_step(Char.is_eq(v_13, v_4), v_13, v_14, v_4, v_6)
+
+def cps_provider_3_js_text_closes_escape(v_2: List<&2, Char>, v_4: Char, v_6: Bool) -> Bool:
+  match v_2:
+    case []:
+      False{}
+    case _ <> v_11:
+      cps_provider_3_js_text_closes(v_11, v_4, v_6)
+
+def cps_provider_3_js_text_closes_step(v_1: Bool, v_3: Char, v_6: List<&2, Char>, v_8: Char, +v_10: Bool) -> Bool:
+  match v_1:
+    case True{}:
+      True{}
+    case False{}:
+      cps_provider_3_js_text_closes_newline(Bool.and(v_10, Char.is_eq(v_3, '\n')), v_6, v_8, v_10)
+
+def cps_provider_3_js_text_closes_newline(v_1: Bool, v_4: List<&2, Char>, v_6: Char, v_8: Bool) -> Bool:
+  match v_1:
+    case True{}:
+      False{}
+    case False{}:
+      cps_provider_3_js_text_closes(v_4, v_6, v_8)
+
+def cps_provider_3_js_block_closes(v_2: List<&2, Char>) -> Bool:
+  match v_2:
+    case []:
+      False{}
+    case '*' <> v_5:
+      cps_provider_3_js_block_closes_star(v_5)
+    case _ <> v_10:
+      cps_provider_3_js_block_closes(v_10)
+
+def cps_provider_3_js_block_closes_star(+v_2: List<&2, Char>) -> Bool:
+  match v_2:
+    case '/' <> _:
+      True{}
+    case _:
+      cps_provider_3_js_block_closes(v_2)
+
+def cps_provider_3_js_emit_chars(v_2: List<&2, Char>, +v_5: List<&2, Char>) -> List<&2, Char>:
+  match v_2:
+    case []:
+      v_5
+    case v_10 <> v_11:
+      cps_provider_3_js_emit_chars(v_11, v_10 <> v_5)
+
+def cps_provider_3_js_scan(v_2: List<&2, Char>, v_4: cps_provider_3_JSMode, v_6: Bool, +v_9: List<&2, Char>, +v_12: Map<&2, Bool>, +v_14: String) -> cps_provider_3_JSScan:
+  match v_2:
+    case []:
+      cps_provider_3_JSScanComplete{v_9}
+    case v_18 <> v_19:
+      cps_provider_3_js_scan_mode(v_4, v_18, v_19, v_6, v_9, v_12, v_14)
+
+def cps_provider_3_js_scan_mode(v_1: cps_provider_3_JSMode, +v_3: Char, +v_6: List<&2, Char>, v_8: Bool, +v_11: List<&2, Char>, +v_14: Map<&2, Bool>, +v_16: String) -> cps_provider_3_JSScan:
+  match v_1:
+    case cps_provider_3_JSCode{}:
+      cps_provider_3_js_scan_code(v_3, v_6, v_8, v_11, v_14, v_16)
+    case cps_provider_3_JSLineComment{}:
+      cps_provider_3_js_scan_line(v_3, v_6, v_11, v_14, v_16)
+    case cps_provider_3_JSBlockComment{}:
+      cps_provider_3_js_scan_block(v_3, v_6, v_11, v_14, v_16)
+    case cps_provider_3_JSDoubleQuote{}:
+      cps_provider_3_js_scan_text(v_3, v_6, cps_provider_3_JSDoubleQuote{}, '"', v_11, v_14, v_16)
+    case cps_provider_3_JSSingleQuote{}:
+      cps_provider_3_js_scan_text(v_3, v_6, cps_provider_3_JSSingleQuote{}, '\'', v_11, v_14, v_16)
+    case cps_provider_3_JSBacktick{}:
+      cps_provider_3_js_scan_text(v_3, v_6, cps_provider_3_JSBacktick{}, '`', v_11, v_14, v_16)
+
+def cps_provider_3_js_scan_code(+v_1: Char, +v_4: List<&2, Char>, +v_6: Bool, +v_9: List<&2, Char>, +v_12: Map<&2, Bool>, +v_14: String) -> cps_provider_3_JSScan:
+  match v_1:
+    case '/':
+      cps_provider_3_js_scan_slash(v_4, v_9, v_12, v_14)
+    case '"':
+      cps_provider_3_js_scan(v_4, Bool.pick(cps_provider_3_JSMode, cps_provider_3_js_text_closes(v_4, '"', True{}), cps_provider_3_JSDoubleQuote{}, cps_provider_3_JSCode{}), False{}, v_1 <> v_9, v_12, v_14)
+    case '\'':
+      cps_provider_3_js_scan(v_4, Bool.pick(cps_provider_3_JSMode, cps_provider_3_js_text_closes(v_4, '\'', True{}), cps_provider_3_JSSingleQuote{}, cps_provider_3_JSCode{}), False{}, v_1 <> v_9, v_12, v_14)
+    case '`':
+      cps_provider_3_js_scan(v_4, Bool.pick(cps_provider_3_JSMode, cps_provider_3_js_text_closes(v_4, '`', False{}), cps_provider_3_JSBacktick{}, cps_provider_3_JSCode{}), False{}, v_1 <> v_9, v_12, v_14)
+    case 'C':
+      cps_provider_3_js_scan_cid(v_6, v_4, v_9, v_12, v_14)
+    case _:
+      cps_provider_3_js_scan(v_4, cps_provider_3_JSCode{}, cps_provider_3_js_word(v_1), v_1 <> v_9, v_12, v_14)
+
+def cps_provider_3_js_scan_slash(+v_2: List<&2, Char>, +v_5: List<&2, Char>, +v_8: Map<&2, Bool>, +v_10: String) -> cps_provider_3_JSScan:
+  match v_2:
+    case '/' <> v_13:
+      cps_provider_3_js_scan(v_13, cps_provider_3_JSLineComment{}, False{}, '/' <> '/' <> v_5, v_8, v_10)
+    case '*' <> +v_16:
+      cps_provider_3_js_scan(v_16, Bool.pick(cps_provider_3_JSMode, cps_provider_3_js_block_closes(v_16), cps_provider_3_JSBlockComment{}, cps_provider_3_JSCode{}), False{}, '*' <> '/' <> v_5, v_8, v_10)
+    case _:
+      cps_provider_3_js_scan(v_2, cps_provider_3_JSCode{}, False{}, '/' <> v_5, v_8, v_10)
+
+def cps_provider_3_js_scan_cid(v_1: Bool, +v_4: List<&2, Char>, +v_7: List<&2, Char>, +v_10: Map<&2, Bool>, +v_12: String) -> cps_provider_3_JSScan:
+  match v_1:
+    case True{}:
+      cps_provider_3_js_scan(v_4, cps_provider_3_JSCode{}, True{}, 'C' <> v_7, v_10, v_12)
+    case False{}:
+      cps_provider_3_js_scan_cid_prefix(v_4, v_7, v_10, v_12)
+
+def cps_provider_3_js_scan_cid_prefix(+v_2: List<&2, Char>, +v_5: List<&2, Char>, +v_8: Map<&2, Bool>, +v_10: String) -> cps_provider_3_JSScan:
+  match v_2:
+    case 'I' <> 'D' <> '(' <> +v_13:
+      cps_provider_3_js_scan_cid_key(cps_provider_3_js_collect_key(v_13, []), v_13, v_5, v_8, v_10)
+    case _:
+      cps_provider_3_js_scan(v_2, cps_provider_3_JSCode{}, True{}, 'C' <> v_5, v_8, v_10)
+
+def cps_provider_3_js_scan_cid_key(v_1: cps_provider_3_JSKeyScan, v_4: List<&2, Char>, +v_7: List<&2, Char>, +v_10: Map<&2, Bool>, +v_12: String) -> cps_provider_3_JSScan:
+  match v_1:
+    case cps_provider_3_JSKeyFound{v_16, v_17}:
+      cps_provider_3_js_scan_cid_found(v_16, v_17, v_7, v_10, v_12)
+    case cps_provider_3_JSKeyAbsent{}:
+      cps_provider_3_js_scan(v_4, cps_provider_3_JSCode{}, False{}, '(' <> 'D' <> 'I' <> 'C' <> v_7, v_10, v_12)
+
+def cps_provider_3_js_scan_cid_found(v_1: String, v_4: List<&2, Char>, v_7: List<&2, Char>, v_10: Map<&2, Bool>, v_12: String) -> cps_provider_3_JSScan:
+  cps_provider_3_js_scan_cid_resolved(cps_provider_3_js_key_resolve(v_10, v_12, v_1), v_1, v_4, v_7, v_10, v_12)
+
+def cps_provider_3_js_scan_cid_resolved(v_2: Maybe<&2, String>, +v_4: String, v_7: List<&2, Char>, v_10: List<&2, Char>, v_13: Map<&2, Bool>, v_15: String) -> cps_provider_3_JSScan:
+  match v_2:
+    case Some{v_18}:
+      cps_provider_3_js_scan(v_7, cps_provider_3_JSCode{}, False{}, cps_provider_3_js_emit_chars(String.to_list(cps_provider_3_js_quote(v_18)), v_10), v_13, v_15)
+    case None{}:
+      cps_provider_3_JSScanRefused{String.append("CID(", String.append(v_4, ") names no constructor or def"))}
+
+def cps_provider_3_js_collect_key(v_2: List<&2, Char>, +v_5: List<&2, Char>) -> cps_provider_3_JSKeyScan:
+  match v_2:
+    case []:
+      cps_provider_3_JSKeyAbsent{}
+    case ')' <> v_8:
+      cps_provider_3_js_collect_key_close(v_5, v_8)
+    case +v_12 <> v_13:
+      cps_provider_3_js_collect_key_more(cps_provider_3_js_key_char(v_12), v_12, v_13, v_5)
+
+def cps_provider_3_js_collect_key_close(+v_2: List<&2, Char>, v_5: List<&2, Char>) -> cps_provider_3_JSKeyScan:
+  match v_2:
+    case []:
+      cps_provider_3_JSKeyAbsent{}
+    case _:
+      cps_provider_3_JSKeyFound{String.from_list(List.reverse(&2, Char, v_2)), v_5}
+
+def cps_provider_3_js_collect_key_more(v_1: Bool, v_3: Char, v_6: List<&2, Char>, v_9: List<&2, Char>) -> cps_provider_3_JSKeyScan:
+  match v_1:
+    case True{}:
+      cps_provider_3_js_collect_key(v_6, v_3 <> v_9)
+    case False{}:
+      cps_provider_3_JSKeyAbsent{}
+
+def cps_provider_3_js_scan_line(+v_1: Char, +v_4: List<&2, Char>, +v_7: List<&2, Char>, +v_10: Map<&2, Bool>, +v_12: String) -> cps_provider_3_JSScan:
+  match v_1:
+    case '\n':
+      cps_provider_3_js_scan(v_4, cps_provider_3_JSCode{}, False{}, v_1 <> v_7, v_10, v_12)
+    case '\\':
+      cps_provider_3_js_scan_line_more(v_4, v_7, v_10, v_12)
+    case _:
+      cps_provider_3_js_scan(v_4, cps_provider_3_JSLineComment{}, False{}, v_1 <> v_7, v_10, v_12)
+
+def cps_provider_3_js_scan_line_more(+v_2: List<&2, Char>, +v_5: List<&2, Char>, +v_8: Map<&2, Bool>, +v_10: String) -> cps_provider_3_JSScan:
+  match v_2:
+    case '\n' <> v_13:
+      cps_provider_3_js_scan(v_13, cps_provider_3_JSLineComment{}, False{}, '\n' <> '\\' <> v_5, v_8, v_10)
+    case _:
+      cps_provider_3_js_scan(v_2, cps_provider_3_JSLineComment{}, False{}, '\\' <> v_5, v_8, v_10)
+
+def cps_provider_3_js_scan_block(+v_1: Char, +v_4: List<&2, Char>, +v_7: List<&2, Char>, +v_10: Map<&2, Bool>, +v_12: String) -> cps_provider_3_JSScan:
+  match v_1:
+    case '*':
+      cps_provider_3_js_scan_block_more(v_4, v_7, v_10, v_12)
+    case _:
+      cps_provider_3_js_scan(v_4, cps_provider_3_JSBlockComment{}, False{}, v_1 <> v_7, v_10, v_12)
+
+def cps_provider_3_js_scan_block_more(+v_2: List<&2, Char>, +v_5: List<&2, Char>, +v_8: Map<&2, Bool>, +v_10: String) -> cps_provider_3_JSScan:
+  match v_2:
+    case '/' <> v_13:
+      cps_provider_3_js_scan(v_13, cps_provider_3_JSCode{}, False{}, '/' <> '*' <> v_5, v_8, v_10)
+    case _:
+      cps_provider_3_js_scan(v_2, cps_provider_3_JSBlockComment{}, False{}, '*' <> v_5, v_8, v_10)
+
+def cps_provider_3_js_scan_text(+v_1: Char, +v_4: List<&2, Char>, +v_6: cps_provider_3_JSMode, v_8: Char, +v_11: List<&2, Char>, +v_14: Map<&2, Bool>, +v_16: String) -> cps_provider_3_JSScan:
+  match v_1:
+    case '\\':
+      cps_provider_3_js_scan_text_more(v_4, v_6, v_11, v_14, v_16)
+    case _:
+      cps_provider_3_js_scan_text_plain(Char.is_eq(v_1, v_8), v_1, v_4, v_6, v_11, v_14, v_16)
+
+def cps_provider_3_js_scan_text_plain(v_1: Bool, +v_3: Char, +v_6: List<&2, Char>, v_8: cps_provider_3_JSMode, +v_11: List<&2, Char>, +v_14: Map<&2, Bool>, +v_16: String) -> cps_provider_3_JSScan:
+  match v_1:
+    case True{}:
+      cps_provider_3_js_scan(v_6, cps_provider_3_JSCode{}, False{}, v_3 <> v_11, v_14, v_16)
+    case False{}:
+      cps_provider_3_js_scan(v_6, v_8, False{}, v_3 <> v_11, v_14, v_16)
+
+def cps_provider_3_js_scan_text_more(v_2: List<&2, Char>, v_4: cps_provider_3_JSMode, +v_7: List<&2, Char>, v_10: Map<&2, Bool>, v_12: String) -> cps_provider_3_JSScan:
+  match v_2:
+    case []:
+      cps_provider_3_JSScanComplete{'\\' <> v_7}
+    case v_16 <> v_17:
+      cps_provider_3_js_scan(v_17, v_4, False{}, v_16 <> '\\' <> v_7, v_10, v_12)
+
+def cps_provider_3_js_source_text(v_1: List<&2, BIR.SourceFile>, v_3: String) -> Maybe<&2, String>:
+  match v_1:
+    case []:
+      None{}
+    case BIR.SourceFile{+v_9, v_10} <> v_11:
+      cps_provider_3_js_source_text_same(String.eq(v_3, v_9), v_10, v_11, v_3)
+
+def cps_provider_3_js_source_text_same(v_1: Bool, v_3: String, v_5: List<&2, BIR.SourceFile>, +v_7: String) -> Maybe<&2, String>:
+  match v_1:
+    case True{}:
+      Some{v_3}
+    case False{}:
+      cps_provider_3_js_source_text(v_5, v_7)
+
+def cps_provider_3_js_effect_chunk(v_1: String) -> String:
+  String.append("(() => {\n", String.append(v_1, "\n})();\n\n"))
+
+def cps_provider_3_js_effect_sources(v_2: List<&2, cps_provider_3_LinkSource>, v_4: List<&2, BIR.SourceFile>, +v_7: Map<&2, Bool>, v_10: List<&2, String>) -> cps_provider_3_JSEffects:
+  match v_2:
+    case []:
+      cps_provider_3_JSEffectsReady{String.join(List.reverse(&2, String, v_10), "")}
+    case +v_15 <> v_16:
+      match v_15:
+        case cps_provider_3_LinkSource{v_20, v_21, v_22}:
+          cps_provider_3_js_effect_text(cps_provider_3_js_source_text(v_4, v_20), v_20, v_21, v_22, v_16, v_4, v_7, v_10)
+
+def cps_provider_3_js_effect_text(v_2: Maybe<&2, String>, +v_4: String, +v_6: String, +v_7: Ast.SourceSpan, v_10: List<&2, cps_provider_3_LinkSource>, v_12: List<&2, BIR.SourceFile>, +v_15: Map<&2, Bool>, v_18: List<&2, String>) -> cps_provider_3_JSEffects:
+  match v_2:
+    case None{}:
+      cps_provider_3_JSEffectsFailure{String.append("bend: missing JavaScript foreign source ", v_4), v_7}
+    case Some{v_21}:
+      cps_provider_3_js_effect_scan(cps_provider_3_js_cid(cps_provider_3_js_scan(String.to_list(v_21), cps_provider_3_JSCode{}, False{}, [], v_15, v_6)), v_4, v_7, v_10, v_12, v_15, v_18)
+
+def cps_provider_3_js_effect_scan(v_1: cps_provider_3_JSCidResult, +v_3: String, +v_4: Ast.SourceSpan, v_7: List<&2, cps_provider_3_LinkSource>, v_9: List<&2, BIR.SourceFile>, +v_12: Map<&2, Bool>, v_15: List<&2, String>) -> cps_provider_3_JSEffects:
+  match v_1:
+    case cps_provider_3_JSCidFailure{v_18}:
+      cps_provider_3_JSEffectsFailure{String.append(String.append(v_3, ": "), v_18), v_4}
+    case cps_provider_3_JSCidDone{v_20}:
+      cps_provider_3_js_effect_sources(v_7, v_9, v_12, cps_provider_3_js_effect_chunk(v_20) <> v_15)
+
+def cps_provider_3_cat(v_2: List<&2, String>) -> String:
+  String.join(v_2, "")
+
+def cps_provider_3_js_escape_char(v_1: Char) -> String:
+  match v_1:
+    case '"':
+      "\\\""
+    case '\\':
+      "\\\\"
+    case '\n':
+      "\\n"
+    case '\r':
+      "\\r"
+    case '\t':
+      "\\t"
+    case '\0':
+      "\\u0000"
+    case _:
+      String.from_list([v_1])
+
+def cps_provider_3_js_quote_chars(v_2: List<&2, Char>) -> String:
+  match v_2:
+    case []:
+      "\""
+    case +v_6 <> v_7:
+      String.append(cps_provider_3_js_escape_char(v_6), cps_provider_3_js_quote_chars(v_7))
+
+def cps_provider_3_js_quote(v_1: String) -> String:
+  String.append("\"", cps_provider_3_js_quote_chars(String.to_list(v_1)))
+
+def cps_provider_3_bool_source(v_1: Bool) -> String:
+  match v_1:
+    case True{}:
+      "true"
+    case False{}:
+      "false"
+
+def cps_provider_3_optional_text(v_2: Maybe<&2, String>) -> String:
+  match v_2:
+    case None{}:
+      "null"
+    case Some{v_5}:
+      cps_provider_3_js_quote(v_5)
+
+def cps_provider_3_local(v_1: U32) -> String:
+  cps_provider_3_cat(["$v", U32.show(v_1)])
+
+def cps_provider_3_capture(v_1: U32) -> String:
+  cps_provider_3_cat(["$c", U32.show(v_1)])
+
+def cps_provider_3_code_name(v_1: U32) -> String:
+  cps_provider_3_cat(["$b", U32.show(v_1)])
+
+def cps_provider_3_atom(v_0: BIR.Atom) -> String:
+  match v_0:
+    case BIR.Local{v_3}:
+      cps_provider_3_local(v_3)
+    case BIR.Capture{v_6}:
+      cps_provider_3_capture(v_6)
+    case BIR.Symbol{_, v_11}:
+      cps_provider_3_cat(["$D[", cps_provider_3_js_quote(v_11), "]"])
+    case BIR.Word{v_14}:
+      U32.show(v_14)
+    case BIR.Natural{v_15}:
+      Nat.show(v_15)
+    case BIR.FloatBits{v_17}:
+      cps_provider_3_cat(["f32_from_bits(", U32.show(v_17), ")"])
+    case BIR.Text{v_19}:
+      cps_provider_3_js_quote(v_19)
+    case BIR.Boolean{v_21}:
+      cps_provider_3_bool_source(v_21)
+    case BIR.Null{}:
+      "null"
+    case BIR.Undefined{}:
+      "undefined"
+
+def cps_provider_3_arguments(v_1: List<&2, BIR.Arg>) -> List<&2, String>:
+  match v_1:
+    case []:
+      []
+    case BIR.Arg{_, v_8} <> v_9:
+      cps_provider_3_atom(v_8) <> cps_provider_3_arguments(v_9)
+
+def cps_provider_3_parameter_names(v_1: List<&2, BIR.Parameter>) -> List<&2, String>:
+  match v_1:
+    case []:
+      []
+    case BIR.Parameter{v_7, _} <> v_9:
+      cps_provider_3_local(v_7) <> cps_provider_3_parameter_names(v_9)
+
+def cps_provider_3_capture_names(v_1: List<&2, BIR.Use>, +v_3: U32) -> List<&2, String>:
+  match v_1:
+    case []:
+      []
+    case _ <> v_9:
+      cps_provider_3_capture(v_3) <> cps_provider_3_capture_names(v_9, U32.inc(v_3))
+
+def cps_provider_3_captured_names(v_1: List<&2, BIR.Arg>, +v_3: U32) -> List<&2, String>:
+  match v_1:
+    case []:
+      []
+    case _ <> v_9:
+      cps_provider_3_capture(v_3) <> cps_provider_3_captured_names(v_9, U32.inc(v_3))
+
+def cps_provider_3_call(v_1: U32, v_4: List<&2, String>) -> String:
+  cps_provider_3_cat([cps_provider_3_code_name(v_1), "(", String.join(v_4, ","), ")"])
+
+def cps_provider_3_tail_call(v_1: U32, +v_4: List<&2, String>) -> String:
+  +v_8 = List.length(&2, String, v_4)
+  cps_provider_3_tail_call_selected(v_1, v_4, v_8, Bool.and(Nat.is_gt(v_8, 0n), Nat.is_le(v_8, 32n)))
+
+def cps_provider_3_tail_call_selected(v_1: U32, v_4: List<&2, String>, v_6: Nat, v_8: Bool) -> String:
+  match v_8:
+    case True{}:
+      cps_provider_3_cat(["run_named", Nat.show(v_6), "(", cps_provider_3_code_name(v_1), ",", String.join(v_4, ","), ",$td)"])
+    case False{}:
+      cps_provider_3_cat(["run_many(", cps_provider_3_code_name(v_1), ",[", String.join(v_4, ","), "],$td)"])
+
+def cps_provider_3_public_closure(v_2: List<&2, String>, v_4: String) -> String:
+  match v_2:
+    case []:
+      v_4
+    case v_8 <> v_9:
+      cps_provider_3_cat(["run_clo((", v_8, ",$raw=undefined)=>run_force(", cps_provider_3_public_closure(v_9, v_4), ",$raw))"])
+
+def cps_provider_3_closure(v_1: U32, +v_3: List<&2, BIR.Arg>, +v_5: List<&2, BIR.Parameter>) -> String:
+  +v_9 = cps_provider_3_captured_names(v_3, 0)
+  +v_12 = cps_provider_3_parameter_names(v_5)
+  v_17 = cps_provider_3_public_closure(v_12, cps_provider_3_tail_call(v_1, List.append(&2, String, v_9, v_12)))
+  cps_provider_3_closure_captures(v_3, v_9, v_17)
+
+def cps_provider_3_closure_captures(+v_1: List<&2, BIR.Arg>, v_4: List<&2, String>, v_6: String) -> String:
+  match v_1:
+    case []:
+      v_6
+    case _:
+      cps_provider_3_cat(["((", String.join(v_4, ","), ")=>", v_6, ")(", String.join(cps_provider_3_arguments(v_1), ","), ")"])
+
+def cps_provider_3_record_fields(v_1: List<&2, BIR.Field>) -> String:
+  match v_1:
+    case []:
+      ""
+    case BIR.Field{_, v_9, _, v_11} <> v_12:
+      cps_provider_3_cat([",[", cps_provider_3_js_quote(v_9), "]:", cps_provider_3_atom(v_11), cps_provider_3_record_fields(v_12)])
+
+def cps_provider_3_foreign_parameters(v_1: Nat, v_3: Nat) -> List<&2, String>:
+  match v_1:
+    case 0n:
+      []
+    case 1n+v_7:
+      cps_provider_3_cat(["$f", Nat.show(v_3)]) <> cps_provider_3_foreign_parameters(v_7, Nat.add(v_3, 1n))
+
+def cps_provider_3_foreign_arrow(v_2: List<&2, String>, v_4: String) -> String:
+  match v_2:
+    case []:
+      v_4
+    case v_8 <> v_9:
+      cps_provider_3_cat([v_8, "=>", cps_provider_3_foreign_arrow(v_9, v_4)])
+
+def cps_provider_3_foreign_kont(v_1: Bool) -> String:
+  match v_1:
+    case True{}:
+      "((x)=>$k(nat_in(x)))"
+    case False{}:
+      "$k"
+
+def cps_provider_3_foreign_request(+v_1: String, v_3: Nat, v_5: Bool) -> String:
+  v_9 = cps_provider_3_foreign_parameters(v_3, 0n)
+  v_14 = cps_provider_3_cat(["({$:", cps_provider_3_js_quote(v_1), ",args:[", String.join(v_9, ","), "],kont:", cps_provider_3_foreign_kont(v_5), "})"])
+  cps_provider_3_cat(["$D[", cps_provider_3_js_quote(v_1), "]=", cps_provider_3_foreign_arrow(List.append(&2, String, v_9, ["$k"]), v_14), ";\n"])
+
+def cps_provider_3_js_descriptor_head(v_0: BIR.Descriptor) -> Maybe<&2, cps_provider_3_JSDescriptorHead>:
+  match v_0:
+    case BIR.DescriptorRef{v_5, v_6}:
+      Some{cps_provider_3_JSDescriptorHead{v_5, v_6}}
+    case BIR.DescriptorConstructor{v_9, v_10}:
+      Some{cps_provider_3_JSDescriptorHead{v_9, v_10}}
+    case BIR.DescriptorNamedFill{v_14, _, v_16}:
+      Some{cps_provider_3_JSDescriptorHead{v_14, v_16}}
+    case BIR.DescriptorNamedPlus{v_20, _, v_22}:
+      Some{cps_provider_3_JSDescriptorHead{v_20, v_22}}
+    case BIR.DescriptorFill{v_25, v_26}:
+      cps_provider_3_js_descriptor_head_fill(cps_provider_3_js_descriptor_head(v_25), v_26)
+    case BIR.DescriptorPlus{v_31, v_32}:
+      cps_provider_3_js_descriptor_head_fill(cps_provider_3_js_descriptor_head(v_31), v_32)
+    case BIR.DescriptorApplication{v_37, v_38}:
+      cps_provider_3_js_descriptor_head_applied(cps_provider_3_js_descriptor_head(v_37), v_38)
+    case _:
+      None{}
+
+def cps_provider_3_js_descriptor_head_fill(v_2: Maybe<&2, cps_provider_3_JSDescriptorHead>, v_4: List<&2, BIR.Descriptor>) -> Maybe<&2, cps_provider_3_JSDescriptorHead>:
+  match v_2:
+    case Some{cps_provider_3_JSDescriptorHead{v_9, _}}:
+      Some{cps_provider_3_JSDescriptorHead{v_9, v_4}}
+    case None{}:
+      None{}
+
+def cps_provider_3_js_descriptor_head_applied(v_2: Maybe<&2, cps_provider_3_JSDescriptorHead>, v_3: BIR.Descriptor) -> Maybe<&2, cps_provider_3_JSDescriptorHead>:
+  match v_2:
+    case Some{cps_provider_3_JSDescriptorHead{v_8, v_9}}:
+      Some{cps_provider_3_JSDescriptorHead{v_8, List.append(&2, BIR.Descriptor, v_9, [v_3])}}
+    case None{}:
+      None{}
+
+def cps_provider_3_js_native_is(+v_2: Map<&2, String>, v_4: String, v_6: String) -> Bool:
+  cps_provider_3_js_native_is_found(IndexLookup.find(String, v_2, v_4), v_6)
+
+def cps_provider_3_js_native_is_found(v_2: Maybe<&2, String>, v_4: String) -> Bool:
+  match v_2:
+    case Some{v_7}:
+      String.eq(v_7, v_4)
+    case None{}:
+      False{}
+
+def cps_provider_3_js_io_answer(v_0: BIR.Descriptor, +v_3: Map<&2, String>) -> Maybe<&2, BIR.Descriptor>:
+  cps_provider_3_js_io_answer_head(cps_provider_3_js_descriptor_head(v_0), v_3)
+
+def cps_provider_3_js_io_answer_head(v_2: Maybe<&2, cps_provider_3_JSDescriptorHead>, +v_5: Map<&2, String>) -> Maybe<&2, BIR.Descriptor>:
+  match v_2:
+    case Some{cps_provider_3_JSDescriptorHead{v_9, v_10}}:
+      cps_provider_3_js_io_answer_named(cps_provider_3_js_native_is(v_5, v_9, "IO"), v_10)
+    case None{}:
+      None{}
+
+def cps_provider_3_js_io_answer_named(v_1: Bool, v_3: List<&2, BIR.Descriptor>) -> Maybe<&2, BIR.Descriptor>:
+  match v_1:
+    case True{}:
+      cps_provider_3_js_first_descriptor(v_3)
+    case False{}:
+      None{}
+
+def cps_provider_3_js_first_descriptor(v_1: List<&2, BIR.Descriptor>) -> Maybe<&2, BIR.Descriptor>:
+  match v_1:
+    case []:
+      None{}
+    case +v_5 <> _:
+      Some{v_5}
+
+def cps_provider_3_js_nat_descriptor(v_0: BIR.Descriptor, +v_3: Map<&2, String>) -> Bool:
+  cps_provider_3_js_nat_descriptor_head(cps_provider_3_js_descriptor_head(v_0), v_3)
+
+def cps_provider_3_js_nat_descriptor_head(v_2: Maybe<&2, cps_provider_3_JSDescriptorHead>, +v_5: Map<&2, String>) -> Bool:
+  match v_2:
+    case Some{cps_provider_3_JSDescriptorHead{v_9, v_10}}:
+      cps_provider_3_js_nat_descriptor_named(cps_provider_3_js_native_is(v_5, v_9, "Nat"), v_10)
+    case None{}:
+      False{}
+
+def cps_provider_3_js_nat_descriptor_named(v_1: Bool, v_3: List<&2, BIR.Descriptor>) -> Bool:
+  match v_1:
+    case True{}:
+      Nat.is_eq(List.length(&2, BIR.Descriptor, v_3), 0n)
+    case False{}:
+      False{}
+
+def cps_provider_3_js_bool_of_parameter(v_1: cps_provider_3_JSParameter) -> Bool:
+  match v_1:
+    case cps_provider_3_JSParameterNat{}:
+      True{}
+    case _:
+      False{}
+
+def cps_provider_3_js_nat_answer(v_0: BIR.Descriptor, +v_3: Map<&2, String>) -> Bool:
+  cps_provider_3_js_nat_answer_io(cps_provider_3_js_io_answer(v_0, v_3), v_3)
+
+def cps_provider_3_js_nat_answer_io(v_1: Maybe<&2, BIR.Descriptor>, +v_4: Map<&2, String>) -> Bool:
+  match v_1:
+    case Some{v_7}:
+      cps_provider_3_js_nat_descriptor(v_7, v_4)
+    case None{}:
+      False{}
+
+def cps_provider_3_operation(v_0: BIR.Op) -> String:
+  match v_0:
+    case BIR.Copy{v_3}:
+      cps_provider_3_atom(v_3)
+    case BIR.PrimitiveCall{v_8, v_9, _}:
+      cps_provider_3_cat([cps_provider_3_primitive_name(v_8), "(", String.join(cps_provider_3_arguments(v_9), ","), ")"])
+    case BIR.Closure{v_17, v_18, v_19}:
+      cps_provider_3_closure(v_17, v_18, v_19)
+    case BIR.Direct{v_23, v_24}:
+      cps_provider_3_cat(["run_loop(", cps_provider_3_call(v_23, cps_provider_3_arguments(v_24)), ")"])
+    case BIR.Apply{v_31, BIR.Arg{_, v_33}}:
+      cps_provider_3_cat(["run_loop(run_tail(", cps_provider_3_atom(v_31), ",", cps_provider_3_atom(v_33), "))"])
+    case BIR.LoadSymbol{_, v_40}:
+      cps_provider_3_cat(["$D[", cps_provider_3_js_quote(v_40), "]"])
+    case BIR.Construct{_, v_47, v_48}:
+      cps_provider_3_cat(["({$:", cps_provider_3_js_quote(v_47), cps_provider_3_record_fields(v_48), "})"])
+    case BIR.Project{v_56, _, _, v_59}:
+      cps_provider_3_cat([cps_provider_3_atom(v_56), "[", cps_provider_3_js_quote(v_59), "]"])
+    case BIR.HasTag{v_66, _, v_68}:
+      cps_provider_3_tag_test(cps_provider_3_atom(v_66), v_68)
+
+def cps_provider_3_tag_test(+v_1: String, v_3: String) -> String:
+  cps_provider_3_cat(["(", v_1, "&&", v_1, ".$===", cps_provider_3_js_quote(v_3), ")"])
+
+def cps_provider_3_tag_subject_same(v_0: BIR.Atom, v_1: BIR.Atom) -> Bool:
+  match v_0, v_1:
+    case BIR.Local{v_5}, BIR.Local{v_6}:
+      U32.is_eq(v_5, v_6)
+    case BIR.Capture{v_9}, BIR.Capture{v_10}:
+      U32.is_eq(v_9, v_10)
+    case _, _:
+      False{}
+
+def cps_provider_3_tagged_region_checked(v_1: Bool, v_3: cps_provider_3_TaggedRegion) -> Maybe<&2, cps_provider_3_TaggedRegion>:
+  match v_1:
+    case True{}:
+      Some{v_3}
+    case False{}:
+      None{}
+
+def cps_provider_3_tagged_region(v_0: BIR.Block) -> Maybe<&2, cps_provider_3_TaggedRegion>:
+  match v_0:
+    case BIR.Region{+v_12, BIR.Let{+v_13, BIR.HasTag{+v_14, _, v_16}, BIR.Branch{BIR.Local{v_17}, v_18, BIR.LeaveRegion{v_19}}}, v_20}:
+      cps_provider_3_tagged_region_checked(Bool.and(U32.is_eq(v_12, v_19), Bool.and(U32.is_eq(v_13, v_17), cps_provider_3_tag_subject_same(v_14, v_14))), cps_provider_3_TaggedRegion{v_12, v_13, v_14, v_16, v_18, v_20})
+    case _:
+      None{}
+
+def cps_provider_3_tag_unseen(v_2: Maybe<&2, Bool>) -> Bool:
+  match v_2:
+    case None{}:
+      True{}
+    case Some{_}:
+      False{}
+
+def cps_provider_3_tag_group_selected(v_1: Bool, v_2: BIR.Atom, v_4: cps_provider_3_TaggedRegion, v_5: BIR.Block, v_8: List<&2, cps_provider_3_TagArm>, v_11: Map<&2, Bool>, v_13: Nat) -> cps_provider_3_TagGroup:
+  match v_1:
+    case False{}:
+      cps_provider_3_TagGroup{v_8, v_5, v_13}
+    case True{}:
+      match v_4:
+        case cps_provider_3_TaggedRegion{v_21, v_22, _, +v_24, v_25, v_26}:
+          cps_provider_3_tag_group(v_2, v_26, cps_provider_3_TagArm{v_21, v_22, v_24, v_25} <> v_8, Map.set(&2, Bool, v_11, v_24, True{}), Nat.add(v_13, 1n))
+
+def cps_provider_3_tag_group_view(v_2: Maybe<&2, cps_provider_3_TaggedRegion>, +v_3: BIR.Atom, v_4: BIR.Block, v_7: List<&2, cps_provider_3_TagArm>, +v_10: Map<&2, Bool>, v_12: Nat) -> cps_provider_3_TagGroup:
+  match v_2:
+    case None{}:
+      cps_provider_3_TagGroup{v_7, v_4, v_12}
+    case Some{+v_15}:
+      match v_15:
+        case cps_provider_3_TaggedRegion{_, _, v_24, +v_25, _, _}:
+          cps_provider_3_tag_group_selected(Bool.and(cps_provider_3_tag_subject_same(v_3, v_24), cps_provider_3_tag_unseen(IndexLookup.find(Bool, v_10, v_25))), v_3, v_15, v_4, v_7, v_10, v_12)
+
+def cps_provider_3_tag_group(v_0: BIR.Atom, +v_1: BIR.Block, v_4: List<&2, cps_provider_3_TagArm>, v_7: Map<&2, Bool>, v_9: Nat) -> cps_provider_3_TagGroup:
+  cps_provider_3_tag_group_view(cps_provider_3_tagged_region(v_1), v_0, v_1, v_4, v_7, v_9)
+
+def cps_provider_3_tag_arms(v_2: List<&2, cps_provider_3_TagArm>) -> String:
+  match v_2:
+    case []:
+      ""
+    case cps_provider_3_TagArm{v_9, v_10, v_11, v_12} <> v_13:
+      cps_provider_3_cat(["case ", cps_provider_3_js_quote(v_11), ":{$case", U32.show(v_9), ":{const ", cps_provider_3_local(v_10), "=true;", cps_provider_3_block(v_12), "}break;}", cps_provider_3_tag_arms(v_13)])
+
+def cps_provider_3_ordinary_region(v_1: U32, v_2: BIR.Block, v_3: BIR.Block) -> String:
+  cps_provider_3_cat(["$case", U32.show(v_1), ":{", cps_provider_3_block(v_2), "}", cps_provider_3_block(v_3)])
+
+def cps_provider_3_tag_render_selected(v_1: Bool, v_2: BIR.Atom, v_5: List<&2, cps_provider_3_TagArm>, v_6: BIR.Block, v_8: U32, v_9: BIR.Block, v_10: BIR.Block) -> String:
+  match v_1:
+    case False{}:
+      cps_provider_3_ordinary_region(v_8, v_9, v_10)
+    case True{}:
+      cps_provider_3_cat(["switch(", cps_provider_3_atom(v_2), "?.$){", cps_provider_3_tag_arms(List.reverse(&2, cps_provider_3_TagArm, v_5)), "}", cps_provider_3_block(v_6)])
+
+def cps_provider_3_tag_render_group(v_1: cps_provider_3_TagGroup, v_2: BIR.Atom, v_4: U32, v_5: BIR.Block, v_6: BIR.Block) -> String:
+  match v_1:
+    case cps_provider_3_TagGroup{v_11, v_12, +v_13}:
+      cps_provider_3_tag_render_selected(Nat.is_gt(v_13, 2n), v_2, v_11, v_12, v_4, v_5, v_6)
+
+def cps_provider_3_region_view(v_2: Maybe<&2, cps_provider_3_TaggedRegion>, v_4: U32, v_5: BIR.Block, v_6: BIR.Block) -> String:
+  match v_2:
+    case None{}:
+      cps_provider_3_ordinary_region(v_4, v_5, v_6)
+    case Some{v_10}:
+      match v_10:
+        case cps_provider_3_TaggedRegion{v_17, v_18, +v_19, +v_20, v_21, v_22}:
+          cps_provider_3_tag_render_group(cps_provider_3_tag_group(v_19, v_22, [cps_provider_3_TagArm{v_17, v_18, v_20, v_21}], Map.set(&2, Bool, Map.new(&2, Bool), v_20, True{}), 1n), v_19, v_4, v_5, v_6)
+
+def cps_provider_3_region(+v_1: U32, +v_2: BIR.Block, +v_3: BIR.Block) -> String:
+  cps_provider_3_region_view(cps_provider_3_tagged_region(BIR.Region{v_1, v_2, v_3}), v_1, v_2, v_3)
+
+def cps_provider_3_block(v_0: BIR.Block) -> String:
+  match v_0:
+    case BIR.Return{v_3}:
+      cps_provider_3_cat(["return ", cps_provider_3_atom(v_3), ";"])
+    case BIR.Let{v_9, v_10, v_11}:
+      cps_provider_3_cat(["const ", cps_provider_3_local(v_9), "=", cps_provider_3_operation(v_10), ";", cps_provider_3_block(v_11)])
+    case BIR.Branch{v_19, v_20, v_21}:
+      cps_provider_3_cat(["if(", cps_provider_3_atom(v_19), "){", cps_provider_3_block(v_20), "}else{", cps_provider_3_block(v_21), "}"])
+    case BIR.Region{v_28, v_29, v_30}:
+      cps_provider_3_region(v_28, v_29, v_30)
+    case BIR.LeaveRegion{v_33}:
+      cps_provider_3_cat(["break $case", U32.show(v_33), ";"])
+    case BIR.TailDirect{v_37, v_38}:
+      cps_provider_3_cat(["return ", cps_provider_3_tail_call(v_37, cps_provider_3_arguments(v_38)), ";"])
+    case BIR.TailApply{v_45, BIR.Arg{_, v_47}}:
+      cps_provider_3_cat(["return run_tail(", cps_provider_3_atom(v_45), ",", cps_provider_3_atom(v_47), ");"])
+    case BIR.Failure{v_52}:
+      cps_provider_3_cat(["throw ", cps_provider_3_js_quote(v_52), ";"])
+
+def cps_provider_3_code(v_0: BIR.Code) -> String:
+  match v_0:
+    case BIR.Code{v_6, v_7, v_8, v_9}:
+      v_14 = List.append(&2, String, cps_provider_3_capture_names(v_7, 0), cps_provider_3_parameter_names(v_8))
+      cps_provider_3_cat(["function ", cps_provider_3_code_name(v_6), "(", String.join(List.append(&2, String, v_14, ["$td=0"]), ","), "){", cps_provider_3_block(v_9), "}\n"])
+
+def cps_provider_3_codes(v_1: List<&2, BIR.Code>) -> String:
+  match v_1:
+    case []:
+      ""
+    case v_5 <> v_6:
+      cps_provider_3_cat([cps_provider_3_code(v_5), cps_provider_3_codes(v_6)])
+
+def cps_provider_3_primitive_name(v_0: BIR.Primitive) -> String:
+  match v_0:
+    case BIR.PrimU32Add{}:
+      "$p_u32_add"
+    case BIR.PrimU32Sub{}:
+      "$p_u32_sub"
+    case BIR.PrimU32Mul{}:
+      "$p_u32_mul"
+    case BIR.PrimU32Div{}:
+      "$p_u32_div"
+    case BIR.PrimNatAdd{}:
+      "$p_nat_add"
+    case BIR.PrimNatSub{}:
+      "$p_nat_sub"
+    case BIR.PrimNatMul{}:
+      "$p_nat_mul"
+    case BIR.PrimNatCmp{}:
+      "$p_nat_cmp"
+    case BIR.PrimNatMin{}:
+      "$p_nat_min"
+    case BIR.PrimNatMax{}:
+      "$p_nat_max"
+    case BIR.PrimStringAppend{}:
+      "$p_string_append"
+    case BIR.PrimBoolOr{}:
+      "$p_bool_or"
+    case BIR.PrimBoolXor{}:
+      "$p_bool_xor"
+    case BIR.PrimU32IsZero{}:
+      "$p_u32_is_zero"
+    case BIR.PrimF32Asin{}:
+      "$p_f32_asin"
+    case BIR.PrimF32Acos{}:
+      "$p_f32_acos"
+    case BIR.PrimF32Atan{}:
+      "$p_f32_atan"
+    case BIR.PrimF32Sinh{}:
+      "$p_f32_sinh"
+    case BIR.PrimF32Cosh{}:
+      "$p_f32_cosh"
+    case BIR.PrimF32Tanh{}:
+      "$p_f32_tanh"
+    case BIR.PrimU32Mod{}:
+      "$p_u32_mod"
+    case BIR.PrimU32And{}:
+      "$p_u32_and"
+    case BIR.PrimU32Or{}:
+      "$p_u32_or"
+    case BIR.PrimU32Xor{}:
+      "$p_u32_xor"
+    case BIR.PrimU32IsEq{}:
+      "$p_u32_is_eq"
+    case BIR.PrimU32IsNe{}:
+      "$p_u32_is_ne"
+    case BIR.PrimU32IsLt{}:
+      "$p_u32_is_lt"
+    case BIR.PrimU32IsLe{}:
+      "$p_u32_is_le"
+    case BIR.PrimU32IsGt{}:
+      "$p_u32_is_gt"
+    case BIR.PrimU32IsGe{}:
+      "$p_u32_is_ge"
+    case BIR.PrimU32Inc{}:
+      "$p_u32_inc"
+    case BIR.PrimU32Not{}:
+      "$p_u32_not"
+    case BIR.PrimU32Shl{}:
+      "$p_u32_shl"
+    case BIR.PrimU32Shr{}:
+      "$p_u32_shr"
+    case BIR.PrimU32Shln{}:
+      "$p_u32_shln"
+    case BIR.PrimU32Shrn{}:
+      "$p_u32_shrn"
+    case BIR.PrimU32Cmp{}:
+      "$p_u32_cmp"
+    case BIR.PrimU32ToNat{}:
+      "$p_u32_to_nat"
+    case BIR.PrimU32FromNat{}:
+      "$p_u32_from_nat"
+    case BIR.PrimF32Add{}:
+      "$p_f32_add"
+    case BIR.PrimF32Sub{}:
+      "$p_f32_sub"
+    case BIR.PrimF32Mul{}:
+      "$p_f32_mul"
+    case BIR.PrimF32Div{}:
+      "$p_f32_div"
+    case BIR.PrimF32Mod{}:
+      "$p_f32_mod"
+    case BIR.PrimF32Neg{}:
+      "$p_f32_neg"
+    case BIR.PrimF32Sqrt{}:
+      "$p_f32_sqrt"
+    case BIR.PrimF32Abs{}:
+      "$p_f32_abs"
+    case BIR.PrimF32ToU32{}:
+      "$p_f32_to_u32"
+    case BIR.PrimF32Bits{}:
+      "$p_f32_bits"
+    case BIR.PrimF32Show{}:
+      "$p_f32_show"
+    case BIR.PrimF32Read{}:
+      "$p_f32_read"
+    case BIR.PrimF32IsEq{}:
+      "$p_f32_is_eq"
+    case BIR.PrimF32IsNe{}:
+      "$p_f32_is_ne"
+    case BIR.PrimF32IsLt{}:
+      "$p_f32_is_lt"
+    case BIR.PrimF32IsLe{}:
+      "$p_f32_is_le"
+    case BIR.PrimF32IsGt{}:
+      "$p_f32_is_gt"
+    case BIR.PrimF32IsGe{}:
+      "$p_f32_is_ge"
+    case BIR.PrimF32Pow{}:
+      "$p_f32_pow"
+    case BIR.PrimF32Atan2{}:
+      "$p_f32_atan2"
+    case BIR.PrimF32Exp{}:
+      "$p_f32_exp"
+    case BIR.PrimF32Log{}:
+      "$p_f32_log"
+    case BIR.PrimF32Log2{}:
+      "$p_f32_log2"
+    case BIR.PrimF32Log10{}:
+      "$p_f32_log10"
+    case BIR.PrimF32Sin{}:
+      "$p_f32_sin"
+    case BIR.PrimF32Cos{}:
+      "$p_f32_cos"
+    case BIR.PrimF32Tan{}:
+      "$p_f32_tan"
+    case BIR.PrimF32Floor{}:
+      "$p_f32_floor"
+    case BIR.PrimF32Ceil{}:
+      "$p_f32_ceil"
+    case BIR.PrimF32Trunc{}:
+      "$p_f32_trunc"
+    case BIR.PrimF32ToNat{}:
+      "$p_f32_to_nat"
+    case BIR.PrimU32ToF32{}:
+      "$p_u32_to_f32"
+    case BIR.PrimNatDouble{}:
+      "$p_nat_double"
+    case BIR.PrimNatIsLt{}:
+      "$p_nat_is_lt"
+    case BIR.PrimNatDivmod{}:
+      "$p_nat_divmod"
+    case BIR.PrimStringEq{}:
+      "$p_string_eq"
+    case BIR.PrimMapBit{}:
+      "$p_map_bit"
+    case BIR.PrimStringCmp{}:
+      "$p_string_cmp"
+    case BIR.PrimStringToList{}:
+      "$p_string_to_list"
+    case BIR.PrimStringLength{}:
+      "$p_string_length"
+    case BIR.PrimArrayNew{}:
+      "$p_array_new"
+    case BIR.PrimArraySet{}:
+      "$p_array_set"
+    case BIR.PrimArrayGet{}:
+      "$p_array_get"
+    case BIR.PrimArraySwap{}:
+      "$p_array_swap"
+    case BIR.PrimArraySize{}:
+      "$p_array_size"
+    case BIR.PrimArrayClone{}:
+      "$p_array_clone"
+    case BIR.PrimNatPredecessor{}:
+      "$p_nat_predecessor"
+    case BIR.PrimNatSuccessor{}:
+      "$p_nat_successor"
+    case BIR.PrimCharNew{}:
+      "$p_char_new"
+    case BIR.PrimCharCode{}:
+      "$p_char_code"
+    case BIR.PrimStringHead{}:
+      "$p_string_head"
+    case BIR.PrimStringTail{}:
+      "$p_string_tail"
+    case BIR.PrimWordToU32{}:
+      "$p_word_to_u32"
+    case BIR.PrimU32ToWord{}:
+      "$p_u32_to_word"
+    case BIR.PrimF32FromBits{}:
+      "$p_f32_from_bits"
+    case BIR.PrimF32FromWord{}:
+      "$p_f32_from_word"
+    case BIR.PrimF32ToWord{}:
+      "$p_f32_to_word"
+    case BIR.PrimArrayLeaf{}:
+      "$p_array_leaf"
+    case BIR.PrimArrayNode{}:
+      "$p_array_node"
+    case BIR.PrimArrayLeafValue{}:
+      "$p_array_leaf_value"
+    case BIR.PrimArrayLeft{}:
+      "$p_array_left"
+    case BIR.PrimArrayRight{}:
+      "$p_array_right"
+    case BIR.PrimIsArrayLeaf{}:
+      "$p_is_array_leaf"
+    case BIR.PrimIsArrayNode{}:
+      "$p_is_array_node"
+    case BIR.PrimIsNatZero{}:
+      "$p_is_nat_zero"
+    case BIR.PrimIsNatSuccessor{}:
+      "$p_is_nat_successor"
+    case BIR.PrimIsStringEmpty{}:
+      "$p_is_string_empty"
+    case BIR.PrimIsStringNonempty{}:
+      "$p_is_string_nonempty"
+    case BIR.PrimIsTrue{}:
+      "$p_is_true"
+    case BIR.PrimIsFalse{}:
+      "$p_is_false"
+    case BIR.PrimSameValue{}:
+      "$p_same_value"
+    case BIR.PrimFloatBitsEqual{}:
+      "$p_float_bits_equal"
+
+def cps_provider_3_primitive_public(v_0: BIR.Primitive) -> String:
+  match v_0:
+    case BIR.PrimU32Add{}:
+      "(a)=>(b)=>((a+b)>>>0)"
+    case BIR.PrimU32Sub{}:
+      "(a)=>(b)=>((a-b)>>>0)"
+    case BIR.PrimU32Mul{}:
+      "(a)=>(b)=>(Math.imul(a,b)>>>0)"
+    case BIR.PrimU32Div{}:
+      "(a)=>(b)=>(b===0?0:(a/b)>>>0)"
+    case BIR.PrimNatAdd{}:
+      "(a)=>(b)=>nat_chk(a+b)"
+    case BIR.PrimNatSub{}:
+      "(a)=>(b)=>(a<b?0:a-b)"
+    case BIR.PrimNatMul{}:
+      "(a)=>(b)=>nat_chk(a*b)"
+    case BIR.PrimNatCmp{}:
+      "(a)=>(b)=>cmp_new(a,b)"
+    case BIR.PrimNatMin{}:
+      "(a)=>(b)=>(a<b?a:b)"
+    case BIR.PrimNatMax{}:
+      "(a)=>(b)=>(a>b?a:b)"
+    case BIR.PrimStringAppend{}:
+      "(a)=>(b)=>a+b"
+    case BIR.PrimBoolOr{}:
+      "(a)=>(b)=>a||b"
+    case BIR.PrimBoolXor{}:
+      "(a)=>(b)=>a!==b"
+    case BIR.PrimU32IsZero{}:
+      "(a)=>a===0"
+    case BIR.PrimF32Asin{}:
+      "(a)=>Math.fround(Math.asin(a))"
+    case BIR.PrimF32Acos{}:
+      "(a)=>Math.fround(Math.acos(a))"
+    case BIR.PrimF32Atan{}:
+      "(a)=>Math.fround(Math.atan(a))"
+    case BIR.PrimF32Sinh{}:
+      "(a)=>Math.fround(Math.sinh(a))"
+    case BIR.PrimF32Cosh{}:
+      "(a)=>Math.fround(Math.cosh(a))"
+    case BIR.PrimF32Tanh{}:
+      "(a)=>Math.fround(Math.tanh(a))"
+    case BIR.PrimU32Mod{}:
+      "(a)=>(b)=>(b===0?a:a%b)"
+    case BIR.PrimU32And{}:
+      "(a)=>(b)=>((a&b)>>>0)"
+    case BIR.PrimU32Or{}:
+      "(a)=>(b)=>((a|b)>>>0)"
+    case BIR.PrimU32Xor{}:
+      "(a)=>(b)=>((a^b)>>>0)"
+    case BIR.PrimU32IsEq{}:
+      "(a)=>(b)=>a===b"
+    case BIR.PrimU32IsNe{}:
+      "(a)=>(b)=>a!==b"
+    case BIR.PrimU32IsLt{}:
+      "(a)=>(b)=>a<b"
+    case BIR.PrimU32IsLe{}:
+      "(a)=>(b)=>a<=b"
+    case BIR.PrimU32IsGt{}:
+      "(a)=>(b)=>a>b"
+    case BIR.PrimU32IsGe{}:
+      "(a)=>(b)=>a>=b"
+    case BIR.PrimU32Inc{}:
+      "(a)=>(a+1)>>>0"
+    case BIR.PrimU32Not{}:
+      "(a)=>(~a)>>>0"
+    case BIR.PrimU32Shl{}:
+      "(a)=>(a<<1)>>>0"
+    case BIR.PrimU32Shr{}:
+      "(a)=>a>>>1"
+    case BIR.PrimU32Shln{}:
+      "(a)=>(b)=>b>=32?0:(a<<b)>>>0"
+    case BIR.PrimU32Shrn{}:
+      "(a)=>(b)=>b>=32?0:a>>>b"
+    case BIR.PrimU32Cmp{}:
+      "(a)=>(b)=>cmp_new(a,b)"
+    case BIR.PrimU32ToNat{}:
+      "(a)=>a"
+    case BIR.PrimU32FromNat{}:
+      "(a)=>a>>>0"
+    case BIR.PrimF32Add{}:
+      "(a)=>(b)=>Math.fround(a+b)"
+    case BIR.PrimF32Sub{}:
+      "(a)=>(b)=>Math.fround(a-b)"
+    case BIR.PrimF32Mul{}:
+      "(a)=>(b)=>Math.fround(a*b)"
+    case BIR.PrimF32Div{}:
+      "(a)=>(b)=>Math.fround(a/b)"
+    case BIR.PrimF32Mod{}:
+      "(a)=>(b)=>Math.fround(a%b)"
+    case BIR.PrimF32Neg{}:
+      "(a)=>-a"
+    case BIR.PrimF32Sqrt{}:
+      "(a)=>Math.fround(Math.sqrt(a))"
+    case BIR.PrimF32Abs{}:
+      "(a)=>Math.fround(Math.abs(a))"
+    case BIR.PrimF32ToU32{}:
+      "(a)=>(a>=1&&a<4294967296?Math.floor(a):0)"
+    case BIR.PrimF32Bits{}:
+      "(a)=>f32_bits(a)"
+    case BIR.PrimF32Show{}:
+      "(a)=>f32_show(a)"
+    case BIR.PrimF32Read{}:
+      "(a)=>f32_read(a)"
+    case BIR.PrimF32IsEq{}:
+      "(a)=>(b)=>a===b"
+    case BIR.PrimF32IsNe{}:
+      "(a)=>(b)=>a!==b"
+    case BIR.PrimF32IsLt{}:
+      "(a)=>(b)=>a<b"
+    case BIR.PrimF32IsLe{}:
+      "(a)=>(b)=>a<=b"
+    case BIR.PrimF32IsGt{}:
+      "(a)=>(b)=>a>b"
+    case BIR.PrimF32IsGe{}:
+      "(a)=>(b)=>a>=b"
+    case BIR.PrimF32Pow{}:
+      "(a)=>(b)=>Math.fround(Math.pow(a,b))"
+    case BIR.PrimF32Atan2{}:
+      "(a)=>(b)=>Math.fround(Math.atan2(a,b))"
+    case BIR.PrimF32Exp{}:
+      "(a)=>Math.fround(Math.exp(a))"
+    case BIR.PrimF32Log{}:
+      "(a)=>Math.fround(Math.log(a))"
+    case BIR.PrimF32Log2{}:
+      "(a)=>Math.fround(Math.log2(a))"
+    case BIR.PrimF32Log10{}:
+      "(a)=>Math.fround(Math.log10(a))"
+    case BIR.PrimF32Sin{}:
+      "(a)=>Math.fround(Math.sin(a))"
+    case BIR.PrimF32Cos{}:
+      "(a)=>Math.fround(Math.cos(a))"
+    case BIR.PrimF32Tan{}:
+      "(a)=>Math.fround(Math.tan(a))"
+    case BIR.PrimF32Floor{}:
+      "(a)=>Math.fround(Math.floor(a))"
+    case BIR.PrimF32Ceil{}:
+      "(a)=>Math.fround(Math.ceil(a))"
+    case BIR.PrimF32Trunc{}:
+      "(a)=>Math.fround(Math.trunc(a))"
+    case BIR.PrimF32ToNat{}:
+      "(a)=>Math.floor(a)"
+    case BIR.PrimU32ToF32{}:
+      "(a)=>Math.fround(a)"
+    case BIR.PrimNatDouble{}:
+      "(a)=>nat_chk(a+a)"
+    case BIR.PrimNatIsLt{}:
+      "(a)=>(b)=>a<b"
+    case BIR.PrimNatDivmod{}:
+      "(a)=>(b)=>nat_divmod(a,b)"
+    case BIR.PrimStringEq{}:
+      "(a)=>(b)=>a===b"
+    case BIR.PrimMapBit{}:
+      "(key)=>(position)=>{const character=Math.floor(position/33);if(character>=key.length)return tuple(key,false);const offset=position%33;let at=0;for(let i=0;i<character&&at<key.length;i++)at+=key.codePointAt(at)>65535?2:1;return tuple(key,at<key.length&&(offset===0||((key.codePointAt(at)>>>(32-offset))&1)!==0));}"
+    case BIR.PrimStringCmp{}:
+      "(a)=>(b)=>{let i=0,j=0,order=0;if(a!==b){while(i<a.length&&j<b.length){const x=a.codePointAt(i),y=b.codePointAt(j);if(x!==y){order=x<y?-1:1;break;}i+=x>65535?2:1;j+=y>65535?2:1;}if(order===0)order=i<a.length?1:j<b.length?-1:0;}return tuple(tuple(a,b),cmp_new(order,0));}"
+    case BIR.PrimStringToList{}:
+      "(text)=>{let tail={$:\"Nil\"};for(let i=text.length;i>0;){const end=i,low=text.charCodeAt(--i);if(low>=0xDC00&&low<=0xDFFF&&i>0){const high=text.charCodeAt(i-1);if(high>=0xD800&&high<=0xDBFF)--i;}tail={$:\"Con\",head:text.slice(i,end),tail};}return tail;}"
+    case BIR.PrimStringLength{}:
+      "(a)=>[...a].length"
+    case BIR.PrimArrayNew{}:
+      "(a)=>(b)=>array_new(a,b)"
+    case BIR.PrimArraySet{}:
+      "(a)=>(i)=>(v)=>(a[i%a.length]=v,a)"
+    case BIR.PrimArrayGet{}:
+      "(a)=>(i)=>tuple(a,a[i%a.length])"
+    case BIR.PrimArraySwap{}:
+      "(a)=>(i)=>(v)=>array_swap(a,i,v)"
+    case BIR.PrimArraySize{}:
+      "(a)=>tuple(a,a.length)"
+    case BIR.PrimArrayClone{}:
+      "(a)=>tuple(a,a.slice())"
+    case BIR.PrimNatPredecessor{}:
+      "(a)=>a-1"
+    case BIR.PrimNatSuccessor{}:
+      "(a)=>nat_chk(a+1)"
+    case BIR.PrimCharNew{}:
+      "(a)=>char_new(a)"
+    case BIR.PrimCharCode{}:
+      "(a)=>a.codePointAt(0)"
+    case BIR.PrimStringHead{}:
+      "(a)=>String.fromCodePoint(a.codePointAt(0))"
+    case BIR.PrimStringTail{}:
+      "(a)=>$string_tail(a)"
+    case BIR.PrimWordToU32{}:
+      "(a)=>word_to_u32(a)"
+    case BIR.PrimU32ToWord{}:
+      "(a)=>u32_to_word(a)"
+    case BIR.PrimF32FromBits{}:
+      "(a)=>f32_from_bits(a)"
+    case BIR.PrimF32FromWord{}:
+      "(a)=>f32_from_bits(word_to_u32(a))"
+    case BIR.PrimF32ToWord{}:
+      "(a)=>u32_to_word(f32_bits(a))"
+    case BIR.PrimArrayLeaf{}:
+      "(a)=>[a]"
+    case BIR.PrimArrayNode{}:
+      "(a)=>(b)=>array_node(a,b)"
+    case BIR.PrimArrayLeafValue{}:
+      "(a)=>a[0]"
+    case BIR.PrimArrayLeft{}:
+      "(a)=>a.slice(0,a.length>>1)"
+    case BIR.PrimArrayRight{}:
+      "(a)=>a.slice(a.length>>1)"
+    case BIR.PrimIsArrayLeaf{}:
+      "(a)=>a.length===1"
+    case BIR.PrimIsArrayNode{}:
+      "(a)=>a.length!==1"
+    case BIR.PrimIsNatZero{}:
+      "(a)=>a===0"
+    case BIR.PrimIsNatSuccessor{}:
+      "(a)=>a>0"
+    case BIR.PrimIsStringEmpty{}:
+      "(a)=>a===\"\""
+    case BIR.PrimIsStringNonempty{}:
+      "(a)=>a!==\"\""
+    case BIR.PrimIsTrue{}:
+      "(a)=>a===true"
+    case BIR.PrimIsFalse{}:
+      "(a)=>a===false"
+    case BIR.PrimSameValue{}:
+      "(a)=>(b)=>a===b"
+    case BIR.PrimFloatBitsEqual{}:
+      "(a)=>(b)=>f32_bits(a)===b"
+
+def cps_provider_3_primitive_runtime() -> String:
+  "const $p_u32_add=(a,b)=>((a+b)>>>0);\nconst $p_u32_sub=(a,b)=>((a-b)>>>0);\nconst $p_u32_mul=(a,b)=>(Math.imul(a,b)>>>0);\nconst $p_u32_div=(a,b)=>(b===0?0:(a/b)>>>0);\nconst $p_nat_add=(a,b)=>nat_chk(a+b);\nconst $p_nat_sub=(a,b)=>(a<b?0:a-b);\nconst $p_nat_mul=(a,b)=>nat_chk(a*b);\nconst $p_nat_cmp=(a,b)=>cmp_new(a,b);\nconst $p_nat_min=(a,b)=>(a<b?a:b);\nconst $p_nat_max=(a,b)=>(a>b?a:b);\nconst $p_string_append=(a,b)=>a+b;\nconst $p_bool_or=(a,b)=>a||b;\nconst $p_bool_xor=(a,b)=>a!==b;\nconst $p_u32_is_zero=(a)=>a===0;\nconst $p_f32_asin=(a)=>Math.fround(Math.asin(a));\nconst $p_f32_acos=(a)=>Math.fround(Math.acos(a));\nconst $p_f32_atan=(a)=>Math.fround(Math.atan(a));\nconst $p_f32_sinh=(a)=>Math.fround(Math.sinh(a));\nconst $p_f32_cosh=(a)=>Math.fround(Math.cosh(a));\nconst $p_f32_tanh=(a)=>Math.fround(Math.tanh(a));\nconst $p_u32_mod=(a,b)=>(b===0?a:a%b);\nconst $p_u32_and=(a,b)=>((a&b)>>>0);\nconst $p_u32_or=(a,b)=>((a|b)>>>0);\nconst $p_u32_xor=(a,b)=>((a^b)>>>0);\nconst $p_u32_is_eq=(a,b)=>a===b;\nconst $p_u32_is_ne=(a,b)=>a!==b;\nconst $p_u32_is_lt=(a,b)=>a<b;\nconst $p_u32_is_le=(a,b)=>a<=b;\nconst $p_u32_is_gt=(a,b)=>a>b;\nconst $p_u32_is_ge=(a,b)=>a>=b;\nconst $p_u32_inc=(a)=>(a+1)>>>0;\nconst $p_u32_not=(a)=>(~a)>>>0;\nconst $p_u32_shl=(a)=>(a<<1)>>>0;\nconst $p_u32_shr=(a)=>a>>>1;\nconst $p_u32_shln=(a,b)=>b>=32?0:(a<<b)>>>0;\nconst $p_u32_shrn=(a,b)=>b>=32?0:a>>>b;\nconst $p_u32_cmp=(a,b)=>cmp_new(a,b);\nconst $p_u32_to_nat=(a)=>a;\nconst $p_u32_from_nat=(a)=>a>>>0;\nconst $p_f32_add=(a,b)=>Math.fround(a+b);\nconst $p_f32_sub=(a,b)=>Math.fround(a-b);\nconst $p_f32_mul=(a,b)=>Math.fround(a*b);\nconst $p_f32_div=(a,b)=>Math.fround(a/b);\nconst $p_f32_mod=(a,b)=>Math.fround(a%b);\nconst $p_f32_neg=(a)=>-a;\nconst $p_f32_sqrt=(a)=>Math.fround(Math.sqrt(a));\nconst $p_f32_abs=(a)=>Math.fround(Math.abs(a));\nconst $p_f32_to_u32=(a)=>(a>=1&&a<4294967296?Math.floor(a):0);\nconst $p_f32_bits=(a)=>f32_bits(a);\nconst $p_f32_show=(a)=>f32_show(a);\nconst $p_f32_read=(a)=>f32_read(a);\nconst $p_f32_is_eq=(a,b)=>a===b;\nconst $p_f32_is_ne=(a,b)=>a!==b;\nconst $p_f32_is_lt=(a,b)=>a<b;\nconst $p_f32_is_le=(a,b)=>a<=b;\nconst $p_f32_is_gt=(a,b)=>a>b;\nconst $p_f32_is_ge=(a,b)=>a>=b;\nconst $p_f32_pow=(a,b)=>Math.fround(Math.pow(a,b));\nconst $p_f32_atan2=(a,b)=>Math.fround(Math.atan2(a,b));\nconst $p_f32_exp=(a)=>Math.fround(Math.exp(a));\nconst $p_f32_log=(a)=>Math.fround(Math.log(a));\nconst $p_f32_log2=(a)=>Math.fround(Math.log2(a));\nconst $p_f32_log10=(a)=>Math.fround(Math.log10(a));\nconst $p_f32_sin=(a)=>Math.fround(Math.sin(a));\nconst $p_f32_cos=(a)=>Math.fround(Math.cos(a));\nconst $p_f32_tan=(a)=>Math.fround(Math.tan(a));\nconst $p_f32_floor=(a)=>Math.fround(Math.floor(a));\nconst $p_f32_ceil=(a)=>Math.fround(Math.ceil(a));\nconst $p_f32_trunc=(a)=>Math.fround(Math.trunc(a));\nconst $p_f32_to_nat=(a)=>Math.floor(a);\nconst $p_u32_to_f32=(a)=>Math.fround(a);\nconst $p_nat_double=(a)=>nat_chk(a+a);\nconst $p_nat_is_lt=(a,b)=>a<b;\nconst $p_nat_divmod=(a,b)=>nat_divmod(a,b);\nconst $p_string_eq=(a,b)=>a===b;\nconst $p_map_bit=(key,position)=>{const character=Math.floor(position/33);if(character>=key.length)return tuple(key,false);const offset=position%33;let at=0;for(let i=0;i<character&&at<key.length;i++)at+=key.codePointAt(at)>65535?2:1;return tuple(key,at<key.length&&(offset===0||((key.codePointAt(at)>>>(32-offset))&1)!==0));};\nconst $p_string_cmp=(a,b)=>{let i=0,j=0,order=0;if(a!==b){while(i<a.length&&j<b.length){const x=a.codePointAt(i),y=b.codePointAt(j);if(x!==y){order=x<y?-1:1;break;}i+=x>65535?2:1;j+=y>65535?2:1;}if(order===0)order=i<a.length?1:j<b.length?-1:0;}return tuple(tuple(a,b),cmp_new(order,0));};\nconst $p_string_to_list=(text)=>{let tail={$:\"Nil\"};for(let i=text.length;i>0;){const end=i,low=text.charCodeAt(--i);if(low>=0xDC00&&low<=0xDFFF&&i>0){const high=text.charCodeAt(i-1);if(high>=0xD800&&high<=0xDBFF)--i;}tail={$:\"Con\",head:text.slice(i,end),tail};}return tail;};\nconst $p_string_length=(a)=>[...a].length;\nconst $p_array_new=(a,b)=>array_new(a,b);\nconst $p_array_set=(a,i,v)=>(a[i%a.length]=v,a);\nconst $p_array_get=(a,i)=>tuple(a,a[i%a.length]);\nconst $p_array_swap=(a,i,v)=>array_swap(a,i,v);\nconst $p_array_size=(a)=>tuple(a,a.length);\nconst $p_array_clone=(a)=>tuple(a,a.slice());\nconst $p_nat_predecessor=(a)=>a-1;\nconst $p_nat_successor=(a)=>nat_chk(a+1);\nconst $p_char_new=(a)=>char_new(a);\nconst $p_char_code=(a)=>a.codePointAt(0);\nconst $p_string_head=(a)=>String.fromCodePoint(a.codePointAt(0));\nconst $p_string_tail=(a)=>$string_tail(a);\nconst $p_word_to_u32=(a)=>word_to_u32(a);\nconst $p_u32_to_word=(a)=>u32_to_word(a);\nconst $p_f32_from_bits=(a)=>f32_from_bits(a);\nconst $p_f32_from_word=(a)=>f32_from_bits(word_to_u32(a));\nconst $p_f32_to_word=(a)=>u32_to_word(f32_bits(a));\nconst $p_array_leaf=(a)=>[a];\nconst $p_array_node=(a,b)=>array_node(a,b);\nconst $p_array_leaf_value=(a)=>a[0];\nconst $p_array_left=(a)=>a.slice(0,a.length>>1);\nconst $p_array_right=(a)=>a.slice(a.length>>1);\nconst $p_is_array_leaf=(a)=>a.length===1;\nconst $p_is_array_node=(a)=>a.length!==1;\nconst $p_is_nat_zero=(a)=>a===0;\nconst $p_is_nat_successor=(a)=>a>0;\nconst $p_is_string_empty=(a)=>a===\"\";\nconst $p_is_string_nonempty=(a)=>a!==\"\";\nconst $p_is_true=(a)=>a===true;\nconst $p_is_false=(a)=>a===false;\nconst $p_same_value=(a,b)=>a===b;\nconst $p_float_bits_equal=(a,b)=>f32_bits(a)===b;\n"
+
+def cps_provider_3_quantity(v_0: BIR.Quantity) -> String:
+  match v_0:
+    case BIR.Erased{}:
+      "0"
+    case BIR.Once{}:
+      "1"
+    case BIR.Unrestricted{}:
+      "2"
+
+def cps_provider_3_optional_quantity(v_1: Maybe<&2, BIR.Quantity>) -> String:
+  match v_1:
+    case None{}:
+      "null"
+    case Some{v_4}:
+      cps_provider_3_quantity(v_4)
+
+def cps_provider_3_quantities(v_1: List<&2, BIR.Quantity>) -> List<&2, String>:
+  match v_1:
+    case []:
+      []
+    case v_6 <> v_7:
+      cps_provider_3_quantity(v_6) <> cps_provider_3_quantities(v_7)
+
+def cps_provider_3_descriptor_pattern(v_0: BIR.DescriptorPattern) -> String:
+  match v_0:
+    case BIR.DescriptorBinder{v_3}:
+      cps_provider_3_cat(["({v:true,q:", cps_provider_3_quantity(v_3), "})"])
+    case BIR.DescriptorConstructorPattern{v_8, v_9}:
+      cps_provider_3_cat(["({c:", cps_provider_3_js_quote(v_8), ",s:\"\",i:{},fields:[", String.join(cps_provider_3_descriptor_patterns(v_9), ","), "]})"])
+
+def cps_provider_3_descriptor_patterns(v_1: List<&2, BIR.DescriptorPattern>) -> List<&2, String>:
+  match v_1:
+    case []:
+      []
+    case v_6 <> v_7:
+      cps_provider_3_descriptor_pattern(v_6) <> cps_provider_3_descriptor_patterns(v_7)
+
+def cps_provider_3_descriptors(v_1: List<&2, BIR.Descriptor>) -> List<&2, String>:
+  match v_1:
+    case []:
+      []
+    case v_6 <> v_7:
+      cps_provider_3_descriptor(v_6) <> cps_provider_3_descriptors(v_7)
+
+def cps_provider_3_descriptor(v_0: BIR.Descriptor) -> String:
+  match v_0:
+    case BIR.DescriptorNull{}:
+      cps_provider_3_cat(["null"])
+    case BIR.DescriptorRef{v_5, v_6}:
+      cps_provider_3_cat(["({r:", cps_provider_3_js_quote(v_5), ",a:[", String.join(cps_provider_3_descriptors(v_6), ","), "],s:\"\",i:{}})"])
+    case BIR.DescriptorParameter{v_11}:
+      cps_provider_3_cat(["({p:", Nat.show(v_11), "})"])
+    case BIR.DescriptorQuantityKind{}:
+      cps_provider_3_cat(["({k:\"QK\"})"])
+    case BIR.DescriptorQuantity{v_14}:
+      cps_provider_3_cat(["({k:\"Q\",v:", cps_provider_3_quantity(v_14), "})"])
+    case BIR.DescriptorKind{v_17}:
+      cps_provider_3_cat(["({kind:", cps_provider_3_descriptor(v_17), "})"])
+    case BIR.DescriptorMinimum{v_22, v_23}:
+      cps_provider_3_cat(["({min:", cps_provider_3_descriptor(v_22), ",right:", cps_provider_3_descriptor(v_23), "})"])
+    case BIR.DescriptorArrow{v_30, v_31, v_32}:
+      cps_provider_3_cat(["({all:", cps_provider_3_descriptor(v_31), ",q:", cps_provider_3_quantity(v_30), ",body:", cps_provider_3_descriptor(v_32), "})"])
+    case BIR.DescriptorLambda{v_39, v_40}:
+      cps_provider_3_cat(["({lam:", cps_provider_3_descriptor(v_40), ",q:", cps_provider_3_optional_quantity(v_39), "})"])
+    case BIR.DescriptorConstructor{v_46, v_47}:
+      cps_provider_3_cat(["({c:", cps_provider_3_js_quote(v_46), ",a:[", String.join(cps_provider_3_descriptors(v_47), ","), "],s:\"\",i:{}})"])
+    case BIR.DescriptorApplication{v_53, v_54}:
+      cps_provider_3_cat(["({app:", cps_provider_3_descriptor(v_53), ",arg:", cps_provider_3_descriptor(v_54), "})"])
+    case BIR.DescriptorSubstitution{v_60, v_61, v_62}:
+      cps_provider_3_cat(["({sub:", Nat.show(v_60), ",value:", cps_provider_3_descriptor(v_61), ",body:", cps_provider_3_descriptor(v_62), "})"])
+    case BIR.DescriptorLet{v_68, v_69}:
+      cps_provider_3_cat(["({let:[", String.join(cps_provider_3_descriptors(v_68), ","), "],body:", cps_provider_3_descriptor(v_69), "})"])
+    case BIR.DescriptorLocal{v_76, v_77, v_78}:
+      cps_provider_3_cat(["({local:[", String.join(cps_provider_3_descriptors(v_77), ","), "],pat:[", String.join(cps_provider_3_descriptor_patterns(v_76), ","), "],body:", cps_provider_3_descriptor(v_78), "})"])
+    case BIR.DescriptorMatch{v_85, v_86}:
+      cps_provider_3_cat(["({match:[", String.join(cps_provider_3_descriptors(v_85), ","), "],cases:[", String.join(cps_provider_3_descriptors(v_86), ","), "]})"])
+    case BIR.DescriptorCase{v_92, v_93}:
+      cps_provider_3_cat(["({pat:[", String.join(cps_provider_3_descriptor_patterns(v_92), ","), "],body:", cps_provider_3_descriptor(v_93), "})"])
+    case BIR.DescriptorBind{v_98, v_99}:
+      cps_provider_3_cat(["({bind:", cps_provider_3_descriptor(v_98), ",body:", cps_provider_3_descriptor(v_99), "})"])
+    case BIR.DescriptorEquality{v_106, v_107, v_108}:
+      cps_provider_3_cat(["({k:\"E\",left:", cps_provider_3_descriptor(v_106), ",right:", cps_provider_3_descriptor(v_107), ",ty:", cps_provider_3_descriptor(v_108), "})"])
+    case BIR.DescriptorReflexivity{}:
+      cps_provider_3_cat(["({k:\"Refl\"})"])
+    case BIR.DescriptorFailure{v_115}:
+      cps_provider_3_cat(["({fail:", cps_provider_3_js_quote(v_115), "})"])
+    case BIR.DescriptorFill{v_120, v_121}:
+      cps_provider_3_cat(["({sugar:", cps_provider_3_descriptor(v_120), ",a:[", String.join(cps_provider_3_descriptors(v_121), ","), "],f:1})"])
+    case BIR.DescriptorPlus{v_127, v_128}:
+      cps_provider_3_cat(["({sugar:", cps_provider_3_descriptor(v_127), ",a:[", String.join(cps_provider_3_descriptors(v_128), ","), "],f:2})"])
+    case BIR.DescriptorNamedFill{v_135, v_136, v_137}:
+      cps_provider_3_cat(["({r:", cps_provider_3_js_quote(v_135), ",h:", cps_provider_3_descriptor(v_136), ",a:[", String.join(cps_provider_3_descriptors(v_137), ","), "],s:\"\",i:{},f:1})"])
+    case BIR.DescriptorNamedPlus{v_145, v_146, v_147}:
+      cps_provider_3_cat(["({r:", cps_provider_3_js_quote(v_145), ",h:", cps_provider_3_descriptor(v_146), ",a:[", String.join(cps_provider_3_descriptors(v_147), ","), "],s:\"\",i:{},f:2})"])
+
+def cps_provider_3_deferred(v_1: String, v_3: String) -> String:
+  cps_provider_3_cat(["Object.defineProperty($D,", cps_provider_3_js_quote(v_1), ",{enumerable:true,configurable:true,get(){return run_loop(", v_3, ");}});\n"])
+
+def cps_provider_3_declaration(v_0: BIR.Declaration, +v_3: Map<&2, String>) -> String:
+  match v_0:
+    case BIR.FunctionDeclaration{v_8, v_9, v_10}:
+      cps_provider_3_cat(["$D[", cps_provider_3_js_quote(v_8), "]=", cps_provider_3_closure(v_9, [], v_10), ";\n"])
+    case BIR.LazyDeclaration{v_16, v_17}:
+      cps_provider_3_deferred(v_16, cps_provider_3_cat(["(()=>{", cps_provider_3_block(v_17), "})()"]))
+    case BIR.NativeDeclaration{v_24, v_25, v_26}:
+      cps_provider_3_native_declaration(v_24, v_25, v_26)
+    case BIR.ForeignDeclaration{v_37, _, v_39, v_40, v_41, _, _, _, v_45}:
+      cps_provider_3_foreign_declaration(v_37, v_39, v_41, v_40, v_45, v_3)
+
+def cps_provider_3_foreign_declaration(+v_1: String, v_3: String, v_6: List<&2, String>, v_8: Nat, v_9: BIR.Descriptor, +v_12: Map<&2, String>) -> String:
+  cps_provider_3_foreign_source(cps_provider_3_js_source(v_6), v_1, v_3, v_8, v_9, v_12)
+
+def cps_provider_3_foreign_source(v_2: Maybe<&2, String>, +v_4: String, +v_6: String, v_8: Nat, v_9: BIR.Descriptor, +v_12: Map<&2, String>) -> String:
+  match v_2:
+    case Some{_}:
+      cps_provider_3_foreign_request(v_4, v_8, cps_provider_3_js_nat_answer(v_9, v_12))
+    case None{}:
+      cps_provider_3_deferred(v_4, cps_provider_3_cat(["(()=>{throw new Error(", cps_provider_3_js_quote(String.append("bend: foreign definition has no .js import: ", v_6)), ")})()"]))
+
+def cps_provider_3_native_declaration(+v_1: String, v_2: BIR.Primitive, +v_4: List<&2, BIR.Quantity>) -> String:
+  cps_provider_3_cat(["$D[", cps_provider_3_js_quote(v_1), "]=", cps_provider_3_primitive_public(v_2), ";\n$TYPEF[", cps_provider_3_js_quote(v_1), "]={n:", Nat.show(List.length(&2, BIR.Quantity, v_4)), ",q:[", String.join(cps_provider_3_quantities(v_4), ","), "],intrinsic:$D[", cps_provider_3_js_quote(v_1), "]};\n"])
+
+def cps_provider_3_declarations(v_1: List<&2, BIR.Declaration>, +v_4: Map<&2, String>) -> String:
+  match v_1:
+    case []:
+      ""
+    case v_8 <> v_9:
+      cps_provider_3_cat([cps_provider_3_declaration(v_8, v_4), cps_provider_3_declarations(v_9, v_4)])
+
+def cps_provider_3_field_names(v_3: List<&2, Maybe<&2, String>>) -> List<&2, String>:
+  match v_3:
+    case []:
+      []
+    case v_8 <> v_9:
+      cps_provider_3_optional_text(v_8) <> cps_provider_3_field_names(v_9)
+
+def cps_provider_3_constructor_layout(v_0: BIR.ConstructorLayout) -> String:
+  match v_0:
+    case BIR.ConstructorLayout{_, v_7, v_8, v_9}:
+      cps_provider_3_constructor_layout_source(v_7, cps_provider_3_optional_text(v_8), String.join(cps_provider_3_field_names(v_9), ","))
+
+def cps_provider_3_constructor_layout_source(+v_1: String, v_3: String, v_5: String) -> String:
+  cps_provider_3_cat(["$FIELDS[", cps_provider_3_js_quote(v_1), "]=[", v_5, "];\n$PRIMITIVES[", cps_provider_3_js_quote(v_1), "]=", v_3, ";\n"])
+
+def cps_provider_3_constructor_layouts(v_1: List<&2, BIR.ConstructorLayout>) -> String:
+  match v_1:
+    case []:
+      ""
+    case v_5 <> v_6:
+      cps_provider_3_cat([cps_provider_3_constructor_layout(v_5), cps_provider_3_constructor_layouts(v_6)])
+
+def cps_provider_3_descriptor_field_types(v_1: List<&2, BIR.DescriptorField>) -> List<&2, String>:
+  match v_1:
+    case []:
+      []
+    case BIR.DescriptorField{_, _, v_10} <> v_11:
+      cps_provider_3_descriptor(v_10) <> cps_provider_3_descriptor_field_types(v_11)
+
+def cps_provider_3_descriptor_field_quantities(v_1: List<&2, BIR.DescriptorField>) -> List<&2, String>:
+  match v_1:
+    case []:
+      []
+    case BIR.DescriptorField{_, v_9, _} <> v_11:
+      cps_provider_3_quantity(v_9) <> cps_provider_3_descriptor_field_quantities(v_11)
+
+def cps_provider_3_descriptor_field_names(v_1: List<&2, BIR.DescriptorField>) -> List<&2, String>:
+  match v_1:
+    case []:
+      []
+    case BIR.DescriptorField{v_8, _, _} <> v_11:
+      cps_provider_3_optional_text(v_8) <> cps_provider_3_descriptor_field_names(v_11)
+
+def cps_provider_3_descriptor_arm(v_0: BIR.DescriptorArm) -> String:
+  match v_0:
+    case BIR.DescriptorArm{v_4, +v_5}:
+      cps_provider_3_cat(["[", cps_provider_3_js_quote(v_4), "]:{types:[", String.join(cps_provider_3_descriptor_field_types(v_5), ","), "],q:[", String.join(cps_provider_3_descriptor_field_quantities(v_5), ","), "],fields:[", String.join(cps_provider_3_descriptor_field_names(v_5), ","), "]}"])
+
+def cps_provider_3_descriptor_arms(v_1: List<&2, BIR.DescriptorArm>) -> List<&2, String>:
+  match v_1:
+    case []:
+      []
+    case v_6 <> v_7:
+      cps_provider_3_descriptor_arm(v_6) <> cps_provider_3_descriptor_arms(v_7)
+
+def cps_provider_3_parameter_info(v_1: String, v_3: Nat, v_5: Nat) -> String:
+  cps_provider_3_cat(["$PARAMS[", cps_provider_3_js_quote(v_1), "]={q:", Nat.show(v_3), ",n:", Nat.show(v_5), "};\n"])
+
+def cps_provider_3_family(v_0: BIR.Family) -> String:
+  match v_0:
+    case BIR.Family{+v_8, v_9, v_10, v_11, v_12, v_13}:
+      cps_provider_3_cat([cps_provider_3_parameter_info(v_8, v_11, v_12), "$TYPE[", cps_provider_3_js_quote(v_8), "]={name:", cps_provider_3_js_quote(v_9), ",native:", cps_provider_3_optional_text(v_10), ",arms:{", String.join(cps_provider_3_descriptor_arms(v_13), ","), "}};\n"])
+
+def cps_provider_3_families(v_1: List<&2, BIR.Family>) -> String:
+  match v_1:
+    case []:
+      ""
+    case v_5 <> v_6:
+      cps_provider_3_cat([cps_provider_3_family(v_5), cps_provider_3_families(v_6)])
+
+def cps_provider_3_type_function(v_0: BIR.TypeFunction) -> String:
+  match v_0:
+    case BIR.TypeFunction{+v_7, v_8, v_9, +v_10, v_11}:
+      cps_provider_3_cat([cps_provider_3_parameter_info(v_7, v_9, v_10), "$TYPEF[", cps_provider_3_js_quote(v_7), "]={n:", Nat.show(v_10), ",native:", cps_provider_3_optional_text(v_8), ",body:", cps_provider_3_descriptor(v_11), "};\n"])
+
+def cps_provider_3_type_functions(v_1: List<&2, BIR.TypeFunction>) -> String:
+  match v_1:
+    case []:
+      ""
+    case v_5 <> v_6:
+      cps_provider_3_cat([cps_provider_3_type_function(v_5), cps_provider_3_type_functions(v_6)])
+
+def cps_provider_3_js_parameter(v_0: BIR.Descriptor, +v_3: Map<&2, String>) -> cps_provider_3_JSParameter:
+  cps_provider_3_js_parameter_head(cps_provider_3_js_descriptor_head(v_0), v_3, v_0)
+
+def cps_provider_3_js_parameter_head(v_2: Maybe<&2, cps_provider_3_JSDescriptorHead>, +v_5: Map<&2, String>, v_6: BIR.Descriptor) -> cps_provider_3_JSParameter:
+  match v_2:
+    case Some{cps_provider_3_JSDescriptorHead{v_10, v_11}}:
+      cps_provider_3_js_parameter_marker(cps_provider_3_js_native_is(v_5, v_10, "Nat"), IndexLookup.find(String, v_5, v_10), v_11, v_6)
+    case None{}:
+      cps_provider_3_js_parameter_unresolved(v_6)
+
+def cps_provider_3_js_parameter_marker(v_1: Bool, v_4: Maybe<&2, String>, v_6: List<&2, BIR.Descriptor>, v_7: BIR.Descriptor) -> cps_provider_3_JSParameter:
+  match v_1:
+    case True{}:
+      cps_provider_3_js_parameter_arity(v_6)
+    case False{}:
+      cps_provider_3_js_parameter_other(v_4, v_7)
+
+def cps_provider_3_js_parameter_other(v_2: Maybe<&2, String>, v_3: BIR.Descriptor) -> cps_provider_3_JSParameter:
+  match v_2:
+    case Some{v_6}:
+      cps_provider_3_js_parameter_known(v_6, v_3)
+    case None{}:
+      cps_provider_3_JSParameterUnresolved{}
+
+def cps_provider_3_js_parameter_known(v_1: String, v_2: BIR.Descriptor) -> cps_provider_3_JSParameter:
+  cps_provider_3_js_parameter_alias(String.eq(v_1, "TF"), v_2)
+
+def cps_provider_3_js_parameter_alias(v_1: Bool, v_2: BIR.Descriptor) -> cps_provider_3_JSParameter:
+  match v_1:
+    case True{}:
+      cps_provider_3_JSParameterUnresolved{}
+    case False{}:
+      cps_provider_3_JSParameterOther{}
+
+def cps_provider_3_js_parameter_arity(v_1: List<&2, BIR.Descriptor>) -> cps_provider_3_JSParameter:
+  cps_provider_3_js_parameter_arity_count(Nat.is_eq(List.length(&2, BIR.Descriptor, v_1), 0n))
+
+def cps_provider_3_js_parameter_arity_count(v_1: Bool) -> cps_provider_3_JSParameter:
+  match v_1:
+    case True{}:
+      cps_provider_3_JSParameterNat{}
+    case False{}:
+      cps_provider_3_JSParameterOther{}
+
+def cps_provider_3_js_parameter_unresolved(v_0: BIR.Descriptor) -> cps_provider_3_JSParameter:
+  match v_0:
+    case BIR.DescriptorFailure{_}:
+      cps_provider_3_JSParameterUnresolved{}
+    case _:
+      cps_provider_3_JSParameterOther{}
+
+def cps_provider_3_export_arguments(v_1: List<&2, BIR.Descriptor>, +v_4: Map<&2, String>, v_6: Nat) -> List<&2, String>:
+  match v_1:
+    case []:
+      []
+    case +v_11 <> v_12:
+      cps_provider_3_export_argument(cps_provider_3_js_parameter(v_11, v_4), v_6) <> cps_provider_3_export_arguments(v_12, v_4, Nat.add(v_6, 1n))
+
+def cps_provider_3_export_argument(v_1: cps_provider_3_JSParameter, v_3: Nat) -> String:
+  match v_1:
+    case cps_provider_3_JSParameterNat{}:
+      cps_provider_3_cat(["nat_in(arguments[", Nat.show(v_3), "])"])
+    case _:
+      cps_provider_3_cat(["arguments[", Nat.show(v_3), "]"])
+
+def cps_provider_3_export_unresolved(+v_1: String, v_3: List<&2, BIR.Descriptor>, +v_6: Map<&2, String>) -> Bool:
+  match v_3:
+    case []:
+      False{}
+    case +v_10 <> v_11:
+      cps_provider_3_export_unresolved_item(cps_provider_3_js_parameter(v_10, v_6), v_1, v_11, v_6)
+
+def cps_provider_3_export_unresolved_item(v_1: cps_provider_3_JSParameter, +v_3: String, v_5: List<&2, BIR.Descriptor>, +v_8: Map<&2, String>) -> Bool:
+  match v_1:
+    case cps_provider_3_JSParameterUnresolved{}:
+      True{}
+    case _:
+      cps_provider_3_export_unresolved(v_3, v_5, v_8)
+
+def cps_provider_3_export_field(v_0: BIR.Export, +v_3: Map<&2, String>) -> String:
+  match v_0:
+    case BIR.Export{+v_7, None{}, +v_8}:
+      cps_provider_3_export_curried(v_7, v_8, v_3)
+    case BIR.Export{+v_14, Some{BIR.Entry{v_15, +v_16}}, +v_17}:
+      cps_provider_3_cat(["[", cps_provider_3_js_quote(v_14), "](){return arguments.length===", Nat.show(v_16), "?run_loop(", cps_provider_3_call(v_15, cps_provider_3_export_arguments(v_17, v_3, 0n)), "):", cps_provider_3_export_curried_call(v_14, v_17, v_3), ";}"])
+
+def native_match_cps_provider_3_export_nat_indices_0(v_17: cps_provider_3_JSParameter, +v_4: Map<&2, String>, v_6: Nat, v_12: List<&2, BIR.Descriptor>) -> List<&2, Nat>:
+  match v_17:
+    case cps_provider_3_JSParameterNat{}:
+      v_6 <> cps_provider_3_export_nat_indices(v_12, v_4, Nat.add(v_6, 1n))
+    case _:
+      cps_provider_3_export_nat_indices(v_12, v_4, Nat.add(v_6, 1n))
+
+def native_match_cps_provider_3_export_nat_indices_1(v_1: List<&2, BIR.Descriptor>, +v_4: Map<&2, String>, v_6: Nat) -> List<&2, Nat>:
+  match v_1:
+    case []:
+      []
+    case +v_11 <> v_12:
+      native_match_cps_provider_3_export_nat_indices_0(cps_provider_3_js_parameter(v_11, v_4), v_4, v_6, v_12)
+
+def cps_provider_3_export_nat_indices(v_1: List<&2, BIR.Descriptor>, +v_4: Map<&2, String>, v_6: Nat) -> List<&2, Nat>:
+  native_match_cps_provider_3_export_nat_indices_1(v_1, v_4, v_6)
+
+def cps_provider_3_export_nat_index_texts(v_2: List<&2, Nat>) -> List<&2, String>:
+  match v_2:
+    case []:
+      []
+    case v_7 <> v_8:
+      Nat.show(v_7) <> cps_provider_3_export_nat_index_texts(v_8)
+
+def cps_provider_3_export_nat_indexes(v_1: List<&2, BIR.Descriptor>, +v_4: Map<&2, String>) -> String:
+  String.join(cps_provider_3_export_nat_index_texts(cps_provider_3_export_nat_indices(v_1, v_4, 0n)), ",")
+
+def cps_provider_3_export_curried(v_1: String, v_3: List<&2, BIR.Descriptor>, +v_6: Map<&2, String>) -> String:
+  cps_provider_3_cat(["[", cps_provider_3_js_quote(v_1), "]:$curried($D[", cps_provider_3_js_quote(v_1), "],", Nat.show(List.length(&2, BIR.Descriptor, v_3)), ",[", cps_provider_3_export_nat_indexes(v_3, v_6), "])"])
+
+def cps_provider_3_export_curried_call(v_1: String, v_3: List<&2, BIR.Descriptor>, +v_6: Map<&2, String>) -> String:
+  cps_provider_3_export_curried_call_body(v_1, v_3, v_6)
+
+def cps_provider_3_export_curried_call_body(v_1: String, v_3: List<&2, BIR.Descriptor>, +v_6: Map<&2, String>) -> String:
+  cps_provider_3_cat(["$curried($D[", cps_provider_3_js_quote(v_1), "],", Nat.show(List.length(&2, BIR.Descriptor, v_3)), ",[", cps_provider_3_export_nat_indexes(v_3, v_6), "])(...arguments)"])
+
+def cps_provider_3_export_fields(v_1: List<&2, BIR.Export>, +v_4: Map<&2, String>) -> List<&2, String>:
+  match v_1:
+    case []:
+      []
+    case v_9 <> v_10:
+      cps_provider_3_export_field(v_9, v_4) <> cps_provider_3_export_fields(v_10, v_4)
+
+def cps_provider_3_ending(v_0: BIR.Ending, +v_3: Map<&2, String>) -> String:
+  match v_0:
+    case BIR.Executable{v_6}:
+      cps_provider_3_js_main(cps_provider_3_descriptor(v_6))
+    case BIR.Library{v_10}:
+      cps_provider_3_cat(["export default {", String.join(cps_provider_3_export_fields(v_10, v_3), ","), "};\n"])
+
+def cps_provider_3_export_check(v_1: List<&2, BIR.Export>, +v_4: Map<&2, String>) -> Maybe<&2, String>:
+  match v_1:
+    case []:
+      None{}
+    case BIR.Export{+v_11, _, v_13} <> v_14:
+      cps_provider_3_export_check_one(cps_provider_3_export_unresolved(v_11, v_13, v_4), v_11, v_14, v_4)
+
+def cps_provider_3_export_check_one(v_1: Bool, +v_3: String, v_5: List<&2, BIR.Export>, +v_8: Map<&2, String>) -> Maybe<&2, String>:
+  match v_1:
+    case True{}:
+      Some{String.append(v_3, " has an export parameter with no canonical type")}
+    case False{}:
+      cps_provider_3_export_check(v_5, v_8)
+
+def cps_provider_3_ending_check(v_0: BIR.Ending, +v_3: Map<&2, String>) -> Maybe<&2, String>:
+  match v_0:
+    case BIR.Library{v_7}:
+      cps_provider_3_export_check(v_7, v_3)
+    case BIR.Executable{_}:
+      None{}
+
+def cps_provider_3_emit_linked(v_0: BIR.Program, v_2: List<&2, BIR.SourceFile>) -> cps_provider_3_EmitResult:
+  cps_provider_3_emit_linked_plan(cps_provider_3_link(v_0), v_0, v_2)
+
+def cps_provider_3_emit_linked_plan(v_1: cps_provider_3_LinkResult, v_2: BIR.Program, v_4: List<&2, BIR.SourceFile>) -> cps_provider_3_EmitResult:
+  match v_1:
+    case cps_provider_3_LinkFailure{v_8, v_9}:
+      cps_provider_3_EmitFailure{v_8, v_9}
+    case cps_provider_3_LinkSuccess{v_11}:
+      cps_provider_3_emit_checked(v_2, v_11, v_4)
+
+def cps_provider_3_emit_checked(+v_0: BIR.Program, v_3: List<&2, cps_provider_3_LinkSource>, v_5: List<&2, BIR.SourceFile>) -> cps_provider_3_EmitResult:
+  match v_0:
+    case BIR.Program{_, _, _, _, _, v_18}:
+      cps_provider_3_emit_checked_exports(cps_provider_3_ending_check(v_18, cps_provider_3_js_native_markers(v_0)), v_0, v_3, v_5)
+
+def cps_provider_3_emit_checked_exports(v_2: Maybe<&2, String>, v_3: BIR.Program, v_6: List<&2, cps_provider_3_LinkSource>, v_8: List<&2, BIR.SourceFile>) -> cps_provider_3_EmitResult:
+  match v_2:
+    case Some{v_11}:
+      cps_provider_3_EmitFailure{v_11, Ast.SpanOf{"", 0n, 0n}}
+    case None{}:
+      cps_provider_3_emit_effects(v_3, cps_provider_3_js_effect_sources(v_6, v_8, cps_provider_3_js_known_keys(v_3), []))
+
+def cps_provider_3_emit_effects(v_0: BIR.Program, v_2: cps_provider_3_JSEffects) -> cps_provider_3_EmitResult:
+  match v_2:
+    case cps_provider_3_JSEffectsFailure{v_6, v_7}:
+      cps_provider_3_EmitFailure{v_6, v_7}
+    case cps_provider_3_JSEffectsReady{v_9}:
+      cps_provider_3_EmitSuccess{cps_provider_3_program_source(v_0, v_9)}
+
+def native_match_cps_provider_3_program_source_0(v_0: BIR.Program, v_2: String, +v_6: Map<&2, String>) -> String:
+  match v_0:
+    case BIR.Program{v_13, v_14, v_15, v_16, v_17, v_18}:
+      cps_provider_3_cat([cps_provider_3_js_runtime, cps_provider_3_js_runtime_extra, cps_provider_3_js_runtime_show, cps_provider_3_js_runtime_cli, cps_provider_3_js_runtime_io, cps_provider_3_js_runtime_array, cps_provider_3_js_runtime_foreign, cps_provider_3_js_runtime_namespace, cps_provider_3_primitive_runtime, cps_provider_3_constructor_layouts(v_15), cps_provider_3_families(v_16), cps_provider_3_type_functions(v_17), v_2, cps_provider_3_codes(v_13), cps_provider_3_declarations(v_14, v_6), cps_provider_3_ending(v_18, v_6)])
+
+def cps_provider_3_program_source(v_0: BIR.Program, v_2: String) -> String:
+  +v_6 = cps_provider_3_js_native_markers(v_0)
+  native_match_cps_provider_3_program_source_0(v_0, v_2, v_6)
+
+def cps_provider_3_js_runtime() -> String:
+  "const $D = Object.create(null);\nconst $BEND_TAIL = Symbol(\"bend.tail\");\nconst $td = 64;\nconst $TAIL_PENDING = Object.create(null), $tailArgs = Array(32);\nlet $tailFn, $tailCount=0, $tailUnary, $tailRest;\nfunction tail_many(f,a) { $tailFn=f; $tailCount=-2; $tailRest=a; return $TAIL_PENDING; }\nfunction tail_unary(f,x) { $tailFn=f; $tailCount=-1; $tailUnary=x; return $TAIL_PENDING; }\nfunction tail_named(f,n) { $tailFn=f; $tailCount=n; return $TAIL_PENDING; }\nfunction $run(f, xs) { let x=run_loop(f); for (const a of xs) x=run_loop(x(a)); return x; }\nfunction $curried(f, n, g) { const step = (args) => function (...more) { const xs = args.concat(more); if (xs.length < n) return step(xs); for (const i of g) xs[i] = nat_in(xs[i]); return $run(f, xs); }; return step([]); }\nfunction run_loop(x) { while (x===$TAIL_PENDING) { const f=$tailFn, count=$tailCount; $tailFn=undefined; $tailCount=0; if(count===-1) { const a=$tailUnary; $tailUnary=undefined; x=f(a,$BEND_TAIL); } else x=tail_dispatch(f,count); } return x; }\nfunction tail_dispatch(f,count) { switch(count) {\ncase -2: { const a=$tailRest; $tailRest=undefined; return f(...a); }\ncase 1: { const a0=$tailArgs[0]; $tailArgs[0]=undefined; return f(a0); }\ncase 2: { const a0=$tailArgs[0],a1=$tailArgs[1]; $tailArgs[0]=$tailArgs[1]=undefined; return f(a0,a1); }\ncase 3: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=undefined; return f(a0,a1,a2); }\ncase 4: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=undefined; return f(a0,a1,a2,a3); }\ncase 5: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=undefined; return f(a0,a1,a2,a3,a4); }\ncase 6: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=undefined; return f(a0,a1,a2,a3,a4,a5); }\ncase 7: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=undefined; return f(a0,a1,a2,a3,a4,a5,a6); }\ncase 8: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7); }\ncase 9: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8); }\ncase 10: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9); }\ncase 11: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10); }\ncase 12: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11); }\ncase 13: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12); }\ncase 14: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13); }\ncase 15: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14); }\ncase 16: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15); }\ncase 17: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16); }\ncase 18: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17); }\ncase 19: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18); }\ncase 20: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19); }\ncase 21: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20); }\ncase 22: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21); }\ncase 23: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22); }\ncase 24: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23); }\ncase 25: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24); }\ncase 26: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25); }\ncase 27: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26); }\ncase 28: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27); }\ncase 29: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28); }\ncase 30: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29); }\ncase 31: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29],a30=$tailArgs[30]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=$tailArgs[30]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30); }\ncase 32: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29],a30=$tailArgs[30],a31=$tailArgs[31]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=$tailArgs[30]=$tailArgs[31]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31); }\ndefault: throw \"bend: invalid private tail frame\";\n} }\nfunction run_force(x,raw) { return raw===$BEND_TAIL?x:run_loop(x); }\nfunction run_many(f,a,d=$td) { return d<64?f(...a,d+1):tail_many(f,a); }\nfunction run_tail(f,x) { const j=f[$BEND_TAIL]; return j ? tail_unary(j,x) : f(x); }\nfunction run_clo(j) { j[$BEND_TAIL]=j; return j; }\nfunction nat_chk(x) { if(x>281474976710655) throw \"bend: a Nat past the largest immediate 2^48-1\"; return x; }\nfunction char_new(x) { if(x>0x10ffff || (x>=0xd800 && x<=0xdfff)) throw \"bend: \"+x+\" is not a Unicode scalar value\"; return String.fromCodePoint(x); }\nfunction cmp_new(a,b) { return {$:a<b?\"LT\":a===b?\"EQ\":\"GT\"}; }\nfunction word_to_u32(w) { let x=0; for(let i=0;w.$===\"WCon\";i++,w=w.tail) if(w.head)x|=1<<i; return x>>>0; }\nfunction u32_to_word(x) { let w={$:\"WNil\"}; for(let i=31;i>=0;i--) w={$:\"WCon\",head:!!((x>>>i)&1),tail:w}; return w; }\nfunction run_named1(f,a0,d) { return d<64?f(a0,d+1):($tailArgs[0]=a0,tail_named(f,1)); }\nfunction run_named2(f,a0,a1,d) { return d<64?f(a0,a1,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,tail_named(f,2)); }\nfunction run_named3(f,a0,a1,a2,d) { return d<64?f(a0,a1,a2,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,tail_named(f,3)); }\nfunction run_named4(f,a0,a1,a2,a3,d) { return d<64?f(a0,a1,a2,a3,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,tail_named(f,4)); }\nfunction run_named5(f,a0,a1,a2,a3,a4,d) { return d<64?f(a0,a1,a2,a3,a4,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,tail_named(f,5)); }\nfunction run_named6(f,a0,a1,a2,a3,a4,a5,d) { return d<64?f(a0,a1,a2,a3,a4,a5,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,tail_named(f,6)); }\nfunction run_named7(f,a0,a1,a2,a3,a4,a5,a6,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,tail_named(f,7)); }\nfunction run_named8(f,a0,a1,a2,a3,a4,a5,a6,a7,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,tail_named(f,8)); }\nfunction run_named9(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,tail_named(f,9)); }\nfunction run_named10(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,tail_named(f,10)); }\nfunction run_named11(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,tail_named(f,11)); }\nfunction run_named12(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,tail_named(f,12)); }\nfunction run_named13(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,tail_named(f,13)); }\nfunction run_named14(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,tail_named(f,14)); }\nfunction run_named15(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,tail_named(f,15)); }\nfunction run_named16(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,tail_named(f,16)); }\nfunction run_named17(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,tail_named(f,17)); }\nfunction run_named18(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,tail_named(f,18)); }\nfunction run_named19(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,tail_named(f,19)); }\nfunction run_named20(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,tail_named(f,20)); }\nfunction run_named21(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,tail_named(f,21)); }\nfunction run_named22(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,tail_named(f,22)); }\nfunction run_named23(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,tail_named(f,23)); }\nfunction run_named24(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,tail_named(f,24)); }\nfunction run_named25(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,tail_named(f,25)); }\nfunction run_named26(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,tail_named(f,26)); }\nfunction run_named27(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,tail_named(f,27)); }\nfunction run_named28(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,tail_named(f,28)); }\nfunction run_named29(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,tail_named(f,29)); }\nfunction run_named30(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,tail_named(f,30)); }\nfunction run_named31(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,$tailArgs[30]=a30,tail_named(f,31)); }\nfunction run_named32(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,$tailArgs[30]=a30,$tailArgs[31]=a31,tail_named(f,32)); }\n"
+
+def cps_provider_3_js_runtime_extra() -> String:
+  "function f32_from_bits(x) { return new Float32Array(new Uint32Array([x]).buffer)[0]; }\nfunction f32_bits(x) { return new Uint32Array(new Float32Array([x]).buffer)[0]; }\nfunction tuple(a,b) { return {$:\"Tuple\",fst:a,snd:b}; }\nfunction f32_show(x) { if(x!==x) return \"nan\"; if(!Number.isFinite(x)||Object.is(x,-0)) return x<0?\"-inf\":x===0?\"-0\":\"inf\"; let s=\"x\"; for(let p=1;p<=9&&Math.fround(Number(s))!==x;p++) s=String(Number(x.toExponential(p-1))); return s; }\nfunction f32_read(s) { const re=/^\\s*[+-]?((\\d+\\.?\\d*|\\.\\d+)(e[+-]?\\d+)?|inf(inity)?|nan)$/i; const v=Number(s.replace(/inf\\w*/i,\"Infinity\")); return re.test(s)?{$:\"Some\",value:Math.fround(v)}:{$:\"None\"}; }\nfunction nat_divmod(a,b) { return b===0?tuple(0,a):tuple(Math.trunc(a/b),a%b); }\nfunction nat_in(n) { return Number.isInteger(n)&&n>=0&&n<=9007199254740992?n:nat_chk(1/0); }\nfunction array_new(n,v) { if(n>31) throw \"bend: an array past the deepest block class 31\"; return Array(2 ** n).fill(v); }\nfunction array_node(a,b) { if(a.length!==b.length) throw \"bend: runtime fail-stop\"; return a.concat(b); }\n"
+
+def cps_provider_3_js_runtime_array() -> String:
   "function array_swap(a,i,v) { const at=i%a.length, old=a[at]; a[at]=v; return tuple(a,old); }\nfunction $string_tail(s) { return s.slice(s.codePointAt(0)>0xFFFF?2:1); }\n"
-def js_runtime_foreign() -> String:
-  "function $curry(f,n,xs=[]) { return n===0 ? f(...xs) : x => $curry(f,n-1,[...xs,x]); }\nfunction io_emit(value) { return {$:\"Emit\",value}; }\nfunction $effect(f,need,n) { return $curry((...args)=>({$:\"$FFI\",run:f,need,args,kont:io_emit}),n); }\n"
-def js_runtime_namespace() -> String:
+
+def cps_provider_3_js_runtime_foreign() -> String:
+  "const $0eff=Object.create(null);\nfunction io_emit(value) { return {$:\"Emit\",value}; }\nfunction io_eff(k,run) { if(arguments.length>2)throw new Error(\"bend: \"+k+\" takes no need: an effect that waits parks itself\"); if(k in $0eff)throw new Error(\"bend: two effects register \"+k); $0eff[k]=run; }\n"
+
+def cps_provider_3_js_runtime_namespace() -> String:
   "function $key(k,s,a) { let p=null; for (const alias of Object.keys(a)) if(k.startsWith(alias+\".\") && (p===null || alias.length>p.length)) p=alias; const n=p===null?undefined:a[p]; return n===undefined?(s?s+\".\"+k:k):(n?n+\".\":\"\")+k.slice(p.length+1); }\nfunction $resolve(k,s,a) { const q=$key(k,s,a); return $D[Object.hasOwn($D,q)?q:k]; }\nconst $FIELDS=Object.create(null), $PRIMITIVES=Object.create(null), $TYPE=Object.create(null), $TYPEF=Object.create(null), $PARAMS=Object.create(null);\nfunction $ctr(k,x,s,a) { const q=$key(k,s,a), key=Object.hasOwn($FIELDS,q)?q:k, fs=$FIELDS[key]; if(!fs||fs.length!==x.length)throw \"bend: unresolved constructor layout\"; const v={$:key}; for(let i=0;i<fs.length;i++){const f=fs[i];if(f!==null){if(f===\"__proto__\")Object.defineProperty(v,f,{value:x[i],enumerable:true,writable:true,configurable:true});else v[f]=x[i];}} return v; }\nfunction $project(v,k,i,s,a) { const q=$key(k,s,a),fs=$FIELDS[q]||$FIELDS[k]; if(!fs)throw \"bend: unresolved constructor layout\"; for(const f of fs)if(f!==null&&i--===0)return v[f]; throw \"bend: constructor field count mismatch\"; }\n"
 
-def js_runtime_field_names(fields: List<&2, AST.TelescopeItem>) -> String:
-  js_runtime_field_names_at(fields, True{})
-def js_runtime_field_names_at(fields: List<&2, AST.TelescopeItem>, first: Bool) -> String:
-  match fields:
-    case Nil{}: ""
-    case +field <> rest:
-      match field:
-        case AST.Binder{ AST.QZero{},  _,  _,  _,  _}:
-          prefix = js_comma_prefix(first)
-          String.append(prefix, String.append("null", js_runtime_field_names_at(rest, False{})))
-        case AST.Binder{ _, key,  _,  _,  _}:
-          prefix = js_comma_prefix(first)
-          String.append(prefix, String.append(js_quote(key), js_runtime_field_names_at(rest, False{})))
-        case AST.TemplateBinder{ _,  _,  _,  _}: String.append("null", js_runtime_field_names_at(rest, False{}))
-def js_constructor_fields_one(namespace: String, family: String, native: Bool, constructor: AST.ConstructorDecl) -> String:
-  match constructor:
-    case AST.Constructor{key, fields,  _}:
-      full_key = qualify(namespace, key)
-      fields_info = String.append("$FIELDS[", String.append(js_quote(full_key), String.append("] = [", String.append(js_runtime_field_names(fields), "];\n"))))
-      native_key = js_constructor_native_origin(native, family, full_key)
-      native_info = String.append("$PRIMITIVES[", String.append(js_quote(full_key), String.append("] = ", String.append(js_quote(native_key), ";\n"))))
-      String.append(fields_info, native_info)
-def js_constructor_fields_constructors(namespace: String, family: String, native: Bool, constructors: List<&2, AST.ConstructorDecl>) -> String:
-  match constructors:
-    case Nil{}: ""
-    case +constructor <> rest:
-      String.append(js_constructor_fields_one(namespace, family, native, constructor), js_constructor_fields_constructors(namespace, family, native, rest))
-def js_constructor_fields_decl(namespace: String, native: Bool, declaration: AST.TopLevel) -> String:
-  match declaration:
-    case AST.TypeTop{ AST.TypeDecl{family, _, _, constructors, _}}:
-      js_constructor_fields_constructors(namespace, family, native, constructors)
-    case _: ""
-def js_constructor_fields_decls(namespace: String, native: Bool, declarations: List<&2, AST.TopLevel>) -> String:
-  match declarations:
-    case Nil{}: ""
-    case +declaration <> rest:
-      String.append(js_constructor_fields_decl(namespace, native, declaration), js_constructor_fields_decls(namespace, native, rest))
-def js_constructor_fields_modules(modules: List<&2, Loader.LoadedModule>) -> String:
-  js_constructor_fields_modules_at(modules, modules)
-def js_constructor_fields_modules_at(remaining: List<&2, Loader.LoadedModule>, modules: List<&2, Loader.LoadedModule>) -> String:
-  match remaining:
-    case Nil{}: ""
-    case +loaded <> rest:
-      match loaded:
-        case Loader.LoadedModule{namespace, AST.Module{path, _, declarations}}:
-          String.append(js_constructor_fields_decls(namespace, js_base_source(path, modules), declarations), js_constructor_fields_modules_at(rest, modules))
-
-def js_type_ref(key: String, args: List<&2, AST.SyntaxTerm>, scope: String, aliases: String) -> String:
-  String.append("({r:", String.append(js_quote(key), String.append(",a:[", String.append(js_type_args(args, scope, aliases, True{}), String.append("],s:", String.append(js_quote(scope), String.append(",i:", String.append(aliases, "})"))))))))
-def js_type_args(args: List<&2, AST.SyntaxTerm>, scope: String, aliases: String, first: Bool) -> String:
-  match args:
-    case Nil{}: ""
-    case +term <> rest:
-      prefix = js_comma_prefix(first)
-      String.append(prefix, String.append(js_type_term(term, scope, aliases), js_type_args(rest, scope, aliases, False{})))
-def js_type_sugar_descriptor(key: String, args: List<&2, AST.SyntaxTerm>, head: AST.SyntaxTerm, mode: String, scope: String, aliases: String) -> String:
-  String.append("({r:", String.append(js_quote(key), String.append(",a:[", String.append(js_type_args(args, scope, aliases, True{}), String.append("],s:", String.append(js_quote(scope), String.append(",i:", String.append(aliases, String.append(",f:", String.append(mode, String.append(",h:", String.append(js_type_term(head, scope, aliases), "})"))))))))))))
-def js_type_sugar(head: AST.SyntaxTerm, args: List<&2, AST.SyntaxTerm>, mode: String, scope: String, aliases: String) -> String:
-  match head:
-    case AST.TermAnn{term,  _,  _}: js_type_sugar(term, args, mode, scope, aliases)
-    case AST.TermRef{key,  _}: js_type_sugar_descriptor(key, args, head, mode, scope, aliases)
-    case AST.TermAdt{key,  head_args,  _,  _}:
-      js_type_sugar_descriptor(key, List.append(&2, AST.SyntaxTerm, head_args, args), head, mode, scope, aliases)
-    case AST.TermApp{fn, arg,  _}:
-      js_type_sugar(fn, arg <> args, mode, scope, aliases)
-    case AST.TermBang{inner, _}: js_type_sugar(inner, args, mode, scope, aliases)
-    case _:
-      prefix = String.append("({sugar:", String.append(js_type_term(head, scope, aliases), ",a:["))
-      String.append(prefix, String.append(js_type_args(args, scope, aliases, True{}), String.append("],f:", String.append(mode, "})"))))
-def js_type_term(term: AST.SyntaxTerm, scope: String, aliases: String) -> String:
-  match term:
-    case AST.TermFill{head, args,  _}: js_type_sugar(head, args, "1", scope, aliases)
-    case AST.TermPlus{head, args,  _}: js_type_sugar(head, args, "2", scope, aliases)
-    case AST.TermTemplate{ _,  _}: "(()=>{throw \"bend: unexpanded template\"})()"
-    case AST.TermBang{inner, _}: js_type_term(inner, scope, aliases)
-    case AST.TermAnn{term,  _,  _}: js_type_term(term, scope, aliases)
-    case AST.TermRef{key,  _}: js_type_ref(key, Nil{}, scope, aliases)
-    case AST.TermAdt{key, args,  _,  _}: js_type_ref(key, args, scope, aliases)
-    case AST.TermApp{_, _, _}: js_type_application(js_app_spine_at(term, Nil{}), scope, aliases)
-    case AST.TermVar{_, index, _}:
-      String.append("({p:", String.append(Nat.show(index), "})"))
-    case AST.TermQuant{}: "({k:\"QK\"})"
-    case AST.TermQuantity{ AST.QZero{},  _}: "({k:\"Q\",v:0})"
-    case AST.TermQuantity{ AST.QOne{},  _}: "({k:\"Q\",v:1})"
-    case AST.TermQuantity{ AST.QMany{},  _}: "({k:\"Q\",v:2})"
-    case AST.TermType{kind, _}: String.append("({kind:", String.append(js_type_term(kind, scope, aliases), "})"))
-    case AST.TermMin{left, right, _}: js_type_binary("min", left, "right", right, scope, aliases)
-    case AST.TermAll{quantity, _, _, domain, body, _}:
-      prefix = String.append("({all:", String.append(js_type_term(domain, scope, aliases), String.append(",q:", js_type_quantity(quantity))))
-      String.append(prefix, String.append(",body:", String.append(js_type_term(body, scope, aliases), "})")))
-    case AST.TermLam{quantity, _, _, body, _}:
-      prefix = String.append("({lam:", js_type_term(body, scope, aliases))
-      String.append(prefix, String.append(",q:", String.append(js_type_optional_quantity(quantity), "})")))
-    case AST.TermCtr{key, args, _}: js_type_constructor(key, args, scope, aliases)
-    case AST.TermString{chars, names, span}: js_type_term(AST.string_desugar(chars, names, span), scope, aliases)
-    case AST.TermSub{index, value, body, _}:
-      prefix = String.append("({sub:", String.append(Nat.show(index), String.append(",value:", js_type_term(value, scope, aliases))))
-      String.append(prefix, String.append(",body:", String.append(js_type_term(body, scope, aliases), "})")))
-    case AST.TermLet{_, _, _, values, body, _}: js_type_let(values, body, scope, aliases)
-    case AST.BodyLocal{patterns, _, values, body, _}:
-      prefix = String.append("({local:[", String.append(js_type_args(values, scope, aliases, True{}), "],pat:["))
-      bindings = String.append(js_type_patterns_source(patterns, scope, aliases, True{}), "],body:")
-      String.append(prefix, String.append(bindings, String.append(js_type_term(body, scope, aliases), "})")))
-    case AST.BodyMatch{scrutinees, cases, _}:
-      prefix = String.append("({match:[", String.append(js_type_args(scrutinees, scope, aliases, True{}), "],cases:["))
-      String.append(prefix, String.append(js_type_cases_source(cases, scope, aliases, True{}), "]})"))
-    case AST.BodyCase{_, body, _}: js_type_term(body, scope, aliases)
-    case AST.BodyReply{inner, _}: js_type_term(inner, scope, aliases)
-    case AST.TermMat{_, head, matched, _}: js_type_binary("bind", matched, "body", head, scope, aliases)
-    case AST.TermRewrite{_, _, body, _}: js_type_term(body, scope, aliases)
-    case AST.TermEqual{left, right, ty, _}:
-      prefix = String.append("({k:\"E\",left:", String.append(js_type_term(left, scope, aliases), String.append(",right:", js_type_term(right, scope, aliases))))
-      String.append(prefix, String.append(",ty:", String.append(js_type_term(ty, scope, aliases), "})")))
-    case AST.TermRefl{_}: "({k:\"Refl\"})"
-    case AST.TermAbsurd{_}: "({fail:\"bend: runtime fail-stop\"})"
-    case AST.TermHole{key, _}: String.append("({fail:", String.append(js_quote(String.append("bend: unsolved hole ", key)), "})"))
-def js_type_quantity(quantity: AST.Quantity) -> String:
-  match quantity:
-    case AST.QZero{}: "0"
-    case AST.QOne{}: "1"
-    case AST.QMany{}: "2"
-def js_type_optional_quantity(quantity: Maybe<&2, AST.Quantity>) -> String:
-  match quantity:
-    case None{}: "null"
-    case Some{value}: js_type_quantity(value)
-def js_type_binary(first: String, left: AST.SyntaxTerm, second: String, right: AST.SyntaxTerm, scope: String, aliases: String) -> String:
-  prefix = String.append("({", String.append(first, String.append(":", js_type_term(left, scope, aliases))))
-  String.append(prefix, String.append(",", String.append(second, String.append(":", String.append(js_type_term(right, scope, aliases), "})")))))
-def js_type_constructor(key: String, args: List<&2, AST.SyntaxTerm>, scope: String, aliases: String) -> String:
-  String.append("({c:", String.append(js_quote(key), String.append(",a:[", String.append(js_type_args(args, scope, aliases, True{}), String.append("],s:", String.append(js_quote(scope), String.append(",i:", String.append(aliases, "})"))))))))
-def js_type_application(spine: AST.SyntaxTerm & List<&2, AST.SyntaxTerm>, scope: String, aliases: String) -> String:
-  match spine:
-    case (AST.TermRef{key, _}, args): js_type_ref(key, args, scope, aliases)
-    case (AST.TermBang{AST.TermRef{key, _}, _}, args): js_type_ref(key, args, scope, aliases)
-    case (AST.TermAdt{key, head_args, _, _}, args): js_type_ref(key, List.append(&2, AST.SyntaxTerm, head_args, args), scope, aliases)
-    case (head, args): js_type_application_args(js_type_term(head, scope, aliases), args, scope, aliases)
-def js_type_application_args(fn: String, args: List<&2, AST.SyntaxTerm>, scope: String, aliases: String) -> String:
-  match args:
-    case Nil{}: fn
-    case +arg <> rest:
-      source = String.append("({app:", String.append(fn, String.append(",arg:", String.append(js_type_term(arg, scope, aliases), "})"))))
-      js_type_application_args(source, rest, scope, aliases)
-def js_type_let(values: List<&2, AST.SyntaxTerm>, body: AST.SyntaxTerm, scope: String, aliases: String) -> String:
-  String.append("({let:[", String.append(js_type_args(values, scope, aliases, True{}), String.append("],body:", String.append(js_type_term(body, scope, aliases), "})"))))
-def js_type_patterns_source(patterns: List<&2, AST.SyntaxPattern>, scope: String, aliases: String, first: Bool) -> String:
-  match patterns:
-    case Nil{}: ""
-    case +pattern <> rest:
-      prefix = js_comma_prefix(first)
-      String.append(prefix, String.append(js_type_pattern_source(pattern, scope, aliases), js_type_patterns_source(rest, scope, aliases, False{})))
-def js_type_pattern_source(pattern: AST.SyntaxPattern, scope: String, aliases: String) -> String:
-  match pattern:
-    case AST.PatternVar{_, _, quantity, _}:
-      String.append("({v:true,q:", String.append(js_type_quantity(quantity), "})"))
-    case AST.PatternCtr{key, fields, _}:
-      prefix = String.append("({c:", String.append(js_quote(key), String.append(",s:", String.append(js_quote(scope), String.append(",i:", String.append(aliases, ",fields:["))))))
-      String.append(prefix, String.append(js_type_patterns_source(fields, scope, aliases, True{}), "]})"))
-def js_type_cases_source(cases: List<&2, AST.SyntaxTerm>, scope: String, aliases: String, first: Bool) -> String:
-  match cases:
-    case Nil{}: ""
-    case AST.BodyCase{patterns, body, _} <> rest:
-      prefix = String.append(js_comma_prefix(first), String.append("({pat:[", String.append(js_type_patterns_source(patterns, scope, aliases, True{}), "],body:")))
-      source = String.append(prefix, String.append(js_type_term(body, scope, aliases), "})"))
-      String.append(source, js_type_cases_source(rest, scope, aliases, False{}))
-    case _ <> _: "(()=>{throw \"bend: malformed type match\"})()"
-def js_type_field_terms(fields: List<&2, AST.TelescopeItem>, scope: String, aliases: String, first: Bool) -> String:
-  match fields:
-    case Nil{}: ""
-    case +field <> rest:
-      match field:
-        case AST.Binder{_, _, _, ty, _}:
-          prefix = js_comma_prefix(first)
-          String.append(prefix, String.append(js_type_term(ty, scope, aliases), js_type_field_terms(rest, scope, aliases, False{})))
-        case AST.TemplateBinder{ _,  _,  _,  _}: js_type_field_terms(rest, scope, aliases, first)
-def js_type_arm(constructor: AST.ConstructorDecl, scope: String, aliases: String) -> String:
-  match constructor:
-    case AST.Constructor{key, fields,  _}:
-      prefix = String.append(js_object_key(qualify(scope, key)), String.append("{types:[", String.append(js_type_field_terms(fields, scope, aliases, True{}), "],q:[")))
-      names = String.append("],fields:[", String.append(js_runtime_field_names(fields), "]}"))
-      String.append(prefix, String.append(js_type_field_quantities(fields, True{}), names))
-def js_type_field_quantities(fields: List<&2, AST.TelescopeItem>, first: Bool) -> String:
-  match fields:
-    case Nil{}: ""
-    case AST.Binder{quantity, _, _, _, _} <> rest:
-      String.append(js_comma_prefix(first), String.append(js_type_quantity(quantity), js_type_field_quantities(rest, False{})))
-    case AST.TemplateBinder{_, _, _, _} <> rest:
-      String.append(js_comma_prefix(first), String.append("0", js_type_field_quantities(rest, False{})))
-def js_type_arms(constructors: List<&2, AST.ConstructorDecl>, scope: String, aliases: String, first: Bool) -> String:
-  match constructors:
-    case Nil{}: ""
-    case +constructor <> rest:
-      prefix = js_comma_prefix(first)
-      String.append(prefix, String.append(js_type_arm(constructor, scope, aliases), js_type_arms(rest, scope, aliases, False{})))
-def js_type_decl(namespace: String, imports: EmitAliases, declaration: AST.TopLevel, catalog: EmitCatalog) -> String:
-  match declaration:
-    case AST.TypeTop{ AST.TypeDecl{key, params,  _, constructors,  _}}:
-      aliases = js_aliases(imports)
-      full_key = qualify(namespace, key)
-      env = EmitEnv{EmitScope{namespace, imports, catalog}, Nil{}, Nil{}, Nil{}, 0n}
-      quant_prefix = js_family_quant_prefix(params, env)
-      parameter_info = String.append("$PARAMS[", String.append(js_quote(full_key), String.append("]={q:", String.append(Nat.show(quant_prefix), String.append(",n:", String.append(Nat.show(List.length(&2, AST.TelescopeItem, params)), "};\n"))))))
-      name_info = String.append("$TYPE[", String.append(js_quote(full_key), String.append("]={name:", String.append(js_quote(key), String.append(",native:", js_type_native_marker(js_base_origin(env), key))))))
-      arm_info = String.append(",arms:{", String.append(js_type_arms(constructors, namespace, aliases, True{}), "}};\n"))
-      String.append(parameter_info, String.append(name_info, arm_info))
-    case _: ""
-def js_type_native_marker(native: Bool, key: String) -> String:
-  match native:
-    case True{}: js_quote(key)
-    case False{}: "null"
-def js_type_decls(namespace: String, imports: EmitAliases, declarations: List<&2, AST.TopLevel>, catalog: EmitCatalog) -> String:
-  match declarations:
-    case Nil{}: ""
-    case +declaration <> rest:
-      String.append(js_type_decl(namespace, imports, declaration, catalog), js_type_decls(namespace, imports, rest, catalog))
-def js_type_modules(modules: List<&2, Loader.LoadedModule>, catalog: EmitCatalog) -> String:
-  js_type_modules_needed(js_type_needed_modules(modules, EmitTypeNeeded{Nil{}, MTip{}}, catalog), modules, catalog)
-def js_type_modules_needed(needed: EmitTypeNeeded, modules: List<&2, Loader.LoadedModule>, catalog: EmitCatalog) -> String:
-  match needed:
-    case EmitTypeNeeded{definitions, _}:
-      String.append(js_type_modules_at(modules, catalog, js_catalog_layouts(catalog)), js_type_function_sources(definitions))
-def js_type_modules_at(remaining: List<&2, Loader.LoadedModule>, catalog: EmitCatalog, layouts: List<&2, EmitModuleIndex>) -> String:
-  match remaining layouts:
-    case Loader.LoadedModule{namespace, AST.Module{_, _, declarations}} <> rest EmitModuleIndex{_, imports, _, _, _} <> next:
-      String.append(js_type_decls(namespace, imports, declarations, catalog), js_type_modules_at(rest, catalog, next))
-    case _ _: ""
-# Collect only actual definition dependencies of type expressions. Register a
-# definition before traversing its body so recursive families terminate this
-# graph walk without a fuel bound or duplicate emitted bodies.
-def js_type_needed_ref(key: String, env: EmitEnv, needed: EmitTypeNeeded) -> EmitTypeNeeded:
-  js_type_needed_found(js_global(key, env), needed)
-def js_type_needed_found(found: Maybe<&2, EmitClosure>, +needed: EmitTypeNeeded) -> EmitTypeNeeded:
-  match found:
-    case Some{value}:
-      match value:
-        case EmitDefinition{key, binders, body, _, _, _, _, _}:
-          match needed:
-            case EmitTypeNeeded{_, seen}:
-              js_type_needed_definition(IndexLookup.find(Bool, seen, key), key, binders, body, js_closure_env(value), needed)
-        case _: needed
-    case None{}: needed
-def js_type_needed_definition(found: Maybe<&2, Bool>, key: String, binders: List<&2, AST.TelescopeItem>, body: AST.SyntaxTerm, env: EmitEnv, needed: EmitTypeNeeded) -> EmitTypeNeeded:
-  match found:
-    case Some{_}: needed
-    case None{}:
-      match needed:
-        case EmitTypeNeeded{definitions, seen}:
-          js_type_needed_term(body, env, EmitTypeNeeded{EmitTypeDefinition{key, binders, body, env} <> definitions, Map.set(&2, Bool, seen, key, True{})})
-def js_type_needed_terms(terms: List<&2, AST.SyntaxTerm>, env: EmitEnv, needed: EmitTypeNeeded) -> EmitTypeNeeded:
-  match terms:
-    case Nil{}: needed
-    case +term <> rest: js_type_needed_terms(rest, env, js_type_needed_term(term, env, needed))
-def js_type_needed_term(term: AST.SyntaxTerm, env: EmitEnv, needed: EmitTypeNeeded) -> EmitTypeNeeded:
-  match term:
-    case AST.TermRef{key, _}: js_type_needed_ref(key, env, needed)
-    case AST.TermBang{inner, _}: js_type_needed_term(inner, env, needed)
-    case AST.TermSub{_, value, body, _}: js_type_needed_terms([value, body], env, needed)
-    case AST.TermLet{_, _, _, values, body, _}: js_type_needed_term(body, env, js_type_needed_terms(values, env, needed))
-    case AST.TermAnn{inner, ty, _}: js_type_needed_terms([inner, ty], env, needed)
-    case AST.TermType{kind, _}: js_type_needed_term(kind, env, needed)
-    case AST.TermMin{left, right, _}: js_type_needed_terms([left, right], env, needed)
-    case AST.TermAll{_, _, _, domain, body, _}: js_type_needed_terms([domain, body], env, needed)
-    case AST.TermLam{_, _, _, body, _}: js_type_needed_term(body, env, needed)
-    case AST.TermApp{fn, arg, _}: js_type_needed_terms([fn, arg], env, needed)
-    case AST.TermAdt{_, args, _, _}: js_type_needed_terms(args, env, needed)
-    case AST.TermFill{head, args, _}: js_type_needed_term(head, env, js_type_needed_terms(args, env, needed))
-    case AST.TermPlus{head, args, _}: js_type_needed_term(head, env, js_type_needed_terms(args, env, needed))
-    case AST.TermCtr{_, args, _}: js_type_needed_terms(args, env, needed)
-    case AST.TermString{_, _, _}: needed
-    case AST.TermMat{_, head, matched, _}: js_type_needed_terms([head, matched], env, needed)
-    case AST.TermEqual{_, _, ty, _}: js_type_needed_term(ty, env, needed)
-    case AST.TermRewrite{_, _, body, _}: js_type_needed_term(body, env, needed)
-    case AST.BodyMatch{scrutinees, cases, _}: js_type_needed_terms(cases, env, js_type_needed_terms(scrutinees, env, needed))
-    case AST.BodyCase{_, body, _}: js_type_needed_term(body, env, needed)
-    case AST.BodyLocal{_, _, values, body, _}: js_type_needed_term(body, env, js_type_needed_terms(values, env, needed))
-    case AST.BodyReply{inner, _}: js_type_needed_term(inner, env, needed)
-    case _: needed
-def js_type_needed_binders(binders: List<&2, AST.TelescopeItem>, env: EmitEnv, needed: EmitTypeNeeded) -> EmitTypeNeeded:
-  match binders:
-    case Nil{}: needed
-    case AST.Binder{_, _, _, ty, _} <> rest: js_type_needed_binders(rest, env, js_type_needed_term(ty, env, needed))
-    case AST.TemplateBinder{_, _, ty, _} <> rest: js_type_needed_binders(rest, env, js_type_needed_term(ty, env, needed))
-def js_type_needed_result(result: AST.OptionalTerm, env: EmitEnv, needed: EmitTypeNeeded) -> EmitTypeNeeded:
-  match result:
-    case AST.NoTerm{}: needed
-    case AST.SomeTerm{term}: js_type_needed_term(term, env, needed)
-def js_type_needed_constructors(constructors: List<&2, AST.ConstructorDecl>, env: EmitEnv, needed: EmitTypeNeeded) -> EmitTypeNeeded:
-  match constructors:
-    case Nil{}: needed
-    case AST.Constructor{_, fields, _} <> rest:
-      js_type_needed_constructors(rest, env, js_type_needed_binders(fields, env, needed))
-def js_type_needed_declarations(declarations: List<&2, AST.TopLevel>, env: EmitEnv, needed: EmitTypeNeeded) -> EmitTypeNeeded:
-  match declarations:
-    case Nil{}: needed
-    case AST.DefTop{AST.Definition{key, binders, result, body, _, _}} <> rest:
-      required = js_type_needed_result(result, env, js_type_needed_binders(binders, env, needed))
-      js_type_needed_declarations(rest, env, js_type_needed_definition_root(key, binders, result, body, env, required))
-    case AST.TypeTop{AST.TypeDecl{_, params, kind, constructors, _}} <> rest:
-      required = js_type_needed_constructors(constructors, env, js_type_needed_term(kind, env, js_type_needed_binders(params, env, needed)))
-      js_type_needed_declarations(rest, env, required)
-    case AST.LawTop{_} <> rest: js_type_needed_declarations(rest, env, needed)
-def js_type_needed_definition_root(key: String, binders: List<&2, AST.TelescopeItem>, result: AST.OptionalTerm, body: AST.DefBody, env: EmitEnv, needed: EmitTypeNeeded) -> EmitTypeNeeded:
-  match body:
-    case AST.DefImports{_}: needed
-    case AST.DefTerm{term}:
-      js_type_needed_definition_root_kind(js_definition_is_type(binders, result, term, env), key, env, needed)
-def js_type_needed_definition_root_kind(type_only: Bool, key: String, env: EmitEnv, needed: EmitTypeNeeded) -> EmitTypeNeeded:
-  match type_only:
-    case True{}: js_type_needed_ref(key, env, needed)
-    case False{}: needed
-def js_type_needed_modules(remaining: List<&2, Loader.LoadedModule>, needed: EmitTypeNeeded, catalog: EmitCatalog) -> EmitTypeNeeded:
-  js_type_needed_modules_at(remaining, needed, catalog, js_catalog_layouts(catalog))
-def js_type_needed_modules_at(remaining: List<&2, Loader.LoadedModule>, needed: EmitTypeNeeded, catalog: EmitCatalog, layouts: List<&2, EmitModuleIndex>) -> EmitTypeNeeded:
-  match remaining layouts:
-    case Loader.LoadedModule{namespace, AST.Module{_, _, declarations}} <> rest EmitModuleIndex{_, imports, _, _, _} <> next:
-      env = EmitEnv{EmitScope{namespace, imports, catalog}, Nil{}, Nil{}, Nil{}, 0n}
-      js_type_needed_modules_at(rest, js_type_needed_declarations(declarations, env, needed), catalog, next)
-    case _ _: needed
-def js_type_function_sources(definitions: List<&2, EmitTypeDefinition>) -> String:
-  match definitions:
-    case Nil{}: ""
-    case EmitTypeDefinition{key, binders, body, env} <> rest:
-      match env:
-        case EmitEnv{EmitScope{namespace, imports, _}, _, _, _, _}:
-          aliases = js_aliases(imports)
-          arity = Nat.show(List.length(&2, AST.TelescopeItem, binders))
-          parameters = String.append("$PARAMS[", String.append(js_quote(key), String.append("]={n:", String.append(arity, String.append(",q:", String.append(Nat.show(js_family_quant_prefix(binders, env)), "};\n"))))))
-          prefix = String.append("$TYPEF[", String.append(js_quote(key), String.append("]={n:", arity)))
-          native = js_type_native_marker(js_base_origin(env), key)
-          entry = String.append(parameters, String.append(prefix, String.append(",native:", String.append(native, String.append(",body:", String.append(js_type_term(body, namespace, aliases), "};\n"))))))
-          String.append(entry, js_type_function_sources(rest))
-
-def main_type_expr_declaration(declaration: AST.TopLevel, namespace: String, aliases: String) -> String:
-  match declaration:
-    case AST.DefTop{ AST.Definition{key,  _, result,  _,  _,  _}}:
-      main_type_expr_is_main(String.eq(key, "main"), result, namespace, aliases)
-    case _: ""
-
-def main_type_expr_is_main(is_main: Bool, result: AST.OptionalTerm, namespace: String, aliases: String) -> String:
-  match is_main:
-    case False{}: ""
-    case True{}:
-      match result:
-        case AST.SomeTerm{term}: js_type_term(term, namespace, aliases)
-        case AST.NoTerm{}: ""
-
-def main_type_expr_declarations(declarations: List<&2, AST.TopLevel>, namespace: String, aliases: String) -> String:
-  match declarations:
-    case Nil{}: ""
-    case +declaration <> rest:
-      main_type_expr_declaration_result(main_type_expr_declaration(declaration, namespace, aliases), rest, namespace, aliases)
-
-def main_type_expr_declaration_result(found: String, rest: List<&2, AST.TopLevel>, namespace: String, aliases: String) -> String:
-  main_type_expr_declaration_empty(String.eq(found, ""), found, rest, namespace, aliases)
-
-def main_type_expr_declaration_empty(empty: Bool, found: String, rest: List<&2, AST.TopLevel>, namespace: String, aliases: String) -> String:
-  match empty:
-    case True{}: main_type_expr_declarations(rest, namespace, aliases)
-    case False{}: found
-
-def main_type_expr_modules(modules: List<&2, Loader.LoadedModule>, catalog: EmitCatalog) -> String:
-  main_type_expr_modules_at(modules, js_catalog_layouts(catalog))
-def main_type_expr_modules_at(remaining: List<&2, Loader.LoadedModule>, layouts: List<&2, EmitModuleIndex>) -> String:
-  match remaining layouts:
-    case Loader.LoadedModule{namespace, AST.Module{_, _, declarations}} <> rest EmitModuleIndex{_, imports, _, _, _} <> next:
-      main_type_expr_module_scope(String.eq(namespace, ""), namespace, imports, declarations, rest, next)
-    case _ _: "null"
-
-def main_type_expr_module_scope(is_root: Bool, namespace: String, imports: EmitAliases, declarations: List<&2, AST.TopLevel>, rest: List<&2, Loader.LoadedModule>, layouts: List<&2, EmitModuleIndex>) -> String:
-  match is_root:
-    case False{}: main_type_expr_modules_at(rest, layouts)
-    case True{}:
-      main_type_expr_module_result(main_type_expr_declarations(declarations, namespace, js_aliases(imports)), rest, layouts)
-
-def main_type_expr_module_result(found: String, rest: List<&2, Loader.LoadedModule>, layouts: List<&2, EmitModuleIndex>) -> String:
-  main_type_expr_module_empty(String.eq(found, ""), found, rest, layouts)
-
-def main_type_expr_module_empty(empty: Bool, found: String, rest: List<&2, Loader.LoadedModule>, layouts: List<&2, EmitModuleIndex>) -> String:
-  match empty:
-    case True{}: main_type_expr_modules_at(rest, layouts)
-    case False{}: found
-
-def js_runtime_cli() -> String:
+def cps_provider_3_js_runtime_cli() -> String:
   "const cli_args=[];\nfunction cli(argv) { for(let i=0;i<argv.length;i++){ if(argv[i]===\"--\"){cli_args.push(...argv.slice(i+1));break;} if(argv[i]===\"--help\"){process.stdout.write(\"usage: \"+process.argv[1]+\"\\n\");process.exit(0);} if(argv[i]===\"--threads\"||argv[i]===\"--gpu\"){i++;} else cli_args.push(argv[i]); } }\n"
-def js_runtime_io() -> String:
-  "function io_out(fd,data) { const fs=require(\"fs\"), b=Buffer.from(data); let at=0; while(at<b.length) at+=fs.writeSync(fd,b,at,b.length-at); }\nfunction io_errs(message) { io_out(2,io_bytes(message+\"\\n\")); }\nfunction io_bytes(text) { return new TextEncoder().encode(text); }\nfunction io_text(bytes,n) { return new TextDecoder(\"utf-8\",{ignoreBOM:true}).decode(bytes.subarray(0,n)); }\nfunction io_tuple_pair(snd,fst) { return tuple(fst,snd); }\nfunction io_tup(...xs) { if(xs.length!==2)return xs.reduceRight(io_tuple_pair); return tuple(xs[0],xs[1]); }\nfunction io_done(value) { return {$:\"Done\",value}; }\nfunction io_sys() { if(globalThis.BEND_SYS===undefined){const ffi=require(\"bun:ffi\"), mac=process.platform===\"darwin\", err=mac?\"__error\":\"__errno_location\", T={i:\"i32\",u:\"u32\",U:\"u64\",I:\"i64\",p:\"ptr\",c:\"cstring\"}, vari=mac&&process.arch===\"arm64\", lib=ffi.dlopen(mac?\"libSystem.dylib\":\"libc.so.6\",Object.fromEntries((\"socket:iii>i bind:ipu>i listen:ii>i connect:ipu>i accept:ipp>i send:ipUi>I recv:ipUi>I read:ipU>I pread:ipUI>I sendto:ipUipu>I recvfrom:ipUipp>I close:i>i poll:pui>i setsockopt:iiipu>i\"+(vari?\" fcntl:iiiiiiiii>i\":\" fcntl:iii>i\")+\" getsockopt:iiipp>i strerror:i>c \"+err+\":>p\").split(\" \").map(s=>{const [name,args,ret]=s.split(/[:>]/);return [name,{args:[...args].map(a=>T[a]),returns:T[ret]}]}))), fcntl=(fd,cmd,arg)=>vari?lib.symbols.fcntl(fd,cmd,0,0,0,0,0,0,arg):lib.symbols.fcntl(fd,cmd,arg); globalThis.BEND_SYS={...lib.symbols,fcntl,ptr:ffi.ptr,mac,errno:()=>ffi.read.i32(lib.symbols[err](),0)};} return globalThis.BEND_SYS; }\nfunction io_fail(code) { return {$:\"Fail\",error:io_tup(code>>>0,String(io_sys().strerror(code)))}; }\nfunction io_push(fun,arg,fresh) { const io=globalThis.BEND_IO; io.runs.push({fun,arg}); io.live+=fresh?1:0; }\nfunction io_park_on(fd,out,k,more) { globalThis.BEND_IO.waits.push({fd,out,k,more}); }\nfunction io_wait(io) { const soon=io.waits.reduce((m,w)=>Math.min(m,w.at??m),Infinity); let ms=-1; if(soon!==Infinity)ms=Math.min(Math.max(0,Math.ceil(soon-performance.now())),2147483647); const fds=io.waits.filter(w=>w.fd!==undefined), buf=Int32Array.from(fds.flatMap(w=>[w.fd,w.out?4:1])); io_sys().poll(fds.length?io_sys().ptr(buf):null,fds.length,ms); const now=performance.now(), fire=io.waits.filter((w)=>(buf[2*fds.indexOf(w)+1]>>>16)!==0||w.at<=now); io.waits=io.waits.filter(w=>!fire.includes(w)); for(const w of fire)io_push(io_wake,w,false); }\nfunction io_wake(w) { const x=w.more(); return x===undefined?undefined:w.k(x); }\nfunction io_run(m) { const io={runs:[],live:0,waits:[]}; globalThis.BEND_IO=io; try{io_push(run_loop(m()),io_emit,true); for(;;){if(io.runs.length===0){if(io.live===0)return 0;if(io.waits.length===0){io_errs(\"bend: deadlock: every computation waits on a channel\");return 1;}io_wait(io);continue;}const s=io.runs.shift();let op=s.fun(s.arg);for(;;){if(op===undefined)break;if(op.$===\"Emit\"){io.live-=1;break;}if(op.$===\"Halt\"){io_errs(op.message);return op.code;}const need=op.need?.()||{},fd=need.read?op.args[0]:null;if(need.time||fd!==null){const more=()=>op.run(...op.args,op.kont);io.waits.push(fd===null?{at:performance.now()+Number(op.args[0]),k:op.kont,more}:{fd,k:op.kont,more});break;}const x=op.run(...op.args,op.kont);if(x===undefined)break;op=op.kont(x);}}}catch(req){if(req instanceof RangeError)throw \"bend: memory fault (machine stack overflow?)\";if(req?.$!==\"$FFI\")throw req;io_errs(\"bend: an FFI operation failed\");return 1;} }\nfunction chan_wake(row,x) { const w=row.wait.shift(); io_push(w.cont,x,false); return w.item; }\nfunction chan_take(row) { const v=row.ring.shift(); if(row.wait.length>0)row.ring.push(chan_wake(row,true)); return v; }\nfunction chan_shut(row) { row.shut=true; while(row.wait.length>0)chan_wake(row,row.wait[0].item===null?{$:\"None\"}:false); }\nfunction io_exit(main,type) { if(type&&type.name===\"IO\")return io_run(main); try{io_out(1,io_bytes($show_value(type,run_loop(main()),0)+\"\\n\"));return 0;}catch(e){io_errs(String(e));return 1;} }\n"
-def js_runtime_show() -> String:
-  String.append(js_runtime_type(), "function $show_chr(x,q) { const c=[...x][0]||\"\\0\", n=c.codePointAt(0), k=({10:\"n\",9:\"t\",13:\"r\",0:\"0\",92:\"\\\\\"})[n]??(c===q?q:null); return k!==null?\"\\\\\"+k:n<32||n===127?\"\\\\u{\"+n.toString(16)+\"}\":c; }\nfunction $show_list(t,x) { const xs=[]; while(x&&x.$===\"Con\") { const fs=t.arms.Con; if(!fs||!Object.hasOwn(x,\"head\")||!Object.hasOwn(x,\"tail\")) throw \"bend: malformed List.Con\"; xs.push($show_value($type(fs.types[0],t.args),x.head,0)); const next=$type(fs.types[1],t.args.concat([x.head])); x=x.tail; t=next; } if(!x||x.$!==\"Nil\") throw \"bend: malformed List.Nil\"; return \"[\"+xs.join(\", \")+\"]\"; }\nfunction $show_fields(t,x,chain) { const fs=t.arms[x.$]; if(!fs) throw \"bend: constructor absent from result datatype\"; const out=[],env=t.args.slice(); let at=0; for(let j=0;j<fs.types.length;j++) { if(fs.q[j]===0) { env.push(null); continue; } const name=fs.fields[j]; if(!Object.hasOwn(x,name))throw \"bend: constructor field count mismatch\"; const v=x[name]; at++; out.push($show_value($type(fs.types[j],env),v,chain&&at===2?\"(\":0)); env.push(v); } return out.join(\", \"); }\nfunction $show_value(t,x,chain) { if(!t) return String(x); if(t.k===\"U\") return String(x); if(t.k===\"F\") { const s=f32_show(x); return s.replace(/^-?\\d+(?=e|$)/i,\"$&.0\"); } if(t.k===\"N\") return x+\"n\"; if(t.k===\"C\") return \"'\"+$show_chr(x,\"'\")+\"'\"; if(t.k===\"S\") return \"\\\"\"+[...x].map(c=>$show_chr(c,\"\\\"\")).join(\"\")+\"\\\"\"; if(t.k===\"E\") return \"{==}\"; if(t.k===\"A\") return \"[\"+x.map(v=>$show_value(t.e,v,0)).join(\", \")+\"]\"; if(typeof x===\"boolean\") return x?\"True{}\":\"False{}\"; if(!x||typeof x!==\"object\"||!x.$) return String(x); if(t.native===\"List\") return $show_list(t,x); if(t.native===\"Sigma\"&&x.$===\"Tuple\") { const c=chain===\"(\"; return (c?\"\":\"(\")+$show_fields(t,x,true)+(c?\"\":\")\"); } if(t.k!==\"D\") throw \"bend: expected a datatype result\"; return x.$+\"{\"+$show_fields(t,x,false)+\"}\"; }\n")
-# Metadata evaluation retains every source formal slot, including erased type
-# arguments, but delays terms until reduction needs them. It never calls an
-# ordinary erased-value function or executes an unused proof/index expression.
-def js_runtime_type() -> String:
-  String.append(js_runtime_native_type(), String.append(js_runtime_type_names(), String.append(js_runtime_type_patterns(), js_runtime_type_eval())))
-def js_runtime_type_names() -> String:
+
+def cps_provider_3_js_runtime_io() -> String:
+  "function io_out(fd,data) { const fs=require(\"fs\"), b=Buffer.from(data); let at=0; while(at<b.length){ try{ at+=fs.writeSync(fd,b,at,b.length-at); } catch(e){ if(e.code===\"EAGAIN\"||e.code===\"EINTR\")continue; if(e.code===\"EPIPE\"){process.on(\"SIGPIPE\",()=>{}).removeAllListeners(\"SIGPIPE\").kill(process.pid,\"SIGPIPE\");} try{fs.writeSync(2,\"bend: a short write on a standard stream\\n\");}catch(o){} process.exit(1);} } }\nfunction io_errs(message) { io_out(2,io_bytes(message+\"\\n\")); }\nfunction io_bytes(text) { return new TextEncoder().encode(text); }\nfunction io_text(b,n) { return new TextDecoder(\"utf-8\",{ignoreBOM:true}).decode(b.subarray(0,n)); }\nfunction io_list(b,n) { let xs={$:\"Nil\"}; while(n>0){ xs={$:\"Con\",head:b[--n],tail:xs}; } return xs; }\nfunction io_unlist(xs) { const b=[]; for(;xs.$===\"Con\";xs=xs.tail){ b.push(xs.head); } return b.some(x=>x>255)?null:Uint8Array.from(b); }\nfunction io_addr(host,port) { const part=host.split(\".\"); const deci=p=>/^(0|[1-9]\\d{0,2})$/.test(p)&&Number(p)<256; if(port>65535||part.length!==4||!part.every(deci))return null; const b=new Uint8Array(16); const head=io_sys().mac?[16,2]:[2,0]; b.set([...head,port>>8,port&255,...part.map(Number)]); return b; }\nfunction io_tup(...xs) { return xs.reduceRight((snd,fst)=>({$:\"Tuple\",fst,snd})); }\nfunction io_done(value) { return {$:\"Done\",value}; }\nfunction io_strerror(code) { try{ return String(io_sys().strerror(code)); } catch(o){ return \"errno \"+code; } }\nfunction io_fail(code,...rest) { const err=io_tup(code>>>0,io_strerror(code)); return {$:\"Fail\",error:io_tup(err,...rest)}; }\nfunction io_until(ms) { return performance.now()+Number(ms); }\nfunction io_late(at) { return at!==undefined&&performance.now()>=at; }\nfunction io_ready(at,r) { return at===undefined?r:{$:\"Ready\",value:r}; }\nfunction io_sys() { if(globalThis.BEND_SYS===undefined){ const ffi=require(\"bun:ffi\"), mac=process.platform===\"darwin\", err=mac?\"__error\":\"__errno_location\", sel=mac?\"select$DARWIN_EXTSN\":\"select\", T={i:\"i32\",u:\"u32\",U:\"u64\",I:\"i64\",p:\"ptr\",c:\"cstring\"}, vari=mac&&process.arch===\"arm64\", lib=ffi.dlopen(mac?\"libSystem.dylib\":\"libc.so.6\",Object.fromEntries((\"socket:iii>i bind:ipu>i listen:ii>i connect:ipu>i accept:ipp>i send:ipUi>I recv:ipUi>I read:ipU>I pread:ipUI>I sendto:ipUipu>I recvfrom:ipUipp>I close:i>i setsockopt:iiipu>i \"+sel+\":ipppp>i\"+(vari?\" fcntl:iiiiiiiii>i\":\" fcntl:iii>i\")+\" getsockopt:iiipp>i strerror:i>c \"+err+\":>p\").split(\" \").map(s=>{const [name,args,ret]=s.split(/[:>]/);return [name,{args:[...args].map(a=>T[a]),returns:T[ret]}]}))).symbols; const fcntl=(fd,cmd,arg)=>vari?lib.fcntl(fd,cmd,0,0,0,0,0,0,arg):lib.fcntl(fd,cmd,arg); globalThis.BEND_SYS={...lib,fcntl,select:lib[sel],ptr:ffi.ptr,mac,errno:()=>ffi.read.i32(lib[err](),0)}; } return globalThis.BEND_SYS; }\nfunction io_push(fun,arg,fresh) { const io=globalThis.BEND_IO; io.runs.push({fun,arg}); io.live+=fresh?1:0; }\nfunction io_park_on(fd,out,k,more,at) { const ws=globalThis.BEND_IO.waits; const i=ws.findLastIndex(w=>(w.at??Infinity)<=(at??Infinity)); ws.splice(i+1,0,{fd,out,k,more,at}); }\nfunction io_wait(io,block) { const soon=io.waits[0]?.at??Infinity; const ms=!block?0:soon===Infinity?-1:Math.max(0,Math.ceil(soon-performance.now())); const fds=io.waits.filter(w=>w.fd!==undefined); const top=fds.reduce((m,w)=>Math.max(m,w.fd),0); const len=(top>>6<<3)+8; const set=new Uint8Array(2*len); const at=w=>(w.out?len:0)+(w.fd>>3); for(const w of fds)set[at(w)]|=1<<(w.fd&7); const tv=new BigInt64Array([BigInt(ms/1000|0),BigInt(ms%1000*1000)]); const sys=io_sys(); if(sys.select(top+1,sys.ptr(set),sys.ptr(set,len),null,ms<0?null:sys.ptr(tv))<0){ if(sys.errno()!==4){ throw \"bend: the poller failed\"; } set.fill(0); } const now=performance.now(); const due=w=>w.at<=now||w.fd!==undefined&&set[at(w)]&1<<(w.fd&7); const todo=io.waits; io.waits=todo.filter(w=>!due(w)); for(const w of todo.filter(due)){ const x=w.more(); if(x!==undefined)io_push(w.k,x,false); } }\nfunction io_run(m) { const io={runs:[],live:0,waits:[]}; globalThis.BEND_IO=io; try{ io_push(run_loop(m()),x=>({$:\"Emit\",value:x}),true); let look=0; for(let n=0;;n+=1){ if(io.runs.length===0){ if(io.live===0)return 0; if(io.waits.length===0){ io_errs(\"bend: deadlock: every computation waits on a channel\"); return 1; } io_wait(io,true); continue; } if((n&63)===0&&io.waits.length>0){ const now=performance.now(); if(now>=look||io.waits[0].at<=now){ look=now+10; io_wait(io,false); } } const s=io.runs.shift(); let op=s.fun(s.arg); while(op!==undefined){ if(op.$===\"Emit\"){ io.live-=1; break; } if(op.$===\"Halt\"||op.$===\"Exit\"){ if(op.$===\"Halt\")io_errs(op.message); if(op.code>255){ io_errs(\"bend: exit code must be in 0..255\"); return 1; } return op.code; } const run=$0eff[op.$]; if(run===undefined){ throw \"bend: no effect registers \"+op.$; } const x=run(...op.args,op.kont); if(x===undefined)break; op=op.kont(x); } } }catch(e){ throw e instanceof RangeError?\"bend: memory fault (machine stack overflow?)\":e; } }\nfunction io_exit(main,type) { try{ if(type&&type.name===\"IO\")return io_run(main); io_out(1,io_bytes($show_value(type,run_loop(main()),0)+\"\\n\")); return 0; }catch(e){ io_errs(String(e)); return 1; } }\n"
+
+def cps_provider_3_js_runtime_show() -> String:
+  String.append(cps_provider_3_js_runtime_type, "function $show_chr(x,q) { const c=[...x][0]||\"\\0\", n=c.codePointAt(0), k=({10:\"n\",9:\"t\",13:\"r\",0:\"0\",92:\"\\\\\"})[n]??(c===q?q:null); return k!==null?\"\\\\\"+k:n<32||n===127?\"\\\\u{\"+n.toString(16)+\"}\":c; }\nfunction $show_list(t,x) { const xs=[]; while(x&&x.$===\"Con\") { const fs=t.arms.Con; if(!fs||!Object.hasOwn(x,\"head\")||!Object.hasOwn(x,\"tail\")) throw \"bend: malformed List.Con\"; xs.push($show_value($type(fs.types[0],t.args),x.head,0)); const next=$type(fs.types[1],t.args.concat([x.head])); x=x.tail; t=next; } if(!x||x.$!==\"Nil\") throw \"bend: malformed List.Nil\"; return \"[\"+xs.join(\", \")+\"]\"; }\nfunction $show_fields(t,x,chain) { const fs=t.arms[x.$]; if(!fs) throw \"bend: constructor absent from result datatype\"; const out=[],env=t.args.slice(); let at=0; for(let j=0;j<fs.types.length;j++) { if(fs.q[j]===0) { env.push(null); continue; } const name=fs.fields[j]; if(!Object.hasOwn(x,name))throw \"bend: constructor field count mismatch\"; const v=x[name]; at++; out.push($show_value($type(fs.types[j],env),v,chain&&at===2?\"(\":0)); env.push(v); } return out.join(\", \"); }\nfunction $show_value(t,x,chain) { if(!t) return String(x); if(t.k===\"U\") return String(x); if(t.k===\"F\") { const s=f32_show(x); return s.replace(/^-?\\d+(?=e|$)/i,\"$&.0\"); } if(t.k===\"N\") return x+\"n\"; if(t.k===\"C\") return \"'\"+$show_chr(x,\"'\")+\"'\"; if(t.k===\"S\") return \"\\\"\"+[...x].map(c=>$show_chr(c,\"\\\"\")).join(\"\")+\"\\\"\"; if(t.k===\"E\") return \"{==}\"; if(t.k===\"A\") return \"[\"+x.map(v=>$show_value(t.e,v,0)).join(\", \")+\"]\"; if(typeof x===\"boolean\") return x?\"True{}\":\"False{}\"; if(!x||typeof x!==\"object\"||!x.$) return String(x); if(t.native===\"List\") return $show_list(t,x); if(t.native===\"Sigma\"&&x.$===\"Tuple\") { const c=chain===\"(\"; return (c?\"\":\"(\")+$show_fields(t,x,true)+(c?\"\":\")\"); } if(t.k!==\"D\") throw \"bend: expected a datatype result\"; return x.$+\"{\"+$show_fields(t,x,false)+\"}\"; }\n")
+
+def cps_provider_3_js_runtime_type() -> String:
+  String.append(cps_provider_3_js_runtime_native_type, String.append(cps_provider_3_js_runtime_type_names, String.append(cps_provider_3_js_runtime_type_patterns, cps_provider_3_js_runtime_type_eval)))
+
+def cps_provider_3_js_runtime_type_names() -> String:
   "function $type_key(k,s,i) { const q=$key(k,s,i||{}); return $TYPE[q]!==undefined||$TYPEF[q]!==undefined?q:k; }\nfunction $type_ctor_key(k,s,i) { const q=$key(k,s,i||{}); return $FIELDS[q]!==undefined?q:k; }\nfunction $type_delay(t,a) { if(t.k)return t; if(t.p!==undefined&&a[a.length-1-t.p]!==undefined)return a[a.length-1-t.p]; return {k:\"Thunk\",term:t,env:a,depth:a.length,done:false}; }\nfunction $type_force(v) { if(v&&v.k===\"Thunk\") { if(!v.done) { v.value=$type(v.term,v.env.length===v.depth?v.env:v.env.slice(0,v.depth)); v.done=true; } return v.value; } return v; }\nfunction $type_apply(f,x) { f=$type_force(f); if(f.k===\"L\") return $type(f.body,f.env.concat([x])); if(f.k===\"TF\"||f.k===\"DF\") return $type_named(f.key,f.args.concat([x])); throw \"bend: type expression applied a non-function\"; }\nfunction $type_named(q,ps) { const f=$TYPEF[q]; if(f) { if(ps.length<f.n)return {k:\"TF\",key:q,args:ps}; let v=f.intrinsic?$type_native_invoke(f,ps):$type(f.body,ps.length===f.n?ps:ps.slice(0,f.n)); for(let i=f.n;i<ps.length;i++)v=$type_apply(v,ps[i]); if(f.native===\"IO\")v.name=\"IO\"; return v; } const d=$TYPE[q]; if(!d) throw \"bend: unresolved type expression \"+q; const p=$PARAMS[q]; if(ps.length<p.n)return {k:\"DF\",key:q,args:ps}; if(ps.length!==p.n)throw \"bend: datatype parameter count mismatch\"; if(d.native===\"Array\") return {k:\"A\",e:$type_force(ps[0])}; const k=({U32:\"U\",F32:\"F\",Nat:\"N\",Char:\"C\",String:\"S\",Eql:\"E\"})[d.native]; return k?{k}:{k:\"D\",key:q,name:d.name,native:d.native,arms:d.arms,args:ps}; }\n"
-def js_runtime_type_patterns() -> String:
+
+def cps_provider_3_js_runtime_type_patterns() -> String:
   "function $type_sugar(t,a) { const h=$type(t.sugar,a),more=t.a.map(x=>$type_delay(x,a)); if(h.k===\"TF\"||h.k===\"DF\"||h.k===\"D\") { const q=h.key,p=$PARAMS[q]; let xs=h.args.concat(more); if(p&&xs.length+p.q===p.n)xs=Array.from({length:p.q},()=>({k:\"Q\",v:t.f})).concat(xs); if(p&&t.f===2)xs=xs.map((x,i)=>i<p.q?({k:\"Q\",v:2}):x); return $type_named(q,xs); } let v=h; for(const x of more)v=$type_apply(v,x); return v; }\nfunction $type_pattern(p,v,bindings) { if(p.v) { bindings.push(v); return true; } v=$type_force(v); const q=$type_ctor_key(p.c,p.s,p.i),c=$PRIMITIVES[q]||($FIELDS[q]===undefined?q:\"\"); let fields,complete=false; if(v&&v.k===\"V\") { if(v.c!==q)return false; fields=v.args; complete=true; } else if(v&&v.$===q) { const names=$FIELDS[q]; if(!names||names.length!==p.fields.length)return false; for(let j=0;j<names.length;j++){if(names[j]===null){bindings.push(null);continue;}if(!$type_pattern(p.fields[j],v[names[j]],bindings))return false;}return true; } else if(c===\"Bool.True\"&&v===true||c===\"Bool.False\"&&v===false||c===\"Nat.Zero\"&&v===0||c===\"String.SNil\"&&v===\"\") fields=[]; else if(c===\"Nat.Succ\"&&typeof v===\"number\"&&v>0)fields=[v-1]; else if(c===\"String.SCon\"&&typeof v===\"string\"&&v.length)fields=[String.fromCodePoint(v.codePointAt(0)),v.slice(v.codePointAt(0)>0xFFFF?2:1)]; else if(c===\"Char.Chr\"&&typeof v===\"string\")fields=[v.codePointAt(0)]; else if(c===\"U32.U32\"&&typeof v===\"number\")fields=[u32_to_word(v)]; else if(c===\"F32.F32\"&&typeof v===\"number\")fields=[u32_to_word(f32_bits(v))]; else if(c===\"Array.ALeaf\"&&Array.isArray(v)&&v.length===1)fields=[v[0]]; else if(c===\"Array.ANode\"&&Array.isArray(v)&&v.length!==1)fields=[v.slice(0,v.length>>1),v.slice(v.length>>1)]; else return false; let at=0; for(const field of p.fields) { if(!complete&&field.v&&field.q===0) { bindings.push(null); continue; } if(at>=fields.length||!$type_pattern(field,fields[at++],bindings))return false; } return at===fields.length; }\nfunction $type_bind(patterns,values) { if(patterns.length!==values.length)return null; const bindings=[]; for(let j=0;j<values.length;j++)if(!$type_pattern(patterns[j],values[j],bindings))return null; return bindings; }\n"
-def js_runtime_type_eval() -> String:
+
+def cps_provider_3_js_runtime_type_eval() -> String:
   "function $type(t,a=[]) { if(t===null)return null; if(t===undefined)throw \"bend: missing type expression\"; if(t.p!==undefined) { const v=$type_force(a[a.length-1-t.p]); if(v===undefined||v===null)throw \"bend: unavailable type-expression binder\"; return v; } if(t.k)return $type_force(t); if(t.fail)throw t.fail; if(t.kind!==undefined)return {k:\"K\",q:$type(t.kind,a)}; if(t.min!==undefined)return {k:\"Q\",v:Math.min($type(t.min,a).v,$type(t.right,a).v)}; if(t.all!==undefined)return {k:\"Fn\",q:t.q,domain:$type(t.all,a),body:t.body,env:a}; if(t.lam!==undefined)return {k:\"L\",body:t.lam,env:a}; if(t.app!==undefined)return $type_apply($type(t.app,a),$type_delay(t.arg,a)); if(t.sub!==undefined) { const env=a.slice(); env.splice(env.length-t.sub,0,$type_delay(t.value,a)); return $type(t.body,env); } if(t.let!==undefined)return $type(t.body,a.concat(t.let.map(x=>$type_delay(x,a)))); if(t.local!==undefined) { const bs=$type_bind(t.pat,t.local.map(x=>$type_delay(x,a))); if(bs===null)throw \"bend: type expression local pattern failed\"; return $type(t.body,a.concat(bs)); } if(t.bind!==undefined)return $type(t.body,a.concat([$type_delay(t.bind,a)])); if(t.match!==undefined) { const vs=t.match.map(x=>$type_delay(x,a)); for(const c of t.cases) { const bs=$type_bind(c.pat,vs); if(bs!==null)return $type(c.body,a.concat(bs)); } throw \"bend: type expression match failed\"; } if(t.c!==undefined)return {k:\"V\",c:$type_ctor_key(t.c,t.s,t.i),args:t.a.map(x=>$type_delay(x,a))}; if(t.sugar!==undefined)return $type_sugar(t,a); if(t.f) { const q=$type_key(t.r,t.s,t.i),p=$PARAMS[q]; if(!p&&t.f===2)return $type(t.h,a); let xs=t.a||[]; if(p&&xs.length+p.q===p.n)xs=Array.from({length:p.q},()=>({k:\"Q\",v:1})).concat(xs); if(p&&t.f===2)xs=xs.map((x,i)=>i<p.q?({k:\"Q\",v:2}):x); return $type_named(q,xs.map(x=>$type_delay(x,a))); } if(t.r!==undefined)return $type_named($type_key(t.r,t.s,t.i),(t.a||[]).map(x=>$type_delay(x,a))); throw \"bend: unsupported type-expression descriptor\"; }\n"
-def js_runtime_native_type() -> String:
+
+def cps_provider_3_js_runtime_native_type() -> String:
   "function $type_native_invoke(f,ps) { let value=f.intrinsic; for(let i=0;i<f.n;i++)if(f.q[i]!==0)value=value($type_runtime_value(ps[i])); return value; }\nfunction $type_runtime_value(value) { const v=$type_force(value); if(!v||v.k!==\"V\")return v; const c=$PRIMITIVES[v.c]||($FIELDS[v.c]===undefined?v.c:\"\"),xs=v.args; switch(c) { case \"Nat.Zero\":return 0; case \"Nat.Succ\":return nat_chk($type_runtime_value(xs[0])+1); case \"Bool.False\":return false; case \"Bool.True\":return true; case \"String.SNil\":return \"\"; case \"String.SCon\":return $type_runtime_value(xs[0])+$type_runtime_value(xs[1]); case \"Char.Chr\":return char_new($type_runtime_value(xs[0])); case \"U32.U32\":return word_to_u32($type_runtime_value(xs[0])); case \"F32.F32\":return f32_from_bits(word_to_u32($type_runtime_value(xs[0]))); case \"Array.ALeaf\":return [$type_runtime_value(xs[0])]; case \"Array.ANode\":return $type_runtime_value(xs[0]).concat($type_runtime_value(xs[1])); } const fs=$FIELDS[v.c]; if(!fs||fs.length!==xs.length)throw \"bend: unresolved metadata constructor\"; const args=xs.map((x,i)=>fs[i]===null?null:$type_runtime_value(x)); return $ctr(v.c,args,\"\",{}); }\n"
-def js_main(type_expression: String) -> String:
-  String.append("if (typeof process !== \"undefined\" && process.argv[1] && /\\.js$/.test(process.argv[1])) { cli(process.argv.slice(2)); if(Object.hasOwn($D,\"main\")) { process.exitCode=io_exit(()=>$D[\"main\"],$type(", String.append(type_expression, ")); } }\n"))
 
-def emit(modules: List<&2, Loader.LoadedModule>) -> EmitResult:
-  js_emit_template(template_modules(modules), modules, None{})
+def cps_provider_3_js_main(v_1: String) -> String:
+  String.append("if (typeof process !== \"undefined\" && process.argv[1] && /\\.js$/.test(process.argv[1])) { cli(process.argv.slice(2)); if(Object.hasOwn($D,\"main\")) { process.exitCode=io_exit(()=>$D[\"main\"],$type(", String.append(v_1, ")); } }\n"))
 
-def js_emit_template(found: Maybe<&2, AST.SourceSpan>, modules: List<&2, Loader.LoadedModule>, exports: Maybe<&2, List<&2, String>>) -> EmitResult:
-  match found:
-    case Some{span}: EmitFailure{ "unexpanded compile-time template", span}
-    case None{}: js_emit_holes(error_modules(modules), modules, exports)
+def cps_provider_4_qualify(+v_1: String, v_3: String) -> String:
+  Scope.canonical_key(v_1, v_3, String.eq(v_1, ""))
 
-def js_emit_holes(found: Maybe<&2, AST.SourceSpan>, modules: List<&2, Loader.LoadedModule>, exports: Maybe<&2, List<&2, String>>) -> EmitResult:
-  match found:
-    case Some{span}: EmitFailure{ "cannot compile a hole", span}
-    case None{}: js_emit_foreign(foreign_error_modules(modules), modules, exports)
+def cps_provider_4_symbol_key(v_0: IR.Symbol) -> String:
+  match v_0:
+    case IR.Symbol{v_6, v_7, _, _}:
+      cps_provider_4_qualify(v_6, v_7)
 
-def js_emit_foreign(found: Maybe<&2, AST.SourceSpan>, modules: List<&2, Loader.LoadedModule>, exports: Maybe<&2, List<&2, String>>) -> EmitResult:
-  match found:
-    case Some{span}: EmitFailure{ "a foreign def without a .js import", span}
+def cps_provider_4_quantity(v_0: Ast.Quantity) -> BIR.Quantity:
+  match v_0:
+    case Ast.QZero{}:
+      BIR.Erased{}
+    case Ast.QOne{}:
+      BIR.Once{}
+    case Ast.QMany{}:
+      BIR.Unrestricted{}
+
+def cps_provider_4_optional_quantity(v_1: Maybe<&2, Ast.Quantity>) -> Maybe<&2, BIR.Quantity>:
+  match v_1:
     case None{}:
-      catalog = js_value_indices(modules)
-      source = String.append(js_runtime(), String.append(js_runtime_extra(), String.append(js_runtime_show(), String.append(js_runtime_cli(), String.append(js_runtime_io(), String.append(js_runtime_array(), String.append(js_runtime_foreign(), String.append(js_runtime_namespace(), String.append(js_constructor_fields_modules(modules), String.append(js_type_modules(modules, catalog), String.append(js_modules(modules, catalog), js_emit_ending(exports, modules, catalog))))))))))))
-      EmitSuccess{source}
+      None{}
+    case Some{v_4}:
+      Some{cps_provider_4_quantity(v_4)}
 
-def js_library_exports(exports: List<&2, String>) -> String:
-  String.append("export default {", String.append(js_library_export_fields(exports), "};\n"))
+def cps_provider_4_parameter(v_1: U32, v_2: BIR.Quantity, v_4: List<&2, BIR.Parameter>) -> List<&2, BIR.Parameter>:
+  match v_2:
+    case BIR.Erased{}:
+      v_4
+    case BIR.Once{}:
+      BIR.Parameter{v_1, BIR.Affine{}} <> v_4
+    case BIR.Unrestricted{}:
+      BIR.Parameter{v_1, BIR.Many{}} <> v_4
 
-def js_library_export_fields(exports: List<&2, String>) -> String:
-  match exports:
-    case Nil{}: ""
-    case +key <> rest:
-      quoted = js_quote(key)
-      String.append(quoted, String.append(":(...args)=>$run($D[", String.append(quoted, String.append("],args),", js_library_export_fields(rest)))))
+def cps_provider_4_field_key(v_1: String, v_2: BIR.Quantity) -> Maybe<&2, String>:
+  match v_2:
+    case BIR.Erased{}:
+      None{}
+    case _:
+      Some{v_1}
 
-def emit_library(modules: List<&2, Loader.LoadedModule>, exports: List<&2, String>) -> EmitResult:
-  js_emit_template(template_modules(modules), modules, Some{exports})
+def cps_provider_4_canonical(v_1: String, v_2: Scope.ArenaGlobalScope, v_4: Bool) -> String:
+  match v_4:
+    case True{}:
+      Scope.canonical_name_result(v_1, Scope.lookup_kind(v_1, Scope.GlobalConstructor{}, v_2))
+    case False{}:
+      Scope.canonical_name(v_1, v_2)
 
-def js_emit_ending(exports: Maybe<&2, List<&2, String>>, modules: List<&2, Loader.LoadedModule>, catalog: EmitCatalog) -> String:
-  match exports:
-    case None{}: js_main(main_type_expr_modules(modules, catalog))
-    case Some{keys}: js_library_exports(keys)
+def cps_provider_4_native_match_descriptor_0(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Node>, v_4: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_3:
+    case (v_8, v_9):
+      cps_provider_4_descriptor_node(v_8, v_9, v_4)
+
+def cps_provider_4_descriptor(v_0: Arena.Arena, v_2: U32, v_3: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  cps_provider_4_native_match_descriptor_0(Arena.get_node(v_0, v_2), v_3)
+
+def cps_provider_4_native_match_descriptor_name_0(v_4: Sigma<&1, &1, Arena.Arena, _ => String>, v_5: Scope.ArenaGlobalScope, v_7: Bool) -> cps_provider_4_CatalogResult<String>:
+  match v_4:
+    case (v_12, v_13):
+      cps_provider_4_CatalogResult{v_12, cps_provider_4_canonical(v_13, v_5, v_7)}
+
+def cps_provider_4_descriptor_name(v_0: Arena.Arena, v_2: U32, v_3: Scope.ArenaGlobalScope, v_5: Bool) -> cps_provider_4_CatalogResult<String>:
+  cps_provider_4_native_match_descriptor_name_0(Arena.name_text(v_0, v_2), v_3, v_5)
+
+def cps_provider_4_native_match_descriptors_0(v_2: cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>, v_3: BIR.Descriptor) -> cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_8, v_9}:
+      cps_provider_4_CatalogResult{v_8, v_3 <> v_9}
+
+def cps_provider_4_native_match_descriptors_1(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>, v_3: U32, v_5: U32, v_6: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_11, v_12}:
+      cps_provider_4_native_match_descriptors_0(cps_provider_4_descriptors(v_11, IR.arena_range_index(v_3, 1), U32.sub(v_5, 1), v_6), v_12)
+
+def cps_provider_4_native_match_descriptors_2(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_6: U32, v_8: U32, v_9: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>:
+  match v_4:
+    case (v_14, v_15):
+      cps_provider_4_native_match_descriptors_1(cps_provider_4_descriptor(v_14, v_15, v_9), v_6, v_8, v_9)
+
+def cps_provider_4_native_match_descriptors_3(v_1: U32, v_2: Arena.Arena, v_4: U32, v_5: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>:
+  match v_1:
+    case 0:
+      cps_provider_4_CatalogResult{v_2, []}
+    case _:
+      cps_provider_4_native_match_descriptors_2(Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5)
+
+def cps_provider_4_descriptors(v_0: Arena.Arena, v_2: U32, v_4: U32, v_5: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>:
+  cps_provider_4_native_match_descriptors_3(v_4, v_0, v_2, v_5)
+
+def cps_provider_4_native_match_descriptor_patterns_0(v_2: cps_provider_4_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_3: BIR.DescriptorPattern) -> cps_provider_4_CatalogResult<List<&2, BIR.DescriptorPattern>>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_8, v_9}:
+      cps_provider_4_CatalogResult{v_8, v_3 <> v_9}
+
+def cps_provider_4_native_match_descriptor_patterns_1(v_1: cps_provider_4_CatalogResult<BIR.DescriptorPattern>, v_3: U32, v_5: U32, v_6: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<List<&2, BIR.DescriptorPattern>>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_11, v_12}:
+      cps_provider_4_native_match_descriptor_patterns_0(cps_provider_4_descriptor_patterns(v_11, IR.arena_range_index(v_3, 1), U32.sub(v_5, 1), v_6), v_12)
+
+def cps_provider_4_native_match_descriptor_patterns_2(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Pattern>, v_5: U32, v_7: U32, v_8: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<List<&2, BIR.DescriptorPattern>>:
+  match v_3:
+    case (v_13, v_14):
+      cps_provider_4_native_match_descriptor_patterns_1(cps_provider_4_descriptor_pattern(v_13, v_14, v_8), v_5, v_7, v_8)
+
+def cps_provider_4_native_match_descriptor_patterns_3(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_6: U32, v_8: U32, v_9: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<List<&2, BIR.DescriptorPattern>>:
+  match v_4:
+    case (v_14, v_15):
+      cps_provider_4_native_match_descriptor_patterns_2(Arena.get_pattern(v_14, v_15), v_6, v_8, v_9)
+
+def cps_provider_4_native_match_descriptor_patterns_4(v_1: U32, v_2: Arena.Arena, v_4: U32, v_5: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<List<&2, BIR.DescriptorPattern>>:
+  match v_1:
+    case 0:
+      cps_provider_4_CatalogResult{v_2, []}
+    case _:
+      cps_provider_4_native_match_descriptor_patterns_3(Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5)
+
+def cps_provider_4_descriptor_patterns(v_0: Arena.Arena, v_2: U32, v_4: U32, v_5: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<List<&2, BIR.DescriptorPattern>>:
+  cps_provider_4_native_match_descriptor_patterns_4(v_4, v_0, v_2, v_5)
+
+def cps_provider_4_native_match_descriptor_pattern_0(v_2: cps_provider_4_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_4: String) -> cps_provider_4_CatalogResult<BIR.DescriptorPattern>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_8, v_9}:
+      cps_provider_4_CatalogResult{v_8, BIR.DescriptorConstructorPattern{v_4, v_9}}
+
+def cps_provider_4_native_match_descriptor_pattern_1(v_2: cps_provider_4_CatalogResult<String>, v_3: Scope.ArenaGlobalScope, v_5: U32, v_7: U32) -> cps_provider_4_CatalogResult<BIR.DescriptorPattern>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_11, v_12}:
+      cps_provider_4_native_match_descriptor_pattern_0(cps_provider_4_descriptor_patterns(v_11, v_5, v_7, v_3), v_12)
+
+def cps_provider_4_native_match_descriptor_pattern_2(v_0: Arena.Pattern, v_1: Arena.Arena, v_2: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<BIR.DescriptorPattern>:
+  match v_0:
+    case Arena.PatternVar{_, _, v_10, _}:
+      cps_provider_4_CatalogResult{v_1, BIR.DescriptorBinder{cps_provider_4_quantity(v_10)}}
+    case Arena.PatternCtr{v_17, v_18, v_19, _}:
+      cps_provider_4_native_match_descriptor_pattern_1(cps_provider_4_descriptor_name(v_1, v_17, v_2, True{}), v_2, v_18, v_19)
+
+def cps_provider_4_descriptor_pattern(v_0: Arena.Arena, v_1: Arena.Pattern, v_2: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<BIR.DescriptorPattern>:
+  cps_provider_4_native_match_descriptor_pattern_2(v_1, v_0, v_2)
+
+def cps_provider_4_descriptor_apply(v_0: BIR.Descriptor, v_1: BIR.Descriptor) -> BIR.Descriptor:
+  match v_0:
+    case BIR.DescriptorRef{v_4, v_5}:
+      BIR.DescriptorRef{v_4, List.append(&2, BIR.Descriptor, v_5, [v_1])}
+    case _:
+      BIR.DescriptorApplication{v_0, v_1}
+
+def cps_provider_4_native_match_descriptor_sugar_0(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>, v_3: List<&2, BIR.Descriptor>, v_5: Bool, v_6: Scope.ArenaGlobalScope, v_8: U32) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_12, v_13}:
+      cps_provider_4_descriptor_sugar(v_12, v_8, v_13 <> v_3, v_5, v_6)
+
+def cps_provider_4_native_match_descriptor_sugar_1(v_2: cps_provider_4_CatalogResult<String>, v_4: List<&2, BIR.Descriptor>, v_6: Bool) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_10, v_11}:
+      cps_provider_4_CatalogResult{v_10, cps_provider_4_named_sugar(v_11, BIR.DescriptorRef{v_11, []}, v_4, v_6)}
+
+def cps_provider_4_native_match_descriptor_sugar_2(v_2: cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>, v_4: List<&2, BIR.Descriptor>, v_6: Bool, v_8: String) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_12, v_13}:
+      cps_provider_4_CatalogResult{v_12, cps_provider_4_named_sugar(v_8, BIR.DescriptorRef{v_8, v_13}, List.append(&2, BIR.Descriptor, v_13, v_4), v_6)}
+
+def cps_provider_4_native_match_descriptor_sugar_3(v_2: cps_provider_4_CatalogResult<String>, v_4: List<&2, BIR.Descriptor>, v_6: Bool, v_7: Scope.ArenaGlobalScope, v_9: U32, v_11: U32) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_15, v_16}:
+      cps_provider_4_native_match_descriptor_sugar_2(cps_provider_4_descriptors(v_15, v_9, v_11, v_7), v_4, v_6, v_16)
+
+def cps_provider_4_native_match_descriptor_sugar_4(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>, v_3: List<&2, BIR.Descriptor>, v_5: Bool) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_9, v_10}:
+      cps_provider_4_CatalogResult{v_9, cps_provider_4_unnamed_sugar(v_10, v_3, v_5)}
+
+def cps_provider_4_native_match_descriptor_sugar_5(v_0: Arena.Node, v_2: List<&2, BIR.Descriptor>, v_4: Bool, v_5: Scope.ArenaGlobalScope, v_6: Arena.Arena) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_0:
+    case Arena.TermAnn{v_11, _, _}:
+      cps_provider_4_descriptor_sugar(v_6, v_11, v_2, v_4, v_5)
+    case Arena.TermBang{v_17, _}:
+      cps_provider_4_descriptor_sugar(v_6, v_17, v_2, v_4, v_5)
+    case Arena.TermApp{v_23, v_24, _}:
+      cps_provider_4_native_match_descriptor_sugar_0(cps_provider_4_descriptor(v_6, v_24, v_5), v_2, v_4, v_5, v_23)
+    case Arena.TermRef{v_30, _}:
+      cps_provider_4_native_match_descriptor_sugar_1(cps_provider_4_descriptor_name(v_6, v_30, v_5, False{}), v_2, v_4)
+    case Arena.TermAdt{v_40, v_41, v_42, _, _, _}:
+      cps_provider_4_native_match_descriptor_sugar_3(cps_provider_4_descriptor_name(v_6, v_40, v_5, False{}), v_2, v_4, v_5, v_41, v_42)
+    case _:
+      cps_provider_4_native_match_descriptor_sugar_4(cps_provider_4_descriptor_node(v_6, v_0, v_5), v_2, v_4)
+
+def cps_provider_4_native_match_descriptor_sugar_6(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Node>, v_5: List<&2, BIR.Descriptor>, v_7: Bool, v_8: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_3:
+    case (v_12, v_13):
+      cps_provider_4_native_match_descriptor_sugar_5(v_13, v_5, v_7, v_8, v_12)
+
+def cps_provider_4_descriptor_sugar(v_0: Arena.Arena, v_2: U32, v_4: List<&2, BIR.Descriptor>, v_6: Bool, v_7: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  cps_provider_4_native_match_descriptor_sugar_6(Arena.get_node(v_0, v_2), v_4, v_6, v_7)
+
+def cps_provider_4_named_sugar(v_1: String, v_2: BIR.Descriptor, v_4: List<&2, BIR.Descriptor>, v_6: Bool) -> BIR.Descriptor:
+  match v_6:
+    case False{}:
+      BIR.DescriptorNamedFill{v_1, v_2, v_4}
+    case True{}:
+      BIR.DescriptorNamedPlus{v_1, v_2, v_4}
+
+def cps_provider_4_unnamed_sugar(v_0: BIR.Descriptor, v_2: List<&2, BIR.Descriptor>, v_4: Bool) -> BIR.Descriptor:
+  match v_4:
+    case False{}:
+      BIR.DescriptorFill{v_0, v_2}
+    case True{}:
+      BIR.DescriptorPlus{v_0, v_2}
+
+def cps_provider_4_string_names(v_0: Ast.StringLiteralNames, v_1: Scope.ArenaGlobalScope) -> Ast.StringLiteralNames:
+  match v_0:
+    case Ast.StringLiteralNames{v_10, v_11, v_12, v_13, v_14, v_15, v_16, v_17}:
+      Ast.StringLiteralNames{cps_provider_4_canonical(v_10, v_1, True{}), cps_provider_4_canonical(v_11, v_1, True{}), cps_provider_4_canonical(v_12, v_1, True{}), cps_provider_4_canonical(v_13, v_1, True{}), cps_provider_4_canonical(v_14, v_1, True{}), cps_provider_4_canonical(v_15, v_1, True{}), cps_provider_4_canonical(v_16, v_1, True{}), cps_provider_4_canonical(v_17, v_1, True{})}
+
+def cps_provider_4_string_bit(v_1: U32, v_2: Ast.StringLiteralNames) -> BIR.Descriptor:
+  match v_1, v_2:
+    case 0, Ast.StringLiteralNames{_, _, _, _, _, _, v_17, _}:
+      BIR.DescriptorConstructor{v_17, []}
+    case _, Ast.StringLiteralNames{_, _, _, _, _, _, _, v_36}:
+      BIR.DescriptorConstructor{v_36, []}
+
+def cps_provider_4_string_word(v_1: Nat, v_3: U32, v_4: Ast.StringLiteralNames) -> BIR.Descriptor:
+  match v_1, v_4:
+    case 0n, Ast.StringLiteralNames{_, _, _, _, v_17, _, _, _}:
+      BIR.DescriptorConstructor{v_17, []}
+    case 1n+v_30, Ast.StringLiteralNames{_, _, _, _, _, v_36, _, _}:
+      BIR.DescriptorConstructor{v_36, [cps_provider_4_string_bit(U32.and(v_3, 1), v_4), cps_provider_4_string_word(v_30, U32.shr(v_3), v_4)]}
+
+def cps_provider_4_string_descriptor(v_2: List<&2, U32>, v_3: Ast.StringLiteralNames) -> BIR.Descriptor:
+  match v_2, v_3:
+    case [], Ast.StringLiteralNames{v_12, _, _, _, _, _, _, _}:
+      BIR.DescriptorConstructor{v_12, []}
+    case v_30 <> v_31, Ast.StringLiteralNames{_, v_33, v_34, v_35, _, _, _, _}:
+      BIR.DescriptorConstructor{v_33, [BIR.DescriptorConstructor{v_34, [BIR.DescriptorConstructor{v_35, [cps_provider_4_string_word(32n, v_30, v_3)]}]}, cps_provider_4_string_descriptor(v_31, v_3)]}
+
+def cps_provider_4_native_match_descriptor_node_0(v_2: cps_provider_4_CatalogResult<String>) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_6, v_7}:
+      cps_provider_4_CatalogResult{v_6, BIR.DescriptorRef{v_7, []}}
+
+def cps_provider_4_native_match_descriptor_node_1(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>, v_3: Nat, v_4: BIR.Descriptor) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_8, v_9}:
+      cps_provider_4_CatalogResult{v_8, BIR.DescriptorSubstitution{v_3, v_4, v_9}}
+
+def cps_provider_4_native_match_descriptor_node_2(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_4: Nat, v_6: U32) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_10, v_11}:
+      cps_provider_4_native_match_descriptor_node_1(cps_provider_4_descriptor(v_10, v_6, v_2), v_4, v_11)
+
+def cps_provider_4_native_match_descriptor_node_3(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>, v_3: List<&2, BIR.Descriptor>) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_7, v_8}:
+      cps_provider_4_CatalogResult{v_7, BIR.DescriptorLet{v_3, v_8}}
+
+def cps_provider_4_native_match_descriptor_node_4(v_2: cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>, v_3: Scope.ArenaGlobalScope, v_5: U32) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_9, v_10}:
+      cps_provider_4_native_match_descriptor_node_3(cps_provider_4_descriptor(v_9, v_5, v_3), v_10)
+
+def cps_provider_4_native_match_descriptor_node_5(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_5, v_6}:
+      cps_provider_4_CatalogResult{v_5, BIR.DescriptorKind{v_6}}
+
+def cps_provider_4_native_match_descriptor_node_6(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>, v_2: BIR.Descriptor) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_6, v_7}:
+      cps_provider_4_CatalogResult{v_6, BIR.DescriptorMinimum{v_2, v_7}}
+
+def cps_provider_4_native_match_descriptor_node_7(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_4: U32) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_8, v_9}:
+      cps_provider_4_native_match_descriptor_node_6(cps_provider_4_descriptor(v_8, v_4, v_2), v_9)
+
+def cps_provider_4_native_match_descriptor_node_8(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>, v_2: Ast.Quantity, v_3: BIR.Descriptor) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_7, v_8}:
+      cps_provider_4_CatalogResult{v_7, BIR.DescriptorArrow{cps_provider_4_quantity(v_2), v_3, v_8}}
+
+def cps_provider_4_native_match_descriptor_node_9(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_3: Ast.Quantity, v_5: U32) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_9, v_10}:
+      cps_provider_4_native_match_descriptor_node_8(cps_provider_4_descriptor(v_9, v_5, v_2), v_3, v_10)
+
+def cps_provider_4_native_match_descriptor_node_10(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>, v_3: Maybe<&2, Ast.Quantity>) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_7, v_8}:
+      cps_provider_4_CatalogResult{v_7, BIR.DescriptorLambda{cps_provider_4_optional_quantity(v_3), v_8}}
+
+def cps_provider_4_native_match_descriptor_node_11(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>, v_2: BIR.Descriptor) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_6, v_7}:
+      cps_provider_4_CatalogResult{v_6, cps_provider_4_descriptor_apply(v_2, v_7)}
+
+def cps_provider_4_native_match_descriptor_node_12(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_4: U32) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_8, v_9}:
+      cps_provider_4_native_match_descriptor_node_11(cps_provider_4_descriptor(v_8, v_4, v_2), v_9)
+
+def cps_provider_4_native_match_descriptor_node_13(v_2: cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>, v_4: String) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_8, v_9}:
+      cps_provider_4_CatalogResult{v_8, BIR.DescriptorRef{v_4, v_9}}
+
+def cps_provider_4_native_match_descriptor_node_14(v_2: cps_provider_4_CatalogResult<String>, v_3: Scope.ArenaGlobalScope, v_5: U32, v_7: U32) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_11, v_12}:
+      cps_provider_4_native_match_descriptor_node_13(cps_provider_4_descriptors(v_11, v_5, v_7, v_3), v_12)
+
+def cps_provider_4_native_match_descriptor_node_15(v_2: cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>, v_3: Scope.ArenaGlobalScope, v_5: U32) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_9, v_10}:
+      cps_provider_4_descriptor_sugar(v_9, v_5, v_10, False{}, v_3)
+
+def cps_provider_4_native_match_descriptor_node_16(v_2: cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>, v_3: Scope.ArenaGlobalScope, v_5: U32) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_9, v_10}:
+      cps_provider_4_descriptor_sugar(v_9, v_5, v_10, True{}, v_3)
+
+def cps_provider_4_native_match_descriptor_node_17(v_2: cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>, v_4: String) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_8, v_9}:
+      cps_provider_4_CatalogResult{v_8, BIR.DescriptorConstructor{v_4, v_9}}
+
+def cps_provider_4_native_match_descriptor_node_18(v_2: cps_provider_4_CatalogResult<String>, v_3: Scope.ArenaGlobalScope, v_5: U32, v_7: U32) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_11, v_12}:
+      cps_provider_4_native_match_descriptor_node_17(cps_provider_4_descriptors(v_11, v_5, v_7, v_3), v_12)
+
+def cps_provider_4_native_match_descriptor_node_19(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>, v_2: BIR.Descriptor) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_6, v_7}:
+      cps_provider_4_CatalogResult{v_6, BIR.DescriptorBind{v_2, v_7}}
+
+def cps_provider_4_native_match_descriptor_node_20(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_4: U32) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_8, v_9}:
+      cps_provider_4_native_match_descriptor_node_19(cps_provider_4_descriptor(v_8, v_4, v_2), v_9)
+
+def cps_provider_4_native_match_descriptor_node_21(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>, v_2: BIR.Descriptor, v_3: BIR.Descriptor) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_7, v_8}:
+      cps_provider_4_CatalogResult{v_7, BIR.DescriptorEquality{v_2, v_3, v_8}}
+
+def cps_provider_4_native_match_descriptor_node_22(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_4: U32, v_5: BIR.Descriptor) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_9, v_10}:
+      cps_provider_4_native_match_descriptor_node_21(cps_provider_4_descriptor(v_9, v_4, v_2), v_5, v_10)
+
+def cps_provider_4_native_match_descriptor_node_23(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>, v_2: Scope.ArenaGlobalScope, v_4: U32, v_6: U32) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_10, v_11}:
+      cps_provider_4_native_match_descriptor_node_22(cps_provider_4_descriptor(v_10, v_4, v_2), v_2, v_6, v_11)
+
+def cps_provider_4_native_match_descriptor_node_24(v_4: Sigma<&1, &1, Arena.Arena, _ => String>) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_4:
+    case (v_8, v_9):
+      cps_provider_4_CatalogResult{v_8, BIR.DescriptorFailure{String.append("bend: unsolved hole ", v_9)}}
+
+def cps_provider_4_native_match_descriptor_node_25(v_2: cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>, v_4: List<&2, BIR.Descriptor>) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_8, v_9}:
+      cps_provider_4_CatalogResult{v_8, BIR.DescriptorMatch{v_4, v_9}}
+
+def cps_provider_4_native_match_descriptor_node_26(v_2: cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>, v_3: Scope.ArenaGlobalScope, v_5: U32, v_7: U32) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_11, v_12}:
+      cps_provider_4_native_match_descriptor_node_25(cps_provider_4_descriptor_cases(v_11, v_5, v_7, v_3), v_12)
+
+def cps_provider_4_native_match_descriptor_node_27(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>, v_3: List<&2, BIR.DescriptorPattern>, v_5: List<&2, BIR.Descriptor>) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_9, v_10}:
+      cps_provider_4_CatalogResult{v_9, BIR.DescriptorLocal{v_3, v_5, v_10}}
+
+def cps_provider_4_native_match_descriptor_node_28(v_2: cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>, v_3: Scope.ArenaGlobalScope, v_5: U32, v_7: List<&2, BIR.DescriptorPattern>) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_11, v_12}:
+      cps_provider_4_native_match_descriptor_node_27(cps_provider_4_descriptor(v_11, v_5, v_3), v_7, v_12)
+
+def cps_provider_4_native_match_descriptor_node_29(v_2: cps_provider_4_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_3: Scope.ArenaGlobalScope, v_5: U32, v_7: U32, v_9: U32) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_13, v_14}:
+      cps_provider_4_native_match_descriptor_node_28(cps_provider_4_descriptors(v_13, v_5, v_7, v_3), v_3, v_9, v_14)
+
+def cps_provider_4_native_match_descriptor_node_30(v_0: Arena.Node, v_1: Arena.Arena, v_2: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_0:
+    case Arena.TermVar{_, v_8, _}:
+      cps_provider_4_CatalogResult{v_1, BIR.DescriptorParameter{v_8}}
+    case Arena.TermRef{v_12, _}:
+      cps_provider_4_native_match_descriptor_node_0(cps_provider_4_descriptor_name(v_1, v_12, v_2, False{}))
+    case Arena.TermBang{v_18, _}:
+      cps_provider_4_descriptor(v_1, v_18, v_2)
+    case Arena.TermSub{v_25, v_26, v_27, _}:
+      cps_provider_4_native_match_descriptor_node_2(cps_provider_4_descriptor(v_1, v_26, v_2), v_2, v_25, v_27)
+    case Arena.TermLet{_, _, _, _, _, _, v_47, v_48, v_49, _}:
+      cps_provider_4_native_match_descriptor_node_4(cps_provider_4_descriptors(v_1, v_47, v_48, v_2), v_2, v_49)
+    case Arena.TermAnn{v_56, _, _}:
+      cps_provider_4_descriptor(v_1, v_56, v_2)
+    case Arena.TermTemplate{_, _}:
+      cps_provider_4_CatalogResult{v_1, BIR.DescriptorFailure{"bend: unexpanded template"}}
+    case Arena.TermType{v_66, _}:
+      cps_provider_4_native_match_descriptor_node_5(cps_provider_4_descriptor(v_1, v_66, v_2))
+    case Arena.TermQuant{}:
+      cps_provider_4_CatalogResult{v_1, BIR.DescriptorQuantityKind{}}
+    case Arena.TermQuantity{v_72, _}:
+      cps_provider_4_CatalogResult{v_1, BIR.DescriptorQuantity{cps_provider_4_quantity(v_72)}}
+    case Arena.TermMin{v_78, v_79, _}:
+      cps_provider_4_native_match_descriptor_node_7(cps_provider_4_descriptor(v_1, v_78, v_2), v_2, v_79)
+    case Arena.TermAll{v_89, _, _, v_92, v_93, _}:
+      cps_provider_4_native_match_descriptor_node_9(cps_provider_4_descriptor(v_1, v_92, v_2), v_2, v_89, v_93)
+    case Arena.TermLam{v_102, _, _, v_105, _}:
+      cps_provider_4_native_match_descriptor_node_10(cps_provider_4_descriptor(v_1, v_105, v_2), v_102)
+    case Arena.TermApp{v_112, v_113, _}:
+      cps_provider_4_native_match_descriptor_node_12(cps_provider_4_descriptor(v_1, v_112, v_2), v_2, v_113)
+    case Arena.TermAdt{v_123, v_124, v_125, _, _, _}:
+      cps_provider_4_native_match_descriptor_node_14(cps_provider_4_descriptor_name(v_1, v_123, v_2, False{}), v_2, v_124, v_125)
+    case Arena.TermFill{v_135, v_136, v_137, _}:
+      cps_provider_4_native_match_descriptor_node_15(cps_provider_4_descriptors(v_1, v_136, v_137, v_2), v_2, v_135)
+    case Arena.TermPlus{v_145, v_146, v_147, _}:
+      cps_provider_4_native_match_descriptor_node_16(cps_provider_4_descriptors(v_1, v_146, v_147, v_2), v_2, v_145)
+    case Arena.TermCtr{v_155, v_156, v_157, _}:
+      cps_provider_4_native_match_descriptor_node_18(cps_provider_4_descriptor_name(v_1, v_155, v_2, True{}), v_2, v_156, v_157)
+    case Arena.TermString{v_164, v_165, _}:
+      cps_provider_4_CatalogResult{v_1, cps_provider_4_string_descriptor(v_164, cps_provider_4_string_names(v_165, v_2))}
+    case Arena.TermMat{_, v_174, v_175, _}:
+      cps_provider_4_native_match_descriptor_node_20(cps_provider_4_descriptor(v_1, v_175, v_2), v_2, v_174)
+    case Arena.TermAbsurd{_}:
+      cps_provider_4_CatalogResult{v_1, BIR.DescriptorFailure{"bend: runtime fail-stop"}}
+    case Arena.TermEqual{v_185, v_186, v_187, _}:
+      cps_provider_4_native_match_descriptor_node_23(cps_provider_4_descriptor(v_1, v_185, v_2), v_2, v_186, v_187)
+    case Arena.TermRefl{_}:
+      cps_provider_4_CatalogResult{v_1, BIR.DescriptorReflexivity{}}
+    case Arena.TermRewrite{_, _, v_199, _}:
+      cps_provider_4_descriptor(v_1, v_199, v_2)
+    case Arena.TermHole{v_204, _}:
+      cps_provider_4_native_match_descriptor_node_24(Arena.name_text(v_1, v_204))
+    case Arena.BodyMatch{v_212, v_213, v_214, v_215, _}:
+      cps_provider_4_native_match_descriptor_node_26(cps_provider_4_descriptors(v_1, v_212, v_213, v_2), v_2, v_214, v_215)
+    case Arena.BodyCase{_, _, v_225, _}:
+      cps_provider_4_descriptor(v_1, v_225, v_2)
+    case Arena.BodyLocal{v_235, v_236, _, v_238, v_239, v_240, _}:
+      cps_provider_4_native_match_descriptor_node_29(cps_provider_4_descriptor_patterns(v_1, v_235, v_236, v_2), v_2, v_238, v_239, v_240)
+    case Arena.BodyReply{v_246, _}:
+      cps_provider_4_descriptor(v_1, v_246, v_2)
+
+def cps_provider_4_descriptor_node(v_0: Arena.Arena, v_1: Arena.Node, v_2: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  cps_provider_4_native_match_descriptor_node_30(v_1, v_0, v_2)
+
+def cps_provider_4_native_match_descriptor_cases_0(v_2: cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>, v_3: BIR.Descriptor) -> cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_8, v_9}:
+      cps_provider_4_CatalogResult{v_8, v_3 <> v_9}
+
+def cps_provider_4_native_match_descriptor_cases_1(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>, v_3: U32, v_5: U32, v_6: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_11, v_12}:
+      cps_provider_4_native_match_descriptor_cases_0(cps_provider_4_descriptor_cases(v_11, IR.arena_range_index(v_3, 1), U32.sub(v_5, 1), v_6), v_12)
+
+def cps_provider_4_native_match_descriptor_cases_2(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Node>, v_5: U32, v_7: U32, v_8: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>:
+  match v_3:
+    case (v_13, v_14):
+      cps_provider_4_native_match_descriptor_cases_1(cps_provider_4_descriptor_case(v_13, v_14, v_8), v_5, v_7, v_8)
+
+def cps_provider_4_native_match_descriptor_cases_3(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_6: U32, v_8: U32, v_9: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>:
+  match v_4:
+    case (v_14, v_15):
+      cps_provider_4_native_match_descriptor_cases_2(Arena.get_node(v_14, v_15), v_6, v_8, v_9)
+
+def cps_provider_4_native_match_descriptor_cases_4(v_1: U32, v_2: Arena.Arena, v_4: U32, v_5: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>:
+  match v_1:
+    case 0:
+      cps_provider_4_CatalogResult{v_2, []}
+    case _:
+      cps_provider_4_native_match_descriptor_cases_3(Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5)
+
+def cps_provider_4_descriptor_cases(v_0: Arena.Arena, v_2: U32, v_4: U32, v_5: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>:
+  cps_provider_4_native_match_descriptor_cases_4(v_4, v_0, v_2, v_5)
+
+def cps_provider_4_native_match_descriptor_case_0(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>, v_3: List<&2, BIR.DescriptorPattern>) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_7, v_8}:
+      cps_provider_4_CatalogResult{v_7, BIR.DescriptorCase{v_3, v_8}}
+
+def cps_provider_4_native_match_descriptor_case_1(v_2: cps_provider_4_CatalogResult<List<&2, BIR.DescriptorPattern>>, v_3: Scope.ArenaGlobalScope, v_5: U32) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_9, v_10}:
+      cps_provider_4_native_match_descriptor_case_0(cps_provider_4_descriptor(v_9, v_5, v_3), v_10)
+
+def cps_provider_4_native_match_descriptor_case_2(v_0: Arena.Node, v_1: Arena.Arena, v_2: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_0:
+    case Arena.BodyCase{v_8, v_9, v_10, _}:
+      cps_provider_4_native_match_descriptor_case_1(cps_provider_4_descriptor_patterns(v_1, v_8, v_9, v_2), v_2, v_10)
+    case _:
+      cps_provider_4_CatalogResult{v_1, BIR.DescriptorFailure{"bend: malformed type match"}}
+
+def cps_provider_4_descriptor_case(v_0: Arena.Arena, v_1: Arena.Node, v_2: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  cps_provider_4_native_match_descriptor_case_2(v_1, v_0, v_2)
+
+def cps_provider_4_native_match_telescope_0(v_2: cps_provider_4_CatalogResult<cps_provider_4_Telescope>, v_4: U32, v_5: Scope.ArenaGlobalScope, v_6: Arena.Binder) -> cps_provider_4_CatalogResult<cps_provider_4_Telescope>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_11, v_12}:
+      cps_provider_4_telescope_binder(v_11, v_6, v_4, v_5, v_12)
+
+def cps_provider_4_native_match_telescope_1(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_5: U32, v_6: Scope.ArenaGlobalScope, v_8: U32, v_10: U32) -> cps_provider_4_CatalogResult<cps_provider_4_Telescope>:
+  match v_3:
+    case (v_15, v_16):
+      cps_provider_4_native_match_telescope_0(cps_provider_4_telescope(v_15, IR.Words{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, U32.add(v_5, 1), v_6), v_5, v_6, v_16)
+
+def cps_provider_4_native_match_telescope_2(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_6: U32, v_7: Scope.ArenaGlobalScope, v_9: U32, v_11: U32) -> cps_provider_4_CatalogResult<cps_provider_4_Telescope>:
+  match v_4:
+    case (v_16, v_17):
+      cps_provider_4_native_match_telescope_1(Arena.get_binder(v_16, v_17), v_6, v_7, v_9, v_11)
+
+def cps_provider_4_native_match_telescope_3(v_0: IR.Words, v_1: Arena.Arena, v_3: U32, v_4: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<cps_provider_4_Telescope>:
+  match v_0:
+    case IR.Words{v_8, 0}:
+      cps_provider_4_CatalogResult{v_1, cps_provider_4_Telescope{[], [], [], True{}}}
+    case IR.Words{v_11, v_12}:
+      cps_provider_4_native_match_telescope_2(Arena.word(v_1, IR.arena_tape_offset(v_11)), v_3, v_4, v_11, v_12)
+
+def cps_provider_4_telescope(v_0: Arena.Arena, v_1: IR.Words, v_3: U32, v_4: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<cps_provider_4_Telescope>:
+  cps_provider_4_native_match_telescope_3(v_1, v_0, v_3, v_4)
+
+def cps_provider_4_native_match_telescope_binder_0(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>, v_3: U32, v_4: Ast.Quantity, v_6: List<&2, BIR.Parameter>, v_8: List<&2, BIR.Quantity>, v_10: List<&2, BIR.DescriptorField>, v_12: Bool, v_14: String) -> cps_provider_4_CatalogResult<cps_provider_4_Telescope>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_19, v_20}:
+      v_23 = cps_provider_4_quantity(v_4)
+      cps_provider_4_CatalogResult{v_19, cps_provider_4_Telescope{cps_provider_4_parameter(v_3, v_23, v_6), v_23 <> v_8, BIR.DescriptorField{cps_provider_4_field_key(v_14, v_23), v_23, v_20} <> v_10, v_12}}
+
+def cps_provider_4_native_match_telescope_binder_1(v_4: Sigma<&1, &1, Arena.Arena, _ => String>, v_6: U32, v_7: Scope.ArenaGlobalScope, v_8: Ast.Quantity, v_10: U32, v_12: List<&2, BIR.Parameter>, v_14: List<&2, BIR.Quantity>, v_16: List<&2, BIR.DescriptorField>, v_18: Bool) -> cps_provider_4_CatalogResult<cps_provider_4_Telescope>:
+  match v_4:
+    case (v_23, v_24):
+      cps_provider_4_native_match_telescope_binder_0(cps_provider_4_descriptor(v_23, v_10, v_7), v_6, v_8, v_12, v_14, v_16, v_18, v_24)
+
+def cps_provider_4_native_match_telescope_binder_2(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>, v_3: List<&2, BIR.Parameter>, v_5: List<&2, BIR.Quantity>, v_7: List<&2, BIR.DescriptorField>) -> cps_provider_4_CatalogResult<cps_provider_4_Telescope>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_12, v_13}:
+      cps_provider_4_CatalogResult{v_12, cps_provider_4_Telescope{v_3, BIR.Erased{} <> v_5, BIR.DescriptorField{None{}, BIR.Erased{}, v_13} <> v_7, False{}}}
+
+def cps_provider_4_native_match_telescope_binder_3(v_0: Arena.Binder, v_2: cps_provider_4_Telescope, v_3: Arena.Arena, v_5: U32, v_6: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<cps_provider_4_Telescope>:
+  match v_0, v_2:
+    case Arena.Binder{v_18, v_19, _, v_21, _}, cps_provider_4_Telescope{v_23, v_24, v_25, v_26}:
+      cps_provider_4_native_match_telescope_binder_1(Arena.name_text(v_3, v_19), v_5, v_6, v_18, v_21, v_23, v_24, v_25, v_26)
+    case Arena.TemplateBinder{_, _, v_38, _}, cps_provider_4_Telescope{v_40, v_41, v_42, _}:
+      cps_provider_4_native_match_telescope_binder_2(cps_provider_4_descriptor(v_3, v_38, v_6), v_40, v_41, v_42)
+
+def cps_provider_4_telescope_binder(v_0: Arena.Arena, v_1: Arena.Binder, v_3: U32, v_4: Scope.ArenaGlobalScope, v_6: cps_provider_4_Telescope) -> cps_provider_4_CatalogResult<cps_provider_4_Telescope>:
+  cps_provider_4_native_match_telescope_binder_3(v_1, v_6, v_0, v_3, v_4)
+
+def cps_provider_4_field_names(v_1: List<&2, BIR.DescriptorField>) -> List<&2, Maybe<&2, String>>:
+  match v_1:
+    case []:
+      []
+    case BIR.DescriptorField{v_9, _, _} <> v_12:
+      v_9 <> cps_provider_4_field_names(v_12)
+
+def cps_provider_4_fields_quantities(v_1: List<&2, BIR.DescriptorField>) -> List<&2, BIR.Quantity>:
+  match v_1:
+    case []:
+      []
+    case BIR.DescriptorField{_, v_8, _} <> v_10:
+      v_8 <> cps_provider_4_fields_quantities(v_10)
+
+def cps_provider_4_base_imports(v_1: List<&2, Ast.ModuleImport>) -> Bool:
+  match v_1:
+    case []:
+      False{}
+    case Ast.ModuleImport{v_7, _, _} <> v_10:
+      Bool.or(String.eq(v_7, "Base"), cps_provider_4_base_imports(v_10))
+
+def cps_provider_4_base_imported(v_1: List<&2, IR.LoadedModule>) -> Bool:
+  match v_1:
+    case []:
+      False{}
+    case IR.LoadedModule{_, IR.Module{_, v_10, _}} <> v_12:
+      Bool.or(cps_provider_4_base_imports(v_10), cps_provider_4_base_imported(v_12))
+
+def cps_provider_4_base_source(v_1: String, v_3: Bool) -> Bool:
+  Bool.and(v_3, Bool.or(String.eq(v_1, "bend2/base.bend"), String.ends_with(v_1, "/bend2/base.bend")))
+
+def cps_provider_4_native_marker(v_1: Bool, v_3: String) -> Maybe<&2, String>:
+  match v_1:
+    case True{}:
+      Some{v_3}
+    case False{}:
+      None{}
+
+def cps_provider_4_short_key(v_1: String) -> String:
+  cps_provider_4_short_chars(String.to_list(v_1), [])
+
+def cps_provider_4_short_chars(v_2: List<&2, Char>, v_5: List<&2, Char>) -> String:
+  match v_2:
+    case []:
+      String.from_list(List.reverse(&2, Char, v_5))
+    case '.' <> v_9:
+      cps_provider_4_short_chars(v_9, [])
+    case '/' <> v_12:
+      cps_provider_4_short_chars(v_12, [])
+    case v_16 <> v_17:
+      cps_provider_4_short_chars(v_17, v_16 <> v_5)
+
+def cps_provider_4_constructor_native(v_1: Bool, v_3: String, v_5: String) -> Maybe<&2, String>:
+  match v_1:
+    case True{}:
+      Some{String.append(v_3, String.append(".", cps_provider_4_short_key(v_5)))}
+    case False{}:
+      Some{String.append("Data.", v_5)}
+
+def cps_provider_4_primitive_name(v_1: String) -> String:
+  String.from_list(cps_provider_4_primitive_chars(String.to_list(String.to_lower(v_1))))
+
+def cps_provider_4_primitive_chars(v_2: List<&2, Char>) -> List<&2, Char>:
+  match v_2:
+    case []:
+      []
+    case '.' <> v_6:
+      '_' <> cps_provider_4_primitive_chars(v_6)
+    case '/' <> v_9:
+      '_' <> cps_provider_4_primitive_chars(v_9)
+    case v_13 <> v_14:
+      v_13 <> cps_provider_4_primitive_chars(v_14)
+
+def cps_provider_4_primitive(v_1: Bool, v_3: String) -> Maybe<&2, BIR.Primitive>:
+  match v_1:
+    case False{}:
+      None{}
+    case True{}:
+      cps_provider_4_primitive_named(cps_provider_4_primitive_name(v_3))
+
+def cps_provider_4_primitive_named(v_1: String) -> Maybe<&2, BIR.Primitive>:
+  match v_1:
+    case "u32_add":
+      Some{BIR.PrimU32Add{}}
+    case "u32_sub":
+      Some{BIR.PrimU32Sub{}}
+    case "u32_mul":
+      Some{BIR.PrimU32Mul{}}
+    case "u32_div":
+      Some{BIR.PrimU32Div{}}
+    case "u32_mod":
+      Some{BIR.PrimU32Mod{}}
+    case "u32_and":
+      Some{BIR.PrimU32And{}}
+    case "u32_or":
+      Some{BIR.PrimU32Or{}}
+    case "u32_xor":
+      Some{BIR.PrimU32Xor{}}
+    case "u32_is_eq":
+      Some{BIR.PrimU32IsEq{}}
+    case "u32_is_ne":
+      Some{BIR.PrimU32IsNe{}}
+    case "u32_is_lt":
+      Some{BIR.PrimU32IsLt{}}
+    case "u32_is_le":
+      Some{BIR.PrimU32IsLe{}}
+    case "u32_is_gt":
+      Some{BIR.PrimU32IsGt{}}
+    case "u32_is_ge":
+      Some{BIR.PrimU32IsGe{}}
+    case "u32_inc":
+      Some{BIR.PrimU32Inc{}}
+    case "u32_not":
+      Some{BIR.PrimU32Not{}}
+    case "u32_shl":
+      Some{BIR.PrimU32Shl{}}
+    case "u32_shr":
+      Some{BIR.PrimU32Shr{}}
+    case "u32_shln":
+      Some{BIR.PrimU32Shln{}}
+    case "u32_shrn":
+      Some{BIR.PrimU32Shrn{}}
+    case "u32_cmp":
+      Some{BIR.PrimU32Cmp{}}
+    case "u32_is_zero":
+      Some{BIR.PrimU32IsZero{}}
+    case "u32_to_nat":
+      Some{BIR.PrimU32ToNat{}}
+    case "u32_from_nat":
+      Some{BIR.PrimU32FromNat{}}
+    case "u32_to_f32":
+      Some{BIR.PrimU32ToF32{}}
+    case "f32_add":
+      Some{BIR.PrimF32Add{}}
+    case "f32_sub":
+      Some{BIR.PrimF32Sub{}}
+    case "f32_mul":
+      Some{BIR.PrimF32Mul{}}
+    case "f32_div":
+      Some{BIR.PrimF32Div{}}
+    case "f32_mod":
+      Some{BIR.PrimF32Mod{}}
+    case "f32_neg":
+      Some{BIR.PrimF32Neg{}}
+    case "f32_is_eq":
+      Some{BIR.PrimF32IsEq{}}
+    case "f32_is_ne":
+      Some{BIR.PrimF32IsNe{}}
+    case "f32_is_lt":
+      Some{BIR.PrimF32IsLt{}}
+    case "f32_is_le":
+      Some{BIR.PrimF32IsLe{}}
+    case "f32_is_gt":
+      Some{BIR.PrimF32IsGt{}}
+    case "f32_is_ge":
+      Some{BIR.PrimF32IsGe{}}
+    case "f32_sqrt":
+      Some{BIR.PrimF32Sqrt{}}
+    case "f32_abs":
+      Some{BIR.PrimF32Abs{}}
+    case "f32_exp":
+      Some{BIR.PrimF32Exp{}}
+    case "f32_log":
+      Some{BIR.PrimF32Log{}}
+    case "f32_log2":
+      Some{BIR.PrimF32Log2{}}
+    case "f32_log10":
+      Some{BIR.PrimF32Log10{}}
+    case "f32_sin":
+      Some{BIR.PrimF32Sin{}}
+    case "f32_cos":
+      Some{BIR.PrimF32Cos{}}
+    case "f32_tan":
+      Some{BIR.PrimF32Tan{}}
+    case "f32_asin":
+      Some{BIR.PrimF32Asin{}}
+    case "f32_acos":
+      Some{BIR.PrimF32Acos{}}
+    case "f32_atan":
+      Some{BIR.PrimF32Atan{}}
+    case "f32_sinh":
+      Some{BIR.PrimF32Sinh{}}
+    case "f32_cosh":
+      Some{BIR.PrimF32Cosh{}}
+    case "f32_tanh":
+      Some{BIR.PrimF32Tanh{}}
+    case "f32_pow":
+      Some{BIR.PrimF32Pow{}}
+    case "f32_atan2":
+      Some{BIR.PrimF32Atan2{}}
+    case "f32_floor":
+      Some{BIR.PrimF32Floor{}}
+    case "f32_ceil":
+      Some{BIR.PrimF32Ceil{}}
+    case "f32_trunc":
+      Some{BIR.PrimF32Trunc{}}
+    case "f32_to_u32":
+      Some{BIR.PrimF32ToU32{}}
+    case "f32_bits":
+      Some{BIR.PrimF32Bits{}}
+    case "f32_show":
+      Some{BIR.PrimF32Show{}}
+    case "f32_read":
+      Some{BIR.PrimF32Read{}}
+    case "nat_add":
+      Some{BIR.PrimNatAdd{}}
+    case "nat_sub":
+      Some{BIR.PrimNatSub{}}
+    case "nat_mul":
+      Some{BIR.PrimNatMul{}}
+    case "nat_double":
+      Some{BIR.PrimNatDouble{}}
+    case "nat_cmp":
+      Some{BIR.PrimNatCmp{}}
+    case "nat_is_lt":
+      Some{BIR.PrimNatIsLt{}}
+    case "nat_divmod":
+      Some{BIR.PrimNatDivmod{}}
+    case "nat_min":
+      Some{BIR.PrimNatMin{}}
+    case "nat_max":
+      Some{BIR.PrimNatMax{}}
+    case "map_bit":
+      Some{BIR.PrimMapBit{}}
+    case "string_cmp":
+      Some{BIR.PrimStringCmp{}}
+    case "string_to_list":
+      Some{BIR.PrimStringToList{}}
+    case "string_eq":
+      Some{BIR.PrimStringEq{}}
+    case "string_append":
+      Some{BIR.PrimStringAppend{}}
+    case "string_length":
+      Some{BIR.PrimStringLength{}}
+    case "bool_or":
+      Some{BIR.PrimBoolOr{}}
+    case "bool_xor":
+      Some{BIR.PrimBoolXor{}}
+    case "array_new":
+      Some{BIR.PrimArrayNew{}}
+    case "array_set":
+      Some{BIR.PrimArraySet{}}
+    case "array_get":
+      Some{BIR.PrimArrayGet{}}
+    case "array_swap":
+      Some{BIR.PrimArraySwap{}}
+    case "array_size":
+      Some{BIR.PrimArraySize{}}
+    case "array_clone":
+      Some{BIR.PrimArrayClone{}}
+    case _:
+      None{}
+
+def cps_provider_4_definition_key(v_1: cps_provider_4_Registry, v_3: String) -> Maybe<&2, cps_provider_4_DefinitionHeader>:
+  match v_1:
+    case cps_provider_4_Registry{v_8, _}:
+      IndexLookup.find(cps_provider_4_DefinitionHeader, v_8, v_3)
+
+def cps_provider_4_constructor_key(v_1: cps_provider_4_Registry, v_3: String) -> Maybe<&2, cps_provider_4_Constructor>:
+  match v_1:
+    case cps_provider_4_Registry{_, v_9}:
+      IndexLookup.find(cps_provider_4_Constructor, v_9, v_3)
+
+def cps_provider_4_lookup_definition(v_1: cps_provider_4_Registry, v_2: IR.Symbol) -> Maybe<&2, cps_provider_4_DefinitionHeader>:
+  cps_provider_4_definition_key(v_1, cps_provider_4_symbol_key(v_2))
+
+def cps_provider_4_lookup_constructor(v_1: cps_provider_4_Registry, v_2: IR.Symbol) -> Maybe<&2, cps_provider_4_Constructor>:
+  cps_provider_4_constructor_key(v_1, cps_provider_4_symbol_key(v_2))
+
+def cps_provider_4_get_definitions(v_1: cps_provider_4_Catalog) -> List<&2, cps_provider_4_Definition>:
+  match v_1:
+    case cps_provider_4_Catalog{v_11, _, _, _, _, _, _}:
+      v_11
+
+def cps_provider_4_get_registry(v_1: cps_provider_4_Catalog) -> cps_provider_4_Registry:
+  match v_1:
+    case cps_provider_4_Catalog{_, v_11, _, _, _, _, _}:
+      v_11
+
+def cps_provider_4_get_constructors(v_1: cps_provider_4_Catalog) -> List<&2, BIR.ConstructorLayout>:
+  match v_1:
+    case cps_provider_4_Catalog{_, _, v_12, _, _, _, _}:
+      v_12
+
+def cps_provider_4_get_families(v_1: cps_provider_4_Catalog) -> List<&2, BIR.Family>:
+  match v_1:
+    case cps_provider_4_Catalog{_, _, _, v_13, _, _, _}:
+      v_13
+
+def cps_provider_4_get_type_functions(v_1: cps_provider_4_Catalog) -> List<&2, BIR.TypeFunction>:
+  match v_1:
+    case cps_provider_4_Catalog{_, _, _, _, v_14, _, _}:
+      v_14
+
+def cps_provider_4_get_next_code(v_1: cps_provider_4_Catalog) -> U32:
+  match v_1:
+    case cps_provider_4_Catalog{_, _, _, _, _, v_15, _}:
+      v_15
+
+def cps_provider_4_get_ending(v_1: cps_provider_4_Catalog) -> BIR.Ending:
+  match v_1:
+    case cps_provider_4_Catalog{_, _, _, _, _, _, v_15}:
+      v_15
+
+def cps_provider_4_native_match_insert_definition_0(v_2: Maybe<&2, cps_provider_4_Definition>, +v_4: String, v_6: cps_provider_4_Definition, +v_9: Map<&2, cps_provider_4_Definition>) -> Map<&2, cps_provider_4_Definition>:
+  match v_2:
+    case Some{_}:
+      v_9
+    case None{}:
+      Map.set(&2, cps_provider_4_Definition, v_9, v_4, v_6)
+
+def cps_provider_4_insert_definition(+v_1: String, v_3: cps_provider_4_Definition, +v_6: Map<&2, cps_provider_4_Definition>) -> Map<&2, cps_provider_4_Definition>:
+  cps_provider_4_native_match_insert_definition_0(IndexLookup.find(cps_provider_4_Definition, v_6, v_1), v_1, v_3, v_6)
+
+def cps_provider_4_native_match_insert_constructor_0(v_2: Maybe<&2, cps_provider_4_Constructor>, +v_4: String, v_6: cps_provider_4_Constructor, +v_9: Map<&2, cps_provider_4_Constructor>) -> Map<&2, cps_provider_4_Constructor>:
+  match v_2:
+    case Some{_}:
+      v_9
+    case None{}:
+      Map.set(&2, cps_provider_4_Constructor, v_9, v_4, v_6)
+
+def cps_provider_4_insert_constructor(+v_1: String, v_3: cps_provider_4_Constructor, +v_6: Map<&2, cps_provider_4_Constructor>) -> Map<&2, cps_provider_4_Constructor>:
+  cps_provider_4_native_match_insert_constructor_0(IndexLookup.find(cps_provider_4_Constructor, v_6, v_1), v_1, v_3, v_6)
+
+def cps_provider_4_normalize_descriptor_value(v_0: BIR.Descriptor, +v_1: cps_provider_2_NfContext) -> BIR.Descriptor:
+  cps_provider_2_normalize_in(v_1, v_0)
+
+def cps_provider_4_normalize_descriptors(v_1: List<&2, BIR.Descriptor>, +v_2: cps_provider_2_NfContext) -> List<&2, BIR.Descriptor>:
+  match v_1:
+    case []:
+      []
+    case +v_6 <> v_7:
+      cps_provider_4_normalize_descriptor_value(v_6, v_2) <> cps_provider_4_normalize_descriptors(v_7, v_2)
+
+def cps_provider_4_normalize_foreign(v_2: Maybe<&2, cps_provider_4_Foreign>, +v_3: cps_provider_2_NfContext) -> Maybe<&2, cps_provider_4_Foreign>:
+  match v_2:
+    case None{}:
+      None{}
+    case Some{cps_provider_4_Foreign{v_12, v_13, v_14, v_15, v_16, v_17}}:
+      Some{cps_provider_4_Foreign{v_12, v_13, v_14, v_15, cps_provider_4_normalize_descriptors(v_16, v_3), cps_provider_4_normalize_descriptor_value(v_17, v_3)}}
+
+def cps_provider_4_normalize_foreign_header(v_1: cps_provider_4_DefinitionHeader, +v_2: cps_provider_2_NfContext) -> cps_provider_4_DefinitionHeader:
+  match v_1:
+    case cps_provider_4_DefinitionHeader{v_13, v_14, v_15, v_16, v_17, v_18, v_19, v_20, v_21}:
+      cps_provider_4_DefinitionHeader{v_13, v_14, v_15, v_16, v_17, v_18, v_19, cps_provider_4_normalize_foreign(v_20, v_2), v_21}
+
+def cps_provider_4_normalize_foreign_definition(v_1: cps_provider_4_Definition, +v_2: cps_provider_2_NfContext) -> cps_provider_4_Definition:
+  match v_1:
+    case cps_provider_4_Definition{v_12, v_13, v_14, v_15, v_16, v_17, v_18, v_19}:
+      cps_provider_4_Definition{cps_provider_4_normalize_foreign_header(v_12, v_2), v_13, v_14, v_15, v_16, v_17, v_18, v_19}
+
+def cps_provider_4_normalize_foreign_definitions(v_2: List<&2, cps_provider_4_Definition>, +v_3: cps_provider_2_NfContext) -> List<&2, cps_provider_4_Definition>:
+  match v_2:
+    case []:
+      []
+    case +v_8 <> v_9:
+      cps_provider_4_normalize_foreign_definition(v_8, v_3) <> cps_provider_4_normalize_foreign_definitions(v_9, v_3)
+
+def cps_provider_4_export_entry(v_2: Maybe<&2, cps_provider_4_DefinitionHeader>) -> Maybe<&2, BIR.Entry>:
+  match v_2:
+    case Some{cps_provider_4_DefinitionHeader{_, _, v_14, v_15, _, _, _, _, True{}}}:
+      Some{BIR.Entry{v_14, List.length(&2, BIR.Parameter, v_15)}}
+    case _:
+      None{}
+
+def native_match_cps_provider_4_export_definition_0(v_44: Bool, v_1: String, +v_9: cps_provider_4_Definition, v_10: List<&2, cps_provider_4_Definition>) -> Maybe<&2, cps_provider_4_Definition>:
+  match v_44:
+    case True{}:
+      Some{v_9}
+    case False{}:
+      cps_provider_4_export_definition(v_1, v_10)
+
+def native_match_cps_provider_4_export_definition_1(+v_9: cps_provider_4_Definition, v_1: String, v_10: List<&2, cps_provider_4_Definition>) -> Maybe<&2, cps_provider_4_Definition>:
+  match v_9:
+    case cps_provider_4_Definition{cps_provider_4_DefinitionHeader{_, v_28, _, _, _, _, _, _, _}, _, _, _, _, _, _, _}:
+      native_match_cps_provider_4_export_definition_0(String.eq(v_1, v_28), v_1, v_9, v_10)
+
+def native_match_cps_provider_4_export_definition_2(v_4: List<&2, cps_provider_4_Definition>, v_1: String) -> Maybe<&2, cps_provider_4_Definition>:
+  match v_4:
+    case []:
+      None{}
+    case +v_9 <> v_10:
+      native_match_cps_provider_4_export_definition_1(v_9, v_1, v_10)
+
+def cps_provider_4_export_definition(v_1: String, v_4: List<&2, cps_provider_4_Definition>) -> Maybe<&2, cps_provider_4_Definition>:
+  native_match_cps_provider_4_export_definition_2(v_4, v_1)
+
+def native_match_cps_provider_4_export_signature_0(v_22: Bool, v_1: String, v_9: List<&2, Scope.ArenaGlobal>, v_19: U32) -> Maybe<&2, U32>:
+  match v_22:
+    case True{}:
+      Some{v_19}
+    case False{}:
+      cps_provider_4_export_signature(v_1, v_9)
+
+def native_match_cps_provider_4_export_signature_1(+v_8: Scope.ArenaGlobal, v_1: String, v_9: List<&2, Scope.ArenaGlobal>) -> Maybe<&2, U32>:
+  match v_8:
+    case Scope.ArenaGlobal{v_16, _, _, v_19, _, _}:
+      native_match_cps_provider_4_export_signature_0(String.eq(v_1, v_16), v_1, v_9, v_19)
+
+def native_match_cps_provider_4_export_signature_2(v_3: List<&2, Scope.ArenaGlobal>, v_1: String) -> Maybe<&2, U32>:
+  match v_3:
+    case []:
+      None{}
+    case +v_8 <> v_9:
+      native_match_cps_provider_4_export_signature_1(v_8, v_1, v_9)
+
+def cps_provider_4_export_signature(v_1: String, v_3: List<&2, Scope.ArenaGlobal>) -> Maybe<&2, U32>:
+  native_match_cps_provider_4_export_signature_2(v_3, v_1)
+
+def cps_provider_4_live_arrow_types(v_0: BIR.Descriptor) -> List<&2, BIR.Descriptor>:
+  match v_0:
+    case BIR.DescriptorArrow{v_5, v_6, v_7}:
+      match v_5:
+        case BIR.Erased{}:
+          cps_provider_4_live_arrow_types(v_7)
+        case _:
+          v_6 <> cps_provider_4_live_arrow_types(v_7)
+    case _:
+      []
+
+def native_match_cps_provider_4_export_facts_0(v_37: cps_provider_4_CatalogResult<BIR.Descriptor>) -> cps_provider_4_CatalogResult<cps_provider_4_ExportFacts>:
+  match v_37:
+    case cps_provider_4_CatalogResult{v_33, v_34}:
+      cps_provider_4_CatalogResult{v_33, cps_provider_4_ExportFacts{cps_provider_4_live_arrow_types(v_34)}}
+
+def native_match_cps_provider_4_export_facts_1(v_36: Maybe<&2, U32>, v_0: Arena.Arena, v_2: String, v_24: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<cps_provider_4_ExportFacts>:
+  match v_36:
+    case None{}:
+      cps_provider_4_CatalogResult{v_0, cps_provider_4_ExportFacts{[BIR.DescriptorFailure{String.append("bend: exported definition has no published signature: ", v_2)}]}}
+    case Some{v_29}:
+      native_match_cps_provider_4_export_facts_0(cps_provider_4_descriptor(v_0, v_29, v_24))
+
+def native_match_cps_provider_4_export_facts_2(v_35: Maybe<&2, cps_provider_4_Definition>, v_0: Arena.Arena, v_2: String, v_7: List<&2, Scope.ArenaGlobal>) -> cps_provider_4_CatalogResult<cps_provider_4_ExportFacts>:
+  match v_35:
+    case None{}:
+      cps_provider_4_CatalogResult{v_0, cps_provider_4_ExportFacts{[BIR.DescriptorFailure{String.append("bend: exported definition is not prepared: ", v_2)}]}}
+    case Some{cps_provider_4_Definition{_, _, _, _, _, v_24, _, _}}:
+      native_match_cps_provider_4_export_facts_1(cps_provider_4_export_signature(v_2, v_7), v_0, v_2, v_24)
+
+def cps_provider_4_export_facts(v_0: Arena.Arena, v_2: String, v_5: List<&2, cps_provider_4_Definition>, v_7: List<&2, Scope.ArenaGlobal>) -> cps_provider_4_CatalogResult<cps_provider_4_ExportFacts>:
+  native_match_cps_provider_4_export_facts_2(cps_provider_4_export_definition(v_2, v_5), v_0, v_2, v_7)
+
+def native_match_cps_provider_4_exports_0(v_30: cps_provider_4_CatalogResult<List<&2, BIR.Export>>, v_4: cps_provider_4_Registry, +v_12: cps_provider_2_NfContext, v_17: String, v_23: List<&2, BIR.Descriptor>) -> cps_provider_4_CatalogResult<List<&2, BIR.Export>>:
+  match v_30:
+    case cps_provider_4_CatalogResult{v_27, v_28}:
+      cps_provider_4_CatalogResult{v_27, BIR.Export{v_17, cps_provider_4_export_entry(cps_provider_4_definition_key(v_4, v_17)), cps_provider_4_normalize_descriptors(v_23, v_12)} <> v_28}
+
+def native_match_cps_provider_4_exports_1(v_29: cps_provider_4_CatalogResult<cps_provider_4_ExportFacts>, v_4: cps_provider_4_Registry, v_8: List<&2, cps_provider_4_Definition>, v_10: List<&2, Scope.ArenaGlobal>, +v_12: cps_provider_2_NfContext, v_17: String, v_18: List<&2, String>) -> cps_provider_4_CatalogResult<List<&2, BIR.Export>>:
+  match v_29:
+    case cps_provider_4_CatalogResult{v_22, cps_provider_4_ExportFacts{v_23}}:
+      native_match_cps_provider_4_exports_0(cps_provider_4_exports(v_18, v_4, v_22, v_8, v_10, v_12), v_4, v_12, v_17, v_23)
+
+def native_match_cps_provider_4_exports_2(v_2: List<&2, String>, v_4: cps_provider_4_Registry, v_5: Arena.Arena, v_8: List<&2, cps_provider_4_Definition>, v_10: List<&2, Scope.ArenaGlobal>, +v_12: cps_provider_2_NfContext) -> cps_provider_4_CatalogResult<List<&2, BIR.Export>>:
+  match v_2:
+    case []:
+      cps_provider_4_CatalogResult{v_5, []}
+    case v_17 <> v_18:
+      native_match_cps_provider_4_exports_1(cps_provider_4_export_facts(v_5, v_17, v_8, v_10), v_4, v_8, v_10, v_12, v_17, v_18)
+
+def cps_provider_4_exports(v_2: List<&2, String>, v_4: cps_provider_4_Registry, v_5: Arena.Arena, v_8: List<&2, cps_provider_4_Definition>, v_10: List<&2, Scope.ArenaGlobal>, +v_12: cps_provider_2_NfContext) -> cps_provider_4_CatalogResult<List<&2, BIR.Export>>:
+  native_match_cps_provider_4_exports_2(v_2, v_4, v_5, v_8, v_10, v_12)
+
+def cps_provider_4_native_match_needed_ref_0(v_2: Maybe<&2, Bool>, v_3: Arena.Arena, v_5: String, v_8: Map<&2, cps_provider_4_Definition>, v_10: cps_provider_4_Needed, v_12: List<&2, BIR.TypeFunction>, v_15: Map<&2, Bool>) -> cps_provider_4_CatalogResult<cps_provider_4_Needed>:
+  match v_2:
+    case Some{_}:
+      cps_provider_4_CatalogResult{v_3, v_10}
+    case None{}:
+      cps_provider_4_needed_definition(v_3, IndexLookup.find(cps_provider_4_Definition, v_8, v_5), v_8, v_12, Map.set(&2, Bool, v_15, v_5, True{}))
+
+def cps_provider_4_native_match_needed_ref_1(v_1: cps_provider_4_Needed, v_2: Arena.Arena, v_4: String, v_7: Map<&2, cps_provider_4_Definition>) -> cps_provider_4_CatalogResult<cps_provider_4_Needed>:
+  match v_1:
+    case cps_provider_4_Needed{v_12, v_13}:
+      cps_provider_4_native_match_needed_ref_0(IndexLookup.find(Bool, v_13, v_4), v_2, v_4, v_7, v_1, v_12, v_13)
+
+def cps_provider_4_needed_ref(v_0: Arena.Arena, v_2: String, v_5: Map<&2, cps_provider_4_Definition>, v_7: cps_provider_4_Needed) -> cps_provider_4_CatalogResult<cps_provider_4_Needed>:
+  cps_provider_4_native_match_needed_ref_1(v_7, v_0, v_2, v_5)
+
+def cps_provider_4_native_match_needed_definition_0(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>, v_4: Map<&2, cps_provider_4_Definition>, v_6: List<&2, BIR.TypeFunction>, v_9: Map<&2, Bool>, v_11: String, v_13: List<&2, BIR.Quantity>, v_15: U32, v_16: Scope.ArenaGlobalScope, v_19: Maybe<&2, String>, v_21: Nat) -> cps_provider_4_CatalogResult<cps_provider_4_Needed>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_26, v_27}:
+      v_29 = BIR.TypeFunction{v_11, v_19, v_21, List.length(&2, BIR.Quantity, v_13), v_27}
+      cps_provider_4_needed_term(v_26, v_15, v_16, v_4, cps_provider_4_Needed{v_29 <> v_6, v_9})
+
+def cps_provider_4_native_match_needed_definition_1(v_2: Maybe<&2, cps_provider_4_Definition>, v_3: Arena.Arena, v_6: Map<&2, cps_provider_4_Definition>, v_8: List<&2, BIR.TypeFunction>, v_11: Map<&2, Bool>) -> cps_provider_4_CatalogResult<cps_provider_4_Needed>:
+  match v_2:
+    case Some{cps_provider_4_Definition{cps_provider_4_DefinitionHeader{_, v_30, _, _, v_33, _, _, None{}, _}, _, _, IR.DefTerm{v_39}, _, v_41, v_42, v_43}}:
+      cps_provider_4_native_match_needed_definition_0(cps_provider_4_descriptor(v_3, v_39, v_41), v_6, v_8, v_11, v_30, v_33, v_39, v_41, v_42, v_43)
+    case _:
+      cps_provider_4_CatalogResult{v_3, cps_provider_4_Needed{v_8, v_11}}
+
+def cps_provider_4_needed_definition(v_0: Arena.Arena, v_3: Maybe<&2, cps_provider_4_Definition>, v_6: Map<&2, cps_provider_4_Definition>, v_8: List<&2, BIR.TypeFunction>, v_11: Map<&2, Bool>) -> cps_provider_4_CatalogResult<cps_provider_4_Needed>:
+  cps_provider_4_native_match_needed_definition_1(v_3, v_0, v_6, v_8, v_11)
+
+def cps_provider_4_native_match_needed_terms_0(v_2: cps_provider_4_CatalogResult<cps_provider_4_Needed>, v_4: U32, v_6: U32, v_7: Scope.ArenaGlobalScope, v_10: Map<&2, cps_provider_4_Definition>) -> cps_provider_4_CatalogResult<cps_provider_4_Needed>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_15, v_16}:
+      cps_provider_4_needed_terms(v_15, IR.arena_range_index(v_4, 1), U32.sub(v_6, 1), v_7, v_10, v_16)
+
+def cps_provider_4_native_match_needed_terms_1(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_6: U32, v_8: U32, v_9: Scope.ArenaGlobalScope, v_12: Map<&2, cps_provider_4_Definition>, v_14: cps_provider_4_Needed) -> cps_provider_4_CatalogResult<cps_provider_4_Needed>:
+  match v_4:
+    case (v_19, v_20):
+      cps_provider_4_native_match_needed_terms_0(cps_provider_4_needed_term(v_19, v_20, v_9, v_12, v_14), v_6, v_8, v_9, v_12)
+
+def cps_provider_4_native_match_needed_terms_2(v_1: U32, v_2: Arena.Arena, v_4: U32, v_5: Scope.ArenaGlobalScope, v_8: Map<&2, cps_provider_4_Definition>, v_10: cps_provider_4_Needed) -> cps_provider_4_CatalogResult<cps_provider_4_Needed>:
+  match v_1:
+    case 0:
+      cps_provider_4_CatalogResult{v_2, v_10}
+    case _:
+      cps_provider_4_native_match_needed_terms_1(Arena.word(v_2, IR.arena_tape_offset(v_4)), v_4, v_1, v_5, v_8, v_10)
+
+def cps_provider_4_needed_terms(v_0: Arena.Arena, v_2: U32, v_4: U32, v_5: Scope.ArenaGlobalScope, v_8: Map<&2, cps_provider_4_Definition>, v_10: cps_provider_4_Needed) -> cps_provider_4_CatalogResult<cps_provider_4_Needed>:
+  cps_provider_4_native_match_needed_terms_2(v_4, v_0, v_2, v_5, v_8, v_10)
+
+def cps_provider_4_native_match_needed_pair_0(v_2: cps_provider_4_CatalogResult<cps_provider_4_Needed>, v_4: U32, v_5: Scope.ArenaGlobalScope, v_8: Map<&2, cps_provider_4_Definition>) -> cps_provider_4_CatalogResult<cps_provider_4_Needed>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_13, v_14}:
+      cps_provider_4_needed_term(v_13, v_4, v_5, v_8, v_14)
+
+def cps_provider_4_needed_pair(v_0: Arena.Arena, v_2: U32, v_4: U32, v_5: Scope.ArenaGlobalScope, v_8: Map<&2, cps_provider_4_Definition>, v_10: cps_provider_4_Needed) -> cps_provider_4_CatalogResult<cps_provider_4_Needed>:
+  cps_provider_4_native_match_needed_pair_0(cps_provider_4_needed_term(v_0, v_2, v_5, v_8, v_10), v_4, v_5, v_8)
+
+def cps_provider_4_native_match_needed_term_0(v_2: cps_provider_4_CatalogResult<String>, v_5: Map<&2, cps_provider_4_Definition>, v_7: cps_provider_4_Needed) -> cps_provider_4_CatalogResult<cps_provider_4_Needed>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_12, v_13}:
+      cps_provider_4_needed_ref(v_12, v_13, v_5, v_7)
+
+def cps_provider_4_native_match_needed_term_1(v_2: cps_provider_4_CatalogResult<cps_provider_4_Needed>, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_4_Definition>, v_8: U32) -> cps_provider_4_CatalogResult<cps_provider_4_Needed>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_13, v_14}:
+      cps_provider_4_needed_term(v_13, v_8, v_3, v_6, v_14)
+
+def cps_provider_4_native_match_needed_term_2(v_2: cps_provider_4_CatalogResult<cps_provider_4_Needed>, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_4_Definition>, v_8: U32) -> cps_provider_4_CatalogResult<cps_provider_4_Needed>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_13, v_14}:
+      cps_provider_4_needed_term(v_13, v_8, v_3, v_6, v_14)
+
+def cps_provider_4_native_match_needed_term_3(v_2: cps_provider_4_CatalogResult<cps_provider_4_Needed>, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_4_Definition>, v_8: U32) -> cps_provider_4_CatalogResult<cps_provider_4_Needed>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_13, v_14}:
+      cps_provider_4_needed_term(v_13, v_8, v_3, v_6, v_14)
+
+def cps_provider_4_native_match_needed_term_4(v_2: cps_provider_4_CatalogResult<cps_provider_4_Needed>, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_4_Definition>, v_8: U32, v_10: U32) -> cps_provider_4_CatalogResult<cps_provider_4_Needed>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_15, v_16}:
+      cps_provider_4_needed_terms(v_15, v_8, v_10, v_3, v_6, v_16)
+
+def cps_provider_4_native_match_needed_term_5(v_2: cps_provider_4_CatalogResult<cps_provider_4_Needed>, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_4_Definition>, v_8: U32) -> cps_provider_4_CatalogResult<cps_provider_4_Needed>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_13, v_14}:
+      cps_provider_4_needed_term(v_13, v_8, v_3, v_6, v_14)
+
+def cps_provider_4_native_match_needed_term_6(v_0: Arena.Node, v_1: Scope.ArenaGlobalScope, v_4: Map<&2, cps_provider_4_Definition>, v_6: cps_provider_4_Needed, v_7: Arena.Arena) -> cps_provider_4_CatalogResult<cps_provider_4_Needed>:
+  match v_0:
+    case Arena.TermRef{v_12, _}:
+      cps_provider_4_native_match_needed_term_0(cps_provider_4_descriptor_name(v_7, v_12, v_1, False{}), v_4, v_6)
+    case Arena.TermBang{v_18, _}:
+      cps_provider_4_needed_term(v_7, v_18, v_1, v_4, v_6)
+    case Arena.TermSub{_, v_26, v_27, _}:
+      cps_provider_4_needed_pair(v_7, v_26, v_27, v_1, v_4, v_6)
+    case Arena.TermLet{_, _, _, _, _, _, v_46, v_47, v_48, _}:
+      cps_provider_4_native_match_needed_term_1(cps_provider_4_needed_terms(v_7, v_46, v_47, v_1, v_4, v_6), v_1, v_4, v_48)
+    case Arena.TermAnn{v_55, v_56, _}:
+      cps_provider_4_needed_pair(v_7, v_55, v_56, v_1, v_4, v_6)
+    case Arena.TermType{v_61, _}:
+      cps_provider_4_needed_term(v_7, v_61, v_1, v_4, v_6)
+    case Arena.TermMin{v_67, v_68, _}:
+      cps_provider_4_needed_pair(v_7, v_67, v_68, v_1, v_4, v_6)
+    case Arena.TermAll{_, _, _, v_80, v_81, _}:
+      cps_provider_4_needed_pair(v_7, v_80, v_81, v_1, v_4, v_6)
+    case Arena.TermLam{_, _, _, v_92, _}:
+      cps_provider_4_needed_term(v_7, v_92, v_1, v_4, v_6)
+    case Arena.TermApp{v_98, v_99, _}:
+      cps_provider_4_needed_pair(v_7, v_98, v_99, v_1, v_4, v_6)
+    case Arena.TermAdt{_, v_109, v_110, _, _, _}:
+      cps_provider_4_needed_terms(v_7, v_109, v_110, v_1, v_4, v_6)
+    case Arena.TermFill{v_119, v_120, v_121, _}:
+      cps_provider_4_native_match_needed_term_2(cps_provider_4_needed_terms(v_7, v_120, v_121, v_1, v_4, v_6), v_1, v_4, v_119)
+    case Arena.TermPlus{v_129, v_130, v_131, _}:
+      cps_provider_4_native_match_needed_term_3(cps_provider_4_needed_terms(v_7, v_130, v_131, v_1, v_4, v_6), v_1, v_4, v_129)
+    case Arena.TermCtr{_, v_140, v_141, _}:
+      cps_provider_4_needed_terms(v_7, v_140, v_141, v_1, v_4, v_6)
+    case Arena.TermMat{_, v_149, v_150, _}:
+      cps_provider_4_needed_pair(v_7, v_149, v_150, v_1, v_4, v_6)
+    case Arena.TermEqual{_, _, v_159, _}:
+      cps_provider_4_needed_term(v_7, v_159, v_1, v_4, v_6)
+    case Arena.TermRewrite{_, _, v_168, _}:
+      cps_provider_4_needed_term(v_7, v_168, v_1, v_4, v_6)
+    case Arena.BodyMatch{v_176, v_177, v_178, v_179, _}:
+      cps_provider_4_native_match_needed_term_4(cps_provider_4_needed_terms(v_7, v_176, v_177, v_1, v_4, v_6), v_1, v_4, v_178, v_179)
+    case Arena.BodyCase{_, _, v_189, _}:
+      cps_provider_4_needed_term(v_7, v_189, v_1, v_4, v_6)
+    case Arena.BodyLocal{_, _, _, v_202, v_203, v_204, _}:
+      cps_provider_4_native_match_needed_term_5(cps_provider_4_needed_terms(v_7, v_202, v_203, v_1, v_4, v_6), v_1, v_4, v_204)
+    case Arena.BodyReply{v_210, _}:
+      cps_provider_4_needed_term(v_7, v_210, v_1, v_4, v_6)
+    case Arena.TermVar{_, _, _}:
+      cps_provider_4_CatalogResult{v_7, v_6}
+    case Arena.TermTemplate{_, _}:
+      cps_provider_4_CatalogResult{v_7, v_6}
+    case Arena.TermQuant{}:
+      cps_provider_4_CatalogResult{v_7, v_6}
+    case Arena.TermQuantity{_, _}:
+      cps_provider_4_CatalogResult{v_7, v_6}
+    case Arena.TermString{_, _, _}:
+      cps_provider_4_CatalogResult{v_7, v_6}
+    case Arena.TermAbsurd{_}:
+      cps_provider_4_CatalogResult{v_7, v_6}
+    case Arena.TermRefl{_}:
+      cps_provider_4_CatalogResult{v_7, v_6}
+    case Arena.TermHole{_, _}:
+      cps_provider_4_CatalogResult{v_7, v_6}
+
+def cps_provider_4_native_match_needed_term_7(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Node>, v_4: Scope.ArenaGlobalScope, v_7: Map<&2, cps_provider_4_Definition>, v_9: cps_provider_4_Needed) -> cps_provider_4_CatalogResult<cps_provider_4_Needed>:
+  match v_3:
+    case (v_14, v_15):
+      cps_provider_4_native_match_needed_term_6(v_15, v_4, v_7, v_9, v_14)
+
+def cps_provider_4_needed_term(v_0: Arena.Arena, v_2: U32, v_3: Scope.ArenaGlobalScope, v_6: Map<&2, cps_provider_4_Definition>, v_8: cps_provider_4_Needed) -> cps_provider_4_CatalogResult<cps_provider_4_Needed>:
+  cps_provider_4_native_match_needed_term_7(Arena.get_node(v_0, v_2), v_3, v_6, v_8)
+
+def cps_provider_4_native_match_needed_roots_0(v_2: cps_provider_4_CatalogResult<cps_provider_4_Needed>, v_5: Map<&2, cps_provider_4_Definition>, v_8: List<&2, cps_provider_4_Root>) -> cps_provider_4_CatalogResult<cps_provider_4_Needed>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_13, v_14}:
+      cps_provider_4_needed_roots(v_13, v_8, v_5, v_14)
+
+def cps_provider_4_native_match_needed_roots_1(v_2: cps_provider_4_CatalogResult<cps_provider_4_Needed>, v_5: Map<&2, cps_provider_4_Definition>, v_8: List<&2, cps_provider_4_Root>) -> cps_provider_4_CatalogResult<cps_provider_4_Needed>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_13, v_14}:
+      cps_provider_4_needed_roots(v_13, v_8, v_5, v_14)
+
+def cps_provider_4_native_match_needed_roots_2(v_2: List<&2, cps_provider_4_Root>, v_3: Arena.Arena, v_6: Map<&2, cps_provider_4_Definition>, v_8: cps_provider_4_Needed) -> cps_provider_4_CatalogResult<cps_provider_4_Needed>:
+  match v_2:
+    case []:
+      cps_provider_4_CatalogResult{v_3, v_8}
+    case cps_provider_4_TermRoot{v_14, v_15} <> v_16:
+      cps_provider_4_native_match_needed_roots_0(cps_provider_4_needed_term(v_3, v_14, v_15, v_6, v_8), v_6, v_16)
+    case cps_provider_4_DefinitionRoot{v_21} <> v_22:
+      cps_provider_4_native_match_needed_roots_1(cps_provider_4_needed_ref(v_3, v_21, v_6, v_8), v_6, v_22)
+
+def cps_provider_4_needed_roots(v_0: Arena.Arena, v_3: List<&2, cps_provider_4_Root>, v_6: Map<&2, cps_provider_4_Definition>, v_8: cps_provider_4_Needed) -> cps_provider_4_CatalogResult<cps_provider_4_Needed>:
+  cps_provider_4_native_match_needed_roots_2(v_3, v_0, v_6, v_8)
+
+def cps_provider_4_native_match_binder_roots_0(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_4: Scope.ArenaGlobalScope, v_7: List<&2, cps_provider_4_Root>, v_9: U32, v_11: U32) -> cps_provider_4_CatalogResult<List<&2, cps_provider_4_Root>>:
+  match v_3:
+    case (v_17, v_18):
+      cps_provider_4_binder_roots(v_17, IR.Words{IR.arena_range_index(v_9, 1), U32.sub(v_11, 1)}, v_4, cps_provider_4_TermRoot{cps_provider_4_binder_type(v_18), v_4} <> v_7)
+
+def cps_provider_4_native_match_binder_roots_1(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_5: Scope.ArenaGlobalScope, v_8: List<&2, cps_provider_4_Root>, v_10: U32, v_12: U32) -> cps_provider_4_CatalogResult<List<&2, cps_provider_4_Root>>:
+  match v_4:
+    case (v_18, v_19):
+      cps_provider_4_native_match_binder_roots_0(Arena.get_binder(v_18, v_19), v_5, v_8, v_10, v_12)
+
+def cps_provider_4_native_match_binder_roots_2(v_0: IR.Words, v_1: Arena.Arena, v_2: Scope.ArenaGlobalScope, v_5: List<&2, cps_provider_4_Root>) -> cps_provider_4_CatalogResult<List<&2, cps_provider_4_Root>>:
+  match v_0:
+    case IR.Words{_, 0}:
+      cps_provider_4_CatalogResult{v_1, v_5}
+    case IR.Words{v_13, v_14}:
+      cps_provider_4_native_match_binder_roots_1(Arena.word(v_1, IR.arena_tape_offset(v_13)), v_2, v_5, v_13, v_14)
+
+def cps_provider_4_binder_roots(v_0: Arena.Arena, v_1: IR.Words, v_2: Scope.ArenaGlobalScope, v_5: List<&2, cps_provider_4_Root>) -> cps_provider_4_CatalogResult<List<&2, cps_provider_4_Root>>:
+  cps_provider_4_native_match_binder_roots_2(v_1, v_0, v_2, v_5)
+
+def cps_provider_4_binder_type(v_0: Arena.Binder) -> U32:
+  match v_0:
+    case Arena.Binder{_, _, _, v_10, _}:
+      v_10
+    case Arena.TemplateBinder{_, _, v_18, _}:
+      v_18
+
+def cps_provider_4_result_roots(v_0: IR.OptionalTerm, v_1: Scope.ArenaGlobalScope, v_4: List<&2, cps_provider_4_Root>) -> List<&2, cps_provider_4_Root>:
+  match v_0:
+    case IR.NoTerm{}:
+      v_4
+    case IR.SomeTerm{v_8}:
+      cps_provider_4_TermRoot{v_8, v_1} <> v_4
+
+def cps_provider_4_type_root(v_1: Bool, v_3: String, v_6: List<&2, cps_provider_4_Root>) -> List<&2, cps_provider_4_Root>:
+  match v_1:
+    case True{}:
+      cps_provider_4_DefinitionRoot{v_3} <> v_6
+    case False{}:
+      v_6
+
+def cps_provider_4_preparation_failure(v_1: cps_provider_4_Preparation, v_3: String) -> cps_provider_4_Preparation:
+  match v_1:
+    case cps_provider_4_Preparation{v_17, v_18, v_19, v_20, v_21, v_22, v_23, v_24, v_25, v_26, v_27, v_28}:
+      cps_provider_4_Preparation{v_17, v_18, v_19, v_20, v_21, v_22, v_23, v_24, v_25, v_26, cps_provider_4_first_failure(v_27, v_3), v_28}
+
+def cps_provider_4_first_failure(v_2: Maybe<&2, String>, v_4: String) -> Maybe<&2, String>:
+  match v_2:
+    case Some{_}:
+      v_2
+    case None{}:
+      Some{v_4}
+
+def cps_provider_4_native_match_header_insert_0(v_2: Maybe<&2, cps_provider_4_DefinitionHeader>, +v_4: String, v_6: cps_provider_4_DefinitionHeader, +v_9: Map<&2, cps_provider_4_DefinitionHeader>) -> Map<&2, cps_provider_4_DefinitionHeader>:
+  match v_2:
+    case Some{_}:
+      v_9
+    case None{}:
+      Map.set(&2, cps_provider_4_DefinitionHeader, v_9, v_4, v_6)
+
+def cps_provider_4_header_insert(+v_1: String, v_3: cps_provider_4_DefinitionHeader, +v_6: Map<&2, cps_provider_4_DefinitionHeader>) -> Map<&2, cps_provider_4_DefinitionHeader>:
+  cps_provider_4_native_match_header_insert_0(IndexLookup.find(cps_provider_4_DefinitionHeader, v_6, v_1), v_1, v_3, v_6)
+
+def cps_provider_4_value_insert(v_2: Maybe<&2, Bool>, v_3: IR.DefBody, v_5: String, v_7: cps_provider_4_Definition, v_10: Map<&2, cps_provider_4_Definition>) -> Map<&2, cps_provider_4_Definition>:
+  match v_2, v_3:
+    case None{}, IR.DefTerm{_}:
+      cps_provider_4_insert_definition(v_5, v_7, v_10)
+    case _, _:
+      v_10
+
+def cps_provider_4_native_match_foreign_sources_1(v_4: Sigma<&1, &1, Arena.Arena, _ => String>, v_6: String, v_8: U32, v_10: U32, v_13: List<&2, String>) -> cps_provider_4_CatalogResult<List<&2, String>>:
+  match v_4:
+    case (v_19, v_20):
+      cps_provider_4_foreign_sources(v_19, IR.Names{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, v_6, Path.resolve(v_6, v_20) <> v_13)
+
+def cps_provider_4_native_match_foreign_sources_0(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_6: String, v_8: U32, v_10: U32, v_13: List<&2, String>) -> cps_provider_4_CatalogResult<List<&2, String>>:
+  match v_4:
+    case (v_19, v_20):
+      cps_provider_4_native_match_foreign_sources_1(Arena.name_text(v_19, v_20), v_6, v_8, v_10, v_13)
+
+def cps_provider_4_foreign_sources(v_0: Arena.Arena, v_1: IR.Names, v_3: String, v_6: List<&2, String>) -> cps_provider_4_CatalogResult<List<&2, String>>:
+  match v_1:
+    case IR.Names{_, 0}:
+      cps_provider_4_CatalogResult{v_0, List.reverse(&2, String, v_6)}
+    case IR.Names{v_15, v_16}:
+      cps_provider_4_native_match_foreign_sources_0(Arena.word(v_0, IR.arena_tape_offset(v_15)), v_3, v_15, v_16, v_6)
+
+def native_match_cps_provider_4_foreign_namespace_0(v_4: Bool, v_1: String, v_3: String) -> String:
+  match v_4:
+    case True{}:
+      ""
+    case False{}:
+      String.take(v_1, Nat.sub(String.length(v_1), Nat.add(String.length(v_3), 1n)))
+
+def cps_provider_4_foreign_namespace(v_1: String, v_3: String) -> String:
+  native_match_cps_provider_4_foreign_namespace_0(String.eq(v_1, v_3), v_1, v_3)
+
+def cps_provider_4_foreign_result_type(v_0: Arena.Arena, v_1: IR.OptionalTerm, v_2: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<BIR.Descriptor>:
+  match v_1:
+    case IR.NoTerm{}:
+      cps_provider_4_CatalogResult{v_0, BIR.DescriptorFailure{"bend: foreign definition has no checked result type"}}
+    case IR.SomeTerm{v_5}:
+      cps_provider_4_descriptor(v_0, v_5, v_2)
+
+def cps_provider_4_live_parameter_types(v_0: Arena.Arena, v_1: IR.Words, v_2: Scope.ArenaGlobalScope, v_4: List<&2, BIR.Descriptor>) -> cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>:
+  match v_1:
+    case IR.Words{_, 0}:
+      cps_provider_4_CatalogResult{v_0, List.reverse(&2, BIR.Descriptor, v_4)}
+    case IR.Words{v_11, v_12}:
+      cps_provider_4_native_match_live_parameter_types_2(Arena.word(v_0, IR.arena_tape_offset(v_11)), v_2, v_4, v_11, v_12)
+
+def cps_provider_4_native_match_live_parameter_types_2(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_5: Scope.ArenaGlobalScope, v_7: List<&2, BIR.Descriptor>, v_9: U32, v_11: U32) -> cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>:
+  match v_4:
+    case (v_16, v_17):
+      cps_provider_4_native_match_live_parameter_types_1(Arena.get_binder(v_16, v_17), v_5, v_7, v_9, v_11)
+
+def cps_provider_4_native_match_live_parameter_types_1(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_4: Scope.ArenaGlobalScope, v_6: List<&2, BIR.Descriptor>, v_8: U32, v_10: U32) -> cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>:
+  match v_3:
+    case (v_15, v_16):
+      cps_provider_4_live_parameter_binder(v_15, v_16, v_4, v_6, v_8, v_10)
+
+def cps_provider_4_live_parameter_binder(v_0: Arena.Arena, v_1: Arena.Binder, v_2: Scope.ArenaGlobalScope, v_4: List<&2, BIR.Descriptor>, v_6: U32, v_8: U32) -> cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>:
+  match v_1:
+    case Arena.Binder{v_16, _, _, v_19, _}:
+      cps_provider_4_live_parameter_quantity(cps_provider_4_quantity(v_16), v_0, v_19, v_2, v_4, v_6, v_8)
+    case Arena.TemplateBinder{_, _, _, _}:
+      cps_provider_4_live_parameter_types(v_0, IR.Words{IR.arena_range_index(v_6, 1), U32.sub(v_8, 1)}, v_2, v_4)
+
+def native_match_cps_provider_4_live_parameter_quantity_0(v_21: cps_provider_4_CatalogResult<BIR.Descriptor>, v_4: Scope.ArenaGlobalScope, v_6: List<&2, BIR.Descriptor>, v_8: U32, v_10: U32) -> cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>:
+  match v_21:
+    case cps_provider_4_CatalogResult{v_19, v_20}:
+      cps_provider_4_live_parameter_types(v_19, IR.Words{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, v_4, v_20 <> v_6)
+
+def native_match_cps_provider_4_live_parameter_quantity_1(v_0: BIR.Quantity, v_1: Arena.Arena, v_3: U32, v_4: Scope.ArenaGlobalScope, v_6: List<&2, BIR.Descriptor>, v_8: U32, v_10: U32) -> cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>:
+  match v_0:
+    case BIR.Erased{}:
+      cps_provider_4_live_parameter_types(v_1, IR.Words{IR.arena_range_index(v_8, 1), U32.sub(v_10, 1)}, v_4, v_6)
+    case _:
+      native_match_cps_provider_4_live_parameter_quantity_0(cps_provider_4_descriptor(v_1, v_3, v_4), v_4, v_6, v_8, v_10)
+
+def cps_provider_4_live_parameter_quantity(v_0: BIR.Quantity, v_1: Arena.Arena, v_3: U32, v_4: Scope.ArenaGlobalScope, v_6: List<&2, BIR.Descriptor>, v_8: U32, v_10: U32) -> cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>:
+  native_match_cps_provider_4_live_parameter_quantity_1(v_0, v_1, v_3, v_4, v_6, v_8, v_10)
+
+def native_match_cps_provider_4_definition_foreign_0(v_36: cps_provider_4_CatalogResult<BIR.Descriptor>, v_5: String, v_7: String, v_8: Ast.SourceSpan, v_23: List<&2, String>, v_28: List<&2, BIR.Descriptor>) -> cps_provider_4_CatalogResult<Maybe<&2, cps_provider_4_Foreign>>:
+  match v_36:
+    case cps_provider_4_CatalogResult{v_32, v_33}:
+      cps_provider_4_CatalogResult{v_32, Some{cps_provider_4_Foreign{cps_provider_4_foreign_namespace(v_5, v_7), v_7, v_23, v_8, v_28, v_33}}}
+
+def native_match_cps_provider_4_definition_foreign_1(v_35: cps_provider_4_CatalogResult<List<&2, BIR.Descriptor>>, v_5: String, v_7: String, v_8: Ast.SourceSpan, v_10: IR.OptionalTerm, v_11: Scope.ArenaGlobalScope, v_23: List<&2, String>) -> cps_provider_4_CatalogResult<Maybe<&2, cps_provider_4_Foreign>>:
+  match v_35:
+    case cps_provider_4_CatalogResult{v_27, v_28}:
+      native_match_cps_provider_4_definition_foreign_0(cps_provider_4_foreign_result_type(v_27, v_10, v_11), v_5, v_7, v_8, v_23, v_28)
+
+def native_match_cps_provider_4_definition_foreign_2(v_34: cps_provider_4_CatalogResult<List<&2, String>>, v_5: String, v_7: String, v_8: Ast.SourceSpan, v_9: IR.Words, v_10: IR.OptionalTerm, v_11: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<Maybe<&2, cps_provider_4_Foreign>>:
+  match v_34:
+    case cps_provider_4_CatalogResult{v_22, v_23}:
+      native_match_cps_provider_4_definition_foreign_1(cps_provider_4_live_parameter_types(v_22, v_9, v_11, []), v_5, v_7, v_8, v_10, v_11, v_23)
+
+def native_match_cps_provider_4_definition_foreign_3(v_1: IR.DefBody, v_0: Arena.Arena, v_3: String, v_5: String, v_7: String, v_8: Ast.SourceSpan, v_9: IR.Words, v_10: IR.OptionalTerm, v_11: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<Maybe<&2, cps_provider_4_Foreign>>:
+  match v_1:
+    case IR.DefTerm{_}:
+      cps_provider_4_CatalogResult{v_0, None{}}
+    case IR.DefImports{v_18}:
+      native_match_cps_provider_4_definition_foreign_2(cps_provider_4_foreign_sources(v_0, v_18, v_3, []), v_5, v_7, v_8, v_9, v_10, v_11)
+
+def cps_provider_4_definition_foreign(v_0: Arena.Arena, v_1: IR.DefBody, v_3: String, v_5: String, v_7: String, v_8: Ast.SourceSpan, v_9: IR.Words, v_10: IR.OptionalTerm, v_11: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<Maybe<&2, cps_provider_4_Foreign>>:
+  native_match_cps_provider_4_definition_foreign_3(v_1, v_0, v_3, v_5, v_7, v_8, v_9, v_10, v_11)
+
+def cps_provider_4_definition_fast(v_1: Bool, v_3: Bool, v_5: List<&2, BIR.Parameter>, v_7: Maybe<&2, BIR.Primitive>, v_10: Maybe<&2, cps_provider_4_Foreign>) -> Bool:
+  match v_5, v_7, v_10:
+    case _ <> _, None{}, None{}:
+      Bool.and(v_1, Bool.not(v_3))
+    case _, _, _:
+      False{}
+
+def cps_provider_4_definition_primitive(v_1: Bool, v_4: Maybe<&2, cps_provider_4_Foreign>, v_6: Bool, v_8: String) -> Maybe<&2, BIR.Primitive>:
+  match v_1, v_4:
+    case False{}, None{}:
+      cps_provider_4_primitive(v_6, v_8)
+    case _, _:
+      None{}
+
+def cps_provider_4_native_match_main_descriptor_0(v_1: cps_provider_4_CatalogResult<BIR.Descriptor>) -> cps_provider_4_CatalogResult<Maybe<&2, BIR.Descriptor>>:
+  match v_1:
+    case cps_provider_4_CatalogResult{v_6, v_7}:
+      cps_provider_4_CatalogResult{v_6, Some{v_7}}
+
+def cps_provider_4_native_match_main_descriptor_1(v_1: Bool, v_2: IR.OptionalTerm, v_3: Arena.Arena, v_4: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<Maybe<&2, BIR.Descriptor>>:
+  match v_1, v_2:
+    case True{}, IR.SomeTerm{v_8}:
+      cps_provider_4_native_match_main_descriptor_0(cps_provider_4_descriptor(v_3, v_8, v_4))
+    case _, _:
+      cps_provider_4_CatalogResult{v_3, None{}}
+
+def cps_provider_4_native_match_main_descriptor_2(v_1: Maybe<&2, BIR.Descriptor>, v_2: Arena.Arena, v_4: String, v_5: IR.OptionalTerm, v_6: Scope.ArenaGlobalScope) -> cps_provider_4_CatalogResult<Maybe<&2, BIR.Descriptor>>:
+  match v_1:
+    case Some{_}:
+      cps_provider_4_CatalogResult{v_2, v_1}
+    case None{}:
+      cps_provider_4_native_match_main_descriptor_1(String.eq(v_4, "main"), v_5, v_2, v_6)
+
+def cps_provider_4_main_descriptor(v_0: Arena.Arena, v_2: String, v_3: IR.OptionalTerm, v_4: Scope.ArenaGlobalScope, v_6: Maybe<&2, BIR.Descriptor>) -> cps_provider_4_CatalogResult<Maybe<&2, BIR.Descriptor>>:
+  cps_provider_4_native_match_main_descriptor_2(v_6, v_0, v_2, v_3, v_4)
+
+def cps_provider_4_signature_symbol(v_0: Scope.ArenaGlobal) -> IR.Symbol:
+  match v_0:
+    case Scope.ArenaGlobal{_, v_7, v_8, v_9, _, Scope.GlobalDefinition{}}:
+      IR.Symbol{v_7, v_8, IR.DefinitionSymbol{}, v_9}
+    case Scope.ArenaGlobal{_, v_17, v_18, v_19, _, Scope.GlobalFamily{}}:
+      IR.Symbol{v_17, v_18, IR.FamilySymbol{}, v_19}
+    case Scope.ArenaGlobal{_, v_27, v_28, v_29, _, Scope.GlobalConstructor{}}:
+      IR.Symbol{v_27, v_28, IR.ConstructorSymbol{}, v_29}
+
+def cps_provider_4_prepare_definition(v_0: Arena.Arena, v_1: IR.Definition, v_3: String, v_5: String, v_7: Bool, v_8: Scope.ArenaGlobalScope, v_10: cps_provider_4_Preparation) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  match v_1:
+    case IR.Definition{v_23, v_24, v_25, v_26, _, v_28, v_29, Some{IR.DefinitionFacts{v_30, v_31, v_32}}}:
+      cps_provider_4_prepare_definition_symbol(v_0, Scope.lookup_kind(cps_provider_4_qualify(v_3, v_23), Scope.GlobalDefinition{}, v_8), cps_provider_4_qualify(v_3, v_23), v_23, v_24, v_25, v_26, v_29, Bool.and(v_30, cps_provider_4_is_term(v_26)), v_31, v_32, v_5, v_7, v_8, v_10, v_28)
+    case IR.Definition{v_44, _, _, _, _, _, _, None{}}:
+      cps_provider_4_CatalogResult{v_0, cps_provider_4_preparation_failure(v_10, String.append("bend: missing checked declaration facts for ", cps_provider_4_qualify(v_3, v_44)))}
+
+def cps_provider_4_native_match_prepare_definition_symbol_0(v_2: cps_provider_4_CatalogResult<Maybe<&2, BIR.Descriptor>>, v_4: String, v_5: IR.DefBody, v_8: List<&2, cps_provider_4_Definition>, v_11: Map<&2, cps_provider_4_Definition>, v_14: Map<&2, cps_provider_4_DefinitionHeader>, v_16: List<&2, BIR.ConstructorLayout>, v_19: Map<&2, cps_provider_4_Constructor>, v_21: List<&2, BIR.Family>, v_23: U32, v_25: U32, v_28: Maybe<&2, String>, v_31: Map<&2, Bool>, v_33: cps_provider_4_DefinitionHeader, v_35: cps_provider_4_Definition, v_38: List<&2, cps_provider_4_Root>) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_43, v_44}:
+      v_48 = cps_provider_4_value_insert(IndexLookup.find(Bool, v_31, v_4), v_5, v_4, v_35, v_11)
+      cps_provider_4_CatalogResult{v_43, cps_provider_4_Preparation{v_35 <> v_8, v_48, cps_provider_4_header_insert(v_4, v_33, v_14), v_16, v_19, v_21, U32.add(v_23, 1), v_25, v_38, v_44, v_28, Map.set(&2, Bool, v_31, v_4, True{})}}
+
+def cps_provider_4_native_match_prepare_definition_symbol_1(v_3: cps_provider_4_CatalogResult<List<&2, cps_provider_4_Root>>, v_5: String, v_6: IR.OptionalTerm, v_7: IR.DefBody, v_9: Bool, v_10: Scope.ArenaGlobalScope, v_13: List<&2, cps_provider_4_Definition>, v_16: Map<&2, cps_provider_4_Definition>, v_19: Map<&2, cps_provider_4_DefinitionHeader>, v_21: List<&2, BIR.ConstructorLayout>, v_24: Map<&2, cps_provider_4_Constructor>, v_26: List<&2, BIR.Family>, v_28: U32, v_30: U32, v_32: Maybe<&2, BIR.Descriptor>, v_35: Maybe<&2, String>, v_38: Map<&2, Bool>, v_40: cps_provider_4_DefinitionHeader, v_42: cps_provider_4_Definition) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  match v_3:
+    case cps_provider_4_CatalogResult{v_47, v_48}:
+      v_53 = cps_provider_4_type_root(Bool.and(v_9, cps_provider_4_is_term(v_7)), v_5, cps_provider_4_result_roots(v_6, v_10, v_48))
+      cps_provider_4_native_match_prepare_definition_symbol_0(cps_provider_4_main_descriptor(v_47, v_5, v_6, v_10, v_32), v_5, v_7, v_13, v_16, v_19, v_21, v_24, v_26, v_28, v_30, v_35, v_38, v_40, v_42, v_53)
+
+def cps_provider_4_native_match_prepare_definition_symbol_2(v_1: cps_provider_4_Preparation, v_3: String, v_4: IR.Words, v_5: IR.OptionalTerm, v_6: IR.DefBody, v_8: Maybe<&2, IR.Occurrence>, v_10: Bool, v_12: Nat, v_14: Bool, v_15: Scope.ArenaGlobalScope, v_16: Scope.ArenaGlobal, v_18: List<&2, BIR.Parameter>, v_20: List<&2, BIR.Quantity>, v_21: Arena.Arena, v_24: Maybe<&2, cps_provider_4_Foreign>, v_26: Maybe<&2, BIR.Primitive>, v_28: Bool) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  match v_1:
+    case cps_provider_4_Preparation{v_43, v_44, v_45, v_46, v_47, v_48, v_49, v_50, v_51, v_52, v_53, v_54}:
+      v_57 = cps_provider_4_DefinitionHeader{cps_provider_4_signature_symbol(v_16), v_3, v_49, v_18, v_20, v_10, v_26, v_24, v_28}
+      v_60 = cps_provider_4_Definition{v_57, v_4, v_5, v_6, v_8, v_15, cps_provider_4_native_marker(v_14, v_3), v_12}
+      cps_provider_4_native_match_prepare_definition_symbol_1(cps_provider_4_binder_roots(v_21, v_4, v_15, v_51), v_3, v_5, v_6, v_10, v_15, v_43, v_44, v_45, v_46, v_47, v_48, v_49, v_50, v_52, v_53, v_54, v_57, v_60)
+
+def cps_provider_4_native_match_prepare_definition_symbol_3(v_3: cps_provider_4_CatalogResult<Maybe<&2, cps_provider_4_Foreign>>, v_5: String, v_6: IR.Words, v_7: IR.OptionalTerm, v_8: IR.DefBody, v_10: Maybe<&2, IR.Occurrence>, v_12: Bool, v_14: Bool, v_16: Nat, v_18: Bool, v_19: Scope.ArenaGlobalScope, v_21: cps_provider_4_Preparation, v_22: Scope.ArenaGlobal, v_24: List<&2, BIR.Parameter>, v_26: List<&2, BIR.Quantity>) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  match v_3:
+    case cps_provider_4_CatalogResult{v_31, v_32}:
+      v_35 = cps_provider_4_definition_primitive(v_12, v_32, v_18, v_5)
+      v_38 = cps_provider_4_definition_fast(v_14, v_12, v_24, v_35, v_32)
+      cps_provider_4_native_match_prepare_definition_symbol_2(v_21, v_5, v_6, v_7, v_8, v_10, v_12, v_16, v_18, v_19, v_22, v_24, v_26, v_31, v_32, v_35, v_38)
+
+def cps_provider_4_native_match_prepare_definition_symbol_4(v_2: cps_provider_4_CatalogResult<cps_provider_4_Telescope>, v_4: String, v_6: String, v_7: IR.Words, v_8: IR.OptionalTerm, v_9: IR.DefBody, v_11: Maybe<&2, IR.Occurrence>, v_13: Bool, v_15: Bool, v_17: Nat, v_19: String, v_21: Bool, v_22: Scope.ArenaGlobalScope, v_24: cps_provider_4_Preparation, v_25: Scope.ArenaGlobal, v_26: Ast.SourceSpan) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_34, cps_provider_4_Telescope{v_35, v_36, _, _}}:
+      cps_provider_4_native_match_prepare_definition_symbol_3(cps_provider_4_definition_foreign(v_34, v_9, v_19, v_4, v_6, v_26, v_7, v_8, v_22), v_4, v_7, v_8, v_9, v_11, v_13, v_15, v_17, v_21, v_22, v_24, v_25, v_35, v_36)
+
+def cps_provider_4_native_match_prepare_definition_symbol_5(v_1: Maybe<&2, Scope.ArenaGlobal>, v_2: Arena.Arena, v_4: String, v_6: String, v_7: IR.Words, v_8: IR.OptionalTerm, v_9: IR.DefBody, v_11: Maybe<&2, IR.Occurrence>, v_13: Bool, v_15: Bool, v_17: Nat, v_19: String, v_21: Bool, v_22: Scope.ArenaGlobalScope, v_24: cps_provider_4_Preparation, v_25: Ast.SourceSpan) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  match v_1:
+    case None{}:
+      cps_provider_4_CatalogResult{v_2, cps_provider_4_preparation_failure(v_24, String.append("bend: missing published definition signature for ", v_4))}
+    case Some{v_30}:
+      cps_provider_4_native_match_prepare_definition_symbol_4(cps_provider_4_live_telescope(v_2, v_7, 0), v_4, v_6, v_7, v_8, v_9, v_11, v_13, v_15, v_17, v_19, v_21, v_22, v_24, v_30, v_25)
+
+def cps_provider_4_prepare_definition_symbol(v_0: Arena.Arena, v_2: Maybe<&2, Scope.ArenaGlobal>, v_4: String, v_6: String, v_7: IR.Words, v_8: IR.OptionalTerm, v_9: IR.DefBody, v_11: Maybe<&2, IR.Occurrence>, v_13: Bool, v_15: Bool, v_17: Nat, v_19: String, v_21: Bool, v_22: Scope.ArenaGlobalScope, v_24: cps_provider_4_Preparation, v_25: Ast.SourceSpan) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  cps_provider_4_native_match_prepare_definition_symbol_5(v_2, v_0, v_4, v_6, v_7, v_8, v_9, v_11, v_13, v_15, v_17, v_19, v_21, v_22, v_24, v_25)
+
+def cps_provider_4_is_term(v_0: IR.DefBody) -> Bool:
+  match v_0:
+    case IR.DefTerm{_}:
+      True{}
+    case IR.DefImports{_}:
+      False{}
+
+def cps_provider_4_native_match_prepare_constructors_0(v_2: cps_provider_4_CatalogResult<cps_provider_4_Arms>, v_4: List<&2, BIR.DescriptorField>, v_6: String) -> cps_provider_4_CatalogResult<cps_provider_4_Arms>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_12, cps_provider_4_Arms{v_13, v_14}}:
+      cps_provider_4_CatalogResult{v_12, cps_provider_4_Arms{BIR.DescriptorArm{v_6, v_4} <> v_13, v_14}}
+
+def cps_provider_4_native_match_prepare_constructors_1(v_3: cps_provider_4_CatalogResult<List<&2, cps_provider_4_Root>>, v_5: String, v_7: String, v_9: Nat, v_11: Bool, v_12: Scope.ArenaGlobalScope, v_14: List<&2, IR.ConstructorDecl>, v_16: List<&2, BIR.DescriptorField>, v_18: String, v_21: List<&2, cps_provider_4_Definition>, v_24: Map<&2, cps_provider_4_Definition>, v_27: Map<&2, cps_provider_4_DefinitionHeader>, v_29: List<&2, BIR.ConstructorLayout>, v_32: Map<&2, cps_provider_4_Constructor>, v_34: List<&2, BIR.Family>, v_36: U32, v_38: U32, v_40: Maybe<&2, BIR.Descriptor>, v_43: Maybe<&2, String>, v_46: Map<&2, Bool>, v_47: BIR.ConstructorLayout, v_49: cps_provider_4_Constructor) -> cps_provider_4_CatalogResult<cps_provider_4_Arms>:
+  match v_3:
+    case cps_provider_4_CatalogResult{v_54, v_55}:
+      v_58 = cps_provider_4_Preparation{v_21, v_24, v_27, v_47 <> v_29, cps_provider_4_insert_constructor(v_18, v_49, v_32), v_34, v_36, U32.add(v_38, 1), v_55, v_40, v_43, v_46}
+      cps_provider_4_native_match_prepare_constructors_0(cps_provider_4_prepare_constructors(v_54, v_14, v_5, v_7, v_9, v_11, v_12, v_58), v_16, v_18)
+
+def cps_provider_4_native_match_prepare_constructors_2(v_1: cps_provider_4_Preparation, v_3: String, v_5: String, v_7: Nat, v_9: Bool, v_10: Scope.ArenaGlobalScope, v_11: IR.Words, v_13: List<&2, IR.ConstructorDecl>, v_14: Arena.Arena, v_16: List<&2, BIR.Quantity>, v_18: List<&2, BIR.DescriptorField>, v_20: String) -> cps_provider_4_CatalogResult<cps_provider_4_Arms>:
+  match v_1:
+    case cps_provider_4_Preparation{v_35, v_36, v_37, v_38, v_39, v_40, v_41, v_42, v_43, v_44, v_45, v_46}:
+      v_50 = BIR.ConstructorLayout{v_42, v_20, cps_provider_4_constructor_native(v_9, v_5, v_20), cps_provider_4_field_names(v_18)}
+      v_53 = cps_provider_4_Constructor{v_50, v_16, v_7, cps_provider_4_qualify(v_3, v_5)}
+      cps_provider_4_native_match_prepare_constructors_1(cps_provider_4_binder_roots(v_14, v_11, v_10, v_43), v_3, v_5, v_7, v_9, v_10, v_13, v_18, v_20, v_35, v_36, v_37, v_38, v_39, v_40, v_41, v_42, v_44, v_45, v_46, v_50, v_53)
+
+def cps_provider_4_native_match_prepare_constructors_3(v_2: cps_provider_4_CatalogResult<cps_provider_4_Telescope>, v_4: String, v_6: String, v_8: Nat, v_10: Bool, v_11: Scope.ArenaGlobalScope, v_13: cps_provider_4_Preparation, v_15: String, v_16: IR.Words, v_18: List<&2, IR.ConstructorDecl>) -> cps_provider_4_CatalogResult<cps_provider_4_Arms>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_26, cps_provider_4_Telescope{_, v_28, v_29, _}}:
+      v_33 = cps_provider_4_qualify(v_4, v_15)
+      cps_provider_4_native_match_prepare_constructors_2(v_13, v_4, v_6, v_8, v_10, v_11, v_16, v_18, v_26, v_28, v_29, v_33)
+
+def cps_provider_4_native_match_prepare_constructors_4(v_1: List<&2, IR.ConstructorDecl>, v_2: Arena.Arena, v_4: String, v_6: String, v_8: Nat, v_10: Bool, v_11: Scope.ArenaGlobalScope, v_13: cps_provider_4_Preparation) -> cps_provider_4_CatalogResult<cps_provider_4_Arms>:
+  match v_1:
+    case []:
+      cps_provider_4_CatalogResult{v_2, cps_provider_4_Arms{[], v_13}}
+    case IR.Constructor{v_20, v_21, _} <> v_23:
+      cps_provider_4_native_match_prepare_constructors_3(cps_provider_4_telescope(v_2, v_21, 0, v_11), v_4, v_6, v_8, v_10, v_11, v_13, v_20, v_21, v_23)
+
+def cps_provider_4_prepare_constructors(v_0: Arena.Arena, v_2: List<&2, IR.ConstructorDecl>, v_4: String, v_6: String, v_8: Nat, v_10: Bool, v_11: Scope.ArenaGlobalScope, v_13: cps_provider_4_Preparation) -> cps_provider_4_CatalogResult<cps_provider_4_Arms>:
+  cps_provider_4_native_match_prepare_constructors_4(v_2, v_0, v_4, v_6, v_8, v_10, v_11, v_13)
+
+def cps_provider_4_native_match_prepare_family_0(v_3: cps_provider_4_CatalogResult<List<&2, cps_provider_4_Root>>, v_5: Bool, v_6: Scope.ArenaGlobalScope, v_8: Nat, v_10: String, v_12: U32, v_14: Nat, v_16: List<&2, BIR.DescriptorArm>, v_19: List<&2, cps_provider_4_Definition>, v_22: Map<&2, cps_provider_4_Definition>, v_25: Map<&2, cps_provider_4_DefinitionHeader>, v_27: List<&2, BIR.ConstructorLayout>, v_30: Map<&2, cps_provider_4_Constructor>, v_32: List<&2, BIR.Family>, v_34: U32, v_36: U32, v_38: Maybe<&2, BIR.Descriptor>, v_41: Maybe<&2, String>, v_44: Map<&2, Bool>, v_46: String) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  match v_3:
+    case cps_provider_4_CatalogResult{v_51, v_52}:
+      v_55 = BIR.Family{v_46, v_10, cps_provider_4_native_marker(v_5, v_10), v_8, v_14, v_16}
+      v_57 = cps_provider_4_Preparation{v_19, v_22, v_25, v_27, v_30, v_55 <> v_32, v_34, v_36, cps_provider_4_TermRoot{v_12, v_6} <> v_52, v_38, v_41, v_44}
+      cps_provider_4_CatalogResult{v_51, cps_provider_4_block_family(Scope.lookup_kind(v_46, Scope.GlobalFamily{}, v_6), v_46, v_57)}
+
+def cps_provider_4_native_match_prepare_family_1(v_1: cps_provider_4_Preparation, v_3: String, v_5: Bool, v_6: Scope.ArenaGlobalScope, v_8: Nat, v_10: String, v_11: IR.Words, v_13: U32, v_15: Nat, v_16: Arena.Arena, v_18: List<&2, BIR.DescriptorArm>) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  match v_1:
+    case cps_provider_4_Preparation{v_33, v_34, v_35, v_36, v_37, v_38, v_39, v_40, v_41, v_42, v_43, v_44}:
+      v_47 = cps_provider_4_qualify(v_3, v_10)
+      cps_provider_4_native_match_prepare_family_0(cps_provider_4_binder_roots(v_16, v_11, v_6, v_41), v_5, v_6, v_8, v_10, v_13, v_15, v_18, v_33, v_34, v_35, v_36, v_37, v_38, v_39, v_40, v_42, v_43, v_44, v_47)
+
+def cps_provider_4_native_match_prepare_family_2(v_2: cps_provider_4_CatalogResult<cps_provider_4_Arms>, v_4: String, v_6: Bool, v_7: Scope.ArenaGlobalScope, v_9: Nat, v_11: String, v_12: IR.Words, v_14: U32, v_16: Nat) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_22, cps_provider_4_Arms{v_23, v_24}}:
+      cps_provider_4_native_match_prepare_family_1(v_24, v_4, v_6, v_7, v_9, v_11, v_12, v_14, v_16, v_22, v_23)
+
+def cps_provider_4_native_match_prepare_family_3(v_0: IR.TypeDecl, v_1: Arena.Arena, v_3: String, v_5: Bool, v_6: Scope.ArenaGlobalScope, v_8: Nat, v_10: cps_provider_4_Preparation) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  match v_0:
+    case IR.TypeDecl{v_18, v_19, v_20, v_21, _}:
+      v_25 = cps_provider_4_words_count(v_19)
+      cps_provider_4_native_match_prepare_family_2(cps_provider_4_prepare_constructors(v_1, v_21, v_3, v_18, v_25, v_5, v_6, v_10), v_3, v_5, v_6, v_8, v_18, v_19, v_20, v_25)
+
+def cps_provider_4_prepare_family(v_0: Arena.Arena, v_1: IR.TypeDecl, v_3: String, v_5: Bool, v_6: Scope.ArenaGlobalScope, v_8: Nat, v_10: cps_provider_4_Preparation) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  cps_provider_4_native_match_prepare_family_3(v_1, v_0, v_3, v_5, v_6, v_8, v_10)
+
+def cps_provider_4_words_count(v_0: IR.Words) -> Nat:
+  match v_0:
+    case IR.Words{_, v_5}:
+      U32.to_nat(v_5)
+
+def cps_provider_4_block_family(v_1: Maybe<&2, Scope.ArenaGlobal>, v_3: String, v_5: cps_provider_4_Preparation) -> cps_provider_4_Preparation:
+  match v_1, v_5:
+    case Some{v_20}, cps_provider_4_Preparation{v_21, v_22, v_23, v_24, v_25, v_26, v_27, v_28, v_29, v_30, v_31, v_32}:
+      v_35 = cps_provider_4_DefinitionHeader{cps_provider_4_signature_symbol(v_20), v_3, v_27, [], [], True{}, None{}, None{}, False{}}
+      cps_provider_4_Preparation{v_21, v_22, cps_provider_4_header_insert(v_3, v_35, v_23), v_24, v_25, v_26, v_27, v_28, v_29, v_30, v_31, v_32}
+    case None{}, _:
+      cps_provider_4_preparation_failure(v_5, String.append("bend: missing published family signature for ", v_3))
+
+def cps_provider_4_law_telescope(v_1: List<&2, IR.Clause>, v_3: U32) -> Maybe<&2, cps_provider_4_Telescope>:
+  match v_1:
+    case []:
+      Some{cps_provider_4_Telescope{[], [], [], True{}}}
+    case IR.ClauseFor{True{}, v_11, _, _, None{}, _} <> v_15:
+      cps_provider_4_law_telescope_cons(cps_provider_4_quantity(v_11), v_3, cps_provider_4_law_telescope(v_15, U32.add(v_3, 1)))
+    case _ <> _:
+      None{}
+
+def cps_provider_4_law_telescope_cons(v_0: BIR.Quantity, v_2: U32, v_5: Maybe<&2, cps_provider_4_Telescope>) -> Maybe<&2, cps_provider_4_Telescope>:
+  match v_5:
+    case None{}:
+      None{}
+    case Some{cps_provider_4_Telescope{v_12, v_13, v_14, v_15}}:
+      Some{cps_provider_4_Telescope{cps_provider_4_parameter(v_2, v_0, v_12), v_0 <> v_13, v_14, v_15}}
+
+def cps_provider_4_prepare_law(v_0: Arena.Arena, v_1: IR.LawDecl, v_3: String, v_5: Bool, v_6: Scope.ArenaGlobalScope, v_8: cps_provider_4_Preparation) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  match v_1:
+    case IR.LawDecl{v_15, v_16, v_17, _}:
+      cps_provider_4_prepare_native_law(v_0, cps_provider_4_primitive(v_5, v_15), cps_provider_4_law_telescope(v_16, 0), Scope.lookup_kind(cps_provider_4_qualify(v_3, v_15), Scope.GlobalDefinition{}, v_6), cps_provider_4_qualify(v_3, v_15), v_17, v_6, v_8)
+
+def cps_provider_4_prepare_native_law(v_0: Arena.Arena, v_2: Maybe<&2, BIR.Primitive>, v_5: Maybe<&2, cps_provider_4_Telescope>, v_7: Maybe<&2, Scope.ArenaGlobal>, v_9: String, v_11: U32, v_12: Scope.ArenaGlobalScope, v_14: cps_provider_4_Preparation) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  match v_2, v_5:
+    case None{}, _:
+      cps_provider_4_CatalogResult{v_0, v_14}
+    case Some{v_20}, None{}:
+      cps_provider_4_CatalogResult{v_0, cps_provider_4_block_family(v_7, v_9, v_14)}
+    case Some{v_27}, Some{cps_provider_4_Telescope{v_28, v_29, _, _}}:
+      match v_7:
+        case None{}:
+          cps_provider_4_CatalogResult{v_0, cps_provider_4_preparation_failure(v_14, String.append("bend: missing published native law signature for ", v_9))}
+        case Some{v_33}:
+          match v_14:
+            case cps_provider_4_Preparation{v_46, v_47, v_48, v_49, v_50, v_51, v_52, v_53, v_54, v_55, v_56, v_57}:
+              v_60 = cps_provider_4_DefinitionHeader{cps_provider_4_signature_symbol(v_33), v_9, v_52, v_28, v_29, False{}, Some{v_27}, None{}, False{}}
+              v_62 = cps_provider_4_Definition{v_60, IR.Words{0, 0}, IR.SomeTerm{v_11}, IR.DefTerm{v_11}, None{}, v_12, Some{v_9}, 0n}
+              cps_provider_4_CatalogResult{v_0, cps_provider_4_Preparation{v_62 <> v_46, v_47, cps_provider_4_header_insert(v_9, v_60, v_48), v_49, v_50, v_51, U32.add(v_52, 1), v_53, v_54, v_55, v_56, v_57}}
+
+def cps_provider_4_family_key(v_0: IR.TypeDecl, v_2: String) -> String:
+  match v_0:
+    case IR.TypeDecl{v_9, _, _, _, _}:
+      cps_provider_4_qualify(v_2, v_9)
+
+def cps_provider_4_native_match_prepare_declarations_0(v_1: List<&2, Checked.FamilyMetadata>, v_2: Arena.Arena, v_4: cps_provider_4_Preparation) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  match v_1:
+    case []:
+      cps_provider_4_CatalogResult{v_2, v_4}
+    case _ <> _:
+      cps_provider_4_CatalogResult{v_2, cps_provider_4_preparation_failure(v_4, "bend: unmatched checked family metadata")}
+
+def cps_provider_4_native_match_prepare_declarations_1(v_2: cps_provider_4_CatalogResult<cps_provider_4_Preparation>, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: List<&2, Checked.FamilyMetadata>, v_13: List<&2, IR.TopLevel>) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_18, v_19}:
+      cps_provider_4_prepare_declarations(v_18, v_13, v_4, v_6, v_8, v_9, v_11, v_19)
+
+def cps_provider_4_native_match_prepare_declarations_2(v_2: cps_provider_4_CatalogResult<cps_provider_4_Preparation>, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: List<&2, IR.TopLevel>, v_13: List<&2, Checked.FamilyMetadata>) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_18, v_19}:
+      cps_provider_4_prepare_declarations(v_18, v_11, v_4, v_6, v_8, v_9, v_13, v_19)
+
+def cps_provider_4_native_match_prepare_declarations_3(v_1: Bool, v_2: Arena.Arena, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: cps_provider_4_Preparation, v_12: IR.TypeDecl, v_14: List<&2, IR.TopLevel>, v_16: Nat, v_18: List<&2, Checked.FamilyMetadata>) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  match v_1:
+    case False{}:
+      cps_provider_4_CatalogResult{v_2, cps_provider_4_preparation_failure(v_11, "bend: checked family metadata identity mismatch")}
+    case True{}:
+      cps_provider_4_native_match_prepare_declarations_2(cps_provider_4_prepare_family(v_2, v_12, v_4, v_8, v_9, v_16, v_11), v_4, v_6, v_8, v_9, v_14, v_18)
+
+def cps_provider_4_native_match_prepare_declarations_4(v_1: List<&2, Checked.FamilyMetadata>, v_2: Arena.Arena, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: cps_provider_4_Preparation, v_12: IR.TypeDecl, v_14: List<&2, IR.TopLevel>) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  match v_1:
+    case []:
+      cps_provider_4_CatalogResult{v_2, cps_provider_4_preparation_failure(v_11, "bend: missing checked family metadata")}
+    case Checked.FamilyMetadata{v_21, v_22} <> v_23:
+      cps_provider_4_native_match_prepare_declarations_3(String.eq(v_21, cps_provider_4_family_key(v_12, v_4)), v_2, v_4, v_6, v_8, v_9, v_11, v_12, v_14, v_22, v_23)
+
+def cps_provider_4_native_match_prepare_declarations_5(v_2: cps_provider_4_CatalogResult<cps_provider_4_Preparation>, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: List<&2, Checked.FamilyMetadata>, v_13: List<&2, IR.TopLevel>) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_18, v_19}:
+      cps_provider_4_prepare_declarations(v_18, v_13, v_4, v_6, v_8, v_9, v_11, v_19)
+
+def cps_provider_4_native_match_prepare_declarations_6(v_1: List<&2, IR.TopLevel>, v_2: Arena.Arena, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: List<&2, Checked.FamilyMetadata>, v_13: cps_provider_4_Preparation) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  match v_1:
+    case []:
+      cps_provider_4_native_match_prepare_declarations_0(v_11, v_2, v_13)
+    case IR.DefTop{v_19} <> v_20:
+      cps_provider_4_native_match_prepare_declarations_1(cps_provider_4_prepare_definition(v_2, v_19, v_4, v_6, v_8, v_9, v_13), v_4, v_6, v_8, v_9, v_11, v_20)
+    case IR.TypeTop{v_25} <> v_26:
+      cps_provider_4_native_match_prepare_declarations_4(v_11, v_2, v_4, v_6, v_8, v_9, v_13, v_25, v_26)
+    case IR.LawTop{v_30} <> v_31:
+      cps_provider_4_native_match_prepare_declarations_5(cps_provider_4_prepare_law(v_2, v_30, v_4, v_8, v_9, v_13), v_4, v_6, v_8, v_9, v_11, v_31)
+
+def cps_provider_4_prepare_declarations(v_0: Arena.Arena, v_2: List<&2, IR.TopLevel>, v_4: String, v_6: String, v_8: Bool, v_9: Scope.ArenaGlobalScope, v_11: List<&2, Checked.FamilyMetadata>, v_13: cps_provider_4_Preparation) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  cps_provider_4_native_match_prepare_declarations_6(v_2, v_0, v_4, v_6, v_8, v_9, v_11, v_13)
+
+def cps_provider_4_reset_module(v_1: cps_provider_4_Preparation) -> cps_provider_4_Preparation:
+  match v_1:
+    case cps_provider_4_Preparation{v_15, v_16, v_17, v_18, v_19, v_20, v_21, v_22, v_23, v_24, v_25, _}:
+      cps_provider_4_Preparation{v_15, v_16, v_17, v_18, v_19, v_20, v_21, v_22, v_23, v_24, v_25, MTip{}}
+
+def cps_provider_4_native_match_prepare_modules_0(v_2: cps_provider_4_CatalogResult<cps_provider_4_Preparation>, v_4: Bool, v_6: List<&2, IR.LoadedModule>, v_8: List<&2, Checked.ModuleMetadata>) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_13, v_14}:
+      cps_provider_4_prepare_modules(v_13, v_6, v_8, v_4, v_14)
+
+def cps_provider_4_native_match_prepare_modules_1(v_1: Bool, v_2: Arena.Arena, v_4: Bool, v_6: cps_provider_4_Preparation, v_8: String, v_10: String, v_12: List<&2, IR.TopLevel>, v_14: List<&2, IR.LoadedModule>, v_15: Scope.ArenaGlobalScope, v_17: List<&2, Checked.FamilyMetadata>, v_19: List<&2, Checked.ModuleMetadata>) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  match v_1:
+    case False{}:
+      cps_provider_4_CatalogResult{v_2, cps_provider_4_preparation_failure(v_6, "bend: checked module metadata identity mismatch")}
+    case True{}:
+      cps_provider_4_native_match_prepare_modules_0(cps_provider_4_prepare_declarations(v_2, v_12, v_8, v_10, cps_provider_4_base_source(v_10, v_4), v_15, v_17, cps_provider_4_reset_module(v_6)), v_4, v_14, v_19)
+
+def cps_provider_4_native_match_prepare_modules_2(v_1: List<&2, IR.LoadedModule>, v_3: List<&2, Checked.ModuleMetadata>, v_4: Arena.Arena, v_6: Bool, v_8: cps_provider_4_Preparation) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  match v_1, v_3:
+    case [], []:
+      cps_provider_4_CatalogResult{v_4, v_8}
+    case IR.LoadedModule{v_21, IR.Module{v_22, _, v_24}} <> v_25, Checked.ModuleMetadata{v_26, v_27, v_28, v_29} <> v_30:
+      cps_provider_4_native_match_prepare_modules_1(Bool.and(String.eq(v_21, v_26), String.eq(v_22, v_27)), v_4, v_6, v_8, v_21, v_22, v_24, v_25, v_28, v_29, v_30)
+    case _, _:
+      cps_provider_4_CatalogResult{v_4, cps_provider_4_preparation_failure(v_8, "bend: missing or unmatched checked module metadata")}
+
+def cps_provider_4_prepare_modules(v_0: Arena.Arena, v_2: List<&2, IR.LoadedModule>, v_4: List<&2, Checked.ModuleMetadata>, v_6: Bool, v_8: cps_provider_4_Preparation) -> cps_provider_4_CatalogResult<cps_provider_4_Preparation>:
+  cps_provider_4_native_match_prepare_modules_2(v_2, v_4, v_0, v_6, v_8)
+
+def native_match_cps_provider_4_ending_0(v_26: cps_provider_4_CatalogResult<List<&2, BIR.Export>>) -> cps_provider_4_CatalogResult<BIR.Ending>:
+  match v_26:
+    case cps_provider_4_CatalogResult{v_22, v_23}:
+      cps_provider_4_CatalogResult{v_22, BIR.Library{v_23}}
+
+def native_match_cps_provider_4_ending_1(v_5: Maybe<&2, BIR.Descriptor>, v_8: Arena.Arena) -> cps_provider_4_CatalogResult<BIR.Ending>:
+  match v_5:
+    case Some{v_25}:
+      cps_provider_4_CatalogResult{v_8, BIR.Executable{v_25}}
+    case None{}:
+      cps_provider_4_CatalogResult{v_8, BIR.Executable{BIR.DescriptorNull{}}}
+
+def native_match_cps_provider_4_ending_2(v_3: Maybe<&2, List<&2, String>>, v_5: Maybe<&2, BIR.Descriptor>, v_7: cps_provider_4_Registry, v_8: Arena.Arena, v_11: List<&2, cps_provider_4_Definition>, v_13: List<&2, Scope.ArenaGlobal>, +v_15: cps_provider_2_NfContext) -> cps_provider_4_CatalogResult<BIR.Ending>:
+  match v_3:
+    case Some{v_18}:
+      native_match_cps_provider_4_ending_0(cps_provider_4_exports(v_18, v_7, v_8, v_11, v_13, v_15))
+    case None{}:
+      native_match_cps_provider_4_ending_1(v_5, v_8)
+
+def cps_provider_4_ending(v_3: Maybe<&2, List<&2, String>>, v_5: Maybe<&2, BIR.Descriptor>, v_7: cps_provider_4_Registry, v_8: Arena.Arena, v_11: List<&2, cps_provider_4_Definition>, v_13: List<&2, Scope.ArenaGlobal>, +v_15: cps_provider_2_NfContext) -> cps_provider_4_CatalogResult<BIR.Ending>:
+  native_match_cps_provider_4_ending_2(v_3, v_5, v_7, v_8, v_11, v_13, v_15)
+
+def native_match_cps_provider_4_native_match_build_finish_0_0(v_56: cps_provider_4_CatalogResult<BIR.Ending>, v_4: List<&2, IR.LoadedModule>, v_6: List<&2, Scope.ArenaGlobal>, v_8: List<&2, Checked.ModuleMetadata>, v_20: List<&2, BIR.ConstructorLayout>, v_27: U32, v_35: List<&2, BIR.TypeFunction>, v_38: cps_provider_4_Registry, v_40: List<&2, BIR.Family>, v_46: List<&2, cps_provider_4_Definition>) -> cps_provider_4_BuildResult:
+  match v_56:
+    case cps_provider_4_CatalogResult{v_50, v_51}:
+      v_54 = cps_provider_4_Catalog{List.reverse(&2, cps_provider_4_Definition, v_46), v_38, List.reverse(&2, BIR.ConstructorLayout, v_20), v_40, v_35, v_27, v_51}
+      cps_provider_4_Built{Checked.CheckedProgram{v_50, v_4, v_6, v_8}, v_54}
+
+def native_match_cps_provider_4_native_match_build_finish_0_1(v_2: cps_provider_4_CatalogResult<cps_provider_4_Needed>, v_4: List<&2, IR.LoadedModule>, v_6: List<&2, Scope.ArenaGlobal>, v_8: List<&2, Checked.ModuleMetadata>, v_12: Maybe<&2, List<&2, String>>, v_15: List<&2, cps_provider_4_Definition>, v_18: Map<&2, cps_provider_4_DefinitionHeader>, v_20: List<&2, BIR.ConstructorLayout>, v_23: Map<&2, cps_provider_4_Constructor>, v_25: List<&2, BIR.Family>, v_27: U32, v_29: Maybe<&2, BIR.Descriptor>) -> cps_provider_4_BuildResult:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_34, cps_provider_4_Needed{v_35, _}}:
+      v_38 = cps_provider_4_Registry{v_18, v_23}
+      v_40 = List.reverse(&2, BIR.Family, v_25)
+      v_43 = cps_provider_2_nf_context(v_40, v_35)
+      v_46 = cps_provider_4_normalize_foreign_definitions(v_15, v_43)
+      native_match_cps_provider_4_native_match_build_finish_0_0(cps_provider_4_ending(v_12, v_29, v_38, v_34, v_46, v_6, v_43), v_4, v_6, v_8, v_20, v_27, v_35, v_38, v_40, v_46)
+
+def cps_provider_4_native_match_build_finish_0(v_2: cps_provider_4_CatalogResult<cps_provider_4_Needed>, v_4: List<&2, IR.LoadedModule>, v_6: List<&2, Scope.ArenaGlobal>, v_8: List<&2, Checked.ModuleMetadata>, v_12: Maybe<&2, List<&2, String>>, v_15: List<&2, cps_provider_4_Definition>, v_18: Map<&2, cps_provider_4_DefinitionHeader>, v_20: List<&2, BIR.ConstructorLayout>, v_23: Map<&2, cps_provider_4_Constructor>, v_25: List<&2, BIR.Family>, v_27: U32, v_29: Maybe<&2, BIR.Descriptor>) -> cps_provider_4_BuildResult:
+  native_match_cps_provider_4_native_match_build_finish_0_1(v_2, v_4, v_6, v_8, v_12, v_15, v_18, v_20, v_23, v_25, v_27, v_29)
+
+def cps_provider_4_native_match_build_finish_1(v_1: cps_provider_4_Preparation, v_2: Arena.Arena, v_4: List<&2, IR.LoadedModule>, v_6: List<&2, Scope.ArenaGlobal>, v_8: List<&2, Checked.ModuleMetadata>, v_12: Maybe<&2, List<&2, String>>) -> cps_provider_4_BuildResult:
+  match v_1:
+    case cps_provider_4_Preparation{v_25, v_26, v_27, v_28, v_29, v_30, v_31, _, v_33, v_34, None{}, _}:
+      cps_provider_4_native_match_build_finish_0(cps_provider_4_needed_roots(v_2, List.reverse(&2, cps_provider_4_Root, v_33), v_26, cps_provider_4_Needed{[], MTip{}}), v_4, v_6, v_8, v_12, v_25, v_27, v_28, v_29, v_30, v_31, v_34)
+    case cps_provider_4_Preparation{_, _, _, _, _, _, _, _, _, _, Some{v_61}, _}:
+      cps_provider_4_BuildFailure{Checked.CheckedProgram{v_2, v_4, v_6, v_8}, v_61}
+
+def cps_provider_4_build_finish(v_0: Arena.Arena, v_2: List<&2, IR.LoadedModule>, v_4: List<&2, Scope.ArenaGlobal>, v_6: List<&2, Checked.ModuleMetadata>, v_10: Maybe<&2, List<&2, String>>, v_12: cps_provider_4_Preparation) -> cps_provider_4_BuildResult:
+  cps_provider_4_native_match_build_finish_1(v_12, v_0, v_2, v_4, v_6, v_10)
+
+def cps_provider_4_native_match_build_0(v_2: cps_provider_4_CatalogResult<cps_provider_4_Preparation>, v_6: Maybe<&2, List<&2, String>>, v_8: List<&2, IR.LoadedModule>, v_10: List<&2, Scope.ArenaGlobal>, v_12: List<&2, Checked.ModuleMetadata>) -> cps_provider_4_BuildResult:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_16, v_17}:
+      cps_provider_4_build_finish(v_16, v_8, v_10, v_12, v_6, v_17)
+
+def cps_provider_4_native_match_build_1(v_0: Checked.CheckedProgram, v_4: Maybe<&2, List<&2, String>>) -> cps_provider_4_BuildResult:
+  match v_0:
+    case Checked.CheckedProgram{v_10, v_11, v_12, v_13}:
+      v_15 = cps_provider_4_Preparation{[], MTip{}, MTip{}, [], MTip{}, [], 0, 0, [], None{}, None{}, MTip{}}
+      cps_provider_4_native_match_build_0(cps_provider_4_prepare_modules(v_10, v_11, v_13, cps_provider_4_base_imported(v_11), v_15), v_4, v_11, v_12, v_13)
+
+def cps_provider_4_build(v_0: Checked.CheckedProgram, v_4: Maybe<&2, List<&2, String>>) -> cps_provider_4_BuildResult:
+  cps_provider_4_native_match_build_1(v_0, v_4)
+
+def cps_provider_4_native_match_live_telescope_0(v_2: cps_provider_4_CatalogResult<cps_provider_4_Telescope>, v_4: U32, v_5: Arena.Binder) -> cps_provider_4_CatalogResult<cps_provider_4_Telescope>:
+  match v_2:
+    case cps_provider_4_CatalogResult{v_10, v_11}:
+      cps_provider_4_CatalogResult{v_10, cps_provider_4_live_binder(v_5, v_4, v_11)}
+
+def cps_provider_4_native_match_live_telescope_1(v_3: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_5: U32, v_7: U32, v_9: U32) -> cps_provider_4_CatalogResult<cps_provider_4_Telescope>:
+  match v_3:
+    case (v_14, v_15):
+      cps_provider_4_native_match_live_telescope_0(cps_provider_4_live_telescope(v_14, IR.Words{IR.arena_range_index(v_7, 1), U32.sub(v_9, 1)}, U32.add(v_5, 1)), v_5, v_15)
+
+def cps_provider_4_native_match_live_telescope_2(v_4: Sigma<&1, &1, Arena.Arena, _ => U32>, v_6: U32, v_8: U32, v_10: U32) -> cps_provider_4_CatalogResult<cps_provider_4_Telescope>:
+  match v_4:
+    case (v_15, v_16):
+      cps_provider_4_native_match_live_telescope_1(Arena.get_binder(v_15, v_16), v_6, v_8, v_10)
+
+def cps_provider_4_native_match_live_telescope_3(v_0: IR.Words, v_1: Arena.Arena, v_3: U32) -> cps_provider_4_CatalogResult<cps_provider_4_Telescope>:
+  match v_0:
+    case IR.Words{_, 0}:
+      cps_provider_4_CatalogResult{v_1, cps_provider_4_Telescope{[], [], [], True{}}}
+    case IR.Words{v_10, v_11}:
+      cps_provider_4_native_match_live_telescope_2(Arena.word(v_1, IR.arena_tape_offset(v_10)), v_3, v_10, v_11)
+
+def cps_provider_4_live_telescope(v_0: Arena.Arena, v_1: IR.Words, v_3: U32) -> cps_provider_4_CatalogResult<cps_provider_4_Telescope>:
+  cps_provider_4_native_match_live_telescope_3(v_1, v_0, v_3)
+
+def cps_provider_4_live_binder(v_0: Arena.Binder, v_2: U32, v_4: cps_provider_4_Telescope) -> cps_provider_4_Telescope:
+  match v_0, v_4:
+    case Arena.Binder{v_15, _, _, _, _}, cps_provider_4_Telescope{v_20, v_21, v_22, v_23}:
+      v_25 = cps_provider_4_quantity(v_15)
+      cps_provider_4_Telescope{cps_provider_4_parameter(v_2, v_25, v_20), v_25 <> v_21, v_22, v_23}
+    case Arena.TemplateBinder{_, _, _, _}, cps_provider_4_Telescope{v_39, v_40, v_41, _}:
+      cps_provider_4_Telescope{v_39, BIR.Erased{} <> v_40, v_41, False{}}
+
+def cps_provider_4_primitive_arity(v_0: BIR.Primitive) -> Nat:
+  match v_0:
+    case BIR.PrimU32Add{}:
+      2n
+    case BIR.PrimU32Sub{}:
+      2n
+    case BIR.PrimU32Mul{}:
+      2n
+    case BIR.PrimU32Div{}:
+      2n
+    case BIR.PrimNatAdd{}:
+      2n
+    case BIR.PrimNatSub{}:
+      2n
+    case BIR.PrimNatMul{}:
+      2n
+    case BIR.PrimNatCmp{}:
+      2n
+    case BIR.PrimNatMin{}:
+      2n
+    case BIR.PrimNatMax{}:
+      2n
+    case BIR.PrimStringAppend{}:
+      2n
+    case BIR.PrimBoolOr{}:
+      2n
+    case BIR.PrimBoolXor{}:
+      2n
+    case BIR.PrimU32IsZero{}:
+      1n
+    case BIR.PrimF32Asin{}:
+      1n
+    case BIR.PrimF32Acos{}:
+      1n
+    case BIR.PrimF32Atan{}:
+      1n
+    case BIR.PrimF32Sinh{}:
+      1n
+    case BIR.PrimF32Cosh{}:
+      1n
+    case BIR.PrimF32Tanh{}:
+      1n
+    case BIR.PrimU32Mod{}:
+      2n
+    case BIR.PrimU32And{}:
+      2n
+    case BIR.PrimU32Or{}:
+      2n
+    case BIR.PrimU32Xor{}:
+      2n
+    case BIR.PrimU32IsEq{}:
+      2n
+    case BIR.PrimU32IsNe{}:
+      2n
+    case BIR.PrimU32IsLt{}:
+      2n
+    case BIR.PrimU32IsLe{}:
+      2n
+    case BIR.PrimU32IsGt{}:
+      2n
+    case BIR.PrimU32IsGe{}:
+      2n
+    case BIR.PrimU32Inc{}:
+      1n
+    case BIR.PrimU32Not{}:
+      1n
+    case BIR.PrimU32Shl{}:
+      1n
+    case BIR.PrimU32Shr{}:
+      1n
+    case BIR.PrimU32Shln{}:
+      2n
+    case BIR.PrimU32Shrn{}:
+      2n
+    case BIR.PrimU32Cmp{}:
+      2n
+    case BIR.PrimU32ToNat{}:
+      1n
+    case BIR.PrimU32FromNat{}:
+      1n
+    case BIR.PrimF32Add{}:
+      2n
+    case BIR.PrimF32Sub{}:
+      2n
+    case BIR.PrimF32Mul{}:
+      2n
+    case BIR.PrimF32Div{}:
+      2n
+    case BIR.PrimF32Mod{}:
+      2n
+    case BIR.PrimF32Neg{}:
+      1n
+    case BIR.PrimF32Sqrt{}:
+      1n
+    case BIR.PrimF32Abs{}:
+      1n
+    case BIR.PrimF32ToU32{}:
+      1n
+    case BIR.PrimF32Bits{}:
+      1n
+    case BIR.PrimF32Show{}:
+      1n
+    case BIR.PrimF32Read{}:
+      1n
+    case BIR.PrimF32IsEq{}:
+      2n
+    case BIR.PrimF32IsNe{}:
+      2n
+    case BIR.PrimF32IsLt{}:
+      2n
+    case BIR.PrimF32IsLe{}:
+      2n
+    case BIR.PrimF32IsGt{}:
+      2n
+    case BIR.PrimF32IsGe{}:
+      2n
+    case BIR.PrimF32Pow{}:
+      2n
+    case BIR.PrimF32Atan2{}:
+      2n
+    case BIR.PrimF32Exp{}:
+      1n
+    case BIR.PrimF32Log{}:
+      1n
+    case BIR.PrimF32Log2{}:
+      1n
+    case BIR.PrimF32Log10{}:
+      1n
+    case BIR.PrimF32Sin{}:
+      1n
+    case BIR.PrimF32Cos{}:
+      1n
+    case BIR.PrimF32Tan{}:
+      1n
+    case BIR.PrimF32Floor{}:
+      1n
+    case BIR.PrimF32Ceil{}:
+      1n
+    case BIR.PrimF32Trunc{}:
+      1n
+    case BIR.PrimF32ToNat{}:
+      1n
+    case BIR.PrimU32ToF32{}:
+      1n
+    case BIR.PrimNatDouble{}:
+      1n
+    case BIR.PrimNatIsLt{}:
+      2n
+    case BIR.PrimNatDivmod{}:
+      2n
+    case BIR.PrimStringEq{}:
+      2n
+    case BIR.PrimMapBit{}:
+      2n
+    case BIR.PrimStringCmp{}:
+      2n
+    case BIR.PrimStringToList{}:
+      1n
+    case BIR.PrimStringLength{}:
+      1n
+    case BIR.PrimArrayNew{}:
+      2n
+    case BIR.PrimArraySet{}:
+      3n
+    case BIR.PrimArrayGet{}:
+      2n
+    case BIR.PrimArraySwap{}:
+      3n
+    case BIR.PrimArraySize{}:
+      1n
+    case BIR.PrimArrayClone{}:
+      1n
+    case BIR.PrimNatPredecessor{}:
+      1n
+    case BIR.PrimNatSuccessor{}:
+      1n
+    case BIR.PrimCharNew{}:
+      1n
+    case BIR.PrimCharCode{}:
+      1n
+    case BIR.PrimStringHead{}:
+      1n
+    case BIR.PrimStringTail{}:
+      1n
+    case BIR.PrimWordToU32{}:
+      1n
+    case BIR.PrimU32ToWord{}:
+      1n
+    case BIR.PrimF32FromBits{}:
+      1n
+    case BIR.PrimF32FromWord{}:
+      1n
+    case BIR.PrimF32ToWord{}:
+      1n
+    case BIR.PrimArrayLeaf{}:
+      1n
+    case BIR.PrimArrayNode{}:
+      2n
+    case BIR.PrimArrayLeafValue{}:
+      1n
+    case BIR.PrimArrayLeft{}:
+      1n
+    case BIR.PrimArrayRight{}:
+      1n
+    case BIR.PrimIsArrayLeaf{}:
+      1n
+    case BIR.PrimIsArrayNode{}:
+      1n
+    case BIR.PrimIsNatZero{}:
+      1n
+    case BIR.PrimIsNatSuccessor{}:
+      1n
+    case BIR.PrimIsStringEmpty{}:
+      1n
+    case BIR.PrimIsStringNonempty{}:
+      1n
+    case BIR.PrimIsTrue{}:
+      1n
+    case BIR.PrimIsFalse{}:
+      1n
+    case BIR.PrimSameValue{}:
+      2n
+    case BIR.PrimFloatBitsEqual{}:
+      2n
+
+def cps_provider_4_constructor_field(v_1: cps_provider_4_Constructor, v_3: U32) -> Maybe<&2, cps_provider_4_ConstructorField>:
+  match v_1:
+    case cps_provider_4_Constructor{BIR.ConstructorLayout{_, _, _, v_16}, v_17, _, _}:
+      cps_provider_4_constructor_field_at(v_16, v_17, U32.to_nat(v_3), v_3)
+
+def cps_provider_4_constructor_field_at(v_3: List<&2, Maybe<&2, String>>, v_5: List<&2, BIR.Quantity>, v_7: Nat, v_9: U32) -> Maybe<&2, cps_provider_4_ConstructorField>:
+  match v_3, v_5, v_7:
+    case v_16 <> _, v_18 <> _, 0n:
+      Some{cps_provider_4_ConstructorField{v_9, v_16, v_18}}
+    case _ <> v_26, _ <> v_28, 1n+v_29:
+      cps_provider_4_constructor_field_at(v_26, v_28, v_29, v_9)
+    case _, _, _:
+      None{}
+
