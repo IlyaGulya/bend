@@ -201,7 +201,7 @@ def js_native_markers(program: BIR.Program) -> Map<&2, String>:
 def js_known_keys(program: BIR.Program) -> Map<&2, Bool>:
   match program:
     case BIR.Program{_, declarations, constructors, families, type_functions, _}:
-      js_key_functions(js_key_families(js_key_layouts(js_key_declarations(declarations, Map.new(&2, Bool)), constructors), families), type_functions)
+      js_key_functions(type_functions, js_key_families(families, js_key_layouts(constructors, js_key_declarations(declarations, Map.new(&2, Bool)))))
 
 def js_cid(applied: JSScan) -> JSCidResult:
   match applied:
