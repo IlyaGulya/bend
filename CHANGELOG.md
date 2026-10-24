@@ -5,6 +5,10 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- Selfhost compiler map lookups carry a string cursor instead of rescanning key
+  prefixes. Arbitrary backward map positions, Unicode scalars and NUL keys retain
+  their existing lookup behavior.
+
 - Native and JavaScript word-pattern coverage compares the required lowered
   structure lazily, avoiding complete temporary trees for discarded annotations
   and unequal suffixes while preserving binder identities and coverage behavior.

@@ -4,6 +4,26 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+СЕЙЧАС принят57y cursor в IndexLookup.find, source563c9b15…; native public
+find API/33-bit presence/MSB-first codepoint encoding не меняются. Suffix cursor
+идёт вперёд и сбрасывается к full key для произвольных backward nodes; leaf
+сравнивает full key. Новый tests/run/index_lookup_cursor.bend реальноPASS C+JS
+до/после: missing/prefix/NUL/Unicode/backward-bit/backward-character/past-end reset.
+Canonical host9704 freshparser75 и root8396/8793PASS (8GiB guardian24.901s).
+Native-produced seed06dba46f…/12743363bytes. Frozen50files/15modules/8403decls/
+7720exportsPASS, exacteb3/14101164bytes; JS125.239549s НЕ faster.
+НОВЫЙ настоящий unchanged stage1/stage2 byte fixedpoint:
+13746315bytes/d10de8af5147788952f414c261d66b8e9987155d82b0f8af975e73c0110aacf2.
+Actual cmp/shasum/wc прошли; comparison551490.093209ms. Все285 seed/stage1/stage2
+behavior executionsPASS с fresh native AST/span approvals; companion guard247537ms,
+RSS2285076480/physical850572664. Original600s aggregateFAIL/deadline600041ms
+с95seed+12stage1 rowsPASS сохранён; отдельная proof не перекрашивает этот gate.
+Native isolated full-current-Bend-program trial (host5b9, не новый9704 fullcycle)
+8414/8817+7720consumerPASS: check60.729247s, compile77.486618s противW62.408978/
+79.231488s; примерно−2.7%check/−2.2%compile в отдельных same-host наблюдениях.
+Prefix-heavy native micro−44% не выдавать за весь compiler, global win/stable300
+не доказаны. Exact source/program/private-native scope: compiler-ir-checkpoint-v57y.json.
+
 Точное разложение checker получено на privateW+9704 (не production timing):
 
 | Интервал | Native process CPU, s |
@@ -46,7 +66,7 @@ wall И CPU не пройден. EffectiveWorkerheap3.322→3.624GB подтве
 Все capacity metadata/пары/источники: compiler-ir-profile-v57x-intervals.json.
 Receipt compiler-ir-checkpoint-v57x.json. Official8.619s пока не обогнан.
 
-СЕЙЧАС принят57w quote fix: js_backend.bend строит quoted suffix из bounded
+Ранее принятый57w quote fix: js_backend.bend строит quoted suffix из bounded
 left fragments вместо копирования growing accumulator. FreshW parser75,
 полный native root8390/8786 и frozen15modules/8403decls/7720exports прошли.
 Новый настоящий unchanged stage1/stage2 byte fixedpoint ПРОШЁЛ:13739105bytes,

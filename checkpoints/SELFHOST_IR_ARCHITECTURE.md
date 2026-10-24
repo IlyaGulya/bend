@@ -2,10 +2,10 @@
 
 ## Статус и границы
 
-Это архитектурный контракт принятого functional FIR/BIR cutover compiler57w,
+Это архитектурный контракт принятого functional FIR/BIR cutover compiler57y,
 не победа над official. Историческая performance-версия55 остаётся reference.
-Полный57w root8390/8786 нативно проверен; новый unchanged stage1/stage2 exact
-byte fixedpoint13739105bytes/d5052bb4… и frozen7720-export consumer прошли.
+Полный57y root8396/8793 нативно проверен; новый unchanged stage1/stage2 exact
+byte fixedpoint13746315bytes/d10de8af… и frozen7720-export consumer прошли.
 Все285 обязательных seed/stage1/stage2 behavior executions завершены с fresh
 native AST/span parity. Original monolithic600s red, отдельная proof его не перекрашивает.
 Нельзя переносить доказательства на изменённые checker, lowering или runtime ABI
@@ -40,6 +40,15 @@ actual native-produced seed byte-identicalW7408b436…: W realFP/285 сохра�
 full native cycle280.457s завершён; ЧИСТЫЙ latestW cycle317.542s тоже semanticPASS,
 но выше300s: producer133.080s/backend98.282s/native79.438s. Failed267s consumer-setup
 run сохранён, не перекрашен. Причина source-identical producer85–133s пока неизвестна.
+57y переносит String cursor через IndexLookup.find: суффикс движется вперёд,
+на arbitrary backward character position сбрасывается к полному ключу; leaf
+сравнивает исходный полный ключ. Presence/MSB-first33-bit codepoint encoding прежний.
+Отдельный native full-current-Bend-program trial (host5b9) прошёл8414/8817+
+7720consumer: check60.729247s/compile77.486618s противW62.408978/79.231488s.
+Это modest separate-run observation, не statistical paired/global speed claim;
+canonical host9704 заново проверил root8396/8793 и source/parser75. Новый stage
+paird10de8af… реально cmp-equal;285 fresh behaviorsPASS. JS full125.240s не ускорился.
+
 
 
 Единственный источник этого контракта — этот файл; оперативный статус, команды,
