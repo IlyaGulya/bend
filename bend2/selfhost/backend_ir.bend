@@ -177,7 +177,7 @@ type Descriptor is Data:
 
 type Op is Data:
   Copy{value: Atom}
-  PrimitiveCall{primitive: Primitive, args: List<&2, Arg>}
+  PrimitiveCall{primitive: Primitive, args: List<&2, Arg>, types: List<&2, Descriptor>}
   Closure{code: U32, captures: List<&2, Arg>, parameters: List<&2, Parameter>}
   Direct{code: U32, args: List<&2, Arg>}
   Apply{fn: Atom, arg: Arg}

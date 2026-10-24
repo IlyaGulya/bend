@@ -143,7 +143,7 @@ def foreign(+path: String, +key: String, arity: Nat) -> String:
 def operation(op: BIR.Op) -> String:
   match op:
     case BIR.Copy{value}: atom(value)
-    case BIR.PrimitiveCall{primitive, args}: cat([primitive_name(primitive), "(", String.join(arguments(args), ","), ")"])
+    case BIR.PrimitiveCall{primitive, args, _}: cat([primitive_name(primitive), "(", String.join(arguments(args), ","), ")"])
     case BIR.Closure{code, captures, parameters}: closure(code, captures, parameters)
     case BIR.Direct{code, args}: cat(["run_loop(", call(code, arguments(args)), ")"])
     case BIR.Apply{fn, BIR.Arg{_, value}}: cat(["run_loop(run_tail(", atom(fn), ",", atom(value), "))"])
