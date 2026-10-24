@@ -33,7 +33,7 @@ if(isMainThread){
  let phase='imports',parseId=0,phaseStarted=performance.now();
  let cpuProfiler,executionError;
  const approvals=new Map(),artifacts={},fixtures=[],sourcePins=new Map();
- const mark=(next,details={})=>{cpuProfiler?.mark(next,details);phase=next;phaseStarted=performance.now();const memory=process.memoryUsage();send({event:'phase',phase,elapsedMs:phaseStarted,rssBytes:memory.rss,heapUsedBytes:memory.heapUsed,heapLimitBytes:getHeapStatistics().heap_size_limit,execArgv:process.execArgv,...details});};
+ const mark=(next,details={})=>{cpuProfiler?.mark(next,details);phase=next;phaseStarted=performance.now();const memory=process.memoryUsage();send({event:'phase',phase,elapsedMs:phaseStarted,rssBytes:memory.rss,heapUsedBytes:memory.heapUsed,heapLimitBytes:getHeapStatistics().heap_size_limit,...details});};
  parentPort.on('message',message=>{const pending=approvals.get(message.id);if(!pending)return;approvals.delete(message.id);message.approved?pending.resolve(message):pending.reject(Error(message.error));});
  const requestApproval=message=>new Promise((resolve,reject)=>{approvals.set(message.id,{resolve,reject});send(message);});
  const pinSource=(file,digest)=>{
