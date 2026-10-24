@@ -10,10 +10,6 @@
 // with the fixture's `#|` lines. The interpreter output is the reference for
 // fixtures that have no per-lane diagnostics.
 //
-// A fixture whose effect builds an inner library itself (nat/generic export
-// fixtures) receives BEND_INNER_LIBRARY_COMPILER: the exact command of the
-// compiler under test, so both lanes measure their own library ABI.
-//
 // A `#|!c <token>` or `#|!js <token>` line marks that lane as a diagnostic
 // lane: the compile MUST fail with an Error naming <token>. This is how a
 // missing foreign target is pinned to a real diagnostic instead of an
@@ -48,16 +44,17 @@ function fail(message: string): never {
 }
 
 function run(bin: string, args: string[], cwd: string,
-  extra: Record<string, string> = {}): Result {
+  env: Record<string, string> = {}): Result {
   const got = child.spawnSync(bin, args, {
     cwd,
     encoding: "utf8",
     maxBuffer: 1 << 28,
+    env: { ...process.env, ...env },
     // The stage-0 CLI performs a daily release check whose notice lands on
     // stderr once per host/day; it is not program behavior and would make
     // the comparison depend on the calendar. BEND_NO_TELEMETRY is the
     // documented switch that skips it.
-    env: { ...process.env, BEND_NO_TELEMETRY: "1", ...extra },
+    env: { ...process.env, BEND_NO_TELEMETRY: "1" },
   });
   if (got.error !== undefined) {
     return { code: 127, out: got.stdout ?? "", err: String(got.error) };
@@ -150,6 +147,8 @@ function default_files(): string[] {
     // A failed nested pattern row falls through to the later rows.
     "tests/run/word_match_coverage.bend",
     "tests/run/state_machine.bend",
+    // Lexical CID/FID linking: whole ids, comment/literal passthrough, LF+CRLF.
+    "tests/run/c_backend_link.bend",
     // Current foreign ABI: native callback into a Bend closure, own-type
     // layout, shared sealed values, nullary constructors, and one shared .js
     // module whose stateful nullary effect is called twice and then read by a
@@ -159,34 +158,19 @@ function default_files(): string[] {
     "tests/io/foreign_shared.bend",
     "tests/io/marshal_imported_nullary.bend",
     "tests/io/shared_module_state.bend",
+    // Host Nat at the export seam: the four fixtures whose effect builds an
+    // inner library with the compiler under test (see HOST_EXPORT_FIXTURES).
+    "tests/io/nat_host_export.bend",
+    "tests/io/nat_alias_export.bend",
+    "tests/io/shadowed_nat_export.bend",
+    "tests/io/generic_export_identity.bend",
     // IO read failure and read-back through the real File surface.
     "tests/io/file_roundtrip.bend",
+    // Target selection: an absent C target must fail only the native lane, an
+    // absent JS target only the JS lane, each with a real diagnostic.
+    "gates/selfhost_cases/missing_c_target.bend",
+    "gates/selfhost_cases/missing_js_target.bend",
   ].map((file) => path.join(ROOT, file));
-}
-
-// Four fixtures build an inner library from inside their effect. That inner
-// library must be built by the compiler under test, never by a fixed path, so
-// the gate supplies the exact command. Stage 0 is named explicitly for the
-// official lane; the candidate lane has no fallback. A typed-step candidate is
-// a library image, not a process, so its test runner (evals/candidate_host.ts) is
-// asked for the explicit library entry with `--library`; `--exports=NAME,...`
-// is the same control when a caller needs an exact export set instead of the
-// host's default (that input module's own term-bodied definitions).
-const HOST_EXPORT_FIXTURES = new Set([
-  "nat_host_export.bend",
-  "nat_alias_export.bend",
-  "shadowed_nat_export.bend",
-  "generic_export_identity.bend",
-]);
-
-function inner_compiler(stage: Stage): string[] {
-  if (stage.name === "stage 0") {
-    return [BUN, path.join(ROOT, "bend2/main.ts")];
-  }
-  if (stage.command.bin === "") {
-    fail("host-export fixture needs an explicit stage 1 compiler command");
-  }
-  return [stage.command.bin, ...stage.command.args, "--library"];
 }
 
 function args_parse(): { stage0: Command; stage1: Command; files: string[] } {
@@ -258,6 +242,34 @@ function build_c(source: string, out: string, cwd: string): void {
   }
 }
 
+// These fixtures build an inner library from inside their effect. The inner
+// library must be built by the compiler under test, not by a fixed path, so
+// the gate supplies the exact command. Stage 0 is named explicitly for the
+// official lane; the candidate lane names its library runner and has no
+// fallback (the candidate image is a typed-step library, not a process).
+const HOST_EXPORT_FIXTURES = new Set([
+  "nat_host_export.bend",
+  "nat_alias_export.bend",
+  "shadowed_nat_export.bend",
+  "generic_export_identity.bend",
+]);
+
+function inner_compiler(stage: Stage): string[] {
+  if (stage.name === "stage 0") {
+    return [BUN, path.join(ROOT, "bend2/main.ts")];
+  }
+  const runner = process.env.BEND_INNER_LIBRARY_RUNNER;
+  if (runner === undefined || runner === "" || stage.command.bin === "") {
+    fail("host-export fixture needs BEND_INNER_LIBRARY_RUNNER and a stage 1 compiler");
+  }
+  return [BUN, runner, "--candidate", stage.command.bin,
+    ...stage.command.args, "--library"];
+}
+
+function host_export_env(stage: Stage): Record<string, string> {
+  return { BEND_INNER_LIBRARY_COMPILER: JSON.stringify(inner_compiler(stage)) };
+}
+
 function main(): void {
   const config = args_parse();
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "bend-selfhost-"));
@@ -273,14 +285,12 @@ function main(): void {
       // A diagnostic lane has no runnable program in that lane, so the
       // interpreter cannot be the reference; both compilers must report the
       // same missing target instead.
-      const inner = HOST_EXPORT_FIXTURES.has(path.basename(fixture.file))
-        ? stages.map((stage) => ({ BEND_INNER_LIBRARY_COMPILER:
-          JSON.stringify(inner_compiler(stage)) }))
-        : stages.map(() => ({}));
       let reference: Result | null = null;
+      const hostExport = HOST_EXPORT_FIXTURES.has(path.basename(fixture.file));
       if (fixture.diagnostics.length === 0) {
         reference = run(config.stage0.bin,
-          [...config.stage0.args, fixture.file], cwd, inner[0]!);
+          [...config.stage0.args, fixture.file], cwd,
+          hostExport ? host_export_env(stages[0]) : {});
         if (reference.code !== 0 || reference.out.trim() !== fixture.want) {
           fail(label + " stage 0 interpreter output differs from #| expectation\n"
             + reference.out + reference.err);
@@ -312,7 +322,8 @@ function main(): void {
           })
           : outputs;
         const runs = executables.map((out, i) => lane === "js"
-          ? run(BUN, [out], tmp, inner[i]!) : run(out, [], tmp, inner[i]!));
+          ? run(BUN, [out], tmp, hostExport ? host_export_env(stages[i]) : {})
+          : run(out, [], tmp));
         same(label + " " + lane, runs[0], runs[1]);
         if (reference !== null) same(label + " stage 0 " + lane, reference, runs[0]);
         for (const got of runs) {

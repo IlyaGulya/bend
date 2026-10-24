@@ -216,7 +216,7 @@ if(!o.worker){
    relocatedHeader=relocatedHeader.replace(change.before+'\n',change.after+'\n');
   }
   if(relocatedHeader!==originalHeader)throw Error('Compiler root must preserve native parser constructor namespaces');
-  const expectedImports='import ../bend2/selfhost/loaded_module.bend as Loader\nimport ../bend2/selfhost/checked_frontend.bend as Checked\nimport ./template_steps_v1.bend as Template\nimport ./checker_core_steps_v1.bend as CheckerCore\nimport ./js_emit_steps_v1.bend as JSEmit\n\n';
+  const expectedImports='import ../bend2/selfhost/loaded_module.bend as Loader\nimport ../bend2/selfhost/backend_ir.bend as BIR\nimport ../bend2/selfhost/checked_frontend.bend as Checked\nimport ./template_steps_v1.bend as Template\nimport ./checker_core_steps_v1.bend as CheckerCore\nimport ./js_emit_steps_v1.bend as JSEmit\n\n';
   const expectedPrefix=relocatedHeader+expectedImports;
   if(embedding.start!==expectedPrefix.length||embedding.chars!==declarations.length||embedding.sha256!==sha(declarations)||manifest.parserDeclarationSha256!==sha(declarations)||rootText.slice(0,expectedPrefix.length)!==expectedPrefix||rootText.slice(expectedPrefix.length,expectedPrefix.length+declarations.length)!==declarations||sha(rootText.slice(expectedPrefix.length+declarations.length))!==manifest.wrapperSha256)throw Error('Root does not contain the exact complete accepted parser declaration suffix and import-only prefix');
   const wrapperNames=[...rootText.slice(expectedPrefix.length+declarations.length).matchAll(/^def ([A-Za-z_]\w*)\(/gm)].map(match=>match[1]);

@@ -237,11 +237,3 @@ type Program is Data:
 # and the exact declared path, never a target guess or a rewritten specifier.
 type SourceFile is Data:
   SourceFile{path: String, source: String}
-
-# A canonical classification of an export or foreign type position. The full
-# normalized Descriptor remains authoritative; this is only the head fact.
-type Head is Data:
-  HeadKnown{key: String, native: Maybe<&2, String>}
-  HeadAbstract{}
-  HeadOther{}
-  HeadMissing{key: String}
