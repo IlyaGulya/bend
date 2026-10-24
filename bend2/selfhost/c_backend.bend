@@ -446,7 +446,7 @@ def plan_pure(end: BIR.Ending, families: List<&2, BIR.Family>, inner: PlanResult
 def plan_set_pure(end: BIR.Ending, families: List<&2, BIR.Family>, plan: Plan) -> PlanResult:
   match end:
     case BIR.Library{exports}: plan_library(exports, plan)
-    case BIR.Executable{main_type}: plan_executable(main_type, families, plan)
+    case BIR.Executable{main_type}: plan_executable(main_type, plan)
 
 def plan_set_pure_flags(plan: Plan, pure: Bool, desc: String, names: String) -> Plan:
   match plan:
@@ -459,27 +459,31 @@ def fid_macros_runtime(acc: Map<&2, String>) -> Map<&2, String>:
 def fid_macros_runtime_one(acc: Map<&2, String>) -> Map<&2, String>:
   map_set_first(acc, "IO~emit", "FID_IO_EMIT")
 
-def plan_executable(+main_type: BIR.Descriptor, families: List<&2, BIR.Family>, plan: Plan) -> PlanResult:
-  match descriptor_head(main_type):
-    case None{}: PlanFail{"the main type is not a resolvable type descriptor"}
-    case Some{+key}:
-      match family_key(key, families):
-        case None{}: PlanFail{String.append("the main type `", String.append(key, "` is not a declared family"))}
-        case Some{family}: plan_executable_family(family, main_type, plan)
+# The main type is classified by the NF/CLay head authority, not by a family
+# table lookup: `IO` is a type function (and aliases such as Entry or MyNat are
+# not families at all), so a Family search would reject canonical programs.
+# A native `IO` head means the program is effectful: no SHOW descriptor, and
+# MAIN_PURE is 0. Everything else is handed to the physical SHOW builder, which
+# normalizes the Data head itself. A head failure is a plan failure.
+def plan_executable(+main_type: BIR.Descriptor, plan: Plan) -> PlanResult:
+  match plan:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, library, exports}:
+      match CLay.head_native(ctx, main_type):
+        case CLay.HeadFailed{message}: PlanFail{message}
+        case CLay.HeadBoxed{reason}: plan_executable_show(main_type, plan)
+        case CLay.HeadFound{key, native}: plan_executable_native(native, main_type, plan)
 
-def plan_executable_family(+family: BIR.Family, +main_type: BIR.Descriptor, +plan: Plan) -> PlanResult:
-  match family:
-    case BIR.Family{key, name, native, quantity_prefix, arity, arms}:
-      match native:
-        case Some{tag}: plan_executable_io(String.eq(tag, "IO"), family, main_type, plan)
-        case None{}: plan_executable_show(family, main_type, plan)
+def plan_executable_native(+native: Maybe<&2, String>, +main_type: BIR.Descriptor, +plan: Plan) -> PlanResult:
+  match native:
+    case Some{tag}: plan_executable_io(String.eq(tag, "IO"), main_type, plan)
+    case None{}: plan_executable_show(main_type, plan)
 
-def plan_executable_io(is_io: Bool, family: BIR.Family, main_type: BIR.Descriptor, +plan: Plan) -> PlanResult:
+def plan_executable_io(is_io: Bool, +main_type: BIR.Descriptor, +plan: Plan) -> PlanResult:
   match is_io:
     case True{}: PlanOk{plan_set_pure_flags(plan, False{}, "{ 0 }", "")}
-    case False{}: plan_executable_show(family, main_type, plan)
+    case False{}: plan_executable_show(main_type, plan)
 
-def plan_executable_show(family: BIR.Family, main_type: BIR.Descriptor, plan: Plan) -> PlanResult:
+def plan_executable_show(+main_type: BIR.Descriptor, plan: Plan) -> PlanResult:
   match plan:
     case Plan{+cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, +constructors, +families, declarations, main_pure, _, _, imports, fkeys, ctx, sharing, _, _}:
       show = Phys.show_build(ctx, main_type, constructors, families)
@@ -605,7 +609,8 @@ def exports_c(library: Bool, rows: List<&2, ExportRow>) -> String:
         "u32 bend_export_count(void) { return BEND_EXPORT_COUNT; }\n",
         "const char* bend_export_name(u32 i) { return i < BEND_EXPORT_COUNT ? BEND_EXPORT_NAMES[i] : 0; }\n",
         "u32 bend_export_arity(u32 i) { return i < BEND_EXPORT_COUNT ? BEND_EXPORT_ARITY[i] : 0; }\n\n",
-        "void bend_library_init(void) { if (BEND_EXPORT_CORPUS == 0) { BEND_EXPORT_CORPUS = corpus_setup(false, 1, 0); } }\n\n",
+        "void bend_library_init(void) {\n",
+        "#if !DEVICE\n  if (BEND_EXPORT_CORPUS == 0) { BEND_EXPORT_CORPUS = corpus_setup(false, 1, 0); io_stk = pool_stack(); }\n#endif\n}\n\n",
         "static Term bend_export_run(u32 fid, const Term* args, u32 n) {\n",
         "  Env e = { BEND_EXPORT_CORPUS, ALC[0] };\n",
         "  Term t = term_tsk(fid, task_node(e, fid, TERM_HOLE, 0, 0));\n",
@@ -808,9 +813,6 @@ def list_index_one(same: Bool, key: String, item: String, rest: List<&2, String>
   match same:
     case True{}: Some{index}
     case False{}: list_index_of(rest, key, U32.inc(index))
-
-def list_index(items: List<&2, String>, key: String) -> Maybe<&2, U32>:
-  list_index_of(items, key, 0)
 
 def ctor_keys(constructors: List<&2, BIR.ConstructorLayout>) -> List<&2, String>:
   match constructors:
@@ -1089,36 +1091,6 @@ def key_layout(+key: String, constructors: List<&2, BIR.ConstructorLayout>) -> M
             case True{}: Some{row}
             case False{}: key_layout(key, rest)
 
-def native_marker(+marker: String) -> String:
-  match String.eq(marker, "Nat.Zero"):
-    case True{}: "natzero"
-    case False{}: native_marker_1(marker)
-
-def native_marker_1(+marker: String) -> String:
-  match String.eq(marker, "Nat.Succ"):
-    case True{}: "natsucc"
-    case False{}: native_marker_2(marker)
-
-def native_marker_2(+marker: String) -> String:
-  match String.eq(marker, "U32.U32"):
-    case True{}: "u32"
-    case False{}: native_marker_3(marker)
-
-def native_marker_3(+marker: String) -> String:
-  match String.eq(marker, "F32.F32"):
-    case True{}: "f32"
-    case False{}: native_marker_4(marker)
-
-def native_marker_4(+marker: String) -> String:
-  match String.eq(marker, "Array.ALeaf"):
-    case True{}: "aleaf"
-    case False{}: native_marker_5(marker)
-
-def native_marker_5(marker: String) -> String:
-  match String.eq(marker, "Array.ANode"):
-    case True{}: "anode"
-    case False{}: "generic"
-
 def live_fields(fields: List<&2, BIR.DescriptorField>, +acc: List<&2, BIR.DescriptorField>) -> List<&2, BIR.DescriptorField>:
   match fields:
     case Nil{}: List.reverse(&2, BIR.DescriptorField, acc)
@@ -1313,13 +1285,6 @@ def arm_member_one(found: Bool, key: String, rest: List<&2, BIR.DescriptorArm>) 
     case True{}: True{}
     case False{}: arm_member(key, rest)
 
-def family_arms_rest(rest: List<&2, BIR.Family>) -> Maybe<&2, List<&2, BIR.DescriptorArm>>:
-  match rest:
-    case Nil{}: None{}
-    case +family <> tail:
-      match family:
-        case BIR.Family{key, name, native, quantity_prefix, arity, arms}: Some{arms}
-
 def arm_index(+key: String, arms: List<&2, BIR.DescriptorArm>, index: Nat) -> Maybe<&2, Nat>:
   match arms:
     case Nil{}: None{}
@@ -1373,26 +1338,6 @@ def values_part(values: List<&2, Part>, +acc: List<&2, String>) -> Maybe<&2, Lis
         case PartFail{message}: None{}
         case PartOk{text}: values_part(rest, text <> acc)
 
-def base_construct_2(+kind: String, +args: List<&2, String>) -> Maybe<&2, String>:
-  match String.eq(kind, "u32"):
-    case True{}: Some{cat(["term_word(e, ", list_at(args, 0n), ")"])}
-    case False{}: base_construct_3(kind, args)
-
-def base_construct_3(+kind: String, +args: List<&2, String>) -> Maybe<&2, String>:
-  match String.eq(kind, "f32"):
-    case True{}: Some{cat(["term_word(e, ", list_at(args, 0n), ")"])}
-    case False{}: base_construct_4(kind, args)
-
-def base_construct_4(+kind: String, +args: List<&2, String>) -> Maybe<&2, String>:
-  match String.eq(kind, "aleaf"):
-    case True{}: Some{cat(["bend_array_leaf(e, ", list_at(args, 0n), ")"])}
-    case False{}: base_construct_5(kind, args)
-
-def base_construct_5(kind: String, +args: List<&2, String>) -> Maybe<&2, String>:
-  match String.eq(kind, "anode"):
-    case True{}: Some{cat(["blk_node(e, ", list_at(args, 0n), ", ", list_at(args, 1n), ")"])}
-    case False{}: None{}
-
 def project_part(value: BIR.Atom, +constructor: U32, field: U32, +plan: Plan) -> Part:
   match atom_part(value, plan):
     case PartFail{message}: PartFail{message}
@@ -1402,21 +1347,6 @@ def hastag_part(value: BIR.Atom, +constructor: U32, +plan: Plan) -> Part:
   match atom_part(value, plan):
     case PartFail{message}: PartFail{message}
     case PartOk{text}: Phys.hastag_part(text, constructor, phys_world(plan))
-
-def hastag_expr_4(+kind: String, +value: String, cid_part: Part) -> Part:
-  match String.eq(kind, "aleaf"):
-    case True{}: okp(cat(["((u32)blk_cls(", value, ") == 0)"]))
-    case False{}: hastag_expr_5(kind, value, cid_part)
-
-def hastag_expr_5(kind: String, +value: String, cid_part: Part) -> Part:
-  match String.eq(kind, "anode"):
-    case True{}: okp(cat(["((u32)blk_cls(", value, ") != 0)"]))
-    case False{}: hastag_node(value, cid_part)
-
-def hastag_node(value: String, cid_part: Part) -> Part:
-  match cid_part:
-    case PartFail{message}: PartFail{message}
-    case PartOk{cid}: PartOk{cat(["bend_hastag(", value, ", ", cid, ")"])}
 
 # ---------------------------------------------------------------------------
 # Primitives
