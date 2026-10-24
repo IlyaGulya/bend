@@ -1,186 +1,1223 @@
 # C target physical emission
 # ===========================
 #
-# SHOW_DESC/SHOW_NAMES construction for the C backend, from the frozen layout
-# oracle (c_backend_layout.bend) and Backend IR facts only. It owns no segment,
-# call or table emission (CIRControl) and never re-derives a layout from a key
-# spelling.
+# Storage (Fill/Unfill, construct/project, array cells) and the pure-main
+# SHOW_DESC/SHOW_NAMES, from the frozen CLay oracle and Backend IR facts only.
+# No entry/table/segment emission (CIRControl), no layout rule of its own.
 #
-# Authority: comp.ts show_main. The descriptor is ONE FLAT WORD ARRAY: a cell's
-# id is the WORD OFFSET where its cell starts, exactly like show.push(kind) - 1
-# in the reference, and every reference slot holds that offset. A child is
-# appended after the parent's header and its offset is patched into the
-# reserved slot, because appending a variable-length cell moves every later
-# word. Rules reproduced:
-#   * kind = position of the datatype in U32 F32 Nat Char String . Array & 7
-#     (Eql 5), everything else 7;
-#   * Char pushes [3, box]; Array pushes [6, element offset, lgs]; Data pushes
-#     [7, box, arm count] then per arm [name index, cid, live field count,
-#     bracket] (Tuple 2, Con/Nil 1, else 0) then per field [offset, cell];
-#   * box = 1 iff the value layout is a box; field offsets start at the tag word
-#     (!box && arms > 1) and advance by the field layout's word count;
-#   * a zero-word root layout is a box;
-#   * a cell is memoized on (type key, layout key) BEFORE recursing, so a
-#     recursive datatype terminates and reuses its already known word offset.
+# Representation: every callable value is ONE Term. Nat/U32/F32 are raw words;
+# every other ADT is a tagged Term (term_ctr over the constructor's node
+# layout, term_pak for a zero/one-w32 node). LayoutData describes storage in a
+# node or an array cell only, so the show root is boxed.
 #
-# Entry point: show_build(ctx, main_type, constructors, families) returns the
-# SHOW_DESC initializer; show_names(constructors) is the SHOW_NAMES initializer.
+# Ownership: a Many operand is term_keep(e,w,1) (or kept whole before an inline
+# unbox, whose ctr_take then bumps the child references); an Affine operand is
+# rfc_seal(e,w) in node storage and taken as-is by array writes. A read of a
+# sealed node goes through ctr_take; an unsealed term is the only owner. An
+# erased slot is a loud failure.
+#
+# Arrays take their element cell from CLay.array_cell(types[0]) (arr/words/lgs)
+# and convert elements through Fill/Unfill.
+#
+# This kernel admits matches only on parameters/pattern binders, has no
+# forward references and no mutual recursion. Conversion is therefore a
+# worklist of Jobs with one self-recursive driver (fuel-bounded), and SHOW is a
+# worklist of ShowJobs with its own driver; every expansion helper is
+# non-recursive and defined before use.
 
 import Base
 import ./backend_ir.bend as BIR
 import ./c_backend_layout.bend as CLay
 import ./index_lookup.bend as IndexLookup
 
-# A word of the flat descriptor: a literal, or a constructor id rendered as
-# CID_<id>. A reference slot starts as WNum 0 and is patched to the child's
-# word offset.
-type Word is Data:
-  WNum{value: Nat}
-  WCid{value: Nat}
 
-type Patch is Data:
-  Patch{at: Nat, to: Nat}
 
-type ShState is Data:
-  ShState{words: List<&2, Word>, patches: List<&2, Patch>, memo: Map<&2, Nat>}
+type Part is Data:
+  PartOk{text: String}
+  PartFail{message: String}
 
-type Step is Data:
-  Step{ok: Bool, message: String, id: Nat, state: ShState}
+type CidSym is Data:
+  CidSym{cid: U32, key: String}
 
-type AppendOut is Data:
-  AppendOut{state: ShState, at: Nat}
+type World is Data:
+  World{ctx: CLay.Context, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, cids: List<&2, CidSym>}
+
+type Code is Data:
+  CodeOk{lines: List<&2, String>}
+  CodeFail{message: String}
+
+type Operand is Data:
+  Operand{use: BIR.Use, text: String}
+
+# ---------------------------------------------------------------------------
+# Code assembly
+# ---------------------------------------------------------------------------
+
+type Dst is Data:
+  DstSeq{buf: String, cursor: String}
+
+type Src is Data:
+  SrcOne{text: String}
+  SrcNode{base: String, fb: String, cursor: String, packed: Bool}
+  SrcBlock{loc: String, at: String, arr: Bool, keep: Bool, cursor: String}
+  SrcBuf{buf: String, cursor: String}
+
+type Job is Data:
+  JText{text: String}
+  JConv{take: CLay.Unfill, make: CLay.Fill, src: Src, dst: Dst, tag: String}
+
+type CellOut is Data:
+  CellOk{layout: CLay.Layout, arr: Bool, words: Nat, lgs: Nat}
+  CellFail{message: String}
+
+type ShowWord is Data:
+  ShowNum{value: Nat}
+  ShowCid{value: Nat}
+
+type ShowPatch is Data:
+  ShowPatchAt{at: Nat, to: Nat}
+
+type ShowState is Data:
+  ShowState{words: List<&2, ShowWord>, patches: List<&2, ShowPatch>, memo: Map<&2, Nat>, names: List<&2, String>, error: Maybe<&2, String>}
+
+type ShowJob is Data:
+  ShowNode{ty: BIR.Descriptor, layout: CLay.Layout, patch: Maybe<&2, Nat>}
+
+type ShowAdvance is Data:
+  ShowNext{state: ShowState, kids: List<&2, ShowJob>}
+
+type ShowRun is Data:
+  ShowDone{state: ShowState}
+  ShowHalted{message: String}
 
 type ShowOut is Data:
   ShowOk{desc: String, names: String}
   ShowFail{message: String}
 
-def show_build(ctx: CLay.Context, main_type: BIR.Descriptor, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>) -> ShowOut:
-  start = ShState{Nil{}, Nil{}, Map.new(&2, Nat)}
-  m1 = CLay.value_layout(ctx, main_type)
-  match m1:
-    case CLay.LayoutFailed{message}: ShowFail{message}
-    case CLay.LayoutFound{layout}:
-      m2 = show_node(ctx, main_type, root_layout(layout), families, constructors, start)
-      match m2:
-        case Step{ok, message, id, state}:
-          match ok:
-            case True{}: show_finish(state)
-            case False{}: ShowFail{message}
+type ShowKind is Data:
+  ShowKindOk{kind: Nat}
+  ShowKindFailed{message: String}
 
-def root_layout(layout: CLay.Layout) -> CLay.Layout:
-  m3 = CLay.layout_words(layout)
-  match m3:
-    case 0n: CLay.LayoutBox{CLay.BoxWide{0n}}
-    case _: layout
+type ShowNorm is Data:
+  ShowNormOk{descriptor: BIR.Descriptor}
+  ShowNormFailed{message: String}
 
-def show_finish(st: ShState) -> ShowOut:
-  match st:
-    case ShState{words, patches, memo}: ShowOk{render_words(apply_patches(words, patches, 0n), ""), ""}
+type ShowToken is Data:
+  ShowTokDesc{descriptor: BIR.Descriptor}
+  ShowTokText{text: String}
+
+def world(+pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pcids: List<&2, CidSym>) -> World:
+  World{pctx, pconstructors, pfamilies, pcids}
+
+def join_text(+pparts: List<&2, String>) -> String:
+  String.join(pparts, "")
+
+def code_line(+ptext: String) -> Code:
+  CodeOk{[ptext]}
+
+def code_empty() -> Code:
+  CodeOk{Nil{}}
+
+def code_seq(+pa: Code, +pb: Code) -> Code:
+  match pa:
+    case CodeFail{message}: CodeFail{message}
+    case CodeOk{lines}:
+      match pb:
+        case CodeFail{message}: CodeFail{message}
+        case CodeOk{more}: CodeOk{List.append(&2, String, lines, more)}
+
+def code_expr(+pcode: Code, +pexpression: String) -> String:
+  match pcode:
+    case CodeFail{+message}: "(0)"
+    case CodeOk{+lines}:
+      match lines:
+        case Nil{}: pexpression
+        case +line <> +rest: join_text(["({\n", String.join(lines, "\n"), "\n", pexpression, ";\n})"])
+
+def part_of(+pcode: Code, +pexpression: String) -> Part:
+  match pcode:
+    case CodeFail{+message}: PartFail{message}
+    case CodeOk{+lines}: PartOk{code_expr(pcode, pexpression)}
 
 # ---------------------------------------------------------------------------
-# State helpers: append a word, reserve a slot, record a patch
+# Lookups
 # ---------------------------------------------------------------------------
 
-def show_node(ctx: CLay.Context, ty: BIR.Descriptor, layout: CLay.Layout, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState) -> Step:
-  key = show_key(ty, layout)
-  m4 = IndexLookup.find(Nat, memo_of(st), key)
-  match m4:
-    case Some{offset}: Step{True{}, "", offset, st}
+def ctor_find(+pid: U32, +prows: List<&2, BIR.ConstructorLayout>) -> Maybe<&2, BIR.ConstructorLayout>:
+  match prows:
+    case Nil{}: None{}
+    case +row <> +rest:
+      match row:
+        case BIR.ConstructorLayout{id, key, native, fields}:
+          same = U32.is_eq(pid, id)
+          Bool.pick(Maybe<&2, BIR.ConstructorLayout>, same, Some{row}, ctor_find(pid, rest))
+
+def ctor_of(+pid: U32, +pw: World) -> Maybe<&2, BIR.ConstructorLayout>:
+  match pw:
+    case World{ctx, constructors, families, cids}: ctor_find(pid, constructors)
+
+def cid_find(+pwant: String, +pcids: List<&2, CidSym>) -> Maybe<&2, U32>:
+  match pcids:
+    case Nil{}: None{}
+    case +row <> +rest:
+      match row:
+        case CidSym{cid, key}:
+          same = String.eq(pwant, key)
+          Bool.pick(Maybe<&2, U32>, same, Some{cid}, cid_find(pwant, rest))
+
+def cid_of(+pkey: String, +pw: World) -> Maybe<&2, U32>:
+  match pw:
+    case World{ctx, constructors, families, cids}: cid_find(pkey, cids)
+
+def cid_text_of(+pfound: Maybe<&2, U32>) -> Maybe<&2, String>:
+  match pfound:
+    case Some{cid}: Some{join_text([U32.show(cid), "u"])}
+    case None{}: None{}
+
+def cid_text(+pkey: String, +pw: World) -> Maybe<&2, String>:
+  found = cid_of(pkey, pw)
+  cid_text_of(found)
+
+def intrinsic_marker(+pmarker: String) -> Bool:
+  match pmarker:
+    case "Nat.Zero": True{}
+    case "Nat.Succ": True{}
+    case "U32.U32": True{}
+    case "F32.F32": True{}
+    case "Char.Chr": True{}
+    case "Bool.True": True{}
+    case "Bool.False": True{}
+    case "String.SNil": True{}
+    case "String.SCon": True{}
+    case "Array.ALeaf": True{}
+    case "Array.ANode": True{}
+    case _: False{}
+
+# ---------------------------------------------------------------------------
+# Cursors, jobs and their expansion helpers
+# ---------------------------------------------------------------------------
+
+def dst_write(+pdst: Dst, +pexpression: String) -> List<&2, Job>:
+  match pdst:
+    case DstSeq{buf, cursor}: [JText{join_text([buf, "[", cursor, "] = ", pexpression, "; ", cursor, " += 1;"])}]
+
+def dst_word(+pdst: Dst, +pword: CLay.CWord, +pexpression: String) -> List<&2, Job>:
+  match pword:
+    case CLay.CWord32{}: dst_write(pdst, join_text(["((u64)(u32)(", pexpression, "))"]))
+    case CLay.CWord64{}: dst_write(pdst, pexpression)
+    case CLay.CWordBox{}: dst_write(pdst, pexpression)
+
+def dst_decl(+pbuf: String, +pcursor: String, +pcount: Nat) -> String:
+  join_text(["u64 ", pbuf, "[", Nat.show(pcount), "]; for (u32 ", pcursor, "i = 0; ", pcursor, "i < ", Nat.show(pcount), "; ", pcursor, "i += 1) { ", pbuf, "[", pcursor, "i] = 0; } u32 ", pcursor, " = 0;"])
+
+def dst_mark(+pdst: Dst) -> String:
+  match pdst:
+    case DstSeq{buf, cursor}: join_text([buf, "[", cursor, "]", " = 1; ", cursor, " += 1;"])
+
+def src_read_node(+pbase: String, +pfb: String, +pcursor: String, +ppacked: Bool, +ptag: String) -> List<&2, Job>:
+  match ppacked:
+    case True{}: [JText{join_text(["u64 ", ptag, "w = ", pbase, ";"])}]
+    case False{}: [JText{join_text(["u64 ", ptag, "w = ((", pbase, " != 0) ? e.mem[", pbase, " + ", pcursor, "] : (u64)", pfb, "[", pcursor, "]); ", pcursor, " += 1;"])}]
+
+def src_read_arr(+ploc: String, +pat: String, +pkeep: Bool, +pcursor: String, +ptag: String) -> List<&2, Job>:
+  match pkeep:
+    case True{}: [JText{join_text(["u64 ", ptag, "w = blk_keep(e, ", ploc, " + ", pat, " + ", pcursor, "); ", pcursor, " += 1;"])}]
+    case False{}: [JText{join_text(["u64 ", ptag, "w = blk_read(e.mem, true, ", ploc, ", ", pat, " + ", pcursor, "); ", pcursor, " += 1;"])}]
+
+def src_read_block(+ploc: String, +pat: String, +parr: Bool, +pkeep: Bool, +pcursor: String, +ptag: String) -> List<&2, Job>:
+  match parr:
+    case True{}: src_read_arr(ploc, pat, pkeep, pcursor, ptag)
+    case False{}: [JText{join_text(["u64 ", ptag, "w = ((u64)blk_read(e.mem, false, ", ploc, ", ", pat, " + ", pcursor, ")); ", pcursor, " += 1;"])}]
+
+def src_read(+psrc: Src, +ptag: String) -> List<&2, Job>:
+  match psrc:
+    case SrcOne{text}: [JText{join_text(["u64 ", ptag, "w = ", text, ";"])}]
+    case SrcNode{base, fb, cursor, packed}: src_read_node(base, fb, cursor, packed, ptag)
+    case SrcBlock{loc, at, arr, keep, cursor}: src_read_block(loc, at, arr, keep, cursor, ptag)
+    case SrcBuf{buf, cursor}: [JText{join_text(["u64 ", ptag, "w = ", buf, "[", cursor, "]; ", cursor, " += 1;"])}]
+
+def form_tagged(+parms: List<&2, CLay.FormArm>) -> Bool:
+  match parms:
+    case Nil{}: False{}
+    case +only <> Nil{}: False{}
+    case _: True{}
+
+def max_node_words(+parms: List<&2, CLay.FormArm>, +pacc: Nat) -> Nat:
+  match parms:
+    case Nil{}: pacc
+    case +arm <> +rest:
+      match arm:
+        case CLay.FormArm{key, tag, packed, node_words, fields}: max_node_words(rest, Nat.max(pacc, node_words))
+
+def max_term_decl(+pfb: String, +pcount: Nat) -> String:
+  match pcount:
+    case 0n: ""
+    case _: join_text(["Term ", pfb, "[", Nat.show(pcount), "];"])
+
+# The source of one arm: its canonical node storage.
+
+def arm_seed(+ppacked: Bool, +pnode_words: Nat, +pt: String, +ptag: String, +pfb: String) -> List<&2, Job>:
+  match ppacked:
+    case True{}: Nil{}
+    case False{}:
+      match pnode_words:
+        case 0n: Nil{}
+        case _: [JText{join_text(["u64 ", ptag, "s = term_rfc(", pt, ") ? ctr_take(e, ", pt, ", ", Nat.show(pnode_words), ", ", pfb, ") : term_loc(", pt, "); u32 ", ptag, "i = 0;"])}]
+
+def arm_src(+ppacked: Bool, +pnode_words: Nat, +pt: String, +ptag: String, +pfb: String) -> Src:
+  match ppacked:
+    case True{}:
+      match pnode_words:
+        case 0n: SrcOne{"0"}
+        case _: SrcOne{join_text(["((u64)term_loc(", pt, "))"])}
+    case False{}: SrcNode{join_text([ptag, "s"]), pfb, join_text([ptag, "i"]), False{}}
+
+# Arm expansion: emits the case block and the nested JConv jobs.
+
+def nests_jobs(+pw: World, +pnests: List<&2, CLay.Nest>, +psrc: Src, +pdst: Dst, +ptag: String) -> List<&2, Job>:
+  match pnests:
+    case Nil{}: Nil{}
+    case +nest <> +rest:
+      match nest:
+        case CLay.Nest{at, offset, take, make}: [JConv{take, make, psrc, pdst, ptag}] <> nests_jobs(pw, rest, psrc, pdst, ptag)
+
+# Expand one conversion into jobs. This function never calls itself or another
+# expander: nested work becomes JConv entries in the returned list.
+
+def jobs_arm_body(+pw: World, +pcid: U32, +ptag_index: Nat, +ppacked: Bool, +pnode_words: Nat, +pfields: List<&2, CLay.Nest>, +pt: String, +pdst: Dst, +ptag: String, +ptagged: Bool, +pfb: String, +pmode: Nat) -> List<&2, Job>:
+  mark = Bool.pick(List<&2, Job>, ptagged, dst_mark(pdst), Nil{})
+  seed = arm_seed(ppacked, pnode_words, pt, ptag, pfb)
+  src = arm_src(ppacked, pnode_words, pt, ptag, pfb)
+  List.append(&2, Job, mark, List.append(&2, Job, seed, nests_jobs(pw, pfields, src, pdst, ptag)))
+
+def jobs_arm(+pw: World, +pcid: U32, +ptag_index: Nat, +ppacked: Bool, +pnode_words: Nat, +pfields: List<&2, CLay.Nest>, +pt: String, +pdst: Dst, +ptag: String, +ptagged: Bool, +pfb: String, +pmode: Nat) -> List<&2, Job>:
+  [JText{join_text(["case ", U32.show(pcid), "u: {"])}] <> jobs_arm_body(pw, pcid, ptag_index, ppacked, pnode_words, pfields, pt, pdst, ptag, ptagged, pfb, pmode) <> [JText{"} break;"}]
+
+def arm_jobs(+pw: World, +pfound: Maybe<&2, U32>, +parm: CLay.FormArm, +pt: String, +pdst: Dst, +ptag: String, +ptagged: Bool, +pfb: String, +pmode: Nat) -> List<&2, Job>:
+  match pfound:
+    case None{}: [JText{"default: (void)bend_fail(e, \"the constructor tag is not a declared constructor\"); break;"}]
+    case Some{cid}:
+      match parm:
+        case CLay.FormArm{key, tag, packed, node_words, fields}:
+          jobs_arm(pw, cid, tag, packed, node_words, fields, pt, pdst, ptag, ptagged, pfb, pmode)
+
+def unbox_cases(+pw: World, +parms: List<&2, CLay.FormArm>, +pt: String, +pdst: Dst, +ptag: String, +ptagged: Bool, +pfb: String) -> List<&2, Job>:
+  match parms:
+    case Nil{}: Nil{}
+    case +arm <> +rest:
+      match arm:
+        case CLay.FormArm{key, tag, packed, node_words, fields}:
+          found = cid_of(key, pw)
+          List.append(&2, Job, arm_jobs(pw, found, arm, pt, pdst, ptag, ptagged, pfb, 0n), unbox_cases(pw, rest, pt, pdst, ptag, ptagged, pfb))
+
+def expand_unbox(+pw: World, +parms: List<&2, CLay.FormArm>, +psrc: Src, +pdst: Dst, +ptag: String) -> List<&2, Job>:
+  t = join_text([ptag, "t"])
+  fb = join_text([ptag, "f"])
+  count = max_node_words(parms, 0n)
+  tagged = form_tagged(parms)
+  head = List.append(&2, Job, src_read(psrc, ptag), List.append(&2, Job, [JText{join_text(["Term ", t, " = ", ptag, "w;"])}], [JText{max_term_decl(fb, count)}]))
+  cases = unbox_cases(pw, parms, t, pdst, ptag, tagged, fb)
+  List.append(&2, Job, head, List.append(&2, Job, [JText{join_text(["switch (term_aux(", t, ")) {"])}], List.append(&2, Job, cases, [JText{"}"}])))
+
+def expand_word_take(+pw: World, +pmake: CLay.Fill, +psrc: Src, +pdst: Dst, +ptag: String) -> List<&2, Job>:
+  match pmake:
+    case CLay.FillWord{}: List.append(&2, Job, src_read(psrc, ptag), dst_write(pdst, join_text([ptag, "w"])))
+    case CLay.FillForm{words, arms}: expand_unbox(pw, arms, psrc, pdst, ptag)
+
+def nest_take(+pfield: CLay.Nest) -> CLay.Unfill:
+  match pfield:
+    case CLay.Nest{at, offset, take, make}: take
+
+def nest_make(+pfield: CLay.Nest) -> CLay.Fill:
+  match pfield:
+    case CLay.Nest{at, offset, take, make}: make
+
+def conv_field_pairs(+pw: World, +pfields: List<&2, CLay.Nest>, +pout_fields: List<&2, CLay.Nest>, +psrc: Src, +pdst: Dst, +ptag: String) -> List<&2, Job>:
+  match pfields:
+    case Nil{}:
+      match pout_fields:
+        case Nil{}: Nil{}
+        case _: [JText{"/* field count mismatch */"}]
+    case +field <> +rest:
+      match pout_fields:
+        case Nil{}: [JText{"/* field count mismatch */"}]
+        case +out_field <> +out_rest: [JConv{nest_take(field), nest_make(out_field), psrc, pdst, ptag}] <> conv_field_pairs(pw, rest, out_rest, psrc, pdst, ptag)
+
+def form_fields(+parm: CLay.FormArm) -> List<&2, CLay.Nest>:
+  match parm:
+    case CLay.FormArm{key, tag, packed, node_words, fields}: fields
+
+def forms_arm_case(+pw: World, +pfound: Maybe<&2, CLay.FormArm>, +parm: CLay.FormArm, +psrc: Src, +pdst: Dst, +ptag: String, +pindex: Nat) -> List<&2, Job>:
+  match pfound:
+    case None{}: [JText{join_text(["case ", Nat.show(pindex), ": { (void)bend_fail(e, \"the inline conversion target has no arm\"); } break;"])}]
+    case Some{target}:
+      match parm:
+        case CLay.FormArm{key, tag, packed, node_words, fields}:
+          [JText{join_text(["case ", Nat.show(pindex), ": {"])}] <> field_pair_jobs(pw, fields, form_fields(target), psrc, pdst, ptag) <> [JText{"} break;"}]
+
+def form_arm_by_key(+pwant: String, +parms: List<&2, CLay.FormArm>) -> Maybe<&2, CLay.FormArm>:
+  match parms:
+    case Nil{}: None{}
+    case +arm <> +rest:
+      match arm:
+        case CLay.FormArm{key, tag, packed, node_words, fields}:
+          same = String.eq(pwant, key)
+          Bool.pick(Maybe<&2, CLay.FormArm>, same, Some{arm}, form_arm_by_key(pwant, rest))
+
+def forms_cases(+pw: World, +parms: List<&2, CLay.FormArm>, +pmake_arms: List<&2, CLay.FormArm>, +psrc: Src, +pdst: Dst, +ptag: String, +ptagged: Bool, +pindex: Nat) -> List<&2, Job>:
+  match parms:
+    case Nil{}: Nil{}
+    case +arm <> +rest:
+      match arm:
+        case CLay.FormArm{key, tag, packed, node_words, fields}:
+          found = form_arm_by_key(key, pmake_arms)
+          block = forms_arm_case(pw, found, arm, psrc, pdst, ptag, pindex)
+          List.append(&2, Job, block, forms_cases(pw, rest, pmake_arms, psrc, pdst, ptag, ptagged, Nat.add(pindex, 1n)))
+
+def expand_forms(+pw: World, +ptake_arms: List<&2, CLay.FormArm>, +pmake_arms: List<&2, CLay.FormArm>, +psrc: Src, +pdst: Dst, +ptag: String) -> List<&2, Job>:
+  tagged = form_tagged(ptake_arms)
+  tagline = Bool.pick(List<&2, Job>, tagged, src_read(psrc, ptag), Nil{})
+  cases = forms_cases(pw, ptake_arms, pmake_arms, psrc, pdst, ptag, tagged, 0n)
+  List.append(&2, Job, tagline, List.append(&2, Job, [JText{join_text(["switch ((u32)(", ptag, "w)) {"])}], List.append(&2, Job, cases, [JText{"}"}])))
+
+def pack_jobs(+pcid: U32, +pcount: Nat, +ppacked: Bool, +pnw: String, +pout: String, +ptag: String) -> List<&2, Job>:
+  match pcount:
+    case 0n: [JText{join_text([pout, " = term_pak(", U32.show(pcid), "u, 0);"])}]
+    case _:
+      match ppacked:
+        case True{}: [JText{join_text([pout, " = term_pak(", U32.show(pcid), "u, (u64)", pnw, "[0]);"])}]
+        case False{}:
+          at = join_text([ptag, "l"])
+          [JText{join_text(["u64 ", at, " = heap_alloc(e, cls_fit(", Nat.show(pcount), ")); for (u32 ", at, "i = 0; ", at, "i < ", Nat.show(pcount), "; ", at, "i += 1) { e.mem[", at, " + ", at, "i] = ", pnw, "[", at, "i]; } ", pout, " = term_ctr(", U32.show(pcid), "u, ", at, ");"])}]
+
+# Two inline forms: the tag is read once, then per-arm field pairs convert.
+
+def box_arm_jobs(+pw: World, +pfound: Maybe<&2, U32>, +parm: CLay.FormArm, +psrc: Src, +pout: String, +ptag: String, +pindex: Nat) -> List<&2, Job>:
+  match pfound:
     case None{}:
-      reserved = words_of(st)
-      at = List.length(&2, Word, words_of(st))
-      memo = Map.set(&2, Nat, memo_of(st), key, at)
-      m5 = show_cell(ctx, ty, layout, families, constructors, ShState{reserved, patches_of(st), memo})
-      match m5:
-        case Step{ok, message, id, state}:
-          match ok:
-            case True{}: Step{True{}, "", at, state}
-            case False{}: Step{False{}, message, at, state}
+      match parm:
+        case CLay.FormArm{key, tag, packed, node_words, fields}: [JText{"default: (void)bend_fail(e, \"the constructor tag is not a declared constructor\"); break;"}]
+    case Some{cid}:
+      match parm:
+        case CLay.FormArm{key, tag, packed, node_words, fields}:
+          nw = join_text([ptag, "w"])
+          cur = join_text([ptag, "j"])
+          block = List.append(&2, Job, [JText{join_text(["case ", Nat.show(pindex), ": {"])}], List.append(&2, Job, [JText{dst_decl(nw, cur, node_words)}], List.append(&2, Job, nests_jobs(pw, fields, psrc, DstSeq{nw, cur}, join_text([ptag, "x", Nat.show(pindex)])), List.append(&2, Job, pack_jobs(cid, pnode_words, ppacked, nw, pout, ptag), [JText{"} break;"}]))))
+          block
 
-def words_of(st: ShState) -> List<&2, Word>:
-  match st:
-    case ShState{words, patches, memo}: words
+def box_cases(+pw: World, +parms: List<&2, CLay.FormArm>, +psrc: Src, +pout: String, +ptag: String, +ptagged: Bool, +pindex: Nat) -> List<&2, Job>:
+  match parms:
+    case Nil{}: Nil{}
+    case +arm <> +rest:
+      match arm:
+        case CLay.FormArm{key, tag, packed, node_words, fields}:
+          found = cid_of(key, pw)
+          block = box_arm_jobs(pw, found, arm, psrc, pout, ptag, pindex)
+          List.append(&2, Job, block, box_cases(pw, rest, psrc, pout, ptag, ptagged, Nat.add(pindex, 1n)))
 
-def patches_of(st: ShState) -> List<&2, Patch>:
-  match st:
-    case ShState{words, patches, memo}: patches
+def expand_box(+pw: World, +parms: List<&2, CLay.FormArm>, +psrc: Src, +pdst: Dst, +ptag: String) -> List<&2, Job>:
+  r = join_text([ptag, "r"])
+  tagged = form_tagged(parms)
+  tagline = Bool.pick(List<&2, Job>, tagged, src_read(psrc, ptag), Nil{})
+  cases = box_cases(pw, parms, psrc, r, ptag, tagged, 0n)
+  List.append(&2, Job, [JText{join_text(["Term ", r, " = 0;"])}], List.append(&2, Job, tagline, List.append(&2, Job, [JText{join_text(["switch ((u32)(", ptag, "w)) {"])}], List.append(&2, Job, cases, List.append(&2, Job, [JText{"}"}], dst_write(pdst, r))))))
 
-def memo_of(st: ShState) -> Map<&2, Nat>:
-  match st:
-    case ShState{words, patches, memo}: memo
+def expand_form_take(+pw: World, +parms: List<&2, CLay.FormArm>, +pmake: CLay.Fill, +psrc: Src, +pdst: Dst, +ptag: String) -> List<&2, Job>:
+  match pmake:
+    case CLay.FillWord{}: expand_box(pw, parms, psrc, pdst, ptag)
+    case CLay.FillForm{words, arms}: expand_forms(pw, parms, arms, psrc, pdst, ptag)
 
-def append_word(st: ShState, word: Word) -> AppendOut:
-  AppendOut{ShState{words_of(st) <> [word], patches_of(st), memo_of(st)}, List.length(&2, Word, words_of(st))}
+# Box an inline value into one Term.
 
-def append_num(st: ShState, value: Nat) -> AppendOut:
-  append_word(st, WNum{value})
+def expand_conv(+pw: World, +ptake: CLay.Unfill, +pmake: CLay.Fill, +psrc: Src, +pdst: Dst, +ptag: String) -> List<&2, Job>:
+  match ptake:
+    case CLay.UnfillWord{}: expand_word_take(pw, pmake, psrc, pdst, ptag)
+    case CLay.UnfillForm{words, arms}: expand_form_take(pw, arms, pmake, psrc, pdst, ptag)
 
-def append_cid(st: ShState, value: Nat) -> AppendOut:
-  append_word(st, WCid{value})
-
-def append_patch(st: ShState, at: Nat, to: Nat) -> ShState:
-  ShState{words_of(st), Patch{at, to} <> patches_of(st), memo_of(st)}
+def run_jobs(+pfuel: Nat, +pjobs: List<&2, Job>, +pw: World, +pacc: List<&2, String>) -> Code:
+  match pfuel:
+    case 0n: CodeFail{"the C conversion exceeds its work fuel"}
+    case 1n+p:
+      match pjobs:
+        case Nil{}: CodeOk(pacc)
+        case +job <> +rest:
+          match job:
+            case JText{text}: run_jobs(p, rest, pw, List.append(&2, String, pacc, [text]))
+            case JConv{take, make, src, dst, tag}: run_jobs(p, List.append(&2, Job, expand_conv(pw, take, make, src, dst, tag), rest), pw, pacc)
 
 # ---------------------------------------------------------------------------
-# Cells
+# Fill / Unfill entry points
 # ---------------------------------------------------------------------------
 
-type KindOut is Data:
-  KindOk{kind: Nat}
-  KindFailed{message: String}
+def fill_plan_jobs(+pfill: CLay.Fill, +pterm: String, +pdst: Dst, +ptag: String) -> List<&2, Job>:
+  match pfill:
+    case CLay.FillWord{}: [JText{"/* a data layout produced a one-word fill */"}]
+    case CLay.FillForm{words, arms}: [JConv{CLay.UnfillWord{}, pfill, SrcOne{pterm}, pdst, ptag}]
 
-def show_cell(ctx: CLay.Context, ty: BIR.Descriptor, layout: CLay.Layout, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState) -> Step:
-  m6 = show_kind(ctx, ty)
-  match m6:
-    case KindFailed{message}: Step{False{}, message, 0n, st}
-    case KindOk{kind}: show_cell_kind(ctx, ty, layout, families, constructors, st, kind)
+def fill_result_jobs(+pfr: CLay.FillResult, +pterm: String, +pdst: Dst, +ptag: String) -> List<&2, Job>:
+  match pfr:
+    case CLay.FillFailed{message}: [JText{join_text(["/* fill failed: ", message, " */"])}]
+    case CLay.FillFound{fill}: fill_plan_jobs(fill, pterm, pdst, ptag)
 
-def show_cell_kind(ctx: CLay.Context, ty: BIR.Descriptor, layout: CLay.Layout, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState, kind: Nat) -> Step:
-  match kind:
-    case 5n: append_plain(st, 5n)
-    case 0n: append_plain(st, 0n)
-    case 1n: append_plain(st, 1n)
-    case 2n: append_plain(st, 2n)
-    case 3n: show_char_cell(st, layout)
-    case 4n: append_plain(st, 4n)
-    case 6n: show_array_cell(ctx, ty, families, constructors, st)
-    case _: show_data_cell(ctx, ty, layout, families, constructors, st)
+def fill_data_jobs(+pw: World, +playout: CLay.Layout, +pterm: String, +pdst: Dst, +ptag: String) -> List<&2, Job>:
+  match pw:
+    case World{ctx, constructors, families, cids}:
+      fr = CLay.layout_fill(ctx, playout)
+      fill_result_jobs(fr, pterm, pdst, ptag)
 
-def append_plain(st: ShState, value: Nat) -> Step:
-  m7 = append_num(st, value)
-  match m7:
-    case AppendOut{state, at}: Step{True{}, "", at, state}
+def fill_jobs(+pw: World, +playout: CLay.Layout, +pterm: String, +pdst: Dst, +ptag: String) -> List<&2, Job>:
+  match playout:
+    case CLay.LayoutWord{word}: dst_word(pdst, word, pterm)
+    case CLay.LayoutBox{reason}: dst_write(pdst, pterm)
+    case CLay.LayoutData{words, arms}: fill_data_jobs(pw, playout, pterm, pdst, ptag)
 
-def show_char_cell(st: ShState, layout: CLay.Layout) -> Step:
-  m8 = append_num(st, 3n)
-  match m8:
-    case AppendOut{state, at}:
-      m9 = append_num(state, box_flag(layout))
-      match m9:
-        case AppendOut{state: state2, at}: Step{True{}, "", at, state2}
+def unfill_result_jobs(+pur: CLay.UnfillResult, +psrc: Src, +pout: String, +ptag: String) -> List<&2, Job>:
+  match pur:
+    case CLay.UnfillFailed{message}: [JText{join_text(["/* unfill failed: ", message, " */"])}]
+    case CLay.UnfillFound{unfill}: [JConv{unfill, CLay.FillWord{}, psrc, DstSeq{pout, join_text([ptag, "o"])}, ptag}]
 
-def box_flag(layout: CLay.Layout) -> Nat:
-  match layout:
-    case CLay.LayoutBox{reason}: 1n
-    case _: 0n
+# ---------------------------------------------------------------------------
+# Construct / Project / HasTag
+# ---------------------------------------------------------------------------
 
-# The shared oracle decides the printed kind: aliases reduce to their family,
-# and an abstract or open form cannot be printed at all.
-def show_kind(ctx: CLay.Context, ty: BIR.Descriptor) -> KindOut:
-  m10 = CLay.head_native(ctx, ty)
-  match m10:
-    case CLay.HeadFailed{message}: KindFailed{message}
-    case CLay.HeadBoxed{reason}: KindFailed{"main's type is abstract or open and cannot be printed"}
-    case CLay.HeadFound{key, native}: kind_of_native(native)
+def unfill_data_jobs(+pw: World, +playout: CLay.Layout, +psrc: Src, +pout: String, +ptag: String) -> List<&2, Job>:
+  match pw:
+    case World{ctx, constructors, families, cids}:
+      ur = CLay.layout_unfill(ctx, playout)
+      unfill_result_jobs(ur, psrc, pout, ptag)
 
-def kind_of_native(native: Maybe<&2, String>) -> KindOut:
-  match native:
-    case None{}: KindOk{7n}
-    case Some{tag}: KindOk{native_kind(tag)}
+def unfill_word_jobs(+pword: CLay.CWord, +psrc: Src, +pout: String, +ptag: String) -> List<&2, Job>:
+  match pword:
+    case CLay.CWord32{}: List.append(&2, Job, src_read(psrc, ptag), [JText{join_text([pout, " = ((u64)(u32)(", ptag, "w));"])}])
+    case _: List.append(&2, Job, src_read(psrc, ptag), [JText{join_text([pout, " = ", ptag, "w;"])}])
 
-def native_kind(native: String) -> Nat:
-  m12 = last_segment(native)
-  match m12:
+def unfill_jobs(+pw: World, +playout: CLay.Layout, +psrc: Src, +pout: String, +ptag: String) -> List<&2, Job>:
+  match playout:
+    case CLay.LayoutWord{word}: unfill_word_jobs(word, psrc, pout, ptag)
+    case CLay.LayoutBox{reason}: List.append(&2, Job, src_read(psrc, ptag), [JText{join_text([pout, " = ", ptag, "w;"])}])
+    case CLay.LayoutData{words, arms}: unfill_data_jobs(pw, playout, psrc, pout, ptag)
+
+def operand_code(+playout: CLay.Layout, +puse: BIR.Use, +ptext: String, +ptag: String) -> Code:
+  match playout:
+    case CLay.LayoutData{words, arms}:
+      match puse:
+        case BIR.Many{}: code_line(join_text(["Term ", ptag, "v = term_keep(e, ", ptext, ", 1);"]))
+        case _: code_empty()
+    case _: code_empty()
+
+def operand_name(+playout: CLay.Layout, +puse: BIR.Use, +ptext: String, +ptag: String) -> String:
+  match playout:
+    case CLay.LayoutData{words, arms}:
+      match puse:
+        case BIR.Many{}: join_text([ptag, "v"])
+        case _: join_text(["(", ptext, ")"])
+    case _: join_text(["(", ptext, ")"])
+
+def text_jobs(+plines: List<&2, String>) -> List<&2, Job>:
+  match plines:
+    case Nil{}: Nil{}
+    case +line <> +rest: [JText{line}] <> text_jobs(rest)
+
+def code_jobs(+pcode: Code) -> List<&2, Job>:
+  match pcode:
+    case CodeFail{message}: [JText{join_text(["/* code failed: ", message, " */"])}]
+    case CodeOk{lines}: text_jobs(lines)
+
+def fill_slots_jobs(+pw: World, +pslots: List<&2, CLay.NodeSlot>, +pfields: List<&2, Operand>) -> List<&2, Job>:
+  match pslots:
+    case Nil{}:
+      match pfields:
+        case Nil{}: Nil{}
+        case _: [JText{"/* field count mismatch */"}]
+    case +slot <> +rest:
+      match pfields:
+        case Nil{}: [JText{"/* field count mismatch */"}]
+        case +field <> +rest_fields:
+          match slot:
+            case CLay.NodeSlot{ordinal, offset, layout}:
+              match field:
+                case Operand{use, text}:
+                  tag = join_text(["s", U32.show(ordinal)])
+                  code = operand_code(layout, use, text, tag)
+                  term = operand_name(layout, use, text, tag)
+                  List.append(&2, Job, code_jobs(code), List.append(&2, Job, fill_jobs(pw, layout, term, DstSeq{"w0", "o0"}, tag), fill_slots_jobs(pw, rest, rest_fields)))
+
+def layout_is_data(+playout: CLay.Layout) -> Bool:
+  match playout:
+    case CLay.LayoutData{words, arms}: True{}
+    case _: False{}
+
+def seal_box_many(+pcur: String, +pfrom_data: Bool) -> List<&2, Job>:
+  match pfrom_data:
+    case True{}: [JText{join_text([pcur, " += 1;"])}]
+    case False{}: [JText{join_text(["w0[", pcur, "] = term_keep(e, w0[", pcur, "], 1); ", pcur, " += 1;"])}]
+
+def seal_box(+puse: BIR.Use, +pcur: String, +pfrom_data: Bool) -> List<&2, Job>:
+  match puse:
+    case BIR.Many{}: seal_box_many(pcur, pfrom_data)
+    case _: [JText{join_text(["w0[", pcur, "] = rfc_seal(e, w0[", pcur, "]); ", pcur, " += 1;"])}]
+
+def seal_kind(+puse: BIR.Use, +pkind: CLay.CWord, +pcur: String, +pfrom_data: Bool) -> List<&2, Job>:
+  match pkind:
+    case CLay.CWord32{}: [JText{join_text([pcur, " += 1;"])}]
+    case CLay.CWord64{}: [JText{join_text([pcur, " += 1;"])}]
+    case CLay.CWordBox{}: seal_box(puse, pcur, pfrom_data)
+
+def seal_kind_walk(+puse: BIR.Use, +pkinds: List<&2, CLay.CWord>, +pcur: String, +pfrom_data: Bool) -> List<&2, Job>:
+  match pkinds:
+    case Nil{}: Nil{}
+    case +kind <> +rest: seal_kind(puse, kind, pcur, pfrom_data) <> seal_kind_walk(puse, rest, pcur, pfrom_data)
+
+def seal_slots_jobs(+pw: World, +pslots: List<&2, CLay.NodeSlot>, +pfields: List<&2, Operand>) -> List<&2, Job>:
+  match pslots:
+    case Nil{}:
+      match pfields:
+        case Nil{}: Nil{}
+        case _: [JText{"/* field count mismatch */"}]
+    case +slot <> +rest:
+      match pfields:
+        case Nil{}: [JText{"/* field count mismatch */"}]
+        case +field <> +rest_fields:
+          match slot:
+            case CLay.NodeSlot{ordinal, offset, layout}:
+              match field:
+                case Operand{use, text}:
+                  cur = join_text(["k", U32.show(ordinal)])
+                  kinds = CLay.layout_kinds(layout)
+                  head = [JText{join_text(["u32 ", cur, " = ", Nat.show(offset), ";"])}]
+                  List.append(&2, Job, head, List.append(&2, Job, seal_kind_walk(use, kinds, cur, layout_is_data(layout)), seal_slots_jobs(pw, rest, rest_fields)))
+
+def seal_slots_one(+pslot: CLay.NodeSlot, +pfield: Operand, +pw: World, +prest: List<&2, CLay.NodeSlot>, +prest_fields: List<&2, Operand>) -> List<&2, Job>:
+  match pslot:
+    case CLay.NodeSlot{ordinal, offset, layout}:
+      match pfield:
+        case Operand{use, text}:
+          cur = join_text(["k", U32.show(ordinal)])
+          kinds = CLay.layout_kinds(layout)
+          head = [JText{join_text(["u32 ", cur, " = ", Nat.show(offset), ";"])}]
+          List.append(&2, Job, head, List.append(&2, Job, seal_kind_walk(use, kinds, cur, layout_is_data(layout)), seal_slots_jobs(pw, prest, prest_fields)))
+
+def construct_words(+pw: World, +pcid: U32, +pcount: Nat, +pslots: List<&2, CLay.NodeSlot>, +poperands: List<&2, Operand>) -> Part:
+  decl = [JText{dst_decl("w0", "o0", pcount)}]
+  filled = fill_slots_jobs(pw, pslots, poperands)
+  sealed = seal_slots_jobs(pw, pslots, poperands)
+  alloc = [JText{join_text(["u64 n0 = heap_alloc(e, cls_fit(", Nat.show(pcount), ")); for (u32 n0i = 0; n0i < ", Nat.show(pcount), "; n0i += 1) { e.mem[n0 + n0i] = w0[n0i]; }"])}]
+  jobs = List.append(&2, Job, decl, List.append(&2, Job, filled, List.append(&2, Job, sealed, alloc)))
+  part_of(run_jobs(100000n, jobs, pw, Nil{}), join_text(["term_ctr(", U32.show(pcid), "u, n0)"]))
+
+def codeSeqPack(+pcode: Code, +pw: World, +playout: CLay.Layout, +pterm: String, +pcid: U32) -> Code:
+  jobs = List.append(&2, Job, [JText{"u64 w0[1]; w0[0] = 0; u32 o0 = 0;"}], List.append(&2, Job, code_jobs(pcode), fill_jobs(pw, playout, pterm, DstSeq{"w0", "o0"}, "p0")))
+  run_jobs(100000n, jobs, pw, Nil{})
+
+def construct_packed_one(+pw: World, +pcid: U32, +pslot: CLay.NodeSlot, +pfield: Operand) -> Part:
+  match pslot:
+    case CLay.NodeSlot{ordinal, offset, layout}:
+      match pfield:
+        case Operand{use, text}:
+          code = operand_code(layout, use, text, "p0")
+          term = operand_name(layout, use, text, "p0")
+          part_of(codeSeqPack(code, pw, layout, term, pcid), join_text(["term_pak(", U32.show(pcid), "u, (u64)w0[0])"]))
+
+def construct_packed(+pw: World, +pcid: U32, +pkey: String, +pnode: CLay.Node, +poperands: List<&2, Operand>) -> Part:
+  match pnode:
+    case CLay.Node{words, slots, packed}:
+      match slots:
+        case Nil{}:
+          match poperands:
+            case Nil{}: PartOk{join_text(["term_pak(", U32.show(pcid), "u, 0)"])}
+            case _: PartFail{join_text(["the constructor `", pkey, "` has an inconsistent packed node"])}
+        case +slot <> Nil{}:
+          match poperands:
+            case +field <> Nil{}: construct_packed_one(pw, pcid, slot, field)
+            case _: PartFail{join_text(["the constructor `", pkey, "` has an inconsistent packed node"])}
+        case _: PartFail{join_text(["the constructor `", pkey, "` has an inconsistent packed node"])}
+
+def construct_packed_flag(+ppacked: Bool, +pw: World, +pcid: U32, +pkey: String, +pnode: CLay.Node, +poperands: List<&2, Operand>) -> Part:
+  match ppacked:
+    case True{}: construct_packed(pw, pcid, pkey, pnode, poperands)
+    case False{}:
+      match pnode:
+        case CLay.Node{words, slots, packed}: construct_words(pw, pcid, List.length(&2, CLay.CWord, words), slots, poperands)
+
+def construct_count(+psame: Bool, +pw: World, +pcid: U32, +pkey: String, +pnode: CLay.Node, +poperands: List<&2, Operand>) -> Part:
+  match psame:
+    case False{}: PartFail{join_text(["the constructor `", pkey, "` has a different live field count than its value arguments"])}
+    case True{}:
+      match pnode:
+        case CLay.Node{words, slots, packed}: construct_packed_flag(packed, pw, pcid, pkey, pnode, poperands)
+
+def construct_node(+pw: World, +pcid: U32, +pkey: String, +pnode: CLay.Node, +poperands: List<&2, Operand>) -> Part:
+  match pnode:
+    case CLay.Node{words, slots, packed}:
+      same = Nat.is_eq(List.length(&2, CLay.NodeSlot, slots), List.length(&2, Operand, poperands))
+      construct_count(same, pw, pcid, pkey, pnode, poperands)
+
+def construct_layout(+pnode: CLay.NodeResult, +pw: World, +pcid: U32, +pkey: String, +poperands: List<&2, Operand>) -> Part:
+  match pnode:
+    case CLay.NodeFailed{message}: PartFail{message}
+    case CLay.NodeFound{node}: construct_node(pw, pcid, pkey, node, poperands)
+
+def construct_cid(+pfound: Maybe<&2, U32>, +pw: World, +pkey: String, +poperands: List<&2, Operand>) -> Part:
+  match pfound:
+    case None{}: PartFail{join_text(["the constructor `", pkey, "` has no canonical CID row"])}
+    case Some{cid}:
+      match pw:
+        case World{ctx, constructors, families, cids}:
+          node = CLay.node_layout(ctx, pkey)
+          construct_layout(node, pw, cid, pkey, poperands)
+
+def construct_generic(+pw: World, +pkey: String, +poperands: List<&2, Operand>) -> Part:
+  found = cid_of(pkey, pw)
+  construct_cid(found, pw, pkey, poperands)
+
+def construct_marker(+pintr: Bool, +pw: World, +pkey: String, +poperands: List<&2, Operand>) -> Part:
+  match pintr:
+    case True{}: PartFail{join_text(["the intrinsic constructor `", pkey, "` must be lowered to its primitive before C emission"])}
+    case False{}: construct_generic(pw, pkey, poperands)
+
+def construct_native(+pnative: Maybe<&2, String>, +pw: World, +pkey: String, +poperands: List<&2, Operand>) -> Part:
+  match pnative:
+    case None{}: construct_generic(pw, pkey, poperands)
+    case Some{marker}: construct_marker(intrinsic_marker(marker), pw, pkey, poperands)
+
+def construct_row(+pfound: Maybe<&2, BIR.ConstructorLayout>, +pw: World, +poperands: List<&2, Operand>) -> Part:
+  match pfound:
+    case None{}: PartFail{"BIR constructs a constructor with no layout row"}
+    case Some{row}:
+      match row:
+        case BIR.ConstructorLayout{id, key, native, fields}: construct_native(native, pw, key, poperands)
+
+def construct_part(+pconstructor: U32, +poperands: List<&2, Operand>, +pw: World) -> Part:
+  row = ctor_of(pconstructor, pw)
+  construct_row(row, pw, poperands)
+
+def term_decl_text(+pcount: Nat) -> String:
+  match pcount:
+    case 0n: ""
+    case _: join_text(["Term b0f[", Nat.show(pcount), "];"])
+
+def project_words(+pw: World, +playout: CLay.Layout, +poffset: Nat, +pcount: Nat, +pvalue: String) -> Part:
+  decl = [JText{join_text(["Term b0t = ", pvalue, ";", term_decl_text(pcount), "u64 b0s = term_rfc(b0t) ? ctr_take(e, b0t, ", Nat.show(pcount), ", b0f) : term_loc(b0t); u32 b0i = ", Nat.show(poffset), "; Term b0r = 0;"])}]
+  jobs = List.append(&2, Job, decl, unfill_jobs(pw, playout, SrcNode{"b0s", "b0f", "b0i", False{}}, "b0r", "b0"))
+  part_of(run_jobs(100000n, jobs, pw, Nil{}), "b0r")
+
+def project_packed(+pw: World, +playout: CLay.Layout, +pvalue: String) -> Part:
+  jobs = [JText{join_text(["Term b0t = ", pvalue, ";"])}] <> unfill_jobs(pw, playout, SrcOne{"((u64)term_loc(b0t))"}, "b0r", "b0")
+  part_of(run_jobs(100000n, jobs, pw, Nil{}), "b0r")
+
+def project_packed_flag(+ppacked: Bool, +pw: World, +playout: CLay.Layout, +poffset: Nat, +pcount: Nat, +pvalue: String) -> Part:
+  match ppacked:
+    case True{}: project_packed(pw, playout, pvalue)
+    case False{}: project_words(pw, playout, poffset, pcount, pvalue)
+
+def project_plan(+pplan: CLay.UnfillResult, +pw: World, +pnode: CLay.Node, +playout: CLay.Layout, +poffset: Nat, +pvalue: String) -> Part:
+  match pplan:
+    case CLay.UnfillFailed{message}: PartFail{message}
+    case CLay.UnfillFound{unfill}:
+      match pnode:
+        case CLay.Node{words, slots, packed}: project_packed_flag(packed, pw, playout, poffset, List.length(&2, CLay.CWord, words), pvalue)
+
+def project_slot(+pslot: CLay.SlotResult, +pw: World, +pnode: CLay.Node, +pkey: String, +pfield: U32, +pvalue: String) -> Part:
+  match pslot:
+    case CLay.SlotErased{}: PartFail{join_text(["the projection of `", pkey, "` names an erased field, which has no storage"])}
+    case CLay.SlotFailed{message}: PartFail{message}
+    case CLay.SlotFound{found}:
+      match found:
+        case CLay.NodeSlot{ordinal, offset, layout}:
+          match pw:
+            case World{ctx, constructors, families, cids}:
+              plan = CLay.slot_unfill(ctx, pkey, pfield)
+              project_plan(plan, pw, pnode, layout, offset, pvalue)
+
+def project_layout(+pnode: CLay.NodeResult, +pw: World, +pkey: String, +pfield: U32, +pvalue: String) -> Part:
+  match pnode:
+    case CLay.NodeFailed{message}: PartFail{message}
+    case CLay.NodeFound{node}:
+      match pw:
+        case World{ctx, constructors, families, cids}:
+          slot = CLay.node_slot(ctx, pkey, pfield)
+          project_slot(slot, pw, node, pkey, pfield, pvalue)
+
+def project_node(+pw: World, +pkey: String, +pfield: U32, +pvalue: String) -> Part:
+  match pw:
+    case World{ctx, constructors, families, cids}:
+      node = CLay.node_layout(ctx, pkey)
+      project_layout(node, pw, pkey, pfield, pvalue)
+
+def project_marker(+pintr: Bool, +pvalue: String, +pkey: String, +pfield: U32, +pw: World) -> Part:
+  match pintr:
+    case True{}: PartFail{join_text(["the intrinsic constructor `", pkey, "` must be lowered to its primitive before C projection"])}
+    case False{}: project_node(pw, pkey, pfield, pvalue)
+
+def project_native(+pnative: Maybe<&2, String>, +pvalue: String, +pkey: String, +pfield: U32, +pw: World) -> Part:
+  match pnative:
+    case None{}: project_node(pw, pkey, pfield, pvalue)
+    case Some{marker}: project_marker(intrinsic_marker(marker), pvalue, pkey, pfield, pw)
+
+def project_row(+pfound: Maybe<&2, BIR.ConstructorLayout>, +pvalue: String, +pfield: U32, +pw: World) -> Part:
+  match pfound:
+    case None{}: PartFail{"BIR projects a constructor with no layout row"}
+    case Some{row}:
+      match row:
+        case BIR.ConstructorLayout{id, key, native, fields}: project_native(native, pvalue, key, pfield, pw)
+
+def project_part(+pvalue: String, +pconstructor: U32, +pfield: U32, +pw: World) -> Part:
+  row = ctor_of(pconstructor, pw)
+  project_row(row, pvalue, pfield, pw)
+
+def hastag_bools(+pt: Maybe<&2, String>, +pf: Maybe<&2, String>, +pcid: U32, +pvalue: String) -> Part:
+  match pt:
+    case None{}: PartFail{"the C runtime contract needs the `True` constructor for a tag test"}
+    case Some{tc}:
+      match pf:
+        case None{}: PartFail{"the C runtime contract needs the `False` constructor for a tag test"}
+        case Some{fc}: PartOk{join_text(["bend_bool(e, ", tc, ", ", fc, ", (u64)bend_hastag(", pvalue, ", ", U32.show(pcid), "u))"])}
+
+def hastag_cid(+pfound: Maybe<&2, U32>, +pvalue: String, +pw: World) -> Part:
+  match pfound:
+    case None{}: PartFail{"the tagged constructor has no canonical CID row"}
+    case Some{cid}: hastag_bools(cid_text("True", pw), cid_text("False", pw), cid, pvalue)
+
+def hastag_row(+pfound: Maybe<&2, BIR.ConstructorLayout>, +pvalue: String, +pw: World) -> Part:
+  match pfound:
+    case None{}: PartFail{"BIR has-tags a constructor with no layout row"}
+    case Some{row}:
+      match row:
+        case BIR.ConstructorLayout{id, key, native, fields}: hastag_cid(cid_of(key, pw), pvalue, pw)
+
+def hastag_part(+pvalue: String, +pconstructor: U32, +pw: World) -> Part:
+  row = ctor_of(pconstructor, pw)
+  hastag_row(row, pvalue, pw)
+
+# ---------------------------------------------------------------------------
+# Arrays
+# ---------------------------------------------------------------------------
+
+def arr_flag(+parr: Bool) -> String:
+  match parr:
+    case True{}: "true"
+    case False{}: "false"
+
+def array_label(+pprimitive: BIR.Primitive) -> String:
+  match pprimitive:
+    case BIR.PrimArrayNew{}: "array_new"
+    case BIR.PrimArrayGet{}: "array_get"
+    case BIR.PrimArraySet{}: "array_set"
+    case BIR.PrimArraySwap{}: "array_swap"
+    case BIR.PrimArraySize{}: "array_size"
+    case BIR.PrimArrayClone{}: "array_clone"
+    case BIR.PrimArrayLeaf{}: "array_leaf"
+    case BIR.PrimArrayNode{}: "array_node"
+    case BIR.PrimArrayLeafValue{}: "array_leaf_value"
+    case BIR.PrimArrayLeft{}: "array_left"
+    case BIR.PrimArrayRight{}: "array_right"
+    case BIR.PrimIsArrayLeaf{}: "is_array_leaf"
+    case BIR.PrimIsArrayNode{}: "is_array_node"
+    case _: "array"
+
+def array_cell_result(+pcell: CLay.CellResult) -> CellOut:
+  match pcell:
+    case CLay.CellFailed{message}: CellFail{message}
+    case CLay.CellFound{cell}:
+      match cell:
+        case CLay.Cell{layout, arr, words, lgs}: CellOk{layout, arr, words, lgs}
+
+def array_cell(+pw: World, +ptypes: List<&2, BIR.Descriptor>, +pprimitive: BIR.Primitive) -> CellOut:
+  match ptypes:
+    case Nil{}: CellFail{join_text(["the array primitive `", array_label(pprimitive), "` carries no instantiated element Descriptor; lowering must supply PrimitiveCall.types"])}
+    case +element <> Nil{}:
+      match pw:
+        case World{ctx, constructors, families, cids}: array_cell_result(CLay.array_cell(ctx, element))
+    case _: CellFail{join_text(["the array primitive `", array_label(pprimitive), "` must carry exactly one element Descriptor"])}
+
+def operand_at(+pargs: List<&2, Operand>, +pindex: Nat) -> Maybe<&2, Operand>:
+  match pargs:
+    case Nil{}: None{}
+    case +arg <> +rest:
+      match pindex:
+        case 0n: Some{arg}
+        case 1n+left: operand_at(rest, left)
+
+def operand_text(+poperand: Operand) -> String:
+  match poperand:
+    case Operand{use, text}: text
+
+def operand_use(+poperand: Operand) -> BIR.Use:
+  match poperand:
+    case Operand{use, text}: use
+
+def keep_text(+poperand: Operand) -> String:
+  match poperand:
+    case Operand{use, text}:
+      match use:
+        case BIR.Many{}: join_text(["term_keep(e, ", text, ", 1)"])
+        case _: text
+
+def tuple_cid(+pt: Maybe<&2, String>, +parray: String, +pelement: String) -> Part:
+  match pt:
+    case Some{tc}: PartOk{join_text(["bend_tuple(e, ", tc, ", ", parray, ", ", pelement, ")"])}
+    case None{}: PartFail{"the C runtime contract needs the `Tuple` constructor for an array result"}
+
+def tuple_part(+pw: World, +parray: String, +pelement: String) -> Part:
+  tuple_cid(cid_text("Tuple", pw), parray, pelement)
+
+def seal_cell_box(+puse: BIR.Use, +pcur: String) -> List<&2, Job>:
+  match puse:
+    case BIR.Many{}: [JText{join_text(["w0[", pcur, "] = term_keep(e, w0[", pcur, "], 1); ", pcur, " += 1;"])}]
+    case _: [JText{join_text([pcur, " += 1;"])}]
+
+def seal_cell_kind(+puse: BIR.Use, +pkind: CLay.CWord, +pcur: String) -> List<&2, Job>:
+  match pkind:
+    case CLay.CWord32{}: [JText{join_text([pcur, " += 1;"])}]
+    case CLay.CWord64{}: [JText{join_text([pcur, " += 1;"])}]
+    case CLay.CWordBox{}: seal_cell_box(puse, pcur)
+
+def seal_cell_walk(+puse: BIR.Use, +pkinds: List<&2, CLay.CWord>, +pcur: String) -> List<&2, Job>:
+  match pkinds:
+    case Nil{}: Nil{}
+    case +kind <> +rest: seal_cell_kind(puse, kind, pcur) <> seal_cell_walk(puse, rest, pcur)
+
+def elem_fill_operand(+pw: World, +playout: CLay.Layout, +puse: BIR.Use, +pcode: Code, +pterm: String, +ptag: String) -> List<&2, Job>:
+  code_jobs(pcode) <> fill_jobs(pw, playout, pterm, DstSeq{"w0", "o0"}, ptag) <> [JText{"c0 = 0;"}] <> seal_cell_walk(puse, CLay.layout_kinds(playout), "c0")
+
+def elem_fill(+pw: World, +playout: CLay.Layout, +puse: BIR.Use, +ptext: String, +ptag: String) -> List<&2, Job>:
+  elem_fill_operand(pw, playout, puse, operand_code(playout, puse, ptext, ptag), operand_name(playout, puse, ptext, ptag), ptag)
+
+def elem_stores(+pwords: Nat) -> String:
+  join_text(["Term f0[", Nat.show(pwords), "]; for (u32 f0i = 0; f0i < ", Nat.show(pwords), "; f0i += 1) { f0[f0i] = w0[f0i]; }"])
+
+def elem_decl(+pwords: Nat) -> String:
+  dst_decl("w0", "o0", pwords)
+
+def run_part(+pjobs: List<&2, Job>, +pw: World, +pexpression: String) -> Part:
+  part_of(run_jobs(100000n, pjobs, pw, Nil{}), pexpression)
+
+def array_new_ops(+pdim: Maybe<&2, Operand>, +pvalue: Maybe<&2, Operand>, +pw: World, +playout: CLay.Layout, +parr: Bool, +pwords: Nat, +plgs: Nat) -> Part:
+  match pdim:
+    case None{}: PartFail{"array_new needs the dimension and the value"}
+    case Some{dim}:
+      match pvalue:
+        case None{}: PartFail{"array_new needs the dimension and the value"}
+        case Some{value}:
+          head = [JText{elem_decl(pwords)}]
+          tail = List.append(&2, Job, [JText{elem_stores(pwords)}], Nil{})
+          jobs = List.append(&2, Job, head, List.append(&2, Job, elem_fill(pw, playout, operand_use(value), operand_text(value), "an"), tail))
+          run_part(jobs, pw, join_text(["blk_new(e, ", arr_flag(parr), ", (u64)(", operand_text(dim), "), ", Nat.show(plgs), ", ", Nat.show(pwords), ", f0)"]))
+
+def tuple_and_code(+ptuple: Part, +pcode: Code) -> Part:
+  match ptuple:
+    case PartFail{message}: PartFail{message}
+    case PartOk{text}: part_of(pcode, text)
+
+def array_get_ops(+parray: Maybe<&2, Operand>, +pindex: Maybe<&2, Operand>, +pw: World, +playout: CLay.Layout, +parr: Bool, +plgs: Nat) -> Part:
+  match parray:
+    case None{}: PartFail{"array_get needs the array and the index"}
+    case Some{array}:
+      match pindex:
+        case None{}: PartFail{"array_get needs the array and the index"}
+        case Some{index}:
+          decl = [JText{join_text(["Term a0 = ", keep_text(array), "; Term i0 = ", operand_text(index), "; u64 l0 = blk_loc(e.mem, a0); u32 g0 = (u32)blk_at(a0, (u64)(u32)i0, ", Nat.show(plgs), "); u32 c0 = 0; Term r0 = 0;"])}]
+          jobs = List.append(&2, Job, decl, unfill_jobs(pw, playout, SrcBlock{"l0", "g0", parr, True{}, "c0"}, "r0", "ag"))
+          code = run_jobs(100000n, jobs, pw, Nil{})
+          tuple_and_code(tuple_part(pw, "a0", "r0"), code)
+
+def kinds_jobs(+pkinds: List<&2, CLay.CWord>, +pcur: String) -> List<&2, Job>:
+  match pkinds:
+    case Nil{}: Nil{}
+    case +kind <> +rest:
+      match kind:
+        case CLay.CWord32{}: [JText{join_text([pcur, " += 1;"])}] <> kinds_jobs(rest, pcur)
+        case CLay.CWord64{}: [JText{join_text([pcur, " += 1;"])}] <> kinds_jobs(rest, pcur)
+        case CLay.CWordBox{}: [JText{join_text(["old0[", pcur, "] = blk_read(e.mem, true, l0, g0 + ", pcur, "); ", pcur, " += 1;"])}] <> kinds_jobs(rest, pcur)
+
+def old_read_box(+parr: Bool, +pcur: String) -> List<&2, Job>:
+  match parr:
+    case True{}: [JText{join_text(["old0[", pcur, "] = blk_read(e.mem, true, l0, g0 + ", pcur, "); ", pcur, " += 1;"])}]
+    case False{}: [JText{join_text(["old0[", pcur, "] = 0; ", pcur, " += 1;"])}]
+
+def kinds_box_jobs(+pkinds: List<&2, CLay.CWord>, +pcur: String, +parr: Bool) -> List<&2, Job>:
+  match pkinds:
+    case Nil{}: Nil{}
+    case +kind <> +rest:
+      match kind:
+        case CLay.CWord32{}: [JText{join_text([pcur, " += 1;"])}] <> kinds_box_jobs(rest, pcur, parr)
+        case CLay.CWord64{}: [JText{join_text([pcur, " += 1;"])}] <> kinds_box_jobs(rest, pcur, parr)
+        case CLay.CWordBox{}: old_read_box(parr, pcur) <> kinds_box_jobs(rest, pcur, parr)
+
+def old_sink_jobs(+pkinds: List<&2, CLay.CWord>, +pcur: String) -> List<&2, Job>:
+  match pkinds:
+    case Nil{}: Nil{}
+    case +kind <> +rest:
+      match kind:
+        case CLay.CWordBox{}: [JText{join_text(["term_sink(e, old0[", pcur, "]); ", pcur, " += 1;"])}] <> old_sink_jobs(rest, pcur)
+        case _: [JText{join_text([pcur, " += 1;"])}] <> old_sink_jobs(rest, pcur)
+
+def write_jobs(+parr: Bool, +pkinds: List<&2, CLay.CWord>, +pcur: String) -> List<&2, Job>:
+  match pkinds:
+    case Nil{}: Nil{}
+    case +kind <> +rest: [JText{join_text(["blk_write(e.mem, ", arr_flag(parr), ", l0, g0 + ", pcur, ", w0[", pcur, "]); ", pcur, " += 1;"])}] <> write_jobs(parr, rest, pcur)
+
+def array_set_run(+parray: Operand, +pindex: Operand, +pvalue: Operand, +pw: World, +playout: CLay.Layout, +parr: Bool, +pwords: Nat, +plgs: Nat) -> Part:
+  kinds = CLay.layout_kinds(playout)
+  decl = [JText{join_text(["Term a0 = ", keep_text(parray), "; Term i0 = ", operand_text(pindex), "; u64 l0 = blk_loc(e.mem, a0); u32 g0 = (u32)blk_at(a0, (u64)(u32)i0, ", Nat.show(plgs), "); Term old0[", Nat.show(pwords), "]; u32 c0 = 0;"])}]
+  old = kinds_box_jobs(kinds, "c0", parr)
+  rest = List.append(&2, Job, [JText{"c0 = 0;"}], List.append(&2, Job, write_jobs(parr, kinds, "c0"), List.append(&2, Job, [JText{"c0 = 0;"}], old_sink_jobs(kinds, "c0"))))
+  jobs = List.append(&2, Job, decl, List.append(&2, Job, old, List.append(&2, Job, [JText{elem_decl(pwords)}], List.append(&2, Job, elem_fill(pw, playout, operand_use(pvalue), operand_text(pvalue), "as"), rest))))
+  part_of(run_jobs(100000n, jobs, pw, Nil{}), "a0")
+
+def array_set_ops(+parray: Maybe<&2, Operand>, +pindex: Maybe<&2, Operand>, +pvalue: Maybe<&2, Operand>, +pw: World, +playout: CLay.Layout, +parr: Bool, +pwords: Nat, +plgs: Nat) -> Part:
+  match parray:
+    case None{}: PartFail{"array_set needs the array, the index and the value"}
+    case Some{array}:
+      match pindex:
+        case None{}: PartFail{"array_set needs the array, the index and the value"}
+        case Some{index}:
+          match pvalue:
+            case None{}: PartFail{"array_set needs the array, the index and the value"}
+            case Some{value}: array_set_run(array, index, value, pw, playout, parr, pwords, plgs)
+
+def array_swap_run(+parray: Operand, +pindex: Operand, +pvalue: Operand, +pw: World, +playout: CLay.Layout, +parr: Bool, +pwords: Nat, +plgs: Nat) -> Part:
+  kinds = CLay.layout_kinds(playout)
+  decl = [JText{join_text(["Term a0 = ", keep_text(parray), "; Term i0 = ", operand_text(pindex), "; u64 l0 = blk_loc(e.mem, a0); u32 g0 = (u32)blk_at(a0, (u64)(u32)i0, ", Nat.show(plgs), "); Term old0[", Nat.show(pwords), "]; u32 c0 = 0; Term r0 = 0;"])}]
+  old = kinds_box_jobs(kinds, "c0", parr)
+  unfill = unfill_jobs(pw, playout, SrcBuf{"old0", "oc0"}, "r0", "awold")
+  rest = List.append(&2, Job, [JText{"c0 = 0;"}], List.append(&2, Job, write_jobs(parr, kinds, "c0"), List.append(&2, Job, [JText{"u32 oc0 = 0;"}], unfill)))
+  jobs = List.append(&2, Job, decl, List.append(&2, Job, old, List.append(&2, Job, [JText{elem_decl(pwords)}], List.append(&2, Job, elem_fill(pw, playout, operand_use(pvalue), operand_text(pvalue), "aw"), rest))))
+  code = run_jobs(100000n, jobs, pw, Nil{})
+  tuple_and_code(tuple_part(pw, "a0", "r0"), code)
+
+def array_swap_ops(+parray: Maybe<&2, Operand>, +pindex: Maybe<&2, Operand>, +pvalue: Maybe<&2, Operand>, +pw: World, +playout: CLay.Layout, +parr: Bool, +pwords: Nat, +plgs: Nat) -> Part:
+  match parray:
+    case None{}: PartFail{"array_swap needs the array, the index and the value"}
+    case Some{array}:
+      match pindex:
+        case None{}: PartFail{"array_swap needs the array, the index and the value"}
+        case Some{index}:
+          match pvalue:
+            case None{}: PartFail{"array_swap needs the array, the index and the value"}
+            case Some{value}: array_swap_run(array, index, value, pw, playout, parr, pwords, plgs)
+
+def array_size_ops(+parray: Maybe<&2, Operand>, +pw: World, +plgs: Nat) -> Part:
+  match parray:
+    case Some{array}:
+      code = run_jobs(100000n, [JText{join_text(["Term a0 = ", keep_text(array), ";"])}], pw, Nil{})
+      tuple_and_code(tuple_part(pw, "a0", join_text(["(1ull << (blk_cls(a0) - ", Nat.show(plgs), "))"])), code)
+    case None{}: PartFail{"array_size needs the array"}
+
+def array_clone_ops(+parray: Maybe<&2, Operand>, +pw: World) -> Part:
+  match parray:
+    case Some{array}:
+      code = run_jobs(100000n, [JText{join_text(["Term a0 = ", keep_text(array), ";"])}], pw, Nil{})
+      tuple_and_code(tuple_part(pw, "a0", "blk_copy(e, a0)"), code)
+    case None{}: PartFail{"array_clone needs the array"}
+
+def array_leaf_ops(+pvalue: Maybe<&2, Operand>, +pw: World, +playout: CLay.Layout, +parr: Bool, +pwords: Nat, +plgs: Nat) -> Part:
+  match pvalue:
+    case Some{value}:
+      jobs = List.append(&2, Job, [JText{elem_decl(pwords)}], List.append(&2, Job, elem_fill(pw, playout, operand_use(value), operand_text(value), "al"), [JText{elem_stores(pwords)}]))
+      run_part(jobs, pw, join_text(["blk_new(e, ", arr_flag(parr), ", 0, ", Nat.show(plgs), ", ", Nat.show(pwords), ", f0)"]))
+    case None{}: PartFail{"array_leaf needs the element value"}
+
+def array_node_ops(+pleft: Maybe<&2, Operand>, +pright: Maybe<&2, Operand>) -> Part:
+  match pleft:
+    case None{}: PartFail{"array_node needs the two halves"}
+    case Some{left}:
+      match pright:
+        case None{}: PartFail{"array_node needs the two halves"}
+        case Some{right}: PartOk{join_text(["blk_node(e, ", keep_text(left), ", ", keep_text(right), ")"])}
+
+def array_leaf_value_use(+puse: BIR.Use, +pw: World, +playout: CLay.Layout, +parr: Bool, +parray: Operand) -> Part:
+  match puse:
+    case BIR.Many{}:
+      decl = [JText{join_text(["Term a0 = term_keep(e, ", operand_text(parray), ", 1); u64 l0 = blk_loc(e.mem, a0); Term r0 = 0; u32 c0 = 0;"])}]
+      part_of(run_jobs(100000n, List.append(&2, Job, decl, unfill_jobs(pw, playout, SrcBlock{"l0", "0", parr, True{}, "c0"}, "r0", "av")), pw, Nil{}), "r0")
+    case _:
+      decl = [JText{join_text(["Term a0 = ", operand_text(parray), "; u64 l0 = blk_loc(e.mem, a0); Term r0 = 0; u32 c0 = 0;"])}]
+      jobs = List.append(&2, Job, decl, List.append(&2, Job, unfill_jobs(pw, playout, SrcBlock{"l0", "0", parr, False{}, "c0"}, "r0", "av"), [JText{"blk_free(e, a0);"}]))
+      part_of(run_jobs(100000n, jobs, pw, Nil{}), "r0")
+
+def array_leaf_value_ops(+parray: Maybe<&2, Operand>, +pw: World, +playout: CLay.Layout, +parr: Bool) -> Part:
+  match parray:
+    case Some{array}: array_leaf_value_use(operand_use(array), pw, playout, parr, array)
+    case None{}: PartFail{"array_leaf_value needs the leaf"}
+
+def array_half_ops(+parray: Maybe<&2, Operand>, +phi: Nat) -> Part:
+  match parray:
+    case Some{array}: PartOk{join_text(["blk_half(e, ", keep_text(array), ", ", Nat.show(phi), ")"])}
+    case None{}: PartFail{"an array half needs the node"}
+
+def array_is_cond(+pwhich: Nat, +parray: Operand) -> String:
+  match pwhich:
+    case 0n: join_text(["((u32)blk_cls(", operand_text(parray), ") == 0)"])
+    case _: join_text(["((u32)blk_cls(", operand_text(parray), ") != 0)"])
+
+def array_is_bools(+pt: Maybe<&2, String>, +pf: Maybe<&2, String>, +pwhich: Nat, +parray: Operand) -> Part:
+  match pt:
+    case None{}: PartFail{"the C runtime contract needs the `True` constructor for an array tag test"}
+    case Some{tc}:
+      match pf:
+        case None{}: PartFail{"the C runtime contract needs the `False` constructor for an array tag test"}
+        case Some{fc}: PartOk{join_text(["bend_bool(e, ", tc, ", ", fc, ", (u64)", array_is_cond(pwhich, parray), ")"])}
+
+def array_is_ops(+parray: Maybe<&2, Operand>, +pwhich: Nat, +pw: World) -> Part:
+  match parray:
+    case Some{array}: array_is_bools(cid_text("True", pw), cid_text("False", pw), pwhich, array)
+    case None{}: PartFail{"an array tag test needs the array"}
+
+def array_new_cell(+pcell: CellOut, +pargs: List<&2, Operand>, +pw: World) -> Part:
+  match pcell:
+    case CellFail{message}: PartFail{message}
+    case CellOk{layout, arr, words, lgs}: array_new_ops(operand_at(pargs, 0n), operand_at(pargs, 1n), pw, layout, arr, words, lgs)
+
+def array_get_cell(+pcell: CellOut, +pargs: List<&2, Operand>, +pw: World) -> Part:
+  match pcell:
+    case CellFail{message}: PartFail{message}
+    case CellOk{layout, arr, words, lgs}: array_get_ops(operand_at(pargs, 0n), operand_at(pargs, 1n), pw, layout, arr, lgs)
+
+def array_set_cell(+pcell: CellOut, +pargs: List<&2, Operand>, +pw: World) -> Part:
+  match pcell:
+    case CellFail{message}: PartFail{message}
+    case CellOk{layout, arr, words, lgs}: array_set_ops(operand_at(pargs, 0n), operand_at(pargs, 1n), operand_at(pargs, 2n), pw, layout, arr, words, lgs)
+
+def array_swap_cell(+pcell: CellOut, +pargs: List<&2, Operand>, +pw: World) -> Part:
+  match pcell:
+    case CellFail{message}: PartFail{message}
+    case CellOk{layout, arr, words, lgs}: array_swap_ops(operand_at(pargs, 0n), operand_at(pargs, 1n), operand_at(pargs, 2n), pw, layout, arr, words, lgs)
+
+def array_size_cell(+pcell: CellOut, +pargs: List<&2, Operand>, +pw: World) -> Part:
+  match pcell:
+    case CellFail{message}: PartFail{message}
+    case CellOk{layout, arr, words, lgs}: array_size_ops(operand_at(pargs, 0n), pw, lgs)
+
+def array_clone_cell(+pcell: CellOut, +pargs: List<&2, Operand>, +pw: World) -> Part:
+  match pcell:
+    case CellFail{message}: PartFail{message}
+    case CellOk{layout, arr, words, lgs}: array_clone_ops(operand_at(pargs, 0n), pw)
+
+def array_leaf_cell(+pcell: CellOut, +pargs: List<&2, Operand>, +pw: World) -> Part:
+  match pcell:
+    case CellFail{message}: PartFail{message}
+    case CellOk{layout, arr, words, lgs}: array_leaf_ops(operand_at(pargs, 0n), pw, layout, arr, words, lgs)
+
+def array_leaf_value_cell(+pcell: CellOut, +pargs: List<&2, Operand>, +pw: World) -> Part:
+  match pcell:
+    case CellFail{message}: PartFail{message}
+    case CellOk{layout, arr, words, lgs}: array_leaf_value_ops(operand_at(pargs, 0n), pw, layout, arr)
+
+def array_part(+pprimitive: BIR.Primitive, +pargs: List<&2, Operand>, +ptypes: List<&2, BIR.Descriptor>, +pw: World) -> Part:
+  match pprimitive:
+    case BIR.PrimArrayNew{}: array_new_cell(array_cell(pw, ptypes, pprimitive), pargs, pw)
+    case BIR.PrimArrayGet{}: array_get_cell(array_cell(pw, ptypes, pprimitive), pargs, pw)
+    case BIR.PrimArraySet{}: array_set_cell(array_cell(pw, ptypes, pprimitive), pargs, pw)
+    case BIR.PrimArraySwap{}: array_swap_cell(array_cell(pw, ptypes, pprimitive), pargs, pw)
+    case BIR.PrimArraySize{}: array_size_cell(array_cell(pw, ptypes, pprimitive), pargs, pw)
+    case BIR.PrimArrayClone{}: array_clone_cell(array_cell(pw, ptypes, pprimitive), pargs, pw)
+    case BIR.PrimArrayLeaf{}: array_leaf_cell(array_cell(pw, ptypes, pprimitive), pargs, pw)
+    case BIR.PrimArrayNode{}: array_node_ops(operand_at(pargs, 0n), operand_at(pargs, 1n))
+    case BIR.PrimArrayLeafValue{}: array_leaf_value_cell(array_cell(pw, ptypes, pprimitive), pargs, pw)
+    case BIR.PrimArrayLeft{}: array_half_ops(operand_at(pargs, 0n), 0n)
+    case BIR.PrimArrayRight{}: array_half_ops(operand_at(pargs, 0n), 1n)
+    case BIR.PrimIsArrayLeaf{}: array_is_ops(operand_at(pargs, 0n), 0n, pw)
+    case BIR.PrimIsArrayNode{}: array_is_ops(operand_at(pargs, 0n), 1n, pw)
+    case _: PartFail{"this primitive is not an array operation"}
+
+def is_array_primitive(+pprimitive: BIR.Primitive) -> Bool:
+  match pprimitive:
+    case BIR.PrimArrayNew{}: True{}
+    case BIR.PrimArrayGet{}: True{}
+    case BIR.PrimArraySet{}: True{}
+    case BIR.PrimArraySwap{}: True{}
+    case BIR.PrimArraySize{}: True{}
+    case BIR.PrimArrayClone{}: True{}
+    case BIR.PrimArrayLeaf{}: True{}
+    case BIR.PrimArrayNode{}: True{}
+    case BIR.PrimArrayLeafValue{}: True{}
+    case BIR.PrimArrayLeft{}: True{}
+    case BIR.PrimArrayRight{}: True{}
+    case BIR.PrimIsArrayLeaf{}: True{}
+    case BIR.PrimIsArrayNode{}: True{}
+    case _: False{}
+
+# ---------------------------------------------------------------------------
+# SHOW_DESC / SHOW_NAMES
+# ---------------------------------------------------------------------------
+#
+# The descriptor is ONE FLAT WORD ARRAY: a cell's id is the WORD OFFSET where
+# its cell starts (show.push(kind) - 1 in the reference); every reference slot
+# holds that offset, patched when the child is processed. kind = position of
+# the normalized key in U32 F32 Nat Char String . Array & 7 (Eql 5), else 7.
+# Char [3, box]; Array [6, element offset, lgs]; Data [7, box, arm count] then
+# per arm [name index, cid, field count, bracket] (Tuple 2, Con/Nil 1) then per
+# field [offset, cell]. box = 1 iff the storage layout is one Term; field
+# offsets start at the tag word (!box && arms > 1) and advance by the field
+# layout's words. Cells are memoized on full normalized (type, layout) identity
+# BEFORE their children. SHOW_NAMES is the arm names in first-emission order.
+# An erased field refuses the build.
+
+def show_state0() -> ShowState:
+  ShowState{Nil{}, Nil{}, Map.new(&2, Nat), Nil{}, None{}}
+
+def show_words(+pst: ShowState) -> List<&2, ShowWord>:
+  match pst:
+    case ShowState{words, patches, memo, names, error}: words
+
+def show_patches(+pst: ShowState) -> List<&2, ShowPatch>:
+  match pst:
+    case ShowState{words, patches, memo, names, error}: patches
+
+def show_memo(+pst: ShowState) -> Map<&2, Nat>:
+  match pst:
+    case ShowState{words, patches, memo, names, error}: memo
+
+def show_names(+pst: ShowState) -> List<&2, String>:
+  match pst:
+    case ShowState{words, patches, memo, names, error}: names
+
+def show_error(+pst: ShowState) -> Maybe<&2, String>:
+  match pst:
+    case ShowState{words, patches, memo, names, error}: error
+
+def show_state_set_memo(+pst: ShowState, +pmemo: Map<&2, Nat>) -> ShowState:
+  match pst:
+    case ShowState{words, patches, memo, names, error}: ShowState{words, patches, pmemo, names, error}
+
+def show_state_error(+pst: ShowState, +pmessage: String) -> ShowState:
+  match pst:
+    case ShowState{words, patches, memo, names, error}: ShowState{words, patches, memo, names, Some{pmessage}}
+
+def show_next_state(+padv: ShowAdvance) -> ShowState:
+  match padv:
+    case ShowNext{state, kids}: state
+
+def show_next_kids(+padv: ShowAdvance) -> List<&2, ShowJob>:
+  match padv:
+    case ShowNext{state, kids}: kids
+
+def show_append_word(+pst: ShowState, +pword: ShowWord) -> ShowState:
+  match pst:
+    case ShowState{words, patches, memo, names, error}: ShowState{List.append(&2, ShowWord, words, [pword]), patches, memo, names, error}
+
+def show_append_num(+pst: ShowState, +pvalue: Nat) -> ShowState:
+  show_append_word(pst, ShowNum{pvalue})
+
+def show_append_cid(+pst: ShowState, +pvalue: Nat) -> ShowState:
+  show_append_word(pst, ShowCid{pvalue})
+
+def show_append_name(+pst: ShowState, +pname: String) -> ShowState:
+  match pst:
+    case ShowState{words, patches, memo, names, error}: ShowState{words, patches, memo, List.append(&2, String, names, [pname]), error}
+
+def show_append_patch(+pst: ShowState, +pat: Nat, +pto: Nat) -> ShowState:
+  match pst:
+    case ShowState{words, patches, memo, names, error}: ShowState{words, List.append(&2, ShowPatch, [ShowPatchAt{pat, pto}], patches), memo, names, error}
+
+def show_apply_patch(+pst: ShowState, +ppatch: Maybe<&2, Nat>, +pto: Nat) -> ShowState:
+  match ppatch:
+    case Some{at}: show_append_patch(pst, at, pto)
+    case None{}: pst
+
+def show_name_kind(+pname: String) -> Nat:
+  match pname:
     case "U32": 0n
     case "F32": 1n
     case "Nat": 2n
@@ -190,414 +1227,468 @@ def native_kind(native: String) -> Nat:
     case "Array": 6n
     case _: 7n
 
-def show_array_cell(ctx: CLay.Context, ty: BIR.Descriptor, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState) -> Step:
-  m13 = descriptor_args(ty)
-  match m13:
-    case +element <> rest:
-      m14 = CLay.array_cell(ctx, element)
-      match m14:
-        case CLay.CellFailed{message}: Step{False{}, message, 0n, st}
-        case CLay.CellFound{cell}:
-          match cell:
-            case CLay.Cell{layout, arr, words, lgs}:
-              m15 = append_num(st, 6n)
-              match m15:
-                case AppendOut{state, at}:
-                  m16 = append_num(state, 0n)
-                  match m16:
-                    case AppendOut{state: p1, at: slot}:
-                      m17 = append_num(p1, lgs)
-                      match m17:
-                        case AppendOut{state: p2, at: _}:
-                          m18 = CLay.value_layout(ctx, element)
-                          match m18:
-                            case CLay.LayoutFailed{message}: Step{False{}, message, 0n, p2}
-                            case CLay.LayoutFound{layout}:
-                              m19 = show_node(ctx, element, layout, families, constructors, p2)
-                              match m19:
-                                case Step{ok, message, id, state: after}:
-                                  match ok:
-                                    case True{}: Step{True{}, "", at, append_patch(after, slot, id)}
-                                    case False{}: Step{False{}, message, 0n, after}
-    case Nil{}: Step{False{}, "an Array descriptor without an element type cannot be printed", 0n, st}
+def last_segment_list(+pparts: List<&2, String>, +pprevious: String) -> String:
+  match pparts:
+    case Nil{}: pprevious
+    case +part <> +rest: last_segment_list(rest, part)
 
-def show_data_cell(ctx: CLay.Context, ty: BIR.Descriptor, layout: CLay.Layout, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState) -> Step:
-  m20 = descriptor_head(ty)
-  match m20:
-    case None{}: Step{False{}, "a datatype without a key cannot be printed", 0n, st}
-    case Some{key}:
-      m21 = family_arms_of(key, families)
-      match m21:
-        case None{}: Step{False{}, cat(["the datatype `", key, "` has no constructors"]), 0n, st}
-        case Some{arms}:
-          box = box_flag(layout)
-          count = List.length(&2, BIR.DescriptorArm, arms)
-          m22 = append_num(st, 7n)
-          match m22:
-            case AppendOut{state, at}:
-              m23 = append_num(state, box)
-              match m23:
-                case AppendOut{state: p1, at: _}:
-                  m24 = append_num(p1, count)
-                  match m24:
-                    case AppendOut{state: p2, at: _}:
-                      m25 = show_arms(ctx, ty, arms, layout, box, count, families, constructors, p2, 0n)
-                      match m25:
-                        case Step{ok, message, id, state: after}:
-                          match ok:
-                            case True{}: Step{True{}, "", at, after}
-                            case False{}: Step{False{}, message, 0n, after}
+def last_segment(+pkey: String) -> String:
+  last_segment_list(String.split(pkey, '.'), "")
 
-def show_arms(ctx: CLay.Context, ty: BIR.Descriptor, arms: List<&2, BIR.DescriptorArm>, layout: CLay.Layout, box: Nat, count: Nat, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState, name_index: Nat) -> Step:
-  match arms:
-    case Nil{}: Step{True{}, "", 0n, st}
-    case +arm <> rest:
-      match arm:
-        case BIR.DescriptorArm{key, fields: _}:
-          m24 = CLay.arm_fields(ctx, key, ty)
-          match m24:
-            case CLay.FieldsFailed{message}: Step{False{}, message, 0n, st}
-            case CLay.FieldsFound{fields}: show_arm_one(ctx, ty, rest, key, fields, layout, box, count, families, constructors, st, name_index)
+def show_kind_head(+phead: CLay.HeadResult) -> ShowKind:
+  match phead:
+    case CLay.HeadFailed{message}: ShowKindFailed{message}
+    case CLay.HeadBoxed{reason}: ShowKindFailed{"main's type is abstract or open and cannot be printed"}
+    case CLay.HeadFound{key, native}: ShowKindOk{show_name_kind(last_segment(key))}
 
-def show_arm_one(ctx: CLay.Context, ty: BIR.Descriptor, rest: List<&2, BIR.DescriptorArm>, key: String, fields: List<&2, BIR.DescriptorField>, layout: CLay.Layout, box: Nat, count: Nat, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState, name_index: Nat) -> Step:
-          m26 = append_num(st, name_index)
-          match m26:
-            case AppendOut{state, at}:
-              m27 = append_cid(state, cid_index(key, constructors, 0n))
-              match m27:
-                case AppendOut{state: p1, at: _}:
-                  m28 = append_num(p1, live_count(fields))
-                  match m28:
-                    case AppendOut{state: p2, at: _}:
-                      m29 = append_num(p2, arm_bracket(key))
-                      match m29:
-                        case AppendOut{state: p3, at: _}:
-                          m30 = show_arm_fields(ctx, key, fields, layout, box, count, families, constructors, p3)
-                          match m30:
-                            case Step{ok, message, id, state: after}:
-                              match ok:
-                                case True{}: show_arms(ctx, ty, rest, layout, box, count, families, constructors, after, nat_inc(name_index))
-                                case False{}: Step{False{}, message, 0n, after}
+def show_kind(+pctx: CLay.Context, +pty: BIR.Descriptor) -> ShowKind:
+  head = CLay.head_native(pctx, pty)
+  show_kind_head(head)
 
-def nat_inc(value: Nat) -> Nat:
-  Nat.add(value, 1n)
+def show_box_flag(+playout: CLay.Layout) -> Nat:
+  match playout:
+    case CLay.LayoutBox{reason}: 1n
+    case _: 0n
 
-def arm_bracket(key: String) -> Nat:
-  m31 = last_segment(key)
-  match m31:
+def show_tag_plain(+pcount: Nat) -> Nat:
+  match pcount:
+    case 1n+rest: 1n
+    case _: 0n
+
+def show_tag_start(+pbox: Nat, +pcount: Nat) -> Nat:
+  match pbox:
+    case 1n: 0n
+    case _: show_tag_plain(pcount)
+
+def show_quote(+ptext: String) -> String:
+  join_text(["\u{22}", ptext, "\u{22}"])
+
+def show_name_sep(+prest: List<&2, String>) -> String:
+  match prest:
+    case Nil{}: ""
+    case _: ","
+
+def show_render_names(+pnames: List<&2, String>) -> String:
+  match pnames:
+    case Nil{}: ""
+    case +name <> +rest: show_quote(name) <> show_name_sep(rest) <> show_render_names(rest)
+
+def show_render_sep_flag(+pempty: Bool) -> String:
+  match pempty:
+    case True{}: ""
+    case False{}: ","
+
+def show_render_sep(+pacc: String) -> String:
+  empty = String.is_empty(pacc)
+  show_render_sep_flag(empty)
+
+def show_render_word(+pword: ShowWord) -> String:
+  match pword:
+    case ShowNum{value}: Nat.show(value)
+    case ShowCid{value}: join_text(["CID_", Nat.show(value)])
+
+# --- layout/field facts used by SHOW -------------------------------------
+
+def show_render_words(+pwords: List<&2, ShowWord>, +pacc: String) -> String:
+  match pwords:
+    case Nil{}: pacc
+    case +word <> +rest: show_render_words(rest, join_text([pacc, show_render_sep(pacc), show_render_word(word)]))
+
+def family_arms(+pwant: String, +pfamilies: List<&2, BIR.Family>) -> Maybe<&2, List<&2, BIR.DescriptorArm>>:
+  match pfamilies:
+    case Nil{}: None{}
+    case +family <> +rest:
+      match family:
+        case BIR.Family{key, name, native, quantity_prefix, arity, arms}:
+          same = String.eq(pwant, key)
+          Bool.pick(Maybe<&2, List<&2, BIR.DescriptorArm>>, same, Some{arms}, family_arms(pwant, rest))
+
+def show_cid_of_key(+pwant: String, +pconstructors: List<&2, BIR.ConstructorLayout>) -> Nat:
+  match pconstructors:
+    case Nil{}: 0n
+    case +item <> +rest:
+      match item:
+        case BIR.ConstructorLayout{id, key, native, fields}:
+          same = String.eq(key, pwant)
+          Bool.pick(Nat, same, U32.to_nat(id), show_cid_of_key(pwant, rest))
+
+def show_arm_bracket_name(+pname: String) -> Nat:
+  match pname:
     case "Tuple": 2n
     case "Con": 1n
     case "Nil": 1n
     case _: 0n
 
-def live_count(fields: List<&2, BIR.DescriptorField>) -> Nat:
-  List.length(&2, BIR.DescriptorField, live_fields(fields, Nil{}))
+def show_arm_bracket(+pkey: String) -> Nat:
+  show_arm_bracket_name(last_segment(pkey))
 
-def live_fields(fields: List<&2, BIR.DescriptorField>, acc: List<&2, BIR.DescriptorField>) -> List<&2, BIR.DescriptorField>:
-  match fields:
-    case Nil{}: List.reverse(&2, BIR.DescriptorField, acc)
-    case +field <> rest:
+def show_erased_present(+pfields: List<&2, BIR.DescriptorField>) -> Bool:
+  match pfields:
+    case Nil{}: False{}
+    case +field <> +rest:
       match field:
         case BIR.DescriptorField{key, quantity, ty}:
           match quantity:
-            case BIR.Erased{}: live_fields(rest, acc)
-            case _: live_fields(rest, field <> acc)
+            case BIR.Erased{}: True{}
+            case _: show_erased_present(rest)
 
-def tag_start(box: Nat, count: Nat) -> Nat:
-  match box:
-    case 1n: 0n
-    case _:
-      m32 = Nat.is_gt(count, 1n)
-      match m32:
-        case True{}: 1n
-        case False{}: 0n
+def show_field_at_each(+pfields: List<&2, BIR.DescriptorField>, +pordinal: Nat, +pindex: Nat) -> Maybe<&2, BIR.DescriptorField>:
+  match pfields:
+    case Nil{}: None{}
+    case +field <> +rest:
+      same = Nat.is_eq(pindex, pordinal)
+      Bool.pick(Maybe<&2, BIR.DescriptorField>, same, Some{field}, show_field_at_each(rest, pordinal, Nat.add(pindex, 1n)))
 
-# Boxed arms read field layouts from the constructor's node (SOURCE ordinals);
-# inline arms read the value layout's arm and advance by each field's words.
-def show_arm_fields(ctx: CLay.Context, key: String, fields: List<&2, BIR.DescriptorField>, layout: CLay.Layout, box: Nat, count: Nat, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState) -> Step:
-  match box:
-    case 1n: show_slots(ctx, key, fields, families, constructors, st)
-    case _: show_inline(ctx, key, live_fields(fields, Nil{}), layout, families, constructors, st, tag_start(box, count))
+def show_field_at(+pfields: List<&2, BIR.DescriptorField>, +pordinal: U32) -> Maybe<&2, BIR.DescriptorField>:
+  show_field_at_each(pfields, U32.to_nat(pordinal), 0n)
 
-def show_slots(ctx: CLay.Context, key: String, fields: List<&2, BIR.DescriptorField>, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState) -> Step:
-  m33 = CLay.node_layout(ctx, key)
-  match m33:
-    case CLay.NodeFailed{message}: Step{False{}, message, 0n, st}
+def show_arm_layouts_each(+parms: List<&2, CLay.LayArm>, +pkey: String) -> Maybe<&2, List<&2, CLay.Layout>>:
+  match parms:
+    case Nil{}: None{}
+    case +arm <> +rest:
+      match arm:
+        case CLay.LayArm{key, fields}:
+          same = String.eq(key, pkey)
+          Bool.pick(Maybe<&2, List<&2, CLay.Layout>>, same, Some{fields}, show_arm_layouts_each(rest, pkey))
+
+def show_arm_layouts(+playout: CLay.Layout, +pkey: String) -> Maybe<&2, List<&2, CLay.Layout>>:
+  match playout:
+    case CLay.LayoutData{words, arms}: show_arm_layouts_each(arms, pkey)
+
+def show_node_layout_slots(+pnode: CLay.NodeResult) -> Maybe<&2, List<&2, CLay.NodeSlot>>:
+  match pnode:
+    case CLay.NodeFailed{message}: None{}
     case CLay.NodeFound{node}:
       match node:
-        case CLay.Node{words, slots, packed}: show_slot_each(ctx, slots, fields, families, constructors, st)
+        case CLay.Node{words, slots, packed}: Some{slots}
 
-def show_slot_each(ctx: CLay.Context, slots: List<&2, CLay.NodeSlot>, fields: List<&2, BIR.DescriptorField>, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState) -> Step:
-  match slots:
-    case Nil{}: Step{True{}, "", 0n, st}
-    case +slot <> rest:
-      match slot:
-        case CLay.NodeSlot{ordinal, offset, layout}:
-          m34 = field_at(fields, ordinal)
-          match m34:
-            case None{}: Step{False{}, "a constructor node slot names no live field", 0n, st}
-            case Some{field}:
-              match field:
-                case BIR.DescriptorField{key, quantity, ty}:
-                  m35 = append_num(st, offset)
-                  match m35:
-                    case AppendOut{state, at}:
-                      m36 = append_num(state, 0n)
-                      match m36:
-                        case AppendOut{state: p1, at: slot_at}:
-                          m37 = show_node(ctx, ty, layout, families, constructors, p1)
-                          match m37:
-                            case Step{ok, message, id, state: after}:
-                              match ok:
-                                case True{}: show_slot_each(ctx, rest, fields, families, constructors, append_patch(after, slot_at, id))
-                                case False{}: Step{False{}, message, 0n, after}
+def show_word_key(+pword: CLay.CWord) -> String:
+  match pword:
+    case CLay.CWord32{}: "32"
+    case CLay.CWord64{}: "64"
+    case CLay.CWordBox{}: "x"
 
-def show_inline(ctx: CLay.Context, key: String, fields: List<&2, BIR.DescriptorField>, layout: CLay.Layout, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState, at: Nat) -> Step:
-  m38 = arm_layouts(layout, key)
-  match m38:
-    case None{}: Step{False{}, cat(["the inline layout has no arm `", key, "`"]), 0n, st}
-    case Some{layouts}: show_inline_each(ctx, fields, layouts, families, constructors, st, at)
+def show_box_key(+preason: CLay.BoxReason) -> String:
+  match preason:
+    case CLay.BoxOpen{}: "open"
+    case CLay.BoxUnresolved{key}: join_text(["unresolved:", key])
+    case CLay.BoxArray{}: "array"
+    case CLay.BoxIo{}: "io"
+    case CLay.BoxRecursive{key}: join_text(["rec:", key])
+    case CLay.BoxWide{words}: join_text(["wide:", Nat.show(words)])
 
-def show_inline_each(ctx: CLay.Context, fields: List<&2, BIR.DescriptorField>, layouts: List<&2, CLay.Layout>, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState, at: Nat) -> Step:
-  match fields layouts:
-    case Nil{} _: Step{True{}, "", 0n, st}
-    case +field <> rest +layout <> rest_layouts:
-      match field:
-        case BIR.DescriptorField{key, quantity, ty}:
-          m39 = append_num(st, at)
-          match m39:
-            case AppendOut{state, at: pos}:
-              m40 = append_num(state, 0n)
-              match m40:
-                case AppendOut{state: p1, at: slot_at}:
-                  m41 = show_node(ctx, ty, layout, families, constructors, p1)
-                  match m41:
-                    case Step{ok, message, id, state: after}:
-                      match ok:
-                        case True{}: show_inline_each(ctx, rest, rest_layouts, families, constructors, append_patch(after, slot_at, id), Nat.add(at, CLay.layout_words(layout)))
-                        case False{}: Step{False{}, message, 0n, after}
-    case _ _: Step{False{}, "an inline arm's fields and layouts differ in length", 0n, st}
+def show_arm_keys(+parms: List<&2, CLay.LayArm>) -> String:
+  match parms:
+    case Nil{}: ""
+    case +arm <> +rest:
+      match arm:
+        case CLay.LayArm{key, fields}: join_text([key, "/", Nat.show(List.length(&2, CLay.Layout, fields)), ";", show_arm_keys(rest)])
 
-# ---------------------------------------------------------------------------
-# Patches and rendering
-# ---------------------------------------------------------------------------
+def show_layout_key(+playout: CLay.Layout) -> String:
+  match playout:
+    case CLay.LayoutWord{word}: join_text(["w", show_word_key(word)])
+    case CLay.LayoutBox{reason}: join_text(["B", show_box_key(reason)])
+    case CLay.LayoutData{words, arms}: join_text(["D", Nat.show(List.length(&2, CLay.CWord, words)), ":", show_arm_keys(arms)])
 
-def apply_patches(words: List<&2, Word>, patches: List<&2, Patch>, index: Nat) -> List<&2, Word>:
-  match patches:
-    case Nil{}: words
-    case +patch <> rest:
-      match patch:
-        case Patch{at, to}: apply_patches(set_word(words, at, WNum{to}, 0n), rest, index)
-
-def set_word(words: List<&2, Word>, at: Nat, value: Word, index: Nat) -> List<&2, Word>:
-  match words:
+def show_arg_tokens(+pargs: List<&2, BIR.Descriptor>, +pfirst: Bool) -> List<&2, ShowToken>:
+  match pargs:
     case Nil{}: Nil{}
-    case +word <> rest:
-      m42 = Nat.is_eq(index, at)
-      match m42:
-        case True{}: value <> rest
-        case False{}: word <> set_word(rest, at, value, nat_inc(index))
+    case +arg <> +rest:
+      sep = Bool.pick(List<&2, ShowToken>, pfirst, Nil{}, [ShowTokText{","}])
+      List.append(&2, ShowToken, sep, List.append(&2, ShowToken, [ShowTokDesc{arg}], show_arg_tokens(rest, False{})))
 
-def render_words(words: List<&2, Word>, acc: String) -> String:
-  match words:
-    case Nil{}: acc
-    case +word <> rest: render_words(rest, cat([acc, render_sep(acc), render_word(word)]))
-
-def render_sep(acc: String) -> String:
-  m43 = String.is_empty(acc)
-  match m43:
-    case True{}: ""
-    case False{}: ","
-
-def render_word(word: Word) -> String:
-  match word:
-    case WNum{value}: Nat.show(value)
-    case WCid{value}: cat(["CID_", Nat.show(value)])
-
-# ---------------------------------------------------------------------------
-# Names and keys
-# ---------------------------------------------------------------------------
-
-def show_names(constructors: List<&2, BIR.ConstructorLayout>) -> String:
-  match constructors:
-    case Nil{}: ""
-    case +item <> rest:
-      match item:
-        case BIR.ConstructorLayout{id, key, native, fields}: cat([quote_name(key), sep_for(rest), show_names(rest)])
-
-def sep_for(rest: List<&2, BIR.ConstructorLayout>) -> String:
-  match rest:
-    case Nil{}: ""
-    case _: ","
-
-def quote_name(text: String) -> String:
-  cat(["\u{22}", text, "\u{22}"])
-
-# A memo key is the full type key plus a canonical layout key, so two different
-# types of the same shape keep their own arms.
-def show_key(ty: BIR.Descriptor, layout: CLay.Layout) -> String:
-  cat([descriptor_key(ty), "@", layout_key(layout)])
-
-def descriptor_key(ty: BIR.Descriptor) -> String:
-  match ty:
-    case BIR.DescriptorRef{key, args}: cat([key, "(", descriptor_keys(args), ")"])
-    case BIR.DescriptorApplication{fn, arg}: cat([descriptor_key(fn), "<", descriptor_key(arg), ">"])
-    case BIR.DescriptorFill{head, args}: cat([descriptor_key(head), "[", descriptor_keys(args), "]"])
-    case BIR.DescriptorPlus{head, args}: cat([descriptor_key(head), "+[", descriptor_keys(args), "]"])
-    case BIR.DescriptorNamedFill{key, head, args}: cat([key, ":", descriptor_key(head), "[", descriptor_keys(args), "]"])
-    case BIR.DescriptorNamedPlus{key, head, args}: cat([key, ":", descriptor_key(head), "+[", descriptor_keys(args), "]"])
-    case BIR.DescriptorParameter{index}: cat(["#", Nat.show(index)])
-    case BIR.DescriptorNull{}: "null"
-    case BIR.DescriptorKind{quantity}: cat(["K(", descriptor_key(quantity), ")"])
-    case BIR.DescriptorQuantity{quantity}: cat(["Q(", quantity_key(quantity), ")"])
-    case BIR.DescriptorQuantityKind{}: "QK"
-    case BIR.DescriptorMinimum{left, right}: cat(["min(", descriptor_key(left), ",", descriptor_key(right), ")"])
-    case BIR.DescriptorArrow{quantity, domain, body}: cat(["(", descriptor_key(domain), ")->", descriptor_key(body)])
-    case BIR.DescriptorLambda{quantity, body}: cat(["\\", descriptor_key(body)])
-    case BIR.DescriptorConstructor{key, args}: cat(["@", key, "(", descriptor_keys(args), ")"])
-    case BIR.DescriptorFailure{message}: cat(["!", message])
-    case BIR.DescriptorSubstitution{index, value, body}: cat(["S", Nat.show(index), "(", descriptor_key(value), ";", descriptor_key(body), ")"])
-    case BIR.DescriptorLet{values, body}: cat(["L(", descriptor_keys(values), ";", descriptor_key(body), ")"])
-    case BIR.DescriptorLocal{patterns, values, body}: cat(["Loc(", Nat.show(List.length(&2, BIR.DescriptorPattern, patterns)), ",", descriptor_keys(values), ";", descriptor_key(body), ")"])
-    case BIR.DescriptorMatch{values, cases}: cat(["M(", descriptor_keys(values), ";", descriptor_keys(cases), ")"])
-    case BIR.DescriptorCase{patterns, body}: cat(["C(", Nat.show(List.length(&2, BIR.DescriptorPattern, patterns)), ";", descriptor_key(body), ")"])
-    case BIR.DescriptorBind{value, body}: cat(["B(", descriptor_key(value), ";", descriptor_key(body), ")"])
-    case BIR.DescriptorEquality{left, right, ty}: cat(["E(", descriptor_key(left), ",", descriptor_key(right), ",", descriptor_key(ty), ")"])
-    case BIR.DescriptorReflexivity{}: "R"
-    case _: "?"
-
-def descriptor_keys(args: List<&2, BIR.Descriptor>) -> String:
-  match args:
-    case Nil{}: ""
-    case +arg <> rest: cat([descriptor_key(arg), key_sep(rest)])
-
-def key_sep(rest: List<&2, BIR.Descriptor>) -> String:
-  match rest:
-    case Nil{}: ""
-    case _: cat([",", descriptor_keys(rest)])
-
-def quantity_key(quantity: BIR.Quantity) -> String:
-  match quantity:
+def show_quantity_key(+pquantity: BIR.Quantity) -> String:
+  match pquantity:
     case BIR.Erased{}: "0"
     case BIR.Once{}: "1"
     case BIR.Unrestricted{}: "2"
     case _: "?"
 
-def layout_key(layout: CLay.Layout) -> String:
-  match layout:
-    case CLay.LayoutWord{word}: cat(["w", word_key(word)])
-    case CLay.LayoutBox{reason}: cat(["B", box_key(reason)])
-    case CLay.LayoutData{words, arms}: cat(["D", Nat.show(List.length(&2, CLay.CWord, words)), ":", arm_keys(arms)])
+# --- SHOW advance ---------------------------------------------------------
 
-def box_key(reason: CLay.BoxReason) -> String:
-  match reason:
-    case CLay.BoxOpen{}: "open"
-    case CLay.BoxUnresolved{key}: cat(["unresolved:", key])
-    case CLay.BoxArray{}: "array"
-    case CLay.BoxIo{}: "io"
-    case CLay.BoxRecursive{key}: cat(["rec:", key])
-    case CLay.BoxWide{words}: cat(["wide:", Nat.show(words)])
+def show_desc_expand(+pty: BIR.Descriptor) -> List<&2, ShowToken>:
+  match pty:
+    case BIR.DescriptorRef{key, args}: List.append(&2, ShowToken, [ShowTokText{join_text([key, "("])}], List.append(&2, ShowToken, show_arg_tokens(args, True{}), [ShowTokText{")"}]))
+    case BIR.DescriptorApplication{fn, arg}: [ShowTokDesc{fn}, ShowTokText{"<"}, ShowTokDesc{arg}, ShowTokText{">"}]
+    case BIR.DescriptorFill{head, args}: List.append(&2, ShowToken, List.append(&2, ShowToken, [ShowTokDesc{head}, ShowTokText{"["}], show_arg_tokens(args, True{})), [ShowTokText{"]"}])
+    case BIR.DescriptorPlus{head, args}: List.append(&2, ShowToken, List.append(&2, ShowToken, [ShowTokDesc{head}, ShowTokText{"+["}], show_arg_tokens(args, True{})), [ShowTokText{"]"}])
+    case BIR.DescriptorNamedFill{key, head, args}: List.append(&2, ShowToken, [ShowTokText{join_text([key, ":"])}, ShowTokDesc{head}, ShowTokText{"["}], List.append(&2, ShowToken, show_arg_tokens(args, True{}), [ShowTokText{"]"}]))
+    case BIR.DescriptorNamedPlus{key, head, args}: List.append(&2, ShowToken, [ShowTokText{join_text([key, ":"])}, ShowTokDesc{head}, ShowTokText{"+["}], List.append(&2, ShowToken, show_arg_tokens(args, True{}), [ShowTokText{"]"}]))
+    case BIR.DescriptorParameter{index}: [ShowTokText{join_text(["#", Nat.show(index)])}]
+    case BIR.DescriptorNull{}: [ShowTokText{"null"}]
+    case BIR.DescriptorKind{quantity}: [ShowTokText{"K("}, ShowTokDesc{quantity}, ShowTokText{")"}]
+    case BIR.DescriptorQuantity{quantity}: [ShowTokText{join_text(["Q(", show_quantity_key(quantity), ")"])}]
+    case BIR.DescriptorQuantityKind{}: [ShowTokText{"QK"}]
+    case BIR.DescriptorMinimum{left, right}: [ShowTokText{"min("}, ShowTokDesc{left}, ShowTokText{","}, ShowTokDesc{right}, ShowTokText{")"}]
+    case BIR.DescriptorArrow{quantity, domain, body}: [ShowTokText{"("}, ShowTokDesc{domain}, ShowTokText{")->"}, ShowTokDesc{body}]
+    case BIR.DescriptorLambda{quantity, body}: [ShowTokText{"\\"}, ShowTokDesc{body}]
+    case BIR.DescriptorConstructor{key, args}: List.append(&2, ShowToken, [ShowTokText{join_text(["@", key, "("])}], List.append(&2, ShowToken, show_arg_tokens(args, True{}), [ShowTokText{")"}]))
+    case BIR.DescriptorFailure{message}: [ShowTokText{join_text(["!", message])}]
+    case BIR.DescriptorSubstitution{index, value, body}: [ShowTokText{join_text(["S", Nat.show(index), "("])}, ShowTokDesc{value}, ShowTokText{";"}, ShowTokDesc{body}, ShowTokText{")"}]
+    case BIR.DescriptorLet{values, body}: List.append(&2, ShowToken, [ShowTokText{"L("}], List.append(&2, ShowToken, show_arg_tokens(values, True{}), [ShowTokText{";"}, ShowTokDesc{body}, ShowTokText{")"}]))
+    case BIR.DescriptorLocal{patterns, values, body}: List.append(&2, ShowToken, [ShowTokText{join_text(["Loc(", Nat.show(List.length(&2, BIR.DescriptorPattern, patterns)), ","])}], List.append(&2, ShowToken, show_arg_tokens(values, True{}), [ShowTokText{";"}, ShowTokDesc{body}, ShowTokText{")"}]))
+    case BIR.DescriptorMatch{values, cases}: List.append(&2, ShowToken, [ShowTokText{"M("}], List.append(&2, ShowToken, show_arg_tokens(values, True{}), List.append(&2, ShowToken, [ShowTokText{";"}], List.append(&2, ShowToken, show_arg_tokens(cases, True{}), [ShowTokText{")"}]))))
+    case BIR.DescriptorCase{patterns, body}: [ShowTokText{join_text(["C(", Nat.show(List.length(&2, BIR.DescriptorPattern, patterns)), ";"])}, ShowTokDesc{body}, ShowTokText{")"}]
+    case BIR.DescriptorBind{value, body}: [ShowTokText{"B("}, ShowTokDesc{value}, ShowTokText{";"}, ShowTokDesc{body}, ShowTokText{")"}]
+    case BIR.DescriptorEquality{left, right, ty}: [ShowTokText{"E("}, ShowTokDesc{left}, ShowTokText{","}, ShowTokDesc{right}, ShowTokText{","}, ShowTokDesc{ty}, ShowTokText{")"}]
+    case BIR.DescriptorReflexivity{}: [ShowTokText{"R"}]
+    case _: [ShowTokText{"?"}]
 
-def word_key(word: CLay.CWord) -> String:
-  match word:
-    case CLay.CWord32{}: "32"
-    case CLay.CWord64{}: "64"
-    case CLay.CWordBox{}: "x"
+def show_render_tokens(+pfuel: Nat, +ptokens: List<&2, ShowToken>, +pacc: String) -> String:
+  match pfuel:
+    case 0n: pacc
+    case 1n+p:
+      match ptokens:
+        case Nil{}: pacc
+        case +tok <> +rest:
+          match tok:
+            case ShowTokText{text}: show_render_tokens(p, rest, join_text([pacc, text]))
+            case ShowTokDesc{descriptor}: show_render_tokens(p, List.append(&2, ShowToken, show_desc_expand(descriptor), rest), pacc)
 
-def arm_keys(arms: List<&2, CLay.LayArm>) -> String:
-  match arms:
-    case Nil{}: ""
-    case +arm <> rest:
+def show_descriptor_key(+pty: BIR.Descriptor) -> String:
+  show_render_tokens(4000n, [ShowTokDesc{pty}], "")
+
+def show_array_cell(+pcell: CLay.CellResult, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pelement: BIR.Descriptor, +pat: Nat, +pst: ShowState) -> ShowAdvance:
+  match pcell:
+    case CLay.CellFailed{message}: ShowNext{show_state_error(pst, message), Nil{}}
+    case CLay.CellFound{cell}:
+      match cell:
+        case CLay.Cell{layout, arr, words, lgs}:
+          st = show_append_num(show_append_num(show_append_num(pst, 6n), 0n), lgs)
+          ShowNext{st, [ShowNode{pelement, layout, Some{Nat.add(pat, 1n)}}]}
+
+def show_array_element(+pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pelement: BIR.Descriptor, +pat: Nat, +pst: ShowState) -> ShowAdvance:
+  cell = CLay.array_cell(pctx, pelement)
+  show_array_cell(cell, pctx, pconstructors, pfamilies, element, pat, pst)
+
+def show_array_args(+pargs: CLay.ArgsResult, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +pat: Nat, +pst: ShowState) -> ShowAdvance:
+  match pargs:
+    case CLay.ArgsFailed{message}: ShowNext{show_state_error(pst, message), Nil{}}
+    case CLay.ArgsOk{values}:
+      match values:
+        case +element <> +rest: show_array_element(pctx, pconstructors, pfamilies, element, pat, pst)
+        case Nil{}: ShowNext{show_state_error(pst, "an Array descriptor without an element type cannot be printed"), Nil{}}
+
+def show_advance_array(+pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +pat: Nat, +pst: ShowState) -> ShowAdvance:
+  args = CLay.head_args(pctx, pty)
+  show_array_args(args, pctx, pconstructors, pfamilies, pty, pat, pst)
+
+def fields_box_each(+pslots: List<&2, CLay.NodeSlot>, +pfields: List<&2, BIR.DescriptorField>, +pst: ShowState) -> ShowAdvance:
+  match pslots:
+    case Nil{}:
+      match pfields:
+        case Nil{}: ShowNext{pst, Nil{}}
+        case _: ShowNext{show_state_error(pst, "a constructor node's slots and fields differ"), Nil{}}
+    case +slot <> +rest:
+      match pfields:
+        case Nil{}: ShowNext{show_state_error(pst, "a constructor node's slots and fields differ"), Nil{}}
+        case +field <> +rest_fields:
+          match slot:
+            case CLay.NodeSlot{ordinal, offset, layout}:
+              match field:
+                case BIR.DescriptorField{key, quantity, ty}:
+                  st = show_append_num(show_append_num(pst, offset), 0n)
+                  slot_at = List.length(&2, ShowWord, show_words(pst))
+                  st2 = show_append_num(st, 0n)
+                  kid = [ShowNode{ty, layout, Some{slot_at}}]
+                  adv = fields_box_each(rest, rest_fields, st2)
+                  ShowNext{show_next_state(adv), List.append(&2, ShowJob, kid, show_next_kids(adv))}
+
+def fields_box_slots(+pslots: Maybe<&2, List<&2, CLay.NodeSlot>>, +pfields: List<&2, BIR.DescriptorField>, +pst: ShowState) -> ShowAdvance:
+  match pslots:
+    case None{}: ShowNext{show_state_error(pst, "a constructor node has no slots for SHOW"), Nil{}}
+    case Some{values}: fields_box_each(values, pfields, pst)
+
+def fields_box(+pctx: CLay.Context, +pkey: String, +pfields: List<&2, BIR.DescriptorField>, +pst: ShowState) -> ShowAdvance:
+  node = CLay.node_layout(pctx, pkey)
+  slots = show_node_layout_slots(node)
+  fields_box_slots(slots, pfields, pst)
+
+def fields_inline_each(+playouts: List<&2, CLay.Layout>, +pfields: List<&2, BIR.DescriptorField>, +pat: Nat, +pst: ShowState) -> ShowAdvance:
+  match playouts:
+    case Nil{}:
+      match pfields:
+        case Nil{}: ShowNext{pst, Nil{}}
+        case _: ShowNext{show_state_error(pst, "an inline arm's fields and layouts differ"), Nil{}}
+    case +layout <> +rest_layouts:
+      match pfields:
+        case Nil{}: ShowNext{show_state_error(pst, "an inline arm's fields and layouts differ"), Nil{}}
+        case +field <> +rest_fields:
+          match field:
+            case BIR.DescriptorField{key, quantity, ty}:
+              st = show_append_num(show_append_num(pst, pat), 0n)
+              slot_at = List.length(&2, ShowWord, show_words(pst))
+              st2 = show_append_num(st, 0n)
+              kid = [ShowNode{ty, layout, Some{slot_at}}]
+              adv = fields_inline_each(rest_layouts, rest_fields, Nat.add(pat, CLay.layout_words(layout)), st2)
+              ShowNext{show_next_state(adv), List.append(&2, ShowJob, kid, show_next_kids(adv))}
+
+def fields_inline_layouts(+playouts: Maybe<&2, List<&2, CLay.Layout>>, +pfields: List<&2, BIR.DescriptorField>, +pat: Nat, +pst: ShowState) -> ShowAdvance:
+  match playouts:
+    case None{}: ShowNext{show_state_error(pst, "the inline layout has no SHOW arm"), Nil{}}
+    case Some{values}: fields_inline_each(values, pfields, pat, pst)
+
+def fields_inline(+pctx: CLay.Context, +pkey: String, +pfields: List<&2, BIR.DescriptorField>, +playout: CLay.Layout, +pcount: Nat, +pat: Nat, +pst: ShowState) -> ShowAdvance:
+  layouts = show_arm_layouts(playout, pkey)
+  fields_inline_layouts(layouts, pfields, pat, pst)
+
+def fields_advance(+pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pkey: String, +pfields: List<&2, BIR.DescriptorField>, +playout: CLay.Layout, +pbox: Nat, +pcount: Nat, +pst: ShowState) -> ShowAdvance:
+  match pbox:
+    case 1n: fields_box(pctx, pkey, pfields, pst)
+    case _: fields_inline(pctx, pkey, pfields, playout, pcount, show_tag_start(pbox, pcount), pst)
+
+# Boxed arms read node slots (declared layouts); inline arms read the value
+# layout's arm and advance by each field's words.
+
+def show_data_arm_header(+pfields: List<&2, BIR.DescriptorField>, +pkey: String, +prest: List<&2, BIR.DescriptorArm>, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pbox: Nat, +pcount: Nat, +pst: ShowState) -> ShowAdvance:
+  index = List.length(&2, String, show_names(pst))
+  st = show_append_num(show_append_cid(show_append_num(pst, index), show_cid_of_key(pkey, pconstructors)), List.length(&2, BIR.DescriptorField, pfields))
+  st2 = show_append_name(show_append_num(st, show_arm_bracket(pkey)), pkey)
+  fields_advance(pctx, pconstructors, pfamilies, pkey, pfields, playout, box, count, pst2)
+
+def show_data_arm_erased(+perased: Bool, +pfields: List<&2, BIR.DescriptorField>, +pkey: String, +prest: List<&2, BIR.DescriptorArm>, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pbox: Nat, +pcount: Nat, +pst: ShowState) -> ShowAdvance:
+  match perased:
+    case True{}: ShowNext{show_state_error(pst, "main's type has an erased field and cannot be printed"), Nil{}}
+    case False{}: show_data_arm_header(pfields, pkey, prest, pctx, pconstructors, pfamilies, ty, layout, box, count, pst)
+
+def show_data_arm_live(+pfields: List<&2, BIR.DescriptorField>, +pkey: String, +prest: List<&2, BIR.DescriptorArm>, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pbox: Nat, +pcount: Nat, +pst: ShowState) -> ShowAdvance:
+  erased = show_erased_present(pfields)
+  show_data_arm_erased(erased, pfields, pkey, prest, pctx, pconstructors, pfamilies, ty, layout, box, count, pst)
+
+def show_data_arm(+pfound: CLay.FieldsResult, +pkey: String, +prest: List<&2, BIR.DescriptorArm>, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pbox: Nat, +pcount: Nat, +pst: ShowState) -> ShowAdvance:
+  match pfound:
+    case CLay.FieldsFailed{message}: ShowNext{show_state_error(pst, message), Nil{}}
+    case CLay.FieldsFound{fields}: show_data_arm_live(fields, pkey, prest, pctx, pconstructors, pfamilies, ty, layout, box, count, pst)
+
+def show_data_arms(+parms: List<&2, BIR.DescriptorArm>, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pbox: Nat, +pcount: Nat, +pst: ShowState) -> ShowAdvance:
+  match parms:
+    case Nil{}: ShowNext{pst, Nil{}}
+    case +arm <> +rest:
       match arm:
-        case CLay.LayArm{key, fields}: cat([key, "/", Nat.show(List.length(&2, CLay.Layout, fields)), ";", arm_keys(rest)])
+        case BIR.DescriptorArm{key, fields}:
+          found = CLay.arm_fields(pctx, key, pty)
+          show_data_arm(found, key, rest, pctx, pconstructors, pfamilies, ty, layout, box, count, pst)
 
-# ---------------------------------------------------------------------------
-# Fact lookups
-# ---------------------------------------------------------------------------
+def show_data_count(+parms: List<&2, BIR.DescriptorArm>, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pat: Nat, +pst: ShowState) -> ShowAdvance:
+  box = show_box_flag(playout)
+  count = List.length(&2, BIR.DescriptorArm, parms)
+  st = show_append_num(show_append_num(show_append_num(pst, 7n), box), count)
+  show_data_arms(parms, pctx, pconstructors, pfamilies, ty, layout, box, count, st)
 
-def cat(parts: List<&2, String>) -> String:
-  String.join(parts, "")
+def show_data_arms_maybe(+parms: Maybe<&2, List<&2, BIR.DescriptorArm>>, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pat: Nat, +pst: ShowState, +pkey: String) -> ShowAdvance:
+  match parms:
+    case None{}: ShowNext{show_state_error(pst, join_text(["the datatype `", pkey, "` has no constructors"])), Nil{}}
+    case Some{values}: show_data_count(values, pctx, pconstructors, pfamilies, ty, layout, pat, pst)
 
-def last_segment(key: String) -> String:
-  last_segment_list(String.split(key, '.'), "")
+def show_data_key(+pkey: String, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pat: Nat, +pst: ShowState) -> ShowAdvance:
+  arms = family_arms(pkey, pfamilies)
+  show_data_arms_maybe(arms, pctx, pconstructors, pfamilies, ty, layout, pat, pst, pkey)
 
-def last_segment_list(parts: List<&2, String>, previous: String) -> String:
-  match parts:
-    case Nil{}: previous
-    case +part <> rest: last_segment_list(rest, part)
+def show_data_head(+phead: CLay.HeadResult, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pat: Nat, +pst: ShowState) -> ShowAdvance:
+  match phead:
+    case CLay.HeadFailed{message}: ShowNext{show_state_error(pst, message), Nil{}}
+    case CLay.HeadBoxed{reason}: ShowNext{show_state_error(pst, "main's type is abstract or open and cannot be printed"), Nil{}}
+    case CLay.HeadFound{key, native}: show_data_key(key, pctx, pconstructors, pfamilies, ty, layout, pat, pst)
 
-def descriptor_head(descriptor: BIR.Descriptor) -> Maybe<&2, String>:
-  match descriptor:
-    case BIR.DescriptorRef{key, args}: Some{key}
-    case BIR.DescriptorApplication{fn, arg}: descriptor_head(fn)
-    case BIR.DescriptorFill{head, args}: descriptor_head(head)
-    case BIR.DescriptorPlus{head, args}: descriptor_head(head)
-    case BIR.DescriptorNamedFill{key, head, args}: descriptor_head(head)
-    case BIR.DescriptorNamedPlus{key, head, args}: descriptor_head(head)
-    case _: None{}
+def show_advance_data(+pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pat: Nat, +pst: ShowState) -> ShowAdvance:
+  head = CLay.head_native(pctx, pty)
+  show_data_head(head, pctx, pconstructors, pfamilies, ty, layout, pat, pst)
 
-def descriptor_args(descriptor: BIR.Descriptor) -> List<&2, BIR.Descriptor>:
-  match descriptor:
-    case BIR.DescriptorRef{key, args}: args
-    case _: Nil{}
+def show_advance_n(+pkind: Nat, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pat: Nat, +pst: ShowState) -> ShowAdvance:
+  match pkind:
+    case 3n: ShowNext{show_append_num(show_append_num(pst, 3n), show_box_flag(playout)), Nil{}}
+    case 6n: show_advance_array(pctx, pconstructors, pfamilies, ty, pat, pst)
+    case 7n: show_advance_data(pctx, pconstructors, pfamilies, ty, playout, pat, pst)
+    case _: ShowNext{show_append_num(pst, pkind), Nil{}}
 
-def family_native(key: String, families: List<&2, BIR.Family>) -> Maybe<&2, String>:
-  match families:
-    case Nil{}: None{}
-    case +family <> rest:
-      match family:
-        case BIR.Family{key: owner, name, native, quantity_prefix, arity, arms}:
-          m44 = String.eq(owner, key)
-          match m44:
-            case True{}: native
-            case False{}: family_native(key, rest)
+def show_advance_kind(+pkind: ShowKind, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pat: Nat, +pst: ShowState) -> ShowAdvance:
+  match pkind:
+    case ShowKindFailed{message}: ShowNext{show_state_error(pst, message), Nil{}}
+    case ShowKindOk{kind}: show_advance_n(kind, pctx, pconstructors, pfamilies, ty, layout, pat, pst)
 
-def family_arms_of(key: String, families: List<&2, BIR.Family>) -> Maybe<&2, List<&2, BIR.DescriptorArm>>:
-  match families:
-    case Nil{}: None{}
-    case +family <> rest:
-      match family:
-        case BIR.Family{key: owner, name, native, quantity_prefix, arity, arms}:
-          m45 = String.eq(owner, key)
-          match m45:
-            case True{}: Some{arms}
-            case False{}: family_arms_of(key, rest)
+def show_advance_memo(+pfound: Maybe<&2, Nat>, +pkey: String, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +ppatch: Maybe<&2, Nat>, +pst: ShowState) -> ShowAdvance:
+  match pfound:
+    case Some{offset}: ShowNext{show_apply_patch(pst, ppatch, offset), Nil{}}
+    case None{}:
+      at = List.length(&2, ShowWord, show_words(pst))
+      memo = Map.set(&2, Nat, show_memo(pst), pkey, at)
+      st = show_apply_patch(show_state_set_memo(pst, memo), ppatch, at)
+      kind = show_kind(pctx, pty)
+      show_advance_kind(kind, pctx, pconstructors, pfamilies, ty, layout, at, st)
 
-# Constructor ids are the program's constructor order, which is the CID order.
-def cid_index(key: String, constructors: List<&2, BIR.ConstructorLayout>, index: Nat) -> Nat:
-  match constructors:
-    case Nil{}: 0n
-    case +item <> rest:
-      match item:
-        case BIR.ConstructorLayout{id, key: known, native, fields}:
-          m46 = String.eq(known, key)
-          match m46:
-            case True{}: index
-            case False{}: cid_index(key, rest, nat_inc(index))
+def show_advance_norm(+pnorm: ShowNorm, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +ppatch: Maybe<&2, Nat>, +pst: ShowState) -> ShowAdvance:
+  match pnorm:
+    case ShowNormFailed{message}: ShowNext{show_state_error(pst, message), Nil{}}
+    case ShowNormOk{descriptor}:
+      key = join_text([show_descriptor_key(descriptor), "@", show_layout_key(playout)])
+      found = IndexLookup.find(Nat, show_memo(pst), key)
+      show_advance_memo(found, key, pctx, pconstructors, pfamilies, ty, layout, patch, pst)
 
-def field_at(fields: List<&2, BIR.DescriptorField>, ordinal: U32) -> Maybe<&2, BIR.DescriptorField>:
-  field_at_each(fields, U32.to_nat(ordinal), 0n)
+def show_advance_error(+pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +ppatch: Maybe<&2, Nat>, +perror: Maybe<&2, String>, +pst: ShowState) -> ShowAdvance:
+  match perror:
+    case Some{message}: ShowNext{pst, Nil{}}
+    case None{}:
+      norm = show_norm(pctx, pty)
+      show_advance_norm(norm, pctx, pconstructors, pfamilies, ty, layout, patch, pst)
 
-def field_at_each(fields: List<&2, BIR.DescriptorField>, ordinal: Nat, index: Nat) -> Maybe<&2, BIR.DescriptorField>:
-  match fields:
-    case Nil{}: None{}
-    case +field <> rest:
-      m47 = Nat.is_eq(index, ordinal)
-      match m47:
-        case True{}: Some{field}
-        case False{}: field_at_each(rest, ordinal, nat_inc(index))
+def show_advance_st(+pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +ppatch: Maybe<&2, Nat>, +pst: ShowState) -> ShowAdvance:
+  match pst:
+    case ShowState{words, patches, memo, names, error}: show_advance_error(pctx, pconstructors, pfamilies, ty, layout, patch, error, pst)
 
-def arm_layouts(layout: CLay.Layout, key: String) -> Maybe<&2, List<&2, CLay.Layout>>:
-  match layout:
-    case CLay.LayoutData{words, arms}: arm_layouts_each(arms, key)
+def show_advance_job(+pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pjob: ShowJob, +pst: ShowState) -> ShowAdvance:
+  match pjob:
+    case ShowNode{ty, layout, patch}: show_advance_st(pctx, pconstructors, pfamilies, ty, layout, patch, pst)
 
-def arm_layouts_each(arms: List<&2, CLay.LayArm>, key: String) -> Maybe<&2, List<&2, CLay.Layout>>:
-  match arms:
-    case Nil{}: None{}
-    case +arm <> rest:
-      match arm:
-        case CLay.LayArm{key: known, fields}:
-          m48 = String.eq(known, key)
-          match m48:
-            case True{}: Some{fields}
-            case False{}: arm_layouts_each(rest, key)
+def run_show(+pfuel: Nat, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pjobs: List<&2, ShowJob>, +pst: ShowState) -> ShowRun:
+  match pfuel:
+    case 0n: ShowHalted{"SHOW descent exceeded its fuel"}
+    case 1n+p:
+      match pjobs:
+        case Nil{}: ShowDone{pst}
+        case +job <> +rest:
+          adv = show_advance_job(pctx, pconstructors, pfamilies, job, pst)
+          run_show(p, pctx, pconstructors, pfamilies, List.append(&2, ShowJob, show_next_kids(adv), rest), show_next_state(adv))
+
+def show_set_word(+pwords: List<&2, ShowWord>, +pat: Nat, +pvalue: ShowWord, +pindex: Nat) -> List<&2, ShowWord>:
+  match pwords:
+    case Nil{}: Nil{}
+    case +word <> +rest:
+      same = Nat.is_eq(pindex, pat)
+      Bool.pick(List<&2, ShowWord>, same, List.append(&2, ShowWord, [pvalue], rest), List.append(&2, ShowWord, [word], show_set_word(rest, pat, pvalue, Nat.add(pindex, 1n))))
+
+def show_apply_patches(+pwords: List<&2, ShowWord>, +ppatches: List<&2, ShowPatch>) -> List<&2, ShowWord>:
+  match ppatches:
+    case Nil{}: pwords
+    case +patch <> +rest:
+      match patch:
+        case ShowPatchAt{at, to}: show_apply_patches(show_set_word(pwords, at, ShowNum{to}, 0n), rest)
+
+def show_finish(+perror: Maybe<&2, String>, +pst: ShowState) -> ShowOut:
+  match perror:
+    case Some{message}: ShowFail{message}
+    case None{}: ShowOk{show_render_words(show_apply_patches(show_words(pst), show_patches(pst)), ""), show_render_names(show_names(pst))}
+
+def show_result(+prun: ShowRun) -> ShowOut:
+  match prun:
+    case ShowHalted{message}: ShowFail{message}
+    case ShowDone{state}: show_finish(show_error(state), state)
+
+def show_root_layout(+playout: CLay.Layout) -> CLay.Layout:
+  match playout:
+    case CLay.LayoutWord{word}: playout
+    case CLay.LayoutBox{reason}: playout
+    case CLay.LayoutData{words, arms}: CLay.LayoutBox{CLay.BoxWide{List.length(&2, CLay.CWord, words)}}
+
+def show_root(+pvl: CLay.LayoutResult, +pctx: CLay.Context, +pmain: BIR.Descriptor, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>) -> ShowOut:
+  match pvl:
+    case CLay.LayoutFailed{message}: ShowFail{message}
+    case CLay.LayoutFound{layout}:
+      run = run_show(100000n, pctx, pconstructors, pfamilies, [ShowNode{pmain, show_root_layout(layout), None{}}], show_state0())
+      show_result(run)
+
+# A callable result is ONE Term: a raw word for Nat/U32/F32, a tagged term for
+# every other ADT, so the show root is boxed for a non-word layout.
+
+def show_build(+pctx: CLay.Context, +pmain: BIR.Descriptor, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>) -> ShowOut:
+  vl = CLay.value_layout(pctx, pmain)
+  show_root(vl, pctx, pmain, pconstructors, pfamilies)
