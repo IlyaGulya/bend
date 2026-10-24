@@ -1361,24 +1361,38 @@ def show_word_key(+pword: CLay.CWord) -> String:
 def show_box_key(+preason: CLay.BoxReason) -> String:
   match preason:
     case CLay.BoxOpen{}: "open"
-    case CLay.BoxUnresolved{key}: join_text(["unresolved:", key])
+    case CLay.BoxUnresolved{key}: join_text(["U", lk_text(key)])
     case CLay.BoxArray{}: "array"
     case CLay.BoxIo{}: "io"
-    case CLay.BoxRecursive{key}: join_text(["rec:", key])
+    case CLay.BoxRecursive{key}: join_text(["R", lk_text(key)])
     case CLay.BoxWide{words}: join_text(["wide:", Nat.show(words)])
 
-def show_arm_keys(+parms: List<&2, CLay.LayArm>) -> String:
+def lk_text(+ptext: String) -> String:
+  join_text([Nat.show(String.length(ptext)), ":", ptext])
+
+def lk_words(+pwords: List<&2, CLay.CWord>) -> String:
+  match pwords:
+    case Nil{}: ""
+    case +word <> +rest: join_text([show_word_key(word), ",", lk_words(rest)])
+
+def lk_fields(+pfields: List<&2, CLay.Layout>) -> String:
+  match pfields:
+    case Nil{}: ""
+    case +field <> +rest: join_text([show_layout_key(field), ",", lk_fields(rest)])
+
+def lk_arms(+parms: List<&2, CLay.LayArm>) -> String:
   match parms:
     case Nil{}: ""
     case +arm <> +rest:
       match arm:
-        case CLay.LayArm{key, fields}: join_text([key, "/", Nat.show(List.length(&2, CLay.Layout, fields)), ";", show_arm_keys(rest)])
+        case CLay.LayArm{key, fields}:
+          join_text(["A", lk_text(key), ":", Nat.show(List.length(&2, CLay.Layout, fields)), ":", lk_fields(fields), ";", lk_arms(rest)])
 
 def show_layout_key(+playout: CLay.Layout) -> String:
   match playout:
     case CLay.LayoutWord{word}: join_text(["w", show_word_key(word)])
     case CLay.LayoutBox{reason}: join_text(["B", show_box_key(reason)])
-    case CLay.LayoutData{words, arms}: join_text(["D", Nat.show(List.length(&2, CLay.CWord, words)), ":", show_arm_keys(arms)])
+    case CLay.LayoutData{words, arms}: join_text(["D", Nat.show(List.length(&2, CLay.CWord, words)), ":", lk_words(words), ":", Nat.show(List.length(&2, CLay.LayArm, arms)), ":", lk_arms(arms)])
 
 def show_arg_tokens(+pargs: List<&2, BIR.Descriptor>, +pfirst: Bool) -> List<&2, ShowToken>:
   match pargs:
@@ -1392,7 +1406,6 @@ def show_quantity_key(+pquantity: BIR.Quantity) -> String:
     case BIR.Erased{}: "0"
     case BIR.Once{}: "1"
     case BIR.Unrestricted{}: "2"
-    case _: "?"
 
 # --- SHOW advance ---------------------------------------------------------
 
@@ -1415,31 +1428,30 @@ def show_pat_expand(+ppattern: BIR.DescriptorPattern) -> List<&2, ShowToken>:
 
 def show_desc_expand(+pty: BIR.Descriptor) -> List<&2, ShowToken>:
   match pty:
-    case BIR.DescriptorRef{key, args}: List.append(&2, ShowToken, [ShowTokText{join_text([key, "("])}], List.append(&2, ShowToken, show_arg_tokens(args, True{}), [ShowTokText{")"}]))
-    case BIR.DescriptorApplication{fn, arg}: [ShowTokDesc{fn}, ShowTokText{"<"}, ShowTokDesc{arg}, ShowTokText{">"}]
-    case BIR.DescriptorFill{head, args}: List.append(&2, ShowToken, List.append(&2, ShowToken, [ShowTokDesc{head}, ShowTokText{"["}], show_arg_tokens(args, True{})), [ShowTokText{"]"}])
-    case BIR.DescriptorPlus{head, args}: List.append(&2, ShowToken, List.append(&2, ShowToken, [ShowTokDesc{head}, ShowTokText{"+["}], show_arg_tokens(args, True{})), [ShowTokText{"]"}])
-    case BIR.DescriptorNamedFill{key, head, args}: List.append(&2, ShowToken, [ShowTokText{join_text([key, ":"])}, ShowTokDesc{head}, ShowTokText{"["}], List.append(&2, ShowToken, show_arg_tokens(args, True{}), [ShowTokText{"]"}]))
-    case BIR.DescriptorNamedPlus{key, head, args}: List.append(&2, ShowToken, [ShowTokText{join_text([key, ":"])}, ShowTokDesc{head}, ShowTokText{"+["}], List.append(&2, ShowToken, show_arg_tokens(args, True{}), [ShowTokText{"]"}]))
-    case BIR.DescriptorParameter{index}: [ShowTokText{join_text(["#", Nat.show(index)])}]
-    case BIR.DescriptorNull{}: [ShowTokText{"null"}]
-    case BIR.DescriptorKind{quantity}: [ShowTokText{"K("}, ShowTokDesc{quantity}, ShowTokText{")"}]
-    case BIR.DescriptorQuantity{quantity}: [ShowTokText{join_text(["Q(", show_quantity_key(quantity), ")"])}]
-    case BIR.DescriptorQuantityKind{}: [ShowTokText{"QK"}]
-    case BIR.DescriptorMinimum{left, right}: [ShowTokText{"min("}, ShowTokDesc{left}, ShowTokText{","}, ShowTokDesc{right}, ShowTokText{")"}]
-    case BIR.DescriptorArrow{quantity, domain, body}: [ShowTokText{"A"}, ShowTokText{show_quantity_key(quantity)}, ShowTokText{"("}, ShowTokDesc{domain}, ShowTokText{")->"}, ShowTokDesc{body}]
+    case BIR.DescriptorRef{key, args}: List.append(&2, ShowToken, [ShowTokText{"R"}, ShowTokText{key}, ShowTokText{"("}], List.append(&2, ShowToken, show_arg_tokens(args, True{}), [ShowTokText{")"}]))
+    case BIR.DescriptorApplication{fn, arg}: [ShowTokText{"a"}, ShowTokDesc{fn}, ShowTokDesc{arg}]
+    case BIR.DescriptorFill{head, args}: List.append(&2, ShowToken, List.append(&2, ShowToken, [ShowTokText{"F"}, ShowTokDesc{head}, ShowTokText{"["}], show_arg_tokens(args, True{})), [ShowTokText{"]"}])
+    case BIR.DescriptorPlus{head, args}: List.append(&2, ShowToken, List.append(&2, ShowToken, [ShowTokText{"P"}, ShowTokDesc{head}, ShowTokText{"["}], show_arg_tokens(args, True{})), [ShowTokText{"]"}])
+    case BIR.DescriptorNamedFill{key, head, args}: List.append(&2, ShowToken, [ShowTokText{"f"}, ShowTokText{key}, ShowTokDesc{head}, ShowTokText{"["}], List.append(&2, ShowToken, show_arg_tokens(args, True{}), [ShowTokText{"]"}]))
+    case BIR.DescriptorNamedPlus{key, head, args}: List.append(&2, ShowToken, [ShowTokText{"q"}, ShowTokText{key}, ShowTokDesc{head}, ShowTokText{"["}], List.append(&2, ShowToken, show_arg_tokens(args, True{}), [ShowTokText{"]"}]))
+    case BIR.DescriptorParameter{index}: [ShowTokText{"p"}, ShowTokText{Nat.show(index)}]
+    case BIR.DescriptorNull{}: [ShowTokText{"n"}]
+    case BIR.DescriptorKind{quantity}: [ShowTokText{"K"}, ShowTokDesc{quantity}]
+    case BIR.DescriptorQuantity{quantity}: [ShowTokText{"Q"}, ShowTokText{show_quantity_key(quantity)}]
+    case BIR.DescriptorQuantityKind{}: [ShowTokText{"Z"}]
+    case BIR.DescriptorMinimum{left, right}: [ShowTokText{"m"}, ShowTokDesc{left}, ShowTokDesc{right}]
+    case BIR.DescriptorArrow{quantity, domain, body}: [ShowTokText{"A"}, ShowTokText{show_quantity_key(quantity)}, ShowTokDesc{domain}, ShowTokDesc{body}]
     case BIR.DescriptorLambda{quantity, body}: [ShowTokText{"L"}, ShowTokText{show_maybe_quantity_key(quantity)}, ShowTokDesc{body}]
-    case BIR.DescriptorConstructor{key, args}: List.append(&2, ShowToken, [ShowTokText{join_text(["@", key, "("])}], List.append(&2, ShowToken, show_arg_tokens(args, True{}), [ShowTokText{")"}]))
-    case BIR.DescriptorFailure{message}: [ShowTokText{join_text(["!", message])}]
-    case BIR.DescriptorSubstitution{index, value, body}: [ShowTokText{join_text(["S", Nat.show(index), "("])}, ShowTokDesc{value}, ShowTokText{";"}, ShowTokDesc{body}, ShowTokText{")"}]
-    case BIR.DescriptorLet{values, body}: List.append(&2, ShowToken, [ShowTokText{"L("}], List.append(&2, ShowToken, show_arg_tokens(values, True{}), [ShowTokText{";"}, ShowTokDesc{body}, ShowTokText{")"}]))
-    case BIR.DescriptorLocal{patterns, values, body}: List.append(&2, ShowToken, [ShowTokText{"Loc("}], List.append(&2, ShowToken, show_pat_tokens(patterns, True{}), List.append(&2, ShowToken, [ShowTokText{";"}], List.append(&2, ShowToken, show_arg_tokens(values, True{}), [ShowTokText{";"}, ShowTokDesc{body}, ShowTokText{")"}]))))
-    case BIR.DescriptorMatch{values, cases}: List.append(&2, ShowToken, [ShowTokText{"M("}], List.append(&2, ShowToken, show_arg_tokens(values, True{}), List.append(&2, ShowToken, [ShowTokText{";"}], List.append(&2, ShowToken, show_arg_tokens(cases, True{}), [ShowTokText{")"}]))))
-    case BIR.DescriptorCase{patterns, body}: List.append(&2, ShowToken, [ShowTokText{"C("}], List.append(&2, ShowToken, show_pat_tokens(patterns, True{}), [ShowTokText{";"}, ShowTokDesc{body}, ShowTokText{")"}]))
-    case BIR.DescriptorBind{value, body}: [ShowTokText{"B("}, ShowTokDesc{value}, ShowTokText{";"}, ShowTokDesc{body}, ShowTokText{")"}]
-    case BIR.DescriptorEquality{left, right, ty}: [ShowTokText{"E("}, ShowTokDesc{left}, ShowTokText{","}, ShowTokDesc{right}, ShowTokText{","}, ShowTokDesc{ty}, ShowTokText{")"}]
-    case BIR.DescriptorReflexivity{}: [ShowTokText{"R"}]
-    case _: [ShowTokText{"?"}]
+    case BIR.DescriptorConstructor{key, args}: List.append(&2, ShowToken, [ShowTokText{"C"}, ShowTokText{key}, ShowTokText{"("}], List.append(&2, ShowToken, show_arg_tokens(args, True{}), [ShowTokText{")"}]))
+    case BIR.DescriptorFailure{message}: [ShowTokText{"!"}, ShowTokText{message}]
+    case BIR.DescriptorSubstitution{index, value, body}: [ShowTokText{"S"}, ShowTokText{Nat.show(index)}, ShowTokDesc{value}, ShowTokDesc{body}]
+    case BIR.DescriptorLet{values, body}: List.append(&2, ShowToken, [ShowTokText{"E"}, ShowTokText{Nat.show(List.length(&2, BIR.Descriptor, values))}], List.append(&2, ShowToken, show_arg_tokens(values, True{}), [ShowTokDesc{body}]))
+    case BIR.DescriptorLocal{patterns, values, body}: List.append(&2, ShowToken, [ShowTokText{"l"}, ShowTokText{Nat.show(List.length(&2, BIR.DescriptorPattern, patterns))}, ShowTokText{Nat.show(List.length(&2, BIR.Descriptor, values))}], List.append(&2, ShowToken, show_pat_tokens(patterns, True{}), List.append(&2, ShowToken, show_arg_tokens(values, True{}), [ShowTokDesc{body}])))
+    case BIR.DescriptorMatch{values, cases}: List.append(&2, ShowToken, [ShowTokText{"M"}, ShowTokText{Nat.show(List.length(&2, BIR.Descriptor, values))}, ShowTokText{Nat.show(List.length(&2, BIR.Descriptor, cases))}], List.append(&2, ShowToken, show_arg_tokens(values, True{}), show_arg_tokens(cases, True{})))
+    case BIR.DescriptorCase{patterns, body}: List.append(&2, ShowToken, [ShowTokText{"c"}, ShowTokText{Nat.show(List.length(&2, BIR.DescriptorPattern, patterns))}], List.append(&2, ShowToken, show_pat_tokens(patterns, True{}), [ShowTokDesc{body}]))
+    case BIR.DescriptorBind{value, body}: [ShowTokText{"b"}, ShowTokDesc{value}, ShowTokDesc{body}]
+    case BIR.DescriptorEquality{left, right, ty}: [ShowTokText{"="}, ShowTokDesc{left}, ShowTokDesc{right}, ShowTokDesc{ty}]
+    case BIR.DescriptorReflexivity{}: [ShowTokText{"r"}]
 
 def show_render_tokens(+ptokens: List<&2, ShowToken>, +pacc: String) -> Maybe<&2, String>:
   match ptokens:
@@ -1542,17 +1554,22 @@ def fields_advance(+pctx: CLay.Context, +pconstructors: List<&2, BIR.Constructor
 # layout's arm and advance by each field's words.
 
 def show_data_arm_header(+pfields: List<&2, BIR.DescriptorField>, +pkey: String, +prest: List<&2, BIR.DescriptorArm>, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pbox: Nat, +pcount: Nat, +pst: ShowState) -> ShowAdvance:
-  index = List.length(&2, String, show_names(pst))
-  show_data_arm_cid(show_cid_of_key(pkey, pconstructors), pfields, pkey, pctx, pconstructors, pfamilies, playout, pbox, pcount, pst)
+  show_data_arm_cid(show_cid_of_key(pkey, pconstructors), pfields, pkey, prest, pctx, pconstructors, pfamilies, pty, playout, pbox, pcount, pst)
 
-def show_data_arm_cid(+pcid: Maybe<&2, Nat>, +pfields: List<&2, BIR.DescriptorField>, +pkey: String, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +playout: CLay.Layout, +pbox: Nat, +pcount: Nat, +pst: ShowState) -> ShowAdvance:
+def show_data_arm_rest(+pfirst: ShowAdvance, +prest: List<&2, BIR.DescriptorArm>, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pbox: Nat, +pcount: Nat) -> ShowAdvance:
+  match pfirst:
+    case ShowNext{state, kids}:
+      match show_data_arms(prest, pctx, pconstructors, pfamilies, pty, playout, pbox, pcount, state):
+        case ShowNext{state, kids2}: ShowNext{state, List.append(&2, ShowJob, kids, kids2)}
+
+def show_data_arm_cid(+pcid: Maybe<&2, Nat>, +pfields: List<&2, BIR.DescriptorField>, +pkey: String, +prest: List<&2, BIR.DescriptorArm>, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pbox: Nat, +pcount: Nat, +pst: ShowState) -> ShowAdvance:
   match pcid:
     case None{}: ShowNext{show_state_error(pst, join_text(["the constructor `", pkey, "` has no assigned C id"])), Nil{}}
     case Some{cid}:
       index = List.length(&2, String, show_names(pst))
       st = show_append_num(show_append_cid(show_append_num(pst, index), cid), List.length(&2, BIR.DescriptorField, pfields))
       st2 = show_append_name(show_append_num(st, show_arm_bracket(pkey)), pkey)
-      fields_advance(pctx, pconstructors, pfamilies, pkey, pfields, playout, pbox, pcount, st2)
+      show_data_arm_rest(fields_advance(pctx, pconstructors, pfamilies, pkey, pfields, playout, pbox, pcount, st2), prest, pctx, pconstructors, pfamilies, pty, playout, pbox, pcount)
 
 def show_data_arm_erased(+perased: Bool, +pfields: List<&2, BIR.DescriptorField>, +pkey: String, +prest: List<&2, BIR.DescriptorArm>, +pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +pbox: Nat, +pcount: Nat, +pst: ShowState) -> ShowAdvance:
   match perased:
@@ -1634,7 +1651,7 @@ def show_advance_key(+pkey: Maybe<&2, String>, +pctx: CLay.Context, +pconstructo
   match pkey:
     case None{}: ShowNext{show_state_error(pst, "the show descriptor key did not finish"), Nil{}}
     case Some{text}:
-      key = join_text([text, "@", show_layout_key(playout)])
+      key = join_text([Nat.show(String.length(text)), ":", text, show_layout_key(playout)])
       found = IndexLookup.find(Nat, show_memo(pst), key)
       show_advance_memo(found, key, pctx, pconstructors, pfamilies, pty, playout, ppatch, pst)
 
