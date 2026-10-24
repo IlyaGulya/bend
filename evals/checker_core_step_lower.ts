@@ -40,6 +40,10 @@ export type StepConfig = {
   checkerOutput?: string; checkerManifest?: string;
   /** Entire canonical provider modules admitted into the same typed CPS boundary. */
   providerClosure?: CPSProviderClosure;
+  /** Retained for callers that set it, but the composer now orders composed
+   * datatypes by dependency SCC itself: dependency-first across acyclic groups and
+   * source order inside one genuinely mutual group, so no flag is needed. */
+  sourceOrderedDatatypes?: boolean;
   generator: string;
 };
 export async function generateNativeSteps(paths: StepConfig) {
