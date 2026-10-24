@@ -1,0 +1,63 @@
+{
+  "schema": "peer-slice-integration-57ab-v1",
+  "date": "2026-10-24",
+  "combinedTree": {
+    "branch": "work/fir-nf-combined57ab",
+    "head": "92b4af7b"
+  },
+  "nf": {
+    "current": "work/nf-verified57ab@3a27aad9",
+    "descriptorNfSha256": "79591089ede2107d84c803a76c2e415ad35a0c358563d76aec7af46ee7b4ba98",
+    "receipt": "GuardedNF33: 787 events / 579 checked definitions / 0 excluded / 0 patches, artifact 81541d4a, 168 chunks, 33/33 assertions",
+    "scope": "component evidence only; no timing or deadline claim",
+    "superseded": [
+      "30aaa33e",
+      "5b595ac7"
+    ]
+  },
+  "clay": {
+    "current": "work/clay-native57ab@d26bd496",
+    "numbers": "221 definitions / 616 helpers, owned 2880e527, step output b1150172, guarded PASS 254509056 B / 769 ms under the original guards, host Run failures 0 with 1061790 chunks, artifact d0ea9282, F399=0",
+    "scope": "CLay boundary does not compose into the compiler root",
+    "superseded": [
+      "d4a2f11e",
+      "f67a5e3a",
+      "4a6b959b"
+    ]
+  },
+  "datatypeHeaders": {
+    "current": "work/fir-datatype57ab@0178ce4d",
+    "result": "27/27 rows PASS on the combined component rebuilt at this head",
+    "superseded": [
+      "1cd2d4df"
+    ]
+  },
+  "composer": {
+    "current": "34e4b7e0",
+    "note": "Tarjan SCC ordering: dependency-first across groups, source order inside one mutual group"
+  },
+  "arrayFacts": {
+    "commits": [
+      "115522b4",
+      "6255f91e"
+    ],
+    "evidence": "55 array primitive calls, LEAK 0, 13/13 ops, typed is_leaf/leaf_value, nested [Array(U32())], partials 485-487 [U32()]"
+  },
+  "regeneration": {
+    "owned": 1141,
+    "checkerSteps": "1141/4223/1541/4914",
+    "template": 196,
+    "emitter": "853/1710/479/4/1413"
+  },
+  "fp": {
+    "status": "blocked",
+    "reason": "stage-one check is 194,871,876 CPS requests at 886 ns each (172.8 s); the permitted dispatcher flattening can recover single-digit seconds per stage against the ~60 s the 600 s envelope requires",
+    "claims": {
+      "aggregatePass": false,
+      "comparisonCertificate": false,
+      "bootstrapGreen": false,
+      "diagnosticOnly": true
+    },
+    "receipt": "evals/selfhost-root-phase-profile-57ab.json"
+  }
+}
