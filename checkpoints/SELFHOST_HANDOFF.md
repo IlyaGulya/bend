@@ -22,6 +22,11 @@ Native runtimephysical1370982584bytes противT1300793432bytes:~70MB increas
 не скрыт. JS fullcompile119.323493s НЕ ускорился противT119.083967s.
 Receipt compiler-ir-checkpoint-v57w.json сохраняет source/proof/tool/CPU/limits.
 Kernel6c1df3…/comp5b934…/Base323827… прежние; oldT proofs не переносились наW.
+После полной W proof удалены515 supersededT nativeAST payloads,1215473265bytes;
+у currentW root/suite input maps ссылок на них0. Source fixtures/stage images/
+compact receipts сохранены. Own /private/tmp/quote57w scaffolds удалены после
+embedding exact sources/runner/measurements в receipt. Checkpoints10778804KiB
+(~10.28GiB); raw backend stdout/stderr хранятся в ignored full reports, не в compact receipt.
 
 ### Предыдущий accepted57t typed-native-stack (история)
 fresh parser75, public native root8391/8391 bodies8787events, frozen15modules/
