@@ -47,22 +47,26 @@ if(isMainThread){
   }else if(workerData.duplicateDeclaration){
    // The compiled parser rejects two top-level declarations with one name, so a
    // duplicate datatype header can only reach the checker as an owned module
-   // value. Splice two parsed modules' declarations and require the checker's own
-   // duplicate category; the combined text is also retained as an observation.
+   // value. Each part must check alone; splicing them must fail at the second
+   // declaration's exact span. No diagnostic wording is consulted.
    phase('compiled-duplicate-parse');
    const part=feedback=>{const result=feedback.value?.result;if(tag(feedback)!=='FeedbackComplete'||tag(result)!=='ParseSuccess')throw Error('Duplicate declaration part did not parse: '+tag(result??feedback));return result.module;};
    const second=part(parser.parse_with_fuel(fuelList(2000000),workerData.file,workerData.second));
    if(tag(module.declarations.tail)!=='Nil'||tag(second.declarations.tail)!=='Nil')throw Error('Duplicate declaration parts must be single-declaration modules');
+   const firstDeclaration=module.declarations.head.declaration,secondDeclaration=second.declarations.head.declaration;
+   const duplicatedIdentity=firstDeclaration.key===secondDeclaration.key;
    const spliced={...module,declarations:{$:'Con',head:module.declarations.head,tail:second.declarations}};
    const combined=parser.parse_with_fuel(fuelList(2000000),workerData.file,workerData.source+workerData.second);
    const parserRefusedCombined=tag(combined)==='FeedbackComplete'&&tag(combined.value?.result)==='ParseFailure';
    phase('compiled-check');
-   const checked=runCheckerSteps(component,{$:'Con',head:component.parsed_module('',spliced),tail:{$:'Nil'}});
+   const check=value=>runCheckerSteps(component,{$:'Con',head:component.parsed_module('',value),tail:{$:'Nil'}});
+   const firstAlone=tag(check(module))==='CheckSuccess',secondAlone=tag(check(second))==='CheckSuccess';
+   const checked=check(spliced);
    observedCheck=checked;
-   const message=String(checked.diagnostic?.message??'');
-   const rejected=tag(checked)==='CheckFailure'&&message.includes('duplicate declaration');
+   const span=checked.diagnostic?.span,blamedSecond=tag(checked)==='CheckFailure'&&span?.beg===secondDeclaration.span?.beg&&span?.end===secondDeclaration.span?.end;
+   const passed=duplicatedIdentity&&firstAlone&&secondAlone&&blamedSecond;
    phase('complete');
-   parentPort.postMessage({passed:rejected,status:rejected?'PASS':'FAIL',name:workerData.name,accepted:false,checkerTag:tag(checked),diagnostic:checked.diagnostic,splicedDeclarations:2,parserRefusedCombined,phases});
+   parentPort.postMessage({passed,status:passed?'PASS':'FAIL',name:workerData.name,accepted:false,checkerTag:tag(checked),diagnostic:checked.diagnostic,splicedDeclarations:2,duplicatedIdentity,firstAlone,secondAlone,blamedSecond,parserRefusedCombined,phases});
   }else{
   const pending=[module];
   while(pending.length){const value=pending.pop();if(!value||typeof value!=='object')continue;const key=tag(value);if(key==='TemplateBinder'||key==='TermTemplate')throw Error('Target violates already-expanded Template-free precondition');for(const [key,child]of Object.entries(value))if(key!=='$')pending.push(child);}

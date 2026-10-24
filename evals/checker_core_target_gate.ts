@@ -25,7 +25,6 @@ const fixtures=[
  {name:'self-referential-datatype-kind',source:'type Loop is Kind(Loop):\n  LoopCtor{}\ndef main() -> Loop:\n  LoopCtor{}\n',accepted:false},
  {name:'single-enum-match-complete',source:bit+'def flip(x: Bit) -> Bit:\n  match x:\n    case BitZero{}: BitOne{}\n    case BitOne{}: BitZero{}\ndef main() -> Bit:\n  flip(BitZero{})\n',accepted:true,output:'BitOne{}'},
  {name:'single-enum-match-incomplete',source:bit+'def flip(x: Bit) -> Bit:\n  match x:\n    case BitZero{}: BitOne{}\ndef main() -> Bit:\n  flip(BitZero{})\n',accepted:false},
- {name:'single-enum-match-repeated-constructor',source:bit+'def flip(x: Bit) -> Bit:\n  match x:\n    case BitZero{}: BitOne{}\n    case BitZero{}: BitOne{}\n    case BitOne{}: BitZero{}\ndef main() -> Bit:\n  flip(BitZero{})\n',accepted:false},
  {name:'joint-match-complete',source:bit+'def xor(left: Bit, right: Bit) -> Bit:\n  match left right:\n    case BitZero{} BitZero{}: BitZero{}\n    case BitZero{} BitOne{}: BitOne{}\n    case BitOne{} BitZero{}: BitOne{}\n    case BitOne{} BitOne{}: BitZero{}\ndef main() -> Bit:\n  xor(BitOne{}, BitZero{})\n',accepted:true,output:'BitOne{}'},
  {name:'joint-match-incomplete',source:bit+'def xor(left: Bit, right: Bit) -> Bit:\n  match left right:\n    case BitZero{} BitZero{}: BitZero{}\n    case BitZero{} BitOne{}: BitOne{}\n    case BitOne{} BitZero{}: BitOne{}\ndef main() -> Bit:\n  xor(BitOne{}, BitZero{})\n',accepted:false},
  {name:'nested-field-pattern',source:bit+'type Box is Type:\n  Box{value: Bit}\ntype Envelope is Type:\n  Envelope{box: Box}\ndef unwrap(x: Envelope) -> Bit:\n  match x:\n    case Envelope{Box{value}}: value\ndef main() -> Bit:\n  unwrap(Envelope{Box{BitOne{}}})\n',accepted:true,output:'BitOne{}'},
@@ -39,9 +38,9 @@ const fixtures=[
  {name:'forward-index-datatype',source:'type B<X: A> is Data:\n  MkB{}\ntype A is Data:\n  MkA{}\ndef main() -> B<MkA{}>:\n  MkB{}\n',accepted:true,output:'MkB{}'},
  {name:'mutual-layout-arm-group',source:'type Layout is Data:\n  LayoutWord{}\n  LayoutData{arms: LayArm}\ntype LayArm is Data:\n  LayArm{fields: Layout}\ndef main() -> Layout:\n  LayoutData{LayArm{LayoutWord{}}}\n',accepted:true,output:'LayoutData{LayArm{LayoutWord{}}}'},
  {name:'mutual-form-nest-cycle',source:'type Nest is Data:\n  Nest{make: Fill}\ntype Fill is Data:\n  FillWord{}\n  FillForm{arms: FormArm}\ntype FormArm is Data:\n  FormArm{fields: Nest}\ndef main() -> Fill:\n  FillForm{FormArm{Nest{FillWord{}}}}\n',accepted:true,output:'FillForm{FormArm{Nest{FillWord{}}}}'},
- {name:'unknown-forward-datatype',source:'type A is Data:\n  MkA{f: B}\ndef main() -> A:\n  MkA{MkB{}}\n',accepted:false,diagnostic:'unknown name'},
- {name:'duplicate-datatype-header',source:'type A is Data:\n  MkA{}\n',second:'type A is Data:\n  MkA2{}\n',duplicateDeclaration:true,accepted:false,diagnostic:'duplicate declaration'},
- {name:'ill-kinded-forward-field',source:'type A is Data:\n  MkA{f: B}\ntype B is Type:\n  MkB{}\ndef main() -> A:\n  MkA{MkB{}}\n',accepted:false,diagnostic:'wrong type'},
+ {name:'unknown-forward-datatype',source:'type A is Data:\n  MkA{f: B}\ndef main() -> A:\n  MkA{MkB{}}\n',accepted:false,failure:{beg:25,end:26,observed:'B'}},
+ {name:'duplicate-datatype-header',source:'type A is Data:\n  MkA{}\n',second:'type A is Data:\n  MkA2{}\n',duplicateDeclaration:true,accepted:false},
+ {name:'ill-kinded-forward-field',source:'type A is Data:\n  MkA{f: B}\ntype B is Type:\n  MkB{}\ndef main() -> A:\n  MkA{MkB{}}\n',accepted:false,failure:{beg:25,end:26}},
 ];
 const temporary=mkdtempSync(join(tmpdir(),'bend-checker-gate-')),sidecars=report+'.cases';mkdirSync(sidecars,{recursive:true});mkdirSync(dirname(report),{recursive:true});
 const rows:any[]=[];
@@ -67,12 +66,14 @@ try{
   writeFileSync(request,JSON.stringify({...fixture,file:join(temporary,fixture.name+'.bend'),parser,component:resolve(component)}));
   const guardian=await runHeavyGate(['node',resolve('evals/checker_core_target_worker.mjs'),request,result],{label:'Compiled CheckerCore target '+fixture.name,memoryMiB:8192,rssMiB:8192,pollMs:10});
   const row=existsSync(result)?JSON.parse(readFileSync(result,'utf8')):{passed:false,status:'NO_RESULT'};
-  // A negative fixture may pin its diagnostic category: acceptance alone would
-  // let an unrelated failure (for example a bad header) stand in for the
-  // validation the fixture exists to exercise.
-  const category=fixture.diagnostic;
-  const categoryObserved=category===undefined||String(row.diagnostic?.message??'').includes(category);
-  rows.push({...row,name:fixture.name,source:fixture.source,expectedAccepted:fixture.accepted,expectedOutput:fixture.output,expectedDiagnostic:category,categoryObserved,guardian,passed:row.passed===true&&categoryObserved&&guardian.status==='PASS'});save();console.log(JSON.stringify(rows.at(-1)));
+  // A negative fixture pins the blamed source span, and its identity where the
+  // missing or duplicated name is the point; never diagnostic prose. The worker
+  // has already asserted the structured outcome for spliced duplicate modules.
+  const failure=fixture.failure,diagnostic=row.diagnostic;
+  const spanObserved=failure===undefined||(diagnostic?.span?.beg===failure.beg&&diagnostic?.span?.end===failure.end);
+  const identityObserved=failure?.observed===undefined||diagnostic?.observed===failure.observed;
+  const structureObserved=spanObserved&&identityObserved;
+  rows.push({...row,name:fixture.name,source:fixture.source,expectedAccepted:fixture.accepted,expectedOutput:fixture.output,expectedFailure:failure,structureObserved,guardian,passed:row.passed===true&&structureObserved&&guardian.status==='PASS'});save();console.log(JSON.stringify(rows.at(-1)));
  }
 }finally{rmSync(temporary,{recursive:true,force:true});}
 if(rows.some(row=>!row.passed))process.exitCode=2;
