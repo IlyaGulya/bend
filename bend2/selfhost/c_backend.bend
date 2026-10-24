@@ -2350,6 +2350,23 @@ def a_rebinds_at(+index: Nat, +count: Nat) -> String:
     case True{}: String.concat(["    ", a_name(index), " = ", r_name(index), ";\n", a_rebinds_at(Nat.add(index, 1n), count)])
     case False{}: ""
 
+# Runtime-owned entries have symbolic WL_CASE definitions in the template, so a
+# jump to one must spell its symbolic name; a numeric FID_<n> would refer to a
+# function that is never defined.
+def fid_name(+target: U32, +entries: List<&2, Entry>) -> String:
+  match U32.is_eq(target, rt_entry(entries, 2n)):
+    case True{}: "FID_IO_EMIT"
+    case False{}:
+      match U32.is_eq(target, rt_entry(entries, 3n)):
+        case True{}: "FID_CLO_APPLY"
+        case False{}:
+          match U32.is_eq(target, rt_entry(entries, 4n)):
+            case True{}: "FID_EXIT"
+            case False{}:
+              match U32.is_eq(target, rt_entry(entries, 5n)):
+                case True{}: "FID_ENTER"
+                case False{}: String.concat(["FID_", U32.show(target)])
+
 def case_text(index: U32, body: String) -> String:
   String.concat(["  WL_CASE(FID_", U32.show(index), ")\n  {\n    WL_OPEN\n", body, "  }}\n\n"])
 
@@ -2465,7 +2482,7 @@ def leave_ctl(label: U32, +ctx: Ctx) -> Step:
           match refs_caps(refs, ctx):
             case None{}: StepFail{"BIR LeaveRegion reads a value that is not in scope"}
             case Some{caps}:
-              StepOk{String.concat([caps_assign(caps, 0n), "    WL_JMP(FID_", U32.show(fid), ");\n"]), ctx}
+              StepOk{String.concat([caps_assign(caps, 0n), "    WL_JMP(", fid_name(fid, sig_entries(ctx_sig(ctx))), ");\n"]), ctx}
 
 def tail_direct_ctl(+code: U32, args: List<&2, BIR.Arg>, +ctx: Ctx) -> Step:
   match IndexLookup.find(U32, sig_by_code(ctx_sig(ctx)), U32.show(code)):
@@ -2481,11 +2498,11 @@ def tail_direct_ctl(+code: U32, args: List<&2, BIR.Arg>, +ctx: Ctx) -> Step:
                 case Some{self}:
                   match U32.is_eq(self, target):
                     case True{}: self_tail(target, values, ctx)
-                    case False{}: StepOk{String.concat([regs_assign(values, 0n), "    WL_JMP(FID_", U32.show(target), ");\n"]), ctx}
-                case None{}: StepOk{String.concat([regs_assign(values, 0n), "    WL_JMP(FID_", U32.show(target), ");\n"]), ctx}
+                    case False{}: StepOk{String.concat([regs_assign(values, 0n), "    WL_JMP(", fid_name(target, sig_entries(ctx_sig(ctx))), ");\n"]), ctx}
+                case None{}: StepOk{String.concat([regs_assign(values, 0n), "    WL_JMP(", fid_name(target, sig_entries(ctx_sig(ctx))), ");\n"]), ctx}
 
 def self_tail(target: U32, values: List<&2, String>, +ctx: Ctx) -> Step:
-  text = String.concat([regs_assign(values, 0n), "    WL_AGAIN(FID_", U32.show(target), ");\n"])
+  text = String.concat([regs_assign(values, 0n), "    WL_AGAIN(", fid_name(target, sig_entries(ctx_sig(ctx))), ");\n"])
   StepOk{text, Ctx{ctx_sig(ctx), ctx_plan(ctx), ctx_env(ctx), ctx_caps(ctx), ctx_caps_n(ctx), ctx_regions(ctx), ctx_self(ctx), ctx_next(ctx), ctx_segs(ctx), ctx_outs(ctx), True{}, ctx_max(ctx)}}
 
 def tail_apply_ctl(fn: BIR.Atom, arg: BIR.Arg, +ctx: Ctx) -> Step:
@@ -2533,16 +2550,16 @@ def call_next(target: U32, args: List<&2, String>, +result: U32, next: BIR.Block
 def call_done(target: U32, args: List<&2, String>, +caps: List<&2, Cap>, result: U32, +ctx: Ctx, text: String, +cn: Ctx) -> Step:
   +fid = ctx_next(ctx)
   +count = List.length(&2, Cap, caps)
-  StepOk{call_head(fid, count, caps, args, target), Ctx{ctx_sig(cn), ctx_plan(cn), ctx_env(cn), ctx_caps(cn), ctx_caps_n(cn), ctx_regions(cn), ctx_self(cn), ctx_next(cn), SegText{fid, Nat.add(count, 1n), 1n, case_text(fid, String.concat([cont_prologue(caps, ctx_caps_n(ctx), result), text]))} <> ctx_segs(cn), ctx_outs(cn), ctx_spin(cn), ctx_max(cn)}}
+  StepOk{call_head(fid, count, caps, args, target, sig_entries(ctx_sig(ctx))), Ctx{ctx_sig(cn), ctx_plan(cn), ctx_env(cn), ctx_caps(cn), ctx_caps_n(cn), ctx_regions(cn), ctx_self(cn), ctx_next(cn), SegText{fid, Nat.add(count, 1n), 1n, case_text(fid, String.concat([cont_prologue(caps, ctx_caps_n(ctx), result), text]))} <> ctx_segs(cn), ctx_outs(cn), ctx_spin(cn), ctx_max(cn)}}
 
-def call_head(+fid: U32, count: Nat, caps: List<&2, Cap>, args: List<&2, String>, target: U32) -> String:
+def call_head(+fid: U32, count: Nat, caps: List<&2, Cap>, args: List<&2, String>, target: U32, entries: List<&2, Entry>) -> String:
   +node = String.concat(["kc", U32.show(fid)])
   String.concat([
     "    u64 ", node, " = task_node(e, FID_", U32.show(fid), ", WL_CONT, WL_IDX, ", Nat.show(count), ");\n",
     cap_stores(node, caps, 0n),
     "    WL_ROOM(3);\n    STK(0) = term_tsk(FID_", U32.show(fid), ", ", node, ");\n    STK(1) = 0;\n    STK(2) = FID_EXIT;\n    WL_PUSHN(3);\n",
     regs_assign(args, 0n),
-    "    WL_JMP(FID_", U32.show(target), ");\n"
+    "    WL_JMP(", fid_name(target, entries), ");\n"
   ])
 
 def cap_stores(+node: String, caps: List<&2, Cap>, +index: Nat) -> String:
@@ -2762,7 +2779,7 @@ def main_jump(index: U32, found: Maybe<&2, U32>, +ctx: Ctx) -> Step:
     case Some{+target}:
       match Nat.is_eq(entry_arity(sig_entries(ctx_sig(ctx)), target), 0n):
         case False{}: StepFail{"the C target's main entry must take no parameters"}
-        case True{}: entry_add(index, String.concat(["    WL_JMP(FID_", U32.show(target), ");\n"]), ctx)
+        case True{}: entry_add(index, String.concat(["    WL_JMP(", fid_name(target, sig_entries(ctx_sig(ctx))), ");\n"]), ctx)
 
 # -- control plan -----------------------------------------------------------
 
@@ -2886,18 +2903,41 @@ def fid_table(rows: List<&2, SegText>) -> String:
       match row:
         case SegText{fid, arity, resw, text}: String.concat(["{ ", Nat.show(arity), ", ", Nat.show(resw), ", 2 }, ", fid_table(rest)])
 
-def wl_table_text(rows: List<&2, SegText>, enter: U32) -> String:
-  String.concat([wl_table_rows(rows, enter), "WL_X(FID_ENTER)"])
+# The runtime owns the IO_EMIT/CLO_APPLY/EXIT/ENTER cases under their symbolic
+# names; their numeric rows must not also appear in WL_TABLE or the linker sees
+# undefined WL_FID_<n>. The template appends WL_X(FID_ENTER) itself, so the
+# table ends with the fixed EXIT row.
+def wl_table_text(rows: List<&2, SegText>, +entries: List<&2, Entry>) -> String:
+  wl_table_rows(rows, entries)
 
-def wl_table_rows(rows: List<&2, SegText>, +enter: U32) -> String:
+def wl_table_rows(rows: List<&2, SegText>, +entries: List<&2, Entry>) -> String:
   match rows:
     case Nil{}: ""
     case +row <> rest:
       match row:
         case SegText{+fid, arity, resw, text}:
-          match U32.is_eq(fid, enter):
-            case True{}: wl_table_rows(rest, enter)
-            case False{}: String.concat(["WL_X(FID_", U32.show(fid), ") ", wl_table_rows(rest, enter)])
+          match wl_row_text(fid, entries):
+            case None{}: wl_table_rows(rest, entries)
+            case Some{name}: String.concat([name, " ", wl_table_rows(rest, entries)])
+
+# One row per fid index. ENTER is dispatched by work_loop directly, so the
+# table omits it (the template appends its declaration). The runtime-owned
+# cases keep their symbolic names, matching the template definitions.
+def wl_row_text(+fid: U32, +entries: List<&2, Entry>) -> Maybe<&2, String>:
+  match U32.is_eq(fid, rt_entry(entries, 5n)):
+    case True{}: None{}
+    case False{}: Some{wl_row_name(fid, entries)}
+
+def wl_row_name(+fid: U32, +entries: List<&2, Entry>) -> String:
+  match U32.is_eq(fid, rt_entry(entries, 2n)):
+    case True{}: "WL_X(FID_IO_EMIT)"
+    case False{}:
+      match U32.is_eq(fid, rt_entry(entries, 3n)):
+        case True{}: "WL_X(FID_CLO_APPLY)"
+        case False{}:
+          match U32.is_eq(fid, rt_entry(entries, 4n)):
+            case True{}: "WL_X(FID_EXIT)"
+            case False{}: String.concat(["WL_X(FID_", U32.show(fid), ")"])
 
 # -- runtime tables ---------------------------------------------------------
 
@@ -2935,12 +2975,12 @@ def wl_last_rows(+count: Nat, +index: Nat) -> String:
 def wl_macros(+regs: Nat) -> String:
   String.concat([
     "#define WL_RESW 1\n#define BANGS 0\n\n",
-    "#define WL_BANK ", register_decls(regs), "\n\n",
+    "#define WL_BANK Term ", register_names(regs), ";\n\n",
     "#define WL_LOAD(A, N) do { \\\n", wl_load_rows(regs, 0n), "  } while (0);\n\n",
     "#define WL_LAST(X) switch (war) { \\\n", wl_last_rows(regs, 0n), "  }\n\n",
     "#define WL_SAVE(V) (V)[0] = r0;\n",
     "#define WL_TAKE(V) r0 = (V)[0];\n\n",
-    "#define WL_SIG Env e, DEV Term* sp, u32 seq, u32 rn, ", register_names(regs), "\n",
+    "#define WL_SIG Env e, DEV Term* sp, u32 seq, u32 rn, ", register_decls(regs), "\n",
     "#define WL_ALL e, sp, seq, rn, ", register_names(regs), "\n"
   ])
 
@@ -2960,21 +3000,16 @@ def tables_part(plan: Plan, +rows: List<&2, SegText>, regs: Nat) -> Part:
         part_text(runtime_cid_aliases(cids)),
         cid_defines(cids),
         fid_defines(rows),
-        runtime_fid_aliases(entries),
         runtime_defines(entries), "\n",
         "CONSTV u8 CID_T[][2] = { ", cid_table(cids), "\n",
         "CONSTV u8 FID_T[][3] = { ", fid_table(rows), "\n",
         "#define STAT_LEN 0\n\n",
         wl_macros(regs), "\n",
-        "#define WL_TABLE ", wl_table_text(rows, rt_entry(entries, 5n)), "\n",
+        "#define WL_TABLE ", wl_table_text(rows, entries), "\n",
         "#define MAIN_FID FID_", U32.show(rt_entry(entries, 1n)), "\n",
         "#define MAIN_PURE ", main_pure_text(main_pure), "\n",
         "#define BLK_SHR 0\n\n",
-        "#if !DEVICE\nstatic const u32 SHOW_DESC[] = { ", show_desc, " };\nstatic const char* SHOW_NAMES[] = { ", show_names, " };\n#endif\n\n",
-        "#if !DEVICE\n",
-        helper_prototypes(),
-        helper_core(),
-        "#endif\n"
+        "#if !DEVICE\nstatic const u32 SHOW_DESC[] = { ", show_desc, " };\nstatic const char* SHOW_NAMES[] = { ", show_names, " };\n#endif\n\n"
       ])}
 
 def main_pure_text(pure: Bool) -> String:
@@ -2982,8 +3017,17 @@ def main_pure_text(pure: Bool) -> String:
     case True{}: "1"
     case False{}: "0"
 
+# The helper core defines the C words the generated segments call inline; it
+# must sit after the runtime's memory/term definitions (the Spins slot) but
+# before the Segments slot. bend_text alone needs io_str, which the runtime
+# defines after Spins, so it is declared here and defined in Requests.
 def spins_part() -> Part:
-  okp("CONSTV u64 STAT_IMG[] = { 0 };\n")
+  okp(String.concat([
+    "typedef u64 Nat;\n",
+    helper_core(),
+    "static Term bend_text(Env e, const char* p, u64 n);\n",
+    "CONSTV u64 STAT_IMG[] = { 0 };\n"
+  ]))
 
 def part_text(part: Part) -> String:
   match part:
@@ -3023,7 +3067,6 @@ def helper_core() -> String:
     "static u64 bend_hastag(Term v, u32 cid) {\n  u64 tag = term_tag(v);\n  return (tag == TAG_CTR || tag == TAG_PAK) && term_aux(v) == (u64)cid;\n}\n\n",
     "static Nat bend_nat_pred(Nat v) {\n  return v == 0 ? 0 : v - 1;\n}\n\n",
     "static Nat bend_f32_to_nat(Env e, Term v) {\n  f32 x = f32_unbox(v);\n  return nat_chk(e, x < 0.0f ? 0 : (u64)x);\n}\n\n",
-    "static Term bend_text(Env e, const char* p, u64 n) {\n  return io_str(e, p, n);\n}\n\n",
     "static Term bend_tuple(Env e, u32 cid, Term a, Term b) {\n  u64 l = heap_alloc(e, cls_fit(2));\n  e.mem[l] = a;\n  e.mem[l + 1] = b;\n  return term_ctr(cid, l);\n}\n\n",
     "static Term bend_box_enum(Env e, const u32* cids, u32 n, u64 tag) {\n  (void)e;\n  return term_pak(tag < (u64)n ? cids[tag] : (n == 0 ? 0 : cids[0]), 0);\n}\n\n",
     "static Term bend_bool(Env e, u32 t, u32 f, u64 c) {\n  (void)e;\n  return term_pak(c != 0 ? t : f, 0);\n}\n\n",
@@ -3059,7 +3102,12 @@ def helper_core() -> String:
 def requests_part(plan: Plan) -> Part:
   match plan:
     case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx}:
-      requests_check(imports, fkeys, declarations, constructors, cids, by_code, by_key, by_foreign, by_native)
+      requests_finish(requests_check(imports, fkeys, declarations, constructors, cids, by_code, by_key, by_foreign, by_native))
+
+def requests_finish(part: Part) -> Part:
+  match part:
+    case PartFail{message}: PartFail{message}
+    case PartOk{text}: PartOk{String.concat([text, "static Term bend_text(Env e, const char* p, u64 n) {\n  return io_str(e, p, n);\n}\n"])}
 
 def requests_check(+imports: List<&2, CImport>, fkeys: List<&2, String>, +declarations: List<&2, BIR.Declaration>, constructors: List<&2, BIR.ConstructorLayout>, cids: List<&2, CidRow>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>) -> Part:
   match requests_uncovered(fkeys, imports, declarations):
