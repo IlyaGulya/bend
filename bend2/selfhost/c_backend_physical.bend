@@ -691,8 +691,15 @@ def project_words(+pw: World, +playout: CLay.Layout, +poffset: Nat, +pcount: Nat
   jobs = List.append(&2, Job, one_job(JText{project_prelude(playout, pvalue, pcount, poffset)}), unfill_jobs(pw, playout, SrcNode{"b0s", "b0f", "b0i", False{}}, "b0r", "b0"))
   part_of(run_jobs(jobs, pw, Nil{}), "b0r")
 
+def project_packed_prelude(+playout: CLay.Layout, +pvalue: String) -> String:
+  head = join_text(["Term b0t = ", pvalue, ";"])
+  match playout:
+    case CLay.LayoutWord{word}: join_text([head, " Term b0r = 0;"])
+    case CLay.LayoutBox{reason}: join_text([head, " Term b0r = 0;"])
+    case CLay.LayoutData{words, arms}: head
+
 def project_packed(+pw: World, +playout: CLay.Layout, +pvalue: String) -> Part:
-jobs = List.append(&2, Job, [JText{join_text(["Term b0t = ", pvalue, ";"])}], unfill_jobs(pw, playout, SrcOne{"((u64)term_loc(b0t))"}, "b0r", "b0"))
+  jobs = List.append(&2, Job, one_job(JText{project_packed_prelude(playout, pvalue)}), unfill_jobs(pw, playout, SrcOne{"((u64)term_loc(b0t))"}, "b0r", "b0"))
   part_of(run_jobs(jobs, pw, Nil{}), "b0r")
 
 def project_packed_flag(+ppacked: Bool, +pw: World, +playout: CLay.Layout, +poffset: Nat, +pcount: Nat, +pvalue: String) -> Part:
