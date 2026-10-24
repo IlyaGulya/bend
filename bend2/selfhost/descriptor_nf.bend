@@ -20,20 +20,33 @@
 #   * a type function is beta-reduced once it has its arity arguments, and any
 #     further arguments apply to the result (curried over-application);
 #     `native` is metadata, never a reason to refuse a reduction, so a closed
-#     alias of Nat or IO resolves to what it names;
-#   * an application to too few arguments is abstract, and an application past
-#     a family's parameter count is a reducer failure;
+#     alias of Nat or IO resolves to what it names. The one exception is the
+#     base IO intrinsic, whose head and arguments are preserved without
+#     unfolding, exactly like the runtime's `$type_named` marking IO;
+#   * a lambda is a closure over the environment where it appears, exactly
+#     like the runtime's `{k:"L", body, env}`: applying it evaluates its body
+#     with the argument appended, so a positive beta reduces and a captured
+#     higher-order alias keeps its captures; an unapplied closure materializes
+#     as a lambda whose captured values are bound by substitutions at indices
+#     1.. (its own argument stays abstract at 0);
+#   * an application to too few arguments is abstract; an application past a
+#     family's or type function's parameter count, and an application of an
+#     argument to a constructor, quantity or kind value, is a reducer failure
+#     (the runtime refuses to apply a non-function);
 #   * substitution, let, local, bind and match are the descriptor language's
 #     scoping forms; a match binds its constructor patterns and evaluates its
-#     body in the extended environment, and a match whose scrutinee is not a
-#     constructor value is abstract (no type unfolds from it);
+#     body in the extended environment. A case whose patterns definitely
+#     mismatch lets the next case run; a case that cannot be decided because
+#     its scrutinee is not yet a constructor value makes the whole match
+#     abstract, so a later binder never masks an unknown earlier case;
 #   * a name that is neither a family nor a type function is an abstract type
 #     expression (an opaque law such as Chan or File), so it is kept as it is,
 #     not a failure: checking already accepted it.
 #
 # Reduction is bounded by a fuel counter and terminates on its own; when the
-# bound runs out the expression is abstract. A reduction that cannot be
-# performed at all (an over-applied family, a DescriptorFailure) is NfFail,
+# bound runs out the expression is a reducer failure (DescriptorFailure), never
+# a silent abstract type. A reduction that cannot be performed at all (an
+# over-applied family, an invalid application, a DescriptorFailure) is NfFail,
 # and every consumer must report it rather than guess.
 #
 # An abstract normal form keeps its source descriptor (NfOther/NfMissing), so
@@ -53,9 +66,16 @@ import ./index_lookup.bend as IndexLookup
 # which a type-level match may inspect; NfQuantity and NfKind are the
 # quantity and kind language, which no target reads (a kind carries its
 # quantity already materialized, so building a normal form never needs a
-# second traversal with its own budget); NfOther is any other term (a
-# function, a proof, a hole), kept as its own descriptor; NfMissing is a
-# binder with no value in scope, kept as its own descriptor.
+# second traversal with its own budget); NfOther is any other term (a proof,
+# a hole, an abstract application), kept as its own descriptor; NfMissing is
+# a binder with no value in scope, kept as its own descriptor.
+#
+# NfClosure is a lambda value: the runtime's `{k:"L", body, env}`. Its body
+# indexes its own future argument at 0 and the captured environment at 1..,
+# exactly like the runtime's `$type_apply` appending an argument to `env`.
+# `sources` is that environment already materialized, so materializing a
+# partially applied closure can rebuild the lambda without re-normalizing its
+# captures.
 type NfVal is Data:
   NfType{key: String, args: List<&2, NfVal>}
   NfCtor{key: String, args: List<&2, NfVal>}
@@ -63,6 +83,17 @@ type NfVal is Data:
   NfKind{quantity: BIR.Descriptor}
   NfOther{source: BIR.Descriptor}
   NfMissing{source: BIR.Descriptor}
+  NfClosure{quantity: Maybe<&2, BIR.Quantity>, body: BIR.Descriptor, env: List<&2, NfVal>, sources: List<&2, BIR.Descriptor>}
+
+# One pattern case matched against one scrutinee: bound values, a definite
+# mismatch that lets the next case run, or a scrutinee that is not yet a
+# constructor value, which makes the whole match abstract. Collapsing the last
+# two into "no bindings" is what let a fallback binder mask an unknown
+# scrutinee, so they stay separate.
+type NfBind is Data:
+  NfBound{bindings: List<&2, NfVal>}
+  NfMismatch{}
+  NfUnknown{}
 
 type Nf is Data:
   NfOk{val: NfVal}
@@ -202,6 +233,28 @@ def quantity_markers(count: Nat) -> List<&2, NfVal>:
 # Materialization: a normal form as a descriptor
 # ---------------------------------------------------------------------------
 
+# A closure's captured sources are already descriptors. Its body indexes its
+# own future argument at 0, so inside the materialized lambda the captured
+# values sit at 1..: the newest capture is Parameter(1). A substitution chain
+# that starts at index 1 rebuilds that environment without touching the
+# binder. Both walks recurse on the list being reduced, no budget needed.
+def reverse_descriptors(sources: List<&2, BIR.Descriptor>, acc: List<&2, BIR.Descriptor>) -> List<&2, BIR.Descriptor>:
+  match sources:
+    case Nil{}:
+      acc
+    case +source <> rest:
+      reverse_descriptors(rest, source <> acc)
+
+def close_sources(+body: BIR.Descriptor, +sources: List<&2, BIR.Descriptor>, +at: Nat) -> BIR.Descriptor:
+  close_sources_reversed(body, reverse_descriptors(sources, Nil{}), at)
+
+def close_sources_reversed(body: BIR.Descriptor, reversed: List<&2, BIR.Descriptor>, at: Nat) -> BIR.Descriptor:
+  match reversed:
+    case Nil{}:
+      body
+    case +source <> rest:
+      BIR.DescriptorSubstitution{at, source, close_sources_reversed(body, rest, 1n+at)}
+
 # One structural list walk builds every descriptor: a value's arguments and
 # each remaining sibling are direct fields of the value list being matched, so
 # the single self-call is decreasing without a budget. A kind already carries
@@ -224,6 +277,8 @@ def materialize_all(vals: List<&2, NfVal>) -> List<&2, BIR.Descriptor>:
           source <> materialize_all(rest)
         case NfMissing{source}:
           source <> materialize_all(rest)
+        case NfClosure{quantity, body, env, sources}:
+          BIR.DescriptorLambda{quantity, close_sources(body, sources, 1n)} <> materialize_all(rest)
 
 def materialize(val: NfVal) -> BIR.Descriptor:
   match val:
@@ -239,46 +294,64 @@ def materialize(val: NfVal) -> BIR.Descriptor:
       source
     case NfMissing{source}:
       source
+    case NfClosure{quantity, body, env, sources}:
+      BIR.DescriptorLambda{quantity, close_sources(body, sources, 1n)}
 
 # ---------------------------------------------------------------------------
 # Descriptor patterns
 # ---------------------------------------------------------------------------
 
-# One structural walk binds every pattern against its value. The self-call on
-# constructor fields receives a direct field of the pattern being matched, just
-# like the sibling tail; no fuel is involved because every call descends.
-def bind_patterns(patterns: List<&2, BIR.DescriptorPattern>, values: List<&2, NfVal>) -> Maybe<&2, List<&2, NfVal>>:
+# One structural walk binds every pattern against its value. A binder always
+# matches. A constructor pattern against a constructor value compares keys: a
+# different key is a definite mismatch, and its fields recurse; against any
+# known non-constructor value it is a definite mismatch too, exactly like the
+# runtime's `$type_pattern`. Against a value that is not known yet (a missing
+# binder, or an abstract term) the answer is unknown, and the caller must make
+# the whole match abstract instead of trying the next case. A scrutinee-count
+# mismatch is a definite mismatch. Field bindings precede the remaining
+# pattern bindings, matching the runtime's binding push order.
+def bind_patterns(patterns: List<&2, BIR.DescriptorPattern>, values: List<&2, NfVal>) -> NfBind:
   match patterns, values:
     case Nil{}, Nil{}:
-      Some{Nil{}}
+      NfBound{Nil{}}
     case +pattern <> rest, +value <> vrest:
       match pattern:
         case BIR.DescriptorBinder{quantity}:
           match bind_patterns(rest, vrest):
-            case Some{bindings}:
-              Some{value <> bindings}
-            case None{}:
-              None{}
+            case NfBound{bindings}:
+              NfBound{value <> bindings}
+            case NfMismatch{}:
+              NfMismatch{}
+            case NfUnknown{}:
+              NfUnknown{}
         case BIR.DescriptorConstructorPattern{key, fields}:
           match value:
             case NfCtor{known, args}:
               match String.eq(key, known):
                 case False{}:
-                  None{}
+                  NfMismatch{}
                 case True{}:
                   match bind_patterns(fields, args):
-                    case Some{bindings}:
+                    case NfBound{bindings}:
                       match bind_patterns(rest, vrest):
-                        case Some{tail}:
-                          Some{append_vals(bindings, tail)}
-                        case None{}:
-                          None{}
-                    case None{}:
-                      None{}
+                        case NfBound{tail}:
+                          NfBound{append_vals(bindings, tail)}
+                        case NfMismatch{}:
+                          NfMismatch{}
+                        case NfUnknown{}:
+                          NfUnknown{}
+                    case NfMismatch{}:
+                      NfMismatch{}
+                    case NfUnknown{}:
+                      NfUnknown{}
+            case NfMissing{source}:
+              NfUnknown{}
+            case NfOther{source}:
+              NfUnknown{}
             case _:
-              None{}
+              NfMismatch{}
     case _, _:
-      None{}
+      NfMismatch{}
 
 # ---------------------------------------------------------------------------
 # Normalization
@@ -320,7 +393,7 @@ def nf_descriptor_step(+context: NfContext, descriptor: BIR.Descriptor, +env: Li
     case BIR.DescriptorArrow{use, domain, body}:
       NfOk{NfOther{whole}}
     case BIR.DescriptorLambda{use, body}:
-      NfOk{NfOther{whole}}
+      NfOk{NfClosure{use, body, env, materialize_all(env)}}
     case BIR.DescriptorRef{key, args}:
       match nf_all(context, args, env, fuel):
         case NfListOk{vals}:
@@ -359,9 +432,9 @@ def nf_descriptor_step(+context: NfContext, descriptor: BIR.Descriptor, +env: Li
       match nf_all(context, values, env, fuel):
         case NfListOk{vals}:
           match bind_patterns(patterns, vals):
-            case Some{bindings}:
+            case NfBound{bindings}:
               nf_descriptor(context, body, List.append(&2, NfVal, env, bindings), Nat.sub(fuel, 1n))
-            case None{}:
+            case _:
               NfOk{NfOther{whole}}
         case NfListFail{message}:
           NfFail{message}
@@ -450,12 +523,14 @@ def nf_apply_one(+context: NfContext, val: NfVal, arg: NfVal, +fuel: Nat) -> Nf:
   match val:
     case NfType{key, args}:
       nf_named(context, key, List.append(&2, NfVal, args, [arg]), Nat.sub(fuel, 1n))
+    case NfClosure{quantity, body, env, sources}:
+      nf_descriptor(context, body, List.append(&2, NfVal, env, [arg]), Nat.sub(fuel, 1n))
     case NfCtor{key, args}:
-      NfOk{NfOther{BIR.DescriptorNull{}}}
+      NfFail{String.append("the constructor `", String.append(key, "` is applied to an argument"))}
     case NfQuantity{quantity}:
-      NfOk{NfOther{BIR.DescriptorNull{}}}
+      NfFail{"a quantity is applied to an argument"}
     case NfKind{quantity}:
-      NfOk{NfOther{BIR.DescriptorNull{}}}
+      NfFail{"a kind is applied to an argument"}
     case NfOther{source}:
       NfOk{NfOther{BIR.DescriptorApplication{source, materialize(arg)}}}
     case NfMissing{source}:
@@ -561,10 +636,12 @@ def nf_cases(+context: NfContext, cases: List<&2, BIR.Descriptor>, +values: List
       match case_body:
         case BIR.DescriptorCase{patterns, body}:
           match bind_patterns(patterns, values):
-            case Some{bindings}:
+            case NfBound{bindings}:
               nf_descriptor(context, body, List.append(&2, NfVal, env, bindings), Nat.sub(fuel, 1n))
-            case None{}:
+            case NfMismatch{}:
               nf_cases(context, rest, values, env, source, fuel)
+            case NfUnknown{}:
+              NfOk{NfOther{source}}
         case BIR.DescriptorFailure{message}:
           NfFail{message}
         case _:

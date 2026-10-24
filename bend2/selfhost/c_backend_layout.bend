@@ -375,6 +375,8 @@ def layout_val(+ctx: Context, +val: NF.NfVal, +fuel: Nat) -> LayoutResult:
       LayoutFound{LayoutBox{BoxOpen{}}}
     case NF.NfMissing{+source}:
       LayoutFound{LayoutBox{BoxOpen{}}}
+    case _:
+      LayoutFound{LayoutBox{BoxOpen{}}}
 
 # A name that is neither a family nor a type function is an abstract type
 # expression (an opaque checked law such as Chan), which the authoritative
