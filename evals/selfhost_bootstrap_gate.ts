@@ -117,7 +117,8 @@ if(!o.worker){
     expectedSourceDefinitions:nativeSeed.report.expectedSourceDefinitions,eventsFullyValidated:nativeSeed.report.eventsFullyValidated,
     cPath:nativeSeed.report.cPath,cSha256:nativeSeed.report.cSha256,guardian:nativeSeed.report.guardian};
    state.nativeSeedInputs=Object.fromEntries(nativeSeed.corpus.files.map((row:any)=>[resolve(nativeSeed.corpus.directory,row.path),row.sha256]));
-   const sourceFileRow=nativeSeed.corpus.files.find((row:any)=>row.external!==true&&typeof row.path==='string'&&row.path.endsWith('bend2/selfhost/backend_ir.bend'));
+   const backendIr=realpathSync(resolve('bend2/selfhost/backend_ir.bend'));
+   const sourceFileRow=nativeSeed.corpus.files.find((row:any)=>row.external!==true&&typeof row.path==='string'&&realpathSync(resolve(nativeSeed.corpus.directory,row.path))===backendIr);
    if(!sourceFileRow||typeof sourceFileRow.namespace!=='string')throw Error('Native workload does not load the canonical BIR module');
    state.nativeSourceFileTag=sourceFileRow.namespace+'.SourceFile';
   }else{
