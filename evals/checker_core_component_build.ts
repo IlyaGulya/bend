@@ -8,11 +8,14 @@
  * Canonical emission releases checked e after all JS definition folding completes.
  * Optional --allocation-profile-mib=N captures live sampled codegen allocations
  * without publishing a compiler artifact or acceptance. Automatic GC only.
+ * Optional --profile-dir=DIR [--profile-raw=true] [--profile-sampling=true]
+ * records opt-in scoped load/validation/codegen spans; ordinary output is
+ * unchanged and the no-profile path does not import the collector.
  * Reports prove generation only; no artifact execution or selfhost-green claim.
  */
 import {createHash} from 'node:crypto';
-import {appendFileSync, closeSync, existsSync, openSync, readFileSync, realpathSync, writeFileSync} from 'node:fs';
-import {dirname, resolve} from 'node:path';
+import {appendFileSync, closeSync, existsSync, mkdirSync, openSync, readFileSync, readdirSync, realpathSync, writeFileSync} from 'node:fs';
+import {dirname, join, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {Worker, isMainThread, workerData} from 'node:worker_threads';
 import {getHeapStatistics} from 'node:v8';
@@ -30,7 +33,50 @@ interface CanonicalCompiler {
   }): string;
 }
 type Options = {file: string; exports: string[]; artifact: string; report: string; worker: boolean;
-  allocationProfileMiB?: number; inputsSha256?: string};
+  allocationProfileMiB?: number; inputsSha256?: string; profileDir?: string; profileRaw: boolean; profileSampling: boolean};
+type ProfileToken = {id: number; name: string};
+type CompilerProfile = {
+  runDirectory: string; reportPath: string; rawDetail: boolean;
+  begin(name: string, details?: Record<string, unknown>, options?: {sample?: boolean}): ProfileToken;
+  end(token: ProfileToken, status?: string, details?: Record<string, unknown>): {id: number; name: string; status: string};
+  abortOpen(status?: string, details?: Record<string, unknown>, options?: {keep?: ProfileToken}): number;
+  record(observation: Record<string, unknown>): {id: number};
+  finish(status?: string, error?: unknown): Record<string, unknown>;
+};
+async function openComponentProfile(o: Options, sourcePins: Record<string, string> | null):
+    Promise<CompilerProfile | undefined> {
+  if (!o.profileDir) return undefined;
+  // Runtime-selected diagnostic module: a static import would add inspector
+  // plumbing to every no-profile component build.
+  const {createCompilerProfile} = await import('./compiler_profile.mjs') as {
+    createCompilerProfile(config: Record<string, unknown>): Promise<CompilerProfile>};
+  const inputsPath = o.report + '.inputs.json';
+  return createCompilerProfile({directory: join(o.profileDir, 'component'),
+    execution: {stage: 'official-ts-component-producer', sourcePath: o.file, sourceSha256: hash(o.file),
+      exports: o.exports,
+      artifactPath: o.artifact, artifactSha256: existsSync(o.artifact) ? hash(o.artifact) : null,
+      reportPath: o.report, reportAtOpenSha256: existsSync(o.report) ? hash(o.report) : null,
+      inputsPath, inputsSha256: existsSync(inputsPath) ? hash(inputsPath) : null, sourcePins,
+      scriptPath, scriptSha256: hash(scriptPath),
+      collectorPath: join(root, 'evals/compiler_profile.mjs'),
+      collectorSha256: hash(join(root, 'evals/compiler_profile.mjs')),
+      inspectorHelperPath: join(root, 'evals/selfhost_cpu_profile.mjs'),
+      inspectorHelperSha256: hash(join(root, 'evals/selfhost_cpu_profile.mjs')),
+      compilerPath, compilerSha256: hash(compilerPath),
+      kernelPath, kernelSha256: hash(kernelPath),
+      basePath, baseSha256: hash(basePath)},
+    rawDetail: o.profileRaw,
+    sampling: o.profileSampling ? {cpuIntervalUs: 1000, allocationIntervalBytes: 4194304} : false});
+}
+function endSpan(profile: CompilerProfile | undefined, token: ProfileToken | undefined, status: string,
+    details: Record<string, unknown> = {}) {
+  if (profile && token) profile.end(token, status, details);
+}
+function diagnosticText(error: unknown, kernel?: typeof Bend): string {
+  if (kernel && error && typeof error === 'object' && '$' in error && error.$ === 'Err')
+    return kernel.err_show(error as Bend.Err);
+  return String(error);
+}
 const scriptPath = fileURLToPath(import.meta.url);
 const root = resolve(dirname(scriptPath), '..');
 const compilerPath = resolve(root, 'bend2/comp.ts');
@@ -50,8 +96,8 @@ function options(): Options {
     if (arg === '--worker' && !worker) { worker = true; continue; }
     const at = arg.indexOf('=');
     const name = arg.slice(0, at), value = arg.slice(at + 1);
-    if (at < 0 || !['--file', '--exports', '--artifact', '--report', '--allocation-profile-mib', '--inputs-sha256'].includes(name) || !value || args.has(name))
-      throw Error('Expected unique --file=PATH --exports=NAME[,NAME] --artifact=PATH --report=PREFIX; optional --allocation-profile-mib=N');
+    if (at < 0 || !['--file', '--exports', '--artifact', '--report', '--allocation-profile-mib', '--inputs-sha256', '--profile-dir', '--profile-raw', '--profile-sampling'].includes(name) || !value || args.has(name))
+      throw Error('Expected unique --file=PATH --exports=NAME[,NAME] --artifact=PATH --report=PREFIX; optional --allocation-profile-mib=N --profile-dir=DIR [--profile-raw=true --profile-sampling=true]');
     args.set(name, value);
   }
   for (const name of ['--file', '--exports', '--artifact', '--report'])
@@ -69,7 +115,14 @@ function options(): Options {
   const inputsSha256 = args.get('--inputs-sha256');
   if (worker !== (inputsSha256 !== undefined) || (inputsSha256 !== undefined && !/^[0-9a-f]{64}$/.test(inputsSha256)))
     throw Error('Worker requires an authenticated input manifest; --inputs-sha256 is worker-only');
-  return {file, exports, artifact, report, worker, allocationProfileMiB, inputsSha256};
+  const profileDir = args.has('--profile-dir') ? resolve(args.get('--profile-dir')!) : undefined;
+  for (const name of ['--profile-raw', '--profile-sampling'])
+    if (args.has(name) && (args.get(name) !== 'true' || !profileDir))
+      throw Error(name + '=true requires --profile-dir and is an opt-in diagnostic');
+  if (profileDir && allocationProfileMiB !== undefined && args.get('--profile-sampling') === 'true')
+    throw Error('--profile-sampling and --allocation-profile-mib both own the inspector sampler; choose one');
+  return {file, exports, artifact, report, worker, allocationProfileMiB, inputsSha256, profileDir,
+    profileRaw: args.get('--profile-raw') === 'true', profileSampling: args.get('--profile-sampling') === 'true'};
 }
 function pins(o: Options): Record<string, string> {
   // These are new run identities, not claims that changed sources match a
@@ -94,6 +147,47 @@ function workerPins(o: Options): Record<string, string> {
   verify(expected);
   return expected;
 }
+function profileState(o: Options, treeStopped: boolean | null): Record<string, unknown> | null {
+  if (!o.profileDir) return null;
+  const resolved = treeStopped === true;
+  const liveness = resolved
+    ? 'not live: the guardian reported reportPhase=complete and ownedTreeStopped=true'
+    : 'unknown: no complete+ownedTreeStopped=true guardian evidence; a finalized profile or provisional guardian decision is not process-liveness proof';
+  const base = join(o.profileDir, 'component');
+  const runs = existsSync(base) ? readdirSync(base).filter(name => name.startsWith('profile-')) : [];
+  if (runs.length !== 1) return {status: 'INCOMPLETE', live: resolved ? false : null,
+    reason: 'expected one component profile run, found ' + runs.length, liveness};
+  const directory = join(base, runs[0]), path = join(directory, 'summary.json');
+  const checkpointPath = join(directory, 'checkpoint.json');
+  const readCheckpoint = () => {
+    try { return existsSync(checkpointPath) ? JSON.parse(readFileSync(checkpointPath, 'utf8')) : null; }
+    catch { return null; }
+  };
+  if (!existsSync(path)) {
+    const checkpoint = readCheckpoint();
+    return {status: 'INCOMPLETE', runDirectory: directory, path: null, live: resolved ? false : null,
+      measurementStatus: 'incomplete', incompleteEvidence: true,
+      reason: 'collector summary was not finalized before the worker exited', liveness,
+      execution: checkpoint?.execution ?? null, checkpointPath, checkpoint,
+      eventsPath: existsSync(join(directory, 'events.jsonl')) ? join(directory, 'events.jsonl') : null};
+  }
+  let summary: Record<string, unknown>;
+  try { summary = JSON.parse(readFileSync(path, 'utf8')); }
+  catch (error) { return {status: 'INCOMPLETE', runDirectory: directory, path, live: resolved ? false : null,
+    reason: 'collector summary is unreadable: ' + String(error), liveness,
+    execution: readCheckpoint()?.execution ?? null, checkpointPath, checkpoint: readCheckpoint()}; }
+  const totals = summary.summary as Record<string, unknown> | undefined;
+  return {status: summary.status, path, runDirectory: directory, live: resolved ? false : null,
+    liveness, measurementStatus: summary.measurementStatus, incompleteEvidence: summary.incompleteEvidence,
+    unclosedSpans: totals?.unclosedSpans, execution: summary.execution ?? null, checkpointPath,
+    spanCount: totals?.spanCount, summarizedSpanCount: totals?.summarizedSpanCount,
+    failedSpans: totals?.failedSpans, abortedSpans: totals?.abortedSpans,
+    failedSpanCount: totals?.failedSpanCount, abortedSpanCount: totals?.abortedSpanCount,
+    sampledSpans: totals?.sampledSpans, observationKinds: totals?.observationKinds,
+    observationCount: totals?.observationCount,
+    aggregatedFineObservations: totals?.aggregatedFineObservations};
+}
+
 function verify(expected: Record<string, string>) {
   for (const [path, pin] of Object.entries(expected))
     if (hash(path) !== pin) throw Error('Protected input drift: ' + path);
@@ -114,6 +208,8 @@ async function worker(o: Options) {
   const loadedInputs: Record<string, string> = {};
   let success: Record<string, unknown> | undefined, failure: {stage: string; diagnostic: string} | undefined;
   let allocationSession: InspectorSession | undefined;
+  let profile: CompilerProfile | undefined, profileSummary: Record<string, unknown> | undefined;
+  let loadSpan: ProfileToken | undefined, validationSpan: ProfileToken | undefined, codegenSpan: ProfileToken | undefined;
   const allocationCutoff = new Error('Diagnostic allocation heap cutoff');
   create(o.report + '.events.jsonl', '');
   let eventsFD: number | undefined = openSync(o.report + '.events.jsonl', 'a');
@@ -143,6 +239,7 @@ async function worker(o: Options) {
   try {
     if (process.versions.bun || !process.versions.v8) throw Error('Native build worker requires Node/V8');
     protectedPins = workerPins(o);
+    profile = await openComponentProfile(o, protectedPins);
     if (existsSync(o.artifact)) throw Error('Artifact path already used: ' + o.artifact);
     const runtime = {name: 'node', node: process.versions.node, v8: process.versions.v8,
       executable: process.execPath, heapLimitMiB, stackSizeMb: 256,
@@ -167,27 +264,36 @@ async function worker(o: Options) {
       }
     }
     phase = 'load';
+    loadSpan = profile?.begin('load', {sourcePath: o.file}, {sample: o.profileSampling});
     event({stage: 'load-start', sourcePath: o.file, compilerPath,
       compilerSha256: protectedPins[compilerPath], kernelSha256: protectedPins[kernelPath],
       loadMode: 'CANONICAL_NATIVE_UNMODIFIED', checkedOutputRetention: 'native e', nativeRetention});
-    await K.book_load(book, o.file, '', new Inputs());
-    // Foreign JS sources, if present, are compiler inputs too.
-    for (const definition of Object.values(book.tlds))
-      if (definition.$ === 'Def') for (const path of definition.i ?? [])
-        if (path.endsWith('.js')) loadedInputs[realpathSync(path)] = hash(path);
-    await stableInputs();
-    for (const name of o.exports)
-      if (book.tlds[name]?.$ !== 'Def') throw Error('Requested export is not a loaded definition: ' + name);
+    try {
+      await K.book_load(book, o.file, '', new Inputs());
+      // Foreign JS sources, if present, are compiler inputs too.
+      for (const definition of Object.values(book.tlds))
+        if (definition.$ === 'Def') for (const path of definition.i ?? [])
+          if (path.endsWith('.js')) loadedInputs[realpathSync(path)] = hash(path);
+      await stableInputs();
+      for (const name of o.exports)
+        if (book.tlds[name]?.$ !== 'Def') throw Error('Requested export is not a loaded definition: ' + name);
+    } catch (error) { endSpan(profile, loadSpan, 'failed', {error: diagnosticText(error, kernel)}); throw error; }
+    endSpan(profile, loadSpan, 'completed', {events: book.order.length, modules: Object.keys(loadedInputs).length});
+    profile?.record({kind: 'exact-counter', name: 'load', scope: 'canonical native book loader',
+      unitsByField: {events: 'book events', modules: 'modules'},
+      values: {events: book.order.length, modules: Object.keys(loadedInputs).length}});
     event({stage: 'load-pass', events: book.order.length, ...memory()});
     phase = 'validation';
+    validationSpan = profile?.begin('book-validation', {events: book.order.length}, {sample: o.profileSampling});
     const validationStart = performance.now(), validationCpu = process.cpuUsage();
-    K.book_valid(book); // Complete canonical validation, with no prefix or observer.
+    try { K.book_valid(book); } // Complete canonical validation, with no prefix or observer.
+    catch (error) { endSpan(profile, validationSpan, 'failed', {error: diagnosticText(error, kernel)}); throw error; }
     const usedValidationCpu = process.cpuUsage(validationCpu);
     const validationTimings = {status: 'FULL_VALIDATION_PASS', eventsChecked: book.order.length,
       totalEvents: book.order.length, manualGC: false, elapsedMs: performance.now() - validationStart,
       cpuMs: (usedValidationCpu.user + usedValidationCpu.system) / 1000};
     create(o.report + '.validation-timings.json', json(validationTimings));
-    if (book.hols) throw Error('Unfilled book after complete native validation');
+    if (book.hols) { endSpan(profile, validationSpan, 'failed', {error: 'Unfilled book after complete native validation'}); throw Error('Unfilled book after complete native validation'); }
     let expectedSourceDefinitions = 0;
     const eNames = new Set<string>();
     for (const [name, definition] of Object.entries(book.tlds)) {
@@ -203,6 +309,10 @@ async function worker(o: Options) {
       throw Error('Native checked body count differs from source definitions');
     const liveBodies = expectedSourceDefinitions;
     const eventsFullyValidated = book.order.length;
+    endSpan(profile, validationSpan, 'completed', {events: eventsFullyValidated, checkedDefinitions});
+    profile?.record({kind: 'exact-counter', name: 'book-validation', scope: 'canonical native book validation',
+      unitsByField: {events: 'book events', checkedDefinitions: 'definitions'},
+      values: {events: eventsFullyValidated, checkedDefinitions}});
     const provenance = {schemaVersion: 4, sourcePath: o.file, sourceSha256: hash(o.file), exports: o.exports,
       protectedPins,
       loadedInputs: Object.fromEntries(Object.entries(loadedInputs).sort(([a], [b]) => a.localeCompare(b))),
@@ -225,7 +335,18 @@ async function worker(o: Options) {
     let memos: Record<string, number> = {};
     const preparationIndices = new Map<string, number>();
     const preparedNames = new Set<string>(), releasedNames = new Set<string>(), hNames = new Set<string>();
+    let profileObserver: {observe(stage: string, name: string, state: Record<string, unknown>): void;
+      readonly releases: number} | undefined;
+    if (profile) {
+      // Runtime-selected diagnostic module; the no-profile path never imports it.
+      const profileAdapter = await import('./compiler_profile.mjs') as {
+        createCompileBookObserver(profile: CompilerProfile, options: Record<string, unknown>):
+          {observe(stage: string, name: string, state: Record<string, unknown>): void; readonly releases: number};
+      };
+      profileObserver = profileAdapter.createCompileBookObserver(profile, {rawDetail: o.profileRaw});
+    }
     const observe = (stage: string, name: string, state: StorageState & {memos?: Record<string, number>}) => {
+      profileObserver?.observe(stage, name, state as Record<string, unknown>);
       if (stage === 'prepare-before' && !preparationIndices.has(name))
         preparationIndices.set(name, preparationIndices.size);
       if (stage === 'prepare-after') { preparedNames.add(name); preparedCount = preparedNames.size; }
@@ -264,12 +385,31 @@ async function worker(o: Options) {
       allocationProfileMiB: o.allocationProfileMiB});
     let code: string | undefined;
     let allocationStopReason = 'emission_complete';
+    codegenSpan = profile?.begin('codegen', {exports: o.exports}, {sample: o.profileSampling});
     try { code = comp.js_lib(book, true, {
       roots: o.exports, exports: o.exports, releaseChecked: true, observe}); }
     catch (error) {
-      if (error !== allocationCutoff) throw error;
+      if (error !== allocationCutoff) {
+        const text = diagnosticText(error, kernel);
+        try { profile?.abortOpen('aborted', {error: text, closeReason: 'codegen-failure'}, {keep: codegenSpan}); }
+        catch {}
+        try { endSpan(profile, codegenSpan, 'failed', {error: text}); } catch {}
+        throw error;
+      }
       allocationStopReason = 'heap_cutoff';
+      try { profile?.abortOpen('aborted', {stopReason: 'heap_cutoff', closeReason: 'allocation-cutoff'},
+        {keep: codegenSpan}); } catch {}
     }
+    endSpan(profile, codegenSpan, allocationStopReason === 'heap_cutoff' ? 'aborted' : 'completed',
+      {stopReason: allocationStopReason, preparedCount, releasedCount, eLive, hLive,
+        maxSimultaneousE: maxE, maxSimultaneousH: maxH});
+    profile?.record({kind: 'exact-counter', name: 'js_lib', scope: 'canonical JS definition prepare/emit/release',
+      unitsByField: {preparedCount: 'definitions', releasedCount: 'definitions',
+        adapterReleaseEvents: 'events', eLive: 'definition slots', hLive: 'definition slots',
+        maxSimultaneousE: 'definition slots', maxSimultaneousH: 'definition slots',
+        checkedDefinitions: 'definitions'},
+      values: {preparedCount, releasedCount, adapterReleaseEvents: profileObserver?.releases ?? null,
+        eLive, hLive, maxSimultaneousE: maxE, maxSimultaneousH: maxH, checkedDefinitions}});
     await stableInputs();
     if (allocationSession) {
       const sampled = await new Promise<HeapProfiler.StopSamplingReturnType>((resolveSampling, reject) =>
@@ -324,9 +464,21 @@ async function worker(o: Options) {
       const fd = eventsFD; eventsFD = undefined;
       if (fd !== undefined) closeSync(fd);
     } catch (error) { fail(error, 'cleanup-events'); }
+    try { profileSummary = profile?.finish(failure ? 'failed' : 'completed', failure?.diagnostic); }
+    catch (error) { fail(error, 'cleanup-profile'); }
   }
-  create(o.report + '.worker-result.json', json(failure ? {status: 'FAIL', ...failure, checksExcluded: 0,
-    outputPatches: 0, compiledExecution: 'NOT_RUN', selfhostGreen: false} : success));
+  const profileResult = profile ? {path: profile.reportPath, runDirectory: profile.runDirectory,
+    rawDetail: o.profileRaw, sampling: o.profileSampling,
+    status: profileSummary?.status ?? 'INCOMPLETE',
+    spanCount: (profileSummary?.summary as Record<string, unknown> | undefined)?.spanCount,
+    failedSpans: (profileSummary?.summary as Record<string, unknown> | undefined)?.failedSpans,
+    abortedSpans: (profileSummary?.summary as Record<string, unknown> | undefined)?.abortedSpans,
+    sampledSpans: (profileSummary?.summary as Record<string, unknown> | undefined)?.sampledSpans,
+    observationKinds: (profileSummary?.summary as Record<string, unknown> | undefined)?.observationKinds,
+    ...(profileSummary ? {} : {reason: 'collector did not return a summary'})} : null;
+  const result = failure ? {status: 'FAIL', ...failure, checksExcluded: 0,
+    outputPatches: 0, compiledExecution: 'NOT_RUN', selfhostGreen: false} : success;
+  create(o.report + '.worker-result.json', json({...result, ...(profileResult ? {compilerProfile: profileResult} : {})}));
   if (failure) process.exitCode = 2;
 }
 
@@ -357,12 +509,17 @@ try {
       '.validation-timings.json', '.allocation-profile.json'])
       if (existsSync(o.report + suffix)) throw Error('Report namespace already used: ' + o.report);
     if (existsSync(o.artifact)) throw Error('Artifact path already used: ' + o.artifact);
+    if (o.profileDir && (o.profileDir === o.artifact || o.profileDir.startsWith(o.report + '.')))
+      throw Error('--profile-dir must not overlap the report namespace or artifact path');
+    if (o.profileDir && existsSync(o.profileDir)) throw Error('Use a fresh --profile-dir; profile runs are not appended or mixed');
+    if (o.profileDir) mkdirSync(o.profileDir, {recursive: true});
     const protectedPins = pins(o);
     create(o.report + '.request.json', json({sourcePath: o.file, exports: o.exports, artifactPath: o.artifact,
       guard: gate, compilerPath, compilerSha256: protectedPins[compilerPath],
       kernelPath, kernelSha256: protectedPins[kernelPath], basePath, baseSha256: protectedPins[basePath],
       runtime: {name: 'node', heapLimitMiB, stackSizeMb: 256, manualGC: false},
       allocationProfileMiB: o.allocationProfileMiB, diagnosticOnly: o.allocationProfileMiB !== undefined,
+      profiling: o.profileDir ? {directory: o.profileDir, rawDetail: o.profileRaw, sampling: o.profileSampling} : null,
       compiledExecution: 'NOT_RUN', selfhostGreen: false}));
     reportReserved = true;
     create(o.report + '.inputs.json', json(protectedPins));
@@ -372,8 +529,12 @@ try {
       const result = await runHeavyGate(['node', '--experimental-strip-types', '--max-old-space-size=' + heapLimitMiB,
         scriptPath, '--worker', '--file=' + o.file, '--exports=' + o.exports.join(','),
         '--artifact=' + o.artifact, '--report=' + o.report, '--inputs-sha256=' + inputsSha256,
-        ...(o.allocationProfileMiB === undefined ? [] : ['--allocation-profile-mib=' + o.allocationProfileMiB])],
+        ...(o.allocationProfileMiB === undefined ? [] : ['--allocation-profile-mib=' + o.allocationProfileMiB]),
+        ...(o.profileDir === undefined ? [] : ['--profile-dir=' + o.profileDir,
+          ...(o.profileRaw ? ['--profile-raw=true'] : []), ...(o.profileSampling ? ['--profile-sampling=true'] : [])])],
         {...gate, label: 'Full-native CheckerCore component JS build'});
+      const guarded = result as typeof result & {reportPhase?: unknown; ownedTreeStopped?: unknown};
+      const treeStopped = guarded.reportPhase === 'complete' && guarded.ownedTreeStopped === true;
       create(o.report + '.guardian.json', json({...result, pollMs: 10}));
       verify(protectedPins);
       const workerResult = existsSync(o.report + '.worker-result.json')
@@ -394,7 +555,10 @@ try {
           workerResult?.status === 'ALLOCATION_PROFILE_ONLY') {
         if (hash(o.report + '.allocation-profile.json') !== workerResult.profileSha256)
           throw Error('Allocation profile changed after capture');
-        create(o.report + '.result.json', json({...workerResult, guardian: result}));
+        if (o.profileDir && workerResult.compilerProfile?.status !== 'completed')
+          throw Error('Compiler profile did not finalize as completed');
+        create(o.report + '.result.json', json({...workerResult, guardian: result,
+          ...(o.profileDir ? {compilerProfile: profileState(o, treeStopped)} : {})}));
         process.exitCode = 0;
       } else if (result.status !== 'PASS' || workerResult?.status !== 'JS_GENERATED_NOT_YET_EXECUTED') {
         const progress = existsSync(o.report + '.progress.json') ? JSON.parse(readFileSync(o.report + '.progress.json', 'utf8')) : {};
@@ -402,12 +566,16 @@ try {
         const diagnostic = workerResult?.diagnostic ?? (result.status + ': ' + result.reason);
         firstError(o, stage, diagnostic);
         create(o.report + '.result.json', json({status: 'FAIL', stage, diagnostic, checksExcluded: 0,
-          outputPatches: 0, compiledExecution: 'NOT_RUN', selfhostGreen: false, guardian: result}));
+          outputPatches: 0, compiledExecution: 'NOT_RUN', selfhostGreen: false, guardian: result,
+          ...(o.profileDir ? {compilerProfile: profileState(o, treeStopped)} : {})}));
         process.exitCode = result.exitCode || 2;
       } else {
         if (workerResult.artifactPath !== o.artifact || hash(o.artifact) !== workerResult.artifactSha256)
           throw Error('Artifact changed after canonical emission');
-        create(o.report + '.result.json', json({...workerResult, guardian: result}));
+        if (o.profileDir && workerResult.compilerProfile?.status !== 'completed')
+          throw Error('Compiler profile did not finalize as completed');
+        create(o.report + '.result.json', json({...workerResult, guardian: result,
+          ...(o.profileDir ? {compilerProfile: profileState(o, treeStopped)} : {})}));
         process.exitCode = 0;
       }
     } finally {
@@ -419,7 +587,8 @@ try {
   if (parsed && reportReserved && !existsSync(parsed.report + '.result.json')) {
     firstError(parsed, 'runner', diagnostic);
     create(parsed.report + '.result.json', json({status: 'FAIL', stage: 'runner', diagnostic,
-      checksExcluded: 0, outputPatches: 0, compiledExecution: 'NOT_RUN', selfhostGreen: false}));
+      checksExcluded: 0, outputPatches: 0, compiledExecution: 'NOT_RUN', selfhostGreen: false,
+      ...(parsed.profileDir ? {compilerProfile: profileState(parsed, null)} : {})}));
   }
   console.error(diagnostic); process.exitCode = 2;
 }
