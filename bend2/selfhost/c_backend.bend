@@ -1490,7 +1490,7 @@ def prim_part(primitive: BIR.Primitive, +a: List<&2, String>, +plan: Plan) -> Pa
     case BIR.PrimStringLength{}: str1("bend_str_length", "SCon", a0, plan)
     case BIR.PrimStringToList{}: str_to_list(a0, plan)
     case BIR.PrimStringCmp{}: str_cmp(a0, a1, plan)
-    case BIR.PrimStringHead{}: str1("bend_str_head", "SCon", a0, plan)
+    case BIR.PrimStringHead{}: str1_char("bend_str_head", "SCon", a0, plan)
     case BIR.PrimStringTail{}: str_tail(a0, plan)
     case BIR.PrimMapBit{}: map_bit_part(a0, a1, plan)
     case BIR.PrimArrayNew{}: okp(cat(["bend_array_new(e, ", a0, ", ", a1, ")"]))
@@ -1593,11 +1593,28 @@ def str_tail(a0: String, +plan: Plan) -> Part:
 def str_to_list(a0: String, +plan: Plan) -> Part:
   match pcid("SCon", plan) pcid("SNil", plan) pcid("Con", plan) pcid("Nil", plan):
     case PartOk{scon} PartOk{snil} PartOk{con} PartOk{nil}:
-      PartOk{cat(["bend_str_to_list(e, ", scon, ", ", snil, ", ", con, ", ", nil, ", ", a0, ")"])}
+      match pcid("Chr", plan):
+        case PartFail{message}: PartFail{message}
+        case PartOk{chr}: PartOk{cat(["bend_str_to_list(e, ", scon, ", ", snil, ", ", con, ", ", nil, ", ", chr, ", ", a0, ")"])}
     case PartFail{message} _ _ _: PartFail{message}
     case _ PartFail{message} _ _: PartFail{message}
     case _ _ PartFail{message} _: PartFail{message}
     case _ _ _ PartFail{message}: PartFail{message}
+
+# A Char value crossing the primitive boundary is the packed Chr term the rest of
+# the target uses: Char.code reads its payload, and a Char field of a record or an
+# array element is written through that same packed word. SCon itself stores the
+# raw codepoint (io_out and showString read it raw), so the pack happens exactly
+# here, at the primitive that produces a Char from a String.
+def str1_char(name: String, cid: String, a0: String, plan: Plan) -> Part:
+  match pcid(cid, plan):
+    case PartFail{message}: PartFail{message}
+    case PartOk{c}: char_pack_part(cat([name, "(e, ", c, ", ", a0, ")"]), plan)
+
+def char_pack_part(expr: String, plan: Plan) -> Part:
+  match pcid("Chr", plan):
+    case PartFail{message}: PartFail{message}
+    case PartOk{c}: PartOk{cat(["term_pak(", c, ", (u64)(", expr, "))"])}
 
 def str_cmp(a0: String, a1: String, +plan: Plan) -> Part:
   match pcid("SCon", plan) pcid("Tuple", plan) pcid("LT", plan) pcid("EQ", plan) pcid("GT", plan):
@@ -2864,7 +2881,7 @@ def helper_core() -> String:
     "static u32 bend_str_empty(Term a, u32 snil) {\n  return term_aux(a) == (u64)snil;\n}\n\n",
     "static Term bend_str_head(Env e, u32 scon, Term a) {\n  if (term_aux(a) != (u64)scon) {\n    return 0;\n  }\n  return e.mem[term_peek(e.mem, a)];\n}\n\n",
     "static Term bend_str_tail(Env e, u32 scon, u32 snil, Term a) {\n  if (term_aux(a) != (u64)scon) {\n    return term_pak(snil, 0);\n  }\n  return e.mem[term_peek(e.mem, a) + 1];\n}\n\n",
-    "static Term bend_str_to_list(Env e, u32 scon, u32 snil, u32 con, u32 nil, Term a) {\n  if (term_aux(a) != (u64)scon) {\n    return term_pak(nil, 0);\n  }\n  u64 l = term_peek(e.mem, a);\n  Term tail = bend_str_to_list(e, scon, snil, con, nil, e.mem[l + 1]);\n  u64 n = heap_alloc(e, cls_fit(2));\n  e.mem[n] = e.mem[l];\n  e.mem[n + 1] = tail;\n  return term_ctr(con, n);\n}\n\n",
+    "static Term bend_str_to_list(Env e, u32 scon, u32 snil, u32 con, u32 nil, u32 chr, Term a) {\n  if (term_aux(a) != (u64)scon) {\n    return term_pak(nil, 0);\n  }\n  u64 l = term_peek(e.mem, a);\n  Term tail = bend_str_to_list(e, scon, snil, con, nil, chr, e.mem[l + 1]);\n  u64 n = heap_alloc(e, cls_fit(2));\n  e.mem[n] = (u64)term_pak(chr, e.mem[l]);\n  e.mem[n + 1] = tail;\n  return term_ctr(con, n);\n}\n\n",
     "static u32 bend_str_eq(Env e, u32 scon, Term a, Term b) {\n  while (term_aux(a) == (u64)scon && term_aux(b) == (u64)scon) {\n    u64 la = term_peek(e.mem, a);\n    u64 lb = term_peek(e.mem, b);\n    if (e.mem[la] != e.mem[lb]) {\n      return 0;\n    }\n    a = e.mem[la + 1];\n    b = e.mem[lb + 1];\n  }\n  return term_aux(a) != (u64)scon && term_aux(b) != (u64)scon;\n}\n\n",
     "static Term bend_str_cmp(Env e, u32 scon, u32 tuple, u32 lt, u32 eq, u32 gt, Term a, Term b) {\n  Term x = a;\n  Term y = b;\n  u64 order = 1000000000ull;\n  while (term_aux(x) == (u64)scon && term_aux(y) == (u64)scon) {\n    u64 lx = term_peek(e.mem, x);\n    u64 ly = term_peek(e.mem, y);\n    if (e.mem[lx] != e.mem[ly]) {\n      order = e.mem[lx] < e.mem[ly] ? 0 : 2;\n      break;\n    }\n    x = e.mem[lx + 1];\n    y = e.mem[ly + 1];\n  }\n  if (order == 1000000000ull) {\n    u64 ex = term_aux(x) != (u64)scon;\n    u64 ey = term_aux(y) != (u64)scon;\n    order = ex && ey ? 1 : ex ? 2 : ey ? 0 : 1;\n  }\n  return bend_tuple(e, tuple, bend_tuple(e, tuple, a, b), term_pak(order == 0 ? lt : order == 1 ? eq : gt, 0));\n}\n\n",
     "static Term bend_map_bit(Env e, u32 scon, u32 tuple, u32 t, u32 f, Term key, Term pos) {\n  u64 at = 0;\n  u64 want = (u64)pos / 33ull;\n  u64 bit = (u64)pos % 33ull;\n  Term s = key;\n  while (term_aux(s) == (u64)scon && at < want) {\n    s = e.mem[term_peek(e.mem, s) + 1];\n    at += 1;\n  }\n  if (term_aux(s) != (u64)scon) {\n    return bend_tuple(e, tuple, key, term_pak(f, 0));\n  }\n  if (bit == 0) {\n    return bend_tuple(e, tuple, key, term_pak(t, 0));\n  }\n  u64 ch = e.mem[term_peek(e.mem, s)];\n  u64 set = (ch >> (32ull - bit)) & 1ull;\n  return bend_tuple(e, tuple, key, term_pak(set != 0 ? t : f, 0));\n}\n\n",
