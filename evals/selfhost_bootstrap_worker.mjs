@@ -208,8 +208,9 @@ if(isMainThread){
  // The BIR module's namespace in this closure is the authority for the carrier
  // tag of anything the closure emits; the artifact can only confirm it.
  function stageSourceFileTag(rows){
-  const row=rows.find(row=>typeof row.file==='string'&&row.file.endsWith('/bend2/selfhost/backend_ir.bend'));
-  if(!row)throw Error('Compiler closure carries no backend_ir source row');
+  const canonical=realpathSync(resolve('bend2/selfhost/backend_ir.bend'));
+  const row=rows.find(row=>row.file===canonical);
+  if(!row)throw Error('Compiler closure carries no canonical backend_ir source row');
   return row.namespace?row.namespace+'.SourceFile':'SourceFile';
  }
  function compile(component,loaded,library,sourceFileTag){
