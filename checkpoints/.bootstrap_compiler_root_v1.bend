@@ -10,8 +10,7 @@ import ../bend2/selfhost/backend_ir.bend as BIR
 import ../bend2/selfhost/checked_frontend.bend as Checked
 import ./template_steps_v1.bend as Template
 import ./checker_core_steps_v1.bend as CheckerCore
-import ./js_emit_steps_v1.bend as JSEmit
-import ./c_emit_steps_v1.bend as CEmit
+import ./emitter_steps_v1.bend as Emit
 
 type ParseResult is Data:
   ParseSuccess{module: Ast.Module}
@@ -8725,20 +8724,20 @@ def inspect_checked_start(program: Checked.CheckedProgram) -> CheckerCore.Checke
 def checker_step(-R: Type, run: CheckerCore.CheckerRun<R>) -> CheckerCore.CheckerRun<R>:
   CheckerCore.checker_step(R, run)
 
-def emit_modules_start(program: Checked.CheckedProgram, files: List<&2, BIR.SourceFile>) -> JSEmit.EmitterRun<JSEmit.EmitResult>:
-  JSEmit.emitter_start(program, files)
+def emit_modules_start(program: Checked.CheckedProgram, files: List<&2, BIR.SourceFile>) -> Emit.EmitterRun<Emit.EmitResult>:
+  Emit.emitter_start(program, files)
 
-def emit_library_start(program: Checked.CheckedProgram, exports: List<&2, String>, files: List<&2, BIR.SourceFile>) -> JSEmit.EmitterRun<JSEmit.EmitResult>:
-  JSEmit.emitter_library_start(program, exports, files)
+def emit_library_start(program: Checked.CheckedProgram, exports: List<&2, String>, files: List<&2, BIR.SourceFile>) -> Emit.EmitterRun<Emit.EmitResult>:
+  Emit.emitter_library_start(program, exports, files)
 
-def emitter_step(-R: Type, run: JSEmit.EmitterRun<R>) -> JSEmit.EmitterRun<R>:
-  JSEmit.emitter_step(R, run)
+def emitter_step(-R: Type, run: Emit.EmitterRun<R>) -> Emit.EmitterRun<R>:
+  Emit.emitter_step(R, run)
 
-def emit_c_modules_start(program: Checked.CheckedProgram, runtime: String, files: List<&2, BIR.SourceFile>) -> CEmit.CEmitterRun<CEmit.EmitResult>:
-  CEmit.cemit_start(program, runtime, files)
+def emit_c_modules_start(program: Checked.CheckedProgram, runtime: String, files: List<&2, BIR.SourceFile>) -> Emit.EmitterRun<Emit.EmitResult>:
+  Emit.cemit_start(program, runtime, files)
 
-def emit_c_library_start(program: Checked.CheckedProgram, exports: List<&2, String>, runtime: String, files: List<&2, BIR.SourceFile>) -> CEmit.CEmitterRun<CEmit.EmitResult>:
-  CEmit.cemit_library_start(program, exports, runtime, files)
+def emit_c_library_start(program: Checked.CheckedProgram, exports: List<&2, String>, runtime: String, files: List<&2, BIR.SourceFile>) -> Emit.EmitterRun<Emit.EmitResult>:
+  Emit.cemit_library_start(program, exports, runtime, files)
 
-def c_emitter_step(-R: Type, run: CEmit.CEmitterRun<R>) -> CEmit.CEmitterRun<R>:
-  CEmit.cemit_step(R, run)
+def c_emitter_step(-R: Type, run: Emit.EmitterRun<R>) -> Emit.EmitterRun<R>:
+  Emit.emitter_step(R, run)

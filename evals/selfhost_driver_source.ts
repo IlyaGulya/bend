@@ -344,7 +344,7 @@ const manifest='checkpoints/selfhost-steps-driver-source-v1.json';
 const authenticated=readAcceptedParserBuild(parserBuild);
 const {parserSource,source}=authenticated;
 const typedStepInputs:Record<string,string>={};
-for(const [mode,stem]of [['template','template'],['checker','checker-core'],['emitter','js-emit'],['cemit','c-emit']] as const){
+for(const [mode,stem]of [['template','template'],['checker','checker-core'],['emitter','emitter']] as const){
  const path=realpathSync(resolve('checkpoints/'+stem+'-steps-v1.json')),text=readFileSync(path,'utf8');
  const record=object(JSON.parse(text)),{generationManifestSha256,...proof}=record;
  if(generationManifestSha256!==sha(JSON.stringify(proof))||record.generationConfig?.mode!==mode
@@ -360,7 +360,7 @@ for(const [mode,stem]of [['template','template'],['checker','checker-core'],['em
   ||record.nativeChunk?.sourceResumeClosuresUnchanged!==true||record.nativeChunk?.directInvokeUnchanged!==true
   ||JSON.stringify(record.nativeChunk?.selfRecursiveFunctions)!==JSON.stringify([mode+'_chunk'])
   ||['runType','runFinishedConstructor','runStateConstructor','stackType','stackDoneConstructor','stackMoreConstructor'].some((key,index)=>
-    record.nativeChunk?.[key]!==({checker:'Checker',emitter:'Emitter',template:'Template',cemit:'CEmitter'}[mode])+['Run','RunFinished','RunState','Stack','StackDone','StackMore'][index])
+    record.nativeChunk?.[key]!==({checker:'Checker',emitter:'Emitter',template:'Template'}[mode])+['Run','RunFinished','RunState','Stack','StackDone','StackMore'][index])
   ||!Array.isArray(record.excludedDefinitions)||record.excludedDefinitions.length
   ||!Array.isArray(record.omittedDefinitions)||record.omittedDefinitions.length)
   throw Error('Complete current typed '+mode+' source generation proof required');
@@ -372,8 +372,8 @@ for(const [mode,stem]of [['template','template'],['checker','checker-core'],['em
   if(realpathSync(input)!==realpaths[input]||sha(readFileSync(input))!==digest)throw Error('Typed '+mode+' source input drift: '+input);
   typedStepInputs[realpathSync(input)]=digest;
  }
- const producer=mode==='template'?'evals/template_step_lower.ts':mode==='checker'?'evals/checker_core_step_lower.ts':mode==='cemit'?'evals/c_emit_step_lower.ts':'evals/js_emit_step_lower.ts';
- const output=mode==='template'?'checkpoints/template_steps_v1.bend':mode==='checker'?'checkpoints/checker_core_steps_v1.bend':mode==='cemit'?'checkpoints/c_emit_steps_v1.bend':'checkpoints/js_emit_steps_v1.bend';
+ const producer=mode==='template'?'evals/template_step_lower.ts':mode==='checker'?'evals/checker_core_step_lower.ts':'evals/emitter_step_lower.ts';
+ const output=mode==='template'?'checkpoints/template_steps_v1.bend':mode==='checker'?'checkpoints/checker_core_steps_v1.bend':'checkpoints/emitter_steps_v1.bend';
  if(record.generationConfig.generator!==producer||hashes[producer]!==sha(readFileSync(producer))
   ||outputs[output]===undefined)throw Error('Typed '+mode+' canonical producer/output identity drift');
  for(const [output,digest]of Object.entries(outputs)){
@@ -382,10 +382,8 @@ for(const [mode,stem]of [['template','template'],['checker','checker-core'],['em
  }
  if(mode==='checker'&&!record.coverage?.some((row:any)=>row.name==='inspect_checked'))
   throw Error('Missing owner-preserving checked inspection closure');
- if(mode==='emitter'&&!record.coverage?.some((row:any)=>row.name==='emit_library'))
-  throw Error('Missing typed library emission closure');
- if(mode==='cemit'&&(!record.coverage?.some((row:any)=>row.name==='emit_library')||!record.coverage?.some((row:any)=>row.name==='emit')))
-  throw Error('Missing typed C emission closure');
+ if(mode==='emitter'&&!['emit','emit_library','emit_c','emit_c_library'].every(name=>record.coverage?.some((row:any)=>row.name===name)))
+  throw Error('Missing typed JS or C emission closure');
  if(mode!=='template'){
   const checked=readFileSync(output,'utf8').match(/^import (\S+) as Checked$/m)?.[1];
   if(!checked||realpathSync(resolve(dirname(output),checked))!==realpathSync('bend2/selfhost/checked_frontend.bend'))
@@ -406,7 +404,7 @@ const header=originalHeader.replace(/^import (\S+)( as [A-Za-z_][A-Za-z0-9_]*)?$
 // The parser and the complete native library share lexical import namespaces:
 // constructor tags must remain identical across their authentic AST transport.
 if(header!==originalHeader)throw Error('Compiler root must preserve the accepted parser import header');
-const imports='import ../bend2/selfhost/loaded_module.bend as Loader\nimport ../bend2/selfhost/backend_ir.bend as BIR\nimport ../bend2/selfhost/checked_frontend.bend as Checked\nimport ./template_steps_v1.bend as Template\nimport ./checker_core_steps_v1.bend as CheckerCore\nimport ./js_emit_steps_v1.bend as JSEmit\nimport ./c_emit_steps_v1.bend as CEmit\n\n';
+const imports='import ../bend2/selfhost/loaded_module.bend as Loader\nimport ../bend2/selfhost/backend_ir.bend as BIR\nimport ../bend2/selfhost/checked_frontend.bend as Checked\nimport ./template_steps_v1.bend as Template\nimport ./checker_core_steps_v1.bend as CheckerCore\nimport ./emitter_steps_v1.bend as Emit\n\n';
 const wrappers=`
 # Bend owns parsing, expansion, checking and emission; Node drives typed steps.
 def parsed_module(namespace: String, module: Ast.Module) -> Loader.LoadedModule:
@@ -427,23 +425,23 @@ def inspect_checked_start(program: Checked.CheckedProgram) -> CheckerCore.Checke
 def checker_step(-R: Type, run: CheckerCore.CheckerRun<R>) -> CheckerCore.CheckerRun<R>:
   CheckerCore.checker_step(R, run)
 
-def emit_modules_start(program: Checked.CheckedProgram, files: List<&2, BIR.SourceFile>) -> JSEmit.EmitterRun<JSEmit.EmitResult>:
-  JSEmit.emitter_start(program, files)
+def emit_modules_start(program: Checked.CheckedProgram, files: List<&2, BIR.SourceFile>) -> Emit.EmitterRun<Emit.EmitResult>:
+  Emit.emitter_start(program, files)
 
-def emit_library_start(program: Checked.CheckedProgram, exports: List<&2, String>, files: List<&2, BIR.SourceFile>) -> JSEmit.EmitterRun<JSEmit.EmitResult>:
-  JSEmit.emitter_library_start(program, exports, files)
+def emit_library_start(program: Checked.CheckedProgram, exports: List<&2, String>, files: List<&2, BIR.SourceFile>) -> Emit.EmitterRun<Emit.EmitResult>:
+  Emit.emitter_library_start(program, exports, files)
 
-def emitter_step(-R: Type, run: JSEmit.EmitterRun<R>) -> JSEmit.EmitterRun<R>:
-  JSEmit.emitter_step(R, run)
+def emitter_step(-R: Type, run: Emit.EmitterRun<R>) -> Emit.EmitterRun<R>:
+  Emit.emitter_step(R, run)
 
-def emit_c_modules_start(program: Checked.CheckedProgram, runtime: String, files: List<&2, BIR.SourceFile>) -> CEmit.CEmitterRun<CEmit.EmitResult>:
-  CEmit.cemit_start(program, runtime, files)
+def emit_c_modules_start(program: Checked.CheckedProgram, runtime: String, files: List<&2, BIR.SourceFile>) -> Emit.EmitterRun<Emit.EmitResult>:
+  Emit.cemit_start(program, runtime, files)
 
-def emit_c_library_start(program: Checked.CheckedProgram, exports: List<&2, String>, runtime: String, files: List<&2, BIR.SourceFile>) -> CEmit.CEmitterRun<CEmit.EmitResult>:
-  CEmit.cemit_library_start(program, exports, runtime, files)
+def emit_c_library_start(program: Checked.CheckedProgram, exports: List<&2, String>, runtime: String, files: List<&2, BIR.SourceFile>) -> Emit.EmitterRun<Emit.EmitResult>:
+  Emit.cemit_library_start(program, exports, runtime, files)
 
-def c_emitter_step(-R: Type, run: CEmit.CEmitterRun<R>) -> CEmit.CEmitterRun<R>:
-  CEmit.cemit_step(R, run)
+def c_emitter_step(-R: Type, run: Emit.EmitterRun<R>) -> Emit.EmitterRun<R>:
+  Emit.emitter_step(R, run)
 `;
 const existing=new Set([...declarations.matchAll(/^def ([^ (]+)\(/gm)].map(x=>x[1]));
 for(const match of wrappers.matchAll(/^def ([^ (]+)\(/gm))if(existing.has(match[1]))throw Error('Compiler wrapper shadows parser definition: '+match[1]);

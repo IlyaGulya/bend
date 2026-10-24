@@ -81,7 +81,7 @@ if(!o.worker){
  const observedRoot=existsSync(o.root)?readFileSync(o.root,'utf8'):'';
  const cSurface={
   exportsRequired:requiredExports.filter(name=>name.startsWith('emit_c_')||name==='c_emitter_step'),
-  seamImported:observedRoot.includes('import ./c_emit_steps_v1.bend as CEmit'),
+  seamImported:observedRoot.includes('import ./emitter_steps_v1.bend as Emit'),
   wrappersPresent:['emit_c_modules_start','emit_c_library_start','c_emitter_step'].filter(name=>observedRoot.includes('def '+name+'(')),
   emissionExercised:typeof result.cEmissionRows==='number'&&result.cEmissionRows>0,
   scope:'observed from the root text only: the declared C surface and the seam import. This lane runs no C emission, so it makes no C behaviour claim; C behaviour is established by the separate authenticated C fixture rows.'};
@@ -266,7 +266,7 @@ if(!o.worker){
    relocatedHeader=relocatedHeader.replace(change.before+'\n',change.after+'\n');
   }
   if(relocatedHeader!==originalHeader)throw Error('Compiler root must preserve native parser constructor namespaces');
-  const expectedImports='import ../bend2/selfhost/loaded_module.bend as Loader\nimport ../bend2/selfhost/backend_ir.bend as BIR\nimport ../bend2/selfhost/checked_frontend.bend as Checked\nimport ./template_steps_v1.bend as Template\nimport ./checker_core_steps_v1.bend as CheckerCore\nimport ./js_emit_steps_v1.bend as JSEmit\nimport ./c_emit_steps_v1.bend as CEmit\n\n';
+  const expectedImports='import ../bend2/selfhost/loaded_module.bend as Loader\nimport ../bend2/selfhost/backend_ir.bend as BIR\nimport ../bend2/selfhost/checked_frontend.bend as Checked\nimport ./template_steps_v1.bend as Template\nimport ./checker_core_steps_v1.bend as CheckerCore\nimport ./emitter_steps_v1.bend as Emit\n\n';
   const expectedPrefix=relocatedHeader+expectedImports;
   if(embedding.start!==expectedPrefix.length||embedding.chars!==declarations.length||embedding.sha256!==sha(declarations)||manifest.parserDeclarationSha256!==sha(declarations)||rootText.slice(0,expectedPrefix.length)!==expectedPrefix||rootText.slice(expectedPrefix.length,expectedPrefix.length+declarations.length)!==declarations||sha(rootText.slice(expectedPrefix.length+declarations.length))!==manifest.wrapperSha256)throw Error('Root does not contain the exact complete accepted parser declaration suffix and import-only prefix');
   const wrapperNames=[...rootText.slice(expectedPrefix.length+declarations.length).matchAll(/^def ([A-Za-z_]\w*)\(/gm)].map(match=>match[1]);
