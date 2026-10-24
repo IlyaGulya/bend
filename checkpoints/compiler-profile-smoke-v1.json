@@ -17,7 +17,7 @@
     "evals/compiler_profile.mjs": "99fca04a701af1fec88e49ab3ec4673ada67fd504ed22d6901b1937e997b4ae8",
     "evals/selfhost_cpu_profile.mjs": "5d5fc8d329a3b600522c58eeac59c49c515109bc7f48845d8177cb520129a1c0",
     "evals/native_compiler_experiment.ts": "acf8371500009002366f0758280ca3383fcb3cb607a3469d30b73a146c97ae57",
-    "evals/checker_core_component_build.ts": "5dac037234b0c1703b31eb4f0552cd054a28e5f13187198e2d20c0c62b9ca864",
+    "evals/checker_core_component_build.ts": "85bc4ae037acbbaa1c5f8ccc97287fdcb6ddc36fbdb8e8906586ef17e11f218b",
     "bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
     "bend2/comp.ts": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70"
   },

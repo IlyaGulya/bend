@@ -131,8 +131,8 @@ function pins(o: Options): Record<string, string> {
     resolve(root, 'evals/heavy_gate.ts'), resolve(root, 'evals/heavy_gate_native.c')];
   const expected = Object.fromEntries(paths.map(path => [path, hash(path)]));
   verify({
-    [resolve(root, 'evals/heavy_gate.ts')]: '47a12205abd374fd69d7dac30ee9fb45d7203cad2790870511387cd2efc22251',
-    [resolve(root, 'evals/heavy_gate_native.c')]: 'f5aecf8308caebc72dccf8986733b37137d448021ee378302cfcd038381b7aa9',
+    [resolve(root, 'evals/heavy_gate.ts')]: '204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2',
+    [resolve(root, 'evals/heavy_gate_native.c')]: '1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b',
   });
   verify(expected);
   return Object.fromEntries(Object.entries(expected).sort(([a], [b]) => a.localeCompare(b)));
