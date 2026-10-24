@@ -12,7 +12,7 @@ import {dirname,isAbsolute,posix,relative,resolve} from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {Worker,isMainThread,workerData} from 'node:worker_threads';
 import {guardHeavyGate,runHeavyGate} from './heavy_gate.ts';
-import {sourceFiles,sourceFilePath} from './checker_core_step_runtime.mjs';
+import {sourceFiles,sourceFilePath,OFFICIAL_SOURCE_FILE_TAG} from './checker_core_step_runtime.mjs';
 
 type Corpus={schemaVersion:number;directory:string;root:string;officialCommit:string;files:{path:string;sha256:string}[]};
 type Options={mode:'official'|'component';corpus:string;report:string;component?:string;driver:string;outputSmokeDriver:'production'|'frozen-v41';exports?:string;stopAfter:'check'|'compile'};
@@ -22,7 +22,7 @@ const hash=(path:string)=>sha(readFileSync(path));
 const json=(value:unknown)=>JSON.stringify(value,null,2)+'\n';
 const save=(path:string,value:unknown,exclusive=false)=>writeFileSync(path,json(value),exclusive?{flag:'wx'}:undefined);
 const guard={memoryMiB:8192,rssMiB:8192,pollMs:10};
-const ABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','inspect_checked_start','checker_step','emit_modules_start','emit_library_start','emitter_step'];
+const ABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','inspect_checked_start','checker_step','emit_modules_start','emit_library_start','emitter_step','emit_c_modules_start','emit_c_library_start','c_emitter_step'];
 // Frozen output is an explicit historical test input, never a production decoder.
 const frozenV41ABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','checker_step','emit_modules_start','emit_library_start','emitter_step'];
 const productionRuntime=resolve(repository,'evals/checker_core_step_runtime.mjs');
@@ -156,7 +156,7 @@ async function worker(requestPath:string,requestSha256:string){
    if(!api||!ABI.every(key=>typeof api[key]==='function'))throw Error('Compiler component ABI is incomplete');
    const loaded=await phase('load-parse',()=>loadOwn(api,corpus,expected));report.moduleCount=loaded.moduleCount;report.sourceDeclarations=loaded.declarations;
    let modules=loaded.modules;
-   const files=sourceFiles(loaded.files);
+   const files=sourceFiles(loaded.files,OFFICIAL_SOURCE_FILE_TAG);
    let expanded=await phase('expand',()=>driver.runTemplateSteps({...api,expand_modules_start:(input:any)=>{modules=undefined;return api.expand_modules_start(input);}},modules));
    if(tag(expanded)!=='ExpandSuccess')throw Error('Own expansion failed: '+JSON.stringify(expanded));
    let checked=await phase('check',()=>driver.runCheckerSteps({...api,check_expanded_start:(input:any)=>{expanded=undefined;return api.check_expanded_start(input);}},expanded.modules));

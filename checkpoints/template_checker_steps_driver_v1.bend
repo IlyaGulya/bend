@@ -6,6 +6,7 @@ import ../bend2/selfhost/backend_ir.bend as BIR
 import ./template_steps_v1.bend as Template
 import ./checker_core_steps_v1.bend as CheckerCore
 import ./js_emit_steps_v1.bend as JSEmit
+import ./c_emit_steps_v1.bend as CEmit
 
 # Diagnostic fixture pipeline; not a parser-containing bootstrap root.
 def parsed_module(namespace: String, module: Ast.Module) -> Loader.LoadedModule:
@@ -34,3 +35,12 @@ def emit_library_start(program: Checked.CheckedProgram, exports: List<&2, String
 
 def emitter_step(-R: Type, run: JSEmit.EmitterRun<R>) -> JSEmit.EmitterRun<R>:
   JSEmit.emitter_step(R, run)
+
+def emit_c_modules_start(program: Checked.CheckedProgram, runtime: String, files: List<&2, BIR.SourceFile>) -> CEmit.CEmitterRun<CEmit.EmitResult>:
+  CEmit.cemit_start(program, runtime, files)
+
+def emit_c_library_start(program: Checked.CheckedProgram, exports: List<&2, String>, runtime: String, files: List<&2, BIR.SourceFile>) -> CEmit.CEmitterRun<CEmit.EmitResult>:
+  CEmit.cemit_library_start(program, exports, runtime, files)
+
+def c_emitter_step(-R: Type, run: CEmit.CEmitterRun<R>) -> CEmit.CEmitterRun<R>:
+  CEmit.cemit_step(R, run)

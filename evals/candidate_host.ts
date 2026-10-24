@@ -18,7 +18,7 @@ import {readFileSync,realpathSync,writeFileSync} from 'node:fs';
 import {dirname,isAbsolute,posix,resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {
- sourceFileEntries,sourceFiles,
+ sourceFileEntries,sourceFiles,OFFICIAL_SOURCE_FILE_TAG,
  runTemplateSteps,runCheckerSteps,runLibraryEmitterSteps,runEmitterSteps,
  runCEmitterSteps,runCLibraryEmitterSteps,
 } from './checker_core_step_runtime.mjs';
@@ -135,7 +135,7 @@ function visit(file:string,scope:string){
  modules.push(candidate!.parsed_module(scope,module));
 }
 visit(o.input,'');
-const bag=sourceFiles(files);
+const bag=sourceFiles(files,OFFICIAL_SOURCE_FILE_TAG);
 
 function checkedProgram():unknown{
  const loaded=list(modules);

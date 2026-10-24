@@ -377,14 +377,17 @@ static Term native_exports(Env e, const char* path) {
 
 static Term native_experiment_run(Env e, Term* f, IoWork* work) {
   (void)work;
-  if (io_argc != 7) err_fail("native experiment: expected root base manifest exports check|compile output");
-  for (u32 i = 0; i < 10; i++) native_closed(f[i]);
+  if (io_argc != 7 && io_argc != 8) err_fail("native experiment: expected root base manifest exports check|compile output [runtime]");
+  for (u32 i = 0; i < 14; i++) native_closed(f[i]);
   // 0 library emission, 1 runnable module emission for source fixtures,
   // -1 check only. The emitter entry point is selected in the checked driver.
   int action = strcmp(io_argv[5], "compile") == 0 ? 0
     : strcmp(io_argv[5], "compile-module") == 0 ? 1
-    : strcmp(io_argv[5], "check") == 0 ? -1 : 2;
+    : strcmp(io_argv[5], "check") == 0 ? -1
+    : strcmp(io_argv[5], "compile-c") == 0 ? 3
+    : strcmp(io_argv[5], "compile-c-module") == 0 ? 4 : 2;
   if (action == 2) err_fail("native experiment: invalid phase");
+  if (action >= 3 && io_argc != 8) err_fail("native experiment: a C phase needs the runtime source path");
   fprintf(stderr, "NATIVE_BEGIN {\"computeThreads\":%u,\"parserFuel\":8000000,\"phase\":\"%s\",\"phaseTraceVersion\":3}\n", pool_size, io_argv[5]);
   u64 started = io_tick();
   struct rusage cpu_started;
@@ -413,6 +416,30 @@ static Term native_experiment_run(Env e, Term* f, IoWork* work) {
   modules = native_accepted(e, native_apply(e, f[3], expanded));
   Term checked = native_drive(e, f[4], modules, f[5],
     CID(NativeCheckerFinished), CID(NativeCheckerMore), "check");
+  if (action >= 3) {
+    // The C seam takes the same passive bag beside the runtime's actual source
+    // bytes; the host never derives a target path or a namespace itself.
+    u64 runtime_length;
+    char* runtime_bytes = native_read(io_argv[7], &runtime_length);
+    Term runtime = io_str(e, runtime_bytes, runtime_length);
+    Term cemit = native_accepted(e, native_apply(e, f[13], checked));
+    Term request = action == 3
+      ? io_node(e, CID(NativeCLibrary), native_exports(e, io_argv[4]), io_tup(e, runtime, loader.files))
+      : io_box(e, CID(NativeCModule), io_tup(e, runtime, loader.files));
+    Term emission = native_drive(e, f[10],
+      io_tup(e, cemit, request), f[11],
+      CID(NativeCEmitterFinished), CID(NativeCEmitterMore), "emit-c");
+    Term source = native_accepted(e, native_apply(e, f[12], emission));
+    u64 length;
+    char* bytes = io_cstr(e, source, &length);
+    FILE* output = fopen(io_argv[6], "wx");
+    if (!output) err_fail("native experiment: output must be a fresh writable path");
+    io_out(output, bytes, length);
+    if (fclose(output) != 0) err_fail("native experiment: output close failed");
+    free(bytes);
+    printf("NATIVE_RESULT {\"result\":\"EmitSuccess\",\"bytes\":%llu,\"modules\":%zu}\n", (unsigned long long)length, loader.module_count);
+    return term_pak(CID(Unit), 0);
+  }
   Term emit = native_accepted(e, native_apply(e, f[6], checked));
   if (action >= 0) {
     Term request = action == 0

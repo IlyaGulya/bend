@@ -52,7 +52,7 @@ const kernelPath = join(root, 'bend2/bend.ts'), compilerPath = join(root, 'bend2
 const bridge = join(root, 'evals/native_compiler_driver.bend');
 const kernelSha256 = '6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e';
 const acceptedCompilerSha256 = '84b19ce89aad6da90b1aedb7b8fff2ed8ef659636754801c91290424c19a7da2';
-const compilerABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','inspect_checked_start','checker_step','emit_modules_start','emit_library_start','emitter_step'];
+const compilerABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','inspect_checked_start','checker_step','emit_modules_start','emit_library_start','emitter_step','emit_c_modules_start','emit_c_library_start','c_emitter_step'];
 const frozenV41CorpusSha256='29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258';
 const guard = {memoryMiB:8192, rssMiB:8192, pollMs:10, timeoutMs:600000};
 const boundary = {host:'trusted C file/import loader and serial opaque native Run chunk driver',

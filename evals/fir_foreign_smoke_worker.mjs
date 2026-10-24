@@ -4,7 +4,7 @@ import {pathToFileURL} from 'node:url';
 import {spawnSync} from 'node:child_process';
 import {
  runTemplateSteps,runCheckerSteps,runLibraryEmitterSteps,runEmitterSteps,
- sourceFileEntries,sourceFiles,declaredSourcePaths,
+ sourceFileEntries,sourceFiles,declaredSourcePaths,OFFICIAL_SOURCE_FILE_TAG,
 } from './checker_core_step_runtime.mjs';
 
 const request=JSON.parse(readFileSync(process.argv[2],'utf8'));
@@ -60,7 +60,7 @@ const entries=[
  ...sourceFileEntries(request.base,declaredSourcePaths(base)),
  ...sourceFileEntries(request.file,declaredSourcePaths(source)),
 ];
-const files=sourceFiles(entries);
+const files=sourceFiles(entries,OFFICIAL_SOURCE_FILE_TAG);
 const effectSha=request.effectSha256;
 if(!entries.some(entry=>entry.path===request.effectPath&&entry.source===readFileSync(request.effectPath,'utf8')))throw Error('Bag is missing the declared effect bytes');
 unlinkSync(request.effectPath);

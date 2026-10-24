@@ -13,22 +13,27 @@ const hasConstructorTag=value=>{
 };
 const invalid=(kind,message)=>{throw Error('Invalid '+kind.toLowerCase()+' step ABI: '+message);};
 
-/**
- * The one host-side builder of the passive `List<&2, BIR.SourceFile>` carrier.
- *
- * Semantic link metadata stays in BIR: the renderer derives every declared
- * target path, namespace and span itself and joins them with this bag by exact
- * declared path. The host only supplies the bytes it actually read, keyed by
- * the same path BIR derives (`Path.resolve` of the module path and the
- * declared import). Nothing here invents a path, namespace or span.
- */
 export function sourceFilePath(modulePath,declaredPath){
  if(typeof modulePath!=='string'||typeof declaredPath!=='string'||!declaredPath)throw Error('Invalid source file path input');
  return posix.normalize(posix.isAbsolute(declaredPath)?declaredPath:posix.dirname(modulePath)+'/'+declaredPath);
 }
 
-export function sourceFiles(entries, sourceFileTag = 'SourceFile') {
- const seen = new Map();
+/**
+ * The one host-side builder of the passive `List<&2, BIR.SourceFile>` carrier.
+ * The constructor tag is nominal: it comes from provenance or the workload's
+ * SourceRows, never from the artifact's shape, and it is required because a
+ * wrong tag is a fail-stop at emission rather than a fallback.
+ */
+/**
+ * Provenance, not inspection: an artifact produced by the official compiler
+ * keeps the BIR module in the root namespace, so the passive carrier it matches
+ * is the bare `SourceFile`. Selfhost-emitted images instead derive their tag
+ * from the closure's own backend_ir source row.
+ */
+export const OFFICIAL_SOURCE_FILE_TAG='SourceFile';
+
+export function sourceFiles(entries,sourceFileTag){
+ const seen=new Map();
  let list={$:'Nil'};
  if(typeof sourceFileTag!=='string'||!/^[A-Za-z_.][A-Za-z0-9_.\/-]*$/.test(sourceFileTag))throw Error('Invalid BIR.SourceFile constructor tag: '+sourceFileTag);
  for(const entry of entries){
@@ -88,8 +93,22 @@ export function sourceFileEntries(modulePath,declaredPaths){
  });
 }
 
-export function sourceFilesFor(modulePath,declaredPaths){
- return sourceFiles(sourceFileEntries(modulePath,declaredPaths));
+/**
+ * Nominal-only check. The exact tag comes from provenance or the workload's
+ * SourceRows; if the artifact registers that exact key, its field schema must
+ * be the carrier's. An absent registration is normal (a matching-only component
+ * never constructs the carrier), and every other registration is an unrelated
+ * record that is ignored rather than judged.
+ */
+export function verifySourceFileCarrier(componentSource,exactTag){
+ if(typeof exactTag!=='string'||!exactTag)throw Error('Missing nominal BIR.SourceFile constructor tag');
+ const registered=new RegExp('\\$FIELDS\\["'+exactTag.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'"\\]=\\[([^\\]]*)\\];').exec(String(componentSource));
+ if(registered&&registered[1]!=='"path","source"')throw Error('Registered '+exactTag+' has fields ['+registered[1]+'], expected ["path","source"]');
+ return exactTag;
+}
+
+export function sourceFilesFor(modulePath,declaredPaths,carrier){
+ return sourceFiles(sourceFileEntries(modulePath,declaredPaths),carrier);
 }
 
 

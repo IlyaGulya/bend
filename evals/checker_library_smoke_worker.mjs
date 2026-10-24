@@ -5,7 +5,7 @@ import {pathToFileURL} from 'node:url';
 import {createHash} from 'node:crypto';
 import {createInterface} from 'node:readline';
 import {writeNativeAst,readNativeAst} from './bootstrap_ast_transport.ts';
-import {runTemplateSteps,runCheckerSteps,runCheckedInspectionSteps,runLibraryEmitterSteps,sourceFilesFor,declaredSourcePaths} from './checker_core_step_runtime.mjs';
+import {runTemplateSteps,runCheckerSteps,runCheckedInspectionSteps,runLibraryEmitterSteps,sourceFilesFor,declaredSourcePaths,OFFICIAL_SOURCE_FILE_TAG} from './checker_core_step_runtime.mjs';
 
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
 const tag=value=>value?.$?.split('.').at(-1);
@@ -57,7 +57,7 @@ if(isMainThread){
   let modules={$:'Con',head:component.parsed_module('',parsed.module),tail:{$:'Nil'}};
   // The passive bag carries only the bytes of this source's declared `.js`
   // alternatives; this consumer library declares none.
-  const files=sourceFilesFor(workerData.file,declaredSourcePaths(parsed.module));
+  const files=sourceFilesFor(workerData.file,declaredSourcePaths(parsed.module),OFFICIAL_SOURCE_FILE_TAG);
   parsed=undefined;
   mark('expand');let expanded=runTemplateSteps({...component,expand_modules_start:input=>{modules=undefined;return component.expand_modules_start(input);}},modules);
   if(tag(expanded)!=='ExpandSuccess')fail('expand',expanded);

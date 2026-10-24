@@ -8,7 +8,7 @@ import {spawnSync} from 'node:child_process';
 import {getHeapStatistics} from 'node:v8';
 import {writeNativeAst,decodeNativeAst} from './bootstrap_ast_transport.ts';
 import {runNativeStage0,requireNativeRun,runtimeManifest,workloadRows,corpusFor} from './native_seed_runtime.mjs';
-import {runTemplateSteps,runCheckerSteps,runEmitterSteps,runLibraryEmitterSteps,sourceFiles,sourceFilePath} from './checker_core_step_runtime.mjs';
+import {runTemplateSteps,runCheckerSteps,runEmitterSteps,runLibraryEmitterSteps,sourceFiles,sourceFilePath,verifySourceFileCarrier} from './checker_core_step_runtime.mjs';
 
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
 async function transportHash(path){
@@ -17,7 +17,7 @@ async function transportHash(path){
  return hash.digest('hex');
 }
 const tag=value=>value?.$?.split('.').at(-1);
-const ABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','inspect_checked_start','checker_step','emit_modules_start','emit_library_start','emitter_step'];
+const ABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','inspect_checked_start','checker_step','emit_modules_start','emit_library_start','emitter_step','emit_c_modules_start','emit_c_library_start','c_emitter_step'];
 const requiredExports=workerData?.fixture?ABI.filter(name=>name!=='parse_with_fuel'&&name!=='emit_library_start'):ABI;
 const send=message=>parentPort.postMessage(message);
 if(isMainThread){
@@ -203,7 +203,16 @@ if(isMainThread){
    return component[name](run);
   }])]);
  }
- function compile(component,loaded,library,sourceFileTag='SourceFile'){
+ // The nominal carrier tag is supplied by the caller from provenance or the
+ // closure's source rows; there is no default because a wrong tag is a fail-stop.
+ // The BIR module's namespace in this closure is the authority for the carrier
+ // tag of anything the closure emits; the artifact can only confirm it.
+ function stageSourceFileTag(rows){
+  const row=rows.find(row=>typeof row.file==='string'&&row.file.endsWith('/bend2/selfhost/backend_ir.bend'));
+  if(!row)throw Error('Compiler closure carries no backend_ir source row');
+  return row.namespace?row.namespace+'.SourceFile':'SourceFile';
+ }
+ function compile(component,loaded,library,sourceFileTag){
   let modules=loaded.modules,files=sourceFiles(loaded.files,sourceFileTag);loaded.modules=undefined;loaded.files=undefined;
   const expansionComponent=profileSteps({...component,expand_modules_start:input=>{modules=undefined;return component.expand_modules_start(input);}},['expand_modules_start','template_step']);
   mark(phase+'-expand');let expanded=runTemplateSteps(expansionComponent,modules);
@@ -235,7 +244,7 @@ if(isMainThread){
   const result=value();if(at!==text.length)throw Error('Trailing printed value content at '+at);
   return JSON.stringify(result);
  }
- async function runFixtures(parser,component,parserSha256,compilerSha256,stage,sourceFileTag='SourceFile'){
+ async function runFixtures(parser,component,parserSha256,compilerSha256,stage,sourceFileTag){
   for(const fixture of workerData.fixtures){
    mark(stage+'-fixture-'+fixture.name+'-parse');
    const loaded=await load(fixture.file,parser,component,parserSha256);
@@ -352,9 +361,15 @@ if(isMainThread){
   if(workerData.native){await runNativeSeed();}else{
   if(sha(readFileSync(workerData.parser))!==workerData.parserSha256||sha(readFileSync(workerData.component))!==workerData.componentSha256)throw Error('Authenticated seed artifact changed before execution');
   const seedParser=(await import(pathToFileURL(workerData.parser).href)).default;
+  // The passive carrier tag is the seed artifact's own registration, never a guess.
+  // Provenance, not inspection: the seed artifact is produced by the official
+  // compiler, whose BIR module sits in the root namespace and therefore
+  // registers the bare carrier. The request carries that fact explicitly.
+  if(typeof workerData.sourceFileTag!=='string'||!workerData.sourceFileTag)throw Error('Seed request must carry the nominal BIR.SourceFile tag');
+  const seedTag=workerData.sourceFileTag;
   const seed=exportsOf(await import(pathToFileURL(workerData.component).href),workerData.component);
   const seedParserSha=workerData.parserSha256;
-  if(!workerData.parseOnly&&!workerData.profileRoot)await runFixtures(seedParser,seed,seedParserSha,workerData.componentSha256,'seed',workerData.fixture?(workerData.sourceFileTag??'SourceFile'):'SourceFile');
+  if(!workerData.parseOnly&&!workerData.profileRoot)await runFixtures(seedParser,seed,seedParserSha,workerData.componentSha256,'seed',seedTag);
   if(workerData.fixture){
    authenticateSources();
    mark('complete');send({event:'result',result:{passed:true,compilerBootstrapGreen:false,selfhostGreen:false,diagnosticFixture:workerData.fixture,fixtureExecutions:fixtures.length}});
@@ -366,9 +381,13 @@ if(isMainThread){
    const sourceHashes=first.sourceHashes;first.modules=undefined;
    mark('root-parse-diagnostic-complete');send({event:'result',result:{passed:false,diagnosticOnly:true,bootstrapAcceptance:false,diagnosticPhaseComplete:true,compilerBootstrapGreen:false,selfhostGreen:false,sourceHashes,fixtureExecutions:0}});
   }else{
-  mark('stage-one');let stageOne=compile(seed,first,true);
+  mark('stage-one');let stageOne=compile(seed,first,true,seedTag);
   const firstPath=join(workerData.sidecars,'stage-one.js');writeFileSync(firstPath,stageOne,{flag:'wx'});
   artifacts.stageOne={event:'artifact',phase,stage:'stageOne',path:firstPath,sha256:sha(stageOne),bytes:Buffer.byteLength(stageOne),sourceHashes:first.sourceHashes};send(artifacts.stageOne);
+  // Stage-one is a selfhost-emitted image: its BIR module is namespaced by the
+  // closure import path, so the tag comes from that source row, not the bytes.
+  const stageOneTag=stageSourceFileTag(first.sourceHashes);
+  verifySourceFileCarrier(stageOne,stageOneTag);
   mark('stage-one-execute');const stage1=exportsOf(await import(pathToFileURL(firstPath).href),firstPath);
   stageOne=undefined;
   if(workerData.profileRoot){
@@ -378,7 +397,7 @@ if(isMainThread){
   // No seed parser or component is used from this boundary onwards.
   mark('stage-two-parse');const second=await load(workerData.root,stage1,stage1,artifacts.stageOne.sha256);
   if(JSON.stringify(first.sourceHashes)!==JSON.stringify(second.sourceHashes))throw Error('Stage source closure drift');
-  mark('stage-two');let stageTwo=compile(stage1,second,true);
+  mark('stage-two');let stageTwo=compile(stage1,second,true,stageOneTag);
   const secondPath=join(workerData.sidecars,'stage-two.js');writeFileSync(secondPath,stageTwo,{flag:'wx'});
   artifacts.stageTwo={event:'artifact',phase,stage:'stageTwo',path:secondPath,sha256:sha(stageTwo),bytes:Buffer.byteLength(stageTwo),sourceHashes:second.sourceHashes};send(artifacts.stageTwo);
   mark('fixedpoint-byte-comparison');
@@ -391,8 +410,8 @@ if(isMainThread){
   // stages still execute every fixture before bootstrap acceptance is published.
   mark('stage-two-execute');const stage2=exportsOf(await import(pathToFileURL(secondPath).href),secondPath);
   stageTwo=undefined;
-  await runFixtures(stage1,stage1,artifacts.stageOne.sha256,artifacts.stageOne.sha256,'stage-one',workerData.sourceFileTag??'SourceFile');
-  await runFixtures(stage2,stage2,artifacts.stageTwo.sha256,artifacts.stageTwo.sha256,'stage-two',workerData.sourceFileTag??'SourceFile');
+  await runFixtures(stage1,stage1,artifacts.stageOne.sha256,artifacts.stageOne.sha256,'stage-one',stageOneTag);
+  await runFixtures(stage2,stage2,artifacts.stageTwo.sha256,artifacts.stageTwo.sha256,'stage-two',stageOneTag);
   authenticateSources();
   mark('complete');send({event:'result',result:{passed:true,compilerBootstrapGreen:true,selfhostGreen:false,fixedpoint:{criterion:'Exact emitted UTF-8 JS bytes; no normalization or patching',equal:true,stageOneSha256:artifacts.stageOne.sha256,stageTwoSha256:artifacts.stageTwo.sha256},stageTwoParser:'stage-one emitted parse_with_fuel, not seed parser',fullCompilerRoot:workerData.root,legacyFullIODriver:false,fixtureExecutions:fixtures.length}});
   }

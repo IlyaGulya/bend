@@ -5,7 +5,8 @@ import {spawnSync} from 'node:child_process';
 
 export const ABI = ['parsed_module', 'parse_with_fuel', 'expand_modules_start', 'template_step',
   'check_expanded_start', 'inspect_checked_start', 'checker_step', 'emit_modules_start',
-  'emit_library_start', 'emitter_step'];
+  'emit_library_start', 'emitter_step',
+  'emit_c_modules_start', 'emit_c_library_start', 'c_emitter_step'];
 
 export const sha = bytes => createHash('sha256').update(bytes).digest('hex');
 export const hashPath = path => sha(readFileSync(path));

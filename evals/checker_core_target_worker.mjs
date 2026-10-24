@@ -4,7 +4,7 @@ import {resolve,join} from 'node:path';
 import {tmpdir} from 'node:os';
 import {pathToFileURL} from 'node:url';
 import {spawnSync} from 'node:child_process';
-import {runCheckerSteps,runEmitterSteps,sourceFilesFor,declaredSourcePaths} from './checker_core_step_runtime.mjs';
+import {runCheckerSteps,runEmitterSteps,sourceFilesFor,declaredSourcePaths,OFFICIAL_SOURCE_FILE_TAG} from './checker_core_step_runtime.mjs';
 
 const tag=value=>value?.$?.split('.').at(-1);
 function fuelList(cells){let fuel={$:'FeedbackFuelEnd'};for(let i=0;i<cells;i++)fuel={$:'FeedbackFuelCell',tail:fuel};return fuel;}
@@ -31,7 +31,7 @@ if(isMainThread){
   if(tag(feedback)!=='FeedbackComplete'||tag(feedback.value?.result)!=='ParseSuccess')throw Error('Target parser did not accept: '+tag(feedback.value?.result??feedback));
   const module=feedback.value.result.module;
   const loaded=component.parsed_module('',module),modules={$:'Con',head:loaded,tail:{$:'Nil'}};
-  const files=sourceFilesFor(workerData.file,declaredSourcePaths(module));
+  const files=sourceFilesFor(workerData.file,declaredSourcePaths(module),OFFICIAL_SOURCE_FILE_TAG);
   if(workerData.uncheckedGuard){
    phase('compiled-checked-boundary-guard');
    let refused=false;

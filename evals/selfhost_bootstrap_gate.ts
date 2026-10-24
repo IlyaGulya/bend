@@ -25,7 +25,7 @@ import {spawn} from 'node:child_process';
 import type {ChildProcess} from 'node:child_process';
 import {createInterface} from 'node:readline';
 
-const ABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','inspect_checked_start','checker_step','emit_modules_start','emit_library_start','emitter_step'];
+const ABI=['parsed_module','parse_with_fuel','expand_modules_start','template_step','check_expanded_start','inspect_checked_start','checker_step','emit_modules_start','emit_library_start','emitter_step','emit_c_modules_start','emit_c_library_start','c_emitter_step'];
 const limits={memoryMiB:8192,rssMiB:8192,pollMs:10,workerStackMiB:256,workerOldGenerationMiB:6144,workerYoungGenerationMiB:128,parserFuel:8000000,maxHeavyChildren:1};
 const sha=(bytes:string|Uint8Array)=>createHash('sha256').update(bytes).digest('hex');
 const hash=(path:string)=>sha(readFileSync(path));
@@ -121,6 +121,9 @@ if(!o.worker){
    if(!sourceFileRow||typeof sourceFileRow.namespace!=='string')throw Error('Native workload does not load the canonical BIR module');
    state.nativeSourceFileTag=sourceFileRow.namespace+'.SourceFile';
   }else{
+  // Provenance: the JS seed component is produced by the official compiler,
+  // which keeps the BIR module in the root namespace, so its carrier is bare.
+  state.sourceFileTag='SourceFile';
   const componentBuild=buildReport(o.componentBuild!);
   for(const [name,build,artifact]of [['component',componentBuild,o.component!],['parser',parserBuild,o.parser]] as const){
    if(build.checksExcluded!==0||build.guardianStatus!=='PASS'||build.artifactSha256!==hash(artifact)||realpathSync(build.artifactPath)!==realpathSync(artifact))throw Error(name+' lacks exact complete native build provenance');
@@ -258,7 +261,7 @@ if(!o.worker){
    relocatedHeader=relocatedHeader.replace(change.before+'\n',change.after+'\n');
   }
   if(relocatedHeader!==originalHeader)throw Error('Compiler root must preserve native parser constructor namespaces');
-  const expectedImports='import ../bend2/selfhost/loaded_module.bend as Loader\nimport ../bend2/selfhost/backend_ir.bend as BIR\nimport ../bend2/selfhost/checked_frontend.bend as Checked\nimport ./template_steps_v1.bend as Template\nimport ./checker_core_steps_v1.bend as CheckerCore\nimport ./js_emit_steps_v1.bend as JSEmit\n\n';
+  const expectedImports='import ../bend2/selfhost/loaded_module.bend as Loader\nimport ../bend2/selfhost/backend_ir.bend as BIR\nimport ../bend2/selfhost/checked_frontend.bend as Checked\nimport ./template_steps_v1.bend as Template\nimport ./checker_core_steps_v1.bend as CheckerCore\nimport ./js_emit_steps_v1.bend as JSEmit\nimport ./c_emit_steps_v1.bend as CEmit\n\n';
   const expectedPrefix=relocatedHeader+expectedImports;
   if(embedding.start!==expectedPrefix.length||embedding.chars!==declarations.length||embedding.sha256!==sha(declarations)||manifest.parserDeclarationSha256!==sha(declarations)||rootText.slice(0,expectedPrefix.length)!==expectedPrefix||rootText.slice(expectedPrefix.length,expectedPrefix.length+declarations.length)!==declarations||sha(rootText.slice(expectedPrefix.length+declarations.length))!==manifest.wrapperSha256)throw Error('Root does not contain the exact complete accepted parser declaration suffix and import-only prefix');
   const wrapperNames=[...rootText.slice(expectedPrefix.length+declarations.length).matchAll(/^def ([A-Za-z_]\w*)\(/gm)].map(match=>match[1]);
@@ -392,7 +395,7 @@ if(!o.worker){
   });
   if(!fixtures.length)throw Error('Unknown diagnostic fixture: '+o.fixture);
   const request=join(sidecars,'request.json');
-  save(request,{...o,limits,sidecars,fixtures,parserSource,rootComposition,componentSha256:o.nativeBuild?state.nativeSeed!.binarySha256:buildReport(o.componentBuild!).artifactSha256,parserSha256:parserBuild.artifactSha256,rootInputs:o.nativeBuild?state.nativeSeedInputs:loadedInputs,
+  save(request,{...o,limits,sidecars,fixtures,parserSource,rootComposition,sourceFileTag:o.nativeBuild?state.nativeSourceFileTag:state.sourceFileTag,componentSha256:o.nativeBuild?state.nativeSeed!.binarySha256:buildReport(o.componentBuild!).artifactSha256,parserSha256:parserBuild.artifactSha256,rootInputs:o.nativeBuild?state.nativeSeedInputs:loadedInputs,
    ...(o.nativeBuild?{native:{build:o.nativeBuild,buildSha256:hash(o.nativeBuild),binary:state.nativeSeed!.binary,binarySha256:state.nativeSeed!.binarySha256,corpus:state.nativeSeed!.corpus,corpusSha256:state.nativeSeed!.corpusSha256,cPath:state.nativeSeed!.cPath,cSha256:state.nativeSeed!.cSha256,sourceFileTag:state.nativeSourceFileTag}}:{})});
   child=spawn('node',[resolve('evals/selfhost_bootstrap_worker.mjs'),request],{stdio:['pipe','pipe','inherit']});
   const completed=new Promise<number>((done,reject)=>{child!.once('error',reject);child!.once('close',code=>done(code??125));});

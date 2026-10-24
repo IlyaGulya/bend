@@ -8,6 +8,7 @@ import ../bend2/selfhost/checked_frontend.bend as Checked
 import ../checkpoints/template_steps_v1.bend as Template
 import ../checkpoints/checker_core_steps_v1.bend as Checker
 import ../checkpoints/js_emit_steps_v1.bend as Emitter
+import ../checkpoints/c_emit_steps_v1.bend as CEmitter
 
 # The loader closure owns the parser's original immutable Module. The host can
 # inspect import paths but cannot replace a parsed tree or checked result.
@@ -95,6 +96,19 @@ def native_check_result(box: Checker.CheckerValue<Checked.CheckResult>) -> Nativ
   match box:
     case Checker.CheckerValue{value}: native_check_value(value)
 
+def native_c_check_value(result: Checked.CheckResult) -> NativeResult<(NativeCEmit -> CEmitter.CEmitterRun<CEmitter.EmitResult>)>:
+  match result:
+    case Checked.CheckSuccess{program}: NativeAccepted{request => native_c_emit_start(program, request)}
+    case Checked.CheckFailure{Checked.Diagnostic{_, _, message, _, _}}: NativeRejected{message}
+
+def native_c_check_result(box: Checker.CheckerValue<Checked.CheckResult>) -> NativeResult<(NativeCEmit -> CEmitter.CEmitterRun<CEmitter.EmitResult>)>:
+  match box:
+    case Checker.CheckerValue{value}: native_c_check_value(value)
+
+def native_c_emit(input: (NativeCEmit -> CEmitter.CEmitterRun<CEmitter.EmitResult>) & NativeCEmit) -> CEmitter.CEmitterRun<CEmitter.EmitResult>:
+  (emit, request) = input
+  emit(request)
+
 def native_emit(input: (NativeEmit -> Emitter.EmitterRun<Emitter.EmitResult>) & NativeEmit) -> Emitter.EmitterRun<Emitter.EmitResult>:
   (emit, request) = input
   emit(request)
@@ -152,6 +166,52 @@ def native_emitter_view_ready(-A: Type, run: Emitter.EmitterRun<A>) -> NativeEmi
 def native_emitter_view(-A: Type, run: Emitter.EmitterRun<A>) -> NativeEmitterView<A>:
   native_emitter_view_ready(A, Emitter.emitter_chunk(A, 64n, run))
 
+
+# The C target uses the same passive carrier and the same opaque chunk protocol;
+# only the request differs (it carries the runtime source bytes) and the result
+# type is CEmit's. The host builds the request, never a second carrier.
+# The payload stays a pair so the host builds the request with the same
+# two-field / one-field constructor encoding it already uses for NativeEmit.
+type NativeCEmit is Data:
+  NativeCLibrary{exports: List<&2, String>, payload: String & List<&2, BIR.SourceFile>}
+  NativeCModule{payload: String & List<&2, BIR.SourceFile>}
+
+def native_c_library_payload(program: Checked.CheckedProgram, exports: List<&2, String>, payload: String & List<&2, BIR.SourceFile>) -> CEmitter.CEmitterRun<CEmitter.EmitResult>:
+  (runtime, files) = payload
+  emit_c_library_start(program, exports, runtime, files)
+
+def native_c_module_payload(program: Checked.CheckedProgram, payload: String & List<&2, BIR.SourceFile>) -> CEmitter.CEmitterRun<CEmitter.EmitResult>:
+  (runtime, files) = payload
+  emit_c_modules_start(program, runtime, files)
+
+def native_c_emit_start(program: Checked.CheckedProgram, request: NativeCEmit) -> CEmitter.CEmitterRun<CEmitter.EmitResult>:
+  match request:
+    case NativeCLibrary{exports, payload}: native_c_library_payload(program, exports, payload)
+    case NativeCModule{payload}: native_c_module_payload(program, payload)
+
+def native_c_emit_value(result: CEmitter.EmitResult) -> NativeResult<String>:
+  match result:
+    case CEmitter.EmitSuccess{source}: NativeAccepted{source}
+    case CEmitter.EmitFailure{message, _}: NativeRejected{message}
+
+def native_c_emit_result(box: CEmitter.CEmitterValue<CEmitter.EmitResult>) -> NativeResult<String>:
+  match box:
+    case CEmitter.CEmitterValue{value}: native_c_emit_value(value)
+
+type NativeCEmitterView<-A: Type> is Type:
+  NativeCEmitterFinished{take: Unit -> CEmitter.CEmitterValue<A>}
+  NativeCEmitterMore{next: Unit -> CEmitter.CEmitterRun<A>}
+
+def native_c_emitter_view_ready(-A: Type, run: CEmitter.CEmitterRun<A>) -> NativeCEmitterView<A>:
+  match run:
+    case CEmitter.CEmitterRunFinished{box}:
+      NativeCEmitterFinished{unit => box}
+    case CEmitter.CEmitterRunState{B, progress, stack}:
+      NativeCEmitterMore{unit => CEmitter.CEmitterRunState{B, progress, stack}}
+
+def native_c_emitter_view(-A: Type, run: CEmitter.CEmitterRun<A>) -> NativeCEmitterView<A>:
+  native_c_emitter_view_ready(A, CEmitter.cemit_chunk(A, 64n, run))
+
 # Reused callbacks below are closed and capture-free. The native Run preserves
 # the original source/result relationship; each returned thunk is consumed once.
 def native_experiment(
@@ -164,7 +224,11 @@ def native_experiment(
   check_result: Checker.CheckerValue<Checked.CheckResult> -> NativeResult<(NativeEmit -> Emitter.EmitterRun<Emitter.EmitResult>)>,
   emit: ((NativeEmit -> Emitter.EmitterRun<Emitter.EmitResult>) & NativeEmit) -> Emitter.EmitterRun<Emitter.EmitResult>,
   emitter_view: (@-A: Type -> @run: Emitter.EmitterRun<A> -> NativeEmitterView<A>),
-  emit_result: Emitter.EmitterValue<Emitter.EmitResult> -> NativeResult<String>
+  emit_result: Emitter.EmitterValue<Emitter.EmitResult> -> NativeResult<String>,
+  c_emit: ((NativeCEmit -> CEmitter.CEmitterRun<CEmitter.EmitResult>) & NativeCEmit) -> CEmitter.CEmitterRun<CEmitter.EmitResult>,
+  c_emitter_view: (@-A: Type -> @run: CEmitter.CEmitterRun<A> -> NativeCEmitterView<A>),
+  c_emit_result: CEmitter.CEmitterValue<CEmitter.EmitResult> -> NativeResult<String>,
+  c_check_result: Checker.CheckerValue<Checked.CheckResult> -> NativeResult<(NativeCEmit -> CEmitter.CEmitterRun<CEmitter.EmitResult>)>
 ) -> IO(Unit):
   import "./native_compiler_host.c"
 
@@ -179,5 +243,9 @@ def main() -> IO(Unit):
     native_check_result,
     native_emit,
     native_emitter_view,
-    native_emit_result
+    native_emit_result,
+    native_c_emit,
+    native_c_emitter_view,
+    native_c_emit_result,
+    native_c_check_result
   )
