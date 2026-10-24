@@ -1027,7 +1027,17 @@ def head_value(+ctx: Context, +val: NF.NfVal) -> HeadResult:
         case None{}:
           match function_lookup(key, context_type_functions(ctx)):
             case Some{+function}:
-              HeadBoxed{BoxOpen{}}
+              match function:
+                case BIR.TypeFunction{+known, +native, +quantity_prefix, +arity, +body}:
+                  match native:
+                    case Some{+marker}:
+                      match Nat.is_eq(List.length(&2, NF.NfVal, args), arity):
+                        case True{}:
+                          HeadFound{key, native}
+                        case False{}:
+                          HeadBoxed{BoxOpen{}}
+                    case None{}:
+                      HeadBoxed{BoxOpen{}}
             case None{}:
               HeadBoxed{BoxUnresolved{key}}
     case _:
@@ -1100,14 +1110,11 @@ def cell_of(+layout: Layout) -> CellResult:
       +words = layout_words(layout)
       CellFound{Cell{layout, layout_has_term(layout), words, ceil_log2(max_one(words))}}
 
-# An array of an abstract element type has no cell layout: the reference rule
-# refuses an open element rather than boxing it silently.
+# An array of an open or generic element type is an array of boxed Terms, as in
+# the reference lay_arr: the element is one BOX word held in an ARR cell (arr =
+# true, words = 1, lgs = 0). Openness selects representation, it never refuses.
 def cell_boxed(+reason: BoxReason) -> CellResult:
-  match reason:
-    case BoxOpen{}:
-      CellFailed("the array element type is an open type; the reference layout rule refuses an open array element")
-    case _:
-      CellFound{Cell{LayoutBox{reason}, True{}, 1n, 0n}}
+  CellFound{Cell{LayoutBox{reason}, True{}, 1n, 0n}}
 
 def max_one(+count: Nat) -> Nat:
   match Nat.is_gt(count, 0n):

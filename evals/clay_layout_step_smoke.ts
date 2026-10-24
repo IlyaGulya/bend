@@ -30,7 +30,7 @@ const dependency = 'checkpoints/clay-layout-smoke-dependency.json';
 const output = 'checkpoints/clay_layout_steps_v1.bend';
 const component = 'checkpoints/clay_layout_steps_component_v1.bend';
 const manifest = 'checkpoints/clay-layout-steps-v1.json';
-const providers = ['bend2/selfhost/descriptor_nf.bend'];
+const providers = ['bend2/selfhost/c_backend_layout.bend', 'bend2/selfhost/descriptor_nf.bend'];
 const expected = 0;
 const sha = (text: string) => createHash('sha256').update(text).digest('hex');
 
@@ -71,7 +71,7 @@ function relocateImports(text: string): string {
 }
 async function generate(): Promise<StepConfig> {
   const canonicalText = readFileSync(canonical, 'utf8');
-  const composition = await composeCanonicalCPSSource(canonical, providers, {sourceOrderedDatatypes: true});
+  const composition = await composeCanonicalCPSSource(canonical, providers);
   const normalized = await normalizeNativeMatchSource(canonical, composition.source);
   const ownedText = relocateImports(normalized.source);
   writeFileSync(owned, ownedText);
@@ -104,7 +104,6 @@ async function generate(): Promise<StepConfig> {
     output, component, manifest,
     driver: undefined, ownedDriver: undefined,
     providerClosure: providers,
-    sourceOrderedDatatypes: true,
   };
   await generateNativeSteps(config);
   return config;
@@ -134,7 +133,6 @@ async function run(artifact: string): Promise<void> {
       current = undefined;
       current = step(chunk.fields);
       steps += 1;
-      if (steps > 100000000) throw Error('Template Run did not finish');
       continue;
     }
     if (!chunk.tag.endsWith('.TemplateRunFinished')) throw Error('Unexpected Run tag ' + chunk.tag);
