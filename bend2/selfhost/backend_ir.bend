@@ -1,4 +1,5 @@
 import Base
+import ./ast.bend as Ast
 
 # Runtime operands contain no source syntax or effects. IDs are labels only;
 # code bodies and descriptor programs own structurally decreasing trees.
@@ -184,8 +185,6 @@ type Op is Data:
   Construct{constructor: U32, tag: String, fields: List<&2, Field>}
   Project{value: Atom, constructor: U32, field: U32, key: String}
   HasTag{value: Atom, constructor: U32, tag: String}
-  DescriptorValue{descriptor: Descriptor}
-  Foreign{path: String, key: String, arity: Nat}
 
 # Let operands are strict. Tail calls only appear as block terminators. Ordered
 # over-application is a sequence of strict Direct/Apply lets, never one arg list.
@@ -211,7 +210,9 @@ type Declaration is Data:
   FunctionDeclaration{key: String, code: U32, parameters: List<&2, Parameter>}
   LazyDeclaration{key: String, body: Block}
   NativeDeclaration{key: String, primitive: Primitive, quantities: List<&2, Quantity>}
-  ForeignDeclaration{key: String, path: String, imported: String, arity: Nat}
+  # Foreign declarations retain every declared import alternative, so each
+  # target selects by extension from authoritative paths and never derives one.
+  ForeignDeclaration{key: String, namespace: String, imported: String, arity: Nat, sources: List<&2, String>, quantities: List<&2, Quantity>, span: Ast.SourceSpan, parameter_types: List<&2, Descriptor>, result: Descriptor}
 type ConstructorLayout is Data:
   ConstructorLayout{id: U32, key: String, native: Maybe<&2, String>, fields: List<&2, Maybe<&2, String>>}
 type DescriptorField is Data:
