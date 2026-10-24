@@ -7,8 +7,8 @@ import ../bend2/selfhost/backend_ir.bend as BIR
 import ../bend2/selfhost/checked_frontend.bend as Checked
 import ../checkpoints/template_steps_v1.bend as Template
 import ../checkpoints/checker_core_steps_v1.bend as Checker
-import ../checkpoints/js_emit_steps_v1.bend as Emitter
-import ../checkpoints/c_emit_steps_v1.bend as CEmitter
+import ../checkpoints/emitter_steps_v1.bend as Emit
+
 
 # The loader closure owns the parser's original immutable Module. The host can
 # inspect import paths but cannot replace a parsed tree or checked result.
@@ -82,17 +82,17 @@ type NativeEmit is Data:
   NativeLibrary{exports: List<&2, String>, files: List<&2, BIR.SourceFile>}
   NativeModule{files: List<&2, BIR.SourceFile>}
 
-def native_emit_start(program: Checked.CheckedProgram, request: NativeEmit) -> Emitter.EmitterRun<Emitter.EmitResult>:
+def native_emit_start(program: Checked.CheckedProgram, request: NativeEmit) -> Emit.EmitterRun<Emit.EmitResult>:
   match request:
-    case NativeLibrary{exports, files}: emit_library_start(program, exports, files)
-    case NativeModule{files}: emit_modules_start(program, files)
+    case NativeLibrary{exports, files}: Emit.emitter_library_start(program, exports, files)
+    case NativeModule{files}: Emit.emitter_start(program, files)
 
-def native_check_value(result: Checked.CheckResult) -> NativeResult<(NativeEmit -> Emitter.EmitterRun<Emitter.EmitResult>)>:
+def native_check_value(result: Checked.CheckResult) -> NativeResult<(NativeEmit -> Emit.EmitterRun<Emit.EmitResult>)>:
   match result:
     case Checked.CheckSuccess{program}: NativeAccepted{request => native_emit_start(program, request)}
     case Checked.CheckFailure{Checked.Diagnostic{_, _, message, _, _}}: NativeRejected{message}
 
-def native_check_result(box: Checker.CheckerValue<Checked.CheckResult>) -> NativeResult<(NativeEmit -> Emitter.EmitterRun<Emitter.EmitResult>)>:
+def native_check_result(box: Checker.CheckerValue<Checked.CheckResult>) -> NativeResult<(NativeEmit -> Emit.EmitterRun<Emit.EmitResult>)>:
   match box:
     case Checker.CheckerValue{value}: native_check_value(value)
 
@@ -107,36 +107,36 @@ type NativeCEmit is Data:
   NativeCLibrary{exports: List<&2, String>, runtime: String, files: List<&2, BIR.SourceFile>}
   NativeCModule{runtime: String, files: List<&2, BIR.SourceFile>}
 
-def native_c_emit_start(program: Checked.CheckedProgram, request: NativeCEmit) -> CEmitter.CEmitterRun<CEmitter.EmitResult>:
+def native_c_emit_start(program: Checked.CheckedProgram, request: NativeCEmit) -> Emit.EmitterRun<Emit.EmitResult>:
   match request:
-    case NativeCLibrary{exports, runtime, files}: emit_c_library_start(program, exports, runtime, files)
-    case NativeCModule{runtime, files}: emit_c_modules_start(program, runtime, files)
+    case NativeCLibrary{exports, runtime, files}: Emit.cemit_library_start(program, exports, runtime, files)
+    case NativeCModule{runtime, files}: Emit.cemit_start(program, runtime, files)
 
-def native_c_check_value(result: Checked.CheckResult) -> NativeResult<(NativeCEmit -> CEmitter.CEmitterRun<CEmitter.EmitResult>)>:
+def native_c_check_value(result: Checked.CheckResult) -> NativeResult<(NativeCEmit -> Emit.EmitterRun<Emit.EmitResult>)>:
   match result:
     case Checked.CheckSuccess{program}: NativeAccepted{request => native_c_emit_start(program, request)}
     case Checked.CheckFailure{Checked.Diagnostic{_, _, message, _, _}}: NativeRejected{message}
 
-def native_c_check_result(box: Checker.CheckerValue<Checked.CheckResult>) -> NativeResult<(NativeCEmit -> CEmitter.CEmitterRun<CEmitter.EmitResult>)>:
+def native_c_check_result(box: Checker.CheckerValue<Checked.CheckResult>) -> NativeResult<(NativeCEmit -> Emit.EmitterRun<Emit.EmitResult>)>:
   match box:
     case Checker.CheckerValue{value}: native_c_check_value(value)
 
-def native_c_emit(input: (NativeCEmit -> CEmitter.CEmitterRun<CEmitter.EmitResult>) & NativeCEmit) -> CEmitter.CEmitterRun<CEmitter.EmitResult>:
+def native_c_emit(input: (NativeCEmit -> Emit.EmitterRun<Emit.EmitResult>) & NativeCEmit) -> Emit.EmitterRun<Emit.EmitResult>:
   (emit, request) = input
   emit(request)
 
-def native_emit(input: (NativeEmit -> Emitter.EmitterRun<Emitter.EmitResult>) & NativeEmit) -> Emitter.EmitterRun<Emitter.EmitResult>:
+def native_emit(input: (NativeEmit -> Emit.EmitterRun<Emit.EmitResult>) & NativeEmit) -> Emit.EmitterRun<Emit.EmitResult>:
   (emit, request) = input
   emit(request)
 
-def native_emit_value(result: Emitter.EmitResult) -> NativeResult<String>:
+def native_emit_value(result: Emit.EmitResult) -> NativeResult<String>:
   match result:
-    case Emitter.EmitSuccess{source}: NativeAccepted{source}
-    case Emitter.EmitFailure{message, _}: NativeRejected{message}
+    case Emit.EmitSuccess{source}: NativeAccepted{source}
+    case Emit.EmitFailure{message, _}: NativeRejected{message}
 
-def native_emit_result(box: Emitter.EmitterValue<Emitter.EmitResult>) -> NativeResult<String>:
+def native_emit_result(box: Emit.EmitterValue<Emit.EmitResult>) -> NativeResult<String>:
   match box:
-    case Emitter.EmitterValue{value}: native_emit_value(value)
+    case Emit.EmitterValue{value}: native_emit_value(value)
 
 # Native reflection advances chunk64 before exposing only one owning thunk.
 # C never observes the existential progress/stack or a source continuation.
@@ -149,8 +149,8 @@ type NativeCheckerView<-A: Type> is Type:
   NativeCheckerMore{next: Unit -> Checker.CheckerRun<A>}
 
 type NativeEmitterView<-A: Type> is Type:
-  NativeEmitterFinished{take: Unit -> Emitter.EmitterValue<A>}
-  NativeEmitterMore{next: Unit -> Emitter.EmitterRun<A>}
+  NativeEmitterFinished{take: Unit -> Emit.EmitterValue<A>}
+  NativeEmitterMore{next: Unit -> Emit.EmitterRun<A>}
 
 def native_template_view_ready(-A: Type, run: Template.TemplateRun<A>) -> NativeTemplateView<A>:
   match run:
@@ -172,41 +172,41 @@ def native_checker_view_ready(-A: Type, run: Checker.CheckerRun<A>) -> NativeChe
 def native_checker_view(-A: Type, run: Checker.CheckerRun<A>) -> NativeCheckerView<A>:
   native_checker_view_ready(A, Checker.checker_chunk(A, 64n, run))
 
-def native_emitter_view_ready(-A: Type, run: Emitter.EmitterRun<A>) -> NativeEmitterView<A>:
+def native_emitter_view_ready(-A: Type, run: Emit.EmitterRun<A>) -> NativeEmitterView<A>:
   match run:
-    case Emitter.EmitterRunFinished{box}:
+    case Emit.EmitterRunFinished{box}:
       NativeEmitterFinished{unit => box}
-    case Emitter.EmitterRunState{B, progress, stack}:
-      NativeEmitterMore{unit => Emitter.EmitterRunState{B, progress, stack}}
+    case Emit.EmitterRunState{B, progress, stack}:
+      NativeEmitterMore{unit => Emit.EmitterRunState{B, progress, stack}}
 
-def native_emitter_view(-A: Type, run: Emitter.EmitterRun<A>) -> NativeEmitterView<A>:
-  native_emitter_view_ready(A, Emitter.emitter_chunk(A, 64n, run))
-
-
+def native_emitter_view(-A: Type, run: Emit.EmitterRun<A>) -> NativeEmitterView<A>:
+  native_emitter_view_ready(A, Emit.emitter_chunk(A, 64n, run))
 
 
-def native_c_emit_value(result: CEmitter.EmitResult) -> NativeResult<String>:
+
+
+def native_c_emit_value(result: Emit.EmitResult) -> NativeResult<String>:
   match result:
-    case CEmitter.EmitSuccess{source}: NativeAccepted{source}
-    case CEmitter.EmitFailure{message, _}: NativeRejected{message}
+    case Emit.EmitSuccess{source}: NativeAccepted{source}
+    case Emit.EmitFailure{message, _}: NativeRejected{message}
 
-def native_c_emit_result(box: CEmitter.CEmitterValue<CEmitter.EmitResult>) -> NativeResult<String>:
+def native_c_emit_result(box: Emit.EmitterValue<Emit.EmitResult>) -> NativeResult<String>:
   match box:
-    case CEmitter.CEmitterValue{value}: native_c_emit_value(value)
+    case Emit.EmitterValue{value}: native_c_emit_value(value)
 
 type NativeCEmitterView<-A: Type> is Type:
-  NativeCEmitterFinished{take: Unit -> CEmitter.CEmitterValue<A>}
-  NativeCEmitterMore{next: Unit -> CEmitter.CEmitterRun<A>}
+  NativeCEmitterFinished{take: Unit -> Emit.EmitterValue<A>}
+  NativeCEmitterMore{next: Unit -> Emit.EmitterRun<A>}
 
-def native_c_emitter_view_ready(-A: Type, run: CEmitter.CEmitterRun<A>) -> NativeCEmitterView<A>:
+def native_c_emitter_view_ready(-A: Type, run: Emit.EmitterRun<A>) -> NativeCEmitterView<A>:
   match run:
-    case CEmitter.CEmitterRunFinished{box}:
+    case Emit.EmitterRunFinished{box}:
       NativeCEmitterFinished{unit => box}
-    case CEmitter.CEmitterRunState{B, progress, stack}:
-      NativeCEmitterMore{unit => CEmitter.CEmitterRunState{B, progress, stack}}
+    case Emit.EmitterRunState{B, progress, stack}:
+      NativeCEmitterMore{unit => Emit.EmitterRunState{B, progress, stack}}
 
-def native_c_emitter_view(-A: Type, run: CEmitter.CEmitterRun<A>) -> NativeCEmitterView<A>:
-  native_c_emitter_view_ready(A, CEmitter.cemit_chunk(A, 64n, run))
+def native_c_emitter_view(-A: Type, run: Emit.EmitterRun<A>) -> NativeCEmitterView<A>:
+  native_c_emitter_view_ready(A, Emit.emitter_chunk(A, 64n, run))
 
 # Reused callbacks below are closed and capture-free. The native Run preserves
 # the original source/result relationship; each returned thunk is consumed once.
@@ -217,14 +217,14 @@ def native_experiment(
   expand_result: Template.TemplateValue<Template.ExpandResult> -> NativeResult<List<&2, Loader.LoadedModule>>,
   check: List<&2, Loader.LoadedModule> -> Checker.CheckerRun<Checked.CheckResult>,
   checker_view: (@-A: Type -> @run: Checker.CheckerRun<A> -> NativeCheckerView<A>),
-  check_result: Checker.CheckerValue<Checked.CheckResult> -> NativeResult<(NativeEmit -> Emitter.EmitterRun<Emitter.EmitResult>)>,
-  emit: ((NativeEmit -> Emitter.EmitterRun<Emitter.EmitResult>) & NativeEmit) -> Emitter.EmitterRun<Emitter.EmitResult>,
-  emitter_view: (@-A: Type -> @run: Emitter.EmitterRun<A> -> NativeEmitterView<A>),
-  emit_result: Emitter.EmitterValue<Emitter.EmitResult> -> NativeResult<String>,
-  c_emit: ((NativeCEmit -> CEmitter.CEmitterRun<CEmitter.EmitResult>) & NativeCEmit) -> CEmitter.CEmitterRun<CEmitter.EmitResult>,
-  c_emitter_view: (@-A: Type -> @run: CEmitter.CEmitterRun<A> -> NativeCEmitterView<A>),
-  c_emit_result: CEmitter.CEmitterValue<CEmitter.EmitResult> -> NativeResult<String>,
-  c_check_result: Checker.CheckerValue<Checked.CheckResult> -> NativeResult<(NativeCEmit -> CEmitter.CEmitterRun<CEmitter.EmitResult>)>
+  check_result: Checker.CheckerValue<Checked.CheckResult> -> NativeResult<(NativeEmit -> Emit.EmitterRun<Emit.EmitResult>)>,
+  emit: ((NativeEmit -> Emit.EmitterRun<Emit.EmitResult>) & NativeEmit) -> Emit.EmitterRun<Emit.EmitResult>,
+  emitter_view: (@-A: Type -> @run: Emit.EmitterRun<A> -> NativeEmitterView<A>),
+  emit_result: Emit.EmitterValue<Emit.EmitResult> -> NativeResult<String>,
+  c_emit: ((NativeCEmit -> Emit.EmitterRun<Emit.EmitResult>) & NativeCEmit) -> Emit.EmitterRun<Emit.EmitResult>,
+  c_emitter_view: (@-A: Type -> @run: Emit.EmitterRun<A> -> NativeCEmitterView<A>),
+  c_emit_result: Emit.EmitterValue<Emit.EmitResult> -> NativeResult<String>,
+  c_check_result: Checker.CheckerValue<Checked.CheckResult> -> NativeResult<(NativeCEmit -> Emit.EmitterRun<Emit.EmitResult>)>
 ) -> IO(Unit):
   import "./native_compiler_host.c"
 
