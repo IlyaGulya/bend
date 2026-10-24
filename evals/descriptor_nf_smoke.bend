@@ -16,6 +16,7 @@ def smoke_functions() -> List<&2, BIR.TypeFunction>:
    BIR.TypeFunction{"MyNat2", None{}, 0n, 0n, BIR.DescriptorRef{"MyNat", Nil{}}},
    BIR.TypeFunction{"MyIO", None{}, 0n, 0n, BIR.DescriptorRef{"IO", [BIR.DescriptorRef{"Nat", Nil{}}]}},
    BIR.TypeFunction{"Id", None{}, 0n, 1n, BIR.DescriptorParameter{0n}},
+   BIR.TypeFunction{"K2", None{}, 0n, 1n, BIR.DescriptorLambda{None{}, BIR.DescriptorParameter{1n}}},
    BIR.TypeFunction{"K", None{}, 0n, 1n, BIR.DescriptorRef{"Bool", Nil{}}},
    BIR.TypeFunction{"CycA", None{}, 0n, 0n, BIR.DescriptorRef{"CycB", Nil{}}},
    BIR.TypeFunction{"CycB", None{}, 0n, 0n, BIR.DescriptorRef{"CycA", Nil{}}}]
@@ -31,6 +32,24 @@ def is_nat(value: BIR.Descriptor) -> Bool:
 def is_failure_with(value: BIR.Descriptor, expected: String) -> Bool:
   match value:
     case BIR.DescriptorFailure{message}: String.eq(message, expected)
+    case _: False{}
+
+def is_bool(value: BIR.Descriptor) -> Bool:
+  match value:
+    case BIR.DescriptorRef{"Bool", args}:
+      match args:
+        case Nil{}: True{}
+        case _: False{}
+    case _: False{}
+
+def is_lambda(value: BIR.Descriptor) -> Bool:
+  match value:
+    case BIR.DescriptorLambda{_, _}: True{}
+    case _: False{}
+
+def is_match_source(value: BIR.Descriptor) -> Bool:
+  match value:
+    case BIR.DescriptorMatch{_, _}: True{}
     case _: False{}
 
 def is_failure(value: BIR.Descriptor) -> Bool:
@@ -126,4 +145,15 @@ def main(modules: List<&2, Loader.LoadedModule>) -> NfSmoke:
   both = String.append(bit(outer_is(fill, [BIR.DescriptorRef{"A", Nil{}}, BIR.DescriptorRef{"B", Nil{}}, BIR.DescriptorRef{"Nat", Nil{}}])), bit(outer_is(applied, [BIR.DescriptorRef{"A", Nil{}}, BIR.DescriptorRef{"B", Nil{}}, BIR.DescriptorRef{"Nat", Nil{}}])))
   extra = String.append(bit(is_failure(family_over)), bit(is_nat(chained)))
   cases_bits = String.append(String.append(bit(is_failure_with(malformed_case, "bend: malformed type match")), bit(is_failure_with(noncase, "descriptor match case is not a case"))), bit(is_nat(second_match)))
-  NfSmoke{String.append(String.append(String.append(String.append(five, rest), both), extra), cases_bits)}
+  lambda_beta = NF.normalize_closed(f, t, BIR.DescriptorApplication{BIR.DescriptorLambda{None{}, BIR.DescriptorParameter{0n}}, BIR.DescriptorRef{"Nat", Nil{}}})
+  higher_order = NF.normalize_closed(f, t, BIR.DescriptorApplication{BIR.DescriptorRef{"K2", [BIR.DescriptorRef{"Nat", Nil{}}]}, BIR.DescriptorRef{"Bool", Nil{}}})
+  captured = NF.normalize_closed(f, t, BIR.DescriptorApplication{BIR.DescriptorApplication{BIR.DescriptorLambda{None{}, BIR.DescriptorLambda{None{}, BIR.DescriptorParameter{1n}}}, BIR.DescriptorRef{"Nat", Nil{}}}, BIR.DescriptorRef{"Bool", Nil{}}})
+  partial = NF.normalize_closed(f, t, BIR.DescriptorApplication{BIR.DescriptorLambda{None{}, BIR.DescriptorLambda{None{}, BIR.DescriptorParameter{1n}}}, BIR.DescriptorRef{"Nat", Nil{}}})
+  reapplied = NF.normalize_closed(f, t, BIR.DescriptorApplication{partial, BIR.DescriptorRef{"Bool", Nil{}}})
+  abstract_match = NF.normalize_closed(f, t, BIR.DescriptorMatch{[BIR.DescriptorParameter{0n}], [BIR.DescriptorCase{[BIR.DescriptorConstructorPattern{"True", Nil{}}], BIR.DescriptorRef{"Nat", Nil{}}}, BIR.DescriptorCase{[BIR.DescriptorBinder{BIR.Erased{}}], BIR.DescriptorRef{"Bool", Nil{}}}]})
+  known_mismatch = NF.normalize_closed(f, t, BIR.DescriptorMatch{[BIR.DescriptorRef{"Nat", Nil{}}], [BIR.DescriptorCase{[BIR.DescriptorConstructorPattern{"True", Nil{}}], BIR.DescriptorRef{"Nat", Nil{}}}, BIR.DescriptorCase{[BIR.DescriptorBinder{BIR.Erased{}}], BIR.DescriptorRef{"Bool", Nil{}}}]})
+  ctor_app = NF.normalize_closed(f, t, BIR.DescriptorApplication{BIR.DescriptorConstructor{"C", Nil{}}, BIR.DescriptorRef{"Nat", Nil{}}})
+  quantity_app = NF.normalize_closed(f, t, BIR.DescriptorApplication{BIR.DescriptorQuantity{BIR.Erased{}}, BIR.DescriptorRef{"Nat", Nil{}}})
+  kind_app = NF.normalize_closed(f, t, BIR.DescriptorApplication{BIR.DescriptorKind{BIR.DescriptorRef{"Nat", Nil{}}}, BIR.DescriptorRef{"Bool", Nil{}}})
+  new_bits = String.append(bit(is_nat(lambda_beta)), String.append(bit(is_nat(higher_order)), String.append(bit(is_nat(captured)), String.append(bit(is_lambda(partial)), String.append(bit(is_nat(reapplied)), String.append(bit(is_match_source(abstract_match)), String.append(bit(is_bool(known_mismatch)), String.append(bit(is_failure_with(ctor_app, "the constructor `C` is applied to an argument")), String.append(bit(is_failure_with(quantity_app, "a quantity is applied to an argument")), bit(is_failure_with(kind_app, "a kind is applied to an argument")))))))))))
+  NfSmoke{String.append(String.append(String.append(String.append(String.append(five, rest), both), extra), cases_bits), new_bits)}

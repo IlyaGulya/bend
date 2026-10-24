@@ -5,6 +5,14 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- Datatypes are headers: the selfhost checker publishes each family's name,
+  module aliases and kind telescope before any parameter, field or body is
+  checked, so a field, index telescope or kind may name a family declared later
+  in the module. Mutually recursive tree types now check like they do in the
+  native book; undefined names, duplicate headers, ill-kinded fields and every
+  body still fail their own category in source order. Forward constructor
+  values in a field type are unchanged.
+
 - Native C value layouts box records wider than eight words instead of carrying
   large inline intermediates. Scalar word encoding and the physical runtime
   layout limit are unchanged; JavaScript value layouts are unchanged.

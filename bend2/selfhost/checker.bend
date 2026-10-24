@@ -11166,6 +11166,32 @@ def predeclare_definition_signatures(store: ArenaStore, declarations: List<&2, I
     case _ <> rest:
       predeclare_definition_signatures(store, rest, namespace, visible)
 
+# The native book declares datatypes whole up front, so a kind, parameter or
+# field may name a family declared later in the module and mutually recursive
+# tree types are legal. Publish the same family header check_type_decl publishes
+# for the declared datatype, but with no value: the name, module aliases and kind
+# telescope are visible before any parameter, field or body is checked, while the
+# header can never be unfolded and is never a runtime value. Duplicate, kind,
+# field, positivity and termination validation still run exactly once against
+# the declaration in source order.
+def predeclare_datatype_header(store: ArenaStore, +key: String, params: IR.Words, kind: U32, +namespace: String, visible: Scope.ArenaGlobalScope) -> ArenaResult<Scope.ArenaGlobalScope>:
+  ArenaResult{store, +ty} = binders_type(store, params, kind)
+  ArenaResult{store, canonical} = arena_publish_global(store, Scope.ArenaGlobal{canonical_key(namespace, key), namespace, key, ty, IR.NoTerm{}, Scope.GlobalFamily{}})
+  ArenaResult{store, local} = arena_publish_global(store, Scope.ArenaGlobal{key, namespace, key, ty, IR.NoTerm{}, Scope.GlobalFamily{}})
+  ArenaResult{store, scope} = global_scope_prepend(store, canonical, visible)
+  ArenaResult{store, scope} = global_scope_prepend(store, local, scope)
+  {ArenaResult{store, scope} : ArenaResult<Scope.ArenaGlobalScope>}
+
+def predeclare_datatype_headers(store: ArenaStore, declarations: List<&2, IR.TopLevel>, +namespace: String, visible: Scope.ArenaGlobalScope) -> ArenaResult<Scope.ArenaGlobalScope>:
+  match declarations:
+    case Nil{}:
+      {ArenaResult{store, visible} : ArenaResult<Scope.ArenaGlobalScope>}
+    case IR.TypeTop{IR.TypeDecl{key, params, kind, _, _}} <> rest:
+      ArenaResult{next, scope} = predeclare_datatype_header(store, key, params, kind, namespace, visible)
+      predeclare_datatype_headers(next, rest, namespace, scope)
+    case _ <> rest:
+      predeclare_datatype_headers(store, rest, namespace, visible)
+
 def check_modules_module(v_20041707: ArenaStore, v_0: IR.Module, v_2: String, v_4: List<&2, IR.LoadedModule>, v_6: List<&2, Scope.ArenaGlobal>) -> ArenaResult<PrivateResult>:
   match v_0:
     case IR.Module{+v_20041708, +v_20041709, +v_20041710}:
@@ -11175,7 +11201,8 @@ def check_modules_module(v_20041707: ArenaStore, v_0: IR.Module, v_2: String, v_
       ArenaResult{v_20041711, +v_20041712} = global_scope(v_20041707, v_6)
       ArenaResult{v_20041713, +v_20041714} = visible_globals(v_20041711, v_6, v_2, v_12)
       ArenaResult{prepared_store, prepared_visible} = predeclare_definition_signatures(v_20041713, v_13, v_2, v_20041714)
-      ArenaResult{v_20041715, +v_20041716} = check_declarations(prepared_store, v_13, v_2, v_12, v_20041712, IR.Names{0, 0}, prepared_visible)
+      ArenaResult{declared_store, declared_visible} = predeclare_datatype_headers(prepared_store, v_13, v_2, prepared_visible)
+      ArenaResult{v_20041715, +v_20041716} = check_declarations(declared_store, v_13, v_2, v_12, v_20041712, IR.Names{0, 0}, declared_visible)
       check_modules_declarations(v_20041715, v_20041716, v_2, v_11, v_12, v_4)
 
 def check_modules_private(v_20041717: ArenaStore, v_1: List<&2, IR.LoadedModule>, v_3: List<&2, Scope.ArenaGlobal>) -> ArenaResult<PrivateResult>:

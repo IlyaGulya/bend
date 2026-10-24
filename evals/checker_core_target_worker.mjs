@@ -7,6 +7,7 @@ import {spawnSync} from 'node:child_process';
 import {runCheckerSteps,runEmitterSteps,sourceFilesFor,declaredSourcePaths} from './checker_core_step_runtime.mjs';
 
 const tag=value=>value?.$?.split('.').at(-1);
+function fuelList(cells){let fuel={$:'FeedbackFuelEnd'};for(let i=0;i<cells;i++)fuel={$:'FeedbackFuelCell',tail:fuel};return fuel;}
 if(isMainThread){
  const [,,requestPath,resultPath]=process.argv;
  if(!requestPath||!resultPath)throw Error('Expected request and result paths');
@@ -43,6 +44,25 @@ if(isMainThread){
    if(span.file!==workerData.file||Number(span.beg)!==workerData.source.indexOf('~')||Number(span.end)<=Number(span.beg)||Number(span.end)>workerData.source.length)throw Error('Typed pipeline failure did not retain the actual template source span');
    phase('complete');
    parentPort.postMessage({passed:true,status:'PASS',name:workerData.name,criterion:'Unchecked syntax cannot cross the emitter boundary; native typed pipeline rejects unexpanded template',checkerTag:tag(checked),rejectionTag:tag(rejected),message,span,uncheckedEmissionRefused:true,phases});
+  }else if(workerData.duplicateDeclaration){
+   // The compiled parser rejects two top-level declarations with one name, so a
+   // duplicate datatype header can only reach the checker as an owned module
+   // value. Splice two parsed modules' declarations and require the checker's own
+   // duplicate category; the combined text is also retained as an observation.
+   phase('compiled-duplicate-parse');
+   const part=feedback=>{const result=feedback.value?.result;if(tag(feedback)!=='FeedbackComplete'||tag(result)!=='ParseSuccess')throw Error('Duplicate declaration part did not parse: '+tag(result??feedback));return result.module;};
+   const second=part(parser.parse_with_fuel(fuelList(2000000),workerData.file,workerData.second));
+   if(tag(module.declarations.tail)!=='Nil'||tag(second.declarations.tail)!=='Nil')throw Error('Duplicate declaration parts must be single-declaration modules');
+   const spliced={...module,declarations:{$:'Con',head:module.declarations.head,tail:second.declarations}};
+   const combined=parser.parse_with_fuel(fuelList(2000000),workerData.file,workerData.source+workerData.second);
+   const parserRefusedCombined=tag(combined)==='FeedbackComplete'&&tag(combined.value?.result)==='ParseFailure';
+   phase('compiled-check');
+   const checked=runCheckerSteps(component,{$:'Con',head:component.parsed_module('',spliced),tail:{$:'Nil'}});
+   observedCheck=checked;
+   const message=String(checked.diagnostic?.message??'');
+   const rejected=tag(checked)==='CheckFailure'&&message.includes('duplicate declaration');
+   phase('complete');
+   parentPort.postMessage({passed:rejected,status:rejected?'PASS':'FAIL',name:workerData.name,accepted:false,checkerTag:tag(checked),diagnostic:checked.diagnostic,splicedDeclarations:2,parserRefusedCombined,phases});
   }else{
   const pending=[module];
   while(pending.length){const value=pending.pop();if(!value||typeof value!=='object')continue;const key=tag(value);if(key==='TemplateBinder'||key==='TermTemplate')throw Error('Target violates already-expanded Template-free precondition');for(const [key,child]of Object.entries(value))if(key!=='$')pending.push(child);}
