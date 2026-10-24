@@ -3,6 +3,7 @@ import ./backend_ir.bend as BIR
 import ./index_lookup.bend as IndexLookup
 import ./c_backend_link.bend as Link
 import ./c_backend_layout.bend as CLay
+import ./c_backend_physical.bend as Phys
 
 # The C target for Backend IR.
 #
@@ -786,10 +787,11 @@ def plan_executable_io(is_io: Bool, family: BIR.Family, main_type: BIR.Descripto
 def plan_executable_show(family: BIR.Family, main_type: BIR.Descriptor, plan: Plan) -> PlanResult:
   match plan:
     case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys, ctx}:
-      match show_cells(main_type, Nil{}, constructors, families, cids):
-        case None{}: PlanFail{"the main value's type has no C show layout"}
-        case Some{cells}:
-          PlanOk{Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, True{}, cells, show_names(constructors), library, exports, imports, fkeys, ctx}}
+      show = Phys.show_build(ctx, main_type, constructors, families)
+      match show:
+        case Phys.ShowFail{message}: PlanFail{message}
+        case Phys.ShowOk{desc, names}:
+          PlanOk{Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, True{}, desc, names, library, exports, imports, fkeys, ctx}}
 
 def show_names(constructors: List<&2, BIR.ConstructorLayout>) -> String:
   show_names_each(ctor_keys(constructors), Nil{})
