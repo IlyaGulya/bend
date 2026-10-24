@@ -51,15 +51,43 @@
     "peakRssBytes": 5091704832,
     "peakFootprintBytes": 4933570784,
     "memoryLimitBytes": 8589934592,
-    "reason": "RangeError: Maximum call stack size exceeded",
+    "reason": "RangeError: Maximum call stack size exceeded (Bun/JSC run; not a Node worker-limit classification)",
     "stack": "comp.ts ty_wnf / ty_adt / adt_of / ctr_adt / emit_ctr",
     "artifactProduced": false,
     "nativePhaseRowsProduced": false,
     "ownedTreeStopped": true,
     "reportPhase": "complete",
-    "guardReportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792873586364-dc124cb5feeb8990.json"
+    "guardReportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792873586364-dc124cb5feeb8990.json",
+    "runtime": "bun/jsc",
+    "peakGiB": 4.742,
+    "peakGB": 5.092,
+    "capsEstablished": false,
+    "classification": "REJECTED_WRONG_RUNTIME_BUN"
   },
-  "decision": "terminal before native execution; not OOM (RSS below 8 GiB), no cap/stack/heap/deadline raise, no retry. Native fine/whole profiling remains BLOCKED on diagnostic codegen stack prerequisite.",
+  "decision": "Rejected: wrong runtime (Bun/JSC). Worker resourceLimits were declared but not established as enforced. No retroactive Node 3072/256 claim and no Node-cap blockage claim. The compliant Node 23.11 run is pending a free lane.",
   "jsCProfileEvidence": "checkpoints/compiler-profile-ab-4a916.json",
-  "note": "C emission byte equality on 4a916 is proven separately; clang execution is not claimed."
+  "note": "C emission byte equality on 4a916 is proven separately; clang execution is not claimed.",
+  "status": "REJECTED_WRONG_RUNTIME_BUN",
+  "runtime": {
+    "name": "bun",
+    "execPath": "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+    "bun": "1.4.2",
+    "note": "Worker resourceLimits declared under Bun/JSC but not established as enforced; no Node-cap evidence"
+  },
+  "nextRequiredRun": {
+    "runtime": "node v23.11.0",
+    "command": "node --experimental-strip-types evals/native_stage_profile_build.ts --artifact-dir=DIR",
+    "guard": "guardHeavyGate inherited lease; no --internal",
+    "workerLimits": {
+      "stackSizeMb": 256,
+      "maxOldGenerationSizeMb": 3072
+    },
+    "policy": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "status": "AUTHORIZED BUT NOT RUN"
+  }
 }

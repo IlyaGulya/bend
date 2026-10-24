@@ -12,7 +12,12 @@
 // raising either. If that bound is insufficient the worker fails and this tool
 // reports the failure instead of claiming a profile.
 //
-// usage: bun evals/native_stage_profile_build.ts [--artifact-dir=DIR]
+// usage: node --experimental-strip-types evals/native_stage_profile_build.ts
+//   [--artifact-dir=DIR]
+//
+// Node/V8 is required: Worker resourceLimits (256 MiB stack, 3072 MiB old
+// generation) must be enforced. Bun/JSC fails fast before the guard because it
+// does not enforce those limits.
 //
 // The whole load/validation/compile_book/clang/run build runs under the existing
 // heavy_gate supervisor (8 GiB memory/RSS, 10 ms sampling, 600 s hard deadline)
@@ -141,7 +146,8 @@ async function build(o: Options) {
     fixtureRequest: {group: emitGroup, canonicalName: 'cps_provider_2_emit', label: groupLabels[emitGroup].label},
     cPath, cSha256: sha(c), artifact, artifactSha256: sha(readFileSync(artifact)),
     buildCommand: [cc, ...flags], validationMs, codegenMs, totalMs: performance.now() - started,
-    runtime: {node: process.versions.node, v8: process.versions.v8, platform: process.platform, arch: process.arch,
+    runtime: {name: 'node', node: process.versions.node, v8: process.versions.v8, bun: (process.versions as {bun?: string}).bun ?? null,
+      execPath: process.execPath, execArgv: process.execArgv, platform: process.platform, arch: process.arch,
       workerLimits: {stackSizeMb: 256, maxOldGenerationSizeMb: 3072}},
     phases: phases.map(row => ({name: row.name, values: row.values, unitsByField: row.unitsByField, details: row.details})),
     note: 'profile-only native driver over the real generated Template/Checker/Emitter Run machines; the Emitter fixture invokes the canonical c_backend.emit request on a well-formed empty BIR.Program and a minimal runtime, requires a non-empty EmitSuccess C result, and classifies only its outer request group; this is not a compiler workload, a source-substage span or a source-call CPU claim',
@@ -149,6 +155,16 @@ async function build(o: Options) {
 }
 
 if (isMainThread) {
+  if (typeof (process.versions as {bun?: string}).bun === 'string') {
+    console.error('native stage profile requires Node/V8 with --experimental-strip-types; Bun/JSC does not enforce Worker resourceLimits');
+    process.exit(2);
+  }
+  if (process.release.name !== 'node') {
+    console.error('native stage profile requires Node/V8; observed runtime ' + process.release.name);
+    process.exit(2);
+  }
+  if (!process.execArgv.includes('--experimental-strip-types'))
+    process.env.NODE_OPTIONS = ('--experimental-strip-types ' + (process.env.NODE_OPTIONS ?? '')).trim();
   process.env.HEAVY_GATE_MEMORY_MIB = '8192';
   process.env.HEAVY_GATE_RSS_MIB = '8192';
   process.env.HEAVY_GATE_POLL_MS = '10';

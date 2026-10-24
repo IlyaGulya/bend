@@ -143,28 +143,32 @@ canonical `c_backend.emit` group (group 12, label
 real runtime carrying the four required sections. It is not a scalar
 number-formatter fixture. The driver source passes `book_valid`.
 
-**Native execution is blocked, not claimed.** One actual guarded run after the
-pre-build label fix reached canonical code generation and failed after 12.4 s
-with `RangeError: Maximum call stack size exceeded` in `comp.ts`
-(`emit_ctr`/`ty_adt`/`ty_wnf`), at `peakRssBytes 5,091,704,832` (below the 8 GiB
-limit) and with `ownedTreeStopped: true`. No artifact or native phase row was
-produced. The executed fixture did not witness the EmitResult: its Pending
-resume returned Unit, so a provider failure could not be distinguished; the
-failure itself occurred before native execution, so there is no native witness
-either way.
+**The prior native attempt was rejected as wrong runtime, not classified as a
+Node-caps blocker.** The actual guarded attempt invoked
+`/opt/homebrew/.../bun`; that was Bun/JSC, not the required Node/V8 worker. It
+failed after 12.4 s with `RangeError: Maximum call stack size exceeded` in
+`comp.ts`, at `peakRssBytes 5,091,704,832` (5.092 GB / 4.742 GiB), with
+`ownedTreeStopped: true`; no artifact or native phase row was produced. Because
+Bun declares but does not establish enforcement of `resourceLimits`, the
+3072/256 limits were not established and this run is recorded as
+`REJECTED_WRONG_RUNTIME_BUN`. No retroactive Node-cap claim is made and no
+compiler/generator/source-output patch was applied. The old Bun raw logs are
+preserved with runtime explicit in
+`checkpoints/compiler-native-profile-aa9-failure.json`.
 
-A later source-only fixture change fixes that hole: the Pending resume now
-forwards the typed `EmitterValue<cps_provider_2_EmitResult>` to the completion,
-and a typed host callback classifies the actual result as non-empty
-`EmitSuccess` (1), empty `EmitSuccess` (0), or `EmitFailure` (2). This change
-passes `book_valid` but is **not executed** and not a PASS; the same guarded
-codegen prerequisite blocks it. It must be run once after that prerequisite is
-fixed. The pre-build attempt failed validation in 68 ms (mixed group label),
-and the actual attempt is preserved in
-`checkpoints/compiler-native-profile-aa9-failure.json`. No stack/heap/deadline
-was raised and the run was not retried. The unverified boundary is diagnostic
-component code generation for this 27-group real-emit driver; it requires a
-compiler/codegen prerequisite outside this profiling scope. The historical bounded-mechanism result is not substituted for this failure.
+The builder now requires Node/V8 and fails fast under Bun/JSC before the guard.
+Its required invocation is `node --experimental-strip-types
+evals/native_stage_profile_build.ts --artifact-dir=DIR`; the whole build still
+uses `guardHeavyGate` with the inherited lease, 8 GiB/10 ms/600 s policy and no
+`--internal` bypass. One compliant Node 23.11 worker 3072/256 run is authorized
+but pending a free Root/FIR lane. Until that actual Node run exists, native
+profiling is UNVERIFIED and no Node-cap blocker is claimed.
+
+A later source-only fixture change fixes the prior Unit-drop hole: the Pending
+resume forwards the typed `EmitterValue<cps_provider_2_EmitResult>` to
+completion, and a typed host callback classifies non-empty `EmitSuccess` (1),
+empty `EmitSuccess` (0), or `EmitFailure` (2). It passes `book_valid` but is not
+executed; it is not a PASS and must run after the runtime prerequisite.
 
 Native coarse rows were read from the preserved diagnostic trace
 `/tmp/signature-publish57z/evidence/comparison/A1.stderr.log`
