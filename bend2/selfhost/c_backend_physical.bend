@@ -332,7 +332,7 @@ def nest_make(+pfield: CLay.Nest) -> CLay.Fill:
   match pfield:
     case CLay.Nest{at, offset, take, make}: make
 
-def conv_field_pairs(+pw: World, +pfields: List<&2, CLay.Nest>, +pout_fields: List<&2, CLay.Nest>, +psrc: Src, +pdst: Dst, +ptag: String) -> List<&2, Job>:
+def field_pair_jobs(+pw: World, +pfields: List<&2, CLay.Nest>, +pout_fields: List<&2, CLay.Nest>, +psrc: Src, +pdst: Dst, +ptag: String) -> List<&2, Job>:
   match pfields:
     case Nil{}:
       match pout_fields:
@@ -341,7 +341,7 @@ def conv_field_pairs(+pw: World, +pfields: List<&2, CLay.Nest>, +pout_fields: Li
     case +field <> +rest:
       match pout_fields:
         case Nil{}: [JText{"/* field count mismatch */"}]
-        case +out_field <> +out_rest: [JConv{nest_take(field), nest_make(out_field), psrc, pdst, ptag}] <> conv_field_pairs(pw, rest, out_rest, psrc, pdst, ptag)
+        case +out_field <> +out_rest: [JConv{nest_take(field), nest_make(out_field), psrc, pdst, ptag}] <> field_pair_jobs(pw, rest, out_rest, psrc, pdst, ptag)
 
 def form_fields(+parm: CLay.FormArm) -> List<&2, CLay.Nest>:
   match parm:
@@ -569,33 +569,14 @@ def seal_kind_walk(+puse: BIR.Use, +pkinds: List<&2, CLay.CWord>, +pcur: String,
     case +kind <> +rest: seal_kind(puse, kind, pcur, pfrom_data) <> seal_kind_walk(puse, rest, pcur, pfrom_data)
 
 def seal_slots_jobs(+pw: World, +pslots: List<&2, CLay.NodeSlot>, +pfields: List<&2, Operand>) -> List<&2, Job>:
-  match pslots:
-    case Nil{}:
-      match pfields:
-        case Nil{}: Nil{}
-        case _: [JText{"/* field count mismatch */"}]
-    case +slot <> +rest:
-      match pfields:
-        case Nil{}: [JText{"/* field count mismatch */"}]
-        case +field <> +rest_fields:
-          match slot:
-            case CLay.NodeSlot{ordinal, offset, layout}:
-              match field:
-                case Operand{use, text}:
-                  cur = join_text(["k", U32.show(ordinal)])
-                  kinds = CLay.layout_kinds(layout)
-                  head = [JText{join_text(["u32 ", cur, " = ", Nat.show(offset), ";"])}]
-                  List.append(&2, Job, head, List.append(&2, Job, seal_kind_walk(use, kinds, cur, layout_is_data(layout)), seal_slots_jobs(pw, rest, rest_fields)))
-
-def seal_slots_one(+pslot: CLay.NodeSlot, +pfield: Operand, +pw: World, +prest: List<&2, CLay.NodeSlot>, +prest_fields: List<&2, Operand>) -> List<&2, Job>:
-  match pslot:
-    case CLay.NodeSlot{ordinal, offset, layout}:
-      match pfield:
-        case Operand{use, text}:
-          cur = join_text(["k", U32.show(ordinal)])
-          kinds = CLay.layout_kinds(layout)
-          head = [JText{join_text(["u32 ", cur, " = ", Nat.show(offset), ";"])}]
-          List.append(&2, Job, head, List.append(&2, Job, seal_kind_walk(use, kinds, cur, layout_is_data(layout)), seal_slots_jobs(pw, prest, prest_fields)))
+  match (pslots, pfields):
+    case (Nil{}, Nil{}): Nil{}
+    case (Nil{}, _): [JText{"/* field count mismatch */"}]
+    case (_, Nil{}): [JText{"/* field count mismatch */"}]
+    case (+slot <> +rest, +field <> +rest_fields):
+      match (slot, field):
+        case (CLay.NodeSlot{ordinal, offset, layout}, Operand{use, text}):
+          List.append(&2, Job, [JText{join_text(["u32 k", U32.show(ordinal), " = ", Nat.show(offset), ";"])}], List.append(&2, Job, seal_kind_walk(use, CLay.layout_kinds(layout), join_text(["k", U32.show(ordinal)]), layout_is_data(layout)), seal_slots_jobs(pw, rest, rest_fields)))
 
 def construct_words(+pw: World, +pcid: U32, +pcount: Nat, +pslots: List<&2, CLay.NodeSlot>, +poperands: List<&2, Operand>) -> Part:
   decl = [JText{dst_decl("w0", "o0", pcount)}]
@@ -1473,26 +1454,18 @@ def show_advance_array(+pctx: CLay.Context, +pconstructors: List<&2, BIR.Constru
   args = CLay.head_args(pctx, pty)
   show_array_args(args, pctx, pconstructors, pfamilies, pty, pat, pst)
 
+def box_advance(+pkid: ShowJob, +padv: ShowAdvance) -> ShowAdvance:
+  ShowNext{show_next_state(padv), List.append(&2, ShowJob, [pkid], show_next_kids(padv))}
+
 def fields_box_each(+pslots: List<&2, CLay.NodeSlot>, +pfields: List<&2, BIR.DescriptorField>, +pst: ShowState) -> ShowAdvance:
-  match pslots:
-    case Nil{}:
-      match pfields:
-        case Nil{}: ShowNext{pst, Nil{}}
-        case _: ShowNext{show_state_error(pst, "a constructor node's slots and fields differ"), Nil{}}
-    case +slot <> +rest:
-      match pfields:
-        case Nil{}: ShowNext{show_state_error(pst, "a constructor node's slots and fields differ"), Nil{}}
-        case +field <> +rest_fields:
-          match slot:
-            case CLay.NodeSlot{ordinal, offset, layout}:
-              match field:
-                case BIR.DescriptorField{key, quantity, ty}:
-                  st = show_append_num(show_append_num(pst, offset), 0n)
-                  slot_at = List.length(&2, ShowWord, show_words(pst))
-                  st2 = show_append_num(st, 0n)
-                  kid = [ShowNode{ty, layout, Some{slot_at}}]
-                  adv = fields_box_each(rest, rest_fields, st2)
-                  ShowNext{show_next_state(adv), List.append(&2, ShowJob, kid, show_next_kids(adv))}
+  match (pslots, pfields):
+    case (Nil{}, Nil{}): ShowNext{pst, Nil{}}
+    case (Nil{}, _): ShowNext{show_state_error(pst, "a constructor node's slots and fields differ"), Nil{}}
+    case (_, Nil{}): ShowNext{show_state_error(pst, "a constructor node's slots and fields differ"), Nil{}}
+    case (+slot <> +rest, +field <> +rest_fields):
+      match (slot, field):
+        case (CLay.NodeSlot{ordinal, offset, layout}, BIR.DescriptorField{key, quantity, ty}):
+          box_advance(ShowNode{ty, layout, Some{List.length(&2, ShowWord, show_words(pst))}}, fields_box_each(rest, rest_fields, show_append_num(show_append_num(show_append_num(pst, offset), 0n), 0n)))
 
 def fields_box_slots(+pslots: Maybe<&2, List<&2, CLay.NodeSlot>>, +pfields: List<&2, BIR.DescriptorField>, +pst: ShowState) -> ShowAdvance:
   match pslots:
@@ -1623,6 +1596,11 @@ def show_advance_norm(+pnorm: ShowNorm, +pctx: CLay.Context, +pconstructors: Lis
       key = join_text([show_descriptor_key(descriptor), "@", show_layout_key(playout)])
       found = IndexLookup.find(Nat, show_memo(pst), key)
       show_advance_memo(found, key, pctx, pconstructors, pfamilies, ty, layout, patch, pst)
+
+def show_norm(+pctx: CLay.Context, +pty: BIR.Descriptor) -> ShowNorm:
+  match CLay.norm(pctx, pty):
+    case CLay.NormOk{descriptor}: ShowNormOk{descriptor}
+    case CLay.NormFailed{message}: ShowNormFailed{message}
 
 def show_advance_error(+pctx: CLay.Context, +pconstructors: List<&2, BIR.ConstructorLayout>, +pfamilies: List<&2, BIR.Family>, +pty: BIR.Descriptor, +playout: CLay.Layout, +ppatch: Maybe<&2, Nat>, +perror: Maybe<&2, String>, +pst: ShowState) -> ShowAdvance:
   match perror:
