@@ -370,7 +370,13 @@ def nf_named(context: NfContext, key: String, args: List<&2, NfVal>, fuel: Nat) 
     case NfContext{families, type_functions}:
       match function_of(key, type_functions):
         case Some{function}:
-          nf_reduce(context, function, args, fuel)
+          match function:
+            case BIR.TypeFunction{key, native, quantity_prefix, arity, body}:
+              match native:
+                case Some{"IO"}:
+                  NfOk{NfType{key, args}}
+                case _:
+                  nf_reduce(context, function, args, Nat.sub(fuel, 1n))
         case None{}:
           match family_of(key, families):
             case Some{family}:
