@@ -4,6 +4,23 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+Host compiler57x: принят exactcomp9704b4bbd00c834df65b21a34f57cfc4ff4f6afc1878f161565a52f7fcf00d9c,
+только mat_lits lazy comparison вместо двух полных term_lower trees.159cases/
+25281oracle comparisons,12realJS/sixnativeC consumersPASS; actual unchangedT
+fresh build+frozen+7720 cycle280.456788s под прежним8GiB guard. Producer85.248956s,
+backend97.662591s, тот же C22e60fac…; это НЕ сумма profile trials.
+Canonical freshX parser75 и root8390/8786 тожеPASS; actual cmp/shasum подтвердил
+ТОТ ЖЕ W executable7408b436…/12739233bytes, поэтому W realFPd505…/285 относятся
+к неизменённой программе, не новому timed gate. CurrentW+9704 ЧИСТЫЙ полный
+native-cycle317.542372s прошёл:8408/8810, тот же C d3229a60…/binary79617127…,
+exacteb3/7720 actual consumer. Stable300 НЕ достигнуто: producer133.079890s,
+backend98.282171s, native79.438037s. Первый267.213812s цикл FAIL из-за отсутствия
+captured runtime у consumer сохранён; retry только consumer после exact2cad repair
+прошёл отдельно. Разрешённый один clean candidate run дал317s, НЕ выбирали fast run.
+Same9704/d322/796 давали producer85–133s/NodeCPU255–480s; причина вариации
+не установлена. Новая private гипотеза — явный young-gen config, не доказанный GC cause.
+Receipt compiler-ir-checkpoint-v57x.json. Official8.619s пока не обогнан.
+
 СЕЙЧАС принят57w quote fix: js_backend.bend строит quoted suffix из bounded
 left fragments вместо копирования growing accumulator. FreshW parser75,
 полный native root8390/8786 и frozen15modules/8403decls/7720exports прошли.

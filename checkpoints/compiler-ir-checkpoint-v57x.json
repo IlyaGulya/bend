@@ -1,0 +1,2194 @@
+{
+  "schemaVersion": 1,
+  "version": "compiler57x-lazy-lowering",
+  "status": "ACCEPT_INTEGRATED_LAZY_LOWERING_SAME_W_PROGRAM_CURRENT_FULL_NATIVE_SEMANTIC_PASS_NOT_STABLE_SUB300",
+  "source": {
+    "path": "bend2/comp.ts",
+    "baselineSha256": "5b934b694b873c9b2e44a6d99b920181cc72e660b30996566bfaee38a7ba0fda",
+    "sha256": "9704b4bbd00c834df65b21a34f57cfc4ff4f6afc1878f161565a52f7fcf00d9c",
+    "patch": "--- a/bend2/comp.ts\n+++ b/bend2/comp.ts\n@@ -1199,8 +1199,9 @@\n \n function mat_lits(x: HTerm): Row[] {\n   const ws: Row[] = [];\n-  // Keep the old lowered representation and JSON key equivalence (including\n-  // binder names/levels), but stop at a mismatch without allocating key strings.\n+  // Preserve the old lowered JSON-key equivalence, including binder names and\n+  // levels. Compare the lowering lazily: discarded annotations/spans and an\n+  // unequal suffix must not allocate two complete lowered term trees.\n   const same = (a: unknown, b: unknown): boolean => {\n     if (a && typeof a === \"object\" && \"$\" in a && a.$ === \"Ann\") {\n       a = Bend.term_strip(a as Bend.LTerm);\n@@ -1244,6 +1245,85 @@\n       if (i === ak.length || j === bk.length) return i === ak.length && j === bk.length;\n       const k = ak[i++];\n       if (k !== bk[j++] || !same(ar[k], br[k])) return false;\n+    }\n+  };\n+  const same_field = (a: unknown, b: unknown): boolean => {\n+    if (a === b) return true;\n+    const ax = a === undefined || typeof a === \"function\" || typeof a === \"symbol\";\n+    const bx = b === undefined || typeof b === \"function\" || typeof b === \"symbol\";\n+    return ax || bx ? ax === bx : same(a, b);\n+  };\n+  const same_terms = (a: HTerm[], b: HTerm[], d: number): boolean => {\n+    if (a.length !== b.length) return false;\n+    for (let i = 0; i < a.length; i++) {\n+      if (!same_term(a[i], b[i], d)) return false;\n+    }\n+    return true;\n+  };\n+  const same_term = (a: HTerm, b: HTerm, d = 0): boolean => {\n+    const t = Bend.term_strip(a), u = Bend.term_strip(b);\n+    if (t === u) return true;\n+    if (t.$ !== u.$) return false;\n+    // These are exactly term_lower's rebuilt constructors. Their canonical\n+    // field order is fixed; primitive/default nodes keep the old JSON rules.\n+    switch (t.$) {\n+      case \"Let\": {\n+        const v = u as Of<\"Let\">;\n+        const tq = t.q ?? t.k.map(() => Bend.Lone());\n+        const uq = v.q ?? v.k.map(() => Bend.Lone());\n+        if (!same_field(t.k, v.k) || !same_field(tq, uq)\n+          || !same_terms(t.v, v.v, d)) return false;\n+        const xs = t.k.map((k, i): HTerm => Bend.Var(k, d + i));\n+        const ys = v.k.map((k, i): HTerm => Bend.Var(k, d + i));\n+        return same_term(t.f(xs), v.f(ys), d + t.k.length);\n+      }\n+      case \"All\": {\n+        const v = u as Of<\"All\">;\n+        if (!same_field(t.k, v.k) || !same_field(t.q, v.q)\n+          || !same_term(t.A, v.A, d)) return false;\n+        const x: HTerm = Bend.Var(t.k, d), y: HTerm = Bend.Var(v.k, d);\n+        return same_term(t.B(x), v.B(y), d + 1);\n+      }\n+      case \"Lam\": {\n+        const v = u as Of<\"Lam\">;\n+        if (!same_field(t.k, v.k) || !same_field(t.q, v.q)) return false;\n+        const x: HTerm = Bend.Var(t.k, d), y: HTerm = Bend.Var(v.k, d);\n+        return same_term(t.f(x), v.f(y), d + 1);\n+      }\n+      case \"Typ\":\n+        return same_term(t.g, (u as Of<\"Typ\">).g, d);\n+      case \"Min\":\n+        return same_term(t.a, (u as Of<\"Min\">).a, d)\n+          && same_term(t.b, (u as Of<\"Min\">).b, d);\n+      case \"App\":\n+        return same_term(t.f, (u as Of<\"App\">).f, d)\n+          && same_term(t.x, (u as Of<\"App\">).x, d);\n+      case \"ADT\": {\n+        const v = u as Of<\"ADT\">;\n+        return same_field(t.k, v.k) && same_field(t.r === undefined ? [] : t.r,\n+          v.r === undefined ? [] : v.r) && same_terms(t.x, v.x, d);\n+      }\n+      case \"Ctr\": {\n+        const v = u as Of<\"Ctr\">;\n+        return same_field(t.k, v.k) && same_terms(t.x, v.x, d);\n+      }\n+      case \"Mat\": {\n+        const v = u as Of<\"Mat\">;\n+        return same_field(t.k, v.k) && same_term(t.h, v.h, d)\n+          && same_term(t.m, v.m, d);\n+      }\n+      case \"Eql\": {\n+        const v = u as Of<\"Eql\">;\n+        return same_term(t.a, v.a, d) && same_term(t.b, v.b, d)\n+          && same_term(t.T, v.T, d);\n+      }\n+      case \"Rwt\": {\n+        const v = u as Of<\"Rwt\">;\n+        return same_term(t.e, v.e, d) && same_term(t.p, v.p, d)\n+          && same_term(t.f, v.f, d);\n+      }\n+      default:\n+        return same(Bend.term_lower(t, d), Bend.term_lower(u, d));\n     }\n   };\n   const walk = (t: HTerm, j: number, n: number,\n@@ -1258,7 +1338,7 @@\n       .reduce((f, a) => Bend.term_apply(f, a), end);\n     const w = Bend.Ctr(\"WCon\", [probe(\"b\"), probe(\"t\")]) as Of<\"Ctr\">;\n     const own = arms.length < 2 && (!cov\n-      || !same(Bend.term_lower(cov(w)), Bend.term_lower(inst(w))));\n+      || !same_term(cov(w), inst(w)));\n     const sub = own ? inst : cov;\n     for (const [k, a] of arms) {\n       walk(a, j + 1, n + (k === \"True\" ? 2 ** j : 0), sub && ((v) =>\n",
+    "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+    "baseSha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c"
+  },
+  "change": "Compare the exact kernel-lowered JSON-equivalent shape lazily in mat_lits; do not allocate discarded annotations or complete unequal suffixes. Binder names/depth/quantities/free variables/default fields/ordered keys/nonfinite/omitted JSON values preserved; no algorithm/ABI/kernel/Bend program change.",
+  "privateAcceptedTProof": {
+    "sourceProof": {
+      "baseline": "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/bend2/comp.before.ts",
+      "baselineSha256": "5b934b694b873c9b2e44a6d99b920181cc72e660b30996566bfaee38a7ba0fda",
+      "candidate": "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/bend2/comp.ts",
+      "candidateSha256": "9704b4bbd00c834df65b21a34f57cfc4ff4f6afc1878f161565a52f7fcf00d9c",
+      "patch": "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/source.patch",
+      "patchSha256": "ed6f7f20690e658491db850920e275f719462aac4c1c4345c1f957c4478d8c0b",
+      "delta": "Only mat_lits: compare kernel lowering lazily, preserving binder names/levels, free variables, annotation/span omission, JSON ordered keys/nonfinite/omitted values. No kernel, native algorithms, ABI, outputs, flags or guardian changes."
+    },
+    "unit": {
+      "status": "PASS",
+      "cases": 159,
+      "comparisons": 25281,
+      "mismatches": [],
+      "method": "Exact baseline/candidate private comparator bodies copied verbatim into this test-only module. Oracle is baseline comparator on actual unchanged kernel term_lower; production compiler source/outputs are not modified. Real public-root and emitted JS/C consumers are separate proofs."
+    },
+    "realFixtureConsumers": {
+      "status": "PASS",
+      "js": [
+        {
+          "compiler": "baseline",
+          "fixture": "word_match_coverage",
+          "releaseChecked": false,
+          "sha256": "becfde74f120a247fd8c9041822f2cbd1de2d09115d4499784b6b42c60288166",
+          "bytes": 5546,
+          "actual": [
+            17,
+            27,
+            37,
+            27,
+            27,
+            37,
+            12,
+            16,
+            12,
+            16,
+            16,
+            12
+          ]
+        },
+        {
+          "compiler": "baseline",
+          "fixture": "word_match_coverage",
+          "releaseChecked": true,
+          "sha256": "becfde74f120a247fd8c9041822f2cbd1de2d09115d4499784b6b42c60288166",
+          "bytes": 5546,
+          "actual": [
+            17,
+            27,
+            37,
+            27,
+            27,
+            37,
+            12,
+            16,
+            12,
+            16,
+            16,
+            12
+          ]
+        },
+        {
+          "compiler": "baseline",
+          "fixture": "word_match_cover_key",
+          "releaseChecked": false,
+          "sha256": "36bd77c392ad539480ce72bc9afe1e03b934581b5dcc8c340ce967115217410a",
+          "bytes": 8978,
+          "actual": [
+            2139095040,
+            2143289344,
+            0,
+            0,
+            2139095040,
+            2143289344
+          ]
+        },
+        {
+          "compiler": "baseline",
+          "fixture": "word_match_cover_key",
+          "releaseChecked": true,
+          "sha256": "36bd77c392ad539480ce72bc9afe1e03b934581b5dcc8c340ce967115217410a",
+          "bytes": 8978,
+          "actual": [
+            2139095040,
+            2143289344,
+            0,
+            0,
+            2139095040,
+            2143289344
+          ]
+        },
+        {
+          "compiler": "baseline",
+          "fixture": "js_late_fold",
+          "releaseChecked": false,
+          "sha256": "8db0c5153108003a9aa92fd75f0da9f4aed239e069279a5db8bada8b2e7577b9",
+          "bytes": 6096,
+          "actual": [
+            1,
+            4,
+            4
+          ]
+        },
+        {
+          "compiler": "baseline",
+          "fixture": "js_late_fold",
+          "releaseChecked": true,
+          "sha256": "8db0c5153108003a9aa92fd75f0da9f4aed239e069279a5db8bada8b2e7577b9",
+          "bytes": 6096,
+          "actual": [
+            1,
+            4,
+            4
+          ]
+        },
+        {
+          "compiler": "candidate",
+          "fixture": "word_match_coverage",
+          "releaseChecked": false,
+          "sha256": "becfde74f120a247fd8c9041822f2cbd1de2d09115d4499784b6b42c60288166",
+          "bytes": 5546,
+          "actual": [
+            17,
+            27,
+            37,
+            27,
+            27,
+            37,
+            12,
+            16,
+            12,
+            16,
+            16,
+            12
+          ]
+        },
+        {
+          "compiler": "candidate",
+          "fixture": "word_match_coverage",
+          "releaseChecked": true,
+          "sha256": "becfde74f120a247fd8c9041822f2cbd1de2d09115d4499784b6b42c60288166",
+          "bytes": 5546,
+          "actual": [
+            17,
+            27,
+            37,
+            27,
+            27,
+            37,
+            12,
+            16,
+            12,
+            16,
+            16,
+            12
+          ]
+        },
+        {
+          "compiler": "candidate",
+          "fixture": "word_match_cover_key",
+          "releaseChecked": false,
+          "sha256": "36bd77c392ad539480ce72bc9afe1e03b934581b5dcc8c340ce967115217410a",
+          "bytes": 8978,
+          "actual": [
+            2139095040,
+            2143289344,
+            0,
+            0,
+            2139095040,
+            2143289344
+          ]
+        },
+        {
+          "compiler": "candidate",
+          "fixture": "word_match_cover_key",
+          "releaseChecked": true,
+          "sha256": "36bd77c392ad539480ce72bc9afe1e03b934581b5dcc8c340ce967115217410a",
+          "bytes": 8978,
+          "actual": [
+            2139095040,
+            2143289344,
+            0,
+            0,
+            2139095040,
+            2143289344
+          ]
+        },
+        {
+          "compiler": "candidate",
+          "fixture": "js_late_fold",
+          "releaseChecked": false,
+          "sha256": "8db0c5153108003a9aa92fd75f0da9f4aed239e069279a5db8bada8b2e7577b9",
+          "bytes": 6096,
+          "actual": [
+            1,
+            4,
+            4
+          ]
+        },
+        {
+          "compiler": "candidate",
+          "fixture": "js_late_fold",
+          "releaseChecked": true,
+          "sha256": "8db0c5153108003a9aa92fd75f0da9f4aed239e069279a5db8bada8b2e7577b9",
+          "bytes": 6096,
+          "actual": [
+            1,
+            4,
+            4
+          ]
+        }
+      ],
+      "c": [
+        {
+          "compiler": "baseline",
+          "fixture": "word_match_coverage",
+          "sha256": "360d6d8786d93c47eecd3f4d53bc836c5d2160928e0cee042d0934622a3178f7",
+          "bytes": 98187,
+          "command": [
+            "-std=c11",
+            "-O1",
+            "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/seed-artifacts-2/baseline-word_match_coverage.c",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-lpthread",
+            "-lm",
+            "-o",
+            "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/seed-artifacts-2/baseline-word_match_coverage"
+          ],
+          "actualStdout": "17,27,37,27,27,37,12,16,12,16,16,12\n",
+          "expected": "17,27,37,27,27,37,12,16,12,16,16,12"
+        },
+        {
+          "compiler": "baseline",
+          "fixture": "word_match_cover_key",
+          "sha256": "367034546c0868460a79292baaf0d634babf29d4a322bcb73210635775d010fe",
+          "bytes": 94223,
+          "command": [
+            "-std=c11",
+            "-O1",
+            "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/seed-artifacts-2/baseline-word_match_cover_key.c",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-lpthread",
+            "-lm",
+            "-o",
+            "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/seed-artifacts-2/baseline-word_match_cover_key"
+          ],
+          "actualStdout": "2139095040 2143289344 0 0 2139095040 2143289344 \n",
+          "expected": "2139095040 2143289344 0 0 2139095040 2143289344"
+        },
+        {
+          "compiler": "baseline",
+          "fixture": "js_late_fold",
+          "sha256": "aa12375b8a930e1dbd0ad66eb68bd9708e4cc1f65be5b96d5dec392c69567681",
+          "bytes": 78853,
+          "command": [
+            "-std=c11",
+            "-O1",
+            "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/seed-artifacts-2/baseline-js_late_fold.c",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-lpthread",
+            "-lm",
+            "-o",
+            "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/seed-artifacts-2/baseline-js_late_fold"
+          ],
+          "actualStdout": "1\n",
+          "expected": "1"
+        },
+        {
+          "compiler": "candidate",
+          "fixture": "word_match_coverage",
+          "sha256": "360d6d8786d93c47eecd3f4d53bc836c5d2160928e0cee042d0934622a3178f7",
+          "bytes": 98187,
+          "command": [
+            "-std=c11",
+            "-O1",
+            "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/seed-artifacts-2/candidate-word_match_coverage.c",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-lpthread",
+            "-lm",
+            "-o",
+            "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/seed-artifacts-2/candidate-word_match_coverage"
+          ],
+          "actualStdout": "17,27,37,27,27,37,12,16,12,16,16,12\n",
+          "expected": "17,27,37,27,27,37,12,16,12,16,16,12"
+        },
+        {
+          "compiler": "candidate",
+          "fixture": "word_match_cover_key",
+          "sha256": "367034546c0868460a79292baaf0d634babf29d4a322bcb73210635775d010fe",
+          "bytes": 94223,
+          "command": [
+            "-std=c11",
+            "-O1",
+            "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/seed-artifacts-2/candidate-word_match_cover_key.c",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-lpthread",
+            "-lm",
+            "-o",
+            "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/seed-artifacts-2/candidate-word_match_cover_key"
+          ],
+          "actualStdout": "2139095040 2143289344 0 0 2139095040 2143289344 \n",
+          "expected": "2139095040 2143289344 0 0 2139095040 2143289344"
+        },
+        {
+          "compiler": "candidate",
+          "fixture": "js_late_fold",
+          "sha256": "aa12375b8a930e1dbd0ad66eb68bd9708e4cc1f65be5b96d5dec392c69567681",
+          "bytes": 78853,
+          "command": [
+            "-std=c11",
+            "-O1",
+            "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/seed-artifacts-2/candidate-js_late_fold.c",
+            "-isysroot",
+            "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+            "-lpthread",
+            "-lm",
+            "-o",
+            "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/seed-artifacts-2/candidate-js_late_fold"
+          ],
+          "actualStdout": "1\n",
+          "expected": "1"
+        }
+      ]
+    },
+    "pairedProfile": {
+      "baselineCodegenMs": 182172.70745800002,
+      "candidateCodegenMs": 85471.010709,
+      "baselineWorkerTicks": 123797,
+      "candidateWorkerTicks": 58612,
+      "baselineGcTicks": 79078,
+      "candidateGcTicks": 27512,
+      "baselineCompileBookActualCombinedNodeCpuMs": 649955.305,
+      "candidateCompileBookActualCombinedNodeCpuMs": 255434.153,
+      "timingBoundary": "Paired profiled diagnostic only. Baseline separate user/system not retained, existing actual process CPU preserved. No unchanged baseline rerun. Earlier producer97.892s vs174.087s variability remains unexplained; no universal half-time/clock/JIT/import attribution."
+    },
+    "freshUntracedCycle": {
+      "kind": "ACTUAL fresh untraced private generic Cgen improvement on unchanged accepted T source; full native public build/frozen/unchanged7720 consumer",
+      "reusedC": false,
+      "v8Profiling": false,
+      "traceC": false,
+      "stages": [
+        {
+          "name": "final-build",
+          "command": [
+            "python3",
+            "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/run.py",
+            "untraced"
+          ],
+          "status": "PASS",
+          "exitCode": 0,
+          "wallSeconds": 186.771787375,
+          "userSeconds": 406.425079,
+          "systemSeconds": 10.455659,
+          "wait4MaxRssBytes": 6249725952
+        },
+        {
+          "name": "final-frozen",
+          "command": [
+            "bun",
+            "--smol",
+            "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/evals/native_compiler_experiment.ts",
+            "--mode=run",
+            "--corpus=/private/tmp/native-cgen57w-candidate.Mgc2ChzR/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+            "--build=/private/tmp/native-cgen57w-candidate.Mgc2ChzR/artifacts/untraced-build.json",
+            "--report=/private/tmp/native-cgen57w-candidate.Mgc2ChzR/artifacts/final-frozen.json",
+            "--phase=compile",
+            "--threads=1",
+            "--exports=/private/tmp/native-cgen57w-candidate.Mgc2ChzR/checkpoints/compiler-benchmark-ir57-official-a.json.exports.json"
+          ],
+          "status": "PASS",
+          "exitCode": 0,
+          "wallSeconds": 93.22318562499999,
+          "userSeconds": 92.277612,
+          "systemSeconds": 2.207297,
+          "wait4MaxRssBytes": 1273528320
+        },
+        {
+          "name": "final-consumer",
+          "command": [
+            "node",
+            "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/final-consumer/consumer_guard.ts"
+          ],
+          "status": "PASS",
+          "exitCode": 0,
+          "wallSeconds": 0.45752687500004185,
+          "userSeconds": 0.40185899999999997,
+          "systemSeconds": 0.049557,
+          "wait4MaxRssBytes": 307167232
+        }
+      ],
+      "wallSeconds": 280.456788416,
+      "status": "PASS",
+      "cSha256": "22e60fac27d0eff97f27491f3ae210b690edac83d969364631fbd4384701438a",
+      "outputSha256": "eb3d374abac9f7e45067174e75c1074966d933467402866eece29556f307559a",
+      "checkedDefinitions": 8409,
+      "eventsFullyValidated": 8811,
+      "buildGuardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 6374703104,
+        "peakFootprintBytes": 6194535120,
+        "elapsedMs": 186626,
+        "timeoutMs": 600000,
+        "command": [
+          "/opt/homebrew/Cellar/bun/1.2.5/bin/bun",
+          "--smol",
+          "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/evals/native_compiler_experiment.ts",
+          "--mode=build",
+          "--cc-pipeline=llvm-split",
+          "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+          "--corpus=/private/tmp/native-cgen57w-candidate.Mgc2ChzR/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+          "--artifact=/private/tmp/native-cgen57w-candidate.Mgc2ChzR/artifacts/untraced-compiler",
+          "--report=/private/tmp/native-cgen57w-candidate.Mgc2ChzR/artifacts/untraced-build.json",
+          "--internal=build"
+        ],
+        "label": "Native CPU compiler build",
+        "exitCode": 0,
+        "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792807483868-5b3a8a497d62cc12.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "runGuardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 1420558336,
+        "peakFootprintBytes": 1370720488,
+        "elapsedMs": 93098,
+        "timeoutMs": 300000,
+        "command": [
+          "/opt/homebrew/Cellar/bun/1.2.5/bin/bun",
+          "--smol",
+          "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/evals/native_compiler_experiment.ts",
+          "--mode=run",
+          "--corpus=/private/tmp/native-cgen57w-candidate.Mgc2ChzR/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+          "--build=/private/tmp/native-cgen57w-candidate.Mgc2ChzR/artifacts/untraced-build.json",
+          "--report=/private/tmp/native-cgen57w-candidate.Mgc2ChzR/artifacts/final-frozen.json",
+          "--phase=compile",
+          "--threads=1",
+          "--exports=/private/tmp/native-cgen57w-candidate.Mgc2ChzR/checkpoints/compiler-benchmark-ir57-official-a.json.exports.json",
+          "--internal=run"
+        ],
+        "label": "Native CPU compiler run",
+        "exitCode": 0,
+        "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792807670628-0bf19764836ab80c.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "consumerGuard": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 299876352,
+        "peakFootprintBytes": 232117072,
+        "elapsedMs": 323,
+        "timeoutMs": 300000,
+        "command": [
+          "node",
+          "--max-old-space-size=3072",
+          "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/final-consumer/consume_native.mjs"
+        ],
+        "label": "Native57g unchanged full frozen output actual captured consumer",
+        "exitCode": 0,
+        "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792807763856-e8ac7657b8573f6f.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "consumerProof": {
+        "status": "PASS",
+        "kind": "actual unchanged native emitted frozen-v41 library consumer",
+        "output": "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/final-consumer/artifacts/frozen-compile.json.mjs",
+        "outputPatches": 0,
+        "fixedpoint": false,
+        "exports": 7720,
+        "exportSetSha256": "99efc6ef8538e35f5b6f549e39296bae814e654d48558f9ca7ba2aae2b1911f4",
+        "parserPassed": true,
+        "checkerPassed": true,
+        "outputSha256": "eb3d374abac9f7e45067174e75c1074966d933467402866eece29556f307559a",
+        "outputBytes": 14101164,
+        "runtimeSha256": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+        "exportsReceiptSha256": "b49ac17d858cff20e3ea8b88f3068b52ca6d0d2045684d4c17d7f318bd3aba18",
+        "manifestSha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+        "elapsedMs": 220.39137499999998,
+        "cpuMs": 238.9,
+        "maxRssBytes": 306413568
+      },
+      "producer": {
+        "stage": "untraced",
+        "attempt": 1,
+        "command": [
+          "bun",
+          "--smol",
+          "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/evals/native_compiler_experiment.ts",
+          "--mode=build",
+          "--cc-pipeline=llvm-split",
+          "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+          "--corpus=/private/tmp/native-cgen57w-candidate.Mgc2ChzR/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+          "--artifact=/private/tmp/native-cgen57w-candidate.Mgc2ChzR/artifacts/untraced-compiler",
+          "--report=/private/tmp/native-cgen57w-candidate.Mgc2ChzR/artifacts/untraced-build.json"
+        ],
+        "selectedInvocationEnvironment": {
+          "PATH": "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/tools:/private/tmp/native-cgen57w-candidate.Mgc2ChzR/tools:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/bin:/bin:/usr/sbin:/sbin",
+          "NODE_OPTIONS": null,
+          "NODE_PATH": null,
+          "V8_OPTIONS": null,
+          "CC": "/usr/bin/clang",
+          "SDKROOT": null,
+          "LANG": "en_US.UTF-8",
+          "LC_ALL": null,
+          "HEAVY_GATE_MEMORY_MIB": null,
+          "HEAVY_GATE_RSS_MIB": null,
+          "HEAVY_GATE_POLL_MS": null,
+          "HEAVY_GATE_TIMEOUT_MS": null
+        },
+        "sourceHashes": {
+          "bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+          "bend2/comp.before.ts": "5b934b694b873c9b2e44a6d99b920181cc72e660b30996566bfaee38a7ba0fda",
+          "bend2/comp.ts": "9704b4bbd00c834df65b21a34f57cfc4ff4f6afc1878f161565a52f7fcf00d9c",
+          "checkpoints/.bootstrap_compiler_root_v1.bend": "efab3bf81dd52f597645b20ddda482e11b961d342115ab62152535de55c26d26",
+          "evals/native_compiler_experiment.ts": "94460b2a3843c7dab8e40f660595c0e4f5f95bde4b5e09590239381f7a46f491",
+          "evals/native_compiler_llvm.ts": "e41724ecc3048609ddbae65d27056f81b5af3cdabdae0790fed9e34a2eee744c",
+          "tools/node": "6b34c326316d6584241bfddf36e3df86c43d892c3f54e8c5787cb15f01340ab8"
+        },
+        "diagnosticOnlyTiming": false,
+        "nodeTimer": "tools/node invokes unchanged Node via /usr/bin/time -lp; actual Node process including Worker/GC threads, not Bun/LLVM backend",
+        "exitCode": 0,
+        "wallSeconds": 186.723016584,
+        "wholeTreeUserSeconds": 406.398375,
+        "wholeTreeSystemSeconds": 10.443625,
+        "wait4MaxRssBytes": 6249725952,
+        "guardians": [
+          {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 6374703104,
+            "peakFootprintBytes": 6194535120,
+            "elapsedMs": 186626,
+            "timeoutMs": 600000,
+            "command": [
+              "/opt/homebrew/Cellar/bun/1.2.5/bin/bun",
+              "--smol",
+              "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/evals/native_compiler_experiment.ts",
+              "--mode=build",
+              "--cc-pipeline=llvm-split",
+              "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+              "--corpus=/private/tmp/native-cgen57w-candidate.Mgc2ChzR/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+              "--artifact=/private/tmp/native-cgen57w-candidate.Mgc2ChzR/artifacts/untraced-compiler",
+              "--report=/private/tmp/native-cgen57w-candidate.Mgc2ChzR/artifacts/untraced-build.json",
+              "--internal=build"
+            ],
+            "label": "Native CPU compiler build",
+            "exitCode": 0,
+            "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792807483868-5b3a8a497d62cc12.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          }
+        ],
+        "buildStatus": "NATIVE_EXECUTABLE_BUILT_NOT_YET_RUN",
+        "guardian": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 6374703104,
+          "peakFootprintBytes": 6194535120,
+          "elapsedMs": 186626,
+          "timeoutMs": 600000,
+          "command": [
+            "/opt/homebrew/Cellar/bun/1.2.5/bin/bun",
+            "--smol",
+            "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/evals/native_compiler_experiment.ts",
+            "--mode=build",
+            "--cc-pipeline=llvm-split",
+            "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+            "--corpus=/private/tmp/native-cgen57w-candidate.Mgc2ChzR/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+            "--artifact=/private/tmp/native-cgen57w-candidate.Mgc2ChzR/artifacts/untraced-compiler",
+            "--report=/private/tmp/native-cgen57w-candidate.Mgc2ChzR/artifacts/untraced-build.json",
+            "--internal=build"
+          ],
+          "label": "Native CPU compiler build",
+          "exitCode": 0,
+          "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792807483868-5b3a8a497d62cc12.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        },
+        "codegenMs": 85248.95604100001,
+        "checkedDefinitions": 8409,
+        "eventsFullyValidated": 8811,
+        "cSha256": "22e60fac27d0eff97f27491f3ae210b690edac83d969364631fbd4384701438a",
+        "pipelineMs": 97662.591166,
+        "runtime": {
+          "name": "node",
+          "node": "26.3.0",
+          "heapLimitMiB": 3072,
+          "stackMiB": 256,
+          "manualGC": false,
+          "profiling": null
+        },
+        "actualProducerOSUsage": {
+          "realSeconds": 88.67,
+          "userSeconds": 260.02,
+          "sysSeconds": 2.71,
+          "maxRssBytes": 3477176320,
+          "scope": "Actual Node producer process and its Worker/GC threads; excludes separate Bun backend process"
+        }
+      },
+      "note": "Frozen inputs, native source algorithms/bridge, kernel, ABI, full-root validation and output consumer unchanged. This is T evidence, not a new W/current-root fixedpoint proof. Separate tool/profiling trials are not included in this explicitly scoped fresh build+run+consumer cycle."
+    },
+    "retainedBuild": {
+      "report": "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/artifacts/untraced-build.json",
+      "reportSha256": "97d8a66f628c8fe3904e8ac5e3a227d58e2c7cf5e5fc039d08d618048a7ecbdd",
+      "artifact": "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/artifacts/untraced-compiler",
+      "artifactSha256FromActualBuild": "5bfc9b637b64abd0e8cac9652a5e8a7b6c98bb7cb60aaa110541eee483e57312",
+      "generatedC": "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/artifacts/untraced-compiler.c",
+      "cSha256": "22e60fac27d0eff97f27491f3ae210b690edac83d969364631fbd4384701438a",
+      "pipelineKind": "llvm-split",
+      "pipelineVersions": {
+        "clang": "Apple clang version 21.0.0 (clang-2100.1.1.101)\nTarget: arm64-apple-darwin25.5.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin",
+        "opt": "Homebrew LLVM version 21.1.8\n  Optimized build.\n  Default target: arm64-apple-darwin25.5.0\n  Host CPU: apple-m3",
+        "llvm-split": "Homebrew LLVM version 21.1.8\n  Optimized build."
+      },
+      "allCommandsCpuWallRssAbiAndToolHashes": "Complete ccPipeline stage commands and actual metrics/ABI/tool receipts retained in the pinned build report"
+    },
+    "files": {
+      "seeds.ts": "54dc466f90f7fc3a40af0ef9311a5e49e3302ceb154ad01e9f1a118b53bc3734",
+      "make_unit.py": "ad83e630a372a94d6c50f649dd1ee6d156f4c635fece196a037365c54ede87b5",
+      "run.py": "96c912823ce86ddb4bc2cd1f2653a661ccc5549feba77d225c92623b3d1070b7",
+      "final_cycle.py": "29ca690fcbe64352b920c5cd2ec56395d16ffbd2ef7f0212602e20d08f8e3538",
+      "candidate-profile-summary.json": "395afcb80b53f9724db165980f4230f8b98cb6ee5a70f95e3f0bbc51bc097507",
+      "profile-inventory.json": "e413721e713f074f9aecef9cfeedd3468df2e72c84eb92143442b2d17dc50974",
+      "analysis-tooling.json": "408910af9d6c5a8dbc91cdbc2ffcfd6baf2887387cb73b3a9a6aa7e8c5d8aad1",
+      "analysis-receipts.json": "40dd7e6fb133f2269bfc4a31fa1cb5d71965f2b0abc5bb907420ce588ba21594",
+      "machine-and-heap-facts.json": "5a0b4315e3064e56e424a2b679f3b27bfbf7806e636a888e85d75c0135b23d71",
+      "worker-flat.txt": "fd929dd1137780910e4f08cb0e359c740d8886afa11deb0e109ba5dfdde6e5d6",
+      "worker-bounded.txt": "45d3480ac32051a1b4afa0d42c0e7fe69c1d128ab6ea3c501ecd77cdf60afb5f"
+    },
+    "firstFailurePreserved": {
+      "kind": "Harness setup missing required book_load seen Map; no native/kernel/compiler failure",
+      "firstActualResult": {
+        "status": "FAIL",
+        "js": [],
+        "c": [],
+        "error": "TypeError: Cannot read properties of undefined (reading 'has')"
+      },
+      "firstLog": "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/seeds-1.log",
+      "firstReceipt": "/private/tmp/native-cgen57w-candidate.Mgc2ChzR/seeds-1-receipt.json",
+      "repair": "Pass new Map() exactly per unchanged kernel signature; retry seeds only, unit/root not rerun for that setup failure"
+    },
+    "originalCompactPath": "/tmp/native-cgen57w.tSPii1QT/compact-receipt.json",
+    "originalCompactSha256": "d27700dfc11a850b142a18ce81a8d167cd7b6153a10a830d3809a46f0ddd307a"
+  },
+  "currentProgram": {
+    "baseVersion": "compiler57w",
+    "proof": "checkpoints/compiler-ir-checkpoint-v57w.json",
+    "freshParserRunId": "ir57x-lazy-admit-a",
+    "sourcePreparation": "PASS22303ms",
+    "nativeFullRoot": {
+      "report": "checkpoints/.ir57x-lazy-full-a-native-build.result.json",
+      "reportSha256": "7e7bc9f2b3ff82a01dfa4faa3bd273d568346b130be805b8322d47997ee080e3",
+      "checkedDefinitions": 8390,
+      "eventsFullyValidated": 8786,
+      "sourceSha256": "efab3bf81dd52f597645b20ddda482e11b961d342115ab62152535de55c26d26",
+      "artifactSha256": "7408b43688dbcf0649485452bcf952549d3829bee53bdc8a747754fe89893121",
+      "artifactBytes": 12739233,
+      "guardian": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 2943270912,
+        "peakFootprintBytes": 3011772928,
+        "elapsedMs": 28953,
+        "timeoutMs": 600000,
+        "command": [
+          "node",
+          "--experimental-strip-types",
+          "--max-old-space-size=3072",
+          "/Users/ilyagulya/Projects/My/bend/evals/checker_core_component_build.ts",
+          "--worker",
+          "--file=/Users/ilyagulya/Projects/My/bend/checkpoints/.bootstrap_compiler_root_v1.bend",
+          "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step",
+          "--artifact=/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57x-lazy-full-a.js",
+          "--report=/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57x-lazy-full-a-native-build",
+          "--inputs-sha256=fa193551efd595c59d1573821e29100e63d20a44ce9feeb4da1a6c679e229301"
+        ],
+        "label": "Full-native CheckerCore component JS build",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792808382464-1804abbef101d86f.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      },
+      "compilerSha256": "9704b4bbd00c834df65b21a34f57cfc4ff4f6afc1878f161565a52f7fcf00d9c",
+      "provenancePath": "/Users/ilyagulya/Projects/My/bend/checkpoints/.ir57x-lazy-full-a-native-build.provenance.json",
+      "provenancePayloadSha256": "ccfe5a3bd65114b6b7c3c8835bc6c9725d00233287995e0cfc5bf9573d4715a1",
+      "provenanceFileSha256": "e183434d6456bfa65862a22fc4aa577af7d35876efd0fd56fcbb5f921e15cf93"
+    },
+    "seedByteEquality": {
+      "status": "PASS",
+      "independentCmpExitCode": 0,
+      "command": "cmp -s checkpoints/.ir57x-lazy-full-a.js checkpoints/.ir57w-quote-full-a.js && shasum -a256 both",
+      "bothSha256": "7408b43688dbcf0649485452bcf952549d3829bee53bdc8a747754fe89893121",
+      "bothBytes": 12739233
+    },
+    "expectedSeedSha256": "7408b43688dbcf0649485452bcf952549d3829bee53bdc8a747754fe89893121",
+    "genuineFixedpoint": {
+      "status": "PRESERVED_EXACT_SAME_EXECUTABLE_PROGRAM",
+      "actualOriginalProof": "checkpoints/compiler-ir-checkpoint-v57w.json",
+      "stageOneAndTwoSha256": "d5052bb405213398f566c4d824ab1440e67414795b47d4d4641562098508e47b",
+      "stageBytes": 13739105,
+      "behaviorExecutions": 285,
+      "scope": "Actual freshXnative-generatedcompiler seed isbyteidentical toactualacceptedWseed; no changedBendprogram orhostruntime. Notclaiminga newlytimedbootstrapgate oroverriding600sFAIL."
+    },
+    "nativeCurrentWCycle": {
+      "receipt": {
+        "status": "PASS_CURRENT_ACCEPTED_XW_UNTRACED_FULL_CYCLE",
+        "namespace": "misakaindrive:/private/tmp/native-xw57x-final.d8hHJQ4R",
+        "kind": "Actual fresh public current W Bend program with canonical-integrated generic compiler9704; not derived T/profile timers",
+        "actualCycleWallSeconds": 317.542371583,
+        "baselineSameHostWCycleWallSeconds": 354.71266608300004,
+        "baselineWSourceReceipt": "/private/tmp/native-w57v.QZEhzCu0/final-receipt.json",
+        "sourceIdentity": {
+          "sourceFiles": 97,
+          "onlyDeltaFromAcceptedW": [
+            "bend2/comp.ts"
+          ],
+          "candidateCompilerSha256": "9704b4bbd00c834df65b21a34f57cfc4ff4f6afc1878f161565a52f7fcf00d9c",
+          "baselineCompilerSha256": "5b934b694b873c9b2e44a6d99b920181cc72e660b30996566bfaee38a7ba0fda",
+          "canonicalIntegrationMatchesActualLocal9704": true,
+          "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+          "rootSha256": "efab3bf81dd52f597645b20ddda482e11b961d342115ab62152535de55c26d26",
+          "snapshot": "/private/tmp/native-xw57x-final.d8hHJQ4R/source-snapshot.json",
+          "snapshotSha256": "b6bc38da354887a2b163c2d5c49326f7358aa0bf0e5edbb47dafae40774b0100",
+          "snapshotIncludesExactWQuoteAndThreeStepPins": true
+        },
+        "freshness": {
+          "reusedC": false,
+          "kernelChanges": false,
+          "nativeBridgeOrAbiChanges": false,
+          "outputPatches": 0,
+          "sourceOrProofShims": false,
+          "v8Profiling": false,
+          "traceC": false,
+          "semiSpaceTuning": false,
+          "manualGc": false,
+          "nativeBendAlgorithmsChanged": false
+        },
+        "fullRootAndActualOutput": {
+          "checkedDefinitions": 8408,
+          "eventsFullyValidated": 8810,
+          "cSha256": "d3229a601002f5c07c51927517e3d16f3539d7d28f9843dc09684b07a39d9be9",
+          "acceptedWCsha256": "d3229a601002f5c07c51927517e3d16f3539d7d28f9843dc09684b07a39d9be9",
+          "exactCByteIdentity": true,
+          "binarySha256": "796171272798af538ffac47e40ef4b114b5d363d9bb5cb7f38ecef5f28271e9f",
+          "outputSha256": "eb3d374abac9f7e45067174e75c1074966d933467402866eece29556f307559a",
+          "outputBytes": 14101164,
+          "exportCount": 7720,
+          "actualUnchangedConsumer": {
+            "status": "PASS",
+            "kind": "actual unchanged native emitted frozen-v41 library consumer",
+            "output": "/private/tmp/native-xw57x-final.d8hHJQ4R/consumer/artifacts/frozen-compile.json.mjs",
+            "outputPatches": 0,
+            "fixedpoint": false,
+            "exports": 7720,
+            "exportSetSha256": "99efc6ef8538e35f5b6f549e39296bae814e654d48558f9ca7ba2aae2b1911f4",
+            "parserPassed": true,
+            "checkerPassed": true,
+            "outputSha256": "eb3d374abac9f7e45067174e75c1074966d933467402866eece29556f307559a",
+            "outputBytes": 14101164,
+            "runtimeSha256": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+            "exportsReceiptSha256": "b49ac17d858cff20e3ea8b88f3068b52ca6d0d2045684d4c17d7f318bd3aba18",
+            "manifestSha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+            "elapsedMs": 219.94833300000002,
+            "cpuMs": 240.011,
+            "maxRssBytes": 306315264
+          }
+        },
+        "actualTimings": {
+          "current": {
+            "stages": [
+              {
+                "name": "build",
+                "command": [
+                  "/opt/homebrew/bin/bun",
+                  "--smol",
+                  "/private/tmp/native-xw57x-final.d8hHJQ4R/evals/native_compiler_experiment.ts",
+                  "--mode=build",
+                  "--cc-pipeline=llvm-split",
+                  "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+                  "--corpus=/private/tmp/native-xw57x-final.d8hHJQ4R/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+                  "--artifact=/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/compiler",
+                  "--report=/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/build.json"
+                ],
+                "status": "PASS",
+                "exitCode": 0,
+                "wallSeconds": 237.412650459,
+                "userSeconds": 626.61693,
+                "systemSeconds": 12.991811,
+                "wait4MaxRssBytes": 6249332736
+              },
+              {
+                "name": "frozen",
+                "command": [
+                  "/opt/homebrew/bin/bun",
+                  "--smol",
+                  "/private/tmp/native-xw57x-final.d8hHJQ4R/evals/native_compiler_experiment.ts",
+                  "--mode=run",
+                  "--corpus=/private/tmp/native-xw57x-final.d8hHJQ4R/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+                  "--build=/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/build.json",
+                  "--report=/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/frozen-compile.json",
+                  "--phase=compile",
+                  "--threads=1",
+                  "--exports=/private/tmp/native-xw57x-final.d8hHJQ4R/checkpoints/compiler-benchmark-ir57-official-a.json.exports.json"
+                ],
+                "status": "PASS",
+                "exitCode": 0,
+                "wallSeconds": 79.70166370799998,
+                "userSeconds": 78.802279,
+                "systemSeconds": 1.9772699999999999,
+                "wait4MaxRssBytes": 1273692160
+              },
+              {
+                "name": "consumer",
+                "command": [
+                  "/opt/homebrew/bin/node",
+                  "/private/tmp/native-xw57x-final.d8hHJQ4R/consumer/consumer_guard.ts"
+                ],
+                "status": "PASS",
+                "exitCode": 0,
+                "wallSeconds": 0.42389395899999727,
+                "userSeconds": 0.405551,
+                "systemSeconds": 0.044617,
+                "wait4MaxRssBytes": 307134464
+              }
+            ],
+            "validationMs": 1378.708209,
+            "producerCodegenMs": 133079.89025,
+            "backendMs": 98282.170792,
+            "nativeCompileMs": 79438.03683400001,
+            "nativePhases": [
+              {
+                "phase": "parse",
+                "elapsedMs": 3447.57,
+                "userCpuMs": 3421.485,
+                "systemCpuMs": 25.599,
+                "modules": 15,
+                "sourceBytes": 4333108,
+                "foreignBytes": 25145,
+                "eagerFuelCells": 120000000,
+                "fuelBuildMs": 123.121
+              },
+              {
+                "phase": "expand",
+                "elapsedMs": 4728.578,
+                "userCpuMs": 4724.207,
+                "systemCpuMs": 4.378,
+                "chunkAdvances": 998037,
+                "chunkQuantum": 64
+              },
+              {
+                "phase": "check",
+                "elapsedMs": 62635.028,
+                "userCpuMs": 62527.14,
+                "systemCpuMs": 107.607,
+                "chunkAdvances": 11254765,
+                "chunkQuantum": 64
+              },
+              {
+                "phase": "emit",
+                "elapsedMs": 6735.453,
+                "userCpuMs": 6714.737,
+                "systemCpuMs": 20.66,
+                "chunkAdvances": 514432,
+                "chunkQuantum": 64
+              }
+            ],
+            "producerOSUsage": {
+              "realSeconds": 137.87,
+              "userSeconds": 480.47,
+              "sysSeconds": 3.2,
+              "maxRssBytes": 3485630464,
+              "scope": "Actual Node producer process including Worker/GC threads; separate Bun/LLVM backend excluded"
+            },
+            "producerPhaseCpu": [
+              {
+                "phase": "book_load:root",
+                "wallMs": 2757,
+                "actualCombinedNodeProcessCpuMs": 7310.018,
+                "scope": "process.cpuUsage(user+system) for Node PID including Worker/GC threads; not waiting Bun/backend"
+              },
+              {
+                "phase": "book_load:bridge",
+                "wallMs": 1,
+                "actualCombinedNodeProcessCpuMs": 1.5590000000001965,
+                "scope": "process.cpuUsage(user+system) for Node PID including Worker/GC threads; not waiting Bun/backend"
+              },
+              {
+                "phase": "book_valid",
+                "wallMs": 1378,
+                "actualCombinedNodeProcessCpuMs": 3445.683000000001,
+                "scope": "process.cpuUsage(user+system) for Node PID including Worker/GC threads; not waiting Bun/backend"
+              },
+              {
+                "phase": "compile_book",
+                "wallMs": 132727,
+                "actualCombinedNodeProcessCpuMs": 469010.504,
+                "scope": "process.cpuUsage(user+system) for Node PID including Worker/GC threads; not waiting Bun/backend"
+              },
+              {
+                "phase": "c-publication",
+                "wallMs": 388,
+                "actualCombinedNodeProcessCpuMs": 1854.5100000000093,
+                "scope": "process.cpuUsage(user+system) for Node PID including Worker/GC threads; not waiting Bun/backend"
+              }
+            ]
+          },
+          "acceptedW": {
+            "fullCycleWallSeconds": 354.71266608300004,
+            "stages": [
+              {
+                "name": "build",
+                "command": [
+                  "/opt/homebrew/bin/bun",
+                  "--smol",
+                  "/private/tmp/native-w57v.QZEhzCu0/evals/native_compiler_experiment.ts",
+                  "--mode=build",
+                  "--cc-pipeline=llvm-split",
+                  "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+                  "--corpus=/private/tmp/native-w57v.QZEhzCu0/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+                  "--artifact=/private/tmp/native-w57v.QZEhzCu0/artifacts/compiler",
+                  "--report=/private/tmp/native-w57v.QZEhzCu0/artifacts/build.json"
+                ],
+                "timingCommand": [
+                  "/usr/bin/time",
+                  "-lp",
+                  "/opt/homebrew/bin/bun",
+                  "--smol",
+                  "/private/tmp/native-w57v.QZEhzCu0/evals/native_compiler_experiment.ts",
+                  "--mode=build",
+                  "--cc-pipeline=llvm-split",
+                  "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+                  "--corpus=/private/tmp/native-w57v.QZEhzCu0/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+                  "--artifact=/private/tmp/native-w57v.QZEhzCu0/artifacts/compiler",
+                  "--report=/private/tmp/native-w57v.QZEhzCu0/artifacts/build.json"
+                ],
+                "exitCode": 0,
+                "wallSeconds": 274.79100329199997,
+                "timedRealSeconds": 274.77,
+                "userSeconds": 764.64,
+                "systemSeconds": 15.5,
+                "maxRssBytes": 6249267200,
+                "status": "PASS"
+              },
+              {
+                "name": "frozen",
+                "command": [
+                  "/opt/homebrew/bin/bun",
+                  "--smol",
+                  "/private/tmp/native-w57v.QZEhzCu0/evals/native_compiler_experiment.ts",
+                  "--mode=run",
+                  "--corpus=/private/tmp/native-w57v.QZEhzCu0/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+                  "--build=/private/tmp/native-w57v.QZEhzCu0/artifacts/build.json",
+                  "--report=/private/tmp/native-w57v.QZEhzCu0/artifacts/frozen-compile.json",
+                  "--phase=compile",
+                  "--threads=1",
+                  "--exports=/private/tmp/native-w57v.QZEhzCu0/checkpoints/compiler-benchmark-ir57-official-a.json.exports.json"
+                ],
+                "timingCommand": [
+                  "/usr/bin/time",
+                  "-lp",
+                  "/opt/homebrew/bin/bun",
+                  "--smol",
+                  "/private/tmp/native-w57v.QZEhzCu0/evals/native_compiler_experiment.ts",
+                  "--mode=run",
+                  "--corpus=/private/tmp/native-w57v.QZEhzCu0/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+                  "--build=/private/tmp/native-w57v.QZEhzCu0/artifacts/build.json",
+                  "--report=/private/tmp/native-w57v.QZEhzCu0/artifacts/frozen-compile.json",
+                  "--phase=compile",
+                  "--threads=1",
+                  "--exports=/private/tmp/native-w57v.QZEhzCu0/checkpoints/compiler-benchmark-ir57-official-a.json.exports.json"
+                ],
+                "exitCode": 0,
+                "wallSeconds": 79.50232170800001,
+                "timedRealSeconds": 79.49,
+                "userSeconds": 78.49,
+                "systemSeconds": 1.94,
+                "maxRssBytes": 1273675776,
+                "status": "PASS"
+              },
+              {
+                "name": "consumer",
+                "command": [
+                  "/opt/homebrew/bin/node",
+                  "/private/tmp/native-w57v.QZEhzCu0/consumer/consumer_guard.ts"
+                ],
+                "timingCommand": [
+                  "/usr/bin/time",
+                  "-lp",
+                  "/opt/homebrew/bin/node",
+                  "/private/tmp/native-w57v.QZEhzCu0/consumer/consumer_guard.ts"
+                ],
+                "exitCode": 0,
+                "wallSeconds": 0.41319204100000206,
+                "timedRealSeconds": 0.39,
+                "userSeconds": 0.4,
+                "systemSeconds": 0.04,
+                "maxRssBytes": 307036160,
+                "status": "PASS"
+              }
+            ],
+            "producerCodegenMs": 171733.251542,
+            "backendMs": 98905.104917,
+            "nativeCompileMs": 79231.488042,
+            "nativePhases": [
+              {
+                "phase": "parse",
+                "elapsedMs": 3434.673,
+                "userCpuMs": 3410.334,
+                "systemCpuMs": 24.344,
+                "modules": 15,
+                "sourceBytes": 4333108,
+                "foreignBytes": 25145,
+                "eagerFuelCells": 120000000,
+                "fuelBuildMs": 119.598
+              },
+              {
+                "phase": "expand",
+                "elapsedMs": 4677.937,
+                "userCpuMs": 4673.236,
+                "systemCpuMs": 4.726,
+                "chunkAdvances": 998037,
+                "chunkQuantum": 64
+              },
+              {
+                "phase": "check",
+                "elapsedMs": 62408.978,
+                "userCpuMs": 62316.185,
+                "systemCpuMs": 93.278,
+                "chunkAdvances": 11254765,
+                "chunkQuantum": 64
+              },
+              {
+                "phase": "emit",
+                "elapsedMs": 6703.796,
+                "userCpuMs": 6688.241,
+                "systemCpuMs": 15.6,
+                "chunkAdvances": 514432,
+                "chunkQuantum": 64
+              }
+            ],
+            "producerPhaseCpu": [
+              {
+                "phase": "book_load:root",
+                "wallMs": 1769,
+                "actualCombinedNodeProcessCpuMs": 2684.091,
+                "scope": "process.cpuUsage(user+system) for Node PID including Worker/GC threads; not waiting Bun/backend"
+              },
+              {
+                "phase": "book_load:bridge",
+                "wallMs": 1,
+                "actualCombinedNodeProcessCpuMs": 1.4400000000000546,
+                "scope": "process.cpuUsage(user+system) for Node PID including Worker/GC threads; not waiting Bun/backend"
+              },
+              {
+                "phase": "book_valid",
+                "wallMs": 1378,
+                "actualCombinedNodeProcessCpuMs": 3485.3979999999997,
+                "scope": "process.cpuUsage(user+system) for Node PID including Worker/GC threads; not waiting Bun/backend"
+              },
+              {
+                "phase": "compile_book",
+                "wallMs": 171599,
+                "actualCombinedNodeProcessCpuMs": 613557.7220000001,
+                "scope": "process.cpuUsage(user+system) for Node PID including Worker/GC threads; not waiting Bun/backend"
+              },
+              {
+                "phase": "c-publication",
+                "wallMs": 134,
+                "actualCombinedNodeProcessCpuMs": 635.1149999999907,
+                "scope": "process.cpuUsage(user+system) for Node PID including Worker/GC threads; not waiting Bun/backend"
+              }
+            ],
+            "separateProducerUserSystem": "Not retained; no baseline rerun. Existing actual combined process CPU preserved."
+          }
+        },
+        "unchangedResourceGuardians": {
+          "settings": "8GiB RSS and physical footprint;10ms polling;600s build and300s run/consumer deadlines; complete supervised command trees including producer and parallel backend descendants",
+          "build": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 6374342656,
+            "peakFootprintBytes": 6193683128,
+            "elapsedMs": 237353,
+            "timeoutMs": 600000,
+            "command": [
+              "/opt/homebrew/Cellar/bun/1.2.5/bin/bun",
+              "--smol",
+              "/private/tmp/native-xw57x-final.d8hHJQ4R/evals/native_compiler_experiment.ts",
+              "--mode=build",
+              "--cc-pipeline=llvm-split",
+              "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+              "--corpus=/private/tmp/native-xw57x-final.d8hHJQ4R/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+              "--artifact=/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/compiler",
+              "--report=/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/build.json",
+              "--internal=build"
+            ],
+            "label": "Native CPU compiler build",
+            "exitCode": 0,
+            "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792809151472-854bac78fff42d5a.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "run": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 1352335360,
+            "peakFootprintBytes": 1302530208,
+            "elapsedMs": 79586,
+            "timeoutMs": 300000,
+            "command": [
+              "/opt/homebrew/Cellar/bun/1.2.5/bin/bun",
+              "--smol",
+              "/private/tmp/native-xw57x-final.d8hHJQ4R/evals/native_compiler_experiment.ts",
+              "--mode=run",
+              "--corpus=/private/tmp/native-xw57x-final.d8hHJQ4R/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+              "--build=/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/build.json",
+              "--report=/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/frozen-compile.json",
+              "--phase=compile",
+              "--threads=1",
+              "--exports=/private/tmp/native-xw57x-final.d8hHJQ4R/checkpoints/compiler-benchmark-ir57-official-a.json.exports.json",
+              "--internal=run"
+            ],
+            "label": "Native CPU compiler run",
+            "exitCode": 0,
+            "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792809388943-68cd63a1969d7813.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          },
+          "consumer": {
+            "status": "PASS",
+            "reason": "command_exit",
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "peakRssBytes": 301645824,
+            "peakFootprintBytes": 231920656,
+            "elapsedMs": 310,
+            "timeoutMs": 300000,
+            "command": [
+              "node",
+              "--max-old-space-size=3072",
+              "/private/tmp/native-xw57x-final.d8hHJQ4R/consumer/consume_native.mjs"
+            ],
+            "label": "Native57g unchanged full frozen output actual captured consumer",
+            "exitCode": 0,
+            "reportPath": "/var/folders/jh/jgv1yq752m934mmwdcy3fj9m0000gp/T/bend-heavy-gate-502/report-1792809468641-1bde4761a6e05785.json",
+            "memoryLimitBytes": 8589934592,
+            "rssLimitBytes": 8589934592
+          }
+        },
+        "exactFlagsAndTools": {
+          "producerCommand": [
+            "node",
+            "--experimental-strip-types",
+            "--max-old-space-size=3072",
+            "/private/tmp/native-xw57x-final.d8hHJQ4R/evals/native_compiler_experiment.ts",
+            "--mode=build",
+            "--cc-pipeline=llvm-split",
+            "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+            "--corpus=/private/tmp/native-xw57x-final.d8hHJQ4R/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+            "--artifact=/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/compiler",
+            "--report=/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/build.json",
+            "--internal=codegen"
+          ],
+          "buildCommand": [
+            "/opt/homebrew/bin/bun",
+            "--smol",
+            "/private/tmp/native-xw57x-final.d8hHJQ4R/evals/native_compiler_experiment.ts",
+            "--mode=build",
+            "--cc-pipeline=llvm-split",
+            "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+            "--corpus=/private/tmp/native-xw57x-final.d8hHJQ4R/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+            "--artifact=/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/compiler",
+            "--report=/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/build.json"
+          ],
+          "runCommand": [
+            "/opt/homebrew/bin/bun",
+            "--smol",
+            "/private/tmp/native-xw57x-final.d8hHJQ4R/evals/native_compiler_experiment.ts",
+            "--mode=run",
+            "--corpus=/private/tmp/native-xw57x-final.d8hHJQ4R/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+            "--build=/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/build.json",
+            "--report=/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/frozen-compile.json",
+            "--phase=compile",
+            "--threads=1",
+            "--exports=/private/tmp/native-xw57x-final.d8hHJQ4R/checkpoints/compiler-benchmark-ir57-official-a.json.exports.json"
+          ],
+          "consumerCommand": [
+            "/opt/homebrew/bin/node",
+            "/private/tmp/native-xw57x-final.d8hHJQ4R/consumer/consumer_guard.ts"
+          ],
+          "backendVersions": {
+            "clang": "Apple clang version 21.0.0 (clang-2100.1.1.101)\nTarget: arm64-apple-darwin25.5.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin",
+            "opt": "Homebrew LLVM version 21.1.8\n  Optimized build.\n  Default target: arm64-apple-darwin25.5.0\n  Host CPU: apple-m3",
+            "llvm-split": "Homebrew LLVM version 21.1.8\n  Optimized build."
+          },
+          "backendStageCommandsCpuWallRss": [
+            {
+              "name": "clang-version",
+              "command": [
+                "/usr/bin/clang",
+                "--version"
+              ],
+              "timingCommand": [
+                "/usr/bin/time",
+                "-lp",
+                "/usr/bin/clang",
+                "--version"
+              ],
+              "status": "PASS",
+              "startedMs": 1.0884169999999997,
+              "stdoutBytes": 202,
+              "stdoutSha256": "ea3037e0630fa16798079372fdc24f6542d021dadda4915cc979799682d78295",
+              "stderrBytes": 753,
+              "stderrSha256": "ecb00f797ce38cd8a557a39dd7047060169af0a3e0dfcfc705231212522e39ff",
+              "timedRealSeconds": 0.01,
+              "userSeconds": 0,
+              "systemSeconds": 0,
+              "maxRssBytes": 17645568,
+              "exitCode": 0,
+              "signal": null,
+              "wallMs": 24.025959
+            },
+            {
+              "name": "opt-version",
+              "command": [
+                "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/opt",
+                "--version"
+              ],
+              "timingCommand": [
+                "/usr/bin/time",
+                "-lp",
+                "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/opt",
+                "--version"
+              ],
+              "status": "PASS",
+              "startedMs": 25.390084,
+              "stdoutBytes": 112,
+              "stdoutSha256": "27e5a918fd9146b28b6dfe74bb1ccba4801d751155fb3081f03fdbc05a79cfd8",
+              "stderrBytes": 753,
+              "stderrSha256": "c8c3c04e24ec8fe81d6a233ce41c71962046c0d5fe2560ca20559e03056c37f6",
+              "timedRealSeconds": 0.01,
+              "userSeconds": 0,
+              "systemSeconds": 0,
+              "maxRssBytes": 22085632,
+              "exitCode": 0,
+              "signal": null,
+              "wallMs": 16.950209
+            },
+            {
+              "name": "llvm-split-version",
+              "command": [
+                "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/llvm-split",
+                "--version"
+              ],
+              "timingCommand": [
+                "/usr/bin/time",
+                "-lp",
+                "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/llvm-split",
+                "--version"
+              ],
+              "status": "PASS",
+              "startedMs": 42.568084,
+              "stdoutBytes": 48,
+              "stdoutSha256": "08c7a33c77dce21039b72d2b65643f1151d74b9447881c9c37e1f49ff027dbc8",
+              "stderrBytes": 753,
+              "stderrSha256": "23355aa2f66de910679ce2df6bb3bff35386411b4a2c5419e0b124f3b7e5676c",
+              "timedRealSeconds": 0.01,
+              "userSeconds": 0,
+              "systemSeconds": 0,
+              "maxRssBytes": 18841600,
+              "exitCode": 0,
+              "signal": null,
+              "wallMs": 15.260625000000005
+            },
+            {
+              "name": "sdk",
+              "command": [
+                "/usr/bin/xcrun",
+                "--show-sdk-path"
+              ],
+              "timingCommand": [
+                "/usr/bin/time",
+                "-lp",
+                "/usr/bin/xcrun",
+                "--show-sdk-path"
+              ],
+              "status": "PASS",
+              "startedMs": 58.09191700000001,
+              "stdoutBytes": 95,
+              "stdoutSha256": "5cb2cff3541ae65432805aa9d9bbfa3454381ef60694cc7b47eed0e2bf973aaf",
+              "stderrBytes": 753,
+              "stderrSha256": "5416835b40a016d999b407da06184bd018861ddcf65d241d90b0f0475399926c",
+              "timedRealSeconds": 0,
+              "userSeconds": 0,
+              "systemSeconds": 0,
+              "maxRssBytes": 7290880,
+              "exitCode": 0,
+              "signal": null,
+              "wallMs": 12.423416000000017
+            },
+            {
+              "name": "abi-macros",
+              "command": [
+                "/usr/bin/clang",
+                "-std=c11",
+                "-O1",
+                "-E",
+                "-dM",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/compiler.c",
+                "-isysroot",
+                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+              ],
+              "timingCommand": [
+                "/usr/bin/time",
+                "-lp",
+                "/usr/bin/clang",
+                "-std=c11",
+                "-O1",
+                "-E",
+                "-dM",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/compiler.c",
+                "-isysroot",
+                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk"
+              ],
+              "status": "PASS",
+              "startedMs": 70.76400000000001,
+              "stdoutBytes": 926915,
+              "stdoutSha256": "cdc3b7cbbc6839bbecec65f82f2b2d8ecf98bdc8b52f38e442d25094266140dd",
+              "stderrBytes": 753,
+              "stderrSha256": "f764cefd2ae09607a65ff72bafc427dd6cec7de30140a3af84437b1dd50c0042",
+              "timedRealSeconds": 0.87,
+              "userSeconds": 0.82,
+              "systemSeconds": 0.03,
+              "maxRssBytes": 474152960,
+              "exitCode": 0,
+              "signal": null,
+              "wallMs": 880.776541
+            },
+            {
+              "name": "abi-driver",
+              "command": [
+                "/usr/bin/clang",
+                "-std=c11",
+                "-O1",
+                "-c",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/compiler.c",
+                "-isysroot",
+                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+                "-o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/compiler",
+                "-###"
+              ],
+              "timingCommand": [
+                "/usr/bin/time",
+                "-lp",
+                "/usr/bin/clang",
+                "-std=c11",
+                "-O1",
+                "-c",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/compiler.c",
+                "-isysroot",
+                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+                "-o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/compiler",
+                "-###"
+              ],
+              "status": "PASS",
+              "startedMs": 952.814917,
+              "stdoutBytes": 0,
+              "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderrBytes": 4842,
+              "stderrSha256": "56a794c0a979614e5fe38efb79258bee1114d4656b19694e1e6ba007fc31c16c",
+              "timedRealSeconds": 0.03,
+              "userSeconds": 0,
+              "systemSeconds": 0,
+              "maxRssBytes": 18874368,
+              "exitCode": 0,
+              "signal": null,
+              "wallMs": 45.23774999999989
+            },
+            {
+              "name": "frontend",
+              "command": [
+                "/usr/bin/clang",
+                "-std=c11",
+                "-O1",
+                "-Xclang",
+                "-disable-llvm-passes",
+                "-emit-llvm",
+                "-c",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/compiler.c",
+                "-isysroot",
+                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+                "-o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/raw.bc"
+              ],
+              "timingCommand": [
+                "/usr/bin/time",
+                "-lp",
+                "/usr/bin/clang",
+                "-std=c11",
+                "-O1",
+                "-Xclang",
+                "-disable-llvm-passes",
+                "-emit-llvm",
+                "-c",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/compiler.c",
+                "-isysroot",
+                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+                "-o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/raw.bc"
+              ],
+              "status": "PASS",
+              "startedMs": 1002.425542,
+              "stdoutBytes": 0,
+              "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderrBytes": 755,
+              "stderrSha256": "f408c43b8dad55c0919ac171cc1e68dda457db465e3a5eb671f5b322c4ca960e",
+              "timedRealSeconds": 17.24,
+              "userSeconds": 16.66,
+              "systemSeconds": 0.54,
+              "maxRssBytes": 6249332736,
+              "exitCode": 0,
+              "signal": null,
+              "wallMs": 17252.640375000003
+            },
+            {
+              "name": "mem2reg-always-inline",
+              "command": [
+                "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/opt",
+                "-passes=function(mem2reg),always-inline",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/raw.bc",
+                "-o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/prepared.bc"
+              ],
+              "timingCommand": [
+                "/usr/bin/time",
+                "-lp",
+                "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/opt",
+                "-passes=function(mem2reg),always-inline",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/raw.bc",
+                "-o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/prepared.bc"
+              ],
+              "status": "PASS",
+              "startedMs": 18256.568209,
+              "stdoutBytes": 0,
+              "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderrBytes": 755,
+              "stderrSha256": "ea72fedf27165c33f8a3ab637ab44c56213794fb22019f99794dc951ede1695a",
+              "timedRealSeconds": 14.69,
+              "userSeconds": 14.35,
+              "systemSeconds": 0.33,
+              "maxRssBytes": 4266360832,
+              "exitCode": 0,
+              "signal": null,
+              "wallMs": 14710.276334000002
+            },
+            {
+              "name": "normal-inliner",
+              "command": [
+                "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/opt",
+                "-passes=cgscc(inline)",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/prepared.bc",
+                "-o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/inlined.bc"
+              ],
+              "timingCommand": [
+                "/usr/bin/time",
+                "-lp",
+                "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/opt",
+                "-passes=cgscc(inline)",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/prepared.bc",
+                "-o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/inlined.bc"
+              ],
+              "status": "PASS",
+              "startedMs": 32968.408708999996,
+              "stdoutBytes": 0,
+              "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderrBytes": 755,
+              "stderrSha256": "b566d343d5487682e9b7630a62969ec2d251d46d40b2c22112127f8e6d36e80b",
+              "timedRealSeconds": 18.09,
+              "userSeconds": 17.69,
+              "systemSeconds": 0.38,
+              "maxRssBytes": 5420924928,
+              "exitCode": 0,
+              "signal": null,
+              "wallMs": 18111.510333000006
+            },
+            {
+              "name": "split",
+              "command": [
+                "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/llvm-split",
+                "-j4",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/inlined.bc",
+                "-o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part.bc"
+              ],
+              "timingCommand": [
+                "/usr/bin/time",
+                "-lp",
+                "/opt/homebrew/Cellar/llvm@21/21.1.8_1/bin/llvm-split",
+                "-j4",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/inlined.bc",
+                "-o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part.bc"
+              ],
+              "status": "PASS",
+              "startedMs": 51081.454249999995,
+              "stdoutBytes": 0,
+              "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderrBytes": 755,
+              "stderrSha256": "35fc5f2601b6377f6bf9a5d45ac808acfa847251eb72fd18003b548be168fe47",
+              "timedRealSeconds": 11.38,
+              "userSeconds": 11.11,
+              "systemSeconds": 0.25,
+              "maxRssBytes": 2786426880,
+              "exitCode": 0,
+              "signal": null,
+              "wallMs": 11405.511041000005
+            },
+            {
+              "name": "opt-codegen-3",
+              "command": [
+                "/usr/bin/clang",
+                "-O1",
+                "-x",
+                "ir",
+                "-c",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part.bc3",
+                "-isysroot",
+                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+                "-o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part3.o"
+              ],
+              "timingCommand": [
+                "/usr/bin/time",
+                "-lp",
+                "/usr/bin/clang",
+                "-O1",
+                "-x",
+                "ir",
+                "-c",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part.bc3",
+                "-isysroot",
+                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+                "-o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part3.o"
+              ],
+              "status": "PASS",
+              "startedMs": 62488.606,
+              "stdoutBytes": 0,
+              "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderrBytes": 755,
+              "stderrSha256": "b346e4c88d6ab38f8d41c92d6889ee698f6c2988e8892c68688fd102a433a6bb",
+              "timedRealSeconds": 29.99,
+              "userSeconds": 29.77,
+              "systemSeconds": 0.18,
+              "maxRssBytes": 1687519232,
+              "exitCode": 0,
+              "signal": null,
+              "wallMs": 30010.025833000007
+            },
+            {
+              "name": "opt-codegen-2",
+              "command": [
+                "/usr/bin/clang",
+                "-O1",
+                "-x",
+                "ir",
+                "-c",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part.bc2",
+                "-isysroot",
+                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+                "-o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part2.o"
+              ],
+              "timingCommand": [
+                "/usr/bin/time",
+                "-lp",
+                "/usr/bin/clang",
+                "-O1",
+                "-x",
+                "ir",
+                "-c",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part.bc2",
+                "-isysroot",
+                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+                "-o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part2.o"
+              ],
+              "status": "PASS",
+              "startedMs": 62489.750125,
+              "stdoutBytes": 0,
+              "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderrBytes": 755,
+              "stderrSha256": "ac4d80118a04f1fa38fe5c9fd456f437e982536c2adbe3edb0ca527237f5cdd5",
+              "timedRealSeconds": 18.22,
+              "userSeconds": 18.02,
+              "systemSeconds": 0.17,
+              "maxRssBytes": 1639268352,
+              "exitCode": 0,
+              "signal": null,
+              "wallMs": 18249.747167
+            },
+            {
+              "name": "opt-codegen-1",
+              "command": [
+                "/usr/bin/clang",
+                "-O1",
+                "-x",
+                "ir",
+                "-c",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part.bc1",
+                "-isysroot",
+                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+                "-o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part1.o"
+              ],
+              "timingCommand": [
+                "/usr/bin/time",
+                "-lp",
+                "/usr/bin/clang",
+                "-O1",
+                "-x",
+                "ir",
+                "-c",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part.bc1",
+                "-isysroot",
+                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+                "-o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part1.o"
+              ],
+              "status": "PASS",
+              "startedMs": 62490.712374999996,
+              "stdoutBytes": 0,
+              "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderrBytes": 755,
+              "stderrSha256": "a4b1153d48bda65094ae79bd67a95efe93721e4ca43c1fca62abcbb5cfb1da2f",
+              "timedRealSeconds": 18.94,
+              "userSeconds": 18.73,
+              "systemSeconds": 0.18,
+              "maxRssBytes": 1470431232,
+              "exitCode": 0,
+              "signal": null,
+              "wallMs": 18976.929624999997
+            },
+            {
+              "name": "opt-codegen-0",
+              "command": [
+                "/usr/bin/clang",
+                "-O1",
+                "-x",
+                "ir",
+                "-c",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part.bc0",
+                "-isysroot",
+                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+                "-o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part0.o"
+              ],
+              "timingCommand": [
+                "/usr/bin/time",
+                "-lp",
+                "/usr/bin/clang",
+                "-O1",
+                "-x",
+                "ir",
+                "-c",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part.bc0",
+                "-isysroot",
+                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+                "-o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part0.o"
+              ],
+              "status": "PASS",
+              "startedMs": 80741.166209,
+              "stdoutBytes": 0,
+              "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderrBytes": 755,
+              "stderrSha256": "b31816acd9385eee48213bc6f0f12cd2de11c519a724e7c24bfbb18fdb9e756f",
+              "timedRealSeconds": 17.43,
+              "userSeconds": 17.22,
+              "systemSeconds": 0.18,
+              "maxRssBytes": 1482752000,
+              "exitCode": 0,
+              "signal": null,
+              "wallMs": 17447.136916999996
+            },
+            {
+              "name": "link",
+              "command": [
+                "/usr/bin/clang",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part0.o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part1.o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part2.o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part3.o",
+                "-isysroot",
+                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+                "-lpthread",
+                "-lm",
+                "-o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/compiler"
+              ],
+              "timingCommand": [
+                "/usr/bin/time",
+                "-lp",
+                "/usr/bin/clang",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part0.o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part1.o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part2.o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/.native-llvm-xIlYDX/part3.o",
+                "-isysroot",
+                "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk",
+                "-lpthread",
+                "-lm",
+                "-o",
+                "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/compiler"
+              ],
+              "status": "PASS",
+              "startedMs": 98189.975959,
+              "stdoutBytes": 0,
+              "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "stderrBytes": 753,
+              "stderrSha256": "5ea602439253f1fc28f6166707f62af457872eb2c2114ffb11163d9ecf2ab138",
+              "timedRealSeconds": 0.07,
+              "userSeconds": 0.1,
+              "systemSeconds": 0.03,
+              "maxRssBytes": 115277824,
+              "exitCode": 0,
+              "signal": null,
+              "wallMs": 83.36379200000374
+            }
+          ],
+          "backendFullToolHashesAndAbiReceipt": "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/build.json",
+          "invocationFacts": {
+            "facts": [
+              {
+                "command": [
+                  "hostname"
+                ],
+                "exitCode": 0,
+                "stdoutBytes": 13,
+                "stdoutSha256": "71f8e4cce0d2b4e495751b8db01bf0335bee34f2b4a90d3bea791fb6b6e72807",
+                "stderrBytes": 0,
+                "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              {
+                "command": [
+                  "uname",
+                  "-a"
+                ],
+                "exitCode": 0,
+                "stdoutBytes": 136,
+                "stdoutSha256": "03304e1ef1454aeb0099e8dca395188047c18c470a93cd3dfdfaa5c490cd2800",
+                "stderrBytes": 0,
+                "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              {
+                "command": [
+                  "sysctl",
+                  "-n",
+                  "machdep.cpu.brand_string"
+                ],
+                "exitCode": 0,
+                "stdoutBytes": 13,
+                "stdoutSha256": "fbad599b7d522951e3c83b238a4c5034a5d189a205e12bc02867fdd3fcea1313",
+                "stderrBytes": 0,
+                "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              {
+                "command": [
+                  "sysctl",
+                  "-n",
+                  "hw.model"
+                ],
+                "exitCode": 0,
+                "stdoutBytes": 8,
+                "stdoutSha256": "cbc887c420f7768c33af2f192f358ed7099ae8ebd8f021b60ec6a5321721726a",
+                "stderrBytes": 0,
+                "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              {
+                "command": [
+                  "sysctl",
+                  "-n",
+                  "hw.ncpu"
+                ],
+                "exitCode": 0,
+                "stdoutBytes": 3,
+                "stdoutSha256": "a1fb50e6c86fae1679ef3351296fd6713411a08cf8dd1790a4fd05fae8688164",
+                "stderrBytes": 0,
+                "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              {
+                "command": [
+                  "sysctl",
+                  "-n",
+                  "hw.memsize"
+                ],
+                "exitCode": 0,
+                "stdoutBytes": 12,
+                "stdoutSha256": "e4b19ed1f4c2ac48ddf8e24f615e0c466b1ddb8e77aafdf84d87bea76e37ee55",
+                "stderrBytes": 0,
+                "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              {
+                "command": [
+                  "pmset",
+                  "-g",
+                  "therm"
+                ],
+                "exitCode": 0,
+                "stdoutBytes": 146,
+                "stdoutSha256": "96de6076213225f787270bff80efd2011e0ad142953c37697dc547f77d302892",
+                "stderrBytes": 0,
+                "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              {
+                "command": [
+                  "pmset",
+                  "-g",
+                  "batt"
+                ],
+                "exitCode": 0,
+                "stdoutBytes": 107,
+                "stdoutSha256": "213de10ac832b06adb0844fdbf3d3489d93820002ba32ebc71ad0102a5ade753",
+                "stderrBytes": 0,
+                "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              {
+                "command": [
+                  "/opt/homebrew/bin/node",
+                  "--version"
+                ],
+                "exitCode": 0,
+                "stdoutBytes": 8,
+                "stdoutSha256": "08f6347c6bc47b1f68fb3e5b85f789b6baabb1c94d2006983a485d4501048459",
+                "stderrBytes": 0,
+                "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              {
+                "command": [
+                  "/opt/homebrew/bin/bun",
+                  "--version"
+                ],
+                "exitCode": 0,
+                "stdoutBytes": 6,
+                "stdoutSha256": "fe2b7c237b5a6e42818aa3e4f7fc5820f49c32289c32c96260ef89a8c8f6d3d7",
+                "stderrBytes": 0,
+                "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              }
+            ],
+            "capturedAtUnixMs": 1792809151384,
+            "selectedInvocationEnvironment": {
+              "PATH": "/private/tmp/native-xw57x-final.d8hHJQ4R/tools:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin",
+              "NODE_OPTIONS": null,
+              "NODE_PATH": null,
+              "V8_OPTIONS": null,
+              "CC": "/usr/bin/clang",
+              "SDKROOT": null,
+              "BEND_NO_TELEMETRY": "1",
+              "LC_ALL": "C",
+              "LANG": "en_US.UTF-8"
+            },
+            "powerBoundary": "Actual pre-cycle facts, no frequency/throttling attribution; no settings changed.",
+            "nodeWrapper": {
+              "path": "/private/tmp/native-xw57x-final.d8hHJQ4R/tools/node",
+              "sha256": "6b34c326316d6584241bfddf36e3df86c43d892c3f54e8c5787cb15f01340ab8",
+              "source": "#!/bin/sh\nexec /usr/bin/time -lp /opt/homebrew/bin/node \"$@\"\n"
+            },
+            "workerResourceLimits": {
+              "maxOldGenerationSizeMb": 3072,
+              "stackSizeMb": 256,
+              "maxYoungGenerationSizeMb": "not explicitly set"
+            },
+            "profiling": false,
+            "semiSpaceTuning": false
+          },
+          "pipelineSourceSha256": "94460b2a3843c7dab8e40f660595c0e4f5f95bde4b5e09590239381f7a46f491",
+          "llvmHelperSourceSha256": "e41724ecc3048609ddbae65d27056f81b5af3cdabdae0790fed9e34a2eee744c"
+        },
+        "reproduction": {
+          "command": "python3 /private/tmp/native-xw57x-final.d8hHJQ4R/preflight.py && python3 /private/tmp/native-xw57x-final.d8hHJQ4R/xw-cycle.py",
+          "newNamespaceRequiredForReplay": "Exact input snapshot plus fresh artifact/report paths; original proof files intentionally remain untouched.",
+          "actualObserverSha256": "676b742b7fcbf9385c48d467ad6c606fdefdd6c2660978702b6f867edd7e8b0c",
+          "originalAcceptedWObserverPreserved": "a6a1594642b753bc2233ad19313463943afb1debac84de24057e6e3f6fc56be5"
+        },
+        "firstSetupFailure": {
+          "status": "SETUP_REJECTED_BEFORE_BUILD",
+          "command": "python3 /private/tmp/native-xw57x.YPehjPER/fullcycle.py",
+          "actualError": "RuntimeError: Source drift: fullcycle.py 676b742b7fcbf9385c48d467ad6c606fdefdd6c2660978702b6f867edd7e8b0c != a6a1594642b753bc2233ad19313463943afb1debac84de24057e6e3f6fc56be5",
+          "cause": "New private observer accidentally reused a filename pinned by accepted W source-snapshot.json. No native/frontend command was started.",
+          "repair": "Keep original accepted W fullcycle.py byte-identical as a pinned input; run new observer under xw-cycle.py. No source-pin weakening or compiler/kernel/Bend changes."
+        },
+        "evidence": {
+          "cycle": "artifacts/fullcycle.json",
+          "build": "artifacts/build.json",
+          "frozen": "artifacts/frozen-compile.json",
+          "consumer": "consumer/artifacts/frozen-output-consumer.json",
+          "source": "source-snapshot.json",
+          "invocation": "invocation-facts.json",
+          "consumerPreflight": "consumer-preflight.json",
+          "consumerPreflightSource": "preflight.py"
+        },
+        "scopeLimits": [
+          "Actual new current-W native cycle, not extrapolated from accepted T280s or a profiled partial timer.",
+          "Parent owns parser75/nativeJS/seed7408 byte comparison and any fixedpoint inheritance; this proof does not infer them.",
+          "Same-host official8.619s prior result is not beaten. Historical official32.003s lacks hostname/CPU and is not a strict same-host speed ratio.",
+          "Earlier producer97.892s versus174.087s variability remains unexplained; no universal half-time, CPU frequency, JIT or import attribution."
+        ],
+        "under300Seconds": false,
+        "preTimerConsumerDependencyPreflight": {
+          "status": "PASS_PRE_TIMER_ALL_CONSUMER_DEPENDENCIES",
+          "capturedAtUnixMs": 1792809151178,
+          "pathsAndHashes": [
+            {
+              "path": "/private/tmp/native-xw57x-final.d8hHJQ4R/consumer/checkpoints/compiler-benchmark-v41-step-runtime.mjs",
+              "realpath": "/private/tmp/native-xw57x-final.d8hHJQ4R/checkpoints/compiler-benchmark-v41-step-runtime.mjs",
+              "sha256": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+              "bytes": 6044
+            },
+            {
+              "path": "/private/tmp/native-xw57x-final.d8hHJQ4R/consumer/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+              "realpath": "/private/tmp/native-xw57x-final.d8hHJQ4R/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+              "sha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+              "bytes": 8975
+            },
+            {
+              "path": "/private/tmp/native-xw57x-final.d8hHJQ4R/consumer/checkpoints/compiler-benchmark-ir57-official-a.json.exports.json",
+              "realpath": "/private/tmp/native-xw57x-final.d8hHJQ4R/checkpoints/compiler-benchmark-ir57-official-a.json.exports.json",
+              "sha256": "b49ac17d858cff20e3ea8b88f3068b52ca6d0d2045684d4c17d7f318bd3aba18",
+              "bytes": 393398
+            },
+            {
+              "path": "/private/tmp/native-xw57x-final.d8hHJQ4R/consumer/evals/heavy_gate.ts",
+              "realpath": "/private/tmp/native-xw57x-final.d8hHJQ4R/evals/heavy_gate.ts",
+              "sha256": "47a12205abd374fd69d7dac30ee9fb45d7203cad2790870511387cd2efc22251",
+              "bytes": 11814
+            },
+            {
+              "path": "/private/tmp/native-xw57x-final.d8hHJQ4R/consumer/evals/heavy_gate_native.c",
+              "realpath": "/private/tmp/native-xw57x-final.d8hHJQ4R/evals/heavy_gate_native.c",
+              "sha256": "f5aecf8308caebc72dccf8986733b37137d448021ee378302cfcd038381b7aa9",
+              "bytes": 14752
+            },
+            {
+              "path": "/private/tmp/native-xw57x-final.d8hHJQ4R/tools/node",
+              "realpath": "/private/tmp/native-xw57x-final.d8hHJQ4R/tools/node",
+              "sha256": "6b34c326316d6584241bfddf36e3df86c43d892c3f54e8c5787cb15f01340ab8",
+              "bytes": 61
+            },
+            {
+              "path": "/private/tmp/native-xw57x-final.d8hHJQ4R/consumer/consume_native.mjs",
+              "realpath": "/private/tmp/native-xw57x-final.d8hHJQ4R/consumer/consume_native.mjs",
+              "sha256": "7ad7a3fe7903ecc2b3b16a33c7a87653d29db773a7500e2280bdfa5a2348143b",
+              "bytes": 3779
+            },
+            {
+              "path": "/private/tmp/native-xw57x-final.d8hHJQ4R/consumer/consumer_guard.ts",
+              "realpath": "/private/tmp/native-xw57x-final.d8hHJQ4R/consumer/consumer_guard.ts",
+              "sha256": "42d74175b99b77ea11eaaffd406f38085de2677cfb6c98b7110778bd497a53ab",
+              "bytes": 911
+            }
+          ],
+          "executables": [
+            {
+              "path": "/opt/homebrew/bin/node",
+              "realpath": "/opt/homebrew/Cellar/node/26.3.0/bin/node",
+              "sha256": "56694c81b093cc8da273fa017cf91765b3653e5f64f16727976ffaa87b2b6b31"
+            },
+            {
+              "path": "/opt/homebrew/bin/bun",
+              "realpath": "/opt/homebrew/Cellar/bun/1.2.5/bin/bun",
+              "sha256": "abe991b29c5151ab11b5344be65dee3a675b0a4a55b8fc493e3cfbe256e61781"
+            },
+            {
+              "path": "/usr/bin/time",
+              "realpath": "/usr/bin/time",
+              "sha256": "d2210b72e8c978748a0f0ac7d0819dda4dd411bb7a2e9730476038b0d695e7a2"
+            },
+            {
+              "path": "/usr/bin/clang",
+              "realpath": "/usr/bin/clang",
+              "sha256": "179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818"
+            }
+          ],
+          "capturedRuntimeStandalone": true,
+          "exports": 7720,
+          "sourceRootNormalCliIndependentOfTimer": true,
+          "timerBoundary": "Setup-only realpath/hash/import/executable checks before final xw-cycle.py starts its full fresh build+run+consumer timer. No compiler source/codegen/native run executed.",
+          "generatedDependenciesNotPretendedPreexisting": {
+            "report": "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/frozen-compile.json",
+            "module": "/private/tmp/native-xw57x-final.d8hHJQ4R/artifacts/frozen-compile.json.mjs",
+            "expectedOutputSha256": "eb3d374abac9f7e45067174e75c1074966d933467402866eece29556f307559a",
+            "validation": "Generated only by fresh full native compilation during timed cycle; existing xw-cycle.py verifies actual report/status/hash/bytes/exports before unchanged consumer runs."
+          },
+          "priorFailuresPreservedAt": "/private/tmp/native-xw57x.YPehjPER",
+          "repairConsumerProof": "/private/tmp/native-xw57x.YPehjPER/consumer-retry/artifacts/frozen-output-consumer.json"
+        },
+        "originalRejectedTrialPreserved": {
+          "namespace": "/private/tmp/native-xw57x.YPehjPER",
+          "cycle": {
+            "status": "FAIL",
+            "kind": "ACTUAL fresh untraced public current XW full native cycle, only approved generic9704 compiler delta",
+            "reusedC": false,
+            "profiling": false,
+            "traceC": false,
+            "outputPatches": 0,
+            "canonicalEdits": 0,
+            "root": "/private/tmp/native-xw57x.YPehjPER",
+            "sourceSnapshotSha256": "b6bc38da354887a2b163c2d5c49326f7358aa0bf0e5edbb47dafae40774b0100",
+            "stages": [
+              {
+                "name": "build",
+                "command": [
+                  "/opt/homebrew/bin/bun",
+                  "--smol",
+                  "/private/tmp/native-xw57x.YPehjPER/evals/native_compiler_experiment.ts",
+                  "--mode=build",
+                  "--cc-pipeline=llvm-split",
+                  "--llvm-bin=/opt/homebrew/opt/llvm@21/bin",
+                  "--corpus=/private/tmp/native-xw57x.YPehjPER/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+                  "--artifact=/private/tmp/native-xw57x.YPehjPER/artifacts/compiler",
+                  "--report=/private/tmp/native-xw57x.YPehjPER/artifacts/build.json"
+                ],
+                "status": "PASS",
+                "exitCode": 0,
+                "wallSeconds": 187.53845091699998,
+                "userSeconds": 401.63042,
+                "systemSeconds": 10.468712,
+                "wait4MaxRssBytes": 6249005056
+              },
+              {
+                "name": "frozen",
+                "command": [
+                  "/opt/homebrew/bin/bun",
+                  "--smol",
+                  "/private/tmp/native-xw57x.YPehjPER/evals/native_compiler_experiment.ts",
+                  "--mode=run",
+                  "--corpus=/private/tmp/native-xw57x.YPehjPER/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+                  "--build=/private/tmp/native-xw57x.YPehjPER/artifacts/build.json",
+                  "--report=/private/tmp/native-xw57x.YPehjPER/artifacts/frozen-compile.json",
+                  "--phase=compile",
+                  "--threads=1",
+                  "--exports=/private/tmp/native-xw57x.YPehjPER/checkpoints/compiler-benchmark-ir57-official-a.json.exports.json"
+                ],
+                "status": "PASS",
+                "exitCode": 0,
+                "wallSeconds": 79.47627041599998,
+                "userSeconds": 78.607044,
+                "systemSeconds": 1.911171,
+                "wait4MaxRssBytes": 1273692160
+              },
+              {
+                "name": "consumer",
+                "command": [
+                  "/opt/homebrew/bin/node",
+                  "/private/tmp/native-xw57x.YPehjPER/consumer/consumer_guard.ts"
+                ],
+                "status": "FAIL",
+                "exitCode": 2,
+                "wallSeconds": 0.19528037499998163,
+                "userSeconds": 0.171737,
+                "systemSeconds": 0.024398,
+                "wait4MaxRssBytes": 92815360
+              }
+            ],
+            "expectedCheckedDefinitions": 8408,
+            "expectedEventsFullyValidated": 8810,
+            "canonicalIntegrationMatches9704": true,
+            "wallSeconds": 267.213812125,
+            "actualProducerOSUsage": {
+              "realSeconds": 87.38,
+              "userSeconds": 255.41,
+              "sysSeconds": 2.64,
+              "maxRssBytes": 3607592960,
+              "scope": "Actual Node producer process including Worker/GC threads; separate Bun/LLVM backend excluded"
+            },
+            "error": "consumer failed; original log/report retained"
+          },
+          "consumerFailure": {
+            "status": "FAIL",
+            "kind": "actual unchanged native emitted frozen-v41 library consumer",
+            "output": "/private/tmp/native-xw57x.YPehjPER/consumer/artifacts/frozen-compile.json.mjs",
+            "outputPatches": 0,
+            "fixedpoint": false,
+            "error": "Error: ENOENT: no such file or directory, open '/private/tmp/native-xw57x.YPehjPER/consumer/checkpoints/compiler-benchmark-v41-step-runtime.mjs'",
+            "stack": "Error: ENOENT: no such file or directory, open '/private/tmp/native-xw57x.YPehjPER/consumer/checkpoints/compiler-benchmark-v41-step-runtime.mjs'\n    at Object.openSync (node:fs:556:18)\n    at readFileSync (node:fs:440:35)\n    at hash (file:///private/tmp/native-xw57x.YPehjPER/consumer/consume_native.mjs:6:43)\n    at file:///private/tmp/native-xw57x.YPehjPER/consumer/consume_native.mjs:16:5\n    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:646:26)\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)",
+            "elapsedMs": 0.4752499999999955,
+            "cpuMs": 0.448,
+            "maxRssBytes": 52969472
+          },
+          "failedConsumerOnlyRepair": {
+            "command": [
+              "/opt/homebrew/bin/node",
+              "/private/tmp/native-xw57x.YPehjPER/consumer-retry/consumer_guard.ts"
+            ],
+            "exitCode": 0,
+            "wallSeconds": 0.4231335,
+            "userSeconds": 0.401646,
+            "systemSeconds": 0.046547,
+            "wait4MaxRssBytes": 307265536,
+            "scope": "Only failed consumer retried after exact runtime copy; original fullcycleFAIL/build/frozen/logs unchanged. Not an uninterrupted successful full-cycle time."
+          },
+          "actualRepairedConsumer": {
+            "status": "PASS",
+            "kind": "actual unchanged native emitted frozen-v41 library consumer",
+            "output": "/private/tmp/native-xw57x.YPehjPER/consumer-retry/artifacts/frozen-compile.json.mjs",
+            "outputPatches": 0,
+            "fixedpoint": false,
+            "exports": 7720,
+            "exportSetSha256": "99efc6ef8538e35f5b6f549e39296bae814e654d48558f9ca7ba2aae2b1911f4",
+            "parserPassed": true,
+            "checkerPassed": true,
+            "outputSha256": "eb3d374abac9f7e45067174e75c1074966d933467402866eece29556f307559a",
+            "outputBytes": 14101164,
+            "runtimeSha256": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+            "exportsReceiptSha256": "b49ac17d858cff20e3ea8b88f3068b52ca6d0d2045684d4c17d7f318bd3aba18",
+            "manifestSha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+            "elapsedMs": 213.87883300000001,
+            "cpuMs": 233.258,
+            "maxRssBytes": 306413568
+          },
+          "relabelledSuccessfulCycle": false
+        },
+        "cleanFinalMeasurementAuthorization": "Main explicitly authorized ONE fresh current candidate cycle after exact-runtime prerequisite repair and failed-consumer-only retry. Not a baseline rerun or favorable-time fishing; this clean timer is independently measured and no failed267s/repair-stage sum is substituted.",
+        "normalCliFeatureTimingBoundary": "Production public CLI944/e417 and generic compiler9704 do not depend on private timing wrapper. Wrapper only transparently execs unchanged real Node with original argv to collect /usr/bin/time OS usage; it is proof metadata, not feature functionality.",
+        "evidenceHashes": {
+          "cycle": "853cb7fa5706af6bec7ec2956296ff42c6b211e498ff8c7acd9f9be3d414cfb0",
+          "build": "e0fe25f6f9936291d589489f6575efcdc913f0827bb10af6890b50bec8d35760",
+          "frozen": "ec179fd47130e73ff3c65827eea55f8425e6faadbcd0e0a020bb1d881cf6a3c5",
+          "consumer": "1d1a9da4dfa6efe7e8f90a3dc0643840fb4cf0e0ef079c53c0acc001e7074201",
+          "source": "b6bc38da354887a2b163c2d5c49326f7358aa0bf0e5edbb47dafae40774b0100",
+          "invocation": "c97dda1d65751050f00e2a63008611bc6de49f5a6a535054f13a01ee940fd41c",
+          "consumerPreflight": "ae615741b2b86e350d7a3453e25de529ad4ba8bed0e048ee43020093fa912540",
+          "consumerPreflightSource": "590e04c8f81b85ebd8b29b92efb7856d5121279c402bb14e64cfb2362b7b0436"
+        }
+      },
+      "receiptPath": "/tmp/native-cgen57w.tSPii1QT/xw-current-compact-receipt.json",
+      "receiptSha256": "ab54650b8b1d605c1739683cedb9410a4e707bccae9f2a6819ba725499b52ee7",
+      "comparison": "Clean317.542371583s vsacceptedW354.712666083s; under300false. Earlierfailed267.213812125s remainsFAIL, repairedconsumerseparate, notsummed. Samecomp/C/binary gaveproducer85–133s; variationunexplained, no furtherunchangedrepeats."
+    },
+    "nativeOfficialSpeedWin": false,
+    "freshParser": {
+      "runId": "ir57x-lazy-admit-a",
+      "report": "checkpoints/bootstrap-parser-rebuild-ir57x-lazy-admit-a.result.json",
+      "sha256": "6ba41d55c78b656147fd79e989410775d051f007b57bb8d0e86be0023c1b1846",
+      "status": "PARSER_ACCEPTED_NATIVE_SEMANTICS",
+      "admitted": true,
+      "artifactSha256": "1464037ba20c190ea51083d5824665fa665ce8d5657264544f4515e2339a3ee0"
+    }
+  },
+  "profilingBoundary": "182.173→85.471s is pairedprofiled evidence; separateactualuntracedaccepted-T fullcycle280.456788s inclfreshCbuild/frozen7720 iscompleted. Do not relabelthatT result ascurrentW. ActualcombinedNodeCPU649955→255434ms includesworker/GC; baselineuser/systemsplitnotretained. No baseline rerun solelyforit. Earlier98vs174svariability remainsunexplained."
+}

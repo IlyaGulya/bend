@@ -5,6 +5,10 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- Native and JavaScript word-pattern coverage compares the required lowered
+  structure lazily, avoiding complete temporary trees for discarded annotations
+  and unequal suffixes while preserving binder identities and coverage behavior.
+
 - JavaScript source quoting no longer repeatedly copies a growing string prefix
   on native backends. Each bounded escape is prepended to the escaped suffix;
   escape bytes and character order are unchanged.

@@ -33,6 +33,13 @@ emit20.839599→6.703796s, compile93.177938→79.231488s, все7720 consumers/b
 62.408978s и TS→C producer171.733252s остаются главными задачами.
 Runtimephysical вырос примерно70MB; JS fullcompile не ускорился. Source
 quote change получила СВОИ свежие parser/native/fixedpoint/285 proofs, не старыеT.
+Host compiler57x меняет только lazy comparison внутри mat_lits; kernel6c1df3…
+и сам Bend FIR/BIR program57w не изменены. FreshX parser75/root8390/8786 прошли,
+actual native-produced seed byte-identicalW7408b436…: W realFP/285 сохраняются
+для того же образа, без ложного нового aggregate PASS. Untraced acceptedT
+full native cycle280.457s завершён; ЧИСТЫЙ latestW cycle317.542s тоже semanticPASS,
+но выше300s: producer133.080s/backend98.282s/native79.438s. Failed267s consumer-setup
+run сохранён, не перекрашен. Причина source-identical producer85–133s пока неизвестна.
 
 
 Единственный источник этого контракта — этот файл; оперативный статус, команды,

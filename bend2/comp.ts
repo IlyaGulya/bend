@@ -1199,8 +1199,9 @@ function mat_arms(t: HTerm) {
 
 function mat_lits(x: HTerm): Row[] {
   const ws: Row[] = [];
-  // Keep the old lowered representation and JSON key equivalence (including
-  // binder names/levels), but stop at a mismatch without allocating key strings.
+  // Preserve the old lowered JSON-key equivalence, including binder names and
+  // levels. Compare the lowering lazily: discarded annotations/spans and an
+  // unequal suffix must not allocate two complete lowered term trees.
   const same = (a: unknown, b: unknown): boolean => {
     if (a && typeof a === "object" && "$" in a && a.$ === "Ann") {
       a = Bend.term_strip(a as Bend.LTerm);
@@ -1246,6 +1247,85 @@ function mat_lits(x: HTerm): Row[] {
       if (k !== bk[j++] || !same(ar[k], br[k])) return false;
     }
   };
+  const same_field = (a: unknown, b: unknown): boolean => {
+    if (a === b) return true;
+    const ax = a === undefined || typeof a === "function" || typeof a === "symbol";
+    const bx = b === undefined || typeof b === "function" || typeof b === "symbol";
+    return ax || bx ? ax === bx : same(a, b);
+  };
+  const same_terms = (a: HTerm[], b: HTerm[], d: number): boolean => {
+    if (a.length !== b.length) return false;
+    for (let i = 0; i < a.length; i++) {
+      if (!same_term(a[i], b[i], d)) return false;
+    }
+    return true;
+  };
+  const same_term = (a: HTerm, b: HTerm, d = 0): boolean => {
+    const t = Bend.term_strip(a), u = Bend.term_strip(b);
+    if (t === u) return true;
+    if (t.$ !== u.$) return false;
+    // These are exactly term_lower's rebuilt constructors. Their canonical
+    // field order is fixed; primitive/default nodes keep the old JSON rules.
+    switch (t.$) {
+      case "Let": {
+        const v = u as Of<"Let">;
+        const tq = t.q ?? t.k.map(() => Bend.Lone());
+        const uq = v.q ?? v.k.map(() => Bend.Lone());
+        if (!same_field(t.k, v.k) || !same_field(tq, uq)
+          || !same_terms(t.v, v.v, d)) return false;
+        const xs = t.k.map((k, i): HTerm => Bend.Var(k, d + i));
+        const ys = v.k.map((k, i): HTerm => Bend.Var(k, d + i));
+        return same_term(t.f(xs), v.f(ys), d + t.k.length);
+      }
+      case "All": {
+        const v = u as Of<"All">;
+        if (!same_field(t.k, v.k) || !same_field(t.q, v.q)
+          || !same_term(t.A, v.A, d)) return false;
+        const x: HTerm = Bend.Var(t.k, d), y: HTerm = Bend.Var(v.k, d);
+        return same_term(t.B(x), v.B(y), d + 1);
+      }
+      case "Lam": {
+        const v = u as Of<"Lam">;
+        if (!same_field(t.k, v.k) || !same_field(t.q, v.q)) return false;
+        const x: HTerm = Bend.Var(t.k, d), y: HTerm = Bend.Var(v.k, d);
+        return same_term(t.f(x), v.f(y), d + 1);
+      }
+      case "Typ":
+        return same_term(t.g, (u as Of<"Typ">).g, d);
+      case "Min":
+        return same_term(t.a, (u as Of<"Min">).a, d)
+          && same_term(t.b, (u as Of<"Min">).b, d);
+      case "App":
+        return same_term(t.f, (u as Of<"App">).f, d)
+          && same_term(t.x, (u as Of<"App">).x, d);
+      case "ADT": {
+        const v = u as Of<"ADT">;
+        return same_field(t.k, v.k) && same_field(t.r === undefined ? [] : t.r,
+          v.r === undefined ? [] : v.r) && same_terms(t.x, v.x, d);
+      }
+      case "Ctr": {
+        const v = u as Of<"Ctr">;
+        return same_field(t.k, v.k) && same_terms(t.x, v.x, d);
+      }
+      case "Mat": {
+        const v = u as Of<"Mat">;
+        return same_field(t.k, v.k) && same_term(t.h, v.h, d)
+          && same_term(t.m, v.m, d);
+      }
+      case "Eql": {
+        const v = u as Of<"Eql">;
+        return same_term(t.a, v.a, d) && same_term(t.b, v.b, d)
+          && same_term(t.T, v.T, d);
+      }
+      case "Rwt": {
+        const v = u as Of<"Rwt">;
+        return same_term(t.e, v.e, d) && same_term(t.p, v.p, d)
+          && same_term(t.f, v.f, d);
+      }
+      default:
+        return same(Bend.term_lower(t, d), Bend.term_lower(u, d));
+    }
+  };
   const walk = (t: HTerm, j: number, n: number,
     cov: ((w: Of<"Ctr">) => HTerm) | null) => {
     const h = mat_arms(t).arms[0]?.[1];
@@ -1258,7 +1338,7 @@ function mat_lits(x: HTerm): Row[] {
       .reduce((f, a) => Bend.term_apply(f, a), end);
     const w = Bend.Ctr("WCon", [probe("b"), probe("t")]) as Of<"Ctr">;
     const own = arms.length < 2 && (!cov
-      || !same(Bend.term_lower(cov(w)), Bend.term_lower(inst(w))));
+      || !same_term(cov(w), inst(w)));
     const sub = own ? inst : cov;
     for (const [k, a] of arms) {
       walk(a, j + 1, n + (k === "True" ? 2 ** j : 0), sub && ((v) =>
