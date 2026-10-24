@@ -202,17 +202,12 @@ export async function composeCanonicalCPSSource(canonical:string, providers:CPSP
         canonicalDeclarationSha256:sha(unit.source.slice(association.start-association.prefix.length,association.end)),composedDeclarationSha256:sha(rendered)});
     }
   }
-  // Native datatypes must see their dependencies first. A true mutual datatype
-  // cycle is rejected explicitly rather than relying on a forward empty slot.
-  const types=new Map(typeRows.map(row=>[row.name,row])), ordered:string[]=[], done=new Set<string>(), active=new Set<string>();
-  function add(name:string):void{
-    if(done.has(name))return;
-    if(active.has(name))throw Error('Mutually dependent composed datatypes '+name);
-    const row=types.get(name)!;active.add(name);
-    for(const dependency of row.dependencies)if(dependency!==name&&types.has(dependency))add(dependency);
-    active.delete(name);done.add(name);ordered.push(row.text);
-  }
-  for(const row of typeRows)add(row.name);
+  // A datatype is a declaration, not code: the native book declares ADTs whole
+  // up front and its types may name each other in any order. Emit composed
+  // datatypes in source order so genuinely mutual tree types (Layout/LayArm,
+  // Fill/FormArm/Nest) are legal instead of being rejected by an artificial
+  // dependency order.
+  const ordered:string[]=typeRows.map(row=>row.text);
   const source='import Base\n'+[...external.values()].map(row=>'import '+row.path+' as '+row.alias+'\n').join('')+'\n'+ordered.join('')+definitionRows.join('');
   const proof:CPSCompositionProof={providers:[...providers].sort(),sourceSha256:sha(source),
     sources:units.map(unit=>({canonical:unit.path,canonicalSha256:sha(unit.source),declarationNames:unit.oracle.declarations.map(row=>row.key),symbols:Object.fromEntries(unit.symbols)})),
