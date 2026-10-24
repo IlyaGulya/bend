@@ -6,116 +6,140 @@
 # call or table emission (CIRControl) and never re-derives a layout from a key
 # spelling.
 #
-# Authority: comp.ts show_main. Reproduced rules:
-#   * kind = index of the datatype in U32 F32 Nat Char String . Array & 7
-#     (Eql is 5), everything else 7;
-#   * Char pushes its box flag; Array pushes [element cell, lgs]; Data pushes
-#     [box, arm count] then per arm [name index, cid, live field count,
+# Authority: comp.ts show_main. The descriptor is ONE FLAT WORD ARRAY: a cell's
+# id is the WORD OFFSET where its cell starts, exactly like show.push(kind) - 1
+# in the reference, and every reference slot holds that offset. A child is
+# appended after the parent's header and its offset is patched into the
+# reserved slot, because appending a variable-length cell moves every later
+# word. Rules reproduced:
+#   * kind = position of the datatype in U32 F32 Nat Char String . Array & 7
+#     (Eql 5), everything else 7;
+#   * Char pushes [3, box]; Array pushes [6, element offset, lgs]; Data pushes
+#     [7, box, arm count] then per arm [name index, cid, live field count,
 #     bracket] (Tuple 2, Con/Nil 1, else 0) then per field [offset, cell];
-#   * box = 1 iff the value layout is a box; offsets start at the tag word
+#   * box = 1 iff the value layout is a box; field offsets start at the tag word
 #     (!box && arms > 1) and advance by the field layout's word count;
 #   * a zero-word root layout is a box;
-#   * a cell is memoized on (type key, layout key) BEFORE recursing, which is
-#     what terminates a recursive datatype. Because an id is reserved before a
-#     child is built, nested references are plain ids and no fixup is needed.
+#   * a cell is memoized on (type key, layout key) BEFORE recursing, so a
+#     recursive datatype terminates and reuses its already known word offset.
 #
-# The module is self-contained so it can be merged into c_backend.bend after
-# the control layer lands: every function takes the CLay context explicitly.
-# Entry point: show_build(ctx, main_type, constructors, families).text is the
-# SHOW_DESC initializer and show_names(constructors) is the SHOW_NAMES one.
+# Entry point: show_build(ctx, main_type, constructors, families) returns the
+# SHOW_DESC initializer; show_names(constructors) is the SHOW_NAMES initializer.
 
 import Base
 import ./backend_ir.bend as BIR
 import ./c_backend_layout.bend as CLay
+import ./index_lookup.bend as IndexLookup
 
-type ShowState is Data:
-  ShowState{cells: Map<&2, String>, memo: Map<&2, Nat>, next: Nat}
+# A word of the flat descriptor: a literal, or a constructor id rendered as
+# CID_<id>. A reference slot starts as WNum 0 and is patched to the child's
+# word offset.
+type Word is Data:
+  WNum{value: Nat}
+  WCid{value: Nat}
 
-# ok false carries the diagnostic; no partially built state is ever used.
+type Patch is Data:
+  Patch{at: Nat, to: Nat}
+
+type ShState is Data:
+  ShState{words: List<&2, Word>, patches: List<&2, Patch>, memo: Map<&2, Nat>}
+
 type Step is Data:
-  Step{ok: Bool, message: String, text: String, id: Nat, state: ShowState}
+  Step{ok: Bool, message: String, id: Nat, state: ShState}
 
-def nat_inc(value: Nat) -> Nat:
-  Nat.add(value, 1n)
+type AppendOut is Data:
+  AppendOut{state: ShState, at: Nat}
 
-def step_fail(message: String, st: ShowState) -> Step:
-  Step{False{}, message, "", 0n, st}
+type ShowOut is Data:
+  ShowOk{desc: String, names: String}
+  ShowFail{message: String}
 
-def show_build(ctx: CLay.Context, main_type: BIR.Descriptor, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>) -> Step:
+def show_build(ctx: CLay.Context, main_type: BIR.Descriptor, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>) -> ShowOut:
+  start = ShState{Nil{}, Nil{}, Map.new(&2, Nat)}
   match CLay.value_layout(ctx, main_type):
-    case CLay.LayoutFailed{message}: step_fail(message, ShowState{Map.new(&2, String), Map.new(&2, Nat), 0n})
+    case CLay.LayoutFailed{message}: ShowFail{message}
     case CLay.LayoutFound{layout}:
-      root = root_layout(layout)
-      start = ShowState{Map.new(&2, String), Map.new(&2, Nat), 0n}
-      match show_node(ctx, main_type, root, families, constructors, start):
-        case Step{ok, message, text, id, state}:
+      match show_node(ctx, main_type, root_layout(layout), families, constructors, start):
+        case Step{ok, message, id, state}:
           match ok:
-            case True{}: show_finish(state, constructors)
-            case False{}: step_fail(message, state)
+            case True{}: show_finish(state)
+            case False{}: ShowFail{message}
 
 def root_layout(layout: CLay.Layout) -> CLay.Layout:
   match CLay.layout_words(layout):
     case 0n: CLay.LayoutBox{CLay.BoxWide{0n}}
     case _: layout
 
-def show_finish(st: ShowState, constructors: List<&2, BIR.ConstructorLayout>) -> Step:
+def show_finish(st: ShState) -> ShowOut:
   match st:
-    case ShowState{cells, memo, next}:
-      Step{True{}, "", show_join(0n, next, cells), 0n, ShowState{cells, memo, next}}
+    case ShState{words, patches, memo}: ShowOk{render_words(apply_patches(words, patches, 0n), ""), ""}
 
-def show_join(index: Nat, count: Nat, cells: Map<&2, String>) -> String:
-  match Nat.is_lt(index, count):
-    case True{}:
-      match IndexLookup.find(String, cells, Nat.show(index)):
-        case None{}: cat([", 0", show_join(Nat.add(index, 1n), count, cells)])
-        case Some{text}: cat([", ", text, show_join(Nat.add(index, 1n), count, cells)])
-    case False{}: ""
+# ---------------------------------------------------------------------------
+# State helpers: append a word, reserve a slot, record a patch
+# ---------------------------------------------------------------------------
+
+def show_node(ctx: CLay.Context, ty: BIR.Descriptor, layout: CLay.Layout, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState) -> Step:
+  key = show_key(ty, layout)
+  match IndexLookup.find(Nat, memo_of(st), key):
+    case Some{offset}: Step{True{}, "", offset, st}
+    case None{}:
+      reserved = words_of(st)
+      at = List.length(&2, Word, words_of(st))
+      memo = Map.set(&2, Nat, memo_of(st), key, at)
+      match show_cell(ctx, ty, layout, families, constructors, ShState{reserved, patches_of(st), memo}):
+        case Step{ok, message, id, state}:
+          match ok:
+            case True{}: Step{True{}, "", at, state}
+            case False{}: Step{False{}, message, at, state}
+
+def words_of(st: ShState) -> List<&2, Word>:
+  match st:
+    case ShState{words, patches, memo}: words
+
+def patches_of(st: ShState) -> List<&2, Patch>:
+  match st:
+    case ShState{words, patches, memo}: patches
+
+def memo_of(st: ShState) -> Map<&2, Nat>:
+  match st:
+    case ShState{words, patches, memo}: memo
+
+def append_word(st: ShState, word: Word) -> AppendOut:
+  AppendOut{ShState{words_of(st) <> [word], patches_of(st), memo_of(st)}, List.length(&2, Word, words_of(st))}
+
+def append_num(st: ShState, value: Nat) -> AppendOut:
+  append_word(st, WNum{value})
+
+def append_cid(st: ShState, value: Nat) -> AppendOut:
+  append_word(st, WCid{value})
+
+def append_patch(st: ShState, at: Nat, to: Nat) -> ShState:
+  ShState{words_of(st), Patch{at, to} <> patches_of(st), memo_of(st)}
 
 # ---------------------------------------------------------------------------
 # Cells
 # ---------------------------------------------------------------------------
 
-def show_node(ctx: CLay.Context, ty: BIR.Descriptor, layout: CLay.Layout, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShowState) -> Step:
-  key = show_key(ty, layout)
-  match IndexLookup.find(Nat, memo_of(st), key):
-    case Some{id}: Step{True{}, "", "", id, st}
-    case None{}:
-      id = next_of(st)
-      reserved = reserve(st, key, id)
-      match show_cell(ctx, ty, layout, families, constructors, reserved, id):
-        case Step{ok, message, text, id, state}:
-          match ok:
-            case True{}: Step{True{}, "", "", id, put_cell(state, id, text)}
-            case False{}: step_fail(message, state)
-
-def memo_of(st: ShowState) -> Map<&2, Nat>:
-  match st:
-    case ShowState{cells, memo, next}: memo
-
-def next_of(st: ShowState) -> Nat:
-  match st:
-    case ShowState{cells, memo, next}: next
-
-def cells_of(st: ShowState) -> Map<&2, String>:
-  match st:
-    case ShowState{cells, memo, next}: cells
-
-def reserve(st: ShowState, key: String, id: Nat) -> ShowState:
-  ShowState{cells_of(st), Map.set(&2, Nat, memo_of(st), key, id), nat_inc(next_of(st))}
-
-def put_cell(st: ShowState, id: Nat, text: String) -> ShowState:
-  ShowState{Map.set(&2, String, cells_of(st), Nat.show(id), text), memo_of(st), next_of(st)}
-
-def show_cell(ctx: CLay.Context, ty: BIR.Descriptor, layout: CLay.Layout, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShowState, id: Nat) -> Step:
+def show_cell(ctx: CLay.Context, ty: BIR.Descriptor, layout: CLay.Layout, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState) -> Step:
   match show_kind(ty, families):
-    case 5n: Step{True{}, "", "5", id, st}
-    case 0n: Step{True{}, "", "0", id, st}
-    case 1n: Step{True{}, "", "1", id, st}
-    case 2n: Step{True{}, "", "2", id, st}
-    case 3n: Step{True{}, "", cat([num(3n), ",", num(box_flag(layout))]), id, st}
-    case 4n: Step{True{}, "", "4", id, st}
-    case 6n: show_array_cell(ctx, ty, families, constructors, st, id)
-    case _: show_data_cell(ctx, ty, layout, families, constructors, st, id)
+    case 5n: append_plain(st, 5n)
+    case 0n: append_plain(st, 0n)
+    case 1n: append_plain(st, 1n)
+    case 2n: append_plain(st, 2n)
+    case 3n: show_char_cell(st, layout)
+    case 4n: append_plain(st, 4n)
+    case 6n: show_array_cell(ctx, ty, families, constructors, st)
+    case _: show_data_cell(ctx, ty, layout, families, constructors, st)
+
+def append_plain(st: ShState, value: Nat) -> Step:
+  match append_num(st, value):
+    case AppendOut{state, at}: Step{True{}, "", at, state}
+
+def show_char_cell(st: ShState, layout: CLay.Layout) -> Step:
+  match append_num(st, 3n):
+    case AppendOut{state, at}:
+      match append_num(state, box_flag(layout)):
+        case AppendOut{state: state2, at}: Step{True{}, "", at, state2}
 
 def box_flag(layout: CLay.Layout) -> Nat:
   match layout:
@@ -127,7 +151,7 @@ def show_kind(ty: BIR.Descriptor, families: List<&2, BIR.Family>) -> Nat:
     case None{}: 7n
     case Some{key}:
       match family_native(key, families):
-        case Some{tag}: native_kind(tag)
+        case Some{native}: native_kind(native)
         case None{}: 7n
 
 def native_kind(native: String) -> Nat:
@@ -141,52 +165,73 @@ def native_kind(native: String) -> Nat:
     case "Array": 6n
     case _: 7n
 
-def show_array_cell(ctx: CLay.Context, ty: BIR.Descriptor, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShowState, id: Nat) -> Step:
+def show_array_cell(ctx: CLay.Context, ty: BIR.Descriptor, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState) -> Step:
   match descriptor_args(ty):
     case +element <> rest:
       match CLay.array_cell(ctx, element):
-        case CLay.CellFailed{message}: step_fail(message, st)
+        case CLay.CellFailed{message}: Step{False{}, message, 0n, st}
         case CLay.CellFound{cell}:
           match cell:
             case CLay.Cell{layout, arr, words, lgs}:
-              match CLay.value_layout(ctx, element):
-                case CLay.LayoutFailed{message}: step_fail(message, st)
-                case CLay.LayoutFound{layout: element_layout}:
-                  match show_node(ctx, element, element_layout, families, constructors, st):
-                    case Step{ok, message, text, element_id, state}:
-                      match ok:
-                        case True{}: Step{True{}, "", cat([num(6n), ",", num(element_id), ",", num(lgs)]), id, state}
-                        case False{}: step_fail(message, state)
-    case Nil{}: step_fail("an Array descriptor without an element type cannot be printed", st)
+              match append_num(st, 6n):
+                case AppendOut{state, at}:
+                  match append_num(state, 0n):
+                    case AppendOut{state: p1, at: slot}:
+                      match append_num(p1, lgs):
+                        case AppendOut{state: p2, at: _}:
+                          match CLay.value_layout(ctx, element):
+                            case CLay.LayoutFailed{message}: Step{False{}, message, 0n, p2}
+                            case CLay.LayoutFound{layout}:
+                              match show_node(ctx, element, layout, families, constructors, p2):
+                                case Step{ok, message, id, state: after}:
+                                  match ok:
+                                    case True{}: Step{True{}, "", at, append_patch(after, slot, id)}
+                                    case False{}: Step{False{}, message, 0n, after}
+    case Nil{}: Step{False{}, "an Array descriptor without an element type cannot be printed", 0n, st}
 
-def show_data_cell(ctx: CLay.Context, ty: BIR.Descriptor, layout: CLay.Layout, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShowState, id: Nat) -> Step:
+def show_data_cell(ctx: CLay.Context, ty: BIR.Descriptor, layout: CLay.Layout, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState) -> Step:
   match descriptor_head(ty):
-    case None{}: step_fail("a datatype without a key cannot be printed", st)
+    case None{}: Step{False{}, "a datatype without a key cannot be printed", 0n, st}
     case Some{key}:
       match family_arms_of(key, families):
-        case None{}: step_fail(cat(["the datatype `", key, "` has no constructors"]), st)
+        case None{}: Step{False{}, cat(["the datatype `", key, "` has no constructors"]), 0n, st}
         case Some{arms}:
           box = box_flag(layout)
           count = List.length(&2, BIR.DescriptorArm, arms)
-          head = cat([num(7n), ",", num(box), ",", num(count)])
-          match show_arms(ctx, arms, layout, box, count, families, constructors, st, head, 0n):
-            case Step{ok, message, text, arm_id, state}:
-              match ok:
-                case True{}: Step{True{}, "", text, id, state}
-                case False{}: step_fail(message, state)
+          match append_num(st, 7n):
+            case AppendOut{state, at}:
+              match append_num(state, box):
+                case AppendOut{state: p1, at: _}:
+                  match append_num(p1, count):
+                    case AppendOut{state: p2, at: _}:
+                      match show_arms(ctx, arms, layout, box, count, families, constructors, p2, 0n):
+                        case Step{ok, message, id, state: after}:
+                          match ok:
+                            case True{}: Step{True{}, "", at, after}
+                            case False{}: Step{False{}, message, 0n, after}
 
-def show_arms(ctx: CLay.Context, arms: List<&2, BIR.DescriptorArm>, layout: CLay.Layout, box: Nat, count: Nat, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShowState, acc: String, name_index: Nat) -> Step:
+def show_arms(ctx: CLay.Context, arms: List<&2, BIR.DescriptorArm>, layout: CLay.Layout, box: Nat, count: Nat, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState, name_index: Nat) -> Step:
   match arms:
-    case Nil{}: Step{True{}, "", acc, 0n, st}
+    case Nil{}: Step{True{}, "", 0n, st}
     case +arm <> rest:
       match arm:
         case BIR.DescriptorArm{key, fields}:
-          head = cat([",", num(name_index), ",", cid_of(key, constructors), ",", num(live_count(fields)), ",", num(arm_bracket(key))])
-          match show_arm_fields(ctx, key, fields, layout, box, count, families, constructors, st, head, tag_start(box, count)):
-            case Step{ok, message, text, arm_id, state}:
-              match ok:
-                case True{}: show_arms(ctx, rest, layout, box, count, families, constructors, state, cat([acc, text]), nat_inc(name_index))
-                case False{}: step_fail(message, state)
+          match append_num(st, name_index):
+            case AppendOut{state, at}:
+              match append_cid(state, cid_index(key, constructors, 0n)):
+                case AppendOut{state: p1, at: _}:
+                  match append_num(p1, live_count(fields)):
+                    case AppendOut{state: p2, at: _}:
+                      match append_num(p2, arm_bracket(key)):
+                        case AppendOut{state: p3, at: _}:
+                          match show_arm_fields(ctx, key, fields, layout, box, count, families, constructors, p3):
+                            case Step{ok, message, id, state: after}:
+                              match ok:
+                                case True{}: show_arms(ctx, rest, layout, box, count, families, constructors, after, nat_inc(name_index))
+                                case False{}: Step{False{}, message, 0n, after}
+
+def nat_inc(value: Nat) -> Nat:
+  Nat.add(value, 1n)
 
 def arm_bracket(key: String) -> Nat:
   match last_segment(key):
@@ -194,14 +239,6 @@ def arm_bracket(key: String) -> Nat:
     case "Con": 1n
     case "Nil": 1n
     case _: 0n
-
-def tag_start(box: Nat, count: Nat) -> Nat:
-  match box:
-    case 1n: 0n
-    case _:
-      match Nat.is_gt(count, 1n):
-        case True{}: 1n
-        case False{}: 0n
 
 def live_count(fields: List<&2, BIR.DescriptorField>) -> Nat:
   List.length(&2, BIR.DescriptorField, live_fields(fields, Nil{}))
@@ -216,52 +253,104 @@ def live_fields(fields: List<&2, BIR.DescriptorField>, acc: List<&2, BIR.Descrip
             case BIR.Erased{}: live_fields(rest, acc)
             case _: live_fields(rest, field <> acc)
 
-def show_arm_fields(ctx: CLay.Context, key: String, fields: List<&2, BIR.DescriptorField>, layout: CLay.Layout, box: Nat, count: Nat, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShowState, acc: String, at: Nat) -> Step:
+def tag_start(box: Nat, count: Nat) -> Nat:
   match box:
-    case 1n: show_slots(ctx, key, fields, families, constructors, st, acc, 0n)
-    case _: show_inline(ctx, key, live_fields(fields, Nil{}), layout, families, constructors, st, acc, at)
+    case 1n: 0n
+    case _:
+      match Nat.is_gt(count, 1n):
+        case True{}: 1n
+        case False{}: 0n
 
-def show_slots(ctx: CLay.Context, key: String, fields: List<&2, BIR.DescriptorField>, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShowState, acc: String, index: Nat) -> Step:
+# Boxed arms read field layouts from the constructor's node (SOURCE ordinals);
+# inline arms read the value layout's arm and advance by each field's words.
+def show_arm_fields(ctx: CLay.Context, key: String, fields: List<&2, BIR.DescriptorField>, layout: CLay.Layout, box: Nat, count: Nat, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState) -> Step:
+  match box:
+    case 1n: show_slots(ctx, key, fields, families, constructors, st)
+    case _: show_inline(ctx, key, live_fields(fields, Nil{}), layout, families, constructors, st, tag_start(box, count))
+
+def show_slots(ctx: CLay.Context, key: String, fields: List<&2, BIR.DescriptorField>, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState) -> Step:
   match CLay.node_layout(ctx, key):
-    case CLay.NodeFailed{message}: step_fail(message, st)
+    case CLay.NodeFailed{message}: Step{False{}, message, 0n, st}
     case CLay.NodeFound{node}:
       match node:
-        case CLay.Node{words, slots, packed}: show_slot_each(ctx, slots, fields, families, constructors, st, acc)
+        case CLay.Node{words, slots, packed}: show_slot_each(ctx, slots, fields, families, constructors, st)
 
-def show_slot_each(ctx: CLay.Context, slots: List<&2, CLay.NodeSlot>, fields: List<&2, BIR.DescriptorField>, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShowState, acc: String) -> Step:
+def show_slot_each(ctx: CLay.Context, slots: List<&2, CLay.NodeSlot>, fields: List<&2, BIR.DescriptorField>, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState) -> Step:
   match slots:
-    case Nil{}: Step{True{}, "", acc, 0n, st}
+    case Nil{}: Step{True{}, "", 0n, st}
     case +slot <> rest:
       match slot:
         case CLay.NodeSlot{ordinal, offset, layout}:
           match field_at(fields, ordinal):
-            case None{}: step_fail("a constructor node slot names no live field", st)
+            case None{}: Step{False{}, "a constructor node slot names no live field", 0n, st}
             case Some{field}:
               match field:
                 case BIR.DescriptorField{key, quantity, ty}:
-                  match show_node(ctx, ty, layout, families, constructors, st):
-                    case Step{ok, message, text, field_id, state}:
-                      match ok:
-                        case True{}: show_slot_each(ctx, rest, fields, families, constructors, state, cat([acc, ",", num(offset), ",", num(field_id)]))
-                        case False{}: step_fail(message, state)
+                  match append_num(st, offset):
+                    case AppendOut{state, at}:
+                      match append_num(state, 0n):
+                        case AppendOut{state: p1, at: slot_at}:
+                          match show_node(ctx, ty, layout, families, constructors, p1):
+                            case Step{ok, message, id, state: after}:
+                              match ok:
+                                case True{}: show_slot_each(ctx, rest, fields, families, constructors, append_patch(after, slot_at, id))
+                                case False{}: Step{False{}, message, 0n, after}
 
-def show_inline(ctx: CLay.Context, key: String, fields: List<&2, BIR.DescriptorField>, layout: CLay.Layout, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShowState, acc: String, at: Nat) -> Step:
+def show_inline(ctx: CLay.Context, key: String, fields: List<&2, BIR.DescriptorField>, layout: CLay.Layout, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState, at: Nat) -> Step:
   match arm_layouts(layout, key):
-    case None{}: step_fail(cat(["the inline layout has no arm `", key, "`"]), st)
-    case Some{layouts}: show_inline_each(ctx, fields, layouts, families, constructors, st, acc, at)
+    case None{}: Step{False{}, cat(["the inline layout has no arm `", key, "`"]), 0n, st}
+    case Some{layouts}: show_inline_each(ctx, fields, layouts, families, constructors, st, at)
 
-def show_inline_each(ctx: CLay.Context, fields: List<&2, BIR.DescriptorField>, layouts: List<&2, CLay.Layout>, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShowState, acc: String, at: Nat) -> Step:
+def show_inline_each(ctx: CLay.Context, fields: List<&2, BIR.DescriptorField>, layouts: List<&2, CLay.Layout>, families: List<&2, BIR.Family>, constructors: List<&2, BIR.ConstructorLayout>, st: ShState, at: Nat) -> Step:
   match fields layouts:
-    case Nil{} _: Step{True{}, "", acc, 0n, st}
+    case Nil{} _: Step{True{}, "", 0n, st}
     case +field <> rest +layout <> rest_layouts:
       match field:
         case BIR.DescriptorField{key, quantity, ty}:
-          match show_node(ctx, ty, layout, families, constructors, st):
-            case Step{ok, message, text, field_id, state}:
-              match ok:
-                case True{}: show_inline_each(ctx, rest, rest_layouts, families, constructors, state, cat([acc, ",", num(at), ",", num(field_id)]), Nat.add(at, CLay.layout_words(layout)))
-                case False{}: step_fail(message, state)
-    case _ _: step_fail("an inline arm's fields and layouts differ in length", st)
+          match append_num(st, at):
+            case AppendOut{state, at: pos}:
+              match append_num(state, 0n):
+                case AppendOut{state: p1, at: slot_at}:
+                  match show_node(ctx, ty, layout, families, constructors, p1):
+                    case Step{ok, message, id, state: after}:
+                      match ok:
+                        case True{}: show_inline_each(ctx, rest, rest_layouts, families, constructors, append_patch(after, slot_at, id), Nat.add(at, CLay.layout_words(layout)))
+                        case False{}: Step{False{}, message, 0n, after}
+    case _ _: Step{False{}, "an inline arm's fields and layouts differ in length", 0n, st}
+
+# ---------------------------------------------------------------------------
+# Patches and rendering
+# ---------------------------------------------------------------------------
+
+def apply_patches(words: List<&2, Word>, patches: List<&2, Patch>, index: Nat) -> List<&2, Word>:
+  match patches:
+    case Nil{}: words
+    case +patch <> rest:
+      match patch:
+        case Patch{at, to}: apply_patches(set_word(words, at, WNum{to}, 0n), rest, index)
+
+def set_word(words: List<&2, Word>, at: Nat, value: Word, index: Nat) -> List<&2, Word>:
+  match words:
+    case Nil{}: Nil{}
+    case +word <> rest:
+      match Nat.is_eq(index, at):
+        case True{}: value <> rest
+        case False{}: word <> set_word(rest, at, value, nat_inc(index))
+
+def render_words(words: List<&2, Word>, acc: String) -> String:
+  match words:
+    case Nil{}: acc
+    case +word <> rest: render_words(rest, cat([acc, render_sep(acc), render_word(word)]))
+
+def render_sep(acc: String) -> String:
+  match String.is_empty(acc):
+    case True{}: ""
+    case False{}: ","
+
+def render_word(word: Word) -> String:
+  match word:
+    case WNum{value}: Nat.show(value)
+    case WCid{value}: cat(["CID_", Nat.show(value)])
 
 # ---------------------------------------------------------------------------
 # Names and keys
@@ -282,6 +371,8 @@ def sep_for(rest: List<&2, BIR.ConstructorLayout>) -> String:
 def quote_name(text: String) -> String:
   cat(["\u{22}", text, "\u{22}"])
 
+# A memo key is the full type key plus a canonical layout key, so two different
+# types of the same shape keep their own arms.
 def show_key(ty: BIR.Descriptor, layout: CLay.Layout) -> String:
   cat([descriptor_key(ty), "@", layout_key(layout)])
 
@@ -303,6 +394,14 @@ def descriptor_key(ty: BIR.Descriptor) -> String:
     case BIR.DescriptorLambda{quantity, body}: cat(["\\", descriptor_key(body)])
     case BIR.DescriptorConstructor{key, args}: cat(["@", key, "(", descriptor_keys(args), ")"])
     case BIR.DescriptorFailure{message}: cat(["!", message])
+    case BIR.DescriptorSubstitution{index, value, body}: cat(["S", Nat.show(index), "(", descriptor_key(value), ";", descriptor_key(body), ")"])
+    case BIR.DescriptorLet{values, body}: cat(["L(", descriptor_keys(values), ";", descriptor_key(body), ")"])
+    case BIR.DescriptorLocal{patterns, values, body}: cat(["Loc(", Nat.show(List.length(&2, BIR.DescriptorPattern, patterns)), ",", descriptor_keys(values), ";", descriptor_key(body), ")"])
+    case BIR.DescriptorMatch{values, cases}: cat(["M(", descriptor_keys(values), ";", descriptor_keys(cases), ")"])
+    case BIR.DescriptorCase{patterns, body}: cat(["C(", Nat.show(List.length(&2, BIR.DescriptorPattern, patterns)), ";", descriptor_key(body), ")"])
+    case BIR.DescriptorBind{value, body}: cat(["B(", descriptor_key(value), ";", descriptor_key(body), ")"])
+    case BIR.DescriptorEquality{left, right, ty}: cat(["E(", descriptor_key(left), ",", descriptor_key(right), ",", descriptor_key(ty), ")"])
+    case BIR.DescriptorReflexivity{}: "R"
     case _: "?"
 
 def descriptor_keys(args: List<&2, BIR.Descriptor>) -> String:
@@ -325,8 +424,17 @@ def quantity_key(quantity: BIR.Quantity) -> String:
 def layout_key(layout: CLay.Layout) -> String:
   match layout:
     case CLay.LayoutWord{word}: cat(["w", word_key(word)])
-    case CLay.LayoutBox{reason}: "B"
+    case CLay.LayoutBox{reason}: cat(["B", box_key(reason)])
     case CLay.LayoutData{words, arms}: cat(["D", Nat.show(List.length(&2, CLay.CWord, words)), ":", arm_keys(arms)])
+
+def box_key(reason: CLay.BoxReason) -> String:
+  match reason:
+    case CLay.BoxOpen{}: "open"
+    case CLay.BoxUnresolved{key}: cat(["unresolved:", key])
+    case CLay.BoxArray{}: "array"
+    case CLay.BoxIo{}: "io"
+    case CLay.BoxRecursive{key}: cat(["rec:", key])
+    case CLay.BoxWide{words}: cat(["wide:", Nat.show(words)])
 
 def word_key(word: CLay.CWord) -> String:
   match word:
@@ -347,9 +455,6 @@ def arm_keys(arms: List<&2, CLay.LayArm>) -> String:
 
 def cat(parts: List<&2, String>) -> String:
   String.join(parts, "")
-
-def num(value: Nat) -> String:
-  Nat.show(value)
 
 def last_segment(key: String) -> String:
   last_segment_list(String.split(key, '.'), "")
@@ -394,19 +499,15 @@ def family_arms_of(key: String, families: List<&2, BIR.Family>) -> Maybe<&2, Lis
             case True{}: Some{arms}
             case False{}: family_arms_of(key, rest)
 
-# Constructor ids are the program's constructor order (comp.ts registers cids in
-# source order); the module exposes the number so the caller can prefix CID_.
-def cid_of(key: String, constructors: List<&2, BIR.ConstructorLayout>) -> String:
-  cat(["CID_", cid_index(key, constructors, 0n)])
-
-def cid_index(key: String, constructors: List<&2, BIR.ConstructorLayout>, index: Nat) -> String:
+# Constructor ids are the program's constructor order, which is the CID order.
+def cid_index(key: String, constructors: List<&2, BIR.ConstructorLayout>, index: Nat) -> Nat:
   match constructors:
-    case Nil{}: "0"
+    case Nil{}: 0n
     case +item <> rest:
       match item:
         case BIR.ConstructorLayout{id, key: known, native, fields}:
           match String.eq(known, key):
-            case True{}: Nat.show(index)
+            case True{}: index
             case False{}: cid_index(key, rest, nat_inc(index))
 
 def field_at(fields: List<&2, BIR.DescriptorField>, ordinal: U32) -> Maybe<&2, BIR.DescriptorField>:
@@ -423,7 +524,6 @@ def field_at_each(fields: List<&2, BIR.DescriptorField>, ordinal: Nat, index: Na
 def arm_layouts(layout: CLay.Layout, key: String) -> Maybe<&2, List<&2, CLay.Layout>>:
   match layout:
     case CLay.LayoutData{words, arms}: arm_layouts_each(arms, key)
-    case _: None{}
 
 def arm_layouts_each(arms: List<&2, CLay.LayArm>, key: String) -> Maybe<&2, List<&2, CLay.Layout>>:
   match arms:
