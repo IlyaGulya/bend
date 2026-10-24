@@ -18,7 +18,7 @@ const fixtures = ['evals/c_target_wide_record', 'evals/c_target_nested_adt',
   'evals/c_target_array_u32', 'evals/c_target_array_wide', 'evals/c_target_multiarm',
   'evals/c_target_char_head', 'evals/c_target_char_to_list', 'evals/c_target_string_from_list',
   'evals/c_target_array_nat', 'evals/c_target_array_nested', 'evals/c_target_drop_fields',
-  'evals/c_target_utf8_literal', 'evals/c_target_utf8_astral',
+  'evals/c_target_utf8_literal', 'evals/c_target_utf8_astral', 'evals/c_target_trigraph_literal',
   'tests/reg/phys_storage_paths'];
 
 for (const name of fixtures) {
