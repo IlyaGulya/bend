@@ -743,34 +743,34 @@ def native_match_insert_constructor_0(v_13: Maybe<&2, Constructor>, +v_1: String
 def insert_constructor(+v_1: String, v_3: Constructor, +v_6: Map<&2, Constructor>) -> Map<&2, Constructor>:
   native_match_insert_constructor_0(IndexLookup.find(Constructor, v_6, v_1), v_1, v_3, v_6)
 
-def normalize_descriptor_value(value: BIR.Descriptor, families: List<&2, BIR.Family>, functions: List<&2, BIR.TypeFunction>) -> BIR.Descriptor:
-  DescriptorNf.normalize_closed(families, functions, value)
+def normalize_descriptor_value(value: BIR.Descriptor, +context: DescriptorNf.NfContext) -> BIR.Descriptor:
+  DescriptorNf.normalize_in(context, value)
 
-def normalize_descriptors(values: List<&2, BIR.Descriptor>, families: List<&2, BIR.Family>, functions: List<&2, BIR.TypeFunction>) -> List<&2, BIR.Descriptor>:
+def normalize_descriptors(values: List<&2, BIR.Descriptor>, +context: DescriptorNf.NfContext) -> List<&2, BIR.Descriptor>:
   match values:
     case Nil{}: Nil{}
-    case +value <> rest: normalize_descriptor_value(value, families, functions) <> normalize_descriptors(rest, families, functions)
+    case +value <> rest: normalize_descriptor_value(value, context) <> normalize_descriptors(rest, context)
 
-def normalize_foreign(value: Maybe<&2, Foreign>, families: List<&2, BIR.Family>, functions: List<&2, BIR.TypeFunction>) -> Maybe<&2, Foreign>:
+def normalize_foreign(value: Maybe<&2, Foreign>, +context: DescriptorNf.NfContext) -> Maybe<&2, Foreign>:
   match value:
     case None{}: None{}
     case Some{Foreign{namespace, imported, sources, span, parameter_types, result}}:
-      Some{Foreign{namespace, imported, sources, span, normalize_descriptors(parameter_types, families, functions), normalize_descriptor_value(result, families, functions)}}
+      Some{Foreign{namespace, imported, sources, span, normalize_descriptors(parameter_types, context), normalize_descriptor_value(result, context)}}
 
-def normalize_foreign_header(header: DefinitionHeader, families: List<&2, BIR.Family>, functions: List<&2, BIR.TypeFunction>) -> DefinitionHeader:
+def normalize_foreign_header(header: DefinitionHeader, +context: DescriptorNf.NfContext) -> DefinitionHeader:
   match header:
     case DefinitionHeader{symbol, key, code, parameters, quantities, type_only, primitive, foreign, fast}:
-      DefinitionHeader{symbol, key, code, parameters, quantities, type_only, primitive, normalize_foreign(foreign, families, functions), fast}
+      DefinitionHeader{symbol, key, code, parameters, quantities, type_only, primitive, normalize_foreign(foreign, context), fast}
 
-def normalize_foreign_definition(definition: Definition, families: List<&2, BIR.Family>, functions: List<&2, BIR.TypeFunction>) -> Definition:
+def normalize_foreign_definition(definition: Definition, +context: DescriptorNf.NfContext) -> Definition:
   match definition:
     case Definition{header, binders, result, body, checked, scope, native, quantity_prefix}:
-      Definition{normalize_foreign_header(header, families, functions), binders, result, body, checked, scope, native, quantity_prefix}
+      Definition{normalize_foreign_header(header, context), binders, result, body, checked, scope, native, quantity_prefix}
 
-def normalize_foreign_definitions(definitions: List<&2, Definition>, families: List<&2, BIR.Family>, functions: List<&2, BIR.TypeFunction>) -> List<&2, Definition>:
+def normalize_foreign_definitions(definitions: List<&2, Definition>, +context: DescriptorNf.NfContext) -> List<&2, Definition>:
   match definitions:
     case Nil{}: Nil{}
-    case +definition <> rest: normalize_foreign_definition(definition, families, functions) <> normalize_foreign_definitions(rest, families, functions)
+    case +definition <> rest: normalize_foreign_definition(definition, context) <> normalize_foreign_definitions(rest, context)
 
 def export_entry(value: Maybe<&2, DefinitionHeader>) -> Maybe<&2, BIR.Entry>:
   match value:
@@ -825,15 +825,15 @@ def export_facts(v_0: Arena.Arena, key: String, definitions: List<&2, Definition
             case CatalogResult{v_20, signature}:
               CatalogResult{v_20, ExportFacts{live_arrow_types(signature)}}
 
-def exports(keys: List<&2, String>, registry: Registry, v_0: Arena.Arena, definitions: List<&2, Definition>, signatures: List<&2, Scope.ArenaGlobal>, families: List<&2, BIR.Family>, functions: List<&2, BIR.TypeFunction>) -> CatalogResult<List<&2, BIR.Export>>:
+def exports(keys: List<&2, String>, registry: Registry, v_0: Arena.Arena, definitions: List<&2, Definition>, signatures: List<&2, Scope.ArenaGlobal>, +context: DescriptorNf.NfContext) -> CatalogResult<List<&2, BIR.Export>>:
   match keys:
     case Nil{}: CatalogResult{v_0, Nil{}}
     case key <> rest:
       match export_facts(v_0, key, definitions, signatures):
         case CatalogResult{v_20, ExportFacts{parameter_types}}:
-          match exports(rest, registry, v_20, definitions, signatures, families, functions):
+          match exports(rest, registry, v_20, definitions, signatures, context):
             case CatalogResult{v_21, tail}:
-              CatalogResult{v_21, BIR.Export{key, export_entry(definition_key(registry, key)), normalize_descriptors(parameter_types, families, functions)} <> tail}
+              CatalogResult{v_21, BIR.Export{key, export_entry(definition_key(registry, key)), normalize_descriptors(parameter_types, context)} <> tail}
 
 # Reachability is a visited-set walk, not reduction and not fuel-bounded.
 # Register before traversing a body so recursive descriptor functions terminate.
@@ -1422,10 +1422,10 @@ def native_match_prepare_modules_2(v_2: List<&2, IR.LoadedModule>, v_4: List<&2,
 def prepare_modules(v_0: Arena.Arena, v_2: List<&2, IR.LoadedModule>, v_4: List<&2, Checked.ModuleMetadata>, v_6: Bool, v_8: Preparation) -> CatalogResult<Preparation>:
   native_match_prepare_modules_2(v_2, v_4, v_0, v_6, v_8)
 
-def ending(requested: Maybe<&2, List<&2, String>>, main: Maybe<&2, BIR.Descriptor>, registry: Registry, v_0: Arena.Arena, definitions: List<&2, Definition>, signatures: List<&2, Scope.ArenaGlobal>, families: List<&2, BIR.Family>, functions: List<&2, BIR.TypeFunction>) -> CatalogResult<BIR.Ending>:
+def ending(requested: Maybe<&2, List<&2, String>>, main: Maybe<&2, BIR.Descriptor>, registry: Registry, v_0: Arena.Arena, definitions: List<&2, Definition>, signatures: List<&2, Scope.ArenaGlobal>, +context: DescriptorNf.NfContext) -> CatalogResult<BIR.Ending>:
   match requested:
     case Some{keys}:
-      match exports(keys, registry, v_0, definitions, signatures, families, functions):
+      match exports(keys, registry, v_0, definitions, signatures, context):
         case CatalogResult{v_20, values}: CatalogResult{v_20, BIR.Library{values}}
     case None{}:
       match main:
@@ -1436,8 +1436,9 @@ def native_match_build_finish_0(v_74: CatalogResult<Needed>, v_2: List<&2, IR.Lo
     case CatalogResult{v_40, Needed{v_41, _}}:
       v_44 = Registry{v_27, v_29}
       v_45 = List.reverse(&2, BIR.Family, v_30)
-      v_46 = normalize_foreign_definitions(v_25, v_45, v_41)
-      match ending(v_10, v_34, v_44, v_40, v_46, v_4, v_45, v_41):
+      v_47 = DescriptorNf.nf_context(v_45, v_41)
+      v_46 = normalize_foreign_definitions(v_25, v_47)
+      match ending(v_10, v_34, v_44, v_40, v_46, v_4, v_47):
         case CatalogResult{v_42, v_43}:
           v_48 = Catalog{List.reverse(&2, Definition, v_46), v_44, List.reverse(&2, BIR.ConstructorLayout, v_28), v_45, v_41, v_31, v_43}
           Built{Checked.CheckedProgram{v_42, v_2, v_4, v_6}, v_48}

@@ -514,6 +514,11 @@ def normalize(context: NfContext, descriptor: BIR.Descriptor, env: List<&2, NfVa
 def normalize_closed(families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>, descriptor: BIR.Descriptor) -> BIR.Descriptor:
   normalize(nf_context(families, type_functions), descriptor, Nil{}, default_fuel())
 
+# One context for a whole annotation pass: build it once, normalize every
+# stored field through it. Rebuilding the indexes per field is pure but O(n^2).
+def normalize_in(+context: NfContext, descriptor: BIR.Descriptor) -> BIR.Descriptor:
+  normalize(context, descriptor, Nil{}, 1024n)
+
 # The outer named application of a checked descriptor, with the arguments it
 # is applied to: the head the effect-answer rule needs.
 def outer_application(descriptor: BIR.Descriptor) -> Maybe<&2, NfApp>:
