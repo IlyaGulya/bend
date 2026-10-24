@@ -614,20 +614,10 @@ def map_u32(map: Map<&2, U32>, key: String) -> U32:
     case Some{value}: value
     case None{}: 0
 
-def map_str(map: Map<&2, String>, key: String) -> String:
-  match IndexLookup.find(String, map, key):
-    case Some{value}: value
-    case None{}: ""
-
 def map_set_first(+map: Map<&2, String>, +key: String, value: String) -> Map<&2, String>:
   match IndexLookup.find(String, map, key):
     case Some{_}: map
     case None{}: Map.set(&2, String, map, key, value)
-
-def map_set_first_u32(+map: Map<&2, U32>, +key: String, value: U32) -> Map<&2, U32>:
-  match IndexLookup.find(U32, map, key):
-    case Some{_}: map
-    case None{}: Map.set(&2, U32, map, key, value)
 
 def nat_min(+left: Nat, +right: Nat) -> Nat:
   match Nat.is_lt(left, right):
@@ -666,11 +656,6 @@ def ctor_keys(constructors: List<&2, BIR.ConstructorLayout>) -> List<&2, String>
     case +row <> rest:
       match row:
         case BIR.ConstructorLayout{_, key, _, _}: key <> ctor_keys(rest)
-
-def ctor_index(key: String, constructors: List<&2, BIR.ConstructorLayout>) -> String:
-  match list_index(ctor_keys(constructors), key):
-    case Some{value}: String.append(U32.show(value), "u")
-    case None{}: "0u"
 
 def entry_at(entries: List<&2, Entry>, +index: U32) -> Maybe<&2, Entry>:
   match entries:
@@ -866,15 +851,6 @@ def cid_symbol(index: U32) -> String:
 def fid_symbol(index: U32) -> String:
   String.append("FID_", U32.show(index))
 
-def fid_symbol_of(+key: String, by_code: Map<&2, U32>, by_foreign: Map<&2, U32>) -> String:
-  match IndexLookup.find(U32, by_code, key):
-    case Some{index}: fid_symbol(index)
-    case None{}: fid_symbol(map_u32(by_foreign, key))
-
-# The regenerated runtime template still spells the fixed prelude constructors
-# symbolically (gen_c_runtime.ts maps CID(k)/FID(k) to CID_<UPPER(k)>). These
-# aliases are the only authoritative symbolic names: each resolves through its
-# exact program key and a missing key is a hard error, never a guessed name.
 def runtime_cid_alias(+alias: String, +key: String, cids: List<&2, CidRow>) -> Part:
   match find_cid_row(key, cids):
     case None{}: PartFail{cat(["the program has no `", key, "` constructor for the runtime symbol ", alias])}
@@ -951,15 +927,6 @@ def key_layout(+key: String, constructors: List<&2, BIR.ConstructorLayout>) -> M
             case True{}: Some{row}
             case False{}: key_layout(key, rest)
 
-def native_kind(native: Maybe<&2, String>) -> String:
-  match native:
-    case None{}: "generic"
-    case Some{marker}: native_marker(marker)
-
-# Only the intrinsic families of the C runtime have their own representation:
-# WORDS {U32, F32, Nat} and Array. Every other constructor, all Base ADTs
-# included, is the generic ctr_build form: term_pak(cid, 0) for no live field,
-# term_pak(cid, word) for one w32 live field, a node otherwise.
 def native_marker(+marker: String) -> String:
   match String.eq(marker, "Nat.Zero"):
     case True{}: "natzero"
@@ -989,11 +956,6 @@ def native_marker_5(marker: String) -> String:
   match String.eq(marker, "Array.ANode"):
     case True{}: "anode"
     case False{}: "generic"
-
-def field_w32_key(is_u32: Bool, is_f32: Bool) -> Bool:
-  match is_u32:
-    case True{}: True{}
-    case False{}: is_f32
 
 def live_fields(fields: List<&2, BIR.DescriptorField>, +acc: List<&2, BIR.DescriptorField>) -> List<&2, BIR.DescriptorField>:
   match fields:
@@ -1145,11 +1107,6 @@ def arg_strings_each(parts: List<&2, Part>, +acc: List<&2, String>) -> Maybe<&2,
         case PartFail{message}: None{}
         case PartOk{text}: arg_strings_each(rest, text <> acc)
 
-def call_args(+values: List<&2, String>) -> String:
-  match values:
-    case Nil{}: "0"
-    case _: cat(["(Term[]){", String.join(values, ", "), "}"])
-
 def op_part(op: BIR.Op, +plan: Plan) -> Part:
   match op:
     case BIR.Copy{value}: atom_part(value, plan)
@@ -1194,11 +1151,6 @@ def arm_member_one(found: Bool, key: String, rest: List<&2, BIR.DescriptorArm>) 
     case True{}: True{}
     case False{}: arm_member(key, rest)
 
-def family_arms_check(found: Bool, arms: List<&2, BIR.DescriptorArm>, rest: List<&2, BIR.Family>) -> Maybe<&2, List<&2, BIR.DescriptorArm>>:
-  match found:
-    case True{}: Some{arms}
-    case False{}: family_arms_rest(rest)
-
 def family_arms_rest(rest: List<&2, BIR.Family>) -> Maybe<&2, List<&2, BIR.DescriptorArm>>:
   match rest:
     case Nil{}: None{}
@@ -1220,13 +1172,6 @@ def arm_index_one(found: Bool, key: String, rest: List<&2, BIR.DescriptorArm>, +
 
 # An inline enum is a family with more than one arm, all of them nullary; its
 # values are the raw arm index, exactly as the current C emitter lays them out.
-def inline_tag_arms(key: String, +arms: List<&2, BIR.DescriptorArm>) -> Maybe<&2, Nat>:
-  match Bool.and(all_arms_nullary(arms), Nat.is_gt(List.length(&2, BIR.DescriptorArm, arms), 1n)):
-    case True{}: arm_index(key, arms, 0n)
-    case False{}: None{}
-
-# The physical world is the storage module's own context: the CLay context plus
-# the constructor/family facts and the canonical CID rows the layout needs.
 def phys_world(+plan: Plan) -> Phys.World:
   match plan:
     case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
@@ -1266,11 +1211,6 @@ def values_part(values: List<&2, Part>, +acc: List<&2, String>) -> Maybe<&2, Lis
         case PartFail{message}: None{}
         case PartOk{text}: values_part(rest, text <> acc)
 
-def base_construct_1(+kind: String, +args: List<&2, String>) -> Maybe<&2, String>:
-  match String.eq(kind, "natsucc"):
-    case True{}: Some{cat(["nat_chk(e, ", list_at(args, 0n), " + 1)"])}
-    case False{}: base_construct_2(kind, args)
-
 def base_construct_2(+kind: String, +args: List<&2, String>) -> Maybe<&2, String>:
   match String.eq(kind, "u32"):
     case True{}: Some{cat(["term_word(e, ", list_at(args, 0n), ")"])}
@@ -1296,22 +1236,10 @@ def project_part(value: BIR.Atom, +constructor: U32, field: U32, +plan: Plan) ->
     case PartFail{message}: PartFail{message}
     case PartOk{text}: Phys.project_part(text, constructor, field, phys_world(plan))
 
-def ctor_key_of(+id: U32, constructors: List<&2, BIR.ConstructorLayout>) -> String:
-  match layout_of(id, constructors):
-    case Some{row}:
-      match row:
-        case BIR.ConstructorLayout{id, key, native, fields}: key
-    case None{}: ""
-
 def hastag_part(value: BIR.Atom, +constructor: U32, +plan: Plan) -> Part:
   match atom_part(value, plan):
     case PartFail{message}: PartFail{message}
     case PartOk{text}: Phys.hastag_part(text, constructor, phys_world(plan))
-
-def hastag_expr_3(+kind: String, value: String, cid_part: Part) -> Part:
-  match String.eq(kind, "f32"):
-    case True{}: okp("1")
-    case False{}: hastag_expr_4(kind, value, cid_part)
 
 def hastag_expr_4(+kind: String, +value: String, cid_part: Part) -> Part:
   match String.eq(kind, "aleaf"):
@@ -1373,23 +1301,6 @@ def is_array_primitive(primitive: BIR.Primitive) -> Bool:
     case BIR.PrimIsArrayLeaf{}: True{}
     case BIR.PrimIsArrayNode{}: True{}
     case _: False{}
-
-def primitive_label(primitive: BIR.Primitive) -> String:
-  match primitive:
-    case BIR.PrimArrayNew{}: "array_new"
-    case BIR.PrimArrayGet{}: "array_get"
-    case BIR.PrimArraySet{}: "array_set"
-    case BIR.PrimArraySwap{}: "array_swap"
-    case BIR.PrimArraySize{}: "array_size"
-    case BIR.PrimArrayClone{}: "array_clone"
-    case BIR.PrimArrayLeaf{}: "array_leaf"
-    case BIR.PrimArrayNode{}: "array_node"
-    case BIR.PrimArrayLeafValue{}: "array_leaf_value"
-    case BIR.PrimArrayLeft{}: "array_left"
-    case BIR.PrimArrayRight{}: "array_right"
-    case BIR.PrimIsArrayLeaf{}: "is_array_leaf"
-    case BIR.PrimIsArrayNode{}: "is_array_node"
-    case _: "primitive"
 
 def prim_call_part(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, +plan: Plan) -> Part:
   match arg_strings(args, plan):
@@ -2685,14 +2596,6 @@ def cid_table(cids: List<&2, CidRow>) -> String:
       match row:
         case CidRow{cid, key, arity, hot}: String.concat(["{ ", Nat.show(arity), ", ", hot_text(hot), " }, ", cid_table(rest)])
 
-def runtime_fid_aliases(+entries: List<&2, Entry>) -> String:
-  String.concat([
-    "#define FID_IO_EMIT FID_", U32.show(rt_entry(entries, 2n)), "\n",
-    "#define FID_CLO_APPLY FID_", U32.show(rt_entry(entries, 3n)), "\n",
-    "#define FID_EXIT FID_", U32.show(rt_entry(entries, 4n)), "\n",
-    "#define FID_ENTER FID_", U32.show(rt_entry(entries, 5n)), "\n"
-  ])
-
 def fid_table(rows: List<&2, SegText>) -> String:
   match rows:
     case Nil{}: " };\n"
@@ -2831,32 +2734,6 @@ def part_text(part: Part) -> String:
   match part:
     case PartOk{text}: text
     case PartFail{message}: ""
-
-def helper_prototypes() -> String:
-  cat([
-    "static u64 nat_chk(Env e, u64 n);\n",
-    "static u64 nat_mul(Env e, u64 a, u64 b);\n",
-    "static void err_post(Corpus H, Err code);\n",
-    "static u32 cls_fit(u32 words);\n",
-    "static u64 heap_alloc(Env e, u32 cls);\n",
-    "static u64 term_peek(DEV u64* H, Term t);\n",
-    "static Term term_keep(Env e, Term t, u32 k);\n",
-    "static void term_drop(Env e, Term t);\n",
-    "static u64 ctr_take(Env e, Term t, u32 n, THR Term* out);\n",
-    "static void spare_free(Env e, u32 cls, u64 loc);\n",
-    "static u32 blk_cls(Term t);\n",
-    "static Term blk_node(Env e, Term l, Term r);\n",
-    "static Term blk_half(Env e, Term a, u32 hi);\n",
-    "static Term blk_copy(Env e, Term a);\n",
-    "static Term blk_new(Env e, bool arr, u64 d, u32 lgs, u32 n, THR Term* v);\n",
-    "static u64 blk_at(Term a, u64 i, u32 lgs);\n",
-    "static Term blk_read(DEV u64* H, bool arr, u64 loc, u32 i);\n",
-    "static void blk_write(DEV u64* H, bool arr, u64 loc, u32 i, Term v);\n",
-    "static Term term_word(Env e, Term w);\n",
-    "static Term io_str(Env e, const char* p, u64 n);\n",
-    "static Term f32_show(Env e, Term x);\n",
-    "static Term f32_read(Env e, Term s);\n"
-  ])
 
 def helper_core() -> String:
   cat([
