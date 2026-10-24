@@ -38411,28 +38411,28 @@
         ],
         "inputs": {
           "bend2/selfhost/emitter.bend": "72085ea8aa90686cf7d105a7ab015659c8e9d71a25a5c84ac3a5b95b781e7a05",
-          "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/emitter.bend": "72085ea8aa90686cf7d105a7ab015659c8e9d71a25a5c84ac3a5b95b781e7a05",
-          "/private/tmp/bend-fir-sharedem-754/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
-          "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
-          "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
-          "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/checker_arena.bend": "fb8651ab2e6304faded5eb312ffe95175a177254f7dd704eca7a9b0896a40e31",
-          "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
-          "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
-          "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/index_lookup.bend": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
-          "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
-          "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/backend_ir.bend": "3614f816b109012c2ccb202ce6164efad9d82b1bf5f9decbc52c27ebaafe94c5",
-          "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/js_emit.bend": "e0e986cc94705472fd7303575ac6c35efe2ea20299dfb1c1b5f6cf89b3da1dab",
-          "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/backend_lower.bend": "465cdf16cdf5a3aae3096f12c8453a48f3264d0afb9d6bb16d9d4a4f5cd52661",
-          "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/lower_catalog.bend": "d682aae92f1ce479ba607c4246836d08f5d48613fefa83ee75a0229f007d3305",
-          "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/descriptor_nf.bend": "747dc747fcb1a6b6c1fcbf31a3e164f998fd5fa502f87a8ad3a1facd13859973",
-          "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
-          "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/js_backend.bend": "45e8916b25f906dc3040b246504034d5fe58229f8225c8ece488a5aa3200ba8d",
-          "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/c_emit_core.bend": "f690db5b6054d4f647b5c02e1281923d5cc66b24c8c2fff7859d811efc5ba380",
-          "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/c_backend.bend": "c5849468ed8eb51bd0605d2a070868bde0cf7c6e53b9273d72fcbb41d8695fde",
-          "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/c_backend_link.bend": "606ce07caaf96c28c1885947897bcc2be1e5949481068e77c5303134f70e1e51",
-          "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/c_backend_layout.bend": "a9f2d5d7d101665f390fb88cd6901947773fbf2444fc6b76504f9537213cdc77",
-          "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/c_backend_physical.bend": "b18e58f11ea16338d6763f8ea419f75d92e21f9978dcebbd1a283dba08a38989",
-          "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/c_backend_sharing.bend": "ffaf97c528c88490fca33a5115e6a6e479d451bc0726cc4f0cb6c5b9b6119edb",
+          "/private/tmp/bend-fir-root-aa9/bend2/selfhost/emitter.bend": "72085ea8aa90686cf7d105a7ab015659c8e9d71a25a5c84ac3a5b95b781e7a05",
+          "/private/tmp/bend-fir-root-aa9/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+          "/private/tmp/bend-fir-root-aa9/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "/private/tmp/bend-fir-root-aa9/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+          "/private/tmp/bend-fir-root-aa9/bend2/selfhost/checker_arena.bend": "fb8651ab2e6304faded5eb312ffe95175a177254f7dd704eca7a9b0896a40e31",
+          "/private/tmp/bend-fir-root-aa9/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+          "/private/tmp/bend-fir-root-aa9/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+          "/private/tmp/bend-fir-root-aa9/bend2/selfhost/index_lookup.bend": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
+          "/private/tmp/bend-fir-root-aa9/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+          "/private/tmp/bend-fir-root-aa9/bend2/selfhost/backend_ir.bend": "3614f816b109012c2ccb202ce6164efad9d82b1bf5f9decbc52c27ebaafe94c5",
+          "/private/tmp/bend-fir-root-aa9/bend2/selfhost/js_emit.bend": "e0e986cc94705472fd7303575ac6c35efe2ea20299dfb1c1b5f6cf89b3da1dab",
+          "/private/tmp/bend-fir-root-aa9/bend2/selfhost/backend_lower.bend": "465cdf16cdf5a3aae3096f12c8453a48f3264d0afb9d6bb16d9d4a4f5cd52661",
+          "/private/tmp/bend-fir-root-aa9/bend2/selfhost/lower_catalog.bend": "d682aae92f1ce479ba607c4246836d08f5d48613fefa83ee75a0229f007d3305",
+          "/private/tmp/bend-fir-root-aa9/bend2/selfhost/descriptor_nf.bend": "747dc747fcb1a6b6c1fcbf31a3e164f998fd5fa502f87a8ad3a1facd13859973",
+          "/private/tmp/bend-fir-root-aa9/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+          "/private/tmp/bend-fir-root-aa9/bend2/selfhost/js_backend.bend": "45e8916b25f906dc3040b246504034d5fe58229f8225c8ece488a5aa3200ba8d",
+          "/private/tmp/bend-fir-root-aa9/bend2/selfhost/c_emit_core.bend": "f690db5b6054d4f647b5c02e1281923d5cc66b24c8c2fff7859d811efc5ba380",
+          "/private/tmp/bend-fir-root-aa9/bend2/selfhost/c_backend.bend": "c5849468ed8eb51bd0605d2a070868bde0cf7c6e53b9273d72fcbb41d8695fde",
+          "/private/tmp/bend-fir-root-aa9/bend2/selfhost/c_backend_link.bend": "606ce07caaf96c28c1885947897bcc2be1e5949481068e77c5303134f70e1e51",
+          "/private/tmp/bend-fir-root-aa9/bend2/selfhost/c_backend_layout.bend": "a9f2d5d7d101665f390fb88cd6901947773fbf2444fc6b76504f9537213cdc77",
+          "/private/tmp/bend-fir-root-aa9/bend2/selfhost/c_backend_physical.bend": "b18e58f11ea16338d6763f8ea419f75d92e21f9978dcebbd1a283dba08a38989",
+          "/private/tmp/bend-fir-root-aa9/bend2/selfhost/c_backend_sharing.bend": "ffaf97c528c88490fca33a5115e6a6e479d451bc0726cc4f0cb6c5b9b6119edb",
           "bend2/selfhost/backend_lower.bend": "465cdf16cdf5a3aae3096f12c8453a48f3264d0afb9d6bb16d9d4a4f5cd52661",
           "bend2/selfhost/c_backend.bend": "c5849468ed8eb51bd0605d2a070868bde0cf7c6e53b9273d72fcbb41d8695fde",
           "bend2/selfhost/c_backend_layout.bend": "a9f2d5d7d101665f390fb88cd6901947773fbf2444fc6b76504f9537213cdc77",
@@ -92836,79 +92836,79 @@
   ],
   "ownedModules": [
     {
-      "source": "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/ast.bend",
+      "source": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/ast.bend",
       "sourceSha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
-      "output": "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/ast.bend",
+      "output": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/ast.bend",
       "outputSha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/checker_arena.bend",
+      "source": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/checker_arena.bend",
       "sourceSha256": "fb8651ab2e6304faded5eb312ffe95175a177254f7dd704eca7a9b0896a40e31",
-      "output": "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/checker_arena.bend",
+      "output": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/checker_arena.bend",
       "outputSha256": "fb8651ab2e6304faded5eb312ffe95175a177254f7dd704eca7a9b0896a40e31",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/scope_lookup.bend",
+      "source": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/scope_lookup.bend",
       "sourceSha256": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
-      "output": "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/scope_lookup.bend",
+      "output": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/scope_lookup.bend",
       "outputSha256": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/checker_ir.bend",
+      "source": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/checker_ir.bend",
       "sourceSha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
-      "output": "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/checker_ir.bend",
+      "output": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/checker_ir.bend",
       "outputSha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/index_lookup.bend",
+      "source": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/index_lookup.bend",
       "sourceSha256": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
-      "output": "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/index_lookup.bend",
+      "output": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/index_lookup.bend",
       "outputSha256": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/path.bend",
+      "source": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/path.bend",
       "sourceSha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
-      "output": "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/path.bend",
+      "output": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/path.bend",
       "outputSha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/loaded_module.bend",
+      "source": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/loaded_module.bend",
       "sourceSha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
-      "output": "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/loaded_module.bend",
+      "output": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/loaded_module.bend",
       "outputSha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/checked_frontend.bend",
+      "source": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/checked_frontend.bend",
       "sourceSha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
-      "output": "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/checked_frontend.bend",
+      "output": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/checked_frontend.bend",
       "outputSha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/backend_ir.bend",
+      "source": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/backend_ir.bend",
       "sourceSha256": "3614f816b109012c2ccb202ce6164efad9d82b1bf5f9decbc52c27ebaafe94c5",
-      "output": "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/backend_ir.bend",
+      "output": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/backend_ir.bend",
       "outputSha256": "3614f816b109012c2ccb202ce6164efad9d82b1bf5f9decbc52c27ebaafe94c5",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/c_backend_sharing.bend",
+      "source": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/c_backend_sharing.bend",
       "sourceSha256": "ffaf97c528c88490fca33a5115e6a6e479d451bc0726cc4f0cb6c5b9b6119edb",
-      "output": "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/c_backend_sharing.bend",
+      "output": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/c_backend_sharing.bend",
       "outputSha256": "ffaf97c528c88490fca33a5115e6a6e479d451bc0726cc4f0cb6c5b9b6119edb",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/emitter.bend",
+      "source": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/emitter.bend",
       "sourceSha256": "72085ea8aa90686cf7d105a7ab015659c8e9d71a25a5c84ac3a5b95b781e7a05",
-      "output": "/private/tmp/bend-fir-sharedem-754/checkpoints/emitter_owned_v1.bend",
+      "output": "/private/tmp/bend-fir-root-aa9/checkpoints/emitter_owned_v1.bend",
       "outputSha256": "9c78550607446995e7a97000ea7184f266681d1f9b0172d0d8e508b66f827580",
       "extractions": [
         {
@@ -98793,16 +98793,16 @@
       ]
     },
     {
-      "source": "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/core.bend",
+      "source": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/core.bend",
       "sourceSha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
-      "output": "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/core.bend",
+      "output": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/core.bend",
       "outputSha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
       "extractions": []
     },
     {
-      "source": "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/sha256.bend",
+      "source": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/sha256.bend",
       "sourceSha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
-      "output": "/private/tmp/bend-fir-sharedem-754/bend2/selfhost/sha256.bend",
+      "output": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/sha256.bend",
       "outputSha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
       "extractions": []
     }
