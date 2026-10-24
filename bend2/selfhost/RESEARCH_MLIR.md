@@ -6,6 +6,17 @@ commit, so every BIR line number below is current, not historical).
 All external material was read on **2026-10-24** at the URLs in §12; upstream claims were
 re-checked against the actual files where a documented path could have been stale (§2.2).
 
+Revision 2 (2026-10-24, after review): the verdict was rebalanced so that MLIR's
+fact-preserving/custom-pass benefit is stated as plausible-but-unmeasured rather than
+redundant; the affine section is now a terminology warning instead of a claim about the
+hypothesis; the opaque-value row no longer says arithmetic is impossible; the affinity
+analysis now requires carried use facts + verifier + explicit consume/type distinction
+instead of relying on non-speculatability; the Metal route is qualified (SPIR-V→MSL) instead
+of declared unavailable; debug info is separated into line-accurate (blocked by missing
+spans) and name-based (possible today); M1 acceptance now requires valid-program semantics,
+not only malformed-IR rejection; and descriptor encoding is presented as a design choice
+between attributes and ops.
+
 Labels used throughout:
 
 | Label | Meaning |
@@ -32,18 +43,25 @@ lowering**, on the evidence of Modular's own compiler, which is built entirely o
 ([MojoCompilerWalkthrough.md](https://github.com/modular/modular/blob/main/Mojo/docs/compiler/MojoCompilerWalkthrough.md#mlir-dialects-reference),
 read 2026-10-24: "The Mojo compiler (KGEN …) is built entirely on top of MLIR").
 
-The hypothesis has three separable parts, and they do not have the same answer:
+The hypothesis has four separable parts. **None of them is closed by argument alone**; each
+is marked with what would settle it:
 
-1. **"An IR with regions, dominance, verifiers and interfaces would help."** Largely true —
-   but only for the part of the backend that is currently *unchecked* (§4.6), not for
-   codegen.
-2. **"MLIR's dialects/optimizations would make generated code better than what we emit
-   today."** Mostly false for the boxed-Term runtime: the optimization blockers are the
-   value representation and the runtime ABI, not the IR (§4.3, §7). Whatever LLVM-level
-   optimization is available through MLIR is already available by compiling the emitted C
-   with clang (§7, option C).
-3. **"MLIR's affine dialect matches Bend's affine quantities."** Falsified: same word,
-   unrelated concepts (§5).
+1. **"An IR with regions, dominance, verifiers and interfaces would help."** Plausible, and
+   cheap to test: the backend's structural obligations are currently unvalidated (§4.6).
+   Settled by M1 (§9).
+2. **"A higher-level IR keeps facts that C lowering destroys, so custom passes and diagnostics
+   get better."** Plausible and *untested*. This is the strongest pro-MLIR argument and it is
+   **not** refuted by "clang also runs LLVM": clang receives C, in which Bend's descriptors,
+   closure structure, region/case structure and affinity facts no longer exist. Whether
+   passes over those preserved facts pay for themselves is an experiment (M2/M3), not a
+   conclusion (§7).
+3. **"Generated code would be faster."** Open. The known optimization blockers are the
+   boxed-Term representation and the runtime ABI, which no IR choice removes (§4.3); but
+   nothing here measures either route, and no comparative performance claim is made.
+4. **Naming.** Bend's `Affine`/`Many` and MLIR's `affine` dialect are unrelated concepts (§5).
+   This is a terminology warning so a design decision is not made on the shared word — it is
+   **not** a finding about the user's hypothesis, which was about pipeline fit and pointed at
+   the walkthrough's dialect list, not at the affine dialect.
 
 ---
 
@@ -52,19 +70,22 @@ The hypothesis has three separable parts, and they do not have the same answer:
 | Claim | Verdict | Evidence |
 |---|---|---|
 | MLIR can express BIR's lexical `Region`/`LeaveRegion` control flow | **Yes, but not natively.** MLIR's scoping rule matches BIR exactly; its *branching* rule forbids the exit. Three encodings exist, all with a cost (§4.1). | LangRef §Value Scoping, §Blocks; BIR `Block` at `bend2/selfhost/backend_ir.bend:194-202` |
-| BIR maps to MLIR SSA directly | **No.** BIR atoms carry no type; MLIR requires a static type per value. Either an opaque `!bend.value` (kills `arith`/`math`) or a new type-recovery analysis that re-does work `BL-2` says was deliberately erased. | `Atom` `backend_ir.bend:13-23`, erasure law `BIR_LAWS.md` §4.2 |
-| MLIR's verifier would buy something real | **Yes, the single clearest win.** `WF-1…WF-11` are currently `[N]/[O]` — specification-only, no validator (`BIR_LAWS.md` §3, §3.7). An ODS'd dialect turns most of them into mechanical checks. | DefiningDialects/ODS `hasVerifier`/`hasRegionVerifier` |
-| MLIR's affine dialect models Bend's `Affine`/`Many` | **No.** MLIR affine is polyhedral index algebra (index-typed, affine maps, constant positive step). Bend affine is a linear-use *resource* discipline. | Affine dialect doc; `Use`/`Quantity` `backend_ir.bend:6-11`; `BL-3` |
-| MLIR would give us Metal | **No.** Upstream GPU object targets are `#nvvm.target` (NVPTX) and `#rocdl.target` (AMDGPU) only; there is no MSL/Metal target attribute. | GPU dialect doc §Module serialization; NVVM/ROCDL docs |
+| BIR maps to MLIR SSA directly | **No.** BIR atoms carry no type; MLIR requires a static type per value. Two workable routes, neither free: an opaque `!bend.value` (keeps `arith` usable at primitive boundaries via the closed catalog's fixed representations, but blocks whole-value reasoning) or a type-recovery pass that must agree with the descriptors `BL-2` retained. | `Atom` `backend_ir.bend:13-23`, erasure law `BIR_LAWS.md` §4.2, §4.2 above |
+| MLIR's verifier would buy something real | **Yes — the clearest win.** `WF-1…WF-11` are currently `[N]/[O]` — specification-only, no validator (`BIR_LAWS.md` §3, §3.7). An ODS'd dialect turns most of them into mechanical checks. | DefiningDialects/ODS `hasVerifier`/`hasRegionVerifier` |
+| MLIR's affine dialect models Bend's `Affine`/`Many` | **No, but this is terminology, not a verdict on the user's idea** (the request never claimed the two match). MLIR affine is polyhedral index algebra; Bend affine is a linear-use *resource* discipline. | Affine dialect doc; `Use`/`Quantity` `backend_ir.bend:6-11`; `BL-3` |
+| Reaching LLVM's optimizer/targets is an argument for MLIR | **No.** clang already runs the LLVM middle-end over the emitted C; MLIR is one front half among several. | §7 |
+| MLIR keeps facts C erases, enabling custom passes/diagnostics | **Plausible, unmeasured.** These facts exist only in BIR today and are destroyed by C emission; whether passes over them pay is an experiment. | §4.4, §7, M2/M3 |
+| MLIR would give us Metal | **No direct target**; `#nvvm.target` (NVPTX) and `#rocdl.target` (AMDGPU) are the only GPU object targets, and no MSL/Metal attribute exists. An indirect route (serialize SPIR-V, translate with SPIRV-Cross to MSL) exists with third-party/coverage cost and is evaluated in §6.1. | GPU dialect doc §Module serialization; NVVM/ROCDL docs; SPIRV-Cross README |
 | MLIR would parallelize the fork tree | **No.** `gpu-lower-to-nvvm-pipeline` "specifically requires explicitly parallel IR and doesn't do GPU parallelization". | GPU dialect doc §Default NVVM Compilation Pipeline |
 | Adopting MLIR is a small dependency bump | **No.** MLIR has no stable C++ API, the C API is "under development, API unstable" with "no stability guarantees", and the project publishes an active deprecation list. A Bend-side integration can only be a pinned subprocess or an unstable FFI. | MLIR C API page; Deprecations page; LLVM developer policy |
-| Mojo's dialects are reusable | **No, and that is fine.** They are real, public and Apache-2.0-with-LLVM-exceptions, but `LIT` is a *source-level* IR (Bend has AST+FIR), `KGEN` carries parametric elaboration Mojo-only machinery, and all of them are glued to Mojo's type system. `HLCF`→`scf` is the only transferable *idea*, and it is an idea, not code (§2.3). | `Mojo/lib/*` listing, `LowerHLCFToSCF.cpp` |
+| Mojo's dialects are reusable | **Not as code — as readable prior art under a usable license.** They are real, public and Apache-2.0-with-LLVM-exceptions, but `LIT` is a *source-level* IR (Bend has AST+FIR), `KGEN` carries parametric elaboration Mojo-only machinery, and all of them are glued to Mojo's type system. `HLCF`→`scf` is the only transferable *idea*, and it is an idea, not code (§2.3). | `Mojo/lib/*` listing, `LowerHLCFToSCF.cpp` |
 
-**Recommendation (research conclusion, not a target decision):** do not adopt MLIR as a
-Bend backend target now. If it is pursued, pursue exactly one bounded experiment —
-**M1: emit standard-dialect MLIR from BIR for verification only** (§9) — because that is the
-only benefit that does not duplicate something the C+clang lane already delivers. No
-custom `bend` dialect, no selfhost cutover, and no GPU work follows from this note.
+**Recommendation (research conclusion, not a target decision):** do not *cut over* to MLIR
+now — the comparative question (preserved facts vs added layer) is open. The cheapest
+informative step is **M1: emit standard-dialect MLIR from BIR and check both verification and
+valid-program semantics** (§9), because verification is the one benefit that is separable
+from the open codegen question. No custom `bend` dialect, no selfhost cutover, and no GPU
+work follows from this note.
 
 ---
 
@@ -136,7 +157,7 @@ This is itself a small lesson about the maintenance surface.
 | `pop` | SIMD/memory ops (`!pop.array`, `!kgen.simd`) | **Partly (idea).** Relevant if a numeric lane is ever vectorized; Bend's BIR has no vector node at all today. |
 | `hlcf` | Structured control flow dialect converted to `scf` by `DialectConversion` | **Idea only.** The transferable lesson: express structured exits in a custom dialect, convert to `scf`, don't hand-roll. Bend's `Region`/`LeaveRegion` is the same shape (§4.1). |
 | `co` | Coroutines | **No.** Bend's control protocol is a compiler-internal CPS (`SELFHOST_IR_ARCHITECTURE.md` §4 K1–K5), not user coroutines. |
-| `debuginfo` | A whole dialect + `DIBuilder` + DI-expression tracking through SROA/mem2reg, then `DebugInfoToLLVM` | **No, and it is a warning.** BIR has no source spans at all (`Failure{message}` only), so a debug-info story would require *adding* spans to BIR first. |
+| `debuginfo` | A whole dialect + `DIBuilder` + DI-expression tracking through SROA/mem2reg, then `DebugInfoToLLVM` | **No, and it is a cost warning.** BIR has no source spans (`Failure{message}` only), so line-accurate DI would require *adding* locations to BIR first; name-based locations need no BIR change (§10.6). |
 | `DepGraphDialect`, `DialectChecksum`, `*Bytecode.td` | Module dependency graph, dialect checksums, custom bytecode format for precompiled packages | **No, but instructive**: three separate pieces of infrastructure exist only to make MLIR artifacts stable/addressable for packaging. |
 | Upstream `index`/`llvm`/`nvvm`/`rocdl`/`scf`/`arith`/`ub` used by Mojo | Standard dialects | **Yes** — that is the point of §3. |
 
@@ -300,8 +321,8 @@ conversion must choose:
 
 | Choice | Consequence |
 |---|---|
-| One opaque type, e.g. `!bend.value` | Faithful to BIR and to `BL-2`, trivially legal, but every `arith`/`math` op is unavailable: all 112 primitives become calls into the runtime, and MLIR's middle-end has nothing typed to fold. This is *not worse* than the current C output — the runtime already owns arithmetic (`js_backend.bend:894`) — but it means MLIR adds no arithmetic optimization. |
-| Recover concrete types per value | Requires a new analysis mapping each `Local` to a descriptor (from primitive call sites, constructor layouts, and parameter descriptors). Real work, and it re-derives information that the checker had and that erasure (law `BL-2`, `L1`) deliberately dropped — so it must be proven against the descriptors, not guessed. This is the only route on which `arith`/`math`/`vector` passes can fire. |
+| One opaque type, e.g. `!bend.value` | Faithful to BIR and `BL-2`, trivially legal. It does **not** force all 112 primitives into runtime calls: the catalog is closed, so each `PrimitiveCall` has fixed operand/result representation rules, and a representation analysis can unbox at the call, use `arith`, and rebox — that is reading the catalog, not re-running the dependent checker `[INFERENCE]`. What is lost is *whole-value* typing: values flowing through `Construct`/`Project`/`Apply`/`Return` stay opaque, so passes cannot reason about them, and every box/unbox has a cost that is unmeasured. |
+| Recover concrete types per value | Requires a new analysis mapping each `Local` to a descriptor (from primitive call sites, constructor layouts, and parameter descriptors). This is **not** a second type checker — the checker already finished and `PrimitiveCall.types`/descriptors are the authority — but it is a new pass that must be proven to agree with them, and any disagreement is a hard failure rather than a guess. It widens what `arith`/`math`/`vector` can fold *beyond* primitive boundaries; it is not the condition for using `arith` at all. |
 | Hybrid | Typed for the primitive/array/float paths (`PrimitiveCall.types` already carries descriptors), opaque for `Construct`/`Project`/`Apply`/`Return` | Probably the practical shape, but it is a *new* mixed-type discipline that must be justified per law (`L5`, `B1`), not a translation. |
 
 Nothing about this is hard to *prototype*; everything about it is hard to *prove*. And it is
@@ -349,12 +370,23 @@ substitution, equality, filling, `Min`, arrows, quantities; `descriptor_nf.bend:
 normalizes it once for both targets and names the reference evaluator
 (`comp.ts RUNTIME: $type, $type_apply, $type_named, $type_sugar`).
 
-In MLIR this is **not** expressible as ops, and should not be: nothing executes descriptors
-at compile time in a way the IR must serialize. It would be:
+In MLIR this can be encoded as **attributes or as ops** — the choice is a design decision,
+not a prohibition. The two shapes have different costs:
 
-- a `DictionaryAttr`/`ArrayAttr` blob on the module,
-- or a custom attribute with a verifier (if the WF checks of §4.6 are wanted),
-- or the static image the C target already emits (`STAT_IMG`, `SHOW_DESC`).
+- **Attributes** (`DictionaryAttr`/`ArrayAttr` blob on the module, or a custom attribute with
+  a verifier if the WF checks of §4.6 are wanted): metadata stays out of the program IR and
+  needs no lowering, but MLIR verifies nothing about its *content* unless a custom verifier
+  is written.
+- **Ops** (a `bend.descriptor` data op per descriptor node, or constants/globals holding the
+  built structure, cf. the C target's static image `STAT_IMG`/`SHOW_DESC`,
+  `c_backend.bend:9-42`): descriptors become first-class, can be verified structurally and
+  traversed by passes, at the price of pulling a compile-time data language into the program
+  IR and giving it a lowering.
+
+What is *not* available either way is a ready-made upstream dialect for a dependent,
+runtime-interpreted type-expression language; `dlti` is data layout, not this. The honest
+limit stands regardless of shape: **descriptor/NF agreement with the codes is a Bend law
+(`BL-7`), not something MLIR checks for free**.
 
 The honest limit: **MLIR cannot verify descriptor/NF agreement** (that `SHOW_DESC` describes
 the same program as the codes, that a family's quantity prefix matches its arity, etc.).
@@ -377,19 +409,34 @@ Required classification of BIR ops in any MLIR mapping:
 | `LoadSymbol{id,key}` | **Must read** the symbol; nullary lazy declarations re-evaluate per read (`backend_ir.bend:205-208`, `js_backend.bend:951`) | CSE/DCE collapses a mutable factory's repeated reads into one — violates `L2`/`B2` |
 | `Foreign{…}` / `ForeignDeclaration` (`backend_ir.bend:215`) | Opaque call, unknown effects, not speculatable | reordering across a `failure` or an IO write |
 | `Construct`/`Project`/`HasTag` | Pure *iff* constructor layout is native and sealed; otherwise allocation effects | CSE of a constructor allocation changes identity/refcounts (`L5`, `B2`) |
-| `Closure`/`Direct`/`Apply` | Call-like; `CallOpInterface` if you want inlining to see through | inlining across an affinely used capture duplicates a use (`L4`, `BL-3`) |
+| `Closure`/`Direct`/`Apply` | Call-like; `CallOpInterface` if you want inlining to see through | rematerializing a closure or duplicating a consumer changes consumption counts; inlining is legal only if the capture's use budget is preserved (`L4`, `BL-3`) |
 | `Failure` | Abort; not speculatable, no return | adding a "may not happen" assumption is wrong: it *does* happen and is observable |
 | `Region`/`LeaveRegion` | Must implement region-branch interfaces (§4.1) | a verifier-blind exit silently miscompiles |
 
-**The `Affine`-use hazard is the sharpest one.** `BL-3` says every `Arg.use`/`Parameter.use`/
-`Field.use`/`Code.captures` entry is an upper bound on consumption: `Affine` = at most once,
-`Many` = zero or more. MLIR has no notion of this, and its *default* optimization posture
-(rematerialize pure computation, duplicate into branches, sink/hoist) is exactly what
-duplicating an at-most-once value would break. A conversion therefore has two options:
-(a) mark any op whose operands are affine as *effectful and non-speculatable* (loses
-optimization, keeps `BL-3`), or (b) carry affine-ness in the type system and prove no pass
-duplicates it (a research project, not a port). Option (a) is the only one I would accept
-without a new law.
+**The `Affine`-use hazard is the sharpest one, and it cannot be solved by a trait.** `BL-3`
+says every `Arg.use`/`Parameter.use`/`Field.use`/`Code.captures` entry is an upper bound on
+consumption: `Affine` = at most once, `Many` = zero or more. MLIR's SSA form allows a value
+to have arbitrarily many users — that is not an "implicit behaviour" in the sense of
+[SideEffectsAndSpeculation](https://mlir.llvm.org/docs/Rationale/SideEffectsAndSpeculation/),
+which covers memory effects, UB and non-termination. So:
+
+- `MemoryEffectsOpInterface` cannot express "this operand may be consumed once". Effects
+  describe what an op does to the world, not how many users a value has.
+- Marking every affine-consuming op non-speculatable prevents the compiler from *inventing*
+  executions of that op. It does **not** prevent a second, independently legal use of the same
+  SSA value, nor DCE of a value whose consumption was supposed to be observable, nor the
+  duplication that inlining/branch-folding performs on the *users*. "Mark it non-speculatable
+  and it is safe" is therefore a blanket claim this note must not make.
+
+A real story needs at least (i) the use fact carried in the IR (an attribute/type, since user
+lists record *actual* uses, not *permitted* ones), (ii) a verifier that walks users and rejects
+more consumptions than the fact permits — an ODS `hasVerifier` can do this, but only if (i)
+exists — (iii) distinct value types or an explicit transfer/consume op so that an illegal copy
+is syntactically a different program rather than a rewrite of the same one, and (iv) a per-pass
+legality argument for the passes actually run. Mojo is the precedent for how much this is:
+quantities live in its type system and a dedicated `KGENVerifier.cpp` pass exists in
+`Mojo/lib/Transforms`. That is engineering, not a trait annotation. `[INFERENCE]` for the
+recommendation; `[READ]` for the docs and the `KGENVerifier.cpp` existence.
 
 ### 4.6 What a dialect + verifier would actually buy (the honest win)
 
@@ -450,7 +497,7 @@ None of this is a reason to avoid MLIR; it is a reason to be precise that a "pri
 
 ---
 
-## 5. `affine`: the homonym, falsified
+## 5. `affine`: a terminology warning (not a finding about the hypothesis)
 
 Bend's affine is a **quantity/resource discipline**: `QZero/QOne/QMany` at the source
 (`SELFHOST_IR_ARCHITECTURE.md` §4 `L1`, `L4`), lowered to `Erased/Once/Unrestricted` and then
@@ -475,10 +522,12 @@ dialect would require first proving that some kernel is an index-space nest with
 affine-map bounds — a *different* optimization project, and one that would also have to
 answer how boxed terms become `memref`s.
 
-So: **`affine` is a naming coincidence.** The user's instinct that "Bend is affine, MLIR has
-affine" does not survive contact with either definition. What Bend's affine needs is what §4.5
-describes: a target-side legality rule that no pass duplicates an at-most-once value — and
-MLIR has no facility for that beyond marking ops effectful.
+So: **`affine` is a naming coincidence, and that is all this section claims.** The request
+pointed at the walkthrough's *dialect list*; it did not claim that MLIR's affine dialect
+implements Bend's quantities. The warning is practical: a future design decision must not be
+justified by the shared word, and if Bend ever wants polyhedral loop work, that is a different
+project requiring an index-space kernel first. What Bend's affine needs is §4.5: carried use
+facts, a use-count verifier, and per-pass legality — MLIR has no built-in facility for that.
 
 ---
 
@@ -516,12 +565,23 @@ Bend's actual GPU story, for contrast `[READ]`:
   bang/dispatch node at all (`backend_ir.bend:178-203`). So "GPU in the new pipeline" is not
   a dialect question; there is no node to lower.
 
-Implication `[INFERENCE]`: MLIR's `gpu`/`nvvm`/`rocdl` could only ever be an executor for an
-*NVIDIA/AMD* device path, and only after BIR gains an explicit parallel construct. There is
-no MSL/Metal target in upstream MLIR, so **on macOS MLIR cannot replace the existing
-MSL-via-clang design** — it would add a second device programming model with no Metal
-output. Cross-reference `RESEARCH_GPU.md` for the runtime/executor evidence; I am not
-restating it.
+Implication `[INFERENCE]`: MLIR's `gpu`/`nvvm`/`rocdl` can be a *direct* executor only for an
+NVIDIA/AMD device path, and only after BIR gains an explicit parallel construct.
+
+**Metal is a qualification, not a flat "impossible".** No upstream dialect has a Metal/MSL
+target attribute, so there is no direct route. An indirect one has tooling behind it:
+the `spirv` dialect serializes SPIR-V (Vulkan/OpenCL consumers), and SPIRV-Cross converts
+SPIR-V to MSL — "Convert SPIR-V to readable, usable and efficient Metal Shading Language
+(MSL)" ([KhronosGroup/SPIRV-Cross README](https://github.com/KhronosGroup/SPIRV-Cross),
+read 2026-10-24). The same README states the real constraint: "Individual features are
+expected to be mostly complete, but it is possible that certain obscure GLSL features are not
+yet supported." So a Metal route through MLIR would be *SPIR-V → third-party translator →
+MSL*, carrying: a third-party dependency at a pinned version, SPIR-V feature coverage risk,
+a second device programming model (gpu/SPIR-V) beside the existing one, and still the Bend
+device-model mapping (shared heap, runtime dispatch, lane semantics) that no dialect
+provides. That is materially more work and risk than the existing second clang invocation
+over MSL, but it is a trade to be evaluated, not a prohibition. Cross-reference
+`RESEARCH_GPU.md` for the executor evidence; I am not restating it.
 
 ### 6.2 WASM: LLVM already is the route; `wasmssa` is not a codegen backend
 
@@ -553,21 +613,31 @@ not one MLIR's SCF provides.
 
 | # | Architecture | What is new | Gets us | Costs | Verdict |
 |---|---|---|---|---|---|
-| **A** | BIR → standard dialects (`func`/`arith`/`cf`/`scf`/`llvm`) → LLVM IR → object | a BIR→MLIR emitter + type discipline (§4.2) | MLIR verifier; LLVM backends (x86/arm64/NVPTX/AMDGPU/wasm) for free; debug info *if* spans existed | type recovery or opaque values; C ABI + refcount still hand-written; LLVM/MLIR toolchain pinned; a second native lane beside `c_backend` | Only if a native lane is wanted *and* direct LLVM IR (D) is rejected |
+| **A** | BIR → standard dialects (`func`/`arith`/`cf`/`scf`/`llvm`) → LLVM IR → object | a BIR→MLIR emitter + type discipline (§4.2) | MLIR verifier; BIR-level facts stay addressable for custom passes; LLVM backends (x86/arm64/NVPTX/AMDGPU/wasm); debug info limited by the absence of spans | box/unbox or a new type-recovery pass; C ABI + refcount still hand-written; LLVM/MLIR toolchain pinned; a second native lane beside `c_backend`; the pass benefit is unproven until M2/M3 | Only if a native lane is wanted *and* direct LLVM IR (D) is rejected |
 | **B** | A custom `bend` dialect kept as the real backend IR, converted to A | ODS dialect + verifiers + conversion + versioning | structural WF checks (§4.6); dialect-level info survives | everything in A, plus a second source of truth next to `backend_ir.bend`; upstream churn (§7.1); a C++ build in a Bend-only toolchain | **Not now.** This is the "become Mojo" option and the cost is the reason to refuse it |
-| **C** | stay: BIR → C (segmented runtime ABI) → clang; BIR → JS | nothing | already exists (`c_backend.bend`, `js_backend.bend`); clang already runs the LLVM optimizer over the emitted C | no IR-level verification; no structured-analysis passes | **Keep as the baseline.** Note: `-O2` on the emitted C already gives LLVM's middle-end and all LLVM targets, which is most of what A promises |
-| **D** | BIR → LLVM IR text directly (no MLIR) | an LLVM-IR printer | same backends as A, one less layer and one less toolchain | hand-writing LLVM IR text (attributes, ABI, DILocation) is its own maintenance; no verifier benefits | Compare against `RESEARCH_LLVM.md`; on the evidence I have, **C beats D** because clang *is* the LLVM frontend+driver, and D would re-implement a small clang for no target gain |
+| **C** | stay: BIR → C (segmented runtime ABI) → clang; BIR → JS | nothing | already exists (`c_backend.bend`, `js_backend.bend`); clang already runs the LLVM optimizer over the emitted C | no IR-level verification; no structured-analysis passes; BIR-level facts (descriptors, case/region structure, affinity) are destroyed at emission | **Keep as the baseline**, but not because A is redundant: C gives up facts and verification that A/B preserve. It is the incumbent to beat, not a proof that nothing better exists |
+| **D** | BIR → LLVM IR text directly (no MLIR) | an LLVM-IR printer | same backends as A, one less layer and one less toolchain | hand-writing LLVM IR text (attributes, ABI, DILocation) is its own maintenance; no verifier benefits; text is version-unstable (see `RESEARCH_LLVM.md`) | Compare against `RESEARCH_LLVM.md`; on the evidence I have, **C currently beats D** because clang already is the LLVM frontend+driver, but D would preserve control; it is a maintenance trade, not a proof |
 
-The redundancy argument, stated plainly `[INFERENCE]`:
+Where the options genuinely differ, stated without overclaiming `[INFERENCE]`:
 
-- If the goal is **LLVM optimization and target breadth**, the C lane already has it: clang
-  compiles the emitted C to LLVM IR. MLIR in the middle adds a toolchain and a type
-  discipline, and changes nothing about the runtime ABI that actually limits optimization.
-- If the goal is **IR verification and structural analysis** (the `WF`/`BL-1` gap), MLIR is a
-  good fit — but then you only need the *front half* (A's emitter + verifier) and never
-  LLVM translation. That is experiment M1.
-- If the goal is **GPU or WASM**, MLIR is neither necessary (wasm: clang/LLVM already;
-  Metal: unavailable) nor sufficient (no scheduler, no Metal).
+- **Reaching LLVM's optimizer and target breadth is not, by itself, an argument for MLIR.**
+  clang compiles the emitted C to LLVM IR already, so the LLVM middle-end and the LLVM
+  targets are available on the current lane. MLIR is then *one possible front half*, not the
+  only route. This does **not** mean MLIR's other benefits are redundant — only that "we get
+  LLVM" is not one of them.
+- **Preserving backend facts before C is a real, distinct benefit.** C emission erases
+  descriptors/NF, the `Region`/case structure, the closure/capture structure, and the
+  `Affine`/`Many` facts. An MLIR layer keeps them addressable, which enables (i) a verifier,
+  (ii) custom passes over BIR-shaped structure, and (iii) diagnostics that name a
+  constructor/family rather than a C identifier. Whether such passes *pay* is unmeasured
+  here and is exactly what M2/M3 would test. This benefit is independent of codegen speed
+  and is the reason a custom dialect (option B) is a coherent design even though I do not
+  recommend starting there.
+- **Verification and structural analysis** (the `WF`/`BL-1` gap) is the cheapest benefit to
+  obtain: the *front half* only (A's emitter + verifier, no LLVM translation). That is M1.
+- **GPU or WASM** are not arguments for MLIR on their own: wasm already goes through
+  clang/LLVM; GPU has no direct Metal route (§6.1) and needs an explicit parallel construct
+  that BIR does not have.
 
 ### 7.1 Maintenance cost of any MLIR link, with evidence
 
@@ -609,7 +679,7 @@ achieved results.
 | M-A (structure) | The emitted module is legal under MLIR's region/dominance/branch rules, and every BIR `Region` has exactly one exit path reachable only through its `LeaveRegion` | `WF-4`/`WF-5` are producer obligations today; MLIR will happily verify a *differently* shaped CFG |
 | M-B (types) | Every opaque `!bend.value` corresponds to exactly one BIR `Atom` use, and every typed value's descriptor equals the descriptor the checker established (no guessing) | `BL-2` says erasure dropped types; recovery must agree with descriptors, not with inference convenience |
 | M-C (erasure) | No erased position becomes an operand, a result, or an ABI slot | `BL-2`, `L1` |
-| M-D (affinity) | No pass may duplicate a value whose `Arg.use`/`Parameter.use`/`Field.use`/`Code.captures` entry is `Affine`; ops consuming such values are effectful/non-speculatable, or the value model proves no duplication | `BL-3`, `L4`; MLIR's default rematerialization (§4.5) actively conflicts |
+| M-D (affinity) | Consumption counts observed in the IR never exceed the carried use fact, and a copy is an explicit, checkable program construct | `BL-3`, `L4`. Requires: the use fact carried as an attribute/type, a use-walk verifier, explicit consume/transfer ops or distinct affine types, and per-pass legality. **Effects/speculatability alone do not express or enforce linearity** (§4.5) |
 | M-E (order/effects) | `LoadSymbol`, `Foreign`, `Failure` carry effects that forbid reordering/elimination; lazy symbol reads are per-read | `L2`, `B2`; `js_backend.bend:951` |
 | M-F (primitives) | Each of the 112 primitives maps to an MLIR op or runtime call whose *defined* behaviour equals `B1`'s, including `div/0`, `mod 0`, Nat's 2^48 guard, and float32 rounding without fast-math | §4.7; `arith` div/rem are UB on zero |
 | M-G (descriptors) | Descriptor/NF data attached to the module denotes the same program the codes implement | `BL-7`; MLIR cannot check it (§4.4) |
@@ -625,24 +695,37 @@ lane: it introduces an optimizer whose defaults assume things Bend's laws deny.
 All of these are research-scoped: no cutover, no new dependency in the shipping build, no
 heavy lane. M1 is the only one I recommend running.
 
-**M1 — verifier-only MLIR emission (recommended).**
-Emit `func`/`arith`/`cf` (no `llvm`, no `mlir-opt` compilation pipeline, no LLVM translation)
-from a *fixed, small* BIR corpus that already has JS/C golden behaviour, and feed it to
-`mlir-opt --verify-each`. Acceptance:
+**M1 — emission with verification *and* valid-program semantics (recommended, research-scoped).**
+Emit `func`/`arith`/`cf` from a *fixed, small* BIR corpus, restricted so semantics are
+executable without the Bend runtime: programs whose observations depend only on `U32`/`F32`
+primitives, constructors and matches — no foreign, no lazy symbol, no closures. The corpus
+must contain one program per structural feature: nested match, an early `LeaveRegion` exit,
+a tail-recursive code, and a `Failure` path. Acceptance (all four, in this order):
 
-1. Every valid corpus program verifies; each corpus program's `Region`/`LeaveRegion` is
-   encoded with a documented scheme from §4.1, and a hand-written negative test per scheme
-   shows the scheme's own invariant is what fails, not the MLIR core verifier.
-2. Hand-built *invalid* BIR programs that are legal Bend data — duplicate code id, duplicate
-   region label, `Local` referring to no enclosing `Let`/`Parameter`, capture slot out of
-   range, `Direct` arity ≠ captures+parameters, constructor field id not in the layout,
-   non-Boolean `Branch.condition` — each produce a **diagnostic** from the emitted module's
-   verifier. This is the acceptance criterion that maps directly to `BIR_LAWS.md` §3.7's
-   `[O]` column, and it is the only measured benefit I would trust.
-3. No change to `backend_ir.bend`, `backend_lower.bend`, either renderer, or any law text.
-4. If (2) cannot be achieved without adding information to BIR, that is a **result**: it
-   proves the verifier win requires an IR change, which is out of scope, and the hypothesis
-   fails cheaply.
+1. **Valid-program semantics — the primary criterion, not malformed rejection.** Every valid
+   corpus program's module executes (via `mlir-runner`/`mlir-cpu-runner` JIT in the
+   *experiment*, never in the shipping build) and its observations equal the recorded
+   observations of the existing JS lane for the same program: result value, exit status,
+   stdout bytes, and for the `Failure` case the same message. A program that verifies but
+   produces a different observation is a failure, not a warning.
+2. **Structural fidelity.** Reading the module back and walking the documented §4.1 encoding
+   reproduces BIR's case order and exit targets for every corpus program — this catches an
+   encoding that is legal MLIR but a *different program*, which (1) can miss when the wrong
+   branch happens not to change the result.
+3. **Malformed rejection (necessary, not sufficient).** Hand-built *invalid* BIR programs
+   that are legal Bend data — duplicate code id, duplicate region label, `Local` referring
+   to no enclosing `Let`/`Parameter`, capture slot out of range, `Direct` arity ≠
+   captures+parameters, constructor field id not in the layout, non-Boolean
+   `Branch.condition` — each produce a **diagnostic** from the emitted module's verifier.
+   This maps to `BIR_LAWS.md` §3.7's `[O]` column.
+4. No change to `backend_ir.bend`, `backend_lower.bend`, either renderer, or any law text;
+   and explicitly **no performance claim** — M1 is not a backend and must not be scored as
+   one.
+
+If (3) cannot be achieved without adding information to BIR, that is a **result**: the
+verifier win then requires an IR change, which is out of scope, and the hypothesis fails
+cheaply. If (1) holds but (2) does not, the encoding is wrong; if (2) holds but (1) does not,
+the value/primitive mapping is wrong — the split keeps the failure legible.
 
 **M2 — typed-value feasibility (only if M1 passes and someone wants `arith`).**
 Take one BIR code that is all `U32`/`F32` primitives plus one constructor, and recover types
@@ -659,8 +742,8 @@ compiler versions and flags recorded and **no** claim that MLIR is faster or slo
 
 **M4 — GPU: do not run.** Acceptance for this note is the *decision record*: BIR has no
 bang node (`c_backend.bend:2848` emits `BANGS 0`; `backend_ir.bend:178-203` has no dispatch
-op), MLIR has no Metal target, and `gpu-lower-to-nvvm-pipeline` needs IR that is already
-parallel. Cross-reference `RESEARCH_GPU.md` for what the legacy Metal/CUDA path does.
+op), MLIR has no *direct* Metal target (§6.1), and `gpu-lower-to-nvvm-pipeline` needs IR that is
+already parallel. Cross-reference `RESEARCH_GPU.md` for what the legacy Metal/CUDA path does.
 
 Explicit non-goals for all four: no custom `bend` dialect, no `scf`-based loop work (BIR has
 no loops), no bytecode/packaging work (Mojo's `*Bytecode.td` is the counter-example), no
@@ -681,20 +764,29 @@ change to stack/heap/fuel caps, no new benchmark, no native-acceptance run.
    `validate` function (pure Bend, no dependency) delivers the same verification as M1 without
    MLIR. That is a legitimate competing answer and I would not object to it; M1's value is
    that it makes the checks declarative, not that it is the only way.
-3. **Where would types come from for `arith`?** M2 answers feasibility, not desirability:
+3. **Does preserving BIR-level facts actually buy anything measurable?** No experiment exists
+   yet. A custom pass over descriptors/case structure/affinity (option B) or over a typed
+   subset (A) has to be shown to produce a better decision than the C lane makes today — e.g.
+   fewer allocations, fewer trampolines, fewer tag tests. Until then, "preserved facts" is a
+   plausible benefit, not a demonstrated one, and it is the strongest remaining case for MLIR.
+4. **Where would types come from for `arith`?** M2 answers feasibility, not desirability:
    `PrimitiveCall.types` is descriptor-level, and descriptors are canonical *keys* plus
    structure, so a mapping descriptor→MLIR type must be defined (U32→i32, F32→f32,
    Nat→i64+guard, Array→runtime handle, …). Any mapping that is not total is a hole.
-4. **What would a `bend` dialect actually hold** that `func`/`cf` cannot? My list is: (i)
+5. **What would a `bend` dialect actually hold** that `func`/`cf` cannot? My list is: (i)
    `bend.region_exit`, (ii) `bend.lazy_symbol` with read-effects, (iii) `bend.foreign` with
    declared sources/quantities, (iv) `bend.construct/project/has_tag` with layout,
    (v) descriptor attributes. Items (i)–(iv) are exactly what §4.1/§4.5 show can be
    expressed with standard ops + calls today, at the price of losing the source-level
    meaning. That is the trade: a custom dialect buys *diagnostics*, not codegen.
-5. **Debug info.** BIR drops spans. MLIR→LLVM debug info is available, but only if BIR carries
-   locations, which would be new IR — out of scope. So debug info cannot be a justification
-   for MLIR today.
-6. **Reproducibility.** `G1` demands byte-identical stages for one canonical input. Pinning
+6. **Debug info.** BIR drops spans, so *line-accurate* DI is blocked today and would need new
+   BIR metadata — out of scope. That is a limitation, not an impossibility: MLIR can carry
+   locations that are not spans — the builtin dialect defines `NameLoc` ("A named source
+   location"), `CallSiteLoc`, and `FusedLoc`
+   ([Builtin dialect](https://mlir.llvm.org/docs/Dialects/Builtin/)) — so subprogram/variable
+   names without lines are representable now. That is enough for symbol-level stack frames,
+   not for stepping, so debug info is a weak argument for MLIR today, not a blocked one.
+7. **Reproducibility.** `G1` demands byte-identical stages for one canonical input. Pinning
    MLIR makes output depend on a second compiler version; is that acceptable to the
    reproducibility law, or does it need an amendment? Unresolved and owner-dependent.
 
@@ -704,8 +796,8 @@ change to stack/heap/fuel caps, no new benchmark, no native-acceptance run.
 
 - **BIR grows an explicit parallel/dispatch node** (a bang) — then MLIR's `gpu` path becomes
   relevant for NVIDIA/AMD, and a device lane would be evaluated on its own terms (§6.1).
-- **BIR grows source locations** — then MLIR→LLVM debug info becomes a real argument instead
-  of an impossibility (§10.5).
+- **BIR grows source locations** — then line-accurate MLIR→LLVM debug info becomes available;
+  even without spans, name-based DI (`NameLoc`) is already representable (§10.6).
 - **The runtime's value representation becomes static** (real closure structs, real
   constructor layouts, refcounts modelled as ownership) — then LLVM/MLIR optimizations start
   to fire and the C-vs-MLIR comparison changes (§4.3).
@@ -715,9 +807,12 @@ change to stack/heap/fuel caps, no new benchmark, no native-acceptance run.
   ship from the selfhost compiler** — then the "clang already gives us LLVM" argument (§7)
   weakens for that target, because clang cannot produce device binaries for Metal.
 
-Until one of those happens, the evidence supports **keeping the C/JS lanes as the backend,
-keeping BIR as the IR, and treating MLIR as an optional verification harness** (M1) rather
-than a target.
+Until one of those happens, the defensible position is **keeping the C/JS lanes as the
+shipping backend and BIR as the IR**, while treating MLIR as (i) an optional verification
+harness and (ii) a candidate place to preserve facts for future passes — both to be settled
+by the bounded experiments above. Nothing here closes the comparative question: **no
+experiment, no measurement and no performance comparison between the MILR-shaped options and
+the current C lane exists yet**, and this note deliberately does not manufacture one.
 
 ---
 
@@ -750,6 +845,8 @@ Upstream specs/docs (**read 2026-10-24**; all are primary — official docs or u
   https://mlir.llvm.org/docs/Dialects/MLProgramOps/
 - `ub` (`ub.poison`, `ub.unreachable`): https://mlir.llvm.org/docs/Dialects/UBOps/
 - `ptr`: https://mlir.llvm.org/docs/Dialects/PtrOps/
+- Builtin dialect — location attributes `NameLoc` ("A named source location"), `CallSiteLoc`,
+  `FusedLoc`: https://mlir.llvm.org/docs/Dialects/Builtin/
 - Dialect Conversion (partial/full/analysis, legality, target): https://mlir.llvm.org/docs/DialectConversion/
 - Side effects & speculatability ("no proper modeling yet … non-local control flow";
   rematerialization; graph-region effects TBD):
@@ -765,6 +862,8 @@ Upstream specs/docs (**read 2026-10-24**; all are primary — official docs or u
   https://llvm.org/docs/DeveloperPolicy.html
 - lld WebAssembly (wasm object output for the wasm32 target):
   https://releases.llvm.org/8.0.0/tools/lld/docs/WebAssembly.html
+- SPIRV-Cross (third-party SPIR-V → MSL/GLSL/HLSL translator; README states the MSL
+  capability and the feature-coverage caveat): https://github.com/KhronosGroup/SPIRV-Cross
 - Mojo compiler walkthrough (phases, dialect hierarchy, pass list):
   https://github.com/modular/modular/blob/main/Mojo/docs/compiler/MojoCompilerWalkthrough.md
 - Mojo source availability/license — verified via the GitHub contents API and raw files:
