@@ -107,16 +107,10 @@ type NativeCEmit is Data:
   NativeCLibrary{exports: List<&2, String>, runtime: String, files: List<&2, BIR.SourceFile>}
   NativeCModule{runtime: String, files: List<&2, BIR.SourceFile>}
 
-def native_c_library_payload(program: Checked.CheckedProgram, exports: List<&2, String>, runtime: String, files: List<&2, BIR.SourceFile>) -> CEmitter.CEmitterRun<CEmitter.EmitResult>:
-  emit_c_library_start(program, exports, runtime, files)
-
-def native_c_module_payload(program: Checked.CheckedProgram, runtime: String, files: List<&2, BIR.SourceFile>) -> CEmitter.CEmitterRun<CEmitter.EmitResult>:
-  emit_c_modules_start(program, runtime, files)
-
 def native_c_emit_start(program: Checked.CheckedProgram, request: NativeCEmit) -> CEmitter.CEmitterRun<CEmitter.EmitResult>:
   match request:
-    case NativeCLibrary{exports, runtime, files}: native_c_library_payload(program, exports, runtime, files)
-    case NativeCModule{runtime, files}: native_c_module_payload(program, runtime, files)
+    case NativeCLibrary{exports, runtime, files}: emit_c_library_start(program, exports, runtime, files)
+    case NativeCModule{runtime, files}: emit_c_modules_start(program, runtime, files)
 
 def native_c_check_value(result: Checked.CheckResult) -> NativeResult<(NativeCEmit -> CEmitter.CEmitterRun<CEmitter.EmitResult>)>:
   match result:
