@@ -4,6 +4,26 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
+Точное разложение checker получено на privateW+9704 (не production timing):
+
+| Интервал | Native process CPU, s |
+| --- | ---: |
+| Body inference | 35.042426 |
+| Other: pack/predeclare/elaboration/type/law/module/metadata | 13.386948 |
+| Publish + type finishing | 6.634021 |
+| Affine usage | 5.713843 |
+| Termination | 1.751859 |
+
+Сумма62.529097CPU/62.529046wall; shared phase wall boundary difference0ns,
+8040 term-body transition cycles, counts reconciled с25 stripped Base templates.
+Full8408/8810+50files+actual7720consumer/eb3 и все original guardsPASS.
+Это entry-delimited intervals, НЕ exclusive function CPU: drop/maps/closures
+внутри каждого пока отдельно не разложены. Inner clock brackets18.357CPUms
+не являются causal upper bound всего overhead; ничего не вычтено.
+Exact patch/pins/coverage/limits: compiler-ir-profile-v57x-intervals.json.
+Две private source-работы: frame-local schema memo против scalar/String churn;
+validated signature/publication reuse без удаления infer/type checks.
+
 Host compiler57x: принят exactcomp9704b4bbd00c834df65b21a34f57cfc4ff4f6afc1878f161565a52f7fcf00d9c,
 только mat_lits lazy comparison вместо двух полных term_lower trees.159cases/
 25281oracle comparisons,12realJS/sixnativeC consumersPASS; actual unchangedT
@@ -18,7 +38,12 @@ backend98.282171s, native79.438037s. Первый267.213812s цикл FAIL из-
 captured runtime у consumer сохранён; retry только consumer после exact2cad repair
 прошёл отдельно. Разрешённый один clean candidate run дал317s, НЕ выбирали fast run.
 Same9704/d322/796 давали producer85–133s/NodeCPU255–480s; причина вариации
-не установлена. Новая private гипотеза — явный young-gen config, не доказанный GC cause.
+не установлена. Гипотеза semi128 ОТКЛОНЕНА: predeclaredA1/B1/B2/A2 всеPASS,
+8408/8810 и exactd322, sourceCgen85.489/85.021/85.303/86.644s.
+Обе reversed pairs: wall−0.55/−1.55%, NodeCPU+2.76/+2.33%; criterion≥10%
+wall И CPU не пройден. EffectiveWorkerheap3.322→3.624GB подтверждён,
+но slow133s mode не воспроизведён/не объяснён. Никаких productionflags/caps changes.
+Все capacity metadata/пары/источники: compiler-ir-profile-v57x-intervals.json.
 Receipt compiler-ir-checkpoint-v57x.json. Official8.619s пока не обогнан.
 
 СЕЙЧАС принят57w quote fix: js_backend.bend строит quoted suffix из bounded
