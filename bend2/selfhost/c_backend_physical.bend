@@ -55,6 +55,7 @@ type Operand is Data:
 
 type Dst is Data:
   DstSeq{buf: String, cursor: String}
+  DstOut{out: String}
 
 type Src is Data:
   SrcOne{text: String}
@@ -198,6 +199,7 @@ def intrinsic_marker(+pmarker: String) -> Bool:
 def dst_write(+pdst: Dst, +pexpression: String) -> List<&2, Job>:
   match pdst:
     case DstSeq{buf, cursor}: [JText{join_text([buf, "[", cursor, "] = ", pexpression, "; ", cursor, " += 1;"])}]
+    case DstOut{out}: [JText{join_text([out, " = ", pexpression, ";"])}]
 
 def dst_word(+pdst: Dst, +pword: CLay.CWord, +pexpression: String) -> List<&2, Job>:
   match pword:
@@ -211,6 +213,7 @@ def dst_decl(+pbuf: String, +pcursor: String, +pcount: Nat) -> String:
 def dst_mark(+pdst: Dst) -> String:
   match pdst:
     case DstSeq{buf, cursor}: join_text([buf, "[", cursor, "]", " = 1; ", cursor, " += 1;"])
+    case DstOut{out}: join_text([out, " = 1;"])
 
 def src_read_node(+pbase: String, +pfb: String, +pcursor: String, +ppacked: Bool, +ptag: String) -> List<&2, Job>:
   match ppacked:
@@ -469,7 +472,7 @@ def fill_jobs(+pw: World, +playout: CLay.Layout, +pterm: String, +pdst: Dst, +pt
 def unfill_result_jobs(+pur: CLay.UnfillResult, +psrc: Src, +pout: String, +ptag: String) -> List<&2, Job>:
   match pur:
     case CLay.UnfillFailed{message}: [JFail{message}]
-    case CLay.UnfillFound{unfill}: [JConv{unfill, CLay.FillWord{}, psrc, DstSeq{pout, join_text([ptag, "o"])}, ptag}]
+    case CLay.UnfillFound{unfill}: [JConv{unfill, CLay.FillWord{}, psrc, DstOut{pout}, ptag}]
 
 # ---------------------------------------------------------------------------
 # Construct / Project / HasTag
@@ -677,8 +680,15 @@ def term_decl_text(+pcount: Nat) -> String:
     case 0n: ""
     case _: join_text(["Term b0f[", Nat.show(pcount), "];"])
 
+def project_prelude(+playout: CLay.Layout, +pvalue: String, +pcount: Nat, +poffset: Nat) -> String:
+  head = join_text(["Term b0t = ", pvalue, ";", term_decl_text(pcount), "u64 b0s = term_rfc(b0t) ? ctr_take(e, b0t, ", Nat.show(pcount), ", b0f) : term_loc(b0t); u32 b0i = ", Nat.show(poffset), ";"])
+  match playout:
+    case CLay.LayoutWord{word}: join_text([head, " Term b0r = 0;"])
+    case CLay.LayoutBox{reason}: join_text([head, " Term b0r = 0;"])
+    case CLay.LayoutData{words, arms}: head
+
 def project_words(+pw: World, +playout: CLay.Layout, +poffset: Nat, +pcount: Nat, +pvalue: String) -> Part:
-  jobs = List.append(&2, Job, ([JText{join_text(["Term b0t = ", pvalue, ";", term_decl_text(pcount), "u64 b0s = term_rfc(b0t) ? ctr_take(e, b0t, ", Nat.show(pcount), ", b0f) : term_loc(b0t); u32 b0i = ", Nat.show(poffset), "; Term b0r = 0;"])}]), unfill_jobs(pw, playout, SrcNode{"b0s", "b0f", "b0i", False{}}, "b0r", "b0"))
+  jobs = List.append(&2, Job, one_job(JText{project_prelude(playout, pvalue, pcount, poffset)}), unfill_jobs(pw, playout, SrcNode{"b0s", "b0f", "b0i", False{}}, "b0r", "b0"))
   part_of(run_jobs(jobs, pw, Nil{}), "b0r")
 
 def project_packed(+pw: World, +playout: CLay.Layout, +pvalue: String) -> Part:
