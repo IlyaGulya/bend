@@ -431,9 +431,21 @@ static Term native_experiment_run(Env e, Term* f, IoWork* work) {
     char* runtime_bytes = native_read(io_argv[7], &runtime_length);
     Term runtime = io_str(e, runtime_bytes, runtime_length);
     Term cemit = native_accepted(e, native_apply(e, f[13], checked));
-    Term request = action == 3
-      ? io_node(e, CID(NativeCLibrary), native_exports(e, io_argv[4]), io_tup(e, runtime, loader.files))
-      : io_box(e, CID(NativeCModule), io_tup(e, runtime, loader.files));
+    // A NativeCLibrary node holds exports, runtime and files as three
+    // adjacent words (nested Data fields expand to their value layouts);
+    // NativeCModule holds two. Both use the same seal/term_ctr encoding as
+    // generated constructor code, only through explicit word counts.
+    u64 library_words = 3;
+    Term request;
+    if (action == 3) {
+      u64 loc = heap_alloc(e, cls_fit((u32)library_words));
+      e.mem[loc] = io_seal(e, native_exports(e, io_argv[4]), CID(NativeCLibrary));
+      e.mem[loc + 1] = io_seal(e, runtime, CID(NativeCLibrary));
+      e.mem[loc + 2] = io_seal(e, loader.files, CID(NativeCLibrary));
+      request = term_ctr(CID(NativeCLibrary), loc);
+    } else {
+      request = io_node(e, CID(NativeCModule), runtime, loader.files);
+    }
     Term emission = native_drive(e, f[10],
       io_tup(e, cemit, request), f[11],
       CID(NativeCEmitterFinished), CID(NativeCEmitterMore), "emit-c");

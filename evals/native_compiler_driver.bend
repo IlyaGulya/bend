@@ -96,6 +96,28 @@ def native_check_result(box: Checker.CheckerValue<Checked.CheckResult>) -> Nativ
   match box:
     case Checker.CheckerValue{value}: native_check_value(value)
 
+# The C target uses the same passive carrier and the same opaque chunk protocol;
+# only the request differs (it carries the runtime source bytes) and the result
+# type is CEmit's. The host builds the request, never a second carrier.
+# Direct fields: a nested Data field would be inlined at its value-layout
+# width, so the request mirrors the authoritative node layout instead of
+# carrying a boxed aggregate. Book order rules: these live definitions must
+# precede their first use.
+type NativeCEmit is Data:
+  NativeCLibrary{exports: List<&2, String>, runtime: String, files: List<&2, BIR.SourceFile>}
+  NativeCModule{runtime: String, files: List<&2, BIR.SourceFile>}
+
+def native_c_library_payload(program: Checked.CheckedProgram, exports: List<&2, String>, runtime: String, files: List<&2, BIR.SourceFile>) -> CEmitter.CEmitterRun<CEmitter.EmitResult>:
+  emit_c_library_start(program, exports, runtime, files)
+
+def native_c_module_payload(program: Checked.CheckedProgram, runtime: String, files: List<&2, BIR.SourceFile>) -> CEmitter.CEmitterRun<CEmitter.EmitResult>:
+  emit_c_modules_start(program, runtime, files)
+
+def native_c_emit_start(program: Checked.CheckedProgram, request: NativeCEmit) -> CEmitter.CEmitterRun<CEmitter.EmitResult>:
+  match request:
+    case NativeCLibrary{exports, runtime, files}: native_c_library_payload(program, exports, runtime, files)
+    case NativeCModule{runtime, files}: native_c_module_payload(program, runtime, files)
+
 def native_c_check_value(result: Checked.CheckResult) -> NativeResult<(NativeCEmit -> CEmitter.CEmitterRun<CEmitter.EmitResult>)>:
   match result:
     case Checked.CheckSuccess{program}: NativeAccepted{request => native_c_emit_start(program, request)}
@@ -167,27 +189,7 @@ def native_emitter_view(-A: Type, run: Emitter.EmitterRun<A>) -> NativeEmitterVi
   native_emitter_view_ready(A, Emitter.emitter_chunk(A, 64n, run))
 
 
-# The C target uses the same passive carrier and the same opaque chunk protocol;
-# only the request differs (it carries the runtime source bytes) and the result
-# type is CEmit's. The host builds the request, never a second carrier.
-# The payload stays a pair so the host builds the request with the same
-# two-field / one-field constructor encoding it already uses for NativeEmit.
-type NativeCEmit is Data:
-  NativeCLibrary{exports: List<&2, String>, payload: String & List<&2, BIR.SourceFile>}
-  NativeCModule{payload: String & List<&2, BIR.SourceFile>}
 
-def native_c_library_payload(program: Checked.CheckedProgram, exports: List<&2, String>, payload: String & List<&2, BIR.SourceFile>) -> CEmitter.CEmitterRun<CEmitter.EmitResult>:
-  (runtime, files) = payload
-  emit_c_library_start(program, exports, runtime, files)
-
-def native_c_module_payload(program: Checked.CheckedProgram, payload: String & List<&2, BIR.SourceFile>) -> CEmitter.CEmitterRun<CEmitter.EmitResult>:
-  (runtime, files) = payload
-  emit_c_modules_start(program, runtime, files)
-
-def native_c_emit_start(program: Checked.CheckedProgram, request: NativeCEmit) -> CEmitter.CEmitterRun<CEmitter.EmitResult>:
-  match request:
-    case NativeCLibrary{exports, payload}: native_c_library_payload(program, exports, payload)
-    case NativeCModule{payload}: native_c_module_payload(program, payload)
 
 def native_c_emit_value(result: CEmitter.EmitResult) -> NativeResult<String>:
   match result:
