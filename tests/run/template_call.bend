@@ -9,7 +9,7 @@ def increment(x: Nat) -> Nat:
 law main:
   Nat
 
-def main() -> Nat:
+def main():
   app(~increment, 41n)
 
-#| 42
+#|42n

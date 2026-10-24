@@ -6,7 +6,7 @@ law main:
 def increment(x: Nat) -> Nat:
   Nat.add(x, 1n)
 
-def main() -> Nat:
+def main():
   Nat.add(increment!(41n), 1n)
 
-#| 43
+#|43n
