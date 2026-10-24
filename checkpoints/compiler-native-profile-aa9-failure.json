@@ -108,7 +108,10 @@
     "runtime": "evals/c_backend_runtime.bend",
     "typedWitness": "nonempty EmitSuccess 1 / empty success 0 / failure 2",
     "executed": true,
-    "result": "EmitFailure (status 2); no EmitSuccess"
+    "result": "EmitFailure (status 2); no EmitSuccess",
+    "runtimeFamilies": "added for all 15 runtime constructors after source-evidenced Nil failure",
+    "jsProven": true,
+    "nativeRunWithFixedFixture": false
   },
   "compliantNodeAttempt": {
     "status": "EMIT_FAILURE_WITNESSED",
@@ -182,5 +185,27 @@
     "noRetry": true,
     "capRaise": false,
     "guardReportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792874487175-0f1a34dbad1bd7c0.json"
+  },
+  "failureDiagnosis": {
+    "message": "no family declares constructor Nil",
+    "method": "JS generated Emit (comp.ts js_lib) over the same canonical smoke BIR data and real runtime; stepwise emitter_chunk(64n); no native C build",
+    "observedBeforeFix": "EmitFailure message exact: \"no family declares constructor Nil\"",
+    "cause": "canonical c_backend_smoke metadata predates the current sharing schema: runtime constructor layouts exist but no BIR.Family arm declares Nil (and siblings)",
+    "fixtureFix": "added runtime_families() arms for all 15 runtime constructors with their declared arities, then U32 family; no runtime/emitter/generator patch",
+    "afterFix": "JS generated Emit returned EMIT_SUCCESS after 26237 emitter_chunk(64n) steps",
+    "jsCodegenNote": "js_lib generation used Node --stack-size=65536 KB for the JS codegen only; no native cap/limit changed; execution used default Node",
+    "probeSourceSha256": "b99fbad13d6bed735f64375da9c7021a76eddc6eba9917bbfab0441f01da6eb3",
+    "probeDataSha256": "2241e16db24981a29497f43966a717e415fd82bbb8c414b78ffefd7603598971",
+    "generatedJs": {
+      "bytes": 8114140,
+      "sha256": "cad4f122e23847bc9774a3541ec3c4b9b8ab0bbfaa63665103297a8840dd8374"
+    },
+    "runLog": {
+      "path": "/tmp/run-emit-js-probe9.log",
+      "sha256": "53c314b79e26942b22d7655af7d3990acc03e45ee9d742e43108317a224f481b",
+      "result": "EMIT_SUCCESS",
+      "steps": 26237
+    },
+    "nativeRunStatus": "unchanged: the performed Node native run used the pre-fix metadata and witnessed EmitFailure; this JS proof is not a native run and no native success is claimed"
   }
 }

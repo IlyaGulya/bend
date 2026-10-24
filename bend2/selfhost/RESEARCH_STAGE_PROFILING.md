@@ -145,7 +145,7 @@ constructors, U32 family; known result 26), factored as passive data in
 `evals/native_stage_profile_emit_fixture.bend`; its runtime is the real
 `evals/c_backend_runtime.bend` source. It does not import `c_backend.bend`'s
 computed emit check, and it is not a scalar number-formatter or empty-program
-fixture. The driver source passes `book_valid`.
+fixture. The driver source passes `book_valid`; a JS generated-Emit probe over the same data/runtime returns `EMIT_SUCCESS` with the added runtime families.
 
 The typed resume forwards the actual `EmitterValue<cps_provider_2_EmitResult>`
 to completion, and the host calls the typed classifier: non-empty `EmitSuccess`
@@ -183,7 +183,15 @@ The run took 217.8 s, peak RSS 6,606,716,928 B (6.607 GB / 6.153 GiB), below
 the 8 GiB guard, with four phase rows (template 2, checker 3, template-pending 2,
 emitter 3 advances; group 12 observed once). This is a real canonical
 `EmitFailure`, not an OOM/stack-cap failure and not a profiling PASS. The exact
-failure message was not surfaced by this host. No rerun or cap change was made.
+failure message was recovered separately through JS generated Emit over the same
+canonical smoke BIR data/runtime: **`no family declares constructor Nil`**. The
+old smoke metadata predates the current sharing schema: it declares runtime
+constructor layouts but no family arm for `Nil` (or its siblings). The diagnostic
+fixture now adds `runtime_families()` arms for all fifteen runtime constructors
+with their declared arities, then the U32 family. JS generated Emit then returned
+`EMIT_SUCCESS` after 26,237 `emitter_chunk(64n)` steps. This is a JS proof of the
+corrected fixture, not a new native run; the performed Node native run remains
+the pre-fix `EmitFailure` evidence. No native rerun or cap change was made.
 The native codegen/runtime prerequisite from the rejected Bun attempt is now
 established under Node; actual Emitter workload success remains OPEN.
 
