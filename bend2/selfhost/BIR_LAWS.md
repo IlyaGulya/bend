@@ -3,8 +3,8 @@
 This document specifies the Backend IR (`bend2/selfhost/backend_ir.bend`, BIR)
 and the transformation obligations that connect it to its input and its two
 targets. It is a normative contract plus an honest statement of what is
-mechanically enforced, what is only exercised by named fixtures, and what
-remains an open proof obligation.
+mechanically enforced, what a named fixture or harness defines but was not
+exercised here, and what remains an open proof obligation.
 
 It does not describe parser architecture; for that see `ARCHITECTURE.md`. The
 input side (what a checked program is, and why the checked domain is what it is)
@@ -36,7 +36,8 @@ interchangeable.
 | --- | --- |
 | **[N]** | Normative: a producer or consumer of BIR MUST satisfy this. Violating it is a compiler defect even when no current test notices. |
 | **[C]** | Checked by target code, which returns a failure instead of emitting. The cited function is the check. |
-| **[M]** | Exercised by a named fixture or acceptance lane. This is measured evidence, not a proof. |
+| **[P]** | Procedure: a named fixture and/or harness defines how to run a check and what it must observe, but this document did not find a matching read receipt at the current base. It is not evidence that the run happened. |
+| **[M]** | Measured: a read receipt whose pinned source hashes match the current base. None of the fixture entries in §6.5 reaches this bar; the one receipt found pins a different NF revision. |
 | **[O]** | Open: no mechanized proof and no exhaustive test exists in this tree. |
 
 "Compiled" does not mean "proved". In particular:
@@ -64,9 +65,17 @@ interchangeable.
 `lower(F)` consumes an F produced by the checker success path. It relies on the
 FIR obligations listed in `FIR_LAWS.md`, in particular:
 
-- every `U32` reachable from `modules`, `signatures`, and `metadata` denotes an
-  in-bounds source-region node of `source`, and the arena is not released before
-  lowering;
+- every **designated semantic handle field** reachable from `modules`,
+  `signatures`, and `metadata` points to an in-bounds arena object of the role
+  that field expects: `IR.Symbol.ty`, `IR.Occurrence.ty`, definition
+  binder/result/body handles, module roots, `Scope.ArenaGlobal.ty`, and
+  constructor/pattern/binder/tape/name-pool handles match their declared
+  node/pattern/binder/tape-range/name-pool roles. Record-valued fields such as
+  `ModuleMetadata.scope` must themselves satisfy their structural invariants.
+  A `U32` is a handle only when its named field has that role; plain payloads —
+  literal words, source offsets, lengths, field ordinals, code ids, flags — are
+  **not** handles and carry no in-bounds claim. The arena is not released
+  before lowering;
 - `modules` and `metadata` are paired and ordered consistently;
 - per-module name resolution must use the module's `ModuleMetadata.scope`;
   `signatures` is the accumulated global signature list with canonical keys;
@@ -105,29 +114,95 @@ implementation is structurally recursive and every failure path has an explicit
 branch; a divergence or stack exhaustion is not modelled by the type. The
 single-return-value claim is a reading of the code, not a theorem.
 
-### 1.3 Observation domain
+### 1.3 Observation domain and representation relation
 
-We must not claim more than the source semantics supports. Define the
-observation of a *terminating* execution only.
+The central law is relational and trace-based. It is **not** a function from a
+program to a printed string, and it does not narrow the checkpoint's `Obs`
+(`checkpoints/SELFHOST_IR_ARCHITECTURE.md` §4) to terminating `show` output.
 
-**Value observation** of a checked executable F is the byte string written to
-standard output by the reference runtime's `show` of the result of `main`,
-including the final newline, with exit status 0. For a library F it is, per
-exported key and host argument tuple, the result value under the same `show`
-convention.
+Fix:
 
-**Effect observation** of a checked executable whose `main` type is an IO
-application is the sequence of externally visible events the IO runtime performs
-(standard-stream bytes written, final exit status, and the values returned by
-registered host effects), once the computation terminates.
+- F, its ending E, and the target T ∈ {JS, C};
+- an environment ξ that fixes the foreign oracle, host calls/arguments,
+  scheduler order where the source leaves it open, and any other external
+  nondeterminism. Two runs with unrelated ξ are not comparable; see (7).
 
-The targets realize these observations as follows:
+Define `SRun(F, ξ)` and `TRun(T(lower(F)), ξ')` as sets of **finite and
+infinite traces**. A trace is a sequence of observable events ending in one of:
+
+- `Value(v, τ)` — a returned value of type τ;
+- `Error(class, payload?)` — a runtime failure/error outcome;
+- divergence — no finite end, with an infinite (possibly empty) event sequence.
+
+A finite trace records the externally visible events (standard-stream writes,
+effect requests/answers under ξ, host calls/callbacks, returned values) in
+order. Compile-time diagnostics are not runtime traces: if lowering or a target
+fails, no program and no trace set exists, and the diagnostic is the outcome.
+
+**Normative observation relation `≈_obs`.** For the same ξ (or related oracles,
+see 7):
+
+1. **Value relation `≈_τ`.** For each checked type τ, source values are related
+   to target values (a JS value or a C `Term` after ABI conversion) by a
+   representation relation derived from τ, the target ABI, and the constructor
+   layouts. It is not defined as "same `show` text".
+2. **Event correspondence.** Every finite source trace has a target trace with
+   the same ordered observable events, with payloads related by `≈_τ`, the same
+   effect/operation names, and arguments related by `≈`; every finite target
+   trace has a matching source trace under the same ξ. For a deterministic ξ
+   this is equality of trace sets; otherwise it is the relation of (7).
+3. **Divergence is preserved, not refuted.** If no finite source trace exists
+   under ξ, no finite target trace may exist, and vice versa. This is a
+   statement about trace sets, **not** a claim that any program terminates.
+   A compiler is allowed to preserve divergence; it is not allowed to invent a
+   finite result or fail-stop where the source diverges, or the reverse.
+4. **Executable top-level observation.** For a closed executable, the finite
+   value/effect trace may be projected to what the runtime actually exposes:
+   the final `show` bytes plus exit status for a pure main, or the effect-event
+   trace plus final value/exit for an IO main. This projection is an explicit
+   weakening for the top-level result only; it does not define `≈_τ` and does
+   not apply to library calls. If `show` is undefined/abstract for the main
+   type, a target that refuses to print is a compile/admission outcome, not a
+   value relation.
+5. **Library observation.** `show` text is insufficient: two different
+   closures may print identically. A library observation is a finite,
+   well-typed host interaction sequence: a sequence of calls of exported keys
+   with arguments related by `≈_τ`, callback invocations supplied by the host,
+   and returned callable values (including closures) compared by their behavior
+   under further well-typed calls. Every finite prefix must correspond, and a
+   pair of returned callables is distinguished if any well-typed continuation
+   distinguishes them.
+6. **Errors.** The contract must distinguish three things, and this document
+   states which it does and does not fix:
+   - **error class** — success vs runtime failure vs admission/compile failure;
+   - **error payload** — a message/span/location;
+   - **exact stderr bytes** — formatting, ordering, and text.
+   The preservation law fixes the class: the same ξ and the same input yield
+   the same class on source and target. It does **not** silently require exact
+   text. Whether payload or exact bytes are part of `Obs` is a decision for the
+   source-observation definition (O-7); R-9 records the current C/JS text
+   difference as that open decision, not as an assumed equality.
+7. **Foreign nondeterminism and host effects.** Compare under a fixed oracle
+   relation or as sets of allowed traces, never by equating two unrelated runs.
+   If a host effect can return different values for the same request, the
+   requirement is that the source and target allowed-trace sets correspond for
+   the same oracle relation (pointwise equality only when the oracle is
+   deterministic).
+8. **Resource state.** Logical ownership is part of the correctness contract,
+   not a trace event: a use-after-free, double consume, lost sharing, or wrong
+   refcount policy is a defect (BL-3, C-6, checkpoint F3/B2). Concrete
+   allocation addresses, allocation counts, RSS, stack depth, timing, and GC
+   schedule are **not** observable and need not match. A host resource-limit
+   abort (`RESOURCE_LIMIT`, exit 73 in the guarded lanes) is a tooling outcome,
+   never a semantic PASS/FAIL verdict and never a substitute for a trace.
+
+The current target entry points realize the top-level part as follows (this is
+mechanism, not the definition of `Obs`):
 
 - JS: `io_exit` (defined in `js_runtime_io`, `js_backend.bend:1176`; emitted
-  into `js_main`, `1193`) either runs
-  `io_run` when the resolved main type is `IO`, or prints
-  `$show_value(type, run_loop(main()), 0)` and a newline. Errors print to
-  stderr and set exit code 1.
+  into `js_main`, `1193`) either runs `io_run` when the resolved main type is
+  `IO`, or prints `$show_value(type, run_loop(main()), 0)` and a newline.
+  Errors print to stderr and set exit code 1.
 - C: for a native `IO` head, `MAIN_PURE` is 0 and the runtime drives the effect
   task (`c_runtime.c:2791-2810`); otherwise `MAIN_PURE` is 1, `SHOW_DESC` is
   built by `Phys.show_build` and `show_val` prints it (`c_runtime.c:2620-2680`).
@@ -135,26 +210,21 @@ The targets realize these observations as follows:
   (`c_backend.bend:473-503`) select the branch from the normalized head; a
   head failure is a compile failure.
 
-**[N]** The preservation laws in §4 and §6 are conditional on the source
-program having an observation, i.e. on the reference execution terminating. No
-law asserts termination, productivity, or a step bound for arbitrary source
-programs. `unsafe` definitions were accepted without a termination proof (FIR),
-and lowering, JS, and C all preserve that possibility of divergence.
+**[N]** The preservation laws in §4 and §6 are statements about `≈_obs` under
+the same ξ. They do not assert termination, productivity, or a step bound for
+arbitrary source programs. `unsafe` definitions were accepted without a
+termination proof (FIR), and lowering, JS, and C all preserve that possibility
+of divergence. The full trace/representation relation of this section is **[O]**;
+what exists is a mixture of mechanism-level arguments, partial fixture
+procedures, and named open obligations. Nothing in this document upgrades a
+partial finite observation into the full relation.
 
-**Not observable.** Allocation addresses, evaluation order of independent
-*effect-free* operands, generated identifier spellings, C stack depth, and
-textual shape of the emitted program are outside the observation domain. They
-may change between implementations. (When an operand's evaluation performs an
-effect, its order can be observable; that case is deliberately left open in
-BL-8/O-3 rather than assumed.)
-
-The checkpoint's `Obs` also includes termination/error and resource state
-(`checkpoints/SELFHOST_IR_ARCHITECTURE.md` §4). This section specifies the
-externally visible value/effect and termination part; the resource-state part
-is the ownership obligation of F3/B2, instantiated here only through BL-3 and
-C-6. Error observation is coarse: a lowering failure yields a diagnostic and no
-program; a target failure yields a compile error; a runtime failure is a
-non-value event and is outside the value-preservation claim.
+**Not observable.** Allocation addresses, RSS, allocation counts, stack depth,
+timing, generated identifier spellings, evaluation order of independent
+*effect-free* operands, and textual shape of the emitted program are outside the
+relation. They may change between implementations. When an operand's evaluation
+performs an effect, its order can be observable; that case is deliberately left
+open in BL-8/O-3 rather than assumed.
 
 ### 1.4 Relation to the existing checkpoint laws
 
@@ -166,7 +236,7 @@ out. Mapping:
 
 | Checkpoint law | Where this document instantiates it |
 | --- | --- |
-| Central law: `Obs(source) = Obs(render(lower(CheckedFIR)))` | TL-1 and TL-3, with the observation domain of §1.3. Conditional on WF and on the foreign contract. |
+| Central law: `Obs(source) = Obs(render(lower(CheckedFIR)))` | TL-1 and TL-3, with the trace/representation relation `≈_obs` of §1.3. This is not string equality, not termination, and not equality of unrelated foreign runs; it is conditional on WF and the foreign oracle relation. |
 | F1 (publication preserves reachable handles) | `FIR_LAWS.md` (input precondition), not restated here. |
 | F2 (occurrence preserves judgement/context) | `FIR_LAWS.md` (input precondition). |
 | F3 (affine owner not copied across handoff) | `FIR_LAWS.md`; BIR consumes the already-checked facts in BL-3. |
@@ -655,9 +725,10 @@ type terms independently of runtime arguments, and an erased argument's checked
 term is the instantiated element type used by array primitives
 (`erased_type_term`, `backend_lower.bend:358-363`).
 
-Status: **[N]**. Mechanism is direct; **[M]** indirectly through
-`evals/c_backend_smoke.bend`/`evals/clay_layout_smoke.bend`, which include
-erased fields and erased positions. No test enumerates all erased shapes.
+Status: **[N]**. Mechanism is direct; **[P]** `evals/c_backend_smoke.bend` and
+`evals/clay_layout_smoke.bend` contain erased fields/positions and their
+harnesses define how to run them, but no matching receipt was read and this
+document ran nothing. No test enumerates all erased shapes.
 
 ### 4.3 Affinity and ownership facts
 
@@ -725,22 +796,23 @@ arguments than the callee's live parameters lowers to a first-class closure:
 behaves as the exact application to all arguments. The adapter's captures are
 evaluated once, at closure creation (`capture_arguments`, `228-252`).
 
-Status: **[N]**; **[M]** `evals/c_backend_smoke.bend` (`code_cap`, a closure
-applied through the runtime), compiled and executed by
-`evals/c_backend_step_smoke.ts` with expected output `26`
-(`evals/c_backend_step_smoke.ts:37,150-156`); `evals/c_backend_library_smoke.bend`
-(`code_partial`, export mode 2) is compiled and run by
-`evals/c_backend_library_run.ts` with expected output `export ok`.
+Status: **[N]**; **[P]** `evals/c_backend_smoke.bend` (`code_cap`) and
+`evals/c_backend_library_smoke.bend` (`code_partial`) are fixtures;
+`evals/c_backend_step_smoke.ts:37,150-156` and
+`evals/c_backend_library_run.ts` are **procedures** that would compile and run
+them, expecting `26` and `export ok` respectively. No matching read receipt
+exists at 943de390, and this document's preparation ran neither procedure.
 **[O]** for a general proof.
 
 **BL-6 (over-application).** Extra live arguments after an exact application
 are applied one at a time, in source order, by successive strict `Apply` lets;
 never as one argument list (`apply_rest`, `backend_lower.bend:932-952`).
 
-Status: **[N]**; **[M]** the C executable smoke's `(add(5))(7)` path is part
-of the compiled-and-run `26` observation
-(`evals/c_backend_step_smoke.ts`). **[O]** for order equality with the
-reference evaluator when the extra arguments have effects (see O-3).
+Status: **[N]**; **[P]** the C executable smoke fixture contains an
+`(add(5))(7)` path, and `evals/c_backend_step_smoke.ts` is the procedure that
+would observe it as part of `26`; no receipt was read. **[O]** for order
+equality with the reference evaluator when the extra arguments have effects
+(see O-3).
 
 **BL-7 (nullary and lazy declarations).** A definition with zero live
 parameters lowers to `LazyDeclaration{key, body}`; each `LoadSymbol` reevaluates
@@ -754,8 +826,9 @@ parameters}`.
   `c_backend.bend:2434-2459`); JS installs a getter that calls the body per
   property read (`deferred`, `js_backend.bend:950-962`).
 - Status: **[N]**, **[C]** in C (nullary read of a parameterised function is an
-  error), **[M]** `evals/c_backend_smoke.bend` (`LoadSymbol "zero"`) and
-  `evals/c_backend_library_smoke.bend` (`factory` freshness).
+  error), **[P]** the smoke fixtures contain `LoadSymbol "zero"` and a lazy
+  `factory`; their harnesses define the check, but no matching receipt was
+  read.
 
 **BL-8 (evaluation order).** The order among independent strict operations is
 whatever the block sequence says; targets emit the sequence exactly:
@@ -797,8 +870,9 @@ a capture.
   (`closure`/`closure_captures`, `js_backend.bend:473-481`); C stores them in a
   fresh closure node (`closure_ctl`/`closure_text`,
   `c_backend.bend:2480-2523`).
-- Status: **[N]**; **[M]** C smoke's `code_cap` and
-  `evals/c_backend_library_smoke.bend`'s closure factory. **[O]** generally.
+- Status: **[N]**; **[P]** the smoke fixtures contain `code_cap` and a closure
+  factory; their harnesses define the checks, but no receipt was read.
+  **[O]** generally.
 
 ### 4.6 Values that are not runtime data
 
@@ -888,10 +962,10 @@ exact path string equality. It never derives, normalizes, or rewrites a path.
 - Duplicate path semantics: one path must have one namespace. JS rejects the
   same path under two namespaces (`link_add_namespace`, `47-54`); C rejects it
   in `plan_add` (`c_emit_core.bend:42-58`).
-- Status: **[N]**, **[C]** in both targets, **[M]**
+- Status: **[N]**, **[C]** in both targets. **[P]**
   `gates/selfhost_cases/missing_c_target.bend` and
-  `gates/selfhost_cases/missing_js_target.bend`
-  pin the diagnostic lanes.
+  `gates/selfhost_cases/missing_js_target.bend` define the diagnostic lanes
+  through `gates/selfhost.ts`; no receipt was read.
 
 **BL-14 (foreign id spelling).** A target that spells program-owned ids inside
 foreign source (C `CID(<key>)`, `FID(<key>)`; JS `CID(<key>)`) resolves the key
@@ -915,7 +989,8 @@ the spelling, never a guessed id.
   are present in the CID table and a collision would assign one CID row twice.
   This is a **reported asymmetry** (§8 R-2).
 - Status: **[N]**, **[C]** in both targets (**[C]** for the collision check in
-  JS only), **[M]** JS/C link fixtures named in §6.
+  JS only). **[P]** the JS/C link fixtures named in §6.5 would exercise the
+  rewrite; no receipt was read.
 
 ### 4.9 Pattern matching and case layout (checkpoint law L5)
 
@@ -944,11 +1019,11 @@ the remaining rows as `next`; `patterns`/`pattern`/`pattern_constructor`
 `scalar_test` chooses `PrimSameValue` or `PrimFloatBitsEqual`
 (`1125-1128`).
 
-Status: **[N]**; **[M]** indirectly through the stage-0/stage-1 acceptance
-lanes, which compile and execute match-heavy sources; no BIR-level match
-fixture enumerates erased/nested/multi-scrutinee rows. **[O]** for the
-equivalence with the reference matcher (first-match order, coverage, native
-scalar comparisons) as a general theorem.
+Status: **[N]**; **[P]** `gates/selfhost.ts` defines stage-0/stage-1 lanes that
+compile and execute match-heavy sources, but no receipt was read for this base
+and no BIR-level match fixture enumerates erased/nested/multi-scrutinee rows.
+**[O]** for the equivalence with the reference matcher (first-match order,
+coverage, native scalar comparisons) as a general theorem.
 
 ### 4.10 Primitive operations (checkpoint law B1)
 
@@ -1012,9 +1087,9 @@ aliases (`backend_ir.bend:32-144`).
    a definition re-evaluates per host call (BL-7, C-8 mode 1). JS and C both
    implement this (`deferred`; `entry_lazy`).
 
-Status: **[N]**; **[M]** C executable/library smoke (export modes and a lazy
-factory), `gates/selfhost.ts` for the JS/native lanes; **[O]** for a general
-cross-target ABI/effect-order proof. The existing checkpoint law B2 is exactly
+Status: **[N]**; **[P]** the C library/executable smoke fixtures define export
+modes and a lazy factory, and `gates/selfhost.ts` defines the JS/native lanes;
+no receipt was read. **[O]** for a general cross-target ABI/effect-order proof. The existing checkpoint law B2 is exactly
 this obligation.
 
 ## 5. Descriptor normal forms (Nf)
@@ -1078,11 +1153,22 @@ The rules implemented by `nf_descriptor_step` and its helpers are:
 
 This distinction is normative:
 
-- **Abstract** (`NfOther`/`NfMissing`): the evaluator cannot or should not
-  reduce further, but the expression is a legitimate type expression. It
-  materializes to a descriptor (its own source form, or a named application of
-  normalized arguments). Consumers must preserve it: C boxes it
-  (`CLay.layout_val`, `376-390`), JS leaves it to the runtime evaluator.
+- **Abstract** has two distinct kinds, and they must not be conflated:
+  - `NfOther`: the evaluator cannot or should not reduce further, and the
+    expression is a legitimate type expression (an opaque name/law, an
+    under-applied family/type function, a lambda/arrow, a stuck match, an
+    equality form). It materializes to its (normalized) source descriptor.
+    Consumers preserve it: C boxes it (`CLay.layout_val`, `376-390`), JS
+    leaves it to the runtime evaluator.
+  - `NfMissing`: a `DescriptorParameter{index}` had no value in the
+    environment (`val_at`/`val_nth`, `descriptor_nf.bend:182-199`). The
+    evaluator keeps the source descriptor; it does not invent a type. This is
+    an **unresolved binder**, not a known opaque type. It is not `NfFail`, but
+    consumers must not treat it as a concrete type either: C boxes it
+    (`BoxOpen`, one Term), and JS's `$type` throws "bend: unavailable
+    type-expression binder" when it must force the binder
+    (`js_backend.bend:1189`). Whether a free index is admissible is WF-13
+    (scoping), not a reduction result.
 - **Failure** (`NfFail` → `BIR.DescriptorFailure{message}`): a reduction was
   attempted and is invalid (over-application of a family/type function,
   application of a non-function constructor/quantity/kind value, a malformed
@@ -1097,17 +1183,24 @@ This distinction is normative:
 - A family applied to more arguments than its arity is `DescriptorFailure` via
   `NfArity` (`nf_family_apply`, `608-624`); a family applied to too few is
   abstract (`NfType` with partial args).
-- An unbound `DescriptorParameter` is abstract (`NfMissing`), not a failure.
+- An unbound `DescriptorParameter` is `NfMissing` (unresolved binder), not
+  `NfFail`; it is not thereby a valid opaque type (see above).
 
-Status: **[N]**; **[M]** `evals/descriptor_nf_smoke.bend` covers:
-`MyNat` alias → `Nat`; `MyIO` → IO answer `Nat`; `Id(Nat)` → `Nat`; `CycA` →
-`DescriptorFailure`; `K` under → abstract `DescriptorRef "K"`; `K(Nat,Bool)` →
-`DescriptorFailure`; `QM` → quantity head with inserted `Erased`; opaque
-`Chan` → unchanged; malformed case → failure message; known mismatch falls
-through to the next case; freeze/`capture` cases; budget-independent items via
-`normalize_closed`. Receipt:
-`evals/descriptor-nf-step-smoke-receipt.json` records the pinned hashes and the
-generated step component, not a semantic proof.
+Status: **[N]**; **[P]** `evals/descriptor_nf_smoke.bend` lists expected
+outcomes: `MyNat` alias → `Nat`; `MyIO` → IO answer `Nat`; `Id(Nat)` → `Nat`;
+`CycA` → `DescriptorFailure`; `K` under → abstract `DescriptorRef "K"`;
+`K(Nat,Bool)` → `DescriptorFailure`; `QM` → quantity head with inserted
+`Erased`; opaque `Chan` → unchanged; malformed case → failure message; known
+mismatch falls through; an unbound parameter stays `DescriptorParameter 0`;
+budget-independent items via `normalize_closed`.
+`evals/descriptor_nf_step_smoke.ts` defines the run.
+
+The one receipt read, `evals/descriptor-nf-step-smoke-receipt.json`, pins
+`descriptor_nf.bend` sha256 `79591089ede2107d84c803a76c2e415ad35a0c358563d76aec7af46ee7b4ba98`,
+while the current base file hashes `747dc747fcb1a6b6c1fcbf31a3e164f998fd5fa502f87a8ad3a1facd13859973`.
+The receipt therefore measures an **older NF revision** (it corresponds to
+commit `0e0f1fe4`) and does not authenticate the current module. No matching
+receipt for 943de390 was found; this document's preparation ran nothing.
 
 ### 5.4 What is not claimed
 
@@ -1118,9 +1211,10 @@ generated step component, not a semantic proof.
 - **No equivalence theorem** between `descriptor_nf` and the JavaScript runtime
   evaluator (`$type`, `$type_apply`, `$type_named`, `$type_sugar`). The module
   header explicitly says the rules are the reference runtime's rules; that is a
-  code-review claim. The smoke fixture fixes specific expected outcomes.
-- **No completeness claim** for type-expression forms not exercised by the
-  smoke fixture.
+  code-review claim. The smoke fixture would test specific expected outcomes if
+  run; no matching receipt exists for this base.
+- **No completeness claim** for type-expression forms not listed by the
+  smoke fixture (which itself was not run for this base).
 - **Nf is not exported to targets**: `CLay` consumes `NF.NfVal` directly as a
   library API (`c_backend_layout.bend:246-265, 336-390`) and `Phys` consumes
   `CLay` values. This is an intra-compiler API, not a program representation.
@@ -1140,12 +1234,14 @@ must not re-infer source facts.
 - `J(B, files)` and `C(B, runtime, files)` return either one emitted program or
   a diagnostic; they never emit a program that used a guessed name, path, type,
   representation, or id.
-- When they emit, the emitted program's observation (§1.3), if the execution
-  terminates, equals the observation of the source program whose checked form
-  lowered to B.
+- When they emit, the emitted program's finite/infinite trace set stands in
+  `≈_obs` (§1.3) to the source trace set for the same ξ: matching events and
+  values under `≈_τ`, the same error class, and divergence preserved in both
+  directions. No termination is required or implied.
 
 Status: **[N]**; the first half has many concrete **[C]** checks cited below.
-The second half is the unproved semantic law. No mechanized proof exists.
+The second half is the unproved semantic law (`≈_obs` is **[O]**). No
+mechanized proof exists.
 
 **TL-2 (targets do not lower).** Both targets consume `BIR.Program` only.
 `js_emit.emit` calls `BackendLower.lower` once and then `Backend.emit_linked`
@@ -1154,10 +1250,9 @@ The second half is the unproved semantic law. No mechanized proof exists.
 emitter reads no syntax tree, no checker environment, and no source alias. The
 shared generated composition (one copy of the lowering in a generated module)
 is a build-size/dedup property; it is **not** evidence that different canonical
-programs preserve semantics. Status: **[N]** for the structure, **[M]** for the
-imports/provenance checks in the generated step sources (e.g.
-`evals/checker_core_step_lower.ts` requires the authenticated `backend_ir`
-import).
+programs preserve semantics. Status: **[N]** for the structure. **[P]** the generated step sources define
+provenance checks (e.g. `evals/checker_core_step_lower.ts` requires the
+authenticated `backend_ir` import); no receipt for those checks was read.
 
 ### 6.2 JavaScript target
 
@@ -1179,8 +1274,8 @@ has exactly one renderer; there is no fallback path that reparses the program.
 - Erased fields are absent from the object. `$show_fields` and the type
   evaluator know declared field quantities from the emitted arm descriptors and
   skip `q === 0` entries (`js_backend.bend:1006-1009, 1178`).
-- Status: **[N]**; **[M]** as above; **[O]** for JS/C agreement on packed and
-  native shapes.
+- Status: **[N]**; **[P]** the fixtures named in BL-5..BL-9 define the shapes;
+  no receipt was read. **[O]** for JS/C agreement on packed and native shapes.
 
 **JS-3 (calls and closures).**
 
@@ -1200,8 +1295,8 @@ has exactly one renderer; there is no fallback path that reparses the program.
   as an immediately evaluated expression rather than a function, which is why
   such a `Closure` is excluded by WF-7. A fully nullary definition is a lazy
   getter (§BL-7), not a zero-argument call site.
-- Status: **[N]**; **[M]** C smoke and JS selfhost gate exercise these shapes
-  per lane, but not cross-target.
+- Status: **[N]**; **[P]** the C smoke and the JS selfhost gate define these
+  shapes per lane; no receipt was read and neither compares the targets.
 
 **JS-4 (branch/region).** `Branch` is JS `if`; `Region` is
 `$case<label>:{<body>}<next>`; `LeaveRegion` is `break $case<label>`. The
@@ -1209,9 +1304,8 @@ renderer groups consecutive tag guards with the same immutable subject into a
 `switch` only when at least three distinct tags are present
 (`tag_group`/`tag_render_group`, `597-644`). This is an emission optimization;
 it must preserve every case label and condition bind, and it does because the
-arm bodies are rendered unchanged. Status: **[N]**; **[M]** the C/JS smoke
-programs do not cover the grouped `switch`; the comment in the source states the
-intent.
+arm bodies are rendered unchanged. Status: **[N]**; **[P]** the C/JS smoke fixture sources do not include the
+grouped `switch`; the source comment states the intent, and no run was made.
 
 **JS-5 (foreign request).** A foreign declaration becomes a curried function of
 its live parameters ending in `$k`, returning
@@ -1226,8 +1320,9 @@ declared native markers, never by source spelling.
 - Effect sources are spliced once each, in their own function scope
   (`js_effect_chunk`/`js_effect_sources`, `368-394`); `CID(k)` is rewritten
   lexically (§BL-14).
-- Status: **[N]**, **[C]** for path/name resolution; **[M]**
-  `gates/selfhost_cases`; **[O]** for cross-target protocol equality.
+- Status: **[N]**, **[C]** for path/name resolution; **[P]**
+  `gates/selfhost_cases` defines the missing-target lanes; no receipt. **[O]**
+  for cross-target protocol equality.
 
 **JS-6 (ending).** `Executable` emits `js_main(descriptor(main_type))`;
 `Library` emits an `export default` object
@@ -1266,10 +1361,10 @@ the code implements it:
 - Non-tail calls push a continuation segment carrying the values the
   continuation reads; the continuation result is bound to the call's local
   (`call_ctl`/`call_next`/`call_done`, `2365-2414`).
-- Status: **[N]**, **[C]** for arity and label checks, **[M]**
-  `evals/c_backend_smoke.bend` and `evals/c_backend_library_smoke.bend` (which
-  render but, by themselves, do not execute the C; execution evidence belongs to
-  the selfhost gate).
+- Status: **[N]**, **[C]** for arity and label checks. **[P]**
+  `evals/c_backend_smoke.bend` and `evals/c_backend_library_smoke.bend` are
+  fixtures whose harnesses would render, compile, and run them; the selfhost
+  gate defines the execution lane. No receipt for this base was read.
 
 **C-2 (boxed callable value versus physical storage).** Two forms exist and
 must not be confused:
@@ -1363,8 +1458,8 @@ documents deliberate conservative departures from the reference emitter
 Status: **[N]** for the superset direction; **[O]** for a soundness proof and
 for "superset" in the presence of foreign values (the plan keeps foreign
 declaration cids cold and relies on the twin's constructor hot bit; that is a
-documented assumption, `tests/io/foreign_shared.c` is cited as the measured
-case).
+documented assumption; `tests/io/foreign_shared.c` is cited by the module as
+the measured case, but no matching receipt was read here).
 
 **C-7 (SHOW).** For a pure executable, `Phys.show_build` derives a flat
 `SHOW_DESC` word array and `SHOW_NAMES` from the normalized main type and the
@@ -1373,9 +1468,10 @@ descriptor uses the same word offsets as storage; a boxed Data reads its arm
 from a `Term`, an inline Data reads a leading tag word, and field offsets
 advance by the field's laid-out word count. An erased field refuses the build.
 
-Status: **[N]**, **[C]** for the refusal; **[M]** `evals/physical_show_smoke.bend`
-(renders a descriptor and names) and the C smoke's pure `U32` main. **[O]** for
-byte-for-byte equality with the JS `$show_value` over the whole language.
+Status: **[N]**, **[C]** for the refusal. **[P]**
+  `evals/physical_show_smoke.bend` defines a descriptor/names fixture and the C
+  smoke defines a pure `U32` main; no receipt was read. **[O]** for
+  byte-for-byte equality with the JS `$show_value` over the whole language.
 
 **C-8 (library ABI).** A `Library` ending publishes a renderer-owned export
 table. Every export runs through the ordinary task/segment path, one BOX `Term`
@@ -1390,14 +1486,18 @@ per argument and result. Modes (documented at `plan_library`,
   in order.
 
 A declared arity above the checked parameter count fails closed. Status: **[N]**,
-**[C]**, **[M]** `evals/c_backend_library_smoke.bend` (direct, extra-argument,
-zero-arity, lazy, lazy-closure-factory exports).
+**[C]**. **[P]** `evals/c_backend_library_smoke.bend` defines direct,
+extra-argument, zero-arity, lazy, and lazy-closure-factory exports; its harness
+would run them, but no receipt was read.
 
 ### 6.4 JavaScript/C correspondence
 
 **TL-3.** J and C are two renderings of one BIR semantics. The normative
-statement is: for an admissible B and target-appropriate foreign sources, if
-both compiled programs terminate, their value/effect observations agree.
+statement is: for an admissible B, target-appropriate foreign sources, and
+related ξ, the JS and C trace sets correspond under `≈_obs` (§1.3) — matching
+finite events and values, matching error class, and divergence preserved.
+Termination of either side is not required, and `show` text alone is not the
+relation (especially for library callables).
 
 This is **not** established:
 
@@ -1421,19 +1521,20 @@ TL-3.
 
 ### 6.5 Evidence ledger
 
-What the named evidence actually establishes. "Compiled and run" below means
-the corresponding TS harness built a native or JS artifact from the fixture's
-own source and compared the observed output.
+This document's preparation ran **no** build, emitter, gate, or fixture. A row
+is therefore marked **procedure** when the source only defines a check, and
+**receipt** when a read artifact records an actual run with pinned hashes.
 
-| Evidence | Establishes | Does not establish |
-| --- | --- | --- |
-| `evals/c_backend_smoke.bend` + `evals/c_backend_step_smoke.ts` | A hand-written BIR executable with a direct call, a capture closure, a runtime-applied closure, a lazy nullary read, and a non-tail continuation compiles to C and prints `26` (`:37,150-156`). | Lowering preservation, other constructors, arrays, effects, overflow, or ownership. |
-| `evals/c_backend_library_smoke.bend` + `evals/c_backend_library_run.ts` | A hand-written `BIR.Library` publishes direct/extra-argument/zero-arity/lazy exports through `bend_export_call`/`apply`; the linked caller prints `export ok`. | JS export parity, general host argument types. |
-| `evals/clay_layout_smoke.bend` + `evals/clay_layout_step_smoke.ts` | Specific value/node layouts, packedness, offsets, and Fill/Unfill plans. | Fill/Unfill identity for all layouts. |
-| `evals/physical_show_smoke.bend` + `evals/physical_step_smoke.ts` | A SHOW descriptor and names for the fixture's types. | Byte equality with JS `$show_value` generally. |
-| `evals/descriptor_nf_smoke.bend` + `evals/descriptor_nf_step_smoke.ts`, `evals/descriptor-nf-step-smoke-receipt.json` | The listed NF cases in §5.3 and the pinned generated-step hashes. | NF/JS-evaluator equivalence, idempotence, completeness. |
-| `gates/selfhost.ts` | For runnable fixtures, stage-0 and stage-1 agree per lane (JS lane and native lane) and with `#|` expectations; `#|!c`/`#|!js` pin missing-target diagnostics. | JS-vs-C agreement for one program; semantic preservation of lowering. |
-| `tests/io/foreign_shared.c` (cited by `c_backend_sharing.bend`) | A foreign value seals through the produced constructor's hot bit. | General foreign sharing safety. |
+| Evidence | Kind | What it defines or records | What it does not establish |
+| --- | --- | --- | --- |
+| `evals/c_backend_smoke.bend` + `evals/c_backend_step_smoke.ts` | procedure | The fixture is a hand-written BIR executable (direct call, capture closure, runtime-applied closure, lazy nullary read, non-tail continuation); the harness writes the rendered C to `/tmp`, invokes clang, runs it, and requires `26` (`:37,150-156`). | That the procedure was run at 943de390; lowering preservation, other constructors, arrays, effects, overflow, ownership. |
+| `evals/c_backend_library_smoke.bend` + `evals/c_backend_library_run.ts` | procedure | A hand-written `BIR.Library` with direct, extra-argument, zero-arity, lazy, and lazy-factory exports; the harness links the C caller and requires `export ok`. | A receipt for this base; JS export parity; general host argument types. |
+| `evals/clay_layout_smoke.bend` + `evals/clay_layout_step_smoke.ts` | procedure | Specific value/node layouts, packedness, offsets, and Fill/Unfill plans. | Fill/Unfill identity for all layouts; a run at this base. |
+| `evals/physical_show_smoke.bend` + `evals/physical_step_smoke.ts` | procedure | A SHOW descriptor and names for the fixture's types. | Byte equality with JS `$show_value`; a run at this base. |
+| `evals/descriptor_nf_smoke.bend` + `evals/descriptor_nf_step_smoke.ts` | procedure | The expected NF outcomes listed in §5.3 and the run procedure. | NF/JS-evaluator equivalence, idempotence, completeness; a run at this base. |
+| `evals/descriptor-nf-step-smoke-receipt.json` | receipt (stale) | Records 33 assertions and all-ones observed bits for `descriptor_nf.bend` sha256 `79591089...` (commit `0e0f1fe4`). | The current module: 943de390 hashes `747dc747...`; the receipt does not authenticate this revision. |
+| `gates/selfhost.ts` | procedure | Stage-0 vs stage-1 comparison per lane (JS lane, native lane), `#|` expectations, and `#|!c`/`#|!js` missing-target diagnostics. | A run at this base; JS-vs-C agreement for one program; semantic preservation of lowering. |
+| `tests/io/foreign_shared.c` (cited by `c_backend_sharing.bend`) | source fixture | The sharing module cites it as the foreign-sharing measured case. | A run receipt; general foreign sharing safety. |
 
 ### 6.6 Determinism, coverage, and the chunked driver (G1, G2, K5)
 
@@ -1478,16 +1579,16 @@ obligation is interface preservation:
 
 The typed Stack invariant, its one-unit-per-transition fuel, and the
 `Pending`/`Direct`/`Bound` behavior are obligations of the generated driver;
-they are stated and measured in `checkpoints/SELFHOST_IR_ARCHITECTURE.md` §4
-(K5) and the step receipts, and are **not** re-proved here. K5's fuel
+they are stated in `checkpoints/SELFHOST_IR_ARCHITECTURE.md` §4 (K5) and
+recorded in the step receipts, and are **not** re-proved or re-measured here. K5's fuel
 accounting is also not a substitute for O-1..O-6.
 
 Status: **[N]** for the BIR-side statements; **[O]** for a proof that the
-generated chunked driver realizes them. The existing step receipts
-(`evals/descriptor-nf-step-smoke-receipt.json`,
-`checkpoints/emitter-steps-v1.json`, `checkpoints/template-steps-v1.json`,
-`checkpoints/checker-core-steps-v1.json`)
-are measured artifacts of the driver, not BIR proofs.
+generated chunked driver realizes them. The step receipts
+(`checkpoints/emitter-steps-v1.json`, `checkpoints/template-steps-v1.json`,
+`checkpoints/checker-core-steps-v1.json`) are driver artifacts, not BIR proofs;
+the descriptor-NF receipt is listed separately in §5.3 and pins a different NF
+revision.
 
 ## 7. Open proof obligations
 
@@ -1500,8 +1601,8 @@ Ordered by what they block. None is discharged here.
 - **O-2 (descriptor normalization agreement).** §5.4: prove
   `descriptor_nf`'s reduction relation agrees with the JS runtime's `$type`
   evaluator for all descriptors BIR can contain, and characterize when
-  normalization is idempotent. Current evidence is one hand-written smoke
-  fixture with pinned expected outcomes.
+  normalization is idempotent. Current evidence is one fixture and a receipt
+  that pins a different NF revision; no matching receipt exists for this base.
 - **O-3 (evaluation order).** BL-8: determine the reference semantics' order for
   independent strict operands, then prove lowering preserves it. Today the
   target-fidelity half is true by construction; the source-fidelity half is
@@ -1511,28 +1612,41 @@ Ordered by what they block. None is discharged here.
 - **O-4 (C layout/fill-unfill).** C-3: prove the Fill/Unfill identities for all
   layouts, including packed nodes, nested datatypes, arrays, `Bool` tag words,
   and abstract types boxed as one Term. Current evidence is structural
-  inspection plus two layout smoke fixtures.
+  inspection plus fixture procedures; no matching receipt was read.
 - **O-5 (C sharing soundness).** C-6: prove `sharing_plan` never under-approximates
   duplication, including through foreign values and the `forced` fallback. The
   module documents where it intentionally differs from the reference emitter.
 - **O-6 (JS/C observation agreement).** TL-3: a real cross-target differential
-  over a bounded but representative corpus, followed by an argument for the
-  untested constructs. No such gate exists today.
-- **O-7 (source observation semantics).** §1.3 is written from the reference
-  runtime's behavior (`io_exit`, `show_val`, `MAIN_PURE`). A precise,
-  case-by-case definition of "the source program's observation" that covers
-  runtime errors, partial output before a failure, and `unsafe`/divergent
-  programs belongs to the source-semantics document; this document only commits
-  to the terminating, value/effect observations above.
+  over a bounded but representative corpus under `≈_obs`, including divergence,
+  error class, effect traces, and library callable behavior. A show-text
+  differential (or unrelated nondeterministic runs) is insufficient. No such
+  gate exists today.
+- **O-7 (source observation semantics).** §1.3 defines the *shape* of the
+  relation (finite/infinite traces, error class vs payload vs exact text,
+  library interactions, oracle-relative foreign effects) from the reference
+  runtime's behavior (`io_exit`, `show_val`, `MAIN_PURE`). The precise
+  source-semantics definition — including which error payload/text is
+  observable, partial output before a failure, `unsafe`/divergent behavior,
+  and host resource-limit outcomes — belongs to the source-semantics document
+  and is not fixed here. This document does not claim the full relation.
 - **O-8 (chunked driver equivalence).** §6.6/K5: prove that each generated
   chunked entry computes the same `BIR.Program` as the direct `lower` call for
   every F, including suspension at code-closure and declaration boundaries, and
-  that no BIR field depends on chunk boundaries. The receipts are measured
-  runs, not this proof.
+  that no BIR field depends on chunk boundaries. The step receipts record driver
+  runs; they are not this proof.
 - **O-9 (primitive agreement).** BL-17/B1: a per-primitive differential between
   the JS runtime helper and the C implementation/runtime, covering overflow,
   shifts, float bits/NaN/signed zero, Unicode and empty strings, and array
-  bounds/ownership. Today only `U32.add` is executed on the C side.
+  bounds/ownership. The only primitive value scenario defined by the C smoke
+  fixture read here is `U32.add`; the layout/show fixtures and any pending
+  FIRAcceptance matrix are separate evidence and are not claimed to fill this
+  gap.
+- **O-10 (value representation relation).** §1.3/`≈_τ`: define and justify the
+  per-type relation between source values and JS values/C `Term`s, including
+  closures, arrays, foreign values, erased/dependent positions, and the C
+  Fill/Unfill storage boundary. This relation underpins TL-1/TL-3 and is not
+  proved by sharing BIR.
+
 
 ## 8. Reported discrepancies and asymmetries
 
@@ -1551,8 +1665,10 @@ fixed here.
   (`js_backend.bend:82-97`). C has no equivalent check; a collision would produce
   two `CidRow`s with the same key, and `cid_lookup` resolves to the first
   (constructor) row (`cid_rows`/`cid_lookup`, `c_backend.bend:958-1006`).
-  Lowering derives keys from distinct namespaces, so this is a
-  defense-in-depth asymmetry, not an observed miscompile.
+  This is reachable only with hand-built/malformed BIR or a producer bug:
+  canonical definition and constructor keys are distinct namespaces in accepted
+  source. It is a missing defense-in-depth check, **not** a demonstrated
+  consumer bug on valid input.
 - **R-3 (`PrimitiveCall.types` is C-only).** Array primitives require one
   element descriptor for the C cell plan (`CLay.array_cell`,
   `c_backend_layout.bend:1098-1116`); JS ignores `types`. A hand-built BIR with
@@ -1561,9 +1677,10 @@ fixed here.
   enforced on one target only.
 - **R-4 (duplicate declaration keys).** C takes the first declaration
   (`find_declaration`, `c_backend.bend:1178-1191`); JS assignment is last-wins
-  (`declarations`, `js_backend.bend:972-975`). Checked source cannot produce
-  duplicates, but hand-built BIR or a producer bug would diverge. WF-15 makes
-  it ill-formed.
+  (`declarations`, `js_backend.bend:972-975`). Checked source rejects duplicate
+  definitions, and WF-15 makes duplicates ill-formed, so this is outside the
+  producer domain. It is a divergence only for hand-built/malformed BIR, not a
+  consumer bug on valid input.
 - **R-5 (main-type provenance differs from foreign/export descriptors).**
   Foreign and export descriptors are normalized at catalog build; the main type
   is stored unnormalized and normalized by each target. Both targets normalize
@@ -1578,29 +1695,36 @@ fixed here.
 - **R-7 (primitives are implemented twice).** B1 is discharged by two
   independent implementations: JS runtime helpers selected by
   `primitive_name`/`primitive_public`, and C expressions/runtime helpers built
-  by `prim_part`. No gate compares them primitive by primitive, and the C
-  executable smoke covers only `U32.add`. This is an open coverage gap under
-  TL-3/BL-17, not an observed mismatch.
-- **R-8 (executable without `main`).** `Catalog.ending` returns
+  by `prim_part`. No gate read here compares them primitive by primitive, and
+  the C executable smoke fixture's only primitive value scenario is `U32.add`.
+  This is an open coverage gap under TL-3/BL-17, not an observed mismatch.
+- **R-8 (executable-mode admission of a source without `main`) — boundary gap,
+  not an established bug.** `Catalog.ending` returns
   `Executable{DescriptorNull}` when no `main` descriptor was found
-  (`lower_catalog.bend:1425-1433`), and neither the checker nor lowering
-  rejects that program. JS's `js_main` guards on
+  (`lower_catalog.bend:1425-1433`). The driver always calls `lower`
+  (executable mode, `driver.bend:126`), so a module compiled in executable mode
+  without `main` reaches this state. JS's `js_main` guards on
   `Object.hasOwn($D,"main")` and, when absent, emits a program that produces no
   output and exits 0 (`js_backend.bend:1193`). C's `entry_main` fails with
   "the C target has no root main definition" (`c_backend.bend:2626-2637`).
-  So the same BIR can compile to a silent no-op under one target and a compile
-  error under the other. Whether an executable without `main` is admissible is
-  a source-language question, not decided in this tree; if it is admissible,
-  this violates TL-3; if it is not, the check is missing at the FIR/BIR
-  boundary.
-- **R-9 (`Failure.message` is dropped in C).** JS renders
-  `BIR.Failure{message}` as `throw "<message>"`, so the text reaches stderr
+  This is **not** a demonstrated counterexample on an accepted executable
+  input: whether a module without `main` is a valid executable is a
+  source-language/CLI contract question, and no check exists at the FIR/BIR
+  boundary. If executable mode requires `main`, the missing check belongs to
+  the CLI/FIR boundary; if a mainless module is a valid executable, the two
+  targets disagree under TL-3. Reported for admission review, not as a
+  confirmed consumer bug.
+- **R-9 (`Failure.message` dropped in C) — possible mismatch only under
+  exact-text observation.** JS renders `BIR.Failure{message}` as
+  `throw "<message>"`, so the text can reach stderr
   (`js_backend.bend:645-654`). C's `block_ctl` passes only the context to
   `failure_ctl`, which emits `err_post(e.mem, ERR_TAGS); return 0;` and never
   reads `message` (`c_backend.bend:2212-2231`). Control behavior (fail-stop)
-  agrees; the diagnostic text does not. This is inside the checkpoint's `Obs`
-  error component, so it should be resolved or explicitly declared
-  non-observable for the C target.
+  agrees. If the observation of an error is its class (success vs failure),
+  this is not a violation; if exact stderr bytes are observable for a checked
+  program that reaches `BIR.Failure`, it is. The checkpoint's `Obs` includes
+  error but does not fix text granularity; O-7 must decide. Not claimed as a
+  bug here.
 
 ## 9. What this document does not claim
 
@@ -1608,11 +1732,24 @@ fixed here.
   work. The scope of that statement is the selfhost FIR → BIR → JS/C pipeline;
   the separate core theory in `bend2/bendtt.lean` is neither used as evidence for
   these laws nor denied by this document.
-- No universal termination, productivity, or effect-order result.
+- No universal termination, productivity, or effect-order result. Divergence
+  preservation is stated as a trace-set obligation, not as a termination
+  theorem.
+- No full definition or proof of the observation/representation relation
+  `≈_obs`/`≈_τ`; §1.3 fixes its shape, and O-7/O-10 leave the full relation
+  open. Finite fixture observations are partial evidence, not the relation.
+- No equality of allocation addresses, allocation counts, RSS, stack depth,
+  timing, or GC schedule; those are not observable. Logical ownership is a
+  separate obligation.
+- No semantic PASS/FAIL verdict from a host resource-limit abort; it is a
+  tooling outcome outside the trace relation.
+- No equality of unrelated nondeterministic foreign runs, and no reduction of
+  library behavior to `show` text. The relation is oracle-relative and
+  callable-behavioral.
 - No completeness of the `Primitive` catalog, native marker sets, or the
   descriptor evaluator over the whole language.
 - No equivalence between `descriptor_nf` and the JS runtime evaluator beyond
-  the cited measured cases.
+  the cases listed in §5.3 (which are not a matching receipt for this base).
 - No claim that passing typecheck, the smoke fixtures, the selfhost gate, or
   the generated-composition dedup proves semantic preservation. Each is
   evidence of a specific mechanism only.
