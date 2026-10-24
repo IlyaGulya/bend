@@ -133,7 +133,6 @@ async function run(artifact: string): Promise<void> {
       current = undefined;
       current = step(chunk.fields);
       steps += 1;
-      if (steps > 100000000) throw Error('Template Run did not finish');
       continue;
     }
     if (!chunk.tag.endsWith('.TemplateRunFinished')) throw Error('Unexpected Run tag ' + chunk.tag);
