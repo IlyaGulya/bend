@@ -68,6 +68,10 @@ if(!worker){
    for(const [path,digest]of Object.entries(object(original.inputs)))pin(path,digest as string);
    const native=object(request.native),seedBuild=object(original.nativeSeed),nativeRun=object(original.nativeRun);
    const auth=authenticateNativeSeedBuild(String(native.build),{root:realpathSync(String(request.root)),corpusPath:String(native.corpus),limits});
+   const expectedPhases=['parse','expand','check','emit'];
+   requireProof(JSON.stringify((nativeRun.phaseStarts??[]).map((row:any)=>row.phase))===JSON.stringify(expectedPhases)&&JSON.stringify((nativeRun.phases??[]).map((row:any)=>row.phase))===JSON.stringify(expectedPhases),'Missing ordered native stage0 phases');
+   const sourceCount=auth.corpus.files.filter((row:any)=>row.external!==true).length;
+   requireProof(nativeRun.sources===sourceCount&&Array.isArray(nativeRun.fuel)&&nativeRun.fuel.length===sourceCount&&nativeRun.fuel.every((row:any)=>row.cells===8000000),'Native stage0 source/cell accounting drift');
    requireProof(auth.binarySha256===native.binarySha256&&auth.binarySha256===seedBuild.binarySha256&&auth.binarySha256===nativeRun.binarySha256,'Native binary identity drift');
    requireProof(auth.corpusSha256===native.corpusSha256&&auth.corpusSha256===nativeRun.corpusSha256,'Native corpus identity drift');
    requireProof(hash(String(native.build))===native.buildSha256&&native.buildSha256===nativeRun.buildSha256&&hash(String(native.build))===hash(String(seedBuild.build)),'Native build identity drift');
@@ -81,7 +85,7 @@ if(!worker){
    for(const key of ['parser','parserBuild','root','rootManifest'])requireProof(typeof request[key]==='string'&&inputs[request[key]]===hash(request[key]),'Request not authenticated by original inputs: '+key);
    const artifacts=object(original.artifacts),one=object(artifacts.stageOne),two=object(artifacts.stageTwo);
    for(const [artifact,name]of [[one,'stage-one'],[two,'stage-two']] as const){
-    requireProof(artifact.path===join(sidecars,name+'.js')&&artifact.bytes===stageBytes&&artifact.sha256===stageSha256,'Wrong native emitted image chain');
+    requireProof(artifact.path===join(String(request.sidecars),name+'.js')&&artifact.bytes===stageBytes&&artifact.sha256===stageSha256,'Wrong native emitted image chain');
     pin(artifact.path,String(artifact.sha256));requireProof(readFileSync(String(artifact.path)).length===stageBytes,'Emitted image size mismatch');
    }
    requireProof(readFileSync(String(one.path)).equals(readFileSync(String(two.path))),'Native stage bytes differ');
@@ -100,8 +104,17 @@ if(!worker){
     const row=seedRows.find((row:Record<string,any>)=>row.name===fixture.name);
     requireProof(typeof fixture.source==='string'&&fixture.sourceSha256===sha(fixture.source)&&readFileSync(fixture.file,'utf8')===fixture.source&&inputs[fixture.file]===fixture.sourceSha256,'Original fixture source drift: '+fixture.name);
     requireProof(row?.passed===true&&row.accepted===fixture.accepted&&row.sourceSha256===fixture.sourceSha256&&row.parserSha256===auth.binarySha256&&row.compilerSha256===auth.binarySha256,'Original native seed row mismatch: '+fixture.name);
-    const manifest=join(fixedpointReport+'.cases','native-fixture-'+fixture.name+'.runtime.tsv');
-    requireProof(row.native?.binarySha256===auth.binarySha256&&hash(manifest)===row.native.manifestSha256&&readFileSync(manifest,'utf8').includes(realpathSync(fixture.file)),'Missing native seed manifest receipt: '+fixture.name);
+    const manifest=join(String(request.sidecars),'native-fixture-'+fixture.name+'.runtime.tsv');
+    const manifestRows=readFileSync(manifest,'utf8').trim().split('\n').map(line=>line.split('\t'));
+    const fixtureManifestRow=manifestRows.find(row=>row.length===3&&row[0]==='B'&&row[2]===realpathSync(fixture.file));
+    const baseManifestRow=manifestRows.find(row=>row.length===3&&row[0]==='B'&&row[2]===realpathSync('bend2/base.bend'));
+    requireProof(row.native?.binarySha256===auth.binarySha256&&hash(manifest)===row.native.manifestSha256&&fixtureManifestRow&&baseManifestRow,'Missing exact native seed manifest receipt: '+fixture.name);
+    const artifact=join(String(request.sidecars),'native-fixture-'+fixture.name+'.js');
+    if(fixture.accepted)requireProof(existsSync(artifact)&&readFileSync(artifact).length>0&&row.native?.artifactSha256===hash(artifact),'Missing native seed artifact receipt: '+fixture.name);
+    else requireProof(!existsSync(artifact)&&row.native?.artifactSha256===null,'Negative native seed row emitted an artifact: '+fixture.name);
+    const recordedPhases=Array.isArray(row.native?.phases)?row.native.phases:[];
+    requireProof(recordedPhases[0]==='parse'&&recordedPhases.every((name:string,index:number)=>expectedPhases[index]===name),'Native fixture phase preface drift: '+fixture.name);
+    if(!fixture.accepted)requireProof(recordedPhases[recordedPhases.length-1]===fixture.failurePhase&&!recordedPhases.includes('emit'),'Native negative phase mismatch: '+fixture.name);
     if(fixture.accepted)requireProof(typeof row.output==='string'&&typeof fixture.output==='string'&&row.output.replace(/\s+/g,'').replace(/\{\}/g,'')===fixture.output.replace(/\s+/g,'').replace(/\{\}/g,''),'Original expected output mismatch: '+fixture.name);
     else requireProof(typeof fixture.failurePhase==='string'&&row.observedFailure===fixture.failurePhase&&row.diagnostic,'Original negative phase mismatch: '+fixture.name);
    }
@@ -109,7 +122,8 @@ if(!worker){
    state.originalMonolithicGate={status:original.status,passed:true,guardian:original.guardian,acceptance:true,seedMode:'native'};
    state.nativeSeedCoverage={checkedDefinitions:auth.report.checkedDefinitions,eventsFullyValidated:auth.report.eventsFullyValidated,binary:auth.binary,sha256:auth.binarySha256,corpus:auth.corpusPath,corpusSha256:auth.corpusSha256};
    state.existingSeedRows=seedRows;state.fixtureInputsSha256=sha(JSON.stringify(fixtures));flush();
-   const sourceFileRow=auth.corpus.files.find((row:any)=>row.external!==true&&typeof row.path==='string'&&row.path.endsWith('bend2/selfhost/backend_ir.bend'));
+   const backendIr=realpathSync(resolve('bend2/selfhost/backend_ir.bend'));
+   const sourceFileRow=auth.corpus.files.find((row:any)=>row.external!==true&&typeof row.path==='string'&&realpathSync(resolve(auth.corpus.directory,row.path))===backendIr);
    requireProof(sourceFileRow&&typeof sourceFileRow.namespace==='string','Native workload does not load the canonical BIR module');
    const sourceFileTag=sourceFileRow.namespace+'.SourceFile';
    for(const [name,image]of [['stage-one',one],['stage-two',two]] as const){
@@ -118,7 +132,7 @@ if(!worker){
     requireProof(api&&ABI.every(key=>typeof api[key]==='function'),'Unchanged emitted image lacks full ABI: '+name);
     const directory=join(sidecars,name);mkdirSync(directory);
     const stage:Record<string,any>={stage:name,image:image.path,imageSha256:image.sha256,requiredExports:ABI,fixtureRows:[],parseRows:[],events:[],passed:false};stages.push(stage);flush();
-    const freshRequest={...request,parser:image.path,component:image.path,parserSha256:image.sha256,componentSha256:image.sha256,sidecars:directory,report,fixture:'authenticated-complete-emitted-suite',parseOnly:false,profileRoot:false,fixtures,sourceFileTag};
+    const freshRequest={...request,native:undefined,nativeBuild:undefined,nativeCorpus:undefined,parser:image.path,component:image.path,parserSha256:image.sha256,componentSha256:image.sha256,sidecars:directory,report,fixture:'authenticated-complete-emitted-suite',parseOnly:false,profileRoot:false,fixtures,sourceFileTag,selfhostImage:{stage:name,path:image.path,sha256:image.sha256,bytes:image.bytes},expectedRoot:{path:realpathSync(request.root),sha256:hash(request.root)}};
     const freshPath=join(directory,'request.json');save(freshPath,freshRequest);pin(freshPath,hash(freshPath));
     child=spawn('node',[resolve('evals/selfhost_bootstrap_worker.mjs'),freshPath],{stdio:['pipe','pipe','inherit']});
     stage.command=['node',resolve('evals/selfhost_bootstrap_worker.mjs'),freshPath];
