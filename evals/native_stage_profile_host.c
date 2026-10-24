@@ -36,8 +36,8 @@ static void native_stage_fields(Env e, Term value, u32 cid, u32 n, Term* fields)
   }
 }
 
-static Term native_stage_drive(Env e, Term start, Term view, u32 finished, u32 more, const char* phase, int group_stage) {
-  u64 chunks = 0, shapes[4] = {0, 0, 0, 0}, groups[26] = {0};
+static Term native_stage_drive(Env e, Term start, Term view, u32 finished, u32 more, const char* phase, int group_stage, int expect_result) {
+  u64 chunks = 0, shapes[4] = {0, 0, 0, 0}, groups[27] = {0};
   u64 started = io_tick();
   struct rusage before;
   native_stage_cpu_sample(&before);
@@ -58,7 +58,7 @@ static Term native_stage_drive(Env e, Term start, Term view, u32 finished, u32 m
         shapes[shape] += 1;
       } else if (shape <= 2) {
         shapes[shape] += 1;
-      } else if (shape >= 100 && shape < 126) {
+      } else if (shape >= 100 && shape < 127) {
         groups[shape - 100] += 1;
       } else {
         err_fail("native stage profile: unknown emitter request group code");
@@ -70,6 +70,8 @@ static Term native_stage_drive(Env e, Term start, Term view, u32 finished, u32 m
     } else if (tag == finished) {
       native_stage_fields(e, observed, finished, 1, &thunk);
       Term result = native_stage_apply(e, thunk, term_pak(CID(Unit), 0));
+      if (expect_result >= 0 && (u32)term_loc(result) != (u32)expect_result)
+        err_fail("native stage profile: emitter fixture did not produce a non-empty C render");
       struct rusage after;
       native_stage_cpu_sample(&after);
       fprintf(stderr, "NATIVE_CHUNK_PROFILE {\"phase\":\"%s\",\"elapsedMs\":%.3f,\"userCpuMs\":%.3f,\"systemCpuMs\":%.3f,\"chunkAdvances\":%llu,\"chunkQuantum\":64,\"shapeFinished\":%llu,\"shapePending\":%llu,\"shapeDirect\":%llu,\"shapeBound\":%llu,\"requestGroups\":{",
@@ -80,7 +82,7 @@ static Term native_stage_drive(Env e, Term start, Term view, u32 finished, u32 m
         (unsigned long long)shapes[1], (unsigned long long)shapes[2],
         (unsigned long long)shapes[3]);
       int first_group = 1;
-      for (u32 i = 0; i < 26; i++) {
+      for (u32 i = 0; i < 27; i++) {
         if (groups[i] == 0) continue;
         fprintf(stderr, "%s\"%u\":%llu", first_group ? "" : ",", i, (unsigned long long)groups[i]);
         first_group = 0;
@@ -97,25 +99,25 @@ static Term native_stage_drive(Env e, Term start, Term view, u32 finished, u32 m
 static Term native_stage_template_run(Env e, Term* f, IoWork* work) {
   (void)work;
   return native_stage_drive(e, f[0], f[1],
-    CID(NativeTemplateStageFinished), CID(NativeTemplateStageMore), "template-chunks", 0);
+    CID(NativeTemplateStageFinished), CID(NativeTemplateStageMore), "template-chunks", 0, -1);
 }
 
 static Term native_stage_template_pending_run(Env e, Term* f, IoWork* work) {
   (void)work;
   return native_stage_drive(e, f[0], f[1],
-    CID(NativeTemplateStageFinished), CID(NativeTemplateStageMore), "template-pending-chunks", 0);
+    CID(NativeTemplateStageFinished), CID(NativeTemplateStageMore), "template-pending-chunks", 0, -1);
 }
 
 static Term native_stage_checker_run(Env e, Term* f, IoWork* work) {
   (void)work;
   return native_stage_drive(e, f[0], f[1],
-    CID(NativeCheckerStageFinished), CID(NativeCheckerStageMore), "checker-chunks", 0);
+    CID(NativeCheckerStageFinished), CID(NativeCheckerStageMore), "checker-chunks", 0, -1);
 }
 
 static Term native_stage_emitter_run(Env e, Term* f, IoWork* work) {
   (void)work;
   return native_stage_drive(e, f[0], f[1],
-    CID(NativeEmitterStageFinished), CID(NativeEmitterStageMore), "emitter-chunks", 1);
+    CID(NativeEmitterStageFinished), CID(NativeEmitterStageMore), "emitter-chunks", 1, -1);
 }
 
 static void __attribute__((constructor)) native_stage_profile_use(void) {

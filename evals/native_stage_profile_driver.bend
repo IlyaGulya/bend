@@ -2,6 +2,7 @@ import Base
 import ../checkpoints/template_steps_v1.bend as Template
 import ../checkpoints/checker_core_steps_v1.bend as Checker
 import ../checkpoints/emitter_steps_v1.bend as Emit
+import ../bend2/selfhost/backend_ir.bend as BIR
 
 # Diagnostic-only typed view for the native chunk driver. It reports the
 # operational shape of the progress value after one bounded chunk (64 native
@@ -80,6 +81,8 @@ def native_emitter_stage_state(-A: Type, -B: Type, progress: Emit.EmitterProgres
           NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_24{inner}, resume}, stack}, 124}
         case Emit.EmitterRequestGroup_25{inner}:
           NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_25{inner}, resume}, stack}, 125}
+        case Emit.EmitterRequestGroup_26{inner}:
+          NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterPending{Emit.EmitterRequestGroup_26{inner}, resume}, stack}, 126}
     case Emit.EmitterDirect{R, request, arguments, invoke, resume}:
       NativeEmitterStageMore{unit => Emit.EmitterRunState{B, Emit.EmitterDirect{R, request, arguments, invoke, resume}, stack}, 1}
     case Emit.EmitterBound{C, inner, resume}:
@@ -190,11 +193,20 @@ def profile_template_start(unit: Unit) -> Template.TemplateRun<Unit>:
 def profile_template_pending_start(unit: Unit) -> Template.TemplateRun<Unit>:
   Template.TemplateRunState{Unit, profile_template_bound(64n, profile_template_pending()), profile_template_stack(0n)}
 
-# A real canonical Emitter request: c_backend.nat_c renders a Nat. The fixture
-# seeds 64 erased Bound wrappers around the Pending request so the first chunk
-# boundary exposes the outer request group; it does not fabricate a CheckedProgram.
+# A real canonical Emitter request: c_backend.emit renders a BIR.Program. The
+# fixture supplies an empty but well-formed program and a minimal runtime whose
+# four required sections are real; the renderer produces a C translation unit,
+# not a number formatter or an invented CheckedProgram. Sixty-four erased Bound
+# wrappers expose the outer request group at the first chunk boundary.
+def profile_emitter_runtime() -> String:
+  "// Tables\n// Spins\n// Segments\n// Requests\n"
+
+def profile_emitter_program() -> BIR.Program:
+  BIR.Program{Nil{}, Nil{}, Nil{}, Nil{}, Nil{}, BIR.Executable{BIR.DescriptorNull{}}}
+
 def profile_emitter_pending() -> Emit.EmitterProgress<Unit>:
-  Emit.EmitterPending{Emit.EmitterRequestGroup_7{Emit.EmitterRequest_cps_provider_2_nat_c{5n}}, box => Emit.EmitterFinished{Emit.EmitterValue{Unit{}}}}
+  Emit.EmitterPending{Emit.EmitterRequestGroup_12{Emit.EmitterRequest_cps_provider_2_emit{
+    profile_emitter_program(), profile_emitter_runtime(), Nil{}}}, box => Emit.EmitterFinished{Emit.EmitterValue{Unit{}}}}
 
 def profile_emitter_resume(box: Emit.EmitterValue<Unit>) -> Emit.EmitterProgress<Unit>:
   Emit.EmitterFinished{box}
