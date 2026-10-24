@@ -2355,9 +2355,11 @@ def tables_part(plan: Plan) -> Part:
 def tables_render(plan: Plan, cids: List<&2, CidRow>, entries: List<&2, Entry>, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, main_pure: Bool, show_desc: String, show_names: String) -> Part:
   regs = max_arity(entries)
   bodies = entry_bodies(entries, plan)
-  match bodies:
-    case PartFail{message}: PartFail{message}
-    case PartOk{body_text}:
+  exports = exports_part(plan)
+  match bodies exports:
+    case PartFail{message} _: PartFail{message}
+    case _ PartFail{message}: PartFail{message}
+    case PartOk{body_text} PartOk{export_text}:
       PartOk{cat([
         part_text(runtime_cid_aliases(cids)),
         cid_defines(cids),
@@ -2377,7 +2379,7 @@ def tables_render(plan: Plan, cids: List<&2, CidRow>, entries: List<&2, Entry>, 
         dispatch_prototypes(entries),
         helper_core(max_arity(entries), dispatch_cases(entries)),
         body_text,
-        exports_block(plan),
+        export_text,
         "#endif\n"
       ])}
 
@@ -2679,29 +2681,35 @@ def export_row_pair(one: Maybe<&2, ExportRow>, rest: Maybe<&2, List<&2, ExportRo
 
 def export_row(item: BIR.Export, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> Maybe<&2, ExportRow>:
   match item:
-    case BIR.Export{key, entry, parameter_types}: export_entry(key, entry, parameter_types, declarations, by_code, by_key, by_foreign, by_native, stages, entries)
+    case BIR.Export{key, entry, parameter_types, result}: export_entry(key, entry, parameter_types, result, declarations, by_code, by_key, by_foreign, by_native, stages, entries)
 
-def export_entry(key: String, entry: Maybe<&2, BIR.Entry>, parameter_types: List<&2, BIR.Descriptor>, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> Maybe<&2, ExportRow>:
+def export_entry(key: String, entry: Maybe<&2, BIR.Entry>, parameter_types: List<&2, BIR.Descriptor>, result: BIR.Descriptor, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> Maybe<&2, ExportRow>:
   match entry:
     case Some{item}:
       match item:
-        case BIR.Entry{code, arity}: Some{ExportRow{key, map_u32(by_code, U32.show(code)), 0n, arity}}
-    case None{}: export_symbol(key, declarations, by_code, by_key, by_foreign, by_native, stages, entries)
+        case BIR.Entry{code, arity}: export_direct(key, code, arity, parameter_types, by_code)
+    case None{}: export_symbol(key, parameter_types, declarations, by_code, by_key, by_foreign, by_native, stages, entries)
 
-def export_symbol(key: String, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> Maybe<&2, ExportRow>:
+# Entry.arity is the live parameter count (FIRContract fact). A direct host call
+# is exact only when the checked parameter count agrees; otherwise the export
+# table fails instead of guessing a conversion.
+def export_direct(key: String, code: U32, arity: Nat, parameter_types: List<&2, BIR.Descriptor>, by_code: Map<&2, U32>) -> Maybe<&2, ExportRow>:
+  match Nat.is_eq(arity, List.length(&2, BIR.Descriptor, parameter_types)):
+    case True{}: Some{ExportRow{key, map_u32(by_code, U32.show(code)), 0n, arity}}
+    case False{}: None{}
+
+def export_symbol(key: String, parameter_types: List<&2, BIR.Descriptor>, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> Maybe<&2, ExportRow>:
   match find_declaration(key, declarations):
     case None{}: None{}
-    case Some{item}: export_symbol_item(item, key, by_key, by_foreign, by_native, stages, entries)
+    case Some{item}: export_symbol_item(item, key, parameter_types, by_key, by_foreign, by_native)
 
-def export_symbol_item(item: BIR.Declaration, key: String, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> Maybe<&2, ExportRow>:
+def export_symbol_item(item: BIR.Declaration, key: String, parameter_types: List<&2, BIR.Descriptor>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>) -> Maybe<&2, ExportRow>:
+  n = List.length(&2, BIR.Descriptor, parameter_types)
   match item:
-    case BIR.FunctionDeclaration{_, code, parameters}:
-      match List.length(&2, BIR.Parameter, parameters):
-        case 0n: Some{ExportRow{key, map_u32(by_key, key), 0n, 0n}}
-        case _: Some{ExportRow{key, map_u32(stages, stage_key(code, 0n)), 1n, 0n}}
-    case BIR.LazyDeclaration{_, body}: Some{ExportRow{key, map_u32(by_key, key), 1n, 0n}}
-    case BIR.ForeignDeclaration{_, _, _, _, _, _, _, _, _}: Some{ExportRow{key, map_u32(by_foreign, key), 1n, 0n}}
-    case BIR.NativeDeclaration{_, _, _}: Some{ExportRow{key, map_u32(by_native, key), 1n, 0n}}
+    case BIR.FunctionDeclaration{_, code, parameters}: Some{ExportRow{key, map_u32(by_key, key), 1n, n}}
+    case BIR.LazyDeclaration{_, body}: Some{ExportRow{key, map_u32(by_key, key), 1n, n}}
+    case BIR.ForeignDeclaration{_, _, _, _, _, _, _, _, _}: Some{ExportRow{key, map_u32(by_foreign, key), 1n, n}}
+    case BIR.NativeDeclaration{_, _, _}: Some{ExportRow{key, map_u32(by_native, key), 1n, n}}
     case _: None{}
 
 def export_names(rows: List<&2, ExportRow>, acc: List<&2, String>) -> String:
@@ -2754,12 +2762,9 @@ def exports_c(rows: List<&2, ExportRow>) -> String:
         "  return v;\n}\n\n"
       ])
 
-def exports_block(plan: Plan) -> String:
+def exports_part(plan: Plan) -> Part:
   match plan:
     case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys}:
-      exports_block_rows(exports, declarations, by_code, by_key, by_foreign, by_native, stages, entries)
-
-def exports_block_rows(exports: List<&2, BIR.Export>, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> String:
-  match export_rows(exports, declarations, by_code, by_key, by_foreign, by_native, stages, entries):
-    case None{}: ""
-    case Some{rows}: exports_c(rows)
+      match export_rows(exports, declarations, by_code, by_key, by_foreign, by_native, stages, entries):
+        case None{}: failp("a library export names no callable, or its checked parameter count disagrees with its entry")
+        case Some{rows}: okp(exports_c(rows))
