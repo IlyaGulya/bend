@@ -236,5 +236,32 @@
       "the runtime source bytes need the same hash pin as the JS hosts"
     ],
     "constraint": "no duplicate carrier: the host keeps building BIR.SourceFile from path+bytes; only one extra String (runtime) is added"
+  },
+  "preparedCut": {
+    "note": "Literal text for the mechanical part of the one-cut change. Nothing here is applied yet: the generator/driver imports would not resolve until checkpoints/c_emit_steps_v1.bend exists, and the gate would then require a root that carries the C wrappers.",
+    "generatorImportsAppend": {
+      "file": "evals/selfhost_driver_source.ts",
+      "replace": "import ./js_emit_steps_v1.bend as JSEmit\\n\\n",
+      "with": "import ./js_emit_steps_v1.bend as JSEmit\\nimport ./c_emit_steps_v1.bend as CEmit\\n\\n",
+      "gateMirror": "evals/selfhost_bootstrap_gate.ts expectedImports must contain the identical line, in the identical position, because the composition prefix is byte-compared"
+    },
+    "generatorWrappersAppend": [
+      "",
+      "# The C target joins the same passive bag; runtime is the actual runtime source bytes.",
+      "def emit_c_modules_start(program: Checked.CheckedProgram, runtime: String, files: List<&2, BIR.SourceFile>) -> CEmit.CEmitterRun<CEmit.EmitResult>:",
+      "  CEmit.cemit_start(program, runtime, files)",
+      "",
+      "def emit_c_library_start(program: Checked.CheckedProgram, exports: List<&2, String>, runtime: String, files: List<&2, BIR.SourceFile>) -> CEmit.CEmitterRun<CEmit.EmitResult>:",
+      "  CEmit.cemit_library_start(program, exports, runtime, files)",
+      "",
+      "def c_emitter_step(-R: Type, run: CEmit.CEmitterRun<R>) -> CEmit.CEmitterRun<R>:",
+      "  CEmit.cemit_step(R, run)"
+    ],
+    "compositeDriverAppend": {
+      "file": "checkpoints/template_checker_steps_driver_v1.bend",
+      "edit": "same three wrappers, plus its own import of ./c_emit_steps_v1.bend as CEmit"
+    },
+    "abiConstants": "append emit_c_modules_start, emit_c_library_start, c_emitter_step to the six root-facing lists; checker_library_smoke stays at nine",
+    "unverified": "the exact CEmit module public names must be confirmed against FIRAcceptance's generated manifest (cemit_start/cemit_library_start/cemit_step) before this text is applied"
   }
 }
