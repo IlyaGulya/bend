@@ -53,6 +53,11 @@ type Part is Data:
   PartOk{text: String}
   PartFail{message: String}
 
+# A resolved string append: the two operand texts in source order and the second
+# operand's quantity, which decides whether the new node keeps that reference.
+type AppendTexts is Data:
+  AppendTexts{parts: List<&2, String>, tail_use: Maybe<&2, BIR.Use>}
+
 type CidRow is Data:
   CidRow{cid: U32, key: String, arity: Nat, hot: Bool}
 type ExportRow is Data:
@@ -1395,9 +1400,50 @@ def is_array_primitive(primitive: BIR.Primitive) -> Bool:
     case _: False{}
 
 def prim_call_part(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, +plan: Plan) -> Part:
-  match arg_strings(args, plan):
+  match primitive:
+    case BIR.PrimStringAppend{}: append_part(args, plan)
+    case _:
+      match arg_strings(args, plan):
+        case None{}: failp("BIR argument has no C value")
+        case Some{values}: prim_part(primitive, values, plan)
+
+# Lowering uses PrimStringAppend for two different constructions: String.append
+# of two strings, and `SCon{char, tail}` where the first operand is a packed Chr
+# term rather than an SCon. The helper distinguishes them by the Chr cid, so the
+# Char payload becomes the raw codepoint the string representation stores. The
+# second operand's quantity travels with the call because storing it in a fresh
+# node adds a reference: term_keep(e, tail, keep) with keep 1 for Many (the
+# caller keeps its own) and 0 for an owned operand.
+def append_part(args: List<&2, BIR.Arg>, plan: Plan) -> Part:
+  match append_texts(args, plan, Nil{}, None{}):
     case None{}: failp("BIR argument has no C value")
-    case Some{values}: prim_part(primitive, values, plan)
+    case Some{parts}: append_cids(parts, plan)
+
+def append_texts(args: List<&2, BIR.Arg>, +plan: Plan, +acc: List<&2, String>, +tail_use: Maybe<&2, BIR.Use>) -> Maybe<&2, AppendTexts>:
+  match args:
+    case Nil{}: Some{AppendTexts{List.reverse(&2, String, acc), tail_use}}
+    case +arg <> rest:
+      match arg:
+        case BIR.Arg{use, value}:
+          match atom_part(value, plan):
+            case PartFail{message}: None{}
+            case PartOk{text}: append_texts(rest, plan, text <> acc, Some{use})
+
+def append_cids(found: AppendTexts, plan: Plan) -> Part:
+  match found:
+    case AppendTexts{parts, tail_use}:
+      match pcid("SCon", plan) pcid("Chr", plan):
+        case PartOk{scon} PartOk{chr}:
+          match parts:
+            case +a0 <> (+a1 <> _): okp(cat(["bend_str_append(e, ", scon, ", ", chr, ", ", a0, ", ", a1, ", ", keep_flag(tail_use), ")"]))
+            case _: failp("a string append needs two operands")
+        case PartFail{message} _: PartFail{message}
+        case _ PartFail{message}: PartFail{message}
+
+def keep_flag(use: Maybe<&2, BIR.Use>) -> String:
+  match use:
+    case Some{BIR.Many{}}: "1"
+    case _: "0"
 
 def pcid(short: String, plan: Plan) -> Part:
   match plan:
@@ -1485,7 +1531,7 @@ def prim_part(primitive: BIR.Primitive, +a: List<&2, String>, +plan: Plan) -> Pa
     case BIR.PrimF32Show{}: okp(cat(["f32_show(e, ", a0, ")"]))
     case BIR.PrimF32Read{}: okp(cat(["f32_read(e, ", a0, ")"]))
     case BIR.PrimF32ToNat{}: okp(cat(["bend_f32_to_nat(e, ", a0, ")"]))
-    case BIR.PrimStringAppend{}: str2("bend_str_append", "SCon", a0, a1, plan)
+    case BIR.PrimStringAppend{}: failp("a string append is emitted by append_part, which needs its operand quantities")
     case BIR.PrimStringEq{}: str2("bend_str_eq", "SCon", a0, a1, plan)
     case BIR.PrimStringLength{}: str1("bend_str_length", "SCon", a0, plan)
     case BIR.PrimStringToList{}: str_to_list(a0, plan)
@@ -2876,7 +2922,8 @@ def helper_core() -> String:
     "static Term bend_cmp3(Env e, u32 lt, u32 eq, u32 gt, Term a, Term b) {\n  return term_pak(a < b ? lt : a == b ? eq : gt, 0);\n}\n\n",
     "static Term bend_divmod(Env e, u32 cid, Term a, Term b) {\n  if (b == 0) {\n    return bend_tuple(e, cid, 0, a);\n  }\n  return bend_tuple(e, cid, a / b, a % b);\n}\n\n",
     "static Term bend_str_cons(Env e, u32 scon, u64 ch, Term tail) {\n  u64 l = heap_alloc(e, cls_fit(2));\n  e.mem[l] = ch;\n  e.mem[l + 1] = tail;\n  return term_ctr(scon, l);\n}\n\n",
-    "static Term bend_str_append(Env e, u32 scon, Term a, Term b) {\n  if (term_aux(a) != (u64)scon) {\n    return b;\n  }\n  u64 l = term_peek(e.mem, a);\n  return bend_str_cons(e, scon, e.mem[l], bend_str_append(e, scon, e.mem[l + 1], b));\n}\n\n",
+    "static Term bend_str_append_go(Env e, u32 scon, u32 chr, Term a, Term b) {\n  if (term_aux(a) == (u64)chr) {\n    return bend_str_cons(e, scon, (u64)term_loc(a), b);\n  }\n  if (term_aux(a) != (u64)scon) {\n    return b;\n  }\n  u64 l = term_peek(e.mem, a);\n  return bend_str_cons(e, scon, e.mem[l], bend_str_append_go(e, scon, chr, e.mem[l + 1], b));\n}\n\n",
+    "static Term bend_str_append(Env e, u32 scon, u32 chr, Term a, Term b, u32 keep) {\n  return bend_str_append_go(e, scon, chr, a, term_keep(e, b, keep));\n}\n\n",
     "static Nat bend_str_length(Env e, u32 scon, Term a) {\n  Nat n = 0;\n  while (term_aux(a) == (u64)scon) {\n    a = e.mem[term_peek(e.mem, a) + 1];\n    n += 1;\n  }\n  return n;\n}\n\n",
     "static u32 bend_str_empty(Term a, u32 snil) {\n  return term_aux(a) == (u64)snil;\n}\n\n",
     "static Term bend_str_head(Env e, u32 scon, Term a) {\n  if (term_aux(a) != (u64)scon) {\n    return 0;\n  }\n  return e.mem[term_peek(e.mem, a)];\n}\n\n",
