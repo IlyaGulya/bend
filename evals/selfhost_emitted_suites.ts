@@ -8,6 +8,7 @@
  * Source-only fixtures are freshly parsed by each image; no AST/cache inputs.
  */
 import {runHeavyGate,guardHeavyGate} from './heavy_gate.ts';
+import {authenticateNativeSeedBuild} from './native_seed_runtime.mjs';
 import {parserParity,isolatedParserParity} from './selfhost_parser_parity.ts';
 import {readAcceptedParserBuild} from './selfhost_driver_source.ts';
 import {createHash} from 'node:crypto';
@@ -58,6 +59,97 @@ if(!worker){
   const snapshot=join(sidecars,'selfhost_emitted_suites.ts');writeFileSync(snapshot,readFileSync(import.meta.path),{flag:'wx'});pin(snapshot,inputs[import.meta.path]);state.runnerSnapshot={path:snapshot,sha256:inputs[snapshot]};
   const original=json(fixedpointReport),requestPath=join(fixedpointReport+'.cases','request.json');pin(requestPath,hash(requestPath));
   const request=json(requestPath);
+  const nativeMode=original.status==='NATIVE_SEED_BOOTSTRAP_FIXEDPOINT';
+  if(nativeMode){
+   requireProof(request.report===fixedpointReport&&request.sidecars===fixedpointReport+'.cases'&&request.worker===true&&!request.fixture&&!request.parseOnly&&!request.profileRoot,'Original request is not a full bootstrap request');
+   requireProof(original.passed===true&&original.seedMode==='native'&&original.guardian?.status==='PASS'&&original.guardian.timeoutMs===600000&&original.guardian.memoryLimitBytes===8192*1024*1024&&original.guardian.rssLimitBytes===8192*1024*1024,'Expected complete native seed certificate');
+   requireProof(same(original.requiredExports,ABI)&&same(original.limits,request.limits),'Full original ABI/limits missing');
+   for(const [key,value]of Object.entries(request.limits))requireProof(limits[key as keyof typeof limits]===value,'Original limit changed: '+key);
+   for(const [path,digest]of Object.entries(object(original.inputs)))pin(path,digest as string);
+   const native=object(request.native),seedBuild=object(original.nativeSeed),nativeRun=object(original.nativeRun);
+   const auth=authenticateNativeSeedBuild(String(native.build),{root:realpathSync(String(request.root)),corpusPath:String(native.corpus),limits});
+   requireProof(auth.binarySha256===native.binarySha256&&auth.binarySha256===seedBuild.binarySha256&&auth.binarySha256===nativeRun.binarySha256,'Native binary identity drift');
+   requireProof(auth.corpusSha256===native.corpusSha256&&auth.corpusSha256===nativeRun.corpusSha256,'Native corpus identity drift');
+   requireProof(hash(String(native.build))===native.buildSha256&&native.buildSha256===nativeRun.buildSha256&&hash(String(native.build))===hash(String(seedBuild.build)),'Native build identity drift');
+   requireProof(nativeRun.stageOne?.sha256===stageSha256&&nativeRun.stageOne?.bytes===stageBytes,'Native stage-one fingerprint drift');
+   for(const [path,digest]of Object.entries(auth.protectedPins))pin(path,String(digest));
+   for(const [path,digest]of Object.entries(auth.loadedInputs))pin(path,String(digest));
+   pin(String(native.build),String(native.buildSha256));pin(String(native.corpus),String(native.corpusSha256));pin(auth.binary,auth.binarySha256);
+   const accepted=readAcceptedParserBuild(request.parserBuild);
+   for(const [path,digest]of Object.entries(accepted.authenticatedInputs))pin(path,digest);
+   requireProof(accepted.parserSource===request.parserSource,'Original accepted parser chain mismatch');
+   for(const key of ['parser','parserBuild','root','rootManifest'])requireProof(typeof request[key]==='string'&&inputs[request[key]]===hash(request[key]),'Request not authenticated by original inputs: '+key);
+   const artifacts=object(original.artifacts),one=object(artifacts.stageOne),two=object(artifacts.stageTwo);
+   for(const [artifact,name]of [[one,'stage-one'],[two,'stage-two']] as const){
+    requireProof(artifact.path===join(sidecars,name+'.js')&&artifact.bytes===stageBytes&&artifact.sha256===stageSha256,'Wrong native emitted image chain');
+    pin(artifact.path,String(artifact.sha256));requireProof(readFileSync(String(artifact.path)).length===stageBytes,'Emitted image size mismatch');
+   }
+   requireProof(readFileSync(String(one.path)).equals(readFileSync(String(two.path))),'Native stage bytes differ');
+   const closure=one.sourceHashes as Record<string,any>[];
+   requireProof(Array.isArray(closure)&&closure.length===Object.keys(request.rootInputs).length,'Incomplete native stage source closure');
+   for(const row of closure){requireProof(row.sha256===row.sourceBytesSha256&&request.rootInputs[row.file]===row.sourceBytesSha256,'Native stage source closure mismatch');pin(row.file,row.sourceBytesSha256);}
+   const parseRows=original.parseRows as Record<string,any>[],expected=closure.filter(row=>!row.external);
+   requireProof(parseRows.length===expected.length&&new Set(parseRows.map(row=>row.file)).size===parseRows.length&&expected.every(row=>parseRows.some(parsed=>parsed.file===row.file)),'Incomplete stage-two root parse approvals');
+   for(const row of parseRows){
+    requireProof(row.phase==='stage-two-parse'&&row.oracleAccepted===true&&row.fullSemanticAST===true&&row.semanticParity===true&&row.stage0ASTHash===row.compiledASTHash&&/^[0-9a-f]{64}$/.test(String(row.stage0ASTHash))&&row.parserFeedback==='FeedbackComplete'&&row.parserFuel===limits.parserFuel&&row.parserSha256===stageSha256&&row.sourceBytesSha256===inputs[row.file]&&row.sourceSha256===sha(readFileSync(row.file,'utf8')),'Missing complete stage-two semantic approval: '+row.file);
+    pin(String(row.transport),String(row.transportSha256));
+   }
+   const fixtures=request.fixtures as Record<string,any>[],seedRows=original.fixtureRows.filter((row:Record<string,any>)=>row.stage==='seed');
+   requireProof(Array.isArray(fixtures)&&fixtures.length===95&&new Set(fixtures.map(row=>row.name)).size===95&&seedRows.length===95,'Missing complete 95 original fixtures/native seed rows');
+   for(const fixture of fixtures){
+    const row=seedRows.find((row:Record<string,any>)=>row.name===fixture.name);
+    requireProof(typeof fixture.source==='string'&&fixture.sourceSha256===sha(fixture.source)&&readFileSync(fixture.file,'utf8')===fixture.source&&inputs[fixture.file]===fixture.sourceSha256,'Original fixture source drift: '+fixture.name);
+    requireProof(row?.passed===true&&row.accepted===fixture.accepted&&row.sourceSha256===fixture.sourceSha256&&row.parserSha256===auth.binarySha256&&row.compilerSha256===auth.binarySha256,'Original native seed row mismatch: '+fixture.name);
+    const manifest=join(fixedpointReport+'.cases','native-fixture-'+fixture.name+'.runtime.tsv');
+    requireProof(row.native?.binarySha256===auth.binarySha256&&hash(manifest)===row.native.manifestSha256&&readFileSync(manifest,'utf8').includes(realpathSync(fixture.file)),'Missing native seed manifest receipt: '+fixture.name);
+    if(fixture.accepted)requireProof(typeof row.output==='string'&&typeof fixture.output==='string'&&row.output.replace(/\s+/g,'').replace(/\{\}/g,'')===fixture.output.replace(/\s+/g,'').replace(/\{\}/g,''),'Original expected output mismatch: '+fixture.name);
+    else requireProof(typeof fixture.failurePhase==='string'&&row.observedFailure===fixture.failurePhase&&row.diagnostic,'Original negative phase mismatch: '+fixture.name);
+   }
+   state.rootFixedpointCertificate={report:fixedpointReport,reportSha256:inputs[fixedpointReport],request:requestPath,requestSha256:inputs[requestPath],equal:true,comparison:'Buffer.equals on actual unchanged files',stageOne:{path:one.path,sha256:one.sha256,bytes:one.bytes},stageTwo:{path:two.path,sha256:two.sha256,bytes:two.bytes},sourceHashes:closure};
+   state.originalMonolithicGate={status:original.status,passed:true,guardian:original.guardian,acceptance:true,seedMode:'native'};
+   state.nativeSeedCoverage={checkedDefinitions:auth.report.checkedDefinitions,eventsFullyValidated:auth.report.eventsFullyValidated,binary:auth.binary,sha256:auth.binarySha256,corpus:auth.corpusPath,corpusSha256:auth.corpusSha256};
+   state.existingSeedRows=seedRows;state.fixtureInputsSha256=sha(JSON.stringify(fixtures));flush();
+   const sourceFileRow=auth.corpus.files.find((row:any)=>row.external!==true&&typeof row.path==='string'&&row.path.endsWith('bend2/selfhost/backend_ir.bend'));
+   requireProof(sourceFileRow&&typeof sourceFileRow.namespace==='string','Native workload does not load the canonical BIR module');
+   const sourceFileTag=sourceFileRow.namespace+'.SourceFile';
+   for(const [name,image]of [['stage-one',one],['stage-two',two]] as const){
+    phase=name+'-imports';rehash();
+    const api=(await import(pathToFileURL(String(image.path)).href)).default;
+    requireProof(api&&ABI.every(key=>typeof api[key]==='function'),'Unchanged emitted image lacks full ABI: '+name);
+    const directory=join(sidecars,name);mkdirSync(directory);
+    const stage:Record<string,any>={stage:name,image:image.path,imageSha256:image.sha256,requiredExports:ABI,fixtureRows:[],parseRows:[],events:[],passed:false};stages.push(stage);flush();
+    const freshRequest={...request,parser:image.path,component:image.path,parserSha256:image.sha256,componentSha256:image.sha256,sidecars:directory,report,fixture:'authenticated-complete-emitted-suite',parseOnly:false,profileRoot:false,fixtures,sourceFileTag};
+    const freshPath=join(directory,'request.json');save(freshPath,freshRequest);pin(freshPath,hash(freshPath));
+    child=spawn('node',[resolve('evals/selfhost_bootstrap_worker.mjs'),freshPath],{stdio:['pipe','pipe','inherit']});
+    stage.command=['node',resolve('evals/selfhost_bootstrap_worker.mjs'),freshPath];
+    const completed=new Promise<number>((done,reject)=>{child!.once('error',reject);child!.once('close',code=>done(code??125));});
+    for await(const line of createInterface({input:child.stdout!})){
+     const message=object(JSON.parse(line));if(typeof message.phase==='string')phase=message.phase;
+     if(message.event==='parse-cache'){
+      requireProof(Number.isSafeInteger(message.id)&&message.parserSha256===image.sha256,'Malformed fresh-only cache lookup');
+      stage.cacheMisses=(stage.cacheMisses??0)+1;child.stdin!.write(JSON.stringify({id:message.id,approved:true})+'\n');
+     }else if(message.event==='parse'){
+      requireProof(Number.isSafeInteger(message.id)&&message.parserSha256===image.sha256,'Wrong emitted parser approval request');
+      const file=realpathSync(message.file),source=readFileSync(file,'utf8'),transport=realpathSync(message.transport);
+      requireProof(file===message.file&&sha(source)===message.sourceSha256&&hash(file)===message.sourceBytesSha256&&transport.startsWith(directory+'/'),'Source/transport changed during emitted parsing');
+      pin(file,message.sourceBytesSha256);
+      const parity=await parserParity({file,source,transport,recordInputs:false});
+      requireProof(parity.stage0ASTHash===parity.compiledASTHash&&hash(transport)===parity.transportSha256,'Complete semantic AST/transport mismatch: '+file);
+      stage.parseRows.push({phase,file,sourceSha256:sha(source),sourceBytesSha256:message.sourceBytesSha256,parserSha256:image.sha256,parserFuel:limits.parserFuel,parserFeedback:'FeedbackComplete',oracleAccepted:true,fullSemanticAST:true,transport,transportSha256:parity.transportSha256,stage0ASTHash:parity.stage0ASTHash,compiledASTHash:parity.compiledASTHash,semanticParity:true});flush();
+      child.stdin!.write(JSON.stringify({id:message.id,approved:true,transportSha256:parity.transportSha256})+'\n');
+     }else if(message.event==='fixture'){stage.fixtureRows.push({...message,workerStage:message.stage,stage:name});flush();}
+     else if(message.event==='result'){requireProof(!stage.workerResult,'Duplicate worker result');stage.workerResult=object(message.result);flush();}
+     else if(message.event==='parse-cache-used'||message.event==='parse-cache-rejected'||message.event==='artifact')throw Error('Forbidden cache/root emission in emitted fixture runner');
+     else if(message.event==='phase'&&message.phase==='complete'){stage.events.push(message);flush();}
+    }
+    const exit=await completed;child=undefined;stage.exitCode=exit;
+    requireProof(exit===0&&stage.workerResult?.passed===true&&stage.workerResult.fixtureExecutions===95&&stage.fixtureRows.length===95,'Emitted worker did not finish all 95 fixtures: '+name);
+    for(const row of stage.parseRows)requireProof(hash(row.transport)===row.transportSha256,'Fresh full AST transport changed');
+    rehash();stage.passed=true;flush();
+   }
+   requireProof(stages.length===2&&stages.every(stage=>stage.passed&&stage.fixtureRows.length===95),'Both unchanged images must finish independently');
+   rehash();state.evidenceCounts={existingSeed:95,freshStageOne:95,freshStageTwo:95,freshEmitted:190,total:285};state.passed=true;state.status='EMITTED_SUITES_BEHAVIOR_PASS';flush();
+  }else{
   requireProof(request.report===fixedpointReport&&request.sidecars===fixedpointReport+'.cases'&&request.worker===true&&!request.fixture&&!request.parseOnly&&!request.profileRoot,'Original request is not a full bootstrap request');
   requireProof(original.status==='FAIL'&&original.passed===false&&original.guardian?.status==='FAIL'&&original.guardian.reason==='deadline_exceeded'&&original.guardian.timeoutMs===600000,'Expected honestly failed original monolithic deadline');
   requireProof(same(original.requiredExports,ABI)&&same(original.limits,request.limits),'Full original ABI/limits missing');
@@ -178,5 +270,6 @@ if(!worker){
   }
   requireProof(stages.length===2&&stages.every(stage=>stage.passed&&stage.fixtureRows.length===95),'Both unchanged images must finish independently');
   rehash();state.evidenceCounts={existingSeed:95,freshStageOne:95,freshStageTwo:95,freshEmitted:190,total:285};state.passed=true;state.status='EMITTED_SUITES_BEHAVIOR_PASS';flush();
+  }
  }catch(error){child?.kill('SIGTERM');state.passed=false;state.status='FAIL';state.failure={phase,error:String(error),stack:error instanceof Error?error.stack:undefined};flush();process.exitCode=2;}
 }
