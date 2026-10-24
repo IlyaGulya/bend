@@ -38,13 +38,49 @@
   },
   "pinUpdate": "evals/checker_core_component_build.ts stale historical heavy_gate pins updated to the merged 0b0b9c9f guardian source; no behavior, limit, or acceptance change",
   "limits": [
+    "one post-fix merged 10-case smoke; an earlier pre-fix attempt failed on stale guardian source pins before any profile case ran; fullroot profiling/overhead and llvm-split link remain unverified",
     "diagnostic only: profile files do not certify acceptance, bootstrap green, fixedpoint or benchmark results",
     "span CPU is a process.cpuUsage boundary delta over all threads in this process; child processes are excluded and require their own rusage receipt; nested or overlapping spans overlap and no exclusive CPU is derived",
     "boundary heapUsed deltas are not allocation, live or retained bytes; RSS is process-wide",
     "sampled CPU/allocation profiles are statistical, include collected objects for allocation, and have no Bend source map",
     "child-process CPU/RSS exists only where the producer records a child receipt (e.g. NATIVE_PHASE or llvm time -lp); it is never inferred",
     "rawDetail streams every event to events.jsonl; fine spans/observations are aggregated in memory, but JSON serialization and I/O overhead remains and is not measured",
-    "fullroot overhead/control and complete stage coverage are not established by a tiny smoke run",
-    "one merged tiny smoke only; fullroot profiling/overhead and llvm-split link remain unverified"
-  ]
+    "fullroot overhead/control and complete stage coverage are not established by a tiny smoke run"
+  ],
+  "verificationAttempts": [
+    {
+      "attempt": 1,
+      "status": "FAIL",
+      "phase": "plain component build (before profiling setup)",
+      "casesExecuted": [],
+      "cause": "Error: Protected input drift: evals/heavy_gate.ts; component builder still pinned the pre-guardian heavy_gate.ts/heavy_gate_native.c hashes",
+      "logPath": "/tmp/profile-evidence/merged-smoke-0b0b9c9f.log",
+      "logSha256": "4f30db568428f259b2cee6c4d9d48571013d3df13ba28784d5648ccf2f4999e1",
+      "remediation": "updated only the two stale guardian pins to the merged 0b0b9c9f source hashes in verification commit 3b08b9b8; no behavior or limits changed"
+    },
+    {
+      "attempt": 2,
+      "status": "PASS",
+      "phase": "post-fix merged 10-case smoke",
+      "casesExecuted": [
+        "componentValid",
+        "componentRejected",
+        "componentCutoff",
+        "nativeRejected",
+        "directC",
+        "directRejected",
+        "directCodegenFailure",
+        "measurementIncomplete",
+        "terminatedWorkerCheckpoint",
+        "collectorContract"
+      ],
+      "logPath": "/tmp/profile-evidence/merged-smoke-0b0b9c9f-pin.log",
+      "logSha256": "5e5ee98eb5e0cdeb00187b8f07057076a67679df8d9b3506dbb9439044d6e271",
+      "evidencePath": "checkpoints/compiler-profile-smoke-v1.json",
+      "evidenceSha256": "5ce94152fd8d354b45c2b87a1a1350d876fc5719d7695bab80c1d1cbef0f8461"
+    }
+  ],
+  "preFixFailures": 1,
+  "postFixPasses": 1,
+  "runCountTotal": 2
 }
