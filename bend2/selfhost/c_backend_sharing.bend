@@ -1360,6 +1360,10 @@ def s_reach_escapes_go(+items: List<&2, U32>, +reach: Reach) -> Reach:
 def s_reach_after_keys(+reach: Reach) -> Reach:
   s_reach_escapes_go(s_reach_escapes(reach), reach)
 
+def s_reach_of(ro: ReachOut) -> Reach:
+  match ro:
+    case ReachOut{reach, changed}: reach
+
 def s_reach_out(+reach: Reach) -> ReachOut:
   ReachOut{reach, s_reach_changed(reach)}
 
@@ -2717,12 +2721,25 @@ def s_plan_of_catalog(+catalog: Catalog, +ctr: Map<&2, Bool>, array_hot: Bool, +
 def s_plan_of(+facts: Facts, +ctr: Map<&2, Bool>, array_hot: Bool, +forced: Bool, +note: List<&2, String>) -> SharingPlan:
   s_plan_of_catalog(s_facts_catalog(facts), ctr, array_hot, forced, note)
 
+def s_list_empty(+items: List<&2, BodyRow>) -> Bool:
+  match items:
+    case Nil{}: True{}
+    case _: False{}
+
+def s_built_no_bodies(built: BuiltFacts) -> Bool:
+  s_list_empty(s_built_bodies(built))
+
+def s_plan_result_ok(no_bodies: Bool, +ctr: Map<&2, Bool>, array_hot: Bool, +forced: Bool, +note: List<&2, String>, +facts: Facts) -> SharingResult:
+  match no_bodies:
+    case True{}: SharingOk{s_plan_of(facts, ctr, array_hot, True{}, ["no body is reachable from the program ending: every constructor is sealed"])}
+    case False{}: SharingOk{s_plan_of(facts, ctr, array_hot, forced, note)}
+
 def s_plan_result(st: AState, +facts: Facts) -> SharingResult:
   match st:
     case AState{flow, pay, call, hot, ctr, array_hot, elem_unknown, forced, note, changed, failure}:
       match failure:
         case Some{message}: SharingFail{message}
-        case None{}: SharingOk{s_plan_of(facts, ctr, array_hot, forced, note)}
+        case None{}: s_plan_result_ok(s_built_no_bodies(s_facts_built(facts)), ctr, array_hot, forced, note, facts)
 
 def s_catalog_result_at(failure: Maybe<&2, String>, +facts: Facts, built: BuiltFacts) -> SharingResult:
   match failure:
