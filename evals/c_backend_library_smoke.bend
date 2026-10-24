@@ -39,7 +39,7 @@ def code_add() -> BIR.Code:
 # supply the remaining checked argument and have it applied in order.
 def code_partial() -> BIR.Code:
   BIR.Code{2, Nil{}, [p1()],
-    BIR.Return{BIR.Closure{4, [a(BIR.Local{1})], [p41()]}}}
+    BIR.Let{12, BIR.Closure{4, [a(BIR.Local{1})], [p41()]}, BIR.Return{BIR.Local{12}}}}
 
 def code_zero() -> BIR.Code:
   BIR.Code{3, Nil{}, Nil{}, BIR.Return{w(9)}}
@@ -52,7 +52,7 @@ def decl_zero() -> BIR.Declaration:
   BIR.LazyDeclaration{"zero", BIR.Return{w(9)}}
 
 def decl_factory() -> BIR.Declaration:
-  BIR.LazyDeclaration{"factory", BIR.Return{BIR.Closure{4, [a(w(5))], [p41()]}}}
+  BIR.LazyDeclaration{"factory", BIR.Let{13, BIR.Closure{4, [a(w(5))], [p41()]}, BIR.Return{BIR.Local{13}}}}
 
 def ctor(id: U32, key: String, arity: Nat) -> BIR.ConstructorLayout:
   BIR.ConstructorLayout{id, key, None{}, List.replicate(Maybe<&2, String>, arity, None{})}
