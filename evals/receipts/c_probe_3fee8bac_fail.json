@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "kind": "C_PROBE_CLANG_FAILURE",
+  "status": "FAIL_CLANG_PRECHECK",
+  "scope": "PROBE_ONLY: C module (c_target_array_nat), minimal pure3, and C library (c_step_library_fixture + caller); no matrix",
+  "component": {
+    "component": "/private/tmp/bend-fir-root-aa9/checkpoints/root-final2-art.js",
+    "componentSha256": "3fee8bace209ffc50d13de010a0ae9ace36257fb20dd03aec2199ae62c802099",
+    "tag": "../bend2/selfhost/backend_ir.SourceFile",
+    "candidateHostSha256": "a56f57e32d0fa475a0564f18a3930137a084cb6a4ce49b05f496e76331d2a22a",
+    "baseSha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+    "runtimeSha256": "478c1ba7d0d0626c1927d11c4af3b3d4cef520db41afd8722ebf55d5050769c3",
+    "callerSha256": "f69878b378bb939a20829076c89aad05bd80e610895c52562f81ed30f45e293e"
+  },
+  "pins": {
+    "componentBytes": 16924823,
+    "checkedDefinitions": 11188,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "root": "/private/tmp/bend-fir-root-aa9/checkpoints/.bootstrap_compiler_root_v1.bend",
+    "rootSha256": "b0b92b67225c1b67972c9fe2a1096962a14926633508936c86d8b93b73cbd36b",
+    "emitterSteps": "/private/tmp/bend-fir-root-aa9/checkpoints/emitter_steps_v1.bend",
+    "emitterStepsSha256": "79f95ee2a16ea8ec5b624aece715a01c31c80edfe5f64e08a0045729d2877e82",
+    "emitterPinInLoadedInputs": {
+      "emitter_steps_v1.bend": "79f95ee2a16ea8ec5b624aec"
+    }
+  },
+  "manifest": {
+    "path": "/tmp/c-probe-3fee8bac/manifest.json",
+    "sha256": "203013a195e14a92b631a8fd3a0a4b7a01ed4b9db8e8feb81df244f85d2d6eb8"
+  },
+  "exits": {
+    "module.emit": "0",
+    "module.clang": "1",
+    "pure3.emit": "0",
+    "pure3.clang": "1",
+    "library.emit": "0",
+    "library.clang": "1"
+  },
+  "clang": {
+    "module": {
+      "errors": [
+        "module.c:8555:1: error: use of undeclared identifier 'c0'",
+        "module.c:8556:1: error: use of undeclared identifier 'c0'",
+        "module.c:8775:1: error: use of undeclared identifier 'c0'",
+        "module.c:8776:1: error: use of undeclared identifier 'c0'",
+        "module.c:11831:1: error: use of undeclared identifier 'c0'",
+        "module.c:11832:1: error: use of undeclared identifier 'c0'",
+        "6 errors generated."
+      ],
+      "fragment": {
+        "lines": "8548-8559",
+        "path": "/tmp/c-probe-3fee8bac/module.fragment.txt",
+        "sha256": "07bc97d301b257c55a2e4470c3e672b9f6fa06abe5eaf116f083e6d0e5104f5a",
+        "text": "r0 = avw;\nblk_free(e, a0);\nr0;\n});\n    Term lv2117 = ({\nu64 w0[1]; for (u32 o0i = 0; o0i < 1; o0i += 1) { w0[o0i] = 0; } u32 o0 = 0;\nw0[o0] = (lv4); o0 += 1;\nc0 = 0;\nc0 += 1;\nTerm f0[1]; for (u32 f0i = 0; f0i < 1; f0i += 1) { f0[f0i] = w0[f0i]; }\nblk_new(e, true, 0, 0, 1, f0);\n});\n"
+      }
+    },
+    "pure3": {
+      "errors": [
+        "pure3.c:8551:1: error: use of undeclared identifier 'c0'",
+        "pure3.c:8552:1: error: use of undeclared identifier 'c0'",
+        "pure3.c:8771:1: error: use of undeclared identifier 'c0'",
+        "pure3.c:8772:1: error: use of undeclared identifier 'c0'",
+        "4 errors generated."
+      ],
+      "fragment": {
+        "lines": "8544-8555",
+        "path": "/tmp/c-probe-3fee8bac/pure3.fragment.txt",
+        "sha256": "07bc97d301b257c55a2e4470c3e672b9f6fa06abe5eaf116f083e6d0e5104f5a",
+        "text": "r0 = avw;\nblk_free(e, a0);\nr0;\n});\n    Term lv2117 = ({\nu64 w0[1]; for (u32 o0i = 0; o0i < 1; o0i += 1) { w0[o0i] = 0; } u32 o0 = 0;\nw0[o0] = (lv4); o0 += 1;\nc0 = 0;\nc0 += 1;\nTerm f0[1]; for (u32 f0i = 0; f0i < 1; f0i += 1) { f0[f0i] = w0[f0i]; }\nblk_new(e, true, 0, 0, 1, f0);\n});\n"
+      }
+    },
+    "library": {
+      "errors": [
+        "lib.c:8558:1: error: use of undeclared identifier 'c0'",
+        "lib.c:8559:1: error: use of undeclared identifier 'c0'",
+        "lib.c:8778:1: error: use of undeclared identifier 'c0'",
+        "lib.c:8779:1: error: use of undeclared identifier 'c0'",
+        "4 errors generated."
+      ],
+      "fragment": {
+        "lines": "8551-8562",
+        "path": "/tmp/c-probe-3fee8bac/library.fragment.txt",
+        "sha256": "07bc97d301b257c55a2e4470c3e672b9f6fa06abe5eaf116f083e6d0e5104f5a",
+        "text": "r0 = avw;\nblk_free(e, a0);\nr0;\n});\n    Term lv2117 = ({\nu64 w0[1]; for (u32 o0i = 0; o0i < 1; o0i += 1) { w0[o0i] = 0; } u32 o0 = 0;\nw0[o0] = (lv4); o0 += 1;\nc0 = 0;\nc0 += 1;\nTerm f0[1]; for (u32 f0i = 0; f0i < 1; f0i += 1) { f0[f0i] = w0[f0i]; }\nblk_new(e, true, 0, 0, 1, f0);\n});\n"
+      }
+    }
+  },
+  "observed": {
+    "previous_defects_gone": [
+      "no redefinition of b0r",
+      "no SHOW_DESC braced-scalar warning"
+    ],
+    "new": "sole diagnostic: c0 undeclared at elem_fill sites; a block-write expression declares w0/o0 then emits c0 = 0; c0 += 1; with c0 out of scope (a sibling read has its own u32 c0)"
+  },
+  "attribution": "Owner CIRStorage reports root cause elem_fill_operand sharing a caller c0 without array_new declaring it; fixed in c_backend_physical at b4e9281e (physical sha 84514613\u2026), awaiting Main intake + fresh component.",
+  "notes": [
+    "No bulk C is committed; full raw files remain in /tmp/c-probe-3fee8bac with the manifest hashes.",
+    "No pipes/head/grep were used: every child wrote complete stdout/stderr plus exit code; clang ran once.",
+    "No source/fixture/cap changes; matrix not run."
+  ]
+}
