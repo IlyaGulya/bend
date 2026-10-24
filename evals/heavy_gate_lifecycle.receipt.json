@@ -100,5 +100,18 @@
     "classificationSeam": "classifyGateResult(record, supervisorExitCode, command, settings, reportPath) is the single exported record-to-result transformation used by runHeavyGate, so guardHeavyGate and the CLI consume the effective nonzero exit.",
     "label": "classifyGateResult defaults an absent settings.label to 'heavy command', matching normalize; the exported result label is always a string."
   },
-  "sourceCommit": "b9e418e6"
+  "sourceCommit": "b9e418e6",
+  "jointVerification": {
+    "sourceHead": "0b0b9c9f",
+    "worktree": "/private/tmp/bend-gate-verify57ab",
+    "branch": "work/gate-verify",
+    "command": "bun test evals/heavy_gate.test.ts -t \"normal and failed|launcher process-group|receipt classification\"",
+    "rawOutputPath": "/tmp/gate-evidence/joint-focused-0b0b9c9f.log",
+    "rawOutputSha256": "05f9d1b7af90f493ffbd77eab1c113a6d0923c146e8abc0d12b6222ed1646879",
+    "bytes": 1641,
+    "exit": 0,
+    "result": "3 pass / 0 fail / 57 expect() calls / [2.31s]",
+    "coverage": "normal and failed exits; launcher process-group kill with complete receipt and lease reuse; receipt classification (including nonzero effective exit for rejected PASS)",
+    "policy": "exactly one merged focused run with full unfiltered stdout/stderr; not a full suite; no full native/root build; repeated runs were not used to outvote the preserved unknown deadline failure"
+  }
 }
