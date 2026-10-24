@@ -189,7 +189,13 @@ old smoke metadata predates the current sharing schema: it declares runtime
 constructor layouts but no family arm for `Nil` (or its siblings). The diagnostic
 fixture now adds `runtime_families()` arms for all fifteen runtime constructors
 with their declared arities, then the U32 family. JS generated Emit then returned
-`EMIT_SUCCESS` after 26,237 `emitter_chunk(64n)` steps. This is a JS proof of the
+`EMIT_SUCCESS` after 26,237 `emitter_chunk(64n)` steps. The reproducible public
+diagnostic is `evals/native_stage_profile_emit_probe.ts` (source
+`evals/native_stage_profile_emit_probe.bend`):
+`node --stack-size=65536 --experimental-strip-types evals/native_stage_profile_emit_probe.ts`.
+The 64 MiB JS codegen stack is within the approved 256 MiB source cap; no native
+worker or guard limit was changed. It prints the exact `EmitFailure.message` on
+failure and `EMIT_SUCCESS` on success; it is not a native run. This is a JS proof of the
 corrected fixture, not a new native run; the performed Node native run remains
 the pre-fix `EmitFailure` evidence. No native rerun or cap change was made.
 The native codegen/runtime prerequisite from the rejected Bun attempt is now

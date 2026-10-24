@@ -193,7 +193,7 @@
     "cause": "canonical c_backend_smoke metadata predates the current sharing schema: runtime constructor layouts exist but no BIR.Family arm declares Nil (and siblings)",
     "fixtureFix": "added runtime_families() arms for all 15 runtime constructors with their declared arities, then U32 family; no runtime/emitter/generator patch",
     "afterFix": "JS generated Emit returned EMIT_SUCCESS after 26237 emitter_chunk(64n) steps",
-    "jsCodegenNote": "js_lib generation used Node --stack-size=65536 KB for the JS codegen only; no native cap/limit changed; execution used default Node",
+    "jsCodegenNote": "js_lib generation used node --stack-size=65536 KB = 64 MiB, within the approved 256 MiB source cap; no native worker/guard limit changed; execution default Node",
     "probeSourceSha256": "b99fbad13d6bed735f64375da9c7021a76eddc6eba9917bbfab0441f01da6eb3",
     "probeDataSha256": "2241e16db24981a29497f43966a717e415fd82bbb8c414b78ffefd7603598971",
     "generatedJs": {
@@ -206,6 +206,22 @@
       "result": "EMIT_SUCCESS",
       "steps": 26237
     },
-    "nativeRunStatus": "unchanged: the performed Node native run used the pre-fix metadata and witnessed EmitFailure; this JS proof is not a native run and no native success is claimed"
+    "nativeRunStatus": "unchanged: the performed Node native run used the pre-fix metadata and witnessed EmitFailure; this JS proof is not a native run and no native success is claimed",
+    "publicProbe": {
+      "source": "evals/native_stage_profile_emit_probe.bend",
+      "tool": "evals/native_stage_profile_emit_probe.ts",
+      "command": "node --stack-size=65536 --experimental-strip-types evals/native_stage_profile_emit_probe.ts",
+      "jsStackBytes": 67108864,
+      "approvedSourceCapBytes": 268435456,
+      "nativeCapsChanged": false,
+      "result": "EMIT_SUCCESS",
+      "steps": 26237,
+      "status": "source diagnostic; not a native run"
+    },
+    "reproducedOriginalFailureLog": {
+      "path": "/tmp/run-emit-js-probe.log",
+      "sha256": "f117ebc1ace1be1ca291e0291af09fe111e9419bf65c7490a7ec194724544f5c",
+      "message": "no family declares constructor Nil"
+    }
   }
 }
