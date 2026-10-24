@@ -557,7 +557,7 @@ def js_nat_descriptor_head(head: Maybe<&2, JSDescriptorHead>, +natives: Map<&2, 
     case None{}: False{}
 def js_nat_descriptor_named(nat: Bool, args: List<&2, BIR.Descriptor>) -> Bool:
   match nat:
-    case True{}: js_parameter_arity_count(Nat.is_eq(List.length(&2, BIR.Descriptor, args), 0n))
+    case True{}: Nat.is_eq(List.length(&2, BIR.Descriptor, args), 0n)
     case False{}: False{}
 def js_bool_of_parameter(value: JSParameter) -> Bool:
   match value:
@@ -1072,7 +1072,7 @@ def export_arguments(items: List<&2, BIR.Descriptor>, +natives: Map<&2, String>,
     case +item <> rest: export_argument(js_parameter(item, natives), index) <> export_arguments(rest, natives, (index + 1n : Nat))
 def export_argument(parameter: JSParameter, index: Nat) -> String:
   match parameter:
-    case JSParameterNat{}: cat(["nat_in(arguments[", Nat.show(index), "])"])
+    case JSParameterNat{}: cat(["(", Nat.show(index), "<arguments.length?nat_in(arguments[", Nat.show(index), "]):undefined)"])
     case _: cat(["arguments[", Nat.show(index), "]"])
 def export_unresolved(+key: String, items: List<&2, BIR.Descriptor>, +natives: Map<&2, String>) -> Bool:
   match items:
