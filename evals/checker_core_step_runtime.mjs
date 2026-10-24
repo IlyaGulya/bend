@@ -209,3 +209,18 @@ export function runLibraryEmitterSteps(component,program,exports,files){
  validateSourceFiles(files);
  return runSteps(component,[program,exports,files],'Emitter','emit_library_start','emitter_step',validateEmitResult);
 }
+
+export function runCEmitterSteps(component,program,runtime,files){
+ validateCheckedProgram(program);
+ if(typeof runtime!=='string')invalid('CEmitter','runtime source must be a string, not a path');
+ validateSourceFiles(files);
+ return runSteps(component,[program,runtime,files],'CEmitter','emit_c_modules_start','c_emitter_step',validateEmitResult);
+}
+
+export function runCLibraryEmitterSteps(component,program,exports,runtime,files){
+ validateCheckedProgram(program);
+ if(!['Nil','Con'].includes(constructorTag(exports)))invalid('CEmitter','library start requires explicit native exports list');
+ if(typeof runtime!=='string')invalid('CEmitter','runtime source must be a string, not a path');
+ validateSourceFiles(files);
+ return runSteps(component,[program,exports,runtime,files],'CEmitter','emit_c_library_start','c_emitter_step',validateEmitResult);
+}

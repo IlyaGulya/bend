@@ -11,6 +11,7 @@ import {sourceOracle} from './bootstrap_source_oracle.ts';
 import {nativeSourceClosure,normalizeNativeMatchSource} from './native_match_source.ts';
 import {composeCanonicalCPSSource, type CPSCompositionProof} from './canonical_cps_source.ts';
 import {emitterStepConfig} from './js_emit_step_lower.ts';
+import {cemitStepConfig} from './c_emit_step_lower.ts';
 import {err_show, type Err} from '../bend2/bend.ts';
 const sourcePath='bend2/selfhost/checker.bend',source=readFileSync(sourcePath,'utf8');
 const dependencyPath='checkpoints/checker-core-dependency.json';
@@ -84,9 +85,9 @@ async function ownImports(input:string,output:string,text:string):Promise<string
 const slice=await ownImports(sourcePath,slicePath,normalizedRoot.source);
 const componentSources:{mode:string;canonical:string;owned:string;canonicalSha256:string;sourceSha256:string;definitionNames:string[];declarationHashes:Record<string,string>;canonicalDefinitionNames:string[];canonicalDeclarationHashes:Record<string,string>;owners:Record<string,string>;composition?:CPSCompositionProof;loweringDefinitionNames?:string[];loweringDeclarationHashes?:Record<string,string>}[]=[];
 const componentInputs=new Map<string,string>();
-for(const[mode,canonical,output]of [['emitter','bend2/selfhost/js_emit.bend','checkpoints/js_emit_owned_v1.bend'],['template','bend2/selfhost/template.bend','checkpoints/template_owned_v1.bend']]){
+for(const[mode,canonical,output]of [['emitter','bend2/selfhost/js_emit.bend','checkpoints/js_emit_owned_v1.bend'],['cemit','bend2/selfhost/c_emit_core.bend','checkpoints/c_emit_owned_v1.bend'],['template','bend2/selfhost/template.bend','checkpoints/template_owned_v1.bend']]){
   const original=readFileSync(canonical!,'utf8');
-  const closure=mode==='emitter'?emitterStepConfig.providerClosure:undefined;
+  const closure=mode==='emitter'?emitterStepConfig.providerClosure:mode==='cemit'?cemitStepConfig.providerClosure:undefined;
   const composition=closure?.length?await composeCanonicalCPSSource(canonical!,closure):undefined;
   for(const[path,text]of composition?.inputs??[[canonical!,original]]){
     if(componentInputs.has(path)&&componentInputs.get(path)!==text)throw Error('Mixed component canonical input '+path);

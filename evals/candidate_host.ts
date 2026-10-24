@@ -20,6 +20,7 @@ import {pathToFileURL} from 'node:url';
 import {
  sourceFileEntries,sourceFiles,
  runTemplateSteps,runCheckerSteps,runLibraryEmitterSteps,runEmitterSteps,
+ runCEmitterSteps,runCLibraryEmitterSteps,
 } from './checker_core_step_runtime.mjs';
 
 const ROOT=resolve(import.meta.dir,'..');
@@ -77,13 +78,14 @@ function args_parse(){
 }
 
 const o=args_parse();
-// The step library has no C backend, and that is not a goal of this runner: a
-// `.c` request is refused instead of writing a JS file with a misleading name.
-if(o.output.endsWith('.c'))fail('this candidate emits JavaScript only; there is no C backend');
+const target=o.output.endsWith('.c')?'c':'js';
 // Both paths are runtime-selected by the caller, so a static import is impossible.
 const candidate=objectOf((await import(pathToFileURL(o.candidate).href)).default);
-if(candidate===undefined||typeof candidate.parsed_module!=='function'||typeof candidate.check_expanded_start!=='function'||typeof candidate.emit_modules_start!=='function')
- fail('candidate lacks the typed step ABI');
+const requiredStart=target==='c'?'emit_c_modules_start':'emit_modules_start';
+const requiredLibraryStart=target==='c'?'emit_c_library_start':'emit_library_start';
+if(candidate===undefined||typeof candidate.parsed_module!=='function'||typeof candidate.check_expanded_start!=='function'
+ ||typeof candidate[requiredStart]!=='function'||(o.library&&typeof candidate[requiredLibraryStart]!=='function'))
+ fail('candidate lacks the typed '+target+' step ABI ('+requiredStart+(o.library?'/'+requiredLibraryStart:'')+')');
 const parserModule=o.parser===undefined?candidate:objectOf((await import(pathToFileURL(o.parser).href)).default);
 if(typeof parserModule?.parse_with_fuel!=='function')fail('no compiled parser: pass --parser=PATH or export parse_with_fuel');
 
@@ -101,8 +103,8 @@ function parse(file:string,source:string):Record<string,unknown>{
 const namespace_of=(parent:string,path:string):string=>
  path==='Base'?'':posix.normalize(isAbsolute(path)?path.replace(/\.bend$/,''):posix.dirname(parent)+'/'+path.replace(/\.bend$/,''));
 
-// The declared `.js` alternative is BIR metadata: the host reads exactly the
-// path BIR resolves from it. Real read failures stay failures.
+// The declared target alternative is BIR metadata: the host reads exactly the
+// path BIR resolves from it. Real read failures stay failures that name it.
 const files:unknown[]=[];
 const modules:unknown[]=[];
 const seen=new Set<string>();
@@ -118,13 +120,16 @@ function visit(file:string,scope:string){
   const definition=objectOf(objectOf(top)?.definition);
   if(tag(definition?.body)!=='DefImports')continue;
   for(const declared of items(objectOf(definition?.body)?.paths)){
-   if(typeof declared==='string'&&declared.endsWith('.js'))files.push(...sourceFileEntries(at,[declared]));
+   if(typeof declared==='string'&&declared.endsWith('.'+target)){
+    try{files.push(...sourceFileEntries(at,[declared]));}
+    catch(error){fail('cannot read declared .'+target+' target '+declared+' of '+at+': '+String(error));}
+   }
   }
  }
  for(const imported of items(module.imports)){
   const path=objectOf(imported)?.path;
   if(typeof path!=='string'||/^0x[0-9a-f]+\//.test(path))fail('malformed import in '+at);
-  if(path.endsWith('.js'))continue;
+  if(path.endsWith('.js')||path.endsWith('.c'))continue;
   visit(path==='Base'?o.base:resolve(dirname(at),path),namespace_of(scope,path));
  }
  modules.push(candidate!.parsed_module(scope,module));
@@ -155,11 +160,20 @@ function declaredExports():string[]{
 
 const program=checkedProgram();
 const exports=o.exports??declaredExports();
-const emitted=o.library
- ? runLibraryEmitterSteps(candidate,program,list(exports),bag)
- : runEmitterSteps(candidate,program,bag);
+let runtime:string|undefined;
+if(target==='c'){
+ try{runtime=readFileSync(o.runtimeC,'utf8');}
+ catch(error){fail('cannot read C runtime '+o.runtimeC+': '+String(error));}
+}
+const emitted=target==='c'
+ ? o.library
+  ? runCLibraryEmitterSteps(candidate,program,list(exports),runtime!,bag)
+  : runCEmitterSteps(candidate,program,runtime!,bag)
+ : o.library
+  ? runLibraryEmitterSteps(candidate,program,list(exports),bag)
+  : runEmitterSteps(candidate,program,bag);
 if(tag(emitted)!=='EmitSuccess')fail('emission failed: '+String(objectOf(emitted)?.message??''));
 const source=objectOf(emitted)?.source;
 if(typeof source!=='string')fail('emission returned no source');
 writeFileSync(o.output,source);
-console.log(JSON.stringify({output:o.output,bytes:Buffer.byteLength(source),sha256:createHash('sha256').update(source).digest('hex'),library:o.library,exports:o.library?exports:undefined,modules:seen.size,foreignFiles:files.length}));
+console.log(JSON.stringify({output:o.output,bytes:Buffer.byteLength(source),sha256:createHash('sha256').update(source).digest('hex'),target,library:o.library,exports:o.library?exports:undefined,modules:seen.size,foreignFiles:files.length,runtime:target==='c'?o.runtimeC:undefined}));

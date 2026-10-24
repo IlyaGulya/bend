@@ -36,7 +36,7 @@ export type StepConfig = {
   kernel: string; emitter: string; parser: string; base: string;
   nodePolicy: string; validationPolicy: string;
   output: string; component: string; driver?: string; manifest: string;
-  mode: 'checker' | 'emitter' | 'template'; root: string; result: string;
+  mode: 'checker' | 'emitter' | 'cemit' | 'template'; root: string; result: string;
   checkerOutput?: string; checkerManifest?: string;
   /** Entire canonical provider modules admitted into the same typed CPS boundary. */
   providerClosure?: CPSProviderClosure;
@@ -47,7 +47,7 @@ export type StepConfig = {
   generator: string;
 };
 export async function generateNativeSteps(paths: StepConfig) {
-const protocol = paths.mode === 'checker' ? 'Checker' : paths.mode === 'emitter' ? 'Emitter' : 'Template';
+const protocol = paths.mode === 'checker' ? 'Checker' : paths.mode === 'emitter' ? 'Emitter' : paths.mode === 'cemit' ? 'CEmitter' : 'Template';
 const prefix = paths.mode;
 const requestType = protocol + 'Request', progressType = protocol + 'Progress', valueType = protocol + 'Value';
 const finishedType = protocol + 'Finished', pendingType = protocol + 'Pending', directType = protocol + 'Direct', boundType = protocol + 'Bound';
@@ -467,7 +467,7 @@ const resultKind = allResultsData ? 'Data' : 'Type';
 const resultQuantity = (name: string): B.Quant => resultKinds[name] === 'Data' ? B.Many() : B.Lone();
 const sourceEdges = new Map([...names].map(name => [name, new Set<string>()]));
 for (const effect of effects) sourceEdges.get(effect.caller)!.add(effect.callee);
-const publicRoots=paths.mode==='checker'?[paths.root,'inspect_checked']:paths.mode==='emitter'?[paths.root,'emit_library']:[paths.root];
+const publicRoots=paths.mode==='checker'?[paths.root,'inspect_checked']:paths.mode==='emitter'||paths.mode==='cemit'?[paths.root,'emit_library']:[paths.root];
 const reachable = new Set<string>(), pending = [...publicRoots];
 while (pending.length) {
   const name = pending.pop()!;
@@ -1208,8 +1208,13 @@ def ${stepFunction}(-R: Type, run: ${runType}<R>) -> ${runType}<R>:
   ${chunkFunction}(R, ${nativeChunkQuantum}n, run)
 `);
 const emitterFiles = 'files: List<&2, BIR.SourceFile>';
-const startInput = paths.mode === 'emitter' ? 'program: Checked.CheckedProgram, ' + emitterFiles : 'modules: List<&2, Loader.LoadedModule>';
-const startArguments = paths.mode === 'checker' ? 'modules, Nil{}' : paths.mode === 'emitter' ? 'program, files' : 'modules';
+const startInput = paths.mode === 'emitter' ? 'program: Checked.CheckedProgram, ' + emitterFiles
+  : paths.mode === 'cemit' ? 'program: Checked.CheckedProgram, runtime: String, ' + emitterFiles
+  : 'modules: List<&2, Loader.LoadedModule>';
+const startArguments = paths.mode === 'checker' ? 'modules, Nil{}'
+  : paths.mode === 'emitter' ? 'program, files'
+  : paths.mode === 'cemit' ? 'program, runtime, files'
+  : 'modules';
 function typedStart(name:string, root:string, parameters:string, arguments_:string, result:string){
  const group=requestGroup.get(root),request=requestName.get(root);
  if(!group||!request)throw Error('Missing typed public root '+root);
@@ -1218,20 +1223,24 @@ function typedStart(name:string, root:string, parameters:string, arguments_:stri
 chunks.push(typedStart(startFunction,paths.root,startInput,startArguments,paths.result));
 if(paths.mode==='checker')chunks.push(typedStart('checker_inspect_start','inspect_checked','program: Checked.CheckedProgram','program','Checked.Inspection'));
 if(paths.mode==='emitter')chunks.push(typedStart('emitter_library_start','emit_library','program: Checked.CheckedProgram, exports: List<&2, String>, ' + emitterFiles,'program, exports, files','EmitResult'));
+if(paths.mode==='cemit')chunks.push(typedStart('cemit_library_start','emit_library','program: Checked.CheckedProgram, exports: List<&2, String>, runtime: String, ' + emitterFiles,'program, exports, runtime, files','EmitResult'));
 const output = chunks.join('');
-const alias = paths.mode === 'checker' ? 'CheckerCore' : paths.mode === 'emitter' ? 'JSEmit' : 'Template';
-const wrapper = paths.mode === 'checker' ? 'check_expanded_start' : paths.mode === 'emitter' ? 'emit_modules_start' : 'expand_modules_start';
+const alias = paths.mode === 'checker' ? 'CheckerCore' : paths.mode === 'emitter' ? 'JSEmit' : paths.mode === 'cemit' ? 'CEmit' : 'Template';
+const wrapper = paths.mode === 'checker' ? 'check_expanded_start' : paths.mode === 'emitter' ? 'emit_modules_start' : paths.mode === 'cemit' ? 'emit_c_modules_start' : 'expand_modules_start';
 const outputImport = './' + posix.basename(paths.output);
 const resultType=paths.result.includes('.')?paths.result:alias+'.'+paths.result;
-const wrappers = 'def ' + wrapper + '('+startInput+') -> ' + alias + '.' + runType + '<' + resultType + '>:\n  ' + alias + '.' + startFunction + '('+(paths.mode==='emitter'?'program, files':'modules')+')\n\n'
+const startCall = paths.mode==='emitter' ? 'program, files' : paths.mode==='cemit' ? 'program, runtime, files' : 'modules';
+const publicStep = paths.mode==='cemit' ? 'c_emitter_step' : stepFunction;
+const wrappers = 'def ' + wrapper + '('+startInput+') -> ' + alias + '.' + runType + '<' + resultType + '>:\n  ' + alias + '.' + startFunction + '('+startCall+')\n\n'
  + (paths.mode==='checker'?'def inspect_checked_start(program: Checked.CheckedProgram) -> CheckerCore.CheckerRun<Checked.Inspection>:\n  CheckerCore.checker_inspect_start(program)\n\n':'')
  + (paths.mode==='emitter'?'def emit_library_start(program: Checked.CheckedProgram, exports: List<&2, String>, ' + emitterFiles + ') -> JSEmit.EmitterRun<JSEmit.EmitResult>:\n  JSEmit.emitter_library_start(program, exports, files)\n\n':'')
- + 'def ' + stepFunction + '(-R: Type, run: ' + alias + '.' + runType + '<R>) -> ' + alias + '.' + runType + '<R>:\n  ' + alias + '.' + stepFunction + '(R, run)';
+ + (paths.mode==='cemit'?'def emit_c_library_start(program: Checked.CheckedProgram, exports: List<&2, String>, runtime: String, ' + emitterFiles + ') -> CEmit.CEmitterRun<CEmit.EmitResult>:\n  CEmit.cemit_library_start(program, exports, runtime, files)\n\n':'')
+ + 'def ' + publicStep + '(-R: Type, run: ' + alias + '.' + runType + '<R>) -> ' + alias + '.' + runType + '<R>:\n  ' + alias + '.' + stepFunction + '(R, run)';
 const loaderImport=header.match(/^import (\S+) as Loader$/m)?.[0];
 const birImport=header.match(/^import (\S+) as BIR$/m)?.[0];
-if(paths.mode==='emitter'&&!birImport)throw Error('Emitter component needs the authenticated backend_ir import for BIR.SourceFile');
+if((paths.mode==='emitter'||paths.mode==='cemit')&&!birImport)throw Error('Emitter component needs the authenticated backend_ir import for BIR.SourceFile');
 const checkedImport=header.match(/^import (\S+) as Checked$/m)?.[0];
-if(paths.mode!=='emitter'&&!loaderImport||paths.mode!=='template'&&!checkedImport)throw Error('Typed step component has no authenticated boundary import');
+if((paths.mode==='checker'||paths.mode==='template')&&!loaderImport||(paths.mode==='emitter'||paths.mode==='cemit')&&!checkedImport)throw Error('Typed step component has no authenticated boundary import');
 const component = [loaderImport,checkedImport,birImport].filter(Boolean).join('\n')+'\nimport ' + outputImport + ' as ' + alias + '\n\n' + wrappers + '\n';
 let driver: string | undefined;
 if (paths.driver) {
