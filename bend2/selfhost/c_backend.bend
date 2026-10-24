@@ -517,7 +517,7 @@ def export_row(item: BIR.Export, +declarations: List<&2, BIR.Declaration>, +by_c
     case BIR.Export{key, entry, parameter_types}:
       match entry:
         case Some{item}: export_direct(key, item, List.length(&2, BIR.Descriptor, parameter_types), by_code)
-        case None{}: export_symbol(key, List.length(&2, BIR.Descriptor, parameter_types), declarations, by_key, by_foreign, by_native)
+        case None{}: export_symbol(key, List.length(&2, BIR.Descriptor, parameter_types), declarations, by_code, by_key, by_foreign, by_native)
 
 def export_direct(key: String, entry: BIR.Entry, checked: Nat, +by_code: Map<&2, U32>) -> Maybe<&2, ExportRow>:
   match entry:
@@ -531,17 +531,21 @@ def export_direct_curried(has_extra: Bool, +key: String, +code: U32, +arity: Nat
     case True{}: Some{ExportRow{key, map_u32(by_code, U32.show(code)), 2n, arity}}
     case False{}: None{}
 
-def export_symbol(key: String, checked: Nat, +declarations: List<&2, BIR.Declaration>, +by_key: Map<&2, U32>, +by_foreign: Map<&2, U32>, +by_native: Map<&2, U32>) -> Maybe<&2, ExportRow>:
+def export_symbol(key: String, checked: Nat, +declarations: List<&2, BIR.Declaration>, +by_code: Map<&2, U32>, +by_key: Map<&2, U32>, +by_foreign: Map<&2, U32>, +by_native: Map<&2, U32>) -> Maybe<&2, ExportRow>:
   match find_declaration(key, declarations):
     case None{}: None{}
-    case Some{item}: export_symbol_item(key, checked, item, by_key, by_foreign, by_native)
+    case Some{item}: export_symbol_item(key, checked, item, by_code, by_key, by_foreign, by_native)
 
-def export_symbol_item(key: String, checked: Nat, item: BIR.Declaration, +by_key: Map<&2, U32>, +by_foreign: Map<&2, U32>, +by_native: Map<&2, U32>) -> Maybe<&2, ExportRow>:
+# A symbol export names a declaration, and the catalog differs per form: only
+# lazy declarations carry a by_key row, functions are registered by code and
+# foreign/native by their own catalogs. A checked symbol call and a code entry
+# call are the same operation for a function, so it goes through export_direct
+# with the real by_code map (mode 2 then covers checked > declared, and a
+# declared arity above checked still fails closed).
+def export_symbol_item(key: String, checked: Nat, item: BIR.Declaration, +by_code: Map<&2, U32>, +by_key: Map<&2, U32>, +by_foreign: Map<&2, U32>, +by_native: Map<&2, U32>) -> Maybe<&2, ExportRow>:
   match item:
     case BIR.FunctionDeclaration{_, code, parameters}:
-      match Nat.is_eq(List.length(&2, BIR.Parameter, parameters), checked):
-        case True{}: Some{ExportRow{key, map_u32(by_key, key), 1n, checked}}
-        case False{}: None{}
+      export_direct(key, BIR.Entry{code, List.length(&2, BIR.Parameter, parameters)}, checked, by_code)
     case BIR.LazyDeclaration{_, body}: Some{ExportRow{key, map_u32(by_key, key), 1n, checked}}
     case BIR.ForeignDeclaration{_, _, _, arity, _, _, _, _, _}: export_declared(key, checked, arity, map_u32(by_foreign, key))
     case BIR.NativeDeclaration{_, _, quantities}: export_declared(key, checked, List.length(&2, BIR.Quantity, quantities), map_u32(by_native, key))
@@ -579,6 +583,13 @@ def export_value(index: U32, mode: Nat, arity: Nat, which: Nat) -> String:
         case True{}: Nat.show(mode)
         case False{}: Nat.show(arity)
 
+# ISO C has no zero-length array; an empty table gets one element that is never
+# read (BEND_EXPORT_COUNT stays 0).
+def export_list(text: String, empty: String) -> String:
+  match String.is_empty(text):
+    case True{}: empty
+    case False{}: text
+
 def exports_c(library: Bool, rows: List<&2, ExportRow>) -> String:
   match library:
     case False{}: ""
@@ -586,10 +597,10 @@ def exports_c(library: Bool, rows: List<&2, ExportRow>) -> String:
       String.concat([
         "\n// Library exports\n",
         "#define BEND_EXPORT_COUNT ", Nat.show(List.length(&2, ExportRow, rows)), "\n",
-        "static const char* BEND_EXPORT_NAMES[] = { ", export_names(rows, ""), " };\n",
-        "static const u32 BEND_EXPORT_ENTRY[] = { ", export_values(rows, 0n, ""), " };\n",
-        "static const u8 BEND_EXPORT_MODE[] = { ", export_values(rows, 1n, ""), " };\n",
-        "static const u32 BEND_EXPORT_ARITY[] = { ", export_values(rows, 2n, ""), " };\n",
+        "static const char* BEND_EXPORT_NAMES[] = { ", export_list(export_names(rows, ""), "0"), " };\n",
+        "static const u32 BEND_EXPORT_ENTRY[] = { ", export_list(export_values(rows, 0n, ""), "0"), " };\n",
+        "static const u8 BEND_EXPORT_MODE[] = { ", export_list(export_values(rows, 1n, ""), "0"), " };\n",
+        "static const u32 BEND_EXPORT_ARITY[] = { ", export_list(export_values(rows, 2n, ""), "0"), " };\n",
         "static u64* BEND_EXPORT_CORPUS;\n\n",
         "u32 bend_export_count(void) { return BEND_EXPORT_COUNT; }\n",
         "const char* bend_export_name(u32 i) { return i < BEND_EXPORT_COUNT ? BEND_EXPORT_NAMES[i] : 0; }\n",
