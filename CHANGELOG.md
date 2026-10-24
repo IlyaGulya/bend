@@ -5,6 +5,10 @@ latest one; the GitHub release carries the same notes.
 
 ## Unreleased
 
+- Native C value layouts box records wider than eight words instead of carrying
+  large inline intermediates. Scalar word encoding and the physical runtime
+  layout limit are unchanged; JavaScript value layouts are unchanged.
+
 - Selfhost compiler map lookups carry a string cursor instead of rescanning key
   prefixes. Arbitrary backward map positions, Unicode scalars and NUL keys retain
   their existing lookup behavior.

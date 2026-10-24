@@ -1011,10 +1011,12 @@ function type_adts(T: HTerm): Name[] {
 // whatever its parts mention: a function is one even when its arguments
 // are erased. adt_of and js_expr call it only for that check.
 
-function lay_of(A: HTerm | null): Lay {
+function lay_of(A: HTerm | null, scalar = false): Lay {
+  // C values inline at most one cache line; WIDE still governs physical ABI.
+  const INLINE_VALUE_THRESHOLD = 8;
   const t = ty_adt(A);
   return t === null ? BOX : WORDS[t.k] ?? memo(FL.lays,
-    Bend.term_key(Bend.term_lower(t)), (key) => {
+    (scalar ? "scalar:" : "") + Bend.term_key(Bend.term_lower(t)), (key) => {
     const tld = FL.book.tlds[t.k];
     if (t.k === "Array" || t.k === "IO.OP" || tld?.$ !== "ADT"
       || tld.c.some((c) => ctr_doms(c).some((F) => ty_holds(F,
@@ -1023,8 +1025,8 @@ function lay_of(A: HTerm | null): Lay {
     }
     FL.lays.set(key, BOX);
     const lay = lay_pack(tld.c.map((c) =>
-      [c.k, ctr_doms(c, t.x).map(lay_of)]));
-    return lay.ks.length > WIDE ? BOX : lay;
+      [c.k, ctr_doms(c, t.x).map((A) => lay_of(A, scalar))]));
+    return lay.ks.length > (FL.js || scalar ? WIDE : INLINE_VALUE_THRESHOLD) ? BOX : lay;
   });
 }
 
@@ -1090,7 +1092,8 @@ function pack_new(): Pack {
 
 function lay_node(k: Name): Lay {
   return memo(FL.nodes, k, () => lay_pack([[k, (FL.book.ctrs[k]
-    ? ctr_doms(FL.book.ctrs[k]) : []).map(lay_of)]], true));
+    ? ctr_doms(FL.book.ctrs[k]) : []).map((A) =>
+      lay_of(A, WORDS[k] === W32))]], true));
 }
 
 function lay_c(k: Kind): string {
@@ -2600,6 +2603,11 @@ function emit_ctr(sc: Scope, x: Of<"Ctr">, ty: HTerm | null,
   const word = WORDS[adt.k];
   if (word !== undefined) {
     const vs = emit_each(sc, flds, [], tys());
+    // Word packing needs structural bits, never a partially boxed bit tail.
+    if (word === W32) {
+      const lays = lay_node(x.k).arms![x.k];
+      vs.forEach((v, i) => { vs[i] = val_to(sc, v, lays[i]); });
+    }
     if (vs.length === 1 && vs[0].ws.length > 1) {
       return val_new([`(${vs[0].ws.map((w, i) => `((u64)${w} << ${i})`)
         .join(" | ")})`], word);

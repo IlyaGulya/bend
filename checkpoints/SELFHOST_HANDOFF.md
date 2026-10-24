@@ -4,12 +4,45 @@
 
 Цель пользователя — кардинально уменьшить память и время компиляции и довести **реальный self-hosting** до завершённого stage1/stage2 byte fixedpoint. Не считать количеством функций до OOM, scaffolding или одними диагностическими fixtures выполненную задачу.
 
-СЕЙЧАС принят57y cursor в IndexLookup.find, source563c9b15…; native public
+СЕЙЧАС принят host57aa: compa84170d5… с общим C-only inline cutoff8 words.
+Physical WIDE247 и JS layouts прежние; scalar structural layouts сохраняются,
+поля перед bit packing нормализуются к scalar layout. Kernel6c1df3… не менялся.
+Это уменьшение представления, а НЕ новая source-level request/arena обёртка.
+Свежие source/public15/264, source71, candidate/public15/264 и parser75 PASS.
+Полный root8396/8793 PASS; actual cmp нового native-produced JS с57y равен:
+06dba46f…/12743363bytes. Поэтому настоящий d10de8af… fixedpoint и285 ниже
+относятся к тому же executable; новый timed aggregate PASS не заявляется.
+
+Свежий latestY native8414/8817 + frozen7720 + actual parser/checker consumer
+PASS под прежними8GiB guards: полный build/run/consumer262.388430s (4мин22с).
+Состав: build174.410s, frozen87.126s, consumer0.848s; внутри build source
+validation2.036s, TS→C83.915s, LLVM backend83.981s. Build peakRSS4812636160/
+physical4820080376bytes, runtime918781952/875005776bytes. Primary C3c40376f…
+и binaryd3745fc2… сохранены в misaka:/private/tmp/layout-native57aa-current.
+Все99 source inputs проверены до/после. Stable300s всё ещё не доказано.
+
+Не скрывать противоположный runtime результат: latestY native compile86.573s
+против предыдущих77.487s; check60.704s против60.729s, emit13.465s против6.570s.
+Это отдельные unpaired samples, причина ещё не установлена. Исторический W
+с той же host policy дал231.973s cycle/72.108s compile/54.387s check; это НЕ
+текущий Y и не доказательство его ускорения. Official same-host8.619s быстрее.
+Принято за полный root budget/представление и semantic proofs, не за победу
+currentY runtime. Exact packet,39 actual C+JS regressions, source pins и failed
+scalar trials: compiler-ir-checkpoint-v57aa.json.
+
+JS-путь действительно CheckedFIR→BIR→JS без AST fallback. Но ВЕСЬ repository
+ещё не переведён: driver.dispatch_c через inspect_checked вызывает c_emit.bend,
+живой legacy AST C emitter. Новый BIR C/Metal/CUDA renderer не реализован;
+этот C путь не удалять и не объявлять мигрированным без полноценной замены.
+
+### Неизменённая Bend-программа57y и её собственный fixedpoint
+
+В57y принят cursor в IndexLookup.find, source563c9b15…; native public
 find API/33-bit presence/MSB-first codepoint encoding не меняются. Suffix cursor
 идёт вперёд и сбрасывается к full key для произвольных backward nodes; leaf
 сравнивает full key. Новый tests/run/index_lookup_cursor.bend реальноPASS C+JS
 до/после: missing/prefix/NUL/Unicode/backward-bit/backward-character/past-end reset.
-Canonical host9704 freshparser75 и root8396/8793PASS (8GiB guardian24.901s).
+При приёмке57y host9704 проверил freshparser75 и root8396/8793 (8GiB guardian24.901s).
 Native-produced seed06dba46f…/12743363bytes. Frozen50files/15modules/8403decls/
 7720exportsPASS, exacteb3/14101164bytes; JS125.239549s НЕ faster.
 НОВЫЙ настоящий unchanged stage1/stage2 byte fixedpoint:
@@ -54,11 +87,34 @@ Exact patch/pins/coverage/limits: compiler-ir-profile-v57x-intervals.json.
   actual7720consumer/eb3 originalguardsPASS. Дополнительный~4097n custom-Nat
   template-positive unsupported наA/B сохранёнFAIL, не зачтён за положительный.
   Exact safe patch/95behaviors/fullproof: compiler-ir-profile-v57z-schema.json.
-Следующие независимые проверки: actual native heap allocation requests по
-phase/ctor/class (не H_BUMP/RSS/live-node proxy) и first-order continuations
-на настоящем native subset; прежнее JS-only отрицание не переносить на C.
+Actual native heap accounting теперь ЗАВЕРШЁН на privateW+9704, не latestY:
+8108942647 heap allocation requests,55860553698 rounded class words в checker.
+CheckerPending145390912 requests payload67/class128 дают33.315% этих words;
+ArenaResult473431354 payload29/class32 дают27.121%; SCon2713395183 дают9.715%.
+Это cumulative requests/words, НЕ live bytes, CPU ownership или OS malloc.
+99.9949% local freelist hits включают fresh siblings и не доказывают lifetime.
+Static source observer для layout8 показывает Pending3/ArenaResult3 words;
+новый dynamic allocation profile после cutoff8 ещё НЕ снят. Полные фазы,
+все ctor/class rows, untagged events и actual allocation probe сохранены:
+compiler-ir-profile-v57aa-allocations.json.
+Native grouped16 continuation candidate тоже проверен: authenticated189-def
+compiler closure, actual127-node pack/open-shift/publish/decode, ABBA1000.
+Native CPU+33.03%, wall+16.14%, exact digest и typing/fuel boundaries PASS.
+Отвергнут ТОЛЬКО этот вариант; прежние whole Frame+Leaf/flat ещё не измерены
+native. Receipt compiler-ir-profile-v57aa-defun.json.
+Opaque whole ArenaStore existential candidate kernel/JS subset PASS, но actual
+native memory fault; ASan deadline сохранён, причина не установлена. Не принят:
+compiler-ir-profile-v57aa-opaque-arena.json. Source request-group existential
+prototype также не принят: small C+JS affine witness PASS, full JS152.242s
+медленнее, full native runtime не измерялся. Общая host layout8 policy решила
+те же wide payloads без нового source protocol; compiler-ir-profile-v57aa-request-box.json.
+Следующее ускорение должно объяснить currentY emit/runtime результат, а не
+экстраполировать старый W allocation profile. Наружный /usr/bin/time hardware
+counter не является счётчиком native child; CPU seconds сами по себе не
+отличают instruction work от frequency/core placement. Причина producer85–133s
+по-прежнему неизвестна; не приписывать её GC, частоте или JIT без измерения.
 
-Host compiler57x: принят exactcomp9704b4bbd00c834df65b21a34f57cfc4ff4f6afc1878f161565a52f7fcf00d9c,
+Предыдущий host compiler57x: exactcomp9704b4bbd00c834df65b21a34f57cfc4ff4f6afc1878f161565a52f7fcf00d9c,
 только mat_lits lazy comparison вместо двух полных term_lower trees.159cases/
 25281oracle comparisons,12realJS/sixnativeC consumersPASS; actual unchangedT
 fresh build+frozen+7720 cycle280.456788s под прежним8GiB guard. Producer85.248956s,

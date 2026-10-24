@@ -1,0 +1,458 @@
+{
+  "schemaVersion": 1,
+  "version": "compiler57aa-private-opaque-arena",
+  "status": "REJECT_NATIVE_MEMORY_FAULT_EXACT_CAUSE_UNRESOLVED",
+  "packet": {
+    "status": "REJECTED_NATIVE_RUNTIME_FAULT",
+    "decision": "Do not integrate this whole-pair existential ArenaStore boundary. No native benefit established; no full compiler/frozen/7720 trial warranted.",
+    "scope": "One pure-source ownership boundary, not blanket rejection of opacity or defunctionalization. Compiler/kernel/Base/guard/fuel/public ABI/lowerer unchanged.",
+    "representation": {
+      "raw": "ArenaStoreState owns source:Arena and transient:Arena",
+      "opaque": "ArenaStoreOpaque{-S:Type,state:S,equation:{S==ArenaStoreState:Type}}",
+      "opening": "Checked equality rewrite, affine consumption once; no casts or borrowed mutation",
+      "canonicalSourceMigration": {
+        "constructors": 68,
+        "patterns": 57,
+        "changedDefinitions": 109
+      },
+      "schedulerMigration": {
+        "constructors": 35,
+        "patterns": 22,
+        "changedDefinitions": 49
+      },
+      "arenaSourceUnchanged": true
+    },
+    "authenticWork": {
+      "sourceDefinitions": 189,
+      "roots": [
+        "core_shift",
+        "arena_pack_term",
+        "arena_publish_term",
+        "arena_decode_term"
+      ],
+      "sourceSha256": "dbb3f640c435696e2eb419a0cb5a6d5a99702ef153ffe002960ceb098cf1fdd1",
+      "fixture": "Actual parsed 127-node AST from NativeDefun57z; all supported Var/Ctr fields, keys, Unicode strings, spans and arbitrary Nat indexes consumed",
+      "driver": "Actual pack -> open shift -> publish -> decode; tagged source/transient IDs, duplicate intern/4294967295 sentinel exclusion, rewind generation/count reset and forgotten-name reintern readback; runtime iteration/fuel/add",
+      "hostExpectedPerIteration": "44352063",
+      "hostExpectedBaselineTotal": "221760315000",
+      "baselineObserved": "OK 221760315000\n",
+      "jsSemanticObserved": "OK 44352063\n"
+    },
+    "checks": {
+      "baseline": {
+        "status": "PASS",
+        "source": "/private/tmp/opaque-arena57aa/baseline/native/driver.bend",
+        "output": "/private/tmp/opaque-arena57aa/baseline.c",
+        "inputs": {
+          "/private/tmp/opaque-arena57aa/baseline/native/driver.bend": "1636705948a564f071b23be5bae9e3ef888bd9075accdf709be237580606b4ad",
+          "/Users/ilyagulya/Projects/My/bend/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+          "/private/tmp/opaque-arena57aa/baseline/native/bounded_steps.bend": "2d7863a1097e5de48a1302dd772d9681d40cfd3d5d109597434d634f015f21f3",
+          "/private/tmp/opaque-arena57aa/baseline/native/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "/private/tmp/opaque-arena57aa/baseline/native/bend2/selfhost/checker_arena.bend": "fb8651ab2e6304faded5eb312ffe95175a177254f7dd704eca7a9b0896a40e31",
+          "/private/tmp/opaque-arena57aa/baseline/native/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+          "/private/tmp/opaque-arena57aa/baseline/native/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+          "/private/tmp/opaque-arena57aa/baseline/native/bend2/selfhost/index_lookup.bend": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
+          "/private/tmp/opaque-arena57aa/baseline/native/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+          "/private/tmp/opaque-arena57aa/baseline/native/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+          "/private/tmp/opaque-arena57aa/baseline/native/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+          "/private/tmp/opaque-arena57aa/baseline/native/fixture.bend": "9ade38bcb04cd6f24809b830c2ac23658ea8a096e8b3bce16c429a7c5e9c448a"
+        },
+        "phases": [],
+        "checksExcluded": 0,
+        "outputPatches": 0,
+        "expected": 1308,
+        "checked": 1308,
+        "cSha256": "90583d0756fe86a08d838aa38d04427fdf9353681211693e929f27ad8c09e4b4",
+        "cBytes": 6514240
+      },
+      "candidate": {
+        "status": "PASS",
+        "source": "/private/tmp/opaque-arena57aa/candidate/native/driver.bend",
+        "output": "/private/tmp/opaque-arena57aa/candidate.c",
+        "inputs": {
+          "/private/tmp/opaque-arena57aa/candidate/native/driver.bend": "3df1e0dd1e1909759b0b043fce54bac9b8995af4beb36957f1e8e404c88e03e4",
+          "/Users/ilyagulya/Projects/My/bend/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+          "/private/tmp/opaque-arena57aa/candidate/native/bounded_steps.bend": "62992a28b30df48f6a5dbccf099f7922d338abb975389eb1e7779bd914add23c",
+          "/private/tmp/opaque-arena57aa/candidate/native/bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "/private/tmp/opaque-arena57aa/candidate/native/bend2/selfhost/checker_arena.bend": "fb8651ab2e6304faded5eb312ffe95175a177254f7dd704eca7a9b0896a40e31",
+          "/private/tmp/opaque-arena57aa/candidate/native/bend2/selfhost/scope_lookup.bend": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+          "/private/tmp/opaque-arena57aa/candidate/native/bend2/selfhost/checker_ir.bend": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+          "/private/tmp/opaque-arena57aa/candidate/native/bend2/selfhost/index_lookup.bend": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
+          "/private/tmp/opaque-arena57aa/candidate/native/bend2/selfhost/path.bend": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+          "/private/tmp/opaque-arena57aa/candidate/native/bend2/selfhost/loaded_module.bend": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+          "/private/tmp/opaque-arena57aa/candidate/native/bend2/selfhost/checked_frontend.bend": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+          "/private/tmp/opaque-arena57aa/candidate/native/fixture.bend": "9ade38bcb04cd6f24809b830c2ac23658ea8a096e8b3bce16c429a7c5e9c448a"
+        },
+        "phases": [],
+        "checksExcluded": 0,
+        "outputPatches": 0,
+        "expected": 1354,
+        "checked": 1354,
+        "cSha256": "bc0c4b53831dcec4a93b2efd0d8be95ca2bd6bd8992487be4910ebe346212628",
+        "cBytes": 4498143
+      },
+      "negativeProofs": {
+        "status": "PASS",
+        "cases": [
+          {
+            "name": "affine-reuse",
+            "path": "/private/tmp/opaque-arena57aa/candidate/native/affine-reuse.bend",
+            "rejected": true,
+            "diagnostic": "Error:\n- expected : store\n- observed : store (consumed more than once)\nLocation: rejected\n3 | \n4>| def rejected(store: C.ArenaStore) -> C.ArenaStore & C.ArenaStore:\n  |              ^^^^^\n5 |   (store, store)"
+          },
+          {
+            "name": "wrong-existential-equation",
+            "path": "/private/tmp/opaque-arena57aa/candidate/native/wrong-existential-equation.bend",
+            "rejected": true,
+            "diagnostic": "Error:\n- expected : Bool\n- observed : C.ArenaStoreState\nLocation: rejected\n4 | def rejected() -> C.ArenaStore:\n5>|   C.ArenaStoreOpaque{Bool, True{}, {==}}\n  |                                    ^^^^\n6 | "
+          },
+          {
+            "name": "type-to-data-leak",
+            "path": "/private/tmp/opaque-arena57aa/candidate/native/type-to-data-leak.bend",
+            "rejected": true,
+            "diagnostic": "Error:\n- expected : Data\n- observed : Type\nLocation: Rejected\n4 | type Rejected is Data:\n5>|   Rejected{store: C.ArenaStore}\n  |                   ^^^^^^^^^^^^\n6 | "
+          }
+        ]
+      }
+    },
+    "policy": {
+      "order": [
+        "baseline",
+        "candidate",
+        "candidate",
+        "baseline"
+      ],
+      "cases": [
+        {
+          "name": "open",
+          "count": "5000",
+          "add": "3"
+        },
+        {
+          "name": "zero",
+          "count": "5000",
+          "add": "0"
+        },
+        {
+          "name": "wide-natural",
+          "count": "5000",
+          "add": "184467440737095516170000000000000000000"
+        }
+      ],
+      "benefitRule": "All semantics PASS; open and wide-natural geometric-mean CPU and wall >=5% better; no case CPU >3% regression. Only then request full native lease.",
+      "limits": {
+        "rssMiB": 8192,
+        "memoryMiB": 8192,
+        "pollMs": 10,
+        "nodeOldMiB": 3072,
+        "nodeStackMiB": 256,
+        "threads": 1,
+        "gpu": "off"
+      },
+      "optimization": "-O1"
+    },
+    "actualNativeRuns": [
+      {
+        "case": "open",
+        "sample": 0,
+        "label": "baseline",
+        "cpu": 5.659999999999999,
+        "wall": 6.3,
+        "stdoutBytes": 16,
+        "stdoutSha256": "442e9405c767eb8194c16f5a9178c28704c4a8ffef95d6935b8d4d7ab09a8d9b",
+        "guard": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 5685248,
+          "peakFootprintBytes": 3441240,
+          "elapsedMs": 6317,
+          "timeoutMs": 600000,
+          "command": [
+            "/usr/bin/time",
+            "-lp",
+            "/private/tmp/opaque-arena57aa/baseline.bin",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--",
+            "5000",
+            "10000",
+            "3"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792816439596-ec8ca7ea1a0717cb.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        }
+      }
+    ],
+    "nativeFailure": {
+      "label": "open-1-candidate",
+      "args": [
+        "/usr/bin/time",
+        "-lp",
+        "/private/tmp/opaque-arena57aa/candidate.bin",
+        "--threads",
+        "1",
+        "--gpu",
+        "off",
+        "--",
+        "5000",
+        "10000",
+        "3"
+      ],
+      "status": 1,
+      "error": "",
+      "wallMs": 54,
+      "stdoutBytes": 0,
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrBytes": 1328,
+      "stderrSha256": "efe25a3606ee5bdf7a6c1682fe4d3f660d49d04ca2381ee4de79ea6657699191"
+    },
+    "timingConclusion": "Predeclared ABBA aborted at first candidate runtime fault. Baseline-only CPU/wall is not a candidate comparison. No allocation-count/word-count/JS performance claim.",
+    "diagnostics": [
+      {
+        "name": "asan-build",
+        "guard": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792816572689-f62c49c50be40f8d.json",
+        "report": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 3058876416,
+          "peakFootprintBytes": 3150925184,
+          "elapsedMs": 136854,
+          "timeoutMs": 600000,
+          "command": [
+            "/opt/homebrew/opt/llvm@21/bin/clang",
+            "-std=c11",
+            "-O1",
+            "-g",
+            "-fsanitize=address",
+            "/private/tmp/opaque-arena57aa/candidate.c",
+            "-lpthread",
+            "-lm",
+            "-o",
+            "/private/tmp/opaque-arena57aa/candidate-asan.bin"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792816572689-f62c49c50be40f8d.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        }
+      },
+      {
+        "name": "asan-native-count1",
+        "guard": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792816720961-78723ba55ac5d493.json",
+        "report": {
+          "status": "FAIL",
+          "reason": "deadline_exceeded",
+          "commandExitCode": -1,
+          "commandSignal": 15,
+          "peakRssBytes": 3801088,
+          "peakFootprintBytes": 9879984,
+          "elapsedMs": 30030,
+          "timeoutMs": 30000,
+          "command": [
+            "/usr/bin/env",
+            "ASAN_OPTIONS=allow_user_segv_handler=0",
+            "/private/tmp/opaque-arena57aa/candidate-asan.bin",
+            "--threads",
+            "1",
+            "--gpu",
+            "off",
+            "--",
+            "1",
+            "10000",
+            "3"
+          ],
+          "label": "heavy command",
+          "exitCode": 1,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792816720961-78723ba55ac5d493.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        }
+      },
+      {
+        "name": "same-source-js-emission",
+        "guard": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792816789019-837cf6f7dbbc4619.json",
+        "report": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 286900224,
+          "peakFootprintBytes": 259054080,
+          "elapsedMs": 956,
+          "timeoutMs": 600000,
+          "command": [
+            "node",
+            "--experimental-strip-types",
+            "/private/tmp/opaque-arena57aa/tools/build.mjs",
+            "/private/tmp/opaque-arena57aa/candidate/native/driver.bend",
+            "/private/tmp/opaque-arena57aa/candidate-semantic.js",
+            "js"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792816789019-837cf6f7dbbc4619.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        }
+      },
+      {
+        "name": "same-source-js-count1-semantic-only",
+        "guard": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792816797208-b1b2bc122d2ebe33.json",
+        "stdoutBytes": 12,
+        "stdoutSha256": "88594bf5abab9a0ba4ccf40f138b9fce58058ac57a016c4cc76b533a93fac17e",
+        "report": {
+          "status": "PASS",
+          "reason": "command_exit",
+          "commandExitCode": 0,
+          "commandSignal": 0,
+          "peakRssBytes": 76447744,
+          "peakFootprintBytes": 39326424,
+          "elapsedMs": 554,
+          "timeoutMs": 30000,
+          "command": [
+            "node",
+            "/private/tmp/opaque-arena57aa/tools/run_js.mjs",
+            "/private/tmp/opaque-arena57aa/candidate-semantic.js",
+            "1",
+            "10000",
+            "3"
+          ],
+          "label": "heavy command",
+          "exitCode": 0,
+          "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792816797208-b1b2bc122d2ebe33.json",
+          "memoryLimitBytes": 8589934592,
+          "rssLimitBytes": 8589934592
+        }
+      }
+    ],
+    "clang": {
+      "command": [
+        "/opt/homebrew/opt/llvm@21/bin/clang",
+        "--version"
+      ],
+      "output": "Homebrew clang version 21.1.8\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /opt/homebrew/Cellar/llvm@21/21.1.8/bin\nConfiguration file: /opt/homebrew/etc/clang/arm64-apple-darwin25.cfg\n"
+    },
+    "boundaries": {
+      "fullSourceExactKernel": "NOT CLAIMED. Raw private checker ownership migration is complete; direct source closure has mutual-forward-reference unfilled-law limitation. Authentic preexisting scheduler baseline used for actual native checks.",
+      "unchangedPublicTemplateWrappers": [
+        "check",
+        "check_template_result"
+      ],
+      "fullCompilerNative": "NOT RUN",
+      "frozen7720Consumer": "NOT RUN",
+      "nativeFaultRootCause": "Not localized. Native memory-fault is observed; same checked-source JS semantic diagnostic succeeds. ASan run hit retained 30s deadline, not waived."
+    },
+    "history": {
+      "allGuardedPreparationAndBuildAttempts": 16,
+      "receipt": "/private/tmp/opaque-arena57aa/receipt.json",
+      "finalizationFailure": "First host-only receipt calculation omitted the final digest_join multiplier 3 and rejected its own expected value; corrected formula then matched baseline total and same-source JS output. No native trial was repeated.",
+      "allFailuresRetained": true
+    },
+    "pins": {
+      "checkerBaseline": {
+        "path": "/private/tmp/opaque-arena57aa/baseline/bend2/selfhost/checker.bend",
+        "sha256": "f01dbf58d8effae632b7da69eecc0a9652dc4ae3c40a6691208e54bf49716330"
+      },
+      "checkerCandidate": {
+        "path": "/private/tmp/opaque-arena57aa/candidate/bend2/selfhost/checker.bend",
+        "sha256": "21b8816212a80bca7896918e594505bf872b491b32008164aff6dcc05f64fbd1"
+      },
+      "schedulerAuthenticated": {
+        "path": "/private/tmp/native-defun57z/source/defun57z_baseline.bend",
+        "sha256": "dbb3f640c435696e2eb419a0cb5a6d5a99702ef153ffe002960ceb098cf1fdd1"
+      },
+      "schedulerBaseline": {
+        "path": "/private/tmp/opaque-arena57aa/baseline/native/bounded_steps.bend",
+        "sha256": "2d7863a1097e5de48a1302dd772d9681d40cfd3d5d109597434d634f015f21f3"
+      },
+      "schedulerCandidate": {
+        "path": "/private/tmp/opaque-arena57aa/candidate/native/bounded_steps.bend",
+        "sha256": "62992a28b30df48f6a5dbccf099f7922d338abb975389eb1e7779bd914add23c"
+      },
+      "baselineC": {
+        "path": "/private/tmp/opaque-arena57aa/baseline.c",
+        "sha256": "90583d0756fe86a08d838aa38d04427fdf9353681211693e929f27ad8c09e4b4"
+      },
+      "candidateC": {
+        "path": "/private/tmp/opaque-arena57aa/candidate.c",
+        "sha256": "bc0c4b53831dcec4a93b2efd0d8be95ca2bd6bd8992487be4910ebe346212628"
+      },
+      "baselineBinary": {
+        "path": "/private/tmp/opaque-arena57aa/baseline.bin",
+        "sha256": "4b82b030d24b5a8dbfbd644d5ab01c777e0bfa5fdf45d9760b31cff88e49f299"
+      },
+      "candidateBinary": {
+        "path": "/private/tmp/opaque-arena57aa/candidate.bin",
+        "sha256": "73c3472ef7657872f1f826122e829eb55dae3a34da5a7a0ba21fef6f9b43aa01"
+      },
+      "diagnosticBinary": {
+        "path": "/private/tmp/opaque-arena57aa/candidate-asan.bin",
+        "sha256": "8b4580e8aae11c751e97a924c62d1995e1ef5d3a21df8f9766430e5c61eb452e"
+      },
+      "baselineDriver": {
+        "path": "/private/tmp/opaque-arena57aa/baseline/native/driver.bend",
+        "sha256": "1636705948a564f071b23be5bae9e3ef888bd9075accdf709be237580606b4ad"
+      },
+      "candidateDriver": {
+        "path": "/private/tmp/opaque-arena57aa/candidate/native/driver.bend",
+        "sha256": "3df1e0dd1e1909759b0b043fce54bac9b8995af4beb36957f1e8e404c88e03e4"
+      },
+      "sameSourceJS": {
+        "path": "/private/tmp/opaque-arena57aa/candidate-semantic.js",
+        "sha256": "c34680cc9cfcc3ff9780c58343782095bc7c04bb80121a6416adeb0e6514602c"
+      },
+      "kernel": {
+        "path": "/Users/ilyagulya/Projects/My/bend/bend2/bend.ts",
+        "sha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e"
+      },
+      "compiler": {
+        "path": "/Users/ilyagulya/Projects/My/bend/bend2/comp.ts",
+        "sha256": "9704b4bbd00c834df65b21a34f57cfc4ff4f6afc1878f161565a52f7fcf00d9c"
+      },
+      "base": {
+        "path": "/Users/ilyagulya/Projects/My/bend/bend2/base.bend",
+        "sha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c"
+      },
+      "fixture": {
+        "path": "/private/tmp/native-defun57z/fixture.json",
+        "sha256": "46467ad182cf2db2b72543495d10741678ac85285dedb4b87207d26ee1fd6f2e"
+      },
+      "migrationScript": {
+        "path": "/private/tmp/opaque-arena57aa/tools/migrate.ts",
+        "sha256": "087be903a768440fa8167692dffcf6f7de77da1354f8c8f42791bf37fdb28b73"
+      },
+      "normalizer": {
+        "path": "/private/tmp/opaque-arena57aa/tools/normalize_bounded.ts",
+        "sha256": "04b86ee2f434aaeaf63eee78c28fbb4f5a09a874f81a5d02e818095f2c31c592"
+      },
+      "buildScript": {
+        "path": "/private/tmp/opaque-arena57aa/tools/build.mjs",
+        "sha256": "0e4cd36b142d4f414bd5ab101e69fba80660da000ac8e5e9c0ee52092bda323b"
+      },
+      "driverTemplate": {
+        "path": "/private/tmp/opaque-arena57aa/tools/scheduler_driver.bend",
+        "sha256": "21806f7f0f5bcaa3434d58ded60c59d1bf8e878fb4a05a24a08664290e520d71"
+      },
+      "receipt": {
+        "path": "/private/tmp/opaque-arena57aa/receipt.json",
+        "sha256": "1551f4c1746efc4daaff8ce96638bbe1cc9e0f1ad37ee753df7aa86c2d47e506"
+      },
+      "negativeProofs": {
+        "path": "/private/tmp/opaque-arena57aa/proof.json",
+        "sha256": "9489dc2c5f0934ee074401c82b925b47a9806d1ba627a87224eeecbd65004f54"
+      }
+    }
+  },
+  "packetSha256": "f4a3734864c637cbb31f169a1fc5088390fd5b2367bf132b3a913a06dce1e001",
+  "decision": "Kerneltypedaffine/equalitymigration, JSsemanticdiagnosticcorrect, butnativefirstsamplefaults; NOTaccepted orprovenstackoverflow. ASan30sdeadlinepreserved. GenericC-onlylayout8fixrequiresno109definitionDSLmigration andhasrealcomplete-rootproof; chooseit."
+}

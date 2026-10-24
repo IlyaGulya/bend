@@ -1,0 +1,818 @@
+{
+  "schemaVersion": 1,
+  "version": "57aa-request-box",
+  "status": "NOT_PROMOTED_SOURCE_EXISTENTIAL_BOXING_SUPERSEDED_BY_GENERIC_C_LAYOUT",
+  "sourcePatch": "--- evals/checker_core_step_lower.ts\n+++ evals/checker_core_step_lower.ts\n@@ -10,11 +10,11 @@\n import {existsSync, readFileSync, realpathSync, writeFileSync, rmSync} from 'node:fs';\n import {dirname, posix, resolve} from 'node:path';\n import {homedir} from 'node:os';\n-import * as B from '../bend2/bend.ts';\n-import type {ParserParameter, ParserSignature} from './parser_full_graph.ts';\n-import {renderBody} from './parser_full_body_render.ts';\n-import {LexicalTypes, freeBinderIds, termChildren, type Binding} from './parser_full_type_env.ts';\n-import {composeCanonicalCPSSource, type CPSProviderClosure} from './canonical_cps_source.ts';\n+import * as B from '/Users/ilyagulya/Projects/My/bend/bend2/bend.ts';\n+import type {ParserParameter, ParserSignature} from '/Users/ilyagulya/Projects/My/bend/evals/parser_full_graph.ts';\n+import {renderBody} from '/Users/ilyagulya/Projects/My/bend/evals/parser_full_body_render.ts';\n+import {LexicalTypes, freeBinderIds, termChildren, type Binding} from '/Users/ilyagulya/Projects/My/bend/evals/parser_full_type_env.ts';\n+import {composeCanonicalCPSSource, type CPSProviderClosure} from '/Users/ilyagulya/Projects/My/bend/evals/canonical_cps_source.ts';\n \n export const checkerStepConfig = {\n   canonical: 'bend2/selfhost/checker.bend', owned: 'checkpoints/checker_core_owned_v1.bend',\n@@ -53,6 +53,7 @@\n const resultFunction = prefix + '_result', stepFunction = prefix + '_step', startFunction = prefix + '_start';\n const rawStepFunction = prefix + '_step_one', chunkFunction = prefix + '_chunk', nativeChunkQuantum = 64;\n const unboxFunction = prefix + '_unbox';\n+const requestBoxType = protocol + 'RequestBox', requestUnboxFunction = prefix + '_unbox_request';\n const inputPaths: string[] = [paths.canonical, paths.owned, paths.dependency, paths.frozenSlice, paths.frozenDriver,\n   paths.frozenCorpus, paths.kernel, paths.emitter, paths.parser, paths.base, paths.nodePolicy, paths.validationPolicy,\n   paths.ownedManifest, ...(paths.ownedDriver ? [paths.ownedDriver] : []), ...(paths.checkerOutput ? [paths.checkerOutput] : []),\n@@ -559,7 +560,7 @@\n for (const name of [requestType, progressType, valueType, finishedType, pendingType, directType, boundType,\n   resultFunction, stepFunction, rawStepFunction, chunkFunction, unboxFunction, startFunction,\n   stackType, stackDoneType, stackMoreType, runType, runFinishedType, runStateType,\n-  castBoxFunction, popFunction, advanceFunction]) reserve(name);\n+  castBoxFunction, popFunction, advanceFunction, requestBoxType, requestUnboxFunction]) reserve(name);\n const requestName = new Map(definitions.map(def => [def.name, reserve(requestType + '_' + def.name)]));\n // Keep request datatypes and dispatch bodies bounded. A single thousands-row\n // dependent match is expensive for both the source checker and native JS.\n@@ -573,7 +574,9 @@\n }));\n const requestGroup = new Map(requestGroups.flatMap(group => group.definitions.map(def => [def.name, group] as const)));\n function request(name: string, arguments_: B.LTerm[]): B.LTerm {\n-  return ctr(requestGroup.get(name)!.constructor, [ctr(requestName.get(name)!, arguments_)]);\n+  const group = requestGroup.get(name)!;\n+  const type: B.LTerm = {$: 'ADT', k: group.type, x: [], r: []};\n+  return ctr(group.constructor, [ctr(requestBoxType, [type, ctr(requestName.get(name)!, arguments_), {$: 'Rfl'}])]);\n }\n const stepName = new Map(definitions.map(def => [def.name, reserve(prefix + '_body_' + def.name)]));\n const pureName = new Map(pureDefinitions.map(def => [def.name, reserve(prefix + '_pure_' + def.name)]));\n@@ -983,6 +986,7 @@\n   }\n   function quantities(key: string, constructor: boolean): B.Quant[] {\n     if (constructor && key === directType) return [B.None(), B.None(), B.Lone(), B.Lone(), B.Lone()];\n+    if (constructor && key === requestBoxType) return [B.None(), B.Lone(), B.Lone()];\n     if (!constructor && key === unboxFunction) return [B.None(), B.Lone()];\n     const parameters = generatedSignatures.get(key) ?? requestSignatures.get(key);\n     if (parameters) return parameters.map(parameter => parameter[0]);\n@@ -1100,14 +1104,26 @@\n   if (!relative.startsWith('.')) relative = './' + relative;\n   return 'import ' + relative + ' as ' + alias;\n });\n-// A Checker request is Data only when every actual source parameter domain\n-// authenticates as Data. Affine domains require Type regardless of binder grade;\n-// Emitter and Template retain their conservative Type envelopes.\n-const requestKind = paths.mode === 'checker'\n+// Inner groups retain authenticated Data domains where possible. Their outer\n+// sum owns an existential Type carrier, so Pending never embeds the widest\n+// flattened group. Constructor-local T stays opaque; equality restores R.\n+const groupRequestKind = paths.mode === 'checker'\n   && definitions.every(def => requestParameterKinds[def.name]!.every(parameter => parameter.kind === 'Data')) ? 'Data' : 'Type';\n+const requestKind = 'Type';\n const chunks = [outputHeader, '\\n# Bounded typed request groups; every source declaration retains its checked signature.\\n'];\n+chunks.push(`\n+type ${requestBoxType}<-R: Type> is Type:\n+  ${requestBoxType}{-T: Type, value: T, equation: {T == R : Type}}\n+\n+def ${requestUnboxFunction}(-R: Type, box: ${requestBoxType}<R>) -> R:\n+  match box:\n+    case ${requestBoxType}{T, value, equation}:\n+      %equation : _\n+      value\n+\n+`);\n for (const group of requestGroups) {\n-  chunks.push('type ' + group.type + ' is ' + requestKind + ':\\n');\n+  chunks.push('type ' + group.type + ' is ' + groupRequestKind + ':\\n');\n   for (const def of group.definitions) {\n     const rendered = renderBody(def.result, def.parameters, {book, showTerm});\n     chunks.push('  ' + requestName.get(def.name)! + '{' + rendered.parameters + '}\\n');\n@@ -1115,13 +1131,13 @@\n   chunks.push('\\n');\n }\n chunks.push('type ' + requestType + ' is ' + requestKind + ':\\n');\n-for (const group of requestGroups) chunks.push('  ' + group.constructor + '{request: ' + group.type + '}\\n');\n+for (const group of requestGroups) chunks.push('  ' + group.constructor + '{request: ' + requestBoxType + '<' + group.type + '>}\\n');\n for (const group of requestGroups) {\n   chunks.push('\\ndef ' + group.result + '(request: ' + group.type + ') -> ' + resultKind + ':\\n  match request:\\n');\n   for (const def of group.definitions) chunks.push('    case ' + requestName.get(def.name)! + '{' + def.parameters.map(() => '_').join(', ') + '}: ' + def.resultSource + '\\n');\n }\n chunks.push('\\ndef ' + resultFunction + '(request: ' + requestType + ') -> ' + resultKind + ':\\n  match request:\\n');\n-for (const group of requestGroups) chunks.push('    case ' + group.constructor + '{inner}: ' + group.result + '(inner)\\n');\n+for (const group of requestGroups) chunks.push('    case ' + group.constructor + '{inner}: ' + group.result + '(' + requestUnboxFunction + '(' + group.type + ', inner))\\n');\n const resumeType = '(@box: ' + valueType + '<' + resultFunction + '(request)> -> ' + progressType + '<A>)';\n chunks.push('\\ntype ' + valueType + '<-A: Type> is Type:\\n  ' + valueType + '{value: A}\\n');\n chunks.push('\\ntype ' + progressType + '<-A: Type> is Type:\\n  ' + finishedType + '{box: ' + valueType + '<A>}\\n  ' + pendingType + '{request: ' + requestType + ', resume: ' + resumeType + '}\\n  ' + directType + '{-R: Type, -request: ' + requestType + ', arguments: R, invoke: (@arguments: R -> ' + progressType + '<' + resultFunction + '(request)>), resume: ' + resumeType + '}\\n  ' + boundType + '{-B: Type, inner: ' + progressType + '<B>, resume: (@box: ' + valueType + '<B> -> ' + progressType + '<A>)}\\n\\n');\n@@ -1169,7 +1185,7 @@\n   chunks.push('\\n');\n }\n chunks.push('def ' + rawStepFunction + '(request: ' + requestType + ') -> ' + progressType + '<' + resultFunction + '(request)>:\\n  match request:\\n');\n-for (const group of requestGroups) chunks.push('    case ' + group.constructor + '{inner}: ' + group.step + '(inner)\\n');\n+for (const group of requestGroups) chunks.push('    case ' + group.constructor + '{inner}: ' + group.step + '(' + requestUnboxFunction + '(' + group.type + ', inner))\\n');\n // Each transition consumes the current progress and heterogeneous native stack\n // once. Source resume/invoke closures are retained without Bound association.\n chunks.push(`\n@@ -1203,7 +1219,7 @@\n function typedStart(name:string, root:string, parameters:string, arguments_:string, result:string){\n  const group=requestGroup.get(root),request=requestName.get(root);\n  if(!group||!request)throw Error('Missing typed public root '+root);\n- return '\\ndef '+name+'('+parameters+') -> '+runType+'<'+result+'>:\\n  '+chunkFunction+'('+result+', '+nativeChunkQuantum+'n, '+runStateType+'{'+result+', '+pendingType+'{'+group.constructor+'{'+request+'{'+arguments_+'}}, box => '+finishedType+'{box}}, '+stackDoneType+'{{==}}})\\n';\n+ return '\\ndef '+name+'('+parameters+') -> '+runType+'<'+result+'>:\\n  '+chunkFunction+'('+result+', '+nativeChunkQuantum+'n, '+runStateType+'{'+result+', '+pendingType+'{'+group.constructor+'{'+requestBoxType+'{'+group.type+', '+request+'{'+arguments_+'}, {==}}}, box => '+finishedType+'{box}}, '+stackDoneType+'{{==}}})\\n';\n }\n chunks.push(typedStart(startFunction,paths.root,startInput,startArguments,paths.result));\n if(paths.mode==='checker')chunks.push(typedStart('checker_inspect_start','inspect_checked','program: Checked.CheckedProgram','program','Checked.Inspection'));\n@@ -1246,6 +1262,12 @@\n     unboxFunction, unboxCallsPerResume: 1, unboxGetterCount: 1,\n     unboxing: 'One generic named parameter-match getter consumes the carrier; a single Let restores each authenticated source result quantity: Many for Data, Lone for affine Type; existing continuation helpers retain named parameter matches; no computed/local native matches or unsafe casts',\n   },\n+  requestTransport: {\n+    type: requestBoxType, constructor: requestBoxType, kind: 'Type', groupKind: groupRequestKind,\n+    erasedConstructorType: 'T', field: 'value: T', equality: '{T == R : Type}', unboxFunction: requestUnboxFunction,\n+    boundary: 'Concrete inner request group, before outer request-sum layout',\n+    invariant: 'Exact original constructor/arguments and dependent result; request and resume consumed once; no new scheduler transition, Direct admission, source backedge, quantum or semantic-fuel change',\n+  },\n   nativeChunk: {\n     function: chunkFunction, rawStep: rawStepFunction, publicStep: stepFunction, start: startFunction,\n     quantum: nativeChunkQuantum, fuelType: 'Nat', recursion: 'structural Nat',\n",
+  "probe": {
+    "source": "import Base\n\ntype RequestBox<-R: Type> is Type:\n  RequestBox{-T: Type, value: T, equation: {T == R : Type}}\n\ndef request_unbox(-R: Type, box: RequestBox<R>) -> R:\n  match box:\n    case RequestBox{T, value, equation}:\n      %equation : _\n      value\n\ntype RequestGroup is Type:\n  TextRequest{value: String}\n  ArrayRequest{value: Array<String>}\n  WideRequest{n0: U32, n1: U32, n2: U32, n3: U32, n4: U32, n5: U32, n6: U32, n7: U32, n8: U32, n9: U32, n10: U32, n11: U32, n12: U32, n13: U32, n14: U32, n15: U32, n16: U32, n17: U32, n18: U32, n19: U32, n20: U32, n21: U32, n22: U32, n23: U32, n24: U32, n25: U32, n26: U32, n27: U32, n28: U32, n29: U32, n30: U32, n31: U32, n32: U32, n33: U32, n34: U32, n35: U32, n36: U32, n37: U32, n38: U32, n39: U32, n40: U32, n41: U32, n42: U32, n43: U32, n44: U32, n45: U32, n46: U32, n47: U32, n48: U32, n49: U32, n50: U32, n51: U32, n52: U32, n53: U32, n54: U32, n55: U32, n56: U32, n57: U32, n58: U32, n59: U32, n60: U32, n61: U32, n62: U32, n63: U32, n64: U32, n65: U32}\n\ntype Request is Type:\n  GroupRequest{box: RequestBox<RequestGroup>}\n\ndef group_result(request: RequestGroup) -> Type:\n  match request:\n    case TextRequest{_}: String\n    case ArrayRequest{_}: Array<String>\n    case WideRequest{_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _}: String\n\ndef group_step(request: RequestGroup) -> group_result(request):\n  match request:\n    case TextRequest{value}: value\n    case ArrayRequest{value}: value\n    case WideRequest{first, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, last}: U32.show((first + last : U32))\n\ndef result(request: Request) -> Type:\n  match request:\n    case GroupRequest{box}: group_result(request_unbox(RequestGroup, box))\n\ndef step(request: Request) -> result(request):\n  match request:\n    case GroupRequest{box}: group_step(request_unbox(RequestGroup, box))\n\ndef print_both(scalar: String, selected: Array<String> & String) -> IO(Unit):\n  match selected:\n    case Tuple{array, value}: IO.print(String.append(scalar, String.append(\"|\", value)))\n\ndef exercise(+text: String) -> IO(Unit):\n  scalar = step(GroupRequest{RequestBox{RequestGroup, TextRequest{text}, {==}}})\n  array = step(GroupRequest{RequestBox{RequestGroup, ArrayRequest{Array.new(String, 1n, text)}, {==}}})\n  print_both(scalar, Array.get(String, array, 0))\n\ndef print_argument(args: List<String>) -> IO(Unit):\n  match args:\n    case _ <> text <> _: exercise(text)\n    case _: exercise(\"empty\")\n\ndef main() -> IO(Unit):\n  IO.bind(List<String>, Unit, IO.args(), print_argument)\n",
+    "sourceSha256": "e766737ac195b26082b3466047602d34831e7be7764e1a3a659d7687858732fb",
+    "stdoutBothNativeAndJS": "λ🙂|λ🙂\nempty|empty\n",
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 172457984,
+      "peakFootprintBytes": 100795712,
+      "elapsedMs": 967,
+      "timeoutMs": 600000,
+      "command": [
+        "bun",
+        "--smol",
+        "bend2/main.ts",
+        "/private/tmp/request-group57aa/probe.bend",
+        "-o",
+        "/private/tmp/request-group57aa/probe",
+        "-o",
+        "/private/tmp/request-group57aa/probe.js",
+        "-o",
+        "/private/tmp/request-group57aa/probe.c"
+      ],
+      "label": "heavy command",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792814400214-459651cd4dd87120.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "generatorSource": "import {checkerStepConfig, generateNativeSteps} from './checker_core_step_lower.ts';\nawait generateNativeSteps({...checkerStepConfig,\n  generator: '/private/tmp/request-group57aa/checker_core_step_lower.ts',\n  output: '/private/tmp/request-group57aa/checker_steps.bend',\n  component: '/private/tmp/request-group57aa/checker_component.bend',\n  driver: undefined,\n  manifest: '/private/tmp/request-group57aa/checker-steps.json',\n});\n",
+  "componentSource": "import ../../../Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend as Loader\nimport ../../../Users/ilyagulya/Projects/My/bend/bend2/selfhost/checked_frontend.bend as Checked\nimport ./checker_steps.bend as CheckerCore\n\ndef check_expanded_start(modules: List<&2, Loader.LoadedModule>) -> CheckerCore.CheckerRun<Checked.CheckResult>:\n  CheckerCore.checker_start(modules)\n\ndef inspect_checked_start(program: Checked.CheckedProgram) -> CheckerCore.CheckerRun<Checked.Inspection>:\n  CheckerCore.checker_inspect_start(program)\n\ndef checker_step(-R: Type, run: CheckerCore.CheckerRun<R>) -> CheckerCore.CheckerRun<R>:\n  CheckerCore.checker_step(R, run)\n",
+  "rootSourceSha256": "c6cf930f1d1ad87d1fb7c4c0396519fb983de7f8eb79a7947ff7c9ea030787c2",
+  "generatedCheckerSha256": "53978ca26ef763b840a1f5b4f5b3ad3c8d7ecac7dbcbb084baa8d88cedf7b9f9",
+  "fullKernelValidatedRoot": {
+    "status": "JS_GENERATED_NOT_YET_EXECUTED",
+    "provenancePath": "/private/tmp/request-group57aa/compiler-native-build.provenance.json",
+    "provenanceSha256": "c182bb417a656ca3c1d35abd616bf1bef28f7745e6a3193f69a9bd9abc6b9916",
+    "sourcePath": "/private/tmp/request-group57aa/compiler_root.bend",
+    "sourceSha256": "c6cf930f1d1ad87d1fb7c4c0396519fb983de7f8eb79a7947ff7c9ea030787c2",
+    "exports": [
+      "parsed_module",
+      "parse_with_fuel",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step"
+    ],
+    "artifactPath": "/private/tmp/request-group57aa/compiler.js",
+    "artifactSha256": "4e8a89e80df5c9138dd8e1579edf3581918451da01a8e3f2ca6df0443ca41da7",
+    "bytes": 14503383,
+    "eventsFullyValidated": 8795,
+    "checkedDefinitions": 8397,
+    "liveBodies": 8397,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "checkedOutputRetention": "native e",
+    "nativeRetention": "native checked e retained through all JS definition folding; scope-local higher caches released between definitions; no serialization or source-value fallback",
+    "nativeCheckedBodies": 8397,
+    "expectedSourceDefinitions": 8397,
+    "toolchain": "CANONICAL NATIVE LOAD/CHECK; CANONICAL JS PREPARE/EMIT/RELEASE; Node/V8 automatic GC",
+    "preparedCount": 8112,
+    "releasedCount": 8505,
+    "maxSimultaneousE": 8397,
+    "maxSimultaneousH": 2,
+    "countsCaveat": "Definition slots, not unique term graphs; signature metadata does not prepare higher bodies",
+    "runtime": {
+      "name": "node",
+      "node": "23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "heapLimitMiB": 3072,
+      "stackSizeMb": 256,
+      "heapSizeLimitBytes": 3271557120,
+      "manualGC": false
+    },
+    "cpuMs": 38855.849,
+    "compiledExecution": "NOT_RUN",
+    "selfhostGreen": false,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 2893086720,
+      "peakFootprintBytes": 3065182968,
+      "elapsedMs": 31715,
+      "timeoutMs": 600000,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/Users/ilyagulya/Projects/My/bend/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/private/tmp/request-group57aa/compiler_root.bend",
+        "--exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step",
+        "--artifact=/private/tmp/request-group57aa/compiler.js",
+        "--report=/private/tmp/request-group57aa/compiler-native-build",
+        "--inputs-sha256=1df002c0a489b93308515aa9764eb044f6c3dac0c9b0318a78edea204fd5d433"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792815747788-7e8485ad5fe3ba89.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "fullFrozenJS": {
+    "schemaVersion": 1,
+    "status": "PASS",
+    "diagnosticOnly": true,
+    "bootstrapAcceptance": false,
+    "mode": "component",
+    "stopAfter": "compile",
+    "oracleIncluded": false,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "corpus": "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-v41.corpus.json",
+    "corpusSha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+    "root": "/private/tmp/bend-v41-corpus.uXXfVm/checkpoints/.bootstrap_compiler_root_v1.bend",
+    "inputFiles": 50,
+    "runtime": {
+      "versions": {
+        "node": "23.11.0",
+        "acorn": "8.14.1",
+        "ada": "3.2.1",
+        "amaro": "0.4.1",
+        "ares": "1.34.4",
+        "brotli": "1.1.0",
+        "cjs_module_lexer": "2.1.0",
+        "cldr": "46.0",
+        "icu": "76.1",
+        "llhttp": "9.2.1",
+        "modules": "131",
+        "napi": "10",
+        "nbytes": "0.1.1",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.64.0",
+        "openssl": "3.0.16",
+        "simdjson": "3.12.2",
+        "simdutf": "6.0.3",
+        "sqlite": "3.49.1",
+        "tz": "2025a",
+        "undici": "6.21.2",
+        "unicode": "16.0",
+        "uv": "1.50.0",
+        "uvwasi": "0.0.21",
+        "v8": "12.9.202.28-node.14",
+        "zlib": "1.3.0.1-motley-788cb3c",
+        "zstd": "1.5.6"
+      },
+      "platform": "darwin",
+      "arch": "arm64"
+    },
+    "limits": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "oldGenerationMiB": 6144,
+      "youngGenerationMiB": 128,
+      "stackMiB": 256
+    },
+    "implementationPins": {
+      "/Users/ilyagulya/Projects/My/bend/evals/compiler_benchmark.ts": "032474502f58968efed8cb5d3e2dfb4db265b9ded9eb585b10f06c64140c7a05",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-v41.corpus.json": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+      "/Users/ilyagulya/Projects/My/bend/evals/checker_core_step_runtime.mjs": "f98c6ee28c68267ea7194ef39ff1174a2dd8d3604a77bbe5dcabdb00683254af",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-v41-step-runtime.mjs": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+      "/private/tmp/request-group57aa/compiler.js": "4e8a89e80df5c9138dd8e1579edf3581918451da01a8e3f2ca6df0443ca41da7",
+      "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-ir57-official-a.json.exports.json": "b49ac17d858cff20e3ea8b88f3068b52ca6d0d2045684d4c17d7f318bd3aba18",
+      "/private/tmp/bend-v41-corpus.uXXfVm/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+      "/private/tmp/bend-v41-corpus.uXXfVm/bend2/comp.ts": "56d5727049bc3ef528ef84d3b4712a41a0a8ce0a06437b29d881e71107638c70"
+    },
+    "phases": [
+      {
+        "name": "compiler-startup",
+        "wallMs": 172.394583,
+        "cpuMs": 206.899,
+        "memoryEnd": {
+          "rss": 221708288,
+          "heapTotal": 47906816,
+          "heapUsed": 43494056,
+          "external": 25503249,
+          "arrayBuffers": 14536580
+        }
+      },
+      {
+        "name": "load-parse",
+        "wallMs": 5106.532083,
+        "cpuMs": 6417.642,
+        "memoryEnd": {
+          "rss": 1085505536,
+          "heapTotal": 865746944,
+          "heapUsed": 629749832,
+          "external": 10991532,
+          "arrayBuffers": 24863
+        }
+      },
+      {
+        "name": "expand",
+        "wallMs": 6341.433499999999,
+        "cpuMs": 5306.326,
+        "memoryEnd": {
+          "rss": 1210023936,
+          "heapTotal": 988954624,
+          "heapUsed": 851985104,
+          "external": 10991532,
+          "arrayBuffers": 24863
+        }
+      },
+      {
+        "name": "check",
+        "wallMs": 133499.52129200002,
+        "cpuMs": 132881.864,
+        "memoryEnd": {
+          "rss": 1362067456,
+          "heapTotal": 1236746240,
+          "heapUsed": 852602000,
+          "external": 10984769,
+          "arrayBuffers": 24863
+        }
+      },
+      {
+        "name": "emit",
+        "wallMs": 7011.333207999996,
+        "cpuMs": 7502.58,
+        "memoryEnd": {
+          "rss": 1541636096,
+          "heapTotal": 1361723392,
+          "heapUsed": 1176651464,
+          "external": 10984769,
+          "arrayBuffers": 24863
+        }
+      },
+      {
+        "name": "write-and-hash",
+        "wallMs": 100.41045799999847,
+        "cpuMs": 79.023,
+        "memoryEnd": {
+          "rss": 1583988736,
+          "heapTotal": 1375830016,
+          "heapUsed": 1190788216,
+          "external": 25085933,
+          "arrayBuffers": 14126027
+        }
+      },
+      {
+        "name": "output-import",
+        "wallMs": 273.2006659999897,
+        "cpuMs": 271.489,
+        "memoryEnd": {
+          "rss": 1740013568,
+          "heapTotal": 1407254528,
+          "heapUsed": 1234312752,
+          "external": 39192897,
+          "arrayBuffers": 28232991
+        }
+      },
+      {
+        "name": "output-semantic-smoke",
+        "wallMs": 14.24237500000163,
+        "cpuMs": 15.585,
+        "memoryEnd": {
+          "rss": 1740439552,
+          "heapTotal": 1407614976,
+          "heapUsed": 1130676640,
+          "external": 10997457,
+          "arrayBuffers": 37551
+        }
+      }
+    ],
+    "lastCompletedPhase": "output-semantic-smoke",
+    "moduleCount": 15,
+    "sourceDeclarations": 8403,
+    "checkedModules": 15,
+    "artifact": {
+      "path": "/private/tmp/request-group57aa/frozen-js.json.output.mjs",
+      "bytes": 14101164,
+      "sha256": "eb3d374abac9f7e45067174e75c1074966d933467402866eece29556f307559a"
+    },
+    "compileMs": 152241.60966699998,
+    "outputSmokeRuntime": {
+      "selection": "frozen-v41",
+      "path": "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-v41-step-runtime.mjs",
+      "sha256": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+      "provenance": "Exact pre-v53 runtime captured from committed52 f99b22db; frozen v41 benchmark input only",
+      "expectedSha256": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+      "corpusReference": "/Users/ilyagulya/Projects/My/bend/checkpoints/compiler-benchmark-release237-v41.corpus.json"
+    },
+    "exportCount": 7720,
+    "exportSetSha256": "99efc6ef8538e35f5b6f549e39296bae814e654d48558f9ca7ba2aae2b1911f4",
+    "outputSmokePassed": true,
+    "passed": true,
+    "totalWithOutputSmokeMs": 152563.67462499999,
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 1756282880,
+      "peakFootprintBytes": 1851463912,
+      "elapsedMs": 152855,
+      "timeoutMs": 600000,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=6144",
+        "--max-semi-space-size=128",
+        "--stack-size=262144",
+        "/Users/ilyagulya/Projects/My/bend/evals/compiler_benchmark.ts",
+        "--worker",
+        "/private/tmp/request-group57aa/frozen-js.json.request.json",
+        "a0acb2fef6b952aff73e90f0b25df9e5a5523a7ef45b0e6620eaa2a5ef787a2d"
+      ],
+      "label": "Comparable full-corpus component compiler",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792815779624-72437168db42e151.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "runtimeScope": "ActualC+JS small66-field Type-erased affine String-array witness. Complete root kernel-validated and actual frozen JS consumed, but full native C runtime was NEVER measured.",
+  "decision": "Do not add a new source protocol when generic host C-only layout8 solves both67-word Pending and29-word ArenaResult payloads. JS compile152241.609667ms vs acceptedY125239.549334ms is not a native C performance rejection.",
+  "unrunNativeSnapshot": {
+    "snapshot": {
+      "root": "/private/tmp/request-native57aa",
+      "sourceFiles": {
+        "bend2/base.bend": {
+          "sha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+          "bytes": 75624
+        },
+        "bend2/bend.ts": {
+          "sha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+          "bytes": 138233
+        },
+        "bend2/comp.ts": {
+          "sha256": "9704b4bbd00c834df65b21a34f57cfc4ff4f6afc1878f161565a52f7fcf00d9c",
+          "bytes": 200209
+        },
+        "bend2/effs/args.c": {
+          "sha256": "84e12702f78e7cce5d350a3ccc6cfbda66f812496c39f025afe02bdf090880cf",
+          "bytes": 351
+        },
+        "bend2/effs/args.js": {
+          "sha256": "ed1a7e7b73ae7fe58ac6d428d2762b66f223f4c70a165570fc5d68dc874ddc0b",
+          "bytes": 221
+        },
+        "bend2/effs/audio.c": {
+          "sha256": "f0fac2bee02918b4958ad1e7508945824fcd98ce9a2e7ede657304c4f8905b85",
+          "bytes": 6953
+        },
+        "bend2/effs/audio_close.js": {
+          "sha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+          "bytes": 118
+        },
+        "bend2/effs/audio_open.js": {
+          "sha256": "6f531ac205dab98dd366111cdcc5eed69fb9058350ca715f3419065cd979b088",
+          "bytes": 266
+        },
+        "bend2/effs/audio_write.js": {
+          "sha256": "377d3e938ce3cc9f083c662b69d34e3a0cf391c92ddaf3fca8a4b28c78662da7",
+          "bytes": 439
+        },
+        "bend2/effs/chan.c": {
+          "sha256": "f20345b3475168e52d431dabc8c8b9347d73b51b5318aae7890b78c94762f4e6",
+          "bytes": 7198
+        },
+        "bend2/effs/chan.js": {
+          "sha256": "007ff7505af9effc20fccfa3d26eaf89a382d6295839b27df119a1704a3f86d7",
+          "bytes": 3645
+        },
+        "bend2/effs/file_close.c": {
+          "sha256": "033da9beb0b484fbc8784044193bf69004f858f6ad86e0c31b4beb89df1349ca",
+          "bytes": 242
+        },
+        "bend2/effs/file_close.js": {
+          "sha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+          "bytes": 192
+        },
+        "bend2/effs/file_open.c": {
+          "sha256": "2f5923e325a22eb384edb3fbb023f04ca842d5acd22654983608b575fa7617fa",
+          "bytes": 1066
+        },
+        "bend2/effs/file_open.js": {
+          "sha256": "dd549f5f05eb896aef9a3a02ffecf2ee902e653f5463be72781edab1cd1180ae",
+          "bytes": 462
+        },
+        "bend2/effs/file_read.c": {
+          "sha256": "ab577225fa98a034c09d7eb6326b74808756dc6203b0e2599a459876382f090d",
+          "bytes": 1913
+        },
+        "bend2/effs/file_read.js": {
+          "sha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+          "bytes": 783
+        },
+        "bend2/effs/file_size.c": {
+          "sha256": "ed0d74fd6b9f14ea471bfe5dd80ecbb2c5abb6a8406519fb2c7e1a1acf3dd5af",
+          "bytes": 719
+        },
+        "bend2/effs/file_size.js": {
+          "sha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+          "bytes": 734
+        },
+        "bend2/effs/file_write.c": {
+          "sha256": "9da28a35294cbde6a97729be825a31f9cab0b8c9d421a02a4613e688df451214",
+          "bytes": 1242
+        },
+        "bend2/effs/file_write.js": {
+          "sha256": "4fe307538beb1047add7646f52df6e382a1da5d8999d8fe96969bd5055bc9b59",
+          "bytes": 655
+        },
+        "bend2/effs/get_env.c": {
+          "sha256": "508a4aaca91e37b2a0a97770f172100fdbaf4a676aba54623b1cd5d1634805ce",
+          "bytes": 397
+        },
+        "bend2/effs/get_env.js": {
+          "sha256": "9a4fc592e447607553bdb08b194a9ede90dbae3660507687752f58ea42892dba",
+          "bytes": 335
+        },
+        "bend2/effs/listener_close.c": {
+          "sha256": "11f6bac6342a37e97b9656e96bdca7d052ed0a7a0cab3b05ea87657020cfb7a2",
+          "bytes": 266
+        },
+        "bend2/effs/listener_close.js": {
+          "sha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+          "bytes": 164
+        },
+        "bend2/effs/now.c": {
+          "sha256": "fc4c1d87a4fb2ace7d5b6c57b434cc3d953a15bdf213020912df6c17aa2352d6",
+          "bytes": 196
+        },
+        "bend2/effs/now.js": {
+          "sha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+          "bytes": 105
+        },
+        "bend2/effs/print.c": {
+          "sha256": "2693b48e0ad8bba77c2babb1cfe00b4adfd63e68b0688229d7efd3a261af3c46",
+          "bytes": 322
+        },
+        "bend2/effs/print.js": {
+          "sha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+          "bytes": 138
+        },
+        "bend2/effs/print_err.c": {
+          "sha256": "f84aa11c8d0d6af6fa2fee28411f95714d6744ad97156990e43e55c292c9c6fb",
+          "bytes": 235
+        },
+        "bend2/effs/print_err.js": {
+          "sha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+          "bytes": 131
+        },
+        "bend2/effs/process_run.c": {
+          "sha256": "a8ae18d313840eeb1594d762a1cb08c43b632dce83c76c1c5316870b1b20d320",
+          "bytes": 8188
+        },
+        "bend2/effs/process_run.js": {
+          "sha256": "9ce0c5853ab8059614f115d99b1d0ba845fb23c056a6965a59e645d155bd58c1",
+          "bytes": 2889
+        },
+        "bend2/effs/random_u32.c": {
+          "sha256": "75429b2b42e00562177fe33a5e18d2730478847f58c4038b048e78131e1b8c0a",
+          "bytes": 703
+        },
+        "bend2/effs/random_u32.js": {
+          "sha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+          "bytes": 581
+        },
+        "bend2/effs/sleep.c": {
+          "sha256": "1dde3701026517d5272d2ff5344d3a8643bec264dbad9f266fdae1c4aaf7601c",
+          "bytes": 381
+        },
+        "bend2/effs/sleep.js": {
+          "sha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+          "bytes": 214
+        },
+        "bend2/effs/socket_close.c": {
+          "sha256": "abea115d2928d4942a9d89898d2022c0f1b19c52db48d0b060c2356d261bfa77",
+          "bytes": 254
+        },
+        "bend2/effs/socket_close.js": {
+          "sha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+          "bytes": 150
+        },
+        "bend2/effs/spawn.c": {
+          "sha256": "05e11ae3f1461d9c72440af3b1786c076b418d2faff45639ac25ba464ee73cd5",
+          "bytes": 217
+        },
+        "bend2/effs/spawn.js": {
+          "sha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+          "bytes": 160
+        },
+        "bend2/effs/tcp_accept.c": {
+          "sha256": "bf7ca1685ed388ce97827ea8379881fbdf5359c7c663ad03eeb8da34bd8584ef",
+          "bytes": 1409
+        },
+        "bend2/effs/tcp_accept.js": {
+          "sha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+          "bytes": 1413
+        },
+        "bend2/effs/tcp_connect.c": {
+          "sha256": "8d17c097138709d71e9d9e1fbc4255007c5e80c93ee384c4a3510b6ac8d10da3",
+          "bytes": 1292
+        },
+        "bend2/effs/tcp_connect.js": {
+          "sha256": "a20819822e4ce18c8878b94e6ee70466833415eb9ebc2b6a39b65cabfcc553c9",
+          "bytes": 1122
+        },
+        "bend2/effs/tcp_listen.c": {
+          "sha256": "efc7528de96abd9f62f299833c1ac7b0e86528292c746b114d2684b5bac52899",
+          "bytes": 875
+        },
+        "bend2/effs/tcp_listen.js": {
+          "sha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+          "bytes": 671
+        },
+        "bend2/effs/tcp_recv.c": {
+          "sha256": "249c8789cd2f541ad00068882de16a00870c2f81a8168b0ac7a59db1e3cb0c6f",
+          "bytes": 2508
+        },
+        "bend2/effs/tcp_recv.js": {
+          "sha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+          "bytes": 1680
+        },
+        "bend2/effs/tcp_send.c": {
+          "sha256": "ed724ef8ce712b113eaac478164802509b41fac4e92435e3df0837d6a8c75632",
+          "bytes": 3042
+        },
+        "bend2/effs/tcp_send.js": {
+          "sha256": "ea68cc521fa9b5603c3fccebbf19ecebcd26bf1a8af644ff1f13cd14ba9fe733",
+          "bytes": 1976
+        },
+        "bend2/effs/thread_count.c": {
+          "sha256": "d4889ed7757dccce03729c9568b88188128f2c1576166a3dc184a8707ed44568",
+          "bytes": 343
+        },
+        "bend2/effs/thread_count.js": {
+          "sha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+          "bytes": 137
+        },
+        "bend2/effs/udp_bind.c": {
+          "sha256": "a1be1bc5c03d430fc6eb43982651073e144872956fadaee98c3700be59352ee3",
+          "bytes": 744
+        },
+        "bend2/effs/udp_bind.js": {
+          "sha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+          "bytes": 502
+        },
+        "bend2/effs/udp_recv_from.c": {
+          "sha256": "607085b34605af6c888e1de5c3f5cd8f689f221c71a3ef9e2c50f9ac880b1bae",
+          "bytes": 3005
+        },
+        "bend2/effs/udp_recv_from.js": {
+          "sha256": "d6f88b08f578f088b4ff257a7e544e4fbbf46f375aee3881ba4d44e25ed890d8",
+          "bytes": 2094
+        },
+        "bend2/effs/udp_send_to.c": {
+          "sha256": "b3a87e56958d8071a368da2edb4748e9496b3eed58b93d6cb4f8af398dd1011a",
+          "bytes": 3484
+        },
+        "bend2/effs/udp_send_to.js": {
+          "sha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+          "bytes": 2168
+        },
+        "bend2/effs/window.c": {
+          "sha256": "1d99fc0dd1640602bc4020e62fd28abef44422429ab9970523d25b050f1e6c18",
+          "bytes": 24934
+        },
+        "bend2/effs/window_close.js": {
+          "sha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+          "bytes": 124
+        },
+        "bend2/effs/window_frame.js": {
+          "sha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+          "bytes": 153
+        },
+        "bend2/effs/window_grab.js": {
+          "sha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+          "bytes": 115
+        },
+        "bend2/effs/window_open.js": {
+          "sha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+          "bytes": 344
+        },
+        "bend2/effs/window_set_title.js": {
+          "sha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+          "bytes": 133
+        },
+        "bend2/effs/write.c": {
+          "sha256": "8807a5f655db452c1d846354560c26fe1e94289e5dc0be231d0b71ecc876d02f",
+          "bytes": 295
+        },
+        "bend2/effs/write.js": {
+          "sha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+          "bytes": 131
+        },
+        "bend2/selfhost/ast.bend": {
+          "sha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+          "bytes": 5813
+        },
+        "bend2/selfhost/backend_ir.bend": {
+          "sha256": "0c4c67e38dbf34e04c2378863ec48a7222d2f762551baaa388f200f2a7d8c83b",
+          "bytes": 7507
+        },
+        "bend2/selfhost/checked_frontend.bend": {
+          "sha256": "8287a44c524b001933cdba9d036b44ade13c34e549f5c926fd2cab45894e288e",
+          "bytes": 1707
+        },
+        "bend2/selfhost/checker_arena.bend": {
+          "sha256": "fb8651ab2e6304faded5eb312ffe95175a177254f7dd704eca7a9b0896a40e31",
+          "bytes": 100364
+        },
+        "bend2/selfhost/checker_ir.bend": {
+          "sha256": "41db13db11d63102d3ea5c8ca14916e5f688685bba96c332abcb7a3533f1f17b",
+          "bytes": 5209
+        },
+        "bend2/selfhost/core.bend": {
+          "sha256": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
+          "bytes": 9777
+        },
+        "bend2/selfhost/index_lookup.bend": {
+          "sha256": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
+          "bytes": 2754
+        },
+        "bend2/selfhost/js_backend.bend": {
+          "sha256": "df4d274e76e07dd81092d9238b0cf78157878ec9a3390d75347c724c67c82097",
+          "bytes": 91168
+        },
+        "bend2/selfhost/js_emit.bend": {
+          "sha256": "1879ff7793f295c88aaccf1f59d20ebe4d292c728451d0191e986032be13faa6",
+          "bytes": 107217
+        },
+        "bend2/selfhost/lexer.bend": {
+          "sha256": "a81265d4ab248c5ea74bf52987e1163773866a01b264ff1a98895d91139d6f53",
+          "bytes": 10349
+        },
+        "bend2/selfhost/loaded_module.bend": {
+          "sha256": "e41f5d5f99c7a81b68603561c48699445e8670c385f160acb21a06d597bd9d7e",
+          "bytes": 119
+        },
+        "bend2/selfhost/lower_catalog.bend": {
+          "sha256": "51faef9846748253b0a43f38b509cf863386fe93ee0558edbe1f475b62fd0f1e",
+          "bytes": 88245
+        },
+        "bend2/selfhost/path.bend": {
+          "sha256": "b7c8deb47f853b9c2e6bd2424d497aa0de551abe86cff95d4bbd80d777c365a8",
+          "bytes": 6171
+        },
+        "bend2/selfhost/scope_lookup.bend": {
+          "sha256": "ae74f46d0d543aefb04d99459328b1f1559eb3f57fd6a2cc837d746743ed67cf",
+          "bytes": 4613
+        },
+        "bend2/selfhost/sha256.bend": {
+          "sha256": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
+          "bytes": 7975
+        },
+        "checkpoints/.bootstrap_compiler_root_v1.bend": {
+          "sha256": "efab3bf81dd52f597645b20ddda482e11b961d342115ab62152535de55c26d26",
+          "bytes": 628503
+        },
+        "checkpoints/checker_core_steps_v1.bend": {
+          "sha256": "352303606a46672d33f90cb015d92912ef05553461dbcdf0a5103d6f99352fb2",
+          "bytes": 2887057
+        },
+        "checkpoints/compiler-benchmark-ir57-official-a.json.exports.json": {
+          "sha256": "b49ac17d858cff20e3ea8b88f3068b52ca6d0d2045684d4c17d7f318bd3aba18",
+          "bytes": 393398
+        },
+        "checkpoints/compiler-benchmark-release237-v41.corpus.json": {
+          "sha256": "29a28b1d03966fbc923e592fccdb8b774666d38162bea5c12d33a5a1e6c4b258",
+          "bytes": 8975
+        },
+        "checkpoints/js_emit_steps_v1.bend": {
+          "sha256": "6e46966ccbe619d7935e97395de8a76fc2c6b92b96228f62d530f527f7eaa2b0",
+          "bytes": 923160
+        },
+        "checkpoints/template_steps_v1.bend": {
+          "sha256": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4",
+          "bytes": 347539
+        },
+        "evals/heavy_gate.ts": {
+          "sha256": "47a12205abd374fd69d7dac30ee9fb45d7203cad2790870511387cd2efc22251",
+          "bytes": 11814
+        },
+        "evals/heavy_gate_native.c": {
+          "sha256": "f5aecf8308caebc72dccf8986733b37137d448021ee378302cfcd038381b7aa9",
+          "bytes": 14752
+        },
+        "evals/native_compiler_driver.bend": {
+          "sha256": "9176e9745df469b059f74b8beed6c7ce17d41c8195aa8660f8bb2060b71b5909",
+          "bytes": 7043
+        },
+        "evals/native_compiler_experiment.ts": {
+          "sha256": "94460b2a3843c7dab8e40f660595c0e4f5f95bde4b5e09590239381f7a46f491",
+          "bytes": 28496
+        },
+        "evals/native_compiler_host.c": {
+          "sha256": "0889bf1a3733be6a28f388fdaf905725f3f5f8190d8f5864a98713b3840274b9",
+          "bytes": 15276
+        },
+        "evals/native_compiler_llvm.ts": {
+          "sha256": "e41724ecc3048609ddbae65d27056f81b5af3cdabdae0790fed9e34a2eee744c",
+          "bytes": 10134
+        },
+        "checkpoints/compiler-benchmark-v41-step-runtime.mjs": {
+          "sha256": "2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd",
+          "bytes": 6044
+        },
+        "consume_native.mjs": {
+          "sha256": "7ad7a3fe7903ecc2b3b16a33c7a87653d29db773a7500e2280bdfa5a2348143b",
+          "bytes": 3779
+        },
+        "consumer_guard.ts": {
+          "sha256": "42d74175b99b77ea11eaaffd406f38085de2677cfb6c98b7110778bd497a53ab",
+          "bytes": 911
+        },
+        "cycle.py": {
+          "sha256": "dbfa84d9c79f22aed9ff40dce64986ada0f28b93cb40fcd6b3372d9d9f63510c",
+          "bytes": 6953
+        },
+        "variant/checker_core_step_lower.ts": {
+          "sha256": "65da8576c8c9a55180b1e33c5880f8b623c504185117dce910bf9322ce3cfbbc",
+          "bytes": 94718
+        }
+      },
+      "sourceFileCount": 99,
+      "sourceAlgorithmEditsHere": [
+        "CheckerCore inner requestgroups use existential RequestBox with checked equality; outerRequest/Pending/StackRun scheduler/transitions unchanged. Only checkerpartchanged inthisisolated native experiment, Template/Emittergeneratedsourceunchanged."
+      ],
+      "kernelEdits": 0,
+      "compilerEdits": 0,
+      "outputPatches": 0,
+      "generatorProvenance": {
+        "base": "evals/checker_core_step_lower.ts",
+        "baseSha256": "88bd0b2750c2676c79a1feaf2cf182ac46e17f007886c8443fbed7a778c6be8d",
+        "privateVariant": "variant/checker_core_step_lower.ts",
+        "variantSha256": "65da8576c8c9a55180b1e33c5880f8b623c504185117dce910bf9322ce3cfbbc",
+        "sourceOnlyImportRebasing": "Generatedprivatecheckerimportsrebasedtocopiedoriginalmodules; rootEFabunchanged. No emittedC/JS/ASTpatch."
+      },
+      "baseline": {
+        "program": "retainedcurrentYcursor563c",
+        "nativeCompileMs": 77486.617958,
+        "checkWallMs": 60729.247,
+        "checkCpuMs": 60728.635,
+        "scope": "Historicalsamehostsinglecompletedtrial, notpaired samples. OriginalbaselineC5315deletedafterproof; no publicrunnerbypass/rebuild. Newcandidatefullactualcycleonlyonce."
+      }
+    },
+    "runner": "import hashlib, json, os, pathlib, re, subprocess, time\nROOT = pathlib.Path(__file__).resolve().parent\nART = ROOT / 'artifacts'\nART.mkdir(exist_ok=True)\nSNAPSHOT = json.loads((ROOT / 'source-snapshot.json').read_text())\nEXPECTED = 'eb3d374abac9f7e45067174e75c1074966d933467402866eece29556f307559a'\ndef sha(path):\n    return hashlib.sha256(pathlib.Path(path).read_bytes()).hexdigest()\ndef save(path, value):\n    pathlib.Path(path).write_text(json.dumps(value, indent=2) + '\\n')\ndef load(path):\n    return json.loads(pathlib.Path(path).read_text())\ndef verify_snapshot():\n    for path, row in SNAPSHOT['sourceFiles'].items():\n        if sha(ROOT / path) != row['sha256']:\n            raise RuntimeError('Snapshot input drift: ' + path)\n    for path, expected in {\n        'bend2/bend.ts': '6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e',\n        'bend2/comp.ts': '9704b4bbd00c834df65b21a34f57cfc4ff4f6afc1878f161565a52f7fcf00d9c',\n        'bend2/selfhost/index_lookup.bend': '563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78',\n        'checkpoints/checker_core_steps_v1.bend': '352303606a46672d33f90cb015d92912ef05553461dbcdf0a5103d6f99352fb2',\n        'checkpoints/compiler-benchmark-v41-step-runtime.mjs': '2cad05bb4885854d7ede65336dbe287ac78063f8321110d2d63018e9890000fd',\n    }.items():\n        if sha(ROOT / path) != expected:\n            raise RuntimeError('Required accepted source or exact variant drift: ' + path)\nverify_snapshot()\nif any((ART / name).exists() for name in ['cycle.json', 'build.json', 'frozen-compile.json', 'compiler', 'compiler.c']):\n    raise RuntimeError('Fresh proof paths required; no overwritten trial')\nenv = os.environ.copy()\nenv.update(PATH='/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin', CC='/usr/bin/clang', BEND_NO_TELEMETRY='1', LC_ALL='C')\nenv.pop('SDKROOT', None)\nreceipt = {'status': 'IN_PROGRESS', 'kind': 'CurrentY plus existential inner checker-group request transport; fresh native build/full frozen/actual unchanged7720 consumer', 'root': str(ROOT), 'reusedC': False, 'kernelEdits': 0, 'compilerEdits': 0, 'sourceRepresentationEdits': ['Only CheckerCore request groups use an existential checked equality carrier before the outer sum; request/resume/fuel/Direct DAG unchanged'], 'outputPatches': 0, 'profiling': False, 'sourceSnapshotSha256': sha(ROOT / 'source-snapshot.json'), 'stages': [], 'baseline': SNAPSHOT['baseline']}\ncli = str(ROOT / 'evals/native_compiler_experiment.ts')\nmanifest = str(ROOT / 'checkpoints/compiler-benchmark-release237-v41.corpus.json')\nbuild_path, run_path = ART / 'build.json', ART / 'frozen-compile.json'\ncommands = [\n    ('build', ['/opt/homebrew/bin/bun', '--smol', cli, '--mode=build', '--cc-pipeline=llvm-split', '--llvm-bin=/opt/homebrew/opt/llvm@21/bin', '--corpus=' + manifest, '--artifact=' + str(ART / 'compiler'), '--report=' + str(build_path)]),\n    ('frozen', ['/opt/homebrew/bin/bun', '--smol', cli, '--mode=run', '--corpus=' + manifest, '--build=' + str(build_path), '--report=' + str(run_path), '--phase=compile', '--threads=1', '--exports=' + str(ROOT / 'checkpoints/compiler-benchmark-ir57-official-a.json.exports.json')]),\n    ('consumer', ['/opt/homebrew/bin/node', str(ROOT / 'consumer_guard.ts')]),\n]\nstarted = time.perf_counter()\nreceipt['startedUnixMs'] = int(time.time() * 1000)\ntry:\n    for name, command in commands:\n        if name == 'consumer':\n            frozen = load(run_path)\n            if frozen['status'] != 'NATIVE_FULL_COMPILE_PASS' or frozen['guardian']['status'] != 'PASS' or frozen['outputSha256'] != EXPECTED or frozen['outputBytes'] != 14101164 or len(frozen['exports']) != 7720:\n                raise RuntimeError('Complete exact frozen output prerequisite failed')\n        stage_started = time.perf_counter()\n        with open(ART / (name + '.stdout.log'), 'w') as stdout, open(ART / (name + '.stderr.log'), 'w') as stderr:\n            child = subprocess.run(['/usr/bin/time', '-lp', *command], stdout=stdout, stderr=stderr, env=env, cwd=ROOT)\n        row = {'name': name, 'command': command, 'timingCommand': ['/usr/bin/time', '-lp', *command], 'exitCode': child.returncode, 'wallSeconds': time.perf_counter() - stage_started}\n        text = (ART / (name + '.stderr.log')).read_text()\n        for key, pattern in [('timedRealSeconds', r'^real\\s+([0-9.]+)$'), ('userSeconds', r'^user\\s+([0-9.]+)$'), ('systemSeconds', r'^sys\\s+([0-9.]+)$')]:\n            matches = re.findall(pattern, text, re.M)\n            if matches:\n                row[key] = float(matches[-1])\n        rss = re.findall(r'^\\s*(\\d+)\\s+maximum resident set size', text, re.M)\n        if rss:\n            row['maxRssBytes'] = int(rss[-1])\n        row['status'] = 'PASS' if child.returncode == 0 else 'FAIL'\n        receipt['stages'].append(row)\n        save(ART / 'cycle.json', receipt)\n        if child.returncode:\n            raise RuntimeError(name + ' exited ' + str(child.returncode) + '; original report/log retained')\n    receipt['wallSeconds'] = time.perf_counter() - started\n    build, frozen = load(build_path), load(run_path)\n    consumer = load(ART / 'frozen-output-consumer.json')\n    consumer_guard = load(ART / 'frozen-output-consumer.guard.json')\n    verify_snapshot()\n    if build['guardian']['status'] != 'PASS' or frozen['guardian']['status'] != 'PASS' or consumer_guard['status'] != 'PASS' or consumer['status'] != 'PASS' or consumer['exports'] != 7720 or consumer['outputSha256'] != EXPECTED:\n        raise RuntimeError('Required original guarded build/run/actual consumer missing')\n    receipt.update(status='PASS_CURRENT_Y_BOXED_CHECKER_GROUP_FULL_NATIVE_CYCLE', build=str(build_path), run=str(run_path), outputSha256=frozen['outputSha256'], outputBytes=frozen['outputBytes'], actualConsumer=consumer, consumerGuard=consumer_guard, buildGuardian=build['guardian'], runGuardian=frozen['guardian'], validationMs=build['validationMs'], producerCodegenMs=build['codegenMs'], backendMs=build['ccPipeline']['elapsedMs'], nativeCompileMs=frozen['elapsedMs'], nativePhases=frozen['phases'], eventsFullyValidated=build['eventsFullyValidated'], checkedDefinitions=build['checkedDefinitions'], cSha256=build['cSha256'], binarySha256=build['artifactSha256'], sourceRootSha256=build['sourceSha256'], compilerSha256=build['compilerSha256'], kernelSha256=build['kernelSha256'], snapshotVerifiedBeforeAfter=True, scriptSha256=sha(__file__))\nexcept BaseException as error:\n    receipt.update(status='FAIL', error=str(error), elapsedToFailureSeconds=time.perf_counter() - started)\n    save(ART / 'cycle.json', receipt)\n    raise\nsave(ART / 'cycle.json', receipt)\nprint(json.dumps({'status': receipt['status'], 'fullCycleWallSeconds': receipt['wallSeconds'], 'producerCodegenMs': receipt['producerCodegenMs'], 'backendMs': receipt['backendMs'], 'nativeCompileMs': receipt['nativeCompileMs'], 'phases': receipt['nativePhases'], 'outputSha256': receipt['outputSha256'], 'exports': receipt['actualConsumer']['exports']}))\n",
+    "neverExecuted": true
+  },
+  "cleanup": {
+    "plannedOwnedDirectories": [
+      "/private/tmp/request-group57aa",
+      "/private/tmp/request-native57aa"
+    ],
+    "plannedOwnedTransportArchives": [
+      "/private/tmp/request-native57aa-source.tar.gz"
+    ],
+    "canonicalSourceEdits": 0,
+    "preservation": "Exact source patch, witness, generation/component wrappers, input manifest, full build and frozen/consumer metrics saved before removal; no native runtime timing claimed.",
+    "status": "COMPLETED_OWNED_ARTIFACTS_REMOVED_AFTER_PRESERVATION",
+    "removedLocalDirectories": [
+      "/private/tmp/request-group57aa",
+      "/private/tmp/request-native57aa"
+    ],
+    "removedLocalArchives": [
+      "/private/tmp/request-native57aa-source.tar.gz"
+    ],
+    "removedRemoteArchives": [
+      "misaka:/private/tmp/request-native57aa-source.tar.gz"
+    ],
+    "nativeCycleExecuted": false
+  },
+  "rootImportRewrite": [
+    {
+      "alias": "Ast",
+      "target": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/ast.bend"
+    },
+    {
+      "alias": "Lexer",
+      "target": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/lexer.bend"
+    },
+    {
+      "alias": "Core",
+      "target": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/core.bend"
+    },
+    {
+      "alias": "Loader",
+      "target": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/loaded_module.bend"
+    },
+    {
+      "alias": "Checked",
+      "target": "/Users/ilyagulya/Projects/My/bend/bend2/selfhost/checked_frontend.bend"
+    },
+    {
+      "alias": "Template",
+      "target": "/Users/ilyagulya/Projects/My/bend/checkpoints/template_steps_v1.bend"
+    },
+    {
+      "alias": "CheckerCore",
+      "target": "/private/tmp/request-group57aa/checker_steps.bend"
+    },
+    {
+      "alias": "JSEmit",
+      "target": "/Users/ilyagulya/Projects/My/bend/checkpoints/js_emit_steps_v1.bend"
+    }
+  ],
+  "lowererBaseSha256": "88bd0b2750c2676c79a1feaf2cf182ac46e17f007886c8443fbed7a778c6be8d"
+}

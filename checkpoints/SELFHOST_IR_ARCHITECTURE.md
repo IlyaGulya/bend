@@ -48,6 +48,22 @@ run сохранён, не перекрашен. Причина source-identical
 Это modest separate-run observation, не statistical paired/global speed claim;
 canonical host9704 заново проверил root8396/8793 и source/parser75. Новый stage
 paird10de8af… реально cmp-equal;285 fresh behaviorsPASS. JS full125.240s не ускорился.
+Host57aa отделяет C representation policy от physical runtime capacity:
+общий inline cutoff8 words, прежний WIDE247 и прежние JS layouts. Scalar
+structural context сохраняет word encoding, constructor fields нормализуются
+перед bit packing. Это не новый semantic IR и не source request wrapper.
+Static observed Pending payload67→3 и ArenaResult29→3; старые cumulative heap
+counts не выдавать за новые live bytes или CPU gain.
+Свежий parser75/full root8396/8793 прошёл, actual native-produced JS byte-identical
+57y06dba46f…/12743363bytes. Реальный d10de8af… fixedpoint/285 сохраняется для
+того же executable, не как новый timed aggregate PASS.
+Свежий latestY native8414/8817 + frozen7720/actual consumer завершил полный
+build/run/consumer за262.388s под прежними8GiB guards; runtime physical875005776bytes.
+Но native compile86.573s/check60.704s/emit13.465s не доказывают runtime ускорение
+против прошлого Y77.487s/60.729s/6.570s. PrivateW231.973s cycle/72.108s compile
+относится к другой версии source program. Official8.619s пока быстрее;
+устойчивый300s и причина вариаций не установлены.
+
 
 
 
@@ -61,6 +77,11 @@ compiler-ir-contract-v56.json содержит проверенные небол
 что уже существует новый C/Metal/CUDA renderer для Backend IR. Старый standalone
 C-emitter не является доказательством такого renderer; его затронутые потребители
 должны быть явно мигрированы и описаны, а не молча объявлены работоспособными.
+Конкретный ещё живой legacy boundary: driver.dispatch_c → inspect_checked →
+c_emit.bend с SyntaxTerm/DefBody. Обычный JS path этот readback не использует.
+Поэтому утверждение «все старые пути удалены, любой backend идёт через BIR»
+сейчас неверно; compatibility C branch не является новым BIR renderer.
+
 
 ## Поток данных
 
