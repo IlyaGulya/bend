@@ -1,0 +1,397 @@
+{
+  "schemaVersion": 1,
+  "kind": "compiler-stage-profile-evidence",
+  "diagnosticOnly": true,
+  "acceptanceEvidence": false,
+  "generatedAt": "2026-10-24T17:50:58.514Z",
+  "implementation": {
+    "evals/candidate_host.ts": "f126bf7dae3b0a4897ac7acc90787be981aec8ea7b3cf8a55dea392bb6fd8724",
+    "evals/checker_core_step_runtime.mjs": "a52b065e99126f6b0fe47d4d74538757faa1e3f8652ba3f4bb818c64498e32d5",
+    "evals/compiler_stage_profile.mjs": "0385315d7f74f7c73cd5603211ad7bc19aeff74716bda595f6a6c5255ed53119",
+    "evals/compiler_stage_report.mjs": "3b8ea5cb18e3d403a3a085b7af2550617a0ad6a8e1f52a0cac453303158782cf",
+    "evals/selfhost_bootstrap_worker.mjs": "8dcb994fdcbe026a2e2f8568340bbf3892141ec0dc96e4c7ec55ef1fc8a8ef9d",
+    "bend2/selfhost/RESEARCH_STAGE_PROFILING.md": "e82fa98e167194db5ef70e71497f302061c9c1bb7cb5f37c476658c82ea27f3b"
+  },
+  "collectorDependency": {
+    "path": "evals/compiler_profile.mjs",
+    "sha256": "e85e196a0c7a2512c1aad0b9804f25fc6694c333b97169a2bf761e5bb4df69ca",
+    "owner": "ProducerProfilingImpl",
+    "note": "imported unchanged; not part of this commit"
+  },
+  "execution": {
+    "stage": "selfhost-candidate",
+    "componentPath": "/private/tmp/croot-proof/root.js",
+    "componentSha256": "7d98ea60d539f31f1db29d7ee91869c9577469fbce178acc1cfb397ba035e272",
+    "componentBytes": 19442727,
+    "sourcePath": "/private/tmp/bend-fir-croot57ab/checkpoints/.croot64-proof-root.bend",
+    "sourceSha256": "c60df5a7e5d1c3472b4374fef79dd88a9342784e7468242390a87d02d49bc38d",
+    "compilerSha256": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70",
+    "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+    "inputPath": "/tmp/stage-tiny.bend",
+    "inputSha256": "d95f59ee2e349d0bcd797d50e1d97a82e763d5eaa594abe040d05bd2013c8010",
+    "runtime": {
+      "name": "bun",
+      "versions": {
+        "node": "26.3.0",
+        "bun": "1.4.2",
+        "boringssl": "41bf9b59c2ebf277a7aa427e1ecad5cc80dd4d4f",
+        "openssl": "1.1.0",
+        "llhttp": "9.3.0",
+        "libarchive": "ded82291ab41d5e355831b96b0e1ff49e24d8939",
+        "mimalloc": "6a64e1ba7f5b2130d4efccb67ec87fd0003f0f6a",
+        "picohttpparser": "066d2b1e9ab820703db0837a7255d92d30f0c9f5",
+        "uwebsockets": "744846f844374847c902b5e7fd59b4342a51ef99",
+        "webkit": "2e2aa2290fac856d6f451ceacb58f7f5b44dd057",
+        "zig": "04e7f6ac1e009525bc00934f20199c68f04e0a24",
+        "zlib": "12731092979c6d07f42da27da673a9f6c7b13586",
+        "tinycc": "05f0fafaa3be31e31d7b4b5c17dc60f62c991171",
+        "lolhtml": "725ce499aa9b71e38b7a2d0a9fbb6d7294a4079e",
+        "ares": "c7a3138dcfe3bb0eaaf10c0c24c36dc66dc790ab",
+        "libdeflate": "c8c56a20f8f621e6a966b716b31f1dedab6a41e3",
+        "usockets": "744846f844374847c902b5e7fd59b4342a51ef99",
+        "lshpack": "8905c024b6d052f083a3d11d0a169b3c2735c8a1",
+        "zstd": "f8745da6ff1ad1e7bab384bd1f9d742439278e99",
+        "v8": "14.6.202.34-node.20",
+        "uv": "1.48.0",
+        "napi": "10",
+        "icu": "78.1",
+        "unicode": "17.0",
+        "sqlite": "3.51.0",
+        "modules": "147"
+      },
+      "platform": "darwin",
+      "arch": "arm64",
+      "execPath": "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+      "execArgv": []
+    },
+    "target": "js",
+    "mode": "typed-step library emission"
+  },
+  "valid": {
+    "offArtifactSha256": "5db9119d4f0a8d35ec3c809d1c41b0ad767e0b45d27dcef3aca8bde0063a609c",
+    "onArtifactSha256": "5db9119d4f0a8d35ec3c809d1c41b0ad767e0b45d27dcef3aca8bde0063a609c",
+    "bytes": 289409,
+    "identical": true,
+    "profileStatus": "completed",
+    "reportPath": "/tmp/final-stage/profiles/valid/profile-51635-thread-0-1BXtwd/summary.json",
+    "measurement": {
+      "wall": {
+        "kind": "monotonic performance.now",
+        "scope": "collector process"
+      },
+      "cpu": {
+        "kind": "process.cpuUsage boundary delta",
+        "scope": "entire process; not exclusive across overlapping spans"
+      },
+      "memory": {
+        "kind": "process.memoryUsage boundary snapshot",
+        "scope": "RSS process-wide; heapUsed boundary sample, not allocation or retained bytes"
+      },
+      "sampling": null
+    },
+    "spans": [
+      {
+        "name": "startup-import",
+        "status": "completed",
+        "wallMs": 203.983,
+        "cpuMs": 148.573
+      },
+      {
+        "name": "parse-import-fuel",
+        "status": "completed",
+        "wallMs": 1661.028,
+        "cpuMs": 1325.885
+      },
+      {
+        "name": "template-expand",
+        "status": "completed",
+        "wallMs": 351.017,
+        "cpuMs": 619.666
+      },
+      {
+        "name": "check-signature-body",
+        "status": "completed",
+        "wallMs": 5869.517,
+        "cpuMs": 8968.232
+      },
+      {
+        "name": "emit",
+        "status": "completed",
+        "wallMs": 724.226,
+        "cpuMs": 997.866
+      },
+      {
+        "name": "output-write",
+        "status": "completed",
+        "wallMs": 0.767,
+        "cpuMs": 1.594
+      }
+    ],
+    "observations": {
+      "parse-import-fuel": {
+        "values": {
+          "modules": 2,
+          "parses": 2,
+          "fuelCells": 16000000,
+          "sourceBytes": 75681,
+          "foreignFiles": 56,
+          "parserFuelCellsPerParse": 8000000
+        }
+      },
+      "template-expand-steps": {
+        "value": 27565,
+        "units": "host-step-calls"
+      },
+      "template-expand-typed-progress": {
+        "values": {
+          "attributedBoundarySamples": 12433,
+          "template-expand": 12433
+        },
+        "unclassifiedSamples": 0,
+        "progressShapes": {
+          "Direct": 1434,
+          "Finished": 13698,
+          "Pending": 12433
+        },
+        "mapping": "exact generator manifest request constructors + canonical composition modules"
+      },
+      "check-signature-body-steps": {
+        "value": 137708,
+        "units": "host-step-calls"
+      },
+      "check-signature-body-typed-progress": {
+        "values": {
+          "attributedBoundarySamples": 30573,
+          "check-signature-body": 30573
+        },
+        "unclassifiedSamples": 0,
+        "progressShapes": {
+          "Direct": 38555,
+          "Finished": 68580,
+          "Pending": 30573
+        },
+        "mapping": "exact generator manifest request constructors + canonical composition modules"
+      },
+      "emit-steps": {
+        "value": 11130,
+        "units": "host-step-calls"
+      },
+      "emit-typed-progress": {
+        "values": {
+          "attributedBoundarySamples": 2605,
+          "emit-catalog-lowering": 995,
+          "emit-descriptor-nf": 91,
+          "emit-render-js": 1519
+        },
+        "unclassifiedSamples": 0,
+        "progressShapes": {
+          "Direct": 2934,
+          "Finished": 5591,
+          "Pending": 2605
+        },
+        "mapping": "exact generator manifest request constructors + canonical composition modules"
+      },
+      "output-write": {
+        "values": {
+          "bytes": 289409,
+          "modules": 2,
+          "foreignFiles": 56
+        }
+      }
+    }
+  },
+  "invalid": {
+    "diagnosticIdentical": true,
+    "diagnostic": "candidate: checking failed: constructor result does not match expected datatype",
+    "exitCode": 1,
+    "profileStatus": "failed",
+    "failedSpans": [
+      "check-signature-body"
+    ],
+    "spans": [
+      {
+        "name": "startup-import",
+        "status": "completed"
+      },
+      {
+        "name": "parse-import-fuel",
+        "status": "completed"
+      },
+      {
+        "name": "template-expand",
+        "status": "completed"
+      },
+      {
+        "name": "check-signature-body",
+        "status": "failed"
+      }
+    ],
+    "reportPath": "/tmp/final-stage/profiles/bad/profile-57440-thread-0-p91XlK/summary.json"
+  },
+  "partialFailure": {
+    "diagnosticIdentical": true,
+    "diagnostic": "candidate: parser rejected /private/tmp/stage-syntax.bend: invalid or unsupported top-level syntax",
+    "exitCode": 1,
+    "profileStatus": "failed",
+    "spans": [
+      {
+        "name": "startup-import",
+        "status": "completed",
+        "closeReason": null
+      },
+      {
+        "name": "parse-import-fuel",
+        "status": "failed",
+        "closeReason": "candidate host terminated"
+      }
+    ],
+    "reportPath": "/tmp/final-stage/profiles/syn/profile-60792-thread-0-iRZjA8/summary.json"
+  },
+  "nativeCoarseTrace": {
+    "logPath": "/private/tmp/signature-publish57z/evidence/comparison/A1.stderr.log",
+    "logSha256": "34c8f79e0cdb4dab356d9dde7158d0a242c9f9a9f014d309a9ba1e8c2fa9e3b1",
+    "nativePhase": "check",
+    "computeThreads": 1,
+    "parserFuel": 8000000,
+    "reportPath": "/tmp/final-stage/profiles/native/profile-60886-thread-0-kFCpTK/summary.json",
+    "observations": [
+      {
+        "kind": "native-begin",
+        "name": "begin",
+        "units": null,
+        "values": {
+          "computeThreads": 1,
+          "parserFuel": 8000000
+        },
+        "details": {
+          "phase": "check",
+          "phaseTraceVersion": 3
+        }
+      },
+      {
+        "kind": "native-fuel-exact",
+        "name": "parser-fuel-1",
+        "units": "milliseconds",
+        "values": {
+          "elapsedMs": 14.581,
+          "cells": 8000000,
+          "processPeakRssBeforeBytes": 4292608,
+          "processPeakRssAfterBytes": 68321280
+        },
+        "details": {
+          "sourceOrdinal": 1,
+          "note": "eager parser fuel cells constructed for one source; peak RSS before/after includes the whole process"
+        }
+      },
+      {
+        "kind": "native-phase-coarse-span",
+        "name": "parse",
+        "units": "milliseconds",
+        "values": {
+          "elapsedMs": 134.076,
+          "userCpuMs": 129.969,
+          "systemCpuMs": 4.106
+        },
+        "details": {
+          "granularity": "coarse phase boundary; CPU is process-wide including compute threads and is not exclusive across overlapping phases",
+          "modules": 1,
+          "sourceBytes": 165123,
+          "foreignBytes": 0,
+          "eagerFuelCells": 8000000,
+          "fuelBuildMs": 14.581
+        }
+      },
+      {
+        "kind": "native-phase-coarse-span",
+        "name": "expand",
+        "units": "milliseconds",
+        "values": {
+          "elapsedMs": 13.534,
+          "userCpuMs": 13.003,
+          "systemCpuMs": 0.53,
+          "chunkAdvances": 7513,
+          "chunkQuantum": 64
+        },
+        "details": {
+          "granularity": "coarse phase boundary; CPU is process-wide including compute threads and is not exclusive across overlapping phases"
+        }
+      },
+      {
+        "kind": "native-phase-coarse-span",
+        "name": "check",
+        "units": "milliseconds",
+        "values": {
+          "elapsedMs": 815.236,
+          "userCpuMs": 809.358,
+          "systemCpuMs": 5.875,
+          "chunkAdvances": 143884,
+          "chunkQuantum": 64
+        },
+        "details": {
+          "granularity": "coarse phase boundary; CPU is process-wide including compute threads and is not exclusive across overlapping phases"
+        }
+      },
+      {
+        "kind": "trace-coverage",
+        "name": "row-counts",
+        "units": null,
+        "values": {
+          "phaseRows": 3,
+          "fuelRows": 1,
+          "resultRows": 0
+        },
+        "details": {
+          "coarsePhases": [
+            "parse",
+            "expand",
+            "check"
+          ],
+          "fineNativeSubstages": null,
+          "fineNativeSubstagesReason": "the typed driver exposes no host-visible progress boundary; native fine spans require a coordinated private typed view and are not claimed by this report"
+        }
+      }
+    ]
+  },
+  "coverage": {
+    "measuredExplicitSpans": [
+      "startup-import",
+      "parse-import-fuel",
+      "template-expand",
+      "check-signature-body",
+      "emit",
+      "output-write"
+    ],
+    "measuredExactCounters": [
+      "host-step calls per phase",
+      "module/parse/fuel-cell/source-byte counts",
+      "output bytes"
+    ],
+    "sampledGroupsObserved": [
+      "template-expand",
+      "check-signature-body",
+      "emit-catalog-lowering",
+      "emit-descriptor-nf",
+      "emit-render-js"
+    ],
+    "sampledGroupsWithZeroSamplesOnThisWorkload": [
+      "emit-layouts",
+      "emit-sharing",
+      "emit-render-c",
+      "emit-link-planning",
+      "emit-emitter-entry"
+    ],
+    "prerequisites": {
+      "check-publication": "no inspection entry is invoked by the candidate or bootstrap worker; runCheckedInspectionSteps accepts a span if a caller invokes it",
+      "emit-render-c": "the only available C-capable component uses the retired CEmitter Run protocol; a component built after the unified Emitter protocol intake is required",
+      "link": "external clang/link is not performed by candidate_host; native_compiler_experiment owns it",
+      "nativeFineSubstages": "typed views hide progress and the generator is frozen; no native fine span is claimed"
+    },
+    "evidenceKinds": "spans, exact counters and sampled chunk-boundary attribution are separate and not additive"
+  },
+  "limits": [
+    "tiny workload only; fullroot overhead and full stage coverage are not established",
+    "sampled attribution is not time-weighted and not an exact per-function CPU measurement",
+    "committed manifests must match the component composition; unmatched request tags stay unclassified",
+    "native coarse trace is preserved diagnostic stderr, not current-source certification"
+  ]
+}

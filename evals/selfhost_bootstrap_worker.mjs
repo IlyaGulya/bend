@@ -9,6 +9,7 @@ import {getHeapStatistics} from 'node:v8';
 import {writeNativeAst,decodeNativeAst} from './bootstrap_ast_transport.ts';
 import {runNativeStage0,requireNativeRun,runtimeManifest,workloadRows,corpusFor,requireCorpusCoversWorkload} from './native_seed_runtime.mjs';
 import {runTemplateSteps,runCheckerSteps,runEmitterSteps,runLibraryEmitterSteps,sourceFiles,sourceFilePath,verifySourceFileCarrier} from './checker_core_step_runtime.mjs';
+import {createStageProfile,createStepAttribution} from './compiler_stage_profile.mjs';
 
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
 async function transportHash(path){
@@ -32,9 +33,17 @@ if(isMainThread){
  lines.on('line',line=>worker.postMessage(JSON.parse(line)));
 }else{
  let phase='imports',parseId=0,phaseStarted=performance.now();
- let cpuProfiler,executionError;
+ let cpuProfiler,executionError,stageProfile,stageSpan,stagePhase;
  const approvals=new Map(),artifacts={},fixtures=[],sourcePins=new Map();
- const mark=(next,details={})=>{cpuProfiler?.mark(next,details);phase=next;phaseStarted=performance.now();const memory=process.memoryUsage();send({event:'phase',phase,elapsedMs:phaseStarted,rssBytes:memory.rss,heapUsedBytes:memory.heapUsed,heapLimitBytes:getHeapStatistics().heap_size_limit,...details});};
+ const mark=(next,details={})=>{
+  cpuProfiler?.mark(next,details);
+  if(stageProfile!==undefined&&next!==stagePhase){
+   if(stageSpan!==undefined)stageProfile.end(stageSpan,'completed',{phase:stagePhase});
+   stagePhase=next;
+   stageSpan=stageProfile.span(next,{...details,phase:next,summary:next.startsWith('stage-one-parse')||next.startsWith('stage-two-parse')?false:true});
+  }
+  phase=next;phaseStarted=performance.now();const memory=process.memoryUsage();send({event:'phase',phase,elapsedMs:phaseStarted,rssBytes:memory.rss,heapUsedBytes:memory.heapUsed,heapLimitBytes:getHeapStatistics().heap_size_limit,...details});
+ };
  parentPort.on('message',message=>{const pending=approvals.get(message.id);if(!pending)return;approvals.delete(message.id);message.approved?pending.resolve(message):pending.reject(Error(message.error));});
  const requestApproval=message=>new Promise((resolve,reject)=>{approvals.set(message.id,{resolve,reject});send(message);});
  const pinSource=(file,digest)=>{
@@ -214,17 +223,27 @@ if(isMainThread){
   return row.namespace?row.namespace+'.SourceFile':'SourceFile';
  }
  function compile(component,loaded,library,sourceFileTag){
+  if(stageProfile!==undefined)stageProfile.record({kind:'phase-exact-counters',scope:'bootstrap worker',name:'parse-import-fuel',
+   values:{sourceFiles:loaded.sourceHashes.length,foreignFiles:loaded.files.length,parserFuel:workerData.limits.parserFuel},
+   source:'selfhost_bootstrap_worker.mjs',details:{phase:'parse-import-fuel',
+    note:'exact source-file count and the requested parser fuel; the worker materializes the finite fuel chain lazily, so no cell count is claimed'}});
   let modules=loaded.modules,files=sourceFiles(loaded.files,sourceFileTag);loaded.modules=undefined;loaded.files=undefined;
+  const expandAttributes=stageProfile===undefined?undefined:createStepAttribution('template-expand','Template',stageProfile.manifestTable);
   const expansionComponent=profileSteps({...component,expand_modules_start:input=>{modules=undefined;return component.expand_modules_start(input);}},['expand_modules_start','template_step']);
-  mark(phase+'-expand');let expanded=runTemplateSteps(expansionComponent,modules);
+  mark(phase+'-expand');let expanded=runTemplateSteps(expansionComponent,modules,expandAttributes);
   if(tag(expanded)!=='ExpandSuccess')failure('expand',expanded);
+  expandAttributes?.record(stageProfile.profile);
+  const checkAttributes=stageProfile===undefined?undefined:createStepAttribution('check-signature-body','Checker',stageProfile.manifestTable);
   const checkingComponent=profileSteps({...component,check_expanded_start:input=>{expanded=undefined;return component.check_expanded_start(input);}},['check_expanded_start','checker_step']);
-  mark(phase.replace(/-expand$/,'')+'-check');let checked=runCheckerSteps(checkingComponent,expanded.modules);
+  mark(phase.replace(/-expand$/,'')+'-check');let checked=runCheckerSteps(checkingComponent,expanded.modules,checkAttributes);
   if(tag(checked)!=='CheckSuccess')failure('check',checked);
+  checkAttributes?.record(stageProfile.profile);
+  const emitAttributes=stageProfile===undefined?undefined:createStepAttribution('emit','Emitter',stageProfile.manifestTable);
   const emissionComponent=profileSteps({...component,emit_modules_start:(input,sources)=>{checked=undefined;return component.emit_modules_start(input,sources);},emit_library_start:(program,names,sources)=>{checked=undefined;return component.emit_library_start(program,names,sources);}},['emit_modules_start','emit_library_start','emitter_step']);
-  mark(phase.replace(/-check$/,'')+'-emit');const emitted=library?runLibraryEmitterSteps(emissionComponent,checked.program,list(ABI),files):runEmitterSteps(emissionComponent,checked.program,files);
+  mark(phase.replace(/-check$/,'')+'-emit');const emitted=library?runLibraryEmitterSteps(emissionComponent,checked.program,list(ABI),files,emitAttributes):runEmitterSteps(emissionComponent,checked.program,files,emitAttributes);
   files=undefined;
   if(tag(emitted)!=='EmitSuccess')failure('emit',emitted);
+  emitAttributes?.record(stageProfile.profile);
   return emitted.source;
  }
  function fixtureConstructorValue(text){
@@ -359,6 +378,17 @@ if(isMainThread){
    cpuProfiler=createCpuProfiler(process.env.SELFHOST_CPU_PROFILE_DIR,{root:workerData.root,parser:workerData.parser,parserSha256:workerData.parserSha256,component:workerData.component,componentSha256:workerData.componentSha256,sidecars:workerData.sidecars,fixture:workerData.fixture,parseOnly:workerData.parseOnly,profileRoot:workerData.profileRoot,limits:workerData.limits});
    cpuProfiler.mark('imports');
   }
+  if(process.env.SELFHOST_STAGE_PROFILE_DIR){
+   const manifestPaths=(process.env.SELFHOST_STAGE_MANIFEST??'').split(process.platform==='win32'?';':':').filter(Boolean);
+   stageProfile=await createStageProfile({directory:process.env.SELFHOST_STAGE_PROFILE_DIR,
+    rawDetail:process.env.SELFHOST_STAGE_PROGRESS==='1',manifestPaths,
+    execution:{stage:'selfhost-bootstrap-worker',mode:'typed-step',root:workerData.root,rootSha256:workerData.rootComposition?.rootSha256,
+     parser:workerData.parser,parserSha256:workerData.parserSha256,component:workerData.component,componentSha256:workerData.componentSha256,
+     seedFileTag:workerData.sourceFileTag,fixture:workerData.fixture??null,parseOnly:workerData.parseOnly===true,profileRoot:workerData.profileRoot===true,
+     native:workerData.native===true,limits:workerData.limits,sidecars:workerData.sidecars,
+     scope:'selfhost bootstrap worker typed-step phases; coarse phase marks plus exact host-step counters and sampled typed progress'}});
+   stagePhase='imports';stageSpan=stageProfile.span('imports',{phase:'imports'});
+  }
   if(workerData.native){await runNativeSeed();}else{
   if(sha(readFileSync(workerData.parser))!==workerData.parserSha256||sha(readFileSync(workerData.component))!==workerData.componentSha256)throw Error('Authenticated seed artifact changed before execution');
   const seedParser=(await import(pathToFileURL(workerData.parser).href)).default;
@@ -420,5 +450,13 @@ if(isMainThread){
   }
   }
  }catch(error){executionError=error;send({event:'result',result:{passed:false,selfhostGreen:false,failure:{phase:error.phase??phase,error:String(error),stack:error.stack,diagnostic:error.diagnostic,span:error.span,file:error.file,artifacts}}});process.exitCode=2;}
- finally{try{cpuProfiler?.finish(executionError);}finally{parentPort.removeAllListeners('message');parentPort.close();}}
+ finally{
+  try{cpuProfiler?.finish(executionError);}finally{
+   if(stageProfile!==undefined){
+    if(stageSpan!==undefined)stageProfile.end(stageSpan,executionError===undefined?'completed':'failed',{phase:stagePhase,...executionError===undefined?{}:{error:String(executionError)}});
+    stageProfile.finish(executionError===undefined?'completed':'failed',executionError);
+   }
+   parentPort.removeAllListeners('message');parentPort.close();
+  }
+ }
 }

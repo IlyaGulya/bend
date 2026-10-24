@@ -13,6 +13,8 @@
 //
 // usage: bun evals/candidate_host.ts --candidate=PATH [--parser=PATH]
 //   [--base=PATH] [--library] [--exports=a,b] <input.bend> -o <output>
+//   Opt-in diagnostic stage report: [--stage-profile=DIR] [--stage-progress]
+//   [--stage-manifest=PATH ...]. Ordinary output and diagnostics are unchanged.
 import {createHash} from 'node:crypto';
 import {readFileSync,realpathSync,writeFileSync} from 'node:fs';
 import {dirname,isAbsolute,posix,resolve} from 'node:path';
@@ -22,10 +24,13 @@ import {
  runTemplateSteps,runCheckerSteps,runLibraryEmitterSteps,runEmitterSteps,
  runCEmitterSteps,runCLibraryEmitterSteps,
 } from './checker_core_step_runtime.mjs';
+import {createStageProfile,createStepAttribution} from './compiler_stage_profile.mjs';
 
 const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 
+let stage:any;
 function fail(message:string):never{
+ try{stage?.fail(message);}catch(error){console.error('candidate: stage profile close failed: '+String(error));}
  console.error('candidate: '+message);
  process.exit(1);
 }
@@ -49,11 +54,11 @@ function items(value:unknown):unknown[]{
 const list=(values:unknown[]):unknown=>values.reduceRight((tail,head)=>({$:'Con',head,tail}),{$:'Nil'});
 
 function args_parse(){
- const values=new Map<string,string>(),flags=new Set<string>(),positional:string[]=[];
+ const values=new Map<string,string>(),flags=new Set<string>(),positional:string[]=[],manifests:string[]=[];
  const rest=process.argv.slice(2);
  for(let i=0;i<rest.length;i+=1){
   const arg=rest[i]!;
-  if(arg==='--library'){flags.add(arg);continue;}
+  if(arg==='--library'||arg==='--stage-progress'){flags.add(arg);continue;}
   if(arg==='-o'){
    const value=rest[++i];
    if(value===undefined||values.has('-o'))fail('-o needs one output path');
@@ -62,7 +67,12 @@ function args_parse(){
   }
   if(arg.startsWith('--')){
    const at=arg.indexOf('='),name=at<0?arg:arg.slice(0,at),value=at<0?rest[++i]:arg.slice(at+1);
-   if(!['--candidate','--parser','--base','--exports','--runtime-c','--source-tag'].includes(name)||value===undefined||values.has(name))fail('unknown or duplicate option '+arg);
+   if(name==='--stage-manifest'){
+    if(value===undefined)fail('--stage-manifest needs one path');
+    manifests.push(resolve(value));
+    continue;
+   }
+   if(!['--candidate','--parser','--base','--exports','--runtime-c','--source-tag','--stage-profile'].includes(name)||value===undefined||values.has(name))fail('unknown or duplicate option '+arg);
    values.set(name,value);
    continue;
   }
@@ -72,16 +82,40 @@ function args_parse(){
  if(!values.has('--candidate'))fail('required --candidate=PATH');
  if(values.has('--source-tag')){const sourceTag=values.get('--source-tag')!;if(!sourceTag||/[\r\n\t]/.test(sourceTag))fail('--source-tag needs one nominal constructor tag');}
  if(!values.has('-o'))fail('required -o <output>');
+ if(flags.has('--stage-progress')&&!values.has('--stage-profile'))fail('--stage-progress needs --stage-profile=DIR');
  const output=values.get('-o')!;
  return {candidate:resolve(values.get('--candidate')!),parser:values.has('--parser')?resolve(values.get('--parser')!):undefined,
   base:resolve(values.get('--base')??posix.join(ROOT,'bend2/base.bend')),exports:values.get('--exports')?.split(','),
   library:flags.has('--library')||output.endsWith('.mjs'),input:resolve(positional[0]!),output:resolve(output),
   runtimeC:values.has('--runtime-c')?resolve(values.get('--runtime-c')!):undefined,
-  sourceTag:values.get('--source-tag')??OFFICIAL_SOURCE_FILE_TAG};
+  sourceTag:values.get('--source-tag')??OFFICIAL_SOURCE_FILE_TAG,
+  stageProfile:values.has('--stage-profile')?resolve(values.get('--stage-profile')!):undefined,
+  stageManifests:manifests,stageProgress:flags.has('--stage-progress')};
 }
 
 const o=args_parse();
 const target=o.output.endsWith('.c')?'c':'js';
+// Opt-in diagnostic identity. Ordinary runs never touch the collector.
+const fileSha=(path:string)=>createHash('sha256').update(readFileSync(path)).digest('hex');
+if(o.stageProfile!==undefined){
+ const inputPath=realpathSync(o.input),parserPath=realpathSync(o.parser??o.candidate);
+ stage=await createStageProfile({
+  directory:o.stageProfile,rawDetail:o.stageProgress,manifestPaths:o.stageManifests,
+  execution:{stage:'selfhost-candidate',mode:'typed-step',target,
+   sourcePath:inputPath,sourceSha256:fileSha(inputPath),
+   candidatePath:realpathSync(o.candidate),candidateSha256:fileSha(o.candidate),
+   parserPath,parserSha256:fileSha(parserPath),
+   basePath:realpathSync(o.base),baseSha256:fileSha(o.base),
+   sourceFileTag:o.sourceTag,library:o.library,exports:o.exports??null,outputPath:o.output,
+   command:[process.execPath,...process.argv.slice(2)],
+   scope:'candidate_host.ts typed-step ABI; source emission only, no external link step'},
+ });
+ process.on('exit',code=>{
+  try{if(stage!==undefined&&!stage.finished)stage.finish(code===0?'completed':'failed',code===0?undefined:'candidate host exited '+code);}
+  catch(error){console.error('candidate: stage profile close failed: '+String(error));}
+ });
+}
+const importSpan=stage?.span('startup-import',{candidatePath:o.candidate,parserPath:o.parser??o.candidate});
 // Both paths are runtime-selected by the caller, so a static import is impossible.
 const candidate=objectOf((await import(pathToFileURL(o.candidate).href)).default);
 const requiredStart=target==='c'?'emit_c_modules_start':'emit_modules_start';
@@ -91,10 +125,13 @@ if(candidate===undefined||typeof candidate.parsed_module!=='function'||typeof ca
  fail('candidate lacks the typed '+target+' step ABI ('+requiredStart+(o.library?'/'+requiredLibraryStart:'')+')');
 const parserModule=o.parser===undefined?candidate:objectOf((await import(pathToFileURL(o.parser).href)).default);
 if(typeof parserModule?.parse_with_fuel!=='function')fail('no compiled parser: pass --parser=PATH or export parse_with_fuel');
+stage?.end(importSpan!,'completed',{target,library:o.library,parserModule:o.parser===undefined?'candidate':'separate'});
 
+let parsedSources=0,fuelCells=0,sourceBytes=0;
 function parse(file:string,source:string):Record<string,unknown>{
  let fuel:unknown={$:'FeedbackFuelEnd'};
  for(let i=0;i<8000000;i+=1)fuel={$:'FeedbackFuelCell',tail:fuel};
+ if(stage!==undefined){parsedSources+=1;fuelCells+=8000000;sourceBytes+=Buffer.byteLength(source);}
  const feedback=objectOf(parserModule!.parse_with_fuel(fuel,file,source));
  if(tag(feedback)!=='FeedbackComplete')fail('parser feedback did not complete for '+file);
  const result=objectOf(objectOf(feedback?.value)?.result);
@@ -117,7 +154,9 @@ function visit(file:string,scope:string){
  const at=realpathSync(file);
  if(seen.has(at))return;
  seen.add(at);
+ const fileSpan=o.stageProgress?stage?.span('parse-file',{file:at,summary:false}):undefined;
  const module=parse(at,readFileSync(at,'utf8'));
+ if(fileSpan!==undefined)stage!.end(fileSpan,'completed',{file:at});
  if(at===inputFile)rootModule=module;
  for(const top of items(module.declarations)){
   const definition=objectOf(objectOf(top)?.definition);
@@ -137,15 +176,31 @@ function visit(file:string,scope:string){
  }
  modules.push(candidate!.parsed_module(scope,module));
 }
+const parseSpan=stage?.span('parse-import-fuel',{input:o.input,target});
 visit(o.input,'');
+stage?.end(parseSpan!,'completed',{modules:modules.length,foreignFiles:files.length});
+stage?.record({kind:'phase-exact-counters',scope:'candidate host',name:'parse-import-fuel',
+ values:{modules:modules.length,parses:parsedSources,fuelCells,sourceBytes,foreignFiles:files.length,parserFuelCellsPerParse:8000000},
+ source:'candidate_host.ts',details:{phase:'parse-import-fuel',
+  note:'one eager parser feedback chain per parsed module; fuelCells is the exact constructed cell count, not semantic fuel consumed'}});
 const bag=sourceFiles(files,o.sourceTag);
 
 function checkedProgram():unknown{
  const loaded=list(modules);
- const expanded=typeof candidate!.expand_modules_start==='function'?runTemplateSteps(candidate,loaded):{$:'ExpandSuccess',modules:loaded};
- if(tag(expanded)!=='ExpandSuccess')fail('template expansion failed: '+String(objectOf(expanded)?.message??''));
- const checked=runCheckerSteps(candidate,objectOf(expanded)?.modules);
- if(tag(checked)!=='CheckSuccess')fail('checking failed: '+String(objectOf(objectOf(checked)?.diagnostic)?.message??''));
+ const expandAttributes=stage===undefined?undefined:createStepAttribution('template-expand','Template',stage.manifestTable);
+ const expandSpan=stage?.span('template-expand',{inputModules:modules.length});
+ const expanded=typeof candidate!.expand_modules_start==='function'?runTemplateSteps(candidate,loaded,expandAttributes):{$:'ExpandSuccess',modules:loaded};
+ const expandResult=tag(expanded),expandOk=expandResult==='ExpandSuccess';
+ stage?.end(expandSpan!,expandOk?'completed':'failed',{result:expandResult,...expandOk?{}:{error:String(objectOf(expanded)?.message??expandResult)}});
+ expandAttributes?.record(stage!.profile);
+ if(!expandOk)fail('template expansion failed: '+String(objectOf(expanded)?.message??''));
+ const checkAttributes=stage===undefined?undefined:createStepAttribution('check-signature-body','Checker',stage.manifestTable);
+ const checkSpan=stage?.span('check-signature-body',{inputModules:modules.length});
+ const checked=runCheckerSteps(candidate,objectOf(expanded)?.modules,checkAttributes);
+ const checkResult=tag(checked),checkOk=checkResult==='CheckSuccess';
+ stage?.end(checkSpan!,checkOk?'completed':'failed',{result:checkResult,...checkOk?{}:{error:String(objectOf(objectOf(checked)?.diagnostic)?.message??checkResult)}});
+ checkAttributes?.record(stage!.profile);
+ if(!checkOk)fail('checking failed: '+String(objectOf(objectOf(checked)?.diagnostic)?.message??''));
  return objectOf(checked)?.program;
 }
 
@@ -168,15 +223,29 @@ if(target==='c'){
  try{runtime=readFileSync(o.runtimeC,'utf8');}
  catch(error){fail('cannot read C runtime '+o.runtimeC+': '+String(error));}
 }
+const emitAttributes=stage===undefined?undefined:createStepAttribution('emit','Emitter',stage.manifestTable);
+const emitSpan=stage?.span('emit',{target,library:o.library,exports:o.library?exports.length:null});
 const emitted=target==='c'
  ? o.library
-  ? runCLibraryEmitterSteps(candidate,program,list(exports),runtime!,bag)
-  : runCEmitterSteps(candidate,program,runtime!,bag)
+  ? runCLibraryEmitterSteps(candidate,program,list(exports),runtime!,bag,emitAttributes)
+  : runCEmitterSteps(candidate,program,runtime!,bag,emitAttributes)
  : o.library
-  ? runLibraryEmitterSteps(candidate,program,list(exports),bag)
-  : runEmitterSteps(candidate,program,bag);
-if(tag(emitted)!=='EmitSuccess')fail('emission failed: '+String(objectOf(emitted)?.message??''));
+  ? runLibraryEmitterSteps(candidate,program,list(exports),bag,emitAttributes)
+  : runEmitterSteps(candidate,program,bag,emitAttributes);
+const emitResult=tag(emitted),emitOk=emitResult==='EmitSuccess';
+stage?.end(emitSpan!,emitOk?'completed':'failed',{result:emitResult,...emitOk?{}:{error:String(objectOf(emitted)?.message??emitResult)}});
+emitAttributes?.record(stage!.profile);
+if(!emitOk)fail('emission failed: '+String(objectOf(emitted)?.message??''));
 const source=objectOf(emitted)?.source;
 if(typeof source!=='string')fail('emission returned no source');
+const outputSpan=stage?.span('output-write',{output:o.output,bytes:Buffer.byteLength(source)});
+const digest=createHash('sha256').update(source).digest('hex');
 writeFileSync(o.output,source);
-console.log(JSON.stringify({output:o.output,bytes:Buffer.byteLength(source),sha256:createHash('sha256').update(source).digest('hex'),target,library:o.library,exports:o.library?exports:undefined,modules:seen.size,foreignFiles:files.length,runtime:target==='c'?o.runtimeC:undefined}));
+stage?.end(outputSpan!,'completed',{output:o.output,bytes:Buffer.byteLength(source)});
+stage?.record({kind:'phase-exact-counters',scope:'candidate host',name:'output-write',
+ values:{bytes:Buffer.byteLength(source),modules:modules.length,foreignFiles:files.length},
+ source:'candidate_host.ts',details:{phase:'output-write',note:'bytes are the emitted source size; the hash is content identity, not a performance metric'}});
+if(stage!==undefined)stage.finish('completed');
+const result:Record<string,unknown>={output:o.output,bytes:Buffer.byteLength(source),sha256:digest,target,library:o.library,exports:o.library?exports:undefined,modules:seen.size,foreignFiles:files.length,runtime:target==='c'?o.runtimeC:undefined};
+if(stage!==undefined)result.stageProfile=stage.reportPath;
+console.log(JSON.stringify(result));

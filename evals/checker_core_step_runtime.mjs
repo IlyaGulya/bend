@@ -119,31 +119,40 @@ export function sourceFilesFor(modulePath,declaredPaths,carrier){
  * Stack transitions, requests and source continuations remain entirely native.
  * There are no recursive host calls or host-imposed step/fuel limits.
  */
-function runSteps(component,startArguments,kind,startExport,stepExport,validateResult){
+function runSteps(component,startArguments,kind,startExport,stepExport,validateResult,observe){
  if(typeof component?.[startExport]!=='function')invalid(kind,'missing '+startExport+' export');
  if(typeof component?.[stepExport]!=='function')invalid(kind,'missing '+stepExport+' export');
  const stateTag=kind+'RunState',finishedTag=kind+'RunFinished',valueTag=kind+'Value',stateSuffix='.'+stateTag,finishedSuffix='.'+finishedTag,valueSuffix='.'+valueTag;
- let knownStateTag,knownFinishedTag,knownValueTag,run=component[startExport](...startArguments);
+ let knownStateTag,knownFinishedTag,knownValueTag,steps=0,run=component[startExport](...startArguments);
  startArguments=undefined;
- for(;;){
-  const tag=run?.$;
-  const validRun=run!==null&&typeof run==='object'&&!Array.isArray(run)&&typeof tag==='string';
-  if(validRun&&(tag===knownStateTag||tag===stateTag||tag.endsWith(stateSuffix))){
-   knownStateTag=tag;
-   const next=run;
-   run=undefined;
-   run=component[stepExport](next);
-  }else if(validRun&&(tag===knownFinishedTag||tag===finishedTag||tag.endsWith(finishedSuffix))){
-   knownFinishedTag=tag;
-   if(!Object.hasOwn(run,'box'))invalid(kind,finishedTag+' requires box');
-   const box=run.box,boxTag=box?.$;
-   if(box===null||typeof box!=='object'||Array.isArray(box)||typeof boxTag!=='string'||!(boxTag===knownValueTag||boxTag===valueTag||boxTag.endsWith(valueSuffix))||!Object.hasOwn(box,'value'))invalid(kind,finishedTag+' requires '+valueTag+' box with value');
-   knownValueTag=boxTag;
-   run=undefined;
-   const value=box.value;
-   validateResult(value);
-   return value;
-  }else invalid(kind,'expected '+stateTag+' or '+finishedTag+', observed '+String(tag));
+ try{
+  for(;;){
+   const tag=run?.$;
+   const validRun=run!==null&&typeof run==='object'&&!Array.isArray(run)&&typeof tag==='string';
+   if(validRun&&(tag===knownStateTag||tag===stateTag||tag.endsWith(stateSuffix))){
+    knownStateTag=tag;
+    const next=run;
+    run=undefined;
+    // Read-only diagnostic observation; absent on every ordinary run.
+    if(observe!==undefined)observe.onStep?.(steps,next);
+    steps+=1;
+    run=component[stepExport](next);
+   }else if(validRun&&(tag===knownFinishedTag||tag===finishedTag||tag.endsWith(finishedSuffix))){
+    knownFinishedTag=tag;
+    if(!Object.hasOwn(run,'box'))invalid(kind,finishedTag+' requires box');
+    const box=run.box,boxTag=box?.$;
+    if(box===null||typeof box!=='object'||Array.isArray(box)||typeof boxTag!=='string'||!(boxTag===knownValueTag||boxTag===valueTag||boxTag.endsWith(valueSuffix))||!Object.hasOwn(box,'value'))invalid(kind,finishedTag+' requires '+valueTag+' box with value');
+    knownValueTag=boxTag;
+    run=undefined;
+    const value=box.value;
+    validateResult(value);
+    if(observe!==undefined)observe.onFinish?.(value,steps);
+    return value;
+   }else invalid(kind,'expected '+stateTag+' or '+finishedTag+', observed '+String(tag));
+  }
+ }catch(error){
+  if(observe!==undefined)observe.onError?.(error,steps);
+  throw error;
  }
 }
 
@@ -204,43 +213,43 @@ function validateSourceFiles(files){
  }
 }
 
-export function runTemplateSteps(component,modules){
- return runSteps(component,[modules],'Template','expand_modules_start','template_step',validateExpandResult);
+export function runTemplateSteps(component,modules,observe){
+ return runSteps(component,[modules],'Template','expand_modules_start','template_step',validateExpandResult,observe);
 }
 
-export function runCheckerSteps(component,modules){
- return runSteps(component,[modules],'Checker','check_expanded_start','checker_step',validateCheckResult);
+export function runCheckerSteps(component,modules,observe){
+ return runSteps(component,[modules],'Checker','check_expanded_start','checker_step',validateCheckResult,observe);
 }
 
-export function runCheckedInspectionSteps(component,program){
+export function runCheckedInspectionSteps(component,program,observe){
  validateCheckedProgram(program);
- return runSteps(component,[program],'Checker','inspect_checked_start','checker_step',validateInspection);
+ return runSteps(component,[program],'Checker','inspect_checked_start','checker_step',validateInspection,observe);
 }
 
-export function runEmitterSteps(component,program,files){
+export function runEmitterSteps(component,program,files,observe){
  validateCheckedProgram(program);
  validateSourceFiles(files);
- return runSteps(component,[program,files],'Emitter','emit_modules_start','emitter_step',validateEmitResult);
+ return runSteps(component,[program,files],'Emitter','emit_modules_start','emitter_step',validateEmitResult,observe);
 }
 
-export function runLibraryEmitterSteps(component,program,exports,files){
+export function runLibraryEmitterSteps(component,program,exports,files,observe){
  validateCheckedProgram(program);
  if(!['Nil','Con'].includes(constructorTag(exports)))invalid('Emitter','library start requires explicit native exports list');
  validateSourceFiles(files);
- return runSteps(component,[program,exports,files],'Emitter','emit_library_start','emitter_step',validateEmitResult);
+ return runSteps(component,[program,exports,files],'Emitter','emit_library_start','emitter_step',validateEmitResult,observe);
 }
 
-export function runCEmitterSteps(component,program,runtime,files){
+export function runCEmitterSteps(component,program,runtime,files,observe){
  validateCheckedProgram(program);
  if(typeof runtime!=='string')invalid('Emitter','runtime source must be a string, not a path');
  validateSourceFiles(files);
- return runSteps(component,[program,runtime,files],'Emitter','emit_c_modules_start','c_emitter_step',validateEmitResult);
+ return runSteps(component,[program,runtime,files],'Emitter','emit_c_modules_start','c_emitter_step',validateEmitResult,observe);
 }
 
-export function runCLibraryEmitterSteps(component,program,exports,runtime,files){
+export function runCLibraryEmitterSteps(component,program,exports,runtime,files,observe){
  validateCheckedProgram(program);
  if(!['Nil','Con'].includes(constructorTag(exports)))invalid('Emitter','library start requires explicit native exports list');
  if(typeof runtime!=='string')invalid('Emitter','runtime source must be a string, not a path');
  validateSourceFiles(files);
- return runSteps(component,[program,exports,runtime,files],'Emitter','emit_c_library_start','c_emitter_step',validateEmitResult);
+ return runSteps(component,[program,exports,runtime,files],'Emitter','emit_c_library_start','c_emitter_step',validateEmitResult,observe);
 }
