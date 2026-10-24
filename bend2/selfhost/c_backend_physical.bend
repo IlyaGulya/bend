@@ -875,7 +875,9 @@ def seal_cell_walk(+puse: BIR.Use, +pkinds: List<&2, CLay.CWord>, +pcur: String)
     case +kind <> +rest: List.append(&2, Job, seal_cell_kind(puse, kind, pcur), seal_cell_walk(puse, rest, pcur))
 
 def elem_fill_operand(+pw: World, +playout: CLay.Layout, +puse: BIR.Use, +pcode: Code, +pterm: String, +ptag: String) -> List<&2, Job>:
-List.append(&2, Job, List.append(&2, Job, List.append(&2, Job,   code_jobs(pcode), fill_jobs(pw, playout, pterm, DstSeq{"w0", "o0"}, ptag)), [JText{"c0 = 0;"}]), seal_cell_walk(puse, CLay.layout_kinds(playout), "c0"))
+  cursor = join_text([ptag, "c"])
+  jobs = List.append(&2, Job, one_job(JText{join_text(["u32 ", cursor, " = 0;"])}), List.append(&2, Job, code_jobs(pcode), List.append(&2, Job, fill_jobs(pw, playout, pterm, DstSeq{"w0", "o0"}, ptag), seal_cell_walk(puse, CLay.layout_kinds(playout), cursor))))
+  jobs
 
 def elem_fill(+pw: World, +playout: CLay.Layout, +puse: BIR.Use, +ptext: String, +ptag: String) -> List<&2, Job>:
   elem_fill_operand(pw, playout, puse, operand_code(playout, puse, ptext, ptag), operand_name(playout, puse, ptext, ptag), ptag)
