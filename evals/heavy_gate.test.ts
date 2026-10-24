@@ -1,5 +1,5 @@
 import {expect,test} from 'bun:test';
-import {mkdtemp,readFile,writeFile,rm,access} from 'node:fs/promises';
+import {mkdtemp,readdir,readFile,writeFile,rm,access} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join,resolve} from 'node:path';
 import {runHeavyGate,type HeavyGateResult} from './heavy_gate.ts';
@@ -274,3 +274,40 @@ test('parent death triggers cleanup and automatically releases the stale kernel 
   }finally{owner.kill('SIGKILL');await owner.exited;}
  }finally{await rm(directory,{recursive:true,force:true});}
 },10000);
+
+test('launcher process-group kill leaves the supervisor independent and terminal',async()=>{
+ const directory=await mkdtemp(join(tmpdir(),'heavy-gate-test-')),lockPath=join(directory,'gate.lock');
+ const ready=join(directory,'ready'),script=join(directory,'launcher.ts');
+ const reportDir=join(tmpdir(),`bend-heavy-gate-${process.getuid?.()??0}`);
+ const before=new Set(await readdir(reportDir).catch(()=>[] as string[]));
+ let launcher:Bun.Subprocess|undefined;
+ try{
+  const command=['/bin/sh','-c','echo $$ > "$1"; exec sleep 30','fixture',ready];
+  await writeFile(script,`import {runHeavyGate} from ${JSON.stringify(gate)};
+await runHeavyGate(${JSON.stringify(command)},${JSON.stringify({...safe,lockPath,timeoutMs:3000,label:'launcher group kill'})});`);
+  // The launcher is its own process-group leader so the fixture can kill the
+  // whole group exactly as a job-control launcher would.
+  launcher=Bun.spawn([process.execPath,script],{detached:true,stdio:['ignore','ignore','ignore']});
+  await eventually(ready);
+  process.kill(-launcher.pid,'SIGKILL');await launcher.exited;
+  // The detached native supervisor survives the group kill, observes the
+  // lifeline EOF, stops the owned command and writes a bounded terminal
+  // receipt. It must not leave an empty report or a hanging lease.
+  const deadline=Date.now()+8000;let receipt:Record<string,unknown>|undefined;
+  while(Date.now()<deadline){
+   for(const name of (await readdir(reportDir).catch(()=>[] as string[])).filter(name=>name.startsWith('report-')&&!before.has(name))){
+    try{const text=await readFile(join(reportDir,name),'utf8');if(text.trim()){receipt=JSON.parse(text);break;}}catch{}
+   }
+   if(receipt)break;
+   await Bun.sleep(20);
+  }
+  expect(receipt).toBeDefined();
+  expect(receipt!.status).toBe('FAIL');
+  expect(['interrupted','deadline_exceeded','command_signal','descendants_after_exit','cleanup_incomplete']).toContain(receipt!.reason);
+  expect((await runHeavyGate(['true'],{...safe,lockPath})).status).toBe('PASS');
+  await expectStopped(Number((await readFile(ready,'utf8')).trim()));
+ }finally{
+  if(launcher)launcher.kill('SIGKILL');
+  await rm(directory,{recursive:true,force:true});
+ }
+},20000);

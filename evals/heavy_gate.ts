@@ -180,6 +180,11 @@ export async function runHeavyGate(command:readonly string[],options:HeavyGateOp
  const child=spawn(helper,['--run',settings.lockPath,token,String(settings.memoryMiB*MiB),String(settings.rssMiB*MiB),
   String(settings.pollMs),String(settings.termGraceMs),String(settings.timeoutMs),'--',...command],{
   stdio:['pipe','inherit','inherit',reportFile.fd],
+  // The supervisor owns the deadline and the owned process tree. It must not
+  // die with the launcher's process group: a group SIGKILL of the launcher
+  // otherwise leaves an empty receipt and no terminal outcome. Its stdin is
+  // the lifeline; EOF/HUP from a dead launcher is handled natively.
+  detached:true,
   env:{...process.env,[leaseToken]:token,[leasePath]:settings.lockPath},
  });
  const stop=()=>{if(!child.stdin?.destroyed)child.stdin?.end('s');};

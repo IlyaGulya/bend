@@ -225,8 +225,21 @@ static int authenticate(const char *path, const char *token) {
 }
 static void report(const char *status, const char *reason, int code, int sig,
                    uint64_t rss, uint64_t footprint, uint64_t elapsed, uint64_t timeout) {
-  dprintf(3, "{\"status\":\"%s\",\"reason\":\"%s\",\"commandExitCode\":%d,\"commandSignal\":%d,\"peakRssBytes\":%" PRIu64 ",\"peakFootprintBytes\":%" PRIu64 ",\"elapsedMs\":%" PRIu64 ",\"timeoutMs\":%" PRIu64 "}\n",
-          status, reason, code, sig, rss, footprint, elapsed, timeout);
+  char line[512];
+  int n = snprintf(line, sizeof(line),
+    "{\"status\":\"%s\",\"reason\":\"%s\",\"commandExitCode\":%d,\"commandSignal\":%d,\"peakRssBytes\":%" PRIu64 ",\"peakFootprintBytes\":%" PRIu64 ",\"elapsedMs\":%" PRIu64 ",\"timeoutMs\":%" PRIu64 "}\n",
+    status, reason, code, sig, rss, footprint, elapsed, timeout);
+  if (n <= 0 || (size_t)n >= sizeof(line)) return;
+  /* A terminal decision is written immediately and may be refined by the final
+     report; overwrite so the file is always one bounded record. */
+  if (!ftruncate(3, 0) && lseek(3, 0, SEEK_SET) >= 0) {
+    ssize_t written = 0;
+    while (written < n) {
+      ssize_t chunk = write(3, line + written, (size_t)(n - written));
+      if (chunk <= 0) break;
+      written += chunk;
+    }
+  }
 }
 int main(int argc, char **argv) {
   if (argc == 4 && !strcmp(argv[1], "--authenticate")) return authenticate(argv[2], argv[3]);
@@ -294,6 +307,8 @@ int main(int argc, char **argv) {
   const char *reason = NULL;
   uint64_t stopping = 0;
   int killed = 0, exited = 0, exit_status = 0, live = 1, parent_open = 1;
+  const uint64_t cleanup_bound = 5000; /* ms after SIGKILL delivery */
+  uint64_t kill_deadline = 0;
   for (;;) {
     int status;
     pid_t reaped;
@@ -314,10 +329,23 @@ int main(int argc, char **argv) {
     if (!reason && millis() - began >= timeout) reason = "deadline_exceeded";
     /* Root exit does not release the lock while descendants remain. */
     if (!reason && exited && live) reason = "descendants_after_exit";
-    if (reason && !stopping) { stopping = millis(); terminate_tree(root, SIGTERM); }
+    if (reason && !stopping) {
+      stopping = millis(); terminate_tree(root, SIGTERM);
+      /* A terminal reason is recorded before destructive cleanup finishes:
+         if the supervisor itself is SIGKILLed mid-cleanup, a receipt exists. */
+      int limited = !strcmp(reason, "physical_footprint_limit") || !strcmp(reason, "rss_limit");
+      report(limited ? "RESOURCE_LIMIT" : "FAIL", reason, -1, 0, peak_rss, peak_footprint, millis() - began, timeout);
+    }
     if (stopping) {
       terminate_tree(root, killed ? SIGKILL : SIGTERM);
-      if (!killed && millis() - stopping >= (uint64_t)grace) { terminate_tree(root, SIGKILL); killed = 1; }
+      if (!killed && millis() - stopping >= (uint64_t)grace) { terminate_tree(root, SIGKILL); killed = 1; kill_deadline = millis(); }
+      else if (killed && millis() - kill_deadline >= cleanup_bound) {
+        /* A descendant can stay unkillable or unconfirmable (e.g. stopped in
+           the kernel). Holding the lease forever with no terminal outcome is
+           worse than an honest incomplete cleanup receipt. */
+        reason = "cleanup_incomplete";
+        break;
+      }
     }
     if (exited && !live) break;
     struct pollfd parent = { .fd = 0, .events = POLLIN | POLLHUP };
@@ -340,7 +368,7 @@ int main(int argc, char **argv) {
       if (bytes <= 0 || byte == 's') interrupted = SIGTERM;
     } else if (n < 0 && errno != EINTR) interrupted = SIGTERM;
   }
-  int code = WIFEXITED(exit_status) ? WEXITSTATUS(exit_status) : -1;
+  int code = exited && WIFEXITED(exit_status) ? WEXITSTATUS(exit_status) : -1;
   int sig = WIFSIGNALED(exit_status) ? WTERMSIG(exit_status) : 0;
   int limited = reason && (!strcmp(reason, "physical_footprint_limit") || !strcmp(reason, "rss_limit"));
   const char *result = limited ? "RESOURCE_LIMIT" : (reason || code != 0 ? "FAIL" : "PASS");
