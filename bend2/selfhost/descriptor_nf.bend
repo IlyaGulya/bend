@@ -436,7 +436,7 @@ def nf_cases(context: NfContext, cases: List<&2, BIR.Descriptor>, values: List<&
             case None{}:
               nf_cases(context, rest, values, env, source, fuel)
         case _:
-          nf_cases(context, rest, values, env, source, fuel)
+          NfFail{"descriptor match case is not a case"}
 
 # ---------------------------------------------------------------------------
 # Descriptor patterns
