@@ -1235,10 +1235,16 @@ def s_reach_add_key(+reach: Reach, +key: String) -> Reach:
     case Reach{+keys, codes, escape, dynamic, changed}:
       s_reach_flag_out(Reach{keys, codes, escape, dynamic, changed}, s_flag_set(keys, key))
 
+def s_reach_code_out(+reach: Reach, fo: FlagOut) -> Reach:
+  match reach:
+    case Reach{keys, _, escape, dynamic, changed}:
+      match fo:
+        case FlagOut{+flags, grew}: Reach{keys, flags, escape, dynamic, Bool.or(changed, grew)}
+
 def s_reach_add_code(+reach: Reach, code: U32) -> Reach:
   match reach:
     case Reach{keys, +codes, escape, dynamic, changed}:
-      s_reach_flag_out(Reach{keys, codes, escape, dynamic, changed}, s_flag_set(codes, U32.show(code)))
+      s_reach_code_out(Reach{keys, codes, escape, dynamic, changed}, s_flag_set(codes, U32.show(code)))
 
 def s_member_u32_go(+items: List<&2, U32>, +key: U32, found: Bool) -> Bool:
   match items:
@@ -1367,8 +1373,12 @@ def s_reach_of(ro: ReachOut) -> Reach:
 def s_reach_out(+reach: Reach) -> ReachOut:
   ReachOut{reach, s_reach_changed(reach)}
 
+def s_reach_reset(+reach: Reach) -> Reach:
+  match reach:
+    case Reach{keys, codes, escape, dynamic, changed}: Reach{keys, codes, escape, dynamic, False{}}
+
 def s_reach_round(+reach: Reach, +bodies: List<&2, BodyRow>, +decls: List<&2, BIR.Declaration>) -> ReachOut:
-  after_bodies = s_reach_bodies_go(bodies, reach)
+  after_bodies = s_reach_bodies_go(bodies, s_reach_reset(reach))
   after_decls = s_reach_decls_go(decls, after_bodies)
   s_reach_out(s_reach_after_keys(after_decls))
 
@@ -2741,12 +2751,28 @@ def s_plan_result(st: AState, +facts: Facts) -> SharingResult:
         case Some{message}: SharingFail{message}
         case None{}: s_plan_result_ok(s_built_no_bodies(s_facts_built(facts)), ctr, array_hot, forced, note, facts)
 
+def s_analysis_bound(+facts: Facts) -> Nat:
+  values = Nat.add(
+    Nat.add(
+      Nat.add(
+        List.length(&2, BodyRow, s_built_bodies(s_facts_built(facts))),
+        List.length(&2, String, s_built_def_keys(s_facts_built(facts)))),
+      List.length(&2, String, s_built_count_keys(s_facts_built(facts)))),
+    List.length(&2, String, s_built_symbol_keys(s_facts_built(facts))))
+  targets = Nat.add(
+    Nat.add(
+      List.length(&2, BodyRow, s_built_bodies(s_facts_built(facts))),
+      List.length(&2, String, s_catalog_foreign_keys(s_facts_catalog(facts)))),
+    1n)
+  heads = Nat.add(List.length(&2, String, s_catalog_family_keys(s_facts_catalog(facts))), 1n)
+  Nat.add(Nat.mul(Nat.add(values, 1n), Nat.add(heads, targets)), 2n)
+
 def s_catalog_result_at(failure: Maybe<&2, String>, +facts: Facts, built: BuiltFacts) -> SharingResult:
   match failure:
     case Some{message}: SharingFail{message}
     case None{}:
       st = s_st_new(s_built_element_unknown(built))
-      s_plan_result(s_analyze(1024n, st, facts), facts)
+      s_plan_result(s_analyze(s_analysis_bound(facts), st, facts), facts)
 
 def s_catalog_result(catalog: Catalog, +facts: Facts, built: BuiltFacts) -> SharingResult:
   s_catalog_result_at(s_catalog_failure(catalog), facts, built)
