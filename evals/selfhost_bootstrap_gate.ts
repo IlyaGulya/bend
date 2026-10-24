@@ -14,6 +14,7 @@
  * not turn fixture/cache or parse-only diagnostics into bootstrap acceptance.
  */
 import {runHeavyGate,guardHeavyGate} from './heavy_gate.ts';
+import {authenticateNativeSeedBuild} from './native_seed_runtime.mjs';
 import {parserParity,isolatedParserParity} from './selfhost_parser_parity.ts';
 import {decodeNativeAst} from './bootstrap_ast_transport.ts';
 import {readAcceptedParserBuild} from './selfhost_driver_source.ts';
@@ -45,25 +46,29 @@ function argumentsOf(){
  for(const argument of process.argv.slice(2)){
   if(argument==='--worker'&&!worker){worker=true;continue;}
   const at=argument.indexOf('='),key=argument.slice(0,at),value=argument.slice(at+1);
-  if(at<0||!['--component','--component-build','--root','--root-manifest','--report','--parser','--parser-build','--fixture','--parse-only','--profile-root'].includes(key)||!value||options.has(key))throw Error('Expected unique --option=value');
+  if(at<0||!['--component','--component-build','--native-build','--native-corpus','--root','--root-manifest','--report','--parser','--parser-build','--fixture','--parse-only','--profile-root'].includes(key)||!value||options.has(key))throw Error('Expected unique --option=value');
   options.set(key,value);
  }
- for(const key of ['--component','--component-build','--root','--report','--parser','--parser-build',...(!options.has('--fixture')?['--root-manifest']:[])])if(!options.has(key))throw Error('Required '+key);
+ const native=options.has('--native-build')||options.has('--native-corpus');
+ if(native&&!(options.has('--native-build')&&options.has('--native-corpus')))throw Error('Native seed mode requires both --native-build and --native-corpus');
+ if(native&&(options.has('--component')||options.has('--component-build')))throw Error('Native seed mode takes no JS component build');
+ for(const key of [...(native?['--native-build','--native-corpus']:['--component','--component-build']),'--root','--report','--parser','--parser-build',...(!options.has('--fixture')?['--root-manifest']:[])])if(!options.has(key))throw Error('Required '+key);
  if(options.has('--parse-only')&&(options.get('--parse-only')!=='true'||options.has('--fixture')))throw Error('--parse-only=true requires the full root, not a fixture');
  if(options.has('--profile-root')&&(options.get('--profile-root')!=='true'||options.has('--fixture')||options.has('--parse-only')||!process.env.SELFHOST_CPU_PROFILE_DIR))throw Error('--profile-root=true requires the full root and SELFHOST_CPU_PROFILE_DIR, without fixture/parse-only modes');
  const parserBuild=resolve(options.get('--parser-build')!);
- return {worker,component:resolve(options.get('--component')!),componentBuild:resolve(options.get('--component-build')!),root:resolve(options.get('--root')!),rootManifest:options.has('--root-manifest')?resolve(options.get('--root-manifest')!):undefined,report:resolve(options.get('--report')!),parser:resolve(options.get('--parser')!),parserBuild,fixture:options.get('--fixture'),parseOnly:options.has('--parse-only'),profileRoot:options.has('--profile-root')};
+ return {worker,component:options.has('--component')?resolve(options.get('--component')!):undefined,componentBuild:options.has('--component-build')?resolve(options.get('--component-build')!):undefined,nativeBuild:options.has('--native-build')?resolve(options.get('--native-build')!):undefined,nativeCorpus:options.has('--native-corpus')?resolve(options.get('--native-corpus')!):undefined,root:resolve(options.get('--root')!),rootManifest:options.has('--root-manifest')?resolve(options.get('--root-manifest')!):undefined,report:resolve(options.get('--report')!),parser:resolve(options.get('--parser')!),parserBuild,fixture:options.get('--fixture'),parseOnly:options.has('--parse-only'),profileRoot:options.has('--profile-root')};
 }
 const o=argumentsOf(),sidecars=o.report+'.cases';mkdirSync(dirname(o.report),{recursive:true});
 // Persistent inputs/results exist only for --fixture diagnostics. Full compiler
 // bootstrap always creates fresh sources and executes every parser/oracle.
 const diagnosticCache=o.fixture?join(dirname(o.report),'.bootstrap-diagnostic-cache-v1'):undefined;
 const requiredExports=o.fixture?ABI.filter(name=>name!=='parse_with_fuel'&&name!=='emit_library_start'):ABI;
-const criterion=o.profileRoot?'Diagnostic fresh full compiler-root parsing, complete semantic oracle parity, original approved parser AST reuse, expansion, full checking, actual library emission and unchanged stage-one library import; no fixture-suite or stage-two/fixedpoint acceptance.':o.parseOnly?'Diagnostic fresh full compiler-root parsing, complete semantic oracle parity and original approved parser AST reuse; no checking, emission, stage execution or fixedpoint acceptance.':o.fixture?'Diagnostic single Template fixture: accepted compiled parsing and full AST parity (fresh or exact authenticated diagnostic reuse), expansion, checking and execution; no bootstrap/fixedpoint claim.':'Accepted native parser + native-validated Template/Checker/JSEmit steps emit full parser-and-step compiler source as stage one; execute its unchanged library, use its own parser and steps to emit stage two from identical Bend sources; require the full native validated closure, byte-identical JS (the JS byte fixed point) and full semantic AST oracle parity, then execute stage-two specialization/failure fixtures. C emission is not exercised by this lane: C behaviour is established only by the separate authenticated C fixture rows, never by declared exports here.';
+const criterion=o.nativeBuild?'Accepted native parser + full natively checked compiler root built by the unchanged canonical kernel/compiler under the original native build policy; native stage0 parses/checks/emits real stage-one JS from the exact same root and executes the original seed fixtures; stage one uses its own parser and steps to emit stage two; require byte-identical JS and full semantic AST oracle parity.':o.profileRoot?'Diagnostic fresh full compiler-root parsing, complete semantic oracle parity, original approved parser AST reuse, expansion, full checking, actual library emission and unchanged stage-one library import; no fixture-suite or stage-two/fixedpoint acceptance.':o.parseOnly?'Diagnostic fresh full compiler-root parsing, complete semantic oracle parity and original approved parser AST reuse; no checking, emission, stage execution or fixedpoint acceptance.':o.fixture?'Diagnostic single Template fixture: accepted compiled parsing and full AST parity (fresh or exact authenticated diagnostic reuse), expansion, checking and execution; no bootstrap/fixedpoint claim.':'Accepted native parser + native-validated Template/Checker/JSEmit steps emit full parser-and-step compiler source as stage one; execute its unchanged library, use its own parser and steps to emit stage two from identical Bend sources; require the full native validated closure, byte-identical JS (the JS byte fixed point) and full semantic AST oracle parity, then execute stage-two specialization/failure fixtures. C emission is not exercised by this lane: C behaviour is established only by the separate authenticated C fixture rows, never by declared exports here.';
+const nativeBoundary=o.nativeBuild?{host:'trusted C file/import loader and serial opaque native Run chunk driver',sourceAlgorithms:'unchanged canonical Bend parser/expansion/checker/JS library emitter compiled by the canonical kernel/compiler',hostChecking:false,hostParsing:false,embeddedSource:false,cachedAst:false,seed:'native stage0 executable built from this exact root',stageTwoParser:'stage-one emitted parse_with_fuel, never the seed parser',outputPatches:0,checksExcluded:0}:undefined;
 // legacyCBackend means "the legacy AST C backend is not in use". The current C
 // seam (c_emit_steps over checked FIR) is a new backend, so this field stays
 // false and the C surface is reported separately below, from observed evidence.
-const boundary={orchestration:'trusted host file loading/import resolution and shared Node opaque native Run chunk driver',nativeTerminationProofIncludesDriver:false,hostCheckingExpansionEmission:false,hostParserUse:'full semantic AST oracle only; never compiler inputs',compilerAstInput:'Original immutable parser result after complete transport validation and full native semantic/span parity approval; transport rehashed before use',nativeCheckedBodies:'seed-native component retains original checked e in memory; never inputs to Bend bootstrap stages',legacyIODriver:false,legacyCBackend:false,legacyCBackendMeans:'legacy AST C backend not used; the new c_emit seam is not legacy and does not set this flag'};
+const boundary=nativeBoundary??{orchestration:'trusted host file loading/import resolution and shared Node opaque native Run chunk driver',nativeTerminationProofIncludesDriver:false,hostCheckingExpansionEmission:false,hostParserUse:'full semantic AST oracle only; never compiler inputs',compilerAstInput:'Original immutable parser result after complete transport validation and full native semantic/span parity approval; transport rehashed before use',nativeCheckedBodies:'seed-native component retains original checked e in memory; never inputs to Bend bootstrap stages',legacyIODriver:false,legacyCBackend:false,legacyCBackendMeans:'legacy AST C backend not used; the new c_emit seam is not legacy and does not set this flag'};
 if(!o.worker){
  if(existsSync(o.report)||existsSync(sidecars))throw Error('Use a fresh report path; bootstrap evidence is never overwritten');
  save(o.report,{status:'IN_PROGRESS',passed:false,selfhostGreen:false,criterion,boundary,limits,root:o.root,requiredExports});
@@ -80,7 +85,7 @@ if(!o.worker){
   wrappersPresent:['emit_c_modules_start','emit_c_library_start','c_emitter_step'].filter(name=>observedRoot.includes('def '+name+'(')),
   emissionExercised:typeof result.cEmissionRows==='number'&&result.cEmissionRows>0,
   scope:'observed from the root text only: the declared C surface and the seam import. This lane runs no C emission, so it makes no C behaviour claim; C behaviour is established by the separate authenticated C fixture rows.'};
- save(o.report,{...result,guardian,cSurface,passed,diagnosticOnly:!!o.parseOnly||!!o.fixture||o.profileRoot,bootstrapAcceptance:!o.parseOnly&&!o.fixture&&!o.profileRoot,compilerBootstrapGreen:passed&&!o.fixture,selfhostGreen:false,broaderSelfhostGreen:'Not established: legacy IO/C driver and product-wide backend/differential gates are outside this compiler-root acceptance',status:diagnosticComplete?(o.profileRoot?'ROOT_COMPILER_PROFILE_PASS':'ROOT_PARSE_DIAGNOSTIC_PASS'):passed?(o.fixture?'TEMPLATE_FIXTURE_PASS':'PURE_STEP_BOOTSTRAP_FIXEDPOINT'):guardian.status==='RESOURCE_LIMIT'?'RESOURCE_LIMIT':guardian.status==='LOCK_BUSY'?'LOCK_BUSY':'FAIL'});
+ save(o.report,{...result,guardian,cSurface,passed,diagnosticOnly:!!o.parseOnly||!!o.fixture||o.profileRoot,bootstrapAcceptance:!o.parseOnly&&!o.fixture&&!o.profileRoot,compilerBootstrapGreen:passed&&!o.fixture,selfhostGreen:false,broaderSelfhostGreen:'Not established: legacy IO/C driver and product-wide backend/differential gates are outside this compiler-root acceptance',status:diagnosticComplete?(o.profileRoot?'ROOT_COMPILER_PROFILE_PASS':'ROOT_PARSE_DIAGNOSTIC_PASS'):passed?(o.fixture?'TEMPLATE_FIXTURE_PASS':o.nativeBuild?'NATIVE_SEED_BOOTSTRAP_FIXEDPOINT':'PURE_STEP_BOOTSTRAP_FIXEDPOINT'):guardian.status==='RESOURCE_LIMIT'?'RESOURCE_LIMIT':guardian.status==='LOCK_BUSY'?'LOCK_BUSY':'FAIL'});
  if(!passed&&!diagnosticComplete)process.exitCode=2;
 }else{
  await guardHeavyGate(import.meta.path,{label:'Real full selfhost step bootstrap'});
@@ -91,10 +96,33 @@ if(!o.worker){
  const flush=()=>save(o.report,state);
  const fail=(error:unknown,details:Record<string,unknown>={})=>{state.failure??={phase,error:String(error),...details};state.status='FAIL';flush();};
  try{
-  state.inputs=Object.fromEntries([o.root,...(o.rootManifest?[o.rootManifest]:[]),o.component,o.componentBuild,o.parser,o.parserBuild,resolve('evals/selfhost_driver_source.ts'),resolve('evals/checker_core_step_runtime.mjs'),resolve('evals/bootstrap_source_oracle.ts'),resolve('evals/bootstrap_ast_transport.ts'),resolve('evals/parser_full_semantic_normalize.ts'),resolve('evals/selfhost_parser_parity.ts'),import.meta.path,resolve('evals/selfhost_bootstrap_worker.mjs'),resolve('evals/selfhost_cpu_profile.mjs')].map(path=>[path,hash(path)]));flush();
+  state.inputs=Object.fromEntries([o.root,...(o.rootManifest?[o.rootManifest]:[]),...(o.component?[o.component]:[]),...(o.componentBuild?[o.componentBuild]:[]),...(o.nativeBuild?[o.nativeBuild,o.nativeCorpus!]:[]),o.parser,o.parserBuild,resolve('evals/selfhost_driver_source.ts'),resolve('evals/checker_core_step_runtime.mjs'),resolve('evals/bootstrap_source_oracle.ts'),resolve('evals/bootstrap_ast_transport.ts'),resolve('evals/parser_full_semantic_normalize.ts'),resolve('evals/selfhost_parser_parity.ts'),resolve('evals/native_seed_runtime.mjs'),import.meta.path,resolve('evals/selfhost_bootstrap_worker.mjs'),resolve('evals/selfhost_cpu_profile.mjs')].map(path=>[path,hash(path)]));flush();
   const acceptedParser=readAcceptedParserBuild(o.parserBuild);
-  const componentBuild=buildReport(o.componentBuild),parserBuild=buildReport(acceptedParser.parserBuild);
-  for(const [name,build,artifact]of [['component',componentBuild,o.component],['parser',parserBuild,o.parser]] as const){
+  const parserBuild=buildReport(acceptedParser.parserBuild);
+  let protectedPins:Record<string,any>,loadedInputs:Record<string,any>;
+  if(o.nativeBuild){
+   const nativeSeed=authenticateNativeSeedBuild(o.nativeBuild,{root:realpathSync(o.root),corpusPath:o.nativeCorpus!,limits});
+   protectedPins=nativeSeed.protectedPins;loadedInputs=nativeSeed.loadedInputs;
+   for(const [path,digest]of Object.entries(protectedPins))state.inputs[path]=String(digest);
+   for(const [path,digest]of Object.entries(loadedInputs))state.inputs[path]=String(digest);
+   for(const path of ['evals/heavy_gate.ts','evals/heavy_gate_native.c'])if(protectedPins[realpathSync(path)]!==hash(path))throw Error('Missing native stage0 guardian identity');
+   // The native build loads the bridge, the accepted parser and the whole root
+   // in one canonical book; every workload source must be in that exact closure.
+   for(const row of nativeSeed.corpus.files){
+    const real=realpathSync(resolve(nativeSeed.corpus.directory,row.path));
+    if(loadedInputs[real]!==row.sha256)throw Error('Native stage0 did not validate the actual workload bytes: '+real);
+   }
+   state.nativeSeed={build:o.nativeBuild,buildSha256:hash(o.nativeBuild),binary:nativeSeed.binary,binarySha256:nativeSeed.binarySha256,
+    corpus:nativeSeed.corpusPath,corpusSha256:nativeSeed.corpusSha256,checkedDefinitions:nativeSeed.report.checkedDefinitions,
+    expectedSourceDefinitions:nativeSeed.report.expectedSourceDefinitions,eventsFullyValidated:nativeSeed.report.eventsFullyValidated,
+    cPath:nativeSeed.report.cPath,cSha256:nativeSeed.report.cSha256,guardian:nativeSeed.report.guardian};
+   state.nativeSeedInputs=Object.fromEntries(nativeSeed.corpus.files.map((row:any)=>[resolve(nativeSeed.corpus.directory,row.path),row.sha256]));
+   const sourceFileRow=nativeSeed.corpus.files.find((row:any)=>row.external!==true&&typeof row.path==='string'&&row.path.endsWith('bend2/selfhost/backend_ir.bend'));
+   if(!sourceFileRow||typeof sourceFileRow.namespace!=='string')throw Error('Native workload does not load the canonical BIR module');
+   state.nativeSourceFileTag=sourceFileRow.namespace+'.SourceFile';
+  }else{
+  const componentBuild=buildReport(o.componentBuild!);
+  for(const [name,build,artifact]of [['component',componentBuild,o.component!],['parser',parserBuild,o.parser]] as const){
    if(build.checksExcluded!==0||build.guardianStatus!=='PASS'||build.artifactSha256!==hash(artifact)||realpathSync(build.artifactPath)!==realpathSync(artifact))throw Error(name+' lacks exact complete native build provenance');
   }
   for(const [path,digest]of Object.entries(acceptedParser.authenticatedInputs)){
@@ -108,7 +136,8 @@ if(!o.worker){
   const provenancePath=realpathSync(componentBuild.provenancePath),record=json(provenancePath);
   const {provenanceSha256,...provenance}=record;
   if(provenance.schemaVersion!==4||provenanceSha256!==componentBuild.provenanceSha256||sha(JSON.stringify(provenance))!==provenanceSha256)throw Error('Canonical builder provenance hash/version mismatch');
-  const protectedPins=object(provenance.protectedPins),loadedInputs=object(provenance.loadedInputs),runtime=object(provenance.runtime),guard=object(provenance.guard);
+  protectedPins=object(provenance.protectedPins);loadedInputs=object(provenance.loadedInputs);
+  const runtime=object(provenance.runtime),guard=object(provenance.guard);
   for(const [field,path]of [['compilerPath',resolve('bend2/comp.ts')],['kernelPath',resolve('bend2/bend.ts')],['runnerPath',resolve('evals/checker_core_component_build.ts')]] as const){
    const digest=provenance[field.replace('Path','Sha256')];
    if(typeof provenance[field]!=='string'||realpathSync(provenance[field] as string)!==realpathSync(path)||digest!==hash(path)||protectedPins[realpathSync(path)]!==digest)throw Error('Canonical builder identity mismatch: '+field);
@@ -138,6 +167,7 @@ if(!o.worker){
   for(const path of ['evals/heavy_gate.ts','evals/heavy_gate_native.c'])if(protectedPins[realpathSync(path)]!==hash(path))throw Error('Missing canonical builder guardian identity');
   state.inputs[provenancePath]=hash(provenancePath);
   state.componentBuilder={provenancePath,provenanceSha256,compilerPath:provenance.compilerPath,compilerSha256:provenance.compilerSha256,runnerPath:provenance.runnerPath,runnerSha256:provenance.runnerSha256,loadedInputs,nativeCheckedBodies:provenance.nativeCheckedBodies,expectedSourceDefinitions:provenance.expectedSourceDefinitions};
+  }
   const parserSource=acceptedParser.parserSource;
   state.parserSource={file:parserSource,sha256:hash(parserSource)};
   const diagnosticCodePaths=['bend2/bend.ts','bend2/comp.ts','evals/bootstrap_source_oracle.ts','evals/parser_full_semantic_normalize.ts','evals/parser_full_graph.ts','evals/bootstrap_ast_transport.ts','evals/selfhost_parser_parity.ts','evals/selfhost_bootstrap_worker.mjs','evals/checker_core_step_runtime.mjs'].map(path=>resolve(path));
@@ -361,7 +391,9 @@ if(!o.worker){
    return {...fixture,file:realpathSync(file),sourceSha256:sha(fixture.source)};
   });
   if(!fixtures.length)throw Error('Unknown diagnostic fixture: '+o.fixture);
-  const request=join(sidecars,'request.json');save(request,{...o,limits,sidecars,fixtures,parserSource,rootComposition,componentSha256:componentBuild.artifactSha256,parserSha256:parserBuild.artifactSha256,rootInputs:loadedInputs});
+  const request=join(sidecars,'request.json');
+  save(request,{...o,limits,sidecars,fixtures,parserSource,rootComposition,componentSha256:o.nativeBuild?state.nativeSeed!.binarySha256:buildReport(o.componentBuild!).artifactSha256,parserSha256:parserBuild.artifactSha256,rootInputs:o.nativeBuild?state.nativeSeedInputs:loadedInputs,
+   ...(o.nativeBuild?{native:{build:o.nativeBuild,buildSha256:hash(o.nativeBuild),binary:state.nativeSeed!.binary,binarySha256:state.nativeSeed!.binarySha256,corpus:state.nativeSeed!.corpus,corpusSha256:state.nativeSeed!.corpusSha256,cPath:state.nativeSeed!.cPath,cSha256:state.nativeSeed!.cSha256,sourceFileTag:state.nativeSourceFileTag}}:{})});
   child=spawn('node',[resolve('evals/selfhost_bootstrap_worker.mjs'),request],{stdio:['pipe','pipe','inherit']});
   const completed=new Promise<number>((done,reject)=>{child!.once('error',reject);child!.once('close',code=>done(code??125));});
   for await(const line of createInterface({input:child.stdout!})){
@@ -405,6 +437,7 @@ if(!o.worker){
      child.stdin!.write(JSON.stringify({id:message.id,approved:true,transportSha256})+'\n');
     }catch(error){fail(error,{file:message.file,sourceSha256:message.sourceSha256,transport:message.transport});child.kill('SIGTERM');break;}
    }else if(message.event==='fixture'){fixtureRows.push(message);flush();}
+   else if(message.event==='native-run'){state.nativeRun=message;events.push(message);flush();}
    else if(message.event==='artifact'){
     if(typeof message.stage!=='string'||typeof message.path!=='string'||hash(message.path)!==message.sha256)throw Error('Malformed or changed emitted artifact');
     state.inputs[message.path]=String(message.sha256);state.artifacts[message.stage]=message;flush();
@@ -414,6 +447,17 @@ if(!o.worker){
   }
   const exit=await completed;
   if(exit!==0||state.failure||((o.parseOnly||o.profileRoot)?state.diagnosticPhaseComplete!==true:!state.passed))throw Error('Bootstrap worker failed or did not establish its requested complete boundary');
+  if(o.nativeBuild){
+   const artifacts=object(state.artifacts),one=object(artifacts.stageOne),two=object(artifacts.stageTwo);
+   for(const [artifact,name]of [[one,'stage-one'],[two,'stage-two']] as const){
+    if(typeof artifact.path!=='string'||hash(artifact.path)!==artifact.sha256||readFileSync(artifact.path).length!==artifact.bytes)throw Error('Wrong native seed emitted '+name+' image');
+   }
+   if(!readFileSync(String(one.path)).equals(readFileSync(String(two.path))))throw Error('Native seed fixedpoint failed: stage-one and stage-two bytes differ');
+   const seedRows=fixtureRows.filter(row=>row.stage==='seed');
+   if(seedRows.length!==95||new Set(seedRows.map(row=>row.name)).size!==95)throw Error('Native stage0 did not execute all original seed fixtures');
+   const nativeRun=object(state.nativeRun);
+   if(nativeRun.binarySha256!==state.nativeSeed!.binarySha256||nativeRun.buildSha256!==hash(o.nativeBuild))throw Error('Native stage0 run evidence differs from the authenticated build');
+  }
   for(const [path,pin]of Object.entries(state.inputs))if(hash(path)!==pin)throw Error('Protected input changed: '+path);
   if(diagnosticCache){
    for(const [path,file]of diagnosticInputRealpaths)if(realpathSync(path)!==file)throw Error('Diagnostic input realpath changed: '+path);
@@ -422,6 +466,6 @@ if(!o.worker){
     if(row.cache){const cache=object(row.cache);if(cache.hit===true&&hash(String(cache.manifest))!==cache.manifestSha256)throw Error('Diagnostic cached parity proof changed');}
    }
   }
-  state.status=o.profileRoot?'ROOT_COMPILER_PROFILE_PASS':o.parseOnly?'ROOT_PARSE_DIAGNOSTIC_PASS':o.fixture?'TEMPLATE_FIXTURE_PASS':'PURE_STEP_BOOTSTRAP_FIXEDPOINT';state.compilerBootstrapGreen=!o.fixture&&!o.parseOnly&&!o.profileRoot;state.selfhostGreen=false;flush();
+  state.status=o.profileRoot?'ROOT_COMPILER_PROFILE_PASS':o.parseOnly?'ROOT_PARSE_DIAGNOSTIC_PASS':o.fixture?'TEMPLATE_FIXTURE_PASS':o.nativeBuild?'NATIVE_SEED_BOOTSTRAP_FIXEDPOINT':'PURE_STEP_BOOTSTRAP_FIXEDPOINT';state.compilerBootstrapGreen=!o.fixture&&!o.parseOnly&&!o.profileRoot;state.selfhostGreen=false;flush();
  }catch(error){fail(error);child?.kill('SIGTERM');process.exitCode=2;}
 }

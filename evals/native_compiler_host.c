@@ -208,6 +208,10 @@ static bool native_manifest_external(const NativeLoader* loader, const char* rea
 // joins by that exact resolved path. The host only reads the bytes of the path
 // BIR derives and hands them over as a passive BIR.SourceFile.
 static void native_foreign(Env e, NativeLoader* loader, const char* module, const char* declared) {
+  // DefImports may list the native `.c` implementation too. Only the declared
+  // `.js` alternative is a BIR link source; the JS host applies the same rule.
+  size_t declared_length = strlen(declared);
+  if (declared_length < 3 || strcmp(declared + declared_length - 3, ".js") != 0) return;
   char* joined = native_join(module, declared);
   char* key = native_normalized(joined, false);
   free(joined);
@@ -223,7 +227,14 @@ static void native_foreign(Env e, NativeLoader* loader, const char* module, cons
   u64 length;
   char* bytes = native_read(key, &length);
   loader->foreign_bytes += length;
-  Term entry = io_node(e, CID(SourceFile), io_str(e, key, strlen(key)), io_str(e, bytes, length));
+  // The canonical C id block names the authoritative BIR.SourceFile constructor
+  // from the book key `../bend2/selfhost/backend_ir:SourceFile` (name_clean ->
+  // upper). This is the existing generated macro, not a numeric or suffix guess;
+  // the guard makes a spelling/namespace change fail at compile time.
+#ifndef CID____BEND2_SELFHOST_BACKEND_IR_SOURCEFILE
+#error "canonical BIR.SourceFile constructor id is missing from the generated book"
+#endif
+  Term entry = io_node(e, CID____BEND2_SELFHOST_BACKEND_IR_SOURCEFILE, io_str(e, key, strlen(key)), io_str(e, bytes, length));
   loader->files = io_node(e, CID(Con), entry, loader->files);
   free(real);
   free(bytes);
@@ -368,8 +379,12 @@ static Term native_experiment_run(Env e, Term* f, IoWork* work) {
   (void)work;
   if (io_argc != 7) err_fail("native experiment: expected root base manifest exports check|compile output");
   for (u32 i = 0; i < 10; i++) native_closed(f[i]);
-  bool compile = strcmp(io_argv[5], "compile") == 0;
-  if (!compile && strcmp(io_argv[5], "check") != 0) err_fail("native experiment: invalid phase");
+  // 0 library emission, 1 runnable module emission for source fixtures,
+  // -1 check only. The emitter entry point is selected in the checked driver.
+  int action = strcmp(io_argv[5], "compile") == 0 ? 0
+    : strcmp(io_argv[5], "compile-module") == 0 ? 1
+    : strcmp(io_argv[5], "check") == 0 ? -1 : 2;
+  if (action == 2) err_fail("native experiment: invalid phase");
   fprintf(stderr, "NATIVE_BEGIN {\"computeThreads\":%u,\"parserFuel\":8000000,\"phase\":\"%s\",\"phaseTraceVersion\":3}\n", pool_size, io_argv[5]);
   u64 started = io_tick();
   struct rusage cpu_started;
@@ -399,9 +414,12 @@ static Term native_experiment_run(Env e, Term* f, IoWork* work) {
   Term checked = native_drive(e, f[4], modules, f[5],
     CID(NativeCheckerFinished), CID(NativeCheckerMore), "check");
   Term emit = native_accepted(e, native_apply(e, f[6], checked));
-  if (compile) {
+  if (action >= 0) {
+    Term request = action == 0
+      ? io_node(e, CID(NativeLibrary), native_exports(e, io_argv[4]), loader.files)
+      : io_box(e, CID(NativeModule), loader.files);
     Term emission = native_drive(e, f[7],
-      io_tup(e, emit, io_tup(e, native_exports(e, io_argv[4]), loader.files)), f[8],
+      io_tup(e, emit, request), f[8],
       CID(NativeEmitterFinished), CID(NativeEmitterMore), "emit");
     Term source = native_accepted(e, native_apply(e, f[9], emission));
     u64 length;

@@ -27,9 +27,10 @@ export function sourceFilePath(modulePath,declaredPath){
  return posix.normalize(posix.isAbsolute(declaredPath)?declaredPath:posix.dirname(modulePath)+'/'+declaredPath);
 }
 
-export function sourceFiles(entries){
- const seen=new Map();
+export function sourceFiles(entries, sourceFileTag = 'SourceFile') {
+ const seen = new Map();
  let list={$:'Nil'};
+ if(typeof sourceFileTag!=='string'||!/^[A-Za-z_][A-Za-z0-9_.\/-]*$/.test(sourceFileTag))throw Error('Invalid BIR.SourceFile constructor tag: '+sourceFileTag);
  for(const entry of entries){
   const path=entry?.path,source=entry?.source;
   if(typeof path!=='string'||!path||typeof source!=='string')throw Error('Invalid BIR source file entry: expected {path, source} strings');
@@ -39,7 +40,7 @@ export function sourceFiles(entries){
    continue;
   }
   seen.set(path,source);
-  list={$:'Con',head:{$:'SourceFile',path,source},tail:list};
+  list={$:'Con',head:{$:sourceFileTag,path,source},tail:list};
  }
  return list;
 }

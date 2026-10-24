@@ -1,5 +1,5 @@
 import {Worker,isMainThread,parentPort,workerData} from 'node:worker_threads';
-import {readFileSync,writeFileSync,realpathSync,createReadStream} from 'node:fs';
+import {readFileSync,writeFileSync,realpathSync,createReadStream,existsSync} from 'node:fs';
 import {resolve,dirname,join,posix,isAbsolute} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {createHash} from 'node:crypto';
@@ -7,6 +7,7 @@ import {createInterface} from 'node:readline';
 import {spawnSync} from 'node:child_process';
 import {getHeapStatistics} from 'node:v8';
 import {writeNativeAst,decodeNativeAst} from './bootstrap_ast_transport.ts';
+import {runNativeStage0,requireNativeRun,runtimeManifest,workloadRows,corpusFor} from './native_seed_runtime.mjs';
 import {runTemplateSteps,runCheckerSteps,runEmitterSteps,runLibraryEmitterSteps,sourceFiles,sourceFilePath} from './checker_core_step_runtime.mjs';
 
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
@@ -202,8 +203,8 @@ if(isMainThread){
    return component[name](run);
   }])]);
  }
- function compile(component,loaded,library){
-  let modules=loaded.modules,files=sourceFiles(loaded.files);loaded.modules=undefined;loaded.files=undefined;
+ function compile(component,loaded,library,sourceFileTag='SourceFile'){
+  let modules=loaded.modules,files=sourceFiles(loaded.files,sourceFileTag);loaded.modules=undefined;loaded.files=undefined;
   const expansionComponent=profileSteps({...component,expand_modules_start:input=>{modules=undefined;return component.expand_modules_start(input);}},['expand_modules_start','template_step']);
   mark(phase+'-expand');let expanded=runTemplateSteps(expansionComponent,modules);
   if(tag(expanded)!=='ExpandSuccess')failure('expand',expanded);
@@ -260,12 +261,95 @@ if(isMainThread){
    const row={event:'fixture',phase,stage,name:fixture.name,passed:true,accepted:fixture.accepted,output,diagnostic,observedFailure,sourceSha256:fixture.sourceSha256,parserSha256,compilerSha256};fixtures.push(row);send(row);
   }
  }
+ async function runNativeSeed(){
+  const native=workerData.native,sidecar=workerData.sidecars,limits=workerData.limits;
+  const binary=realpathSync(native.binary),base=resolve('bend2/base.bend');
+  if(sha(readFileSync(binary))!==native.binarySha256)throw Error('Native stage0 binary changed before execution');
+  if(sha(readFileSync(native.corpus))!==native.corpusSha256)throw Error('Native stage0 corpus changed before execution');
+  if(sha(readFileSync(native.build))!==native.buildSha256)throw Error('Native stage0 build report changed before execution');
+  const corpus=JSON.parse(readFileSync(native.corpus,'utf8'));
+  const sources=corpus.files.filter(row=>row.external!==true).length;
+  const exportsPath=join(sidecar,'native-exports.txt'),manifestPath=join(sidecar,'native-root.runtime.tsv');
+  writeFileSync(exportsPath,ABI.join('\n')+'\n',{flag:'wx'});
+  writeFileSync(manifestPath,runtimeManifest(corpus),{flag:'wx'});
+  const sourceHashes=corpus.files.map(row=>{
+   const file=realpathSync(resolve(corpus.directory,row.path));
+   return row.external===true?{file,sha256:row.sha256,sourceBytesSha256:row.sha256,external:true}
+    :{file,sha256:row.sha256,sourceBytesSha256:row.sha256,namespace:row.namespace};
+  });
+  const sorted=values=>JSON.stringify([...values].sort((left,right)=>left.file.localeCompare(right.file)));
+  mark('native-stage-zero-parse');
+  const stageOnePath=join(sidecar,'stage-one.js');
+  const run=runNativeStage0(binary,{root:workerData.root,base,manifest:manifestPath,exports:exportsPath,phase:'compile',output:stageOnePath},{timeoutMs:limits.timeoutMs});
+  const emitted=requireNativeRun(run,{phases:['parse','expand','check','emit'],sources,output:stageOnePath});
+  const stageOneSha=sha(emitted.bytes);
+  artifacts.stageOne={event:'artifact',phase:'native-stage-zero-emit',stage:'stageOne',path:stageOnePath,sha256:stageOneSha,bytes:emitted.bytes.length,sourceHashes};send(artifacts.stageOne);
+  const nativeRun={binary:native.binary,binarySha256:native.binarySha256,build:native.build,buildSha256:native.buildSha256,
+   corpus:native.corpus,corpusSha256:native.corpusSha256,phases:run.phases,phaseStarts:run.phaseStarts,fuel:run.fuel,
+   begins:run.begins,result:emitted.emit,elapsedMs:run.elapsedMs,sources,foreign:corpus.files.length-sources,
+   stageOne:{path:stageOnePath,sha256:stageOneSha,bytes:emitted.bytes.length}};
+  send({event:'native-run',phase:'native-stage-zero',...nativeRun});
+  // The native stage0 executes the original seed fixtures through its own
+  // checked parser/checker/emitter; no seed JS is imported anywhere here.
+  for(const fixture of workerData.fixtures){
+   mark('seed-fixture-'+fixture.name+'-parse');
+   const rows=workloadRows(fixture.file),fixtureCorpus=corpusFor(rows);
+   const fixtureManifest=join(sidecar,'native-fixture-'+fixture.name+'.runtime.tsv');
+   writeFileSync(fixtureManifest,runtimeManifest(fixtureCorpus),{flag:'wx'});
+   const output=join(sidecar,'native-fixture-'+fixture.name+'.js');
+   mark('seed-fixture-'+fixture.name);
+   const fixtureRun=runNativeStage0(binary,{root:fixture.file,base,manifest:fixtureManifest,exports:exportsPath,phase:'compile-module',output},{timeoutMs:limits.timeoutMs});
+   let outputText,diagnostic,observedFailure;
+   try{
+    requireNativeRun(fixtureRun,{phases:['parse','expand','check','emit'],sources:rows.sources.length,output});
+    if(!fixture.accepted)throw Error('Consumer-visible failure was incorrectly accepted: '+fixture.name);
+    mark('seed-fixture-'+fixture.name+'-execute');
+    const executed=spawnSync(process.execPath,[output],{encoding:'utf8',timeout:120000,killSignal:'SIGKILL'});
+    if(executed.error||executed.status!==0)throw Error('Unchanged emitted fixture execution failed: '+String(executed.error??executed.stderr));
+    outputText=executed.stdout.trim();
+    if(fixtureConstructorValue(outputText)!==fixtureConstructorValue(fixture.output))throw Error('Fixture value mismatch: expected '+fixture.output+', observed '+outputText);
+   }catch(error){
+    if(fixture.accepted||!error.failurePhase)throw error;
+    observedFailure=error.failurePhase;diagnostic=error.diagnostic;
+    if(observedFailure!==fixture.failurePhase)throw error;
+   }
+   const row={event:'fixture',phase,stage:'seed',name:fixture.name,passed:true,accepted:fixture.accepted,output:outputText,diagnostic,observedFailure,
+    sourceSha256:fixture.sourceSha256,parserSha256:native.binarySha256,compilerSha256:native.binarySha256,
+    native:{binarySha256:native.binarySha256,manifestSha256:sha(readFileSync(fixtureManifest)),
+     artifactSha256:existsSync(output)?sha(readFileSync(output)):null,phases:fixtureRun.phaseStarts.map(row=>row.phase)}};
+   fixtures.push(row);send(row);
+  }
+  authenticateSources();
+  // No seed parser or component is used from this boundary onwards.
+  mark('stage-one-execute');const stage1=exportsOf(await import(pathToFileURL(stageOnePath).href),stageOnePath);
+  mark('stage-two-parse');const second=await load(workerData.root,stage1,stage1,stageOneSha);
+  if(sorted(second.sourceHashes)!==sorted(sourceHashes))throw Error('Stage source closure drift');
+  mark('stage-two');let stageTwo=compile(stage1,second,true,native.sourceFileTag);
+  const secondPath=join(sidecar,'stage-two.js');writeFileSync(secondPath,stageTwo,{flag:'wx'});
+  artifacts.stageTwo={event:'artifact',phase,stage:'stageTwo',path:secondPath,sha256:sha(stageTwo),bytes:Buffer.byteLength(stageTwo),sourceHashes:second.sourceHashes};send(artifacts.stageTwo);
+  mark('fixedpoint-byte-comparison');
+  {
+   const firstBytes=readFileSync(stageOnePath),secondBytes=readFileSync(secondPath);
+   if(sha(firstBytes)!==artifacts.stageOne.sha256||sha(secondBytes)!==artifacts.stageTwo.sha256)throw Error('Unchanged emitted compiler artifact drift');
+   if(!firstBytes.equals(secondBytes))throw Error('Real emitted compiler fixedpoint failed: stage-one and stage-two bytes differ');
+  }
+  mark('stage-two-execute');const stage2=exportsOf(await import(pathToFileURL(secondPath).href),secondPath);
+  stageTwo=undefined;
+  authenticateSources();
+  mark('complete');
+  send({event:'result',result:{passed:true,seedMode:'native',compilerBootstrapGreen:true,selfhostGreen:false,
+   fixedpoint:{criterion:'Exact emitted UTF-8 JS bytes; no normalization or patching',equal:true,
+    stageOneSha256:artifacts.stageOne.sha256,stageTwoSha256:artifacts.stageTwo.sha256},
+   stageTwoParser:'stage-one emitted parse_with_fuel, not seed parser',stageOneProducer:'native stage0 executable',
+   fullCompilerRoot:workerData.root,legacyFullIODriver:false,fixtureExecutions:fixtures.length,nativeRun}});
+ }
  try{
   if(process.env.SELFHOST_CPU_PROFILE_DIR){
    const {createCpuProfiler}=await import('./selfhost_cpu_profile.mjs');
    cpuProfiler=createCpuProfiler(process.env.SELFHOST_CPU_PROFILE_DIR,{root:workerData.root,parser:workerData.parser,parserSha256:workerData.parserSha256,component:workerData.component,componentSha256:workerData.componentSha256,sidecars:workerData.sidecars,fixture:workerData.fixture,parseOnly:workerData.parseOnly,profileRoot:workerData.profileRoot,limits:workerData.limits});
    cpuProfiler.mark('imports');
   }
+  if(workerData.native){await runNativeSeed();}else{
   if(sha(readFileSync(workerData.parser))!==workerData.parserSha256||sha(readFileSync(workerData.component))!==workerData.componentSha256)throw Error('Authenticated seed artifact changed before execution');
   const seedParser=(await import(pathToFileURL(workerData.parser).href)).default;
   const seed=exportsOf(await import(pathToFileURL(workerData.component).href),workerData.component);
@@ -311,6 +395,7 @@ if(isMainThread){
   await runFixtures(stage2,stage2,artifacts.stageTwo.sha256,artifacts.stageTwo.sha256,'stage-two');
   authenticateSources();
   mark('complete');send({event:'result',result:{passed:true,compilerBootstrapGreen:true,selfhostGreen:false,fixedpoint:{criterion:'Exact emitted UTF-8 JS bytes; no normalization or patching',equal:true,stageOneSha256:artifacts.stageOne.sha256,stageTwoSha256:artifacts.stageTwo.sha256},stageTwoParser:'stage-one emitted parse_with_fuel, not seed parser',fullCompilerRoot:workerData.root,legacyFullIODriver:false,fixtureExecutions:fixtures.length}});
+  }
   }
   }
   }

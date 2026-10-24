@@ -26,20 +26,12 @@ def native_import_paths(imports: List<&2, Ast.ModuleImport>) -> List<&2, String>
     case Nil{}:
       Nil{}
 
-# The declared `.js` alternatives are BIR metadata. The host only reads their
-# bytes; it never derives a target path or a namespace of its own.
-def native_js_paths(paths: List<&2, String>, rest: List<&2, String>) -> List<&2, String>:
-  match paths:
-    case Nil{}: rest
-    case +path <> tail: native_js_path(path, tail, rest)
-def native_js_path(+path: String, tail: List<&2, String>, rest: List<&2, String>) -> List<&2, String>:
-  match String.ends_with(path, ".js"):
-    case True{}: path <> native_js_paths(tail, rest)
-    case False{}: native_js_paths(tail, rest)
-
+# The declared alternatives are BIR metadata. The host filters the `.js`
+# variant and reads only those bytes; it never derives a target path or a
+# namespace of its own.
 def native_foreign_body(body: Ast.DefBody, rest: List<&2, String>) -> List<&2, String>:
   match body:
-    case Ast.DefImports{paths}: native_js_paths(paths, rest)
+    case Ast.DefImports{paths}: List.append(&2, String, paths, rest)
     case _: rest
 
 def native_foreign_definition(definition: Ast.Definition, rest: List<&2, String>) -> List<&2, String>:
@@ -81,22 +73,31 @@ def native_expand_result(box: Template.TemplateValue<Template.ExpandResult>) -> 
   match box:
     case Template.TemplateValue{value}: native_expand_value(value)
 
-def native_emit_start(program: Checked.CheckedProgram, arguments: List<&2, String> & List<&2, BIR.SourceFile>) -> Emitter.EmitterRun<Emitter.EmitResult>:
-  (exports, files) = arguments
-  emit_library_start(program, exports, files)
+# The host selects the unchanged public emitter entry point as data, so both
+# library emission and the runnable module emission used by source fixtures go
+# through the same checked JSEmit steps. No host-side source rewriting. The
+# host builds the one public BIR.SourceFile carrier directly from actual bytes.
+type NativeEmit is Data:
+  NativeLibrary{exports: List<&2, String>, files: List<&2, BIR.SourceFile>}
+  NativeModule{files: List<&2, BIR.SourceFile>}
 
-def native_check_value(result: Checked.CheckResult) -> NativeResult<(List<&2, String> & List<&2, BIR.SourceFile>) -> Emitter.EmitterRun<Emitter.EmitResult>>:
+def native_emit_start(program: Checked.CheckedProgram, request: NativeEmit) -> Emitter.EmitterRun<Emitter.EmitResult>:
+  match request:
+    case NativeLibrary{exports, files}: emit_library_start(program, exports, files)
+    case NativeModule{files}: emit_modules_start(program, files)
+
+def native_check_value(result: Checked.CheckResult) -> NativeResult<(NativeEmit -> Emitter.EmitterRun<Emitter.EmitResult>)>:
   match result:
-    case Checked.CheckSuccess{program}: NativeAccepted{arguments => native_emit_start(program, arguments)}
+    case Checked.CheckSuccess{program}: NativeAccepted{request => native_emit_start(program, request)}
     case Checked.CheckFailure{Checked.Diagnostic{_, _, message, _, _}}: NativeRejected{message}
 
-def native_check_result(box: Checker.CheckerValue<Checked.CheckResult>) -> NativeResult<(List<&2, String> & List<&2, BIR.SourceFile>) -> Emitter.EmitterRun<Emitter.EmitResult>>:
+def native_check_result(box: Checker.CheckerValue<Checked.CheckResult>) -> NativeResult<(NativeEmit -> Emitter.EmitterRun<Emitter.EmitResult>)>:
   match box:
     case Checker.CheckerValue{value}: native_check_value(value)
 
-def native_emit(input: ((List<&2, String> & List<&2, BIR.SourceFile>) -> Emitter.EmitterRun<Emitter.EmitResult>) & (List<&2, String> & List<&2, BIR.SourceFile>)) -> Emitter.EmitterRun<Emitter.EmitResult>:
-  (emit, arguments) = input
-  emit(arguments)
+def native_emit(input: (NativeEmit -> Emitter.EmitterRun<Emitter.EmitResult>) & NativeEmit) -> Emitter.EmitterRun<Emitter.EmitResult>:
+  (emit, request) = input
+  emit(request)
 
 def native_emit_value(result: Emitter.EmitResult) -> NativeResult<String>:
   match result:
@@ -160,8 +161,8 @@ def native_experiment(
   expand_result: Template.TemplateValue<Template.ExpandResult> -> NativeResult<List<&2, Loader.LoadedModule>>,
   check: List<&2, Loader.LoadedModule> -> Checker.CheckerRun<Checked.CheckResult>,
   checker_view: (@-A: Type -> @run: Checker.CheckerRun<A> -> NativeCheckerView<A>),
-  check_result: Checker.CheckerValue<Checked.CheckResult> -> NativeResult<(List<&2, String> & List<&2, BIR.SourceFile>) -> Emitter.EmitterRun<Emitter.EmitResult>>,
-  emit: (((List<&2, String> & List<&2, BIR.SourceFile>) -> Emitter.EmitterRun<Emitter.EmitResult>) & (List<&2, String> & List<&2, BIR.SourceFile>)) -> Emitter.EmitterRun<Emitter.EmitResult>,
+  check_result: Checker.CheckerValue<Checked.CheckResult> -> NativeResult<(NativeEmit -> Emitter.EmitterRun<Emitter.EmitResult>)>,
+  emit: ((NativeEmit -> Emitter.EmitterRun<Emitter.EmitResult>) & NativeEmit) -> Emitter.EmitterRun<Emitter.EmitResult>,
   emitter_view: (@-A: Type -> @run: Emitter.EmitterRun<A> -> NativeEmitterView<A>),
   emit_result: Emitter.EmitterValue<Emitter.EmitResult> -> NativeResult<String>
 ) -> IO(Unit):
