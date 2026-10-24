@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "kind": "C_PROBE_EXECUTION_FAILURE",
+  "status": "FAIL_RUNTIME_AFTER_CLEAN_CLANG",
+  "scope": "PROBE_ONLY: module (c_target_array_nat), minimal pure3, library (c_step_library_fixture+caller); no matrix",
+  "clangStatus": "PASS: emit 0 and clang 0 for all three; clang stderr empty (full files hashed)",
+  "exits": {
+    "module.emit": "0",
+    "module.clang": "0",
+    "pure3.emit": "0",
+    "pure3.clang": "0",
+    "library.emit": "0",
+    "library.clang": "0"
+  },
+  "runExits": {
+    "module": "1",
+    "pure3": "0",
+    "library": "134"
+  },
+  "component": {
+    "path": "/private/tmp/bend-fir-root-aa9/checkpoints/root-final3-art.js",
+    "sha256": "5b92478f34d2224a6a55d27dd49ea73429095a62173f3444fe09e9a0cd98c211",
+    "bytes": 16927725,
+    "checkedDefinitions": 11190,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "root": "/private/tmp/bend-fir-root-aa9/checkpoints/.bootstrap_compiler_root_v1.bend",
+    "rootSha256": "b0b92b67225c1b67972c9fe2a1096962a14926633508936c86d8b93b73cbd36b",
+    "emitterSteps": "/private/tmp/bend-fir-root-aa9/checkpoints/emitter_steps_v1.bend",
+    "emitterStepsSha256": "062e8998557d28dd1e3ccc4e04f6dc85eb217f2f59f16f6bb0688db87a9c881a",
+    "emitterPinInLoadedInputs": {
+      "emitter_steps_v1.bend": "062e8998557d28dd1e3ccc4e04f6dc85eb217f2f59f16f6bb0688db87a9c881a"
+    },
+    "candidateHostSha256": "a56f57e32d0fa475a0564f18a3930137a084cb6a4ce49b05f496e76331d2a22a",
+    "baseSha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+    "runtimeSha256": "478c1ba7d0d0626c1927d11c4af3b3d4cef520db41afd8722ebf55d5050769c3",
+    "callerSha256": "f69878b378bb939a20829076c89aad05bd80e610895c52562f81ed30f45e293e"
+  },
+  "failures": {
+    "module_nat_show": {
+      "runExit": 1,
+      "stdoutBytes": 0,
+      "stderr": "bend: runtime fail-stop",
+      "cause": "err_post(ERR_TAGS=2) at WL_FID_747 (module.c:20934-20937) reached from WL_FID_746 else branch after `(lv1865 > 0)` false: the Nat zero/base arm jumps to a match-failure body.",
+      "lldbTranscript": "/tmp/c-probe-5b92478f/module.lldb.log",
+      "lldbTranscriptSha256": "f6115f31ab92f9128b36246e3f7c3eaeed0c7559f6948dab1cf78047f142691e",
+      "fragment": "/tmp/c-probe-5b92478f/module.fragment.txt",
+      "fragmentSha256": "e738aead6dc18215c227e8e28ef27805fb76bba75234107dba87af5e8220e382"
+    },
+    "minimal_nat_show": {
+      "source": "",
+      "fixture": "import Base; IO.print(Nat.show(7n))",
+      "dir": "/tmp/c-diag-5b92478f",
+      "emitExit": 0,
+      "clangExit": 0,
+      "runExit": 1,
+      "stderr": "bend: runtime fail-stop"
+    },
+    "library_factory": {
+      "runExit": 134,
+      "stderr": "Assertion failed: (f != g), function main, file c_backend_library_caller.c, line 47",
+      "observed": "factory FID_323 emits `term_clo(FID_318, 0)` on each call; loc 0 is a canonical immediate closure, so two calls compare equal although the declaration re-evaluates. BEND_EXPORT_ARITY reports factory=1 (mode 1) while the declaration takes 0 args.",
+      "status": "CONTRACT QUESTION: if immediate captureless closures are intended, the distinct-term fixture expectation is unobservable and a genuinely mutable/capturing factory is needed; if distinct terms are required, the emitter must allocate. Not labelled a backend bug pending owner ruling.",
+      "fragment": "/tmp/c-probe-5b92478f/lib.fragment.txt",
+      "fragmentSha256": "395206944cd1445bce48d2921e63d33da285d8cf7cd57c7ab4e00d91a67de45f"
+    }
+  },
+  "passing": {
+    "pure3": {
+      "runExit": 0,
+      "stdout": "T{42}\n",
+      "stderr": ""
+    }
+  },
+  "manifest": {
+    "path": "/tmp/c-probe-5b92478f/manifest.json",
+    "sha256": "383eae3f0f609cee06800812a45410c8e3e01971efd2fc44f419575337dc546c"
+  },
+  "notes": [
+    "No bulk C or logs are committed; full raw stdout/stderr/exit files remain in the probe dirs with manifest hashes.",
+    "No pipes/head/grep in the run; clang diagnostics ran once per artifact with -ferror-limit=0.",
+    "No source, fixture, cap or domain changes; matrix not run. nat_show/array diag logs are in /tmp/c-diag-5b92478f."
+  ]
+}
