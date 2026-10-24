@@ -1,8 +1,10 @@
 # Incremental compilation for the current Bend FIR/BIR pipeline
 
-Status: research note, documentation only. Baseline `f46ad0f6` (integration
-branch `work/fir-ir-integrated57ab`; root 943 + native bridge 7dc + the
-common-emitter consumer cutover), sources read 2026-10-24. Every substantive
+Status: research note, documentation only. Source analysis baseline `f46ad0f6`
+(integration branch `work/fir-ir-integrated57ab`; root 943 + native bridge 7dc
++ the common-emitter consumer cutover), sources read 2026-10-24. The docs
+commit is rebased onto actual HEAD `2fcdbaea`; the code files analyzed here are
+unchanged between those commits (the intake adds law documents only). Every substantive
 claim is labelled **[S]** source-read here, **[M]** measured in a scoped
 artifact or trace named beside it, or **[I]** inference. Nothing in this note
 was implemented, and no build, test, benchmark, heap dump, or live-process
@@ -35,7 +37,7 @@ What actually exists:
 | check | **[M]** 162,580 ms wall / 174,625 ms CPU; self-time shares: CPS continuation closures 25.9 %, `checker_chunk` 9.5 %, `checker_step_one` 8.3 %, `checker_step` 8.1 %, GC 7.1 %, `index_lookup` 6.8 % | process/aggregate only; 4.59–5.14 GiB peak RSS for the aggregate gate | per-module and per-definition retained bytes; recheck cost of one module; cache hit rate |
 | catalog / BIR lowering | no phase receipt for the new pipeline | none | time and bytes for `Catalog.build` and `BackendLower.lower` |
 | JS/C render | **[M]** emit 7,069 ms wall / 8,835 ms CPU in the pinned profile | none separated | per-definition render time/size; sharing-plan pass cost |
-| official producer (TS) | **[M]** `--trace-c` rows per pass/definition/spin with process `heapUsed` in `evals/native_compiler_experiment.ts:207-223`; peer measurement of pass-level live floor | **[M-peer: NativeCodegenMemory]** post-major-GC live floor rose 1,993.5 → 2,240.3 MiB over passes 1–6 (+≈50 MiB/pass); at death checked book 1,592.5 MiB of 3,033.7 MiB; stable FL facts +401.7 MiB | isolated retained bytes per structure; per-definition attribution (GC-polluted) |
+| official producer (TS) | **[M]** `--trace-c` rows per pass/definition/spin with process `heapUsed` in `evals/native_compiler_experiment.ts:207-223`; peer measurement of pass-level heap minima | **[M-peer: NativeCodegenMemory]** lowest observed `heapUsed` after reported drops rose 1,993.5 → 2,240.3 MiB over passes 1–6; at death checked book 1,592.5 MiB of 3,033.7 MiB; stable FL facts +401.7 MiB. GC type and retained-byte provenance are unobserved | isolated retained bytes per structure; per-definition attribution (GC-polluted) |
 
 Pins and limits that forbid using the numbers as current certification:
 
@@ -62,7 +64,7 @@ Qualitative difficulty, in the order the pipeline makes things possible:
 | resolved-import cache | **low–medium** | resolution is IO + path/namespace rules; package sources already verify SHA-256 |
 | template-expansion cache | **medium** | expansion is a global fixed point; needs a per-module template dependency set and generated-key stability |
 | module-level checked-artifact reuse (in one process) | **medium–high** | append-only source arena helps; but signatures/metadata hold raw handles, `Arena` is affine, and invalidation must follow imports and body values |
-| module-level checked-artifact reuse (across processes) | **high** | no production serializer; positional `U32` handles; needs relocation or stable IDs |
+| module-level checked-artifact reuse (across processes) | **high** | no production serializer; positional semantic-arena handles; needs relocation or stable IDs |
 | dependency-tracked per-definition checking | **very high** | no read set or result fingerprints; bodies unfold into types; `ArenaStore` is destructured everywhere |
 | BIR/declaration fragment caching | **high** | whole-program sequential code/constructor ids; normality and reachability are global; C sharing/physical facts are whole-program |
 | true separate compilation / linking | **very high, architectural** | BIR and C have no module boundary or table ABI split; one C translation unit is explicit |
@@ -75,11 +77,15 @@ The single most important structural fact is both good and bad:
   `checker.bend:12722-12725`). Per-declaration scratch caches are already
   scoped and invalidated correctly (`checker_arena.bend:82-97`,
   `checker.bend:12792-12798`, `checker.bend:13031-13034`).
-- **Bad [S]:** every cross-artifact reference is still a positional `U32`
-  into one arena, and the same arena index means something else after an
-  insertion. There is no stable identity layer, no serialization, and no
-  dependency journal. That is exactly the distance between "cache a prefix in
-  one live process" and "incremental compiler".
+- **Bad [S]:** semantic references inside checked artifacts are positional
+  `U32` arena handles, and the same arena index means something else after an
+  insertion. This is narrower than "everything is a number": canonical keys,
+  owner/local names, and import paths are `String`s, and BIR declaration/
+  constructor/family labels are string keys with separate numeric
+  code/constructor ids. The missing pieces are a stable identity layer for the
+  semantic handles, a serialization format, and a dependency journal. That is
+  exactly the distance between "cache a prefix in one live process" and
+  "incremental compiler".
 
 ---
 
@@ -653,9 +659,12 @@ Consequences:
   pinned check profile already shows 7.1 % GC self-time. A cache that retains
   more than it saves can lose. This must be measured, not assumed.
 
-**[M-peer: NativeCodegenMemory]** the official codegen's live floor grew
-≈50 MiB per pass (1,993.5 → 2,240.3 MiB over passes 1–6) before the pass peak;
-a frontend cache does not address that growth.
+**[M-peer: NativeCodegenMemory]** the official codegen's lowest observed process
+`heapUsed` after its reported drops rose ≈50 MiB per pass (1,993.5 → 2,240.3
+MiB over passes 1–6) before the pass peak. That is a heap-accounting
+observation, not proof that ≈50 MiB is retained: the GC type and the
+retained-byte provenance were not observed, and per-definition deltas are
+GC-polluted. A frontend cache does not address this growth.
 
 ---
 
@@ -679,10 +688,13 @@ Why a selfhost FIR/BIR cache cannot fix it:
    tables, and the single C translation unit are program-global. The Book
    itself retains every lowered body (`bend2/bend.ts:2484`) and `book_valid`
    walks the whole order (`:3804-3810`).
-3. **Measured live growth is in codegen.** **[M-peer: NativeCodegenMemory]**
-   the post-GC live floor rises ≈50 MiB/pass; the checked book alone is
-   1,592.5 MiB of a 3,033.7 MiB death footprint. Avoiding reparsing or
-   rechecking does not cap the per-pass working set or the retained Book.
+3. **Measured heap minima move in codegen, retention unproven.** **[M-peer:
+   NativeCodegenMemory]** the lowest observed process `heapUsed` after reported
+   drops rises ≈50 MiB/pass; the checked book alone is 1,592.5 MiB of a
+   3,033.7 MiB death footprint. GC type and retained-byte provenance were not
+   observed, so this is not an attribution of retained bytes. Avoiding
+   reparsing or rechecking does not cap the per-pass working set or the
+   retained Book.
 4. **Single-TU requirement.** Even with a perfect incremental frontend, the
    official C producer must assemble all segments/tables into one C file; a
    frontend cache does not create separate objects or a link step.
@@ -753,8 +765,12 @@ Additional admission checks:
 
 ### FIR hurts
 
-- Positional `U32` handles in every artifact; no stable ID, no relocation
-  table, no arena serialization.
+- Positional `U32` semantic-arena handles inside checked artifacts; no stable
+  ID for those handles, no relocation table, no arena serialization. Canonical
+  keys, owner/local names, and import paths are `String`s; BIR declaration/
+  constructor/family labels are string keys with separate numeric code and
+  constructor ids, so the stable-ID problem is specific to the semantic arena
+  and to the BIR numeric references, not to every identifier in the system.
 - No dependency journal; `ArenaStore` has no read-set slot, and normalization
   unfolds bodies.
 - Occurrence trees are explicitly not cache keys (`checker_ir.bend:40-45`).
@@ -807,14 +823,17 @@ Additional admission checks:
 5. **Generated template keys depend on the module key set** for collision
    suffixes (`template.bend:176-205`); adding/deleting an unrelated declaration
    can rename a generated key. Treat key-set changes as expansion dirt.
-6. **`unsafe` forward references are a compatibility question.** The official
-   Book says `@unsafe` permits a live forward reference to a bodiless def
-   (`bend2/bend.ts:3779-3804` comment), while the new checker publishes
-   predeclared signatures with `IR.NoTerm` and stores `unsafe` without an
-   obvious value-publication path (`checker.bend:10675-10688`,
-   `checker_ir.bend:72-77`). Before relying on "earlier declarations cannot see
-   later bodies" as a fine-grained rule, confirm the new checker's `@unsafe`
-   semantics. Conservative module invalidation avoids this trap.
+6. **`unsafe` is not a body-visibility mechanism in the new checker.** The
+   official Book says `@unsafe` permits a live forward reference to a bodiless
+   def (`bend2/bend.ts:3779-3804` comment). The new checker publishes
+   predeclared signatures with `IR.NoTerm` (`checker.bend:10675-10688`) and
+   uses `unsafe` only to bypass structural termination and to relax `QMany` to
+   `QOne` (`check_termination`, `checker.bend:10470-10483`;
+   `domain_quantity`, `checker.bend:1199-1209`). So *in this checker* an earlier
+   declaration cannot read a later body, and a body-only edit may one day use a
+   suffix rule. Do not transfer that claim to the official Book or to a future
+   `@unsafe` change without re-reading the semantics. Conservative module
+   invalidation avoids the question entirely.
 7. **Diagnostics are part of the output.** A cached semantic artifact with stale
    spans is a correctness regression even if the target bytes match.
 8. **Failure is not green.** A failed check has no `CheckedProgram`
@@ -868,11 +887,13 @@ to skip duplicate/signature/affine/termination/foreign admission.
 
 ## 11. Next tasks (bounded, evidence-producing)
 
-1. **Current-tree phase receipt (heavy-gate authorized separately).** One
-   clean selfhost root build with the existing `NATIVE_PHASE`/profile hooks;
-   record parse/expand/check/emit wall+CPU and peak footprint/RSS; store the
-   exact source/compiler pins. Acceptance: a receipt that names `f46ad0f6` and
-   the compiler image hash, not a branch. This is the missing baseline for any
+1. **Current-tree phase receipt (heavy-gate authorized separately).** Reuse
+   the existing RootABI root/parser/body reports when their source/compiler pin
+   still matches; do not rerun unchanged source for a docs-only change. Run a
+   fresh selfhost root build only when the pin changes, with the existing
+   `NATIVE_PHASE`/profile hooks; record parse/expand/check/emit wall+CPU and
+   peak footprint/RSS. Acceptance: a receipt that names the exact source and
+   compiler image hashes, not a branch. This baseline is still missing for any
    incremental claim.
 2. **Per-module cost census.** For each module in the root import closure,
    record source bytes, declaration count, expand time, check time, and
@@ -890,11 +911,12 @@ to skip duplicate/signature/affine/termination/foreign admission.
 4. **Cache-key design review (doc only).** Produce the key/invalidation table
    for parse, expansion, and module check, including version/schema and
    determinism rules; review against §7. No code.
-5. **`@unsafe` forward-reference semantics check (read-only).** Determine
-   whether the new checker ever publishes a later body value to an earlier
-   declaration; if not, record that body-only edits may one day use a suffix
-   rule. If the official Book differs, record that the two pipelines cannot
-   share an invalidation assumption. No code.
+5. **`@unsafe` forward-reference semantics (read-only record).** The new
+   checker does not publish a later body value to an earlier declaration;
+   `unsafe` bypasses termination and relaxes `QMany` only
+   (`checker.bend:10470-10483`, `1199-1209`). Record the official Book's
+   different wording (`bend2/bend.ts:3779-3804`) and the rule that the two
+   pipelines cannot share an invalidation assumption. No code.
 6. **Template dependency recording design (doc only).** Specify what the
    expander would have to record per module to make expansion caching sound;
    include generated-generated instances and key-set collision behavior. No
@@ -959,14 +981,16 @@ Local, read in this worktree at `f46ad0f6` (unless a different pin is named):
   43-53,113` — `NATIVE_PHASE`, `ru_maxrss`, chunk 64.
 - Profiles: `evals/selfhost-root-phase-profile-57ab.json` (pin `d47f859b`,
   diagnostic only); `checkpoints/compiler-profiling-quality-v51.json` (pin
-  `7c33172b`, v49); `evals/selfhost_cpu_profile.mjs:44-80` (1 ms CPU, 4 MiB
+  `7c33172b`, v49); `evals/selfhost_cpu_profile.mjs:39-46` (1 ms CPU, 4 MiB
   allocation); `checkpoints/book-phase-attribution.json` (load blocker, older
   pins).
-- Peer measurements cited with attribution: NativeCodegenMemory (pass-level
-  live floor, Book/FL bytes; process-heap only, no isolated per-module bytes);
+- Peer measurements cited with attribution: NativeCodegenMemory (lowest
+  observed process-heap `heapUsed` after reported drops, Book/FL byte values;
+  GC type/retention provenance unobserved; no isolated per-module bytes);
   SharedEmitterSteps (fragment sizes, non-independence); MLIRBackendResearch
   (name-based MLIR symbols, versioning); WasmWasiResearch (whole-program wasm
-  module, no per-module objects).
+  module, no per-module objects); LLVMBackendResearch (whole-program, numeric
+  export ABI).
 
 External primary background, used only for the standard red-green vocabulary:
 the rustc-dev-guide chapters "Incremental compilation" and "Incremental
@@ -984,9 +1008,9 @@ template for this codebase.
   already supports this: only source-published handles escape, and source is
   append-only.
 - **The hard parts are identity and dependency precision, not caching
-  machinery.** Positional `U32` handles, no stable IDs, no serializer, and no
-  read set are the blockers. Cross-process reuse and per-definition checking
-  are separate, much larger projects.
+  machinery.** Positional semantic-arena handles, no stable IDs for them, no
+  serializer, and no read set are the blockers. Cross-process reuse and
+  per-definition checking are separate, much larger projects.
 - **BIR/render caching is not the first move.** Sequential global ids,
   whole-program sharing/layout facts, and tiny non-independent emitter
   fragments make it low-value until stable IDs and separate compilation exist.
