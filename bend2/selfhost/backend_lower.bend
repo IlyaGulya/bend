@@ -315,13 +315,13 @@ def element_argument(state: State, handle: U32) -> LowerResult<List<&2, BIR.Desc
         case _: LowerResult{state_problem(state2, "checked array type has no element argument", no_span()), []}
     case LowerResult{state2, _}: LowerResult{state2, []}
 
-def primitive_element(+state: State, +op: BIR.Primitive, +values: List<&2, BIR.Atom>, element: Maybe<&2, U32>, arrayed: Bool) -> LowerResult<BIR.Atom>:
+def primitive_element(state: State, +op: BIR.Primitive, +values: List<&2, BIR.Atom>, element: Maybe<&2, U32>, arrayed: Bool) -> LowerResult<BIR.Atom>:
   match element arrayed:
-    case Some{handle} True{}: primitive_types(state, op, values, element_argument(state, handle))
-    case Some{handle} False{}: primitive_types(state, op, values, element_value(state, handle))
+    case Some{handle} True{}: primitive_types(op, values, element_argument(state, handle))
+    case Some{handle} False{}: primitive_types(op, values, element_value(state, handle))
     case None{} _: fail(state, "missing checked array element type", no_span())
 
-def primitive_types(state: State, op: BIR.Primitive, values: List<&2, BIR.Atom>, types: LowerResult<List<&2, BIR.Descriptor>>) -> LowerResult<BIR.Atom>:
+def primitive_types(op: BIR.Primitive, values: List<&2, BIR.Atom>, types: LowerResult<List<&2, BIR.Descriptor>>) -> LowerResult<BIR.Atom>:
   match types:
     case LowerResult{state2, descriptors}: operation(state2, BIR.PrimitiveCall{op, atom_arguments(values), descriptors})
 
@@ -388,25 +388,26 @@ def array_primitive(+op: BIR.Primitive) -> Bool:
     case BIR.PrimArrayNode{}: True{}
     case _: array_element_is_argument(op)
 
-def primitive(+state: State, op: BIR.Primitive, values: List<&2, BIR.Atom>) -> LowerResult<BIR.Atom>:
-  primitive_types(state, op, values, LowerResult{state, Nil{}})
+def primitive(state: State, op: BIR.Primitive, values: List<&2, BIR.Atom>) -> LowerResult<BIR.Atom>:
+  operation(state, BIR.PrimitiveCall{op, atom_arguments(values), Nil{}})
 
-def primitive_call(+state: State, +op: BIR.Primitive, +arguments: List<&2, BIR.Arg>, element: Maybe<&2, U32>) -> LowerResult<BIR.Atom>:
+def primitive_call(state: State, +op: BIR.Primitive, +arguments: List<&2, BIR.Arg>, element: Maybe<&2, U32>) -> LowerResult<BIR.Atom>:
   match array_primitive(op):
     case True{}:
-      match element:
-        case Some{handle}:
-          match element_fact(state, handle, array_element_is_argument(op)):
-            case LowerResult{state2, descriptors}: operation(state2, BIR.PrimitiveCall{op, arguments, descriptors})
-        case None{}: fail(state, "missing checked array element type", no_span())
+      primitive_call_element(state, op, arguments, element)
     case False{}: operation(state, BIR.PrimitiveCall{op, arguments, Nil{}})
 
-def element_fact(+state: State, handle: U32, arrayed: Bool) -> LowerResult<List<&2, BIR.Descriptor>>:
+def primitive_call_element(state: State, +op: BIR.Primitive, +arguments: List<&2, BIR.Arg>, element: Maybe<&2, U32>) -> LowerResult<BIR.Atom>:
+  match element:
+    case Some{handle}: primitive_types(op, arguments, element_fact(state, handle, array_element_is_argument(op)))
+    case None{}: fail(state, "missing checked array element type", no_span())
+
+def element_fact(state: State, handle: U32, arrayed: Bool) -> LowerResult<List<&2, BIR.Descriptor>>:
   match arrayed:
     case True{}: element_argument(state, handle)
     case False{}: element_value(state, handle)
 
-def primitive_fact(+state: State, +op: BIR.Primitive, +values: List<&2, BIR.Atom>, element: Maybe<&2, U32>) -> LowerResult<BIR.Atom>:
+def primitive_fact(state: State, +op: BIR.Primitive, +values: List<&2, BIR.Atom>, element: Maybe<&2, U32>) -> LowerResult<BIR.Atom>:
   match array_primitive(op):
     case True{}: primitive_element(state, op, values, element, array_element_is_argument(op))
     case False{}: primitive(state, op, values)
