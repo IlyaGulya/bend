@@ -4,18 +4,23 @@ import ./backend_ir.bend as BIR
 import ./index_lookup.bend as IndexLookup
 
 # Target selection is explicit. A foreign declaration names its own declared
-# import alternatives, and the JS adapter takes the first declared .js path; it
-# never derives one path from another. A declaration with no .js alternative is
-# a target error, never undefined success. link() is the CLI's IO preflight
-# input: the caller checks that every selected file actually exists.
+# import alternatives, and this target takes the first declared .js path; it
+# never derives one path from another. A missing alternative is a target error,
+# never undefined success. link() is pure: it names the files the CLI must read
+# and splices them once each, so one module's state is one module's state.
 type EmitResult is Data:
   EmitSuccess{source: String}
   EmitFailure{message: String, span: Ast.SourceSpan}
 type LinkSource is Data:
-  LinkSource{path: String, span: Ast.SourceSpan}
+  LinkSource{path: String, namespace: String, span: Ast.SourceSpan}
 type LinkResult is Data:
   LinkSuccess{sources: List<&2, LinkSource>}
   LinkFailure{message: String, span: Ast.SourceSpan}
+# A host supplies bytes, nothing else: namespace, span and selection are BIR
+# facts that link() derives, and the join is by exact declared path. The host
+# never invents a namespace and never inspects the checked program.
+type SourceFile is Data:
+  SourceFile{path: String, source: String}
 def js_source(sources: List<&2, String>) -> Maybe<&2, String>:
   match sources:
     case Nil{}: None{}
@@ -23,19 +28,329 @@ def js_source(sources: List<&2, String>) -> Maybe<&2, String>:
       match String.ends_with(path, ".js"):
         case True{}: Some{path}
         case False{}: js_source(rest)
+# One path splices once, under one namespace: a second namespace would rewrite
+# its CID(k) differently, so it is a compile error, never a silent first wins.
+def link_add(path: String, namespace: String, span: Ast.SourceSpan, planned: List<&2, LinkSource>) -> LinkResult:
+  match planned:
+    case Nil{}: LinkSuccess{[LinkSource{path, namespace, span}]}
+    case +item <> rest:
+      match item:
+        case LinkSource{+known, known_namespace, _}:
+          match String.eq(path, known):
+            case True{}:
+              match String.eq(namespace, known_namespace):
+                case True{}: LinkSuccess{planned}
+                case False{}: LinkFailure{String.append("bend: ", String.append(path, " is imported from two namespaces")), span}
+            case False{}:
+              match link_add(path, namespace, span, rest):
+                case LinkSuccess{+inner}: LinkSuccess{item <> inner}
+                case LinkFailure{message, failure_span}: LinkFailure{message, failure_span}
 def link_declarations(items: List<&2, BIR.Declaration>, acc: List<&2, LinkSource>) -> LinkResult:
   match items:
     case Nil{}: LinkSuccess{List.reverse(&2, LinkSource, acc)}
     case +item <> rest:
       match item:
-        case BIR.ForeignDeclaration{_, _, imported, _, decl_sources, _, span, _, _}:
+        case BIR.ForeignDeclaration{_, namespace, imported, _, decl_sources, _, span, _, _}:
           match js_source(decl_sources):
-            case Some{path}: link_declarations(rest, LinkSource{path, span} <> acc)
+            case Some{path}:
+              match link_add(path, namespace, span, acc):
+                case LinkSuccess{sources}: link_declarations(rest, sources)
+                case LinkFailure{message, failure_span}: LinkFailure{message, failure_span}
             case None{}: LinkFailure{String.append("bend: foreign definition has no .js import: ", imported), span}
         case _: link_declarations(rest, acc)
+# A foreign request and a constructor must not share one name: the request
+# escapes as that key while the constructor lives in the same tag space.
+def constructors_named(items: List<&2, BIR.ConstructorLayout>, key: String) -> Bool:
+  match items:
+    case Nil{}: False{}
+    case BIR.ConstructorLayout{_, +known, _, _} <> rest:
+      match String.eq(key, known):
+        case True{}: True{}
+        case False{}: constructors_named(rest, key)
+def foreign_name_check(items: List<&2, BIR.Declaration>, constructors: List<&2, BIR.ConstructorLayout>) -> Maybe<&2, LinkResult>:
+  match items:
+    case Nil{}: None{}
+    case +item <> rest:
+      match item:
+        case BIR.ForeignDeclaration{key, _, _, _, _, _, span, _, _}:
+          match constructors_named(constructors, key):
+            case True{}: Some{LinkFailure{String.append(key, " names both a constructor and a foreign def: name one apart"), span}}
+            case False{}: foreign_name_check(rest, constructors)
+        case _: foreign_name_check(rest, constructors)
+def link_checked(check: Maybe<&2, LinkResult>, values: List<&2, BIR.Declaration>) -> LinkResult:
+  match check:
+    case Some{failure}: failure
+    case None{}: link_declarations(values, Nil{})
 def link(program: BIR.Program) -> LinkResult:
   match program:
-    case BIR.Program{_, values, _, _, _, _}: link_declarations(values, Nil{})
+    case BIR.Program{_, values, constructors, _, _, _}:
+      link_checked(foreign_name_check(values, constructors), values)
+
+# An effect source is spliced verbatim, so its CID(<key>) spellings are the
+# only syntax this target resolves: the program, not the module, owns the name
+# of a constructor or def. The pass is lexical: comments, strings and template
+# literals are copied through, and a whole CID(<key>) is replaced by the quoted
+# canonical key. A key this program does not declare is a compile error that
+# names the file, never a tag no match knows.
+type JSCidResult is Data:
+  JSCidDone{source: String}
+  JSCidFailure{message: String}
+type JSMode is Data:
+  JSCode{}
+  JSLineComment{}
+  JSBlockComment{}
+  JSDoubleQuote{}
+  JSSingleQuote{}
+  JSBacktick{}
+type JSScan is Data:
+  JSScanComplete{output: List<&2, Char>}
+  JSScanRefused{message: String}
+type JSKeyScan is Data:
+  JSKeyFound{key: String, rest: List<&2, Char>}
+  JSKeyAbsent{}
+
+def js_key_candidate(+namespace: String, +key: String) -> String:
+  match String.eq(namespace, ""):
+    case True{}: key
+    case False{}: String.append(namespace, String.append(".", key))
+def js_key_member(+keys: Map<&2, Bool>, key: String) -> Bool:
+  match IndexLookup.find(Bool, keys, key):
+    case Some{_}: True{}
+    case None{}: False{}
+# The module's own namespace first, then the key as the source spells it.
+def js_key_resolve(+keys: Map<&2, Bool>, +namespace: String, +key: String) -> Maybe<&2, String>:
+  match js_key_member(keys, js_key_candidate(namespace, key)):
+    case True{}: Some{js_key_candidate(namespace, key)}
+    case False{}:
+      match js_key_member(keys, key):
+        case True{}: Some{key}
+        case False{}: None{}
+
+def js_key_declaration(item: BIR.Declaration, keys: Map<&2, Bool>) -> Map<&2, Bool>:
+  match item:
+    case BIR.FunctionDeclaration{key, _, _}: Map.set(&2, Bool, keys, key, True{})
+    case BIR.LazyDeclaration{key, _}: Map.set(&2, Bool, keys, key, True{})
+    case BIR.NativeDeclaration{key, _, _}: Map.set(&2, Bool, keys, key, True{})
+    case BIR.ForeignDeclaration{key, _, _, _, _, _, _, _, _}: Map.set(&2, Bool, keys, key, True{})
+def js_key_declarations(items: List<&2, BIR.Declaration>, keys: Map<&2, Bool>) -> Map<&2, Bool>:
+  match items:
+    case Nil{}: keys
+    case +item <> rest: js_key_declarations(rest, js_key_declaration(item, keys))
+def js_key_layouts(items: List<&2, BIR.ConstructorLayout>, keys: Map<&2, Bool>) -> Map<&2, Bool>:
+  match items:
+    case Nil{}: keys
+    case BIR.ConstructorLayout{_, key, _, _} <> rest: js_key_layouts(rest, Map.set(&2, Bool, keys, key, True{}))
+def js_key_families(items: List<&2, BIR.Family>, keys: Map<&2, Bool>) -> Map<&2, Bool>:
+  match items:
+    case Nil{}: keys
+    case BIR.Family{key, _, _, _, _, _} <> rest: js_key_families(rest, Map.set(&2, Bool, keys, key, True{}))
+def js_key_functions(items: List<&2, BIR.TypeFunction>, keys: Map<&2, Bool>) -> Map<&2, Bool>:
+  match items:
+    case Nil{}: keys
+    case BIR.TypeFunction{key, _, _, _, _} <> rest: js_key_functions(rest, Map.set(&2, Bool, keys, key, True{}))
+# Native authority, not spelling: a descriptor head names host IO/Nat only when
+# the closed BIR family or type function declares that native marker. A module
+# that shadows the name cannot become host IO or host Nat.
+def js_native_families(items: List<&2, BIR.Family>, natives: Map<&2, String>) -> Map<&2, String>:
+  match items:
+    case Nil{}: natives
+    case BIR.Family{key, _, native, _, _, _} <> rest: js_native_family(native, key, rest, natives)
+# A known type with no native marker is recorded as "" so a head that is
+# absent from this map is an unresolved concrete alias, not an abstract one.
+def js_native_family(native: Maybe<&2, String>, key: String, rest: List<&2, BIR.Family>, natives: Map<&2, String>) -> Map<&2, String>:
+  match native:
+    case None{}: js_native_families(rest, Map.set(&2, String, natives, key, ""))
+    case Some{name}: js_native_families(rest, Map.set(&2, String, natives, key, name))
+def js_native_functions(items: List<&2, BIR.TypeFunction>, natives: Map<&2, String>) -> Map<&2, String>:
+  match items:
+    case Nil{}: natives
+    case BIR.TypeFunction{key, native, _, _, _} <> rest: js_native_function(native, key, rest, natives)
+def js_native_function(native: Maybe<&2, String>, key: String, rest: List<&2, BIR.TypeFunction>, natives: Map<&2, String>) -> Map<&2, String>:
+  match native:
+    case None{}: js_native_functions(rest, Map.set(&2, String, natives, key, ""))
+    case Some{name}: js_native_functions(rest, Map.set(&2, String, natives, key, name))
+def js_native_markers(program: BIR.Program) -> Map<&2, String>:
+  match program:
+    case BIR.Program{_, _, _, families, type_functions, _}:
+      js_native_functions(type_functions, js_native_families(families, Map.new(&2, String)))
+
+def js_known_keys(program: BIR.Program) -> Map<&2, Bool>:
+  match program:
+    case BIR.Program{_, declarations, constructors, families, type_functions, _}:
+      js_key_functions(js_key_families(js_key_layouts(js_key_declarations(declarations, Map.new(&2, Bool)), constructors), families), type_functions)
+
+def js_cid(applied: JSScan) -> JSCidResult:
+  match applied:
+    case JSScanComplete{output}: JSCidDone{String.from_list(List.reverse(&2, Char, output))}
+    case JSScanRefused{message}: JSCidFailure{message}
+
+def js_word(+char: Char) -> Bool:
+  match char:
+    case '_': True{}
+    case _: Bool.or(Char.is_alpha(char), Char.is_digit(char))
+def js_key_char(+char: Char) -> Bool:
+  match char:
+    case '.': True{}
+    case '/': True{}
+    case '~': True{}
+    case '-': True{}
+    case _: js_word(char)
+
+# A lookahead decides once whether a literal closes; one that does not is not
+# a literal, so its text stays code, exactly as the accepted compiler reads it.
+def js_text_closes(chars: List<&2, Char>, +terminator: Char, +newline_ends: Bool) -> Bool:
+  match chars:
+    case Nil{}: False{}
+    case '\\' <> rest: js_text_closes_escape(rest, terminator, newline_ends)
+    case +char <> rest: js_text_closes_step(Char.is_eq(char, terminator), char, rest, terminator, newline_ends)
+def js_text_closes_escape(rest: List<&2, Char>, terminator: Char, newline_ends: Bool) -> Bool:
+  match rest:
+    case Nil{}: False{}
+    case _ <> more: js_text_closes(more, terminator, newline_ends)
+def js_text_closes_step(same: Bool, char: Char, rest: List<&2, Char>, terminator: Char, +newline_ends: Bool) -> Bool:
+  match same:
+    case True{}: True{}
+    case False{}: js_text_closes_newline(Bool.and(newline_ends, Char.is_eq(char, '\n')), rest, terminator, newline_ends)
+def js_text_closes_newline(ends: Bool, rest: List<&2, Char>, terminator: Char, newline_ends: Bool) -> Bool:
+  match ends:
+    case True{}: False{}
+    case False{}: js_text_closes(rest, terminator, newline_ends)
+def js_block_closes(chars: List<&2, Char>) -> Bool:
+  match chars:
+    case Nil{}: False{}
+    case '*' <> rest: js_block_closes_star(rest)
+    case _ <> rest: js_block_closes(rest)
+def js_block_closes_star(+rest: List<&2, Char>) -> Bool:
+  match rest:
+    case '/' <> _: True{}
+    case _: js_block_closes(rest)
+
+def js_emit_chars(chars: List<&2, Char>, +output: List<&2, Char>) -> List<&2, Char>:
+  match chars:
+    case Nil{}: output
+    case char <> rest: js_emit_chars(rest, char <> output)
+
+def js_scan(chars: List<&2, Char>, mode: JSMode, word: Bool, +output: List<&2, Char>, +keys: Map<&2, Bool>, +namespace: String) -> JSScan:
+  match chars:
+    case Nil{}: JSScanComplete{output}
+    case char <> rest: js_scan_mode(mode, char, rest, word, output, keys, namespace)
+def js_scan_mode(mode: JSMode, +char: Char, +rest: List<&2, Char>, word: Bool, +output: List<&2, Char>, +keys: Map<&2, Bool>, +namespace: String) -> JSScan:
+  match mode:
+    case JSCode{}: js_scan_code(char, rest, word, output, keys, namespace)
+    case JSLineComment{}: js_scan_line(char, rest, output, keys, namespace)
+    case JSBlockComment{}: js_scan_block(char, rest, output, keys, namespace)
+    case JSDoubleQuote{}: js_scan_text(char, rest, JSDoubleQuote{}, '\"', output, keys, namespace)
+    case JSSingleQuote{}: js_scan_text(char, rest, JSSingleQuote{}, '\'', output, keys, namespace)
+    case JSBacktick{}: js_scan_text(char, rest, JSBacktick{}, '`', output, keys, namespace)
+
+def js_scan_code(+char: Char, +rest: List<&2, Char>, +word: Bool, +output: List<&2, Char>, +keys: Map<&2, Bool>, +namespace: String) -> JSScan:
+  match char:
+    case '/': js_scan_slash(rest, output, keys, namespace)
+    case '\"': js_scan(rest, Bool.pick(JSMode, js_text_closes(rest, '\"', True{}), JSDoubleQuote{}, JSCode{}), False{}, char <> output, keys, namespace)
+    case '\'': js_scan(rest, Bool.pick(JSMode, js_text_closes(rest, '\'', True{}), JSSingleQuote{}, JSCode{}), False{}, char <> output, keys, namespace)
+    case '`': js_scan(rest, Bool.pick(JSMode, js_text_closes(rest, '`', False{}), JSBacktick{}, JSCode{}), False{}, char <> output, keys, namespace)
+    case 'C': js_scan_cid(word, rest, output, keys, namespace)
+    case _: js_scan(rest, JSCode{}, js_word(char), char <> output, keys, namespace)
+def js_scan_slash(+rest: List<&2, Char>, +output: List<&2, Char>, +keys: Map<&2, Bool>, +namespace: String) -> JSScan:
+  match rest:
+    case '/' <> more: js_scan(more, JSLineComment{}, False{}, '/' <> ('/' <> output), keys, namespace)
+    case '*' <> +more: js_scan(more, Bool.pick(JSMode, js_block_closes(more), JSBlockComment{}, JSCode{}), False{}, '*' <> ('/' <> output), keys, namespace)
+    case _: js_scan(rest, JSCode{}, False{}, '/' <> output, keys, namespace)
+
+# A failed shape copies its prefix and resumes after it: I, D and ( can never
+# begin an invocation themselves, so nothing is skipped.
+def js_scan_cid(word: Bool, +rest: List<&2, Char>, +output: List<&2, Char>, +keys: Map<&2, Bool>, +namespace: String) -> JSScan:
+  match word:
+    case True{}: js_scan(rest, JSCode{}, True{}, 'C' <> output, keys, namespace)
+    case False{}: js_scan_cid_prefix(rest, output, keys, namespace)
+def js_scan_cid_prefix(+rest: List<&2, Char>, +output: List<&2, Char>, +keys: Map<&2, Bool>, +namespace: String) -> JSScan:
+  match rest:
+    case 'I' <> 'D' <> '(' <> +more: js_scan_cid_key(js_collect_key(more, Nil{}), more, output, keys, namespace)
+    case _: js_scan(rest, JSCode{}, True{}, 'C' <> output, keys, namespace)
+def js_scan_cid_key(pending: JSKeyScan, more: List<&2, Char>, +output: List<&2, Char>, +keys: Map<&2, Bool>, +namespace: String) -> JSScan:
+  match pending:
+    case JSKeyFound{key, rest}: js_scan_cid_found(key, rest, output, keys, namespace)
+    case JSKeyAbsent{}: js_scan(more, JSCode{}, False{}, '(' <> ('D' <> ('I' <> ('C' <> output))), keys, namespace)
+def js_scan_cid_found(key: String, rest: List<&2, Char>, output: List<&2, Char>, keys: Map<&2, Bool>, namespace: String) -> JSScan:
+  match js_key_resolve(keys, namespace, key):
+    case Some{resolved}: js_scan(rest, JSCode{}, False{}, js_emit_chars(String.to_list(js_quote(resolved)), output), keys, namespace)
+    case None{}: JSScanRefused{String.append("CID(", String.append(key, ") names no constructor or def"))}
+
+def js_collect_key(chars: List<&2, Char>, +collected: List<&2, Char>) -> JSKeyScan:
+  match chars:
+    case Nil{}: JSKeyAbsent{}
+    case ')' <> rest: js_collect_key_close(collected, rest)
+    case +char <> rest: js_collect_key_more(js_key_char(char), char, rest, collected)
+def js_collect_key_close(+collected: List<&2, Char>, rest: List<&2, Char>) -> JSKeyScan:
+  match collected:
+    case Nil{}: JSKeyAbsent{}
+    case _: JSKeyFound{String.from_list(List.reverse(&2, Char, collected)), rest}
+def js_collect_key_more(valid: Bool, char: Char, rest: List<&2, Char>, collected: List<&2, Char>) -> JSKeyScan:
+  match valid:
+    case True{}: js_collect_key(rest, char <> collected)
+    case False{}: JSKeyAbsent{}
+
+def js_scan_line(+char: Char, +rest: List<&2, Char>, +output: List<&2, Char>, +keys: Map<&2, Bool>, +namespace: String) -> JSScan:
+  match char:
+    case '\n': js_scan(rest, JSCode{}, False{}, char <> output, keys, namespace)
+    case '\\': js_scan_line_more(rest, output, keys, namespace)
+    case _: js_scan(rest, JSLineComment{}, False{}, char <> output, keys, namespace)
+def js_scan_line_more(+rest: List<&2, Char>, +output: List<&2, Char>, +keys: Map<&2, Bool>, +namespace: String) -> JSScan:
+  match rest:
+    case '\n' <> more: js_scan(more, JSLineComment{}, False{}, '\n' <> ('\\' <> output), keys, namespace)
+    case _: js_scan(rest, JSLineComment{}, False{}, '\\' <> output, keys, namespace)
+def js_scan_block(+char: Char, +rest: List<&2, Char>, +output: List<&2, Char>, +keys: Map<&2, Bool>, +namespace: String) -> JSScan:
+  match char:
+    case '*': js_scan_block_more(rest, output, keys, namespace)
+    case _: js_scan(rest, JSBlockComment{}, False{}, char <> output, keys, namespace)
+def js_scan_block_more(+rest: List<&2, Char>, +output: List<&2, Char>, +keys: Map<&2, Bool>, +namespace: String) -> JSScan:
+  match rest:
+    case '/' <> more: js_scan(more, JSCode{}, False{}, '/' <> ('*' <> output), keys, namespace)
+    case _: js_scan(rest, JSBlockComment{}, False{}, '*' <> output, keys, namespace)
+
+# A backslash owns the character after it. The lookahead promised a terminator,
+# so the escape walk cannot reach the end of the input here.
+def js_scan_text(+char: Char, +rest: List<&2, Char>, +mode: JSMode, terminator: Char, +output: List<&2, Char>, +keys: Map<&2, Bool>, +namespace: String) -> JSScan:
+  match char:
+    case '\\': js_scan_text_more(rest, mode, output, keys, namespace)
+    case _: js_scan_text_plain(Char.is_eq(char, terminator), char, rest, mode, output, keys, namespace)
+def js_scan_text_plain(same: Bool, +char: Char, +rest: List<&2, Char>, mode: JSMode, +output: List<&2, Char>, +keys: Map<&2, Bool>, +namespace: String) -> JSScan:
+  match same:
+    case True{}: js_scan(rest, JSCode{}, False{}, char <> output, keys, namespace)
+    case False{}: js_scan(rest, mode, False{}, char <> output, keys, namespace)
+def js_scan_text_more(rest: List<&2, Char>, mode: JSMode, +output: List<&2, Char>, keys: Map<&2, Bool>, namespace: String) -> JSScan:
+  match rest:
+    case Nil{}: JSScanComplete{'\\' <> output}
+    case char <> more: js_scan(more, mode, False{}, char <> ('\\' <> output), keys, namespace)
+
+type JSEffects is Data:
+  JSEffectsReady{text: String}
+  JSEffectsFailure{message: String, span: Ast.SourceSpan}
+
+def js_source_text(items: List<&2, SourceFile>, path: String) -> Maybe<&2, String>:
+  match items:
+    case Nil{}: None{}
+    case SourceFile{+known, source} <> rest:
+      match String.eq(path, known):
+        case True{}: Some{source}
+        case False{}: js_source_text(rest, path)
+
+# Each file is spliced once, in its own function scope, so its state is shared
+# by every def it registers and its helpers cannot shadow the runtime's.
+def js_effect_chunk(source: String) -> String:
+  String.append("(() => {\n", String.append(source, "\n})();\n\n"))
+def js_effect_sources(links: List<&2, LinkSource>, loaded: List<&2, SourceFile>, +keys: Map<&2, Bool>, acc: List<&2, String>) -> JSEffects:
+  match links:
+    case Nil{}: JSEffectsReady{String.join(List.reverse(&2, String, acc), "")}
+    case +link <> rest:
+      match link:
+        case LinkSource{path, namespace, span}:
+          match js_source_text(loaded, path):
+            case None{}: JSEffectsFailure{String.append("bend: missing JavaScript foreign source ", path), span}
+            case Some{text}:
+              match js_cid(js_scan(String.to_list(text), JSCode{}, False{}, Nil{}, keys, namespace)):
+                case JSCidFailure{message}: JSEffectsFailure{String.append(String.append(path, ": "), message), span}
+                case JSCidDone{source}: js_effect_sources(rest, loaded, keys, js_effect_chunk(source) <> acc)
 
 type TagArm is Data:
   TagArm{label: U32, condition: U32, tag: String, body: BIR.Block}
@@ -138,8 +453,77 @@ def record_fields(fields: List<&2, BIR.Field>) -> String:
     case Nil{}: ""
     case BIR.Field{_, key, _, value} <> rest:
       cat([",[", js_quote(key), "]:", atom(value), record_fields(rest)])
-def foreign(+path: String, +key: String, arity: Nat) -> String:
-  cat(["$effect(require(", js_quote(path), ")[", js_quote(key), "],require(", js_quote(path), ")[", js_quote(String.append(key, "_need")), "],", Nat.show(arity), ")"])
+# A foreign definition is a request constructor. BIR application is unary, so
+# the value is curried: one arrow per live parameter and then the continuation.
+# The request names the effect the source registered; its continuation is the
+# one the caller supplied. A Nat answer is checked as the host hands it back,
+# which is where comp.ts puts nat_in, so an out-of-range number fails here.
+def foreign_parameters(count: Nat, index: Nat) -> List<&2, String>:
+  match count:
+    case 0n: Nil{}
+    case 1n+rest: cat(["$f", Nat.show(index)]) <> foreign_parameters(rest, (index + 1n : Nat))
+def foreign_arrow(names: List<&2, String>, body: String) -> String:
+  match names:
+    case Nil{}: body
+    case name <> rest: cat([name, "=>", foreign_arrow(rest, body)])
+def foreign_kont(checked: Bool) -> String:
+  match checked:
+    case True{}: "((x)=>$k(nat_in(x)))"
+    case False{}: "$k"
+def foreign_request(+key: String, count: Nat, checked: Bool) -> String:
+  names = foreign_parameters(count, 0n)
+  body = cat(["({$:", js_quote(key), ",args:[", String.join(names, ","), "],kont:", foreign_kont(checked), "})"])
+  cat(["$D[", js_quote(key), "]=", foreign_arrow(List.append(&2, String, names, ["$k"]), body), ";\n"])
+
+# The answer type of a foreign IO(A) is the continuation's domain A. The
+# descriptor of the declared result is the only authoritative source: a named
+# or unnamed application whose head is IO carries A as its argument.
+type JSDescriptorHead is Data:
+  JSDescriptorHead{key: String, args: List<&2, BIR.Descriptor>}
+def js_descriptor_head(value: BIR.Descriptor) -> Maybe<&2, JSDescriptorHead>:
+  match value:
+    case BIR.DescriptorRef{key, args}: Some{JSDescriptorHead{key, args}}
+    case BIR.DescriptorConstructor{key, args}: Some{JSDescriptorHead{key, args}}
+    case BIR.DescriptorNamedFill{key, _, args}: Some{JSDescriptorHead{key, args}}
+    case BIR.DescriptorNamedPlus{key, _, args}: Some{JSDescriptorHead{key, args}}
+    case BIR.DescriptorFill{head, args}: js_descriptor_head_fill(js_descriptor_head(head), args)
+    case BIR.DescriptorPlus{head, args}: js_descriptor_head_fill(js_descriptor_head(head), args)
+    case BIR.DescriptorApplication{fn, arg}: js_descriptor_head_applied(js_descriptor_head(fn), arg)
+    case _: None{}
+def js_descriptor_head_fill(head: Maybe<&2, JSDescriptorHead>, args: List<&2, BIR.Descriptor>) -> Maybe<&2, JSDescriptorHead>:
+  match head:
+    case Some{JSDescriptorHead{key, _}}: Some{JSDescriptorHead{key, args}}
+    case None{}: None{}
+def js_descriptor_head_applied(head: Maybe<&2, JSDescriptorHead>, arg: BIR.Descriptor) -> Maybe<&2, JSDescriptorHead>:
+  match head:
+    case Some{JSDescriptorHead{key, args}}: Some{JSDescriptorHead{key, List.append(&2, BIR.Descriptor, args, [arg])}}
+    case None{}: None{}
+def js_native_is(+natives: Map<&2, String>, key: String, name: String) -> Bool:
+  match IndexLookup.find(String, natives, key):
+    case Some{found}: String.eq(found, name)
+    case None{}: False{}
+def js_io_answer(value: BIR.Descriptor, +natives: Map<&2, String>) -> Maybe<&2, BIR.Descriptor>:
+  match js_descriptor_head(value):
+    case Some{JSDescriptorHead{key, args}}:
+      match js_native_is(natives, key, "IO"):
+        case True{}: js_first_descriptor(args)
+        case False{}: None{}
+    case None{}: None{}
+def js_first_descriptor(items: List<&2, BIR.Descriptor>) -> Maybe<&2, BIR.Descriptor>:
+  match items:
+    case Nil{}: None{}
+    case +item <> _: Some{item}
+def js_nat_descriptor(value: BIR.Descriptor, +natives: Map<&2, String>) -> Bool:
+  match js_descriptor_head(value):
+    case Some{JSDescriptorHead{key, args}}:
+      match js_native_is(natives, key, "Nat"):
+        case True{}: Nat.is_eq(List.length(&2, BIR.Descriptor, args), 0n)
+        case False{}: False{}
+    case None{}: False{}
+def js_nat_answer(value: BIR.Descriptor, +natives: Map<&2, String>) -> Bool:
+  match js_io_answer(value, natives):
+    case Some{answer}: js_nat_descriptor(answer, natives)
+    case None{}: False{}
 def operation(op: BIR.Op) -> String:
   match op:
     case BIR.Copy{value}: atom(value)
@@ -520,7 +904,7 @@ def descriptor(value: BIR.Descriptor) -> String:
 
 def deferred(key: String, value: String) -> String:
   cat(["Object.defineProperty($D,", js_quote(key), ",{enumerable:true,configurable:true,get(){return run_loop(", value, ");}});\n"])
-def declaration(item: BIR.Declaration) -> String:
+def declaration(item: BIR.Declaration, +natives: Map<&2, String>) -> String:
   match item:
     case BIR.FunctionDeclaration{key, code, parameters}:
       cat(["$D[", js_quote(key), "]=", closure(code, Nil{}, parameters), ";\n"])
@@ -528,20 +912,20 @@ def declaration(item: BIR.Declaration) -> String:
       deferred(key, cat(["(()=>{", block(body), "})()"]))
     case BIR.NativeDeclaration{key, primitive, uses}:
       native_declaration(key, primitive, uses)
-    case BIR.ForeignDeclaration{key, _, imported, arity, decl_sources, _, _, _, _}:
-      foreign_declaration(key, imported, decl_sources, arity)
-def foreign_declaration(+key: String, imported: String, sources: List<&2, String>, arity: Nat) -> String:
+    case BIR.ForeignDeclaration{key, _, imported, arity, decl_sources, _, _, _, result}:
+      foreign_declaration(key, imported, decl_sources, arity, result, natives)
+def foreign_declaration(+key: String, imported: String, sources: List<&2, String>, arity: Nat, result: BIR.Descriptor, +natives: Map<&2, String>) -> String:
   match js_source(sources):
-    case Some{path}: deferred(key, foreign(path, imported, arity))
+    case Some{_}: foreign_request(key, arity, js_nat_answer(result, natives))
     case None{}:
       # link() rejects this declaration before emission; keep the render total.
       deferred(key, cat(["(()=>{throw new Error(", js_quote(String.append("bend: foreign definition has no .js import: ", imported)), ")})()"]))
 def native_declaration(+key: String, primitive: BIR.Primitive, +uses: List<&2, BIR.Quantity>) -> String:
   cat(["$D[", js_quote(key), "]=", primitive_public(primitive), ";\n$TYPEF[", js_quote(key), "]={n:", Nat.show(List.length(&2, BIR.Quantity, uses)), ",q:[", String.join(quantities(uses), ","), "],intrinsic:$D[", js_quote(key), "]};\n"])
-def declarations(items: List<&2, BIR.Declaration>) -> String:
+def declarations(items: List<&2, BIR.Declaration>, +natives: Map<&2, String>) -> String:
   match items:
     case Nil{}: ""
-    case item <> rest: cat([declaration(item), declarations(rest)])
+    case item <> rest: cat([declaration(item, natives), declarations(rest, natives)])
 def field_names(items: List<&2, Maybe<&2, String>>) -> List<&2, String>:
   match items:
     case Nil{}: Nil{}
@@ -594,48 +978,117 @@ def type_functions(items: List<&2, BIR.TypeFunction>) -> String:
   match items:
     case Nil{}: ""
     case item <> rest: cat([type_function(item), type_functions(rest)])
-def export_arguments(count: Nat, index: Nat) -> List<&2, String>:
-  match count:
-    case 0n: Nil{}
-    case 1n+rest: cat(["arguments[", Nat.show(index), "]"]) <> export_arguments(rest, (index + 1n : Nat))
-def export_field(item: BIR.Export) -> String:
-  match item:
-    case BIR.Export{+key, None{}, _}:
-      cat(["[", js_quote(key), "]:(...args)=>$run($D[", js_quote(key), "],args)"])
-    case BIR.Export{+key, Some{BIR.Entry{code, +arity}}, _}:
-      cat(["[", js_quote(key), "](){return arguments.length===", Nat.show(arity), "?run_loop(", call(code, export_arguments(arity, 0n)), "):$run($D[", js_quote(key), "],arguments);}"])
-def export_fields(items: List<&2, BIR.Export>) -> List<&2, String>:
+# A host parameter crosses the export seam as a number. It is a Nat only when
+# the export's published live parameter descriptor resolves to the family whose
+# BIR native is Nat; a polymorphic or missing descriptor is refused by name,
+# never treated as unguarded Nat and never silently adapted.
+type JSParameter is Data:
+  JSParameterNat{}
+  JSParameterOther{}
+  JSParameterUnresolved{}
+def js_parameter(value: BIR.Descriptor, +natives: Map<&2, String>) -> JSParameter:
+  match js_descriptor_head(value):
+    case Some{JSDescriptorHead{key, args}}:
+      js_parameter_head(js_native_is(natives, key, "Nat"), js_key_member(natives, key), args)
+    case None{}: js_parameter_unresolved(value)
+# A concrete Nat is guarded; a known non-Nat type is not. A head absent from
+# the type table is an unresolved concrete alias: the build must fail.
+def js_parameter_head(nat: Bool, known: Bool, args: List<&2, BIR.Descriptor>) -> JSParameter:
+  match nat:
+    case True{}: js_parameter_arity(args)
+    case False{}: js_parameter_known(known)
+def js_parameter_known(known: Bool) -> JSParameter:
+  match known:
+    case True{}: JSParameterOther{}
+    case False{}: JSParameterUnresolved{}
+def js_parameter_arity(args: List<&2, BIR.Descriptor>) -> JSParameter:
+  match Nat.is_eq(List.length(&2, BIR.Descriptor, args), 0n):
+    case True{}: JSParameterNat{}
+    case False{}: JSParameterOther{}
+# An abstract (generic) domain is unconstrained, not Nat: it crosses as it is,
+# with no guessed guard and no failure. Only a missing canonical symbol (a
+# DescriptorFailure published by lowering) is an error.
+def js_parameter_unresolved(value: BIR.Descriptor) -> JSParameter:
+  match value:
+    case BIR.DescriptorFailure{_}: JSParameterUnresolved{}
+    case _: JSParameterOther{}
+def export_arguments(items: List<&2, BIR.Descriptor>, +natives: Map<&2, String>, index: Nat) -> List<&2, String>:
   match items:
     case Nil{}: Nil{}
-    case item <> rest: export_field(item) <> export_fields(rest)
-def ending(item: BIR.Ending) -> String:
+    case +item <> rest: export_argument(js_parameter(item, natives), index) <> export_arguments(rest, natives, (index + 1n : Nat))
+def export_argument(parameter: JSParameter, index: Nat) -> String:
+  match parameter:
+    case JSParameterNat{}: cat(["nat_in(arguments[", Nat.show(index), "])"])
+    case _: cat(["arguments[", Nat.show(index), "]"])
+def export_unresolved(+key: String, items: List<&2, BIR.Descriptor>, +natives: Map<&2, String>) -> Bool:
+  match items:
+    case Nil{}: False{}
+    case +item <> rest:
+      match js_parameter(item, natives):
+        case JSParameterUnresolved{}: True{}
+        case _: export_unresolved(key, rest, natives)
+def export_field(item: BIR.Export, +natives: Map<&2, String>) -> String:
+  match item:
+    case BIR.Export{+key, None{}, +parameters}:
+      cat(["[", js_quote(key), "]:(...args)=>$run($D[", js_quote(key), "],[", String.join(export_arguments(parameters, natives, 0n), ","), "])"])
+    case BIR.Export{+key, Some{BIR.Entry{code, +arity}}, +parameters}:
+      cat(["[", js_quote(key), "](){return arguments.length===", Nat.show(arity), "?run_loop(", call(code, export_arguments(parameters, natives, 0n)), "):$run($D[", js_quote(key), "],[", String.join(export_arguments(parameters, natives, 0n), ","), "]);}"])
+def export_fields(items: List<&2, BIR.Export>, +natives: Map<&2, String>) -> List<&2, String>:
+  match items:
+    case Nil{}: Nil{}
+    case item <> rest: export_field(item, natives) <> export_fields(rest, natives)
+def ending(item: BIR.Ending, +natives: Map<&2, String>) -> String:
   match item:
     case BIR.Executable{main_type}: js_main(descriptor(main_type))
-    case BIR.Library{exports}: cat(["export default {", String.join(export_fields(exports), ","), "};\n"])
-def emit(program: BIR.Program) -> EmitResult:
+    case BIR.Library{exports}: cat(["export default {", String.join(export_fields(exports, natives), ","), "};\n"])
+# A generic export parameter is a real abstract domain: it is not Nat and the
+# host passes it through unchanged. Only a missing canonical symbol fails.
+def export_check(items: List<&2, BIR.Export>, +natives: Map<&2, String>) -> Maybe<&2, String>:
+  match items:
+    case Nil{}: None{}
+    case BIR.Export{+key, _, parameters} <> rest:
+      match export_unresolved(key, parameters, natives):
+        case True{}: Some{String.append(key, " has an export parameter with no canonical type")}
+        case False{}: export_check(rest, natives)
+def ending_check(item: BIR.Ending, +natives: Map<&2, String>) -> Maybe<&2, String>:
+  match item:
+    case BIR.Library{exports}: export_check(exports, natives)
+    case BIR.Executable{_}: None{}
+def emit_linked(program: BIR.Program, loaded: List<&2, SourceFile>) -> EmitResult:
   match link(program):
     case LinkFailure{message, span}: EmitFailure{message, span}
-    case LinkSuccess{_}: EmitSuccess{source(program)}
-def source(program: BIR.Program) -> String:
+    case LinkSuccess{sources}: emit_checked(program, sources, loaded)
+def emit_checked(+program: BIR.Program, sources: List<&2, LinkSource>, loaded: List<&2, SourceFile>) -> EmitResult:
+  match program:
+    case BIR.Program{_, _, _, _, _, end}:
+      match ending_check(end, js_native_markers(program)):
+        case Some{message}: EmitFailure{message, Ast.SpanOf{"", 0n, 0n}}
+        case None{}: emit_effects(program, js_effect_sources(sources, loaded, js_known_keys(program), Nil{}))
+def emit_effects(program: BIR.Program, effects: JSEffects) -> EmitResult:
+  match effects:
+    case JSEffectsFailure{message, span}: EmitFailure{message, span}
+    case JSEffectsReady{text}: EmitSuccess{program_source(program, text)}
+def program_source(program: BIR.Program, effects: String) -> String:
+  +natives = js_native_markers(program)
   match program:
     case BIR.Program{bodies, values, layouts, types, functions, end}:
-      cat([js_runtime(), js_runtime_extra(), js_runtime_show(), js_runtime_cli(), js_runtime_io(), js_runtime_array(), js_runtime_foreign(), js_runtime_namespace(), primitive_runtime(), constructor_layouts(layouts), families(types), type_functions(functions), codes(bodies), declarations(values), ending(end)])
+      cat([js_runtime(), js_runtime_extra(), js_runtime_show(), js_runtime_cli(), js_runtime_io(), js_runtime_array(), js_runtime_foreign(), js_runtime_namespace(), primitive_runtime(), constructor_layouts(layouts), families(types), type_functions(functions), effects, codes(bodies), declarations(values, natives), ending(end, natives)])
 
 # Trusted target runtime; public/native callback and reflection ABI is retained.
 def js_runtime() -> String:
   "const $D = Object.create(null);\nconst $BEND_TAIL = Symbol(\"bend.tail\");\nconst $td = 64;\nconst $TAIL_PENDING = Object.create(null), $tailArgs = Array(32);\nlet $tailFn, $tailCount=0, $tailUnary, $tailRest;\nfunction tail_many(f,a) { $tailFn=f; $tailCount=-2; $tailRest=a; return $TAIL_PENDING; }\nfunction tail_unary(f,x) { $tailFn=f; $tailCount=-1; $tailUnary=x; return $TAIL_PENDING; }\nfunction tail_named(f,n) { $tailFn=f; $tailCount=n; return $TAIL_PENDING; }\nfunction $run(f, xs) { let x=run_loop(f); for (const a of xs) x=run_loop(x(a)); return x; }\nfunction run_loop(x) { while (x===$TAIL_PENDING) { const f=$tailFn, count=$tailCount; $tailFn=undefined; $tailCount=0; if(count===-1) { const a=$tailUnary; $tailUnary=undefined; x=f(a,$BEND_TAIL); } else x=tail_dispatch(f,count); } return x; }\nfunction tail_dispatch(f,count) { switch(count) {\ncase -2: { const a=$tailRest; $tailRest=undefined; return f(...a); }\ncase 1: { const a0=$tailArgs[0]; $tailArgs[0]=undefined; return f(a0); }\ncase 2: { const a0=$tailArgs[0],a1=$tailArgs[1]; $tailArgs[0]=$tailArgs[1]=undefined; return f(a0,a1); }\ncase 3: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=undefined; return f(a0,a1,a2); }\ncase 4: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=undefined; return f(a0,a1,a2,a3); }\ncase 5: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=undefined; return f(a0,a1,a2,a3,a4); }\ncase 6: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=undefined; return f(a0,a1,a2,a3,a4,a5); }\ncase 7: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=undefined; return f(a0,a1,a2,a3,a4,a5,a6); }\ncase 8: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7); }\ncase 9: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8); }\ncase 10: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9); }\ncase 11: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10); }\ncase 12: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11); }\ncase 13: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12); }\ncase 14: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13); }\ncase 15: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14); }\ncase 16: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15); }\ncase 17: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16); }\ncase 18: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17); }\ncase 19: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18); }\ncase 20: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19); }\ncase 21: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20); }\ncase 22: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21); }\ncase 23: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22); }\ncase 24: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23); }\ncase 25: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24); }\ncase 26: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25); }\ncase 27: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26); }\ncase 28: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27); }\ncase 29: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28); }\ncase 30: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29); }\ncase 31: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29],a30=$tailArgs[30]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=$tailArgs[30]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30); }\ncase 32: { const a0=$tailArgs[0],a1=$tailArgs[1],a2=$tailArgs[2],a3=$tailArgs[3],a4=$tailArgs[4],a5=$tailArgs[5],a6=$tailArgs[6],a7=$tailArgs[7],a8=$tailArgs[8],a9=$tailArgs[9],a10=$tailArgs[10],a11=$tailArgs[11],a12=$tailArgs[12],a13=$tailArgs[13],a14=$tailArgs[14],a15=$tailArgs[15],a16=$tailArgs[16],a17=$tailArgs[17],a18=$tailArgs[18],a19=$tailArgs[19],a20=$tailArgs[20],a21=$tailArgs[21],a22=$tailArgs[22],a23=$tailArgs[23],a24=$tailArgs[24],a25=$tailArgs[25],a26=$tailArgs[26],a27=$tailArgs[27],a28=$tailArgs[28],a29=$tailArgs[29],a30=$tailArgs[30],a31=$tailArgs[31]; $tailArgs[0]=$tailArgs[1]=$tailArgs[2]=$tailArgs[3]=$tailArgs[4]=$tailArgs[5]=$tailArgs[6]=$tailArgs[7]=$tailArgs[8]=$tailArgs[9]=$tailArgs[10]=$tailArgs[11]=$tailArgs[12]=$tailArgs[13]=$tailArgs[14]=$tailArgs[15]=$tailArgs[16]=$tailArgs[17]=$tailArgs[18]=$tailArgs[19]=$tailArgs[20]=$tailArgs[21]=$tailArgs[22]=$tailArgs[23]=$tailArgs[24]=$tailArgs[25]=$tailArgs[26]=$tailArgs[27]=$tailArgs[28]=$tailArgs[29]=$tailArgs[30]=$tailArgs[31]=undefined; return f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31); }\ndefault: throw \"bend: invalid private tail frame\";\n} }\nfunction run_force(x,raw) { return raw===$BEND_TAIL?x:run_loop(x); }\nfunction run_many(f,a,d=$td) { return d<64?f(...a,d+1):tail_many(f,a); }\nfunction run_tail(f,x) { const j=f[$BEND_TAIL]; return j ? tail_unary(j,x) : f(x); }\nfunction run_clo(j) { j[$BEND_TAIL]=j; return j; }\nfunction nat_chk(x) { if(x>281474976710655) throw \"bend: a Nat past the largest immediate 2^48-1\"; return x; }\nfunction char_new(x) { if(x>0x10ffff || (x>=0xd800 && x<=0xdfff)) throw \"bend: \"+x+\" is not a Unicode scalar value\"; return String.fromCodePoint(x); }\nfunction cmp_new(a,b) { return {$:a<b?\"LT\":a===b?\"EQ\":\"GT\"}; }\nfunction word_to_u32(w) { let x=0; for(let i=0;w.$===\"WCon\";i++,w=w.tail) if(w.head)x|=1<<i; return x>>>0; }\nfunction u32_to_word(x) { let w={$:\"WNil\"}; for(let i=31;i>=0;i--) w={$:\"WCon\",head:!!((x>>>i)&1),tail:w}; return w; }\nfunction run_named1(f,a0,d) { return d<64?f(a0,d+1):($tailArgs[0]=a0,tail_named(f,1)); }\nfunction run_named2(f,a0,a1,d) { return d<64?f(a0,a1,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,tail_named(f,2)); }\nfunction run_named3(f,a0,a1,a2,d) { return d<64?f(a0,a1,a2,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,tail_named(f,3)); }\nfunction run_named4(f,a0,a1,a2,a3,d) { return d<64?f(a0,a1,a2,a3,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,tail_named(f,4)); }\nfunction run_named5(f,a0,a1,a2,a3,a4,d) { return d<64?f(a0,a1,a2,a3,a4,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,tail_named(f,5)); }\nfunction run_named6(f,a0,a1,a2,a3,a4,a5,d) { return d<64?f(a0,a1,a2,a3,a4,a5,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,tail_named(f,6)); }\nfunction run_named7(f,a0,a1,a2,a3,a4,a5,a6,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,tail_named(f,7)); }\nfunction run_named8(f,a0,a1,a2,a3,a4,a5,a6,a7,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,tail_named(f,8)); }\nfunction run_named9(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,tail_named(f,9)); }\nfunction run_named10(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,tail_named(f,10)); }\nfunction run_named11(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,tail_named(f,11)); }\nfunction run_named12(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,tail_named(f,12)); }\nfunction run_named13(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,tail_named(f,13)); }\nfunction run_named14(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,tail_named(f,14)); }\nfunction run_named15(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,tail_named(f,15)); }\nfunction run_named16(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,tail_named(f,16)); }\nfunction run_named17(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,tail_named(f,17)); }\nfunction run_named18(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,tail_named(f,18)); }\nfunction run_named19(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,tail_named(f,19)); }\nfunction run_named20(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,tail_named(f,20)); }\nfunction run_named21(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,tail_named(f,21)); }\nfunction run_named22(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,tail_named(f,22)); }\nfunction run_named23(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,tail_named(f,23)); }\nfunction run_named24(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,tail_named(f,24)); }\nfunction run_named25(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,tail_named(f,25)); }\nfunction run_named26(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,tail_named(f,26)); }\nfunction run_named27(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,tail_named(f,27)); }\nfunction run_named28(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,tail_named(f,28)); }\nfunction run_named29(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,tail_named(f,29)); }\nfunction run_named30(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,tail_named(f,30)); }\nfunction run_named31(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,$tailArgs[30]=a30,tail_named(f,31)); }\nfunction run_named32(f,a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31,d) { return d<64?f(a0,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17,a18,a19,a20,a21,a22,a23,a24,a25,a26,a27,a28,a29,a30,a31,d+1):($tailArgs[0]=a0,$tailArgs[1]=a1,$tailArgs[2]=a2,$tailArgs[3]=a3,$tailArgs[4]=a4,$tailArgs[5]=a5,$tailArgs[6]=a6,$tailArgs[7]=a7,$tailArgs[8]=a8,$tailArgs[9]=a9,$tailArgs[10]=a10,$tailArgs[11]=a11,$tailArgs[12]=a12,$tailArgs[13]=a13,$tailArgs[14]=a14,$tailArgs[15]=a15,$tailArgs[16]=a16,$tailArgs[17]=a17,$tailArgs[18]=a18,$tailArgs[19]=a19,$tailArgs[20]=a20,$tailArgs[21]=a21,$tailArgs[22]=a22,$tailArgs[23]=a23,$tailArgs[24]=a24,$tailArgs[25]=a25,$tailArgs[26]=a26,$tailArgs[27]=a27,$tailArgs[28]=a28,$tailArgs[29]=a29,$tailArgs[30]=a30,$tailArgs[31]=a31,tail_named(f,32)); }\n"
 def js_runtime_extra() -> String:
-  "function f32_from_bits(x) { return new Float32Array(new Uint32Array([x]).buffer)[0]; }\nfunction f32_bits(x) { return new Uint32Array(new Float32Array([x]).buffer)[0]; }\nfunction tuple(a,b) { return {$:\"Tuple\",fst:a,snd:b}; }\nfunction f32_show(x) { if(x!==x) return \"nan\"; if(!Number.isFinite(x)||Object.is(x,-0)) return x<0?\"-inf\":x===0?\"-0\":\"inf\"; let s=\"x\"; for(let p=1;p<=9&&Math.fround(Number(s))!==x;p++) s=String(Number(x.toExponential(p-1))); return s; }\nfunction f32_read(s) { const re=/^\\s*[+-]?((\\d+\\.?\\d*|\\.\\d+)(e[+-]?\\d+)?|inf(inity)?|nan)$/i; const v=Number(s.replace(/inf\\w*/i,\"Infinity\")); return re.test(s)?{$:\"Some\",value:Math.fround(v)}:{$:\"None\"}; }\nfunction nat_divmod(a,b) { return b===0?tuple(0,a):tuple(Math.trunc(a/b),a%b); }\nfunction array_new(n,v) { if(n>31) throw \"bend: an array past the deepest block class 31\"; return Array(2 ** n).fill(v); }\nfunction array_node(a,b) { if(a.length!==b.length) throw \"bend: runtime fail-stop\"; return a.concat(b); }\n"
+  "function f32_from_bits(x) { return new Float32Array(new Uint32Array([x]).buffer)[0]; }\nfunction f32_bits(x) { return new Uint32Array(new Float32Array([x]).buffer)[0]; }\nfunction tuple(a,b) { return {$:\"Tuple\",fst:a,snd:b}; }\nfunction f32_show(x) { if(x!==x) return \"nan\"; if(!Number.isFinite(x)||Object.is(x,-0)) return x<0?\"-inf\":x===0?\"-0\":\"inf\"; let s=\"x\"; for(let p=1;p<=9&&Math.fround(Number(s))!==x;p++) s=String(Number(x.toExponential(p-1))); return s; }\nfunction f32_read(s) { const re=/^\\s*[+-]?((\\d+\\.?\\d*|\\.\\d+)(e[+-]?\\d+)?|inf(inity)?|nan)$/i; const v=Number(s.replace(/inf\\w*/i,\"Infinity\")); return re.test(s)?{$:\"Some\",value:Math.fround(v)}:{$:\"None\"}; }\nfunction nat_divmod(a,b) { return b===0?tuple(0,a):tuple(Math.trunc(a/b),a%b); }\nfunction nat_in(n) { return Number.isInteger(n)&&n>=0&&n<=9007199254740992?n:nat_chk(1/0); }\nfunction array_new(n,v) { if(n>31) throw \"bend: an array past the deepest block class 31\"; return Array(2 ** n).fill(v); }\nfunction array_node(a,b) { if(a.length!==b.length) throw \"bend: runtime fail-stop\"; return a.concat(b); }\n"
 def js_runtime_array() -> String:
   "function array_swap(a,i,v) { const at=i%a.length, old=a[at]; a[at]=v; return tuple(a,old); }\nfunction $string_tail(s) { return s.slice(s.codePointAt(0)>0xFFFF?2:1); }\n"
 def js_runtime_foreign() -> String:
-  "function $curry(f,n,xs=[]) { return n===0 ? f(...xs) : x => $curry(f,n-1,[...xs,x]); }\nfunction io_emit(value) { return {$:\"Emit\",value}; }\nfunction $effect(f,need,n) { return $curry((...args)=>({$:\"$FFI\",run:f,need,args,kont:io_emit}),n); }\n"
+  "const $0eff=Object.create(null);\nfunction io_emit(value) { return {$:\"Emit\",value}; }\nfunction io_eff(k,run) { if(arguments.length>2)throw new Error(\"bend: \"+k+\" takes no need: an effect that waits parks itself\"); if(k in $0eff)throw new Error(\"bend: two effects register \"+k); $0eff[k]=run; }\n"
 def js_runtime_namespace() -> String:
   "function $key(k,s,a) { let p=null; for (const alias of Object.keys(a)) if(k.startsWith(alias+\".\") && (p===null || alias.length>p.length)) p=alias; const n=p===null?undefined:a[p]; return n===undefined?(s?s+\".\"+k:k):(n?n+\".\":\"\")+k.slice(p.length+1); }\nfunction $resolve(k,s,a) { const q=$key(k,s,a); return $D[Object.hasOwn($D,q)?q:k]; }\nconst $FIELDS=Object.create(null), $PRIMITIVES=Object.create(null), $TYPE=Object.create(null), $TYPEF=Object.create(null), $PARAMS=Object.create(null);\nfunction $ctr(k,x,s,a) { const q=$key(k,s,a), key=Object.hasOwn($FIELDS,q)?q:k, fs=$FIELDS[key]; if(!fs||fs.length!==x.length)throw \"bend: unresolved constructor layout\"; const v={$:key}; for(let i=0;i<fs.length;i++){const f=fs[i];if(f!==null){if(f===\"__proto__\")Object.defineProperty(v,f,{value:x[i],enumerable:true,writable:true,configurable:true});else v[f]=x[i];}} return v; }\nfunction $project(v,k,i,s,a) { const q=$key(k,s,a),fs=$FIELDS[q]||$FIELDS[k]; if(!fs)throw \"bend: unresolved constructor layout\"; for(const f of fs)if(f!==null&&i--===0)return v[f]; throw \"bend: constructor field count mismatch\"; }\n"
 def js_runtime_cli() -> String:
   "const cli_args=[];\nfunction cli(argv) { for(let i=0;i<argv.length;i++){ if(argv[i]===\"--\"){cli_args.push(...argv.slice(i+1));break;} if(argv[i]===\"--help\"){process.stdout.write(\"usage: \"+process.argv[1]+\"\\n\");process.exit(0);} if(argv[i]===\"--threads\"||argv[i]===\"--gpu\"){i++;} else cli_args.push(argv[i]); } }\n"
 def js_runtime_io() -> String:
-  "function io_out(fd,data) { const fs=require(\"fs\"), b=Buffer.from(data); let at=0; while(at<b.length) at+=fs.writeSync(fd,b,at,b.length-at); }\nfunction io_errs(message) { io_out(2,io_bytes(message+\"\\n\")); }\nfunction io_bytes(text) { return new TextEncoder().encode(text); }\nfunction io_text(bytes,n) { return new TextDecoder(\"utf-8\",{ignoreBOM:true}).decode(bytes.subarray(0,n)); }\nfunction io_tuple_pair(snd,fst) { return tuple(fst,snd); }\nfunction io_tup(...xs) { if(xs.length!==2)return xs.reduceRight(io_tuple_pair); return tuple(xs[0],xs[1]); }\nfunction io_done(value) { return {$:\"Done\",value}; }\nfunction io_sys() { if(globalThis.BEND_SYS===undefined){const ffi=require(\"bun:ffi\"), mac=process.platform===\"darwin\", err=mac?\"__error\":\"__errno_location\", T={i:\"i32\",u:\"u32\",U:\"u64\",I:\"i64\",p:\"ptr\",c:\"cstring\"}, vari=mac&&process.arch===\"arm64\", lib=ffi.dlopen(mac?\"libSystem.dylib\":\"libc.so.6\",Object.fromEntries((\"socket:iii>i bind:ipu>i listen:ii>i connect:ipu>i accept:ipp>i send:ipUi>I recv:ipUi>I read:ipU>I pread:ipUI>I sendto:ipUipu>I recvfrom:ipUipp>I close:i>i poll:pui>i setsockopt:iiipu>i\"+(vari?\" fcntl:iiiiiiiii>i\":\" fcntl:iii>i\")+\" getsockopt:iiipp>i strerror:i>c \"+err+\":>p\").split(\" \").map(s=>{const [name,args,ret]=s.split(/[:>]/);return [name,{args:[...args].map(a=>T[a]),returns:T[ret]}]}))), fcntl=(fd,cmd,arg)=>vari?lib.symbols.fcntl(fd,cmd,0,0,0,0,0,0,arg):lib.symbols.fcntl(fd,cmd,arg); globalThis.BEND_SYS={...lib.symbols,fcntl,ptr:ffi.ptr,mac,errno:()=>ffi.read.i32(lib.symbols[err](),0)};} return globalThis.BEND_SYS; }\nfunction io_fail(code) { return {$:\"Fail\",error:io_tup(code>>>0,String(io_sys().strerror(code)))}; }\nfunction io_push(fun,arg,fresh) { const io=globalThis.BEND_IO; io.runs.push({fun,arg}); io.live+=fresh?1:0; }\nfunction io_park_on(fd,out,k,more) { globalThis.BEND_IO.waits.push({fd,out,k,more}); }\nfunction io_wait(io) { const soon=io.waits.reduce((m,w)=>Math.min(m,w.at??m),Infinity); let ms=-1; if(soon!==Infinity)ms=Math.min(Math.max(0,Math.ceil(soon-performance.now())),2147483647); const fds=io.waits.filter(w=>w.fd!==undefined), buf=Int32Array.from(fds.flatMap(w=>[w.fd,w.out?4:1])); io_sys().poll(fds.length?io_sys().ptr(buf):null,fds.length,ms); const now=performance.now(), fire=io.waits.filter((w)=>(buf[2*fds.indexOf(w)+1]>>>16)!==0||w.at<=now); io.waits=io.waits.filter(w=>!fire.includes(w)); for(const w of fire)io_push(io_wake,w,false); }\nfunction io_wake(w) { const x=w.more(); return x===undefined?undefined:w.k(x); }\nfunction io_run(m) { const io={runs:[],live:0,waits:[]}; globalThis.BEND_IO=io; try{io_push(run_loop(m()),io_emit,true); for(;;){if(io.runs.length===0){if(io.live===0)return 0;if(io.waits.length===0){io_errs(\"bend: deadlock: every computation waits on a channel\");return 1;}io_wait(io);continue;}const s=io.runs.shift();let op=s.fun(s.arg);for(;;){if(op===undefined)break;if(op.$===\"Emit\"){io.live-=1;break;}if(op.$===\"Halt\"){io_errs(op.message);return op.code;}const need=op.need?.()||{},fd=need.read?op.args[0]:null;if(need.time||fd!==null){const more=()=>op.run(...op.args,op.kont);io.waits.push(fd===null?{at:performance.now()+Number(op.args[0]),k:op.kont,more}:{fd,k:op.kont,more});break;}const x=op.run(...op.args,op.kont);if(x===undefined)break;op=op.kont(x);}}}catch(req){if(req instanceof RangeError)throw \"bend: memory fault (machine stack overflow?)\";if(req?.$!==\"$FFI\")throw req;io_errs(\"bend: an FFI operation failed\");return 1;} }\nfunction chan_wake(row,x) { const w=row.wait.shift(); io_push(w.cont,x,false); return w.item; }\nfunction chan_take(row) { const v=row.ring.shift(); if(row.wait.length>0)row.ring.push(chan_wake(row,true)); return v; }\nfunction chan_shut(row) { row.shut=true; while(row.wait.length>0)chan_wake(row,row.wait[0].item===null?{$:\"None\"}:false); }\nfunction io_exit(main,type) { if(type&&type.name===\"IO\")return io_run(main); try{io_out(1,io_bytes($show_value(type,run_loop(main()),0)+\"\\n\"));return 0;}catch(e){io_errs(String(e));return 1;} }\n"
+  "function io_out(fd,data) { const fs=require(\"fs\"), b=Buffer.from(data); let at=0; while(at<b.length){ try{ at+=fs.writeSync(fd,b,at,b.length-at); } catch(e){ if(e.code===\"EAGAIN\"||e.code===\"EINTR\")continue; if(e.code===\"EPIPE\"){process.on(\"SIGPIPE\",()=>{}).removeAllListeners(\"SIGPIPE\").kill(process.pid,\"SIGPIPE\");} try{fs.writeSync(2,\"bend: a short write on a standard stream\\n\");}catch(o){} process.exit(1);} } }\nfunction io_errs(message) { io_out(2,io_bytes(message+\"\\n\")); }\nfunction io_bytes(text) { return new TextEncoder().encode(text); }\nfunction io_text(b,n) { return new TextDecoder(\"utf-8\",{ignoreBOM:true}).decode(b.subarray(0,n)); }\nfunction io_list(b,n) { let xs={$:\"Nil\"}; while(n>0){ xs={$:\"Con\",head:b[--n],tail:xs}; } return xs; }\nfunction io_unlist(xs) { const b=[]; for(;xs.$===\"Con\";xs=xs.tail){ b.push(xs.head); } return b.some(x=>x>255)?null:Uint8Array.from(b); }\nfunction io_addr(host,port) { const part=host.split(\".\"); const deci=p=>/^(0|[1-9]\\d{0,2})$/.test(p)&&Number(p)<256; if(port>65535||part.length!==4||!part.every(deci))return null; const b=new Uint8Array(16); const head=io_sys().mac?[16,2]:[2,0]; b.set([...head,port>>8,port&255,...part.map(Number)]); return b; }\nfunction io_tup(...xs) { return xs.reduceRight((snd,fst)=>({$:\"Tuple\",fst,snd})); }\nfunction io_done(value) { return {$:\"Done\",value}; }\nfunction io_strerror(code) { try{ return String(io_sys().strerror(code)); } catch(o){ return \"errno \"+code; } }\nfunction io_fail(code,...rest) { const err=io_tup(code>>>0,io_strerror(code)); return {$:\"Fail\",error:io_tup(err,...rest)}; }\nfunction io_until(ms) { return performance.now()+Number(ms); }\nfunction io_late(at) { return at!==undefined&&performance.now()>=at; }\nfunction io_ready(at,r) { return at===undefined?r:{$:\"Ready\",value:r}; }\nfunction io_sys() { if(globalThis.BEND_SYS===undefined){ const ffi=require(\"bun:ffi\"), mac=process.platform===\"darwin\", err=mac?\"__error\":\"__errno_location\", sel=mac?\"select$DARWIN_EXTSN\":\"select\", T={i:\"i32\",u:\"u32\",U:\"u64\",I:\"i64\",p:\"ptr\",c:\"cstring\"}, vari=mac&&process.arch===\"arm64\", lib=ffi.dlopen(mac?\"libSystem.dylib\":\"libc.so.6\",Object.fromEntries((\"socket:iii>i bind:ipu>i listen:ii>i connect:ipu>i accept:ipp>i send:ipUi>I recv:ipUi>I read:ipU>I pread:ipUI>I sendto:ipUipu>I recvfrom:ipUipp>I close:i>i setsockopt:iiipu>i \"+sel+\":ipppp>i\"+(vari?\" fcntl:iiiiiiiii>i\":\" fcntl:iii>i\")+\" getsockopt:iiipp>i strerror:i>c \"+err+\":>p\").split(\" \").map(s=>{const [name,args,ret]=s.split(/[:>]/);return [name,{args:[...args].map(a=>T[a]),returns:T[ret]}]}))).symbols; const fcntl=(fd,cmd,arg)=>vari?lib.fcntl(fd,cmd,0,0,0,0,0,0,arg):lib.fcntl(fd,cmd,arg); globalThis.BEND_SYS={...lib,fcntl,select:lib[sel],ptr:ffi.ptr,mac,errno:()=>ffi.read.i32(lib[err](),0)}; } return globalThis.BEND_SYS; }\nfunction io_push(fun,arg,fresh) { const io=globalThis.BEND_IO; io.runs.push({fun,arg}); io.live+=fresh?1:0; }\nfunction io_park_on(fd,out,k,more,at) { const ws=globalThis.BEND_IO.waits; const i=ws.findLastIndex(w=>(w.at??Infinity)<=(at??Infinity)); ws.splice(i+1,0,{fd,out,k,more,at}); }\nfunction io_wait(io,block) { const soon=io.waits[0]?.at??Infinity; const ms=!block?0:soon===Infinity?-1:Math.max(0,Math.ceil(soon-performance.now())); const fds=io.waits.filter(w=>w.fd!==undefined); const top=fds.reduce((m,w)=>Math.max(m,w.fd),0); const len=(top>>6<<3)+8; const set=new Uint8Array(2*len); const at=w=>(w.out?len:0)+(w.fd>>3); for(const w of fds)set[at(w)]|=1<<(w.fd&7); const tv=new BigInt64Array([BigInt(ms/1000|0),BigInt(ms%1000*1000)]); const sys=io_sys(); if(sys.select(top+1,sys.ptr(set),sys.ptr(set,len),null,ms<0?null:sys.ptr(tv))<0){ if(sys.errno()!==4){ throw \"bend: the poller failed\"; } set.fill(0); } const now=performance.now(); const due=w=>w.at<=now||w.fd!==undefined&&set[at(w)]&1<<(w.fd&7); const todo=io.waits; io.waits=todo.filter(w=>!due(w)); for(const w of todo.filter(due)){ const x=w.more(); if(x!==undefined)io_push(w.k,x,false); } }\nfunction io_run(m) { const io={runs:[],live:0,waits:[]}; globalThis.BEND_IO=io; try{ io_push(run_loop(m()),x=>({$:\"Emit\",value:x}),true); let look=0; for(let n=0;;n+=1){ if(io.runs.length===0){ if(io.live===0)return 0; if(io.waits.length===0){ io_errs(\"bend: deadlock: every computation waits on a channel\"); return 1; } io_wait(io,true); continue; } if((n&63)===0&&io.waits.length>0){ const now=performance.now(); if(now>=look||io.waits[0].at<=now){ look=now+10; io_wait(io,false); } } const s=io.runs.shift(); let op=s.fun(s.arg); while(op!==undefined){ if(op.$===\"Emit\"){ io.live-=1; break; } if(op.$===\"Halt\"||op.$===\"Exit\"){ if(op.$===\"Halt\")io_errs(op.message); if(op.code>255){ io_errs(\"bend: exit code must be in 0..255\"); return 1; } return op.code; } const run=$0eff[op.$]; if(run===undefined){ throw \"bend: no effect registers \"+op.$; } const x=run(...op.args,op.kont); if(x===undefined)break; op=op.kont(x); } } }catch(e){ throw e instanceof RangeError?\"bend: memory fault (machine stack overflow?)\":e; } }\nfunction io_exit(main,type) { try{ if(type&&type.name===\"IO\")return io_run(main); io_out(1,io_bytes($show_value(type,run_loop(main()),0)+\"\\n\")); return 0; }catch(e){ io_errs(String(e)); return 1; } }\n"
 def js_runtime_show() -> String:
   String.append(js_runtime_type(), "function $show_chr(x,q) { const c=[...x][0]||\"\\0\", n=c.codePointAt(0), k=({10:\"n\",9:\"t\",13:\"r\",0:\"0\",92:\"\\\\\"})[n]??(c===q?q:null); return k!==null?\"\\\\\"+k:n<32||n===127?\"\\\\u{\"+n.toString(16)+\"}\":c; }\nfunction $show_list(t,x) { const xs=[]; while(x&&x.$===\"Con\") { const fs=t.arms.Con; if(!fs||!Object.hasOwn(x,\"head\")||!Object.hasOwn(x,\"tail\")) throw \"bend: malformed List.Con\"; xs.push($show_value($type(fs.types[0],t.args),x.head,0)); const next=$type(fs.types[1],t.args.concat([x.head])); x=x.tail; t=next; } if(!x||x.$!==\"Nil\") throw \"bend: malformed List.Nil\"; return \"[\"+xs.join(\", \")+\"]\"; }\nfunction $show_fields(t,x,chain) { const fs=t.arms[x.$]; if(!fs) throw \"bend: constructor absent from result datatype\"; const out=[],env=t.args.slice(); let at=0; for(let j=0;j<fs.types.length;j++) { if(fs.q[j]===0) { env.push(null); continue; } const name=fs.fields[j]; if(!Object.hasOwn(x,name))throw \"bend: constructor field count mismatch\"; const v=x[name]; at++; out.push($show_value($type(fs.types[j],env),v,chain&&at===2?\"(\":0)); env.push(v); } return out.join(\", \"); }\nfunction $show_value(t,x,chain) { if(!t) return String(x); if(t.k===\"U\") return String(x); if(t.k===\"F\") { const s=f32_show(x); return s.replace(/^-?\\d+(?=e|$)/i,\"$&.0\"); } if(t.k===\"N\") return x+\"n\"; if(t.k===\"C\") return \"'\"+$show_chr(x,\"'\")+\"'\"; if(t.k===\"S\") return \"\\\"\"+[...x].map(c=>$show_chr(c,\"\\\"\")).join(\"\")+\"\\\"\"; if(t.k===\"E\") return \"{==}\"; if(t.k===\"A\") return \"[\"+x.map(v=>$show_value(t.e,v,0)).join(\", \")+\"]\"; if(typeof x===\"boolean\") return x?\"True{}\":\"False{}\"; if(!x||typeof x!==\"object\"||!x.$) return String(x); if(t.native===\"List\") return $show_list(t,x); if(t.native===\"Sigma\"&&x.$===\"Tuple\") { const c=chain===\"(\"; return (c?\"\":\"(\")+$show_fields(t,x,true)+(c?\"\":\")\"); } if(t.k!==\"D\") throw \"bend: expected a datatype result\"; return x.$+\"{\"+$show_fields(t,x,false)+\"}\"; }\n")
 # Metadata evaluation retains every source formal slot, including erased type
