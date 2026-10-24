@@ -2679,9 +2679,9 @@ def export_row_pair(one: Maybe<&2, ExportRow>, rest: Maybe<&2, List<&2, ExportRo
 
 def export_row(item: BIR.Export, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> Maybe<&2, ExportRow>:
   match item:
-    case BIR.Export{key, entry}: export_entry(key, entry, declarations, by_code, by_key, by_foreign, by_native, stages, entries)
+    case BIR.Export{key, entry, parameter_types}: export_entry(key, entry, parameter_types, declarations, by_code, by_key, by_foreign, by_native, stages, entries)
 
-def export_entry(key: String, entry: Maybe<&2, BIR.Entry>, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> Maybe<&2, ExportRow>:
+def export_entry(key: String, entry: Maybe<&2, BIR.Entry>, parameter_types: List<&2, BIR.Descriptor>, declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_key: Map<&2, U32>, by_foreign: Map<&2, U32>, by_native: Map<&2, U32>, stages: Map<&2, U32>, entries: List<&2, Entry>) -> Maybe<&2, ExportRow>:
   match entry:
     case Some{item}:
       match item:
