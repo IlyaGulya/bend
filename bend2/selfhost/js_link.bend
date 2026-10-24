@@ -9,7 +9,7 @@ import ./js_backend.bend as JSBackend
 # value. A missing file is a compile diagnostic that names the declared path,
 # never an undefined module read or a derived alternative.
 type LoadResult is Data:
-  LoadSuccess{files: List<&2, JSBackend.SourceFile>}
+  LoadSuccess{files: List<&2, BIR.SourceFile>}
   LoadFailure{message: String, span: Ast.SourceSpan}
 type SourceResult is Data:
   SourceSuccess{source: String}
@@ -42,9 +42,9 @@ def read_source(path: String) -> IO(SourceResult):
         (code, message) = error
         return SourceFailure{String.concat(["cannot open ", path, ": ", U32.show(code), " ", message])}
 
-def load_sources(links: List<&2, JSBackend.LinkSource>, loaded: List<&2, JSBackend.SourceFile>) -> IO(LoadResult):
+def load_sources(links: List<&2, JSBackend.LinkSource>, loaded: List<&2, BIR.SourceFile>) -> IO(LoadResult):
   match links:
-    case Nil{}: IO.pure(LoadResult, LoadSuccess{List.reverse(&2, JSBackend.SourceFile, loaded)})
+    case Nil{}: IO.pure(LoadResult, LoadSuccess{List.reverse(&2, BIR.SourceFile, loaded)})
     case +link <> rest:
       match link:
         case JSBackend.LinkSource{path, namespace, span}:
@@ -53,7 +53,7 @@ def load_sources(links: List<&2, JSBackend.LinkSource>, loaded: List<&2, JSBacke
             match read:
               case SourceFailure{message}: return LoadFailure{message, span}
               case SourceSuccess{source}:
-                return load_sources(rest, JSBackend.SourceFile{path, source} <> loaded)
+                return load_sources(rest, BIR.SourceFile{path, source} <> loaded)
 
 def load_links(links: JSBackend.LinkResult) -> IO(LoadResult):
   match links:

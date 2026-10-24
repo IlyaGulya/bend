@@ -290,7 +290,7 @@ def atom_arguments(values: List<&2, BIR.Atom>) -> List<&2, BIR.Arg>:
     case Nil{}: Nil{}
     case value <> rest: BIR.Arg{BIR.Affine{}, value} <> atom_arguments(rest)
 def primitive(state: State, op: BIR.Primitive, values: List<&2, BIR.Atom>) -> LowerResult<BIR.Atom>:
-  operation(state, BIR.PrimitiveCall{op, atom_arguments(values)})
+  operation(state, BIR.PrimitiveCall{op, atom_arguments(values), Nil{}})
 def field_values(state: State, constructor: Catalog.Constructor, values: List<&2, BIR.Atom>, index: U32, span: Ast.SourceSpan) -> LowerResult<List<&2, BIR.Field>>:
   match values:
     case Nil{}: LowerResult{state, Nil{}}
@@ -565,7 +565,7 @@ def native_match_application_native_1(v_34: LowerResult<BIR.Atom>, v_13: List<&2
 def native_match_application_native_2(v_24: Sigma<&1, &1, List<&2, BIR.Arg>, _ => List<&2, SourceArgument>>, v_4: BIR.Primitive, v_13: List<&2, Slot>, v_14: Catalog.Registry, v_23: State) -> LowerResult<BIR.Atom>:
   match v_24:
     case (v_27, v_28):
-      native_match_application_native_1(operation(v_23, BIR.PrimitiveCall{v_4, v_27}), v_13, v_14, v_28)
+      native_match_application_native_1(operation(v_23, BIR.PrimitiveCall{v_4, v_27, Nil{}}), v_13, v_14, v_28)
 
 def native_match_application_native_3(v_35: LowerResult<Pair(List<&2, BIR.Arg>, List<&2, SourceArgument>)>, v_4: BIR.Primitive, v_13: List<&2, Slot>, v_14: Catalog.Registry) -> LowerResult<BIR.Atom>:
   match v_35:

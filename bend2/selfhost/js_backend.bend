@@ -16,11 +16,9 @@ type LinkSource is Data:
 type LinkResult is Data:
   LinkSuccess{sources: List<&2, LinkSource>}
   LinkFailure{message: String, span: Ast.SourceSpan}
-# A host supplies bytes, nothing else: namespace, span and selection are BIR
-# facts that link() derives, and the join is by exact declared path. The host
-# never invents a namespace and never inspects the checked program.
-type SourceFile is Data:
-  SourceFile{path: String, source: String}
+# The host supplies BIR.SourceFile bytes, nothing else: namespace, span and
+# selection are BIR facts that link() derives, and the join is by exact
+# declared path. The host never invents a namespace or inspects the program.
 type JSParameter is Data:
   JSParameterNat{}
   JSParameterOther{}
@@ -355,12 +353,12 @@ type JSEffects is Data:
   JSEffectsReady{text: String}
   JSEffectsFailure{message: String, span: Ast.SourceSpan}
 
-def js_source_text(items: List<&2, SourceFile>, path: String) -> Maybe<&2, String>:
+def js_source_text(items: List<&2, BIR.SourceFile>, path: String) -> Maybe<&2, String>:
   match items:
     case Nil{}: None{}
-    case SourceFile{+known, source} <> rest:
+    case BIR.SourceFile{+known, source} <> rest:
       js_source_text_same(String.eq(path, known), source, rest, path)
-def js_source_text_same(same: Bool, source: String, rest: List<&2, SourceFile>, +path: String) -> Maybe<&2, String>:
+def js_source_text_same(same: Bool, source: String, rest: List<&2, BIR.SourceFile>, +path: String) -> Maybe<&2, String>:
   match same:
     case True{}: Some{source}
     case False{}: js_source_text(rest, path)
@@ -369,18 +367,18 @@ def js_source_text_same(same: Bool, source: String, rest: List<&2, SourceFile>, 
 # by every def it registers and its helpers cannot shadow the runtime's.
 def js_effect_chunk(source: String) -> String:
   String.append("(() => {\n", String.append(source, "\n})();\n\n"))
-def js_effect_sources(links: List<&2, LinkSource>, loaded: List<&2, SourceFile>, +keys: Map<&2, Bool>, acc: List<&2, String>) -> JSEffects:
+def js_effect_sources(links: List<&2, LinkSource>, loaded: List<&2, BIR.SourceFile>, +keys: Map<&2, Bool>, acc: List<&2, String>) -> JSEffects:
   match links:
     case Nil{}: JSEffectsReady{String.join(List.reverse(&2, String, acc), "")}
     case +link <> rest:
       match link:
         case LinkSource{path, namespace, span}:
           js_effect_text(js_source_text(loaded, path), path, namespace, span, rest, loaded, keys, acc)
-def js_effect_text(found: Maybe<&2, String>, +path: String, +namespace: String, +span: Ast.SourceSpan, rest: List<&2, LinkSource>, loaded: List<&2, SourceFile>, +keys: Map<&2, Bool>, acc: List<&2, String>) -> JSEffects:
+def js_effect_text(found: Maybe<&2, String>, +path: String, +namespace: String, +span: Ast.SourceSpan, rest: List<&2, LinkSource>, loaded: List<&2, BIR.SourceFile>, +keys: Map<&2, Bool>, acc: List<&2, String>) -> JSEffects:
   match found:
     case None{}: JSEffectsFailure{String.append("bend: missing JavaScript foreign source ", path), span}
     case Some{text}: js_effect_scan(js_cid(js_scan(String.to_list(text), JSCode{}, False{}, Nil{}, keys, namespace)), path, span, rest, loaded, keys, acc)
-def js_effect_scan(result: JSCidResult, +path: String, +span: Ast.SourceSpan, rest: List<&2, LinkSource>, loaded: List<&2, SourceFile>, +keys: Map<&2, Bool>, acc: List<&2, String>) -> JSEffects:
+def js_effect_scan(result: JSCidResult, +path: String, +span: Ast.SourceSpan, rest: List<&2, LinkSource>, loaded: List<&2, BIR.SourceFile>, +keys: Map<&2, Bool>, acc: List<&2, String>) -> JSEffects:
   match result:
     case JSCidFailure{message}: JSEffectsFailure{String.append(String.append(path, ": "), message), span}
     case JSCidDone{source}: js_effect_sources(rest, loaded, keys, js_effect_chunk(source) <> acc)
@@ -1113,17 +1111,17 @@ def ending_check(item: BIR.Ending, +natives: Map<&2, String>) -> Maybe<&2, Strin
   match item:
     case BIR.Library{exports}: export_check(exports, natives)
     case BIR.Executable{_}: None{}
-def emit_linked(program: BIR.Program, loaded: List<&2, SourceFile>) -> EmitResult:
+def emit_linked(program: BIR.Program, loaded: List<&2, BIR.SourceFile>) -> EmitResult:
   emit_linked_plan(link(program), program, loaded)
-def emit_linked_plan(planned: LinkResult, program: BIR.Program, loaded: List<&2, SourceFile>) -> EmitResult:
+def emit_linked_plan(planned: LinkResult, program: BIR.Program, loaded: List<&2, BIR.SourceFile>) -> EmitResult:
   match planned:
     case LinkFailure{message, span}: EmitFailure{message, span}
     case LinkSuccess{sources}: emit_checked(program, sources, loaded)
-def emit_checked(+program: BIR.Program, sources: List<&2, LinkSource>, loaded: List<&2, SourceFile>) -> EmitResult:
+def emit_checked(+program: BIR.Program, sources: List<&2, LinkSource>, loaded: List<&2, BIR.SourceFile>) -> EmitResult:
   match program:
     case BIR.Program{_, _, _, _, _, end}:
       emit_checked_exports(ending_check(end, js_native_markers(program)), program, sources, loaded)
-def emit_checked_exports(check: Maybe<&2, String>, program: BIR.Program, sources: List<&2, LinkSource>, loaded: List<&2, SourceFile>) -> EmitResult:
+def emit_checked_exports(check: Maybe<&2, String>, program: BIR.Program, sources: List<&2, LinkSource>, loaded: List<&2, BIR.SourceFile>) -> EmitResult:
   match check:
     case Some{message}: EmitFailure{message, Ast.SpanOf{"", 0n, 0n}}
     case None{}: emit_effects(program, js_effect_sources(sources, loaded, js_known_keys(program), Nil{}))
