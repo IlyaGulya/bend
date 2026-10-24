@@ -277,18 +277,19 @@ def arm_src(+ppacked: Bool, +pnode_words: Nat, +pt: String, +ptag: String, +pfb:
 
 # Arm expansion: emits the case block and the nested JConv jobs.
 
-def nests_jobs(+pw: World, +pnests: List<&2, CLay.Nest>, +psrc: Src, +pdst: Dst, +ptag: String) -> List<&2, Job>:
+def nests_jobs(+pw: World, +pnests: List<&2, CLay.Nest>, +psrc: Src, +pdst: Dst, +ptag: String, +pindex: Nat) -> List<&2, Job>:
   match pnests:
     case Nil{}: Nil{}
     case +nest <> +rest:
       match nest:
-        case CLay.Nest{at, offset, take, make}: List.append(&2, Job, [JConv{take, make, psrc, pdst, ptag}], nests_jobs(pw, rest, psrc, pdst, ptag))
+        case CLay.Nest{at, offset, take, make}:
+          List.append(&2, Job, [JConv{take, make, psrc, pdst, join_text([ptag, "f", Nat.show(pindex)])}], nests_jobs(pw, rest, psrc, pdst, ptag, Nat.add(pindex, 1n)))
 
 # Expand one conversion into jobs. This function never calls itself or another
 # expander: nested work becomes JConv entries in the returned list.
 
 def jobs_arm_body(+pw: World, +pcid: U32, +ptag_index: Nat, +ppacked: Bool, +pnode_words: Nat, +pfields: List<&2, CLay.Nest>, +pt: String, +pdst: Dst, +ptag: String, +ptagged: Bool, +pfb: String, +pmode: Nat) -> List<&2, Job>:
-  List.append(&2, Job, Bool.pick(List<&2, Job>, ptagged, one_job(JText{dst_mark(pdst)}), Nil{}), List.append(&2, Job, arm_seed(ppacked, pnode_words, pt, ptag, pfb), nests_jobs(pw, pfields, arm_src(ppacked, pnode_words, pt, ptag, pfb), pdst, ptag)))
+  List.append(&2, Job, Bool.pick(List<&2, Job>, ptagged, one_job(JText{dst_mark(pdst)}), Nil{}), List.append(&2, Job, arm_seed(ppacked, pnode_words, pt, ptag, pfb), nests_jobs(pw, pfields, arm_src(ppacked, pnode_words, pt, ptag, pfb), pdst, ptag, 0n)))
 
 def jobs_arm(+pw: World, +pcid: U32, +ptag_index: Nat, +ppacked: Bool, +pnode_words: Nat, +pfields: List<&2, CLay.Nest>, +pt: String, +pdst: Dst, +ptag: String, +ptagged: Bool, +pfb: String, +pmode: Nat) -> List<&2, Job>:
   List.append(&2, Job, [JText{join_text(["case ", U32.show(pcid), "u: {"])}], List.append(&2, Job, jobs_arm_body(pw, pcid, ptag_index, ppacked, pnode_words, pfields, pt, pdst, ptag, ptagged, pfb, pmode), [JText{"} break;"}]))
@@ -392,18 +393,17 @@ def pack_jobs(+pcid: U32, +pcount: Nat, +ppacked: Bool, +pnw: String, +pout: Str
 
 # Two inline forms: the tag is read once, then per-arm field pairs convert.
 
+def arm_block_jobs(+pw: World, +pcid: U32, +parm: CLay.FormArm, +psrc: Src, +pout: String, +ptag: String, +pindex: Nat) -> List<&2, Job>:
+  match parm:
+    case CLay.FormArm{key, tag, packed, node_words, fields}:
+      nw = join_text([ptag, "w"])
+      cur = join_text([ptag, "j"])
+      List.append(&2, Job, one_job(JText{dst_decl(nw, cur, node_words)}), List.append(&2, Job, nests_jobs(pw, fields, psrc, DstSeq{nw, cur}, join_text([ptag, "x", Nat.show(pindex)]), 0n), pack_jobs(pcid, node_words, packed, nw, pout, ptag)))
+
 def box_arm_jobs(+pw: World, +pfound: Maybe<&2, U32>, +parm: CLay.FormArm, +psrc: Src, +pout: String, +ptag: String, +pindex: Nat) -> List<&2, Job>:
   match pfound:
-    case None{}:
-      match parm:
-        case CLay.FormArm{key, tag, packed, node_words, fields}: [JText{"default: (void)bend_fail(e, \"the constructor tag is not a declared constructor\"); break;"}]
-    case Some{cid}:
-      match parm:
-        case CLay.FormArm{key, tag, packed, node_words, fields}:
-          nw = join_text([ptag, "w"])
-          cur = join_text([ptag, "j"])
-          block = List.append(&2, Job, [JText{join_text(["case ", Nat.show(pindex), ": {"])}], List.append(&2, Job, [JText{dst_decl(nw, cur, node_words)}], List.append(&2, Job, nests_jobs(pw, fields, psrc, DstSeq{nw, cur}, join_text([ptag, "x", Nat.show(pindex)])), List.append(&2, Job, pack_jobs(cid, node_words, packed, nw, pout, ptag), [JText{"} break;"}]))))
-          block
+    case None{}: [JText{"default: (void)bend_fail(e, \"the constructor tag is not a declared constructor\"); break;"}]
+    case Some{cid}: List.append(&2, Job, [JText{join_text(["case ", Nat.show(pindex), ": {"])}], List.append(&2, Job, arm_block_jobs(pw, cid, parm, psrc, pout, ptag, pindex), [JText{"} break;"}]))
 
 def box_cases(+pw: World, +parms: List<&2, CLay.FormArm>, +psrc: Src, +pout: String, +ptag: String, +ptagged: Bool, +pindex: Nat) -> List<&2, Job>:
   match parms:
@@ -415,12 +415,28 @@ def box_cases(+pw: World, +parms: List<&2, CLay.FormArm>, +psrc: Src, +pout: Str
           block = box_arm_jobs(pw, found, arm, psrc, pout, ptag, pindex)
           List.append(&2, Job, block, box_cases(pw, rest, psrc, pout, ptag, ptagged, Nat.add(pindex, 1n)))
 
+def box_untagged(+pw: World, +parms: List<&2, CLay.FormArm>, +psrc: Src, +pout: String, +ptag: String) -> List<&2, Job>:
+  match parms:
+    case Nil{}: Nil{}
+    case +arm <> Nil{}:
+      match arm:
+        case CLay.FormArm{key, tag, packed, node_words, fields}:
+          match cid_of(key, pw):
+            case None{}: [JText{"(void)bend_fail(e, \"the constructor tag is not a declared constructor\");"}]
+            case Some{cid}: arm_block_jobs(pw, cid, arm, psrc, pout, ptag, 0n)
+    case _: Nil{}
+
 def expand_box(+pw: World, +parms: List<&2, CLay.FormArm>, +psrc: Src, +pdst: Dst, +ptag: String) -> List<&2, Job>:
   r = join_text([ptag, "r"])
-  tagged = form_tagged(parms)
-  tagline = Bool.pick(List<&2, Job>, tagged, src_read(psrc, ptag), Nil{})
-  cases = box_cases(pw, parms, psrc, r, ptag, tagged, 0n)
-  List.append(&2, Job, [JText{join_text(["Term ", r, " = 0;"])}], List.append(&2, Job, tagline, List.append(&2, Job, [JText{join_text(["switch ((u32)(", ptag, "w)) {"])}], List.append(&2, Job, cases, List.append(&2, Job, [JText{"}"}], dst_write(pdst, r))))))
+  bool_ = form_tagged(parms)
+  List.append(&2, Job, [JText{join_text(["Term ", r, " = 0;"])}], expand_box_body(bool_, pw, parms, psrc, pdst, ptag, r))
+
+def expand_box_body(+ptagged: Bool, +pw: World, +parms: List<&2, CLay.FormArm>, +psrc: Src, +pdst: Dst, +ptag: String, +pr: String) -> List<&2, Job>:
+  match ptagged:
+    case True{}:
+      List.append(&2, Job, src_read(psrc, ptag), List.append(&2, Job, [JText{join_text(["switch ((u32)(", ptag, "w)) {"])}], List.append(&2, Job, box_cases(pw, parms, psrc, pr, ptag, True{}, 0n), List.append(&2, Job, [JText{"}"}], dst_write(pdst, pr)))))
+    case False{}:
+      List.append(&2, Job, box_untagged(pw, parms, psrc, pr, ptag), dst_write(pdst, pr))
 
 def expand_form_take(+pw: World, +parms: List<&2, CLay.FormArm>, +pmake: CLay.Fill, +psrc: Src, +pdst: Dst, +ptag: String) -> List<&2, Job>:
   match pmake:
