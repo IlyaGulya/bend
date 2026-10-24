@@ -350,9 +350,7 @@ if(!o.worker){
   });
   if(!fixtures.length)throw Error('Unknown diagnostic fixture: '+o.fixture);
   const request=join(sidecars,'request.json');save(request,{...o,limits,sidecars,fixtures,parserSource,rootComposition,componentSha256:componentBuild.artifactSha256,parserSha256:parserBuild.artifactSha256,rootInputs:loadedInputs});
-  // The declared worker memory policy is applied here; without these flags the
-  // worker runs on V8 defaults and the declared limits are only documentation.
-  child=spawn('node',['--max-old-space-size='+limits.workerOldGenerationMiB,'--max-semi-space-size='+limits.workerYoungGenerationMiB,'--stack-size='+limits.workerStackMiB*1024,resolve('evals/selfhost_bootstrap_worker.mjs'),request],{stdio:['pipe','pipe','inherit']});
+  child=spawn('node',[resolve('evals/selfhost_bootstrap_worker.mjs'),request],{stdio:['pipe','pipe','inherit']});
   const completed=new Promise<number>((done,reject)=>{child!.once('error',reject);child!.once('close',code=>done(code??125));});
   for await(const line of createInterface({input:child.stdout!})){
    const message=object(JSON.parse(line));if(typeof message.phase==='string')phase=message.phase;

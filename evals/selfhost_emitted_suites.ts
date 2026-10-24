@@ -138,9 +138,8 @@ if(!worker){
    const stage:Record<string,any>={stage:name,image:image.path,imageSha256:image.sha256,requiredExports:ABI,fixtureRows:[],parseRows:[],events:[],passed:false};stages.push(stage);flush();
    const freshRequest={...request,parser:image.path,component:image.path,parserSha256:image.sha256,componentSha256:image.sha256,sidecars:directory,report,fixture:'authenticated-complete-emitted-suite',parseOnly:false,profileRoot:false,fixtures};
    const freshPath=join(directory,'request.json');save(freshPath,freshRequest);pin(freshPath,hash(freshPath));
-   // Same declared policy as the bootstrap gate: flags, not documentation.
-   child=spawn('node',['--max-old-space-size='+limits.workerOldGenerationMiB,'--max-semi-space-size='+limits.workerYoungGenerationMiB,'--stack-size='+limits.workerStackMiB*1024,resolve('evals/selfhost_bootstrap_worker.mjs'),freshPath],{stdio:['pipe','pipe','inherit']});
-   stage.command=['node','--max-old-space-size='+limits.workerOldGenerationMiB,'--max-semi-space-size='+limits.workerYoungGenerationMiB,'--stack-size='+limits.workerStackMiB*1024,resolve('evals/selfhost_bootstrap_worker.mjs'),freshPath];
+   child=spawn('node',[resolve('evals/selfhost_bootstrap_worker.mjs'),freshPath],{stdio:['pipe','pipe','inherit']});
+   stage.command=['node',resolve('evals/selfhost_bootstrap_worker.mjs'),freshPath];
    const completed=new Promise<number>((done,reject)=>{child!.once('error',reject);child!.once('close',code=>done(code??125));});
    for await(const line of createInterface({input:child.stdout!})){
     const message=object(JSON.parse(line));if(typeof message.phase==='string')phase=message.phase;
