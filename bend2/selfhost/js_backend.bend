@@ -21,6 +21,10 @@ type LinkResult is Data:
 # never invents a namespace and never inspects the checked program.
 type SourceFile is Data:
   SourceFile{path: String, source: String}
+type JSParameter is Data:
+  JSParameterNat{}
+  JSParameterOther{}
+  JSParameterUnresolved{}
 def js_source(sources: List<&2, String>) -> Maybe<&2, String>:
   match sources:
     case Nil{}: None{}
@@ -1027,10 +1031,6 @@ def type_functions(items: List<&2, BIR.TypeFunction>) -> String:
 # the export's published live parameter descriptor resolves to the family whose
 # BIR native is Nat; a polymorphic or missing descriptor is refused by name,
 # never treated as unguarded Nat and never silently adapted.
-type JSParameter is Data:
-  JSParameterNat{}
-  JSParameterOther{}
-  JSParameterUnresolved{}
 def js_parameter(value: BIR.Descriptor, +natives: Map<&2, String>) -> JSParameter:
   js_parameter_head(js_descriptor_head(value), natives, value)
 def js_parameter_head(head: Maybe<&2, JSDescriptorHead>, +natives: Map<&2, String>, value: BIR.Descriptor) -> JSParameter:
