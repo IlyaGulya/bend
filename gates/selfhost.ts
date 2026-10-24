@@ -165,6 +165,20 @@ function default_files(): string[] {
     "tests/io/generic_export_identity.bend",
     // IO read failure and read-back through the real File surface.
     "tests/io/file_roundtrip.bend",
+    // C target representation: scalars, wide/nested arrays, multi-arm tags,
+    // dropped affine fields, string codepoints, and the storage witness.
+    "evals/c_target_wide_record.bend",
+    "evals/c_target_nested_adt.bend",
+    "evals/c_target_array_u32.bend",
+    "evals/c_target_array_wide.bend",
+    "evals/c_target_array_nat.bend",
+    "evals/c_target_array_nested.bend",
+    "evals/c_target_multiarm.bend",
+    "evals/c_target_drop_fields.bend",
+    "evals/c_target_char_head.bend",
+    "evals/c_target_char_to_list.bend",
+    "evals/c_target_string_from_list.bend",
+    "tests/reg/phys_storage_paths.bend",
     // Target selection: an absent C target must fail only the native lane, an
     // absent JS target only the JS lane, each with a real diagnostic.
     "gates/selfhost_cases/missing_c_target.bend",
