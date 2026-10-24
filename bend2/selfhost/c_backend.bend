@@ -1026,13 +1026,6 @@ def arms_find(+key: String, arms: List<&2, BIR.DescriptorArm>, +rest: List<&2, B
 
 # Project.field is a source ordinal, erased slots included; the node keeps
 # only live fields, so map the ordinal through the arm's quantities.
-def live_index(+key: String, +ordinal: U32, families: List<&2, BIR.Family>) -> Nat:
-  match arm_of(key, families):
-    case None{}: U32.to_nat(ordinal)
-    case Some{arm}:
-      match arm:
-        case BIR.DescriptorArm{key, fields}: live_index_fields(fields, U32.to_nat(ordinal), 0n, 0n)
-
 def live_index_fields(fields: List<&2, BIR.DescriptorField>, +ordinal: Nat, +source: Nat, +live: Nat) -> Nat:
   match fields:
     case Nil{}: live
@@ -1310,21 +1303,6 @@ def ctor_key_of(+id: U32, constructors: List<&2, BIR.ConstructorLayout>) -> Stri
         case BIR.ConstructorLayout{id, key, native, fields}: key
     case None{}: ""
 
-def project_expr_3(+kind: String, +value: String, key: String, field: U32, families: List<&2, BIR.Family>) -> String:
-  match String.eq(kind, "aleaf"):
-    case True{}: cat(["bend_array_leaf_value(e, ", value, ")"])
-    case False{}: project_expr_4(kind, value, key, field, families)
-
-def project_expr_4(kind: String, +value: String, key: String, +field: U32, families: List<&2, BIR.Family>) -> String:
-  match String.eq(kind, "anode"):
-    case True{}: project_anode(value, field)
-    case False{}: cat(["bend_project(e, ", value, ", ", Nat.show(live_index(key, field, families)), ")"])
-
-def project_anode(+value: String, field: U32) -> String:
-  match U32.is_eq(field, 0):
-    case True{}: cat(["blk_half(e, ", value, ", 0)"])
-    case False{}: cat(["blk_half(e, ", value, ", 1)"])
-
 def hastag_part(value: BIR.Atom, +constructor: U32, +plan: Plan) -> Part:
   match atom_part(value, plan):
     case PartFail{message}: PartFail{message}
@@ -1362,10 +1340,22 @@ def prim_call_typed(+primitive: BIR.Primitive, +args: List<&2, BIR.Arg>, types: 
     case True{}: prim_array_part(primitive, args, types, plan)
     case False{}: prim_call_part(primitive, args, plan)
 
+# Array storage is physical: Phys derives the element cell from the
+# PrimitiveCall element Descriptor and emits every word/slot access for it.
 def prim_array_part(+primitive: BIR.Primitive, args: List<&2, BIR.Arg>, types: List<&2, BIR.Descriptor>, plan: Plan) -> Part:
-  match types:
-    case Nil{}: failp(cat(["array primitive `", primitive_label(primitive), "` carries no instantiated element Descriptor; lowering must supply PrimitiveCall.types"]))
-    case _: failp(cat(["array primitive `", primitive_label(primitive), "` needs the CIRLayouts element cell plan (arr/words/lgs) before this target can lay it out"]))
+  match arg_operands(args, plan, Nil{}):
+    case OperandsFail{message}: PartFail{message}
+    case OperandsOk{operands}: Phys.array_part(primitive, operands, types, phys_world(plan))
+
+def arg_operands(args: List<&2, BIR.Arg>, +plan: Plan, +acc: List<&2, Phys.Operand>) -> OperandsOut:
+  match args:
+    case Nil{}: OperandsOk{List.reverse(&2, Phys.Operand, acc)}
+    case +arg <> rest:
+      match arg:
+        case BIR.Arg{use, value}:
+          match atom_part(value, plan):
+            case PartFail{message}: OperandsFail{message}
+            case PartOk{text}: arg_operands(rest, plan, Phys.Operand{use, text} <> acc)
 
 def is_array_primitive(primitive: BIR.Primitive) -> Bool:
   match primitive:
@@ -2870,9 +2860,7 @@ def helper_prototypes() -> String:
 
 def helper_core() -> String:
   cat([
-    "static Term bend_node(Env e, u32 cid, u32 n, THR Term* v) {\n  u64 l = 0;\n  if (n != 0) {\n    l = heap_alloc(e, cls_fit(n));\n    for (u32 i = 0; i < n; i += 1) {\n      e.mem[l + i] = v[i];\n    }\n  }\n  return term_ctr(cid, l);\n}\n\n",
-    "static Term bend_project(Env e, Term v, u32 field) {\n  if (term_tag(v) == TAG_PAK) {\n    return term_loc(v);\n  }\n  return e.mem[term_peek(e.mem, v) + field];\n}\n\n",
-    "static u64 bend_hastag(Term v, u32 cid) {\n  u64 tag = term_tag(v);\n  return (tag == TAG_CTR || tag == TAG_PAK) && term_aux(v) == (u64)cid;\n}\n\n",
+            "static u64 bend_hastag(Term v, u32 cid) {\n  u64 tag = term_tag(v);\n  return (tag == TAG_CTR || tag == TAG_PAK) && term_aux(v) == (u64)cid;\n}\n\n",
     "static Nat bend_nat_pred(Nat v) {\n  return v == 0 ? 0 : v - 1;\n}\n\n",
     "static Nat bend_f32_to_nat(Env e, Term v) {\n  f32 x = f32_unbox(v);\n  return nat_chk(e, x < 0.0f ? 0 : (u64)x);\n}\n\n",
     "static Term bend_tuple(Env e, u32 cid, Term a, Term b) {\n  u64 l = heap_alloc(e, cls_fit(2));\n  e.mem[l] = a;\n  e.mem[l + 1] = b;\n  return term_ctr(cid, l);\n}\n\n",
