@@ -41,17 +41,18 @@ int main(void) {
   assert(bend_export_call(index_of("mk"), 0, 0) == 9);
   assert(bend_export_call(index_of("zero"), 0, 0) == 9);
 
-  /* a lazy factory re-evaluates on every call; identity is not part of the
-     ABI (a captureless closure is a canonical immediate term), so assert the
-     observable semantics: both results apply through the runtime to 12. */
+  /* The factory's callable arity is the full published arrow count (1), not
+     its declaration parameter count (0); identity/allocation is not the ABI
+     contract, only the observable application results are. */
+  assert(bend_export_arity(index_of("factory")) == 1);
   Term f = bend_export_call(index_of("factory"), 0, 0);
   Term g = bend_export_call(index_of("factory"), 0, 0);
   Term c[1] = {7};
+  Term d[1] = {8};
   assert(bend_export_apply(f, c, 1) == 12);
-  assert(bend_export_apply(g, c, 1) == 12);
+  assert(bend_export_apply(g, d, 1) == 13);
 
-  /* mode 1 also accepts arguments directly; callable arity is the full
-     published arrow count (1 here), and application yields the same value. */
+  /* mode 1 also accepts arguments directly to the declaration. */
   assert(bend_export_call(index_of("factory"), c, 1) == 12);
 
   puts("export ok");
