@@ -934,28 +934,14 @@ def array_get_ops(+parray: Maybe<&2, Operand>, +pindex: Maybe<&2, Operand>, +pw:
           code = run_jobs(jobs, pw, Nil{})
           tuple_and_code(tuple_part(pw, "a0", "r0"), code)
 
-def kinds_jobs(+pkinds: List<&2, CLay.CWord>, +pcur: String) -> List<&2, Job>:
-  match pkinds:
-    case Nil{}: Nil{}
-    case +kind <> +rest:
-      match kind:
-        case CLay.CWord32{}: List.append(&2, Job, [JText{join_text([pcur, " += 1;"])}], kinds_jobs(rest, pcur))
-        case CLay.CWord64{}: List.append(&2, Job, [JText{join_text([pcur, " += 1;"])}], kinds_jobs(rest, pcur))
-        case CLay.CWordBox{}: List.append(&2, Job, [JText{join_text(["old0[", pcur, "] = blk_read(e.mem, true, l0, g0 + ", pcur, "); ", pcur, " += 1;"])}], kinds_jobs(rest, pcur))
-
-def old_read_box(+parr: Bool, +pcur: String) -> List<&2, Job>:
-  match parr:
-    case True{}: [JText{join_text(["old0[", pcur, "] = blk_read(e.mem, true, l0, g0 + ", pcur, "); ", pcur, " += 1;"])}]
-    case False{}: [JText{join_text(["old0[", pcur, "] = 0; ", pcur, " += 1;"])}]
+def old_read_cell(+parr: Bool, +pcur: String) -> List<&2, Job>:
+  [JText{join_text(["old0[", pcur, "] = blk_read(e.mem, ", arr_flag(parr), ", l0, g0 + ", pcur, "); ", pcur, " += 1;"])}]
 
 def kinds_box_jobs(+pkinds: List<&2, CLay.CWord>, +pcur: String, +parr: Bool) -> List<&2, Job>:
   match pkinds:
     case Nil{}: Nil{}
     case +kind <> +rest:
-      match kind:
-        case CLay.CWord32{}: List.append(&2, Job, [JText{join_text([pcur, " += 1;"])}], kinds_box_jobs(rest, pcur, parr))
-        case CLay.CWord64{}: List.append(&2, Job, [JText{join_text([pcur, " += 1;"])}], kinds_box_jobs(rest, pcur, parr))
-        case CLay.CWordBox{}: List.append(&2, Job, old_read_box(parr, pcur), kinds_box_jobs(rest, pcur, parr))
+      List.append(&2, Job, old_read_cell(parr, pcur), kinds_box_jobs(rest, pcur, parr))
 
 def old_sink_jobs(+pkinds: List<&2, CLay.CWord>, +pcur: String) -> List<&2, Job>:
   match pkinds:
