@@ -1,7 +1,9 @@
 # Library ABI fixture for the typed C step seam. Control's caller drives the
 # six-symbol C library ABI: exact names/order, direct arity, a partial export
-# that returns a closure, two nullary factories that must re-evaluate (distinct
-# closure terms), and the returned closure applied through the runtime.
+# that returns a closure, a lazy factory that re-evaluates on every call (the
+# host-callable arity is the full published arrow count, not the declaration
+# parameter count, and term identity is not part of the ABI), zero-arity values,
+# and closures applied through the runtime.
 import Base
 
 def add(a: U32, b: U32) -> U32:

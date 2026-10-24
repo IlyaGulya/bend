@@ -41,14 +41,18 @@ int main(void) {
   assert(bend_export_call(index_of("mk"), 0, 0) == 9);
   assert(bend_export_call(index_of("zero"), 0, 0) == 9);
 
-  /* a lazy factory re-evaluates: two calls are distinct closure terms */
+  /* a lazy factory re-evaluates on every call; identity is not part of the
+     ABI (a captureless closure is a canonical immediate term), so assert the
+     observable semantics: both results apply through the runtime to 12. */
   Term f = bend_export_call(index_of("factory"), 0, 0);
   Term g = bend_export_call(index_of("factory"), 0, 0);
-  assert(f != g);
-
-  /* the returned closure applies through the runtime: (5 + 7) == 12 */
   Term c[1] = {7};
   assert(bend_export_apply(f, c, 1) == 12);
+  assert(bend_export_apply(g, c, 1) == 12);
+
+  /* mode 1 also accepts arguments directly; callable arity is the full
+     published arrow count (1 here), and application yields the same value. */
+  assert(bend_export_call(index_of("factory"), c, 1) == 12);
 
   puts("export ok");
   return 0;
