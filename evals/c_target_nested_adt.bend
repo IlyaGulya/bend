@@ -17,8 +17,8 @@ type Seg is Data:
 def swap(+a: U32, +b: U32) -> Pt:
   Pt{b, a}
 
-def build(n: U32) -> Seg:
-  Seg{swap(n, U32.add(n, 1)), Pt{U32.add(n, 2), U32.add(n, 3)}, Fl{U32.add(n, 4)}}
+def build() -> Seg:
+  Seg{swap(1, 2), Pt{3, 4}, Fl{5}}
 
 def sum(p: Pt) -> U32:
   match p:
@@ -31,6 +31,6 @@ def checksum(s: Seg) -> U32:
         case Fl{v}: U32.add(sum(lo), U32.add(sum(hi), v))
 
 def main() -> IO(Unit):
-  IO.print(U32.show(checksum(build(1))))
+  IO.print(U32.show(checksum(build())))
 
 #|15

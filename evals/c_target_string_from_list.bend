@@ -12,15 +12,14 @@ def first(s: String) -> Char:
     case SCon{h, t}: h
     case SNil{}: 'a'
 
-def codes(s: String) -> IO(Unit):
-  match String.to_list(s):
+def codes(chars: List<&2, Char>) -> IO(Unit):
+  match chars:
     case a <> rest:
       match rest:
         case b <> tail:
           do IO<Unit>:
             Unit <- IO.print(U32.show(Char.to_u32(a)))
-            Unit <- IO.print(U32.show(Char.to_u32(b)))
-            Unit
+            IO.print(U32.show(Char.to_u32(b)))
         case Nil{}: IO.print("unexpected")
     case Nil{}: IO.print("unexpected")
 
@@ -31,7 +30,7 @@ def main() -> IO(Unit):
   do IO<Unit>:
     Unit <- IO.print(shown)
     Unit <- IO.print(U32.show(Char.to_u32(first(headed))))
-    codes(listed)
+    codes(String.to_list(listed))
 
 #|λx
 #|955

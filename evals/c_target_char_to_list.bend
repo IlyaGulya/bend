@@ -3,17 +3,19 @@
 # U+03BB is 955, 'x' is 120. Expected: 955 then 120.
 import Base
 
-def main() -> IO(Unit):
-  match String.to_list("λx"):
+def codes(chars: List<&2, Char>) -> IO(Unit):
+  match chars:
     case h <> t:
       match t:
         case h2 <> rest:
           do IO<Unit>:
             Unit <- IO.print(U32.show(Char.to_u32(h)))
-            Unit <- IO.print(U32.show(Char.to_u32(h2)))
-            Unit
+            IO.print(U32.show(Char.to_u32(h2)))
         case Nil{}: IO.print("unexpected")
     case Nil{}: IO.print("unexpected")
+
+def main() -> IO(Unit):
+  codes(String.to_list("λx"))
 
 #|955
 #|120

@@ -14,17 +14,22 @@ def first(s: String) -> Char:
     case SCon{h, t}: h
     case SNil{}: 'a'
 
-def main() -> IO(Unit):
-  c = first("λx")
-  h = Holder{c}
-  a = Array.new(Char, 0n, c)
-  (b, got) = Array.get(Char, a, 0)
+def char_of(pair: Array<Char> & Char) -> Char:
+  (arr, v) = pair
+  v
+
+def show_holder(h: Holder, got: Char) -> IO(Unit):
   match h:
     case Holder{field}:
       do IO<Unit>:
         Unit <- IO.print(U32.show(Char.to_u32(field)))
-        Unit <- IO.print(U32.show(Char.to_u32(got)))
-        Unit
+        IO.print(U32.show(Char.to_u32(got)))
+
+def main() -> IO(Unit):
+  c1 = first("λx")
+  c2 = first("λx")
+  a = Array.new(Char, 0n, c2)
+  show_holder(Holder{c1}, char_of(Array.get(Char, a, 0)))
 
 #|955
 #|955
