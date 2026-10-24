@@ -30,7 +30,7 @@ export function sourceFilePath(modulePath,declaredPath){
 export function sourceFiles(entries, sourceFileTag = 'SourceFile') {
  const seen = new Map();
  let list={$:'Nil'};
- if(typeof sourceFileTag!=='string'||!/^[A-Za-z_][A-Za-z0-9_.\/-]*$/.test(sourceFileTag))throw Error('Invalid BIR.SourceFile constructor tag: '+sourceFileTag);
+ if(typeof sourceFileTag!=='string'||!/^[A-Za-z_.][A-Za-z0-9_.\/-]*$/.test(sourceFileTag))throw Error('Invalid BIR.SourceFile constructor tag: '+sourceFileTag);
  for(const entry of entries){
   const path=entry?.path,source=entry?.source;
   if(typeof path!=='string'||!path||typeof source!=='string')throw Error('Invalid BIR source file entry: expected {path, source} strings');
