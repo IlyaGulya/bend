@@ -306,13 +306,22 @@ def element_value(state: State, handle: U32) -> LowerResult<List<&2, BIR.Descrip
     case LowerResult{state2, Some{descriptor}}: LowerResult{state2, [descriptor]}
     case LowerResult{state2, None{}}: LowerResult{state_problem(state2, "missing checked array element type", no_span()), []}
 
+def single_argument(descriptor: BIR.Descriptor) -> Maybe<&2, BIR.Descriptor>:
+  match descriptor:
+    case BIR.DescriptorRef{_, [element]}: Some{element}
+    case BIR.DescriptorApplication{_, element}: Some{element}
+    case BIR.DescriptorFill{_, [element]}: Some{element}
+    case BIR.DescriptorPlus{_, [element]}: Some{element}
+    case BIR.DescriptorNamedFill{_, _, [element]}: Some{element}
+    case BIR.DescriptorNamedPlus{_, _, [element]}: Some{element}
+    case _: None{}
+
 def element_argument(state: State, handle: U32) -> LowerResult<List<&2, BIR.Descriptor>>:
   match element_value(state, handle):
     case LowerResult{state2, [descriptor]}:
-      match descriptor:
-        case BIR.DescriptorRef{_, [element]}: LowerResult{state2, [element]}
-        case BIR.DescriptorApplication{_, element}: LowerResult{state2, [element]}
-        case _: LowerResult{state_problem(state2, "checked array type has no element argument", no_span()), []}
+      match single_argument(descriptor):
+        case Some{element}: LowerResult{state2, [element]}
+        case None{}: LowerResult{state_problem(state2, "checked array type has no element argument", no_span()), []}
     case LowerResult{state2, _}: LowerResult{state2, []}
 
 def primitive_element(state: State, +op: BIR.Primitive, +values: List<&2, BIR.Atom>, element: Maybe<&2, U32>, arrayed: Bool) -> LowerResult<BIR.Atom>:
@@ -717,16 +726,17 @@ def arrow_facts_rest(descriptor: BIR.Descriptor) -> ArrowFacts:
 def last_domain(domains: List<&2, BIR.Descriptor>) -> Maybe<&2, BIR.Descriptor>:
   match domains:
     case Nil{}: None{}
-    case only: Some{only}
+    case last <> rest: last_domain_rest(rest, last)
+
+def last_domain_rest(rest: List<&2, BIR.Descriptor>, +last: BIR.Descriptor) -> Maybe<&2, BIR.Descriptor>:
+  match rest:
+    case Nil{}: Some{last}
+    case next <> tail: last_domain_rest(tail, next)
 
 def first_element_argument(descriptors: List<&2, BIR.Descriptor>) -> Maybe<&2, BIR.Descriptor>:
   match descriptors:
     case Nil{}: None{}
-    case descriptor <> _:
-      match descriptor:
-        case BIR.DescriptorRef{_, [element]}: Some{element}
-        case BIR.DescriptorApplication{_, element}: Some{element}
-        case _: None{}
+    case descriptor <> _: single_argument(descriptor)
 
 # new carries its element as the value it is given; every other array primitive
 # operates on its first live domain, whose single argument is the element.
@@ -753,7 +763,7 @@ def partial_block(+id: U32, op: BIR.Op) -> BIR.Block:
   BIR.Let{id, op, BIR.Return{BIR.Local{id}}}
 
 def partial_call(op: BIR.Primitive, captures: List<&2, BIR.Arg>, parameters: List<&2, BIR.Parameter>, element: BIR.Descriptor) -> BIR.Op:
-  BIR.PrimitiveCall{op, indexed_captures(captures, 0) <> parameter_arguments(parameters), element <> Nil{}}
+  BIR.PrimitiveCall{op, List.append(&2, BIR.Arg, indexed_captures(captures, 0), parameter_arguments(parameters)), [element]}
 
 def partial_array_body(state: State, op: BIR.Primitive, captures: List<&2, BIR.Arg>, parameters: List<&2, BIR.Parameter>, element: BIR.Descriptor, +result: U32) -> LowerResult<BIR.Atom>:
   match state:

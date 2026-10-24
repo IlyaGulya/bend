@@ -435,6 +435,8 @@ def nf_cases(context: NfContext, cases: List<&2, BIR.Descriptor>, values: List<&
               nf_descriptor(context, body, List.append(&2, NfVal, env, bindings), fuel)
             case None{}:
               nf_cases(context, rest, values, env, source, fuel)
+        case _:
+          nf_cases(context, rest, values, env, source, fuel)
 
 # ---------------------------------------------------------------------------
 # Descriptor patterns
