@@ -34,6 +34,22 @@ Local JS frozen119083.967ms против старогоK142821.056ms, но nativ
 51114ms противQ25347ms: path-specific regression не скрыта. Основной receipt:
 compiler-ir-checkpoint-v57t.json. Все source/semantic/native proof pins в нём.
 
+57v: новый currentT native CPU profile завершён на unchanged binary/C и полном
+frozen/7720 consumer: checker9394 и emit4708 exclusive-leaf samples, physical
+tail calls не выдумываются в inclusive attribution. Checker: sharing/drop28.178%,
+Clo.apply16.085%, Map.bit.go12.444%; emit String.append/reconstruction58.815%,
+в late emit80.136%. Это sample fractions в явно ограниченных windows, не полный
+CPU coverage и не allocation counters. Receipt compiler-ir-profile-v57v.json.
+Private register-threaded Run loop нативно проверен8406/8808 и полностью верен,
+но actual native93326ms противT93329ms: НЕ продвинут, native speedup отсутствует.
+Его JS frozen110506ms не переносится на C; full native cycle375.463s.
+Private12 nativeSELF bodies дали controlled positive~5% wall/~10.3% CPU gain;
+geometry-only rejection отозван. Однако affine workerPASS/guardian sampler_error
+сохранён как failed guarded scenario; canonical cutover/FP для него не заявлен.
+Удалены только172 obsolete ownK parse-*.ast.json,793186008bytes; текущиеT
+proof transports/исходники/stage images/receipts сохранены, T dependency count0.
+После удаления checkpoints10605172KiB (~10.11GiB), включая новыеT proofs.
+
 ### Предыдущий correctness checkpoint57q/K (история)
 
 В57q: production FIR→BIR compiler root нативно проверен8382/8382,
