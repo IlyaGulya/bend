@@ -294,6 +294,7 @@ type cps_provider_5_Code is Data:
 
 type cps_provider_5_Dst is Data:
   cps_provider_5_DstSeq{buf: String, cursor: String}
+  cps_provider_5_DstOut{out: String}
 
 type cps_provider_5_Src is Data:
   cps_provider_5_SrcOne{text: String}
@@ -3217,7 +3218,7 @@ def cps_provider_2_plan_top(+v_0: BIR.Program, +v_2: cps_provider_2_Scan, +v_5: 
   +v_20 = cps_provider_2_ending_library(v_12)
   +v_23 = cps_provider_2_ending_exports(v_12)
   +v_27 = cps_provider_2_finish_entries(cps_provider_2_build_entries(v_0, v_2), v_20)
-  cps_provider_2_PlanOk{cps_provider_2_Plan{v_5, cps_provider_2_cid_macro_map(v_5), cps_provider_2_fid_macro_map(v_11, v_27), cps_provider_2_entries_ascending(cps_provider_2_build_entries_of(v_27)), cps_provider_2_by_code_of(v_27), cps_provider_2_by_key_of(v_27), cps_provider_2_by_foreign_of(v_27), cps_provider_2_by_native_of(v_27), cps_provider_2_stages_of(v_27), v_7, v_9, v_11, True{}, "{ 0 }", "", v_15, cps_provider_2_fkeys_of(v_2), cps_provider_3_context(v_0), v_16, v_20, v_23}}
+  cps_provider_2_PlanOk{cps_provider_2_Plan{v_5, cps_provider_2_cid_macro_map(v_5), cps_provider_2_fid_macro_map(v_11, v_27), cps_provider_2_entries_ascending(cps_provider_2_build_entries_of(v_27)), cps_provider_2_by_code_of(v_27), cps_provider_2_by_key_of(v_27), cps_provider_2_by_foreign_of(v_27), cps_provider_2_by_native_of(v_27), cps_provider_2_stages_of(v_27), v_7, v_9, v_11, True{}, "0", "", v_15, cps_provider_2_fkeys_of(v_2), cps_provider_3_context(v_0), v_16, v_20, v_23}}
 
 def cps_provider_2_plan_pure(v_0: BIR.Ending, v_2: List<&2, BIR.Family>, v_4: cps_provider_2_PlanResult) -> cps_provider_2_PlanResult:
   match v_4:
@@ -3271,7 +3272,7 @@ def cps_provider_2_plan_executable_native(+v_2: Maybe<&2, String>, +v_3: BIR.Des
 def cps_provider_2_plan_executable_io(v_1: Bool, +v_2: BIR.Descriptor, +v_4: cps_provider_2_Plan) -> cps_provider_2_PlanResult:
   match v_1:
     case True{}:
-      cps_provider_2_PlanOk{cps_provider_2_plan_set_pure_flags(v_4, False{}, "{ 0 }", "")}
+      cps_provider_2_PlanOk{cps_provider_2_plan_set_pure_flags(v_4, False{}, "0", "")}
     case False{}:
       cps_provider_2_plan_executable_show(v_2, v_4)
 
@@ -3296,7 +3297,7 @@ def native_match_cps_provider_2_plan_library_0(v_50: Maybe<&2, List<&2, cps_prov
     case None{}:
       cps_provider_2_PlanFail{"a library export names no callable, or its checked parameter count disagrees with its entry"}
     case Some{v_49}:
-      cps_provider_2_PlanOk{cps_provider_2_Plan{v_26, v_27, v_28, v_29, v_30, v_31, v_32, v_33, v_34, v_35, v_36, v_37, False{}, "{ 0 }", "", v_41, v_42, v_43, v_44, True{}, v_1}}
+      cps_provider_2_PlanOk{cps_provider_2_Plan{v_26, v_27, v_28, v_29, v_30, v_31, v_32, v_33, v_34, v_35, v_36, v_37, False{}, "0", "", v_41, v_42, v_43, v_44, True{}, v_1}}
 
 def native_match_cps_provider_2_plan_library_1(v_3: cps_provider_2_Plan, v_1: List<&2, BIR.Export>) -> cps_provider_2_PlanResult:
   match v_3:
@@ -6765,12 +6766,22 @@ def cps_provider_2_wl_macros(+v_1: Nat) -> String:
 def cps_provider_2_runtime_defines(+v_2: List<&2, cps_provider_2_Entry>) -> String:
   cps_provider_2_cat(["#define FID_MAIN ", U32.show(cps_provider_2_rt_entry(v_2, 1n)), "\n", "#define FID_IO_EMIT ", U32.show(cps_provider_2_rt_entry(v_2, 2n)), "\n", "#define FID_CLO_APPLY ", U32.show(cps_provider_2_rt_entry(v_2, 3n)), "\n", "#define FID_EXIT ", U32.show(cps_provider_2_rt_entry(v_2, 4n)), "\n", "#define FID_ENTER ", U32.show(cps_provider_2_rt_entry(v_2, 5n)), "\n"])
 
+def native_match_cps_provider_2_table_or_zero_0(v_2: Bool, v_1: String) -> String:
+  match v_2:
+    case True{}:
+      "0"
+    case False{}:
+      v_1
+
+def cps_provider_2_table_or_zero(v_1: String) -> String:
+  native_match_cps_provider_2_table_or_zero_0(String.is_empty(v_1), v_1)
+
 def native_match_cps_provider_2_tables_part_0(v_55: cps_provider_2_Part, v_1: cps_provider_2_Plan, +v_4: List<&2, cps_provider_2_SegText>, v_6: Nat, +v_29: List<&2, cps_provider_2_CidRow>, +v_32: List<&2, cps_provider_2_Entry>, v_41: Bool, v_42: String, v_43: String, v_48: Bool) -> cps_provider_2_Part:
   match v_55:
     case cps_provider_2_PartFail{v_52}:
       cps_provider_2_PartFail{v_52}
     case cps_provider_2_PartOk{v_54}:
-      cps_provider_2_PartOk{cps_provider_2_cat([cps_provider_2_main_suppress(v_48), v_54, cps_provider_2_cid_defines(v_29), cps_provider_2_fid_defines(v_4), cps_provider_2_runtime_defines(v_32), "\n", "CONSTV u8 CID_T[][2] = { ", cps_provider_2_cid_table(v_29), "\n", "CONSTV u8 FID_T[][3] = { ", cps_provider_2_fid_table(v_4), "\n", "#define STAT_LEN 0\n\n", cps_provider_2_wl_macros(v_6), "\n", "#define WL_TABLE ", cps_provider_2_wl_table_text(v_4, v_32), "\n", "#define MAIN_FID FID_", U32.show(cps_provider_2_main_fid_index(v_48, v_32)), "\n", "#define MAIN_PURE ", cps_provider_2_main_pure_text(v_41), "\n", "#define BLK_SHR ", cps_provider_2_blk_shr_text(v_1), "\n\n", "#if !DEVICE\nstatic const u32 SHOW_DESC[] = { ", v_42, " };\nstatic const char* SHOW_NAMES[] = { ", v_43, " };\n#endif\n\n"])}
+      cps_provider_2_PartOk{cps_provider_2_cat([cps_provider_2_main_suppress(v_48), v_54, cps_provider_2_cid_defines(v_29), cps_provider_2_fid_defines(v_4), cps_provider_2_runtime_defines(v_32), "\n", "CONSTV u8 CID_T[][2] = { ", cps_provider_2_cid_table(v_29), "\n", "CONSTV u8 FID_T[][3] = { ", cps_provider_2_fid_table(v_4), "\n", "#define STAT_LEN 0\n\n", cps_provider_2_wl_macros(v_6), "\n", "#define WL_TABLE ", cps_provider_2_wl_table_text(v_4, v_32), "\n", "#define MAIN_FID FID_", U32.show(cps_provider_2_main_fid_index(v_48, v_32)), "\n", "#define MAIN_PURE ", cps_provider_2_main_pure_text(v_41), "\n", "#define BLK_SHR ", cps_provider_2_blk_shr_text(v_1), "\n\n", "#if !DEVICE\nstatic const u32 SHOW_DESC[] = { ", v_42, " };\nstatic const char* SHOW_NAMES[] = { ", cps_provider_2_table_or_zero(v_43), " };\n#endif\n\n"])}
 
 def native_match_cps_provider_2_tables_part_1(v_1: cps_provider_2_Plan, +v_4: List<&2, cps_provider_2_SegText>, v_6: Nat) -> cps_provider_2_Part:
   match v_1:
@@ -9056,6 +9067,8 @@ def cps_provider_5_dst_write(+v_1: cps_provider_5_Dst, +v_3: String) -> List<&2,
   match v_1:
     case cps_provider_5_DstSeq{v_8, v_9}:
       [cps_provider_5_JText{cps_provider_5_join_text([v_8, "[", v_9, "] = ", v_3, "; ", v_9, " += 1;"])}]
+    case cps_provider_5_DstOut{v_12}:
+      [cps_provider_5_JText{cps_provider_5_join_text([v_12, " = ", v_3, ";"])}]
 
 def cps_provider_5_dst_word(+v_1: cps_provider_5_Dst, +v_2: cps_provider_3_CWord, +v_4: String) -> List<&2, cps_provider_5_Job>:
   match v_2:
@@ -9073,6 +9086,8 @@ def cps_provider_5_dst_mark(+v_1: cps_provider_5_Dst) -> String:
   match v_1:
     case cps_provider_5_DstSeq{v_5, v_6}:
       cps_provider_5_join_text([v_5, "[", v_6, "]", " = 1; ", v_6, " += 1;"])
+    case cps_provider_5_DstOut{v_9}:
+      cps_provider_5_join_text([v_9, " = 1;"])
 
 def cps_provider_5_src_read_node(+v_1: String, +v_3: String, +v_5: String, +v_7: Bool, +v_9: String) -> List<&2, cps_provider_5_Job>:
   match v_7:
@@ -9377,7 +9392,7 @@ def cps_provider_5_unfill_result_jobs(+v_0: cps_provider_3_UnfillResult, +v_2: c
     case cps_provider_3_UnfillFailed{v_10}:
       [cps_provider_5_JFail{v_10}]
     case cps_provider_3_UnfillFound{v_12}:
-      [cps_provider_5_JConv{v_12, cps_provider_3_FillWord{}, v_2, cps_provider_5_DstSeq{v_4, cps_provider_5_join_text([v_6, "o"])}, v_6}]
+      [cps_provider_5_JConv{v_12, cps_provider_3_FillWord{}, v_2, cps_provider_5_DstOut{v_4}, v_6}]
 
 def cps_provider_5_unfill_data_jobs(+v_1: cps_provider_5_World, +v_2: cps_provider_3_Layout, +v_4: cps_provider_5_Src, +v_6: String, +v_8: String) -> List<&2, cps_provider_5_Job>:
   match v_1:
@@ -9663,13 +9678,39 @@ def cps_provider_5_term_decl_text(+v_1: Nat) -> String:
     case _:
       cps_provider_5_join_text(["Term b0f[", Nat.show(v_1), "];"])
 
+def native_match_cps_provider_5_project_prelude_0(+v_1: cps_provider_3_Layout, v_12: String) -> String:
+  match v_1:
+    case cps_provider_3_LayoutWord{v_14}:
+      cps_provider_5_join_text([v_12, " Term b0r = 0;"])
+    case cps_provider_3_LayoutBox{v_17}:
+      cps_provider_5_join_text([v_12, " Term b0r = 0;"])
+    case cps_provider_3_LayoutData{v_21, v_22}:
+      v_12
+
+def cps_provider_5_project_prelude(+v_1: cps_provider_3_Layout, +v_3: String, +v_5: Nat, +v_7: Nat) -> String:
+  v_12 = cps_provider_5_join_text(["Term b0t = ", v_3, ";", cps_provider_5_term_decl_text(v_5), "u64 b0s = term_rfc(b0t) ? ctr_take(e, b0t, ", Nat.show(v_5), ", b0f) : term_loc(b0t); u32 b0i = ", Nat.show(v_7), ";"])
+  native_match_cps_provider_5_project_prelude_0(v_1, v_12)
+
 def cps_provider_5_project_words(+v_1: cps_provider_5_World, +v_2: cps_provider_3_Layout, +v_4: Nat, +v_6: Nat, +v_8: String) -> cps_provider_5_Part:
-  v_15 = List.append(&2, cps_provider_5_Job, [cps_provider_5_JText{cps_provider_5_join_text(["Term b0t = ", v_8, ";", cps_provider_5_term_decl_text(v_6), "u64 b0s = term_rfc(b0t) ? ctr_take(e, b0t, ", Nat.show(v_6), ", b0f) : term_loc(b0t); u32 b0i = ", Nat.show(v_4), "; Term b0r = 0;"])}], cps_provider_5_unfill_jobs(v_1, v_2, cps_provider_5_SrcNode{"b0s", "b0f", "b0i", False{}}, "b0r", "b0"))
+  v_15 = List.append(&2, cps_provider_5_Job, cps_provider_5_one_job(cps_provider_5_JText{cps_provider_5_project_prelude(v_2, v_8, v_6, v_4)}), cps_provider_5_unfill_jobs(v_1, v_2, cps_provider_5_SrcNode{"b0s", "b0f", "b0i", False{}}, "b0r", "b0"))
   cps_provider_5_part_of(cps_provider_5_run_jobs(v_15, v_1, []), "b0r")
 
+def native_match_cps_provider_5_project_packed_prelude_0(+v_1: cps_provider_3_Layout, v_7: String) -> String:
+  match v_1:
+    case cps_provider_3_LayoutWord{v_9}:
+      cps_provider_5_join_text([v_7, " Term b0r = 0;"])
+    case cps_provider_3_LayoutBox{v_12}:
+      cps_provider_5_join_text([v_7, " Term b0r = 0;"])
+    case cps_provider_3_LayoutData{v_16, v_17}:
+      v_7
+
+def cps_provider_5_project_packed_prelude(+v_1: cps_provider_3_Layout, +v_3: String) -> String:
+  v_7 = cps_provider_5_join_text(["Term b0t = ", v_3, ";"])
+  native_match_cps_provider_5_project_packed_prelude_0(v_1, v_7)
+
 def cps_provider_5_project_packed(+v_1: cps_provider_5_World, +v_2: cps_provider_3_Layout, +v_4: String) -> cps_provider_5_Part:
-  v_10 = List.append(&2, cps_provider_5_Job, [cps_provider_5_JText{cps_provider_5_join_text(["Term b0t = ", v_4, ";"])}], cps_provider_5_unfill_jobs(v_1, v_2, cps_provider_5_SrcOne{"((u64)term_loc(b0t))"}, "b0r", "b0"))
-  cps_provider_5_part_of(cps_provider_5_run_jobs(v_10, v_1, []), "b0r")
+  v_11 = List.append(&2, cps_provider_5_Job, cps_provider_5_one_job(cps_provider_5_JText{cps_provider_5_project_packed_prelude(v_2, v_4)}), cps_provider_5_unfill_jobs(v_1, v_2, cps_provider_5_SrcOne{"((u64)term_loc(b0t))"}, "b0r", "b0"))
+  cps_provider_5_part_of(cps_provider_5_run_jobs(v_11, v_1, []), "b0r")
 
 def cps_provider_5_project_packed_flag(+v_1: Bool, +v_3: cps_provider_5_World, +v_4: cps_provider_3_Layout, +v_6: Nat, +v_8: Nat, +v_10: String) -> cps_provider_5_Part:
   match v_1:

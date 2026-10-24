@@ -1,0 +1,133 @@
+{
+  "schema": "fir-root-final2-aa9-receipt-v1",
+  "date": "2026-10-25",
+  "worktree": "/private/tmp/bend-fir-root-aa9",
+  "branch": "work/fir-root-aa9",
+  "baseCommit": "aa9a39a7",
+  "cherries": [
+    "0b3fcab4 c_backend valid SHOW initialisers (67ec4e19)",
+    "aad8404b physical Project scalar result (5fa7d5bd)",
+    "30150a6d physical packed Project prelude (6b9db40d)"
+  ],
+  "purpose": "Compact evidence for the post-physical-fix thirteen-export root. Supersedes 4a91665c, which is retained with its FAIL receipt. Bulk gate reports and emitted artifacts stay untracked.",
+  "sourceStepOutputs": {
+    "emitterModule": {
+      "path": "checkpoints/emitter_steps_v1.bend",
+      "sha256": "79f95ee2a16ea8ec5b624aece715a01c31c80edfe5f64e08a0045729d2877e82",
+      "note": "moved from d7dbe318 because the physical module is inside the emitter provider closure"
+    },
+    "emitterComponent": {
+      "path": "checkpoints/emitter_steps_component_v1.bend",
+      "sha256": "e6bd090dc9b2a0b381e4a896922c91869571445b194a60898d893e1f2ce3b3c8"
+    },
+    "emitterManifest": {
+      "path": "checkpoints/emitter-steps-v1.json",
+      "coverageRows": 1679,
+      "note": "1676 plus three helpers introduced by the Project fix; excluded/omitted empty, residual 0, recursiveHelpers 1",
+      "sha256": "023042320d1b1c1f350783629ebfe358d8a0ce4d2190512f7fde1879120c100e"
+    },
+    "templateSteps": {
+      "path": "checkpoints/template_steps_v1.bend",
+      "sha256": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4",
+      "unchanged": true
+    },
+    "checkerSteps": {
+      "path": "checkpoints/checker_core_steps_v1.bend",
+      "sha256": "d6000fd556d550f45ccca6adeaaa6e2b0d6aa2fc7604fae0959d650f6d7d175c",
+      "unchanged": true
+    }
+  },
+  "root": {
+    "path": "checkpoints/.bootstrap_compiler_root_v1.bend",
+    "sha256": "b0b92b67225c1b67972c9fe2a1096962a14926633508936c86d8b93b73cbd36b",
+    "chars": 629141,
+    "definitions": 1238,
+    "unchangedFromPreviousAssembly": true,
+    "reason": "the emitter is imported, not inlined, so a provider change cannot move the root text",
+    "manifest": {
+      "path": "checkpoints/selfhost-steps-driver-source-v1.json",
+      "sha256": "0f265e97865b864649773e09"
+    }
+  },
+  "parserReuse": {
+    "verdict": "REUSED",
+    "run": "ir-aa9-1",
+    "check": "all 45 pinned paths rehashed with matching sha256 and realpath, guard {memoryMiB 8192, rssMiB 8192, pollMs 10} and runtime {node 23.11.0, heapLimitMiB 3072, stackSizeMb 256} identical, 0 mismatches",
+    "whyValid": "none of the three fixes touches a parser pin; the generator, driver, guardian and canonical sources are untouched",
+    "receiptFileSha256": "50ab974f7267a792c0af9d0556ebb156772cd5639a63b915558941a710218ec8",
+    "provenanceFileSha256": "180a91ba4db79d1473ee38eb9577a8dfa6bbfde5c96868a5e686962c15086faa",
+    "provenanceRecordSha256": "24108d71fb18e6dff88a983549c43f195046784141af9fc6a3f50a96bf1eb1c4",
+    "acceptedResultFileSha256": "32dce68fe250a82546549ff5611e9346b6bd19524b0ef8e6fb7be980ae2e2fe9",
+    "artifact": {
+      "path": "checkpoints/bootstrap-parser-rebuild-ir-aa9-1.js",
+      "sha256": "1464037ba20c190ea51083d5824665fa665ce8d5657264544f4515e2339a3ee0"
+    }
+  },
+  "componentBodyProof": {
+    "artifact": {
+      "path": "checkpoints/root-final2-art.js",
+      "sha256": "3fee8bace209ffc50d13de010a0ae9ace36257fb20dd03aec2199ae62c802099",
+      "bytes": 16924823,
+      "tracked": false
+    },
+    "receipt": {
+      "path": "checkpoints/root-final2-rep.result.json",
+      "fileSha256": "6bf80f9aaff3f09461f7962ad19a9f8b03264209d359b4cc98dc0486783e46f2"
+    },
+    "status": "JS_GENERATED_NOT_YET_EXECUTED",
+    "checkedDefinitions": 11188,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "provenanceFileSha256": "e1b44fed5fe37f27d9dda030be7ccda6d4dcc6b5a4393e24e8606a3ebeaa1ea9",
+    "provenanceRecordSha256": "7d68515f00aafa15e734310db4c42630f94bc0f367ebd6b0e93152df35829e00",
+    "emitterPinInLoadedInputs": {
+      "emitter_steps_v1.bend": "79f95ee2a16ea8ec5b624aec"
+    },
+    "exports": [
+      "parsed_module",
+      "parse_with_fuel",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step",
+      "emit_c_modules_start",
+      "emit_c_library_start",
+      "c_emitter_step"
+    ]
+  },
+  "superseded": {
+    "artifact": "checkpoints/root-final-art.js 4a91665c",
+    "receipt": "checkpoints/root-final-rep.result.json c0514658",
+    "reason": "clang rejected the emitted C on the duplicated b0r accumulator; retained as the FAIL receipt"
+  },
+  "carrier": {
+    "type": "BIR.SourceFile{path, source}",
+    "tag": "../bend2/selfhost/backend_ir.SourceFile"
+  },
+  "host": {
+    "candidateHost": "evals/candidate_host.ts a56f57e32d0fa475a0564f18a3930137a084cb6a4ce49b05f496e76331d2a22a",
+    "stepRuntime": "evals/checker_core_step_runtime.mjs a52b065e99126f6b0fe47d4d74538757faa1e3f8652ba3f4bb818c64498e32d5"
+  },
+  "limits": {
+    "guardian": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "worker": {
+      "heapMiB": 3072,
+      "stackMiB": 256
+    }
+  },
+  "claims": {
+    "aggregatePass": false,
+    "bootstrapGreen": false,
+    "cReachable": false,
+    "comparisonCertificate": false
+  }
+}
