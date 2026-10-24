@@ -224,11 +224,13 @@ static int authenticate(const char *path, const char *token) {
   return 1;
 }
 static void report(const char *status, const char *reason, int code, int sig,
-                   uint64_t rss, uint64_t footprint, uint64_t elapsed, uint64_t timeout) {
+                   uint64_t rss, uint64_t footprint, uint64_t elapsed, uint64_t timeout,
+                   const char *phase, int stopped) {
   char line[512];
   int n = snprintf(line, sizeof(line),
-    "{\"status\":\"%s\",\"reason\":\"%s\",\"commandExitCode\":%d,\"commandSignal\":%d,\"peakRssBytes\":%" PRIu64 ",\"peakFootprintBytes\":%" PRIu64 ",\"elapsedMs\":%" PRIu64 ",\"timeoutMs\":%" PRIu64 "}\n",
-    status, reason, code, sig, rss, footprint, elapsed, timeout);
+    "{\"status\":\"%s\",\"reason\":\"%s\",\"commandExitCode\":%d,\"commandSignal\":%d,\"peakRssBytes\":%" PRIu64 ",\"peakFootprintBytes\":%" PRIu64 ",\"elapsedMs\":%" PRIu64 ",\"timeoutMs\":%" PRIu64 ",\"reportPhase\":\"%s\",\"ownedTreeStopped\":%s}\n",
+    status, reason, code, sig, rss, footprint, elapsed, timeout, phase,
+    stopped == 1 ? "true" : (stopped == 0 ? "false" : "null"));
   if (n <= 0 || (size_t)n >= sizeof(line)) return;
   /* A terminal decision is written immediately and may be refined by the final
      report; overwrite so the file is always one bounded record. */
@@ -256,26 +258,26 @@ int main(int argc, char **argv) {
   int fd = open(lock_path, O_RDWR | O_CREAT | O_NOFOLLOW | O_CLOEXEC, 0600);
   struct stat st;
   if (fd < 0 || fstat(fd, &st) || st.st_uid != getuid() || !S_ISREG(st.st_mode) || (st.st_mode & 077)) {
-    report("FAIL", "lock_error", -1, 0, 0, 0, millis() - began, timeout); return 125;
+    report("FAIL", "lock_error", -1, 0, 0, 0, millis() - began, timeout, "complete", -1); return 125;
   }
   if (flock(fd, LOCK_EX | LOCK_NB)) {
     int busy = errno == EWOULDBLOCK || errno == EAGAIN;
-    report(busy ? "LOCK_BUSY" : "FAIL", busy ? "exclusive_lock_busy" : "lock_error", -1, 0, 0, 0, millis() - began, timeout);
+    report(busy ? "LOCK_BUSY" : "FAIL", busy ? "exclusive_lock_busy" : "lock_error", -1, 0, 0, 0, millis() - began, timeout, "complete", -1);
     close(fd); return busy ? 75 : 125;
   }
   Proc self;
   if (identity(getpid(), &self) || memory(&self)) {
-    report("FAIL", "sampler_unavailable", -1, 0, 0, 0, millis() - began, timeout); close(fd); return 125;
+    report("FAIL", "sampler_unavailable", -1, 0, 0, 0, millis() - began, timeout, "complete", -1); close(fd); return 125;
   }
 #ifndef __APPLE__
   if (prctl(PR_SET_CHILD_SUBREAPER, 1)) {
-    report("FAIL", "subreaper_unavailable", -1, 0, 0, 0, millis() - began, timeout); close(fd); return 125;
+    report("FAIL", "subreaper_unavailable", -1, 0, 0, 0, millis() - began, timeout, "complete", -1); close(fd); return 125;
   }
 #endif
   signal(SIGTERM, on_signal); signal(SIGINT, on_signal); signal(SIGHUP, on_signal);
   signal(SIGPIPE, SIG_IGN);
   int ready[2];
-  if (pipe(ready)) { report("FAIL", "launch_error", -1, 0, 0, 0, millis() - began, timeout); close(fd); return 125; }
+  if (pipe(ready)) { report("FAIL", "launch_error", -1, 0, 0, 0, millis() - began, timeout, "complete", -1); close(fd); return 125; }
   pid_t root = fork();
   if (root == 0) {
     close(ready[1]); close(fd); close(3);
@@ -292,7 +294,7 @@ int main(int argc, char **argv) {
     perror("heavy-gate exec"); _exit(127);
   }
   close(ready[0]);
-  if (root < 0) { close(ready[1]); report("FAIL", "launch_error", -1, 0, 0, 0, millis() - began, timeout); close(fd); return 125; }
+  if (root < 0) { close(ready[1]); report("FAIL", "launch_error", -1, 0, 0, 0, millis() - began, timeout, "complete", -1); close(fd); return 125; }
   Proc child;
   int initialized = !identity(root, &child);
   char lease[512];
@@ -300,7 +302,7 @@ int main(int argc, char **argv) {
                      getpid(), self.start, root, token, began, timeout);
   if (!initialized || ftruncate(fd, 0) || pwrite(fd, lease, len, 0) != len) {
     close(ready[1]); kill(root, SIGKILL); waitpid(root, NULL, 0);
-    report("FAIL", "lease_error", -1, 0, 0, 0, millis() - began, timeout); close(fd); return 125;
+    report("FAIL", "lease_error", -1, 0, 0, 0, millis() - began, timeout, "complete", 1); close(fd); return 125;
   }
   if (write(ready[1], "x", 1) != 1) interrupted = SIGTERM;
   close(ready[1]);
@@ -332,7 +334,7 @@ int main(int argc, char **argv) {
       /* A terminal reason is recorded before destructive cleanup finishes:
          if the supervisor itself is SIGKILLed mid-cleanup, a receipt exists. */
       int limited = !strcmp(reason, "physical_footprint_limit") || !strcmp(reason, "rss_limit");
-      report(limited ? "RESOURCE_LIMIT" : "FAIL", reason, -1, 0, peak_rss, peak_footprint, millis() - began, timeout);
+      report(limited ? "RESOURCE_LIMIT" : "FAIL", reason, -1, 0, peak_rss, peak_footprint, millis() - began, timeout, "decision", 0);
     }
     if (stopping) {
       terminate_tree(root, killed ? SIGKILL : SIGTERM);
@@ -364,7 +366,7 @@ int main(int argc, char **argv) {
   int limited = reason && (!strcmp(reason, "physical_footprint_limit") || !strcmp(reason, "rss_limit"));
   const char *result = limited ? "RESOURCE_LIMIT" : (reason || code != 0 ? "FAIL" : "PASS");
   if (!reason) reason = sig ? "command_signal" : "command_exit";
-  report(result, reason, code, sig, peak_rss, peak_footprint, millis() - began, timeout);
+  report(result, reason, code, sig, peak_rss, peak_footprint, millis() - began, timeout, "complete", 1);
   /* Never unlink the flock inode: unlinking permits two simultaneous owners. */
   close(fd); free(rows); free(known);
   return limited ? 73 : (!strcmp(result, "PASS") ? 0 : (reason && !strcmp(reason, "interrupted") ? 130 : 1));

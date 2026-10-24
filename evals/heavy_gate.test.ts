@@ -33,7 +33,7 @@ test('normal and failed command exits have distinct recorded outcomes and stale 
   // A dead owner's file is not a live kernel lease. It must not block new work.
   await writeFile(lockPath,'999999 0 999998 stale-token\n',{mode:0o600});
   const pass=await runHeavyGate(['/bin/sh','-c','sleep 0.1; exit 0'],{...safe,lockPath,label:'normal exit'});
-  expect(pass.status).toBe('PASS');expect(pass.exitCode).toBe(0);
+  expect(pass.status).toBe('PASS');expect(pass.reportPhase).toBe('complete');expect(pass.ownedTreeStopped).toBe(true);expect(pass.exitCode).toBe(0);
   expect(pass.commandExitCode).toBe(0);expect(pass.reason).toBe('command_exit');
   expect(pass.elapsedMs).toBeGreaterThanOrEqual(80);
   expect(pass.timeoutMs).toBe(safe.timeoutMs);
@@ -52,7 +52,7 @@ test('a contending gate never starts its command and the lease is reusable after
   owner=runHeavyGate(['/bin/sh','-c','touch "$1"; while [ ! -f "$2" ]; do sleep 0.05; done','fixture',ready,release],{...safe,lockPath});
   await eventually(ready);
   const busy=await runHeavyGate(['/bin/sh','-c','touch "$1"','fixture',forbidden],{...safe,lockPath});
-  expect(busy.status).toBe('LOCK_BUSY');expect(busy.exitCode).toBe(75);
+  expect(busy.status).toBe('LOCK_BUSY');expect(busy.reportPhase).toBe('complete');expect(busy.ownedTreeStopped).toBeNull();expect(busy.exitCode).toBe(75);
   expect(busy.reason).toBe('exclusive_lock_busy');
   expect(await Bun.file(forbidden).exists()).toBe(false);
   await writeFile(release,'release');expect((await owner).status).toBe('PASS');
@@ -298,13 +298,23 @@ await runHeavyGate(${JSON.stringify(command)},${JSON.stringify({...safe,lockPath
   const deadline=Date.now()+8000;let receipt:Record<string,unknown>|undefined;
   while(Date.now()<deadline){
    for(const name of (await readdir(reportDir).catch(()=>[] as string[])).filter(name=>name.startsWith('report-')&&!before.has(name))){
-    try{const text=await readFile(join(reportDir,name),'utf8');if(text.trim()){receipt=JSON.parse(text);break;}}catch{}
+    try{
+     const text=await readFile(join(reportDir,name),'utf8');
+     if(text.trim()){
+      const parsed=JSON.parse(text);
+      // The decision record is provisional; wait for the final record that
+      // confirms owned cleanup, without assuming how quickly it lands.
+      if(parsed.reportPhase==='complete'){receipt=parsed;break;}
+     }
+    }catch{}
    }
    if(receipt)break;
    await Bun.sleep(20);
   }
   expect(receipt).toBeDefined();
   expect(receipt!.status).toBe('FAIL');
+  expect(receipt!.reportPhase).toBe('complete');
+  expect(receipt!.ownedTreeStopped).toBe(true);
   expect(['interrupted','deadline_exceeded','command_signal','descendants_after_exit']).toContain(receipt!.reason);
   // The provisional receipt may land while owned cleanup is still running;
   // the lease is released only after the owned tree is confirmed gone.
