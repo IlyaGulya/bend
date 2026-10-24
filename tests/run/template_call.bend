@@ -6,7 +6,10 @@ def app(~f: Nat -> Nat, x: Nat) -> Nat:
 def increment(x: Nat) -> Nat:
   Nat.add(x, 1n)
 
-def main() -> Nat:
+law main:
+  Nat
+
+def main():
   app(~increment, 41n)
 
 #|42n
