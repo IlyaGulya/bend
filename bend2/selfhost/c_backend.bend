@@ -4,6 +4,7 @@ import ./index_lookup.bend as IndexLookup
 import ./c_backend_link.bend as Link
 import ./c_backend_layout.bend as CLay
 import ./c_backend_physical.bend as Phys
+import ./c_backend_sharing.bend as Sharing
 
 # The C target for Backend IR.
 #
@@ -53,7 +54,7 @@ type Part is Data:
   PartFail{message: String}
 
 type CidRow is Data:
-  CidRow{cid: U32, key: String, arity: Nat}
+  CidRow{cid: U32, key: String, arity: Nat, hot: Bool}
 type EntryKind is Data:
   KindCode{id: U32, captures: Nat, params: List<&2, BIR.Parameter>, body: BIR.Block}
   KindStage{next: U32}
@@ -102,8 +103,8 @@ type Plan is Data:
     show_names: String,
     imports: List<&2, CImport>,
     fkeys: List<&2, String>,
-    ctx: CLay.Context
-  }
+    ctx: CLay.Context,
+    sharing: Sharing.SharingPlan, sharing}
 
 # The stable entry facts control generation consults: every lookup is by the
 # exact numeric id or declared key, never by a suffix.
@@ -396,17 +397,21 @@ def fid_macros_declarations(declarations: List<&2, BIR.Declaration>, +by_code: M
 
 def plan_make(+program: BIR.Program, imports: List<&2, CImport>) -> PlanResult:
   +scan = scan_program(program)
-  cids = cid_rows(program, scan)
-  match program:
-    case BIR.Program{codes, declarations, constructors, families, type_functions, end}:
-      plan_finish(program, scan, cids, constructors, families, declarations, end, imports)
+  sharing_result = Sharing.sharing_plan(program)
+  match sharing_result:
+    case Sharing.SharingFail{message}: PlanFail{message}
+    case Sharing.SharingOk{plan: plan_hot}:
+      cids = cid_rows(program, scan, plan_hot)
+      match program:
+        case BIR.Program{codes, declarations, constructors, families, type_functions, end}:
+          plan_finish(program, scan, cids, constructors, families, declarations, end, imports, plan_hot)
 
-def plan_finish(program: BIR.Program, scan: Scan, cids: List<&2, CidRow>, constructors: List<&2, BIR.ConstructorLayout>, +families: List<&2, BIR.Family>, declarations: List<&2, BIR.Declaration>, +end: BIR.Ending, imports: List<&2, CImport>) -> PlanResult:
-  plan_pure(end, families, plan_top(program, scan, cids, constructors, families, declarations, end, imports))
+def plan_finish(program: BIR.Program, scan: Scan, cids: List<&2, CidRow>, constructors: List<&2, BIR.ConstructorLayout>, +families: List<&2, BIR.Family>, declarations: List<&2, BIR.Declaration>, +end: BIR.Ending, imports: List<&2, CImport>, sharing: Sharing.SharingPlan) -> PlanResult:
+  plan_pure(end, families, plan_top(program, scan, cids, constructors, families, declarations, end, imports, sharing))
 
-def plan_top(+program: BIR.Program, +scan: Scan, +cids: List<&2, CidRow>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, +declarations: List<&2, BIR.Declaration>, end: BIR.Ending, imports: List<&2, CImport>) -> PlanResult:
+def plan_top(+program: BIR.Program, +scan: Scan, +cids: List<&2, CidRow>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, +declarations: List<&2, BIR.Declaration>, end: BIR.Ending, imports: List<&2, CImport>, sharing: Sharing.SharingPlan) -> PlanResult:
   +build = finish_entries(build_entries(program, scan))
-  PlanOk{Plan{cids, cid_macro_map(cids), fid_macro_map(declarations, build), entries_ascending(build_entries_of(build)), by_code_of(build), by_key_of(build), by_foreign_of(build), by_native_of(build), stages_of(build), constructors, families, declarations, True{}, "{ 0 }", "", imports, fkeys_of(scan), CLay.context(program)}}
+  PlanOk{Plan{cids, cid_macro_map(cids), fid_macro_map(declarations, build), entries_ascending(build_entries_of(build)), by_code_of(build), by_key_of(build), by_foreign_of(build), by_native_of(build), stages_of(build), constructors, families, declarations, True{}, "{ 0 }", "", imports, fkeys_of(scan), CLay.context(program), sharing}}
 
 def plan_pure(end: BIR.Ending, families: List<&2, BIR.Family>, inner: PlanResult) -> PlanResult:
   match inner:
@@ -422,8 +427,8 @@ def plan_set_pure(end: BIR.Ending, families: List<&2, BIR.Family>, plan: Plan) -
 
 def plan_set_pure_flags(plan: Plan, pure: Bool, desc: String, names: String) -> Plan:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx}:
-      Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, pure, desc, names, imports, fkeys, ctx}
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
+      Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, pure, desc, names, imports, fkeys, ctx, sharing}
 
 def fid_macros_runtime(acc: Map<&2, String>) -> Map<&2, String>:
   fid_macros_runtime_one(map_set_first(acc, "Clo~apply", "FID_CLO_APPLY"))
@@ -453,12 +458,12 @@ def plan_executable_io(is_io: Bool, family: BIR.Family, main_type: BIR.Descripto
 
 def plan_executable_show(family: BIR.Family, main_type: BIR.Descriptor, plan: Plan) -> PlanResult:
   match plan:
-    case Plan{+cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, +constructors, +families, declarations, main_pure, _, _, imports, fkeys, ctx}:
+    case Plan{+cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, +constructors, +families, declarations, main_pure, _, _, imports, fkeys, ctx, sharing}:
       show = Phys.show_build(ctx, main_type, constructors, families)
       match show:
         case Phys.ShowFail{message}: PlanFail{message}
         case Phys.ShowOk{desc, names}:
-          PlanOk{Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, True{}, desc, names, imports, fkeys, ctx}}
+          PlanOk{Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, True{}, desc, names, imports, fkeys, ctx, sharing}}
 
 def descriptor_head(descriptor: BIR.Descriptor) -> Maybe<&2, String>:
   match descriptor:
@@ -796,28 +801,30 @@ def scan_block(block: BIR.Block, +scan: Scan) -> Scan:
 # Cid rows
 # ---------------------------------------------------------------------------
 
-def cid_rows(program: BIR.Program, scan: Scan) -> List<&2, CidRow>:
+def cid_rows(program: BIR.Program, scan: Scan, sharing: Sharing.SharingPlan) -> List<&2, CidRow>:
   match program:
     case BIR.Program{codes, declarations, constructors, families, type_functions, end}:
-      cid_foreign_rows(scan, cid_ctor_rows(constructors, 0, Nil{}))
+      cid_foreign_rows(scan, cid_ctor_rows(constructors, 0, Nil{}, sharing), sharing)
 
-def cid_ctor_rows(rows: List<&2, BIR.ConstructorLayout>, +index: U32, +acc: List<&2, CidRow>) -> List<&2, CidRow>:
+def cid_ctor_rows(rows: List<&2, BIR.ConstructorLayout>, +index: U32, +acc: List<&2, CidRow>, sharing: Sharing.SharingPlan) -> List<&2, CidRow>:
   match rows:
     case Nil{}: List.reverse(&2, CidRow, acc)
     case +row <> rest:
       match row:
         case BIR.ConstructorLayout{_, key, _, fields}:
-          cid_ctor_rows(rest, U32.inc(index), CidRow{index, key, List.length(&2, Maybe<&2, String>, fields)} <> acc)
+          hot = Sharing.ctor_hot(sharing, key)
+          cid_ctor_rows(rest, U32.inc(index), CidRow{index, key, List.length(&2, Maybe<&2, String>, fields), hot} <> acc, sharing)
 
-def cid_foreign_rows(scan: Scan, +acc: List<&2, CidRow>) -> List<&2, CidRow>:
+def cid_foreign_rows(scan: Scan, +acc: List<&2, CidRow>, sharing: Sharing.SharingPlan) -> List<&2, CidRow>:
   match scan:
-    case Scan{closures, reads, fkeys, farity}: cid_foreign_each(fkeys, farity, U32.from_nat(List.length(&2, CidRow, acc)), acc)
+    case Scan{closures, reads, fkeys, farity}: cid_foreign_each(fkeys, farity, U32.from_nat(List.length(&2, CidRow, acc)), acc, sharing)
 
-def cid_foreign_each(keys: List<&2, String>, +farity: Map<&2, Nat>, +index: U32, +acc: List<&2, CidRow>) -> List<&2, CidRow>:
+def cid_foreign_each(keys: List<&2, String>, +farity: Map<&2, Nat>, +index: U32, +acc: List<&2, CidRow>, sharing: Sharing.SharingPlan) -> List<&2, CidRow>:
   match keys:
     case Nil{}: acc
     case +key <> rest:
-      cid_foreign_each(rest, farity, U32.inc(index), List.append(&2, CidRow, acc, [CidRow{index, key, Nat.add(map_nat(farity, key), 1n)}]))
+      hot = Sharing.ctor_hot(sharing, key)
+      cid_foreign_each(rest, farity, U32.inc(index), List.append(&2, CidRow, acc, [CidRow{index, key, Nat.add(map_nat(farity, key), 1n), hot}]), sharing)
 
 def cid_lookup(+key: String, cids: List<&2, CidRow>) -> U32:
   match cids:
@@ -1111,7 +1118,7 @@ def bool_lit_part(which: String, plan: Plan) -> Part:
 
 def symbol_part(+key: String, +plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
       symbol_part_decl(find_declaration(key, declarations), key, plan)
 
 def find_declaration(+key: String, declarations: List<&2, BIR.Declaration>) -> Maybe<&2, BIR.Declaration>:
@@ -1137,7 +1144,7 @@ def symbol_part_decl(found: Maybe<&2, BIR.Declaration>, +key: String, plan: Plan
 
 def symbol_part_item(item: BIR.Declaration, +key: String, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, +entries, by_code, by_key, by_foreign, by_native, +stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx}:
+    case Plan{cids, cid_macros, fid_macros, +entries, by_code, by_key, by_foreign, by_native, +stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
       match item:
         case BIR.FunctionDeclaration{known, +code, parameters}:
           symbol_value(IndexLookup.find(U32, by_code, U32.show(code)), code_stem(code), entries, stages)
@@ -1274,7 +1281,7 @@ def inline_tag_arms(key: String, +arms: List<&2, BIR.DescriptorArm>) -> Maybe<&2
 
 def construct_part(+constructor: U32, +fields: List<&2, BIR.Field>, +plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, +constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, +constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
       construct_values(constructor, native_kind_of(constructor, constructors), field_values(fields, plan), ctor_cid(constructor, constructors, cids), List.length(&2, BIR.Field, fields), packed_ctor(constructor, constructors, families))
 
 def construct_values(constructor: U32, kind: String, values: List<&2, Part>, cid_part: Part, count: Nat, packed: Bool) -> Part:
@@ -1340,7 +1347,7 @@ def base_construct_5(kind: String, +args: List<&2, String>) -> Maybe<&2, String>
 
 def project_part(value: BIR.Atom, +constructor: U32, field: U32, +plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, +constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, +constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
       project_values(atom_part(value, plan), native_kind_of(constructor, constructors), ctor_key_of(constructor, constructors), field, families)
 
 def ctor_key_of(+id: U32, constructors: List<&2, BIR.ConstructorLayout>) -> String:
@@ -1387,7 +1394,7 @@ def project_anode(+value: String, field: U32) -> String:
 
 def hastag_part(value: BIR.Atom, +constructor: U32, +plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, +constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, +constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
       hastag_values(atom_part(value, plan), native_kind_of(constructor, constructors), ctor_cid(constructor, constructors, cids))
 
 def hastag_values(value: Part, kind: String, cid_part: Part) -> Part:
@@ -1488,7 +1495,7 @@ def prim_call_part(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, +plan: Pla
 
 def pcid(short: String, plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
       cid_c(short, cids)
 
 def prim_part(primitive: BIR.Primitive, +a: List<&2, String>, +plan: Plan) -> Part:
@@ -1620,7 +1627,7 @@ def f32_cmp(op: String, a0: String, a1: String) -> Part:
 
 def bool2_part(fn: String, a0: String, a1: String, plan: Plan) -> Part:
   match plan:
-    case Plan{+cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx}:
+    case Plan{+cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
       bool2_c(fn, a0, a1, cid_c("True", cids), cid_c("False", cids))
 
 def bool2_c(fn: String, a0: String, a1: String, t: Part, f: Part) -> Part:
@@ -2657,7 +2664,7 @@ def main_jump(index: U32, found: Maybe<&2, U32>, +ctx: Ctx) -> Step:
 
 def control_build(+plan: Plan) -> Control:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, +entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx}:
+    case Plan{cids, cid_macros, fid_macros, +entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
       match entries_ctl(entries, Ctx{Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, rt_entry(entries, 3n)}, plan, Nil{}, Nil{}, 0n, Nil{}, None{}, U32.from_nat(List.length(&2, Entry, entries)), Nil{}, Nil{}, False{}, max_arity(entries)}):
         case StepFail{message}: ControlFail{message}
         case StepOk{_, +done}:
@@ -2753,12 +2760,27 @@ def fid_defines(rows: List<&2, SegText>) -> String:
 
 # CID_T[x] is {arity, hot} for the cid index x (runtime cid_arity/cid_hot).
 # The hot fact is not derivable from BIR today; CIRSharing's seal plan owns it.
+def hot_text(hot: Bool) -> String:
+  match hot:
+    case True{}: "1"
+    case False{}: "0"
+
+def blk_shr_text(plan: Plan) -> String:
+  match plan:
+    case Plan{sharing, cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx}:
+      array_shared_text(Sharing.array_shared(sharing))
+
+def array_shared_text(shared: Bool) -> String:
+  match shared:
+    case True{}: "1"
+    case False{}: "0"
+
 def cid_table(cids: List<&2, CidRow>) -> String:
   match cids:
     case Nil{}: "};\n"
     case +row <> rest:
       match row:
-        case CidRow{cid, key, arity}: String.concat(["{ ", Nat.show(arity), ", 0 }, ", cid_table(rest)])
+        case CidRow{cid, key, arity, hot}: String.concat(["{ ", Nat.show(arity), ", ", hot_text(hot), " }, ", cid_table(rest)])
 
 def runtime_fid_aliases(+entries: List<&2, Entry>) -> String:
   String.concat([
@@ -2868,7 +2890,7 @@ def runtime_defines(+entries: List<&2, Entry>) -> String:
 
 def tables_part(plan: Plan, +rows: List<&2, SegText>, regs: Nat) -> Part:
   match plan:
-    case Plan{+cids, cid_macros, fid_macros, +entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx}:
+    case Plan{+cids, cid_macros, fid_macros, +entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
       PartOk{String.concat([
         part_text(runtime_cid_aliases(cids)),
         cid_defines(cids),
@@ -2881,7 +2903,7 @@ def tables_part(plan: Plan, +rows: List<&2, SegText>, regs: Nat) -> Part:
         "#define WL_TABLE ", wl_table_text(rows, entries), "\n",
         "#define MAIN_FID FID_", U32.show(rt_entry(entries, 1n)), "\n",
         "#define MAIN_PURE ", main_pure_text(main_pure), "\n",
-        "#define BLK_SHR 0\n\n",
+        "#define BLK_SHR ", blk_shr_text(plan), "\n\n",
         "#if !DEVICE\nstatic const u32 SHOW_DESC[] = { ", show_desc, " };\nstatic const char* SHOW_NAMES[] = { ", show_names, " };\n#endif\n\n"
       ])}
 
@@ -2974,7 +2996,7 @@ def helper_core() -> String:
 
 def requests_part(plan: Plan) -> Part:
   match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx}:
+    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
       requests_finish(requests_check(imports, fkeys, declarations, constructors, cids, by_code, by_key, by_foreign, by_native))
 
 def requests_finish(part: Part) -> Part:
@@ -3192,7 +3214,7 @@ def emit(program: BIR.Program, runtime: String, imports: List<&2, CImport>) -> E
 
 def render(+plan: Plan, runtime: String) -> EmitResult:
   match plan:
-    case Plan{+cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx}:
+    case Plan{+cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing}:
       match macro_collision_cids(cids):
         case Some{message}: EmitFailure{message}
         case None{}: render_parts(plan, runtime, cid_exact_map(cids), fid_exact_map(declarations, by_code, by_key, by_foreign, by_native))
