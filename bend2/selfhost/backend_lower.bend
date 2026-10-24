@@ -692,10 +692,117 @@ def native_match_application_native_3(v_35: LowerResult<Pair(List<&2, BIR.Arg>, 
     case LowerResult{v_23, v_24}:
       native_match_application_native_2(v_24, v_4, v_13, v_14, v_23, element)
 
+# A partially applied array primitive still owes the C target its element type.
+# The checked head occurrence's arrow type is the only surviving source: the
+# domains after the applied arguments are the remaining parameters, and the
+# array (or, for new, the value) domain names the element.
+type ArrowFacts is Data:
+  ArrowFacts{uses: List<&2, BIR.Use>, domains: List<&2, BIR.Descriptor>}
+
+def arrow_facts(descriptor: BIR.Descriptor, skip: Nat) -> ArrowFacts:
+  match skip:
+    case 0n: arrow_facts_rest(descriptor)
+    case 1n+rest:
+      match descriptor:
+        case BIR.DescriptorArrow{quantity, domain, body}: arrow_facts(body, rest)
+        case _: ArrowFacts{Nil{}, Nil{}}
+
+def arrow_facts_rest(descriptor: BIR.Descriptor) -> ArrowFacts:
+  match descriptor:
+    case BIR.DescriptorArrow{quantity, domain, body}:
+      match arrow_facts_rest(body):
+        case ArrowFacts{uses, domains}: ArrowFacts{bir_use(quantity) <> uses, domain <> domains}
+    case _: ArrowFacts{Nil{}, Nil{}}
+
+def last_domain(domains: List<&2, BIR.Descriptor>) -> Maybe<&2, BIR.Descriptor>:
+  match domains:
+    case Nil{}: None{}
+    case only: Some{only}
+
+def first_element_argument(descriptors: List<&2, BIR.Descriptor>) -> Maybe<&2, BIR.Descriptor>:
+  match descriptors:
+    case Nil{}: None{}
+    case descriptor <> _:
+      match descriptor:
+        case BIR.DescriptorRef{_, [element]}: Some{element}
+        case BIR.DescriptorApplication{_, element}: Some{element}
+        case _: None{}
+
+# new carries its element as the value it is given; every other array primitive
+# operates on its first live domain, whose single argument is the element.
+def partial_element(op: BIR.Primitive, domains: List<&2, BIR.Descriptor>) -> Maybe<&2, BIR.Descriptor>:
+  match op:
+    case BIR.PrimArrayNew{}: last_domain(domains)
+    case _: first_element_argument(domains)
+
+def parameterize(parameters: List<&2, BIR.Parameter>, uses: List<&2, BIR.Use>) -> List<&2, BIR.Parameter>:
+  match parameters uses:
+    case Nil{} _: Nil{}
+    case BIR.Parameter{id, _} <> rest use <> more: BIR.Parameter{id, use} <> parameterize(rest, more)
+    case _ Nil{}: Nil{}
+
+def partial_array_parameters(state: State, uses: List<&2, BIR.Use>) -> LowerResult<List<&2, BIR.Parameter>>:
+  match new_parameters(state, List.length(&2, BIR.Use, uses)):
+    case LowerResult{state2, parameters}: LowerResult{state2, parameterize(parameters, uses)}
+
+def partial_array_code(state: State, op: BIR.Primitive, captures: List<&2, BIR.Arg>, parameters: List<&2, BIR.Parameter>, element: BIR.Descriptor) -> LowerResult<BIR.Atom>:
+  match fresh(state):
+    case LowerResult{state2, result}: partial_array_body(state2, op, captures, parameters, element, result)
+
+def partial_block(+id: U32, op: BIR.Op) -> BIR.Block:
+  BIR.Let{id, op, BIR.Return{BIR.Local{id}}}
+
+def partial_call(op: BIR.Primitive, captures: List<&2, BIR.Arg>, parameters: List<&2, BIR.Parameter>, element: BIR.Descriptor) -> BIR.Op:
+  BIR.PrimitiveCall{op, indexed_captures(captures, 0) <> parameter_arguments(parameters), element <> Nil{}}
+
+def partial_array_body(state: State, op: BIR.Primitive, captures: List<&2, BIR.Arg>, parameters: List<&2, BIR.Parameter>, element: BIR.Descriptor, +result: U32) -> LowerResult<BIR.Atom>:
+  match state:
+    case State{source, next_code, local, frame, codes, failure, scope, normalizer}:
+      body = partial_block(result, partial_call(op, captures, parameters, element))
+      code = BIR.Code{next_code, capture_argument_uses(captures), parameters, body}
+      operation(State{source, U32.inc(next_code), local, frame, code <> codes, failure, scope, normalizer}, BIR.Closure{next_code, captures, parameters})
+
+def capture_argument_uses(arguments: List<&2, BIR.Arg>) -> List<&2, BIR.Use>:
+  match arguments:
+    case Nil{}: Nil{}
+    case BIR.Arg{usage, _} <> rest: usage <> capture_argument_uses(rest)
+
+def partial_array_build(state: State, op: BIR.Primitive, head: IR.Occurrence, captures: List<&2, BIR.Arg>, applied: Nat) -> LowerResult<BIR.Atom>:
+  match occurrence_type(head):
+    case None{}: fail(state, "missing checked partial application type", no_span())
+    case Some{handle}: partial_array_described(state, op, handle, captures, applied)
+
+def partial_array_described(state: State, op: BIR.Primitive, handle: U32, captures: List<&2, BIR.Arg>, applied: Nat) -> LowerResult<BIR.Atom>:
+  match describe(state, handle):
+    case LowerResult{state2, None{}}: fail(state2, "missing checked partial application type", no_span())
+    case LowerResult{state2, Some{descriptor}}: partial_array_facts(state2, op, arrow_facts(descriptor, applied), captures)
+
+def partial_array_facts(state: State, op: BIR.Primitive, facts: ArrowFacts, captures: List<&2, BIR.Arg>) -> LowerResult<BIR.Atom>:
+  match facts:
+    case ArrowFacts{uses, domains}:
+      match partial_element(op, domains):
+        case None{}: fail(state, "missing checked array element type for a partially applied primitive", no_span())
+        case Some{element}: partial_array_typed(state, op, uses, captures, element)
+
+def partial_array_typed(state: State, op: BIR.Primitive, uses: List<&2, BIR.Use>, captures: List<&2, BIR.Arg>, element: BIR.Descriptor) -> LowerResult<BIR.Atom>:
+  match partial_array_parameters(state, uses):
+    case LowerResult{state2, parameters}: partial_array_code(state2, op, captures, parameters, element)
+
+def partial_array_call(state: State, op: BIR.Primitive, head: IR.Occurrence, args: List<&2, SourceArgument>, env: List<&2, Slot>, registry: Catalog.Registry) -> LowerResult<BIR.Atom>:
+  match argument_prefix(state, List.length(&2, SourceArgument, args), args, env, registry):
+    case LowerResult{state2, parts}:
+      match parts:
+        case (captures, _): partial_array_build(state2, op, head, captures, List.length(&2, SourceArgument, args))
+
+def application_native_partial(state: State, op: BIR.Primitive, head: IR.Occurrence, args: List<&2, SourceArgument>, env: List<&2, Slot>, registry: Catalog.Registry) -> LowerResult<BIR.Atom>:
+  match array_primitive(op):
+    case True{}: partial_array_call(state, op, head, args, env, registry)
+    case False{}: native_match_application_native_0(lower_occurrence(state, head, env, registry), args, env, registry)
+
 def native_match_application_native_4(v_3: Bool, v_1: State, v_4: BIR.Primitive, v_6: Nat, v_7: IR.Occurrence, v_10: List<&2, SourceArgument>, v_13: List<&2, Slot>, v_14: Catalog.Registry, element: Maybe<&2, U32>) -> LowerResult<BIR.Atom>:
   match v_3:
     case False{}:
-      native_match_application_native_0(lower_occurrence(v_1, v_7, v_13, v_14), v_10, v_13, v_14)
+      application_native_partial(v_1, v_4, v_7, v_10, v_13, v_14)
     case True{}:
       native_match_application_native_3(argument_prefix(v_1, v_6, v_10, v_13, v_14), v_4, v_13, v_14, element)
 
