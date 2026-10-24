@@ -1198,8 +1198,9 @@ def ${chunkFunction}(-R: Type, fuel: Nat, run: ${runType}<R>) -> ${runType}<R>:
 def ${stepFunction}(-R: Type, run: ${runType}<R>) -> ${runType}<R>:
   ${chunkFunction}(R, ${nativeChunkQuantum}n, run)
 `);
-const startInput = paths.mode === 'emitter' ? 'program: Checked.CheckedProgram' : 'modules: List<&2, Loader.LoadedModule>';
-const startArguments = paths.mode === 'checker' ? 'modules, Nil{}' : paths.mode === 'emitter' ? 'program' : 'modules';
+const emitterFiles = 'files: List<&2, BIR.SourceFile>';
+const startInput = paths.mode === 'emitter' ? 'program: Checked.CheckedProgram, ' + emitterFiles : 'modules: List<&2, Loader.LoadedModule>';
+const startArguments = paths.mode === 'checker' ? 'modules, Nil{}' : paths.mode === 'emitter' ? 'program, files' : 'modules';
 function typedStart(name:string, root:string, parameters:string, arguments_:string, result:string){
  const group=requestGroup.get(root),request=requestName.get(root);
  if(!group||!request)throw Error('Missing typed public root '+root);
@@ -1207,27 +1208,29 @@ function typedStart(name:string, root:string, parameters:string, arguments_:stri
 }
 chunks.push(typedStart(startFunction,paths.root,startInput,startArguments,paths.result));
 if(paths.mode==='checker')chunks.push(typedStart('checker_inspect_start','inspect_checked','program: Checked.CheckedProgram','program','Checked.Inspection'));
-if(paths.mode==='emitter')chunks.push(typedStart('emitter_library_start','emit_library','program: Checked.CheckedProgram, exports: List<&2, String>','program, exports','EmitResult'));
+if(paths.mode==='emitter')chunks.push(typedStart('emitter_library_start','emit_library','program: Checked.CheckedProgram, exports: List<&2, String>, ' + emitterFiles,'program, exports, files','EmitResult'));
 const output = chunks.join('');
 const alias = paths.mode === 'checker' ? 'CheckerCore' : paths.mode === 'emitter' ? 'JSEmit' : 'Template';
 const wrapper = paths.mode === 'checker' ? 'check_expanded_start' : paths.mode === 'emitter' ? 'emit_modules_start' : 'expand_modules_start';
 const outputImport = './' + posix.basename(paths.output);
 const resultType=paths.result.includes('.')?paths.result:alias+'.'+paths.result;
-const wrappers = 'def ' + wrapper + '('+startInput+') -> ' + alias + '.' + runType + '<' + resultType + '>:\n  ' + alias + '.' + startFunction + '('+(paths.mode==='emitter'?'program':'modules')+')\n\n'
+const wrappers = 'def ' + wrapper + '('+startInput+') -> ' + alias + '.' + runType + '<' + resultType + '>:\n  ' + alias + '.' + startFunction + '('+(paths.mode==='emitter'?'program, files':'modules')+')\n\n'
  + (paths.mode==='checker'?'def inspect_checked_start(program: Checked.CheckedProgram) -> CheckerCore.CheckerRun<Checked.Inspection>:\n  CheckerCore.checker_inspect_start(program)\n\n':'')
- + (paths.mode==='emitter'?'def emit_library_start(program: Checked.CheckedProgram, exports: List<&2, String>) -> JSEmit.EmitterRun<JSEmit.EmitResult>:\n  JSEmit.emitter_library_start(program, exports)\n\n':'')
+ + (paths.mode==='emitter'?'def emit_library_start(program: Checked.CheckedProgram, exports: List<&2, String>, ' + emitterFiles + ') -> JSEmit.EmitterRun<JSEmit.EmitResult>:\n  JSEmit.emitter_library_start(program, exports, files)\n\n':'')
  + 'def ' + stepFunction + '(-R: Type, run: ' + alias + '.' + runType + '<R>) -> ' + alias + '.' + runType + '<R>:\n  ' + alias + '.' + stepFunction + '(R, run)';
 const loaderImport=header.match(/^import (\S+) as Loader$/m)?.[0];
+const birImport=header.match(/^import (\S+) as BIR$/m)?.[0];
+if(paths.mode==='emitter'&&!birImport)throw Error('Emitter component needs the authenticated backend_ir import for BIR.SourceFile');
 const checkedImport=header.match(/^import (\S+) as Checked$/m)?.[0];
 if(paths.mode!=='emitter'&&!loaderImport||paths.mode!=='template'&&!checkedImport)throw Error('Typed step component has no authenticated boundary import');
-const component = [loaderImport,checkedImport].filter(Boolean).join('\n')+'\nimport ' + outputImport + ' as ' + alias + '\n\n' + wrappers + '\n';
+const component = [loaderImport,checkedImport,birImport].filter(Boolean).join('\n')+'\nimport ' + outputImport + ' as ' + alias + '\n\n' + wrappers + '\n';
 let driver: string | undefined;
 if (paths.driver) {
 const driverSource = paths.mode === 'checker' ? inputs.get(paths.ownedDriver!)! : inputs.get(paths.checkerOutput!)!;
 const oldImport = paths.mode === 'checker' ? 'import ./checker_core_owned_v1.bend as CheckerCore' : driverSource.match(/^import \S+ as JSEmit$/m)?.[0];
 const oldWrapper = paths.mode === 'checker'
   ? 'def check_expanded(modules: List<&2, Loader.LoadedModule>) -> Checked.CheckResult:\n  CheckerCore.check_modules(modules, Nil{})'
-  : 'def emit_modules(program: Checked.CheckedProgram) -> JSEmit.EmitResult:\n  JSEmit.emit(program)';
+  : 'def emit_modules(program: Checked.CheckedProgram, files: List<&2, BIR.SourceFile>) -> JSEmit.EmitResult:\n  JSEmit.emit(program, files)';
 if (!oldImport || driverSource.split(oldImport).length !== 2 || driverSource.split(oldWrapper).length !== 2) throw Error('Derived driver wrapper anchor drift');
 driver = driverSource.replace(oldImport, 'import ' + outputImport + ' as ' + alias).replace(oldWrapper, wrappers);
 }

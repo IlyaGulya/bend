@@ -404,7 +404,7 @@ const header=originalHeader.replace(/^import (\S+)( as [A-Za-z_][A-Za-z0-9_]*)?$
 // The parser and the complete native library share lexical import namespaces:
 // constructor tags must remain identical across their authentic AST transport.
 if(header!==originalHeader)throw Error('Compiler root must preserve the accepted parser import header');
-const imports='import ../bend2/selfhost/loaded_module.bend as Loader\nimport ../bend2/selfhost/checked_frontend.bend as Checked\nimport ./template_steps_v1.bend as Template\nimport ./checker_core_steps_v1.bend as CheckerCore\nimport ./js_emit_steps_v1.bend as JSEmit\n\n';
+const imports='import ../bend2/selfhost/loaded_module.bend as Loader\nimport ../bend2/selfhost/backend_ir.bend as BIR\nimport ../bend2/selfhost/checked_frontend.bend as Checked\nimport ./template_steps_v1.bend as Template\nimport ./checker_core_steps_v1.bend as CheckerCore\nimport ./js_emit_steps_v1.bend as JSEmit\n\n';
 const wrappers=`
 # Bend owns parsing, expansion, checking and emission; Node drives typed steps.
 def parsed_module(namespace: String, module: Ast.Module) -> Loader.LoadedModule:
@@ -425,11 +425,11 @@ def inspect_checked_start(program: Checked.CheckedProgram) -> CheckerCore.Checke
 def checker_step(-R: Type, run: CheckerCore.CheckerRun<R>) -> CheckerCore.CheckerRun<R>:
   CheckerCore.checker_step(R, run)
 
-def emit_modules_start(program: Checked.CheckedProgram) -> JSEmit.EmitterRun<JSEmit.EmitResult>:
-  JSEmit.emitter_start(program)
+def emit_modules_start(program: Checked.CheckedProgram, files: List<&2, BIR.SourceFile>) -> JSEmit.EmitterRun<JSEmit.EmitResult>:
+  JSEmit.emitter_start(program, files)
 
-def emit_library_start(program: Checked.CheckedProgram, exports: List<&2, String>) -> JSEmit.EmitterRun<JSEmit.EmitResult>:
-  JSEmit.emitter_library_start(program, exports)
+def emit_library_start(program: Checked.CheckedProgram, exports: List<&2, String>, files: List<&2, BIR.SourceFile>) -> JSEmit.EmitterRun<JSEmit.EmitResult>:
+  JSEmit.emitter_library_start(program, exports, files)
 
 def emitter_step(-R: Type, run: JSEmit.EmitterRun<R>) -> JSEmit.EmitterRun<R>:
   JSEmit.emitter_step(R, run)
