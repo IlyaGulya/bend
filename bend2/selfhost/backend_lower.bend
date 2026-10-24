@@ -317,13 +317,13 @@ def element_argument(state: State, handle: U32) -> LowerResult<List<&2, BIR.Desc
 
 def primitive_element(state: State, +op: BIR.Primitive, +values: List<&2, BIR.Atom>, element: Maybe<&2, U32>, arrayed: Bool) -> LowerResult<BIR.Atom>:
   match element arrayed:
-    case Some{handle} True{}: primitive_types(op, values, element_argument(state, handle))
-    case Some{handle} False{}: primitive_types(op, values, element_value(state, handle))
+    case Some{handle} True{}: primitive_types(op, atom_arguments(values), element_argument(state, handle))
+    case Some{handle} False{}: primitive_types(op, atom_arguments(values), element_value(state, handle))
     case None{} _: fail(state, "missing checked array element type", no_span())
 
-def primitive_types(op: BIR.Primitive, values: List<&2, BIR.Atom>, types: LowerResult<List<&2, BIR.Descriptor>>) -> LowerResult<BIR.Atom>:
+def primitive_types(op: BIR.Primitive, arguments: List<&2, BIR.Arg>, types: LowerResult<List<&2, BIR.Descriptor>>) -> LowerResult<BIR.Atom>:
   match types:
-    case LowerResult{state2, descriptors}: operation(state2, BIR.PrimitiveCall{op, atom_arguments(values), descriptors})
+    case LowerResult{state2, descriptors}: operation(state2, BIR.PrimitiveCall{op, arguments, descriptors})
 
 def occurrence_type(occurrence: IR.Occurrence) -> Maybe<&2, U32>:
   match occurrence:

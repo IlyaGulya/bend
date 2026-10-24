@@ -11,7 +11,7 @@ export const emitterStepConfig: StepConfig = {
   canonical: 'bend2/selfhost/js_emit.bend', owned: 'checkpoints/js_emit_owned_v1.bend',
   generator: 'evals/js_emit_step_lower.ts',
   providerClosure: ['bend2/selfhost/backend_lower.bend', 'bend2/selfhost/lower_catalog.bend', 'bend2/selfhost/js_backend.bend',
-    'bend2/selfhost/descriptor_nf.bend', 'bend2/selfhost/scope_lookup.bend'],
+    'bend2/selfhost/descriptor_nf.bend'],
   ownedDriver: undefined,
   output: 'checkpoints/js_emit_steps_v1.bend',
   component: 'checkpoints/js_emit_steps_component_v1.bend',
