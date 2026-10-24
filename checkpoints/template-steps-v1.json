@@ -18429,7 +18429,7 @@
     "bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
     "evals/heavy_gate.ts": "204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2",
     "evals/validation_profile.ts": "d0bfd8124b334cb1db4792e49675290a971ae82730e57029173b07ff23d6938d",
-    "checkpoints/checker-core-owned-source-v1.json": "4ee88e2a8a63ff19a87cf4610e6d28a29ec54f4db399ad7810790c5c7e59585d",
+    "checkpoints/checker-core-owned-source-v1.json": "be1db9cb9c8fbe620d12935dc79cc07dee39aa52740a1c89798825219cca5f55",
     "evals/checker_core_step_lower.ts": "05492ac6aaa7855b4d4770bf1f77d7abacf3cc3b956dfca9e6f411fffb202158",
     "evals/checker_core_owned_source.ts": "550ce39e12d8491fcc1913d3a84d49f37cf3f464b6f4df7944374c16504672e2",
     "evals/emitter_step_lower.ts": "4376c983d376a91f8464037444ddeccd1233f6a00f9c2362ce4fd88ab9f84371",
@@ -18452,7 +18452,7 @@
     "/private/tmp/bend-fir-root-aa9/bend2/selfhost/backend_ir.bend": "3614f816b109012c2ccb202ce6164efad9d82b1bf5f9decbc52c27ebaafe94c5",
     "/private/tmp/bend-fir-root-aa9/bend2/selfhost/c_backend_sharing.bend": "ffaf97c528c88490fca33a5115e6a6e479d451bc0726cc4f0cb6c5b9b6119edb",
     "/private/tmp/bend-fir-root-aa9/bend2/selfhost/emitter.bend": "72085ea8aa90686cf7d105a7ab015659c8e9d71a25a5c84ac3a5b95b781e7a05",
-    "/private/tmp/bend-fir-root-aa9/checkpoints/emitter_owned_v1.bend": "32fc9c234fe13ae0e288957ceabf9b2add4ae0c030015c4cb953a16ddd0224b9",
+    "/private/tmp/bend-fir-root-aa9/checkpoints/emitter_owned_v1.bend": "90621b306664747ef29cbd918db5f4ecd116e1f159f63810b8dc40e2abec07f8",
     "/private/tmp/bend-fir-root-aa9/bend2/selfhost/core.bend": "33823e56b9c70306970ccb0e3b5fb3b995806d3a1907dd97d45c5c9634d13511",
     "/private/tmp/bend-fir-root-aa9/bend2/selfhost/sha256.bend": "2fe6b6fc50c90db1b4730a384724bc989398b0ce41752cc510aa2478a3e845d6",
     "bend2/selfhost/ast.bend": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
@@ -18471,5 +18471,5 @@
     "nativeBuildRun": false,
     "testsRun": false
   },
-  "generationManifestSha256": "e55f5474aaeb0285d54b12b62ce25dfddfb1755e4cead0b306eca0558ae546dd"
+  "generationManifestSha256": "419a63a32abb47596aba15bcfc8aa85fd13e7596f6b27ba4d8514b5267e375dc"
 }

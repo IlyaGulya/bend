@@ -15178,7 +15178,7 @@
       "canonical": "bend2/selfhost/emitter.bend",
       "owned": "checkpoints/emitter_owned_v1.bend",
       "canonicalSha256": "72085ea8aa90686cf7d105a7ab015659c8e9d71a25a5c84ac3a5b95b781e7a05",
-      "sourceSha256": "32fc9c234fe13ae0e288957ceabf9b2add4ae0c030015c4cb953a16ddd0224b9",
+      "sourceSha256": "90621b306664747ef29cbd918db5f4ecd116e1f159f63810b8dc40e2abec07f8",
       "definitionNames": [
         "emitted_js",
         "emitted_c",
@@ -18814,7 +18814,7 @@
         "cps_provider_5_seal_cell_box": "928669ac80a901f6c701d5dfbc517d1d52db4d90d9986f913113d3c653b3472e",
         "cps_provider_5_seal_cell_kind": "5d1489e40813e10218818d78cb482befdfb30f9acb0b16b503e9ba345c3aad00",
         "cps_provider_5_seal_cell_walk": "25a03268b8a9a0b8d9d8852d17143f5ccd520e676f3564704d098a97529e2696",
-        "cps_provider_5_elem_fill_operand": "7f32ecbfba9c7199bd2ba1602cd7bc763602c7d52869732d6710f4f24a4052e7",
+        "cps_provider_5_elem_fill_operand": "e91d82ab9788d8d49416bcc71c03f9ddf513e6c91845bc309a5aba0de4dc13d8",
         "cps_provider_5_elem_fill": "769eb901717a5fcfb375a81c5d6eda45c72d57e6598ae6d36f01eb5771bccbd9",
         "cps_provider_5_elem_stores": "f4b36f513f7b1d32f9150cede212a4e1c0c831d37e00ffbd9f344f81f118a98c",
         "cps_provider_5_elem_decl": "c700cb421f69c80eaf1943d62b72e5b6f6cd8c0c38f5f27a3c5d6c7daf26e712",
@@ -20117,7 +20117,7 @@
           "bend2/selfhost/js_emit.bend",
           "bend2/selfhost/lower_catalog.bend"
         ],
-        "sourceSha256": "2773314f37110eaf8c00d64f880aafcfbeda15e9d95e585b25f7bed5f50e75cb",
+        "sourceSha256": "bd265dacdd52f0a96fbddd7e5ae046939e097e50b184f847fcfd492ddaad77c9",
         "sources": [
           {
             "canonical": "bend2/selfhost/emitter.bend",
@@ -22224,7 +22224,7 @@
           },
           {
             "canonical": "bend2/selfhost/c_backend_physical.bend",
-            "canonicalSha256": "fdc8f7a7aedb533533c30f7755101c2ffb85f8df4739c55ad11a403061dcfbcf",
+            "canonicalSha256": "84514613df4ad000e964446f87fd533832f8c0c3e988f98fad71d391ade03206",
             "declarationNames": [
               "Part",
               "CidSym",
@@ -32947,8 +32947,8 @@
             "canonicalName": "elem_fill_operand",
             "name": "cps_provider_5_elem_fill_operand",
             "kind": "def",
-            "canonicalDeclarationSha256": "02568b994106f811a1547215cb2cf81cfbffac3dc886ae364990174e12989adb",
-            "composedDeclarationSha256": "7f32ecbfba9c7199bd2ba1602cd7bc763602c7d52869732d6710f4f24a4052e7"
+            "canonicalDeclarationSha256": "b8bdae25776612b0c7e6eb5fdc0d6a9b253e35789776a18e70347ee5d05a87a3",
+            "composedDeclarationSha256": "e91d82ab9788d8d49416bcc71c03f9ddf513e6c91845bc309a5aba0de4dc13d8"
           },
           {
             "source": "bend2/selfhost/c_backend_physical.bend",
@@ -38477,13 +38477,13 @@
           "/private/tmp/bend-fir-root-aa9/bend2/selfhost/c_backend.bend": "b43a4663b65568baf78f59d3a12701775c36e12f72a905d7d6db5681ac8a6068",
           "/private/tmp/bend-fir-root-aa9/bend2/selfhost/c_backend_link.bend": "606ce07caaf96c28c1885947897bcc2be1e5949481068e77c5303134f70e1e51",
           "/private/tmp/bend-fir-root-aa9/bend2/selfhost/c_backend_layout.bend": "a9f2d5d7d101665f390fb88cd6901947773fbf2444fc6b76504f9537213cdc77",
-          "/private/tmp/bend-fir-root-aa9/bend2/selfhost/c_backend_physical.bend": "fdc8f7a7aedb533533c30f7755101c2ffb85f8df4739c55ad11a403061dcfbcf",
+          "/private/tmp/bend-fir-root-aa9/bend2/selfhost/c_backend_physical.bend": "84514613df4ad000e964446f87fd533832f8c0c3e988f98fad71d391ade03206",
           "/private/tmp/bend-fir-root-aa9/bend2/selfhost/c_backend_sharing.bend": "ffaf97c528c88490fca33a5115e6a6e479d451bc0726cc4f0cb6c5b9b6119edb",
           "bend2/selfhost/backend_lower.bend": "465cdf16cdf5a3aae3096f12c8453a48f3264d0afb9d6bb16d9d4a4f5cd52661",
           "bend2/selfhost/c_backend.bend": "b43a4663b65568baf78f59d3a12701775c36e12f72a905d7d6db5681ac8a6068",
           "bend2/selfhost/c_backend_layout.bend": "a9f2d5d7d101665f390fb88cd6901947773fbf2444fc6b76504f9537213cdc77",
           "bend2/selfhost/c_backend_link.bend": "606ce07caaf96c28c1885947897bcc2be1e5949481068e77c5303134f70e1e51",
-          "bend2/selfhost/c_backend_physical.bend": "fdc8f7a7aedb533533c30f7755101c2ffb85f8df4739c55ad11a403061dcfbcf",
+          "bend2/selfhost/c_backend_physical.bend": "84514613df4ad000e964446f87fd533832f8c0c3e988f98fad71d391ade03206",
           "bend2/selfhost/c_emit_core.bend": "f690db5b6054d4f647b5c02e1281923d5cc66b24c8c2fff7859d811efc5ba380",
           "bend2/selfhost/descriptor_nf.bend": "747dc747fcb1a6b6c1fcbf31a3e164f998fd5fa502f87a8ad3a1facd13859973",
           "bend2/selfhost/js_backend.bend": "45e8916b25f906dc3040b246504034d5fe58229f8225c8ece488a5aa3200ba8d",
@@ -41204,7 +41204,7 @@
         "cps_provider_5_seal_cell_box": "928669ac80a901f6c701d5dfbc517d1d52db4d90d9986f913113d3c653b3472e",
         "cps_provider_5_seal_cell_kind": "5d1489e40813e10218818d78cb482befdfb30f9acb0b16b503e9ba345c3aad00",
         "cps_provider_5_seal_cell_walk": "25a03268b8a9a0b8d9d8852d17143f5ccd520e676f3564704d098a97529e2696",
-        "cps_provider_5_elem_fill_operand": "7f32ecbfba9c7199bd2ba1602cd7bc763602c7d52869732d6710f4f24a4052e7",
+        "cps_provider_5_elem_fill_operand": "e91d82ab9788d8d49416bcc71c03f9ddf513e6c91845bc309a5aba0de4dc13d8",
         "cps_provider_5_elem_fill": "769eb901717a5fcfb375a81c5d6eda45c72d57e6598ae6d36f01eb5771bccbd9",
         "cps_provider_5_elem_stores": "f4b36f513f7b1d32f9150cede212a4e1c0c831d37e00ffbd9f344f81f118a98c",
         "cps_provider_5_elem_decl": "c700cb421f69c80eaf1943d62b72e5b6f6cd8c0c38f5f27a3c5d6c7daf26e712",
@@ -92961,7 +92961,7 @@
       "source": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/emitter.bend",
       "sourceSha256": "72085ea8aa90686cf7d105a7ab015659c8e9d71a25a5c84ac3a5b95b781e7a05",
       "output": "/private/tmp/bend-fir-root-aa9/checkpoints/emitter_owned_v1.bend",
-      "outputSha256": "32fc9c234fe13ae0e288957ceabf9b2add4ae0c030015c4cb953a16ddd0224b9",
+      "outputSha256": "90621b306664747ef29cbd918db5f4ecd116e1f159f63810b8dc40e2abec07f8",
       "extractions": [
         {
           "owner": "cps_provider_1_describe",

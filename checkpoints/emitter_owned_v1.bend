@@ -9944,7 +9944,9 @@ def cps_provider_5_seal_cell_walk(+v_0: BIR.Use, +v_2: List<&2, cps_provider_3_C
       List.append(&2, cps_provider_5_Job, cps_provider_5_seal_cell_kind(v_0, v_9, v_4), cps_provider_5_seal_cell_walk(v_0, v_10, v_4))
 
 def cps_provider_5_elem_fill_operand(+v_1: cps_provider_5_World, +v_2: cps_provider_3_Layout, +v_3: BIR.Use, +v_5: cps_provider_5_Code, +v_7: String, +v_9: String) -> List<&2, cps_provider_5_Job>:
-  List.append(&2, cps_provider_5_Job, List.append(&2, cps_provider_5_Job, List.append(&2, cps_provider_5_Job, cps_provider_5_code_jobs(v_5), cps_provider_5_fill_jobs(v_1, v_2, v_7, cps_provider_5_DstSeq{"w0", "o0"}, v_9)), [cps_provider_5_JText{"c0 = 0;"}]), cps_provider_5_seal_cell_walk(v_3, cps_provider_3_layout_kinds(v_2), "c0"))
+  v_14 = cps_provider_5_join_text([v_9, "c"])
+  v_24 = List.append(&2, cps_provider_5_Job, cps_provider_5_one_job(cps_provider_5_JText{cps_provider_5_join_text(["u32 ", v_14, " = 0;"])}), List.append(&2, cps_provider_5_Job, cps_provider_5_code_jobs(v_5), List.append(&2, cps_provider_5_Job, cps_provider_5_fill_jobs(v_1, v_2, v_7, cps_provider_5_DstSeq{"w0", "o0"}, v_9), cps_provider_5_seal_cell_walk(v_3, cps_provider_3_layout_kinds(v_2), v_14))))
+  v_24
 
 def cps_provider_5_elem_fill(+v_1: cps_provider_5_World, +v_2: cps_provider_3_Layout, +v_3: BIR.Use, +v_5: String, +v_7: String) -> List<&2, cps_provider_5_Job>:
   cps_provider_5_elem_fill_operand(v_1, v_2, v_3, cps_provider_5_operand_code(v_2, v_3, v_5, v_7), cps_provider_5_operand_name(v_2, v_3, v_5, v_7), v_7)

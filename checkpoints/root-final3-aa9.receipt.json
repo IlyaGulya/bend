@@ -1,0 +1,125 @@
+{
+  "schema": "fir-root-final3-aa9-receipt-v1",
+  "date": "2026-10-25",
+  "worktree": "/private/tmp/bend-fir-root-aa9",
+  "branch": "work/fir-root-aa9",
+  "cherries": [
+    "661ed69f physical element fill seal cursor (b4e9281e)"
+  ],
+  "sourceStepOutputs": {
+    "emitterModule": {
+      "path": "checkpoints/emitter_steps_v1.bend",
+      "sha256": "062e8998557d28dd1e3ccc4e04f6dc85eb217f2f59f16f6bb0688db87a9c881a"
+    },
+    "emitterComponent": {
+      "path": "checkpoints/emitter_steps_component_v1.bend",
+      "sha256": "e6bd090dc9b2a0b381e4a896922c91869571445b194a60898d893e1f2ce3b3c8"
+    },
+    "emitterManifest": {
+      "path": "checkpoints/emitter-steps-v1.json",
+      "sha256": "a85015e83768f5436f64b720e1395670191772de7bd6d115e67a5fbc81b57734",
+      "coverageRows": 1679,
+      "note": "canonical def count stays 1679; sourceCalls 4080 to 4083 and helpers 3271 to 3273, i.e. helper/body shifts only"
+    },
+    "templateSteps": {
+      "path": "checkpoints/template_steps_v1.bend",
+      "sha256": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4",
+      "unchanged": true
+    },
+    "checkerSteps": {
+      "path": "checkpoints/checker_core_steps_v1.bend",
+      "sha256": "d6000fd556d550f45ccca6adeaaa6e2b0d6aa2fc7604fae0959d650f6d7d175c",
+      "unchanged": true
+    }
+  },
+  "root": {
+    "path": "checkpoints/.bootstrap_compiler_root_v1.bend",
+    "sha256": "b0b92b67225c1b67972c9fe2a1096962a14926633508936c86d8b93b73cbd36b",
+    "chars": 629141,
+    "definitions": 1238,
+    "unchanged": true,
+    "manifest": {
+      "path": "checkpoints/selfhost-steps-driver-source-v1.json",
+      "sha256": "c65fd2e1998a0aca6ffd35472947"
+    }
+  },
+  "parserReuse": {
+    "verdict": "REUSED",
+    "run": "ir-aa9-1",
+    "check": "45/45 pins rehashed with matching sha256 and realpath, guard 8192/8192/10 and runtime node 23.11.0 / 3072 / 256 identical, 0 drift",
+    "receiptFileSha256": "50ab974f7267a792c0af9d0556ebb156772cd5639a63b915558941a710218ec8",
+    "provenanceFileSha256": "180a91ba4db79d1473ee38eb9577a8dfa6bbfde5c96868a5e686962c15086faa",
+    "provenanceRecordSha256": "24108d71fb18e6dff88a983549c43f195046784141af9fc6a3f50a96bf1eb1c4",
+    "artifact": {
+      "path": "checkpoints/bootstrap-parser-rebuild-ir-aa9-1.js",
+      "sha256": "1464037ba20c190ea51083d5824665fa665ce8d5657264544f4515e2339a3ee0"
+    }
+  },
+  "componentBodyProof": {
+    "artifact": {
+      "path": "checkpoints/root-final3-art.js",
+      "sha256": "5b92478f34d2224a6a55d27dd49ea73429095a62173f3444fe09e9a0cd98c211",
+      "bytes": 16927725,
+      "tracked": false
+    },
+    "receipt": {
+      "path": "checkpoints/root-final3-rep.result.json",
+      "fileSha256": "dc18f6cdfaf5023f497c3bdb0d28aa2a4212ee76eb957869c52199b3ed61aea0"
+    },
+    "status": "JS_GENERATED_NOT_YET_EXECUTED",
+    "checkedDefinitions": 11190,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "provenanceFileSha256": "b339ef50a693c9f264a6ac8f54275b055ed9b0b46912f671c28ce7f38a4a6891",
+    "provenanceRecordSha256": "93b4b3590697515cf461ee6eb626dc896cefb434533c28a754bc4f69e1abc831",
+    "emitterPinInLoadedInputs": {
+      "emitter_steps_v1.bend": "062e8998557d28dd1e3ccc4e04f6dc85eb217f2f59f16f6bb0688db87a9c881a"
+    },
+    "exports": [
+      "parsed_module",
+      "parse_with_fuel",
+      "expand_modules_start",
+      "template_step",
+      "check_expanded_start",
+      "inspect_checked_start",
+      "checker_step",
+      "emit_modules_start",
+      "emit_library_start",
+      "emitter_step",
+      "emit_c_modules_start",
+      "emit_c_library_start",
+      "c_emitter_step"
+    ]
+  },
+  "preserved": [
+    "root-final-art.js 4a91665c + receipt (b0r)",
+    "root-final2-art.js 3fee8bac + receipt (c0)",
+    "both FAIL receipts"
+  ],
+  "carrier": {
+    "type": "BIR.SourceFile{path, source}",
+    "tag": "../bend2/selfhost/backend_ir.SourceFile"
+  },
+  "host": {
+    "candidateHost": "evals/candidate_host.ts a56f57e32d0fa475a0564f18a3930137a084cb6a4ce49b05f496e76331d2a22a",
+    "stepRuntime": "evals/checker_core_step_runtime.mjs a52b065e99126f6b0fe47d4d74538757faa1e3f8652ba3f4bb818c64498e32d5"
+  },
+  "limits": {
+    "guardian": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "worker": {
+      "heapMiB": 3072,
+      "stackMiB": 256
+    }
+  },
+  "claims": {
+    "aggregatePass": false,
+    "bootstrapGreen": false,
+    "cReachable": false,
+    "comparisonCertificate": false
+  }
+}
