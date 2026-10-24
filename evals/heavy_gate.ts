@@ -186,7 +186,7 @@ export function classifyGateResult(record:Record<string,any>,supervisorExitCode:
  const incomplete=reportPhase!=='complete'||ownedTreeStopped===false||(ownedTreeStopped===null&&record.status==='PASS');
  const status=(incomplete&&record.status==='PASS'?'FAIL':record.status) as HeavyGateStatus;
  const exitCode=incomplete&&supervisorExitCode===0?1:supervisorExitCode;
- return {...record,status,reportPhase,ownedTreeStopped,supervisorExitCode,command:[...command],label:settings.label,exitCode,
+ return {...record,status,reportPhase,ownedTreeStopped,supervisorExitCode,command:[...command],label:settings.label??'heavy command',exitCode,
   reportPath,memoryLimitBytes:settings.memoryMiB*MiB,rssLimitBytes:settings.rssMiB*MiB,timeoutMs:settings.timeoutMs};
 }
 /** Public behavior seam. Never nests: guarded entrypoints authenticate the lease. */

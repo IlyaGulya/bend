@@ -340,6 +340,9 @@ test('receipt classification forces a nonzero exit when PASS is incomplete',()=>
  const completePass=classify({status:'PASS',reason:'command_exit',reportPhase:'complete',ownedTreeStopped:true},0);
  expect(completePass.status).toBe('PASS');expect(completePass.exitCode).toBe(0);
  expect(completePass.supervisorExitCode).toBe(0);expect(completePass.reportPhase).toBe('complete');expect(completePass.ownedTreeStopped).toBe(true);
+ expect(completePass.label).toBe('contract check');
+ const unlabeled=classifyGateResult({status:'PASS',reason:'command_exit',reportPhase:'complete',ownedTreeStopped:true},0,['true'],{memoryMiB:64,rssMiB:64,timeoutMs:5000},'/tmp/report.json');
+ expect(unlabeled.label).toBe('heavy command');
  for(const record of [
   {status:'PASS',reason:'deadline_exceeded',reportPhase:'decision',ownedTreeStopped:false},
   {status:'PASS',reason:'deadline_exceeded',reportPhase:'complete',ownedTreeStopped:false},

@@ -51,6 +51,14 @@
       "bytes": 118,
       "result": "1 pass / 0 fail / 34 expect() calls / [102.00ms]",
       "coverage": "complete PASS stays 0; decision, incomplete-false, null-stopped and missing-phase PASS records are rejected FAIL with exit 1 and supervisorExitCode 0, reason preserved; FAIL stays 1; RESOURCE_LIMIT 73; LOCK_BUSY 75"
+    },
+    "focusedLabelContract": {
+      "command": "bun test evals/heavy_gate.test.ts -t \"receipt classification\"",
+      "rawOutputPath": "/tmp/gate-evidence/focused-label-contract.log",
+      "rawOutputSha256": "3bd260ae40f767eeedb3ec21c484d4f7f689c2d067fcd28d628e0763d5a50918",
+      "bytes": 117,
+      "result": "1 pass / 0 fail / 36 expect() calls / [87.00ms]",
+      "coverage": "explicit label preserved; absent label defaults to the normalize value; exit/phase/status semantics unchanged"
     }
   },
   "knownUnlocalizedFailure": {
@@ -89,7 +97,8 @@
     "runHeavyGate": "a decision record, a false stopped state, or PASS with null stopped state is classified as failure, preserving the supervisor reason; only complete + ownedTreeStopped true may be PASS",
     "consumerRule": "provisional/missing evidence is INCOMPLETE or FAIL, never PASS or observed OOM",
     "effectiveExit": "a PASS rejected for incomplete evidence becomes FAIL with a nonzero effective exitCode (1 when the supervisor exited 0); the raw supervisor code is preserved as supervisorExitCode; original terminal reason unchanged. Complete PASS 0 / FAIL 1 / RESOURCE_LIMIT 73 / LOCK_BUSY 75 keep the supervisor exit.",
-    "classificationSeam": "classifyGateResult(record, supervisorExitCode, command, settings, reportPath) is the single exported record-to-result transformation used by runHeavyGate, so guardHeavyGate and the CLI consume the effective nonzero exit."
+    "classificationSeam": "classifyGateResult(record, supervisorExitCode, command, settings, reportPath) is the single exported record-to-result transformation used by runHeavyGate, so guardHeavyGate and the CLI consume the effective nonzero exit.",
+    "label": "classifyGateResult defaults an absent settings.label to 'heavy command', matching normalize; the exported result label is always a string."
   },
   "sourceCommit": "b9e418e6"
 }
