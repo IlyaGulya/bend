@@ -114,6 +114,8 @@ if(o.stageProfile!==undefined){
   try{if(stage!==undefined&&!stage.finished)stage.finish(code===0?'completed':'failed',code===0?undefined:'candidate host exited '+code);}
   catch(error){console.error('candidate: stage profile close failed: '+String(error));}
  });
+ // Preserve the real exception in the report before Node/Bun prints it and exits.
+ process.on('uncaughtExceptionMonitor',error=>{try{stage?.fail(error);}catch{};});
 }
 const importSpan=stage?.span('startup-import',{candidatePath:o.candidate,parserPath:o.parser??o.candidate});
 // Both paths are runtime-selected by the caller, so a static import is impossible.
@@ -185,22 +187,32 @@ stage?.record({kind:'phase-exact-counters',scope:'candidate host',name:'parse-im
   note:'one eager parser feedback chain per parsed module; fuelCells is the exact constructed cell count, not semantic fuel consumed'}});
 const bag=sourceFiles(files,o.sourceTag);
 
+// One attributed phase: a real span plus exact host-step counters and sampled
+// typed progress. A thrown step error still closes the span failed and records
+// the samples observed before it.
+function attributedPhase(name:string,protocol:string,inputs:Record<string,unknown>,run:(observe:unknown)=>unknown,success:(value:unknown)=>boolean):unknown{
+ if(stage===undefined)return run(undefined);
+ const attributes=createStepAttribution(name,protocol,stage.manifestTable);
+ const token=stage.span(name,inputs);
+ let value:unknown;
+ try{value=run(attributes);}
+ catch(error){stage.end(token,'failed',{error:String(error)});attributes.record(stage.profile);throw error;}
+ const ok=success(value),message=String(objectOf(objectOf(value)?.diagnostic)?.message??objectOf(value)?.message??tag(value));
+ stage.end(token,ok?'completed':'failed',{result:tag(value),...(ok?{}:{error:message})});
+ attributes.record(stage.profile);
+ return value;
+}
+
 function checkedProgram():unknown{
  const loaded=list(modules);
- const expandAttributes=stage===undefined?undefined:createStepAttribution('template-expand','Template',stage.manifestTable);
- const expandSpan=stage?.span('template-expand',{inputModules:modules.length});
- const expanded=typeof candidate!.expand_modules_start==='function'?runTemplateSteps(candidate,loaded,expandAttributes):{$:'ExpandSuccess',modules:loaded};
- const expandResult=tag(expanded),expandOk=expandResult==='ExpandSuccess';
- stage?.end(expandSpan!,expandOk?'completed':'failed',{result:expandResult,...expandOk?{}:{error:String(objectOf(expanded)?.message??expandResult)}});
- expandAttributes?.record(stage!.profile);
- if(!expandOk)fail('template expansion failed: '+String(objectOf(expanded)?.message??''));
- const checkAttributes=stage===undefined?undefined:createStepAttribution('check-signature-body','Checker',stage.manifestTable);
- const checkSpan=stage?.span('check-signature-body',{inputModules:modules.length});
- const checked=runCheckerSteps(candidate,objectOf(expanded)?.modules,checkAttributes);
- const checkResult=tag(checked),checkOk=checkResult==='CheckSuccess';
- stage?.end(checkSpan!,checkOk?'completed':'failed',{result:checkResult,...checkOk?{}:{error:String(objectOf(objectOf(checked)?.diagnostic)?.message??checkResult)}});
- checkAttributes?.record(stage!.profile);
- if(!checkOk)fail('checking failed: '+String(objectOf(objectOf(checked)?.diagnostic)?.message??''));
+ const expanded=attributedPhase('template-expand','Template',{inputModules:modules.length},
+  observe=>typeof candidate!.expand_modules_start==='function'?runTemplateSteps(candidate,loaded,observe):{$:'ExpandSuccess',modules:loaded},
+  value=>tag(value)==='ExpandSuccess');
+ if(tag(expanded)!=='ExpandSuccess')fail('template expansion failed: '+String(objectOf(expanded)?.message??''));
+ const checked=attributedPhase('check-signature-body','Checker',{inputModules:modules.length},
+  observe=>runCheckerSteps(candidate,objectOf(expanded)?.modules,observe),
+  value=>tag(value)==='CheckSuccess');
+ if(tag(checked)!=='CheckSuccess')fail('checking failed: '+String(objectOf(objectOf(checked)?.diagnostic)?.message??''));
  return objectOf(checked)?.program;
 }
 
@@ -223,19 +235,16 @@ if(target==='c'){
  try{runtime=readFileSync(o.runtimeC,'utf8');}
  catch(error){fail('cannot read C runtime '+o.runtimeC+': '+String(error));}
 }
-const emitAttributes=stage===undefined?undefined:createStepAttribution('emit','Emitter',stage.manifestTable);
-const emitSpan=stage?.span('emit',{target,library:o.library,exports:o.library?exports.length:null});
-const emitted=target==='c'
- ? o.library
-  ? runCLibraryEmitterSteps(candidate,program,list(exports),runtime!,bag,emitAttributes)
-  : runCEmitterSteps(candidate,program,runtime!,bag,emitAttributes)
- : o.library
-  ? runLibraryEmitterSteps(candidate,program,list(exports),bag,emitAttributes)
-  : runEmitterSteps(candidate,program,bag,emitAttributes);
-const emitResult=tag(emitted),emitOk=emitResult==='EmitSuccess';
-stage?.end(emitSpan!,emitOk?'completed':'failed',{result:emitResult,...emitOk?{}:{error:String(objectOf(emitted)?.message??emitResult)}});
-emitAttributes?.record(stage!.profile);
-if(!emitOk)fail('emission failed: '+String(objectOf(emitted)?.message??''));
+const emitted=attributedPhase('emit','Emitter',{target,library:o.library,exports:o.library?exports.length:null},
+ observe=>target==='c'
+  ? o.library
+   ? runCLibraryEmitterSteps(candidate,program,list(exports),runtime!,bag,observe)
+   : runCEmitterSteps(candidate,program,runtime!,bag,observe)
+  : o.library
+   ? runLibraryEmitterSteps(candidate,program,list(exports),bag,observe)
+   : runEmitterSteps(candidate,program,bag,observe),
+ value=>tag(value)==='EmitSuccess');
+if(tag(emitted)!=='EmitSuccess')fail('emission failed: '+String(objectOf(emitted)?.message??''));
 const source=objectOf(emitted)?.source;
 if(typeof source!=='string')fail('emission returned no source');
 const outputSpan=stage?.span('output-write',{output:o.output,bytes:Buffer.byteLength(source)});

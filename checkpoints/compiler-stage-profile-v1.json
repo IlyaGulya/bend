@@ -1,30 +1,34 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "kind": "compiler-stage-profile-evidence",
   "diagnosticOnly": true,
   "acceptanceEvidence": false,
-  "generatedAt": "2026-10-24T17:50:58.514Z",
+  "generatedAt": "2026-10-24T18:37:55.677Z",
   "implementation": {
-    "evals/candidate_host.ts": "f126bf7dae3b0a4897ac7acc90787be981aec8ea7b3cf8a55dea392bb6fd8724",
+    "evals/candidate_host.ts": "6c4c8d8a0edbbf82e72f16e70abea773202a9994ab13f5c3892c1b8bf681d87f",
     "evals/checker_core_step_runtime.mjs": "a52b065e99126f6b0fe47d4d74538757faa1e3f8652ba3f4bb818c64498e32d5",
-    "evals/compiler_stage_profile.mjs": "0385315d7f74f7c73cd5603211ad7bc19aeff74716bda595f6a6c5255ed53119",
+    "evals/compiler_stage_profile.mjs": "8abb1cef8478c36f995e2bea84c9660e1cfd712606ce3b97ee99870daf31e0fe",
+    "evals/compiler_stage_profile.test.ts": "ebe5915bb75d57bd36cac5bd999f352d95a03e7df292a978acb31d6aa30e8136",
     "evals/compiler_stage_report.mjs": "3b8ea5cb18e3d403a3a085b7af2550617a0ad6a8e1f52a0cac453303158782cf",
+    "evals/native_stage_profile_build.ts": "8bac0766e5fd7e24ebf0767ca00ed9b1349db334e333b2f7b800b31e86f35ed0",
+    "evals/native_stage_profile_driver.bend": "08244cafa11cf331b3c19ef25e0612b29b07db8c7efbb0eb00f99b2c7460d185",
+    "evals/native_stage_profile_host.c": "f77b02315265654d82ee1029a41a5c82be898ec3ee7d622fa01ee4537c3e2cac",
     "evals/selfhost_bootstrap_worker.mjs": "8dcb994fdcbe026a2e2f8568340bbf3892141ec0dc96e4c7ec55ef1fc8a8ef9d",
-    "bend2/selfhost/RESEARCH_STAGE_PROFILING.md": "e82fa98e167194db5ef70e71497f302061c9c1bb7cb5f37c476658c82ea27f3b"
+    "bend2/selfhost/RESEARCH_STAGE_PROFILING.md": "b6635fa62b848e57592d7fa57feb909d17753fd0c403ffdf9fb3e582d36f3ce3"
   },
   "collectorDependency": {
     "path": "evals/compiler_profile.mjs",
-    "sha256": "e85e196a0c7a2512c1aad0b9804f25fc6694c333b97169a2bf761e5bb4df69ca",
+    "sha256": "61f7cee0ef54f56894fc184367050aceca2e8231cd8a1178e32c6468c96274f1",
     "owner": "ProducerProfilingImpl",
     "note": "imported unchanged; not part of this commit"
   },
   "execution": {
     "stage": "selfhost-candidate",
-    "componentPath": "/private/tmp/croot-proof/root.js",
-    "componentSha256": "7d98ea60d539f31f1db29d7ee91869c9577469fbce178acc1cfb397ba035e272",
-    "componentBytes": 19442727,
-    "sourcePath": "/private/tmp/bend-fir-croot57ab/checkpoints/.croot64-proof-root.bend",
-    "sourceSha256": "c60df5a7e5d1c3472b4374fef79dd88a9342784e7468242390a87d02d49bc38d",
+    "componentPath": "/private/tmp/bend-fir-integrated57ab/checkpoints/root-sharedem-art.js",
+    "componentSha256": "fcd8cca2d566ad80591a74d0000d60eb14c5e82e2427bd28917ea07ecc4cb4d6",
+    "componentBytes": 16789267,
+    "sourcePath": "/private/tmp/bend-fir-integrated57ab/checkpoints/.bootstrap_compiler_root_v1.bend",
+    "sourceSha256": "b0b92b67225c1b67972c9fe2a1096962a14926633508936c86d8b93b73cbd36b",
     "compilerSha256": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70",
     "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
     "inputPath": "/tmp/stage-tiny.bend",
@@ -67,64 +71,77 @@
     "target": "js",
     "mode": "typed-step library emission"
   },
-  "valid": {
+  "classification": {
+    "manifestNamespaces": [
+      "checker_core_steps_v1",
+      "template_steps_v1",
+      "emitter_steps_v1"
+    ],
+    "binding": "observed Run namespace must equal a registered manifest output namespace; full qualified request tags retained; declared canonical source path or unambiguous basename only",
+    "tables": [
+      {
+        "namespace": "checker_core_steps_v1",
+        "protocol": "Checker",
+        "sources": 0,
+        "verification": [],
+        "basenameCollisions": []
+      },
+      {
+        "namespace": "template_steps_v1",
+        "protocol": "Template",
+        "sources": 0,
+        "verification": [],
+        "basenameCollisions": []
+      },
+      {
+        "namespace": "emitter_steps_v1",
+        "protocol": "Emitter",
+        "sources": 11,
+        "verification": [
+          "verified"
+        ],
+        "basenameCollisions": []
+      }
+    ],
+    "tests": "bun test evals/compiler_stage_profile.test.ts: 8 passed, 0 failed (foreign namespace, unregistered namespace, no manifest, basename collision, source-hash mismatch, erased Direct, publication wording, full tag identity)"
+  },
+  "validJs": {
     "offArtifactSha256": "5db9119d4f0a8d35ec3c809d1c41b0ad767e0b45d27dcef3aca8bde0063a609c",
     "onArtifactSha256": "5db9119d4f0a8d35ec3c809d1c41b0ad767e0b45d27dcef3aca8bde0063a609c",
     "bytes": 289409,
     "identical": true,
     "profileStatus": "completed",
-    "reportPath": "/tmp/final-stage/profiles/valid/profile-51635-thread-0-1BXtwd/summary.json",
-    "measurement": {
-      "wall": {
-        "kind": "monotonic performance.now",
-        "scope": "collector process"
-      },
-      "cpu": {
-        "kind": "process.cpuUsage boundary delta",
-        "scope": "entire process; not exclusive across overlapping spans"
-      },
-      "memory": {
-        "kind": "process.memoryUsage boundary snapshot",
-        "scope": "RSS process-wide; heapUsed boundary sample, not allocation or retained bytes"
-      },
-      "sampling": null
-    },
+    "reportPath": "/tmp/final2/profiles/valid/profile-22954-thread-0-S2qRfu/summary.json",
     "spans": [
       {
         "name": "startup-import",
         "status": "completed",
-        "wallMs": 203.983,
-        "cpuMs": 148.573
+        "wallMs": 262.214
       },
       {
         "name": "parse-import-fuel",
         "status": "completed",
-        "wallMs": 1661.028,
-        "cpuMs": 1325.885
+        "wallMs": 760.209
       },
       {
         "name": "template-expand",
         "status": "completed",
-        "wallMs": 351.017,
-        "cpuMs": 619.666
+        "wallMs": 312.261
       },
       {
         "name": "check-signature-body",
         "status": "completed",
-        "wallMs": 5869.517,
-        "cpuMs": 8968.232
+        "wallMs": 5639.463
       },
       {
         "name": "emit",
         "status": "completed",
-        "wallMs": 724.226,
-        "cpuMs": 997.866
+        "wallMs": 517.172
       },
       {
         "name": "output-write",
         "status": "completed",
-        "wallMs": 0.767,
-        "cpuMs": 1.594
+        "wallMs": 0.931
       }
     ],
     "observations": {
@@ -144,16 +161,22 @@
       },
       "template-expand-typed-progress": {
         "values": {
-          "attributedBoundarySamples": 12433,
+          "requestBoundarySamples": 12433,
           "template-expand": 12433
         },
-        "unclassifiedSamples": 0,
         "progressShapes": {
           "Direct": 1434,
           "Finished": 13698,
           "Pending": 12433
         },
-        "mapping": "exact generator manifest request constructors + canonical composition modules"
+        "observedRunNamespace": "template_steps_v1",
+        "groupBases": {
+          "template-expand": [
+            "protocol-coarse"
+          ]
+        },
+        "unclassifiedSamples": 0,
+        "unclassifiedReasons": {}
       },
       "check-signature-body-steps": {
         "value": 137708,
@@ -161,16 +184,22 @@
       },
       "check-signature-body-typed-progress": {
         "values": {
-          "attributedBoundarySamples": 30573,
+          "requestBoundarySamples": 30573,
           "check-signature-body": 30573
         },
-        "unclassifiedSamples": 0,
         "progressShapes": {
           "Direct": 38555,
           "Finished": 68580,
           "Pending": 30573
         },
-        "mapping": "exact generator manifest request constructors + canonical composition modules"
+        "observedRunNamespace": "checker_core_steps_v1",
+        "groupBases": {
+          "check-signature-body": [
+            "protocol-coarse"
+          ]
+        },
+        "unclassifiedSamples": 0,
+        "unclassifiedReasons": {}
       },
       "emit-steps": {
         "value": 11130,
@@ -178,18 +207,34 @@
       },
       "emit-typed-progress": {
         "values": {
-          "attributedBoundarySamples": 2605,
-          "emit-catalog-lowering": 995,
-          "emit-descriptor-nf": 91,
-          "emit-render-js": 1519
+          "requestBoundarySamples": 2616,
+          "emit-backend-lowering": 657,
+          "emit-catalog": 343,
+          "emit-descriptor-nf": 113,
+          "emit-render-js": 1503
+        },
+        "progressShapes": {
+          "Direct": 2986,
+          "Finished": 5528,
+          "Pending": 2616
+        },
+        "observedRunNamespace": "emitter_steps_v1",
+        "groupBases": {
+          "emit-backend-lowering": [
+            "verified-canonical-source"
+          ],
+          "emit-catalog": [
+            "verified-canonical-source"
+          ],
+          "emit-descriptor-nf": [
+            "verified-canonical-source"
+          ],
+          "emit-render-js": [
+            "verified-canonical-source"
+          ]
         },
         "unclassifiedSamples": 0,
-        "progressShapes": {
-          "Direct": 2934,
-          "Finished": 5591,
-          "Pending": 2605
-        },
-        "mapping": "exact generator manifest request constructors + canonical composition modules"
+        "unclassifiedReasons": {}
       },
       "output-write": {
         "values": {
@@ -197,6 +242,144 @@
           "modules": 2,
           "foreignFiles": 56
         }
+      }
+    }
+  },
+  "cFailure": {
+    "diagnosticIdentical": true,
+    "diagnostic": "Bun v1.4.2 (macOS arm64)",
+    "exitCode": 1,
+    "profileStatus": "failed",
+    "error": "Maximum call stack size exceeded.",
+    "failedSpans": [
+      "emit"
+    ],
+    "spans": [
+      {
+        "name": "startup-import",
+        "status": "completed",
+        "wallMs": 603.078
+      },
+      {
+        "name": "parse-import-fuel",
+        "status": "completed",
+        "wallMs": 819.61
+      },
+      {
+        "name": "template-expand",
+        "status": "completed",
+        "wallMs": 381.928
+      },
+      {
+        "name": "check-signature-body",
+        "status": "completed",
+        "wallMs": 7207.235
+      },
+      {
+        "name": "emit",
+        "status": "failed",
+        "wallMs": 3421.45
+      }
+    ],
+    "observations": {
+      "parse-import-fuel": {
+        "values": {
+          "modules": 2,
+          "parses": 2,
+          "fuelCells": 16000000,
+          "sourceBytes": 75681,
+          "foreignFiles": 56,
+          "parserFuelCellsPerParse": 8000000
+        }
+      },
+      "template-expand-steps": {
+        "value": 27565,
+        "units": "host-step-calls"
+      },
+      "template-expand-typed-progress": {
+        "values": {
+          "requestBoundarySamples": 12433,
+          "template-expand": 12433
+        },
+        "progressShapes": {
+          "Direct": 1434,
+          "Finished": 13698,
+          "Pending": 12433
+        },
+        "observedRunNamespace": "template_steps_v1",
+        "groupBases": {
+          "template-expand": [
+            "protocol-coarse"
+          ]
+        },
+        "unclassifiedSamples": 0,
+        "unclassifiedReasons": {}
+      },
+      "check-signature-body-steps": {
+        "value": 137708,
+        "units": "host-step-calls"
+      },
+      "check-signature-body-typed-progress": {
+        "values": {
+          "requestBoundarySamples": 30573,
+          "check-signature-body": 30573
+        },
+        "progressShapes": {
+          "Direct": 38555,
+          "Finished": 68580,
+          "Pending": 30573
+        },
+        "observedRunNamespace": "checker_core_steps_v1",
+        "groupBases": {
+          "check-signature-body": [
+            "protocol-coarse"
+          ]
+        },
+        "unclassifiedSamples": 0,
+        "unclassifiedReasons": {}
+      },
+      "emit-steps": {
+        "value": 315073,
+        "units": "host-step-calls"
+      },
+      "emit-typed-progress": {
+        "values": {
+          "requestBoundarySamples": 148690,
+          "emit-backend-lowering": 629,
+          "emit-catalog": 343,
+          "emit-descriptor-nf": 6138,
+          "emit-layouts": 5529,
+          "emit-link-planning": 1238,
+          "emit-render-c": 134813
+        },
+        "progressShapes": {
+          "Direct": 8942,
+          "Finished": 157441,
+          "Pending": 148690
+        },
+        "observedRunNamespace": "emitter_steps_v1",
+        "groupBases": {
+          "emit-backend-lowering": [
+            "verified-canonical-source"
+          ],
+          "emit-catalog": [
+            "verified-canonical-source"
+          ],
+          "emit-descriptor-nf": [
+            "verified-canonical-source"
+          ],
+          "emit-render-c": [
+            "verified-canonical-source"
+          ],
+          "emit-layouts": [
+            "verified-canonical-source"
+          ],
+          "emit-link-planning": [
+            "verified-canonical-source"
+          ]
+        },
+        "unclassifiedSamples": 0,
+        "unclassifiedReasons": {}
       }
     }
   },
@@ -225,8 +408,7 @@
         "name": "check-signature-body",
         "status": "failed"
       }
-    ],
-    "reportPath": "/tmp/final-stage/profiles/bad/profile-57440-thread-0-p91XlK/summary.json"
+    ]
   },
   "partialFailure": {
     "diagnosticIdentical": true,
@@ -244,16 +426,84 @@
         "status": "failed",
         "closeReason": "candidate host terminated"
       }
+    ]
+  },
+  "nativeChunkProfile": {
+    "diagnosticOnly": true,
+    "acceptanceEvidence": false,
+    "driverSha256": "08244cafa11cf331b3c19ef25e0612b29b07db8c7efbb0eb00f99b2c7460d185",
+    "hostSha256": "f77b02315265654d82ee1029a41a5c82be898ec3ee7d622fa01ee4537c3e2cac",
+    "cSha256": "20abe1122e106b18343b7454e2888c7c553b876c1130fb0f3779c63dfd098128",
+    "artifactSha256": "f2a811087a3833a33f0da66d2a28e57c525a27176d7812dc5a594ae58aeae172",
+    "kernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+    "compilerSha256": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70",
+    "buildCommand": [
+      "clang",
+      "-std=c11",
+      "-O0",
+      "-pthread",
+      "/tmp/native-prof-evidence/native-stage-profile.c",
+      "-lpthread",
+      "-lm",
+      "-o",
+      "/tmp/native-prof-evidence/native-stage-profile"
     ],
-    "reportPath": "/tmp/final-stage/profiles/syn/profile-60792-thread-0-iRZjA8/summary.json"
+    "validationMs": 2246.3055830000003,
+    "codegenMs": 76227.360458,
+    "totalMs": 96026.393542,
+    "phases": [
+      {
+        "name": "template-chunks",
+        "values": {
+          "elapsedMs": 0.367,
+          "userCpuMs": 0.045,
+          "systemCpuMs": 0.32,
+          "chunkAdvances": 2,
+          "chunkQuantum": 64,
+          "shapeFinished": 1,
+          "shapePending": 0,
+          "shapeDirect": 0,
+          "shapeBound": 1
+        }
+      },
+      {
+        "name": "checker-chunks",
+        "values": {
+          "elapsedMs": 0.069,
+          "userCpuMs": 0.055,
+          "systemCpuMs": 0.014,
+          "chunkAdvances": 3,
+          "chunkQuantum": 64,
+          "shapeFinished": 3,
+          "shapePending": 0,
+          "shapeDirect": 0,
+          "shapeBound": 0
+        }
+      },
+      {
+        "name": "template-pending-chunks",
+        "values": {
+          "elapsedMs": 0.031,
+          "userCpuMs": 0.03,
+          "systemCpuMs": 0,
+          "chunkAdvances": 2,
+          "chunkQuantum": 64,
+          "shapeFinished": 1,
+          "shapePending": 1,
+          "shapeDirect": 0,
+          "shapeBound": 0
+        }
+      }
+    ],
+    "note": "profile-only native driver over the real generated Template/Checker Run machine with a finite seeded stack; not a compiler workload and not a source-substage CPU claim"
   },
   "nativeCoarseTrace": {
+    "kind": "preserved native stderr diagnostic trace, not a fresh run",
     "logPath": "/private/tmp/signature-publish57z/evidence/comparison/A1.stderr.log",
     "logSha256": "34c8f79e0cdb4dab356d9dde7158d0a242c9f9a9f014d309a9ba1e8c2fa9e3b1",
     "nativePhase": "check",
     "computeThreads": 1,
     "parserFuel": 8000000,
-    "reportPath": "/tmp/final-stage/profiles/native/profile-60886-thread-0-kFCpTK/summary.json",
     "observations": [
       {
         "kind": "native-begin",
@@ -330,27 +580,9 @@
         "details": {
           "granularity": "coarse phase boundary; CPU is process-wide including compute threads and is not exclusive across overlapping phases"
         }
-      },
-      {
-        "kind": "trace-coverage",
-        "name": "row-counts",
-        "units": null,
-        "values": {
-          "phaseRows": 3,
-          "fuelRows": 1,
-          "resultRows": 0
-        },
-        "details": {
-          "coarsePhases": [
-            "parse",
-            "expand",
-            "check"
-          ],
-          "fineNativeSubstages": null,
-          "fineNativeSubstagesReason": "the typed driver exposes no host-visible progress boundary; native fine spans require a coordinated private typed view and are not claimed by this report"
-        }
       }
-    ]
+    ],
+    "scope": "child-process RUSAGE_SELF + monotonic wall; coarse phases only; not additive with parent CPU"
   },
   "coverage": {
     "measuredExplicitSpans": [
@@ -366,32 +598,41 @@
       "module/parse/fuel-cell/source-byte counts",
       "output bytes"
     ],
-    "sampledGroupsObserved": [
+    "sampledGroupsObservedJs": [
       "template-expand",
       "check-signature-body",
-      "emit-catalog-lowering",
+      "emit-backend-lowering",
+      "emit-catalog",
       "emit-descriptor-nf",
       "emit-render-js"
     ],
-    "sampledGroupsWithZeroSamplesOnThisWorkload": [
+    "sampledGroupsObservedC": [
+      "emit-backend-lowering",
+      "emit-catalog",
+      "emit-descriptor-nf",
       "emit-layouts",
-      "emit-sharing",
-      "emit-render-c",
       "emit-link-planning",
+      "emit-render-c"
+    ],
+    "groupsWithZeroSamplesOnThisWorkload": [
+      "emit-sharing",
       "emit-emitter-entry"
     ],
     "prerequisites": {
-      "check-publication": "no inspection entry is invoked by the candidate or bootstrap worker; runCheckedInspectionSteps accepts a span if a caller invokes it",
-      "emit-render-c": "the only available C-capable component uses the retired CEmitter Run protocol; a component built after the unified Emitter protocol intake is required",
+      "check-publication": "included in the ordinary Checker.check Run before transient rewind; no separate host boundary; canonical helpers only sampled when reached",
+      "emit-render-c": "executed through C entry; the current component fails in Base String.split recursion after 134813 render-c samples; the failed span is recorded and no C pass is claimed",
+      "emit-sharing": "zero samples on the tiny JS/C workload; mechanism is the same canonical request attribution",
       "link": "external clang/link is not performed by candidate_host; native_compiler_experiment owns it",
-      "nativeFineSubstages": "typed views hide progress and the generator is frozen; no native fine span is claimed"
+      "nativeDirectShape": "Direct progress shape code 2 was not observed in the bounded native fixture (it is observed in real JS Run samples); code 0/1/3 were observed natively",
+      "fullNativeCompilerRun": "not executed; the native fixture is a profile-only bounded component over the real generated Run machines, not a compiler workload"
     },
     "evidenceKinds": "spans, exact counters and sampled chunk-boundary attribution are separate and not additive"
   },
   "limits": [
-    "tiny workload only; fullroot overhead and full stage coverage are not established",
-    "sampled attribution is not time-weighted and not an exact per-function CPU measurement",
-    "committed manifests must match the component composition; unmatched request tags stay unclassified",
-    "native coarse trace is preserved diagnostic stderr, not current-source certification"
+    "tiny workload; fullroot overhead and complete coverage are not established",
+    "sampled attribution is not time-weighted or an exact per-function CPU measurement",
+    "native chunk attribution counts typed progress shapes only; no source substage or exclusive CPU",
+    "native fixture is bounded and not a compiler workload",
+    "component manifest must match the generated component namespace and source pins"
   ]
 }

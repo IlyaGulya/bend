@@ -39,12 +39,20 @@ bun evals/compiler_stage_report.mjs --native-log=TRACE.stderr.log \
   --stage-profile=DIR [--expect-sha256=HEX]
 ```
 
-`--stage-manifest` is optional. Without it, request tags are still exact but
-remain `unclassified`. With it, grouping uses the generator manifest's exact
-request constructors and `canonicalComposition` declaration names/source
-modules. An unmatched tag stays `unclassified`; no suffix or source-text
-guess is made. Manifests must match the component's generation; a stale
-manifest produces unclassified samples, never a fabricated group.
+`--stage-manifest` is optional. Without it, fully qualified request tags are
+retained but remain `unclassified`. With it, grouping requires:
+
+1. the observed Run namespace to equal a registered manifest output namespace;
+2. the exact fully qualified request constructor to be registered; and
+3. the declared canonical source path (not just a basename) to map to a group.
+
+An unmatched tag stays `unclassified` with a reason (`namespace-mismatch`,
+`unregistered-namespace`, `unmapped-request`, `manifest-conflict`). A
+source-hash mismatch yields `unverified-source`; a basename fallback is used
+only when the manifest has one unambiguous source for that basename, and the
+report records that weaker basis. Manifests must match the component's
+generation; a stale manifest produces unclassified samples, never a fabricated
+group.
 
 ## Evidence classes (never added together)
 
@@ -66,8 +74,9 @@ process-wide. Nested span CPU overlaps and is never made exclusive.
 | parse / import / fuel | Explicit span; exact module/parse/fuel-cell/source-byte counters |
 | template expansion | Explicit span; exact host-step counter; sampled canonical request tags |
 | signature / body check | Explicit span around one `check_modules` Run; exact host-step counter; sampled canonical request tags |
-| check publication | **Unreachable on this path**: neither host invokes `inspect_checked_start` |
-| catalog / lowering | Sampled attribution, grouped from canonical `backend_lower` / `lower_catalog` modules |
+| check publication | Included in the ordinary check Run before its transient rewind; no separate host boundary. Canonical publication helpers appear only in sampled request attribution when reached. `inspect_checked_start` is a separate readback entry, not the publication itself. |
+| catalog | Sampled attribution, canonical `lower_catalog` |
+| backend lowering | Sampled attribution, canonical `backend_lower` |
 | descriptor NF | Sampled attribution, canonical `descriptor_nf` |
 | layouts | Sampled attribution, canonical `c_backend_layout`; zero samples on a JS-only tiny workload |
 | sharing | Sampled attribution, canonical `c_backend_sharing`; zero samples on a JS-only tiny workload |
@@ -76,27 +85,61 @@ process-wide. Nested span CPU overlaps and is never made exclusive.
 | C link planning | Sampled attribution, canonical `c_backend_link`; source planning only, not the external linker |
 | emitter entry | Sampled attribution, canonical `emitter` |
 | link | **Unreachable in `candidate_host`**: it emits source only; linking belongs to `native_compiler_experiment` |
-| native fine substages | **Explicit prerequisite**: typed views hide progress and the generator is frozen; no fine native CPU is claimed |
+| native chunk attribution | Diagnostic typed view counts, per native phase, the operational progress shape code (0 Finished, 1 Pending, 2 Direct, 3 Bound) after each bounded chunk; verified on a bounded native fixture over the real generated Template/Checker Run machines. No source substage and no exact CPU share is claimed. |
 
 ## Verification in this tree
 
-Real typed component `/private/tmp/croot-proof/root.js`
-(`sha256 7d98ea60…`, built from source `c60df5a7…` with canonical compiler
-`a84170d5…` and kernel `6c1df3eb…`), tiny valid input:
+Current unified typed component
+`/private/tmp/bend-fir-integrated57ab/checkpoints/root-sharedem-art.js`
+(`sha256 fcd8cca2…`, 16,789,267 bytes, built from root `b0b92b67…` with
+canonical compiler `a84170d5…` and kernel `6c1df3eb…`), tiny valid input:
 
 - profile off/on emitted byte-identical JS (`289409` bytes,
   `sha256 5db9119d…`);
 - six explicit spans completed; exact step counts and sampled groups present;
-  with matching manifests: template 12433 samples, check 30573,
-  emit 2605 (`catalog-lowering` 995, `descriptor-nf` 91, `render-js` 1519),
-  zero unclassified;
+  with the matching manifests: template 12433 samples, check 30573, emit 2616
+  (`backend-lowering` 657, `catalog` 343, `descriptor-nf` 113, `render-js`
+  1503), zero unclassified;
+- the C entry ran through the same component and reached `catalog` 343,
+  `backend-lowering` 629, `descriptor-nf` 6138, `layouts` 5529,
+  `link-planning` 1238 and `render-c` 134813 samples before the component's
+  `Base String.split` recursion overflow; the `emit` span and report finalize
+  `failed`, and the stderr diagnostic is identical to the unprofiled run;
 - invalid input kept the identical diagnostic and finalized the profile
   `failed` with a failed `check-signature-body` span;
 - a parser rejection kept the identical diagnostic and closed the open
   `parse-import-fuel` span `failed` with `closeReason: candidate host terminated`.
 
+Bounded diagnostic native component
+(`evals/native_stage_profile_build.ts`, driver `08244caf…`, host `f77b0231…`,
+kernel `6c1df3eb…`, compiler `a84170d5…`): three phases ran within the tool
+deadline, with real generated Template/Checker Run machines and a finite seeded
+Run. Observed chunk transitions: template 2 (`Finished` 1, `Bound` 1), checker
+3 (`Finished` 3), template-pending 2 (`Finished` 1, `Pending` 1). Shape codes
+0, 1 and 3 were therefore exercised natively; code 2 (`Direct`) is exercised by
+real JS Run samples, not by this bounded fixture. This is operational chunk
+attribution only: no source substage, compiler workload, acceptance or exclusive
+CPU claim.
+
 Compact evidence: `checkpoints/compiler-stage-profile-v1.json`.
 Raw profiles stay outside Git.
+
+### Native chunk attribution (diagnostic component)
+
+`evals/native_stage_profile_driver.bend` is a separate profile-only native
+driver with a diagnostic C host (`evals/native_stage_profile_host.c`). It is not
+the production `native_experiment`: the 14 callback positions, 13 public names,
+quantum 64 and ordinary hot path are untouched. The driver advances one chunk
+per view call, reconstructs the affine Run state once (never inspecting request
+payloads), and reports a numeric progress-shape code (0 Finished, 1 Pending,
+2 Direct, 3 Bound) plus wall and `RUSAGE_SELF` CPU for the phase.
+
+`node --experimental-strip-types --max-old-space-size=4096
+evals/native_stage_profile_build.ts --artifact-dir=DIR --timeout-ms=180000`
+builds only the diagnostic driver (real generated Template/Checker Run machines,
+not the full compiler root) and runs a finite seeded Run under a tool deadline.
+It is operational chunk attribution, not a source substage span and not a
+compiler-workload CPU measurement.
 
 Native coarse rows were read from the preserved diagnostic trace
 `/tmp/signature-publish57z/evidence/comparison/A1.stderr.log`
