@@ -81,7 +81,9 @@ function labels(o: Options) {
     if (sources.length === 0) return {index, label: 'unknown', sources: []};
     return {index, label: names.length === 1 ? names[0] : 'mixed:' + names.join('+'), sources: sources.sort()};
   });
-  if (groupLabels[emitGroup].label !== 'render-c') throw Error('Emitter cps_provider_2_emit group is no longer homogeneous render-c: ' + JSON.stringify(groupLabels[emitGroup]));
+  const emitLabel = groupLabels[emitGroup];
+  if (!emitLabel.label.split('+').includes('render-c') || !emitLabel.sources.includes('bend2/selfhost/c_backend.bend'))
+    throw Error('Emitter cps_provider_2_emit group no longer contains the c_backend render-c request: ' + JSON.stringify(emitLabel));
   const requiredOutput = emitterManifest.generationConfig?.output;
   const expectedOutputSha256 = requiredOutput === undefined ? undefined : emitterManifest.outputs?.[requiredOutput];
   if (requiredOutput === undefined || expectedOutputSha256 === undefined)
