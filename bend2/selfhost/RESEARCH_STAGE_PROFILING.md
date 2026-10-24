@@ -101,105 +101,60 @@ collector accepts the close; a rejected close does not hide the stage.
 | layouts | Sampled attribution, canonical `c_backend_layout`; zero samples on a JS-only tiny workload |
 | sharing | Sampled attribution, canonical `c_backend_sharing`; zero samples on a JS-only tiny workload |
 | JS rendering | Sampled attribution, canonical `js_emit` / `js_backend` |
-| C rendering | Same mechanism; **not executed here**: the available C-capable component predates the unified `Emitter` Run protocol |
+| C rendering | Sampled attribution on the final 4a916 component: `emit-render-c`, plus C-only layouts, link planning and sharing; source emission, not clang execution |
 | C link planning | Sampled attribution, canonical `c_backend_link`; source planning only, not the external linker |
 | emitter entry | Sampled attribution, canonical `emitter` |
 | link | **Unreachable in `candidate_host`**: it emits source only; linking belongs to `native_compiler_experiment` |
-| native chunk attribution | Diagnostic typed view counts, per native phase, the operational progress shape code and, for Emitter, only the outer request-group variant. Verified as a mechanism/group-tag check on a bounded native fixture; actual Emitter workload coverage remains OPEN pending a fresh CIR-regenerated component and real FIR/BIR input. No source substage, per-function or exact CPU share is claimed. |
+| native chunk attribution | Diagnostic typed view counts, per native phase, the operational progress shape code and, for Emitter, only the outer request-group variant. The current 27-group real-emit fixture is source-validated but its guarded code generation failed terminally with a compiler call-stack overflow; no native workload result is claimed. No source substage, per-function or exact CPU share is claimed. |
 
 ## Verification in this tree
 
-Current unified typed component
-`/private/tmp/bend-fir-integrated57ab/checkpoints/root-sharedem-art.js`
-(`sha256 fcd8cca2…`, 16,789,267 bytes, built from root `b0b92b67…` with
-canonical compiler `a84170d5…` and kernel `6c1df3eb…`), tiny valid input:
+Final artifact `4a91665c…` from `/private/tmp/bend-fir-root-aa9`
+(16,912,082 bytes; provenance receipt `root-final-rep.result.json`), tiny valid
+input `evals/c_target_multiarm.bend`:
 
-- profile off/on emitted byte-identical JS (`289409` bytes,
-  `sha256 5db9119d…`);
-- six explicit spans completed; exact step counts and sampled groups present;
-  with the matching manifests: template 12433 samples, check 30573, emit 2616
-  (`backend-lowering` 657, `catalog` 343, `descriptor-nf` 113, `render-js`
-  1503), zero unclassified;
-- the C entry ran through the same component and reached `catalog` 343,
-  `backend-lowering` 629, `descriptor-nf` 6138, `layouts` 5529,
-  `link-planning` 1238 and `render-c` 134813 samples before the component's
-  `Base String.split` recursion overflow; the `emit` span and report finalize
-  `failed`, and the stderr diagnostic is identical to the unprofiled run;
-- invalid input kept the identical diagnostic and finalized the profile
-  `failed` with a failed `check-signature-body` span;
-- a parser rejection kept the identical diagnostic and closed the open
-  `parse-import-fuel` span `failed` with `closeReason: candidate host terminated`.
+- profile off/on emitted byte-identical JS (`291363` bytes,
+  `sha256 1effbc8d…`);
+- profile off/on emitted byte-identical C (`842696` bytes,
+  `sha256 3005e365…`); clang was not run because that fresh component C is
+  known to fail clang, so this proves emission, not execution;
+- six explicit spans completed on both targets; exact host-step counts and
+  sampled groups used all three manifests with zero unclassified samples;
+- JS emit samples: 2691 (`backend-lowering` 710, `catalog` 355,
+  `descriptor-nf` 90, `render-js` 1536);
+- C emit samples: 394317 (`backend-lowering` 710, `catalog` 355,
+  `descriptor-nf` 6122, `layouts` 5601, `link-planning` 242016,
+  `render-c` 139513);
+- template 12589 and check 30610 grouped samples on both targets.
+
+Compact evidence: `checkpoints/compiler-profile-ab-4a916.json`.
 
 Bounded diagnostic native component
-(`evals/native_stage_profile_build.ts`, driver `08244caf…`, host `f77b0231…`,
-kernel `6c1df3eb…`, compiler `a84170d5…`): three phases ran within the tool
-deadline, with real generated Template/Checker Run machines and a finite seeded
-Run. Observed chunk transitions: template 2 (`Finished` 1, `Bound` 1), checker
-3 (`Finished` 3), template-pending 2 (`Finished` 1, `Pending` 1), and the
-Emitter phase reports its outer request group. The Emitter fixture seeds 64
-erased `Bound` wrappers around an `EmitterRequestGroup_7` Pending request for
-`c_backend.nat_c(5n)`. That request is a number-to-C-string scalar leaf, not a
-real checker-produced FIR program and not a full canonical BIR renderer entry:
-it validates only the outer-group tag mechanism. The first chunk boundary
-classifies that outer group; group 7 is homogeneous in the registered manifest
-and maps to `render-c`; mixed groups remain `mixed:<labels>`, and Direct remains
-`direct` with an erased request. Shape codes 0, 1 and 3 are exercised natively;
-code 2 (`Direct`) is exercised by real JS Run samples.
+(`evals/native_stage_profile_build.ts`, driver/host in this tree): the builder
+now calls the existing `guardHeavyGate(import.meta.url, …)` before creating its
+3072 MiB/256 MiB worker, so a direct CLI run re-execs and authenticates the
+supervisor lease; the old `--internal` bypass and manual `runHeavyGate` path are
+gone. The guarded policy is 8 GiB RSS/memory, 10 ms sampling and 600 s, with
+fixed 300 s clang and 120 s fixture-child deadlines.
 
-**Actual Emitter workload coverage is OPEN.** It requires a fresh component
-built after the pending CIR source fix, fed by real checker-produced FIR (or a
-legitimate canonical BIR renderer entry), then re-profiled with a manifest and
-artifact receipt bound to that fresh artifact. The bounded fixture above is a
-mechanism/group-tag check only; it is not a substitute and is not recorded as
-actual workload coverage. No source-substage, source-call, per-function or
-exclusive-CPU claim is made.
+The fixture matches all 27 current Emitter request groups and requests the real
+canonical `c_backend.emit` group (group 12, label
+`mixed:layouts+render-c`), with a well-formed empty `BIR.Program` and a minimal
+real runtime carrying the four required sections. It is not a scalar
+number-formatter fixture. The driver source passes `book_valid`.
 
-The builder now runs the entire load/validation/`compile_book`/clang/run build
-under the existing `heavy_gate` supervisor (8 GiB memory/RSS, 10 ms sampling,
-600 s hard deadline), with fixed internal 300 s clang and 120 s fixture-child
-deadlines; code generation itself uses the canonical 256 MiB stack and 3072 MiB
-old-generation cap. The native mechanism result retained here was produced
-before that supervisor wiring; future runs must use the guarded builder. No
-heap or stack bound was raised.
-
-Compact evidence: `checkpoints/compiler-stage-profile-v1.json`.
-Raw profiles stay outside Git.
-
-### Native chunk attribution (diagnostic component)
-
-`evals/native_stage_profile_driver.bend` is a separate profile-only native
-driver with a diagnostic C host (`evals/native_stage_profile_host.c`). It is not
-the production `native_experiment`: the 14 callback positions, 13 public names,
-quantum 64 and ordinary hot path are untouched. The driver advances one chunk
-per view call, reconstructs the affine Run state once (never inspecting request
-payloads), and reports numeric stage codes plus wall and `RUSAGE_SELF` CPU for
-the phase.
-
-Template/checker codes: 0 Finished, 1 Pending, 2 Direct, 3 Bound. Emitter codes:
-0 Finished, 1 Direct (erased scheduling request), 2 Bound, and 100+N when the
-Pending progress carries outer `EmitterRequestGroup_N`. For Emitter only that
-outer variant is matched; the payload stays owned and untouched. The builder
-labels each group from the registered manifest's `requestGroups` and canonical
-source composition: homogeneous groups get `catalog`, `backend-lowering`,
-`descriptor-nf`, `layouts`, `sharing`, `render-js`, `render-c`, `link-planning`
-or `emitter-entry`; mixed groups get `mixed:<labels>` and stay unclassified as
-one stage. The fixture requests a real canonical `c_backend.nat_c(5n)` renderer
-entry through Emitter group 7; it does not fabricate a `CheckSuccess`.
-
-`node --experimental-strip-types --max-old-space-size=4096
-evals/native_stage_profile_build.ts --artifact-dir=DIR --timeout-ms=180000`
-builds only the diagnostic driver (real generated Template/Checker Run machines,
-not the full compiler root) and runs a finite seeded Run under a tool deadline.
-The builder also binds its native artifact to the manifest's required generated
-engine output pin (`artifactBinding: verified-by-builder`); a pin mismatch fails
-the build instead of labelling groups. Emitter group labels are outer
-request-group sets from `requestGroups` plus canonical source composition, not
-per-function phase measurements.
-
-It is operational chunk attribution, not a source substage span and not a
-compiler-workload CPU measurement. `nativeTraceObservations` reports
-per-field units via `unitsByField` for rows that mix milliseconds, bytes and
-counts.
+**Native execution is blocked, not claimed.** One actual guarded run after the
+pre-build label fix reached canonical code generation and failed after 12.4 s
+with `RangeError: Maximum call stack size exceeded` in `comp.ts`
+(`emit_ctr`/`ty_adt`/`ty_wnf`), at `peakRssBytes 5,091,704,832` (below the 8 GiB
+limit) and with `ownedTreeStopped: true`. No artifact or native phase row was
+produced. The pre-build attempt failed validation in 68 ms (mixed group label),
+and the actual attempt is preserved in
+`checkpoints/compiler-native-profile-aa9-failure.json`. No stack/heap/deadline
+was raised and the run was not retried. The unverified boundary is diagnostic
+component code generation for this 27-group real-emit driver; it requires a
+compiler/codegen prerequisite outside this profiling scope. The historical
+bounded-mechanism result is not substituted for this failure.
 
 Native coarse rows were read from the preserved diagnostic trace
 `/tmp/signature-publish57z/evidence/comparison/A1.stderr.log`

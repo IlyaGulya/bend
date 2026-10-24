@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "kind": "compiler-native-stage-profile-failure",
+  "diagnosticOnly": true,
+  "acceptanceEvidence": false,
+  "sourceHead": "651f6360995c1c70bc0c374b323eb0b1bb2afd68",
+  "scope": "aa9/d7 Emitter, all 27 groups, real c_backend.emit request; not the new 86ef mapping",
+  "builder": {
+    "path": "evals/native_stage_profile_build.ts",
+    "sha256": "e1fd472edd1593c02aa73f3c3c15ea299b17e5905a83aba504f7ae4af743808a"
+  },
+  "driver": {
+    "path": "evals/native_stage_profile_driver.bend",
+    "sha256": "ae5871a284d3110e67632be5a0a26948d1eab3fed44c9ce4d9a23fbce639557d"
+  },
+  "host": {
+    "path": "evals/native_stage_profile_host.c",
+    "sha256": "e96d76b8e50f25d826d1fceddbff60b2128b62a99836e04138637277da1195f4"
+  },
+  "guard": {
+    "entry": "guardHeavyGate(import.meta.url,{label})",
+    "policy": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "workerLimits": {
+      "stackSizeMb": 256,
+      "maxOldGenerationSizeMb": 3072
+    },
+    "clangTimeoutMs": 300000,
+    "fixtureRunTimeoutMs": 120000,
+    "bypassRemoved": true,
+    "command": "bun evals/native_stage_profile_build.ts --artifact-dir=DIR"
+  },
+  "preBuildAttempt": {
+    "log": "/tmp/native-diag-aa9-precheck-fail.log",
+    "sha256": "85b1089eef664040cad117ea2312ae08eede43d98026cae81b3695f2a24b3155",
+    "bytes": 1181,
+    "elapsedMs": 68,
+    "reason": "mixed layouts+render-c group label rejected before load",
+    "note": "validation bug fixed; no compiler work ran"
+  },
+  "actualAttempt": {
+    "log": "/tmp/native-diag-aa9-run2.log",
+    "sha256": "ee3ddfff3a1a7721feadd3206b444f51a0b83c133098b0dce235af0b71fbf679",
+    "bytes": 1357,
+    "exitCode": 1,
+    "elapsedMs": 12353,
+    "peakRssBytes": 5091704832,
+    "peakFootprintBytes": 4933570784,
+    "memoryLimitBytes": 8589934592,
+    "reason": "RangeError: Maximum call stack size exceeded",
+    "stack": "comp.ts ty_wnf / ty_adt / adt_of / ctr_adt / emit_ctr",
+    "artifactProduced": false,
+    "nativePhaseRowsProduced": false,
+    "ownedTreeStopped": true,
+    "reportPhase": "complete",
+    "guardReportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792873586364-dc124cb5feeb8990.json"
+  },
+  "decision": "terminal before native execution; not OOM (RSS below 8 GiB), no cap/stack/heap/deadline raise, no retry. Native fine/whole profiling remains BLOCKED on diagnostic codegen stack prerequisite.",
+  "jsCProfileEvidence": "checkpoints/compiler-profile-ab-4a916.json",
+  "note": "C emission byte equality on 4a916 is proven separately; clang execution is not claimed."
+}
