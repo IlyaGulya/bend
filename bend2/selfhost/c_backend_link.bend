@@ -150,11 +150,7 @@ def flush_empty(head: Char, output: List<&2, Char>) -> List<&2, Char>:
 def key_text(collected: List<&2, Char>) -> String:
   String.from_list(List.reverse(&2, Char, collected))
 
-def key_close_failure(+head: Char, +collected: List<&2, Char>, failure: Maybe<&2, String>, cids: Map<&2, String>, fids: Map<&2, String>) -> Maybe<&2, String>:
-  next_failure(head, key_text(collected), lookup_id(head, cids, fids, key_text(collected)), failure)
 
-def key_close_output(head: Char, collected: List<&2, Char>, output: List<&2, Char>, cids: Map<&2, String>, fids: Map<&2, String>) -> List<&2, Char>:
-  emit_chars(String.to_list(resolved_text(lookup_id(head, cids, fids, key_text(collected)))), output)
 
 def scan(chars: List<&2, Char>, +mode: Mode, +word: Bool, +failure: Maybe<&2, String>, +output: List<&2, Char>, +cids: Map<&2, String>, +fids: Map<&2, String>) -> Scan:
   match chars:
@@ -166,8 +162,8 @@ def scan(chars: List<&2, Char>, +mode: Mode, +word: Bool, +failure: Maybe<&2, St
       match char:
         case '\\':
           match rest:
-            case '\n' <> more: scan(more, mode, False{}, failure, '\n' <> (char <> output), cids, fids)
-            case '\r' <> '\n' <> more: scan(more, mode, False{}, failure, '\n' <> ('\r' <> (char <> output)), cids, fids)
+            case '\n' <> more: scan(more, mode, word, failure, '\n' <> (char <> output), cids, fids)
+            case '\r' <> '\n' <> more: scan(more, mode, word, failure, '\n' <> ('\r' <> (char <> output)), cids, fids)
             case escaped <> more:
               match mode:
                 case DoubleQuote{}: scan(more, DoubleQuote{}, False{}, failure, escaped <> ('\\' <> output), cids, fids)
@@ -257,7 +253,10 @@ def scan(chars: List<&2, Char>, +mode: Mode, +word: Bool, +failure: Maybe<&2, St
             case KeyMode{head, collected}:
               match collected:
                 case Nil{}: scan(rest, CodeMode{}, False{}, failure, flush_empty(head, output), cids, fids)
-                case _: scan(rest, CodeMode{}, False{}, key_close_failure(head, collected, failure, cids, fids), key_close_output(head, collected, output, cids, fids), cids, fids)
+                case _:
+                  +key = key_text(collected)
+                  +found = lookup_id(head, cids, fids, key)
+                  scan(rest, CodeMode{}, False{}, next_failure(head, key, found, failure), emit_chars(String.to_list(resolved_text(found)), output), cids, fids)
             case _: scan(rest, mode, False{}, failure, char <> output, cids, fids)
         case '\n':
           match mode:
