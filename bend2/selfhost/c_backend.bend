@@ -439,7 +439,7 @@ def plan_top(+program: BIR.Program, +scan: Scan, +cids: List<&2, CidRow>, constr
   +library = ending_library(end)
   +exports = ending_exports(end)
   +build = finish_entries(build_entries(program, scan), library)
-  PlanOk{Plan{cids, cid_macro_map(cids), fid_macro_map(declarations, build), entries_ascending(build_entries_of(build)), by_code_of(build), by_key_of(build), by_foreign_of(build), by_native_of(build), stages_of(build), constructors, families, declarations, True{}, "{ 0 }", "", imports, fkeys_of(scan), CLay.context(program), sharing, library, exports}}
+  PlanOk{Plan{cids, cid_macro_map(cids), fid_macro_map(declarations, build), entries_ascending(build_entries_of(build)), by_code_of(build), by_key_of(build), by_foreign_of(build), by_native_of(build), stages_of(build), constructors, families, declarations, True{}, "0", "", imports, fkeys_of(scan), CLay.context(program), sharing, library, exports}}
 
 def plan_pure(end: BIR.Ending, families: List<&2, BIR.Family>, inner: PlanResult) -> PlanResult:
   match inner:
@@ -485,7 +485,7 @@ def plan_executable_native(+native: Maybe<&2, String>, +main_type: BIR.Descripto
 
 def plan_executable_io(is_io: Bool, +main_type: BIR.Descriptor, +plan: Plan) -> PlanResult:
   match is_io:
-    case True{}: PlanOk{plan_set_pure_flags(plan, False{}, "{ 0 }", "")}
+    case True{}: PlanOk{plan_set_pure_flags(plan, False{}, "0", "")}
     case False{}: plan_executable_show(main_type, plan)
 
 def plan_executable_show(+main_type: BIR.Descriptor, plan: Plan) -> PlanResult:
@@ -509,7 +509,7 @@ def plan_library(exports: List<&2, BIR.Export>, plan: Plan) -> PlanResult:
       match export_rows(exports, declarations, by_code, by_key, by_foreign, by_native, entries):
         case None{}: PlanFail{"a library export names no callable, or its checked parameter count disagrees with its entry"}
         case Some{rows}:
-          PlanOk{Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, False{}, "{ 0 }", "", imports, fkeys, ctx, sharing, True{}, exports}}
+          PlanOk{Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, False{}, "0", "", imports, fkeys, ctx, sharing, True{}, exports}}
 
 def export_rows(exports: List<&2, BIR.Export>, +declarations: List<&2, BIR.Declaration>, +by_code: Map<&2, U32>, +by_key: Map<&2, U32>, +by_foreign: Map<&2, U32>, +by_native: Map<&2, U32>, +entries: List<&2, Entry>) -> Maybe<&2, List<&2, ExportRow>>:
   match exports:
@@ -2847,6 +2847,13 @@ def runtime_defines(+entries: List<&2, Entry>) -> String:
     "#define FID_ENTER ", U32.show(rt_entry(entries, 5n)), "\n"
   ])
 
+# ISO C has no zero-length array: an empty names table gets one null element,
+# which is never read because SHOW_DESC carries no entries in that case.
+def table_or_zero(text: String) -> String:
+  match String.is_empty(text):
+    case True{}: "0"
+    case False{}: text
+
 def tables_part(plan: Plan, +rows: List<&2, SegText>, regs: Nat) -> Part:
   match plan:
     case Plan{+cids, cid_macros, fid_macros, +entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, library, _}:
@@ -2869,7 +2876,7 @@ def tables_part(plan: Plan, +rows: List<&2, SegText>, regs: Nat) -> Part:
             "#define MAIN_FID FID_", U32.show(main_fid_index(library, entries)), "\n",
             "#define MAIN_PURE ", main_pure_text(main_pure), "\n",
             "#define BLK_SHR ", blk_shr_text(plan), "\n\n",
-            "#if !DEVICE\nstatic const u32 SHOW_DESC[] = { ", show_desc, " };\nstatic const char* SHOW_NAMES[] = { ", show_names, " };\n#endif\n\n"
+            "#if !DEVICE\nstatic const u32 SHOW_DESC[] = { ", show_desc, " };\nstatic const char* SHOW_NAMES[] = { ", table_or_zero(show_names), " };\n#endif\n\n"
           ])}
 
 def main_suppress(library: Bool) -> String:
