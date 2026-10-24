@@ -31,7 +31,7 @@ type Instruction is Data:
 type Frame is Data:
   Frame{owner: U32, instructions: List<&2, Instruction>, captures: List<&2, Capture>, capture_count: U32}
 type State is Type:
-  State{source: Arena.Arena, next_code: U32, next_local: U32, frame: Frame, codes: List<&2, BIR.Code>, failure: Maybe<&2, Problem>, scope: Maybe<&2, Scope.ArenaGlobalScope>, families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>}
+  State{source: Arena.Arena, next_code: U32, next_local: U32, frame: Frame, codes: List<&2, BIR.Code>, failure: Maybe<&2, Problem>, scope: Maybe<&2, Scope.ArenaGlobalScope>, normalizer: Maybe<&2, DescriptorNf.NfContext>}
 type LowerResult<-T: Type> is Type:
   LowerResult{state: State, value: T}
 type CodeRef is Data:
@@ -61,8 +61,8 @@ def problem_first(old: Maybe<&2, Problem>, message: String, span: Ast.SourceSpan
     case Some{_}: old
 def fail(state: State, message: String, span: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
   match state:
-    case State{source, code, local, frame, codes, old, scope, families, type_functions}:
-      LowerResult{State{source, code, local, frame, codes, problem_first(old, message, span), scope, families, type_functions}, BIR.Null{}}
+    case State{source, code, local, frame, codes, old, scope, normalizer}:
+      LowerResult{State{source, code, local, frame, codes, problem_first(old, message, span), scope, normalizer}, BIR.Null{}}
 def native_match_state_problem_0(v_10: LowerResult<BIR.Atom>) -> State:
   match v_10:
     case LowerResult{v_8, _}:
@@ -71,44 +71,44 @@ def native_match_state_problem_0(v_10: LowerResult<BIR.Atom>) -> State:
 def state_problem(v_1: State, v_3: String, v_4: Ast.SourceSpan) -> State:
   native_match_state_problem_0(fail(v_1, v_3, v_4))
 
-def native_match_node_0(v_20: Sigma<&1, &1, Arena.Arena, _ => Arena.Node>, v_12: U32, v_13: U32, v_14: Frame, v_15: List<&2, BIR.Code>, v_16: Maybe<&2, Problem>, scope: Maybe<&2, Scope.ArenaGlobalScope>, families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>) -> LowerResult<Arena.Node>:
+def native_match_node_0(v_20: Sigma<&1, &1, Arena.Arena, _ => Arena.Node>, v_12: U32, v_13: U32, v_14: Frame, v_15: List<&2, BIR.Code>, v_16: Maybe<&2, Problem>, scope: Maybe<&2, Scope.ArenaGlobalScope>, normalizer: Maybe<&2, DescriptorNf.NfContext>) -> LowerResult<Arena.Node>:
   match v_20:
     case (v_18, v_19):
-      LowerResult{State{v_18, v_12, v_13, v_14, v_15, v_16, scope, families, type_functions}, v_19}
+      LowerResult{State{v_18, v_12, v_13, v_14, v_15, v_16, scope, normalizer}, v_19}
 
 def native_match_node_1(v_1: State, v_3: U32) -> LowerResult<Arena.Node>:
   match v_1:
-    case State{v_11, v_12, v_13, v_14, v_15, v_16, scope, families, type_functions}:
-      native_match_node_0(Arena.get_node(v_11, v_3), v_12, v_13, v_14, v_15, v_16, scope, families, type_functions)
+    case State{v_11, v_12, v_13, v_14, v_15, v_16, scope, normalizer}:
+      native_match_node_0(Arena.get_node(v_11, v_3), v_12, v_13, v_14, v_15, v_16, scope, normalizer)
 
 def node(v_1: State, v_3: U32) -> LowerResult<Arena.Node>:
   native_match_node_1(v_1, v_3)
 
-def native_match_name_0(v_21: Sigma<&1, &1, Arena.Arena, _ => String>, v_13: U32, v_14: U32, v_15: Frame, v_16: List<&2, BIR.Code>, v_17: Maybe<&2, Problem>, scope: Maybe<&2, Scope.ArenaGlobalScope>, families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>) -> LowerResult<String>:
+def native_match_name_0(v_21: Sigma<&1, &1, Arena.Arena, _ => String>, v_13: U32, v_14: U32, v_15: Frame, v_16: List<&2, BIR.Code>, v_17: Maybe<&2, Problem>, scope: Maybe<&2, Scope.ArenaGlobalScope>, normalizer: Maybe<&2, DescriptorNf.NfContext>) -> LowerResult<String>:
   match v_21:
     case (v_19, v_20):
-      LowerResult{State{v_19, v_13, v_14, v_15, v_16, v_17, scope, families, type_functions}, v_20}
+      LowerResult{State{v_19, v_13, v_14, v_15, v_16, v_17, scope, normalizer}, v_20}
 
 def native_match_name_1(v_1: State, v_3: U32) -> LowerResult<String>:
   match v_1:
-    case State{v_12, v_13, v_14, v_15, v_16, v_17, scope, families, type_functions}:
-      native_match_name_0(Arena.name_text(v_12, v_3), v_13, v_14, v_15, v_16, v_17, scope, families, type_functions)
+    case State{v_12, v_13, v_14, v_15, v_16, v_17, scope, normalizer}:
+      native_match_name_0(Arena.name_text(v_12, v_3), v_13, v_14, v_15, v_16, v_17, scope, normalizer)
 
 def name(v_1: State, v_3: U32) -> LowerResult<String>:
   native_match_name_1(v_1, v_3)
 
 def fresh(state: State) -> LowerResult<U32>:
   match state:
-    case State{source, code, local, frame, codes, failure, scope, families, type_functions}:
-      LowerResult{State{source, code, U32.inc(local), frame, codes, failure, scope, families, type_functions}, local}
+    case State{source, code, local, frame, codes, failure, scope, normalizer}:
+      LowerResult{State{source, code, U32.inc(local), frame, codes, failure, scope, normalizer}, local}
 def reserve(state: State, minimum: U32) -> State:
   match state:
-    case State{source, code, local, frame, codes, failure, scope, families, type_functions}:
-      State{source, code, U32.max(local, minimum), frame, codes, failure, scope, families, type_functions}
+    case State{source, code, local, frame, codes, failure, scope, normalizer}:
+      State{source, code, U32.max(local, minimum), frame, codes, failure, scope, normalizer}
 def push(state: State, instruction: Instruction) -> State:
   match state:
-    case State{source, code, local, Frame{owner, instructions, captures, count}, codes, failure, scope, families, type_functions}:
-      State{source, code, local, Frame{owner, instruction <> instructions, captures, count}, codes, failure, scope, families, type_functions}
+    case State{source, code, local, Frame{owner, instructions, captures, count}, codes, failure, scope, normalizer}:
+      State{source, code, local, Frame{owner, instruction <> instructions, captures, count}, codes, failure, scope, normalizer}
 def native_match_operation_0(v_8: LowerResult<U32>, v_2: BIR.Op) -> LowerResult<BIR.Atom>:
   match v_8:
     case LowerResult{v_6, v_7}:
@@ -160,12 +160,12 @@ def resolve(state: State, slot: Slot) -> LowerResult<BIR.Atom>:
       resolve_live(state, owner, identity, value, usage)
 def resolve_live(state: State, owner: U32, identity: U32, value: BIR.Atom, usage: BIR.Use) -> LowerResult<BIR.Atom>:
   match state:
-    case State{source, code, local, Frame{current, instructions, captures, count}, codes, failure, scope, families, type_functions}:
-      resolve_owner(U32.is_eq(current, owner), State{source, code, local, Frame{current, instructions, captures, count}, codes, failure, scope, families, type_functions}, Slot{owner, identity, value, usage})
+    case State{source, code, local, Frame{current, instructions, captures, count}, codes, failure, scope, normalizer}:
+      resolve_owner(U32.is_eq(current, owner), State{source, code, local, Frame{current, instructions, captures, count}, codes, failure, scope, normalizer}, Slot{owner, identity, value, usage})
 def native_match_resolve_owner_0(v_3: State, v_5: Slot, v_21: U32, v_22: U32) -> LowerResult<BIR.Atom>:
   match v_3:
-    case State{v_34, v_35, v_36, Frame{v_37, v_38, v_39, v_40}, v_41, v_42, scope, families, type_functions}:
-      resolve_capture(capture_found(v_39, v_21, v_22), v_34, v_35, v_36, v_37, v_38, v_39, v_40, v_41, v_42, v_5, scope, families, type_functions)
+    case State{v_34, v_35, v_36, Frame{v_37, v_38, v_39, v_40}, v_41, v_42, scope, normalizer}:
+      resolve_capture(capture_found(v_39, v_21, v_22), v_34, v_35, v_36, v_37, v_38, v_39, v_40, v_41, v_42, v_5, scope, normalizer)
 
 def native_match_resolve_owner_1(v_1: Bool, v_5: Slot, v_3: State) -> LowerResult<BIR.Atom>:
   match v_1, v_5:
@@ -179,25 +179,25 @@ def native_match_resolve_owner_1(v_1: Bool, v_5: Slot, v_3: State) -> LowerResul
 def resolve_owner(v_1: Bool, v_3: State, v_5: Slot) -> LowerResult<BIR.Atom>:
   native_match_resolve_owner_1(v_1, v_5, v_3)
 
-def resolve_capture(found: Maybe<&2, U32>, source: Arena.Arena, code: U32, local: U32, current: U32, instructions: List<&2, Instruction>, captures: List<&2, Capture>, count: U32, codes: List<&2, BIR.Code>, failure: Maybe<&2, Problem>, slot: Slot, scope: Maybe<&2, Scope.ArenaGlobalScope>, families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>) -> LowerResult<BIR.Atom>:
+def resolve_capture(found: Maybe<&2, U32>, source: Arena.Arena, code: U32, local: U32, current: U32, instructions: List<&2, Instruction>, captures: List<&2, Capture>, count: U32, codes: List<&2, BIR.Code>, failure: Maybe<&2, Problem>, slot: Slot, scope: Maybe<&2, Scope.ArenaGlobalScope>, normalizer: Maybe<&2, DescriptorNf.NfContext>) -> LowerResult<BIR.Atom>:
   match found:
-    case Some{index}: LowerResult{State{source, code, local, Frame{current, instructions, captures, count}, codes, failure, scope, families, type_functions}, BIR.Capture{index}}
-    case None{}: LowerResult{State{source, code, local, Frame{current, instructions, Capture{slot, count} <> captures, U32.inc(count)}, codes, failure, scope, families, type_functions}, BIR.Capture{count}}
+    case Some{index}: LowerResult{State{source, code, local, Frame{current, instructions, captures, count}, codes, failure, scope, normalizer}, BIR.Capture{index}}
+    case None{}: LowerResult{State{source, code, local, Frame{current, instructions, Capture{slot, count} <> captures, U32.inc(count)}, codes, failure, scope, normalizer}, BIR.Capture{count}}
 def variable(state: State, slots: List<&2, Slot>, index: Nat, span: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
   variable_found(state, slot_at(slots, index), span)
 def variable_found(state: State, found: Maybe<&2, Slot>, span: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
   match found:
     case Some{slot}: resolve(state, slot)
     case None{}: fail(state, "missing checked lexical binding", span)
-def native_match_bind_slot_0(v_19: Frame, v_2: BIR.Atom, v_3: BIR.Use, v_9: U32, v_16: Arena.Arena, v_17: U32, v_18: U32, v_20: List<&2, BIR.Code>, v_21: Maybe<&2, Problem>, scope: Maybe<&2, Scope.ArenaGlobalScope>, families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>) -> LowerResult<Slot>:
+def native_match_bind_slot_0(v_19: Frame, v_2: BIR.Atom, v_3: BIR.Use, v_9: U32, v_16: Arena.Arena, v_17: U32, v_18: U32, v_20: List<&2, BIR.Code>, v_21: Maybe<&2, Problem>, scope: Maybe<&2, Scope.ArenaGlobalScope>, normalizer: Maybe<&2, DescriptorNf.NfContext>) -> LowerResult<Slot>:
   match v_19:
     case Frame{v_26, _, _, _}:
-      LowerResult{State{v_16, v_17, v_18, v_19, v_20, v_21, scope, families, type_functions}, Slot{v_26, v_9, v_2, v_3}}
+      LowerResult{State{v_16, v_17, v_18, v_19, v_20, v_21, scope, normalizer}, Slot{v_26, v_9, v_2, v_3}}
 
 def native_match_bind_slot_1(v_8: State, v_2: BIR.Atom, v_3: BIR.Use, v_9: U32) -> LowerResult<Slot>:
   match v_8:
-    case State{v_16, v_17, v_18, v_19, v_20, v_21, scope, families, type_functions}:
-      native_match_bind_slot_0(v_19, v_2, v_3, v_9, v_16, v_17, v_18, v_20, v_21, scope, families, type_functions)
+    case State{v_16, v_17, v_18, v_19, v_20, v_21, scope, normalizer}:
+      native_match_bind_slot_0(v_19, v_2, v_3, v_9, v_16, v_17, v_18, v_20, v_21, scope, normalizer)
 
 def native_match_bind_slot_2(v_30: LowerResult<U32>, v_2: BIR.Atom, v_3: BIR.Use) -> LowerResult<Slot>:
   match v_30:
@@ -209,8 +209,8 @@ def bind_slot(v_1: State, v_2: BIR.Atom, v_3: BIR.Use) -> LowerResult<Slot>:
 
 def enter(state: State) -> LowerResult<Frame>:
   match state:
-    case State{source, code, local, parent, codes, failure, scope, families, type_functions}:
-      LowerResult{State{source, U32.inc(code), local, Frame{code, Nil{}, Nil{}, 0}, codes, failure, scope, families, type_functions}, parent}
+    case State{source, code, local, parent, codes, failure, scope, normalizer}:
+      LowerResult{State{source, U32.inc(code), local, Frame{code, Nil{}, Nil{}, 0}, codes, failure, scope, normalizer}, parent}
 def capture_uses(captures: List<&2, Capture>) -> List<&2, BIR.Use>:
   match captures:
     case Nil{}: Nil{}
@@ -218,13 +218,13 @@ def capture_uses(captures: List<&2, Capture>) -> List<&2, BIR.Use>:
     case _ <> rest: capture_uses(rest)
 def leave(state: State, parent: Frame, parameters: List<&2, BIR.Parameter>, body: BIR.Block) -> LowerResult<CodeRef>:
   match state:
-    case State{source, next_code, local, Frame{code, _, captures, _}, codes, failure, scope, families, type_functions}:
+    case State{source, next_code, local, Frame{code, _, captures, _}, codes, failure, scope, normalizer}:
       ordered = List.reverse(&2, Capture, captures)
-      LowerResult{State{source, next_code, local, parent, BIR.Code{code, capture_uses(ordered), parameters, body} <> codes, failure, scope, families, type_functions}, CodeRef{code, parameters, ordered}}
+      LowerResult{State{source, next_code, local, parent, BIR.Code{code, capture_uses(ordered), parameters, body} <> codes, failure, scope, normalizer}, CodeRef{code, parameters, ordered}}
 def leave_value(state: State, parent: Frame, parameters: List<&2, BIR.Parameter>, value: BIR.Atom) -> LowerResult<CodeRef>:
   match state:
-    case State{source, code, local, Frame{owner, instructions, captures, count}, codes, failure, scope, families, type_functions}:
-      leave(State{source, code, local, Frame{owner, Nil{}, captures, count}, codes, failure, scope, families, type_functions}, parent, parameters, finish(instructions, value))
+    case State{source, code, local, Frame{owner, instructions, captures, count}, codes, failure, scope, normalizer}:
+      leave(State{source, code, local, Frame{owner, Nil{}, captures, count}, codes, failure, scope, normalizer}, parent, parameters, finish(instructions, value))
 def capture_arguments(state: State, captures: List<&2, Capture>) -> LowerResult<List<&2, BIR.Arg>>:
   match captures:
     case Nil{}: LowerResult{state, Nil{}}
@@ -292,14 +292,14 @@ def atom_arguments(values: List<&2, BIR.Atom>) -> List<&2, BIR.Arg>:
     case value <> rest: BIR.Arg{BIR.Affine{}, value} <> atom_arguments(rest)
 def describe(state: State, handle: U32) -> LowerResult<Maybe<&2, BIR.Descriptor>>:
   match state:
-    case State{source, code, local, frame, codes, failure, scopes, families, type_functions}:
-      match scopes:
-        case Some{scope}:
+    case State{source, code, local, frame, codes, failure, +scopes, +normalizer}:
+      match scopes normalizer:
+        case Some{scope} Some{+context}:
           match Catalog.descriptor(source, handle, scope):
             case Catalog.CatalogResult{source2, value}:
-              LowerResult{State{source2, code, local, frame, codes, failure, Some{scope}, families, type_functions}, Some{DescriptorNf.normalize_closed(families, type_functions, value)}}
-        case None{}:
-          LowerResult{State{source, code, local, frame, codes, problem_first(failure, "missing definition scope for a checked descriptor", no_span()), None{}, families, type_functions}, None{}}
+              LowerResult{State{source2, code, local, frame, codes, failure, Some{scope}, Some{context}}, Some{DescriptorNf.normalize_in(context, value)}}
+        case _ _:
+          LowerResult{State{source, code, local, frame, codes, problem_first(failure, "missing definition scope for a checked descriptor", no_span()), scopes, normalizer}, None{}}
 
 def element_value(state: State, handle: U32) -> LowerResult<List<&2, BIR.Descriptor>>:
   match describe(state, handle):
@@ -793,10 +793,10 @@ def parameter_arguments(parameters: List<&2, BIR.Parameter>) -> List<&2, BIR.Arg
     case BIR.Parameter{id, usage} <> rest: BIR.Arg{usage, BIR.Local{id}} <> parameter_arguments(rest)
 def native_match_partial_0(v_1: State, v_3: U32, v_5: List<&2, BIR.Arg>, v_7: List<&2, BIR.Parameter>) -> LowerResult<BIR.Atom>:
   match v_1:
-    case State{v_18, v_19, v_20, v_21, v_22, v_23, scope, families, type_functions}:
+    case State{v_18, v_19, v_20, v_21, v_22, v_23, scope, normalizer}:
       v_27 = List.append(&2, BIR.Arg, indexed_captures(v_5, 0), parameter_arguments(v_7))
       v_30 = BIR.Code{v_19, argument_uses(v_5), v_7, BIR.TailDirect{v_3, v_27}}
-      operation(State{v_18, U32.inc(v_19), v_20, v_21, v_30 <> v_22, v_23, scope, families, type_functions}, BIR.Closure{v_19, v_5, v_7})
+      operation(State{v_18, U32.inc(v_19), v_20, v_21, v_30 <> v_22, v_23, scope, normalizer}, BIR.Closure{v_19, v_5, v_7})
 
 def native_match_partial_1(v_7: List<&2, BIR.Parameter>, v_1: State, v_3: U32, v_5: List<&2, BIR.Arg>) -> LowerResult<BIR.Atom>:
   match v_7:
@@ -1056,8 +1056,8 @@ def checked_cases(v_1: State, v_3: List<&2, IR.Occurrence>, v_5: List<&2, BIR.At
 
 def take_block(state: State, value: BIR.Atom) -> LowerResult<BIR.Block>:
   match state:
-    case State{source, code, local, Frame{owner, instructions, captures, count}, codes, failure, scope, families, type_functions}:
-      LowerResult{State{source, code, local, Frame{owner, Nil{}, captures, count}, codes, failure, scope, families, type_functions}, finish(instructions, value)}
+    case State{source, code, local, Frame{owner, instructions, captures, count}, codes, failure, scope, normalizer}:
+      LowerResult{State{source, code, local, Frame{owner, Nil{}, captures, count}, codes, failure, scope, normalizer}, finish(instructions, value)}
 def native_match_match_values_0(v_28: LowerResult<CodeRef>, v_5: List<&2, BIR.Atom>) -> LowerResult<BIR.Atom>:
   match v_28:
     case LowerResult{v_26, v_27}:
@@ -1439,8 +1439,8 @@ def scalar_literal_native(v_1: State, v_3: String, v_4: Catalog.Constructor, v_6
 
 def take_instructions(state: State) -> LowerResult<List<&2, Instruction>>:
   match state:
-    case State{source, code, local, Frame{owner, instructions, captures, count}, codes, failure, scope, families, type_functions}:
-      LowerResult{State{source, code, local, Frame{owner, Nil{}, captures, count}, codes, failure, scope, families, type_functions}, instructions}
+    case State{source, code, local, Frame{owner, instructions, captures, count}, codes, failure, scope, normalizer}:
+      LowerResult{State{source, code, local, Frame{owner, Nil{}, captures, count}, codes, failure, scope, normalizer}, instructions}
 def matcher_checked(state: State, formal: Maybe<&2, Ast.Quantity>, symbol: Maybe<&2, IR.Symbol>, children: List<&2, IR.Occurrence>, env: List<&2, Slot>, registry: Catalog.Registry, span: Ast.SourceSpan) -> LowerResult<BIR.Atom>:
   match formal symbol children:
     case Some{Ast.QZero{}} _ _: fail(state, "erased matcher scrutinee reached live lowering", span)
@@ -1544,8 +1544,8 @@ def matcher_fields(v_1: State, v_2: Catalog.Constructor, v_4: List<&2, BIR.Quant
 
 def native_match_definition_frame_0(v_20: State, v_3: U32, scope: Scope.ArenaGlobalScope) -> State:
   match v_20:
-    case State{v_14, v_15, v_16, _, v_18, v_19, _, families, type_functions}:
-      State{v_14, v_15, v_16, Frame{v_3, [], [], 0}, v_18, v_19, Some{scope}, families, type_functions}
+    case State{v_14, v_15, v_16, _, v_18, v_19, _, normalizer}:
+      State{v_14, v_15, v_16, Frame{v_3, [], [], 0}, v_18, v_19, Some{scope}, normalizer}
 
 def definition_frame(v_1: State, v_3: U32, v_5: U32, scope: Scope.ArenaGlobalScope) -> State:
   native_match_definition_frame_0(reserve(v_1, v_5), v_3, scope)
@@ -1606,8 +1606,8 @@ def definition_match_direct(direct: Bool, state: State, cases: List<&2, IR.Occur
     case False{}: definition_atom_block(match_values(state, cases, values, env, registry))
 def definition_match_state(state: State, cases: List<&2, IR.Occurrence>, values: List<&2, BIR.Atom>, env: List<&2, Slot>, registry: Catalog.Registry, parameters: List<&2, BIR.Parameter>) -> LowerResult<BIR.Block>:
   match state:
-    case State{source, next_code, local, frame, codes, failure, scope, families, type_functions}:
-      definition_match_direct(definition_locals_frame(frame, values, parameters), State{source, next_code, local, frame, codes, failure, scope, families, type_functions}, cases, values, env, registry)
+    case State{source, next_code, local, frame, codes, failure, scope, normalizer}:
+      definition_match_direct(definition_locals_frame(frame, values, parameters), State{source, next_code, local, frame, codes, failure, scope, normalizer}, cases, values, env, registry)
 def definition_match_values(result: LowerResult<List<&2, BIR.Atom>>, cases: List<&2, IR.Occurrence>, env: List<&2, Slot>, registry: Catalog.Registry, parameters: List<&2, BIR.Parameter>) -> LowerResult<BIR.Block>:
   match result:
     case LowerResult{state, values}:
@@ -1658,12 +1658,12 @@ def definition_body(v_1: State, v_3: String, v_5: U32, v_7: List<&2, BIR.Paramet
 
 def definition_complete(state: State, key: String, code: U32, parameters: List<&2, BIR.Parameter>, body: BIR.Block, rest: List<&2, Catalog.Definition>, registry: Catalog.Registry, result: List<&2, BIR.Declaration>) -> LowerResult<List<&2, BIR.Declaration>>:
   match state:
-    case State{source, next_code, local, Frame{owner, instructions, captures, count}, codes, failure, scope, families, type_functions}:
-      definition_closed(U32.is_eq(count, 0), State{source, next_code, local, Frame{owner, instructions, captures, count}, codes, failure, scope, families, type_functions}, key, code, parameters, body, rest, registry, result)
+    case State{source, next_code, local, Frame{owner, instructions, captures, count}, codes, failure, scope, normalizer}:
+      definition_closed(U32.is_eq(count, 0), State{source, next_code, local, Frame{owner, instructions, captures, count}, codes, failure, scope, normalizer}, key, code, parameters, body, rest, registry, result)
 def native_match_definition_closed_0(v_3: State, v_5: String, v_7: U32, v_9: List<&2, BIR.Parameter>, v_10: BIR.Block, v_12: List<&2, Catalog.Definition>, v_13: Catalog.Registry, v_15: List<&2, BIR.Declaration>) -> LowerResult<List<&2, BIR.Declaration>>:
   match v_3:
-    case State{v_32, v_33, v_34, v_35, v_36, v_37, scope, families, type_functions}:
-      definitions(State{v_32, v_33, v_34, v_35, BIR.Code{v_7, [], v_9, v_10} <> v_36, v_37, scope, families, type_functions}, v_12, v_13, BIR.FunctionDeclaration{v_5, v_7, v_9} <> v_15)
+    case State{v_32, v_33, v_34, v_35, v_36, v_37, scope, normalizer}:
+      definitions(State{v_32, v_33, v_34, v_35, BIR.Code{v_7, [], v_9, v_10} <> v_36, v_37, scope, normalizer}, v_12, v_13, BIR.FunctionDeclaration{v_5, v_7, v_9} <> v_15)
 
 def native_match_definition_closed_1(v_1: Bool, v_9: List<&2, BIR.Parameter>, v_3: State, v_5: String, v_7: U32, v_10: BIR.Block, v_12: List<&2, Catalog.Definition>, v_13: Catalog.Registry, v_15: List<&2, BIR.Declaration>) -> LowerResult<List<&2, BIR.Declaration>>:
   match v_1, v_9:
@@ -1775,11 +1775,11 @@ def lower_catalog(result: Catalog.BuildResult) -> ProgramResult:
   match result:
     case Catalog.BuildFailure{_, message}: LowerFailure{message, no_span()}
     case Catalog.Built{Checked.CheckedProgram{source, _, _, _}, Catalog.Catalog{work, registry, constructors, families, type_functions, next_code, ending}}:
-      state = State{source, next_code, 0, Frame{0, Nil{}, Nil{}, 0}, Nil{}, None{}, None{}, families, type_functions}
+      state = State{source, next_code, 0, Frame{0, Nil{}, Nil{}, 0}, Nil{}, None{}, None{}, Some{DescriptorNf.nf_context(families, type_functions)}}
       lower_definitions(definitions(state, work, registry, Nil{}), constructors, families, type_functions, ending)
 def lower_definitions(result: LowerResult<List<&2, BIR.Declaration>>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>, ending: BIR.Ending) -> ProgramResult:
   match result:
-    case LowerResult{State{_, _, _, _, codes, failure, scope, families, type_functions}, declarations}:
+    case LowerResult{State{_, _, _, _, codes, failure, scope, normalizer}, declarations}:
       lower_complete(failure, codes, declarations, constructors, families, type_functions, ending)
 def lower_complete(failure: Maybe<&2, Problem>, codes: List<&2, BIR.Code>, declarations: List<&2, BIR.Declaration>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>, ending: BIR.Ending) -> ProgramResult:
   match failure:
