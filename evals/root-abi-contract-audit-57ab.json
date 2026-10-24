@@ -351,5 +351,13 @@
       "record the runtime file hash the host actually read so the receipt can pin it"
     ],
     "ordering": "after the native-seed merge; otherwise this patch would be written against the older shape and conflict"
+  },
+  "abiBumpConsequences": {
+    "selfhost_emitted_suites.ts": "line 76 compares component.exports to ABI exactly (same(component.exports,ABI)) and line 63 compares the fixedpoint proof's requiredExports to ABI. Bumping ABI to thirteen therefore REQUIRES the emitted compiler component proof to be regenerated with thirteen exports; an older ten-export proof will fail the comparison and must not be relaxed.",
+    "compiler_benchmark.ts": "has ABI (current, ten) and frozenV41ABI (nine, no inspect_checked_start). Only ABI grows to thirteen; frozenV41ABI is the immutable v41 surface and stays untouched. Line 156 then requires the benchmark component to expose the C entries as functions, which follows automatically if the component is built from the same root.",
+    "native_compiler_experiment.ts": "compilerABI grows to thirteen; the frozen branch (line 104) keeps filtering inspect_checked_start for the v41 manifest, and the frozen manifest itself is immutable.",
+    "checker_library_smoke": "nine names, its own component, never builds the root: unchanged.",
+    "fir_foreign_smoke": "eight names, its own component: unchanged unless the C lane is added to that smoke.",
+    "nativeSeedDependency": "the emitted-suite comparison means NativeSeedBootstrap's component proof must be regenerated with thirteen exports AFTER the cut; their existing ten-export proof will be rejected, correctly."
   }
 }
