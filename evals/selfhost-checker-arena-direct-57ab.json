@@ -77,30 +77,60 @@
     }
   },
   "probes": {
-    "status": "NOT RUN - shared heavy lane owned by NativeSeedBootstrap (their native bridge); plain-node full-root probes were started twice and killed on their explicit request to avoid parallel heavy work",
-    "prepared": {
-      "baseComponent": "/private/tmp/cps-perf57ab/build/component-base.js (sha256 2fc148ac2ae0b8449c12e8b0ef3fdba3b6c9d4f3f4fbf8f973b6c510bcc1191d)",
-      "optComponent": "/private/tmp/cps-perf57ab/build/component-opt.js (sha256 0807ccda1840403abcd5771187d0eed732dc4cdd318a67b1490e8cbb5e5ea65f)",
-      "countedCopies": "/private/tmp/cps-perf57ab/build/counted-base.js, counted-opt.js (one globalThis.__stepCount increment inside checker_step_one; diagnostic copies only)",
-      "probeHost": "/private/tmp/cps-perf57ab/countcheck.ts and tagfull57ab.ts (RootABIConsumers copies; read-only runtime import from the combined tree)",
-      "command": "cd /private/tmp/bend-fir-combined57ab && node --experimental-strip-types --stack-size=262144 --max-old-space-size=6144 /private/tmp/cps-perf57ab/countcheck.ts --candidate=<counted copy> --parser=checkpoints/bootstrap-parser-rebuild-p75comb4.js --base=bend2/base.bend checkpoints/.bootstrap_compiler_root_v1.bend"
+    "status": "MEASURED (single run each, BASE then OPT, same frozen root/parser/host; plain node 6 GB heap, stack-size 262144)",
+    "command": "cd /private/tmp/bend-fir-combined57ab && node --experimental-strip-types --stack-size=262144 --max-old-space-size=6144 /private/tmp/cps-perf57ab/countcheck.ts --candidate=<counted copy> --parser=checkpoints/bootstrap-parser-rebuild-p75comb4.js --base=bend2/base.bend checkpoints/.bootstrap_compiler_root_v1.bend",
+    "inputRootSha256": "0523f8a9cef1f9b76fde94e93ef2b6918ce60d1178dd666dabf7571a23a6311b",
+    "parserArtifactSha256": "1464037ba20c190ea51083d5824665fa665ce8d5657264544f4515e2339a3ee0",
+    "base": {
+      "req": 194453457,
+      "ms": 176059,
+      "nsPerRequest": 905.4,
+      "log": "/private/tmp/cps-perf57ab/base.count.log"
     },
-    "expected": {
-      "baselineReproduction": "194,871,876 requests / 172,825 ms check (Root receipt requestCost)",
-      "arenaTagBaseline": "59.58 % (115,921,758 of 194,569,635 tagged requests)",
-      "top40AdmittedArenaRequests": 77652650
+    "opt": {
+      "req": 115567361,
+      "ms": 124145,
+      "nsPerRequest": 1074.2,
+      "log": "/private/tmp/cps-perf57ab/opt.count.log"
     },
-    "note": "No request/wall number is claimed here. The BASE generated source is byte-identical to the source embedded in the 8935d503 component used for the 194.87 M receipt, so the probe is a reproduction check, not a new baseline."
+    "delta": {
+      "requests": 78886096,
+      "requestShare": 0.4056811188499467,
+      "wallMs": 51914,
+      "wallShare": 0.29486706161002846,
+      "marginalNsPerRemovedRequest": 658.1
+    },
+    "crossCheckVsRootReceipt": {
+      "rootRequests": 194871876,
+      "differenceRequests": -418419,
+      "share": -0.0021471492376868174,
+      "rootWallMs": 172825,
+      "differenceWallMs": 3234,
+      "note": "BASE generated steps are byte-identical to the committed b0ec90a3 source; the 0.21% request difference is therefore instrument/component-build state, not source. Recorded rather than smoothed."
+    },
+    "instrument": {
+      "countedCopies": "one globalThis.__stepCount increment inside generated checker_step_one; diagnostic copies only, never acceptance artifacts",
+      "semantics": "count and timing only; no output patch, no check exclusion"
+    },
+    "tagStatus": "NOT RUN - window used for the count pair; OPT arena tag share is prepared (/private/tmp/cps-perf57ab/tagfull57ab.ts) and needs a later gap"
   },
   "fixture": {
-    "status": "PENDING LANE"
+    "input": "tests/run/word_arithmetic.bend",
+    "emittedJsSha256": "875c63a72af8ab76c948f77b847db04e3f75508a96cb516be68bfa08b425c59b",
+    "bytes": 291177,
+    "identical": true,
+    "stdout": {
+      "base": "63",
+      "opt": "63"
+    },
+    "command": "emithost57ab.ts (candidate_host with node-compatible import.meta path) --candidate=component-{base,opt}.js --parser=frozen parser --base=bend2/base.bend tests/run/word_arithmetic.bend -o word-{base,opt}.js; cmp + node execution",
+    "note": "emitted JS byte-identical and both programs print the expected 63; this exercises the changed checker path through the real emitter"
   },
   "caveats": [
     "The probe driver composes the same generated step modules and public ABI but omits the embedded parser (the probe passes the frozen parser artifact), so it is a measurement harness, not an acceptance artifact.",
     "Request count is a generator-producer classification property, not a lower bound on necessary work; semantic work in admitted bodies still runs as direct native calls.",
     "No acceptance claim: the final root proof and fixtures remain the original protocol.",
-    "Emitted-JS byte identity on the fixture is treated as a stop-and-explain signal if it differs; typing alone is not offered as ordering proof.",
-    "Full-root request count, wall time, tag share and fixture emitted-JS/stdout equality are prepared but NOT measured; they require the shared heavy lane. Do not integrate this as a speed result before those numbers exist; the source change itself is committed and natively validated."
+    "Emitted-JS byte identity on the fixture is treated as a stop-and-explain signal if it differs; typing alone is not offered as ordering proof."
   ],
   "baselineStepsSha256": "5bb2c2ea99a0a0cd713e12cfea4c02f08d3e398a558a7415169ad92d2cd2143f",
   "optStepsSha256": "d6000fd556d550f45ccca6adeaaa6e2b0d6aa2fc7604fae0959d650f6d7d175c",
@@ -133,29 +163,6 @@
     "locations": {
       "baseLines": "component-base.js continuation_3231",
       "optLines": "component-opt.js checker_match_3253"
-    }
-  },
-  "staticElimination": {
-    "method": "count CheckerRequest_<name>{ occurrences in the generated checker steps for the 45 newly admitted definitions",
-    "opt": "every admitted request constructor occurs exactly 3 times: type field, result-type case, group dispatch; zero construction call sites",
-    "base": "the same 45 names have 490 request-construction sites (625 total occurrences) in the otherwise identical baseline source",
-    "emittedJS": {
-      "functions": {
-        "base": 7270,
-        "opt": 7312
-      },
-      "CheckerPending": {
-        "base": 1545,
-        "opt": 1121
-      },
-      "CheckerDirect": {
-        "base": 1503,
-        "opt": 1448
-      },
-      "bytes": {
-        "base": 11109564,
-        "opt": 10955067
-      }
     }
   }
 }
