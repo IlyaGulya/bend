@@ -249,7 +249,7 @@ function renderProgram(program:unknown):string{
 // and no raw provider import anywhere.
 const program=checkedProgram();
 if(typeof candidate.emitter_request!=='function')fail('candidate lacks the emitter_request export');
-const request={$:'js_emit_steps_v1.EmitterRequestGroup_5',request:{$:'js_emit_steps_v1.EmitterRequest_cps_provider_1_lower',v_0:program}};
+const request={$:'emitter_steps_v1.EmitterRequestGroup_5',request:{$:'emitter_steps_v1.EmitterRequest_cps_provider_1_lower',v_0:program}};
 const stack:unknown[]=[];
 let progress:unknown=candidate.emitter_request(request),value:unknown;
 for(let i=0;;i+=1){
