@@ -3,7 +3,9 @@ import ./ast.bend as AST
 import ./loader.bend as Loader
 import ./checker.bend as Checker
 import ./checked_frontend.bend as Checked
-import ./js_emit.bend as JSEmit
+import ./backend_ir.bend as BIR
+import ./backend_lower.bend as BackendLower
+import ./js_backend.bend as JSBackend
 import ./c_emit.bend as CEmit
 
 type Config is Data:
@@ -99,12 +101,57 @@ def write_output(path: String, source: String) -> IO(U32):
     opened : Result<&1, &1, U32 & String, File> <- File.open(path, "w")
     return handle_open(path, source, opened)
 
-def compile_js_emit(emitted: JSEmit.EmitResult, output: String) -> IO(U32):
+def compile_js_emit(emitted: JSBackend.EmitResult, output: String) -> IO(U32):
   match emitted:
-    case JSEmit.EmitFailure{message, span}:
+    case JSBackend.EmitFailure{message, span}:
       emit_diagnostic(span, message)
-    case JSEmit.EmitSuccess{source}:
+    case JSBackend.EmitSuccess{source}:
       write_output(output, source)
+
+# The CLI owns target-link IO for JavaScript too: link() selects the declared
+# .js alternative of every foreign definition, and each selected file must
+# exist before a successful emission. A missing target is a real diagnostic,
+# never a runtime require failure or undefined success.
+type MissingTarget is Data:
+  NoMissingTarget{}
+  MissingTarget{entry: JSBackend.LinkSource}
+
+def check_js_source(entry: JSBackend.LinkSource, rest: List<&2, JSBackend.LinkSource>) -> IO(MissingTarget):
+  match entry:
+    case JSBackend.LinkSource{path, _}:
+      do IO<MissingTarget>:
+        opened : Result<&1, &1, U32 & String, File> <- File.open(path, "r")
+        match opened:
+          case Done{file}:
+            Unit <- File.close(file)
+            return check_js_sources(rest)
+          case Fail{_}:
+            return MissingTarget{entry}
+
+def check_js_sources(sources: List<&2, JSBackend.LinkSource>) -> IO(MissingTarget):
+  match sources:
+    case Nil{}: IO.pure(MissingTarget, NoMissingTarget{})
+    case +entry <> rest: check_js_source(entry, rest)
+
+def compile_js_linked(program: BIR.Program, output: String) -> IO(U32):
+  match JSBackend.link(program):
+    case JSBackend.LinkFailure{message, span}:
+      emit_diagnostic(span, message)
+    case JSBackend.LinkSuccess{sources}:
+      do IO<U32>:
+        missing : MissingTarget <- check_js_sources(sources)
+        match missing:
+          case MissingTarget{JSBackend.LinkSource{path, span}}:
+            emit_diagnostic(span, String.append("cannot read foreign JS target ", path))
+          case NoMissingTarget{}:
+            return compile_js_emit(JSBackend.emit(program), output)
+
+def compile_js(checked: Checked.CheckedProgram, output: String) -> IO(U32):
+  match BackendLower.lower(checked):
+    case BackendLower.LowerFailure{message, span}:
+      emit_diagnostic(span, message)
+    case BackendLower.Lowered{program}:
+      compile_js_linked(program, output)
 
 def compile_c_emit(emitted: CEmit.EmitResult, output: String) -> IO(U32):
   match emitted:
@@ -113,14 +160,12 @@ def compile_c_emit(emitted: CEmit.EmitResult, output: String) -> IO(U32):
     case CEmit.EmitSuccess{source}:
       write_output(output, source)
 
-# The legacy full-IO C backend still consumes syntax; this is its explicit
-# readback boundary, not the production JavaScript compilation path.
-def compile_c_inspection(inspection: Checked.Inspection, output: String, runtime: String) -> IO(U32):
-  match inspection:
-    case Checked.Inspection{_, modules}:
-      compile_c_emit(CEmit.emit(modules, runtime), output)
-    case Checked.InspectionFailure{_, Checked.Diagnostic{file, span, message, expected, observed}}:
-      diagnostic(file, span, message, expected, observed)
+# The C adapter lowers the checked program once and sequences its own runtime
+# and foreign-source reads; the driver only awaits that IO.
+def compile_c(checked: Checked.CheckedProgram, output: String, runtime: String) -> IO(U32):
+  do IO<U32>:
+    emitted : CEmit.EmitResult <- CEmit.emit(checked, runtime)
+    return compile_c_emit(emitted, output)
 
 def dispatch_c(is_c: Bool, checked: Checked.CheckedProgram, output: String, runtime: String) -> IO(U32):
   match is_c:
@@ -129,12 +174,12 @@ def dispatch_c(is_c: Bool, checked: Checked.CheckedProgram, output: String, runt
         Unit <- IO.print_err("Error: unsupported output extension: " ++ output ++ "\n" ++ usage() ++ "\n")
         return 1
     case True{}:
-      compile_c_inspection(Checker.inspect_checked(checked), output, runtime)
+      compile_c(checked, output, runtime)
 
 def dispatch_output(is_js: Bool, checked: Checked.CheckedProgram, output: String, runtime: String) -> IO(U32):
   match is_js:
     case True{}:
-      compile_js_emit(JSEmit.emit(checked), output)
+      compile_js(checked, output)
     case False{}:
       dispatch_c(String.ends_with(output, ".c"), checked, output, runtime)
 

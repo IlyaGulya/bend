@@ -1,6 +1,41 @@
 import Base
+import ./ast.bend as Ast
 import ./backend_ir.bend as BIR
 import ./index_lookup.bend as IndexLookup
+
+# Target selection is explicit. A foreign declaration names its own declared
+# import alternatives, and the JS adapter takes the first declared .js path; it
+# never derives one path from another. A declaration with no .js alternative is
+# a target error, never undefined success. link() is the CLI's IO preflight
+# input: the caller checks that every selected file actually exists.
+type EmitResult is Data:
+  EmitSuccess{source: String}
+  EmitFailure{message: String, span: Ast.SourceSpan}
+type LinkSource is Data:
+  LinkSource{path: String, span: Ast.SourceSpan}
+type LinkResult is Data:
+  LinkSuccess{sources: List<&2, LinkSource>}
+  LinkFailure{message: String, span: Ast.SourceSpan}
+def js_source(sources: List<&2, String>) -> Maybe<&2, String>:
+  match sources:
+    case Nil{}: None{}
+    case +path <> rest:
+      match String.ends_with(path, ".js"):
+        case True{}: Some{path}
+        case False{}: js_source(rest)
+def link_declarations(items: List<&2, BIR.Declaration>, acc: List<&2, LinkSource>) -> LinkResult:
+  match items:
+    case Nil{}: LinkSuccess{List.reverse(&2, LinkSource, acc)}
+    case +item <> rest:
+      match item:
+        case BIR.ForeignDeclaration{_, _, imported, _, decl_sources, _, span, _, _}:
+          match js_source(decl_sources):
+            case Some{path}: link_declarations(rest, LinkSource{path, span} <> acc)
+            case None{}: LinkFailure{String.append("bend: foreign definition has no .js import: ", imported), span}
+        case _: link_declarations(rest, acc)
+def link(program: BIR.Program) -> LinkResult:
+  match program:
+    case BIR.Program{_, values, _, _, _, _}: link_declarations(values, Nil{})
 
 type TagArm is Data:
   TagArm{label: U32, condition: U32, tag: String, body: BIR.Block}
@@ -116,8 +151,6 @@ def operation(op: BIR.Op) -> String:
     case BIR.Construct{_, tag, fields}: cat(["({$:", js_quote(tag), record_fields(fields), "})"])
     case BIR.Project{value, _, _, key}: cat([atom(value), "[", js_quote(key), "]"])
     case BIR.HasTag{value, _, tag}: tag_test(atom(value), tag)
-    case BIR.DescriptorValue{value}: descriptor(value)
-    case BIR.Foreign{path, key, arity}: foreign(path, key, arity)
 def tag_test(+value: String, tag: String) -> String:
   cat(["(", value, "&&", value, ".$===", js_quote(tag), ")"])
 # Group only immutable local/capture tag guards whose failure leaves that case.
@@ -495,8 +528,14 @@ def declaration(item: BIR.Declaration) -> String:
       deferred(key, cat(["(()=>{", block(body), "})()"]))
     case BIR.NativeDeclaration{key, primitive, uses}:
       native_declaration(key, primitive, uses)
-    case BIR.ForeignDeclaration{key, path, imported, arity}:
-      deferred(key, foreign(path, imported, arity))
+    case BIR.ForeignDeclaration{key, _, imported, arity, decl_sources, _, _, _, _}:
+      foreign_declaration(key, imported, decl_sources, arity)
+def foreign_declaration(+key: String, imported: String, sources: List<&2, String>, arity: Nat) -> String:
+  match js_source(sources):
+    case Some{path}: deferred(key, foreign(path, imported, arity))
+    case None{}:
+      # link() rejects this declaration before emission; keep the render total.
+      deferred(key, cat(["(()=>{throw new Error(", js_quote(String.append("bend: foreign definition has no .js import: ", imported)), ")})()"]))
 def native_declaration(+key: String, primitive: BIR.Primitive, +uses: List<&2, BIR.Quantity>) -> String:
   cat(["$D[", js_quote(key), "]=", primitive_public(primitive), ";\n$TYPEF[", js_quote(key), "]={n:", Nat.show(List.length(&2, BIR.Quantity, uses)), ",q:[", String.join(quantities(uses), ","), "],intrinsic:$D[", js_quote(key), "]};\n"])
 def declarations(items: List<&2, BIR.Declaration>) -> String:
@@ -573,7 +612,11 @@ def ending(item: BIR.Ending) -> String:
   match item:
     case BIR.Executable{main_type}: js_main(descriptor(main_type))
     case BIR.Library{exports}: cat(["export default {", String.join(export_fields(exports), ","), "};\n"])
-def emit(program: BIR.Program) -> String:
+def emit(program: BIR.Program) -> EmitResult:
+  match link(program):
+    case LinkFailure{message, span}: EmitFailure{message, span}
+    case LinkSuccess{_}: EmitSuccess{source(program)}
+def source(program: BIR.Program) -> String:
   match program:
     case BIR.Program{bodies, values, layouts, types, functions, end}:
       cat([js_runtime(), js_runtime_extra(), js_runtime_show(), js_runtime_cli(), js_runtime_io(), js_runtime_array(), js_runtime_foreign(), js_runtime_namespace(), primitive_runtime(), constructor_layouts(layouts), families(types), type_functions(functions), codes(bodies), declarations(values), ending(end)])

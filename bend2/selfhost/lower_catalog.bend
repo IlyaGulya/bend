@@ -14,8 +14,7 @@ type BuildResult is Type:
   Built{program: Checked.CheckedProgram, catalog: Catalog}
   BuildFailure{program: Checked.CheckedProgram, message: String}
 type Foreign is Data:
-  Foreign{path: String, key: String, arity: Nat}
-  ForeignMissing{key: String, arity: Nat}
+  Foreign{namespace: String, imported: String, sources: List<&2, String>, span: Ast.SourceSpan, parameter_types: List<&2, BIR.Descriptor>, result: BIR.Descriptor}
 type DefinitionHeader is Data:
   DefinitionHeader{symbol: IR.Symbol, key: String, code: U32, parameters: List<&2, BIR.Parameter>, quantities: List<&2, BIR.Quantity>, type_only: Bool, primitive: Maybe<&2, BIR.Primitive>, foreign: Maybe<&2, Foreign>, fast: Bool}
 type Definition is Data:
@@ -988,47 +987,86 @@ def value_insert(first: Maybe<&2, Bool>, body: IR.DefBody, key: String, definiti
   match first body:
     case None{} IR.DefTerm{_}: insert_definition(key, definition, index)
     case _ _: index
-def native_match_foreign_path_0(v_88: Bool, v_3: String, v_5: String, v_7: Nat, v_14: U32, v_15: U32, v_20: Arena.Arena, v_21: String) -> CatalogResult<Foreign>:
-  match v_88:
-    case True{}:
-      CatalogResult{v_20, Foreign{Path.resolve(v_3, v_21), v_5, v_7}}
-    case False{}:
-      foreign_path(v_20, IR.Names{IR.arena_range_index(v_14, 1), U32.sub(v_15, 1)}, v_3, v_5, v_7)
-
-def native_match_foreign_path_1(v_89: Sigma<&1, &1, Arena.Arena, _ => String>, v_3: String, v_5: String, v_7: Nat, v_14: U32, v_15: U32) -> CatalogResult<Foreign>:
-  match v_89:
-    case (v_20, v_21):
-      native_match_foreign_path_0(String.ends_with(v_21, ".js"), v_3, v_5, v_7, v_14, v_15, v_20, v_21)
-
-def native_match_foreign_path_2(v_90: Sigma<&1, &1, Arena.Arena, _ => U32>, v_3: String, v_5: String, v_7: Nat, v_14: U32, v_15: U32) -> CatalogResult<Foreign>:
+# A foreign definition retains every declared import alternative, resolved
+# against its module and in source order. Targets select by extension from
+# these authoritative paths; lowering never chooses one or invents another.
+def native_match_foreign_sources_1(v_90: Sigma<&1, &1, Arena.Arena, _ => String>, v_3: String, v_14: U32, v_15: U32, v_22: List<&2, String>) -> CatalogResult<List<&2, String>>:
   match v_90:
-    case (v_17, v_18):
-      native_match_foreign_path_1(Arena.name_text(v_17, v_18), v_3, v_5, v_7, v_14, v_15)
+    case (v_20, v_21):
+      foreign_sources(v_20, IR.Names{IR.arena_range_index(v_14, 1), U32.sub(v_15, 1)}, v_3, Path.resolve(v_3, v_21) <> v_22)
 
-def native_match_foreign_path_3(v_1: IR.Names, v_0: Arena.Arena, v_3: String, v_5: String, v_7: Nat) -> CatalogResult<Foreign>:
+def native_match_foreign_sources_0(v_89: Sigma<&1, &1, Arena.Arena, _ => U32>, v_3: String, v_14: U32, v_15: U32, v_22: List<&2, String>) -> CatalogResult<List<&2, String>>:
+  match v_89:
+    case (v_17, v_18):
+      native_match_foreign_sources_1(Arena.name_text(v_17, v_18), v_3, v_14, v_15, v_22)
+
+def foreign_sources(v_0: Arena.Arena, v_1: IR.Names, v_3: String, v_22: List<&2, String>) -> CatalogResult<List<&2, String>>:
   match v_1:
     case IR.Names{_, 0}:
-      CatalogResult{v_0, ForeignMissing{v_5, v_7}}
+      CatalogResult{v_0, List.reverse(&2, String, v_22)}
     case IR.Names{v_14, v_15}:
-      native_match_foreign_path_2(Arena.word(v_0, IR.arena_tape_offset(v_14)), v_3, v_5, v_7, v_14, v_15)
+      native_match_foreign_sources_0(Arena.word(v_0, IR.arena_tape_offset(v_14)), v_3, v_14, v_15, v_22)
 
-def foreign_path(v_0: Arena.Arena, v_1: IR.Names, v_3: String, v_5: String, v_7: Nat) -> CatalogResult<Foreign>:
-  native_match_foreign_path_3(v_1, v_0, v_3, v_5, v_7)
+def foreign_namespace(qualified: String, imported: String) -> String:
+  match String.eq(qualified, imported):
+    case True{}: ""
+    case False{}: String.take(qualified, Nat.sub(String.length(qualified), Nat.add(String.length(imported), 1n)))
 
-def native_match_definition_foreign_0(v_19: CatalogResult<Foreign>) -> CatalogResult<Maybe<&2, Foreign>>:
-  match v_19:
-    case CatalogResult{v_17, v_18}:
-      CatalogResult{v_17, Some{v_18}}
+def foreign_result_type(source: Arena.Arena, result: IR.OptionalTerm, scope: Scope.ArenaGlobalScope) -> CatalogResult<BIR.Descriptor>:
+  match result:
+    case IR.NoTerm{}:
+      CatalogResult{source, BIR.DescriptorFailure{"bend: foreign definition has no checked result type"}}
+    case IR.SomeTerm{term}:
+      descriptor(source, term, scope)
 
-def native_match_definition_foreign_1(v_1: IR.DefBody, v_0: Arena.Arena, v_3: String, v_5: String, v_7: Nat) -> CatalogResult<Maybe<&2, Foreign>>:
+# One descriptor per LIVE parameter, in live order. Erased binders are dropped
+# exactly as BIR.Parameter/quantities drop them, so this list aligns with the
+# request constructor's [arguments..., continuation] fields.
+def live_parameter_types(v_0: Arena.Arena, v_1: IR.Words, v_4: Scope.ArenaGlobalScope, v_22: List<&2, BIR.Descriptor>) -> CatalogResult<List<&2, BIR.Descriptor>>:
   match v_1:
-    case IR.DefTerm{_}:
-      CatalogResult{v_0, None{}}
-    case IR.DefImports{v_14}:
-      native_match_definition_foreign_0(foreign_path(v_0, v_14, v_3, v_5, v_7))
+    case IR.Words{_, 0}:
+      CatalogResult{v_0, List.reverse(&2, BIR.Descriptor, v_22)}
+    case IR.Words{v_10, v_11}:
+      native_match_live_parameter_types_2(Arena.word(v_0, IR.arena_tape_offset(v_10)), v_4, v_22, v_10, v_11)
 
-def definition_foreign(v_0: Arena.Arena, v_1: IR.DefBody, v_3: String, v_5: String, v_7: Nat) -> CatalogResult<Maybe<&2, Foreign>>:
-  native_match_definition_foreign_1(v_1, v_0, v_3, v_5, v_7)
+def native_match_live_parameter_types_2(v_90: Sigma<&1, &1, Arena.Arena, _ => U32>, v_4: Scope.ArenaGlobalScope, v_22: List<&2, BIR.Descriptor>, v_10: U32, v_11: U32) -> CatalogResult<List<&2, BIR.Descriptor>>:
+  match v_90:
+    case (v_13, v_14):
+      native_match_live_parameter_types_1(Arena.get_binder(v_13, v_14), v_4, v_22, v_10, v_11)
+
+def native_match_live_parameter_types_1(v_89: Sigma<&1, &1, Arena.Arena, _ => Arena.Binder>, v_4: Scope.ArenaGlobalScope, v_22: List<&2, BIR.Descriptor>, v_10: U32, v_11: U32) -> CatalogResult<List<&2, BIR.Descriptor>>:
+  match v_89:
+    case (v_16, v_17):
+      live_parameter_binder(v_16, v_17, v_4, v_22, v_10, v_11)
+
+def live_parameter_binder(v_0: Arena.Arena, v_1: Arena.Binder, v_4: Scope.ArenaGlobalScope, v_22: List<&2, BIR.Descriptor>, v_10: U32, v_11: U32) -> CatalogResult<List<&2, BIR.Descriptor>>:
+  match v_1:
+    case Arena.Binder{q, _, _, ty, _}:
+      live_parameter_quantity(quantity(q), v_0, ty, v_4, v_22, v_10, v_11)
+    case Arena.TemplateBinder{_, _, _, _}:
+      live_parameter_types(v_0, IR.Words{IR.arena_range_index(v_10, 1), U32.sub(v_11, 1)}, v_4, v_22)
+
+def live_parameter_quantity(v_1: BIR.Quantity, v_0: Arena.Arena, v_2: U32, v_4: Scope.ArenaGlobalScope, v_22: List<&2, BIR.Descriptor>, v_10: U32, v_11: U32) -> CatalogResult<List<&2, BIR.Descriptor>>:
+  match v_1:
+    case BIR.Erased{}:
+      live_parameter_types(v_0, IR.Words{IR.arena_range_index(v_10, 1), U32.sub(v_11, 1)}, v_4, v_22)
+    case _:
+      match descriptor(v_0, v_2, v_4):
+        case CatalogResult{v_20, v_21}:
+          live_parameter_types(v_20, IR.Words{IR.arena_range_index(v_10, 1), U32.sub(v_11, 1)}, v_4, v_21 <> v_22)
+
+def definition_foreign(source: Arena.Arena, body: IR.DefBody, module_path: String, qualified: String, imported: String, span: Ast.SourceSpan, binders: IR.Words, result: IR.OptionalTerm, scope: Scope.ArenaGlobalScope) -> CatalogResult<Maybe<&2, Foreign>>:
+  match body:
+    case IR.DefTerm{_}:
+      CatalogResult{source, None{}}
+    case IR.DefImports{paths}:
+      match foreign_sources(source, paths, module_path, Nil{}):
+        case CatalogResult{source_path, sources}:
+          match live_parameter_types(source_path, binders, scope, Nil{}):
+            case CatalogResult{source_types, parameter_types}:
+              match foreign_result_type(source_types, result, scope):
+                case CatalogResult{source_done, result_type}:
+                  CatalogResult{source_done, Some{Foreign{foreign_namespace(qualified, imported), imported, sources, span, parameter_types, result_type}}}
 
 def definition_fast(fixed: Bool, type_only: Bool, parameters: List<&2, BIR.Parameter>, primitive: Maybe<&2, BIR.Primitive>, foreign: Maybe<&2, Foreign>) -> Bool:
   match parameters primitive foreign:
@@ -1068,8 +1106,8 @@ def signature_symbol(value: Scope.ArenaGlobal) -> IR.Symbol:
 
 def prepare_definition(source: Arena.Arena, definition: IR.Definition, namespace: String, source_path: String, native: Bool, scope: Scope.ArenaGlobalScope, state: Preparation) -> CatalogResult<Preparation>:
   match definition:
-    case IR.Definition{key, binders, result, body, _, _, checked, Some{IR.DefinitionFacts{type_only, fixed, prefix}}}:
-      prepare_definition_symbol(source, Scope.lookup_kind(qualify(namespace, key), Scope.GlobalDefinition{}, scope), qualify(namespace, key), key, binders, result, body, checked, Bool.and(type_only, is_term(body)), fixed, prefix, source_path, native, scope, state)
+    case IR.Definition{key, binders, result, body, _, span, checked, Some{IR.DefinitionFacts{type_only, fixed, prefix}}}:
+      prepare_definition_symbol(source, Scope.lookup_kind(qualify(namespace, key), Scope.GlobalDefinition{}, scope), qualify(namespace, key), key, binders, result, body, checked, Bool.and(type_only, is_term(body)), fixed, prefix, source_path, native, scope, state, span)
     case IR.Definition{key, _, _, _, _, _, _, None{}}:
       CatalogResult{source, preparation_failure(state, String.append("bend: missing checked declaration facts for ", qualify(namespace, key)))}
 def native_match_prepare_definition_symbol_0(v_95: CatalogResult<Maybe<&2, BIR.Descriptor>>, v_4: String, v_9: IR.DefBody, v_62: List<&2, Definition>, v_63: Map<&2, Definition>, v_64: Map<&2, DefinitionHeader>, v_65: List<&2, BIR.ConstructorLayout>, v_66: Map<&2, Constructor>, v_67: List<&2, BIR.Family>, v_68: U32, v_69: U32, v_72: Maybe<&2, String>, v_73: Map<&2, Bool>, v_76: DefinitionHeader, v_79: Definition, v_86: List<&2, Root>) -> CatalogResult<Preparation>:
@@ -1098,20 +1136,20 @@ def native_match_prepare_definition_symbol_3(v_97: CatalogResult<Maybe<&2, Forei
       v_49 = definition_fast(v_15, v_13, v_36, v_46, v_43)
       native_match_prepare_definition_symbol_2(v_24, v_4, v_7, v_8, v_9, v_11, v_13, v_17, v_21, v_22, v_29, v_36, v_37, v_42, v_43, v_46, v_49)
 
-def native_match_prepare_definition_symbol_4(v_98: CatalogResult<Telescope>, v_4: String, v_6: String, v_7: IR.Words, v_8: IR.OptionalTerm, v_9: IR.DefBody, v_11: Maybe<&2, IR.Occurrence>, v_13: Bool, v_15: Bool, v_17: Nat, v_19: String, v_21: Bool, v_22: Scope.ArenaGlobalScope, v_24: Preparation, v_29: Scope.ArenaGlobal) -> CatalogResult<Preparation>:
+def native_match_prepare_definition_symbol_4(v_98: CatalogResult<Telescope>, v_4: String, v_6: String, v_7: IR.Words, v_8: IR.OptionalTerm, v_9: IR.DefBody, v_11: Maybe<&2, IR.Occurrence>, v_13: Bool, v_15: Bool, v_17: Nat, v_19: String, v_21: Bool, v_22: Scope.ArenaGlobalScope, v_24: Preparation, v_29: Scope.ArenaGlobal, v_30: Ast.SourceSpan) -> CatalogResult<Preparation>:
   match v_98:
     case CatalogResult{v_35, Telescope{v_36, v_37, _, _}}:
-      native_match_prepare_definition_symbol_3(definition_foreign(v_35, v_9, v_19, v_6, List.length(&2, BIR.Parameter, v_36)), v_4, v_7, v_8, v_9, v_11, v_13, v_15, v_17, v_21, v_22, v_24, v_29, v_36, v_37)
+      native_match_prepare_definition_symbol_3(definition_foreign(v_35, v_9, v_19, v_4, v_6, v_30, v_7, v_8, v_22), v_4, v_7, v_8, v_9, v_11, v_13, v_15, v_17, v_21, v_22, v_24, v_29, v_36, v_37)
 
-def native_match_prepare_definition_symbol_5(v_2: Maybe<&2, Scope.ArenaGlobal>, v_0: Arena.Arena, v_4: String, v_6: String, v_7: IR.Words, v_8: IR.OptionalTerm, v_9: IR.DefBody, v_11: Maybe<&2, IR.Occurrence>, v_13: Bool, v_15: Bool, v_17: Nat, v_19: String, v_21: Bool, v_22: Scope.ArenaGlobalScope, v_24: Preparation) -> CatalogResult<Preparation>:
+def native_match_prepare_definition_symbol_5(v_2: Maybe<&2, Scope.ArenaGlobal>, v_0: Arena.Arena, v_4: String, v_6: String, v_7: IR.Words, v_8: IR.OptionalTerm, v_9: IR.DefBody, v_11: Maybe<&2, IR.Occurrence>, v_13: Bool, v_15: Bool, v_17: Nat, v_19: String, v_21: Bool, v_22: Scope.ArenaGlobalScope, v_24: Preparation, v_30: Ast.SourceSpan) -> CatalogResult<Preparation>:
   match v_2:
     case None{}:
       CatalogResult{v_0, preparation_failure(v_24, String.append("bend: missing published definition signature for ", v_4))}
     case Some{v_29}:
-      native_match_prepare_definition_symbol_4(live_telescope(v_0, v_7, 0), v_4, v_6, v_7, v_8, v_9, v_11, v_13, v_15, v_17, v_19, v_21, v_22, v_24, v_29)
+      native_match_prepare_definition_symbol_4(live_telescope(v_0, v_7, 0), v_4, v_6, v_7, v_8, v_9, v_11, v_13, v_15, v_17, v_19, v_21, v_22, v_24, v_29, v_30)
 
-def prepare_definition_symbol(v_0: Arena.Arena, v_2: Maybe<&2, Scope.ArenaGlobal>, v_4: String, v_6: String, v_7: IR.Words, v_8: IR.OptionalTerm, v_9: IR.DefBody, v_11: Maybe<&2, IR.Occurrence>, v_13: Bool, v_15: Bool, v_17: Nat, v_19: String, v_21: Bool, v_22: Scope.ArenaGlobalScope, v_24: Preparation) -> CatalogResult<Preparation>:
-  native_match_prepare_definition_symbol_5(v_2, v_0, v_4, v_6, v_7, v_8, v_9, v_11, v_13, v_15, v_17, v_19, v_21, v_22, v_24)
+def prepare_definition_symbol(v_0: Arena.Arena, v_2: Maybe<&2, Scope.ArenaGlobal>, v_4: String, v_6: String, v_7: IR.Words, v_8: IR.OptionalTerm, v_9: IR.DefBody, v_11: Maybe<&2, IR.Occurrence>, v_13: Bool, v_15: Bool, v_17: Nat, v_19: String, v_21: Bool, v_22: Scope.ArenaGlobalScope, v_24: Preparation, v_30: Ast.SourceSpan) -> CatalogResult<Preparation>:
+  native_match_prepare_definition_symbol_5(v_2, v_0, v_4, v_6, v_7, v_8, v_9, v_11, v_13, v_15, v_17, v_19, v_21, v_22, v_24, v_30)
 
 def is_term(body: IR.DefBody) -> Bool:
   match body:
