@@ -454,18 +454,11 @@ def plan_executable_io(is_io: Bool, family: BIR.Family, main_type: BIR.Descripto
 def plan_executable_show(family: BIR.Family, main_type: BIR.Descriptor, plan: Plan) -> PlanResult:
   match plan:
     case Plan{+cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, +constructors, +families, declarations, main_pure, _, _, imports, fkeys, ctx}:
-      match show_cells(main_type, Nil{}, constructors, families, cids):
-        case None{}: PlanFail{"the main value's type has no C show layout"}
-        case Some{cells}:
-          PlanOk{Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, True{}, cells, show_names(constructors), imports, fkeys, ctx}}
-
-def show_names(constructors: List<&2, BIR.ConstructorLayout>) -> String:
-  show_names_each(ctor_keys(constructors), Nil{})
-
-def show_names_each(keys: List<&2, String>, +acc: List<&2, String>) -> String:
-  match keys:
-    case Nil{}: String.join(List.reverse(&2, String, acc), ", ")
-    case +key <> rest: show_names_each(rest, c_quote(key) <> acc)
+      show = Phys.show_build(ctx, main_type, constructors, families)
+      match show:
+        case Phys.ShowFail{message}: PlanFail{message}
+        case Phys.ShowOk{desc, names}:
+          PlanOk{Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, True{}, desc, names, imports, fkeys, ctx}}
 
 def descriptor_head(descriptor: BIR.Descriptor) -> Maybe<&2, String>:
   match descriptor:
@@ -924,357 +917,6 @@ def cid_macro_each(cids: List<&2, CidRow>, +acc: Map<&2, String>) -> Map<&2, Str
       match row:
         case CidRow{_, key, _}:
           cid_macro_each(rest, map_set_first(acc, key, cid_symbol(cid_of_row(row))))
-
-# ---------------------------------------------------------------------------
-# Entries
-# ---------------------------------------------------------------------------
-
-def build_entries(program: BIR.Program, scan: Scan) -> Build:
-  match program:
-    case BIR.Program{codes, declarations, constructors, families, type_functions, end}:
-      build_foreign(scan, build_native(declarations, build_lazy(declarations, build_codes(codes, declarations, scan, build_new()))))
-
-def build_new() -> Build:
-  Build{Nil{}, Map.new(&2, U32), Map.new(&2, U32), Map.new(&2, U32), Map.new(&2, U32), Map.new(&2, U32), 0u}
-
-def build_codes(codes: List<&2, BIR.Code>, declarations: List<&2, BIR.Declaration>, scan: Scan, build: Build) -> Build:
-  match codes:
-    case Nil{}: build
-    case +code <> rest:
-      match code:
-        case BIR.Code{id, captures, parameters, body}:
-          build_codes(rest, declarations, scan, build_one_code(declarations, scan, build, id, List.length(&2, BIR.Use, captures), parameters, body))
-
-def code_key(declarations: List<&2, BIR.Declaration>, id: U32) -> Maybe<&2, String>:
-  match declarations:
-    case Nil{}: None{}
-    case +item <> rest:
-      match item:
-        case BIR.FunctionDeclaration{key, code, parameters}: code_key_one(U32.is_eq(code, id), key, rest, id)
-        case _: code_key(rest, id)
-
-def code_key_one(found: Bool, key: String, rest: List<&2, BIR.Declaration>, id: U32) -> Maybe<&2, String>:
-  match found:
-    case True{}: Some{key}
-    case False{}: code_key(rest, id)
-
-def scan_reads(scan: Scan) -> Map<&2, Bool>:
-  match scan:
-    case Scan{closures, reads, fkeys, farity}: reads
-
-def closure_map(scan: Scan) -> Map<&2, Nat>:
-  match scan:
-    case Scan{closures, reads, fkeys, farity}: closures
-
-def code_stage_start(declarations: List<&2, BIR.Declaration>, scan: Scan, id: U32, arity: Nat) -> Nat:
-  match code_key(declarations, id):
-    case None{}: stage_from_closures(scan, id, arity)
-    case Some{key}: stage_from_key(map_flag(scan_reads(scan), key), scan, id, arity)
-
-def stage_from_key(read: Bool, scan: Scan, id: U32, arity: Nat) -> Nat:
-  match read:
-    case True{}: 0n
-    case False{}: stage_from_closures(scan, id, arity)
-
-def stage_from_closures(scan: Scan, id: U32, arity: Nat) -> Nat:
-  match IndexLookup.find(Nat, closure_map(scan), U32.show(id)):
-    case Some{value}: nat_min(value, arity)
-    case None{}: arity
-
-def build_one_code(declarations: List<&2, BIR.Declaration>, scan: Scan, build: Build, id: U32, captures: Nat, parameters: List<&2, BIR.Parameter>, body: BIR.Block) -> Build:
-  arity = Nat.add(captures, List.length(&2, BIR.Parameter, parameters))
-  build_stage(build, id, captures, parameters, body, code_stage_start(declarations, scan, id, arity), arity)
-
-def build_stage(build: Build, id: U32, captures: Nat, parameters: List<&2, BIR.Parameter>, body: BIR.Block, stage: Nat, arity: Nat) -> Build:
-  match Nat.is_lt(stage, arity):
-    case True{}: build_stage_one(build, id, captures, parameters, body, stage, arity)
-    case False{}: build_real(build, id, captures, parameters, body, arity)
-
-def build_stage_one(build: Build, id: U32, captures: Nat, parameters: List<&2, BIR.Parameter>, body: BIR.Block, stage: Nat, arity: Nat) -> Build:
-  match build:
-    case Build{entries, by_code, by_key, by_foreign, by_native, stages, next}:
-      entry = Entry{next, Nat.add(stage, 1n), KindStage{id, Nat.add(stage, 1n)}}
-      stages_next = Map.set(&2, U32, stage_key(id, stage), next, stages)
-      build_stage(Build{entry <> entries, by_code, by_key, by_foreign, by_native, stages_next, U32.inc(next)}, id, captures, parameters, body, Nat.add(stage, 1n), arity)
-
-def stage_key(id: U32, count: Nat) -> String:
-  String.append(U32.show(id), String.append(":", Nat.show(count)))
-
-def build_real(build: Build, id: U32, captures: Nat, parameters: List<&2, BIR.Parameter>, body: BIR.Block, arity: Nat) -> Build:
-  match build:
-    case Build{entries, by_code, by_key, by_foreign, by_native, stages, next}:
-      entry = Entry{next, arity, KindCode{id, captures, parameters, body}}
-      Build{entry <> entries, Map.set(&2, U32, U32.show(id), next, by_code), by_key, by_foreign, by_native, stages, U32.inc(next)}
-
-def build_lazy(declarations: List<&2, BIR.Declaration>, build: Build) -> Build:
-  match declarations:
-    case Nil{}: build
-    case +item <> rest:
-      match item:
-        case BIR.LazyDeclaration{key, body}: build_lazy(rest, build_lazy_one(build, key, body))
-        case _: build_lazy(rest, build)
-
-def build_lazy_one(build: Build, key: String, body: BIR.Block) -> Build:
-  match build:
-    case Build{entries, by_code, by_key, by_foreign, by_native, stages, next}:
-      entry = Entry{next, 0n, KindLazy{body}}
-      Build{entry <> entries, by_code, Map.set(&2, U32, key, next, by_key), by_foreign, by_native, stages, U32.inc(next)}
-
-
-def live_quantities(quantities: List<&2, BIR.Quantity>, count: Nat) -> Nat:
-  match quantities:
-    case Nil{}: count
-    case +quantity <> rest: live_quantities(rest, live_quantity_next(quantity, count))
-
-def live_quantity_next(quantity: BIR.Quantity, count: Nat) -> Nat:
-  match quantity:
-    case BIR.Erased{}: count
-    case _: Nat.add(count, 1n)
-
-def native_bind(first: Bool, map: Map<&2, U32>, key: String, index: U32) -> Map<&2, U32>:
-  match first:
-    case True{}: Map.set(&2, U32, map, key, index)
-    case False{}: map
-
-def build_native(declarations: List<&2, BIR.Declaration>, build: Build) -> Build:
-  match declarations:
-    case Nil{}: build
-    case +item <> rest:
-      match item:
-        case BIR.NativeDeclaration{key, primitive, quantities}: build_native_one(rest, build, key, primitive, live_quantities(quantities, 0n))
-        case _: build_native(rest, build)
-
-def build_native_one(rest: List<&2, BIR.Declaration>, build: Build, key: String, primitive: BIR.Primitive, count: Nat) -> Build:
-  match Nat.is_eq(count, 0n):
-    case True{}: build_native(rest, build)
-    case False{}: build_native_stage(rest, build, key, primitive, count, 0n, True{})
-
-def build_native_stage(rest: List<&2, BIR.Declaration>, build: Build, key: String, primitive: BIR.Primitive, count: Nat, stage: Nat, first: Bool) -> Build:
-  match build:
-    case Build{entries, by_code, by_key, by_foreign, by_native, stages, next}:
-      match Nat.is_lt(Nat.add(stage, 1n), count):
-        case True{}:
-          entry = Entry{next, Nat.add(stage, 1n), KindStage{0u, Nat.add(stage, 1n)}}
-          bound = native_bind(first, by_native, key, next)
-          build_native_stage(rest, Build{entry <> entries, by_code, by_key, by_foreign, bound, stages, U32.inc(next)}, key, primitive, count, Nat.add(stage, 1n), False{})
-        case False{}:
-          entry = Entry{next, count, KindNative{primitive, count}}
-          bound = native_bind(first, by_native, key, next)
-          build_native(rest, Build{entry <> entries, by_code, by_key, by_foreign, bound, stages, U32.inc(next)})
-
-def arg_names(count: Nat, index: Nat) -> List<&2, String>:
-  match Nat.is_lt(index, count):
-    case True{}: cat(["x[", Nat.show(index), "]"]) <> arg_names(count, Nat.add(index, 1n))
-    case False{}: Nil{}
-
-def build_foreign(scan: Scan, build: Build) -> Build:
-  match scan:
-    case Scan{closures, reads, fkeys, farity}: build_foreign_each(fkeys, farity, build)
-
-def build_foreign_each(keys: List<&2, String>, farity: Map<&2, Nat>, build: Build) -> Build:
-  match keys:
-    case Nil{}: build
-    case +key <> rest:
-      match build:
-        case Build{entries, by_code, by_key, by_foreign, by_native, stages, next}:
-          entry = Entry{next, Nat.add(map_nat(farity, key), 1n), KindForeign{key, map_nat(farity, key)}}
-          build_foreign_each(rest, farity, Build{entry <> entries, by_code, by_key, Map.set(&2, U32, key, next, by_foreign), by_native, stages, U32.inc(next)})
-
-# Final order: program entries, the top (main or library action), then the
-# runtime's own four segments, whose bodies the runtime supplies.
-def finish_entries(build: Build, library: Bool) -> Build:
-  match build:
-    case Build{entries, by_code, by_key, by_foreign, by_native, stages, next}:
-      top = Entry{next, top_arity(library), top_kind(library)}
-      build_runtime(Build{top <> entries, by_code, by_key, by_foreign, by_native, stages, U32.inc(next)})
-
-def top_arity(library: Bool) -> Nat:
-  match library:
-    case True{}: 1n
-    case False{}: 0n
-
-def top_kind(library: Bool) -> Kind:
-  match library:
-    case True{}: KindLibrary{}
-    case False{}: KindMain{}
-
-def build_runtime(build: Build) -> Build:
-  match build:
-    case Build{entries, by_code, by_key, by_foreign, by_native, stages, next}:
-      emit = Entry{next, 1n, KindEmit{}}
-      apply = Entry{U32.inc(next), 2n, KindApply{}}
-      exit = Entry{U32.inc(U32.inc(next)), 0n, KindExit{}}
-      enter = Entry{U32.inc(U32.inc(U32.inc(next))), 0n, KindEnter{}}
-      last = U32.inc(U32.inc(U32.inc(U32.inc(next))))
-      Build{enter <> exit <> apply <> emit <> entries, by_code, by_key, by_foreign, by_native, stages, last}
-
-def entries_ascending(entries: List<&2, Entry>) -> List<&2, Entry>:
-  List.reverse(&2, Entry, entries)
-
-def fid_macro_map(declarations: List<&2, BIR.Declaration>, build: Build) -> Map<&2, String>:
-  match build:
-    case Build{entries: all, by_code, by_key, by_foreign, by_native, stages, next}:
-      fid_macros_runtime(fid_macros_declarations(declarations, by_code, by_foreign, Map.new(&2, String)))
-
-def fid_macros_declarations(declarations: List<&2, BIR.Declaration>, by_code: Map<&2, U32>, by_foreign: Map<&2, U32>, acc: Map<&2, String>) -> Map<&2, String>:
-  match declarations:
-    case Nil{}: acc
-    case +item <> rest:
-      match item:
-        case BIR.FunctionDeclaration{key, code, parameters}:
-          fid_macros_declarations(rest, by_code, by_foreign, map_set_first(acc, key, fid_symbol_of(key, by_code, by_foreign)))
-        case BIR.ForeignDeclaration{key, _, _, arity, _, _, _, _, _}:
-          fid_macros_declarations(rest, by_code, by_foreign, map_set_first(acc, key, fid_symbol_of(key, by_code, by_foreign)))
-        case _: fid_macros_declarations(rest, by_code, by_foreign, acc)
-
-# ---------------------------------------------------------------------------
-# Plan: main kind, native constructor tables, show descriptors
-# ---------------------------------------------------------------------------
-
-def plan_make(program: BIR.Program, imports: List<&2, CImport>) -> PlanResult:
-  scan = scan_program(program)
-  cids = cid_rows(program, scan)
-  match program:
-    case BIR.Program{codes, declarations, constructors, families, type_functions, end}:
-      plan_finish(program, scan, cids, constructors, families, declarations, end, imports)
-
-def plan_finish(program: BIR.Program, scan: Scan, cids: List<&2, CidRow>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, declarations: List<&2, BIR.Declaration>, end: BIR.Ending, imports: List<&2, CImport>) -> PlanResult:
-  plan_pure(end, families, plan_top(program, scan, cids, constructors, families, declarations, end, imports))
-
-def plan_top(program: BIR.Program, scan: Scan, cids: List<&2, CidRow>, constructors: List<&2, BIR.ConstructorLayout>, families: List<&2, BIR.Family>, declarations: List<&2, BIR.Declaration>, end: BIR.Ending, imports: List<&2, CImport>) -> PlanResult:
-  library = ending_library(end)
-  ctx = CLay.context(program)
-  build = finish_entries(build_entries(program, scan), library)
-  PlanOk{Plan{cids, cid_macro_map(cids), fid_macro_map(declarations, build), entries_ascending(build_entries_of(build)), by_code_of(build), by_key_of(build), by_foreign_of(build), by_native_of(build), stages_of(build), constructors, families, declarations, True{}, "{ 0 }", "", library, ending_exports(end), imports, fkeys_of(scan), ctx}}
-
-def plan_pure(end: BIR.Ending, families: List<&2, BIR.Family>, inner: PlanResult) -> PlanResult:
-  match inner:
-    case PlanFail{message}: PlanFail{message}
-    case PlanOk{plan}:
-      plan_set_pure(end, families, plan)
-
-def plan_set_pure(end: BIR.Ending, families: List<&2, BIR.Family>, plan: Plan) -> PlanResult:
-  match end:
-    case BIR.Library{exports}: PlanOk{plan_set_pure_flags(plan, False{}, "{ 0 }", "")}
-    case BIR.Executable{main_type}: plan_executable(main_type, families, plan)
-
-def plan_set_pure_flags(plan: Plan, pure: Bool, desc: String, names: String) -> Plan:
-  match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys, ctx}:
-      Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, pure, desc, names, library, exports, imports, fkeys, ctx}
-
-def fid_macros_runtime(acc: Map<&2, String>) -> Map<&2, String>:
-  fid_macros_runtime_one(map_set_first(acc, "Clo~apply", "FID_CLO_APPLY"))
-
-def fid_macros_runtime_one(acc: Map<&2, String>) -> Map<&2, String>:
-  map_set_first(acc, "IO~emit", "FID_IO_EMIT")
-
-def plan_executable(main_type: BIR.Descriptor, families: List<&2, BIR.Family>, plan: Plan) -> PlanResult:
-  match descriptor_head(main_type):
-    case None{}: PlanFail{"the main type is not a resolvable type descriptor"}
-    case Some{key}:
-      match family_key(key, families):
-        case None{}: PlanFail{String.append("the main type `", String.append(key, "` is not a declared family"))}
-        case Some{family}: plan_executable_family(family, main_type, plan)
-
-def plan_executable_family(family: BIR.Family, main_type: BIR.Descriptor, plan: Plan) -> PlanResult:
-  match family:
-    case BIR.Family{key, name, native, quantity_prefix, arity, arms}:
-      match native:
-        case Some{tag}: plan_executable_io(String.eq(tag, "IO"), family, main_type, plan)
-        case None{}: plan_executable_show(family, main_type, plan)
-
-def plan_executable_io(is_io: Bool, family: BIR.Family, main_type: BIR.Descriptor, plan: Plan) -> PlanResult:
-  match is_io:
-    case True{}: PlanOk{plan_set_pure_flags(plan, False{}, "{ 0 }", "")}
-    case False{}: plan_executable_show(family, main_type, plan)
-
-def plan_executable_show(family: BIR.Family, main_type: BIR.Descriptor, plan: Plan) -> PlanResult:
-  match plan:
-    case Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, library, exports, imports, fkeys, ctx}:
-      show = Phys.show_build(ctx, main_type, constructors, families)
-      match show:
-        case Phys.ShowFail{message}: PlanFail{message}
-        case Phys.ShowOk{desc, names}:
-          PlanOk{Plan{cids, cid_macros, fid_macros, entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, True{}, desc, names, library, exports, imports, fkeys, ctx}}
-
-def descriptor_head(descriptor: BIR.Descriptor) -> Maybe<&2, String>:
-  match descriptor:
-    case BIR.DescriptorRef{key, args}: Some{key}
-    case BIR.DescriptorApplication{fn, arg}: descriptor_head(fn)
-    case BIR.DescriptorFill{head, args}: descriptor_head(head)
-    case BIR.DescriptorPlus{head, args}: descriptor_head(head)
-    case BIR.DescriptorNamedFill{key, head, args}: descriptor_head(head)
-    case BIR.DescriptorNamedPlus{key, head, args}: descriptor_head(head)
-    case _: None{}
-
-def family_key(key: String, families: List<&2, BIR.Family>) -> Maybe<&2, BIR.Family>:
-  match families:
-    case Nil{}: None{}
-    case +family <> rest:
-      match family:
-        case BIR.Family{key: known, name, native, quantity_prefix, arity, arms}:
-          match Bool.or(String.eq(key, known), String.eq(key, name)):
-            case True{}: Some{family}
-            case False{}: family_key(key, rest)
-
-def ending_library(end: BIR.Ending) -> Bool:
-  match end:
-    case BIR.Library{exports}: True{}
-    case BIR.Executable{main_type}: False{}
-
-def ending_exports(end: BIR.Ending) -> List<&2, BIR.Export>:
-  match end:
-    case BIR.Library{exports}: exports
-    case BIR.Executable{main_type}: Nil{}
-
-def build_entries_of(build: Build) -> List<&2, Entry>:
-  match build:
-    case Build{entries, _, _, _, _, _, _}: entries
-
-def by_code_of(build: Build) -> Map<&2, U32>:
-  match build:
-    case Build{_, by_code, _, _, _, _, _}: by_code
-
-def by_key_of(build: Build) -> Map<&2, U32>:
-  match build:
-    case Build{_, _, by_key, _, _, _, _}: by_key
-
-def by_foreign_of(build: Build) -> Map<&2, U32>:
-  match build:
-    case Build{_, _, _, by_foreign, _, _, _}: by_foreign
-
-def by_native_of(build: Build) -> Map<&2, U32>:
-  match build:
-    case Build{_, _, _, _, by_native, _, _}: by_native
-
-def stages_of(build: Build) -> Map<&2, U32>:
-  match build:
-    case Build{_, _, _, _, _, stages, _}: stages
-
-def fkeys_of(scan: Scan) -> List<&2, String>:
-  match scan:
-    case Scan{closures, reads, fkeys, farity}: fkeys
-
-# Descriptor parameter references are de Bruijn indices from the applied end.
-def bool_arms(arms: List<&2, BIR.DescriptorArm>) -> Bool:
-  match arms:
-    case Nil{}: False{}
-    case +first <> rest: bool_arms_rest(last_segment_of_arm(first), rest)
-
-def last_segment_of_arm(arm: BIR.DescriptorArm) -> String:
-  match arm:
-    case BIR.DescriptorArm{key, fields}: last_segment(key)
-
-def bool_arms_rest(first: String, rest: List<&2, BIR.DescriptorArm>) -> Bool:
-  match rest:
-    case Nil{}: False{}
-    case +second <> tail: bool_arms_tail(String.eq(first, "False"), last_segment_of_arm(second), tail)
-
-def bool_arms_tail(is_false: Bool, second: String, tail: List<&2, BIR.DescriptorArm>) -> Bool:
-  match tail:
-    case Nil{}: Bool.and(is_false, String.eq(second, "True"))
-    case _: False{}
 
 # ---------------------------------------------------------------------------
 # Native constructor layout
@@ -2518,14 +2160,25 @@ def cap_slot_value(found: Bool, slot: U32) -> String:
     case True{}: String.concat(["x[", U32.show(slot), "]"])
     case False{}: "0"
 
+# comp.ts call frame: the caller pushes [held words..., continuation FID] and
+# WL_RETN dispatches to that FID after sp -= 1. The continuation pops the held
+# words (WL_POPN(caps)), finds them at STK(0..caps-1), and the return words in
+# r0... No task trio is installed at a call site.
 def cont_prologue(+caps: List<&2, Cap>, caps_n: Nat, result: U32) -> String:
   String.concat([
     "    WL_POPN(", Nat.show(List.length(&2, Cap, caps)), ");\n",
     x_decl(caps_n),
-    k_decls(caps, 0n),
-    cap_intro(caps, 0n, "", ""),
+    cap_stk_intro(caps, 0n, "", ""),
     "    Term ", lv_name(result), " = r0;\n"
   ])
+
+def cap_stk_intro(+caps: List<&2, Cap>, +index: Nat, +locals: String, +slots: String) -> String:
+  match caps:
+    case Nil{}: String.concat([locals, slots])
+    case +cap <> rest:
+      match cap:
+        case CapLocal{id, expr}: cap_stk_intro(rest, Nat.add(index, 1n), String.concat([locals, "    Term ", lv_name(id), " = STK(", Nat.show(index), ");\n"]), slots)
+        case CapSlot{slot, expr}: cap_stk_intro(rest, Nat.add(index, 1n), locals, String.concat([slots, "    x[", U32.show(slot), "] = STK(", Nat.show(index), ");\n"]))
 
 def region_prologue(+caps: List<&2, Cap>, caps_n: Nat) -> String:
   String.concat([a_decls(List.length(&2, Cap, caps)), x_decl(caps_n), cap_intro_a(caps, 0n, "", "")])
@@ -2555,8 +2208,11 @@ def fid_name(+target: U32, +entries: List<&2, Entry>) -> String:
                 case True{}: "FID_ENTER"
                 case False{}: String.concat(["FID_", U32.show(target)])
 
-def case_text(index: U32, body: String) -> String:
-  String.concat(["  WL_CASE(FID_", U32.show(index), ")\n  {\n    WL_OPEN\n", body, "  }}\n\n"])
+# comp.ts reads a segment's incoming registers and stack words before
+# WL_OPEN: WL_OPEN declares the outgoing register bank, so a read after it
+# would see an uninitialised local. The prologue therefore stays outside.
+def case_text(+index: U32, +prologue: String, +body: String, +spin: Bool) -> String:
+  String.concat(["  WL_CASE(FID_", U32.show(index), ")\n  {\n", prologue, "    WL_OPEN\n", spin_open(spin), body, spin_close(spin), "  }}\n\n"])
 
 def spin_open(spin: Bool) -> String:
   match spin:
@@ -2644,7 +2300,7 @@ def region_next(+label: U32, body: BIR.Block, next: BIR.Block, +ctx: Ctx, +caps:
     case StepOk{tn, cn}: region_body(label, body, ctx, caps, fid, refs, tn, cn)
 
 def region_body(label: U32, body: BIR.Block, +ctx: Ctx, +caps: List<&2, Cap>, +fid: U32, refs: List<&2, CapRef>, tn: String, +cn: Ctx) -> Step:
-  match block_ctl(body, Ctx{ctx_sig(ctx), ctx_plan(ctx), ctx_env(ctx), ctx_caps(ctx), ctx_caps_n(ctx), Region{label, fid, refs} <> ctx_regions(ctx), ctx_self(ctx), ctx_next(cn), SegText{fid, List.length(&2, Cap, caps), 0n, case_text(fid, String.concat([region_prologue(caps, ctx_caps_n(ctx)), tn]))} <> ctx_segs(cn), ctx_outs(cn), ctx_spin(ctx), ctx_max(cn)}):
+  match block_ctl(body, Ctx{ctx_sig(ctx), ctx_plan(ctx), ctx_env(ctx), ctx_caps(ctx), ctx_caps_n(ctx), Region{label, fid, refs} <> ctx_regions(ctx), ctx_self(ctx), ctx_next(cn), SegText{fid, List.length(&2, Cap, caps), 0n, case_text(fid, region_prologue(caps, ctx_caps_n(ctx)), tn, False{})} <> ctx_segs(cn), ctx_outs(cn), ctx_spin(ctx), ctx_max(cn)}):
     case StepFail{message}: StepFail{message}
     case StepOk{tb, +cb}:
       StepOk{tb, Ctx{ctx_sig(cb), ctx_plan(cb), ctx_env(cb), ctx_caps(cb), ctx_caps_n(cb), ctx_regions(ctx), ctx_self(ctx), ctx_next(cb), ctx_segs(cb), ctx_outs(cb), ctx_spin(cb), ctx_max(cb)}}
@@ -2689,8 +2345,9 @@ def tail_direct_ctl(+code: U32, args: List<&2, BIR.Arg>, +ctx: Ctx) -> Step:
                     case False{}: StepOk{String.concat([regs_assign(values, 0n), "    WL_JMP(", fid_name(target, sig_entries(ctx_sig(ctx))), ");\n"]), ctx}
                 case None{}: StepOk{String.concat([regs_assign(values, 0n), "    WL_JMP(", fid_name(target, sig_entries(ctx_sig(ctx))), ");\n"]), ctx}
 
-def self_tail(target: U32, values: List<&2, String>, +ctx: Ctx) -> Step:
-  text = String.concat([regs_assign(values, 0n), "    WL_AGAIN(", fid_name(target, sig_entries(ctx_sig(ctx))), ");\n"])
+def self_tail(+target: U32, values: List<&2, String>, +ctx: Ctx) -> Step:
+  +arity = entry_arity(sig_entries(ctx_sig(ctx)), target)
+  text = String.concat([regs_assign(values, 0n), a_rebinds(arity), "    WL_AGAIN(", fid_name(target, sig_entries(ctx_sig(ctx))), ");\n"])
   StepOk{text, Ctx{ctx_sig(ctx), ctx_plan(ctx), ctx_env(ctx), ctx_caps(ctx), ctx_caps_n(ctx), ctx_regions(ctx), ctx_self(ctx), ctx_next(ctx), ctx_segs(ctx), ctx_outs(ctx), True{}, ctx_max(ctx)}}
 
 def tail_apply_ctl(fn: BIR.Atom, arg: BIR.Arg, +ctx: Ctx) -> Step:
@@ -2738,17 +2395,48 @@ def call_next(target: U32, args: List<&2, String>, +result: U32, next: BIR.Block
 def call_done(target: U32, args: List<&2, String>, +caps: List<&2, Cap>, result: U32, +ctx: Ctx, text: String, +cn: Ctx) -> Step:
   +fid = ctx_next(ctx)
   +count = List.length(&2, Cap, caps)
-  StepOk{call_head(fid, count, caps, args, target, sig_entries(ctx_sig(ctx))), Ctx{ctx_sig(cn), ctx_plan(cn), ctx_env(cn), ctx_caps(cn), ctx_caps_n(cn), ctx_regions(cn), ctx_self(cn), ctx_next(cn), SegText{fid, Nat.add(count, 1n), 1n, case_text(fid, String.concat([cont_prologue(caps, ctx_caps_n(ctx), result), text]))} <> ctx_segs(cn), ctx_outs(cn), ctx_spin(cn), ctx_max(cn)}}
+  StepOk{call_head(fid, count, caps, args, target, sig_entries(ctx_sig(ctx))), Ctx{ctx_sig(cn), ctx_plan(cn), ctx_env(cn), ctx_caps(cn), ctx_caps_n(cn), ctx_regions(cn), ctx_self(cn), ctx_next(cn), SegText{fid, Nat.add(count, 1n), 1n, case_text(fid, cont_prologue(caps, ctx_caps_n(ctx), result), text, False{})} <> ctx_segs(cn), ctx_outs(cn), ctx_spin(cn), ctx_max(cn)}}
 
-def call_head(+fid: U32, count: Nat, caps: List<&2, Cap>, args: List<&2, String>, target: U32, entries: List<&2, Entry>) -> String:
+def arg_stores(+node: String, args: List<&2, String>, +index: Nat) -> String:
+  match args:
+    case Nil{}: ""
+    case +arg <> rest: String.concat(["      e.mem[", node, " + ", Nat.show(index), "] = ", arg, ";\n", arg_stores(node, rest, Nat.add(index, 1n))])
+
+# A call site follows comp.ts exactly: the sync path stores the continuation
+# frame as plain words and pushes it; the sequential path builds the
+# continuation task from the current frame's WL_CONT/WL_IDX and does not
+# touch the stack. Both share the callee register load.
+def call_head(+fid: U32, +count: Nat, +caps: List<&2, Cap>, +args: List<&2, String>, +target: U32, +entries: List<&2, Entry>) -> String:
   +node = String.concat(["kc", U32.show(fid)])
+  +callee = String.concat(["kc", U32.show(fid), "t"])
   String.concat([
-    "    u64 ", node, " = task_node(e, FID_", U32.show(fid), ", WL_CONT, WL_IDX, ", Nat.show(count), ");\n",
+    "    if (seq) {\n",
+    "      WL_ROOM(", Nat.show(Nat.add(count, 1n)), ");\n",
+    cap_stk_stores(caps, 0n),
+    "      STK(", Nat.show(count), ") = FID_", U32.show(fid), ";\n",
+    "      WL_PUSHN(", Nat.show(Nat.add(count, 1n)), ");\n",
+    "    } else {\n",
+    "      u64 ", node, " = task_node(e, FID_", U32.show(fid), ", WL_CONT, WL_IDX, 1);\n",
     cap_stores(node, caps, 0n),
-    "    WL_ROOM(3);\n    STK(0) = term_tsk(FID_", U32.show(fid), ", ", node, ");\n    STK(1) = 0;\n    STK(2) = FID_EXIT;\n    WL_PUSHN(3);\n",
+    "      WL_CONT = term_tsk(FID_", U32.show(fid), ", ", node, ");\n",
+    "      WL_IDX = ", Nat.show(count), ";\n",
+    "    }\n",
+    "    if (!DEVICE && !seq && fid_nofk(", fid_name(target, entries), ")) {\n",
+    "      u64 ", callee, " = task_node(e, ", fid_name(target, entries), ", WL_CONT, WL_IDX, 0);\n",
+    arg_stores(callee, args, 0n),
+    "      return term_tsk(", fid_name(target, entries), ", ", callee, ");\n",
+    "    }\n",
     regs_assign(args, 0n),
     "    WL_JMP(", fid_name(target, entries), ");\n"
   ])
+
+def cap_stk_stores(+caps: List<&2, Cap>, +index: Nat) -> String:
+  match caps:
+    case Nil{}: ""
+    case +cap <> rest:
+      match cap:
+        case CapLocal{id, expr}: String.concat(["    STK(", Nat.show(index), ") = ", expr, ";\n", cap_stk_stores(rest, Nat.add(index, 1n))])
+        case CapSlot{slot, expr}: String.concat(["    STK(", Nat.show(index), ") = ", expr, ";\n", cap_stk_stores(rest, Nat.add(index, 1n))])
 
 def cap_stores(+node: String, caps: List<&2, Cap>, +index: Nat) -> String:
   match caps:
@@ -2886,8 +2574,8 @@ def entry_kind_ctl(+index: U32, +arity: Nat, kind: EntryKind, +ctx: Ctx) -> Step
 def entry_reserved(index: U32, ctx: Ctx) -> Step:
   StepOk{"", ctx}
 
-def entry_add(index: U32, body: String, +ctx: Ctx) -> Step:
-  StepOk{"", Ctx{ctx_sig(ctx), ctx_plan(ctx), ctx_env(ctx), ctx_caps(ctx), ctx_caps_n(ctx), ctx_regions(ctx), ctx_self(ctx), ctx_next(ctx), ctx_segs(ctx), case_text(index, body) <> ctx_outs(ctx), False{}, ctx_max(ctx)}}
+def entry_add(index: U32, +prologue: String, +body: String, +spin: Bool, +ctx: Ctx) -> Step:
+  StepOk{"", Ctx{ctx_sig(ctx), ctx_plan(ctx), ctx_env(ctx), ctx_caps(ctx), ctx_caps_n(ctx), ctx_regions(ctx), ctx_self(ctx), ctx_next(ctx), ctx_segs(ctx), case_text(index, prologue, body, spin) <> ctx_outs(ctx), False{}, ctx_max(ctx)}}
 
 def entry_code(+index: U32, +arity: Nat, +captures: Nat, +params: List<&2, BIR.Parameter>, body: BIR.Block, +ctx: Ctx) -> Step:
   match Nat.is_eq(Nat.add(captures, List.length(&2, BIR.Parameter, params)), arity):
@@ -2896,12 +2584,8 @@ def entry_code(+index: U32, +arity: Nat, +captures: Nat, +params: List<&2, BIR.P
       match block_ctl(body, Ctx{ctx_sig(ctx), ctx_plan(ctx), params_env(params, captures, 0n, Nil{}), a_caps(captures), captures, Nil{}, Some{index}, ctx_next(ctx), ctx_segs(ctx), ctx_outs(ctx), False{}, ctx_max(ctx)}):
         case StepFail{message}: StepFail{message}
         case StepOk{text, +after}:
-          entry_add(index, spin_body(ctx_spin(after), String.concat([a_decls(arity), x_decl(captures), x_fill_a(captures), params_bind(params, captures, 0n)]), text), after)
+          entry_add(index, String.concat([a_decls(arity), x_decl(captures)]), String.concat([x_fill_a(captures), params_bind(params, captures, 0n), text]), ctx_spin(after), after)
 
-def spin_body(spin: Bool, +prologue: String, +text: String) -> String:
-  match spin:
-    case True{}: String.concat(["    WL_SPIN\n", prologue, text, "    WL_SPUN\n"])
-    case False{}: String.concat([prologue, text])
 
 def entry_stage(+index: U32, +arity: Nat, next: U32, ctx: Ctx) -> Step:
   +node = String.concat(["nd", U32.show(index)])
@@ -2911,7 +2595,7 @@ def entry_stage(+index: U32, +arity: Nat, next: U32, ctx: Ctx) -> Step:
     stores,
     "    r0 = term_clo(FID_", U32.show(next), ", ", node, ");\n    WL_RETN(1);\n"
   ])
-  entry_add(index, body, ctx)
+  entry_add(index, a_decls(arity), body, False{}, ctx)
 
 def stage_stores(+node: String, +count: Nat, +index: Nat) -> String:
   match Nat.is_lt(index, count):
@@ -2921,15 +2605,15 @@ def stage_stores(+node: String, +count: Nat, +index: Nat) -> String:
 def entry_lazy(index: U32, arity: Nat, body: BIR.Block, +ctx: Ctx) -> Step:
   match block_ctl(body, Ctx{ctx_sig(ctx), ctx_plan(ctx), Nil{}, Nil{}, 0n, Nil{}, None{}, ctx_next(ctx), ctx_segs(ctx), ctx_outs(ctx), False{}, ctx_max(ctx)}):
     case StepFail{message}: StepFail{message}
-    case StepOk{text, +after}: entry_add(index, spin_body(ctx_spin(after), "", text), after)
+    case StepOk{text, +after}: entry_add(index, "", text, ctx_spin(after), after)
 
-def entry_native(index: U32, arity: Nat, primitive: BIR.Primitive, +count: Nat, +ctx: Ctx) -> Step:
+def entry_native(index: U32, +arity: Nat, primitive: BIR.Primitive, +count: Nat, +ctx: Ctx) -> Step:
   match Nat.is_eq(arity, count):
     case False{}: StepFail{"BIR native entry arity disagrees with its live quantities"}
     case True{}:
       match prim_part(primitive, a_names(count), ctx_plan(ctx)):
         case PartFail{message}: StepFail{message}
-        case PartOk{text}: entry_add(index, String.concat(["    r0 = ", text, ";\n    WL_RETN(1);\n"]), ctx)
+        case PartOk{text}: entry_add(index, a_decls(arity), String.concat(["    r0 = ", text, ";\n    WL_RETN(1);\n"]), False{}, ctx)
 
 def a_names(count: Nat) -> List<&2, String>:
   a_caps(count)
@@ -2945,7 +2629,7 @@ def entry_foreign(+index: U32, +arity: Nat, key: String, args: Nat, +ctx: Ctx) -
         stage_stores(node, arity, 0n),
         "    r0 = term_ctr(", U32.show(cid), ", ", node, ");\n    WL_RETN(1);\n"
       ])
-      entry_add(index, body, ctx)
+      entry_add(index, a_decls(arity), body, False{}, ctx)
 
 # The top entry calls the main declaration and lets its result reach the root
 # continuation the runtime installed.
@@ -2967,7 +2651,7 @@ def main_jump(index: U32, found: Maybe<&2, U32>, +ctx: Ctx) -> Step:
     case Some{+target}:
       match Nat.is_eq(entry_arity(sig_entries(ctx_sig(ctx)), target), 0n):
         case False{}: StepFail{"the C target's main entry must take no parameters"}
-        case True{}: entry_add(index, String.concat(["    WL_JMP(", fid_name(target, sig_entries(ctx_sig(ctx))), ");\n"]), ctx)
+        case True{}: entry_add(index, "", String.concat(["    WL_JMP(", fid_name(target, sig_entries(ctx_sig(ctx))), ");\n"]), False{}, ctx)
 
 # -- control plan -----------------------------------------------------------
 
@@ -3112,9 +2796,7 @@ def wl_table_rows(rows: List<&2, SegText>, +entries: List<&2, Entry>) -> String:
 # table omits it (the template appends its declaration). The runtime-owned
 # cases keep their symbolic names, matching the template definitions.
 def wl_row_text(+fid: U32, +entries: List<&2, Entry>) -> Maybe<&2, String>:
-  match U32.is_eq(fid, rt_entry(entries, 5n)):
-    case True{}: None{}
-    case False{}: Some{wl_row_name(fid, entries)}
+  Some{wl_row_name(fid, entries)}
 
 def wl_row_name(+fid: U32, +entries: List<&2, Entry>) -> String:
   match U32.is_eq(fid, rt_entry(entries, 2n)):
@@ -3125,7 +2807,10 @@ def wl_row_name(+fid: U32, +entries: List<&2, Entry>) -> String:
         case False{}:
           match U32.is_eq(fid, rt_entry(entries, 4n)):
             case True{}: "WL_X(FID_EXIT)"
-            case False{}: String.concat(["WL_X(FID_", U32.show(fid), ")"])
+            case False{}:
+              match U32.is_eq(fid, rt_entry(entries, 5n)):
+                case True{}: "WL_X(FID_ENTER)"
+                case False{}: String.concat(["WL_X(FID_", U32.show(fid), ")"])
 
 # -- runtime tables ---------------------------------------------------------
 

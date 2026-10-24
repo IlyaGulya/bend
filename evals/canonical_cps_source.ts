@@ -202,17 +202,33 @@ export async function composeCanonicalCPSSource(canonical:string, providers:CPSP
         canonicalDeclarationSha256:sha(unit.source.slice(association.start-association.prefix.length,association.end)),composedDeclarationSha256:sha(rendered)});
     }
   }
-  // Native datatypes must see their dependencies first. A true mutual datatype
-  // cycle is rejected explicitly rather than relying on a forward empty slot.
-  const types=new Map(typeRows.map(row=>[row.name,row])), ordered:string[]=[], done=new Set<string>(), active=new Set<string>();
-  function add(name:string):void{
-    if(done.has(name))return;
-    if(active.has(name))throw Error('Mutually dependent composed datatypes '+name);
-    const row=types.get(name)!;active.add(name);
-    for(const dependency of row.dependencies)if(dependency!==name&&types.has(dependency))add(dependency);
-    active.delete(name);done.add(name);ordered.push(row.text);
+  // A datatype is a declaration, but the selfhost checker resolves names while
+  // it walks the composed header, so a type must still precede every type it
+  // names unless they belong to one mutually recursive group. Tarjan's SCC
+  // order is dependency-first; members of one group keep source order, the only
+  // order a genuine mutual datatype can have. The kernel declares ADTs whole up
+  // front, so a group's internal forward names are legal for it.
+  const types=new Map(typeRows.map(row=>[row.name,row])), position=new Map(typeRows.map((row,index)=>[row.name,index]));
+  const ids=new Map<string,number>(), low=new Map<string,number>(), stack:string[]=[], active=new Set<string>(), groups:string[][]=[];
+  let nextId=0;
+  function visit(name:string):void{
+    ids.set(name,nextId);low.set(name,nextId);nextId++;stack.push(name);active.add(name);
+    for(const dependency of types.get(name)!.dependencies){
+      if(dependency===name||!types.has(dependency))continue;
+      if(!ids.has(dependency)){visit(dependency);low.set(name,Math.min(low.get(name)!,low.get(dependency)!));}
+      else if(active.has(dependency))low.set(name,Math.min(low.get(name)!,ids.get(dependency)!));
+    }
+    if(low.get(name)!==ids.get(name))return;
+    const group:string[]=[];let member:string;
+    do{member=stack.pop()!;active.delete(member);group.push(member);}while(member!==name);
+    groups.push(group);
   }
-  for(const row of typeRows)add(row.name);
+  for(const row of typeRows)if(!ids.has(row.name))visit(row.name);
+  const groupOf=new Map<string,number>();groups.forEach((group,index)=>group.forEach(name=>groupOf.set(name,index)));
+  groups.forEach((group,index)=>{for(const name of group)for(const dependency of types.get(name)!.dependencies)
+    if(dependency!==name&&groupOf.has(dependency)&&groupOf.get(dependency)!>index)throw Error('Composed datatype order drift '+name+' -> '+dependency);});
+  const ordered:string[]=[];
+  for(const group of groups)for(const name of group.sort((a,b)=>position.get(a)!-position.get(b)!))ordered.push(types.get(name)!.text);
   const source='import Base\n'+[...external.values()].map(row=>'import '+row.path+' as '+row.alias+'\n').join('')+'\n'+ordered.join('')+definitionRows.join('');
   const proof:CPSCompositionProof={providers:[...providers].sort(),sourceSha256:sha(source),
     sources:units.map(unit=>({canonical:unit.path,canonicalSha256:sha(unit.source),declarationNames:unit.oracle.declarations.map(row=>row.key),symbols:Object.fromEntries(unit.symbols)})),

@@ -46,18 +46,21 @@
 
 import Base
 import ./backend_ir.bend as BIR
+import ./index_lookup.bend as IndexLookup
 
 # A normalized type expression. NfType is a named type applied to the
 # arguments it has so far; NfCtor is a value constructor applied to values,
 # which a type-level match may inspect; NfQuantity and NfKind are the
-# quantity and kind language, which no target reads; NfOther is any other
-# term (a function, a proof, a hole), kept as its own descriptor; NfMissing
-# is a binder with no value in scope, kept as its own descriptor.
+# quantity and kind language, which no target reads (a kind carries its
+# quantity already materialized, so building a normal form never needs a
+# second traversal with its own budget); NfOther is any other term (a
+# function, a proof, a hole), kept as its own descriptor; NfMissing is a
+# binder with no value in scope, kept as its own descriptor.
 type NfVal is Data:
   NfType{key: String, args: List<&2, NfVal>}
   NfCtor{key: String, args: List<&2, NfVal>}
   NfQuantity{quantity: BIR.Quantity}
-  NfKind{quantity: NfVal}
+  NfKind{quantity: BIR.Descriptor}
   NfOther{source: BIR.Descriptor}
   NfMissing{source: BIR.Descriptor}
 
@@ -70,14 +73,38 @@ type NfList is Data:
   NfListFail{message: String}
 
 type NfContext is Data:
-  NfContext{families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>}
+  NfContext{families: Map<&2, BIR.Family>, type_functions: Map<&2, BIR.TypeFunction>}
 
 # An outer named application: the key and the arguments applied to it.
 type NfApp is Data:
   NfApp{key: String, args: List<&2, BIR.Descriptor>}
 
+# The arity decision is computed from a borrowed argument list, then applied to
+# the owned list exactly once. This keeps list measurement from consuming the
+# value that the resulting NfType must own.
+type NfArity is Data:
+  NfArity{complete: Bool, exact: Bool, under: Bool}
+
+def family_index(families: List<&2, BIR.Family>) -> Map<&2, BIR.Family>:
+  match families:
+    case Nil{}:
+      Map.new(&2, BIR.Family)
+    case +family <> rest:
+      match family:
+        case BIR.Family{key, name, native, quantity_prefix, arity, arms}:
+          Map.set(&2, BIR.Family, family_index(rest), key, family)
+
+def function_index(functions: List<&2, BIR.TypeFunction>) -> Map<&2, BIR.TypeFunction>:
+  match functions:
+    case Nil{}:
+      Map.new(&2, BIR.TypeFunction)
+    case +function <> rest:
+      match function:
+        case BIR.TypeFunction{key, native, quantity_prefix, arity, body}:
+          Map.set(&2, BIR.TypeFunction, function_index(rest), key, function)
+
 def nf_context(families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>) -> NfContext:
-  NfContext{families, type_functions}
+  NfContext{family_index(families), function_index(type_functions)}
 
 def default_fuel() -> Nat:
   1024n
@@ -86,33 +113,13 @@ def default_fuel() -> Nat:
 # Lookup: exact canonical keys only
 # ---------------------------------------------------------------------------
 
-def family_of(key: String, families: List<&2, BIR.Family>) -> Maybe<&2, BIR.Family>:
-  match families:
-    case Nil{}:
-      None{}
-    case +family <> rest:
-      match family:
-        case BIR.Family{known, name, native, quantity_prefix, arity, arms}:
-          match String.eq(key, known):
-            case True{}:
-              Some{family}
-            case False{}:
-              family_of(key, rest)
+def family_of(+key: String, +families: Map<&2, BIR.Family>) -> Maybe<&2, BIR.Family>:
+  IndexLookup.find(BIR.Family, families, key)
 
-def function_of(key: String, functions: List<&2, BIR.TypeFunction>) -> Maybe<&2, BIR.TypeFunction>:
-  match functions:
-    case Nil{}:
-      None{}
-    case +function <> rest:
-      match function:
-        case BIR.TypeFunction{known, native, quantity_prefix, arity, body}:
-          match String.eq(key, known):
-            case True{}:
-              Some{function}
-            case False{}:
-              function_of(key, rest)
+def function_of(+key: String, +functions: Map<&2, BIR.TypeFunction>) -> Maybe<&2, BIR.TypeFunction>:
+  IndexLookup.find(BIR.TypeFunction, functions, key)
 
-def native_of(key: String, families: List<&2, BIR.Family>, functions: List<&2, BIR.TypeFunction>) -> Maybe<&2, String>:
+def native_of(+key: String, +families: Map<&2, BIR.Family>, +functions: Map<&2, BIR.TypeFunction>) -> Maybe<&2, String>:
   match family_of(key, families):
     case Some{family}:
       match family:
@@ -131,7 +138,7 @@ def native_of(key: String, families: List<&2, BIR.Family>, functions: List<&2, B
 # Environment and list helpers
 # ---------------------------------------------------------------------------
 
-def val_nth(env: List<&2, NfVal>, at: Nat) -> NfVal:
+def val_nth(+env: List<&2, NfVal>, at: Nat) -> NfVal:
   match env, at:
     case +val <> rest, 0n:
       val
@@ -140,15 +147,17 @@ def val_nth(env: List<&2, NfVal>, at: Nat) -> NfVal:
     case _, _:
       NfMissing{BIR.DescriptorNull{}}
 
-def val_at(env: List<&2, NfVal>, index: Nat, source: BIR.Descriptor) -> NfVal:
-  count = List.length(&2, NfVal, env)
-  match Nat.is_lt(index, count):
+def val_at(+env: List<&2, NfVal>, +index: Nat, source: BIR.Descriptor) -> NfVal:
+  val_at_choose(Nat.is_lt(index, List.length(&2, NfVal, env)), env, index, source)
+
+def val_at_choose(inside: Bool, +env: List<&2, NfVal>, +index: Nat, source: BIR.Descriptor) -> NfVal:
+  match inside:
     case True{}:
-      val_nth(env, Nat.sub(Nat.sub(count, 1n), index))
+      val_nth(env, Nat.sub(Nat.sub(List.length(&2, NfVal, env), 1n), index))
     case False{}:
       NfMissing{source}
 
-def first_vals(vals: List<&2, NfVal>, count: Nat) -> List<&2, NfVal>:
+def first_vals(vals: List<&2, NfVal>, +count: Nat) -> List<&2, NfVal>:
   match vals, count:
     case _, 0n:
       Nil{}
@@ -157,7 +166,7 @@ def first_vals(vals: List<&2, NfVal>, count: Nat) -> List<&2, NfVal>:
     case +val <> tail, 1n+rest:
       val <> first_vals(tail, rest)
 
-def drop_vals(vals: List<&2, NfVal>, count: Nat) -> List<&2, NfVal>:
+def drop_vals(vals: List<&2, NfVal>, +count: Nat) -> List<&2, NfVal>:
   match vals, count:
     case _, 0n:
       vals
@@ -166,7 +175,7 @@ def drop_vals(vals: List<&2, NfVal>, count: Nat) -> List<&2, NfVal>:
     case +val <> tail, 1n+rest:
       drop_vals(tail, rest)
 
-def insert_before(vals: List<&2, NfVal>, at: Nat, val: NfVal) -> List<&2, NfVal>:
+def insert_before(vals: List<&2, NfVal>, +at: Nat, val: NfVal) -> List<&2, NfVal>:
   match vals, at:
     case _, 0n:
       val <> vals
@@ -190,45 +199,128 @@ def quantity_markers(count: Nat) -> List<&2, NfVal>:
       NfQuantity{BIR.Erased{}} <> quantity_markers(rest)
 
 # ---------------------------------------------------------------------------
+# Materialization: a normal form as a descriptor
+# ---------------------------------------------------------------------------
+
+# One structural list walk builds every descriptor: a value's arguments and
+# each remaining sibling are direct fields of the value list being matched, so
+# the single self-call is decreasing without a budget. A kind already carries
+# its materialized quantity (see nf_descriptor_step).
+def materialize_all(vals: List<&2, NfVal>) -> List<&2, BIR.Descriptor>:
+  match vals:
+    case Nil{}:
+      Nil{}
+    case +val <> rest:
+      match val:
+        case NfType{key, args}:
+          BIR.DescriptorRef{key, materialize_all(args)} <> materialize_all(rest)
+        case NfCtor{key, args}:
+          BIR.DescriptorConstructor{key, materialize_all(args)} <> materialize_all(rest)
+        case NfQuantity{quantity}:
+          BIR.DescriptorQuantity{quantity} <> materialize_all(rest)
+        case NfKind{quantity}:
+          BIR.DescriptorKind{quantity} <> materialize_all(rest)
+        case NfOther{source}:
+          source <> materialize_all(rest)
+        case NfMissing{source}:
+          source <> materialize_all(rest)
+
+def materialize(val: NfVal) -> BIR.Descriptor:
+  match val:
+    case NfType{key, args}:
+      BIR.DescriptorRef{key, materialize_all(args)}
+    case NfCtor{key, args}:
+      BIR.DescriptorConstructor{key, materialize_all(args)}
+    case NfQuantity{quantity}:
+      BIR.DescriptorQuantity{quantity}
+    case NfKind{quantity}:
+      BIR.DescriptorKind{quantity}
+    case NfOther{source}:
+      source
+    case NfMissing{source}:
+      source
+
+# ---------------------------------------------------------------------------
+# Descriptor patterns
+# ---------------------------------------------------------------------------
+
+# One structural walk binds every pattern against its value. The self-call on
+# constructor fields receives a direct field of the pattern being matched, just
+# like the sibling tail; no fuel is involved because every call descends.
+def bind_patterns(patterns: List<&2, BIR.DescriptorPattern>, values: List<&2, NfVal>) -> Maybe<&2, List<&2, NfVal>>:
+  match patterns, values:
+    case Nil{}, Nil{}:
+      Some{Nil{}}
+    case +pattern <> rest, +value <> vrest:
+      match pattern:
+        case BIR.DescriptorBinder{quantity}:
+          match bind_patterns(rest, vrest):
+            case Some{bindings}:
+              Some{value <> bindings}
+            case None{}:
+              None{}
+        case BIR.DescriptorConstructorPattern{key, fields}:
+          match value:
+            case NfCtor{known, args}:
+              match String.eq(key, known):
+                case False{}:
+                  None{}
+                case True{}:
+                  match bind_patterns(fields, args):
+                    case Some{bindings}:
+                      match bind_patterns(rest, vrest):
+                        case Some{tail}:
+                          Some{append_vals(bindings, tail)}
+                        case None{}:
+                          None{}
+                    case None{}:
+                      None{}
+            case _:
+              None{}
+    case _, _:
+      None{}
+
+# ---------------------------------------------------------------------------
 # Normalization
 # ---------------------------------------------------------------------------
 
-def nf(context: NfContext, descriptor: BIR.Descriptor, env: List<&2, NfVal>, fuel: Nat) -> Nf:
+def nf(+context: NfContext, descriptor: BIR.Descriptor, +env: List<&2, NfVal>, +fuel: Nat) -> Nf:
   match Nat.is_eq(fuel, 0n):
     case True{}:
       NfFail{"the type expression did not normalize within its reduction budget"}
     case False{}:
       nf_descriptor(context, descriptor, env, Nat.sub(fuel, 1n))
 
-def nf_descriptor(context: NfContext, descriptor: BIR.Descriptor, env: List<&2, NfVal>, fuel: Nat) -> Nf:
+def nf_descriptor(+context: NfContext, descriptor: BIR.Descriptor, +env: List<&2, NfVal>, +fuel: Nat) -> Nf:
   match Nat.is_eq(fuel, 0n):
     case True{}:
       NfFail{"the type expression did not normalize within its reduction budget"}
     case False{}:
       nf_descriptor_step(context, descriptor, env, fuel)
 
-def nf_descriptor_step(context: NfContext, descriptor: BIR.Descriptor, env: List<&2, NfVal>, fuel: Nat) -> Nf:
-  match descriptor:
+def nf_descriptor_step(+context: NfContext, descriptor: BIR.Descriptor, +env: List<&2, NfVal>, +fuel: Nat) -> Nf:
+  +whole = descriptor
+  match whole:
     case BIR.DescriptorNull{}:
-      NfOk{NfOther{descriptor}}
+      NfOk{NfOther{whole}}
     case BIR.DescriptorParameter{index}:
-      NfOk{val_at(env, index, descriptor)}
+      NfOk{val_at(env, index, whole)}
     case BIR.DescriptorQuantityKind{}:
-      NfOk{NfOther{descriptor}}
+      NfOk{NfOther{whole}}
     case BIR.DescriptorQuantity{quantity}:
       NfOk{NfQuantity{quantity}}
     case BIR.DescriptorKind{quantity}:
       match nf(context, quantity, env, fuel):
         case NfOk{val}:
-          NfOk{NfKind{val}}
+          NfOk{NfKind{materialize(val)}}
         case NfFail{message}:
           NfFail{message}
     case BIR.DescriptorMinimum{left, right}:
-      NfOk{NfOther{descriptor}}
+      NfOk{NfOther{whole}}
     case BIR.DescriptorArrow{use, domain, body}:
-      NfOk{NfOther{descriptor}}
+      NfOk{NfOther{whole}}
     case BIR.DescriptorLambda{use, body}:
-      NfOk{NfOther{descriptor}}
+      NfOk{NfOther{whole}}
     case BIR.DescriptorRef{key, args}:
       match nf_all(context, args, env, fuel):
         case NfListOk{vals}:
@@ -266,21 +358,21 @@ def nf_descriptor_step(context: NfContext, descriptor: BIR.Descriptor, env: List
     case BIR.DescriptorLocal{patterns, values, body}:
       match nf_all(context, values, env, fuel):
         case NfListOk{vals}:
-          match bind_patterns(patterns, vals, fuel):
+          match bind_patterns(patterns, vals):
             case Some{bindings}:
               nf_descriptor(context, body, List.append(&2, NfVal, env, bindings), Nat.sub(fuel, 1n))
             case None{}:
-              NfOk{NfOther{descriptor}}
+              NfOk{NfOther{whole}}
         case NfListFail{message}:
           NfFail{message}
     case BIR.DescriptorMatch{values, cases}:
       match nf_all(context, values, env, fuel):
         case NfListOk{vals}:
-          nf_cases(context, cases, vals, env, descriptor, fuel)
+          nf_cases(context, cases, vals, env, whole, fuel)
         case NfListFail{message}:
           NfFail{message}
     case BIR.DescriptorCase{patterns, body}:
-      NfOk{NfOther{descriptor}}
+      NfOk{NfOther{whole}}
     case BIR.DescriptorBind{value, body}:
       match nf(context, value, env, fuel):
         case NfOk{val}:
@@ -288,15 +380,15 @@ def nf_descriptor_step(context: NfContext, descriptor: BIR.Descriptor, env: List
         case NfFail{message}:
           NfFail{message}
     case BIR.DescriptorEquality{left, right, ty}:
-      NfOk{NfOther{descriptor}}
+      NfOk{NfOther{whole}}
     case BIR.DescriptorReflexivity{}:
-      NfOk{NfOther{descriptor}}
+      NfOk{NfOther{whole}}
     case BIR.DescriptorFailure{message}:
       NfFail{message}
     case BIR.DescriptorFill{head, args}:
-      nf_apply_args(context, head, args, env, descriptor, fuel)
+      nf_apply_args(context, head, args, env, whole, fuel)
     case BIR.DescriptorPlus{head, args}:
-      nf_apply_args(context, head, args, env, descriptor, fuel)
+      nf_apply_args(context, head, args, env, whole, fuel)
     case BIR.DescriptorNamedFill{key, head, args}:
       match nf_all(context, args, env, fuel):
         case NfListOk{vals}:
@@ -310,7 +402,7 @@ def nf_descriptor_step(context: NfContext, descriptor: BIR.Descriptor, env: List
         case NfListFail{message}:
           NfFail{message}
 
-def nf_all(context: NfContext, descriptors: List<&2, BIR.Descriptor>, env: List<&2, NfVal>, fuel: Nat) -> NfList:
+def nf_all(+context: NfContext, descriptors: List<&2, BIR.Descriptor>, +env: List<&2, NfVal>, +fuel: Nat) -> NfList:
   match descriptors:
     case Nil{}:
       NfListOk{Nil{}}
@@ -325,7 +417,7 @@ def nf_all(context: NfContext, descriptors: List<&2, BIR.Descriptor>, env: List<
             case NfListOk{vals}:
               NfListOk{val <> vals}
 
-def nf_apply_args(context: NfContext, head: BIR.Descriptor, args: List<&2, BIR.Descriptor>, env: List<&2, NfVal>, source: BIR.Descriptor, fuel: Nat) -> Nf:
+def nf_apply_args(+context: NfContext, head: BIR.Descriptor, args: List<&2, BIR.Descriptor>, +env: List<&2, NfVal>, source: BIR.Descriptor, +fuel: Nat) -> Nf:
   match nf(context, head, env, fuel):
     case NfFail{message}:
       NfFail{message}
@@ -336,14 +428,14 @@ def nf_apply_args(context: NfContext, head: BIR.Descriptor, args: List<&2, BIR.D
         case NfListOk{vals}:
           nf_apply_source(context, val, vals, source, fuel)
 
-def nf_apply_source(context: NfContext, val: NfVal, args: List<&2, NfVal>, source: BIR.Descriptor, fuel: Nat) -> Nf:
+def nf_apply_source(+context: NfContext, val: NfVal, args: List<&2, NfVal>, source: BIR.Descriptor, +fuel: Nat) -> Nf:
   match args:
     case Nil{}:
       NfOk{val}
     case _:
       nf_apply(context, val, args, fuel)
 
-def nf_apply(context: NfContext, val: NfVal, args: List<&2, NfVal>, fuel: Nat) -> Nf:
+def nf_apply(+context: NfContext, val: NfVal, args: List<&2, NfVal>, +fuel: Nat) -> Nf:
   match args:
     case Nil{}:
       NfOk{val}
@@ -354,7 +446,7 @@ def nf_apply(context: NfContext, val: NfVal, args: List<&2, NfVal>, fuel: Nat) -
         case NfOk{next}:
           nf_apply(context, next, rest, Nat.sub(fuel, 1n))
 
-def nf_apply_one(context: NfContext, val: NfVal, arg: NfVal, fuel: Nat) -> Nf:
+def nf_apply_one(+context: NfContext, val: NfVal, arg: NfVal, +fuel: Nat) -> Nf:
   match val:
     case NfType{key, args}:
       nf_named(context, key, List.append(&2, NfVal, args, [arg]), Nat.sub(fuel, 1n))
@@ -372,12 +464,29 @@ def nf_apply_one(context: NfContext, val: NfVal, arg: NfVal, fuel: Nat) -> Nf:
 # A named type with the arguments it has: a type function reduces once it is
 # fully applied, a datatype keeps its arguments, and a name that is neither is
 # an abstract type expression, which no consumer may fail on.
-def nf_named(context: NfContext, key: String, args: List<&2, NfVal>, fuel: Nat) -> Nf:
+def intrinsic_io(+function: BIR.TypeFunction) -> Bool:
+  match function:
+    case BIR.TypeFunction{key, native, quantity_prefix, arity, body}:
+      match native:
+        case Some{"IO"}: True{}
+        case _: False{}
+
+def nf_named_io(is_io: Bool, +context: NfContext, function: BIR.TypeFunction, args: List<&2, NfVal>, +fuel: Nat) -> Nf:
+  match is_io:
+    case True{}:
+      match function:
+        case BIR.TypeFunction{key, native, quantity_prefix, arity, body}:
+          NfOk{NfType{key, args}}
+    case False{}:
+      nf_reduce(context, function, args, Nat.sub(fuel, 1n))
+
+def nf_named(+context: NfContext, +key: String, args: List<&2, NfVal>, +fuel: Nat) -> Nf:
   match context:
     case NfContext{families, type_functions}:
       match function_of(key, type_functions):
         case Some{function}:
-          nf_reduce(context, function, args, Nat.sub(fuel, 1n))
+          +work = function
+          nf_named_io(intrinsic_io(work), context, work, args, fuel)
         case None{}:
           match family_of(key, families):
             case Some{family}:
@@ -385,131 +494,86 @@ def nf_named(context: NfContext, key: String, args: List<&2, NfVal>, fuel: Nat) 
             case None{}:
               NfOk{NfType{key, args}}
 
+def nf_arity(+args: List<&2, NfVal>, +quantity_prefix: Nat, +arity: Nat) -> NfArity:
+  NfArity{Nat.is_eq(Nat.add(List.length(&2, NfVal, args), quantity_prefix), arity), Nat.is_eq(List.length(&2, NfVal, args), arity), Nat.is_lt(List.length(&2, NfVal, args), arity)}
+
 def nf_family(family: BIR.Family, args: List<&2, NfVal>) -> Nf:
+  +work = args
   match family:
     case BIR.Family{key, name, native, quantity_prefix, arity, arms}:
-      count = List.length(&2, NfVal, args)
-      match Nat.is_eq(Nat.add(count, quantity_prefix), arity):
+      +prefix = quantity_prefix
+      nf_family_apply(nf_arity(work, prefix, arity), key, prefix, work)
+
+def nf_family_apply(decision: NfArity, key: String, quantity_prefix: Nat, args: List<&2, NfVal>) -> Nf:
+  match decision:
+    case NfArity{complete, exact, under}:
+      match complete:
         case True{}:
           NfOk{NfType{key, List.append(&2, NfVal, quantity_markers(quantity_prefix), args)}}
         case False{}:
-          match Nat.is_eq(count, arity):
+          match exact:
             case True{}:
               NfOk{NfType{key, args}}
             case False{}:
-              match Nat.is_lt(count, arity):
+              match under:
                 case True{}:
                   NfOk{NfType{key, args}}
                 case False{}:
                   NfFail{String.append("the type `", String.append(key, "` is applied past its declared parameter count"))}
 
-def nf_reduce(context: NfContext, function: BIR.TypeFunction, args: List<&2, NfVal>, fuel: Nat) -> Nf:
+def nf_reduce(+context: NfContext, function: BIR.TypeFunction, args: List<&2, NfVal>, +fuel: Nat) -> Nf:
+  +work = args
   match function:
     case BIR.TypeFunction{key, native, quantity_prefix, arity, body}:
-      count = List.length(&2, NfVal, args)
-      match Nat.is_eq(Nat.add(count, quantity_prefix), arity):
+      +prefix = quantity_prefix
+      +fixed_arity = arity
+      nf_reduce_apply(nf_arity(work, prefix, fixed_arity), context, key, prefix, fixed_arity, body, work, fuel)
+
+def nf_reduce_apply(decision: NfArity, +context: NfContext, key: String, quantity_prefix: Nat, +arity: Nat, body: BIR.Descriptor, +args: List<&2, NfVal>, +fuel: Nat) -> Nf:
+  match decision:
+    case NfArity{complete, exact, under}:
+      match complete:
         case True{}:
           nf_reduce_body(context, body, List.append(&2, NfVal, quantity_markers(quantity_prefix), args), Nil{}, Nat.sub(fuel, 1n))
         case False{}:
-          match Nat.is_eq(count, arity):
+          match exact:
             case True{}:
               nf_reduce_body(context, body, first_vals(args, arity), drop_vals(args, arity), Nat.sub(fuel, 1n))
             case False{}:
-              match Nat.is_lt(count, arity):
+              match under:
                 case True{}:
                   NfOk{NfType{key, args}}
                 case False{}:
                   NfFail{String.append("the type function `", String.append(key, "` is applied past its declared parameter count"))}
 
-def nf_reduce_body(context: NfContext, body: BIR.Descriptor, env: List<&2, NfVal>, extra: List<&2, NfVal>, fuel: Nat) -> Nf:
+def nf_reduce_body(+context: NfContext, body: BIR.Descriptor, +env: List<&2, NfVal>, extra: List<&2, NfVal>, +fuel: Nat) -> Nf:
   match nf_descriptor(context, body, env, Nat.sub(fuel, 1n)):
     case NfFail{message}:
       NfFail{message}
     case NfOk{val}:
       nf_apply(context, val, extra, fuel)
 
-def nf_cases(context: NfContext, cases: List<&2, BIR.Descriptor>, values: List<&2, NfVal>, env: List<&2, NfVal>, source: BIR.Descriptor, fuel: Nat) -> Nf:
+def nf_cases(+context: NfContext, cases: List<&2, BIR.Descriptor>, +values: List<&2, NfVal>, +env: List<&2, NfVal>, source: BIR.Descriptor, +fuel: Nat) -> Nf:
   match cases:
     case Nil{}:
       NfOk{NfOther{source}}
     case +case_body <> rest:
       match case_body:
         case BIR.DescriptorCase{patterns, body}:
-          match bind_patterns(patterns, values, fuel):
+          match bind_patterns(patterns, values):
             case Some{bindings}:
               nf_descriptor(context, body, List.append(&2, NfVal, env, bindings), Nat.sub(fuel, 1n))
             case None{}:
               nf_cases(context, rest, values, env, source, fuel)
-
-# ---------------------------------------------------------------------------
-# Descriptor patterns
-# ---------------------------------------------------------------------------
-
-def bind_patterns(patterns: List<&2, BIR.DescriptorPattern>, values: List<&2, NfVal>, fuel: Nat) -> Maybe<&2, List<&2, NfVal>>:
-  match Nat.is_eq(fuel, 0n):
-    case True{}:
-      None{}
-    case False{}:
-      bind_patterns_go(patterns, values, Nil{}, Nat.sub(fuel, 1n))
-
-def bind_patterns_go(patterns: List<&2, BIR.DescriptorPattern>, values: List<&2, NfVal>, acc: List<&2, NfVal>, fuel: Nat) -> Maybe<&2, List<&2, NfVal>>:
-  match patterns, values:
-    case Nil{}, Nil{}:
-      Some{acc}
-    case +pattern <> prest, +value <> vrest:
-      match bind_pattern(pattern, value, fuel):
-        case Some{bindings}:
-          bind_patterns_go(prest, vrest, append_vals(acc, bindings), fuel)
-        case None{}:
-          None{}
-    case _, _:
-      None{}
-
-def bind_pattern(pattern: BIR.DescriptorPattern, value: NfVal, fuel: Nat) -> Maybe<&2, List<&2, NfVal>>:
-  match pattern:
-    case BIR.DescriptorBinder{quantity}:
-      Some{[value]}
-    case BIR.DescriptorConstructorPattern{key, fields}:
-      match value:
-        case NfCtor{known, args}:
-          match String.eq(key, known):
-            case False{}:
-              None{}
-            case True{}:
-              bind_patterns(fields, args, fuel)
+        case BIR.DescriptorFailure{message}:
+          NfFail{message}
         case _:
-          None{}
-
-# ---------------------------------------------------------------------------
-# Materialization: a normal form as a descriptor
-# ---------------------------------------------------------------------------
-
-def materialize(val: NfVal) -> BIR.Descriptor:
-  match val:
-    case NfType{key, args}:
-      BIR.DescriptorRef{key, materialize_all(args)}
-    case NfCtor{key, args}:
-      BIR.DescriptorConstructor{key, materialize_all(args)}
-    case NfQuantity{quantity}:
-      BIR.DescriptorQuantity{quantity}
-    case NfKind{quantity}:
-      BIR.DescriptorKind{materialize(quantity)}
-    case NfOther{source}:
-      source
-    case NfMissing{source}:
-      source
-
-def materialize_all(vals: List<&2, NfVal>) -> List<&2, BIR.Descriptor>:
-  match vals:
-    case Nil{}:
-      Nil{}
-    case +val <> rest:
-      materialize(val) <> materialize_all(rest)
+          NfFail{"descriptor match case is not a case"}
 
 # The normalized descriptor for a checked type expression. A reduction that
 # cannot be performed becomes DescriptorFailure, so a consumer that replaces a
 # stored field with this result can never silently lose the failure.
-def normalize(context: NfContext, descriptor: BIR.Descriptor, env: List<&2, NfVal>, fuel: Nat) -> BIR.Descriptor:
+def normalize(+context: NfContext, descriptor: BIR.Descriptor, +env: List<&2, NfVal>, +fuel: Nat) -> BIR.Descriptor:
   match nf(context, descriptor, env, fuel):
     case NfFail{message}:
       BIR.DescriptorFailure{message}
@@ -519,63 +583,60 @@ def normalize(context: NfContext, descriptor: BIR.Descriptor, env: List<&2, NfVa
 def normalize_closed(families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>, descriptor: BIR.Descriptor) -> BIR.Descriptor:
   normalize(nf_context(families, type_functions), descriptor, Nil{}, 1024n)
 
+# One context for a whole annotation pass: build it once, normalize every
+# stored field through it. Rebuilding the indexes per field is pure but O(n^2).
+def normalize_in(+context: NfContext, descriptor: BIR.Descriptor) -> BIR.Descriptor:
+  normalize(context, descriptor, Nil{}, 1024n)
+
 # The outer named application of a checked descriptor, with the arguments it
-# is applied to: the head the effect-answer rule needs.
-def outer_application(descriptor: BIR.Descriptor) -> Maybe<&2, NfApp>:
+# is applied to: the head the effect-answer rule needs. The walk reads the
+# descriptor under borrow and accumulates the arguments of each wrapper it
+# opens, so the recursive call always receives a direct field of the matched
+# descriptor: one structural definition, no mutual component.
+def outer_application(+descriptor: BIR.Descriptor) -> Maybe<&2, NfApp>:
+  outer_walk(descriptor, Nil{})
+
+def outer_walk(+descriptor: BIR.Descriptor, extra: List<&2, BIR.Descriptor>) -> Maybe<&2, NfApp>:
   match descriptor:
     case BIR.DescriptorRef{key, args}:
-      Some{NfApp{key, args}}
+      Some{NfApp{key, List.append(&2, BIR.Descriptor, args, extra)}}
     case BIR.DescriptorNamedFill{key, head, args}:
-      Some{NfApp{key, args}}
+      Some{NfApp{key, List.append(&2, BIR.Descriptor, args, extra)}}
     case BIR.DescriptorNamedPlus{key, head, args}:
-      Some{NfApp{key, args}}
+      Some{NfApp{key, List.append(&2, BIR.Descriptor, args, extra)}}
     case BIR.DescriptorFill{head, args}:
-      outer_filled(head, args)
+      outer_walk(head, List.append(&2, BIR.Descriptor, args, extra))
     case BIR.DescriptorPlus{head, args}:
-      outer_filled(head, args)
+      outer_walk(head, List.append(&2, BIR.Descriptor, args, extra))
     case BIR.DescriptorApplication{fn, arg}:
-      outer_applied(fn, arg)
+      outer_walk(fn, List.append(&2, BIR.Descriptor, [arg], extra))
     case _:
-      None{}
-
-def outer_filled(head: BIR.Descriptor, extra: List<&2, BIR.Descriptor>) -> Maybe<&2, NfApp>:
-  match outer_application(head):
-    case Some{app}:
-      match app:
-        case NfApp{key, args}:
-          Some{NfApp{key, List.append(&2, BIR.Descriptor, args, extra)}}
-    case None{}:
-      None{}
-
-def outer_applied(fn: BIR.Descriptor, arg: BIR.Descriptor) -> Maybe<&2, NfApp>:
-  match outer_application(fn):
-    case Some{app}:
-      match app:
-        case NfApp{key, args}:
-          Some{NfApp{key, List.append(&2, BIR.Descriptor, args, [arg])}}
-    case None{}:
       None{}
 
 # The type a foreign request's continuation receives: an application of the
 # base library's IO former answers its first argument, and every other type
 # answers itself. This is the reference runtime's effect-answer rule, keyed by
-# the former's native marker rather than by its spelling.
-def answer_descriptor(result: BIR.Descriptor, families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>) -> BIR.Descriptor:
-  normalized = normalize(nf_context(families, type_functions), result, Nil{}, 1024n)
+# the former's native marker rather than by its spelling. The answer decision
+# reads the prebuilt pass indexes; the normalized descriptor stays authoritative.
+def answer_in(+context: NfContext, result: BIR.Descriptor) -> BIR.Descriptor:
+  normalized = normalize(context, result, Nil{}, 1024n)
   match normalized:
     case BIR.DescriptorFailure{_}:
       normalized
     case _:
-      answer_normalized(normalized, families, type_functions)
+      answer_normalized(context, normalized)
 
-def answer_normalized(result: BIR.Descriptor, families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>) -> BIR.Descriptor:
+def answer_descriptor(result: BIR.Descriptor, families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>) -> BIR.Descriptor:
+  answer_in(nf_context(families, type_functions), result)
+
+def answer_normalized(+context: NfContext, +result: BIR.Descriptor) -> BIR.Descriptor:
   match outer_application(result):
     case None{}:
       result
     case Some{app}:
       match app:
         case NfApp{key, args}:
-          match is_io_head(key, families, type_functions):
+          match is_io_head_in(context, key):
             case False{}:
               result
             case True{}:
@@ -585,52 +646,14 @@ def answer_normalized(result: BIR.Descriptor, families: List<&2, BIR.Family>, ty
                 case +first <> rest:
                   first
 
-def is_io_head(key: String, families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>) -> Bool:
+def is_io_head_in(+context: NfContext, +key: String) -> Bool:
+  match context:
+    case NfContext{families, type_functions}:
+      is_io_head(key, families, type_functions)
+
+def is_io_head(+key: String, +families: Map<&2, BIR.Family>, +type_functions: Map<&2, BIR.TypeFunction>) -> Bool:
   match native_of(key, families, type_functions):
     case Some{marker}:
       String.eq(marker, "IO")
     case None{}:
       False{}
-
-# Head classification over the same normalizer. It is a projection only: the
-# stored Descriptor remains authoritative and is never replaced by a Head.
-def head_of_value(context: NfContext, value: NfVal) -> BIR.Head:
-  match value:
-    case NfType{key, args}:
-      match family_of(key, context.families):
-        case Some{family}:
-          match family:
-            case BIR.Family{_, _, native, _, _, _}: BIR.HeadKnown{key, native}
-        case None{}:
-          match function_of(key, context.type_functions):
-            case Some{_}: BIR.HeadAbstract{}
-            case None{}: BIR.HeadOther{}
-    case NfCtor{_, _}: BIR.HeadOther{}
-    case NfQuantity{_}: BIR.HeadOther{}
-    case NfKind{_}: BIR.HeadOther{}
-    case NfOther{_}: BIR.HeadOther{}
-    case NfMissing{_}: BIR.HeadAbstract{}
-
-def head_of_result(context: NfContext, result: Nf) -> BIR.Head:
-  match result:
-    case NfOk{value}: head_of_value(context, value)
-    case NfFail{message}: BIR.HeadMissing{message}
-
-def canonical_head(descriptor: BIR.Descriptor, families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>) -> BIR.Head:
-  context = nf_context(families, type_functions)
-  head_of_result(context, nf(context, descriptor, Nil{}, 1024n))
-
-# The IO answer classification uses the full normalized application arguments
-# before truncating to a Head: IO(Nat) after alias reduction yields Nat.
-def canonical_answer_head(descriptor: BIR.Descriptor, families: List<&2, BIR.Family>, type_functions: List<&2, BIR.TypeFunction>) -> BIR.Head:
-  context = nf_context(families, type_functions)
-  match nf(context, descriptor, Nil{}, 1024n):
-    case NfOk{NfType{key, args}}:
-      match native_of(key, families, type_functions):
-        case Some{"IO"}:
-          match args:
-            case +arg <> _: head_of_value(context, arg)
-            case Nil{}: BIR.HeadOther{}
-        case _: BIR.HeadOther{}
-    case NfOk{_}: BIR.HeadOther{}
-    case NfFail{message}: BIR.HeadMissing{message}
