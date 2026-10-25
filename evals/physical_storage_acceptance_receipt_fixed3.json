@@ -1,7 +1,13 @@
 {
   "schemaVersion": 1,
-  "status": "PASS",
-  "acceptance": "guarded physical storage slice with Bool/Char consumer-boundary proof; not a Root GO",
+  "status": "REJECTED_INVALID_RUNTIME_FIXTURE",
+  "observedRunStatus": "PASS",
+  "acceptance": "46 guarded expressions executed, but the new Flags canonical-constructor proof is rejected; not a Root GO",
+  "review": {
+    "reason": "The physical world maps both Pt and Flags to runtime CID 33. The C probe constructs Flags-shaped storage as CID_PTS, but its actual runtime fixture declares PtS with U32 fields and no Flags constructor.",
+    "consequence": "Bitwise-compatible borrowed reads ran, but they do not authenticate a distinct canonical Flags constructor or its runtime metadata.",
+    "requiredCorrection": "Use a real reachable FlagsS constructor with Bool fields, bind distinct CIDs from the freshly compiled runtime fixture, then repeat the guarded scoped proof. Preserve the original raw execution records."
+  },
   "worktree": "/private/tmp/bend-c-storage-selector",
   "logs": "/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7",
   "pins": {
