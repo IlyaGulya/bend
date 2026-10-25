@@ -1159,6 +1159,29 @@ def raw_word_expr(+pbase: String, +poffset: Nat, +pword: CLay.CWord) -> String:
     case CLay.CWord32{}: join_text(["((u64)(u32)(", read, "))"])
     case _: read
 
+# A packed inline form is one canonical Term of its arm. The layout plan
+# already says how the laid-out word is read back: a nullary arm has no word,
+# a one-w32 arm carries its word in term_pak, and every arm with a boxed or
+# wider field would need an allocating node, which a borrowed view cannot do
+# without taking ownership from the source. Only the exactly-one-w32 form is
+# therefore a nonallocating canonical view.
+def packed_form_body(+pw: World, +playout: CLay.Layout, +psource: String) -> Part:
+  match playout:
+    case CLay.LayoutData{words, arms}:
+      match words:
+        case Nil{}: zero_value_body(pw, playout)
+        case +word <> Nil{}:
+          match word:
+            case CLay.CWord32{}:
+              jobs = unfill_jobs(pw, playout, SrcOne{psource}, "pbl", "pblc")
+              part = part_of(run_jobs(jobs, pw, Nil{}), "pbl")
+              match part:
+                case PartFail{message}: PartFail{message}
+                case PartOk{text}: PartOk{join_text(["{ Term pbl = 0; ", text, "; pbr = pbl; }\n"])}
+            case _: PartFail{"an inline form with a boxed or wider field has no nonallocating canonical Term read; use a typed consumer"}
+        case _: PartFail{"a multiword inline form has no nonallocating canonical Term read; use a typed consumer"}
+    case _: PartFail{"a packed form read needs a data layout"}
+
 def read_body(+pw: World, +pstate: PathState) -> Part:
   match pstate:
     case StSlot{offset, layout, base, uniq, stat, packed}:
@@ -1175,7 +1198,10 @@ def read_body(+pw: World, +pstate: PathState) -> Part:
           match layout:
             case CLay.LayoutWord{word}: PartOk{join_text(["pbr = ", raw_word_expr(base, offset, word), ";\n"])}
             case CLay.LayoutBox{reason}: PartOk{join_text(["pbr = e.mem[", base, " + ", Nat.show(offset), "];\n"])}
-            case CLay.LayoutData{words, arms}: PartFail{"a form field is not a single word"}
+            case CLay.LayoutData{words, arms}:
+              match words:
+                case Nil{}: packed_form_body(pw, layout, "0")
+                case +word <> rest: packed_form_body(pw, layout, raw_word_expr(base, offset, word))
     case StArray{loc, cls, lgs, cell, arr, off, buf, uniq, stat}:
       PartOk{join_text(["if (", arr, ") { pbr = term_blk(true, (u32)(", cls, "), (u64)((u64)(", loc, ") + (u64)(", off, "))); } else { u64 pboff = (u64)(", off, "); if ((pboff & 1ull) != 0ull) { (void)bend_fail(e, \"a mid-block BUF cell has no Term view; a consumer must read it through blk_read\"); } pbr = term_blk(false, (u32)(", cls, "), (u64)((u64)(", loc, ") + (pboff >> 1))); }\n"])}
     case StCell{loc, arr, index, cls, layout, lgs, buf, uniq, stat}:
@@ -1188,17 +1214,14 @@ def read_body(+pw: World, +pstate: PathState) -> Part:
           match buf:
             case True{}: PartFail{"a BUF array cell cannot contain a boxed field"}
             case False{}: PartOk{join_text(["pbr = blk_read(e.mem, ", arr, ", ", loc, ", (u32)(", index, "));\n"])}
-        case CLay.LayoutData{words, arms}: PartFail{"an inline form cell has no allocating Term read; use a consumer-aware typed read"}
+        case CLay.LayoutData{words, arms}: packed_form_body(pw, layout, join_text(["blk_read(e.mem, ", arr, ", ", loc, ", (u32)(", index, "))"]))
     case StBufField{loc, index, layout, uniq, stat}:
       match layout:
         case CLay.LayoutWord{word}:
           match word:
             case CLay.CWord32{}: PartOk{join_text(["pbr = ((u64)(u32)blk_read(e.mem, false, ", loc, ", (u32)(", index, ")));\n"])}
             case _: PartFail{"a BUF raw field is not one w32 cell"}
-        case CLay.LayoutData{words, arms}:
-          match words:
-            case Nil{}: zero_value_body(pw, layout)
-            case _: PartFail{"a BUF inline form needs a consumer-aware typed read"}
+        case CLay.LayoutData{words, arms}: packed_form_body(pw, layout, join_text(["blk_read(e.mem, false, ", loc, ", (u32)(", index, "))"]))
         case CLay.LayoutBox{reason}: PartFail{"a BUF inline form cannot hold a box"}
 
 def tag_single(+pw: World, +pkey: String, +pexpected: Maybe<&2, U32>, +ptarget: String) -> Part:
