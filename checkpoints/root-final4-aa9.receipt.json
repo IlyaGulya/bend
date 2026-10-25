@@ -43,7 +43,7 @@
     "unchanged": true,
     "manifest": {
       "path": "checkpoints/selfhost-steps-driver-source-v1.json",
-      "sha256": "84c6dd1b1fef217288067c8adf1d"
+      "sha256": "84c6dd1b1fef217288067c8adf1dbb9c7571a17b7de4b17b8b45a03a0f1c25f7"
     }
   },
   "parserReuse": {
