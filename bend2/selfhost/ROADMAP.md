@@ -43,7 +43,12 @@ the same 13 exports and quantum 64. Both previously failing literal/projected
 Bool.xor witnesses and all four truth-table rows now pass real emit/clang/run.
 Receipt: `evals/receipts/bool_xor_fix_667e7f33.json`.
 The full matrix is expanded, never narrowed, to 26 inputs by adding
-`c_target_bool_xor`; complete-batch acceptance is pending.
+`c_target_bool_xor`: **26/26 PASS**, all 78 emit/clang/run stages
+complete/stopped/exit 0. Receipt: `evals/receipts/c_matrix_667e7f33_26.json`.
+The same image also passes all three C/JS foreign fixture pairs and the real
+six-export C-library route: 7 rows / 18 stages, all complete/stopped/exit 0.
+Receipt: `evals/receipts/foreign_667e7f33.json`. Full compiler corpus, embedded
+parser cutover, byte fixedpoint, native HOST and general laws remain open.
 
 ### Preceding `971e0986` checkpoint (historical)
 
@@ -353,13 +358,13 @@ Detailed contracts: integrated `FIR_LAWS.md` and `BIR_LAWS.md`, and
 - [ ] Official producer pass-6 OOM is resolved or explicitly re-scoped with a
   receipt; no claim that frontend caching fixed it.
 
-- [ ] Fix the `bend_bool_xor` C conditional at `c_backend.bend:3942`: its
-  `a=True` arm returns raw 0/1 as a constructor CID instead of selecting
-  canonical `t`/`f`. Both projected and literal minimal sources emit/compile
-  but fail at runtime; `evals/receipts/repro_bool_xor_971.json` preserves them.
-  Apply the source correction, regenerate through the existing producer,
-  check both minimized paths and the Boolean truth table, then the full matrix.
-  No generated-C patch or fallback value; the proposed fix is not yet verified.
+- [x] Correct the `bend_bool_xor` C conditional at `c_backend.bend:3942`.
+  Source-only `8aefa052` selects canonical `t`/`f` after comparing truth values.
+  Both reduced failures and the complete truth table now pass on `667e7f33`;
+  the unfiltered expanded C matrix passes 26/26. Old `971e0986` failures remain
+  immutable in `repro_bool_xor_971.json` / `c_matrix_971e0986_25.json`.
+  New proofs: `bool_xor_fix_667e7f33.json`, `c_matrix_667e7f33_26.json`.
+  No generated-C patch, new helper, allocation or fallback value was added.
 
 ### 3.4 JS and shared lanes
 
@@ -427,9 +432,9 @@ Parser cutover preparation is recorded at commit `d68df586` in
 It is **PREPARATION_ONLY_NOT_EXECUTED**. The composer requires tree-local
 authenticated parser acceptance, then fresh owned/template/checker/emitter
 manifests before root composition; copying accepted absolute paths or patching
-root text is not a cutover. Reconcile the recipe's runtime pin with the frozen
-current runtime before executing it. The public differential, not source hash
-equality, decides whether the inline parser is repaired.
+root text is not a cutover. The recipe's `6c1df3eb` runtime pin names the kernel
+`bend2/bend.ts`, not generated C runtime `478c1ba7`; there is no pin mismatch.
+Public parse behavior, not source-hash equality, decides inline-parser repair.
 
 
 ---

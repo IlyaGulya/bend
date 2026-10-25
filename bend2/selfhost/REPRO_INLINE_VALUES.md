@@ -1,10 +1,10 @@
 # Reduced C witnesses and continuation-scope diagnosis
 
-Status: **BOOL_XOR_FIXED_IN_SOURCE_AND_SCOPED_RUNTIME; FULL_MATRIX_PENDING**.
+Status: **BOOL_XOR_FIXED; COMPLETE_C26_PASS; FULL_COMPILER_ACCEPTANCE_OPEN**.
 Successor `667e7f33` fixes the Boolean defect; both reduced failures and the
 complete truth table now pass real emit/clang/run. On predecessor `971e0986`,
 all five original reduced inputs below pass, but its frozen C matrix remains
-failed. These finite diagnostics do not replace the full corpus or matrix.
+failed. Successor C26 passes completely; full compiler acceptance is separate.
 
 ## First executable proof
 
@@ -70,7 +70,8 @@ Fresh image `667e7f33` retains all 11,860 checked bodies and passes both reduced
 programs with `False`, plus all four truth-table observations
 (`False`, `True`, `True`, `False`). All nine smoke stages complete/stopped/exit 0.
 Receipt: `evals/receipts/bool_xor_fix_667e7f33.json`. This is failing-before /
-passing-after evidence; the full 26-input matrix remains pending.
+passing-after evidence. The full 26-input C matrix also passes on this image:
+`evals/receipts/c_matrix_667e7f33_26.json`, all 78 stages complete/stopped/exit 0.
 
 ## Reduced inputs and independent expected results
 
@@ -185,5 +186,5 @@ source/artifact/runtime hashes, raw streams and terminal guardians. Use fresh
 logs and the named artifact; do not patch generated output, alter expectations,
 reuse a rejected image as acceptance, or substitute these inputs for the full
 matrix/corpus. The named finite public boundaries and corrected Boolean helper
-now pass. Full-matrix, general ownership/ABI laws, frozen corpus and current
-root byte fixedpoint acceptance remain open.
+now pass, as does the complete default C26 matrix. General ownership/ABI laws,
+full frozen compiler corpus and current root byte fixedpoint remain open.
