@@ -45,6 +45,13 @@ covered all 71 source and 75 compiled semantic cases, not a copied receipt.
 Proof: `evals/receipts/inline_parser_cutover_db147cba.json`.
 Current-root C/JS corpus, compiler fixedpoint and native HOST remain open;
 the preceding C/foreign passes below belong specifically to `667e7f33`.
+The seed host carrier now uses the native loader's actual nominal
+`../bend2/selfhost/backend_ir.SourceFile` tag, shared by the bootstrap gate
+instead of a bare-name assumption. A loader-authority diagnostic and real JS
+foreign library/module runs on `db147cba` pass, with exact effect bytes supplied
+through the passive carrier. Receipt:
+`evals/receipts/source_carrier_db147cba.json`. Optimized single-constructor
+matches are not evidence that an arbitrary tag is valid.
 
 ### Preceding `667e7f33` C checkpoint (historical)
 

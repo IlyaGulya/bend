@@ -1000,6 +1000,20 @@ exact path string equality. It never derives, normalizes, or rewrites a path.
   `gates/selfhost_cases/missing_js_target.bend` define the diagnostic lanes
   through `gates/selfhost.ts`; no receipt was read.
 
+Host carrier authority is separate from byte lookup. `BIR.SourceFile` is a
+nominal two-field constructor. For current canonical seed roots under
+`checkpoints/` or `evals/`, unchanged `book_load` binds BIR to
+`../bend2/selfhost/backend_ir`; the native registry key is
+`../bend2/selfhost/backend_ir:SourceFile`, rendered by `name_key` as
+`../bend2/selfhost/backend_ir.SourceFile`. The shared host factory and bootstrap
+seed use this tag; selfhost-emitted stages derive theirs from the actual
+closure's source row. A successful optimized single-constructor match does
+**not** establish a tag's authority: its default arm may omit a nominal check.
+Measured native-loader authority and real JS foreign library/module execution
+with the corrected host tag are recorded in
+`evals/receipts/source_carrier_db147cba.json`. This finite smoke does not close
+the general foreign/IO or cross-target obligations.
+
 **BL-14 (foreign id spelling).** A target that spells program-owned ids inside
 foreign source (C `CID(<key>)`, `FID(<key>)`; JS `CID(<key>)`) resolves the key
 by exact lookup in the program's own maps; a miss is a compile failure naming

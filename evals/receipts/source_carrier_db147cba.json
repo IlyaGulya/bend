@@ -1,0 +1,227 @@
+{
+  "schema": 1,
+  "status": "CANONICAL_SOURCE_CARRIER_AUTHORITY_AND_FOREIGN_SMOKE_PASS",
+  "scope": "Host carrier namespace correction, not full bootstrap, C corpus, native HOST, or fixedpoint acceptance",
+  "worktree": "/private/tmp/bend-parser-cutover667",
+  "baseSourceCommit": "34c64741",
+  "rootImage": {
+    "path": "/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+    "sha256": "db147cba480109443fe8cfbd0efa2f1c167af7f6b9f7e2d623a0b1032c677dbe"
+  },
+  "change": {
+    "oldCanonicalSeedTag": "SourceFile",
+    "canonicalSeedTag": "../bend2/selfhost/backend_ir.SourceFile",
+    "nativeRegistryKey": "../bend2/selfhost/backend_ir:SourceFile",
+    "reason": "Unmodified book_load binds the module namespace; name_key translates its colon-separated native key to the emitted dotted tag. Single-constructor optimized matches can accept a wrong tag and do not establish nominal authority.",
+    "files": [
+      "evals/checker_core_step_runtime.mjs",
+      "evals/selfhost_bootstrap_gate.ts"
+    ],
+    "compilerKernelGeneratorChanges": 0,
+    "imagePatches": 0,
+    "abiExports": 13,
+    "quantum": 64
+  },
+  "runtime": {
+    "node": "v23.11.0",
+    "v8": "12.9.202.28-node.14",
+    "authorityExecArgv": [
+      "--experimental-strip-types",
+      "--max-old-space-size=3072",
+      "--stack-size=262144"
+    ],
+    "foreignCommand": [
+      "/usr/bin/env",
+      "PATH=/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin:$PATH",
+      "NODE_OPTIONS=--max-old-space-size=3072",
+      "bun",
+      "evals/fir_foreign_smoke.ts",
+      "--component=checkpoints/root-cutover667-1-art.js",
+      "--component-build=checkpoints/root-cutover667-1-rep.result.json",
+      "--parser=checkpoints/bootstrap-parser-rebuild-cutover667-1.js",
+      "--parser-build=checkpoints/bootstrap-parser-rebuild-cutover667-1.native-build.result.json",
+      "--report=checkpoints/carrier-db147-foreign-smoke.json"
+    ],
+    "authorityStackMiB": 256,
+    "foreignHostStackFlag": "not supplied",
+    "guardian": {
+      "footprintBytes": 8589934592,
+      "rssBytes": 8589934592,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    }
+  },
+  "authority": {
+    "result": {
+      "kind": "NATIVE_LOADER_CARRIER_AUTHORITY",
+      "scope": "Namespace authority smoke; root validation is already recorded by the full11889-body build, not repeated here",
+      "source": "/private/tmp/bend-parser-cutover667/checkpoints/.bootstrap_compiler_root_v1.bend",
+      "sourceSha256": "402011f5a68aec3db82cc766e3cc21c61ca40d4b475031e0f915d93e0ead11ed",
+      "module": "/private/tmp/bend-parser-cutover667/bend2/selfhost/backend_ir.bend",
+      "moduleSha256": "3614f816b109012c2ccb202ce6164efad9d82b1bf5f9decbc52c27ebaafe94c5",
+      "runtimeSha256": "529ee782495ecbc5267d8b4e0e8f664ee27a6bfe1b25ff8e84ff913a3163f34b",
+      "namespace": "../bend2/selfhost/backend_ir",
+      "constructorTag": "../bend2/selfhost/backend_ir.SourceFile",
+      "nativeConstructorKey": "../bend2/selfhost/backend_ir:SourceFile",
+      "arity": 2,
+      "node": "v23.11.0",
+      "v8": "12.9.202.28-node.14",
+      "execArgv": [
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "--stack-size=262144"
+      ]
+    },
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 710639616,
+      "peakFootprintBytes": 715004608,
+      "elapsedMs": 4420,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "--stack-size=262144",
+        "checkpoints/carrier-authority-db147.mjs"
+      ],
+      "label": "heavy command",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792936371090-5511bd0fd8578bcf.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "executedScript": {
+      "originalPath": "/private/tmp/bend-parser-cutover667/checkpoints/carrier-authority-db147.mjs",
+      "archivedPath": "/private/tmp/bend-parser-cutover667/checkpoints/carrier-authority-db147.executed.mjs",
+      "sha256": "27648b8f7dc6f89f693591adbcc65a5217349ca527ad63364a2c66e4c910aed6"
+    }
+  },
+  "foreignSmoke": {
+    "status": "FOREIGN_CONSUMER_ABI_SMOKE_PASS",
+    "passed": true,
+    "smokeOnly": true,
+    "criterion": "One real foreign effect's bytes reach the JS renderer only through the host-built List<&2, BIR.SourceFile> bag, for both the library and module emitter entries, and the unchanged emitted JS prints that effect's output.",
+    "boundary": {
+      "hostBag": "one shared checker_core_step_runtime.mjs sourceFiles factory",
+      "declaredPaths": "Bend DefImports alternatives",
+      "linkMetadata": "BIR only",
+      "hostParsing": false,
+      "hostChecking": false,
+      "outputPatches": 0,
+      "checksExcluded": 0,
+      "bootstrapFixedpointClaim": false
+    },
+    "inputs": {
+      "/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js": "db147cba480109443fe8cfbd0efa2f1c167af7f6b9f7e2d623a0b1032c677dbe",
+      "/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-rep.result.json": "68ad3bd5dbc1745095018e390b2ea74f365aff08d4e002d1e79844a2954e86ad",
+      "/private/tmp/bend-parser-cutover667/checkpoints/bootstrap-parser-rebuild-cutover667-1.js": "0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b",
+      "/private/tmp/bend-parser-cutover667/checkpoints/bootstrap-parser-rebuild-cutover667-1.native-build.result.json": "59d99ef0cf7b6aa917f8b44d40d22b4ce1c9ed99c5b341b970e5b2a6d785c9cd",
+      "/private/tmp/bend-parser-cutover667/evals/fir_foreign_effect.js": "78f4fa597350d0ea99a589c977f7fc1022b735137cb741e7a9c4dbb74175f39c",
+      "/private/tmp/bend-parser-cutover667/evals/fir_foreign_smoke_worker.mjs": "fc8aaba5e72ea911a90e302beb17aa1ad01526ad19b13ca6f44d704bdb346a68",
+      "/private/tmp/bend-parser-cutover667/evals/checker_core_step_runtime.mjs": "529ee782495ecbc5267d8b4e0e8f664ee27a6bfe1b25ff8e84ff913a3163f34b",
+      "/private/tmp/bend-parser-cutover667/evals/fir_foreign_smoke.ts": "21be18a8f7a68d8816937286e805e25356d623063f0e737610fdd8b3e17d4693",
+      "/private/tmp/bend-parser-cutover667/checkpoints/carrier-db147-foreign-smoke.json.cases/fir_foreign_smoke.bend": "57eeb19223db32d527e11d052dfcafb42af3e4885598695c4d0fadc203e3fe9e",
+      "/private/tmp/bend-parser-cutover667/checkpoints/carrier-db147-foreign-smoke.json.cases/fir_foreign_effect.js": "78f4fa597350d0ea99a589c977f7fc1022b735137cb741e7a9c4dbb74175f39c"
+    },
+    "rows": [
+      {
+        "lane": "emit_library_start",
+        "passed": true,
+        "artifact": "/private/tmp/bend-parser-cutover667/checkpoints/carrier-db147-foreign-smoke.json.cases/library.mjs",
+        "exports": [
+          "main",
+          "fir_mark"
+        ],
+        "output": "fir-foreign-loaded",
+        "splicedBytes": true,
+        "effectSha256": "78f4fa597350d0ea99a589c977f7fc1022b735137cb741e7a9c4dbb74175f39c",
+        "sourceBytes": 290184
+      },
+      {
+        "lane": "emit_modules_start",
+        "passed": true,
+        "artifact": "/private/tmp/bend-parser-cutover667/checkpoints/carrier-db147-foreign-smoke.json.cases/program.js",
+        "output": "fir-foreign-loaded\nfir-foreign:smoke",
+        "effectSha256": "78f4fa597350d0ea99a589c977f7fc1022b735137cb741e7a9c4dbb74175f39c",
+        "sourceBytes": 290343
+      }
+    ],
+    "request": "/private/tmp/bend-parser-cutover667/checkpoints/carrier-db147-foreign-smoke.json.cases/request.json",
+    "guardian": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 717766656,
+      "peakFootprintBytes": 693619936,
+      "elapsedMs": 7874,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "node",
+        "/private/tmp/bend-parser-cutover667/evals/fir_foreign_smoke_worker.mjs",
+        "/private/tmp/bend-parser-cutover667/checkpoints/carrier-db147-foreign-smoke.json.cases/request.json"
+      ],
+      "label": "FIR foreign-source consumer ABI smoke",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792936375631-2f8bdf3bf1d932c8.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "rejectedDiagnostic": {
+    "status": "REJECTED_DIAGNOSTIC_HARNESS_ASSUMPTION",
+    "reason": "First throwaway probe looked up the dotted emitted tag in the colon-separated native registry; it failed before any consumer execution. Corrected only the diagnostic lookup; no language/compiler failure or workaround is inferred.",
+    "guardian": {
+      "status": "FAIL",
+      "reason": "command_exit",
+      "commandExitCode": 1,
+      "commandSignal": 0,
+      "peakRssBytes": 712949760,
+      "peakFootprintBytes": 717233240,
+      "elapsedMs": 4378,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 1,
+      "command": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "--stack-size=262144",
+        "checkpoints/carrier-authority-db147.mjs"
+      ],
+      "label": "heavy command",
+      "exitCode": 1,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792935892709-455c009483f5b0a0.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    },
+    "archivedScript": {
+      "path": "/private/tmp/bend-parser-cutover667/checkpoints/carrier-authority-db147.attempt1-native-key-assumption.mjs",
+      "sha256": "2b0636b6f07550dda4a97db3d722ff22b79859b562c9bd856a1b06eff3122e42"
+    }
+  },
+  "sources": {
+    "evals/checker_core_step_runtime.mjs": "529ee782495ecbc5267d8b4e0e8f664ee27a6bfe1b25ff8e84ff913a3163f34b",
+    "evals/selfhost_bootstrap_gate.ts": "2977e70b6a9f28a946390c6860a568dc783c636911b46c911ab69d31d95f0626",
+    "bend2/selfhost/backend_ir.bend": "3614f816b109012c2ccb202ce6164efad9d82b1bf5f9decbc52c27ebaafe94c5",
+    "bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+    "bend2/comp.ts": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70"
+  },
+  "limitsOfProof": [
+    "No inference of nominal authority from emitted match default behavior",
+    "Native loader smoke does not repeat full book_valid; earlier root build separately admitted all11889 bodies",
+    "Two real JS foreign module/library outputs do not establish all foreign/IO semantics or C behavior",
+    "No full current-root byte-fixedpoint or native-C artifact claim"
+  ]
+}
