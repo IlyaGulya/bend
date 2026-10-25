@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "kind": "canonical-native-profile-run",
+  "diagnosticOnly": true,
+  "acceptanceEvidence": false,
+  "status": "NOT_PASS_WORKER_HEAP_LIMIT",
+  "runtime": "node v23.11.0/V8 (no Bun)",
+  "componentSha256": "4a91665c634dff4b1da9d17bdc80786efc03bd0d0e89865ed22e085c1026060a",
+  "command": [
+    "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+    "--experimental-strip-types",
+    "evals/native_stage_profile_build.ts",
+    "--artifact-dir=/tmp/native-stage-canonical-final",
+    "--canonical-bir=/tmp/canonical-source-bir-c.json",
+    "--canonical-sources=/tmp/sources-source-c.json",
+    "--canonical-runtime=bend2/selfhost/c_runtime.c",
+    "--canonical-checked=/tmp/checked-source-c.json",
+    "--canonical-component=/private/tmp/bend-fir-root-aa9/checkpoints/root-final-art.js"
+  ],
+  "guard": {
+    "entry": "guardHeavyGate",
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000,
+    "workerLimits": {
+      "stackSizeMb": 256,
+      "maxOldGenerationSizeMb": 3072
+    },
+    "internalBypass": false
+  },
+  "result": {
+    "exitCode": 1,
+    "reason": "ERR_WORKER_OUT_OF_MEMORY: Worker terminated due to reaching memory limit: JS heap out of memory",
+    "elapsedMs": 101984,
+    "peakRssBytes": 3394748416,
+    "peakFootprintBytes": 3631272288,
+    "ownedTreeStopped": true,
+    "reportPhase": "complete",
+    "nativePhaseRows": 0,
+    "artifactProduced": false,
+    "profileProduced": false,
+    "capRaise": false,
+    "retry": false
+  },
+  "transport": {
+    "generatedFixture": "checkpoints/native_stage_profile_generated_fixture.bend",
+    "generatedFixtureSha256": "ef98fcac013f127a218430aa1b3f43c191092cbc41d66b3f41f02715be65a108",
+    "birSha256": "f272d5531b76fcbb05c3fe6c096a60bb32cb930f5a4103c6161aa10c287bada6",
+    "sourcesSha256": "f8edf1aaa5d07b3c17e4d3b26411c3517541bfba68939eca17ebcf87de307836",
+    "runtimeSha256": "478c1ba7d0d0626c1927d11c4af3b3d4cef520db41afd8722ebf55d5050769c3",
+    "sourceSha256": "d1001497df01fa274cd4a67e7a3bd596853e9ee45ecf3fc133084c3a9cfc883b",
+    "checkedSha256": "9e220b61c64648ee4070be7b053cd10db92a039cf07f20575bdaa517d89f6bbe",
+    "sources": 56,
+    "unknownConstructors": 0
+  },
+  "rawLog": {
+    "path": "/tmp/native-stage-canonical-final.log",
+    "sha256": "14d810f2206b0563d4cfecfa1d0323b3f6657ef0d8844d17bea4c1dcd769cb99",
+    "bytes": 2386
+  },
+  "note": "The 3072 MiB old-generation worker cap was reached while loading/checking/generating the canonical fixture; no native phase ran. This is NOT a profiling pass, NOT a cap raise, and NOT retried. It does not claim full compiler HOST/FP/C execution."
+}

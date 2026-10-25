@@ -215,7 +215,16 @@ C source bundle through `EmitterRequestGroup_18` /
 `EmitterRequest_cps_provider_6_render`. The native host passes the owned
 result to one typed outcome callback and does not drop it again; the callback
 carries EmitSuccess source or EmitFailure message/span, and the driver prints
-`EMIT_SUCCESS` or `EMIT_FAILURE: <message>` and exits nonzero on failure. the builder's transport step writes the
+`EMIT_SUCCESS` or `EMIT_FAILURE: <message>` and exits nonzero on failure.
+
+The actual canonical Node 23.11 run is terminal **NOT PASS**: the 3072 MiB
+old-generation Worker cap was reached after 102 s while loading/checking/
+generating the canonical fixture (`ERR_WORKER_OUT_OF_MEMORY`, peak RSS
+3,394,748,416 B = 3.395 GB / 3.162 GiB, below the 8 GiB guard). No native phase
+row, artifact or profile was produced. No cap was raised and the run was not
+retried. This is an honest worker-heap prerequisite failure, not a profiling
+success; it also does not claim full compiler host/FP/C execution. Details:
+`checkpoints/compiler-native-profile-aa9-canonical-final.json`. the builder's transport step writes the
 generated fixture under `checkpoints/` (not Git) from `--canonical-bir`,
 `--canonical-sources`, `--canonical-runtime`, and optional checked/component
 provenance. The transport computes real hashes, includes nullary constructors,
