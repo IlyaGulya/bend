@@ -197,7 +197,7 @@ const bag=sourceFiles(files,o.sourceTag);
 // the samples observed before it.
 function attributedPhase(name:string,protocol:string,inputs:Record<string,unknown>,run:(observe:unknown)=>unknown,success:(value:unknown)=>boolean):unknown{
  if(stage===undefined)return run(undefined);
- const attributes=createStepAttribution(name,protocol,stage.manifestTable);
+ const attributes=createStepAttribution(name,protocol,stage.manifestTable,stage.profile);
  const token=stage.span(name,inputs);
  let value:unknown;
  try{value=run(attributes);}

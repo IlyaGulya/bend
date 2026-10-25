@@ -229,17 +229,17 @@ if(isMainThread){
    source:'selfhost_bootstrap_worker.mjs',details:{phase:'parse-import-fuel',
     note:'exact source-file count and the requested parser fuel; the worker materializes the finite fuel chain lazily, so no cell count is claimed'}});
   let modules=loaded.modules,files=sourceFiles(loaded.files,sourceFileTag);loaded.modules=undefined;loaded.files=undefined;
-  const expandAttributes=stageProfile===undefined?undefined:createStepAttribution('template-expand','Template',stageProfile.manifestTable);
+  const expandAttributes=stageProfile===undefined?undefined:createStepAttribution('template-expand','Template',stageProfile.manifestTable,stageProfile.profile);
   const expansionComponent=profileSteps({...component,expand_modules_start:input=>{modules=undefined;return component.expand_modules_start(input);}},['expand_modules_start','template_step']);
   mark(phase+'-expand');let expanded=runTemplateSteps(expansionComponent,modules,expandAttributes);
   if(tag(expanded)!=='ExpandSuccess')failure('expand',expanded);
   expandAttributes?.record(stageProfile.profile);
-  const checkAttributes=stageProfile===undefined?undefined:createStepAttribution('check-signature-body','Checker',stageProfile.manifestTable);
+  const checkAttributes=stageProfile===undefined?undefined:createStepAttribution('check-signature-body','Checker',stageProfile.manifestTable,stageProfile.profile);
   const checkingComponent=profileSteps({...component,check_expanded_start:input=>{expanded=undefined;return component.check_expanded_start(input);}},['check_expanded_start','checker_step']);
   mark(phase.replace(/-expand$/,'')+'-check');let checked=runCheckerSteps(checkingComponent,expanded.modules,checkAttributes);
   if(tag(checked)!=='CheckSuccess')failure('check',checked);
   checkAttributes?.record(stageProfile.profile);
-  const emitAttributes=stageProfile===undefined?undefined:createStepAttribution('emit','Emitter',stageProfile.manifestTable);
+  const emitAttributes=stageProfile===undefined?undefined:createStepAttribution('emit','Emitter',stageProfile.manifestTable,stageProfile.profile);
   const emissionComponent=profileSteps({...component,emit_modules_start:(input,sources)=>{checked=undefined;return component.emit_modules_start(input,sources);},emit_library_start:(program,names,sources)=>{checked=undefined;return component.emit_library_start(program,names,sources);}},['emit_modules_start','emit_library_start','emitter_step']);
   mark(phase.replace(/-check$/,'')+'-emit');const emitted=library?runLibraryEmitterSteps(emissionComponent,checked.program,list(ABI),files,emitAttributes):runEmitterSteps(emissionComponent,checked.program,files,emitAttributes);
   files=undefined;

@@ -285,19 +285,38 @@ export function typedProgressSample(run) {
 }
 
 /**
- * Accumulate exact host-step counts and sampled typed-progress observations for
- * one phase. `onStep` is called from the trusted step runtime only when stage
- * profiling is enabled; `record` emits one observation per phase so a full-root
- * report stays compact.
+ * Accumulate exact host-step counts and sampled typed progress for one phase.
+ * `onStep` runs only when profiling is enabled. Optional progress checkpoints
+ * preserve the last observed boundary before an abrupt worker stop.
  */
-export function createStepAttribution(phase, protocol, table) {
+export function createStepAttribution(phase, protocol, table, profile) {
   let hostSteps = 0, attributed = 0, unclassified = 0, observedNamespace = null;
   const requests = new Map(), groups = new Map(), groupBases = new Map(), shapes = new Map();
   const unclassifiedRequests = new Map(), unclassifiedReasons = new Map();
+  let checkpointAt = -Infinity;
+  function checkpoint(sample) {
+    if (profile === undefined) return;
+    const now = performance.now();
+    if (now - checkpointAt < 1000) return;
+    checkpointAt = now;
+    profile.record({
+      kind: 'typed-step-progress', scope: 'latest observed host-visible bounded-step boundary',
+      name: phase, units: 'host-step-calls', value: hostSteps,
+      source: 'checker_core_step_runtime.mjs',
+      details: {
+        protocol, nativeChunkQuantum: 64,
+        progressShape: sample?.progress ?? null,
+        request: sample?.request ?? null,
+        runNamespace: sample?.runNamespace ?? null,
+        granularity: 'first boundary then at most once per second; not a substage duration, live-process claim, or continuous sample',
+      },
+    });
+  }
   return {
     onStep(_steps, run) {
       hostSteps += 1;
       const sample = typedProgressSample(run);
+      checkpoint(sample);
       if (sample === undefined) return;
       if (observedNamespace === null && sample.runNamespace !== null) observedNamespace = sample.runNamespace;
       shapes.set(sample.progress, (shapes.get(sample.progress) ?? 0) + 1);

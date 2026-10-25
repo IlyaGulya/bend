@@ -1,5 +1,5 @@
 import {expect, test} from 'bun:test';
-import {mkdtemp, rm, writeFile} from 'node:fs/promises';
+import {mkdtemp, readFile, rm, writeFile} from 'node:fs/promises';
 import {join} from 'node:path';
 import {tmpdir} from 'node:os';
 import {createStageProfile, createStepAttribution, loadStageManifests, typedProgressSample} from './compiler_stage_profile.mjs';
@@ -224,4 +224,30 @@ test('a closed wrapper stage leaves a complete measurement', async () => {
     expect(report.summary.unclosedSpans.count).toBe(0);
     expect(report.spans.map(span => [span.name, span.status])).toContainEqual(['closed-stage', 'completed']);
   } finally {await rm(directory, {recursive: true, force: true});}
+});
+
+test('an unfinished phase durably records its last observed typed-step boundary', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'bend-stage-progress-'));
+  const stage = await createStageProfile({directory, execution: {stage: 'unfinished-step-test'}});
+  try {
+    stage.span('emit');
+    const attribution = createStepAttribution('emit', 'Emitter', undefined, stage.profile);
+    attribution.onStep(0, run('emitter_steps_v1', 'emit'));
+    const checkpoint = JSON.parse(await readFile(join(stage.runDirectory, 'checkpoint.json'), 'utf8'));
+    const progress = checkpoint.recentObservations.find(row => row.kind === 'typed-step-progress');
+    expect(progress).toMatchObject({
+      name: 'emit', value: 1, units: 'host-step-calls',
+      details: {
+        protocol: 'Emitter',
+        progressShape: 'Pending',
+        request: 'emitter_steps_v1.EmitterRequest_emit',
+        runNamespace: 'emitter_steps_v1',
+      },
+    });
+    expect(checkpoint.activeSpans.map(span => span.name)).toContain('emit');
+    expect(checkpoint.status).toBe('running');
+  } finally {
+    stage.finish('aborted');
+    await rm(directory, {recursive: true, force: true});
+  }
 });

@@ -170,6 +170,27 @@ be preserved by any reader:
   `IN_PROGRESS` report is not live evidence; profile runs whose summaries were
   not finalized are `INCOMPLETE` with the same liveness rule.
 
+## Unfinished typed-stage progress
+
+`candidate_host` and the bootstrap worker optionally pass their collector to
+`createStepAttribution`. The first bounded-step boundary, then at most one
+boundary per second, records `typed-step-progress` in the atomic checkpoint.
+It retains the exact observed host-step count, protocol, fully qualified Run
+namespace and pending request tag when visible. No callback runs on the normal
+unprofiled path. Final phase attribution remains separate.
+
+These are **last observed boundaries**, not continuous samples or evidence that
+the process is still alive. A `Finished` progress shape is not whole-phase
+completion: its Run may still carry a continuation stack. CPU/memory in the
+checkpoint have the collector's existing process/isolate boundary scopes, not
+per-request duration, allocation or retained-byte ownership.
+
+`evals/receipts/durable_stage_progress_db147.json` records the regression
+red/green, actual C emit/clang/run with byte-identical output against the
+unprofiled image-bound control, and controlled termination of the real
+full-root checker after a durable progress update. That interruption is not
+compiler acceptance or full-input overhead evidence.
+
 ## Verified coverage and explicit gaps
 
 `evals/compiler_profile_smoke.ts` is the focused bounded smoke. It runs:
