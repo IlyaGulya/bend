@@ -180,6 +180,7 @@ function default_files(): string[] {
     "evals/c_target_char_to_list.bend",
     "evals/c_target_string_from_list.bend",
     "evals/c_target_bool_prims.bend",
+    "evals/c_target_clo_field.bend",
     "tests/reg/phys_storage_paths.bend",
     // Target selection: an absent C target must fail only the native lane, an
     // absent JS target only the JS lane, each with a real diagnostic.
