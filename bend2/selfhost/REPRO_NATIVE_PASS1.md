@@ -323,3 +323,20 @@ events and two codegen passes complete under the original3072MiB/256MiB
 worker policy and8GiB/10ms/600s guard. This rules out that simple wrapper as
 a sufficient isolated reproducer; the full-workload interaction and a minimal
 failing input remain open. No clang/native execution or acceptance is claimed.
+
+### Temporary working8192MiB policy: two passes complete, deadline in pass3
+
+The user's next instruction defers the3072MiB optimization target and permits
+an8192MiB working heap. The outer tree guard is12288MiB to leave non-heap
+headroom; stack256MiB,10ms sampling,one heavy child and600s deadline stay fixed.
+`evals/receipts/native03d0_working8192_deadline.json` pins the same complete
+frozen03d0 workload and unchanged compiler/kernel/observer bytes.
+
+No OOM is observed. `c-pass-1` and `c-pass-2` complete; the guard stops pass3
+with `profile_emitter_start` open and `profile_emitter_pending` in a spin.
+No C output or native binary is produced. Guard complete/stopped,
+600568ms, peak RSS7063502848B / footprint7568086144B.
+The trace contains1060976events /646109345B; its overhead is not measured.
+A subsequent no-per-definition-observer control is required before attributing
+that deadline to the compiler or the observer. Passing under this working
+policy would not close the deferred3072MiB target.
