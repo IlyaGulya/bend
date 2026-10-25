@@ -769,22 +769,18 @@ def view_field(+pw: World, +ppacked: Bool, +pbase: String, +pslot: CLay.NodeSlot
       dst = join_text(["vf", U32.show(ordinal)])
       part_of(run_jobs(unfill_jobs(pw, layout, view_src(ppacked, pbase, offset), dst, dst), pw, Nil{}), dst)
 
-def view_slots(+pw: World, +pslots: List<&2, CLay.NodeSlot>, +ppacked: Bool, +pbase: String, +pexpected: Nat, +pacc: List<&2, ProjectField>) -> ViewFields:
+def view_slots(+pw: World, +pslots: List<&2, CLay.NodeSlot>, +ppacked: Bool, +pbase: String, +pacc: List<&2, ProjectField>) -> ViewFields:
   match pslots:
-    case Nil{}: ViewFieldsOk{List.reverse(&2, ProjectField, pacc)}
+    case Nil{}: ViewFieldsOk(pacc)
     case +slot <> rest:
       match slot:
         case CLay.NodeSlot{ordinal, offset, layout}:
-          at = U32.to_nat(ordinal)
-          gap = Nat.sub(at, pexpected)
-          blank = ProjectField{U32.from_nat(0n), "", ""}
-          padded = List.append(&2, ProjectField, pacc, List.replicate(ProjectField, gap, blank))
           field = view_field(pw, ppacked, pbase, slot)
           match field:
             case PartFail{message}: ViewFieldsFail{message}
             case PartOk{text}:
               discard = view_discard(layout, text)
-              view_slots(pw, rest, ppacked, pbase, Nat.add(at, 1n), List.append(&2, ProjectField, padded, [ProjectField{ordinal, text, discard}]))
+              view_slots(pw, rest, ppacked, pbase, List.append(&2, ProjectField, pacc, [ProjectField{ordinal, text, discard}]))
 
 def view_finish(+psetup: String, +pvf: ViewFields, +prelease: String) -> ProjectView:
   match pvf:
@@ -795,7 +791,7 @@ def view_plan(+ppacked: Bool, +pwords: Nat, +pslots: List<&2, CLay.NodeSlot>, +p
   match ppacked:
     case True{}:
       setup = join_text(["Term vt = (", pvalue, ");"])
-      view_finish(setup, view_slots(pw, pslots, True{}, "", 0n, Nil{}), "")
+      view_finish(setup, view_slots(pw, pslots, True{}, "", Nil{}), "")
     case False{}:
       match pwords:
         case 0n:
@@ -806,7 +802,7 @@ def view_plan(+ppacked: Bool, +pwords: Nat, +pslots: List<&2, CLay.NodeSlot>, +p
           setup = join_text(["Term fb[", Nat.show(pwords), "]; Term vt = (", pvalue, "); u64 vp = term_rfc(vt) ? ctr_take(e, vt, ", Nat.show(pwords), ", fb) : term_loc(vt);"])
           base = "(term_rfc(vt) ? 0 : vp)"
           release = join_text(["if (vp != 0) { spare_free(e, cls_fit(", Nat.show(pwords), "), vp); }"])
-          view_finish(setup, view_slots(pw, pslots, False{}, base, 0n, Nil{}), release)
+          view_finish(setup, view_slots(pw, pslots, False{}, base, Nil{}), release)
 
 def view_node(+pvalue: String, +pkey: String, +pw: World) -> ProjectView:
   match pw:
