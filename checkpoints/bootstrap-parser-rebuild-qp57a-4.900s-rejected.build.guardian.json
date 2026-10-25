@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "reason": "command_exit",
+  "commandExitCode": 0,
+  "commandSignal": 0,
+  "peakRssBytes": 301858816,
+  "peakFootprintBytes": 202261368,
+  "elapsedMs": 1362,
+  "timeoutMs": 600000,
+  "reportPhase": "complete",
+  "ownedTreeStopped": true,
+  "supervisorExitCode": 0,
+  "command": [
+    "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+    "--smol",
+    "/private/tmp/bend-fir-root-aa9/evals/bootstrap_parser_rebuild.ts",
+    "--worker-build",
+    "--run-id",
+    "qp57a-4",
+    "--canonical-sha256",
+    "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37",
+    "--candidate-gate",
+    "/private/tmp/bend-fir-root-aa9/checkpoints/parser-candidate-gate-qp57a-4.json"
+  ],
+  "label": "Final canonical bootstrap parser --build",
+  "exitCode": 0,
+  "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792903780173-aa5cd18ca650f174.json",
+  "memoryLimitBytes": 8589934592,
+  "rssLimitBytes": 8589934592,
+  "pollMs": 10
+}

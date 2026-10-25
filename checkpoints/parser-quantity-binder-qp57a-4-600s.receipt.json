@@ -489,5 +489,66 @@
   "C matrix",
   "bootstrap green",
   "any admission from the 900 s gate invocation"
- ]
+ ],
+ "finalBuild": {
+  "invokedCommand": "bun --smol evals/bootstrap_parser_rebuild.ts --build --run-id qp57a-4 --candidate-gate checkpoints/parser-candidate-gate-qp57a-4-600s.json",
+  "guardedCommand": [
+   "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+   "--smol",
+   "/private/tmp/bend-fir-root-aa9/evals/bootstrap_parser_rebuild.ts",
+   "--worker-build",
+   "--run-id",
+   "qp57a-4",
+   "--canonical-sha256",
+   "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37",
+   "--candidate-gate",
+   "/private/tmp/bend-fir-root-aa9/checkpoints/parser-candidate-gate-qp57a-4-600s.json"
+  ],
+  "guardianReport": "checkpoints/bootstrap-parser-rebuild-qp57a-4.build.guardian.json",
+  "guardian": {
+   "status": "PASS",
+   "elapsedMs": 1237,
+   "peakRssBytes": 296419328,
+   "peakFootprintBytes": 229131104,
+   "timeoutMs": 600000,
+   "commandExitCode": 0,
+   "supervisorExitCode": 0
+  },
+  "nativeRecompile": false,
+  "reusedArtifact": "0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b",
+  "result": {
+   "path": "checkpoints/bootstrap-parser-rebuild-qp57a-4.result.json",
+   "sha256": "42184ce90a524baa97e4609da5c9d4c7da5bb178e393f7369fa83e05ad10eb26",
+   "status": "PARSER_ACCEPTED_NATIVE_SEMANTICS",
+   "canonicalSha256": "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37",
+   "rows": 75,
+   "checksExcluded": 0,
+   "outputPatches": 0
+  },
+  "candidateGates": {
+   "path": "checkpoints/bootstrap-parser-rebuild-qp57a-4.candidate-gates-v1.json",
+   "sha256": "f4049222f8b6fa7a993321cb9a0db871b70c205ae764838acb533dbea2bc1056",
+   "candidateGatePath": "checkpoints/parser-candidate-gate-qp57a-4-600s.json",
+   "candidateGateSha256": "f9eb738b8171619652f8a055590802d324e0aa1343191dbf8c352e06b3300efb"
+  },
+  "acceptanceAuthorized": {
+   "path": "checkpoints/bootstrap-parser-rebuild-qp57a-4.acceptance-authorized.json",
+   "sha256": "53562553db4472ef6b33b72cfa1c624a332ee462536e4ceffb1ed7ce55bfcfe7"
+  },
+  "identityChecks": "result, candidate-gates-v1 and acceptance-authorized all name parser-candidate-gate-qp57a-4-600s.json (sha f9eb738b\u2026) as the candidate gate; native and prepared proofs re-verified by hash during the run"
+ },
+ "superseded900Build": {
+  "preservedAs": "checkpoints/bootstrap-parser-rebuild-qp57a-4.900s-rejected.*",
+  "files": [
+   "result.json",
+   "candidate-gates-v1.json",
+   "acceptance-authorized.json",
+   "build.guardian.json",
+   "build.jsonl",
+   "build.request.json",
+   "progress.json"
+  ],
+  "verdict": "REJECTED_UNAPPROVED_DEADLINE",
+  "note": "the old build record authenticated against the 900 s gate; it is kept verbatim as historical and makes no acceptance claim"
+ }
 }

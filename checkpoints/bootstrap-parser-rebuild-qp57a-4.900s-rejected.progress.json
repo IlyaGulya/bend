@@ -1,0 +1,11 @@
+{
+  "phase": "load",
+  "elapsedMs": 1278.343375,
+  "bunVersion": "1.4.2",
+  "runtimeArgs": [
+    "--smol"
+  ],
+  "stage": "complete-native-parser-acceptance-authorized",
+  "rows": 75,
+  "parserBuildPath": "/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.native-build.result.json"
+}
