@@ -288,8 +288,16 @@ def nests_jobs(+pw: World, +pnests: List<&2, CLay.Nest>, +psrc: Src, +pdst: Dst,
 # Expand one conversion into jobs. This function never calls itself or another
 # expander: nested work becomes JConv entries in the returned list.
 
+def arm_release(+ppacked: Bool, +pnode_words: Nat, +ptag: String) -> List<&2, Job>:
+  match ppacked:
+    case True{}: Nil{}
+    case False{}:
+      match pnode_words:
+        case 0n: Nil{}
+        case _: [JText{join_text(["if (", ptag, "s != 0) { spare_free(e, cls_fit(", Nat.show(pnode_words), "), ", ptag, "s); }"])}]
+
 def jobs_arm_body(+pw: World, +pcid: U32, +ptag_index: Nat, +ppacked: Bool, +pnode_words: Nat, +pfields: List<&2, CLay.Nest>, +pt: String, +pdst: Dst, +ptag: String, +ptagged: Bool, +pfb: String, +pmode: Nat) -> List<&2, Job>:
-  List.append(&2, Job, Bool.pick(List<&2, Job>, ptagged, one_job(JText{dst_mark(pdst)}), Nil{}), List.append(&2, Job, arm_seed(ppacked, pnode_words, pt, ptag, pfb), nests_jobs(pw, pfields, arm_src(ppacked, pnode_words, pt, ptag, pfb), pdst, ptag, 0n)))
+  List.append(&2, Job, Bool.pick(List<&2, Job>, ptagged, one_job(JText{dst_mark(pdst)}), Nil{}), List.append(&2, Job, arm_seed(ppacked, pnode_words, pt, ptag, pfb), List.append(&2, Job, nests_jobs(pw, pfields, arm_src(ppacked, pnode_words, pt, ptag, pfb), pdst, ptag, 0n), arm_release(ppacked, pnode_words, ptag))))
 
 def jobs_arm(+pw: World, +pcid: U32, +ptag_index: Nat, +ppacked: Bool, +pnode_words: Nat, +pfields: List<&2, CLay.Nest>, +pt: String, +pdst: Dst, +ptag: String, +ptagged: Bool, +pfb: String, +pmode: Nat) -> List<&2, Job>:
   List.append(&2, Job, [JText{join_text(["case ", U32.show(pcid), "u: {"])}], List.append(&2, Job, jobs_arm_body(pw, pcid, ptag_index, ppacked, pnode_words, pfields, pt, pdst, ptag, ptagged, pfb, pmode), [JText{"} break;"}]))
