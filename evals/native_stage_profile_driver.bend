@@ -221,7 +221,13 @@ def profile_emitter_outcome(box: Emit.EmitterValue<Emit.cps_provider_6_EmitResul
 
 def profile_emitter_report(outcome: NativeEmitOutcome) -> IO(Unit):
   match outcome:
-    case NativeEmitSuccess{source}: IO.print("EMIT_SUCCESS")
+    case NativeEmitSuccess{source}:
+      match source:
+        case SCon{h, t}: IO.print("EMIT_SUCCESS")
+        case SNil{}:
+          do IO<Unit>:
+            Unit <- IO.print("EMIT_FAILURE: empty EmitSuccess")
+            IO.exit(1)
     case NativeEmitFailure{message, span}:
       do IO<Unit>:
         Unit <- IO.print(String.concat(["EMIT_FAILURE: ", message]))
