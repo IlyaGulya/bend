@@ -64,12 +64,21 @@ and no explicit stack flag fails during `parse-import-fuel` in
 `String.from_list` (`$b293`), before checking. Receipt:
 `evals/receipts/stage1_30bef0b0_default_stack.json`. That is not the prior
 bootstrap worker's 256 MiB-stack execution and does not reclassify its timeout.
+The canonical TS-produced seed `db147cba` also fails in `String.from_list` under
+the same default-stack CLI policy: this is not established as a selfhost-only
+or FIR-cutover regression. With the existing 256 MiB worker-stack policy and
+3,072 MiB old generation, full-root C compilation completes parsing,
+expansion and checking, then hits the unchanged 600 s deadline inside
+`emit(target=c, library=true, exports=13)`. No C artifact is produced.
+Receipt: `evals/receipts/full_root_c_db147_diagnostics.json`.
+The separate390-byte general non-tail recursion witness and observed default
+stack failure are frozen in `evals/receipts/js_non_tail_depth_db147.json`.
 
 Immediate acceptance followups:
 - [ ] Localize/fix full-bootstrap `stage-two-check` cost under the unchanged
   600 s deadline, complete stage2 and compare bytes without narrowing fixtures.
-- [ ] Minimize/fix the selfhost-emitted JS default-stack `String.from_list`
-  failure; keep host CLI and producer/worker policies distinct.
+- [ ] Resolve the default-stack non-tail recursion boundary, now also observed
+  in the canonical seed; keep host CLI and producer/worker policies distinct.
 - [ ] Minimize the native working-set interaction now localized to the actual
   `files()` transport. The same56-entry literal completes in isolation but its
   first-pass heapUsed boundaries grow 30,213,600 → 2,213,765,616 B.
@@ -83,6 +92,16 @@ foreign library/module runs on `db147cba` pass, with exact effect bytes supplied
 through the passive carrier. Receipt:
 `evals/receipts/source_carrier_db147cba.json`. Optimized single-constructor
 matches are not evidence that an arbitrary tag is valid.
+
+Latest profiling fix: `21c3ed45` + receipt checkpoint `eabcaa36`.
+Opt-in typed-stage observers now durably record the first step boundary, then
+at most one per second, before phase completion. Behavioral suite: 16 pass /
+0 fail / 52 expectations. Actual C emit/clang/run passes with byte-identical C
+against the unprofiled control; a real full-root checker interruption preserves
+43,424 observed step calls without claiming compiler completion or liveness.
+Receipt: `evals/receipts/durable_stage_progress_db147.json`.
+The compiler image, ordinary unprofiled path, ABI and quantum are unchanged;
+full-input overhead, fine substage timing and retained/live bytes remain open.
 
 ### Preceding `667e7f33` C checkpoint (historical)
 
@@ -278,6 +297,11 @@ Deliverables:
   generated machines authenticated by hash; it is not the new C candidate.
   Boundary heap deltas are not allocation or retained bytes, and the open
   pass has no completed wall/CPU measurement. No unchanged retry is planned.
+- [x] Preserve bounded typed-step progress before phase completion, including
+  controlled real-worker termination. Implemented at `21c3ed45`; exact
+  regression, actual C output identity/execution and interruption evidence in
+  `evals/receipts/durable_stage_progress_db147.json`. This does not establish
+  full-input profiling overhead or exact internal substage duration.
 
 Acceptance:
 - [ ] Clean target output is byte-identical with profiling on and off (JS and C
