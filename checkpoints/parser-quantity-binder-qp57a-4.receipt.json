@@ -1,0 +1,156 @@
+{
+ "schemaVersion": 1,
+ "status": "PARSER_QUANTITY_BINDER_RESTORED_ACCEPTED",
+ "runId": "qp57a-4",
+ "date": "2026-10-25",
+ "scope": "canonical parser.bend only: quantity-annotated local binders in function bodies and do blocks, plus the reusable quantity on do <- binders; kernel, comp.ts, canonical generator, corpus, exports, fuel and caps untouched",
+ "sourceChange": {
+  "file": "bend2/selfhost/parser.bend",
+  "summary": "parse_body_scan routes an annotated name group through decl_body_name_group to a typed-local path; the + row routes through decl_plus_local; parse_do_typed_bind accepts +name : T = value and +name : T <- action, with does-let quantities QMany and TermAnn values; local_annotation_has_equal scans the annotation for the closing =; parse_do_typed_bind_body_result/parse_do_typed_bind_value_result now carry the lambda quantity",
+  "canonicalSha256": "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37"
+ },
+ "artifacts": {
+  "candidateSource": {
+   "path": "checkpoints/.bootstrap_parser_rebuild_qp57a-4_generated_fuel.bend",
+   "sha256": "1f87959ff0030b21d5d5add2b3c9f30a5868875bf115e9358a0c68bfb56de4cd",
+   "bytes": 651694
+  },
+  "preparedSource": {
+   "path": "checkpoints/.bootstrap_parser_rebuild_qp57a-4_source.bend",
+   "sha256": "56a1b8ece135e55d9e6eaf4be3ff8ae47744e70185dbe46711c6a3037d74d6a3",
+   "bytes": 366001
+  },
+  "artifact": {
+   "path": "checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+   "sha256": "0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b",
+   "bytes": 2834193
+  }
+ },
+ "authentication": {
+  "sourceGate": {
+   "report": "checkpoints/parser-source-gate-qp57a-4.json",
+   "status": "PASS",
+   "canonicalSha256": "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37"
+  },
+  "publicSource": {
+   "report": "checkpoints/parser-public-qp57a-4.json",
+   "passed": 15,
+   "failed": 0
+  },
+  "publicCandidate": {
+   "report": "checkpoints/parser-public-candidate-qp57a-4.json",
+   "passed": 15,
+   "failed": 0,
+   "entry": "parse_with_fuel"
+  },
+  "candidateGate": {
+   "report": "checkpoints/parser-candidate-gate-qp57a-4.json",
+   "completed": true,
+   "admitted": true,
+   "sourceSpecificExceptions": 0,
+   "checksExcluded": 0,
+   "outputPatches": 0,
+   "guard": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10
+   }
+  },
+  "nativeBuild": {
+   "status": "JS_GENERATED_NOT_YET_EXECUTED",
+   "metrics": null
+  }
+ },
+ "consumerRegressions": {
+  "command": "bun evals/candidate_host.ts --candidate=checkpoints/root-final4-art.js --parser=checkpoints/bootstrap-parser-rebuild-qp57a-4.js <fixture> -o <js>; bun <js>",
+  "fixtures": [
+   {
+    "path": "tests/run/list_rebox_sum.bend",
+    "stdout": [
+     "7",
+     "3",
+     "bounded"
+    ],
+    "expected": [
+     "7",
+     "3",
+     "bounded"
+    ],
+    "pass": true,
+    "emitSha256": "79c9c46ae9424f2499d9382bb0394f0e81f7192e3823001f73cdf8deaac4f050"
+   },
+   {
+    "path": "tests/run/c_backend_link.bend",
+    "stdout": [
+     "linked-comment-kept",
+     "literal-kept",
+     "fid-linked",
+     "splice-kept",
+     "splice-kept",
+     "missing"
+    ],
+    "expected": [
+     "linked-comment-kept",
+     "literal-kept",
+     "fid-linked",
+     "splice-kept",
+     "splice-kept",
+     "missing"
+    ],
+    "pass": true,
+    "emitSha256": "9678b9b9d735e55e868e36fd535979c242bf54c5cd71bc0469f23aeb88247648"
+   },
+   {
+    "path": "tests/run/family_field_hot.bend",
+    "stdout": [
+     "5"
+    ],
+    "expected": [
+     "5"
+    ],
+    "pass": true,
+    "emitSha256": "a903fbf3b9e23f7573f4734b547e8e0c77bb7e9523e73251f9575bd00f2148e2"
+   }
+  ],
+  "forms": {
+   "do_plus_typed_assign": "accepted",
+   "do_plus_typed_bind": "accepted with re-usable binder quantity",
+   "body_plus_typed": "accepted",
+   "body_plain_typed": "accepted",
+   "do_plain_typed": "accepted",
+   "plus_untyped_and_parallel_typed": "still rejected, matching the stage0 compiler",
+   "body_plus_untyped": "still accepted as before; pre-existing over-accept, unchanged by this fix"
+  },
+  "rootClosureParse": "ast, lexer, core, loaded_module, backend_ir, checked_frontend, parser, checker, lower_catalog, js_emit, template_steps and the root itself parse; checker_core_steps exceeds the probe's 2e6 fuel cells, not a parse failure; js_link.bend and c_emit.bend fail identically on the previous and the new parser and are outside the built root closure"
+ },
+ "rejectedVersions": [
+  {
+   "runId": "qp57a-1",
+   "reason": "prepare-source aborted after writing a partial record; superseded"
+  },
+  {
+   "runId": "qp57a-2",
+   "reason": "generator invariant: Body next-token priority drift (a fifth row was added to the body name-group match); fixed by routing the default row through decl_body_name_group"
+  },
+  {
+   "runId": "qp57a-3",
+   "reason": "candidate accepted syntactically, but the plus typed <- binder dropped the quantity, so family_field_hot failed checking with invalid use quantity for s; superseded by qp57a-4"
+  }
+ ],
+ "runtime": {
+  "node": "23.11.0",
+  "bun": "1.4.2",
+  "limits": {
+   "memoryMiB": 8192,
+   "rssMiB": 8192,
+   "pollMs": 10
+  }
+ },
+ "notClaimed": [
+  "root-final5",
+  "full root byte fixed point",
+  "frozen v41 corpus run",
+  "C matrix",
+  "bootstrap green"
+ ]
+}
