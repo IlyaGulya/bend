@@ -3,6 +3,7 @@ import ../checkpoints/template_steps_v1.bend as Template
 import ../checkpoints/checker_core_steps_v1.bend as Checker
 import ../checkpoints/emitter_steps_v1.bend as Emit
 import ../bend2/selfhost/backend_ir.bend as BIR
+import ../bend2/selfhost/ast.bend as Ast
 import ../checkpoints/native_stage_profile_generated_fixture.bend as EmitFixture
 
 # Diagnostic-only typed view for the native chunk driver. It reports the
@@ -20,6 +21,10 @@ type NativeCheckerStageView<-A: Type> is Type:
 type NativeEmitterStageView<-A: Type> is Type:
   NativeEmitterStageFinished{take: Unit -> Emit.EmitterValue<A>}
   NativeEmitterStageMore{next: Unit -> Emit.EmitterRun<A>, stage: U32}
+
+type NativeEmitOutcome is Data:
+  NativeEmitSuccess{source: String}
+  NativeEmitFailure{message: String, span: Ast.SourceSpan}
 
 # Emitter stage codes: 0 Finished, 1 Direct (erased scheduling request),
 # 2 Bound, 100+N Pending whose outer request-group variant is N. Only the
@@ -152,7 +157,7 @@ def native_stage_checker(start: Unit -> Checker.CheckerRun<Unit>, view: (@-A: Ty
 def native_stage_template_pending(start: Unit -> Template.TemplateRun<Unit>, view: (@-A: Type -> @run: Template.TemplateRun<A> -> NativeTemplateStageView<A>)) -> IO(Unit):
   import "./native_stage_profile_host.c"
 
-def native_stage_emitter(start: Unit -> Emit.EmitterRun<Emit.cps_provider_6_EmitResult>, view: (@-A: Type -> @run: Emit.EmitterRun<A> -> NativeEmitterStageView<A>), result_status: (@box: Emit.EmitterValue<Emit.cps_provider_6_EmitResult> -> U32)) -> IO(Unit):
+def native_stage_emitter(start: Unit -> Emit.EmitterRun<Emit.cps_provider_6_EmitResult>, view: (@-A: Type -> @run: Emit.EmitterRun<A> -> NativeEmitterStageView<A>), outcome: (@box: Emit.EmitterValue<Emit.cps_provider_6_EmitResult> -> NativeEmitOutcome)) -> IO(NativeEmitOutcome):
   import "./native_stage_profile_host.c"
 
 # The fixture seeds the real generated Run machine with a finite finished-value
@@ -207,16 +212,20 @@ def profile_emitter_program() -> BIR.Program:
 def profile_emitter_files() -> List<&2, BIR.SourceFile>:
   EmitFixture.files()
 
-def profile_emitter_result_status(box: Emit.EmitterValue<Emit.cps_provider_6_EmitResult>) -> U32:
+def profile_emitter_outcome(box: Emit.EmitterValue<Emit.cps_provider_6_EmitResult>) -> NativeEmitOutcome:
   match box:
     case Emit.EmitterValue{value}:
       match value:
-        case Emit.cps_provider_6_EmitSuccess{source}:
-          match source:
-            case SCon{h, t}: 1
-            case SNil{}: 0
-        case Emit.cps_provider_6_EmitFailure{message, span}:
-          2
+        case Emit.cps_provider_6_EmitSuccess{source}: NativeEmitSuccess{source}
+        case Emit.cps_provider_6_EmitFailure{message, span}: NativeEmitFailure{message, span}
+
+def profile_emitter_report(outcome: NativeEmitOutcome) -> IO(Unit):
+  match outcome:
+    case NativeEmitSuccess{source}: IO.print("EMIT_SUCCESS")
+    case NativeEmitFailure{message, span}:
+      do IO<Unit>:
+        Unit <- IO.print(String.concat(["EMIT_FAILURE: ", message]))
+        IO.exit(1)
 
 def profile_emitter_pending() -> Emit.EmitterProgress<Emit.cps_provider_6_EmitResult>:
   Emit.EmitterPending{Emit.EmitterRequestGroup_18{Emit.EmitterRequest_cps_provider_6_render{
@@ -247,5 +256,6 @@ def main() -> IO(Unit):
     Unit <- native_stage_template(profile_template_start, native_template_stage_view)
     Unit <- native_stage_checker(profile_checker_start, native_checker_stage_view)
     Unit <- native_stage_template_pending(profile_template_pending_start, native_template_stage_view)
-    Unit <- native_stage_emitter(profile_emitter_start, native_emitter_stage_view, box => profile_emitter_result_status(box))
+    outcome : NativeEmitOutcome <- native_stage_emitter(profile_emitter_start, native_emitter_stage_view, profile_emitter_outcome)
+    Unit <- profile_emitter_report(outcome)
     return Unit{}

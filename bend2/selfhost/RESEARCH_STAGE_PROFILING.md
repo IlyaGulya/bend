@@ -212,7 +212,10 @@ only the source input and thin diagnostic components are source. The JS codegen
 stack is 256 MiB, the approved source cap; no native worker/guard limit changed.
 The diagnostic driver now consumes this canonical BIR, real runtime and 56-file
 C source bundle through `EmitterRequestGroup_18` /
-`EmitterRequest_cps_provider_6_render`; the builder's transport step writes the
+`EmitterRequest_cps_provider_6_render`. The native host passes the owned
+result to one typed outcome callback and does not drop it again; the callback
+carries EmitSuccess source or EmitFailure message/span, and the driver prints
+`EMIT_SUCCESS` or `EMIT_FAILURE: <message>` and exits nonzero on failure. the builder's transport step writes the
 generated fixture under `checkpoints/` (not Git) from `--canonical-bir`,
 `--canonical-sources`, `--canonical-runtime`, and optional checked/component
 provenance. The transport computes real hashes, includes nullary constructors,

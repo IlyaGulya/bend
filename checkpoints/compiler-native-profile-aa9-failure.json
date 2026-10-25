@@ -330,5 +330,11 @@
         "badExtra": "/tmp/transport-bad-extra.log"
       }
     }
+  },
+  "nativeOwnershipFix": {
+    "status": "source fixed; not native-run",
+    "result": "owned result is consumed exactly once by the typed outcome callback; no term_drop follows on the classifier path; phases without a classifier still drop their owned result",
+    "failureSurface": "NativeEmitOutcome carries EmitSuccess source or EmitFailure message+span; driver IO report prints EMIT_SUCCESS or EMIT_FAILURE: <message> and exits 1 on failure; canonical CJoin span retained in the outcome",
+    "note": "previous status-2 path never exercised the double-drop; fixed before any native run"
   }
 }

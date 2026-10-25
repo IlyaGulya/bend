@@ -36,7 +36,7 @@ static void native_stage_fields(Env e, Term value, u32 cid, u32 n, Term* fields)
   }
 }
 
-static Term native_stage_drive(Env e, Term start, Term view, u32 finished, u32 more, const char* phase, int group_stage, Term result_status, int expect_result) {
+static Term native_stage_drive(Env e, Term start, Term view, u32 finished, u32 more, const char* phase, int group_stage, Term outcome) {
   u64 chunks = 0, shapes[4] = {0, 0, 0, 0}, groups[27] = {0};
   u64 started = io_tick();
   struct rusage before;
@@ -70,20 +70,15 @@ static Term native_stage_drive(Env e, Term start, Term view, u32 finished, u32 m
     } else if (tag == finished) {
       native_stage_fields(e, observed, finished, 1, &thunk);
       Term result = native_stage_apply(e, thunk, term_pak(CID(Unit), 0));
-      u32 fixture_result = 0;
-      if (result_status != TERM_HOLE) {
-        Term status = native_stage_apply(e, result_status, result);
-        fixture_result = (u32)term_loc(status);
-      }
       struct rusage after;
       native_stage_cpu_sample(&after);
-      fprintf(stderr, "NATIVE_CHUNK_PROFILE {\"phase\":\"%s\",\"elapsedMs\":%.3f,\"userCpuMs\":%.3f,\"systemCpuMs\":%.3f,\"chunkAdvances\":%llu,\"chunkQuantum\":64,\"shapeFinished\":%llu,\"shapePending\":%llu,\"shapeDirect\":%llu,\"shapeBound\":%llu,\"fixtureResultStatus\":%u,\"requestGroups\":{",
+      fprintf(stderr, "NATIVE_CHUNK_PROFILE {\"phase\":\"%s\",\"elapsedMs\":%.3f,\"userCpuMs\":%.3f,\"systemCpuMs\":%.3f,\"chunkAdvances\":%llu,\"chunkQuantum\":64,\"shapeFinished\":%llu,\"shapePending\":%llu,\"shapeDirect\":%llu,\"shapeBound\":%llu,\"requestGroups\":{",
         phase, (double)(io_tick() - started) / 1000000.0,
         native_stage_cpu_ms(&before.ru_utime, &after.ru_utime),
         native_stage_cpu_ms(&before.ru_stime, &after.ru_stime),
         (unsigned long long)chunks, (unsigned long long)shapes[0],
         (unsigned long long)shapes[1], (unsigned long long)shapes[2],
-        (unsigned long long)shapes[3], fixture_result);
+        (unsigned long long)shapes[3]);
       int first_group = 1;
       for (u32 i = 0; i < 27; i++) {
         if (groups[i] == 0) continue;
@@ -91,9 +86,9 @@ static Term native_stage_drive(Env e, Term start, Term view, u32 finished, u32 m
         first_group = 0;
       }
       fprintf(stderr, "}}\n");
-      if (expect_result >= 0 && fixture_result != (u32)expect_result) {
-        fprintf(stderr, "NATIVE_EMIT_RESULT {\"status\":%u,\"expected\":%d}\n", fixture_result, expect_result);
-        err_fail("native stage profile: canonical emit request did not produce a non-empty EmitSuccess C source");
+      if (outcome != TERM_HOLE) {
+        // The typed outcome callback consumes the affine result exactly once.
+        return native_stage_apply(e, outcome, result);
       }
       term_drop(e, result);
       return term_pak(CID(Unit), 0);
@@ -106,25 +101,25 @@ static Term native_stage_drive(Env e, Term start, Term view, u32 finished, u32 m
 static Term native_stage_template_run(Env e, Term* f, IoWork* work) {
   (void)work;
   return native_stage_drive(e, f[0], f[1],
-    CID(NativeTemplateStageFinished), CID(NativeTemplateStageMore), "template-chunks", 0, TERM_HOLE, -1);
+    CID(NativeTemplateStageFinished), CID(NativeTemplateStageMore), "template-chunks", 0, TERM_HOLE);
 }
 
 static Term native_stage_template_pending_run(Env e, Term* f, IoWork* work) {
   (void)work;
   return native_stage_drive(e, f[0], f[1],
-    CID(NativeTemplateStageFinished), CID(NativeTemplateStageMore), "template-pending-chunks", 0, TERM_HOLE, -1);
+    CID(NativeTemplateStageFinished), CID(NativeTemplateStageMore), "template-pending-chunks", 0, TERM_HOLE);
 }
 
 static Term native_stage_checker_run(Env e, Term* f, IoWork* work) {
   (void)work;
   return native_stage_drive(e, f[0], f[1],
-    CID(NativeCheckerStageFinished), CID(NativeCheckerStageMore), "checker-chunks", 0, TERM_HOLE, -1);
+    CID(NativeCheckerStageFinished), CID(NativeCheckerStageMore), "checker-chunks", 0, TERM_HOLE);
 }
 
 static Term native_stage_emitter_run(Env e, Term* f, IoWork* work) {
   (void)work;
   return native_stage_drive(e, f[0], f[1],
-    CID(NativeEmitterStageFinished), CID(NativeEmitterStageMore), "emitter-chunks", 1, f[2], 1);
+    CID(NativeEmitterStageFinished), CID(NativeEmitterStageMore), "emitter-chunks", 1, f[2]);
 }
 
 static void __attribute__((constructor)) native_stage_profile_use(void) {
