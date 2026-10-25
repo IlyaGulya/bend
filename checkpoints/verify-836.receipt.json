@@ -1,0 +1,162 @@
+{
+ "schemaVersion": 1,
+ "status": "VERIFICATION_BUILD_JS_GENERATED_NOT_YET_EXECUTED",
+ "authorization": "literal Main GO for the combined pair 83680e53 + daf8a137; runtime and matrix are not part of this run",
+ "base": "2faa3c77",
+ "worktree": "/private/tmp/bend-verify-836",
+ "sources": {
+  "c_backend": {
+   "path": "bend2/selfhost/c_backend.bend",
+   "sha256": "83680e5356dcdc24f19f7668f1fba00be676f9c1b153a5832d461505c9d6ad79",
+   "control": "22a73266"
+  },
+  "c_backend_physical": {
+   "path": "bend2/selfhost/c_backend_physical.bend",
+   "sha256": "daf8a1373395773020f1842e492271594835d95c2b50709648bd1e1a9cfae7f8",
+   "storage": "573244d7"
+  },
+  "c_backend_layout": {
+   "path": "bend2/selfhost/c_backend_layout.bend",
+   "sha256": "a9f2d5d7d101665f390fb88cd6901947773fbf2444fc6b76504f9537213cdc77"
+  },
+  "descriptor_nf": {
+   "path": "bend2/selfhost/descriptor_nf.bend",
+   "sha256": "747dc747fcb1a6b6c1fcbf31a3e164f998fd5fa502f87a8ad3a1facd13859973"
+  },
+  "runtime": {
+   "path": "bend2/bend.ts",
+   "sha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e"
+  },
+  "parser": {
+   "path": "bend2/selfhost/parser.bend",
+   "sha256": "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37"
+  }
+ },
+ "providerHashes": {
+  "bend2/selfhost/backend_lower.bend": "465cdf16cdf5a3aae3096f12c8453a48f3264d0afb9d6bb16d9d4a4f5cd52661",
+  "bend2/selfhost/c_backend.bend": "83680e5356dcdc24f19f7668f1fba00be676f9c1b153a5832d461505c9d6ad79",
+  "bend2/selfhost/c_backend_layout.bend": "a9f2d5d7d101665f390fb88cd6901947773fbf2444fc6b76504f9537213cdc77",
+  "bend2/selfhost/c_backend_link.bend": "606ce07caaf96c28c1885947897bcc2be1e5949481068e77c5303134f70e1e51",
+  "bend2/selfhost/c_backend_physical.bend": "daf8a1373395773020f1842e492271594835d95c2b50709648bd1e1a9cfae7f8",
+  "bend2/selfhost/c_emit_core.bend": "f690db5b6054d4f647b5c02e1281923d5cc66b24c8c2fff7859d811efc5ba380",
+  "bend2/selfhost/descriptor_nf.bend": "747dc747fcb1a6b6c1fcbf31a3e164f998fd5fa502f87a8ad3a1facd13859973",
+  "bend2/selfhost/js_backend.bend": "45e8916b25f906dc3040b246504034d5fe58229f8225c8ece488a5aa3200ba8d",
+  "bend2/selfhost/js_emit.bend": "e0e986cc94705472fd7303575ac6c35efe2ea20299dfb1c1b5f6cf89b3da1dab",
+  "bend2/selfhost/lower_catalog.bend": "d682aae92f1ce479ba607c4246836d08f5d48613fefa83ee75a0229f007d3305"
+ },
+ "generator": {
+  "entry": {
+   "path": "evals/emitter_step_lower.ts",
+   "sha256": "4376c983d376a91f8464037444ddeccd1233f6a00f9c2362ce4fd88ab9f84371"
+  },
+  "engine": {
+   "path": "evals/checker_core_step_lower.ts",
+   "sha256": "05492ac6aaa7855b4d4770bf1f77d7abacf3cc3b956dfca9e6f411fffb202158"
+  }
+ },
+ "engine": {
+  "path": "checkpoints/emitter_steps_v1.bend",
+  "sha256": "46e6f7498df073943373290fa747dbc82dd84dbfb0ab8fecc28331665cdbce2d",
+  "manifest": "c14da6e5500d755a308f31a2a8f616382b87df56b552b1cdab9589240dab5bce",
+  "ownedSource": "ac5cc1a3c1c871825ed548c38181c205aff87f71fef38b350f6b0bbe1ea52197",
+  "declarations": 2020
+ },
+ "commands": [
+  "bun evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 --timeout-ms 600000 -- bun evals/checker_core_owned_source.ts",
+  "bun evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 --timeout-ms 600000 -- bun evals/emitter_step_lower.ts",
+  "bun evals/checker_core_component_build.ts --file=checkpoints/.bootstrap_compiler_root_v1.bend --exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step --artifact=checkpoints/verify-836-art.js --report=checkpoints/verify-836-rep"
+ ],
+ "build": {
+  "artifact": {
+   "path": "checkpoints/verify-836-art.js",
+   "sha256": "971e0986800a7d331cf5f528bb71dfb4400e4b9177b90224ce33054da48e0422",
+   "bytes": 17918636
+  },
+  "status": "JS_GENERATED_NOT_YET_EXECUTED",
+  "checkedDefinitions": 11860,
+  "liveBodies": 11860,
+  "expectedSourceDefinitions": 11860,
+  "eventsFullyValidated": 12421,
+  "checksExcluded": 0,
+  "outputPatches": 0,
+  "guardian": {
+   "status": "PASS",
+   "reason": "command_exit",
+   "commandExitCode": 0,
+   "commandSignal": 0,
+   "exitCode": 0,
+   "supervisorExitCode": 0,
+   "elapsedMs": 50896,
+   "peakRssBytes": 3050291200,
+   "peakFootprintBytes": 3177616080,
+   "timeoutMs": 600000,
+   "memoryLimitBytes": 8589934592,
+   "rssLimitBytes": 8589934592,
+   "reportPhase": "complete",
+   "ownedTreeStopped": true
+  },
+  "node": {
+   "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+   "version": "23.11.0",
+   "v8": "12.9.202.28-node.14",
+   "heapLimitMiB": 3072,
+   "stackSizeMb": 256,
+   "manualGC": false
+  },
+  "quantum": 64
+ },
+ "rawRecords": {
+  "checkpoints/verify-836-rep.worker-result.json": {
+   "sha256": "4556943b945690adc14add15b32bce5936783d236161dd90856017e24b8d65c6",
+   "bytes": 2050
+  },
+  "checkpoints/verify-836-rep.guardian.json": {
+   "sha256": "fc81332dd3ebc076bbf1ac666e18898b3dee61255c0cb8962049e6a40b4a177c",
+   "bytes": 1337
+  },
+  "checkpoints/verify-836-rep.metrics.json": {
+   "sha256": "f01a15ada013c0b210f08ada97eba4486f0efb866fe024a9cdf5490c3cf2b0a9",
+   "bytes": 976
+  },
+  "checkpoints/verify-836-rep.provenance.json": {
+   "sha256": "1e713339b8aea39e18b3a2ab3fd7a32fa1bd7a6585839d94273227d36202ca11",
+   "bytes": 10161
+  },
+  "checkpoints/verify-836-rep.inputs.json": {
+   "sha256": "435362f0b5655cfed29747e79f0484fcb0444c0357b72dff91a94ae292ea7447",
+   "bytes": 890
+  },
+  "checkpoints/verify-836-rep.request.json": {
+   "sha256": "558543f4b2d7e28f23f99f00d45987ae520ecfafdf3d60f7ac3609bf84182789",
+   "bytes": 1259
+  },
+  "checkpoints/verify-836-rep.result.json": {
+   "sha256": "591d028ee233a7be866b1ca39d8b67ad2b879062546c8cd8bbe5e0c955eaf941",
+   "bytes": 3444
+  },
+  "checkpoints/verify-836-rep.validation-timings.json": {
+   "sha256": "a49dd7ea9477ea034604aaeecd2d63f6648201dd455f1277a7ee1656d1cd8e38",
+   "bytes": 164
+  },
+  "checkpoints/verify-836-rep.events.jsonl": {
+   "sha256": "718de88535fa6ba9b5ad9ca52d476a96d77c3ceff70340abb856ca6eb035f51e",
+   "bytes": 1803
+  },
+  "checkpoints/verify-836-art.js": {
+   "sha256": "971e0986800a7d331cf5f528bb71dfb4400e4b9177b90224ce33054da48e0422",
+   "bytes": 17918636
+  }
+ },
+ "distinctFrom": {
+  "a1c4": "a1c4a657f788f2b6233a0a8f5ec6cab61eff22744dc69ffd7ad5ce11ad290add",
+  "canonical994": "9941352b639d1f31e381640f77e015e252d601b3815d9f36ea8614496bf50cb4",
+  "diagnostic65b": "65b01fd4ac8c8a228c60e2e3607283977acaab3532c126b9ee6b2a849ec8b976"
+ },
+ "notClaimed": [
+  "C runtime",
+  "iso_do_chain emit",
+  "clang",
+  "25-case matrix",
+  "aggregate acceptance"
+ ]
+}
