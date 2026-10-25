@@ -15,6 +15,7 @@
  */
 import {runHeavyGate,guardHeavyGate} from './heavy_gate.ts';
 import {authenticateNativeSeedBuild,requireCorpusCoversWorkload,workloadRows} from './native_seed_runtime.mjs';
+import {OFFICIAL_SOURCE_FILE_TAG} from './checker_core_step_runtime.mjs';
 import {parserParity,isolatedParserParity} from './selfhost_parser_parity.ts';
 import {decodeNativeAst} from './bootstrap_ast_transport.ts';
 import {readAcceptedParserBuild} from './selfhost_driver_source.ts';
@@ -126,9 +127,9 @@ if(!o.worker){
    if(!sourceFileRow||typeof sourceFileRow.namespace!=='string')throw Error('Native workload does not load the canonical BIR module');
    state.nativeSourceFileTag=sourceFileRow.namespace+'.SourceFile';
   }else{
-  // Provenance: the JS seed component is produced by the official compiler,
-  // which keeps the BIR module in the root namespace, so its carrier is bare.
-  state.sourceFileTag='SourceFile';
+  // The canonical seed retains the BIR module's declared namespace. Emitted
+  // stages derive their own nominal carrier from their actual source rows.
+  state.sourceFileTag=OFFICIAL_SOURCE_FILE_TAG;
   const componentBuild=buildReport(o.componentBuild!);
   for(const [name,build,artifact]of [['component',componentBuild,o.component!],['parser',parserBuild,o.parser]] as const){
    if(build.checksExcluded!==0||build.guardianStatus!=='PASS'||build.artifactSha256!==hash(artifact)||realpathSync(build.artifactPath)!==realpathSync(artifact))throw Error(name+' lacks exact complete native build provenance');

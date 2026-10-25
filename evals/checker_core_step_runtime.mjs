@@ -19,18 +19,15 @@ export function sourceFilePath(modulePath,declaredPath){
 }
 
 /**
- * The one host-side builder of the passive `List<&2, BIR.SourceFile>` carrier.
- * The constructor tag is nominal: it comes from provenance or the workload's
- * SourceRows, never from the artifact's shape, and it is required because a
- * wrong tag is a fail-stop at emission rather than a fallback.
+ * The passive `List<&2, BIR.SourceFile>` carrier uses nominal constructor names.
+ * Current canonical seed roots in checkpoints/ or evals/ import the BIR module
+ * in this namespace, as bound by the unchanged kernel's book_load namespace
+ * map. Selfhost-emitted images derive their tag from the closure's source row.
+ * Correct fields do not authorize another nominal tag: a single-constructor
+ * match may optimize the tag check away, so successful emission is not proof
+ * of the carrier's declared namespace.
  */
-/**
- * Provenance, not inspection: an artifact produced by the official compiler
- * keeps the BIR module in the root namespace, so the passive carrier it matches
- * is the bare `SourceFile`. Selfhost-emitted images instead derive their tag
- * from the closure's own backend_ir source row.
- */
-export const OFFICIAL_SOURCE_FILE_TAG='SourceFile';
+export const OFFICIAL_SOURCE_FILE_TAG='../bend2/selfhost/backend_ir.SourceFile';
 
 export function sourceFiles(entries,sourceFileTag){
  const seen=new Map();
