@@ -1,0 +1,252 @@
+{
+  "schemaVersion": 1,
+  "status": "BUN_BOUNDED_STACK_CODEGEN_RANGEERROR",
+  "accepted": false,
+  "result": {
+    "status": "BUN_WORKING_CODEGEN_FAILED",
+    "pipelineCompleted": false,
+    "acceptanceEvidence": false,
+    "phase": "compile_book",
+    "runtime": {
+      "name": "bun",
+      "version": "1.4.2",
+      "revision": "744846f844374847c902b5e7fd59b4342a51ef99",
+      "stack": "Native stack unchanged; BUN_JSC_maxPerThreadStackUsage=7340032, below native soft limit8176KiB",
+      "gc": "Bun default; no added forced GC or --smol",
+      "nodeWorkerResourceLimits": "not used; Bun ignores this option"
+    },
+    "limits": {
+      "treeRssMiB": 8192,
+      "treeFootprintMiB": 8192,
+      "pollMs": 10,
+      "deadlineMs": 1800000,
+      "heapLimit": "no separate V8 old-generation limit; actual tree memory is bounded instead"
+    },
+    "inputs": {
+      "/private/tmp/bend-native-merged-03d0/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+      "/private/tmp/bend-native-merged-03d0/bend2/comp.ts": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70",
+      "/private/tmp/bend-native-merged-03d0/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+      "/private/tmp/bend-native-merged-03d0/evals/native_stage_profile_driver.bend": "dd1b86b49f66039949c3efd962973e784a938fdce8a4beb7a2a324f591f3171a",
+      "/private/tmp/bend-native-merged-03d0/checkpoints/native_stage_profile_generated_fixture.bend": "ef98fcac013f127a218430aa1b3f43c191092cbc41d66b3f41f02715be65a108",
+      "/private/tmp/bend-native-merged-03d0/checkpoints/emitter_steps_v1.bend": "d7dbe31856eb8d9e53eeddefab0ea4eed56eafe6420a7478d4c37b53d63fb956",
+      "/private/tmp/bend-native-merged-03d0/checkpoints/checker_core_steps_v1.bend": "d6000fd556d550f45ccca6adeaaa6e2b0d6aa2fc7604fae0959d650f6d7d175c",
+      "/private/tmp/bend-native-merged-03d0/checkpoints/template_steps_v1.bend": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4"
+    },
+    "events": [
+      {
+        "event": "identity",
+        "runtime": {
+          "name": "bun",
+          "version": "1.4.2",
+          "revision": "744846f844374847c902b5e7fd59b4342a51ef99",
+          "stack": "Native stack unchanged; BUN_JSC_maxPerThreadStackUsage=7340032, below native soft limit8176KiB",
+          "gc": "Bun default; no added forced GC or --smol",
+          "nodeWorkerResourceLimits": "not used; Bun ignores this option"
+        },
+        "limits": {
+          "treeRssMiB": 8192,
+          "treeFootprintMiB": 8192,
+          "pollMs": 10,
+          "deadlineMs": 1800000,
+          "heapLimit": "no separate V8 old-generation limit; actual tree memory is bounded instead"
+        },
+        "inputs": {
+          "/private/tmp/bend-native-merged-03d0/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+          "/private/tmp/bend-native-merged-03d0/bend2/comp.ts": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70",
+          "/private/tmp/bend-native-merged-03d0/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+          "/private/tmp/bend-native-merged-03d0/evals/native_stage_profile_driver.bend": "dd1b86b49f66039949c3efd962973e784a938fdce8a4beb7a2a324f591f3171a",
+          "/private/tmp/bend-native-merged-03d0/checkpoints/native_stage_profile_generated_fixture.bend": "ef98fcac013f127a218430aa1b3f43c191092cbc41d66b3f41f02715be65a108",
+          "/private/tmp/bend-native-merged-03d0/checkpoints/emitter_steps_v1.bend": "d7dbe31856eb8d9e53eeddefab0ea4eed56eafe6420a7478d4c37b53d63fb956",
+          "/private/tmp/bend-native-merged-03d0/checkpoints/checker_core_steps_v1.bend": "d6000fd556d550f45ccca6adeaaa6e2b0d6aa2fc7604fae0959d650f6d7d175c",
+          "/private/tmp/bend-native-merged-03d0/checkpoints/template_steps_v1.bend": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4"
+        },
+        "scriptSha256": "5eb0c4e970df7eef05f18745748a3d86040a37c745381870deaa7d6809aed872",
+        "workload": "OLDPINNED_DIAGNOSTIC_03d0",
+        "acceptanceEvidence": false
+      },
+      {
+        "event": "begin",
+        "phase": "module-import",
+        "elapsedMs": 0.36020899999999756,
+        "cpu": {
+          "user": 158,
+          "system": 198
+        },
+        "memory": {
+          "rss": 34897920,
+          "heapTotal": 2007040,
+          "heapUsed": 2007040,
+          "external": 6570112,
+          "arrayBuffers": 6570112
+        },
+        "memoryScope": "Raw Bun boundary values; not allocation, retained or live bytes"
+      },
+      {
+        "event": "end",
+        "phase": "module-import",
+        "elapsedMs": 9.560499999999998,
+        "cpu": {
+          "user": 6126,
+          "system": 1968
+        },
+        "memory": {
+          "rss": 39321600,
+          "heapTotal": 2188288,
+          "heapUsed": 8042899,
+          "external": 7121987,
+          "arrayBuffers": 6570212
+        },
+        "memoryScope": "Raw Bun boundary values; not allocation, retained or live bytes"
+      },
+      {
+        "event": "begin",
+        "phase": "book_load",
+        "elapsedMs": 9.710875000000001,
+        "cpu": {
+          "user": 6151,
+          "system": 2091
+        },
+        "memory": {
+          "rss": 39321600,
+          "heapTotal": 2188288,
+          "heapUsed": 8042899,
+          "external": 7121987,
+          "arrayBuffers": 6570212
+        },
+        "memoryScope": "Raw Bun boundary values; not allocation, retained or live bytes"
+      },
+      {
+        "event": "end",
+        "phase": "book_load",
+        "elapsedMs": 4626.199334,
+        "cpu": {
+          "user": 3512750,
+          "system": 301840
+        },
+        "memory": {
+          "rss": 1255751680,
+          "heapTotal": 1132754944,
+          "heapUsed": 359835511,
+          "external": 8206199,
+          "arrayBuffers": 100
+        },
+        "memoryScope": "Raw Bun boundary values; not allocation, retained or live bytes"
+      },
+      {
+        "event": "begin",
+        "phase": "book_valid",
+        "elapsedMs": 4626.851584,
+        "cpu": {
+          "user": 3512799,
+          "system": 302121
+        },
+        "memory": {
+          "rss": 1255751680,
+          "heapTotal": 1132771328,
+          "heapUsed": 359835511,
+          "external": 8206199,
+          "arrayBuffers": 100
+        },
+        "memoryScope": "Raw Bun boundary values; not allocation, retained or live bytes"
+      },
+      {
+        "event": "end",
+        "phase": "book_valid",
+        "elapsedMs": 6102.779208999999,
+        "cpu": {
+          "user": 5764727,
+          "system": 426007
+        },
+        "memory": {
+          "rss": 1807646720,
+          "heapTotal": 1637727232,
+          "heapUsed": 934372476,
+          "external": 10557580,
+          "arrayBuffers": 100
+        },
+        "memoryScope": "Raw Bun boundary values; not allocation, retained or live bytes"
+      },
+      {
+        "event": "begin",
+        "phase": "compile_book",
+        "elapsedMs": 6102.960749999999,
+        "cpu": {
+          "user": 5764774,
+          "system": 426213
+        },
+        "memory": {
+          "rss": 1807958016,
+          "heapTotal": 1637727232,
+          "heapUsed": 934372476,
+          "external": 10557580,
+          "arrayBuffers": 100
+        },
+        "memoryScope": "Raw Bun boundary values; not allocation, retained or live bytes"
+      }
+    ],
+    "error": "RangeError: Maximum call stack size exceeded.",
+    "stack": "RangeError: Maximum call stack size exceeded.\n    at tele_open (/private/tmp/bend-native-merged-03d0/bend2/bend.ts:1031:13)\n    at tele_unbind (/private/tmp/bend-native-merged-03d0/bend2/bend.ts:1054:16)\n    at ctr_tail (/private/tmp/bend-native-merged-03d0/bend2/comp.ts:1128:27)\n    at facts_ctr (/private/tmp/bend-native-merged-03d0/bend2/comp.ts:1803:14)\n    at emit_ctr (/private/tmp/bend-native-merged-03d0/bend2/comp.ts:2630:5)\n    at map (native:1:11)\n    at emit_ctr (/private/tmp/bend-native-merged-03d0/bend2/comp.ts:2640:14)\n    at map (native:1:11)\n    at emit_ctr (/private/tmp/bend-native-merged-03d0/bend2/comp.ts:2640:14)\n    at map (native:1:11)",
+    "elapsedMs": 24612.519625,
+    "cpu": {
+      "user": 22522479,
+      "system": 2024062
+    },
+    "memory": {
+      "rss": 6290849792,
+      "heapTotal": 5589713920,
+      "heapUsed": 3346276615,
+      "external": 34409596,
+      "arrayBuffers": 100
+    },
+    "memoryScope": "Raw Bun boundary values; not allocation, retained or live bytes"
+  },
+  "guardPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792954043764-d9935228c8182880.json",
+  "guard": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "commandExitCode": 1,
+    "commandSignal": 0,
+    "peakRssBytes": 6292094976,
+    "peakFootprintBytes": 6217880640,
+    "elapsedMs": 24897,
+    "timeoutMs": 1800000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "command": [
+      "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+      "/private/tmp/bend-fir-integrated57ab/checkpoints/native03d0_working_bun_stack7.ts"
+    ],
+    "label": "Same frozen03d0 Bun working build;7MiB JSC stack guard;8GiB tree guard",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792954043764-d9935228c8182880.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "raw": {
+    "report": "/tmp/native03d0-working-bun-stack7-1.json",
+    "reportSha256": "5e9b6ae260c9fe5fbb877c16c91f89bfb3a9c5633f4abbaf3a41b29298817011",
+    "events": "/tmp/native03d0-working-bun-stack7-1.jsonl",
+    "eventsSha256": "4060ca605d09282369f5a77187ae3372fb29134347aa09887ba25eaa0a878d5c",
+    "script": "/tmp/native03d0-working-bun-stack7-1-executed-probe.ts",
+    "scriptSha256": "5eb0c4e970df7eef05f18745748a3d86040a37c745381870deaa7d6809aed872"
+  },
+  "observations": {
+    "cOutputExists": false,
+    "oomObserved": false,
+    "sameEightFrozenInputHashes": true,
+    "noNativeStackRaise": true,
+    "configuredJscStackBytes": 7340032,
+    "failure": "Repeated emit_ctr -> facts_ctr -> ctr_tail -> tele_unbind/tele_open exceeds stack"
+  },
+  "stackOptionSmoke": {
+    "defaultReached": 45607,
+    "bounded7MiBReached": 64332,
+    "script": "/tmp/bend-bun-stack-option-smoke.ts",
+    "sha256": "a45ff1dd7960d23fb6e64ad37329f79caec7af49bda28207ee1e0e6d8b88bc14",
+    "boundedResult": "/tmp/bend-bun-stack7-result.json",
+    "rejectedNativeStackRaises": "/tmp/bend-bun-stack-options-result.json",
+    "rejection": "Native stack32/48/60MiB plus JSC64MiB crashes Bun on the synthetic witness; not used for compiler runs"
+  },
+  "interpretation": "A larger safe JSC stack guard still fails the full frozen input. Stop increasing resource flags; isolate recursive constructor emission. Current immutable compiler/kernel constraints remain in force."
+}

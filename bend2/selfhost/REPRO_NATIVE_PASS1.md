@@ -394,3 +394,13 @@ not a claimed8GiB V8 heap or256MiB worker stack. Node/V8 GC measurements must
 not be attributed to Bun. Synthetic stack-option probes are diagnostic only:
 raising native ulimit with a large JSC stack option causes Bun crashes and is
 rejected. No such configuration is used on the compiler workload.
+
+The safe7MiB JSC guard control also fails after full validation, at the same
+recursive constructor-emission family: guardian elapsed24897ms,
+RSS6292094976B /
+footprint6217880640B, complete/stopped/exit1, no C output.
+Receipt: `evals/receipts/native03d0_bun_bounded_stack.json`.
+The synthetic non-tail witness reaches64332calls versus45607on defaults;
+this is an option-behavior witness, not a compiler fix or stack byte measurement.
+Further resource-flag increases are not the next step; isolate the producer's
+recursive emit_ctr traversal while preserving frozen compiler/kernel authority.
