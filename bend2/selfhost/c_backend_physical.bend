@@ -1109,6 +1109,46 @@ def field_tag(+proot: String, +ppath: List<&2, FieldStep>, +pw: World) -> Part:
         case PartFail{message}: PartFail{message}
         case PartOk{body}: PartOk{resolved_expr(body, proot)}
 
+def tag_compare_single(+pw: World, +pkey: String, +pexpected: U32) -> Part:
+  match cid_of(pkey, pw):
+    case None{}: PartFail{join_text(["the arm `", pkey, "` has no canonical CID"])}
+    case Some{cid}: PartOk{join_text(["pbr = (", U32.show(cid), "u == ", U32.show(pexpected), "u);\n"])}
+
+def tag_compare_arms(+pw: World, +pbase: String, +poffset: Nat, +parms: List<&2, CLay.LayArm>, +pexpected: U32, +pindex: Nat, +pacc: String) -> Part:
+  match parms:
+    case Nil{}: PartOk{join_text(["switch ((u32)e.mem[", pbase, " + ", Nat.show(poffset), "]) {\n", pacc, "default: (void)bend_fail(e, \"the constructor tag is not a declared constructor\"); break;\n}\n"])}
+    case +arm <> rest:
+      match arm:
+        case CLay.LayArm{key, fields}:
+          match cid_of(key, pw):
+            case None{}: PartFail{join_text(["the arm `", key, "` has no canonical CID"])}
+            case Some{cid}: tag_compare_arms(pw, pbase, poffset, rest, pexpected, Nat.add(pindex, 1n), join_text([pacc, "case ", Nat.show(pindex), ": pbr = (", U32.show(cid), "u == ", U32.show(pexpected), "u); break;\n"]) )
+
+def hastag_body(+pw: World, +pres: Resolved, +pexpected: U32) -> Part:
+  match pres:
+    case ResolvedOk{offset, layout, base, uniq, stat, packed}:
+      match packed:
+        case True{}: PartFail{"a packed field tag is not addressable"}
+        case False{}:
+          match layout:
+            case CLay.LayoutData{words, arms}:
+              match arms:
+                case Nil{}: PartFail{"a data layout has no arms"}
+                case +only <> Nil{}:
+                  match only:
+                    case CLay.LayArm{key, fields}: tag_compare_single(pw, key, pexpected)
+                case _: tag_compare_arms(pw, base, offset, arms, pexpected, 0n, "")
+            case _: PartFail{"a tag test needs a data field"}
+    case ResolvedFail{message}: PartFail{message}
+
+def field_hastag(+proot: String, +ppath: List<&2, FieldStep>, +pexpected: U32, +pw: World) -> Part:
+  match resolve_path(pw, ppath):
+    case FieldRefFail{message}: PartFail{message}
+    case FieldRefOk{resolved}:
+      match hastag_body(pw, resolved, pexpected):
+        case PartFail{message}: PartFail{message}
+        case PartOk{body}: PartOk{resolved_expr(body, proot)}
+
 def field_copy(+proot: String, +ppath: List<&2, FieldStep>, +pw: World) -> Part:
   match resolve_path(pw, ppath):
     case FieldRefFail{message}: PartFail{message}

@@ -57,12 +57,14 @@ def pair_parts(+w: Phys.World) -> String:
   String.append(show_part(Phys.field_read("pair_value", [Phys.FieldStep{0, 0}], w)), show_part(Phys.field_copy("pair_value", [Phys.FieldStep{0, 1}], w)))
 
 def seg_parts(+w: Phys.World) -> String:
-  String.append(show_part(Phys.field_tag("seg_value", [Phys.FieldStep{3, 0}], w)),
+  String.append(show_part(Phys.field_tag("seg_value", [Phys.FieldStep{3, 0}], w)), String.append(show_part(Phys.field_hastag("seg_value", [Phys.FieldStep{3, 0}], 1, w)),
     String.append(show_part(Phys.field_consume("seg_value", [Phys.FieldStep{3, 0}, Phys.FieldStep{1, 0}], w)),
-      show_part(Phys.field_detach("seg_value", [Phys.FieldStep{3, 2}], w))))
+      show_part(Phys.field_detach("seg_value", [Phys.FieldStep{3, 2}], w)))))
 
 def box_parts(+w: Phys.World) -> String:
-  String.append(show_part(Phys.field_detach("box_value", [Phys.FieldStep{4, 0}], w)), show_part(Phys.field_copy("box_value", [Phys.FieldStep{4, 1}], w)))
+  String.append(show_part(Phys.field_detach("box_value", [Phys.FieldStep{4, 0}], w)),
+    String.append(show_part(Phys.field_consume("box_value", [Phys.FieldStep{4, 0}], w)),
+      show_part(Phys.field_copy("box_value", [Phys.FieldStep{4, 1}], w))))
 
 def main(modules: List<&2, Loader.LoadedModule>) -> ViewSmoke:
   ViewSmoke{String.append(pair_parts(world()), String.append(seg_parts(world()), box_parts(world())))}
