@@ -156,6 +156,10 @@ type CapRef is Data:
   CapLocalRef{id: U32}
   CapSlotRef{slot: U32}
 
+type CapsStep is Data:
+  CapsOk{caps: List<&2, Cap>}
+  CapsFail{message: String}
+
 # The same reference with the expression to capture it, and the order it is
 # passed in. A continuation takes its captures on the stack, a region in
 # registers.
@@ -2022,6 +2026,66 @@ def step_at(steps: List<&2, Phys.PathStep>, +index: Nat) -> Maybe<&2, Phys.PathS
         case True{}: Some{step}
         case False{}: step_at(rest, Nat.sub(index, 1n))
 
+# A region obligation only exists on paths that actually reach its LeaveRegion.
+def leave_reach(block: BIR.Block, +label: U32, leaves: List<&2, Leave>) -> Bool:
+  match block:
+    case BIR.Return{value}: False{}
+    case BIR.Let{id, op, next}: leave_reach(next, label, leaves)
+    case BIR.Branch{condition, yes, no}: Bool.or(leave_reach(yes, label, leaves), leave_reach(no, label, leaves))
+    case BIR.Region{known, body, next}: leave_reach(body, label, leaves_enter(leaves, known, next))
+    case BIR.LeaveRegion{known}:
+      match U32.is_eq(known, label):
+        case True{}: True{}
+        case False{}:
+          match leaf_at(leaves, known):
+            case Some{next}: leave_reach(next, label, leaves)
+            case None{}: False{}
+    case BIR.TailDirect{code, args}: False{}
+    case BIR.TailApply{fn, arg}: False{}
+    case BIR.Failure{message}: False{}
+
+def refs_hold_root(refs: List<&2, CapRef>, root: FieldRoot) -> Bool:
+  match root:
+    case FieldLocal{id}: refs_have_local(refs, id)
+    case FieldSlot{slot}: refs_have_slot(refs, slot)
+
+def regions_hold_root(regions: List<&2, Region>, block: BIR.Block, leaves: List<&2, Leave>, root: FieldRoot) -> Bool:
+  match regions:
+    case Nil{}: False{}
+    case +row <> rest:
+      match row:
+        case Region{label, fid, refs}:
+          Bool.or(Bool.and(leave_reach(block, label, leaves), refs_hold_root(refs, root)), regions_hold_root(rest, block, leaves, root))
+
+def regions_reachable_refs(regions: List<&2, Region>, block: BIR.Block, leaves: List<&2, Leave>) -> List<&2, CapRef>:
+  match regions:
+    case Nil{}: Nil{}
+    case +row <> rest:
+      match row:
+        case Region{label, fid, refs}:
+          match leave_reach(block, label, leaves):
+            case True{}: List.append(&2, CapRef, refs, regions_reachable_refs(rest, block, leaves))
+            case False{}: regions_reachable_refs(rest, block, leaves)
+
+def reachable_labels(regions: List<&2, Region>, block: BIR.Block, leaves: List<&2, Leave>, +acc: List<&2, U32>) -> List<&2, U32>:
+  match regions:
+    case Nil{}: List.reverse(&2, U32, acc)
+    case +row <> rest:
+      match row:
+        case Region{label, fid, refs}:
+          match leave_reach(block, label, leaves):
+            case True{}: reachable_labels(rest, block, leaves, label <> acc)
+            case False{}: reachable_labels(rest, block, leaves, acc)
+
+def region_keeps_root(+ctx: Ctx, remaining: BIR.Block, root: FieldRoot) -> Bool:
+  regions_hold_root(ctx_regions(ctx), remaining, ctx_leaves(ctx), root)
+
+def region_keeps_local(+ctx: Ctx, remaining: BIR.Block, +id: U32) -> Bool:
+  region_keeps_root(ctx, remaining, FieldLocal{id})
+
+def region_keeps_slot(+ctx: Ctx, remaining: BIR.Block, +slot: U32) -> Bool:
+  region_keeps_root(ctx, remaining, FieldSlot{slot})
+
 # True when the remaining block reads the target path again, a descendant of it,
 # the same field through another projection, or an owning ancestor as a whole
 # value. Disjoint sibling fields are not overlap.
@@ -2033,7 +2097,7 @@ def field_owned(atom: BIR.Atom, +use: BIR.Use, +ctx: Ctx, remaining: BIR.Block) 
           match field_root_expr(ref, ctx):
             case None{}: WriteFail{"BIR projects a field whose parent is not owned by the frame"}
             case Some{root}:
-              match path_conflict(remaining, ref, ctx_leaves(ctx), ctx_env(ctx)):
+              match Bool.or(path_conflict(remaining, ref, ctx_leaves(ctx), ctx_env(ctx)), Bool.or(region_keeps_local(ctx, remaining, id), region_keeps_root(ctx, remaining, ref_root(ref)))):
                 case True{}:
                   match phys_part(Phys.path_copy(root, ref_steps(ref), phys_world(ctx_plan(ctx)))):
                     case PartFail{message}: WriteFail{message}
@@ -2046,14 +2110,14 @@ def field_owned(atom: BIR.Atom, +use: BIR.Use, +ctx: Ctx, remaining: BIR.Block) 
           match env_get(ctx_env(ctx), id):
             case None{}: WriteFail{cat(["BIR uses local ", U32.show(id), " before it is bound"])}
             case Some{expr}:
-              match root_residual(remaining, FieldLocal{id}, ctx_leaves(ctx), ctx):
+              match Bool.or(root_residual(remaining, FieldLocal{id}, ctx_leaves(ctx), ctx), region_keeps_local(ctx, remaining, id)):
                 case True{}: WriteOk{cat(["(", expr, " = term_keep(e, ", expr, ", 1))"]), ctx}
                 case False{}: WriteOk{expr, ctx_env_put(ctx, env_del(id, ctx_env(ctx)))}
     case BIR.Capture{slot}:
       match u32_member(ctx_cap_slots(ctx), slot):
         case False{}: WriteFail{cat(["BIR uses capture slot ", U32.show(slot), " outside the frame"])}
         case True{}:
-          match root_residual(remaining, FieldSlot{slot}, ctx_leaves(ctx), ctx):
+          match Bool.or(root_residual(remaining, FieldSlot{slot}, ctx_leaves(ctx), ctx), region_keeps_slot(ctx, remaining, slot)):
             case True{}: WriteOk{cat(["(x[", U32.show(slot), "] = term_keep(e, x[", U32.show(slot), "], 1))"]), ctx}
             case False{}: WriteOk{cat(["x[", U32.show(slot), "]"]), ctx_caps_put(ctx, cap_slots_del(slot, ctx_cap_slots(ctx)))}
     case _:
@@ -2527,7 +2591,7 @@ def refs_local_ids(refs: List<&2, CapRef>, +acc: List<&2, U32>) -> List<&2, U32>
 
 def needed_refs(+block: BIR.Block, +ctx: Ctx) -> List<&2, CapRef>:
   used = block_locals(block, Nil{})
-  +inherited = region_refs(ctx_regions(ctx), Nil{})
+  +inherited = regions_reachable_refs(ctx_regions(ctx), block, ctx_leaves(ctx))
   +used_all = List.append(&2, U32, refs_local_ids(inherited, Nil{}), used)
   +with_roots = field_root_locals(ctx_env(ctx), used_all, used)
   slots = field_root_slots(ctx_env(ctx), used_all, block_slots(block, Nil{}))
@@ -2535,13 +2599,50 @@ def needed_refs(+block: BIR.Block, +ctx: Ctx) -> List<&2, CapRef>:
   slots_done = slot_refs(0n, ctx_caps_n(ctx), slots, inherited, Nil{})
   List.append(&2, CapRef, locals, List.reverse(&2, CapRef, slots_done))
 
-def refs_caps(refs: List<&2, CapRef>, +ctx: Ctx) -> Maybe<&2, List<&2, Cap>>:
+def u32s_text(list: List<&2, U32>) -> String:
+  match list:
+    case Nil{}: "-"
+    case +item <> rest: u32s_text_more(U32.show(item), rest)
+
+def u32s_text_more(+text: String, list: List<&2, U32>) -> String:
+  match list:
+    case Nil{}: text
+    case +item <> rest: u32s_text_more(cat([text, ",", U32.show(item)]), rest)
+
+def refs_text(list: List<&2, CapRef>) -> String:
+  match list:
+    case Nil{}: "-"
+    case +item <> rest:
+      match item:
+        case CapLocalRef{id}: refs_text_more(cat(["L", U32.show(id)]), rest)
+        case CapSlotRef{slot}: refs_text_more(cat(["S", U32.show(slot)]), rest)
+
+def refs_text_more(+text: String, list: List<&2, CapRef>) -> String:
+  match list:
+    case Nil{}: text
+    case +item <> rest:
+      match item:
+        case CapLocalRef{id}: refs_text_more(cat([text, " L", U32.show(id)]), rest)
+        case CapSlotRef{slot}: refs_text_more(cat([text, " S", U32.show(slot)]), rest)
+
+def capture_context(block: BIR.Block, +ctx: Ctx) -> String:
+  cat(["; active slots ", u32s_text(ctx_cap_slots(ctx)), "; continuation slots ", u32s_text(block_slots(block, Nil{})), "; continuation locals ", u32s_text(block_locals(block, Nil{})), "; all inherited ", refs_text(region_refs(ctx_regions(ctx), Nil{})), "; reachable regions ", u32s_text(reachable_labels(ctx_regions(ctx), block, ctx_leaves(ctx), Nil{}))])
+
+def refs_caps(refs: List<&2, CapRef>, +ctx: Ctx) -> CapsStep:
   match refs:
-    case Nil{}: Some{Nil{}}
+    case Nil{}: CapsOk{Nil{}}
     case +ref <> rest:
-      match cap_of_ref(ref, ctx) refs_caps(rest, ctx):
-        case Some{cap} Some{caps}: Some{cap <> caps}
-        case _ _: None{}
+      match cap_of_ref(ref, ctx):
+        case None{}: CapsFail{cat(["ref ", cap_ref_text(ref), " is not capturable from the caller frame"])}
+        case Some{cap}:
+          match refs_caps(rest, ctx):
+            case CapsFail{message}: CapsFail{message}
+            case CapsOk{caps}: CapsOk{cap <> caps}
+
+def cap_ref_text(ref: CapRef) -> String:
+  match ref:
+    case CapLocalRef{+id}: cat(["local ", U32.show(id)])
+    case CapSlotRef{+slot}: cat(["capture slot ", U32.show(slot)])
 
 def cap_of_ref(ref: CapRef, +ctx: Ctx) -> Maybe<&2, Cap>:
   match ref:
@@ -2557,8 +2658,42 @@ def cap_of_ref(ref: CapRef, +ctx: Ctx) -> Maybe<&2, Cap>:
         case False{}: None{}
         case True{}: Some{CapSlot{slot, cat(["x[", U32.show(slot), "]"])}}
 
-def capture_for(block: BIR.Block, +ctx: Ctx) -> Maybe<&2, List<&2, Cap>>:
+def capture_for(block: BIR.Block, +ctx: Ctx) -> CapsStep:
   refs_caps(needed_refs(block, ctx), ctx)
+
+def entry_label(+target: U32, +entries: List<&2, Entry>, +declarations: List<&2, BIR.Declaration>) -> String:
+  match entry_at(entries, target):
+    case None{}: cat(["entry ", U32.show(target)])
+    case Some{entry}:
+      match entry:
+        case Entry{index, arity, kind}: cat(["entry ", U32.show(index), " ", kind_label(kind, declarations)])
+
+def kind_label(kind: EntryKind, +declarations: List<&2, BIR.Declaration>) -> String:
+  match kind:
+    case KindCode{id, captures, params, body}: cat(["code `", declaration_key(id, declarations), "`"])
+    case KindStage{next}: cat(["stage targeting entry ", U32.show(next)])
+    case KindLazy{body}: "lazy value"
+    case KindForeign{key, args}: cat(["foreign `", key, "`"])
+    case KindNative{primitive, count}: "native"
+    case KindMain{}: "main"
+    case KindLibrary{}: "library"
+    case KindEmit{}: "io emit"
+    case KindApply{}: "closure apply"
+    case KindExit{}: "exit"
+    case KindEnter{}: "enter"
+
+def declaration_key(+code: U32, +declarations: List<&2, BIR.Declaration>) -> String:
+  match declarations:
+    case Nil{}: cat(["code ", U32.show(code)])
+    case +item <> rest:
+      match item:
+        case BIR.FunctionDeclaration{key, known, parameters}: declaration_key_one(U32.is_eq(known, code), key, rest, code)
+        case _: declaration_key(code, rest)
+
+def declaration_key_one(found: Bool, +key: String, rest: List<&2, BIR.Declaration>, +code: U32) -> String:
+  match found:
+    case True{}: key
+    case False{}: declaration_key(code, rest)
 
 
 def ctx_sig(c: Ctx) -> Sig:
@@ -3052,8 +3187,8 @@ def ctx_after_branch(after: Ctx, entry: Ctx, yes: Ctx) -> Ctx:
 # LeaveRegion, whose tail jump reuses the current frame.
 def region_ctl(label: U32, body: BIR.Block, +next: BIR.Block, +ctx: Ctx) -> Step:
   match capture_for(next, ctx):
-    case None{}: StepFail{"BIR region reads a value that is not in scope"}
-    case Some{caps}: region_next(label, body, next, ctx, caps, ctx_next(ctx), needed_refs(next, ctx))
+    case CapsFail{message}: StepFail{cat(["BIR region ", U32.show(label), " next reads a value that is not in scope: ", message, capture_context(next, ctx)])}
+    case CapsOk{caps}: region_next(label, body, next, ctx, caps, ctx_next(ctx), needed_refs(next, ctx))
 
 def region_next(+label: U32, body: BIR.Block, next: BIR.Block, +ctx: Ctx, +caps: List<&2, Cap>, +fid: U32, +refs: List<&2, CapRef>) -> Step:
   match block_ctl(next, Ctx{ctx_sig(ctx), ctx_plan(ctx), cap_locals_env(caps, Nil{}), cap_slots_exprs(caps, ctx_caps_n(ctx), 0n, Nil{}), ctx_caps_n(ctx), Region{label, fid, refs} <> ctx_regions(ctx), None{}, U32.inc(fid), ctx_segs(ctx), False{}, Nil{}, False{}, nat_max(ctx_max(ctx), cap_count(caps)), cap_slots_of(caps), ctx_leaves(ctx)}):
@@ -3085,8 +3220,8 @@ def leave_ctl(label: U32, +ctx: Ctx) -> Step:
       match region:
         case Region{known, fid, refs}:
           match refs_caps(refs, ctx):
-            case None{}: StepFail{"BIR LeaveRegion reads a value that is not in scope"}
-            case Some{caps}:
+            case CapsFail{message}: StepFail{cat(["BIR LeaveRegion reads a value that is not in scope: ", message])}
+            case CapsOk{caps}:
               StepOk{cat([caps_assign(caps, 0n), exit_releases(ctx, caps_ids(caps, Nil{}), caps_slots(caps, Nil{})), "    WL_JMP(", fid_name(fid, sig_entries(ctx_sig(ctx))), ");\n"]), ctx_add_call(ctx, fid)}
 
 def tail_direct_ctl(+code: U32, args: List<&2, BIR.Arg>, +ctx: Ctx) -> Step:
@@ -3150,8 +3285,8 @@ def call_ctl(+target: U32, +args: List<&2, String>, result: U32, +next: BIR.Bloc
     case False{}: StepFail{cat(["BIR call passes ", Nat.show(List.length(&2, String, args)), " arguments to an entry of arity ", Nat.show(entry_arity(sig_entries(ctx_sig(ctx)), target))])}
     case True{}:
       match capture_for(next, ctx):
-        case None{}: StepFail{"BIR continuation reads a value that is not in scope"}
-        case Some{caps}: call_next(target, args, result, next, ctx, caps)
+        case CapsFail{message}: StepFail{cat(["BIR continuation of call to `", entry_label(target, sig_entries(ctx_sig(ctx)), sig_decls(ctx_sig(ctx))), "` (continuation ", U32.show(ctx_next(ctx)), ") reads a value that is not in scope: ", message, capture_context(next, ctx)])}
+        case CapsOk{caps}: call_next(target, args, result, next, ctx, caps)
 
 def call_next(target: U32, args: List<&2, String>, +result: U32, next: BIR.Block, +ctx: Ctx, +caps: List<&2, Cap>) -> Step:
   match block_ctl(next, Ctx{ctx_sig(ctx), ctx_plan(ctx), Env{result, lv_name(result), cat(["    term_sink(e, ", lv_name(result), ");\n"]), None{}} <> cap_locals_env(caps, Nil{}), cap_slots_exprs(caps, ctx_caps_n(ctx), 0n, Nil{}), ctx_caps_n(ctx), ctx_regions(ctx), None{}, U32.inc(ctx_next(ctx)), ctx_segs(ctx), False{}, Nil{}, False{}, nat_max(ctx_max(ctx), Nat.add(cap_count(caps), 1n)), cap_slots_of(caps), ctx_leaves(ctx)}):
