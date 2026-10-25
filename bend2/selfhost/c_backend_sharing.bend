@@ -55,12 +55,11 @@ import ./index_lookup.bend as IndexLookup
 #     never a subset);
 #   * Nat/U32/F32 heads are words, not nodes: a duplicated word never seeds
 #     their constructors, though a hot field type may still reach them;
-#   * a demanded function value needs no constructor sealed: the runtime keeps a
-#     closure by term_keep and a closure node carries no declared constructor
-#     field, so the synthetic function head is never expanded into the hot set.
-#     (The reference reads an arrow type as unknown and seals everything; that
-#     is not needed to keep the C target sound and it collapses every program
-#     with a high-order helper to all-hot, so it is deliberately not copied.)
+#   * a function head has no declared constructor fields, so it is not expanded
+#     into the hot set. This does not license copying a heap callable:
+#     rfc_wrap rejects TAG_CLO/TAG_TSK. Caller liveness must transfer those
+#     affine owners without term_keep. This hot-set plan is not a move/keep
+#     plan and cannot establish frame or projection lifetimes.
 #   * foreign declaration cids stay cold: the foreign twin lays its own node
 #     under the produced constructor's cid and seals through the constructor
 #     hot bit (tests/io/foreign_shared.c), so the declaration cid itself is
