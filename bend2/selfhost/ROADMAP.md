@@ -57,8 +57,13 @@ including its inline parser: all 78 emit/clang/run stages are
 complete/stopped/exit 0, with exact expected output. Guarded stage sum
 671,100 ms; max sampled RSS 1,975,779,328 B / footprint 2,047,690,136 B.
 Receipt: `evals/receipts/c_matrix_db147cba_26.json`.
-Full JS corpus, byte fixedpoint and native HOST remain open; the preceding
-broader C/JS foreign pairs and C-library pass below belong to `667e7f33`.
+The same current image and its inline parser also pass all three unchanged
+foreign/lifetime fixtures in **both C and JS**, plus real six-export C-library
+emit/link/run: **7 rows / 18 stages**, all complete/stopped/exit0 with exact
+expected output. The original ownership frontier bound is unchanged.
+Receipt: `evals/receipts/foreign_db147cba.json`.
+Full JS corpus, byte fixedpoint and native HOST remain open; historical
+`667e7f33` foreign/library receipts below are not reclassified.
 A separate stage1 `30bef0b0` diagnostic through `candidate_host` with profiling
 and no explicit stack flag fails during `parse-import-fuel` in
 `String.from_list` (`$b293`), before checking. Receipt:
