@@ -752,22 +752,85 @@ def project_packed_flag(+ppacked: Bool, +pw: World, +playout: CLay.Layout, +poff
 # Packed and zero-word values have no constructor payload to release.
 # ---------------------------------------------------------------------------
 
-def view_src(+ppacked: Bool, +pbase: String, +poffset: Nat) -> Src:
+def view_src(+ppacked: Bool, +pbase: String, +pcursor: String) -> Src:
   match ppacked:
-    case True{}: SrcOne{"((u64)term_peek(vt))"}
-    case False{}: SrcNode{pbase, "fb", poffset, False{}}
+    case True{}: SrcOne{"((u64)term_loc(vt))"}
+    case False{}: SrcNode{pbase, "fb", pcursor, False{}}
 
-def view_discard(+playout: CLay.Layout, +ptext: String) -> String:
-  match playout:
-    case CLay.LayoutWord{word}: ""
-    case CLay.LayoutBox{reason}: join_text(["term_sink(e, ", ptext, ");"])
-    case CLay.LayoutData{words, arms}: join_text(["term_sink(e, ", ptext, ");"])
+# A laid-out value owns the boxed Terms in its words. The discard follows the
+# selected arm's own nests at its storage offsets, so padding positions of the
+# other arms are never touched; a box word is sunk, a raw word is not. It
+# allocates no canonical temporary.
+def view_raw(+pbase: String, +poffset: Nat) -> String:
+  join_text(["(((", pbase, " != 0) ? e.mem[(", pbase, ") + ", Nat.show(poffset), "] : (u64)fb[", Nat.show(poffset), "])"])
+
+def view_form_cases(+parms: List<&2, CLay.FormArm>, +pwords: List<&2, CLay.CWord>, +pbase: String, +pform: Nat, +pindent: String) -> String:
+  match parms:
+    case Nil{}:
+      join_text([pindent, "default: (void)bend_fail(e, \"the constructor tag is not a declared constructor\"); break;\n"])
+    case +arm <> rest:
+      match arm:
+        case CLay.FormArm{key, tag, packed, node_words, fields}:
+          body = view_nests(fields, pwords, pbase, pform, join_text([pindent, "  "]))
+          join_text([pindent, "case ", Nat.show(tag), ": {\n", body, pindent, "} break;\n", view_form_cases(rest, pwords, pbase, pform, pindent)])
+
+def view_form(+parms: List<&2, CLay.FormArm>, +pwords: List<&2, CLay.CWord>, +pbase: String, +pform: Nat, +pindent: String) -> String:
+  match parms:
+    case Nil{}: ""
+    case +only <> Nil{}:
+      match only:
+        case CLay.FormArm{key, tag, packed, node_words, fields}:
+          view_nests(fields, pwords, pbase, pform, pindent)
+    case _:
+      join_text([pindent, "switch ((u32)(", view_raw(pbase, pform), ")) {\n", view_form_cases(parms, pwords, pbase, pform, pindent), pindent, "}\n"])
+
+def view_word_sink(+pwords: List<&2, CLay.CWord>, +pbase: String, +poffset: Nat, +pat: Nat, +pindent: String) -> String:
+  match List.get(&2, CLay.CWord, pwords, pat):
+    case None{}: ""
+    case Some{kind}:
+      match kind:
+        case CLay.CWordBox{}: join_text([pindent, "term_sink(e, ", view_raw(pbase, poffset), ");\n"])
+        case _: ""
+
+def view_nest_sink(+ptake: CLay.Unfill, +pwords: List<&2, CLay.CWord>, +pbase: String, +pform: Nat, +pat: Nat, +pindent: String) -> String:
+  match ptake:
+    case CLay.UnfillWord{}: view_word_sink(pwords, pbase, Nat.add(pform, pat), pat, pindent)
+    case CLay.UnfillForm{words, arms}: view_form(arms, words, pbase, Nat.add(pform, pat), pindent)
+
+def view_nests(+pnests: List<&2, CLay.Nest>, +pwords: List<&2, CLay.CWord>, +pbase: String, +pform: Nat, +pindent: String) -> String:
+  match pnests:
+    case Nil{}: ""
+    case +nest <> rest:
+      match nest:
+        case CLay.Nest{at, offset, take, make}:
+          join_text([view_nest_sink(take, pwords, pbase, pform, at, pindent), view_nests(rest, pwords, pbase, pform, pindent)])
+
+def view_discard(+pw: World, +ppacked: Bool, +pbase: String, +poffset: Nat, +playout: CLay.Layout, +ptext: String) -> Part:
+  match ppacked:
+    case True{}: PartOk{""}
+    case False{}:
+      match playout:
+        case CLay.LayoutWord{word}: PartOk{""}
+        case CLay.LayoutBox{reason}: PartOk{join_text(["term_sink(e, ", ptext, ");"])}
+        case CLay.LayoutData{words, arms}:
+          match pw:
+            case World{ctx, constructors, families, cids}:
+              ur = CLay.layout_unfill(ctx, playout)
+              match ur:
+                case CLay.UnfillFailed{message}: PartFail{message}
+                case CLay.UnfillFound{unfill}:
+                  match unfill:
+                    case CLay.UnfillWord{}: PartOk{""}
+                    case CLay.UnfillForm{words, arms}: PartOk{view_form(arms, words, pbase, poffset, "")}
 
 def view_field(+pw: World, +ppacked: Bool, +pbase: String, +pslot: CLay.NodeSlot) -> Part:
   match pslot:
     case CLay.NodeSlot{ordinal, offset, layout}:
       dst = join_text(["vf", U32.show(ordinal)])
-      part_of(run_jobs(unfill_jobs(pw, layout, view_src(ppacked, pbase, offset), dst, dst), pw, Nil{}), dst)
+      cursor = join_text(["vf", U32.show(ordinal), "i"])
+      decl = join_text(["Term ", dst, " = 0; u32 ", cursor, " = ", Nat.show(offset), ";"])
+      jobs = List.append(&2, Job, [JText{decl}], unfill_jobs(pw, layout, view_src(ppacked, pbase, cursor), dst, dst))
+      part_of(run_jobs(jobs, pw, Nil{}), dst)
 
 def view_slots(+pw: World, +pslots: List<&2, CLay.NodeSlot>, +ppacked: Bool, +pbase: String, +pacc: List<&2, ProjectField>) -> ViewFields:
   match pslots:
@@ -779,8 +842,12 @@ def view_slots(+pw: World, +pslots: List<&2, CLay.NodeSlot>, +ppacked: Bool, +pb
           match field:
             case PartFail{message}: ViewFieldsFail{message}
             case PartOk{text}:
-              discard = view_discard(layout, text)
-              view_slots(pw, rest, ppacked, pbase, List.append(&2, ProjectField, pacc, [ProjectField{ordinal, text, discard}]))
+              expr = text
+              plan = view_discard(pw, ppacked, pbase, offset, layout, text)
+              match plan:
+                case PartFail{message}: ViewFieldsFail{message}
+                case PartOk{text}:
+                  view_slots(pw, rest, ppacked, pbase, List.append(&2, ProjectField, pacc, [ProjectField{ordinal, expr, text}]))
 
 def view_finish(+psetup: String, +pvf: ViewFields, +prelease: String) -> ProjectView:
   match pvf:
