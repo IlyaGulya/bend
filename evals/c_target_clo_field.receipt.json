@@ -1,0 +1,27 @@
+{
+  "fixture": "evals/c_target_clo_field.bend",
+  "expected_stdout": "7",
+  "official_run": {
+    "command": "bend evals/c_target_clo_field.bend",
+    "cwd": "repo root",
+    "binary": "/Users/ilyagulya/.local/bin/bend",
+    "binary_sha256": "dea7865dc17f1d151201885cc456c4f685d75f7f5c181f13646615714ef6fd9e",
+    "version_banner": "Bend 2.0.36: check, run, build and publish Bend programs.",
+    "stdout": "7",
+    "stderr": "",
+    "exit": 0,
+    "wall_seconds": 1.21,
+    "heap_closure_allocation_observed": false,
+    "heap_closure_note": "The program captures k in make(k), so lowering must allocate a heap closure for the returned function; the run did not instrument allocation, so only the capture relation is established by source, not the allocation itself."
+  },
+  "candidate_run": {
+    "status": "not run",
+    "reason": "No built stage1 executable exists in this worktree; the documented candidate invocation needs one (gates/selfhost.ts:239-249 builds the stage1 command as `<stage1 bin> <file> -o <out.c> --base <repo>/bend2/base.bend --runtime-c <repo>/bend2/selfhost/c_runtime.c`, then `clang -O2 -pthread <out.c> -lm -o <exe>`). Building it is a heavy job and is outside this slice.",
+    "command_template": [
+      "<stage1> evals/c_target_clo_field.bend -o /tmp/c_target_clo_field.c --base bend2/base.bend --runtime-c bend2/selfhost/c_runtime.c",
+      "clang -O2 -pthread /tmp/c_target_clo_field.c -lm -o /tmp/c_target_clo_field",
+      "/tmp/c_target_clo_field"
+    ],
+    "candidate_commit": "520-line root tree with the candidate c_backend (Main's integration worktree)"
+  }
+}
