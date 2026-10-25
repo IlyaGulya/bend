@@ -156,11 +156,20 @@ profile. Raw logs remain outside Git.
 
 The builder now has opt-in `--profile-dir=DIR` instrumentation using the
 existing `evals/compiler_profile.mjs`: `module-import`, `book_load`,
-`book_valid`, `compile_book` spans plus source/input/runtime provenance.
-`--profile-smoke=small` completes; `--profile-smoke=fail` records an aborted
-span and failed/incomplete summary; parent worker errors write a
-`worker-failure.json` beside the newest profile run. These smokes are
-source-path checks only and did not rerun the native workload. The old OOM
+`book_valid`, `compile_book` spans plus source/input/runtime hashes and
+execArgv before phase work. The parent binds the exact profile run directory
+with a worker `profile-ready` message, not mtime scanning; worker error/exit
+without a summary writes an interrupted `worker-failure.json` in that exact
+run, while a known throw aborts open spans as failed and finishes failed.
+
+A throwaway harness imports the shared `compilePhases()` and compiles the real
+`evals/c_target_array_nat.bend` (completed) and a malformed real fixture
+(`book_load` failed). A second throwaway harness exercises the shared
+`superviseProfileWorker` with a throwing worker and an exit-137 worker, which
+write interrupted receipts in their exact bound directories. These are
+changed-path source checks only; they did not rerun the native workload. The
+removed `--profile-smoke` CLI branch was a bare begin/end/handmade-error check
+and is not changed-path proof. The old OOM
 boundary remains unknown.
 
 The fixture must include the full prelude because the small source imports Base;

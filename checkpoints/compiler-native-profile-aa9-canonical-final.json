@@ -59,10 +59,11 @@
     "sha256": "14d810f2206b0563d4cfecfa1d0323b3f6657ef0d8844d17bea4c1dcd769cb99",
     "bytes": 2386
   },
-  "note": "The 3072 MiB old-generation worker cap was reached while loading/checking/generating the canonical fixture; no native phase ran. This is NOT a profiling pass, NOT a cap raise, and NOT retried. It does not claim full compiler HOST/FP/C execution. The opt-in compiler_profile instrumentation was added after this run and manuscript-smoked; it does not retroactively identify this run\u2019s internal boundary.",
+  "note": "The 3072 MiB old-generation worker cap was reached while loading/checking/generating the canonical fixture; no native phase ran. This is NOT a profiling pass, NOT a cap raise, and NOT retried. It does not claim full compiler HOST/FP/C execution. The opt-in compiler_profile instrumentation and real valid/invalid compile smoke were added after this run; they do not retroactively identify this run\u2019s internal boundary.",
   "profilerInstrumentation": {
-    "status": "opt-in source added; smoke-exercised; old OOM run remains uninstrumented/unknown boundary",
+    "status": "opt-in source added and real changed-path smoke exercised; old OOM run remains uninstrumented/unknown boundary",
     "collector": "evals/compiler_profile.mjs (existing)",
+    "sharedWorkerPath": "evals/native_stage_profile_build.ts build() calls exported compilePhases(); --profile-dir binds the exact runDirectory with a profile-ready message and supervises worker error/exit receipts",
     "spans": [
       "module-import",
       "book_load",
@@ -70,34 +71,86 @@
       "compile_book"
     ],
     "provenance": [
-      "source path+sha256",
-      "canonical BIR/sources/runtime paths",
-      "artifact dir",
+      "source/kernel/compiler/driver/host/manifest/canonical input SHA-256",
+      "generated fixture SHA-256 record",
+      "runtime execPath/execArgv/versions",
+      "worker limits",
       "command",
-      "worker scope"
+      "artifact dir"
     ],
-    "smallSmoke": {
-      "command": "node --experimental-strip-types evals/native_stage_profile_build.ts --profile-dir=/tmp/profile-smoke-small --profile-smoke=small",
-      "exit": 0,
-      "summary": "/tmp/profile-smoke-small/profile-50387-thread-1-oCjdBn/summary.json",
-      "summarySha256": "8e287502c5a255af2b5c4f7970fee747cf93c0e18307cfacb48889792b25997a",
-      "status": "completed",
-      "measurementStatus": "complete",
-      "incompleteEvidence": false
+    "realCompileSmoke": {
+      "harness": "/tmp/stage-prof-review/smoke.mjs (throwaway; imports the shared compilePhases, not a builder CLI smoke branch)",
+      "valid": {
+        "driver": "evals/c_target_array_nat.bend",
+        "summary": "/tmp/stage-prof-review/valid-profiles/profile-31781-thread-0-qFudXe/summary.json",
+        "summarySha256": "daeb930746cf767cbb089705f4a08b0dfbd4b6c5aa6f477b5eb07d36f93a0f51",
+        "status": "completed",
+        "measurementStatus": "complete",
+        "incompleteEvidence": false,
+        "spans": [
+          [
+            "module-import",
+            "completed"
+          ],
+          [
+            "book_load",
+            "completed"
+          ],
+          [
+            "book_valid",
+            "completed"
+          ],
+          [
+            "compile_book",
+            "completed"
+          ]
+        ]
+      },
+      "invalid": {
+        "driver": "/tmp/stage-prof-review/tiny_invalid.bend (valid fixture plus malformed suffix)",
+        "summary": "/tmp/stage-prof-review/invalid-profiles/profile-31781-thread-0-rdHDD9/summary.json",
+        "summarySha256": "03987579a597acae39ebcb743445ef797f27391ec71009d3a1e12aafef16a194",
+        "status": "failed",
+        "measurementStatus": "complete",
+        "incompleteEvidence": false,
+        "spans": [
+          [
+            "module-import",
+            "completed"
+          ],
+          [
+            "book_load",
+            "failed"
+          ]
+        ]
+      },
+      "log": "/tmp/stage-prof-review/smoke.log",
+      "logSha256": "448816d0a2d3cec4df953c85a96b6e580f3f12f01b9fc4addf8bfe8ac30db34d"
     },
-    "controlledFailure": {
-      "command": "node --experimental-strip-types evals/native_stage_profile_build.ts --profile-dir=/tmp/profile-smoke-fail --profile-smoke=fail",
-      "exit": 1,
-      "log": "/tmp/profile-smoke-fail.log",
-      "logSha256": "419087beb2cc7dc1dceacfa1d4aa8013fe84cb7e3c1f56fc2b8fc57834999ad5",
-      "summary": "/tmp/profile-smoke-fail/profile-51056-thread-1-dwcb2l/summary.json",
-      "summarySha256": "b11594ad8151dac10753c594ddf2cd7ae1019652778b1b2c1da793e7fe3b119c",
+    "knownBuilderFailure": {
+      "command": "node --experimental-strip-types evals/native_stage_profile_build.ts --profile-dir=/tmp/stage-prof-review/builder-fail2",
+      "summary": "/tmp/stage-prof-review/builder-fail2/profile-55874-thread-1-6x7fha/summary.json",
+      "summarySha256": "a8dc5550cd12f825c4ed603f5745274b508e549cb793717aa3d779129f8230d5",
       "status": "failed",
-      "measurementStatus": "incomplete",
-      "incompleteEvidence": true,
-      "span": "smoke-phase aborted"
+      "workerFailureReceipt": null,
+      "note": "known throw aborts/fails the collector; parent exit sees summary.json and does not write an interrupted receipt"
     },
-    "workerDeath": "parent writes worker-failure.json next to the newest profile run directory when the worker errors before finish",
+    "workerTermination": {
+      "harness": "/tmp/stage-prof-review/term-smoke.mjs imports the shared superviseProfileWorker; one worker throws, one exits 137",
+      "error": {
+        "receipt": "/tmp/stage-prof-review/term-error-run/worker-failure.json",
+        "sha256": "292b29d42f12807a932f0e930ce6e86ff61289f800cd96e9b5435af84dfb3a83",
+        "status": "interrupted"
+      },
+      "exit": {
+        "receipt": "/tmp/stage-prof-review/term-exit-run/worker-failure.json",
+        "sha256": "20d706fd3056a9534096186d01eb9cd9c3517e6369f9a87afadd66dcc1d24779",
+        "status": "interrupted"
+      },
+      "log": "/tmp/stage-prof-review/term-smoke.log",
+      "logSha256": "89dfe94feb1ef9496eeec1f43196fe219a3ee8201340a69f272abe21302c7d2b"
+    },
+    "oldPermanentSmokeRetracted": "the removed --profile-smoke branch was bare begin/end (or handmade error), exercised none of the new spans, and was not changed-path proof; no claim uses it",
     "oldRun": "the 46124798 OOM run predates instrumentation; its internal boundary remains unknown"
   }
 }
