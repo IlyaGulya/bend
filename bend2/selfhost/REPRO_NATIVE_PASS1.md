@@ -1,0 +1,221 @@
+# REPRO_NATIVE_PASS1 — c-pass-1 cost witness (diagnostic only)
+
+Status: **DIAGNOSTIC_ONLY**. Not acceptance evidence, not a C candidate result, not
+benchmark data. The frozen 03d0 diagnostic workload (driver `dd1b86b4`, pinned old
+generated units) was **not** rerun. Production compiler code was not changed.
+
+Committed inputs: `evals/repro_native_pass1.ts` (driver, sha256
+`ef42fa50f44558d8f00c8a8b5835504222c2c0a18b4a3c5c6328a0db116c5ac7`).
+Compact receipt: `evals/receipts/repro_native_pass1_literal.json` (sha256
+`fc9b141d340acb5a0430810a1fc18330d650e8181bf91f4d30fb7f0ada81148e`).
+The three exact generated sources the run loaded are committed at
+`evals/repro_native_pass1/literal-{1000,4000,16000}.bend`
+(sha256 `78685a5db42b00488755de0050c909bfe8735ee6ece482ffd6ea76da6d8f50a0`,
+`edf4f5dc36c5c4f305eac76d852380dc798331bc33cd1adff1eeb717a1fc4763`,
+`a33487cc6ded7730160cefae3827fada4c88212841e19626e384fb8f1e45d17e`; each
+matches the receipt's `sourceSha256`/`sourceBytes` byte for byte and is exactly
+what `familySource('literal', K)` produces). Full run JSON with per-release
+samples stayed outside Git at `/tmp/repro-native-pass1-full.json`.
+
+## Frozen execution facts
+
+- Node `v23.11.0` / V8 `12.9.202.28-node.14`,
+  `/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node`.
+- Compiler under test: `bend2/comp.ts` sha256
+  `a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70`,
+  `bend2/bend.ts` sha256 `6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e`
+  (same bytes as the failing 03d0 worktree).
+- Worker per case: stack 256 MiB, old generation 3072 MiB. Guardian:
+  `guardHeavyGate` 8192 MiB / 8192 MiB / 10 ms / 600000 ms, DEFAULT lock path,
+  no nested or independent lock. Real worker `exit` is awaited before the next
+  case starts.
+- Command actually run (cwd `/private/tmp/bend-repro-oom57ab`, branch
+  `work/repro-oom57ab`, driver commit `ae63dc7d`):
+
+  ```
+  /Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node --experimental-strip-types \
+    evals/repro_native_pass1.ts --out=/tmp/repro-native-pass1-full.json \
+    --receipt=/tmp/repro-native-pass1-receipt.json --families=literal \
+    --literal-sizes=1000,4000,16000 --sizes=8,16,32,64 --max-defs=64 \
+    --max-elements=16384 --report-limit-units=67108864 --case-timeout-ms=60000
+  ```
+
+- Guardian terminal record: status `PASS`, reason `command_exit`, exit 0,
+  reportPhase `complete`, ownedTreeStopped `true`, elapsed 11943 ms,
+  peakRss 591642624 B, peakFootprint 588228664 B.
+- `--report-limit-units` is a **post-generation report limit** checked on the
+  returned C string after `compile_book` finished. It is not an emit,
+  allocation or preventive memory bound.
+
+## Reproducer: one pure main holding a wide List<Nat> literal
+
+`literal(K)` generates `import Base` plus `def main() -> List<Nat>:` whose body is
+one wide literal of K elements (`[0n, 1n, …, (K-1)n]`, roughly two constructor/literal
+nodes per element after desugaring). `book_load` → `book_valid` → `compile_book` on the real
+public path with an observer; `K` is an **element count**, never a definition
+count. Counts below are labelled accordingly.
+
+### [OBSERVED] measured phases (same pass, same caps)
+
+| elements | source B | load ms | valid ms | reach ms | pass-1 ms | reach Δheap B | pass-1 Δheap B | C units | C lines | segments | spins | whole-run sampled max heap B | sampled max RSS B |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1000 | 5931 | 115.4 | 329.2 | 134.8 | 572.7 | 8100048 | 8477712 | 212343 | 5965 | 1 | 0 | 43906920 | 227688448 |
+| 4000 | 26931 | 243.3 | 226.7 | 318.3 | 1044.3 | 40729392 | 46110792 | 641343 | 14965 | 1 | 0 | 119135416 | 301842432 |
+| 16000 | 116931 | 303.0 | 1304.9 | 543.4 | 3312.6 | 154878744 | 178282800 | 2387343 | 50965 | 1 | 0 | 379509448 | 583024640 |
+
+Every case: `status COMPLETED`, exactly 1 pass (`c-pass-1-before`/`-after`
+observed), 346 checked definitions in the loaded book, 2 higher-term prepares,
+13 releases, 0 spins, `heap_size_limit` 3271557120 B. `releases` is the count of
+definitions the pass actually emitted (13: `main` plus 12 reachable), so these
+runs measure literal-node cost, not per-definition cost over thousands of
+definitions. Heap row semantics: `heapUsed` is a worker-isolate sample at an
+observe event, not live or retained bytes.
+
+### [OBSERVED] boundary heapUsed rows (B), in order
+
+`c-reachability-before` → `c-reachability-after` → `c-pass-1-before` →
+`c-pass-1-after`; the pass boundary is the exact `c-pass-1` boundary reached:
+
+- 1000 elements: 27325976 → 35426024 → 35429208 → 43906920
+- 4000 elements: 32291784 → 73021176 → 73024624 → 119135416
+- 16000 elements: 46344456 → 201223200 → 201226648 → 379509448
+
+### [OBSERVED] marginal coefficients (list-element basis)
+
+- Emitted C: **145.5 UTF-16 units and 3.0 lines per element** (4000→16000);
+  the 1k→4k marginal is 143.0 units/element, so the slope is stable.
+- `c-pass-1` boundary heap delta: **10.9 KiB/element** at 16000 (11.3 at 4000,
+  8.3 at 1000); `c-reachability` delta: **9.5 KiB/element**.
+- Wall: `compile_book` marginal ≈ **0.19 ms/element** (pass-1 total 3.3 s at
+  16000 elements); reachability marginal ≈ 0.019–0.06 ms/element.
+- The literal is emitted inside exactly one segment with zero spins; the
+  measured per-element boundary heap is not further attributed here (emitted
+  code, image words and uncollected garbage are all possible owners).
+
+### [INFERENCE] naive scale only: it neither explains nor refutes the merged OOM
+
+The measured slope applies **only to this LIST family**: uniform `Nat` leaves in
+one flat wide literal, emitted inside one segment with zero spins. The merged
+fixture's terms have a different structure: `program()` is one 434812 B line of
+23403 **heterogeneous, nested** `BIR.` constructor tokens (`Program` → `Code` →
+`Region`/`Let`/`Branch`/…, with type-carrying fields), while `runtime()` is a
+78513 B string literal and `files()` a 56-entry list of records holding source
+strings. Constructor cost is therefore **not uniform**, and nesting, erased-type
+instantiation, string/image handling and per-definition rebuilds are all absent
+from the measured family.
+
+Applying the list slope numerically to those tokens (bracketing 11.7k-23.4k
+elements) gives pass-1 boundary growth ≈ 0.12-0.25 GiB, reachability
+≈ 0.11-0.22 GiB, whole-run sampled max ≈ 0.26-0.52 GiB, C text ≈ 1.7-3.5 M
+UTF-16 units, against **1.143 GiB** of pass-1 headroom under the same 3072 MiB
+cap. That is a naive scale of a *different* structure: it does **not** explain
+the actual OOM, does **not** prove the fixture literals are insufficient, and
+does **not** refute them. The giant-fixture hypothesis is **not ruled out**; an
+actual fixture-shaped nested input would be needed, and only if source profiling
+points there. No OOM cause, upper bound or minimality claim is made.
+
+## [OBSERVED] the frozen 03d0 failure (from its own receipt, not rerun)
+
+`checkpoints/compiler-native-profile-merged-03d0-durable.json`:
+
+- Six spans: module-import 0.704 s, book_load 15.274 s, book_valid 9.584 s,
+  c-reachability 26.238 s; `compile_book` and `c-pass-1` still active.
+- At the `c-pass-1-before` boundary (52.2 s): heapUsed **1993412464**, heapTotal
+  2029076480, RSS 2185461760. Process CPU at that checkpoint: user 21433.1 ms,
+  system 973.2 ms (process-wide).
+- Worker OOM observed **101.3 s** after that boundary (153.6 s total); no
+  `c-pass-1-after`, no artifact. Guardian peakRss **3472670720**, footprint
+  **3627897496**; worker heap limit 3072 MiB = 3221225472, so the boundary left
+  1.143 GiB and the later peak sat 1.199 GiB above the boundary RSS.
+- Fine observations were suppressed (`rawDetail: false`, `fineSpans: 0`), so
+  this receipt has **no per-definition rows**: the pass's internal trajectory is
+  unmeasured there. The 1.993 GB boundary sample is not a peak and not retained
+  bytes.
+
+## [OBSERVED] per-pass output scale of the same generated machines (older book)
+
+An earlier successful compile of the same generated-unit family (its entry
+comments name `../checkpoints/*_steps_v1`; byte identity to today's pinned units
+is not proven) with the older 236-line driver produced `native-stage-profile.c` = 45996671 B, 1093354 lines,
+14340 `WL_CASE` arms. The `WL_TABLE` lists 14339 entries = **14336 emitted
+segments** + `FID_IO_EMIT` + `FID_CLO_APPLY` + `FID_EXIT`, and the 14338 table
+comments are those 14336 segments plus IO_EMIT/CLO_APPLY. Of the comments:
+**1341 plain names** (including IO_EMIT/CLO_APPLY), 10919 `$c` and 2078 `$k`
+continuation entries, with continuation counters reaching **44548** — i.e. one
+pass pushed at least ~44.5 k segments before the reachability filter kept 14.3 k.
+All arms hold 783870 lines (median 38, mean 54.7; largest kept segments are
+`emitter_step_one` 38995, `checker_step_one` 35243, `template_step_one` 7003);
+5312 spins hold 275235 lines. That run's guardian peak was 6606716928 B over
+217834 ms including clang and the native execution. It contains **zero**
+generated-fixture entries, so it is not this merged workload's output; it is
+evidence for the shape and magnitude of a pass over the generated machines.
+
+## Source ownership of `c-pass-1` (primary code, `bend2/comp.ts`)
+
+- `compile_book` 3110–3156: each pass clears `lend/spun/clos/tabs/lits/consts/brws`
+  and resets `segs/spins/img`; then for every `done_defs()` definition
+  (`done_defs` 1484, `FL.srcs` keys) it calls `emit_open(scope_new(), k)`, pushes
+  that segment, emits `emit_body(dl, fun_of(k).h!, …)` and calls `file_release(k)`;
+  the loop repeats while `own+hot+stat` changed (`facts()` 3122).
+- `file_release` 1669–1682: **per definition**, it clears `FL.higher`, clears
+  `FL.consts`, and `memo_gc()` clears all five memos. Higher terms are therefore
+  rebuilt per definition, not cached per pass; `fun_of` 1415–1442 keeps only the
+  `Fun` record and exposes `h` as a getter into `file_higher`/`term_higher`.
+- `emit_fuse` 2476–2502: reads `{n, h, lays, ret} = fun_of(k)` eagerly; flat
+  callees go to `emit_native` 2520–2548, which memoises a spin per
+  (definition, erased-layout ids) inside the pass (`FL.spun` is reset each pass);
+  non-flat callees that are tail-called, non-bang and referenced exactly once are
+  inlined into the caller (`emit_body` once test 2846–2855).
+- `seg_open` 1883–1896 pushes every fork/loop continuation into `FL.segs`, and
+  `seg_name` 1879 names it from `FL.segs.length`; a pass therefore materialises
+  more segments than it has definitions.
+- `c-pass-N-after` (3154) is observed **before** the `live` filter (3162), so it
+  reports the pre-filter working set.
+- `file_observe` 1627–1643 reports cache sizes only (`retainedHigher`, `segments`,
+  `spins`, fact sizes, memo sizes); the production adapter
+  (`evals/compiler_profile.mjs` 661–690) drops fine stages unless `rawDetail`, so
+  the 03d0 receipt cannot show per-definition state.
+
+## Causal accounting (separated)
+
+- [OBSERVED] Constant-literal emission is linear in nodes: ~145 C units and ~3
+  lines per element, ~11 KiB boundary-heap per element, ~0.19 ms/element.
+- [OBSERVED] The failing pass started at 1.993 GB with 1.143 GiB of headroom and
+  did not finish within 101 s.
+- [INFERENCE] The list-family slope is a naive scale for the fixture's
+  heterogeneous nested `BIR` tokens (≈0.12-0.25 GiB pass-1 boundary heap,
+  ≈2-5 s if applied numerically). Because constructor cost is not uniform and
+  the structures differ, that scale neither explains nor refutes the actual
+  OOM: the giant-fixture hypothesis stays open. A second open hypothesis is
+  per-definition work over the book (each definition emits a segment and rebuilds
+  its higher term and memos after the previous definition's release), whose
+  scale the older artifact shows as ~1.09 M lines and ≥44.5 k pushed segments per
+  pass. Neither is measured for 03d0: no per-definition rows exist there, and the
+  prepared chain/linear pair was **not** executed.
+- Not claimed: exact OOM cause, globally minimal OOM witness, retained-byte
+  figures, a pass result, or any acceptance/candidate behaviour.
+
+## Prepared but unexecuted
+
+`chain` and `linear` (4 sizes each, matched arithmetic/IO.pure prefix and leaf;
+only the continuation placement of the identical call differs) remain in the
+committed driver and were **not run** in this slot. They would add per-definition
+`prepare`/`release` slopes and the once-tail-inlining growth term; they do not
+shrink the frozen acceptance corpus, exports or matrix.
+
+## Unknowns
+
+- No per-definition heap/prepare series exists for the 03d0 book.
+- The fixture's nested non-list constructor term and its large string/list
+  images were not compiled in isolation; only a wide `List<Nat>` proxy was, and
+  its per-element slope is not a per-token cost for heterogeneous nested
+  constructors.
+- The giant-fixture hypothesis is untested and not ruled out; no fixture-shaped
+  nested input was run.
+- `book_load`/`book_valid` peaks are unsampled (no observer hooks inside them);
+  only their boundary states are measured.
+- CPU per phase was **not** instrumented in the executed driver; only wall times
+  are measured here. The frozen 03d0 receipt's process CPU at its 52.2 s
+  checkpoint was user 21433.1 ms + system 973.2 ms (process-wide, includes the
+  worker), but that is a different run and book.
+- Everything here is one machine, one Node/V8 build, one pass implementation.
