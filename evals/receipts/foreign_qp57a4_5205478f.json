@@ -188,7 +188,7 @@
    "arch": "arm64",
    "node": "v23.11.0",
    "bun": "1.4.2",
-   "clang": "Apple clang (observed via clang --version; see command list)"
+   "clang": "Apple clang version 21.0.0 (clang-2100.3.34.2), target arm64-apple-darwin25.6.0"
   },
   "limits": {
    "nodeMaxOldSpaceMiB": 3072,
