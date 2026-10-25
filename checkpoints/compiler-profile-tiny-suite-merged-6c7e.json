@@ -1,0 +1,240 @@
+{
+  "schemaVersion": 1,
+  "kind": "compiler-profile-tiny-changed-path-suite-merged-receipt",
+  "diagnosticOnly": true,
+  "acceptanceEvidence": false,
+  "status": "PASS",
+  "sourceCommit": "b97482f2",
+  "mergedBaseCommit": "6c7e8aec",
+  "docCorrectionCommit": "b97482f2",
+  "note": "ONE guarded tiny actual suite on merged source in a fresh worktree and fresh artifact dir. Not a full native/canonical workload, compiler-root admission, source BIR execution proof, or native host execution proof. Old OOM boundary remains unknown.",
+  "worktree": "/private/tmp/bend-merged-tiny-6c7e",
+  "shell": {
+    "argv": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "--experimental-strip-types",
+      "/tmp/bend-merged-tiny-suite.mjs"
+    ],
+    "cwd": "/private/tmp/bend-merged-tiny-6c7e"
+  },
+  "guardianCommand": [
+    "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+    "/private/tmp/bend-merged-tiny-suite.mjs"
+  ],
+  "runtime": {
+    "node": "23.11.0",
+    "v8": "12.9.202.28-node.14",
+    "execPath": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+    "execArgv": [],
+    "nodeOptions": "--experimental-strip-types --max-old-space-size=3072 --experimental-strip-types --max-old-space-size=3072",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "limits": {
+    "guardian": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "nodeHeapMiB": 3072,
+    "compileWorker": {
+      "stackSizeMb": 256,
+      "maxOldGenerationSizeMb": 3072
+    }
+  },
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 276316160,
+    "peakFootprintBytes": 202980448,
+    "elapsedMs": 6521,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "/private/tmp/bend-merged-tiny-suite.mjs"
+    ],
+    "label": "Tiny compiler profile changed-path suite",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792906920041-cc0dfc0727f372df.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "sourceBindings": {
+    "evals/native_stage_profile_build.ts": {
+      "path": "/private/tmp/bend-merged-tiny-6c7e/evals/native_stage_profile_build.ts",
+      "bytes": 21458,
+      "sha256": "a4f54e44a2cdf62632d6409ff310dcb80f86fa573f425729b5623313f9148472"
+    },
+    "evals/compiler_profile.mjs": {
+      "path": "/private/tmp/bend-merged-tiny-6c7e/evals/compiler_profile.mjs",
+      "bytes": 32309,
+      "sha256": "99fca04a701af1fec88e49ab3ec4673ada67fd504ed22d6901b1937e997b4ae8"
+    },
+    "evals/native_stage_profile_host.c": {
+      "path": "/private/tmp/bend-merged-tiny-6c7e/evals/native_stage_profile_host.c",
+      "bytes": 5890,
+      "sha256": "d50e96cb10c302024bcb264bafa47eb37dc79c675be4634cccf694b482681793"
+    },
+    "evals/native_stage_profile_driver.bend": {
+      "path": "/private/tmp/bend-merged-tiny-6c7e/evals/native_stage_profile_driver.bend",
+      "bytes": 17167,
+      "sha256": "dd1b86b49f66039949c3efd962973e784a938fdce8a4beb7a2a324f591f3171a"
+    },
+    "evals/c_target_array_nat.bend": {
+      "path": "/private/tmp/bend-merged-tiny-6c7e/evals/c_target_array_nat.bend",
+      "bytes": 417,
+      "sha256": "1f5d1ebc34537453b7733daff35973d09fb919ccf7af18c98fe948858d8f1462"
+    },
+    "bend2/bend.ts": {
+      "path": "/private/tmp/bend-merged-tiny-6c7e/bend2/bend.ts",
+      "bytes": 138233,
+      "sha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e"
+    },
+    "bend2/comp.ts": {
+      "path": "/private/tmp/bend-merged-tiny-6c7e/bend2/comp.ts",
+      "bytes": 200681,
+      "sha256": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70"
+    },
+    "bend2/selfhost/RESEARCH_STAGE_PROFILING.md": {
+      "path": "/private/tmp/bend-merged-tiny-6c7e/bend2/selfhost/RESEARCH_STAGE_PROFILING.md",
+      "bytes": 17755,
+      "sha256": "f965ff9ab47f88176120d59ece0cab90891610712ef5c5806e3c0fbdd8abe7a4"
+    }
+  },
+  "rawStreams": {
+    "stdout": {
+      "path": "/tmp/bend-merged-tiny-suite.stdout.log",
+      "bytes": 272,
+      "sha256": "85e5ccc68774e7ecf33350c0156f3f430806df5f608151d9ba992c0bd6a79f55"
+    },
+    "stderr": {
+      "path": "/tmp/bend-merged-tiny-suite.stderr.log",
+      "bytes": 1408,
+      "sha256": "64ef5ecb131ce0c4d29dc3845e48de137db3e9a1e4ec3aae598977a216c0d827",
+      "containsGuardianRecord": true
+    }
+  },
+  "suiteReceipt": {
+    "path": "/tmp/bend-merged-tiny-artifacts/suite.json",
+    "bytes": 5013,
+    "sha256": "c4cd9e15b037885ff84a2194b96bf6bf90f052fa1b9985e6928f59d439d038ba"
+  },
+  "checks": {
+    "valid": {
+      "driver": "/private/tmp/bend-merged-tiny-6c7e/evals/c_target_array_nat.bend",
+      "driverSha256": "1f5d1ebc34537453b7733daff35973d09fb919ccf7af18c98fe948858d8f1462",
+      "cBytes": 81153,
+      "cSha256": "94a57dbda989a3edd8923d39d8f12952fa6c68ea2c68004d429916d9e9eb9dc3",
+      "cPassSpans": [
+        {
+          "name": "c-pass-1",
+          "status": "completed"
+        },
+        {
+          "name": "c-pass-2",
+          "status": "completed"
+        }
+      ],
+      "observations": 9,
+      "observationKinds": {
+        "compiler-state": 3,
+        "compiler-retention": 3,
+        "compiler-memo-sizes": 3
+      },
+      "timingTypes": [
+        "number",
+        "number"
+      ]
+    },
+    "invalid": {
+      "driver": "/tmp/bend-merged-tiny-artifacts/invalid_fixture.bend",
+      "driverSha256": "762e7f8cc2fbdcbc1170d6bf452806eac5e0b22e04e642a9dd9412e4fd7a9cfd",
+      "profile": "/tmp/bend-merged-tiny-artifacts/profiles-invalid/profile-69073-thread-4-nmaaoP/summary.json",
+      "profileSha256": "9a5bb9dd56f9d8ac510b8c6bc1a6c981afe823d61f56b2b95ecb480a6a813d3d",
+      "status": "failed",
+      "error": "non-Error diagnostic",
+      "spans": [
+        {
+          "name": "module-import",
+          "status": "completed"
+        },
+        {
+          "name": "book_load",
+          "status": "failed"
+        }
+      ]
+    },
+    "nestedFailure": {
+      "profile": "/tmp/bend-merged-tiny-artifacts/profiles-nested-fail/profile-69073-thread-4-ZGN63x/summary.json",
+      "profileSha256": "f5e2decd48628f8c2bc458c6876bda2239295e7ca0fed80f1ad94d1b95102e09",
+      "status": "failed",
+      "spans": [
+        {
+          "name": "c-reachability",
+          "status": "failed"
+        },
+        {
+          "name": "c-pass-1",
+          "status": "failed"
+        }
+      ]
+    },
+    "byteIdentical": {
+      "equal": true,
+      "onSha256": "94a57dbda989a3edd8923d39d8f12952fa6c68ea2c68004d429916d9e9eb9dc3",
+      "offSha256": "94a57dbda989a3edd8923d39d8f12952fa6c68ea2c68004d429916d9e9eb9dc3",
+      "onBytes": 81153,
+      "offBytes": 81153,
+      "offPath": "/tmp/bend-merged-tiny-artifacts/observer-off.c"
+    },
+    "cRun": {
+      "path": "/tmp/bend-merged-tiny-artifacts/observer.bin",
+      "exitStatus": 0,
+      "stdoutPath": "/tmp/bend-merged-tiny-artifacts/run.stdout.log",
+      "stdout": "7\n",
+      "stdoutSha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+      "stderrPath": "/tmp/bend-merged-tiny-artifacts/run.stderr.log",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "supervisor": {
+      "error": {
+        "runDirectory": "/tmp/bend-merged-tiny-artifacts/supervisor/error",
+        "receiptPath": "/tmp/bend-merged-tiny-artifacts/supervisor/error/worker-failure.json",
+        "receiptSha256": "3070e64acb256597aa603d2d8a902d07eb8b71f0e83ddb46d023ec19ccf3f9be",
+        "status": "interrupted",
+        "error": "controlled worker termination",
+        "exitCode": 1
+      },
+      "exit137": {
+        "runDirectory": "/tmp/bend-merged-tiny-artifacts/supervisor/exit137",
+        "receiptPath": "/tmp/bend-merged-tiny-artifacts/supervisor/exit137/worker-failure.json",
+        "receiptSha256": "0fc4ef39e89fa2d75bd622b793418247969b7f6b3fc88b20196630c87d5bd89c",
+        "status": "interrupted",
+        "error": "worker exited 137 without a terminal result",
+        "exitCode": 137
+      },
+      "zero": {
+        "runDirectory": "/tmp/bend-merged-tiny-artifacts/supervisor/zero",
+        "receiptPath": "/tmp/bend-merged-tiny-artifacts/supervisor/zero/worker-failure.json",
+        "receiptSha256": "c362a7ba90b04b1f15d5ac2f56f3452ef93eba4b006997b416ca737d2994c18f",
+        "status": "failed",
+        "error": "worker exited 0 without a terminal result",
+        "exitCode": 1
+      }
+    }
+  },
+  "notExecutionProven": [
+    "full canonical native transport/build",
+    "source BIR execution",
+    "native host emitter label execution",
+    "old OOM internal boundary"
+  ],
+  "oldOOMBoundary": "unknown",
+  "priorUnguardedProofs": "observed_only_not_admission"
+}
