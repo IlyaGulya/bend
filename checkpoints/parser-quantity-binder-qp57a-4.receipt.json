@@ -165,7 +165,10 @@
    "timeoutMs": 900000,
    "memoryLimitBytes": 8589934592,
    "rssLimitBytes": 8589934592,
-   "commandExitCode": 0
+   "commandExitCode": 0,
+   "verdict": "REJECTED_UNAPPROVED_DEADLINE",
+   "verdictReason": "ran with --timeout-ms 900000 while the authorized hard deadline is 600000; the command and its observed 59 s are kept verbatim, the run is not accepted and contributes no admission claim",
+   "correctedRun": "checkpoints/parser-candidate-gate-qp57a-4-600s.json"
   },
   "build": {
    "guardianReport": "report-1792903780173-aa5cd18ca650f174.json",
@@ -501,5 +504,21 @@
   "frozen v41 corpus run",
   "C matrix",
   "bootstrap green"
- ]
+ ],
+ "gateCorrection": {
+  "status": "CORRECTED_BELOW_600S",
+  "rejectedRun": {
+   "report": "checkpoints/parser-candidate-gate-qp57a-4.json",
+   "verdict": "REJECTED_UNAPPROVED_DEADLINE",
+   "timeoutMs": 900000,
+   "observation": "completed and admitted in 59 s, but under an unapproved deadline, so no admission claim is made from it"
+  },
+  "correctedRun": {
+   "report": "checkpoints/parser-candidate-gate-qp57a-4-600s.json",
+   "receipt": "checkpoints/parser-quantity-binder-qp57a-4-600s.receipt.json",
+   "guardianReport": "report-1792904770490-43ba711ac10f1bc6.json"
+  },
+  "artifact": "unchanged 0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b; not rebuilt",
+  "historicalReports": "source, prepare, build-native and public reports remain valid historical evidence; only the admission claim moves to the 600 s run"
+ }
 }

@@ -1,0 +1,493 @@
+{
+ "schemaVersion": 1,
+ "status": "PARSER_GATE_ACCEPTED_UNDER_AUTHORIZED_600S",
+ "runId": "qp57a-4",
+ "date": "2026-10-25",
+ "purpose": "corrected-configuration verification of the 75-case candidate gate: same artifact, same parser source, same 45-pin/realpath/input chain, authorized 600 s deadline instead of the unapproved 900 s used by the first gate invocation",
+ "artifactUnchanged": {
+  "path": "checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+  "sha256": "0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b",
+  "bytes": 2834193,
+  "rebuilt": false
+ },
+ "correctedGate": {
+  "invokedCommand": "bun evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 --timeout-ms 600000 -- bun evals/bootstrap_parser_fast.ts --parser=checkpoints/.bootstrap_parser_rebuild_qp57a-4_generated_fuel.bend --entry=parse_with_fuel --component=checkpoints/bootstrap-parser-rebuild-qp57a-4.js --component-build=checkpoints/bootstrap-parser-rebuild-qp57a-4.native-build.result.json --public-report=checkpoints/parser-public-candidate-qp57a-4.json --report=checkpoints/parser-candidate-gate-qp57a-4-600s.json",
+  "guardedCommand": [
+   "bun",
+   "evals/bootstrap_parser_fast.ts",
+   "--parser=checkpoints/.bootstrap_parser_rebuild_qp57a-4_generated_fuel.bend",
+   "--entry=parse_with_fuel",
+   "--component=checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+   "--component-build=checkpoints/bootstrap-parser-rebuild-qp57a-4.native-build.result.json",
+   "--public-report=checkpoints/parser-public-candidate-qp57a-4.json",
+   "--report=checkpoints/parser-candidate-gate-qp57a-4-600s.json"
+  ],
+  "guardianReport": "report-1792904770490-43ba711ac10f1bc6.json",
+  "guardian": {
+   "status": "PASS",
+   "reason": "command_exit",
+   "commandExitCode": 0,
+   "supervisorExitCode": 0,
+   "elapsedMs": 56874,
+   "peakRssBytes": 1558085632,
+   "peakFootprintBytes": 1175058184,
+   "timeoutMs": 600000,
+   "memoryLimitBytes": 8589934592,
+   "rssLimitBytes": 8589934592,
+   "pollMs": 10,
+   "reportPhase": "complete",
+   "ownedTreeStopped": true
+  },
+  "report": "checkpoints/parser-candidate-gate-qp57a-4-600s.json",
+  "evaluationMode": "native-artifact",
+  "completed": true,
+  "admitted": true,
+  "partial": false,
+  "sourceSpecificExceptions": 0,
+  "checksExcluded": 0,
+  "outputPatches": 0,
+  "knownEvaluatorLimitedModules": [],
+  "parserSha256": "1f87959ff0030b21d5d5add2b3c9f30a5868875bf115e9358a0c68bfb56de4cd",
+  "canonicalSha256": "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37",
+  "guard": {
+   "memoryMiB": 8192,
+   "rssMiB": 8192,
+   "pollMs": 10
+  },
+  "counts": {
+   "focused": {
+    "total": 23,
+    "accepted": 22,
+    "acceptanceParity": 23,
+    "semanticParity": 23,
+    "literalSpanParity": 23
+   },
+   "whole29": {
+    "total": 29,
+    "accepted": 23,
+    "acceptanceParity": 29,
+    "semanticParity": 29,
+    "literalSpanParity": 29
+   },
+   "literals": {
+    "total": 13,
+    "accepted": 13,
+    "acceptanceParity": 13,
+    "semanticParity": 13,
+    "literalSpanParity": 13
+   },
+   "real": {
+    "total": 10,
+    "accepted": 10,
+    "acceptanceParity": 10,
+    "semanticParity": 10,
+    "literalSpanParity": 10
+   }
+  },
+  "publicRegressions": {
+   "parserSha256": "1f87959ff0030b21d5d5add2b3c9f30a5868875bf115e9358a0c68bfb56de4cd",
+   "passed": 15,
+   "failed": 0,
+   "assertions": 264,
+   "reportPath": "/private/tmp/bend-fir-root-aa9/checkpoints/parser-public-candidate-qp57a-4.json",
+   "reportSha256": "2bc30c965cb092d6cec031b4ae67ec700a66cf7113c1d90b44415e6a8d495d2a"
+  },
+  "nativeWorker": {
+   "path": "/private/tmp/bend-fir-root-aa9/evals/bootstrap_parser_native_semantic_worker.mjs",
+   "sha256": "039879d770042fd54fe57ef1a1f7ca65424e09025518f705e611ecb2d213a288",
+   "runtime": {
+    "name": "node",
+    "heapLimitMiB": 3072,
+    "stackSizeMiB": 256,
+    "manualGC": false
+   },
+   "fuelCells": 2000000,
+   "transport": "bend-native-ast-v1",
+   "isolation": "Fresh Bun/Node processes for every semantic case; no overlapping heavy children"
+  }
+ },
+ "rejectedRun": {
+  "report": "checkpoints/parser-candidate-gate-qp57a-4.json",
+  "verdict": "REJECTED_UNAPPROVED_DEADLINE",
+  "reason": "the same gate was invoked with --timeout-ms 900000 while the authorized hard deadline is 600000; it completed and self-admitted in 59 s, but that configuration is not the agreed one, so it contributes no admission claim",
+  "commandKeptVerbatim": [
+   "bun",
+   "evals/bootstrap_parser_fast.ts",
+   "--parser=checkpoints/.bootstrap_parser_rebuild_qp57a-4_generated_fuel.bend",
+   "--entry=parse_with_fuel",
+   "--component=checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+   "--component-build=checkpoints/bootstrap-parser-rebuild-qp57a-4.native-build.result.json",
+   "--public-report=checkpoints/parser-public-candidate-qp57a-4.json",
+   "--report=checkpoints/parser-candidate-gate-qp57a-4.json"
+  ],
+  "invokedCommandKeptVerbatim": "bun evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 --timeout-ms 900000 -- bun evals/bootstrap_parser_fast.ts --parser=checkpoints/.bootstrap_parser_rebuild_qp57a-4_generated_fuel.bend --entry=parse_with_fuel --component=checkpoints/bootstrap-parser-rebuild-qp57a-4.js --component-build=checkpoints/bootstrap-parser-rebuild-qp57a-4.native-build.result.json --public-report=checkpoints/parser-public-candidate-qp57a-4.json --report=checkpoints/parser-candidate-gate-qp57a-4.json",
+  "observedElapsedMs": 59392,
+  "observedAdmitted": true
+ },
+ "runtime": {
+  "release": "4ff8545f19b09b7d2b8ca2303668100eac8efd66",
+  "releaseKernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+  "compilerSha256": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70",
+  "bun": "1.4.2",
+  "node": "23.11.0",
+  "guardian": {
+   "memoryMiB": 8192,
+   "rssMiB": 8192,
+   "pollMs": 10,
+   "timeoutMs": 600000
+  },
+  "nativeWorker": {
+   "heapLimitMiB": 3072,
+   "stackSizeMiB": 256,
+   "manualGC": false
+  },
+  "fuelCells": 2000000,
+  "transport": "bend-native-ast-v1"
+ },
+ "historicalEvidenceUnchanged": {
+  "artifacts": {
+   "candidateSource": {
+    "path": "checkpoints/.bootstrap_parser_rebuild_qp57a-4_generated_fuel.bend",
+    "sha256": "1f87959ff0030b21d5d5add2b3c9f30a5868875bf115e9358a0c68bfb56de4cd",
+    "bytes": 651694
+   },
+   "preparedSource": {
+    "path": "checkpoints/.bootstrap_parser_rebuild_qp57a-4_source.bend",
+    "sha256": "56a1b8ece135e55d9e6eaf4be3ff8ae47744e70185dbe46711c6a3037d74d6a3",
+    "bytes": 366001
+   },
+   "artifact": {
+    "path": "checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+    "sha256": "0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b",
+    "bytes": 2834193
+   },
+   "acceptanceReport": "checkpoints/bootstrap-parser-rebuild-qp57a-4.result.json",
+   "acceptanceStatus": "PARSER_ACCEPTED_NATIVE_SEMANTICS"
+  },
+  "steps": {
+   "prepareSource": {
+    "guardianReport": "report-1792903618418-9e662b0f03c60f80.json",
+    "invokedCommand": "bun --smol evals/bootstrap_parser_rebuild.ts --prepare-source --run-id qp57a-4",
+    "guardedCommand": [
+     "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+     "--smol",
+     "/private/tmp/bend-fir-root-aa9/evals/bootstrap_parser_rebuild.ts",
+     "--worker-prepare-source",
+     "--run-id",
+     "qp57a-4",
+     "--canonical-sha256",
+     "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37"
+    ],
+    "label": "Final canonical bootstrap parser --prepare-source",
+    "status": "PASS",
+    "elapsedMs": 30952,
+    "peakRssBytes": 781074432,
+    "peakFootprintBytes": 538117320,
+    "timeoutMs": 600000,
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592,
+    "commandExitCode": 0
+   },
+   "publicSource": {
+    "guardianReport": "report-1792903656072-35f0473b8d02c3c4.json",
+    "invokedCommand": "bun evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 --timeout-ms 600000 -- bun evals/bootstrap_parser_public_gate.ts --parser=checkpoints/.bootstrap_parser_rebuild_qp57a-4_source.bend --entry=parse_module_tokens --report=checkpoints/parser-public-qp57a-4.json",
+    "guardedCommand": [
+     "bun",
+     "evals/bootstrap_parser_public_gate.ts",
+     "--parser=checkpoints/.bootstrap_parser_rebuild_qp57a-4_source.bend",
+     "--entry=parse_module_tokens",
+     "--report=checkpoints/parser-public-qp57a-4.json"
+    ],
+    "label": "heavy command",
+    "status": "PASS",
+    "elapsedMs": 4248,
+    "peakRssBytes": 312901632,
+    "peakFootprintBytes": 236750216,
+    "timeoutMs": 600000,
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592,
+    "commandExitCode": 0
+   },
+   "sourceGate": {
+    "guardianReport": "report-1792903660390-c8c5a2983c246a02.json",
+    "invokedCommand": "bun evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 --timeout-ms 600000 -- bun evals/bootstrap_parser_fast.ts --parser=checkpoints/.bootstrap_parser_rebuild_qp57a-4_source.bend --entry=parse_module_tokens --public-report=checkpoints/parser-public-qp57a-4.json --report=checkpoints/parser-source-gate-qp57a-4.json",
+    "guardedCommand": [
+     "bun",
+     "evals/bootstrap_parser_fast.ts",
+     "--parser=checkpoints/.bootstrap_parser_rebuild_qp57a-4_source.bend",
+     "--entry=parse_module_tokens",
+     "--public-report=checkpoints/parser-public-qp57a-4.json",
+     "--report=checkpoints/parser-source-gate-qp57a-4.json"
+    ],
+    "label": "heavy command",
+    "status": "PASS",
+    "elapsedMs": 13115,
+    "peakRssBytes": 719585280,
+    "peakFootprintBytes": 379476064,
+    "timeoutMs": 600000,
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592,
+    "commandExitCode": 0
+   },
+   "prepare": {
+    "guardianReport": "report-1792903673700-75dd5abe3c943b75.json",
+    "invokedCommand": "bun --smol evals/bootstrap_parser_rebuild.ts --prepare --run-id qp57a-4 --source-gate checkpoints/parser-source-gate-qp57a-4.json",
+    "guardedCommand": [
+     "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+     "--smol",
+     "/private/tmp/bend-fir-root-aa9/evals/bootstrap_parser_rebuild.ts",
+     "--worker-prepare",
+     "--run-id",
+     "qp57a-4",
+     "--canonical-sha256",
+     "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37",
+     "--source-gate",
+     "/private/tmp/bend-fir-root-aa9/checkpoints/parser-source-gate-qp57a-4.json"
+    ],
+    "label": "Final canonical bootstrap parser --prepare",
+    "status": "PASS",
+    "elapsedMs": 22099,
+    "peakRssBytes": 361955328,
+    "peakFootprintBytes": 255379016,
+    "timeoutMs": 600000,
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592,
+    "commandExitCode": 0
+   },
+   "buildNative": {
+    "guardianReport": "report-1792903695906-12739b9e0bc1e62b.json",
+    "invokedCommand": "bun --smol evals/bootstrap_parser_rebuild.ts --build-native --run-id qp57a-4",
+    "guardedCommand": [
+     "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+     "--smol",
+     "/private/tmp/bend-fir-root-aa9/evals/bootstrap_parser_rebuild.ts",
+     "--worker-build-native",
+     "--run-id",
+     "qp57a-4",
+     "--canonical-sha256",
+     "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37"
+    ],
+    "label": "Final canonical bootstrap parser --build-native",
+    "status": "PASS",
+    "elapsedMs": 1708,
+    "peakRssBytes": 209862656,
+    "peakFootprintBytes": 128860952,
+    "timeoutMs": 600000,
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592,
+    "commandExitCode": 0
+   },
+   "publicCandidate": {
+    "guardianReport": "report-1792903718935-b2d6d8cd730d0367.json",
+    "invokedCommand": "bun evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 --timeout-ms 600000 -- bun evals/bootstrap_parser_public_gate.ts --parser=checkpoints/.bootstrap_parser_rebuild_qp57a-4_generated_fuel.bend --entry=parse_with_fuel --report=checkpoints/parser-public-candidate-qp57a-4.json",
+    "guardedCommand": [
+     "bun",
+     "evals/bootstrap_parser_public_gate.ts",
+     "--parser=checkpoints/.bootstrap_parser_rebuild_qp57a-4_generated_fuel.bend",
+     "--entry=parse_with_fuel",
+     "--report=checkpoints/parser-public-candidate-qp57a-4.json"
+    ],
+    "label": "heavy command",
+    "status": "PASS",
+    "elapsedMs": 1697,
+    "peakRssBytes": 886259712,
+    "peakFootprintBytes": 798000928,
+    "timeoutMs": 600000,
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592,
+    "commandExitCode": 0
+   },
+   "build": {
+    "guardianReport": "report-1792903780173-aa5cd18ca650f174.json",
+    "invokedCommand": "bun --smol evals/bootstrap_parser_rebuild.ts --build --run-id qp57a-4 --candidate-gate checkpoints/parser-candidate-gate-qp57a-4.json",
+    "guardedCommand": [
+     "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+     "--smol",
+     "/private/tmp/bend-fir-root-aa9/evals/bootstrap_parser_rebuild.ts",
+     "--worker-build",
+     "--run-id",
+     "qp57a-4",
+     "--canonical-sha256",
+     "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37",
+     "--candidate-gate",
+     "/private/tmp/bend-fir-root-aa9/checkpoints/parser-candidate-gate-qp57a-4.json"
+    ],
+    "label": "Final canonical bootstrap parser --build",
+    "status": "PASS",
+    "elapsedMs": 1362,
+    "peakRssBytes": 301858816,
+    "peakFootprintBytes": 202261368,
+    "timeoutMs": 600000,
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592,
+    "commandExitCode": 0
+   }
+  },
+  "nativeJsBuild": {
+   "guardian": {
+    "command": [
+     "node",
+     "--experimental-strip-types",
+     "--max-old-space-size=3072",
+     "/private/tmp/bend-fir-root-aa9/evals/checker_core_component_build.ts",
+     "--worker",
+     "--file=/private/tmp/bend-fir-root-aa9/checkpoints/.bootstrap_parser_rebuild_qp57a-4_generated_fuel.bend",
+     "--exports=parse_with_fuel",
+     "--artifact=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+     "--report=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.native-build",
+     "--inputs-sha256=66c0535d6ea4cc43c51fea8847e59cdba4f2bc79be0353a583260759ee7c9b6a"
+    ],
+    "status": "PASS",
+    "elapsedMs": 6670,
+    "peakRssBytes": 1710358528,
+    "peakFootprintBytes": 1768581728,
+    "timeoutMs": 600000,
+    "guard": {
+     "memoryMiB": 8192,
+     "rssMiB": 8192,
+     "pollMs": 10
+    }
+   },
+   "metrics": {
+    "validationStatus": "FULL_VALIDATION_PASS",
+    "eventsChecked": 1840,
+    "totalEvents": 1840,
+    "totalElapsedMs": 6313.8442079999995,
+    "cpuMs": 9430.812,
+    "validationElapsedMs": 1160.4147499999997,
+    "runtime": {
+     "name": "node",
+     "node": "23.11.0",
+     "v8": "12.9.202.28-node.14",
+     "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+     "heapLimitMiB": 3072,
+     "stackSizeMb": 256,
+     "heapSizeLimitBytes": 3271557120,
+     "manualGC": false
+    }
+   },
+   "worker": {
+    "status": "JS_GENERATED_NOT_YET_EXECUTED",
+    "checkedDefinitions": 1630,
+    "liveBodies": 1630,
+    "checksExcluded": 0,
+    "outputPatches": 0,
+    "eventsFullyValidated": 1840,
+    "toolchain": "CANONICAL NATIVE LOAD/CHECK; CANONICAL JS PREPARE/EMIT/RELEASE; Node/V8 automatic GC"
+   }
+  }
+ },
+ "permanentGateCoverage": {
+  "gates/selfhost.ts": [
+   "tests/run/list_rebox_sum.bend",
+   "tests/run/c_backend_link.bend",
+   "tests/run/family_field_hot.bend"
+  ],
+  "ownerCommit": "efccc8da",
+  "note": "family_field_hot added by FIRAcceptance after my coverage finding; gated run with qp57a-4 and root-final4 under the 600 s deadline passed js and native lanes, direct candidate JS prints 5"
+ },
+ "consumerRegressions": {
+  "commands": [
+   "bun evals/candidate_host.ts --candidate=checkpoints/root-final4-art.js --parser=checkpoints/bootstrap-parser-rebuild-qp57a-4.js tests/run/list_rebox_sum.bend -o /tmp/list_rebox_sum_q4.js",
+   "bun /tmp/list_rebox_sum_q4.js",
+   "bun evals/candidate_host.ts --candidate=checkpoints/root-final4-art.js --parser=checkpoints/bootstrap-parser-rebuild-qp57a-4.js tests/run/c_backend_link.bend -o /tmp/c_backend_link_q4.js",
+   "bun /tmp/c_backend_link_q4.js",
+   "bun evals/candidate_host.ts --candidate=checkpoints/root-final4-art.js --parser=checkpoints/bootstrap-parser-rebuild-qp57a-4.js tests/run/family_field_hot.bend -o /tmp/family_field_hot_q4.js",
+   "bun /tmp/family_field_hot_q4.js"
+  ],
+  "fixtures": [
+   {
+    "path": "tests/run/list_rebox_sum.bend",
+    "stdout": [
+     "7",
+     "3",
+     "bounded"
+    ],
+    "expected": [
+     "7",
+     "3",
+     "bounded"
+    ],
+    "pass": true,
+    "emitSha256": "79c9c46ae9424f2499d9382bb0394f0e81f7192e3823001f73cdf8deaac4f050",
+    "emitBytes": 296340
+   },
+   {
+    "path": "tests/run/c_backend_link.bend",
+    "stdout": [
+     "linked-comment-kept",
+     "literal-kept",
+     "fid-linked",
+     "splice-kept",
+     "splice-kept",
+     "missing"
+    ],
+    "expected": [
+     "linked-comment-kept",
+     "literal-kept",
+     "fid-linked",
+     "splice-kept",
+     "splice-kept",
+     "missing"
+    ],
+    "pass": true,
+    "emitSha256": "9678b9b9d735e55e868e36fd535979c242bf54c5cd71bc0469f23aeb88247648",
+    "emitBytes": 405297
+   },
+   {
+    "path": "tests/run/family_field_hot.bend",
+    "stdout": [
+     "5"
+    ],
+    "expected": [
+     "5"
+    ],
+    "pass": true,
+    "emitSha256": "a903fbf3b9e23f7573f4734b547e8e0c77bb7e9523e73251f9575bd00f2148e2",
+    "emitBytes": 292273
+   }
+  ],
+  "forms": {
+   "do_plus_typed_assign": "accepted",
+   "do_plus_typed_bind": "accepted with re-usable binder quantity",
+   "body_plus_typed": "accepted",
+   "body_plain_typed": "accepted",
+   "do_plain_typed": "accepted",
+   "plus_untyped_and_parallel_typed": "still rejected, matching the stage0 compiler",
+   "body_plus_untyped": "still accepted as before; pre-existing over-accept, unchanged by this fix"
+  },
+  "permanentGateCoverage": {
+   "gates/selfhost.ts": [
+    "tests/run/list_rebox_sum.bend",
+    "tests/run/c_backend_link.bend"
+   ],
+   "notCovered": [
+    "tests/run/family_field_hot.bend"
+   ],
+   "note": "family_field_hot appears in no gate, test or eval list; the other two are permanent selfhost-gate fixtures"
+  }
+ },
+ "rejectedVersions": [
+  {
+   "runId": "qp57a-1",
+   "reason": "prepare-source aborted after a partial record; superseded"
+  },
+  {
+   "runId": "qp57a-2",
+   "reason": "generator invariant Body next-token priority drift (a fifth row in the body name-group match); fixed by routing the default row through decl_body_name_group"
+  },
+  {
+   "runId": "qp57a-3",
+   "reason": "plus typed <- binder dropped the quantity; family_field_hot failed checking with invalid use quantity for s; superseded by qp57a-4"
+  }
+ ],
+ "notClaimed": [
+  "parser stage1/stage2 byte fixed point \u2014 not run for this parser",
+  "root-final5",
+  "full root byte fixed point",
+  "frozen v41 corpus run",
+  "C matrix",
+  "bootstrap green",
+  "any admission from the 900 s gate invocation"
+ ]
+}
