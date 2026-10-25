@@ -305,7 +305,7 @@ def jobs_arm(+pw: World, +pcid: U32, +ptag_index: Nat, +ppacked: Bool, +pnode_wo
 
 def arm_jobs(+pw: World, +pfound: Maybe<&2, U32>, +parm: CLay.FormArm, +pt: String, +pdst: Dst, +ptag: String, +ptagged: Bool, +pfb: String, +pmode: Nat) -> List<&2, Job>:
   match pfound:
-    case None{}: [JText{"default: (void)bend_fail(e, \"the constructor tag is not a declared constructor\"); break;"}]
+    case None{}: [JText{"default: (void)err_fail(\"the constructor tag is not a declared constructor\"); break;"}]
     case Some{cid}:
       match parm:
         case CLay.FormArm{key, tag, packed, node_words, fields}:
@@ -359,7 +359,7 @@ def form_fields(+parm: CLay.FormArm) -> List<&2, CLay.Nest>:
 
 def forms_arm_case(+pw: World, +pfound: Maybe<&2, CLay.FormArm>, +parm: CLay.FormArm, +psrc: Src, +pdst: Dst, +ptag: String, +pindex: Nat) -> List<&2, Job>:
   match pfound:
-    case None{}: [JText{join_text(["case ", Nat.show(pindex), ": { (void)bend_fail(e, \"the inline conversion target has no arm\"); } break;"])}]
+    case None{}: [JText{join_text(["case ", Nat.show(pindex), ": { (void)err_fail(\"the inline conversion target has no arm\"); } break;"])}]
     case Some{target}:
       match parm:
         case CLay.FormArm{key, tag, packed, node_words, fields}:
@@ -411,7 +411,7 @@ def arm_block_jobs(+pw: World, +pcid: U32, +parm: CLay.FormArm, +psrc: Src, +pou
 
 def box_arm_jobs(+pw: World, +pfound: Maybe<&2, U32>, +parm: CLay.FormArm, +psrc: Src, +pout: String, +ptag: String, +pindex: Nat) -> List<&2, Job>:
   match pfound:
-    case None{}: [JText{"default: (void)bend_fail(e, \"the constructor tag is not a declared constructor\"); break;"}]
+    case None{}: [JText{"default: (void)err_fail(\"the constructor tag is not a declared constructor\"); break;"}]
     case Some{cid}: List.append(&2, Job, [JText{join_text(["case ", Nat.show(pindex), ": {"])}], List.append(&2, Job, arm_block_jobs(pw, cid, parm, psrc, pout, ptag, pindex), [JText{"} break;"}]))
 
 def box_cases(+pw: World, +parms: List<&2, CLay.FormArm>, +psrc: Src, +pout: String, +ptag: String, +ptagged: Bool, +pindex: Nat) -> List<&2, Job>:
@@ -431,7 +431,7 @@ def box_untagged(+pw: World, +parms: List<&2, CLay.FormArm>, +psrc: Src, +pout: 
       match arm:
         case CLay.FormArm{key, tag, packed, node_words, fields}:
           match cid_of(key, pw):
-            case None{}: [JText{"(void)bend_fail(e, \"the constructor tag is not a declared constructor\");"}]
+            case None{}: [JText{"(void)err_fail(\"the constructor tag is not a declared constructor\");"}]
             case Some{cid}: arm_block_jobs(pw, cid, arm, psrc, pout, ptag, 0n)
     case _: Nil{}
 
@@ -1103,7 +1103,7 @@ def keep_copy(+pbase: String, +punique: String, +pstatic: String, +pslot: Nat, +
       join_text([pindent, "pbbuf[", Nat.show(Nat.sub(pabs, pslot)), "] = e.mem[", pbase, " + ", Nat.show(pabs), "];\n"])
     case CLay.LayoutBox{reason}:
       at = join_text(["e.mem[", pbase, " + ", Nat.show(pabs), "]"])
-      join_text([pindent, "{ Term pbb = term_keep(e, ", at, ", 1); if (pbb != ", at, ") { if (", pstatic, ") { (void)bend_fail(e, \"a static image would need a keep wrapper\"); } else if (!", punique, ") { (void)bend_fail(e, \"a shared owner has an unsealed cell child\"); } else { ", at, " = pbb; } } pbbuf[", Nat.show(Nat.sub(pabs, pslot)), "] = (u64)pbb; }\n"])
+      join_text([pindent, "{ Term pbb = term_keep(e, ", at, ", 1); if (pbb != ", at, ") { if (", pstatic, ") { (void)err_fail(\"a static image would need a keep wrapper\"); } else if (!", punique, ") { (void)err_fail(\"a shared owner has an unsealed cell child\"); } else { ", at, " = pbb; } } pbbuf[", Nat.show(Nat.sub(pabs, pslot)), "] = (u64)pbb; }\n"])
     case CLay.LayoutData{words, arms}:
       match arms:
         case Nil{}: ""
@@ -1121,7 +1121,7 @@ def keep_copy_fields(+pbase: String, +punique: String, +pstatic: String, +pslot:
 
 def keep_copy_cases(+pbase: String, +punique: String, +pstatic: String, +pslot: Nat, +pabs: Nat, +parms: List<&2, CLay.LayArm>, +pindent: String, +pindex: Nat) -> String:
   match parms:
-    case Nil{}: join_text([pindent, "default: (void)bend_fail(e, \"the constructor tag is not a declared constructor\"); break;\n"])
+    case Nil{}: join_text([pindent, "default: (void)err_fail(\"the constructor tag is not a declared constructor\"); break;\n"])
     case +arm <> rest:
       match arm:
         case CLay.LayArm{key, fields}:
@@ -1148,7 +1148,7 @@ def move_copy_fields(+pbase: String, +pslot: Nat, +pabs: Nat, +fields: List<&2, 
 
 def move_copy_cases(+pbase: String, +pslot: Nat, +pabs: Nat, +parms: List<&2, CLay.LayArm>, +pindent: String, +pindex: Nat) -> String:
   match parms:
-    case Nil{}: join_text([pindent, "default: (void)bend_fail(e, \"the constructor tag is not a declared constructor\"); break;\n"])
+    case Nil{}: join_text([pindent, "default: (void)err_fail(\"the constructor tag is not a declared constructor\"); break;\n"])
     case +arm <> rest:
       match arm:
         case CLay.LayArm{key, fields}:
@@ -1204,7 +1204,7 @@ def read_body(+pw: World, +pstate: PathState) -> Part:
                 case Nil{}: packed_form_body(pw, layout, "0")
                 case +word <> rest: packed_form_body(pw, layout, raw_word_expr(base, offset, word))
     case StArray{loc, cls, lgs, cell, arr, off, buf, uniq, stat}:
-      PartOk{join_text(["if (", arr, ") { pbr = term_blk(true, (u32)(", cls, "), (u64)((u64)(", loc, ") + (u64)(", off, "))); } else { u64 pboff = (u64)(", off, "); if ((pboff & 1ull) != 0ull) { (void)bend_fail(e, \"a mid-block BUF cell has no Term view; a consumer must read it through blk_read\"); } pbr = term_blk(false, (u32)(", cls, "), (u64)((u64)(", loc, ") + (pboff >> 1))); }\n"])}
+      PartOk{join_text(["if (", arr, ") { pbr = term_blk(true, (u32)(", cls, "), (u64)((u64)(", loc, ") + (u64)(", off, "))); } else { u64 pboff = (u64)(", off, "); if ((pboff & 1ull) != 0ull) { (void)err_fail(\"a mid-block BUF cell has no Term view; a consumer must read it through blk_read\"); } pbr = term_blk(false, (u32)(", cls, "), (u64)((u64)(", loc, ") + (pboff >> 1))); }\n"])}
     case StCell{loc, arr, index, cls, layout, lgs, buf, uniq, stat}:
       match layout:
         case CLay.LayoutWord{word}:
@@ -1235,7 +1235,7 @@ def tag_single(+pw: World, +pkey: String, +pexpected: Maybe<&2, U32>, +ptarget: 
 
 def tag_multi(+pw: World, +pbase: String, +poffset: Nat, +parms: List<&2, CLay.LayArm>, +pexpected: Maybe<&2, U32>, +pindex: Nat, +pacc: String, +ptarget: String) -> Part:
   match parms:
-    case Nil{}: PartOk{join_text(["switch ((u32)e.mem[", pbase, " + ", Nat.show(poffset), "]) {\n", pacc, "default: (void)bend_fail(e, \"the constructor tag is not a declared constructor\"); break;\n}\n"])}
+    case Nil{}: PartOk{join_text(["switch ((u32)e.mem[", pbase, " + ", Nat.show(poffset), "]) {\n", pacc, "default: (void)err_fail(\"the constructor tag is not a declared constructor\"); break;\n}\n"])}
     case +arm <> rest:
       match arm:
         case CLay.LayArm{key, fields}:
@@ -1254,7 +1254,7 @@ def tag_multi_packed(+pw: World, +parms: List<&2, CLay.LayArm>, +pexpected: Mayb
 
 def tag_multi_packed_go(+pw: World, +parms: List<&2, CLay.LayArm>, +pexpected: Maybe<&2, U32>, +pindex: Nat, +pacc: String, +ptarget: String) -> Part:
   match parms:
-    case Nil{}: PartOk{join_text(["switch ((u32)pbn) {\n", pacc, "default: (void)bend_fail(e, \"the constructor tag is not a declared constructor\"); break;\n}\n"])}
+    case Nil{}: PartOk{join_text(["switch ((u32)pbn) {\n", pacc, "default: (void)err_fail(\"the constructor tag is not a declared constructor\"); break;\n}\n"])}
     case +arm <> rest:
       match arm:
         case CLay.LayArm{key, fields}:
@@ -1267,7 +1267,7 @@ def tag_multi_buf(+pw: World, +ploc: String, +pindex: String, +parms: List<&2, C
 
 def tag_multi_buf_go(+pw: World, +ploc: String, +pindex: String, +parms: List<&2, CLay.LayArm>, +pexpected: Maybe<&2, U32>, +pindexn: Nat, +pacc: String, +ptarget: String) -> Part:
   match parms:
-    case Nil{}: PartOk{join_text(["switch ((u32)blk_read(e.mem, false, ", ploc, ", (u32)(", pindex, "))) {\n", pacc, "default: (void)bend_fail(e, \"the constructor tag is not a declared constructor\"); break;\n}\n"])}
+    case Nil{}: PartOk{join_text(["switch ((u32)blk_read(e.mem, false, ", ploc, ", (u32)(", pindex, "))) {\n", pacc, "default: (void)err_fail(\"the constructor tag is not a declared constructor\"); break;\n}\n"])}
     case +arm <> rest:
       match arm:
         case CLay.LayArm{key, fields}:
@@ -1369,7 +1369,7 @@ def packed_data_copy(+pw: World, +playout: CLay.Layout) -> Part:
 
 def box_copy_body(+pbase: String, +poffset: Nat, +puniq: String, +pstat: String) -> Part:
   at = join_text(["e.mem[", pbase, " + ", Nat.show(poffset), "]"])
-  PartOk{join_text(["{ Term pbb = term_keep(e, ", at, ", 1); if (pbb != ", at, ") { if (", pstat, ") { (void)bend_fail(e, \"a static image would need a keep wrapper\"); } else if (!", puniq, ") { (void)bend_fail(e, \"a shared owner has an unsealed field\"); } else { ", at, " = pbb; } } pbr = pbb; }\n"])}
+  PartOk{join_text(["{ Term pbb = term_keep(e, ", at, ", 1); if (pbb != ", at, ") { if (", pstat, ") { (void)err_fail(\"a static image would need a keep wrapper\"); } else if (!", puniq, ") { (void)err_fail(\"a shared owner has an unsealed field\"); } else { ", at, " = pbb; } } pbr = pbb; }\n"])}
 
 def data_copy_body(+pw: World, +playout: CLay.Layout, +pbase: String, +poffset: Nat, +puniq: String, +pstat: String) -> Part:
   count = CLay.layout_words(playout)
@@ -1467,7 +1467,7 @@ def copy_cell_body(+pw: World, +pstate: PathState) -> Part:
         case CLay.LayoutBox{reason}:
           match buf:
             case True{}: PartFail{"a BUF array cell cannot contain a boxed field"}
-            case False{}: PartOk{join_text(["{ Term pv = blk_read(e.mem, ", arr, ", ", loc, ", (u32)(", index, ")); Term pk = term_keep(e, pv, 1); if (pk != pv) { if (", stat, ") { (void)bend_fail(e, \"a static image would need a keep wrapper\"); } else if (!", uniq, ") { (void)bend_fail(e, \"a shared owner has an unsealed cell child\"); } else { blk_write(e.mem, ", arr, ", ", loc, ", (u32)(", index, "), pk); } } pbr = pk; }\n"])}
+            case False{}: PartOk{join_text(["{ Term pv = blk_read(e.mem, ", arr, ", ", loc, ", (u32)(", index, ")); Term pk = term_keep(e, pv, 1); if (pk != pv) { if (", stat, ") { (void)err_fail(\"a static image would need a keep wrapper\"); } else if (!", uniq, ") { (void)err_fail(\"a shared owner has an unsealed cell child\"); } else { blk_write(e.mem, ", arr, ", ", loc, ", (u32)(", index, "), pk); } } pbr = pk; }\n"])}
         case CLay.LayoutData{words, arms}: cell_data_body(pw, layout, loc, arr, index, lgs, uniq, stat, False{})
     case _: PartFail{"not a cell"}
 
