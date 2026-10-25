@@ -1,8 +1,9 @@
 # REPRO_NATIVE_PASS1 — c-pass-1 cost witness (diagnostic only)
 
-Status: **DIAGNOSTIC_ONLY**. Not acceptance evidence, not a C candidate result, not
-benchmark data. The frozen 03d0 diagnostic workload (driver `dd1b86b4`, pinned old
-generated units) was **not** rerun. Production compiler code was not changed.
+Status: **DIAGNOSTIC_ONLY**. Not acceptance evidence, not a C candidate result,
+not benchmark data. The literal-family measurements below remain unchanged.
+A later raw-detail observation of the same frozen03d0 workload is recorded at
+the end; it changes only observer detail, not production compiler/source bytes.
 
 Committed inputs: `evals/repro_native_pass1.ts` (driver, sha256
 `ef42fa50f44558d8f00c8a8b5835504222c2c0a18b4a3c5c6328a0db116c5ac7`).
@@ -245,3 +246,32 @@ shrink the frozen acceptance corpus, exports or matrix.
   checkpoint was user 21433.1 ms + system 973.2 ms (process-wide, includes the
   worker), but that is a different run and book.
 - Everything here is one machine, one Node/V8 build, one pass implementation.
+
+## Later raw-detail attribution of the preserved03d0 workload
+
+`evals/receipts/native03d0_fine_files_oom.json` records a new diagnostic with
+the same frozen driver `dd1b86b4`, generated transport and step machines.
+The existing observer's raw mode streams 397,986 events rather than suppressing
+per-definition rows; its serialization/I/O overhead is included. This is not an
+unchanged retry for acceptance or a timing comparison with the earlier run.
+
+Unchanged Node23.11 / 3,072 MiB worker old generation / 256 MiB stack and
+8 GiB footprint/RSS / 10 ms / 600 s guard: worker OOM, complete/stopped,
+80,132 ms, max sampled RSS 3,489,955,840 B / footprint 3,619,656,368 B.
+Load, full validation and reachability complete. After 9,551 completed
+`c-definition` spans, the final open scope is:
+
+`compile_book → c-pass-1 → native_stage_profile_generated_fixture:files`.
+
+Its `prepare` completed. The final observed boundary has heapUsed
+2,482,589,240 B, 43,351 segments, 5,298 spins, 21,238 own / 683 hot / 58 static
+facts. These are boundary/count observations, not a continuous isolate-heap
+peak or retained/live owner sizes. The raw 238,143,216 B event file stays
+outside Git with its hash in the compact receipt.
+
+This localizes **this diagnostic's open definition**, not the cause or owner of
+all preceding memory. It does not establish that `files()` fails in isolation,
+that the list is minimal, that `program()`/`runtime()` are harmless, or that a
+different historical full-native-root OOM has the same cause. Isolating the
+actual56-entry literal is now a source-backed experiment rather than scaling
+the unrelated `List<Nat>` proxy.
