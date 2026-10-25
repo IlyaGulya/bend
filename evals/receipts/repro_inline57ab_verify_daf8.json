@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 1,
+  "kind": "C_INLINE_VALUE_REPRO",
+  "scope": "DIAGNOSTIC_WITNESS_ONLY: three reduced inline-value sources; not the 13-export/24-case acceptance matrix and not a Root GO",
+  "status": "PASS",
+  "worktree": "/private/tmp/bend-repro-inline57ab",
+  "logs": "checkpoints/verify-daf8-v1",
+  "host": {
+    "path": "/private/tmp/bend-verify-836/evals/candidate_host.ts",
+    "sha256": "2596997a2a578cb371e11e8cb0858e4ebd9f53b1679d2814f3068a0db29613e4"
+  },
+  "component": {
+    "path": "/private/tmp/bend-verify-836/checkpoints/verify-836-art.js",
+    "sha256": "971e0986800a7d331cf5f528bb71dfb4400e4b9177b90224ce33054da48e0422",
+    "bytes": 17918636
+  },
+  "parser": {
+    "path": "/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+    "sha256": "0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b"
+  },
+  "tag": "../bend2/selfhost/backend_ir.SourceFile",
+  "node": {
+    "path": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+    "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5",
+    "version": "v23.11.0",
+    "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))"
+  },
+  "base": {
+    "path": "/private/tmp/bend-repro-inline57ab/bend2/base.bend",
+    "sha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c"
+  },
+  "runtimeC": {
+    "path": "/private/tmp/bend-repro-inline57ab/bend2/selfhost/c_runtime.c",
+    "sha256": "478c1ba7d0d0626c1927d11c4af3b3d4cef520db41afd8722ebf55d5050769c3"
+  },
+  "guardian": {
+    "ts": "/private/tmp/bend-repro-inline57ab/evals/heavy_gate.ts",
+    "tsSha256": "204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2",
+    "nativeC": "/private/tmp/bend-repro-inline57ab/evals/heavy_gate_native.c",
+    "nativeCSha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b"
+  },
+  "caps": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000,
+    "hostHeapMiB": 3072
+  },
+  "emitOnly": false,
+  "fixtures": [
+    {
+      "fixture": "/private/tmp/bend-repro-inline57ab/evals/repro_inline57ab_iso_do_chain.bend",
+      "sourceSha256": "83b82b3793d65cf066c8238e2469a7b2acaa3af88c59320efc0713b5a3ff7b41",
+      "expected": "a\nb",
+      "status": "PASS",
+      "observed": "a\nb",
+      "artifacts": {
+        "repro_inline57ab_iso_do_chain.c": {
+          "path": "checkpoints/verify-daf8-v1/repro_inline57ab_iso_do_chain.c",
+          "bytes": 1122032,
+          "sha256": "7b167797d5344f0303024e0f7e8359718bd127e03030346e40660a2c8351ac8c"
+        },
+        "repro_inline57ab_iso_do_chain": {
+          "path": "checkpoints/verify-daf8-v1/repro_inline57ab_iso_do_chain",
+          "bytes": 954256,
+          "sha256": "05fe3684119402d3d3ab23132d1534c0dd990d3624df0ed08cc797744f49d76c"
+        }
+      }
+    }
+  ],
+  "stages": {
+    "repro_inline57ab_iso_do_chain": {
+      "emit": {
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--experimental-strip-types",
+          "--max-old-space-size=3072",
+          "/private/tmp/bend-verify-836/evals/candidate_host.ts",
+          "--candidate=/private/tmp/bend-verify-836/checkpoints/verify-836-art.js",
+          "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+          "--parser=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+          "/private/tmp/bend-repro-inline57ab/evals/repro_inline57ab_iso_do_chain.bend",
+          "-o",
+          "checkpoints/verify-daf8-v1/repro_inline57ab_iso_do_chain.c",
+          "--base=/private/tmp/bend-repro-inline57ab/bend2/base.bend",
+          "--runtime-c=/private/tmp/bend-repro-inline57ab/bend2/selfhost/c_runtime.c"
+        ],
+        "status": "PASS",
+        "reason": "command_exit",
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "effectiveExitCode": 0,
+        "elapsedMs": 19593,
+        "peakRssBytes": 1748746240,
+        "peakFootprintBytes": 1876168480,
+        "stdoutPath": "checkpoints/verify-daf8-v1/repro_inline57ab_iso_do_chain.emit.stdout",
+        "stdoutSha256": "de7e0c3de158ab58bb1a8c1642a31558136dddea731f3b5754cc6988109591dc",
+        "stdoutBytes": 332,
+        "stderrPath": "checkpoints/verify-daf8-v1/repro_inline57ab_iso_do_chain.emit.stderr",
+        "stderrSha256": "d647ca14d8cc7d3c13876f050f5eae0ddac722f91ce5cfdf14d055b2289abd26",
+        "stderrBytes": 177,
+        "gatePath": "checkpoints/verify-daf8-v1/repro_inline57ab_iso_do_chain.emit.gate.report.json"
+      },
+      "clang": {
+        "command": [
+          "clang",
+          "-std=c11",
+          "-O0",
+          "-ferror-limit=0",
+          "-pthread",
+          "-lm",
+          "-o",
+          "checkpoints/verify-daf8-v1/repro_inline57ab_iso_do_chain",
+          "checkpoints/verify-daf8-v1/repro_inline57ab_iso_do_chain.c"
+        ],
+        "status": "PASS",
+        "reason": "command_exit",
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "effectiveExitCode": 0,
+        "elapsedMs": 1429,
+        "peakRssBytes": 134578176,
+        "peakFootprintBytes": 90063544,
+        "stdoutPath": "checkpoints/verify-daf8-v1/repro_inline57ab_iso_do_chain.clang.stdout",
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 0,
+        "stderrPath": "checkpoints/verify-daf8-v1/repro_inline57ab_iso_do_chain.clang.stderr",
+        "stderrSha256": "a3cc96ff1244fd082ef7aafb26a53b0549b37cc3bebb99724d19f400b57d4697",
+        "stderrBytes": 7841,
+        "gatePath": "checkpoints/verify-daf8-v1/repro_inline57ab_iso_do_chain.clang.gate.report.json"
+      },
+      "run": {
+        "command": [
+          "checkpoints/verify-daf8-v1/repro_inline57ab_iso_do_chain"
+        ],
+        "status": "PASS",
+        "reason": "command_exit",
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "effectiveExitCode": 0,
+        "elapsedMs": 15,
+        "peakRssBytes": 671744,
+        "peakFootprintBytes": 475400,
+        "stdoutPath": "checkpoints/verify-daf8-v1/repro_inline57ab_iso_do_chain.run.stdout",
+        "stdoutSha256": "911169ddaaf146aff539f58c26c489af3b892dff0fe283c1c264c65ae5aa59a2",
+        "stdoutBytes": 4,
+        "stderrPath": "checkpoints/verify-daf8-v1/repro_inline57ab_iso_do_chain.run.stderr",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderrBytes": 0,
+        "gatePath": "checkpoints/verify-daf8-v1/repro_inline57ab_iso_do_chain.run.gate.report.json"
+      }
+    }
+  },
+  "committedSources": [
+    {
+      "path": "/private/tmp/bend-repro-inline57ab/evals/repro_inline57ab_iso_do_chain.bend",
+      "sha256": "83b82b3793d65cf066c8238e2469a7b2acaa3af88c59320efc0713b5a3ff7b41"
+    }
+  ]
+}

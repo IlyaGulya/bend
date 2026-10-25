@@ -1,0 +1,234 @@
+{
+  "schemaVersion": 1,
+  "kind": "REPRO_INLINE_RAW_FREEZE",
+  "note": "Frozen raw stage files for the 9941352b boundary runs, the 994 ladder and the 65b01fd4 diagnostic run. Never overwritten; new runs use fresh directories. Not acceptance.",
+  "worktree": "/private/tmp/bend-repro-inline57ab",
+  "directories": [
+    "checkpoints/repro-inline-values57ab-v1",
+    "checkpoints/repro-inline-values57ab-v2",
+    "checkpoints/repro-inline-values57ab-v3",
+    "checkpoints/repro-inline-values57ab-diag-v1"
+  ],
+  "files": [
+    {
+      "path": "checkpoints/repro-inline-values57ab-v1/repro.receipt.json",
+      "bytes": 9454,
+      "sha256": "7018a2dccc22d345f02a3337607c4e013ec61625dc334878cad0d63ae7c49ede"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v1/repro_inline57ab_bool_fill_tags.emit.gate.json",
+      "bytes": 2563,
+      "sha256": "9ac25f9d6344c3af46ec6231aa2fe6643dc0ad028a51dab6460f4e3409b197da"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v1/repro_inline57ab_bool_fill_tags.emit.gate.report.json",
+      "bytes": 1436,
+      "sha256": "c12e42320cf29044cd622e78fc0cd104fc226402c15667b0612b46399e988d2e"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v1/repro_inline57ab_bool_fill_tags.emit.stderr",
+      "bytes": 233,
+      "sha256": "46fc911049497933e127f82b7e6cce4a78b404c7a80c9ba22917ef456f513e69"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v1/repro_inline57ab_bool_fill_tags.emit.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v1/repro_inline57ab_bool_projection.emit.gate.json",
+      "bytes": 2572,
+      "sha256": "7bcc7330db6a22be702191bf424bcb9badac3e09fcdb878ce5a747b3f49949a2"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v1/repro_inline57ab_bool_projection.emit.gate.report.json",
+      "bytes": 1441,
+      "sha256": "cd79a264b7a810371534c496585b0a26c23792e05b19bf098c806e9b74bbbeb6"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v1/repro_inline57ab_bool_projection.emit.stderr",
+      "bytes": 233,
+      "sha256": "c934554ca16bae8e1d798c1fd3f425437e80857334a79087d6379aea616759a0"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v1/repro_inline57ab_bool_projection.emit.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v1/repro_inline57ab_char_codepoint.emit.gate.json",
+      "bytes": 2562,
+      "sha256": "102e4a83db831e2af54414130c9ffd2b94313c151f5d73473ab137526f1f2a03"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v1/repro_inline57ab_char_codepoint.emit.gate.report.json",
+      "bytes": 1435,
+      "sha256": "f65256fbd1a2ec1e8f878e8d7e9ef2f3777187699e3ffdf14c5ae7920b1a9ac7"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v1/repro_inline57ab_char_codepoint.emit.stderr",
+      "bytes": 323,
+      "sha256": "207f9b8bcd2def15219d9b1d7ae0f5115695dd1c1709abb4125790bef4f4c882"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v1/repro_inline57ab_char_codepoint.emit.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v2/repro.receipt.json",
+      "bytes": 9443,
+      "sha256": "4e2f723405318085e987b380f428ac5b642e6aa1ca696377d070469e7a07306c"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v2/repro_inline57ab_bool_fill_tags.emit.gate.json",
+      "bytes": 2565,
+      "sha256": "95a74825fd13a631015025e5c8b0297011e9e191c4ecddbb46dc246527502155"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v2/repro_inline57ab_bool_fill_tags.emit.gate.report.json",
+      "bytes": 1438,
+      "sha256": "26cc3323e9c03fc476c2353c75639946212a8ebafad43e137d680cefe1a14ce2"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v2/repro_inline57ab_bool_fill_tags.emit.stderr",
+      "bytes": 257,
+      "sha256": "fe31b19bf1d3e4b7d7075fe90716874e5f39d334f6382180dcd043854f9180be"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v2/repro_inline57ab_bool_fill_tags.emit.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v2/repro_inline57ab_bool_projection.emit.gate.json",
+      "bytes": 2574,
+      "sha256": "88a57dd22549babc53f7bb6472073cab2eff724890fd9e5e2d5ff0f83ca7cd3e"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v2/repro_inline57ab_bool_projection.emit.gate.report.json",
+      "bytes": 1443,
+      "sha256": "27b78880274f70baf42ab5a7013cefd1b19f272e2a9cd338f6d01b73bdd16074"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v2/repro_inline57ab_bool_projection.emit.stderr",
+      "bytes": 257,
+      "sha256": "ab8aacf3fc37c65f17b7e3f401cd916aa625133829570a55a38632c4b4750f5a"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v2/repro_inline57ab_bool_projection.emit.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v2/repro_inline57ab_char_codepoint.emit.gate.json",
+      "bytes": 2565,
+      "sha256": "ad5b2168ff01a069db47bfb228c99dece665803418ac3aa0475029ad92016ad2"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v2/repro_inline57ab_char_codepoint.emit.gate.report.json",
+      "bytes": 1438,
+      "sha256": "d7a9e905deabab75a69c97529e3eb8e30ec9a00d384d4700e1eedc7d826bdbb0"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v2/repro_inline57ab_char_codepoint.emit.stderr",
+      "bytes": 257,
+      "sha256": "f77954aa872fef20212d2251f01553b18425d6c74eba2535988439ded1f5b0fa"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v2/repro_inline57ab_char_codepoint.emit.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v3/c_target_array_nat.emit.gate.json",
+      "bytes": 2447,
+      "sha256": "006db34b2ea10d03d2fa2cec279f869f2bb801a6ff425571a1d45fbf3ca033e7"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v3/c_target_array_nat.emit.gate.report.json",
+      "bytes": 1372,
+      "sha256": "4fc69da5ebc7ca5815902da7d06279fb1aadbd0d6aca793775bc66130afcfe9f"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v3/c_target_array_nat.emit.stderr",
+      "bytes": 257,
+      "sha256": "cb9876aa702f1c23f8cef81014e33ce83ab49594a072920680f2e0b81bad2ca4"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v3/c_target_array_nat.emit.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v3/repro.receipt.json",
+      "bytes": 9067,
+      "sha256": "b3445add9af69b6edcf76533a4ad009d32a1b115936610640c9ff69842739c36"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v3/repro_inline57ab_iso_bool_read.emit.gate.json",
+      "bytes": 2554,
+      "sha256": "baa9a99e3ae0454994e43521ffbd8949a388af45a8a8124abe71c3b9225b2e01"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v3/repro_inline57ab_iso_bool_read.emit.gate.report.json",
+      "bytes": 1431,
+      "sha256": "f0eaec26af7490126adbce405386b9d0f28c58ac9e097b9be127a903a0fbfe7d"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v3/repro_inline57ab_iso_bool_read.emit.stderr",
+      "bytes": 228,
+      "sha256": "947577d0e85a314d735dba184d7d25c5c2011f63c5b50057bcab1b5301838caf"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v3/repro_inline57ab_iso_bool_read.emit.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v3/repro_inline57ab_iso_do_chain.emit.gate.json",
+      "bytes": 2547,
+      "sha256": "9f101491a38dcc49112772eb782dfdf55abb27472b42095c93c5034996d198ae"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v3/repro_inline57ab_iso_do_chain.emit.gate.report.json",
+      "bytes": 1428,
+      "sha256": "10a17ae2e2b522b5b0fefbbb5466c7da820396d1268b6a88193abff6d20ee04c"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v3/repro_inline57ab_iso_do_chain.emit.stderr",
+      "bytes": 257,
+      "sha256": "0ebd2e5827e7c3bf874e4961fe8fd57d8b9744063473a24cee60ab142f0f2a21"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-v3/repro_inline57ab_iso_do_chain.emit.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-diag-v1/repro.receipt.json",
+      "bytes": 4820,
+      "sha256": "9b74611b05229d52c86e7c71e46f8257db933d91b206c99b69f1bdfc5e149565"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-diag-v1/repro_inline57ab_iso_do_chain.emit.gate.json",
+      "bytes": 2588,
+      "sha256": "879684d2de53fb107cdd5b0c1215d3d9a0c43b0bcc359d83b7a1e55c3c7dfa4e"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-diag-v1/repro_inline57ab_iso_do_chain.emit.gate.report.json",
+      "bytes": 1448,
+      "sha256": "b65340f0cface53ba89b04a3cac15feba2ddce2509ae22bbe5a456873fbd3f1f"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-diag-v1/repro_inline57ab_iso_do_chain.emit.stderr",
+      "bytes": 469,
+      "sha256": "dfa3a1873609b0d5cdf77322cd16e343d252f9c0e6c430fe992e5aaa752ee27a"
+    },
+    {
+      "path": "checkpoints/repro-inline-values57ab-diag-v1/repro_inline57ab_iso_do_chain.emit.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}
