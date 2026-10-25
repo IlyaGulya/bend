@@ -1225,6 +1225,35 @@ def zero_value_body(+pw: World, +playout: CLay.Layout) -> Part:
         case _: PartFail{"a zero-word field must have exactly one constructor"}
     case _: PartFail{"a zero-word field is not a data layout"}
 
+
+
+def cell_arr_body(+pw: World, +playout: CLay.Layout, +ploc: String, +pindex: String, +puniq: String, +pstat: String, +pmove: Bool) -> Part:
+  match pmove:
+    case True{}: data_move_body(pw, playout, join_text([ploc, " + (", pindex, ")"]), 0n)
+    case False{}: data_copy_body(pw, playout, join_text([ploc, " + (", pindex, ")"]), 0n, puniq, pstat)
+
+def cell_move_clear(+ploc: String, +pindex: String, +pspan: Nat, +pmove: Bool) -> String:
+  match pmove:
+    case True{}: buf_clear_span(ploc, pindex, pspan, 0n, "      ")
+    case False{}: ""
+
+def cell_data_body(+pw: World, +playout: CLay.Layout, +ploc: String, +parr: String, +pindex: String, +plgs: Nat, +puniq: String, +pstat: String, +pmove: Bool) -> Part:
+  span = pow2(plgs)
+  jobs = unfill_jobs(pw, playout, SrcBlock{ploc, pindex, False{}, False{}, "pbc"}, "pbl", "pblc")
+  match part_of(run_jobs(jobs, pw, Nil{}), "pbl"):
+    case PartFail{message}: PartFail{message}
+    case PartOk{btext}:
+      match cell_arr_body(pw, playout, ploc, pindex, puniq, pstat, pmove):
+        case PartFail{message}: PartFail{message}
+        case PartOk{abody}:
+          move_clear = cell_move_clear(ploc, pindex, span, pmove)
+          PartOk{join_text(["if (", parr, ") { ", abody, " } else { Term pbl = 0; u32 pbc = 0; Term pblc = 0; ", btext, "; ", move_clear, " pbr = pbl; }\n"])}
+
+def buf_clear_span(+ploc: String, +pindex: String, +pspan: Nat, +pat: Nat, +pindent: String) -> String:
+  match Nat.is_eq(pat, pspan):
+    case True{}: ""
+    case False{}: join_text([pindent, "blk_write(e.mem, false, ", ploc, ", (u32)((", pindex, ") + ", Nat.show(pat), "ull), 0);\n", buf_clear_span(ploc, pindex, pspan, Nat.add(pat, 1n), pindent)])
+
 def copy_cell_body(+pw: World, +pstate: PathState) -> Part:
   match pstate:
     case StCell{loc, arr, index, cls, layout, lgs, uniq, stat}:
@@ -1234,7 +1263,7 @@ def copy_cell_body(+pw: World, +pstate: PathState) -> Part:
             case CLay.CWord32{}: PartOk{join_text(["pbr = ((u64)(u32)(blk_read(e.mem, ", arr, ", ", loc, ", (u32)(", index, "))));\n"])}
             case _: PartOk{join_text(["pbr = (u64)(blk_read(e.mem, ", arr, ", ", loc, ", (u32)(", index, ")));\n"])}
         case CLay.LayoutBox{reason}: PartOk{join_text(["{ Term pv = blk_read(e.mem, ", arr, ", ", loc, ", (u32)(", index, ")); Term pk = term_keep(e, pv, 1); if (pk != pv) { if (", stat, ") { (void)bend_fail(e, \"a static image would need a keep wrapper\"); } else if (!", uniq, ") { (void)bend_fail(e, \"a shared owner has an unsealed cell child\"); } else { blk_write(e.mem, ", arr, ", ", loc, ", (u32)(", index, "), pk); } } pbr = pk; }\n"])}
-        case CLay.LayoutData{words, arms}: data_copy_body(pw, layout, join_text([loc, " + (", index, ")"]), 0n, uniq, stat)
+        case CLay.LayoutData{words, arms}: cell_data_body(pw, layout, loc, arr, index, lgs, uniq, stat, False{})
     case _: PartFail{"not a cell"}
 
 def copy_padding(+pspan: Nat, +pwords: Nat, +pindent: String) -> String:
@@ -1272,7 +1301,7 @@ def move_cell_body(+pw: World, +pstate: PathState) -> Part:
             case CLay.CWord32{}: PartOk{join_text(["pbr = ((u64)(u32)(blk_read(e.mem, ", arr, ", ", loc, ", (u32)(", index, ")))); blk_write(e.mem, ", arr, ", ", loc, ", (u32)(", index, "), 0);\n"])}
             case _: PartOk{join_text(["pbr = (u64)(blk_read(e.mem, ", arr, ", ", loc, ", (u32)(", index, "))); blk_write(e.mem, ", arr, ", ", loc, ", (u32)(", index, "), 0);\n"])}
         case CLay.LayoutBox{reason}: PartOk{join_text(["pbr = blk_read(e.mem, ", arr, ", ", loc, ", (u32)(", index, ")); blk_write(e.mem, ", arr, ", ", loc, ", (u32)(", index, "), 0);\n"])}
-        case CLay.LayoutData{words, arms}: data_move_body(pw, layout, join_text([loc, " + (", index, ")"]), 0n)
+        case CLay.LayoutData{words, arms}: cell_data_body(pw, layout, loc, arr, index, lgs, uniq, stat, True{})
     case _: PartFail{"not a cell"}
 
 def move_slot_body(+pw: World, +pstate: PathState) -> Part:
