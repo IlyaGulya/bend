@@ -135,6 +135,17 @@ Other verification stages retain600s. The bounded CPU diagnostic is preserved
 separately in `evals/receipts/native03d0_working8192_cpu.json`; its controlled
 teardown PASS is not a successful compiler build. No C artifact exists yet.
 
+Runtime correction: the user challenges the unproven choice of Node over Bun.
+The active Node run is deliberately interrupted at218708ms; its guardian
+confirms complete/stopped. This is not an OOM or1800s timeout:
+`evals/receipts/native03d0_working8192_node_interrupted.json`.
+V8 OOM/GC observations do not describe Bun. Bun1.4.2 exposes CPU/heap profilers
+itself. Its worker resourceLimits are ignored, so the next working run uses
+the same eight frozen source hashes on **Bun defaults**, with an8192MiB actual
+tree RSS/footprint guard,10ms sampling and the approved1800s deadline.
+No256MiB stack or8GiB V8 old-generation enforcement is claimed for Bun.
+The limit is conservatively on the whole tree, not a fabricated equivalent heap.
+
 ### Preceding `667e7f33` C checkpoint (historical)
 
 

@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "status": "INTERRUPTED_FOR_BUN_RUNTIME_CORRECTION",
+  "accepted": false,
+  "reason": "User challenges using Node instead of Bun; own Node run deliberately cancelled, not OOM or1800s timeout",
+  "guardPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792952448442-5a77ca7dad4d1601.json",
+  "guard": {
+    "status": "FAIL",
+    "reason": "interrupted",
+    "commandExitCode": -1,
+    "commandSignal": 15,
+    "peakRssBytes": 6760775680,
+    "peakFootprintBytes": 7211196504,
+    "elapsedMs": 218708,
+    "timeoutMs": 1800000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 130,
+    "command": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "/private/tmp/bend-fir-integrated57ab/checkpoints/native03d0_working_8g_long.ts"
+    ],
+    "label": "User-approved one1800s8GiB native working build",
+    "exitCode": 130,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792952448442-5a77ca7dad4d1601.json",
+    "memoryLimitBytes": 12884901888,
+    "rssLimitBytes": 12884901888
+  },
+  "profilePath": "/tmp/native03d0-working-8g-long-1-profiles/profile-16933-thread-1-GYX6IF",
+  "checkpointSha256": "05d68dff39b0156e7092cb394d6aad4e543f2c17e6b45f9b68d4274c50ada64e",
+  "scriptSha256": "b056cf51edc8b92de3a6a422e1a9ccb4faedb7e59aa5c4319247d9a67819acf3",
+  "cOutputExists": false,
+  "scope": "Same frozen03d0 input and approved8GiB Node worker/12GiB tree policy; no CPU profiler or per-definition observer",
+  "nextRuntimePolicy": "Bun default runtime/stack/GC, no Node resourceLimits claim; conservative8192MiB actual tree RSS/footprint guard and approved1800s deadline; other stages600s"
+}
