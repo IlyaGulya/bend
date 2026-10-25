@@ -39,7 +39,7 @@ import type * as Compiler from '../bend2/comp.ts';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
-type Options = {artifactDir?: string};
+type Options = {artifactDir?: string; canonicalBir?: string; canonicalSources?: string; canonicalRuntime?: string};
 const clangTimeoutMs = 300000, runTimeoutMs = 120000;
 
 function options(): Options {
@@ -47,11 +47,16 @@ function options(): Options {
   for (const argument of process.argv.slice(2)) {
     const at = argument.indexOf('=');
     const name = at < 0 ? argument : argument.slice(0, at), value = at < 0 ? undefined : argument.slice(at + 1);
-    if (!['--artifact-dir'].includes(name) || value === undefined || values.has(name))
-      throw Error('expected unique --artifact-dir=DIR, observed ' + argument);
+    if (!['--artifact-dir', '--canonical-bir', '--canonical-sources', '--canonical-runtime'].includes(name) || value === undefined || values.has(name))
+      throw Error('expected unique --artifact-dir=DIR or canonical transport paths, observed ' + argument);
     values.set(name, value);
   }
-  return {artifactDir: values.has('--artifact-dir') ? resolve(values.get('--artifact-dir')) : undefined};
+  return {
+    artifactDir: values.has('--artifact-dir') ? resolve(values.get('--artifact-dir')) : undefined,
+    canonicalBir: values.has('--canonical-bir') ? resolve(values.get('--canonical-bir')) : undefined,
+    canonicalSources: values.has('--canonical-sources') ? resolve(values.get('--canonical-sources')) : undefined,
+    canonicalRuntime: values.has('--canonical-runtime') ? resolve(values.get('--canonical-runtime')) : undefined,
+  };
 }
 
 function labels(o: Options) {
@@ -61,9 +66,9 @@ function labels(o: Options) {
   if (!Array.isArray(requestGroups) || requestGroups.length !== 27)
     throw Error('Emitter manifest no longer has 27 request groups; update the diagnostic group view before profiling');
   const emitGroups = requestGroups.flatMap((group, index) =>
-    group.definitions?.includes('cps_provider_2_emit') ? [index] : []);
+    group.definitions?.includes('cps_provider_6_render') ? [index] : []);
   if (emitGroups.length !== 1)
-    throw Error('Emitter manifest must place cps_provider_2_emit in exactly one request group, observed ' + JSON.stringify(emitGroups));
+    throw Error('Emitter manifest must place cps_provider_6_render in exactly one request group, observed ' + JSON.stringify(emitGroups));
   const emitGroup = emitGroups[0];
   const sourceOf = new Map<string, string>();
   for (const declaration of emitterManifest.canonicalComposition?.declarations ?? [])
@@ -87,8 +92,8 @@ function labels(o: Options) {
     return {index, label: names.length === 1 ? names[0] : 'mixed:' + names.join('+'), sources: sources.sort()};
   });
   const emitLabel = groupLabels[emitGroup];
-  if (!emitLabel.label.split('+').includes('render-c') || !emitLabel.sources.includes('bend2/selfhost/c_backend.bend'))
-    throw Error('Emitter cps_provider_2_emit group no longer contains the c_backend render-c request: ' + JSON.stringify(emitLabel));
+  if (!emitLabel.label.split('+').includes('render-c') || !emitLabel.sources.includes('bend2/selfhost/c_emit_core.bend'))
+    throw Error('Emitter cps_provider_6_render group no longer contains the c_backend render-c request: ' + JSON.stringify(emitLabel));
   const requiredOutput = emitterManifest.generationConfig?.output;
   const expectedOutputSha256 = requiredOutput === undefined ? undefined : emitterManifest.outputs?.[requiredOutput];
   if (requiredOutput === undefined || expectedOutputSha256 === undefined)
@@ -104,6 +109,11 @@ function labels(o: Options) {
 async function build(o: Options) {
   const directory = o.artifactDir ?? mkdtempSync(join(tmpdir(), 'bend-native-stage-profile-'));
   mkdirSync(directory, {recursive: true});
+  if (!o.canonicalBir || !o.canonicalSources || !o.canonicalRuntime)
+    throw Error('diagnostic transport requires --canonical-bir=FILE --canonical-sources=FILE --canonical-runtime=FILE');
+  const generatedFixture = join(root, 'checkpoints/native_stage_profile_generated_fixture.bend');
+  execFileSync(process.execPath, [join(root, 'evals/native_stage_profile_fixture_transport.mjs'),
+    o.canonicalBir, o.canonicalSources, o.canonicalRuntime, generatedFixture], {stdio: 'inherit'});
   const kernelPath = join(root, 'bend2/bend.ts'), compilerPath = join(root, 'bend2/comp.ts');
   const driverPath = join(root, 'evals/native_stage_profile_driver.bend');
   const hostPath = join(root, 'evals/native_stage_profile_host.c');
@@ -142,8 +152,12 @@ async function build(o: Options) {
     directory, driverPath, driverSha256: sha(readFileSync(driverPath)), hostPath, hostSha256: sha(readFileSync(hostPath)),
     kernelPath, kernelSha256: sha(readFileSync(kernelPath)), compilerPath, compilerSha256: sha(readFileSync(compilerPath)),
     emitterManifestPath, emitterManifestSha256: sha(readFileSync(emitterManifestPath)), groupLabels,
+    canonicalTransport: {bir: {path: o.canonicalBir, sha256: sha(readFileSync(o.canonicalBir))},
+      sources: {path: o.canonicalSources, sha256: sha(readFileSync(o.canonicalSources))},
+      runtime: {path: o.canonicalRuntime, sha256: sha(readFileSync(o.canonicalRuntime))},
+      generatedFixture: {path: generatedFixture, sha256: sha(readFileSync(generatedFixture))}},
     artifactBinding,
-    fixtureRequest: {group: emitGroup, canonicalName: 'cps_provider_2_emit', label: groupLabels[emitGroup].label},
+    fixtureRequest: {group: emitGroup, canonicalName: 'cps_provider_6_render', label: groupLabels[emitGroup].label},
     cPath, cSha256: sha(c), artifact, artifactSha256: sha(readFileSync(artifact)),
     buildCommand: [cc, ...flags], validationMs, codegenMs, totalMs: performance.now() - started,
     runtime: {name: 'node', node: process.versions.node, v8: process.versions.v8, bun: (process.versions as {bun?: string}).bun ?? null,

@@ -210,8 +210,13 @@ chunks) with the 56 real `.c` source alternatives, returning `EMIT_SUCCESS`.
 CheckedProgram/BIR/source bundles are generated under `/tmp` and not committed;
 only the source input and thin diagnostic components are source. The JS codegen
 stack is 256 MiB, the approved source cap; no native worker/guard limit changed.
-This is not yet a native fixture run, and direct group-12 CImport assembly is not
-claimed. The performed Node native run remains the pre-fix
+The diagnostic driver now consumes this canonical BIR, real runtime and 56-file
+C source bundle through `EmitterRequestGroup_18` /
+`EmitterRequest_cps_provider_6_render`; the builder's transport step writes the
+generated fixture under `checkpoints/` (not Git) from `--canonical-bir`,
+`--canonical-sources` and `--canonical-runtime`. It does not use the copied
+smoke fixture or a scalar request. This is not yet a native fixture run, and
+direct group-12 CImport assembly is not claimed. The performed Node native run remains the pre-fix
 `EmitFailure` evidence; no native rerun or cap change was made.
 
 Native coarse rows were read from the preserved diagnostic trace
