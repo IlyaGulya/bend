@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "status": "HARNESS_REJECTED_NESTED_GUARD_LOCK_BUSY",
+  "accepted": false,
+  "sourceFixtureUnmodified": true,
+  "compilerBehaviorReached": false,
+  "outerGuard": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "commandExitCode": 1,
+    "commandSignal": 0,
+    "peakRssBytes": 832602112,
+    "peakFootprintBytes": 498519736,
+    "elapsedMs": 3379,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "command": [
+      "bun",
+      "checkpoints/c_backend_library_current_red.ts"
+    ],
+    "label": "heavy command",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792949810201-81776429d0690c6e.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "scriptSha256": "998f55c292a74373694d1a4b057071fe6c606d7d9017e64469da402e186131ef",
+  "actualError": "Inner checker_core_component_build runHeavyGate fails exclusive_lock_busy while outer guard holds lane; no semantic capture/export result.",
+  "correction": "Let existing component builder own its guard, then guard render/clang/run separately."
+}

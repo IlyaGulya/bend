@@ -1,0 +1,418 @@
+{
+  "schemaVersion": 1,
+  "status": "CONTROLLED_CPU_PROFILE_INCOMPLETE",
+  "accepted": false,
+  "terminal": {
+    "status": "CONTROLLED_CPU_PROFILE_INCOMPLETE",
+    "controlledInterruption": true,
+    "pipelineCompleted": false,
+    "acceptanceEvidence": false,
+    "frozenWorkload": "OLDPINNED_DIAGNOSTIC_03d0",
+    "workerExit": 1,
+    "error": null,
+    "profilePath": "/tmp/native03d0-working-8g-cpu-1-profiles/profile-58107-thread-1-ITOUMA",
+    "workerLimits": {
+      "stackSizeMb": 256,
+      "maxOldGenerationSizeMb": 8192
+    },
+    "runtime": {
+      "node": "v23.11.0",
+      "v8": "12.9.202.28-node.14"
+    },
+    "command": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=8192",
+      "--cpu-prof",
+      "--cpu-prof-interval=1000",
+      "--cpu-prof-dir=/tmp/native03d0-working-8g-cpu-1-cpu",
+      "/private/tmp/bend-fir-integrated57ab/checkpoints/native03d0_working_8g_cpu.ts"
+    ]
+  },
+  "guardPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792949184103-1c77a3600f1e4872.json",
+  "guard": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 7658422272,
+    "peakFootprintBytes": 8667003000,
+    "elapsedMs": 562252,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=8192",
+      "--cpu-prof",
+      "--cpu-prof-interval=1000",
+      "--cpu-prof-dir=/tmp/native03d0-working-8g-cpu-1-cpu",
+      "checkpoints/native03d0_working_8g_cpu.ts"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792949184103-1c77a3600f1e4872.json",
+    "memoryLimitBytes": 12884901888,
+    "rssLimitBytes": 12884901888
+  },
+  "sameEightFrozenInputHashes": true,
+  "inputs": {
+    "/private/tmp/bend-native-merged-03d0/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+    "/private/tmp/bend-native-merged-03d0/bend2/comp.ts": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70",
+    "/private/tmp/bend-native-merged-03d0/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+    "/private/tmp/bend-native-merged-03d0/evals/native_stage_profile_driver.bend": "dd1b86b49f66039949c3efd962973e784a938fdce8a4beb7a2a324f591f3171a",
+    "/private/tmp/bend-native-merged-03d0/checkpoints/native_stage_profile_generated_fixture.bend": "ef98fcac013f127a218430aa1b3f43c191092cbc41d66b3f41f02715be65a108",
+    "/private/tmp/bend-native-merged-03d0/checkpoints/emitter_steps_v1.bend": "d7dbe31856eb8d9e53eeddefab0ea4eed56eafe6420a7478d4c37b53d63fb956",
+    "/private/tmp/bend-native-merged-03d0/checkpoints/checker_core_steps_v1.bend": "d6000fd556d550f45ccca6adeaaa6e2b0d6aa2fc7604fae0959d650f6d7d175c",
+    "/private/tmp/bend-native-merged-03d0/checkpoints/template_steps_v1.bend": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4"
+  },
+  "analysis": {
+    "schemaVersion": 1,
+    "kind": "Statistical CPU profile, controlled incomplete native codegen",
+    "workerProfilePath": "/tmp/native03d0-working-8g-cpu-1-cpu/CPU.20261025.222624.58107.1.002.cpuprofile",
+    "wholeWorker": {
+      "samples": 139880,
+      "nodes": 628063,
+      "startTime": 1126475928084,
+      "endTime": 1127029761126
+    },
+    "compileWindow": {
+      "definition": "From first sampled compile_book ancestor through controlled termination; not an exact phase clock",
+      "firstSample": 5655,
+      "samples": 134225,
+      "topExclusiveFrames": [
+        {
+          "frame": [
+            "(garbage collector)",
+            "",
+            0,
+            0
+          ],
+          "ticks": 76565,
+          "percent": 57.04227975414416
+        },
+        {
+          "frame": [
+            "emit_ctr",
+            "file:///private/tmp/bend-native-merged-03d0/bend2/comp.ts",
+            2594,
+            18
+          ],
+          "ticks": 7249,
+          "percent": 5.400633265040045
+        },
+        {
+          "frame": [
+            "memo",
+            "file:///private/tmp/bend-native-merged-03d0/bend2/comp.ts",
+            2178,
+            20
+          ],
+          "ticks": 6332,
+          "percent": 4.717452039485938
+        },
+        {
+          "frame": [
+            "term_higher",
+            "file:///private/tmp/bend-native-merged-03d0/bend2/bend.ts",
+            693,
+            28
+          ],
+          "ticks": 4451,
+          "percent": 3.316073756751723
+        },
+        {
+          "frame": [
+            "u32_from_term",
+            "file:///private/tmp/bend-native-merged-03d0/bend2/bend.ts",
+            1114,
+            33
+          ],
+          "ticks": 3021,
+          "percent": 2.2506984540882846
+        },
+        {
+          "frame": [
+            "term_wnf",
+            "file:///private/tmp/bend-native-merged-03d0/bend2/bend.ts",
+            2795,
+            25
+          ],
+          "ticks": 2693,
+          "percent": 2.006332650400447
+        },
+        {
+          "frame": [
+            "ctr_tail",
+            "file:///private/tmp/bend-native-merged-03d0/bend2/comp.ts",
+            1127,
+            18
+          ],
+          "ticks": 2302,
+          "percent": 1.7150307319798845
+        },
+        {
+          "frame": [
+            "emit_expr",
+            "file:///private/tmp/bend-native-merged-03d0/bend2/comp.ts",
+            2730,
+            19
+          ],
+          "ticks": 1707,
+          "percent": 1.2717452039485937
+        },
+        {
+          "frame": [
+            "term_key",
+            "file:///private/tmp/bend-native-merged-03d0/bend2/bend.ts",
+            1192,
+            25
+          ],
+          "ticks": 1663,
+          "percent": 1.2389644254051033
+        },
+        {
+          "frame": [
+            "ctr_adt",
+            "file:///private/tmp/bend-native-merged-03d0/bend2/comp.ts",
+            1115,
+            17
+          ],
+          "ticks": 1557,
+          "percent": 1.1599925498230583
+        },
+        {
+          "frame": [
+            "ctr_build",
+            "file:///private/tmp/bend-native-merged-03d0/bend2/comp.ts",
+            1150,
+            19
+          ],
+          "ticks": 1556,
+          "percent": 1.159247532128888
+        },
+        {
+          "frame": [
+            "facts_hot",
+            "file:///private/tmp/bend-native-merged-03d0/bend2/comp.ts",
+            1749,
+            19
+          ],
+          "ticks": 1465,
+          "percent": 1.0914509219593966
+        },
+        {
+          "frame": [
+            "",
+            "file:///private/tmp/bend-native-merged-03d0/bend2/comp.ts",
+            708,
+            30
+          ],
+          "ticks": 1420,
+          "percent": 1.057925125721736
+        },
+        {
+          "frame": [
+            "",
+            "file:///private/tmp/bend-native-merged-03d0/bend2/comp.ts",
+            736,
+            35
+          ],
+          "ticks": 1180,
+          "percent": 0.8791208791208791
+        },
+        {
+          "frame": [
+            "",
+            "file:///private/tmp/bend-native-merged-03d0/bend2/comp.ts",
+            2461,
+            17
+          ],
+          "ticks": 1095,
+          "percent": 0.8157943751164091
+        },
+        {
+          "frame": [
+            "ty_wnf",
+            "file:///private/tmp/bend-native-merged-03d0/bend2/comp.ts",
+            912,
+            16
+          ],
+          "ticks": 1082,
+          "percent": 0.8061091450921959
+        },
+        {
+          "frame": [
+            "",
+            "file:///private/tmp/bend-native-merged-03d0/bend2/comp.ts",
+            1970,
+            16
+          ],
+          "ticks": 955,
+          "percent": 0.711491897932576
+        },
+        {
+          "frame": [
+            "",
+            "file:///private/tmp/bend-native-merged-03d0/bend2/bend.ts",
+            734,
+            36
+          ],
+          "ticks": 773,
+          "percent": 0.5758986775935928
+        },
+        {
+          "frame": [
+            "type_adts",
+            "file:///private/tmp/bend-native-merged-03d0/bend2/comp.ts",
+            982,
+            19
+          ],
+          "ticks": 768,
+          "percent": 0.5721735891227416
+        },
+        {
+          "frame": [
+            "emit_each",
+            "file:///private/tmp/bend-native-merged-03d0/bend2/comp.ts",
+            2459,
+            19
+          ],
+          "ticks": 729,
+          "percent": 0.5431178990501024
+        },
+        {
+          "frame": [
+            "",
+            "file:///private/tmp/bend-native-merged-03d0/bend2/bend.ts",
+            3646,
+            60
+          ],
+          "ticks": 674,
+          "percent": 0.5021419258707395
+        },
+        {
+          "frame": [
+            "emit_body",
+            "file:///private/tmp/bend-native-merged-03d0/bend2/comp.ts",
+            2806,
+            19
+          ],
+          "ticks": 599,
+          "percent": 0.4462655988079717
+        },
+        {
+          "frame": [
+            "facts_ctr",
+            "file:///private/tmp/bend-native-merged-03d0/bend2/comp.ts",
+            1802,
+            19
+          ],
+          "ticks": 434,
+          "percent": 0.32333767926988266
+        },
+        {
+          "frame": [
+            "ADT",
+            "file:///private/tmp/bend-native-merged-03d0/bend2/bend.ts",
+            407,
+            23
+          ],
+          "ticks": 432,
+          "percent": 0.3218476438815422
+        },
+        {
+          "frame": [
+            "term_const",
+            "file:///private/tmp/bend-native-merged-03d0/bend2/comp.ts",
+            828,
+            20
+          ],
+          "ticks": 377,
+          "percent": 0.28087167070217917
+        }
+      ],
+      "sampleIntervalMicroseconds": 1000,
+      "actualDeltaMicroseconds": {
+        "median": 2375,
+        "p95": 10583,
+        "p99": 25958,
+        "max": 590792
+      },
+      "attributionCaveat": "Percentages are unweighted primary-worker-isolate sample counts, not wall-time fractions or whole-process CPU fractions; GC helper-thread CPU is not sampled here."
+    },
+    "processTimeline": {
+      "scope": "Parent samples whole-process CPU including every worker/profiler/GC thread, excluding child processes",
+      "samples": 563,
+      "elapsedMs": 561910.9926669999,
+      "userMs": 202692.829,
+      "systemMs": 20330.964,
+      "cpuPerWall": 0.3969023491451225,
+      "maxHeartbeatGapMs": 1045.079374999972,
+      "medianHeartbeatGapMs": 1000.657583000022
+    },
+    "hostPointObservation": {
+      "logicalCpus": 10,
+      "loadAvg": [
+        46.6,
+        44.52,
+        40.96
+      ],
+      "swapUsedMiB": 11133.38,
+      "systemMemoryFreePercent": 57,
+      "observation": "Single system snapshots during capture; not a causal allocation, current memory-pressure or whole-run load measurement"
+    },
+    "pipelineCompleted": false
+  },
+  "evidence": {
+    "manifest": "/tmp/native03d0-working-8g-cpu-1-evidence.manifest.json",
+    "manifestSha256": "b7d26b355d3260a56a4e5f6ad383dfb19e7a0afbc84ef86188fbffec3cd550d3",
+    "files": [
+      {
+        "path": "/tmp/native03d0-working-8g-cpu-1.json",
+        "bytes": 825,
+        "sha256": "3bf561e82f87c25bea2c47dccd17491ca40326367520e57b765250f133c333c7"
+      },
+      {
+        "path": "/tmp/native03d0-working-8g-cpu-1-analysis.json",
+        "bytes": 7283,
+        "sha256": "b23318560073a2f47c9882e8ef521c142a2a7054e8333ddcb572ddcdcb38a5f8"
+      },
+      {
+        "path": "/tmp/native03d0-working-8g-cpu-1-process.jsonl",
+        "bytes": 82325,
+        "sha256": "282a1530d57ec3a86115fb75030bfa38d0ef9563a2b237664adaf98456f0588f"
+      },
+      {
+        "path": "/tmp/native03d0-working-8g-cpu-1-profiles/profile-58107-thread-1-ITOUMA/run.json",
+        "bytes": 5614,
+        "sha256": "ddddac5df6c94ef0018664badb6b097e120be0a78a098c6c7c72fc1f8410565b"
+      },
+      {
+        "path": "/tmp/native03d0-working-8g-cpu-1-profiles/profile-58107-thread-1-ITOUMA/checkpoint.json",
+        "bytes": 7728,
+        "sha256": "ce375652a9e92aa172f7ff128d8bb42aca31ef05b4ade5cd56c6c79cbc13f7d9"
+      },
+      {
+        "path": "/tmp/native03d0-working-8g-cpu-1-profiles/profile-58107-thread-1-ITOUMA/executed-probe.ts",
+        "bytes": 5606,
+        "sha256": "1f8d53c1f99420ffe43e617349650c27ccf4e7fbfdf0bed79616ec1124c2c63d"
+      },
+      {
+        "path": "/tmp/native03d0-working-8g-cpu-1-cpu/CPU.20261025.222624.58107.0.001.cpuprofile",
+        "bytes": 2051734,
+        "sha256": "4dd35d293895f323a00aeee62deb6e71fdcd91ce7f58fbb883744133c533883a"
+      },
+      {
+        "path": "/tmp/native03d0-working-8g-cpu-1-cpu/CPU.20261025.222624.58107.1.002.cpuprofile",
+        "bytes": 130240011,
+        "sha256": "d25c47ae45fa19928dd915cc9f6829ead220bdd43e360bb6c77d6db3dae6e581"
+      }
+    ]
+  },
+  "cOutputExists": false,
+  "interpretation": "GC is57.04% of sampled primary-worker-isolate ticks after first compile_book stack. This is a profiled-run hotspot, not proof of baseline GC cost, retained owner, a wall-time fraction, or the cause of all missing CPU/wall time. Profiler overhead is unmeasured. Host load observation is a point snapshot only.",
+  "next": "Do not patch immutable compiler/kernel or weaken input. Longer working-build deadline requires explicit authorization; keep current600s policy until then."
+}

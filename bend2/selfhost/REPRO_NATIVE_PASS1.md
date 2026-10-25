@@ -354,3 +354,24 @@ no C output exists, and the final pass/CPU location is unavailable.
 Removing per-definition tracing is therefore not sufficient to complete this
 working build inside the unchanged deadline. It does not measure overhead,
 prove a compiler algorithmic cause, or attribute missing wall time.
+
+### Bounded CPU capture on the same8192MiB workload
+
+`evals/receipts/native03d0_working8192_cpu.json` pins both V8 CPU profiles,
+the whole-process one-second CPU heartbeat and the same eight input hashes.
+The controller interrupts still-running codegen after540s and flushes the
+worker profile before the unchanged600s guard deadline. Guard PASS means
+controlled diagnostic teardown only; pipelineCompleted is false, with no C.
+
+After the first sampled compile_book frame, GC accounts for57.04% of134225
+primary-worker-isolate samples. The next exclusive frames are emit_ctr5.40%,
+memo4.72% and term_higher3.32%. These are unweighted statistical samples,
+not wall-time fractions, whole-process CPU shares, retained/live ownership,
+or evidence that the unprofiled run has the same costs. Overhead is unmeasured;
+the worker profile contains628063call-tree nodes /130240011bytes.
+Whole-process user+system CPU is223023.793ms over561910.993ms wall, with a
+maximum parent heartbeat gap1045.079ms. A point host snapshot reports10
+logical CPUs, load46.60/44.52/40.96 and57% free memory. It does not prove the
+cause of missing CPU time; neither sleep nor memory pressure is established.
+The diagnostic prioritizes allocation/GC investigation without authorizing a
+compiler/kernel patch, input narrowing, or a longer working-build deadline.
