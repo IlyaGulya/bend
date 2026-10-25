@@ -36,6 +36,21 @@ type Part is Data:
   PartOk{text: String}
   PartFail{message: String}
 
+# One grouped projection view of a constructor value. Control emits `setup`
+# once in its own compound block, binds a Project to the matching logical
+# field expression, and at the view's flush emits every un-materialised
+# field's `discard` and then the one guarded payload `release`.
+type ProjectField is Data:
+  ProjectField{ordinal: U32, expr: String, discard: String}
+
+type ProjectView is Data:
+  ProjectView{setup: String, fields: List<&2, ProjectField>, release: String}
+  ProjectViewFail{message: String}
+
+type ViewFields is Data:
+  ViewFieldsOk{fields: List<&2, ProjectField>}
+  ViewFieldsFail{message: String}
+
 type CidSym is Data:
   CidSym{cid: U32, key: String}
 
@@ -722,6 +737,101 @@ def project_packed_flag(+ppacked: Bool, +pw: World, +playout: CLay.Layout, +poff
   match ppacked:
     case True{}: project_packed(pw, playout, pvalue)
     case False{}: project_words(pw, playout, poffset, pcount, pvalue)
+
+# ---------------------------------------------------------------------------
+# Grouped Project view
+#
+# The per-field BIR Project cannot take a node on its own: a second take reads
+# the redirect counter of a node whose only reference the first take already
+# released. Control therefore groups every Project on the same scrutinee into
+# one view: `setup` performs exactly one extraction, each field expression
+# reads that one extraction, and `release` frees the returned payload once,
+# guarded by vp so a kept (count>1) node's span_fade result 0 is a no-op.
+# The selector preserves vp: count1 frees the redirect and returns the live
+# payload, non-rfc returns the payload, and count>1 returns 0 after span_fade.
+# Packed and zero-word values have no constructor payload to release.
+# ---------------------------------------------------------------------------
+
+def view_src(+ppacked: Bool, +pbase: String, +poffset: Nat) -> Src:
+  match ppacked:
+    case True{}: SrcOne{"((u64)term_peek(vt))"}
+    case False{}: SrcNode{pbase, "fb", poffset, False{}}
+
+def view_discard(+playout: CLay.Layout, +ptext: String) -> String:
+  match playout:
+    case CLay.LayoutWord{word}: ""
+    case CLay.LayoutBox{reason}: join_text(["term_sink(e, ", ptext, ");"])
+    case CLay.LayoutData{words, arms}: join_text(["term_sink(e, ", ptext, ");"])
+
+def view_field(+pw: World, +ppacked: Bool, +pbase: String, +pslot: CLay.NodeSlot) -> Part:
+  match pslot:
+    case CLay.NodeSlot{ordinal, offset, layout}:
+      dst = join_text(["vf", U32.show(ordinal)])
+      part_of(run_jobs(unfill_jobs(pw, layout, view_src(ppacked, pbase, offset), dst, dst), pw, Nil{}), dst)
+
+def view_slots(+pw: World, +pslots: List<&2, CLay.NodeSlot>, +ppacked: Bool, +pbase: String, +pexpected: Nat, +pacc: List<&2, ProjectField>) -> ViewFields:
+  match pslots:
+    case Nil{}: ViewFieldsOk{List.reverse(&2, ProjectField, pacc)}
+    case +slot <> rest:
+      match slot:
+        case CLay.NodeSlot{ordinal, offset, layout}:
+          at = U32.to_nat(ordinal)
+          gap = Nat.sub(at, pexpected)
+          blank = ProjectField{U32.from_nat(0n), "", ""}
+          padded = List.append(&2, ProjectField, pacc, List.replicate(ProjectField, gap, blank))
+          field = view_field(pw, ppacked, pbase, slot)
+          match field:
+            case PartFail{message}: ViewFieldsFail{message}
+            case PartOk{text}:
+              discard = view_discard(layout, text)
+              view_slots(pw, rest, ppacked, pbase, Nat.add(at, 1n), List.append(&2, ProjectField, padded, [ProjectField{ordinal, text, discard}]))
+
+def view_finish(+psetup: String, +pvf: ViewFields, +prelease: String) -> ProjectView:
+  match pvf:
+    case ViewFieldsFail{message}: ProjectViewFail{message}
+    case ViewFieldsOk{fields}: ProjectView{psetup, fields, prelease}
+
+def view_plan(+ppacked: Bool, +pwords: Nat, +pslots: List<&2, CLay.NodeSlot>, +pvalue: String, +pw: World) -> ProjectView:
+  match ppacked:
+    case True{}:
+      setup = join_text(["Term vt = (", pvalue, ");"])
+      view_finish(setup, view_slots(pw, pslots, True{}, "", 0n, Nil{}), "")
+    case False{}:
+      match pwords:
+        case 0n:
+          match pslots:
+            case Nil{}: ProjectView{join_text(["Term vt = (", pvalue, ");"]), Nil{}, ""}
+            case _: ProjectViewFail{"a zero-word node has live field slots"}
+        case _:
+          setup = join_text(["Term fb[", Nat.show(pwords), "]; Term vt = (", pvalue, "); u64 vp = term_rfc(vt) ? ctr_take(e, vt, ", Nat.show(pwords), ", fb) : term_loc(vt);"])
+          base = "(term_rfc(vt) ? 0 : vp)"
+          release = join_text(["if (vp != 0) { spare_free(e, cls_fit(", Nat.show(pwords), "), vp); }"])
+          view_finish(setup, view_slots(pw, pslots, False{}, base, 0n, Nil{}), release)
+
+def view_node(+pvalue: String, +pkey: String, +pw: World) -> ProjectView:
+  match pw:
+    case World{ctx, constructors, families, cids}:
+      node = CLay.node_layout(ctx, pkey)
+      match node:
+        case CLay.NodeFailed{message}: ProjectViewFail{message}
+        case CLay.NodeFound{node}:
+          match node:
+            case CLay.Node{words, slots, packed}:
+              view_plan(packed, List.length(&2, CLay.CWord, words), slots, pvalue, pw)
+
+def project_view(+pvalue: String, +pconstructor: U32, +pw: World) -> ProjectView:
+  row = ctor_of(pconstructor, pw)
+  match row:
+    case None{}: ProjectViewFail{"BIR projects a constructor with no layout row"}
+    case Some{row}:
+      match row:
+        case BIR.ConstructorLayout{id, key, native, fields}:
+          match native:
+            case None{}: view_node(pvalue, key, pw)
+            case Some{marker}:
+              match intrinsic_marker(marker):
+                case True{}: ProjectViewFail{join_text(["the intrinsic constructor `", key, "` must be lowered to its primitive before C projection"])}
+                case False{}: view_node(pvalue, key, pw)
 
 def project_plan(+pplan: CLay.UnfillResult, +pw: World, +pnode: CLay.Node, +playout: CLay.Layout, +poffset: Nat, +pvalue: String) -> Part:
   match pplan:
