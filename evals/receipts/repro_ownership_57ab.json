@@ -1,0 +1,194 @@
+{
+ "schemaVersion": 1,
+ "kind": "REPRO_OWNERSHIP_MINIMAL",
+ "status": "MEASURED_520_DIAGNOSTIC",
+ "scope": "Minimal diagnostic ownership witnesses only; NOT a narrowed acceptance corpus, NOT the 13 exports and NOT the 24-case matrix. Full acceptance stays all 13 exports, original corpus and all 24 cases unchanged.",
+ "worktree": {
+  "path": "/private/tmp/bend-repro-ownership57ab",
+  "branch": "work/repro-ownership57ab",
+  "baseTip": "5328869a8aa81cc114107a28df8d26204cd72a34",
+  "artifactCommit": "branch work/repro-ownership57ab; the per-file sha256 pins below are the authority"
+ },
+ "invariant": {
+  "source": "tests/run/list_rebox_sum.c foreign effect heap.check",
+  "reading": "pages = a32_load(a32_at(e.mem, H_BUMP)); fail when before != 0 and pages > before + (QUANTUM >> PAGE_BITS)",
+  "pages": "1 page = PAGE_LEN 128 u64 = 1 KiB",
+  "quantum": "QUANTUM = min(CAP_WORDS 32768, 32 * PAGE_LEN 4096) = 4096 words = 32 pages = 32 KiB",
+  "meaning": "frontier high-water growth between two readings, not live bytes, RSS or retained-object count; KEEP_WORDS HOT/COLD/bank retention is invisible to H_BUMP; the warm-up reading passes before = 0",
+  "unchanged": "threshold, frees and warm-up convention are byte-identical to the original fixture; only the diagnostic string differs"
+ },
+ "historical": {
+  "receipt": "evals/receipts/foreign_qp57a4_5205478f.json",
+  "component": "5205478f22cc6dc7ea7de5b343e40b575044e0965a173c9c539a84be564646c9",
+  "emittedC": "/tmp/foreign-qp57a-4/list_rebox_sum.c",
+  "emittedCSha256": "1d59847a3227e2381316cd009c37446b8e2360547ba6113036368fc98534ed71",
+  "binarySha256": "a63c0ea563d019618bab84e6288865d82280deaeabcae76ab1689e936c32d391",
+  "observed": "emit exit 0, clang exit 0 with empty stderr, run exit 1, stdout 7\\n3, stderr 'bend: list reboxing retains heap pages'",
+  "emittedShape": "FID_320 cycle; FID_314 wrap; FID_315 rebox -> FID_1007; FID_1011 head_u32 arm; FID_1015 head_nat arm. Each arm projects with term_rfc(t) ? ctr_take(...) : term_loc(t); FID_1007 allocates a new Cons and seals fields; no arm releases the taken cell. Lines 11750-30560 of the emitted C contain 3 heap_alloc sites in the cycle chain and zero heap_free/spare_free/term_drop.",
+  "inferenceMagnitude": "seed 0 successor iteration allocates cons 2w + rebox cons 2w + Pair 2w + cons 2w + rebox cons 2w + one Pair seal redirect 1w = 11 words and frees none; 190000 measured iterations ~= 2.09M words ~= 16.7 MB ~= 16.3k pages of 1 KiB against 32 allowed. Exact bump was not recorded.",
+  "sourceHistory": "commit 59b3c490 adds arm_release 'if (tag_s != 0) spare_free(e, cls_fit(n), tag_s)' after arm field conversion; 5205478f predates it; fresh 9941352b has it as an ancestor. Causal sufficiency for the fresh result is NOT assumed."
+ },
+ "artifacts": {
+  "own_cons.bend": "ad628caf17d68e4ec7330502c48e9f0962173e07f866316108bec8557ab6c45f",
+  "own_cons.c": "b94e1aa78995c23c40a8922cd2c675685d63062ffba0a7ee6990ade8d9349ef1",
+  "own_cons.js": "5b20a9b0abf53df55feec3924354ce712f050007be5a1f8ac52e429b42742b33",
+  "own_rebox.bend": "3b9658f8bd3c51f0c55f83d92a57330bec013f8eea18a99bfce0f5eabf5f834b",
+  "own_rebox.c": "f2e75e1e02e9b9c7d3e88e54c4d1101decf748676fc828b98e4c2e19060192eb",
+  "own_rebox.js": "5b20a9b0abf53df55feec3924354ce712f050007be5a1f8ac52e429b42742b33",
+  "alias_whole_parent.bend": "aa8ee8a38efaa49e03f0669af49328d53dbd04a7311145167b783d7d1ed7df5b",
+  "run_ownership_repro.sh": "e1927784794ce41421a7a79011e7f434ebcd9d40aea8fc0368eea2591964cb02"
+ },
+ "image": {
+  "candidate": "/private/tmp/bend-root57ab-go/checkpoints/root57ab-go-art.js",
+  "candidateSha256": "9941352b639d1f31e381640f77e015e252d601b3815d9f36ea8614496bf50cb4",
+  "candidateHost": "/private/tmp/bend-root57ab-go/evals/candidate_host.ts",
+  "candidateHostSha256": "2596997a2a578cb371e11e8cb0858e4ebd9f53b1679d2814f3068a0db29613e4",
+  "parser": "/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+  "parserSha256": "0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b",
+  "base": "/private/tmp/bend-root57ab-go/bend2/base.bend",
+  "baseSha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+  "runtimeC": "/private/tmp/bend-root57ab-go/bend2/selfhost/c_runtime.c",
+  "runtimeCSha256": "478c1ba7d0d0626c1927d11c4af3b3d4cef520db41afd8722ebf55d5050769c3",
+  "node": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+  "tag": "../bend2/selfhost/backend_ir.SourceFile",
+  "target": "c",
+  "physical": "f4fdfcc9",
+  "backend": "f17c157b"
+ },
+ "measuredImage": {
+  "note": "Accepted historical image; this is a new reduced diagnostic input, not a rerun of the original failure.",
+  "candidate": "/private/tmp/bend-fir-root-aa9/checkpoints/root-final4-art.js",
+  "candidateSha256": "5205478f22cc6dc7ea7de5b343e40b575044e0965a173c9c539a84be564646c9",
+  "candidateHost": "/private/tmp/bend-fir-root-aa9/evals/candidate_host.ts",
+  "candidateHostSha256": "a56f57e32d0fa475a0564f18a3930137a084cb6a4ce49b05f496e76331d2a22a",
+  "parserSha256": "0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b",
+  "base": "/private/tmp/bend-fir-croot57ab/bend2/base.bend",
+  "baseSha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+  "runtimeC": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/c_runtime.c",
+  "runtimeCSha256": "478c1ba7d0d0626c1927d11c4af3b3d4cef520db41afd8722ebf55d5050769c3",
+  "out": "/tmp/ownership-520-go2"
+ },
+ "guardian": {
+  "mechanism": "one outer evals/heavy_gate.ts deadline over the whole owned tree; no per-stage wrapper, no independent lock",
+  "memoryMiB": 8192,
+  "rssMiB": 8192,
+  "pollMs": 10,
+  "timeoutMs": 600000,
+  "lease": "driver refuses without HEAVY_GATE_LEASE_TOKEN"
+ },
+ "commands": {
+  "outer": "env CANDIDATE=/private/tmp/bend-root57ab-go/checkpoints/root57ab-go-art.js CANDIDATE_HOST=/private/tmp/bend-root57ab-go/evals/candidate_host.ts PARSER=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js BASE=/private/tmp/bend-root57ab-go/bend2/base.bend RUNTIME_C=/private/tmp/bend-root57ab-go/bend2/selfhost/c_runtime.c NODE=/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node OUT=/tmp/ownership-57ab TARGET=c bun /private/tmp/bend-repro-ownership57ab/evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 --timeout-ms 600000 -- /bin/sh /private/tmp/bend-repro-ownership57ab/evals/repro_ownership/run_ownership_repro.sh",
+  "emit": "node --experimental-strip-types --max-old-space-size=3072 CANDIDATE_HOST --candidate=CANDIDATE --parser=PARSER --source-tag=../bend2/selfhost/backend_ir.SourceFile SOURCE -o OUT/NAME.c --base=BASE --runtime-c=RUNTIME_C",
+  "clang": "clang -std=c11 -O0 -ferror-limit=0 -pthread -lm -o OUT/NAME.cbin OUT/NAME.c",
+  "run": "OUT/NAME.cbin",
+  "measuredOuter": "env CANDIDATE=/private/tmp/bend-fir-root-aa9/checkpoints/root-final4-art.js CANDIDATE_HOST=/private/tmp/bend-fir-root-aa9/evals/candidate_host.ts PARSER=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js BASE=/private/tmp/bend-fir-croot57ab/bend2/base.bend RUNTIME_C=/private/tmp/bend-fir-root-aa9/bend2/selfhost/c_runtime.c NODE=/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node OUT=/tmp/ownership-520-go2 TARGET=c bun /private/tmp/bend-repro-ownership57ab/evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 --timeout-ms 600000 -- /bin/sh /private/tmp/bend-repro-ownership57ab/evals/repro_ownership/run_ownership_repro.sh"
+ },
+ "expected": {
+  "magnitudesAreInference": true,
+  "own_cons": "valid affine shape, 2-word Box per iteration consumed once by a field-returning match; correct: '3', warm frontier P1, after frontier P2 with P2 <= P1 + 32, 'bounded'; on the historical missing-release emitter 2 words/iteration predicts ~297 pages over the window (inference, not a promised outcome)",
+  "own_rebox": "valid affine shape, Cons<&2, Value> identity rebuild then head_u32; correct: '7', P1, P2 <= P1 + 32, 'bounded'; the old shape would add 4 words/iteration, ~593 pages (inference)",
+  "jsControl": "same sources, values only: '3'/'7', then 0, 0, 'bounded'"
+ },
+ "sequencing": {
+  "fixedWithMain": "GRANT_520_NEXT after the current Native Pass1 literal three-case terminal; then exactly these two C fixtures on the accepted historical 5205478f image (new reduced input, not a rerun of the original failure), same command and unchanged bound; then Root diagnostic 161a build slot. The alias witness is not run on 520; it waits for a fixed fresh image. Hold until Main explicit GO; no independent lock."
+ },
+ "separation": {
+  "memoryRetention": ["evals/repro_ownership/own_cons.bend", "evals/repro_ownership/own_rebox.bend", "tests/run/list_rebox_sum.bend"],
+  "aliasWholeParentObservable": {
+   "evals/repro_ownership/alias_whole_parent.bend": "9 (prepared, opt-in CASES=alias_whole_parent; Many caller +p to one field-projecting and one whole-parent Lone consumer)",
+   "evals/c_target_repeat_data.bend": "8",
+   "evals/c_target_alias_paths.bend": "8",
+   "evals/c_target_region_leave_repeat.bend": "7,6",
+   "evals/c_target_disjoint_type_cells.bend": "5",
+   "evals/c_target_clo_field.bend": "7 (historical run REJECTED_UNGUARDED)"
+  },
+  "rule": "pages judge frontier growth only; alias/whole-parent/residual-liveness/clo-copy contracts are judged by printed values and absence of double free. The memory witnesses use a fresh temporary and one Lone consumption, so they cannot be excused as invalid affine input."
+ },
+ "historicalCrossCheck": {
+  "status": "OBSERVED_GENERIC_MISSING_ARM_RELEASE_IN_520_ARTIFACTS",
+  "detail": "Every spare_free call site in the surviving 520 emitted artifacts is one of five runtime helpers; no user match arm releases its taken node. c_target_nested_adt.c FID_316 is the user sum(Pt{x,y}) body (two-word two-U32 node, one match, U32.add) and never releases b0s/lv0; lines 11700-12000 have zero spare_free/heap_free/term_drop. Its clang failed for unrelated duplicate names, so it never ran; the dynamic failure is still list_rebox_sum.",
+  "artifact": "/tmp/c_target_nested_adt.c",
+  "artifactSha256": "bebca56df07acea815c893367138e3bdfcdb60ba5f171b0d10835d2b4efb4e6a",
+  "emitReceipt": "/tmp/c-target-matrix-c2-5205478f/c_target_nested_adt.emit.stdout",
+  "emitReceiptSha256": "a572d63d1811655f48df08e4baff6013b1672a944dae36dc5d86cb1e6903ac0d",
+  "fixture": "evals/c_target_nested_adt.bend",
+  "fixtureSha256": "704014f43ec2fb031640e41fad7a0960ca189a57ddcfaab4c198ef00a20be6cc",
+  "sharedRuntimeSites": ["FID_ENTER", "audio write", "marshal request", "array node", "audio buffer"]
+ },
+ "emitBlocker": {
+  "status": "OBSERVED_COMMON_ON_9941352b",
+  "detail": "A plain Base+IO matrix fixture with no inline-value syntax fails before clang with the same 'BIR continuation reads a value that is not in scope', so this is not an ownership-shape result.",
+  "fixture": "/private/tmp/bend-repro-inline57ab/evals/c_target_array_nat.bend",
+  "fixtureSha256": "1f5d1ebc34537453b7733daff35973d09fb919ccf7af18c98fe948858d8f1462",
+  "stderr": "/private/tmp/bend-repro-inline57ab/checkpoints/repro-inline-values57ab-v3/c_target_array_nat.emit.stderr",
+  "stderrSha256": "cb9876aa702f1c23f8cef81014e33ce83ab49594a072920680f2e0b81bad2ca4",
+  "gateReport": "/private/tmp/bend-repro-inline57ab/checkpoints/repro-inline-values57ab-v3/c_target_array_nat.emit.gate.report.json",
+  "gateReportSha256": "4fc69da5ebc7ca5815902da7d06279fb1aadbd0d6aca793775bc66130afcfe9f",
+  "gate": "phase complete, ownedTreeStopped true, commandExitCode 1, elapsedMs 19118",
+  "ladderReceipt": "/private/tmp/bend-repro-inline57ab/evals/receipts/repro_inline57ab_ladder.json",
+  "ladderReceiptSha256": "b3445add9af69b6edcf76533a4ad009d32a1b115936610640c9ff69842739c36"
+ },
+ "rejectedAttempt": {
+  "status": "REJECTED_INPUT_DEFECT_BEFORE_MEASUREMENT",
+  "out": "/tmp/ownership-520-go1",
+  "detail": "The first corrected-shape attempt never emitted: own_cons checking failed 'invalid use quantity for n' (mk used n twice as Lone) and own_rebox 'invalid use quantity for before' (a Lone do-binding printed and passed). These are input quantity defects, not ownership results. Fixed by mk(+n: U32) and +before : U32; the shapes and bound did not change.",
+  "ownConsStderrSha256": "fb96a755573a4816690a3bd37e6963601b5777990fecf24114b656eb7442b767",
+  "ownReboxStderrSha256": "ec9fb8b7d83cdf7795ed9ce177c8675a8aa01d9e44864a69940343f831de4de5"
+ },
+ "result": {
+  "status": "MEASURED_520_DIAGNOSTIC_BOTH_FAIL_BOUND",
+  "gate": {
+   "status": "FAIL",
+   "reason": "command_exit",
+   "reportPhase": "complete",
+   "ownedTreeStopped": true,
+   "commandExitCode": 1,
+   "commandSignal": 0,
+   "supervisorExitCode": 1,
+   "elapsedMs": 42743,
+   "peakRssBytes": 1369505792,
+   "peakFootprintBytes": 1411545616,
+   "memoryLimitBytes": 8589934592,
+   "rssLimitBytes": 8589934592,
+   "timeoutMs": 600000,
+   "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792919554434-c4b686d1a9641b6a.json",
+   "reportSha256": "553fd89dcc698957689447ce463b981f0452633e510e9239046b91671f0607fb",
+   "note": "FAIL/command_exit is the expected witness failure (the driver exits 1 because each measured run trips the unchanged bound), not a harness failure: the report is complete and the owned tree stopped."
+  },
+  "own_cons": {
+   "emitExit": 0,
+   "clangExit": 0,
+   "runExit": 1,
+   "stdout": "3\n97\n",
+   "stderr": "bend: minimal ownership retains heap pages",
+   "stdoutSha256": "5ac1283593ea768269b3e34929a37c4efc617040662c480d8b7e53e36edf5f36",
+   "stderrSha256": "d3048f3689dada2e5f250cdef891d9934a306630a19697fcb14ce07ffe3e1986",
+   "emittedC": "/tmp/ownership-520-go2/own_cons.c",
+   "emittedCSha256": "7be9471f76c5ec24f26c0680dc66374630d3e805fb295669c02d13281d94eb3b",
+   "emittedCBytes": 863882,
+   "binarySha256": "564538654f666b6ea27d2dcc01fe7836b694c4774245af71358b534c6f8046a3",
+   "warmPages": 97,
+   "allowedCeiling": 129,
+   "failureMeans": "second reading >= 130 pages (the foreign function aborts before returning it; exact P2 not printed and not guessed)",
+   "emittedShape": "FID_315 take arm lines 11814-11840: term_rfc(lv0) ? ctr_take(lv0,2,..) : term_loc(lv0), two field projections, return; no release of b0s. Zero spare_free/heap_free/term_drop in user region 11700-12000."
+  },
+  "own_rebox": {
+   "emitExit": 0,
+   "clangExit": 0,
+   "runExit": 1,
+   "stdout": "7\n97\n",
+   "stderr": "bend: rebox rebuild retains heap pages",
+   "stdoutSha256": "cc9393f8ff3334779ac6158a9a47a8330ace82cbd79589c647889ef54420ffad",
+   "stderrSha256": "5e083ae82edc24eeb4ce87bd4d54d1a4f26f4c65f9b245becc8ea7314c5a8702",
+   "emittedC": "/tmp/ownership-520-go2/own_rebox.c",
+   "emittedCSha256": "3cf69a8cc8b462d4cf51bab5a3e6e504dce2f7ea536bdac40cd10f51231aca72",
+   "emittedCBytes": 870581,
+   "binarySha256": "38b0b5d19f5cb80bbffeac00ed7546447d7a3b69c671939b9f86efa920136f9c",
+   "warmPages": 97,
+   "allowedCeiling": 129,
+   "failureMeans": "second reading >= 130 pages (not printed, not guessed)",
+   "emittedShape": "FID_490 projects a Cons head/tail without releasing b0s; FID_492 rebuilds with heap_alloc(cls_fit(2)) + rfc_seal; zero spare_free/heap_free/term_drop in user region 14400-15600."
+  },
+  "interpretation": "OBSERVED: both reduced valid-affine inputs reproduce the historical retained-frontier failure on 520 with the unchanged bound, 97 warm pages and the first failing reading above 129. The one 2-word node per iteration (own_cons) and the 4-word Cons rebuild (own_rebox) are sufficient; sums, &2, closures and caller residual use are not required. The measured runs do not prove which source change causes the failure; the missing release is observed in the emitted arm, and its causal sufficiency for the fresh image is untested."
+ }
+}
