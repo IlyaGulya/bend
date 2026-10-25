@@ -360,5 +360,34 @@
     "integrated 23-case matrix",
     "native admission",
     "memory-leak bound (list_rebox remains open)"
-  ]
+  ],
+  "emittedHelperAudit": {
+    "bend_fail": {
+      "physicalSitesBefore": 16,
+      "physicalSitesAfter": 0,
+      "disposition": "replaced by runtime err_fail(const char*) with no Env argument; all sites are void guard statements"
+    },
+    "err_fail": {
+      "runtimeDefinition": "bend2/selfhost/c_runtime.c static void err_fail(const char* msg)",
+      "proofCReferences": 87,
+      "termTypedUse": false
+    },
+    "bend_bool": {
+      "physicalSites": 3,
+      "candidateDefinition": "repro C line 2339",
+      "disposition": "already defined in candidate preamble; unchanged"
+    },
+    "bend_hastag": {
+      "physicalSites": 1,
+      "candidateDefinition": "repro C line 2313",
+      "disposition": "already defined in candidate preamble; unchanged"
+    },
+    "bend_tuple": {
+      "physicalSites": 1,
+      "candidateDefinition": "repro C line 2327",
+      "disposition": "already defined in candidate preamble; unchanged"
+    },
+    "unitStub": "test-only static Term bend_fail helper removed; generated proof C has 0 bend_fail references",
+    "protected": "no runtime/comp/c_backend/kernel edit; no generated C patch; guards remain fail-closed"
+  }
 }
