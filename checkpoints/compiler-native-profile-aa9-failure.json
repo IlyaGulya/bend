@@ -103,15 +103,12 @@
     "countsAsCompliantResult": false
   },
   "fixtureStatus": {
-    "status": "corrected source-validated",
-    "program": "evals/native_stage_profile_emit_fixture.bend data copied from canonical evals/c_backend_smoke.bend",
-    "runtime": "evals/c_backend_runtime.bend",
-    "typedWitness": "nonempty EmitSuccess 1 / empty success 0 / failure 2",
-    "executed": true,
-    "result": "EmitFailure (status 2); no EmitSuccess",
-    "runtimeFamilies": "added for all 15 runtime constructors after source-evidenced Nil failure",
-    "jsProven": true,
-    "nativeRunWithFixedFixture": false
+    "program": "canonical c_backend_smoke data copied as passive data",
+    "runtime": "real c_backend_runtime.bend",
+    "authoritativeMetadata": false,
+    "jsProven": false,
+    "nativeRunWithFixedFixture": false,
+    "status": "BLOCKED_ON_AUTHORITATIVE_BIR"
   },
   "compliantNodeAttempt": {
     "status": "EMIT_FAILURE_WITNESSED",
@@ -214,14 +211,20 @@
       "jsStackBytes": 67108864,
       "approvedSourceCapBytes": 268435456,
       "nativeCapsChanged": false,
-      "result": "EMIT_SUCCESS",
-      "steps": 26237,
-      "status": "source diagnostic; not a native run"
+      "result": "EMIT_FAILURE",
+      "message": "no family declares constructor Nil",
+      "steps": 2,
+      "log": "/tmp/public-emit-probe-failure.log",
+      "logSha256": "6fbaf9fb43c6fa79c7bd2a4024f9e3bb95222c9d21d715ce90f7ede98065e6c2",
+      "status": "public source diagnostic; exposes exact typed failure; not a native run"
     },
     "reproducedOriginalFailureLog": {
       "path": "/tmp/run-emit-js-probe.log",
       "sha256": "f117ebc1ace1be1ca291e0291af09fe111e9419bf65c7490a7ec194724544f5c",
       "message": "no family declares constructor Nil"
-    }
+    },
+    "status": "BLOCKED_ON_AUTHORITATIVE_RUNTIME_FAMILY_METADATA",
+    "afterFamilyAttempt": "REJECTED: hand-built one-family-per-ctor arms with DescriptorNull fields, None-native ConstructorLayouts and unrestricted quantities are not authoritative typed metadata; removed. No EmitSuccess claim.",
+    "correctedFixtureStatus": "NOT ACCEPTED: needs a real checked source -> canonical FIR/lowering -> BIR (or canonical generated fixture) with authoritative runtime family/constructor metadata. The copied smoke BIR data is retained only as the failing public diagnostic input."
   }
 }

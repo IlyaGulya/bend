@@ -80,38 +80,11 @@ def runtime_ctors() -> List<&2, BIR.ConstructorLayout>:
     ctor(14, "Some", 1n)
   ]
 
-def runtime_field() -> BIR.DescriptorField:
-  BIR.DescriptorField{None{}, BIR.Unrestricted{}, BIR.DescriptorNull{}}
-
-def runtime_arm(key: String, arity: Nat) -> BIR.DescriptorArm:
-  BIR.DescriptorArm{key, List.replicate(BIR.DescriptorField, arity, runtime_field())}
-
-def runtime_family(key: String, name: String, arm_key: String, arity: Nat) -> BIR.Family:
-  BIR.Family{key, name, None{}, 0n, 0n, [runtime_arm(arm_key, arity)]}
-
 def u32_family() -> BIR.Family:
   BIR.Family{"U32", "U32", Some{"U32"}, 0n, 0n, Nil{}}
 
-def runtime_families() -> List<&2, BIR.Family>:
-  [runtime_family("Nil", "Nil", "Nil", 0n),
-   runtime_family("Con", "Con", "Con", 2n),
-   runtime_family("Tuple", "Tuple", "Tuple", 2n),
-   runtime_family("SNil", "SNil", "SNil", 0n),
-   runtime_family("SCon", "SCon", "SCon", 2n),
-   runtime_family("WCon", "WCon", "WCon", 2n),
-   runtime_family("Emit", "Emit", "Emit", 0n),
-   runtime_family("Halt", "Halt", "Halt", 0n),
-   runtime_family("Exit", "Exit", "Exit", 0n),
-   runtime_family("Fail", "Fail", "Fail", 0n),
-   runtime_family("Done", "Done", "Done", 1n),
-   runtime_family("Ready", "Ready", "Ready", 1n),
-   runtime_family("Wait", "Wait", "Wait", 1n),
-   runtime_family("None", "None", "None", 0n),
-   runtime_family("Some", "Some", "Some", 1n),
-   u32_family()]
-
 def program() -> BIR.Program:
-  BIR.Program{[code_main(), code_add(), code_cap(), code_zero()], [decl_main(), decl_add(), decl_zero()], runtime_ctors(), runtime_families(), Nil{}, BIR.Executable{BIR.DescriptorRef{"U32", Nil{}}}}
+  BIR.Program{[code_main(), code_add(), code_cap(), code_zero()], [decl_main(), decl_add(), decl_zero()], runtime_ctors(), [u32_family()], Nil{}, BIR.Executable{BIR.DescriptorRef{"U32", Nil{}}}}
 
 def runtime() -> String:
   Runtime.runtime_source()

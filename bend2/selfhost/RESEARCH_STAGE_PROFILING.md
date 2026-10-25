@@ -182,24 +182,26 @@ through Emitter group 12, and the host failed the phase instead of dropping it.
 The run took 217.8 s, peak RSS 6,606,716,928 B (6.607 GB / 6.153 GiB), below
 the 8 GiB guard, with four phase rows (template 2, checker 3, template-pending 2,
 emitter 3 advances; group 12 observed once). This is a real canonical
-`EmitFailure`, not an OOM/stack-cap failure and not a profiling PASS. The exact
-failure message was recovered separately through JS generated Emit over the same
-canonical smoke BIR data/runtime: **`no family declares constructor Nil`**. The
-old smoke metadata predates the current sharing schema: it declares runtime
-constructor layouts but no family arm for `Nil` (or its siblings). The diagnostic
-fixture now adds `runtime_families()` arms for all fifteen runtime constructors
-with their declared arities, then the U32 family. JS generated Emit then returned
-`EMIT_SUCCESS` after 26,237 `emitter_chunk(64n)` steps. The reproducible public
-diagnostic is `evals/native_stage_profile_emit_probe.ts` (source
-`evals/native_stage_profile_emit_probe.bend`):
-`node --stack-size=65536 --experimental-strip-types evals/native_stage_profile_emit_probe.ts`.
-The 64 MiB JS codegen stack is within the approved 256 MiB source cap; no native
-worker or guard limit was changed. It prints the exact `EmitFailure.message` on
-failure and `EMIT_SUCCESS` on success; it is not a native run. This is a JS proof of the
-corrected fixture, not a new native run; the performed Node native run remains
-the pre-fix `EmitFailure` evidence. No native rerun or cap change was made.
-The native codegen/runtime prerequisite from the rejected Bun attempt is now
-established under Node; actual Emitter workload success remains OPEN.
+`EmitFailure`, not an OOM/stack-cap failure and not a profiling PASS. The exact failure message is recovered on the public diagnostic surface
+`evals/native_stage_profile_emit_probe.ts` (source
+`evals/native_stage_profile_emit_probe.bend`): it prints
+`no family declares constructor Nil` for the copied canonical smoke BIR data
+and real runtime. Run it with
+`node --stack-size=65536 --experimental-strip-types evals/native_stage_profile_emit_probe.ts`;
+the 64 MiB stack is within the approved 256 MiB source cap and no native cap is
+changed.
+
+A hand-built family-per-constructor patch was attempted and then rejected:
+its `DescriptorNull` fields, `None`-native constructor layouts and separate
+families named after each constructor are not authoritative typed BIR metadata,
+even though they made the renderer return success. That metadata has been
+removed. The fixture is **BLOCKED ON AUTHORITATIVE BIR**: it needs a small real
+checked source driven through canonical FIR/lowering to a BIR/Emitter request,
+or another canonical generated fixture with complete semantically correct
+runtime family/constructor metadata. The copied smoke data is retained only as
+the failing public diagnostic input. No valid BIR, native Emitter workload, or
+EmitSuccess is claimed. The performed Node native run remains the pre-fix
+`EmitFailure` evidence; no native rerun or cap change was made.
 
 Native coarse rows were read from the preserved diagnostic trace
 `/tmp/signature-publish57z/evidence/comparison/A1.stderr.log`

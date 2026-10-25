@@ -150,7 +150,7 @@ async function build(o: Options) {
       execPath: process.execPath, execArgv: process.execArgv, platform: process.platform, arch: process.arch,
       workerLimits: {stackSizeMb: 256, maxOldGenerationSizeMb: 3072}},
     phases: phases.map(row => ({name: row.name, values: row.values, unitsByField: row.unitsByField, details: row.details})),
-    note: 'profile-only native driver over the real generated Template/Checker/Emitter Run machines; the Emitter fixture uses the canonical c_backend_smoke BIR data (including runtime family arms) and the real c_backend_runtime source, requires a non-empty EmitSuccess C result, and classifies only its outer request group; this is not a compiler workload, a source-substage span or a source-call CPU claim',
+    note: 'profile-only native driver over the real generated Template/Checker/Emitter Run machines; the Emitter fixture uses the canonical c_backend_smoke BIR data and the real c_backend_runtime source, but its runtime family metadata is not yet authoritative; the public probe surfaces the typed EmitFailure and no EmitSuccess is claimed; this is not a compiler workload, a source-substage span or a source-call CPU claim',
   };
 }
 
