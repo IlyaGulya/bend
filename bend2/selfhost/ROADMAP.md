@@ -1,7 +1,7 @@
 # Bend selfhost roadmap
 
 Persistent backlog for the current integration line (`work/fir-ir-integrated57ab`).
-Status snapshot reviewed through `c1676064`; measured component `5205478f`
+Status snapshot reviewed through `51c09c2a`; measured component `5205478f`
 predates the physical fixes `655754cf` / `5122fbd8` and the accepted parser
 repair. Detailed evidence and reasoning live in the linked notes. This index
 does not replace a receipt.
@@ -57,7 +57,7 @@ artifact is claimed.
 | Guarded target-matrix runner | Integrated explicit Node 23.11/V8 and parser binding, artifact hashes, fresh log directories and complete/stopped/effective-exit enforcement for each emit/clang/run stage. Diagnostic C and JS `wide_record` smokes both print `133`; all 17 default cases remain. Earlier smoke used a stale guardian and is explicitly rejected | `84b8792a` / `aaaecff1`; `evals/receipts/guarded_runner_083e_smoke.json`, `9556e675`; rejected record `runner_guard_smoke_5205478f.json` | run the full unchanged matrix only after the complete ownership source batch and a fresh component; diagnostic smoke is not C-backend acceptance |
 | Official TS producer / full native build, traced | 11,164 native-bridge bodies; book heap 1,669,811,048 B; reaches pass 6; OOM; no native artifact | Main-scoped traced run; scope not verified by note | per-structure decomposition; native artifact within the guard |
 | Profiling (actual code) | Producer and stage adapters integrated: scoped wall/CPU/memory, optional statistical samples, crash checkpoints, failure unwind and artifact-bound attribution. Producer smoke 10/10; merged stage behavioral tests 15/15, 49 assertions. Typed request/chunk attribution is sampling, not exact substage time; retained bytes and full-root overhead remain OPEN | producer `3cd1adcd` / `0b0b9c9f` / `d1bbca4e`; stage `68cde43a`..`754ff301`, behavioral receipt `13db7c2c` after deleting the incidental static test | finish canonical-input native Emitter profiling and fresh full-input A/B; do not treat output generation or fabricated BIR metadata as workload acceptance |
-| Native profiling followup | Canonical-input native build remains NOT PASS: worker heap OOM after 101,984 ms, no native artifact/phase/profile; old internal boundary unknown. Diagnostic source is now integrated, including durable load/check/codegen/pass checkpoints and exact worker-run binding. Merged guarded tiny suite passes: profile-on/off C byte-identical (81,153 B), clang/run prints `7`, two real codegen pass spans and nine observations; failure/worker-exit paths verified | `checkpoints/compiler-native-profile-aa9-canonical-final.json`; `compiler-profile-tiny-suite-merged-6c7e.json`, `fe027d57`; Node 23.11, worker 3072/256 MiB, guardian 8 GiB/10 ms/600 s | full native Emitter workload, native label execution, retained/live-byte attribution and full-input overhead remain OPEN; tiny producer execution is not new BIR→C acceptance |
+| Native profiling followup | Merged durable instrumentation localizes a new `OLDPINNED_DIAGNOSTIC` worker OOM: load, validation and C reachability completed; `c-pass-1` remains open inside `compile_book`. Guarded FAIL after 154,282 ms, peak RSS 3,472,670,720 B / footprint 3,627,897,496 B, complete/stopped. No clang/native artifact or native phase rows. Earlier 101,984 ms OOM boundary remains unknown. Tiny profile-on/off execution evidence is unchanged | `checkpoints/compiler-native-profile-merged-03d0-durable.json`, `51c09c2a`; frozen input pins in `native-stage-profile-merged-pins.json`; tiny suite `compiler-profile-tiny-suite-merged-6c7e.json`, `fe027d57` | producer memory fix within the original limits, successful native Emitter workload/label execution, retained/live-byte attribution and current-image full-input overhead remain OPEN; diagnostic attribution is not C-backend acceptance |
 | Law documents | `FIR_LAWS.md` and `BIR_LAWS.md` are written, reviewed, integrated at `2fcdbaea`, and linked from `ARCHITECTURE.md`; seven written law tasks CLOSED; proof/behavior obligations remain OPEN | `6a7cfc59`/`4417d18a` (FIR), `0695e763`/`8311d6a4`/`2f0e8d3b`/`2fcdbaea` (BIR) | obligation triage; no behavior/proof acceptance |
 
 Table entries are status, not acceptance checkboxes. The current full-root
@@ -197,6 +197,14 @@ Deliverables:
   a terminal result. Merged guarded tiny suite at `fe027d57` passes; peak RSS
   276,316,160 B / footprint 202,980,448 B, elapsed 6,521 ms. This neither
   retroactively attributes the old OOM nor proves the full native workload.
+  A subsequent full diagnostic attempt with these merged checkpoints
+  (`51c09c2a`) now localizes **that run** to `compile_book/c-pass-1`.
+  `book_load`, `book_valid` and `c-reachability` completed; the worker reached
+  its 3072 MiB heap limit before clang or native execution. The workload is
+  explicitly `OLDPINNED_DIAGNOSTIC`, with the prior canonical inputs and
+  generated machines authenticated by hash; it is not the new C candidate.
+  Boundary heap deltas are not allocation or retained bytes, and the open
+  pass has no completed wall/CPU measurement. No unchanged retry is planned.
 
 Acceptance:
 - [ ] Clean target output is byte-identical with profiling on and off (JS and C
