@@ -318,12 +318,12 @@ if (isMainThread && isEntry) {
   await guardHeavyGate(fileURLToPath(import.meta.url), {label: 'Bounded native stage profile build'});
   const o = options();
   const worker = new Worker(new URL(import.meta.url), {
-    workerData: o,
+    workerData: {...o, __nativeStageProfileWorker: true},
     resourceLimits: {stackSizeMb: 256, maxOldGenerationSizeMb: 3072},
   });
   await superviseProfileWorker(worker);
 
-} else if (!isMainThread) {
+} else if (!isMainThread && (workerData as any)?.__nativeStageProfileWorker === true) {
   try {
     parentPort!.postMessage(await build(workerData as Options));
   } catch (error) {
