@@ -59,6 +59,23 @@ complete/stopped/exit 0, with exact expected output. Guarded stage sum
 Receipt: `evals/receipts/c_matrix_db147cba_26.json`.
 Full JS corpus, byte fixedpoint and native HOST remain open; the preceding
 broader C/JS foreign pairs and C-library pass below belong to `667e7f33`.
+A separate stage1 `30bef0b0` diagnostic through `candidate_host` with profiling
+and no explicit stack flag fails during `parse-import-fuel` in
+`String.from_list` (`$b293`), before checking. Receipt:
+`evals/receipts/stage1_30bef0b0_default_stack.json`. That is not the prior
+bootstrap worker's 256 MiB-stack execution and does not reclassify its timeout.
+
+Immediate acceptance followups:
+- [ ] Localize/fix full-bootstrap `stage-two-check` cost under the unchanged
+  600 s deadline, complete stage2 and compare bytes without narrowing fixtures.
+- [ ] Minimize/fix the selfhost-emitted JS default-stack `String.from_list`
+  failure; keep host CLI and producer/worker policies distinct.
+- [ ] Minimize the native working-set interaction now localized to the actual
+  `files()` transport. The same56-entry literal completes in isolation but its
+  first-pass heapUsed boundaries grow 30,213,600 → 2,213,765,616 B.
+  These samples are not allocated or retained bytes, nor a minimal OOM.
+  Receipts: `evals/receipts/native03d0_fine_files_oom.json` and
+  `evals/receipts/native03d0_files_isolated.json`; details: `REPRO_NATIVE_PASS1.md`.
 The seed host carrier now uses the native loader's actual nominal
 `../bend2/selfhost/backend_ir.SourceFile` tag, shared by the bootstrap gate
 instead of a bare-name assumption. A loader-authority diagnostic and real JS

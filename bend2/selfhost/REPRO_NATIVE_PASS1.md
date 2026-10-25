@@ -230,7 +230,7 @@ committed driver and were **not run** in this slot. They would add per-definitio
 `prepare`/`release` slopes and the once-tail-inlining growth term; they do not
 shrink the frozen acceptance corpus, exports or matrix.
 
-## Unknowns
+## Unknowns in the original literal/coarse runs (later controls below)
 
 - No per-definition heap/prepare series exists for the 03d0 book.
 - The fixture's nested non-list constructor term and its large string/list
@@ -275,3 +275,22 @@ that the list is minimal, that `program()`/`runtime()` are harmless, or that a
 different historical full-native-root OOM has the same cause. Isolating the
 actual56-entry literal is now a source-backed experiment rather than scaling
 the unrelated `List<Nat>` proxy.
+
+### Exact files-body isolation: completes, but with large codegen heap
+
+`evals/receipts/native03d0_files_isolated.json` preserves the next control:
+the exact 279,909 B body of that56-entry `files()` list, byte-for-byte, becomes
+one pure `main()` with only original Base/BIR-schema imports. No fabricated BIR
+metadata or changes to the full acceptance corpus are involved.
+
+The same Node23.11 / 3,072 MiB old generation / 256 MiB stack policy completes
+load, full validation (543 events) and two `compile_book` passes. Returned C:
+3,470,450 B; no clang/native execution was attempted. Guardian PASS,
+complete/stopped, 10,320 ms, max sampled RSS 2,811,691,008 B / footprint
+2,932,953,168 B.
+
+Its first-pass heapUsed boundaries are 30,213,600 → 2,213,765,616 B. This is
+large codegen working-set evidence for the actual transport structure, not
+retained/live or allocated-byte attribution. It is also **not an isolated OOM**
+or a minimal failing input. It does not prove that adding these samples to
+the full run explains that OOM; overlapping lifetimes and GC remain unmeasured.
