@@ -68,6 +68,9 @@ static Term phys_view_probe_run(Env e, Term* f, IoWork* w) {
   Term wrap_b_value = term_pak(CID_WRAPE, 1);
   Term flags_value = (Term)f[13];
   if (term_aux(flags_value) != CID_FLAGSS) { err_fail("view probe: foreign FlagsS argument is not the real runtime constructor"); }
+  Term char_leaf = (Term)f[14];
+  u64 char_tag = term_tag(char_leaf);
+  if (char_tag != TAG_ARR && char_tag != TAG_BUF) { err_fail("view probe: foreign Array<Char> argument is not an array or BUF value"); }
 
   Term r0 = /*@@r0@@*/;
   Term r1 = /*@@r1@@*/;
@@ -117,11 +120,13 @@ static Term phys_view_probe_run(Env e, Term* f, IoWork* w) {
   Term r41 = /*@@r41@@*/;
   Term r42 = /*@@r42@@*/;
   Term r43 = /*@@r43@@*/;
+  Term r44 = /*@@r44@@*/;
+  Term r45 = /*@@r45@@*/;
 
   if ((u32)r0 != 3 || (u32)r1 != 4) { err_fail("view probe: Pair fields wrong"); }
   if (term_aux(r2) != 14u) { err_fail("view probe: Pt hastag is not canonical True"); }
   if ((u32)r3 != 1u) { err_fail("view probe: Seg inline Pt.x wrong"); }
-  if (term_aux(r4) != 34u || term_peek(e.mem, r4) != 5u) { err_fail("view probe: Seg Fl wrong"); }
+  if (term_aux(r4) != CID_FLS || term_peek(e.mem, r4) != 5u) { err_fail("view probe: Seg Fl wrong"); }
   if (r5 != box_child) { err_fail("view probe: BoxP consume lost the child"); }
   if (term_aux(r6) != 15u) { err_fail("view probe: Unit copy wrong"); }
   if (term_tag(r7) != TAG_BUF || (u32)blk_cls(r7) != 3 || blk_read(e.mem, false, blk_loc(e.mem, r7), 0) != 7 || blk_read(e.mem, false, blk_loc(e.mem, r7), 7) != 7) { err_fail("view probe: array low half Term view wrong"); }
@@ -165,6 +170,14 @@ static Term phys_view_probe_run(Env e, Term* f, IoWork* w) {
   if (term_aux(r40) != 28u || term_aux(r41) != 29u) { err_fail("view probe: packed enum unfill wrong"); }
   if (term_aux(r42) != CID_FALSE) { err_fail("view probe: inline Bool false tag did not canonicalize to False"); }
   if (term_aux(r43) != CID_TRUE) { err_fail("view probe: inline Bool true tag did not canonicalize to True"); }
+  if (term_aux(r44) != CID_CHR || term_loc(r44) != 955u) { err_fail("view probe: inline Array<Char> cell did not canonicalize to actual CID_CHR 955"); }
+  if (term_aux(r45) != CID_FLAGSS) { err_fail("view probe: constructed FlagsS did not carry actual CID_FLAGSS"); }
+  u64 flags_runtime_loc = term_loc(flags_value);
+  u64 flags_built_loc = term_loc(r45);
+  if (e.mem[flags_runtime_loc + 0] != e.mem[flags_built_loc + 0] ||
+      e.mem[flags_runtime_loc + 1] != e.mem[flags_built_loc + 1]) {
+    err_fail("view probe: FlagsS construct tags disagree with the real Base Bool arm order");
+  }
   u64 box_slot = term_peek(e.mem, box_value);
   bool box_static = term_triv(box_value);
   bool box_shared = !box_static && term_rfc(box_value) && (a32_load(a32_at(e.mem, term_loc(box_value))) & RFC_CNT) > 1;
@@ -180,8 +193,8 @@ static Term phys_view_probe_run(Env e, Term* f, IoWork* w) {
   term_sink(e, r26); term_sink(e, r27);
   term_sink(e, r2); term_sink(e, r4); term_sink(e, r5); term_sink(e, r6); term_sink(e, r10); term_sink(e, r11);
   term_sink(e, r12); term_sink(e, r34); term_sink(e, r36); term_sink(e, r37); term_sink(e, r38); term_sink(e, r39);
-  term_sink(e, r42); term_sink(e, r43);
-  for (u32 fi = 0; fi < 14; fi += 1) { term_sink(e, f[fi]); }
+  term_sink(e, r42); term_sink(e, r43); term_sink(e, r44); term_sink(e, r45);
+  for (u32 fi = 0; fi < 15; fi += 1) { term_sink(e, f[fi]); }
   return 1;
 }
 static void __attribute__((constructor)) phys_view_probe_use(void) { io_eff(CID(probe), phys_view_probe_run); }

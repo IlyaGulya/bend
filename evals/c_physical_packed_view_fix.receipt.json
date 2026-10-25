@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "status": "SUPERSEDED_BY_FIXED4",
-  "reason": "fixed3 was rejected because its synthetic Flags CID 33 aliased Pt; fixed4 uses the real FlagsS runtime constructor and actual CID_FLAGSS",
-  "supersededBy": "evals/physical_storage_acceptance_receipt_fixed4.json",
-  "rejectedReceipt": "evals/physical_storage_acceptance_receipt_fixed3.json",
-  "logs": "checkpoints/storage-fixed-v10",
-  "physicalSha256": "f4fdfcc9575cf1667348cb512ee990e5ddd6ae58d97ea8df35ce914b5c66f0b2"
+  "status": "COMPLETE_SCOPED_46_PROOF",
+  "physicalSha256": "f4fdfcc9575cf1667348cb512ee990e5ddd6ae58d97ea8df35ce914b5c66f0b2",
+  "receipt": "evals/physical_storage_acceptance_receipt_fixed5.json",
+  "logs": "checkpoints/storage-fixed-v13",
+  "fixed4": "SCOPED_44_PASS preserved",
+  "fixed3": "REJECTED_INVALID_RUNTIME_FIXTURE preserved"
 }

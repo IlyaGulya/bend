@@ -47,6 +47,7 @@ def families() -> List<&2, BIR.Family>:
     fam("Choice0", None{}, [arm("CA", Nil{}), arm("CB", Nil{})]),
     fam("WrapE", None{}, [arm("WrapE", [fld(ref("Choice0", Nil{}))])]),
     fam("Bool", None{}, [arm("False", Nil{}), arm("True", Nil{})]),
+    fam("Char", None{}, [arm("Chr", [fld(ref("U32", Nil{}))])]),
     fam("FlagsS", None{}, [arm("FlagsS", [fld(ref("Bool", Nil{})), fld(ref("Bool", Nil{}))])]),
     array_fam(),
     fam("Arr", None{}, [arm("Arr", [fld(ref("Array", [ref("U32", Nil{})]))])])
@@ -63,7 +64,7 @@ def program() -> BIR.Program:
 
 def world() -> Phys.World:
   ctx = CLay.context(program())
-  Phys.world(ctx, constructors(), families(), [Phys.CidSym{16, "Pair"}, Phys.CidSym{33, "Pt"}, Phys.CidSym{34, "Fl"}, Phys.CidSym{18, "Seg"}, Phys.CidSym{17, "BoxP"}, Phys.CidSym{15, "Unit"}, Phys.CidSym{6, "Arr"}, Phys.CidSym{14, "True"}, Phys.CidSym{13, "False"}, Phys.CidSym{22, "BoxM"}, Phys.CidSym{20, "Circle"}, Phys.CidSym{21, "Rect"}, Phys.CidSym{19, "Wide"}, Phys.CidSym{0, "Tuple"}, Phys.CidSym{23, "Wrap"}, Phys.CidSym{24, "E"}, Phys.CidSym{25, "BoxArr"}, Phys.CidSym{26, "ChA"}, Phys.CidSym{27, "ChB"}, Phys.CidSym{30, "WrapE"}, Phys.CidSym{28, "CA"}, Phys.CidSym{29, "CB"}])
+  Phys.world(ctx, constructors(), families(), [Phys.CidSym{16, "Pair"}, Phys.CidSym{34, "Pt"}, Phys.CidSym{35, "Fl"}, Phys.CidSym{18, "Seg"}, Phys.CidSym{17, "BoxP"}, Phys.CidSym{15, "Unit"}, Phys.CidSym{6, "Arr"}, Phys.CidSym{14, "True"}, Phys.CidSym{13, "False"}, Phys.CidSym{22, "BoxM"}, Phys.CidSym{20, "Circle"}, Phys.CidSym{21, "Rect"}, Phys.CidSym{19, "Wide"}, Phys.CidSym{0, "Tuple"}, Phys.CidSym{23, "Wrap"}, Phys.CidSym{24, "E"}, Phys.CidSym{25, "BoxArr"}, Phys.CidSym{26, "ChA"}, Phys.CidSym{27, "ChB"}, Phys.CidSym{30, "WrapE"}, Phys.CidSym{28, "CA"}, Phys.CidSym{29, "CB"}, Phys.CidSym{31, "FlagsS"}, Phys.CidSym{32, "Chr"}])
 
 def show_part(+part: Phys.Part) -> String:
   match part:
@@ -178,7 +179,9 @@ def array_parts(+w: Phys.World) -> String:
 def packed_inline_parts(+w: Phys.World) -> String:
   a = show_part(Phys.path_read("flags_value", [Phys.PathField{41, 0}], w))
   b = show_part(Phys.path_read("flags_value", [Phys.PathField{41, 1}], w))
-  String.append(a, b)
+  c = show_part(Phys.path_read("char_leaf", [Phys.PathLeafCell{ref("Char", Nil{})}], w))
+  d = show_part(Phys.construct_part(41, [op("term_pak(CID_FALSE, 0)"), op("term_pak(CID_TRUE, 0)")], w))
+  String.append(a, String.append(b, String.append(c, d)))
 
 def all_parts(+w: Phys.World) -> String:
   String.concat([
