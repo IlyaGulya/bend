@@ -72,13 +72,17 @@ static Term native_stage_drive(Env e, Term start, Term view, u32 finished, u32 m
       Term result = native_stage_apply(e, thunk, term_pak(CID(Unit), 0));
       struct rusage after;
       native_stage_cpu_sample(&after);
+      u64 pending = group_stage ? 0 : shapes[1];
+      if (group_stage) for (u32 i = 0; i < 27; i++) pending += groups[i];
+      u64 direct = group_stage ? shapes[1] : shapes[2];
+      u64 bound = group_stage ? shapes[2] : shapes[3];
       fprintf(stderr, "NATIVE_CHUNK_PROFILE {\"phase\":\"%s\",\"elapsedMs\":%.3f,\"userCpuMs\":%.3f,\"systemCpuMs\":%.3f,\"chunkAdvances\":%llu,\"chunkQuantum\":64,\"shapeFinished\":%llu,\"shapePending\":%llu,\"shapeDirect\":%llu,\"shapeBound\":%llu,\"requestGroups\":{",
         phase, (double)(io_tick() - started) / 1000000.0,
         native_stage_cpu_ms(&before.ru_utime, &after.ru_utime),
         native_stage_cpu_ms(&before.ru_stime, &after.ru_stime),
         (unsigned long long)chunks, (unsigned long long)shapes[0],
-        (unsigned long long)shapes[1], (unsigned long long)shapes[2],
-        (unsigned long long)shapes[3]);
+        (unsigned long long)pending, (unsigned long long)direct,
+        (unsigned long long)bound);
       int first_group = 1;
       for (u32 i = 0; i < 27; i++) {
         if (groups[i] == 0) continue;

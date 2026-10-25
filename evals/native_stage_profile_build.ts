@@ -136,7 +136,7 @@ function profileExecution(o: Options) {
     artifactDir: o.artifactDir ?? null,
     runtime: {name: process.release.name, node: process.versions.node, v8: process.versions.v8,
       execPath: process.execPath, execArgv: [...process.execArgv], workerLimits: {stackSizeMb: 256, maxOldGenerationSizeMb: 3072}},
-    command: [process.execPath, ...process.argv.slice(2)],
+    command: [process.execPath, ...process.execArgv, ...process.argv.slice(1)],
     scope: 'native diagnostic builder; worker 3072/256; no compiler-root/HOST/FP/C-execution claim',
   };
 }
@@ -157,13 +157,20 @@ export async function compilePhases(profile: any, driverPath: string) {
   const validationMs = performance.now() - started;
   const codegenStart = performance.now();
   const compileSpan = profile?.begin('compile_book', {driverPath});
-  const c = C.compile_book(book);
+  let c: string;
+  if (profile) {
+    const {createCompileBookObserver} = await import('./compiler_profile.mjs');
+    const observer = createCompileBookObserver(profile);
+    c = C.compile_book(book, {observe: observer.observe});
+  } else {
+    c = C.compile_book(book);
+  }
   if (compileSpan) profile.end(compileSpan, 'completed', {outputBytes: Buffer.byteLength(c)});
   const codegenMs = performance.now() - codegenStart;
-  return {K, C, book, c, validationMs, codegenMs};
+  return {c, validationMs, codegenMs};
 }
-function recordWorkerFailure(runDirectory: string, error: unknown, status: 'interrupted' | 'failed') {
-  if (existsSync(join(runDirectory, 'summary.json'))) return false;
+function recordWorkerFailure(runDirectory: string, error: unknown, status: 'interrupted' | 'failed', allowExistingSummary = false) {
+  if (!allowExistingSummary && existsSync(join(runDirectory, 'summary.json'))) return false;
   writeFileSync(join(runDirectory, 'worker-failure.json'), JSON.stringify({schemaVersion: 1,
     kind: 'compiler-profile-worker-failure', diagnosticOnly: true, status,
     reason: status === 'interrupted' ? 'worker terminated before the collector could finish' : 'worker failed before finish',
@@ -196,12 +203,24 @@ export function superviseProfileWorker(worker: Worker) {
       settle();
     });
     worker.once('exit', code => {
-      if (code !== 0) { writeInterrupted('worker exited with code ' + String(code)); process.exitCode = code; }
+      if (!terminalMessage) {
+        const status = code === 0 ? 'failed' : 'interrupted';
+        const reason = 'worker exited ' + String(code) + ' without a terminal result';
+        console.error('native stage profile ' + reason);
+        process.exitCode = code === 0 ? 1 : code;
+        if (profileRunDirectory && !receiptWritten) {
+          try { receiptWritten = recordWorkerFailure(profileRunDirectory, reason, status, code === 0); }
+          catch (receiptError) { console.error('worker failure receipt failed: ' + String(receiptError)); }
+        }
+      } else if (code !== 0) {
+        process.exitCode = code;
+      }
       settle();
     });
   });
 }
 async function build(o: Options) {
+  const buildStarted = performance.now();
   const directory = o.artifactDir ?? mkdtempSync(join(tmpdir(), 'bend-native-stage-profile-'));
   mkdirSync(directory, {recursive: true});
   let profile: any;
@@ -220,14 +239,13 @@ async function build(o: Options) {
   if (o.canonicalChecked) transportArgs.push('--checked=' + o.canonicalChecked);
   if (o.canonicalComponent) transportArgs.push('--component=' + o.canonicalComponent);
   execFileSync(process.execPath, transportArgs, {stdio: 'inherit'});
+  if (profile) profile.record({kind: 'input-hash', scope: 'generated canonical transport', name: 'generated-fixture',
+    details: {path: generatedFixture, sha256: sha(readFileSync(generatedFixture))}});
   const kernelPath = join(root, 'bend2/bend.ts'), compilerPath = join(root, 'bend2/comp.ts');
   const driverPath = join(root, 'evals/native_stage_profile_driver.bend');
   const hostPath = join(root, 'evals/native_stage_profile_host.c');
   const {emitterManifestPath, emitterManifest, groupLabels, emitGroup, artifactBinding} = labels(o);
-  const compiled = await compilePhases(profile, driverPath);
-  const {c, validationMs, codegenMs} = compiled;
-  if (profile) profile.record({kind: 'input-hash', scope: 'generated canonical transport', name: 'generated-fixture',
-    details: {path: generatedFixture, sha256: sha(readFileSync(generatedFixture))}});
+  const {c, validationMs, codegenMs} = await compilePhases(profile, driverPath);
   const cPath = join(directory, 'native-stage-profile.c');
   const artifact = join(directory, 'native-stage-profile');
   if (existsSync(cPath) || existsSync(artifact)) throw Error('artifact directory already holds a previous component: ' + directory);
@@ -236,11 +254,20 @@ async function build(o: Options) {
   const flags = ['-std=c11', '-O0', '-pthread', cPath, '-lpthread', '-lm', '-o', artifact];
   execFileSync(cc, flags, {stdio: 'inherit', timeout: clangTimeoutMs});
   const run = spawnSync(artifact, [], {encoding: 'utf8', timeout: runTimeoutMs});
-  if (run.error) throw run.error;
-  if (run.status !== 0) throw Error('native stage profile exited ' + String(run.status) + ': ' + (run.stderr ?? ''));
-  const observations = nativeTraceObservations(run.stderr ?? '');
+  const stdoutPath = join(directory, 'native-stage-profile.stdout.log');
+  const stderrPath = join(directory, 'native-stage-profile.stderr.log');
+  const stdout = run.stdout ?? '', stderr = run.stderr ?? '';
+  writeFileSync(stdoutPath, stdout, {flag: 'wx'});
+  writeFileSync(stderrPath, stderr, {flag: 'wx'});
+  const nativeExecution = {exitStatus: run.status, signal: run.signal,
+    error: run.error ? String(run.error) : null,
+    stdout: {path: stdoutPath, bytes: Buffer.byteLength(stdout), sha256: sha(stdout)},
+    stderr: {path: stderrPath, bytes: Buffer.byteLength(stderr), sha256: sha(stderr)}};
+  if (run.error) throw Error('native stage profile spawn failed: ' + String(run.error) + '; raw stdout=' + stdoutPath + ' stderr=' + stderrPath);
+  if (run.status !== 0) throw Error('native stage profile exited ' + String(run.status) + '; raw stdout=' + stdoutPath + ' stderr=' + stderrPath);
+  const observations = nativeTraceObservations(stderr);
   const phases = observations.filter(row => row.kind === 'native-chunk-profile');
-  if (phases.length === 0) throw Error('native stage profile emitted no NATIVE_CHUNK_PROFILE rows: ' + (run.stderr ?? ''));
+  if (phases.length === 0) throw Error('native stage profile emitted no NATIVE_CHUNK_PROFILE rows; raw stdout=' + stdoutPath + ' stderr=' + stderrPath);
   if (phases.some(row => row.values.chunkAdvances === 0))
     throw Error('native stage profile observed no chunk transitions; the fixture is not exercising the Run machine');
   const emitterPhase = phases.find(row => row.name === 'emitter-chunks');
@@ -262,7 +289,7 @@ async function build(o: Options) {
     artifactBinding,
     fixtureRequest: {group: emitGroup, canonicalName: 'cps_provider_6_render', label: groupLabels[emitGroup].label},
     cPath, cSha256: sha(c), artifact, artifactSha256: sha(readFileSync(artifact)),
-    buildCommand: [cc, ...flags], validationMs, codegenMs, totalMs: performance.now() - started,
+    buildCommand: [cc, ...flags], nativeExecution, validationMs, codegenMs, totalMs: performance.now() - buildStarted,
     runtime: {name: 'node', node: process.versions.node, v8: process.versions.v8, bun: (process.versions as {bun?: string}).bun ?? null,
       execPath: process.execPath, execArgv: process.execArgv, platform: process.platform, arch: process.arch,
       workerLimits: {stackSizeMb: 256, maxOldGenerationSizeMb: 3072}},

@@ -163,14 +163,48 @@ without a summary writes an interrupted `worker-failure.json` in that exact
 run, while a known throw aborts open spans as failed and finishes failed.
 
 A throwaway harness imports the shared `compilePhases()` and compiles the real
-`evals/c_target_array_nat.bend` (completed) and a malformed real fixture
-(`book_load` failed). A second throwaway harness exercises the shared
-`superviseProfileWorker` with a throwing worker and an exit-137 worker, which
-write interrupted receipts in their exact bound directories. These are
-changed-path source checks only; they did not rerun the native workload. The
-removed `--profile-smoke` CLI branch was a bare begin/end/handmade-error check
-and is not changed-path proof. The old OOM
+`evals/c_target_array_nat.bend` (all four spans completed; 81,153 C bytes;
+numeric validation/codegen timings) and a malformed real fixture (`book_load`
+failed). Its emitted C was compiled by clang and run, producing exactly `7`.
+`compilePhases()` returns only the C string and timings, so the book/K/C
+objects are not retained through clang/run. The generated-fixture SHA-256 is
+recorded immediately after transport, before compilePhases; command identity is
+`[execPath, ...execArgv, ...argv.slice(1)]`.
+
+The profile-on path uses the existing
+`createCompileBookObserver(profile).observe` adapter passed to
+`C.compile_book(book,{observe})`; profile-off is exactly `C.compile_book(book)`.
+A real valid driver produced actual `c-pass-1`/`c-pass-2` spans, compiler-state,
+retention and memo observations, and byte-identical C in both modes
+(81,153 B, SHA-256 `94a57dbd…`). The invalid driver closes `book_load` failed;
+any `compilePhases` throw is unwound by `abortOpen('failed')`, including nested
+observer spans; a throwaway adapter check closed `c-reachability` and
+`c-pass-1` failed. No post-c-pass compile-failure fixture was exercised.
+
+A second throwaway harness exercises the shared `superviseProfileWorker` with a
+throwing worker, an exit-137 worker, and an exit-0 worker with no terminal
+result. Error/137 write interrupted receipts; exit 0 fails closed with an
+explicit failed receipt. A known throw that finished a failed summary writes no
+interrupted receipt. These are changed-path source checks only; they did not
+rerun the native workload. The removed `--profile-smoke` CLI branch was a bare
+begin/end/handmade-error check and is not changed-path proof. The old OOM
 boundary remains unknown.
+
+Native raw stdout and stderr are now written to the artifact directory with
+`wx` before any error/status check, and returned with paths/bytes/SHA-256 and
+exit/signal, so EmitFailure or successful output is preserved without patching
+output. No post-fix native run exists.
+
+### Native emitter label defect
+
+The diagnostic host previously printed Template's shape mapping for every
+stage: `shapePending=shapes[1]`, `shapeDirect=shapes[2]`,
+`shapeBound=shapes[3]`. Emitter codes are `0 Finished, 1 Direct, 2 Bound,
+100+N Pending`, so that report mislabeled Direct as Pending and Bound as Direct.
+The host now maps emitter fields to `finished=shapes[0]`,
+`pending=sum(requestGroups)`, `direct=shapes[1]`, `bound=shapes[2]`; Template
+and Checker mappings are unchanged. No native rerun was performed. Any old
+native emitter rows retain the known label defect and are historical.
 
 The fixture must include the full prelude because the small source imports Base;
 canonical lowering carries its global declarations, constructor/family
