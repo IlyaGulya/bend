@@ -44,6 +44,8 @@ def families() -> List<&2, BIR.Family>:
     fam("Erased", None{}, [arm("E", [BIR.DescriptorField{None{}, BIR.Erased{}, ref("U32", Nil{})}, fld(ref("U32", Nil{}))])]),
     fam("BoxArr", None{}, [arm("BoxArr", [fld(ref("Array", [ref("Pt", Nil{})]))])]),
     fam("Choice", None{}, [arm("ChA", [fld(ref("U32", Nil{}))]), arm("ChB", [fld(ref("U32", Nil{}))])]),
+    fam("Choice0", None{}, [arm("CA", Nil{}), arm("CB", Nil{})]),
+    fam("WrapE", None{}, [arm("WrapE", [fld(ref("Choice0", Nil{}))])]),
     array_fam(),
     fam("Arr", None{}, [arm("Arr", [fld(ref("Array", [ref("U32", Nil{})]))])])
   ]
@@ -52,14 +54,14 @@ def row(+id: U32, +key: String, +arity: Nat) -> BIR.ConstructorLayout:
   BIR.ConstructorLayout{id, key, None{}, List.replicate(Maybe<&2, String>, arity, None{})}
 
 def constructors() -> List<&2, BIR.ConstructorLayout>:
-  [row(0, "Pair", 2n), row(1, "Pt", 2n), row(2, "Fl", 1n), row(3, "Seg", 3n), row(4, "BoxP", 2n), row(5, "Unit", 0n), row(6, "Arr", 1n), row(9, "BoxM", 1n), row(10, "Circle", 1n), row(11, "Rect", 2n), row(12, "Wide", 3n), row(20, "Wrap", 1n), row(21, "E", 2n), row(22, "BoxArr", 1n), row(23, "ChA", 1n), row(24, "ChB", 1n), row(101, "Pt", 2n), row(110, "Circle", 1n), row(111, "Rect", 2n)]
+  [row(0, "Pair", 2n), row(1, "Pt", 2n), row(2, "Fl", 1n), row(3, "Seg", 3n), row(4, "BoxP", 2n), row(5, "Unit", 0n), row(6, "Arr", 1n), row(9, "BoxM", 1n), row(10, "Circle", 1n), row(11, "Rect", 2n), row(12, "Wide", 3n), row(20, "Wrap", 1n), row(21, "E", 2n), row(22, "BoxArr", 1n), row(23, "ChA", 1n), row(24, "ChB", 1n), row(30, "WrapE", 1n), row(31, "CA", 0n), row(32, "CB", 0n), row(101, "Pt", 2n), row(110, "Circle", 1n), row(111, "Rect", 2n)]
 
 def program() -> BIR.Program:
   BIR.Program{Nil{}, Nil{}, constructors(), families(), Nil{}, BIR.Executable{BIR.DescriptorRef{"U32", Nil{}}}}
 
 def world() -> Phys.World:
   ctx = CLay.context(program())
-  Phys.world(ctx, constructors(), families(), [Phys.CidSym{0, "Pair"}, Phys.CidSym{1, "Pt"}, Phys.CidSym{2, "Fl"}, Phys.CidSym{3, "Seg"}, Phys.CidSym{4, "BoxP"}, Phys.CidSym{5, "Unit"}, Phys.CidSym{6, "Arr"}, Phys.CidSym{7, "True"}, Phys.CidSym{8, "False"}, Phys.CidSym{9, "BoxM"}, Phys.CidSym{10, "Circle"}, Phys.CidSym{11, "Rect"}, Phys.CidSym{12, "Wide"}, Phys.CidSym{13, "Tuple"}, Phys.CidSym{14, "Wrap"}, Phys.CidSym{15, "E"}, Phys.CidSym{16, "BoxArr"}, Phys.CidSym{17, "ChA"}, Phys.CidSym{18, "ChB"}])
+  Phys.world(ctx, constructors(), families(), [Phys.CidSym{0, "Pair"}, Phys.CidSym{1, "Pt"}, Phys.CidSym{2, "Fl"}, Phys.CidSym{3, "Seg"}, Phys.CidSym{4, "BoxP"}, Phys.CidSym{5, "Unit"}, Phys.CidSym{6, "Arr"}, Phys.CidSym{7, "True"}, Phys.CidSym{8, "False"}, Phys.CidSym{9, "BoxM"}, Phys.CidSym{10, "Circle"}, Phys.CidSym{11, "Rect"}, Phys.CidSym{12, "Wide"}, Phys.CidSym{13, "Tuple"}, Phys.CidSym{14, "Wrap"}, Phys.CidSym{15, "E"}, Phys.CidSym{16, "BoxArr"}, Phys.CidSym{17, "ChA"}, Phys.CidSym{18, "ChB"}, Phys.CidSym{19, "WrapE"}, Phys.CidSym{20, "CA"}, Phys.CidSym{21, "CB"}])
 
 def show_part(+part: Phys.Part) -> String:
   match part:
@@ -90,15 +92,29 @@ def multi_parts(+w: Phys.World) -> String:
   String.append(a, String.append(b, String.append(c, d)))
 
 def extra_array_parts(+w: Phys.World) -> String:
-  a = show_part(Phys.path_consume("nat_leaf", [Phys.PathLeafCell{ref("Nat", Nil{})}], w))
-  b = show_part(Phys.path_consume("wide_leaf", [Phys.PathLeafCell{ref("Wide", Nil{})}], w))
-  String.append(a, b)
+  show_part(Phys.path_consume("wide_leaf", [Phys.PathLeafCell{ref("Wide", Nil{})}], w))
+
+def nat_parts(+w: Phys.World) -> String:
+  a = show_part(Phys.path_read("nat_leaf", [Phys.PathLeafCell{ref("Nat", Nil{})}], w))
+  b = show_part(Phys.path_copy("nat_leaf", [Phys.PathLeafCell{ref("Nat", Nil{})}], w))
+  c = show_part(Phys.path_consume("nat_leaf", [Phys.PathLeafCell{ref("Nat", Nil{})}], w))
+  String.append(a, String.append(b, c))
 
 def shared_parts(+w: Phys.World) -> String:
   show_part(Phys.path_consume("shared_value", [Phys.PathField{4, 0}], w))
 
 def op(+text: String) -> Phys.Operand:
   Phys.Operand{BIR.Affine{}, text}
+
+def wrapped_part(+part: Phys.Part) -> String:
+  match part:
+    case Phys.PartOk{text}: show_part(Phys.PartOk{String.append(String.append("({\nTerm pbr = ", text), ";\npbr;\n})")})
+    case Phys.PartFail{message}: show_part(part)
+
+def erased_kind(+w: Phys.World) -> String:
+  match Phys.path_consume("erased_value", [Phys.PathField{21, 0}], w):
+    case Phys.PartFail{message}: "F"
+    case Phys.PartOk{text}: "O"
 
 def array_prim_parts(+w: Phys.World) -> String:
   match Phys.array_cell(w, [ref("U32", Nil{})], BIR.PrimU32Add{}):
@@ -109,13 +125,11 @@ def array_prim_parts(+w: Phys.World) -> String:
       c = show_part(Phys.array_swap_ops(Some{op("arr_root")}, Some{op("1")}, Some{op("9")}, w, layout, arr, words, lgs))
       d = show_part(Phys.array_clone_ops(Some{op("arr_root")}, w))
       e = show_part(Phys.array_leaf_ops(Some{op("51")}, w, layout, arr, words, lgs))
-      f = show_part(Phys.array_node_ops(Some{op("leafv")}, Some{op("leafw")}))
+      f = wrapped_part(Phys.array_node_ops(Some{op("leafv")}, Some{op("leafw")}))
       String.append(a, String.append(b, String.append(c, String.append(d, String.append(e, f)))))
 
 def erased_parts(+w: Phys.World) -> String:
-  a = show_part(Phys.path_consume("erased_value", [Phys.PathField{21, 1}], w))
-  b = show_part(Phys.path_consume("erased_value", [Phys.PathField{21, 0}], w))
-  String.append(a, b)
+  show_part(Phys.path_consume("erased_value", [Phys.PathField{21, 1}], w))
 
 def packed_nested_part(+w: Phys.World) -> String:
   show_part(Phys.path_consume("wrap_value", [Phys.PathField{20, 0}, Phys.PathField{2, 0}], w))
@@ -133,6 +147,14 @@ def variant_parts(+w: Phys.World) -> String:
   a = show_part(Phys.path_consume("choice_leaf", [Phys.PathLeafCell{ref("Choice", Nil{})}, Phys.PathField{24, 0}], w))
   b = show_part(Phys.path_hastag("choice_leaf", [Phys.PathLeafCell{ref("Choice", Nil{})}], 24, w))
   String.append(a, b)
+
+def packed_enum_parts(+w: Phys.World) -> String:
+  a = show_part(Phys.path_hastag("wrap_a_value", [Phys.PathField{30, 0}], 31, w))
+  b = show_part(Phys.path_hastag("wrap_a_value", [Phys.PathField{30, 0}], 32, w))
+  c = show_part(Phys.path_hastag("wrap_b_value", [Phys.PathField{30, 0}], 32, w))
+  d = show_part(Phys.path_consume("wrap_a_value", [Phys.PathField{30, 0}], w))
+  e = show_part(Phys.path_consume("wrap_b_value", [Phys.PathField{30, 0}], w))
+  String.append(a, String.append(b, String.append(c, String.append(d, e))))
 
 def boxed_tag_part(+w: Phys.World) -> String:
   show_part(Phys.path_hastag("tagged_value", [Phys.PathField{4, 0}], 12, w))
@@ -154,10 +176,10 @@ def array_parts(+w: Phys.World) -> String:
 def all_parts(+w: Phys.World) -> String:
   String.concat([
     pair_parts(w), seg_parts(w), box_parts(w), array_parts(w), multi_parts(w),
-    extra_array_parts(w), shared_parts(w), seg_offset2_part(w), array_prim_parts(w),
+    extra_array_parts(w), nat_parts(w), shared_parts(w), seg_offset2_part(w), array_prim_parts(w),
     erased_parts(w), packed_nested_part(w), buf_pt_part(w), nested_array_part(w),
-    mixed_part(w), variant_parts(w), callable_part(w), boxed_tag_part(w)
+    mixed_part(w), variant_parts(w), callable_part(w), boxed_tag_part(w), packed_enum_parts(w)
   ])
 
 def main(modules: List<&2, Loader.LoadedModule>) -> ViewSmoke:
-  ViewSmoke{all_parts(world())}
+  ViewSmoke{String.append(all_parts(world()), erased_kind(world()))}

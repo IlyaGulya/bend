@@ -20,7 +20,8 @@ import {runHeavyGate} from './heavy_gate.ts';
 import type {HeavyGateResult} from './heavy_gate.ts';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const logsArg = process.argv.find(a => a.startsWith('--logs='))?.slice('--logs='.length);
-if (!logsArg) throw Error('usage: bun evals/physical_storage_acceptance.ts --logs=<fresh dir>');
+const receiptArg = process.argv.find(a => a.startsWith('--receipt='))?.slice('--receipt='.length);
+if (!logsArg) throw Error('usage: bun evals/physical_storage_acceptance.ts --logs=<fresh dir> [--receipt=<path>]');
 const logs = resolve(logsArg);
 if (existsSync(logs)) throw Error('refuse to reuse a log directory: ' + logs);
 mkdirSync(logs, {recursive: true});
@@ -51,8 +52,9 @@ const clay = resolve(root, 'bend2/selfhost/c_backend_layout.bend');
 const nf = resolve(root, 'bend2/selfhost/descriptor_nf.bend');
 const pins = {
   physical: sha(physical), clay: sha(clay), descriptorNf: sha(nf),
-  harness: sha(resolve(root, 'evals/physical_path_smoke.c')),
+  harnessTemplate: sha(resolve(root, 'evals/physical_path_smoke_template.c')),
   fixture: sha(resolve(root, 'evals/physical_view_smoke.bend')),
+  cFixture: sha(resolve(root, 'evals/physical_path_smoke.bend')),
   heavyGate: sha(resolve(root, 'evals/heavy_gate.ts')),
   heavyGateNative: sha(resolve(root, 'evals/heavy_gate_native.c')),
 };
@@ -88,7 +90,7 @@ const host = await stage('host', ['bun', '--smol', 'evals/physical_view_step_smo
 const hostResult = JSON.parse(host.stdout.trim());
 if (hostResult.status !== 'PASS' || typeof hostResult.text !== 'string') throw Error('host run did not return PASS text');
 write('host.result.json', JSON.stringify(hostResult, null, 2) + '\n');
-// 4. The C harness must embed every expression the admitted component emitted.
+// 4. Generate the foreign C input from the admitted component expressions.
 const blocks: string[] = [];
 let at = 0;
 for (;;) {
@@ -105,25 +107,35 @@ for (;;) {
     else if (c === '{') depth += 1;
     else if (c === '}') {
       depth -= 1;
-      if (depth === 0) {
-        i += 1;
-        if (hostResult.text[i] === ')') i += 1;
-        break;
-      }
+      if (depth === 0) { i += 1; if (hostResult.text[i] === ')') i += 1; break; }
     }
   }
   blocks.push(hostResult.text.slice(start, i));
   at = i;
 }
 write('host.expressions.json', JSON.stringify(blocks, null, 2) + '\n');
-const harness = readFileSync(resolve(root, 'evals/physical_path_smoke.c'), 'utf8');
-if (blocks.length !== 34) throw Error('expected 33 emitted statement expressions, got ' + blocks.length);
-for (const block of blocks) if (!harness.includes(block)) throw Error('C harness is missing a component-emitted expression');
-if (!hostResult.text.includes('FAIL a packed projection names an erased field')) throw Error('erased ordinal did not fail loudly');
-if (!harness.includes('Term r25 = blk_node(e, leafv, leafw);')) throw Error('C harness lost the array_node expression');
-// 5. Emit the C with the fixture compiler, under the guard.
+if (!hostResult.text.endsWith('F')) throw Error('erased-ordinal result kind was not the expected failure kind');
+const template = readFileSync(resolve(root, 'evals/physical_path_smoke_template.c'), 'utf8');
+const holePattern = /\/\*@@r(\d+)@@\*\//g;
+const holes = [...template.matchAll(holePattern)].map(match => Number(match[1]));
+if (new Set(holes).size !== holes.length) throw Error('duplicate expression hole');
+if (holes.length !== blocks.length) throw Error('template holes and emitted expressions disagree');
+let probe = template;
+for (let i = 0; i < holes.length; i += 1) {
+  const marker = `/*@@r${i}@@*/`;
+  if (!probe.includes(marker)) throw Error('missing expression hole ' + i);
+  probe = probe.replace(marker, blocks[i]!);
+}
+if (/@@r\d+@@/.test(probe)) throw Error('unfilled expression hole');
+const probePath = resolve(logs, 'physical_path_probe.c');
+write('physical_path_probe.c', probe);
+const fixtureCopy = resolve(logs, 'physical_path_smoke.bend');
+cpSync(resolve(root, 'evals/physical_path_smoke.bend'), fixtureCopy);
+// 5. Emit the C through the real Node compilePhases API, under the guard.
 const cPath = resolve(logs, 'physical_path_smoke.c');
-await stage('harness-emit', ['bun', '--smol', 'bend2/main.ts', 'evals/physical_path_smoke.bend', '-o', cPath]);
+const node = '/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node';
+await stage('harness-emit', [node, '--experimental-transform-types', '--max-old-space-size=3072',
+  '--stack-size=262144', 'evals/physical_storage_emit.ts', fixtureCopy, cPath]);
 // 6. Compile it, under the guard.
 const exe = resolve(logs, 'physical_path_smoke');
 await stage('clang', ['clang', '-std=c11', '-O0', '-g', '-o', exe, cPath, '-lpthread', '-lm']);
@@ -131,5 +143,22 @@ await stage('clang', ['clang', '-std=c11', '-O0', '-g', '-o', exe, cPath, '-lpth
 const run = await stage('run', [exe]);
 const observed = run.stdout.trim();
 if (observed !== 'ok') throw Error('C run observed ' + JSON.stringify(observed) + ', expected "ok"');
-write('result.json', JSON.stringify({status: 'PASS', pins, blocks: blocks.length, observed, stages: results}, null, 2) + '\n');
-console.log(JSON.stringify({status: 'PASS', logs, pins, blocks: blocks.length, observed}));
+write('result.json', JSON.stringify({status: 'PASS', pins, expressions: blocks.length, observed, stages: results}, null, 2) + '\n');
+if (receiptArg) {
+  const receiptPath = resolve(receiptArg);
+  const stageReceipts: Record<string, unknown> = {};
+  for (const label of ['steps', 'host', 'harness-emit', 'clang', 'run']) {
+    const gatePath = resolve(logs, label + '.gate.json');
+    if (existsSync(gatePath)) stageReceipts[label] = JSON.parse(readFileSync(gatePath, 'utf8'));
+  }
+  stageReceipts['component'] = componentGate;
+  const artifacts = Object.fromEntries([artifact, cPath, exe, probePath].map(path => [basename(path), {bytes: readFileSync(path).length, sha256: sha(path)}]));
+  writeFileSync(receiptPath, JSON.stringify({
+    schemaVersion: 1, status: 'PASS', acceptance: 'guarded physical storage slice; not a Root GO',
+    worktree: root, logs, commitSourceHashes: pins, runtime: {node, nodeVersion: 'v23.11.0', componentWorker: {heapLimitMiB: 3072, stackSizeMb: 256}},
+    caps: {memoryMiB: 8192, rssMiB: 8192, pollMs: 10, timeoutMs: 600000},
+    stages: stageReceipts, artifacts, expressions: blocks.length, terminal: {observed, erasedOrdinalKind: hostResult.text.slice(-1)},
+    command: process.argv.slice(0), cwd: root, note: '19207e04 runtime evidence is REJECTED_UNGUARDED and is not part of this receipt.'
+  }, null, 2) + '\n');
+}
+console.log(JSON.stringify({status: 'PASS', logs, pins, expressions: blocks.length, observed}));

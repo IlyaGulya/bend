@@ -22,14 +22,17 @@ law probe:
   for pair: PairS
   for boxp: BoxS
   for seg: SegS
+  for cb: U32 -> U32
   IO(U32)
 
-def probe(pair, boxp, seg):
-  import "./physical_path_smoke.c"
+def probe(pair, boxp, seg, cb):
+  import "./physical_path_probe.c"
 
 def main() -> IO(Unit):
+  cap: U32 = 7
+  f: U32 -> U32 = x => U32.add(x, cap)
   do IO<Unit>:
-    r : U32 <- probe(PairS{3, 4}, BoxS{"hi", U0{}}, SegS{PtS{1, 2}, PtS{3, 4}, FlS{5}})
+    r : U32 <- probe(PairS{3, 4}, BoxS{"hi", U0{}}, SegS{PtS{1, 2}, PtS{3, 4}, FlS{5}}, f)
     IO.print("ok")
 
 #|ok

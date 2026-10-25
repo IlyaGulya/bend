@@ -1224,6 +1224,20 @@ def tag_case_line(+pacc: String, +pindex: Nat, +pcid: U32, +pexpected: Maybe<&2,
     case None{}: join_text([pacc, "case ", Nat.show(pindex), ": ", ptarget, " = ", U32.show(pcid), "u; break;\n"])
     case Some{want}: join_text([pacc, "case ", Nat.show(pindex), ": ", ptarget, " = (", U32.show(pcid), "u == ", U32.show(want), "u); break;\n"])
 
+
+def tag_multi_packed(+pw: World, +parms: List<&2, CLay.LayArm>, +pexpected: Maybe<&2, U32>, +ptarget: String) -> Part:
+  tag_multi_packed_go(pw, parms, pexpected, 0n, "", ptarget)
+
+def tag_multi_packed_go(+pw: World, +parms: List<&2, CLay.LayArm>, +pexpected: Maybe<&2, U32>, +pindex: Nat, +pacc: String, +ptarget: String) -> Part:
+  match parms:
+    case Nil{}: PartOk{join_text(["switch ((u32)pbn) {\n", pacc, "default: (void)bend_fail(e, \"the constructor tag is not a declared constructor\"); break;\n}\n"])}
+    case +arm <> rest:
+      match arm:
+        case CLay.LayArm{key, fields}:
+          match cid_of(key, pw):
+            case None{}: PartFail{join_text(["the arm `", key, "` has no canonical CID"])}
+            case Some{cid}: tag_multi_packed_go(pw, rest, pexpected, Nat.add(pindex, 1n), tag_case_line(pacc, pindex, cid, pexpected, ptarget), ptarget)
+
 def tag_multi_buf(+pw: World, +ploc: String, +pindex: String, +parms: List<&2, CLay.LayArm>, +pexpected: Maybe<&2, U32>, +ptarget: String) -> Part:
   tag_multi_buf_go(pw, ploc, pindex, parms, pexpected, 0n, "", ptarget)
 
@@ -1249,7 +1263,7 @@ def tag_body(+pw: World, +pstate: PathState, +pexpected: Maybe<&2, U32>, +ptarge
                 case +only <> Nil{}:
                   match only:
                     case CLay.LayArm{key, fields}: tag_single(pw, key, pexpected, ptarget)
-                case _: PartFail{"a packed multi-arm value has no stored tag"}
+                case _: tag_multi_packed(pw, arms, pexpected, ptarget)
             case _: PartFail{"a packed word is not a constructor tag"}
         case False{}:
           match layout:
