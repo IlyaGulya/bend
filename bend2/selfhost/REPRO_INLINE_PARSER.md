@@ -1,9 +1,10 @@
 # Inline parser differential: quantity-annotated body locals and do binders
 
-Diagnostic reproducer note. Reduced inputs only; this note does not narrow or
-replace the 13-export corpus, the 24-case C matrix, or any public gate.
+Status: **EMBEDDED_PARSER_CUTOVER_PUBLIC_PARITY_PASS**. The historical reduced
+differential below is preserved. Current `db147cba` resolves all five cases;
+this does not narrow or replace the compiler corpus or complete C matrix.
 
-## Artifacts
+## Historical artifacts
 
 - Inline image: `/private/tmp/bend-root57ab-go/checkpoints/root57ab-go-art.js`
   sha256 `9941352b639d1f31e381640f77e015e252d601b3815d9f36ea8614496bf50cb4`,
@@ -81,12 +82,48 @@ the local annotation colon. Its status is preserved as
 "no difference": it observed a real typed-local differential while showing that
 the `+` was not the discriminator for body locals.
 
+## Current authenticated cutover: `db147cba`
+
+Receipt: `evals/receipts/inline_parser_cutover_db147cba.json`.
+Worktree: `/private/tmp/bend-parser-cutover667`, base `34c64741`.
+
+The same canonical parser `7389188a` was honestly re-accepted in this tree:
+all 71 preparation cases, all 75 compiled semantic cases, and both public
+15-test/264-assertion gates passed. The new standalone image is byte-identical
+to the prior accepted `0e7b3c42`; that is regeneration identity, not a
+stage-one/stage-two fixedpoint.
+
+Owned source and all three typed-step manifests were regenerated with parser
+pin `7389188a`, quantum 64. The unchanged composer authenticated the tree-local
+acceptance and inlined its exact declarations; no manual root edit, copied
+absolute-path proof or validation shortcut was used.
+
+New root: 653,895 B, sha256 `402011f5…`. New image:
+`db147cba480109443fe8cfbd0efa2f1c167af7f6b9f7e2d623a0b1032c677dbe`,
+18,039,083 B. Native admission checks all 11,889 expected/live bodies and
+12,450 events, 0 exclusions/patches, all 13 exports unchanged. Guard:
+61,954 ms, peak RSS 3,209,117,696 B / footprint 3,296,361,632 B,
+complete/stopped/exit 0 under the same 8192/8192 MiB, 10 ms, 600 s limits.
+
+The unchanged five-source public differential now observes ParseSuccess on
+both sides and identical complete projected ASTs for every row: typed local,
+`+` typed local, typed do, `+` typed do and untyped control. No ABI failures
+or oracle rejections. Its guard completes/stops/exit 0 in 811 ms, RSS
+279,642,112 B / footprint 219,843,520 B. Fuel stays 2,000,000, Node23.11.0,
+old-generation cap3072 MiB, worker stack256 MiB.
+
+This closes the inline-parser cutover, not current-image C/JS corpus,
+compiler byte fixedpoint or native HOST acceptance. The C26 and foreign/library
+passes on predecessor `667e7f33` remain version-scoped evidence.
+
+
 ## Does not establish
 
-- The accepted external parser image does not authenticate the root candidate's
-  inline parser, its eleven-thousand-body compilation, or its emitter.
-- A successful parse is not checking, C emission, runtime, or full fixedpoint.
-- No production parser, generator, kernel or compiler source was changed; no
-  cutover to the external parser is claimed or performed.
-- These five sources are diagnostic witnesses only. The unchanged acceptance
-  scope remains all public exports, the original corpus and the 24-case matrix.
+- Historical external-parser acceptance alone was not authority for the old
+  root. The current root has its own full native admission and actual public
+  parity evidence above.
+- A successful parse is not C emission, execution or compiler fixedpoint.
+- Canonical parser, kernel, compiler and generator source are unchanged by
+  this cutover; the generated root is composed from the authenticated parser.
+- These five sources remain diagnostic witnesses. Acceptance still requires
+  every public export, the full agreed corpus and complete current C matrix.

@@ -36,7 +36,20 @@ Main-scoped facts. A receipt's existence is not acceptance: its recorded status
 is named. Where this note did not verify a record, it says "scope not verified
 by note". A JS-generated report is not a native artifact receipt.
 
-Latest candidate: **`667e7f33`**, source-only Boolean fix integrated at
+Latest compiler root: **`db147cba`**, after an authenticated inline-parser
+cutover in `/private/tmp/bend-parser-cutover667`. Fresh native admission checks
+all 11,889 bodies / 12,450 events with 0 exclusions/patches and unchanged
+13-export ABI. All five original public parser cases now parse and produce
+identical ASTs against the separately accepted parser. Tree-local acceptance
+covered all 71 source and 75 compiled semantic cases, not a copied receipt.
+Proof: `evals/receipts/inline_parser_cutover_db147cba.json`.
+Current-root C/JS corpus, compiler fixedpoint and native HOST remain open;
+the preceding C/foreign passes below belong specifically to `667e7f33`.
+
+### Preceding `667e7f33` C checkpoint (historical)
+
+
+Previous C candidate: **`667e7f33`**, source-only Boolean fix integrated at
 `8aefa052` (`c_backend 346f5b53`, physical unchanged `daf8a137`).
 Fresh generation still checks all 11,860 bodies, with 0 exclusions/patches,
 the same 13 exports and quantum 64. Both previously failing literal/projected
@@ -47,8 +60,8 @@ The full matrix is expanded, never narrowed, to 26 inputs by adding
 complete/stopped/exit 0. Receipt: `evals/receipts/c_matrix_667e7f33_26.json`.
 The same image also passes all three C/JS foreign fixture pairs and the real
 six-export C-library route: 7 rows / 18 stages, all complete/stopped/exit 0.
-Receipt: `evals/receipts/foreign_667e7f33.json`. Full compiler corpus, embedded
-parser cutover, byte fixedpoint, native HOST and general laws remain open.
+Receipt: `evals/receipts/foreign_667e7f33.json`. At this checkpoint full corpus,
+parser cutover, byte fixedpoint, native HOST and general laws remained open.
 
 ### Preceding `971e0986` checkpoint (historical)
 
@@ -427,14 +440,13 @@ Main executed the existing guarded commands in isolated worktrees and records
 their actual results above. Worker access is not restored; implementation
 handoffs must not be described as running while that prerequisite is absent.
 
-Parser cutover preparation is recorded at commit `d68df586` in
-`/private/tmp/bend-root57ab-go/checkpoints/inline-parser-cutover.preparation.json`.
-It is **PREPARATION_ONLY_NOT_EXECUTED**. The composer requires tree-local
-authenticated parser acceptance, then fresh owned/template/checker/emitter
-manifests before root composition; copying accepted absolute paths or patching
-root text is not a cutover. The recipe's `6c1df3eb` runtime pin names the kernel
-`bend2/bend.ts`, not generated C runtime `478c1ba7`; there is no pin mismatch.
-Public parse behavior, not source-hash equality, decides inline-parser repair.
+Parser cutover is now executed and publicly verified on `db147cba`:
+`evals/receipts/inline_parser_cutover_db147cba.json`. The old `d68df586`
+preparation is historical only. Tree-local full parser acceptance, fresh
+owned/template/checker/emitter manifests and the unchanged composer authenticate
+the imported declarations. All five original public parses now agree exactly.
+The recipe's `6c1df3eb` kernel pin and generated C runtime `478c1ba7` were
+distinct correct authorities, not a mismatch. No source-hash-only repair claim.
 
 
 ---
