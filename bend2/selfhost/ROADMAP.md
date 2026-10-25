@@ -52,8 +52,13 @@ peak RSS 3,223,076,864 B / footprint 3,467,539,096 B. Receipt:
 `evals/receipts/bootstrap_db147cba_deadline.json`. Its existing execution worker
 uses 6,144 MiB old generation under the 8 GiB guard; this is not the separate
 3,072 MiB native producer admission. No limit was raised.
-Current-root C/JS corpus, byte fixedpoint and native HOST remain open;
-the preceding C/foreign passes below belong specifically to `667e7f33`.
+The complete unchanged **26-case C matrix passes on `db147cba` itself**,
+including its inline parser: all 78 emit/clang/run stages are
+complete/stopped/exit 0, with exact expected output. Guarded stage sum
+671,100 ms; max sampled RSS 1,975,779,328 B / footprint 2,047,690,136 B.
+Receipt: `evals/receipts/c_matrix_db147cba_26.json`.
+Full JS corpus, byte fixedpoint and native HOST remain open; the preceding
+broader C/JS foreign pairs and C-library pass below belong to `667e7f33`.
 The seed host carrier now uses the native loader's actual nominal
 `../bend2/selfhost/backend_ir.SourceFile` tag, shared by the bootstrap gate
 instead of a bare-name assumption. A loader-authority diagnostic and real JS
