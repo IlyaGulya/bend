@@ -170,7 +170,7 @@
     },
     "oldPermanentSmokeRetracted": "the removed --profile-smoke branch was bare begin/end (or handmade error), exercised none of the new spans, and was not changed-path proof; no claim uses it",
     "oldRun": "the 46124798 OOM run predates instrumentation; its internal boundary remains unknown",
-    "compilePhasesReturn": "returns only c/validationMs/codegenMs; K/C/book are not retained through clang/run",
+    "compilePhasesReturn": "returns only c/validationMs/codegenMs, avoiding extra caller-held wrapper references; not a release/live-heap claim (compiler module cache and FL may retain the book)",
     "fixtureHashTiming": "generated fixture SHA-256 recorded immediately after transport, before compilePhases",
     "commandIdentity": "[process.execPath, ...process.execArgv, ...process.argv.slice(1)] in profileExecution",
     "nativeExecutionCapture": "after native spawn, raw stdout and stderr are written with wx before error/status checks; return records exitStatus, signal, error, paths, bytes and SHA-256; failure errors cite paths, not a replacement output",

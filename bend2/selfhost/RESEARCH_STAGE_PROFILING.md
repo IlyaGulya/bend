@@ -166,10 +166,12 @@ A throwaway harness imports the shared `compilePhases()` and compiles the real
 `evals/c_target_array_nat.bend` (all four spans completed; 81,153 C bytes;
 numeric validation/codegen timings) and a malformed real fixture (`book_load`
 failed). Its emitted C was compiled by clang and run, producing exactly `7`.
-`compilePhases()` returns only the C string and timings, so the book/K/C
-objects are not retained through clang/run. The generated-fixture SHA-256 is
-recorded immediately after transport, before compilePhases; command identity is
-`[execPath, ...execArgv, ...argv.slice(1)]`.
+`compilePhases()` returns only the C string and timings, avoiding extra
+caller-held wrapper references; this is not a release or live-heap claim. The
+compiler module remains cached, and `comp`'s `file_new(book, ...)` assigns the
+module-level `FL`, so the book and live state may remain reachable. The
+generated-fixture SHA-256 is recorded immediately after transport, before
+compilePhases; command identity is `[execPath, ...execArgv, ...argv.slice(1)]`.
 
 The profile-on path uses the existing
 `createCompileBookObserver(profile).observe` adapter passed to
