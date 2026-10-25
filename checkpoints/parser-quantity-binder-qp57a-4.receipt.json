@@ -6,8 +6,267 @@
  "scope": "canonical parser.bend only: quantity-annotated local binders in function bodies and do blocks, plus the reusable quantity on do <- binders; kernel, comp.ts, canonical generator, corpus, exports, fuel and caps untouched",
  "sourceChange": {
   "file": "bend2/selfhost/parser.bend",
-  "summary": "parse_body_scan routes an annotated name group through decl_body_name_group to a typed-local path; the + row routes through decl_plus_local; parse_do_typed_bind accepts +name : T = value and +name : T <- action, with does-let quantities QMany and TermAnn values; local_annotation_has_equal scans the annotation for the closing =; parse_do_typed_bind_body_result/parse_do_typed_bind_value_result now carry the lambda quantity",
+  "commit": "410a2121",
+  "insertions": 141,
+  "deletions": 7,
   "canonicalSha256": "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37"
+ },
+ "steps": {
+  "prepareSource": {
+   "guardianReport": "report-1792903618418-9e662b0f03c60f80.json",
+   "invokedCommand": "bun --smol evals/bootstrap_parser_rebuild.ts --prepare-source --run-id qp57a-4",
+   "guardedCommand": [
+    "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+    "--smol",
+    "/private/tmp/bend-fir-root-aa9/evals/bootstrap_parser_rebuild.ts",
+    "--worker-prepare-source",
+    "--run-id",
+    "qp57a-4",
+    "--canonical-sha256",
+    "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37"
+   ],
+   "label": "Final canonical bootstrap parser --prepare-source",
+   "status": "PASS",
+   "elapsedMs": 30952,
+   "peakRssBytes": 781074432,
+   "peakFootprintBytes": 538117320,
+   "timeoutMs": 600000,
+   "memoryLimitBytes": 8589934592,
+   "rssLimitBytes": 8589934592,
+   "commandExitCode": 0
+  },
+  "publicSource": {
+   "guardianReport": "report-1792903656072-35f0473b8d02c3c4.json",
+   "invokedCommand": "bun evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 --timeout-ms 600000 -- bun evals/bootstrap_parser_public_gate.ts --parser=checkpoints/.bootstrap_parser_rebuild_qp57a-4_source.bend --entry=parse_module_tokens --report=checkpoints/parser-public-qp57a-4.json",
+   "guardedCommand": [
+    "bun",
+    "evals/bootstrap_parser_public_gate.ts",
+    "--parser=checkpoints/.bootstrap_parser_rebuild_qp57a-4_source.bend",
+    "--entry=parse_module_tokens",
+    "--report=checkpoints/parser-public-qp57a-4.json"
+   ],
+   "label": "heavy command",
+   "status": "PASS",
+   "elapsedMs": 4248,
+   "peakRssBytes": 312901632,
+   "peakFootprintBytes": 236750216,
+   "timeoutMs": 600000,
+   "memoryLimitBytes": 8589934592,
+   "rssLimitBytes": 8589934592,
+   "commandExitCode": 0
+  },
+  "sourceGate": {
+   "guardianReport": "report-1792903660390-c8c5a2983c246a02.json",
+   "invokedCommand": "bun evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 --timeout-ms 600000 -- bun evals/bootstrap_parser_fast.ts --parser=checkpoints/.bootstrap_parser_rebuild_qp57a-4_source.bend --entry=parse_module_tokens --public-report=checkpoints/parser-public-qp57a-4.json --report=checkpoints/parser-source-gate-qp57a-4.json",
+   "guardedCommand": [
+    "bun",
+    "evals/bootstrap_parser_fast.ts",
+    "--parser=checkpoints/.bootstrap_parser_rebuild_qp57a-4_source.bend",
+    "--entry=parse_module_tokens",
+    "--public-report=checkpoints/parser-public-qp57a-4.json",
+    "--report=checkpoints/parser-source-gate-qp57a-4.json"
+   ],
+   "label": "heavy command",
+   "status": "PASS",
+   "elapsedMs": 13115,
+   "peakRssBytes": 719585280,
+   "peakFootprintBytes": 379476064,
+   "timeoutMs": 600000,
+   "memoryLimitBytes": 8589934592,
+   "rssLimitBytes": 8589934592,
+   "commandExitCode": 0
+  },
+  "prepare": {
+   "guardianReport": "report-1792903673700-75dd5abe3c943b75.json",
+   "invokedCommand": "bun --smol evals/bootstrap_parser_rebuild.ts --prepare --run-id qp57a-4 --source-gate checkpoints/parser-source-gate-qp57a-4.json",
+   "guardedCommand": [
+    "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+    "--smol",
+    "/private/tmp/bend-fir-root-aa9/evals/bootstrap_parser_rebuild.ts",
+    "--worker-prepare",
+    "--run-id",
+    "qp57a-4",
+    "--canonical-sha256",
+    "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37",
+    "--source-gate",
+    "/private/tmp/bend-fir-root-aa9/checkpoints/parser-source-gate-qp57a-4.json"
+   ],
+   "label": "Final canonical bootstrap parser --prepare",
+   "status": "PASS",
+   "elapsedMs": 22099,
+   "peakRssBytes": 361955328,
+   "peakFootprintBytes": 255379016,
+   "timeoutMs": 600000,
+   "memoryLimitBytes": 8589934592,
+   "rssLimitBytes": 8589934592,
+   "commandExitCode": 0
+  },
+  "buildNative": {
+   "guardianReport": "report-1792903695906-12739b9e0bc1e62b.json",
+   "invokedCommand": "bun --smol evals/bootstrap_parser_rebuild.ts --build-native --run-id qp57a-4",
+   "guardedCommand": [
+    "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+    "--smol",
+    "/private/tmp/bend-fir-root-aa9/evals/bootstrap_parser_rebuild.ts",
+    "--worker-build-native",
+    "--run-id",
+    "qp57a-4",
+    "--canonical-sha256",
+    "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37"
+   ],
+   "label": "Final canonical bootstrap parser --build-native",
+   "status": "PASS",
+   "elapsedMs": 1708,
+   "peakRssBytes": 209862656,
+   "peakFootprintBytes": 128860952,
+   "timeoutMs": 600000,
+   "memoryLimitBytes": 8589934592,
+   "rssLimitBytes": 8589934592,
+   "commandExitCode": 0
+  },
+  "publicCandidate": {
+   "guardianReport": "report-1792903718935-b2d6d8cd730d0367.json",
+   "invokedCommand": "bun evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 --timeout-ms 600000 -- bun evals/bootstrap_parser_public_gate.ts --parser=checkpoints/.bootstrap_parser_rebuild_qp57a-4_generated_fuel.bend --entry=parse_with_fuel --report=checkpoints/parser-public-candidate-qp57a-4.json",
+   "guardedCommand": [
+    "bun",
+    "evals/bootstrap_parser_public_gate.ts",
+    "--parser=checkpoints/.bootstrap_parser_rebuild_qp57a-4_generated_fuel.bend",
+    "--entry=parse_with_fuel",
+    "--report=checkpoints/parser-public-candidate-qp57a-4.json"
+   ],
+   "label": "heavy command",
+   "status": "PASS",
+   "elapsedMs": 1697,
+   "peakRssBytes": 886259712,
+   "peakFootprintBytes": 798000928,
+   "timeoutMs": 600000,
+   "memoryLimitBytes": 8589934592,
+   "rssLimitBytes": 8589934592,
+   "commandExitCode": 0
+  },
+  "candidateGate": {
+   "guardianReport": "report-1792903720686-b1a6398612fef66f.json",
+   "invokedCommand": "bun evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 --timeout-ms 900000 -- bun evals/bootstrap_parser_fast.ts --parser=checkpoints/.bootstrap_parser_rebuild_qp57a-4_generated_fuel.bend --entry=parse_with_fuel --component=checkpoints/bootstrap-parser-rebuild-qp57a-4.js --component-build=checkpoints/bootstrap-parser-rebuild-qp57a-4.native-build.result.json --public-report=checkpoints/parser-public-candidate-qp57a-4.json --report=checkpoints/parser-candidate-gate-qp57a-4.json",
+   "guardedCommand": [
+    "bun",
+    "evals/bootstrap_parser_fast.ts",
+    "--parser=checkpoints/.bootstrap_parser_rebuild_qp57a-4_generated_fuel.bend",
+    "--entry=parse_with_fuel",
+    "--component=checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+    "--component-build=checkpoints/bootstrap-parser-rebuild-qp57a-4.native-build.result.json",
+    "--public-report=checkpoints/parser-public-candidate-qp57a-4.json",
+    "--report=checkpoints/parser-candidate-gate-qp57a-4.json"
+   ],
+   "label": "heavy command",
+   "status": "PASS",
+   "elapsedMs": 59392,
+   "peakRssBytes": 1725923328,
+   "peakFootprintBytes": 1249631000,
+   "timeoutMs": 900000,
+   "memoryLimitBytes": 8589934592,
+   "rssLimitBytes": 8589934592,
+   "commandExitCode": 0
+  },
+  "build": {
+   "guardianReport": "report-1792903780173-aa5cd18ca650f174.json",
+   "invokedCommand": "bun --smol evals/bootstrap_parser_rebuild.ts --build --run-id qp57a-4 --candidate-gate checkpoints/parser-candidate-gate-qp57a-4.json",
+   "guardedCommand": [
+    "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+    "--smol",
+    "/private/tmp/bend-fir-root-aa9/evals/bootstrap_parser_rebuild.ts",
+    "--worker-build",
+    "--run-id",
+    "qp57a-4",
+    "--canonical-sha256",
+    "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37",
+    "--candidate-gate",
+    "/private/tmp/bend-fir-root-aa9/checkpoints/parser-candidate-gate-qp57a-4.json"
+   ],
+   "label": "Final canonical bootstrap parser --build",
+   "status": "PASS",
+   "elapsedMs": 1362,
+   "peakRssBytes": 301858816,
+   "peakFootprintBytes": 202261368,
+   "timeoutMs": 600000,
+   "memoryLimitBytes": 8589934592,
+   "rssLimitBytes": 8589934592,
+   "commandExitCode": 0
+  }
+ },
+ "nativeJsBuild": {
+  "guardian": {
+   "command": [
+    "node",
+    "--experimental-strip-types",
+    "--max-old-space-size=3072",
+    "/private/tmp/bend-fir-root-aa9/evals/checker_core_component_build.ts",
+    "--worker",
+    "--file=/private/tmp/bend-fir-root-aa9/checkpoints/.bootstrap_parser_rebuild_qp57a-4_generated_fuel.bend",
+    "--exports=parse_with_fuel",
+    "--artifact=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+    "--report=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.native-build",
+    "--inputs-sha256=66c0535d6ea4cc43c51fea8847e59cdba4f2bc79be0353a583260759ee7c9b6a"
+   ],
+   "status": "PASS",
+   "elapsedMs": 6670,
+   "peakRssBytes": 1710358528,
+   "peakFootprintBytes": 1768581728,
+   "timeoutMs": 600000,
+   "guard": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10
+   }
+  },
+  "metrics": {
+   "validationStatus": "FULL_VALIDATION_PASS",
+   "eventsChecked": 1840,
+   "totalEvents": 1840,
+   "totalElapsedMs": 6313.8442079999995,
+   "cpuMs": 9430.812,
+   "validationElapsedMs": 1160.4147499999997,
+   "runtime": {
+    "name": "node",
+    "node": "23.11.0",
+    "v8": "12.9.202.28-node.14",
+    "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+    "heapLimitMiB": 3072,
+    "stackSizeMb": 256,
+    "heapSizeLimitBytes": 3271557120,
+    "manualGC": false
+   }
+  },
+  "worker": {
+   "status": "JS_GENERATED_NOT_YET_EXECUTED",
+   "checkedDefinitions": 1630,
+   "liveBodies": 1630,
+   "checksExcluded": 0,
+   "outputPatches": 0,
+   "eventsFullyValidated": 1840,
+   "toolchain": "CANONICAL NATIVE LOAD/CHECK; CANONICAL JS PREPARE/EMIT/RELEASE; Node/V8 automatic GC"
+  }
+ },
+ "runtime": {
+  "release": "4ff8545f19b09b7d2b8ca2303668100eac8efd66",
+  "releaseKernelSha256": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+  "compilerSha256": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70",
+  "bun": "1.4.2",
+  "node": "23.11.0",
+  "guardian": {
+   "memoryMiB": 8192,
+   "rssMiB": 8192,
+   "pollMs": 10,
+   "defaultTimeoutMs": 600000,
+   "candidateGateTimeoutMs": 900000
+  },
+  "parserWorker": {
+   "heapLimitMiB": 3072,
+   "stackSizeMiB": 256,
+   "manualGC": false,
+   "youngGenerationMiB": "not configured for this worker; the bootstrap JS worker's 6144/128 split does not apply"
+  },
+  "fuelCells": 2000000,
+  "transport": "bend-native-ast-v1"
  },
  "artifacts": {
   "candidateSource": {
@@ -24,45 +283,131 @@
    "path": "checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
    "sha256": "0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b",
    "bytes": 2834193
-  }
+  },
+  "acceptanceReport": "checkpoints/bootstrap-parser-rebuild-qp57a-4.result.json",
+  "acceptanceStatus": "PARSER_ACCEPTED_NATIVE_SEMANTICS"
  },
  "authentication": {
-  "sourceGate": {
-   "report": "checkpoints/parser-source-gate-qp57a-4.json",
-   "status": "PASS",
-   "canonicalSha256": "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37"
-  },
   "publicSource": {
    "report": "checkpoints/parser-public-qp57a-4.json",
    "passed": 15,
-   "failed": 0
+   "failed": 0,
+   "assertions": 264
+  },
+  "sourceGate": {
+   "report": "checkpoints/parser-source-gate-qp57a-4.json",
+   "evaluationMode": "source-preparation",
+   "completed": true,
+   "preparationAdmitted": true,
+   "partial": false,
+   "knownEvaluatorLimitedModules": [
+    ".parser_definition_body_shape_generated_fuel.bend",
+    "base.bend",
+    "checker_core_slice.bend",
+    "js_emit.bend"
+   ],
+   "counts": {
+    "focused": {
+     "total": 23,
+     "accepted": 22,
+     "acceptanceParity": 23,
+     "semanticParity": 23,
+     "literalSpanParity": 23
+    },
+    "whole29": {
+     "total": 29,
+     "accepted": 23,
+     "acceptanceParity": 29,
+     "semanticParity": 29,
+     "literalSpanParity": 29
+    },
+    "literals": {
+     "total": 13,
+     "accepted": 13,
+     "acceptanceParity": 13,
+     "semanticParity": 13,
+     "literalSpanParity": 13
+    },
+    "real": {
+     "total": 6,
+     "accepted": 6,
+     "acceptanceParity": 6,
+     "semanticParity": 6,
+     "literalSpanParity": 6
+    }
+   }
   },
   "publicCandidate": {
    "report": "checkpoints/parser-public-candidate-qp57a-4.json",
    "passed": 15,
    "failed": 0,
+   "assertions": 264,
    "entry": "parse_with_fuel"
   },
   "candidateGate": {
    "report": "checkpoints/parser-candidate-gate-qp57a-4.json",
+   "evaluationMode": "native-artifact",
    "completed": true,
    "admitted": true,
+   "partial": false,
    "sourceSpecificExceptions": 0,
    "checksExcluded": 0,
    "outputPatches": 0,
-   "guard": {
-    "memoryMiB": 8192,
-    "rssMiB": 8192,
-    "pollMs": 10
+   "knownEvaluatorLimitedModules": [],
+   "counts": {
+    "focused": {
+     "total": 23,
+     "accepted": 22,
+     "acceptanceParity": 23,
+     "semanticParity": 23,
+     "literalSpanParity": 23
+    },
+    "whole29": {
+     "total": 29,
+     "accepted": 23,
+     "acceptanceParity": 29,
+     "semanticParity": 29,
+     "literalSpanParity": 29
+    },
+    "literals": {
+     "total": 13,
+     "accepted": 13,
+     "acceptanceParity": 13,
+     "semanticParity": 13,
+     "literalSpanParity": 13
+    },
+    "real": {
+     "total": 10,
+     "accepted": 10,
+     "acceptanceParity": 10,
+     "semanticParity": 10,
+     "literalSpanParity": 10
+    }
+   },
+   "nativeWorker": {
+    "path": "/private/tmp/bend-fir-root-aa9/evals/bootstrap_parser_native_semantic_worker.mjs",
+    "sha256": "039879d770042fd54fe57ef1a1f7ca65424e09025518f705e611ecb2d213a288",
+    "runtime": {
+     "name": "node",
+     "heapLimitMiB": 3072,
+     "stackSizeMiB": 256,
+     "manualGC": false
+    },
+    "fuelCells": 2000000,
+    "transport": "bend-native-ast-v1",
+    "isolation": "Fresh Bun/Node processes for every semantic case; no overlapping heavy children"
    }
-  },
-  "nativeBuild": {
-   "status": "JS_GENERATED_NOT_YET_EXECUTED",
-   "metrics": null
   }
  },
  "consumerRegressions": {
-  "command": "bun evals/candidate_host.ts --candidate=checkpoints/root-final4-art.js --parser=checkpoints/bootstrap-parser-rebuild-qp57a-4.js <fixture> -o <js>; bun <js>",
+  "commands": [
+   "bun evals/candidate_host.ts --candidate=checkpoints/root-final4-art.js --parser=checkpoints/bootstrap-parser-rebuild-qp57a-4.js tests/run/list_rebox_sum.bend -o /tmp/list_rebox_sum_q4.js",
+   "bun /tmp/list_rebox_sum_q4.js",
+   "bun evals/candidate_host.ts --candidate=checkpoints/root-final4-art.js --parser=checkpoints/bootstrap-parser-rebuild-qp57a-4.js tests/run/c_backend_link.bend -o /tmp/c_backend_link_q4.js",
+   "bun /tmp/c_backend_link_q4.js",
+   "bun evals/candidate_host.ts --candidate=checkpoints/root-final4-art.js --parser=checkpoints/bootstrap-parser-rebuild-qp57a-4.js tests/run/family_field_hot.bend -o /tmp/family_field_hot_q4.js",
+   "bun /tmp/family_field_hot_q4.js"
+  ],
   "fixtures": [
    {
     "path": "tests/run/list_rebox_sum.bend",
@@ -77,7 +422,8 @@
      "bounded"
     ],
     "pass": true,
-    "emitSha256": "79c9c46ae9424f2499d9382bb0394f0e81f7192e3823001f73cdf8deaac4f050"
+    "emitSha256": "79c9c46ae9424f2499d9382bb0394f0e81f7192e3823001f73cdf8deaac4f050",
+    "emitBytes": 296340
    },
    {
     "path": "tests/run/c_backend_link.bend",
@@ -98,7 +444,8 @@
      "missing"
     ],
     "pass": true,
-    "emitSha256": "9678b9b9d735e55e868e36fd535979c242bf54c5cd71bc0469f23aeb88247648"
+    "emitSha256": "9678b9b9d735e55e868e36fd535979c242bf54c5cd71bc0469f23aeb88247648",
+    "emitBytes": 405297
    },
    {
     "path": "tests/run/family_field_hot.bend",
@@ -109,7 +456,8 @@
      "5"
     ],
     "pass": true,
-    "emitSha256": "a903fbf3b9e23f7573f4734b547e8e0c77bb7e9523e73251f9575bd00f2148e2"
+    "emitSha256": "a903fbf3b9e23f7573f4734b547e8e0c77bb7e9523e73251f9575bd00f2148e2",
+    "emitBytes": 292273
    }
   ],
   "forms": {
@@ -121,32 +469,33 @@
    "plus_untyped_and_parallel_typed": "still rejected, matching the stage0 compiler",
    "body_plus_untyped": "still accepted as before; pre-existing over-accept, unchanged by this fix"
   },
-  "rootClosureParse": "ast, lexer, core, loaded_module, backend_ir, checked_frontend, parser, checker, lower_catalog, js_emit, template_steps and the root itself parse; checker_core_steps exceeds the probe's 2e6 fuel cells, not a parse failure; js_link.bend and c_emit.bend fail identically on the previous and the new parser and are outside the built root closure"
+  "permanentGateCoverage": {
+   "gates/selfhost.ts": [
+    "tests/run/list_rebox_sum.bend",
+    "tests/run/c_backend_link.bend"
+   ],
+   "notCovered": [
+    "tests/run/family_field_hot.bend"
+   ],
+   "note": "family_field_hot appears in no gate, test or eval list; the other two are permanent selfhost-gate fixtures"
+  }
  },
  "rejectedVersions": [
   {
    "runId": "qp57a-1",
-   "reason": "prepare-source aborted after writing a partial record; superseded"
+   "reason": "prepare-source aborted after a partial record; superseded"
   },
   {
    "runId": "qp57a-2",
-   "reason": "generator invariant: Body next-token priority drift (a fifth row was added to the body name-group match); fixed by routing the default row through decl_body_name_group"
+   "reason": "generator invariant Body next-token priority drift (a fifth row in the body name-group match); fixed by routing the default row through decl_body_name_group"
   },
   {
    "runId": "qp57a-3",
-   "reason": "candidate accepted syntactically, but the plus typed <- binder dropped the quantity, so family_field_hot failed checking with invalid use quantity for s; superseded by qp57a-4"
+   "reason": "plus typed <- binder dropped the quantity; family_field_hot failed checking with invalid use quantity for s; superseded by qp57a-4"
   }
  ],
- "runtime": {
-  "node": "23.11.0",
-  "bun": "1.4.2",
-  "limits": {
-   "memoryMiB": 8192,
-   "rssMiB": 8192,
-   "pollMs": 10
-  }
- },
  "notClaimed": [
+  "parser stage1/stage2 byte fixed point \u2014 not run for this parser",
   "root-final5",
   "full root byte fixed point",
   "frozen v41 corpus run",
