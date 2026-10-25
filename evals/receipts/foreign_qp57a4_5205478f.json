@@ -1,171 +1,292 @@
 {
-  "schemaVersion": 1,
-  "kind": "FOREIGN_TARGET_AND_PARSER_ACCEPTANCE",
-  "status": "JS_PASS_C_MEMORY_FAIL",
-  "component": {
-    "path": "/private/tmp/bend-fir-root-aa9/checkpoints/root-final4-art.js",
-    "sha256": "5205478f22cc6dc7ea7de5b343e40b575044e0965a173c9c539a84be564646c9",
-    "bytes": 16932690,
-    "checkedDefinitions": 11191,
-    "checksExcluded": 0,
-    "outputPatches": 0,
-    "worktreeCommit": "ff9a50ec",
-    "rootSha256": "b0b92b67225c1b67972c9fe2a1096962a14926633508936c86d8b93b73cbd36b",
-    "emitterStepsSha256": "156a74755552831812c4b0e1951965f8563665e9802479d70d491c998fff2cf2"
+ "schemaVersion": 1,
+ "kind": "FOREIGN_TARGET_AND_PARSER_ACCEPTANCE",
+ "status": "JS_PASS_C_MEMORY_FAIL",
+ "component": {
+  "path": "/private/tmp/bend-fir-root-aa9/checkpoints/root-final4-art.js",
+  "sha256": "5205478f22cc6dc7ea7de5b343e40b575044e0965a173c9c539a84be564646c9",
+  "bytes": 16932690,
+  "checkedDefinitions": 11191,
+  "checksExcluded": 0,
+  "outputPatches": 0,
+  "worktreeCommit": "ff9a50ec",
+  "rootSha256": "b0b92b67225c1b67972c9fe2a1096962a14926633508936c86d8b93b73cbd36b",
+  "emitterStepsSha256": "156a74755552831812c4b0e1951965f8563665e9802479d70d491c998fff2cf2"
+ },
+ "parser": {
+  "path": "/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+  "sha256": "0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b",
+  "bytes": 2834193,
+  "authenticated": "600s qp57a-4 final chain 094d9d9d receipt (see authentication); earlier 900s attempt unapproved/not basis",
+  "authentication": {
+   "parserPath": "/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+   "parserSha256": "0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b",
+   "canonicalSha256": "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37",
+   "finalChain": "094d9d9d",
+   "gateTimeoutSeconds": 600,
+   "gateReceipt": "/private/tmp/bend-fir-root-aa9/checkpoints/parser-candidate-gate-qp57a-4-600s.json",
+   "gateReceiptSha256": "f9eb738b8171619652f8a055590802d324e0aa1343191dbf8c352e06b3300efb",
+   "gateSummary": "completed=true admitted=true partial=false sourceSpecificExceptions=0 checksExcluded=0 outputPatches=0 guard 8192/8192/10; public regressions 15 passed / 0 failed / 264 assertions (report sha 2bc30c96\u2026)",
+   "rejectedEarlierRun": "/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.900s-rejected.progress.json",
+   "rejectedEarlierRunSha256": "87f1aa113fb79f26ef45d5d8726266ab6eedd350ce9dc480fb4b32cb7c52ce63",
+   "basisNote": "The earlier 900s gate attempt is unapproved and is NOT the basis; the 600s qp57a-4 final chain 094d9d9d receipt is the authentication basis. Consumer observations below are unchanged and use the same parser image 0e7b3c42\u2026."
+  }
+ },
+ "carrierTag": "../bend2/selfhost/backend_ir.SourceFile",
+ "fixture": {
+  "path": "tests/run/list_rebox_sum.bend",
+  "sha256": "c046078c5a6c852d539c7456e4ce5fcf55d1556b8c37a08c1a8b711a1e9b379c",
+  "expected": "7\n3\nbounded"
+ },
+ "foreignLanes": {
+  "js": {
+   "emitExit": 0,
+   "runExit": 0,
+   "stdout": "7\n3\nbounded",
+   "stderr": "",
+   "artifact": "list_rebox_sum.js",
+   "artifactSha256": "79c9c46ae9424f2499d9382bb0394f0e81f7192e3823001f73cdf8deaac4f050"
   },
-  "parser": {
-    "path": "/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
-    "sha256": "0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b",
-    "bytes": 2834193,
-    "authenticated": "accepted by the 75-case gate with zero exceptions/exclusions/patches (Root report); not re-run here"
+  "c": {
+   "emitExit": 0,
+   "clangExit": 0,
+   "clangStderrBytes": 0,
+   "runExit": 1,
+   "stdout": "7\n3",
+   "stderr": "bend: list reboxing retains heap pages",
+   "artifact": "list_rebox_sum.c",
+   "artifactSha256": "1d59847a3227e2381316cd009c37446b8e2360547ba6113036368fc98534ed71",
+   "binarySha256": "a63c0ea563d019618bab84e6288865d82280deaeabcae76ab1689e936c32d391"
+  }
+ },
+ "familyFieldHot": {
+  "fixture": "tests/run/family_field_hot.bend",
+  "candidateJs": {
+   "emitExit": 0,
+   "runExit": 0,
+   "stdout": "5\n",
+   "stderr": ""
   },
-  "carrierTag": "../bend2/selfhost/backend_ir.SourceFile",
-  "fixture": {
-    "path": "tests/run/list_rebox_sum.bend",
-    "sha256": "c046078c5a6c852d539c7456e4ce5fcf55d1556b8c37a08c1a8b711a1e9b379c",
-    "expected": "7\n3\nbounded"
-  },
-  "foreignLanes": {
-    "js": {
-      "emitExit": 0,
-      "runExit": 0,
-      "stdout": "7\n3\nbounded",
-      "stderr": "",
-      "artifact": "list_rebox_sum.js",
-      "artifactSha256": "79c9c46ae9424f2499d9382bb0394f0e81f7192e3823001f73cdf8deaac4f050"
+  "gate": {
+   "command": "env CANDIDATE=/private/tmp/bend-fir-root-aa9/checkpoints/root-final4-art.js SOURCE_TAG=../bend2/selfhost/backend_ir.SourceFile PARSER=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js BEND_NO_TELEMETRY=1 timeout 600 bun gates/selfhost.ts --stage1 /tmp/croot-proof/stage1_driver.sh tests/run/family_field_hot.bend",
+   "timeoutSeconds": 600,
+   "exit": 0,
+   "stdout": "PASS tests/run/family_field_hot.bend js\nPASS tests/run/family_field_hot.bend native\n",
+   "stderr": ""
+  }
+ },
+ "logs": {
+  "foreign": {
+   "dir": "/tmp/foreign-qp57a-4",
+   "files": {
+    "clang.c.stderr": {
+     "bytes": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
-    "c": {
-      "emitExit": 0,
-      "clangExit": 0,
-      "clangStderrBytes": 0,
-      "runExit": 1,
-      "stdout": "7\n3",
-      "stderr": "bend: list reboxing retains heap pages",
-      "artifact": "list_rebox_sum.c",
-      "artifactSha256": "1d59847a3227e2381316cd009c37446b8e2360547ba6113036368fc98534ed71",
-      "binarySha256": "a63c0ea563d019618bab84e6288865d82280deaeabcae76ab1689e936c32d391"
+    "clang.c.stdout": {
+     "bytes": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "emit.c.exit": {
+     "bytes": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "emit.c.stderr": {
+     "bytes": 177,
+     "sha256": "cf923e008fec1f218a09dfc388851668f9687fb6495d5e7fb0b1ce61b575db1f"
+    },
+    "emit.c.stdout": {
+     "bytes": 271,
+     "sha256": "f29e3fa2e4e0b627361144e6d3afea6f4f60362d4a2e1478c334090eccb964f9"
+    },
+    "emit.js.exit": {
+     "bytes": 2,
+     "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "emit.js.stderr": {
+     "bytes": 177,
+     "sha256": "581afcf62a48c2f5da69324731fca7b54b3b49db93cf74e3853164370344779f"
+    },
+    "emit.js.stdout": {
+     "bytes": 203,
+     "sha256": "dc1bea1471990d9d64b3eb65cb9c03bfec60d95f1976bede37902f6e785abe6b"
+    },
+    "list_rebox_sum.c": {
+     "bytes": 879872,
+     "sha256": "1d59847a3227e2381316cd009c37446b8e2360547ba6113036368fc98534ed71"
+    },
+    "list_rebox_sum.cbin": {
+     "bytes": 906560,
+     "sha256": "a63c0ea563d019618bab84e6288865d82280deaeabcae76ab1689e936c32d391"
+    },
+    "list_rebox_sum.js": {
+     "bytes": 296340,
+     "sha256": "79c9c46ae9424f2499d9382bb0394f0e81f7192e3823001f73cdf8deaac4f050"
+    },
+    "run.c.stderr": {
+     "bytes": 39,
+     "sha256": "888d98448fda47e54330901fa6c388e3532bc50c4723beb36ab62f7fa526d121"
+    },
+    "run.c.stdout": {
+     "bytes": 4,
+     "sha256": "c6aa27d2ba0d2bbc9e43f4f65230b2f184de1ca2bdc2e90a53ca245c56ed524c"
+    },
+    "run.js.stderr": {
+     "bytes": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "run.js.stdout": {
+     "bytes": 12,
+     "sha256": "7d3fe20b511fd09902c5c071dbb8058ffa477f798566481078f341edc2820828"
     }
+   }
   },
   "familyFieldHot": {
-    "fixture": "tests/run/family_field_hot.bend",
-    "candidateJs": {
-      "emitExit": 0,
-      "runExit": 0,
-      "stdout": "5\n",
-      "stderr": ""
+   "dir": "/tmp/family-field-hot-qp57a-4",
+   "files": {
+    "emit.stderr": {
+     "bytes": 177,
+     "sha256": "56db8b2d38aca772ca0172ae5604c3b4c0aed948ed6f832f3aa238ec78295333"
     },
-    "gate": {
-      "command": "bun gates/selfhost.ts --stage1 <candidate_host wrapper> tests/run/family_field_hot.bend",
-      "timeoutSeconds": 600,
-      "exit": 0,
-      "stdout": "PASS tests/run/family_field_hot.bend js\nPASS tests/run/family_field_hot.bend native\n",
-      "stderr": ""
-    }
-  },
-  "logs": {
-    "foreign": {
-      "dir": "/tmp/foreign-qp57a-4",
-      "files": {
-        "clang.c.stderr": {
-          "bytes": 0,
-          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-        },
-        "clang.c.stdout": {
-          "bytes": 0,
-          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-        },
-        "emit.c.exit": {
-          "bytes": 2,
-          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
-        },
-        "emit.c.stderr": {
-          "bytes": 177,
-          "sha256": "cf923e008fec1f218a09dfc388851668f9687fb6495d5e7fb0b1ce61b575db1f"
-        },
-        "emit.c.stdout": {
-          "bytes": 271,
-          "sha256": "f29e3fa2e4e0b627361144e6d3afea6f4f60362d4a2e1478c334090eccb964f9"
-        },
-        "emit.js.exit": {
-          "bytes": 2,
-          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
-        },
-        "emit.js.stderr": {
-          "bytes": 177,
-          "sha256": "581afcf62a48c2f5da69324731fca7b54b3b49db93cf74e3853164370344779f"
-        },
-        "emit.js.stdout": {
-          "bytes": 203,
-          "sha256": "dc1bea1471990d9d64b3eb65cb9c03bfec60d95f1976bede37902f6e785abe6b"
-        },
-        "list_rebox_sum.c": {
-          "bytes": 879872,
-          "sha256": "1d59847a3227e2381316cd009c37446b8e2360547ba6113036368fc98534ed71"
-        },
-        "list_rebox_sum.cbin": {
-          "bytes": 906560,
-          "sha256": "a63c0ea563d019618bab84e6288865d82280deaeabcae76ab1689e936c32d391"
-        },
-        "list_rebox_sum.js": {
-          "bytes": 296340,
-          "sha256": "79c9c46ae9424f2499d9382bb0394f0e81f7192e3823001f73cdf8deaac4f050"
-        },
-        "run.c.stderr": {
-          "bytes": 39,
-          "sha256": "888d98448fda47e54330901fa6c388e3532bc50c4723beb36ab62f7fa526d121"
-        },
-        "run.c.stdout": {
-          "bytes": 4,
-          "sha256": "c6aa27d2ba0d2bbc9e43f4f65230b2f184de1ca2bdc2e90a53ca245c56ed524c"
-        },
-        "run.js.stderr": {
-          "bytes": 0,
-          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-        },
-        "run.js.stdout": {
-          "bytes": 12,
-          "sha256": "7d3fe20b511fd09902c5c071dbb8058ffa477f798566481078f341edc2820828"
-        }
-      }
+    "emit.stdout": {
+     "bytes": 214,
+     "sha256": "5e76053e8d0a828bcec27412b689b0a24f067aea5413a6f82179bc467920abd1"
     },
-    "familyFieldHot": {
-      "dir": "/tmp/family-field-hot-qp57a-4",
-      "files": {
-        "emit.stderr": {
-          "bytes": 177,
-          "sha256": "56db8b2d38aca772ca0172ae5604c3b4c0aed948ed6f832f3aa238ec78295333"
-        },
-        "emit.stdout": {
-          "bytes": 214,
-          "sha256": "5e76053e8d0a828bcec27412b689b0a24f067aea5413a6f82179bc467920abd1"
-        },
-        "family_field_hot.js": {
-          "bytes": 292273,
-          "sha256": "a903fbf3b9e23f7573f4734b547e8e0c77bb7e9523e73251f9575bd00f2148e2"
-        },
-        "gate.stderr": {
-          "bytes": 0,
-          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-        },
-        "gate.stdout": {
-          "bytes": 84,
-          "sha256": "8c8f54797152d344b7235209b0a784f5e56cf3408bfad94f19837dbfc219d999"
-        },
-        "run.stderr": {
-          "bytes": 0,
-          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-        },
-        "run.stdout": {
-          "bytes": 2,
-          "sha256": "f0b5c2c2211c8d67ed15e75e656c7862d086e9245420892a7de62cd9ec582a06"
-        }
-      }
+    "family_field_hot.js": {
+     "bytes": 292273,
+     "sha256": "a903fbf3b9e23f7573f4734b547e8e0c77bb7e9523e73251f9575bd00f2148e2"
+    },
+    "gate.stderr": {
+     "bytes": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "gate.stdout": {
+     "bytes": 84,
+     "sha256": "8c8f54797152d344b7235209b0a784f5e56cf3408bfad94f19837dbfc219d999"
+    },
+    "run.stderr": {
+     "bytes": 0,
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "run.stdout": {
+     "bytes": 2,
+     "sha256": "f0b5c2c2211c8d67ed15e75e656c7862d086e9245420892a7de62cd9ec582a06"
     }
+   }
+  }
+ },
+ "notes": [
+  "No pipes/head/grep; child stdout/stderr/exit saved for the direct foreign and family runs; gate stdout/stderr saved whole.",
+  "No fixture or corpus edits; family_field_hot was only registered in gates/selfhost.ts (efccc8da).",
+  "The C list_rebox_sum failure is memory acceptance, not target selection or parsing; routed to CIRStorage/CIRControl.",
+  "No 900s gate deadline was used or claimed; this gate run used 600s.",
+  "Command strings above are literal paths/args as executed; no reruns were needed to write them. Wrapper sha256 is recorded; versions observed locally: node v23.11.0, bun 1.4.2, Apple clang (clang --version)."
+ ],
+ "execution": {
+  "platform": {
+   "os": "darwin 25.6.0",
+   "arch": "arm64",
+   "node": "v23.11.0",
+   "bun": "1.4.2",
+   "clang": "Apple clang (observed via clang --version; see command list)"
   },
-  "notes": [
-    "No pipes/head/grep; child stdout/stderr/exit saved for the direct foreign and family runs; gate stdout/stderr saved whole.",
-    "No fixture or corpus edits; family_field_hot was only registered in gates/selfhost.ts (efccc8da).",
-    "The C list_rebox_sum failure is memory acceptance, not target selection or parsing; routed to CIRStorage/CIRControl.",
-    "No 900s gate deadline was used or claimed; this gate run used 600s."
-  ]
+  "limits": {
+   "nodeMaxOldSpaceMiB": 3072,
+   "parserGateGuard": "memoryMiB 8192 / rssMiB 8192 / pollMs 10",
+   "gateTimeoutSeconds": 600
+  },
+  "wrapper": {
+   "path": "/tmp/croot-proof/stage1_driver.sh",
+   "sha256": "02ba96a8a013d303fd2d80db2083d80195ee9d1f59937a754df53b951b372dd5",
+   "purpose": "stage1 vehicle for gates/selfhost.ts; exported CANDIDATE/SOURCE_TAG/PARSER are read by the wrapper and it forwards all compiler args"
+  },
+  "hosts": {
+   "candidateHost": "/private/tmp/bend-fir-root-aa9/evals/candidate_host.ts",
+   "candidateHostSha256": "a56f57e32d0fa475a0564f18a3930137a084cb6a4ce49b05f496e76331d2a22a",
+   "base": "/private/tmp/bend-fir-croot57ab/bend2/base.bend",
+   "baseSha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+   "runtimeC": "/private/tmp/bend-fir-root-aa9/bend2/selfhost/c_runtime.c",
+   "runtimeCSha256": "478c1ba7d0d0626c1927d11c4af3b3d4cef520db41afd8722ebf55d5050769c3"
+  },
+  "commands": {
+   "foreign_emit_c": [
+    "node",
+    "--experimental-strip-types",
+    "--max-old-space-size=3072",
+    "/private/tmp/bend-fir-root-aa9/evals/candidate_host.ts",
+    "--candidate=/private/tmp/bend-fir-root-aa9/checkpoints/root-final4-art.js",
+    "--parser=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+    "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+    "tests/run/list_rebox_sum.bend",
+    "-o",
+    "/tmp/foreign-qp57a-4/list_rebox_sum.c",
+    "--base=/private/tmp/bend-fir-croot57ab/bend2/base.bend",
+    "--runtime-c=/private/tmp/bend-fir-root-aa9/bend2/selfhost/c_runtime.c"
+   ],
+   "foreign_emit_js": [
+    "node",
+    "--experimental-strip-types",
+    "--max-old-space-size=3072",
+    "/private/tmp/bend-fir-root-aa9/evals/candidate_host.ts",
+    "--candidate=/private/tmp/bend-fir-root-aa9/checkpoints/root-final4-art.js",
+    "--parser=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+    "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+    "tests/run/list_rebox_sum.bend",
+    "-o",
+    "/tmp/foreign-qp57a-4/list_rebox_sum.js",
+    "--base=/private/tmp/bend-fir-croot57ab/bend2/base.bend",
+    "--runtime-c=/private/tmp/bend-fir-root-aa9/bend2/selfhost/c_runtime.c"
+   ],
+   "foreign_clang": [
+    "clang",
+    "-std=c11",
+    "-O0",
+    "-ferror-limit=0",
+    "-pthread",
+    "-lm",
+    "-o",
+    "/tmp/foreign-qp57a-4/list_rebox_sum.cbin",
+    "/tmp/foreign-qp57a-4/list_rebox_sum.c"
+   ],
+   "foreign_run_c": [
+    "/tmp/foreign-qp57a-4/list_rebox_sum.cbin"
+   ],
+   "foreign_run_js": [
+    "node",
+    "/tmp/foreign-qp57a-4/list_rebox_sum.js"
+   ],
+   "family_direct_emit_js": [
+    "node",
+    "--experimental-strip-types",
+    "--max-old-space-size=3072",
+    "/private/tmp/bend-fir-root-aa9/evals/candidate_host.ts",
+    "--candidate=/private/tmp/bend-fir-root-aa9/checkpoints/root-final4-art.js",
+    "--parser=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+    "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+    "tests/run/family_field_hot.bend",
+    "-o",
+    "/tmp/family-field-hot-qp57a-4/family_field_hot.js",
+    "--base=/private/tmp/bend-fir-croot57ab/bend2/base.bend",
+    "--runtime-c=/private/tmp/bend-fir-root-aa9/bend2/selfhost/c_runtime.c"
+   ],
+   "family_direct_run_js": [
+    "node",
+    "/tmp/family-field-hot-qp57a-4/family_field_hot.js"
+   ],
+   "family_gate": [
+    "env",
+    "CANDIDATE=/private/tmp/bend-fir-root-aa9/checkpoints/root-final4-art.js",
+    "SOURCE_TAG=../bend2/selfhost/backend_ir.SourceFile",
+    "PARSER=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+    "BEND_NO_TELEMETRY=1",
+    "timeout",
+    "600",
+    "bun",
+    "gates/selfhost.ts",
+    "--stage1",
+    "/tmp/croot-proof/stage1_driver.sh",
+    "tests/run/family_field_hot.bend"
+   ]
+  }
+ }
 }
