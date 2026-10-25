@@ -7,7 +7,7 @@ generated units) was **not** rerun. Production compiler code was not changed.
 Committed inputs: `evals/repro_native_pass1.ts` (driver, sha256
 `ef42fa50f44558d8f00c8a8b5835504222c2c0a18b4a3c5c6328a0db116c5ac7`).
 Compact receipt: `evals/receipts/repro_native_pass1_literal.json` (sha256
-`fc9b141d340acb5a0430810a1fc18330d650e8181bf91f4d30fb7f0ada81148e`).
+`62377cfa91b9efbb81da253ad5050b579ae0505633c8e05430912a1535287b33`).
 The three exact generated sources the run loaded are committed at
 `evals/repro_native_pass1/literal-{1000,4000,16000}.bend`
 (sha256 `78685a5db42b00488755de0050c909bfe8735ee6ece482ffd6ea76da6d8f50a0`,
@@ -25,12 +25,14 @@ samples stayed outside Git at `/tmp/repro-native-pass1-full.json`.
   `a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70`,
   `bend2/bend.ts` sha256 `6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e`
   (same bytes as the failing 03d0 worktree).
-- Worker per case: stack 256 MiB, old generation 3072 MiB. Guardian:
+- Worker per case: stack 256 MiB, `resourceLimits.maxOldGenerationSizeMb=3072`
+  (an old-generation limit, not a cap on `heapUsed` across all V8 spaces). Guardian:
   `guardHeavyGate` 8192 MiB / 8192 MiB / 10 ms / 600000 ms, DEFAULT lock path,
   no nested or independent lock. Real worker `exit` is awaited before the next
   case starts.
-- Command actually run (cwd `/private/tmp/bend-repro-oom57ab`, branch
-  `work/repro-oom57ab`, driver commit `ae63dc7d`):
+- Invoked launcher command (cwd `/private/tmp/bend-repro-oom57ab`, branch
+  `work/repro-oom57ab`, driver commit `ae63dc7d`), with launcher
+  `execArgv = ["--experimental-strip-types"]`:
 
   ```
   /Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node --experimental-strip-types \
@@ -40,9 +42,27 @@ samples stayed outside Git at `/tmp/repro-native-pass1-full.json`.
     --max-elements=16384 --report-limit-units=67108864 --case-timeout-ms=60000
   ```
 
-- Guardian terminal record: status `PASS`, reason `command_exit`, exit 0,
-  reportPhase `complete`, ownedTreeStopped `true`, elapsed 11943 ms,
-  peakRss 591642624 B, peakFootprint 588228664 B.
+- Guardian re-exec: `guardHeavyGate` runs `process.execPath` + the absolute script
+  path + the case arguments, so the supervised child's `execArgv` is `[]` and the
+  receipt's `runtime.execArgv=[]` is the child's, not the launcher's. Node 23
+  strips TypeScript by default, so the dropped flag does not change loading.
+  Both argv forms, both execArgv values, and the guardian's own recorded command
+  are committed in the receipt under `invocation.launcher`,
+  `invocation.supervisedChild` and `guardian.command`. `--sizes` and `--max-defs`
+  are present in the invoked argv but unused under `--families=literal` (literal
+  sizes come from `--literal-sizes`, the element bound from `--max-elements`).
+- Guardian terminal record copied from the existing report (no rerun):
+  `reportPath /var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792919199894-4da41f9aed3f3e02.json`,
+  879 B, sha256 `a3fa23e25b3c69c652d0800d3410fd8810ff60a37a571f46ecf09e8598acd4fb`;
+  status `PASS`, reason `command_exit`, commandExitCode 0, commandSignal 0,
+  reportPhase `complete`, ownedTreeStopped `true`, supervisorExitCode 0,
+  elapsed 11943 ms, peakRss 591642624 B, peakFootprint 588228664 B,
+  memoryLimit 8589934592 B, rssLimit 8589934592 B, timeout 600000 ms.
+  The peak values are 10 ms supervisor samples of the guarded tree. The receipt's
+  `measurement.workerLimit`/`measurement.heapSizeLimit` scope notes record that
+  `maxOldGenerationSizeMb=3072` is an old-space limit while `heapSizeLimit`
+  (3271557120 B) is V8's isolate heap-size limit, and that neither turns the
+  heapUsed samples into available headroom.
 - `--report-limit-units` is a **post-generation report limit** checked on the
   returned C string after `compile_book` finished. It is not an emit,
   allocation or preventive memory bound.
@@ -107,8 +127,9 @@ from the measured family.
 Applying the list slope numerically to those tokens (bracketing 11.7k-23.4k
 elements) gives pass-1 boundary growth ≈ 0.12-0.25 GiB, reachability
 ≈ 0.11-0.22 GiB, whole-run sampled max ≈ 0.26-0.52 GiB, C text ≈ 1.7-3.5 M
-UTF-16 units, against **1.143 GiB** of pass-1 headroom under the same 3072 MiB
-cap. That is a naive scale of a *different* structure: it does **not** explain
+UTF-16 units, against a 1227813008 B numeric gap between that boundary heapUsed
+sample and the same 3072 MiB old-generation limit (not proved available
+headroom). That is a naive scale of a *different* structure: it does **not** explain
 the actual OOM, does **not** prove the fixture literals are insufficient, and
 does **not** refute them. The giant-fixture hypothesis is **not ruled out**; an
 actual fixture-shaped nested input would be needed, and only if source profiling
@@ -125,8 +146,12 @@ points there. No OOM cause, upper bound or minimality claim is made.
   system 973.2 ms (process-wide).
 - Worker OOM observed **101.3 s** after that boundary (153.6 s total); no
   `c-pass-1-after`, no artifact. Guardian peakRss **3472670720**, footprint
-  **3627897496**; worker heap limit 3072 MiB = 3221225472, so the boundary left
-  1.143 GiB and the later peak sat 1.199 GiB above the boundary RSS.
+  **3627897496**. The worker limit is `maxOldGenerationSizeMb=3072`
+  = 3221225472 B; the boundary heapUsed sample is 1227813008 B below that number
+  and heapTotal 1192148992 B below it. Those are numeric differences to an
+  old-space limit, **not** proved available heap headroom (the limit bounds old
+  space while heapUsed/heapTotal cover all V8 spaces). The guardian peak RSS is
+  1287208960 B above the boundary RSS.
 - Fine observations were suppressed (`rawDetail: false`, `fineSpans: 0`), so
   this receipt has **no per-definition rows**: the pass's internal trajectory is
   unmeasured there. The 1.993 GB boundary sample is not a peak and not retained
@@ -180,8 +205,9 @@ evidence for the shape and magnitude of a pass over the generated machines.
 
 - [OBSERVED] Constant-literal emission is linear in nodes: ~145 C units and ~3
   lines per element, ~11 KiB boundary-heap per element, ~0.19 ms/element.
-- [OBSERVED] The failing pass started at 1.993 GB with 1.143 GiB of headroom and
-  did not finish within 101 s.
+- [OBSERVED] The failing pass started from a 1993412464 B heapUsed sample,
+  1227813008 B below the 3072 MiB old-generation limit (a numeric gap, not proved
+  available headroom), and did not finish within 101 s.
 - [INFERENCE] The list-family slope is a naive scale for the fixture's
   heterogeneous nested `BIR` tokens (≈0.12-0.25 GiB pass-1 boundary heap,
   ≈2-5 s if applied numerically). Because constructor cost is not uniform and
