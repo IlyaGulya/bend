@@ -375,3 +375,22 @@ logical CPUs, load46.60/44.52/40.96 and57% free memory. It does not prove the
 cause of missing CPU time; neither sleep nor memory pressure is established.
 The diagnostic prioritizes allocation/GC investigation without authorizing a
 compiler/kernel patch, input narrowing, or a longer working-build deadline.
+
+### Bun default-runtime control: real stack failure, not V8 OOM
+
+The user questions continuing on Node without first checking Bun. The active
+Node1800s run is deliberately stopped, with complete/stopped guardian evidence
+in `evals/receipts/native03d0_working8192_node_interrupted.json`.
+`evals/receipts/native03d0_bun_default_stack.json` then records the same eight
+source hashes on Bun1.4.2, with no CPU profiler or compile-book observer.
+Full load and validation finish; codegen fails with RangeError at
+tele_unbind/ctr_tail/facts_ctr under repeated emit_ctr calls. Guard elapsed
+14501ms, RSS6061506560B / footprint5859873664B, complete/stopped/exit1.
+This is not OOM and does not establish codegen completion or minimality.
+
+Bun ignores node:worker_threads resourceLimits; its CPU/heap profilers exist
+independently of Node. The Bun run uses an actual8192MiB tree memory guard,
+not a claimed8GiB V8 heap or256MiB worker stack. Node/V8 GC measurements must
+not be attributed to Bun. Synthetic stack-option probes are diagnostic only:
+raising native ulimit with a large JSC stack option causes Bun crashes and is
+rejected. No such configuration is used on the compiler workload.
