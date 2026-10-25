@@ -123,11 +123,17 @@ unchanged. Exact comparison and approval scope:
 
 The user subsequently approved a temporary **8GiB working native-codegen heap**,
 with a12GiB tree RSS/footprint guard so non-heap process memory has headroom.
-Stack256MiB,10ms sampling,600s deadline and one heavy child remain unchanged.
+Stack256MiB,10ms sampling and one heavy child remain unchanged.
 The3072MiB native-root item is deferred as a later optimization target, not
 marked complete. This working-resource policy does not reclassify old OOMs,
 change compiler semantics/inputs, or authorize representing an8GiB run as a
 3072MiB acceptance. Build/run receipts must name their actual policy.
+After both detailed and no-per-definition-observer8GiB attempts reach600s,
+the user explicitly approves **one working codegen run up to1800s**, without
+CPU profiling or per-definition tracing, under the same8GiB heap/12GiB guard.
+Other verification stages retain600s. The bounded CPU diagnostic is preserved
+separately in `evals/receipts/native03d0_working8192_cpu.json`; its controlled
+teardown PASS is not a successful compiler build. No C artifact exists yet.
 
 ### Preceding `667e7f33` C checkpoint (historical)
 
