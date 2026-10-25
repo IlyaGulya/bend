@@ -340,3 +340,17 @@ The trace contains1060976events /646109345B; its overhead is not measured.
 A subsequent no-per-definition-observer control is required before attributing
 that deadline to the compiler or the observer. Passing under this working
 policy would not close the deferred3072MiB target.
+
+### No-per-definition-observer working8192MiB control also reaches the deadline
+
+`evals/receipts/native03d0_working8192_unobserved_deadline.json` records the
+same eight frozen source hashes with `C.compile_book(book)` and no installed
+compile-book observer. Only module/load/validation/whole-codegen boundary
+collection remains; this is not a zero-instrumentation timing claim.
+Load and validation finish; compile-book starts at collector9412.820ms.
+The guard stops the still-open whole-codegen span after600420ms, complete
+and stopped, with RSS6999818240B / footprint7550635336B. No OOM is observed,
+no C output exists, and the final pass/CPU location is unavailable.
+Removing per-definition tracing is therefore not sufficient to complete this
+working build inside the unchanged deadline. It does not measure overhead,
+prove a compiler algorithmic cause, or attribute missing wall time.
