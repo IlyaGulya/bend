@@ -1,0 +1,229 @@
+{
+ "schemaVersion": 1,
+ "kind": "POST_MATRIX_FOLLOWUPS",
+ "status": "C_BLOCKED_BY_EMIT_JS_PASS",
+ "candidate": {
+  "component": "/private/tmp/bend-cand-allbody57ab/checkpoints/cand-allbody57ab-art4.js",
+  "sha256": "433aadb54af3255d76dd41bf410b0e4002a675018389b497d6cb42448d7b0f03",
+  "host": "/private/tmp/bend-cand-allbody57ab/evals/candidate_host.ts",
+  "hostSha256": "2596997a2a578cb371e11e8cb0858e4ebd9f53b1679d2814f3068a0db29613e4",
+  "parser": "/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+  "parserSha256": "0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b",
+  "tag": "../bend2/selfhost/backend_ir.SourceFile",
+  "node": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+  "nodeSha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5",
+  "baseSha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+  "runtimeCSha256": "478c1ba7d0d0626c1927d11c4af3b3d4cef520db41afd8722ebf55d5050769c3"
+ },
+ "guardian": {
+  "memoryMiB": 8192,
+  "rssMiB": 8192,
+  "pollMs": 10,
+  "timeoutMs": 600000
+ },
+ "fixtures": {
+  "list_rebox_sum": {
+   "c": {
+    "emitExit": 1,
+    "stderr": "candidate: emission failed: a form field is not a single word"
+   },
+   "js": {
+    "emitGate": "PASS",
+    "runExit": 0,
+    "stdout": "7\n3\nbounded",
+    "expected": "7\n3\nbounded"
+   }
+  },
+  "family_field_hot": {
+   "c": {
+    "emitExit": 1,
+    "stderr": "candidate: emission failed: a form field is not a single word"
+   },
+   "js": {
+    "emitGate": "PASS",
+    "runExit": 0,
+    "stdout": "5",
+    "expected": "5"
+   }
+  },
+  "c_backend_link": {
+   "c": {
+    "emitExit": 1,
+    "stderr": "candidate: emission failed: a form field is not a single word"
+   },
+   "js": {
+    "emitGate": "PASS",
+    "runExit": 0,
+    "stdout": "linked-comment-kept\nliteral-kept\nfid-linked\nsplice-kept\nsplice-kept\nmissing",
+    "expected": "linked-comment-kept\nliteral-kept\nfid-linked\nsplice-kept\nsplice-kept\nmissing"
+   }
+  }
+ },
+ "logs": {
+  "dir": "/tmp/postmatrix-6b1d",
+  "fileCount": 39,
+  "files": {
+   "c_backend_link.c.gate.stderr": {
+    "bytes": 1283,
+    "sha256": "149357dabf6039ee114e83f9435f0087a3c022491518ac0a842c14c258a9572c"
+   },
+   "c_backend_link.c.gate.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_backend_link.c.stderr": {
+    "bytes": 239,
+    "sha256": "2a970d83f8c433f9cd000972d52ea0bd234d9723fd4da30af03b245e15ae8b4d"
+   },
+   "c_backend_link.c.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_backend_link.js.gate.stderr": {
+    "bytes": 1287,
+    "sha256": "8e8665c4bbf24d23ec97362c015faaaa00d586c07197f1c9d73ed9bc0305c147"
+   },
+   "c_backend_link.js.gate.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_backend_link.js.js": {
+    "bytes": 405297,
+    "sha256": "9678b9b9d735e55e868e36fd535979c242bf54c5cd71bc0469f23aeb88247648"
+   },
+   "c_backend_link.js.run.gate.stderr": {
+    "bytes": 796,
+    "sha256": "e47ffa338e0cd7818c5c12f4943bee8daac82a17250b7b7ddc57ef671822a965"
+   },
+   "c_backend_link.js.run.gate.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_backend_link.js.run.stderr": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "c_backend_link.js.run.stdout": {
+    "bytes": 76,
+    "sha256": "8061b6f73ebdc45fee4e5eeba5e26f06c50e2b03bf88d4d61303baf98f80bb62"
+   },
+   "c_backend_link.js.stderr": {
+    "bytes": 177,
+    "sha256": "8c21933edadd613e102ac28a0fd9bee215bca8fbeab385e5520ded5f6c7980b6"
+   },
+   "c_backend_link.js.stdout": {
+    "bytes": 206,
+    "sha256": "22639d7729d655d7f4bc6c6517c784c69038bae62374dc5681459c012d237e3f"
+   },
+   "family_field_hot.c.gate.stderr": {
+    "bytes": 1291,
+    "sha256": "9825f2543dc677f093399404c6962b977b55238d8de2dc82a9bd748425461617"
+   },
+   "family_field_hot.c.gate.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "family_field_hot.c.stderr": {
+    "bytes": 238,
+    "sha256": "7975b34ab1f5e6809b9a4dc0c9ff1d838fb3371e93de2aeeef55b5d90e1d769a"
+   },
+   "family_field_hot.c.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "family_field_hot.js.gate.stderr": {
+    "bytes": 1295,
+    "sha256": "b690c7f975bbe6d0f5522e44219a83e837faecb8638601389f49b86b69909a3b"
+   },
+   "family_field_hot.js.gate.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "family_field_hot.js.js": {
+    "bytes": 292273,
+    "sha256": "a903fbf3b9e23f7573f4734b547e8e0c77bb7e9523e73251f9575bd00f2148e2"
+   },
+   "family_field_hot.js.run.gate.stderr": {
+    "bytes": 803,
+    "sha256": "d6185ca4602cab9f85488156bbafae23bdfc106a0732a5bda782a0447823f09d"
+   },
+   "family_field_hot.js.run.gate.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "family_field_hot.js.run.stderr": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "family_field_hot.js.run.stdout": {
+    "bytes": 2,
+    "sha256": "f0b5c2c2211c8d67ed15e75e656c7862d086e9245420892a7de62cd9ec582a06"
+   },
+   "family_field_hot.js.stderr": {
+    "bytes": 177,
+    "sha256": "9f62db0311f4f49f4398abc6cefef8fc9989a853fd786b95025f2770ae017d1a"
+   },
+   "family_field_hot.js.stdout": {
+    "bytes": 208,
+    "sha256": "16a718fa3da4fe96c392ff9fe4f482a19d9cb5c6b0da019d57ec5d799231f926"
+   },
+   "list_rebox_sum.c.gate.stderr": {
+    "bytes": 1283,
+    "sha256": "56afd42253b0dfacab6b5e849b4d407fc5ca4f71001c3e5f004154378f8f3547"
+   },
+   "list_rebox_sum.c.gate.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "list_rebox_sum.c.stderr": {
+    "bytes": 239,
+    "sha256": "fbfdeb423cb453598195fe0e7353a66f0d7fce0dfada7f003e74c8375c7bcf33"
+   },
+   "list_rebox_sum.c.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "list_rebox_sum.js.gate.stderr": {
+    "bytes": 1287,
+    "sha256": "527ac63b3b90edf02dec3fdfdddefdeb098607409320de9c9a47802973dc2f99"
+   },
+   "list_rebox_sum.js.gate.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "list_rebox_sum.js.js": {
+    "bytes": 296340,
+    "sha256": "79c9c46ae9424f2499d9382bb0394f0e81f7192e3823001f73cdf8deaac4f050"
+   },
+   "list_rebox_sum.js.run.gate.stderr": {
+    "bytes": 796,
+    "sha256": "bbc4625537150e44d450fb2c9323fa8f2836aaaa2845fdd67c3e904421ea941c"
+   },
+   "list_rebox_sum.js.run.gate.stdout": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "list_rebox_sum.js.run.stderr": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+   },
+   "list_rebox_sum.js.run.stdout": {
+    "bytes": 12,
+    "sha256": "7d3fe20b511fd09902c5c071dbb8058ffa477f798566481078f341edc2820828"
+   },
+   "list_rebox_sum.js.stderr": {
+    "bytes": 176,
+    "sha256": "0b2c7e7f0fc185786ca6a7bf974481aef0fbea4cd984615c83d0f2e08033f0b6"
+   },
+   "list_rebox_sum.js.stdout": {
+    "bytes": 206,
+    "sha256": "7c275c585ff4a179721a1af0ed2c38463dfb1acd1945218ec7f99143fa346b95"
+   }
+  }
+ },
+ "notes": [
+  "Post-matrix with the same candidate. Every C-target emit fails with the same form-field error as all 23 matrix cases; JS emits and runs pass exactly.",
+  "No clang/run was attempted for a C target because emission never produced a file; no inputs/exports/fuel/bounds/caps changed.",
+  "This is follow-up evidence, not C acceptance/root FP/native proof."
+ ]
+}
