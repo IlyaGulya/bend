@@ -73,7 +73,7 @@ function args_parse(){
     (name==='--stage-manifest'?manifests:receipts).push(resolve(value));
     continue;
    }
-   if(!['--candidate','--parser','--base','--exports','--runtime-c','--source-tag','--stage-profile'].includes(name)||value===undefined||values.has(name))fail('unknown or duplicate option '+arg);
+   if(!['--candidate','--parser','--base','--exports','--runtime-c','--source-tag','--stage-profile','--checked-out','--sources-out'].includes(name)||value===undefined||values.has(name))fail('unknown or duplicate option '+arg);
    values.set(name,value);
    continue;
   }
@@ -91,6 +91,8 @@ function args_parse(){
   runtimeC:values.has('--runtime-c')?resolve(values.get('--runtime-c')!):undefined,
   sourceTag:values.get('--source-tag')??OFFICIAL_SOURCE_FILE_TAG,
   stageProfile:values.has('--stage-profile')?resolve(values.get('--stage-profile')!):undefined,
+  checkedOut:values.has('--checked-out')?resolve(values.get('--checked-out')!):undefined,
+  sourcesOut:values.has('--sources-out')?resolve(values.get('--sources-out')!):undefined,
   stageManifests:manifests,stageReceipts:receipts,stageProgress:flags.has('--stage-progress')};
 }
 
@@ -232,6 +234,8 @@ function declaredExports():string[]{
 }
 
 const program=checkedProgram();
+if(o.checkedOut)writeFileSync(o.checkedOut,JSON.stringify(program));
+if(o.sourcesOut)writeFileSync(o.sourcesOut,JSON.stringify(files));
 const exports=o.exports??declaredExports();
 let runtime:string|undefined;
 if(target==='c'){

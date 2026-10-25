@@ -199,8 +199,19 @@ removed. The fixture is **BLOCKED ON AUTHORITATIVE BIR**: it needs a small real
 checked source driven through canonical FIR/lowering to a BIR/Emitter request,
 or another canonical generated fixture with complete semantically correct
 runtime family/constructor metadata. The copied smoke data is retained only as
-the failing public diagnostic input. No valid BIR, native Emitter workload, or
-EmitSuccess is claimed. The performed Node native run remains the pre-fix
+the failing public diagnostic input.
+
+A canonical replacement path is now proven separately: a frozen real source
+(`evals/native_stage_profile_emit_source.bend`, closed arithmetic/closure) is
+checked by the production candidate artifact, lowered by generated
+`EmitterRequest_cps_provider_1_lower` (group 5, 4627 chunks), and rendered by the
+generated canonical C render request `cps_provider_6_render` (group 18, 826307
+chunks) with the 56 real `.c` source alternatives, returning `EMIT_SUCCESS`.
+CheckedProgram/BIR/source bundles are generated under `/tmp` and not committed;
+only the source input and thin diagnostic components are source. The JS codegen
+stack is 256 MiB, the approved source cap; no native worker/guard limit changed.
+This is not yet a native fixture run, and direct group-12 CImport assembly is not
+claimed. The performed Node native run remains the pre-fix
 `EmitFailure` evidence; no native rerun or cap change was made.
 
 Native coarse rows were read from the preserved diagnostic trace
