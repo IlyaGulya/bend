@@ -754,11 +754,11 @@ document ran nothing. No test enumerates all erased shapes.
 
 ### 4.3 Affinity and ownership facts
 
-**BL-3.** Every `Arg.use`, `Parameter.use`, `Field.use`, and `Code.captures`
-entry is an upper bound on how many times the target runtime may consume that
-value at that occurrence: `Affine` means at most once, `Many` means zero or
-more. Lowering derives them from the checked source quantity, never from a
-target analysis:
+**BL-3.** `Arg.use`, `Parameter.use`, `Field.use`, and `Code.captures`
+translate checked quantity contracts. `Affine` bounds a consumer to at most
+one logical use; `Many` permits repeated use. They do **not** prove that the
+caller's reference is dead after supplying that consumer. Lowering derives
+these contracts from checked source quantities, never from target liveness:
 
 - `use(Ast.QMany) = Many`, every other source quantity maps to `Affine`
   (`backend_lower.bend:48-51`); `bir_use(Unrestricted) = Many`, else `Affine`
@@ -769,6 +769,16 @@ target analysis:
 - `Catalog.quantity` maps `QZero/QOne/QMany` to `Erased/Once/Unrestricted`
   (`lower_catalog.bend:54-57`); `Catalog.parameter` maps `Once -> Affine`,
   `Unrestricted -> Many`, drops `Erased` (`63-66`).
+
+In particular, `TypedOccurrence.formal` (`checker_ir.bend:53`) becomes
+`SourceArgument.quantity` and then `Arg.use`
+(`backend_lower.bend:674-677,903-926`). `Field.use` comes from the constructor's
+declared field quantity (`449-464`). Local resolution reuses its existing
+`Atom`; it does not insert a `Copy` for each reference (`156-208`).
+Consequently, two calls to an affine `id(s: String)` may both carry
+`Arg{Affine, Local{s}}` when the caller's `s` is unrestricted. This is a source
+trace, not an executed regression receipt. Moving that local on the first
+`Affine` argument is not licensed by BL-3.
 
 This is a *translation of checked facts*, not a new analysis. The source
 checker already validated uses on the checked body (FIR). Consequently:
@@ -787,11 +797,12 @@ checker already validated uses on the checked body (FIR). Consequently:
   `rfc_seal` (`c_backend_physical.bend:540-566`). JS has no such pass; JS value
   semantics are uniform references and do not encode affinity.
 
-Status: **[N]** for the mapping; **[O]** for the implication "checked source
-quantities are sufficient for the C reference-counting policy". The sharing
-module explicitly documents conservative departures from the reference emitter
-in its header (`c_backend_sharing.bend:51-67`). No test proves the sealing
-policy safe for all programs.
+Status: **[N]** for quantity translation. Quantities alone are not a caller
+move/keep plan: C also needs path-sensitive liveness and alias handling (C-6).
+The source sharing analysis documents conservative departures from the
+reference emitter, but its hot-set result does not supply those lifetimes.
+The corrected C ownership implementation and its behavioral regressions remain
+**[O]**; neither the mapping nor sealing proves them.
 
 ### 4.4 Strict operands, order, and application shape
 
@@ -1472,8 +1483,34 @@ note}` drives `CID_T` hot bits, `BLK_SHR`, and sealing. Obligations:
    out-of-range projection, non-convergent fixed point, `DescriptorFailure`
    where the hot closure must read) are failures, not defaults
    (`c_backend_sharing.bend:68-74`).
+4. Every semantic argument, stored field and returned value crosses its
+   runtime boundary as one owned reference. The caller chooses move versus
+   counted share from residual uses, not from the callee's formal quantity.
+   Arguments are prepared once, in source order, before frame release or
+   continuation transfer. Physical storage must not keep an already prepared
+   owned argument a second time.
+5. Branch alternatives have independent ownership states. A value used once
+   in each mutually exclusive branch does not require a runtime copy.
+   Synthesized continuations transfer owning roots and preserve projection
+   provenance; they do not semantically consume the projected fields.
+6. `Project` and the native array pattern projections
+   (`PrimArrayLeft`, `PrimArrayRight`, `PrimArrayLeafValue`) are borrowed paths
+   until a semantic consuming use. Observations and failed nested patterns
+   leave the scrutinee intact. An affine field argument is not enough to
+   justify detachment if a whole ancestor or overlapping path remains live.
+7. At a permitted transfer, only selected boxed slots may be cleared, and
+   only when every ownership ancestor is unique and non-static. Shared/static
+   owners require counted sharing with source-wrapper writeback; raw words
+   copy. Untouched siblings remain owned by the root until their own use or
+   frame cleanup. Array halves may be consumed separately across continuations;
+   taking one must not free the other prematurely.
+8. Heap callables are affine runtime objects: `rfc_wrap` rejects `TAG_CLO`
+   and `TAG_TSK` in `c_runtime.c`. A blanket `term_keep`, including one hidden
+   in a tag-test temporary or an array-element copy, is not an ownership
+   solution for a `Type` field. The sharing module's contrary closure comment
+   is not runtime authority.
 
-Mechanism: a monotone fixed point over demand/flow/closure facts
+Sharing-plan mechanism: a monotone fixed point over demand/flow/closure facts
 (`Fact`/`AState`, `1920-1960`; `s_plan_from_facts`, `2796-2800`). The header
 documents deliberate conservative departures from the reference emitter
 (`c_backend_sharing.bend:51-67`).
@@ -1483,6 +1520,9 @@ for "superset" in the presence of foreign values (the plan keeps foreign
 declaration cids cold and relies on the twin's constructor hot bit; that is a
 documented assumption; `tests/io/foreign_shared.c` is cited by the module as
 the measured case, but no matching receipt was read here).
+The frame/path obligations in items 4–8 are normative requirements, not a claim
+that this fixed point implements them. Their C implementation and guarded
+behavioral acceptance remain **[O]**.
 
 **C-7 (SHOW).** For a pure executable, `Phys.show_build` derives a flat
 `SHOW_DESC` word array and `SHOW_NAMES` from the normalized main type and the
