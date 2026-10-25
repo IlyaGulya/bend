@@ -283,6 +283,12 @@ Detailed contracts: integrated `FIR_LAWS.md` and `BIR_LAWS.md`, and
   is not a solution. Preserve callable-field return/application as well as
   repeated legal data projections; no blanket input rejection or type table.
   The rejected destructive-view patch and raw-read/no-free patch are not fixes.
+  Regression `evals/c_target_clo_field.bend` returns and applies a captured
+  function field. Official 2.0.36 and component `5205478f` both printed `7`,
+  but those runs lacked the required guardian and are explicitly
+  `REJECTED_UNGUARDED` in `evals/c_target_clo_field.receipt.json` (`10182f34`).
+  Output alone cannot distinguish correct transfer from a leak; include it
+  in the next guarded matrix without treating it as a demonstrated failure.
 - [ ] Carry ownership state through continuations and nested pattern failure;
   prove values and allocation/release behavior for ordinary, sealed/shared,
   nested, unused-field and fallback cases before the full fresh C matrix.
