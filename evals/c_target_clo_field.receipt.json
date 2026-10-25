@@ -12,16 +12,31 @@
     "exit": 0,
     "wall_seconds": 1.21,
     "heap_closure_allocation_observed": false,
-    "heap_closure_note": "The program captures k in make(k), so lowering must allocate a heap closure for the returned function; the run did not instrument allocation, so only the capture relation is established by source, not the allocation itself."
+    "heap_closure_note": "The program captures k in make(k). Allocation of a heap closure is NOT established by this run: it was uninstrumented and an optimizer may inline or eliminate the allocation."
   },
   "candidate_run": {
-    "status": "not run",
-    "reason": "No built stage1 executable exists in this worktree; the documented candidate invocation needs one (gates/selfhost.ts:239-249 builds the stage1 command as `<stage1 bin> <file> -o <out.c> --base <repo>/bend2/base.bend --runtime-c <repo>/bend2/selfhost/c_runtime.c`, then `clang -O2 -pthread <out.c> -lm -o <exe>`). Building it is a heavy job and is outside this slice.",
-    "command_template": [
-      "<stage1> evals/c_target_clo_field.bend -o /tmp/c_target_clo_field.c --base bend2/base.bend --runtime-c bend2/selfhost/c_runtime.c",
-      "clang -O2 -pthread /tmp/c_target_clo_field.c -lm -o /tmp/c_target_clo_field",
-      "/tmp/c_target_clo_field"
-    ],
-    "candidate_commit": "520-line root tree with the candidate c_backend (Main's integration worktree)"
+    "status": "PASS",
+    "note": "PASS preserved as the before outcome. It does not prove the field move is ownership-correct: a leaking backend also prints 7.",
+    "candidate": "/private/tmp/bend-fir-root-aa9/checkpoints/root-final4-art.js",
+    "parser": "/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+    "host": "/private/tmp/bend-fir-root-aa9/evals/candidate_host.ts",
+    "node": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node (--experimental-strip-types --max-old-space-size=3072)",
+    "emit_command": "node --experimental-strip-types --max-old-space-size=3072 evals/candidate_host.ts --candidate=checkpoints/root-final4-art.js --parser=checkpoints/bootstrap-parser-rebuild-qp57a-4.js --source-tag=../bend2/selfhost/backend_ir.SourceFile evals/c_target_clo_field.bend -o FRESH.c --base=bend2/base.bend --runtime-c=bend2/selfhost/c_runtime.c",
+    "emit_exit": 0,
+    "emit_wall_seconds": 204.04,
+    "emitted_c": "FRESH.c",
+    "emitted_c_bytes": 848840,
+    "emitted_c_sha256": "ed9d1ca5a8eb74e16774aea1a311af30cfad889f2b2a4c84601515c73111b2bd",
+    "emitted_modules": 2,
+    "emitted_foreign_files": 56,
+    "build_command": "clang -std=c11 -O0 -pthread FRESH.c -lm -o FRESH",
+    "build_exit": 0,
+    "binary": "FRESH",
+    "binary_bytes": 872008,
+    "binary_sha256_prefix": "9e6935589288ec07",
+    "run_exit": 0,
+    "stdout": "7\n",
+    "stderr_bytes": 0,
+    "emitted_c_closure_evidence": "term_clo/TAG_CLO occurrences: 45; examples term_clo(FID_308, nd3772) at line 29402 and term_clo(FID_312, nd3799) at line 29516. The C ABI therefore does construct heap closure terms; this is evidence of the representation, not proof that this fixture's make() closure survived optimization as a heap object."
   }
 }

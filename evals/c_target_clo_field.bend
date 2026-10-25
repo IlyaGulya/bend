@@ -1,6 +1,6 @@
 # A captured function stored in a constructor field, extracted, and applied:
-# the closure captures k, so it is a heap closure, and unwrap returns the field
-# itself (a valid affine program that moves the field out of the parent).
+# make(k) captures k, unwrap returns the field itself (a valid affine program
+# that moves the field out of the parent), and main applies the result.
 import Base
 
 type FBox is Type:
