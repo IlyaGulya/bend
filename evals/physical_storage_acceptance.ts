@@ -21,6 +21,11 @@ import type {HeavyGateResult} from './heavy_gate.ts';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const logsArg = process.argv.find(a => a.startsWith('--logs='))?.slice('--logs='.length);
 const receiptArg = process.argv.find(a => a.startsWith('--receipt='))?.slice('--receipt='.length);
+const opt = (name: string) => process.argv.find(a => a.startsWith('--' + name + '='))?.slice(name.length + 3);
+const reuseComponent = opt('component');
+const reuseComponentGate = opt('component-gate');
+const reuseHost = opt('host-result');
+const reuseHostGate = opt('host-gate');
 if (!logsArg) throw Error('usage: bun evals/physical_storage_acceptance.ts --logs=<fresh dir> [--receipt=<path>]');
 const logs = resolve(logsArg);
 if (existsSync(logs)) throw Error('refuse to reuse a log directory: ' + logs);
@@ -75,33 +80,49 @@ if (pins.descriptorNf !== '747dc747fcb1a6b6c1fcbf31a3e164f998fd5fa502f87a8ad3a1f
 if (pins.heavyGate !== '204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2') throw Error('heavy_gate is not the current Main pin');
 if (pins.heavyGateNative !== '1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b') throw Error('heavy_gate_native is not the current Main pin');
 write('pins.json', JSON.stringify(pins, null, 2) + '\n');
-// 1. Compose and lower the physical provider chain.
-const steps = await stage('steps', ['bun', '--smol', 'evals/physical_view_step_smoke.ts']);
-const component = resolve(root, 'checkpoints/physical_view_steps_component_v1.bend');
-if (!existsSync(component)) throw Error('steps produced no component');
-// 2. The admitted component build, through its own Node worker gate.
-const artifact = resolve(logs, 'physical_view_component.js');
-const report = resolve(logs, 'component-report');
-const buildArgv = ['bun', '--smol', 'evals/checker_core_component_build.ts', '--file=' + component,
-  '--exports=expand_modules_start,template_step', '--artifact=' + artifact, '--report=' + report];
-const build = spawnSync(buildArgv[0], buildArgv.slice(1), {cwd: root, encoding: 'utf8', maxBuffer: 1 << 28});
-write('component.stdout', build.stdout ?? '');
-write('component.stderr', build.stderr ?? '');
-write('component.argv.json', JSON.stringify({argv: buildArgv, cwd: root}, null, 2) + '\n');
-if (build.status !== 0) throw Error('component build failed with ' + String(build.status));
-const gateLine = (build.stderr ?? '').split('\n').filter(line => line.startsWith('HEAVY_GATE ')).pop();
-if (!gateLine) throw Error('component build produced no HEAVY_GATE record');
-const componentGate = JSON.parse(gateLine.slice('HEAVY_GATE '.length));
+// 1-2. Compose/build, or reuse an authenticated component for a probe-only change.
+let artifact: string;
+let componentGate: any;
+if (reuseComponent) {
+  artifact = resolve(reuseComponent);
+  if (!existsSync(artifact)) throw Error('reused component artifact is missing');
+  if (!reuseComponentGate) throw Error('--component requires --component-gate');
+  componentGate = JSON.parse(readFileSync(resolve(reuseComponentGate), 'utf8'));
+  results.push({stage: 'component', reused: artifact, ...componentGate});
+} else {
+  await stage('steps', ['bun', '--smol', 'evals/physical_view_step_smoke.ts']);
+  const component = resolve(root, 'checkpoints/physical_view_steps_component_v1.bend');
+  if (!existsSync(component)) throw Error('steps produced no component');
+  artifact = resolve(logs, 'physical_view_component.js');
+  const report = resolve(logs, 'component-report');
+  const buildArgv = ['bun', '--smol', 'evals/checker_core_component_build.ts', '--file=' + component,
+    '--exports=expand_modules_start,template_step', '--artifact=' + artifact, '--report=' + report];
+  const build = spawnSync(buildArgv[0], buildArgv.slice(1), {cwd: root, encoding: 'utf8', maxBuffer: 1 << 28});
+  write('component.stdout', build.stdout ?? '');
+  write('component.stderr', build.stderr ?? '');
+  write('component.argv.json', JSON.stringify({argv: buildArgv, cwd: root}, null, 2) + '\n');
+  if (build.status !== 0) throw Error('component build failed with ' + String(build.status));
+  const gateLine = (build.stderr ?? '').split('\n').filter(line => line.startsWith('HEAVY_GATE ')).pop();
+  if (!gateLine) throw Error('component build produced no HEAVY_GATE record');
+  componentGate = JSON.parse(gateLine.slice('HEAVY_GATE '.length));
+  write('component.gate.json', JSON.stringify(componentGate, null, 2) + '\n');
+  results.push({stage: 'component', ...componentGate});
+}
 if (componentGate.status !== 'PASS' || componentGate.reportPhase !== 'complete' || componentGate.ownedTreeStopped !== true ||
     componentGate.exitCode !== 0 || componentGate.commandExitCode !== 0)
-  throw Error('component build gate did not complete: ' + gateLine);
-write('component.gate.json', JSON.stringify(componentGate, null, 2) + '\n');
-results.push({stage: 'component', ...componentGate});
-// 3. Drive the admitted component to read the fixture result.
-const host = await stage('host', ['bun', '--smol', 'evals/physical_view_step_smoke.ts', '--run=' + artifact]);
-const hostResult = JSON.parse(host.stdout.trim());
-if (hostResult.status !== 'PASS' || typeof hostResult.text !== 'string') throw Error('host run did not return PASS text');
-write('host.result.json', JSON.stringify(hostResult, null, 2) + '\n');
+  throw Error('component gate did not complete');
+// 3. Drive the admitted component, or reuse the authenticated host result.
+let hostResult: any;
+if (reuseHost) {
+  hostResult = JSON.parse(readFileSync(resolve(reuseHost), 'utf8'));
+  if (!reuseHostGate) throw Error('--host-result requires --host-gate');
+  results.push({stage: 'host', reused: resolve(reuseHost), gate: JSON.parse(readFileSync(resolve(reuseHostGate), 'utf8'))});
+} else {
+  const host = await stage('host', ['bun', '--smol', 'evals/physical_view_step_smoke.ts', '--run=' + artifact]);
+  hostResult = JSON.parse(host.stdout.trim());
+  write('host.result.json', JSON.stringify(hostResult, null, 2) + '\n');
+}
+if (hostResult.status !== 'PASS' || typeof hostResult.text !== 'string') throw Error('host result is not PASS text');
 // 4. Generate the foreign C input from the admitted component expressions.
 const blocks: string[] = [];
 let at = 0;
@@ -164,6 +185,10 @@ if (receiptArg) {
     if (existsSync(gatePath)) stageReceipts[label] = JSON.parse(readFileSync(gatePath, 'utf8'));
   }
   stageReceipts['component'] = componentGate;
+  for (const entry of results) {
+    const item = entry as any;
+    if (item.reused) stageReceipts[item.stage] = { ...item, gate: item.gate };
+  }
   const artifacts = Object.fromEntries([artifact, cPath, exe, probePath].map(path => [basename(path), {bytes: readFileSync(path).length, sha256: sha(path)}]));
   writeFileSync(receiptPath, JSON.stringify({
     schemaVersion: 1, status: 'PASS', acceptance: 'guarded physical storage slice; not a Root GO',

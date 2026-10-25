@@ -56,10 +56,13 @@ static Term phys_view_probe_run(Env e, Term* f, IoWork* w) {
   if (term_triv(real_callable) || term_tag(real_callable) != TAG_CLO || term_loc(real_callable) == 0) { err_fail("view probe: the foreign callable is not a heap closure"); }
   Term clv[1]; clv[0] = real_callable;
   Term callable_leaf = blk_new(e, true, 0, 0, 1, clv);
-  Term tag_child = term_pak(CID_WIDEP, 0);
-  u64 tag_loc = heap_alloc(e, cls_fit(2));
+  u64 tag_child_loc = heap_alloc(e, cls_fit(3));
+  e.mem[tag_child_loc + 0] = 99;
+  e.mem[tag_child_loc + 1] = 0;
+  e.mem[tag_child_loc + 2] = 0;
+  Term tag_child = term_ctr(CID_WIDEP, tag_child_loc);
+  u64 tag_loc = heap_alloc(e, cls_fit(1));
   e.mem[tag_loc + 0] = tag_child;
-  e.mem[tag_loc + 1] = 0;
   Term tagged_value = term_ctr(CID_BOXS, tag_loc);
   Term wrap_a_value = term_pak(CID_WRAPE, 0);
   Term wrap_b_value = term_pak(CID_WRAPE, 1);
@@ -156,6 +159,12 @@ static Term phys_view_probe_run(Env e, Term* f, IoWork* w) {
   if (term_aux(r36) != 14u || e.mem[tag_loc + 0] != tag_child) { err_fail("view probe: boxed tag wrong"); }
   if (term_aux(r37) != 14u || term_aux(r38) != 13u || term_aux(r39) != 14u) { err_fail("view probe: packed enum tag wrong"); }
   if (term_aux(r40) != 28u || term_aux(r41) != 29u) { err_fail("view probe: packed enum unfill wrong"); }
+  u64 box_slot = term_peek(e.mem, box_value);
+  bool box_static = term_triv(box_value);
+  bool box_shared = !box_static && term_rfc(box_value) && (a32_load(a32_at(e.mem, term_loc(box_value))) & RFC_CNT) > 1;
+  Term box_after = e.mem[box_slot];
+  if (!box_static && !box_shared) { if (box_after != 0) { err_fail("view probe: unique box field was not cleared"); } }
+  else if (box_after == 0) { err_fail("view probe: shared/static box field was cleared"); }
   term_sink(e, r35); term_sink(e, callable_leaf);
   term_sink(e, r20); term_sink(e, shared_value); term_sink(e, shared_parent);
   term_sink(e, boxm_value); term_sink(e, rect_value); term_sink(e, tagged_value);
@@ -165,6 +174,7 @@ static Term phys_view_probe_run(Env e, Term* f, IoWork* w) {
   term_sink(e, r26); term_sink(e, r27);
   term_sink(e, r2); term_sink(e, r4); term_sink(e, r5); term_sink(e, r6); term_sink(e, r10); term_sink(e, r11);
   term_sink(e, r12); term_sink(e, r34); term_sink(e, r36); term_sink(e, r37); term_sink(e, r38); term_sink(e, r39);
+  for (u32 fi = 0; fi < 13; fi += 1) { term_sink(e, f[fi]); }
   return 1;
 }
 static void __attribute__((constructor)) phys_view_probe_use(void) { io_eff(CID(probe), phys_view_probe_run); }
