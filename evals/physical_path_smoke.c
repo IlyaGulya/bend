@@ -35,6 +35,31 @@ static Term phys_view_probe_run(Env e, Term* f, IoWork* w) {
   Term shared_parent = term_ctr(4, shared_loc);
   Term shared_value = term_keep(e, shared_parent, 1);
   u32 shared_before = a32_load(a32_at(e.mem, term_loc(shared_child))) & RFC_CNT;
+  Term erased_value = term_pak(15, 77);
+  Term wrap_value = term_pak(14, 5);
+  Term ptv[2]; ptv[0] = 71; ptv[1] = 72;
+  Term pt_leaf = blk_new(e, false, 0, 1, 2, ptv);
+  Term inv[1]; inv[0] = 81;
+  Term inner_arr = blk_new(e, false, 1, 0, 1, inv);
+  Term outerv[1]; outerv[0] = inner_arr;
+  Term outer_leaf = blk_new(e, true, 0, 0, 1, outerv);
+  Term ptav[2]; ptav[0] = 91; ptav[1] = 92;
+  Term ptarr = blk_new(e, false, 0, 1, 2, ptav);
+  u64 boxarr_loc = heap_alloc(e, cls_fit(1));
+  e.mem[boxarr_loc] = ptarr;
+  Term boxarr_value = term_ctr(16, boxarr_loc);
+  Term cv[2]; cv[0] = 1; cv[1] = 42;
+  Term choice_leaf = blk_new(e, false, 0, 1, 2, cv);
+  Term clv[1]; clv[0] = term_clo(3, 0);
+  Term callable_leaf = blk_new(e, true, 0, 0, 1, clv);
+  u64 tag_child_loc = heap_alloc(e, cls_fit(1));
+  e.mem[tag_child_loc] = 99;
+  Term tag_child = term_ctr(12, tag_child_loc);
+  u64 tag_loc = heap_alloc(e, cls_fit(2));
+  e.mem[tag_loc + 0] = tag_child;
+  e.mem[tag_loc + 1] = 0;
+  Term tagged_value = term_ctr(4, tag_loc);
+
   Term r0 = ({
 Term pbt = (pair_value); u64 pbn = term_peek(e.mem, pbt); Term pbr = 0; pbr = ((u64)(u32)(e.mem[pbn + 0]));
 pbr;
@@ -258,6 +283,58 @@ Term f0[1]; for (u32 f0i = 0; f0i < 1; f0i += 1) { f0[f0i] = w0[f0i]; }
 blk_new(e, false, 0, 0, 1, f0);
 });
   Term r25 = blk_node(e, leafv, leafw);
+  Term r26 = ({
+Term pbt = (erased_value); u64 pbn = term_peek(e.mem, pbt); Term pbr = 0; if (1 || !0) { pbr = ((u64)(u32)pbn);
+ } else { pbr = ((u64)(u32)pbn);
+ } pbr;
+});
+  Term r27 = ({
+Term pbt = (wrap_value); u64 pbn = term_peek(e.mem, pbt); Term pbr = 0; if (1 || !0) { pbr = ((u64)(u32)pbn);
+ } else { pbr = ((u64)(u32)pbn);
+ } pbr;
+});
+  Term r28 = ({
+Term pbt = (pt_leaf); u64 pbn = term_peek(e.mem, pbt); Term pbr = 0; if ((term_triv(pbt) || term_triv(pbt)) || !((!term_triv(pbt) && !(term_rfc(pbt) && (a32_load(a32_at(e.mem, term_loc(pbt))) & RFC_CNT) > 1)) && (!term_triv(pbt) && !(term_rfc(pbt) && (a32_load(a32_at(e.mem, term_loc(pbt))) & RFC_CNT) > 1)))) { pbr = ((u64)(u32)blk_read(e.mem, false, blk_loc(e.mem, pbt), (u32)(0 + 0))); 
+ } else { pbr = ((u64)(u32)blk_read(e.mem, false, blk_loc(e.mem, pbt), (u32)(0 + 0))); blk_write(e.mem, false, blk_loc(e.mem, pbt), (u32)((0 + 0) + 0u), 0);
+
+ } pbr;
+});
+  Term r29 = ({
+Term pbt = (outer_leaf); u64 pbn = term_peek(e.mem, pbt); Term pbr = 0; if (((term_triv(pbt) || term_triv(pbt)) || term_triv(blk_read(e.mem, (term_tag(pbt) == TAG_ARR), blk_loc(e.mem, pbt), (u32)(0)))) || !(((!term_triv(pbt) && !(term_rfc(pbt) && (a32_load(a32_at(e.mem, term_loc(pbt))) & RFC_CNT) > 1)) && (!term_triv(pbt) && !(term_rfc(pbt) && (a32_load(a32_at(e.mem, term_loc(pbt))) & RFC_CNT) > 1))) && (!term_triv(blk_read(e.mem, (term_tag(pbt) == TAG_ARR), blk_loc(e.mem, pbt), (u32)(0))) && !(term_rfc(blk_read(e.mem, (term_tag(pbt) == TAG_ARR), blk_loc(e.mem, pbt), (u32)(0))) && (a32_load(a32_at(e.mem, term_loc(blk_read(e.mem, (term_tag(pbt) == TAG_ARR), blk_loc(e.mem, pbt), (u32)(0))))) & RFC_CNT) > 1)))) { pbr = ((u64)(u32)(blk_read(e.mem, (term_tag(blk_read(e.mem, (term_tag(pbt) == TAG_ARR), blk_loc(e.mem, pbt), (u32)(0))) == TAG_ARR), blk_loc(e.mem, blk_read(e.mem, (term_tag(pbt) == TAG_ARR), blk_loc(e.mem, pbt), (u32)(0))), (u32)((u64)((0) + 0)))));
+ } else { pbr = ((u64)(u32)(blk_read(e.mem, (term_tag(blk_read(e.mem, (term_tag(pbt) == TAG_ARR), blk_loc(e.mem, pbt), (u32)(0))) == TAG_ARR), blk_loc(e.mem, blk_read(e.mem, (term_tag(pbt) == TAG_ARR), blk_loc(e.mem, pbt), (u32)(0))), (u32)((u64)((0) + 0))))); blk_write(e.mem, (term_tag(blk_read(e.mem, (term_tag(pbt) == TAG_ARR), blk_loc(e.mem, pbt), (u32)(0))) == TAG_ARR), blk_loc(e.mem, blk_read(e.mem, (term_tag(pbt) == TAG_ARR), blk_loc(e.mem, pbt), (u32)(0))), (u32)((u64)((0) + 0)), 0);
+ } pbr;
+});
+  Term r30 = ({
+Term pbt = (boxarr_value); u64 pbn = term_peek(e.mem, pbt); Term pbr = 0; if ((term_triv(pbt) || term_triv(e.mem[pbn + 0])) || !((!term_triv(pbt) && !(term_rfc(pbt) && (a32_load(a32_at(e.mem, term_loc(pbt))) & RFC_CNT) > 1)) && (!term_triv(e.mem[pbn + 0]) && !(term_rfc(e.mem[pbn + 0]) && (a32_load(a32_at(e.mem, term_loc(e.mem[pbn + 0]))) & RFC_CNT) > 1)))) { pbr = ((u64)(u32)blk_read(e.mem, false, blk_loc(e.mem, e.mem[pbn + 0]), (u32)(0 + 0))); 
+ } else { pbr = ((u64)(u32)blk_read(e.mem, false, blk_loc(e.mem, e.mem[pbn + 0]), (u32)(0 + 0))); blk_write(e.mem, false, blk_loc(e.mem, e.mem[pbn + 0]), (u32)((0 + 0) + 0u), 0);
+
+ } pbr;
+});
+  Term r31 = ({
+Term pbt = (choice_leaf); u64 pbn = term_peek(e.mem, pbt); Term pbr = 0; if ((term_triv(pbt) || term_triv(pbt)) || !((!term_triv(pbt) && !(term_rfc(pbt) && (a32_load(a32_at(e.mem, term_loc(pbt))) & RFC_CNT) > 1)) && (!term_triv(pbt) && !(term_rfc(pbt) && (a32_load(a32_at(e.mem, term_loc(pbt))) & RFC_CNT) > 1)))) { pbr = ((u64)(u32)blk_read(e.mem, false, blk_loc(e.mem, pbt), (u32)(0 + 1))); 
+ } else { pbr = ((u64)(u32)blk_read(e.mem, false, blk_loc(e.mem, pbt), (u32)(0 + 1))); blk_write(e.mem, false, blk_loc(e.mem, pbt), (u32)((0 + 1) + 0u), 0);
+
+ } pbr;
+});
+  Term r32 = ({
+Term pbt = (choice_leaf); u64 pbn = term_peek(e.mem, pbt); Term pbr = 0; u32 pbpred = 0; { switch ((u32)blk_read(e.mem, false, blk_loc(e.mem, pbt), (u32)(0))) {
+case 0: pbpred = (17u == 18u); break;
+case 1: pbpred = (18u == 18u); break;
+default: (void)bend_fail(e, "the constructor tag is not a declared constructor"); break;
+}
+ } pbr = bend_bool(e, 7u, 8u, pbpred);
+pbr;
+});
+  Term r33 = ({
+Term pbt = (callable_leaf); u64 pbn = term_peek(e.mem, pbt); Term pbr = 0; if ((term_triv(pbt) || term_triv(pbt)) || !((!term_triv(pbt) && !(term_rfc(pbt) && (a32_load(a32_at(e.mem, term_loc(pbt))) & RFC_CNT) > 1)) && (!term_triv(pbt) && !(term_rfc(pbt) && (a32_load(a32_at(e.mem, term_loc(pbt))) & RFC_CNT) > 1)))) { { Term pv = blk_read(e.mem, (term_tag(pbt) == TAG_ARR), blk_loc(e.mem, pbt), (u32)(0)); Term pk = term_keep(e, pv, 1); if (pk != pv) { if ((term_triv(pbt) || term_triv(pbt))) { (void)bend_fail(e, "a static image would need a keep wrapper"); } else if (!((!term_triv(pbt) && !(term_rfc(pbt) && (a32_load(a32_at(e.mem, term_loc(pbt))) & RFC_CNT) > 1)) && (!term_triv(pbt) && !(term_rfc(pbt) && (a32_load(a32_at(e.mem, term_loc(pbt))) & RFC_CNT) > 1)))) { (void)bend_fail(e, "a shared owner has an unsealed cell child"); } else { blk_write(e.mem, (term_tag(pbt) == TAG_ARR), blk_loc(e.mem, pbt), (u32)(0), pk); } } pbr = pk; }
+ } else { pbr = blk_read(e.mem, (term_tag(pbt) == TAG_ARR), blk_loc(e.mem, pbt), (u32)(0)); blk_write(e.mem, (term_tag(pbt) == TAG_ARR), blk_loc(e.mem, pbt), (u32)(0), 0);
+ } pbr;
+});
+  Term r34 = ({
+Term pbt = (tagged_value); u64 pbn = term_peek(e.mem, pbt); Term pbr = 0; u32 pbpred = 0; { pbpred = (term_aux(e.mem[pbn + 0]) == 12u);
+ } pbr = bend_bool(e, 7u, 8u, pbpred);
+pbr;
+});
 
   if ((u32)r0 != 3 || (u32)r1 != 4) { err_fail("view probe: Pair fields wrong"); }
   if (term_aux(r2) != 7u) { err_fail("view probe: Pt hastag is not canonical True"); }
@@ -291,6 +368,17 @@ blk_new(e, false, 0, 0, 1, f0);
   if (term_tag(r24) != TAG_BUF || (u32)blk_cls(r24) != 0 || blk_read(e.mem, false, blk_loc(e.mem, r24), 0) != 51) { err_fail("view probe: array_leaf op wrong"); }
   if (term_tag(r25) != TAG_BUF || (u32)blk_cls(r25) != 1 || blk_read(e.mem, false, blk_loc(e.mem, r25), 0) != 52 || blk_read(e.mem, false, blk_loc(e.mem, r25), 1) != 53) { err_fail("view probe: array_node op wrong"); }
   term_sink(e, (Term)e.mem[t23 + 1]); term_sink(e, r20); term_sink(e, r22); term_sink(e, r23); term_sink(e, r24); term_sink(e, r25);
+  if ((u32)r26 != 77u) { err_fail("view probe: erased-live packed field wrong"); }
+  if ((u32)r27 != 5u) { err_fail("view probe: packed nested Fl wrapper wrong"); }
+  if ((u32)r28 != 71u || blk_read(e.mem, false, blk_loc(e.mem, pt_leaf), 0) != 0) { err_fail("view probe: BUF Pt.x wrong"); }
+  if ((u32)r29 != 81u) { err_fail("view probe: nested array leaf wrong"); }
+  if ((u32)r30 != 91u) { err_fail("view probe: mixed ADT->Array->ADT field wrong"); }
+  if ((u32)r31 != 42u || blk_read(e.mem, false, blk_loc(e.mem, choice_leaf), 1) != 0) { err_fail("view probe: variant cell field wrong"); }
+  if (term_aux(r32) != 7u) { err_fail("view probe: variant cell tag/cid conversion wrong"); }
+  if (term_tag(r33) != TAG_CLO || term_aux(r33) != 3u || blk_read(e.mem, true, blk_loc(e.mem, callable_leaf), 0) != 0) { err_fail("view probe: callable cell consume wrong"); }
+  term_sink(e, r33);
+  if (term_aux(r34) != 7u || e.mem[tag_loc + 0] != tag_child) { err_fail("view probe: boxed tag must use term_aux of the Term"); }
+
   term_sink(e, r18); term_sink(e, shared_value); term_sink(e, shared_parent);
   term_sink(e, r2); term_sink(e, r4); term_sink(e, r5); term_sink(e, r6); term_sink(e, r7); term_sink(e, r8); term_sink(e, r10); term_sink(e, r11); term_sink(e, r12); term_sink(e, r17);
   return 1;
