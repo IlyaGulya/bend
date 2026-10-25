@@ -1,0 +1,36 @@
+{
+  "label": "REJECTED_UNGUARDED",
+  "reason": "compiled with Bun/JSC and run without the current guardian; not acceptance evidence",
+  "source_candidate": "work/c-storage-selector 2f8fb79e (physical path engine)",
+  "commits": {
+    "field_path": "2f8fb79e",
+    "arm_payload_release": "b1e7f808",
+    "physical_sha256": "17fb92c55e4b41b7b70c126b36b1258cab540f4b46f2f179474cad057e67bb04"
+  },
+  "smoke_sources": {
+    "fixture": "b877eaacdda152533724d2a713786f2e6361765a8893f8392d7718a6bb1cbddf",
+    "probe_c": "1e3636aaf79c40458c9021678fd191a30399623f5745a0f5c01f4dd581f96411",
+    "probe_js": "4536b34c4a6f566f9e6a59b74c266b414437546dbc468bcd588a2b5154460282"
+  },
+  "observed": {
+    "exit": 0,
+    "stdout": "ok\n",
+    "stderr": ""
+  },
+  "covered": [
+    "pair reads 3/4",
+    "static-image copy does not mutate image or word",
+    "unique heap Box detach returns child and zeroes slot",
+    "shared sealed-cell consume keeps+writebacks with count bump",
+    "Seg inline detach yields term_pak with Fl payload 5",
+    "Unit zero-word copy yields a packed term"
+  ],
+  "command": "bun bend2/main.ts evals/physical_path_smoke/smoke.bend -o /tmp/phys_smoke.c && clang -std=c11 -O0 -g -o /tmp/phys_smoke_c /tmp/phys_smoke.c -lpthread -lm && /tmp/phys_smoke_c",
+  "not_guarded": "Node 23.11/V8 heap 3072 MiB, stack 256, RSS+footprint 8192 MiB, poll 10 ms, deadline 600 s, complete + ownedTreeStopped not applied",
+  "open": [
+    "unified Phys.PathStep engine with PathHalf/PathLeafCell and mixed ADT->Array->ADT",
+    "array_get/clone cell keep+writeback in array_part",
+    "array Left/Right/LeafValue lazy path bindings",
+    "guarded changed-path suite incl. list_rebox_sum"
+  ]
+}
