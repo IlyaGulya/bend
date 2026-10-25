@@ -1,0 +1,188 @@
+{
+  "schemaVersion": 1,
+  "kind": "compiler-profile-tiny-changed-path-suite-receipt",
+  "diagnosticOnly": true,
+  "acceptanceEvidence": false,
+  "status": "PASS",
+  "sourceCommit": "3f58af5c",
+  "note": "Tiny guarded compilePhases/profile lifecycle suite. Not a native workload, full native profile, or compiler-root admission. Prior unguarded tiny proofs are observed_only and are not retroactively certified.",
+  "shell": {
+    "argv": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "--experimental-strip-types",
+      "/tmp/stage-prof-review/tiny_suite.mjs"
+    ],
+    "cwd": "/private/tmp/bend-stage-aa9-followup"
+  },
+  "guardianCommand": [
+    "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+    "/private/tmp/stage-prof-review/tiny_suite.mjs"
+  ],
+  "runtime": {
+    "node": "23.11.0",
+    "v8": "12.9.202.28-node.14",
+    "execPath": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+    "execArgv": [],
+    "nodeOptions": "--experimental-strip-types --max-old-space-size=3072 --experimental-strip-types --max-old-space-size=3072",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "limits": {
+    "guardian": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "nodeHeapMiB": 3072,
+    "compileWorker": {
+      "stackSizeMb": 256,
+      "maxOldGenerationSizeMb": 3072
+    }
+  },
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 274579456,
+    "peakFootprintBytes": 201587688,
+    "elapsedMs": 6844,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "/private/tmp/stage-prof-review/tiny_suite.mjs"
+    ],
+    "label": "Tiny compiler profile changed-path suite",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792906689782-38355fc77b286f66.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "rawStreams": {
+    "stdout": {
+      "path": "/tmp/stage-prof-review/final-suite.stdout.log",
+      "bytes": 275,
+      "sha256": "c4756628c33b2795abe3bf88775cf7974ddda2c99e33ff95ac4a9dede31bdf6b"
+    },
+    "stderr": {
+      "path": "/tmp/stage-prof-review/final-suite.stderr.log",
+      "bytes": 1414,
+      "sha256": "fb1b3733e1ff88876c9f3d8e695b068965f8f4d055101667899f38e60ba3b278",
+      "containsGuardianRecord": true
+    }
+  },
+  "suiteReceipt": {
+    "path": "/tmp/stage-prof-review/final-suite/suite.json",
+    "bytes": 5061,
+    "sha256": "cc6cb231139fb6883ec31915a5db1b285fa4d943d6c099caca5a57a7c2e63d5f"
+  },
+  "checks": {
+    "valid": {
+      "driver": "/private/tmp/bend-stage-aa9-followup/evals/c_target_array_nat.bend",
+      "driverSha256": "1f5d1ebc34537453b7733daff35973d09fb919ccf7af18c98fe948858d8f1462",
+      "cBytes": 81153,
+      "cSha256": "94a57dbda989a3edd8923d39d8f12952fa6c68ea2c68004d429916d9e9eb9dc3",
+      "cPassSpans": [
+        {
+          "name": "c-pass-1",
+          "status": "completed"
+        },
+        {
+          "name": "c-pass-2",
+          "status": "completed"
+        }
+      ],
+      "observations": 9,
+      "observationKinds": {
+        "compiler-state": 3,
+        "compiler-retention": 3,
+        "compiler-memo-sizes": 3
+      },
+      "timingTypes": [
+        "number",
+        "number"
+      ]
+    },
+    "invalid": {
+      "driver": "/tmp/stage-prof-review/final-suite/invalid_fixture.bend",
+      "driverSha256": "762e7f8cc2fbdcbc1170d6bf452806eac5e0b22e04e642a9dd9412e4fd7a9cfd",
+      "profile": "/tmp/stage-prof-review/final-suite/profiles-invalid/profile-95681-thread-4-BxwhGP/summary.json",
+      "profileSha256": "0e157179f54df158f24539952262c2d09435270b84a24664594c7cd07d22eb0f",
+      "status": "failed",
+      "error": "non-Error diagnostic",
+      "spans": [
+        {
+          "name": "module-import",
+          "status": "completed"
+        },
+        {
+          "name": "book_load",
+          "status": "failed"
+        }
+      ]
+    },
+    "nestedFailure": {
+      "profile": "/tmp/stage-prof-review/final-suite/profiles-nested-fail/profile-95681-thread-4-THDx72/summary.json",
+      "profileSha256": "6ada663fb833b5a6612ce17314872ad079f324c2572db1dc987c4d6c113c7e8c",
+      "status": "failed",
+      "spans": [
+        {
+          "name": "c-reachability",
+          "status": "failed"
+        },
+        {
+          "name": "c-pass-1",
+          "status": "failed"
+        }
+      ]
+    },
+    "byteIdentical": {
+      "equal": true,
+      "onSha256": "94a57dbda989a3edd8923d39d8f12952fa6c68ea2c68004d429916d9e9eb9dc3",
+      "offSha256": "94a57dbda989a3edd8923d39d8f12952fa6c68ea2c68004d429916d9e9eb9dc3",
+      "onBytes": 81153,
+      "offBytes": 81153,
+      "offPath": "/tmp/stage-prof-review/final-suite/observer-off.c"
+    },
+    "cRun": {
+      "path": "/tmp/stage-prof-review/final-suite/observer.bin",
+      "exitStatus": 0,
+      "stdoutPath": "/tmp/stage-prof-review/final-suite/run.stdout.log",
+      "stdout": "7\n",
+      "stdoutSha256": "10159baf262b43a92d95db59dae1f72c645127301661e0a3ce4e38b295a97c58",
+      "stderrPath": "/tmp/stage-prof-review/final-suite/run.stderr.log",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "supervisor": {
+      "error": {
+        "runDirectory": "/tmp/stage-prof-review/final-suite/supervisor/error",
+        "receiptPath": "/tmp/stage-prof-review/final-suite/supervisor/error/worker-failure.json",
+        "receiptSha256": "34024c4c1aa1be9698b172338b1fffdd55dfa26ab2209442381429bcdb358479",
+        "status": "interrupted",
+        "error": "controlled worker termination",
+        "exitCode": 1
+      },
+      "exit137": {
+        "runDirectory": "/tmp/stage-prof-review/final-suite/supervisor/exit137",
+        "receiptPath": "/tmp/stage-prof-review/final-suite/supervisor/exit137/worker-failure.json",
+        "receiptSha256": "79d6979a37bc47ef331db0280cd22e9007ada34dfc5893d52ae3b444c5fb3174",
+        "status": "interrupted",
+        "error": "worker exited 137 without a terminal result",
+        "exitCode": 137
+      },
+      "zero": {
+        "runDirectory": "/tmp/stage-prof-review/final-suite/supervisor/zero",
+        "receiptPath": "/tmp/stage-prof-review/final-suite/supervisor/zero/worker-failure.json",
+        "receiptSha256": "944e12cdd231c12c390432ded74be293d5112547eaad1dc0dc12f7ac77175ab0",
+        "status": "failed",
+        "error": "worker exited 0 without a terminal result",
+        "exitCode": 1
+      }
+    }
+  },
+  "priorUnguardedProofs": "observed_only_not_admission"
+}

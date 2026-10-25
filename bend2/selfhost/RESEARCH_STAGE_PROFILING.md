@@ -181,14 +181,22 @@ any `compilePhases` throw is unwound by `abortOpen('failed')`, including nested
 observer spans; a throwaway adapter check closed `c-reachability` and
 `c-pass-1` failed. No post-c-pass compile-failure fixture was exercised.
 
-A second throwaway harness exercises the shared `superviseProfileWorker` with a
-throwing worker, an exit-137 worker, and an exit-0 worker with no terminal
-result. Error/137 write interrupted receipts; exit 0 fails closed with an
-explicit failed receipt. A known throw that finished a failed summary writes no
-interrupted receipt. These are changed-path source checks only; they did not
-rerun the native workload. The removed `--profile-smoke` CLI branch was a bare
-begin/end/handmade-error check and is not changed-path proof. The old OOM
-boundary remains unknown.
+A guarded tiny changed-path suite repeats the shared compile path and
+supervisor cases under the existing guardian: 8192 MiB memory/RSS, 10 ms
+sampling, 600 s deadline, Node 23.11, compile worker heap 3072 MiB and stack
+256 MiB. It compiled profile-on and profile-off C (byte-identical 81,153 B),
+ran the C (stdout `7`), exercised `c-pass-1`/`c-pass-2` and 9 observations,
+failed the invalid fixture, closed nested `c-reachability`/`c-pass-1` failed,
+and covered throwing, exit-137 and exit-0-without-result workers. The guardian
+reported PASS with `reportPhase=complete`, `ownedTreeStopped=true`, peak RSS
+274,579,456 B/footprint 201,587,688 B, elapsed 6,844 ms. Compact receipt:
+`checkpoints/compiler-profile-tiny-suite-aa9.json`; raw stdout/stderr hashes
+are in it and remain outside Git.
+
+Earlier unguarded tiny checks are **observed only**; they are not admission
+evidence and are not retroactively certified against guardian limits. The
+removed `--profile-smoke` CLI branch was a bare begin/end/handmade-error check
+and is not changed-path proof. The old OOM boundary remains unknown.
 
 Native raw stdout and stderr are now written to the artifact directory with
 `wx` before any error/status check, and returned with paths/bytes/SHA-256 and
