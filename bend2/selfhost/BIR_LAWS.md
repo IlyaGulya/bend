@@ -1417,6 +1417,20 @@ must not be confused:
   `Layout`; a `Nest` carries `take : Unfill`, `make : Fill`, and the two word
   counts (`931-996`).
 
+**Borrowed observations [N], [O].** A storage span of one word is not
+necessarily a canonical `Term`. In particular, a declared inline `Bool` stores
+an arm tag, while a declared inline `Char` stores the `Chr` payload; a consumer
+expecting `V(τ)` must not interpret either as a raw `LayoutWord` or a boxed
+pointer. Its typed view must use the authoritative arm/layout and canonical
+runtime CID. A predicate may inspect the path directly; a packed scalar may
+be reconstructed as a non-allocating `term_pak`. Neither operation consumes
+the path, clears source slots, changes refcounts, or duplicates an affine
+child. Do not replace an unsupported generic borrowed read with a blanket
+copy/unfill of an arbitrary form. Full ownership transfer remains governed by
+C-6. Behavioral acceptance must include Bool predicates/branches and Char
+payload reads through both constructor fields and array-cell provenance;
+source admission alone does not establish this boundary.
+
 **C-3 (fill/unfill round-trip obligation).** For every `Layout L` built by
 `value_layout`/`node_layout`:
 
@@ -1673,10 +1687,13 @@ Ordered by what they block. None is discharged here.
   unproved. This matters only for operands whose evaluation performs an effect
   (mostly foreign requests and IO construction), so the practical exposure is
   narrower than "all expressions".
-- **O-4 (C layout/fill-unfill).** C-3: prove the Fill/Unfill identities for all
-  layouts, including packed nodes, nested datatypes, arrays, `Bool` tag words,
-  and abstract types boxed as one Term. Current evidence is structural
-  inspection plus fixture procedures; no matching receipt was read.
+- **O-4 (C layout/fill-unfill).** C-2/C-3: prove the Fill/Unfill identities for
+  all layouts, including packed nodes, nested datatypes, arrays, `Bool` tag
+  words, and abstract types boxed as one Term. Separately exercise borrowed
+  Bool/Char views through fields and array cells: the scalar result must agree
+  with the canonical value without consuming or changing its stored source.
+  The law-document base has structural inspection and fixture procedures,
+  not a general identity or borrowed-view proof.
 - **O-5 (C sharing soundness).** C-6: prove `sharing_plan` never under-approximates
   duplication, including through foreign values and the `forced` fallback. The
   module documents where it intentionally differs from the reference emitter.
