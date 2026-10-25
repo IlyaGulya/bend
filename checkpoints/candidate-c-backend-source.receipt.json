@@ -1,0 +1,167 @@
+{
+ "schemaVersion": 1,
+ "status": "SOURCE_CANDIDATE_NOT_FULL_C_ACCEPTANCE",
+ "branch": "work/cand-handoff57ab",
+ "baseCommit": "6b1d6743",
+ "sourceOnlyHandoff": "this commit carries only the final canonical C producer source; every generated compiler image, owned text, AST manifest and artifact stays ignored in /private/tmp/bend-cand-allbody57ab and is authenticated below by path and hash rather than committed",
+ "candidateSource": {
+  "file": "bend2/selfhost/c_backend.bend",
+  "sha256": "f17c157be9d761cf475e843b647e5e97a35a50062f036187c4f4fefa2490aea4",
+  "bytes": 202256,
+  "sourceCommits": [
+   "caae2549 complete C producer",
+   "1f9249e9 qualify Phys.join_text/Phys.array_label",
+   "99c26eed restore ctx_spin/ctx_max/ctx_cap_slots/ctx_leaves",
+   "d95614ea drop dead atom_uses_conflict wrapper",
+   "ff9ea9bd U32 literal at 2436"
+  ],
+  "fixedPhysical": {
+   "file": "bend2/selfhost/c_backend_physical.bend",
+   "sha256": "256f57772f4384e8d043269ab4cbc52d71049f3d38afd40022aadb0f9b962ced",
+   "sourceCommit": "a3e5332b",
+   "alreadyIntaken": true
+  }
+ },
+ "generatedEngineIgnored": {
+  "worktree": "/private/tmp/bend-cand-allbody57ab",
+  "emitterSteps": {
+   "path": "checkpoints/emitter_steps_v1.bend",
+   "sha256": "7b24d429be4396139d1e62a2f799508b01cb47cb4e77f66fce48e4e9e4eeb5d1",
+   "was": "156a74755552831812c4b0e1951965f8563665e9802479d70d491c998fff2cf2"
+  },
+  "manifest": {
+   "path": "checkpoints/emitter-steps-v1.json",
+   "sha256": "63c18c9de9c7726d0c91be6dd34130d14b720a49261a44f561afa4e1d80ef798"
+  },
+  "ownedSource": {
+   "path": "checkpoints/emitter_owned_v1.bend",
+   "sha256": "1d9fd445283f43469469b8cfa455bfbdd8644e5c9eaad1ac750ef2e609f87b8c"
+  },
+  "component": {
+   "path": "checkpoints/emitter_steps_component_v1.bend",
+   "sha256": "e6bd090dc9b2a0b381e4a896922c91869571445b194a60898d893e1f2ce3b3c8"
+  },
+  "ownedManifest": {
+   "path": "checkpoints/checker-core-owned-source-v1.json",
+   "sha256": "8ff3ea5282f8fb035d18d33608de45366de3a2809c56a53179f37cf964185ba4"
+  },
+  "coverage": {
+   "declarationsBefore": 1808,
+   "declarationsAfter": 2000,
+   "added": 219,
+   "removed": 27,
+   "exclusions": 0,
+   "patches": 0
+  },
+  "pins": {
+   "canonicalEmitter": "72085ea8aa90686cf7d105a7ab015659c8e9d71a25a5c84ac3a5b95b781e7a05",
+   "providers": {
+    "bend2/selfhost/backend_lower.bend": "465cdf16cdf5a3aae3096f12c8453a48f3264d0afb9d6bb16d9d4a4f5cd52661",
+    "bend2/selfhost/c_backend.bend": "f17c157be9d761cf475e843b647e5e97a35a50062f036187c4f4fefa2490aea4",
+    "bend2/selfhost/c_backend_layout.bend": "a9f2d5d7d101665f390fb88cd6901947773fbf2444fc6b76504f9537213cdc77",
+    "bend2/selfhost/c_backend_link.bend": "606ce07caaf96c28c1885947897bcc2be1e5949481068e77c5303134f70e1e51",
+    "bend2/selfhost/c_backend_physical.bend": "256f57772f4384e8d043269ab4cbc52d71049f3d38afd40022aadb0f9b962ced",
+    "bend2/selfhost/c_emit_core.bend": "f690db5b6054d4f647b5c02e1281923d5cc66b24c8c2fff7859d811efc5ba380",
+    "bend2/selfhost/descriptor_nf.bend": "747dc747fcb1a6b6c1fcbf31a3e164f998fd5fa502f87a8ad3a1facd13859973",
+    "bend2/selfhost/js_backend.bend": "45e8916b25f906dc3040b246504034d5fe58229f8225c8ece488a5aa3200ba8d",
+    "bend2/selfhost/js_emit.bend": "e0e986cc94705472fd7303575ac6c35efe2ea20299dfb1c1b5f6cf89b3da1dab",
+    "bend2/selfhost/lower_catalog.bend": "d682aae92f1ce479ba607c4246836d08f5d48613fefa83ee75a0229f007d3305"
+   },
+   "loweringSourceSha256": "9d98628300f2dadeda1eac67b8010cb01546f222d7e42dbdfeac31088484a7ea",
+   "composedSourceSha256": "1d9fd445283f43469469b8cfa455bfbdd8644e5c9eaad1ac750ef2e609f87b8c"
+  },
+  "generator": {
+   "entry": {
+    "path": "evals/emitter_step_lower.ts",
+    "sha256": "4376c983d376a91f8464037444ddeccd1233f6a00f9c2362ce4fd88ab9f84371"
+   },
+   "engine": {
+    "path": "evals/checker_core_step_lower.ts",
+    "sha256": "05492ac6aaa7855b4d4770bf1f77d7abacf3cc3b956dfca9e6f411fffb202158"
+   },
+   "unchanged": true
+  },
+  "commands": [
+   "bun evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 --timeout-ms 600000 -- bun evals/checker_core_owned_source.ts",
+   "bun evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 --timeout-ms 600000 -- bun evals/emitter_step_lower.ts"
+  ]
+ },
+ "admission": {
+  "path": "/private/tmp/bend-cand-allbody57ab",
+  "ignored": true,
+  "artifact": {
+   "path": "checkpoints/cand-allbody57ab-art4.js",
+   "sha256": "433aadb54af3255d76dd41bf410b0e4002a675018389b497d6cb42448d7b0f03",
+   "bytes": 17834145
+  },
+  "status": "JS_GENERATED_NOT_YET_EXECUTED",
+  "checkedDefinitions": 11806,
+  "liveBodies": 11806,
+  "expectedSourceDefinitions": 11806,
+  "eventsFullyValidated": 12366,
+  "checksExcluded": 0,
+  "outputPatches": 0,
+  "guardian": {
+   "status": "PASS",
+   "elapsedMs": 95496,
+   "peakRssBytes": 3111387136,
+   "peakFootprintBytes": 3299643872,
+   "timeoutMs": 600000,
+   "ownedTreeStopped": true
+  },
+  "command": "bun evals/checker_core_component_build.ts --file=checkpoints/.bootstrap_compiler_root_v1.bend --exports=<thirteen> --artifact=checkpoints/cand-allbody57ab-art4.js --report=checkpoints/cand-allbody57ab-rep4",
+  "deltaVsStaleEngine": {
+   "bodies": [
+    11191,
+    11806
+   ],
+   "artifact": [
+    "5205478f22cc6dc7ea7de5b343e40b575044e0965a173c9c539a84be564646c9",
+    "433aadb54af3255d76dd41bf410b0e4002a675018389b497d6cb42448d7b0f03"
+   ]
+  }
+ },
+ "rejectedAttempts": [
+  {
+   "c_backend": "2314418d",
+   "phase": "composition",
+   "error": "Missing authenticated Book provider join_text (composed line 4159)",
+   "cause": "unqualified join_text/array_label"
+  },
+  {
+   "c_backend": "d74a587e",
+   "phase": "composition",
+   "error": "Missing authenticated Book provider ctx_cap_slots (composed line 4995)",
+   "cause": "four Ctx accessors absent"
+  },
+  {
+   "c_backend": "fe4fbf71",
+   "phase": "admission",
+   "error": "expected List<&2, Env>, observed Ctx at atom_uses_conflict (line 12126)",
+   "cause": "dead Ctx wrapper"
+  },
+  {
+   "c_backend": "33271859",
+   "phase": "admission",
+   "error": "expected U32, observed Nat at atom_step_ref_in 0n (line 12197)",
+   "cause": "Nat literal in a U32 slot"
+  }
+ ],
+ "rejectedBranches": [
+  {
+   "branch": "work/cand-allbody57ab",
+   "status": "REJECTED_GENERATED_ARTIFACT_GIT_HANDOFF",
+   "reason": "committed generated engine images, owned text and full AST manifests (100k+ lines); unmerged, kept only as the worktree that holds the ignored artifacts"
+  }
+ ],
+ "notClaimed": [
+  "C execution",
+  "full C acceptance",
+  "root version green",
+  "full matrix",
+  "native 13 build",
+  "byte fixed point",
+  "frozen v41 corpus"
+ ],
+ "next": "Main authorizes actual C execution against artifact 433aadb5 in /private/tmp/bend-cand-allbody57ab"
+}

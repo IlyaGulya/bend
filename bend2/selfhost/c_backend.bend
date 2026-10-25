@@ -53,11 +53,6 @@ type Part is Data:
   PartOk{text: String}
   PartFail{message: String}
 
-# A resolved string append: the two operand texts in source order and the second
-# operand's quantity, which decides whether the new node keeps that reference.
-type AppendTexts is Data:
-  AppendTexts{parts: List<&2, String>, tail_use: Maybe<&2, BIR.Use>}
-
 type CidRow is Data:
   CidRow{cid: U32, key: String, arity: Nat, hot: Bool}
 type ExportRow is Data:
@@ -137,8 +132,23 @@ type PlanResult is Data:
 
 # One named local of the segment being emitted: its BIR id and the C expression
 # that holds its value now.
+type FieldRoot is Data:
+  FieldLocal{id: U32}
+  FieldSlot{slot: U32}
+
+type FieldRef is Data:
+  FieldRef{root: FieldRoot, steps: List<&2, Phys.PathStep>, owners: List<&2, FieldRoot>}
+
+type RefStep is Data:
+  RefOk{ref: FieldRef}
+  RefFail{message: String}
+
+
+type Leave is Data:
+  Leave{label: U32, block: BIR.Block}
+
 type Env is Data:
-  Env{id: U32, expr: String}
+  Env{id: U32, expr: String, drop: String, field: Maybe<&2, FieldRef>}
 
 # A value a synthesized segment must receive: a local of the enclosing segment
 # or a lexical capture slot of the code it belongs to.
@@ -152,12 +162,13 @@ type CapRef is Data:
 type Cap is Data:
   CapLocal{id: U32, expr: String}
   CapSlot{slot: U32, expr: String}
+  CapField{id: U32, ref: FieldRef}
 
 type Region is Data:
   Region{label: U32, fid: U32, refs: List<&2, CapRef>}
 
 type SegText is Data:
-  SegText{fid: U32, arity: Nat, resw: Nat, text: String}
+  SegText{fid: U32, arity: Nat, resw: Nat, text: String, forked: Bool, calls: List<&2, U32>}
 
 type Ctx is Data:
   Ctx{
@@ -170,10 +181,25 @@ type Ctx is Data:
     self_fid: Maybe<&2, U32>,
     next: U32,
     segs: List<&2, SegText>,
-    outs: List<&2, String>,
+    forked: Bool,
+    calls: List<&2, U32>,
     spin: Bool,
-    max_arity: Nat
+    max_arity: Nat,
+    cap_slots: List<&2, U32>,
+    leaves: List<&2, Leave>
   }
+
+type WriteStep is Data:
+  WriteOk{text: String, ctx: Ctx}
+  WriteFail{message: String}
+
+type ArgsStep is Data:
+  ArgsOk{texts: List<&2, String>, ctx: Ctx}
+  ArgsFail{message: String}
+
+type OpStep is Data:
+  OpOk{setup: String, text: String, ctx: Ctx}
+  OpFail{message: String}
 
 type Step is Data:
   StepOk{text: String, ctx: Ctx}
@@ -186,6 +212,7 @@ type Control is Data:
 # ---------------------------------------------------------------------------
 # Entries
 # ---------------------------------------------------------------------------
+
 
 def build_new() -> Build:
   Build{Nil{}, Map.new(&2, U32), Map.new(&2, U32), Map.new(&2, U32), Map.new(&2, U32), Map.new(&2, U32), 0}
@@ -1218,32 +1245,187 @@ def args_parts(args: List<&2, BIR.Arg>, +plan: Plan) -> List<&2, Part>:
       match arg:
         case BIR.Arg{_, value}: atom_part(value, plan) <> args_parts(rest, plan)
 
-def arg_strings(args: List<&2, BIR.Arg>, plan: Plan) -> Maybe<&2, List<&2, String>>:
-  arg_strings_each(args_parts(args, plan), Nil{})
+def prim_default_owned(primitive: BIR.Primitive, +index: Nat) -> Bool:
+  match primitive:
+    case BIR.PrimStringCmp{}: Nat.is_lt(index, 2n)
+    case BIR.PrimMapBit{}: Nat.is_eq(index, 0n)
+    case BIR.PrimNatDivmod{}: Nat.is_eq(index, 0n)
+    case _: False{}
 
-def arg_strings_each(parts: List<&2, Part>, +acc: List<&2, String>) -> Maybe<&2, List<&2, String>>:
-  match parts:
-    case Nil{}: Some{List.reverse(&2, String, acc)}
-    case +part <> rest:
-      match part:
-        case PartFail{message}: None{}
-        case PartOk{text}: arg_strings_each(rest, text <> acc)
+def array_arg_owned(primitive: BIR.Primitive, +index: Nat) -> Bool:
+  match primitive:
+    case BIR.PrimArrayNew{}: Nat.is_eq(index, 1n)
+    case BIR.PrimArrayGet{}: Nat.is_eq(index, 0n)
+    case BIR.PrimArraySize{}: Nat.is_eq(index, 0n)
+    case BIR.PrimArrayClone{}: Nat.is_eq(index, 0n)
+    case BIR.PrimArraySet{}: Bool.or(Nat.is_eq(index, 0n), Nat.is_eq(index, 2n))
+    case BIR.PrimArraySwap{}: Bool.or(Nat.is_eq(index, 0n), Nat.is_eq(index, 2n))
+    case BIR.PrimArrayLeaf{}: Nat.is_eq(index, 0n)
+    case BIR.PrimArrayNode{}: Nat.is_lt(index, 2n)
+    case _: False{}
 
-def op_part(op: BIR.Op, +plan: Plan) -> Part:
+def array_step(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, types: List<&2, BIR.Descriptor>, +ctx: Ctx, +index: Nat, +acc: List<&2, Phys.Operand>, +setup: String, continuation: BIR.Block, +owner_tag: U32) -> OpStep:
+  match args:
+    case Nil{}:
+      match phys_part(Phys.array_part(primitive, List.reverse(&2, Phys.Operand, acc), types, phys_world(ctx_plan(ctx)))):
+        case PartFail{message}: OpFail{message}
+        case PartOk{text}: OpOk{setup, text, ctx}
+    case +arg <> rest:
+      match arg:
+        case BIR.Arg{use, value}:
+          +name = cat(["pa", U32.show(owner_tag), "_", Nat.show(index)])
+          match array_arg_owned(primitive, index):
+            case True{}:
+              match field_owned(value, use, ctx, atoms_after_args(rest, continuation)):
+                case WriteFail{message}: OpFail{message}
+                case WriteOk{text, actx}:
+                  +decl = cat(["    Term ", name, " = ", text, ";\n"])
+                  array_step(primitive, rest, types, actx, Nat.add(index, 1n), Phys.Operand{BIR.Affine{}, name} <> acc, String.append(setup, decl), continuation, owner_tag)
+            case False{}:
+              match field_borrow(value, ctx):
+                case PartFail{message}: OpFail{message}
+                case PartOk{text}:
+                  +decl = cat(["    Term ", name, " = ", text, ";\n"])
+                  array_step(primitive, rest, types, ctx, Nat.add(index, 1n), Phys.Operand{BIR.Many{}, name} <> acc, String.append(setup, decl), continuation, owner_tag)
+
+def prim_texts(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, +ctx: Ctx, +index: Nat, +acc: List<&2, String>, +setup: String, continuation: BIR.Block, +owner_tag: U32) -> OpStep:
+  match args:
+    case Nil{}:
+      match prim_part(primitive, List.reverse(&2, String, acc), ctx_plan(ctx)):
+        case PartFail{message}: OpFail{message}
+        case PartOk{text}: OpOk{setup, text, ctx}
+    case +arg <> rest:
+      match arg:
+        case BIR.Arg{use, value}:
+          match prim_default_owned(primitive, index):
+            case True{}:
+              match field_owned(value, use, ctx, atoms_after_args(rest, continuation)):
+                case WriteFail{message}: OpFail{message}
+                case WriteOk{text, actx}:
+                  +name = cat(["pt", U32.show(owner_tag), "_", Nat.show(index)])
+                  +decl = cat(["    Term ", name, " = ", text, ";\n"])
+                  prim_texts(primitive, rest, actx, Nat.add(index, 1n), name <> acc, String.append(setup, decl), continuation, owner_tag)
+            case False{}:
+              match field_borrow(value, ctx):
+                case PartFail{message}: OpFail{message}
+                case PartOk{text}: prim_texts(primitive, rest, ctx, Nat.add(index, 1n), text <> acc, setup, continuation, owner_tag)
+
+def prim_step(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, types: List<&2, BIR.Descriptor>, +ctx: Ctx, continuation: BIR.Block, +owner_tag: U32) -> OpStep:
+  match primitive:
+    case BIR.PrimStringAppend{}: append_step(args, ctx, continuation, owner_tag)
+    case BIR.PrimIsArrayLeaf{}:
+      match pred_path(primitive, args, ctx):
+        case Some{part}:
+          match part:
+            case PartOk{text}: OpOk{"", text, ctx}
+            case PartFail{message}: OpFail{message}
+        case None{}: array_op_step(primitive, args, types, ctx, continuation, owner_tag)
+    case BIR.PrimIsArrayNode{}:
+      match pred_path(primitive, args, ctx):
+        case Some{part}:
+          match part:
+            case PartOk{text}: OpOk{"", text, ctx}
+            case PartFail{message}: OpFail{message}
+        case None{}: array_op_step(primitive, args, types, ctx, continuation, owner_tag)
+    case _: array_op_step(primitive, args, types, ctx, continuation, owner_tag)
+
+def array_op_step(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, types: List<&2, BIR.Descriptor>, +ctx: Ctx, continuation: BIR.Block, +owner_tag: U32) -> OpStep:
+  match is_array_primitive(primitive):
+    case True{}:
+      match types:
+        case Nil{}: OpFail{Phys.join_text(["the array primitive `", Phys.array_label(primitive), "` carries no instantiated element Descriptor; lowering must supply PrimitiveCall.types"])}
+        case _: array_step(primitive, args, types, ctx, 0n, Nil{}, "", continuation, owner_tag)
+    case False{}: prim_texts(primitive, args, ctx, 0n, Nil{}, "", continuation, owner_tag)
+
+# An array leaf/node test on a lazy path is a predicate over the path state,
+# never a re-materialised borrowed Term. Values outside the path algebra keep
+# the physical array operation.
+def pred_path(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, +ctx: Ctx) -> Maybe<&2, Part>:
+  match args:
+    case [BIR.Arg{use, value}]:
+      match atom_path(value, ctx):
+        case None{}: None{}
+        case Some{ref}:
+          match field_root_expr(ref, ctx):
+            case None{}: Some{PartFail{"BIR tests an array path whose parent is not owned by the frame"}}
+            case Some{root}:
+              match primitive:
+                case BIR.PrimIsArrayLeaf{}: Some{phys_part(Phys.path_is_leaf(root, ref_steps(ref), phys_world(ctx_plan(ctx))))}
+                case _: Some{phys_part(Phys.path_is_node(root, ref_steps(ref), phys_world(ctx_plan(ctx))))}
+    case _: None{}
+
+def append_step(args: List<&2, BIR.Arg>, +ctx: Ctx, continuation: BIR.Block, +owner_tag: U32) -> OpStep:
+  match args:
+    case +a0 <> (+a1 <> _):
+      match a0 a1:
+        case BIR.Arg{use0, value0} BIR.Arg{use1, value1}:
+          match field_borrow(value0, ctx):
+            case PartFail{message}: OpFail{message}
+            case PartOk{head_text}:
+              match field_owned(value1, use1, ctx, continuation):
+                case WriteFail{message}: OpFail{message}
+                case WriteOk{tail_text, actx}:
+                  +head = cat(["sh", U32.show(owner_tag)])
+                  +tail = cat(["st", U32.show(owner_tag)])
+                  +setup = cat(["    Term ", head, " = ", head_text, ";\n    Term ", tail, " = ", tail_text, ";\n"])
+                  append_step_parts(head, tail, setup, actx)
+    case _: OpFail{"a string append needs two operands"}
+
+def append_step_parts(head: String, tail: String, +setup: String, +ctx: Ctx) -> OpStep:
+  +plan = ctx_plan(ctx)
+  match pcid("SCon", plan) pcid("Chr", plan):
+    case PartOk{scon} PartOk{chr}: OpOk{setup, cat(["bend_str_append(e, ", scon, ", ", chr, ", ", head, ", ", tail, ", 0)"]), ctx}
+    case PartFail{message} _: OpFail{message}
+    case _ PartFail{message}: OpFail{message}
+
+def construct_step(+constructor: U32, fields: List<&2, BIR.Field>, +ctx: Ctx, +index: Nat, +acc: List<&2, Phys.Operand>, +setup: String, continuation: BIR.Block, +owner_tag: U32) -> OpStep:
+  match fields:
+    case Nil{}:
+      match phys_part(Phys.construct_part(constructor, List.reverse(&2, Phys.Operand, acc), phys_world(ctx_plan(ctx)))):
+        case PartFail{message}: OpFail{message}
+        case PartOk{text}: OpOk{setup, text, ctx}
+    case +field <> rest:
+      match field:
+        case BIR.Field{identity, key, use, value}:
+          match field_owned(value, use, ctx, atoms_after_fields(rest, continuation)):
+            case WriteFail{message}: OpFail{message}
+            case WriteOk{text, actx}:
+              +name = cat(["cf", U32.show(owner_tag), "_", Nat.show(index)])
+              +decl = cat(["    Term ", name, " = ", text, ";\n"])
+              construct_step(constructor, rest, actx, Nat.add(index, 1n), Phys.Operand{BIR.Affine{}, name} <> acc, String.append(setup, decl), continuation, owner_tag)
+
+def hastag_step(value: BIR.Atom, +constructor: U32, +ctx: Ctx) -> OpStep:
+  match value:
+    case BIR.Local{id}:
+      match env_field(ctx_env(ctx), id):
+        case Some{ref}:
+          match field_root_expr(ref, ctx):
+            case None{}: OpFail{"BIR has-tags a field whose parent is not owned by the frame"}
+            case Some{root}:
+              match phys_part(Phys.path_hastag(root, ref_steps(ref), constructor, phys_world(ctx_plan(ctx)))):
+                case PartFail{message}: OpFail{message}
+                case PartOk{text}: OpOk{"", text, ctx}
+        case None{}:
+          match hastag_part(value, constructor, ctx_plan(ctx)):
+            case PartFail{message}: OpFail{message}
+            case PartOk{text}: OpOk{"", text, ctx}
+    case _:
+      match hastag_part(value, constructor, ctx_plan(ctx)):
+        case PartFail{message}: OpFail{message}
+        case PartOk{text}: OpOk{"", text, ctx}
+
+def op_step(op: BIR.Op, +ctx: Ctx, remaining: BIR.Block, +owner_tag: U32) -> OpStep:
   match op:
-    case BIR.Copy{value}: atom_part(value, plan)
-    case BIR.PrimitiveCall{primitive, args, types}: prim_call_typed(primitive, args, types, plan)
-    case BIR.Construct{constructor, tag, fields}: construct_part(constructor, fields, plan)
-    case BIR.Project{value, constructor, field, key}: project_part(value, constructor, field, plan)
-    case BIR.HasTag{value, constructor, tag}: hastag_part(value, constructor, plan)
-    case BIR.Closure{code, captures, parameters}: failp("a BIR closure is a control operation, not a pure C expression")
-    case BIR.Direct{code, args}: failp("a BIR call is a control operation, not a pure C expression")
-    case BIR.Apply{fn, arg}: failp("a BIR application is a control operation, not a pure C expression")
-    case BIR.LoadSymbol{_, key}: failp("a BIR symbol load is a control operation, not a pure C expression")
-    case _: failp("BIR operation form has no C rendering")
+    case BIR.PrimitiveCall{primitive, args, types}: prim_step(primitive, args, types, ctx, remaining, owner_tag)
+    case BIR.Construct{constructor, tag, fields}: construct_step(constructor, fields, ctx, 0n, Nil{}, "", remaining, owner_tag)
+    case BIR.Copy{value}:
+      match field_owned(value, BIR.Many{}, ctx, remaining):
+        case WriteFail{message}: OpFail{message}
+        case WriteOk{text, actx}: OpOk{"", text, actx}
+    case BIR.HasTag{value, constructor, tag}: hastag_step(value, constructor, ctx)
+    case BIR.Project{value, constructor, field, key}: OpFail{"a projection is bound as a provenance path, not a value"}
+    case _: OpFail{"BIR operation form has no C rendering"}
 
-# Phys answers in its own Part ADT; the renderer's Part is a distinct type, so
-# every delegated layout answer is translated at this one boundary.
 def phys_part(part: Phys.Part) -> Part:
   match part:
     case Phys.PartOk{text}: PartOk{text}
@@ -1306,33 +1488,6 @@ def phys_cids(cids: List<&2, CidRow>) -> List<&2, Phys.CidSym>:
       match row:
         case CidRow{cid, key, arity, hot}: Phys.CidSym{cid, key} <> phys_cids(rest)
 
-type OperandsOut is Data:
-  OperandsOk{operands: List<&2, Phys.Operand>}
-  OperandsFail{message: String}
-
-def construct_part(+constructor: U32, +fields: List<&2, BIR.Field>, +plan: Plan) -> Part:
-  match field_operands(fields, plan, Nil{}):
-    case OperandsFail{message}: PartFail{message}
-    case OperandsOk{operands}: phys_part(Phys.construct_part(constructor, operands, phys_world(plan)))
-
-def field_operands(fields: List<&2, BIR.Field>, +plan: Plan, +acc: List<&2, Phys.Operand>) -> OperandsOut:
-  match fields:
-    case Nil{}: OperandsOk{List.reverse(&2, Phys.Operand, acc)}
-    case +field <> rest:
-      match field:
-        case BIR.Field{identity, key, use, value}:
-          match atom_part(value, plan):
-            case PartFail{message}: OperandsFail{message}
-            case PartOk{text}: field_operands(rest, plan, Phys.Operand{use, text} <> acc)
-
-def values_part(values: List<&2, Part>, +acc: List<&2, String>) -> Maybe<&2, List<&2, String>>:
-  match values:
-    case Nil{}: Some{List.reverse(&2, String, acc)}
-    case +part <> rest:
-      match part:
-        case PartFail{message}: None{}
-        case PartOk{text}: values_part(rest, text <> acc)
-
 def project_part(value: BIR.Atom, +constructor: U32, field: U32, +plan: Plan) -> Part:
   match atom_part(value, plan):
     case PartFail{message}: PartFail{message}
@@ -1350,28 +1505,6 @@ def hastag_part(value: BIR.Atom, +constructor: U32, +plan: Plan) -> Part:
 # The checked op carries its instantiated type arguments. Array operations need
 # exactly one element Descriptor; until the CIRLayouts cell plan is consumed the
 # target refuses them instead of assuming arr/lgs/words.
-def prim_call_typed(+primitive: BIR.Primitive, +args: List<&2, BIR.Arg>, types: List<&2, BIR.Descriptor>, +plan: Plan) -> Part:
-  match is_array_primitive(primitive):
-    case True{}: prim_array_part(primitive, args, types, plan)
-    case False{}: prim_call_part(primitive, args, plan)
-
-# Array storage is physical: Phys derives the element cell from the
-# PrimitiveCall element Descriptor and emits every word/slot access for it.
-def prim_array_part(+primitive: BIR.Primitive, args: List<&2, BIR.Arg>, types: List<&2, BIR.Descriptor>, plan: Plan) -> Part:
-  match arg_operands(args, plan, Nil{}):
-    case OperandsFail{message}: PartFail{message}
-    case OperandsOk{operands}: phys_part(Phys.array_part(primitive, operands, types, phys_world(plan)))
-
-def arg_operands(args: List<&2, BIR.Arg>, +plan: Plan, +acc: List<&2, Phys.Operand>) -> OperandsOut:
-  match args:
-    case Nil{}: OperandsOk{List.reverse(&2, Phys.Operand, acc)}
-    case +arg <> rest:
-      match arg:
-        case BIR.Arg{use, value}:
-          match atom_part(value, plan):
-            case PartFail{message}: OperandsFail{message}
-            case PartOk{text}: arg_operands(rest, plan, Phys.Operand{use, text} <> acc)
-
 def is_array_primitive(primitive: BIR.Primitive) -> Bool:
   match primitive:
     case BIR.PrimArrayNew{}: True{}
@@ -1382,58 +1515,9 @@ def is_array_primitive(primitive: BIR.Primitive) -> Bool:
     case BIR.PrimArrayClone{}: True{}
     case BIR.PrimArrayLeaf{}: True{}
     case BIR.PrimArrayNode{}: True{}
-    case BIR.PrimArrayLeafValue{}: True{}
-    case BIR.PrimArrayLeft{}: True{}
-    case BIR.PrimArrayRight{}: True{}
     case BIR.PrimIsArrayLeaf{}: True{}
     case BIR.PrimIsArrayNode{}: True{}
     case _: False{}
-
-def prim_call_part(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, +plan: Plan) -> Part:
-  match primitive:
-    case BIR.PrimStringAppend{}: append_part(args, plan)
-    case _:
-      match arg_strings(args, plan):
-        case None{}: failp("BIR argument has no C value")
-        case Some{values}: prim_part(primitive, values, plan)
-
-# Lowering uses PrimStringAppend for two different constructions: String.append
-# of two strings, and `SCon{char, tail}` where the first operand is a packed Chr
-# term rather than an SCon. The helper distinguishes them by the Chr cid, so the
-# Char payload becomes the raw codepoint the string representation stores. The
-# second operand's quantity travels with the call because storing it in a fresh
-# node adds a reference: term_keep(e, tail, keep) with keep 1 for Many (the
-# caller keeps its own) and 0 for an owned operand.
-def append_part(args: List<&2, BIR.Arg>, plan: Plan) -> Part:
-  match append_texts(args, plan, Nil{}, None{}):
-    case None{}: failp("BIR argument has no C value")
-    case Some{parts}: append_cids(parts, plan)
-
-def append_texts(args: List<&2, BIR.Arg>, +plan: Plan, +acc: List<&2, String>, +tail_use: Maybe<&2, BIR.Use>) -> Maybe<&2, AppendTexts>:
-  match args:
-    case Nil{}: Some{AppendTexts{List.reverse(&2, String, acc), tail_use}}
-    case +arg <> rest:
-      match arg:
-        case BIR.Arg{use, value}:
-          match atom_part(value, plan):
-            case PartFail{message}: None{}
-            case PartOk{text}: append_texts(rest, plan, text <> acc, Some{use})
-
-def append_cids(found: AppendTexts, plan: Plan) -> Part:
-  match found:
-    case AppendTexts{parts, tail_use}:
-      match pcid("SCon", plan) pcid("Chr", plan):
-        case PartOk{scon} PartOk{chr}:
-          match parts:
-            case +a0 <> (+a1 <> _): okp(cat(["bend_str_append(e, ", scon, ", ", chr, ", ", a0, ", ", a1, ", ", keep_flag(tail_use), ")"]))
-            case _: failp("a string append needs two operands")
-        case PartFail{message} _: PartFail{message}
-        case _ PartFail{message}: PartFail{message}
-
-def keep_flag(use: Maybe<&2, BIR.Use>) -> String:
-  match use:
-    case Some{BIR.Many{}}: "1"
-    case _: "0"
 
 def pcid(short: String, plan: Plan) -> Part:
   match plan:
@@ -1555,19 +1639,6 @@ def prim_part(primitive: BIR.Primitive, +a: List<&2, String>, +plan: Plan) -> Pa
     case BIR.PrimStringHead{}: str1_char("bend_str_head", "SCon", a0, plan)
     case BIR.PrimStringTail{}: str_tail(a0, plan)
     case BIR.PrimMapBit{}: map_bit_part(a0, a1, plan)
-    case BIR.PrimArrayNew{}: okp(cat(["bend_array_new(e, ", a0, ", ", a1, ")"]))
-    case BIR.PrimArrayGet{}: arr2("bend_array_get", a0, a1, plan)
-    case BIR.PrimArraySet{}: okp(cat(["bend_array_set(e, ", a0, ", ", a1, ", ", a2, ")"]))
-    case BIR.PrimArraySwap{}: arr_swap(a0, a1, a2, plan)
-    case BIR.PrimArraySize{}: arr1("bend_array_size", a0, plan)
-    case BIR.PrimArrayClone{}: arr1("bend_array_clone", a0, plan)
-    case BIR.PrimArrayLeaf{}: okp(cat(["bend_array_leaf(e, ", a0, ")"]))
-    case BIR.PrimArrayNode{}: okp(cat(["blk_node(e, ", a0, ", ", a1, ")"]))
-    case BIR.PrimArrayLeafValue{}: okp(cat(["bend_array_leaf_value(e, ", a0, ")"]))
-    case BIR.PrimArrayLeft{}: okp(cat(["blk_half(e, ", a0, ", 0)"]))
-    case BIR.PrimArrayRight{}: okp(cat(["blk_half(e, ", a0, ", 1)"]))
-    case BIR.PrimIsArrayLeaf{}: bool_part(cat(["((u32)blk_cls(", a0, ") == 0)"]), plan)
-    case BIR.PrimIsArrayNode{}: bool_part(cat(["((u32)blk_cls(", a0, ") != 0)"]), plan)
     case BIR.PrimIsNatZero{}: bool_part(cat(["(", a0, " == 0)"]), plan)
     case BIR.PrimIsNatSuccessor{}: bool_part(cat(["(", a0, " > 0)"]), plan)
     case BIR.PrimIsStringEmpty{}: bool_str_empty(False{}, a0, plan)
@@ -1681,21 +1752,6 @@ def map_bit_part(a0: String, a1: String, +plan: Plan) -> Part:
     case _ PartFail{message} _ _: PartFail{message}
     case _ _ PartFail{message} _: PartFail{message}
     case _ _ _ PartFail{message}: PartFail{message}
-
-def arr1(name: String, a0: String, plan: Plan) -> Part:
-  match pcid("Tuple", plan):
-    case PartFail{message}: PartFail{message}
-    case PartOk{t}: PartOk{cat([name, "(e, ", t, ", ", a0, ")"])}
-
-def arr2(name: String, a0: String, a1: String, plan: Plan) -> Part:
-  match pcid("Tuple", plan):
-    case PartFail{message}: PartFail{message}
-    case PartOk{t}: PartOk{cat([name, "(e, ", t, ", ", a0, ", ", a1, ")"])}
-
-def arr_swap(a0: String, a1: String, a2: String, plan: Plan) -> Part:
-  match pcid("Tuple", plan):
-    case PartFail{message}: PartFail{message}
-    case PartOk{t}: PartOk{cat(["bend_array_swap(e, ", t, ", ", a0, ", ", a1, ", ", a2, ")"])}
 
 def char_new_part(a0: String, plan: Plan) -> Part:
   match pcid("Chr", plan):
@@ -1831,12 +1887,282 @@ def env_get(env: List<&2, Env>, +id: U32) -> Maybe<&2, String>:
     case Nil{}: None{}
     case +binding <> rest:
       match binding:
-        case Env{known, expr}: env_get_one(U32.is_eq(known, id), expr, rest, id)
+        case Env{known, expr, _, _}: env_get_one(U32.is_eq(known, id), expr, rest, id)
 
 def env_get_one(found: Bool, expr: String, rest: List<&2, Env>, id: U32) -> Maybe<&2, String>:
   match found:
     case True{}: Some{expr}
     case False{}: env_get(rest, id)
+
+def env_del(+id: U32, +env: List<&2, Env>) -> List<&2, Env>:
+  match env:
+    case Nil{}: Nil{}
+    case +row <> rest:
+      match row:
+        case Env{known, expr, drop, _}:
+          match U32.is_eq(known, id):
+            case True{}: env_del(id, rest)
+            case False{}: row <> env_del(id, rest)
+
+def ctx_env_put(ctx: Ctx, env: List<&2, Env>) -> Ctx:
+  match ctx:
+    case Ctx{sig, plan, old, caps, caps_n, regions, self_fid, next, segs, forked, calls, spin, max_arity, cap_slots, leaves}:
+      Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, forked, calls, spin, max_arity, cap_slots, leaves}
+
+def ctx_caps_put(ctx: Ctx, slots: List<&2, U32>) -> Ctx:
+  match ctx:
+    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, forked, calls, spin, max_arity, old, leaves}:
+      Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, forked, calls, spin, max_arity, slots, leaves}
+
+def env_field(env: List<&2, Env>, +id: U32) -> Maybe<&2, FieldRef>:
+  match env:
+    case Nil{}: None{}
+    case +row <> rest:
+      match row:
+        case Env{known, expr, drop, field}:
+          match U32.is_eq(known, id):
+            case True{}: field
+            case False{}: env_field(rest, id)
+
+def field_root_expr(ref: FieldRef, +ctx: Ctx) -> Maybe<&2, String>:
+  match ref:
+    case FieldRef{root, steps, owners}:
+      match root:
+        case FieldLocal{id}:
+          match env_get(ctx_env(ctx), id):
+            case Some{expr}: Some{expr}
+            case None{}: None{}
+        case FieldSlot{slot}:
+          match u32_member(ctx_cap_slots(ctx), slot):
+            case True{}: Some{cat(["x[", U32.show(slot), "]"])}
+            case False{}: None{}
+
+def field_borrow(atom: BIR.Atom, +ctx: Ctx) -> Part:
+  match atom:
+    case BIR.Local{id}:
+      match env_field(ctx_env(ctx), id):
+        case Some{ref}: field_read_ref(ref, ctx)
+        case None{}:
+          match env_get(ctx_env(ctx), id):
+            case Some{expr}: okp(expr)
+            case None{}: failp(cat(["BIR reads local ", U32.show(id), " before it is bound"]))
+    case BIR.Capture{slot}:
+      match u32_member(ctx_cap_slots(ctx), slot):
+        case True{}: okp(cat(["x[", U32.show(slot), "]"]))
+        case False{}: failp(cat(["BIR reads capture slot ", U32.show(slot), " outside the frame"]))
+    case _: atom_part(atom, ctx_plan(ctx))
+
+def field_read_ref(ref: FieldRef, +ctx: Ctx) -> Part:
+  match field_root_expr(ref, ctx):
+    case None{}: failp("BIR projects a field whose parent is not owned by the frame")
+    case Some{root}: phys_part(Phys.path_read(root, ref_steps(ref), phys_world(ctx_plan(ctx))))
+
+def ref_steps(ref: FieldRef) -> List<&2, Phys.PathStep>:
+  match ref:
+    case FieldRef{root, steps, owners}: steps
+
+def ref_owners(ref: FieldRef) -> List<&2, FieldRoot>:
+  match ref:
+    case FieldRef{root, steps, owners}: owners
+
+def rebase_ref(ref: FieldRef, +id: U32) -> FieldRef:
+  FieldRef{ref_root(ref), ref_steps(ref), [ref_root(ref), FieldLocal{id}]}
+
+def append_owner(items: List<&2, FieldRoot>, +value: FieldRoot) -> List<&2, FieldRoot>:
+  List.append(&2, FieldRoot, items, [value])
+def owner_local(owner: FieldRoot) -> Maybe<&2, U32>:
+  match owner:
+    case FieldLocal{id}: Some{id}
+    case _: None{}
+
+def owner_slot(owner: FieldRoot) -> Maybe<&2, U32>:
+  match owner:
+    case FieldSlot{slot}: Some{slot}
+    case _: None{}
+
+def owners_ancestors(owners: List<&2, FieldRoot>) -> List<&2, FieldRoot>:
+  List.reverse(&2, FieldRoot, owners_drop_last(owners, Nil{}))
+
+def owners_drop_last(owners: List<&2, FieldRoot>, +acc: List<&2, FieldRoot>) -> List<&2, FieldRoot>:
+  match owners:
+    case Nil{}: Nil{}
+    case +only <> Nil{}: List.reverse(&2, FieldRoot, acc)
+    case +owner <> rest: owners_drop_last(rest, owner <> acc)
+
+def owner_index(owners: List<&2, FieldRoot>, owner: FieldRoot, +index: Nat) -> Maybe<&2, Nat>:
+  match owners:
+    case Nil{}: None{}
+    case +known <> rest:
+      match owner_same(known, owner):
+        case True{}: Some{index}
+        case False{}: owner_index(rest, owner, Nat.add(index, 1n))
+
+def owner_same(a: FieldRoot, b: FieldRoot) -> Bool:
+  match a b:
+    case FieldLocal{id} FieldLocal{known}: U32.is_eq(id, known)
+    case FieldSlot{slot} FieldSlot{known}: U32.is_eq(slot, known)
+    case _ _: False{}
+
+def atom_owner(atom: BIR.Atom) -> Maybe<&2, FieldRoot>:
+  match atom:
+    case BIR.Local{id}: Some{FieldLocal{id}}
+    case BIR.Capture{slot}: Some{FieldSlot{slot}}
+    case _: None{}
+
+def atom_is_owner(atom: BIR.Atom, owner: FieldRoot) -> Bool:
+  match atom_owner(atom):
+    case Some{found}: owner_same(found, owner)
+    case None{}: False{}
+
+def step_at(steps: List<&2, Phys.PathStep>, +index: Nat) -> Maybe<&2, Phys.PathStep>:
+  match steps:
+    case Nil{}: None{}
+    case +step <> rest:
+      match Nat.is_eq(index, 0n):
+        case True{}: Some{step}
+        case False{}: step_at(rest, Nat.sub(index, 1n))
+
+# True when the remaining block reads the target path again, a descendant of it,
+# the same field through another projection, or an owning ancestor as a whole
+# value. Disjoint sibling fields are not overlap.
+def field_owned(atom: BIR.Atom, +use: BIR.Use, +ctx: Ctx, remaining: BIR.Block) -> WriteStep:
+  match atom:
+    case BIR.Local{id}:
+      match env_field(ctx_env(ctx), id):
+        case Some{ref}:
+          match field_root_expr(ref, ctx):
+            case None{}: WriteFail{"BIR projects a field whose parent is not owned by the frame"}
+            case Some{root}:
+              match path_conflict(remaining, ref, ctx_leaves(ctx), ctx_env(ctx)):
+                case True{}:
+                  match phys_part(Phys.path_copy(root, ref_steps(ref), phys_world(ctx_plan(ctx)))):
+                    case PartFail{message}: WriteFail{message}
+                    case PartOk{text}: WriteOk{text, ctx}
+                case False{}:
+                  match phys_part(Phys.path_consume(root, ref_steps(ref), phys_world(ctx_plan(ctx)))):
+                    case PartFail{message}: WriteFail{message}
+                    case PartOk{text}: WriteOk{text, ctx_env_put(ctx, env_del(id, ctx_env(ctx)))}
+        case None{}:
+          match env_get(ctx_env(ctx), id):
+            case None{}: WriteFail{cat(["BIR uses local ", U32.show(id), " before it is bound"])}
+            case Some{expr}:
+              match root_residual(remaining, FieldLocal{id}, ctx_leaves(ctx), ctx):
+                case True{}: WriteOk{cat(["(", expr, " = term_keep(e, ", expr, ", 1))"]), ctx}
+                case False{}: WriteOk{expr, ctx_env_put(ctx, env_del(id, ctx_env(ctx)))}
+    case BIR.Capture{slot}:
+      match u32_member(ctx_cap_slots(ctx), slot):
+        case False{}: WriteFail{cat(["BIR uses capture slot ", U32.show(slot), " outside the frame"])}
+        case True{}:
+          match root_residual(remaining, FieldSlot{slot}, ctx_leaves(ctx), ctx):
+            case True{}: WriteOk{cat(["(x[", U32.show(slot), "] = term_keep(e, x[", U32.show(slot), "], 1))"]), ctx}
+            case False{}: WriteOk{cat(["x[", U32.show(slot), "]"]), ctx_caps_put(ctx, cap_slots_del(slot, ctx_cap_slots(ctx)))}
+    case _:
+      match atom_part(atom, ctx_plan(ctx)):
+        case PartFail{message}: WriteFail{message}
+        case PartOk{text}: WriteOk{text, ctx}
+
+def atom_use(atom: BIR.Atom, +use: BIR.Use, +ctx: Ctx, remaining: BIR.Block) -> WriteStep:
+  field_owned(atom, use, ctx, remaining)
+
+def args_use(args: List<&2, BIR.Arg>, +ctx: Ctx, +acc: List<&2, String>, continuation: BIR.Block) -> ArgsStep:
+  match args:
+    case Nil{}: ArgsOk{List.reverse(&2, String, acc), ctx}
+    case +arg <> rest:
+      match arg:
+        case BIR.Arg{use, value}:
+          match atom_use(value, use, ctx, atoms_after_args(rest, continuation)):
+            case WriteFail{message}: ArgsFail{message}
+            case WriteOk{text, next_ctx}: args_use(rest, next_ctx, text <> acc, continuation)
+
+def env_drops(env: List<&2, Env>, +skip: List<&2, U32>, +acc: String) -> String:
+  match env:
+    case Nil{}: acc
+    case +row <> rest:
+      match row:
+        case Env{id, expr, drop, _}:
+          match u32_member(skip, id):
+            case True{}: env_drops(rest, skip, acc)
+            case False{}: env_drops(rest, skip, String.append(acc, drop))
+
+def cap_count(caps: List<&2, Cap>) -> Nat:
+  cap_count_each(caps, 0n)
+
+def cap_count_each(caps: List<&2, Cap>, +count: Nat) -> Nat:
+  match caps:
+    case Nil{}: count
+    case +cap <> rest:
+      match cap:
+        case CapField{id, ref}: cap_count_each(rest, count)
+        case _: cap_count_each(rest, Nat.add(count, 1n))
+
+def cap_slots_from(+count: Nat, +index: Nat, +acc: List<&2, U32>) -> List<&2, U32>:
+  match Nat.is_eq(index, count):
+    case True{}: acc
+    case False{}: cap_slots_from(count, Nat.add(index, 1n), U32.from_nat(index) <> acc)
+
+def cap_slots_of(caps: List<&2, Cap>) -> List<&2, U32>:
+  cap_slots_of_each(caps, Nil{})
+
+def cap_slots_of_each(caps: List<&2, Cap>, +acc: List<&2, U32>) -> List<&2, U32>:
+  match caps:
+    case Nil{}: List.reverse(&2, U32, acc)
+    case +cap <> rest:
+      match cap:
+        case CapLocal{id, expr}: cap_slots_of_each(rest, acc)
+        case CapSlot{slot, expr}: cap_slots_of_each(rest, slot <> acc)
+        case CapField{id, ref}: cap_slots_of_each(rest, acc)
+
+def cap_slots_used(+slots: List<&2, U32>, +skip: List<&2, U32>) -> List<&2, U32>:
+  match slots:
+    case Nil{}: Nil{}
+    case +slot <> rest:
+      match u32_member(skip, slot):
+        case True{}: cap_slots_used(rest, skip)
+        case False{}: slot <> cap_slots_used(rest, skip)
+
+def cap_slots_del(+slot: U32, +slots: List<&2, U32>) -> List<&2, U32>:
+  match slots:
+    case Nil{}: Nil{}
+    case +row <> rest:
+      match U32.is_eq(row, slot):
+        case True{}: rest
+        case False{}: row <> cap_slots_del(slot, rest)
+
+def cap_drops(+slots: List<&2, U32>, +acc: String) -> String:
+  match slots:
+    case Nil{}: acc
+    case +slot <> rest: cap_drops(rest, String.append(acc, cat(["    term_sink(e, x[", U32.show(slot), "]);\n"])))
+
+def caps_ids(caps: List<&2, Cap>, +acc: List<&2, U32>) -> List<&2, U32>:
+  match caps:
+    case Nil{}: acc
+    case +cap <> rest:
+      match cap:
+        case CapLocal{+id, expr}: caps_ids(rest, u32_add(acc, id))
+        case CapSlot{slot, expr}: caps_ids(rest, acc)
+        case CapField{id, ref}: caps_ids(rest, acc)
+
+def caps_slots(caps: List<&2, Cap>, +acc: List<&2, U32>) -> List<&2, U32>:
+  match caps:
+    case Nil{}: acc
+    case +cap <> rest:
+      match cap:
+        case CapLocal{id, expr}: caps_slots(rest, acc)
+        case CapSlot{+slot, expr}: caps_slots(rest, u32_add(acc, slot))
+        case CapField{id, ref}: caps_slots(rest, acc)
+
+def arg_decls(args: List<&2, String>, +index: Nat, +acc: String) -> String:
+  match args:
+    case Nil{}: acc
+    case +arg <> rest: arg_decls(rest, Nat.add(index, 1n), String.append(acc, cat(["    Term ca", Nat.show(index), " = ", arg, ";\n"])))
+
+def arg_names(+count: Nat, +index: Nat, +acc: List<&2, String>) -> List<&2, String>:
+  match Nat.is_eq(index, count):
+    case True{}: List.reverse(&2, String, acc)
+    case False{}: arg_names(count, Nat.add(index, 1n), cat(["ca", Nat.show(index)]) <> acc)
+
+def exit_releases(ctx: Ctx, +skip_ids: List<&2, U32>, +skip_slots: List<&2, U32>) -> String:
+  cat([env_drops(ctx_env(ctx), skip_ids, ""), cap_drops(cap_slots_used(ctx_cap_slots(ctx), skip_slots), "")])
 
 def region_refs(regions: List<&2, Region>, +acc: List<&2, CapRef>) -> List<&2, CapRef>:
   match regions:
@@ -1876,7 +2202,7 @@ def env_refs(env: List<&2, Env>, +used: List<&2, U32>, +inherited: List<&2, CapR
     case Nil{}: List.reverse(&2, CapRef, acc)
     case +binding <> rest:
       match binding:
-        case Env{+id, expr}: env_refs(rest, used, inherited, env_ref_add(u32_member(used, id), refs_have_local(inherited, id), id, acc))
+        case Env{+id, expr, _, _}: env_refs(rest, used, inherited, env_ref_add(u32_member(used, id), refs_have_local(inherited, id), id, acc))
 
 def env_ref_add(used: Bool, inherited: Bool, id: U32, +acc: List<&2, CapRef>) -> List<&2, CapRef>:
   match Bool.or(used, inherited):
@@ -1897,11 +2223,315 @@ def slot_ref_add(used: Bool, inherited: Bool, slot: U32, +acc: List<&2, CapRef>)
 
 # Every value the remaining block reads from before its own bindings, plus every
 # value an enclosing region may need on its LeaveRegion jump.
+def field_root_locals(env: List<&2, Env>, used: List<&2, U32>, +acc: List<&2, U32>) -> List<&2, U32>:
+  match env:
+    case Nil{}: acc
+    case +row <> rest:
+      match row:
+        case Env{id, expr, drop, field}:
+          match u32_member(used, id):
+            case False{}: field_root_locals(rest, used, acc)
+            case True{}:
+              match field:
+                case None{}: field_root_locals(rest, used, acc)
+                case Some{ref}:
+                  match ref_root(ref):
+                    case FieldLocal{root}: field_root_locals(rest, used, u32_add(acc, root))
+                    case FieldSlot{slot}: field_root_locals(rest, used, acc)
+
+def field_root_slots(env: List<&2, Env>, used: List<&2, U32>, +acc: List<&2, U32>) -> List<&2, U32>:
+  match env:
+    case Nil{}: acc
+    case +row <> rest:
+      match row:
+        case Env{id, expr, drop, field}:
+          match u32_member(used, id):
+            case False{}: field_root_slots(rest, used, acc)
+            case True{}:
+              match field:
+                case None{}: field_root_slots(rest, used, acc)
+                case Some{ref}:
+                  match ref_root(ref):
+                    case FieldLocal{root}: field_root_slots(rest, used, acc)
+                    case FieldSlot{slot}: field_root_slots(rest, used, u32_add(acc, slot))
+
+def leaf_at(leaves: List<&2, Leave>, +label: U32) -> Maybe<&2, BIR.Block>:
+  match leaves:
+    case Nil{}: None{}
+    case +row <> rest:
+      match row:
+        case Leave{known, block}:
+          match U32.is_eq(known, label):
+            case True{}: Some{block}
+            case False{}: leaf_at(rest, label)
+
+def leaves_enter(leaves: List<&2, Leave>, +label: U32, block: BIR.Block) -> List<&2, Leave>:
+  Leave{label, block} <> leaves
+
+def ctx_flow_put(ctx: Ctx, forked: Bool, calls: List<&2, U32>) -> Ctx:
+  match ctx:
+    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, old_forked, old_calls, spin, max_arity, cap_slots, leaves}:
+      Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, forked, calls, spin, max_arity, cap_slots, leaves}
+
+def ctx_add_call(ctx: Ctx, +fid: U32) -> Ctx:
+  ctx_flow_put(ctx, ctx_forked(ctx), fid <> ctx_calls(ctx))
+
+def ctx_fork(ctx: Ctx, +target: U32, +continuation: U32) -> Ctx:
+  ctx_flow_put(ctx, True{}, target <> (continuation <> ctx_calls(ctx)))
+
+def atoms_after_args(args: List<&2, BIR.Arg>, next: BIR.Block) -> BIR.Block:
+  match args:
+    case Nil{}: next
+    case +arg <> rest:
+      match arg:
+        case BIR.Arg{use, value}: BIR.Let{0, BIR.Copy{value}, atoms_after_args(rest, next)}
+
+def atoms_after_fields(fields: List<&2, BIR.Field>, next: BIR.Block) -> BIR.Block:
+  match fields:
+    case Nil{}: next
+    case +field <> rest:
+      match field:
+        case BIR.Field{identity, key, use, value}: BIR.Let{0, BIR.Copy{value}, atoms_after_fields(rest, next)}
+
+def atom_key(atom: BIR.Atom) -> Maybe<&2, FieldRoot>:
+  match atom:
+    case BIR.Local{id}: Some{FieldLocal{id}}
+    case BIR.Capture{slot}: Some{FieldSlot{slot}}
+    case _: None{}
+
+def atom_path(atom: BIR.Atom, +ctx: Ctx) -> Maybe<&2, FieldRef>:
+  atom_path_in(atom, ctx_env(ctx))
+
+def atom_path_in(atom: BIR.Atom, env: List<&2, Env>) -> Maybe<&2, FieldRef>:
+  match atom:
+    case BIR.Local{id}: env_field(env, id)
+    case _: None{}
+
+def root_eq(a: FieldRoot, b: FieldRoot) -> Bool:
+  owner_same(a, b)
+
+def steps_prefix(a: List<&2, Phys.PathStep>, b: List<&2, Phys.PathStep>) -> Bool:
+  match a:
+    case Nil{}: True{}
+    case +step <> rest:
+      match b:
+        case Nil{}: False{}
+        case +known <> tail:
+          match step_eq(step, known):
+            case True{}: steps_prefix(rest, tail)
+            case False{}: False{}
+
+def step_eq(a: Phys.PathStep, b: Phys.PathStep) -> Bool:
+  match a:
+    case Phys.PathField{constructor, field}: step_eq_field(constructor, field, b)
+    case Phys.PathHalf{low, element}: step_eq_half(low, b)
+    case Phys.PathLeafCell{element}: step_eq_leaf(b)
+
+def step_eq_field(ca: U32, fa: U32, b: Phys.PathStep) -> Bool:
+  match b:
+    case Phys.PathField{constructor, field}: Bool.and(U32.is_eq(ca, constructor), U32.is_eq(fa, field))
+    case _: False{}
+
+def step_eq_half(expected: Bool, b: Phys.PathStep) -> Bool:
+  match b:
+    case Phys.PathHalf{low, element}: step_eq_half_both(expected, low)
+    case _: False{}
+
+def step_eq_half_both(a: Bool, b: Bool) -> Bool:
+  match a b:
+    case True{} True{}: True{}
+    case False{} False{}: True{}
+    case _ _: False{}
+
+def step_eq_leaf(b: Phys.PathStep) -> Bool:
+  match b:
+    case Phys.PathLeafCell{element}: True{}
+    case _: False{}
+
+def path_related(a: FieldRef, b: FieldRef) -> Bool:
+  match root_eq(ref_root(a), ref_root(b)):
+    case False{}: False{}
+    case True{}: Bool.or(steps_prefix(ref_steps(a), ref_steps(b)), steps_prefix(ref_steps(b), ref_steps(a)))
+
+def path_before(a: FieldRef, b: FieldRef) -> Bool:
+  Bool.and(root_eq(ref_root(a), ref_root(b)), steps_prefix(ref_steps(a), ref_steps(b)))
+
+def atom_owner_known(atom: BIR.Atom, ref: FieldRef) -> Bool:
+  match atom_key(atom):
+    case Some{key}: owners_member(ref_owners(ref), key)
+    case None{}: False{}
+
+def owners_member(owners: List<&2, FieldRoot>, key: FieldRoot) -> Bool:
+  match owners:
+    case Nil{}: False{}
+    case +owner <> rest:
+      match owner_same(owner, key):
+        case True{}: True{}
+        case False{}: owners_member(rest, key)
+
+def project_related(value: BIR.Atom, +constructor: U32, +field: U32, target: FieldRef, env: List<&2, Env>) -> Bool:
+  match atom_path_in(value, env):
+    case Some{parent}:
+      +extended = FieldRef{ref_root(parent), append_path_step(ref_steps(parent), Phys.PathField{constructor, field}), ref_owners(parent)}
+      path_related(extended, target)
+    case None{}:
+      match atom_key(value):
+        case Some{key}:
+          match owner_index(ref_owners(target), key, 0n):
+            case None{}: False{}
+            case Some{index}:
+              match step_at(ref_steps(target), index):
+                case Some{step}:
+                  match step_eq(step, Phys.PathField{constructor, field}):
+                    case True{}: True{}
+                    case False{}: False{}
+                case None{}:
+                  match Nat.is_eq(Nat.add(index, 1n), List.length(&2, FieldRoot, ref_owners(target))):
+                    case True{}: True{}
+                    case False{}: False{}
+        case None{}: False{}
+
+def atom_conflict(atom: BIR.Atom, target: FieldRef, env: List<&2, Env>) -> Bool:
+  match atom_path_in(atom, env):
+    case Some{other}: path_related(other, target)
+    case None{}: atom_owner_known(atom, target)
+
+def conflict_atom_list(args: List<&2, BIR.Arg>, target: FieldRef, env: List<&2, Env>) -> Bool:
+  match args:
+    case Nil{}: False{}
+    case +arg <> rest:
+      match arg:
+        case BIR.Arg{use, value}: Bool.or(atom_conflict(value, target, env), conflict_atom_list(rest, target, env))
+
+def conflict_field_list(fields: List<&2, BIR.Field>, target: FieldRef, env: List<&2, Env>) -> Bool:
+  match fields:
+    case Nil{}: False{}
+    case +field <> rest:
+      match field:
+        case BIR.Field{identity, key, use, value}: Bool.or(atom_conflict(value, target, env), conflict_field_list(rest, target, env))
+
+def conflict_op(op: BIR.Op, target: FieldRef, leaves: List<&2, Leave>, env: List<&2, Env>) -> Bool:
+  match op:
+    case BIR.Copy{value}: atom_conflict(value, target, env)
+    case BIR.PrimitiveCall{primitive, args, types}:
+      match projection_primitive(primitive):
+        case True{}: projection_conflict(primitive, args, types, target, env)
+        case False{}: conflict_atom_list(args, target, env)
+    case BIR.Closure{code, captures, parameters}: conflict_atom_list(captures, target, env)
+    case BIR.Direct{code, args}: conflict_atom_list(args, target, env)
+    case BIR.Apply{fn, arg}: Bool.or(atom_conflict(fn, target, env), conflict_atom_list([arg], target, env))
+    case BIR.Construct{constructor, tag, fields}: conflict_field_list(fields, target, env)
+    case BIR.Project{value, constructor, field, key}: project_related(value, constructor, field, target, env)
+    case BIR.HasTag{value, constructor, tag}:
+      match atom_path_in(value, env):
+        case Some{other}: path_before(target, other)
+        case None{}: False{}
+    case _: False{}
+
+def projection_conflict(primitive: BIR.Primitive, args: List<&2, BIR.Arg>, types: List<&2, BIR.Descriptor>, target: FieldRef, env: List<&2, Env>) -> Bool:
+  match args:
+    case [BIR.Arg{use, value}]:
+      match types:
+        case [element]:
+          match atom_step_ref_in(value, projection_step(primitive, element), 0, env):
+            case RefOk{ref}: path_related(ref, target)
+            case RefFail{message}: conflict_atom_list(args, target, env)
+        case _: conflict_atom_list(args, target, env)
+    case _: conflict_atom_list(args, target, env)
+
+def conflict_block(block: BIR.Block, target: FieldRef, leaves: List<&2, Leave>, env: List<&2, Env>) -> Bool:
+  match block:
+    case BIR.Return{value}: atom_conflict(value, target, env)
+    case BIR.Let{id, op, next}:
+      Bool.or(conflict_op(op, target, leaves, env), conflict_block(next, target, leaves, bind_provenance(env, id, op)))
+    case BIR.Branch{condition, yes, no}:
+      Bool.or(atom_conflict(condition, target, env), Bool.or(conflict_block(yes, target, leaves, env), conflict_block(no, target, leaves, env)))
+    case BIR.Region{label, body, next}: conflict_block(body, target, leaves_enter(leaves, label, next), env)
+    case BIR.LeaveRegion{label}:
+      match leaf_at(leaves, label):
+        case Some{next}: conflict_block(next, target, leaves, env)
+        case None{}: False{}
+    case BIR.TailDirect{code, args}: conflict_atom_list(args, target, env)
+    case BIR.TailApply{fn, arg}: Bool.or(atom_conflict(fn, target, env), conflict_atom_list([arg], target, env))
+    case BIR.Failure{message}: False{}
+
+def path_conflict(block: BIR.Block, ref: FieldRef, leaves: List<&2, Leave>, env: List<&2, Env>) -> Bool:
+  conflict_block(block, ref, leaves, env)
+
+# Plain binding residual: the same local/capture appears anywhere later.
+def atom_has_key(atom: BIR.Atom, wanted: FieldRoot) -> Bool:
+  match atom_key(atom):
+    case Some{found}: owner_same(found, wanted)
+    case None{}: False{}
+
+def path_rooted_by(path: Maybe<&2, FieldRef>, wanted: FieldRoot) -> Bool:
+  match path:
+    case Some{ref}: owners_member(ref_owners(ref), wanted)
+    case None{}: False{}
+
+def atom_root_used(atom: BIR.Atom, wanted: FieldRoot, +ctx: Ctx) -> Bool:
+  match atom_has_key(atom, wanted):
+    case True{}: True{}
+    case False{}: path_rooted_by(atom_path(atom, ctx), wanted)
+
+def op_root_used(op: BIR.Op, wanted: FieldRoot, +ctx: Ctx) -> Bool:
+  match op:
+    case BIR.Copy{value}: atom_root_used(value, wanted, ctx)
+    case BIR.PrimitiveCall{primitive, args, types}: args_root_used(args, wanted, ctx)
+    case BIR.Closure{code, captures, parameters}: args_root_used(captures, wanted, ctx)
+    case BIR.Direct{code, args}: args_root_used(args, wanted, ctx)
+    case BIR.Apply{fn, arg}: Bool.or(atom_root_used(fn, wanted, ctx), args_root_used([arg], wanted, ctx))
+    case BIR.Construct{constructor, tag, fields}: fields_root_used(fields, wanted, ctx)
+    case BIR.Project{value, constructor, field, key}: atom_root_used(value, wanted, ctx)
+    case BIR.HasTag{value, constructor, tag}: atom_root_used(value, wanted, ctx)
+    case _: False{}
+
+def args_root_used(args: List<&2, BIR.Arg>, wanted: FieldRoot, +ctx: Ctx) -> Bool:
+  match args:
+    case Nil{}: False{}
+    case +arg <> rest:
+      match arg:
+        case BIR.Arg{use, value}: Bool.or(atom_root_used(value, wanted, ctx), args_root_used(rest, wanted, ctx))
+
+def fields_root_used(fields: List<&2, BIR.Field>, wanted: FieldRoot, +ctx: Ctx) -> Bool:
+  match fields:
+    case Nil{}: False{}
+    case +field <> rest:
+      match field:
+        case BIR.Field{identity, key, use, value}: Bool.or(atom_root_used(value, wanted, ctx), fields_root_used(rest, wanted, ctx))
+
+def root_residual(block: BIR.Block, wanted: FieldRoot, leaves: List<&2, Leave>, +ctx: Ctx) -> Bool:
+  match block:
+    case BIR.Return{value}: atom_root_used(value, wanted, ctx)
+    case BIR.Let{id, op, next}: Bool.or(op_root_used(op, wanted, ctx), root_residual(next, wanted, leaves, ctx))
+    case BIR.Branch{condition, yes, no}: Bool.or(atom_root_used(condition, wanted, ctx), Bool.or(root_residual(yes, wanted, leaves, ctx), root_residual(no, wanted, leaves, ctx)))
+    case BIR.Region{label, body, next}: root_residual(body, wanted, leaves_enter(leaves, label, next), ctx)
+    case BIR.LeaveRegion{label}:
+      match leaf_at(leaves, label):
+        case Some{next}: root_residual(next, wanted, leaves, ctx)
+        case None{}: False{}
+    case BIR.TailDirect{code, args}: args_root_used(args, wanted, ctx)
+    case BIR.TailApply{fn, arg}: Bool.or(atom_root_used(fn, wanted, ctx), args_root_used([arg], wanted, ctx))
+    case BIR.Failure{message}: False{}
+
+def no_remaining() -> BIR.Block:
+  BIR.Failure{""}
+
+def refs_local_ids(refs: List<&2, CapRef>, +acc: List<&2, U32>) -> List<&2, U32>:
+  match refs:
+    case Nil{}: acc
+    case +ref <> rest:
+      match ref:
+        case CapLocalRef{+id}: refs_local_ids(rest, u32_add(acc, id))
+        case _: refs_local_ids(rest, acc)
+
 def needed_refs(+block: BIR.Block, +ctx: Ctx) -> List<&2, CapRef>:
   used = block_locals(block, Nil{})
-  slots = block_slots(block, Nil{})
   +inherited = region_refs(ctx_regions(ctx), Nil{})
-  locals = env_refs(ctx_env(ctx), used, inherited, Nil{})
+  +used_all = List.append(&2, U32, refs_local_ids(inherited, Nil{}), used)
+  +with_roots = field_root_locals(ctx_env(ctx), used_all, used)
+  slots = field_root_slots(ctx_env(ctx), used_all, block_slots(block, Nil{}))
+  locals = env_refs(ctx_env(ctx), with_roots, inherited, Nil{})
   slots_done = slot_refs(0n, ctx_caps_n(ctx), slots, inherited, Nil{})
   List.append(&2, CapRef, locals, List.reverse(&2, CapRef, slots_done))
 
@@ -1916,13 +2546,16 @@ def refs_caps(refs: List<&2, CapRef>, +ctx: Ctx) -> Maybe<&2, List<&2, Cap>>:
 def cap_of_ref(ref: CapRef, +ctx: Ctx) -> Maybe<&2, Cap>:
   match ref:
     case CapLocalRef{+id}:
-      match env_get(ctx_env(ctx), id):
-        case Some{expr}: Some{CapLocal{id, expr}}
-        case None{}: None{}
+      match env_field(ctx_env(ctx), id):
+        case Some{ref}: Some{CapField{id, ref}}
+        case None{}:
+          match env_get(ctx_env(ctx), id):
+            case Some{expr}: Some{CapLocal{id, expr}}
+            case None{}: None{}
     case CapSlotRef{+slot}:
-      match Nat.is_lt(U32.to_nat(slot), ctx_caps_n(ctx)):
+      match u32_member(ctx_cap_slots(ctx), slot):
         case False{}: None{}
-        case True{}: Some{CapSlot{slot, list_at(ctx_caps(ctx), U32.to_nat(slot))}}
+        case True{}: Some{CapSlot{slot, cat(["x[", U32.show(slot), "]"])}}
 
 def capture_for(block: BIR.Block, +ctx: Ctx) -> Maybe<&2, List<&2, Cap>>:
   refs_caps(needed_refs(block, ctx), ctx)
@@ -1930,51 +2563,73 @@ def capture_for(block: BIR.Block, +ctx: Ctx) -> Maybe<&2, List<&2, Cap>>:
 
 def ctx_sig(c: Ctx) -> Sig:
   match c:
-    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, outs, spin, max_arity}: sig
+    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, forked, calls, spin, max_arity, cap_slots, leaves}: sig
 
 def ctx_plan(c: Ctx) -> Plan:
   match c:
-    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, outs, spin, max_arity}: plan
+    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, forked, calls, spin, max_arity, cap_slots, leaves}: plan
 
 def ctx_env(c: Ctx) -> List<&2, Env>:
   match c:
-    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, outs, spin, max_arity}: env
+    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, forked, calls, spin, max_arity, cap_slots, leaves}: env
 
 def ctx_caps(c: Ctx) -> List<&2, String>:
   match c:
-    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, outs, spin, max_arity}: caps
+    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, forked, calls, spin, max_arity, cap_slots, leaves}: caps
 
 def ctx_caps_n(c: Ctx) -> Nat:
   match c:
-    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, outs, spin, max_arity}: caps_n
+    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, forked, calls, spin, max_arity, cap_slots, leaves}: caps_n
 
 def ctx_regions(c: Ctx) -> List<&2, Region>:
   match c:
-    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, outs, spin, max_arity}: regions
+    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, forked, calls, spin, max_arity, cap_slots, leaves}: regions
 
 def ctx_self(c: Ctx) -> Maybe<&2, U32>:
   match c:
-    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, outs, spin, max_arity}: self_fid
+    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, forked, calls, spin, max_arity, cap_slots, leaves}: self_fid
 
 def ctx_next(c: Ctx) -> U32:
   match c:
-    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, outs, spin, max_arity}: next
+    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, forked, calls, spin, max_arity, cap_slots, leaves}: next
 
 def ctx_segs(c: Ctx) -> List<&2, SegText>:
   match c:
-    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, outs, spin, max_arity}: segs
+    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, forked, calls, spin, max_arity, cap_slots, leaves}: segs
 
-def ctx_outs(c: Ctx) -> List<&2, String>:
+def ctx_forked(c: Ctx) -> Bool:
   match c:
-    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, outs, spin, max_arity}: outs
+    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, forked, calls, spin, max_arity, cap_slots, leaves}: forked
+
+def ctx_calls(c: Ctx) -> List<&2, U32>:
+  match c:
+    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, forked, calls, spin, max_arity, cap_slots, leaves}: calls
 
 def ctx_spin(c: Ctx) -> Bool:
   match c:
-    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, outs, spin, max_arity}: spin
+    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, forked, calls, spin, max_arity, cap_slots, leaves}: spin
 
 def ctx_max(c: Ctx) -> Nat:
   match c:
-    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, outs, spin, max_arity}: max_arity
+    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, forked, calls, spin, max_arity, cap_slots, leaves}: max_arity
+
+def ctx_cap_slots(c: Ctx) -> List<&2, U32>:
+  match c:
+    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, forked, calls, spin, max_arity, cap_slots, leaves}: cap_slots
+
+def ctx_leaves(c: Ctx) -> List<&2, Leave>:
+  match c:
+    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, forked, calls, spin, max_arity, cap_slots, leaves}: leaves
+
+def ctx_segs_put(ctx: Ctx, segs: List<&2, SegText>) -> Ctx:
+  match ctx:
+    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, old, forked, calls, spin, max_arity, cap_slots, leaves}:
+      Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, forked, calls, spin, max_arity, cap_slots, leaves}
+
+def ctx_with_leaves(ctx: Ctx, leaves: List<&2, Leave>) -> Ctx:
+  match ctx:
+    case Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, forked, calls, spin, max_arity, cap_slots, old}:
+      Ctx{sig, plan, env, caps, caps_n, regions, self_fid, next, segs, forked, calls, spin, max_arity, cap_slots, leaves}
 
 def sig_entries(s: Sig) -> List<&2, Entry>:
   match s:
@@ -2058,7 +2713,7 @@ def params_env(params: List<&2, BIR.Parameter>, +captures: Nat, +index: Nat, +ac
     case +param <> rest:
       match param:
         case BIR.Parameter{id, use}:
-          params_env(rest, captures, Nat.add(index, 1n), Env{id, cat(["a", Nat.show(Nat.add(captures, index))])} <> acc)
+          params_env(rest, captures, Nat.add(index, 1n), Env{id, lv_name(id), cat(["    term_sink(e, ", lv_name(id), ");\n"]), None{}} <> acc)
 
 def a_caps(count: Nat) -> List<&2, String>:
   a_caps_at(0n, count)
@@ -2075,6 +2730,7 @@ def caps_assign(caps: List<&2, Cap>, +index: Nat) -> String:
       match cap:
         case CapLocal{id, expr}: cat(["    ", r_name(index), " = ", expr, ";\n", caps_assign(rest, Nat.add(index, 1n))])
         case CapSlot{slot, expr}: cat(["    ", r_name(index), " = ", expr, ";\n", caps_assign(rest, Nat.add(index, 1n))])
+        case CapField{id, ref}: caps_assign(rest, index)
 
 def regs_assign(values: List<&2, String>, +index: Nat) -> String:
   match values:
@@ -2094,6 +2750,7 @@ def cap_intro(caps: List<&2, Cap>, +index: Nat, +locals: String, +slots: String)
       match cap:
         case CapLocal{id, expr}: cap_intro(rest, Nat.add(index, 1n), cat([locals, "    Term ", lv_name(id), " = k", Nat.show(index), ";\n"]), slots)
         case CapSlot{slot, expr}: cap_intro(rest, Nat.add(index, 1n), locals, cat([slots, "    x[", U32.show(slot), "] = k", Nat.show(index), ";\n"]))
+        case CapField{id, ref}: cap_intro(rest, index, locals, slots)
 
 def cap_intro_a(caps: List<&2, Cap>, +index: Nat, +locals: String, +slots: String) -> String:
   match caps:
@@ -2102,14 +2759,16 @@ def cap_intro_a(caps: List<&2, Cap>, +index: Nat, +locals: String, +slots: Strin
       match cap:
         case CapLocal{id, expr}: cap_intro_a(rest, Nat.add(index, 1n), cat([locals, "    Term ", lv_name(id), " = a", Nat.show(index), ";\n"]), slots)
         case CapSlot{slot, expr}: cap_intro_a(rest, Nat.add(index, 1n), locals, cat([slots, "    x[", U32.show(slot), "] = a", Nat.show(index), ";\n"]))
+        case CapField{id, ref}: cap_intro_a(rest, index, locals, slots)
 
 def cap_locals_env(caps: List<&2, Cap>, +acc: List<&2, Env>) -> List<&2, Env>:
   match caps:
     case Nil{}: List.reverse(&2, Env, acc)
     case +cap <> rest:
       match cap:
-        case CapLocal{+id, expr}: cap_locals_env(rest, Env{id, lv_name(id)} <> acc)
+        case CapLocal{+id, expr}: cap_locals_env(rest, Env{id, lv_name(id), cat(["    term_sink(e, ", lv_name(id), ");\n"]), None{}} <> acc)
         case CapSlot{slot, expr}: cap_locals_env(rest, acc)
+        case CapField{+id, ref}: cap_locals_env(rest, Env{id, "", "", Some{rebase_ref(ref, id)}} <> acc)
 
 def caps_lookup(caps: List<&2, Cap>, +slot: U32) -> Bool:
   match caps:
@@ -2143,7 +2802,7 @@ def cap_slot_value(found: Bool, slot: U32) -> String:
 # r0... No task trio is installed at a call site.
 def cont_prologue(+caps: List<&2, Cap>, caps_n: Nat, result: U32) -> String:
   cat([
-    "    WL_POPN(", Nat.show(List.length(&2, Cap, caps)), ");\n",
+    "    WL_POPN(", Nat.show(cap_count(caps)), ");\n",
     x_decl(caps_n),
     cap_stk_intro(caps, 0n, "", ""),
     "    Term ", lv_name(result), " = r0;\n"
@@ -2156,9 +2815,10 @@ def cap_stk_intro(+caps: List<&2, Cap>, +index: Nat, +locals: String, +slots: St
       match cap:
         case CapLocal{id, expr}: cap_stk_intro(rest, Nat.add(index, 1n), cat([locals, "    Term ", lv_name(id), " = STK(", Nat.show(index), ");\n"]), slots)
         case CapSlot{slot, expr}: cap_stk_intro(rest, Nat.add(index, 1n), locals, cat([slots, "    x[", U32.show(slot), "] = STK(", Nat.show(index), ");\n"]))
+        case CapField{id, ref}: cap_stk_intro(rest, index, locals, slots)
 
 def region_prologue(+caps: List<&2, Cap>, caps_n: Nat) -> String:
-  cat([a_decls(List.length(&2, Cap, caps)), x_decl(caps_n), cap_intro_a(caps, 0n, "", "")])
+  cat([a_decls(cap_count(caps)), x_decl(caps_n), cap_intro_a(caps, 0n, "", "")])
 
 def a_rebinds(count: Nat) -> String:
   a_rebinds_at(0n, count)
@@ -2216,12 +2876,13 @@ def block_ctl(block: BIR.Block, +ctx: Ctx) -> Step:
     case _: StepFail{"BIR block form has no C rendering"}
 
 def return_ctl(value: BIR.Atom, +ctx: Ctx) -> Step:
-  match atom_part(value, ctx_plan(ctx)):
-    case PartFail{message}: StepFail{message}
-    case PartOk{text}: StepOk{cat(["    r0 = ", text, ";\n    WL_RETN(1);\n"]), ctx}
+  match atom_use(value, BIR.Affine{}, ctx, no_remaining()):
+    case WriteFail{message}: StepFail{message}
+    case WriteOk{text, vctx}:
+      StepOk{cat(["    Term rv = ", text, ";\n", exit_releases(vctx, Nil{}, Nil{}), "    r0 = rv;\n    WL_RETN(1);\n"]), vctx}
 
 def failure_ctl(ctx: Ctx) -> Step:
-  StepOk{"    err_post(e.mem, ERR_TAGS);\n    return 0;\n", ctx}
+  StepOk{cat([exit_releases(ctx, Nil{}, Nil{}), "    err_post(e.mem, ERR_TAGS);\n    return 0;\n"]), ctx}
 
 def let_ctl(+id: U32, +op: BIR.Op, +next: BIR.Block, +ctx: Ctx) -> Step:
   match op:
@@ -2232,12 +2893,123 @@ def let_ctl(+id: U32, +op: BIR.Op, +next: BIR.Block, +ctx: Ctx) -> Step:
     case _: pure_let(id, op, next, ctx)
 
 def pure_let(+id: U32, op: BIR.Op, next: BIR.Block, +ctx: Ctx) -> Step:
-  match op_part(op, ctx_plan(ctx)):
-    case PartFail{message}: StepFail{message}
-    case PartOk{text}:
-      match block_ctl(next, Ctx{ctx_sig(ctx), ctx_plan(ctx), Env{id, lv_name(id)} <> ctx_env(ctx), ctx_caps(ctx), ctx_caps_n(ctx), ctx_regions(ctx), ctx_self(ctx), ctx_next(ctx), ctx_segs(ctx), ctx_outs(ctx), ctx_spin(ctx), ctx_max(ctx)}):
+  match op:
+    case BIR.Project{value, constructor, field, key}: project_bind(id, value, constructor, field, next, ctx)
+    case BIR.PrimitiveCall{primitive, args, types}:
+      match projection_primitive(primitive):
+        case True{}:
+          match types:
+            case [element]: array_project_bind(id, primitive, element, args, next, ctx)
+            case _: StepFail{"the array projection carries no unique instantiated element Descriptor"}
+        case False{}: value_let(id, op, next, ctx)
+    case _: value_let(id, op, next, ctx)
+
+def value_let(+id: U32, op: BIR.Op, next: BIR.Block, +ctx: Ctx) -> Step:
+  match op_step(op, ctx, next, id):
+    case OpFail{message}: StepFail{message}
+    case OpOk{setup, text, octx}:
+      +env = Env{id, lv_name(id), cat(["    term_sink(e, ", lv_name(id), ");\n"]), None{}} <> ctx_env(octx)
+      match block_ctl(next, ctx_env_put(octx, env)):
         case StepFail{message}: StepFail{message}
-        case StepOk{body, after}: StepOk{cat(["    Term ", lv_name(id), " = ", text, ";\n", body]), after}
+        case StepOk{body, after}: StepOk{cat([setup, "    Term ", lv_name(id), " = ", text, ";\n", body]), after}
+
+def projection_primitive(primitive: BIR.Primitive) -> Bool:
+  match primitive:
+    case BIR.PrimArrayLeafValue{}: True{}
+    case BIR.PrimArrayLeft{}: True{}
+    case BIR.PrimArrayRight{}: True{}
+    case _: False{}
+
+def projection_step(primitive: BIR.Primitive, element: BIR.Descriptor) -> Phys.PathStep:
+  match primitive:
+    case BIR.PrimArrayLeft{}: Phys.PathHalf{True{}, element}
+    case BIR.PrimArrayRight{}: Phys.PathHalf{False{}, element}
+    case _: Phys.PathLeafCell{element}
+
+def array_project_bind(+id: U32, primitive: BIR.Primitive, element: BIR.Descriptor, args: List<&2, BIR.Arg>, next: BIR.Block, +ctx: Ctx) -> Step:
+  match args:
+    case [BIR.Arg{use, value}]:
+      match atom_step_ref(value, projection_step(primitive, element), id, ctx):
+        case RefFail{message}: StepFail{message}
+        case RefOk{ref}:
+          +env = Env{id, "", "", Some{ref}} <> ctx_env(ctx)
+          match block_ctl(next, ctx_env_put(ctx, env)):
+            case StepFail{message}: StepFail{message}
+            case StepOk{body, after}: StepOk{body, after}
+    case _: StepFail{"an array projection takes exactly one array operand"}
+
+def atom_step_ref(value: BIR.Atom, step: Phys.PathStep, +bound: U32, +ctx: Ctx) -> RefStep:
+  atom_step_ref_in(value, step, bound, ctx_env(ctx))
+
+def atom_step_ref_in(value: BIR.Atom, step: Phys.PathStep, +bound: U32, env: List<&2, Env>) -> RefStep:
+  match value:
+    case BIR.Local{id}:
+      match env_field(env, id):
+        case Some{ref}:
+          +root = ref_root(ref)
+          +steps0 = append_path_step(ref_steps(ref), step)
+          RefOk{FieldRef{root, steps0, append_owner(ref_owners(ref), FieldLocal{bound})}}
+        case None{}: RefOk{FieldRef{FieldLocal{id}, [step], [FieldLocal{id}, FieldLocal{bound}]}}
+    case BIR.Capture{slot}: RefOk{FieldRef{FieldSlot{slot}, [step], [FieldSlot{slot}, FieldLocal{bound}]}}
+    case _: RefFail{"an array projection needs a first-class binding, not a computed value"}
+
+def project_ref(value: BIR.Atom, +constructor: U32, +field: U32, +bound: U32, +ctx: Ctx) -> RefStep:
+  project_ref_in(value, constructor, field, bound, ctx_env(ctx))
+
+def project_ref_in(value: BIR.Atom, +constructor: U32, +field: U32, +bound: U32, env: List<&2, Env>) -> RefStep:
+  match value:
+    case BIR.Local{id}:
+      match env_field(env, id):
+        case Some{ref}:
+          +root = ref_root(ref)
+          +steps0 = append_path_step(ref_steps(ref), Phys.PathField{constructor, field})
+          RefOk{FieldRef{root, steps0, append_owner(ref_owners(ref), FieldLocal{bound})}}
+        case None{}: RefOk{FieldRef{FieldLocal{id}, [Phys.PathField{constructor, field}], [FieldLocal{id}, FieldLocal{bound}]}}
+    case BIR.Capture{slot}: RefOk{FieldRef{FieldSlot{slot}, [Phys.PathField{constructor, field}], [FieldSlot{slot}, FieldLocal{bound}]}}
+    case _: RefFail{"a projection needs a first-class binding, not a computed value"}
+
+def bind_provenance(env: List<&2, Env>, +id: U32, op: BIR.Op) -> List<&2, Env>:
+  match op:
+    case BIR.Project{value, constructor, field, key}:
+      match project_ref_in(value, constructor, field, id, env):
+        case RefOk{ref}: Env{id, "", "", Some{ref}} <> env
+        case RefFail{message}: env
+    case BIR.PrimitiveCall{primitive, args, types}:
+      match projection_primitive(primitive):
+        case True{}:
+          match args:
+            case [BIR.Arg{use, value}]:
+              match types:
+                case [element]:
+                  match atom_step_ref_in(value, projection_step(primitive, element), id, env):
+                    case RefOk{ref}: Env{id, "", "", Some{ref}} <> env
+                    case RefFail{message}: env
+                case _: env
+            case _: env
+        case False{}: env
+    case BIR.Copy{value}: bind_copy_path(env, id, value)
+    case _: env
+
+def bind_copy_path(env: List<&2, Env>, +id: U32, value: BIR.Atom) -> List<&2, Env>:
+  match atom_path_in(value, env):
+    case Some{ref}: Env{id, "", "", Some{ref}} <> env
+    case None{}: env
+
+def ref_root(ref: FieldRef) -> FieldRoot:
+  match ref:
+    case FieldRef{root, steps, owners}: root
+
+def append_path_step(items: List<&2, Phys.PathStep>, +value: Phys.PathStep) -> List<&2, Phys.PathStep>:
+  List.append(&2, Phys.PathStep, items, [value])
+
+def project_bind(+id: U32, value: BIR.Atom, +constructor: U32, +field: U32, next: BIR.Block, +ctx: Ctx) -> Step:
+  match project_ref(value, constructor, field, id, ctx):
+    case RefFail{message}: StepFail{message}
+    case RefOk{ref}:
+      +env = Env{id, "", "", Some{ref}} <> ctx_env(ctx)
+      match block_ctl(next, ctx_env_put(ctx, env)):
+        case StepFail{message}: StepFail{message}
+        case StepOk{body, after}: StepOk{body, after}
 
 def cond_part_of(part: Part, plan: Plan) -> Part:
   match part:
@@ -2250,7 +3022,7 @@ def cond_part(cond: String, true_cid: Part) -> Part:
     case PartOk{cid}: okp(cat(["term_aux(", cond, ") == (u64)", cid]))
 
 def branch_ctl(condition: BIR.Atom, yes: BIR.Block, no: BIR.Block, +ctx: Ctx) -> Step:
-  match atom_part(condition, ctx_plan(ctx)):
+  match field_borrow(condition, ctx):
     case PartFail{message}: StepFail{message}
     case PartOk{value}:
       match cond_part_of(PartOk{value}, ctx_plan(ctx)):
@@ -2259,10 +3031,22 @@ def branch_ctl(condition: BIR.Atom, yes: BIR.Block, no: BIR.Block, +ctx: Ctx) ->
           match block_ctl(yes, ctx):
             case StepFail{message}: StepFail{message}
             case StepOk{ty, cy}:
-              match block_ctl(no, cy):
+              match block_ctl(no, ctx_arm_start(cy, ctx)):
                 case StepFail{message}: StepFail{message}
                 case StepOk{tn, cn}:
-                  StepOk{cat(["    if (", cond, ") {\n", ty, "    } else {\n", tn, "    }\n"]), cn}
+                  StepOk{cat(["    if (", cond, ") {\n", ty, "    } else {\n", tn, "    }\n"]), ctx_after_branch(cn, ctx, cy)}
+
+def ctx_arm_start(after: Ctx, entry: Ctx) -> Ctx:
+  Ctx{ctx_sig(entry), ctx_plan(entry), ctx_env(entry), ctx_caps(entry), ctx_caps_n(entry), ctx_regions(entry), ctx_self(entry), ctx_next(after), ctx_segs(after), Bool.or(ctx_forked(entry), ctx_forked(after)), List.append(&2, U32, ctx_calls(entry), ctx_calls(after)), Bool.or(ctx_spin(entry), ctx_spin(after)), ctx_max(after), ctx_cap_slots(entry), ctx_leaves(entry)}
+
+def ctx_after_call(after: Ctx, entry: Ctx) -> Ctx:
+  Ctx{ctx_sig(entry), ctx_plan(entry), ctx_env(entry), ctx_caps(entry), ctx_caps_n(entry), ctx_regions(entry), ctx_self(entry), ctx_next(after), ctx_segs(after), ctx_forked(entry), ctx_calls(entry), ctx_spin(entry), ctx_max(after), ctx_cap_slots(entry), ctx_leaves(entry)}
+
+def ctx_after_region(after: Ctx, entry: Ctx) -> Ctx:
+  Ctx{ctx_sig(entry), ctx_plan(entry), ctx_env(entry), ctx_caps(entry), ctx_caps_n(entry), ctx_regions(entry), ctx_self(entry), ctx_next(after), ctx_segs(after), Bool.or(ctx_forked(entry), ctx_forked(after)), List.append(&2, U32, ctx_calls(entry), ctx_calls(after)), Bool.or(ctx_spin(entry), ctx_spin(after)), ctx_max(after), ctx_cap_slots(entry), ctx_leaves(entry)}
+
+def ctx_after_branch(after: Ctx, entry: Ctx, yes: Ctx) -> Ctx:
+  Ctx{ctx_sig(entry), ctx_plan(entry), ctx_env(entry), ctx_caps(entry), ctx_caps_n(entry), ctx_regions(entry), ctx_self(entry), ctx_next(after), ctx_segs(after), Bool.or(ctx_forked(entry), Bool.or(ctx_forked(yes), ctx_forked(after))), List.append(&2, U32, ctx_calls(entry), List.append(&2, U32, ctx_calls(yes), ctx_calls(after))), Bool.or(ctx_spin(entry), Bool.or(ctx_spin(yes), ctx_spin(after))), ctx_max(after), ctx_cap_slots(entry), ctx_leaves(entry)}
 
 # A region's next block runs in its own entry and is reached only by
 # LeaveRegion, whose tail jump reuses the current frame.
@@ -2272,15 +3056,15 @@ def region_ctl(label: U32, body: BIR.Block, +next: BIR.Block, +ctx: Ctx) -> Step
     case Some{caps}: region_next(label, body, next, ctx, caps, ctx_next(ctx), needed_refs(next, ctx))
 
 def region_next(+label: U32, body: BIR.Block, next: BIR.Block, +ctx: Ctx, +caps: List<&2, Cap>, +fid: U32, +refs: List<&2, CapRef>) -> Step:
-  match block_ctl(next, Ctx{ctx_sig(ctx), ctx_plan(ctx), cap_locals_env(caps, Nil{}), cap_slots_exprs(caps, ctx_caps_n(ctx), 0n, Nil{}), ctx_caps_n(ctx), Region{label, fid, refs} <> ctx_regions(ctx), None{}, U32.inc(fid), ctx_segs(ctx), ctx_outs(ctx), False{}, nat_max(ctx_max(ctx), List.length(&2, Cap, caps))}):
+  match block_ctl(next, Ctx{ctx_sig(ctx), ctx_plan(ctx), cap_locals_env(caps, Nil{}), cap_slots_exprs(caps, ctx_caps_n(ctx), 0n, Nil{}), ctx_caps_n(ctx), Region{label, fid, refs} <> ctx_regions(ctx), None{}, U32.inc(fid), ctx_segs(ctx), False{}, Nil{}, False{}, nat_max(ctx_max(ctx), cap_count(caps)), cap_slots_of(caps), ctx_leaves(ctx)}):
     case StepFail{message}: StepFail{message}
-    case StepOk{tn, cn}: region_body(label, body, ctx, caps, fid, refs, tn, cn)
+    case StepOk{tn, cn}: region_body(label, body, next, ctx, caps, fid, refs, tn, cn)
 
-def region_body(label: U32, body: BIR.Block, +ctx: Ctx, +caps: List<&2, Cap>, +fid: U32, refs: List<&2, CapRef>, tn: String, +cn: Ctx) -> Step:
-  match block_ctl(body, Ctx{ctx_sig(ctx), ctx_plan(ctx), ctx_env(ctx), ctx_caps(ctx), ctx_caps_n(ctx), Region{label, fid, refs} <> ctx_regions(ctx), ctx_self(ctx), ctx_next(cn), SegText{fid, List.length(&2, Cap, caps), 0n, case_text(fid, region_prologue(caps, ctx_caps_n(ctx)), tn, False{})} <> ctx_segs(cn), ctx_outs(cn), ctx_spin(ctx), ctx_max(cn)}):
+def region_body(label: U32, body: BIR.Block, next: BIR.Block, +ctx: Ctx, +caps: List<&2, Cap>, +fid: U32, refs: List<&2, CapRef>, tn: String, +cn: Ctx) -> Step:
+  match block_ctl(body, Ctx{ctx_sig(ctx), ctx_plan(ctx), ctx_env(ctx), ctx_caps(ctx), ctx_caps_n(ctx), Region{label, fid, refs} <> ctx_regions(ctx), ctx_self(ctx), ctx_next(cn), SegText{fid, cap_count(caps), 0n, case_text(fid, region_prologue(caps, ctx_caps_n(ctx)), tn, False{}), ctx_forked(cn), ctx_calls(cn)} <> ctx_segs(cn), False{}, Nil{}, ctx_spin(ctx), ctx_max(cn), ctx_cap_slots(ctx), leaves_enter(ctx_leaves(ctx), label, next)}):
     case StepFail{message}: StepFail{message}
     case StepOk{tb, +cb}:
-      StepOk{tb, Ctx{ctx_sig(cb), ctx_plan(cb), ctx_env(cb), ctx_caps(cb), ctx_caps_n(cb), ctx_regions(ctx), ctx_self(ctx), ctx_next(cb), ctx_segs(cb), ctx_outs(cb), ctx_spin(cb), ctx_max(cb)}}
+      StepOk{tb, ctx_add_call(ctx_after_region(cb, ctx), fid)}
 
 def find_region(regions: List<&2, Region>, +label: U32) -> Maybe<&2, Region>:
   match regions:
@@ -2303,58 +3087,63 @@ def leave_ctl(label: U32, +ctx: Ctx) -> Step:
           match refs_caps(refs, ctx):
             case None{}: StepFail{"BIR LeaveRegion reads a value that is not in scope"}
             case Some{caps}:
-              StepOk{cat([caps_assign(caps, 0n), "    WL_JMP(", fid_name(fid, sig_entries(ctx_sig(ctx))), ");\n"]), ctx}
+              StepOk{cat([caps_assign(caps, 0n), exit_releases(ctx, caps_ids(caps, Nil{}), caps_slots(caps, Nil{})), "    WL_JMP(", fid_name(fid, sig_entries(ctx_sig(ctx))), ");\n"]), ctx_add_call(ctx, fid)}
 
 def tail_direct_ctl(+code: U32, args: List<&2, BIR.Arg>, +ctx: Ctx) -> Step:
   match IndexLookup.find(U32, sig_by_code(ctx_sig(ctx)), U32.show(code)):
     case None{}: StepFail{cat(["BIR tail call names code ", U32.show(code), " with no entry"])}
     case Some{+target}:
-      match arg_strings(args, ctx_plan(ctx)):
-        case None{}: StepFail{"BIR tail argument has no C value"}
-        case Some{+values}:
-          match Nat.is_eq(List.length(&2, String, values), entry_arity(sig_entries(ctx_sig(ctx)), target)):
+      match args_use(args, ctx, Nil{}, no_remaining()):
+        case ArgsFail{message}: StepFail{message}
+        case ArgsOk{+values, actx}:
+          match Nat.is_eq(List.length(&2, String, values), entry_arity(sig_entries(ctx_sig(actx)), target)):
             case False{}: StepFail{"BIR tail call arity disagrees with its entry"}
             case True{}:
-              match ctx_self(ctx):
+              match ctx_self(actx):
                 case Some{self}:
                   match U32.is_eq(self, target):
-                    case True{}: self_tail(target, values, ctx)
-                    case False{}: StepOk{cat([regs_assign(values, 0n), "    WL_JMP(", fid_name(target, sig_entries(ctx_sig(ctx))), ");\n"]), ctx}
-                case None{}: StepOk{cat([regs_assign(values, 0n), "    WL_JMP(", fid_name(target, sig_entries(ctx_sig(ctx))), ");\n"]), ctx}
+                    case True{}: self_tail(target, values, actx)
+                    case False{}: tail_jump(target, values, actx)
+                case None{}: tail_jump(target, values, actx)
+
+def tail_jump(+target: U32, +values: List<&2, String>, +ctx: Ctx) -> Step:
+  +names = arg_names(List.length(&2, String, values), 0n, Nil{})
+  StepOk{cat([arg_decls(values, 0n, ""), exit_releases(ctx, Nil{}, Nil{}), regs_assign(names, 0n), "    WL_JMP(", fid_name(target, sig_entries(ctx_sig(ctx))), ");\n"]), ctx_add_call(ctx, target)}
 
 def self_tail(+target: U32, values: List<&2, String>, +ctx: Ctx) -> Step:
   +arity = entry_arity(sig_entries(ctx_sig(ctx)), target)
-  text = cat([regs_assign(values, 0n), a_rebinds(arity), "    WL_AGAIN(", fid_name(target, sig_entries(ctx_sig(ctx))), ");\n"])
-  StepOk{text, Ctx{ctx_sig(ctx), ctx_plan(ctx), ctx_env(ctx), ctx_caps(ctx), ctx_caps_n(ctx), ctx_regions(ctx), ctx_self(ctx), ctx_next(ctx), ctx_segs(ctx), ctx_outs(ctx), True{}, ctx_max(ctx)}}
+  +names = arg_names(List.length(&2, String, values), 0n, Nil{})
+  text = cat([arg_decls(values, 0n, ""), exit_releases(ctx, Nil{}, Nil{}), regs_assign(names, 0n), a_rebinds(arity), "    WL_AGAIN(", fid_name(target, sig_entries(ctx_sig(ctx))), ");\n"])
+  StepOk{text, Ctx{ctx_sig(ctx), ctx_plan(ctx), ctx_env(ctx), ctx_caps(ctx), ctx_caps_n(ctx), ctx_regions(ctx), ctx_self(ctx), ctx_next(ctx), ctx_segs(ctx), ctx_forked(ctx), ctx_calls(ctx), True{}, ctx_max(ctx), ctx_cap_slots(ctx), ctx_leaves(ctx)}}
 
 def tail_apply_ctl(fn: BIR.Atom, arg: BIR.Arg, +ctx: Ctx) -> Step:
-  match atom_part(fn, ctx_plan(ctx)):
-    case PartFail{message}: StepFail{message}
-    case PartOk{fn_text}:
+  match atom_use(fn, BIR.Affine{}, ctx, atoms_after_args([arg], no_remaining())):
+    case WriteFail{message}: StepFail{message}
+    case WriteOk{fn_text, fctx}:
       match arg:
         case BIR.Arg{use, value}:
-          match atom_part(value, ctx_plan(ctx)):
-            case PartFail{message}: StepFail{message}
-            case PartOk{arg_text}:
-              StepOk{cat(["    r0 = ", fn_text, ";\n    r1 = ", arg_text, ";\n    WL_JMP(FID_CLO_APPLY);\n"]), ctx}
+          match atom_use(value, use, fctx, no_remaining()):
+            case WriteFail{message}: StepFail{message}
+            case WriteOk{arg_text, actx}:
+              StepOk{cat(["    Term rf = ", fn_text, ";\n    Term ra = ", arg_text, ";\n", exit_releases(actx, Nil{}, Nil{}), "    r0 = rf;\n    r1 = ra;\n    WL_JMP(FID_CLO_APPLY);\n"]), actx}
 
 def direct_ctl(result: U32, +code: U32, args: List<&2, BIR.Arg>, next: BIR.Block, +ctx: Ctx) -> Step:
   match IndexLookup.find(U32, sig_by_code(ctx_sig(ctx)), U32.show(code)):
     case None{}: StepFail{cat(["BIR call names code ", U32.show(code), " with no entry"])}
     case Some{target}:
-      match arg_strings(args, ctx_plan(ctx)):
-        case None{}: StepFail{"BIR call argument has no C value"}
-        case Some{values}: call_ctl(target, values, result, next, ctx)
+      match args_use(args, ctx, Nil{}, next):
+        case ArgsFail{message}: StepFail{message}
+        case ArgsOk{values, actx}: call_ctl(target, values, result, next, actx)
 
 def apply_ctl(result: U32, fn: BIR.Atom, arg: BIR.Arg, next: BIR.Block, +ctx: Ctx) -> Step:
-  match atom_part(fn, ctx_plan(ctx)):
-    case PartFail{message}: StepFail{message}
-    case PartOk{fn_text}:
+  match atom_use(fn, BIR.Affine{}, ctx, atoms_after_args([arg], next)):
+    case WriteFail{message}: StepFail{message}
+    case WriteOk{fn_text, fctx}:
       match arg:
         case BIR.Arg{use, value}:
-          match atom_part(value, ctx_plan(ctx)):
-            case PartFail{message}: StepFail{message}
-            case PartOk{arg_text}: call_ctl(sig_apply(ctx_sig(ctx)), [fn_text, arg_text], result, next, ctx)
+          match atom_use(value, use, fctx, next):
+            case WriteFail{message}: StepFail{message}
+            case WriteOk{arg_text, actx}: call_ctl(sig_apply(ctx_sig(actx)), [fn_text, arg_text], result, next, actx)
 
 def call_ctl(+target: U32, +args: List<&2, String>, result: U32, +next: BIR.Block, +ctx: Ctx) -> Step:
   match Nat.is_eq(List.length(&2, String, args), entry_arity(sig_entries(ctx_sig(ctx)), target)):
@@ -2365,14 +3154,17 @@ def call_ctl(+target: U32, +args: List<&2, String>, result: U32, +next: BIR.Bloc
         case Some{caps}: call_next(target, args, result, next, ctx, caps)
 
 def call_next(target: U32, args: List<&2, String>, +result: U32, next: BIR.Block, +ctx: Ctx, +caps: List<&2, Cap>) -> Step:
-  match block_ctl(next, Ctx{ctx_sig(ctx), ctx_plan(ctx), Env{result, lv_name(result)} <> cap_locals_env(caps, Nil{}), cap_slots_exprs(caps, ctx_caps_n(ctx), 0n, Nil{}), ctx_caps_n(ctx), ctx_regions(ctx), None{}, U32.inc(ctx_next(ctx)), ctx_segs(ctx), ctx_outs(ctx), False{}, nat_max(ctx_max(ctx), Nat.add(List.length(&2, Cap, caps), 1n))}):
+  match block_ctl(next, Ctx{ctx_sig(ctx), ctx_plan(ctx), Env{result, lv_name(result), cat(["    term_sink(e, ", lv_name(result), ");\n"]), None{}} <> cap_locals_env(caps, Nil{}), cap_slots_exprs(caps, ctx_caps_n(ctx), 0n, Nil{}), ctx_caps_n(ctx), ctx_regions(ctx), None{}, U32.inc(ctx_next(ctx)), ctx_segs(ctx), False{}, Nil{}, False{}, nat_max(ctx_max(ctx), Nat.add(cap_count(caps), 1n)), cap_slots_of(caps), ctx_leaves(ctx)}):
     case StepFail{message}: StepFail{message}
     case StepOk{text, cn}: call_done(target, args, caps, result, ctx, text, cn)
 
 def call_done(target: U32, args: List<&2, String>, +caps: List<&2, Cap>, result: U32, +ctx: Ctx, text: String, +cn: Ctx) -> Step:
   +fid = ctx_next(ctx)
-  +count = List.length(&2, Cap, caps)
-  StepOk{call_head(fid, count, caps, args, target, sig_entries(ctx_sig(ctx))), Ctx{ctx_sig(cn), ctx_plan(cn), ctx_env(cn), ctx_caps(cn), ctx_caps_n(cn), ctx_regions(cn), ctx_self(cn), ctx_next(cn), SegText{fid, Nat.add(count, 1n), 1n, case_text(fid, cont_prologue(caps, ctx_caps_n(ctx), result), text, False{})} <> ctx_segs(cn), ctx_outs(cn), ctx_spin(cn), ctx_max(cn)}}
+  +count = cap_count(caps)
+  +releases = exit_releases(ctx, caps_ids(caps, Nil{}), caps_slots(caps, Nil{}))
+  +segment = SegText{fid, Nat.add(count, 1n), 1n, case_text(fid, cont_prologue(caps, ctx_caps_n(ctx), result), text, False{}), ctx_forked(cn), ctx_calls(cn)}
+  +after = ctx_fork(ctx_after_call(cn, ctx), target, fid)
+  StepOk{call_head(fid, count, caps, args, target, sig_entries(ctx_sig(ctx)), releases), ctx_segs_put(after, segment <> ctx_segs(after))}
 
 def arg_stores(+node: String, args: List<&2, String>, +index: Nat) -> String:
   match args:
@@ -2383,10 +3175,12 @@ def arg_stores(+node: String, args: List<&2, String>, +index: Nat) -> String:
 # frame as plain words and pushes it; the sequential path builds the
 # continuation task from the current frame's WL_CONT/WL_IDX and does not
 # touch the stack. Both share the callee register load.
-def call_head(+fid: U32, +count: Nat, +caps: List<&2, Cap>, +args: List<&2, String>, +target: U32, +entries: List<&2, Entry>) -> String:
+def call_head(+fid: U32, +count: Nat, +caps: List<&2, Cap>, +args: List<&2, String>, +target: U32, +entries: List<&2, Entry>, +releases: String) -> String:
   +node = cat(["kc", U32.show(fid)])
   +callee = cat(["kc", U32.show(fid), "t"])
+  +names = arg_names(List.length(&2, String, args), 0n, Nil{})
   cat([
+    arg_decls(args, 0n, ""),
     "    if (seq) {\n",
     "      WL_ROOM(", Nat.show(Nat.add(count, 1n)), ");\n",
     cap_stk_stores(caps, 0n),
@@ -2400,10 +3194,12 @@ def call_head(+fid: U32, +count: Nat, +caps: List<&2, Cap>, +args: List<&2, Stri
     "    }\n",
     "    if (!DEVICE && !seq && fid_nofk(", fid_name(target, entries), ")) {\n",
     "      u64 ", callee, " = task_node(e, ", fid_name(target, entries), ", WL_CONT, WL_IDX, 0);\n",
-    arg_stores(callee, args, 0n),
+    arg_stores(callee, names, 0n),
+    releases,
     "      return term_tsk(", fid_name(target, entries), ", ", callee, ");\n",
     "    }\n",
-    regs_assign(args, 0n),
+    releases,
+    regs_assign(names, 0n),
     "    WL_JMP(", fid_name(target, entries), ");\n"
   ])
 
@@ -2414,6 +3210,7 @@ def cap_stk_stores(+caps: List<&2, Cap>, +index: Nat) -> String:
       match cap:
         case CapLocal{id, expr}: cat(["    STK(", Nat.show(index), ") = ", expr, ";\n", cap_stk_stores(rest, Nat.add(index, 1n))])
         case CapSlot{slot, expr}: cat(["    STK(", Nat.show(index), ") = ", expr, ";\n", cap_stk_stores(rest, Nat.add(index, 1n))])
+        case CapField{id, ref}: cap_stk_stores(rest, index)
 
 def cap_stores(+node: String, caps: List<&2, Cap>, +index: Nat) -> String:
   match caps:
@@ -2422,6 +3219,7 @@ def cap_stores(+node: String, caps: List<&2, Cap>, +index: Nat) -> String:
       match cap:
         case CapLocal{id, expr}: cat(["    e.mem[", node, " + ", Nat.show(index), "] = ", expr, ";\n", cap_stores(node, rest, Nat.add(index, 1n))])
         case CapSlot{slot, expr}: cat(["    e.mem[", node, " + ", Nat.show(index), "] = ", expr, ";\n", cap_stores(node, rest, Nat.add(index, 1n))])
+        case CapField{id, ref}: cap_stores(node, rest, index)
 
 # A foreign or native value is a staged closure; a nullary read yields the
 # arity-one closure the runtime applies once with the continuation.
@@ -2455,7 +3253,7 @@ def value_bind_entry(+result: U32, fid: U32, stem: String, next: BIR.Block, +ctx
   match value_closure(fid, stem, ctx):
     case None{}: StepFail{"BIR symbol has no arity-one value entry"}
     case Some{expr}:
-      match block_ctl(next, Ctx{ctx_sig(ctx), ctx_plan(ctx), Env{result, lv_name(result)} <> ctx_env(ctx), ctx_caps(ctx), ctx_caps_n(ctx), ctx_regions(ctx), ctx_self(ctx), ctx_next(ctx), ctx_segs(ctx), ctx_outs(ctx), ctx_spin(ctx), ctx_max(ctx)}):
+      match block_ctl(next, Ctx{ctx_sig(ctx), ctx_plan(ctx), Env{result, lv_name(result), cat(["    term_sink(e, ", lv_name(result), ");\n"]), None{}} <> ctx_env(ctx), ctx_caps(ctx), ctx_caps_n(ctx), ctx_regions(ctx), ctx_self(ctx), ctx_next(ctx), ctx_segs(ctx), ctx_forked(ctx), ctx_calls(ctx), ctx_spin(ctx), ctx_max(ctx), ctx_cap_slots(ctx), ctx_leaves(ctx)}):
         case StepFail{message}: StepFail{message}
         case StepOk{body, after}: StepOk{cat(["    Term ", lv_name(result), " = ", expr, ";\n", body]), after}
 
@@ -2484,15 +3282,15 @@ def closure_ctl(result: U32, +code: U32, +captures: List<&2, BIR.Arg>, parameter
           match Nat.is_eq(Nat.add(captured, remaining), total):
             case False{}: StepFail{"BIR closure capture count disagrees with its code entry"}
             case True{}:
-              match arg_strings(captures, ctx_plan(ctx)):
-                case None{}: StepFail{"BIR capture has no C value"}
-                case Some{values}: closure_bind(result, code, captured, total, real, values, next, ctx)
+              match args_use(captures, ctx, Nil{}, next):
+                case ArgsFail{message}: StepFail{message}
+                case ArgsOk{values, actx}: closure_bind(result, code, captured, total, real, values, next, actx)
 
 def closure_bind(+result: U32, code: U32, +captured: Nat, total: Nat, real: U32, values: List<&2, String>, next: BIR.Block, +ctx: Ctx) -> Step:
   match closure_entry(code, captured, total, real, ctx):
     case None{}: StepFail{"BIR closure has no staged entry"}
     case Some{fid}:
-      match block_ctl(next, Ctx{ctx_sig(ctx), ctx_plan(ctx), Env{result, lv_name(result)} <> ctx_env(ctx), ctx_caps(ctx), ctx_caps_n(ctx), ctx_regions(ctx), ctx_self(ctx), ctx_next(ctx), ctx_segs(ctx), ctx_outs(ctx), ctx_spin(ctx), ctx_max(ctx)}):
+      match block_ctl(next, Ctx{ctx_sig(ctx), ctx_plan(ctx), Env{result, lv_name(result), cat(["    term_sink(e, ", lv_name(result), ");\n"]), None{}} <> ctx_env(ctx), ctx_caps(ctx), ctx_caps_n(ctx), ctx_regions(ctx), ctx_self(ctx), ctx_next(ctx), ctx_segs(ctx), ctx_forked(ctx), ctx_calls(ctx), ctx_spin(ctx), ctx_max(ctx), ctx_cap_slots(ctx), ctx_leaves(ctx)}):
         case StepFail{message}: StepFail{message}
         case StepOk{body, after}: StepOk{cat([closure_text(result, captured, fid, values), body]), after}
 
@@ -2553,22 +3351,23 @@ def entry_kind_ctl(+index: U32, +arity: Nat, kind: EntryKind, +ctx: Ctx) -> Step
 # drives the export table instead. It exists so the top fid slot holds a real,
 # trivial segment rather than a dangling index.
 def entry_library(+index: U32, +ctx: Ctx) -> Step:
-  entry_add(index, "", "    r0 = 0;\n    WL_RETN(1);\n", False{}, ctx)
+  entry_add(index, 0n, "", "    r0 = 0;\n    WL_RETN(1);\n", False{}, ctx)
 
 def entry_reserved(index: U32, ctx: Ctx) -> Step:
   StepOk{"", ctx}
 
-def entry_add(index: U32, +prologue: String, +body: String, +spin: Bool, +ctx: Ctx) -> Step:
-  StepOk{"", Ctx{ctx_sig(ctx), ctx_plan(ctx), ctx_env(ctx), ctx_caps(ctx), ctx_caps_n(ctx), ctx_regions(ctx), ctx_self(ctx), ctx_next(ctx), ctx_segs(ctx), case_text(index, prologue, body, spin) <> ctx_outs(ctx), False{}, ctx_max(ctx)}}
+def entry_add(index: U32, +arity: Nat, +prologue: String, +body: String, +spin: Bool, +ctx: Ctx) -> Step:
+  +row = SegText{index, arity, 0n, case_text(index, prologue, body, spin), ctx_forked(ctx), ctx_calls(ctx)}
+  StepOk{"", ctx_segs_put(ctx, row <> ctx_segs(ctx))}
 
 def entry_code(+index: U32, +arity: Nat, +captures: Nat, +params: List<&2, BIR.Parameter>, body: BIR.Block, +ctx: Ctx) -> Step:
   match Nat.is_eq(Nat.add(captures, List.length(&2, BIR.Parameter, params)), arity):
     case False{}: StepFail{"BIR code arity disagrees with its captures and parameters"}
     case True{}:
-      match block_ctl(body, Ctx{ctx_sig(ctx), ctx_plan(ctx), params_env(params, captures, 0n, Nil{}), a_caps(captures), captures, Nil{}, Some{index}, ctx_next(ctx), ctx_segs(ctx), ctx_outs(ctx), False{}, ctx_max(ctx)}):
+      match block_ctl(body, Ctx{ctx_sig(ctx), ctx_plan(ctx), params_env(params, captures, 0n, Nil{}), a_caps(captures), captures, Nil{}, Some{index}, ctx_next(ctx), ctx_segs(ctx), False{}, Nil{}, False{}, ctx_max(ctx), cap_slots_from(captures, 0n, Nil{}), Nil{}}):
         case StepFail{message}: StepFail{message}
         case StepOk{text, +after}:
-          entry_add(index, cat([a_decls(arity), x_decl(captures)]), cat([x_fill_a(captures), params_bind(params, captures, 0n), text]), ctx_spin(after), after)
+          entry_add(index, arity, cat([a_decls(arity), x_decl(captures)]), cat([x_fill_a(captures), params_bind(params, captures, 0n), text]), ctx_spin(after), after)
 
 
 def entry_stage(+index: U32, +arity: Nat, next: U32, ctx: Ctx) -> Step:
@@ -2579,7 +3378,7 @@ def entry_stage(+index: U32, +arity: Nat, next: U32, ctx: Ctx) -> Step:
     stores,
     "    r0 = term_clo(FID_", U32.show(next), ", ", node, ");\n    WL_RETN(1);\n"
   ])
-  entry_add(index, a_decls(arity), body, False{}, ctx)
+  entry_add(index, arity, a_decls(arity), body, False{}, ctx)
 
 def stage_stores(+node: String, +count: Nat, +index: Nat) -> String:
   match Nat.is_lt(index, count):
@@ -2587,9 +3386,9 @@ def stage_stores(+node: String, +count: Nat, +index: Nat) -> String:
     case False{}: ""
 
 def entry_lazy(index: U32, arity: Nat, body: BIR.Block, +ctx: Ctx) -> Step:
-  match block_ctl(body, Ctx{ctx_sig(ctx), ctx_plan(ctx), Nil{}, Nil{}, 0n, Nil{}, None{}, ctx_next(ctx), ctx_segs(ctx), ctx_outs(ctx), False{}, ctx_max(ctx)}):
+  match block_ctl(body, Ctx{ctx_sig(ctx), ctx_plan(ctx), Nil{}, Nil{}, 0n, Nil{}, None{}, ctx_next(ctx), ctx_segs(ctx), False{}, Nil{}, False{}, ctx_max(ctx), Nil{}, Nil{}}):
     case StepFail{message}: StepFail{message}
-    case StepOk{text, +after}: entry_add(index, "", text, ctx_spin(after), after)
+    case StepOk{text, +after}: entry_add(index, arity, "", text, ctx_spin(after), after)
 
 def entry_native(index: U32, +arity: Nat, primitive: BIR.Primitive, +count: Nat, +ctx: Ctx) -> Step:
   match Nat.is_eq(arity, count):
@@ -2597,7 +3396,7 @@ def entry_native(index: U32, +arity: Nat, primitive: BIR.Primitive, +count: Nat,
     case True{}:
       match prim_part(primitive, a_names(count), ctx_plan(ctx)):
         case PartFail{message}: StepFail{message}
-        case PartOk{text}: entry_add(index, a_decls(arity), cat(["    r0 = ", text, ";\n    WL_RETN(1);\n"]), False{}, ctx)
+        case PartOk{text}: entry_add(index, arity, a_decls(arity), cat(["    r0 = ", text, ";\n    WL_RETN(1);\n"]), False{}, ctx)
 
 def a_names(count: Nat) -> List<&2, String>:
   a_caps(count)
@@ -2613,7 +3412,7 @@ def entry_foreign(+index: U32, +arity: Nat, key: String, args: Nat, +ctx: Ctx) -
         stage_stores(node, arity, 0n),
         "    r0 = term_ctr(", U32.show(cid), ", ", node, ");\n    WL_RETN(1);\n"
       ])
-      entry_add(index, a_decls(arity), body, False{}, ctx)
+      entry_add(index, arity, a_decls(arity), body, False{}, ctx)
 
 # The top entry calls the main declaration and lets its result reach the root
 # continuation the runtime installed.
@@ -2635,29 +3434,24 @@ def main_jump(index: U32, found: Maybe<&2, U32>, +ctx: Ctx) -> Step:
     case Some{+target}:
       match Nat.is_eq(entry_arity(sig_entries(ctx_sig(ctx)), target), 0n):
         case False{}: StepFail{"the C target's main entry must take no parameters"}
-        case True{}: entry_add(index, "", cat(["    WL_JMP(", fid_name(target, sig_entries(ctx_sig(ctx))), ");\n"]), False{}, ctx)
+        case True{}: entry_add(index, 0n, "", cat(["    WL_JMP(", fid_name(target, sig_entries(ctx_sig(ctx))), ");\n"]), False{}, ctx_add_call(ctx, target))
 
 # -- control plan -----------------------------------------------------------
 
 def control_build(+plan: Plan) -> Control:
   match plan:
     case Plan{cids, cid_macros, fid_macros, +entries, by_code, by_key, by_foreign, by_native, stages, constructors, families, declarations, main_pure, show_desc, show_names, imports, fkeys, ctx, sharing, _, _}:
-      match entries_ctl(entries, Ctx{Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, rt_entry(entries, 3n)}, plan, Nil{}, Nil{}, 0n, Nil{}, None{}, U32.from_nat(List.length(&2, Entry, entries)), Nil{}, Nil{}, False{}, max_arity(entries)}):
+      match entries_ctl(entries, Ctx{Sig{entries, by_code, by_key, by_foreign, by_native, stages, declarations, cids, rt_entry(entries, 3n)}, plan, Nil{}, Nil{}, 0n, Nil{}, None{}, U32.from_nat(List.length(&2, Entry, entries)), Nil{}, False{}, Nil{}, False{}, max_arity(entries), Nil{}, Nil{}}):
         case StepFail{message}: ControlFail{message}
         case StepOk{_, +done}:
-          ControlOk{cat([outs_text(ctx_outs(done), ""), segs_text(ctx_segs(done), "")]), rows_add_segs(ctx_segs(done), rows_add_entries(entries, Nil{})), ctx_max(done)}
-
-def outs_text(outs: List<&2, String>, +acc: String) -> String:
-  match outs:
-    case Nil{}: acc
-    case +text <> rest: outs_text(rest, Link.text_prepend(text, acc))
+          ControlOk{segs_text(ctx_segs(done), ""), rows_add_segs(ctx_segs(done), rows_add_entries(entries, Nil{})), ctx_max(done)}
 
 def segs_text(segs: List<&2, SegText>, +acc: String) -> String:
   match segs:
     case Nil{}: acc
     case +seg <> rest:
       match seg:
-        case SegText{fid, arity, resw, text}: segs_text(rest, Link.text_prepend(text, acc))
+        case SegText{fid, arity, resw, text, _, _}: segs_text(rest, Link.text_prepend(text, acc))
 
 def rt_entry(entries: List<&2, Entry>, want: Nat) -> U32:
   match entry_at_kind(entries, want):
@@ -2693,7 +3487,7 @@ def rows_add_entries(entries: List<&2, Entry>, +acc: List<&2, SegText>) -> List<
     case Nil{}: acc
     case +entry <> rest:
       match entry:
-        case Entry{index, arity, kind}: rows_add_entries(rest, row_insert(SegText{index, arity, 0n, ""}, acc))
+        case Entry{index, arity, kind}: rows_add_entries(rest, row_insert(SegText{index, arity, 0n, "", entry_forks(kind), Nil{}}, acc))
 
 def rows_add_segs(segs: List<&2, SegText>, +acc: List<&2, SegText>) -> List<&2, SegText>:
   match segs:
@@ -2705,19 +3499,22 @@ def row_insert(+row: SegText, +rows: List<&2, SegText>) -> List<&2, SegText>:
     case Nil{}: [row]
     case +head <> rest:
       match row:
-        case SegText{fid, arity, resw, text}:
+        case SegText{fid, arity, resw, text, forked, calls}:
           match head:
-            case SegText{head_fid, head_arity, head_resw, head_text}:
+            case SegText{head_fid, head_arity, head_resw, head_text, head_forked, head_calls}:
               match U32.is_lt(fid, head_fid):
                 case True{}: row <> rows
-                case False{}: head <> row_insert(row, rest)
+                case False{}:
+                  match U32.is_eq(fid, head_fid):
+                    case True{}: row <> rest
+                    case False{}: head <> row_insert(row, rest)
 
 def rows_check(rows: List<&2, SegText>) -> Maybe<&2, String>:
   match rows:
     case Nil{}: None{}
     case +row <> rest:
       match row:
-        case SegText{fid, arity, resw, text}:
+        case SegText{fid, arity, resw, text, _, _}:
           match Bool.and(Nat.is_le(arity, 255n), Nat.is_le(resw, 255n)):
             case True{}: rows_check(rest)
             case False{}: Some{cat(["entry ", U32.show(fid), " has an arity or result width the runtime table cannot store"])}
@@ -2729,12 +3526,86 @@ def cid_defines(cids: List<&2, CidRow>) -> String:
       match row:
         case CidRow{cid, key, arity, _}: cat(["#define CID_", U32.show(cid), " ", U32.show(cid), "\n", cid_defines(rest)])
 
+def entry_forks(kind: EntryKind) -> Bool:
+  match kind:
+    case KindApply{}: True{}
+    case _: False{}
+
+def forky_has(forky: List<&2, U32>, +fid: U32) -> Bool:
+  match forky:
+    case Nil{}: False{}
+    case +known <> rest:
+      match U32.is_eq(known, fid):
+        case True{}: True{}
+        case False{}: forky_has(rest, fid)
+
+def calls_forky(calls: List<&2, U32>, forky: List<&2, U32>) -> Bool:
+  match calls:
+    case Nil{}: False{}
+    case +fid <> rest:
+      match forky_has(forky, fid):
+        case True{}: True{}
+        case False{}: calls_forky(rest, forky)
+
+def row_calls_forky(rows: List<&2, SegText>, forky: List<&2, U32>, +fid: U32) -> Bool:
+  match rows:
+    case Nil{}: False{}
+    case +row <> rest:
+      match row:
+        case SegText{known, arity, resw, text, forked, calls}:
+          match U32.is_eq(known, fid):
+            case True{}: calls_forky(calls, forky)
+            case False{}: row_calls_forky(rest, forky, fid)
+
+def forky_seeds(rows: List<&2, SegText>, +acc: List<&2, U32>) -> List<&2, U32>:
+  match rows:
+    case Nil{}: acc
+    case +row <> rest:
+      match row:
+        case SegText{fid, arity, resw, text, forked, calls}:
+          match forked:
+            case True{}: forky_seeds(rest, fid <> acc)
+            case False{}: forky_seeds(rest, acc)
+
+def forky_round(rows: List<&2, SegText>, forky: List<&2, U32>, +acc: List<&2, U32>) -> List<&2, U32>:
+  match rows:
+    case Nil{}: acc
+    case +row <> rest:
+      match row:
+        case SegText{fid, arity, resw, text, forked, calls}:
+          match forky_has(forky, fid):
+            case True{}: forky_round(rest, forky, acc)
+            case False{}:
+              match row_calls_forky(rows, forky, fid):
+                case True{}: forky_round(rest, forky, fid <> acc)
+                case False{}: forky_round(rest, forky, acc)
+
+def forky_fix(rows: List<&2, SegText>, forky: List<&2, U32>, +fuel: Nat) -> List<&2, U32>:
+  match Nat.is_eq(fuel, 0n):
+    case True{}: forky
+    case False{}:
+      +next = forky_round(rows, forky, forky)
+      match Nat.is_eq(List.length(&2, U32, next), List.length(&2, U32, forky)):
+        case True{}: forky
+        case False{}: forky_fix(rows, next, Nat.sub(fuel, 1n))
+
+def forky_rows(rows: List<&2, SegText>) -> List<&2, U32>:
+  +seeds = forky_seeds(rows, Nil{})
+  forky_fix(rows, seeds, Nat.add(List.length(&2, SegText, rows), 1n))
+
+def rows_max_resw(rows: List<&2, SegText>, +acc: Nat) -> Nat:
+  match rows:
+    case Nil{}: acc
+    case +row <> rest:
+      match row:
+        case SegText{fid, arity, resw, text, forked, calls}: rows_max_resw(rest, Nat.max(acc, resw))
+
 def fid_defines(rows: List<&2, SegText>) -> String:
   match rows:
     case Nil{}: ""
     case +row <> rest:
       match row:
-        case SegText{+fid, arity, resw, text}: cat(["#define FID_", U32.show(fid), " ", U32.show(fid), "\n", fid_defines(rest)])
+        case SegText{+fid, arity, resw, text, _, _}: cat(["#define FID_", U32.show(fid), " ", U32.show(fid), "\n", fid_defines(rest)])
 
 # CID_T[x] is {arity, hot} for the cid index x (runtime cid_arity/cid_hot).
 # The hot fact is not derivable from BIR today; CIRSharing's seal plan owns it.
@@ -2760,12 +3631,15 @@ def cid_table(cids: List<&2, CidRow>) -> String:
       match row:
         case CidRow{cid, key, arity, hot}: cat(["{ ", Nat.show(arity), ", ", hot_text(hot), " }, ", cid_table(rest)])
 
-def fid_table(rows: List<&2, SegText>) -> String:
+def fid_table(rows: List<&2, SegText>, forky: List<&2, U32>) -> String:
   match rows:
     case Nil{}: " };\n"
     case +row <> rest:
       match row:
-        case SegText{fid, arity, resw, text}: cat(["{ ", Nat.show(arity), ", ", Nat.show(resw), ", 2 }, ", fid_table(rest)])
+        case SegText{fid, arity, resw, text, forked, calls}:
+          match forky_has(forky, fid):
+            case True{}: cat(["{ ", Nat.show(arity), ", ", Nat.show(resw), ", 0 }, ", fid_table(rest, forky)])
+            case False{}: cat(["{ ", Nat.show(arity), ", ", Nat.show(resw), ", 2 }, ", fid_table(rest, forky)])
 
 # The runtime owns the IO_EMIT/CLO_APPLY/EXIT/ENTER cases under their symbolic
 # names; their numeric rows must not also appear in WL_TABLE or the linker sees
@@ -2779,7 +3653,7 @@ def wl_table_rows(rows: List<&2, SegText>, +entries: List<&2, Entry>) -> String:
     case Nil{}: ""
     case +row <> rest:
       match row:
-        case SegText{+fid, arity, resw, text}:
+        case SegText{+fid, arity, resw, text, _, _}:
           match wl_row_text(fid, entries):
             case None{}: wl_table_rows(rest, entries)
             case Some{name}: cat([name, " ", wl_table_rows(rest, entries)])
@@ -2837,9 +3711,11 @@ def wl_last_rows(+count: Nat, +index: Nat) -> String:
     case True{}: cat(["    case ", Nat.show(index), ": ", r_name(index), " = (X); \\\n      break; \\\n", wl_last_rows(count, Nat.add(index, 1n))])
     case False{}: ""
 
-def wl_macros(+regs: Nat) -> String:
+# BIR carries no device-bang facts, so BANGS is the true zero here; WL_RESW is
+# the widest result vector the plan actually delivers.
+def wl_macros(+regs: Nat, resw: Nat) -> String:
   cat([
-    "#define WL_RESW 1\n#define BANGS 0\n\n",
+    "#define WL_RESW ", Nat.show(resw), "\n#define BANGS 0\n\n",
     "#define WL_BANK Term ", register_names(regs), ";\n\n",
     "#define WL_LOAD(A, N) do { \\\n", wl_load_rows(regs, 0n), "  } while (0);\n\n",
     "#define WL_LAST(X) switch (war) { \\\n", wl_last_rows(regs, 0n), "  }\n\n",
@@ -2873,6 +3749,8 @@ def tables_part(plan: Plan, +rows: List<&2, SegText>, regs: Nat) -> Part:
       match runtime_cid_aliases(cids):
         case PartFail{message}: PartFail{message}
         case PartOk{aliases}:
+          +forky = forky_rows(rows)
+          +resw = Nat.max(1n, rows_max_resw(rows, 0n))
           PartOk{cat([
             main_suppress(library),
             aliases,
@@ -2880,9 +3758,9 @@ def tables_part(plan: Plan, +rows: List<&2, SegText>, regs: Nat) -> Part:
             fid_defines(rows),
             runtime_defines(entries), "\n",
             "CONSTV u8 CID_T[][2] = { ", cid_table(cids), "\n",
-            "CONSTV u8 FID_T[][3] = { ", fid_table(rows), "\n",
+            "CONSTV u8 FID_T[][3] = { ", fid_table(rows, forky), "\n",
             "#define STAT_LEN 0\n\n",
-            wl_macros(regs), "\n",
+            wl_macros(regs, resw), "\n",
             "#define WL_TABLE ", wl_table_text(rows, entries), "\n",
             "#define MAIN_FID FID_", U32.show(main_fid_index(library, entries)), "\n",
             "#define MAIN_PURE ", main_pure_text(main_pure), "\n",
@@ -2935,20 +3813,12 @@ def helper_core() -> String:
     "static Nat bend_str_length(Env e, u32 scon, Term a) {\n  Nat n = 0;\n  while (term_aux(a) == (u64)scon) {\n    a = e.mem[term_peek(e.mem, a) + 1];\n    n += 1;\n  }\n  return n;\n}\n\n",
     "static u32 bend_str_empty(Term a, u32 snil) {\n  return term_aux(a) == (u64)snil;\n}\n\n",
     "static Term bend_str_head(Env e, u32 scon, Term a) {\n  if (term_aux(a) != (u64)scon) {\n    return 0;\n  }\n  return e.mem[term_peek(e.mem, a)];\n}\n\n",
-    "static Term bend_str_tail(Env e, u32 scon, u32 snil, Term a) {\n  if (term_aux(a) != (u64)scon) {\n    return term_pak(snil, 0);\n  }\n  return e.mem[term_peek(e.mem, a) + 1];\n}\n\n",
+    "static Term bend_str_tail(Env e, u32 scon, u32 snil, Term a) {\n  if (term_aux(a) != (u64)scon) {\n    return term_pak(snil, 0);\n  }\n  u64 at = term_peek(e.mem, a) + 1;\n  Term w = e.mem[at];\n  Term v = term_keep(e, w, 1);\n  if (v != w) {\n    e.mem[at] = v;\n  }\n  return v;\n}\n\n",
     "static Term bend_str_to_list(Env e, u32 scon, u32 snil, u32 con, u32 nil, u32 chr, Term a) {\n  if (term_aux(a) != (u64)scon) {\n    return term_pak(nil, 0);\n  }\n  u64 l = term_peek(e.mem, a);\n  Term tail = bend_str_to_list(e, scon, snil, con, nil, chr, e.mem[l + 1]);\n  u64 n = heap_alloc(e, cls_fit(2));\n  e.mem[n] = (u64)term_pak(chr, e.mem[l]);\n  e.mem[n + 1] = tail;\n  return term_ctr(con, n);\n}\n\n",
     "static u32 bend_str_eq(Env e, u32 scon, Term a, Term b) {\n  while (term_aux(a) == (u64)scon && term_aux(b) == (u64)scon) {\n    u64 la = term_peek(e.mem, a);\n    u64 lb = term_peek(e.mem, b);\n    if (e.mem[la] != e.mem[lb]) {\n      return 0;\n    }\n    a = e.mem[la + 1];\n    b = e.mem[lb + 1];\n  }\n  return term_aux(a) != (u64)scon && term_aux(b) != (u64)scon;\n}\n\n",
     "static Term bend_str_cmp(Env e, u32 scon, u32 tuple, u32 lt, u32 eq, u32 gt, Term a, Term b) {\n  Term x = a;\n  Term y = b;\n  u64 order = 1000000000ull;\n  while (term_aux(x) == (u64)scon && term_aux(y) == (u64)scon) {\n    u64 lx = term_peek(e.mem, x);\n    u64 ly = term_peek(e.mem, y);\n    if (e.mem[lx] != e.mem[ly]) {\n      order = e.mem[lx] < e.mem[ly] ? 0 : 2;\n      break;\n    }\n    x = e.mem[lx + 1];\n    y = e.mem[ly + 1];\n  }\n  if (order == 1000000000ull) {\n    u64 ex = term_aux(x) != (u64)scon;\n    u64 ey = term_aux(y) != (u64)scon;\n    order = ex && ey ? 1 : ex ? 2 : ey ? 0 : 1;\n  }\n  return bend_tuple(e, tuple, bend_tuple(e, tuple, a, b), term_pak(order == 0 ? lt : order == 1 ? eq : gt, 0));\n}\n\n",
     "static Term bend_map_bit(Env e, u32 scon, u32 tuple, u32 t, u32 f, Term key, Term pos) {\n  u64 at = 0;\n  u64 want = (u64)pos / 33ull;\n  u64 bit = (u64)pos % 33ull;\n  Term s = key;\n  while (term_aux(s) == (u64)scon && at < want) {\n    s = e.mem[term_peek(e.mem, s) + 1];\n    at += 1;\n  }\n  if (term_aux(s) != (u64)scon) {\n    return bend_tuple(e, tuple, key, term_pak(f, 0));\n  }\n  if (bit == 0) {\n    return bend_tuple(e, tuple, key, term_pak(t, 0));\n  }\n  u64 ch = e.mem[term_peek(e.mem, s)];\n  u64 set = (ch >> (32ull - bit)) & 1ull;\n  return bend_tuple(e, tuple, key, term_pak(set != 0 ? t : f, 0));\n}\n\n",
-    "static Term bend_u32_to_word(Env e, u32 wcon, u32 wnil, Term x) {\n  Term w = term_pak(wnil, 0);\n  for (u32 i = 0; i < 32; i += 1) {\n    u64 l = heap_alloc(e, cls_fit(2));\n    e.mem[l] = ((u64)x >> i) & 1ull;\n    e.mem[l + 1] = w;\n    w = term_ctr(wcon, l);\n  }\n  return w;\n}\n\n",
-    "static Term bend_array_new(Env e, Term v, Nat n) {\n  u64 d = 0;\n  u64 size = 1;\n  while (size < n && d < 31) {\n    size <<= 1;\n    d += 1;\n  }\n  Term one[1];\n  one[0] = v;\n  return blk_new(e, true, d, 0, 1, one);\n}\n\n",
-    "static Term bend_array_set(Env e, Term a, Term i, Term v) {\n  u64 loc = term_peek(e.mem, a);\n  blk_write(e.mem, true, loc, blk_at(a, (u64)(u32)i, 0), v);\n  return a;\n}\n\n",
-    "static Term bend_array_get(Env e, u32 tuple, Term a, Term i) {\n  u64 loc = term_peek(e.mem, a);\n  Term v = blk_read(e.mem, true, loc, blk_at(a, (u64)(u32)i, 0));\n  return bend_tuple(e, tuple, a, v);\n}\n\n",
-    "static Term bend_array_swap(Env e, u32 tuple, Term a, Term i, Term v) {\n  u64 loc = term_peek(e.mem, a);\n  u32 ok = blk_at(a, (u64)(u32)i, 0);\n  Term old = blk_read(e.mem, true, loc, ok);\n  blk_write(e.mem, true, loc, ok, v);\n  return bend_tuple(e, tuple, a, old);\n}\n\n",
-    "static Term bend_array_size(Env e, u32 tuple, Term a) {\n  return bend_tuple(e, tuple, a, 1ull << blk_cls(a));\n}\n\n",
-    "static Term bend_array_clone(Env e, u32 tuple, Term a) {\n  return bend_tuple(e, tuple, a, blk_copy(e, a));\n}\n\n",
-    "static Term bend_array_leaf(Env e, Term v) {\n  Term one[1];\n  one[0] = v;\n  return blk_new(e, true, 0, 0, 1, one);\n}\n\n",
-    "static Term bend_array_leaf_value(Env e, Term a) {\n  return blk_read(e.mem, true, term_peek(e.mem, a), 0);\n}\n\n"
+    "static Term bend_u32_to_word(Env e, u32 wcon, u32 wnil, Term x) {\n  Term w = term_pak(wnil, 0);\n  for (u32 i = 0; i < 32; i += 1) {\n    u64 l = heap_alloc(e, cls_fit(2));\n    e.mem[l] = ((u64)x >> i) & 1ull;\n    e.mem[l + 1] = w;\n    w = term_ctr(wcon, l);\n  }\n  return w;\n}\n\n"
   ])
 
 # ---------------------------------------------------------------------------
