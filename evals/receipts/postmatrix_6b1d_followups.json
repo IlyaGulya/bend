@@ -224,6 +224,8 @@
  "notes": [
   "Post-matrix with the same candidate. Every C-target emit fails with the same form-field error as all 23 matrix cases; JS emits and runs pass exactly.",
   "No clang/run was attempted for a C target because emission never produced a file; no inputs/exports/fuel/bounds/caps changed.",
-  "This is follow-up evidence, not C acceptance/root FP/native proof."
- ]
+  "This is follow-up evidence, not C acceptance/root FP/native proof.",
+  "Receipt correction (receipt-only; no rerun, raw untouched): origin prose fixed to the observed read_body/StSlot packed=False/LayoutData branch; no form_node/StForm exists in admitted Physical 256f5777, and no exact consumer is invented."
+ ],
+ "observedLiteral": "Observed literal: bend2/selfhost/c_backend_physical.bend:1178, inside read_body -> StSlot{... packed=False} -> case CLay.LayoutData{words, arms}: PartFail{\"a form field is not a single word\"}. The admitted Physical 256f5777 has no form_node or StForm; the actual BIR consumer/path that reaches this branch is NOT identified by this evidence and is left to Control/Storage."
 }

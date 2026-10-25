@@ -65,7 +65,7 @@
   "failed": 23,
   "allSameError": true,
   "error": "candidate: emission failed: a form field is not a single word",
-  "origin": "bend2/selfhost/c_backend_physical.bend:1177-1178 form_node StForm -> CLay.LayoutData PartFail"
+  "origin": "Observed literal: bend2/selfhost/c_backend_physical.bend:1178, inside read_body -> StSlot{... packed=False} -> case CLay.LayoutData{words, arms}: PartFail{\"a form field is not a single word\"}. The admitted Physical 256f5777 has no form_node or StForm; the actual BIR consumer/path that reaches this branch is NOT identified by this evidence and is left to Control/Storage."
  },
  "cases": [
   {
@@ -1117,6 +1117,8 @@
  "notes": [
   "All 23 cases were attempted; none was skipped and no filter/smoke-case was used. Every emit ran under the repaired guardian with complete/stopped true and exit1; no clang/run stage began.",
   "No generated C output existed, so no output patches. No input/export/fuel/bounds/caps changed and no code fix was attempted during the frozen matrix.",
-  "This receipt is matrix evidence only, not C acceptance/root FP/native proof."
- ]
+  "This receipt is matrix evidence only, not C acceptance/root FP/native proof.",
+  "Receipt correction (receipt-only; no rerun, raw untouched): origin prose fixed to the observed read_body/StSlot packed=False/LayoutData branch; no form_node/StForm exists in admitted Physical 256f5777, and no exact consumer is invented."
+ ],
+ "observedLiteral": "Observed literal: bend2/selfhost/c_backend_physical.bend:1178, inside read_body -> StSlot{... packed=False} -> case CLay.LayoutData{words, arms}: PartFail{\"a form field is not a single word\"}. The admitted Physical 256f5777 has no form_node or StForm; the actual BIR consumer/path that reaches this branch is NOT identified by this evidence and is left to Control/Storage."
 }
