@@ -294,3 +294,23 @@ large codegen working-set evidence for the actual transport structure, not
 retained/live or allocated-byte attribution. It is also **not an isolated OOM**
 or a minimal failing input. It does not prove that adding these samples to
 the full run explains that OOM; overlapping lifetimes and GC remain unmeasured.
+
+### User-approved4096MiB diagnostic: OOM moves, compilation still fails
+
+`evals/receipts/native03d0_4096mib_oom.json` records the explicitly approved
+heap-only diagnostic. All eight frozen input hashes and the observer source
+match the3072MiB raw-detail baseline. Stack256MiB, guard8GiB footprint/RSS,
+10ms sampling,600s deadline and automatic GC remain unchanged. The acceptance
+policy is still3072MiB; this is not a new accepted native compiler version.
+
+| Worker old generation MiB | Result | Guard wall ms | Peak RSS B | Peak footprint B | Open c-pass1 definition |
+| --- | --- | --- | --- | --- | --- |
+| 3072 | OOM | 80132 | 3489955840 | 3619656368 | transport `files` |
+| 4096 | OOM | 150768 | 4502913024 | 4820992008 | `profile_emitter_pending` |
+
+At4096MiB the transport `files`, `runtime` and `program` definition emissions
+complete before the later failure. The additional heap therefore permits
+observed progress but is insufficient for this workload; it neither produces
+C nor proves that some still larger limit would suffice. These runs are not
+a controlled speed benchmark. End-boundary heapUsed and memo counts remain
+observations, not allocation or retained/live ownership.

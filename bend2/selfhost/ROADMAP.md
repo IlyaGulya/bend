@@ -103,6 +103,19 @@ Receipt: `evals/receipts/durable_stage_progress_db147.json`.
 The compiler image, ordinary unprofiled path, ABI and quantum are unchanged;
 full-input overhead, fine substage timing and retained/live bytes remain open.
 
+The later durable full-root diagnostic is separately preserved in
+`evals/receipts/full_root_c_db147_progress_deadline.json`: deadline during
+`check-signature-body`, last observed4,204,542 host steps. Its process CPU
+169.82s at599.25s observed wall does not account for the remaining wall; no
+scheduling/I/O/observer cause or measured regression is inferred. Unlike the
+earlier worker diagnostic, this attempt did not reach C emission.
+
+The user-approved4096MiB native-codegen diagnostic on the unchanged frozen03d0
+input still OOMs, but passes the `files`, `runtime` and `program` definitions
+and reaches `profile_emitter_pending`. No C artifact;3072MiB acceptance remains
+unchanged. Exact comparison and approval scope:
+`evals/receipts/native03d0_4096mib_oom.json`.
+
 ### Preceding `667e7f33` C checkpoint (historical)
 
 
