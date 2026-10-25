@@ -148,6 +148,7 @@ function default_files(): string[] {
     "tests/run/state_machine.bend",
     // Lexical CID/FID linking: whole ids, comment/literal passthrough, LF+CRLF.
     "tests/run/c_backend_link.bend",
+    "tests/run/family_field_hot.bend",
     // Current foreign ABI: native callback into a Bend closure, own-type
     // layout, shared sealed values, nullary constructors, and one shared .js
     // module whose stateful nullary effect is called twice and then read by a
