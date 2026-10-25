@@ -1,0 +1,450 @@
+{
+  "schemaVersion": 1,
+  "kind": "native-diagnostic-merged-durable-profile-receipt",
+  "diagnosticOnly": true,
+  "acceptanceEvidence": false,
+  "status": "FAIL",
+  "failure": "worker out-of-memory",
+  "successAccepted": false,
+  "retry": false,
+  "capRaised": false,
+  "sourceCommit": "03d0d144",
+  "worktree": "/private/tmp/bend-native-merged-03d0",
+  "workloadLabel": "OLDPINNED_DIAGNOSTIC",
+  "notLabel": "current C candidate acceptance",
+  "oldOOMBoundary": "prior 46124798 internal boundary remains unknown; this merged run localizes only itself",
+  "shell": {
+    "argv": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=3072",
+      "evals/native_stage_profile_build.ts",
+      "--artifact-dir=/tmp/native-stage-merged-03d0-artifacts",
+      "--profile-dir=/tmp/native-stage-merged-03d0-profiles",
+      "--canonical-bir=/tmp/canonical-source-bir-c.json",
+      "--canonical-sources=/tmp/sources-source-c.json",
+      "--canonical-runtime=bend2/selfhost/c_runtime.c",
+      "--canonical-checked=/tmp/checked-source-c.json",
+      "--canonical-component=/private/tmp/bend-fir-root-aa9/checkpoints/root-final-art.js"
+    ],
+    "cwd": "/private/tmp/bend-native-merged-03d0"
+  },
+  "runtime": {
+    "name": "node",
+    "node": "23.11.0",
+    "v8": "12.9.202.28-node.14",
+    "execPath": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+    "execArgv": [],
+    "workerLimits": {
+      "stackSizeMb": 256,
+      "maxOldGenerationSizeMb": 3072
+    }
+  },
+  "limits": {
+    "guardian": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "worker": {
+      "stackSizeMb": 256,
+      "maxOldGenerationSizeMb": 3072
+    }
+  },
+  "guardian": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "commandExitCode": 1,
+    "commandSignal": 0,
+    "peakRssBytes": 3472670720,
+    "peakFootprintBytes": 3627897496,
+    "elapsedMs": 154282,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "command": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "/private/tmp/bend-native-merged-03d0/evals/native_stage_profile_build.ts",
+      "--artifact-dir=/tmp/native-stage-merged-03d0-artifacts",
+      "--profile-dir=/tmp/native-stage-merged-03d0-profiles",
+      "--canonical-bir=/tmp/canonical-source-bir-c.json",
+      "--canonical-sources=/tmp/sources-source-c.json",
+      "--canonical-runtime=bend2/selfhost/c_runtime.c",
+      "--canonical-checked=/tmp/checked-source-c.json",
+      "--canonical-component=/private/tmp/bend-fir-root-aa9/checkpoints/root-final-art.js"
+    ],
+    "label": "Bounded native stage profile build",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792913378958-19e956162f563c0e.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "inputs": [
+    {
+      "path": "/tmp/canonical-source-bir-c.json",
+      "bytes": 1639178,
+      "sha256": "f272d5531b76fcbb05c3fe6c096a60bb32cb930f5a4103c6161aa10c287bada6"
+    },
+    {
+      "path": "/tmp/sources-source-c.json",
+      "bytes": 279742,
+      "sha256": "f8edf1aaa5d07b3c17e4d3b26411c3517541bfba68939eca17ebcf87de307836"
+    },
+    {
+      "path": "/tmp/checked-source-c.json",
+      "bytes": 22854363,
+      "sha256": "9e220b61c64648ee4070be7b053cd10db92a039cf07f20575bdaa517d89f6bbe"
+    },
+    {
+      "path": "/private/tmp/bend-fir-root-aa9/checkpoints/root-final-art.js",
+      "bytes": 16912082,
+      "sha256": "4a91665c634dff4b1da9d17bdc80786efc03bd0d0e89865ed22e085c1026060a"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/bend2/selfhost/c_runtime.c",
+      "bytes": 75336,
+      "sha256": "478c1ba7d0d0626c1927d11c4af3b3d4cef520db41afd8722ebf55d5050769c3"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/checkpoints/native_stage_profile_generated_fixture.bend",
+      "bytes": 793517,
+      "sha256": "ef98fcac013f127a218430aa1b3f43c191092cbc41d66b3f41f02715be65a108"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/checkpoints/template_steps_v1.bend",
+      "bytes": 347539,
+      "sha256": "fe5d758e6707563c2b6c1ecbd7b960501e638b489579ca6f7a034ffb63404da4"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/checkpoints/checker_core_steps_v1.bend",
+      "bytes": 2710173,
+      "sha256": "d6000fd556d550f45ccca6adeaaa6e2b0d6aa2fc7604fae0959d650f6d7d175c"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/checkpoints/emitter_steps_v1.bend",
+      "bytes": 2702264,
+      "sha256": "d7dbe31856eb8d9e53eeddefab0ea4eed56eafe6420a7478d4c37b53d63fb956"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/checkpoints/template-steps-v1.json",
+      "bytes": 559519,
+      "sha256": "01df14fc5366f893922156529c9538260f4ff166eb63941d81ee4793d72ac94f"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/checkpoints/checker-core-steps-v1.json",
+      "bytes": 4966038,
+      "sha256": "da75496bfeaae3d59150e669db7e93b07b90f64d9d8cd7bf99675afbbe704971"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/checkpoints/emitter-steps-v1.json",
+      "bytes": 5128595,
+      "sha256": "63c51f8970fb6aaf024101c70d804893ea757b3c68cfd132b6bdfdd87b096619"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/evals/native_stage_profile_build.ts",
+      "bytes": 21458,
+      "sha256": "a4f54e44a2cdf62632d6409ff310dcb80f86fa573f425729b5623313f9148472"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/evals/compiler_profile.mjs",
+      "bytes": 32309,
+      "sha256": "99fca04a701af1fec88e49ab3ec4673ada67fd504ed22d6901b1937e997b4ae8"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/evals/native_stage_profile_host.c",
+      "bytes": 5890,
+      "sha256": "d50e96cb10c302024bcb264bafa47eb37dc79c675be4634cccf694b482681793"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/evals/native_stage_profile_driver.bend",
+      "bytes": 17167,
+      "sha256": "dd1b86b49f66039949c3efd962973e784a938fdce8a4beb7a2a324f591f3171a"
+    },
+    {
+      "path": "/private/tmp/bend-native-merged-03d0/evals/native_stage_profile_emit_source.bend",
+      "bytes": 305,
+      "sha256": "d1001497df01fa274cd4a67e7a3bd596853e9ee45ecf3fc133084c3a9cfc883b"
+    }
+  ],
+  "sourceBindings": {
+    "native_stage_profile_build.ts": {
+      "path": "/private/tmp/bend-native-merged-03d0/evals/native_stage_profile_build.ts",
+      "bytes": 21458,
+      "sha256": "a4f54e44a2cdf62632d6409ff310dcb80f86fa573f425729b5623313f9148472"
+    },
+    "compiler_profile.mjs": {
+      "path": "/private/tmp/bend-native-merged-03d0/evals/compiler_profile.mjs",
+      "bytes": 32309,
+      "sha256": "99fca04a701af1fec88e49ab3ec4673ada67fd504ed22d6901b1937e997b4ae8"
+    },
+    "native_stage_profile_host.c": {
+      "path": "/private/tmp/bend-native-merged-03d0/evals/native_stage_profile_host.c",
+      "bytes": 5890,
+      "sha256": "d50e96cb10c302024bcb264bafa47eb37dc79c675be4634cccf694b482681793"
+    },
+    "native_stage_profile_driver.bend": {
+      "path": "/private/tmp/bend-native-merged-03d0/evals/native_stage_profile_driver.bend",
+      "bytes": 17167,
+      "sha256": "dd1b86b49f66039949c3efd962973e784a938fdce8a4beb7a2a324f591f3171a"
+    },
+    "emitter-steps-v1.json": {
+      "path": "/private/tmp/bend-native-merged-03d0/checkpoints/emitter-steps-v1.json",
+      "bytes": 5128595,
+      "sha256": "63c51f8970fb6aaf024101c70d804893ea757b3c68cfd132b6bdfdd87b096619"
+    }
+  },
+  "profile": {
+    "runDirectory": "/tmp/native-stage-merged-03d0-profiles/profile-88967-thread-1-4eAbZf",
+    "checkpoint": {
+      "path": "/tmp/native-stage-merged-03d0-profiles/profile-88967-thread-1-4eAbZf/checkpoint.json",
+      "bytes": 11483,
+      "sha256": "5135949f55cda7ea05a0d87a26a8a2130e4e1fe3103de4c0869f07fe73024ab5"
+    },
+    "workerFailure": {
+      "status": "interrupted",
+      "reason": "worker terminated before the collector could finish",
+      "error": "Worker terminated due to reaching memory limit: JS heap out of memory",
+      "observedAt": "2026-10-25T07:32:13.230Z"
+    },
+    "run": {
+      "path": "/tmp/native-stage-merged-03d0-profiles/profile-88967-thread-1-4eAbZf/run.json",
+      "bytes": 5710,
+      "sha256": "be17ec9ca8b54736a9c6949cd3ba8da1326e99aff902fcf67ab5ded4d694bda5"
+    },
+    "status": "running",
+    "activeSpanCount": 2,
+    "counts": {
+      "spans": 6,
+      "coarseSpans": 6,
+      "fineSpans": 0,
+      "observations": 4,
+      "retainedObservations": 4,
+      "fineObservations": 0
+    },
+    "checkpointUpdatedAt": "2026-10-25T07:30:31.898Z",
+    "checkpointElapsedMs": 52209.814916,
+    "process": {
+      "cpu": {
+        "kind": "process-boundary-delta",
+        "scope": "process.cpuUsage delta since collector creation; every thread in this process; child processes excluded",
+        "userMs": 21433.071,
+        "systemMs": 973.157
+      },
+      "memory": {
+        "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+        "rssBytes": 2185461760,
+        "heapTotalBytes": 2029076480,
+        "heapUsedBytes": 1993412464,
+        "externalBytes": 17276848,
+        "arrayBuffersBytes": 16675
+      }
+    },
+    "lastCompletedSpans": [
+      {
+        "name": "module-import",
+        "status": "completed",
+        "wallMs": 703.9309999999998,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 225.15200000000004,
+          "systemMs": 8.378999999999998
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 201392128,
+            "heapTotalBytes": 41041920,
+            "heapUsedBytes": 23523720,
+            "externalBytes": 14087953,
+            "arrayBuffersBytes": 3512452
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 227377152,
+            "heapTotalBytes": 44253184,
+            "heapUsedBytes": 27116152,
+            "externalBytes": 21112743,
+            "arrayBuffersBytes": 3852570
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 3592432,
+            "rssDeltaBytes": 25985024,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        }
+      },
+      {
+        "name": "book_load",
+        "status": "completed",
+        "wallMs": 15274.016457999998,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 5201.972000000001,
+          "systemMs": 214.35099999999997
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 227377152,
+            "heapTotalBytes": 44253184,
+            "heapUsedBytes": 27148384,
+            "externalBytes": 21112743,
+            "arrayBuffersBytes": 3852570
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 603111424,
+            "heapTotalBytes": 392364032,
+            "heapUsedBytes": 347523256,
+            "externalBytes": 17276848,
+            "arrayBuffersBytes": 16675
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 320374872,
+            "rssDeltaBytes": 375734272,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        }
+      },
+      {
+        "name": "book_valid",
+        "status": "completed",
+        "wallMs": 9583.994125000001,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 3419.355999999999,
+          "systemMs": 211.49400000000003
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 603111424,
+            "heapTotalBytes": 392364032,
+            "heapUsedBytes": 347566248,
+            "externalBytes": 17276848,
+            "arrayBuffersBytes": 16675
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 1405206528,
+            "heapTotalBytes": 1177206784,
+            "heapUsedBytes": 1154935696,
+            "externalBytes": 17276848,
+            "arrayBuffersBytes": 16675
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 807369448,
+            "rssDeltaBytes": 802095104,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        }
+      },
+      {
+        "name": "c-reachability",
+        "status": "completed",
+        "wallMs": 26238.075708000004,
+        "cpu": {
+          "kind": "process-boundary-delta",
+          "scope": "process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans",
+          "userMs": 12547.538,
+          "systemMs": 528.055
+        },
+        "boundaryMemory": {
+          "start": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 1405304832,
+            "heapTotalBytes": 1177206784,
+            "heapUsedBytes": 1155072624,
+            "externalBytes": 17276848,
+            "arrayBuffersBytes": 16675
+          },
+          "end": {
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "rssBytes": 2185461760,
+            "heapTotalBytes": 2029076480,
+            "heapUsedBytes": 1993363296,
+            "externalBytes": 17276848,
+            "arrayBuffersBytes": 16675
+          },
+          "delta": {
+            "kind": "boundary-snapshot-delta",
+            "scope": "process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes",
+            "heapUsedDeltaBytes": 838290672,
+            "rssDeltaBytes": 780156928,
+            "caveat": "a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage"
+          }
+        }
+      }
+    ],
+    "activeSpans": [
+      {
+        "name": "compile_book",
+        "parentId": null,
+        "details": {
+          "driverPath": "/private/tmp/bend-native-merged-03d0/evals/native_stage_profile_driver.bend"
+        },
+        "startedAt": "2026-10-25T07:30:05.657Z",
+        "startedMonotonicMs": 26658.18575
+      },
+      {
+        "name": "c-pass-1",
+        "parentId": 4,
+        "details": {
+          "name": "main"
+        },
+        "startedAt": "2026-10-25T07:30:31.898Z",
+        "startedMonotonicMs": 52898.907
+      }
+    ],
+    "lastCompletedPhase": "c-reachability (completed 26.238 s after compile_book start)",
+    "openPhase": "c-pass-1 inside compile_book",
+    "runStatus": "running",
+    "startedAt": "2026-10-25T07:29:39.674Z",
+    "endedAt": null
+  },
+  "rawStreams": {
+    "stdout": {
+      "path": "/tmp/native-stage-merged-03d0-run/run.stdout.log",
+      "bytes": 712,
+      "sha256": "4a58fe683867c3b1410e84f0f5251be013260dc21e973121d0d1a2f82b08bd41"
+    },
+    "stderr": {
+      "path": "/tmp/native-stage-merged-03d0-run/run.stderr.log",
+      "bytes": 1773,
+      "sha256": "73b2d022b159d9aedd22d652fb8dae63313b8622e4dd9d0ae32182ff1e20a675"
+    }
+  },
+  "nativePhaseAttribution": {
+    "phases": [],
+    "nativeExecution": null,
+    "artifactDir": "/tmp/native-stage-merged-03d0-artifacts",
+    "artifactDirFiles": [],
+    "interpretation": "OOM occurred in the JS compile_book c-pass-1 after c-reachability completed, before clang/native spawn; no native phase row and no C backend acceptance"
+  },
+  "generatedFixture": {
+    "path": "/private/tmp/bend-native-merged-03d0/checkpoints/native_stage_profile_generated_fixture.bend",
+    "sha256": "ef98fcac013f127a218430aa1b3f43c191092cbc41d66b3f41f02715be65a108",
+    "bytes": 793517
+  },
+  "commandTiming": {
+    "profileStartedAt": "2026-10-25T07:29:39.674Z",
+    "profileStarted": null,
+    "lastCheckpointAt": "2026-10-25T07:30:31.898Z",
+    "guardianElapsedMs": 154282,
+    "guardianPeakRssBytes": 3472670720,
+    "guardianPeakFootprintBytes": 3627897496,
+    "workerFailureObservedAt": "2026-10-25T07:32:13.230Z"
+  },
+  "note": "One merged-instrumentation canonical native diagnostic run. OOM localized to JS compile_book/c-pass-1 after book load/check and c-reachability; no native profile phase or C backend acceptance. Old OOM unknown preserved."
+}
