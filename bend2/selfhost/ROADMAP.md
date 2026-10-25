@@ -1,9 +1,10 @@
 # Bend selfhost roadmap
 
 Persistent backlog for the current integration line (`work/fir-ir-integrated57ab`).
-Status snapshot reviewed through `0fec0aff`; measured component `5205478f`
-predates the physical fixes `655754cf` / `5122fbd8`. Detailed evidence and
-reasoning live in the linked notes. This index does not replace a receipt.
+Status snapshot reviewed through `4caf49f9`; measured component `5205478f`
+predates the physical fixes `655754cf` / `5122fbd8` and the accepted parser
+repair. Detailed evidence and reasoning live in the linked notes. This index
+does not replace a receipt.
 
 **Status legend**
 
@@ -44,16 +45,18 @@ artifact is claimed.
 
 | Workstream | Recorded state | Evidence | Remaining |
 |---|---|---|---|
-| Parser acceptance | Root's own-worktree `ir-aa9-1` parser accepted; 45/45 source/realpath pins rechecked for component `5205478f`, image `1464037b`. A stage0-valid `+name` body/do binding regression is now identified; its targeted canonical parser fix is user-authorized | `checkpoints/root-final4-aa9.receipt.json` in `/private/tmp/bend-fir-root-aa9`; provenance record `24108d71`, file `180a91ba` | repair typed/untyped quantity bindings, preserve the three existing fixtures, and obtain fresh parser acceptance; no stale-pin reuse |
+| Parser acceptance | Canonical quantity-binding repair integrated at `2a20074e`..`b2753368`; parser image `0e7b3c42`, canonical source `7389188a`. Full 600 s gate: 75 cases, 0 exclusions/patches; public regressions 15/15, 264 assertions. Earlier 900 s attempt explicitly rejected; final admission uses the corrected gate | `checkpoints/parser-quantity-binder-qp57a-4-600s.receipt.json`, `parser-quantity-binder-qp57a-4-raw-records.json`; final gate `f9eb738b` | authenticate the accepted parser and all imported source pins in the next root build; no parser byte-fixedpoint claim |
 | FIR check / full-body component | 11,191 definitions and live/native checked bodies, 0 excluded / 0 output patches; JS component `5205478f`, 16,932,690 B; loaded emitter pin `156a7475`. Build report remains `JS_GENERATED_NOT_YET_EXECUTED`; subsequent probe execution is recorded separately. Guardian complete/stopped, peak RSS 3,187,703,808 B / footprint 3,267,857,280 B | `/private/tmp/bend-fir-root-aa9/checkpoints/root-final4-rep.result.json`; source `b0b92b67`, manifest `84c6dd1b` | new source batch needs a fresh component; full 13-export fixedpoint, frozen corpus and native HOST remain open |
 | Shared emitter composition | One generated Emit engine, 1,680 canonical coverage rows, 0 excluded/omitted, residual 0; emitter `156a7475`; public 13 names/arities and quantum 64 unchanged | `checkpoints/root-final4-aa9.receipt.json`; `ff9a50ec` | regenerate after ownership/parser fixes; unchanged root text alone does not authenticate changed imported source |
 | BIR lowering / native bridge | Bridge source drives the one Emit engine; no split JS/C lowering. Earlier native `book_valid` checked 11,164 bodies with 0 holes; that historical admission is not current C execution or a native HOST artifact | `evals/native_compiler_driver.bend`; `7dc1ab92` | complete current-root BIR/C and ownership admission |
 | C lane | Real checked FIR → BIR → C → clang → execution: Nat.show prints `7`, pure ADT prints `T{42}`, library caller prints `export ok`. Full matrix is **9 PASS / 7 FAIL**, including all 47 Bool-primitive observations passing. Five clang failures, one old-array-word error and one repeated-Project RFC consumption error remain in that image | `evals/receipts/c_probe_5205478f_pass.json`, `c_matrix_5205478f_fail.json`; `d1c2ee3c`, `a77e6954` | physical naming/tagless and array-read fixes integrated but unmeasured; correct take/borrow/drop lifetimes before one fresh complete matrix; leaking/raw-read workaround rejected |
+| Foreign / lifetime regression | With accepted parser `0e7b3c42` and component `5205478f`, `list_rebox_sum` passes JS (`7`, `3`, `bounded`); C emits and compiles, then exits 1 after `7`, `3`: `bend: list reboxing retains heap pages`. `family_field_hot` passes the JS/native gate | `evals/receipts/foreign_qp57a4_5205478f.json`; `4caf49f9` | fix ownership rather than remove frees or relax the existing retained-page bound; rerun the unchanged fixture only after source changes |
 | JS lane | `candidate_host` over the frozen root-sharedem artifact: 291,402 bytes / sha256 `43d9e28e` for `tests/run/bang_call.bend` | commit `6700988b` | broader JS acceptance receipt for the agreed corpus |
 | Full native build, NO_TRACE joint control | `ABORTED_NO_TERMINAL_REPORT` — **not** an OOM: dead PIDs, guardian report 0 bytes, last recorded `compile_book` start; exact kill cause unobserved; launcher had a 1200 cap but no exit record | Main-scoped control; no terminal report path available to this note | guardian lifecycle fix before interpreting this control |
 | Guardian lifecycle | Integrated: detached supervisor, early decision receipt, final `complete`/`ownedTreeStopped` contract; lease held until owned descendants are confirmed stopped, never released by timer. Merged focused run: 3 pass / 0 fail / 57 assertions. Earlier unlocalized deadline-test failure remains UNKNOWN; this is not a full-suite green claim. | `a72e87d6`..`1c82c2c5`; receipt `747a42a2`, `evals/heavy_gate_lifecycle.receipt.json` | fresh full-root control; diagnose the preserved deadline risk if encountered |
 | Official TS producer / full native build, traced | 11,164 native-bridge bodies; book heap 1,669,811,048 B; reaches pass 6; OOM; no native artifact | Main-scoped traced run; scope not verified by note | per-structure decomposition; native artifact within the guard |
 | Profiling (actual code) | Producer and stage adapters integrated: scoped wall/CPU/memory, optional statistical samples, crash checkpoints, failure unwind and artifact-bound attribution. Producer smoke 10/10; merged stage behavioral tests 15/15, 49 assertions. Typed request/chunk attribution is sampling, not exact substage time; retained bytes and full-root overhead remain OPEN | producer `3cd1adcd` / `0b0b9c9f` / `d1bbca4e`; stage `68cde43a`..`754ff301`, behavioral receipt `13db7c2c` after deleting the incidental static test | finish canonical-input native Emitter profiling and fresh full-input A/B; do not treat output generation or fabricated BIR metadata as workload acceptance |
+| Native profiling followup | One canonical-input Node 23.11 run failed at the 3072 MiB worker heap limit: 101,984 ms, peak RSS 3,394,748,416 B / footprint 3,631,272,288 B. Guardian complete/stopped; no native artifact, phase row or profile. No retry/cap change. Followup source is not yet integrated | `/private/tmp/bend-stage-aa9-followup/checkpoints/compiler-native-profile-aa9-canonical-final.json`, `46124798`; raw `/tmp/native-stage-canonical-final.log` | durable producer-phase attribution is missing in this builder; exact load/check/codegen OOM boundary remains unobserved. Native workload and full-input overhead stay OPEN |
 | Law documents | `FIR_LAWS.md` and `BIR_LAWS.md` are written, reviewed, integrated at `2fcdbaea`, and linked from `ARCHITECTURE.md`; seven written law tasks CLOSED; proof/behavior obligations remain OPEN | `6a7cfc59`/`4417d18a` (FIR), `0695e763`/`8311d6a4`/`2f0e8d3b`/`2fcdbaea` (BIR) | obligation triage; no behavior/proof acceptance |
 
 Table entries are status, not acceptance checkboxes. The current full-root
@@ -159,9 +162,13 @@ Status: integrated at `68cde43a`, `dce884f1`, `ffee21ea`, `754ff301`. Includes
 `bend2/selfhost/RESEARCH_STAGE_PROFILING.md`, `evals/compiler_stage_profile.mjs`,
 `evals/compiler_stage_report.mjs`, candidate-host/bootstrap-worker entry points
 and `checkpoints/compiler-stage-profile-v1.json`. The old-component A/B receipt
-is historical after the C renderer update. Native scalar `nat_c` is only a
-mechanism check, not an Emitter workload; the guarded builder path still needs
-an actual guarded run. The checkboxes below are acceptance, not writing.
+is historical after the C renderer update. Followup canonical-input native
+build `46124798` ran under Node 23.11 with the fixed 3072 MiB worker heap,
+8 GiB RSS/footprint guard, 10 ms sampling and 600 s deadline: worker heap OOM,
+no native phase or artifact. The raw log does not distinguish load, validation
+and codegen; no exact boundary is inferred. Earlier scalar and invented-metadata
+inputs are diagnostic/rejected, not Emitter workload acceptance. Followup
+source is in review; the checkboxes below are acceptance, not writing.
 
 Deliverables:
 - [ ] One optional stage/profile mode with phase boundaries matching
@@ -180,6 +187,9 @@ Deliverables:
   exists; zero before that).
 - [ ] A pinned report under `checkpoints/` for the current integration tree,
   naming source/compiler/image hashes and the exact corpus.
+- [ ] Reuse the existing producer profiler in the native diagnostic builder so
+  durable load/validation/codegen boundaries survive worker death; do not
+  retroactively attribute the already-recorded OOM or add a parallel logger.
 
 Acceptance:
 - [ ] Clean target output is byte-identical with profiling on and off (JS and C
@@ -220,9 +230,11 @@ Detailed contracts: integrated `FIR_LAWS.md` and `BIR_LAWS.md`, and
   11,191 checked/live bodies, 0 excluded / 0 patches.
   Root text equality is not dependency equality. A changed parser pin requires
   fresh parser acceptance, not reuse of the prior 45-pin receipt.
-- [ ] Restore stage0-valid typed/untyped `+name` body/do bindings in the
-  user-authorized canonical parser scope; retain failure-before and
-  passing-after evidence, including all three existing affected fixtures.
+- [x] Repair the canonical quantity-binding parser in the authorized scope:
+  typed `+name: T = value` in body/do and typed `+name: T <- action` in do
+  preserve quantity. Existing body-untyped behavior is unchanged; untyped do
+  quantity binding is not stage0-valid. Three affected JS fixtures and the
+  full parser gate pass; no corpus/exports/limit changes.
 - [ ] Preserve the build report's `JS_GENERATED_NOT_YET_EXECUTED` status;
   record subsequent actual component/C execution in its own receipt, not by
   retroactively rewriting the build.
@@ -263,10 +275,12 @@ Detailed contracts: integrated `FIR_LAWS.md` and `BIR_LAWS.md`, and
 - [x] Replace the non-tail Base String.split/join path with linear stack-safe
   text assembly; complete emitted translation units now reach clang and run
   (`c_probe_5205478f_pass.json`). This does not close full C acceptance.
-- [ ] Finish ownership-correct projection/destructure: distinguish RFC redirect
-  cells from payload storage, take once, preserve borrowed/fallback uses,
-  release payload once, and sink unused owned fields using authoritative
-  layout kinds. Removing frees or leaking nodes is not a fix.
+- [ ] Finish ownership-correct projection: use a non-consuming payload read
+  (`term_peek`), produce an independently owned field, and retain the parent
+  until path liveness permits `term_sink`. Keep only the selected field's
+  boxed words and write back newly sealed child references when required.
+  Repeated/fallback projections remain legal. Destructive grouped-view and
+  raw-read/no-free workarounds are rejected; no new representation type table.
 - [ ] Carry ownership state through continuations and nested pattern failure;
   prove values and allocation/release behavior for ordinary, sealed/shared,
   nested, unused-field and fallback cases before the full fresh C matrix.
