@@ -49,6 +49,9 @@ type SegS is Data:
 type BoxS is Data:
   BoxS{t: String, u: U0}
 
+type FlagsS is Data:
+  FlagsS{a: Bool, b: Bool}
+
 law probe:
   for pair: PairS
   for boxp: BoxS
@@ -63,9 +66,10 @@ law probe:
   for choice: Choice
   for choice0: Choice0
   for wrape: WrapE
+  for flags: FlagsS
   IO(U32)
 
-def probe(pair, boxp, seg, cb, wide, shape, boxm, wrap, erased, boxarr, choice, choice0, wrape):
+def probe(pair, boxp, seg, cb, wide, shape, boxm, wrap, erased, boxarr, choice, choice0, wrape, flags):
   import "./physical_path_probe.c"
 
 def main() -> IO(Unit):
@@ -73,7 +77,7 @@ def main() -> IO(Unit):
   f: U32 -> U32 = x => U32.add(x, cap)
   do IO<Unit>:
     r : U32 <- probe(PairS{3, 4}, BoxS{"hi", U0{}}, SegS{PtS{1, 2}, PtS{3, 4}, FlS{5}}, f,
-      WideP{1, 2, 3}, Circle{4}, BoxM{Circle{4}}, Wrap{FlS{5}}, E{6}, BoxArrT{7}, ChA{8}, CA{}, WrapE{CA{}})
+      WideP{1, 2, 3}, Circle{4}, BoxM{Circle{4}}, Wrap{FlS{5}}, E{6}, BoxArrT{7}, ChA{8}, CA{}, WrapE{CA{}}, FlagsS{False{}, True{}})
     IO.print("ok")
 
 #|ok
