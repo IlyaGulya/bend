@@ -252,3 +252,42 @@ not a certification of current source.
 - Native fine substage spans require a coordinated private typed view and a
   proven native build; they remain future work and are listed as unavailable,
   not approximated.
+
+
+## Intake bundle and native OOM boundary
+
+Linear commits after `aa9a39a7`, dependency order:
+`a4192c5c`, `415251a9`, `651f6360`, `2a8bd57b`, `ca8d6fa0`, `76111410`,
+`7d6177de`, `68ea898a`, `1b2f85e2`, `08a89e66`, `5ed71315`, `25450687`,
+`3e68db78`, `c01e65a3`, `a52c0399`, `6eccb27b`, `17a2701e`, `46124798`.
+
+Keep as integrated diagnostic/source fixes: the guard cutover, A/B and failure
+receipts, Node runtime gate, canonical checked → lower → group18 render harness
+and source, hardened transport/provenance, single-consumption typed outcome,
+nonempty-success gate, and the final OOM receipt. The old copied smoke fixture
+is retained only as `evals/native_stage_profile_rejected_smoke.bend` for the
+public failure probe; the invented-family commit `1b2f85e2` and its fixture data
+are historical/rejected and must not be treated as canonical. Generated
+CheckedProgram/BIR/fixture/images remain outside Git.
+
+The actual canonical Node 23.11 run completed transport generation, then the
+3072 MiB worker old-generation heap was exhausted during the build before the
+builder returned phase timing, wrote C, or produced an artifact. Existing raw
+output has no book_valid/compile_book progress marker, so the exact internal
+allocation boundary cannot be proven from that log. A separate prior
+`book_load`/`book_valid` consumer smoke completed (`TRANSPORT_CONSUMER_OK`), so
+`compile_book` is the probable boundary, not a proven one. Only guardian peak
+RSS/footprint was captured (3,394,748,416 / 3,631,272,288 B); there is no heap,
+CPU, or allocation profile. The 8 GiB guard was not reached; the 3072 MiB worker
+old-generation cap is the terminal limit. No retry, cap raise, GC, Bun worker,
+or internal bypass was used.
+
+The fixture must include the full prelude because the small checked source
+imports Base and its canonical lowering carries all global declarations,
+constructor/family metadata, foreign declarations and the exact 56 C source
+alternatives required by CJoin. Omitting it is not a smaller valid fixture: the
+missing `Nil` family is the observed example. The transport sizes are BIR
+1,639,178 B, source bundle 279,742 B, runtime 75,336 B and serialized fixture
+793,517 B; the driver then loads that closure plus the generated Emitter
+prelude before code generation. Raw logs remain under `/tmp` and are ignored,
+not Git.
