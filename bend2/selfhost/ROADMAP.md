@@ -116,6 +116,14 @@ and reaches `profile_emitter_pending`. No C artifact;3072MiB acceptance remains
 unchanged. Exact comparison and approval scope:
 `evals/receipts/native03d0_4096mib_oom.json`.
 
+The user subsequently approved a temporary **8GiB working native-codegen heap**,
+with a12GiB tree RSS/footprint guard so non-heap process memory has headroom.
+Stack256MiB,10ms sampling,600s deadline and one heavy child remain unchanged.
+The3072MiB native-root item is deferred as a later optimization target, not
+marked complete. This working-resource policy does not reclassify old OOMs,
+change compiler semantics/inputs, or authorize representing an8GiB run as a
+3072MiB acceptance. Build/run receipts must name their actual policy.
+
 ### Preceding `667e7f33` C checkpoint (historical)
 
 
