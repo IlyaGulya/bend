@@ -142,7 +142,7 @@ canonical `c_backend.emit` group (group 12, label
 `mixed:layouts+render-c`). Its program is the complete canonical smoke BIR from
 `evals/c_backend_smoke.bend` (main/add/cap/zero codes, declarations,
 constructors, U32 family; known result 26), factored as passive data in
-`evals/native_stage_profile_emit_fixture.bend`; its runtime is the real
+`evals/native_stage_profile_rejected_smoke.bend` (explicit rejected diagnostic input); its runtime is the real
 `evals/c_backend_runtime.bend` source. It does not import `c_backend.bend`'s
 computed emit check, and it is not a scalar number-formatter or empty-program
 fixture. The driver source passes `book_valid`; a JS generated-Emit probe over the same data/runtime returns `EMIT_SUCCESS` with the added runtime families.
@@ -214,7 +214,11 @@ The diagnostic driver now consumes this canonical BIR, real runtime and 56-file
 C source bundle through `EmitterRequestGroup_18` /
 `EmitterRequest_cps_provider_6_render`; the builder's transport step writes the
 generated fixture under `checkpoints/` (not Git) from `--canonical-bir`,
-`--canonical-sources` and `--canonical-runtime`. It does not use the copied
+`--canonical-sources`, `--canonical-runtime`, and optional checked/component
+provenance. The transport computes real hashes, includes nullary constructors,
+rejects unknown constructors, non-canonical nominal tags, and extra/missing
+fields, and validates source bundles as exactly `{path, source}`. A consumer
+smoke passed (`TRANSPORT_CONSUMER_OK`). It does not use the copied
 smoke fixture or a scalar request. This is not yet a native fixture run, and
 direct group-12 CImport assembly is not claimed. The performed Node native run remains the pre-fix
 `EmitFailure` evidence; no native rerun or cap change was made.
