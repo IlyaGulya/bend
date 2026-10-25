@@ -1,7 +1,7 @@
 # Bend selfhost roadmap
 
 Persistent backlog for the current integration line (`work/fir-ir-integrated57ab`).
-Integration snapshot through `21403317`; last candidate component `433aadb5`
+Integration snapshot through `2faa3c77`; last candidate component `433aadb5`
 contains the prior C producer and physical paths. Its source admission passes;
 all 23 C cases fail emission. Detailed evidence and reasoning live in the linked notes. This index
 does not replace a receipt.
@@ -52,7 +52,7 @@ own inline parser is still unrepaired. No current full-root fixedpoint or native
 | Shared emitter composition | Regenerated one Emit engine `7b24d429`, manifest `63c18c9d`; 2,000 canonical declarations, 219 added / 27 removed against the predecessor, 0 exclusions/patches. Generator code, public 13 exports and quantum 64 unchanged | `checkpoints/candidate-c-backend-source.receipt.json`; generated images/manifests retained outside Main Git | regenerate again only after a coherent source fix; root text equality alone does not authenticate composed providers |
 | BIR lowering / native bridge | Bridge source drives the one Emit engine; no split JS/C lowering. Earlier native `book_valid` checked 11,164 bodies with 0 holes; that historical admission is not current C execution or a native HOST artifact | `evals/native_compiler_driver.bend`; `7dc1ab92` | complete current-root BIR/C and ownership admission |
 | C lane | Candidate `433aadb5` is **REJECTED_C_EMISSION**: all 23 default cases fail with `a form field is not a single word`; every emit has a complete/stopped guardian receipt, command/effective exit 1, and no clang/run. Observed origin is `read_body` → `StSlot{… packed=False}` → `CLay.LayoutData` in physical source `256f5777`; the uninstrumented receipt does not identify the BIR consumer. Historical `5205478f` remains 9 PASS / 7 FAIL, not current-candidate coverage | `evals/receipts/c_matrix_6b1d_23_fail.json`, `2d4f50e3` / correction `78339d80`; 139 preserved raw files under `/tmp/accept23-c-1792914553` | implement the inline borrowed-consumer boundary without copying heap callables or rejecting valid forms; regenerate from coherent source changes before rerunning; no C output patches, removed frees or weakened checks |
-| Physical path slice | Pending source `f4fdfcc9` adds a non-allocating canonical packed read for zero/one-w32 inline forms and fixes Fill to write `FormArm.tag`, not constant 1. Control remains `f17c157b`; no duplicate Bool consumer conversion. Earlier `256f5777` has a scoped 42-expression guarded C PASS. The newer 46-expression execution completed, but its new Flags constructor aliases Pt's runtime CID and is **REJECTED_INVALID_RUNTIME_FIXTURE** | source `25768441` / `21403317`; accepted older `evals/physical_storage_acceptance_receipt_fixed2.json`; rejected newer `evals/physical_storage_acceptance_receipt_fixed3.json` | authenticate a real reachable Flags constructor in the scoped fixture, regenerate the shared engine and all-body candidate, then run the expanded target matrix; retained-page bound and full C acceptance remain open |
+| Physical path slice | Source `f4fdfcc9` adds a non-allocating canonical packed read for zero/one-w32 inline forms and writes the authoritative `FormArm.tag` on Fill. Control remains `f17c157b`; no duplicate Bool consumer conversion. Authentic scoped proof executes all 46 expressions, including real `FlagsS` and `Array<Char>` foreign arguments plus construction checked against real runtime metadata; all six guarded stages complete/stopped/exit 0, executable prints `ok`. Fixed3's aliased Flags proof remains rejected; fixed4 is a narrower 44-expression result, not completion | source `25768441` / `21403317`; complete `evals/physical_storage_acceptance_receipt_fixed5.json`, `2faa3c77`; preserved rejected `fixed3` and scoped `fixed4` | Root has GO for one regenerated shared engine/all-body candidate; full 24-case C matrix, public-path reproducers and retained-page bound remain open. This scoped proof does not accept the whole backend |
 | Foreign / lifetime regression | With historical component `5205478f`, `list_rebox_sum` executes C and fails the retained-page bound after `7`, `3`. With current `433aadb5`, C `list_rebox_sum`, `family_field_hot` and `c_backend_link` all stop at the common emit failure; their C lifetime/link behavior is therefore unobserved. The same current image passes JS emit/run for those three cases | historical `evals/receipts/foreign_qp57a4_5205478f.json`, `4caf49f9`; current `evals/receipts/postmatrix_6b1d_followups.json`, `3bcbc5d9` / correction `78339d80` | fix ownership rather than remove frees or relax the existing retained-page bound; exercise C foreign/link/library behavior after the common emit fix |
 | JS lane | Current `433aadb5` passes actual emit/run for `list_rebox_sum` (`7`, `3`, `bounded`), `family_field_hot` (`5`) and `c_backend_link` (all six expected lines), using accepted external parser `0e7b3c42`. Earlier `bang_call` artifact evidence remains historical, not current broad coverage | `evals/receipts/postmatrix_6b1d_followups.json`, `3bcbc5d9` / correction `78339d80`; historical `6700988b` | full agreed JS corpus and current-root byte fixedpoint; three follow-up cases are not aggregate acceptance |
 | Full native build, NO_TRACE joint control | `ABORTED_NO_TERMINAL_REPORT` — **not** an OOM: dead PIDs, guardian report 0 bytes, last recorded `compile_book` start; exact kill cause unobserved; launcher had a 1200 cap but no exit record | Main-scoped control; no terminal report path available to this note | guardian lifecycle fix before interpreting this control |
@@ -366,6 +366,29 @@ Detailed contracts: integrated `FIR_LAWS.md` and `BIR_LAWS.md`, and
 - [ ] Commit messages may summarize but do not substitute for the receipt.
 - [ ] A failed/partial run is recorded as `RESOURCE_LIMIT` or `FAIL`, never
   inferred as PASS from prose.
+
+### 3.6 Parallel minimal reproducers
+
+Requested by the user; four independent workers started from `5328869a` in
+isolated `work/repro-*57ab` worktrees. They own diagnostic inputs and evidence,
+not production changes:
+
+- [ ] **ReproInlineValues:** minimize the real public-path Bool borrowed
+  predicate/branch, Char payload read and constructor arm-tag witnesses.
+- [ ] **ReproOwnership:** isolate list-reboxing retention from observable
+  alias/whole-parent reuse; preserve the existing retained-page bound.
+- [ ] **ReproNativePass1:** identify a small typed diagnostic input for the
+  producer's `compile_book / c-pass-1` growth using the preserved durable OOM
+  evidence; do not retry the unchanged full failure or invent retained bytes.
+- [ ] **ReproInlineParser:** minimize actual parsed-result quantity differences
+  between root's stale inline parser and accepted external parser `0e7b3c42`.
+
+Each handoff requires the source, exact command, source/artifact hashes,
+expected/observed behavior, runtime/heap/stack/caps and a complete/stopped
+guardian receipt. A reduced diagnostic witness is not a narrowed acceptance
+corpus. One Root build is shared; workers prepare independently and execute
+only in assigned slots on the same default guarded lane. Generated artifacts
+and raw bulk logs stay out of Git.
 
 ---
 
