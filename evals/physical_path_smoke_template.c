@@ -1,4 +1,3 @@
-static Term bend_fail(Env e, const char* m) { (void)e; err_fail(m); return 0; }
 static Term bend_bool(Env e, u32 t, u32 f, u64 c) { (void)e; return term_pak(c != 0 ? t : f, 0); }
 static Term bend_tuple(Env e, u32 tc, Term a, Term b) { u64 l = heap_alloc(e, cls_fit(2)); e.mem[l] = a; e.mem[l + 1] = b; return term_ctr(tc, l); }
 static Term probe_array(Env e) { Term v[1]; v[0] = 7; return blk_new(e, false, 4, 0, 1, v); }
