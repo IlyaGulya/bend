@@ -1,13 +1,13 @@
 # REPRO_OWNERSHIP: minimal retained-ownership witness
 
-Status: **measured on the accepted historical `5205478f` image** (diagnostic
-only, not acceptance): both reduced valid-affine shapes emit, compile and run,
-and both trip the unchanged retained-frontier bound. The fresh `9941352b` C
-path still stops before clang at a common emit failure (`BIR continuation
-reads a value that is not in scope`) that also hits a plain matrix fixture, so
-no fresh-image behaviour is claimed. Every claim is labelled **[OBSERVED]** (a
-saved artifact, receipt, measured log or source line) or **[INFERENCE]**
-(derived, not executed). The historical failure is preserved unchanged.
+Status: **historical failure reproduced; current finite controls PASS**.
+On historical `5205478f`, both reduced valid-affine shapes emit, compile and
+trip the unchanged frontier bound. On current `971e0986`, both controls pass
+the same bound and the whole-parent alias witness prints the expected value.
+Every claim is labelled **[OBSERVED]** (saved artifact, receipt, measured log or
+source line) or **[INFERENCE]** (derived, not executed). The historical failure
+is preserved unchanged. These controls do not prove general ownership or
+retained/live-byte behavior.
 
 ## 1. The invariant in the foreign fixture is a frontier bound, not live bytes
 
@@ -185,16 +185,15 @@ Conversely, both memory witnesses above use only a fresh temporary and a
 single Lone consumption, so a page failure there cannot be excused as invalid
 affine input.
 
-Prepared minimal public-path witness for the whole-parent corner (opt-in in
-the driver: `CASES=alias_whole_parent`, expected `9`):
+Executed minimal public-path witness for the whole-parent corner (opt-in in
+the driver: `CASES=alias_whole_parent`, observed expected `9` on `971e0986`):
 `evals/repro_ownership/alias_whole_parent.bend` has one Many caller `+p` and
 two Lone consumers: `first_field` projects one Many `String` field, and
 `whole_length` consumes the whole parent. A correct emitter may share/copy;
 the observable is the value `9` and no double free, never a page count. This
 is the same caller-residual-liveness contract as `c_target_repeat_data` with
-the whole-parent consumption added, so it needs no BIR fixture: Control's
-candidate BIR `1dfad82a` is not present in this worktree and is not used as
-proof.
+the whole-parent consumption added. It needs no manufactured BIR fixture;
+the observed current public-source run is the evidence.
 
 ## 6. Runs
 
@@ -235,16 +234,34 @@ whole owned tree; the driver adds no timeout wrapper, lock or process-group
 engine. Stage exits, literal commands and sha256 of every input and output are
 written under `$OUT`; raw stdout/stderr stay whole.
 
-### Pending: `9941352b` fresh image
+### Executed: `971e0986`, scoped controls PASS
 
-The fresh command is the same with the fresh pins
-(`root57ab-go-art.js 9941352b…`, `candidate_host 2596997a…`,
-`base/root57ab-go/bend2/base.bend 323827…`,
-`runtime_c/root57ab-go/bend2/selfhost/c_runtime.c 478c1b…`,
-`OUT=/tmp/ownership-57ab`). The whole-parent alias witness likewise waits for
-that fixed image. No production file was edited.
+**[OBSERVED]** `evals/receipts/repro_ownership_971.json` records the same
+committed inputs, real candidate host `2596997a`, parser `0e7b3c42`,
+base `32382729` and runtime C `478c1ba7`. No source threshold, free or
+production file was changed for this run.
 
-**[OBSERVED]** why the fresh run is pending: the common failure already hits a
+| case | value | warm frontier pages | after frontier pages | allowed ceiling | result |
+| --- | ---: | ---: | ---: | ---: | --- |
+| `own_cons` | 3 | 129 | 129 | 161 | PASS |
+| `own_rebox` | 7 | 129 | 129 | 161 | PASS |
+| `alias_whole_parent` | 9 | not measured | not measured | not applicable | PASS |
+
+All nine emit/clang/run exits are 0. One outer guard covers the three owned
+trees sequentially: complete/stopped/exit 0, 76,468 ms, peak RSS
+1,962,819,584 B, peak footprint 2,033,418,088 B; limits remain
+8192 MiB footprint / 8192 MiB RSS / 10 ms / 600 s. Full commands, source and
+artifact hashes, raw streams and guard are under `/tmp/bend-ownership-971-run1`.
+The warm frontier differs from the historical image; the same relative
+`before + 32` bound is unchanged. This is not a retained-byte measurement or
+a proof that one particular source change is the sole cause of the repair.
+
+The separate original `list_rebox_sum` C and JS programs now both print
+`7`, `3`, `bounded`; see `evals/receipts/foreign_971e0986.json`.
+
+### Historical reason the `9941352b` replay was deferred
+
+**[OBSERVED]** why that replay was deferred: the common failure already hit a
 plain fixture on `9941352b`, so it is not an ownership-shape result.
 `evals/c_target_array_nat.bend` (`1f5d1ebc…`, Base+IO only, no inline-value
 syntax) fails before clang with `candidate: emission failed: BIR continuation

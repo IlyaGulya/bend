@@ -1,0 +1,1491 @@
+{
+  "schemaVersion": 1,
+  "status": "FAIL_FROZEN_C_MATRIX",
+  "accepted": false,
+  "scope": "Unfiltered 25-case C matrix. 23 cases passed emit/clang/run/output. Projected Bool fails runtime; the tail-capture input is parser-rejected, not a demonstrated backend counterexample.",
+  "sourceCommit": "6fa30d28f75a56e9a131edbbe4b99781dca275e9",
+  "command": [
+    "bun",
+    "evals/c_target_fixtures_run.ts",
+    "--host=/private/tmp/bend-verify-836/evals/candidate_host.ts",
+    "--component=/private/tmp/bend-verify-836/checkpoints/verify-836-art.js",
+    "--parser=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+    "--tag=../bend2/selfhost/backend_ir.SourceFile",
+    "--node=/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+    "--target=c",
+    "--keep",
+    "--logs=/tmp/bend-accept25-971-6fa30d28-run1"
+  ],
+  "cwd": "/private/tmp/bend-accept25-971-sol",
+  "runnerSha256": "1c7e94db78d4e8ada4dcd34501e544703451d6e05c228dd0753c3d34f00fc209",
+  "pins": {
+    "mode": "acceptance-matrix",
+    "target": "c",
+    "node": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+    "nodeVersion": "v23.11.0",
+    "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))",
+    "host": "/private/tmp/bend-verify-836/evals/candidate_host.ts",
+    "component": "/private/tmp/bend-verify-836/checkpoints/verify-836-art.js",
+    "parser": "/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+    "tag": "../bend2/selfhost/backend_ir.SourceFile",
+    "hostSha256": "2596997a2a578cb371e11e8cb0858e4ebd9f53b1679d2814f3068a0db29613e4",
+    "componentSha256": "971e0986800a7d331cf5f528bb71dfb4400e4b9177b90224ce33054da48e0422",
+    "parserSha256": "0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b",
+    "guardianTs": "/private/tmp/bend-accept25-971-sol/evals/heavy_gate.ts",
+    "guardianTsSha256": "204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2",
+    "guardianNativeC": "/private/tmp/bend-accept25-971-sol/evals/heavy_gate_native.c",
+    "guardianNativeCSha256": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+    "cwd": "/private/tmp/bend-accept25-971-sol",
+    "base": "/private/tmp/bend-accept25-971-sol/bend2/base.bend",
+    "baseSha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+    "runtime": "/private/tmp/bend-accept25-971-sol/bend2/selfhost/c_runtime.c",
+    "runtimeSha256": "478c1ba7d0d0626c1927d11c4af3b3d4cef520db41afd8722ebf55d5050769c3",
+    "logs": "/tmp/bend-accept25-971-6fa30d28-run1",
+    "gate": {
+      "memoryMiB": 8192,
+      "rssMiB": 8192,
+      "pollMs": 10,
+      "timeoutMs": 600000
+    },
+    "fixtures": 25
+  },
+  "hostStackLimit": "default; no explicit stack flag; the producer worker 256 MiB stack does not apply to this host",
+  "summary": {
+    "fixtures": 25,
+    "passed": 23,
+    "failed": 2,
+    "stages": 73,
+    "allTerminalCompleteStopped": true,
+    "sumGuardedStageMs": 858089,
+    "maxStageRssBytes": 1966702592,
+    "maxStageFootprintBytes": 2039267464,
+    "outerWallSeconds": 862.72,
+    "outerExit": 1
+  },
+  "lawEvidence": "Finite coverage only. No general C-1/C-6 proof, current full13 byte fixedpoint, frozen corpus or native HOST acceptance.",
+  "rawEvidence": {
+    "directory": "/tmp/bend-accept25-971-6fa30d28-run1",
+    "files": 462,
+    "sortedManifestSha256": "4b87801db55096064a5cfc0346adf26280a6302e582dcdf36e02a1cdfaad3539",
+    "noOutputPatches": true,
+    "artifactsRetained": true,
+    "manifestPath": "/tmp/bend-accept25-971-6fa30d28-run1/evidence.manifest.json",
+    "manifestScope": "462 original completed-run files; exported manifest itself excluded"
+  },
+  "rows": [
+    {
+      "fixture": "/private/tmp/bend-accept25-971-sol/evals/c_target_alias_paths.bend",
+      "sourceSha256": "5e5f5dee9376664013f1d7ce055fa45af40c40b9e2fbee02e8755e84abdf932f",
+      "expected": "8",
+      "observedRaw": "8\n",
+      "status": "PASS",
+      "diagnostics": "",
+      "stages": [
+        [
+          "emit",
+          "PASS",
+          0,
+          0,
+          0,
+          37223,
+          1600438272,
+          1692865264,
+          "dffca803cd6f8d5a628b56b4e43170a48d19d40f3c7e2ae887820023925d48c0",
+          "43a0356679b191beb233ef9a1a4d9b3f7209332cf8541f4233b16db91142cb3a"
+        ],
+        [
+          "clang",
+          "PASS",
+          0,
+          0,
+          0,
+          1679,
+          135561216,
+          91734712,
+          "3e146ee1f03a9e9e749f2d0c5834fd8a552721a89bc3fbb214dad50b98a7aca1",
+          "ce9b5c22c754801bdc24cc9bffd46f83885d7e9e7b61242d7a086f272ae57944"
+        ],
+        [
+          "run",
+          "PASS",
+          0,
+          0,
+          0,
+          30,
+          2392064,
+          1524000,
+          "43d74ef142d06303492ce0d315c5d6ab350e1a9fc20fb1fb614a35bd2267de0e",
+          "8e1941f799bb3490d129867a47bb321ef196be1793a70dacb8493ea8d2212b67"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_alias_paths.c": {
+          "bytes": 1123767,
+          "sha256": "2d8e0bfff3634b554c62d2c6ae1655c552e620f19e7e0c98a71e27d23b8944df"
+        },
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_alias_paths": {
+          "bytes": 954312,
+          "sha256": "9a7a9540847c4d82f80e2d890c8d8a1598a33ce7b06190a48297c018304bba86"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-accept25-971-sol/evals/c_target_array_nat.bend",
+      "sourceSha256": "1f5d1ebc34537453b7733daff35973d09fb919ccf7af18c98fe948858d8f1462",
+      "expected": "7",
+      "observedRaw": "7\n",
+      "status": "PASS",
+      "diagnostics": "",
+      "stages": [
+        [
+          "emit",
+          "PASS",
+          0,
+          0,
+          0,
+          31600,
+          1581334528,
+          1631797968,
+          "d9be95440acc15dc46b8f47b05a4606ec9e557aa615feade1bbfedd03802fde3",
+          "2d2c5d1863960291fa6392f2f50f2318abcf6c4b1dc333f445e538629d2781c9"
+        ],
+        [
+          "clang",
+          "PASS",
+          0,
+          0,
+          0,
+          2073,
+          136085504,
+          90424016,
+          "2c2f579dc26d5fa6fa34f86c59f5eec59b21b45d66bdb8db38fef45271d16494",
+          "9d676a60d06bb6de81e303ffd6bfde437de5ff7bbb682816d4af95731d3bb96e"
+        ],
+        [
+          "run",
+          "PASS",
+          0,
+          0,
+          0,
+          30,
+          1720320,
+          1196416,
+          "7955b43b737b04238e0c8680a82cb6b9f030b3273d6b8162b427d58b10597539",
+          "62c7fb6ecd38ff3e21e45d5cea93877ef86d540f1631e448848ea54e3189f0fa"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_array_nat.c": {
+          "bytes": 1125424,
+          "sha256": "9976a36997089caa3a77bd3fbccd4d5dd328e22fe6bc6a869ee108256517a025"
+        },
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_array_nat": {
+          "bytes": 954336,
+          "sha256": "bb331c463754a355d3d754e11ff6d3050750c8ea47036001088b9916cab08b3f"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-accept25-971-sol/evals/c_target_array_nested.bend",
+      "sourceSha256": "3387f428bc07319bb66a07e64e0b7635efc01ea7400ec35ad4bc13eda04ff8dc",
+      "expected": "12",
+      "observedRaw": "12\n",
+      "status": "PASS",
+      "diagnostics": "",
+      "stages": [
+        [
+          "emit",
+          "PASS",
+          0,
+          0,
+          0,
+          33425,
+          1658126336,
+          1776431776,
+          "763a7942c339130bba4fa260a2c492fc0248b31ceabe20678b3b9dc207c42ec9",
+          "1e14b3f9f13c8d08b8a9999ea3ed80387602d710ba8c744f523a26aaf7622592"
+        ],
+        [
+          "clang",
+          "PASS",
+          0,
+          0,
+          0,
+          1421,
+          135823360,
+          91407032,
+          "6285059263c5d43d75f5b83e8397a01521a44209582cdbafbe96f4de2ea32be8",
+          "c74b7f7774ee8119de7e74f2b6c4eee715a0e34b15864e9ee847e9f9ec18b64d"
+        ],
+        [
+          "run",
+          "PASS",
+          0,
+          0,
+          0,
+          29,
+          2031616,
+          1261856,
+          "25bf9f70b130596737a724fb16a67b4a91fb09e5996f6fb7eda21826a635c50e",
+          "10e753a9c7bef3741d72195e65bb16d58a8fa0caea65abf3da1b2742c7ed22d1"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_array_nested.c": {
+          "bytes": 1130701,
+          "sha256": "c3e2dd3ec0161738ad5c4039eb27b05e22864df25517e98656dfb3197fe119bd"
+        },
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_array_nested": {
+          "bytes": 954456,
+          "sha256": "059a72cea2477924ccb490a851ee294c93c44b53c07a24daa5f6921205ef9de3"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-accept25-971-sol/evals/c_target_array_u32.bend",
+      "sourceSha256": "9e5752bf27faa913b0473c78d10141e9e8942c8bc56ba22a337265ab29fff2fa",
+      "expected": "15",
+      "observedRaw": "15\n",
+      "status": "PASS",
+      "diagnostics": "",
+      "stages": [
+        [
+          "emit",
+          "PASS",
+          0,
+          0,
+          0,
+          40973,
+          1689255936,
+          1779937448,
+          "e6da72aab6ccbb2ad4536820856ee2795f73c3d3d3386a21103f83b651e7623c",
+          "cfd1ab200cee9a7804fdff5c3c24a12602a1237e099c0fe6690047ba78671f00"
+        ],
+        [
+          "clang",
+          "PASS",
+          0,
+          0,
+          0,
+          2165,
+          136806400,
+          92078776,
+          "9b5c3581177154b98c003673228579173dda96542f1172d036e2eaeccc016219",
+          "cc1b766c5d2a47f5fe1badb61981c0603db681765ed26691feb942633675cc25"
+        ],
+        [
+          "run",
+          "PASS",
+          0,
+          0,
+          0,
+          45,
+          2031616,
+          1261856,
+          "9e6f1281bc4e3ca488e9827c8dc13b69fa199eb12028eb3f2ba69d8c38738621",
+          "b419175d6517a280e8be4cd1614a4fa6dbb2235be9827c6b9378f8a3e10929cd"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_array_u32.c": {
+          "bytes": 1134569,
+          "sha256": "503292554e22c5f5664dc2b0d793300ebf1e6b816189f4e0dc9ca0235f20b918"
+        },
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_array_u32": {
+          "bytes": 954752,
+          "sha256": "2afe6e30ff8fb1dd59326279c994da68f14234091670a71c5ef160899769ff83"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-accept25-971-sol/evals/c_target_array_wide.bend",
+      "sourceSha256": "fd151ba4438b94e76b9eaaa6e77a5c1bfe469726e90a92787f1a33458021cde1",
+      "expected": "16",
+      "observedRaw": "16\n",
+      "status": "PASS",
+      "diagnostics": "",
+      "stages": [
+        [
+          "emit",
+          "PASS",
+          0,
+          0,
+          0,
+          25677,
+          1354383360,
+          1389866728,
+          "e21361dc4f48cb0b4f7bde170024381e84fad4bd60d7ffccbbc30ccc9b1322e6",
+          "1c5d123515f4e6ba654b726cc6c30b5ce1eb55a1c64eff92878011348bd7bf72"
+        ],
+        [
+          "clang",
+          "PASS",
+          0,
+          0,
+          0,
+          2617,
+          136085504,
+          91603640,
+          "25f7adcdca2f627d8dbc7b6b15f4392f75d23e6fe893be522b46be5bc8df7ebf",
+          "51556d42d5edfc71677d2d6bbe2350a255c781d797dd41654a0cde12e9254357"
+        ],
+        [
+          "run",
+          "PASS",
+          0,
+          0,
+          0,
+          16,
+          163840,
+          311440,
+          "823c3119ec394f41d3d2453c063b363a6c5f53306b308aa2a2665c84c88bd62e",
+          "dd3366d6f3fb6e9f6373d3702fcfa8734e980834fa6955638f427383d6bcd696"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_array_wide.c": {
+          "bytes": 1138348,
+          "sha256": "f9a78d6a1b36ee2a2eb3018c1f7a42e6f44b0643527d0225360b4e9f9990aefc"
+        },
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_array_wide": {
+          "bytes": 971312,
+          "sha256": "5162326d11ae63ded66c115e9e785d95cb735be6a0f1a58f8d8fc34e4795b115"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-accept25-971-sol/evals/c_target_bool_fields.bend",
+      "sourceSha256": "262d7aeaf81288c1d6a5c031b89c607ea509a0e92d19c3789922f78d23471de0",
+      "expected": "True\nFalse\n1",
+      "observedRaw": "True\n",
+      "status": "FAIL_RUN",
+      "diagnostics": "bend: runtime fail-stop\n",
+      "stages": [
+        [
+          "emit",
+          "PASS",
+          0,
+          0,
+          0,
+          31102,
+          1359003648,
+          1400385568,
+          "4d6027087a34f87f1475506922f2ecfb903e290fe0ff7e511031c8aba90de37d",
+          "ee2161165b37f1455ffdd73721c4cef35d4170d10ed9adebb6c2389460884c65"
+        ],
+        [
+          "clang",
+          "PASS",
+          0,
+          0,
+          0,
+          1767,
+          136937472,
+          92472016,
+          "d904b1d6433bb6cf522eb8cb415c64cd912ad6f6f6c8b9d3e20e031d35d67cc0",
+          "5cd7ba5987c8e7ac7026436d01aedb709b4849a75e44896c110592133b61f4df"
+        ],
+        [
+          "run",
+          "FAIL",
+          1,
+          1,
+          1,
+          14,
+          114688,
+          311440,
+          "348676a7c17ca1fef5bad5aee7238d003ee9005c11b19129941ecc2f71f93573",
+          "d462ad31866c0130d713bc8d6fbf6d4e6c7fbbf842f388d92295320de280743b"
+        ]
+      ],
+      "artifacts": [
+        {
+          "name": "c_target_bool_fields",
+          "bytes": 954744,
+          "sha256": "ccd1183f4de283cae9c3648c1136710bd980feb39cfd4a0d1425d36f21c5cdbc"
+        },
+        {
+          "name": "c_target_bool_fields.c",
+          "bytes": 1137346,
+          "sha256": "98a54709a8eb1fa70e15a64e5b4be585e9ceea9e77e91b72dac1f5a89f53b3e6"
+        }
+      ]
+    },
+    {
+      "fixture": "/private/tmp/bend-accept25-971-sol/evals/c_target_bool_prims.bend",
+      "sourceSha256": "bc2c9dd125503eaaae6cf233da61400cae28d2ca7da2b09027ae1fe3da408688",
+      "expected": "1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n1\n0\n1\n1\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n0\n1\n0\n0\n1\n1\n0\n1\n1\n0\n1\n0\n1\n0",
+      "observedRaw": "1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n1\n0\n1\n1\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n1\n0\n0\n1\n0\n0\n1\n1\n0\n1\n1\n0\n1\n0\n1\n0\n",
+      "status": "PASS",
+      "diagnostics": "",
+      "stages": [
+        [
+          "emit",
+          "PASS",
+          0,
+          0,
+          0,
+          30392,
+          1459945472,
+          1503188456,
+          "5e97656faf3c0fbecab18cba0d62b88636a3fd296db8472049604fb890849b8a",
+          "e8771be4aed04e6bada61295ae02fa756493808a17e0387ee792e3028706fef6"
+        ],
+        [
+          "clang",
+          "PASS",
+          0,
+          0,
+          0,
+          1956,
+          148586496,
+          103989968,
+          "06887e98fe641054310543a15f9fab6dfc5e6fff9296ce4fca1e10fe6e3f92b4",
+          "43a08f728dd537357c79243a11b33cc91bc42f2a8e1b247b7e875fcd881df54b"
+        ],
+        [
+          "run",
+          "PASS",
+          0,
+          0,
+          0,
+          15,
+          606208,
+          819392,
+          "eb4eb9892695b3de75b445f779afcf23c5c90626a931eeb470badc4f608e5aa2",
+          "06ce548bcdd93cc3d773a7b65ce3144d8775c87531ef06322fff01e067616f89"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_bool_prims.c": {
+          "bytes": 1256716,
+          "sha256": "2ab91d1ae08388da8d373a437bdb06f89b8e035a683244d1d8dbcdeed9cb9196"
+        },
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_bool_prims": {
+          "bytes": 1043552,
+          "sha256": "f7e5ed809b6799a99a51d144307fd2bdc68d26d659545b2acffe64fc43d0efa8"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-accept25-971-sol/evals/c_target_branch_arms.bend",
+      "sourceSha256": "113f0729f92d7b0275f4d5941d7ae6cc21d1c1968b4e4abcffdb7534587a8719",
+      "expected": "hi",
+      "observedRaw": "hi\n",
+      "status": "PASS",
+      "diagnostics": "",
+      "stages": [
+        [
+          "emit",
+          "PASS",
+          0,
+          0,
+          0,
+          34340,
+          1784283136,
+          1881443936,
+          "8a3ce2286d52996ee30cd75dee129a2d84d09b174ee815571cb70c6541e3bd2f",
+          "01600cb2bc32b7481f433a8b83dee624b39074c5337f2b3a3aa98ec3dbf1db7b"
+        ],
+        [
+          "clang",
+          "PASS",
+          0,
+          0,
+          0,
+          1668,
+          136347648,
+          91833016,
+          "d70cb86ba19cff3f8d7590f6f376ea3dbded4416a1b85d15467ceeca6f37e647",
+          "f0d318efc7cc726e3e476b3dd643ba7999e98ebcdd2ffdc63757d7065db9d4a1"
+        ],
+        [
+          "run",
+          "PASS",
+          0,
+          0,
+          0,
+          26,
+          311296,
+          311440,
+          "c59b9021e4be0ad2cbab30d6a7a8ecaa7d2455db197d8572cdd9e42d398432f3",
+          "bc05eddba21fe8346021ed547534e1263ede58f910c6d2a4d08ea5843bb06bbd"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_branch_arms.c": {
+          "bytes": 1126529,
+          "sha256": "383d08cd644672583806af8ce3e1c245cf312daf032e2475e5bd72bbb2c140ef"
+        },
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_branch_arms": {
+          "bytes": 954424,
+          "sha256": "88a84200cd2e507713b614276f767aa19e68642cb6f62d3bb7f523cb4ffb6955"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-accept25-971-sol/evals/c_target_char_head.bend",
+      "sourceSha256": "cc5811d968465d9756d579a854e68a649d08b521789c38afb7ebf0ec116422eb",
+      "expected": "955\n955",
+      "observedRaw": "955\n955\n",
+      "status": "PASS",
+      "diagnostics": "",
+      "stages": [
+        [
+          "emit",
+          "PASS",
+          0,
+          0,
+          0,
+          30716,
+          1548795904,
+          1670006896,
+          "a3398f9d5c4aca9f6052023b1862763f00ecf0f6c3e20c556867de1675560c3a",
+          "07f70ba2aaacde8a8cb2189dcca8441fe0d0c4a1592554bdd142e3bb834a7ff7"
+        ],
+        [
+          "clang",
+          "PASS",
+          0,
+          0,
+          0,
+          1533,
+          137134080,
+          92619448,
+          "7abbe2766cd13ea03a1577f2159bdf21485df5a414c32544e9428bc8da086757",
+          "ede734c90a6cd84ca4ac7047ae60366b8192af3481f459fef4a9fb5b76bb1a07"
+        ],
+        [
+          "run",
+          "PASS",
+          0,
+          0,
+          0,
+          32,
+          1540096,
+          1114472,
+          "d77ac951c84389c41a8eb249783f8decd2de50176783d48481f947fb2b8cefb9",
+          "4c17fd17abfce4bf1e4a83c5dd2a9a6adec497f88e9471534222c6b856326c5b"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_char_head.c": {
+          "bytes": 1131340,
+          "sha256": "9664da8d322aa002c7f6a22dbfd8a5f59088ba7ca34b18a9e5ba57d52fb6ea4b"
+        },
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_char_head": {
+          "bytes": 954656,
+          "sha256": "fa843eb608a735a3703629b1dc531c323c69263702b532cdd8bc88052109a8e7"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-accept25-971-sol/evals/c_target_char_to_list.bend",
+      "sourceSha256": "69788352c9b92708c9166d7e78cecd2e1e3ad33adf013eea5d8f2f3cff4262aa",
+      "expected": "955\n120",
+      "observedRaw": "955\n120\n",
+      "status": "PASS",
+      "diagnostics": "",
+      "stages": [
+        [
+          "emit",
+          "PASS",
+          0,
+          0,
+          0,
+          27583,
+          1890828288,
+          2017001008,
+          "55d109fd248f0a271f53e96b8509ea9d03f740809b1aff983ba9df5698b319cc",
+          "638487c10a37893858d0066c29ddfaa6b62ce0596c93350e326e9ff714e843a7"
+        ],
+        [
+          "clang",
+          "PASS",
+          0,
+          0,
+          0,
+          1283,
+          135741440,
+          91357880,
+          "714aa9f9caadd895dcf49cd057a55b4aae152aafe165eb93dff52e0acb90fe36",
+          "21734f0eabaecaae94d5d4f8d24a4654d7a06f2e67430e8dd470f47739f988b2"
+        ],
+        [
+          "run",
+          "PASS",
+          0,
+          0,
+          0,
+          15,
+          229376,
+          311440,
+          "b4f9e2f61f5512693c6e91e08a4bda3f405606dbe3d629518338fe016a78f285",
+          "d39f92a78c630c33a6ec9eb3ed74584f86e95bd672568a234065174a10503f6e"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_char_to_list.c": {
+          "bytes": 1129446,
+          "sha256": "0a459160dd6c67cf7ef0f4a4df73e39d5e8f6859a11dd3c89140c6f90229f0f1"
+        },
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_char_to_list": {
+          "bytes": 954584,
+          "sha256": "42ce8506a86fe18fb8407ef7117ced6d1b09931caa3ff26e27845d76d429e5d7"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-accept25-971-sol/evals/c_target_clo_field.bend",
+      "sourceSha256": "7e1e922c18100bf2b4b588859f555012848843525a56785b1f33e13dec197b4f",
+      "expected": "7",
+      "observedRaw": "7\n",
+      "status": "PASS",
+      "diagnostics": "",
+      "stages": [
+        [
+          "emit",
+          "PASS",
+          0,
+          0,
+          0,
+          29399,
+          1758838784,
+          1819786696,
+          "215a9ded712a8895145aa0dc2f144d0c1c1e1ec1cd0404b71568541fbb1d6bdc",
+          "84beeef05ef95afb0f10042005f4977e473319883645d898d460be5ba5914b2e"
+        ],
+        [
+          "clang",
+          "PASS",
+          0,
+          0,
+          0,
+          1539,
+          134479872,
+          89981648,
+          "55b8d2abc7891b684d9a98ea34eca8f4a5b91ffd803abfcc26f27ae4ebbc0065",
+          "b48256bad247d66ac5c4d5bda27d5272caef59a381927950d5fbb80653100000"
+        ],
+        [
+          "run",
+          "PASS",
+          0,
+          0,
+          0,
+          33,
+          2048000,
+          1278240,
+          "98fcb5ecd92eade0cfa5998de2c2d40d0241eefef47533c1f4844c9115c28a37",
+          "fe19ac450ce20589dec055b0d2cc6dd00e52c06c385384e8098b7f0c23f86509"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_clo_field.c": {
+          "bytes": 1125891,
+          "sha256": "48dbe13e397d0336e94f518361cf52039e48750b949a9164e6cbbeaac402df21"
+        },
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_clo_field": {
+          "bytes": 954432,
+          "sha256": "22c0e92b5cbd5c60845c091925ada872ce9d51c554dc45d311b2c54f43f3e6f3"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-accept25-971-sol/evals/c_target_disjoint_type_cells.bend",
+      "sourceSha256": "5b6ead1a37e317d4fed3b5060a0527f982045dd336d2ec385690b974fb92a6da",
+      "expected": "5",
+      "observedRaw": "5\n",
+      "status": "PASS",
+      "diagnostics": "",
+      "stages": [
+        [
+          "emit",
+          "PASS",
+          0,
+          0,
+          0,
+          33625,
+          1627422720,
+          1723030920,
+          "6fbea1e0468b721a1588d0824f65ab42dbb4cb95367c66395e5aeee7750b0aff",
+          "8ed030a7f71c08d625e51d9386b5420379c9bae57cef4078060ce815c9233b73"
+        ],
+        [
+          "clang",
+          "PASS",
+          0,
+          0,
+          0,
+          1762,
+          135790592,
+          91390672,
+          "d723d09c4c0e2fc0871899fec77dcb46b48ffca6ec2e12df920997c5cb5d3962",
+          "6b0ff3b70e75055f64c464786f0cd4838789b6203b10132c15fe8c61a447edd9"
+        ],
+        [
+          "run",
+          "PASS",
+          0,
+          0,
+          0,
+          31,
+          1310720,
+          934176,
+          "500070e20020c9d90564b8e2866dcf555fd6a087e7ed717b7c2d1c97869d09f9",
+          "c72537850b7745c0197232bd893b26c7967d460083b38cb19643e62ecbf0231d"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_disjoint_type_cells.c": {
+          "bytes": 1133378,
+          "sha256": "9661ced293af3b941c511a96e1cc18f11e6f1f94c5ad48352587a62c51b0f4b3"
+        },
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_disjoint_type_cells": {
+          "bytes": 954528,
+          "sha256": "3ec748e6c2cc0f8d9d14509780e5ece4ffed1607b35059a35958b16a652f682a"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-accept25-971-sol/evals/c_target_drop_fields.bend",
+      "sourceSha256": "cc3f60ad76053e080ff234002c89b488beb5a06c823d4d516466dd90fb9f0bd6",
+      "expected": "5",
+      "observedRaw": "5\n",
+      "status": "PASS",
+      "diagnostics": "",
+      "stages": [
+        [
+          "emit",
+          "PASS",
+          0,
+          0,
+          0,
+          30882,
+          1540505600,
+          1648101080,
+          "1d8e1b3cbe5cf867289e8ea33b7f013b80e93fa16555c3c397f9412fa5426766",
+          "3142afcb25404c4e8b4b204abd432bcf080382f0860dd607f4b0f59fc563c591"
+        ],
+        [
+          "clang",
+          "PASS",
+          0,
+          0,
+          0,
+          1450,
+          135872512,
+          91407032,
+          "4809b2de183a5e2bcb23aa892fa05947d65d8422c643b2848a4402f41dd22b59",
+          "30d975cd16694c13b97c5aefd087ca9aad43e271183e625ba458a777c592503a"
+        ],
+        [
+          "run",
+          "PASS",
+          0,
+          0,
+          0,
+          16,
+          114688,
+          311440,
+          "64207e4d5c82aac865d1ff82f0502498c6f4c89daf0e1bf731bfc338e4c238ad",
+          "a1ab3755719d0edb84c6a7a9cedc1db874d4394b13a81ad7c0b8b005a0df9333"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_drop_fields.c": {
+          "bytes": 1123589,
+          "sha256": "ab3c20c29b1dd14a1d52d8b44127e30ac030d599fbab3947e99a76640a95202b"
+        },
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_drop_fields": {
+          "bytes": 954312,
+          "sha256": "6dcd12a645e6d0256d6e579c564503b10f2d10c346dc6405a4b274bffbf8609c"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-accept25-971-sol/evals/c_target_multiarm.bend",
+      "sourceSha256": "19534b50a377c4142b352e2c1072a9c586f70585b65dc10414eb7e442842f2ac",
+      "expected": "13",
+      "observedRaw": "13\n",
+      "status": "PASS",
+      "diagnostics": "",
+      "stages": [
+        [
+          "emit",
+          "PASS",
+          0,
+          0,
+          0,
+          24565,
+          1324384256,
+          1358980272,
+          "9d6e76accad23c27232290b3a9b27280bb292a9260c51feb0efdda68d6ef9886",
+          "bf51ee95055e57bc6b3754b22bf3205b209e04080433ddab5a7990ee6fde93dc"
+        ],
+        [
+          "clang",
+          "PASS",
+          0,
+          0,
+          0,
+          2005,
+          138018816,
+          93323984,
+          "16519b105d5079f742fc8833555e526678a07920170a077aa19da6babb548bb2",
+          "a93c7ce4475bad6e12103a5edce3814a022f2c01cf3c7a203be8018a80c10f9e"
+        ],
+        [
+          "run",
+          "PASS",
+          0,
+          0,
+          0,
+          17,
+          114688,
+          966944,
+          "53066c5e7d3cd4e341ce14dd2eeb13d45c114be1874738619deaf4125dc0abb1",
+          "45d392ba1436eb91a4c35042c49ce657cdea8ad6beeaebb19560ac6939ada1e4"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_multiarm.c": {
+          "bytes": 1127512,
+          "sha256": "2990dedc40b1d3ede30c9874251738d2651178eba6ed3f62840dd33b8c2d9c44"
+        },
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_multiarm": {
+          "bytes": 954608,
+          "sha256": "c62714babac472aa2d35c3f06614e43b0fad6d0fed661156ab73842cc3c44f0d"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-accept25-971-sol/evals/c_target_nested_adt.bend",
+      "sourceSha256": "704014f43ec2fb031640e41fad7a0960ca189a57ddcfaab4c198ef00a20be6cc",
+      "expected": "15",
+      "observedRaw": "15\n",
+      "status": "PASS",
+      "diagnostics": "",
+      "stages": [
+        [
+          "emit",
+          "PASS",
+          0,
+          0,
+          0,
+          65644,
+          1624391680,
+          1742106624,
+          "c2d134a855d2f5e1d7a335b636acddb7fdb7577f788a6addbe08e99206296527",
+          "353b926587bb25e275ca49463a0e4fc3d79468b45ed2d0bb5562dec650eddf49"
+        ],
+        [
+          "clang",
+          "PASS",
+          0,
+          0,
+          0,
+          1346,
+          136871936,
+          92324560,
+          "33aba827000007507965a2af177e859934ccba0f6a0415c5a6251cd60ab34916",
+          "35ff4d6bf64d077d76811d95ec63704a7e361235cf8671bf0a88e1ce689e7417"
+        ],
+        [
+          "run",
+          "PASS",
+          0,
+          0,
+          0,
+          15,
+          114688,
+          311440,
+          "bb6c260139a8e2b4ce5ef021852178ffc43fb9304df1c31410766c3da0514474",
+          "a639fa9cc2b020d654c32ea7038efc992dfe58f3855cc2ba22c93139943a0586"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_nested_adt.c": {
+          "bytes": 1134636,
+          "sha256": "ff17ab892dfa2f562856023b7c1e98822acdebb00f809393834c56ea666b88bb"
+        },
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_nested_adt": {
+          "bytes": 954608,
+          "sha256": "6efb3ed3fdb7b3117d50258c5be11a30b9508ca50567190a3e2a023fd054671d"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-accept25-971-sol/evals/c_target_region_leave_repeat.bend",
+      "sourceSha256": "e0ff9c485e11bddd85e045bf1a7ccdc6be911d924a7950be2b552d71bd092fc1",
+      "expected": "7\n6",
+      "observedRaw": "7\n6\n",
+      "status": "PASS",
+      "diagnostics": "",
+      "stages": [
+        [
+          "emit",
+          "PASS",
+          0,
+          0,
+          0,
+          31721,
+          1966702592,
+          2039267464,
+          "09da3426751ca3d4aa4ab386ec350c9f81fb1ade96a1127a1bdce94a07ba558b",
+          "5b5d5cc10e985e18f6b72d780a3764469e8c7f574d75ce7825a0f15e5cbdb01a"
+        ],
+        [
+          "clang",
+          "PASS",
+          0,
+          0,
+          0,
+          1270,
+          135331840,
+          90866384,
+          "323ee52152a88aec4ea320c85309d6da5bef00deaabea890fdccf72f9c28c327",
+          "5c7bd5a30066ecb44dc2eabb1bc70bb173e6a6e6af4f15f37c3e0e8207ca3c42"
+        ],
+        [
+          "run",
+          "PASS",
+          0,
+          0,
+          0,
+          17,
+          655360,
+          245832,
+          "0838db60e131d51d9b0394295b3676059ec6d34c94ee560c6106bdcbcdde41db",
+          "2a4d6638b6aa20aba009a278d887054aab5634f96a8aac676719d8f60d8de3c2"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_region_leave_repeat.c": {
+          "bytes": 1128102,
+          "sha256": "e6ff47ca0f82391f856e9a94aa7c7c149300e770969d4e30cfce476ae7b953df"
+        },
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_region_leave_repeat": {
+          "bytes": 954528,
+          "sha256": "be4e63a76bf020c60422e1dd7a2421996dca7fae91de1d66542c61f2a533c53e"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-accept25-971-sol/evals/c_target_region_tail_capture.bend",
+      "sourceSha256": "dbee409925818d554f9a5c88b1c4c8427307f0af48993d29705339be41c94f39",
+      "expected": "11\n12",
+      "observedRaw": null,
+      "status": "FAIL_EMIT",
+      "diagnostics": "(node:26683) ExperimentalWarning: Type Stripping is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\ncandidate: parser rejected /private/tmp/bend-accept25-971-sol/evals/c_target_region_tail_capture.bend: invalid or unsupported top-level syntax\n",
+      "stages": [
+        [
+          "emit",
+          "FAIL",
+          1,
+          1,
+          1,
+          905,
+          509181952,
+          499862288,
+          "854a8ba05d81fa90c76a6ec5a6512b84cd215cc7223985fff02bad0546f3c4b4",
+          "c04e040af48b8ad9ae46626f146683964ac26a7ad08935c1aeba3c1e875e40e2"
+        ]
+      ],
+      "artifacts": []
+    },
+    {
+      "fixture": "/private/tmp/bend-accept25-971-sol/evals/c_target_repeat_capture.bend",
+      "sourceSha256": "59dd7417420f4128ce84e65e14276c5c35d6b764d7d25b3d5a1a4f02e2d239fe",
+      "expected": "10",
+      "observedRaw": "10\n",
+      "status": "PASS",
+      "diagnostics": "",
+      "stages": [
+        [
+          "emit",
+          "PASS",
+          0,
+          0,
+          0,
+          38423,
+          1578024960,
+          1629896296,
+          "69327472f2150dfdcd444542a8b4d2a8d1cad60731bf66a6f51ce80f0f5ebc1c",
+          "b3a548f728cf3f7a44cd853b3310a733474739070471b8f054610adc02d0699f"
+        ],
+        [
+          "clang",
+          "PASS",
+          0,
+          0,
+          0,
+          1257,
+          132874240,
+          90276560,
+          "b0b61f636d1973d95112b32130329da3104be2acc1b24c6b6557164bcc5f0259",
+          "f43db70242403e90f444cf902884d02320ae78a050f6ddf320b8b4d202e340d9"
+        ],
+        [
+          "run",
+          "PASS",
+          0,
+          0,
+          0,
+          32,
+          0,
+          819392,
+          "d339c296ba05117695b444ca9ca20132f4f63ada231ae12ea40a3d953f10231d",
+          "4de0275aac6c0e6b409e57e2628ef8b20f0703819c6c49317db52e379a3f7256"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_repeat_capture.c": {
+          "bytes": 1124394,
+          "sha256": "c929081d7bf7fe2c07518ef675d7d29de3b7b06aede9e6ffdd7492b04b6c7fc6"
+        },
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_repeat_capture": {
+          "bytes": 954376,
+          "sha256": "f6626090b973438af8310f782c38506ec421b935e947520890e19a0f784ae0ca"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-accept25-971-sol/evals/c_target_repeat_data.bend",
+      "sourceSha256": "b871c3b5242184e47ee9e7c034b2d6f62e31a1159ed6c8e259b6e9b2bd240546",
+      "expected": "8",
+      "observedRaw": "8\n",
+      "status": "PASS",
+      "diagnostics": "",
+      "stages": [
+        [
+          "emit",
+          "PASS",
+          0,
+          0,
+          0,
+          31018,
+          1616609280,
+          1721851680,
+          "d418c560c25cce8d6c55fa091ed29015a124c29295f6a60857aca4a2a2143b01",
+          "904cec6a3637e624c20c5999b2d03d81c7584f479c8c3f28dff17d73ca7387e7"
+        ],
+        [
+          "clang",
+          "PASS",
+          0,
+          0,
+          0,
+          1300,
+          133988352,
+          89899680,
+          "5ad149fc808b9d9b787c2be6c11cb4abd096c88e94301e86455ff27b570b7c27",
+          "0abd05b8826c8b781d1abbfd326e5204da87700889d6ddf061f8044e58e703c7"
+        ],
+        [
+          "run",
+          "PASS",
+          0,
+          0,
+          0,
+          16,
+          245760,
+          311440,
+          "36c5f5ca74f9e6aaa64da1c789d9adb2c339b6c49aedc05048838cdfa9944f73",
+          "6f3fbaeb162530ba2ac5613f374f12947924f19a7cdcda9070996fd4de937f44"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_repeat_data.c": {
+          "bytes": 1124313,
+          "sha256": "9b05f95f4c3c70ec6fe987bbeba962c43d2dfcf815be40c3493f6a9a53653109"
+        },
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_repeat_data": {
+          "bytes": 954376,
+          "sha256": "c5ebab3fd4fd675f6bf278b54cab442342d3e70308ea0cd570d536df81244476"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-accept25-971-sol/evals/c_target_string_from_list.bend",
+      "sourceSha256": "2fdc63032bff8c9187ad0ab3533f44c0cb9dedfd9f7113e7b4f4f84e94d50d65",
+      "expected": "λx\n955\n955\n120",
+      "observedRaw": "λx\n955\n955\n120\n",
+      "status": "PASS",
+      "diagnostics": "",
+      "stages": [
+        [
+          "emit",
+          "PASS",
+          0,
+          0,
+          0,
+          25970,
+          1350303744,
+          1391718480,
+          "9be6ccb91b17fba074519adecbff4615260c1e5d19088e5ec123cac7ce451a32",
+          "e13f6c7c513df8af2ebcc9a6f16d838b23c90468571039c31b560baa1b437571"
+        ],
+        [
+          "clang",
+          "PASS",
+          0,
+          0,
+          0,
+          1687,
+          136216576,
+          91816632,
+          "043dd4dfe170ae44ba9f2029c29dee060a29de6605981ca3a8db5da8766d8887",
+          "1a78969020657022faad739a391a51e395c592e4a0106c5d9a443c4a7453c27b"
+        ],
+        [
+          "run",
+          "PASS",
+          0,
+          0,
+          0,
+          31,
+          147456,
+          311440,
+          "ce68e25af03f5098836874d770e09b8bb0781bc7751224cdf970e7379ff6a192",
+          "04edd3afe3b16d9e1dca3ca3fcc0936f64087f370b7a9477aaadf0b037e0dac1"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_string_from_list.c": {
+          "bytes": 1140650,
+          "sha256": "7609811abde9ba761573815132a57d0c5a049b2ad5469bcfef2a9c8a4439e790"
+        },
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_string_from_list": {
+          "bytes": 971496,
+          "sha256": "62f79597bc2a045e9323278d7c8d750955bf0b13d303e4877316fcbf852d184b"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-accept25-971-sol/evals/c_target_trigraph_literal.bend",
+      "sourceSha256": "f036aa1315914c907429f883b010ff5e33b3cd75dab84137c8f1ea11574cc901",
+      "expected": "??=??/??'??(??)??!??<??>??-",
+      "observedRaw": "??=??/??'??(??)??!??<??>??-\n",
+      "status": "PASS",
+      "diagnostics": "",
+      "stages": [
+        [
+          "emit",
+          "PASS",
+          0,
+          0,
+          0,
+          34256,
+          1616936960,
+          1731223688,
+          "eb9e1ddb2a413a9744389a7f50c7c67f48d82abd68da1638e2e84195ddf9773e",
+          "154e233a3711aea3d46edd2f8b0270d85aaa2cda0eca5ba60f6edb6b7a324503"
+        ],
+        [
+          "clang",
+          "PASS",
+          0,
+          0,
+          0,
+          1815,
+          135299072,
+          90833592,
+          "7595dabf702633c01ab6c10651a7ca4f884d6bab4ea74bf9d30b7defb23d3c06",
+          "017d64d611f1e98781087384f861205cf177a087f0a8df47039da26af68d20a6"
+        ],
+        [
+          "run",
+          "PASS",
+          0,
+          0,
+          0,
+          30,
+          458752,
+          180296,
+          "ee536d0af73156de93f789bc15b8642f7534d8001202cbeb403e39da92fe28b5",
+          "fb5ccce1fa68bc05ece2001a36bf0a6b08a7b022fb19f795311aba1e8e81aae4"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_trigraph_literal.c": {
+          "bytes": 1121057,
+          "sha256": "feefea0b55040551f9774e2a938f845f2e6818ea78512c8f37517d445a8026cf"
+        },
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_trigraph_literal": {
+          "bytes": 954200,
+          "sha256": "ab0c65f8c09b911ea3bc269e4d287ed04371daad9dcc6ea4f507ace31f82db22"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-accept25-971-sol/evals/c_target_utf8_astral.bend",
+      "sourceSha256": "8b601c81baf7514313012117ea8dfac6ff4d4f0931725cc525f4f9e7f630a88a",
+      "expected": "𝄞",
+      "observedRaw": "𝄞\n",
+      "status": "PASS",
+      "diagnostics": "",
+      "stages": [
+        [
+          "emit",
+          "PASS",
+          0,
+          0,
+          0,
+          30831,
+          1520173056,
+          1564468696,
+          "ea2f2062a7f8de370643024e95c5effc0667b9873fc4368c6d74d463da7c6c1e",
+          "8f3b0c4cd978eab838bf655cbe5ebb1a01998dca2d56ab00dd40cab56ffa003e"
+        ],
+        [
+          "clang",
+          "PASS",
+          0,
+          0,
+          0,
+          1402,
+          135413760,
+          90587856,
+          "9ae317427a6cdc2c2b87e39c0fa7b77bf64a2476b386eaf3bbf54372ea40439b",
+          "ae859dd1298ca4aeb78556bd8a0583935f0c13af4d728e94478da6b24efcf634"
+        ],
+        [
+          "run",
+          "PASS",
+          0,
+          0,
+          0,
+          31,
+          1687552,
+          1196416,
+          "de7753b2086b1801d27c25cb50181c4b975014e5417d78425ffec0768ee69da7",
+          "a65ec1e0a061d836c6f26c1e54847ade6f83e3a21fa60f78cf2895b948d762aa"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_utf8_astral.c": {
+          "bytes": 1121027,
+          "sha256": "2ca6941e47a1dc45dacf60783055ca7f57994063b861e0cee5ac1db633c85ccd"
+        },
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_utf8_astral": {
+          "bytes": 954200,
+          "sha256": "9c5a0abfcde4576034aa3a823a33df65fb8f1148bc194a6f0927a933e066680e"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-accept25-971-sol/evals/c_target_utf8_literal.bend",
+      "sourceSha256": "e9873e12d727b50ee32ef7afc1a2971f83fe27e314c2a4653e1f453e776342db",
+      "expected": "λx",
+      "observedRaw": "λx\n",
+      "status": "PASS",
+      "diagnostics": "",
+      "stages": [
+        [
+          "emit",
+          "PASS",
+          0,
+          0,
+          0,
+          28838,
+          1555054592,
+          1603893376,
+          "04ba5dabbfbaa89e08a4602a78435070b17e8e970354c54f865b43f1cdb7853f",
+          "5bdaf6a3dbf6e1849a4eea5967fc22e07cacbfd27996d953bf1623da06e7c3b4"
+        ],
+        [
+          "clang",
+          "PASS",
+          0,
+          0,
+          0,
+          1625,
+          135774208,
+          91161320,
+          "a1e325d32c03ac6835fc661527c24780113e9fab7b4b1155da561c58baed2ddd",
+          "db23dad51fb423bde1ce6cfabb59e916afa62066fd31a6ea934f155713cb1ccd"
+        ],
+        [
+          "run",
+          "PASS",
+          0,
+          0,
+          0,
+          15,
+          180224,
+          311440,
+          "8fd6c34c046adeb5934751e5dd8acf6310c2ae5441172af8cacfac2990c21fee",
+          "5da22560a48fc7b3d85dba2d88efb9a2fe427b02cba49a0220de47d74a94690f"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_utf8_literal.c": {
+          "bytes": 1121020,
+          "sha256": "50f426bf0b2772fd6654ffc37b958c960e2a6f8f08a369bacd884cb046946614"
+        },
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_utf8_literal": {
+          "bytes": 954200,
+          "sha256": "d486ecc48e7859e98c172c99133aaec220abb3b6c2fa8489feb21073b6dedbe4"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-accept25-971-sol/evals/c_target_wide_record.bend",
+      "sourceSha256": "88cca90b9c2ee71d14d73bf704c02f99866e70203f3f5b026522832f7f478c7c",
+      "expected": "133",
+      "observedRaw": "133\n",
+      "status": "PASS",
+      "diagnostics": "",
+      "stages": [
+        [
+          "emit",
+          "PASS",
+          0,
+          0,
+          0,
+          55323,
+          1478213632,
+          1627307552,
+          "71dd9b6db0a81ebada887bf022c61000aed9d03f5f2eb0011d2e7bf41ec56f1b",
+          "262d09e770376e4684f754005cf50fdf68e86dae8fe56b0406110219fac7123b"
+        ],
+        [
+          "clang",
+          "PASS",
+          0,
+          0,
+          0,
+          2629,
+          134938624,
+          90489552,
+          "caffd227f84d714def6efd3ecd2f2af1b225fc29db4f69228503736bac98899f",
+          "251c62c47de3e8129ba6b6e2a25cd13f10c471c850feec1341174f69eacd36f6"
+        ],
+        [
+          "run",
+          "PASS",
+          0,
+          0,
+          0,
+          30,
+          2031616,
+          1261856,
+          "590bc10011dc3d074649d2d8fcbd523392c1e774ec15b329a75d9a5b70172d0f",
+          "533368d9fa1ab6945b953513f38a2d2360b776d6c41bf1fc1bd980960ccb03ee"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_wide_record.c": {
+          "bytes": 1128191,
+          "sha256": "4bdd0c556c3d5d87c4ffbc3c808d6e88a91900d503fcc908e34459e6e49dd8e5"
+        },
+        "/tmp/bend-accept25-971-6fa30d28-run1/c_target_wide_record": {
+          "bytes": 954376,
+          "sha256": "83480ff054b13c821c36cc8f1b74def391e34b62b093615bab9e18e9ea19cb92"
+        }
+      }
+    },
+    {
+      "fixture": "/private/tmp/bend-accept25-971-sol/tests/reg/phys_storage_paths.bend",
+      "sourceSha256": "b3f1aad4a75d028845f301816982a0d98a9606d239ce4d3c674a91ac5bf5fd85",
+      "expected": "2655042671\n3,9",
+      "observedRaw": "2655042671\n3,9\n",
+      "status": "PASS",
+      "diagnostics": "",
+      "stages": [
+        [
+          "emit",
+          "PASS",
+          0,
+          0,
+          0,
+          32325,
+          1875116032,
+          1941873696,
+          "2fee744cddfe4a652514d5028f5f516112af4e5d4fe8efa06e32cdd3593dcaf0",
+          "6f9fd37088ac9efb512401dc311db1976b6801c30a6b976386902f9159a4ddfe"
+        ],
+        [
+          "clang",
+          "PASS",
+          0,
+          0,
+          0,
+          1490,
+          140378112,
+          95847096,
+          "934df07949f513c43aeb77c5d012fde9f4b5c454507e4db2f94a0df9c3c18ddb",
+          "8a55328834df40ccf8b859d7a6f3abce8c9b49a54a08eab28db615cef7dcbaf5"
+        ],
+        [
+          "run",
+          "PASS",
+          0,
+          0,
+          0,
+          28,
+          2129920,
+          1360160,
+          "6979db089574d69342cebe11f81357663e09f4f58cc7ff599da5233631d84159",
+          "a4e96ef42673b3da83b2ca9198aceda7d179e7d9214bcf577223b8c86dbc9559"
+        ]
+      ],
+      "artifacts": {
+        "/tmp/bend-accept25-971-6fa30d28-run1/phys_storage_paths.c": {
+          "bytes": 1188596,
+          "sha256": "1a58591696b9d56f841d5b63a8231650debdedd1255f3640b46d80c9b8b9f160"
+        },
+        "/tmp/bend-accept25-971-6fa30d28-run1/phys_storage_paths": {
+          "bytes": 1005856,
+          "sha256": "09e112b71dc5a6eb00066f9b15d902719cd9be7c4b6c88d14b26be6cb53680be"
+        }
+      }
+    }
+  ],
+  "stageRecordColumns": [
+    "stage",
+    "status",
+    "effectiveExit",
+    "commandExit",
+    "supervisorExit",
+    "elapsedMs",
+    "peakRssBytes",
+    "peakFootprintBytes",
+    "guardianReportSha256",
+    "argvSha256"
+  ],
+  "childCommandTemplates": {
+    "emit": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=3072",
+      "/private/tmp/bend-verify-836/evals/candidate_host.ts",
+      "--candidate=/private/tmp/bend-verify-836/checkpoints/verify-836-art.js",
+      "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+      "--parser=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+      "<source>",
+      "-o",
+      "<c>",
+      "--base",
+      "/private/tmp/bend-accept25-971-sol/bend2/base.bend",
+      "--runtime-c",
+      "/private/tmp/bend-accept25-971-sol/bend2/selfhost/c_runtime.c"
+    ],
+    "clang": [
+      "clang",
+      "-std=c11",
+      "-O0",
+      "-ferror-limit=0",
+      "-pthread",
+      "-lm",
+      "-o",
+      "<exe>",
+      "<c>"
+    ],
+    "run": [
+      "<exe>"
+    ]
+  },
+  "stageRecordInterpretation": "Every recorded stage has reportPhase complete and ownedTreeStopped true (checked individually against both raw guardian and adapter result). Reports are <stem>.<stage>.gate.report.json; argv is in <stem>.<stage>.gate.json. Templates reproduce each exact argv using row.fixture and logs/<stem>{.c,}. The Bool failing run exits 1; the parser failing emit exits 1. No other stage failed."
+}

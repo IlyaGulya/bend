@@ -1,13 +1,12 @@
 # Reduced C witnesses and continuation-scope diagnosis
 
-Status: **PUBLIC_DO_CHAIN_PASS; INLINE_BOUNDARIES_PENDING**. The common
-C-generation/compilation blockers are removed for one real do-chain on
-`971e0986`. The three reduced Bool/Char/Fill witnesses have not yet run on that
-image; their older failures are historical, not current boundary results.
-These diagnostics do not replace the full 13-export corpus or the 25-case
-matrix (all previous 24 cases plus the affine closure tail-path regression).
+Status: **SCOPED_PUBLIC_WITNESSES_PASS; FULL_C_MATRIX_FAIL**. On `971e0986`,
+all five reduced inputs below now emit, compile and produce their expected
+stdout. The separate frozen 25-case matrix still fails. A smaller literal
+`Bool.xor(True{}, True{})` through `Bool.show` fails even without projected fields.
+These diagnostics do not replace the full 13-export corpus or C matrix.
 
-## Current executable proof
+## First executable proof
 
 Artifact: `/private/tmp/bend-verify-836/checkpoints/verify-836-art.js`, sha256
 `971e0986800a7d331cf5f528bb71dfb4400e4b9177b90224ce33054da48e0422`,
@@ -41,15 +40,38 @@ outside Git at
 This do-chain has no Bool/Char field, projection or array cell, so it does not
 prove any of the three inline-value boundaries.
 
+## Current bounded public results
+
+`evals/receipts/repro_inline57ab_971_public.json` records the three original
+Bool/Char/Fill sources and the isolated Bool-read control. All their emit,
+clang and execution guards are complete/stopped/exit 0. Expected values in
+the table below equal the observed stdout; Char/CID and borrowed-cell limits
+remain exactly as stated below.
+
+The same receipt separately records the corrected affine tail-capture
+fixture: parenthesizing the local function type preserves the closure and
+both match arms, and the real C executable prints the expected `11`, `12`.
+The original parser-rejected `dbee4099` row stays unchanged in
+`c_matrix_971e0986_25.json`; this targeted correction is not a new aggregate
+matrix PASS. The projected-Bool matrix failure remains unresolved.
+
+The remaining failure is now reduced to
+`repro_inline57ab_bool_xor_literal.bend`: expected `False`, observed empty
+stdout and `runtime fail-stop` after successful emission/clang. The projected
+version fails identically. Receipt: `repro_bool_xor_971.json`. Source inspection
+finds a C conditional-precedence defect in `bend_bool_xor`
+(`c_backend.bend:3942`): the true-input arm returns 0/1 as the CID, not canonical
+True/False CIDs. The source fix has not been applied or behaviorally verified.
+
 ## Reduced inputs and independent expected results
 
-| input under `evals/` | source sha prefix | expected stdout |
+| input under `evals/` | source sha prefix | expected (= observed on `971e0986`) |
 | --- | --- | --- |
 | `repro_inline57ab_bool_projection.bend` | `c9a71566` | `1`, `True` |
 | `repro_inline57ab_char_codepoint.bend` | `53f12eff` | `955`, `955` |
 | `repro_inline57ab_bool_fill_tags.bend` | `e5c11935` | `False`, `True`, `True`, `False` |
 | `repro_inline57ab_iso_do_chain.bend` | `83b82b37` | `a`, `b` |
-| `repro_inline57ab_iso_bool_read.bend` | `9fdf0db1` | `True` (corrected input, not run) |
+| `repro_inline57ab_iso_bool_read.bend` | `9fdf0db1` | `True` |
 
 The projected-Bool record has an extra U32 field to avoid the packed one-word
 parent path. Only True is constructed, separating the read from the old
@@ -131,9 +153,9 @@ clang diagnostics are preserved and were not rerun to reconfirm the failure.
   this run supports no backend conclusion.
 - The ladder's first projected-Bool-only version (`55421bfd`) used an
   unannotated constructor local and failed checking with `term form cannot
-  infer`. Corrected `9fdf0db1` passes the constructor directly and remains
-  unexecuted. The two valid controls, not this invalid input, establish the
-  common emitter failure.
+  infer`. Corrected `9fdf0db1` passes the constructor directly and now executes
+  successfully on `971e0986`. The original invalid input was never evidence
+  for the common emitter failure.
 
 Original streams and guardians remain outside Git, with immutable hashes in
 `evals/receipts/repro_inline57ab_raw_manifest.json` and the attempt receipts.
@@ -153,6 +175,6 @@ The driver `evals/repro_inline57ab_run.ts` records the literal commands,
 source/artifact/runtime hashes, raw streams and terminal guardians. Use fresh
 logs and the named artifact; do not patch generated output, alter expectations,
 reuse a rejected image as acceptance, or substitute these inputs for the full
-matrix/corpus. Future runs remain separately recorded; no successful inline
-boundary, library ABI, memory bound, frozen corpus or byte fixedpoint is
-claimed by this report.
+matrix/corpus. The named finite public boundaries above now pass. The separate
+Bool.xor failure, general ownership/ABI laws, full frozen corpus and current
+root byte fixedpoint remain open.

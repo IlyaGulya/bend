@@ -1,0 +1,637 @@
+{
+  "schemaVersion": 1,
+  "status": "SCOPED_INLINE_AND_CORRECTED_TAIL_PASS",
+  "wholeBackendAccepted": false,
+  "sourceBase": "a46f948b804292fcbf6ba090b62c32a020602018",
+  "productionChanges": [],
+  "testCorrection": {
+    "path": "/private/tmp/bend-fir-integrated57ab/evals/c_target_region_tail_capture.bend",
+    "beforeSha256": "dbee409925818d554f9a5c88b1c4c8427307f0af48993d29705339be41c94f39",
+    "after": {
+      "path": "/private/tmp/bend-fir-integrated57ab/evals/c_target_region_tail_capture.bend",
+      "bytes": 796,
+      "sha256": "5dbbb2fdf2821a6c4cd66bb9061608195f9ac6fbbc7387bad1813fdf81c9a1e4"
+    },
+    "change": "Parenthesize the local function type; same closure, both match arms and expected 11/12. Original parser-rejected matrix row is immutable, not reclassified."
+  },
+  "runner": {
+    "path": "/private/tmp/bend-fir-integrated57ab/evals/repro_inline57ab_run.ts",
+    "bytes": 13685,
+    "sha256": "b127869830afcaf339ab94ddfe7e4e293e6af4f4ed746daed7b9a868cbb4890b"
+  },
+  "scope": "Three original public Bool/Char/Fill witnesses, corrected affine-tail source and isolated Bool-read control. No full25 aggregate acceptance; projected Bool.xor still fails in the frozen matrix. Char stdout does not prove canonical CID or borrowed StCell.",
+  "groups": [
+    {
+      "rawReceipt": {
+        "path": "/tmp/bend-inline-971-original3-run1/repro.receipt.json",
+        "bytes": 17498,
+        "sha256": "a1efc403fc793f1d8fd1eadecfa34b60fb97add672e374ca0358c0ca7bf65cac"
+      },
+      "component": {
+        "path": "/private/tmp/bend-verify-836/checkpoints/verify-836-art.js",
+        "sha256": "971e0986800a7d331cf5f528bb71dfb4400e4b9177b90224ce33054da48e0422",
+        "bytes": 17918636
+      },
+      "parser": {
+        "path": "/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+        "sha256": "0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b"
+      },
+      "node": {
+        "path": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5",
+        "version": "v23.11.0",
+        "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))"
+      },
+      "base": {
+        "path": "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "sha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c"
+      },
+      "runtimeC": {
+        "path": "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c",
+        "sha256": "478c1ba7d0d0626c1927d11c4af3b3d4cef520db41afd8722ebf55d5050769c3"
+      },
+      "caps": {
+        "memoryMiB": 8192,
+        "rssMiB": 8192,
+        "pollMs": 10,
+        "timeoutMs": 600000,
+        "hostHeapMiB": 3072
+      },
+      "fixtures": [
+        {
+          "fixture": "/private/tmp/bend-fir-integrated57ab/evals/repro_inline57ab_bool_projection.bend",
+          "sourceSha256": "c9a71566834052297705d593aae41589bd1fd03c80a3b642d81360dd8a66409d",
+          "expected": "1\nTrue",
+          "status": "PASS",
+          "observed": "1\nTrue",
+          "artifacts": {
+            "repro_inline57ab_bool_projection.c": {
+              "path": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_projection.c",
+              "bytes": 1130045,
+              "sha256": "dbd6fac56ef1dd74d12f59176e85d2dfe2b8bf11cbf93b37524e3942e7f46dd6"
+            },
+            "repro_inline57ab_bool_projection": {
+              "path": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_projection",
+              "bytes": 954592,
+              "sha256": "ad6d1caa5a525151b13e798800ea8c78d86d4a9646c917bb5f4e2ba60346b4b8"
+            }
+          }
+        },
+        {
+          "fixture": "/private/tmp/bend-fir-integrated57ab/evals/repro_inline57ab_char_codepoint.bend",
+          "sourceSha256": "53f12effbc54603d045616ba88c3809950ea99ae5398319f1c6aa7de6a9d169c",
+          "expected": "955\n955",
+          "status": "PASS",
+          "observed": "955\n955",
+          "artifacts": {
+            "repro_inline57ab_char_codepoint.c": {
+              "path": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_char_codepoint.c",
+              "bytes": 1130070,
+              "sha256": "e3e488403a71d260abf17d2f32519bbd22dae87fa8bc6ba3fb1d6a8b155c37a4"
+            },
+            "repro_inline57ab_char_codepoint": {
+              "path": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_char_codepoint",
+              "bytes": 954544,
+              "sha256": "31931bcff7bd5ae05eeaa57183196add228d43c3381998b2fa0a316341a23a36"
+            }
+          }
+        },
+        {
+          "fixture": "/private/tmp/bend-fir-integrated57ab/evals/repro_inline57ab_bool_fill_tags.bend",
+          "sourceSha256": "e5c119356a4137931f08f34f7dc76ebff385761a556b7bea11d452e66b5b1022",
+          "expected": "False\nTrue\nTrue\nFalse",
+          "status": "PASS",
+          "observed": "False\nTrue\nTrue\nFalse",
+          "artifacts": {
+            "repro_inline57ab_bool_fill_tags.c": {
+              "path": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_fill_tags.c",
+              "bytes": 1129509,
+              "sha256": "1873890dfee70c80d66fb35e7bd53f25ce66d3d63cf5881812973e4bc9fba822"
+            },
+            "repro_inline57ab_bool_fill_tags": {
+              "path": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_fill_tags",
+              "bytes": 954448,
+              "sha256": "1c9cbf89d41cadb4e0499651add68f83d03b88a433cef0e824aed1f26a2090c3"
+            }
+          }
+        }
+      ],
+      "stages": {
+        "repro_inline57ab_bool_projection": {
+          "emit": {
+            "command": [
+              "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+              "--experimental-strip-types",
+              "--max-old-space-size=3072",
+              "/private/tmp/bend-verify-836/evals/candidate_host.ts",
+              "--candidate=/private/tmp/bend-verify-836/checkpoints/verify-836-art.js",
+              "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+              "--parser=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+              "/private/tmp/bend-fir-integrated57ab/evals/repro_inline57ab_bool_projection.bend",
+              "-o",
+              "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_projection.c",
+              "--base=/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+              "--runtime-c=/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+            ],
+            "status": "PASS",
+            "reason": "command_exit",
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "effectiveExitCode": 0,
+            "elapsedMs": 20005,
+            "peakRssBytes": 1892696064,
+            "peakFootprintBytes": 1993029584,
+            "stdoutPath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_projection.emit.stdout",
+            "stdoutSha256": "68e4a708bed5b1a265613902192281e77ede885c35950eeecb3afa1cdab51de1",
+            "stdoutBytes": 311,
+            "stderrPath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_projection.emit.stderr",
+            "stderrSha256": "47665d35410207861ed032a882bddf403563d8bbaf07f4ef1dfd3b730a9ff1cf",
+            "stderrBytes": 177,
+            "gatePath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_projection.emit.gate.report.json"
+          },
+          "clang": {
+            "command": [
+              "clang",
+              "-std=c11",
+              "-O0",
+              "-ferror-limit=0",
+              "-pthread",
+              "-lm",
+              "-o",
+              "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_projection",
+              "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_projection.c"
+            ],
+            "status": "PASS",
+            "reason": "command_exit",
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "effectiveExitCode": 0,
+            "elapsedMs": 1242,
+            "peakRssBytes": 136593408,
+            "peakFootprintBytes": 92144312,
+            "stdoutPath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_projection.clang.stdout",
+            "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdoutBytes": 0,
+            "stderrPath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_projection.clang.stderr",
+            "stderrSha256": "c0ea297e2292e59f3e091888d2807a96cccc4a27242f46d7996184764c155b2a",
+            "stderrBytes": 8963,
+            "gatePath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_projection.clang.gate.report.json"
+          },
+          "run": {
+            "command": [
+              "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_projection"
+            ],
+            "status": "PASS",
+            "reason": "command_exit",
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "effectiveExitCode": 0,
+            "elapsedMs": 14,
+            "peakRssBytes": 229376,
+            "peakFootprintBytes": 311440,
+            "stdoutPath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_projection.run.stdout",
+            "stdoutSha256": "1f44a31642e54ff9f9e13cae74ae0084a73f638a4bdfed79cd140317bae3996c",
+            "stdoutBytes": 7,
+            "stderrPath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_projection.run.stderr",
+            "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderrBytes": 0,
+            "gatePath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_projection.run.gate.report.json"
+          }
+        },
+        "repro_inline57ab_char_codepoint": {
+          "emit": {
+            "command": [
+              "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+              "--experimental-strip-types",
+              "--max-old-space-size=3072",
+              "/private/tmp/bend-verify-836/evals/candidate_host.ts",
+              "--candidate=/private/tmp/bend-verify-836/checkpoints/verify-836-art.js",
+              "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+              "--parser=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+              "/private/tmp/bend-fir-integrated57ab/evals/repro_inline57ab_char_codepoint.bend",
+              "-o",
+              "/tmp/bend-inline-971-original3-run1/repro_inline57ab_char_codepoint.c",
+              "--base=/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+              "--runtime-c=/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+            ],
+            "status": "PASS",
+            "reason": "command_exit",
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "effectiveExitCode": 0,
+            "elapsedMs": 18968,
+            "peakRssBytes": 1901969408,
+            "peakFootprintBytes": 1970286024,
+            "stdoutPath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_char_codepoint.emit.stdout",
+            "stdoutSha256": "9cb59021abcb91c62e4f9d83be4acdbe8c23e44c517ec56bcfcc93c0e8f269b6",
+            "stdoutBytes": 310,
+            "stderrPath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_char_codepoint.emit.stderr",
+            "stderrSha256": "128dbcdaa60eb8672be65727abba84947e8b2dbaa31a8e96e1b2348386311e11",
+            "stderrBytes": 177,
+            "gatePath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_char_codepoint.emit.gate.report.json"
+          },
+          "clang": {
+            "command": [
+              "clang",
+              "-std=c11",
+              "-O0",
+              "-ferror-limit=0",
+              "-pthread",
+              "-lm",
+              "-o",
+              "/tmp/bend-inline-971-original3-run1/repro_inline57ab_char_codepoint",
+              "/tmp/bend-inline-971-original3-run1/repro_inline57ab_char_codepoint.c"
+            ],
+            "status": "PASS",
+            "reason": "command_exit",
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "effectiveExitCode": 0,
+            "elapsedMs": 1177,
+            "peakRssBytes": 134676480,
+            "peakFootprintBytes": 90227408,
+            "stdoutPath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_char_codepoint.clang.stdout",
+            "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdoutBytes": 0,
+            "stderrPath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_char_codepoint.clang.stderr",
+            "stderrSha256": "bda3a1899f9c601ac0ca351e263d9ecdec706636526434599e4fc457d34af5c5",
+            "stderrBytes": 8749,
+            "gatePath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_char_codepoint.clang.gate.report.json"
+          },
+          "run": {
+            "command": [
+              "/tmp/bend-inline-971-original3-run1/repro_inline57ab_char_codepoint"
+            ],
+            "status": "PASS",
+            "reason": "command_exit",
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "effectiveExitCode": 0,
+            "elapsedMs": 15,
+            "peakRssBytes": 147456,
+            "peakFootprintBytes": 311440,
+            "stdoutPath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_char_codepoint.run.stdout",
+            "stdoutSha256": "a82721ac8fcccf36e94bdf42c6ef24c45c6b1ecbf3aa4f01ab7d394ee71b2ff0",
+            "stdoutBytes": 8,
+            "stderrPath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_char_codepoint.run.stderr",
+            "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderrBytes": 0,
+            "gatePath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_char_codepoint.run.gate.report.json"
+          }
+        },
+        "repro_inline57ab_bool_fill_tags": {
+          "emit": {
+            "command": [
+              "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+              "--experimental-strip-types",
+              "--max-old-space-size=3072",
+              "/private/tmp/bend-verify-836/evals/candidate_host.ts",
+              "--candidate=/private/tmp/bend-verify-836/checkpoints/verify-836-art.js",
+              "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+              "--parser=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+              "/private/tmp/bend-fir-integrated57ab/evals/repro_inline57ab_bool_fill_tags.bend",
+              "-o",
+              "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_fill_tags.c",
+              "--base=/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+              "--runtime-c=/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+            ],
+            "status": "PASS",
+            "reason": "command_exit",
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "effectiveExitCode": 0,
+            "elapsedMs": 19365,
+            "peakRssBytes": 1812529152,
+            "peakFootprintBytes": 1875415176,
+            "stdoutPath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_fill_tags.emit.stdout",
+            "stdoutSha256": "37a788b2a0d130982c1a0b59c5a848e3888372669bcea1b13bab6abf80db401e",
+            "stdoutBytes": 310,
+            "stderrPath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_fill_tags.emit.stderr",
+            "stderrSha256": "569c323843a732dc952e5e16cbf34a64277ac855f90742f016ea8ea16f753179",
+            "stderrBytes": 177,
+            "gatePath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_fill_tags.emit.gate.report.json"
+          },
+          "clang": {
+            "command": [
+              "clang",
+              "-std=c11",
+              "-O0",
+              "-ferror-limit=0",
+              "-pthread",
+              "-lm",
+              "-o",
+              "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_fill_tags",
+              "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_fill_tags.c"
+            ],
+            "status": "PASS",
+            "reason": "command_exit",
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "effectiveExitCode": 0,
+            "elapsedMs": 1203,
+            "peakRssBytes": 134479872,
+            "peakFootprintBytes": 89981600,
+            "stdoutPath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_fill_tags.clang.stdout",
+            "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdoutBytes": 0,
+            "stderrPath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_fill_tags.clang.stderr",
+            "stderrSha256": "2402a5d225b14c0b1305bc758561b7f6115ed1262e1bcb36a4ee58c1c1b623c5",
+            "stderrBytes": 9063,
+            "gatePath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_fill_tags.clang.gate.report.json"
+          },
+          "run": {
+            "command": [
+              "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_fill_tags"
+            ],
+            "status": "PASS",
+            "reason": "command_exit",
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "effectiveExitCode": 0,
+            "elapsedMs": 13,
+            "peakRssBytes": 147456,
+            "peakFootprintBytes": 311440,
+            "stdoutPath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_fill_tags.run.stdout",
+            "stdoutSha256": "05c71bd00410bb9379f66314012ef2916bda92421cfcbbc7807c1ca00686a8ff",
+            "stdoutBytes": 22,
+            "stderrPath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_fill_tags.run.stderr",
+            "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderrBytes": 0,
+            "gatePath": "/tmp/bend-inline-971-original3-run1/repro_inline57ab_bool_fill_tags.run.gate.report.json"
+          }
+        }
+      }
+    },
+    {
+      "rawReceipt": {
+        "path": "/tmp/bend-inline-971-tail-parens-run1/repro.receipt.json",
+        "bytes": 12131,
+        "sha256": "e331c1c9a273be4ff0d7fc1c8599d3f6bcdf8320902c25652bc61f0d0516d9a0"
+      },
+      "component": {
+        "path": "/private/tmp/bend-verify-836/checkpoints/verify-836-art.js",
+        "sha256": "971e0986800a7d331cf5f528bb71dfb4400e4b9177b90224ce33054da48e0422",
+        "bytes": 17918636
+      },
+      "parser": {
+        "path": "/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+        "sha256": "0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b"
+      },
+      "node": {
+        "path": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "sha256": "ead5889f15f4e17b37f941c7d9e92b624396786bd74d8155ef470f6381f032c5",
+        "version": "v23.11.0",
+        "v8": "12.9.202.28-node.14|--max-old-space-size=3072,-e,process.stdout.write(process.versions.v8 + \"|\" + process.execArgv.join(\",\"))"
+      },
+      "base": {
+        "path": "/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+        "sha256": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c"
+      },
+      "runtimeC": {
+        "path": "/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c",
+        "sha256": "478c1ba7d0d0626c1927d11c4af3b3d4cef520db41afd8722ebf55d5050769c3"
+      },
+      "caps": {
+        "memoryMiB": 8192,
+        "rssMiB": 8192,
+        "pollMs": 10,
+        "timeoutMs": 600000,
+        "hostHeapMiB": 3072
+      },
+      "fixtures": [
+        {
+          "fixture": "/private/tmp/bend-fir-integrated57ab/evals/c_target_region_tail_capture.bend",
+          "sourceSha256": "5dbbb2fdf2821a6c4cd66bb9061608195f9ac6fbbc7387bad1813fdf81c9a1e4",
+          "expected": "11\n12",
+          "status": "PASS",
+          "observed": "11\n12",
+          "artifacts": {
+            "c_target_region_tail_capture.c": {
+              "path": "/tmp/bend-inline-971-tail-parens-run1/c_target_region_tail_capture.c",
+              "bytes": 1127173,
+              "sha256": "6d7ad53a46cb3247f82100bc0bbdb946f567daf67b8252d5c08dd50d3ff5c4fd"
+            },
+            "c_target_region_tail_capture": {
+              "path": "/tmp/bend-inline-971-tail-parens-run1/c_target_region_tail_capture",
+              "bytes": 954560,
+              "sha256": "6289b513219cae69fbc65837c437f71ed4f74b79564b601d237168be174dbe1c"
+            }
+          }
+        },
+        {
+          "fixture": "/private/tmp/bend-fir-integrated57ab/evals/repro_inline57ab_iso_bool_read.bend",
+          "sourceSha256": "9fdf0db1350c369d0e965ad09d5ee25794d2da64954eacd74515fa9f6331292d",
+          "expected": "True",
+          "status": "PASS",
+          "observed": "True",
+          "artifacts": {
+            "repro_inline57ab_iso_bool_read.c": {
+              "path": "/tmp/bend-inline-971-tail-parens-run1/repro_inline57ab_iso_bool_read.c",
+              "bytes": 1125012,
+              "sha256": "d35cfd65e72401a8790b2b5734f6d33f2a138b1ade749c497643ee3e1232ac49"
+            },
+            "repro_inline57ab_iso_bool_read": {
+              "path": "/tmp/bend-inline-971-tail-parens-run1/repro_inline57ab_iso_bool_read",
+              "bytes": 954320,
+              "sha256": "4fc65c39bd3509ead19c7ea8ae19c5810f9aa6d16f56b321332e341ca1c3b444"
+            }
+          }
+        }
+      ],
+      "stages": {
+        "c_target_region_tail_capture": {
+          "emit": {
+            "command": [
+              "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+              "--experimental-strip-types",
+              "--max-old-space-size=3072",
+              "/private/tmp/bend-verify-836/evals/candidate_host.ts",
+              "--candidate=/private/tmp/bend-verify-836/checkpoints/verify-836-art.js",
+              "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+              "--parser=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+              "/private/tmp/bend-fir-integrated57ab/evals/c_target_region_tail_capture.bend",
+              "-o",
+              "/tmp/bend-inline-971-tail-parens-run1/c_target_region_tail_capture.c",
+              "--base=/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+              "--runtime-c=/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+            ],
+            "status": "PASS",
+            "reason": "command_exit",
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "effectiveExitCode": 0,
+            "elapsedMs": 20360,
+            "peakRssBytes": 1825980416,
+            "peakFootprintBytes": 1889408168,
+            "stdoutPath": "/tmp/bend-inline-971-tail-parens-run1/c_target_region_tail_capture.emit.stdout",
+            "stdoutSha256": "1639d13e38795986d60204908866c5bbbc0be923f0842432eca99aba094fd60a",
+            "stdoutBytes": 309,
+            "stderrPath": "/tmp/bend-inline-971-tail-parens-run1/c_target_region_tail_capture.emit.stderr",
+            "stderrSha256": "146b19df23b140494e30ec23f371ab6fe4be8847888b739e49847b12a83ff929",
+            "stderrBytes": 177,
+            "gatePath": "/tmp/bend-inline-971-tail-parens-run1/c_target_region_tail_capture.emit.gate.report.json"
+          },
+          "clang": {
+            "command": [
+              "clang",
+              "-std=c11",
+              "-O0",
+              "-ferror-limit=0",
+              "-pthread",
+              "-lm",
+              "-o",
+              "/tmp/bend-inline-971-tail-parens-run1/c_target_region_tail_capture",
+              "/tmp/bend-inline-971-tail-parens-run1/c_target_region_tail_capture.c"
+            ],
+            "status": "PASS",
+            "reason": "command_exit",
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "effectiveExitCode": 0,
+            "elapsedMs": 1212,
+            "peakRssBytes": 135479296,
+            "peakFootprintBytes": 91046608,
+            "stdoutPath": "/tmp/bend-inline-971-tail-parens-run1/c_target_region_tail_capture.clang.stdout",
+            "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdoutBytes": 0,
+            "stderrPath": "/tmp/bend-inline-971-tail-parens-run1/c_target_region_tail_capture.clang.stderr",
+            "stderrSha256": "20c5f6a55debddacf2bbb354898af9ae22bce97b4f53d3c67c5b2fb4b101353e",
+            "stderrBytes": 8381,
+            "gatePath": "/tmp/bend-inline-971-tail-parens-run1/c_target_region_tail_capture.clang.gate.report.json"
+          },
+          "run": {
+            "command": [
+              "/tmp/bend-inline-971-tail-parens-run1/c_target_region_tail_capture"
+            ],
+            "status": "PASS",
+            "reason": "command_exit",
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "effectiveExitCode": 0,
+            "elapsedMs": 15,
+            "peakRssBytes": 147456,
+            "peakFootprintBytes": 311440,
+            "stdoutPath": "/tmp/bend-inline-971-tail-parens-run1/c_target_region_tail_capture.run.stdout",
+            "stdoutSha256": "42f11aa3013f40302d6f936610d780c36514edf35cd4d60037d5a6adda935c63",
+            "stdoutBytes": 6,
+            "stderrPath": "/tmp/bend-inline-971-tail-parens-run1/c_target_region_tail_capture.run.stderr",
+            "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderrBytes": 0,
+            "gatePath": "/tmp/bend-inline-971-tail-parens-run1/c_target_region_tail_capture.run.gate.report.json"
+          }
+        },
+        "repro_inline57ab_iso_bool_read": {
+          "emit": {
+            "command": [
+              "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+              "--experimental-strip-types",
+              "--max-old-space-size=3072",
+              "/private/tmp/bend-verify-836/evals/candidate_host.ts",
+              "--candidate=/private/tmp/bend-verify-836/checkpoints/verify-836-art.js",
+              "--source-tag=../bend2/selfhost/backend_ir.SourceFile",
+              "--parser=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+              "/private/tmp/bend-fir-integrated57ab/evals/repro_inline57ab_iso_bool_read.bend",
+              "-o",
+              "/tmp/bend-inline-971-tail-parens-run1/repro_inline57ab_iso_bool_read.c",
+              "--base=/private/tmp/bend-fir-integrated57ab/bend2/base.bend",
+              "--runtime-c=/private/tmp/bend-fir-integrated57ab/bend2/selfhost/c_runtime.c"
+            ],
+            "status": "PASS",
+            "reason": "command_exit",
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "effectiveExitCode": 0,
+            "elapsedMs": 19965,
+            "peakRssBytes": 1602568192,
+            "peakFootprintBytes": 1656800936,
+            "stdoutPath": "/tmp/bend-inline-971-tail-parens-run1/repro_inline57ab_iso_bool_read.emit.stdout",
+            "stdoutSha256": "6403d0565ce356861bb55e6be023735266469b16ef8eed2d4db577281e345150",
+            "stdoutBytes": 311,
+            "stderrPath": "/tmp/bend-inline-971-tail-parens-run1/repro_inline57ab_iso_bool_read.emit.stderr",
+            "stderrSha256": "bfd268febf1fbf7f1027daac06085f549e4984de6c4feece243225e8ae56b086",
+            "stderrBytes": 177,
+            "gatePath": "/tmp/bend-inline-971-tail-parens-run1/repro_inline57ab_iso_bool_read.emit.gate.report.json"
+          },
+          "clang": {
+            "command": [
+              "clang",
+              "-std=c11",
+              "-O0",
+              "-ferror-limit=0",
+              "-pthread",
+              "-lm",
+              "-o",
+              "/tmp/bend-inline-971-tail-parens-run1/repro_inline57ab_iso_bool_read",
+              "/tmp/bend-inline-971-tail-parens-run1/repro_inline57ab_iso_bool_read.c"
+            ],
+            "status": "PASS",
+            "reason": "command_exit",
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "effectiveExitCode": 0,
+            "elapsedMs": 1169,
+            "peakRssBytes": 134823936,
+            "peakFootprintBytes": 89998008,
+            "stdoutPath": "/tmp/bend-inline-971-tail-parens-run1/repro_inline57ab_iso_bool_read.clang.stdout",
+            "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdoutBytes": 0,
+            "stderrPath": "/tmp/bend-inline-971-tail-parens-run1/repro_inline57ab_iso_bool_read.clang.stderr",
+            "stderrSha256": "6c2dc444f4575c236c41b5b534d3d3eca06dd23e33c23e690411bc35ebc47a08",
+            "stderrBytes": 8805,
+            "gatePath": "/tmp/bend-inline-971-tail-parens-run1/repro_inline57ab_iso_bool_read.clang.gate.report.json"
+          },
+          "run": {
+            "command": [
+              "/tmp/bend-inline-971-tail-parens-run1/repro_inline57ab_iso_bool_read"
+            ],
+            "status": "PASS",
+            "reason": "command_exit",
+            "reportPhase": "complete",
+            "ownedTreeStopped": true,
+            "commandExitCode": 0,
+            "commandSignal": 0,
+            "effectiveExitCode": 0,
+            "elapsedMs": 15,
+            "peakRssBytes": 131072,
+            "peakFootprintBytes": 311440,
+            "stdoutPath": "/tmp/bend-inline-971-tail-parens-run1/repro_inline57ab_iso_bool_read.run.stdout",
+            "stdoutSha256": "a9ac0c3ac83c40e1b4c3416066d63d324ee9f8c144641dfeed72d140b6557245",
+            "stdoutBytes": 5,
+            "stderrPath": "/tmp/bend-inline-971-tail-parens-run1/repro_inline57ab_iso_bool_read.run.stderr",
+            "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderrBytes": 0,
+            "gatePath": "/tmp/bend-inline-971-tail-parens-run1/repro_inline57ab_iso_bool_read.run.gate.report.json"
+          }
+        }
+      }
+    }
+  ]
+}

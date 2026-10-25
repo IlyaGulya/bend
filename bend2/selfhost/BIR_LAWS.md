@@ -1400,6 +1400,15 @@ the code implements it:
   fixtures whose harnesses would render, compile, and run them; the selfhost
   gate defines the execution lane. No receipt for this base was read.
 
+**Compiler-owned runtime helpers [N], [O].** Every helper called by emitted
+code must resolve, with the expected ABI, in the supplied runtime or the
+renderer's own helper prelude. A fixture-local helper is not production
+runtime authority. Fail-closed paths must retain their failure behavior:
+use the real fatal runtime operation, not an undeclared name, a no-op or a
+fabricated return value. A real emitted translation unit compiled and run
+against that runtime is bounded evidence; a helper-completed unit fixture is
+not a substitute.
+
 **C-2 (boxed callable value versus physical storage).** Two forms exist and
 must not be confused:
 
@@ -1521,8 +1530,16 @@ note}` drives `CID_T` hot bits, `BLK_SHR`, and sealing. Obligations:
 8. Heap callables are affine runtime objects: `rfc_wrap` rejects `TAG_CLO`
    and `TAG_TSK` in `c_runtime.c`. A blanket `term_keep`, including one hidden
    in a tag-test temporary or an array-element copy, is not an ownership
-   solution for a `Type` field. The sharing module's contrary closure comment
-   is not runtime authority.
+   solution for a `Type` field. Hot-set membership alone does not license a
+   runtime copy of a heap callable.
+9. An enclosing `Region` contributes a fallback obligation only on paths
+   from the remaining block that can reach its `LeaveRegion`. The lowering's
+   `Region.next` is the later-case fallback, not unconditional fall-through:
+   a successful `Return`, tail call or `Failure` does not execute it.
+   Carry values through reachable leaves, including outer-region obligations
+   with no immediate atom use; do not capture stale fallback-only references
+   or force an affine copy on a successful/tail arm. Missing genuinely used
+   references remain errors, never zero-filled or silently filtered.
 
 Sharing-plan mechanism: a monotone fixed point over demand/flow/closure facts
 (`Fact`/`AState`, `1920-1960`; `s_plan_from_facts`, `2796-2800`). The header
@@ -1534,7 +1551,7 @@ for "superset" in the presence of foreign values (the plan keeps foreign
 declaration cids cold and relies on the twin's constructor hot bit; that is a
 documented assumption; `tests/io/foreign_shared.c` is cited by the module as
 the measured case, but no matching receipt was read here).
-The frame/path obligations in items 4–8 are normative requirements, not a claim
+The frame/path obligations in items 4–9 are normative requirements, not a claim
 that this fixed point implements them. Their C implementation and guarded
 behavioral acceptance remain **[O]**.
 

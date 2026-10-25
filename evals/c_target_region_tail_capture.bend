@@ -14,7 +14,7 @@ def inc10(x: U32) -> U32:
   U32.add(x, 10)
 
 def run(choice: Choice, g: U32 -> U32) -> U32:
-  h : U32 -> U32 = x => (g(x) : U32)
+  h : (U32 -> U32) = x => (g(x) : U32)
   match choice:
     case Fast{}:
       h(1)

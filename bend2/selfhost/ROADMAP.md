@@ -36,32 +36,33 @@ Main-scoped facts. A receipt's existence is not acceptance: its recorded status
 is named. Where this note did not verify a record, it says "scope not verified
 by note". A JS-generated report is not a native artifact receipt.
 
-The latest all-body candidate is `433aadb5`: 11,806 checked/live bodies,
+The latest all-body candidate is `971e0986`: 11,860 checked/live bodies,
 0 excluded checks and 0 output patches. Its regenerated shared Emit includes
-the changed C producer; stale generated-engine reuse was rejected. The complete
-23-case C matrix is 0 PASS / 23 FAIL, all at emission with
-`a form field is not a single word`; no clang or C execution started.
-Source admission is not C-backend acceptance. Earlier `5205478f` passed 9/16
-C cases. The new matrix uses the accepted external parser `0e7b3c42`; the root's
-own inline parser is still unrepaired. No current full-root fixedpoint or native HOST artifact is claimed.
+Control `83680e53` and physical renderer `daf8a137`. A real public-path
+two-print program now passes emission, clang and execution (`a`, `b`).
+The frozen **25-case C matrix completed with 23 PASS / 2 FAIL**. The rejected
+tail-capture input now passes after a syntax-only correction; Bool.xor still fails.
+The current runs use accepted external parser `0e7b3c42`; a measured public
+parse differential confirms that the root's inline parser is still stale.
+No current full-root fixedpoint or native HOST artifact is claimed.
 
 | Workstream | Recorded state | Evidence | Remaining |
 |---|---|---|---|
-| Parser acceptance | Canonical quantity-binding repair integrated at `2a20074e`..`b2753368`; parser image `0e7b3c42`, canonical source `7389188a`. Full 600 s gate: 75 cases, 0 exclusions/patches; public regressions 15/15, 264 assertions. Earlier 900 s attempt explicitly rejected; final admission uses the corrected gate | `checkpoints/parser-quantity-binder-qp57a-4-600s.receipt.json`, `parser-quantity-binder-qp57a-4-raw-records.json`; final gate `f9eb738b` | authenticate the accepted parser and all imported source pins in the next root build; no parser byte-fixedpoint claim |
-| FIR check / full-body candidate | 11,806 checked/live/expected bodies from 12,366 validated events, 0 excluded / 0 output patches. Artifact `433aadb5`, 17,834,145 B; guardian complete/stopped, 95,496 ms, peak RSS 3,111,387,136 B / footprint 3,299,643,872 B. Immutable build status is `JS_GENERATED_NOT_YET_EXECUTED`; later emission attempts are separate evidence | `checkpoints/candidate-c-backend-source.receipt.json`, `c7fb069d` / `1ad5e4c7`; Control `f17c157b`, physical `256f5777` | fix actual inline borrowed-consumer failure; full 13-export fixedpoint, frozen corpus and native HOST remain open |
-| Shared emitter composition | Regenerated one Emit engine `7b24d429`, manifest `63c18c9d`; 2,000 canonical declarations, 219 added / 27 removed against the predecessor, 0 exclusions/patches. Generator code, public 13 exports and quantum 64 unchanged | `checkpoints/candidate-c-backend-source.receipt.json`; generated images/manifests retained outside Main Git | regenerate again only after a coherent source fix; root text equality alone does not authenticate composed providers |
+| Parser acceptance | Canonical quantity-binding repair integrated at `2a20074e`..`b2753368`; parser image `0e7b3c42`, canonical source `7389188a`. Full 600 s gate: 75 cases, 0 exclusions/patches; public regressions 15/15, 264 assertions. Actual public root parses still reject typed locals and `+` do binders accepted by the external parser; ordinary do and untyped controls agree | `checkpoints/parser-quantity-binder-qp57a-4-600s.receipt.json`, final gate `f9eb738b`; `REPRO_INLINE_PARSER.md`, intake `bcd6f171` | tree-local authenticated parser acceptance, typed-step regeneration and root composition; run the same public differential after cutover; no parser byte-fixedpoint claim |
+| FIR check / full-body candidate | 11,860 checked/live/expected bodies from 12,421 validated events, 0 excluded / 0 output patches. Artifact `971e0986`, 17,918,636 B; guardian complete/stopped, 50,896 ms, peak RSS 3,050,291,200 B / footprint 3,177,616,080 B. Build admission and later C execution are separate receipts | `checkpoints/verify-836.receipt.json`, intake `6fa30d28`; Control `83680e53`, physical `daf8a137`; `evals/receipts/repro_inline57ab_verify_daf8.json` | complete frozen C/foreign/JS coverage, full 13-export fixedpoint, frozen corpus and native HOST |
+| Shared emitter composition | Regenerated one Emit engine `46e6f749`, manifest `c14da6e5`; 2,020 canonical declarations. Generator code, public 13 exports and quantum 64 unchanged; no stale generated engine or output patch | `checkpoints/verify-836.receipt.json`; generated images/manifests retained outside Main Git | regenerate only after a coherent source change; root text equality alone does not authenticate composed providers |
 | BIR lowering / native bridge | Bridge source drives the one Emit engine; no split JS/C lowering. Earlier native `book_valid` checked 11,164 bodies with 0 holes; that historical admission is not current C execution or a native HOST artifact | `evals/native_compiler_driver.bend`; `7dc1ab92` | complete current-root BIR/C and ownership admission |
-| C lane | Candidate `433aadb5` is **REJECTED_C_EMISSION**: all 23 default cases fail with `a form field is not a single word`; every emit has a complete/stopped guardian receipt, command/effective exit 1, and no clang/run. Observed origin is `read_body` → `StSlot{… packed=False}` → `CLay.LayoutData` in physical source `256f5777`; the uninstrumented receipt does not identify the BIR consumer. Historical `5205478f` remains 9 PASS / 7 FAIL, not current-candidate coverage | `evals/receipts/c_matrix_6b1d_23_fail.json`, `2d4f50e3` / correction `78339d80`; 139 preserved raw files under `/tmp/accept23-c-1792914553` | implement the inline borrowed-consumer boundary without copying heap callables or rejecting valid forms; regenerate from coherent source changes before rerunning; no C output patches, removed frees or weakened checks |
-| Physical path slice | Source `f4fdfcc9` adds a non-allocating canonical packed read for zero/one-w32 inline forms and writes the authoritative `FormArm.tag` on Fill. Control remains `f17c157b`; no duplicate Bool consumer conversion. Authentic scoped proof executes all 46 expressions, including real `FlagsS` and `Array<Char>` foreign arguments plus construction checked against real runtime metadata; all six guarded stages complete/stopped/exit 0, executable prints `ok`. Fixed3's aliased Flags proof remains rejected; fixed4 is a narrower 44-expression result, not completion | source `25768441` / `21403317`; complete `evals/physical_storage_acceptance_receipt_fixed5.json`, `2faa3c77`; preserved rejected `fixed3` and scoped `fixed4` | Root has GO for one regenerated shared engine/all-body candidate; full 24-case C matrix, public-path reproducers and retained-page bound remain open. This scoped proof does not accept the whole backend |
-| Foreign / lifetime regression | With historical component `5205478f`, `list_rebox_sum` executes C and fails the retained-page bound after `7`, `3`. With current `433aadb5`, C `list_rebox_sum`, `family_field_hot` and `c_backend_link` all stop at the common emit failure; their C lifetime/link behavior is therefore unobserved. The same current image passes JS emit/run for those three cases | historical `evals/receipts/foreign_qp57a4_5205478f.json`, `4caf49f9`; current `evals/receipts/postmatrix_6b1d_followups.json`, `3bcbc5d9` / correction `78339d80` | fix ownership rather than remove frees or relax the existing retained-page bound; exercise C foreign/link/library behavior after the common emit fix |
-| JS lane | Current `433aadb5` passes actual emit/run for `list_rebox_sum` (`7`, `3`, `bounded`), `family_field_hot` (`5`) and `c_backend_link` (all six expected lines), using accepted external parser `0e7b3c42`. Earlier `bang_call` artifact evidence remains historical, not current broad coverage | `evals/receipts/postmatrix_6b1d_followups.json`, `3bcbc5d9` / correction `78339d80`; historical `6700988b` | full agreed JS corpus and current-root byte fixedpoint; three follow-up cases are not aggregate acceptance |
+| C lane | Frozen `971e0986` matrix: 23/25 pass emit/clang/run/output. `c_target_bool_fields` prints `True` then fails at runtime; original tail-capture input is parser-rejected. Parenthesizing its local function type preserves the intended test and separately passes with `11`, `12`. Literal `Bool.xor(True{}, True{})` also fails without fields or preceding IO: not merely a borrowed-view bug | `evals/receipts/c_matrix_971e0986_25.json`; `repro_inline57ab_971_public.json`; `repro_bool_xor_971.json` | correct canonical CID selection in `bend_bool_xor`, regenerate and run the complete unchanged-or-expanded matrix; do not reclassify the original failed batch |
+| Physical path slice | `daf8a137` retains non-allocating packed reads and authoritative `FormArm.tag` writes; failure paths use real `err_fail`, no fixture-only helper. Authentic fixed6 runs all 46 expressions. The three original public Bool projection/Char/Fill sources now also pass actual emit/clang/run; Char stdout does not establish canonical CID or a borrowed StCell by itself | fixed6 intake `0987900a`, helper audit `10eaeb62`; `evals/receipts/repro_inline57ab_971_public.json` | general physical/ownership laws, full-root/native admission and remaining primitive failure stay open; finite checks are not whole-backend acceptance |
+| Foreign / lifetime regression | Current `971e0986`: `list_rebox_sum`, `family_field_hot`, `c_backend_link` pass real C and JS emission/execution; the original frontier bound is unchanged. Two minimized ownership controls also pass, frontier 129→129 pages, and whole-parent alias prints `9`. Historical `5205478f` failures remain preserved; frontier pages are not retained/live bytes | `evals/receipts/foreign_971e0986.json`, `repro_ownership_971.json`; `REPRO_OWNERSHIP.md` | general lifetime/alias proof and full corpus remain open; no removed frees, relaxed thresholds or inference of retained bytes |
+| JS / library lanes | The three current foreign/IO fixtures pass both targets. Actual sharedEmitC library emission, clang linking to the unchanged C caller and execution pass (`export ok`): six named exports including partial/lazy/factory application, not the legacy template-only smoke | `evals/receipts/foreign_971e0986.json`: seven rows, eighteen guarded stages, all complete/stopped/exit 0 | full agreed JS corpus and current-root byte fixedpoint; these bounded ABI cases do not accept every foreign/library program |
 | Full native build, NO_TRACE joint control | `ABORTED_NO_TERMINAL_REPORT` — **not** an OOM: dead PIDs, guardian report 0 bytes, last recorded `compile_book` start; exact kill cause unobserved; launcher had a 1200 cap but no exit record | Main-scoped control; no terminal report path available to this note | guardian lifecycle fix before interpreting this control |
 | Guardian lifecycle | Integrated: detached supervisor, early decision receipt, final `complete`/`ownedTreeStopped` contract; lease held until owned descendants are confirmed stopped, never released by timer. Merged focused run: 3 pass / 0 fail / 57 assertions. Earlier unlocalized deadline-test failure remains UNKNOWN; this is not a full-suite green claim. | `a72e87d6`..`1c82c2c5`; receipt `747a42a2`, `evals/heavy_gate_lifecycle.receipt.json` | fresh full-root control; diagnose the preserved deadline risk if encountered |
-| Guarded target-matrix runner | Explicit Node 23.11/V8 and parser binding, artifact hashes, fresh logs and complete/stopped/effective-exit enforcement per emit/clang/run. Completed `433aadb5` run: all 23 cases fail emission, no clang/run. Next default matrix expands to 24 with `c_target_bool_fields`; all prior 23 remain unchanged, no acceptance filter. Earlier runner smoke used a stale guardian and remains rejected | runner `aaaecff1`, smoke `9556e675`; six caller/path regressions `0fc1d0ca`; complete frozen failure `evals/receipts/c_matrix_6b1d_23_fail.json`; new real projected-Bool fixture `evals/c_target_bool_fields.bend` | retain frozen failure evidence; run 24 cases only on the freshly regenerated candidate after a coherent source fix |
+| Guarded target-matrix runner | Completed unfiltered 25-case batch on source `6fa30d28`, candidate `971e0986`, Node 23.11.0, external parser `0e7b3c42`, `--keep`. All 73 started stages have complete/stopped reports; batch exit 1. Raw 462-file manifest, commands, hashes, per-stage times/peaks and exact failure diagnostics are preserved | `evals/receipts/c_matrix_971e0986_25.json`; `/tmp/bend-accept25-971-6fa30d28-run1/evidence.manifest.json` | repeat the complete batch after the actual producer fix, including corrected affine-tail input; no narrowed aggregate acceptance |
 | Official TS producer / full native build, traced | 11,164 native-bridge bodies; book heap 1,669,811,048 B; reaches pass 6; OOM; no native artifact | Main-scoped traced run; scope not verified by note | per-structure decomposition; native artifact within the guard |
 | Profiling (actual code) | Producer and stage adapters integrated: scoped wall/CPU/memory, optional statistical samples, crash checkpoints, failure unwind and artifact-bound attribution. Producer smoke 10/10; merged stage behavioral tests 15/15, 49 assertions. Typed request/chunk attribution is sampling, not exact substage time; retained bytes and full-root overhead remain OPEN | producer `3cd1adcd` / `0b0b9c9f` / `d1bbca4e`; stage `68cde43a`..`754ff301`, behavioral receipt `13db7c2c` after deleting the incidental static test | finish canonical-input native Emitter profiling and fresh full-input A/B; do not treat output generation or fabricated BIR metadata as workload acceptance |
-| Native profiling followup | Merged durable instrumentation localizes a new `OLDPINNED_DIAGNOSTIC` worker OOM: load, validation and C reachability completed; `c-pass-1` remains open inside `compile_book`. Guarded FAIL after 154,282 ms, peak RSS 3,472,670,720 B / footprint 3,627,897,496 B, complete/stopped. No clang/native artifact or native phase rows. Earlier 101,984 ms OOM boundary remains unknown. Tiny profile-on/off execution evidence is unchanged | `checkpoints/compiler-native-profile-merged-03d0-durable.json`, `51c09c2a`; frozen input pins in `native-stage-profile-merged-pins.json`; tiny suite `compiler-profile-tiny-suite-merged-6c7e.json`, `fe027d57` | producer memory fix within the original limits, successful native Emitter workload/label execution, retained/live-byte attribution and current-image full-input overhead remain OPEN; diagnostic attribution is not C-backend acceptance |
-| Law documents | `FIR_LAWS.md` and `BIR_LAWS.md` are written, reviewed, integrated at `2fcdbaea`, and linked from `ARCHITECTURE.md`; seven written law tasks CLOSED; proof/behavior obligations remain OPEN | `6a7cfc59`/`4417d18a` (FIR), `0695e763`/`8311d6a4`/`2f0e8d3b`/`2fcdbaea` (BIR) | obligation triage; no behavior/proof acceptance |
+| Native profiling followup | Preserved `OLDPINNED_DIAGNOSTIC` OOM localizes the open boundary to `compile_book / c-pass-1` after load/validation/reachability; no native artifact. A separate guarded literal diagnostic with 1k/4k/16k elements passes and measures reachability/pass-1 growth. It does not reproduce the heterogeneous full-root OOM, identify its cause or measure retained bytes. Observed samples are boundary/event samples, not continuous heap peaks | original `checkpoints/compiler-native-profile-merged-03d0-durable.json`, `51c09c2a`; `REPRO_NATIVE_PASS1.md`, `evals/receipts/repro_native_pass1_literal.json`, intakes `d3f02ed2` / exact provenance `a46f948b` | minimize the actual failing structure; native artifact within 3072 MiB worker old-generation limit, retained/live attribution and current-image full-input overhead remain OPEN |
+| Law documents | `FIR_LAWS.md` and `BIR_LAWS.md` are written, reviewed and linked from `ARCHITECTURE.md`; seven written law tasks CLOSED. C-1 now explicitly requires real runtime/helper resolution; C-6 distinguishes reachable region fallback obligations from successful return/tail paths. General proofs/behavior obligations remain OPEN | original intake `2fcdbaea`; current source/smoke evidence is finite, not a proof of every C-1/C-6 path | obligation triage and missing edge checks; no general semantic-preservation, ownership or whole-backend acceptance |
 
 Table entries are status, not acceptance checkboxes. The current full-root
 acceptance remains pending. A doc-only change does not justify rerunning
@@ -302,11 +303,10 @@ Detailed contracts: integrated `FIR_LAWS.md` and `BIR_LAWS.md`, and
   repeated legal data projections; no blanket input rejection or type table.
   The rejected destructive-view patch and raw-read/no-free patch are not fixes.
   Regression `evals/c_target_clo_field.bend` returns and applies a captured
-  function field. Official 2.0.36 and component `5205478f` both printed `7`,
-  but those runs lacked the required guardian and are explicitly
-  `REJECTED_UNGUARDED` in `evals/c_target_clo_field.receipt.json` (`10182f34`).
-  Output alone cannot distinguish correct transfer from a leak; include it
-  in the next guarded matrix without treating it as a demonstrated failure.
+  function field. Its current guarded `971e0986` matrix run prints `7`.
+  Earlier Official 2.0.36 / `5205478f` unguarded runs remain explicitly
+  `REJECTED_UNGUARDED` in `c_target_clo_field.receipt.json` (`10182f34`);
+  the later pass does not legitimize them. Output alone is not a release proof.
 - [ ] Carry ownership state through continuations and nested pattern failure;
   prove values and allocation/release behavior for ordinary, sealed/shared,
   nested, unused-field and fallback cases before the full fresh C matrix.
@@ -316,8 +316,8 @@ Detailed contracts: integrated `FIR_LAWS.md` and `BIR_LAWS.md`, and
   constructor, already-bound aliases of the same projected path, and a
   projected field followed by use of its whole parent. Branch/region analysis
   must follow `LeaveRegion` successors without treating terminal alternatives
-  as sequential uses of an affine callable. These are open source-review
-  findings, not executed regression receipts.
+  as sequential uses of an affine callable. Current guarded caller/alias,
+  disjoint-cell and corrected tail controls pass; the general proof stays open.
   Array pattern halves/leaf cells follow the same borrowed-path law:
   consuming a selected slice must leave disjoint sibling owners available,
   including across continuations. Verify packed u32 buffers, boxed/inline
@@ -339,6 +339,14 @@ Detailed contracts: integrated `FIR_LAWS.md` and `BIR_LAWS.md`, and
   envelope; pass count and peak recorded.
 - [ ] Official producer pass-6 OOM is resolved or explicitly re-scoped with a
   receipt; no claim that frontend caching fixed it.
+
+- [ ] Fix the `bend_bool_xor` C conditional at `c_backend.bend:3942`: its
+  `a=True` arm returns raw 0/1 as a constructor CID instead of selecting
+  canonical `t`/`f`. Both projected and literal minimal sources emit/compile
+  but fail at runtime; `evals/receipts/repro_bool_xor_971.json` preserves them.
+  Apply the source correction, regenerate through the existing producer,
+  check both minimized paths and the Boolean truth table, then the full matrix.
+  No generated-C patch or fallback value; the proposed fix is not yet verified.
 
 ### 3.4 JS and shared lanes
 
@@ -373,15 +381,20 @@ Requested by the user; four independent workers started from `5328869a` in
 isolated `work/repro-*57ab` worktrees. They own diagnostic inputs and evidence,
 not production changes:
 
-- [ ] **ReproInlineValues:** minimize the real public-path Bool borrowed
-  predicate/branch, Char payload read and constructor arm-tag witnesses.
-- [ ] **ReproOwnership:** isolate list-reboxing retention from observable
-  alias/whole-parent reuse; preserve the existing retained-page bound.
-- [ ] **ReproNativePass1:** identify a small typed diagnostic input for the
-  producer's `compile_book / c-pass-1` growth using the preserved durable OOM
-  evidence; do not retry the unchanged full failure or invent retained bytes.
-- [ ] **ReproInlineParser:** minimize actual parsed-result quantity differences
-  between root's stale inline parser and accepted external parser `0e7b3c42`.
+- [x] **ReproInlineValues:** original three Bool/Char/Fill witnesses and both
+  isolation controls pass on `971e0986`; limitations on CID/StCell evidence
+  remain explicit. The newly isolated literal/projected Bool.xor failure is a
+  separate open C primitive bug. See `REPRO_INLINE_VALUES.md` and receipts.
+- [x] **ReproOwnership:** historical minimal failures preserved; current
+  constructor, rebox and whole-parent value controls pass with the unchanged
+  frontier bound. See `REPRO_OWNERSHIP.md` and `repro_ownership_971.json`.
+- [ ] **ReproNativePass1:** three frozen literal inputs pass within the existing
+  guard and quantify growth. They do not reproduce/minimize the heterogeneous
+  full-root OOM. See `REPRO_NATIVE_PASS1.md`, intake `d3f02ed2` / `a46f948b`.
+- [x] **ReproInlineParser:** actual public parsed results isolate stale inline
+  typed-local and quantity-binding behavior from the accepted external parser;
+  untyped and ordinary-do controls agree. No ABI/oracle failure or parser
+  cutover claimed. See `REPRO_INLINE_PARSER.md`, intake `bcd6f171`.
 
 Each handoff requires the source, exact command, source/artifact hashes,
 expected/observed behavior, runtime/heap/stack/caps and a complete/stopped
@@ -389,6 +402,22 @@ guardian receipt. A reduced diagnostic witness is not a narrowed acceptance
 corpus. One Root build is shared; workers prepare independently and execute
 only in assigned slots on the same default guarded lane. Generated artifacts
 and raw bulk logs stay out of Git.
+
+The four baseline handoffs are preserved. New matrix/foreign executors could
+not start: their model provider returned `401 api_key_expired` before tools.
+Main executed the existing guarded commands in isolated worktrees and records
+their actual results above. Worker access is not restored; implementation
+handoffs must not be described as running while that prerequisite is absent.
+
+Parser cutover preparation is recorded at commit `d68df586` in
+`/private/tmp/bend-root57ab-go/checkpoints/inline-parser-cutover.preparation.json`.
+It is **PREPARATION_ONLY_NOT_EXECUTED**. The composer requires tree-local
+authenticated parser acceptance, then fresh owned/template/checker/emitter
+manifests before root composition; copying accepted absolute paths or patching
+root text is not a cutover. Reconcile the recipe's runtime pin with the frozen
+current runtime before executing it. The public differential, not source hash
+equality, decides whether the inline parser is repaired.
+
 
 ---
 
