@@ -59,5 +59,45 @@
     "sha256": "14d810f2206b0563d4cfecfa1d0323b3f6657ef0d8844d17bea4c1dcd769cb99",
     "bytes": 2386
   },
-  "note": "The 3072 MiB old-generation worker cap was reached while loading/checking/generating the canonical fixture; no native phase ran. This is NOT a profiling pass, NOT a cap raise, and NOT retried. It does not claim full compiler HOST/FP/C execution."
+  "note": "The 3072 MiB old-generation worker cap was reached while loading/checking/generating the canonical fixture; no native phase ran. This is NOT a profiling pass, NOT a cap raise, and NOT retried. It does not claim full compiler HOST/FP/C execution. The opt-in compiler_profile instrumentation was added after this run and manuscript-smoked; it does not retroactively identify this run\u2019s internal boundary.",
+  "profilerInstrumentation": {
+    "status": "opt-in source added; smoke-exercised; old OOM run remains uninstrumented/unknown boundary",
+    "collector": "evals/compiler_profile.mjs (existing)",
+    "spans": [
+      "module-import",
+      "book_load",
+      "book_valid",
+      "compile_book"
+    ],
+    "provenance": [
+      "source path+sha256",
+      "canonical BIR/sources/runtime paths",
+      "artifact dir",
+      "command",
+      "worker scope"
+    ],
+    "smallSmoke": {
+      "command": "node --experimental-strip-types evals/native_stage_profile_build.ts --profile-dir=/tmp/profile-smoke-small --profile-smoke=small",
+      "exit": 0,
+      "summary": "/tmp/profile-smoke-small/profile-50387-thread-1-oCjdBn/summary.json",
+      "summarySha256": "8e287502c5a255af2b5c4f7970fee747cf93c0e18307cfacb48889792b25997a",
+      "status": "completed",
+      "measurementStatus": "complete",
+      "incompleteEvidence": false
+    },
+    "controlledFailure": {
+      "command": "node --experimental-strip-types evals/native_stage_profile_build.ts --profile-dir=/tmp/profile-smoke-fail --profile-smoke=fail",
+      "exit": 1,
+      "log": "/tmp/profile-smoke-fail.log",
+      "logSha256": "419087beb2cc7dc1dceacfa1d4aa8013fe84cb7e3c1f56fc2b8fc57834999ad5",
+      "summary": "/tmp/profile-smoke-fail/profile-51056-thread-1-dwcb2l/summary.json",
+      "summarySha256": "b11594ad8151dac10753c594ddf2cd7ae1019652778b1b2c1da793e7fe3b119c",
+      "status": "failed",
+      "measurementStatus": "incomplete",
+      "incompleteEvidence": true,
+      "span": "smoke-phase aborted"
+    },
+    "workerDeath": "parent writes worker-failure.json next to the newest profile run directory when the worker errors before finish",
+    "oldRun": "the 46124798 OOM run predates instrumentation; its internal boundary remains unknown"
+  }
 }

@@ -105,7 +105,7 @@ collector accepts the close; a rejected close does not hide the stage.
 | C link planning | Sampled attribution, canonical `c_backend_link`; source planning only, not the external linker |
 | emitter entry | Sampled attribution, canonical `emitter` |
 | link | **Unreachable in `candidate_host`**: it emits source only; linking belongs to `native_compiler_experiment` |
-| native chunk attribution | Diagnostic typed view counts, per native phase, the operational progress shape code and, for Emitter, only the outer request-group variant. The current 27-group real-emit fixture is source-validated but its guarded code generation failed terminally with a compiler call-stack overflow; no native workload result is claimed. No source substage, per-function or exact CPU share is claimed. |
+| native chunk attribution | Diagnostic typed view counts the operational progress shape and outer request group. The current canonical BIR/runtime/56-source transport is source-integrated for group 18, but the actual Node worker hit its 3072 MiB heap cap before any native phase; no native workload/profile result is claimed. |
 
 ## Verification in this tree
 
@@ -129,111 +129,61 @@ input `evals/c_target_multiarm.bend`:
 
 Compact evidence: `checkpoints/compiler-profile-ab-4a916.json`.
 
-Bounded diagnostic native component
-(`evals/native_stage_profile_build.ts`, driver/host in this tree): the builder
-now calls the existing `guardHeavyGate(import.meta.url, …)` before creating its
-3072 MiB/256 MiB worker, so a direct CLI run re-execs and authenticates the
-supervisor lease; the old `--internal` bypass and manual `runHeavyGate` path are
-gone. The guarded policy is 8 GiB RSS/memory, 10 ms sampling and 600 s, with
-fixed 300 s clang and 120 s fixture-child deadlines.
+## Current native diagnostic status
 
-The fixture matches all 27 current Emitter request groups and requests the real
-canonical `c_backend.emit` group (group 12, label
-`mixed:layouts+render-c`). Its program is the complete canonical smoke BIR from
-`evals/c_backend_smoke.bend` (main/add/cap/zero codes, declarations,
-constructors, U32 family; known result 26), factored as passive data in
-`evals/native_stage_profile_rejected_smoke.bend` (explicit rejected diagnostic input); its runtime is the real
-`evals/c_backend_runtime.bend` source. It does not import `c_backend.bend`'s
-computed emit check, and it is not a scalar number-formatter or empty-program
-fixture. The driver source passes `book_valid`; a JS generated-Emit probe over the same data/runtime returns `EMIT_SUCCESS` with the added runtime families.
+Current canonical route (source-integrated, not a native pass): frozen
+`evals/native_stage_profile_emit_source.bend` → production candidate artifact
+`4a91665c…` → canonical checked program → generated lower group 5 (4627
+chunks) → canonical BIR → generated transport with the real `c_runtime.c` and
+all 56 declared `.c` sources → driver request group 18
+`cps_provider_6_render` (826307 chunks in the JS proof, `EMIT_SUCCESS`).
 
-The typed resume forwards the actual `EmitterValue<cps_provider_2_EmitResult>`
-to completion, and the host calls the typed classifier: non-empty `EmitSuccess`
-(1), empty `EmitSuccess` (0), `EmitFailure` (2); a non-1 status fails the phase.
-This removes the prior failure-to-Unit drop.
+The one actual Node 23.11/V8 guarded run (8 GiB/10 ms/600 s; worker 3072/256;
+no Bun, no internal bypass) completed transport generation and then exhausted
+the worker old-generation heap after 101,984 ms:
+`ERR_WORKER_OUT_OF_MEMORY`. Peak RSS was 3,394,748,416 B (3.395 GB / 3.162 GiB),
+below the 8 GiB guard. No native phase row, artifact, or profile was produced.
+No cap was raised and the run was not retried. This is **NOT PASS** and does not
+claim full compiler host/FP/C execution. Details:
+`checkpoints/compiler-native-profile-aa9-canonical-final.json`.
 
-A stopped Node 23.11 attempt is preserved but is not counted: it used the
-placeholder fixture and was interrupted on instruction after 102 s, peak RSS
-3,029,139,456 B, with `ownedTreeStopped: true` and no result. Its command ran
-Node through `guardHeavyGate`, but it establishes neither workload success nor
-a Node cap result.
+The OOM boundary is not fully proven for this old run: it predates
+instrumentation; the log contains only transport output then the worker error.
+A separate prior consumer smoke completed `book/load/valid`
+(`TRANSPORT_CONSUMER_OK`), making `compile_book` probable, but this is not
+proven. Only guardian peak RSS/footprint exists; there is no heap/CPU/allocation
+profile. Raw logs remain outside Git.
 
-**The prior native attempt was rejected as wrong runtime, not classified as a
-Node-caps blocker.** The actual guarded attempt invoked
-`/opt/homebrew/.../bun`; that was Bun/JSC, not the required Node/V8 worker. It
-failed after 12.4 s with `RangeError: Maximum call stack size exceeded` in
-`comp.ts`, at `peakRssBytes 5,091,704,832` (5.092 GB / 4.742 GiB), with
-`ownedTreeStopped: true`; no artifact or native phase row was produced. Because
-Bun declares but does not establish enforcement of `resourceLimits`, the
-3072/256 limits were not established and this run is recorded as
-`REJECTED_WRONG_RUNTIME_BUN`. No retroactive Node-cap claim is made and no
-compiler/generator/source-output patch was applied. The old Bun raw logs are
-preserved with runtime explicit in
-`checkpoints/compiler-native-profile-aa9-failure.json`.
+The builder now has opt-in `--profile-dir=DIR` instrumentation using the
+existing `evals/compiler_profile.mjs`: `module-import`, `book_load`,
+`book_valid`, `compile_book` spans plus source/input/runtime provenance.
+`--profile-smoke=small` completes; `--profile-smoke=fail` records an aborted
+span and failed/incomplete summary; parent worker errors write a
+`worker-failure.json` beside the newest profile run. These smokes are
+source-path checks only and did not rerun the native workload. The old OOM
+boundary remains unknown.
 
-The builder now requires Node/V8 and fails fast under Bun/JSC before the guard.
-Its required invocation is `node --experimental-strip-types
-evals/native_stage_profile_build.ts --artifact-dir=DIR`; the whole build still
-uses `guardHeavyGate` with the inherited lease, 8 GiB/10 ms/600 s policy and no
-`--internal` bypass. The compliant Node 23.11/V8 run is complete and is the terminal native evidence:
-codegen and native execution succeeded, the typed witness saw
-`fixtureResultStatus 2` (`EmitFailure`) for the canonical smoke program/runtime
-through Emitter group 12, and the host failed the phase instead of dropping it.
-The run took 217.8 s, peak RSS 6,606,716,928 B (6.607 GB / 6.153 GiB), below
-the 8 GiB guard, with four phase rows (template 2, checker 3, template-pending 2,
-emitter 3 advances; group 12 observed once). This is a real canonical
-`EmitFailure`, not an OOM/stack-cap failure and not a profiling PASS. The exact failure message is recovered on the public diagnostic surface
-`evals/native_stage_profile_emit_probe.ts` (source
-`evals/native_stage_profile_emit_probe.bend`): it prints
-`no family declares constructor Nil` for the copied canonical smoke BIR data
-and real runtime. Run it with
-`node --stack-size=65536 --experimental-strip-types evals/native_stage_profile_emit_probe.ts`;
-the 64 MiB stack is within the approved 256 MiB source cap and no native cap is
-changed.
+The fixture must include the full prelude because the small source imports Base;
+canonical lowering carries its global declarations, constructor/family
+metadata, foreign declarations and exact C source alternatives. Omitting it is
+not a smaller valid fixture (the observed `no family declares constructor Nil`
+is the historical example). Transport sizes: BIR 1,639,178 B; source bundle
+279,742 B; runtime 75,336 B; serialized fixture 793,517 B.
 
-A hand-built family-per-constructor patch was attempted and then rejected:
-its `DescriptorNull` fields, `None`-native constructor layouts and separate
-families named after each constructor are not authoritative typed BIR metadata,
-even though they made the renderer return success. That metadata has been
-removed. The fixture is **BLOCKED ON AUTHORITATIVE BIR**: it needs a small real
-checked source driven through canonical FIR/lowering to a BIR/Emitter request,
-or another canonical generated fixture with complete semantically correct
-runtime family/constructor metadata. The copied smoke data is retained only as
-the failing public diagnostic input.
+### Historical/rejected evidence (not current claims)
 
-A canonical replacement path is now proven separately: a frozen real source
-(`evals/native_stage_profile_emit_source.bend`, closed arithmetic/closure) is
-checked by the production candidate artifact, lowered by generated
-`EmitterRequest_cps_provider_1_lower` (group 5, 4627 chunks), and rendered by the
-generated canonical C render request `cps_provider_6_render` (group 18, 826307
-chunks) with the 56 real `.c` source alternatives, returning `EMIT_SUCCESS`.
-CheckedProgram/BIR/source bundles are generated under `/tmp` and not committed;
-only the source input and thin diagnostic components are source. The JS codegen
-stack is 256 MiB, the approved source cap; no native worker/guard limit changed.
-The diagnostic driver now consumes this canonical BIR, real runtime and 56-file
-C source bundle through `EmitterRequestGroup_18` /
-`EmitterRequest_cps_provider_6_render`. The native host passes the owned
-result to one typed outcome callback and does not drop it again; the callback
-carries EmitSuccess source or EmitFailure message/span, and the driver prints
-`EMIT_SUCCESS` or `EMIT_FAILURE: <message>` and exits nonzero on failure.
-
-The actual canonical Node 23.11 run is terminal **NOT PASS**: the 3072 MiB
-old-generation Worker cap was reached after 102 s while loading/checking/
-generating the canonical fixture (`ERR_WORKER_OUT_OF_MEMORY`, peak RSS
-3,394,748,416 B = 3.395 GB / 3.162 GiB, below the 8 GiB guard). No native phase
-row, artifact or profile was produced. No cap was raised and the run was not
-retried. This is an honest worker-heap prerequisite failure, not a profiling
-success; it also does not claim full compiler host/FP/C execution. Details:
-`checkpoints/compiler-native-profile-aa9-canonical-final.json`. the builder's transport step writes the
-generated fixture under `checkpoints/` (not Git) from `--canonical-bir`,
-`--canonical-sources`, `--canonical-runtime`, and optional checked/component
-provenance. The transport computes real hashes, includes nullary constructors,
-rejects unknown constructors, non-canonical nominal tags, and extra/missing
-fields, and validates source bundles as exactly `{path, source}`. A consumer
-smoke passed (`TRANSPORT_CONSUMER_OK`). It does not use the copied
-smoke fixture or a scalar request. This is not yet a native fixture run, and
-direct group-12 CImport assembly is not claimed. The performed Node native run remains the pre-fix
-`EmitFailure` evidence; no native rerun or cap change was made.
+- Bun/JSC diagnostic run: `REJECTED_WRONG_RUNTIME_BUN`; worker limits were not
+  established. Its call-stack failure is not a Node-cap result.
+- Copied `c_backend_smoke` BIR had no authoritative runtime families; it is now
+  `evals/native_stage_profile_rejected_smoke.bend`, referenced only by the
+  public failure probe. That probe prints the exact original
+  `no family declares constructor Nil`, but is diagnostic-only.
+- A hand-built family-per-constructor patch was rejected as non-authoritative
+  metadata; it is not a valid fixture and is not in the canonical driver path.
+- The earlier Node `EmitFailure` status-2 run and its message probe are
+  historical diagnostics, not terminal native evidence.
+- Direct group-12 CImport assembly was not proven; group 18 is the approved
+  canonical C render entry. C remains `C_EMISSION_EQUIVALENT_NOT_EXECUTED`.
 
 Native coarse rows were read from the preserved diagnostic trace
 `/tmp/signature-publish57z/evidence/comparison/A1.stderr.log`

@@ -27,7 +27,7 @@
 // --internal bypass mode.
 import {createHash} from 'node:crypto';
 import {execFileSync, spawnSync} from 'node:child_process';
-import {existsSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync} from 'node:fs';
+import {existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, statSync, writeFileSync} from 'node:fs';
 import {dirname, join, resolve} from 'node:path';
 import {tmpdir} from 'node:os';
 import {fileURLToPath} from 'node:url';
@@ -39,7 +39,7 @@ import type * as Compiler from '../bend2/comp.ts';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
-type Options = {artifactDir?: string; canonicalBir?: string; canonicalSources?: string; canonicalRuntime?: string; canonicalChecked?: string; canonicalComponent?: string};
+type Options = {artifactDir?: string; canonicalBir?: string; canonicalSources?: string; canonicalRuntime?: string; canonicalChecked?: string; canonicalComponent?: string; profileDir?: string; profileSmoke?: 'small' | 'fail'};
 const clangTimeoutMs = 300000, runTimeoutMs = 120000;
 
 function options(): Options {
@@ -47,7 +47,7 @@ function options(): Options {
   for (const argument of process.argv.slice(2)) {
     const at = argument.indexOf('=');
     const name = at < 0 ? argument : argument.slice(0, at), value = at < 0 ? undefined : argument.slice(at + 1);
-    if (!['--artifact-dir', '--canonical-bir', '--canonical-sources', '--canonical-runtime', '--canonical-checked', '--canonical-component'].includes(name) || value === undefined || values.has(name))
+    if (!['--artifact-dir', '--canonical-bir', '--canonical-sources', '--canonical-runtime', '--canonical-checked', '--canonical-component', '--profile-dir', '--profile-smoke'].includes(name) || value === undefined || values.has(name))
       throw Error('expected unique --artifact-dir=DIR or canonical transport paths, observed ' + argument);
     values.set(name, value);
   }
@@ -58,6 +58,8 @@ function options(): Options {
     canonicalRuntime: values.has('--canonical-runtime') ? resolve(values.get('--canonical-runtime')) : undefined,
     canonicalChecked: values.has('--canonical-checked') ? resolve(values.get('--canonical-checked')) : undefined,
     canonicalComponent: values.has('--canonical-component') ? resolve(values.get('--canonical-component')) : undefined,
+    profileDir: values.has('--profile-dir') ? resolve(values.get('--profile-dir')) : undefined,
+    profileSmoke: values.has('--profile-smoke') ? values.get('--profile-smoke') as 'small' | 'fail' : undefined,
   };
 }
 
@@ -108,9 +110,57 @@ function labels(o: Options) {
       expectedOutputSha256, actualOutputSha256}};
 }
 
+let workerProfile: any;
+function profileExecution(o: Options) {
+  const sourcePath = join(root, 'evals/native_stage_profile_emit_source.bend');
+  return {
+    stage: 'native-diagnostic', mode: o.profileSmoke ? 'profile-smoke' : 'canonical-transport',
+    sourcePath, sourceSha256: sha(readFileSync(sourcePath)),
+    canonicalBirPath: o.canonicalBir ?? null, canonicalSourcesPath: o.canonicalSources ?? null,
+    canonicalRuntimePath: o.canonicalRuntime ?? null, artifactDir: o.artifactDir ?? null,
+    command: [process.execPath, ...process.argv.slice(2)],
+    scope: 'native diagnostic builder; worker 3072/256; no compiler-root/HOST/FP/C-execution claim',
+  };
+}
+async function profileSmoke(o: Options) {
+  if (!o.profileDir) throw Error('--profile-smoke needs --profile-dir=DIR');
+  const {createCompilerProfile} = await import('./compiler_profile.mjs');
+  const profile = await createCompilerProfile({directory: o.profileDir, execution: profileExecution(o)});
+  workerProfile = profile;
+  const span = profile.begin('smoke-phase', {workload: o.profileSmoke});
+  if (o.profileSmoke === 'fail') {
+    const error = new Error('controlled profile smoke failure');
+    profile.finish('failed', error);
+    throw error;
+  }
+  profile.end(span, 'completed', {workload: 'small'});
+  const summary = profile.finish('completed');
+  workerProfile = undefined;
+  return {diagnosticOnly: true, profileSmoke: 'small', profile: {runDirectory: profile.runDirectory, reportPath: profile.reportPath, status: summary.status}};
+}
+function recordWorkerFailure(o: Options, error: unknown) {
+  if (!o.profileDir || !existsSync(o.profileDir)) return;
+  const runs = readdirSync(o.profileDir, {withFileTypes: true})
+    .filter(entry => entry.isDirectory() && entry.name.startsWith('profile-'))
+    .map(entry => ({path: join(o.profileDir!, entry.name), mtime: statSync(join(o.profileDir!, entry.name)).mtimeMs}))
+    .sort((a, b) => b.mtime - a.mtime);
+  if (runs.length === 0) return;
+  writeFileSync(join(runs[0].path, 'worker-failure.json'), JSON.stringify({schemaVersion: 1,
+    kind: 'compiler-profile-worker-failure', diagnosticOnly: true, status: 'failed',
+    reason: 'worker terminated before the collector could finish',
+    error: error instanceof Error ? error.message : String(error),
+    profileRunDirectory: runs[0].path, checkpointPath: join(runs[0].path, 'checkpoint.json'),
+    reportPath: join(runs[0].path, 'summary.json'), observedAt: new Date().toISOString()}, null, 2) + '\n', {flag: 'wx'});
+}
 async function build(o: Options) {
   const directory = o.artifactDir ?? mkdtempSync(join(tmpdir(), 'bend-native-stage-profile-'));
   mkdirSync(directory, {recursive: true});
+  let profile: any;
+  if (o.profileDir) {
+    const {createCompilerProfile} = await import('./compiler_profile.mjs');
+    profile = await createCompilerProfile({directory: o.profileDir, execution: profileExecution(o)});
+    workerProfile = profile;
+  }
   if (!o.canonicalBir || !o.canonicalSources || !o.canonicalRuntime)
     throw Error('diagnostic transport requires --canonical-bir=FILE --canonical-sources=FILE --canonical-runtime=FILE');
   const generatedFixture = join(root, 'checkpoints/native_stage_profile_generated_fixture.bend');
@@ -124,15 +174,23 @@ async function build(o: Options) {
   const driverPath = join(root, 'evals/native_stage_profile_driver.bend');
   const hostPath = join(root, 'evals/native_stage_profile_host.c');
   const {emitterManifestPath, emitterManifest, groupLabels, emitGroup, artifactBinding} = labels(o);
+  const importSpan = profile?.begin('module-import', {kernelPath, compilerPath});
   const K = await import(kernelPath) as typeof Bend;
   const C = await import(compilerPath) as typeof Compiler;
+  if (importSpan) profile.end(importSpan, 'completed', {});
   const started = performance.now();
   const book = K.book_nil();
+  const loadSpan = profile?.begin('book_load', {driverPath, generatedFixture});
   await K.book_load(book, driverPath, '', new Map());
+  if (loadSpan) profile.end(loadSpan, 'completed', {});
+  const validSpan = profile?.begin('book_valid', {driverPath});
   K.book_valid(book);
+  if (validSpan) profile.end(validSpan, 'completed', {});
   const validationMs = performance.now() - started;
   const codegenStart = performance.now();
+  const compileSpan = profile?.begin('compile_book', {driverPath});
   const c = C.compile_book(book);
+  if (compileSpan) profile.end(compileSpan, 'completed', {outputBytes: Buffer.byteLength(c)});
   const codegenMs = performance.now() - codegenStart;
   const cPath = join(directory, 'native-stage-profile.c');
   const artifact = join(directory, 'native-stage-profile');
@@ -153,8 +211,11 @@ async function build(o: Options) {
   const observedEmitterGroups = Object.keys(emitterPhase?.values.requestGroups ?? {}).map(Number);
   if (!observedEmitterGroups.includes(emitGroup))
     throw Error('native emitter fixture did not exercise the manifest emit group ' + emitGroup + '; observed ' + JSON.stringify(observedEmitterGroups));
+  const profileSummary = profile?.finish('completed');
+  workerProfile = undefined;
   return {
     diagnosticOnly: true, acceptanceEvidence: false,
+    profile: profile ? {runDirectory: profile.runDirectory, reportPath: profile.reportPath, status: profileSummary?.status} : null,
     directory, driverPath, driverSha256: sha(readFileSync(driverPath)), hostPath, hostSha256: sha(readFileSync(hostPath)),
     kernelPath, kernelSha256: sha(readFileSync(kernelPath)), compilerPath, compilerSha256: sha(readFileSync(compilerPath)),
     emitterManifestPath, emitterManifestSha256: sha(readFileSync(emitterManifestPath)), groupLabels,
@@ -197,12 +258,18 @@ if (isMainThread) {
     resourceLimits: {stackSizeMb: 256, maxOldGenerationSizeMb: 3072},
   });
   worker.once('message', result => {console.log(JSON.stringify(result));});
-  worker.once('error', error => {console.error('native stage profile worker failed: ' + String(error)); process.exitCode = 1;});
+  worker.once('error', error => {
+    try { recordWorkerFailure(workerData as Options, error); } catch (receiptError) { console.error('worker failure receipt failed: ' + String(receiptError)); }
+    console.error('native stage profile worker failed: ' + String(error));
+    process.exitCode = 1;
+  });
   worker.once('exit', code => {if (code !== 0) process.exitCode = code;});
 } else {
   try {
-    parentPort!.postMessage(await build(workerData as Options));
+    const o = workerData as Options;
+    parentPort!.postMessage(o.profileSmoke ? await profileSmoke(o) : await build(o));
   } catch (error) {
+    try { workerProfile?.finish('failed', error); } catch {}
     console.error('native stage profile build failed: ' + String(error instanceof Error ? error.stack ?? error.message : error));
     process.exitCode = 1;
   }
