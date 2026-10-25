@@ -275,12 +275,14 @@ Detailed contracts: integrated `FIR_LAWS.md` and `BIR_LAWS.md`, and
 - [x] Replace the non-tail Base String.split/join path with linear stack-safe
   text assembly; complete emitted translation units now reach clang and run
   (`c_probe_5205478f_pass.json`). This does not close full C acceptance.
-- [ ] Finish ownership-correct projection: use a non-consuming payload read
-  (`term_peek`), produce an independently owned field, and retain the parent
-  until path liveness permits `term_sink`. Keep only the selected field's
-  boxed words and write back newly sealed child references when required.
-  Repeated/fallback projections remain legal. Destructive grouped-view and
-  raw-read/no-free workarounds are rejected; no new representation type table.
+- [ ] Finish ownership-correct projection: non-consuming payload reads must
+  preserve the parent through nested-pattern failure. Distinguish borrowed
+  field views from owned transfers; detach an affine field at its actual move
+  rather than keep it and later drop both owners. The runtime rejects sharing
+  heap closures (`rfc_wrap`, `ERR_RFCS`), so unconditional field `term_keep`
+  is not a solution. Preserve callable-field return/application as well as
+  repeated legal data projections; no blanket input rejection or type table.
+  The rejected destructive-view patch and raw-read/no-free patch are not fixes.
 - [ ] Carry ownership state through continuations and nested pattern failure;
   prove values and allocation/release behavior for ordinary, sealed/shared,
   nested, unused-field and fallback cases before the full fresh C matrix.
