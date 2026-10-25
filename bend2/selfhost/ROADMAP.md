@@ -36,14 +36,27 @@ Main-scoped facts. A receipt's existence is not acceptance: its recorded status
 is named. Where this note did not verify a record, it says "scope not verified
 by note". A JS-generated report is not a native artifact receipt.
 
-The latest all-body candidate is `971e0986`: 11,860 checked/live bodies,
+Latest candidate: **`667e7f33`**, source-only Boolean fix integrated at
+`8aefa052` (`c_backend 346f5b53`, physical unchanged `daf8a137`).
+Fresh generation still checks all 11,860 bodies, with 0 exclusions/patches,
+the same 13 exports and quantum 64. Both previously failing literal/projected
+Bool.xor witnesses and all four truth-table rows now pass real emit/clang/run.
+Receipt: `evals/receipts/bool_xor_fix_667e7f33.json`.
+The full matrix is expanded, never narrowed, to 26 inputs by adding
+`c_target_bool_xor`; complete-batch acceptance is pending.
+
+### Preceding `971e0986` checkpoint (historical)
+
+
+The preceding all-body candidate was `971e0986`: 11,860 checked/live bodies,
 0 excluded checks and 0 output patches. Its regenerated shared Emit includes
 Control `83680e53` and physical renderer `daf8a137`. A real public-path
 two-print program now passes emission, clang and execution (`a`, `b`).
 The frozen **25-case C matrix completed with 23 PASS / 2 FAIL**. The rejected
-tail-capture input now passes after a syntax-only correction; Bool.xor still fails.
-The current runs use accepted external parser `0e7b3c42`; a measured public
-parse differential confirms that the root's inline parser is still stale.
+tail-capture input separately passed after a syntax-only correction. The later
+`667e7f33` Boolean fix does not reclassify this batch. These runs used accepted
+external parser `0e7b3c42`; a measured public parse differential confirms that
+the root's inline parser is still stale.
 No current full-root fixedpoint or native HOST artifact is claimed.
 
 | Workstream | Recorded state | Evidence | Remaining |

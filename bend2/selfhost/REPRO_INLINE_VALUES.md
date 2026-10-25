@@ -1,10 +1,10 @@
 # Reduced C witnesses and continuation-scope diagnosis
 
-Status: **SCOPED_PUBLIC_WITNESSES_PASS; FULL_C_MATRIX_FAIL**. On `971e0986`,
-all five reduced inputs below now emit, compile and produce their expected
-stdout. The separate frozen 25-case matrix still fails. A smaller literal
-`Bool.xor(True{}, True{})` through `Bool.show` fails even without projected fields.
-These diagnostics do not replace the full 13-export corpus or C matrix.
+Status: **BOOL_XOR_FIXED_IN_SOURCE_AND_SCOPED_RUNTIME; FULL_MATRIX_PENDING**.
+Successor `667e7f33` fixes the Boolean defect; both reduced failures and the
+complete truth table now pass real emit/clang/run. On predecessor `971e0986`,
+all five original reduced inputs below pass, but its frozen C matrix remains
+failed. These finite diagnostics do not replace the full corpus or matrix.
 
 ## First executable proof
 
@@ -53,15 +53,24 @@ fixture: parenthesizing the local function type preserves the closure and
 both match arms, and the real C executable prints the expected `11`, `12`.
 The original parser-rejected `dbee4099` row stays unchanged in
 `c_matrix_971e0986_25.json`; this targeted correction is not a new aggregate
-matrix PASS. The projected-Bool matrix failure remains unresolved.
+matrix PASS. Its projected-Bool failure is preserved as historical evidence.
 
-The remaining failure is now reduced to
+The `971e0986` failure was reduced to
 `repro_inline57ab_bool_xor_literal.bend`: expected `False`, observed empty
 stdout and `runtime fail-stop` after successful emission/clang. The projected
 version fails identically. Receipt: `repro_bool_xor_971.json`. Source inspection
 finds a C conditional-precedence defect in `bend_bool_xor`
 (`c_backend.bend:3942`): the true-input arm returns 0/1 as the CID, not canonical
-True/False CIDs. The source fix has not been applied or behaviorally verified.
+True/False CIDs.
+
+Source correction `8aefa052` computes inequality of the two Boolean comparisons,
+then selects canonical `t`/`f` exactly once. Only the C helper expression changes;
+no runtime, generator, allocation or generated-output patch is added.
+Fresh image `667e7f33` retains all 11,860 checked bodies and passes both reduced
+programs with `False`, plus all four truth-table observations
+(`False`, `True`, `True`, `False`). All nine smoke stages complete/stopped/exit 0.
+Receipt: `evals/receipts/bool_xor_fix_667e7f33.json`. This is failing-before /
+passing-after evidence; the full 26-input matrix remains pending.
 
 ## Reduced inputs and independent expected results
 
@@ -175,6 +184,6 @@ The driver `evals/repro_inline57ab_run.ts` records the literal commands,
 source/artifact/runtime hashes, raw streams and terminal guardians. Use fresh
 logs and the named artifact; do not patch generated output, alter expectations,
 reuse a rejected image as acceptance, or substitute these inputs for the full
-matrix/corpus. The named finite public boundaries above now pass. The separate
-Bool.xor failure, general ownership/ABI laws, full frozen corpus and current
-root byte fixedpoint remain open.
+matrix/corpus. The named finite public boundaries and corrected Boolean helper
+now pass. Full-matrix, general ownership/ABI laws, frozen corpus and current
+root byte fixedpoint acceptance remain open.
