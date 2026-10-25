@@ -1,0 +1,206 @@
+{
+ "schemaVersion": 1,
+ "status": "ROOT_CANDIDATE_ALL_BODY_ADMISSION_JS_GENERATED_NOT_YET_EXECUTED",
+ "baseCommit": "2faa3c77",
+ "worktree": "/private/tmp/bend-root57ab-go",
+ "frozenSources": {
+  "c_backend": {
+   "path": "bend2/selfhost/c_backend.bend",
+   "sha256": "f17c157be9d761cf475e843b647e5e97a35a50062f036187c4f4fefa2490aea4",
+   "source": "Control 62f7ae21"
+  },
+  "c_backend_physical": {
+   "path": "bend2/selfhost/c_backend_physical.bend",
+   "sha256": "f4fdfcc9575cf1667348cb512ee990e5ddd6ae58d97ea8df35ce914b5c66f0b2",
+   "source": "Storage 69957c82"
+  },
+  "c_backend_layout": {
+   "path": "bend2/selfhost/c_backend_layout.bend",
+   "sha256": "a9f2d5d7d101665f390fb88cd6901947773fbf2444fc6b76504f9537213cdc77"
+  },
+  "descriptor_nf": {
+   "path": "bend2/selfhost/descriptor_nf.bend",
+   "sha256": "747dc747fcb1a6b6c1fcbf31a3e164f998fd5fa502f87a8ad3a1facd13859973"
+  }
+ },
+ "generation": {
+  "commands": [
+   "bun evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 --timeout-ms 600000 -- bun evals/checker_core_owned_source.ts",
+   "bun evals/heavy_gate.ts --memory-mib 8192 --rss-mib 8192 --poll-ms 10 --timeout-ms 600000 -- bun evals/emitter_step_lower.ts"
+  ],
+  "generator": {
+   "entry": {
+    "path": "evals/emitter_step_lower.ts",
+    "sha256": "4376c983d376a91f8464037444ddeccd1233f6a00f9c2362ce4fd88ab9f84371"
+   },
+   "engine": {
+    "path": "evals/checker_core_step_lower.ts",
+    "sha256": "05492ac6aaa7855b4d4770bf1f77d7abacf3cc3b956dfca9e6f411fffb202158"
+   }
+  },
+  "engine": {
+   "path": "checkpoints/emitter_steps_v1.bend",
+   "sha256": "ee32c96b98b8dbd4b2516a6129d82d93e47ab999b60dfbe48e1383ba4df42f84",
+   "bytes": 3134722,
+   "previousFromGit": "156a74755552831812c4b0e1951965f8563665e9802479d70d491c998fff2cf2"
+  },
+  "manifest": {
+   "path": "checkpoints/emitter-steps-v1.json",
+   "sha256": "a9f491ac11ed7c0b407cd722baca9cd6ff92c892c069cdd97db51597269079b3"
+  },
+  "ownedSource": {
+   "path": "checkpoints/emitter_owned_v1.bend",
+   "sha256": "9659f9f2ced673d49c6d9dea2103cfafafb180a56c966840a17e6c98a6ed7851"
+  },
+  "component": {
+   "path": "checkpoints/emitter_steps_component_v1.bend",
+   "sha256": "e6bd090dc9b2a0b381e4a896922c91869571445b194a60898d893e1f2ce3b3c8"
+  },
+  "ownedManifest": {
+   "path": "checkpoints/checker-core-owned-source-v1.json",
+   "sha256": "748174a39417cfc1a470f25147b5cb033a1d1457ac6325a92aea6cea41bdaa89"
+  },
+  "providers": {
+   "bend2/selfhost/backend_lower.bend": "465cdf16cdf5a3aae3096f12c8453a48f3264d0afb9d6bb16d9d4a4f5cd52661",
+   "bend2/selfhost/c_backend.bend": "f17c157be9d761cf475e843b647e5e97a35a50062f036187c4f4fefa2490aea4",
+   "bend2/selfhost/c_backend_layout.bend": "a9f2d5d7d101665f390fb88cd6901947773fbf2444fc6b76504f9537213cdc77",
+   "bend2/selfhost/c_backend_link.bend": "606ce07caaf96c28c1885947897bcc2be1e5949481068e77c5303134f70e1e51",
+   "bend2/selfhost/c_backend_physical.bend": "f4fdfcc9575cf1667348cb512ee990e5ddd6ae58d97ea8df35ce914b5c66f0b2",
+   "bend2/selfhost/c_emit_core.bend": "f690db5b6054d4f647b5c02e1281923d5cc66b24c8c2fff7859d811efc5ba380",
+   "bend2/selfhost/descriptor_nf.bend": "747dc747fcb1a6b6c1fcbf31a3e164f998fd5fa502f87a8ad3a1facd13859973",
+   "bend2/selfhost/js_backend.bend": "45e8916b25f906dc3040b246504034d5fe58229f8225c8ece488a5aa3200ba8d",
+   "bend2/selfhost/js_emit.bend": "e0e986cc94705472fd7303575ac6c35efe2ea20299dfb1c1b5f6cf89b3da1dab",
+   "bend2/selfhost/lower_catalog.bend": "d682aae92f1ce479ba607c4246836d08f5d48613fefa83ee75a0229f007d3305"
+  },
+  "loweringSourceSha256": "4bcd1d0d04ddf0cdba7cd10f6219199fb2bbb6a6ba78dab1023a5599491b9b04",
+  "composedSourceSha256": "9659f9f2ced673d49c6d9dea2103cfafafb180a56c966840a17e6c98a6ed7851",
+  "declarations": 2001
+ },
+ "build": {
+  "command": "bun evals/checker_core_component_build.ts --file=checkpoints/.bootstrap_compiler_root_v1.bend --exports=parsed_module,parse_with_fuel,expand_modules_start,template_step,check_expanded_start,inspect_checked_start,checker_step,emit_modules_start,emit_library_start,emitter_step,emit_c_modules_start,emit_c_library_start,c_emitter_step --artifact=checkpoints/root57ab-go-art.js --report=checkpoints/root57ab-go-rep",
+  "exports": [
+   "parsed_module",
+   "parse_with_fuel",
+   "expand_modules_start",
+   "template_step",
+   "check_expanded_start",
+   "inspect_checked_start",
+   "checker_step",
+   "emit_modules_start",
+   "emit_library_start",
+   "emitter_step",
+   "emit_c_modules_start",
+   "emit_c_library_start",
+   "c_emitter_step"
+  ],
+  "guardian": {
+   "status": "PASS",
+   "reason": "command_exit",
+   "commandExitCode": 0,
+   "commandSignal": 0,
+   "exitCode": 0,
+   "supervisorExitCode": 0,
+   "elapsedMs": 210046,
+   "peakRssBytes": 3099213824,
+   "peakFootprintBytes": 3273389056,
+   "timeoutMs": 600000,
+   "memoryLimitBytes": 8589934592,
+   "rssLimitBytes": 8589934592,
+   "reportPhase": "complete",
+   "ownedTreeStopped": true
+  },
+  "node": {
+   "executable": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+   "version": "23.11.0",
+   "v8": "12.9.202.28-node.14",
+   "heapLimitMiB": 3072,
+   "stackSizeMb": 256,
+   "manualGC": false
+  },
+  "worker": {
+   "status": "JS_GENERATED_NOT_YET_EXECUTED",
+   "bytes": 17846510,
+   "artifactSha256": "9941352b639d1f31e381640f77e015e252d601b3815d9f36ea8614496bf50cb4",
+   "checkedDefinitions": 11814,
+   "liveBodies": 11814,
+   "expectedSourceDefinitions": 11814,
+   "eventsFullyValidated": 12374,
+   "checksExcluded": 0,
+   "outputPatches": 0
+  },
+  "validation": {
+   "status": "FULL_VALIDATION_PASS",
+   "eventsChecked": 12374,
+   "totalElapsedMs": 208493.376917,
+   "cpuMs": 75536.733
+  },
+  "root": {
+   "path": "checkpoints/.bootstrap_compiler_root_v1.bend",
+   "sha256": "b0b92b67225c1b67972c9fe2a1096962a14926633508936c86d8b93b73cbd36b"
+  },
+  "inlineParser": {
+   "path": "bend2/selfhost/parser.bend",
+   "sha256": "7389188a68a205bfccdd6a3457ba0f11e689967751e31fa6d35eaec3b09e3e37",
+   "note": "root still compiles its inline parser b0b; no parser export was repaired by this build"
+  },
+  "loadedInputs": 53
+ },
+ "preserved": {
+  "canonical433": {
+   "path": "/private/tmp/bend-cand-allbody57ab/checkpoints/cand-allbody57ab-art4.js",
+   "sha256": "433aadb54af3255d76dd41bf410b0e4002a675018389b497d6cb42448d7b0f03"
+  },
+  "staleEngineRun": "/private/tmp/bend-cand-allbody57ab checkpoints/cand-allbody57ab-rep* untouched",
+  "cMatrixFailureLogs": "held by FIRAcceptance (0524e291, 1fc63dfe, 8ffe1091) \u2014 not modified here"
+ },
+ "rawRecords": {
+  "checkpoints/root57ab-go-rep.worker-result.json": {
+   "sha256": "ed88253aab99094cf8c5df8565f221417638e5b5f3f0bcb6abdf573127d6f00c",
+   "bytes": 2055
+  },
+  "checkpoints/root57ab-go-rep.guardian.json": {
+   "sha256": "2bd22ac21f13530a40835f23804e3d5c40910039799afb7eb27b31a8f5934028",
+   "bytes": 1344
+  },
+  "checkpoints/root57ab-go-rep.metrics.json": {
+   "sha256": "40133d339d431cacb92636baf4683a7fa7c027fb27cb69d8678069af355a3f90",
+   "bytes": 978
+  },
+  "checkpoints/root57ab-go-rep.provenance.json": {
+   "sha256": "cd4b241b8ba82059e37db210e4ba17791803e13e4e24217bb40d9fb2bad848a8",
+   "bytes": 10226
+  },
+  "checkpoints/root57ab-go-rep.inputs.json": {
+   "sha256": "44502f3a9e6e63720dacd9aafbc0f880b96e249674c139784a7cc03fbc2ba459",
+   "bytes": 897
+  },
+  "checkpoints/root57ab-go-rep.request.json": {
+   "sha256": "bd9d56127366ab5dc709ad0af6d27eb11be09efc44b19b50b567971210fe1804",
+   "bytes": 1265
+  },
+  "checkpoints/root57ab-go-rep.result.json": {
+   "sha256": "7581a6c7db35b9ded6187477937d104c62e8c558f4da075c5fbecd4a451bb3dd",
+   "bytes": 3456
+  },
+  "checkpoints/root57ab-go-rep.validation-timings.json": {
+   "sha256": "ea69345f490230324f218e531843a0e250ca28d4d7ed33b48b811071029d0c04",
+   "bytes": 160
+  },
+  "checkpoints/root57ab-go-rep.events.jsonl": {
+   "sha256": "afc8430c6c018f7af590927b85048f49c4fb325bb49a7dd54c42577d5f3f7896",
+   "bytes": 1804
+  },
+  "checkpoints/root57ab-go-art.js": {
+   "sha256": "9941352b639d1f31e381640f77e015e252d601b3815d9f36ea8614496bf50cb4",
+   "bytes": 17846510
+  }
+ },
+ "notClaimed": [
+  "C matrix",
+  "C execution",
+  "root version green",
+  "full byte fixed point",
+  "frozen v41 corpus",
+  "parser regeneration from the accepted 738 pin (open obligation)"
+ ]
+}
