@@ -51,7 +51,7 @@ def program() -> BIR.Program:
 
 def world() -> Phys.World:
   ctx = CLay.context(program())
-  Phys.world(ctx, constructors(), families(), [Phys.CidSym{0, "Pair"}, Phys.CidSym{1, "Pt"}, Phys.CidSym{2, "Fl"}, Phys.CidSym{3, "Seg"}, Phys.CidSym{4, "BoxP"}, Phys.CidSym{5, "Unit"}, Phys.CidSym{6, "Arr"}])
+  Phys.world(ctx, constructors(), families(), [Phys.CidSym{0, "Pair"}, Phys.CidSym{1, "Pt"}, Phys.CidSym{2, "Fl"}, Phys.CidSym{3, "Seg"}, Phys.CidSym{4, "BoxP"}, Phys.CidSym{5, "Unit"}, Phys.CidSym{6, "Arr"}, Phys.CidSym{7, "True"}, Phys.CidSym{8, "False"}])
 
 def show_part(+part: Phys.Part) -> String:
   match part:
