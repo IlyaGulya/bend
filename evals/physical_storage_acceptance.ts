@@ -37,7 +37,14 @@ async function stage(label: string, argv: string[]): Promise<{gate: HeavyGateRes
   const outPath = resolve(logs, label + '.stdout');
   const errPath = resolve(logs, label + '.stderr');
   const wrapped = ['/bin/sh', '-c', 'out=$1; err=$2; shift 2; exec "$@" >"$out" 2>"$err"', 'sh', outPath, errPath, ...argv];
-  const gate = await runHeavyGate(wrapped, {label, memoryMiB: 8192, rssMiB: 8192, pollMs: 10, timeoutMs: 600000});
+  let gate: HeavyGateResult | undefined;
+  for (let attempt = 0; attempt < 1800; attempt += 1) {
+    gate = await runHeavyGate(wrapped, {label, memoryMiB: 8192, rssMiB: 8192, pollMs: 10, timeoutMs: 600000});
+    if (gate.status !== 'LOCK_BUSY') break;
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  }
+  if (gate === undefined) throw Error(label + ': no gate result');
+  if (gate.status === 'LOCK_BUSY') throw Error(label + ': heavy gate stayed busy');
   write(label + '.gate.json', JSON.stringify({...gate, argv, cwd: root}, null, 2) + '\n');
   write(label + '.argv.json', JSON.stringify({argv, cwd: root}, null, 2) + '\n');
   const stdout = existsSync(outPath) ? readFileSync(outPath, 'utf8') : '';
@@ -57,6 +64,11 @@ const pins = {
   cFixture: sha(resolve(root, 'evals/physical_path_smoke.bend')),
   heavyGate: sha(resolve(root, 'evals/heavy_gate.ts')),
   heavyGateNative: sha(resolve(root, 'evals/heavy_gate_native.c')),
+  nativeStageProfileBuild: sha(resolve(root, 'evals/native_stage_profile_build.ts')),
+  compilerStageProfile: sha(resolve(root, 'evals/compiler_stage_profile.mjs')),
+  emitterStepLower: sha(resolve(root, 'evals/emitter_step_lower.ts')),
+  componentBuild: sha(resolve(root, 'evals/checker_core_component_build.ts')),
+  stepLower: sha(resolve(root, 'evals/checker_core_step_lower.ts')),
 };
 if (pins.clay !== 'a9f2d5d7d101665f390fb88cd6901947773fbf2444fc6b76504f9537213cdc77') throw Error('CLay is not the current Main pin');
 if (pins.descriptorNf !== '747dc747fcb1a6b6c1fcbf31a3e164f998fd5fa502f87a8ad3a1facd13859973') throw Error('NF is not the current Main pin');
@@ -155,7 +167,7 @@ if (receiptArg) {
   const artifacts = Object.fromEntries([artifact, cPath, exe, probePath].map(path => [basename(path), {bytes: readFileSync(path).length, sha256: sha(path)}]));
   writeFileSync(receiptPath, JSON.stringify({
     schemaVersion: 1, status: 'PASS', acceptance: 'guarded physical storage slice; not a Root GO',
-    worktree: root, logs, commitSourceHashes: pins, runtime: {node, nodeVersion: 'v23.11.0', componentWorker: {heapLimitMiB: 3072, stackSizeMb: 256}},
+    worktree: root, logs, pins, commitSourceHashes: pins, runtime: {node, nodeVersion: 'v23.11.0', componentWorker: {heapLimitMiB: 3072, stackSizeMb: 256}},
     caps: {memoryMiB: 8192, rssMiB: 8192, pollMs: 10, timeoutMs: 600000},
     stages: stageReceipts, artifacts, expressions: blocks.length, terminal: {observed, erasedOrdinalKind: hostResult.text.slice(-1)},
     command: process.argv.slice(0), cwd: root, note: '19207e04 runtime evidence is REJECTED_UNGUARDED and is not part of this receipt.'
