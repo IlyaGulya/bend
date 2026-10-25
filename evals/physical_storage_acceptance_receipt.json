@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "status": "PASS",
-  "acceptance": "guarded physical storage slice; not a Root GO",
+  "status": "REJECTED_INVALID_RUNTIME_FIXTURE",
+  "acceptance": "NOT accepted: runtime ownership fixture invalid; guardian PASS records process only",
   "worktree": "/private/tmp/bend-c-storage-selector",
   "logs": "/private/tmp/bend-c-storage-selector/checkpoints/storage-accept-v5",
   "commitSourceHashes": {
@@ -283,5 +283,57 @@
     "--receipt=evals/physical_storage_acceptance_receipt.json"
   ],
   "cwd": "/private/tmp/bend-c-storage-selector",
-  "note": "19207e04 runtime evidence is REJECTED_UNGUARDED and is not part of this receipt."
+  "note": "19207e04 runtime evidence is REJECTED_UNGUARDED and is not part of this receipt.",
+  "rejection": {
+    "reason": "runtime CID/arity mismatch (runtime CID4=EMIT arity1, CID12=SOME arity1, CID13=FALSE arity0 vs synthetic World IDs), borrowed r7 Term was sunk, and tuples shared/multiple-freed the same array owner",
+    "preservedRawEvidence": "raw guardian records were not edited; PASS there proves process completion only",
+    "receiptBeforeRejectionSha256": "2471c725d89d2baf48ebbaddd9cce2a2ccd1c5b3342d22ef7ad26903f2df93c8",
+    "rawEvidence": {
+      "result.json": {
+        "bytes": 4194,
+        "sha256": "443c34b62066349b40cb554345cfc85d5e6f713333696050f99689e65ad59945"
+      },
+      "component.gate.json": {
+        "bytes": 1208,
+        "sha256": "df835f88da49ca2721e210d90e53ce51699dd32a06a2dc795fac0c74c380511e"
+      },
+      "physical_view_component.js": {
+        "bytes": 2262945,
+        "sha256": "b296af539e381bd9a6f6c1f2e1e87518c3b18093febbf5ad501f2b709e4769c4"
+      },
+      "physical_path_probe.c": {
+        "bytes": 30335,
+        "sha256": "73fbce8b54cc45217ce48e936cccf11f4a82ed6bb879e205a53b2f8941ff9d7e"
+      },
+      "physical_path_smoke.c": {
+        "bytes": 111454,
+        "sha256": "2ea08699324867fb97174cfa0475b9b4a073b8e2d4e7c7ce35e335657e80867a"
+      },
+      "physical_path_smoke": {
+        "bytes": 113248,
+        "sha256": "cdd86c71efe9c433436f150e51bcc4927a6c726dd5e86a87e1b70fe8f0024e63"
+      },
+      "steps.gate.json": {
+        "bytes": 1012,
+        "sha256": "977dd0b5de878873d01c0833c2fad84e63e15e3c1495b78c7053513ec325f301"
+      },
+      "host.gate.json": {
+        "bytes": 1220,
+        "sha256": "cb494acf4cda80d76f2d1abf74b038f1add471db2f7911c76d0a037ffd318efc"
+      },
+      "harness-emit.gate.json": {
+        "bytes": 1684,
+        "sha256": "8747507d7f31562e2a550f5435a397c21d1bc805e6b02792a05fe262e9c6d3ae"
+      },
+      "clang.gate.json": {
+        "bytes": 1433,
+        "sha256": "f85a06bf7f968ebe6590034b2dd4e201c37943fa17e572d809170132a268c6da"
+      },
+      "run.gate.json": {
+        "bytes": 1056,
+        "sha256": "7385d5e24c7a6eee4c49dbf8b25ee0a2fbc06273a939cc665d54b079d4e15f01"
+      }
+    },
+    "sourceAdmissionSeparateFact": "Root ABI consumers admission at Main03d0d144/Control caae/Physical a3e5332b (physical sha 256f57772f4384e8d043269ab4cbc52d71049f3d38afd40022aadb0f9b962ced) is a separate scoped fact, not runtime ownership acceptance"
+  }
 }
