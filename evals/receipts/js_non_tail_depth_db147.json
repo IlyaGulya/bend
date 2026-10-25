@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "status": "GENERAL_NON_TAIL_RECURSION_DEFAULT_STACK_FAILURE",
+  "acceptanceEvidence": false,
+  "source": {
+    "path": "evals/repro_js_non_tail_depth.bend",
+    "sha256": "9a5b91387f8f38dbc0d7c62ff2916fb7478d8014d556dd71cc86a2588875794b",
+    "bytes": 390,
+    "expectedStdout": "12000\n",
+    "recursionDepth": 12000
+  },
+  "compiler": {
+    "path": "/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+    "sha256": "db147cba480109443fe8cfbd0efa2f1c167af7f6b9f7e2d623a0b1032c677dbe"
+  },
+  "output": {
+    "path": "/tmp/repro-js-non-tail-depth-db147.js",
+    "sha256": "67f080be4def7b56c6a4f95b8585ca11d34c52b379eef866c39b41e6f6c7802c",
+    "bytes": 290436
+  },
+  "emit": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 975273984,
+    "peakFootprintBytes": 1087197048,
+    "elapsedMs": 19701,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "--experimental-strip-types",
+      "--max-old-space-size=3072",
+      "evals/candidate_host.ts",
+      "--candidate=/private/tmp/bend-parser-cutover667/checkpoints/root-cutover667-1-art.js",
+      "evals/repro_js_non_tail_depth.bend",
+      "-o",
+      "/tmp/repro-js-non-tail-depth-db147.js"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792941291632-90215c8911bc2006.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "run": {
+    "status": "FAIL",
+    "reason": "command_exit",
+    "commandExitCode": 1,
+    "commandSignal": 0,
+    "peakRssBytes": 43646976,
+    "peakFootprintBytes": 14304912,
+    "elapsedMs": 60,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 1,
+    "command": [
+      "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+      "--max-old-space-size=3072",
+      "/tmp/repro-js-non-tail-depth-db147.js"
+    ],
+    "label": "heavy command",
+    "exitCode": 1,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792941311493-4675072622168043.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "observedStderr": "bend: memory fault (machine stack overflow?)\n",
+  "runtime": "Node23.11.0,old-generation3072MiB,no explicit stack flag",
+  "scope": "390-byte general non-tail recursion source, no String.from_list special case. Native stage0 reference has not yet been run on this source; not a minimal-depth or selfhost-only regression claim."
+}
