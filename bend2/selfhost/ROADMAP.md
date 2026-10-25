@@ -1,7 +1,7 @@
 # Bend selfhost roadmap
 
 Persistent backlog for the current integration line (`work/fir-ir-integrated57ab`).
-Status snapshot reviewed through `9556e675`; measured component `5205478f`
+Status snapshot reviewed through `c1676064`; measured component `5205478f`
 predates the physical fixes `655754cf` / `5122fbd8` and the accepted parser
 repair. Detailed evidence and reasoning live in the linked notes. This index
 does not replace a receipt.
@@ -299,6 +299,19 @@ Detailed contracts: integrated `FIR_LAWS.md` and `BIR_LAWS.md`, and
 - [ ] Carry ownership state through continuations and nested pattern failure;
   prove values and allocation/release behavior for ordinary, sealed/shared,
   nested, unused-field and fallback cases before the full fresh C matrix.
+  Caller liveness is separate from formal `Arg.use`/`Field.use`: an
+  unrestricted caller can supply the same value to two affine consumers.
+  Cover repeated data parameters/captures, duplicate operands in one call or
+  constructor, already-bound aliases of the same projected path, and a
+  projected field followed by use of its whole parent. Branch/region analysis
+  must follow `LeaveRegion` successors without treating terminal alternatives
+  as sequential uses of an affine callable. These are open source-review
+  findings, not executed regression receipts.
+  Array pattern halves/leaf cells follow the same borrowed-path law:
+  consuming a selected slice must leave disjoint sibling owners available,
+  including across continuations. Verify packed u32 buffers, boxed/inline
+  cells, mixed ADT/array nesting and static/shared roots without eagerly
+  freeing the whole array or copying a heap callable.
 - [ ] Implement moves, keeps and sinks under the existing universal one-Term
   ABI: admitted Nat values are 48-bit immediates, U32/F32 payloads are 32-bit,
   and runtime `term_triv` handles them without a heap operation. Preserve
