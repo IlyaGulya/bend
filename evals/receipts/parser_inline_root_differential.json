@@ -1,0 +1,646 @@
+{
+  "schemaVersion": 1,
+  "kind": "INLINE_ROOT_PARSER_QUANTITY_BINDER_DIFFERENTIAL",
+  "status": "DIAGNOSTIC_OBSERVED",
+  "reducedDiagnosticOnly": true,
+  "scope": "Five new minimal sources: + and plain typed body locals, + and plain typed do binds, and one unannotated control with both body shapes. Diagnostic only; the unchanged 13-export corpus, 24-case matrix and full public gates are neither represented nor replaced.",
+  "authenticationBoundary": "The external parser artifact 0e7b3c42 is already authenticated from canonical 7389188a by the completed qp57a-4 600s gate; this run does not re-run that gate. This run does not authenticate the root candidate inline parser, does not validate its generated compiler image, and does not establish any full fixedpoint.",
+  "contract": "Stage0 and canonical 7389188a accept an annotated local written \"name : T = value\", a \"+\"-annotated local \"+name : T = value\", a typed do bind \"name : T <- action\", and \"+name : T <- action\". The + binder is quantity Many (QMany); the plain binder is QOne/None. Real corpus evidence already in the accepted gate: tests/run/c_backend_link.bend body locals and tests/parse/plus_binder_lambda_do.bend do binders.",
+  "staticInference": "[INFERENCE, not runtime evidence] Both the 433 artifact and the fresh root57ab-go artifact contain zero compiled functions named step_decl_plus_local, step_parse_typed_local_body or step_parse_do_plus_bind, while the accepted external artifact does. The rows below are the authoritative runtime observation, not this static count.",
+  "fixtures": [
+    {
+      "name": "plus-body-local",
+      "source": "def f(x: Nat) -> Nat:\n  +l : Nat = x\n  l\n",
+      "sourceSha256": "0e4cef0140250f6a9c3e40e1d7bfc0dc4ff150feace28220f444516282ddc046",
+      "expected": {
+        "construct": "body-local-plus",
+        "quantity": "QMany"
+      }
+    },
+    {
+      "name": "typed-body-local",
+      "source": "def f(x: Nat) -> Nat:\n  l : Nat = x\n  l\n",
+      "sourceSha256": "2f1d43f3a104ef615ed5e519533cbdf68bb197ce90eb045f965bb8e0ab3a4167",
+      "expected": {
+        "construct": "body-local-typed",
+        "quantity": "QOne"
+      }
+    },
+    {
+      "name": "plus-do-bind",
+      "source": "def f(x: Nat) -> Nat:\n  do M<>: +y : Nat <- x; return y\n",
+      "sourceSha256": "5aaecf503ed82304b1b7c7c28abcfa80a6e523956c4f33e857e3a229887b61f8",
+      "expected": {
+        "construct": "do-plus-bind",
+        "quantity": "QMany"
+      }
+    },
+    {
+      "name": "typed-do-bind",
+      "source": "def f(x: Nat) -> Nat:\n  do M<>: y : Nat <- x; return y\n",
+      "sourceSha256": "f7627df3b0943427b12feeaf5bc4fd8d108fd2abc24411e9ab1f669b3cc60bdf",
+      "expected": {
+        "construct": "do-typed-bind",
+        "quantity": "None"
+      }
+    },
+    {
+      "name": "untyped-control",
+      "source": "def f(x: Nat) -> Nat:\n  l = x\n  do M<>: y <- x; return y\n",
+      "sourceSha256": "cf3022736bebeadfb2770ab6b600c525b2100753a44e4626a26c7abb77d447c0",
+      "expected": {
+        "construct": "control-untyped",
+        "quantity": "QOne"
+      }
+    }
+  ],
+  "artifacts": {
+    "inline": {
+      "path": "/private/tmp/bend-root57ab-go/checkpoints/root57ab-go-art.js",
+      "sha256": "9941352b639d1f31e381640f77e015e252d601b3815d9f36ea8614496bf50cb4",
+      "bytes": 17846510,
+      "role": "root candidate artifact under test; its inline parser is compiled inside this image"
+    },
+    "external": {
+      "path": "/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+      "sha256": "0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b",
+      "bytes": 2834193,
+      "role": "accepted external parser canonical 7389188a"
+    }
+  },
+  "runner": {
+    "path": "/private/tmp/bend-repro-parser57ab/evals/parser_inline_root_differential.ts",
+    "sha256": "b34873a7b26001be07d1c309d6263022492324382e02d62097f90b703b9c2c64",
+    "bytes": 17349
+  },
+  "fixturesModule": {
+    "path": "/private/tmp/bend-repro-parser57ab/evals/parser_quantity_binder_fixtures.ts",
+    "sha256": "32cbbef722c11e2e6f2008b6c93947a39ddb3bcfd35d7199676b4a6f3bac1927",
+    "bytes": 1738
+  },
+  "runtime": {
+    "node": "v23.11.0",
+    "nodeFlags": [
+      "--max-old-space-size=3072",
+      "--stack-size=262144"
+    ],
+    "workerStackSizeMb": 256,
+    "fuelCells": 2000000
+  },
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 282918912,
+    "peakFootprintBytes": 222219632,
+    "elapsedMs": 870,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "exitCode": 0,
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592,
+    "label": "heavy command",
+    "command": [
+      "bun",
+      "evals/parser_inline_root_differential.ts",
+      "--inline=/private/tmp/bend-root57ab-go/checkpoints/root57ab-go-art.js",
+      "--external=/private/tmp/bend-fir-root-aa9/checkpoints/bootstrap-parser-rebuild-qp57a-4.js",
+      "--report=/private/tmp/bend-repro-parser57ab/checkpoints/parser-inline-root-differential.json",
+      "--receipt=/private/tmp/bend-repro-parser57ab/evals/receipts/parser_inline_root_differential.json"
+    ],
+    "stderrCapture": {
+      "path": "/private/tmp/bend-repro-parser57ab/checkpoints/parser-inline-root-differential.guardian.stderr",
+      "sha256": "529a492f4a21b5990349becac0abc5b0463340ffebe04dd7e74a1f92ff7fdea5"
+    },
+    "innerReportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792918193432-a25129b2b522e00c.json"
+  },
+  "runs": [
+    {
+      "role": "inline",
+      "artifactSha256": "9941352b639d1f31e381640f77e015e252d601b3815d9f36ea8614496bf50cb4",
+      "elapsedMs": 519.788208
+    },
+    {
+      "role": "external",
+      "artifactSha256": "0e7b3c4295d5fc3e64cad4cb23eeb01c7c6051ae7df15893dd18622b226ca33b",
+      "elapsedMs": 271.3182089999999
+    }
+  ],
+  "rows": [
+    {
+      "name": "plus-body-local",
+      "source": "def f(x: Nat) -> Nat:\n  +l : Nat = x\n  l\n",
+      "sourceSha256": "0e4cef0140250f6a9c3e40e1d7bfc0dc4ff150feace28220f444516282ddc046",
+      "expected": {
+        "construct": "body-local-plus",
+        "quantity": "QMany"
+      },
+      "inline": {
+        "accepted": false,
+        "outcome": "ParseFailure",
+        "elapsedMs": 494.20354199999997,
+        "resultSha256": "9185b9b36a1e828a531257f13bbfb082ad24b7d93ba7cb65edd76162c3a208b7",
+        "failure": {
+          "message": "invalid or unsupported top-level syntax",
+          "expected": "a supported declaration",
+          "observed": ":",
+          "span": {
+            "file": "repro-inline-parser.bend",
+            "beg": 27,
+            "end": 28
+          },
+          "sourceSlice": ":"
+        }
+      },
+      "external": {
+        "accepted": true,
+        "outcome": "ParseSuccess",
+        "elapsedMs": 239.039125,
+        "resultSha256": "520bca8caadedebdd2e1c53683d1140fd16a8226113dcbd8520c11044c929a3f",
+        "module": {
+          "file": "repro-inline-parser.bend",
+          "imports": 0,
+          "declarations": [
+            "DefTop"
+          ]
+        },
+        "quantitySites": [
+          {
+            "path": "module.declarations[0].definition.body.term",
+            "tag": "BodyLocal",
+            "quantity": "QMany",
+            "span": {
+              "file": "repro-inline-parser.bend",
+              "beg": 24,
+              "end": 41
+            },
+            "patterns": [
+              {
+                "tag": "PatternVar",
+                "key": "l",
+                "quantity": "QMany",
+                "span": {
+                  "file": "repro-inline-parser.bend",
+                  "beg": 24,
+                  "end": 26
+                }
+              }
+            ],
+            "values": [
+              {
+                "tag": "TermAnn",
+                "span": {
+                  "file": "repro-inline-parser.bend",
+                  "beg": 24,
+                  "end": 36
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "comparison": {
+        "acceptanceSame": false,
+        "astSame": null,
+        "firstDifference": null
+      }
+    },
+    {
+      "name": "typed-body-local",
+      "source": "def f(x: Nat) -> Nat:\n  l : Nat = x\n  l\n",
+      "sourceSha256": "2f1d43f3a104ef615ed5e519533cbdf68bb197ce90eb045f965bb8e0ab3a4167",
+      "expected": {
+        "construct": "body-local-typed",
+        "quantity": "QOne"
+      },
+      "inline": {
+        "accepted": false,
+        "outcome": "ParseFailure",
+        "elapsedMs": 1.723875000000021,
+        "resultSha256": "d67ce19bc97217e5ad5f8c7725c13f615e0530b639e560fafb8135c1ecba43fe",
+        "failure": {
+          "message": "invalid or unsupported top-level syntax",
+          "expected": "a supported declaration",
+          "observed": ":",
+          "span": {
+            "file": "repro-inline-parser.bend",
+            "beg": 26,
+            "end": 27
+          },
+          "sourceSlice": ":"
+        }
+      },
+      "external": {
+        "accepted": true,
+        "outcome": "ParseSuccess",
+        "elapsedMs": 9.853707999999983,
+        "resultSha256": "32d5812ae1b406cea92562126078033b07049525335655fc353b4ff7605c8acb",
+        "module": {
+          "file": "repro-inline-parser.bend",
+          "imports": 0,
+          "declarations": [
+            "DefTop"
+          ]
+        },
+        "quantitySites": [
+          {
+            "path": "module.declarations[0].definition.body.term",
+            "tag": "BodyLocal",
+            "quantity": "QOne",
+            "span": {
+              "file": "repro-inline-parser.bend",
+              "beg": 24,
+              "end": 40
+            },
+            "patterns": [
+              {
+                "tag": "PatternVar",
+                "key": "l",
+                "quantity": "QOne",
+                "span": {
+                  "file": "repro-inline-parser.bend",
+                  "beg": 24,
+                  "end": 25
+                }
+              }
+            ],
+            "values": [
+              {
+                "tag": "TermAnn",
+                "span": {
+                  "file": "repro-inline-parser.bend",
+                  "beg": 24,
+                  "end": 35
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "comparison": {
+        "acceptanceSame": false,
+        "astSame": null,
+        "firstDifference": null
+      }
+    },
+    {
+      "name": "plus-do-bind",
+      "source": "def f(x: Nat) -> Nat:\n  do M<>: +y : Nat <- x; return y\n",
+      "sourceSha256": "5aaecf503ed82304b1b7c7c28abcfa80a6e523956c4f33e857e3a229887b61f8",
+      "expected": {
+        "construct": "do-plus-bind",
+        "quantity": "QMany"
+      },
+      "inline": {
+        "accepted": false,
+        "outcome": "ParseFailure",
+        "elapsedMs": 3.214125000000081,
+        "resultSha256": "3a9be7e7772e5a1d18f8c9a229d6042aa9699eea73c26d692eb8fbfccafe687d",
+        "failure": {
+          "message": "invalid or unsupported top-level syntax",
+          "expected": "a supported declaration",
+          "observed": ":",
+          "span": {
+            "file": "repro-inline-parser.bend",
+            "beg": 35,
+            "end": 36
+          },
+          "sourceSlice": ":"
+        }
+      },
+      "external": {
+        "accepted": true,
+        "outcome": "ParseSuccess",
+        "elapsedMs": 5.817707999999925,
+        "resultSha256": "06f1b7f9f5923a4e4f61b1b3c01fff206954f1d4dba16931d5b26739c35cedfd",
+        "module": {
+          "file": "repro-inline-parser.bend",
+          "imports": 0,
+          "declarations": [
+            "DefTop"
+          ]
+        },
+        "quantitySites": [
+          {
+            "path": "module.declarations[0].definition.body.term.term.arg",
+            "tag": "TermLam",
+            "key": "y",
+            "quantity": "Some(QMany)",
+            "span": {
+              "file": "repro-inline-parser.bend",
+              "beg": 33,
+              "end": 56
+            },
+            "body": "TermApp"
+          }
+        ]
+      },
+      "comparison": {
+        "acceptanceSame": false,
+        "astSame": null,
+        "firstDifference": null
+      }
+    },
+    {
+      "name": "typed-do-bind",
+      "source": "def f(x: Nat) -> Nat:\n  do M<>: y : Nat <- x; return y\n",
+      "sourceSha256": "f7627df3b0943427b12feeaf5bc4fd8d108fd2abc24411e9ab1f669b3cc60bdf",
+      "expected": {
+        "construct": "do-typed-bind",
+        "quantity": "None"
+      },
+      "inline": {
+        "accepted": true,
+        "outcome": "ParseSuccess",
+        "elapsedMs": 4.649457999999981,
+        "resultSha256": "fa089e6ef575d42fb8540887dc383e4ffb578485d5ff09a822bdda7156ffe266",
+        "module": {
+          "file": "repro-inline-parser.bend",
+          "imports": 0,
+          "declarations": [
+            "DefTop"
+          ]
+        },
+        "quantitySites": [
+          {
+            "path": "module.declarations[0].definition.body.term.term.arg",
+            "tag": "TermLam",
+            "key": "y",
+            "quantity": "None",
+            "span": {
+              "file": "repro-inline-parser.bend",
+              "beg": 32,
+              "end": 55
+            },
+            "body": "TermApp"
+          }
+        ]
+      },
+      "external": {
+        "accepted": true,
+        "outcome": "ParseSuccess",
+        "elapsedMs": 2.584124999999972,
+        "resultSha256": "fa089e6ef575d42fb8540887dc383e4ffb578485d5ff09a822bdda7156ffe266",
+        "module": {
+          "file": "repro-inline-parser.bend",
+          "imports": 0,
+          "declarations": [
+            "DefTop"
+          ]
+        },
+        "quantitySites": [
+          {
+            "path": "module.declarations[0].definition.body.term.term.arg",
+            "tag": "TermLam",
+            "key": "y",
+            "quantity": "None",
+            "span": {
+              "file": "repro-inline-parser.bend",
+              "beg": 32,
+              "end": 55
+            },
+            "body": "TermApp"
+          }
+        ]
+      },
+      "comparison": {
+        "acceptanceSame": true,
+        "astSame": true,
+        "firstDifference": null
+      }
+    },
+    {
+      "name": "untyped-control",
+      "source": "def f(x: Nat) -> Nat:\n  l = x\n  do M<>: y <- x; return y\n",
+      "sourceSha256": "cf3022736bebeadfb2770ab6b600c525b2100753a44e4626a26c7abb77d447c0",
+      "expected": {
+        "construct": "control-untyped",
+        "quantity": "QOne"
+      },
+      "inline": {
+        "accepted": true,
+        "outcome": "ParseSuccess",
+        "elapsedMs": 2.743167000000085,
+        "resultSha256": "92b74ffe5b104c874c9e338a339ca1f0e134a879fb0facfa1cd5c9090032f7d0",
+        "module": {
+          "file": "repro-inline-parser.bend",
+          "imports": 0,
+          "declarations": [
+            "DefTop"
+          ]
+        },
+        "quantitySites": [
+          {
+            "path": "module.declarations[0].definition.body.term",
+            "tag": "BodyLocal",
+            "quantity": "QOne",
+            "span": {
+              "file": "repro-inline-parser.bend",
+              "beg": 24,
+              "end": 57
+            },
+            "patterns": [
+              {
+                "tag": "PatternVar",
+                "key": "l",
+                "quantity": "QOne",
+                "span": {
+                  "file": "repro-inline-parser.bend",
+                  "beg": 24,
+                  "end": 25
+                }
+              }
+            ],
+            "values": [
+              {
+                "tag": "TermVar",
+                "span": {
+                  "file": "repro-inline-parser.bend",
+                  "beg": 28,
+                  "end": 29
+                }
+              }
+            ]
+          },
+          {
+            "path": "module.declarations[0].definition.body.term.body.term.arg",
+            "tag": "TermLam",
+            "key": "_",
+            "quantity": "None",
+            "span": {
+              "file": "repro-inline-parser.bend",
+              "beg": 32,
+              "end": 57
+            },
+            "body": "TermApp"
+          }
+        ]
+      },
+      "external": {
+        "accepted": true,
+        "outcome": "ParseSuccess",
+        "elapsedMs": 2.2434169999999085,
+        "resultSha256": "92b74ffe5b104c874c9e338a339ca1f0e134a879fb0facfa1cd5c9090032f7d0",
+        "module": {
+          "file": "repro-inline-parser.bend",
+          "imports": 0,
+          "declarations": [
+            "DefTop"
+          ]
+        },
+        "quantitySites": [
+          {
+            "path": "module.declarations[0].definition.body.term",
+            "tag": "BodyLocal",
+            "quantity": "QOne",
+            "span": {
+              "file": "repro-inline-parser.bend",
+              "beg": 24,
+              "end": 57
+            },
+            "patterns": [
+              {
+                "tag": "PatternVar",
+                "key": "l",
+                "quantity": "QOne",
+                "span": {
+                  "file": "repro-inline-parser.bend",
+                  "beg": 24,
+                  "end": 25
+                }
+              }
+            ],
+            "values": [
+              {
+                "tag": "TermVar",
+                "span": {
+                  "file": "repro-inline-parser.bend",
+                  "beg": 28,
+                  "end": 29
+                }
+              }
+            ]
+          },
+          {
+            "path": "module.declarations[0].definition.body.term.body.term.arg",
+            "tag": "TermLam",
+            "key": "_",
+            "quantity": "None",
+            "span": {
+              "file": "repro-inline-parser.bend",
+              "beg": 32,
+              "end": 57
+            },
+            "body": "TermApp"
+          }
+        ]
+      },
+      "comparison": {
+        "acceptanceSame": true,
+        "astSame": true,
+        "firstDifference": null
+      }
+    }
+  ],
+  "differences": [
+    {
+      "name": "plus-body-local",
+      "expected": {
+        "construct": "body-local-plus",
+        "quantity": "QMany"
+      },
+      "inlineOutcome": "ParseFailure",
+      "externalOutcome": "ParseSuccess",
+      "externalQuantitySites": [
+        "BodyLocal:QMany"
+      ],
+      "inlineFailureSpan": {
+        "file": "repro-inline-parser.bend",
+        "beg": 27,
+        "end": 28
+      },
+      "inlineFailureSlice": ":",
+      "astSame": null,
+      "firstDifference": null
+    },
+    {
+      "name": "typed-body-local",
+      "expected": {
+        "construct": "body-local-typed",
+        "quantity": "QOne"
+      },
+      "inlineOutcome": "ParseFailure",
+      "externalOutcome": "ParseSuccess",
+      "externalQuantitySites": [
+        "BodyLocal:QOne"
+      ],
+      "inlineFailureSpan": {
+        "file": "repro-inline-parser.bend",
+        "beg": 26,
+        "end": 27
+      },
+      "inlineFailureSlice": ":",
+      "astSame": null,
+      "firstDifference": null
+    },
+    {
+      "name": "plus-do-bind",
+      "expected": {
+        "construct": "do-plus-bind",
+        "quantity": "QMany"
+      },
+      "inlineOutcome": "ParseFailure",
+      "externalOutcome": "ParseSuccess",
+      "externalQuantitySites": [
+        "TermLam:Some(QMany)"
+      ],
+      "inlineFailureSpan": {
+        "file": "repro-inline-parser.bend",
+        "beg": 35,
+        "end": 36
+      },
+      "inlineFailureSlice": ":",
+      "astSame": null,
+      "firstDifference": null
+    },
+    {
+      "name": "typed-do-bind",
+      "expected": {
+        "construct": "do-typed-bind",
+        "quantity": "None"
+      },
+      "inlineOutcome": "ParseSuccess",
+      "externalOutcome": "ParseSuccess",
+      "externalQuantitySites": [
+        "TermLam:None"
+      ],
+      "inlineFailureSpan": null,
+      "inlineFailureSlice": null,
+      "astSame": true,
+      "firstDifference": null
+    },
+    {
+      "name": "untyped-control",
+      "expected": {
+        "construct": "control-untyped",
+        "quantity": "QOne"
+      },
+      "inlineOutcome": "ParseSuccess",
+      "externalOutcome": "ParseSuccess",
+      "externalQuantitySites": [
+        "BodyLocal:QOne",
+        "TermLam:None"
+      ],
+      "inlineFailureSpan": null,
+      "inlineFailureSlice": null,
+      "astSame": true,
+      "firstDifference": null
+    }
+  ],
+  "abiFailures": [],
+  "oracleRejected": [],
+  "rawReport": "/private/tmp/bend-repro-parser57ab/checkpoints/parser-inline-root-differential.json"
+}
