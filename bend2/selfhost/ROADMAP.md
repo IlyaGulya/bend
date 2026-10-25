@@ -270,8 +270,11 @@ Detailed contracts: integrated `FIR_LAWS.md` and `BIR_LAWS.md`, and
 - [ ] Carry ownership state through continuations and nested pattern failure;
   prove values and allocation/release behavior for ordinary, sealed/shared,
   nested, unused-field and fallback cases before the full fresh C matrix.
-- [ ] Verify that every generic local/capture drop has authoritative scalar vs
-  managed representation metadata; never treat a raw wide Nat as a heap Term.
+- [ ] Implement moves, keeps and sinks under the existing universal one-Term
+  ABI: admitted Nat values are 48-bit immediates, U32/F32 payloads are 32-bit,
+  and runtime `term_triv` handles them without a heap operation. Preserve
+  generic/open inputs; ownership origin and path liveness, not speculative
+  duplicated type tables, determine release placement.
 - [ ] Full 13-root C artifact is emitted, compiled, and run under the existing
   guard; record the artifact hash, C source hash, and runtime receipt.
 - [ ] C tag gate and shared-emitter `Emit` kind remain valid after the fix.
