@@ -30,21 +30,23 @@ def families() -> List<&2, BIR.Family>:
     fam("Pt", None{}, [arm("Pt", [fld(ref("U32", Nil{})), fld(ref("U32", Nil{}))])]),
     fam("Fl", None{}, [arm("Fl", [fld(ref("U32", Nil{}))])]),
     fam("Pair", None{}, [arm("Pair", [fld(ref("U32", Nil{})), fld(ref("U32", Nil{}))])]),
-    fam("Seg", None{}, [arm("Seg", [fld(ref("Pt", Nil{})), fld(ref("Pt", Nil{})), fld(ref("Fl", Nil{}))])])
+    fam("Seg", None{}, [arm("Seg", [fld(ref("Pt", Nil{})), fld(ref("Pt", Nil{})), fld(ref("Fl", Nil{}))])]),
+    fam("Unit", None{}, [arm("Unit", Nil{})]),
+    fam("BoxP", None{}, [arm("BoxP", [fld(ref("AB", Nil{})), fld(ref("Unit", Nil{}))])])
   ]
 
 def row(+id: U32, +key: String, +arity: Nat) -> BIR.ConstructorLayout:
   BIR.ConstructorLayout{id, key, None{}, List.replicate(Maybe<&2, String>, arity, None{})}
 
 def constructors() -> List<&2, BIR.ConstructorLayout>:
-  [row(0, "Pair", 2n), row(1, "Pt", 2n), row(2, "Fl", 1n), row(3, "Seg", 3n)]
+  [row(0, "Pair", 2n), row(1, "Pt", 2n), row(2, "Fl", 1n), row(3, "Seg", 3n), row(4, "BoxP", 2n), row(5, "Unit", 0n)]
 
 def program() -> BIR.Program:
   BIR.Program{Nil{}, Nil{}, constructors(), families(), Nil{}, BIR.Executable{BIR.DescriptorRef{"U32", Nil{}}}}
 
 def world() -> Phys.World:
   ctx = CLay.context(program())
-  Phys.world(ctx, constructors(), families(), [Phys.CidSym{0, "Pair"}, Phys.CidSym{1, "Pt"}, Phys.CidSym{2, "Fl"}, Phys.CidSym{3, "Seg"}])
+  Phys.world(ctx, constructors(), families(), [Phys.CidSym{0, "Pair"}, Phys.CidSym{1, "Pt"}, Phys.CidSym{2, "Fl"}, Phys.CidSym{3, "Seg"}, Phys.CidSym{4, "BoxP"}, Phys.CidSym{5, "Unit"}])
 
 def show_part(+part: Phys.Part) -> String:
   match part:
@@ -52,12 +54,15 @@ def show_part(+part: Phys.Part) -> String:
     case Phys.PartFail{message}: String.append("FAIL ", String.append(message, "\n"))
 
 def pair_parts(+w: Phys.World) -> String:
-  String.append(show_part(Phys.field_read("pair_value", 0, [0], w)), show_part(Phys.field_copy("pair_value", 0, [1], w)))
+  String.append(show_part(Phys.field_read("pair_value", [Phys.FieldStep{0, 0}], w)), show_part(Phys.field_copy("pair_value", [Phys.FieldStep{0, 1}], w)))
 
 def seg_parts(+w: Phys.World) -> String:
-  String.append(show_part(Phys.field_tag("seg_value", 3, [0], w)),
-    String.append(show_part(Phys.field_consume("seg_value", 3, [0, 0], w)),
-      show_part(Phys.field_detach("seg_value", 3, [2], w))))
+  String.append(show_part(Phys.field_tag("seg_value", [Phys.FieldStep{3, 0}], w)),
+    String.append(show_part(Phys.field_consume("seg_value", [Phys.FieldStep{3, 0}, Phys.FieldStep{1, 0}], w)),
+      show_part(Phys.field_detach("seg_value", [Phys.FieldStep{3, 2}], w))))
+
+def box_parts(+w: Phys.World) -> String:
+  String.append(show_part(Phys.field_detach("box_value", [Phys.FieldStep{4, 0}], w)), show_part(Phys.field_copy("box_value", [Phys.FieldStep{4, 1}], w)))
 
 def main(modules: List<&2, Loader.LoadedModule>) -> ViewSmoke:
-  ViewSmoke{String.append(pair_parts(world()), seg_parts(world()))}
+  ViewSmoke{String.append(pair_parts(world()), String.append(seg_parts(world()), box_parts(world())))}

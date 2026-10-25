@@ -723,410 +723,435 @@ def project_packed_flag(+ppacked: Bool, +pw: World, +playout: CLay.Layout, +poff
     case True{}: project_packed(pw, playout, pvalue)
     case False{}: project_words(pw, playout, poffset, pcount, pvalue)
 
-# Borrowed Project materialisation
-# ================================
+# Borrowed Project steps
+# ======================
 #
-# The parent Term stays owned by Control and is sunk once at liveness death.
-# A field is not owned by the Project result until Control materialises it at
-# the consuming use; materialisation has two transfers:
-#   * move (affine use of a unique parent): take the stored word and clear the
-#     slot to 0, so the parent's deep drop skips it; inline data moves each
-#     boxed leaf out and clears its slot, then unfills the moved copy.
-#   * keep (Many use, or an affine use of a shared parent): term_keep stores a
-#     second reference; for an unsealed child under a unique parent the wrapper
-#     is written back into the parent slot so the parent drop releases that same
-#     wrapper. A shared parent's fields must already be rfc (runtime invariant),
-#     so the keep bumps without writing; term_keep on a callable fails loudly,
-#     which is correct because callables are affine and never Many.
-# No read of the borrowed field is made at Project time, so a failed pattern
-# arm leaves the parent untouched.
+# A path is a list of FieldStep{constructor, field}, one per BIR.Project, so a
+# LayoutBox boundary is resolved with the next step's authoritative
+# constructor, never guessed from NodeSlot. The owning Term starts as the root
+# and becomes each boxed Term on the path. Effective uniqueness is the
+# conjunction of every owner's predicate (non-trivial and not rfc count>1);
+# a static owner anywhere forces copy-only behaviour. Only the innermost
+# owner's payload slot is cleared, and only when every owner is unique and
+# non-static. Packed roots are raw-only for their single inline payload word.
 
-def borrow_shared_count(+ptag: String) -> String:
-  join_text(["term_rfc(", ptag, "t) ? (a32_load(a32_at(e.mem, term_loc(", ptag, "t))) & RFC_CNT) : 0"])
+type FieldStep is Data:
+  FieldStep{constructor: U32, field: U32}
 
-def borrow_shared_cond(+pmany: Bool) -> String:
-  match pmany:
-    case True{}: "1"
-    case False{}: "pbs > 1"
+type Resolved is Data:
+  ResolvedOk{offset: Nat, layout: CLay.Layout, base: String, uniq: String, stat: String, packed: Bool}
+  ResolvedFail{message: String}
 
+type FieldRefResult is Data:
+  FieldRefOk{resolved: Resolved}
+  FieldRefFail{message: String}
 
-def move_copy(+pslot: Nat, +pabs: Nat, +playout: CLay.Layout, +pindent: String) -> String:
-  match playout:
-    case CLay.LayoutWord{word}:
-      join_text([pindent, "pbbuf[", Nat.show(Nat.sub(pabs, pslot)), "] = e.mem[pbn + ", Nat.show(pabs), "];\n"])
-    case CLay.LayoutBox{reason}:
-      join_text([pindent, "pbbuf[", Nat.show(Nat.sub(pabs, pslot)), "] = e.mem[pbn + ", Nat.show(pabs), "]; e.mem[pbn + ", Nat.show(pabs), "] = 0;\n"])
-    case CLay.LayoutData{words, arms}:
-      match arms:
-        case Nil{}: ""
-        case +only <> Nil{}:
-          match only:
-            case CLay.LayArm{key, fields}: move_copy_fields(pslot, pabs, fields, pindent)
-        case _:
-          join_text([pindent, "pbbuf[", Nat.show(Nat.sub(pabs, pslot)), "] = e.mem[pbn + ", Nat.show(pabs), "];\n", pindent, "switch ((u32)e.mem[pbn + ", Nat.show(pabs), "]) {\n", move_copy_cases(pslot, Nat.add(pabs, 1n), arms, pindent, 0n), pindent, "}\n"])
+def unique_expr(+pterm: String) -> String:
+  join_text(["(!term_triv(", pterm, ") && !(term_rfc(", pterm, ") && (a32_load(a32_at(e.mem, term_loc(", pterm, "))) & RFC_CNT) > 1))"])
 
-def move_copy_fields(+pslot: Nat, +pabs: Nat, +fields: List<&2, CLay.Layout>, +pindent: String) -> String:
-  match fields:
-    case Nil{}: ""
-    case +layout <> rest:
-      join_text([move_copy(pslot, pabs, layout, pindent), move_copy_fields(pslot, Nat.add(pabs, CLay.layout_words(layout)), rest, pindent)])
+def static_expr(+pterm: String) -> String:
+  join_text(["term_triv(", pterm, ")"])
 
-def move_copy_cases(+pslot: Nat, +pabs: Nat, +parms: List<&2, CLay.LayArm>, +pindent: String, +pindex: Nat) -> String:
-  match parms:
-    case Nil{}:
-      join_text([pindent, "default: (void)bend_fail(e, \"the constructor tag is not a declared constructor\"); break;\n"])
-    case +arm <> rest:
-      match arm:
-        case CLay.LayArm{key, fields}:
-          join_text([pindent, "case ", Nat.show(pindex), ": {\n", move_copy_fields(pslot, pabs, fields, join_text([pindent, "  "])), pindent, "} break;\n", move_copy_cases(pslot, pabs, rest, pindent, Nat.add(pindex, 1n))])
+def and_expr(+pa: String, +pb: String) -> String:
+  join_text(["(", pa, " && ", pb, ")"])
 
-def keep_copy(+pslot: Nat, +pabs: Nat, +playout: CLay.Layout, +pindent: String) -> String:
-  match playout:
-    case CLay.LayoutWord{word}:
-      join_text([pindent, "pbbuf[", Nat.show(Nat.sub(pabs, pslot)), "] = e.mem[pbn + ", Nat.show(pabs), "];\n"])
-    case CLay.LayoutBox{reason}:
-      at = join_text(["e.mem[pbn + ", Nat.show(pabs), "]"])
-      join_text([pindent, "{ Term pbb = term_keep(e, ", at, ", 1); if (pbb != ", at, ") { if (pbs > 1) { (void)bend_fail(e, \"a shared node has an unsealed field\"); } ", at, " = pbb; } pbbuf[", Nat.show(Nat.sub(pabs, pslot)), "] = (u64)pbb; }\n"])
-    case CLay.LayoutData{words, arms}:
-      match arms:
-        case Nil{}: ""
-        case +only <> Nil{}:
-          match only:
-            case CLay.LayArm{key, fields}: keep_copy_fields(pslot, pabs, fields, pindent)
-        case _:
-          join_text([pindent, "pbbuf[", Nat.show(Nat.sub(pabs, pslot)), "] = e.mem[pbn + ", Nat.show(pabs), "];\n", pindent, "switch ((u32)e.mem[pbn + ", Nat.show(pabs), "]) {\n", keep_copy_cases(pslot, Nat.add(pabs, 1n), arms, pindent, 0n), pindent, "}\n"])
+def or_expr(+pa: String, +pb: String) -> String:
+  join_text(["(", pa, " || ", pb, ")"])
 
-def keep_copy_fields(+pslot: Nat, +pabs: Nat, +fields: List<&2, CLay.Layout>, +pindent: String) -> String:
-  match fields:
-    case Nil{}: ""
-    case +layout <> rest:
-      join_text([keep_copy(pslot, pabs, layout, pindent), keep_copy_fields(pslot, Nat.add(pabs, CLay.layout_words(layout)), rest, pindent)])
-
-def keep_copy_cases(+pslot: Nat, +pabs: Nat, +parms: List<&2, CLay.LayArm>, +pindent: String, +pindex: Nat) -> String:
-  match parms:
-    case Nil{}:
-      join_text([pindent, "default: (void)bend_fail(e, \"the constructor tag is not a declared constructor\"); break;\n"])
-    case +arm <> rest:
-      match arm:
-        case CLay.LayArm{key, fields}:
-          join_text([pindent, "case ", Nat.show(pindex), ": {\n", keep_copy_fields(pslot, pabs, fields, join_text([pindent, "  "])), pindent, "} break;\n", keep_copy_cases(pslot, pabs, rest, pindent, Nat.add(pindex, 1n))])
-
-# ---------------------------------------------------------------------------
-# Path Project view
-#
-# Control carries FieldRef{root constructor, root Term local, path of CLay
-# slot ordinals}. Physical resolves the path into a SlotPlan: a leaf slot, or
-# a runtime switch over a multi-arm form's tag with one plan per arm. The
-# five entries then emit a statement expression that reads, tags, copies or
-# detaches the selected slot. Static parents (term_triv) are immutable: copy,
-# never clear. A shared parent keeps the child with conditional writeback and
-# never clears. Only a unique, non-static parent clears on transfer.
-# ---------------------------------------------------------------------------
-
-type SlotPlan is Data:
-  SlotLeaf{offset: Nat, layout: CLay.Layout}
-  SlotSwitch{offset: Nat, arms: List<&2, SlotArm>}
-  SlotPacked{word: CLay.CWord}
-
-type SlotArm is Data:
-  SlotArm{tag: Nat, plan: SlotPlan}
-
-type SlotField is Data:
-  SlotField{offset: Nat, layout: CLay.Layout}
-
-type SlotFieldResult is Data:
-  SlotFieldOk{field: SlotField}
-  SlotFieldFail{message: String}
-
-type PlanResult is Data:
-  PlanOk{plan: SlotPlan}
-  PlanFail{message: String}
-
-def slot_field_at(+pfields: List<&2, CLay.Layout>, +pordinal: U32, +poffset: Nat) -> SlotFieldResult:
-  slot_field_walk(pfields, U32.to_nat(pordinal), 0n, poffset)
-
-def slot_field_walk(+pfields: List<&2, CLay.Layout>, +pwant: Nat, +pat: Nat, +poffset: Nat) -> SlotFieldResult:
-  match pfields:
-    case Nil{}: SlotFieldFail{join_text(["the constructor has no field ordinal ", Nat.show(pwant)])}
-    case +layout <> rest:
-      match Nat.is_eq(pat, pwant):
-        case True{}: SlotFieldOk{SlotField{poffset, layout}}
-        case False{}: slot_field_walk(rest, pwant, Nat.add(pat, 1n), Nat.add(poffset, CLay.layout_words(layout)))
-
-def plan_rest(+pw: World, +playout: CLay.Layout, +poffset: Nat, +prest: List<&2, U32>) -> PlanResult:
-  match prest:
-    case Nil{}: PlanOk{SlotLeaf{poffset, playout}}
-    case +ord <> tail:
-      match playout:
-        case CLay.LayoutData{words, arms}: plan_arms(pw, arms, poffset, ord, tail)
-        case _: PlanFail{"a nested Project path continues through a non-data field"}
-
-def plan_arm(+pw: World, +parm: CLay.LayArm, +pstart: Nat, +pordinal: U32, +prest: List<&2, U32>) -> PlanResult:
-  match parm:
-    case CLay.LayArm{key, fields}:
-      match slot_field_at(fields, pordinal, pstart):
-        case SlotFieldFail{message}: PlanFail{message}
-        case SlotFieldOk{field}:
-          match field:
-            case SlotField{offset, layout}: plan_rest(pw, layout, offset, prest)
-
-def plan_arm_list(+pw: World, +parms: List<&2, CLay.LayArm>, +pstart: Nat, +pordinal: U32, +prest: List<&2, U32>, +pindex: Nat, +pacc: List<&2, SlotArm>) -> PlanResult:
-  match parms:
-    case Nil{}: PlanOk{SlotSwitch{pstart, List.reverse(&2, SlotArm, pacc)}}
-    case +arm <> rest:
-      match plan_arm(pw, arm, pstart, pordinal, prest):
-        case PlanFail{message}: PlanFail{message}
-        case PlanOk{plan}: plan_arm_list(pw, rest, pstart, pordinal, prest, Nat.add(pindex, 1n), List.append(&2, SlotArm, pacc, [SlotArm{pindex, plan}]))
-
-def plan_arms(+pw: World, +parms: List<&2, CLay.LayArm>, +poffset: Nat, +pordinal: U32, +prest: List<&2, U32>) -> PlanResult:
-  match parms:
-    case Nil{}: PlanFail{"a form projection has no arms"}
-    case +only <> Nil{}: plan_arm(pw, only, poffset, pordinal, prest)
-    case _: plan_arm_list(pw, parms, Nat.add(poffset, 1n), pordinal, prest, 0n, Nil{})
-
-def plan_for(+pw: World, +pkey: String, +ppath: List<&2, U32>) -> PlanResult:
-  match ppath:
-    case Nil{}: PlanFail{"a Project path is empty"}
-    case +ord <> tail:
-      match pw:
-        case World{ctx, constructors, families, cids}:
-          match CLay.node_slot(ctx, pkey, ord):
-            case CLay.SlotErased{}: PlanFail{join_text(["the projection of `", pkey, "` names an erased field"])}
-            case CLay.SlotFailed{message}: PlanFail{message}
-            case CLay.SlotFound{slot}:
-              match slot:
-                case CLay.NodeSlot{ordinal, offset, layout}: plan_rest(pw, layout, offset, tail)
-
-def plan_field_expr(+pvalue: String) -> String:
-  join_text(["Term pbt = (", pvalue, "); u64 pbn = term_peek(e.mem, pbt); u32 pbs = ", borrow_shared_count("pb"), "; Term pbr = 0; "])
-
-def plan_read_leaf(+poffset: Nat, +playout: CLay.Layout, +pindent: String) -> String:
-  match playout:
-    case CLay.LayoutWord{word}:
-      match word:
-        case CLay.CWord32{}: join_text([pindent, "pbr = ((u64)(u32)(e.mem[pbn + ", Nat.show(poffset), "]));\n"])
-        case _: join_text([pindent, "pbr = e.mem[pbn + ", Nat.show(poffset), "];\n"])
-    case CLay.LayoutBox{reason}: join_text([pindent, "pbr = e.mem[pbn + ", Nat.show(poffset), "];\n"])
-    case CLay.LayoutData{words, arms}: join_text([pindent, "(void)bend_fail(e, \"a form field is not a single word\");\n"])
-
-def plan_read(+pplan: SlotPlan, +pindent: String) -> String:
-  match pplan:
-    case SlotLeaf{offset, layout}: plan_read_leaf(offset, layout, pindent)
-    case SlotSwitch{offset, arms}:
-      join_text([pindent, "switch ((u32)e.mem[pbn + ", Nat.show(offset), "]) {\n", plan_read_arms(arms, join_text([pindent, "  "])), pindent, "default: (void)bend_fail(e, \"the constructor tag is not a declared constructor\"); break;\n", pindent, "}\n"])
-    case SlotPacked{word}: plan_packed_read(word, pindent)
-
-def plan_packed_read(+pword: CLay.CWord, +pindent: String) -> String:
-  match pword:
-    case CLay.CWord32{}: join_text([pindent, "pbr = ((u64)(u32)pbn);\n"])
-    case _: join_text([pindent, "pbr = pbn;\n"])
-
-def plan_read_arms(+parms: List<&2, SlotArm>, +pindent: String) -> String:
-  match parms:
-    case Nil{}: ""
-    case +arm <> rest:
-      match arm:
-        case SlotArm{tag, plan}:
-          join_text([pindent, "case ", Nat.show(tag), ": {\n", plan_read(plan, join_text([pindent, "  "])), pindent, "} break;\n", plan_read_arms(rest, pindent)])
-
-def plan_tag_leaf(+poffset: Nat, +playout: CLay.Layout, +pindent: String) -> String:
-  match playout:
-    case CLay.LayoutData{words, arms}:
-      match arms:
-        case Nil{}: join_text([pindent, "pbr = 0;\n"])
-        case +only <> Nil{}: join_text([pindent, "pbr = 0;\n"])
-        case _: join_text([pindent, "pbr = (u64)e.mem[pbn + ", Nat.show(poffset), "];\n"])
-    case _: join_text([pindent, "(void)bend_fail(e, \"a tag test needs a data field\");\n"])
-
-def plan_tag(+pplan: SlotPlan, +pindent: String) -> String:
-  match pplan:
-    case SlotLeaf{offset, layout}: plan_tag_leaf(offset, layout, pindent)
-    case SlotSwitch{offset, arms}:
-      join_text([pindent, "switch ((u32)e.mem[pbn + ", Nat.show(offset), "]) {\n", plan_tag_arms(arms, join_text([pindent, "  "])), pindent, "default: (void)bend_fail(e, \"the constructor tag is not a declared constructor\"); break;\n", pindent, "}\n"])
-    case SlotPacked{word}: join_text([pindent, "(void)bend_fail(e, \"a tag test needs a data field\");\n"])
-
-def plan_tag_arms(+parms: List<&2, SlotArm>, +pindent: String) -> String:
-  match parms:
-    case Nil{}: ""
-    case +arm <> rest:
-      match arm:
-        case SlotArm{tag, plan}:
-          join_text([pindent, "case ", Nat.show(tag), ": {\n", plan_tag(plan, join_text([pindent, "  "])), pindent, "} break;\n", plan_tag_arms(rest, pindent)])
-
-def plan_copy_leaf(+pw: World, +poffset: Nat, +playout: CLay.Layout, +pindent: String) -> Part:
-  match playout:
-    case CLay.LayoutWord{word}:
-      match word:
-        case CLay.CWord32{}: PartOk{join_text([pindent, "pbr = ((u64)(u32)(e.mem[pbn + ", Nat.show(poffset), "]));\n"])}
-        case _: PartOk{join_text([pindent, "pbr = e.mem[pbn + ", Nat.show(poffset), "];\n"])}
-    case CLay.LayoutBox{reason}:
-      at = join_text(["e.mem[pbn + ", Nat.show(poffset), "]"])
-      PartOk{join_text([pindent, "{ Term pbb = term_keep(e, ", at, ", 1); if (pbb != ", at, ") { if (pbs > 1) { (void)bend_fail(e, \"a shared node has an unsealed field\"); } ", at, " = pbb; } pbr = pbb; }\n"])}
-    case CLay.LayoutData{words, arms}:
-      count = CLay.layout_words(playout)
-      match count:
-        case 0n: PartFail{"a data field has no storage words"}
-        case _:
-          jobs = unfill_jobs(pw, playout, SrcNode{"0", "pbbuf", "pbi", False{}}, "pbr", "pbc")
-          part = part_of(run_jobs(jobs, pw, Nil{}), "pbr")
-          match part:
-            case PartFail{message}: PartFail{message}
-            case PartOk{text}: PartOk{join_text([pindent, "{ Term pbbuf[", Nat.show(count), "]; ", keep_copy(poffset, poffset, playout, join_text([pindent, "  "])), "u32 pbi = 0; ", text, "; }\n"])}
-
-def plan_copy(+pw: World, +pplan: SlotPlan, +pindent: String) -> Part:
-  match pplan:
-    case SlotLeaf{offset, layout}: plan_copy_leaf(pw, offset, layout, pindent)
-    case SlotSwitch{offset, arms}:
-      body2 = plan_copy_arms(pw, arms, join_text([pindent, "  "]))
-      match body2:
-        case PartFail{message}: PartFail{message}
-        case PartOk{text}: PartOk{join_text([pindent, "switch ((u32)e.mem[pbn + ", Nat.show(offset), "]) {\n", text, pindent, "default: (void)bend_fail(e, \"the constructor tag is not a declared constructor\"); break;\n", pindent, "}\n"])}
-    case SlotPacked{word}: PartOk{plan_packed_read(word, pindent)}
-
-def plan_copy_arms(+pw: World, +parms: List<&2, SlotArm>, +pindent: String) -> Part:
-  match parms:
-    case Nil{}: PartOk{""}
-    case +arm <> rest:
-      match arm:
-        case SlotArm{tag, plan}:
-          head = plan_copy(pw, plan, join_text([pindent, "  "]))
-          match head:
-            case PartFail{message}: PartFail{message}
-            case PartOk{body}:
-              match plan_copy_arms(pw, rest, pindent):
-                case PartFail{message}: PartFail{message}
-                case PartOk{tail}: PartOk{join_text([pindent, "case ", Nat.show(tag), ": {\n", body, pindent, "} break;\n", tail])}
-
-def plan_detach_leaf(+pw: World, +poffset: Nat, +playout: CLay.Layout, +pindent: String) -> Part:
-  match playout:
-    case CLay.LayoutWord{word}:
-      match word:
-        case CLay.CWord32{}: PartOk{join_text([pindent, "pbr = ((u64)(u32)(e.mem[pbn + ", Nat.show(poffset), "]));\n"])}
-        case _: PartOk{join_text([pindent, "pbr = e.mem[pbn + ", Nat.show(poffset), "];\n"])}
-    case CLay.LayoutBox{reason}:
-      at = join_text(["e.mem[pbn + ", Nat.show(poffset), "]"])
-      PartOk{join_text([pindent, "pbr = ", at, "; ", at, " = 0;\n"])}
-    case CLay.LayoutData{words, arms}:
-      count = CLay.layout_words(playout)
-      match count:
-        case 0n: PartFail{"a data field has no storage words"}
-        case _:
-          jobs = unfill_jobs(pw, playout, SrcNode{"0", "pbbuf", "pbi", False{}}, "pbr", "pbc")
-          part = part_of(run_jobs(jobs, pw, Nil{}), "pbr")
-          match part:
-            case PartFail{message}: PartFail{message}
-            case PartOk{text}: PartOk{join_text([pindent, "{ Term pbbuf[", Nat.show(count), "]; ", move_copy(poffset, poffset, playout, join_text([pindent, "  "])), "u32 pbi = 0; ", text, "; }\n"])}
-
-def plan_detach(+pw: World, +pplan: SlotPlan, +pindent: String) -> Part:
-  match pplan:
-    case SlotLeaf{offset, layout}: plan_detach_leaf(pw, offset, layout, pindent)
-    case SlotSwitch{offset, arms}:
-      body2 = plan_detach_arms(pw, arms, join_text([pindent, "  "]))
-      match body2:
-        case PartFail{message}: PartFail{message}
-        case PartOk{text}: PartOk{join_text([pindent, "switch ((u32)e.mem[pbn + ", Nat.show(offset), "]) {\n", text, pindent, "default: (void)bend_fail(e, \"the constructor tag is not a declared constructor\"); break;\n", pindent, "}\n"])}
-    case SlotPacked{word}: PartOk{plan_packed_read(word, pindent)}
-
-def plan_detach_arms(+pw: World, +parms: List<&2, SlotArm>, +pindent: String) -> Part:
-  match parms:
-    case Nil{}: PartOk{""}
-    case +arm <> rest:
-      match arm:
-        case SlotArm{tag, plan}:
-          head = plan_detach(pw, plan, join_text([pindent, "  "]))
-          match head:
-            case PartFail{message}: PartFail{message}
-            case PartOk{body}:
-              match plan_detach_arms(pw, rest, pindent):
-                case PartFail{message}: PartFail{message}
-                case PartOk{tail}: PartOk{join_text([pindent, "case ", Nat.show(tag), ": {\n", body, pindent, "} break;\n", tail])}
-
-def plan_expr(+pbody: String, +ptail: String) -> String:
-  join_text(["({\n", pbody, ptail, "pbr;\n})"])
-
-def packed_plan(+pw: World, +pkey: String, +ppath: List<&2, U32>) -> PlanResult:
-  match ppath:
-    case Nil{}: PlanFail{"a Project path is empty"}
-    case +ord <> tail:
-      match tail:
-        case Nil{}: packed_plan_slot(pw, pkey, ord)
-        case _: PlanFail{"a packed value has no nested field storage"}
-
-def packed_plan_slot(+pw: World, +pkey: String, +pordinal: U32) -> PlanResult:
+def arm_descriptor_fields(+pw: World, +pkey: String) -> Maybe<&2, List<&2, BIR.DescriptorField>>:
   match pw:
-    case World{ctx, constructors, families, cids}:
-      match CLay.node_slot(ctx, pkey, pordinal):
-        case CLay.SlotErased{}: PlanFail{join_text(["the projection of `", pkey, "` names an erased field"])}
-        case CLay.SlotFailed{message}: PlanFail{message}
-        case CLay.SlotFound{slot}:
-          match slot:
-            case CLay.NodeSlot{ordinal, offset, layout}:
-              match layout:
-                case CLay.LayoutWord{word}: PlanOk{SlotPacked{word}}
-                case _: PlanFail{"a packed value carries only raw words"}
+    case World{ctx, constructors, families, cids}: family_arm_fields(families, pkey)
 
-def field_plan_parts(+pconstructor: U32, +ppath: List<&2, U32>, +pw: World) -> PlanResult:
-  row = ctor_of(pconstructor, pw)
-  match row:
-    case None{}: PlanFail{"BIR projects a constructor with no layout row"}
+def family_arm_fields(+pfamilies: List<&2, BIR.Family>, +pkey: String) -> Maybe<&2, List<&2, BIR.DescriptorField>>:
+  match pfamilies:
+    case Nil{}: None{}
+    case +family <> rest:
+      match family:
+        case BIR.Family{key, name, native, quantity_prefix, arity, arms}:
+          match descriptor_arm_fields(arms, pkey):
+            case None{}: family_arm_fields(rest, pkey)
+            case Some{fields}: Some{fields}
+
+def descriptor_arm_fields(+parms: List<&2, BIR.DescriptorArm>, +pkey: String) -> Maybe<&2, List<&2, BIR.DescriptorField>>:
+  match parms:
+    case Nil{}: None{}
+    case +arm <> rest:
+      match arm:
+        case BIR.DescriptorArm{key, fields}:
+          same = String.eq(key, pkey)
+          Bool.pick(Maybe<&2, List<&2, BIR.DescriptorField>>, same, Some{fields}, descriptor_arm_fields(rest, pkey))
+
+def live_ordinal(+pfields: List<&2, BIR.DescriptorField>, +pwant: U32) -> Maybe<&2, U32>:
+  live_walk(pfields, U32.to_nat(pwant), 0n, 0n)
+
+def live_walk(+pfields: List<&2, BIR.DescriptorField>, +pwant: Nat, +pat: Nat, +plive: Nat) -> Maybe<&2, U32>:
+  match pfields:
+    case Nil{}: None{}
+    case +field <> rest:
+      match field:
+        case BIR.DescriptorField{key, quantity, ty}:
+          match Nat.is_eq(pat, pwant):
+            case True{}:
+              match quantity:
+                case BIR.Erased{}: None{}
+                case _: Some{U32.from_nat(plive)}
+            case False{}:
+              live_walk(rest, pwant, Nat.add(pat, 1n), live_next(quantity, plive))
+
+def live_next(+pquantity: BIR.Quantity, +plive: Nat) -> Nat:
+  match pquantity:
+    case BIR.Erased{}: plive
+    case _: Nat.add(plive, 1n)
+
+def arm_of(+parms: List<&2, CLay.LayArm>, +pkey: String) -> Maybe<&2, List<&2, CLay.Layout>>:
+  match parms:
+    case Nil{}: None{}
+    case +arm <> rest:
+      match arm:
+        case CLay.LayArm{key, fields}:
+          same = String.eq(key, pkey)
+          Bool.pick(Maybe<&2, List<&2, CLay.Layout>>, same, Some{fields}, arm_of(rest, pkey))
+
+def step_key(+pw: World, +pconstructor: U32) -> Maybe<&2, String>:
+  match ctor_of(pconstructor, pw):
+    case None{}: None{}
+    case Some{row}:
+      match row:
+        case BIR.ConstructorLayout{id, key, native, fields}: Some{key}
+
+def step_live(+pw: World, +pconstructor: U32, +pfield: U32) -> Maybe<&2, U32>:
+  match ctor_of(pconstructor, pw):
+    case None{}: None{}
     case Some{row}:
       match row:
         case BIR.ConstructorLayout{id, key, native, fields}:
-          match pw:
-            case World{ctx, constructors, families, cids}:
-              node = CLay.node_layout(ctx, key)
-              match node:
-                case CLay.NodeFailed{message}: PlanFail{message}
-                case CLay.NodeFound{found}:
-                  match found:
-                    case CLay.Node{words, slots, packed}:
-                      match packed:
-                        case True{}: packed_plan(pw, key, ppath)
-                        case False{}: plan_for(pw, key, ppath)
+          match arm_descriptor_fields(pw, key):
+            case None{}: None{}
+            case Some{descriptors}: live_ordinal(descriptors, pfield)
 
-def field_read(+proot: String, +pconstructor: U32, +ppath: List<&2, U32>, +pw: World) -> Part:
-  match field_plan_parts(pconstructor, ppath, pw):
-    case PlanFail{message}: PartFail{message}
-    case PlanOk{plan}: PartOk{plan_expr(plan_field_expr(proot), plan_read(plan, ""))}
+def resolve_after(+pw: World, +playout: CLay.Layout, +pabs: Nat, +pbase: String, +puniq: String, +pstat: String, +prest: List<&2, FieldStep>) -> FieldRefResult:
+  match prest:
+    case Nil{}: FieldRefOk{ResolvedOk{pabs, playout, pbase, puniq, pstat, False{}}}
+    case +step <> tail:
+      match step:
+        case FieldStep{constructor, field}:
+          match step_key(pw, constructor):
+            case None{}: FieldRefFail{join_text(["BIR projects constructor ", U32.show(constructor), " with no layout row"])}
+            case Some{key}:
+              match step_live(pw, constructor, field):
+                case None{}: FieldRefFail{join_text(["the projection of `", key, "` names an erased field ordinal"])}
+                case Some{live}:
+                  resolve_next(pw, playout, pabs, pbase, puniq, pstat, key, live, tail)
 
-def field_tag(+proot: String, +pconstructor: U32, +ppath: List<&2, U32>, +pw: World) -> Part:
-  match field_plan_parts(pconstructor, ppath, pw):
-    case PlanFail{message}: PartFail{message}
-    case PlanOk{plan}: PartOk{plan_expr(plan_field_expr(proot), plan_tag(plan, ""))}
+def resolve_next(+pw: World, +playout: CLay.Layout, +pabs: Nat, +pbase: String, +puniq: String, +pstat: String, +pnextkey: String, +pnextfield: U32, +prest: List<&2, FieldStep>) -> FieldRefResult:
+  match playout:
+    case CLay.LayoutData{words, arms}:
+      match arm_of(arms, pnextkey):
+        case None{}: FieldRefFail{join_text(["the inline form has no arm `", pnextkey, "`"])}
+        case Some{fields}:
+          start = Bool.pick(Nat, Nat.is_gt(List.length(&2, CLay.LayArm, arms), 1n), Nat.add(pabs, 1n), pabs)
+          resolve_by_key(pw, pnextkey, pnextfield, prest, pbase, start, puniq, pstat)
+    case CLay.LayoutBox{reason}:
+      box = join_text(["e.mem[", pbase, " + ", Nat.show(pabs), "]"])
+      resolve_by_key(pw, pnextkey, pnextfield, prest, join_text(["term_peek(e.mem, (", box, "))"]), 0n, and_expr(puniq, unique_expr(box)), or_expr(pstat, static_expr(box)))
+    case CLay.LayoutWord{word}: FieldRefFail{"a nested Project path continues through a raw word"}
 
-def field_copy(+proot: String, +pconstructor: U32, +ppath: List<&2, U32>, +pw: World) -> Part:
-  match field_plan_parts(pconstructor, ppath, pw):
-    case PlanFail{message}: PartFail{message}
-    case PlanOk{plan}:
-      match plan_copy(pw, plan, ""):
+def resolve_by_key(+pw: World, +pkey: String, +pfield: U32, +prest: List<&2, FieldStep>, +pbase: String, +pnodeoff: Nat, +puniq: String, +pstat: String) -> FieldRefResult:
+  match pw:
+    case World{ctx, constructors, families, cids}:
+      match CLay.node_slot(ctx, pkey, pfield):
+        case CLay.SlotErased{}: FieldRefFail{join_text(["the projection of `", pkey, "` names an erased field"])}
+        case CLay.SlotFailed{message}: FieldRefFail{message}
+        case CLay.SlotFound{slot}:
+          match slot:
+            case CLay.NodeSlot{ordinal, offset, layout}:
+              resolve_after(pw, layout, Nat.add(pnodeoff, offset), pbase, puniq, pstat, prest)
+
+def resolve_path(+pw: World, +psteps: List<&2, FieldStep>) -> FieldRefResult:
+  match psteps:
+    case Nil{}: FieldRefFail{"a Project path is empty"}
+    case +first <> rest:
+      match first:
+        case FieldStep{constructor, field}:
+          match step_key(pw, constructor):
+            case None{}: FieldRefFail{join_text(["BIR projects constructor ", U32.show(constructor), " with no layout row"])}
+            case Some{key}:
+              match step_live(pw, constructor, field):
+                case None{}: FieldRefFail{join_text(["the projection of `", key, "` names an erased field ordinal"])}
+                case Some{live}:
+                  resolve_root(pw, key, live, rest)
+
+def resolve_root(+pw: World, +pkey: String, +plive: U32, +prest: List<&2, FieldStep>) -> FieldRefResult:
+  match pw:
+    case World{ctx, constructors, families, cids}:
+      node = CLay.node_layout(ctx, pkey)
+      match node:
+        case CLay.NodeFailed{message}: FieldRefFail{message}
+        case CLay.NodeFound{found}:
+          match found:
+            case CLay.Node{words, slots, packed}:
+              match packed:
+                case True{}:
+                  match prest:
+                    case Nil{}: packed_root_plan(pw, pkey, plive)
+                    case _: FieldRefFail{"a packed value has no nested field storage"}
+                case False{}: resolve_by_key(pw, pkey, plive, prest, "pbn", 0n, unique_expr("pbt"), static_expr("pbt"))
+
+def packed_root_plan(+pw: World, +pkey: String, +plive: U32) -> FieldRefResult:
+  match pw:
+    case World{ctx, constructors, families, cids}:
+      match CLay.node_slot(ctx, pkey, plive):
+        case CLay.SlotErased{}: FieldRefFail{join_text(["the projection of `", pkey, "` names an erased field"])}
+        case CLay.SlotFailed{message}: FieldRefFail{message}
+        case CLay.SlotFound{slot}:
+          match slot:
+            case CLay.NodeSlot{ordinal, offset, layout}: FieldRefOk{ResolvedOk{offset, layout, "pbn", "0", "1", True{}}}
+
+def field_prelude(+proot: String) -> String:
+  join_text(["Term pbt = (", proot, "); u64 pbn = term_peek(e.mem, pbt); Term pbr = 0; "])
+
+def resolved_expr(+pbody: String, +proot: String) -> String:
+  join_text(["({\n", field_prelude(proot), pbody, "pbr;\n})"])
+
+# Storage copy helpers. pbase is the payload expression, pslot the field's
+# payload-relative start, pabs the current payload-relative word.
+def keep_copy(+pbase: String, +punique: String, +pslot: Nat, +pabs: Nat, +playout: CLay.Layout, +pindent: String) -> String:
+  match playout:
+    case CLay.LayoutWord{word}:
+      join_text([pindent, "pbbuf[", Nat.show(Nat.sub(pabs, pslot)), "] = e.mem[", pbase, " + ", Nat.show(pabs), "];\n"])
+    case CLay.LayoutBox{reason}:
+      at = join_text(["e.mem[", pbase, " + ", Nat.show(pabs), "]"])
+      join_text([pindent, "{ Term pbb = term_keep(e, ", at, ", 1); if (pbb != ", at, ") { if (!", punique, ") { (void)bend_fail(e, \"a shared node has an unsealed field\"); } ", at, " = pbb; } pbbuf[", Nat.show(Nat.sub(pabs, pslot)), "] = (u64)pbb; }\n"])
+    case CLay.LayoutData{words, arms}:
+      match arms:
+        case Nil{}: ""
+        case +only <> Nil{}:
+          match only:
+            case CLay.LayArm{key, fields}: keep_copy_fields(pbase, punique, pslot, pabs, fields, pindent)
+        case _:
+          join_text([pindent, "pbbuf[", Nat.show(Nat.sub(pabs, pslot)), "] = e.mem[", pbase, " + ", Nat.show(pabs), "];\n", pindent, "switch ((u32)e.mem[", pbase, " + ", Nat.show(pabs), "]) {\n", keep_copy_cases(pbase, punique, pslot, Nat.add(pabs, 1n), arms, pindent, 0n), pindent, "}\n"])
+
+def keep_copy_fields(+pbase: String, +punique: String, +pslot: Nat, +pabs: Nat, +fields: List<&2, CLay.Layout>, +pindent: String) -> String:
+  match fields:
+    case Nil{}: ""
+    case +layout <> rest:
+      join_text([keep_copy(pbase, punique, pslot, pabs, layout, pindent), keep_copy_fields(pbase, punique, pslot, Nat.add(pabs, CLay.layout_words(layout)), rest, pindent)])
+
+def keep_copy_cases(+pbase: String, +punique: String, +pslot: Nat, +pabs: Nat, +parms: List<&2, CLay.LayArm>, +pindent: String, +pindex: Nat) -> String:
+  match parms:
+    case Nil{}:
+      join_text([pindent, "default: (void)bend_fail(e, \"the constructor tag is not a declared constructor\"); break;\n"])
+    case +arm <> rest:
+      match arm:
+        case CLay.LayArm{key, fields}:
+          join_text([pindent, "case ", Nat.show(pindex), ": {\n", keep_copy_fields(pbase, punique, pslot, pabs, fields, join_text([pindent, "  "])), pindent, "} break;\n", keep_copy_cases(pbase, punique, pslot, pabs, rest, pindent, Nat.add(pindex, 1n))])
+
+def move_copy(+pbase: String, +pslot: Nat, +pabs: Nat, +playout: CLay.Layout, +pindent: String) -> String:
+  match playout:
+    case CLay.LayoutWord{word}:
+      join_text([pindent, "pbbuf[", Nat.show(Nat.sub(pabs, pslot)), "] = e.mem[", pbase, " + ", Nat.show(pabs), "];\n"])
+    case CLay.LayoutBox{reason}:
+      join_text([pindent, "pbbuf[", Nat.show(Nat.sub(pabs, pslot)), "] = e.mem[", pbase, " + ", Nat.show(pabs), "]; e.mem[", pbase, " + ", Nat.show(pabs), "] = 0;\n"])
+    case CLay.LayoutData{words, arms}:
+      match arms:
+        case Nil{}: ""
+        case +only <> Nil{}:
+          match only:
+            case CLay.LayArm{key, fields}: move_copy_fields(pbase, pslot, pabs, fields, pindent)
+        case _:
+          join_text([pindent, "pbbuf[", Nat.show(Nat.sub(pabs, pslot)), "] = e.mem[", pbase, " + ", Nat.show(pabs), "];\n", pindent, "switch ((u32)e.mem[", pbase, " + ", Nat.show(pabs), "]) {\n", move_copy_cases(pbase, pslot, Nat.add(pabs, 1n), arms, pindent, 0n), pindent, "}\n"])
+
+def move_copy_fields(+pbase: String, +pslot: Nat, +pabs: Nat, +fields: List<&2, CLay.Layout>, +pindent: String) -> String:
+  match fields:
+    case Nil{}: ""
+    case +layout <> rest:
+      join_text([move_copy(pbase, pslot, pabs, layout, pindent), move_copy_fields(pbase, pslot, Nat.add(pabs, CLay.layout_words(layout)), rest, pindent)])
+
+def move_copy_cases(+pbase: String, +pslot: Nat, +pabs: Nat, +parms: List<&2, CLay.LayArm>, +pindent: String, +pindex: Nat) -> String:
+  match parms:
+    case Nil{}:
+      join_text([pindent, "default: (void)bend_fail(e, \"the constructor tag is not a declared constructor\"); break;\n"])
+    case +arm <> rest:
+      match arm:
+        case CLay.LayArm{key, fields}:
+          join_text([pindent, "case ", Nat.show(pindex), ": {\n", move_copy_fields(pbase, pslot, pabs, fields, join_text([pindent, "  "])), pindent, "} break;\n", move_copy_cases(pbase, pslot, pabs, rest, pindent, Nat.add(pindex, 1n))])
+
+def raw_word_expr(+pbase: String, +poffset: Nat, +pword: CLay.CWord) -> String:
+  read = join_text(["e.mem[", pbase, " + ", Nat.show(poffset), "]"])
+  match pword:
+    case CLay.CWord32{}: join_text(["((u64)(u32)(", read, "))"])
+    case _: read
+
+def read_body(+pres: Resolved) -> String:
+  match pres:
+    case ResolvedOk{offset, layout, base, uniq, stat, packed}:
+      match packed:
+        case True{}: "(void)bend_fail(e, \"a packed field is not a single word\");\n"
+        case False{}:
+          match layout:
+            case CLay.LayoutWord{word}: join_text(["pbr = ", raw_word_expr(base, offset, word), ";\n"])
+            case CLay.LayoutBox{reason}: join_text(["pbr = e.mem[", base, " + ", Nat.show(offset), "];\n"])
+            case CLay.LayoutData{words, arms}: "(void)bend_fail(e, \"a form field is not a single word\");\n"
+    case ResolvedFail{message}: ""
+
+def tag_body(+pw: World, +pres: Resolved) -> Part:
+  match pres:
+    case ResolvedOk{offset, layout, base, uniq, stat, packed}:
+      match packed:
+        case True{}: PartFail{"a tag test needs an addressable data field"}
+        case False{}:
+          match layout:
+            case CLay.LayoutData{words, arms}: tag_arms(pw, base, offset, arms)
+            case _: PartFail{"a tag test needs a data field"}
+    case ResolvedFail{message}: PartFail{message}
+
+def tag_arms(+pw: World, +pbase: String, +poffset: Nat, +parms: List<&2, CLay.LayArm>) -> Part:
+  match parms:
+    case Nil{}: PartFail{"a data layout has no arms"}
+    case +only <> Nil{}:
+      match only:
+        case CLay.LayArm{key, fields}:
+          match cid_of(key, pw):
+            case None{}: PartFail{join_text(["the arm `", key, "` has no canonical CID"])}
+            case Some{cid}: PartOk{join_text(["pbr = ", U32.show(cid), "u;\n"])}
+    case _: tag_cases(pw, pbase, poffset, parms, 0n, "")
+
+def tag_cases(+pw: World, +pbase: String, +poffset: Nat, +parms: List<&2, CLay.LayArm>, +pindex: Nat, +pacc: String) -> Part:
+  match parms:
+    case Nil{}: PartOk{join_text(["switch ((u32)e.mem[", pbase, " + ", Nat.show(poffset), "]) {\n", pacc, "default: (void)bend_fail(e, \"the constructor tag is not a declared constructor\"); break;\n}\n"])}
+    case +arm <> rest:
+      match arm:
+        case CLay.LayArm{key, fields}:
+          match cid_of(key, pw):
+            case None{}: PartFail{join_text(["the arm `", key, "` has no canonical CID"])}
+            case Some{cid}: tag_cases(pw, pbase, poffset, rest, Nat.add(pindex, 1n), join_text([pacc, "case ", Nat.show(pindex), ": pbr = ", U32.show(cid), "u; break;\n"]))
+
+def data_unfill_copy(+pw: World, +pres: Resolved, +pmove: Bool, +pindent: String) -> Part:
+  match pres:
+    case ResolvedOk{offset, layout, base, uniq, stat, packed}:
+      match layout:
+        case CLay.LayoutData{words, arms}:
+          count = CLay.layout_words(layout)
+          match count:
+            case 0n: zero_word_value(pw, arms, pindent)
+            case _:
+              size = count
+              src = SrcNode{"0", "pbbuf", "pbi", False{}}
+              jobs = unfill_jobs(pw, layout, src, "pbl", "pblc")
+              part = part_of(run_jobs(jobs, pw, Nil{}), "pbl")
+              match part:
+                case PartFail{message}: PartFail{message}
+                case PartOk{text}:
+                  copy = Bool.pick(String, pmove, move_copy(base, offset, offset, layout, join_text([pindent, "  "])), keep_copy(base, uniq, offset, offset, layout, join_text([pindent, "  "])))
+                  PartOk{join_text([pindent, "{ Term pbbuf[", Nat.show(size), "]; ", copy, "u32 pbi = 0; Term pbl = 0; ", text, "; pbr = pbl; }\n"])}
+        case _: PartFail{"a data copy needs a data layout"}
+    case ResolvedFail{message}: PartFail{message}
+
+def copy_body(+pw: World, +pres: Resolved) -> Part:
+  match pres:
+    case ResolvedOk{offset, layout, base, uniq, stat, packed}:
+      match packed:
+        case True{}:
+          match layout:
+            case CLay.LayoutWord{word}: PartOk{join_text(["pbr = ", raw_word_expr("pbn", offset, word), ";\n"])}
+            case CLay.LayoutData{words, arms}: packed_copy_expr(pw, layout)
+            case CLay.LayoutBox{reason}: PartFail{"a packed value has no boxed field"}
+        case False{}:
+          match layout:
+            case CLay.LayoutWord{word}: PartOk{join_text(["pbr = ", raw_word_expr(base, offset, word), ";\n"])}
+            case CLay.LayoutBox{reason}:
+              at = join_text(["e.mem[", base, " + ", Nat.show(offset), "]"])
+              PartOk{join_text(["{ Term pbb = term_keep(e, ", at, ", 1); if (pbb != ", at, ") { if (!", uniq, ") { (void)bend_fail(e, \"a shared node has an unsealed field\"); } ", at, " = pbb; } pbr = pbb; }\n"])}
+            case CLay.LayoutData{words, arms}: data_unfill_copy(pw, pres, False{}, "")
+    case ResolvedFail{message}: PartFail{message}
+
+def zero_word_value(+pw: World, +parms: List<&2, CLay.LayArm>, +pindent: String) -> Part:
+  match parms:
+    case +only <> Nil{}:
+      match only:
+        case CLay.LayArm{key, fields}:
+          match cid_of(key, pw):
+            case None{}: PartFail{join_text(["the arm `", key, "` has no canonical CID"])}
+            case Some{cid}: PartOk{join_text([pindent, "pbr = term_pak(", U32.show(cid), "u, 0);\n"])}
+    case _: PartFail{"a zero-word field must have exactly one constructor"}
+
+def packed_copy_expr(+pw: World, +playout: CLay.Layout) -> Part:
+  jobs = unfill_jobs(pw, playout, SrcOne{"((u64)pbn)"}, "pbl", "pblc")
+  part = part_of(run_jobs(jobs, pw, Nil{}), "pbl")
+  match part:
+    case PartFail{message}: PartFail{message}
+    case PartOk{text}: PartOk{join_text(["{ Term pbl = 0; ", text, "; pbr = pbl; }\n"])}
+
+def move_body(+pw: World, +pres: Resolved) -> Part:
+  match pres:
+    case ResolvedOk{offset, layout, base, uniq, stat, packed}:
+      match packed:
+        case True{}: copy_body(pw, pres)
+        case False{}:
+          match layout:
+            case CLay.LayoutWord{word}: PartOk{join_text(["pbr = ", raw_word_expr(base, offset, word), ";\n"])}
+            case CLay.LayoutBox{reason}:
+              at = join_text(["e.mem[", base, " + ", Nat.show(offset), "]"])
+              PartOk{join_text(["pbr = ", at, "; ", at, " = 0;\n"])}
+            case CLay.LayoutData{words, arms}: data_unfill_copy(pw, pres, True{}, "")
+    case ResolvedFail{message}: PartFail{message}
+
+def field_read(+proot: String, +ppath: List<&2, FieldStep>, +pw: World) -> Part:
+  match resolve_path(pw, ppath):
+    case FieldRefFail{message}: PartFail{message}
+    case FieldRefOk{resolved}: PartOk{resolved_expr(read_body(resolved), proot)}
+
+def field_tag(+proot: String, +ppath: List<&2, FieldStep>, +pw: World) -> Part:
+  match resolve_path(pw, ppath):
+    case FieldRefFail{message}: PartFail{message}
+    case FieldRefOk{resolved}:
+      match tag_body(pw, resolved):
         case PartFail{message}: PartFail{message}
-        case PartOk{body}: PartOk{plan_expr(plan_field_expr(proot), body)}
+        case PartOk{body}: PartOk{resolved_expr(body, proot)}
 
-def field_detach(+proot: String, +pconstructor: U32, +ppath: List<&2, U32>, +pw: World) -> Part:
-  match field_plan_parts(pconstructor, ppath, pw):
-    case PlanFail{message}: PartFail{message}
-    case PlanOk{plan}:
-      match plan_copy(pw, plan, ""):
+def field_copy(+proot: String, +ppath: List<&2, FieldStep>, +pw: World) -> Part:
+  match resolve_path(pw, ppath):
+    case FieldRefFail{message}: PartFail{message}
+    case FieldRefOk{resolved}:
+      match copy_body(pw, resolved):
         case PartFail{message}: PartFail{message}
-        case PartOk{copy_body}:
-          match plan_detach(pw, plan, ""):
+        case PartOk{body}: PartOk{resolved_expr(body, proot)}
+
+def field_detach(+proot: String, +ppath: List<&2, FieldStep>, +pw: World) -> Part:
+  match resolve_path(pw, ppath):
+    case FieldRefFail{message}: PartFail{message}
+    case FieldRefOk{resolved}:
+      match copy_body(pw, resolved):
+        case PartFail{message}: PartFail{message}
+        case PartOk{copy}:
+          match move_body(pw, resolved):
             case PartFail{message}: PartFail{message}
-            case PartOk{move_body}:
-              body = join_text(["if (term_triv(pbt)) { ", copy_body, " } else { if (pbs > 1) { (void)bend_fail(e, \"a shared node cannot give away a field\"); } ", move_body, " } "])
-              PartOk{plan_expr(plan_field_expr(proot), body)}
+            case PartOk{moved}:
+              body = join_text(["if (", resolved_stat(resolved), ") { ", copy, " } else { if (!", resolved_uniq(resolved), ") { (void)bend_fail(e, \"a shared node cannot give away a field\"); } ", moved, " } "])
+              PartOk{resolved_expr(body, proot)}
 
-def field_consume(+proot: String, +pconstructor: U32, +ppath: List<&2, U32>, +pw: World) -> Part:
-  match field_plan_parts(pconstructor, ppath, pw):
-    case PlanFail{message}: PartFail{message}
-    case PlanOk{plan}:
-      match plan_copy(pw, plan, ""):
+def field_consume(+proot: String, +ppath: List<&2, FieldStep>, +pw: World) -> Part:
+  match resolve_path(pw, ppath):
+    case FieldRefFail{message}: PartFail{message}
+    case FieldRefOk{resolved}:
+      match copy_body(pw, resolved):
         case PartFail{message}: PartFail{message}
-        case PartOk{copy_body}:
-          match plan_detach(pw, plan, ""):
+        case PartOk{copy}:
+          match move_body(pw, resolved):
             case PartFail{message}: PartFail{message}
-            case PartOk{move_body}:
-              body = join_text(["if (term_triv(pbt) || pbs > 1) { ", copy_body, " } else { ", move_body, " } "])
-              PartOk{plan_expr(plan_field_expr(proot), body)}
+            case PartOk{moved}:
+              body = join_text(["if (", resolved_stat(resolved), " || !", resolved_uniq(resolved), ") { ", copy, " } else { ", moved, " } "])
+              PartOk{resolved_expr(body, proot)}
+
+def resolved_stat(+pres: Resolved) -> String:
+  match pres:
+    case ResolvedOk{offset, layout, base, uniq, stat, packed}: stat
+    case ResolvedFail{message}: "1"
+
+def resolved_uniq(+pres: Resolved) -> String:
+  match pres:
+    case ResolvedOk{offset, layout, base, uniq, stat, packed}: uniq
+    case ResolvedFail{message}: "0"
 
 def project_plan(+pplan: CLay.UnfillResult, +pw: World, +pnode: CLay.Node, +playout: CLay.Layout, +poffset: Nat, +pvalue: String) -> Part:
   match pplan:
