@@ -1,5 +1,5 @@
 import Base
-import ./native_stage_profile_emit_fixture.bend as F
+import ./native_stage_profile_rejected_smoke.bend as F
 import ../checkpoints/emitter_steps_v1.bend as Emit
 import ../bend2/selfhost/backend_ir.bend as BIR
 

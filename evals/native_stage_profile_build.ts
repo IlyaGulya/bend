@@ -39,7 +39,7 @@ import type * as Compiler from '../bend2/comp.ts';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
-type Options = {artifactDir?: string; canonicalBir?: string; canonicalSources?: string; canonicalRuntime?: string};
+type Options = {artifactDir?: string; canonicalBir?: string; canonicalSources?: string; canonicalRuntime?: string; canonicalChecked?: string; canonicalComponent?: string};
 const clangTimeoutMs = 300000, runTimeoutMs = 120000;
 
 function options(): Options {
@@ -47,7 +47,7 @@ function options(): Options {
   for (const argument of process.argv.slice(2)) {
     const at = argument.indexOf('=');
     const name = at < 0 ? argument : argument.slice(0, at), value = at < 0 ? undefined : argument.slice(at + 1);
-    if (!['--artifact-dir', '--canonical-bir', '--canonical-sources', '--canonical-runtime'].includes(name) || value === undefined || values.has(name))
+    if (!['--artifact-dir', '--canonical-bir', '--canonical-sources', '--canonical-runtime', '--canonical-checked', '--canonical-component'].includes(name) || value === undefined || values.has(name))
       throw Error('expected unique --artifact-dir=DIR or canonical transport paths, observed ' + argument);
     values.set(name, value);
   }
@@ -56,6 +56,8 @@ function options(): Options {
     canonicalBir: values.has('--canonical-bir') ? resolve(values.get('--canonical-bir')) : undefined,
     canonicalSources: values.has('--canonical-sources') ? resolve(values.get('--canonical-sources')) : undefined,
     canonicalRuntime: values.has('--canonical-runtime') ? resolve(values.get('--canonical-runtime')) : undefined,
+    canonicalChecked: values.has('--canonical-checked') ? resolve(values.get('--canonical-checked')) : undefined,
+    canonicalComponent: values.has('--canonical-component') ? resolve(values.get('--canonical-component')) : undefined,
   };
 }
 
@@ -112,8 +114,12 @@ async function build(o: Options) {
   if (!o.canonicalBir || !o.canonicalSources || !o.canonicalRuntime)
     throw Error('diagnostic transport requires --canonical-bir=FILE --canonical-sources=FILE --canonical-runtime=FILE');
   const generatedFixture = join(root, 'checkpoints/native_stage_profile_generated_fixture.bend');
-  execFileSync(process.execPath, [join(root, 'evals/native_stage_profile_fixture_transport.mjs'),
-    o.canonicalBir, o.canonicalSources, o.canonicalRuntime, generatedFixture], {stdio: 'inherit'});
+  const transportArgs = [join(root, 'evals/native_stage_profile_fixture_transport.mjs'),
+    o.canonicalBir, o.canonicalSources, o.canonicalRuntime, generatedFixture,
+    '--source=' + join(root, 'evals/native_stage_profile_emit_source.bend')];
+  if (o.canonicalChecked) transportArgs.push('--checked=' + o.canonicalChecked);
+  if (o.canonicalComponent) transportArgs.push('--component=' + o.canonicalComponent);
+  execFileSync(process.execPath, transportArgs, {stdio: 'inherit'});
   const kernelPath = join(root, 'bend2/bend.ts'), compilerPath = join(root, 'bend2/comp.ts');
   const driverPath = join(root, 'evals/native_stage_profile_driver.bend');
   const hostPath = join(root, 'evals/native_stage_profile_host.c');

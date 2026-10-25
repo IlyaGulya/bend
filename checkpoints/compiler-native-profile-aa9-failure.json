@@ -110,7 +110,8 @@
     "nativeRunWithFixedFixture": false,
     "status": "BLOCKED_ON_AUTHORITATIVE_BIR",
     "canonicalPipelineProven": true,
-    "nativeRunWithCanonicalBIR": false
+    "nativeRunWithCanonicalBIR": false,
+    "rejectedSmokePath": "evals/native_stage_profile_rejected_smoke.bend (diagnostic only; not canonical)"
   },
   "compliantNodeAttempt": {
     "status": "EMIT_FAILURE_WITNESSED",
@@ -292,6 +293,42 @@
     "generatedFixtureGit": false,
     "builderTransport": "evals/native_stage_profile_fixture_transport.mjs writes checkpoints/native_stage_profile_generated_fixture.bend before compile; requires --canonical-bir/--canonical-sources/--canonical-runtime",
     "driverRequest": "EmitterRequestGroup_18 EmitterRequest_cps_provider_6_render{program,runtime,files}",
-    "noNativeRun": true
+    "noNativeRun": true,
+    "transport": {
+      "script": "evals/native_stage_profile_fixture_transport.mjs",
+      "status": "fixed and consumer-smoked",
+      "birSha256": "f272d5531b76fcbb05c3fe6c096a60bb32cb930f5a4103c6161aa10c287bada6",
+      "sourcesSha256": "f8edf1aaa5d07b3c17e4d3b26411c3517541bfba68939eca17ebcf87de307836",
+      "runtimeSha256": "478c1ba7d0d0626c1927d11c4af3b3d4cef520db41afd8722ebf55d5050769c3",
+      "outputSha256": "ef98fcac013f127a218430aa1b3f43c191092cbc41d66b3f41f02715be65a108",
+      "sourceSha256": "d1001497df01fa274cd4a67e7a3bd596853e9ee45ecf3fc133084c3a9cfc883b",
+      "checkedSha256": "9e220b61c64648ee4070be7b053cd10db92a039cf07f20575bdaa517d89f6bbe",
+      "componentSha256": "4a91665c634dff4b1da9d17bdc80786efc03bd0d0e89865ed22e085c1026060a",
+      "byteSizes": {
+        "source": 305,
+        "bir": 1639178,
+        "sources": 279742,
+        "runtime": 75336,
+        "output": 793517
+      },
+      "checks": {
+        "nullaryConstructorsIncluded": true,
+        "unknownConstructorFails": true,
+        "nonCanonicalNamespaceFails": true,
+        "extraOrMissingFieldsFail": true,
+        "sourceBundleExactPathSource": true,
+        "actualHashes": true
+      },
+      "consumerSmoke": {
+        "bookLoadValid": "TRANSPORT_CONSUMER_OK",
+        "log": "/tmp/transport-consumer.log",
+        "sha256": "3704f7f2560a7bc1dcecad3d6fe7e49b7cc9b3775bd0284fac05a6baff794633"
+      },
+      "discriminators": {
+        "badNamespace": "/tmp/transport-bad-namespace.log",
+        "badUnknown": "/tmp/transport-bad-unknown.log",
+        "badExtra": "/tmp/transport-bad-extra.log"
+      }
+    }
   }
 }
