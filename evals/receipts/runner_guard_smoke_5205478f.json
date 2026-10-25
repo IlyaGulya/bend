@@ -1,7 +1,7 @@
 {
  "schemaVersion": 1,
  "kind": "ACCEPTANCE_HARNESS_FIX_AND_GUARDED_SMOKE",
- "status": "HARNESS_FIXED_SMOKE_PASS",
+ "status": "REJECTED_STALE_GUARD",
  "runner": {
   "path": "evals/c_target_fixtures_run.ts",
   "sha256": "cb17c4a7f28bc4d8891f13a14582eccc120c44d59a2fe06432c5385512ef5fb1",
@@ -233,7 +233,14 @@
  "notes": [
   "Tiny smoke only; the 17-case matrix was NOT rerun on the unchanged component.",
   "Observed guarded emit elapsed 184.4 s (C smoke) and 120.7 s (JS smoke), both PASS and far below the 600 s per-stage deadline; these are not performance claims and no caps were raised.",
-  "Every stage is complete/stopped and owned: shell exec redirects complete stdout/stderr, exit recorded, gate report copied, gate JSON has argv.",
-  "Full-matrix execution awaits a correct fresh component and ROOT GO; the old 520 matrix evidence remains untouched."
- ]
+  "Full-matrix execution awaits a correct fresh component and ROOT GO; the old 520 matrix evidence remains untouched.",
+  "REJECTED_STALE_GUARD: old guardian report lacked reportPhase/ownedTreeStopped/supervisorExitCode; stage completion/ownership was unobserved."
+ ],
+ "observedOutputsRetained": true,
+ "rejection": {
+  "reason": "gate.report.json from the old guardian lacks reportPhase, ownedTreeStopped and supervisorExitCode; complete/stopped/owned stages were therefore UNOBSERVED. This receipt is not a complete/stopped evidence source.",
+  "repairedGuardian": "Main 083e83b0",
+  "retained": "The observed stdout values 133 for the C and JS wide_record smokes are retained as observations only; they are not an acceptance or owned/monitored-completion proof.",
+  "next": "Fresh integration worktree from 083e83b0, apply a091, harden the runner to require PASS + reportPhase=complete + ownedTreeStopped=true (effective exit), then one tiny C+JS verification in fresh dirs."
+ }
 }
