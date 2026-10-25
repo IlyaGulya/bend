@@ -404,3 +404,27 @@ The synthetic non-tail witness reaches64332calls versus45607on defaults;
 this is an option-behavior witness, not a compiler fix or stack byte measurement.
 Further resource-flag increases are not the next step; isolate the producer's
 recursive emit_ctr traversal while preserving frozen compiler/kernel authority.
+
+### Compact ordinary-Bend witness; no selfhost modules required
+
+`evals/repro_bun_c_ctor_stack_8192.bend` is8291bytes: Base, a literal String
+payload and a main returning its Nat length. Full native load/check succeeds;
+the direct C producer then RangeErrors in repeated emit_ctr after449ms, at
+162709504B peak RSS. This is not a multi-GiB OOM and does not require FIR/BIR.
+It is a compact witness, not a claimed minimum failing length.
+
+The retained public CLI command also fails with a machine-stack diagnostic:
+
+```sh
+bun bend2/main.ts evals/repro_bun_c_ctor_stack_8192.bend -o /tmp/fresh-stack-witness.c
+```
+
+The1024-character sibling passes actual Bun CLI emission, clang linking and
+native execution, printing `1024n`. Its retained #| expectation includes the
+Nat suffix. All stages have complete/stopped terminal guardians; the compact
+receipt pins the exact commands, source hashes and direct internal stack:
+`evals/receipts/bun_c_ctor_stack_mre.json`.
+Main and frozen bend.ts/comp.ts/base.bend hashes match. No producer/kernel
+fix is included; a stack-safe C producer change crosses the frozen-source
+boundary and needs an explicit decision rather than a silent baseline change.
+

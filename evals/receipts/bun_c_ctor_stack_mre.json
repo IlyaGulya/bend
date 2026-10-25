@@ -1,0 +1,338 @@
+{
+  "schemaVersion": 1,
+  "status": "STANDALONE_BUN_C_PRODUCER_STACK_MRE_WITH_NATIVE_POSITIVE",
+  "wholeCompilerAccepted": false,
+  "runtime": "Bun1.4.2+744846f84; defaults; no JSC stack options or added GC",
+  "protectedSources": {
+    "bend2/bend.ts": {
+      "current": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+      "frozen": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e"
+    },
+    "bend2/comp.ts": {
+      "current": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70",
+      "frozen": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70"
+    },
+    "bend2/base.bend": {
+      "current": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+      "frozen": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c"
+    }
+  },
+  "fixtures": [
+    {
+      "path": "evals/repro_bun_c_ctor_stack_1024.bend",
+      "bytes": 1123,
+      "sha256": "8ed5ba49c8c84fe0753a718250e05626ae7625ea7c46ae95e31d9bec673334e6",
+      "payloadCharacters": 1024,
+      "expectedNatOutput": "1024n"
+    },
+    {
+      "path": "evals/repro_bun_c_ctor_stack_8192.bend",
+      "bytes": 8291,
+      "sha256": "8b394a24444a30e5e35441eadb82bda122151c589c668a58f2d6590b105784c1",
+      "payloadCharacters": 8192,
+      "expectedNatOutput": "8192n"
+    }
+  ],
+  "direct": {
+    "fail": {
+      "status": "FAILED",
+      "runtime": "Bun 1.4.2",
+      "phase": "compile_book",
+      "inputs": {
+        "/private/tmp/bend-native-merged-03d0/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+        "/private/tmp/bend-native-merged-03d0/bend2/comp.ts": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70",
+        "/private/tmp/bend-native-merged-03d0/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+        "/private/tmp/bend-fir-integrated57ab/checkpoints/bun_c_ctor_stack_8192.bend": "cc468f28880fe5d33d623d507fa0a3b844a070f22d8aa249af8c66af0fd48c41"
+      },
+      "events": [
+        {
+          "phase": "book_load",
+          "status": "completed",
+          "wallMs": 32.562583000000004
+        },
+        {
+          "phase": "book_valid",
+          "status": "completed",
+          "wallMs": 192.84508399999999
+        }
+      ],
+      "elapsedMs": 388.094167,
+      "error": "RangeError: Maximum call stack size exceeded.",
+      "stack": "RangeError: Maximum call stack size exceeded.\n    at ty_wnf (/private/tmp/bend-native-merged-03d0/bend2/comp.ts:913:24)\n    at ty_adt (/private/tmp/bend-native-merged-03d0/bend2/comp.ts:931:13)\n    at adt_of (/private/tmp/bend-native-merged-03d0/bend2/comp.ts:936:15)\n    at ctr_adt (/private/tmp/bend-native-merged-03d0/bend2/comp.ts:1118:15)\n    at emit_ctr (/private/tmp/bend-native-merged-03d0/bend2/comp.ts:2596:20)\n    at map (native:1:11)\n    at emit_ctr (/private/tmp/bend-native-merged-03d0/bend2/comp.ts:2640:14)\n    at map (native:1:11)\n    at emit_ctr (/private/tmp/bend-native-merged-03d0/bend2/comp.ts:2640:14)\n    at map (native:1:11)"
+    },
+    "positive": {
+      "status": "CODEGEN_COMPLETE",
+      "runtime": "Bun 1.4.2",
+      "inputs": {
+        "/private/tmp/bend-native-merged-03d0/bend2/bend.ts": "6c1df3eb304fe085070aa4797928f70243b80d4635389e3d5d8a49fdfbb3051e",
+        "/private/tmp/bend-native-merged-03d0/bend2/comp.ts": "a84170d5a84f21386383ccd478a1dac687eb664d89c21b284cd1134513963b70",
+        "/private/tmp/bend-native-merged-03d0/bend2/base.bend": "3238272964daa05438a8a99311008802fd495963ac78dbbf51f6d5e6bdcee77c",
+        "/private/tmp/bend-fir-integrated57ab/checkpoints/bun_c_ctor_stack_1024.bend": "70de87de5a781c953e59ef451e7751fd56bac4c51f3c7ce8fe2b00f7ae2bbcd5"
+      },
+      "events": [
+        {
+          "phase": "book_load",
+          "status": "completed",
+          "wallMs": 41.996167
+        },
+        {
+          "phase": "book_valid",
+          "status": "completed",
+          "wallMs": 40.99175000000001
+        },
+        {
+          "phase": "compile_book",
+          "status": "completed",
+          "wallMs": 91.849542
+        }
+      ],
+      "elapsedMs": 183.45679199999998,
+      "cBytes": 123208,
+      "cSha256": "0cfc0a5ab7300fc4658a3b2aac924253a472ac7bbb7debe599ed384de3ae3968"
+    },
+    "nativeObserved": "1024n",
+    "observationSource": "Tool terminal output, normalized line",
+    "driver": "/tmp/bun-c-ctr-executed-case.ts",
+    "driverSha256": "b18acd30e4dfdcc2bd8336ea1f5cab93dc3490d5ade190ef612da755b63d772c"
+  },
+  "publicCli": {
+    "largeExit": 1,
+    "diagnostic": "Error: the machine stack overflowed (a deep recursion, or a literal too large to expand)",
+    "positiveNativeObserved": "1024n",
+    "observationSource": "Tool terminal output, normalized line",
+    "cPath": "/tmp/bun-c-ctr-cli-1024-1.c",
+    "cSha256": "0cfc0a5ab7300fc4658a3b2aac924253a472ac7bbb7debe599ed384de3ae3968",
+    "binaryPath": "/tmp/bun-c-ctr-cli-1024-1-bin",
+    "binarySha256": "3099284f69a1b82350e45907146ae69247ededbc6b4c5ea653dde0fb0a51e109"
+  },
+  "guards": {
+    "directFail": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792954877303-8f016a7d3644cb99.json",
+      "result": {
+        "status": "FAIL",
+        "reason": "command_exit",
+        "commandExitCode": 1,
+        "commandSignal": 0,
+        "peakRssBytes": 162709504,
+        "peakFootprintBytes": 133186256,
+        "elapsedMs": 449,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 1,
+        "command": [
+          "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+          "/private/tmp/bend-fir-integrated57ab/checkpoints/bun_c_ctor_stack_case.ts",
+          "/private/tmp/bend-fir-integrated57ab/checkpoints/bun_c_ctor_stack_8192.bend",
+          "/tmp/bun-c-ctr-8192-1"
+        ],
+        "label": "Standalone Bun constructor-stack witness; unchanged compiler/kernel",
+        "exitCode": 1,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792954877303-8f016a7d3644cb99.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    "directPositive": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792955105003-44935411230fd812.json",
+      "result": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 120881152,
+        "peakFootprintBytes": 90079904,
+        "elapsedMs": 241,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+          "/private/tmp/bend-fir-integrated57ab/checkpoints/bun_c_ctor_stack_case.ts",
+          "/private/tmp/bend-fir-integrated57ab/checkpoints/bun_c_ctor_stack_1024.bend",
+          "/tmp/bun-c-ctr-1024-1"
+        ],
+        "label": "Standalone Bun constructor-stack witness; unchanged compiler/kernel",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792955105003-44935411230fd812.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    "directClang": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792955163737-1abbdba9dc5a0ab5.json",
+      "result": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 70713344,
+        "peakFootprintBytes": 32408200,
+        "elapsedMs": 470,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "clang",
+          "-std=c11",
+          "-O0",
+          "-pthread",
+          "/tmp/bun-c-ctr-1024-1.c",
+          "-lm",
+          "-o",
+          "/tmp/bun-c-ctr-1024-1-bin"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792955163737-1abbdba9dc5a0ab5.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    "directNative": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792955164257-54286fc3b8d534bd.json",
+      "result": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 212992,
+        "peakFootprintBytes": 311440,
+        "elapsedMs": 14,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/tmp/bun-c-ctr-1024-1-bin"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792955164257-54286fc3b8d534bd.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    "cliFail": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792955498333-a1eaef8691052134.json",
+      "result": {
+        "status": "FAIL",
+        "reason": "command_exit",
+        "commandExitCode": 1,
+        "commandSignal": 0,
+        "peakRssBytes": 167755776,
+        "peakFootprintBytes": 132891320,
+        "elapsedMs": 1038,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 1,
+        "command": [
+          "bun",
+          "bend2/main.ts",
+          "evals/repro_bun_c_ctor_stack_8192.bend",
+          "-o",
+          "/tmp/bun-c-ctr-cli-8192-1.c"
+        ],
+        "label": "heavy command",
+        "exitCode": 1,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792955498333-a1eaef8691052134.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    "cliPositive": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792955526487-e7bb9b1aa7351699.json",
+      "result": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 119095296,
+        "peakFootprintBytes": 86262408,
+        "elapsedMs": 343,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "bun",
+          "bend2/main.ts",
+          "evals/repro_bun_c_ctor_stack_1024.bend",
+          "-o",
+          "/tmp/bun-c-ctr-cli-1024-1.c"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792955526487-e7bb9b1aa7351699.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    "cliClang": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792955526886-7efc4609e9e729dc.json",
+      "result": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 70844416,
+        "peakFootprintBytes": 29770088,
+        "elapsedMs": 306,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "clang",
+          "-std=c11",
+          "-O0",
+          "-pthread",
+          "/tmp/bun-c-ctr-cli-1024-1.c",
+          "-lm",
+          "-o",
+          "/tmp/bun-c-ctr-cli-1024-1-bin"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792955526886-7efc4609e9e729dc.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    },
+    "cliNative": {
+      "path": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792955527257-ec630a559bedee17.json",
+      "result": {
+        "status": "PASS",
+        "reason": "command_exit",
+        "commandExitCode": 0,
+        "commandSignal": 0,
+        "peakRssBytes": 180224,
+        "peakFootprintBytes": 311440,
+        "elapsedMs": 16,
+        "timeoutMs": 600000,
+        "reportPhase": "complete",
+        "ownedTreeStopped": true,
+        "supervisorExitCode": 0,
+        "command": [
+          "/tmp/bun-c-ctr-cli-1024-1-bin"
+        ],
+        "label": "heavy command",
+        "exitCode": 0,
+        "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792955527257-ec630a559bedee17.json",
+        "memoryLimitBytes": 8589934592,
+        "rssLimitBytes": 8589934592
+      }
+    }
+  },
+  "notes": [
+    "Only Base and two ordinary definitions are needed; no FIR/BIR/selfhost modules in the Bend input.",
+    "Direct large input completes full book_load/book_valid then RangeErrors under repeated emit_ctr; it peaks at162709504B RSS, not an8GiB OOM.",
+    "8192 is a compact witness, not a proven minimum failing length.",
+    "Earlier raw prototypes had #|1024/#|8192 markers without Nat suffix and were not assertion gates; retained fixtures correct those comments and were exercised through the public CLI.",
+    "No compiler/kernel/source language or runtime ABI changes.",
+    "A stack-safe constructor-emission producer change would cross the current frozen comp.ts boundary and needs an explicit decision."
+  ]
+}

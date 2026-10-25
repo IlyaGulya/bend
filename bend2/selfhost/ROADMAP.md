@@ -145,6 +145,12 @@ the same eight frozen source hashes on **Bun defaults**, with an8192MiB actual
 tree RSS/footprint guard,10ms sampling and the approved1800s deadline.
 No256MiB stack or8GiB V8 old-generation enforcement is claimed for Bun.
 The limit is conservatively on the whole tree, not a fabricated equivalent heap.
+The Bun controls now complete with a genuine recursive C-producer stack
+failure, not OOM; neither default nor the bounded7MiB JSC guard emits C.
+The problem also reproduces through the public Bun CLI on an ordinary
+Base-only literal program, with a real emitted/linked/executed small control.
+See `evals/receipts/bun_c_ctor_stack_mre.json` and the compact-witness section
+of `REPRO_NATIVE_PASS1.md`. The native working image is still not accepted.
 
 ### Preceding `667e7f33` C checkpoint (historical)
 
