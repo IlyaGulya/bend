@@ -73,7 +73,7 @@ const record = (stem: string, stage: string, suffix: string, bytes: Uint8Array |
   writeFileSync(logs + '/' + stem + '.' + stage + '.' + suffix, bytes);
 };
 
-async function guarded(stem: string, stage: string, command: string[]): Promise<{exit: number; stdout: string; stderr: string; status: string; reason: string; gatePath: string}> {
+async function guarded(stem: string, stage: string, command: string[]): Promise<{exit: number; commandExit: number; stdout: string; stderr: string; status: string; reason: string; reportPhase: string; ownedTreeStopped: boolean | null; supervisorExit: number; gatePath: string}> {
   const outPath = logs + '/' + stem + '.' + stage + '.stdout';
   const errPath = logs + '/' + stem + '.' + stage + '.stderr';
   // exec keeps the monitored child's pid/exit status; redirection preserves the
@@ -96,7 +96,7 @@ async function guarded(stem: string, stage: string, command: string[]): Promise<
   }
   const stdout = existsSync(outPath) ? readFileSync(outPath, 'utf8') : '';
   const stderr = existsSync(errPath) ? readFileSync(errPath, 'utf8') : '';
-  return {exit: gate.commandExitCode, stdout, stderr, status: gate.status, reason: gate.reason, gatePath};
+  return {exit: gate.exitCode, commandExit: gate.commandExitCode, stdout, stderr, status: gate.status, reason: gate.reason, reportPhase: gate.reportPhase, ownedTreeStopped: gate.ownedTreeStopped, supervisorExit: gate.supervisorExitCode, gatePath};
 }
 
 for (const name of selected) {
@@ -113,22 +113,22 @@ for (const name of selected) {
     : [node, '--experimental-strip-types', '--max-old-space-size=3072', host,
       '--candidate=' + component!, '--source-tag=' + tag!, '--parser=' + parser!, source, '-o', outFile,
       '--base', base, '--runtime-c', runtime];
-  record(stem, 'pins', 'json', JSON.stringify({fixture: source, sourceSha256: sourceSha, expected, target, outFile, parser, tag, component, node, nodeVersion, v8}, null, 2) + '\n');
+  record(stem, 'pins', 'json', JSON.stringify({fixture: source, sourceSha256: sourceSha, expected, target, outFile, parser, parserSha256: parser === undefined ? undefined : createHash('sha256').update(readFileSync(parser)).digest('hex'), tag, component, componentSha256: component === undefined ? undefined : createHash('sha256').update(readFileSync(component)).digest('hex'), host, hostSha256: host === undefined ? undefined : createHash('sha256').update(readFileSync(host)).digest('hex'), node, nodeSha256: existsSync(node) ? createHash('sha256').update(readFileSync(node)).digest('hex') : undefined, nodeVersion, v8}, null, 2) + '\n');
   const emit = await guarded(stem, 'emit', command);
-  if (emit.status !== 'PASS' || emit.exit !== 0) {
-    failures.push({fixture: stem, stage: 'emit', detail: emit.status + '/' + emit.exit + ': ' + emit.reason + '; raw in ' + logs});
+  if (emit.status !== 'PASS' || emit.exit !== 0 || emit.commandExit !== 0 || emit.reportPhase !== 'complete' || emit.ownedTreeStopped !== true) {
+    failures.push({fixture: stem, stage: 'emit', detail: 'gate=' + emit.status + ' effective=' + emit.exit + ' command=' + emit.commandExit + ' phase=' + emit.reportPhase + ' stopped=' + String(emit.ownedTreeStopped) + ': ' + emit.reason + '; raw in ' + logs});
     continue;
   }
   if (target === 'c') {
     const cc = await guarded(stem, 'clang', ['clang', '-std=c11', '-O0', '-ferror-limit=0', '-pthread', '-lm', '-o', exe, outFile]);
-    if (cc.status !== 'PASS' || cc.exit !== 0) {
-      failures.push({fixture: stem, stage: 'clang', detail: cc.status + '/' + cc.exit + ': ' + cc.reason + '; raw in ' + logs});
+    if (cc.status !== 'PASS' || cc.exit !== 0 || cc.commandExit !== 0 || cc.reportPhase !== 'complete' || cc.ownedTreeStopped !== true) {
+      failures.push({fixture: stem, stage: 'clang', detail: 'gate=' + cc.status + ' effective=' + cc.exit + ' command=' + cc.commandExit + ' phase=' + cc.reportPhase + ' stopped=' + String(cc.ownedTreeStopped) + ': ' + cc.reason + '; raw in ' + logs});
       continue;
     }
   }
-  const run = await guarded(stem, 'run', target === 'c' ? [exe] : [node, exe]);
-  if (run.status !== 'PASS' || run.exit !== 0) {
-    failures.push({fixture: stem, stage: 'run', detail: run.status + '/' + run.exit + ': ' + run.reason + '; raw in ' + logs});
+  const run = await guarded(stem, 'run', target === 'c' ? [exe] : [node, '--max-old-space-size=3072', exe]);
+  if (run.status !== 'PASS' || run.exit !== 0 || run.commandExit !== 0 || run.reportPhase !== 'complete' || run.ownedTreeStopped !== true) {
+    failures.push({fixture: stem, stage: 'run', detail: 'gate=' + run.status + ' effective=' + run.exit + ' command=' + run.commandExit + ' phase=' + run.reportPhase + ' stopped=' + String(run.ownedTreeStopped) + ': ' + run.reason + '; raw in ' + logs});
     continue;
   }
   const out = run.stdout.trim();
@@ -136,6 +136,11 @@ for (const name of selected) {
     failures.push({fixture: stem, stage: 'output', detail: 'observed ' + JSON.stringify(out) + ' expected ' + JSON.stringify(expected)});
     continue;
   }
+  const artifacts: Record<string, {bytes: number; sha256: string}> = {};
+  for (const path of [outFile, exe]) {
+    if (existsSync(path)) artifacts[path] = {bytes: readFileSync(path).length, sha256: createHash('sha256').update(readFileSync(path)).digest('hex')};
+  }
+  record(stem, 'artifact', 'json', JSON.stringify(artifacts, null, 2) + '\n');
   if (!keep) {
     for (const path of [outFile, exe]) {
       try { Bun.spawnSync(['rm', '-f', path]); } catch { /* transient artifact */ }
@@ -145,8 +150,15 @@ for (const name of selected) {
 }
 
 const sha = (path: string): string => createHash('sha256').update(readFileSync(path)).digest('hex');
+const mode = smokeCase === undefined ? 'acceptance-matrix' : 'diagnostic-smoke';
 const pins = {
-  target, node, nodeVersion, v8, host, component, parser, tag, driver,
+  mode, target, node, nodeVersion, v8, host, component, parser, tag, driver,
+  hostSha256: host === undefined ? undefined : createHash('sha256').update(readFileSync(host)).digest('hex'),
+  componentSha256: component === undefined ? undefined : createHash('sha256').update(readFileSync(component)).digest('hex'),
+  parserSha256: parser === undefined ? undefined : createHash('sha256').update(readFileSync(parser)).digest('hex'),
+  guardianTs: resolve('evals/heavy_gate.ts'), guardianTsSha256: sha(resolve('evals/heavy_gate.ts')),
+  guardianNativeC: resolve('evals/heavy_gate_native.c'), guardianNativeCSha256: sha(resolve('evals/heavy_gate_native.c')),
+  cwd: process.cwd(),
   base, baseSha256: sha(base), runtime, runtimeSha256: sha(runtime), logs,
   gate: {memoryMiB: 8192, rssMiB: 8192, pollMs: 10, timeoutMs: 600000},
   fixtures: selected.length, smokeCase,
@@ -155,8 +167,8 @@ const cleanPins = Object.fromEntries(Object.entries(pins).filter(([, value]) => 
 record('matrix', 'pins', 'json', JSON.stringify(cleanPins, null, 2) + '\n');
 if (failures.length > 0) {
   for (const failure of failures) console.error(failure.fixture + ': ' + failure.stage + ': ' + failure.detail);
-  console.error(JSON.stringify({status: 'FAIL', target, fixtures: selected.length, smokeCase, failures, logDir: logs, nodeVersion, v8}));
+  console.error(JSON.stringify({status: 'FAIL', mode, target, fixtures: selected.length, smokeCase, failures, logDir: logs, nodeVersion, v8}));
   process.exitCode = 1;
 } else {
-  console.log(JSON.stringify({status: 'PASS', target, fixtures: selected.length, smokeCase, logDir: logs, nodeVersion, v8}));
+  console.log(JSON.stringify({status: 'PASS', mode, target, fixtures: selected.length, smokeCase, logDir: logs, nodeVersion, v8}));
 }
