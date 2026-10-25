@@ -46,6 +46,9 @@ def families() -> List<&2, BIR.Family>:
     fam("Choice", None{}, [arm("ChA", [fld(ref("U32", Nil{}))]), arm("ChB", [fld(ref("U32", Nil{}))])]),
     fam("Choice0", None{}, [arm("CA", Nil{}), arm("CB", Nil{})]),
     fam("WrapE", None{}, [arm("WrapE", [fld(ref("Choice0", Nil{}))])]),
+    fam("Bool", None{}, [arm("True", Nil{}), arm("False", Nil{})]),
+    fam("Char", None{}, [arm("Chr", [fld(ref("U32", Nil{}))])]),
+    fam("Flags", None{}, [arm("Flags", [fld(ref("Bool", Nil{})), fld(ref("Bool", Nil{}))])]),
     array_fam(),
     fam("Arr", None{}, [arm("Arr", [fld(ref("Array", [ref("U32", Nil{})]))])])
   ]
@@ -54,14 +57,14 @@ def row(+id: U32, +key: String, +arity: Nat) -> BIR.ConstructorLayout:
   BIR.ConstructorLayout{id, key, None{}, List.replicate(Maybe<&2, String>, arity, None{})}
 
 def constructors() -> List<&2, BIR.ConstructorLayout>:
-  [row(0, "Pair", 2n), row(1, "Pt", 2n), row(2, "Fl", 1n), row(3, "Seg", 3n), row(4, "BoxP", 2n), row(5, "Unit", 0n), row(6, "Arr", 1n), row(9, "BoxM", 1n), row(10, "Circle", 1n), row(11, "Rect", 2n), row(12, "Wide", 3n), row(20, "Wrap", 1n), row(21, "E", 2n), row(22, "BoxArr", 1n), row(23, "ChA", 1n), row(24, "ChB", 1n), row(30, "WrapE", 1n), row(31, "CA", 0n), row(32, "CB", 0n), row(101, "Pt", 2n), row(110, "Circle", 1n), row(111, "Rect", 2n)]
+  [row(0, "Pair", 2n), row(1, "Pt", 2n), row(2, "Fl", 1n), row(3, "Seg", 3n), row(4, "BoxP", 2n), row(5, "Unit", 0n), row(6, "Arr", 1n), row(9, "BoxM", 1n), row(10, "Circle", 1n), row(11, "Rect", 2n), row(12, "Wide", 3n), row(20, "Wrap", 1n), row(21, "E", 2n), row(22, "BoxArr", 1n), row(23, "ChA", 1n), row(24, "ChB", 1n), row(30, "WrapE", 1n), row(31, "CA", 0n), row(32, "CB", 0n), row(40, "Flags", 2n), row(101, "Pt", 2n), row(110, "Circle", 1n), row(111, "Rect", 2n)]
 
 def program() -> BIR.Program:
   BIR.Program{Nil{}, Nil{}, constructors(), families(), Nil{}, BIR.Executable{BIR.DescriptorRef{"U32", Nil{}}}}
 
 def world() -> Phys.World:
   ctx = CLay.context(program())
-  Phys.world(ctx, constructors(), families(), [Phys.CidSym{16, "Pair"}, Phys.CidSym{33, "Pt"}, Phys.CidSym{34, "Fl"}, Phys.CidSym{18, "Seg"}, Phys.CidSym{17, "BoxP"}, Phys.CidSym{15, "Unit"}, Phys.CidSym{6, "Arr"}, Phys.CidSym{14, "True"}, Phys.CidSym{13, "False"}, Phys.CidSym{22, "BoxM"}, Phys.CidSym{20, "Circle"}, Phys.CidSym{21, "Rect"}, Phys.CidSym{19, "Wide"}, Phys.CidSym{0, "Tuple"}, Phys.CidSym{23, "Wrap"}, Phys.CidSym{24, "E"}, Phys.CidSym{25, "BoxArr"}, Phys.CidSym{26, "ChA"}, Phys.CidSym{27, "ChB"}, Phys.CidSym{30, "WrapE"}, Phys.CidSym{28, "CA"}, Phys.CidSym{29, "CB"}])
+  Phys.world(ctx, constructors(), families(), [Phys.CidSym{16, "Pair"}, Phys.CidSym{33, "Pt"}, Phys.CidSym{34, "Fl"}, Phys.CidSym{18, "Seg"}, Phys.CidSym{17, "BoxP"}, Phys.CidSym{15, "Unit"}, Phys.CidSym{6, "Arr"}, Phys.CidSym{14, "True"}, Phys.CidSym{13, "False"}, Phys.CidSym{22, "BoxM"}, Phys.CidSym{20, "Circle"}, Phys.CidSym{21, "Rect"}, Phys.CidSym{19, "Wide"}, Phys.CidSym{0, "Tuple"}, Phys.CidSym{23, "Wrap"}, Phys.CidSym{24, "E"}, Phys.CidSym{25, "BoxArr"}, Phys.CidSym{26, "ChA"}, Phys.CidSym{27, "ChB"}, Phys.CidSym{30, "WrapE"}, Phys.CidSym{28, "CA"}, Phys.CidSym{29, "CB"}, Phys.CidSym{31, "Chr"}, Phys.CidSym{33, "Flags"}])
 
 def show_part(+part: Phys.Part) -> String:
   match part:
@@ -173,12 +176,20 @@ def array_parts(+w: Phys.World) -> String:
   e = show_part(Phys.path_is_node("arr_root", [Phys.PathHalf{True{}, ref("U32", Nil{})}], w))
   String.append(a, String.append(b, String.append(c, String.append(d, e))))
 
+def packed_inline_parts(+w: Phys.World) -> String:
+  a = show_part(Phys.path_read("flags_value", [Phys.PathField{40, 0}], w))
+  b = show_part(Phys.path_read("flags_value", [Phys.PathField{40, 1}], w))
+  c = show_part(Phys.path_read("char_leaf", [Phys.PathLeafCell{ref("Char", Nil{})}], w))
+  d = show_part(Phys.construct_part(40, [op("term_pak(14u, 0)"), op("term_pak(13u, 0)")], w))
+  String.append(a, String.append(b, String.append(c, d)))
+
 def all_parts(+w: Phys.World) -> String:
   String.concat([
     pair_parts(w), seg_parts(w), box_parts(w), array_parts(w), multi_parts(w),
     extra_array_parts(w), nat_parts(w), shared_parts(w), seg_offset2_part(w), array_prim_parts(w),
     erased_parts(w), packed_nested_part(w), buf_pt_part(w), nested_array_part(w),
-    mixed_part(w), variant_parts(w), callable_part(w), boxed_tag_part(w), packed_enum_parts(w)
+    mixed_part(w), variant_parts(w), callable_part(w), boxed_tag_part(w), packed_enum_parts(w),
+    packed_inline_parts(w)
   ])
 
 def main(modules: List<&2, Loader.LoadedModule>) -> ViewSmoke:

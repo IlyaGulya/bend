@@ -1,0 +1,340 @@
+{
+  "schemaVersion": 1,
+  "status": "PASS",
+  "acceptance": "guarded physical storage slice with Bool/Char consumer-boundary proof; not a Root GO",
+  "worktree": "/private/tmp/bend-c-storage-selector",
+  "logs": "/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7",
+  "pins": {
+    "physical": "f4fdfcc9575cf1667348cb512ee990e5ddd6ae58d97ea8df35ce914b5c66f0b2",
+    "clay": "a9f2d5d7d101665f390fb88cd6901947773fbf2444fc6b76504f9537213cdc77",
+    "descriptorNf": "747dc747fcb1a6b6c1fcbf31a3e164f998fd5fa502f87a8ad3a1facd13859973",
+    "harnessTemplate": "a189c3c4590401bc021d974e760ba74528c721afc24231420aa25102167d4103",
+    "fixture": "228a333c23831b9ecd64027d4af6fd5ad22397ddbddda134ff2d328a66a3568a",
+    "cFixture": "47d61a307b3e6a40349c9b9d2e809cf5da0436023e98de239bbfe00d7afaaec0",
+    "heavyGate": "204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2",
+    "heavyGateNative": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+    "nativeStageProfileBuild": "a4f54e44a2cdf62632d6409ff310dcb80f86fa573f425729b5623313f9148472",
+    "compilerStageProfile": "3e9a679575b4cbd21f5f8263fc13f8bc5d62d63fb720a91f9be8d3f1d3219f07",
+    "emitterStepLower": "4376c983d376a91f8464037444ddeccd1233f6a00f9c2362ce4fd88ab9f84371",
+    "componentBuild": "85bc4ae037acbbaa1c5f8ccc97287fdcb6ddc36fbdb8e8906586ef17e11f218b",
+    "stepLower": "05492ac6aaa7855b4d4770bf1f77d7abacf3cc3b956dfca9e6f411fffb202158"
+  },
+  "commitSourceHashes": {
+    "physical": "f4fdfcc9575cf1667348cb512ee990e5ddd6ae58d97ea8df35ce914b5c66f0b2",
+    "clay": "a9f2d5d7d101665f390fb88cd6901947773fbf2444fc6b76504f9537213cdc77",
+    "descriptorNf": "747dc747fcb1a6b6c1fcbf31a3e164f998fd5fa502f87a8ad3a1facd13859973",
+    "harnessTemplate": "a189c3c4590401bc021d974e760ba74528c721afc24231420aa25102167d4103",
+    "fixture": "228a333c23831b9ecd64027d4af6fd5ad22397ddbddda134ff2d328a66a3568a",
+    "cFixture": "47d61a307b3e6a40349c9b9d2e809cf5da0436023e98de239bbfe00d7afaaec0",
+    "heavyGate": "204f3529704435455d20a9d5a126a8e9c62e002b6fed9044c8319da8a3c26ff2",
+    "heavyGateNative": "1ff233edacdbf13c6ffd4a8bf38cbf153629e8c76be4860deec8a5b591d3fa8b",
+    "nativeStageProfileBuild": "a4f54e44a2cdf62632d6409ff310dcb80f86fa573f425729b5623313f9148472",
+    "compilerStageProfile": "3e9a679575b4cbd21f5f8263fc13f8bc5d62d63fb720a91f9be8d3f1d3219f07",
+    "emitterStepLower": "4376c983d376a91f8464037444ddeccd1233f6a00f9c2362ce4fd88ab9f84371",
+    "componentBuild": "85bc4ae037acbbaa1c5f8ccc97287fdcb6ddc36fbdb8e8906586ef17e11f218b",
+    "stepLower": "05492ac6aaa7855b4d4770bf1f77d7abacf3cc3b956dfca9e6f411fffb202158"
+  },
+  "runtime": {
+    "node": "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+    "nodeVersion": "v23.11.0",
+    "componentWorker": {
+      "heapLimitMiB": 3072,
+      "stackSizeMb": 256
+    }
+  },
+  "caps": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000
+  },
+  "stages": {
+    "steps": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 355368960,
+      "peakFootprintBytes": 205325152,
+      "elapsedMs": 2725,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/bin/sh",
+        "-c",
+        "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+        "sh",
+        "/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7/steps.stdout",
+        "/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7/steps.stderr",
+        "bun",
+        "--smol",
+        "evals/physical_view_step_smoke.ts"
+      ],
+      "label": "steps",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792916130993-6aa515982fc11a53.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592,
+      "argv": [
+        "bun",
+        "--smol",
+        "evals/physical_view_step_smoke.ts"
+      ],
+      "cwd": "/private/tmp/bend-c-storage-selector"
+    },
+    "host": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 74432512,
+      "peakFootprintBytes": 50905808,
+      "elapsedMs": 647,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/bin/sh",
+        "-c",
+        "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+        "sh",
+        "/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7/host.stdout",
+        "/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7/host.stderr",
+        "bun",
+        "--smol",
+        "evals/physical_view_step_smoke.ts",
+        "--run=/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7/physical_view_component.js"
+      ],
+      "label": "host",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792916142278-dc9bff7ee600b587.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592,
+      "argv": [
+        "bun",
+        "--smol",
+        "evals/physical_view_step_smoke.ts",
+        "--run=/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7/physical_view_component.js"
+      ],
+      "cwd": "/private/tmp/bend-c-storage-selector"
+    },
+    "harness-emit": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 172064768,
+      "peakFootprintBytes": 132539920,
+      "elapsedMs": 1954,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/bin/sh",
+        "-c",
+        "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+        "sh",
+        "/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7/harness-emit.stdout",
+        "/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7/harness-emit.stderr",
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-transform-types",
+        "--max-old-space-size=3072",
+        "--stack-size=262144",
+        "evals/physical_storage_emit.ts",
+        "/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7/physical_path_smoke.bend",
+        "/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7/physical_path_smoke.c"
+      ],
+      "label": "harness-emit",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792916142960-6df3bd1d134b330e.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592,
+      "argv": [
+        "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+        "--experimental-transform-types",
+        "--max-old-space-size=3072",
+        "--stack-size=262144",
+        "evals/physical_storage_emit.ts",
+        "/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7/physical_path_smoke.bend",
+        "/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7/physical_path_smoke.c"
+      ],
+      "cwd": "/private/tmp/bend-c-storage-selector"
+    },
+    "clang": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 68911104,
+      "peakFootprintBytes": 38257336,
+      "elapsedMs": 1641,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/bin/sh",
+        "-c",
+        "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+        "sh",
+        "/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7/clang.stdout",
+        "/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7/clang.stderr",
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-g",
+        "-o",
+        "/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7/physical_path_smoke",
+        "/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7/physical_path_smoke.c",
+        "-lpthread",
+        "-lm"
+      ],
+      "label": "clang",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792916144955-2a92e450c3394d6f.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592,
+      "argv": [
+        "clang",
+        "-std=c11",
+        "-O0",
+        "-g",
+        "-o",
+        "/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7/physical_path_smoke",
+        "/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7/physical_path_smoke.c",
+        "-lpthread",
+        "-lm"
+      ],
+      "cwd": "/private/tmp/bend-c-storage-selector"
+    },
+    "run": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 2392064,
+      "peakFootprintBytes": 1524000,
+      "elapsedMs": 31,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "/bin/sh",
+        "-c",
+        "out=$1; err=$2; shift 2; exec \"$@\" >\"$out\" 2>\"$err\"",
+        "sh",
+        "/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7/run.stdout",
+        "/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7/run.stderr",
+        "/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7/physical_path_smoke"
+      ],
+      "label": "run",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792916146636-3601d0dc666f6400.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592,
+      "argv": [
+        "/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7/physical_path_smoke"
+      ],
+      "cwd": "/private/tmp/bend-c-storage-selector"
+    },
+    "component": {
+      "status": "PASS",
+      "reason": "command_exit",
+      "commandExitCode": 0,
+      "commandSignal": 0,
+      "peakRssBytes": 669728768,
+      "peakFootprintBytes": 695914104,
+      "elapsedMs": 8409,
+      "timeoutMs": 600000,
+      "reportPhase": "complete",
+      "ownedTreeStopped": true,
+      "supervisorExitCode": 0,
+      "command": [
+        "node",
+        "--experimental-strip-types",
+        "--max-old-space-size=3072",
+        "/private/tmp/bend-c-storage-selector/evals/checker_core_component_build.ts",
+        "--worker",
+        "--file=/private/tmp/bend-c-storage-selector/checkpoints/physical_view_steps_component_v1.bend",
+        "--exports=expand_modules_start,template_step",
+        "--artifact=/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7/physical_view_component.js",
+        "--report=/private/tmp/bend-c-storage-selector/checkpoints/storage-fixed-v7/component-report",
+        "--inputs-sha256=8b9f2bb493cabe1865ae8937c744eb13b6b7ceb6b0f92920bf49c2ce5b3bfc41"
+      ],
+      "label": "Full-native CheckerCore component JS build",
+      "exitCode": 0,
+      "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1792916133825-c44a8c7fc178476a.json",
+      "memoryLimitBytes": 8589934592,
+      "rssLimitBytes": 8589934592
+    }
+  },
+  "artifacts": {
+    "physical_view_component.js": {
+      "bytes": 2296440,
+      "sha256": "a16db27d62c146b2376704c850e5f8f9654b90678e3729c6dc8a8ab0b2b85411"
+    },
+    "physical_path_smoke.c": {
+      "bytes": 118271,
+      "sha256": "5c416e5049383579b49b4c1222f2cce0b68c7868f91a0ff01891c2b8af8ca25c"
+    },
+    "physical_path_smoke": {
+      "bytes": 113440,
+      "sha256": "6eab18014a0e13e02c9f257a38abac75dcacfd6f4494f0140ad8d3db195613c0"
+    },
+    "physical_path_probe.c": {
+      "bytes": 34793,
+      "sha256": "705ebe19b6587a96e1c865f6cc14c3710f128f890246aa82ea5cadcba1e22f7f"
+    }
+  },
+  "expressions": 46,
+  "terminal": {
+    "observed": "ok",
+    "erasedOrdinalKind": "F"
+  },
+  "command": [
+    "/opt/homebrew/Cellar/bun/1.4.2/bin/bun",
+    "/private/tmp/bend-c-storage-selector/evals/physical_storage_acceptance.ts",
+    "--logs=checkpoints/storage-fixed-v7",
+    "--receipt=evals/physical_storage_acceptance_receipt_fixed3.json"
+  ],
+  "cwd": "/private/tmp/bend-c-storage-selector",
+  "note": "19207e04 runtime evidence is REJECTED_UNGUARDED and is not part of this receipt.",
+  "scope": "actual guarded C execution of the physical slice, including inline Bool/Char canonical packed view; not a Root GO and not the integrated 23-case matrix",
+  "source": "bend2/selfhost/c_backend_physical.bend sha256 f4fdfcc9575cf1667348cb512ee990e5ddd6ae58d97ea8df35ce914b5c66f0b2",
+  "newCases": {
+    "inlineBoolRead": "nonpacked Flags node fields 0/1 canonicalize to term_pak(CID_TRUE/CID_FALSE,0) from raw arm tags",
+    "inlineCharRead": "Array<Char> StCell canonicalizes to term_pak(CID_CHR,955) nonallocating",
+    "inlineBoolFill": "construct_part Flags writes arm tags 0/1, not the old constant 1",
+    "unchanged": "all prior physical expressions and terminal ok/F still execute"
+  },
+  "notClaimed": [
+    "Root GO",
+    "integrated 23-case C matrix",
+    "memory-leak bound (list_rebox remains open)",
+    "native admission"
+  ],
+  "failureRepro": {
+    "cases": [
+      "c_target_bool_fields",
+      "c_target_char_head",
+      "c_target_bool_prims",
+      "c_target_wide_record"
+    ],
+    "before": "artifact 433aadb5 failed at EMIT with a form field is not a single word; raw /tmp/accept23-c-1792914553",
+    "next": "rebuild one integrated candidate from this physical source plus the accepted Control c_backend and run the frozen matrix"
+  },
+  "limits": {
+    "memoryMiB": 8192,
+    "rssMiB": 8192,
+    "pollMs": 10,
+    "timeoutMs": 600000,
+    "workerHeapMiB": 3072,
+    "workerStackMb": 256,
+    "node": "v23.11.0"
+  }
+}

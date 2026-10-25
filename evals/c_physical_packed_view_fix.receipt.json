@@ -1,52 +1,8 @@
 {
   "schemaVersion": 1,
-  "status": "FIX_PRESENT_AWAITING_INTEGRATED_C_MATRIX",
-  "scope": "physical consumer-boundary only; not a Root GO",
-  "physical": {
-    "path": "bend2/selfhost/c_backend_physical.bend",
-    "sha256": "5197eb363835e7f4d6555e7f810a0eea88e822e8c2d37c38ffbf2d99fc8e4aaa",
-    "previousSha256": "256f57772f4384e8d043269ab4cbc52d71049f3d38afd40022aadb0f9b962ced"
-  },
-  "groundTruth": {
-    "logs": "/tmp/accept23-c-1792914553",
-    "artifactSha256": "433aadb54af3255d76dd41bf410b0e4002a675018389b497d6cb42448d7b0f03",
-    "hostSha256": "2596997a2a578cb371e11e8cb0858e4ebd9f53b1679d2814f3068a0db29613e4",
-    "firstCases": [
-      "c_target_wide_record",
-      "c_target_nested_adt",
-      "c_target_array_u32"
-    ],
-    "error": "candidate: emission failed: a form field is not a single word",
-    "origin": "c_backend_physical.bend read_body nonpacked LayoutData terminal; Control diagnostic path [PathField{constructor20,field0}], Bool false/true"
-  },
-  "fix": {
-    "readBody": "nonpacked StSlot, StCell and StBufField LayoutData with zero or one CWord32 now canonicalize through CLay.layout_unfill and the existing unfill_jobs to term_pak(canonical CID, payload or 0); no heap, no term_keep/path_copy",
-    "zero": "zero-word single-arm form uses the existing zero_value_body term_pak",
-    "nodes": "Bool false/true become term_pak(CID_FALSE/TRUE,0); Char becomes term_pak(CID_CHR, raw 32-bit code); no heap node or child duplication",
-    "rejects": "boxed/wider or multiword inline forms still fail with an explicit typed-consumer message; no invented type facts"
-  },
-  "behavioralRepro": {
-    "fixtures": [
-      "evals/c_target_bool_prims.bend",
-      "evals/c_target_char_head.bend"
-    ],
-    "before": "both fail at EMIT with the message above; Char also fails through Array<Char> StCell LayoutData",
-    "expectedAfter": "Bool primitives return packed True/False terms and branch by value; Char field and Array<Char> get return packed Chr terms and Char.to_u32 prints 955 twice",
-    "matrix": "rebuild one integrated candidate artifact from this physical source + Control c8dcba25, then run the frozen 23-case C matrix; no artifact patch"
-  },
-  "typecheckEvidence": {
-    "command": "bun --smol evals/checker_core_component_build.ts --file=checkpoints/physical_view_steps_component_v1.bend --exports=expand_modules_start,template_step --artifact=checkpoints/charfix-build/component.js --report=checkpoints/charfix-build/report",
-    "componentSourceSha256": "2bc4a567774b7acf3f4bad55609aab74b3546825bebcce09175606eafb86f282",
-    "gate": "PASS/complete/stopped/exit0, 3.7s, peak RSS ~718 MiB",
-    "notClaimed": "this focused build is source/type admission only, not actual C execution"
-  },
-  "notRun": [
-    "Root regen",
-    "full 23-case C matrix",
-    "heavy acceptance retry"
-  ],
-  "rawPreserved": [
-    "/tmp/accept23-c-1792914553",
-    "checkpoints/charfix-build"
-  ]
+  "status": "SUPERSEDED_BY_FIXED3",
+  "reason": "the first fix lacked the inline arm tag write; final source now f4fdfcc9575cf1667348cb512ee990e5ddd6ae58d97ea8df35ce914b5c66f0b2",
+  "supersededBy": "evals/physical_storage_acceptance_receipt_fixed3.json",
+  "logs": "checkpoints/storage-fixed-v7",
+  "priorPhysicalSha256": "5197eb363835e7f4d6555e7f810a0eea88e822e8c2d37c38ffbf2d99fc8e4aaa"
 }

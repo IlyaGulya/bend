@@ -210,10 +210,11 @@ def dst_word(+pdst: Dst, +pword: CLay.CWord, +pexpression: String) -> List<&2, J
 def dst_decl(+pbuf: String, +pcursor: String, +pcount: Nat) -> String:
   join_text(["u64 ", pbuf, "[", Nat.show(pcount), "]; for (u32 ", pcursor, "i = 0; ", pcursor, "i < ", Nat.show(pcount), "; ", pcursor, "i += 1) { ", pbuf, "[", pcursor, "i] = 0; } u32 ", pcursor, " = 0;"])
 
-def dst_mark(+pdst: Dst) -> String:
+def dst_mark(+pdst: Dst, +ptag: Nat) -> String:
+  value = Nat.show(ptag)
   match pdst:
-    case DstSeq{buf, cursor}: join_text([buf, "[", cursor, "]", " = 1; ", cursor, " += 1;"])
-    case DstOut{out}: join_text([out, " = 1;"])
+    case DstSeq{buf, cursor}: join_text([buf, "[", cursor, "]", " = ", value, "; ", cursor, " += 1;"])
+    case DstOut{out}: join_text([out, " = ", value, ";"])
 
 def src_read_node(+pbase: String, +pfb: String, +pcursor: String, +ppacked: Bool, +ptag: String) -> List<&2, Job>:
   match ppacked:
@@ -297,7 +298,7 @@ def arm_release(+ppacked: Bool, +pnode_words: Nat, +ptag: String) -> List<&2, Jo
         case _: [JText{join_text(["if (", ptag, "s != 0) { spare_free(e, cls_fit(", Nat.show(pnode_words), "), ", ptag, "s); }"])}]
 
 def jobs_arm_body(+pw: World, +pcid: U32, +ptag_index: Nat, +ppacked: Bool, +pnode_words: Nat, +pfields: List<&2, CLay.Nest>, +pt: String, +pdst: Dst, +ptag: String, +ptagged: Bool, +pfb: String, +pmode: Nat) -> List<&2, Job>:
-  List.append(&2, Job, Bool.pick(List<&2, Job>, ptagged, one_job(JText{dst_mark(pdst)}), Nil{}), List.append(&2, Job, arm_seed(ppacked, pnode_words, pt, ptag, pfb), List.append(&2, Job, nests_jobs(pw, pfields, arm_src(ppacked, pnode_words, pt, ptag, pfb), pdst, ptag, 0n), arm_release(ppacked, pnode_words, ptag))))
+  List.append(&2, Job, Bool.pick(List<&2, Job>, ptagged, one_job(JText{dst_mark(pdst, ptag_index)}), Nil{}), List.append(&2, Job, arm_seed(ppacked, pnode_words, pt, ptag, pfb), List.append(&2, Job, nests_jobs(pw, pfields, arm_src(ppacked, pnode_words, pt, ptag, pfb), pdst, ptag, 0n), arm_release(ppacked, pnode_words, ptag))))
 
 def jobs_arm(+pw: World, +pcid: U32, +ptag_index: Nat, +ppacked: Bool, +pnode_words: Nat, +pfields: List<&2, CLay.Nest>, +pt: String, +pdst: Dst, +ptag: String, +ptagged: Bool, +pfb: String, +pmode: Nat) -> List<&2, Job>:
   List.append(&2, Job, [JText{join_text(["case ", U32.show(pcid), "u: {"])}], List.append(&2, Job, jobs_arm_body(pw, pcid, ptag_index, ppacked, pnode_words, pfields, pt, pdst, ptag, ptagged, pfb, pmode), [JText{"} break;"}]))

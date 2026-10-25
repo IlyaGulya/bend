@@ -2,6 +2,7 @@ static Term bend_fail(Env e, const char* m) { (void)e; err_fail(m); return 0; }
 static Term bend_bool(Env e, u32 t, u32 f, u64 c) { (void)e; return term_pak(c != 0 ? t : f, 0); }
 static Term bend_tuple(Env e, u32 tc, Term a, Term b) { u64 l = heap_alloc(e, cls_fit(2)); e.mem[l] = a; e.mem[l + 1] = b; return term_ctr(tc, l); }
 static Term probe_array(Env e) { Term v[1]; v[0] = 7; return blk_new(e, false, 4, 0, 1, v); }
+static Term char_array(Env e) { Term v[1]; v[0] = 955; return blk_new(e, false, 4, 0, 1, v); }
 static Term phys_view_probe_run(Env e, Term* f, IoWork* w) {
   (void)w;
   Term pair_value = (Term)f[0];
@@ -66,6 +67,11 @@ static Term phys_view_probe_run(Env e, Term* f, IoWork* w) {
   Term tagged_value = term_ctr(CID_BOXS, tag_loc);
   Term wrap_a_value = term_pak(CID_WRAPE, 0);
   Term wrap_b_value = term_pak(CID_WRAPE, 1);
+  u64 flags_loc = heap_alloc(e, cls_fit(2));
+  e.mem[flags_loc + 0] = 0;
+  e.mem[flags_loc + 1] = 1;
+  Term flags_value = term_ctr(CID_PTS, flags_loc);
+  Term char_leaf = char_array(e);
 
   Term r0 = /*@@r0@@*/;
   Term r1 = /*@@r1@@*/;
@@ -113,6 +119,10 @@ static Term phys_view_probe_run(Env e, Term* f, IoWork* w) {
   Term r39 = /*@@r39@@*/;
   Term r40 = /*@@r40@@*/;
   Term r41 = /*@@r41@@*/;
+  Term r42 = /*@@r42@@*/;
+  Term r43 = /*@@r43@@*/;
+  Term r44 = /*@@r44@@*/;
+  Term r45 = /*@@r45@@*/;
 
   if ((u32)r0 != 3 || (u32)r1 != 4) { err_fail("view probe: Pair fields wrong"); }
   if (term_aux(r2) != 14u) { err_fail("view probe: Pt hastag is not canonical True"); }
@@ -159,6 +169,11 @@ static Term phys_view_probe_run(Env e, Term* f, IoWork* w) {
   if (term_aux(r36) != 14u || e.mem[tag_loc + 0] != tag_child) { err_fail("view probe: boxed tag wrong"); }
   if (term_aux(r37) != 14u || term_aux(r38) != 13u || term_aux(r39) != 14u) { err_fail("view probe: packed enum tag wrong"); }
   if (term_aux(r40) != 28u || term_aux(r41) != 29u) { err_fail("view probe: packed enum unfill wrong"); }
+  if (term_aux(r42) != 14u) { err_fail("view probe: inline Bool true tag did not canonicalize to True"); }
+  if (term_aux(r43) != 13u) { err_fail("view probe: inline Bool false tag did not canonicalize to False"); }
+  if (term_aux(r44) != 31u || term_loc(r44) != 955u) { err_fail("view probe: inline Char cell did not canonicalize to Chr 955"); }
+  u64 flags_built_loc = term_loc(r45);
+  if (e.mem[flags_built_loc + 0] != 0u || e.mem[flags_built_loc + 1] != 1u) { err_fail("view probe: inline Bool fill wrote the wrong tag indices"); }
   u64 box_slot = term_peek(e.mem, box_value);
   bool box_static = term_triv(box_value);
   bool box_shared = !box_static && term_rfc(box_value) && (a32_load(a32_at(e.mem, term_loc(box_value))) & RFC_CNT) > 1;
@@ -174,6 +189,8 @@ static Term phys_view_probe_run(Env e, Term* f, IoWork* w) {
   term_sink(e, r26); term_sink(e, r27);
   term_sink(e, r2); term_sink(e, r4); term_sink(e, r5); term_sink(e, r6); term_sink(e, r10); term_sink(e, r11);
   term_sink(e, r12); term_sink(e, r34); term_sink(e, r36); term_sink(e, r37); term_sink(e, r38); term_sink(e, r39);
+  term_sink(e, r42); term_sink(e, r43); term_sink(e, r44); term_sink(e, r45);
+  term_sink(e, flags_value); term_sink(e, char_leaf);
   for (u32 fi = 0; fi < 13; fi += 1) { term_sink(e, f[fi]); }
   return 1;
 }
