@@ -1,10 +1,10 @@
 # Bend selfhost roadmap
 
 Persistent backlog for the current integration line (`work/fir-ir-integrated57ab`).
-Integration snapshot through `2faa3c77`; last candidate component `433aadb5`
-contains the prior C producer and physical paths. Its source admission passes;
-all 23 C cases fail emission. Detailed evidence and reasoning live in the linked notes. This index
-does not replace a receipt.
+The latest image-bound checkpoints are in §1. Earlier failures remain recorded
+under their original image IDs; a later pass never reclassifies an older run.
+Detailed evidence and reasoning live in the linked receipts and notes.
+This index does not replace a receipt.
 
 **Status legend**
 
@@ -43,7 +43,16 @@ all 11,889 bodies / 12,450 events with 0 exclusions/patches and unchanged
 identical ASTs against the separately accepted parser. Tree-local acceptance
 covered all 71 source and 75 compiled semantic cases, not a copied receipt.
 Proof: `evals/receipts/inline_parser_cutover_db147cba.json`.
-Current-root C/JS corpus, compiler fixedpoint and native HOST remain open;
+The full `db147cba` bootstrap is **rejected by the unchanged 600 s deadline**,
+not an observed OOM or semantic mismatch. All 95 seed fixtures and 166 complete
+semantic-AST parser comparisons pass; the seed emits/imports stage1 `30bef0b0`
+(19,686,291 B). The last observed phase is `stage-two-check`; no stage2 artifact
+or byte fixedpoint exists from this run. Guard: complete/stopped, 600,014 ms,
+peak RSS 3,223,076,864 B / footprint 3,467,539,096 B. Receipt:
+`evals/receipts/bootstrap_db147cba_deadline.json`. Its existing execution worker
+uses 6,144 MiB old generation under the 8 GiB guard; this is not the separate
+3,072 MiB native producer admission. No limit was raised.
+Current-root C/JS corpus, byte fixedpoint and native HOST remain open;
 the preceding C/foreign passes below belong specifically to `667e7f33`.
 The seed host carrier now uses the native loader's actual nominal
 `../bend2/selfhost/backend_ir.SourceFile` tag, shared by the bootstrap gate
