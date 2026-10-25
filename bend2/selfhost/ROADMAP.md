@@ -1,7 +1,7 @@
 # Bend selfhost roadmap
 
 Persistent backlog for the current integration line (`work/fir-ir-integrated57ab`).
-Status snapshot reviewed through `4caf49f9`; measured component `5205478f`
+Status snapshot reviewed through `fe027d57`; measured component `5205478f`
 predates the physical fixes `655754cf` / `5122fbd8` and the accepted parser
 repair. Detailed evidence and reasoning live in the linked notes. This index
 does not replace a receipt.
@@ -56,7 +56,7 @@ artifact is claimed.
 | Guardian lifecycle | Integrated: detached supervisor, early decision receipt, final `complete`/`ownedTreeStopped` contract; lease held until owned descendants are confirmed stopped, never released by timer. Merged focused run: 3 pass / 0 fail / 57 assertions. Earlier unlocalized deadline-test failure remains UNKNOWN; this is not a full-suite green claim. | `a72e87d6`..`1c82c2c5`; receipt `747a42a2`, `evals/heavy_gate_lifecycle.receipt.json` | fresh full-root control; diagnose the preserved deadline risk if encountered |
 | Official TS producer / full native build, traced | 11,164 native-bridge bodies; book heap 1,669,811,048 B; reaches pass 6; OOM; no native artifact | Main-scoped traced run; scope not verified by note | per-structure decomposition; native artifact within the guard |
 | Profiling (actual code) | Producer and stage adapters integrated: scoped wall/CPU/memory, optional statistical samples, crash checkpoints, failure unwind and artifact-bound attribution. Producer smoke 10/10; merged stage behavioral tests 15/15, 49 assertions. Typed request/chunk attribution is sampling, not exact substage time; retained bytes and full-root overhead remain OPEN | producer `3cd1adcd` / `0b0b9c9f` / `d1bbca4e`; stage `68cde43a`..`754ff301`, behavioral receipt `13db7c2c` after deleting the incidental static test | finish canonical-input native Emitter profiling and fresh full-input A/B; do not treat output generation or fabricated BIR metadata as workload acceptance |
-| Native profiling followup | One canonical-input Node 23.11 run failed at the 3072 MiB worker heap limit: 101,984 ms, peak RSS 3,394,748,416 B / footprint 3,631,272,288 B. Guardian complete/stopped; no native artifact, phase row or profile. No retry/cap change. Followup source is not yet integrated | `/private/tmp/bend-stage-aa9-followup/checkpoints/compiler-native-profile-aa9-canonical-final.json`, `46124798`; raw `/tmp/native-stage-canonical-final.log` | durable producer-phase attribution is missing in this builder; exact load/check/codegen OOM boundary remains unobserved. Native workload and full-input overhead stay OPEN |
+| Native profiling followup | Canonical-input native build remains NOT PASS: worker heap OOM after 101,984 ms, no native artifact/phase/profile; old internal boundary unknown. Diagnostic source is now integrated, including durable load/check/codegen/pass checkpoints and exact worker-run binding. Merged guarded tiny suite passes: profile-on/off C byte-identical (81,153 B), clang/run prints `7`, two real codegen pass spans and nine observations; failure/worker-exit paths verified | `checkpoints/compiler-native-profile-aa9-canonical-final.json`; `compiler-profile-tiny-suite-merged-6c7e.json`, `fe027d57`; Node 23.11, worker 3072/256 MiB, guardian 8 GiB/10 ms/600 s | full native Emitter workload, native label execution, retained/live-byte attribution and full-input overhead remain OPEN; tiny producer execution is not new BIR→C acceptance |
 | Law documents | `FIR_LAWS.md` and `BIR_LAWS.md` are written, reviewed, integrated at `2fcdbaea`, and linked from `ARCHITECTURE.md`; seven written law tasks CLOSED; proof/behavior obligations remain OPEN | `6a7cfc59`/`4417d18a` (FIR), `0695e763`/`8311d6a4`/`2f0e8d3b`/`2fcdbaea` (BIR) | obligation triage; no behavior/proof acceptance |
 
 Table entries are status, not acceptance checkboxes. The current full-root
@@ -168,7 +168,10 @@ build `46124798` ran under Node 23.11 with the fixed 3072 MiB worker heap,
 no native phase or artifact. The raw log does not distinguish load, validation
 and codegen; no exact boundary is inferred. Earlier scalar and invented-metadata
 inputs are diagnostic/rejected, not Emitter workload acceptance. Followup
-source is in review; the checkboxes below are acceptance, not writing.
+source is integrated through `8a108208`; merged tiny verification is recorded
+at `fe027d57`. The producer's optional observer uses the existing
+`compile_book` seam, without kernel/compiler changes. The checkboxes below
+are acceptance, not writing.
 
 Deliverables:
 - [ ] One optional stage/profile mode with phase boundaries matching
@@ -187,9 +190,12 @@ Deliverables:
   exists; zero before that).
 - [ ] A pinned report under `checkpoints/` for the current integration tree,
   naming source/compiler/image hashes and the exact corpus.
-- [ ] Reuse the existing producer profiler in the native diagnostic builder so
-  durable load/validation/codegen boundaries survive worker death; do not
-  retroactively attribute the already-recorded OOM or add a parallel logger.
+- [x] Reuse the existing producer profiler in the native diagnostic builder:
+  durable load/validation/codegen and codegen-pass boundaries, exact
+  worker-run binding, failed/aborted distinction, and fail-closed exit without
+  a terminal result. Merged guarded tiny suite at `fe027d57` passes; peak RSS
+  276,316,160 B / footprint 202,980,448 B, elapsed 6,521 ms. This neither
+  retroactively attributes the old OOM nor proves the full native workload.
 
 Acceptance:
 - [ ] Clean target output is byte-identical with profiling on and off (JS and C
