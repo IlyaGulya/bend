@@ -314,3 +314,12 @@ observed progress but is insufficient for this workload; it neither produces
 C nor proves that some still larger limit would suffice. These runs are not
 a controlled speed benchmark. End-boundary heapUsed and memo counts remain
 observations, not allocation or retained/live ownership.
+
+### One-helper reduction does not reproduce the full OOM
+
+`evals/receipts/native03d0_files_helper_control.json` records the same exact
+56-entry literal in `files()` plus one pure `main()` call. All544 validation
+events and two codegen passes complete under the original3072MiB/256MiB
+worker policy and8GiB/10ms/600s guard. This rules out that simple wrapper as
+a sufficient isolated reproducer; the full-workload interaction and a minimal
+failing input remain open. No clang/native execution or acceptance is claimed.
