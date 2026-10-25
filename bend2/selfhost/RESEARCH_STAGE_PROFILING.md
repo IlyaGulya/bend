@@ -209,7 +209,8 @@ not a certification of current source.
 Linear commits after `aa9a39a7`, dependency order:
 `a4192c5c`, `415251a9`, `651f6360`, `2a8bd57b`, `ca8d6fa0`, `76111410`,
 `7d6177de`, `68ea898a`, `1b2f85e2`, `08a89e66`, `5ed71315`, `25450687`,
-`3e68db78`, `c01e65a3`, `a52c0399`, `6eccb27b`, `17a2701e`, `46124798`.
+`3e68db78`, `c01e65a3`, `a52c0399`, `6eccb27b`, `17a2701e`, `46124798`,
+`83296cab`, `f6d3f8d7`.
 
 Keep as integrated diagnostic/source fixes: the guard cutover, A/B and failure
 receipts, Node runtime gate, canonical checked → lower → group18 render harness

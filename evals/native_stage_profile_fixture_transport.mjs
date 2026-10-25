@@ -40,7 +40,6 @@ for (const file of ['bend2/selfhost/backend_ir.bend', 'bend2/selfhost/ast.bend']
     schema.set(c[1], fields);
   }
 }
-const unknown = new Set();
 function value(v, ty = null) {
   if (Array.isArray(v)) return '[' + v.map(x => value(x)).join(', ') + ']';
   if (v === null) return 'None{}';
@@ -49,23 +48,40 @@ function value(v, ty = null) {
   if (typeof v === 'string') return JSON.stringify(v);
   if (typeof v !== 'object') throw Error('bad BIR value ' + String(v));
   const tag = v.$;
-  if (tag === 'Nil') return '[]';
+  const exactKeys = expected => {
+    const keys = Object.keys(v).sort();
+    const want = [...expected].sort();
+    if (keys.length !== want.length || keys.some((k, i) => k !== want[i]))
+      throw Error('carrier fields mismatch for ' + String(tag) + ': observed ' + JSON.stringify(keys) + ', expected ' + JSON.stringify(want));
+  };
+  if (tag === 'Nil') { exactKeys(['$']); return '[]'; }
   if (tag === 'Con') {
+    exactKeys(['$', 'head', 'tail']);
     const out = [];
     let cur = v;
-    while (cur && cur.$ === 'Con') { out.push(value(cur.head)); cur = cur.tail; }
-    if (!cur || cur.$ !== 'Nil') throw Error('malformed BIR list');
+    while (cur && cur.$ === 'Con') {
+      const keys = Object.keys(cur).sort();
+      if (keys.length !== 3 || keys[0] !== '$' || keys[1] !== 'head' || keys[2] !== 'tail')
+        throw Error('malformed BIR list cell');
+      out.push(value(cur.head)); cur = cur.tail;
+    }
+    if (!cur || cur.$ !== 'Nil' || Object.keys(cur).length !== 1) throw Error('malformed BIR list');
     return '[' + out.join(', ') + ']';
   }
-  if (tag === 'None') return 'None{}';
-  if (tag === 'Some') return 'Some{' + value(v.value) + '}';
-  if (tag === 'True' || tag === 'False') return tag + '{}';
+  if (tag === 'None') { exactKeys(['$']); return 'None{}'; }
+  if (tag === 'Some') { exactKeys(['$', 'value']); return 'Some{' + value(v.value) + '}'; }
+  if (tag === 'True' || tag === 'False') { exactKeys(['$']); return tag + '{}'; }
   if (typeof tag !== 'string') throw Error('unknown BIR tag ' + String(tag));
   const birPrefix = '../bend2/selfhost/backend_ir.';
   const astPrefix = '../bend2/selfhost/ast.';
   if (tag.startsWith(astPrefix)) {
     if (tag !== '../bend2/selfhost/ast.SpanOf') throw Error('unsupported Ast tag ' + tag);
-    return 'Ast.SpanOf{' + schema.get('SpanOf').map(([k, t]) => value(v[k], t)).join(', ') + '}';
+    const fields = schema.get('SpanOf');
+    const keys = Object.keys(v).filter(k => k !== '$').sort();
+    const expected = fields.map(([k]) => k).sort();
+    if (keys.length !== expected.length || keys.some((k, i) => k !== expected[i]))
+      throw Error('Ast.SpanOf fields mismatch: observed ' + JSON.stringify(keys) + ', expected ' + JSON.stringify(expected));
+    return 'Ast.SpanOf{' + fields.map(([k, t]) => value(v[k], t)).join(', ') + '}';
   }
   if (!tag.startsWith(birPrefix)) throw Error('non-canonical nominal tag ' + tag);
   const type = tag.slice(birPrefix.length);
@@ -112,5 +128,5 @@ const result = {outPath, bytes: outBytes.length, sources: sources.length,
   sourceSha256: extraMap.has('--source') ? sha(readFileSync(extraMap.get('--source'))) : null,
   checkedSha256: extraMap.has('--checked') ? sha(readFileSync(extraMap.get('--checked'))) : null,
   componentSha256: extraMap.has('--component') ? sha(readFileSync(extraMap.get('--component'))) : null,
-  unknownConstructors: []};
+};
 console.log(JSON.stringify(result));
