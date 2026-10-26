@@ -95,13 +95,3 @@ def compile_checked(result: Checked.CheckResult, output: String) -> IO(U32):
 
 def compile(modules: List<&2, Loader.LoadedModule>, output: String) -> IO(U32):
   compile_checked(Checker.check(modules), output)
-
-# Pure boundary: the host supplies parsed modules, not source.
-def parsed_module(namespace: String, module: AST.Module) -> Loader.LoadedModule:
-  Loader.LoadedModule{namespace, module}
-
-def check_modules(modules: List<&2, Loader.LoadedModule>) -> Checked.CheckResult:
-  Checker.check(modules)
-
-def emit_modules(program: Checked.CheckedProgram, files: List<&2, BIR.SourceFile>) -> JSEmit.EmitResult:
-  JSEmit.emit(program, files)
