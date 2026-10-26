@@ -1,0 +1,2491 @@
+{
+  "schemaVersion": 1,
+  "status": "NATIVE_FOREIGN_AND_LIBRARY_SMOKE_PASS",
+  "compilerAccepted": false,
+  "byteFixedpoint": false,
+  "scope": "Actual optimized native compiler executes the three unchanged foreign/lifetime fixtures on C and JS and the real six-export C library. Separate backend consumer smoke, not full-build/bootstrap admission.",
+  "ownershipBound": "Original list_rebox_sum frontier bound unchanged; frontier pages are not retained/live bytes",
+  "binary": {
+    "path": "/tmp/bend2039g1-split-first-native-smoke",
+    "sha256": "0f95e4986d77d841a0112f86ff9111cd730c7cf7822ffd5551a3f1af54805101"
+  },
+  "rows": [
+    {
+      "source": "tests/run/c_backend_link.bend",
+      "target": "c",
+      "input": {
+        "root": "/private/tmp/bend2039-upgrade/tests/run/c_backend_link.bend",
+        "base": "/private/tmp/bend2039-upgrade/bend2/base.bend",
+        "manifest": "/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.tsv",
+        "exports": "/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.exports",
+        "phase": "compile-c-module",
+        "output": "/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c",
+        "runtime": "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+      },
+      "corpus": {
+        "schemaVersion": 1,
+        "directory": "/private/tmp/bend2039-upgrade",
+        "root": "tests/run/c_backend_link.bend",
+        "exports": [
+          "parsed_module",
+          "parse_with_fuel",
+          "expand_modules_start",
+          "template_step",
+          "check_expanded_start",
+          "inspect_checked_start",
+          "checker_step",
+          "emit_modules_start",
+          "emit_library_start",
+          "emitter_step",
+          "emit_c_modules_start",
+          "emit_c_library_start",
+          "c_emitter_step"
+        ],
+        "files": [
+          {
+            "path": "bend2/base.bend",
+            "sha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+            "namespace": ""
+          },
+          {
+            "path": "bend2/selfhost/ast.bend",
+            "sha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+            "namespace": "../../bend2/selfhost/ast"
+          },
+          {
+            "path": "bend2/selfhost/c_backend_link.bend",
+            "sha256": "f83c270f2b6f094f2bd220e6e750aa0265c93ae90fa0036dd8d92b86c09e26bd",
+            "namespace": "../../bend2/selfhost/c_backend_link"
+          },
+          {
+            "path": "bend2/selfhost/index_lookup.bend",
+            "sha256": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
+            "namespace": "../../bend2/selfhost/index_lookup"
+          },
+          {
+            "path": "tests/run/c_backend_link.bend",
+            "sha256": "6765dbc7f143592c162b2c9a7dcd8243491ce8adf7b168f0564a6c2ed79b68c9",
+            "namespace": ""
+          },
+          {
+            "path": "bend2/effs/args.c",
+            "sha256": "7717332d0b8c8ba28d6dbe60b62a23dce99ea6828ada7d1f9b664f4dc388e84e",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/audio.c",
+            "sha256": "f0fac2bee02918b4958ad1e7508945824fcd98ce9a2e7ede657304c4f8905b85",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/chan.c",
+            "sha256": "af09b2749741bcc54f56c8f81803073818a165d4cad4c817708e359d677b2a52",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_close.c",
+            "sha256": "033da9beb0b484fbc8784044193bf69004f858f6ad86e0c31b4beb89df1349ca",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_open.c",
+            "sha256": "b987bcb0f9a89d769714ddf8cbecca211c4392e4098da19b411d09f5c088d360",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_read.c",
+            "sha256": "ab577225fa98a034c09d7eb6326b74808756dc6203b0e2599a459876382f090d",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_size.c",
+            "sha256": "ed0d74fd6b9f14ea471bfe5dd80ecbb2c5abb6a8406519fb2c7e1a1acf3dd5af",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_write.c",
+            "sha256": "da810ad9aa76ad1431622292529fa3edebabc4b6a7ee20ae833097b71bb595e5",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/get_env.c",
+            "sha256": "b4903e94681340f9e02187457fabe9461c1b4e43646b7e1573f5d21e954e3a34",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/listener_close.c",
+            "sha256": "11f6bac6342a37e97b9656e96bdca7d052ed0a7a0cab3b05ea87657020cfb7a2",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/now.c",
+            "sha256": "fc4c1d87a4fb2ace7d5b6c57b434cc3d953a15bdf213020912df6c17aa2352d6",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/print_err.c",
+            "sha256": "f84aa11c8d0d6af6fa2fee28411f95714d6744ad97156990e43e55c292c9c6fb",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/print.c",
+            "sha256": "58657b7351daee89121e1df2856f102743c9db7640257e50c6009a0f1080b00e",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/process_run.c",
+            "sha256": "554cfbdf9a6de163f00fc1b23dc8f3df10821cfce336caa1cb5db439b8a55e1f",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/random_u32.c",
+            "sha256": "75429b2b42e00562177fe33a5e18d2730478847f58c4038b048e78131e1b8c0a",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/sleep.c",
+            "sha256": "1dde3701026517d5272d2ff5344d3a8643bec264dbad9f266fdae1c4aaf7601c",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/socket_close.c",
+            "sha256": "abea115d2928d4942a9d89898d2022c0f1b19c52db48d0b060c2356d261bfa77",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/spawn.c",
+            "sha256": "05e11ae3f1461d9c72440af3b1786c076b418d2faff45639ac25ba464ee73cd5",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_accept.c",
+            "sha256": "bf7ca1685ed388ce97827ea8379881fbdf5359c7c663ad03eeb8da34bd8584ef",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_connect.c",
+            "sha256": "8d17c097138709d71e9d9e1fbc4255007c5e80c93ee384c4a3510b6ac8d10da3",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_listen.c",
+            "sha256": "efc7528de96abd9f62f299833c1ac7b0e86528292c746b114d2684b5bac52899",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_recv.c",
+            "sha256": "249c8789cd2f541ad00068882de16a00870c2f81a8168b0ac7a59db1e3cb0c6f",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_send.c",
+            "sha256": "993cc8ee5b39fd54a4aeace102602ecf2841ce1f402fe6b2407ebaca837383f9",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/thread_count.c",
+            "sha256": "d4889ed7757dccce03729c9568b88188128f2c1576166a3dc184a8707ed44568",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_bind.c",
+            "sha256": "a1be1bc5c03d430fc6eb43982651073e144872956fadaee98c3700be59352ee3",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_recv_from.c",
+            "sha256": "1ce914be6cd6153732258f06343e5bcf9765a7fac7e3c3f0462facba7060e067",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_send_to.c",
+            "sha256": "b3a87e56958d8071a368da2edb4748e9496b3eed58b93d6cb4f8af398dd1011a",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window.c",
+            "sha256": "bf8d5779775ba9566d4bbeb8706a9ec993efb724dae7af8a76c38501ab4092c2",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/write.c",
+            "sha256": "8807a5f655db452c1d846354560c26fe1e94289e5dc0be231d0b71ecc876d02f",
+            "external": true
+          }
+        ]
+      },
+      "artifact": {
+        "path": "/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c",
+        "sha256": "cd88e60b569f1967ba16321f43d2db93b82d0c947bce9bf3539bc1cea0e4b3c1"
+      },
+      "sourceSha256": "6765dbc7f143592c162b2c9a7dcd8243491ce8adf7b168f0564a6c2ed79b68c9",
+      "expected": "linked-comment-kept\nliteral-kept\nfid-linked\nsplice-kept\nsplice-kept\nmissing",
+      "passed": true,
+      "run": {
+        "command": [
+          "/tmp/bend2039g1-split-first-native-smoke",
+          "+RTS",
+          "--threads",
+          "1",
+          "--gpu",
+          "off",
+          "--RTS",
+          "/private/tmp/bend2039-upgrade/tests/run/c_backend_link.bend",
+          "/private/tmp/bend2039-upgrade/bend2/base.bend",
+          "/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.tsv",
+          "/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.exports",
+          "compile-c-module",
+          "/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c",
+          "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 47663,
+        "phases": [
+          {
+            "phase": "parse",
+            "elapsedMs": 1272.482,
+            "userCpuMs": 975.08,
+            "systemCpuMs": 25.555,
+            "modules": 5,
+            "sourceBytes": 115847,
+            "foreignBytes": 305668,
+            "eagerFuelCells": 40000000,
+            "fuelBuildMs": 147.432
+          },
+          {
+            "phase": "expand",
+            "elapsedMs": 966.406,
+            "userCpuMs": 344.122,
+            "systemCpuMs": 4.699,
+            "chunkAdvances": 42716,
+            "chunkQuantum": 64
+          },
+          {
+            "phase": "check",
+            "elapsedMs": 5229.688,
+            "userCpuMs": 4137.919,
+            "systemCpuMs": 33.292,
+            "chunkAdvances": 349039,
+            "chunkQuantum": 64
+          },
+          {
+            "phase": "emit-c",
+            "elapsedMs": 40136.289,
+            "userCpuMs": 28739.849,
+            "systemCpuMs": 219.587,
+            "chunkAdvances": 5921892,
+            "chunkQuantum": 64
+          }
+        ],
+        "phaseStarts": [
+          {
+            "phase": "parse"
+          },
+          {
+            "phase": "expand"
+          },
+          {
+            "phase": "check"
+          },
+          {
+            "phase": "emit-c"
+          }
+        ],
+        "fuel": [
+          {
+            "sourceOrdinal": 1,
+            "cells": 8000000,
+            "elapsedMs": 33.833,
+            "processPeakRssBeforeBytes": 5029888,
+            "processPeakRssAfterBytes": 69058560
+          },
+          {
+            "sourceOrdinal": 2,
+            "cells": 8000000,
+            "elapsedMs": 24.331,
+            "processPeakRssBeforeBytes": 72122368,
+            "processPeakRssAfterBytes": 72122368
+          },
+          {
+            "sourceOrdinal": 3,
+            "cells": 8000000,
+            "elapsedMs": 30.828,
+            "processPeakRssBeforeBytes": 82804736,
+            "processPeakRssAfterBytes": 84901888
+          },
+          {
+            "sourceOrdinal": 4,
+            "cells": 8000000,
+            "elapsedMs": 26.465,
+            "processPeakRssBeforeBytes": 85590016,
+            "processPeakRssAfterBytes": 85688320
+          },
+          {
+            "sourceOrdinal": 5,
+            "cells": 8000000,
+            "elapsedMs": 31.975,
+            "processPeakRssBeforeBytes": 85721088,
+            "processPeakRssAfterBytes": 85721088
+          }
+        ],
+        "begins": [
+          {
+            "computeThreads": 1,
+            "parserFuel": 8000000,
+            "phase": "compile-c-module",
+            "phaseTraceVersion": 3
+          }
+        ],
+        "results": [
+          {
+            "result": "EmitSuccess",
+            "bytes": 1738891,
+            "modules": 5
+          }
+        ]
+      },
+      "clang": {
+        "label": "clang",
+        "command": [
+          "clang",
+          "-std=c11",
+          "-O0",
+          "-pthread",
+          "/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c",
+          "-lm",
+          "-o",
+          "/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 2319.9102090000015,
+        "stdout": "",
+        "stderr": "/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:8355:1: warning: expression result unused [-Wunused-value]\n 8355 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:8379:1: warning: expression result unused [-Wunused-value]\n 8379 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:8590:1: warning: expression result unused [-Wunused-value]\n 8590 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:8614:1: warning: expression result unused [-Wunused-value]\n 8614 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:8641:1: warning: expression result unused [-Wunused-value]\n 8641 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:8665:1: warning: expression result unused [-Wunused-value]\n 8665 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:8845:1: warning: expression result unused [-Wunused-value]\n 8845 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:8863:1: warning: expression result unused [-Wunused-value]\n 8863 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:9056:1: warning: expression result unused [-Wunused-value]\n 9056 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:9074:1: warning: expression result unused [-Wunused-value]\n 9074 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:9274:1: warning: expression result unused [-Wunused-value]\n 9274 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:9298:1: warning: expression result unused [-Wunused-value]\n 9298 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:9477:1: warning: expression result unused [-Wunused-value]\n 9477 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:9501:1: warning: expression result unused [-Wunused-value]\n 9501 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:9721:1: warning: expression result unused [-Wunused-value]\n 9721 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:9745:1: warning: expression result unused [-Wunused-value]\n 9745 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:9899:1: warning: expression result unused [-Wunused-value]\n 9899 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:9923:1: warning: expression result unused [-Wunused-value]\n 9923 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:10277:1: warning: expression result unused [-Wunused-value]\n 10277 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:10301:1: warning: expression result unused [-Wunused-value]\n 10301 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:10328:1: warning: expression result unused [-Wunused-value]\n 10328 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:10352:1: warning: expression result unused [-Wunused-value]\n 10352 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:10560:1: warning: expression result unused [-Wunused-value]\n 10560 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:10634:1: warning: expression result unused [-Wunused-value]\n 10634 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:10917:1: warning: expression result unused [-Wunused-value]\n 10917 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:10941:1: warning: expression result unused [-Wunused-value]\n 10941 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:11017:1: warning: expression result unused [-Wunused-value]\n 11017 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:11041:1: warning: expression result unused [-Wunused-value]\n 11041 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:11182:1: warning: expression result unused [-Wunused-value]\n 11182 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:11206:1: warning: expression result unused [-Wunused-value]\n 11206 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:11233:1: warning: expression result unused [-Wunused-value]\n 11233 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:11257:1: warning: expression result unused [-Wunused-value]\n 11257 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:11570:1: warning: expression result unused [-Wunused-value]\n 11570 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:11592:1: warning: expression result unused [-Wunused-value]\n 11592 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:11704:1: warning: expression result unused [-Wunused-value]\n 11704 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:11726:1: warning: expression result unused [-Wunused-value]\n 11726 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:11838:1: warning: expression result unused [-Wunused-value]\n 11838 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:11860:1: warning: expression result unused [-Wunused-value]\n 11860 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:11972:1: warning: expression result unused [-Wunused-value]\n 11972 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:11994:1: warning: expression result unused [-Wunused-value]\n 11994 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:12106:1: warning: expression result unused [-Wunused-value]\n 12106 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:12128:1: warning: expression result unused [-Wunused-value]\n 12128 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:12240:1: warning: expression result unused [-Wunused-value]\n 12240 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:12262:1: warning: expression result unused [-Wunused-value]\n 12262 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:12374:1: warning: expression result unused [-Wunused-value]\n 12374 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:12396:1: warning: expression result unused [-Wunused-value]\n 12396 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:12508:1: warning: expression result unused [-Wunused-value]\n 12508 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:12530:1: warning: expression result unused [-Wunused-value]\n 12530 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:12748:1: warning: expression result unused [-Wunused-value]\n 12748 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:12834:1: warning: expression result unused [-Wunused-value]\n 12834 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:13043:1: warning: expression result unused [-Wunused-value]\n 13043 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:13160:1: warning: expression result unused [-Wunused-value]\n 13160 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:14049:1: warning: expression result unused [-Wunused-value]\n 14049 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:14073:1: warning: expression result unused [-Wunused-value]\n 14073 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:34891:1: warning: expression result unused [-Wunused-value]\n 34891 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:35050:1: warning: expression result unused [-Wunused-value]\n 35050 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:40810:1: warning: expression result unused [-Wunused-value]\n 40810 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:40837:1: warning: expression result unused [-Wunused-value]\n 40837 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:42879:1: warning: expression result unused [-Wunused-value]\n 42879 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:42889:1: warning: expression result unused [-Wunused-value]\n 42889 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:43050:1: warning: expression result unused [-Wunused-value]\n 43050 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:43060:1: warning: expression result unused [-Wunused-value]\n 43060 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:43531:1: warning: expression result unused [-Wunused-value]\n 43531 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:43541:1: warning: expression result unused [-Wunused-value]\n 43541 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:44142:1: warning: expression result unused [-Wunused-value]\n 44142 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:44152:1: warning: expression result unused [-Wunused-value]\n 44152 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:44405:1: warning: expression result unused [-Wunused-value]\n 44405 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:44415:1: warning: expression result unused [-Wunused-value]\n 44415 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:44727:1: warning: expression result unused [-Wunused-value]\n 44727 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:44737:1: warning: expression result unused [-Wunused-value]\n 44737 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:45078:1: warning: expression result unused [-Wunused-value]\n 45078 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:45088:1: warning: expression result unused [-Wunused-value]\n 45088 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:45403:1: warning: expression result unused [-Wunused-value]\n 45403 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:45413:1: warning: expression result unused [-Wunused-value]\n 45413 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:45732:1: warning: expression result unused [-Wunused-value]\n 45732 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:45742:1: warning: expression result unused [-Wunused-value]\n 45742 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:46186:1: warning: expression result unused [-Wunused-value]\n 46186 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:46196:1: warning: expression result unused [-Wunused-value]\n 46196 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:46640:1: warning: expression result unused [-Wunused-value]\n 46640 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:46650:1: warning: expression result unused [-Wunused-value]\n 46650 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:47309:1: warning: expression result unused [-Wunused-value]\n 47309 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:47319:1: warning: expression result unused [-Wunused-value]\n 47319 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:47516:1: warning: expression result unused [-Wunused-value]\n 47516 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:47526:1: warning: expression result unused [-Wunused-value]\n 47526 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:48104:1: warning: expression result unused [-Wunused-value]\n 48104 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:48114:1: warning: expression result unused [-Wunused-value]\n 48114 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:48311:1: warning: expression result unused [-Wunused-value]\n 48311 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:48321:1: warning: expression result unused [-Wunused-value]\n 48321 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:49032:1: warning: expression result unused [-Wunused-value]\n 49032 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:49042:1: warning: expression result unused [-Wunused-value]\n 49042 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:49177:1: warning: expression result unused [-Wunused-value]\n 49177 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:49187:1: warning: expression result unused [-Wunused-value]\n 49187 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:49559:1: warning: expression result unused [-Wunused-value]\n 49559 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:49569:1: warning: expression result unused [-Wunused-value]\n 49569 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c.c:49809:1: warning: expression result unused [-Wunused-value]\n 49809 | pbl;\n       | ^~~\n95 warnings generated.\n"
+      },
+      "execute": {
+        "label": "execute",
+        "command": [
+          "/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-c"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 5.442833000000974,
+        "stdout": "linked-comment-kept\nliteral-kept\nfid-linked\nsplice-kept\nsplice-kept\nmissing\n",
+        "stderr": ""
+      }
+    },
+    {
+      "source": "tests/run/c_backend_link.bend",
+      "target": "js",
+      "input": {
+        "root": "/private/tmp/bend2039-upgrade/tests/run/c_backend_link.bend",
+        "base": "/private/tmp/bend2039-upgrade/bend2/base.bend",
+        "manifest": "/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-js.tsv",
+        "exports": "/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-js.exports",
+        "phase": "compile-module",
+        "output": "/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-js.js"
+      },
+      "corpus": {
+        "schemaVersion": 1,
+        "directory": "/private/tmp/bend2039-upgrade",
+        "root": "tests/run/c_backend_link.bend",
+        "exports": [
+          "parsed_module",
+          "parse_with_fuel",
+          "expand_modules_start",
+          "template_step",
+          "check_expanded_start",
+          "inspect_checked_start",
+          "checker_step",
+          "emit_modules_start",
+          "emit_library_start",
+          "emitter_step",
+          "emit_c_modules_start",
+          "emit_c_library_start",
+          "c_emitter_step"
+        ],
+        "files": [
+          {
+            "path": "bend2/base.bend",
+            "sha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+            "namespace": ""
+          },
+          {
+            "path": "bend2/selfhost/ast.bend",
+            "sha256": "544623e07794459430f47630cb2c0a35725308247e2fdba80d23f23952051c83",
+            "namespace": "../../bend2/selfhost/ast"
+          },
+          {
+            "path": "bend2/selfhost/c_backend_link.bend",
+            "sha256": "f83c270f2b6f094f2bd220e6e750aa0265c93ae90fa0036dd8d92b86c09e26bd",
+            "namespace": "../../bend2/selfhost/c_backend_link"
+          },
+          {
+            "path": "bend2/selfhost/index_lookup.bend",
+            "sha256": "563c9b152699b490cf68b264e6c4dea4a4e6770dfcf527cf6c81911cb5ea1b78",
+            "namespace": "../../bend2/selfhost/index_lookup"
+          },
+          {
+            "path": "tests/run/c_backend_link.bend",
+            "sha256": "6765dbc7f143592c162b2c9a7dcd8243491ce8adf7b168f0564a6c2ed79b68c9",
+            "namespace": ""
+          },
+          {
+            "path": "bend2/effs/args.js",
+            "sha256": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/audio_close.js",
+            "sha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/audio_open.js",
+            "sha256": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/audio_write.js",
+            "sha256": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/chan.js",
+            "sha256": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_close.js",
+            "sha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_open.js",
+            "sha256": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_read.js",
+            "sha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_size.js",
+            "sha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_write.js",
+            "sha256": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/get_env.js",
+            "sha256": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/listener_close.js",
+            "sha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/now.js",
+            "sha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/print_err.js",
+            "sha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/print.js",
+            "sha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/process_run.js",
+            "sha256": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/random_u32.js",
+            "sha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/sleep.js",
+            "sha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/socket_close.js",
+            "sha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/spawn.js",
+            "sha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_accept.js",
+            "sha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_connect.js",
+            "sha256": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_listen.js",
+            "sha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_recv.js",
+            "sha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_send.js",
+            "sha256": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/thread_count.js",
+            "sha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_bind.js",
+            "sha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_recv_from.js",
+            "sha256": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_send_to.js",
+            "sha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window_close.js",
+            "sha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window_frame.js",
+            "sha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window_grab.js",
+            "sha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window_open.js",
+            "sha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window_set_title.js",
+            "sha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/write.js",
+            "sha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+            "external": true
+          }
+        ]
+      },
+      "artifact": {
+        "path": "/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-js.js",
+        "sha256": "da5b598d06aa31a91f0fb582e620ae0cbc3256860ff76c3e9ea2f05f100578c3"
+      },
+      "sourceSha256": "6765dbc7f143592c162b2c9a7dcd8243491ce8adf7b168f0564a6c2ed79b68c9",
+      "expected": "linked-comment-kept\nliteral-kept\nfid-linked\nsplice-kept\nsplice-kept\nmissing",
+      "passed": true,
+      "run": {
+        "command": [
+          "/tmp/bend2039g1-split-first-native-smoke",
+          "+RTS",
+          "--threads",
+          "1",
+          "--gpu",
+          "off",
+          "--RTS",
+          "/private/tmp/bend2039-upgrade/tests/run/c_backend_link.bend",
+          "/private/tmp/bend2039-upgrade/bend2/base.bend",
+          "/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-js.tsv",
+          "/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-js.exports",
+          "compile-module",
+          "/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-js.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 7651,
+        "phases": [
+          {
+            "phase": "parse",
+            "elapsedMs": 1139.936,
+            "userCpuMs": 942.711,
+            "systemCpuMs": 22.914,
+            "modules": 5,
+            "sourceBytes": 115847,
+            "foreignBytes": 78415,
+            "eagerFuelCells": 40000000,
+            "fuelBuildMs": 243.708
+          },
+          {
+            "phase": "expand",
+            "elapsedMs": 341.154,
+            "userCpuMs": 326.947,
+            "systemCpuMs": 2.958,
+            "chunkAdvances": 42716,
+            "chunkQuantum": 64
+          },
+          {
+            "phase": "check",
+            "elapsedMs": 5334.1,
+            "userCpuMs": 4122.849,
+            "systemCpuMs": 42.568,
+            "chunkAdvances": 349039,
+            "chunkQuantum": 64
+          },
+          {
+            "phase": "emit",
+            "elapsedMs": 359.627,
+            "userCpuMs": 349.763,
+            "systemCpuMs": 3.784,
+            "chunkAdvances": 25174,
+            "chunkQuantum": 64
+          }
+        ],
+        "phaseStarts": [
+          {
+            "phase": "parse"
+          },
+          {
+            "phase": "expand"
+          },
+          {
+            "phase": "check"
+          },
+          {
+            "phase": "emit"
+          }
+        ],
+        "fuel": [
+          {
+            "sourceOrdinal": 1,
+            "cells": 8000000,
+            "elapsedMs": 35.457,
+            "processPeakRssBeforeBytes": 4980736,
+            "processPeakRssAfterBytes": 69009408
+          },
+          {
+            "sourceOrdinal": 2,
+            "cells": 8000000,
+            "elapsedMs": 29.511,
+            "processPeakRssBeforeBytes": 72073216,
+            "processPeakRssAfterBytes": 72073216
+          },
+          {
+            "sourceOrdinal": 3,
+            "cells": 8000000,
+            "elapsedMs": 23.766,
+            "processPeakRssBeforeBytes": 79134720,
+            "processPeakRssAfterBytes": 79429632
+          },
+          {
+            "sourceOrdinal": 4,
+            "cells": 8000000,
+            "elapsedMs": 24.426,
+            "processPeakRssBeforeBytes": 80134144,
+            "processPeakRssAfterBytes": 80265216
+          },
+          {
+            "sourceOrdinal": 5,
+            "cells": 8000000,
+            "elapsedMs": 130.548,
+            "processPeakRssBeforeBytes": 80297984,
+            "processPeakRssAfterBytes": 80297984
+          }
+        ],
+        "begins": [
+          {
+            "computeThreads": 1,
+            "parserFuel": 8000000,
+            "phase": "compile-module",
+            "phaseTraceVersion": 3
+          }
+        ],
+        "results": [
+          {
+            "result": "EmitSuccess",
+            "bytes": 534609,
+            "modules": 5
+          }
+        ]
+      },
+      "execute": {
+        "label": "execute",
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--max-old-space-size=3072",
+          "/tmp/bend2039g1-native-foreign-zYgDou/c_backend_link-js.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 43.914042000003974,
+        "stdout": "linked-comment-kept\nliteral-kept\nfid-linked\nsplice-kept\nsplice-kept\nmissing\n",
+        "stderr": ""
+      }
+    },
+    {
+      "source": "tests/run/family_field_hot.bend",
+      "target": "c",
+      "input": {
+        "root": "/private/tmp/bend2039-upgrade/tests/run/family_field_hot.bend",
+        "base": "/private/tmp/bend2039-upgrade/bend2/base.bend",
+        "manifest": "/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.tsv",
+        "exports": "/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.exports",
+        "phase": "compile-c-module",
+        "output": "/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c",
+        "runtime": "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+      },
+      "corpus": {
+        "schemaVersion": 1,
+        "directory": "/private/tmp/bend2039-upgrade",
+        "root": "tests/run/family_field_hot.bend",
+        "exports": [
+          "parsed_module",
+          "parse_with_fuel",
+          "expand_modules_start",
+          "template_step",
+          "check_expanded_start",
+          "inspect_checked_start",
+          "checker_step",
+          "emit_modules_start",
+          "emit_library_start",
+          "emitter_step",
+          "emit_c_modules_start",
+          "emit_c_library_start",
+          "c_emitter_step"
+        ],
+        "files": [
+          {
+            "path": "bend2/base.bend",
+            "sha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+            "namespace": ""
+          },
+          {
+            "path": "tests/run/family_field_hot.bend",
+            "sha256": "8ca2a24bc66c7ce223c07178d92e33e265a695cfa54633db2f74431671168bb8",
+            "namespace": ""
+          },
+          {
+            "path": "bend2/effs/args.c",
+            "sha256": "7717332d0b8c8ba28d6dbe60b62a23dce99ea6828ada7d1f9b664f4dc388e84e",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/audio.c",
+            "sha256": "f0fac2bee02918b4958ad1e7508945824fcd98ce9a2e7ede657304c4f8905b85",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/chan.c",
+            "sha256": "af09b2749741bcc54f56c8f81803073818a165d4cad4c817708e359d677b2a52",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_close.c",
+            "sha256": "033da9beb0b484fbc8784044193bf69004f858f6ad86e0c31b4beb89df1349ca",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_open.c",
+            "sha256": "b987bcb0f9a89d769714ddf8cbecca211c4392e4098da19b411d09f5c088d360",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_read.c",
+            "sha256": "ab577225fa98a034c09d7eb6326b74808756dc6203b0e2599a459876382f090d",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_size.c",
+            "sha256": "ed0d74fd6b9f14ea471bfe5dd80ecbb2c5abb6a8406519fb2c7e1a1acf3dd5af",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_write.c",
+            "sha256": "da810ad9aa76ad1431622292529fa3edebabc4b6a7ee20ae833097b71bb595e5",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/get_env.c",
+            "sha256": "b4903e94681340f9e02187457fabe9461c1b4e43646b7e1573f5d21e954e3a34",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/listener_close.c",
+            "sha256": "11f6bac6342a37e97b9656e96bdca7d052ed0a7a0cab3b05ea87657020cfb7a2",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/now.c",
+            "sha256": "fc4c1d87a4fb2ace7d5b6c57b434cc3d953a15bdf213020912df6c17aa2352d6",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/print_err.c",
+            "sha256": "f84aa11c8d0d6af6fa2fee28411f95714d6744ad97156990e43e55c292c9c6fb",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/print.c",
+            "sha256": "58657b7351daee89121e1df2856f102743c9db7640257e50c6009a0f1080b00e",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/process_run.c",
+            "sha256": "554cfbdf9a6de163f00fc1b23dc8f3df10821cfce336caa1cb5db439b8a55e1f",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/random_u32.c",
+            "sha256": "75429b2b42e00562177fe33a5e18d2730478847f58c4038b048e78131e1b8c0a",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/sleep.c",
+            "sha256": "1dde3701026517d5272d2ff5344d3a8643bec264dbad9f266fdae1c4aaf7601c",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/socket_close.c",
+            "sha256": "abea115d2928d4942a9d89898d2022c0f1b19c52db48d0b060c2356d261bfa77",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/spawn.c",
+            "sha256": "05e11ae3f1461d9c72440af3b1786c076b418d2faff45639ac25ba464ee73cd5",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_accept.c",
+            "sha256": "bf7ca1685ed388ce97827ea8379881fbdf5359c7c663ad03eeb8da34bd8584ef",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_connect.c",
+            "sha256": "8d17c097138709d71e9d9e1fbc4255007c5e80c93ee384c4a3510b6ac8d10da3",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_listen.c",
+            "sha256": "efc7528de96abd9f62f299833c1ac7b0e86528292c746b114d2684b5bac52899",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_recv.c",
+            "sha256": "249c8789cd2f541ad00068882de16a00870c2f81a8168b0ac7a59db1e3cb0c6f",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_send.c",
+            "sha256": "993cc8ee5b39fd54a4aeace102602ecf2841ce1f402fe6b2407ebaca837383f9",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/thread_count.c",
+            "sha256": "d4889ed7757dccce03729c9568b88188128f2c1576166a3dc184a8707ed44568",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_bind.c",
+            "sha256": "a1be1bc5c03d430fc6eb43982651073e144872956fadaee98c3700be59352ee3",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_recv_from.c",
+            "sha256": "1ce914be6cd6153732258f06343e5bcf9765a7fac7e3c3f0462facba7060e067",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_send_to.c",
+            "sha256": "b3a87e56958d8071a368da2edb4748e9496b3eed58b93d6cb4f8af398dd1011a",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window.c",
+            "sha256": "bf8d5779775ba9566d4bbeb8706a9ec993efb724dae7af8a76c38501ab4092c2",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/write.c",
+            "sha256": "8807a5f655db452c1d846354560c26fe1e94289e5dc0be231d0b71ecc876d02f",
+            "external": true
+          }
+        ]
+      },
+      "artifact": {
+        "path": "/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c",
+        "sha256": "b9991b202d5b57df7e04492185d6c55b10740d6688f5e40a7321f17e1f83edc4"
+      },
+      "sourceSha256": "8ca2a24bc66c7ce223c07178d92e33e265a695cfa54633db2f74431671168bb8",
+      "expected": "5",
+      "passed": true,
+      "run": {
+        "command": [
+          "/tmp/bend2039g1-split-first-native-smoke",
+          "+RTS",
+          "--threads",
+          "1",
+          "--gpu",
+          "off",
+          "--RTS",
+          "/private/tmp/bend2039-upgrade/tests/run/family_field_hot.bend",
+          "/private/tmp/bend2039-upgrade/bend2/base.bend",
+          "/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.tsv",
+          "/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.exports",
+          "compile-c-module",
+          "/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c",
+          "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 12990,
+        "phases": [
+          {
+            "phase": "parse",
+            "elapsedMs": 458.309,
+            "userCpuMs": 432.597,
+            "systemCpuMs": 12.751,
+            "modules": 2,
+            "sourceBytes": 80519,
+            "foreignBytes": 305668,
+            "eagerFuelCells": 16000000,
+            "fuelBuildMs": 60.1
+          },
+          {
+            "phase": "expand",
+            "elapsedMs": 420.89,
+            "userCpuMs": 231.832,
+            "systemCpuMs": 3.21,
+            "chunkAdvances": 29061,
+            "chunkQuantum": 64
+          },
+          {
+            "phase": "check",
+            "elapsedMs": 2140.151,
+            "userCpuMs": 1904.225,
+            "systemCpuMs": 14.089,
+            "chunkAdvances": 144576,
+            "chunkQuantum": 64
+          },
+          {
+            "phase": "emit-c",
+            "elapsedMs": 9940.903,
+            "userCpuMs": 6978.592,
+            "systemCpuMs": 56.895,
+            "chunkAdvances": 1248500,
+            "chunkQuantum": 64
+          }
+        ],
+        "phaseStarts": [
+          {
+            "phase": "parse"
+          },
+          {
+            "phase": "expand"
+          },
+          {
+            "phase": "check"
+          },
+          {
+            "phase": "emit-c"
+          }
+        ],
+        "fuel": [
+          {
+            "sourceOrdinal": 1,
+            "cells": 8000000,
+            "elapsedMs": 35.971,
+            "processPeakRssBeforeBytes": 5029888,
+            "processPeakRssAfterBytes": 69058560
+          },
+          {
+            "sourceOrdinal": 2,
+            "cells": 8000000,
+            "elapsedMs": 24.129,
+            "processPeakRssBeforeBytes": 72171520,
+            "processPeakRssAfterBytes": 72171520
+          }
+        ],
+        "begins": [
+          {
+            "computeThreads": 1,
+            "parserFuel": 8000000,
+            "phase": "compile-c-module",
+            "phaseTraceVersion": 3
+          }
+        ],
+        "results": [
+          {
+            "result": "EmitSuccess",
+            "bytes": 1160874,
+            "modules": 2
+          }
+        ]
+      },
+      "clang": {
+        "label": "clang",
+        "command": [
+          "clang",
+          "-std=c11",
+          "-O0",
+          "-pthread",
+          "/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c",
+          "-lm",
+          "-o",
+          "/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 1361.5564999999915,
+        "stdout": "",
+        "stderr": "/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:7816:1: warning: expression result unused [-Wunused-value]\n 7816 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:7840:1: warning: expression result unused [-Wunused-value]\n 7840 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:8051:1: warning: expression result unused [-Wunused-value]\n 8051 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:8075:1: warning: expression result unused [-Wunused-value]\n 8075 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:8102:1: warning: expression result unused [-Wunused-value]\n 8102 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:8126:1: warning: expression result unused [-Wunused-value]\n 8126 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:8306:1: warning: expression result unused [-Wunused-value]\n 8306 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:8324:1: warning: expression result unused [-Wunused-value]\n 8324 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:8517:1: warning: expression result unused [-Wunused-value]\n 8517 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:8535:1: warning: expression result unused [-Wunused-value]\n 8535 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:8735:1: warning: expression result unused [-Wunused-value]\n 8735 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:8759:1: warning: expression result unused [-Wunused-value]\n 8759 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:8938:1: warning: expression result unused [-Wunused-value]\n 8938 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:8962:1: warning: expression result unused [-Wunused-value]\n 8962 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:9182:1: warning: expression result unused [-Wunused-value]\n 9182 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:9206:1: warning: expression result unused [-Wunused-value]\n 9206 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:9360:1: warning: expression result unused [-Wunused-value]\n 9360 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:9384:1: warning: expression result unused [-Wunused-value]\n 9384 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:9738:1: warning: expression result unused [-Wunused-value]\n 9738 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:9762:1: warning: expression result unused [-Wunused-value]\n 9762 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:9789:1: warning: expression result unused [-Wunused-value]\n 9789 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:9813:1: warning: expression result unused [-Wunused-value]\n 9813 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:10021:1: warning: expression result unused [-Wunused-value]\n 10021 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:10095:1: warning: expression result unused [-Wunused-value]\n 10095 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:10378:1: warning: expression result unused [-Wunused-value]\n 10378 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:10402:1: warning: expression result unused [-Wunused-value]\n 10402 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:10478:1: warning: expression result unused [-Wunused-value]\n 10478 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:10502:1: warning: expression result unused [-Wunused-value]\n 10502 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:10643:1: warning: expression result unused [-Wunused-value]\n 10643 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:10667:1: warning: expression result unused [-Wunused-value]\n 10667 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:10694:1: warning: expression result unused [-Wunused-value]\n 10694 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:10718:1: warning: expression result unused [-Wunused-value]\n 10718 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:11031:1: warning: expression result unused [-Wunused-value]\n 11031 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:11053:1: warning: expression result unused [-Wunused-value]\n 11053 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:11165:1: warning: expression result unused [-Wunused-value]\n 11165 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:11187:1: warning: expression result unused [-Wunused-value]\n 11187 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:11299:1: warning: expression result unused [-Wunused-value]\n 11299 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:11321:1: warning: expression result unused [-Wunused-value]\n 11321 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:11433:1: warning: expression result unused [-Wunused-value]\n 11433 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:11455:1: warning: expression result unused [-Wunused-value]\n 11455 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:11567:1: warning: expression result unused [-Wunused-value]\n 11567 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:11589:1: warning: expression result unused [-Wunused-value]\n 11589 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:11701:1: warning: expression result unused [-Wunused-value]\n 11701 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:11723:1: warning: expression result unused [-Wunused-value]\n 11723 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:11835:1: warning: expression result unused [-Wunused-value]\n 11835 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:11857:1: warning: expression result unused [-Wunused-value]\n 11857 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:11969:1: warning: expression result unused [-Wunused-value]\n 11969 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:11991:1: warning: expression result unused [-Wunused-value]\n 11991 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:12209:1: warning: expression result unused [-Wunused-value]\n 12209 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:12295:1: warning: expression result unused [-Wunused-value]\n 12295 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:12504:1: warning: expression result unused [-Wunused-value]\n 12504 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:12621:1: warning: expression result unused [-Wunused-value]\n 12621 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:13510:1: warning: expression result unused [-Wunused-value]\n 13510 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c.c:13534:1: warning: expression result unused [-Wunused-value]\n 13534 | pbl;\n       | ^~~\n54 warnings generated.\n"
+      },
+      "execute": {
+        "label": "execute",
+        "command": [
+          "/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-c"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 4.56891600000381,
+        "stdout": "5\n",
+        "stderr": ""
+      }
+    },
+    {
+      "source": "tests/run/family_field_hot.bend",
+      "target": "js",
+      "input": {
+        "root": "/private/tmp/bend2039-upgrade/tests/run/family_field_hot.bend",
+        "base": "/private/tmp/bend2039-upgrade/bend2/base.bend",
+        "manifest": "/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-js.tsv",
+        "exports": "/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-js.exports",
+        "phase": "compile-module",
+        "output": "/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-js.js"
+      },
+      "corpus": {
+        "schemaVersion": 1,
+        "directory": "/private/tmp/bend2039-upgrade",
+        "root": "tests/run/family_field_hot.bend",
+        "exports": [
+          "parsed_module",
+          "parse_with_fuel",
+          "expand_modules_start",
+          "template_step",
+          "check_expanded_start",
+          "inspect_checked_start",
+          "checker_step",
+          "emit_modules_start",
+          "emit_library_start",
+          "emitter_step",
+          "emit_c_modules_start",
+          "emit_c_library_start",
+          "c_emitter_step"
+        ],
+        "files": [
+          {
+            "path": "bend2/base.bend",
+            "sha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+            "namespace": ""
+          },
+          {
+            "path": "tests/run/family_field_hot.bend",
+            "sha256": "8ca2a24bc66c7ce223c07178d92e33e265a695cfa54633db2f74431671168bb8",
+            "namespace": ""
+          },
+          {
+            "path": "bend2/effs/args.js",
+            "sha256": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/audio_close.js",
+            "sha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/audio_open.js",
+            "sha256": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/audio_write.js",
+            "sha256": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/chan.js",
+            "sha256": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_close.js",
+            "sha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_open.js",
+            "sha256": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_read.js",
+            "sha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_size.js",
+            "sha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_write.js",
+            "sha256": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/get_env.js",
+            "sha256": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/listener_close.js",
+            "sha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/now.js",
+            "sha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/print_err.js",
+            "sha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/print.js",
+            "sha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/process_run.js",
+            "sha256": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/random_u32.js",
+            "sha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/sleep.js",
+            "sha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/socket_close.js",
+            "sha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/spawn.js",
+            "sha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_accept.js",
+            "sha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_connect.js",
+            "sha256": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_listen.js",
+            "sha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_recv.js",
+            "sha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_send.js",
+            "sha256": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/thread_count.js",
+            "sha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_bind.js",
+            "sha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_recv_from.js",
+            "sha256": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_send_to.js",
+            "sha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window_close.js",
+            "sha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window_frame.js",
+            "sha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window_grab.js",
+            "sha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window_open.js",
+            "sha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window_set_title.js",
+            "sha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/write.js",
+            "sha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+            "external": true
+          }
+        ]
+      },
+      "artifact": {
+        "path": "/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-js.js",
+        "sha256": "45c8dec5031a0ecfa69641dd114a85dd60eb53d6e517cff0a4c7e55066589885"
+      },
+      "sourceSha256": "8ca2a24bc66c7ce223c07178d92e33e265a695cfa54633db2f74431671168bb8",
+      "expected": "5",
+      "passed": true,
+      "run": {
+        "command": [
+          "/tmp/bend2039g1-split-first-native-smoke",
+          "+RTS",
+          "--threads",
+          "1",
+          "--gpu",
+          "off",
+          "--RTS",
+          "/private/tmp/bend2039-upgrade/tests/run/family_field_hot.bend",
+          "/private/tmp/bend2039-upgrade/bend2/base.bend",
+          "/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-js.tsv",
+          "/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-js.exports",
+          "compile-module",
+          "/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-js.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 4383,
+        "phases": [
+          {
+            "phase": "parse",
+            "elapsedMs": 450.282,
+            "userCpuMs": 430.848,
+            "systemCpuMs": 11.095,
+            "modules": 2,
+            "sourceBytes": 80519,
+            "foreignBytes": 78415,
+            "eagerFuelCells": 16000000,
+            "fuelBuildMs": 62.581
+          },
+          {
+            "phase": "expand",
+            "elapsedMs": 222.991,
+            "userCpuMs": 220.845,
+            "systemCpuMs": 0.663,
+            "chunkAdvances": 29061,
+            "chunkQuantum": 64
+          },
+          {
+            "phase": "check",
+            "elapsedMs": 3390.523,
+            "userCpuMs": 2028.401,
+            "systemCpuMs": 22.379,
+            "chunkAdvances": 144576,
+            "chunkQuantum": 64
+          },
+          {
+            "phase": "emit",
+            "elapsedMs": 297.308,
+            "userCpuMs": 229.944,
+            "systemCpuMs": 3.619,
+            "chunkAdvances": 14980,
+            "chunkQuantum": 64
+          }
+        ],
+        "phaseStarts": [
+          {
+            "phase": "parse"
+          },
+          {
+            "phase": "expand"
+          },
+          {
+            "phase": "check"
+          },
+          {
+            "phase": "emit"
+          }
+        ],
+        "fuel": [
+          {
+            "sourceOrdinal": 1,
+            "cells": 8000000,
+            "elapsedMs": 33.769,
+            "processPeakRssBeforeBytes": 4964352,
+            "processPeakRssAfterBytes": 68993024
+          },
+          {
+            "sourceOrdinal": 2,
+            "cells": 8000000,
+            "elapsedMs": 28.812,
+            "processPeakRssBeforeBytes": 72105984,
+            "processPeakRssAfterBytes": 72105984
+          }
+        ],
+        "begins": [
+          {
+            "computeThreads": 1,
+            "parserFuel": 8000000,
+            "phase": "compile-module",
+            "phaseTraceVersion": 3
+          }
+        ],
+        "results": [
+          {
+            "result": "EmitSuccess",
+            "bytes": 360195,
+            "modules": 2
+          }
+        ]
+      },
+      "execute": {
+        "label": "execute",
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--max-old-space-size=3072",
+          "/tmp/bend2039g1-native-foreign-zYgDou/family_field_hot-js.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 40.03741699999955,
+        "stdout": "5\n",
+        "stderr": ""
+      }
+    },
+    {
+      "source": "tests/run/list_rebox_sum.bend",
+      "target": "c",
+      "input": {
+        "root": "/private/tmp/bend2039-upgrade/tests/run/list_rebox_sum.bend",
+        "base": "/private/tmp/bend2039-upgrade/bend2/base.bend",
+        "manifest": "/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.tsv",
+        "exports": "/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.exports",
+        "phase": "compile-c-module",
+        "output": "/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c",
+        "runtime": "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+      },
+      "corpus": {
+        "schemaVersion": 1,
+        "directory": "/private/tmp/bend2039-upgrade",
+        "root": "tests/run/list_rebox_sum.bend",
+        "exports": [
+          "parsed_module",
+          "parse_with_fuel",
+          "expand_modules_start",
+          "template_step",
+          "check_expanded_start",
+          "inspect_checked_start",
+          "checker_step",
+          "emit_modules_start",
+          "emit_library_start",
+          "emitter_step",
+          "emit_c_modules_start",
+          "emit_c_library_start",
+          "c_emitter_step"
+        ],
+        "files": [
+          {
+            "path": "bend2/base.bend",
+            "sha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+            "namespace": ""
+          },
+          {
+            "path": "tests/run/list_rebox_sum.bend",
+            "sha256": "c046078c5a6c852d539c7456e4ce5fcf55d1556b8c37a08c1a8b711a1e9b379c",
+            "namespace": ""
+          },
+          {
+            "path": "bend2/effs/args.c",
+            "sha256": "7717332d0b8c8ba28d6dbe60b62a23dce99ea6828ada7d1f9b664f4dc388e84e",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/audio.c",
+            "sha256": "f0fac2bee02918b4958ad1e7508945824fcd98ce9a2e7ede657304c4f8905b85",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/chan.c",
+            "sha256": "af09b2749741bcc54f56c8f81803073818a165d4cad4c817708e359d677b2a52",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_close.c",
+            "sha256": "033da9beb0b484fbc8784044193bf69004f858f6ad86e0c31b4beb89df1349ca",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_open.c",
+            "sha256": "b987bcb0f9a89d769714ddf8cbecca211c4392e4098da19b411d09f5c088d360",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_read.c",
+            "sha256": "ab577225fa98a034c09d7eb6326b74808756dc6203b0e2599a459876382f090d",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_size.c",
+            "sha256": "ed0d74fd6b9f14ea471bfe5dd80ecbb2c5abb6a8406519fb2c7e1a1acf3dd5af",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_write.c",
+            "sha256": "da810ad9aa76ad1431622292529fa3edebabc4b6a7ee20ae833097b71bb595e5",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/get_env.c",
+            "sha256": "b4903e94681340f9e02187457fabe9461c1b4e43646b7e1573f5d21e954e3a34",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/listener_close.c",
+            "sha256": "11f6bac6342a37e97b9656e96bdca7d052ed0a7a0cab3b05ea87657020cfb7a2",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/now.c",
+            "sha256": "fc4c1d87a4fb2ace7d5b6c57b434cc3d953a15bdf213020912df6c17aa2352d6",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/print_err.c",
+            "sha256": "f84aa11c8d0d6af6fa2fee28411f95714d6744ad97156990e43e55c292c9c6fb",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/print.c",
+            "sha256": "58657b7351daee89121e1df2856f102743c9db7640257e50c6009a0f1080b00e",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/process_run.c",
+            "sha256": "554cfbdf9a6de163f00fc1b23dc8f3df10821cfce336caa1cb5db439b8a55e1f",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/random_u32.c",
+            "sha256": "75429b2b42e00562177fe33a5e18d2730478847f58c4038b048e78131e1b8c0a",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/sleep.c",
+            "sha256": "1dde3701026517d5272d2ff5344d3a8643bec264dbad9f266fdae1c4aaf7601c",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/socket_close.c",
+            "sha256": "abea115d2928d4942a9d89898d2022c0f1b19c52db48d0b060c2356d261bfa77",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/spawn.c",
+            "sha256": "05e11ae3f1461d9c72440af3b1786c076b418d2faff45639ac25ba464ee73cd5",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_accept.c",
+            "sha256": "bf7ca1685ed388ce97827ea8379881fbdf5359c7c663ad03eeb8da34bd8584ef",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_connect.c",
+            "sha256": "8d17c097138709d71e9d9e1fbc4255007c5e80c93ee384c4a3510b6ac8d10da3",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_listen.c",
+            "sha256": "efc7528de96abd9f62f299833c1ac7b0e86528292c746b114d2684b5bac52899",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_recv.c",
+            "sha256": "249c8789cd2f541ad00068882de16a00870c2f81a8168b0ac7a59db1e3cb0c6f",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_send.c",
+            "sha256": "993cc8ee5b39fd54a4aeace102602ecf2841ce1f402fe6b2407ebaca837383f9",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/thread_count.c",
+            "sha256": "d4889ed7757dccce03729c9568b88188128f2c1576166a3dc184a8707ed44568",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_bind.c",
+            "sha256": "a1be1bc5c03d430fc6eb43982651073e144872956fadaee98c3700be59352ee3",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_recv_from.c",
+            "sha256": "1ce914be6cd6153732258f06343e5bcf9765a7fac7e3c3f0462facba7060e067",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_send_to.c",
+            "sha256": "b3a87e56958d8071a368da2edb4748e9496b3eed58b93d6cb4f8af398dd1011a",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window.c",
+            "sha256": "bf8d5779775ba9566d4bbeb8706a9ec993efb724dae7af8a76c38501ab4092c2",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/write.c",
+            "sha256": "8807a5f655db452c1d846354560c26fe1e94289e5dc0be231d0b71ecc876d02f",
+            "external": true
+          },
+          {
+            "path": "tests/run/list_rebox_sum.c",
+            "sha256": "fa1864b0c8879b2bb4fb7cbdec43fb2f6bc0e5924d64f6ac9c5fe0153192d820",
+            "external": true
+          }
+        ]
+      },
+      "artifact": {
+        "path": "/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c",
+        "sha256": "a1ff96438d230977a6756c4f59da569bd7b5d4590669514b0a6bf09a729500d0"
+      },
+      "sourceSha256": "c046078c5a6c852d539c7456e4ce5fcf55d1556b8c37a08c1a8b711a1e9b379c",
+      "expected": "7\n3\nbounded",
+      "passed": true,
+      "run": {
+        "command": [
+          "/tmp/bend2039g1-split-first-native-smoke",
+          "+RTS",
+          "--threads",
+          "1",
+          "--gpu",
+          "off",
+          "--RTS",
+          "/private/tmp/bend2039-upgrade/tests/run/list_rebox_sum.bend",
+          "/private/tmp/bend2039-upgrade/bend2/base.bend",
+          "/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.tsv",
+          "/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.exports",
+          "compile-c-module",
+          "/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c",
+          "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 11332,
+        "phases": [
+          {
+            "phase": "parse",
+            "elapsedMs": 456.012,
+            "userCpuMs": 430.866,
+            "systemCpuMs": 14.657,
+            "modules": 2,
+            "sourceBytes": 81305,
+            "foreignBytes": 306084,
+            "eagerFuelCells": 16000000,
+            "fuelBuildMs": 60.24
+          },
+          {
+            "phase": "expand",
+            "elapsedMs": 238.396,
+            "userCpuMs": 233.182,
+            "systemCpuMs": 1.503,
+            "chunkAdvances": 29892,
+            "chunkQuantum": 64
+          },
+          {
+            "phase": "check",
+            "elapsedMs": 2210.985,
+            "userCpuMs": 1949.825,
+            "systemCpuMs": 13.858,
+            "chunkAdvances": 145992,
+            "chunkQuantum": 64
+          },
+          {
+            "phase": "emit-c",
+            "elapsedMs": 8364.37,
+            "userCpuMs": 7018.637,
+            "systemCpuMs": 41.223,
+            "chunkAdvances": 1278259,
+            "chunkQuantum": 64
+          }
+        ],
+        "phaseStarts": [
+          {
+            "phase": "parse"
+          },
+          {
+            "phase": "expand"
+          },
+          {
+            "phase": "check"
+          },
+          {
+            "phase": "emit-c"
+          }
+        ],
+        "fuel": [
+          {
+            "sourceOrdinal": 1,
+            "cells": 8000000,
+            "elapsedMs": 34.724,
+            "processPeakRssBeforeBytes": 4997120,
+            "processPeakRssAfterBytes": 69025792
+          },
+          {
+            "sourceOrdinal": 2,
+            "cells": 8000000,
+            "elapsedMs": 25.516,
+            "processPeakRssBeforeBytes": 72351744,
+            "processPeakRssAfterBytes": 72384512
+          }
+        ],
+        "begins": [
+          {
+            "computeThreads": 1,
+            "parserFuel": 8000000,
+            "phase": "compile-c-module",
+            "phaseTraceVersion": 3
+          }
+        ],
+        "results": [
+          {
+            "result": "EmitSuccess",
+            "bytes": 1188388,
+            "modules": 2
+          }
+        ]
+      },
+      "clang": {
+        "label": "clang",
+        "command": [
+          "clang",
+          "-std=c11",
+          "-O0",
+          "-pthread",
+          "/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c",
+          "-lm",
+          "-o",
+          "/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 1757.8274169999931,
+        "stdout": "",
+        "stderr": "/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:7858:1: warning: expression result unused [-Wunused-value]\n 7858 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:7882:1: warning: expression result unused [-Wunused-value]\n 7882 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:8093:1: warning: expression result unused [-Wunused-value]\n 8093 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:8117:1: warning: expression result unused [-Wunused-value]\n 8117 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:8144:1: warning: expression result unused [-Wunused-value]\n 8144 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:8168:1: warning: expression result unused [-Wunused-value]\n 8168 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:8348:1: warning: expression result unused [-Wunused-value]\n 8348 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:8366:1: warning: expression result unused [-Wunused-value]\n 8366 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:8559:1: warning: expression result unused [-Wunused-value]\n 8559 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:8577:1: warning: expression result unused [-Wunused-value]\n 8577 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:8777:1: warning: expression result unused [-Wunused-value]\n 8777 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:8801:1: warning: expression result unused [-Wunused-value]\n 8801 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:8980:1: warning: expression result unused [-Wunused-value]\n 8980 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:9004:1: warning: expression result unused [-Wunused-value]\n 9004 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:9224:1: warning: expression result unused [-Wunused-value]\n 9224 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:9248:1: warning: expression result unused [-Wunused-value]\n 9248 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:9402:1: warning: expression result unused [-Wunused-value]\n 9402 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:9426:1: warning: expression result unused [-Wunused-value]\n 9426 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:9780:1: warning: expression result unused [-Wunused-value]\n 9780 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:9804:1: warning: expression result unused [-Wunused-value]\n 9804 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:9831:1: warning: expression result unused [-Wunused-value]\n 9831 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:9855:1: warning: expression result unused [-Wunused-value]\n 9855 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:10063:1: warning: expression result unused [-Wunused-value]\n 10063 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:10137:1: warning: expression result unused [-Wunused-value]\n 10137 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:10420:1: warning: expression result unused [-Wunused-value]\n 10420 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:10444:1: warning: expression result unused [-Wunused-value]\n 10444 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:10520:1: warning: expression result unused [-Wunused-value]\n 10520 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:10544:1: warning: expression result unused [-Wunused-value]\n 10544 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:10685:1: warning: expression result unused [-Wunused-value]\n 10685 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:10709:1: warning: expression result unused [-Wunused-value]\n 10709 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:10736:1: warning: expression result unused [-Wunused-value]\n 10736 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:10760:1: warning: expression result unused [-Wunused-value]\n 10760 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:11073:1: warning: expression result unused [-Wunused-value]\n 11073 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:11095:1: warning: expression result unused [-Wunused-value]\n 11095 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:11207:1: warning: expression result unused [-Wunused-value]\n 11207 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:11229:1: warning: expression result unused [-Wunused-value]\n 11229 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:11341:1: warning: expression result unused [-Wunused-value]\n 11341 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:11363:1: warning: expression result unused [-Wunused-value]\n 11363 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:11475:1: warning: expression result unused [-Wunused-value]\n 11475 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:11497:1: warning: expression result unused [-Wunused-value]\n 11497 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:11609:1: warning: expression result unused [-Wunused-value]\n 11609 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:11631:1: warning: expression result unused [-Wunused-value]\n 11631 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:11743:1: warning: expression result unused [-Wunused-value]\n 11743 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:11765:1: warning: expression result unused [-Wunused-value]\n 11765 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:11877:1: warning: expression result unused [-Wunused-value]\n 11877 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:11899:1: warning: expression result unused [-Wunused-value]\n 11899 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:12011:1: warning: expression result unused [-Wunused-value]\n 12011 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:12033:1: warning: expression result unused [-Wunused-value]\n 12033 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:12251:1: warning: expression result unused [-Wunused-value]\n 12251 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:12337:1: warning: expression result unused [-Wunused-value]\n 12337 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:12546:1: warning: expression result unused [-Wunused-value]\n 12546 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:12663:1: warning: expression result unused [-Wunused-value]\n 12663 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:13552:1: warning: expression result unused [-Wunused-value]\n 13552 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c.c:13576:1: warning: expression result unused [-Wunused-value]\n 13576 | pbl;\n       | ^~~\n54 warnings generated.\n"
+      },
+      "execute": {
+        "label": "execute",
+        "command": [
+          "/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-c"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 290.61320800000976,
+        "stdout": "7\n3\nbounded\n",
+        "stderr": ""
+      }
+    },
+    {
+      "source": "tests/run/list_rebox_sum.bend",
+      "target": "js",
+      "input": {
+        "root": "/private/tmp/bend2039-upgrade/tests/run/list_rebox_sum.bend",
+        "base": "/private/tmp/bend2039-upgrade/bend2/base.bend",
+        "manifest": "/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-js.tsv",
+        "exports": "/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-js.exports",
+        "phase": "compile-module",
+        "output": "/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-js.js"
+      },
+      "corpus": {
+        "schemaVersion": 1,
+        "directory": "/private/tmp/bend2039-upgrade",
+        "root": "tests/run/list_rebox_sum.bend",
+        "exports": [
+          "parsed_module",
+          "parse_with_fuel",
+          "expand_modules_start",
+          "template_step",
+          "check_expanded_start",
+          "inspect_checked_start",
+          "checker_step",
+          "emit_modules_start",
+          "emit_library_start",
+          "emitter_step",
+          "emit_c_modules_start",
+          "emit_c_library_start",
+          "c_emitter_step"
+        ],
+        "files": [
+          {
+            "path": "bend2/base.bend",
+            "sha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+            "namespace": ""
+          },
+          {
+            "path": "tests/run/list_rebox_sum.bend",
+            "sha256": "c046078c5a6c852d539c7456e4ce5fcf55d1556b8c37a08c1a8b711a1e9b379c",
+            "namespace": ""
+          },
+          {
+            "path": "bend2/effs/args.js",
+            "sha256": "4fa9772d438257793425d4f9516e1411ce58455fdaec402ab836e6a6cf8a7a82",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/audio_close.js",
+            "sha256": "c700e2fc0eda1f9a67afd317184999d9283912817aaec00637af41b135b84c62",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/audio_open.js",
+            "sha256": "ed792cb29df28497c60fb6bfcebaa72d9f4bb0a9d8b22063567aa40ac4803fc9",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/audio_write.js",
+            "sha256": "ca3731d6da39355c0b924007dfe4f3ea25ed1a9d7b06b7bf19cacf49fdcc0de6",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/chan.js",
+            "sha256": "c8e4f3cdaea81cfd35dc22e07c29a86b8f08272d284bf3506dd5148dff8d168f",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_close.js",
+            "sha256": "2b83f900113776ab875fa3afd29f31000a191fe48645abe78b1d7b34cb12a7fe",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_open.js",
+            "sha256": "e6cbf6455aeae0768f1e8e7cabbafb8d0999eb27660cbaa23885757322b8c694",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_read.js",
+            "sha256": "7aa8a95a0b02f3c8db1167da5a936958a90c64e7df3e327ba5c66766d5e57da7",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_size.js",
+            "sha256": "508a931334016f725f0446d9c63f91d7e9de79b9fb347d0e148777dba834ef0b",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_write.js",
+            "sha256": "fbb706714fe6724e12658ad638d8b7aa2228f6297791bf74bd4894af361776f0",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/get_env.js",
+            "sha256": "4bbb377d73898055bd06b498bef605e81bc2a0885e7ac664bc77591fd7e3dfa4",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/listener_close.js",
+            "sha256": "1b87fb43c373b1a8a54b5afaf0cf8e3ec2f8d39bdfde131e49527caa19ac0cb8",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/now.js",
+            "sha256": "f41624aba3f07d56b671f41691b5cb833b4d018266668f5f48329290fc41b2d9",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/print_err.js",
+            "sha256": "a7a00612edfe98af1a351e8f7b912af4ee33f4bb888c36f119f7712d72a9394e",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/print.js",
+            "sha256": "814ceba4efbaa291b7b6a9ff29aa20e3a23c06eb4fa165c69ee0bd22878adaa9",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/process_run.js",
+            "sha256": "26868538280a1df9570ed2fba234d2a329f1e1d9e86c6fe9353de417adaee729",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/random_u32.js",
+            "sha256": "ab0b37cb6055ad08573d1263aa380c339c3fe7417530cfa63264629dce7744c2",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/sleep.js",
+            "sha256": "6711ccd804dcaede381da9ff0283b4640feb440e1d413381101f22bfed65a934",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/socket_close.js",
+            "sha256": "dc4bf1fa95692c91528d4eb855506dde8dfc9164a90de2c43cd1bd6916e0c380",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/spawn.js",
+            "sha256": "8a14c7a7a5ff80b049f0659f9e58d43bf0f3b1a6724d35a199c3f864b3242e4b",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_accept.js",
+            "sha256": "26406cce42c497994e597a7a032629fab65f43ec14f06ee69aace2b353afe28d",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_connect.js",
+            "sha256": "c51c4b55ffbc4a520f01082a1307498801a17e5123bdffbd01077fb42730f1cb",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_listen.js",
+            "sha256": "0da4cfafaa24ba5e17d9fda5e6a5b207b2b36031b2c888944f67b85842d76399",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_recv.js",
+            "sha256": "e8c54490445cb71a4328c07be8c40a49cee3e643cbf74f42dc73d31ab95890d7",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_send.js",
+            "sha256": "350bc6ac8f957d6a154cc9437b4ad871bd11ec65babbbd7c3b0d2c77590ec5c6",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/thread_count.js",
+            "sha256": "f4ef6d8ded95fe3114e50b7d2b6eb873e693419b85150f681b4a54a5043c2de9",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_bind.js",
+            "sha256": "e3afae5bf246184e76703efbcf41cb35bf5289e746cc40dc0300eef98753dfb5",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_recv_from.js",
+            "sha256": "66435d23dd12f30aa47bf618c925a42250920768d5ae28c7c52c35d4e04fa5ad",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_send_to.js",
+            "sha256": "40c835c4d73eb15d089a41b425968d04931d02820cb901aadb8eb3dd4905f247",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window_close.js",
+            "sha256": "be4ef11e9ac57c59aa4aee847f15ece18034ca9fe1c4a68c6e0b0d7bbd7c3590",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window_frame.js",
+            "sha256": "78baa53aa46e02165c0c94da68d1f6362386ebcfb97dbb36fffb82792a03d34f",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window_grab.js",
+            "sha256": "55cfc1925114f2d1f177137fad24d6252fe28707d26a1aae18a98ad97060a668",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window_open.js",
+            "sha256": "cd716864b8dfb27ca955c8aa58643c7d693ce76eb56472bd8255ff7ac0656e8d",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window_set_title.js",
+            "sha256": "eee0bf26b7f381f8800364e22e8c735e47dd6db3f58e23ff3dda8478a8411513",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/write.js",
+            "sha256": "e3495066a5d8c53fe1c46cfd2bb32577e3bd7dcae9797808801599073504dacb",
+            "external": true
+          },
+          {
+            "path": "tests/run/list_rebox_sum.js",
+            "sha256": "b3dfd23affd9dd316cbfdd697faf128deb944c6191cf7da1b651e244aa7938b9",
+            "external": true
+          }
+        ]
+      },
+      "artifact": {
+        "path": "/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-js.js",
+        "sha256": "9a6c8aeafd1eeffdc2c4abc1753c7d72a1aaa762d25f41de0b98ab7a4fb0f7c7"
+      },
+      "sourceSha256": "c046078c5a6c852d539c7456e4ce5fcf55d1556b8c37a08c1a8b711a1e9b379c",
+      "expected": "7\n3\nbounded",
+      "passed": true,
+      "run": {
+        "command": [
+          "/tmp/bend2039g1-split-first-native-smoke",
+          "+RTS",
+          "--threads",
+          "1",
+          "--gpu",
+          "off",
+          "--RTS",
+          "/private/tmp/bend2039-upgrade/tests/run/list_rebox_sum.bend",
+          "/private/tmp/bend2039-upgrade/bend2/base.bend",
+          "/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-js.tsv",
+          "/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-js.exports",
+          "compile-module",
+          "/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-js.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 3433,
+        "phases": [
+          {
+            "phase": "parse",
+            "elapsedMs": 455.536,
+            "userCpuMs": 430.111,
+            "systemCpuMs": 14.023,
+            "modules": 2,
+            "sourceBytes": 81305,
+            "foreignBytes": 78561,
+            "eagerFuelCells": 16000000,
+            "fuelBuildMs": 60.173
+          },
+          {
+            "phase": "expand",
+            "elapsedMs": 225.15,
+            "userCpuMs": 223.554,
+            "systemCpuMs": 0.801,
+            "chunkAdvances": 29892,
+            "chunkQuantum": 64
+          },
+          {
+            "phase": "check",
+            "elapsedMs": 2333.256,
+            "userCpuMs": 1993.208,
+            "systemCpuMs": 17.482,
+            "chunkAdvances": 145992,
+            "chunkQuantum": 64
+          },
+          {
+            "phase": "emit",
+            "elapsedMs": 400.397,
+            "userCpuMs": 228.86,
+            "systemCpuMs": 2.944,
+            "chunkAdvances": 15279,
+            "chunkQuantum": 64
+          }
+        ],
+        "phaseStarts": [
+          {
+            "phase": "parse"
+          },
+          {
+            "phase": "expand"
+          },
+          {
+            "phase": "check"
+          },
+          {
+            "phase": "emit"
+          }
+        ],
+        "fuel": [
+          {
+            "sourceOrdinal": 1,
+            "cells": 8000000,
+            "elapsedMs": 33.994,
+            "processPeakRssBeforeBytes": 4997120,
+            "processPeakRssAfterBytes": 69025792
+          },
+          {
+            "sourceOrdinal": 2,
+            "cells": 8000000,
+            "elapsedMs": 26.179,
+            "processPeakRssBeforeBytes": 72351744,
+            "processPeakRssAfterBytes": 72351744
+          }
+        ],
+        "begins": [
+          {
+            "computeThreads": 1,
+            "parserFuel": 8000000,
+            "phase": "compile-module",
+            "phaseTraceVersion": 3
+          }
+        ],
+        "results": [
+          {
+            "result": "EmitSuccess",
+            "bytes": 367713,
+            "modules": 2
+          }
+        ]
+      },
+      "execute": {
+        "label": "execute",
+        "command": [
+          "/Users/ilyagulya/Library/pnpm/nodejs/23.11.0/bin/node",
+          "--max-old-space-size=3072",
+          "/tmp/bend2039g1-native-foreign-zYgDou/list_rebox_sum-js.js"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 512.9159999999974,
+        "stdout": "7\n3\nbounded\n",
+        "stderr": ""
+      }
+    },
+    {
+      "source": "evals/c_step_library_fixture.bend",
+      "target": "c",
+      "input": {
+        "root": "/private/tmp/bend2039-upgrade/evals/c_step_library_fixture.bend",
+        "base": "/private/tmp/bend2039-upgrade/bend2/base.bend",
+        "manifest": "/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.tsv",
+        "exports": "/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.exports",
+        "phase": "compile-c",
+        "output": "/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c",
+        "runtime": "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+      },
+      "corpus": {
+        "schemaVersion": 1,
+        "directory": "/private/tmp/bend2039-upgrade",
+        "root": "evals/c_step_library_fixture.bend",
+        "exports": [
+          "parsed_module",
+          "parse_with_fuel",
+          "expand_modules_start",
+          "template_step",
+          "check_expanded_start",
+          "inspect_checked_start",
+          "checker_step",
+          "emit_modules_start",
+          "emit_library_start",
+          "emitter_step",
+          "emit_c_modules_start",
+          "emit_c_library_start",
+          "c_emitter_step"
+        ],
+        "files": [
+          {
+            "path": "bend2/base.bend",
+            "sha256": "3cd0b0944b11e15c4da5c9af2560e3c04f27d3d37027f1617899aeec17b499ce",
+            "namespace": ""
+          },
+          {
+            "path": "evals/c_step_library_fixture.bend",
+            "sha256": "5e53a4815f2fc7f12c3fdea7bfc12764daf65096b125a22a5f884c0cf0e710df",
+            "namespace": ""
+          },
+          {
+            "path": "bend2/effs/args.c",
+            "sha256": "7717332d0b8c8ba28d6dbe60b62a23dce99ea6828ada7d1f9b664f4dc388e84e",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/audio.c",
+            "sha256": "f0fac2bee02918b4958ad1e7508945824fcd98ce9a2e7ede657304c4f8905b85",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/chan.c",
+            "sha256": "af09b2749741bcc54f56c8f81803073818a165d4cad4c817708e359d677b2a52",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_close.c",
+            "sha256": "033da9beb0b484fbc8784044193bf69004f858f6ad86e0c31b4beb89df1349ca",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_open.c",
+            "sha256": "b987bcb0f9a89d769714ddf8cbecca211c4392e4098da19b411d09f5c088d360",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_read.c",
+            "sha256": "ab577225fa98a034c09d7eb6326b74808756dc6203b0e2599a459876382f090d",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_size.c",
+            "sha256": "ed0d74fd6b9f14ea471bfe5dd80ecbb2c5abb6a8406519fb2c7e1a1acf3dd5af",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/file_write.c",
+            "sha256": "da810ad9aa76ad1431622292529fa3edebabc4b6a7ee20ae833097b71bb595e5",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/get_env.c",
+            "sha256": "b4903e94681340f9e02187457fabe9461c1b4e43646b7e1573f5d21e954e3a34",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/listener_close.c",
+            "sha256": "11f6bac6342a37e97b9656e96bdca7d052ed0a7a0cab3b05ea87657020cfb7a2",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/now.c",
+            "sha256": "fc4c1d87a4fb2ace7d5b6c57b434cc3d953a15bdf213020912df6c17aa2352d6",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/print_err.c",
+            "sha256": "f84aa11c8d0d6af6fa2fee28411f95714d6744ad97156990e43e55c292c9c6fb",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/print.c",
+            "sha256": "58657b7351daee89121e1df2856f102743c9db7640257e50c6009a0f1080b00e",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/process_run.c",
+            "sha256": "554cfbdf9a6de163f00fc1b23dc8f3df10821cfce336caa1cb5db439b8a55e1f",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/random_u32.c",
+            "sha256": "75429b2b42e00562177fe33a5e18d2730478847f58c4038b048e78131e1b8c0a",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/sleep.c",
+            "sha256": "1dde3701026517d5272d2ff5344d3a8643bec264dbad9f266fdae1c4aaf7601c",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/socket_close.c",
+            "sha256": "abea115d2928d4942a9d89898d2022c0f1b19c52db48d0b060c2356d261bfa77",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/spawn.c",
+            "sha256": "05e11ae3f1461d9c72440af3b1786c076b418d2faff45639ac25ba464ee73cd5",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_accept.c",
+            "sha256": "bf7ca1685ed388ce97827ea8379881fbdf5359c7c663ad03eeb8da34bd8584ef",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_connect.c",
+            "sha256": "8d17c097138709d71e9d9e1fbc4255007c5e80c93ee384c4a3510b6ac8d10da3",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_listen.c",
+            "sha256": "efc7528de96abd9f62f299833c1ac7b0e86528292c746b114d2684b5bac52899",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_recv.c",
+            "sha256": "249c8789cd2f541ad00068882de16a00870c2f81a8168b0ac7a59db1e3cb0c6f",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/tcp_send.c",
+            "sha256": "993cc8ee5b39fd54a4aeace102602ecf2841ce1f402fe6b2407ebaca837383f9",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/thread_count.c",
+            "sha256": "d4889ed7757dccce03729c9568b88188128f2c1576166a3dc184a8707ed44568",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_bind.c",
+            "sha256": "a1be1bc5c03d430fc6eb43982651073e144872956fadaee98c3700be59352ee3",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_recv_from.c",
+            "sha256": "1ce914be6cd6153732258f06343e5bcf9765a7fac7e3c3f0462facba7060e067",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/udp_send_to.c",
+            "sha256": "b3a87e56958d8071a368da2edb4748e9496b3eed58b93d6cb4f8af398dd1011a",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/window.c",
+            "sha256": "bf8d5779775ba9566d4bbeb8706a9ec993efb724dae7af8a76c38501ab4092c2",
+            "external": true
+          },
+          {
+            "path": "bend2/effs/write.c",
+            "sha256": "8807a5f655db452c1d846354560c26fe1e94289e5dc0be231d0b71ecc876d02f",
+            "external": true
+          }
+        ]
+      },
+      "artifact": {
+        "path": "/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c",
+        "sha256": "ea6c1ef5deb92e5460946b099bf7820372e1d98e3befb96d77a20e1d5c00171d"
+      },
+      "sourceSha256": "5e53a4815f2fc7f12c3fdea7bfc12764daf65096b125a22a5f884c0cf0e710df",
+      "caller": {
+        "path": "/private/tmp/bend2039-upgrade/evals/c_backend_library_caller.c",
+        "sha256": "e874c1d3b617c8d4a82adaf50ceb9e2c15715fc18f2cd6d6d5b1b6b9d4d16004"
+      },
+      "expected": "export ok",
+      "passed": true,
+      "run": {
+        "command": [
+          "/tmp/bend2039g1-split-first-native-smoke",
+          "+RTS",
+          "--threads",
+          "1",
+          "--gpu",
+          "off",
+          "--RTS",
+          "/private/tmp/bend2039-upgrade/evals/c_step_library_fixture.bend",
+          "/private/tmp/bend2039-upgrade/bend2/base.bend",
+          "/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.tsv",
+          "/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.exports",
+          "compile-c",
+          "/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c",
+          "/private/tmp/bend2039-upgrade/bend2/selfhost/c_runtime.c"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 13278,
+        "phases": [
+          {
+            "phase": "parse",
+            "elapsedMs": 1015.29,
+            "userCpuMs": 453.233,
+            "systemCpuMs": 14.021,
+            "modules": 2,
+            "sourceBytes": 80191,
+            "foreignBytes": 305668,
+            "eagerFuelCells": 16000000,
+            "fuelBuildMs": 120.015
+          },
+          {
+            "phase": "expand",
+            "elapsedMs": 247.675,
+            "userCpuMs": 220.495,
+            "systemCpuMs": 0.477,
+            "chunkAdvances": 28840,
+            "chunkQuantum": 64
+          },
+          {
+            "phase": "check",
+            "elapsedMs": 2475.4,
+            "userCpuMs": 1960.623,
+            "systemCpuMs": 16.119,
+            "chunkAdvances": 143685,
+            "chunkQuantum": 64
+          },
+          {
+            "phase": "emit-c",
+            "elapsedMs": 9500.172,
+            "userCpuMs": 6761.658,
+            "systemCpuMs": 56.908,
+            "chunkAdvances": 1210724,
+            "chunkQuantum": 64
+          }
+        ],
+        "phaseStarts": [
+          {
+            "phase": "parse"
+          },
+          {
+            "phase": "expand"
+          },
+          {
+            "phase": "check"
+          },
+          {
+            "phase": "emit-c"
+          }
+        ],
+        "fuel": [
+          {
+            "sourceOrdinal": 1,
+            "cells": 8000000,
+            "elapsedMs": 33.639,
+            "processPeakRssBeforeBytes": 5013504,
+            "processPeakRssAfterBytes": 69042176
+          },
+          {
+            "sourceOrdinal": 2,
+            "cells": 8000000,
+            "elapsedMs": 86.376,
+            "processPeakRssBeforeBytes": 71778304,
+            "processPeakRssAfterBytes": 71778304
+          }
+        ],
+        "begins": [
+          {
+            "computeThreads": 1,
+            "parserFuel": 8000000,
+            "phase": "compile-c",
+            "phaseTraceVersion": 3
+          }
+        ],
+        "results": [
+          {
+            "result": "EmitSuccess",
+            "bytes": 1153770,
+            "modules": 2
+          }
+        ]
+      },
+      "clang": {
+        "label": "library-clang",
+        "command": [
+          "clang",
+          "-std=c11",
+          "-O0",
+          "-pthread",
+          "/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c",
+          "/private/tmp/bend2039-upgrade/evals/c_backend_library_caller.c",
+          "-lm",
+          "-o",
+          "/tmp/bend2039g1-native-foreign-zYgDou/library"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 1998.8977920000034,
+        "stdout": "",
+        "stderr": "/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:7807:1: warning: expression result unused [-Wunused-value]\n 7807 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:7831:1: warning: expression result unused [-Wunused-value]\n 7831 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:8042:1: warning: expression result unused [-Wunused-value]\n 8042 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:8066:1: warning: expression result unused [-Wunused-value]\n 8066 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:8093:1: warning: expression result unused [-Wunused-value]\n 8093 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:8117:1: warning: expression result unused [-Wunused-value]\n 8117 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:8297:1: warning: expression result unused [-Wunused-value]\n 8297 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:8315:1: warning: expression result unused [-Wunused-value]\n 8315 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:8508:1: warning: expression result unused [-Wunused-value]\n 8508 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:8526:1: warning: expression result unused [-Wunused-value]\n 8526 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:8726:1: warning: expression result unused [-Wunused-value]\n 8726 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:8750:1: warning: expression result unused [-Wunused-value]\n 8750 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:8929:1: warning: expression result unused [-Wunused-value]\n 8929 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:8953:1: warning: expression result unused [-Wunused-value]\n 8953 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:9173:1: warning: expression result unused [-Wunused-value]\n 9173 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:9197:1: warning: expression result unused [-Wunused-value]\n 9197 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:9351:1: warning: expression result unused [-Wunused-value]\n 9351 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:9375:1: warning: expression result unused [-Wunused-value]\n 9375 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:9729:1: warning: expression result unused [-Wunused-value]\n 9729 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:9753:1: warning: expression result unused [-Wunused-value]\n 9753 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:9780:1: warning: expression result unused [-Wunused-value]\n 9780 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:9804:1: warning: expression result unused [-Wunused-value]\n 9804 | pbl;\n      | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:10012:1: warning: expression result unused [-Wunused-value]\n 10012 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:10086:1: warning: expression result unused [-Wunused-value]\n 10086 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:10369:1: warning: expression result unused [-Wunused-value]\n 10369 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:10393:1: warning: expression result unused [-Wunused-value]\n 10393 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:10469:1: warning: expression result unused [-Wunused-value]\n 10469 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:10493:1: warning: expression result unused [-Wunused-value]\n 10493 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:10634:1: warning: expression result unused [-Wunused-value]\n 10634 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:10658:1: warning: expression result unused [-Wunused-value]\n 10658 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:10685:1: warning: expression result unused [-Wunused-value]\n 10685 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:10709:1: warning: expression result unused [-Wunused-value]\n 10709 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:11022:1: warning: expression result unused [-Wunused-value]\n 11022 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:11044:1: warning: expression result unused [-Wunused-value]\n 11044 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:11156:1: warning: expression result unused [-Wunused-value]\n 11156 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:11178:1: warning: expression result unused [-Wunused-value]\n 11178 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:11290:1: warning: expression result unused [-Wunused-value]\n 11290 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:11312:1: warning: expression result unused [-Wunused-value]\n 11312 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:11424:1: warning: expression result unused [-Wunused-value]\n 11424 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:11446:1: warning: expression result unused [-Wunused-value]\n 11446 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:11558:1: warning: expression result unused [-Wunused-value]\n 11558 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:11580:1: warning: expression result unused [-Wunused-value]\n 11580 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:11692:1: warning: expression result unused [-Wunused-value]\n 11692 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:11714:1: warning: expression result unused [-Wunused-value]\n 11714 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:11826:1: warning: expression result unused [-Wunused-value]\n 11826 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:11848:1: warning: expression result unused [-Wunused-value]\n 11848 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:11960:1: warning: expression result unused [-Wunused-value]\n 11960 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:11982:1: warning: expression result unused [-Wunused-value]\n 11982 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:12200:1: warning: expression result unused [-Wunused-value]\n 12200 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:12286:1: warning: expression result unused [-Wunused-value]\n 12286 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:12495:1: warning: expression result unused [-Wunused-value]\n 12495 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:12612:1: warning: expression result unused [-Wunused-value]\n 12612 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:13501:1: warning: expression result unused [-Wunused-value]\n 13501 | pbl;\n       | ^~~\n/tmp/bend2039g1-native-foreign-zYgDou/c_step_library_fixture-c-library.c:13525:1: warning: expression result unused [-Wunused-value]\n 13525 | pbl;\n       | ^~~\n54 warnings generated.\n"
+      },
+      "execute": {
+        "label": "library-execute",
+        "command": [
+          "/tmp/bend2039g1-native-foreign-zYgDou/library"
+        ],
+        "status": 0,
+        "signal": null,
+        "elapsedMs": 9.190708000009181,
+        "stdout": "export ok\n",
+        "stderr": ""
+      }
+    }
+  ],
+  "rawReceipt": {
+    "path": "/tmp/bend2039g1-native-foreign-zYgDou/receipt.json",
+    "sha256": "d6612b2f4492941c6d3edf28071a234a3438b3dab49b2404a13b78f30332b877"
+  },
+  "runner": {
+    "path": "/tmp/bend2039g1-native-foreign-suite.mjs",
+    "sha256": "ff3e6d12e4ff188cd1c22085ee6d48e81a3ff7576e9ba6048bf193e61def9f2e"
+  },
+  "guardianCommand": [
+    "/opt/homebrew/bin/bun",
+    "evals/heavy_gate.ts",
+    "--memory-mib",
+    "8192",
+    "--rss-mib",
+    "8192",
+    "--poll-ms",
+    "10",
+    "--timeout-ms",
+    "600000",
+    "--",
+    "/opt/homebrew/bin/bun",
+    "/tmp/bend2039g1-native-foreign-suite.mjs"
+  ],
+  "guardian": {
+    "status": "PASS",
+    "reason": "command_exit",
+    "commandExitCode": 0,
+    "commandSignal": 0,
+    "peakRssBytes": 219021312,
+    "peakFootprintBytes": 167977552,
+    "elapsedMs": 109262,
+    "timeoutMs": 600000,
+    "reportPhase": "complete",
+    "ownedTreeStopped": true,
+    "supervisorExitCode": 0,
+    "command": [
+      "/opt/homebrew/bin/bun",
+      "/tmp/bend2039g1-native-foreign-suite.mjs"
+    ],
+    "label": "heavy command",
+    "exitCode": 0,
+    "reportPath": "/var/folders/0r/pkz80d0154z37ybnv69pqclh0000gn/T/bend-heavy-gate-501/report-1793036084418-517f2ed7197188e2.json",
+    "memoryLimitBytes": 8589934592,
+    "rssLimitBytes": 8589934592
+  },
+  "summary": {
+    "rows": 7,
+    "stages": 18,
+    "allPassed": true,
+    "allCompileRunExitZero": true
+  }
+}
