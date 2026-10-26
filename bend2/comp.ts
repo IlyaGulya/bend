@@ -1810,7 +1810,6 @@ function file_new(book: Bend.Book, js: boolean, options: JSOptions = {}) {
   return {
     book,
     js,
-    emitting: true,
     options,
     higher: new Map<Name, HTerm>(),
     rest_max: 0,
@@ -2094,9 +2093,7 @@ function facts_ctr(sc: Scope, c: Bend.Ctr, xs: HTerm[]): void {
 }
 
 function file_push(sc: Scope, line: string): void {
-  if (FL.emitting) {
-    sc.seg.lines.push(line);
-  }
+  sc.seg.lines.push(line);
 }
 
 function block(sc: Scope, open: string, go: () => void): void {
@@ -2178,9 +2175,7 @@ function seg_open(sc: Scope, name: string, ret: Lay, frame: Seg["frame"],
     return nw;
   }), b.val.lay));
   const seg = seg_new(name, ret, [...vals, res], frame);
-  if (FL.emitting) {
-    FL.segs.push(seg);
-  }
+  FL.segs.push(seg);
   sc = { ...sc, seg, spares: [], uses: new Map() };
   live.forEach(([p, b], i) => bind_uses(sc, p, vals[i], rest, b.A, false));
   return sc;
@@ -2840,9 +2835,6 @@ function emit_native(sc: Scope, k: Name, ers: HTerm[], f: Fun): string {
       val_new(seg.ret.ks.map((_, j) => `o[${j}]`), seg.ret));
     if (FL.options.observe) file_observe("c-spin-after", k);
     FUEL = fuel;
-    if (!FL.emitting) {
-      return name;
-    }
     const body = [...seg_text(["u32 wpoll = 0;", ...seg.ks.flatMap((k, i) =>
       arr_q(k) ? [`Term h${i} = r${i};`] : []),
     ...seg_take(seg), "WL_SPIN"], 1),
@@ -3514,10 +3506,14 @@ function effect_src(k: Name, tld: Bend.Def & { i: string[] }): void {
 export function compile_book(book: Bend.Book,
   options: Pick<JSOptions, "observe"> = {}): string {
   FL = file_new(book, false, options);
-  // Ownership/heating reaches its fixedpoint without retaining discarded C
-  // segments. Once settled, run the same traversal once to publish the text.
-  FL.emitting = false;
-  // the datatypes of the constructors a pure main prints are roots too
+  // Ownership/heating reaches its fixedpoint by repeating the traversal, and a
+  // pass whose facts moved is discarded. Keeping the text of every pass rather
+  // than only of the one before the settled pass therefore costs that pass's
+  // text and saves a whole repeat of it: the pass that changes no fact starts
+  // from the settled facts, so its own text is the published text. Facts are
+  // monotone (a pass only adds), so a pass that adds none sees the set its
+  // successor would see.
+  // The datatypes of the constructors a pure main prints are roots too.
   const show = show_main();
   const names = (show ?? []).filter((c) => typeof c === "string");
   if (options.observe) file_observe("c-reachability-before", "main");
@@ -3542,9 +3538,7 @@ export function compile_book(book: Bend.Book,
       memo_gc();
       PROBES.length = 1;
       const [dl, vals] = emit_open(scope_new(), k);
-      if (FL.emitting) {
-        FL.segs.push(dl.seg);
-      }
+      FL.segs.push(dl.seg);
       if (def_foreign(tld)) {
         emit_put(dl, null, val_new([ctr_build(dl, k, dl.seg.params)], BOX));
       } else {
@@ -3579,10 +3573,9 @@ export function compile_book(book: Bend.Book,
       file_observe(`c-pass-${pass}-after`, "main", undefined, true);
     }
     const settled = was === facts();
-    if (settled && FL.emitting) {
+    if (settled) {
       break;
     }
-    FL.emitting = settled;
   } while (true);
   // Reachability asks the same segment graph from two roots; one adjacency
   // index answers both, and neither materializes an edge-pair array.
