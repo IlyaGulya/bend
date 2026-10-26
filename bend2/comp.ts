@@ -835,10 +835,18 @@ function term_any(t: HTerm, p: (s: HTerm, tail: boolean) => boolean,
   return false;
 }
 
+// A literal is a constant tree and a constructor is one when every field is.
+// Every walk asks each visited constructor for that answer, so asking a node's
+// whole subtree again per node costs the subtree there: quadratic in a
+// constructor literal's depth, which one wide literal makes minutes. The answer
+// is a fact about the term alone (a stripped node never changes), so each term
+// object answers once. The cache is weak: nothing is retained by being asked.
 function term_const(t: HTerm): boolean {
-  const s = Bend.term_strip(t);
-  return s.$ === "Lit" ? lit_call(s) === null
-    : s.$ === "Ctr" && s.x.every(term_const);
+  return memo(FL.const_ids, t, () => {
+    const s = Bend.term_strip(t);
+    return s.$ === "Lit" ? lit_call(s) === null
+      : s.$ === "Ctr" && s.x.every(term_const);
+  });
 }
 
 function term_use(u: Bend.PMap<number>, p: Of<"Var">): number {
@@ -1777,6 +1785,7 @@ function file_new(book: Bend.Book, js: boolean, options: JSOptions = {}) {
     taken: new Set("FID_EXIT FID_ENTER FID_T CID_T $pc".split(" ")),
     teles: new WeakMap<HTerm, { doms: Dom[]; ret: HTerm }>(),
     wnfs: new WeakMap<HTerm, HTerm>(),
+    const_ids: new WeakMap<HTerm, boolean>(),
     ctr_own: new WeakMap<Bend.Ctr, CtrDoms>(),
     ctr_fills: new WeakMap<Bend.Ctr, WeakMap<HTerm[], CtrDoms>>(),
     steps: new WeakMap<Of<"Lit">, HTerm>(),
