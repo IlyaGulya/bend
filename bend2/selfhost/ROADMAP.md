@@ -182,6 +182,29 @@ Proof: `evals/receipts/root2039g1_args_smoke.json`. The preceding failed `g`
 invocation double-acquired the guardian lease, and the first `g1` build command
 misspelled `parsed_module`; neither was a parser/checker or compiler acceptance.
 
+`release2039g2` fixes constructor-field instantiation scope: every preceding
+declared field contributes an abstract binder before the family's arguments
+are read from the end. The real C `List<U32>` main now emits, compiles and prints
+`[1, 2]`. Fresh parser admission completes the same 71 source / 75 compiled
+cases and public 15 tests / 264 assertions. Full JS-root validation checks
+12,114 bodies / 12,684 events with zero exclusions or patches and emits
+13,840,374 B in 36,750 ms; peak RSS 3,084,451,840 B / footprint 3,175,372,280 B.
+Its full native build is **rejected by the unchanged 600 s deadline**:
+all 12,144 bodies / 12,723 events validate, 55,201,172 B of C are published,
+but codegen takes 544,597.5 ms and the deadline stops LLVM's frontend.
+Peak sampled RSS is 4,360,536,064 B / footprint 4,753,920,752 B. This uses
+Bun 1.4.3, default stack and automatic GC with an explicit 4 GiB RAM heuristic
+(`BUN_JSC_forceRAMSize`, not a hard heap cap), under the original 8 GiB guard.
+No native-build or byte-fixedpoint acceptance follows. Proof:
+`evals/receipts/root2039g2_native_deadline_rejected.json`.
+Separately, the preceding unchanged g1 full C passes the split-before-O1
+backend and its resulting actual native compiler passes all three original
+foreign/lifetime fixtures in C and JS plus the six-export C library:
+7 rows / 18 stages, including the unchanged `list_rebox_sum` bound. These are
+backend/consumer smokes, not reclassified whole-build or bootstrap passes.
+Proof: `evals/receipts/root2039g1_llvm_split_smoke.json` and
+`evals/receipts/root2039g1_native_foreign_smoke.json`.
+
 Latest compiler root: **`db147cba`**, after an authenticated inline-parser
 cutover in `/private/tmp/bend-parser-cutover667`. Fresh native admission checks
 all 11,889 bodies / 12,450 events with 0 exclusions/patches and unchanged
