@@ -5,18 +5,22 @@
 // one into another:
 //
 //   * coarse explicit spans: monotonic wall, process-wide CPU boundary delta,
-//     and process.memoryUsage boundary snapshots;
+//     current-thread CPU boundary delta, and process.memoryUsage plus
+//     process.resourceUsage/RSS and runtime heap-statistics boundary snapshots;
 //   * sampled attribution: optional V8 inspector CPU (1 ms) and statistical
 //     allocation (4 MiB) profiles for explicitly sampled spans;
 //   * exact counters/observations supplied by the producer (definition,
 //     segment, cache and chunk counts, or child-process RUSAGE rows).
 //
-// A boundary heapUsed delta is not allocation or retained bytes. RSS is
-// process-wide. process.cpuUsage covers every thread in this process, not
-// child processes; child CPU requires its own rusage receipt. Nested or
+// A boundary heapUsed delta is not allocation or retained bytes. RSS and peak
+// RSS are process-wide. process.cpuUsage covers every thread in this process,
+// not child processes; child CPU requires its own rusage receipt.
+// process.threadCpuUsage covers only the collector's own thread, so the
+// process-minus-thread difference is arithmetic, not attribution. Nested or
 // overlapping spans have overlapping CPU deltas and no exclusive CPU is
-// invented. Retained/live bytes and child rusage that the host cannot observe
-// stay null with an explicit reason.
+// invented. Footprint, live/retained bytes, allocation-request counts and
+// child rusage that the host cannot observe stay unavailable with an explicit
+// reason in every snapshot.
 //
 // Import is side-effect free. Inspector is loaded lazily and only when a span
 // explicitly requests sampling, so Bun/Node runners that never profile pay no
@@ -28,15 +32,18 @@ import {join, resolve} from 'node:path';
 import {isMainThread, threadId} from 'node:worker_threads';
 
 export const COMPILER_PROFILE_SCHEMA_VERSION = 1;
-const profilerVersion = 'compiler-profile/1';
+const profilerVersion = 'compiler-profile/2';
 const statuses = new Set(['completed', 'failed', 'aborted']);
 
 export const compilerProfileLimits = Object.freeze([
   'diagnostic only: profile files do not certify acceptance, bootstrap green, fixedpoint or benchmark results',
   'span CPU is a process.cpuUsage boundary delta over all threads in this process; child processes are excluded and require their own rusage receipt; nested or overlapping spans overlap and no exclusive CPU is derived',
+  'span thread CPU is a process.threadCpuUsage boundary delta over the collector thread only; worker threads and runtime helper threads are excluded there and included in the process delta, so their arithmetic difference is a measurement gap, not an attribution',
   'boundary heapUsed deltas are not allocation, live or retained bytes; RSS is process-wide',
+  'peak RSS is process.resourceUsage().maxRSS (a runtime-documented high-water resident size); it is not memory footprint and no snapshot substitutes one for the other',
+  'footprint, live/retained heap and allocation-request counts are unavailable at these boundaries and stay explicit: the collector never forces GC, and inspector heap sampling is statistical over allocated and collected objects',
   'sampled CPU/allocation profiles are statistical, include collected objects for allocation, and have no Bend source map',
-  'child-process CPU/RSS exists only where the producer records a child receipt (e.g. NATIVE_PHASE or llvm time -lp); it is never inferred',
+  'child-process CPU/RSS exists only where the producer records a child receipt (e.g. NATIVE_PHASE or llvm time -lp); it is never inferred, and worker and child process trees are not enumerable from the collector',
   'rawDetail streams every event to events.jsonl; fine spans/observations are aggregated in memory, but JSON serialization and I/O overhead remains and is not measured',
   'fullroot overhead/control and complete stage coverage are not established by a tiny smoke run',
 ]);
@@ -61,39 +68,153 @@ function timeSnapshot() {
   return {monotonicMs: performance.now(), unixMs: Date.now()};
 }
 
+function threadCpuSnapshot() {
+  if (typeof process.threadCpuUsage !== 'function')
+    return {status: 'unavailable', reason: 'process.threadCpuUsage is not available in this runtime'};
+  const usage = process.threadCpuUsage();
+  return {
+    status: 'available',
+    source: 'process.threadCpuUsage (microseconds, runtime contract; converted to milliseconds)',
+    userMs: usage.user / 1000,
+    systemMs: usage.system / 1000,
+  };
+}
+
 function cpuSnapshot() {
   const usage = process.cpuUsage();
-  return {userMs: usage.user / 1000, systemMs: usage.system / 1000};
+  return {userMs: usage.user / 1000, systemMs: usage.system / 1000, thread: threadCpuSnapshot()};
 }
 
 function cpuDelta(before, after) {
+  const thread = before.thread.status === 'available' && after.thread.status === 'available'
+    ? {
+      status: 'available',
+      scope: 'process.threadCpuUsage: the collector thread only; excludes worker threads and runtime helper threads',
+      userMs: after.thread.userMs - before.thread.userMs,
+      systemMs: after.thread.systemMs - before.thread.systemMs,
+    }
+    : {status: 'unavailable', reason: after.thread.reason ?? before.thread.reason};
+  const otherThreads = thread.status === 'available'
+    ? {
+      status: 'available',
+      scope: 'arithmetic difference of the process-wide delta and this-thread delta; covers worker threads and runtime helper threads; a measurement gap, never an attribution to them',
+      userMs: (after.userMs - before.userMs) - thread.userMs,
+      systemMs: (after.systemMs - before.systemMs) - thread.systemMs,
+    }
+    : {status: 'unavailable', reason: 'this-thread CPU was not captured at both boundaries, so other-thread CPU cannot be separated'};
   return {
     kind: 'process-boundary-delta',
     scope: 'process.cpuUsage: every thread in this process, including worker threads; child processes have separate rusage and are excluded; not exclusive to this span and overlapping for nested spans',
     userMs: after.userMs - before.userMs,
     systemMs: after.systemMs - before.systemMs,
+    thread,
+    otherThreads,
   };
 }
 
-function memorySnapshot() {
+// Footprint, live heap and allocation-request counts are separate classes with
+// no runtime readout at a boundary. They are declared once here, copied into
+// every snapshot, and never substituted by RSS, heapUsed or sampled bytes.
+const memoryUnavailable = Object.freeze({
+  footprintBytes: {
+    status: 'unavailable',
+    reason: 'no runtime API exposes the OS memory footprint (for example macOS phys_footprint); RSS and peak RSS are different resident-size measurements',
+  },
+  liveHeapBytes: {
+    status: 'unavailable',
+    reason: 'a live/retained number requires a forced full GC plus a heap readback; the collector never forces GC, and a boundary heapUsed is not live or retained bytes',
+  },
+  allocationRequests: {
+    status: 'unavailable',
+    reason: 'no allocation-site hook is installed; inspector heap sampling is a statistical sample of allocated and collected objects, not an allocation-request count',
+  },
+});
+
+function resourceUsageSnapshot() {
+  if (typeof process.resourceUsage !== 'function')
+    return {status: 'unavailable', reason: 'process.resourceUsage is not available in this runtime'};
+  const usage = process.resourceUsage();
+  if (!Number.isFinite(usage.maxRSS))
+    return {status: 'unavailable', reason: 'process.resourceUsage returned no finite maxRSS'};
+  return {
+    status: 'available',
+    source: 'process.resourceUsage().maxRSS',
+    maxRss: usage.maxRSS,
+    maxRssUnit: 'kilobytes as documented by the process.resourceUsage runtime contract',
+    peakRssBytes: usage.maxRSS * 1024,
+    scope: 'process high-water resident set size for the whole process; not memory footprint, not live heap and not allocation',
+  };
+}
+
+const heapStatisticsFields = Object.freeze([
+  ['totalHeapSizeBytes', 'total_heap_size'],
+  ['totalHeapSizeExecutableBytes', 'total_heap_size_executable'],
+  ['totalPhysicalSizeBytes', 'total_physical_size'],
+  ['totalAvailableSizeBytes', 'total_available_size'],
+  ['usedHeapSizeBytes', 'used_heap_size'],
+  ['totalAllocatedBytes', 'total_allocated_bytes'],
+  ['heapSizeLimitBytes', 'heap_size_limit'],
+  ['mallocedBytes', 'malloced_memory'],
+  ['peakMallocedBytes', 'peak_malloced_memory'],
+  ['externalMemoryBytes', 'external_memory'],
+  ['totalGlobalHandlesBytes', 'total_global_handles_size'],
+  ['usedGlobalHandlesBytes', 'used_global_handles_size'],
+]);
+
+function heapStatisticsSnapshot(probe, omittedReason) {
+  if (probe === null)
+    return {status: 'unavailable', reason: omittedReason ?? 'node:v8 getHeapStatistics is not available in this runtime'};
+  try {
+    const statistics = probe();
+    const bytes = {};
+    for (const [name, key] of heapStatisticsFields)
+      if (Number.isFinite(statistics[key])) bytes[name] = statistics[key];
+    const counts = {};
+    for (const [name, key] of [['nativeContexts', 'number_of_native_contexts'], ['detachedContexts', 'number_of_detached_contexts']])
+      if (Number.isFinite(statistics[key])) counts[name] = statistics[key];
+    return {
+      status: 'available',
+      source: 'node:v8 getHeapStatistics (runtime-provided; Bun exposes a compatibility shim)',
+      bytes, counts,
+      scope: 'isolate heap statistics at the boundary: totalAllocatedBytes is cumulative allocation volume including collected objects, usedHeapSizeBytes is a boundary used size, peakMallocedBytes is a peak runtime malloc; none is live/retained bytes, resident size or OS footprint',
+    };
+  } catch (error) {
+    return {status: 'error', reason: errorText(error)};
+  }
+}
+
+function memorySnapshot(heapProbe, heapOmittedReason) {
   const usage = process.memoryUsage();
   return {
-    scope: 'process.memoryUsage at a span boundary: RSS is process-wide; heapUsed is a boundary sample, not allocation, live or retained bytes',
+    scope: 'process.memoryUsage at a boundary: RSS is process-wide; heapUsed/heapTotal are boundary samples, not allocation, live or retained bytes; allocation requests are not observed',
     rssBytes: usage.rss,
     heapTotalBytes: usage.heapTotal,
     heapUsedBytes: usage.heapUsed,
     externalBytes: usage.external,
     arrayBuffersBytes: usage.arrayBuffers,
+    resourceUsage: resourceUsageSnapshot(),
+    heapStatistics: heapStatisticsSnapshot(heapProbe, heapOmittedReason),
+    unavailable: memoryUnavailable,
   };
 }
 
 function memoryDelta(before, after) {
+  const cumulative = before.heapStatistics?.status === 'available' && after.heapStatistics?.status === 'available'
+    && Number.isFinite(before.heapStatistics.bytes.totalAllocatedBytes)
+    && Number.isFinite(after.heapStatistics.bytes.totalAllocatedBytes);
   return {
     kind: 'boundary-snapshot-delta',
     scope: before.scope,
     heapUsedDeltaBytes: after.heapUsedBytes - before.heapUsedBytes,
     rssDeltaBytes: after.rssBytes - before.rssBytes,
-    caveat: 'a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage',
+    allocationVolume: cumulative
+      ? {
+        status: 'available',
+        cumulativeAllocatedDeltaBytes: after.heapStatistics.bytes.totalAllocatedBytes - before.heapStatistics.bytes.totalAllocatedBytes,
+        scope: 'difference of the runtime-reported cumulative allocated volume at two boundaries; includes objects later collected and is not an allocation-request count, live bytes or retained bytes',
+      }
+      : {status: 'unavailable', reason: 'runtime heap statistics were not captured at both boundaries (for example a fine raw span), so cumulative allocation volume cannot be differenced'},
+    caveat: 'a boundary delta is not allocation or retained bytes; it can miss peaks and includes uncollected garbage; allocationVolume never replaces allocation samples or a retained-byte measurement',
   };
 }
 
@@ -185,7 +306,34 @@ export async function createCompilerProfile(config = {}) {
     }
   }
 
-  const identity = {pid: process.pid, parentPid: process.ppid, threadId, isMainThread};
+  // Runtime heap statistics are optional evidence: a runtime without
+  // node:v8 still gets an explicit unavailable reason instead of a guessed
+  // number. Loading is lazy so no-profile consumers pay nothing.
+  let heapProbe = null;
+  try {
+    const v8 = await import('node:v8');
+    if (typeof v8.getHeapStatistics === 'function') heapProbe = () => v8.getHeapStatistics();
+  } catch {}
+  const fineHeapOmittedReason = 'fine raw span (details.summary:false): runtime heap statistics are captured only for retained evidence to bound diagnostic overhead';
+
+  const identity = {pid: process.pid, parentPid: process.ppid, threadId, isMainThread,
+    threadKind: isMainThread ? 'main-thread' : 'worker-thread'};
+  // Which process/thread the evidence belongs to, and which parts of the tree
+  // this collector cannot enumerate. Child and worker accounting is never
+  // merged into span CPU; it requires a producer-supplied receipt.
+  const provenance = {
+    process: {pid: process.pid, parentPid: process.ppid, execPath: process.execPath, platform: process.platform, arch: process.arch},
+    thread: {threadId, isMainThread, threadKind: isMainThread ? 'main-thread' : 'worker-thread',
+      source: 'node:worker_threads in the collector process'},
+    workerThreads: {enumerable: false,
+      reason: 'a producer-created worker thread registers no identity with this collector; a profile created inside that worker carries its own pid/threadId, and process.cpuUsage includes both threads while threadCpuUsage covers only the creating thread'},
+    childProcesses: {enumerable: false,
+      reason: 'no portable child-process enumeration is available; child CPU/RSS is recorded only from an explicit producer receipt (wait4/rusage/NATIVE_PHASE) and is never merged into span CPU or this process\'s CPU'},
+    samplingScope: 'local inspector Session for the isolate that created this collector',
+    cpuScope: {process: 'every thread in this process', thread: 'the collector thread only',
+      child: 'excluded; explicit producer receipt required',
+      otherThreads: 'process delta minus thread delta; arithmetic gap, not attribution'},
+  };
   const profileId = randomUUID();
   const run = {
     schemaVersion: COMPILER_PROFILE_SCHEMA_VERSION,
@@ -209,13 +357,40 @@ export async function createCompilerProfile(config = {}) {
     startMonotonicMs,
     rawDetail,
     checkpointPath: join(runDirectory, 'checkpoint.json'),
+    provenance,
     measurement: {
       wall: {kind: 'monotonic performance.now', scope: 'collector process'},
-      cpu: {kind: 'process.cpuUsage boundary delta', scope: 'every thread in this process; child processes excluded; not exclusive across overlapping spans'},
-      memory: {kind: 'process.memoryUsage boundary snapshot', scope: 'RSS process-wide; heapUsed boundary sample, not allocation or retained bytes'},
+      cpu: {
+        kind: 'process.cpuUsage boundary delta, plus process.threadCpuUsage boundary delta',
+        scope: 'process: every thread in this process; thread: the collector thread only; child processes excluded from both; not exclusive across overlapping spans',
+        classes: {
+          processBoundaryDelta: {observed: 'process.cpuUsage', semantics: 'all threads in this process, including worker threads'},
+          threadBoundaryDelta: {observed: 'process.threadCpuUsage', semantics: 'the collector thread only; excludes worker threads and helper threads'},
+          otherThreadGap: {observed: 'process delta minus thread delta', semantics: 'arithmetic gap covering helper/worker threads; not an attribution'},
+          childProcess: {observed: null, reason: 'child CPU requires a producer wait4/rusage receipt; the collector never infers it'},
+        },
+      },
+      memory: {
+        kind: 'process.memoryUsage + process.resourceUsage + runtime heap-statistics boundary snapshot',
+        scope: 'RSS and peak RSS are process-wide; heap sizes are isolate boundary samples; none is allocation requests, live bytes or retained bytes',
+        classes: {
+          rss: {observed: 'process.memoryUsage().rss', unit: 'bytes', semantics: 'process-wide resident size at the boundary'},
+          peakRss: {observed: 'process.resourceUsage().maxRSS', unit: 'bytes (runtime kB × 1024)', semantics: 'process-wide high-water resident size; not footprint'},
+          footprint: memoryUnavailable.footprintBytes,
+          heapBoundary: {observed: 'process.memoryUsage().heapUsed/heapTotal', unit: 'bytes', semantics: 'isolate boundary sizes, not live or retained bytes'},
+          heapStatistics: {observed: 'node:v8 getHeapStatistics when available', unit: 'bytes/counts',
+            semantics: 'cumulative allocated volume, boundary used size and peak malloc as reported by the runtime; includes collected objects; not live bytes'},
+          liveHeap: memoryUnavailable.liveHeapBytes,
+          allocationRequests: memoryUnavailable.allocationRequests,
+          allocationSamples: samplingConfig
+            ? {observed: 'inspector HeapProfiler sampling', unit: 'bytes interval, statistical samples', semantics: 'statistical allocation samples including collected objects; not exact sizes or request counts'}
+            : {observed: null, reason: 'inspector allocation sampling was not enabled for this profile'},
+        },
+      },
       sampling: samplingConfig
         ? {kind: 'V8 inspector', cpu: {unit: 'us', intervalUs: cpuIntervalUs, kind: 'statistical CPU stacks'},
-            allocation: {unit: 'bytes', intervalBytes: allocationIntervalBytes, kind: 'statistical allocation samples, including collected objects'}}
+            allocation: {unit: 'bytes', intervalBytes: allocationIntervalBytes, kind: 'statistical allocation samples, including collected objects',
+              semantics: 'sampled bytes and sites are statistical estimates including objects collected by minor/major GC; never retained bytes and never allocation-request counts'}}
         : null,
     },
     sampling: {config: samplingConfig ? {cpuIntervalUs, allocationIntervalBytes} : null, status: sampler.status, reason: sampler.reason, spans: []},
@@ -234,6 +409,7 @@ export async function createCompilerProfile(config = {}) {
       profileId,
       execution,
       identity,
+      provenance,
       runDirectory,
       checkpointPath: run.checkpointPath,
       rawDetail,
@@ -244,8 +420,13 @@ export async function createCompilerProfile(config = {}) {
       process: {
         cpu: {kind: 'process-boundary-delta',
           scope: 'process.cpuUsage delta since collector creation; every thread in this process; child processes excluded',
-          userMs: cpu.userMs - cpuStart.userMs, systemMs: cpu.systemMs - cpuStart.systemMs},
-        memory: memorySnapshot(),
+          userMs: cpu.userMs - cpuStart.userMs, systemMs: cpu.systemMs - cpuStart.systemMs,
+          thread: cpu.thread.status === 'available' && cpuStart.thread.status === 'available'
+            ? {status: 'available', scope: 'collector thread only, since collector creation',
+                userMs: cpu.thread.userMs - cpuStart.thread.userMs,
+                systemMs: cpu.thread.systemMs - cpuStart.thread.systemMs}
+            : {status: 'unavailable', reason: cpu.thread.reason ?? cpuStart.thread.reason}},
+        memory: memorySnapshot(heapProbe),
       },
       activeSpans: stack.filter(span => !span.excluded).map(span => ({
         id: span.id, parentId: span.parentId, name: span.name, details: span.details,
@@ -334,20 +515,25 @@ export async function createCompilerProfile(config = {}) {
     if (sample && activeSample) fail('cannot sample ' + JSON.stringify(name) + ' while sampled span ' + JSON.stringify(activeSample.name) + ' is active');
     const parent = stack.at(-1);
     const times = timeSnapshot();
+    const spanDetails = serializable(details);
+    // Fine raw spans are streamed but not retained; capturing runtime heap
+    // statistics for each of them would pay a heap readback per event without
+    // any retained evidence. The omission is explicit in the snapshot.
+    const excluded = rawDetail && spanDetails.summary === false;
     const span = {
       id: ++spanSequence,
       parentId: parent?.id ?? null,
       depth: stack.length,
       name,
-      details: serializable(details),
+      details: spanDetails,
       status: 'running',
       startedAt: new Date(times.unixMs).toISOString(),
       startedMonotonicMs: times.monotonicMs,
       cpuStart: cpuSnapshot(),
-      memoryStart: memorySnapshot(),
+      memoryStart: memorySnapshot(excluded ? null : heapProbe, excluded ? fineHeapOmittedReason : undefined),
       sample: null,
+      excluded,
     };
-    span.excluded = rawDetail && span.details.summary === false;
     if (parent === undefined) topLevelSpanCount += 1;
     if (sample) startSample(span);
     stack.push(span);
@@ -360,7 +546,8 @@ export async function createCompilerProfile(config = {}) {
 
   function closeSpan(span, status, details, closeReason) {
     const times = timeSnapshot();
-    const memoryEnd = memorySnapshot();
+    const memoryEnd = memorySnapshot(span.excluded ? null : heapProbe,
+      span.excluded ? fineHeapOmittedReason : undefined);
     const cpuEnd = cpuSnapshot();
     if (span.sample?.status === 'running') stopSample(span);
     span.endedAt = new Date(times.unixMs).toISOString();
@@ -540,6 +727,7 @@ export async function createCompilerProfile(config = {}) {
       error: errorText(error),
       execution,
       identity,
+      provenance,
       profileId,
       runtime: run.runtime,
       run: {
@@ -632,6 +820,33 @@ export function createCompileBookObserver(profile, options = {}) {
   const entryKeys = ['retainedHigher', 'segments', 'spins', 'ownFacts', 'hotFacts', 'staticFacts'];
   let passes = 0, releases = 0;
   const fine = base => base === 'c-definition' || base === 'c-spin' || base === 'prepare';
+  let seamCoverageRecorded = false;
+  function recordSeamCoverage() {
+    if (!profile || seamCoverageRecorded) return;
+    seamCoverageRecorded = true;
+    profile.record({
+      kind: 'producer-seam-coverage', scope: 'canonical producer observe(stage,name,state) seam',
+      name: 'compile-book-stages',
+      values: {envelopeSpanFamilies: 3, rawOnlySpanFamilies: 3, stateOnlyEventFamilies: 2, modulePhaseFamilies: 0},
+      unitsByField: {envelopeSpanFamilies: 'stage families', rawOnlySpanFamilies: 'stage families',
+        stateOnlyEventFamilies: 'stage families', modulePhaseFamilies: 'stage families'},
+      source: 'bend2/comp.ts FL.options.observe calls',
+      details: {
+        envelopeSpans: ['c-reachability-before/after', 'c-pass-N-before/after', 'c-pass-N-close-before/after'],
+        rawOnlySpans: ['prepare-before/after', 'c-spin-before/after', 'c-definition-before/after'],
+        stateOnlyEvents: ['release-before (never begins a span)',
+          'release-after (counted; one streamed observation per definition in rawDetail only)'],
+        fineGrainAvailable: rawDetail
+          ? 'per-definition prepare/spin/definition spans are streamed to events.jsonl but excluded from the bounded summary; their wall/CPU overlap enclosing pass spans and are never exclusive'
+          : 'prepare, c-spin and c-definition spans are not begun at all; only the c-reachability and per-pass envelopes carry wall/CPU',
+        modulePhaseAttribution: null,
+        modulePhaseAttributionReason: 'the producer seam reports per-definition prepare/spin and per-pass envelopes but no catalog/lowering/descriptor-NF/layout/sharing/JS-C-rendering boundary and no authenticated declaration-to-source manifest; deriving a stage owner from a definition key name would be a guess, so no such attribution is produced',
+        cpuScope: 'span CPU is process.cpuUsage over every thread plus process.threadCpuUsage over the codegen thread; nested pass/definition spans overlap and no exclusive CPU is derived',
+        memoryScope: 'boundary process.memoryUsage/process.resourceUsage/heap-statistics snapshots only; no per-definition allocation, live or retained bytes',
+        childScope: 'child processes (clang/link) are excluded from span CPU; only an explicit producer receipt may describe them',
+      },
+    });
+  }
   function recordState(kind, name, state, aggregate = false) {
     if (!profile) return;
     const mark = aggregate ? {summary: false} : {};
@@ -678,6 +893,10 @@ export function createCompileBookObserver(profile, options = {}) {
     const stack = stacks.get(base) ?? [];
     if (side === 'before') {
       if (base.startsWith('c-pass-')) passes += 1;
+      // Coverage metadata is recorded once, at the first span this observer
+      // actually opens, so a non-collector recorder stub sees no unexpected row
+      // before it has observed any stage.
+      recordSeamCoverage();
       stack.push(profile.begin(base, {name, ...(fine(base) ? {summary: false} : {})}));
       stacks.set(base, stack);
     } else {
